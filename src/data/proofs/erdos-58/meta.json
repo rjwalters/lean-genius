@@ -13,70 +13,95 @@
       "erdos",
       "graph-theory",
       "chromatic-number",
-      "cycles"
+      "cycles",
+      "combinatorics",
+      "solved"
     ],
     "badge": "wip",
     "sorries": 0,
     "erdosNumber": 58,
     "erdosUrl": "https://erdosproblems.com/58",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "references": [
+      "Bollobás-Erdős: original conjecture",
+      "Bollobás-Shelah: confirmed k=1 case (χ ≤ 4)",
+      "Gyárfás (1992): 'Graphs with k odd cycle lengths' — full solution",
+      "Gao-Huo-Ma (2021): 'A strengthening on odd cycles in graphs of given chromatic number'",
+      "https://erdosproblems.com/58"
+    ],
+    "leanFile": "Proofs/Erdos58Problem.lean"
   },
   "overview": {
-    "historicalContext": "Conjectured by Bollobás and Erdős, this problem quantifies the relationship between chromatic number and the diversity of odd cycle lengths. Bollobás and Shelah confirmed k=1. Gyárfás proved the full result in 1992, also showing that 2-connected graphs either contain K_{2k+2} or have a low-degree vertex. Gao-Huo-Ma (2021) strengthened this to show high chromatic number forces consecutive odd cycle lengths.",
-    "problemStatement": "If G is a graph which contains odd cycles of ≤ k different lengths, then χ(G) ≤ 2k+2, with equality if and only if G contains K_{2k+2}.",
-    "proofStrategy": "The formalization defines odd cycle lengths and chromatic number, then states Gyárfás' theorem as axioms. Special cases k=0 (bipartite) and k=1 (Bollobás-Shelah) are derived. The Gao-Huo-Ma strengthening about consecutive odd lengths is also formalized.",
+    "historicalContext": "Bollobás and Erdős conjectured that a graph with at most k distinct odd cycle lengths satisfies χ(G) ≤ 2k+2. The case k=0 is the classical bipartite characterization (χ ≤ 2 iff no odd cycles). Bollobás and Shelah proved the k=1 case: at most one odd cycle length implies χ ≤ 4. Gyárfás solved the general conjecture in 1992 using an inductive argument powered by a structural dichotomy for 2-connected graphs: either the graph contains K_{2k+2} or has a low-degree vertex (degree ≤ 2k). He also characterized equality: χ(G) = 2k+2 iff K_{2k+2} ⊆ G. In 2021, Gao, Huo, and Ma substantially strengthened the result: if χ(G) ≥ 2k+3, then G contains k+1 consecutive odd cycle lengths {2m+1, 2m+3, ..., 2m+2k+1} for some m. This is strictly stronger than just having k+1 distinct odd lengths. The problem is closely related to Problem #57 (Liu-Montgomery 2020), which handles the infinite chromatic number case: χ(G) = ∞ implies ∑ 1/aᵢ = ∞ over odd cycle lengths.",
+    "problemStatement": "If $G$ is a graph which contains odd cycles of $\\leq k$ different lengths, then $\\chi(G) \\leq 2k+2$, with equality if and only if $G$ contains $K_{2k+2}$.",
+    "proofStrategy": "The formalization axiomatizes the chromatic number with a specification (existence + minimality). Gyárfás' theorem is stated as three axioms: the upper bound χ ≤ 2k+2, the equality characterization via K_{2k+2}, and the structural dichotomy for 2-connected graphs. Four theorems are proved: the Bollobás-Shelah case (k=1), the bipartite case (k=0), a χ ≥ 5 corollary, and the equality-implies-clique direction — all by combining the axioms with omega. The Gao-Huo-Ma consecutive odd lengths strengthening is axiomatized.",
     "keyInsights": [
-      "k=0: No odd cycles implies bipartite (χ ≤ 2)",
-      "k=1: At most one odd cycle length implies χ ≤ 4 (Bollobás-Shelah)",
-      "Equality χ = 2k+2 characterizes graphs containing K_{2k+2}",
-      "2-connected case: either K_{2k+2} or low-degree vertex exists",
-      "Gao-Huo-Ma: High χ forces k+1 consecutive odd cycle lengths"
+      "The bound χ ≤ 2k+2 is tight: K_{2k+2} has exactly k odd cycle lengths {3, 5, ..., 2k+1} and χ(K_{2k+2}) = 2k+2",
+      "Gyárfás' proof engine: in 2-connected graphs with ≤ k odd cycle lengths and no K_{2k+2}, some vertex has degree ≤ 2k, enabling induction by vertex removal + greedy extension",
+      "The hierarchy of chromatic forcing: χ ≤ 2 → no odd cycles; χ ≤ 2k+2 → ≤ k odd lengths (Gyárfás); χ = ∞ → ∑ 1/aᵢ = ∞ (Problem #57, Liu-Montgomery)",
+      "Gao-Huo-Ma's consecutive odd lengths strengthening: χ ≥ 2k+3 forces not just k+1 distinct odd lengths but k+1 consecutive ones — revealing that high chromatic number constrains the gaps between odd cycle lengths",
+      "All four proved theorems are one- or two-line applications of the axioms with omega or direct rewriting, demonstrating clean modular proof architecture"
     ]
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement, History, and Imports",
+      "summary": "Documentation header with Bollobás-Erdős conjecture, Bollobás-Shelah k=1, Gyárfás 1992 solution, Gao-Huo-Ma 2021 strengthening, Mathlib import",
+      "startLine": 1,
+      "endLine": 25
+    },
+    {
       "id": "definitions",
-      "title": "Core Definitions",
-      "summary": "Cycle lengths, odd cycle lengths, chromatic number, cliques",
+      "title": "Core Definitions: Cycles, Coloring, Cliques",
+      "summary": "cycleLengths and oddCycleLengths via Walk.IsCycle, numOddCycleLengths via Set.ncard, IsColorable, axiomatized chromaticNumber with spec, ContainsClique via Finset",
       "startLine": 26,
       "endLine": 62
     },
     {
       "id": "main-results",
-      "title": "Gyárfás' Theorem (1992)",
-      "summary": "Upper bound, equality characterization, structural result",
+      "title": "Gyárfás' Theorem (1992): Upper Bound, Equality, Structure",
+      "summary": "gyarfas_upper_bound: k odd lengths → χ ≤ 2k+2. gyarfas_equality: χ = 2k+2 ↔ K_{2k+2} ⊆ G. gyarfas_structural: 2-connected → K_{2k+2} or low-degree vertex",
       "startLine": 64,
-      "endLine": 88
+      "endLine": 90
     },
     {
       "id": "special-cases",
-      "title": "Special Cases",
-      "summary": "Bollobás-Shelah (k=1) and bipartite case (k=0)",
-      "startLine": 90,
-      "endLine": 108
+      "title": "Special Cases: k=0 (Bipartite) and k=1 (Bollobás-Shelah)",
+      "summary": "bollobas_shelah: 1 odd length → χ ≤ 4 (proved by omega from gyarfas_upper_bound). no_odd_cycles_bipartite: 0 odd lengths → χ ≤ 2 (proved by omega)",
+      "startLine": 92,
+      "endLine": 112
     },
     {
       "id": "gao-huo-ma",
-      "title": "Gao-Huo-Ma Strengthening (2021)",
-      "summary": "High chromatic number forces consecutive odd cycle lengths",
-      "startLine": 110,
-      "endLine": 126
+      "title": "Gao-Huo-Ma Strengthening (2021): Consecutive Odd Lengths",
+      "summary": "consecutiveOddLengths definition. gao_huo_ma axiom: χ ≥ 2k+3 → k+1 consecutive odd cycle lengths exist. Strictly stronger than Gyárfás' count bound",
+      "startLine": 114,
+      "endLine": 129
     },
     {
       "id": "corollaries",
-      "title": "Corollaries",
-      "summary": "Derived results from the main theorems",
-      "startLine": 128,
-      "endLine": 145
+      "title": "Proved Corollaries",
+      "summary": "chi_5_two_odd_lengths: χ ≥ 5 → 2+ odd lengths (by contrapositive + omega). equality_implies_clique: forward direction of gyarfas_equality (by rewrite)",
+      "startLine": 131,
+      "endLine": 148
+    },
+    {
+      "id": "historical-notes",
+      "title": "Historical Notes and References",
+      "summary": "Progression from k=0 (bipartite) through k=1 (Bollobás-Shelah) to general k (Gyárfás), Gao-Huo-Ma consecutive strengthening, references",
+      "startLine": 150,
+      "endLine": 166
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #58, solved by Gyárfás in 1992. The result establishes a tight relationship between chromatic number and the number of distinct odd cycle lengths: χ(G) ≤ 2k+2 with equality characterizing the presence of K_{2k+2}.",
-    "implications": "This provides a powerful tool for bounding chromatic number by analyzing odd cycle structure. The Gao-Huo-Ma strengthening shows that high chromatic number forces very specific cycle structures.",
+    "summary": "Erdős Problem #58 was SOLVED by Gyárfás in 1992. The 166-line formalization axiomatizes the three components of Gyárfás' theorem (upper bound, equality characterization, structural dichotomy) and the Gao-Huo-Ma consecutive lengths strengthening (2021). Four theorems are proved from these axioms: the k=0 bipartite case, the k=1 Bollobás-Shelah case, a χ ≥ 5 corollary, and the equality-implies-clique direction. All proofs are clean one-line arguments using omega.",
+    "implications": "Combined with Problem #57 (Liu-Montgomery 2020), this gives a complete quantitative picture of how chromatic number controls odd cycle structure: from none (bipartite) through bounded counts (Gyárfás) to divergent reciprocal sums (infinite χ). The Gao-Huo-Ma strengthening suggests that the structure is even more rigid than counting alone reveals — high chromatic number forces consecutive odd cycle lengths.",
     "openQuestions": [
-      "Can the structural result be strengthened further?",
-      "What about even cycle lengths?",
-      "Connections to Problem #57 on harmonic sums of odd cycle lengths"
+      "Can the Gao-Huo-Ma consecutive lengths result be further strengthened to determine the starting point m?",
+      "What is the analogous theory for even cycle lengths vs chromatic number?",
+      "Connection to Problem #57: does the Gyárfás bound give quantitative information about the rate of divergence of ∑ 1/aᵢ?",
+      "Can the chromaticNumber axioms be replaced by Mathlib's SimpleGraph.chromaticNumber once it stabilizes?"
     ]
   }
 }
