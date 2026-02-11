@@ -1,74 +1,86 @@
 [
   {
-    "id": "general-position",
+    "id": "ann-e98-imports",
     "proofId": "erdos-98",
-    "type": "definition",
-    "title": "General Position",
-    "content": "A point set is in general position if all points are distinct, no 3 are collinear, and no 4 are concyclic. This prevents structured configurations that minimize distinct distances.",
-    "significance": "critical",
-    "range": {
-      "startLine": 43,
-      "endLine": 45
-    }
+    "range": { "startLine": 15, "endLine": 20 },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports `InnerProductSpace.Basic` for `EuclideanSpace ℝ (Fin 2)` and the `dist` metric, `SpecialFunctions.Log.Basic` for `Real.log`, `Real.exp`, `Real.sqrt` used in upper bounds, `Finset.Basic` and `Finset.Card` for counting distinct distances, and `Filter.Basic` for `Filter.Tendsto` and `Filter.atTop` in the asymptotic statements. The `Tactic` import provides `omega`, `simp`, and other automation.",
+    "mathContext": "The formalization represents $\\mathbb{R}^2$ as `EuclideanSpace ℝ (Fin 2)`, a type alias for `PiLp 2 (fun _ : Fin 2 ↦ ℝ)`. The metric $d(P, Q) = \\|P - Q\\|_2$ is provided by `dist`. Asymptotic statements use `Filter.atTop` for $n \\to \\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": ["EuclideanSpace", "dist metric", "Filter.atTop", "Real.log", "Real.exp"],
+    "prerequisites": ["Lean 4 imports", "inner product spaces", "Mathlib filter library"]
   },
   {
-    "id": "h-function",
+    "id": "ann-e98-general-position",
     "proofId": "erdos-98",
+    "range": { "startLine": 25, "endLine": 46 },
     "type": "definition",
-    "title": "The Function h(n)",
-    "content": "h(n) is the minimum number of distinct distances among all n-point configurations in general position. The conjecture is h(n)/n → ∞.",
+    "title": "Point Configuration and General Position",
+    "content": "**PointConfig** $n$ defines an $n$-point configuration as `Fin n → EuclideanSpace ℝ (Fin 2)` — a function assigning each index a point in $\\mathbb{R}^2$.\n\n**NoThreeCollinear**: for any 3 distinct indices $i, j, k$, no affine line $ax + by + c = 0$ passes through all three points. Formalized via the non-existence of $(a, b, c) \\neq (0, 0, 0)$ satisfying all three linear equations.\n\n**NoFourConcyclic**: for any 4 distinct indices, no circle with center and radius $r$ passes through all four. Uses `dist center (P i) = r`.\n\n**InGeneralPosition**: `Function.Injective P` (all points distinct) $\\wedge$ `NoThreeCollinear P` $\\wedge$ `NoFourConcyclic P`.",
+    "mathContext": "General position in $\\mathbb{R}^2$: no 3 points on a line, no 4 on a circle. The collinearity test uses the affine equation $ax + by + c = 0$ rather than cross products. The concyclicity test checks equidistance from a common center. The $\\sqrt{n} \\times \\sqrt{n}$ integer lattice has $\\Theta(n^{3/2})$ collinear triples, so general position excludes the extremal configurations for the unrestricted distinct distances problem.",
     "significance": "critical",
-    "range": {
-      "startLine": 55,
-      "endLine": 58
-    }
+    "relatedConcepts": ["Function.Injective", "affine lines", "circles", "Finset.card for distinctness"],
+    "prerequisites": ["EuclideanSpace ℝ (Fin 2)", "Finset cardinality", "dist metric"]
   },
   {
-    "id": "pach-bound",
+    "id": "ann-e98-distances",
     "proofId": "erdos-98",
+    "range": { "startLine": 51, "endLine": 59 },
+    "type": "definition",
+    "title": "Distinct Distances and $h(n)$",
+    "content": "**numDistinctDistances**: counts the number of distinct positive pairwise distances. Computed as the cardinality of $\\{d(P_i, P_j) : i, j \\in \\text{Fin}\\; n,\\; d(P_i, P_j) > 0\\}$ using `Finset.univ.product`, `Finset.image`, and `Finset.filter`.\n\n**$h(n)$**: the infimum over all general-position configurations of $n$ points. Defined via `sInf` on the set $\\{\\text{numDistinctDistances}(P) : P \\text{ in general position}\\}$. Both are `noncomputable` due to the use of `sInf` and `dist`.",
+    "mathContext": "$h(n) = \\min\\{|\\{d(P_i, P_j) : 1 \\leq i < j \\leq n\\}| : P \\text{ in general position}\\}$. The filter $d > 0$ excludes self-distances $d(P_i, P_i) = 0$. Using `sInf` rather than `Finset.min` handles the case where the set of configurations may be infinite (it always is for $n \\geq 3$).",
+    "significance": "critical",
+    "relatedConcepts": ["sInf", "Finset.image", "Finset.filter", "noncomputable definitions", "pairwise distances"],
+    "prerequisites": ["PointConfig", "InGeneralPosition", "dist", "Finset.product"]
+  },
+  {
+    "id": "ann-e98-pach",
+    "proofId": "erdos-98",
+    "range": { "startLine": 64, "endLine": 66 },
     "type": "theorem",
     "title": "Pach's Upper Bound",
-    "content": "h(n) < n^{log₂ 3} ≈ n^{1.585}: there exist general-position configurations with fewer than n^{1.585} distinct distances.",
+    "content": "**pach_upper_bound** (axiom): $h(n) < n^{\\log_2 3}$ for all sufficiently large $n$. The exponent $\\log_2 3 \\approx 1.585$ is expressed as `Real.log 3 / Real.log 2`. The `∀ᶠ n in Filter.atTop` quantifier means \"for all sufficiently large $n$\".\n\nPach's construction uses Horton sets — point sets with no empty convex pentagon — adapted to ensure general position while keeping the number of distinct distances subquadratic.",
+    "mathContext": "Pach (1993) showed $h(n) < n^{\\log_2 3}$ by constructing general-position configurations with few distinct distances using a divide-and-conquer approach. The exponent $\\log_2 3$ arises from a recurrence $T(n) = 2T(n/2) + n$ with a multiplicative distance structure.",
     "significance": "key",
-    "range": {
-      "startLine": 62,
-      "endLine": 65
-    }
+    "relatedConcepts": ["Filter.Eventually", "Filter.atTop", "Real.log", "Horton sets", "subquadratic growth"],
+    "prerequisites": ["h function", "Filter.atTop", "Real.log / Real.log (change of base)"]
   },
   {
-    "id": "efp-bound",
+    "id": "ann-e98-efp",
     "proofId": "erdos-98",
+    "range": { "startLine": 69, "endLine": 72 },
     "type": "theorem",
-    "title": "Erdős–Füredi–Pach Bound",
-    "content": "h(n) < n·exp(c√(log n)): a stronger upper bound, showing h(n) is close to linear. This is the best known upper bound on h(n).",
+    "title": "Erdős–Füredi–Pach Improved Bound",
+    "content": "**efp_upper_bound** (axiom): $\\exists c > 0$ such that $h(n) < n \\cdot \\exp(c\\sqrt{\\log n})$ for sufficiently large $n$. This is the best known upper bound on $h(n)$, showing it grows only slightly faster than linearly.\n\nThe existential $c$ is quantified first, then the eventual bound follows. The expression `Real.exp (c * Real.sqrt (Real.log n))` is a slowly growing function — much slower than any polynomial $n^\\varepsilon$.",
+    "mathContext": "The bound $h(n) < n \\cdot e^{c\\sqrt{\\log n}}$ is subpolynomial in $n$: for any $\\varepsilon > 0$, $e^{c\\sqrt{\\log n}} = o(n^\\varepsilon)$. This means $h(n)/n \\to \\infty$ would require the true growth to be between $n$ and $n \\cdot e^{c\\sqrt{\\log n}}$ — a very narrow window.",
     "significance": "critical",
-    "range": {
-      "startLine": 68,
-      "endLine": 71
-    }
+    "relatedConcepts": ["Real.exp", "Real.sqrt", "Real.log", "subpolynomial growth", "Filter.Eventually"],
+    "prerequisites": ["h function", "real exponential and logarithm", "Filter.atTop"]
   },
   {
-    "id": "main-conjecture",
+    "id": "ann-e98-conjecture",
     "proofId": "erdos-98",
-    "type": "concept",
-    "title": "The Erdős Conjecture: h(n)/n → ∞",
-    "content": "General position should force superlinearly many distinct distances. Even the weaker statement h(n) ≥ n is unknown. Open since the 1970s.",
-    "significance": "critical",
-    "range": {
-      "startLine": 75,
-      "endLine": 82
-    }
-  },
-  {
-    "id": "guth-katz",
-    "proofId": "erdos-98",
+    "range": { "startLine": 79, "endLine": 84 },
     "type": "theorem",
-    "title": "Guth–Katz Comparison",
-    "content": "Without general-position assumptions, any n points determine Ω(n/log n) distinct distances (Guth–Katz 2015). General position should give more, but this isn't proved.",
+    "title": "The Erdős Conjecture and Weak Form",
+    "content": "**ErdosProblem98** (axiom): $h(n)/n \\to \\infty$ as $n \\to \\infty$, formalized as `Filter.Tendsto (fun n ↦ h(n)/n) Filter.atTop Filter.atTop`. This is the strong conjecture: general position forces superlinearly many distinct distances.\n\n**erdos_98_weak** (axiom): $h(n) \\geq n$ for all sufficiently large $n$, using `∀ᶠ n in Filter.atTop`. Even this much weaker bound remains **open** — Erdős himself could not prove it. A proof of $h(n) \\geq n$ would already be a significant breakthrough.",
+    "mathContext": "The conjecture $h(n)/n \\to \\infty$ is equivalent to: for every $C > 0$, $h(n) > Cn$ for large $n$. The weak form $h(n) \\geq n$ asks merely for $C = 1$. The EFP bound $h(n) < n \\cdot e^{c\\sqrt{\\log n}}$ shows the conjecture, if true, would be nearly tight.",
+    "significance": "critical",
+    "relatedConcepts": ["Filter.Tendsto", "Filter.atTop", "superlinear growth", "open problems in combinatorial geometry"],
+    "prerequisites": ["h function", "Filter.Tendsto to atTop", "Filter.Eventually"]
+  },
+  {
+    "id": "ann-e98-guth-katz",
+    "proofId": "erdos-98",
+    "range": { "startLine": 91, "endLine": 95 },
+    "type": "theorem",
+    "title": "Guth–Katz Comparison (Without General Position)",
+    "content": "**guth_katz_comparison** (axiom): without any general-position assumption, any injective $n$-point configuration determines at least $c \\cdot n / \\log n$ distinct distances. This is the Guth–Katz theorem (2015), which resolved the Erdős distinct distances conjecture up to the $\\log n$ factor.\n\nThe formalization uses $\\forall n \\geq 2$ (not just eventually) with an explicit constant $c > 0$. The hypothesis `Function.Injective P` ensures all points are distinct but allows collinear and concyclic configurations.",
+    "mathContext": "Guth–Katz (2015): any $n$ points in $\\mathbb{R}^2$ determine $\\Omega(n/\\log n)$ distinct distances. Their proof uses the Elekes–Sharir framework reducing to line counting in $\\mathbb{R}^3$, then applies the polynomial partitioning technique. General position should improve this to $\\omega(n)$, but the gap between $\\Omega(n/\\log n)$ and $h(n)/n \\to \\infty$ is wide open.",
     "significance": "key",
-    "range": {
-      "startLine": 86,
-      "endLine": 93
-    }
+    "relatedConcepts": ["Guth–Katz theorem", "polynomial partitioning", "Elekes–Sharir framework", "Function.Injective"],
+    "prerequisites": ["numDistinctDistances", "PointConfig", "Real.log", "Function.Injective"]
   }
 ]
