@@ -23,118 +23,125 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem is part of partition calculus, a branch of combinatorial set theory pioneered by Erdős and Rado. The notation κ → (α, β)ₖⁿ describes Ramsey-type properties for infinite cardinals. Erdős and Rado proved 𝔠 → (ω+n, 4)₂³ for 2 ≤ n < ω, but the general case for arbitrary countable ordinals β remains OPEN.",
+    "historicalContext": "Erdős Problem #70 belongs to partition calculus, the infinitary extension of Ramsey theory developed by Erdős and Rado in their foundational 1956 paper 'A partition calculus in set theory'. The arrow notation κ → (α, β)_k^n captures the idea that coloring n-element subsets of a κ-sized set forces monochromatic subsets of specified types. Erdős and Rado proved 𝔠 → (ω+n, 4)₂³ for 2 ≤ n < ω, establishing that the continuum satisfies non-trivial partition relations for 3-element subsets. The proof uses the stepping-up lemma, converting 2-dimensional partition relations to 3-dimensional ones at the cost of enlarging the ordinal parameter. The general case — whether 𝔠 → (β, n)₂³ holds for all countable ordinals β — remains completely open. This connects to deep questions about the combinatorial structure of the continuum. Under GCH, stronger partition relations hold, but the problem is formulated in ZFC. Todorčević's work on partition relations and Shelah's pcf theory have provided partial insights, but the gap between ω+n and arbitrary countable ordinals has not been bridged.",
     "problemStatement": "Let 𝔠 be the cardinality of the continuum (= 2^ℵ₀), β be any countable ordinal, and 2 ≤ n < ω. Is it true that 𝔠 → (β, n)₂³? That is, for any 2-coloring of 3-element subsets of a continuum-sized set, is there either a homogeneous set of order type β for color 0 or a homogeneous set of size n for color 1?",
-    "proofStrategy": "The formalization defines colorings of n-element subsets, homogeneous sets, order types, and the partition arrow notation. The main conjecture is stated for all countable ordinals β. Special cases for β = ω, ω², and ω^ω are defined. The Erdős-Rado partial result is axiomatized. Monotonicity properties and countability proofs for ordinal arithmetic are provided.",
+    "proofStrategy": "The formalization defines colorings of n-element subsets, homogeneous sets, order types, and the partition arrow notation κ → (α, m)₂³. The main conjecture is stated for all countable ordinals β. Special cases for β = ω, ω², and ω^ω are defined. The Erdős-Rado partial result is axiomatized. Monotonicity properties and countability proofs for ordinal arithmetic (ω+n, ω²) are proved from Mathlib's ordinal/cardinal API.",
     "keyInsights": [
-      "Erdős-Rado proved 𝔠 → (ω+n, 4)₂³ for all 2 ≤ n < ω",
-      "The general case for arbitrary countable β remains OPEN",
-      "Partition arrows are monotonic in both the ordinal and size parameters",
-      "Ordinal arithmetic: ω + n, ω², ω^ω are all countable ordinals",
-      "Finite Ramsey theory provides the finite analogue of this problem"
+      "**Erdős-Rado stepping-up**: $\\mathfrak{c} \\to (\\omega+n, 4)_2^3$ for $2 \\le n < \\omega$, proved by converting the 2-dimensional relation $\\mathfrak{c} \\to (\\omega, 3)_2^2$ to dimension 3 via the stepping-up lemma",
+      "**Gap at $\\omega^2$**: The Erdős-Rado result covers ordinals $\\omega + n$ but not $\\omega \\cdot 2$ or $\\omega^2$. Whether $\\mathfrak{c} \\to (\\omega^2, n)_2^3$ holds is the first open case beyond their theorem",
+      "**Monotonicity**: Partition arrows are monotone: $\\kappa \\to (\\beta, m)_k^n$ and $\\alpha \\le \\beta$ implies $\\kappa \\to (\\alpha, m)_k^n$. Similarly for the finite parameter $m$",
+      "**Ordinal arithmetic**: $\\omega + n$, $\\omega^2$, and $\\omega^\\omega$ are all countable, proved via $|\\omega + n| = \\aleph_0$, $|\\omega^2| = \\aleph_0 \\cdot \\aleph_0 = \\aleph_0$",
+      "**Connection to CH**: Under GCH ($\\mathfrak{c} = \\aleph_1$), stronger partition relations hold by the Erdős-Rado theorem. The problem in ZFC alone is more delicate"
     ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Part 0: Imports",
+      "startLine": 27,
+      "endLine": 31,
+      "summary": "Imports the full Mathlib library and opens `Set`, `Cardinal`, `Ordinal` namespaces for set-theoretic notation and ordinal/cardinal arithmetic."
+    },
+    {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "summary": "Colorings of n-element subsets",
+      "title": "Part I: Basic Definitions",
       "startLine": 33,
-      "endLine": 41
+      "endLine": 41,
+      "summary": "Defines `Coloring S n k` as functions from $n$-element subsets of $S$ to $\\text{Fin}(k)$ colors, and `nSubsets S n` as the set $\\{t \\in \\text{Finset}(S) \\mid |t| = n\\}$."
     },
     {
       "id": "homogeneous-sets",
-      "title": "Homogeneous Sets",
-      "summary": "Definitions of homogeneity for sets and finsets",
+      "title": "Part II: Homogeneous Sets",
       "startLine": 43,
-      "endLine": 53
+      "endLine": 53,
+      "summary": "Defines `IsHomogeneous H n c i`: all $n$-subsets of $H$ receive color $i$ under coloring $c$. Provides both `Set` and `Finset` variants for the monochromatic condition."
     },
     {
       "id": "order-types",
-      "title": "Order Types",
-      "summary": "Cardinal-based order type comparison",
+      "title": "Part III: Order Types",
       "startLine": 55,
-      "endLine": 60
+      "endLine": 60,
+      "summary": "Defines `HasOrderTypeAtLeast S H α`: $|H| \\ge |\\alpha|$ (cardinal comparison). A simplified proxy for the full order-type condition $\\text{otp}(H) \\ge \\alpha$."
     },
     {
       "id": "partition-arrow",
-      "title": "Partition Arrow",
-      "summary": "The notation κ → (α, m)₂³",
+      "title": "Part IV: Partition Arrow",
       "startLine": 62,
-      "endLine": 74
+      "endLine": 74,
+      "summary": "Defines $\\kappa \\to (\\alpha, m)_2^3$: for any 2-coloring of 3-subsets of a $\\kappa$-sized set, either a color-0 homogeneous set of order type $\\ge \\alpha$ exists, or a color-1 homogeneous set of size $\\ge m$."
     },
     {
       "id": "continuum",
-      "title": "The Continuum",
-      "summary": "Cardinality 𝔠 = 2^ℵ₀",
+      "title": "Part V: The Continuum",
       "startLine": 76,
-      "endLine": 82
+      "endLine": 83,
+      "summary": "Defines $\\mathfrak{c} = 2^{\\aleph_0}$ via `Cardinal.continuum` and proves `continuum_def : continuum_card = 2 ^ aleph0`."
     },
     {
       "id": "countable-ordinals",
-      "title": "Countable Ordinals",
-      "summary": "Definition and examples of countable ordinals",
-      "startLine": 84,
-      "endLine": 98
+      "title": "Part VI: Countable Ordinals",
+      "startLine": 85,
+      "endLine": 99,
+      "summary": "Defines `IsCountableOrdinal α` as $|\\alpha| \\le \\aleph_0$. Proves $\\omega$ and all natural numbers are countable ordinals using `card_omega0` and `card_nat`."
     },
     {
       "id": "erdos-rado",
-      "title": "Erdős-Rado Theorem",
-      "summary": "Partial result: 𝔠 → (ω+n, 4)₂³",
-      "startLine": 100,
-      "endLine": 111
+      "title": "Part VII: Erdős-Rado Theorem",
+      "startLine": 101,
+      "endLine": 112,
+      "summary": "Axiomatizes the Erdős-Rado partial result: $\\mathfrak{c} \\to (\\omega + n, 4)_2^3$ for all $2 \\le n < \\omega$. This is the strongest known result toward the full conjecture."
     },
     {
       "id": "main-conjecture",
-      "title": "Main Conjecture (OPEN)",
-      "summary": "The full Erdős Problem 70 statement",
-      "startLine": 113,
-      "endLine": 124
+      "title": "Part VIII: Main Conjecture (OPEN)",
+      "startLine": 114,
+      "endLine": 125,
+      "summary": "States `erdos_70_conjecture`: $\\forall \\beta$ countable, $\\forall n \\ge 2$, $\\mathfrak{c} \\to (\\beta, n)_2^3$. The full Erdős Problem #70, open for ordinals beyond $\\omega + n$."
     },
     {
       "id": "special-cases",
-      "title": "Special Cases",
-      "summary": "Conjectures for β = ω, ω², ω^ω",
-      "startLine": 126,
-      "endLine": 138
+      "title": "Part IX: Special Cases",
+      "startLine": 127,
+      "endLine": 139,
+      "summary": "Defines conjectures for $\\beta = \\omega$, $\\beta = \\omega^2$, $\\beta = \\omega^\\omega$. The $\\omega$ case follows from Erdős-Rado; the $\\omega^2$ case is the first genuinely open instance."
     },
     {
       "id": "finite-ramsey",
-      "title": "Finite Ramsey Theory",
-      "summary": "Finite Ramsey theorem and R(3,3) = 6",
-      "startLine": 140,
-      "endLine": 159
+      "title": "Part X: Finite Ramsey Theory",
+      "startLine": 141,
+      "endLine": 160,
+      "summary": "Axiomatizes the finite Ramsey theorem $\\forall r,k,n, \\exists N, N \\to (r)_k^n$ and the specific case $R(3,3) = 6$ for 2-colorings of 3-subsets of a 6-element set."
     },
     {
       "id": "negative-results",
-      "title": "Negative Results",
-      "summary": "Counterexample structure and mutual exclusivity",
-      "startLine": 161,
-      "endLine": 177
+      "title": "Part XI: Negative Results",
+      "startLine": 162,
+      "endLine": 178,
+      "summary": "Defines `erdos_70_counterexample` (negation of the conjecture) and proves `conjecture_xor_counterexample`: the conjecture and its negation are logically complementary."
     },
     {
       "id": "monotonicity",
-      "title": "Monotonicity",
-      "summary": "Monotonicity of partition arrows",
-      "startLine": 179,
-      "endLine": 187
+      "title": "Part XII: Monotonicity",
+      "startLine": 180,
+      "endLine": 188,
+      "summary": "Axiomatizes monotonicity: $\\kappa \\to (\\beta, m)_k^n$ with $\\alpha \\le \\beta$ implies $\\kappa \\to (\\alpha, m)_k^n$, and similarly for $m' \\le m$."
     },
     {
       "id": "ordinal-arithmetic",
-      "title": "Ordinal Arithmetic",
-      "summary": "Countability proofs for ω+n and ω*ω",
-      "startLine": 189,
-      "endLine": 199
+      "title": "Part XIII: Ordinal Arithmetic",
+      "startLine": 190,
+      "endLine": 200,
+      "summary": "Proves $\\omega + n$ and $\\omega^2$ are countable using `card_add`, `card_mul`, `aleph0_add_nat`, and `aleph0_mul_aleph0` from Mathlib."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #70, an OPEN problem in partition calculus asking whether 𝔠 → (β, n)₂³ holds for all countable ordinals β and 2 ≤ n < ω. Erdős-Rado proved the special case 𝔠 → (ω+n, 4)₂³, but the general conjecture remains open.",
-    "implications": "This problem connects infinite Ramsey theory to the structure of the continuum. A positive answer would establish strong partition properties for the continuum. The problem may depend on set-theoretic axioms beyond ZFC, particularly the Continuum Hypothesis.",
+    "summary": "We formalize Erdős Problem #70, an OPEN problem in partition calculus asking whether 𝔠 → (β, n)₂³ holds for all countable ordinals β and 2 ≤ n < ω. The 226-line formalization captures colorings, homogeneous sets, partition arrows, the Erdős-Rado partial result, monotonicity, and countability proofs for ordinal arithmetic. Several properties are proved from Mathlib's API; deep results are axiomatized.",
+    "implications": "This problem connects infinite Ramsey theory to the combinatorial structure of the continuum. A positive answer would establish that the continuum satisfies strong partition properties for all countable ordinals. The problem may depend on set-theoretic axioms beyond ZFC, and its resolution could involve forcing, pcf theory, or new stepping-up techniques.",
     "openQuestions": [
-      "Does 𝔠 → (ω², n)₂³ hold?",
-      "Does 𝔠 → (ω^ω, n)₂³ hold?",
-      "What is the relationship to CH (Continuum Hypothesis)?",
-      "Can the Erdős-Rado bound of 4 be improved?"
+      "Does 𝔠 → (ω², n)₂³ hold? This is the first case beyond the Erdős-Rado theorem",
+      "Does 𝔠 → (ω^ω, n)₂³ hold? ω^ω is the supremum of ω, ω², ω³, ...",
+      "Is the answer independent of ZFC? Could forcing models separate the cases?",
+      "Can the stepping-up lemma be iterated to reach ordinals beyond ω + n?"
     ]
   }
 }
