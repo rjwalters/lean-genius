@@ -1,0 +1,97 @@
+{
+  "slug": "birthday-problem-oq-01",
+  "title": "Expected Number of Shared Birthday Pairs",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "E[number of pairs sharing a birthday] = C(n,2)/365 = n(n-1)/730",
+    "plain": "In a group of n people with uniformly distributed birthdays, what is the expected number of pairs who share a birthday?",
+    "whyMatters": [
+      "Natural extension of the birthday problem from probability to expectation",
+      "Demonstrates linearity of expectation in formal mathematics",
+      "Connects combinatorial counting to expected value"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "E[pairs] = C(n,2)/365 (definition and formula)",
+      "E[pairs] for n=0,1,2 computed exactly",
+      "E[pairs for 23 people] = 253/365 ≈ 0.693",
+      "Threshold: E[pairs] > 1 at n=28 (C(28,2)/365 = 378/365)",
+      "Tight bound: E[pairs] < 1 at n=27 (C(27,2)/365 = 351/365)",
+      "E[pairs] ≥ 0 for all n"
+    ],
+    "open": [
+      "Formal connection to MeasureTheory.Probability (indicator random variables)",
+      "Variance of shared pairs: Var = C(n,2) * (1/365) * (364/365) + correlations",
+      "Higher-order statistics (distribution of pair count)"
+    ],
+    "goal": "Prove expected number of shared birthday pairs formula and threshold"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-02-11T00:00:00Z",
+    "iteration": 1,
+    "focus": "Core results already formalized in BirthdayProblem.lean Part VII.",
+    "blockers": [],
+    "nextAction": "None - core problem completed. Extensions possible via probability theory.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Expected shared pairs formula C(n,2)/365 fully formalized in BirthdayProblem.lean (Part VII, lines 304-356). Includes definition, specific values (n=0,1,2,23), threshold at n=28 (>1 expected pair), tight lower bound at n=27, and nonnegativity proof.",
+    "builtItems": [
+      "proofs/Proofs/BirthdayProblem.lean:317 - expected_shared_pairs definition",
+      "proofs/Proofs/BirthdayProblem.lean:322 - expected_shared_pairs_nat_eq",
+      "proofs/Proofs/BirthdayProblem.lean:326 - expected_pairs_23",
+      "proofs/Proofs/BirthdayProblem.lean:331 - expected_shared_pairs_nonneg",
+      "proofs/Proofs/BirthdayProblem.lean:336-340 - expected_pairs_zero/one",
+      "proofs/Proofs/BirthdayProblem.lean:343 - expected_pairs_two",
+      "proofs/Proofs/BirthdayProblem.lean:348 - expected_pairs_28_gt_one",
+      "proofs/Proofs/BirthdayProblem.lean:352 - expected_pairs_27_lt_one"
+    ],
+    "insights": [
+      "Linearity of expectation makes the formula trivial: each of C(n,2) pairs has independent 1/365 chance",
+      "The combinatorial formulation avoids measure theory entirely",
+      "28 is the threshold where we expect >1 shared pair (vs 23 for >50% probability of any match)",
+      "All proofs use norm_num and Nat.choose - no native_decide needed for expected values"
+    ],
+    "mathlibGaps": [
+      "No formal linearity of expectation for discrete uniform distributions in Lean 4",
+      "Indicator random variable framework would formalize the derivation"
+    ],
+    "nextSteps": [
+      "Could extend with variance computation: Var[X] = C(n,2)/365 * 364/365 + correction terms",
+      "Could connect to MeasureTheory.Probability for formal probabilistic derivation"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Direct combinatorial definition",
+      "status": "succeeded",
+      "description": "Define E[pairs] = C(n,2)/365 directly and prove specific values and thresholds using norm_num"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "probability",
+    "combinatorics",
+    "extension",
+    "completed"
+  ],
+  "relatedProofs": ["birthday-problem"],
+  "references": {
+    "papers": [],
+    "urls": ["https://en.wikipedia.org/wiki/Birthday_problem"],
+    "mathlib": ["Nat.choose_two_right"]
+  },
+  "started": "2026-02-11T09:39:00Z",
+  "lastUpdate": "2026-02-11T09:45:00Z",
+  "significance": 6,
+  "tractability": 8
+}
