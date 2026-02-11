@@ -1,56 +1,86 @@
 [
   {
-    "id": "hypercube",
+    "id": "ann-e181-imports",
     "proofId": "erdos-181",
-    "range": { "startLine": 27, "endLine": 29 },
-    "type": "definition",
-    "title": "Hypercube Graph Q_n",
-    "content": "The n-dimensional hypercube has 2^n vertices (binary strings of length n) with edges between strings differing in exactly one coordinate. Degree n, n·2^{n−1} edges.",
-    "significance": "high"
+    "range": { "startLine": 28, "endLine": 33 },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "Imports `SimpleGraph.Basic` for graph-theoretic foundations, `Finset.Card` for cardinality, `Data.Nat.Basic` for natural number arithmetic, and `Tactic` for automation. The formalization works within the `Erdos181` namespace and does not use Mathlib's `SimpleGraph` type directly, instead defining hypercube adjacency from scratch via bit operations on `Fin (2^n)`.",
+    "mathContext": "Uses `Fin (2^n)` as the vertex type for $Q_n$, with bit-level operations for adjacency.",
+    "significance": "supporting",
+    "relatedConcepts": ["SimpleGraph", "Fin type", "bit operations", "namespace isolation"],
+    "prerequisites": ["Lean 4 imports", "Mathlib combinatorics library"]
   },
   {
-    "id": "ramsey-number",
+    "id": "ann-e181-hypercube",
     "proofId": "erdos-181",
-    "range": { "startLine": 33, "endLine": 37 },
+    "range": { "startLine": 42, "endLine": 71 },
+    "type": "definition",
+    "title": "Hypercube Graph Q_n: Definition and Properties",
+    "content": "The $n$-dimensional hypercube $Q_n$ has $2^n$ vertices (modeled as `Fin (2^n)`) with adjacency defined by differing in exactly one bit position: `hypercubeAdj n x y` iff $\\exists! i \\in \\text{Fin}\\,n$ such that the $i$-th bits of $x$ and $y$ differ. Three structural properties are proved: **symmetry** (`hypercubeAdj_symm`), **irreflexivity** (`hypercubeAdj_irrefl`), and **vertex count** $|V(Q_n)| = 2^n$. The **edge count formula** $|E(Q_n)| = n \\cdot 2^{n-1}$ is derived from the handshaking lemma (each vertex has degree $n$, so $\\sum \\deg = n \\cdot 2^n = 2|E|$). The bit-level encoding via division and modulo faithfully captures Hamming distance 1.",
+    "mathContext": "$Q_n$: $V = \\{0,1\\}^n \\cong \\text{Fin}(2^n)$, $x \\sim y$ iff $d_H(x,y) = 1$. $|V| = 2^n$, $|E| = n \\cdot 2^{n-1}$, $\\Delta(Q_n) = n$.",
+    "significance": "critical",
+    "relatedConcepts": ["Hamming distance", "binary hypercube", "regular graph", "handshaking lemma"],
+    "prerequisites": ["Fin type", "bit operations", "existsUnique"]
+  },
+  {
+    "id": "ann-e181-ramsey-def",
+    "proofId": "erdos-181",
+    "range": { "startLine": 73, "endLine": 97 },
     "type": "definition",
     "title": "Ramsey Number R(Q_n)",
-    "content": "The minimum N such that any 2-coloring of K_N contains a monochromatic copy of Q_n. The central quantity to estimate.",
-    "significance": "high"
+    "content": "The 2-color Ramsey number $R(Q_n)$ is defined as the minimum $N$ such that every 2-coloring of the edges of $K_N$ contains a monochromatic copy of $Q_n$. Formally, $R(Q_n) = \\inf\\{N : \\forall c : \\binom{[N]}{2} \\to \\{0,1\\}, \\exists f : V(Q_n) \\hookrightarrow [N] \\text{ injective}, \\exists \\text{color}, \\forall x \\sim y \\in Q_n, c(f(x), f(y)) = \\text{color}\\}$. The formalization uses `sInf` and models colorings as functions `Fin N → Fin N → Fin 2`. The base case $R(Q_0) \\leq 1$ is proved: $Q_0$ has one vertex and no edges, so any 1-vertex graph trivially contains it.",
+    "mathContext": "$R(Q_n) = \\min\\{N : \\forall c : E(K_N) \\to \\{0,1\\}, K_N \\xrightarrow{c} Q_n\\}$. Proved: $R(Q_0) \\leq 1$.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey number", "graph coloring", "monochromatic subgraph", "sInf"],
+    "prerequisites": ["complete graph", "graph embedding", "injective functions"]
   },
   {
-    "id": "main-conjecture",
+    "id": "ann-e181-conjecture",
     "proofId": "erdos-181",
-    "range": { "startLine": 42, "endLine": 44 },
-    "type": "conjecture",
-    "title": "Burr–Erdős Conjecture for Q_n",
-    "content": "R(Q_n) ≪ 2^n: the Ramsey number is at most a constant times the number of vertices. This would be optimal up to the constant.",
-    "significance": "high"
-  },
-  {
-    "id": "tikhomirov",
-    "proofId": "erdos-181",
-    "range": { "startLine": 54, "endLine": 57 },
+    "range": { "startLine": 99, "endLine": 112 },
     "type": "theorem",
-    "title": "Tikhomirov (2022)",
-    "content": "R(Q_n) ≪ 2^{(2−c)n} for c ≈ 0.0366. The current best upper bound, subquadratic in 2^n but still exponential in n.",
-    "significance": "high"
+    "title": "Burr-Erdős Conjecture: R(Q_n) = O(2^n)",
+    "content": "The main conjecture (1975, OPEN): $\\exists C > 0$ such that $R(Q_n) \\leq C \\cdot 2^n$ for all $n$. This asserts that the Ramsey number of $Q_n$ is **linear** in its vertex count $2^n$ — the strongest possible growth rate aside from determining the exact constant $C$. The conjecture is part of the broader **Burr-Erdős program** asking when Ramsey numbers are linear in vertex count. For bounded-degree graphs, Lee (2017) confirmed linearity, but $Q_n$ has degree $n = \\log_2|V|$ which grows, placing it outside Lee's theorem.",
+    "mathContext": "**Burr-Erdős Conjecture:** $R(Q_n) = O(2^n)$, equivalently $\\exists C > 0,\\; \\forall n: R(Q_n) \\leq C \\cdot 2^n$.",
+    "significance": "critical",
+    "relatedConcepts": ["Burr-Erdős conjecture", "Ramsey linearity", "sparse graph Ramsey theory", "Lee's theorem"],
+    "prerequisites": ["ramseyNumber definition", "hypercube vertex count"]
   },
   {
-    "id": "lower-bound",
+    "id": "ann-e181-bounds",
     "proofId": "erdos-181",
-    "range": { "startLine": 60, "endLine": 62 },
+    "range": { "startLine": 114, "endLine": 144 },
     "type": "theorem",
-    "title": "Trivial Lower Bound",
-    "content": "R(Q_n) ≥ 2^n since Q_n has 2^n vertices. Any Ramsey number is at least the number of vertices of the target graph.",
-    "significance": "medium"
+    "title": "Known Bounds: Trivial, Tikhomirov, and Lower",
+    "content": "Three key bounds. **Trivial upper:** $R(Q_n) \\leq C^{2^n}$ from the classical Ramsey bound $R(K_m) \\leq 4^m$ applied with $m = 2^n$. **Tikhomirov (2022):** $R(Q_n) \\leq C \\cdot 2^{(2-c)n}$ with $c \\approx 0.0366$ — this is subquadratic in $2^n$ (exponent $2 - c < 2$) but still superlinear (exponent $> 1$). The proof uses a novel dependent random choice argument combined with regularity-free embedding techniques. **Lower bound:** $R(Q_n) \\geq 2^n$ trivially, since $Q_n$ has $2^n$ vertices. The gap between exponents 1 (conjectured) and $2 - c \\approx 1.964$ (best known) is the main challenge.",
+    "mathContext": "**Bounds:** $2^n \\leq R(Q_n) \\leq C \\cdot 2^{(2-c)n}$ where $c \\approx 0.0366$. **Gap:** exponent in $[1, 1.964]$ (conjectured: 1).",
+    "significance": "critical",
+    "relatedConcepts": ["dependent random choice", "Ramsey upper bounds", "embedding lemmas", "subquadratic bounds"],
+    "prerequisites": ["ramseyNumber", "exponential bounds", "Ramsey theory"]
   },
   {
-    "id": "burr-erdos",
+    "id": "ann-e181-context",
     "proofId": "erdos-181",
-    "range": { "startLine": 67, "endLine": 70 },
-    "type": "note",
-    "title": "Burr–Erdős Bounded-Degree Context",
-    "content": "Lee (2017) proved R(G) = O(|V(G)|) for bounded-degree graphs. But Q_n has degree n → ∞, so this doesn't apply directly. The hypercube sits at the boundary.",
-    "significance": "medium"
+    "range": { "startLine": 146, "endLine": 175 },
+    "type": "insight",
+    "title": "Lee's Theorem and Erdős-Sós Divergence Question",
+    "content": "Two important contextual results. **Lee (2017)** proved the general Burr-Erdős conjecture for bounded-degree graphs: if $\\Delta(G) \\leq \\Delta$ then $R(G) \\leq C_\\Delta \\cdot |V(G)|$. But $Q_n$ has $\\Delta = n = \\log_2|V|$, which grows with the graph, so Lee's theorem does not apply. This places $Q_n$ at the exact boundary of known Ramsey-linear behavior. The **Erdős-Sós question** asks whether $R(Q_n)/2^n \\to \\infty$ — equivalently, whether the conjecture is false. Current bounds give $R(Q_n)/2^n \\leq C \\cdot 2^{(1-c)n} \\to \\infty$, so the ratio does diverge with current knowledge, but this could change if better upper bounds are found.",
+    "mathContext": "**Lee (2017):** $\\Delta(G) \\leq \\Delta \\Rightarrow R(G) = O_{\\Delta}(|V(G)|)$. $Q_n$: $\\Delta = n \\to \\infty$, so inapplicable. **Erdős-Sós:** $R(Q_n)/2^n \\stackrel{?}{\\to} \\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["bounded-degree Ramsey", "Lee's theorem", "Ramsey growth rates", "degree vs vertex count"],
+    "prerequisites": ["Ramsey linearity", "bounded-degree graphs", "limit divergence"]
+  },
+  {
+    "id": "ann-e181-gap-summary",
+    "proofId": "erdos-181",
+    "range": { "startLine": 177, "endLine": 211 },
+    "type": "theorem",
+    "title": "Gap Summary and Main Theorem",
+    "content": "The gap between known bounds is summarized: $2^n \\leq R(Q_n) \\leq C \\cdot 2^{(2-c)n}$, with the conjecture asserting the exponent should be exactly 1. The auxiliary theorem `bound_gap_description` proves $2^n \\leq 2^{2n}$ (a trivial inequality witnessing the gap). The final axiom `erdos_181` restates the conjecture: $\\exists C > 0, \\forall n, R(Q_n) \\leq C \\cdot 2^n$. Closing the exponent gap from $2 - c \\approx 1.964$ down to 1 would resolve one of the most prominent open problems in combinatorial Ramsey theory.",
+    "mathContext": "**Gap:** $2^n \\leq R(Q_n) \\leq C \\cdot 2^{(2-c)n}$. **Conjecture:** $R(Q_n) \\leq C \\cdot 2^n$ (exponent 1).",
+    "significance": "key",
+    "relatedConcepts": ["exponent gap", "open problems in Ramsey theory", "conjecture restating"],
+    "prerequisites": ["all previous bounds", "exponential comparison"]
   }
 ]
