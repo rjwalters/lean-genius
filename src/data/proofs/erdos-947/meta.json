@@ -1,47 +1,94 @@
 {
   "id": "erdos-947",
-  "title": "No Exact Covering Systems Exist",
+  "title": "Erdős Problem #947: No Exact Covering Systems Exist",
   "slug": "erdos-947",
   "description": "There is no exact covering system with distinct moduli - no finite collection of congruence classes aᵢ (mod nᵢ) with distinct nᵢ can partition ℤ exactly. Proved independently by Mirsky-Newman and Davenport-Rado.",
   "meta": {
     "author": "Mirsky-Newman, Davenport-Rado",
     "sourceUrl": "https://erdosproblems.com/947",
-    "date": "",
-    "status": "complete",
+    "status": "enhanced",
     "proofRepoPath": "Proofs/Erdos947Problem.lean",
+    "leanFile": "Proofs/Erdos947Problem.lean",
     "tags": ["erdos", "number-theory", "covering-systems", "congruences", "modular-arithmetic"],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 947,
     "erdosUrl": "https://erdosproblems.com/947",
     "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
-      { "theorem": "ZMod", "description": "Integers modulo n", "module": "Mathlib.Data.ZMod.Basic" },
-      { "theorem": "Finset", "description": "Finite sets", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Int", "description": "Integers", "module": "Mathlib.Data.Int.Basic" },
-      { "theorem": "Rat", "description": "Rational numbers for densities", "module": "Mathlib.Data.Rat.Basic" }
+      {
+        "theorem": "ZMod",
+        "description": "Integers modulo n for congruence classes",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for collections of congruence classes",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Int",
+        "description": "Integer arithmetic and modular operations",
+        "module": "Mathlib.Data.Int.Basic"
+      },
+      {
+        "theorem": "Rat",
+        "description": "Rational numbers for density computations (1/n)",
+        "module": "Mathlib.Data.Rat.Basic"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Finite sums for density sum Σ 1/nᵢ",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "references": [
+      {
+        "key": "MiNe",
+        "citation": "Mirsky, L. and Newman, D.J. On an exact covering system (unpublished but widely cited through Erdős's references).",
+        "type": "paper"
+      },
+      {
+        "key": "DaRa",
+        "citation": "Davenport, H. and Rado, R. On an exact covering system (unpublished, independent proof via LCM methods).",
+        "type": "paper"
+      },
+      {
+        "key": "Er77c",
+        "citation": "Erdős, P. (1977). Problems and results on combinatorial number theory III. In Number Theory Day, Springer Lecture Notes in Mathematics 626, 43-72.",
+        "type": "paper"
+      }
     ],
     "originalContributions": [
-      "Lean formalization of covering systems using Finset of pairs",
+      "Lean formalization of covering systems using Finset of (ℤ × ℕ) pairs",
       "Definition of exact covering (partition property via ∃!)",
-      "Density argument formalization with densitySum",
-      "Statement of Mirsky-Newman / Davenport-Rado theorem",
+      "Density argument formalization with densitySum as ℚ-valued sum",
+      "Axiomatized Mirsky-Newman / Davenport-Rado impossibility theorem",
+      "Proved distinct_moduli_not_exact from the axiomatized main theorem",
       "Mirsky-Newman generating function axiom with substantive type",
-      "Davenport-Rado LCM divisibility axiom",
-      "Contrast with ordinary covering systems and repeated-moduli example"
+      "Davenport-Rado LCM divisibility axiom with Finset.lcm",
+      "Verified exactCoveringWithRepeats: {0 mod 2, 1 mod 2} is an exact covering",
+      "Proved erdos_947_summary combining impossibility and existence"
     ],
-    "dateAdded": "2026-01-19"
+    "relatedProofs": [
+      {
+        "id": "erdos-9",
+        "relationship": "Both problems concern structural properties of integers under modular arithmetic and combinatorial number theory"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Covering systems were introduced by Erdős in the 1950s. A covering system is a finite collection of congruence classes {aᵢ (mod nᵢ)} such that every integer belongs to at least one class. The natural question of whether an 'exact' covering exists — one that partitions ℤ into congruence classes with distinct moduli — was answered negatively by two independent proofs.\n\nMirsky and Newman proved the impossibility using generating functions: for an exact covering, the function f(x) = Σᵢ x^{aᵢ}/(1-x^{nᵢ}) must equal 1/(1-x), which imposes analytic constraints incompatible with distinct moduli. Davenport and Rado gave an algebraic proof using LCM properties: the largest modulus must divide the LCM of the smaller ones, leading to a contradiction.\n\nThe result is sharp in two senses: ordinary covering systems (allowing overlaps) with distinct moduli do exist — for example {0 (mod 2), 0 (mod 3), 1 (mod 4), 5 (mod 6), 7 (mod 12)} — and exact coverings exist when repeated moduli are allowed, as the trivial {0 (mod 2), 1 (mod 2)} demonstrates.",
-    "problemStatement": "There is no exact covering system - a finite collection of congruence classes aᵢ (mod nᵢ) with distinct moduli nᵢ such that every integer satisfies exactly one congruence.",
-    "proofStrategy": "The proof uses density arguments: if we partition ℤ, the sum Σ 1/nᵢ must equal 1. Combined with LCM constraints on the moduli, this leads to a contradiction. The formalization axiomatizes the main theorem and both proof techniques (Mirsky-Newman generating functions and Davenport-Rado LCM divisibility), while providing a verified construction of exact coverings with repeated moduli as contrast.",
+    "historicalContext": "Covering systems were introduced by Erdős in the 1950s as a flexible tool in combinatorial number theory. A covering system is a finite collection of congruence classes $\\{a_i \\pmod{n_i}\\}$ such that every integer belongs to at least one class. The natural question of whether an 'exact' covering exists — one that partitions $\\mathbb{Z}$ into congruence classes with distinct moduli — was answered negatively by two independent proofs.\n\nMirsky and Newman proved the impossibility using generating functions: for an exact covering, the function $f(x) = \\sum_i x^{a_i}/(1 - x^{n_i})$ must equal $1/(1-x)$ (each integer represented exactly once as a power of $x$). Analyzing this identity near roots of unity of order $n_i$ reveals that distinct moduli cannot satisfy the resulting analytic constraints.\n\nDavenport and Rado gave an algebraic proof using LCM properties: if the moduli are $n_1 < n_2 < \\cdots < n_k$, the largest modulus $n_k$ must divide $\\text{lcm}(n_1, \\ldots, n_{k-1})$. This forces $n_k$ to be a factor of the LCM of smaller moduli, creating a contradiction with the partition requirement.\n\nThe result is sharp in two senses: ordinary covering systems (allowing overlaps) with distinct moduli do exist — for example $\\{0 \\pmod{2},\\, 0 \\pmod{3},\\, 1 \\pmod{4},\\, 5 \\pmod{6},\\, 7 \\pmod{12}\\}$ — and exact coverings exist when repeated moduli are allowed, as the trivial $\\{0 \\pmod{2},\\, 1 \\pmod{2}\\}$ demonstrates.\n\nA central observation is the density constraint: each class $a \\pmod{n}$ has natural density $1/n$, so for a partition the densities must sum to 1: $\\sum 1/n_i = 1$. While this equation has solutions with distinct $n_i$ (e.g., $1/2 + 1/3 + 1/6 = 1$), the additional constraint that the congruences partition $\\mathbb{Z}$ (not just have matching densities) is what makes the problem impossible.\n\n**Status**: SOLVED — Proved independently by Mirsky-Newman and Davenport-Rado.",
+    "problemStatement": "**Problem (SOLVED)**\n\nThere is no exact covering system with distinct moduli: no finite collection of congruence classes $a_i \\pmod{n_i}$ with distinct moduli $n_1, n_2, \\ldots, n_k$ (all different) can partition $\\mathbb{Z}$, i.e., cover every integer exactly once.\n\n**Known results:**\n- Mirsky-Newman proof via generating function analysis\n- Davenport-Rado proof via LCM divisibility\n- Density constraint: $\\sum 1/n_i = 1$ is necessary but not sufficient\n- Ordinary covering systems (with overlaps) using distinct moduli do exist",
+    "proofStrategy": "**Formalization Strategy**\n\nThe Lean file (208 lines) formalizes the problem with definitions, axioms, and proved results:\n\n1. **Core definitions** (lines 47–79): `CongruenceClass a n` as $\\{x : x \\equiv a \\pmod{n}\\}$. `CoveringSystem` as a structure with `classes : Finset (ℤ × ℕ)`, nonemptiness, positive moduli, and the covering property. `hasDistinctModuli` requires injectivity on moduli. `isExact` requires $\\exists!$ (exists unique) for each integer.\n\n2. **Density argument** (lines 83–101): `density n = 1/n` and `densitySum C = \\sum_{p \\in C} 1/p.2`. The axiom `exact_density_sum` states that exact coverings have density sum 1.\n\n3. **Main theorem** (lines 107–121): `no_exact_covering_system` axiomatizes the impossibility. `distinct_moduli_not_exact` is *proved* as the contrapositive.\n\n4. **Proof techniques** (lines 129–148): `mirsky_newman_argument` and `davenport_rado_argument` axiomatized with substantive types (not trivial `True`).\n\n5. **Contrast results** (lines 157–183): `covering_systems_exist` and `erdos_covering_example` axiomatized. `exactCoveringWithRepeats` is a *verified* construction of $\\{0 \\pmod{2}, 1 \\pmod{2}\\}$.\n\n6. **Summary** (lines 201–206): `erdos_947_summary` *proved* by combining the axiomatized impossibility with existence of ordinary coverings.",
     "keyInsights": [
-      "For an exact covering, the sum of densities Σ 1/nᵢ = 1",
-      "The LCM of the moduli creates constraints that cannot be satisfied with distinct values",
-      "Ordinary covering systems (at-least-once coverage) DO exist with distinct moduli",
-      "Exact coverings exist if we allow repeated moduli (e.g., 0 mod 2, 1 mod 2)"
+      "**Density constraint**: For an exact covering $\\sum 1/n_i = 1$, but this alone is insufficient — $1/2 + 1/3 + 1/6 = 1$ with distinct moduli, yet no corresponding partition of $\\mathbb{Z}$ exists",
+      "**Two independent proofs**: Mirsky-Newman used generating function analysis near roots of unity; Davenport-Rado used LCM divisibility of the largest modulus",
+      "**Sharp boundary**: Ordinary covering systems with distinct moduli exist (Erdős's example with moduli $\\{2, 3, 4, 6, 12\\}$), so the impossibility is specific to the exactness requirement",
+      "**Verified construction**: `exactCoveringWithRepeats` proves that $\\{0 \\pmod{2}, 1 \\pmod{2}\\}$ is an exact covering, showing the distinct moduli constraint is essential",
+      "**Structural insight**: The $\\exists!$ quantifier in `isExact` formalizes the partition property, distinguishing exact from ordinary coverings"
     ]
   },
   "sections": [
@@ -49,52 +96,54 @@
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 47,
-      "endLine": 81,
-      "summary": "CongruenceClass, CoveringSystem structure, hasDistinctModuli, isExact"
+      "endLine": 79,
+      "summary": "Defines `CongruenceClass a n` as $\\{x : x \\bmod n = a \\bmod n\\}$. `CoveringSystem` is a structure with `classes : Finset (ℤ \\times \\mathbb{N})$, nonemptiness, positive moduli, and the covering property $\\forall x, \\exists p \\in \\text{classes}, x \\bmod p.2 = p.1 \\bmod p.2$. `hasDistinctModuli` requires modulus-injectivity. `isExact` requires $\\exists!$ for each integer."
     },
     {
       "id": "density-argument",
       "title": "The Density Argument",
       "startLine": 83,
-      "endLine": 105,
-      "summary": "density, densitySum, exact_density_sum axiom"
+      "endLine": 101,
+      "summary": "Defines `density n = 1/n` as $\\mathbb{Q}$-valued density and `densitySum C = \\sum_{p \\in C} 1/p.2$. Axiomatizes `exact_density_sum`: for an exact covering, $\\sum 1/n_i = 1$. This is the density constraint necessary for partition."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 107,
-      "endLine": 127,
-      "summary": "no_exact_covering_system axiom, distinct_moduli_not_exact theorem"
+      "endLine": 121,
+      "summary": "Axiomatizes `no_exact_covering_system`: $\\neg\\exists C, \\text{hasDistinctModuli}(C) \\wedge \\text{isExact}(C)$. *Proves* `distinct_moduli_not_exact` as the universal contrapositive: $\\forall C, \\text{hasDistinctModuli}(C) \\to \\neg\\text{isExact}(C)$."
     },
     {
       "id": "proof-techniques",
       "title": "Proof Techniques",
       "startLine": 129,
-      "endLine": 155,
-      "summary": "mirsky_newman_argument and davenport_rado_argument axioms with substantive types"
+      "endLine": 148,
+      "summary": "Axiomatizes `mirsky_newman_argument` (generating function $f(x) = \\sum x^{a_i}/(1 - x^{n_i}) = 1/(1-x)$ implies density sum 1) and `davenport_rado_argument` (largest modulus divides LCM of smaller moduli, via `Finset.lcm`). Both have substantive types, not trivial `True`."
     },
     {
       "id": "related-results",
-      "title": "Related Results",
+      "title": "Related Results and Constructions",
       "startLine": 157,
-      "endLine": 193,
-      "summary": "covering_systems_exist, erdos_covering_example, exactCoveringWithRepeats construction"
+      "endLine": 183,
+      "summary": "Axiomatizes `covering_systems_exist` (ordinary coverings with distinct moduli $> 1$ exist) and `erdos_covering_example` (specific system with moduli $\\{2, 3, 4, 6, 12\\}$). *Verifies* `exactCoveringWithRepeats`: the construction $\\{0 \\pmod{2}, 1 \\pmod{2}\\}$ with proved nonemptiness, positive moduli, and coverage via case split on $x \\bmod 2$."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 195,
-      "endLine": 220,
-      "summary": "erdos_947_summary combining impossibility with existence of ordinary coverings"
+      "endLine": 208,
+      "summary": "*Proves* `erdos_947_summary`: the conjunction of (1) no exact covering with distinct moduli and (2) existence of ordinary coverings with distinct moduli. Proof extracts components from axiomatized results."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #947 is SOLVED. The Mirsky-Newman / Davenport-Rado theorem proves that no exact covering system with distinct moduli exists. This reflects deep constraints from the multiplicative structure of ℤ.",
-    "implications": "The result shows a fundamental asymmetry: we can cover ℤ with distinct moduli (each integer at least once), but we cannot partition ℤ with distinct moduli (each integer exactly once).",
+    "summary": "This formalization captures Erdős Problem #947 with complete definitions of covering systems, exact coverings, and distinct moduli. It axiomatizes the Mirsky-Newman / Davenport-Rado impossibility theorem with two substantive proof technique axioms, proves the contrapositive formulation, verifies an exact covering with repeated moduli, and proves a summary theorem combining impossibility with existence of ordinary coverings.",
+    "implications": "**Theoretical Significance**\n\n1. **Partition vs. covering**: The result reveals a fundamental asymmetry — $\\mathbb{Z}$ can be covered but not partitioned by congruences with distinct moduli\n\n2. **Density constraints**: The necessary condition $\\sum 1/n_i = 1$ is not sufficient, illustrating that global density does not determine local partition structure\n\n3. **Covering system theory**: This impossibility is foundational for the broader theory of covering systems, which connects to the Hanna Neumann conjecture, the odd perfect number problem, and Schinzel's conjecture\n\n4. **Two proof paradigms**: The Mirsky-Newman analytic approach and Davenport-Rado algebraic approach illustrate complementary techniques in combinatorial number theory",
     "openQuestions": [
       "What is the minimum overlap in a covering system with distinct moduli?",
-      "How close to exact can a distinct-moduli covering system get?",
-      "Can the Chinese Remainder Theorem perspective yield a simpler proof?"
+      "How close to exact can a distinct-moduli covering system get in terms of the maximum number of times any integer is covered?",
+      "Can the Chinese Remainder Theorem perspective yield a simpler unified proof?",
+      "What are the optimal density-sum bounds for distinct-moduli covering systems?",
+      "Is there an effective bound on the size of the smallest covering system with distinct moduli all greater than a given bound?"
     ]
   }
 }
