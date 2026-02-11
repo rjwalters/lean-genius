@@ -518,6 +518,94 @@ theorem trivial_upper_bound :
     _ = P.points.card.choose 2 := Finset.card_powersetCard 2 P.points
     _ = P.points.card * (P.points.card - 1) / 2 := Nat.choose_two_right P.points.card
 
+/- ## Improved Upper Bound -/
+
+/-- If two Finsets share at most 1 element, their 2-element subsets are disjoint. -/
+theorem powersetCard2_disjoint {α : Type*} [DecidableEq α]
+    {S₁ S₂ : Finset α} (h : (S₁ ∩ S₂).card ≤ 1) :
+    Disjoint (S₁.powersetCard 2) (S₂.powersetCard 2) := by
+  rw [Finset.disjoint_left]
+  intro T hT₁ hT₂
+  have hsub₁ := (Finset.mem_powersetCard.mp hT₁).1
+  have hsub₂ := (Finset.mem_powersetCard.mp hT₂).1
+  have hcard := (Finset.mem_powersetCard.mp hT₁).2
+  have hT_inter : T ⊆ S₁ ∩ S₂ := Finset.subset_inter hsub₁ hsub₂
+  have := Finset.card_le_card hT_inter
+  omega
+
+open Classical in
+/-- **Improved Upper Bound**: Under NoFiveCollinear, fourPointLineCount(P) ≤ n(n-1)/12.
+    Each 4-collinear subset has C(4,2) = 6 pairs. Distinct subsets share ≤1 point,
+    so their pair-sets are disjoint. Packing into C(n,2) = n(n-1)/2 total pairs
+    gives 6·|F| ≤ n(n-1)/2, hence |F| ≤ n(n-1)/12. -/
+theorem improved_upper_bound (P : PlanarPointSet) (hP : NoFiveCollinear P) :
+    fourPointLineCount P ≤ P.points.card * (P.points.card - 1) / 12 := by
+  -- Reformulate as: 12 * fourPointLineCount P ≤ P.points.card * (P.points.card - 1)
+  -- which is equivalent in ℕ division.
+  -- Strategy: prove 6 * fourPointLineCount P ≤ n.choose 2, then use n.choose 2 = n*(n-1)/2
+  suffices h : 6 * fourPointLineCount P ≤ P.points.card.choose 2 by
+    rw [Nat.choose_two_right] at h; omega
+  unfold fourPointLineCount
+  set n := P.points.card
+  set F := P.points.powerset.filter (fun S =>
+    S.card = 4 ∧
+    ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
+      ∀ p ∈ S, collinear a b p)
+  -- Need: 6 * F.card ≤ n.choose 2
+  -- Build: each S ∈ F maps to 6 pairs in P.points.powersetCard 2
+  -- These are disjoint across distinct S
+  -- So biUnion of pair-sets has card = 6 * |F|
+  -- And it's a subset of P.points.powersetCard 2 of size n.choose 2
+  -- Helpers
+  have hF_sub : ∀ S ∈ F, S ⊆ P.points :=
+    fun S hS => Finset.mem_powerset.mp (Finset.mem_of_mem_filter S hS)
+  have hF_prop : ∀ S ∈ F, S.card = 4 ∧
+      ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧ ∀ p ∈ S, collinear a b p :=
+    fun S hS => (Finset.mem_filter.mp hS).2
+  -- The pair-set map
+  let pairSet : Finset (ℝ × ℝ) → Finset (Finset (ℝ × ℝ)) := fun S =>
+    S.powersetCard 2
+  -- Each pairSet S has card = C(4,2) = 6
+  have hpair_card : ∀ S ∈ F, (pairSet S).card = 6 := by
+    intro S hS
+    show (S.powersetCard 2).card = 6
+    rw [Finset.card_powersetCard]
+    rw [(hF_prop S hS).1]; decide
+  -- Pairwise disjointness: use powersetCard2_disjoint + four_collinear_overlap_small
+  have hpair_disj : ∀ S₁ ∈ F, ∀ S₂ ∈ F, S₁ ≠ S₂ →
+      Disjoint (pairSet S₁) (pairSet S₂) := by
+    intro S₁ hS₁ S₂ hS₂ hne
+    have h₁ := hF_prop S₁ hS₁
+    have h₂ := hF_prop S₂ hS₂
+    obtain ⟨a₁, b₁, ha₁, hb₁, hab₁, hcol₁⟩ := h₁.2
+    obtain ⟨a₂, b₂, ha₂, hb₂, hab₂, hcol₂⟩ := h₂.2
+    apply powersetCard2_disjoint
+    exact four_collinear_overlap_small P hP S₁ S₂
+      (hF_sub S₁ hS₁) (hF_sub S₂ hS₂)
+      h₁.1 h₂.1 hne a₁ b₁ hab₁ ha₁ hb₁ hcol₁ a₂ b₂ hab₂ ha₂ hb₂ hcol₂
+  -- The biUnion lands in P.points.powersetCard 2
+  have hbU_sub : F.biUnion pairSet ⊆ P.points.powersetCard 2 := by
+    intro T hT
+    rw [Finset.mem_biUnion] at hT
+    obtain ⟨S, hS, hT_S⟩ := hT
+    have hsub_S := (Finset.mem_powersetCard.mp hT_S).1
+    have hcard_T := (Finset.mem_powersetCard.mp hT_S).2
+    exact Finset.mem_powersetCard.mpr ⟨Finset.Subset.trans hsub_S (hF_sub S hS), hcard_T⟩
+  -- biUnion card = sum of individual cards (disjoint)
+  have hbU_card : (F.biUnion pairSet).card = F.sum (fun S => (pairSet S).card) := by
+    exact Finset.card_biUnion (fun S hS T hT hne => hpair_disj S hS T hT hne)
+  -- Sum = 6 * |F|
+  have hsum_eq : F.sum (fun S => (pairSet S).card) = 6 * F.card := by
+    rw [Finset.sum_const_nat (fun S hS => hpair_card S hS)]
+    ring
+  -- |biUnion| ≤ |P.points.powersetCard 2| = n.choose 2
+  have hbU_le : (F.biUnion pairSet).card ≤ n.choose 2 := by
+    calc (F.biUnion pairSet).card
+        ≤ (P.points.powersetCard 2).card := Finset.card_le_card hbU_sub
+      _ = n.choose 2 := Finset.card_powersetCard 2 P.points
+  -- Combine: 6 * |F| ≤ n.choose 2
+  linarith [hbU_card, hsum_eq, hbU_le]
+
 /- ## Related Observations -/
 
 /-- **Collinear Triples**: Burr–Grünbaum–Sloane and Füredi–Palásti constructed

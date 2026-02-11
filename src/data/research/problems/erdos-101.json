@@ -1,55 +1,53 @@
 {
-  "id": "erdos-101",
-  "name": "Erdős Problem #101: Four-Point Lines from Planar Point Sets",
-  "description": "Given n points in ℝ² with no five collinear, prove the number of lines containing exactly four points is o(n²). The main conjecture is OPEN ($100). The formalization contains a comprehensive collinearity library and proves the best known upper bound n(n-1)/2.",
-  "status": "surveyed",
-  "category": "discrete-geometry",
-  "tags": ["erdos", "incidence-geometry", "collinearity", "open-problem", "surveyed"],
-  "source": "https://erdosproblems.com/101",
-  "difficulty": "B",
-  "leanFile": "proofs/Proofs/Erdos101Problem.lean",
+  "slug": "erdos-101",
+  "title": "Erdős #101",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Given $n$ points in $\\mathbb{R}^2$, no five of which are on a line, the number of lines containing four points is $o(n^2)$.\n\n\n\nThere are examples of sets of $n$ points with $\\sim n^2/6$ many collinear triples and no four points on a line. Such constructions are given by Burr, Gr\\\"{u}nbaum, and Sloane \\cite{BGS74} and F\\\"{u}redi and Pal\\'{a}sti \\cite{FuPa84}.\n\nGr\\\"{u}nbaum \\cite{Gr76} constructed an example with $\\gg n^{3/2}$ such lines. Erd\\H{o}s speculated this may be the correct order of magnitude. This is false: Solymosi and Stojakovi\\'{c} \\cite{SoSt13} have constructed a set with no five on a line and at least\\[n^{2-O(1/\\sqrt{\\log n})}\\]many lines containing exactly four points.\n\nSee also [102] and [669]. A generalisation of this problem is asked in [588].\n\nThis problem is Problem 71 on Green's open problems list.",
+    "plain": "Given $n$ points in $\\mathbb{R}^2$, no five of which are on a line, the number of lines containing four points is $o(n^2)$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-01-12T07:59:02.685Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
   "knowledge": {
-    "insights": [
-      "Main conjecture is OPEN ($100 prize) - o(n²) upper bound not proven by anyone",
-      "The trivial bound n(n-1)/2 IS the state of the art for proven upper bounds",
-      "Szemerédi-Trotter cannot improve beyond O(n²) for 4-point lines (k=4 gives O(n²/64 + n/4) = O(n²))",
-      "Solymosi-Stojaković (2008) disproved Erdős's Θ(n^{3/2}) conjecture with n^{2−O(1/√(log n))} constructions",
-      "Grünbaum's construction achieves ≫ n^{3/2} four-point lines",
-      "True threshold is between n^{3/2} and n² - gap is fundamental barrier",
-      "collinear predicate based on signed area determinant - fully symmetric, transitive (proved)",
-      "NoFiveCollinear implies at most 4 points per line (proved)",
-      "Two distinct 4-collinear subsets share at most 1 element (proved)",
-      "fourPointLineCount definition requires open Classical for DecidablePred"
-    ],
-    "builtItems": [
-      "collinear_self: collinearity reflexivity (p,p,q)",
-      "collinear_refl: three identical points are collinear (p,p,p)",
-      "collinear_self_right: (p,q,q) are collinear",
-      "collinear_swap23: symmetry in 2nd/3rd args",
-      "collinear_swap12: symmetry in 1st/2nd args (via nlinarith)",
-      "collinear_rotate: full rotation p,q,r → r,q,p",
-      "collinear_cycle: cyclic permutation p,q,r → q,r,p",
-      "collinear_trans: transitivity for distinct anchor points",
-      "collinear_four: four points on same line through distinct p,q",
-      "collinear_any_triple: full transitivity over a line",
-      "noFiveCollinear_small: vacuous truth for ≤4 points",
-      "fourPointLineCount_lt_four: zero for <4 points",
-      "noFiveCollinear_line_bound: at most 4 collinear per line",
-      "four_collinear_unique: uniqueness of 4-collinear subsets with shared witnesses",
-      "four_collinear_overlap_small: distinct 4-collinear subsets share ≤1 element",
-      "trivial_upper_bound_sq: n² upper bound (proved)",
-      "trivial_upper_bound: n(n-1)/2 upper bound via injection into powersetCard 2 (proved - best known)"
-    ],
-    "mathlibGaps": [
-      "No Mathlib support for point-line incidences in ℝ²",
-      "Szemerédi-Trotter bound not in Mathlib",
-      "No combinatorial geometry library for higher-order collinearity"
-    ],
-    "nextSteps": [
-      "Main conjecture (o(n²)) remains OPEN - no known proof technique works",
-      "Could formalize explicit Grünbaum/Solymosi-Stojaković constructions as definitions",
-      "File is essentially complete for provable content"
-    ],
-    "progressSummary": "SURVEYED: Comprehensive formalization with 17 proved theorems including best known bound n(n-1)/2. Main conjecture o(n²) is OPEN ($100). Szemerédi-Trotter cannot improve beyond O(n²). All nextSteps from prior sessions accomplished. No further tractable work identified."
-  }
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #101 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven $n$ points in $\\mathbb{R}^2$, no five of which are on a line, the number of lines containing four points is $o(n^2)$.\n\n\n\nThere are examples of sets of $n$ points with $\\sim n^2/6$ many collinear triples and no four points on a line. Such constructions are given by Burr, Gr\\\"{u}nbaum, and Sloane \\cite{BGS74} and F\\\"{u}redi and Pal\\'{a}sti \\cite{FuPa84}.\n\nGr\\\"{u}nbaum \\cite{Gr76} constructed an example with $\\gg n^{3/2}$ such lines. Erd\\H{o}s speculated this may be the correct order of magnitude. This is false: Solymosi and Stojakovi\\'{c} \\cite{SoSt13} have constructed a set with no five on a line and at least\\[n^{2-O(1/\\sqrt{\\log n})}\\]many lines containing exactly four points.\n\nSee also [102] and [669]. A generalisation of this problem is asked in [588].\n\nThis problem is Problem 71 on Green's open problems list.\n\n\n\n\nReferences\n\n\n[BGS74] Burr, Stefan A. and Gr\\\"{u}nbaum, Branko and Sloane, N. J. A., The orchard problem. Geometriae Dedicata (1974), 397-424.\n\n[FuPa84] F\\\"{u}redi, Z. and Pal\\'{a}sti, I., Arrangements of lines with a large number of triangles. Proc. Amer. Math. Soc. (1984), 561-566.\n\n[Gr76] Gr\\\"{u}nbaum, Branko, New views on some old questions of combinatorial geometry. Colloquio Internazionale sulle Teorie Combinatorie\n(Roma, 1973), Tomo I (1976), 451-468.\n\n[SoSt13] Solymosi, J\\'{o}zsef and Stojakovi\\'C, Milo\\vS, Many collinear {$k$}-tuples with no {$k+1$} collinear points. Discrete Comput. Geom. (2013), 811-820.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $100\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #6\n- Problem #2\n- Problem #102\n- Problem #669\n- Problem #588\n- Problem #100\n- Problem #39\n- Problem #1\n\n## References\n\n- Er84\n- Er90\n- Er92e\n- BGS74\n- FuPa84\n- Gr76\n- SoSt13\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+  },
+  "approaches": [],
+  "tags": [
+    "erdos"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-08T06:11:43.710Z",
+  "significance": 5,
+  "tractability": 3
 }
