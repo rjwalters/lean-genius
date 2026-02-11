@@ -1,82 +1,105 @@
 {
   "id": "erdos-51",
-  "title": "Totient Preimage Growth",
+  "title": "Erdős #51: Totient Preimage Growth",
   "slug": "erdos-51",
-  "description": "Is there an infinite set A ⊂ ℕ of totient values such that the smallest preimage n_a of each a ∈ A satisfies n_a/a → ∞? That is, can the minimal solution to φ(n) = a grow much faster than a?",
+  "description": "Is there an infinite set A ⊂ ℕ of totient values such that the smallest preimage n_a of each a ∈ A satisfies n_a/a → ∞? That is, can the minimal solution to φ(n) = a grow much faster than a? OPEN.",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/51",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos51Problem.lean",
+    "leanFile": "Proofs/Erdos51Problem.lean",
     "tags": [
       "erdos",
-      "number theory",
-      "Euler totient",
-      "inverse totient",
-      "preimage growth"
+      "number-theory",
+      "euler-totient",
+      "inverse-totient",
+      "preimage-growth",
+      "carmichael-conjecture",
+      "open"
     ],
     "badge": "formalized",
     "sorries": 0,
     "erdosNumber": 51,
     "erdosUrl": "https://erdosproblems.com/51",
-    "erdosProblemStatus": "open"
-  },
-  "overview": {
-    "historicalContext": "Erdős posed this in 1995, exploring the inverse totient problem. Every even number is a totient value, but the smallest preimage can vary wildly. For primes p, φ(p) = p−1 gives ratio p/(p−1) → 1. The question asks if there are infinitely many totient values where the ratio diverges.",
-    "problemStatement": "Is there an infinite set A ⊂ ℕ such that each a ∈ A satisfies φ(n) = a for some n, yet the smallest such n satisfies n_a/a → ∞?",
-    "proofStrategy": "We formalize totient preimages, the smallest preimage function, the main conjecture, and provide context from Carmichael's observation and prime-based bounds.",
-    "keyInsights": [
-      "φ(p) = p−1 gives ratio p/(p−1) → 1: prime totient values have small ratios",
-      "The conjecture requires finding values where the smallest preimage is disproportionately large",
-      "Erdős proved: if any totient value has a unique preimage, infinitely many do",
-      "Related to Problem #694 on totient preimage structure",
-      "OEIS A002202 (totient values), A014197 (inverse totient counts)"
+    "erdosProblemStatus": "open",
+    "date": "1995",
+    "dateAdded": "2026-01-23",
+    "references": [
+      "Erdős, P. (1995): Problem #51 — posed the question of divergent totient preimage ratios",
+      "Erdős, P. (1935): Proved that if any totient value has a unique preimage, infinitely many do — partial result toward Carmichael's conjecture",
+      "Carmichael, R.D. (1907): Conjectured that no totient value has a unique preimage (|φ⁻¹(a)| ≠ 1 for all a)",
+      "Ford, K. (1998): 'The distribution of totients' — proved for any k, infinitely many a have |φ⁻¹(a)| = k",
+      "Guy, R.K. (2004): Unsolved Problems in Number Theory, B36 (Euler's totient), B39 (Carmichael's conjecture)",
+      "OEIS A002202: Totient values (range of Euler's totient function)",
+      "OEIS A014197: Inverse totient counting function |{n : φ(n) = a}|",
+      "OEIS A058277: Smallest n with φ(n) = a for totient values a",
+      "https://erdosproblems.com/51"
+    ],
+    "relatedProblems": [
+      { "id": "erdos-50", "relation": "Companion totient problem: #50 studies the distribution function of φ(n)/n (singularity of Schoenberg's function), while #51 studies the inverse totient" },
+      { "id": "erdos-414", "relation": "Distribution of totient values: both study the range and structure of Euler's totient function from different angles" },
+      { "id": "erdos-4", "relation": "Bounds on totient sums: complementary perspective on the growth behavior of Euler's totient function" }
     ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 26,
-      "endLine": 46,
-      "summary": "Defines totient preimages, IsTotientValue predicate, and the smallest preimage function."
+      "startLine": 34,
+      "endLine": 51,
+      "summary": "Defines **totientPreimage** (fiber φ⁻¹(a)), **IsTotientValue** (range membership), and **smallestTotientPreimage** (minimum of fiber, via Nat.find with Classical.choice)."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
-      "startLine": 48,
-      "endLine": 58,
-      "summary": "States the main conjecture: an infinite set of totient values with divergent preimage-to-value ratio."
+      "startLine": 53,
+      "endLine": 64,
+      "summary": "Axiom **erdos_51_conjecture**: ∃ infinite A ⊆ ℕ of totient values with n_a/a → ∞. Formalized with ∀ C > 0, ∃ N, ∀ a ∈ A ∩ [N, ∞), n_a/a > C. The central open question."
     },
     {
       "id": "totient-properties",
       "title": "Basic Totient Properties",
-      "startLine": 60,
-      "endLine": 74,
-      "summary": "φ(1) = 1, φ(p) = p−1, φ(n) ≤ n, and φ(n) is even for n ≥ 3."
+      "startLine": 66,
+      "endLine": 81,
+      "summary": "Theorem **totient_one** (φ(1) = 1, by simp). Axioms **totient_prime** (φ(p) = p−1), **totient_le** (φ(n) ≤ n), and **totient_even** (φ(n) even for n ≥ 3)."
     },
     {
       "id": "preimage-structure",
       "title": "Preimage Structure",
-      "startLine": 76,
-      "endLine": 92,
-      "summary": "Even numbers are totient values, smallest preimage lower bound, and Erdős's Carmichael result."
+      "startLine": 83,
+      "endLine": 99,
+      "summary": "Axioms: **even_totient_values** (even a ≥ 2 are totient values), **smallest_preimage_lower** (n_a ≥ a+1 for a ≥ 2), and **erdos_carmichael** (unique preimage ⇒ infinitely many unique preimages)."
     },
     {
       "id": "growth-bounds",
       "title": "Growth Bounds",
-      "startLine": 94,
-      "endLine": 116,
-      "summary": "Prime preimage ratios are bounded; inverse totient counting function; highly totient numbers exist."
+      "startLine": 101,
+      "endLine": 122,
+      "summary": "Axioms: **prime_preimage_ratio** and **prime_minus_one_ratio_bounded** (prime-generated totient values have bounded ratios ≤ 2). Definition **inverseTotientCount**. Axiom **highly_totient_exist** (preimage sizes unbounded)."
     }
   ],
+  "overview": {
+    "historicalContext": "Erdős posed Problem #51 in 1995, asking whether the inverse totient function can be arbitrarily inefficient. The Euler totient φ(n) counts integers ≤ n coprime to n, and the **inverse totient problem** asks: given a, find the smallest n with φ(n) = a. For prime-generated values a = p−1, the answer is n = p (ratio ≈ 1), but for other totient values, the smallest preimage may be much larger. The problem connects to **Carmichael's conjecture** (1907, still open) that no totient value has exactly one preimage, which Erdős addressed in 1935 with the conditional result that a single counterexample implies infinitely many. Ford's 1998 work on the distribution of totients provides the broader framework. The problem is listed as B36/B39 in Guy's 'Unsolved Problems in Number Theory'.",
+    "problemStatement": "Is there an infinite set A ⊂ ℕ such that each a ∈ A satisfies φ(n) = a for some n, yet the smallest such n satisfies n_a/a → ∞ as a → ∞ through A?",
+    "proofStrategy": "The formalization defines the totient preimage set, the IsTotientValue predicate, and the smallest preimage function via Nat.find. The main conjecture is axiomatized as an existential over infinite sets with divergent ratios. Supporting results establish that prime-generated totient values have bounded ratios (the 'easy' case the conjecture must avoid), and that preimage sizes are unbounded (highly totient numbers exist). Erdős's 1935 Carmichael result is included as context. The file has 0 sorries.",
+    "keyInsights": [
+      "**Prime obstruction**: For a = p−1 with p prime, n_a ≤ p so ratio → 1 — the conjecture must find totient values *not* of this form",
+      "**Carmichael connection**: Erdős's 1935 result (unique preimage ⇒ infinitely many) uses the same multiplicative structure that governs preimage growth",
+      "**Inverse totient difficulty**: The smallest preimage depends on whether ka+1 is prime for small k — a Diophantine condition on arithmetic progressions",
+      "**Ford's distribution theorem**: The counting function |φ⁻¹(a)| takes every positive integer value infinitely often — but this says nothing about min(φ⁻¹(a))",
+      "**Structural tension**: Most totient values have small preimage ratios (close to 1), but the conjecture asks whether rare exceptions with large ratios exist infinitely often"
+    ]
+  },
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #51 on whether totient preimage ratios can diverge along an infinite set, with context from Carmichael's conjecture and prime-based bounds.",
-    "implications": "A positive answer would reveal deep irregularity in the inverse totient function, showing that some totient values require disproportionately large preimages.",
+    "summary": "Erdős Problem #51 is OPEN. It asks whether there is an infinite set of totient values where the smallest preimage grows arbitrarily faster than the value itself. The formalization captures the conjecture, supporting structural results (prime ratio bounds, Carmichael's conditional, highly totient existence), and the key definitions.",
+    "implications": "A positive answer would demonstrate deep irregularity in the inverse totient function — that the multiplicative structure of φ allows 'gaps' where the smallest solution to φ(n) = a is far from a. This would connect to broader questions about the distribution of smooth numbers and the Diophantine properties of shifted primes.",
     "openQuestions": [
-      "Does such an infinite set A exist?",
-      "What growth rate can n_a/a achieve?",
-      "How does this relate to the distribution of highly totient numbers?"
+      "Does such an infinite set A exist? This is the main open problem.",
+      "What growth rate can n_a/a achieve along an infinite subsequence? Is n_a/a = Ω(log a) possible?",
+      "Can techniques from sieve theory or the distribution of smooth numbers resolve the problem?",
+      "How does the preimage ratio behave for highly composite totient values versus prime-adjacent values?",
+      "Is there a connection between large preimage ratios and the Bunyakovsky conjecture on primes in polynomials?"
     ]
   }
 }
