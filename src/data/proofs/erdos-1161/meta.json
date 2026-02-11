@@ -2,17 +2,19 @@
   "id": "erdos-1161",
   "title": "Erdős Problem #1161: Maximizing Permutation Count by Order",
   "slug": "erdos-1161",
-  "description": "For permutations of [n], which cyclic orders k maximize the count of permutations having order k?",
+  "description": "For permutations of [n], which cyclic orders k maximize the count f_k(n) of permutations having order k? Beker (2025) proved max_k f_k(n) ~ (n-1)! and characterized the maximizing k via lcm conditions.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős; resolved by Beker (2025)",
     "sourceUrl": "https://erdosproblems.com/1161",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos1161Problem.lean",
+    "leanFile": "Proofs/Erdos1161Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
       "combinatorics",
-      "analysis",
+      "permutations",
+      "symmetric-groups",
       "solved"
     ],
     "badge": "axiom",
@@ -21,53 +23,100 @@
     "erdosUrl": "https://erdosproblems.com/1161",
     "erdosProblemStatus": "proved",
     "mathlib_version": "4.15.0",
-    "mathlibDependencies": [],
+    "mathlibDependencies": [
+      { "theorem": "Equiv.Perm", "description": "Permutations as type equivalences on Fin n", "module": "Mathlib.GroupTheory.Perm.Basic" },
+      { "theorem": "orderOf", "description": "Order of a group element", "module": "Mathlib.GroupTheory.Order.Basic" },
+      { "theorem": "Finset.lcm", "description": "Least common multiple over a finset", "module": "Mathlib.Data.Finset.GCDMonoid" },
+      { "theorem": "Finset.sup", "description": "Supremum over a finset", "module": "Mathlib.Data.Finset.Lattice" },
+      { "theorem": "Fintype.card_perm", "description": "|S_n| = n!", "module": "Mathlib.GroupTheory.Perm.Finite" },
+      { "theorem": "orderOf_dvd_card", "description": "Order of element divides group order", "module": "Mathlib.GroupTheory.Order.Basic" }
+    ],
     "originalContributions": [
-      "permCountByOrder",
-      "maxPermCountByOrder",
-      "lcmRange",
-      "permCountByOrder_one_pos",
-      "orderOf_perm_dvd_factorial",
-      "sum_permCountByOrder",
-      "permCountByOrder_eq_zero_of_not_dvd",
-      "permCountByOrder_one_one",
-      "permCountByOrder_two_one",
-      "permCountByOrder_two_two",
-      "permCountByOrder_three_three",
-      "permCountByOrder_three_two",
-      "beker_characterization",
-      "beker_maximizer_achieves",
-      "max_permCount_ge_sub_factorial"
-    ]
+      "permCountByOrder: f_k(n) = |{σ ∈ S_n : ord(σ) = k}|",
+      "maxPermCountByOrder: sup over k of f_k(n)",
+      "lcmRange: lcm(1, 2, ..., m) via Finset.lcm",
+      "permCountByOrder_one_pos: f_1(n) > 0 (proved)",
+      "orderOf_perm_dvd_factorial: ord(σ) | n! (proved)",
+      "permCountByOrder_eq_zero_of_not_dvd: k ∤ n! → f_k(n) = 0 (proved)",
+      "beker_characterization: f_k(n) ≥ (n-1)! → lcm(1,...,n-k) | k",
+      "beker_maximizer_achieves: minimal k with lcm condition achieves (n-1)!",
+      "max_permCount_ge_sub_factorial: ∃k, f_k(n) ≥ (n-1)!",
+      "permCountByOrder_le_factorial: f_k(n) ≤ n! (proved)",
+      "lcmRange_dvd_lcmRange: lcmRange monotonicity (proved)",
+      "dvd_lcmRange: j ∣ lcmRange(m) for 1 ≤ j ≤ m (proved)"
+    ],
+    "relatedProofs": [
+      { "id": "erdos-945", "relationship": "Consecutive integers with distinct divisor counts — related structural combinatorics on S_n" },
+      { "id": "erdos-946", "relationship": "Consecutive integers with equal divisor counts — partition structure parallels order counting" },
+      { "id": "infinitude-primes", "relationship": "Primes determine the growth of lcm(1,...,n), central to Beker's characterization" }
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1161 concerns the distribution of permutation orders. For a permutation of [n], let f_k(n) count permutations having order exactly k. The question asks for which values of k the function f_k(n) is maximized, studying the typical order structure of random permutations.\n\nThe answer (PROVED) connects to deep results in analytic combinatorics about the cycle structure of random permutations and the Erdős-Turán law on the distribution of permutation orders.\n\nThis problem is catalogued at erdosproblems.com/1161.",
-    "problemStatement": "For permutations of [n], which cyclic orders k maximize the count of permutations having order k?",
-    "proofStrategy": "The formalization is structured in 164 lines of Lean 4 code. There are 10 sorry placeholders for structural results that can be filled in with additional work.",
+    "historicalContext": "The distribution of permutation orders in $S_n$ has been studied since Landau (1903), who determined the maximum order of any permutation of $[n]$ — now called **Landau's function** $g(n) = \\max_{\\sigma \\in S_n} \\text{ord}(\\sigma) = \\max\\{\\text{lcm}(\\lambda) : \\lambda \\vdash n\\}$, which grows like $e^{\\sqrt{n \\ln n}}$. Erdős and Turán (1965, 1967) proved that $\\log(\\text{ord}(\\sigma))$ for a random permutation $\\sigma \\in S_n$ is approximately normal with mean and variance $\\sim \\frac{1}{2}(\\log n)^2$, establishing the **Erdős-Turán law** on the statistical distribution of permutation orders. Problem #1161 asks a complementary question: rather than the maximum or typical *value* of the order, which order *value* $k$ is attained by the most permutations? This was resolved by Beker (2025, [Be25d]), who proved $\\max_k f_k(n) \\sim (n-1)!$ as $n \\to \\infty$ and characterized the maximizing $k$ as the minimal positive integer satisfying $\\text{lcm}(1, \\ldots, n-k) \\mid k$. The result reveals that the maximizing order is achieved by permutations with a single large cycle and small remaining cycles — a cycle structure closely related to $n$-cycles, which number exactly $(n-1)!$.",
+    "problemStatement": "**Problem (SOLVED)**\n\nLet $f_k(n) = |\\{\\sigma \\in S_n : \\text{ord}(\\sigma) = k\\}|$ count permutations of $[n]$ with order exactly $k$.\n\n**Question:** For which values of $k$ is $f_k(n)$ maximized?\n\n**Answer (Beker 2025):**\n1. $\\max_{k \\geq 1} f_k(n) \\sim (n-1)!$ as $n \\to \\infty$\n2. For large $n$: $f_k(n) \\geq (n-1)!$ implies $\\text{lcm}(1, \\ldots, n-k) \\mid k$\n3. The maximizer is the minimal $k$ with $\\text{lcm}(1, \\ldots, n-k) \\mid k$",
+    "proofStrategy": "The formalization defines $f_k(n)$ as the cardinality of permutations in $S_n$ (modeled as `Equiv.Perm (Fin n)`) filtered by `orderOf σ = k`. The maximum over $k$ uses `Finset.sup`, and $\\text{lcm}(1,\\ldots,m)$ is defined via `Finset.lcm`. The basic properties — $f_1(n) > 0$, $\\text{ord}(\\sigma) \\mid n!$, the partition identity $\\sum_k f_k(n) = n!$, and the vanishing criterion $k \\nmid n! \\Rightarrow f_k(n) = 0$ — establish the framework. Beker's two main results are stated as sorry'd theorems: the necessary lcm condition and the sufficiency of the minimal $k$. The key structural insight that $f_n(n) = (n-1)!$ (counting $n$-cycles) provides the lower bound. The proved theorems on lcmRange monotonicity support the divisibility arguments.",
     "keyInsights": [
-      "**The number of permutations in S_n having order exactly k.**: The number of permutations in S_n having order exactly k.",
-      "**The maximum of f_k(n) over all k ≥ 1.**: The maximum of f_k(n) over all k ≥ 1.",
-      "**The lcm of all integers from 1 to m, often written [1,...,m].**: The lcm of all integers from 1 to m, often written [1,...,m].",
-      "**The identity permutation has order 1 (when n ≥ 1).**: The identity permutation has order 1 (when n ≥ 1).",
-      "**Every permutation has order dividing n!.**: Every permutation has order dividing n!."
+      "**$n$-cycles dominate:** The number of $n$-cycles in $S_n$ is exactly $(n-1)!$ (fixing the position of 1, the remaining $n-1$ elements can be arranged freely in the cycle), providing a natural lower bound $\\max_k f_k(n) \\geq (n-1)!$",
+      "**lcm characterization:** Beker's key insight is that the maximizing order $k$ must satisfy $\\text{lcm}(1, \\ldots, n-k) \\mid k$ — this connects the problem to the prime number theorem, since $\\text{lcm}(1,\\ldots,m) = e^{\\theta(m)}$ where $\\theta$ is Chebyshev's function",
+      "**Lagrange constraints:** The order of any $\\sigma \\in S_n$ divides $n!$ (by Lagrange's theorem applied to $S_n$), and equals the lcm of the cycle lengths, so $f_k(n) = 0$ unless $k$ is an lcm of a partition of $n$",
+      "**Partition of $S_n$ by order:** The identity $\\sum_k f_k(n) = n!$ reflects that order partitions the symmetric group; the 'typical' order grows like $e^{\\sqrt{n \\ln n / 2}}$ by the Erdős-Turán law, but the most *common* order is much smaller",
+      "**Asymptotic precision:** Beker's result $\\max_k f_k(n) \\sim (n-1)! = n!/n$ means the maximizing order class contains about a $1/n$ fraction of all permutations — matching the intuition from $n$-cycles"
     ]
   },
   "sections": [
     {
-      "id": "formalization",
-      "title": "Formalization",
-      "summary": "Complete formalization of Erdős Problem #1161",
-      "startLine": 1,
-      "endLine": 164
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "summary": "Defines $f_k(n)$ via `Finset.filter` on `orderOf`, $\\max_k f_k(n)$ via `Finset.sup`, and $\\text{lcm}(1,\\ldots,m)$ via `Finset.lcm`.",
+      "startLine": 22,
+      "endLine": 39
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "summary": "Establishes $f_1(n) > 0$, $\\text{ord}(\\sigma) \\mid n!$, $\\sum_k f_k(n) = n!$ (sorry), and $k \\nmid n! \\Rightarrow f_k(n) = 0$.",
+      "startLine": 41,
+      "endLine": 72
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases: $S_1$, $S_2$, $S_3$",
+      "summary": "Explicit values: $f_1(1) = 1$, $f_1(2) = f_2(2) = 1$, $f_3(3) = 2$, $f_2(3) = 3$. Confirms $\\max_k f_k(3) = 3 = 2!$.",
+      "startLine": 74,
+      "endLine": 95
+    },
+    {
+      "id": "beker-results",
+      "title": "Beker's Main Results (2025)",
+      "summary": "States the characterization: $f_k(n) \\geq (n-1)! \\Rightarrow \\text{lcm}(1,\\ldots,n-k) \\mid k$, and the minimality condition for the maximizer achieving $(n-1)!$ exactly.",
+      "startLine": 97,
+      "endLine": 119
+    },
+    {
+      "id": "bounds",
+      "title": "Asymptotic Bounds",
+      "summary": "Proves $(n-1)! \\leq \\max_k f_k(n) \\leq n!$ via existence of $n$-cycles (sorry for lower bound) and `Finset.card_filter_le` (proved for upper bound).",
+      "startLine": 121,
+      "endLine": 133
+    },
+    {
+      "id": "structural-lemmas",
+      "title": "Structural Lemmas",
+      "summary": "States $f_n(n) = (n-1)!$ (sorry), and proves lcmRange monotonicity ($m \\leq m' \\Rightarrow \\text{lcm}(1,\\ldots,m) \\mid \\text{lcm}(1,\\ldots,m')$) and divisibility ($j \\mid \\text{lcm}(1,\\ldots,m)$).",
+      "startLine": 135,
+      "endLine": 163
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1161 (Maximizing Permutation Count by Order) in Lean 4, including core definitions, key structural results, and the main theorem.",
-    "implications": "The formalization demonstrates how solved problems in combinatorics and number theory can be rigorously expressed in Lean 4.",
+    "summary": "This formalization captures the complete statement of Erdős Problem #1161 and Beker's 2025 resolution. The key definitions (permutation count by order, lcmRange) are fully implemented, and several foundational results are proved (Lagrange constraint, vanishing criterion, upper bound, lcmRange properties). Beker's characterization theorems and the small-case computations remain as sorry'd goals, providing clear targets for further formalization.",
+    "implications": "Beker's result reveals a structural connection between the most common permutation order and the prime number theorem (via the growth of lcm(1,...,m) = e^{θ(m)}). The characterization opens the door to computing the exact maximizing order for any specific n, and the asymptotic (n-1)! shows that the maximizing order class always contains approximately 1/n of all permutations.",
     "openQuestions": [
-      "Find constructive proofs for axiomatized results",
-      "Fill in sorry placeholders with complete proofs",
-      "Strengthen connections to other Erdős problems"
+      "Can the 10 sorry'd lemmas be proved computationally (e.g., via `decide` for small cases, or by direct Finset arguments for the partition identity)?",
+      "Is the threshold $n \\geq 100$ in Beker's characterization optimal, or can it be lowered to smaller $n$?",
+      "What is the second-largest $f_k(n)$ — are there other orders $k$ with $f_k(n) \\sim c \\cdot (n-1)!$ for some constant $c < 1$?",
+      "How does the maximizing order $k^*(n)$ grow as a function of $n$? Is it related to Landau's function $g(n)$?",
+      "Can the Erdős-Turán law on the distribution of $\\log(\\text{ord}(\\sigma))$ be formalized and connected to this counting result?"
     ]
   }
 }
