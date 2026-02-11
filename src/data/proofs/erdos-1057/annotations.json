@@ -5,8 +5,11 @@
     "range": { "startLine": 45, "endLine": 47 },
     "type": "definition",
     "title": "Korselt's Criterion",
-    "content": "n satisfies Korselt's criterion if n is squarefree and (p-1)|(n-1) for every prime p dividing n. This characterizes Carmichael numbers among composites.",
-    "significance": "critical"
+    "content": "$n$ satisfies Korselt's criterion if $n$ is squarefree and $(p-1) \\mid (n-1)$ for every prime $p$ dividing $n$. This purely number-theoretic condition, discovered by Korselt in 1899, exactly characterizes which composites pass the Fermat test for all bases.",
+    "mathContext": "$\\text{satisfiesKorselt}(n) \\iff \\text{Squarefree}(n) \\wedge \\forall p \\text{ prime}, p \\mid n \\implies (p-1) \\mid (n-1)$.",
+    "significance": "critical",
+    "relatedConcepts": ["squarefree integer", "Fermat's little theorem", "modular arithmetic", "prime factorization"],
+    "prerequisites": ["divisibility", "prime numbers", "squarefree integers"]
   },
   {
     "id": "ann-1057-carmichael",
@@ -14,8 +17,11 @@
     "range": { "startLine": 49, "endLine": 51 },
     "type": "definition",
     "title": "Carmichael Number",
-    "content": "A Carmichael number is a composite n > 1 satisfying Korselt's criterion. These are exactly the composites that pass Fermat's test for all bases.",
-    "significance": "critical"
+    "content": "A Carmichael number is a composite $n > 1$ satisfying Korselt's criterion. These are exactly the composites where $a^n \\equiv a \\pmod{n}$ for all integers $a$, making them indistinguishable from primes by the Fermat test alone.",
+    "mathContext": "$\\text{IsCarmichael}(n) \\iff n > 1 \\wedge \\neg\\text{Prime}(n) \\wedge \\text{satisfiesKorselt}(n)$.",
+    "significance": "critical",
+    "relatedConcepts": ["pseudoprime", "Fermat primality test", "composite number"],
+    "prerequisites": ["primality", "Korselt's criterion"]
   },
   {
     "id": "ann-1057-fermat",
@@ -23,178 +29,214 @@
     "range": { "startLine": 53, "endLine": 55 },
     "type": "definition",
     "title": "Fermat Characterization",
-    "content": "The Fermat property: a^n ≡ a (mod n) for all a. Primes satisfy this by Fermat's little theorem; Carmichael numbers are the composites that do too.",
-    "significance": "key"
+    "content": "The Fermat property states $a^n \\equiv a \\pmod{n}$ for all $a$. By Fermat's little theorem, every prime satisfies this. Carmichael numbers are the composites that also satisfy it—the 'hardest' pseudoprimes to detect via Fermat testing.",
+    "mathContext": "$\\text{satisfiesFermat}(n) \\iff \\forall a \\in \\mathbb{N}, a^n \\bmod n = a \\bmod n$.",
+    "significance": "key",
+    "relatedConcepts": ["Fermat's little theorem", "modular exponentiation", "pseudoprime"],
+    "prerequisites": ["modular arithmetic", "exponentiation"]
   },
   {
     "id": "ann-1057-korseltthm",
     "proofId": "erdos-1057",
     "range": { "startLine": 57, "endLine": 59 },
     "type": "theorem",
-    "title": "Korselt's Theorem",
-    "content": "For composites n > 1, Korselt's criterion is equivalent to the Fermat property. This 1899 result characterizes Carmichael numbers.",
-    "significance": "critical"
+    "title": "Korselt's Theorem (1899)",
+    "content": "For composites $n > 1$, Korselt's criterion is equivalent to the Fermat property. This 1899 result (predating Carmichael's 1910 discovery of 561) characterizes Carmichael numbers purely in terms of divisibility. Axiomatized here as the full proof requires careful modular arithmetic over all residues.",
+    "mathContext": "$n > 1 \\wedge \\neg\\text{Prime}(n) \\implies (\\text{satisfiesKorselt}(n) \\iff \\text{satisfiesFermat}(n))$.",
+    "significance": "critical",
+    "relatedConcepts": ["Chinese remainder theorem", "Euler's criterion", "group theory of units"],
+    "prerequisites": ["group theory of $(\\mathbb{Z}/n\\mathbb{Z})^*$", "Chinese remainder theorem"]
   },
   {
     "id": "ann-1057-561",
     "proofId": "erdos-1057",
-    "range": { "startLine": 67, "endLine": 68 },
+    "range": { "startLine": 67, "endLine": 92 },
     "type": "theorem",
-    "title": "Smallest Carmichael Number",
-    "content": "561 = 3 × 11 × 17 is the smallest Carmichael number. Discovered by R.D. Carmichael in 1910.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1057-verify561",
-    "proofId": "erdos-1057",
-    "range": { "startLine": 73, "endLine": 79 },
-    "type": "theorem",
-    "title": "Korselt Verification for 561",
-    "content": "Check: 561-1=560. We need (3-1)|560, (11-1)|560, (17-1)|560. Indeed 2|560, 10|560, 16|560.",
-    "significance": "supporting"
+    "title": "561 is Carmichael (Verified)",
+    "content": "$561 = 3 \\times 11 \\times 17$ is the smallest Carmichael number, discovered by R.D. Carmichael in 1910. The Lean proof verifies squarefreeness by showing no prime square divides 561, and Korselt's condition by checking $(3-1) \\mid 560$, $(11-1) \\mid 560$, $(17-1) \\mid 560$. Uses `native_decide` for primality and `norm_num` for arithmetic.",
+    "mathContext": "$561 = 3 \\times 11 \\times 17$, $560 = 2^4 \\times 5 \\times 7$. Check: $2 \\mid 560$, $10 \\mid 560$, $16 \\mid 560$.",
+    "significance": "key",
+    "relatedConcepts": ["native_decide", "Nat.primeFactors", "Squarefree"],
+    "prerequisites": ["Lean decidability", "Finset membership"]
   },
   {
     "id": "ann-1057-1729",
     "proofId": "erdos-1057",
-    "range": { "startLine": 84, "endLine": 85 },
+    "range": { "startLine": 124, "endLine": 142 },
     "type": "theorem",
-    "title": "Hardy-Ramanujan Taxicab Number",
-    "content": "1729 = 7 × 13 × 19 is both the Hardy-Ramanujan taxicab number (smallest sum of two cubes in two ways) and a Carmichael number.",
-    "significance": "supporting"
+    "title": "1729: Taxicab and Carmichael",
+    "content": "$1729 = 7 \\times 13 \\times 19$ is both the Hardy-Ramanujan taxicab number ($1^3 + 12^3 = 9^3 + 10^3$) and a Carmichael number. Ramanujan's famous remark to Hardy about the 'dull' taxi number 1729 belies its rich number-theoretic properties.",
+    "mathContext": "$1729 = 7 \\times 13 \\times 19$. Korselt: $6 \\mid 1728$, $12 \\mid 1728$, $18 \\mid 1728$. Also $1729 = 1^3 + 12^3 = 9^3 + 10^3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["taxicab number", "Hardy-Ramanujan number", "sums of cubes"],
+    "prerequisites": ["basic arithmetic verification"]
   },
   {
     "id": "ann-1057-list",
     "proofId": "erdos-1057",
-    "range": { "startLine": 87, "endLine": 88 },
+    "range": { "startLine": 228, "endLine": 229 },
     "type": "definition",
-    "title": "First Few Carmichael Numbers",
-    "content": "OEIS A002997: 561, 1105, 1729, 2465, 2821, 6601, 8911, ... The sequence grows slowly at first.",
-    "significance": "supporting"
+    "title": "First Seven Carmichael Numbers",
+    "content": "OEIS A002997: $561, 1105, 1729, 2465, 2821, 6601, 8911$. All seven are verified as Carmichael in Lean, each having exactly 3 prime factors. The formalization proves $C(8911) \\geq 7$.",
+    "mathContext": "$\\{561, 1105, 1729, 2465, 2821, 6601, 8911\\} \\subseteq \\{n : \\text{IsCarmichael}(n)\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["OEIS A002997", "computational verification"],
+    "prerequisites": ["Lean computation", "native_decide"]
   },
   {
     "id": "ann-1057-C",
     "proofId": "erdos-1057",
-    "range": { "startLine": 96, "endLine": 98 },
+    "range": { "startLine": 237, "endLine": 239 },
     "type": "definition",
     "title": "Counting Function C(x)",
-    "content": "C(x) counts Carmichael numbers in [1,x]. This is the central quantity whose growth rate we want to understand.",
-    "significance": "critical"
+    "content": "The counting function $C(x) = |\\{n \\leq x : \\text{IsCarmichael}(n)\\}|$ is formalized via `Finset.filter` over `Finset.range (x+1)`. The growth rate of $C(x)$ is the central question: is $C(x) = x^{1-o(1)}$?",
+    "mathContext": "$C(x) = \\#\\{n \\in [1, x] : n \\text{ is Carmichael}\\} = |(\\text{Finset.range}(x+1)).\\text{filter}(\\text{IsCarmichael})|$.",
+    "significance": "critical",
+    "relatedConcepts": ["prime counting function $\\pi(x)$", "Finset.filter", "counting function"],
+    "prerequisites": ["Finset operations", "cardinality"]
   },
   {
     "id": "ann-1057-mono",
     "proofId": "erdos-1057",
-    "range": { "startLine": 100, "endLine": 107 },
+    "range": { "startLine": 241, "endLine": 248 },
     "type": "theorem",
     "title": "Monotonicity of C",
-    "content": "C is monotone increasing: if x ≤ y then C(x) ≤ C(y). The proof filters elements from a larger range.",
-    "significance": "supporting"
+    "content": "$C$ is monotone: $x \\leq y \\implies C(x) \\leq C(y)$. The proof uses `Finset.card_le_card` and `Finset.filter_subset_filter` with `Finset.range_mono`. A clean example of how Mathlib's Finset API supports counting arguments.",
+    "mathContext": "$x \\leq y \\implies C(x) \\leq C(y)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotone function", "Finset.card_le_card", "Finset.range_mono"],
+    "prerequisites": ["order theory", "Finset subset lemmas"]
   },
   {
     "id": "ann-1057-upper",
     "proofId": "erdos-1057",
-    "range": { "startLine": 115, "endLine": 119 },
+    "range": { "startLine": 256, "endLine": 260 },
     "type": "theorem",
-    "title": "Erdős Upper Bound",
-    "content": "C(x) < x·exp(-c·log x·log log log x / log log x). This 1956 bound shows Carmichael numbers are sparse. Pomerance conjectures this is tight.",
-    "significance": "critical"
+    "title": "Erdős Upper Bound (1956)",
+    "content": "Erdős proved $C(x) < x \\cdot \\exp(-c \\cdot \\frac{\\log x \\cdot \\log \\log \\log x}{\\log \\log x})$ for some constant $c > 0$. This sublinear bound shows Carmichael numbers have natural density zero. The triple-logarithmic factor means the effective exponent approaches 1 extremely slowly. Pomerance conjectured this bound is essentially tight.",
+    "mathContext": "$C(x) < x \\cdot \\exp\\left(-c \\cdot \\frac{\\log x \\cdot \\log \\log \\log x}{\\log \\log x}\\right)$.",
+    "significance": "critical",
+    "relatedConcepts": ["sieve methods", "smooth numbers", "Pomerance conjecture"],
+    "prerequisites": ["analytic number theory", "sieve theory", "logarithmic functions"]
   },
   {
     "id": "ann-1057-lichtman",
     "proofId": "erdos-1057",
-    "range": { "startLine": 121, "endLine": 123 },
+    "range": { "startLine": 262, "endLine": 264 },
     "type": "theorem",
-    "title": "Lichtman Lower Bound",
-    "content": "C(x) > x^{0.3389} for large x. This 2022 result is the current best lower bound, improving Harman's 0.33336704.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1057-harman",
-    "proofId": "erdos-1057",
-    "range": { "startLine": 125, "endLine": 127 },
-    "type": "theorem",
-    "title": "Harman Lower Bound",
-    "content": "C(x) > x^{0.33336704} for large x. This 2008 result held as the best bound until Lichtman's improvement.",
-    "significance": "key"
+    "title": "Lichtman Lower Bound (2022)",
+    "content": "$C(x) > x^{0.3389}$ for sufficiently large $x$. Lichtman's 2022 result is the current best lower bound, improving Harman's 2008 exponent of $0.33336704$. The construction finds integers $n$ with many prime factors $p$ such that $(p-1) \\mid (n-1)$, using sophisticated sieve techniques.",
+    "mathContext": "$\\exists X: \\forall x \\geq X, C(x) > x^{0.3389}$.",
+    "significance": "critical",
+    "relatedConcepts": ["sieve methods", "smooth numbers", "constructive lower bounds"],
+    "prerequisites": ["analytic number theory", "multiplicative number theory"]
   },
   {
     "id": "ann-1057-agpinf",
     "proofId": "erdos-1057",
-    "range": { "startLine": 129, "endLine": 131 },
+    "range": { "startLine": 270, "endLine": 272 },
     "type": "theorem",
-    "title": "Infinitely Many Carmichaels",
-    "content": "Alford-Granville-Pomerance (1994) proved there are infinitely many Carmichael numbers. This was a major breakthrough after decades of uncertainty.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1057-agp27",
-    "proofId": "erdos-1057",
-    "range": { "startLine": 133, "endLine": 135 },
-    "type": "theorem",
-    "title": "AGP Quantitative Bound",
-    "content": "C(x) > x^{2/7} for large x. The AGP paper gave the first power-type lower bound.",
-    "significance": "key"
+    "title": "Infinitely Many Carmichael Numbers (AGP 1994)",
+    "content": "Alford, Granville, and Pomerance proved in their landmark 1994 paper that there are infinitely many Carmichael numbers. This resolved a question open since Carmichael's 1910 discovery. Their method constructs Carmichael numbers using products of primes $p$ where $p-1$ shares a common large divisor with a carefully chosen $n-1$.",
+    "mathContext": "$\\forall N \\in \\mathbb{N}, \\exists n > N: \\text{IsCarmichael}(n)$. Equivalently, $C(x) \\to \\infty$.",
+    "significance": "critical",
+    "relatedConcepts": ["Alford-Granville-Pomerance theorem", "constructive existence", "multiplicative structure"],
+    "prerequisites": ["algebraic number theory", "multiplicative functions", "sieve theory"]
   },
   {
     "id": "ann-1057-conjecture",
     "proofId": "erdos-1057",
-    "range": { "startLine": 143, "endLine": 145 },
+    "range": { "startLine": 284, "endLine": 286 },
     "type": "conjecture",
-    "title": "Main Conjecture",
-    "content": "C(x) = x^{1-o(1)}: for every ε > 0, eventually C(x) > x^{1-ε}. This asserts Carmichael numbers have log-density approaching 1.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-1057-alt",
-    "proofId": "erdos-1057",
-    "range": { "startLine": 147, "endLine": 150 },
-    "type": "definition",
-    "title": "Alternative Formulation",
-    "content": "log C(x) / log x → 1. The ratio of logarithms tends to 1, meaning the 'exponent' of C(x) approaches 1.",
-    "significance": "key"
+    "title": "Main Conjecture: $C(x) = x^{1-o(1)}$",
+    "content": "The conjecture asserts that for every $\\varepsilon > 0$, eventually $C(x) > x^{1-\\varepsilon}$. Equivalently, $\\frac{\\log C(x)}{\\log x} \\to 1$. This would mean Carmichael numbers have 'logarithmic density 1'—they are surprisingly abundant on a log scale, though they still have natural density zero.",
+    "mathContext": "$\\forall \\varepsilon > 0, \\exists X: \\forall x \\geq X, C(x) > x^{1-\\varepsilon}$. Equivalently, $\\lim_{x \\to \\infty} \\frac{\\log C(x)}{\\log x} = 1$.",
+    "significance": "critical",
+    "relatedConcepts": ["logarithmic density", "o(1) notation", "Filter.Tendsto"],
+    "prerequisites": ["asymptotic analysis", "limit theory"]
   },
   {
     "id": "ann-1057-pomerance",
     "proofId": "erdos-1057",
-    "range": { "startLine": 152, "endLine": 154 },
+    "range": { "startLine": 293, "endLine": 300 },
     "type": "definition",
-    "title": "Pomerance's Prediction",
-    "content": "The conjectured order: x·exp(-log x·log log log x / log log x). This matches Erdős's upper bound, suggesting it's tight.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-1057-3primes",
-    "proofId": "erdos-1057",
-    "range": { "startLine": 167, "endLine": 169 },
-    "type": "theorem",
-    "title": "At Least 3 Prime Factors",
-    "content": "Every Carmichael number has at least 3 distinct prime factors. With 1 or 2 primes, Korselt's criterion forces n to be prime or a prime power.",
-    "significance": "key"
+    "title": "Pomerance's Heuristic Prediction",
+    "content": "Pomerance (1989) conjectured the precise asymptotic: $C(x) \\sim x \\cdot \\exp(-\\frac{\\log x \\cdot \\log \\log \\log x}{\\log \\log x})$. This matches Erdős's upper bound (without the constant $c$), suggesting the upper bound technique is essentially optimal. If true, Carmichael numbers are sparser than the main conjecture $C(x) = x^{1-o(1)}$ would suggest.",
+    "mathContext": "$C(x) \\sim x \\cdot \\exp\\left(-\\frac{\\log x \\cdot \\log \\log \\log x}{\\log \\log x}\\right)$, formalized as $\\frac{C(x)}{\\text{pomeranceOrder}(x)} \\to 1$.",
+    "significance": "key",
+    "relatedConcepts": ["heuristic argument", "probabilistic model", "asymptotic equivalence"],
+    "prerequisites": ["asymptotic analysis", "probabilistic number theory"]
   },
   {
     "id": "ann-1057-odd",
     "proofId": "erdos-1057",
-    "range": { "startLine": 178, "endLine": 180 },
+    "range": { "startLine": 308, "endLine": 366 },
     "type": "theorem",
-    "title": "Carmichael Numbers are Odd",
-    "content": "All Carmichael numbers are odd. If 2|n then Korselt requires (2-1)|(n-1), i.e., 1|(n-1), which is trivially true, but squarefreeness and the other conditions force oddness.",
-    "significance": "supporting"
+    "title": "Carmichael Numbers Are Odd (Verified)",
+    "content": "A fully verified proof that all Carmichael numbers are odd. The argument: if $n$ is even and Carmichael, then $2 \\mid n$. Squarefreeness gives $4 \\nmid n$, so $n-1$ is odd. But $n$ has an odd prime factor $p \\geq 3$, and Korselt gives $(p-1) \\mid (n-1)$ with $2 \\mid (p-1)$, forcing $2 \\mid (n-1)$—contradiction.",
+    "mathContext": "$\\forall n, \\text{IsCarmichael}(n) \\implies \\text{Odd}(n)$. Key step: $2 \\mid n \\wedge 4 \\nmid n \\implies 2 \\nmid (n-1)$, but $p \\geq 3$ prime, $p \\mid n$ gives $2 \\mid (p-1) \\mid (n-1)$.",
+    "significance": "key",
+    "relatedConcepts": ["parity argument", "squarefree constraint", "by_contra tactic"],
+    "prerequisites": ["Lean contradiction proofs", "Nat.not_odd_iff_even", "divisibility chains"]
   },
   {
-    "id": "ann-1057-upperexp",
+    "id": "ann-1057-semiprime",
     "proofId": "erdos-1057",
-    "range": { "startLine": 188, "endLine": 190 },
-    "type": "definition",
-    "title": "Upper Bound Exponent",
-    "content": "The effective exponent from Erdős's bound: 1 - log log log x / log log x. This tends to 1 very slowly.",
-    "significance": "key"
+    "range": { "startLine": 368, "endLine": 443 },
+    "type": "theorem",
+    "title": "Carmichael Numbers Are Not Semiprimes (Verified)",
+    "content": "A complete verified proof that no Carmichael number is a product of exactly two primes. The key lemma: if $p < q$ are primes and $(q-1) \\mid (pq-1)$, then $(q-1) \\mid (p-1)$ (since $pq-1 = q(p-1) + (q-1)$ and $\\gcd(q, q-1) = 1$), but $q > p$ makes this impossible. The proof lifts natural number subtraction to $\\mathbb{Z}$ for clean arithmetic.",
+    "mathContext": "If $n = pq$ with $p < q$ prime, then $pq - 1 = q(p-1) + (q-1)$, so $(q-1) \\mid q(p-1)$. Since $\\gcd(q, q-1) = 1$, $(q-1) \\mid (p-1)$, contradicting $q > p$.",
+    "significance": "key",
+    "relatedConcepts": ["coprimality", "Int casting", "semiprime", "proof by contradiction"],
+    "prerequisites": ["integer arithmetic", "Nat.Coprime", "dvd_trans"]
+  },
+  {
+    "id": "ann-1057-3primes",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 445, "endLine": 498 },
+    "type": "theorem",
+    "title": "At Least 3 Prime Factors (Verified)",
+    "content": "Every Carmichael number has $\\geq 3$ distinct prime factors. The proof handles three cases: card 0 (impossible since $n > 1$), card 1 (squarefree with one prime factor forces $n = p$, contradicting compositeness), card 2 (the semiprime impossibility above). Uses `Nat.prod_primeFactors_of_squarefree` to recover $n$ from its prime factorization.",
+    "mathContext": "$\\forall n, \\text{IsCarmichael}(n) \\implies |\\text{primeFactors}(n)| \\geq 3$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.card_eq_one", "Finset.card_eq_two", "case analysis", "omega tactic"],
+    "prerequisites": ["prime factorization", "squarefree decomposition", "Finset cardinality"]
+  },
+  {
+    "id": "ann-1057-decidable",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 598, "endLine": 629 },
+    "type": "technique",
+    "title": "Decidable Carmichael Check and 561 Minimality",
+    "content": "A decidable Boolean function `isCarmichaelCheck` enables computational verification. The theorem `no_carmichael_below_561` uses `native_decide` to verify that no number below 561 passes the check, proving 561 is the smallest Carmichael number. This combines decidability with exhaustive search.",
+    "mathContext": "$\\forall n < 561, \\neg\\text{IsCarmichael}(n)$, verified computationally via `native_decide`.",
+    "significance": "key",
+    "relatedConcepts": ["decidability", "native_decide", "Boolean reflection", "exhaustive verification"],
+    "prerequisites": ["Lean decidable instances", "computational verification"]
+  },
+  {
+    "id": "ann-1057-unbounded",
+    "proofId": "erdos-1057",
+    "range": { "startLine": 693, "endLine": 726 },
+    "type": "theorem",
+    "title": "C Is Unbounded (Verified)",
+    "content": "A fully verified proof that $C(x) \\to \\infty$: for any $N$, there exists $x$ with $C(x) > N$. The proof constructs a set of $N+1$ distinct Carmichael numbers by induction, using `infinitely_many_carmichaels` (AGP axiom) at each step to find a new Carmichael number beyond all previous ones.",
+    "mathContext": "$\\forall N \\in \\mathbb{N}, \\exists x: C(x) > N$. Proof by induction on $N$, using AGP to extend the witness set.",
+    "significance": "key",
+    "relatedConcepts": ["unbounded growth", "inductive construction", "Finset.sup"],
+    "prerequisites": ["induction", "Finset operations", "AGP theorem"]
   },
   {
     "id": "ann-1057-gap",
     "proofId": "erdos-1057",
-    "range": { "startLine": 195, "endLine": 197 },
+    "range": { "startLine": 519, "endLine": 537 },
     "type": "theorem",
     "title": "The Exponent Gap",
-    "content": "Current knowledge: 0.3389 < true exponent < 1 - o(1). The gap is enormous, leaving the true density unknown.",
-    "significance": "key"
+    "content": "Current knowledge: $0.3389 < \\text{true exponent} < 1 - o(1)$. The formalization defines `upperExponent(x)` and `lowerExponent` and proves $0.3389 < 1$. The enormous gap between the known lower bound ($\\approx 1/3$) and upper bound ($\\to 1$) is the heart of the open problem.",
+    "mathContext": "$0.3389 < \\alpha^* < 1 - \\frac{\\log\\log\\log x}{\\log\\log x}$ where $C(x) \\approx x^{\\alpha^*}$.",
+    "significance": "key",
+    "relatedConcepts": ["exponent gap", "open problem", "bounds comparison"],
+    "prerequisites": ["asymptotic analysis", "logarithmic scales"]
   }
 ]
