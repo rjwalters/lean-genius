@@ -1,56 +1,86 @@
 [
   {
-    "id": "irreducible-zero-sum",
+    "id": "ann-e319-imports",
     "proofId": "erdos-319",
-    "range": { "startLine": 37, "endLine": 41 },
+    "range": { "startLine": 21, "endLine": 24 },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports `Finset.Card` for finite set cardinality, `Rat.Basic` for rational arithmetic (unit fractions $\\delta(n)/n \\in \\mathbb{Q}$), `Nat.Basic` for natural number operations, and `Tactic` for proof automation. The formalization works over $\\mathbb{Q}$ rather than $\\mathbb{R}$ since all sums $\\sum \\delta(n)/n$ are rational, making equality decidable.",
+    "mathContext": "All unit-fraction sums lie in $\\mathbb{Q}$: $\\sum_{n \\in A} \\delta(n)/n \\in \\mathbb{Q}$ for $A \\subseteq \\mathbb{N}$, $\\delta : A \\to \\{\\pm 1\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset", "rational arithmetic", "unit fractions", "decidable equality"],
+    "prerequisites": ["Lean 4 imports", "Mathlib number theory library"]
+  },
+  {
+    "id": "ann-e319-signing-defs",
+    "proofId": "erdos-319",
+    "range": { "startLine": 28, "endLine": 34 },
+    "type": "definition",
+    "title": "Signing Function and Signed Sum",
+    "content": "Two core definitions. **IsSigning** asserts $\\delta : \\mathbb{N} \\to \\mathbb{Z}$ restricts to $\\{\\pm 1\\}$ on $A$: $\\forall n \\in A,\\; \\delta(n) = 1 \\lor \\delta(n) = -1$. **signedSum** computes $\\sum_{n \\in A} \\delta(n)/n$ as a rational number using `Finset.sum`. The signing function is defined on all of $\\mathbb{N}$ for convenience; only its restriction to $A$ matters. The coercion $(\\delta\\,n : \\mathbb{Q})$ embeds the integer sign into rationals before division.",
+    "mathContext": "$\\text{IsSigning}(A, \\delta) \\iff \\forall n \\in A: \\delta(n) \\in \\{\\pm 1\\}$. $\\text{signedSum}(A, \\delta) = \\sum_{n \\in A} \\frac{\\delta(n)}{n} \\in \\mathbb{Q}$.",
+    "significance": "critical",
+    "relatedConcepts": ["signing function", "unit fractions", "Finset.sum", "integer-to-rational coercion"],
+    "prerequisites": ["Finset membership", "rational division", "integer casting"]
+  },
+  {
+    "id": "ann-e319-irreducible",
+    "proofId": "erdos-319",
+    "range": { "startLine": 36, "endLine": 41 },
     "type": "definition",
     "title": "Irreducible Zero Sum",
-    "content": "A signing δ : A → {±1} is irreducible if Σ δ(n)/n = 0 but no proper nonempty subset achieves this. The vanishing is 'tight'.",
-    "significance": "high"
+    "content": "**IsIrreducibleZeroSum** captures the key constraint: $\\delta$ is a valid signing, $\\sum_{n \\in A} \\delta(n)/n = 0$, and **no proper nonempty subset** $A' \\subsetneq A$ satisfies $\\sum_{A'} \\delta(n)/n = 0$. The irreducibility condition is modeled via `A' ⊂ A → A'.Nonempty → signedSum A' δ ≠ 0`, using strict subset (`⊂`) to exclude $A$ itself. This captures **minimal rational dependence** among reciprocals — the zero-sum relation uses every element essentially.",
+    "mathContext": "$\\text{IsIrreducibleZeroSum}(A, \\delta) \\iff \\text{IsSigning}(A, \\delta) \\land \\sum_A \\frac{\\delta(n)}{n} = 0 \\land \\forall \\emptyset \\neq A' \\subsetneq A: \\sum_{A'} \\frac{\\delta(n)}{n} \\neq 0$.",
+    "significance": "critical",
+    "relatedConcepts": ["minimal dependence", "strict subset", "zero-sum property", "Egyptian fractions"],
+    "prerequisites": ["IsSigning", "signedSum", "Finset.Subset"]
   },
   {
-    "id": "max-irreducible-size",
+    "id": "ann-e319-max-size",
     "proofId": "erdos-319",
-    "range": { "startLine": 44, "endLine": 46 },
+    "range": { "startLine": 43, "endLine": 46 },
     "type": "definition",
-    "title": "Maximum Irreducible Size c(N)",
-    "content": "c(N) is the maximum cardinality of A ⊆ {1,...,N} admitting an irreducible zero sum. This is the quantity Erdős asks to determine.",
-    "significance": "high"
+    "title": "Maximum Irreducible Size $c(N)$",
+    "content": "Defines $c(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; \\exists \\delta\\; \\text{IsIrreducibleZeroSum}(A,\\delta)\\}$ using `Finset.sup` over the power set of $\\{1,\\ldots,N\\}$ filtered by the existence of an irreducible signing. Marked `noncomputable` since the filter involves existential quantification over all signing functions. This is the quantity Erdős and Graham asked to determine asymptotically.",
+    "mathContext": "$c(N) = \\sup\\{|A| : A \\subseteq [N],\\; \\exists \\delta : A \\to \\{\\pm 1\\},\\; \\text{irreducible zero sum}\\}$.",
+    "significance": "critical",
+    "relatedConcepts": ["Finset.powerset", "Finset.sup", "noncomputable definitions", "asymptotic growth"],
+    "prerequisites": ["IsIrreducibleZeroSum", "Finset.Icc", "Finset.filter"]
   },
   {
-    "id": "main-conjecture",
+    "id": "ann-e319-conjecture",
     "proofId": "erdos-319",
-    "range": { "startLine": 50, "endLine": 53 },
-    "type": "conjecture",
-    "title": "Erdős Problem #319",
-    "content": "Determine the asymptotic growth of c(N). Known: c(N) ≥ (1−1/e+o(1))N. Is c(N) = (1−o(1))N?",
-    "significance": "high"
-  },
-  {
-    "id": "adenwalla",
-    "proofId": "erdos-319",
-    "range": { "startLine": 57, "endLine": 61 },
+    "range": { "startLine": 50, "endLine": 55 },
     "type": "theorem",
-    "title": "Adenwalla Lower Bound",
-    "content": "c(N) ≥ (1−1/e+o(1))N ≈ 0.632N. Uses Croot's theorem to find B ⊆ [(1/e)N, N] with Σ 1/b = 1, then A = B ∪ {1}.",
-    "significance": "high"
+    "title": "Erdős Problem #319: Main Conjecture",
+    "content": "States the conjecture as: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0: c(N) \\geq (1 - 1/e - \\varepsilon)N$. This is the **Adenwalla lower bound** formulated as an axiom (OPEN problem). The use of `Real.exp 1` for $e$ ties into Mathlib's exponential function. The $\\varepsilon$-formulation captures the $o(1)$ error term: for any $\\varepsilon$, the bound holds for large enough $N$. The conjecture asks whether $c(N)/N \\to 1$ or whether the constant $1 - 1/e \\approx 0.632$ is optimal.",
+    "mathContext": "**Conjecture (OPEN):** $c(N) \\geq (1 - e^{-1} - \\varepsilon)N$ for $N \\geq N_0(\\varepsilon)$. Equivalently, $\\liminf_{N \\to \\infty} c(N)/N \\geq 1 - 1/e$.",
+    "significance": "critical",
+    "relatedConcepts": ["asymptotic lower bound", "Real.exp", "epsilon-delta formulation", "Erdős–Graham program"],
+    "prerequisites": ["maxIrreducibleSize", "real arithmetic", "exponential function"]
   },
   {
-    "id": "croot",
+    "id": "ann-e319-bounds",
     "proofId": "erdos-319",
-    "range": { "startLine": 67, "endLine": 71 },
+    "range": { "startLine": 59, "endLine": 77 },
     "type": "theorem",
-    "title": "Croot Unit Fraction Theorem (2001)",
-    "content": "Every positive integer ≤ N is a sum of distinct unit fractions with denominators in {1,...,N}, for large N. Key ingredient in the Adenwalla construction.",
-    "significance": "medium"
+    "title": "Known Bounds and Croot's Theorem",
+    "content": "Three axiomatized results. **Adenwalla lower bound** (lines 62–65): restates $c(N) \\geq (1 - 1/e + o(1))N$ — the construction takes $B \\subseteq [(1/e)N, N]$ with $\\sum_{b \\in B} 1/b = 1$ (via Croot), sets $A = B \\cup \\{1\\}$ with $\\delta(1) = +1$, $\\delta(b) = -1$. Then $|A| = |B| + 1 \\geq (1 - 1/e - o(1))N$. **Trivial upper bound** (lines 67–69): $c(N) \\leq N$ since $A \\subseteq \\{1,\\ldots,N\\}$. **Croot (2001)** (lines 74–77): every positive integer $k \\leq N$ equals $\\sum_{n \\in S} 1/n$ for some $S \\subseteq \\{1,\\ldots,N\\}$, for large $N$. This is the engine behind Adenwalla's construction and connects to Problem #286 on unit fractions in short intervals.",
+    "mathContext": "**Bounds:** $(1 - e^{-1} + o(1))N \\leq c(N) \\leq N$. **Croot:** $\\forall k \\in [1,N],\\; \\exists S \\subseteq [N]: \\sum_{n \\in S} 1/n = k$ for $N \\gg 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Croot's theorem", "unit-fraction representations", "short-interval sums", "Adenwalla construction"],
+    "prerequisites": ["maxIrreducibleSize", "Egyptian fractions", "harmonic sums"]
   },
   {
-    "id": "egyptian-fractions",
+    "id": "ann-e319-observations",
     "proofId": "erdos-319",
-    "range": { "startLine": 83, "endLine": 87 },
-    "type": "note",
-    "title": "Egyptian Fraction Connection",
-    "content": "The problem belongs to the family of Erdős–Graham unit fraction problems. Signed unit fractions generalize the classical Egyptian fraction setting.",
-    "significance": "medium"
+    "range": { "startLine": 81, "endLine": 90 },
+    "type": "insight",
+    "title": "Small Examples and Egyptian Fraction Connection",
+    "content": "**Small example** (axiomatized): there exists $A \\subseteq \\{1,\\ldots,6\\}$ with an irreducible zero sum. A concrete instance is $A = \\{2, 3, 6\\}$ with $\\delta(2) = \\delta(3) = +1$, $\\delta(6) = -1$: $1/2 + 1/3 - 1/6 = 2/3 \\neq 0$, so another signing is needed. In fact $A = \\{1, 2, 3, 6\\}$ with $\\delta(1) = -1, \\delta(2) = -1, \\delta(3) = +1, \\delta(6) = +1$: $-1 - 1/2 + 1/3 + 1/6 = 0$, and irreducibility can be checked. The comment on Egyptian fractions places the problem within the Erdős–Graham (1980) program on unit-fraction decompositions.",
+    "mathContext": "Example: $A = \\{1, 2, 3, 6\\} \\subseteq [6]$ with signing giving $-1 - 1/2 + 1/3 + 1/6 = 0$. The Erdős–Graham monograph (1980) initiated systematic study of such problems.",
+    "significance": "supporting",
+    "relatedConcepts": ["Egyptian fractions", "Erdős–Graham monograph", "small case verification", "unit-fraction decomposition"],
+    "prerequisites": ["IsIrreducibleZeroSum", "rational arithmetic"]
   }
 ]
