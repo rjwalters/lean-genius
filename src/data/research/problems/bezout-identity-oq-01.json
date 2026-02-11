@@ -1,0 +1,88 @@
+{
+  "slug": "bezout-identity-oq-01",
+  "title": "Extended Euclidean Algorithm as Computable Function",
+  "phase": "COMPLETE",
+  "status": "complete",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "Define extGcd : N -> N -> Z x Z x N by well-founded recursion implementing the extended Euclidean algorithm, and prove (1) extGcd(a,b).g = gcd(a,b), (2) a * extGcd(a,b).x + b * extGcd(a,b).y = extGcd(a,b).g, with full computability (no axioms, no sorry).",
+    "plain": "Formalize the extended Euclidean algorithm as a computable function in Lean 4 with a machine-checked correctness proof that it returns valid Bezout coefficients.",
+    "whyMatters": [
+      "Demonstrates formalization of a fundamental algorithm with correctness proof",
+      "Provides computable Bezout coefficients (not just existence)",
+      "Extends the existing BezoutIdentity gallery proof with algorithmic content"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "extGcd_gcd: (extGcd a b).2.2 = Nat.gcd a b",
+      "extGcd_bezout: a * (extGcd a b).1 + b * (extGcd a b).2.1 = (extGcd a b).2.2",
+      "extGcd_correct: a * x + b * y = gcd(a,b) via extGcd",
+      "extGcd_gcd_pos: gcd > 0 when a or b nonzero",
+      "extGcd_gcd_dvd_left/right: gcd divides both inputs",
+      "bezout_via_extGcd: existence of Bezout coefficients via computable function",
+      "Computational verification on concrete inputs (12,8), (35,15), (17,5), (252,198)"
+    ],
+    "open": [],
+    "goal": "COMPLETE - proved in BezoutIdentityOQ01.lean with 0 sorries, 0 axioms"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-11T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Complete. All theorems proved in BezoutIdentityOQ01.lean.",
+    "blockers": [],
+    "nextAction": "None - problem is complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: extGcd defined as computable function by well-founded recursion on b. GCD correctness proved by strong induction. Bezout correctness proved by strong induction with linear_combination tactic. All 208 lines, 0 sorries, 0 axioms. Docker build verified.",
+    "builtItems": [
+      "extGcd : N -> N -> Z x Z x N (computable extended Euclidean algorithm)",
+      "extGcd_gcd (GCD correctness)",
+      "extGcd_bezout (Bezout coefficient correctness)",
+      "extGcd_correct (combined correctness)",
+      "extGcd_gcd_pos, extGcd_gcd_dvd_left, extGcd_gcd_dvd_right (properties)",
+      "bezout_via_extGcd (existence theorem via computable function)"
+    ],
+    "insights": [
+      "Well-founded recursion on b with Nat.mod_lt termination proof",
+      "Explicit projections (.1, .2.1, .2.2) instead of destructuring let for definitional reduction",
+      "linear_combination tactic handles the algebraic manipulation in Bezout correctness",
+      "native_decide handles computational verification examples efficiently"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "algorithms",
+    "number-theory",
+    "computability",
+    "extension",
+    "0-sorry",
+    "0-axiom"
+  ],
+  "relatedProofs": [
+    "BezoutIdentity.lean",
+    "BezoutIdentityOQ01.lean"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Int.GCD"
+    ]
+  },
+  "started": "2026-02-11T00:00:00.000Z",
+  "lastUpdate": "2026-02-11T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 7
+}
