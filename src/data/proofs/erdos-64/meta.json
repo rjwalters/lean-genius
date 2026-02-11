@@ -22,90 +22,97 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős and Gyárfás originally conjectured the answer is NO: for every r, there exists a graph with min degree r containing no 2^k-cycle. Liu-Montgomery (2020) disproved this conjecture by showing that for sufficiently large minimum degree, such cycles must exist. The case of minimum degree exactly 3 remains OPEN with a $1000 prize.",
-    "problemStatement": "Does every finite graph with minimum degree at least 3 contain a cycle of length 2^k for some k ≥ 2?",
-    "proofStrategy": "The formalization defines cycle containment, minimum degree, and powers of two. The main conjecture and the (disproved) Erdős-Gyárfás conjecture are stated. Liu-Montgomery's threshold result is axiomatized. The infinite counterexample (3-regular tree) is also formalized. Related results include Dirac's theorem and Bondy's pancyclicity theorem.",
+    "historicalContext": "Erdős and Gyárfás posed this problem in the 1990s, conjecturing that the answer is NO: for every $r$, there should exist a graph with minimum degree $r$ avoiding all $2^k$-length cycles. This belief stemmed from the seeming rigidity of exponential cycle lengths compared to the flexibility available in dense graphs. The problem carries a \\$1000 Erdős prize, one of his highest bounties, reflecting its perceived difficulty. A breakthrough came from Hong Liu and Richard Montgomery (2020), who proved that for sufficiently large minimum degree $D$, every graph must contain a cycle of length $2^k$. Their proof, published as part of a broader result on even cycle lengths in graphs of large average degree, leverages the regularity method and a deep structural analysis showing that dense graphs contain cycles of every even length in a geometric range $[(\\log \\ell)^8, \\ell]$. Since this range contains a power of 2 whenever $\\ell \\ge 16$, the Erdős-Gyárfás conjecture is disproved for large $r$. However, the exact value of the threshold $D$ is not known, and the critical case $r = 3$ (minimum degree exactly 3) remains completely open. The problem connects to Dirac's theorem (1952), Bondy's pancyclicity theorem (1971), and the broader study of unavoidable cycle lengths in graph theory.",
+    "problemStatement": "Does every finite graph with minimum degree at least $3$ contain a cycle of length $2^k$ for some $k \\ge 2$?",
+    "proofStrategy": "The formalization defines cycle containment via injective vertex maps with cyclic adjacency (using `Fin.succMod`), minimum degree via `Finset.inf'` over neighbor counts, and the set $\\{2^k : k \\ge 2\\} = \\{4, 8, 16, \\ldots\\}$. The main conjecture and the disproved Erdős-Gyárfás conjecture are stated as Lean `Prop` definitions. Liu-Montgomery's threshold result and even-cycle theorem are axiomatized. An infinite counterexample (the infinite 3-regular tree) is formalized via a custom `InfGraph` structure, demonstrating that finiteness is essential. Supporting results include Dirac's theorem (Hamiltonicity from high degree), Bondy's pancyclicity theorem (dense graphs have all cycle lengths), and a probabilistic argument that random graphs contain power-of-two cycles.",
     "keyInsights": [
-      "Liu-Montgomery (2020): YES for sufficiently large minimum degree",
-      "This disproves the Erdős-Gyárfás conjecture (which predicted NO)",
-      "The case of minimum degree exactly 3 remains OPEN",
-      "For infinite graphs: NO (infinite 3-regular trees have no cycles)",
-      "Random graphs with min degree 3 contain power-of-two cycles"
+      "**Liu-Montgomery breakthrough**: There exists a constant $D$ such that every graph with $\\delta(G) \\ge D$ contains a $2^k$-cycle. The proof shows that high average degree forces every even cycle length in a range $[(\\log \\ell)^8, \\ell]$, which must include some $2^k$.",
+      "**Erdős-Gyárfás disproof**: Erdős and Gyárfás conjectured the answer was NO for all $r$. Liu-Montgomery disproved this for large $r$, but the critical case $r = 3$ remains completely open—demonstrating how a general asymptotic result can coexist with an unsolved extremal case.",
+      "**Finiteness is essential**: The infinite 3-regular tree (each vertex has degree exactly 3) contains no cycles at all. This shows that the conjecture fundamentally requires finiteness and cannot be proved by local structural arguments alone.",
+      "**Power-of-two special structure**: The set $\\{4, 8, 16, 32, \\ldots\\}$ is much sparser than even integers. The conjecture asks whether this exponentially sparse subsequence is still 'unavoidable' for minimum degree 3, a much stronger condition than asking about dense sets of cycle lengths.",
+      "**Probabilistic evidence**: Random graphs $G(n, c/n)$ with appropriate $c$ almost surely have minimum degree 3 and contain power-of-two cycles. This suggests counterexamples, if they exist, must be algebraically or combinatorially structured rather than random-like."
     ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "summary": "Imports Mathlib and opens the `Set`, `SimpleGraph`, and `Finset` namespaces. Declares universe-polymorphic vertex type $V$ with `Fintype` and `DecidableEq` instances.",
+      "startLine": 25,
+      "endLine": 31
+    },
+    {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "summary": "Cyclic successor, cycle containment, minimum degree",
+      "summary": "Defines `Fin.succMod` for cyclic adjacency in $\\mathbb{Z}/k\\mathbb{Z}$, `ContainsCycleLength G k` (existence of an injective $k$-cycle embedding), `minDegree` (via `Finset.inf'`), and `HasMinDegree G d` ($\\delta(G) \\ge d$).",
       "startLine": 33,
       "endLine": 51
     },
     {
       "id": "powers-of-two",
       "title": "Powers of Two",
-      "summary": "PowersOfTwoAtLeast4, evenness and bounds",
+      "summary": "Defines `PowersOfTwoAtLeast4` $= \\{2^k : k \\ge 2\\} = \\{4, 8, 16, \\ldots\\}$. Proves $2^k \\ge 4$ for $k \\ge 2$ and that $2^k$ is even.",
       "startLine": 53,
       "endLine": 67
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (OPEN)",
-      "summary": "Erdős Problem 64 statement",
+      "summary": "States Erdős Problem #64: every finite graph with $\\delta(G) \\ge 3$ contains a cycle of length $2^k$ for some $k \\ge 2$. Carries a \\$1000 prize.",
       "startLine": 69,
       "endLine": 79
     },
     {
       "id": "erdos-gyarfas",
-      "title": "Erdős-Gyárfás Conjecture",
-      "summary": "The disproved counter-conjecture",
+      "title": "Erdős-Gyárfás Conjecture (Disproved)",
+      "summary": "States the Erdős-Gyárfás conjecture (for every $r$, $\\exists G$ with $\\delta(G) \\ge r$ avoiding all $2^k$-cycles) and axiomatizes the Liu-Montgomery theorem disproving it for large $r$ via existence of threshold $D$.",
       "startLine": 81,
       "endLine": 105
     },
     {
       "id": "partial-results",
-      "title": "Partial Results",
-      "summary": "Liu-Montgomery even cycles theorem",
+      "title": "Partial Results: Even Cycle Ranges",
+      "summary": "Axiomatizes Liu-Montgomery's stronger result: graphs with $\\delta(G) \\ge D$ contain all even cycle lengths in $[4, L]$ for some $L \\ge 16$. Proves that such a range always contains $2^k = 4$, connecting even cycles to the main conjecture.",
       "startLine": 107,
       "endLine": 131
     },
     {
       "id": "infinite-counterexample",
       "title": "Infinite Counterexample",
-      "summary": "3-regular trees have no cycles",
+      "summary": "Defines `InfGraph` (infinite simple graph), `IsRegular d`, `ContainsCycleLength`, and `IsTree` (acyclic). Axiomatizes existence of the infinite 3-regular tree, showing finiteness is necessary for the conjecture.",
       "startLine": 133,
       "endLine": 160
     },
     {
       "id": "degree-3",
       "title": "Degree 3 Case (Open)",
-      "summary": "The specific open problem",
+      "summary": "Restates the conjecture with $\\delta(G) = 3$ explicitly as `degree_3_conjecture`, emphasizing that this specific case remains unresolved despite the Liu-Montgomery breakthrough for large degree.",
       "startLine": 162,
       "endLine": 174
     },
     {
       "id": "known-results",
       "title": "Known Cycle Results",
-      "summary": "Dirac's theorem, Bondy's theorem",
+      "summary": "Axiomatizes Dirac's theorem (1952): $\\delta(G) \\ge n/2$ implies Hamiltonicity; and Bondy's pancyclicity theorem (1971): $|E| \\ge n^2/4$ implies all cycle lengths $3$ to $n$ unless $G$ is bipartite.",
       "startLine": 176,
       "endLine": 199
     },
     {
       "id": "random-graphs",
       "title": "Probabilistic Bounds",
-      "summary": "Random graphs contain power-of-two cycles",
-      "startLine": 201,
-      "endLine": 212
+      "summary": "Axiomatizes that random graphs $G(n, c/n)$ with suitable $c$ have $\\delta \\ge 3$ and contain $2^k$-cycles for $k \\le 10$, providing probabilistic evidence that counterexamples must be highly structured.",
+      "startLine": 199,
+      "endLine": 210
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #64, an OPEN problem with a $1000 prize asking whether every finite graph with minimum degree ≥ 3 contains a cycle of length 2^k for some k ≥ 2. Liu-Montgomery (2020) proved this for large minimum degree, disproving the Erdős-Gyárfás conjecture. The case of minimum degree exactly 3 remains open.",
-    "implications": "This problem connects minimum degree conditions to specific cycle lengths. A positive answer would establish that power-of-two lengths are 'unavoidable' for sparse graphs. A counterexample would need to be highly structured (not random-like).",
+    "summary": "This formalization captures Erdős Problem #64, one of the most prominent open problems in extremal graph theory, carrying a $1000 prize. The file defines cycle containment, minimum degree, and powers of two, then states both the main conjecture and the disproved Erdős-Gyárfás conjecture. The Liu-Montgomery (2020) breakthrough is axiomatized: sufficiently large minimum degree forces power-of-two cycles. The infinite 3-regular tree demonstrates that finiteness is essential. Supporting results (Dirac, Bondy, random graphs) provide context for what is known about cycle lengths in graphs.",
+    "implications": "The problem sits at the intersection of extremal graph theory and combinatorial number theory. A positive resolution would establish that the exponentially sparse sequence $\\{4, 8, 16, 32, \\ldots\\}$ is 'unavoidable' for finite graphs of minimum degree 3, a remarkable rigidity result. A negative resolution (constructing a counterexample) would require a graph that simultaneously has minimum degree 3, is finite, and avoids all $2^k$-cycles—such a construction would likely reveal deep structural insights about cycle avoidance. The Liu-Montgomery result shows that the difficulty is entirely concentrated in the sparse regime ($\\delta = 3$).",
     "openQuestions": [
-      "Does the conjecture hold for minimum degree exactly 3?",
-      "What is the exact threshold D from Liu-Montgomery?",
-      "Are there 'almost counterexamples' with few power-of-two cycles?",
-      "Can the result be extended to other sparse sequences?"
+      "Does the conjecture hold for minimum degree exactly 3? This is the $1000 Erdős prize question, and the difficulty may be comparable to resolving the Erdős-Hajnal conjecture.",
+      "What is the exact threshold $D$ from Liu-Montgomery? The proof gives an enormous bound; can it be reduced to a small constant (e.g., $D \\le 10$)?",
+      "Can the result be extended to other sparse sequences beyond powers of two? For instance, are Fibonacci numbers unavoidable as cycle lengths for some minimum degree condition?",
+      "Are there 'almost counterexamples'—graphs with $\\delta \\ge 3$ that contain very few cycles of power-of-two length, or only contain $C_4$ but no longer $2^k$-cycles?"
     ]
   }
 }
