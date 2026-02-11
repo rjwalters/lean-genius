@@ -2,10 +2,13 @@
   "id": "erdos-749",
   "title": "Erdős Problem #749: Dense Sumsets with Bounded Representation",
   "slug": "erdos-749",
-  "description": "For ε > 0, does A ⊆ ℕ exist with lower density of A+A ≥ 1-ε and bounded representation function r(n)? Explores tension between sumset density and convolution growth. Related to Erdős–Turán conjecture (#28). Status: OPEN.",
+  "description": "For ε > 0, does A ⊆ ℕ exist with lower density of A+A ≥ 1-ε and bounded representation function r(n)? Explores tension between sumset density and convolution growth. Related to Erdős-Turán conjecture (#28). Status: OPEN.",
   "meta": {
-    "erdosNumber": 749,
+    "author": "Paul Erdős",
+    "sourceUrl": "https://erdosproblems.com/749",
+    "date": "1994",
     "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos749Problem.lean",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -14,73 +17,161 @@
       "density",
       "open"
     ],
-    "references": [
-      "Erdős (1994): original problem",
-      "Erdős–Turán conjecture: Problem #28",
-      "https://erdosproblems.com/749"
-    ],
-    "leanFile": "Proofs/Erdos749Problem.lean",
+    "badge": "axiom",
     "sorries": 0,
-    "sourceUrl": "https://erdosproblems.com/749",
-    "erdosUrl": "https://erdosproblems.com/749"
+    "erdosNumber": 749,
+    "erdosUrl": "https://erdosproblems.com/749",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-24",
+    "mathlib_version": "4.15.0",
+    "mathContext": {
+      "field": "Additive Combinatorics",
+      "subfield": "Sumset density and representation function bounds",
+      "level": "research",
+      "centralObjects": ["representation function r_A(n)", "sumset A+A", "lower asymptotic density", "bounded representation predicate"],
+      "keyTechniques": ["Sidon set construction (bounded r(n), sparse sumset)", "Erdős-Turán conjecture boundary analysis", "density axiomatization (lim inf / lim sup)", "dichotomy formulation"],
+      "significance": "Probes the exact threshold of the Erdős-Turán phenomenon. Sidon sets show bounded r(n) is compatible with sparse sumsets. The Erdős-Turán conjecture asserts full bases must have unbounded r(n). Problem #749 asks about the boundary: can near-bases (density close to 1) still have bounded r(n)? The answer determines whether the Erdős-Turán obstruction is a sharp phase transition at density 1 or a gradual phenomenon."
+    },
+    "references": [
+      {
+        "key": "E94",
+        "citation": "Erdős, Paul, Some of my favourite unsolved problems, in: A Tribute to Paul Erdős (A. Baker et al., eds.), Cambridge Univ. Press, 1994, 467-478.",
+        "type": "paper"
+      },
+      {
+        "key": "ET41",
+        "citation": "Erdős, P. and Turán, P., On a problem of Sidon in additive number theory, and on some related problems, J. London Math. Soc. 16 (1941), 212-215.",
+        "type": "paper"
+      },
+      {
+        "key": "HR66",
+        "citation": "Halberstam, H. and Roth, K.F., Sequences, Oxford Univ. Press, 1966 (reprinted Springer 1983).",
+        "type": "book"
+      },
+      {
+        "key": "erdos749",
+        "citation": "Erdős Problems, Problem #749, https://erdosproblems.com/749",
+        "type": "website"
+      }
+    ],
+    "relatedProofs": [
+      {
+        "id": "erdos-28",
+        "relationship": "Problem #28 (Erdős-Turán conjecture, $500): if A+A has density 1, then r(n) must be unbounded. Problem #749 asks about density 1-ε, probing the exact threshold of the Erdős-Turán obstruction"
+      },
+      {
+        "id": "erdos-40",
+        "relationship": "Problem #40 asks for which growth rates g(N) does |A ∩ [1,N]| ≫ √N/g(N) imply lim sup r(n) = ∞. Both study the density-representation tradeoff, with #40 implying #28"
+      },
+      {
+        "id": "erdos-55",
+        "relationship": "Problem #55 (Ramsey r-complete sets) studies additive completeness under colorings. Both involve sumset structure and density of representable integers"
+      },
+      {
+        "id": "erdos-484",
+        "relationship": "Problem #484 proves density lower bounds for monochromatic sumsets in colorings. Both study how constrained sumset structures affect density coverage"
+      }
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering to compute r_A(n) by counting valid pairs in Finset.range",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.range",
+        "description": "Range {0,...,n} for iterating over potential summands",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of filtered sets for computing r_A(n)",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Set",
+        "description": "Sets of natural numbers for A ⊆ ℕ and sumset A+A",
+        "module": "Mathlib.Data.Set.Basic"
+      }
+    ],
+    "originalContributions": [
+      "repFunction: representation function r_A(n) via Finset.filter on range",
+      "sumSet: sumset A + A = {a + b : a, b ∈ A}",
+      "lowerDensity, upperDensity: axiomatized asymptotic densities",
+      "lowerDensity_bounds: axiomatized 0 ≤ d(S) ≤ 1",
+      "lower_le_upper: axiomatized d(S) ≤ d̄(S)",
+      "HasBoundedRep: uniform bound ∃ C, ∀ n, r_A(n) ≤ C",
+      "HasDenseSumset: ε-dense sumset d(A+A) ≥ 1-ε",
+      "erdos_749_conjecture: main question as dichotomy axiom",
+      "sidon_bounded_rep: axiomatized Sidon → bounded r(n)",
+      "sidon_density_zero: axiomatized Sidon → d(A+A) = 0",
+      "erdos_turan_conjecture_28: axiomatized d(A+A) = 1 → ¬HasBoundedRep",
+      "erdos_749_upper_variant: upper density version of the main question"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős posed this in 1994, exploring the fundamental tension in additive combinatorics between sumset density and representation function growth. Sidon sets (Erdős-Turán 1941) demonstrate that bounded r(n) is compatible with sparse sumsets: they have r(n) ≤ 1 but |A ∩ [1,N]| ∼ √N, giving density-0 sumsets. At the other extreme, the Erdős-Turán conjecture (Problem #28, $500 bounty) asserts that any additive basis of order 2 (density-1 sumset) must have unbounded r(n).\n\nProblem #749 asks about the boundary: can we get sumset density arbitrarily close to 1 while keeping r(n) bounded? A positive answer would show the Erdős-Turán obstruction is specific to density exactly 1 — a sharp phase transition. A negative answer would show the obstruction appears at some critical density 1-ε₀ < 1, strengthening the Erdős-Turán conjecture quantitatively.",
+    "problemStatement": "For every ε > 0, does there exist A ⊆ ℕ such that A + A has lower density ≥ 1 - ε, yet the representation function r(n) = |{(a,b) ∈ A² : a+b=n, a≤b}| is bounded?",
+    "proofStrategy": "The formalization defines the representation function via Finset.filter, the sumset as an existential image, and asymptotic densities as axioms. The bounded representation and dense sumset predicates capture the two competing goals. The main conjecture is stated as a dichotomy. Sidon sets demonstrate one extreme (bounded r(n), sparse sumset), and the Erdős-Turán conjecture captures the other (dense sumset implies unbounded r(n)). The upper density variant is also formalized.",
+    "keyInsights": [
+      "Sidon sets: r(n) ≤ 1 (bounded) but sumset density = 0 — shows bounded r(n) is possible for sparse sumsets",
+      "Erdős-Turán conjecture (#28): full bases (density 1) require unbounded r(n)",
+      "The main question: can we interpolate? Near-density-1 sumset with bounded r(n)?",
+      "If YES: the Erdős-Turán threshold is exactly density 1 (sharp phase transition)",
+      "If NO: quantitative strengthening of Erdős-Turán below density 1",
+      "The upper density variant may have a different answer"
+    ]
   },
   "sections": [
     {
       "id": "core-definitions",
       "title": "Core Definitions",
+      "summary": "Defines `repFunction` (representation count via Finset.filter), `sumSet` (A + A), and axiomatized `lowerDensity`/`upperDensity` with basic properties (bounds, ordering).",
       "startLine": 26,
-      "endLine": 49,
-      "summary": "Define repFunction, sumSet, lowerDensity, upperDensity with basic properties."
+      "endLine": 49
     },
     {
       "id": "bounded-dense",
       "title": "Bounded Representation and Dense Sumset",
+      "summary": "Defines `HasBoundedRep` (∃ C, ∀ n, r(n) ≤ C) and `HasDenseSumset` (d(A+A) ≥ 1-ε). These are the two properties whose simultaneous achievability is the main question.",
       "startLine": 51,
-      "endLine": 59,
-      "summary": "Define HasBoundedRep and HasDenseSumset."
+      "endLine": 59
     },
     {
       "id": "main-conjecture",
-      "title": "The Main Conjecture",
+      "title": "The Main Conjecture (OPEN)",
+      "summary": "States `erdos_749_conjecture` as a dichotomy: either for all ε > 0 such sets exist, or there is a critical ε₀ below which no such A exists. Captures both possible answers.",
       "startLine": 61,
-      "endLine": 70,
-      "summary": "For every ε > 0, can we have dense sumset AND bounded r(n)?"
+      "endLine": 70
     },
     {
       "id": "context",
-      "title": "Sidon Sets and Erdős–Turán Connection",
+      "title": "Sidon Sets and Erdős-Turán Connection",
+      "summary": "Axiomatizes that Sidon sets have bounded r(n) but density-0 sumsets. Connects to the Erdős-Turán conjecture (#28): full bases require unbounded r(n). Problem #749 probes the gap between these extremes.",
       "startLine": 72,
-      "endLine": 95,
-      "summary": "Sidon sets have bounded r(n) but density-0 sumsets. Connection to Problem #28."
+      "endLine": 95
     },
     {
       "id": "upper-variant",
       "title": "Upper Density Variant",
+      "summary": "States the analogous question for upper density d̄(A+A) ≥ 1-ε. This is weaker than the lower density version and the answer may differ.",
       "startLine": 97,
-      "endLine": 104,
-      "summary": "Similar question with upper density instead of lower density."
+      "endLine": 104
     }
   ],
-  "overview": {
-    "historicalContext": "Erdős posed this in 1994, exploring the fundamental tension in additive combinatorics between sumset density and representation function growth. Sidon sets show bounded r(n) is compatible with sparse sumsets, while the Erdős–Turán conjecture (Problem #28) asserts that a full basis must have unbounded r(n). Problem #749 asks about the boundary: near-full density.",
-    "problemStatement": "For every ε > 0, does there exist A ⊆ ℕ such that A + A has lower density ≥ 1 - ε, yet the representation function r(n) = |{(a,b) ∈ A² : a+b=n, a≤b}| is bounded?",
-    "proofStrategy": "We formalize the representation function, sumset, density, and the bounded/dense properties. We state the main question as a disjunction (exists or not), connect to Sidon sets (bounded but sparse) and the Erdős–Turán conjecture (full density implies unbounded), and include the upper density variant.",
-    "keyInsights": [
-      "Sidon sets: r(n) ≤ 2 (bounded) but sumset density = 0",
-      "Additive bases: sumset density = 1 but r(n) conjectured unbounded (Erdős–Turán)",
-      "The question: can we interpolate? Near-density-1 sumset with bounded r(n)?",
-      "If true, this would show the Erdős–Turán threshold is sharp at density = 1",
-      "Upper density variant is also open and potentially different"
-    ]
-  },
   "conclusion": {
-    "summary": "Erdős Problem #749 asks whether near-basis sets (sumset density close to 1) can have bounded representation function. This sits between Sidon sets (bounded r(n), sparse sumset) and the Erdős–Turán conjecture (full basis implies unbounded r(n)). Both the lower and upper density variants remain open.",
-    "implications": "A positive answer would show the Erdős–Turán threshold is exactly density 1, with bounded representation possible for any density below 1. A negative answer would establish quantitative lower bounds on r(n) in terms of sumset density.",
+    "summary": "Erdős Problem #749 asks whether near-basis sets (sumset density close to 1) can have bounded representation function r(n). This sits between Sidon sets (bounded r(n), sparse sumset) and the Erdős-Turán conjecture (full basis implies unbounded r(n)). Both the lower and upper density variants remain open. The answer determines whether the Erdős-Turán obstruction is a sharp phase transition at density 1.",
+    "implications": [
+      "A positive answer would show the Erdős-Turán threshold is exactly density 1: bounded r(n) is possible for any density below 1",
+      "A negative answer would quantitatively strengthen the Erdős-Turán conjecture: dense sumsets force unbounded r(n) even below density 1",
+      "The two density variants (lower vs. upper) may have different answers, revealing the role of density regularity",
+      "Connects to the broader program of understanding when additive structure forces representation growth"
+    ],
     "openQuestions": [
       "Can A+A have lower density ≥ 1-ε with bounded r(n)?",
       "Does the answer differ for upper density vs lower density?",
       "What is the optimal bound C(ε) on r(n) if such sets exist?",
-      "Is the Erdős–Turán conjecture (Problem #28) true?"
+      "Is the Erdős-Turán conjecture (Problem #28) true?"
     ]
   }
 }
