@@ -6,6 +6,7 @@
   "meta": {
     "erdosNumber": 761,
     "status": "formalized",
+    "proofRepoPath": "Proofs/Erdos761Problem.lean",
     "tags": [
       "erdos",
       "graph-theory",
@@ -14,72 +15,118 @@
       "orientations",
       "open"
     ],
-    "references": [
-      "Erdős–Gimbel [ErGi93]",
-      "Neumann-Lara (1982): dichromatic number definition",
-      "https://erdosproblems.com/761"
-    ],
-    "leanFile": "Proofs/Erdos761Problem.lean",
+    "badge": "axiom",
     "sorries": 1,
     "sourceUrl": "https://erdosproblems.com/761",
-    "erdosUrl": "https://erdosproblems.com/761"
+    "erdosUrl": "https://erdosproblems.com/761",
+    "erdosProblemStatus": "open",
+    "references": [
+      {
+        "key": "NL82",
+        "citation": "Neumann-Lara, V., The dichromatic number of a digraph, J. Combin. Theory Ser. B 33 (1982), 265-270.",
+        "type": "paper"
+      },
+      {
+        "key": "ErGi93",
+        "citation": "Erdős, P. and Gimbel, J., Some problems and results in cochromatic theory, Congressus Numerantium 93 (1993), 227-238.",
+        "type": "paper"
+      },
+      {
+        "key": "Mo16",
+        "citation": "Mohar, B., Dichromatic number and fractional chromatic number, Forum Math. Sigma 4 (2016), e32.",
+        "type": "paper"
+      },
+      {
+        "key": "erdos761",
+        "citation": "Erdős Problems, Problem #761, https://erdosproblems.com/761",
+        "type": "website"
+      }
+    ],
+    "relatedProofs": [
+      {
+        "id": "erdos-760",
+        "relationship": "Problem #760 provides the bound ζ(G) ≤ χ(G) used to show that Question 2 of #761 implies Question 1"
+      },
+      {
+        "id": "erdos-735",
+        "relationship": "Both involve incidence-geometric or combinatorial structures on finite configurations; #735 classifies magic configurations while #761 studies orientation-coloring duality"
+      }
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Undirected simple graphs as symmetric irreflexive relations",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Colorable",
+        "description": "Graph k-colorability predicate",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite type class for vertex sets",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ]
   },
   "sections": [
     {
-      "id": "core-definitions",
+      "id": "sec-761-header",
+      "title": "Problem Overview",
+      "startLine": 24,
+      "endLine": 30,
+      "summary": "Imports from `Mathlib.Combinatorics.SimpleGraph` for graph structure and coloring, plus `Mathlib.Data.Fintype.Basic` for finite vertex sets."
+    },
+    {
+      "id": "sec-761-definitions",
       "title": "Core Definitions",
-      "startLine": 35,
-      "endLine": 73,
-      "summary": "Define chromatic number, orientations, acyclic coloring, dichromatic number, cochromatic coloring, and cochromatic number."
+      "startLine": 33,
+      "endLine": 71,
+      "summary": "Defines the key structures: `Orientation G` (directed edge assignment), `IsAcyclicColoring` (no monochromatic directed edges), `HasAcyclicColoring` (existence of acyclic $k$-coloring), `dichromNumber` $\\delta(G) = \\min\\{k : \\forall O,\\, \\exists$ acyclic $k$-coloring\\}$, `IsCochromatic` (each class is clique or independent set), and `cochromNumber` $\\zeta(G)$."
     },
     {
-      "id": "basic-properties",
+      "id": "sec-761-properties",
       "title": "Basic Properties",
-      "startLine": 75,
-      "endLine": 92,
-      "summary": "Dichromatic number is at most chromatic number; cochromatic number is at most chromatic number; tournament dichromaticity characterization."
+      "startLine": 73,
+      "endLine": 94,
+      "summary": "Establishes $\\delta(G) \\le \\chi(G)$ (proper colorings are acyclic), $\\zeta(G) \\le \\chi(G)$ (proper colorings are cochromatic), and the bipartite bound $\\delta(G) \\le 2$ for 2-colorable graphs (the single sorry in the file)."
     },
     {
-      "id": "main-conjectures",
-      "title": "Main Conjectures",
-      "startLine": 94,
-      "endLine": 112,
-      "summary": "The two open questions: (1) large χ implies large δ (Erdős–Neumann-Lara), (2) large ζ implies a subgraph with large δ (Erdős–Gimbel)."
+      "id": "sec-761-conjectures",
+      "title": "Main Conjectures (OPEN)",
+      "startLine": 96,
+      "endLine": 119,
+      "summary": "States the two open questions: **Question 1** (Erdős-Neumann-Lara): $\\forall k,\\, \\exists f(k)$ such that $\\chi(G) \\ge f(k) \\Rightarrow \\delta(G) \\ge k$. **Question 2** (Erdős-Gimbel): $\\forall k,\\, \\exists g(k)$ such that $\\zeta(G) \\ge g(k) \\Rightarrow \\exists H \\subseteq G$ with $\\delta(H) \\ge k$."
     },
     {
-      "id": "implications",
-      "title": "Implications",
-      "startLine": 114,
-      "endLine": 124,
-      "summary": "Question 2 implies Question 1 since cochromatic number is bounded by chromatic number."
-    },
-    {
-      "id": "special-cases",
-      "title": "Special Cases",
-      "startLine": 126,
-      "endLine": 142,
-      "summary": "Dichromatic number bounds for perfect graphs, triangle-free graphs, and bipartite graphs."
+      "id": "sec-761-known-cases",
+      "title": "Known Cases and Structural Results",
+      "startLine": 121,
+      "endLine": 149,
+      "summary": "Axiomatizes known results: $\\delta(K_n) = \\lfloor n/2 \\rfloor + 1$ (Neumann-Lara 1982), $\\delta(C_{2k+1}) = 2 < 3 = \\chi(C_{2k+1})$, subgraph monotonicity $H \\subseteq G \\Rightarrow \\delta(H) \\le \\delta(G)$, and existence of acyclic orientations."
     }
   ],
   "overview": {
-    "historicalContext": "Neumann-Lara introduced the dichromatic number in 1982. Erdős and Neumann-Lara asked whether large chromatic number forces large dichromatic number. Erdős and Gimbel (1993) extended this to cochromatic number, strengthening the question.",
+    "historicalContext": "Victor Neumann-Lara introduced the dichromatic number in his 1982 paper 'The dichromatic number of a digraph', defining δ(G) as the minimum k such that every orientation of G admits an acyclic k-coloring. Erdős and Neumann-Lara then posed the fundamental question: must large chromatic number force large dichromatic number? In 1993, Erdős and Gimbel strengthened this by introducing the cochromatic number ζ(G) — the minimum partition into cliques and independent sets — and asking whether large ζ(G) forces a subgraph with large δ. The problems connect orientation theory with classical coloring: while δ(G) ≤ χ(G) is immediate (proper colorings are acyclic), the reverse direction remains mysterious. Neumann-Lara showed δ(K_n) = ⌊n/2⌋ + 1, far below χ(K_n) = n, demonstrating that dichromatic number can be much smaller. Mohar (2016) proved δ(G) ≤ χ_f(G) (fractional chromatic number), providing a tighter upper bound. The question has deep connections to Ramsey theory and the Burr-Erdős conjecture on oriented graphs.",
     "problemStatement": "Must a graph with large chromatic number have large dichromatic number? Must large cochromatic number force a subgraph with large dichromatic number?",
-    "proofStrategy": "We formalize orientations, acyclic colorings, and the dichromatic/cochromatic numbers using SimpleGraph from Mathlib. We state both open questions and prove that Question 2 implies Question 1.",
+    "proofStrategy": "The formalization defines orientations, acyclic colorings, and the dichromatic/cochromatic numbers using SimpleGraph from Mathlib. Both open questions are stated as axioms. The key structural result — that Question 2 implies Question 1 via ζ(G) ≤ χ(G) — is axiomatized. Known cases for complete graphs, odd cycles, and subgraph monotonicity are included.",
     "keyInsights": [
-      "The dichromatic number δ(G) measures worst-case acyclic coloring across all orientations",
-      "δ(G) ≤ χ(G) always, but the reverse relationship (large χ ⟹ large δ) is open",
-      "Cochromatic coloring allows both cliques and independent sets as color classes",
-      "Question 2 implies Question 1 via the bound ζ(G) ≤ χ(G)",
-      "Bipartite graphs always have δ ≤ 2, so the question is interesting only for high chromatic number"
+      "The **dichromatic number** $\\delta(G)$ measures worst-case acyclic coloring across all orientations: $\\delta(G) = \\min\\{k : \\forall O,\\, \\exists$ acyclic $k$-coloring of $O\\}$",
+      "The inequality $\\delta(G) \\le \\chi(G)$ is immediate since proper colorings are acyclic, but the **reverse** (large $\\chi \\Rightarrow$ large $\\delta$) is open",
+      "**Cochromatic coloring** relaxes proper coloring by allowing cliques as color classes; $\\zeta(G) \\le \\chi(G)$ since independent sets are trivially cochromatic classes",
+      "**Question 2 implies Question 1** via the chain: large $\\chi(G) \\Rightarrow$ large $\\zeta(G) \\Rightarrow \\exists H \\subseteq G$ with large $\\delta(H) \\Rightarrow$ large $\\delta(G)$ by monotonicity",
+      "For complete graphs $\\delta(K_n) = \\lfloor n/2 \\rfloor + 1 \\ll n = \\chi(K_n)$, showing dichromatic number can be **dramatically smaller** than chromatic number"
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #761 remains open. Both questions about the relationship between dichromatic number and chromatic/cochromatic number are unresolved. The implication structure (Q2 ⟹ Q1) provides a natural hierarchy of difficulty.",
-    "implications": "Resolving these questions would clarify the fundamental relationship between undirected coloring complexity and directed acyclicity constraints, connecting structural graph theory with orientation problems.",
+    "summary": "Erdős Problem #761 remains OPEN. Both questions about the relationship between dichromatic number and chromatic/cochromatic number are unresolved. The formalization captures the key definitions, the implication hierarchy (Q2 ⟹ Q1), known cases for complete graphs and odd cycles, and structural results including subgraph monotonicity.",
+    "implications": "Resolving these questions would clarify the fundamental relationship between undirected coloring complexity and directed acyclicity constraints, connecting structural graph theory with orientation problems and Ramsey theory.",
     "openQuestions": [
-      "Is there a function f such that χ(G) ≥ f(k) implies δ(G) ≥ k?",
+      "Is there a function f such that χ(G) ≥ f(k) implies δ(G) ≥ k? (Erdős-Neumann-Lara conjecture)",
       "Can triangle-free graphs with arbitrarily large chromatic number have bounded dichromatic number?",
-      "What is the dichromatic number of Kneser graphs?"
+      "What is the exact dichromatic number of Kneser graphs K(n,k)?",
+      "Does the Burr-Erdős conjecture for oriented Ramsey numbers follow from a positive answer to Question 1?"
     ]
   }
 }
