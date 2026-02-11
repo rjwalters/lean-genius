@@ -22,111 +22,111 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem concerns runs of consecutive integers with distinct Euler totient values. Erdős, Pomerance, and Sárközy (1987) studied 'locally repeated values' of arithmetic functions, establishing upper bounds on how long such distinct runs can be.\n\nThe EPS87 theorem shows that if φ(n+1), ..., φ(n+K) are all distinct, then K ≤ n/exp(c(log n)^{1/3}) for some constant c > 0. This is a strong constraint—distinct runs cannot be too long relative to n.\n\nThe main question asks whether runs of length (log x)^c always exist for large x. This remains open. Problem #945 asks the analogous question for the divisor function τ(n).",
-    "problemStatement": "Let c > 0. If x is sufficiently large, does there exist n ≤ x such that the values φ(n+1), φ(n+2), ..., φ(n+⌊(log x)^c⌋) are all distinct?\n\n**Status**: OPEN (partial results from EPS 1987)",
-    "proofStrategy": "We formalize Euler's totient function, define distinct totient runs, and state the EPS87 upper bound as an axiom. The main conjecture asks for the existence of runs of length (log x)^c. We explore examples showing how collisions (repeated totient values) limit run lengths, and connect to the birthday problem heuristic for understanding when collisions occur.",
+    "historicalContext": "Euler's totient function $\\varphi(n)$ — counting integers $1 \\leq k \\leq n$ coprime to $n$ — has been studied since Euler's 1763 work on modular arithmetic. Its value distribution is rich: by the prime number theorem, $\\varphi(p) = p - 1$ for primes, but composite numbers introduce collisions like $\\varphi(3) = \\varphi(4) = \\varphi(6) = 2$. Carmichael conjectured in 1907 that every value in the range of $\\varphi$ is attained at least twice, a conjecture still open after over a century. In their influential 1987 paper \"On locally repeated values of certain arithmetic functions, III,\" Erdős, Pomerance, and Sárközy (EPS) studied how often consecutive values of $\\varphi$ can be distinct. They proved the striking upper bound: if $\\varphi(n+1), \\ldots, \\varphi(n+K)$ are all distinct, then $K \\leq n/\\exp(c(\\log n)^{1/3})$ for some $c > 0$. This uses deep results on smooth number estimates (related to the de Bruijn $\\Psi$ function). Problem 1004 asks whether the complementary lower bound holds: can we always find runs of length $(\\log x)^c$ with distinct totient values? The analogous Problem 945 asks the same for the divisor function $\\tau(n)$. Both remain open.",
+    "problemStatement": "Let $c > 0$. If $x$ is sufficiently large, does there exist $n \\leq x$ such that the values $\\varphi(n+1), \\varphi(n+2), \\ldots, \\varphi(n+\\lfloor (\\log x)^c \\rfloor)$ are all distinct?\n\n**Status**: OPEN (partial results from EPS 1987)",
+    "proofStrategy": "The formalization builds from Mathlib's `Nat.totient`. It defines distinct totient runs (`IsDistinctTotientRun`) as an injectivity condition on $\\varphi$ over $\\{n+1, \\ldots, n+K\\}$, proves trivial cases ($K=0,1$), and defines the maximum run length function. The EPS87 bound $K \\leq n/\\exp(c(\\log n)^{1/3})$ is axiomatized with its corollary $f(n)/n \\to 0$. The main conjecture uses `Filter.Eventually` for the asymptotic quantifier. The formalization includes concrete verified examples ($n=1$ gives run length 2, $n=2$ gives run length 1), a systematic study of collisions (with `collision_ends_run` as the key structural lemma), the connection to Problem 945 for $\\tau(n)$, birthday problem heuristics for collision probability, and characterizations of small totient preimages ($\\varphi^{-1}(1), \\varphi^{-1}(2), \\varphi^{-1}(4)$).",
     "keyInsights": [
-      "**Totient collisions**: φ(3) = φ(4) = φ(6) = 2 shows multiple integers can share the same totient value",
-      "**EPS87 bound**: Distinct runs satisfy K ≤ n/exp(c(log n)^{1/3}), so runs are sublinear in n",
-      "**Birthday paradox**: With ~n/log n distinct totient values, collisions become likely after ~√(n/log n) consecutive integers",
-      "**Problem #945**: The analogous question for divisor function τ(n) is also open",
-      "**Critical exponent**: The bound suggests c ≤ 1/3 might be the threshold for the conjecture"
+      "**Totient collisions are pervasive**: $\\varphi(3) = \\varphi(4) = \\varphi(6) = 2$ is typical — Carmichael's conjecture (1907, still open) asserts every totient value has multiplicity $\\geq 2$. If true, collisions are structurally unavoidable, not just probabilistically likely",
+      "**EPS bound uses smooth number theory**: The upper bound $K \\leq n/\\exp(c(\\log n)^{1/3})$ comes from estimating the number of smooth numbers (integers with no large prime factor) in an interval, via the de Bruijn $\\Psi$ function. The exponent $1/3$ reflects the current limits of smooth number estimates",
+      "**Birthday paradox as collision predictor**: With $V(x) \\sim x/\\log x$ distinct totient values up to $x$, the birthday paradox predicts collisions after $K \\approx \\sqrt{V} \\sim \\sqrt{x/\\log x}$ terms — much longer than $(\\log x)^c$, suggesting the conjecture should be true but proving it requires controlling local correlations in $\\varphi$",
+      "**The gap between upper and lower bounds**: The EPS bound allows runs up to $n/\\exp(c(\\log n)^{1/3})$ but the conjecture only asks for $(\\log n)^c$ — an enormous gap. The difficulty is showing that *somewhere* in $[1, x]$ there's a collision-free stretch of logarithmic length",
+      "**Parallel structure with divisor function**: Problem 945 asks the identical question for $\\tau(n)$. Both $\\varphi$ and $\\tau$ are multiplicative, but their collision patterns differ: $\\tau$ has more collisions at small values (many $n$ with 2 divisors), while $\\varphi$ collides differently (even values dominate)"
     ]
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "File documentation citing EPS (1987), imports from Mathlib: `EulerPhi.Basic` for $\\varphi(n)$, `ArithmeticFunction`, `Log.Basic` and `Pow.Real` for asymptotic bounds, and `Topology.Instances.Real` for `Filter.atTop`."
+    },
+    {
       "id": "totient",
       "title": "Euler's Totient Function",
-      "summary": "Definition and basic properties of φ(n)",
       "startLine": 36,
-      "endLine": 58
+      "endLine": 58,
+      "summary": "Defines `phi(n)` as `Nat.totient n`, proves $\\varphi(p) = p-1$ for primes, and establishes bounds: $\\varphi(n) > 0$ for $n > 0$, $\\varphi(n) \\leq n$, $\\varphi(n) < n$ for $n > 1$."
     },
     {
       "id": "distinct-runs",
       "title": "Distinct Totient Runs",
-      "summary": "Definition of runs with all distinct φ values",
       "startLine": 60,
-      "endLine": 85
+      "endLine": 85,
+      "summary": "Defines `IsDistinctTotientRun(n, K)`: $\\varphi$ is injective on $\\{n+1, \\ldots, n+K\\}$. Equivalent `Set.InjOn` formulation stated. Trivial cases $K=0$ and $K=1$ proved."
     },
     {
       "id": "max-length",
-      "title": "Maximum Run Length",
-      "summary": "The supremum of distinct run lengths at n",
+      "title": "Maximum Run Length Function",
       "startLine": 87,
-      "endLine": 96
+      "endLine": 96,
+      "summary": "Defines `maxDistinctRunLength(n) = \\sup\\{K : \\text{IsDistinctTotientRun}(n,K)\\}` and proves it is at least 1 for every $n$."
     },
     {
       "id": "eps87",
       "title": "EPS87 Upper Bound",
-      "summary": "K ≤ n/exp(c(log n)^{1/3}) for distinct runs",
       "startLine": 98,
-      "endLine": 118
+      "endLine": 118,
+      "summary": "Axiomatizes the Erdős–Pomerance–Sárközy theorem: $K \\leq n/\\exp(c(\\log n)^{1/3})$ for distinct runs of length $K$. Corollary: $f(n)/n \\to 0$ (sublinear growth)."
     },
     {
       "id": "conjecture",
-      "title": "Main Conjecture",
-      "summary": "Existence of runs of length (log x)^c",
+      "title": "Main Conjecture and Variants",
       "startLine": 120,
-      "endLine": 138
-    },
-    {
-      "id": "partial",
-      "title": "Partial Results",
-      "summary": "Small c cases and constraints from EPS",
-      "startLine": 140,
-      "endLine": 152
+      "endLine": 152,
+      "summary": "States `Erdos1004Conjecture`: $\\forall c > 0,\\ \\forall^\\infty x,\\ \\exists n \\leq x$ with distinct run of length $\\lfloor (\\log x)^c \\rfloor$. Also: negation, `SmallCaseConjecture`, and the EPS constraint heuristic $c \\leq 1/3$."
     },
     {
       "id": "examples",
-      "title": "Examples",
-      "summary": "Concrete runs at n=1, n=2 showing collisions",
+      "title": "Concrete Examples",
       "startLine": 154,
-      "endLine": 176
+      "endLine": 176,
+      "summary": "Verified computations: $n=1$ gives run length 2 ($\\varphi(2)=1, \\varphi(3)=2, \\varphi(4)=2$), $n=2$ gives run length 1. Proves longer runs require larger starting points."
     },
     {
       "id": "collisions",
-      "title": "Totient Collisions",
-      "summary": "When φ(a) = φ(b) for a ≠ b",
+      "title": "Totient Value Collisions",
       "startLine": 178,
-      "endLine": 201
+      "endLine": 201,
+      "summary": "Defines `TotientCollision`, proves $\\varphi(1) = \\varphi(2) = 1$ and $\\varphi(3) = \\varphi(4) = 2$. Key theorem: `collision_ends_run` — a collision at positions $i < j$ in a run bounds its length to $< j$."
     },
     {
       "id": "divisor",
-      "title": "Divisor Function",
-      "summary": "Connection to Problem #945 for τ(n)",
+      "title": "Connection to Problem 945 (Divisor Function)",
       "startLine": 203,
-      "endLine": 217
+      "endLine": 217,
+      "summary": "Defines $\\tau(n) = |\\text{divisors}(n)|$, `IsDistinctDivisorRun`, and `Problem945Conjecture`: the analogous question for $\\tau$ instead of $\\varphi$."
     },
     {
       "id": "heuristics",
-      "title": "Probabilistic Heuristics",
-      "summary": "Birthday problem analysis of collisions",
+      "title": "Birthday Problem Heuristics",
       "startLine": 219,
-      "endLine": 236
+      "endLine": 236,
+      "summary": "Counts distinct totient values: $|\\{\\varphi(k) : k \\leq x\\}| \\sim x/\\log x$. Birthday paradox analysis: collisions likely after $K \\approx \\sqrt{x/\\log x}$ terms, suggesting logarithmic runs should exist."
     },
     {
       "id": "bounds",
       "title": "Run Length Bounds",
-      "summary": "Trivial and improved bounds on K",
       "startLine": 238,
-      "endLine": 248
+      "endLine": 248,
+      "summary": "Trivial bound $K \\leq n+K$ and structural bound $K \\leq |\\{\\varphi(m) : m \\leq n+K+1\\}|$ (distinct values bound injective image)."
     },
     {
       "id": "special",
-      "title": "Special Values",
-      "summary": "Characterizing φ(n) = 1, 2, 4",
+      "title": "Special Totient Values",
       "startLine": 250,
-      "endLine": 263
+      "endLine": 263,
+      "summary": "Characterizes $\\varphi^{-1}(1) = \\{1,2\\}$, $\\varphi^{-1}(2) = \\{3,4,6\\}$, $\\varphi^{-1}(4) = \\{5,8,10,12\\}$. Illustrates increasing preimage sizes relevant to Carmichael's conjecture."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1004 on distinct consecutive totient values. The problem remains open, but EPS (1987) established a strong upper bound on run lengths. The birthday problem heuristic suggests collisions are inevitable for long runs, but the exact behavior for runs of length (log x)^c is unknown.",
-    "implications": "Understanding totient value distribution connects to fundamental questions about multiplicative structure. The EPS bound uses deep results from analytic number theory. The parallel question for divisor functions (Problem #945) shows this is part of a broader investigation into arithmetic function behavior.",
+    "summary": "This formalization captures Erdős Problem 1004 comprehensively: the totient function with Mathlib's `Nat.totient`, the distinct run concept, the EPS87 upper bound $K \\leq n/\\exp(c(\\log n)^{1/3})$, the open conjecture on logarithmic-length runs, concrete examples, collision analysis, the connection to Problem 945, birthday problem heuristics, and special totient value characterizations. The 263-line Lean file spans 12 logically organized sections.",
+    "implications": "The EPS bound uses deep analytic number theory (smooth number estimates via the de Bruijn $\\Psi$ function). Resolution of Problem 1004 would significantly advance our understanding of the local distribution of multiplicative arithmetic functions. The parallel Problem 945 for $\\tau(n)$ shows this is part of a broader program. Connections to Carmichael's conjecture, Ford's theorem on the distribution of totient values, and the Maier matrix method make this a rich intersection of analytic and combinatorial number theory.",
     "openQuestions": [
-      "Does the main conjecture hold for any c > 0?",
-      "What is the optimal exponent c₀ such that runs of length (log x)^c exist for c < c₀?",
-      "Can the EPS bound be improved?",
-      "What is the typical length of the maximal distinct run starting at n?"
+      "Does the main conjecture hold for any $c > 0$? The birthday heuristic strongly suggests yes, but controlling local correlations in $\\varphi$ at the logarithmic scale remains out of reach of current techniques.",
+      "What is the optimal exponent $c_0$ such that runs of length $(\\log x)^c$ exist for $c < c_0$ but not for $c > c_0$? The EPS bound suggests $c_0 \\leq 1/3$ heuristically, but a precise determination would require new ideas.",
+      "Can the EPS upper bound $K \\leq n/\\exp(c(\\log n)^{1/3})$ be improved? The exponent $1/3$ comes from smooth number theory; improving it would require advances in understanding the distribution of numbers with large prime factors.",
+      "Is there a Maier-type phenomenon for totient runs — can sieve methods show that there are intervals where collisions are unusually sparse, analogously to Maier's theorem on prime gaps?"
     ]
   }
 }
