@@ -67,7 +67,10 @@ geometric measure theory). Instead, it provides:
 | Perelman W-entropy | AXIOM (monotonicity) |
 | Hamilton positive Ricci | AXIOM |
 | Main theorem (Mathlib form) | DERIVED from axioms |
-| Generalized Poincare (all dim) | PROVED from per-dimension axioms |
+| Generalized Poincare (dim ≥ 5) | DERIVED from existential axiom |
+| Generalized Poincare (dim 2) | DERIVED from direct axiom |
+| Generalized Poincare (dim 4) | DERIVED from direct axiom |
+| Generalized Poincare (all dim) | PROVED from per-dimension results |
 | Dichotomy, contrapositive | PROVED from main theorem |
 
 ## Key Mathlib Integration (Iteration 3)
@@ -312,7 +315,7 @@ theorem poincare_of_trivial_pi1 (M : Type) [TopologicalSpace M]
     refine ⟨inferInstance, fun x γ => ?_⟩
     have hsub : Subsingleton (Quotient (Path.Homotopic.setoid x x)) := htriv x
     have heq := @Quotient.exact _ (Path.Homotopic.setoid x x) _ _
-                  (Subsingleton.elim (s := hsub)
+                  (Subsingleton.elim (h := hsub)
                     (@Quotient.mk _ (Path.Homotopic.setoid x x) γ)
                     (@Quotient.mk _ (Path.Homotopic.setoid x x) (Path.refl x)))
     exact heq
@@ -385,9 +388,24 @@ def GeneralizedPoincareStatement (n : ℕ) : Prop :=
 theorem poincare_dim3 : GeneralizedPoincareStatement 3 := by
   intro M _ hM hsc; exact poincare_conjecture_holds M hM hsc
 
-axiom generalized_poincare_high_dim_gps (n : ℕ) (hn : n ≥ 5) : GeneralizedPoincareStatement n
-axiom poincare_dim_2_gps : GeneralizedPoincareStatement 2
-axiom poincare_dim_4_gps : GeneralizedPoincareStatement 4
+/-- Generalized Poincaré for n ≥ 5 (Smale, 1961). Derived from the existential form. -/
+theorem generalized_poincare_high_dim_gps (n : ℕ) (hn : n ≥ 5) :
+    GeneralizedPoincareStatement n := by
+  intro M _ hM hsc
+  obtain ⟨S, hS, hHomeo⟩ := generalized_poincare_high_dim n hn M hM hsc
+  have : S = SphereN n := hS
+  rw [this] at hHomeo
+  exact hHomeo
+
+/-- Poincaré for dimension 2 (uniformization). Derived from the direct form. -/
+theorem poincare_dim_2_gps : GeneralizedPoincareStatement 2 := by
+  intro M _ hM hsc
+  exact poincare_dim_2 M hM hsc
+
+/-- Poincaré for dimension 4 (Freedman, 1982). Derived from the direct form. -/
+theorem poincare_dim_4_gps : GeneralizedPoincareStatement 4 := by
+  intro M _ hM hsc
+  exact poincare_dim_4 M hM hsc
 
 /-- The topological Poincare Conjecture holds in all dimensions >= 2. -/
 theorem poincare_all_dimensions (n : ℕ) (hn : 2 ≤ n) : GeneralizedPoincareStatement n := by
