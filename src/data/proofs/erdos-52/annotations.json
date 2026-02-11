@@ -1,56 +1,98 @@
 [
   {
-    "id": "erdos-52-defs",
+    "id": "ann-e52-imports",
     "proofId": "erdos-52",
-    "type": "definition",
+    "range": { "startLine": 14, "endLine": 20 },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports `Nat.Basic` and `Int.Basic` for integer arithmetic, `Finset.Basic`/`Finset.Card`/`Finset.Image` for finite set operations (the core data structure), and `Real.Basic` for real exponents in the conjecture statement. The formalization works over $\\mathbb{Z}$ (integers) via `Finset ℤ`, using `Finset.image` for sumsets and product sets, and real-valued exponentiation `(|A| : \\mathbb{R})^{2-\\varepsilon}` for the bound.",
+    "mathContext": "All sets are `Finset ℤ`. Bounds are stated in $\\mathbb{R}$ to handle fractional exponents: $(|A| : \\mathbb{R})^{2-\\varepsilon}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset", "integer arithmetic", "real exponentiation", "Finset.image"],
+    "prerequisites": ["Lean 4 imports", "Mathlib finite set library", "real number basics"]
+  },
+  {
+    "id": "ann-e52-defs",
+    "proofId": "erdos-52",
     "range": { "startLine": 26, "endLine": 36 },
-    "title": "Sumset and Product Set",
-    "content": "sumset A computes {a+b : a,b ∈ A}, productset A computes {a·b : a,b ∈ A}. sumProductMax takes the maximum of their cardinalities — the central quantity in the conjecture.",
-    "significance": "essential"
+    "type": "definition",
+    "title": "Sumset, Product Set, and Sum-Product Maximum",
+    "content": "Three definitions. **sumset**: $A + A = \\{a + b : a, b \\in A\\}$ computed via `(A ×ˢ A).image (fun p => p.1 + p.2)`. **productset**: $A \\cdot A = \\{a \\cdot b : a, b \\in A\\}$ via the same Cartesian product pattern. **sumProductMax**: $\\max(|A+A|, |A \\cdot A|)$, the central quantity. The use of `Finset.product` (`×ˢ`) with `Finset.image` is the standard Lean pattern for defining sumsets. Note these include $a + a$ and $a \\cdot a$ (not just distinct pairs), matching the standard convention.",
+    "mathContext": "$A + A = \\{a + b : a, b \\in A\\}$, $A \\cdot A = \\{ab : a, b \\in A\\}$. Central quantity: $\\max(|A+A|, |A \\cdot A|)$.",
+    "significance": "critical",
+    "relatedConcepts": ["sumset", "product set", "Finset.product", "Finset.image", "Cartesian product"],
+    "prerequisites": ["Finset operations", "integer arithmetic", "max function"]
   },
   {
-    "id": "erdos-52-conjecture",
+    "id": "ann-e52-conjecture",
     "proofId": "erdos-52",
-    "type": "conjecture",
     "range": { "startLine": 42, "endLine": 52 },
-    "title": "Erdős Problem 52",
-    "content": "For every ε > 0, there exists C > 0 such that max(|A+A|, |A·A|) ≥ C·|A|^{2-ε} for all finite sets A with |A| ≥ 2. This is the Erdős–Szemerédi sum-product conjecture, with a $250 prize.",
-    "significance": "essential"
+    "type": "definition",
+    "title": "Erdős Problem #52: The Sum-Product Conjecture",
+    "content": "The conjecture is defined as a `Prop` (not axiom): $\\forall \\varepsilon > 0,\\; \\exists C > 0,\\; \\forall A \\subseteq \\mathbb{Z}$ with $|A| \\geq 2$: $\\max(|A+A|, |A \\cdot A|) \\geq C \\cdot |A|^{2-\\varepsilon}$. The exponent $2 - \\varepsilon$ is optimal: geometric progressions have $|A \\cdot A| = O(|A|^2)$ but $|A + A| \\sim |A|^2$, so the conjecture says one of the two operations must produce near-quadratic output. This is one of the most famous open problems in additive combinatorics, with a **\\$250 Erdős prize**.",
+    "mathContext": "**Conjecture (OPEN, \\$250):** $\\forall \\varepsilon > 0,\\; \\exists C > 0: \\max(|A+A|, |A \\cdot A|) \\geq C |A|^{2-\\varepsilon}$ for $|A| \\geq 2$.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős–Szemerédi conjecture", "additive combinatorics", "sum-product phenomenon", "Erdős prize"],
+    "prerequisites": ["sumset", "productset", "real exponentiation", "universal-existential statements"]
   },
   {
-    "id": "erdos-52-es-theorem",
+    "id": "ann-e52-es-theorem",
     "proofId": "erdos-52",
-    "type": "result",
     "range": { "startLine": 58, "endLine": 64 },
-    "title": "Erdős–Szemerédi Theorem",
-    "content": "Erdős and Szemerédi (1983) proved that max(|A+A|, |A·A|) ≥ |A|^{1+c} for some absolute constant c > 0. This was the first result establishing super-linear growth.",
-    "significance": "essential"
+    "type": "theorem",
+    "title": "Erdős–Szemerédi Theorem (1983)",
+    "content": "The foundational result: $\\exists c > 0$ such that $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ for all finite $A \\subseteq \\mathbb{Z}$ with $|A| \\geq 2$. This proved the first **super-linear** lower bound, confirming that the sum-product phenomenon is real. The original constant $c$ was very small; subsequent work by Elekes, Solymosi, and others improved it substantially. The axiomatized form uses an existential for $c$ without specifying its value.",
+    "mathContext": "**Erdős–Szemerédi (1983):** $\\exists c > 0: \\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ for $|A| \\geq 2$.",
+    "significance": "critical",
+    "relatedConcepts": ["super-linear bounds", "sum-product phenomenon", "incidence geometry", "Szemerédi–Trotter theorem"],
+    "prerequisites": ["sumProductMax", "real exponentiation"]
   },
   {
-    "id": "erdos-52-bloom",
+    "id": "ann-e52-bloom",
     "proofId": "erdos-52",
-    "type": "result",
     "range": { "startLine": 70, "endLine": 77 },
-    "title": "Bloom's 2025 Bound",
-    "content": "Bloom (2025) proved the current best exponent: max(|A+A|, |A·A|) ≥ |A|^{1270/951-o(1)} ≈ |A|^{1.335}. This improves on a long line of successive bounds since Erdős–Szemerédi.",
-    "significance": "essential"
+    "type": "theorem",
+    "title": "Bloom's Bound (2025): Exponent $1270/951$",
+    "content": "The current best result: $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1270/951 - o(1)}$ where $1270/951 \\approx 1.335$. Formalized as: $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall A$ with $|A| \\geq N_0$: $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1270/951 - \\varepsilon}$. The exponent improves a long succession: Elekes ($5/4$), Solymosi ($4/3 - \\varepsilon$), Konyagin–Shkredov, Rudnev–Stevens, and finally Bloom. The gap from $1.335$ to the conjectured $2$ remains enormous.",
+    "mathContext": "**Bloom (2025):** $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1270/951 - \\varepsilon}$ for $|A| \\gg_\\varepsilon 1$. Exponent $\\approx 1.335$.",
+    "significance": "key",
+    "relatedConcepts": ["Elekes's crossing number method", "Solymosi's bound", "Konyagin–Shkredov", "exponent improvements"],
+    "prerequisites": ["sumProductMax", "Erdős–Szemerédi theorem"]
   },
   {
-    "id": "erdos-52-generalized",
+    "id": "ann-e52-trivial",
     "proofId": "erdos-52",
-    "type": "conjecture",
+    "range": { "startLine": 83, "endLine": 98 },
+    "type": "theorem",
+    "title": "Trivial Bounds on Sumsets and Product Sets",
+    "content": "Four elementary bounds. **Lower bounds**: $|A| \\leq |A+A|$ (since $a + \\min(A)$ gives $|A|$ distinct sums) and $|A| \\leq |A \\cdot A|$ (when $0 \\notin A$ and $|A| \\geq 2$). **Upper bounds**: $|A+A| \\leq |A|^2$ and $|A \\cdot A| \\leq |A|^2$ (at most $|A|^2$ pairs). Thus $|A| \\leq \\max(|A+A|, |A \\cdot A|) \\leq |A|^2$. The conjecture asserts the lower bound is nearly $|A|^2$.",
+    "mathContext": "**Trivial:** $|A| \\leq |A+A|, |A \\cdot A| \\leq |A|^2$. The conjecture asks: is the lower bound closer to $|A|^{2-\\varepsilon}$?",
+    "significance": "supporting",
+    "relatedConcepts": ["trivial bounds", "quadratic upper bound", "Cauchy–Davenport theorem"],
+    "prerequisites": ["sumset", "productset", "Finset.card inequalities"]
+  },
+  {
+    "id": "ann-e52-generalized",
+    "proofId": "erdos-52",
     "range": { "startLine": 104, "endLine": 122 },
-    "title": "Generalized Sum-Product Conjecture",
-    "content": "For m ≥ 2 and every ε > 0, max(|mA|, |A^m|) ≥ C·|A|^{m-ε}. This extends the pairwise conjecture to arbitrary m-fold operations.",
-    "significance": "essential"
+    "type": "definition",
+    "title": "Higher-Fold Generalization: $m$-fold Sum-Product",
+    "content": "Defines $m$-fold operations recursively: $mA$ (iterated sumset) and $A^m$ (iterated product set) via `mfoldSumset` and `mfoldProductset`. The generalized conjecture `GeneralizedSumProduct m` states: for $m \\geq 2$ and $\\varepsilon > 0$, $\\max(|mA|, |A^m|) \\geq C \\cdot |A|^{m-\\varepsilon}$. The base case $m = 2$ recovers Problem #52. For $m = 1$, the bound $|A|^{1-\\varepsilon}$ is trivially true. The higher-fold version is even less understood than the pairwise case.",
+    "mathContext": "$mA = A + \\cdots + A$ ($m$ times), $A^m = A \\cdot \\cdots \\cdot A$. **Conjecture:** $\\max(|mA|, |A^m|) \\geq C |A|^{m-\\varepsilon}$.",
+    "significance": "key",
+    "relatedConcepts": ["iterated sumsets", "iterated product sets", "Plünnecke–Ruzsa inequality", "higher-fold sum-product"],
+    "prerequisites": ["sumset", "productset", "recursive definitions", "ErdosProblem52"]
   },
   {
-    "id": "erdos-52-connection",
+    "id": "ann-e52-connection",
     "proofId": "erdos-52",
-    "type": "context",
     "range": { "startLine": 128, "endLine": 135 },
-    "title": "Connection to Problem 53",
-    "content": "Problem 52 (pairwise sums/products) is closely related to Problem 53 (sums/products of distinct subsets, resolved by Chang 2003). A large sumset or product set implies many distinct representations.",
-    "significance": "supporting"
+    "type": "insight",
+    "title": "Connection to Problem #53 (Chang 2003)",
+    "content": "Problem #52 (pairwise operations) relates to Problem #53 (distinct subset sums and products), resolved by Chang (2003). The axiom states $|A+A| + |A \\cdot A| \\geq |A|$ for $|A| \\geq 2$, a weak consequence. The deeper connection: if $|A+A|$ is small (near $|A|$), then $A$ has additive structure (approximate subgroup), which forces $|A \\cdot A|$ to be large. This structural dichotomy — additive or multiplicative structure but not both — is the philosophical core of the sum-product phenomenon.",
+    "mathContext": "**Chang (2003):** resolved Problem #53 on distinct subset sums/products. **Connection:** small $|A+A|$ implies additive structure, forcing large $|A \\cdot A|$.",
+    "significance": "key",
+    "relatedConcepts": ["Problem 53", "Chang's theorem", "additive structure", "approximate groups"],
+    "prerequisites": ["sumset", "productset", "Freiman's theorem"]
   }
 ]

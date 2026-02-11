@@ -8,6 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/52",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos52Problem.lean",
+    "leanFile": "Proofs/Erdos52Problem.lean",
     "tags": [
       "erdos",
       "additive-combinatorics",
@@ -18,77 +19,98 @@
     "sorries": 0,
     "erdosNumber": 52,
     "erdosUrl": "https://erdosproblems.com/52",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Card" },
+      { "theorem": "Finset.image", "description": "Image of a function on a finite set", "module": "Mathlib.Data.Finset.Image" },
+      { "theorem": "Int.add", "description": "Integer addition for sumset construction", "module": "Mathlib.Data.Int.Basic" },
+      { "theorem": "Real.rpow", "description": "Real exponentiation for fractional exponents", "module": "Mathlib.Data.Real.Basic" }
+    ],
+    "relatedProofs": [
+      { "id": "erdos-1", "relationship": "Foundational Erdős problem — both concern extremal combinatorial structure" },
+      { "id": "erdos-10", "relationship": "Erdős–Sós conjecture on trees — related extremal combinatorics problem from the same era" }
+    ]
   },
   "overview": {
     "historicalContext": "The Erdős–Szemerédi sum-product conjecture (1983) is one of the most influential problems in additive combinatorics. It asserts that a finite set cannot simultaneously have small sumset and small product set. Erdős and Szemerédi proved the first super-linear bound |A|^{1+c}. Successive improvements by Solymosi, Konyagin–Shkredov, Rudnev–Stevens, and Bloom have raised the exponent, with Bloom (2025) achieving |A|^{1270/951} ≈ |A|^{1.335}. The conjectured exponent 2-ε remains far out of reach. Related to Problems 53, 808, 818.",
     "problemStatement": "For every ε > 0, does there exist C > 0 such that for every finite set A ⊂ ℤ with |A| ≥ 2, max(|A+A|, |A·A|) ≥ C·|A|^{2-ε}?",
-    "proofStrategy": "We define sumset, productset, and sumProductMax. The main conjecture ErdosProblem52 asserts the near-quadratic lower bound. We axiomatize the Erdős–Szemerédi theorem and Bloom's current best bound. Trivial bounds and higher-fold generalizations are formalized. The connection to Problem 53 is stated.",
+    "proofStrategy": "The formalization defines `sumset` ($A+A$), `productset` ($A \\cdot A$), and `sumProductMax` ($\\max(|A+A|, |A \\cdot A|)$) using `Finset.product` and `Finset.image`. The conjecture `ErdosProblem52` is a `def : Prop` asserting $\\max(|A+A|, |A \\cdot A|) \\geq C |A|^{2-\\varepsilon}$. The Erdős–Szemerédi theorem ($|A|^{1+c}$) and Bloom's bound ($|A|^{1270/951 - \\varepsilon}$) are axiomatized. Trivial bounds ($|A| \\leq |A+A| \\leq |A|^2$) and $m$-fold generalizations are formalized. The connection to Problem #53 (Chang 2003) is stated. All deep results are axioms (0 sorries).",
     "keyInsights": [
-      "A set cannot simultaneously have both small sumset and small product set",
-      "Erdős–Szemerédi (1983): max(|A+A|, |A·A|) ≥ |A|^{1+c} for some c > 0",
-      "Bloom (2025): current best exponent 1270/951 ≈ 1.335, still far from the conjectured 2-ε",
-      "The higher-fold generalization asks for max(|mA|, |A^m|) ≥ |A|^{m-ε}"
+      "**Sum-product dichotomy**: A finite set $A$ cannot simultaneously have small sumset $|A+A|$ and small product set $|A \\cdot A|$. Arithmetic progressions have $|A+A| = O(|A|)$ but $|A \\cdot A| \\sim |A|^2$; geometric progressions have the reverse. The conjecture asserts one must always be near-quadratic.",
+      "**Erdős–Szemerédi (1983)**: $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ for some $c > 0$. This was the first super-linear bound, proved using the Szemerédi–Trotter incidence theorem. The original $c$ was tiny.",
+      "**Bloom (2025)**: Current best exponent $1270/951 \\approx 1.335$, extending a line of improvements: Elekes ($5/4$), Solymosi ($4/3 - \\varepsilon$), Konyagin–Shkredov ($4/3 + c$), Rudnev–Stevens. The gap to the conjectured $2 - \\varepsilon$ remains vast.",
+      "**Incidence geometry connection**: All major advances use point-line incidence bounds (Szemerédi–Trotter). Elekes's key insight: $|A+A| \\cdot |A \\cdot A|$ counts incidences of the point set $A \\times A$ with lines $y = a(x-b)$.",
+      "**Higher-fold generalization**: For $m$-fold operations, $\\max(|mA|, |A^m|) \\geq C |A|^{m-\\varepsilon}$ is conjectured. The Plünnecke–Ruzsa inequality gives bounds for iterated sumsets but not the full sum-product version."
     ]
   },
   "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 14,
+      "endLine": 20,
+      "summary": "Imports `Finset.Basic`/`Card`/`Image`, `Int.Basic`, `Real.Basic`, `Tactic`. All sets are `Finset ℤ`."
+    },
     {
       "id": "sumset-productset",
       "title": "Sumset and Product Set",
       "startLine": 22,
       "endLine": 36,
-      "summary": "Defines sumset A+A, productset A·A, and sumProductMax as the maximum of their cardinalities."
+      "summary": "Defines $A+A$, $A \\cdot A$ via `Finset.product` and `Finset.image`, and $\\max(|A+A|, |A \\cdot A|)$."
     },
     {
       "id": "conjecture",
       "title": "The Sum-Product Conjecture",
       "startLine": 38,
       "endLine": 52,
-      "summary": "States ErdosProblem52: for every ε > 0, max(|A+A|, |A·A|) ≥ C·|A|^{2-ε} for some constant C."
+      "summary": "States `ErdosProblem52`: $\\forall \\varepsilon > 0,\\; \\exists C > 0: \\max(|A+A|, |A \\cdot A|) \\geq C |A|^{2-\\varepsilon}$."
     },
     {
       "id": "erdos-szemeredi",
-      "title": "The Erdős–Szemerédi Theorem",
+      "title": "The Erdős–Szemerédi Theorem (1983)",
       "startLine": 54,
       "endLine": 64,
-      "summary": "Axiomatizes the foundational 1983 result: max(|A+A|, |A·A|) ≥ |A|^{1+c} for some c > 0."
+      "summary": "Axiomatizes $\\exists c > 0: \\max(|A+A|, |A \\cdot A|) \\geq |A|^{1+c}$ — the first super-linear bound."
     },
     {
       "id": "bloom-bound",
-      "title": "Current Best Bound",
+      "title": "Bloom's Bound (2025)",
       "startLine": 66,
       "endLine": 77,
-      "summary": "Axiomatizes Bloom's 2025 bound: exponent 1270/951 ≈ 1.335."
+      "summary": "Axiomatizes $\\max(|A+A|, |A \\cdot A|) \\geq |A|^{1270/951 - \\varepsilon}$ where $1270/951 \\approx 1.335$."
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "startLine": 79,
       "endLine": 98,
-      "summary": "Axiomatizes that |A| ≤ |A+A|, |A| ≤ |A·A|, and both are at most |A|²."
+      "summary": "Four bounds: $|A| \\leq |A+A|$, $|A| \\leq |A \\cdot A|$ (when $0 \\notin A$), and both $\\leq |A|^2$."
     },
     {
       "id": "generalizations",
-      "title": "Higher-Fold Generalizations",
+      "title": "$m$-Fold Generalizations",
       "startLine": 100,
       "endLine": 122,
-      "summary": "Defines m-fold sumset and product set, and states the generalized conjecture for arbitrary m ≥ 2."
+      "summary": "Defines $mA$ and $A^m$ recursively. States $\\max(|mA|, |A^m|) \\geq C |A|^{m-\\varepsilon}$ for $m \\geq 2$."
     },
     {
       "id": "connection-p53",
-      "title": "Connection to Problem 53",
+      "title": "Connection to Problem #53",
       "startLine": 124,
       "endLine": 135,
-      "summary": "States the connection to Problem 53: large sumset or product set implies many representations."
+      "summary": "Problem #53 (Chang 2003) on subset sums/products is related: large $|A+A|$ or $|A \\cdot A|$ implies many representations."
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem 52 asks for a near-quadratic lower bound on max(|A+A|, |A·A|). The Erdős–Szemerédi theorem established super-linearity, and successive improvements have reached exponent ~1.335 (Bloom 2025), but the conjectured exponent 2-ε remains open.",
     "implications": "Resolution would be a breakthrough in additive combinatorics, with implications for incidence geometry, exponential sums, and the structure theory of finite sets.",
     "openQuestions": [
-      "Can the exponent be improved beyond 1270/951?",
-      "Does the conjecture hold for all rings, not just integers?",
-      "What is the correct higher-fold generalization for m-fold sums and products?"
+      "Can the exponent be improved beyond $1270/951 \\approx 1.335$? Is $3/2$ achievable?",
+      "Does the conjecture hold over all rings (e.g., $\\mathbb{F}_p$, $\\mathbb{R}$)? Bourgain–Katz–Tao proved it for $\\mathbb{F}_p$ with exponent $1 + \\varepsilon$.",
+      "Is the $m$-fold generalization $\\max(|mA|, |A^m|) \\geq C |A|^{m-\\varepsilon}$ true for $m \\geq 3$?",
+      "What is the extremal structure? Do sets near the bound necessarily have 'additive' or 'multiplicative' structure (approximate arithmetic progressions or geometric progressions)?",
+      "Can the sum-product phenomenon be proved for specific families (e.g., subsets of primes, random sets) with better exponents?"
     ]
   }
 }
