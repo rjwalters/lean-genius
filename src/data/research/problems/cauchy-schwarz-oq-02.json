@@ -1,96 +1,55 @@
 {
   "slug": "cauchy-schwarz-oq-02",
   "title": "Bunyakovsky-Schwarz Integral Inequality Formalization",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "For L^2 functions f, g: |integral f*g d mu|^2 <= (integral f^2 d mu) * (integral g^2 d mu)",
-    "plain": "The integral form of Cauchy-Schwarz (Bunyakovsky-Schwarz inequality): the square of the integral of the product of two square-integrable functions is at most the product of the integrals of their squares.",
-    "whyMatters": [
-      "Fundamental inequality in functional analysis and measure theory",
-      "Historical: proved by Bunyakovsky (1859) before Schwarz (1885)",
-      "Used in quantum mechanics (uncertainty principle), statistics (correlation bounds)"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "bunyakovsky_schwarz_abs: |integral f*g d mu| <= ||f|| * ||g|| for L2 functions",
-      "bunyakovsky_schwarz_sq: (integral f*g d mu)^2 <= ||f||^2 * ||g||^2 for L2 functions",
-      "L2_inner_eq_integral: L2 inner product = integral f*g d mu (bridge theorem)",
-      "cauchy_schwarz_L2: abstract CS on Lp R 2 mu",
-      "cauchy_schwarz_L2_sq: squared form on Lp R 2 mu",
-      "cauchy_schwarz_L2_eq_iff: equality iff linearly dependent in L2"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Formalize Bunyakovsky-Schwarz integral inequality in Lean 4 using Mathlib's L2 space"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-11T14:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-02-11T06:59:43.224Z",
     "iteration": 1,
-    "focus": "Complete formalization achieved.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Merge PR and close.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Full formalization of Bunyakovsky-Schwarz integral inequality. Key insight: Mathlib's Lp R 2 mu is already an InnerProductSpace, where inner product = integral by L2.inner_def. Abstract CS (abs_real_inner_le_norm) gives the integral form directly. 6 theorems proved, 0 sorries, 0 axioms.",
-    "builtItems": [
-      "proofs/Proofs/CauchySchwarzIntegral.lean: Full proof file (116 lines)",
-      "bunyakovsky_schwarz_abs: |integral f*g| <= ||f||*||g|| via abs_real_inner_le_norm",
-      "bunyakovsky_schwarz_sq: (integral f*g)^2 <= ||f||^2*||g||^2",
-      "L2_inner_eq_integral: Bridge theorem connecting L2 inner product to integral",
-      "cauchy_schwarz_L2_eq_iff: Equality characterization (linear dependence)",
-      "src/data/proofs/cauchy-schwarz-integral/: Gallery entry (meta.json, annotations.json, index.ts)"
-    ],
-    "insights": [
-      "Lp R 2 mu is an InnerProductSpace in Mathlib - abstract CS applies directly",
-      "MeasureTheory.L2.inner_def bridges abstract inner product to integral: inner f g = integral f*g d mu",
-      "For R-valued functions, inner x y = x * y, so inner_def gives exactly the integral of f*g",
-      "inv_mul_cancel API changed in Mathlib v4.26.0: use inv_mul_cancel0 with explicit zero-ne proof",
-      "The simp lemma [inner] is not needed when simplifying real inner product to multiplication"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "L2 InnerProductSpace instantiation",
-      "status": "succeeded",
-      "description": "Exploit that Lp R 2 mu is an InnerProductSpace, apply abstract Cauchy-Schwarz, bridge via L2.inner_def",
-      "evidence": "Build success with 0 sorries, 6 theorems proved"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "analysis",
     "measure-theory",
-    "cauchy-schwarz",
-    "completed"
-  ],
-  "relatedProofs": [
     "cauchy-schwarz"
   ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      {"authors": "V. Y. Bunyakovsky", "title": "Sur quelques inegalites concernant les integrales ordinaires", "year": "1859"},
-      {"authors": "H. A. Schwarz", "title": "Uber ein die Flachen kleinsten Flacheninhalts betreffendes Problem", "year": "1885"}
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.MeasureTheory.Function.L2Space",
-      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
-      "Mathlib.Analysis.InnerProductSpace.Basic"
-    ]
+    "mathlib": []
   },
   "started": "2026-02-11T07:03:36.101Z",
-  "lastUpdate": "2026-02-11T14:00:00.000Z",
+  "lastUpdate": "2026-02-11T07:03:36.101Z",
   "significance": 7,
   "tractability": 6
 }

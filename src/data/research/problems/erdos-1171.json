@@ -1,108 +1,52 @@
 {
   "slug": "erdos-1171",
   "title": "Erdős #1171",
-  "phase": "SURVEYED",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\omega_1^2 \\to (\\omega_1 \\cdot \\omega, 3, \\ldots, 3)_{k+1}^2 \\text{ for all finite } k < \\omega",
-    "plain": "For all finite k, does any (k+1)-coloring of pairs from omega_1^2 contain either a monochromatic-0 copy of order type omega_1 * omega, or a monochromatic triangle in some other color?",
-    "whyMatters": [
-      "Extends ordinal Ramsey theory to multicolor partition relations on uncountable ordinals",
-      "Connects to the independence phenomenon: the 2-color case (#1169) depends on set-theoretic axioms",
-      "Part of the Erdős-Hajnal partition calculus program for uncountable ordinals"
-    ]
+    "formal": "(LaTeX not available)",
+    "plain": "Problem statement not found",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Under CH: fully resolved via Hajnal's theorem + color merging",
-      "k=1 case under Martin's Axiom: Baumgartner proved omega_1*omega -> (omega_1*omega, 3)^2"
-    ],
-    "open": [
-      "ZFC status for all finite k",
-      "ZFC status even for k=1 (the 2-color case is Problem #1169)"
-    ],
-    "goal": "Determine whether the partition relation holds in ZFC (without additional axioms)"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-02-08T02:55:00Z",
+    "phase": "NEW",
+    "since": "2026-01-15T17:01:06.707Z",
     "iteration": 1,
-    "focus": "Formalized statement, partial results, and connections to #1169",
-    "blockers": [
-      "Problem is OPEN - requires new set-theoretic techniques",
-      "Even the 2-color case (#1169) is open in ZFC"
-    ],
-    "nextAction": "Monitor for new results in ordinal partition calculus literature",
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Created comprehensive Lean formalization with 14 axioms and 10 theorems. Formalized the multicolor partition relation, the problem statement, Baumgartner's partial result (k=1 under MA), and the CH-conditional full resolution via Hajnal's theorem.",
-    "builtItems": [
-      "proofs/Proofs/Erdos1171Problem.lean - full formalization",
-      "ordinalPartitionRelMulti - multicolor partition relation axiom",
-      "erdos_1171_statement - formal problem statement",
-      "erdos_1171_under_ch - CH implies full resolution",
-      "erdos_1171_k1_under_ma - Baumgartner's k=1 case under MA",
-      "omega1TimesOmega_lt_omega1Sq - proved ordinal arithmetic fact",
-      "omega_lt_omega1 - proved from Mathlib cardinal/ordinal API"
-    ],
-    "insights": [
-      "Problem #1171 generalizes #1169 to multicolor: trades ordinal target strength for more colors",
-      "Under CH, the multicolor case reduces to 2-color via merging argument",
-      "Baumgartner's result [Ba89b] gives the k=1 case but only under Martin's Axiom",
-      "The ZFC difficulty traces to independence of omega_1^2 -> (omega_1^2, 3)^2",
-      "omega1 * omega < omega1 * omega1 is provable from Mathlib's mul_lt_mul_iff_left"
-    ],
-    "mathlibGaps": [
-      "No ordinal partition relation definitions in Mathlib - must axiomatize",
-      "No formal treatment of Martin's Axiom in Mathlib"
-    ],
-    "nextSteps": [
-      "Monitor literature for ZFC results on omega_1^2 partition relations",
-      "Consider connecting to Erdos1172Problem.lean for nearby problems"
-    ],
-    "markdown": "# Erdős #1171 - Knowledge Base\n\n## Problem Statement\n\nFor all finite k, does omega_1^2 -> (omega_1*omega, 3, ..., 3)^2_{k+1} hold?\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Formalization Status**: SURVEYED\n\n## Known Results\n\n- Under CH: Fully resolved via Hajnal + color merging\n- k=1 under MA: Baumgartner [Ba89b]\n- ZFC: OPEN\n\n## Related Problems\n\n- Problem #1169\n- Problem #1172\n\n## References\n\n- [Va99, 7.84]\n- [Ba89b] Baumgartner\n\n---\n\n*Enhanced by researcher-1 on 2026-02-08*\n"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1171 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
-  "approaches": [
-    {
-      "name": "Survey and formalization",
-      "status": "completed",
-      "description": "Formalized the problem statement, known partial results, and connections to related problems"
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "set-theory",
-    "partition-calculus",
-    "ordinals",
-    "Ramsey-theory"
+    "erdos"
   ],
-  "relatedProofs": [
-    "proofs/Proofs/Erdos1169Problem.lean",
-    "proofs/Proofs/Erdos1172Problem.lean",
-    "proofs/Proofs/Erdos591Problem.lean"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "[Va99, 7.84] - Original problem source",
-      "[Ba89b] - Baumgartner, partition relations under Martin's Axiom"
-    ],
-    "urls": [
-      "https://erdosproblems.com/1171"
-    ],
-    "mathlib": [
-      "Mathlib.SetTheory.Ordinal.Arithmetic",
-      "Mathlib.SetTheory.Cardinal.Basic",
-      "Mathlib.SetTheory.Cardinal.Ordinal"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-15T17:01:06.707Z",
   "significance": 7,
-  "tractability": 3
+  "tractability": 6
 }

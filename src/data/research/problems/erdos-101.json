@@ -1,94 +1,123 @@
 {
   "slug": "erdos-101",
-  "title": "Erdős #101",
-  "phase": "NEW",
+  "title": "Erdős #101 — Four-Point Lines from Planar Point Sets",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Given $n$ points in $\\mathbb{R}^2$, no five of which are on a line, the number of lines containing four points is $o(n^2)$.\n\n\n\nThere are examples of sets of $n$ points with $\\sim n^2/6$ many collinear triples and no four points on a line. Such constructions are given by Burr, Gr\\\"{u}nbaum, and Sloane \\cite{BGS74} and F\\\"{u}redi and Pal\\'{a}sti \\cite{FuPa84}.\n\nGr\\\"{u}nbaum \\cite{Gr76} constructed an example with $\\gg n^{3/2}$ such lines. Erd\\H{o}s speculated this may be the correct order of magnitude. This is false: Solymosi and Stojakovi\\'{c} \\cite{SoSt13} have constructed a set with no five on a line and at least\\[n^{2-O(1/\\sqrt{\\log n})}\\]many lines containing exactly four points.\n\nSee also [102] and [669]. A generalisation of this problem is asked in [588].\n\nThis problem is Problem 71 on Green's open problems list.",
-    "plain": "Given $n$ points in $\\mathbb{R}^2$, no five of which are on a line, the number of lines containing four points is $o(n^2)$.",
-    "whyMatters": []
+    "formal": "Given $n$ points in $\\mathbb{R}^2$, no five of which are on a line, the number of lines containing four points is $o(n^2)$.",
+    "plain": "Given n points in the plane with no five collinear, prove that the number of lines containing exactly four of the points is o(n²).",
+    "whyMatters": [
+      "Fundamental problem in combinatorial geometry connecting point-line incidences to collinearity structure",
+      "Related to the Szemerédi-Trotter theorem and its applications",
+      "The gap between best known lower bound n^{2-O(1/√(log n))} and the conjectured o(n²) upper bound is a major open question",
+      "Problem 71 on Ben Green's open problems list; $100 Erdős prize"
+    ]
   },
   "knownResults": {
     "proven": [
-      "improved_upper_bound: fourPointLineCount ≤ n(n-1)/12 (fully proved in Lean)",
-      "trivial_upper_bound: fourPointLineCount ≤ n(n-1)/2 (fully proved)",
-      "noFiveCollinear_line_bound: each line has ≤4 points under NoFiveCollinear",
-      "four_collinear_unique: 4-collinear subsets on same line are unique",
-      "four_collinear_overlap_small: distinct 4-collinear subsets share ≤1 point",
-      "collinear_trans chain: full transitivity of collinearity"
+      "Collinearity definitions and basic properties (reflexivity, symmetry, transitivity)",
+      "NoFiveCollinear predicate and vacuous case for |P| ≤ 4",
+      "noFiveCollinear_line_bound: under NoFiveCollinear, any line through 2 points has ≤ 4 points",
+      "four_collinear_unique: two 4-collinear subsets sharing 2 common collinear points must be equal",
+      "four_collinear_overlap_small: distinct 4-collinear subsets share ≤ 1 element",
+      "trivial_upper_bound_sq: fourPointLineCount(P) ≤ n² (injection to ordered pairs)",
+      "trivial_upper_bound: fourPointLineCount(P) ≤ n(n-1)/2 (injection to unordered pairs)",
+      "improved_upper_bound: fourPointLineCount(P) ≤ n(n-1)/12 (pair-packing via C(4,2)=6 disjoint pairs)",
+      "fourCollinearThrough_bound: at most (n-1)/3 four-point lines through any single point",
+      "Double-counting connection: per-point and global bounds are equivalent via Σ_p |FCT(p)| = 4|F|"
     ],
     "open": [
-      "erdos_101_conjecture: fourPointLineCount = o(n²) - main open problem ($100 prize)",
-      "True order of magnitude between n^{2-O(1/√log n)} (Solymosi-Stojaković lower) and O(n²) (our upper)"
+      "Main conjecture: fourPointLineCount(P) = o(n²) — genuinely OPEN, $100 prize",
+      "Best lower bound: n^{2-O(1/√(log n))} by Solymosi-Stojaković (2013), disproving Θ(n^{3/2}) guess",
+      "Closing the gap between O(n²) and o(n²) requires genuinely new ideas beyond Szemerédi-Trotter"
     ],
-    "goal": "Prove o(n²) upper bound on four-point lines under no-five-collinear condition"
+    "goal": "OPEN problem — no further proof work appropriate. Formalization is comprehensive."
   },
   "currentState": {
-    "phase": "PROVING",
-    "since": "2026-01-12T07:59:02.685Z",
-    "iteration": 3,
-    "focus": "All proofs build. Structural lemmas complete. Main conjecture OPEN.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "SURVEYED",
+    "since": "2026-02-11T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Survey complete. Existing Lean formalization is excellent — all provable combinatorial bounds are proved, main conjecture correctly stated as axiom.",
+    "blockers": [
+      "Main conjecture is genuinely OPEN — not suitable for proof attempts"
+    ],
+    "nextAction": "No further work needed. Problem is well-formalized and documented.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "RICH FORMALIZATION (0 sorries): 8 collinearity lemmas, 3 upper bounds (n², n(n-1)/2, n(n-1)/12), per-point bound (n-1)/3, structural lemmas (uniqueness, overlap, fourCollinearThrough_sub_family, mem_fourCollinearThrough_of_mem_family). Szemerédi-Trotter axiom refined with Finset incidence structure. Double-counting connection documented. The n(n-1)/12 bound is optimal from pure combinatorics. Main conjecture o(n²) OPEN ($100 prize).",
+    "progressSummary": "SURVEY: Erdős #101 is a genuine OPEN problem ($100 prize). The existing Lean formalization in Erdos101Problem.lean is comprehensive and high-quality. It proves all combinatorial bounds achievable without resolving the main conjecture: trivial O(n²), improved O(n(n-1)/2), tight O(n(n-1)/12) via pair-packing, and per-point bound (n-1)/3. The double-counting connection between these is documented. The main conjecture and known lower bounds are correctly axiomatized. No further proof work is appropriate.",
     "builtItems": [
-      "collinear_self, collinear_refl, collinear_self_right, collinear_swap23, collinear_swap12, collinear_rotate, collinear_cycle - 7 collinearity symmetry lemmas proved",
-      "collinear_trans, collinear_four, collinear_any_triple - transitivity chain proved",
-      "noFiveCollinear_small - vacuous NoFiveCollinear for ≤4 points",
-      "fourPointLineCount_lt_four - zero for <4 points",
-      "noFiveCollinear_line_bound - each line has ≤4 points under NoFiveCollinear",
-      "four_collinear_unique - 4-element collinear subsets on same line are unique (key structural result)",
-      "four_collinear_overlap_small - distinct 4-collinear subsets share ≤1 element",
-      "trivial_upper_bound_sq - fourPointLineCount ≤ n² (injection to ordered pairs)",
-      "trivial_upper_bound - fourPointLineCount ≤ n(n-1)/2 (injection to unordered pairs)",
-      "improved_upper_bound - fourPointLineCount ≤ n(n-1)/12 (disjoint C(4,2)=6 pair packing)",
-      "powersetCard2_disjoint - utility lemma for disjoint pair-sets",
-      "fourCollinearFamily, fourCollinearThrough definitions",
-      "fourCollinearThrough_bound - per-point bound (n-1)/3 [HAS BUILD ERRORS from concurrent editing]",
-      "szemeredi_trotter axiom refined with Finset incidence structure",
-      "fourCollinearThrough_sub_family - proved subset relation (BUILDS OK)",
-      "mem_fourCollinearThrough_of_mem_family - proved membership relation (BUILDS OK)",
-      "Fixed sum_const_nat mul order issue from concurrent editing (ring tactic)"
+      "PlanarPointSet: structure for finite point sets in ℝ²",
+      "collinear: three-point collinearity via signed area determinant",
+      "NoFiveCollinear: predicate for no five points on a line",
+      "fourPointLineCount: count of 4-element collinear subsets",
+      "collinear_self, collinear_refl, collinear_self_right: reflexivity lemmas",
+      "collinear_swap23, collinear_swap12, collinear_rotate, collinear_cycle: symmetry lemmas",
+      "collinear_trans: transitivity through a common line",
+      "collinear_four, collinear_any_triple: extended transitivity",
+      "noFiveCollinear_small: vacuous NoFiveCollinear for |P| ≤ 4",
+      "fourPointLineCount_lt_four: zero four-point lines for |P| < 4",
+      "noFiveCollinear_line_bound: each line has ≤ 4 points under NoFiveCollinear",
+      "four_collinear_unique: uniqueness of 4-collinear subsets on same line",
+      "four_collinear_overlap_small: distinct 4-collinear subsets share ≤ 1 element",
+      "trivial_upper_bound_sq: |F| ≤ n²",
+      "trivial_upper_bound: |F| ≤ n(n-1)/2",
+      "improved_upper_bound: |F| ≤ n(n-1)/12",
+      "fourCollinearFamily, fourCollinearThrough: helper definitions",
+      "fourCollinearThrough_bound: ≤ (n-1)/3 four-point lines per point",
+      "powersetCard2_disjoint: pair-disjointness from overlap bound"
     ],
     "insights": [
-      "The n(n-1)/12 bound is OPTIMAL from pure double-counting: each 4-collinear subset has C(4,2)=6 pairs, disjoint subsets pack into C(n,2) total pairs, giving 6F ≤ C(n,2)",
-      "Szemerédi-Trotter does NOT improve on O(n²) for k=4: ST gives m ≤ O(n²/k³ + n/k), for k=4 this is O(n²/64 + n/4) = O(n²)",
-      "The o(n²) conjecture is genuinely beyond all known incidence geometry bounds for k=4",
-      "Per-point bound uses disjoint union: erasing p from each 4-collinear subset gives pairwise disjoint 3-element subsets of P\\{p}",
-      "Double-counting via per-point bound: sum over all p of |fourCollinearThrough(p)| = 4·|F|, each bounded by (n-1)/3, gives 4F ≤ n(n-1)/3, so F ≤ n(n-1)/12. This reproves improved_upper_bound from a different angle",
-      "Solymosi-Stojaković (2013) gives lower bound n^{2-O(1/√log n)}, nearly quadratic. Gap between this and o(n²) is the open problem",
-      "Problem relates to Erdős #102, #669, #588. Also Problem 71 on Ben Green's list of open problems",
-      "Kővári-Sós-Turán does NOT help: K_{2,2}-free in point-line incidence gives 4f ≤ √n·f+f which does not bound f"
+      "The n(n-1)/12 bound is tight from pure combinatorial methods — further improvement requires geometric input",
+      "Szemerédi-Trotter is axiomatized but not directly applicable to close the o(n²) gap for k=4",
+      "Solymosi-Stojaković (2013) disproved Erdős's Θ(n^{3/2}) guess with n^{2-O(1/√(log n))} constructions",
+      "The existing formalization correctly separates proved combinatorial bounds from the open conjecture",
+      "Double-counting approach (per-point × 4 = global × n) gives equivalent bounds but cannot break o(n²) barrier",
+      "Problem is #71 on Ben Green's open problems list, indicating ongoing research interest"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Formalize full double-counting proof via Finset.sum_comm interchange",
-      "Investigate spectral methods or algebraic geometry approaches to o(n²)",
-      "This problem is OPEN with $100 prize - truly novel ideas required beyond incidence geometry"
-    ],
-    "markdown": "# Erdős #101 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven $n$ points in $\\mathbb{R}^2$, no five of which are on a line, the number of lines containing four points is $o(n^2)$.\n\n\n\nThere are examples of sets of $n$ points with $\\sim n^2/6$ many collinear triples and no four points on a line. Such constructions are given by Burr, Gr\\\"{u}nbaum, and Sloane \\cite{BGS74} and F\\\"{u}redi and Pal\\'{a}sti \\cite{FuPa84}.\n\nGr\\\"{u}nbaum \\cite{Gr76} constructed an example with $\\gg n^{3/2}$ such lines. Erd\\H{o}s speculated this may be the correct order of magnitude. This is false: Solymosi and Stojakovi\\'{c} \\cite{SoSt13} have constructed a set with no five on a line and at least\\[n^{2-O(1/\\sqrt{\\log n})}\\]many lines containing exactly four points.\n\nSee also [102] and [669]. A generalisation of this problem is asked in [588].\n\nThis problem is Problem 71 on Green's open problems list.\n\n\n\n\nReferences\n\n\n[BGS74] Burr, Stefan A. and Gr\\\"{u}nbaum, Branko and Sloane, N. J. A., The orchard problem. Geometriae Dedicata (1974), 397-424.\n\n[FuPa84] F\\\"{u}redi, Z. and Pal\\'{a}sti, I., Arrangements of lines with a large number of triangles. Proc. Amer. Math. Soc. (1984), 561-566.\n\n[Gr76] Gr\\\"{u}nbaum, Branko, New views on some old questions of combinatorial geometry. Colloquio Internazionale sulle Teorie Combinatorie\n(Roma, 1973), Tomo I (1976), 451-468.\n\n[SoSt13] Solymosi, J\\'{o}zsef and Stojakovi\\'C, Milo\\vS, Many collinear {$k$}-tuples with no {$k+1$} collinear points. Discrete Comput. Geom. (2013), 811-820.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $100\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #6\n- Problem #2\n- Problem #102\n- Problem #669\n- Problem #588\n- Problem #100\n- Problem #39\n- Problem #1\n\n## References\n\n- Er84\n- Er90\n- Er92e\n- BGS74\n- FuPa84\n- Gr76\n- SoSt13\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+      "No further proof work appropriate — problem is genuinely OPEN",
+      "If resolving the conjecture becomes tractable (new paper, new techniques), revisit",
+      "Could potentially formalize Szemerédi-Trotter more precisely for related problems"
+    ]
   },
   "approaches": [],
   "tags": [
-    "erdos"
+    "erdos",
+    "combinatorial-geometry",
+    "incidence-geometry",
+    "open-problem",
+    "surveyed"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "Erdos101Problem.lean"
+  ],
+  "leanFile": "Erdos101Problem.lean",
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Burr, Grünbaum, Sloane (1974) - The orchard problem",
+      "Füredi, Palásti (1984) - Arrangements of lines with many triangles",
+      "Grünbaum (1976) - New views on combinatorial geometry",
+      "Solymosi, Stojaković (2013) - Many collinear k-tuples with no k+1 collinear points"
+    ],
+    "urls": [
+      "https://erdosproblems.com/101"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Finset.Powerset"
+    ]
   },
   "started": "2026-02-08T06:11:43.710Z",
-  "lastUpdate": "2026-02-11T14:36:58Z",
+  "lastUpdate": "2026-02-11T00:00:00.000Z",
   "significance": 5,
   "tractability": 3
 }

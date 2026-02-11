@@ -1,140 +1,65 @@
 {
   "slug": "navier-stokes-existence",
   "title": "Navier-Stokes Existence and Smoothness",
-  "phase": "SURVEY_COMPLETE",
-  "status": "completed",
+  "phase": "BREAKTHROUGH",
+  "status": "blocked",
   "tier": "S",
   "path": "full",
   "problemStatement": {
-    "formal": "In 3D, prove global existence and smoothness of Navier-Stokes solutions for all smooth initial data, or provide a counterexample showing finite-time blowup. Formally: ¬IsBlowup sol for all NSSolution sol satisfying NSAxioms.",
+    "formal": "\\text{(formal statement to be added)}",
     "plain": "MILLENNIUM PRIZE: Prove existence and smoothness of solutions to 3D Navier-Stokes, or find a counterexample.",
-    "whyMatters": [
-      "One of seven Millennium Prize Problems ($1M prize)",
-      "Governs all fluid dynamics: weather, blood flow, aerodynamics, oceanography",
-      "Connected to the turbulence problem, one of the last unsolved problems in classical physics",
-      "2D case is completely solved; 3D remains open despite 90+ years of effort"
-    ]
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "2D global existence and enstrophy bound (Ladyzhenskaya 1969) - FORMALIZED, 0 axioms",
-      "2D exponential enstrophy decay under Poincaré inequality - FORMALIZED",
-      "3D conditional regularity: NSAxioms → ¬IsBlowup - FORMALIZED, 0 axioms",
-      "CKN ε-regularity framework (Caffarelli-Kohn-Nirenberg 1982) - FORMALIZED",
-      "Type I exclusion via ESS backward uniqueness - FORMALIZED",
-      "Bernoulli inequality, spectral gap bounds, numerical constants - all FORMALIZED",
-      "Backward growth/unboundedness of ancient solutions - FORMALIZED",
-      "Liouville theorem for bounded ancient solutions - FORMALIZED",
-      "Type II no-blowup (E bounded → Ω bounded → contradiction) - FORMALIZED"
-    ],
-    "open": [
-      "3D global regularity without conditional hypotheses (the Millennium Problem)",
-      "Whether finite-time singularities exist in 3D",
-      "2D uniqueness (requires Sobolev space framework, Lions-Prodi theorem)"
-    ],
-    "goal": "The 3D Millennium Problem is OPEN and not tractable for formalization. The file provides the most complete conditional result possible: given physically motivated NSAxioms, blowup is impossible. The 2D case is fully solved with 0 axioms."
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "SURVEY_COMPLETE",
-    "since": "2026-02-11T11:00:00.000Z",
-    "iteration": 3,
-    "focus": "Build verification and knowledge consolidation",
-    "blockers": [
-      "3D Millennium Problem is mathematically OPEN - no known proof exists",
-      "Sobolev space infrastructure limited in Mathlib (blocks 2D uniqueness formalization)"
-    ],
-    "nextAction": "No further research needed. File is at maximum achievable completeness.",
+    "phase": "NEW",
+    "since": "2026-01-01T21:55:27.888Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 1,
-      "approachesTried": 2
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: NavierStokes.lean builds successfully in Docker (0 sorries, 0 axioms, 2352 lines). 2D global existence fully proved. 3D conditional regularity proved. Axiom count reduced 35→0 over iterations. This is a Millennium Prize Problem - the 3D unconditional case is mathematically OPEN.",
-    "builtItems": [
-      "NavierStokes.lean:146 - spectralGap_pos (spectral gap constant)",
-      "NavierStokes.lean:152 - spectralGap_val (4π² > 39)",
-      "NavierStokes.lean:265 - bernoulli inequality ((1+x)^n ≥ 1+nx)",
-      "NavierStokes.lean:289 - growth_unbounded (Archimedean property)",
-      "NavierStokes.lean:313 - exp_dominates_poly (exp beats polynomial)",
-      "NavierStokes.lean:459 - liouville_bounded_ancient (Liouville theorem)",
-      "NavierStokes.lean:713 - eff_beta_vanishes (effective β → 0)",
-      "NavierStokes.lean:835 - typeII_no_blowup (main Type II exclusion)",
-      "NavierStokes.lean:949 - navier_stokes_regularity (3D conditional theorem)",
-      "NavierStokes.lean:1933 - global_regularity_complete (explicit form)",
-      "NavierStokes.lean:2021 - enstrophy_bounded_2d (2D enstrophy bound)",
-      "NavierStokes.lean:2138 - global_enstrophy_bound (global 2D bound)",
-      "NavierStokes.lean:2243 - enstrophy_decay_rate (exponential decay)",
-      "NavierStokes.lean:2297 - navier_stokes_2d_solved (headline 2D theorem)"
-    ],
-    "insights": [
-      "2D N-S SOLVED: vortex stretching vanishes, ω is scalar, giving E' = -2νP ≤ 0",
-      "3D difficulty: vortex stretching term (ω·∇)u can cause blowup",
-      "Conditional 3D: B' → Type I only → ESŠ backward uniqueness → regularity",
-      "All 35 original axioms eliminated via proof or dead-code removal",
-      "Gronwall: f'(t) ≤ -c·f(t) implies f(t) ≤ f(0)·exp(-ct)",
-      "Poincaré inequality P ≥ λ₁E enables quantitative exponential decay",
-      "Millennium Problem: 3D global regularity remains OPEN despite 90+ years of effort",
-      "Docker build verified: 2026-02-11, builds in ~5min with 32GB limit",
-      "File uses NSAxioms structure (not Lean axiom declarations) - correct pattern",
-      "Antitone argument key for 2D: E' ≤ 0 ⟹ E monotone decreasing ⟹ bounded"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [
-      "Sobolev spaces (limited in Mathlib - blocks 2D uniqueness)",
-      "PDE infrastructure for nonlinear equations",
-      "Grönwall's inequality (we built our own in NavierStokesGronwall.lean)"
+      "Sobolev spaces",
+      "PDEs"
     ],
     "nextSteps": [
-      "Gallery integration for NavierStokes.lean",
-      "Monitor Mathlib PDE/Sobolev development for 2D uniqueness formalization"
+      "2D Navier-Stokes",
+      "Stokes Equations",
+      "Leray Solutions",
+      "Partial Regularity"
     ],
-    "markdown": "# Knowledge Base: Navier-Stokes Existence and Smoothness\n\n## The Problem\n\nThe Navier-Stokes problem asks whether smooth, physically reasonable solutions exist for all time for the equations governing fluid flow in three dimensions.\n\n### Core Statement\n\n> In 3D, prove global existence and smoothness of Navier-Stokes solutions for all smooth initial data, or provide a counterexample showing finite-time blowup.\n\nThe equations describe how velocity and pressure of a fluid evolve:\n\n∂u/∂t + (u·∇)u = ν∆u - ∇p + f\n∇·u = 0\n\nwhere u is velocity, p is pressure, ν is viscosity, and f is external force.\n\n### Why It Matters\n\n1. **Fluid Dynamics**: Governs everything from weather to blood flow\n2. **Engineering**: Aircraft design, turbulence modeling, oceanography\n3. **Physics**: Fundamental understanding of fluids\n4. **Turbulence**: Connected to one of the last major unsolved physics problems\n\n## Formalization Status\n\n### NavierStokes.lean (2352 lines, 0 sorries, 0 axioms)\n\n**Docker build verified: 2026-02-11**\n\n| Result | Status | Lines |\n|--------|--------|-------|\n| 2D global enstrophy bound | PROVEN (0 axioms) | ~100 |\n| 2D exponential decay | PROVEN (0 axioms) | ~50 |\n| 2D headline theorem | PROVEN (0 axioms) | ~20 |\n| 3D conditional regularity | PROVEN (via NSAxioms) | ~200 |\n| Type II exclusion | PROVEN | ~100 |\n| Liouville bounded ancient | PROVEN | ~70 |\n| CKN framework | PROVEN | ~300 |\n| Numerical constants | PROVEN | ~200 |\n\n### Axiom Elimination History\n\n- 35 → 12: Proved 23 axioms using Mathlib (spectral gap, pi bounds, etc.)\n- 12 → 1: Proved 11 more (Type II stability, Liouville, backward uniqueness)\n- 1 → 0: Restructured 2D theorem using GlobalNSSolution2D\n- 12 dead-code axioms removed (never used downstream)\n\n## The Key Difficulty: 3D vs 2D\n\n### 2D: Solved!\n\nIn 2D, global smooth solutions exist. Key facts:\n- Vorticity ω = curl(u) satisfies a nice transport equation\n- Enstrophy ∫|ω|² is bounded for all time (E' = -2νP ≤ 0)\n- No vortex stretching term\n- Global regularity follows from energy estimates\n\n### 3D: Open (Millennium Problem)\n\nIn 3D, the vortex stretching term (ω·∇)u can potentially cause:\n- Vorticity concentration\n- Energy cascade to small scales\n- Possible finite-time singularity\n\n## References\n\n- Leray, J. (1934). \"Sur le mouvement d'un liquide visqueux\"\n- Ladyzhenskaya, O. (1969). \"The Mathematical Theory of Viscous Incompressible Flow\"\n- Caffarelli, L., Kohn, R., Nirenberg, L. (1982). \"Partial regularity\"\n- Fefferman, C. (2006). \"Existence and Smoothness of the Navier-Stokes Equation\" (Clay Problem Statement)\n"
+    "markdown": "# Knowledge Base: Navier-Stokes Existence and Smoothness\n\n## The Problem\n\nThe Navier-Stokes problem asks whether smooth, physically reasonable solutions exist for all time for the equations governing fluid flow in three dimensions.\n\n### Core Statement\n\n> In 3D, prove global existence and smoothness of Navier-Stokes solutions for all smooth initial data, or provide a counterexample showing finite-time blowup.\n\nThe equations describe how velocity and pressure of a fluid evolve:\n\n∂u/∂t + (u·∇)u = ν∆u - ∇p + f\n∇·u = 0\n\nwhere u is velocity, p is pressure, ν is viscosity, and f is external force.\n\n### Why It Matters\n\n1. **Fluid Dynamics**: Governs everything from weather to blood flow\n2. **Engineering**: Aircraft design, turbulence modeling, oceanography\n3. **Physics**: Fundamental understanding of fluids\n4. **Turbulence**: Connected to one of the last major unsolved physics problems\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1822 | Navier | Derived equations with molecular assumptions |\n| 1845 | Stokes | Rigorous continuum derivation |\n| 1934 | Leray | Weak solutions exist globally |\n| 1962 | Ladyzhenskaya | 2D global regularity |\n| 1977 | Scheffer | Partial regularity results |\n| 1982 | Caffarelli-Kohn-Nirenberg | Singular set has dimension ≤ 1 |\n\nThe 3D problem remains open despite 90+ years of effort since Leray.\n\n## The Key Difficulty: 3D vs 2D\n\n### 2D: Solved!\n\nIn 2D, global smooth solutions exist. Key facts:\n- Vorticity ω = curl(u) satisfies a nice transport equation\n- Enstrophy ∫|ω|² is bounded for all time\n- No vortex stretching term\n- Global regularity follows from energy estimates\n\n### 3D: Open\n\nIn 3D, the vortex stretching term (ω·∇)u can potentially cause:\n- Vorticity concentration\n- Energy cascade to small scales\n- Possible finite-time singularity\n\nThe Ladyzhenskaya inequality ||u||_4 ≤ C||u||_{H¹}^{3/4}||u||_2^{1/4} only works in 2D.\n\n## What We Could Build\n\n### In Mathlib Now\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Vector calculus | ✅ | div, curl, grad |\n| Sobolev spaces | ⚠️ Limited | Basic definitions |\n| PDEs | ⚠️ Limited | Linear theory |\n| Lebesgue spaces | ✅ | Well-developed |\n| Functional analysis | ✅ | Strong foundation |\n\n### Tractable Partial Work\n\n1. **2D Navier-Stokes** (see 2d-navier-stokes project)\n   - Global existence IS known\n   - Would be a major formalization achievement\n   - ~3000-5000 lines estimated\n\n2. **Stokes Equations** (linear case)\n   - ∆u = ∇p, ∇·u = 0\n   - Linear theory, more tractable\n   - Foundation for full N-S\n\n3. **Leray Solutions** (weak solutions)\n   - Energy inequality\n   - Existence without uniqueness\n   - Fundamental theory\n\n4. **Partial Regularity**\n   - Caffarelli-Kohn-Nirenberg\n   - Singular set is small (dimension ≤ 1)\n\n## Formalization Challenges\n\n### Primary Blocker: Advanced PDE Infrastructure\n\nFormalizing even 2D N-S requires:\n\n1. **Sobolev Spaces** (~1000 lines)\n   - H^s spaces on domains\n   - Trace theorems\n   - Embeddings\n\n2. **Energy Methods** (~1500 lines)\n   - A priori estimates\n   - Weak formulations\n   - Galerkin approximations\n\n3. **Regularity Theory** (~2000 lines)\n   - Bootstrapping\n   - Schauder estimates\n   - Maximum principles\n\n### The 3D-Specific Challenges\n\n3D uniquely requires handling:\n- **Enstrophy growth**: ∫|∇u|² can grow in 3D\n- **Vortex stretching**: (ω·∇)u term\n- **Critical scaling**: Equations are borderline in 3D\n\n## Current State of Knowledge\n\n### What's Known\n\n- **Weak solutions exist** (Leray 1934)\n- **Strong solutions exist locally** (Fujita-Kato)\n- **Small data ⟹ global existence** (for ||u₀|| small)\n- **Partial regularity** (singularities rare)\n- **Unique for 2D** and for small 3D data\n\n### What's Open\n\n- Do 3D solutions stay smooth forever?\n- Do finite-time singularities exist?\n- If blowup occurs, what does it look like?\n\n## Related Work\n\n| File | Relevance |\n|------|-----------|\n| `2d-navier-stokes` | The tractable 2D case |\n\n## Key References\n\n- Leray, J. (1934). \"Sur le mouvement d'un liquide visqueux\"\n- Ladyzhenskaya, O. (1969). \"The Mathematical Theory of Viscous Incompressible Flow\"\n- Caffarelli, L., Kohn, R., Nirenberg, L. (1982). \"Partial regularity\"\n- Constantin, P., Foias, C. (1988). \"Navier-Stokes Equations\"\n- Fefferman, C. (2006). \"Existence and Smoothness of the Navier-Stokes Equation\" (Clay Problem Statement)\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Current Status**: BLOCKED - Heavy PDE/analysis infrastructure required\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Basic PDEs | Yes | 2026-01-01 |\n| Sobolev spaces | Limited | 2026-01-01 |\n| Navier-Stokes | No | 2026-01-01 |\n| Fluid mechanics | No | 2026-01-01 |\n\n**Path Forward**:\n1. Build Sobolev space infrastructure\n2. Formalize 2D Navier-Stokes (known result)\n3. Add partial regularity for 3D weak solutions\n4. State the Millennium Problem precisely\n\n**Related Active Work**: `2d-navier-stokes` attempts the tractable 2D case\n\n**Next Scout**: Check Mathlib PDE development; 2D case is the near-term goal\n"
   },
-  "approaches": [
-    {
-      "name": "Conditional 3D regularity via NSAxioms",
-      "status": "completed",
-      "description": "Proved ¬IsBlowup conditional on NSAxioms structure (Type II exclusion + ESS backward uniqueness)"
-    },
-    {
-      "name": "2D global existence via enstrophy monotonicity",
-      "status": "completed",
-      "description": "Proved global enstrophy bound using E' = -2νP ≤ 0 and antitone argument, 0 axioms"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "millennium-prize",
     "analysis",
     "pde",
-    "open-conjecture",
-    "build-verified"
+    "open-conjecture"
   ],
-  "relatedProofs": [
-    "NavierStokes.lean",
-    "NavierStokesGronwall.lean"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Leray 1934 - Global weak solutions",
-      "Ladyzhenskaya 1969 - 2D regularity",
-      "Caffarelli-Kohn-Nirenberg 1982 - Partial regularity",
-      "Fefferman 2006 - Clay problem statement"
-    ],
-    "urls": [
-      "https://www.claymath.org/millennium-problems/navier-stokes-equation"
-    ],
-    "mathlib": [
-      "Analysis.Calculus.Deriv.Basic",
-      "Analysis.SpecialFunctions.Pow.Real",
-      "Analysis.SpecialFunctions.ExpDeriv",
-      "MeasureTheory.Integral.Bochner.Basic",
-      "Analysis.InnerProductSpace.Basic"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-02-11T11:05:00.000Z",
-  "completed": "2026-02-11T11:05:00.000Z",
+  "lastUpdate": "2026-02-11T07:03:36.100Z",
+  "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1
 }

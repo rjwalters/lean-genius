@@ -1,8 +1,8 @@
 {
   "slug": "erdos-655",
   "title": "Erdős #655",
-  "phase": "FORMALIZED",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -11,59 +11,32 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "basic_distance_bound: Each point determines ≥ (n-1)/2 distinct distances under concyclicity restriction"
-    ],
-    "open": [
-      "ErdosProblem655_corrected: Under no-4-concyclic, do points determine ≥ (1+c)n/2 distinct distances?"
-    ],
-    "goal": "Prove the corrected conjecture or find structural results under no-4-concyclic condition"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "FORMALIZED",
-    "since": "2026-02-07T22:36:00.000Z",
-    "iteration": 2,
-    "focus": "Proved basic distance bound via pigeonhole argument.",
-    "blockers": [
-      "Hunter counterexample (axiom) - would need constructive circle geometry to prove",
-      "Corrected conjecture is OPEN - requires new mathematical ideas"
-    ],
-    "nextAction": "Consider proving Hunter counterexample constructively, or submit to Aristotle.",
+    "phase": "NEW",
+    "since": "2026-01-13T18:22:04.304Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved basic_distance_bound theorem converting axiom to theorem. Key technique: fiberwise counting with Finset.card_eq_sum_card_fiberwise plus NoConcyclicTriple fiber bound ≤ 2.",
-    "builtItems": [
-      "theorem basic_distance_bound in Proofs.Erdos655Problem (pigeonhole proof)",
-      "lemma others_card_le_two_mul_distinct (fiber counting core)"
-    ],
-    "insights": [
-      "NoConcyclicTriple means each distance from a point has multiplicity ≤ 2",
-      "Pigeonhole: n-1 points at most 2 per distance → ≥ (n-1)/2 distances",
-      "Finset.card_eq_sum_card_fiberwise is the right Mathlib lemma for fiber counting",
-      "Need Finset.mem_coe for Set.MapsTo proofs from Finset membership",
-      "dist_pos.mpr needs careful argument order: dist(P i, P j) > 0 requires P i ≠ P j",
-      "Hunter counterexample: equally-spaced n-gon vertices give ~n/2 distances",
-      "Original conjecture is FALSE; corrected version (no 4 concyclic) is OPEN"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove hunter_counterexample constructively using regular polygon distances",
-      "Submit to Aristotle for remaining sorry-free theorem attempts"
-    ],
-    "markdown": "# Erdős #655 - Knowledge Base\n\n## Problem Statement\n\nLet points in ℝ² satisfy the concyclicity restriction (no circle centered at any point passes through 3+ others). Do they determine at least (1+c)n/2 distinct distances?\n\n## Status\n\n**Erdős Database Status**: OPEN (corrected form)\n**Original conjecture**: DISPROVED by Zach Hunter\n\n## Proved Results\n\n- **basic_distance_bound**: Each point determines ≥ (n-1)/2 distinct distances (pigeonhole argument)\n- Key technique: fiberwise counting via `Finset.card_eq_sum_card_fiberwise`\n\n## Remaining Axioms\n\n- **hunter_counterexample**: Regular n-gon disproves original conjecture\n- **ErdosProblem655_corrected**: Open corrected conjecture under no-4-concyclic\n\n## Sessions\n\n### Session 1 (2026-02-07)\n- Proved basic_distance_bound via pigeonhole\n- Reduced axiom count from 3 to 2\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "nextSteps": [],
+    "markdown": "# Erdős #655 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $x_1,\\ldots,x_n\\in \\mathbb{R}^2$ be such that no circle whose centre is one of the $x_i$ contains three other points. Are there at least\\[(1+c)\\frac{n}{2}\\]distinct distances determined between the $x_i$, for some constant $c>0$ and all $n$ sufficiently large?\n\n\n\nA problem of Erd\\H{o}s and Pach. It is easy to see that this assumption implies that there are at least $\\frac{n-1}{2}$ distinct distances determined by every point.\n\nZach Hunter has observed that taking $n$ points equally spaced on a circle disproves this conjecture. In the spirit of related conjectures of Erd\\H{o}s and others, presumably some kind of assumption that the points are in general position (e.g. no three on a line and no four on a circle) was intended.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #654\n- Problem #656\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er97e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
-  "approaches": [
-    {
-      "name": "Pigeonhole/fiber counting for basic bound",
-      "status": "completed",
-      "description": "Each distance value has multiplicity ≤ 2 (from NoConcyclicTriple), so n-1 points yield ≥ (n-1)/2 distinct distances"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "erdos"
   ],
@@ -71,12 +44,7 @@
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Finset.card_eq_sum_card_fiberwise",
-      "Finset.sum_le_sum",
-      "Finset.card_le_card",
-      "dist_pos"
-    ]
+    "mathlib": []
   },
   "started": "2026-01-13T18:22:04.304Z",
   "significance": 6,

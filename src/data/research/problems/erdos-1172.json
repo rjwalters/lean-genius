@@ -1,115 +1,50 @@
 {
   "slug": "erdos-1172",
   "title": "Erdős #1172",
-  "phase": "FORMALIZED",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Under GCH: (1) ω₃ → (ω₂, ω₁+2)², (2) ω₃ → (ω₂+ω₁, ω₂+ω)², (3) ω₂ → (ω₁^(ω+2)+2, ω₁+2)². Under CH: (4) ω₂ → (ω₁+ω)₂².",
-    "plain": "Determine the truth of four ordinal partition relations under GCH/CH. These ask whether certain 2-colorings of pairs from uncountable ordinals must contain large monochromatic subsets of specified order types.",
-    "whyMatters": [
-      "Central to the Erdős-Hajnal partition calculus program",
-      "Tests the boundary of what GCH implies for ordinal Ramsey theory",
-      "Connects to independence results (PFA vs b=ω₁ for ω₁ partition relations)"
-    ]
+    "formal": "(LaTeX not available)",
+    "plain": "Problem statement not found",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Erdős-Dushnik-Miller: λ → (λ, ω)² for infinite λ",
-      "Erdős-Rado: κ → (κ, ω+1)² for regular uncountable κ",
-      "Todorcevic: ω₁ → (ω₁, ω+2)² is independent of ZFC",
-      "PFA: ω₁ → (ω₁, α)² for all countable α"
-    ],
-    "open": [
-      "All four partition relations in Problem #1172 remain open",
-      "Whether GCH is necessary or sufficient for any of them"
-    ],
-    "goal": "Determine truth of the four partition relations under GCH/CH"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "FORMALIZED",
-    "since": "2026-02-07T18:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-01-15T17:01:06.708Z",
     "iteration": 1,
-    "focus": "Complete formalization with 16 proved theorems and 10 axioms.",
-    "blockers": [
-      "OPEN problem - partition relations under GCH remain unresolved",
-      "No Mathlib partition relation infrastructure exists"
-    ],
-    "nextAction": "Submit to Aristotle if axioms can be converted to theorem sorries.",
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "FORMALIZED: Created Erdos1172Problem.lean with 16 proved theorems, 10 axioms, 0 sorries. Formalized all four partition relation questions, ordinal hierarchy (ω < ω₁ < ω₂ < ω₃), GCH/CH definitions, Erdős-Dushnik-Miller theorem applications, monotonicity results, and Todorcevic independence results.",
-    "builtItems": [
-      "proofs/Proofs/Erdos1172Problem.lean (199 lines, 16 theorems, 10 axioms, 0 sorries)",
-      "OrdPartitionRel axiom for partition relations on Ordinal.{0}",
-      "GCH and CH definitions with GCH→CH proof",
-      "omega1/omega2/omega3 via Cardinal.aleph.ord pattern",
-      "omega_lt_omega1 via Cardinal.ord_lt_ord and aleph hierarchy"
-    ],
-    "insights": [
-      "Partition relations at uncountable ordinals are deeply set-theory-dependent",
-      "Todorcevic showed ω₁ → (ω₁, ω+2)² is independent of ZFC (PFA positive, b=ω₁ negative)",
-      "The Erdős-Dushnik-Miller theorem provides weak baselines for all four questions",
-      "Ordinal.omega1 may not exist in all Mathlib versions; use (Cardinal.aleph 1).ord instead",
-      "Universe polymorphism in Ordinal requires fixing to {0} for axiom consistency",
-      "Ordinal.cof returns Cardinal, not Ordinal - need kap.cof = kap.card pattern",
-      "Cardinal.aleph_zero : Cardinal.aleph 0 = ℵ₀ bridges ℵ₀ and aleph notation"
-    ],
-    "mathlibGaps": [
-      "No partition relation definitions in Mathlib (ordinal arrow notation)",
-      "No ordinal Ramsey theory in Mathlib",
-      "No homogeneous set theory for ordinal colorings",
-      "Paulson formalized partition calculus in Isabelle/HOL but not in Lean"
-    ],
-    "nextSteps": [
-      "Consider building PartitionRelation infrastructure as shared library",
-      "Connect to existing formalizations: Erdos590, Erdos118, Erdos70",
-      "Survey whether Q4 (under CH only) is more tractable than Q1-Q3 (under GCH)"
-    ],
-    "markdown": "# Erdős #1172 - Knowledge Base\n\n## Problem Statement\n\nDetermine the truth of four ordinal partition relations (Erdős-Hajnal):\n\nUnder GCH:\n1. ω₃ → (ω₂, ω₁ + 2)²\n2. ω₃ → (ω₂ + ω₁, ω₂ + ω)²\n3. ω₂ → (ω₁^(ω+2) + 2, ω₁ + 2)²\n\nUnder CH:\n4. ω₂ → (ω₁ + ω)₂²\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Formalization**: Complete (16 theorems, 10 axioms, 0 sorries)\n\n## Key Results\n\n### Proved Theorems\n- gch_implies_ch: GCH → CH\n- omega1_lt_omega2, omega2_lt_omega3: ordinal hierarchy\n- omega_lt_omega1: ω < ω₁ (countable vs uncountable)\n- omega3_edm, omega2_edm: Erdős-Dushnik-Miller applications\n- q1_weak_from_edm: weak form of Q1 via EDM\n- q1_implies_weak_second: monotonicity weakening\n- q2_weakened_first: first target weakening for Q2\n- partition_independence: PFA vs b=ω₁ for ω₁ partitions\n\n### Axioms\n- OrdPartitionRel: core partition relation\n- partition_mono_source/target: monotonicity\n- erdos_dushnik_miller: EDM theorem\n- erdos_rado_regular: Erdős-Rado strengthening\n- todorcevic_negative, pfa_positive: independence results\n- stepping_up_negative: Erdős-Hajnal stepping-up lemma\n\n## References\n\n- Erdős, Hajnal: Original problem (Va99, 7.87)\n- Todorcevic (1989): Independence of ω₁ partition relations\n- Paulson (2022): Isabelle/HOL formalization of partition calculus\n\n## Related Problems\n\n- Problem #590 (ω^ω Ramsey, SOLVED)\n- Problem #118 (partition ordinals, SOLVED)\n- Problem #70 (continuum partition calculus, OPEN)\n\n---\n\n*Formalized by researcher-2 on 2026-02-07*\n"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1172 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
-  "approaches": [
-    {
-      "name": "Axiomatized partition relations with Mathlib ordinals",
-      "status": "completed",
-      "description": "Formalized all four questions using axiomatized OrdPartitionRel on Ordinal.{0}, with ordinals defined via Cardinal.aleph.ord. Proved ordinal hierarchy, GCH→CH, EDM applications, and monotonicity results."
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "set-theory",
-    "partition-calculus",
-    "ordinals",
-    "GCH",
-    "CH"
+    "erdos"
   ],
-  "relatedProofs": [
-    "Erdos590Problem",
-    "Erdos118Problem",
-    "Erdos70Problem",
-    "ContinuumHypothesis"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Erdős-Hajnal partition calculus (Va99, 7.87)",
-      "Todorcevic (1989): b=ω₁ implies ω₁ ↛ (ω₁, ω+2)²",
-      "Paulson (2022): Formalising Ordinal Partition Relations Using Isabelle/HOL"
-    ],
-    "urls": [
-      "https://erdosproblems.com/1172"
-    ],
-    "mathlib": [
-      "Mathlib.SetTheory.Ordinal.Arithmetic",
-      "Mathlib.SetTheory.Ordinal.Exponential",
-      "Mathlib.SetTheory.Cardinal.Basic",
-      "Mathlib.SetTheory.Cardinal.Ordinal"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-15T17:01:06.708Z",
   "significance": 7,

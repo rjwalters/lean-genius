@@ -18,11 +18,11 @@
   "currentState": {
     "phase": "ACT",
     "since": "2025-12-31",
-    "iteration": 4,
-    "focus": "Added Descriptive Complexity (Fagin, Immerman-Vardi, Immerman-Szelepcsényi, Cai-Fürer-Immerman, CPT)",
+    "iteration": 3,
+    "focus": "Extending complexity class formalization with PSPACE, EXP, and NP-completeness framework.",
     "activeApproach": "Abstract complexity class definitions with barrier theorems.",
     "blockers": [],
-    "nextAction": "Add space complexity (Savitch theorem), or metacomplexity (MKTP)",
+    "nextAction": "Add coNP, PSPACE-completeness, and explore removing sorries.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 3,
@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "33 parts, 7985 lines, 0 sorries. Comprehensive complexity theory encyclopedia: barriers, probabilistic, interactive proofs, quantum, PCP, zero-knowledge, algebraic, parameterized, descriptive complexity.",
+    "progressSummary": "Surveyed (has axioms, full proofs for consequences)",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -71,46 +71,6 @@
         "name": "all_barriers_constrain_proofs",
         "description": "Combined constraint",
         "proven": true
-      },
-      {
-        "name": "Vocabulary",
-        "description": "Relational vocabulary/signature for finite model theory",
-        "proven": true
-      },
-      {
-        "name": "FiniteStructure",
-        "description": "Finite structure over a vocabulary",
-        "proven": true
-      },
-      {
-        "name": "fagin_theorem",
-        "description": "NP = ESO (existential second-order logic) - Fagin 1974",
-        "proven": true
-      },
-      {
-        "name": "immerman_vardi",
-        "description": "P = FO + LFP on ordered structures - Immerman-Vardi 1982",
-        "proven": true
-      },
-      {
-        "name": "immerman_szelepcsenyi",
-        "description": "NL = coNL via inductive counting - 1987",
-        "proven": true
-      },
-      {
-        "name": "cai_furer_immerman",
-        "description": "No k-variable logic captures P without order - 1992",
-        "proven": true
-      },
-      {
-        "name": "CPT_does_not_capture_P",
-        "description": "Choiceless Poly Time does not capture P - Dawar 2015",
-        "proven": true
-      },
-      {
-        "name": "descriptive_complexity_landscape",
-        "description": "Summary: Fagin + Immerman-Vardi + Abiteboul-Vianu",
-        "proven": true
       }
     ],
     "insights": [
@@ -121,13 +81,7 @@
       "natural_proof_breaks_crypto",
       "relativization_insight",
       "P_subset_NP",
-      "all_barriers_constrain_proofs",
-      "Fagin theorem: NP = ESO (existential second-order logic)",
-      "Immerman-Vardi: P = FO + LFP on ordered structures",
-      "P vs NP in logic: does FO + LFP = ESO on ordered finite structures?",
-      "Cai-Fürer-Immerman: bounded-variable counting logics cannot capture P without order",
-      "Choiceless Polynomial Time (CPT) does not capture P (Dawar 2015)",
-      "0-1 law for FO but fails for ESO - another ESO vs FO separation"
+      "all_barriers_constrain_proofs"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",

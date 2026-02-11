@@ -1,153 +1,54 @@
 {
   "slug": "wilsons-theorem-oq-02",
   "title": "Generalizations of Wilsons Theorem to Non-Prime Moduli",
-  "phase": "IN_PROGRESS",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "For n ≥ 3: ∏ x : (ZMod n)ˣ, (x : ZMod n) = -1 ↔ IsCyclic (ZMod n)ˣ. The Gauss-Wilson theorem: product of units mod n equals -1 iff the unit group is cyclic, iff n ∈ {4, p^k, 2p^k} for odd prime p.",
-    "plain": "Prove the Gauss-Wilson theorem abstractly: the product of all units modulo n equals -1 if and only if the unit group (ZMod n)ˣ is cyclic. Build the bridge to the concrete product computation.",
-    "whyMatters": [
-      "Gauss-Wilson theorem is a fundamental generalization of Wilson's theorem",
-      "Connects group structure (cyclicity) to arithmetic (unit products)",
-      "Provides foundation for primitive root theory in Lean"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "prod_units_eq_neg_one_prime: Product = -1 for primes (via FiniteField)",
-      "neg_one_ne_one_units/zmod: -1 ≠ 1 in (ZMod n)ˣ for n ≥ 3",
-      "card_sq_eq_one_le_two: |{x | x²=1}| ≤ 2 in cyclic group",
-      "selfInverse_units_eq_pair: {x | x²=1} = {1,-1} in cyclic (ZMod n)ˣ, n ≥ 3",
-      "prod_univ_sq_eq_one: (∏ x)² = 1 in any finite commutative group",
-      "prod_eq_prod_sq_eq_one: Involution product lemma ∏ G = ∏ {x | x² = 1}",
-      "prod_units_neg_one_of_cyclic: IsCyclic → product = -1 (sorry-free)",
-      "gaussWilson_abstract: ∏ units = -1 ↔ cyclic (modulo 1 sorry)",
-      "unitsProduct_cast_eq_abstract: Concrete-abstract bridge (sorry-free)",
-      "gaussWilson_verified_le_300: Computational verification for n ≤ 300",
-      "Wilson prime verification for 5 and 13",
-      "No Wilson primes in [14, 100]"
-    ],
-    "open": [
-      "prod_units_one_of_not_cyclic: ¬IsCyclic → product = 1 (1 sorry)"
-    ],
-    "goal": "Eliminate the last sorry in prod_units_one_of_not_cyclic"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "IN_PROGRESS",
-    "since": "2026-02-10T14:00:00.000Z",
-    "iteration": 3,
-    "focus": "Cleaned up file to 1 sorry (down from 4). Documented proof strategy. Ready for Aristotle submission.",
-    "blockers": [
-      "Finset.prod_involution requires paired products = 1, but natural pairing x ↦ cx gives product c ≠ 1",
-      "Need Finset coset partition machinery or orbit product formula with transversal",
-      "isCyclic_of_card_pow_eq_one_le needs condition for ALL n, not just n=2"
-    ],
-    "nextAction": "Submit to Aristotle for automated proof search. Alternatively, construct Finset transversal for orbit product formula.",
+    "phase": "NEW",
+    "since": "2026-02-06T19:32:14.365Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 2,
-      "approachesTried": 2
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "14 proved theorems, 0 axioms, 1 sorry. Reduced from 4 sorries to 1 by cleaning up incomplete helper lemmas. The remaining sorry is prod_units_one_of_not_cyclic: when (ZMod n)ˣ is not cyclic, ∏ units = 1. Proof strategy is clear (Klein four coset decomposition) but Lean formalization requires Finset machinery not directly available in Mathlib.",
-    "builtItems": [
-      "prod_units_eq_neg_one_prime: Product = -1 for primes",
-      "sq_eq_one_iff_eq_inv: x² = 1 ↔ x = x⁻¹ in CommGroup",
-      "neg_one_ne_one_units: -1 ≠ 1 in (ZMod n)ˣ for n ≥ 3",
-      "neg_one_ne_one_zmod: -1 ≠ 1 in ZMod n for n ≥ 3",
-      "card_sq_eq_one_le_two: |{x | x²=1}| ≤ 2 in cyclic group",
-      "selfInverse_units_eq_pair: {x | x²=1} = {1,-1} when cyclic, n ≥ 3",
-      "prod_univ_sq_eq_one: (∏ x)² = 1 in finite CommGroup",
-      "prod_eq_prod_sq_eq_one: Involution product lemma (sorry-free)",
-      "prod_units_neg_one_of_cyclic: IsCyclic → product = -1 (sorry-free)",
-      "gaussWilson_abstract: biconditional (modulo 1 sorry)",
-      "unitsProduct_cast_eq_abstract: Concrete-abstract bridge (sorry-free)",
-      "gaussWilson_verified_le_300: Computational verification n ≤ 300",
-      "five_is_wilson_prime, thirteen_is_wilson_prime",
-      "no_wilson_primes_14_to_100"
-    ],
-    "insights": [
-      "IsCyclic.card_pow_eq_one_le gives |{x | x^n=1}| ≤ n in cyclic groups",
-      "Finset.eq_of_subset_of_card_le proves set equality from subset + cardinality bounds",
-      "(∏ x)² = 1 proof uses Finset.prod_bij with x ↦ x⁻¹ and Finset.prod_inv_distrib",
-      "Finset.prod_involution pairs elements with product 1; used for involution lemma on non-self-inverse elements",
-      "Cyclic → product = -1: involution lemma reduces to ∏ {1,-1} = -1",
-      "Concrete-abstract bridge: Finset.prod_nbij with ZMod.val gives bijection between coprime naturals and units",
-      "BARRIER: Finset.prod_involution CANNOT prove orbit product P=c^(|S|/2) because paired values multiply to c ≠ 1",
-      "BARRIER: isCyclic_of_card_pow_eq_one_le needs |{x|x^n=1}| ≤ n for ALL n, not just n=2",
-      "Klein four coset decomposition: {e,ce,de,cde} has product c²d²e⁴ = 1 when c²=d²=1",
-      "10+ proof strategies attempted; all require either transversal construction or coset partition Finset machinery",
-      "The sorry is computationally verified for n ≤ 300 via native_decide"
-    ],
-    "mathlibGaps": [
-      "No Finset.prod_involution variant for non-identity paired products (product = c instead of 1)",
-      "No direct orbit product formula: ∏ S = c^(|S|/2) for fixed-point-free involution with pair product c",
-      "No Finset coset partition/decomposition lemma for subgroup action",
-      "isCyclic_of_card_pow_eq_one_le (converse) requires condition for all divisors, not just one"
-    ],
-    "nextSteps": [
-      "Prove orbit product formula P=c^(|S|/2) via Finset transversal construction",
-      "Three-involution trick: P=c^(|S|/2) for three involutions gives P=P², combined with P²=1 yields P=1",
-      "Alternative: use isCyclic_of_card_pow_eq_one_le + structure theorem",
-      "Submit to Aristotle for prod_units_one_of_not_cyclic sorry"
-    ],
-    "markdown": "# Wilson's Theorem OQ-02: Gauss-Wilson Generalization\n\n## Status: 15 proved theorems, 0 axioms, 1 sorry\n\n## Proven Theorems\n- **Involution product lemma**: ∏ G = ∏ {x | x² = 1} (key structural result)\n- **Cyclic → product = -1**: Via involution lemma + self-inverse classification\n- **Concrete-abstract bridge**: ZMod.val gives bijection between coprime naturals and units\n- **Gauss-Wilson biconditional**: ∏ units = -1 ↔ cyclic (modulo 1 sorry)\n- **Computational verification**: All cases verified for n ≤ 300\n- **Non-cyclic (∏ S)² = 1**: via Finset.prod_pow\n\n## Remaining Sorry\n`prod_units_one_of_not_cyclic`: ¬IsCyclic → ∏ units = 1\n\n**Mathematical proof**: Three-involution trick: P² = 1 and orbit product gives P = P², hence P = 1.\n\n**Formalization barrier**: Requires Finset transversal construction for orbit product formula."
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Involution + self-inverse decomposition",
-      "description": "∏ G = ∏ {self-inverse} via involution pairing. Cyclic: {1,-1}, product = -1. Non-cyclic: S has rank ≥ 2, product = 1.",
-      "status": "in-progress",
-      "difficulty": "medium"
-    },
-    {
-      "name": "Klein four coset decomposition (for non-cyclic case)",
-      "description": "Pick c,d ∈ S\\{1} distinct. K={1,c,d,cd} partitions S into cosets. Each coset product = 1. Requires Finset partition.",
-      "status": "blocked",
-      "difficulty": "hard"
-    },
-    {
-      "name": "Orbit product formula via transversal",
-      "description": "Fixed-point-free involution x ↦ cx pairs S. Transversal T gives ∏ S = c^|T|. Since 4||S|, c^(|S|/2) = (c²)^(|S|/4) = 1.",
-      "status": "blocked",
-      "difficulty": "hard"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "number-theory",
-    "extension",
-    "group-theory",
-    "cyclic-groups",
-    "1-sorry"
+    "extension"
   ],
-  "relatedProofs": [
-    "WilsonsTheorem.lean",
-    "WilsonsTheoremOQ01.lean",
-    "PrimitiveRoots.lean"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.NumberTheory.Wilson",
-      "Mathlib.Data.ZMod.Basic",
-      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
-      "Mathlib.FieldTheory.Finite.Basic",
-      "Mathlib.RingTheory.ZMod.UnitsCyclic",
-      "FiniteField.prod_univ_units_id_eq_neg_one",
-      "IsCyclic.card_pow_eq_one_le",
-      "ZMod.isCyclic_units_iff",
-      "Finset.prod_involution",
-      "Finset.prod_bij",
-      "Finset.prod_nbij"
-    ]
+    "mathlib": []
   },
   "started": "2026-02-08T06:11:43.710Z",
-  "lastUpdate": "2026-02-10T18:00:00.000Z",
+  "lastUpdate": "2026-02-08T06:11:43.710Z",
   "significance": 7,
   "tractability": 7
 }
