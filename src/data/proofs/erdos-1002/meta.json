@@ -24,85 +24,85 @@
     "relatedProblems": []
   },
   "overview": {
-    "historicalContext": "**Fractional Part Distribution**\n\nThe fractional part function {x} = x - ⌊x⌋ plays a central role in Diophantine approximation. For irrational α, the sequence {α}, {2α}, {3α}, ... is equidistributed in [0,1) by Weyl's theorem.\n\n**The Weighted Sum**: Erdős considered the deviation from uniformity: f(α,n) = (1/log n) Σ (1/2 - {αk}). The factor 1/2 centers the fractional part, and dividing by log n normalizes the sum.\n\n**Distribution Question**: Rather than asking about specific α, Erdős asked whether f(α,n) has an *asymptotic distribution* - does the measure of {α : f(α,n) ≤ c} converge as n → ∞?\n\n**Kesten's Breakthrough**: In 1960, Kesten proved the two-parameter variant f(α,β,n) = (1/log n) Σ (1/2 - {β + αk}) has asymptotic Cauchy distribution. Averaging over β provides independence that the one-parameter case lacks.",
+    "historicalContext": "**Fractional Parts in Number Theory**\n\nThe study of fractional parts $\\{n\\alpha\\}$ for irrational $\\alpha$ is central to Diophantine approximation. Hermann Weyl's equidistribution theorem (1916) established that $\\{\\alpha\\}, \\{2\\alpha\\}, \\{3\\alpha\\}, \\ldots$ is uniformly distributed in $[0,1)$, a foundational result connecting number theory to ergodic theory.\n\n**Gauss and Continued Fractions**: Carl Friedrich Gauss studied the map $T(x) = \\{1/x\\}$ on $(0,1)$, discovering its invariant measure $d\\mu = dx/(\\log 2 \\cdot (1+x))$. The Gauss-Kuzmin theorem (Kuzmin 1928, Lévy 1929) describes the rate at which iterates of $T$ converge to this measure.\n\n**Erdős's Question**: Erdős asked whether $f(\\alpha, n) = \\frac{1}{\\log n}\\sum_{k=1}^{n}(1/2 - \\{\\alpha k\\})$ has an asymptotic distribution function — does the proportion of $\\alpha$ with $f(\\alpha, n) \\le c$ converge as $n \\to \\infty$?\n\n**Kesten's Breakthrough**: Harry Kesten (1960) proved the two-parameter variant $f(\\alpha, \\beta, n) = \\frac{1}{\\log n}\\sum(1/2 - \\{\\beta + \\alpha k\\})$ has a Cauchy limit distribution $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + 1/2$, using the ergodic properties of the natural extension of the Gauss map. The extra parameter $\\beta$ provides the independence needed for the ergodic argument. Fixing $\\beta = 0$ destroys this independence, and the one-parameter problem remains **OPEN**.",
     "problemStatement": "**Problem Statement**\n\nFor any 0 < α < 1, define:\n$$f(\\alpha,n) = \\frac{1}{\\log n} \\sum_{1 \\leq k \\leq n} \\left(\\frac{1}{2} - \\{\\alpha k\\}\\right)$$\n\nDoes f(α,n) possess an asymptotic distribution function?\n\nMore precisely: Does there exist a non-decreasing function g with g(-∞) = 0, g(+∞) = 1, such that:\n$$\\lim_{n \\to \\infty} |\\{\\alpha \\in (0,1) : f(\\alpha,n) \\leq c\\}| = g(c)?$$\n\n**Status**: OPEN\n\n**Related Result**: Kesten (1960) proved that f(α,β,n) with an additional shift parameter β has Cauchy distribution g(c) = (1/π)arctan(ρc) + 1/2.",
     "proofStrategy": "**Why This Problem is Difficult**\n\nThe key difficulty is the loss of independence when β = 0:\n\n1. **Two-Parameter Case**: Averaging over both α and β provides sufficient independence for ergodic methods.\n\n2. **One-Parameter Case**: With β = 0 fixed, the sequence {αk} for different k values has subtle correlations.\n\n3. **Continued Fractions**: The behavior of f(α,n) depends on the continued fraction expansion of α. Different Diophantine properties of α lead to different behaviors.\n\n4. **Dynamical Systems**: The problem connects to geodesic flows on modular surfaces, but the relevant ergodic theory is incomplete.\n\n**Potential Approaches**:\n- Study the joint distribution of (α, {α}, {2α}, ..., {nα})\n- Analyze the Fourier transform of the distribution\n- Use number-theoretic properties of continued fractions",
     "keyInsights": [
-      "The fractional part {αk} for irrational α is equidistributed (Weyl's theorem)",
-      "The deviation from uniformity, weighted by 1/log n, captures subtle arithmetic structure",
-      "Kesten's two-parameter result uses averaging over β to achieve independence",
-      "Fixing β = 0 destroys the independence and makes the problem much harder",
-      "The answer may depend on Diophantine properties of α (how well approximable it is)"
+      "**Weyl equidistribution**: $\\{\\alpha k\\}$ is equidistributed in $[0,1)$ for irrational $\\alpha$, so the inner sum grows sublinearly — the $\\log n$ normalization captures the precise scale",
+      "**Kesten's Cauchy limit**: The two-parameter variant $f(\\alpha, \\beta, n)$ converges to $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$ via ergodic properties of the Gauss map's natural extension",
+      "**Loss of independence**: Fixing $\\beta = 0$ eliminates the averaging over the shift parameter that provides the crucial ergodic independence in Kesten's proof",
+      "**Continued fraction connection**: The behavior of $f(\\alpha, n)$ depends on $\\alpha$'s continued fraction partial quotients — large quotients cause large oscillations in the sum",
+      "**Open status**: Neither the existence of a limiting distribution nor its form (Cauchy or otherwise) is known for the one-parameter case"
     ]
   },
   "sections": [
     {
       "id": "fractional-part",
       "title": "Fractional Part",
-      "summary": "Definition of frac(x) = x - ⌊x⌋",
+      "summary": "$\\{x\\} = x - \\lfloor x \\rfloor$ fractional part definition and basic properties",
       "startLine": 24,
       "endLine": 37
     },
     {
       "id": "weighted-sum",
       "title": "The Weighted Sum f(α, n)",
-      "summary": "innerSum and f definitions",
+      "summary": "$S(\\alpha, n) = \\sum_{k=1}^{n}(1/2 - \\{\\alpha k\\})$ and $f(\\alpha, n) = S(\\alpha, n)/\\log n$",
       "startLine": 39,
       "endLine": 54
     },
     {
       "id": "distribution-functions",
       "title": "Distribution Functions",
-      "summary": "isDistributionFunction definition",
+      "summary": "$g : \\mathbb{R} \\to [0,1]$ non-decreasing with $g(-\\infty) = 0$, $g(+\\infty) = 1$",
       "startLine": 56,
       "endLine": 68
     },
     {
       "id": "asymptotic-distribution",
       "title": "Asymptotic Distribution",
-      "summary": "levelSet and hasAsymptoticDistribution",
+      "summary": "Level set $L(n,c) = \\{\\alpha : f(\\alpha,n) \\le c\\}$ and $\\mu(L(n,c)) \\to g(c)$ convergence",
       "startLine": 70,
       "endLine": 88
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
-      "summary": "erdos_1002_conjecture definition",
+      "summary": "OPEN: $\\exists\\, g,\\; \\mu(\\{\\alpha : f(\\alpha,n) \\le c\\}) \\to g(c)$ as $n \\to \\infty$",
       "startLine": 90,
       "endLine": 101
     },
     {
       "id": "kesten-theorem",
       "title": "Kesten's Theorem (1960)",
-      "summary": "Two-parameter variant has Cauchy distribution",
+      "summary": "Kesten (1960): $f(\\alpha, \\beta, n)$ has Cauchy limit $g(c) = \\frac{1}{\\pi}\\arctan(\\rho c) + \\frac{1}{2}$",
       "startLine": 103,
       "endLine": 133
     },
     {
       "id": "relationship",
       "title": "Relationship Between Problems",
-      "summary": "One-parameter as special case",
+      "summary": "$f(\\alpha, n) = f(\\alpha, 0, n)$: one-parameter case is $\\beta = 0$ specialization",
       "startLine": 135,
       "endLine": 145
     },
     {
       "id": "difficulty",
       "title": "Why the Problem is Difficult",
-      "summary": "Independence is lost when β = 0",
+      "summary": "Fixing $\\beta = 0$ destroys ergodic independence; Weyl equidistribution and oscillation for fixed $\\alpha$",
       "startLine": 147,
       "endLine": 166
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
-      "summary": "Boundedness and continued fraction bounds",
+      "summary": "$|f(\\alpha, n)| \\le C(\\alpha)$ boundedness and $|S(\\alpha, n)| \\le C \\log n$ continued fraction bound",
       "startLine": 168,
       "endLine": 182
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Overview and open problems",
+      "summary": "Full problem formalization with 0 sorries; main conjecture OPEN (mathematical gap, not formalization gap)",
       "startLine": 184,
       "endLine": 208
     }
