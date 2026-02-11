@@ -1,8 +1,8 @@
 {
   "slug": "riemann-hypothesis",
   "title": "Riemann Hypothesis",
-  "phase": "PROGRESS",
-  "status": "in-progress",
+  "phase": "NEW",
+  "status": "blocked",
   "tier": "S",
   "path": "full",
   "problemStatement": {
@@ -16,59 +16,34 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "PROGRESS",
-    "since": "2026-02-11T21:00:00.000Z",
-    "iteration": 2,
-    "focus": "Incorporating new Mathlib APIs (PNT-strength non-vanishing, Dirichlet L-functions) and adding structural results.",
-    "blockers": ["RH itself is an open conjecture - we can only formalize surrounding results"],
-    "nextAction": "Add Nyman-Beurling criterion, explore PrimeNumberTheoremAnd dependency for replacing axioms with proofs.",
+    "phase": "NEW",
+    "since": "2026-01-01T21:55:27.886Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added PNT-strength non-vanishing (ζ(s)≠0 for Re(s)≥1), conjugate symmetry of zeros, RH↔upper-half-plane equivalence, and GRH formulation. Updated Mathlib gap assessment - zeta function and L-functions now fully available.",
+    "progressSummary": "",
     "builtItems": [
-      {
-        "name": "no_zeros_re_ge_one",
-        "description": "PNT-strength: ζ(s)≠0 for Re(s)≥1 (Mathlib proven)",
-        "proven": true
-      },
-      {
-        "name": "no_zeros_on_re_one",
-        "description": "ζ(s)≠0 on Re(s)=1 (corollary)",
-        "proven": true
-      },
-      {
-        "name": "zero_conj",
-        "description": "Conjugate symmetry: ζ(s)=0 ⟹ ζ(conj(s))=0",
-        "proven": true
-      },
-      {
-        "name": "nonTrivialZero_conj",
-        "description": "Non-trivial zeros preserved by conjugation",
-        "proven": true
-      },
-      {
-        "name": "RH_iff_upper_half",
-        "description": "RH equivalent to checking upper half-plane",
-        "proven": true
-      },
-      {
-        "name": "GeneralizedRiemannHypothesis",
-        "description": "GRH formulation for Dirichlet L-functions",
-        "proven": false
-      },
       {
         "name": "RH_implies_prime_gap_bound",
         "description": "Prime gap bounds from RH",
         "proven": true
       },
       {
+        "name": "explicit_formula",
+        "description": "Connection between zeros and primes",
+        "proven": true
+      },
+      {
         "name": "zeta_special_values",
-        "description": "ζ(2), ζ(4), ζ(-1), ζ(-3) etc.",
+        "description": "ζ(2), ζ(4), etc.",
         "proven": true
       },
       {
@@ -78,27 +53,24 @@
       }
     ],
     "insights": [
-      "Mathlib now has riemannZeta_ne_zero_of_one_le_re - PNT-strength non-vanishing on Re(s)≥1",
-      "DirichletCharacter.LFunction is now available in Mathlib with non-vanishing results",
-      "Conjugation symmetry (zeta_conj) axiomatized - not yet in Mathlib but mathematically straightforward",
-      "RH can be reduced to checking upper half-plane zeros only (proven from conjugation)",
-      "GRH formulated using Mathlib's DirichletCharacter.LFunction",
-      "PrimeNumberTheoremAnd project could replace some axioms with proofs if added as dependency",
-      "Zero confinement to open strip 0<Re(s)<1 partially proven (Re(s)<1 direction complete, Re(s)>0 has sorry)"
+      "RH_implies_prime_gap_bound",
+      "explicit_formula",
+      "zeta_special_values",
+      "Li_criterion"
     ],
     "mathlibGaps": [
-      "riemannZeta_conj (conjugation symmetry) - needed for full conjugate zero proof",
-      "Zero classification for Re(s)≤0 (functional equation doesn't easily give this)",
-      "PNT itself (only non-vanishing is in Mathlib, not the asymptotic)"
+      "Dirichlet series",
+      "Riemann zeta ζ(s)",
+      "Analytic continuation",
+      "L-functions"
     ],
     "nextSteps": [
-      "Add Nyman-Beurling criterion (RH ↔ density of certain functions in L²)",
-      "Explore adding PrimeNumberTheoremAnd as dependency to upgrade axioms",
-      "Complete zero_in_strip_of_zero sorry (Re(s)>0 direction)",
-      "Prove GRH_implies_RH (connecting LFunction to riemannZeta)",
-      "Add Weil explicit formula formulation"
+      "RH Consequences",
+      "Computational Verification",
+      "Equivalent Formulations",
+      "Zero-Free Regions"
     ],
-    "markdown": "# Knowledge Base: Riemann Hypothesis\n\n## The Problem\n\n> All non-trivial zeros of the Riemann zeta function ζ(s) have real part equal to 1/2.\n\n## What We've Built (as of 2026-02-11)\n\n### RiemannHypothesis.lean (~750 lines)\n- Formal statement of RH using Mathlib's `riemannZeta`\n- PNT-strength non-vanishing: ζ(s)≠0 for Re(s)≥1 (PROVEN from Mathlib)\n- Zeros symmetric under s↦1-s (PROVEN via functional equation)\n- Conjugate symmetry: ζ(s)=0 ⟹ ζ(conj(s))=0 (from axiom)\n- RH ↔ checking upper half-plane only (PROVEN)\n- Equivalent formulations: Robin's inequality, Mertens bound, prime counting\n- GRH for Dirichlet L-functions (formalized)\n\n### RiemannHypothesisConsequences.lean (~632 lines)\n- Mertens function with computed values up to 100\n- Chebyshev θ(x) and ψ(x) functions\n- Von Mangoldt function verifications\n- Zeta special values: ζ(2), ζ(4), ζ(-1), ζ(-3)\n- Li's criterion, zero counting formula\n\n### Mathlib Status (2026-02-11)\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Riemann zeta ζ(s) | ✅ | Full definition with analytic continuation |\n| Functional equation | ✅ | completedRiemannZeta_one_sub |\n| Non-vanishing Re(s)≥1 | ✅ | riemannZeta_ne_zero_of_one_le_re (PNT) |\n| Euler product | ✅ | riemannZeta_eulerProduct_tprod |\n| Special values | ✅ | ζ(2), ζ(4), ζ(-k) via Bernoulli |\n| Dirichlet L-functions | ✅ | DirichletCharacter.LFunction |\n| L-function non-vanishing | ✅ | LFunction_ne_zero_of_one_le_re |\n| Conjugation symmetry | ❌ | Not in Mathlib (axiomatized here) |\n| PNT asymptotic | ❌ | Only non-vanishing, not π(x)~x/log(x) |\n\n## Remaining Sorries\n- `zero_in_strip_of_zero` (Re(s)>0 direction) - needs zero classification for Re(s)≤0\n- `GRH_implies_RH` - connecting DirichletCharacter.LFunction to riemannZeta\n\n## Key References\n- Riemann (1859), Edwards (1974), Conrey (2003), Bombieri (2000)\n- PrimeNumberTheoremAnd: github.com/AlexKontorovich/PrimeNumberTheoremAnd\n"
+    "markdown": "# Knowledge Base: Riemann Hypothesis\n\n## The Problem\n\nThe Riemann Hypothesis (RH) is arguably the most famous unsolved problem in mathematics. Proposed by Bernhard Riemann in 1859, it concerns the distribution of prime numbers.\n\n### Core Statement\n\n> All non-trivial zeros of the Riemann zeta function ζ(s) have real part equal to 1/2.\n\nIn simpler terms: The zeta function ζ(s) = 1 + 1/2^s + 1/3^s + 1/4^s + ... has zeros at negative even integers (-2, -4, -6, ...) called \"trivial zeros.\" All other zeros are conjectured to lie on the \"critical line\" where Re(s) = 1/2.\n\n### Why It Matters\n\n1. **Prime Distribution**: RH implies the best possible error term for the prime counting function π(x)\n2. **Cryptography**: Many cryptographic systems rely on assumptions about prime distribution\n3. **Number Theory**: Hundreds of theorems are proven \"assuming RH\"\n4. **L-functions**: RH generalizes to a vast family of L-functions (Generalized Riemann Hypothesis)\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1859 | Riemann | Original paper stating the hypothesis |\n| 1896 | Hadamard, de la Vallée Poussin | Proved Prime Number Theorem (weaker than RH) |\n| 1914 | Hardy | Infinitely many zeros on critical line |\n| 1942 | Selberg | Positive proportion of zeros on critical line |\n| 2004 | Gourdon | First 10^13 zeros verified computationally |\n\nThe problem has resisted proof for over 165 years despite intense effort by the world's best mathematicians.\n\n## What We've Built\n\n### In This Repository\n\nThe `rh-consequences.lean` file (~632 lines) formalizes results *assuming* RH:\n- `RH_implies_prime_gap_bound` - Prime gap bounds from RH\n- `explicit_formula` - Connection between zeros and primes\n- `zeta_special_values` - ζ(2), ζ(4), etc.\n- `Li_criterion` - Equivalent formulation via Li coefficients\n\n### In Mathlib\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Complex exponentials | ✅ | Full support |\n| Dirichlet series | ⚠️ Partial | Basic framework exists |\n| Riemann zeta ζ(s) | ❌ | Not defined |\n| Analytic continuation | ❌ | Not available |\n| L-functions | ❌ | Not available |\n\n## Formalization Challenges\n\n### Primary Blocker: Zeta Function Infrastructure\n\nDefining ζ(s) rigorously requires:\n1. **Initial definition**: ζ(s) = Σ n^(-s) for Re(s) > 1\n2. **Analytic continuation**: Extending to all s ≠ 1\n3. **Functional equation**: ζ(s) = 2^s π^(s-1) sin(πs/2) Γ(1-s) ζ(1-s)\n4. **Zeros**: Defining and locating non-trivial zeros\n\nThis infrastructure represents thousands of lines of formalization work.\n\n### What We Could Still Do\n\nEven without proving RH, tractable partial work includes:\n\n1. **RH Consequences** (done in rh-consequences.lean)\n   - Prove theorems *assuming* RH as an axiom\n   - Formalizes the implications of RH\n\n2. **Computational Verification**\n   - State that first N zeros are verified to be on critical line\n   - Connect to Gourdon's verification of 10^13 zeros\n\n3. **Equivalent Formulations**\n   - Li's criterion (already in our file)\n   - Weil's explicit formula\n   - Random matrix theory connections\n\n4. **Zero-Free Regions**\n   - Classical Hadamard-de la Vallée Poussin region\n   - Korobov-Vinogradov improvements\n\n## Related Work in This Repository\n\n| File | Relevance |\n|------|-----------|\n| `rh-consequences.lean` | Consequences assuming RH |\n| `ChebyshevBounds.lean` | Prime counting bounds (weaker than RH) |\n| `prime-gaps-explicit` | Related to prime distribution |\n\n## Key References\n\n- Riemann, B. (1859). \"Über die Anzahl der Primzahlen unter einer gegebenen Größe\"\n- Edwards, H.M. (1974). \"Riemann's Zeta Function\" (Dover)\n- Conrey, J.B. (2003). \"The Riemann Hypothesis\" (AMS Notices)\n- Bombieri, E. (2000). \"The Riemann Hypothesis\" (Clay Mathematics Institute)\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Searches Performed**:\n- Checked Mathlib for zeta function: Not present\n- Checked for Dirichlet series: Partial support exists\n- Looked for analytic continuation machinery: Limited\n\n**Current Status**: BLOCKED - Requires zeta function infrastructure not in Mathlib\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Dirichlet series | Partial | 2026-01-01 |\n| Riemann zeta | No | 2026-01-01 |\n| Analytic continuation | No | 2026-01-01 |\n| L-functions | No | 2026-01-01 |\n\n**Path Forward**: Continue building RH consequences while waiting for zeta infrastructure. The work we're doing now (assuming RH) will integrate naturally once ζ(s) is available.\n\n**Next Scout**: After major Mathlib release or when analytic number theory PR lands\n"
   },
   "approaches": [],
   "tags": [
@@ -114,7 +86,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.885Z",
-  "lastUpdate": "2026-02-11T21:00:00.000Z",
+  "lastUpdate": "2026-01-01T21:55:27.886Z",
   "significance": 10,
   "tractability": 1
 }
