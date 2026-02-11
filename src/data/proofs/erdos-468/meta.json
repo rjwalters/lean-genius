@@ -8,6 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/468",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos468Problem.lean",
+    "leanFile": "Proofs/Erdos468Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -26,19 +27,19 @@
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' For each positive integer n, the set D_n consists of the cumulative sums of the divisors of n greater than 1, sorted in increasing order. For example, 6 has divisors 2, 3, 6, so D_6 = {2, 2+3, 2+3+6} = {2, 5, 11}.\n\nThe problem has two parts. First, how many elements of D_n are genuinely new — not appearing in any D_m for m < n? This asks about the rate at which the union ⋃_n D_n grows. Second, for a given target N, what is the smallest n such that N ∈ D_n? If this first-appearance function f(N) satisfies f(N) = o(N), then most partial sums arise from relatively small integers.\n\nThe problem connects several themes in number theory: the additive structure of divisor sets, the distribution of the sum-of-divisors function σ(n), and the combinatorics of ordered partitions. The OEIS sequences A167485, A387502, and A387503 track related quantities. Despite its elementary formulation, the problem remains completely open.",
     "problemStatement": "Let D_n be the set of partial sums of divisors of n (excluding 1). (1) How many elements of D_n are new? (2) If f(N) = min{n : N ∈ D_n}, is f(N) = o(N)?",
-    "proofStrategy": "We formalize D_n as partial sums of sorted divisors > 1 using Nat.divisors and List operations. The first-appearance function f(N) uses sInf. Both conjectures are stated: the strong form (f(N) = o(N) for all N) and the weak form (for almost all N). Small examples and structural observations are axiomatized.",
+    "proofStrategy": "The formalization constructs $D_n$ from `Nat.divisors` filtered to $d > 1$, sorted via `Finset.sort`, with prefix sums via `List.take` and `List.sum`. The first-appearance function $f(N) = \\inf\\{n : N \\in D_n\\}$ uses `sInf`. Both conjectures are axiomatized: the strong form ($f(N) = o(N)$ for all $N$) and the almost-all form (density of exceptions $\\to 0$). Boundary elements ($\\min = p_1(n)$, $\\max = \\sigma(n) - 1$) and examples ($D_6$, $D_{12}$) are also stated. All results are axioms (0 sorries).",
     "keyInsights": [
-      "**Cumulative sum construction**: D_n is built from the divisors d₁ < d₂ < ... of n (excluding 1) by taking partial sums d₁, d₁+d₂, d₁+d₂+d₃, etc. The ordering matters — different orderings would give different sets.",
-      "**Boundary elements**: The smallest element of D_n is always the least prime factor of n (= n.minFac), and the largest is σ(n) - 1, the sum of all divisors minus 1. This anchors the partial sum set.",
-      "**New elements grow**: Each n contributes at least one new partial sum not seen in any earlier D_m. The rate of new element generation relates to the growth of ⋃_n D_n.",
-      "**Sublinear first appearance**: f(N) = o(N) would mean that to represent N as a partial divisor sum, you don't need n anywhere near N itself. Highly composite numbers n have many divisors and thus many partial sums, so they represent many N values efficiently.",
-      "**Almost-all weakening**: The weaker conjecture f(N) = o(N) for almost all N allows a density-zero set of exceptions, which may be more tractable via averaging arguments."
+      "**Cumulative sum construction**: $D_n = \\{d_1, d_1+d_2, \\ldots, \\sum_{i=1}^k d_i\\}$ where $1 < d_1 < \\cdots < d_k$ are divisors of $n$. The ordering is essential — different orderings yield different partial sum sets. We have $|D_n| = d(n) - 1$ where $d(n)$ is the divisor count.",
+      "**Boundary anchoring**: $\\min(D_n) = p_1(n)$ (smallest prime factor) and $\\max(D_n) = \\sigma(n) - 1$ where $\\sigma(n) = \\sum_{d \\mid n} d$. This bounds $D_n \\subseteq [p_1(n),\\, \\sigma(n) - 1]$.",
+      "**New elements exist**: Each $n \\geq 2$ contributes at least one new partial sum not in $\\bigcup_{m<n} D_m$. The rate of new element generation determines how quickly $\\bigcup_n D_n$ covers $\\mathbb{N}$.",
+      "**Sublinear first appearance**: $f(N) = o(N)$ would mean partial divisor sums cover $\\mathbb{N}$ efficiently — each $N$ arises from some $n \\ll N$. Highly composite numbers (large $d(n)$) generate many partial sums from a single $n$.",
+      "**Almost-all weakening**: $f(N) = o(N)$ for density-1 set of $N$ allows a measure-zero set of exceptions. This may be tractable via averaging: $\\sum_{N \\leq M} f(N)/N = o(M)$ would suffice."
     ],
     "mathlibDependencies": [
-      "Mathlib.Data.Nat.Divisors",
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Data.Finset.Sort",
-      "Mathlib.Data.Nat.Basic"
+      { "theorem": "Nat.divisors", "description": "Set of all divisors of n", "module": "Mathlib.Data.Nat.Divisors" },
+      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Card" },
+      { "theorem": "Finset.sort", "description": "Sorting finite sets into ordered lists", "module": "Mathlib.Data.Finset.Sort" },
+      { "theorem": "Nat.minFac", "description": "Smallest prime factor of n", "module": "Mathlib.Data.Nat.Basic" }
     ],
     "originalContributions": [
       "properDivisorsSorted: sorted divisors > 1 via Finset.sort",
@@ -51,46 +52,58 @@
       "erdos_468_almost_all: f(N) = o(N) almost-all form",
       "d6_example, d12_example: concrete computations",
       "smallest_partial_sum, largest_partial_sum: boundary axioms"
+    ],
+    "relatedProofs": [
+      { "id": "erdos-955", "relationship": "Sum of proper divisors σ(n)−n — studies the same divisor function but takes total sums rather than partial sums" },
+      { "id": "erdos-466", "relationship": "Divisor-related combinatorial number theory from the same section of the Erdős–Graham monograph" }
     ]
   },
   "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 17,
+      "endLine": 21,
+      "summary": "Imports `Nat.Divisors`, `Finset.Card`, `Finset.Sort`, `Nat.Basic`, and `Tactic`."
+    },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
       "startLine": 23,
       "endLine": 42,
-      "summary": "Defines properDivisorsSorted (divisors > 1 in order), partialDivisorSums (D_n as cumulative sums), previousPartialSums (union of earlier sets), and newElements (genuinely new partial sums)."
+      "summary": "Defines `properDivisorsSorted`, `partialDivisorSums` ($D_n$), `previousPartialSums` ($\\bigcup_{m<n} D_m$), and `newElements` ($D_n \\setminus \\bigcup_{m<n} D_m$)."
     },
     {
       "id": "question-1",
       "title": "Question 1: New Elements",
       "startLine": 44,
       "endLine": 55,
-      "summary": "Axiomatizes that each n ≥ 2 contributes nonempty new elements, and conjectures the count grows without bound."
+      "summary": "Axiomatizes $D_n \\setminus \\bigcup_{m<n} D_m \\neq \\emptyset$ for $n \\geq 2$ and conjectures $|D_n| \\to \\infty$."
     },
     {
       "id": "question-2",
-      "title": "Question 2: First Appearance",
+      "title": "Question 2: First Appearance $f(N)$",
       "startLine": 57,
       "endLine": 73,
-      "summary": "Defines firstAppearance f(N) via sInf. States strong conjecture (f(N) = o(N) for all N) and weak form (for almost all N via density)."
+      "summary": "Defines $f(N) = \\inf\\{n : N \\in D_n\\}$ via `sInf`. States strong conjecture $f(N) = o(N)$ and weak form (for density-1 set of $N$)."
     },
     {
       "id": "examples",
-      "title": "Examples and Observations",
+      "title": "Examples and Boundary Elements",
       "startLine": 75,
       "endLine": 95,
-      "summary": "Concrete examples: D_6 = {2,5,11}, D_12 = {2,5,9,15,27}. Boundary axioms: smallest element is minFac(n), largest is σ(n)-1."
+      "summary": "$D_6 = \\{2, 5, 11\\}$, $D_{12} = \\{2, 5, 9, 15, 27\\}$. Boundary: $\\min(D_n) = p_1(n)$, $\\max(D_n) = \\sigma(n) - 1$."
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem 468 asks about partial sums of divisors: how many are new for each n, and how quickly does f(N) grow? Both questions remain open. The formalization captures the construction, examples, and both the strong and almost-all conjectures. 0 sorries.",
     "implications": "Understanding partial divisor sums would shed light on the additive structure of divisor sets, connecting multiplicative number theory to additive combinatorics.",
     "openQuestions": [
-      "How large is |D_n \\ ⋃_{m<n} D_m| as a function of n?",
-      "Is f(N) = o(N) for all N, or only for almost all N?",
-      "What is the density of ⋃_n D_n in ℕ — does every large integer eventually appear?",
-      "How does the number of partial sums |D_n| relate to d(n), the number of divisors of n?"
+      "How large is $|D_n \\setminus \\bigcup_{m<n} D_m|$ as a function of $n$? Does it grow like $d(n)$ or slower?",
+      "Is $f(N) = o(N)$ for all $N$, or only for a density-1 subset? What is the growth rate of $f(N)$?",
+      "Does $\\bigcup_n D_n$ have density 1 in $\\mathbb{N}$? Does every sufficiently large integer eventually appear as a partial divisor sum?",
+      "What is $\\max(D_n) - \\min(D_n) = \\sigma(n) - 1 - p_1(n)$, and how does the internal structure of $D_n$ relate to the factorization of $n$?",
+      "Can the problem be generalized to other orderings of divisors, or to $k$-th smallest divisors?"
     ]
   }
 }
