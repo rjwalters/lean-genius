@@ -269,25 +269,33 @@ theorem euler_formula_alt (G : PolyhedralGraph) :
 Euler's formula has powerful consequences for understanding polyhedra:
 -/
 
-/-- **Axiom:** Edge-vertex bound for simple polyhedra.
+/-- **Edge-vertex bound for simple polyhedra: E ≤ 3V - 6.**
 
-    For simple polyhedra: E ≤ 3V - 6.
-
-    **Proof sketch:**
-    - Each face has at least 3 edges, and each edge is shared by 2 faces
-    - So 3F ≤ 2E, giving F ≤ 2E/3
-    - From V - E + F = 2: F = 2 - V + E
-    - Substituting: 2 - V + E ≤ 2E/3
-    - Solving: 6 - 3V + 3E ≤ 2E → E ≤ 3V - 6
-
-    Full proof requires face-degree information not in our simple structure. -/
-axiom edge_vertex_bound_axiom (G : PolyhedralGraph) : (G.E : ℤ) ≤ 3 * G.V - 6
-
-/-- From Euler's formula, we can derive a bound on edges in terms of vertices.
-    For simple polyhedra: E ≤ 3V - 6 (when V ≥ 3 and each face has ≥ 3 edges) -/
+    Proof:
+    - Each face has ≥ 3 edges, and each edge borders exactly 2 faces
+    - So 2E = Σ (face degrees) ≥ 3F, giving 3F ≤ 2E
+    - From Euler's formula V - E + F = 2: F = 2 - V + E
+    - Substituting: 3(2 - V + E) ≤ 2E → 6 - 3V + 3E ≤ 2E → E ≤ 3V - 6 -/
 theorem edge_vertex_bound (G : PolyhedralGraph)
-    (hface : ∀ f_edges : ℕ, 3 ≤ f_edges → True) :
-    (G.E : ℤ) ≤ 3 * G.V - 6 := edge_vertex_bound_axiom G
+    (h_euler : eulerCharacteristic G = 2)
+    (h_face_edge : 3 * (G.F : ℤ) ≤ 2 * G.E) :
+    (G.E : ℤ) ≤ 3 * G.V - 6 := by
+  unfold eulerCharacteristic at h_euler
+  linarith
+
+/-- **Dual bound: E ≤ 3F - 6.**
+
+    Proof:
+    - Each vertex has degree ≥ 3 (polyhedron), and each edge has 2 endpoints
+    - So 2E = Σ (vertex degrees) ≥ 3V, giving 3V ≤ 2E
+    - From Euler's formula V - E + F = 2: V = 2 + E - F
+    - Substituting: 3(2 + E - F) ≤ 2E → 6 + 3E - 3F ≤ 2E → E ≤ 3F - 6 -/
+theorem edge_face_bound (G : PolyhedralGraph)
+    (h_euler : eulerCharacteristic G = 2)
+    (h_vertex_edge : 3 * (G.V : ℤ) ≤ 2 * G.E) :
+    (G.E : ℤ) ≤ 3 * G.F - 6 := by
+  unfold eulerCharacteristic at h_euler
+  linarith
 
 /-- All five Platonic solids satisfy Euler's formula.
     (Tetrahedron, cube, octahedron, dodecahedron, icosahedron) -/
@@ -298,6 +306,36 @@ theorem all_platonic_solids_euler :
     eulerCharacteristic dodecahedron = 2 ∧
     eulerCharacteristic icosahedron = 2 :=
   ⟨tetrahedron_euler, cube_euler, octahedron_euler, dodecahedron_euler, icosahedron_euler⟩
+
+/-- The edge-vertex bound E ≤ 3V - 6 verified for all Platonic solids. -/
+theorem platonic_edge_vertex_bounds :
+    (tetrahedron.E : ℤ) ≤ 3 * tetrahedron.V - 6 ∧
+    (cube.E : ℤ) ≤ 3 * cube.V - 6 ∧
+    (octahedron.E : ℤ) ≤ 3 * octahedron.V - 6 ∧
+    (dodecahedron.E : ℤ) ≤ 3 * dodecahedron.V - 6 ∧
+    (icosahedron.E : ℤ) ≤ 3 * icosahedron.V - 6 := by
+  simp only [tetrahedron, cube, octahedron, dodecahedron, icosahedron]
+  omega
+
+/-- **Nonexistence of K₅ as a planar graph.**
+    K₅ has 5 vertices and 10 edges. If it were planar: 10 ≤ 3·5 - 6 = 9. Contradiction. -/
+theorem k5_nonplanar :
+    ¬ ∃ G : PolyhedralGraph, G.V = 5 ∧ G.E = 10 ∧ eulerCharacteristic G = 2 ∧
+      3 * (G.F : ℤ) ≤ 2 * G.E := by
+  intro ⟨G, hV, hE, hEuler, hFace⟩
+  have := edge_vertex_bound G hEuler hFace
+  rw [hV, hE] at this; omega
+
+/-- **Nonexistence of K₃,₃ as a planar graph.**
+    K₃,₃ has 6 vertices, 9 edges. Being bipartite, each face has ≥ 4 edges,
+    giving 4F ≤ 2E. Euler: F = 2 - 6 + 9 = 5. But 4·5 = 20 > 18 = 2·9. -/
+theorem k33_nonplanar :
+    ¬ ∃ G : PolyhedralGraph, G.V = 6 ∧ G.E = 9 ∧ eulerCharacteristic G = 2 ∧
+      4 * (G.F : ℤ) ≤ 2 * G.E := by
+  intro ⟨G, hV, hE, hEuler, hFace⟩
+  unfold eulerCharacteristic at hEuler
+  rw [hV, hE] at hEuler hFace ⊢
+  omega
 
 -- ============================================================
 -- PART 6: Connection to Topology
