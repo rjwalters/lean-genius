@@ -1,57 +1,138 @@
 {
   "slug": "wilsons-generalization",
   "title": "Wilson Theorem Generalizations for Composite Moduli",
-  "phase": "NEW",
+  "phase": "IN_PROGRESS",
   "status": "active",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "For n ≥ 2: (n-1)! ≡ -1 (mod n) iff n prime; (3)! ≡ 2 (mod 4); (n-1)! ≡ 0 (mod n) for composite n > 4. The Gauss-Wilson classification: ∏ units ≡ -1 (mod n) iff n ∈ {4, p^k, 2p^k}.",
+    "plain": "Complete classification of factorial residues and unit products modulo n, extending Wilson's theorem to all moduli.",
+    "whyMatters": [
+      "Wilson's theorem is a fundamental result in number theory",
+      "The Gauss generalization connects to primitive root theory and cyclic group structure",
+      "Provides a computational primality test and characterizes the unit group structure"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Composite factorial vanishing: n | (n-1)! for composite n > 4",
+      "Special case n = 4: 3! ≡ 2 (mod 4)",
+      "Complete factorial classification for all n ≥ 2",
+      "Wilson quotient definition and properties",
+      "Wilson prime verification for 5, 13",
+      "unitsProduct_eq_factorial: bridge between unitsProduct and factorial for primes",
+      "unitsProduct_prime: Wilson's theorem in unitsProduct formulation",
+      "Square roots of unity analysis and Gauss-Wilson form detection",
+      "Gauss-Wilson classification verified computationally for n ≤ 300",
+      "isCyclic_units_iff_gaussWilson: Mathlib's cyclic units characterization restated",
+      "prod_involution_const: FPF involution product formula (Ext file)",
+      "Two-involution trick: complete modulo one sorry (Ext file)"
+    ],
+    "open": [
+      "Prove card_sq_eq_one_ge_three_of_not_cyclic_zmod: for (ZMod n)ˣ with n ≥ 3, ¬IsCyclic → |{x|x²=1}| ≥ 3"
+    ],
+    "goal": "Close the single remaining sorry in WilsonsTheoremOQ02Ext.lean"
   },
   "currentState": {
-    "phase": "IN_PROGRESS",
-    "since": "2026-02-10T01:00:00.000Z",
-    "iteration": 2,
-    "focus": "Prove bridge lemma connecting concrete `unitsProduct` to abstract `IsCyclic (ZMod n)ˣ`.",
-    "activeApproach": "Mathlib cyclic classification + involution bridge.",
-    "blockers": [],
-    "nextAction": "Prove `unitsProduct_eq_neg_one_iff_cyclic` via involution pairing.",
+    "phase": "EXPLORED",
+    "since": "2026-02-11T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Fixed a critical bug: the general theorem ¬IsCyclic G → |{x|x²=1}| ≥ 3 was FALSE (counterexample: Z/3×Z/3). Specialized to (ZMod n)ˣ with n ≥ 3, which is correct and provable.",
+    "blockers": [
+      "Need CRT decomposition of (ZMod n)ˣ to count 2-torsion elements in non-cyclic case"
+    ],
+    "nextAction": "Prove card_sq_eq_one_ge_three_of_not_cyclic_zmod using ZMod.chineseRemainder + units isomorphism.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Discovered that the general theorem card_sq_eq_one_ge_three_of_not_cyclic was FALSE for arbitrary CommGroup G (counterexample: Z/3×Z/3 is not cyclic but |{x|x²=1}|=1). Fixed by specializing to (ZMod n)ˣ with n ≥ 3, where the theorem IS true. The sorry is now correctly stated and provable via CRT decomposition. All other proofs in the file remain correct.",
+    "builtItems": [
+      "prime_coprime_iff_pos: coprimality ↔ positivity for primes",
+      "unitsProduct_eq_factorial: unitsProduct p = (p-1)! for prime p",
+      "unitsProduct_prime: Wilson's theorem via unitsProduct",
+      "wilson_product_form: Mathlib's ZMod.prod_Ico_one_prime",
+      "sqRootsOfUnity: computable square root counting",
+      "sqRoot_gaussWilson_le_100: square root count characterizes GW form",
+      "selfInverse_product_le_100: involution-product connection verified",
+      "gaussWilson_verified_le_300: extended computational verification",
+      "isCyclic_units_iff_gaussWilson: Mathlib cyclic characterization restated",
+      "odd_iff_ne_two: helper for prime oddness",
+      "prod_involution_const: FPF involution product = c^(|S|/2)",
+      "even_card_of_fpf_involution: FPF involution → even cardinality",
+      "mul_involution_on_sq_eq_one: x↦cx is FPF involution on {x|x²=1}",
+      "card_sq_eq_one_ge_three_of_not_cyclic_zmod: specialized (correct) version"
+    ],
+    "insights": [
+      "The Gauss-Wilson classification reduces to: IsCyclic (ZMod n)ˣ ↔ product of units ≡ -1",
+      "Mathlib has ZMod.isCyclic_units_iff giving the full cyclic characterization",
+      "CRITICAL: ¬IsCyclic G → |{x|x²=1}| ≥ 3 is FALSE for general CommGroup G. Counterexample: Z/3×Z/3 has |{x|x²=1}|=1 but is not cyclic",
+      "For (ZMod n)ˣ specifically, the theorem IS true because: (1) n ≥ 3 ensures -1 ≠ 1, so |S| ≥ 2; (2) ¬IsCyclic means n decomposes via CRT into factors each contributing independent 2-torsion, giving |S| ≥ 4",
+      "Two-involution trick is cleaner than three-involution trick: uses prod_involution_const directly, no transversal needed",
+      "Z/3×Z/3 counterexample: |{x|x²=1}| = 1 (only identity), group order 9, not cyclic, but 2-torsion is trivial because group has odd order",
+      "For abelian groups with even order and ¬IsCyclic, the 2-Sylow has rank ≥ 2 giving |{x|x²=1}| ≥ 4",
+      "isCyclic_of_card_pow_eq_one_le needs ALL n, not just n=2, so the contrapositive alone doesn't suffice"
+    ],
+    "mathlibGaps": [
+      "Need bridge between ZMod.chineseRemainder (ring iso) and units MulEquiv for counting 2-torsion in product groups",
+      "ZMod.unitsEquivCoprime exists but connecting to concrete ℕ products requires careful type manipulation",
+      "No direct Mathlib theorem for: non-cyclic (ZMod n)ˣ → |{x|x²=1}| ≥ 3"
+    ],
+    "nextSteps": [
+      "Prove card_sq_eq_one_ge_three_of_not_cyclic_zmod via CRT: decompose (ZMod n)ˣ when n has coprime factors m₁,m₂ > 2, construct element ≡ -1 mod m₁ and ≡ 1 mod m₂",
+      "Alternative: for n = 2^k with k ≥ 3, construct explicit element 2^(k-1)-1 or use native_decide for specific cases",
+      "Alternative: prove |{x|x²=1}| ≤ 2 → IsCyclic (ZMod n)ˣ using ZMod.isCyclic_units_iff classification + case analysis",
+      "Submit WilsonsTheoremOQ02Ext.lean to Aristotle for the remaining sorry"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Two-involution trick (via prod_involution_const)",
+      "description": "Use FPF involution x↦cx with c²=1, c≠1 to show ∏S = c^(|S|/2). Two such involutions give d^(|S|/2)=1 and c^(|S|/2)=1, so ∏S=1. Requires |S|≥3.",
+      "status": "in-progress",
+      "difficulty": "medium"
+    },
+    {
+      "name": "CRT decomposition for 2-torsion bound",
+      "description": "For ¬IsCyclic (ZMod n)ˣ, use ZMod.chineseRemainder to decompose into coprime factors, each contributing independent 2-torsion, proving |S|≥4.",
+      "status": "proposed",
+      "difficulty": "hard"
+    }
+  ],
   "tags": [
     "seeker-selected",
     "number-theory",
     "modular-arithmetic",
     "classical",
-    "extension"
+    "extension",
+    "cyclic-groups",
+    "primitive-roots"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "WilsonsTheorem.lean",
+    "PrimitiveRoots.lean",
+    "WilsonsTheoremOQ02.lean",
+    "WilsonsTheoremOQ02Ext.lean"
+  ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.NumberTheory.Wilson",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "ZMod.isCyclic_units_iff",
+      "ZMod.chineseRemainder",
+      "isCyclic_of_card_pow_eq_one_le",
+      "IsCyclic.card_pow_eq_one_le"
+    ]
   },
   "started": "2026-02-08T06:11:43.710Z",
-  "lastUpdate": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-11T00:00:00.000Z",
   "significance": 6,
   "tractability": 7
 }
