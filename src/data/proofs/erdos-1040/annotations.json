@@ -1,290 +1,398 @@
 [
   {
+    "id": "ann-1040-imports",
+    "proofId": "erdos-1040",
+    "range": { "startLine": 22, "endLine": 24 },
+    "type": "concept",
+    "title": "Imports and Namespace",
+    "content": "Imports the full Mathlib library, providing access to complex analysis, measure theory, and topology infrastructure. The `Erdos1040` namespace isolates the formalization of this potential-theoretic problem.",
+    "mathContext": "The formalization relies on Mathlib's `Complex.abs`, `MeasureTheory.volume`, `Filter.liminf`, and `Metric.closedBall` — core constructs from complex analysis and measure theory.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "complex analysis", "measure theory", "potential theory"],
+    "prerequisites": ["Lean 4", "Mathlib library"]
+  },
+  {
     "id": "ann-1040-nthdiameter",
     "proofId": "erdos-1040",
     "range": { "startLine": 30, "endLine": 34 },
     "type": "definition",
-    "title": "nthDiameter",
-    "content": "The n-th diameter of set F.",
-    "significance": "key"
+    "title": "nthDiameter — The n-th Diameter",
+    "content": "Defines the n-th diameter of a compact set $F \\subseteq \\mathbb{C}$ as the supremum of the geometric mean of pairwise distances among $n$ points in $F$. This is the discrete approximation to the transfinite diameter, introduced by Fekete in 1923. The $n$-point configurations that achieve or approach this supremum are called **Fekete points**, which play a key role in polynomial interpolation theory.",
+    "mathContext": "$d_n(F) = \\sup \\left\\{ \\left( \\prod_{0 \\le i < j < n} |z_i - z_j| \\right)^{2/(n(n-1))} : z_0, \\ldots, z_{n-1} \\in F \\right\\}$",
+    "significance": "key",
+    "relatedConcepts": ["Fekete points", "polynomial interpolation", "Vandermonde determinant", "energy minimization"],
+    "prerequisites": ["complex numbers", "supremum", "finite products"]
   },
   {
     "id": "ann-1040-transfinite",
     "proofId": "erdos-1040",
     "range": { "startLine": 36, "endLine": 38 },
     "type": "definition",
-    "title": "transfiniteDiameter",
-    "content": "Logarithmic capacity of F.",
-    "significance": "critical"
+    "title": "transfiniteDiameter — Logarithmic Capacity",
+    "content": "The **transfinite diameter** (equivalently, the **logarithmic capacity** or **Chebyshev constant**) of $F$ is the limit of the $n$-th diameters as $n \\to \\infty$. This fundamental quantity in potential theory was introduced independently by Fekete (1923) and Szegő (1924). The Fekete–Szegő theorem establishes that $\\rho(F) = \\lim_{n \\to \\infty} d_n(F)$ and equals the capacity defined via Green's functions.",
+    "mathContext": "$\\rho(F) = \\lim_{n \\to \\infty} d_n(F) = \\inf_n d_n(F)$, where the sequence $\\{d_n(F)\\}$ is decreasing, so the infimum equals the limit.",
+    "significance": "critical",
+    "relatedConcepts": ["logarithmic capacity", "Chebyshev constant", "Green's function", "Robin constant", "equilibrium measure"],
+    "prerequisites": ["potential theory", "infimum", "limits of sequences"]
   },
   {
     "id": "ann-1040-transfinite2",
     "proofId": "erdos-1040",
     "range": { "startLine": 40, "endLine": 42 },
     "type": "definition",
-    "title": "transfiniteDiameter'",
-    "content": "Alternative limit definition.",
-    "significance": "supporting"
+    "title": "transfiniteDiameter' — Limit Definition",
+    "content": "Alternative characterization via `Filter.liminf`, expressing the transfinite diameter as a limit inferior along the `atTop` filter on $\\mathbb{N}$. In practice, the sequence $d_n(F)$ is monotone decreasing (a consequence of submultiplicativity of the Vandermonde-like products), so `liminf` and `inf` agree.",
+    "mathContext": "$\\rho'(F) = \\liminf_{n \\to \\infty} d_n(F)$",
+    "significance": "supporting",
+    "relatedConcepts": ["liminf", "filter convergence", "monotone sequences"],
+    "prerequisites": ["order filters", "liminf"]
   },
   {
     "id": "ann-1040-diam-eq",
     "proofId": "erdos-1040",
     "range": { "startLine": 44, "endLine": 46 },
-    "type": "axiom",
-    "title": "transfiniteDiameter_eq",
-    "content": "Two definitions agree.",
-    "significance": "supporting"
+    "type": "theorem",
+    "title": "transfiniteDiameter_eq — Definitions Agree",
+    "content": "Asserts that the infimum and liminf definitions of transfinite diameter coincide. This follows from the monotonicity of the sequence $\\{d_n(F)\\}$: since $d_{n+1}(F) \\le d_n(F)$ for all $n$, the infimum equals the limit. The decreasing property ultimately traces back to the submultiplicativity of the Vandermonde-like products used in the definition.",
+    "mathContext": "$\\inf_n d_n(F) = \\liminf_{n \\to \\infty} d_n(F)$, because $d_n(F)$ is a decreasing sequence.",
+    "significance": "supporting",
+    "relatedConcepts": ["monotone convergence", "Vandermonde determinant"],
+    "prerequisites": ["monotone sequences", "infimum equals limit for decreasing sequences"]
   },
   {
     "id": "ann-1040-polyinf",
     "proofId": "erdos-1040",
     "range": { "startLine": 52, "endLine": 59 },
     "type": "definition",
-    "title": "PolynomialInF",
-    "content": "Polynomial with roots in F.",
-    "significance": "critical"
+    "title": "PolynomialInF — Monic Polynomial with Roots in F",
+    "content": "A structure encoding a monic polynomial $f(z) = \\prod_{i=1}^n (z - z_i)$ where every root $z_i$ lies in the set $F$. This is the key constraint: we only consider polynomials whose roots are drawn from $F$, and then study how small the sublevel set $\\{z : |f(z)| < 1\\}$ can be. The restriction to monic polynomials with roots in $F$ is what connects the extremal polynomial problem to the geometry of $F$.",
+    "mathContext": "$f(z) = \\prod_{i=1}^{n} (z - z_i), \\quad z_i \\in F \\text{ for all } i$",
+    "significance": "critical",
+    "relatedConcepts": ["monic polynomials", "Chebyshev polynomials", "extremal polynomials", "lemniscates"],
+    "prerequisites": ["polynomial algebra", "complex roots"]
   },
   {
     "id": "ann-1040-eval",
     "proofId": "erdos-1040",
     "range": { "startLine": 63, "endLine": 65 },
     "type": "definition",
-    "title": "PolynomialInF.eval",
-    "content": "Evaluate polynomial at z.",
-    "significance": "key"
+    "title": "PolynomialInF.eval — Polynomial Evaluation",
+    "content": "Evaluates the monic polynomial at a point $z \\in \\mathbb{C}$ by taking the product over all root factors. The set where $|f(z)| < 1$ forms a **polynomial lemniscate** — a bounded region in $\\mathbb{C}$ whose geometry encodes information about the distribution of roots.",
+    "mathContext": "$f(z) = \\prod_{i=1}^{n} (z - z_i)$, and $\\{z : |f(z)| < 1\\}$ is the **lemniscate** of $f$.",
+    "significance": "key",
+    "relatedConcepts": ["polynomial lemniscates", "level curves", "conformal mapping"],
+    "prerequisites": ["complex multiplication", "absolute value"]
   },
   {
     "id": "ann-1040-sublevel",
     "proofId": "erdos-1040",
     "range": { "startLine": 67, "endLine": 69 },
     "type": "definition",
-    "title": "sublevelSet",
-    "content": "{z : |f(z)| < 1}.",
-    "significance": "critical"
+    "title": "sublevelSet — The Polynomial Lemniscate",
+    "content": "The sublevel set $\\{z : |f(z)| < 1\\}$ is an open subset of $\\mathbb{C}$ bounded by the **lemniscate** $|f(z)| = 1$. For degree-$n$ polynomials, this set has at most $n$ connected components. The area of this lemniscate region is the central object of study in Problem 1040 — how small can it be as we optimize over all polynomials with roots in $F$?",
+    "mathContext": "$S_f = \\{z \\in \\mathbb{C} : |f(z)| < 1\\}$, an open set with $\\text{Area}(S_f) \\le \\pi n$ for degree-$n$ polynomials.",
+    "significance": "critical",
+    "relatedConcepts": ["lemniscate", "connected components", "area of sublevel sets"],
+    "prerequisites": ["open sets in ℂ", "Lebesgue measure"]
   },
   {
     "id": "ann-1040-measure",
     "proofId": "erdos-1040",
     "range": { "startLine": 71, "endLine": 73 },
     "type": "definition",
-    "title": "sublevelMeasure",
-    "content": "Lebesgue measure of sublevel set.",
-    "significance": "key"
+    "title": "sublevelMeasure — Area of Lemniscate",
+    "content": "Computes the Lebesgue measure (area) of the sublevel set using Mathlib's `MeasureTheory.volume`. The classical result of Pólya (1928) shows that for any degree-$n$ monic polynomial, $|S_f| \\le \\pi n$, with equality when $f(z) = z^n$ (roots all at origin). For polynomials with roots in a set $F$, the measure depends on the geometry of $F$.",
+    "mathContext": "$|S_f| = \\lambda^2(\\{z : |f(z)| < 1\\})$ where $\\lambda^2$ is two-dimensional Lebesgue measure.",
+    "significance": "key",
+    "relatedConcepts": ["Lebesgue measure", "Pólya's lemniscate inequality", "area bounds"],
+    "prerequisites": ["measure theory", "Lebesgue measure on ℂ ≅ ℝ²"]
   },
   {
     "id": "ann-1040-mu",
     "proofId": "erdos-1040",
     "range": { "startLine": 79, "endLine": 81 },
     "type": "definition",
-    "title": "mu",
-    "content": "μ(F) = inf of sublevel measures.",
-    "significance": "critical"
+    "title": "mu — The Extremal Measure μ(F)",
+    "content": "The central quantity of Problem 1040: $\\mu(F)$ is the infimum of lemniscate areas over all monic polynomials with roots in $F$. This asks: how efficiently can we cover the plane (in the sense of making $|f(z)|$ large) using polynomials rooted in $F$? The conjecture is that $\\mu(F)$ depends only on the transfinite diameter $\\rho(F)$, and specifically that $\\mu(F) = 0$ when $\\rho(F) \\ge 1$.",
+    "mathContext": "$\\mu(F) = \\inf \\{ |S_f| : f(z) = \\prod(z - z_i),\\, z_i \\in F \\}$",
+    "significance": "critical",
+    "relatedConcepts": ["extremal problems", "capacity", "polynomial optimization"],
+    "prerequisites": ["infimum", "measure theory", "monic polynomials"]
   },
   {
     "id": "ann-1040-mureal",
     "proofId": "erdos-1040",
     "range": { "startLine": 83, "endLine": 85 },
     "type": "definition",
-    "title": "muReal",
-    "content": "μ(F) as real number.",
-    "significance": "supporting"
+    "title": "muReal — Real-valued μ(F)",
+    "content": "Converts $\\mu(F)$ from extended non-negative reals ($\\mathbb{R}_{\\ge 0}^\\infty$) to $\\mathbb{R}$ via `.toReal`. This is well-defined when $\\mu(F)$ is finite, which holds for any infinite closed set $F$ since we can always find polynomials with bounded sublevel set area.",
+    "mathContext": "$\\mu_{\\mathbb{R}}(F) = \\mu(F)$ viewed as an element of $\\mathbb{R}$ (when finite).",
+    "significance": "supporting",
+    "relatedConcepts": ["extended reals", "coercion"],
+    "prerequisites": ["extended non-negative reals"]
   },
   {
     "id": "ann-1040-determined",
     "proofId": "erdos-1040",
     "range": { "startLine": 91, "endLine": 96 },
     "type": "definition",
-    "title": "muDeterminedByDiameter",
-    "content": "Is μ(F) determined by ρ(F)?",
-    "significance": "critical"
+    "title": "muDeterminedByDiameter — Main Question Part 1",
+    "content": "The first part of Erdős's question: is $\\mu(F)$ a function of $\\rho(F)$ alone? That is, if two closed infinite sets $F$ and $G$ have the same transfinite diameter, must they have the same extremal lemniscate measure? This would establish a deep link between the geometric potential theory of $F$ (encoded by $\\rho$) and the polynomial approximation theory (encoded by $\\mu$).",
+    "mathContext": "$\\rho(F) = \\rho(G) \\implies \\mu(F) = \\mu(G)$ for all closed infinite $F, G \\subseteq \\mathbb{C}$.",
+    "significance": "critical",
+    "relatedConcepts": ["capacity", "invariants of compact sets", "conformal invariants"],
+    "prerequisites": ["transfinite diameter", "potential theory"]
   },
   {
     "id": "ann-1040-conjecture",
     "proofId": "erdos-1040",
     "range": { "startLine": 98, "endLine": 102 },
     "type": "definition",
-    "title": "diameterOneConjecture",
-    "content": "μ(F) = 0 when ρ(F) ≥ 1?",
-    "significance": "critical"
+    "title": "diameterOneConjecture — The μ = 0 Conjecture",
+    "content": "The sharper conjecture: $\\mu(F) = 0$ whenever $\\rho(F) \\ge 1$. Intuitively, when the set $F$ is 'large enough' (capacity $\\ge 1$), we can find polynomials with roots in $F$ whose lemniscate areas shrink to zero. This is analogous to saying that high-capacity sets support polynomials that grow quickly away from $F$, leaving tiny regions where $|f| < 1$.",
+    "mathContext": "$\\rho(F) \\ge 1 \\implies \\mu(F) = 0$, i.e., $\\inf_f |\\{z : |f(z)| < 1\\}| = 0$.",
+    "significance": "critical",
+    "relatedConcepts": ["capacity threshold", "Chebyshev polynomials", "equilibrium measure"],
+    "prerequisites": ["transfinite diameter", "polynomial lemniscates"]
   },
   {
     "id": "ann-1040-open",
     "proofId": "erdos-1040",
     "range": { "startLine": 104, "endLine": 105 },
-    "type": "axiom",
-    "title": "problem_open",
-    "content": "The problem is open.",
-    "significance": "critical"
+    "type": "theorem",
+    "title": "problem_open — Open Status",
+    "content": "Encodes that Problem 1040 remains open: neither the conjecture nor its negation has been established. This is formalized as an axiom asserting the conjunction is false — a logical device to record the open status. The problem has been open since 1958, despite partial progress by Erdős, Herzog, Piranian, and Netanyahu.",
+    "mathContext": "The open status means no proof or disproof of $\\mu(F) = 0$ when $\\rho(F) \\ge 1$ is known for general closed infinite $F$.",
+    "significance": "critical",
+    "relatedConcepts": ["open problems in analysis", "Erdős problems"],
+    "prerequisites": ["classical logic"]
   },
   {
     "id": "ann-1040-lineseg",
     "proofId": "erdos-1040",
     "range": { "startLine": 111, "endLine": 113 },
     "type": "definition",
-    "title": "isLineSegment",
-    "content": "Line segment in ℂ.",
-    "significance": "key"
+    "title": "isLineSegment — Line Segment Predicate",
+    "content": "Defines when a set $F$ is a line segment in $\\mathbb{C}$, formalized as the closed interval $[a, b]$ for distinct $a, b \\in \\mathbb{C}$. Line segments are among the simplest compact connected sets, and the transfinite diameter of a segment of length $L$ is $L/4$ — a classical result going back to Chebyshev's work on polynomial deviation.",
+    "mathContext": "$F$ is a line segment if $F = [a, b]$ for some $a \\neq b$ in $\\mathbb{C}$, with $\\rho([a,b]) = |b - a|/4$.",
+    "significance": "key",
+    "relatedConcepts": ["Chebyshev polynomials", "interval capacity", "conformal mapping"],
+    "prerequisites": ["closed intervals in ℂ"]
   },
   {
     "id": "ann-1040-disc",
     "proofId": "erdos-1040",
     "range": { "startLine": 115, "endLine": 117 },
     "type": "definition",
-    "title": "isClosedDisc",
-    "content": "Closed disc in ℂ.",
-    "significance": "key"
+    "title": "isClosedDisc — Closed Disc Predicate",
+    "content": "Defines when $F$ is a closed disc $\\overline{B}(c, r)$ in $\\mathbb{C}$. The transfinite diameter of a disc of radius $r$ is exactly $r$, which follows from the fact that the equilibrium measure of the disc is the uniform distribution on its boundary (the circle). This makes discs the simplest test case for the conjecture.",
+    "mathContext": "$F = \\overline{B}(c, r) = \\{z : |z - c| \\le r\\}$, with $\\rho(\\overline{B}(c,r)) = r$.",
+    "significance": "key",
+    "relatedConcepts": ["metric ball", "equilibrium measure", "circular symmetry"],
+    "prerequisites": ["metric spaces", "closed balls"]
   },
   {
     "id": "ann-1040-lineseg-det",
     "proofId": "erdos-1040",
     "range": { "startLine": 119, "endLine": 121 },
-    "type": "axiom",
-    "title": "lineSegment_determined",
-    "content": "μ determined for line segments.",
-    "significance": "key"
+    "type": "theorem",
+    "title": "lineSegment_determined — EHP 1958 for Segments",
+    "content": "The Erdős–Herzog–Piranian result (1958): for line segments, $\\mu$ is determined by $\\rho$. The proof exploits the connection to **Chebyshev polynomials**: the $n$-th Chebyshev polynomial $T_n$ on $[a, b]$ minimizes the supremum norm among monic polynomials of degree $n$, and the sublevel sets of scaled Chebyshev polynomials have explicitly computable areas that depend only on the interval length.",
+    "mathContext": "For $F = [a, b]$: $\\mu(F) = g(\\rho(F))$ for some universal function $g$, where $\\rho([a,b]) = |b-a|/4$.",
+    "significance": "key",
+    "relatedConcepts": ["Chebyshev polynomials", "extremal polynomials on intervals", "conformal mapping"],
+    "prerequisites": ["Chebyshev polynomials", "transfinite diameter of intervals"]
   },
   {
     "id": "ann-1040-disc-det",
     "proofId": "erdos-1040",
     "range": { "startLine": 123, "endLine": 125 },
-    "type": "axiom",
-    "title": "disc_determined",
-    "content": "μ determined for discs.",
-    "significance": "key"
+    "type": "theorem",
+    "title": "disc_determined — EHP 1958 for Discs",
+    "content": "The companion result from EHP (1958): for closed discs, $\\mu$ is determined by $\\rho$. By rotational symmetry, the extremal polynomials for a disc $\\overline{B}(c, r)$ are of the form $f(z) = (z - c)^n$, whose sublevel sets are smaller discs $B(c, r^{1/n})$. The areas $\\pi r^{2/n} \\to \\pi$ as $n \\to \\infty$ when $r = 1$, but $\\to 0$ only when $r > 1$ (i.e., $\\rho > 1$).",
+    "mathContext": "For $F = \\overline{B}(c, r)$: the optimal polynomial is $f(z) = (z-c)^n$, giving $|S_f| = \\pi r^{2/n}$.",
+    "significance": "key",
+    "relatedConcepts": ["circular symmetry", "power functions", "optimal polynomial"],
+    "prerequisites": ["disc geometry", "transfinite diameter of discs"]
   },
   {
     "id": "ann-1040-lineseg-diam",
     "proofId": "erdos-1040",
     "range": { "startLine": 127, "endLine": 129 },
-    "type": "axiom",
-    "title": "lineSegment_diameter",
-    "content": "Line segment: ρ = L/4.",
-    "significance": "key"
+    "type": "theorem",
+    "title": "lineSegment_diameter — Capacity of Intervals",
+    "content": "A classical result in potential theory: the transfinite diameter (logarithmic capacity) of a line segment $[a, b]$ in $\\mathbb{C}$ is $|b - a|/4$. This follows from the conformal mapping $z \\mapsto z + 1/z$ that maps the complement of $[-2, 2]$ to $\\mathbb{C} \\setminus \\overline{\\mathbb{D}}$, combined with the scaling property. Equivalently, it follows from the Chebyshev polynomial extremal property.",
+    "mathContext": "$\\rho([a, b]) = \\frac{|b - a|}{4}$. In particular, $\\rho([-2, 2]) = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Joukowski transform", "conformal mapping", "Chebyshev polynomials"],
+    "prerequisites": ["conformal mapping", "capacity computation"]
   },
   {
     "id": "ann-1040-disc-diam",
     "proofId": "erdos-1040",
     "range": { "startLine": 131, "endLine": 133 },
-    "type": "axiom",
-    "title": "disc_diameter",
-    "content": "Disc of radius r: ρ = r.",
-    "significance": "key"
+    "type": "theorem",
+    "title": "disc_diameter — Capacity of Discs",
+    "content": "The transfinite diameter of a closed disc of radius $r$ is exactly $r$. This is perhaps the most natural capacity computation: the equilibrium measure of the disc is the normalized arclength on the boundary circle, and the resulting logarithmic energy integral gives $\\rho = r$. This is the starting point for many capacity computations via conformal mapping.",
+    "mathContext": "$\\rho(\\overline{B}(c, r)) = r$ for any center $c$ and radius $r > 0$.",
+    "significance": "key",
+    "relatedConcepts": ["equilibrium measure", "logarithmic energy", "Robin constant"],
+    "prerequisites": ["potential theory", "logarithmic energy"]
   },
   {
     "id": "ann-1040-small",
     "proofId": "erdos-1040",
     "range": { "startLine": 139, "endLine": 144 },
-    "type": "axiom",
-    "title": "small_diameter_disc",
-    "content": "ρ(F) < 1 → sublevel contains disc.",
-    "significance": "critical"
+    "type": "theorem",
+    "title": "small_diameter_disc — Disc in Sublevel Set",
+    "content": "A key positive result from EHP (1958): when $\\rho(F) < 1$, every sublevel set $\\{z : |f(z)| < 1\\}$ for a nonconstant polynomial with roots in $F$ contains a disc of radius bounded below by a positive constant depending only on $F$. This implies $\\mu(F) > 0$ when $\\rho(F) < 1$, confirming the contrapositive: the conjecture $\\mu(F) = 0$ can only hold when $\\rho(F) \\ge 1$.",
+    "mathContext": "$\\rho(F) < 1 \\implies \\exists\\, c > 0 \\text{ s.t. } \\forall f \\in \\text{Poly}(F),\\, \\exists B(z_0, r) \\subseteq S_f \\text{ with } r \\ge c.$",
+    "significance": "critical",
+    "relatedConcepts": ["inscribed discs", "sublevel set geometry", "capacity threshold"],
+    "prerequisites": ["potential theory", "polynomial lemniscates"]
   },
   {
     "id": "ann-1040-discconst",
     "proofId": "erdos-1040",
     "range": { "startLine": 146, "endLine": 149 },
     "type": "definition",
-    "title": "discConstant",
-    "content": "The disc constant for F.",
-    "significance": "key"
+    "title": "discConstant — Optimal Inscribed Disc Radius",
+    "content": "Defines the best (largest) constant $c$ such that every sublevel set for a polynomial with roots in $F$ contains a disc of radius $\\ge c$. This is the supremum of all valid lower bounds. The discConstant is related to Problem 1039 (Erdős), which asks specifically about the supremum of inscribed disc radii in sublevel sets.",
+    "mathContext": "$c(F) = \\sup \\{ c > 0 : \\forall f \\in \\text{Poly}(F),\\, \\exists B(z_0, r) \\subseteq S_f,\\, r \\ge c \\}$",
+    "significance": "key",
+    "relatedConcepts": ["inscribed disc radius", "Erdős Problem 1039", "extremal geometry"],
+    "prerequisites": ["supremum", "sublevel set geometry"]
   },
   {
     "id": "ann-1040-netanyahu",
     "proofId": "erdos-1040",
     "range": { "startLine": 155, "endLine": 161 },
-    "type": "axiom",
-    "title": "erdos_netanyahu",
-    "content": "Erdős-Netanyahu 1973 result.",
-    "significance": "key"
+    "type": "theorem",
+    "title": "erdos_netanyahu — Erdős–Netanyahu 1973",
+    "content": "The Erdős–Netanyahu result (1973) strengthens the EHP disc-in-sublevel theorem for **bounded connected** sets with $0 < \\rho(F) < 1$: the inscribed disc radius can be expressed as a function $r(\\rho(F))$ that is positive on $(0, 1)$. This gives explicit quantitative bounds relating capacity to lemniscate geometry. Netanyahu was a mathematician at the Technion; this paper appeared in the Israel Journal of Mathematics.",
+    "mathContext": "For bounded connected $F$ with $0 < \\rho(F) < 1$: $\\exists\\, r : (0,1) \\to \\mathbb{R}^+$ with $r(\\rho) > 0$ such that every sublevel set contains $B(z_0, r(\\rho(F)))$.",
+    "significance": "key",
+    "relatedConcepts": ["quantitative potential theory", "connected compact sets", "explicit bounds"],
+    "prerequisites": ["transfinite diameter", "bounded connected sets", "inscribed disc"]
   },
   {
     "id": "ann-1040-unitdisc",
     "proofId": "erdos-1040",
     "range": { "startLine": 167, "endLine": 172 },
     "type": "definition",
-    "title": "unitDiscCase",
-    "content": "Connection to Problem 1039.",
-    "significance": "key"
+    "title": "unitDiscCase — Bridge to Problem 1039",
+    "content": "The unit disc $\\overline{B}(0, 1)$ has transfinite diameter exactly 1, placing it at the critical threshold of the conjecture. Problem 1039 asks about the inscribed disc radius $\\rho(f)$ specifically for the unit disc case. The unit disc is the natural test case because $\\rho = 1$ is the boundary between the 'positive μ' regime ($\\rho < 1$) and the conjectured 'zero μ' regime ($\\rho \\ge 1$).",
+    "mathContext": "$\\rho(\\overline{\\mathbb{D}}) = 1$, so $\\overline{\\mathbb{D}}$ sits exactly at the conjectural threshold $\\mu(F) = 0 \\iff \\rho(F) \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": ["unit disc", "Erdős Problem 1039", "critical threshold"],
+    "prerequisites": ["disc capacity", "Problem 1039"]
   },
   {
     "id": "ann-1040-unitdisc-diam",
     "proofId": "erdos-1040",
     "range": { "startLine": 174, "endLine": 177 },
     "type": "theorem",
-    "title": "unitDisc_diameter",
-    "content": "Unit disc has ρ = 1.",
-    "significance": "key"
+    "title": "unitDisc_diameter — ρ(D̄) = 1",
+    "content": "Proves that the unit disc has transfinite diameter 1, by specializing the `disc_diameter` axiom with $r = 1$. This is one of the few fully-proved results in the file: it derives from the disc capacity formula and basic simplification. The result places the unit disc at the critical threshold for the conjecture.",
+    "mathContext": "$\\rho(\\overline{B}(0, 1)) = 1$",
+    "significance": "key",
+    "relatedConcepts": ["disc capacity", "unit disc"],
+    "prerequisites": ["disc_diameter axiom"]
   },
   {
     "id": "ann-1040-mono",
     "proofId": "erdos-1040",
     "range": { "startLine": 183, "endLine": 186 },
     "type": "theorem",
-    "title": "transfiniteDiameter_mono",
-    "content": "ρ is monotone.",
-    "significance": "supporting"
+    "title": "transfiniteDiameter_mono — Monotonicity of Capacity",
+    "content": "States that transfinite diameter is monotone with respect to set inclusion: $F \\subseteq G \\implies \\rho(F) \\le \\rho(G)$. This is intuitive — a larger set has more $n$-point configurations available, so the supremum in the $n$-th diameter can only increase. This is a fundamental property used throughout potential theory.",
+    "mathContext": "$F \\subseteq G \\implies \\rho(F) \\le \\rho(G)$",
+    "significance": "supporting",
+    "relatedConcepts": ["monotonicity", "set inclusion", "capacity comparison"],
+    "prerequisites": ["transfinite diameter", "supremum over larger sets"]
   },
   {
     "id": "ann-1040-nonneg",
     "proofId": "erdos-1040",
     "range": { "startLine": 188, "endLine": 191 },
     "type": "theorem",
-    "title": "transfiniteDiameter_nonneg",
-    "content": "ρ ≥ 0.",
-    "significance": "supporting"
+    "title": "transfiniteDiameter_nonneg — Non-negativity",
+    "content": "The transfinite diameter is always non-negative, since each $n$-th diameter involves absolute values (which are non-negative) raised to a positive power. This is a basic regularity property ensuring $\\rho(F) \\in [0, \\infty)$ for all sets $F$.",
+    "mathContext": "$\\rho(F) \\ge 0$ for all $F \\subseteq \\mathbb{C}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["non-negativity", "absolute value"],
+    "prerequisites": ["transfinite diameter definition"]
   },
   {
     "id": "ann-1040-finite",
     "proofId": "erdos-1040",
     "range": { "startLine": 193, "endLine": 196 },
     "type": "theorem",
-    "title": "finite_diameter_zero",
-    "content": "Finite sets have ρ = 0.",
-    "significance": "supporting"
+    "title": "finite_diameter_zero — Finite Sets Have Zero Capacity",
+    "content": "Finite sets have transfinite diameter zero. For a set with $|F| = N$, once $n > N$ we cannot choose $n$ distinct points in $F$, so configurations must repeat and the product of pairwise distances includes zero factors. This gives $d_n(F) = 0$ for $n > N$, hence $\\rho(F) = \\inf_n d_n(F) = 0$.",
+    "mathContext": "$|F| < \\infty \\implies \\rho(F) = 0$, since $d_n(F) = 0$ for $n > |F|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["finite sets", "zero capacity", "polar sets"],
+    "prerequisites": ["transfinite diameter", "pigeonhole principle"]
   },
   {
     "id": "ann-1040-scale",
     "proofId": "erdos-1040",
     "range": { "startLine": 198, "endLine": 202 },
     "type": "theorem",
-    "title": "transfiniteDiameter_scale",
-    "content": "Scaling property.",
-    "significance": "key"
+    "title": "transfiniteDiameter_scale — Scaling Property",
+    "content": "The transfinite diameter scales linearly under dilation: $\\rho(cF) = |c| \\cdot \\rho(F)$. This follows because pairwise distances scale by $|c|$ under the map $z \\mapsto cz$, so each factor in the $n$-th diameter product is multiplied by $|c|$, giving $d_n(cF) = |c| \\cdot d_n(F)$. This property is crucial for reducing capacity computations to normalized cases.",
+    "mathContext": "$\\rho(c \\cdot F) = |c| \\cdot \\rho(F)$ for $c \\neq 0$.",
+    "significance": "key",
+    "relatedConcepts": ["scaling invariance", "conformal covariance", "normalization"],
+    "prerequisites": ["transfinite diameter", "dilation"]
   },
   {
     "id": "ann-1040-mumono",
     "proofId": "erdos-1040",
     "range": { "startLine": 208, "endLine": 211 },
     "type": "theorem",
-    "title": "mu_mono",
-    "content": "μ is monotone in F.",
-    "significance": "supporting"
+    "title": "mu_mono — Monotonicity of μ (Reversed)",
+    "content": "The measure functional $\\mu$ is **anti-monotone**: $F \\subseteq G \\implies \\mu(G) \\le \\mu(F)$. A larger root set $G$ gives access to more polynomials (any polynomial with roots in $F$ also has roots in $G$), so the infimum over a larger class can only decrease. This reversal of the direction compared to $\\rho$ is key: larger sets have larger capacity but smaller extremal lemniscate measure.",
+    "mathContext": "$F \\subseteq G \\implies \\mu(G) \\le \\mu(F)$, because $\\text{Poly}(F) \\subseteq \\text{Poly}(G)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["anti-monotonicity", "infimum over larger class", "duality"],
+    "prerequisites": ["infimum", "set of polynomials"]
   },
   {
     "id": "ann-1040-muinf",
     "proofId": "erdos-1040",
     "range": { "startLine": 213, "endLine": 216 },
     "type": "theorem",
-    "title": "mu_infimum",
-    "content": "μ(F) is approached.",
-    "significance": "supporting"
+    "title": "mu_infimum — Approximation Property",
+    "content": "For any infinite set $F$ and any $\\varepsilon > 0$, there exists a polynomial with roots in $F$ whose sublevel set area is within $\\varepsilon$ of $\\mu(F)$. This is a standard property of infima: while the infimum may not be attained (no 'extremal polynomial' need exist), it can be approximated arbitrarily closely. The question of attainment is itself interesting — for discs, extremal polynomials do exist.",
+    "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists f \\in \\text{Poly}(F) : |S_f| < \\mu(F) + \\varepsilon$.",
+    "significance": "supporting",
+    "relatedConcepts": ["infimum approximation", "extremal sequences", "minimizing polynomials"],
+    "prerequisites": ["infimum properties", "ε-δ arguments"]
   },
   {
     "id": "ann-1040-question",
     "proofId": "erdos-1040",
     "range": { "startLine": 222, "endLine": 223 },
     "type": "definition",
-    "title": "erdos_1040_question",
-    "content": "The main open question.",
-    "significance": "critical"
+    "title": "erdos_1040_question — The Open Problem",
+    "content": "Wraps `diameterOneConjecture` as the official Erdős Problem 1040 statement. The problem has been open since 1958 when Erdős, Herzog, and Piranian first posed it. Despite nearly 70 years of work in geometric function theory and potential theory, no general answer is known beyond the special cases of line segments and discs.",
+    "mathContext": "Erdős Problem 1040: Is $\\mu(F) = 0$ whenever $\\rho(F) \\ge 1$, for all closed infinite $F \\subseteq \\mathbb{C}$?",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős problems", "open problems in complex analysis", "capacity"],
+    "prerequisites": ["all preceding definitions"]
   },
   {
     "id": "ann-1040-state",
     "proofId": "erdos-1040",
     "range": { "startLine": 225, "endLine": 231 },
     "type": "theorem",
-    "title": "erdos_1040_current_state",
-    "content": "Current known results.",
-    "significance": "critical"
+    "title": "erdos_1040_current_state — Known Results Summary",
+    "content": "Summarizes what is known: (1) for line segments and discs with $\\rho \\ge 1$, we have $\\mu = 0$; (2) for any closed infinite set with $\\rho < 1$, we have $\\mu > 0$. The gap between these results — general closed sets with $\\rho \\ge 1$ that are neither segments nor discs — remains the open frontier. Possible attack strategies include extending the conformal mapping techniques used for discs, or finding counterexamples among Cantor-type sets.",
+    "mathContext": "Known: $(\\text{segment or disc}) \\wedge \\rho \\ge 1 \\implies \\mu = 0$, and $\\rho < 1 \\implies \\mu > 0$. Open: general $F$ with $\\rho \\ge 1$.",
+    "significance": "critical",
+    "relatedConcepts": ["partial results", "Cantor sets", "conformal mapping", "extremal problems"],
+    "prerequisites": ["all preceding definitions and results"]
   }
 ]

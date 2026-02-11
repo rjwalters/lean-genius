@@ -24,105 +24,105 @@
     "relatedProblems": [1039]
   },
   "overview": {
-    "historicalContext": "**Erdős-Herzog-Piranian Problem**\n\nThis problem concerns the relationship between the transfinite diameter (logarithmic capacity) of a set F and the measure of polynomial sublevel sets with roots in F.\n\n**Historical Development**:\n- 1958: Erdős, Herzog, and Piranian posed the problem, proved it for line segments and discs\n- 1973: Erdős and Netanyahu gave explicit bounds for bounded connected sets\n- Related to Problem 1039 (inscribed disc radius in sublevel sets)",
-    "problemStatement": "**Problem Statement**\n\nLet F ⊆ ℂ be a closed infinite set. Define μ(F) as the infimum of |{z : |f(z)| < 1}| over all polynomials f(z) = ∏(z - zᵢ) with zᵢ ∈ F.\n\nIs μ(F) determined by the transfinite diameter of F?\nIn particular, is μ(F) = 0 whenever the transfinite diameter ≥ 1?\n\n**Status**: OPEN\n\n**Known**:\n- YES for line segments and discs (EHP 1958)\n- When ρ(F) < 1, sublevel sets contain a disc of radius ≫_F 1",
-    "proofStrategy": "**Approach**\n\n1. **Transfinite Diameter**: The logarithmic capacity ρ(F) = lim sup of (∏|zᵢ - zⱼ|)^(2/n(n-1)) over n-point configurations.\n\n2. **Special Cases**: For line segments of length L, ρ = L/4. For discs of radius r, ρ = r.\n\n3. **Small Diameter**: When ρ(F) < 1, every sublevel set contains a disc of positive radius.\n\n4. **The Gap**: General sets with ρ(F) ≥ 1 remain unresolved.",
+    "historicalContext": "**Erdős–Herzog–Piranian Problem (1958)**\n\nThis problem originates in the 1958 paper *\"On polynomials whose zeros lie on the unit circle\"* by Paul Erdős, Fritz Herzog, and George Piranian, published in the Duke Mathematical Journal. The central question connects two classical objects in complex analysis: the **transfinite diameter** (logarithmic capacity) of a compact set, and the **Lebesgue measure of polynomial lemniscates** — the sublevel sets $\\{z : |f(z)| < 1\\}$.\n\nThe transfinite diameter was introduced by Mihály Fekete in 1923 and independently studied by Gábor Szegő in 1924. The Fekete–Szegő theorem established the equivalence of the transfinite diameter, the Chebyshev constant, and the logarithmic capacity — three a priori different quantities that measure the 'size' of a compact set from the perspective of potential theory. For intervals $[a, b]$, the transfinite diameter is $|b-a|/4$ (connected to Chebyshev polynomials), and for discs of radius $r$, it is simply $r$ (related to the equilibrium measure on the circle).\n\nErdős, Herzog, and Piranian proved the conjecture for line segments and closed discs, and showed that when $\\rho(F) < 1$, every lemniscate with roots in $F$ contains a disc of positive radius. In 1973, Erdős and Elisha Netanyahu (a mathematician at the Technion, not to be confused with the political figure) refined the quantitative bounds for bounded connected sets in the Israel Journal of Mathematics. Despite nearly seven decades of progress in geometric function theory, the general case remains open — making this one of the longest-standing problems in the intersection of potential theory and polynomial approximation.",
+    "problemStatement": "**Problem Statement**\n\nLet $F \\subseteq \\mathbb{C}$ be a closed infinite set. Define $\\mu(F)$ as the infimum of $|\\{z : |f(z)| < 1\\}|$ over all monic polynomials $f(z) = \\prod(z - z_i)$ with $z_i \\in F$.\n\nIs $\\mu(F)$ determined by the transfinite diameter $\\rho(F)$?\nIn particular, is $\\mu(F) = 0$ whenever $\\rho(F) \\ge 1$?\n\n**Status**: OPEN\n\n**Known Results**:\n- YES for line segments and closed discs (Erdős–Herzog–Piranian 1958)\n- When $\\rho(F) < 1$, every sublevel set contains a disc of radius $\\gg_F 1$\n- Erdős–Netanyahu (1973): explicit bounds for bounded connected $F$ with $0 < \\rho(F) < 1$",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Transfinite Diameter via Fekete**: Defines $d_n(F)$ as the supremum of the geometric mean of pairwise distances over $n$-point configurations in $F$, then takes $\\rho(F) = \\inf_n d_n(F)$.\n\n2. **Polynomial Lemniscates**: Constructs the `PolynomialInF` structure encoding monic polynomials with roots constrained to $F$, then defines the sublevel set $\\{z : |f(z)| < 1\\}$ and its Lebesgue measure.\n\n3. **Extremal Measure $\\mu(F)$**: Takes the infimum of sublevel set measures over all such polynomials.\n\n4. **Known Results as Axioms**: Encodes the EHP (1958) results for segments and discs, the small-diameter disc theorem, and the Erdős–Netanyahu (1973) bounds as axioms.\n\n5. **Properties**: States monotonicity, scaling, and non-negativity of $\\rho$, along with anti-monotonicity and approximation properties of $\\mu$.",
     "keyInsights": [
-      "μ(F) = infimum of sublevel set measures over polynomials with roots in F",
-      "Transfinite diameter = logarithmic capacity",
-      "Known for line segments and discs (EHP 1958)",
-      "ρ(F) < 1 → sublevel sets contain positive-radius disc",
-      "Conjecture: μ(F) = 0 when ρ(F) ≥ 1"
+      "**Capacity as a polynomial invariant**: The transfinite diameter $\\rho(F)$, originally defined via point configurations (Fekete 1923), is equivalent to the Chebyshev constant $\\tau(F) = \\lim_{n \\to \\infty} \\inf_{\\deg p = n} \\|p\\|_F^{1/n}$ and the logarithmic capacity $\\exp(-V(F))$ where $V$ is the Robin constant — three equivalent characterizations from approximation theory, potential theory, and conformal mapping.",
+      "**Lemniscate geometry encodes capacity**: The area of $\\{z : |f(z)| < 1\\}$ for optimally chosen polynomials with roots in $F$ is intimately related to $\\rho(F)$. When $\\rho < 1$, the lemniscates must have positive area (containing a disc); when $\\rho \\ge 1$, the conjecture says lemniscate areas can shrink to zero — suggesting a **phase transition** at $\\rho = 1$.",
+      "**Anti-monotonicity of $\\mu$ vs monotonicity of $\\rho$**: Capacity grows with the set ($F \\subseteq G \\implies \\rho(F) \\le \\rho(G)$), but the extremal measure shrinks ($\\mu(G) \\le \\mu(F)$). More roots available means more polynomials to optimize over, driving lemniscate areas down.",
+      "**The disc case reveals the mechanism**: For $\\overline{B}(0, r)$, the optimal polynomials are $f(z) = z^n$ with lemniscate area $\\pi r^{2/n}$. When $r \\ge 1$, these areas $\\to 0$ as $n \\to \\infty$; when $r < 1$, they $\\to \\pi$. This geometric divergence at the threshold $r = 1$ motivates the general conjecture.",
+      "**Connection to Problem 1039**: The unit disc ($\\rho = 1$) is the critical test case linking Problems 1039 and 1040. Problem 1039 asks about inscribed disc radii in lemniscates, while 1040 asks about lemniscate areas — both probing polynomial behavior at the capacity threshold."
     ]
   },
   "sections": [
     {
       "id": "transfinite-diameter",
       "title": "Transfinite Diameter",
-      "summary": "nthDiameter, transfiniteDiameter, transfiniteDiameter'",
+      "summary": "Defines the $n$-th diameter $d_n(F)$ via Fekete point configurations, the transfinite diameter as $\\rho(F) = \\inf_n d_n(F)$, an equivalent liminf formulation, and asserts their equality. These are the foundational potential-theoretic definitions.",
       "startLine": 26,
       "endLine": 46
     },
     {
       "id": "polynomials",
       "title": "Polynomials with Roots in F",
-      "summary": "PolynomialInF, eval, sublevelSet, sublevelMeasure",
+      "summary": "Introduces the `PolynomialInF` structure (monic polynomials $f(z) = \\prod(z - z_i)$ with $z_i \\in F$), evaluation, the sublevel set $\\{z : |f(z)| < 1\\}$ (a polynomial lemniscate), and its Lebesgue measure.",
       "startLine": 48,
       "endLine": 73
     },
     {
       "id": "mu-function",
       "title": "The Function μ(F)",
-      "summary": "mu, muReal definitions",
+      "summary": "Defines $\\mu(F) = \\inf_f |S_f|$ as the infimum of lemniscate areas over all monic polynomials with roots in $F$, both in extended reals and as a real number.",
       "startLine": 75,
       "endLine": 85
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
-      "summary": "muDeterminedByDiameter, diameterOneConjecture",
+      "summary": "States the two parts of Erdős's question: (1) `muDeterminedByDiameter` — is $\\mu$ a function of $\\rho$ alone? (2) `diameterOneConjecture` — is $\\mu(F) = 0$ when $\\rho(F) \\ge 1$? Records the open status via axiom.",
       "startLine": 87,
       "endLine": 105
     },
     {
       "id": "known-results",
       "title": "Known Results: Line Segments and Discs",
-      "summary": "isLineSegment, isClosedDisc, lineSegment_determined, disc_determined",
+      "summary": "Encodes the EHP (1958) positive results: $\\mu$ is determined by $\\rho$ for line segments (via Chebyshev polynomials, $\\rho = L/4$) and closed discs (via rotational symmetry, $\\rho = r$). These special cases confirm the conjecture for the simplest geometries.",
       "startLine": 107,
       "endLine": 133
     },
     {
       "id": "small-diameter",
       "title": "Small Transfinite Diameter",
-      "summary": "small_diameter_disc, discConstant",
+      "summary": "When $\\rho(F) < 1$, every polynomial lemniscate with roots in $F$ contains a disc of radius bounded below by a positive constant $c(F)$, implying $\\mu(F) > 0$. This establishes the contrapositive: $\\mu(F) = 0$ is only possible when $\\rho(F) \\ge 1$.",
       "startLine": 135,
       "endLine": 149
     },
     {
       "id": "erdos-netanyahu",
-      "title": "Erdős-Netanyahu Result (1973)",
-      "summary": "erdos_netanyahu axiom",
+      "title": "Erdős–Netanyahu Result (1973)",
+      "summary": "For bounded connected $F$ with $0 < \\rho(F) < 1$, the Erdős–Netanyahu theorem provides an explicit function $r(\\rho)$ bounding the inscribed disc radius in every lemniscate with roots in $F$, strengthening the qualitative EHP result with quantitative estimates.",
       "startLine": 151,
       "endLine": 161
     },
     {
       "id": "problem-1039",
       "title": "Relationship to Problem 1039",
-      "summary": "unitDiscCase, unitDisc_diameter",
+      "summary": "The unit disc $\\overline{\\mathbb{D}}$ has $\\rho = 1$, sitting at the critical threshold. Problem 1039 asks about inscribed disc radii at this boundary case, making the unit disc the natural bridge between the two problems. Includes a proof that $\\rho(\\overline{\\mathbb{D}}) = 1$.",
       "startLine": 163,
       "endLine": 177
     },
     {
       "id": "diameter-properties",
       "title": "Properties of Transfinite Diameter",
-      "summary": "transfiniteDiameter_mono, transfiniteDiameter_nonneg, finite_diameter_zero, transfiniteDiameter_scale",
+      "summary": "States fundamental properties of $\\rho$: monotonicity ($F \\subseteq G \\implies \\rho(F) \\le \\rho(G)$), non-negativity, vanishing on finite sets ($|F| < \\infty \\implies \\rho = 0$), and the scaling law $\\rho(cF) = |c| \\cdot \\rho(F)$. All remain sorry'd.",
       "startLine": 179,
       "endLine": 202
     },
     {
       "id": "mu-properties",
       "title": "Properties of μ",
-      "summary": "mu_mono, mu_infimum",
+      "summary": "States anti-monotonicity of $\\mu$ ($F \\subseteq G \\implies \\mu(G) \\le \\mu(F)$) and the infimum approximation property (for any $\\varepsilon > 0$, a polynomial achieving $|S_f| < \\mu(F) + \\varepsilon$ exists). Both sorry'd.",
       "startLine": 204,
       "endLine": 216
     },
     {
       "id": "open-question",
       "title": "The Open Question",
-      "summary": "erdos_1040_question, erdos_1040_current_state",
+      "summary": "Wraps the conjecture as the official Erdős Problem 1040 and summarizes the current state: confirmed for segments and discs, $\\mu > 0$ when $\\rho < 1$, but the general case of $\\rho \\ge 1$ for arbitrary closed infinite sets remains open since 1958.",
       "startLine": 218,
       "endLine": 231
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1040 asks whether the infimum μ(F) of sublevel set measures is determined by the transfinite diameter of F, and specifically whether μ(F) = 0 when ρ(F) ≥ 1. The answer is YES for line segments and discs, and when ρ(F) < 1 the sublevel sets always contain a disc of positive radius. The general case remains open.",
-    "implications": "**Theoretical Significance**\n\n1. **Potential Theory**: Deep connection between capacity and polynomial behavior\n\n2. **Complex Analysis**: Understanding sublevel sets of polynomials\n\n3. **Extremal Problems**: Which sets F minimize/maximize μ(F)?\n\n4. **Connection to #1039**: Unit disc case bridges both problems",
+    "summary": "Erdős Problem #1040 formalizes a deep question at the intersection of potential theory and polynomial approximation: whether the extremal lemniscate measure $\\mu(F) = \\inf_f |\\{z : |f(z)| < 1\\}|$ is determined by the transfinite diameter $\\rho(F)$, and specifically whether $\\mu(F) = 0$ when $\\rho(F) \\ge 1$. The formalization captures the complete known landscape — the EHP (1958) confirmations for segments and discs, the small-diameter disc theorem, and the Erdős–Netanyahu (1973) quantitative bounds — while leaving the 7 sorry'd theorems as markers for the open structural properties.",
+    "implications": "**Theoretical Significance**\n\n1. **Phase transition in polynomial approximation**: The conjecture predicts a sharp transition at $\\rho = 1$ — below this threshold, lemniscate areas are bounded away from zero; above, they can be driven to zero. This mirrors phenomena in statistical physics and random matrix theory.\n\n2. **Universality of capacity**: If $\\mu(F)$ depends only on $\\rho(F)$, it would mean that the fine geometry of $F$ is irrelevant for extremal polynomial behavior — only the single number $\\rho$ matters. This is a strong universality statement.\n\n3. **Geometric function theory**: Understanding lemniscate geometry is central to questions about polynomial approximation, conformal mapping, and the distribution of zeros of polynomials.\n\n4. **Connection to electrostatics**: Via the electrostatic interpretation of logarithmic capacity (the equilibrium charge distribution on $F$), the problem asks whether the 'charge-theoretic size' of $F$ determines how efficiently polynomials with charges at points of $F$ can concentrate their field.",
     "openQuestions": [
-      "Is μ(F) = 0 when transfinite diameter ≥ 1?",
-      "Is μ(F) determined by transfinite diameter alone?",
-      "Explicit formula for μ(F) in terms of ρ(F)?",
-      "Characterize extremal sets for fixed ρ(F)",
-      "Higher-dimensional analogues?"
+      "Is $\\mu(F) = 0$ for general closed infinite $F$ with $\\rho(F) \\ge 1$, or does there exist a counterexample (perhaps a Cantor-type set)?",
+      "Is $\\mu(F)$ a continuous or monotone function of $\\rho(F)$ in the regime $\\rho < 1$?",
+      "Can the conformal mapping techniques that work for discs and intervals be extended to more general simply-connected domains?",
+      "What is the extremal behavior for disconnected sets — e.g., does a union of two separated intervals behave differently from a single interval of the same capacity?",
+      "Is the infimum in $\\mu(F)$ ever attained (i.e., does an extremal polynomial exist), and if so, what is its root distribution?"
     ]
   }
 }
