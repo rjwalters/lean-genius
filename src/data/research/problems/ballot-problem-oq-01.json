@@ -1,96 +1,55 @@
 {
   "slug": "ballot-problem-oq-01",
-  "title": "Generalized Ballot Problem: k-Fold Dominance",
-  "phase": "IN_PROGRESS",
-  "status": "in-progress",
+  "title": "Ballot Problem Generalization to Multiple Candidates",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "For a > k*b, the probability that A maintains > k times B's votes throughout counting is (a - k*b)/(a + b)",
-    "plain": "The Generalized Ballot Problem extends Bertrand's classical result to the k-fold case.",
-    "whyMatters": [
-      "Generalizes the classical ballot theorem (k=1) to arbitrary dominance factors",
-      "Uses the Dvoretzky-Motzkin cycle lemma - a fundamental combinatorial tool",
-      "Connects to lattice path counting, random walks, and queueing theory"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "kCountedSequence definitions and basic properties (sum, length, finiteness, nonemptiness)",
-      "Connection to classical ballot: kCountedSequence 1 a b = countedSequence a b",
-      "Cyclic rotation infrastructure (sum, length, composition, kCountedSequence preservation)",
-      "Prefix sum relation for rotations (wrapping and non-wrapping cases)",
-      "Good rotation characterization via doubled prefix sums",
-      "Rightmost minimum infrastructure (definition, bounds, good rotation proof)",
-      "Prefix sum strict monotonicity and injectivity on good rotations",
-      "Corrected cycle lemma statement (restricted to kCountedSequence)",
-      "Verification examples via native_decide"
-    ],
-    "open": [
-      "Cycle lemma counting (injectivity proved, surjectivity via level crossings needed)",
-      "Generalized ballot counting theorem (depends on cycle lemma)"
-    ],
-    "goal": "Complete proof of the generalized ballot theorem via the cycle lemma"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "IN_PROGRESS",
-    "since": "2026-02-10T17:30:00Z",
-    "iteration": 4,
-    "focus": "Built rightmost min infrastructure. Found/fixed bug in cycle lemma statement. Proved good rotation existence and injectivity.",
-    "blockers": [
-      "Cycle lemma surjectivity: need level crossing argument for ballot sequences"
-    ],
-    "nextAction": "Prove surjectivity or submit to Aristotle",
+    "phase": "NEW",
+    "since": "2026-02-06T19:32:14.355Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 4,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: ~35 theorems proved, 2 sorries remain. Key: rightmost min infrastructure + good rotation proof + strict monotonicity + injectivity. Critical bug found: cycle lemma wrong for arbitrary integers.",
-    "builtItems": [
-      "proofs/Proofs/BallotProblemOQ01.lean - ~35 theorems, 2 sorries (~430 lines)",
-      "minPrefixSum, rightmostMinPos with full bounds",
-      "goodRotation_at_rightmostMin, goodRotations_nonempty",
-      "goodRotation_prefixSum_strictMono, goodRotation_prefixSum_injective"
-    ],
-    "insights": [
-      "CRITICAL: Cycle lemma FALSE for arbitrary integers. [5,-2] has sum 3 but only 2 rotations. Must restrict to ballot sequences.",
-      "Rightmost minimum m gives provably good rotation via wrapping/non-wrapping case analysis",
-      "P is strictly monotone on good rotations: i1 < i2 both good implies P(i1) < P(i2)",
-      "Surjectivity needs level crossing: ballot steps are +1 or -k so P passes through all integer levels"
-    ],
-    "mathlibGaps": [
-      "No cycle lemma in Mathlib",
-      "No k-fold ballot problem in Mathlib"
-    ],
-    "nextSteps": [
-      "Prove cycle lemma surjectivity via level crossing for ballot sequences",
-      "Alternative: submit to Aristotle",
-      "If proved, derive generalized_ballot_count via double counting"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Cycle lemma via rightmost minimum",
-      "status": "in-progress",
-      "description": "Model as lists with +1 and -k steps. Cycle lemma via rightmost minimum. Infrastructure complete; counting argument remains."
-    }
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "probability",
+    "extension"
   ],
-  "tags": ["seeker-selected", "combinatorics", "probability", "extension", "lattice-paths", "cycle-lemma"],
-  "relatedProofs": ["ballot-problem"],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Bertrand (1887): Original ballot problem",
-      "Dvoretzky & Motzkin (1947): Cycle lemma",
-      "Renault (2007): Four Proofs of the Ballot Theorem"
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": ["Archive.Wiedijk100Theorems.BallotProblem", "Mathlib.Tactic"]
+    "mathlib": []
   },
   "started": "2026-02-08T06:11:43.709Z",
-  "lastUpdate": "2026-02-10T17:30:00Z",
+  "lastUpdate": "2026-02-08T06:11:43.709Z",
   "significance": 7,
   "tractability": 6
 }

@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "DEEP_DIVE",
+    "phase": "NEW",
     "since": "2026-01-01T21:55:27.886Z",
-    "iteration": 2,
-    "focus": "Converted zeros_symmetric axiom to theorem. Further axiom-to-theorem conversions possible for deeper results.",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Converted zeros_symmetric from axiom to proven theorem using Mathlib riemannZeta_one_sub functional equation. The proof is 4 lines: verify hypotheses (s ≠ -n, s ≠ 1), apply functional equation, simp with zero.",
+    "progressSummary": "",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -50,20 +50,13 @@
         "name": "Li_criterion",
         "description": "Equivalent formulation via Li coefficients",
         "proven": true
-      },
-      {
-        "name": "zeros_symmetric_proven",
-        "description": "Proved zeros_symmetric (axiom→theorem) using riemannZeta_one_sub functional equation",
-        "proven": true
       }
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
       "explicit_formula",
       "zeta_special_values",
-      "Li_criterion",
-      "riemannZeta_one_sub directly gives zeros_symmetric: if ζ(s)=0 in strip then ζ(1-s)=0, because ζ(1-s) = [factors] * ζ(s) = 0",
-      "Key: ne_neg_nat_of_mem_criticalStrip and ne_one_of_mem_criticalStrip satisfy riemannZeta_one_sub hypotheses"
+      "Li_criterion"
     ],
     "mathlibGaps": [
       "Dirichlet series",

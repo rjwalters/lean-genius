@@ -1,108 +1,54 @@
 {
   "slug": "lagrange-four-squares-oq-02",
   "title": "Distribution of Four-Square Representations Among Orderings",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "For n = a₁² + a₂² + a₃² + a₄² with 0 ≤ a₁ ≤ a₂ ≤ a₃ ≤ a₄, each sorted representation type contributes permutations × signFactor ordered signed representations, where permutations = 4!/(m₁!···mₖ!) and signFactor = 2^(nonzero count). Total r₄(n) = Σ contributions = 8σ*(n).",
-    "plain": "Classify all sorted four-square representation types by their multiplicity pattern, prove general contribution formulas for each type family, and verify the orbit-stabilizer structure connecting contributions to the symmetry group S₄ × (ℤ/2ℤ)⁴.",
-    "whyMatters": [
-      "Completes the distributional analysis of Lagrange's four-square theorem",
-      "Connects combinatorial type theory to group-theoretic orbit-stabilizer analysis",
-      "Provides decidable enumeration making the decomposition fully algorithmic"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "General trivialType (0,0,0,k) theorem: contribution = 8 for all k > 0",
-      "General allEqualType (k,k,k,k) theorem: contribution = 16 for all k > 0",
-      "General threeEqualType (0,k,k,k) theorem: contribution = 32 for all k > 0",
-      "General twoPairType (a,a,b,b) theorem: contribution = 96 for all 0 < a < b",
-      "General twoEqualType (0,0,k,k) theorem: contribution = 24 for all k > 0",
-      "General twoNonzeroDistinct (0,0,a,b) theorem: contribution = 48 for all 0 < a < b",
-      "Decidable type enumeration via enumTypes",
-      "Type count verification for n = 0..18, 20, 25",
-      "Contribution sum verification (totalFromEnum matches known r₄ values) for n = 1..7, 9..11, 13..16",
-      "Structural bounds: nonzeroCount ≤ 4, signFactor ≤ 16, permutations ≤ 24, contribution ≤ 384",
-      "Complete sign factor classification by nonzero count",
-      "Complete contribution table: 10 possible values {1, 8, 16, 24, 32, 48, 64, 96, 192, 384}",
-      "Orbit-stabilizer analysis: contribution = 384/|stabilizer| for all type families",
-      "All-distinct type (1,2,3,4) achieves max contribution 384",
-      "Perfect square nontrivial contributions for n = 4, 9, 16"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "COMPLETED: All type families proved generally, enumeration verified, orbit-stabilizer structure established. 0 sorries, 0 axioms."
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-02-10T12:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-02-06T19:32:14.361Z",
     "iteration": 1,
-    "focus": "Problem fully resolved. All sorted representation types classified with general contribution theorems. Orbit-stabilizer analysis connects to S₄ × (ℤ/2ℤ)⁴ symmetry group.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - problem completed.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: LagrangeFourSquaresOQ02.lean has 0 sorries and 0 axioms. Proves 6 general type family theorems (contribution formulas for ALL valid parameters), decidable enumeration with verification, complete contribution table, structural bounds, and orbit-stabilizer analysis. 717 lines of formal mathematics.",
-    "builtItems": [
-      "RepType structure: sorted 4-tuple representation type with DecidableEq",
-      "enumTypes: decidable enumeration of all representation types for given n",
-      "trivialType_contribution: ∀ k > 0, (0,0,0,k) contributes 8",
-      "allEqualType_contribution: ∀ k > 0, (k,k,k,k) contributes 16",
-      "threeEqualType_contribution: ∀ k > 0, (0,k,k,k) contributes 32",
-      "twoPairType_contribution: ∀ 0 < a < b, (a,a,b,b) contributes 96",
-      "twoEqualType_contribution: ∀ k > 0, (0,0,k,k) contributes 24",
-      "twoNonzeroDistinct_contribution: ∀ 0 < a < b, (0,0,a,b) contributes 48",
-      "contribution_le_384: maximum contribution bound",
-      "orbit-stabilizer theorems: stabilizer sizes for all 6 type families"
-    ],
-    "insights": [
-      "Contribution formula depends only on multiplicity pattern and nonzero count, not specific values",
-      "Permutation count proven by unfolding List.dedup and using inequality hypotheses",
-      "Complete contribution value set has exactly 10 elements: {1, 8, 16, 24, 32, 48, 64, 96, 192, 384}",
-      "384/contribution gives stabilizer order, matching S₄ × (ℤ/2ℤ)⁴ orbit-stabilizer theorem",
-      "24:1 symmetry ratio between max and min nonzero type contributions",
-      "The proof technique for all general theorems: suffices permutations = k, then unfold + simp with inequality hypotheses"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Type family decomposition with general proofs",
-      "description": "Classify types by multiplicity pattern, prove contribution formula for each family using list dedup + factorial computation, verify with native_decide",
-      "status": "completed",
-      "difficulty": "medium"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "number-theory",
-    "extension",
-    "combinatorics",
-    "group-theory"
+    "extension"
   ],
-  "relatedProofs": [
-    "FourSquareDistribution.lean",
-    "LagrangeFourSquaresOQ02.lean"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.NumberTheory.SumFourSquares",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.List.Sort"
-    ]
+    "mathlib": []
   },
   "started": "2026-02-08T06:11:43.710Z",
-  "lastUpdate": "2026-02-10T12:00:00.000Z",
+  "lastUpdate": "2026-02-08T06:11:43.710Z",
   "significance": 6,
   "tractability": 7
 }

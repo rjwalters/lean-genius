@@ -1,121 +1,57 @@
 {
   "slug": "wilsons-generalization",
   "title": "Wilson Theorem Generalizations for Composite Moduli",
-  "phase": "IN_PROGRESS",
+  "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "For n ≥ 2: (n-1)! ≡ -1 (mod n) iff n prime; (3)! ≡ 2 (mod 4); (n-1)! ≡ 0 (mod n) for composite n > 4. The Gauss-Wilson classification: ∏ units ≡ -1 (mod n) iff n ∈ {4, p^k, 2p^k}.",
-    "plain": "Complete classification of factorial residues and unit products modulo n, extending Wilson's theorem to all moduli.",
-    "whyMatters": [
-      "Wilson's theorem is a fundamental result in number theory",
-      "The Gauss generalization connects to primitive root theory and cyclic group structure",
-      "Provides a computational primality test and characterizes the unit group structure"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Composite factorial vanishing: n | (n-1)! for composite n > 4",
-      "Special case n = 4: 3! ≡ 2 (mod 4)",
-      "Complete factorial classification for all n ≥ 2",
-      "Wilson quotient definition and properties",
-      "Wilson prime verification for 5, 13",
-      "unitsProduct_eq_factorial: bridge between unitsProduct and factorial for primes",
-      "unitsProduct_prime: Wilson's theorem in unitsProduct formulation",
-      "Square roots of unity analysis and Gauss-Wilson form detection",
-      "Gauss-Wilson classification verified computationally for n ≤ 200",
-      "isCyclic_units_iff_gaussWilson: Mathlib's cyclic units characterization restated"
-    ],
-    "open": [
-      "Bridge between abstract IsCyclic condition and concrete unitsProduct computation",
-      "Full algebraic proof of gaussWilson_classification (1 sorry remains)"
-    ],
-    "goal": "Complete the bridge between IsCyclic (ZMod n)ˣ and unitsProduct n % n = n - 1"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "EXPLORED",
-    "since": "2026-02-09T01:00:00.000Z",
+    "phase": "IN_PROGRESS",
+    "since": "2026-02-10T01:00:00.000Z",
     "iteration": 2,
-    "focus": "Built substantial infrastructure: prime bridge (unitsProduct = factorial), square roots of unity analysis, self-inverse product connection, extended computational verification, abstract cyclic characterization.",
-    "blockers": [
-      "Need to bridge ZMod unit product (abstract) to unitsProduct (concrete ℕ computation)"
-    ],
-    "nextAction": "Prove the bridge lemma connecting ∏ (ZMod n)ˣ to unitsProduct n via ZMod.unitsEquivCoprime.",
+    "focus": "Prove bridge lemma connecting concrete `unitsProduct` to abstract `IsCyclic (ZMod n)ˣ`.",
+    "activeApproach": "Mathlib cyclic classification + involution bridge.",
+    "blockers": [],
+    "nextAction": "Prove `unitsProduct_eq_neg_one_iff_cyclic` via involution pairing.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced non-cyclic case to orbit product formula. Proved (∏ S)² = 1 where S={x|x²=1} via Finset.prod_pow. Documented three-involution trick: P=c^(|S|/2) for three involutions gives P=P², combined with P²=1 yields P=1. Remaining gap: Finset transversal construction for the orbit product formula. The sorry is now well-localized and has a clear mathematical proof strategy.",
-    "builtItems": [
-      "prime_coprime_iff_pos: coprimality ↔ positivity for primes",
-      "unitsProduct_eq_factorial: unitsProduct p = (p-1)! for prime p",
-      "unitsProduct_prime: Wilson's theorem via unitsProduct",
-      "wilson_product_form: Mathlib's ZMod.prod_Ico_one_prime",
-      "sqRootsOfUnity: computable square root counting",
-      "sqRoot_gaussWilson_le_100: square root count characterizes GW form",
-      "selfInverse_product_le_100: involution-product connection verified",
-      "gaussWilson_verified_le_200: extended computational verification",
-      "isCyclic_units_iff_gaussWilson: Mathlib cyclic characterization restated",
-      "odd_iff_ne_two: helper for prime oddness"
-    ],
-    "insights": [
-      "The Gauss-Wilson classification reduces to: IsCyclic (ZMod n)ˣ ↔ product of units ≡ -1",
-      "Mathlib has ZMod.isCyclic_units_iff giving the full cyclic characterization",
-      "Three-involution trick: for c,d ∈ S\\{1}, orbit products give P=c^(|S|/2)=d^(|S|/2)=(cd)^(|S|/2)=P², so P=P²∧P²=1→P=1",
-      "Finset.prod_involution CANNOT prove orbit product P=c^(|S|/2) because paired values multiply to c≠1",
-      "Need custom Finset transversal construction: pick one element from each {x,cx} pair",
-      "(∏ S)² = 1 proved via Finset.prod_pow + Finset.prod_eq_one (each x² = 1)",
-      "isCyclic_of_card_pow_eq_one_le may provide contrapositive: |S|≤2 → IsCyclic (alternative approach)",
-      "WilsonsTheoremOQ02.lean and wilsons-theorem-oq-02.json are the primary files for this work"
-    ],
-    "mathlibGaps": [
-      "Need bridge between Finset.univ.prod over (ZMod n)ˣ and Finset.filter/prod over coprime elements",
-      "ZMod.unitsEquivCoprime exists but connecting to concrete ℕ products requires careful type manipulation"
-    ],
-    "nextSteps": [
-      "Prove orbit product formula: construct Finset transversal T of S under involution x↦cx, then ∏ S = ∏_T (x·cx) = c^|T|",
-      "Alternative: prove ¬IsCyclic → |S| > 2 via isCyclic_of_card_pow_eq_one_le (needs |{x|x^n=1}|≤n for ALL n, not just 2)",
-      "Alternative: use Mathlib's finite abelian group structure theorem to decompose product",
-      "Submit WilsonsTheoremOQ02.lean to Aristotle for the prod_units_one_of_not_cyclic sorry"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Three-lemma decomposition",
-      "description": "Decompose Gauss-Wilson into: (1) involution pairing, (2) square root counting = cyclic classification, (3) product evaluation when 2 square roots",
-      "status": "in-progress",
-      "difficulty": "hard"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "number-theory",
     "modular-arithmetic",
     "classical",
-    "extension",
-    "cyclic-groups",
-    "primitive-roots"
+    "extension"
   ],
-  "relatedProofs": [
-    "WilsonsTheorem.lean",
-    "PrimitiveRoots.lean"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.NumberTheory.Wilson",
-      "Mathlib.Data.ZMod.Basic",
-      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
-      "ZMod.isCyclic_units_iff"
-    ]
+    "mathlib": []
   },
   "started": "2026-02-08T06:11:43.710Z",
-  "lastUpdate": "2026-02-10T22:00:00.000Z",
+  "lastUpdate": "2026-02-08T06:11:43.710Z",
   "significance": 6,
   "tractability": 7
 }

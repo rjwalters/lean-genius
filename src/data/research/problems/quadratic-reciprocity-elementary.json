@@ -1,86 +1,41 @@
 {
   "slug": "quadratic-reciprocity-elementary",
   "title": "Elementary Proofs of Quadratic Reciprocity",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "theorem elementary_quadratic_reciprocity {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (hp2 : p ≠ 2) (hq2 : q ≠ 2) (hpq : p ≠ q) : legendreSym q p * legendreSym p q = (-1) ^ (p / 2 * (q / 2))",
-    "plain": "For distinct odd primes p and q, the product of Legendre symbols (q/p)(p/q) = (-1)^((p-1)/2 * (q-1)/2). Proven via Eisenstein's elementary approach using Gauss's Lemma, floor function sums, and lattice point counting.",
-    "whyMatters": [
-      "Quadratic reciprocity is one of the most celebrated theorems in number theory",
-      "The elementary Eisenstein proof uses only basic arithmetic and counting",
-      "Over 240 known proofs exist; this formalizes one of the most elegant"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Gauss's Lemma (via ZMod.gauss_lemma)",
-      "Eisenstein's Lemma (via ZMod.eisenstein_lemma)",
-      "Lattice point identity (via ZMod.sum_mul_div_add_sum_mul_div_eq_mul)",
-      "Full QR via elementary proof chain",
-      "Eisenstein proof chain theorem (all 3 steps in one statement)",
-      "QR for p ≡ 1 (mod 4) case",
-      "QR for both ≡ 3 (mod 4) case",
-      "First supplementary law (-1 is QR iff p ≡ 1 mod 4)",
-      "Second supplementary law (2 is QR iff p ≡ ±1 mod 8)",
-      "Computational examples for primes 3, 5, 7, 11, 13"
-    ],
-    "open": [
-      "Zolotarev's permutation-based proof (no Mathlib infrastructure)",
-      "Gauss sum proof (no Gauss sum module in Mathlib)",
-      "Proof via finite field theory"
-    ],
-    "goal": "Formalize the Eisenstein elementary proof of QR with full gallery entry"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-02-10T00:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-02-06T19:32:14.363Z",
     "iteration": 1,
-    "focus": "Fixed build errors and created gallery entry.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - proof is complete with 0 sorries and gallery entry created.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed build errors in ElementaryQuadraticReciprocity.lean (helper lemma logic error, deprecated API, example Fact instance synthesis, example argument order). Proof compiles with 0 sorries. Created full gallery entry with meta.json, index.ts, and annotations.json.",
-    "builtItems": [
-      "Fixed prime_ne_cast_ne_zero helper lemma (line 209-216)",
-      "Fixed Fact instance synthesis for computational examples (lines 301-306)",
-      "Fixed example argument order to match Mathlib API (lines 308-328)",
-      "Created gallery entry: src/data/proofs/elementary-quadratic-reciprocity/"
-    ],
-    "insights": [
-      "Mathlib has NO Gauss sum module - Gauss sum proof would require new foundational work",
-      "Mathlib has NO Zolotarev theorem - permutation-based proof blocked",
-      "ZMod.natCast_zmod_eq_zero_iff_dvd deprecated in favor of ZMod.natCast_eq_zero_iff",
-      "Fact (Nat.Prime N) instances not auto-synthesized for concrete N; need explicit named instances",
-      "quadratic_reciprocity_one_mod_four takes p % 4 = 1 for the FIRST argument, not the displayed prime",
-      "Eisenstein's 1844 proof is the most elegant elementary approach and well-supported by Mathlib"
-    ],
-    "mathlibGaps": [
-      "No Gauss sum (g(χ) = Σ χ(t)e^(2πit/p)) formalization",
-      "No Zolotarev theorem (Legendre symbol = permutation sign)",
-      "No Jacobi sum formalization"
-    ],
-    "nextSteps": [
-      "Alternative QR proofs (Gauss sum, Zolotarev) would need significant new infrastructure",
-      "Could extend to Jacobi symbol and QR for composite moduli",
-      "Could formalize the connection between QR and class field theory"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Fix and verify Eisenstein elementary proof",
-      "status": "completed",
-      "description": "Fixed build errors, verified 0 sorries, created gallery entry"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "number-theory",
@@ -88,23 +43,14 @@
     "quadratic-reciprocity",
     "extension"
   ],
-  "relatedProofs": [
-    "quadratic-reciprocity"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Eisenstein, G. (1844). Geometrischer Beweis des Fundamentaltheorems für die quadratischen Reste."
-    ],
-    "urls": [
-      "https://en.wikipedia.org/wiki/Proofs_of_quadratic_reciprocity"
-    ],
-    "mathlib": [
-      "Mathlib.NumberTheory.LegendreSymbol.GaussEisensteinLemmas",
-      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-02-08T06:11:43.710Z",
-  "lastUpdate": "2026-02-10T00:00:00.000Z",
+  "lastUpdate": "2026-02-08T06:11:43.710Z",
   "significance": 7,
   "tractability": 6
 }

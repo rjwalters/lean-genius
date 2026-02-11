@@ -1,96 +1,50 @@
 {
   "slug": "erdos-693",
   "title": "Erdős #693",
-  "phase": "FORMALIZED",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "Let $k\\geq 2$ and $n$ be sufficiently large depending on $k$. Let $A=\\{a_1<a_2<\\cdots \\}$ be the set of those integers in $[n,n^k]$ which have a divisor in $(n,2n)$. Estimate\\[\\max_{i} a_{i+1}-a_i.\\]Is this $\\leq (\\log n)^{O(1)}$?\n\n\n\nSee also [446].",
     "plain": "Let $k\\geq 2$ and $n$ be sufficiently large depending on $k$. Let $A=\\{a_1<a_2<\\cdots \\}$ be the set of those integers in $[n,n^k]$ which have a divisor in $(n,2n)$. Estimate\\[\\max_{i} a_{i+1}-a_i.\\]Is this $\\leq (\\log n)^{O(1)}$?",
-    "whyMatters": [
-      "Connects to Ford's 2008 density theorem on divisor distribution",
-      "Related to Problem #446 (solved by Ford) and #692 (disproved by Cambie 2025)"
-    ]
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "setA monotonicity (setA_mono): setA n k ⊆ setA n (k+1)",
-      "setA divisor bounds: divisors in (n,2n) yield quotients in (n/(2n), n^k/n)",
-      "Membership witnesses: n+1 ∈ setA for n ≥ 2, k ≥ 2",
-      "Interval coverage: every d ∈ (n, 2n) is in setA for n ≥ 3",
-      "Cardinality lower bound: |setA| ≥ n-1 for n ≥ 3, k ≥ 2",
-      "Average gap crude bound from cardinality"
-    ],
-    "open": [
-      "Is max gap ≤ (log n)^O(1)? (Erdős conjecture)",
-      "Tight pigeonhole bound for max gap",
-      "Connection to Ford's divisor density with α ≈ 0.086"
-    ],
-    "goal": "Prove or disprove polylogarithmic bound on max consecutive gap"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "FORMALIZED",
-    "since": "2026-02-07T18:50:00.000Z",
-    "iteration": 2,
-    "focus": "Lean formalization with structural theorems proved",
+    "phase": "NEW",
+    "since": "2026-01-14T19:54:27.711Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Submit to Aristotle for axiom proofs, or investigate Ford density further",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Comprehensive Lean 4 formalization with 16 proved theorems, 4 axioms, 0 sorries. Proved setA structural properties (monotonicity, membership witnesses, cardinality lower bound). Connected to Ford's 2008 density theorem.",
-    "builtItems": [
-      "proofs/Proofs/Erdos693Problem.lean - 16 theorems, 4 axioms, 0 sorries"
-    ],
-    "insights": [
-      "setA always contains the interval (n, 2n) since each d divides itself - gives n-1 elements",
-      "Ford's 2008 result (Problem #446) gives density of integers with divisor in (n,2n): δ(n) ~ 1/((log n)^α (log log n)^{3/2}) with α ≈ 0.086",
-      "Problem #692 was disproved by Cambie (2025), showing related problems can have surprising answers",
-      "The polylogarithmic gap conjecture would follow from showing divisors are 'well-spread' in each quotient class"
-    ],
-    "mathlibGaps": [
-      "No Mathlib support for Ford's divisor density theorem",
-      "No Mathlib support for multiplicative structure of divisor sets"
-    ],
-    "nextSteps": [
-      "Convert axioms to theorem sorries for Aristotle submission",
-      "Investigate if maxGap_trivial_upper can be proved from pigeonhole",
-      "Study Ford's proof technique for potential formalization"
-    ],
-    "markdown": "# Erdős #693 - Knowledge Base\n\n## Problem Statement\n\nLet k≥2 and n be sufficiently large. Let A = {a₁ < a₂ < ...} be the set of integers in [n, n^k] with a divisor in (n, 2n). Estimate max(aᵢ₊₁ - aᵢ). Is this ≤ (log n)^O(1)?\n\n## Status: OPEN\n\n## Formalization\n\n**File**: `proofs/Proofs/Erdos693Problem.lean`\n- 16 proved theorems, 4 axioms, 0 sorries\n- Key definitions: setA, hasDivisorInInterval, maxGap, maxGapA\n- Key proved results: setA_mono, setA_contains_interval, setA_has_many_elements, average_gap_crude_bound\n- Axioms: maxGap_trivial_upper, maxGap_pigeonhole, divisor_density_ford, polylog_implies_subpoly\n\n## Related Problems\n\n- Problem #446 (Ford 2008, SOLVED): Density of integers with divisor in (y, 2y)\n- Problem #692 (Cambie 2025, DISPROVED): Related divisor problem\n\n## References\n\n- Ford (2008): The distribution of integers with a divisor in a given interval\n- Er79e: Original Erdős reference\n\n---\n\n*Updated 2026-02-07 by researcher-2*\n"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #693 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and $n$ be sufficiently large depending on $k$. Let $A=\\{a_1<a_2<\\cdots \\}$ be the set of those integers in $[n,n^k]$ which have a divisor in $(n,2n)$. Estimate\\[\\max_{i} a_{i+1}-a_i.\\]Is this $\\leq (\\log n)^{O(1)}$?\n\n\n\nSee also [446].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #446\n- Problem #692\n- Problem #694\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
-  "approaches": [
-    {
-      "name": "Structural formalization with Ford connection",
-      "status": "completed",
-      "description": "Formalize setA definitions, prove monotonicity and membership witnesses, connect to Ford's density theorem"
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "number-theory",
-    "divisors",
-    "gaps"
+    "erdos"
   ],
-  "relatedProofs": [
-    "proofs/Proofs/Erdos446Problem.lean"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Ford (2008): The distribution of integers with a divisor in a given interval"
-    ],
-    "urls": [
-      "https://erdosproblems.com/693"
-    ],
-    "mathlib": [
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Data.Set.Finite.Basic"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-14T19:54:27.712Z",
   "significance": 7,
