@@ -2,6 +2,7 @@ import Mathlib.NumberTheory.LSeries.RiemannZeta
 import Mathlib.NumberTheory.LSeries.Basic
 import Mathlib.NumberTheory.LSeries.Nonvanishing
 import Mathlib.NumberTheory.LSeries.Dirichlet
+import Mathlib.NumberTheory.LSeries.DirichletContinuation
 import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.NumberTheory.Harmonic.EulerMascheroni
@@ -52,6 +53,7 @@ This file does NOT prove the Riemann Hypothesis. It provides:
 | Conjugate symmetry: ζ(s)=0 ⟹ ζ(conj(s))=0 | PROVEN (from axiom zeta_conj) |
 | RH ↔ RH for upper half-plane | PROVEN (this file) |
 | Generalized RH for Dirichlet L-functions | FORMALIZED (definition) |
+| GRH implies RH | PROVEN (via LFunction_modOne_eq) |
 | All zeros in 0 < Re(s) < 1 have Re(s) = 1/2 | **CONJECTURE** |
 
 ## Historical Context
@@ -704,9 +706,18 @@ def GeneralizedRiemannHypothesis : Prop :=
     s.re = 1/2
 
 /-- GRH implies RH: the Riemann zeta function is L(s, χ₀) for the principal
-character mod 1. -/
+character mod 1 (PROVEN).
+
+Proof: By `DirichletCharacter.LFunction_modOne_eq`, for χ : DirichletCharacter ℂ 1,
+we have L(s, χ) = ζ(s). Specializing GRH to N=1 gives the result. -/
 theorem GRH_implies_RH (h : GeneralizedRiemannHypothesis) : RiemannHypothesis := by
-  sorry
+  rw [RH_alt]
+  intro s hz hpos hlt
+  -- The unique character mod 1 has L-function equal to ζ
+  have hL : DirichletCharacter.LFunction (1 : DirichletCharacter ℂ 1) s = riemannZeta s :=
+    congr_fun DirichletCharacter.LFunction_modOne_eq s
+  -- Apply GRH to N=1 and the trivial character
+  exact h 1 1 s (hL ▸ hz) hpos hlt
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XII: SUMMARY AND SIGNIFICANCE
@@ -736,6 +747,7 @@ PART XII: SUMMARY AND SIGNIFICANCE
 
 4. **Generalizations**:
    - GRH for Dirichlet L-functions (formalized)
+   - GRH implies RH (PROVEN via LFunction_modOne_eq)
 
 5. **Why it matters**:
    - Best possible error term in Prime Number Theorem

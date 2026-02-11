@@ -1254,6 +1254,122 @@ theorem triangle_gives_congruent_number_point (T : RightTriangle)
     exact triangle_to_point_y_ne_zero T
 
 /- ═══════════════════════════════════════════════════════════════════════════════
+PART IX.d.5: INVERSE KOBLITZ CORRESPONDENCE - POINT → TRIANGLE (PROVEN)
+═══════════════════════════════════════════════════════════════════════════════
+
+The inverse of the Koblitz map: given a non-torsion rational point (X, Y) on
+y² = x³ - n²x (with Y ≠ 0), we construct a rational right triangle with area n.
+
+The map is:
+  (X, Y) ↦ (a, b, c) where
+    a = |X² - n²| / |Y|
+    b = 2n · |X| / |Y|
+    c = (X² + n²) / |Y|
+
+Key identities:
+  a² + b² = (X⁴ + 2n²X² + n⁴)/Y² = (X²+n²)²/Y² = c²
+  ab/2 = n|X||X²-n²| / Y² = n|X(X²-n²)| / Y² = n|Y²|/Y² = n
+
+The condition Y ≠ 0 ensures X ≠ 0 and X ≠ ±n (since Y² = X(X-n)(X+n)),
+so all sides are positive.
+-/
+
+/-- Given a non-torsion point on y² = x³ - n²x, the X-coordinate satisfies X ≠ 0. -/
+lemma congruent_point_x_ne_zero {n : ℕ} {hn : n > 0}
+    (P : RationalPoint (congruentNumberCurve n hn)) (hnt : P.isNonTorsion) :
+    P.x ≠ 0 := by
+  intro hx0
+  -- If X = 0 then Y² = 0³ - n²·0 = 0, so Y = 0, contradicting non-torsion
+  have h := P.on_curve
+  unfold congruentNumberCurve at h
+  simp only at h
+  rw [hx0] at h
+  simp at h
+  exact hnt (sq_eq_zero_iff.mp h)
+
+/-- Given a non-torsion point on y² = x³ - n²x, X² ≠ n².
+This is because X = ±n gives Y² = (±n)(0)(±2n) = 0. -/
+lemma congruent_point_x_sq_ne_n_sq {n : ℕ} {hn : n > 0}
+    (P : RationalPoint (congruentNumberCurve n hn)) (hnt : P.isNonTorsion) :
+    P.x ^ 2 ≠ (n : ℚ) ^ 2 := by
+  intro heq
+  have h := P.on_curve
+  unfold congruentNumberCurve at h
+  simp only at h
+  -- Y² = X³ - n²X = X(X² - n²) = 0 since X² = n²
+  have : P.y ^ 2 = P.x * (P.x ^ 2 - (n : ℚ) ^ 2) := by ring_nf; linarith
+  rw [heq, sub_self, mul_zero] at this
+  exact hnt (sq_eq_zero_iff.mp this)
+
+/-- The inverse Koblitz map: side a = |X² - n²| / |Y|. -/
+def pointToTriangleA {n : ℕ} {hn : n > 0}
+    (P : RationalPoint (congruentNumberCurve n hn)) : ℚ :=
+  |P.x ^ 2 - (n : ℚ) ^ 2| / |P.y|
+
+/-- The inverse Koblitz map: side b = 2n|X| / |Y|. -/
+def pointToTriangleB {n : ℕ} {hn : n > 0}
+    (P : RationalPoint (congruentNumberCurve n hn)) : ℚ :=
+  2 * (n : ℚ) * |P.x| / |P.y|
+
+/-- The inverse Koblitz map: side c = (X² + n²) / |Y|. -/
+def pointToTriangleC {n : ℕ} {hn : n > 0}
+    (P : RationalPoint (congruentNumberCurve n hn)) : ℚ :=
+  (P.x ^ 2 + (n : ℚ) ^ 2) / |P.y|
+
+/-- **The Pythagorean Identity for the Inverse Map** (PROVEN)
+
+For a non-torsion point (X, Y) on y² = x³ - n²x, the sides
+a = |X² - n²|/|Y|, b = 2n|X|/|Y|, c = (X² + n²)/|Y| satisfy a² + b² = c².
+
+Proof: a² + b² = ((X² - n²)² + 4n²X²)/Y² = (X² + n²)²/Y² = c². -/
+theorem inverse_koblitz_pythagorean {n : ℕ} {hn : n > 0}
+    (P : RationalPoint (congruentNumberCurve n hn)) (hnt : P.isNonTorsion) :
+    (pointToTriangleA P) ^ 2 + (pointToTriangleB P) ^ 2 =
+    (pointToTriangleC P) ^ 2 := by
+  unfold pointToTriangleA pointToTriangleB pointToTriangleC
+  have hy_ne : P.y ≠ 0 := hnt
+  have habs_y_ne : |P.y| ≠ 0 := abs_ne_zero.mpr hy_ne
+  -- Simplify: all terms have denominator |Y|², so compare numerators
+  field_simp
+  -- |X² - n²|² + (2n|X|)² = (X² + n²)²
+  -- Since |a|² = a² for rationals, this reduces to algebra
+  rw [sq_abs, sq_abs, sq_abs]
+  ring
+
+/-- Key identity: |X| · |X² - n²| = Y² for points on y² = x³ - n²x.
+This is because Y² = X(X² - n²) and Y² ≥ 0 gives |X(X² - n²)| = Y². -/
+lemma abs_x_mul_abs_diff_sq_eq_y_sq {n : ℕ} {hn : n > 0}
+    (P : RationalPoint (congruentNumberCurve n hn)) :
+    |P.x| * |P.x ^ 2 - (n : ℚ) ^ 2| = P.y ^ 2 := by
+  have h := P.on_curve
+  unfold congruentNumberCurve at h
+  simp only at h
+  -- h : Y² = X³ + (-n²)·X + 0, i.e., Y² = X³ - n²X = X(X² - n²)
+  have key : P.y ^ 2 = P.x * (P.x ^ 2 - (n : ℚ) ^ 2) := by linarith
+  rw [← abs_mul, key, abs_of_nonneg (sq_nonneg P.y)]
+
+/-- **The Area Identity for the Inverse Map**
+
+For a non-torsion point (X, Y) on y² = x³ - n²x, the triangle with sides
+a, b, c from the inverse Koblitz map has area n.
+
+Proof: ab/2 = |X²-n²|·2n|X| / (2·|Y|²) = n·(|X|·|X²-n²|) / Y² = n·Y²/Y² = n. -/
+theorem inverse_koblitz_area {n : ℕ} {hn : n > 0}
+    (P : RationalPoint (congruentNumberCurve n hn)) (hnt : P.isNonTorsion) :
+    pointToTriangleA P * pointToTriangleB P / 2 = (n : ℚ) := by
+  unfold pointToTriangleA pointToTriangleB
+  have hy_ne : P.y ≠ 0 := hnt
+  have habs_y_ne : |P.y| ≠ 0 := abs_ne_zero.mpr hy_ne
+  have hkey := abs_x_mul_abs_diff_sq_eq_y_sq P
+  -- Goal: (|X²-n²|/|Y|) · (2n·|X|/|Y|) / 2 = n
+  -- = |X²-n²| · 2n · |X| / (2 · |Y|²)
+  -- = 2n · (|X| · |X²-n²|) / (2 · Y²)   [since |Y|² = Y²]
+  -- = 2n · Y² / (2 · Y²) = n
+  have hy_sq_pos : 0 < P.y ^ 2 := by positivity
+  field_simp
+  nlinarith [hkey, sq_abs P.y]
+
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART IX.e: HASSE BOUND AND POINT COUNTING (INFRASTRUCTURE)
 ═══════════════════════════════════════════════════════════════════════════════
 

@@ -1,55 +1,101 @@
 {
   "slug": "geometric-series-oq-02",
   "title": "Geometric Series for Matrices and Operators",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "complete",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "For T in a complete normed ring with ‖T‖ < 1, prove: (1) ∑ T^n converges, (2) (1-T) is invertible, (3) ∑ T^n = (1-T)⁻¹ (Neumann series).",
+    "plain": "Generalize the geometric series formula to matrices and operators: the Neumann series ∑ T^n = (1-T)⁻¹ for ‖T‖ < 1 in any complete normed ring.",
+    "whyMatters": [
+      "Foundation of perturbation theory in functional analysis",
+      "Operator-theoretic generalization of scalar geometric series",
+      "Key tool for iterative methods in numerical linear algebra"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "neumann_summable: ‖T‖ < 1 → ∑ T^n converges",
+      "one_sub_isUnit: ‖T‖ < 1 → (1-T) is a unit",
+      "neumann_sum: ∑ T^n = Ring.inverse(1-T)",
+      "finite_neumann_identity: (1-T) * ∑_{k<n} T^k = 1 - T^n",
+      "finite_neumann_identity': right-multiply form",
+      "left_inverse_identity: (1-T) * ∑ T^n = 1",
+      "right_inverse_identity: (∑ T^n) * (1-T) = 1",
+      "norm_neumann_le: ‖∑ T^n‖ ≤ (1-‖T‖)⁻¹",
+      "partial_sums_tendsto: finite sums → Ring.inverse(1-T)",
+      "invertible_near_one: ‖1-A‖ < 1 → A is a unit",
+      "inverse_near_one: Ring.inverse A = ∑ (1-A)^n",
+      "neumann_sum_comm: T commutes with ∑ T^n",
+      "norm_pow_le_pow_norm: ‖T^n‖ ≤ ‖T‖^n for n ≥ 1"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "COMPLETE - all theorems proved with 0 sorries and 0 axioms"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-02-06T19:32:14.360Z",
+    "phase": "COMPLETE",
+    "since": "2026-02-11T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Complete. 237 lines, 13 theorems, 0 sorries, 0 axioms.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - problem is complete.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: GeometricSeriesOQ02.lean has 237 lines with 13 fully-proved theorems covering the Neumann series (operator geometric series). All results proved from Mathlib with 0 sorries and 0 axioms. Covers summability, invertibility, the Neumann series identity, finite partial sums, norm bounds, partial sum convergence, perturbation of identity, and commutativity.",
+    "builtItems": [
+      "neumann_summable", "one_sub_isUnit", "neumann_sum",
+      "finite_neumann_identity", "finite_neumann_identity'",
+      "left_inverse_identity", "right_inverse_identity",
+      "norm_pow_le_pow_norm", "norm_neumann_le",
+      "partial_sums_tendsto", "invertible_near_one",
+      "inverse_near_one", "neumann_sum_comm"
+    ],
+    "insights": [
+      "All results follow cleanly from Mathlib's summable_geometric_of_norm_lt_one and Units.oneSub",
+      "Results apply to matrices, bounded linear operators, and any complete normed ring via typeclass genericity",
+      "File is self-contained with no axioms or sorry - fully verified"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Neumann series via Mathlib NormedRing",
+      "description": "Formalize Neumann series using Mathlib's NormedRing + CompleteSpace infrastructure. All proofs delegate to existing Mathlib lemmas.",
+      "status": "complete",
+      "difficulty": "easy"
+    }
+  ],
   "tags": [
     "seeker-selected",
     "linear-algebra",
     "analysis",
-    "generalization"
+    "generalization",
+    "0-sorry",
+    "0-axiom"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "GeometricSeries.lean",
+    "GeometricSeriesOQ02.lean"
+  ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Mathlib.Algebra.Group.NatPowAssoc",
+      "Mathlib.Algebra.Ring.Regular",
+      "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+    ]
   },
   "started": "2026-02-08T06:11:43.710Z",
-  "lastUpdate": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-11T00:00:00.000Z",
   "significance": 7,
   "tractability": 7
 }
