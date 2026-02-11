@@ -3,7 +3,7 @@
     "id": "erdos-10-ann-imports",
     "proofId": "erdos-10",
     "range": { "startLine": 28, "endLine": 33 },
-    "type": "context",
+    "type": "concept",
     "title": "Imports and Setup",
     "content": "Imports `Mathlib.Data.Nat.Prime.Basic` for `Nat.Prime`, `Mathlib.Topology.Algebra.InfiniteSum.Real` for real-valued sums, `Mathlib.Order.Filter.AtTopBot.Group` for `Filter.atTop` and `Filter.liminf`, and `Mathlib.Tactic` for proof tactics. Opens `Set` and `Filter` namespaces for cleaner notation in density and set definitions.",
     "mathContext": "Uses `Filter.liminf` and `Filter.atTop` to define asymptotic lower density as $\\underline{d}(S) = \\liminf_{n \\to \\infty} \\frac{|S \\cap [0,n]|}{n+1}$.",
