@@ -1,6 +1,6 @@
 {
   "slug": "erdos-101",
-  "title": "Erd\u0151s #101",
+  "title": "Erdős #101",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
@@ -28,8 +28,8 @@
   "currentState": {
     "phase": "PROVING",
     "since": "2026-01-12T07:59:02.685Z",
-    "iteration": 2,
-    "focus": "Proved per-point bound. Next: global bound via double counting.",
+    "iteration": 3,
+    "focus": "All proofs build. Structural lemmas complete. Main conjecture OPEN.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "RICH FORMALIZATION: 8 collinearity lemmas proved, 3 upper bounds proved (n², n(n-1)/2, n(n-1)/12), per-point bound (n-1)/3, and key structural lemmas (uniqueness, overlap). The n(n-1)/12 bound is optimal from double-counting. Main conjecture o(n²) remains OPEN - requires techniques beyond combinatorial double-counting. File has build errors in latest edits due to concurrent instance contention.",
+    "progressSummary": "RICH FORMALIZATION (0 sorries): 8 collinearity lemmas, 3 upper bounds (n², n(n-1)/2, n(n-1)/12), per-point bound (n-1)/3, structural lemmas (uniqueness, overlap, fourCollinearThrough_sub_family, mem_fourCollinearThrough_of_mem_family). Szemerédi-Trotter axiom refined with Finset incidence structure. Double-counting connection documented. The n(n-1)/12 bound is optimal from pure combinatorics. Main conjecture o(n²) OPEN ($100 prize).",
     "builtItems": [
       "collinear_self, collinear_refl, collinear_self_right, collinear_swap23, collinear_swap12, collinear_rotate, collinear_cycle - 7 collinearity symmetry lemmas proved",
       "collinear_trans, collinear_four, collinear_any_triple - transitivity chain proved",
@@ -54,7 +54,10 @@
       "powersetCard2_disjoint - utility lemma for disjoint pair-sets",
       "fourCollinearFamily, fourCollinearThrough definitions",
       "fourCollinearThrough_bound - per-point bound (n-1)/3 [HAS BUILD ERRORS from concurrent editing]",
-      "szemeredi_trotter axiom refined with Finset incidence structure"
+      "szemeredi_trotter axiom refined with Finset incidence structure",
+      "fourCollinearThrough_sub_family - proved subset relation (BUILDS OK)",
+      "mem_fourCollinearThrough_of_mem_family - proved membership relation (BUILDS OK)",
+      "Fixed sum_const_nat mul order issue from concurrent editing (ring tactic)"
     ],
     "insights": [
       "The n(n-1)/12 bound is OPTIMAL from pure double-counting: each 4-collinear subset has C(4,2)=6 pairs, disjoint subsets pack into C(n,2) total pairs, giving 6F ≤ C(n,2)",
@@ -63,17 +66,16 @@
       "Per-point bound uses disjoint union: erasing p from each 4-collinear subset gives pairwise disjoint 3-element subsets of P\\{p}",
       "Double-counting via per-point bound: sum over all p of |fourCollinearThrough(p)| = 4·|F|, each bounded by (n-1)/3, gives 4F ≤ n(n-1)/3, so F ≤ n(n-1)/12. This reproves improved_upper_bound from a different angle",
       "Solymosi-Stojaković (2013) gives lower bound n^{2-O(1/√log n)}, nearly quadratic. Gap between this and o(n²) is the open problem",
-      "Problem relates to Erdős #102, #669, #588. Also Problem 71 on Ben Green's list of open problems"
+      "Problem relates to Erdős #102, #669, #588. Also Problem 71 on Ben Green's list of open problems",
+      "Kővári-Sós-Turán does NOT help: K_{2,2}-free in point-line incidence gives 4f ≤ √n·f+f which does not bound f"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Fix build errors in fourCollinearThrough_bound caused by concurrent editing (herase_inj direction, hsum_eq mul order)",
-      "Formalize the double-counting argument: sum of per-point bounds gives alternative proof of n(n-1)/12",
-      "Investigate whether Kővári-Sós-Turán (bipartite Turán) gives better bounds for this specific structure",
-      "Consider formalizing the Solymosi-Stojaković lower bound construction",
-      "This problem is OPEN with $100 prize - any improvement on O(n²) upper bound would be significant"
+      "Formalize full double-counting proof via Finset.sum_comm interchange",
+      "Investigate spectral methods or algebraic geometry approaches to o(n²)",
+      "This problem is OPEN with $100 prize - truly novel ideas required beyond incidence geometry"
     ],
-    "markdown": "# Erd\u0151s #101 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven $n$ points in $\\mathbb{R}^2$, no five of which are on a line, the number of lines containing four points is $o(n^2)$.\n\n\n\nThere are examples of sets of $n$ points with $\\sim n^2/6$ many collinear triples and no four points on a line. Such constructions are given by Burr, Gr\\\"{u}nbaum, and Sloane \\cite{BGS74} and F\\\"{u}redi and Pal\\'{a}sti \\cite{FuPa84}.\n\nGr\\\"{u}nbaum \\cite{Gr76} constructed an example with $\\gg n^{3/2}$ such lines. Erd\\H{o}s speculated this may be the correct order of magnitude. This is false: Solymosi and Stojakovi\\'{c} \\cite{SoSt13} have constructed a set with no five on a line and at least\\[n^{2-O(1/\\sqrt{\\log n})}\\]many lines containing exactly four points.\n\nSee also [102] and [669]. A generalisation of this problem is asked in [588].\n\nThis problem is Problem 71 on Green's open problems list.\n\n\n\n\nReferences\n\n\n[BGS74] Burr, Stefan A. and Gr\\\"{u}nbaum, Branko and Sloane, N. J. A., The orchard problem. Geometriae Dedicata (1974), 397-424.\n\n[FuPa84] F\\\"{u}redi, Z. and Pal\\'{a}sti, I., Arrangements of lines with a large number of triangles. Proc. Amer. Math. Soc. (1984), 561-566.\n\n[Gr76] Gr\\\"{u}nbaum, Branko, New views on some old questions of combinatorial geometry. Colloquio Internazionale sulle Teorie Combinatorie\n(Roma, 1973), Tomo I (1976), 451-468.\n\n[SoSt13] Solymosi, J\\'{o}zsef and Stojakovi\\'C, Milo\\vS, Many collinear {$k$}-tuples with no {$k+1$} collinear points. Discrete Comput. Geom. (2013), 811-820.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n**Prize**: $100\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #6\n- Problem #2\n- Problem #102\n- Problem #669\n- Problem #588\n- Problem #100\n- Problem #39\n- Problem #1\n\n## References\n\n- Er84\n- Er90\n- Er92e\n- BGS74\n- FuPa84\n- Gr76\n- SoSt13\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erdős #101 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nGiven $n$ points in $\\mathbb{R}^2$, no five of which are on a line, the number of lines containing four points is $o(n^2)$.\n\n\n\nThere are examples of sets of $n$ points with $\\sim n^2/6$ many collinear triples and no four points on a line. Such constructions are given by Burr, Gr\\\"{u}nbaum, and Sloane \\cite{BGS74} and F\\\"{u}redi and Pal\\'{a}sti \\cite{FuPa84}.\n\nGr\\\"{u}nbaum \\cite{Gr76} constructed an example with $\\gg n^{3/2}$ such lines. Erd\\H{o}s speculated this may be the correct order of magnitude. This is false: Solymosi and Stojakovi\\'{c} \\cite{SoSt13} have constructed a set with no five on a line and at least\\[n^{2-O(1/\\sqrt{\\log n})}\\]many lines containing exactly four points.\n\nSee also [102] and [669]. A generalisation of this problem is asked in [588].\n\nThis problem is Problem 71 on Green's open problems list.\n\n\n\n\nReferences\n\n\n[BGS74] Burr, Stefan A. and Gr\\\"{u}nbaum, Branko and Sloane, N. J. A., The orchard problem. Geometriae Dedicata (1974), 397-424.\n\n[FuPa84] F\\\"{u}redi, Z. and Pal\\'{a}sti, I., Arrangements of lines with a large number of triangles. Proc. Amer. Math. Soc. (1984), 561-566.\n\n[Gr76] Gr\\\"{u}nbaum, Branko, New views on some old questions of combinatorial geometry. Colloquio Internazionale sulle Teorie Combinatorie\n(Roma, 1973), Tomo I (1976), 451-468.\n\n[SoSt13] Solymosi, J\\'{o}zsef and Stojakovi\\'C, Milo\\vS, Many collinear {$k$}-tuples with no {$k+1$} collinear points. Discrete Comput. Geom. (2013), 811-820.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $100\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #6\n- Problem #2\n- Problem #102\n- Problem #669\n- Problem #588\n- Problem #100\n- Problem #39\n- Problem #1\n\n## References\n\n- Er84\n- Er90\n- Er92e\n- BGS74\n- FuPa84\n- Gr76\n- SoSt13\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "approaches": [],
   "tags": [
@@ -86,7 +88,7 @@
     "mathlib": []
   },
   "started": "2026-02-08T06:11:43.710Z",
-  "lastUpdate": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-11T14:36:58Z",
   "significance": 5,
   "tractability": 3
 }

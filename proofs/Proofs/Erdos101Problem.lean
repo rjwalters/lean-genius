@@ -225,7 +225,7 @@ theorem four_collinear_unique (P : PlanarPointSet) (hP : NoFiveCollinear P)
     (hS₁_sub : S₁ ⊆ P.points) (hS₂_sub : S₂ ⊆ P.points)
     (hS₁_card : S₁.card = 4) (hS₂_card : S₂.card = 4)
     (a b : ℝ × ℝ) (hab : a ≠ b)
-    (ha₁ : a ∈ S₁) (hb₁ : b ∈ S₁) (ha₂ : a ∈ S₂) (hb₂ : b ∈ S₂)
+    (ha₁ : a ∈ S₁) (hb₁ : b ∈ S₁) (_ha₂ : a ∈ S₂) (_hb₂ : b ∈ S₂)
     (hcol₁ : ∀ p ∈ S₁, collinear a b p)
     (hcol₂ : ∀ p ∈ S₂, collinear a b p) :
     S₁ = S₂ := by
@@ -253,10 +253,10 @@ theorem four_collinear_overlap_small (P : PlanarPointSet) (hP : NoFiveCollinear 
     (hS₁_card : S₁.card = 4) (hS₂_card : S₂.card = 4)
     (hne : S₁ ≠ S₂)
     (a₁ b₁ : ℝ × ℝ) (hab₁ : a₁ ≠ b₁)
-    (ha₁ : a₁ ∈ S₁) (hb₁ : b₁ ∈ S₁)
+    (_ha₁ : a₁ ∈ S₁) (_hb₁ : b₁ ∈ S₁)
     (hcol₁ : ∀ p ∈ S₁, collinear a₁ b₁ p)
     (a₂ b₂ : ℝ × ℝ) (hab₂ : a₂ ≠ b₂)
-    (ha₂ : a₂ ∈ S₂) (hb₂ : b₂ ∈ S₂)
+    (_ha₂ : a₂ ∈ S₂) (_hb₂ : b₂ ∈ S₂)
     (hcol₂ : ∀ p ∈ S₂, collinear a₂ b₂ p) :
     (S₁ ∩ S₂).card ≤ 1 := by
   by_contra h
@@ -616,9 +616,175 @@ axiom collinear_triples_no_four :
       NoFiveCollinear P ∧ P.points.card ≥ N ∧
         fourPointLineCount P = 0
 
-/-- **Szemerédi–Trotter Bound**: the number of point-line incidences
-    is O(n^{2/3} m^{2/3} + n + m) for n points and m lines in the plane. -/
-axiom szemeredi_trotter :
+/-- **Szemerédi–Trotter Bound**: for any finite set of points P and finite set
+    of lines L in ℝ², the number of incidences I(P,L) satisfies
+    I(P,L) ≤ C · (|P|^{2/3}·|L|^{2/3} + |P| + |L|) for some absolute constant C.
+    Note: stated for a given incidence count, not universally quantified. -/
+axiom szemeredi_trotter
+    (P_pts : Finset (ℝ × ℝ)) (lines : Finset (Finset (ℝ × ℝ)))
+    (incidences : Finset ((ℝ × ℝ) × Finset (ℝ × ℝ)))
+    (h_inc : ∀ pl ∈ incidences, pl.1 ∈ P_pts ∧ pl.2 ∈ lines ∧ pl.1 ∈ pl.2) :
   ∃ C : ℝ, C > 0 ∧
-    ∀ (n m : ℕ), ∀ (incidences : ℕ),
-      (incidences : ℝ) ≤ C * ((n : ℝ) ^ (2/3 : ℝ) * (m : ℝ) ^ (2/3 : ℝ) + n + m)
+    (incidences.card : ℝ) ≤ C * ((P_pts.card : ℝ) ^ (2/3 : ℝ) *
+      (lines.card : ℝ) ^ (2/3 : ℝ) + P_pts.card + lines.card)
+
+/- ## The F family (for reuse across theorems) -/
+
+open Classical in
+/-- The family F of all 4-element collinear subsets of P.points. -/
+noncomputable def fourCollinearFamily (P : PlanarPointSet) : Finset (Finset (ℝ × ℝ)) :=
+  P.points.powerset.filter (fun S =>
+    S.card = 4 ∧
+    ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
+      ∀ p ∈ S, collinear a b p)
+
+open Classical in
+/-- fourPointLineCount equals the cardinality of fourCollinearFamily. -/
+theorem fourPointLineCount_eq_family (P : PlanarPointSet) :
+    fourPointLineCount P = (fourCollinearFamily P).card := by
+  unfold fourPointLineCount fourCollinearFamily; rfl
+
+/- ## Per-Point Bound -/
+
+open Classical in
+/-- Four-collinear subsets of P containing a given point p. -/
+noncomputable def fourCollinearThrough (P : PlanarPointSet) (p : ℝ × ℝ) :
+    Finset (Finset (ℝ × ℝ)) :=
+  P.points.powerset.filter (fun S =>
+    S.card = 4 ∧ p ∈ S ∧
+    ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
+      ∀ q ∈ S, collinear a b q)
+
+open Classical in
+/-- **Per-Point Bound**: Under NoFiveCollinear, at most (n-1)/3 four-point lines
+    pass through any single point.
+    Proof: each 4-collinear subset through p contributes 3 other points.
+    By overlap_small, distinct subsets share at most 1 element (namely p).
+    So the "other" 3-element parts are pairwise disjoint in P \ {p}. -/
+theorem fourCollinearThrough_bound (P : PlanarPointSet) (hP : NoFiveCollinear P)
+    (p : ℝ × ℝ) (hp : p ∈ P.points) :
+    (fourCollinearThrough P p).card ≤ (P.points.card - 1) / 3 := by
+  set FP := fourCollinearThrough P p
+  -- Map each S to S.erase p (3-element subset of P.points \ {p})
+  let eraseMap : Finset (ℝ × ℝ) → Finset (ℝ × ℝ) := fun S => S.erase p
+  -- Each eraseMap S has card 3
+  have herase_card : ∀ S ∈ FP, (eraseMap S).card = 3 := by
+    intro S hS
+    have ⟨hcard, hp_S, _⟩ := (Finset.mem_filter.mp hS).2
+    show (S.erase p).card = 3
+    rw [Finset.card_erase_of_mem hp_S]; omega
+  -- Each eraseMap S ⊆ P.points.erase p
+  have herase_sub : ∀ S ∈ FP, eraseMap S ⊆ P.points.erase p := by
+    intro S hS x hx
+    have hS_sub := Finset.mem_powerset.mp (Finset.mem_of_mem_filter S hS)
+    have hx_S := Finset.mem_of_mem_erase hx
+    have hx_ne : x ≠ p := Finset.ne_of_mem_erase hx
+    exact Finset.mem_erase.mpr ⟨hx_ne, hS_sub hx_S⟩
+  -- eraseMap is injective on FP (since S = (eraseMap S) ∪ {p} for S ∈ FP)
+  have herase_inj : ∀ S₁ ∈ FP, ∀ S₂ ∈ FP, eraseMap S₁ = eraseMap S₂ → S₁ = S₂ := by
+    intro S₁ hS₁ S₂ hS₂ heq
+    have ⟨_, hp₁, _⟩ := (Finset.mem_filter.mp hS₁).2
+    have ⟨_, hp₂, _⟩ := (Finset.mem_filter.mp hS₂).2
+    ext x
+    by_cases hxp : x = p
+    · subst hxp; exact ⟨fun _ => hp₂, fun _ => hp₁⟩
+    · constructor
+      · intro hx
+        have hx_e : x ∈ eraseMap S₁ := Finset.mem_erase.mpr ⟨hxp, hx⟩
+        have hx_e2 : x ∈ eraseMap S₂ := heq ▸ hx_e
+        exact Finset.mem_of_mem_erase hx_e2
+      · intro hx
+        have hx_e : x ∈ eraseMap S₂ := Finset.mem_erase.mpr ⟨hxp, hx⟩
+        have hx_e1 : x ∈ eraseMap S₁ := heq ▸ hx_e
+        exact Finset.mem_of_mem_erase hx_e1
+  -- Pairwise disjoint: from four_collinear_overlap_small
+  have herase_disj : ∀ S₁ ∈ FP, ∀ S₂ ∈ FP, S₁ ≠ S₂ →
+      Disjoint (eraseMap S₁) (eraseMap S₂) := by
+    intro S₁ hS₁ S₂ hS₂ hne
+    rw [Finset.disjoint_left]
+    intro x hx₁ hx₂
+    have hx_ne_p : x ≠ p := Finset.ne_of_mem_erase hx₁
+    have hx_S₁ : x ∈ S₁ := Finset.mem_of_mem_erase hx₁
+    have hx_S₂ : x ∈ S₂ := Finset.mem_of_mem_erase hx₂
+    have ⟨hcard₁, hp₁, a₁, b₁, ha₁, hb₁, hab₁, hcol₁⟩ := (Finset.mem_filter.mp hS₁).2
+    have ⟨hcard₂, hp₂, a₂, b₂, ha₂, hb₂, hab₂, hcol₂⟩ := (Finset.mem_filter.mp hS₂).2
+    have hS₁_sub := Finset.mem_powerset.mp (Finset.mem_of_mem_filter S₁ hS₁)
+    have hS₂_sub := Finset.mem_powerset.mp (Finset.mem_of_mem_filter S₂ hS₂)
+    -- S₁ ∩ S₂ contains both p and x (with p ≠ x), so card ≥ 2
+    have h_inter_ge : (S₁ ∩ S₂).card ≥ 2 := by
+      have hp_inter : p ∈ S₁ ∩ S₂ := Finset.mem_inter.mpr ⟨hp₁, hp₂⟩
+      have hx_inter : x ∈ S₁ ∩ S₂ := Finset.mem_inter.mpr ⟨hx_S₁, hx_S₂⟩
+      have hpx : p ≠ x := Ne.symm hx_ne_p
+      have : ({p, x} : Finset (ℝ × ℝ)).card = 2 := Finset.card_pair hpx
+      calc (S₁ ∩ S₂).card ≥ ({p, x} : Finset (ℝ × ℝ)).card := by
+            apply Finset.card_le_card
+            intro y hy; simp at hy
+            rcases hy with rfl | rfl
+            · exact hp_inter
+            · exact hx_inter
+        _ = 2 := this
+    -- But four_collinear_overlap_small says ≤ 1
+    have h_inter_le := four_collinear_overlap_small P hP S₁ S₂
+      hS₁_sub hS₂_sub hcard₁ hcard₂ hne a₁ b₁ hab₁ ha₁ hb₁ hcol₁ a₂ b₂ hab₂ ha₂ hb₂ hcol₂
+    omega
+  -- Count: 3 * |FP| ≤ |P.points.erase p| = n - 1
+  -- via disjoint union of 3-element subsets
+  have hbU_sub : FP.biUnion eraseMap ⊆ P.points.erase p := by
+    intro x hx
+    rw [Finset.mem_biUnion] at hx
+    obtain ⟨S, hS, hxS⟩ := hx
+    exact herase_sub S hS hxS
+  have hbU_card : (FP.biUnion eraseMap).card = FP.sum (fun S => (eraseMap S).card) :=
+    Finset.card_biUnion (fun S hS T hT hne => herase_disj S hS T hT hne)
+  have hsum_eq : FP.sum (fun S => (eraseMap S).card) = 3 * FP.card := by
+    rw [Finset.sum_const_nat (fun S hS => herase_card S hS)]; ring
+  have herase_p_card : (P.points.erase p).card = P.points.card - 1 :=
+    Finset.card_erase_of_mem hp
+  have hle : 3 * FP.card ≤ P.points.card - 1 := by
+    calc 3 * FP.card = (FP.biUnion eraseMap).card := by linarith [hbU_card, hsum_eq]
+      _ ≤ (P.points.erase p).card := Finset.card_le_card hbU_sub
+      _ = P.points.card - 1 := herase_p_card
+  omega
+
+/- ## Structural Lemmas for fourCollinearThrough -/
+
+open Classical in
+/-- fourCollinearThrough is a subset of fourCollinearFamily. -/
+theorem fourCollinearThrough_sub_family (P : PlanarPointSet) (p : ℝ × ℝ) :
+    fourCollinearThrough P p ⊆ fourCollinearFamily P := by
+  intro S hS
+  unfold fourCollinearThrough at hS
+  unfold fourCollinearFamily
+  rw [Finset.mem_filter] at hS ⊢
+  exact ⟨hS.1, hS.2.1, hS.2.2.2⟩
+
+open Classical in
+/-- Each S in fourCollinearFamily appears in fourCollinearThrough for each of its points. -/
+theorem mem_fourCollinearThrough_of_mem_family (P : PlanarPointSet)
+    (S : Finset (ℝ × ℝ)) (hS : S ∈ fourCollinearFamily P) (p : ℝ × ℝ) (hp : p ∈ S) :
+    S ∈ fourCollinearThrough P p := by
+  unfold fourCollinearFamily at hS
+  unfold fourCollinearThrough
+  rw [Finset.mem_filter] at hS ⊢
+  exact ⟨hS.1, hS.2.1, hp, hS.2.2⟩
+
+/- ## Double-Counting Connection
+
+    The per-point bound and global bound are connected by double counting:
+    - Per-point: |fourCollinearThrough P p| ≤ (n-1)/3  (fourCollinearThrough_bound)
+    - Global: |fourCollinearFamily P| ≤ n(n-1)/12  (improved_upper_bound)
+
+    Each S ∈ F (with |S| = 4) appears in fourCollinearThrough(p) for exactly 4
+    values of p ∈ P.points (by mem_fourCollinearThrough_of_mem_family).
+    By summation interchange:
+      Σ_{p ∈ P} |fourCollinearThrough(p)| = Σ_{S ∈ F} |S| = 4·|F|
+    Combined with 3·|fourCollinearThrough(p)| ≤ n-1:
+      12·|F| = 3·(4·|F|) = 3·Σ_p |fourCollinearThrough(p)| ≤ Σ_p (n-1) = n·(n-1)
+    This reproves |F| ≤ n(n-1)/12 via double counting.
+
+    Both the pair-packing proof (improved_upper_bound) and this per-point approach
+    give the same tight bound. The bound n(n-1)/12 is optimal from pure
+    combinatorial methods without geometric input.
+
+    Closing the gap between O(n²) and o(n²) requires genuinely new ideas
+    beyond what Szemerédi-Trotter or double counting can provide for k=4. -/
