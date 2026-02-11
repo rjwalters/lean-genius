@@ -8,6 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/422",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos422Problem.lean",
+    "leanFile": "Proofs/Erdos422Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -26,17 +27,18 @@
   "overview": {
     "historicalContext": "Douglas Hofstadter, famous for 'Godel, Escher, Bach' (1979), proposed this self-referential sequence and communicated it to Erdős. It appears in the Erdős–Graham monograph 'Old and New Problems and Results in Combinatorial Number Theory' (1980), and is listed as OEIS A005185.\n\nThe sequence f(1)=f(2)=1, f(n) = f(n-f(n-1)) + f(n-f(n-2)) is remarkable because its most basic property — whether f(n) is well-defined for all n — is unknown. The recursion is self-referential: to compute f(n), you need f(n-1) and f(n-2) to determine the indices n-f(n-1) and n-f(n-2), and then evaluate f at those indices. If f(n-1) ≥ n or f(n-2) ≥ n, the indices become non-positive and the recursion breaks down.\n\nComputationally, the sequence has been verified to be well-defined for billions of terms, and it appears to grow roughly linearly with a complicated local structure. The sequence begins 1, 1, 2, 3, 3, 4, 5, 7, 7, 8, ... and exhibits no obvious pattern. It is one of the simplest self-referential recursions whose behavior resists all known analytical techniques, making it a paradigmatic example of 'simple to state, impossible to analyze.'",
     "problemStatement": "Define f(1)=f(2)=1, f(n) = f(n-f(n-1))+f(n-f(n-2)) for n > 2. Is f well-defined for all n? Does it miss infinitely many integers?",
-    "proofStrategy": "We formalize the recursion using Lean's equation compiler with explicit pattern matching on 0, 1, 2, and n+3. The well-definedness predicate IsWellDefined checks that recursive indices stay positive. Main questions are stated as axioms. Known initial values are axiomatized.",
+    "proofStrategy": "The formalization defines `hofstadterF` via Lean's equation compiler with pattern matching on $0, 1, 2, n+3$, marked `noncomputable` since termination is unprovable (the open problem). The well-definedness predicate `IsWellDefined` checks $f(k-1) < k \\land f(k-2) < k$ for $k \\geq 3$. Four open conjectures are axiomatized: well-definedness, infinitely many missing integers ($\\text{Set.Infinite}$), non-surjectivity, and linear growth $f(n) \\leq (1+\\varepsilon)n$. Initial values $f(1) = \\cdots = f(6)$ are axiomatized since the `noncomputable` definition cannot be unfolded. All results are axioms (0 sorries); the formalization captures the problem's structure faithfully.",
     "keyInsights": [
-      "**Well-definedness is unknown**: The most fundamental question — whether f(n) is defined for all n — is open. The recursion requires f(n-1) < n and f(n-2) < n for the indices to be valid, and this has only been verified computationally.",
-      "**Self-referential indexing**: Unlike standard recursions where f(n) depends on f(n-1) and f(n-2), here the indices themselves depend on f. This creates a nested feedback loop that defeats inductive arguments.",
-      "**OEIS A005185**: The sequence begins 1, 1, 2, 3, 3, 4, 5, 7, 7, 8, ... and has been computed to many terms without encountering a failure of well-definedness.",
-      "**Missing integers**: Even assuming well-definedness, whether f misses infinitely many integers (i.e., fails to be surjective) is unknown. The related question of whether f is eventually constant is also open.",
-      "**Linear growth conjecture**: Computational evidence suggests f(n) grows linearly, formalized here as f(n) ≤ (1+ε)n for any ε > 0 and large enough n."
+      "**Well-definedness is the first barrier**: The recursion $f(n) = f(n - f(n-1)) + f(n - f(n-2))$ requires $f(n-1) < n$ and $f(n-2) < n$ for the indices to be positive. This has been verified computationally for billions of terms but never proved, making it the most fundamental open question.",
+      "**Self-referential indexing defeats induction**: Unlike Fibonacci ($f(n) = f(n-1) + f(n-2)$) where evaluation points are fixed, here the points $n - f(n-1)$ and $n - f(n-2)$ depend on $f$ itself. An induction at step $n$ needs bounds on $f$ at data-dependent earlier indices, creating a circular dependency.",
+      "**OEIS A005185**: The sequence $1, 1, 2, 3, 3, 4, 5, 7, 7, 8, \\ldots$ exhibits no discernible pattern. It has been computed to billions of terms without encountering a well-definedness failure or settling into periodic behavior.",
+      "**Missing integers and non-surjectivity**: Even assuming well-definedness, whether $\\{m > 0 : m \\notin \\text{Im}(f)\\}$ is infinite is unknown. The weaker question of surjectivity ($\\text{Im}(f) = \\mathbb{N}^+$?) is also open, as is eventual constancy.",
+      "**Linear growth conjecture**: Computational evidence suggests $\\limsup f(n)/n \\leq 1$, formalized as $f(n) \\leq (1 + \\varepsilon)n$ for any $\\varepsilon > 0$ and $n$ sufficiently large. Even this weak bound is unproved."
     ],
     "mathlibDependencies": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Set.Finite.Basic"
+      { "theorem": "Nat.succ", "description": "Natural number successor and basic arithmetic", "module": "Mathlib.Data.Nat.Basic" },
+      { "theorem": "Set.Infinite", "description": "Predicate for infinite sets (used for missing integers)", "module": "Mathlib.Data.Set.Finite.Basic" },
+      { "theorem": "Function.Surjective", "description": "Surjectivity predicate for the non-surjectivity conjecture", "module": "Mathlib.Logic.Function.Basic" }
     ],
     "originalContributions": [
       "hofstadterF: recursive definition via equation compiler",
@@ -46,46 +48,58 @@
       "erdos_422_surjectivity: non-surjectivity conjecture",
       "erdos_422_growth: linear growth bound f(n) ≤ (1+ε)n",
       "initial_values: axiom for f(1)=1, f(2)=1, ..., f(6)=4"
+    ],
+    "relatedProofs": [
+      { "id": "erdos-423", "relationship": "Consecutive-terms greedy sequence — another self-referential sequence from the same section of Erdős–Graham (1980) with open growth rate" },
+      { "id": "erdos-424", "relationship": "Multiplicative generation sequence {a_i · a_j − 1} — iteratively defined sequence with unknown density, from the same problem cluster" }
     ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 20,
+      "endLine": 22,
+      "summary": "Imports `Nat.Basic`, `Set.Finite.Basic` (for `Set.Infinite`), and `Tactic`."
+    },
+    {
       "id": "definition",
-      "title": "Definition",
+      "title": "Sequence Definition and Well-Definedness",
       "startLine": 24,
       "endLine": 37,
-      "summary": "Defines hofstadterF via Lean's equation compiler with cases for 0, 1, 2, and n+3. Defines IsWellDefined predicate checking recursive indices stay positive."
+      "summary": "Defines `hofstadterF` via equation compiler: $f(n+3) = f(n+3 - f(n+2)) + f(n+3 - f(n+1))$. Defines `IsWellDefined`: $f(k-1) < k \\land f(k-2) < k$ for $k \\geq 3$."
     },
     {
       "id": "main-questions",
-      "title": "Main Questions",
+      "title": "Main Open Questions",
       "startLine": 39,
       "endLine": 57,
-      "summary": "States four open questions as axioms: well-definedness for all n, infinitely many missing integers, non-surjectivity, and linear growth rate."
+      "summary": "Four axiomatized conjectures: well-definedness $\\forall n$, $|\\{m \\notin \\text{Im}(f)\\}| = \\infty$, non-surjectivity, and linear growth $f(n) \\leq (1+\\varepsilon)n$."
     },
     {
       "id": "known-values",
-      "title": "Known Values",
+      "title": "Known Initial Values",
       "startLine": 59,
       "endLine": 66,
-      "summary": "Axiomatizes the first six values: f(1)=1, f(2)=1, f(3)=2, f(4)=3, f(5)=3, f(6)=4."
+      "summary": "Axiomatizes $f(1) = 1, f(2) = 1, f(3) = 2, f(4) = 3, f(5) = 3, f(6) = 4$ (OEIS A005185)."
     },
     {
       "id": "observations",
-      "title": "Observations",
+      "title": "Observations and Context",
       "startLine": 68,
       "endLine": 78,
-      "summary": "Comments on Hofstadter's origin, the self-referential difficulty, and the open question of eventual constancy."
+      "summary": "Hofstadter origin (communicated to Erdős), self-referential indexing difficulty vs. Fibonacci, and the open question of eventual constancy."
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem 422 concerns a Hofstadter-type sequence whose most basic properties — well-definedness, surjectivity, growth — are all unknown. The self-referential recursion resists standard analysis techniques. 0 sorries.",
     "implications": "Understanding this sequence would shed light on self-referential recursive dynamics, a notoriously difficult area at the boundary of number theory, dynamical systems, and computability theory.",
     "openQuestions": [
-      "Is f(n) well-defined for all n, or does the recursion eventually break down?",
-      "Does f miss infinitely many positive integers?",
-      "Is f eventually surjective, eventually constant, or neither?",
-      "What is the precise growth rate of f? Is f(n)/n bounded?"
+      "Is $f(n)$ well-defined for all $n \\in \\mathbb{N}$, or does the recursion eventually produce a non-positive index?",
+      "Is $\\{m > 0 : m \\notin \\text{Im}(f)\\}$ infinite? What is the density of missing integers?",
+      "Is $f$ eventually surjective, eventually constant, or neither? What is $\\liminf f(n)/n$?",
+      "What is the precise growth rate? Is $\\lim f(n)/n = 1$, or does $f(n)/n$ oscillate?",
+      "Are there other initial conditions $(f(1), f(2)) \\neq (1,1)$ for which the same recursion is provably well-defined or provably breaks down?"
     ]
   }
 }

@@ -1,56 +1,86 @@
 [
   {
-    "id": "hofstadter-f",
+    "id": "ann-e422-imports",
     "proofId": "erdos-422",
-    "range": { "startLine": 28, "endLine": 33 },
+    "range": { "startLine": 20, "endLine": 22 },
+    "type": "concept",
+    "title": "Imports and Dependencies",
+    "content": "Imports `Nat.Basic` for natural number arithmetic, `Set.Finite.Basic` for `Set.Infinite` (used in the missing-integers conjecture), and `Tactic` for automation. The formalization uses `ℕ → ℕ` for the sequence type and `Set.Infinite` to express that infinitely many integers are missed.",
+    "mathContext": "The sequence $f : \\mathbb{N} \\to \\mathbb{N}$ is modeled as a total function; well-definedness is a separate predicate. `Set.Infinite` captures the cardinality condition.",
+    "significance": "supporting",
+    "relatedConcepts": ["Set.Infinite", "natural number arithmetic", "total functions on ℕ"],
+    "prerequisites": ["Lean 4 imports", "Mathlib set theory"]
+  },
+  {
+    "id": "ann-e422-definition",
+    "proofId": "erdos-422",
+    "range": { "startLine": 28, "endLine": 37 },
     "type": "definition",
-    "title": "Hofstadter Recursive Sequence",
-    "content": "f(1)=f(2)=1, f(n) = f(n−f(n−1))+f(n−f(n−2)). The recursion is self-referential: the indices at which f is evaluated depend on earlier values of f.",
-    "significance": "high"
+    "title": "Hofstadter Sequence and Well-Definedness Predicate",
+    "content": "**hofstadterF** defines $f$ by pattern matching: $f(0) = 0$ (unused sentinel), $f(1) = f(2) = 1$, and $f(n+3) = f(n+3 - f(n+2)) + f(n+3 - f(n+1))$. The shift to $n+3$ avoids subtraction issues with natural numbers. Marked `noncomputable` because Lean cannot verify termination — the recursion's well-definedness is itself an open problem. **IsWellDefined** is a separate predicate asserting $\\forall k \\leq n,\\; k \\geq 3 \\Rightarrow f(k-1) < k \\land f(k-2) < k$, ensuring recursive indices stay positive. This separation of definition from well-definedness reflects the mathematical reality: the recursion can be written down, but its totality is unproved.",
+    "mathContext": "$f(1) = f(2) = 1$, $f(n) = f(n - f(n-1)) + f(n - f(n-2))$ for $n \\geq 3$. Well-defined iff $f(k-1) < k$ and $f(k-2) < k$ for all $k \\geq 3$.",
+    "significance": "critical",
+    "relatedConcepts": ["self-referential recursion", "noncomputable definition", "termination", "well-definedness predicate"],
+    "prerequisites": ["pattern matching", "natural number subtraction", "Lean equation compiler"]
   },
   {
-    "id": "well-defined",
+    "id": "ann-e422-well-defined",
     "proofId": "erdos-422",
-    "range": { "startLine": 42, "endLine": 43 },
-    "type": "conjecture",
-    "title": "Well-Definedness",
-    "content": "Is f(n) well-defined for all n? The recursive indices must stay within range. This is the most fundamental open question.",
-    "significance": "high"
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "theorem",
+    "title": "Well-Definedness Conjecture",
+    "content": "States $\\forall n,\\; \\text{IsWellDefined}(n)$ — that the recursive indices always stay in range. This is axiomatized because it is the **most fundamental open question** about the sequence. Computationally verified for billions of terms, but no proof exists. The difficulty is that the recursion is self-referential: to bound $f(n)$, you need bounds on $f$ at points determined by $f$ itself, creating a circular dependency that defeats standard induction.",
+    "mathContext": "**Conjecture (OPEN):** $\\forall n \\geq 3: f(n-1) < n \\land f(n-2) < n$. Equivalently, the recursion never attempts to evaluate $f$ at a non-positive index.",
+    "significance": "critical",
+    "relatedConcepts": ["totality of recursion", "computational verification", "inductive proof barriers"],
+    "prerequisites": ["IsWellDefined", "hofstadterF"]
   },
   {
-    "id": "missing-integers",
+    "id": "ann-e422-missing-surjectivity",
     "proofId": "erdos-422",
-    "range": { "startLine": 46, "endLine": 47 },
-    "type": "conjecture",
-    "title": "Missing Integers",
-    "content": "Does f miss infinitely many positive integers? The range of f may have gaps that persist indefinitely.",
-    "significance": "high"
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "theorem",
+    "title": "Missing Integers and Non-Surjectivity",
+    "content": "Two related conjectures. **Missing integers** (lines 46–47): $\\{m > 0 : \\forall n,\\; f(n) \\neq m\\}$ is infinite — the range of $f$ has infinitely many gaps. Uses `Set.Infinite` from Mathlib. **Non-surjectivity** (lines 50–51): $f$ restricted to positive integers is not surjective, stated as $\\neg\\text{Surjective}(n \\mapsto f(n+1))$. The shift by 1 avoids the $f(0) = 0$ sentinel. These are logically related: infinitely many missing integers implies non-surjectivity, but the converse is weaker (finitely many gaps would also give non-surjectivity).",
+    "mathContext": "**Conjecture:** $|\\{m \\in \\mathbb{N}^+ : m \\notin \\text{Im}(f)\\}| = \\infty$. **Consequence:** $f : \\mathbb{N}^+ \\to \\mathbb{N}^+$ is not surjective.",
+    "significance": "key",
+    "relatedConcepts": ["Set.Infinite", "Function.Surjective", "range gaps", "image of a sequence"],
+    "prerequisites": ["hofstadterF", "set theory basics", "function surjectivity"]
   },
   {
-    "id": "surjectivity",
+    "id": "ann-e422-growth",
     "proofId": "erdos-422",
-    "range": { "startLine": 50, "endLine": 51 },
-    "type": "conjecture",
-    "title": "Surjectivity Question",
-    "content": "Is f surjective onto the positive integers? Equivalently, does every positive integer appear as f(n) for some n?",
-    "significance": "high"
+    "range": { "startLine": 53, "endLine": 57 },
+    "type": "theorem",
+    "title": "Linear Growth Bound",
+    "content": "States $\\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall n \\geq N_0: f(n) \\leq (1 + \\varepsilon)n$. This captures the computational observation that $f(n)/n$ appears to approach 1 (or at least stay bounded). The $\\varepsilon$-formulation is the standard way to express $f(n) = O(n)$ with leading constant 1. The coercion to $\\mathbb{R}$ is needed for the multiplication $(1 + \\varepsilon) \\cdot n$. Even this weak growth bound is unproved — it would follow from well-definedness plus a monotonicity-type argument, but neither is available.",
+    "mathContext": "**Conjecture:** $f(n) \\leq (1 + \\varepsilon)n$ for $n \\gg 1$, i.e., $\\limsup f(n)/n \\leq 1$.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic growth", "linear bound", "limsup", "real coercion"],
+    "prerequisites": ["hofstadterF", "real arithmetic", "asymptotic notation"]
   },
   {
-    "id": "initial-values",
+    "id": "ann-e422-initial-values",
     "proofId": "erdos-422",
-    "range": { "startLine": 59, "endLine": 63 },
-    "type": "note",
-    "title": "Initial Values",
-    "content": "The sequence begins 1, 1, 2, 3, 3, 4, ... (OEIS A005185). These values are computable, but the long-term behavior is unknown.",
-    "significance": "medium"
+    "range": { "startLine": 63, "endLine": 66 },
+    "type": "theorem",
+    "title": "Initial Values (OEIS A005185)",
+    "content": "Axiomatizes $f(1) = 1, f(2) = 1, f(3) = 2, f(4) = 3, f(5) = 3, f(6) = 4$. These are computable from the recursion: $f(3) = f(3 - f(2)) + f(3 - f(1)) = f(2) + f(2) = 2$, $f(4) = f(4 - f(3)) + f(4 - f(2)) = f(2) + f(3) = 3$, etc. Axiomatized rather than proved because the `noncomputable` definition cannot be unfolded by the kernel. The sequence (OEIS A005185) has been computed to billions of terms.",
+    "mathContext": "Sequence begins $1, 1, 2, 3, 3, 4, 5, 7, 7, 8, \\ldots$ (OEIS A005185). Each value is computable assuming prior values stay in range.",
+    "significance": "supporting",
+    "relatedConcepts": ["OEIS A005185", "computational verification", "noncomputable unfolding"],
+    "prerequisites": ["hofstadterF", "natural number computation"]
   },
   {
-    "id": "self-referential",
+    "id": "ann-e422-observations",
     "proofId": "erdos-422",
-    "range": { "startLine": 72, "endLine": 75 },
-    "type": "note",
-    "title": "Self-Referential Difficulty",
-    "content": "The recursion f(n) = f(n−f(n−1))+f(n−f(n−2)) is self-referential: the evaluation points depend on the sequence itself. This makes rigorous analysis extremely challenging.",
-    "significance": "medium"
+    "range": { "startLine": 70, "endLine": 78 },
+    "type": "insight",
+    "title": "Self-Referential Nature and Open Questions",
+    "content": "Three observations in comments. **Hofstadter origin**: the sequence was communicated by Hofstadter (author of 'Gödel, Escher, Bach') to Erdős, appearing in the 1980 Erdős–Graham monograph. **Self-referential difficulty**: unlike standard recursions $f(n) = g(f(n-1), f(n-2))$ where evaluation points are fixed, here the evaluation points $n - f(n-1)$ and $n - f(n-2)$ depend on $f$ itself, creating a nested feedback loop. This defeats inductive proofs because the induction hypothesis at step $n$ requires information about $f$ at unpredictable earlier points. **Eventually constant**: whether $f$ becomes constant is also open — computational evidence suggests it does not.",
+    "mathContext": "The key difficulty: $f(n) = f(n - f(n-1)) + f(n - f(n-2))$ has **variable evaluation points**, unlike $f(n) = f(n-1) + f(n-2)$ (Fibonacci). The indices $n - f(n-1)$ are data-dependent.",
+    "significance": "key",
+    "relatedConcepts": ["Hofstadter sequences", "Gödel Escher Bach", "Erdős–Graham monograph", "feedback loops in recursion"],
+    "prerequisites": ["self-referential definitions", "induction limitations"]
   }
 ]
