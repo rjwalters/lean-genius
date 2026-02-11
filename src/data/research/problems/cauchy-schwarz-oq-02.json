@@ -46,7 +46,8 @@
       "bunyakovsky_schwarz_abs: |integral f*g| <= ||f||*||g|| via abs_real_inner_le_norm",
       "bunyakovsky_schwarz_sq: (integral f*g)^2 <= ||f||^2*||g||^2",
       "L2_inner_eq_integral: Bridge theorem connecting L2 inner product to integral",
-      "cauchy_schwarz_L2_eq_iff: Equality characterization (linear dependence)"
+      "cauchy_schwarz_L2_eq_iff: Equality characterization (linear dependence)",
+      "src/data/proofs/cauchy-schwarz-integral/: Gallery entry (meta.json, annotations.json, index.ts)"
     ],
     "insights": [
       "Lp R 2 mu is an InnerProductSpace in Mathlib - abstract CS applies directly",
