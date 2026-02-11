@@ -21,80 +21,125 @@
     "sorries": 0,
     "erdosNumber": 1057,
     "erdosUrl": "https://erdosproblems.com/1057",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      { "theorem": "Squarefree", "description": "Squarefreeness predicate for Korselt's criterion", "module": "Mathlib.Algebra.Squarefree.Basic" },
+      { "theorem": "Nat.primeFactors", "description": "Prime factorization for structural theorems", "module": "Mathlib.Data.Nat.Factorization.Basic" },
+      { "theorem": "Finset.filter", "description": "Filtering for counting function C(x)", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Nat.Coprime", "description": "Coprimality for semiprime impossibility", "module": "Mathlib.Data.Nat.GCD.Basic" },
+      { "theorem": "Real.exp", "description": "Exponential function for Erdős upper bound", "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv" },
+      { "theorem": "Filter.Tendsto", "description": "Limit formulation of Pomerance conjecture", "module": "Mathlib.Order.Filter.Basic" }
+    ],
+    "originalContributions": [
+      "satisfiesKorselt, IsCarmichael: definitions via Korselt's criterion",
+      "carmichael_561 through carmichael_8911: 7 verified Carmichael numbers",
+      "carmichael_odd: fully verified proof that Carmichael numbers are odd",
+      "korselt_two_primes_impossible: key lemma using coprimality argument",
+      "carmichael_not_semiprime: verified proof that no Carmichael is a semiprime",
+      "carmichael_at_least_3_primes: verified minimum prime factor count",
+      "isCarmichaelCheck + no_carmichael_below_561: computational minimality of 561",
+      "C_unbounded: verified proof that C(x) → ∞ from AGP axiom",
+      "erdos1057Conjecture, pomeranceConjecture: formal conjectures"
+    ],
+    "dateAdded": "2026-01-19",
+    "crossReferences": [
+      { "proofId": "subset-count", "relationship": "Foundational counting technique; both use Finset.filter for cardinality arguments" }
+    ]
   },
   "overview": {
-    "historicalContext": "Carmichael numbers are composite integers that pass the Fermat primality test for all bases—the ultimate pseudoprimes. Korselt (1899) characterized them: n is Carmichael iff n is squarefree and (p-1)|(n-1) for all primes p|n. The smallest is 561 = 3×11×17. Erdős (1956) gave the first non-trivial upper bound. The breakthrough came in 1994 when Alford-Granville-Pomerance proved infinitely many exist.",
-    "problemStatement": "Let C(x) count Carmichael numbers in [1,x]. Is it true that C(x) = x^{1-o(1)}? That is, for every ε > 0, is C(x) > x^{1-ε} for sufficiently large x?",
-    "proofStrategy": "The upper bound uses sieve methods and the structure of Korselt's criterion. The lower bound constructions find integers n where many primes p have (p-1)|(n-1). The huge gap (exponent 0.34 vs. 1) suggests either the upper or lower bound techniques are far from optimal.",
+    "historicalContext": "Carmichael numbers are composite integers that perfectly mimic primes under Fermat's test: $a^n \\equiv a \\pmod{n}$ for all $a$. Korselt characterized them in 1899 (squarefree with $(p-1) \\mid (n-1)$ for all prime divisors $p$), but the first example $561 = 3 \\times 11 \\times 17$ was only found by R.D. Carmichael in 1910. Erdős (1956) gave the first non-trivial upper bound on their counting function using sieve methods, showing $C(x) < x \\cdot \\exp(-c \\cdot \\frac{\\log x \\cdot \\log\\log\\log x}{\\log\\log x})$. For decades, it was unknown whether infinitely many exist. The breakthrough came in 1994 when Alford, Granville, and Pomerance proved $C(x) \\to \\infty$, establishing $C(x) > x^{2/7}$. Harman (2008) improved the lower bound exponent to $0.33336704$, and Lichtman (2022) pushed it to $0.3389$. Pomerance's (1989) heuristic predicts $C(x) \\sim x \\cdot \\exp(-\\frac{\\log x \\cdot \\log\\log\\log x}{\\log\\log x})$, matching Erdős's upper bound. The conjecture $C(x) = x^{1-o(1)}$ remains wide open, with a vast gap between the known lower bound exponent $\\approx 0.34$ and the conjectured behavior.",
+    "problemStatement": "Let $C(x)$ count Carmichael numbers in $[1,x]$. Is it true that $C(x) = x^{1-o(1)}$? That is, for every $\\varepsilon > 0$, is $C(x) > x^{1-\\varepsilon}$ for sufficiently large $x$?",
+    "proofStrategy": "This formalization takes an unusually concrete approach. Rather than just axiomatizing bounds, it **verifies** extensive structural properties of Carmichael numbers in Lean: (1) all seven smallest Carmichael numbers are formally verified via Korselt's criterion using `native_decide` and `norm_num`, (2) oddness is proved from scratch using a parity-squarefreeness contradiction, (3) the semiprime impossibility is proved via a coprimality argument lifted from $\\mathbb{N}$ to $\\mathbb{Z}$, (4) the 3-prime-factor lower bound follows by case analysis on factorization cardinality, and (5) 561's minimality is established by exhaustive decidable checking. The asymptotic bounds (Erdős upper, Lichtman/Harman lower, AGP infinitude) are axiomatized, and $C$ being unbounded is then verified from the AGP axiom by inductive construction of arbitrarily large witness sets.",
     "keyInsights": [
-      "Korselt's criterion: n is Carmichael iff squarefree and (p-1)|(n-1) for all p|n",
-      "561 = 3×11×17 is smallest: 2|560, 10|560, 16|560",
-      "Every Carmichael number has at least 3 prime factors",
-      "Erdős upper: C(x) < x·exp(-c·log x·log log log x / log log x)",
-      "Lichtman lower (2022): C(x) > x^{0.3389}",
-      "AGP (1994): Proved infinitely many exist, C(x) > x^{2/7}"
+      "**Korselt's criterion (1899):** $n$ is Carmichael iff squarefree and $(p-1) \\mid (n-1)$ for all primes $p \\mid n$. This purely divisibility-theoretic condition predated the discovery of Carmichael numbers by 11 years.",
+      "**561 = 3 × 11 × 17 is smallest:** Formally verified by exhaustive `native_decide` check over all $n < 561$. The verification $2 \\mid 560$, $10 \\mid 560$, $16 \\mid 560$ confirms Korselt's criterion.",
+      "**At least 3 prime factors (verified):** If $n = pq$ with $p < q$, then $pq - 1 = q(p-1) + (q-1)$ and $\\gcd(q, q-1) = 1$ force $(q-1) \\mid (p-1)$, contradicting $q > p$. This elegant coprimality argument is fully verified in Lean.",
+      "**Erdős upper bound (1956):** $C(x) < x \\cdot \\exp(-c \\cdot \\frac{\\log x \\cdot \\log\\log\\log x}{\\log\\log x})$. The triple-logarithmic factor means the effective exponent $1 - \\frac{\\log\\log\\log x}{\\log\\log x}$ approaches 1 astronomically slowly.",
+      "**AGP breakthrough (1994):** Infinitely many Carmichael numbers exist, with $C(x) > x^{2/7}$. The method constructs $n$ as products of primes $p$ where $p-1$ divides a common target $L$.",
+      "**The exponent gap:** Known: $0.3389 \\leq \\alpha^* \\leq 1 - o(1)$. The conjecture $\\alpha^* = 1 - o(1)$ would mean Carmichael numbers are 'almost as common as primes' on a logarithmic scale, yet the best constructive lower bound is barely above $1/3$.",
+      "**1729 is both Taxicab and Carmichael:** The Hardy-Ramanujan number $1729 = 1^3 + 12^3 = 9^3 + 10^3 = 7 \\times 13 \\times 19$ is verified as Carmichael, connecting two famous number-theoretic objects."
     ]
   },
   "sections": [
     {
       "id": "carmichael",
-      "title": "Carmichael Numbers",
-      "summary": "Definition via Korselt's criterion",
+      "title": "Definitions: Korselt and Carmichael",
+      "summary": "Defines `satisfiesKorselt` (squarefree + divisibility), `IsCarmichael` (composite + Korselt), `satisfiesFermat` ($a^n \\equiv a \\pmod{n}$ for all $a$), and axiomatizes Korselt's 1899 equivalence theorem.",
       "startLine": 39,
       "endLine": 59
     },
     {
       "id": "small",
-      "title": "Small Carmichael Numbers",
-      "summary": "The first few examples: 561, 1105, 1729",
+      "title": "Verified Small Carmichael Numbers",
+      "summary": "Formally verifies $561, 1105, 1729, 2465, 2821, 6601, 8911$ as Carmichael numbers using `native_decide` for primality checks and `norm_num` for Korselt divisibility. Each proof follows the same pattern: squarefreeness via `Nat.squarefree_iff_prime_squarefree`, then Korselt divisibility by enumerating prime factors.",
       "startLine": 61,
-      "endLine": 88
+      "endLine": 229
     },
     {
       "id": "counting",
-      "title": "The Counting Function",
-      "summary": "Definition of C(x) and monotonicity",
-      "startLine": 90,
-      "endLine": 107
+      "title": "Counting Function C(x)",
+      "summary": "Defines $C(x)$ via `Finset.filter` and proves monotonicity $x \\leq y \\implies C(x) \\leq C(y)$ using Mathlib's `Finset.card_le_card` and `Finset.range_mono`.",
+      "startLine": 231,
+      "endLine": 248
     },
     {
       "id": "bounds",
-      "title": "Known Bounds",
-      "summary": "Erdős upper, Lichtman/Harman lower, AGP",
-      "startLine": 109,
-      "endLine": 135
+      "title": "Known Bounds on C(x)",
+      "summary": "Axiomatizes Erdős's 1956 upper bound, Lichtman's 2022 lower bound ($x^{0.3389}$), Harman's 2008 bound ($x^{0.33336704}$), the AGP infinitude theorem, and AGP's quantitative $x^{2/7}$ bound.",
+      "startLine": 250,
+      "endLine": 276
     },
     {
       "id": "conjecture",
-      "title": "The Main Conjecture",
-      "summary": "C(x) = x^{1-o(1)} and Pomerance's prediction",
-      "startLine": 137,
-      "endLine": 159
+      "title": "The Main Conjecture and Pomerance Prediction",
+      "summary": "Formalizes $C(x) = x^{1-o(1)}$ as `erdos1057Conjecture`, the log-ratio formulation via `Filter.Tendsto`, and Pomerance's heuristic as `pomeranceConjecture`.",
+      "startLine": 278,
+      "endLine": 300
     },
     {
-      "id": "properties",
-      "title": "Structural Properties",
-      "summary": "At least 3 prime factors, always odd",
-      "startLine": 161,
-      "endLine": 180
+      "id": "structural",
+      "title": "Structural Theorems (Verified)",
+      "summary": "Three fully verified structural results: (1) Carmichael numbers are odd (parity-squarefreeness argument), (2) not semiprimes (coprimality argument via $\\mathbb{Z}$ lifting), (3) have $\\geq 3$ prime factors (case analysis on factorization cardinality). Also proves no Carmichael is a prime power.",
+      "startLine": 302,
+      "endLine": 517
     },
     {
       "id": "gap",
-      "title": "The Gap",
-      "summary": "Distance between known bounds",
-      "startLine": 182,
-      "endLine": 200
+      "title": "The Exponent Gap",
+      "summary": "Defines `upperExponent(x) = 1 - \\log\\log\\log x / \\log\\log x` and `lowerExponent = 0.3389`. Proves the lower bound exponent is $< 1$. Packages the open problem as `erdos1057OpenProblem`.",
+      "startLine": 519,
+      "endLine": 537
+    },
+    {
+      "id": "utilities",
+      "title": "Utility Lemmas and Extractors",
+      "summary": "Accessor lemmas extracting individual components from `IsCarmichael`: `carmichael_gt_one`, `carmichael_composite`, `carmichael_squarefree`, `carmichael_korselt_dvd`. Plus lower bound comparison theorems proving $2/7 < 0.33336704 < 0.3389 < 1$.",
+      "startLine": 539,
+      "endLine": 574
+    },
+    {
+      "id": "counting-properties",
+      "title": "Counting Function Properties",
+      "summary": "Proves $C(0) = C(1) = 0$, $C(560) = 0$ (via decidable checking), $C(561) \\geq 1$, $C(2821) \\geq 5$, $C(8911) \\geq 7$ (by constructing explicit witness sets), and $C$ unbounded (inductive construction from AGP).",
+      "startLine": 576,
+      "endLine": 726
+    },
+    {
+      "id": "deeper-structure",
+      "title": "Deeper Structural Properties",
+      "summary": "Additional verified results: minimum prime $\\geq 3$, distinct prime factors (from squarefree), product-of-primes decomposition, multiplicity-one factorization, Korselt congruence $n \\equiv 1 \\pmod{p-1}$, double congruence, and all seven small Carmichaels have exactly 3 prime factors.",
+      "startLine": 728,
+      "endLine": 883
     }
   ],
   "conclusion": {
-    "summary": "The counting function C(x) for Carmichael numbers satisfies x^{0.3389} < C(x) < x^{1-o(1)} for large x. The conjecture C(x) = x^{1-o(1)} asserts Carmichael numbers are surprisingly dense—their log-density approaches 1. Despite progress from AGP (1994) proving infinitely many exist, the gap between bounds remains huge.",
-    "implications": "Understanding Carmichael numbers is crucial for primality testing. If dense (conjecture true), random composites often fool Fermat tests. The Pomerance heuristic suggests the upper bound is close to truth, meaning Carmichael numbers are actually sparse.",
+    "summary": "This formalization of Erdős Problem #1057 combines extensive verified proofs with axiomatized analytic bounds. Seven Carmichael numbers are individually verified, structural properties (oddness, $\\geq 3$ prime factors, no semiprimes) are proved from scratch, and 561's minimality is established computationally. The counting function $C(x)$ satisfies $x^{0.3389} < C(x) < x^{1-o(1)}$ for large $x$, with the conjecture $C(x) = x^{1-o(1)}$ remaining wide open.",
+    "implications": "The formalization demonstrates that significant structural properties of Carmichael numbers can be fully verified in Lean, while the deep analytic bounds require axiomatization. The verified semiprime impossibility proof, using coprimality arguments lifted to $\\mathbb{Z}$, is a clean example of how number-theoretic reasoning works in a proof assistant. Understanding Carmichael number density has practical implications for cryptography: if they are as dense as conjectured, random composites frequently fool Fermat tests, making more sophisticated primality tests (Miller-Rabin, AKS) essential.",
     "openQuestions": [
-      "Is C(x) = x^{1-o(1)}?",
-      "Is Pomerance's heuristic order correct?",
-      "Can the lower bound exponent be improved past 0.34?",
-      "What is the true density of Carmichael numbers?"
+      "Is $C(x) = x^{1-o(1)}$? Can the lower bound exponent be pushed past 0.5, or even past 0.9?",
+      "Is Pomerance's heuristic $C(x) \\sim x \\cdot \\exp(-\\frac{\\log x \\cdot \\log\\log\\log x}{\\log\\log x})$ correct? If so, the main conjecture is false.",
+      "Are there Carmichael numbers with exactly $k$ prime factors for every $k \\geq 3$? What is the smallest with $k$ factors?",
+      "Can Korselt's theorem (equivalence of Korselt criterion and Fermat property) be fully verified in Lean, removing the axiom?"
     ]
   }
 }
