@@ -377,11 +377,146 @@ theorem trivial_upper_bound_sq (P : PlanarPointSet) (hP : NoFiveCollinear P) :
             (hmap_col S₁ hS₁) hcol₂
     _ = P.points.card * P.points.card := Finset.card_product _ _
 
-/-- **Trivial Upper Bound (tight)**: Under NoFiveCollinear, fourPointLineCount ≤ n(n−1)/2.
-    Follows from injection into unordered pairs. Kept as axiom pending formalization. -/
-axiom trivial_upper_bound :
-  ∀ P : PlanarPointSet, NoFiveCollinear P →
-    fourPointLineCount P ≤ P.points.card * (P.points.card - 1) / 2
+open Classical in
+/-- **PROVED: Trivial Upper Bound (tight)**: Under NoFiveCollinear, fourPointLineCount ≤ n(n-1)/2.
+    Each four-collinear subset S determines a unique line (by NoFiveCollinear), and each line
+    is determined by any 2 of its points. So the map S to (a, b) in offDiag is injective,
+    giving at most n(n-1). The tighter /2 follows because `four_collinear_unique` means
+    each unordered pair determines at most one S. -/
+theorem trivial_upper_bound :
+    ∀ P : PlanarPointSet, NoFiveCollinear P →
+      fourPointLineCount P ≤ P.points.card * (P.points.card - 1) / 2 := by
+  intro P hP
+  -- The n² bound already proved; we improve to n(n-1)/2 via offDiag injection
+  unfold fourPointLineCount
+  set F := P.points.powerset.filter (fun S =>
+    S.card = 4 ∧
+    ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
+      ∀ p ∈ S, collinear a b p)
+  -- Step 1: Map each S to an ordered pair (a, b) ∈ P.offDiag
+  have hF_sub : ∀ S ∈ F, S ⊆ P.points :=
+    fun S hS => Finset.mem_powerset.mp (Finset.mem_of_mem_filter S hS)
+  have hF_prop : ∀ S ∈ F, S.card = 4 ∧
+      ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧ ∀ p ∈ S, collinear a b p :=
+    fun S hS => (Finset.mem_filter.mp hS).2
+  let witnessMap : Finset (ℝ × ℝ) → (ℝ × ℝ) × (ℝ × ℝ) := fun S =>
+    if h : ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧ ∀ p ∈ S, collinear a b p
+    then (h.choose, h.choose_spec.choose)
+    else ((0, 0), (0, 0))
+  have hF_dite : ∀ S ∈ F, ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
+      ∀ p ∈ S, collinear a b p :=
+    fun S hS => (hF_prop S hS).2
+  have hmap_a_mem : ∀ S ∈ F, (witnessMap S).1 ∈ S := by
+    intro S hS; have h := hF_dite S hS
+    simp only [witnessMap, dif_pos h]; exact h.choose_spec.choose_spec.1
+  have hmap_b_mem : ∀ S ∈ F, (witnessMap S).2 ∈ S := by
+    intro S hS; have h := hF_dite S hS
+    simp only [witnessMap, dif_pos h]; exact h.choose_spec.choose_spec.2.1
+  have hmap_ne : ∀ S ∈ F, (witnessMap S).1 ≠ (witnessMap S).2 := by
+    intro S hS; have h := hF_dite S hS
+    simp only [witnessMap, dif_pos h]; exact h.choose_spec.choose_spec.2.2.1
+  have hmap_col : ∀ S ∈ F, ∀ p ∈ S,
+      collinear (witnessMap S).1 (witnessMap S).2 p := by
+    intro S hS p hp; have h := hF_dite S hS
+    simp only [witnessMap, dif_pos h]; exact h.choose_spec.choose_spec.2.2.2 p hp
+  -- Step 2: Show witnessMap lands in offDiag (since a ≠ b)
+  have hmap_offDiag : ∀ S ∈ F, witnessMap S ∈ P.points.offDiag := by
+    intro S hS
+    exact Finset.mem_offDiag.mpr
+      ⟨hF_sub S hS (hmap_a_mem S hS), hF_sub S hS (hmap_b_mem S hS), hmap_ne S hS⟩
+  -- Step 3: witnessMap is injective on F
+  have hmap_inj : Set.InjOn witnessMap (↑F) := by
+    intro S₁ hS₁ S₂ hS₂ heq
+    have h₁ := hF_prop S₁ (Finset.mem_coe.mp hS₁)
+    have h₂ := hF_prop S₂ (Finset.mem_coe.mp hS₂)
+    have ha₂ : (witnessMap S₁).1 ∈ S₂ := by
+      rw [congr_arg Prod.fst heq]; exact hmap_a_mem S₂ (Finset.mem_coe.mp hS₂)
+    have hb₂ : (witnessMap S₁).2 ∈ S₂ := by
+      rw [congr_arg Prod.snd heq]; exact hmap_b_mem S₂ (Finset.mem_coe.mp hS₂)
+    have hcol₂ : ∀ p ∈ S₂, collinear (witnessMap S₁).1 (witnessMap S₁).2 p := by
+      intro p hp
+      have := hmap_col S₂ (Finset.mem_coe.mp hS₂) p hp
+      rwa [← congr_arg Prod.fst heq, ← congr_arg Prod.snd heq] at this
+    exact four_collinear_unique P hP S₁ S₂
+      (hF_sub S₁ (Finset.mem_coe.mp hS₁)) (hF_sub S₂ (Finset.mem_coe.mp hS₂))
+      h₁.1 h₂.1 _ _ (hmap_ne S₁ (Finset.mem_coe.mp hS₁))
+      (hmap_a_mem S₁ (Finset.mem_coe.mp hS₁)) (hmap_b_mem S₁ (Finset.mem_coe.mp hS₁))
+      ha₂ hb₂ (hmap_col S₁ (Finset.mem_coe.mp hS₁)) hcol₂
+  -- Step 4: |F| ≤ |offDiag| = n(n-1) ≤ n(n-1), then /2 via injection refinement
+  -- Actually, we first get |F| ≤ |offDiag| = n(n-1)
+  -- Then we refine: each unordered pair {a,b} is hit at most once by witnessMap
+  -- So |F| ≤ n(n-1)/2
+  -- Use: offDiag has card n*(n-1), and the image under witnessMap has at most
+  -- half the offDiag since for each (a,b) in the image, (b,a) is NOT also in the image
+  -- (because witnessMap is a function, so S ↦ witnessMap(S) is deterministic)
+  -- But actually, it's simpler to bound F.card ≤ (P.points.powersetCard 2).card
+  -- Map S to the 2-element set {(witnessMap S).1, (witnessMap S).2}
+  let pairMap : Finset (ℝ × ℝ) → Finset (ℝ × ℝ) := fun S =>
+    {(witnessMap S).1, (witnessMap S).2}
+  have hpair_card : ∀ S ∈ F, (pairMap S).card = 2 := by
+    intro S hS
+    simp only [pairMap, Finset.card_pair (hmap_ne S hS)]
+  have hpair_sub : ∀ S ∈ F, pairMap S ⊆ P.points := by
+    intro S hS x hx
+    simp only [pairMap, Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact hF_sub S hS (hmap_a_mem S hS)
+    · exact hF_sub S hS (hmap_b_mem S hS)
+  have hpair_mem : ∀ S ∈ F, pairMap S ∈ P.points.powersetCard 2 := by
+    intro S hS
+    exact Finset.mem_powersetCard.mpr ⟨hpair_sub S hS, hpair_card S hS⟩
+  -- Injectivity of pairMap: if {a₁,b₁} = {a₂,b₂}, then a₂,b₂ both lie on the
+  -- line through a₁,b₁ (collinear), so four_collinear_unique gives S₁ = S₂
+  have hpair_inj : ∀ S₁ ∈ F, ∀ S₂ ∈ F, pairMap S₁ = pairMap S₂ → S₁ = S₂ := by
+    intro S₁ hS₁ S₂ hS₂ heq
+    have h₁ := hF_prop S₁ hS₁
+    have h₂ := hF_prop S₂ hS₂
+    -- From heq, the 2-element sets {a₁,b₁} = {a₂,b₂}
+    -- So a₂ ∈ {a₁,b₁} and b₂ ∈ {a₁,b₁}
+    -- From heq: {a₂, b₂} = {a₁, b₁}, so a₂ and b₂ are each equal to a₁ or b₁
+    have ha₂_mem : (witnessMap S₂).1 ∈ pairMap S₁ := by
+      rw [heq]; simp [pairMap]
+    have hb₂_mem : (witnessMap S₂).2 ∈ pairMap S₁ := by
+      rw [heq]; simp [pairMap]
+    simp only [pairMap, Finset.mem_insert, Finset.mem_singleton] at ha₂_mem hb₂_mem
+    -- a₂ is either a₁ or b₁; b₂ is either a₁ or b₁
+    -- In any case, a₂ and b₂ are in S₁ and collinear with line(a₁, b₁)
+    have ha₂_S₁ : (witnessMap S₂).1 ∈ S₁ := by
+      rcases ha₂_mem with h | h <;> rw [h]
+      · exact hmap_a_mem S₁ hS₁
+      · exact hmap_b_mem S₁ hS₁
+    have hb₂_S₁ : (witnessMap S₂).2 ∈ S₁ := by
+      rcases hb₂_mem with h | h <;> rw [h]
+      · exact hmap_a_mem S₁ hS₁
+      · exact hmap_b_mem S₁ hS₁
+    -- All points of S₂ lie on the line through (witnessMap S₂).1 and (witnessMap S₂).2
+    -- These two points also belong to S₁ and lie on the line through S₁'s witnesses
+    -- By four_collinear_unique, S₁ = S₂
+    have hne₂ : (witnessMap S₂).1 ≠ (witnessMap S₂).2 := hmap_ne S₂ hS₂
+    -- Need: ∀ p ∈ S₁, collinear (witnessMap S₂).1 (witnessMap S₂).2 p
+    have hcol_12 : ∀ p ∈ S₁, collinear (witnessMap S₂).1 (witnessMap S₂).2 p := by
+      intro p hp
+      -- p ∈ S₁, so collinear (witnessMap S₁).1 (witnessMap S₁).2 p
+      have hp_col := hmap_col S₁ hS₁ p hp
+      -- a₂, b₂ ∈ S₁, so collinear with S₁'s witnesses
+      have ha₂_col := hmap_col S₁ hS₁ _ ha₂_S₁
+      have hb₂_col := hmap_col S₁ hS₁ _ hb₂_S₁
+      -- All three (a₂, b₂, p) are on line through S₁'s witnesses
+      -- a₂ ≠ b₂, and they're collinear with S₁'s witnesses
+      exact collinear_any_triple (hmap_ne S₁ hS₁) ha₂_col hb₂_col hp_col
+    exact four_collinear_unique P hP S₁ S₂
+      (hF_sub S₁ hS₁) (hF_sub S₂ hS₂) h₁.1 h₂.1
+      (witnessMap S₂).1 (witnessMap S₂).2 hne₂
+      ha₂_S₁ hb₂_S₁
+      (hmap_a_mem S₂ hS₂) (hmap_b_mem S₂ hS₂)
+      hcol_12 (hmap_col S₂ hS₂)
+  -- Step 5: F.card ≤ (powersetCard 2 P.points).card = n.choose 2 = n(n-1)/2
+  calc F.card ≤ (P.points.powersetCard 2).card := by
+        apply Finset.card_le_card_of_injOn pairMap hpair_mem
+        intro S₁ hS₁ S₂ hS₂ heq
+        exact hpair_inj S₁ hS₁ S₂ hS₂ heq
+    _ = P.points.card.choose 2 := Finset.card_powersetCard 2 P.points
+    _ = P.points.card * (P.points.card - 1) / 2 := Nat.choose_two_right P.points.card
 
 /- ## Related Observations -/
 
