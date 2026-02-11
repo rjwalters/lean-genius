@@ -27,61 +27,128 @@
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "summary": "Imports `Mathlib.Combinatorics.Ramsey`, `Data.Nat.Basic`, and `Tactic` for Ramsey-theoretic foundations",
+      "startLine": 23,
+      "endLine": 25
+    },
+    {
       "id": "tower-function",
       "title": "Tower Function",
-      "startLine": 26,
-      "endLine": 38,
-      "summary": "Define the iterated exponential tower function twr(k, n) = 2↑↑k starting from n."
+      "summary": "Recursive definition of $\\mathrm{twr}(k, n) = 2^{\\mathrm{twr}(k-1, n)}$ with base $\\mathrm{twr}(0,n) = n$, plus verification $\\mathrm{twr}(1,n) = 2^n$ and $\\mathrm{twr}(2,n) = 2^{2^n}$",
+      "startLine": 27,
+      "endLine": 39
     },
     {
       "id": "hypergraph-ramsey",
       "title": "Hypergraph Ramsey Numbers",
-      "startLine": 40,
-      "endLine": 48,
-      "summary": "Define R_r(n): minimal m for monochromatic r-uniform cliques in 2-colorings."
+      "summary": "Definition of $R_r(n)$: minimal $m$ for monochromatic $r$-uniform cliques in 2-colorings of $K_m^{(r)}$, via `sInf`",
+      "startLine": 41,
+      "endLine": 49
     },
     {
-      "id": "classical-bounds",
-      "title": "Classical Graph Ramsey (r = 2)",
-      "startLine": 50,
-      "endLine": 62,
-      "summary": "Erdős–Szekeres: 2^{n/2} ≤ R(n,n) ≤ 4^n, establishing exponential growth."
+      "id": "graph-ramsey",
+      "title": "Classical Graph Ramsey ($r = 2$)",
+      "summary": "Erdős-Szekeres bounds $2^{n/2} \\leq R(n,n) \\leq 4^n$ establishing exponential growth, combined into $R_2(n) = \\mathrm{twr}_1(\\Theta(n))$",
+      "startLine": 51,
+      "endLine": 64
     },
     {
-      "id": "upper-lower",
-      "title": "Upper and Lower Bounds for r ≥ 3",
-      "startLine": 64,
-      "endLine": 88,
-      "summary": "Erdős–Rado upper bound twr_{r-1}(O(n²)) and lower bound twr_{r-1}(Ω(n))."
+      "id": "stepping-up",
+      "title": "Erdős-Rado Stepping-Up Upper Bound",
+      "summary": "For $r \\geq 3$: $R_r(n) \\leq \\mathrm{twr}_{r-1}(c_r \\cdot n^2)$ — each uniformity increase adds one tower level with quadratic penalty",
+      "startLine": 66,
+      "endLine": 72
+    },
+    {
+      "id": "r3-lower",
+      "title": "Erdős-Hajnal Lower Bound ($r = 3$)",
+      "summary": "$R_3(n) \\geq \\mathrm{twr}_2(c \\cdot n^2) = 2^{2^{cn^2}}$, matching the upper bound tower height and resolving the $r=3$ case",
+      "startLine": 74,
+      "endLine": 80
+    },
+    {
+      "id": "general-lower",
+      "title": "General Lower Bound ($r \\geq 3$)",
+      "summary": "$R_r(n) \\geq \\mathrm{twr}_{r-1}(cn)$: tower height is exactly $r-1$, with gap in argument ($n$ vs $n^2$)",
+      "startLine": 82,
+      "endLine": 86
     },
     {
       "id": "main-conjecture",
-      "title": "The Main Conjecture",
-      "startLine": 90,
-      "endLine": 102,
-      "summary": "R_r(n) = twr_{r-1}(Θ(n)): iterated logarithm of R_r(n) is linear in n."
+      "title": "The Tower Growth Conjecture",
+      "summary": "Erdős-Hajnal-Rado (1965): $R_r(n) = \\mathrm{twr}_{r-1}(\\Theta(n))$ — the iterated logarithm is linear in $n$",
+      "startLine": 88,
+      "endLine": 98
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases",
+      "summary": "Exact value $R_3(4) = 13$, one of very few known hypergraph Ramsey numbers",
+      "startLine": 100,
+      "endLine": 103
     }
   ],
   "overview": {
-    "historicalContext": "Erdős, Hajnal, and Rado formulated this in 1965 as a fundamental question in Ramsey theory. For graphs (r=2), the Erdős–Szekeres bounds show R(n,n) is exponential. For hypergraphs, the Erdős–Rado stepping-up lemma gives tower-type upper bounds, but matching lower bounds are much harder to establish.",
+    "historicalContext": "Erdős, Hajnal, and Rado formulated this conjecture in 1965 as the central question in hypergraph Ramsey theory. The story begins with the 1935 Erdős-Szekeres theorem establishing that graph Ramsey numbers R(n,n) grow exponentially — as a tower of height 1. The Erdős-Rado stepping-up lemma (1952) showed that each increase in uniformity r adds one tower level, giving R_r(n) ≤ twr_{r-1}(c·n²). For the lower bound, Erdős and Hajnal proved R_3(n) ≥ twr_2(c·n²), matching the upper bound for r=3. The general lower bound twr_{r-1}(Ω(n)) establishes the tower height as exactly r-1, but with a polynomial gap (linear vs quadratic) in the argument. The conjecture asks whether this gap can be closed to linear. For r=3, the answer is now known to be quadratic (Θ(n²)), so the strongest form of the linear conjecture is false. The problem remains open for r ≥ 4 and is considered one of the most fundamental challenges in combinatorics. Recent progress on graph Ramsey numbers by Campos-Griffiths-Morris-Sahasrabudhe (2023) has renewed interest in hypergraph analogues.",
     "problemStatement": "For r ≥ 3, prove that the (r-1)-fold iterated logarithm of R_r(n) is Θ(n). Equivalently, R_r(n) = twr_{r-1}(Θ(n)).",
-    "proofStrategy": "We formalize the tower function, hypergraph Ramsey numbers, the Erdős–Szekeres bounds for r=2, the Erdős–Rado stepping-up upper bound, and known lower bounds. The conjecture states that the upper and lower bounds match up to constants in the tower argument.",
+    "proofStrategy": "We formalize the tower function twr(k,n) by recursion on k, define hypergraph Ramsey numbers R_r(n) via sInf over valid 2-colorings of r-uniform hypergraphs, state the Erdős-Szekeres graph bounds as axioms, prove their conjunction as a theorem, state the Erdős-Rado stepping-up upper bound and the Erdős-Hajnal lower bounds as axioms, and formalize the main conjecture as an axiom asserting the existence of constants c₁, c₂ bounding the tower argument.",
     "keyInsights": [
-      "The Erdős–Rado stepping-up lemma converts R_{r-1} bounds to R_r bounds, adding one level to the tower",
-      "For r=2, both bounds are exponential: 2^{n/2} ≤ R(n,n) ≤ 4^n",
-      "The gap for r ≥ 3 is in the argument of the tower: O(n²) vs Ω(n)",
-      "The conjecture asks for twr_{r-1}(Θ(n)), closing this polynomial gap",
-      "This is a central open problem in combinatorics with connections to model theory"
+      "**Tower hierarchy**: Each increase in uniformity $r$ adds one level to the tower: $R_2(n) = 2^{\\Theta(n)}$, $R_3(n) = 2^{2^{\\Theta(n^2)}}$, and conjecturally $R_r(n) = \\mathrm{twr}_{r-1}(\\Theta(n^?))$",
+      "**Stepping-up penalty**: The Erdős-Rado lemma incurs a quadratic penalty $n \\mapsto cn^2$ at each step, which may or may not be inherent",
+      "**$r=3$ is resolved**: Both bounds give $\\mathrm{twr}_2(\\Theta(n^2))$, so the strongest linear conjecture is false for $r=3$",
+      "**Polynomial gap for $r \\geq 4$**: The remaining open question is the exact polynomial in $\\mathrm{twr}_{r-1}(n^?)$ — linear vs quadratic vs intermediate",
+      "**Very few exact values**: Only $R_3(4) = 13$ is known exactly; $R_3(5)$ is bounded between 43 and 48"
     ]
   },
+  "relatedProofs": [
+    {
+      "id": "erdos-564",
+      "relationship": "Sibling problem — addresses 3-uniform hypergraph Ramsey numbers R₃(n) with the same tower function framework"
+    },
+    {
+      "id": "ramseys-theorem",
+      "relationship": "Foundational — Ramsey's theorem provides the existence guarantee for monochromatic substructures that underlies the entire hypergraph Ramsey hierarchy"
+    },
+    {
+      "id": "erdos-546",
+      "relationship": "Graph Ramsey variant — studies R(G) ≤ 2^{O(√m)} for graphs with m edges, sharing exponential-growth analysis at the r=2 level"
+    },
+    {
+      "id": "erdos-545",
+      "relationship": "Ramsey number optimization — asks which graphs maximize Ramsey numbers, complementing the hypergraph growth rate question"
+    },
+    {
+      "id": "erdos-szekeres",
+      "relationship": "Classical foundation — the Erdős-Szekeres theorem on monotonic subsequences uses the same pigeonhole/Ramsey principles"
+    },
+    {
+      "id": "erdos-55",
+      "relationship": "Ramsey + additive combinatorics — growth rate characterization of Ramsey r-complete sets shares the density analysis paradigm"
+    },
+    {
+      "id": "erdos-500",
+      "relationship": "Hypergraph extremal theory — Turán density of K₄³ studies 3-uniform hypergraph extremal problems with related methodology"
+    }
+  ],
+  "references": [
+    "Erdős, P., Hajnal, A., and Rado, R. (1965). 'Partition relations for cardinal numbers.' Acta Math. Acad. Sci. Hungar., 16, 93–196.",
+    "Erdős, P. and Szekeres, G. (1935). 'A combinatorial problem in geometry.' Compositio Mathematica, 2, 463–470.",
+    "Erdős, P. and Rado, R. (1952). 'Combinatorial theorems on classifications of subsets of a given set.' Proc. London Math. Soc., 3(2), 417–439.",
+    "Erdős, P. (1947). 'Some remarks on the theory of graphs.' Bull. Amer. Math. Soc., 53, 292–294.",
+    "Campos, M., Griffiths, S., Morris, R., and Sahasrabudhe, J. (2023). 'An exponential improvement for diagonal Ramsey.' arXiv:2303.09521.",
+    "Conlon, D., Fox, J., and Sudakov, B. (2015). 'Recent developments in graph Ramsey theory.' Surveys in Combinatorics, 49–118.",
+    "https://erdosproblems.com/562"
+  ],
   "conclusion": {
-    "summary": "Erdős Problem #562 conjectures that hypergraph Ramsey numbers R_r(n) grow like towers of height r-1 with linear argument. The Erdős–Rado upper bound gives twr_{r-1}(O(n²)) and known lower bounds give twr_{r-1}(Ω(n)). The problem remains open for all r ≥ 3.",
-    "implications": "A proof would completely determine the tower height of hypergraph Ramsey numbers, one of the most fundamental quantities in combinatorics. Progress on this problem has driven major developments in probabilistic and algebraic methods.",
+    "summary": "This formalization captures the Erdős-Hajnal-Rado conjecture on hypergraph Ramsey number tower growth: R_r(n) should equal twr_{r-1}(Θ(n)). The tower function, hypergraph Ramsey numbers, Erdős-Szekeres graph bounds, the Erdős-Rado stepping-up upper bound, and known lower bounds are all formalized. The r=3 case is essentially resolved at twr_2(Θ(n²)), while the general case for r ≥ 4 remains one of the deepest open problems in combinatorics.",
+    "implications": "Resolving this conjecture would determine the fundamental complexity hierarchy of hypergraph Ramsey theory. It would reveal whether the quadratic penalty in the stepping-up lemma is inherent or can be eliminated, with implications for partition calculus, Hales-Jewett theory, and computational complexity lower bounds.",
     "openQuestions": [
-      "Can the Erdős–Rado upper bound argument be improved from O(n²) to O(n)?",
-      "Can the lower bound for r = 3 be improved from twr_2(cn²) to twr_2(cn²)?",
-      "What is the correct constant in the tower argument?",
-      "Is the stepping-up approach inherently lossy?"
+      "Can the Erdős-Rado stepping-up lemma be improved from O(n²) to o(n²) in the tower argument for r ≥ 4?",
+      "What is the exact polynomial exponent in twr_{r-1}(n^α) for each r?",
+      "Is R_3(5) equal to 43, 44, ... or 48? (Current best bounds: 43 ≤ R₃(5) ≤ 48)",
+      "Can algebraic or topological methods yield better hypergraph Ramsey lower bounds for r ≥ 4?"
     ]
   }
 }
