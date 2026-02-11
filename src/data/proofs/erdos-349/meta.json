@@ -14,79 +14,126 @@
       "open"
     ],
     "references": [
-      "Erdős–Graham (1980): original problem, p.57",
-      "Graham (1964): disjoint segments construction",
+      "Erdős–Graham (1980): Old and New Problems and Results in Combinatorial Number Theory, p.57",
+      "Graham (1964): On a conjecture of Erdős in additive number theory, Acta Arithmetica 10",
+      "Zeckendorf (1972): Représentation des nombres naturels par une somme de nombres de Fibonacci",
+      "Vijayaraghavan (1940): On the fractional parts of the powers of a number",
+      "Kubina–Wunderlich (2016): Extending the known verification of the Ideal Waring formula",
       "https://erdosproblems.com/349"
     ],
     "leanFile": "Proofs/Erdos349Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/349",
-    "erdosUrl": "https://erdosproblems.com/349"
+    "erdosUrl": "https://erdosproblems.com/349",
+    "relatedProofs": [
+      {
+        "id": "erdos-345",
+        "relationship": "Studies completeness thresholds for power sequences, a closely related completeness problem"
+      },
+      {
+        "id": "erdos-346",
+        "relationship": "Studies lacunary complete sequences with golden ratio limit, sharing the φ threshold"
+      },
+      {
+        "id": "erdos-246",
+        "relationship": "Studies completeness of exponential-type sets {a^k b^l}, another exponential completeness question"
+      },
+      {
+        "id": "erdos-28",
+        "relationship": "The Erdős–Turán conjecture on additive bases, foundational to the additive number theory framework"
+      },
+      {
+        "id": "erdos-339",
+        "relationship": "Additive bases and distinct element sums, directly relevant to representation by distinct terms"
+      },
+      {
+        "id": "erdos-322",
+        "relationship": "Waring's problem for sums of k-th powers, connected through the ⌊(3/2)^k⌋ formula for g(k)"
+      },
+      {
+        "id": "erdos-267",
+        "relationship": "Irrationality of Fibonacci reciprocal sums, connecting Fibonacci sequences and the golden ratio"
+      }
+    ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Mathlib Imports",
+      "startLine": 17,
+      "endLine": 20,
+      "summary": "Imports core Mathlib modules: $\\mathbb{N}$, $\\mathbb{Z}$, $\\mathbb{R}$ basics, and tactics. Provides the floor function $\\lfloor \\cdot \\rfloor$, real exponentiation, and Finset summation."
+    },
+    {
       "id": "definition",
-      "title": "Definition",
+      "title": "Core Definitions",
       "startLine": 22,
       "endLine": 36,
-      "summary": "Additive completeness, exponential floor sequence, good pair predicate."
+      "summary": "Defines additive completeness ($\\exists N, \\forall m \\geq N$, $m$ is a sum of distinct elements), the exponential floor sequence $a_n = \\lfloor t\\alpha^n \\rfloor$, and the 'good pair' predicate encoding the completeness property."
     },
     {
       "id": "main-question",
-      "title": "Main Question",
+      "title": "Main Characterization Problem",
       "startLine": 38,
-      "endLine": 43,
-      "summary": "Characterize good pairs (t,α) for completeness of ⌊tα^n⌋."
+      "endLine": 44,
+      "summary": "States Erdős Problem #349: characterize the set $\\mathcal{G} \\subseteq (0,\\infty)^2$ of all good pairs $(t,\\alpha)$. Formalized as an existential axiom asserting the completeness region exists."
     },
     {
       "id": "golden-ratio",
       "title": "Golden Ratio Conjecture",
-      "startLine": 45,
-      "endLine": 50,
-      "summary": "Conjectured complete for 1 < α < (1+√5)/2."
+      "startLine": 46,
+      "endLine": 52,
+      "summary": "The central conjecture: $\\lfloor t\\alpha^n \\rfloor$ is complete for all $t > 0$ and $1 < \\alpha < \\varphi = (1+\\sqrt{5})/2$. The golden ratio threshold arises from the Fibonacci sequence's completeness via Zeckendorf's theorem."
     },
     {
       "id": "known-results",
-      "title": "Known Results",
-      "startLine": 52,
-      "endLine": 61,
-      "summary": "Graham's disjoint segments: completeness set has complex structure."
+      "title": "Graham's Disjoint Segments",
+      "startLine": 54,
+      "endLine": 64,
+      "summary": "Formalizes Graham's 1964 result: for any $k$, there exists $t_k \\in (0,1)$ such that the completeness set $\\{\\alpha : (t_k, \\alpha) \\in \\mathcal{G}\\}$ consists of $\\geq k$ disjoint intervals, revealing fractal-like complexity."
     },
     {
-      "id": "parity",
+      "id": "parity-questions",
       "title": "Parity of ⌊(3/2)^n⌋",
-      "startLine": 63,
-      "endLine": 74,
-      "summary": "Whether ⌊(3/2)^n⌋ is odd/even infinitely often — both open."
+      "startLine": 66,
+      "endLine": 77,
+      "summary": "States the two fundamental parity sub-problems: is $\\lfloor (3/2)^n \\rfloor$ odd infinitely often? Even infinitely often? Both remain open and connect to equidistribution of $\\{(3/2)^n\\}$ modulo 1."
     },
     {
-      "id": "observations",
-      "title": "Observations",
-      "startLine": 76,
+      "id": "waring-observation",
+      "title": "Waring Connection",
+      "startLine": 79,
+      "endLine": 83,
+      "summary": "Notes the link to Waring's problem: the Ideal Waring formula $g(k) = 2^k + \\lfloor (3/2)^k \\rfloor - 2$ depends on the same exponential floor values that appear in Problem #349."
+    },
+    {
+      "id": "fibonacci-observation",
+      "title": "Fibonacci Threshold",
+      "startLine": 85,
       "endLine": 88,
-      "summary": "Waring connection and Fibonacci threshold significance."
+      "summary": "Explains why $\\varphi$ is the natural boundary: for $\\alpha > \\varphi$, eventually $a_{n+1} > 2a_n$, creating gaps too large for completeness. The Fibonacci sequence ($\\alpha = \\varphi$) is the extremal complete case."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph. Graham showed that the completeness region has a surprisingly complex structure: for some t, the set of good α consists of multiple disjoint intervals. The conjecture that α < golden ratio suffices remains one of the deepest open questions in combinatorial number theory.",
-    "problemStatement": "For what values of t, α ∈ (0,∞) is the sequence ⌊tα^n⌋ complete (all sufficiently large integers representable as sums of distinct terms)?",
-    "proofStrategy": "We define additive completeness, the exponential floor sequence, and good pairs. We state the golden ratio conjecture, Graham's disjoint segments result, and the fundamental parity questions for ⌊(3/2)^n⌋.",
+    "historicalContext": "Paul Erdős and Ronald Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory.' The question builds on Graham's earlier 1964 paper in Acta Arithmetica, where he proved the striking result that the completeness region for exponential floor sequences has arbitrarily complex structure — for any fixed number of intervals, one can find parameters producing at least that many disjoint completeness intervals. The golden ratio conjecture connects to Edouard Zeckendorf's 1939 discovery (published 1972) that every positive integer has a unique Fibonacci representation, establishing the Fibonacci sequence as the prototypical complete sequence. The parity sub-problems for ⌊(3/2)^n⌋ connect to T. Vijayaraghavan's 1940 work on fractional parts of powers and to the Ideal Waring formula g(k) = 2^k + ⌊(3/2)^k⌋ − 2, verified computationally by Kubina and Wunderlich up to k = 471,600,000. These connections make Problem #349 a nexus linking additive combinatorics, diophantine approximation, and analytic number theory.",
+    "problemStatement": "For what values of $t, \\alpha \\in (0,\\infty)$ is the sequence $\\lfloor t\\alpha^n \\rfloor$ additively complete (i.e., all sufficiently large integers are representable as sums of distinct terms)? Conjecture: completeness holds for all $t > 0$ and $1 < \\alpha < (1+\\sqrt{5})/2$.",
+    "proofStrategy": "The formalization defines additive completeness via Finset sums, constructs the exponential floor sequence as ⌊tα^n⌋, and introduces the 'good pair' predicate. The main problem, golden ratio conjecture, Graham's disjoint segments theorem, and the fundamental parity questions for ⌊(3/2)^n⌋ are all stated as axioms reflecting their open status. The observations section connects to Waring's problem and explains the Fibonacci threshold.",
     "keyInsights": [
-      "Conjectured complete for 1 < α < (1+√5)/2 (golden ratio)",
-      "Graham showed the completeness set has ≥ k disjoint intervals for any k",
-      "Whether ⌊(3/2)^n⌋ is odd/even infinitely often is a fundamental obstacle",
-      "The golden ratio threshold connects to Fibonacci completeness",
-      "Even basic parity questions about exponential floors are intractable"
+      "**Golden ratio as critical threshold**: The conjecture that $\\alpha < \\varphi = (1+\\sqrt{5})/2$ suffices for completeness is motivated by the Fibonacci sequence, whose growth rate is exactly $\\varphi$ and which is known to be complete by Zeckendorf's theorem",
+      "**Fractal-like parameter space**: Graham's 1964 result shows the completeness region has arbitrarily many disjoint intervals for suitable $t$, suggesting the boundary of $\\mathcal{G}$ may have a fractal structure in the $(t,\\alpha)$-plane",
+      "**Parity as fundamental obstruction**: Even determining whether $\\lfloor (3/2)^n \\rfloor$ is odd infinitely often remains open — this basic question about one specific sequence blocks progress on the general completeness characterization",
+      "**Waring's problem connection**: The Ideal Waring formula $g(k) = 2^k + \\lfloor (3/2)^k \\rfloor - 2$ ties exponential floor values directly to classical number theory, giving Problem #349 deep connections beyond combinatorics",
+      "**Lacunary gap condition**: For $\\alpha > \\varphi$, the sequence eventually satisfies $a_{n+1} > a_1 + a_2 + \\cdots + a_n$, making completeness impossible — the golden ratio is the precise boundary where this gap condition first fails"
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #349 asks for the complete characterization of pairs (t,α) making ⌊tα^n⌋ a complete sequence. The conjectured golden ratio threshold and the intractable parity questions for ⌊(3/2)^n⌋ highlight the profound difficulty of understanding exponential floor sequences.",
-    "implications": "Resolution would advance our understanding of completeness in additive number theory and the distribution of fractional parts of exponential sequences, with connections to Waring's problem and uniform distribution theory.",
+    "summary": "Erdős Problem #349 formalizes the deep question of characterizing completeness for exponential floor sequences ⌊tα^n⌋. The Lean formalization captures the core definitions (additive completeness, good pairs), the golden ratio conjecture, Graham's structural theorem on disjoint completeness intervals, and the fundamental parity obstructions for ⌊(3/2)^n⌋ — all stated as axioms reflecting the open status of this 45-year-old problem.",
+    "implications": "Resolution would unify several areas of mathematics: the golden ratio conjecture would establish a sharp phase transition in additive completeness at the Fibonacci growth rate; understanding the parity of ⌊(3/2)^n⌋ would advance equidistribution theory for non-Pisot exponential sequences; and a full characterization of the completeness region would illuminate the fractal-like structure Graham discovered in the parameter space.",
     "openQuestions": [
-      "Is ⌊tα^n⌋ complete for all t > 0 and 1 < α < (1+√5)/2?",
-      "Is ⌊(3/2)^n⌋ odd infinitely often?",
-      "Is ⌊(3/2)^n⌋ even infinitely often?",
-      "What is the exact boundary of the completeness region?"
+      "Is ⌊tα^n⌋ complete for all t > 0 and 1 < α < (1+√5)/2? (The golden ratio conjecture)",
+      "Is ⌊(3/2)^n⌋ odd infinitely often? Is it even infinitely often?",
+      "What is the Hausdorff dimension of the boundary of the completeness region in (t,α)-space?",
+      "Is there a topological or measure-theoretic characterization of the completeness set for fixed t?"
     ]
   }
 }
