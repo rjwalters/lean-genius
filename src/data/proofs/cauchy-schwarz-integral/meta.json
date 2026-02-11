@@ -1,0 +1,91 @@
+{
+  "id": "cauchy-schwarz-integral",
+  "title": "Bunyakovsky-Schwarz Integral Inequality",
+  "slug": "cauchy-schwarz-integral",
+  "description": "(integral f*g)^2 <= (integral f^2)*(integral g^2). The integral form of Cauchy-Schwarz via L^2 inner product spaces.",
+  "meta": {
+    "author": "Bunyakovsky, Schwarz (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality#Integral_form",
+    "date": "1859",
+    "status": "verified",
+    "tags": ["analysis", "measure-theory", "classic", "intermediate"],
+    "proofRepoPath": "Proofs/CauchySchwarzIntegral.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      { "theorem": "abs_real_inner_le_norm", "description": "Cauchy-Schwarz for real inner products", "module": "Mathlib.Analysis.InnerProductSpace.Basic" },
+      { "theorem": "L2.inner_def", "description": "L2 inner product equals integral of pointwise inner product", "module": "Mathlib.MeasureTheory.Function.L2Space" },
+      { "theorem": "norm_inner_eq_norm_iff", "description": "Equality in Cauchy-Schwarz iff linearly dependent", "module": "Mathlib.Analysis.InnerProductSpace.Basic" }
+    ],
+    "originalContributions": [
+      "L2 Cauchy-Schwarz via abstract inner product space instance",
+      "Bridge theorem: L2 inner product = integral of f*g",
+      "Bunyakovsky-Schwarz absolute value form",
+      "Bunyakovsky-Schwarz squared form",
+      "Equality characterization: linear dependence in L2"
+    ],
+    "references": [
+      {"authors": "V. Y. Bunyakovsky", "title": "Sur quelques inegalites concernant les integrales ordinaires et les integrales aux differences finies", "year": "1859", "venue": "Memoires de l'Academie Imperiale des Sciences de St.-Petersbourg", "note": "First proof of the integral form"},
+      {"authors": "H. A. Schwarz", "title": "Uber ein die Flachen kleinsten Flacheninhalts betreffendes Problem der Variationsrechnung", "year": "1885", "venue": "Acta Societatis Scientiarum Fennicae", "note": "Independent proof of the integral version"},
+      {"authors": "J. M. Steele", "title": "The Cauchy-Schwarz Master Class", "year": "2004", "venue": "Cambridge University Press", "note": "Comprehensive treatment including the integral form"}
+    ],
+    "dateAdded": "02/11/26"
+  },
+  "overview": {
+    "historicalContext": "**Bunyakovsky's Extension to Integrals**\n\nViktor Bunyakovsky proved the integral form of the Cauchy-Schwarz inequality in 1859, extending Cauchy's 1821 discrete version to continuous functions. Hermann Schwarz independently proved it in 1885. The inequality states that for square-integrable functions $f, g$:\n\n$$\\left(\\int f \\cdot g \\, d\\mu\\right)^2 \\leq \\left(\\int f^2 \\, d\\mu\\right) \\cdot \\left(\\int g^2 \\, d\\mu\\right)$$\n\nThis is fundamental to functional analysis: it shows that the $L^2$ inner product is well-defined and that $L^2$ is a Hilbert space.\n\n**Modern Formalization Strategy**\n\nIn Mathlib, $L^2(\\mu)$ is already equipped with an `InnerProductSpace` instance, where $\\langle f, g \\rangle = \\int f \\cdot g \\, d\\mu$. The abstract Cauchy-Schwarz inequality $|\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$ therefore immediately gives the integral form. The key insight is that the bridge theorem connecting the abstract inner product to the concrete integral is the critical step.",
+    "problemStatement": "**Bunyakovsky-Schwarz Integral Inequality**\n\nFor $L^2$ functions $f, g$:\n$$\\left|\\int f \\cdot g \\, d\\mu\\right| \\leq \\|f\\|_{L^2} \\cdot \\|g\\|_{L^2}$$\n\nEquivalently in squared form:\n$$(\\int f \\cdot g \\, d\\mu)^2 \\leq \\|f\\|_{L^2}^2 \\cdot \\|g\\|_{L^2}^2$$\n\nEquality holds if and only if $f$ and $g$ are linearly dependent in $L^2$.",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **L2 is an InnerProductSpace:** Mathlib provides `InnerProductSpace \\mathbb{R} (Lp \\mathbb{R} 2 \\mu)` as an instance.\n2. **Abstract Cauchy-Schwarz:** Apply `abs_real_inner_le_norm` to get $|\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$.\n3. **Bridge theorem:** Show $\\langle f, g \\rangle = \\int f \\cdot g \\, d\\mu$ using `L2.inner_def`.\n4. **Rewrite:** Substitute the bridge into the abstract inequality to obtain the integral form.\n5. **Equality:** Use `norm_inner_eq_norm_iff` to characterize equality as linear dependence in $L^2$.",
+    "keyInsights": [
+      "**L2 as InnerProductSpace:** Mathlib's `Lp \\mathbb{R} 2 \\mu` carries an `InnerProductSpace` instance where $\\langle f, g \\rangle = \\int f \\cdot g \\, d\\mu$. This means the abstract Cauchy-Schwarz inequality *is* the integral form.",
+      "**Bridge Theorem:** The key formalization step is `L2_inner_eq_integral`: proving that the abstract inner product notation $\\langle f, g \\rangle$ equals the concrete integral $\\int f(a) \\cdot g(a) \\, d\\mu(a)$. This uses `L2.inner_def` and the fact that `inner x y = x * y` for reals.",
+      "**Squared Form:** The squared inequality $(\\int fg)^2 \\leq \\|f\\|^2 \\|g\\|^2$ follows directly from the absolute value form, avoiding square roots entirely.",
+      "**Equality = Linear Dependence in L2:** Equality holds iff $\\exists c: f = c \\cdot g$ in $L^2$, meaning $f(x) = c \\cdot g(x)$ almost everywhere."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "summary": "Imports Mathlib's L2 space, Bochner integration, inner product space theory, and tactics. Opens `MeasureTheory` namespace and sets up universe variables for a measurable space $(\\alpha, \\mu)$.",
+      "startLine": 1,
+      "endLine": 42
+    },
+    {
+      "id": "abstract-l2",
+      "title": "Abstract L2 Cauchy-Schwarz",
+      "summary": "Establishes that `Lp \\mathbb{R} 2 \\mu` is an `InnerProductSpace` (via `inferInstance`) and states the abstract Cauchy-Schwarz $|\\langle f, g \\rangle| \\leq \\|f\\| \\cdot \\|g\\|$ and its squared form.",
+      "startLine": 44,
+      "endLine": 60
+    },
+    {
+      "id": "bridge",
+      "title": "Bridge: Inner Product = Integral",
+      "summary": "Proves `L2_inner_eq_integral`: $\\langle f, g \\rangle = \\int f(a) \\cdot g(a) \\, d\\mu(a)$, connecting the abstract inner product to concrete integration via `L2.inner_def`.",
+      "startLine": 62,
+      "endLine": 73
+    },
+    {
+      "id": "integral-form",
+      "title": "Bunyakovsky-Schwarz Inequality",
+      "summary": "States and proves the integral form in both absolute value ($|\\int fg| \\leq \\|f\\|\\|g\\|$) and squared ($(\\int fg)^2 \\leq \\|f\\|^2\\|g\\|^2$) versions by rewriting the bridge theorem into the abstract inequality.",
+      "startLine": 75,
+      "endLine": 93
+    },
+    {
+      "id": "equality",
+      "title": "Equality Characterization",
+      "summary": "Proves equality holds iff $f$ and $g$ are linearly dependent in $L^2$: $|\\langle f, g \\rangle| = \\|f\\|\\|g\\| \\iff \\exists c: f = c \\cdot g$, using `norm_inner_eq_norm_iff`.",
+      "startLine": 95,
+      "endLine": 116
+    }
+  ],
+  "conclusion": {
+    "summary": "The formalization proves the Bunyakovsky-Schwarz integral inequality by exploiting Mathlib's L2 inner product space structure. The key insight is that the bridge theorem `L2_inner_eq_integral` connecting abstract inner products to concrete integrals turns the abstract Cauchy-Schwarz into the integral form in a single rewrite. All proofs are complete with zero sorries.",
+    "implications": "**Implications and Connections**\n\n1. **Hilbert Space Theory:** The inequality is the fundamental tool showing that $L^2(\\mu)$ is a Hilbert space, with $\\langle f, g \\rangle = \\int fg \\, d\\mu$ as a well-defined inner product.\n\n2. **Quantum Mechanics:** The Heisenberg uncertainty principle $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$ is a direct consequence of this inequality applied to wave functions.\n\n3. **Probability Theory:** For random variables $X, Y$ with finite variance, $\\text{Cov}(X,Y)^2 \\leq \\text{Var}(X) \\cdot \\text{Var}(Y)$, bounding the correlation coefficient.\n\n4. **Signal Processing:** The matched filter theorem, showing that correlation detection is optimal, is a consequence of Cauchy-Schwarz in $L^2$.\n\n5. **Extends Cauchy-Schwarz Gallery:** This proof completes the Cauchy-Schwarz trilogy: discrete (finite sums), abstract (inner product spaces), and integral (measure-theoretic $L^2$).",
+    "openQuestions": [
+      "Can Holder's inequality be formalized as a generalization, recovering Cauchy-Schwarz for p=q=2?",
+      "Can the Minkowski inequality for integrals be derived as a corollary?",
+      "Can the bridge theorem be extended to complex-valued L2 functions?"
+    ]
+  }
+}

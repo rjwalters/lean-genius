@@ -111,7 +111,7 @@
     "implications": "**Implications and Connections**\n\n1. **Foundation for Normed Spaces:** The triangle inequality, derived here as a corollary, is the key axiom for normed vector spaces and metric spaces.\n\n2. **Quantum Mechanics:** The Heisenberg uncertainty principle $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$ is a consequence of Cauchy-Schwarz applied to wave functions in $L^2$.\n\n3. **Statistics:** The bound $|\\rho| \\leq 1$ on the Pearson correlation coefficient, proved here, is fundamental to regression analysis and hypothesis testing.\n\n4. **Functional Analysis:** Cauchy-Schwarz ensures that inner product spaces are normed spaces, enabling the Hilbert space theory underlying modern analysis.\n\n5. **Machine Learning:** Cosine similarity $\\cos\\theta = \\langle u,v\\rangle/(\\|u\\|\\|v\\|)$ is well-defined precisely because Cauchy-Schwarz guarantees $|\\cos\\theta| \\leq 1$.",
     "openQuestions": [
       "Can the formalization be extended to complex inner product spaces using `inner_mul_le_norm_mul_norm`?",
-      "Can the integral form (Bunyakovsky-Schwarz) be formalized using Mathlib's measure theory?",
+      "[RESOLVED] The integral form (Bunyakovsky-Schwarz) has been formalized - see `cauchy-schwarz-integral` proof.",
       "Can Hölder's inequality be formalized as a generalization, recovering Cauchy-Schwarz for $p=q=2$?",
       "Can the equality condition be strengthened to give the exact proportionality constant $c = \\langle u,v\\rangle/\\|v\\|^2$?"
     ]
