@@ -15,93 +15,106 @@
       "analytic-number-theory",
       "primes",
       "series-convergence",
-      "open-problem"
+      "open-problem",
+      "prime-gaps",
+      "alternating-series"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 15,
     "erdosUrl": "https://erdosproblems.com/15",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "relatedProblems": ["erdos-28"],
+    "references": [
+      "Tao (2023): On the Hardy–Littlewood conjecture and the convergence of Σ(-1)^n n/p_n",
+      "Zhang (2014): Bounded gaps between primes",
+      "Maynard (2015): Small gaps between primes (gap ≤ 246)",
+      "Hardy–Littlewood (1923): Partitio Numerorum III (prime k-tuples conjecture)",
+      "Hadamard, de la Vallée-Poussin (1896): Prime Number Theorem",
+      "Erdős–Selberg (1949): Elementary proof of the Prime Number Theorem",
+      "https://erdosproblems.com/15"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem asks about the convergence of an alternating series involving primes. The Prime Number Theorem gives p_n ~ n log n, so n/p_n ~ 1/log n → 0. However, the Alternating Series Test requires monotonicity, which fails here due to irregular prime gaps. Tao (2023) proved conditional convergence assuming Hardy-Littlewood.",
-    "problemStatement": "Is it true that Σ_{n=1}^∞ (-1)^n · n/p_n converges, where p_n is the n-th prime?",
-    "proofStrategy": "The formalization defines nthPrime via Nat.nth, the alternating term (-1)^n · n/p_n, and partial sums. The Prime Number Theorem implies terms → 0, but non-monotonicity prevents direct application of Leibniz test. Tao's conditional result and related Erdős conjectures about prime gap series are axiomatized. Zhang's bounded gaps theorem resolves one related conjecture.",
+    "historicalContext": "Erdős Problem #15 asks whether the alternating series $\\sum_{n=1}^{\\infty} (-1)^n \\cdot n/p_n$ converges, where $p_n$ is the $n$-th prime. The Prime Number Theorem (Hadamard, de la Vallée-Poussin, 1896) gives $p_n \\sim n \\ln n$, so the terms $n/p_n \\sim 1/\\ln n \\to 0$ — a necessary condition. However, the Alternating Series Test (Leibniz criterion) requires monotone decrease of $|a_n| = n/p_n$, which fails near twin primes: at $(11, 13)$ we have $5/11 < 6/13$. The deep difficulty is that convergence depends on the precise cancellation pattern, which is governed by the irregular distribution of prime gaps. Terence Tao proved conditional convergence in 2023, assuming the Hardy–Littlewood prime $k$-tuples conjecture — one of the deepest unsolved problems in number theory. Related Erdős conjectures concern alternating sums involving prime gaps: $\\sum (-1)^n / g_n$ was proved to diverge via Zhang's 2014 breakthrough on bounded gaps ($\\liminf g_n \\le 246$), while $\\sum (-1)^n / (n \\cdot g_n)$ remains open. The problem cannot be resolved by finite computation, as the tail behavior is entirely determined by the infinite structure of the primes.",
+    "problemStatement": "Is it true that $\\sum_{n=1}^{\\infty} (-1)^n \\cdot n/p_n$ converges, where $p_n$ is the $n$-th prime?",
+    "proofStrategy": "The formalization defines `nthPrime` via `Nat.nth Nat.Prime`, the alternating term $(-1)^n \\cdot n/p_n$, and partial sums. The Prime Number Theorem, terms tending to zero, and non-monotonicity are axiomatized. Tao's conditional convergence (assuming Hardy–Littlewood) is the main result. Related Erdős conjectures on prime gap series ($\\sum (-1)^n/g_n$ diverges, proved via Zhang's bounded gaps; $\\sum (-1)^n/(n \\cdot g_n)$ converges, still open) are also formalized.",
     "keyInsights": [
-      "Status: OPEN - cannot be resolved by finite computation",
-      "Tao (2023): Converges conditionally assuming Hardy-Littlewood prime tuples conjecture",
-      "Alternating Series Test fails: n/p_n is NOT monotonically decreasing (irregular prime gaps)",
-      "No absolute convergence: Σ n/p_n ~ Σ 1/log n diverges",
-      "Zhang (2014): Bounded gaps imply Σ(-1)^n/g_n diverges (related Erdős conjecture proved)",
-      "Empirical evidence: partial sums oscillate around ≈ -1"
+      "**Status: OPEN** — cannot be resolved by finite computation, as the answer depends on the infinite tail behavior of $n/p_n$",
+      "**Tao (2023)**: Converges conditionally assuming the Hardy–Littlewood prime $k$-tuples conjecture, which predicts the density of all prime constellations via the singular series $\\mathfrak{S}$",
+      "**Leibniz test fails**: $n/p_n$ is NOT monotonically decreasing — near twin primes like $(11, 13)$, $5/11 < 6/13$ shows the ratio can increase when the prime gap is small",
+      "**No absolute convergence**: $\\sum n/p_n \\sim \\sum 1/\\ln n = \\infty$ (diverges by comparison with the logarithmic integral $\\text{Li}(x)$), so any convergence must be conditional",
+      "**Zhang (2014) resolves related conjecture**: Bounded gaps ($\\liminf g_n \\le 246$, Maynard) imply $\\sum (-1)^n / g_n$ diverges, since $|1/g_n| \\ge 1/246$ infinitely often",
+      "**Empirical evidence**: Partial sums oscillate around $\\approx -1$, but numerical computation cannot prove convergence"
     ]
   },
   "sections": [
     {
       "id": "background",
       "title": "Background",
-      "summary": "Why the problem is hard - PNT and non-monotonicity",
+      "summary": "The PNT gives $p_n \\sim n \\ln n$, so $n/p_n \\to 0$. But the Leibniz test fails since $n/p_n$ is not monotone decreasing (twin primes cause ratio increases).",
       "startLine": 32,
       "endLine": 46
     },
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "summary": "nthPrime, alternatingPrimeTerm, partial sums",
+      "summary": "Defines `nthPrime` via `Nat.nth Nat.Prime`, the alternating term $a_n = (-1)^n \\cdot n/p_n$, partial sums $S_N = \\sum_{n=0}^{N} a_n$, and `AlternatingPrimeSeriesConverges` as $\\exists L : S_N \\to L$.",
       "startLine": 48,
       "endLine": 68
     },
     {
       "id": "pnt-consequences",
       "title": "Prime Number Theorem Consequences",
-      "summary": "Terms tend to zero but not monotonically",
+      "summary": "Axiomatizes PNT ($p_n/(n\\ln n) \\to 1$), $n/p_n \\to 0$, $|a_n| \\to 0$, and the critical failure: $n/p_n$ is not monotone decreasing (counterexample: $5/11 < 6/13$ near twin primes).",
       "startLine": 70,
       "endLine": 116
     },
     {
       "id": "tao-result",
       "title": "Tao's Conditional Result (2023)",
-      "summary": "Convergence assuming Hardy-Littlewood",
+      "summary": "States the Hardy–Littlewood prime $k$-tuples conjecture (admissible tuples have infinitely many prime translations) and axiomatizes Tao's theorem: $\\text{HardyLittlewood} \\Rightarrow \\exists L : S_N \\to L$.",
       "startLine": 118,
-      "endLine": 139
+      "endLine": 141
     },
     {
       "id": "related-series",
-      "title": "Related Series",
-      "summary": "Erdős's conjectures about prime gap series",
-      "startLine": 141,
-      "endLine": 176
+      "title": "Related Series and Erdős's Gap Conjectures",
+      "summary": "Defines prime gap $g_n = p_{n+1} - p_n$. Erdős's conjectures: (1) $\\sum (-1)^n/(n g_n)$ converges (open); (2) $\\sum (-1)^n/g_n$ diverges (proved via Zhang's bounded gaps $\\liminf g_n \\le H$).",
+      "startLine": 143,
+      "endLine": 178
     },
     {
       "id": "difficulty",
       "title": "Why This Problem is Hard",
-      "summary": "Non-monotonicity, subtle cancellation, conditional results only",
-      "startLine": 178,
-      "endLine": 203
+      "summary": "Four obstacles: (1) Leibniz test fails (non-monotone); (2) cancellation is subtle (depends on prime gap structure); (3) only conditional results known; (4) not finitely resolvable — two sequences agreeing on $[1,N]$ can converge/diverge differently.",
+      "startLine": 180,
+      "endLine": 205
     },
     {
       "id": "absolute-convergence",
-      "title": "Absolute Convergence",
-      "summary": "Series does NOT converge absolutely",
-      "startLine": 205,
-      "endLine": 225
+      "title": "Absolute Convergence Fails",
+      "summary": "$\\sum n/p_n \\sim \\sum 1/\\ln n = \\infty$ (logarithmic integral diverges), so any convergence must be conditional. The comparison $n/p_n \\sim 1/\\ln n$ follows from PNT.",
+      "startLine": 207,
+      "endLine": 227
     },
     {
       "id": "numerical-evidence",
       "title": "Numerical Evidence",
-      "summary": "Partial sums oscillate around -1",
-      "startLine": 227,
-      "endLine": 239
+      "summary": "Partial sums appear to oscillate around $\\approx -1$: $|S_N - (-1)| < 1 + \\varepsilon$ for large $N$. Suggestive but not a proof, as the infinite tail is uncomputable.",
+      "startLine": 229,
+      "endLine": 241
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #15, an OPEN problem asking whether Σ(-1)^n · n/p_n converges. Tao (2023) proved conditional convergence assuming Hardy-Littlewood. The main difficulty is that n/p_n is not monotonically decreasing due to irregular prime gaps, so the Alternating Series Test doesn't apply.",
-    "implications": "This problem lies at the intersection of analytic number theory and series convergence. Its resolution requires understanding the fine structure of prime distribution. The conditional nature of Tao's result highlights how many open problems in number theory are interconnected through deep conjectures.",
+    "summary": "Erdős Problem #15 asks whether Σ(-1)^n · n/p_n converges. Tao (2023) proved conditional convergence assuming Hardy–Littlewood. The main difficulty is that n/p_n is not monotonically decreasing (due to twin primes), so the Leibniz test fails, and convergence depends on the deep structure of prime distribution. The formalization captures the state of the art: PNT consequences, non-monotonicity, Tao's conditional result, and related gap series conjectures (one proved via Zhang's bounded gaps, one still open).",
+    "implications": "This problem lies at the intersection of analytic number theory and classical analysis. Its resolution would require understanding the precise cancellation pattern in alternating sums over primes, which in turn requires information about the fine distribution of prime gaps beyond what current unconditional methods provide. The conditional nature of Tao's result highlights the interconnectedness of deep conjectures in prime number theory.",
     "openQuestions": [
-      "Does the series converge unconditionally?",
-      "Can Hardy-Littlewood be weakened while preserving convergence?",
-      "What is the exact limit if the series converges? (Empirically ≈ -1)",
-      "Does Σ(-1)^n/(n · g_n) converge? (Erdős's other conjecture)"
+      "Does the series converge unconditionally, without assuming Hardy–Littlewood?",
+      "Can the Hardy–Littlewood hypothesis be weakened (e.g., to Elliott–Halberstam or Bombieri–Vinogradov) while preserving convergence?",
+      "If the series converges, what is the exact limit? (Empirically ≈ -1)",
+      "Does Σ(-1)^n/(n · g_n) converge? (Erdős's open gap conjecture)",
+      "Is there a connection to the Riemann Hypothesis or other zeta-function conjectures?"
     ]
   }
 }
