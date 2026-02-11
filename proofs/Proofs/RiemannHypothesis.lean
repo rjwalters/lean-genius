@@ -3,17 +3,18 @@ import Mathlib.NumberTheory.LSeries.Basic
 import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.NumberTheory.Harmonic.EulerMascheroni
+import Mathlib.NumberTheory.EulerProduct.DirichletLSeries
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
 import Mathlib.Analysis.Asymptotics.Defs
 import Mathlib.Order.Filter.Basic
-import Mathlib.Data.Complex.ExponentialBounds
+import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Topology.Order.Basic
 import Mathlib.Data.Set.Card
 import Mathlib.Tactic
 
-/-!
+/-
 # The Riemann Hypothesis
 
 ## What This File Contains
@@ -43,8 +44,9 @@ This file does NOT prove the Riemann Hypothesis. It provides:
 |-----------|--------|
 | Trivial zeros at -2, -4, -6, ... | PROVEN (Mathlib) |
 | Functional equation ζ(s) = ... ζ(1-s) | PROVEN (Mathlib) |
-| ζ(s) ≠ 0 for Re(s) > 1 | PROVEN (Mathlib) |
+| ζ(s) ≠ 0 for Re(s) > 1 | PROVEN (Mathlib, via Euler product) |
 | ζ(s) ≠ 0 for Re(s) = 1 | PROVEN (Prime Number Theorem) |
+| Zeros symmetric: ζ(s)=0 ⟹ ζ(1-s)=0 in strip | PROVEN (this file, via functional eq) |
 | All zeros in 0 < Re(s) < 1 have Re(s) = 1/2 | **CONJECTURE** |
 
 ## Historical Context
@@ -60,14 +62,15 @@ This file does NOT prove the Riemann Hypothesis. It provides:
 ## Mathlib Dependencies
 
 - `Mathlib.NumberTheory.LSeries.RiemannZeta` - Riemann zeta function
+- `Mathlib.NumberTheory.EulerProduct.DirichletLSeries` - Euler product and non-vanishing
 - `Mathlib.NumberTheory.ArithmeticFunction` - Arithmetic functions
 - `Mathlib.NumberTheory.PrimeCounting` - Prime counting function
 
 ## References
 
-- [Riemann's 1859 Paper](https://www.claymath.org/sites/default/files/ezeta.pdf)
-- [Clay Mathematics Institute](https://www.claymath.org/millennium-problems/riemann-hypothesis)
-- [Mathlib Zeta Function](https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LSeries/RiemannZeta.html)
+- Riemann's 1859 Paper
+- Clay Mathematics Institute Millennium Prize description
+- Mathlib Zeta Function documentation
 -/
 
 set_option maxHeartbeats 400000
@@ -79,7 +82,7 @@ open scoped Topology BigOperators ComplexConjugate
 
 namespace RiemannHypothesis
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART I: BASIC DEFINITIONS AND PROPERTIES
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -95,7 +98,7 @@ def isTrivialZero (s : ℂ) : Prop := ∃ n : ℕ, s = -2 * (n + 1)
 /-- A zero is non-trivial if it's in the critical strip -/
 def isNonTrivialZero (s : ℂ) : Prop := riemannZeta s = 0 ∧ s ∈ criticalStrip
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART II: THE RIEMANN HYPOTHESIS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -135,7 +138,7 @@ theorem RH_symmetric : RiemannHypothesis ↔
     simp only [abs_eq_zero, sub_eq_zero] at this
     exact this
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART III: KNOWN FACTS ABOUT ZEROS (PROVEN)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -150,7 +153,7 @@ theorem trivial_zeros (n : ℕ) : riemannZeta (-2 * (n + 1)) = 0 :=
 /-- ζ(0) = -1/2 (not a zero!) -/
 theorem zeta_zero : riemannZeta 0 = -1/2 := riemannZeta_zero
 
-/-- **Axiom: No Zeros for Re(s) > 1**
+/-- **No Zeros for Re(s) > 1** (PROVEN)
 
 The Riemann zeta function has no zeros in the half-plane Re(s) > 1.
 
@@ -159,11 +162,10 @@ This follows from the Euler product representation:
 
 Each factor is nonzero (since |p^(-s)| < 1 for Re(s) > 1), hence the product is nonzero.
 
-**Status**: This is a proven theorem in analytic number theory, but requires the
-Euler product formula which is not yet fully available in Mathlib for ζ(s) with s ∈ ℂ.
-The Euler product is proven for the completed zeta function, but extracting this
-result for the standard zeta function requires additional technical lemmas. -/
-axiom no_zeros_re_gt_one (s : ℂ) (hs : 1 < s.re) : riemannZeta s ≠ 0
+Now proven in Mathlib via `riemannZeta_ne_zero_of_one_lt_re`, which uses the
+Euler product formula. Requires import of `EulerProduct.DirichletLSeries`. -/
+theorem no_zeros_re_gt_one (s : ℂ) (hs : 1 < s.re) : riemannZeta s ≠ 0 :=
+  riemannZeta_ne_zero_of_one_lt_re hs
 
 /-- The functional equation relates ζ(s) and ζ(1-s)
 
@@ -172,22 +174,43 @@ theorem functional_equation_completed (s : ℂ) :
     completedRiemannZeta (1 - s) = completedRiemannZeta s :=
   completedRiemannZeta_one_sub s
 
-/-- **Axiom: Zeros Symmetric About Critical Line**
+/-- If s is in the critical strip, then s ≠ -n for any natural number n.
+This is because Re(-n) ≤ 0 but Re(s) > 0 in the critical strip. -/
+lemma ne_neg_nat_of_mem_criticalStrip (s : ℂ) (hs : s ∈ criticalStrip) (n : ℕ) :
+    s ≠ -↑n := by
+  intro heq
+  simp only [criticalStrip, mem_setOf_eq] at hs
+  have : s.re = -(n : ℝ) := by
+    rw [heq]; simp [Complex.neg_re, Complex.natCast_re]
+  linarith [hs.1]
+
+/-- If s is in the critical strip, then s ≠ 1 (since Re(s) < 1). -/
+lemma ne_one_of_mem_criticalStrip (s : ℂ) (hs : s ∈ criticalStrip) : s ≠ 1 := by
+  intro heq
+  simp only [criticalStrip, mem_setOf_eq] at hs
+  have : s.re = 1 := by rw [heq]; simp
+  linarith [hs.2]
+
+/-- **Zeros Symmetric About Critical Line** (PROVEN)
 
 Zeros in the critical strip come in symmetric pairs about Re(s) = 1/2.
 If ζ(s) = 0 with 0 < Re(s) < 1, then ζ(1-s) = 0 as well.
 
-**Proof sketch**: The functional equation for the completed zeta function gives
-  Λ(s) = Λ(1-s) where Λ(s) = π^(-s/2) Γ(s/2) ζ(s)
+**Proof**: The functional equation (Mathlib's `riemannZeta_one_sub`) gives:
+  ζ(1-s) = 2(2π)^(-s) Γ(s) cos(πs/2) ζ(s)
 
-If ζ(s) = 0, then Λ(s) = 0, so Λ(1-s) = 0. Since Γ has no zeros (only poles at
-non-positive integers, which lie outside the critical strip), we must have ζ(1-s) = 0.
+When ζ(s) = 0, the right side vanishes, hence ζ(1-s) = 0.
 
-**Status**: This is a proven theorem, but extracting it requires careful analysis of
-the Gamma function's behavior in the critical strip, specifically that Γ(s/2) ≠ 0
-and Γ((1-s)/2) ≠ 0 when 0 < Re(s) < 1. -/
-axiom zeros_symmetric (s : ℂ) (hs_strip : s ∈ criticalStrip)
-    (hs_zero : riemannZeta s = 0) : riemannZeta (1 - s) = 0
+The hypotheses of `riemannZeta_one_sub` are satisfied because for s in the
+critical strip (0 < Re(s) < 1):
+- s ≠ -n for any n ∈ ℕ (since Re(s) > 0 but Re(-n) ≤ 0)
+- s ≠ 1 (since Re(s) < 1) -/
+theorem zeros_symmetric (s : ℂ) (hs_strip : s ∈ criticalStrip)
+    (hs_zero : riemannZeta s = 0) : riemannZeta (1 - s) = 0 := by
+  have hne_nat : ∀ (n : ℕ), s ≠ -↑n := ne_neg_nat_of_mem_criticalStrip s hs_strip
+  have hne_one : s ≠ 1 := ne_one_of_mem_criticalStrip s hs_strip
+  rw [riemannZeta_one_sub hne_nat hne_one]
+  simp [hs_zero]
 
 /-- The critical strip is symmetric about Re(s) = 1/2 -/
 theorem criticalStrip_symmetric (s : ℂ) :
@@ -195,11 +218,11 @@ theorem criticalStrip_symmetric (s : ℂ) :
   simp only [criticalStrip, mem_setOf_eq, sub_re, one_re]
   constructor <;> intro ⟨h1, h2⟩ <;> constructor <;> linarith
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART IV: EQUIVALENT FORMULATIONS OF RH
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-!
+/-
 ### Robin's Inequality
 
 **Robin (1984)**: The Riemann Hypothesis is equivalent to:
@@ -216,7 +239,7 @@ def sigma (n : ℕ) : ℕ := n.divisors.sum _root_.id
 
 /-- Robin's upper bound function: e^γ · n · log(log(n)) -/
 def robinBound (n : ℕ) : ℝ :=
-  if h : n ≥ 3 then
+  if _h : n ≥ 3 then
     Real.exp eulerMascheroni * n * Real.log (Real.log n)
   else 0
 
@@ -246,7 +269,7 @@ This is far beyond current Mathlib capabilities and would require a major
 formalization effort. -/
 axiom RH_iff_Robin : RiemannHypothesis ↔ RobinsInequality
 
-/-!
+/-
 ### Mertens Function Bound
 
 **Littlewood**: RH is equivalent to M(x) = O(x^(1/2 + ε)) for all ε > 0
@@ -259,7 +282,7 @@ def mobius : ℕ → ℤ := ArithmeticFunction.moebius
 
 /-- The Mertens function M(x) = Σ_{n≤x} μ(n) -/
 def mertens (x : ℝ) : ℤ :=
-  ∑ n in Finset.filter (· ≤ ⌊x⌋₊) (Finset.range (⌊x⌋₊ + 1)), mobius n
+  (Finset.filter (fun n => n ≤ ⌊x⌋₊) (Finset.range (⌊x⌋₊ + 1))).sum mobius
 
 /-- **Mertens bound equivalent to RH** -/
 def MertensBound : Prop :=
@@ -287,7 +310,7 @@ where M(x) = Σ_{n≤x} μ(n) is the Mertens function.
 yet available in Mathlib. -/
 axiom RH_iff_Mertens : RiemannHypothesis ↔ MertensBound
 
-/-!
+/-
 ### Prime Counting Error Term
 
 **Koch (1901)**: RH is equivalent to:
@@ -338,7 +361,7 @@ It shows that RH is fundamentally about how well Li(x) approximates π(x).
 and is not yet in Mathlib. -/
 axiom RH_iff_PrimeCounting : RiemannHypothesis ↔ PrimeCountingBound
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART V: PARTIAL RESULTS (PROVEN WITHOUT RH)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -425,7 +448,7 @@ axiom classical_zero_free_region :
     ∃ c > 0, ∃ t₀ > 0, ∀ s : ℂ,
       |s.im| ≥ t₀ → s.re ≥ 1 - c / Real.log |s.im| → riemannZeta s ≠ 0
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART VI: COMPUTATIONAL VERIFICATION
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -441,7 +464,7 @@ As of 2024, this has been verified for the first 10^13 zeros. -/
 axiom computationally_verified_zeros (T : ℝ) (hT : T ≤ 10^13) :
     ∀ s : ℂ, riemannZeta s = 0 → s ∈ criticalStrip → |s.im| ≤ T → s.re = 1/2
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART VII: CONSEQUENCES OF RH
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -496,20 +519,39 @@ axiom RH_implies_ternary_goldbach_effective (h : RiemannHypothesis) :
     ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ → Odd n →
       ∃ p q r : ℕ, Nat.Prime p ∧ Nat.Prime q ∧ Nat.Prime r ∧ n = p + q + r
 
-/-! ═══════════════════════════════════════════════════════════════════════════════
-PART VIII: SUMMARY AND SIGNIFICANCE
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART VIII: EULER PRODUCT AND NON-VANISHING (PROVEN)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- The Euler product formula: ζ(s) = ∏_p (1 - p^(-s))^(-1) for Re(s) > 1.
+This is the identity that connects ζ(s) to prime numbers. -/
+theorem euler_product {s : ℂ} (hs : 1 < s.re) :
+    ∏' p : Nat.Primes, (1 - (p : ℂ)^(-s))⁻¹ = riemannZeta s :=
+  riemannZeta_eulerProduct_tprod hs
+
+/-- The Euler product shows ζ(s) ≠ 0 for Re(s) > 1:
+Each factor (1 - p^(-s))^(-1) is nonzero, and the product converges. -/
+theorem euler_product_nonvanishing {s : ℂ} (hs : 1 < s.re) :
+    ∏' p : Nat.Primes, (1 - (p : ℂ)^(-s))⁻¹ ≠ 0 := by
+  rw [euler_product hs]
+  exact no_zeros_re_gt_one s hs
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART IX: SUMMARY AND SIGNIFICANCE
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-- Summary of what we know about the Riemann Hypothesis:
 
 1. **Statement**: All non-trivial zeros of ζ(s) have Re(s) = 1/2
 
-2. **Proven facts**:
-   - Trivial zeros at -2, -4, -6, ...
-   - No zeros for Re(s) > 1 or Re(s) = 1
-   - Infinitely many zeros on Re(s) = 1/2 (Hardy)
-   - >40% of zeros on Re(s) = 1/2 (Conrey)
-   - First 10^13 zeros verified computationally
+2. **Proven facts (in this file)**:
+   - Trivial zeros at -2, -4, -6, ... (PROVEN via Mathlib)
+   - No zeros for Re(s) > 1 (PROVEN via Euler product)
+   - Zeros symmetric: ζ(s)=0 in strip implies ζ(1-s)=0 (PROVEN via functional equation)
+   - Euler product ζ(s) = Π_p (1 - p^(-s))^(-1) (PROVEN)
+   - Infinitely many zeros on Re(s) = 1/2 (Hardy, axiom)
+   - >40% of zeros on Re(s) = 1/2 (Conrey, axiom)
+   - First 10^13 zeros verified computationally (axiom)
 
 3. **Equivalent statements**:
    - Robin's inequality: σ(n) < e^γ n log log n for n > 5040
