@@ -53,15 +53,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1063 was posed by Erdős and Selfridge in 1983. It concerns the divisibility of binomial coefficients C(n,k) by the \"nearby\" integers n, n-1, ..., n-k+1. Erdős and Selfridge first proved a fundamental structural result: for n >= 2k, it is impossible for ALL of these k integers to divide C(n,k) — at least one must fail.\n\nThe natural follow-up question is: how large must n be before all but ONE of them divide? This threshold n_k has been computed for small k: n_2=4, n_3=6, n_4=9, n_5=12. The growth pattern is not immediately obvious.\n\nMonier (1985) proved the first non-trivial upper bound: n_k <= k! for k >= 3, by showing that C(k!, k) satisfies the required divisibility conditions. Cambie later improved this significantly to n_k <= k * lcm(2,...,k-1) <= e^{(1+o(1))k}, bringing the bound from super-exponential to single-exponential. The true growth rate of n_k — whether polynomial, exponential, or something in between — remains open.",
+    "historicalContext": "**Erdős-Selfridge and Binomial Divisibility**\n\nErdős Problem #1063 originates from a 1983 paper by Paul Erdős and John Selfridge on the arithmetic structure of binomial coefficients. They observed that the $k$ consecutive integers $n, n-1, \\ldots, n-k+1$ appearing in the numerator of $\\binom{n}{k} = \\frac{n(n-1)\\cdots(n-k+1)}{k!}$ have a subtle divisibility relationship with $\\binom{n}{k}$ itself. Their key result: for $n \\geq 2k$, it is impossible for ALL $k$ of these integers to divide $\\binom{n}{k}$ — the prime factorization of $k!$ cannot simultaneously cancel every factor.\n\n**The threshold question**: The natural follow-up asks for the least $n_k \\geq 2k$ where all but one of these $k$ integers divide $\\binom{n}{k}$. Computed values are $n_2 = 4$ (since $3 \\mid \\binom{4}{2} = 6$ but $4 \\nmid 6$), $n_3 = 6$, $n_4 = 9$, $n_5 = 12$.\n\n**Monier's bound (1985)**: Louis Monier proved $n_k \\leq k!$ by showing that $n = k!$ satisfies the all-but-one condition — the highly composite structure of $k!$ ensures most nearby factors divide $\\binom{k!}{k}$. This was the first non-trivial result but grows super-exponentially.\n\n**Cambie's improvement**: Stijn Cambie dramatically improved the bound to $n_k \\leq k \\cdot \\text{lcm}(2, \\ldots, k-1)$, which by the prime number theorem ($\\log \\text{lcm}(1, \\ldots, m) = \\psi(m) \\sim m$) gives $n_k \\leq e^{(1+o(1))k}$. The gap between $n_k \\geq 2k$ (trivial) and $n_k \\leq e^{(1+o(1))k}$ remains vast — whether $n_k$ grows polynomially or exponentially is the central open question.",
     "problemStatement": "**Problem Statement (Open)**\n\nLet $k \\geq 2$. Define $n_k \\geq 2k$ as the least $n$ such that $(n-i) \\mid \\binom{n}{k}$ for all but one $0 \\leq i < k$.\n\n**Question:** Estimate $n_k$. In particular, is $n_k$ polynomial in $k$?",
-    "proofStrategy": "The formalization defines the divisibility condition using Nat.choose and Finset.filter for counting. The threshold n_k is characterized as the least n >= 2k satisfying the all-but-one condition. The Erdős-Selfridge non-divisibility result, known small values, and upper bounds are axiomatized. The main theorem erdos_1063_summary combines the non-divisibility result with Monier's bound.",
+    "proofStrategy": "**Axiomatized Framework with Computable Definitions**\n\nThe formalization takes a layered approach: computable definitions for the core predicates, with deep results axiomatized.\n\n**Definitions (fully formalized)**: `DividesChoose(n, k, i)` checks $(n-i) \\mid \\binom{n}{k}$; `divisibilityCount` uses `Finset.filter` to count how many of the $k$ factors divide $\\binom{n}{k}$; `AllButOneDivide` requires count $\\geq k-1$; and `IsThreshold` captures minimality.\n\n**Axioms (deep results)**: The Erdős-Selfridge nondivisibility ($\\text{divCount} < k$ always), known threshold values ($n_2 = 4$ through $n_5 = 12$), Monier's bound ($n_k \\leq k!$), and Cambie's improvement ($n_k \\leq k \\cdot \\text{lcm}(2,\\ldots,k-1)$) are all axiomatized because their proofs involve intricate prime factorization arguments.\n\n**Summary theorem**: `erdos_1063_summary` combines the Erdős-Selfridge result with Monier's bound via `exact ⟨..., ...⟩`, packaging the state of knowledge.\n\n**Open formalization**: `ErdosProblem1063` defines the polynomial growth question as $\\exists C \\geq 1,\\, \\forall k \\geq 2 : n_k \\leq k^C$, making the open problem machine-checkable once (if) resolved.",
     "keyInsights": [
-      "**Erdős-Selfridge:** Full divisibility (all k values) never occurs for n >= 2k",
-      "**Known values:** n_2=4, n_3=6, n_4=9, n_5=12 — slow but potentially exponential growth",
-      "**Monier bound:** n_k <= k! (super-exponential, but first non-trivial bound)",
-      "**Cambie improvement:** n_k <= k * lcm(2,...,k-1) <= e^{(1+o(1))k} (single-exponential)",
-      "**Open question:** Is n_k polynomial in k, or does it necessarily grow exponentially?"
+      "**Erdős-Selfridge impossibility**: For $n \\geq 2k$, full divisibility ($\\forall i < k : (n-i) \\mid \\binom{n}{k}$) is impossible — the prime factorization of $k!$ cannot cancel all numerator factors simultaneously",
+      "**Known thresholds**: $n_2 = 4, n_3 = 6, n_4 = 9, n_5 = 12$ — the sequence grows roughly linearly for small $k$, but the asymptotic behavior is completely unknown",
+      "**Monier's super-exponential bound**: $n_k \\leq k!$ for $k \\geq 3$, proved by showing $\\binom{k!}{k}$ has the required divisibility — the highly composite nature of $k!$ forces almost all factors to divide",
+      "**Cambie's exponential improvement**: $n_k \\leq k \\cdot \\text{lcm}(2, \\ldots, k-1) \\leq e^{(1+o(1))k}$ via the prime number theorem and the Chebyshev function $\\psi(m) \\sim m$",
+      "**The polynomial vs. exponential question**: Whether $n_k \\leq k^C$ for some constant $C$ is one of the cleanest open problems in combinatorial number theory, with a gap spanning many orders of magnitude"
     ]
   },
   "sections": [
@@ -70,52 +70,53 @@
       "title": "Divisibility Condition",
       "startLine": 37,
       "endLine": 55,
-      "summary": "DividesChoose, divisibilityCount, AllButOneDivide definitions"
+      "summary": "Defines $(n-i) \\mid \\binom{n}{k}$ predicate, counting function $|\\{i : (n-i) \\mid \\binom{n}{k}\\}|$, and `AllButOneDivide` requiring count $\\geq k-1$"
     },
     {
       "id": "threshold",
-      "title": "The Threshold n_k",
+      "title": "The Threshold $n_k$",
       "startLine": 57,
       "endLine": 65,
-      "summary": "IsThreshold: least n >= 2k with all-but-one divisibility"
+      "summary": "$n_k = \\min\\{n \\geq 2k : \\text{AllButOneDivide}(n, k)\\}$ — the extremal function whose growth rate is the open question"
     },
     {
       "id": "erdos-selfridge",
       "title": "Erdős-Selfridge Result",
       "startLine": 67,
       "endLine": 80,
-      "summary": "Full divisibility never occurs for n >= 2k"
+      "summary": "Axiom: $\\forall k \\geq 2,\\, \\forall n \\geq 2k : \\text{divisibilityCount}(n,k) < k$ — full divisibility is impossible"
     },
     {
       "id": "small-values",
       "title": "Known Small Values",
       "startLine": 82,
       "endLine": 103,
-      "summary": "n_2=4, n_3=6, n_4=9, n_5=12"
+      "summary": "Axioms for $n_2 = 4$, $n_3 = 6$, $n_4 = 9$, $n_5 = 12$ with concrete $\\binom{n}{k}$ verifications"
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
       "startLine": 105,
       "endLine": 131,
-      "summary": "Monier k!, Cambie lcm, polynomial growth question"
+      "summary": "Monier: $n_k \\leq k!$; Cambie: $n_k \\leq k \\cdot \\text{lcm}(2,\\ldots,k-1) \\leq e^{(1+o(1))k}$; open: $\\exists C,\\, n_k \\leq k^C$?"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 133,
       "endLine": 155,
-      "summary": "erdos_1063_summary combining key results"
+      "summary": "`erdos_1063_summary`: combines Erdős-Selfridge nondivisibility with Monier bound via `exact ⟨..., ...⟩`"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1063 asks for the growth rate of n_k, the least n where all but one of {n,...,n-k+1} divide C(n,k). Known small values are n_2=4 through n_5=12, with upper bounds n_k <= k! (Monier) and n_k <= k*lcm(2,...,k-1) (Cambie). The true growth rate remains open.",
-    "implications": "Understanding n_k illuminates the arithmetic structure of binomial coefficients and divisibility by nearby integers. This connects to questions about the prime factorization of C(n,k) and has potential applications in primality testing and factoring algorithms.",
+    "summary": "This formalization captures Erdős Problem #1063 on the growth rate of $n_k$, the least $n \\geq 2k$ where all but one of $\\{n, n-1, \\ldots, n-k+1\\}$ divide $\\binom{n}{k}$. The Erdős-Selfridge theorem (1983) shows full divisibility is impossible, and the formalization axiomatizes known values ($n_2 = 4$ through $n_5 = 12$), Monier's bound $n_k \\leq k!$, and Cambie's improvement $n_k \\leq e^{(1+o(1))k}$. The open question — whether $n_k$ is polynomial in $k$ — is formalized as a Lean `Prop`.",
+    "implications": "**Theoretical Significance**\n\n1. **Arithmetic of binomial coefficients**: The problem reveals that the divisibility of $\\binom{n}{k}$ by nearby integers is highly structured — not all can divide, but almost all can. This connects to Kummer's theorem on the $p$-adic valuation of binomial coefficients.\n\n2. **Gap between polynomial and exponential**: The enormous gap between the trivial lower bound $n_k \\geq 2k$ and the exponential upper bound $n_k \\leq e^{(1+o(1))k}$ highlights a deep lacuna in our understanding of divisibility patterns. The answer likely requires new techniques from analytic number theory.\n\n3. **Role of lcm**: Cambie's bound $n_k \\leq k \\cdot \\text{lcm}(2, \\ldots, k-1)$ connects the problem to the prime number theorem, since $\\text{lcm}(1, \\ldots, m) = e^{\\psi(m)}$ where $\\psi$ is the Chebyshev function. This suggests the growth rate is controlled by prime distribution.\n\n4. **Formalization approach**: By axiomatizing deep results and fully formalizing the definitions and the open question, the formalization enables future machine-verified progress — once the polynomial vs. exponential question is resolved, the proof can be directly integrated.\n\n5. **Connection to Erdős's legacy**: This is one of over 500 open problems left by Erdős, representing a clean number-theoretic question where the answer (polynomial vs. exponential) is genuinely unknown.",
     "openQuestions": [
-      "Is n_k polynomial or exponential in k?",
-      "Can n_k be computed exactly for k = 6, 7, 8, ...?",
-      "Is there a non-trivial lower bound better than n_k >= 2k?",
-      "What is the precise role of lcm(2,...,k-1) in the growth rate?"
+      "Is $n_k$ polynomial in $k$? The known values $4, 6, 9, 12$ grow roughly linearly, but this could be misleading for large $k$.",
+      "Can $n_k$ be computed exactly for $k = 6, 7, 8$? Computational evidence would help distinguish polynomial from exponential growth.",
+      "Is there a non-trivial lower bound $n_k \\geq f(k)$ with $f(k)/k \\to \\infty$? Currently only the trivial $n_k \\geq 2k$ is known.",
+      "Does the 'exceptional' index $i$ (the one where $(n_k - i) \\nmid \\binom{n_k}{k}$) have a pattern? Is it always the largest prime power in $\\{n_k, \\ldots, n_k - k + 1\\}$?",
+      "Can Cambie's lcm bound be improved to $n_k \\leq e^{c \\cdot k / \\log k}$ for some constant $c$, or is single-exponential growth sharp?"
     ]
   }
 }
