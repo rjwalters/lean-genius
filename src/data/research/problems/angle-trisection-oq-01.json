@@ -1,0 +1,55 @@
+{
+  "slug": "angle-trisection-oq-01",
+  "title": "Minimal Polynomial Degree for Non-Constructibility",
+  "phase": "COMPLETE",
+  "status": "complete",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For d > 0: (not IsConstructible alpha d) iff not (exists k, d = 2^k). Equivalently, d has an odd prime factor iff degree d is non-constructible.",
+    "plain": "A degree d guarantees non-constructibility if and only if d has an odd prime factor. The constructible degrees are exactly the powers of 2.",
+    "whyMatters": [
+      "Provides the complete number-theoretic characterization underlying Wantzel's theorem",
+      "Explains WHY degree 3 is the obstruction (not just that it is)",
+      "Extends naturally to regular polygon constructibility (Gauss-Wantzel theorem)",
+      "Connects to Fermat primes and the classification of constructible n-gons"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "prime_dvd_pow_two_eq_two - any prime factor of 2^n must equal 2",
+      "odd_prime_dvd_not_dvd_pow_two - odd prime factor prevents dividing 2^n",
+      "dvd_pow_two_is_pow_two - divisors of 2^n are powers of 2 (strong induction)",
+      "dvd_pow_two_iff - complete characterization: d | 2^n iff d = 2^k",
+      "not_constructible_of_odd_prime_factor - odd prime factor implies non-constructible",
+      "constructible_degree_is_power_of_two - constructible degree must be power of 2",
+      "non_constructible_complete_criterion - full iff characterization",
+      "All 5 known Fermat primes verified (3, 5, 17, 257, 65537)",
+      "Complete regular n-gon constructibility for n=3..20 (11 constructible, 7 not)",
+      "Specific non-constructibility for degrees 3, 5, 6, 7, 9, 10"
+    ],
+    "axiomatized": []
+  },
+  "knowledge": {
+    "insights": [
+      "The proof is entirely self-contained with 0 axioms - all results follow from Mathlib primitives",
+      "Strong induction (Nat.strongRecOn) is the key technique for dvd_pow_two_is_pow_two",
+      "native_decide efficiently handles Nat.totient computations for n-gon classification",
+      "The Fermat prime characterization provides the bridge to regular polygon constructibility",
+      "Nat.Prime.dvd_of_dvd_pow and Nat.exists_prime_and_dvd are the key Mathlib lemmas"
+    ],
+    "builtItems": [
+      "Complete Lean 4 proof file: proofs/Proofs/AngleTrisectionOQ01.lean (366 lines)",
+      "Powers of 2 characterization framework (dvd_pow_two_iff)",
+      "Non-constructibility criterion (not_constructible_of_odd_prime_factor)",
+      "Regular polygon constructibility classification (n=3..20)",
+      "Fermat prime definitions and verification for all 5 known primes"
+    ],
+    "nextSteps": [
+      "Gallery integration (create src/data/proofs/angle-trisection-oq-01/ directory)",
+      "Consider extending n-gon classification beyond n=20",
+      "Potential OQ02: Galois group characterization of constructible numbers"
+    ],
+    "progressSummary": "COMPLETE: Full proof with 0 axioms, 0 sorries. Answers the open question completely: degree d is non-constructible iff d has an odd prime factor. Includes Fermat primes, regular polygon classification n=3..20, and complete iff characterization."
+  }
+}
