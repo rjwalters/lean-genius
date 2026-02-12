@@ -284,6 +284,29 @@ the full line lies in moserSet n. The Moser set only avoids lines where |varying
 (Previous axiom moser_set_is_cap_combinatorial was FALSE and has been removed.)
 -/
 
+/-- The Moser set for n=3 is NOT a cap set: the three constant points
+    (0,0,0), (1,1,1), (2,2,2) are all in moserSet 3 (sums 0, 0, 0 mod 3)
+    and they form a collinear triple (OnLine). -/
+theorem moserSet_not_capSet_3 : ¬IsCapSet (moserSet 3) := by
+  intro h
+  -- The three constant points
+  let p0 : TernaryHypercube 3 := fun _ => 0
+  let p1 : TernaryHypercube 3 := fun _ => 1
+  let p2 : TernaryHypercube 3 := fun _ => 2
+  -- They are in the Moser set (coordinate sums are 0, 3≡0, 6≡0 mod 3)
+  have h0 : p0 ∈ moserSet 3 := by decide
+  have h1 : p1 ∈ moserSet 3 := by decide
+  have h2 : p2 ∈ moserSet 3 := by decide
+  -- They are distinct
+  have hne01 : p0 ≠ p1 := by decide
+  have hne12 : p1 ≠ p2 := by decide
+  have hne02 : p0 ≠ p2 := by decide
+  -- They are collinear: p0 + p2 = 2 * p1 (coordinatewise in ZMod 3)
+  have hline : OnLine p0 p1 p2 := by
+    intro i; fin_cases i <;> decide
+  -- This contradicts the cap set property
+  exact h p0 p1 p2 h0 h1 h2 hne01 hne12 hne02 hline
+
 /-
 ## Part VI: The Main Result - Density Hales-Jewett
 -/
@@ -948,6 +971,23 @@ theorem f3_supermultiplicative (m n : ℕ) : f3 (m + n) ≥ f3 m * f3 n := by
   calc f3 m * f3 n = A.card * B.card := by rw [hAcard, hBcard]
     _ = (finsetProduct A B).card := (finsetProduct_card A B).symm
     _ ≤ f3 (m + n) := this
+
+/-- Monotonicity: f₃(n) ≤ f₃(n+1).
+    Follows from supermultiplicativity and f₃(1) ≥ 1. -/
+theorem f3_monotone : ∀ n : ℕ, f3 n ≤ f3 (n + 1) := by
+  intro n
+  have h := f3_supermultiplicative n 1
+  have hf1 := f3_ge_one 1
+  calc f3 n = f3 n * 1 := (Nat.mul_one _).symm
+    _ ≤ f3 n * f3 1 := Nat.mul_le_mul_left _ hf1
+    _ ≤ f3 (n + 1) := h
+
+/-- Stronger monotonicity: f₃(n+1) ≥ 2 · f₃(n) for n ≥ 1.
+    Since f₃(1) = 2, we get f₃(n+1) ≥ f₃(n) · 2. -/
+theorem f3_doubling (n : ℕ) (_hn : n ≥ 1) : f3 (n + 1) ≥ 2 * f3 n := by
+  have h := f3_supermultiplicative n 1
+  rw [f3_1] at h
+  linarith
 
 /-
 ## Part IX: Summary
