@@ -3,154 +3,143 @@
     "id": "connected-subsets-def",
     "proofId": "erdos-910",
     "type": "definition",
-    "range": { "startLine": 57, "endLine": 63 },
+    "range": {
+      "startLine": 57,
+      "endLine": 63
+    },
     "title": "Connected Subsets Collection",
     "content": "Defines `connectedSubsets X` as the set of all connected subsets of $X$, and `connectedSubsetsOf S` as the connected subsets contained in $S$. A set $S$ is connected if it cannot be partitioned into two disjoint non-empty open subsets.",
     "significance": "supporting",
-    "mathContext": {
-      "formalization": "$\\texttt{connectedSubsets}(X) := \\{S \\subseteq X \\mid \\texttt{IsConnected}\\;S\\}$; $\\texttt{connectedSubsetsOf}(S) := \\{T \\subseteq S \\mid \\texttt{IsConnected}\\;T\\}$",
-      "relatedConcepts": ["IsConnected", "Set", "TopologicalSpace"],
-      "prerequisites": ["connected topological spaces", "subspace topology"]
-    }
+    "mathContext": "Prerequisites: connected topological spaces, subspace topology"
   },
   {
     "id": "homeomorphic-sets-def",
     "proofId": "erdos-910",
     "type": "definition",
-    "range": { "startLine": 72, "endLine": 83 },
+    "range": {
+      "startLine": 72,
+      "endLine": 83
+    },
     "title": "Homeomorphism Between Subsets",
     "content": "Defines `AreHomeomorphic S T` as the existence of a homeomorphism $S \\simeq_t T$ (continuous bijection with continuous inverse, in the subspace topology). Proves reflexivity and symmetry.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$\\texttt{AreHomeomorphic}(S, T) := \\texttt{Nonempty}(S \\simeq_t T)$",
-      "relatedConcepts": ["Homeomorph", "subspace topology", "topological equivalence"],
-      "prerequisites": ["continuous functions", "bijection", "subspace topology"]
-    }
+    "mathContext": "Prerequisites: continuous functions, bijection, subspace topology"
   },
   {
     "id": "diverse-subset-def",
     "proofId": "erdos-910",
     "type": "definition",
-    "range": { "startLine": 92, "endLine": 97 },
+    "range": {
+      "startLine": 92,
+      "endLine": 97
+    },
     "title": "Diverse Connected Subset",
     "content": "A set $S$ has a diverse connected subset if there exists $T \\subsetneq S$ that is connected, contains at least two points, and is not homeomorphic to $S$. Erdos expected all connected sets to have this property.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$\\texttt{HasDiverseConnectedSubset}(S) := \\exists T \\subsetneq S,\\, \\texttt{IsConnected}\\;T \\wedge |T| \\geq 2 \\wedge \\neg(T \\simeq_t S)$",
-      "relatedConcepts": ["IsConnected", "AreHomeomorphic", "proper subset"],
-      "prerequisites": ["connected subsets", "homeomorphism"]
-    }
+    "mathContext": "Prerequisites: connected subsets, homeomorphism"
   },
   {
     "id": "first-conjecture",
     "proofId": "erdos-910",
     "type": "conjecture",
-    "range": { "startLine": 99, "endLine": 102 },
+    "range": {
+      "startLine": 99,
+      "endLine": 102
+    },
     "title": "Erdos's First Conjecture (Disproved)",
     "content": "States that every connected set has a diverse connected subset. Erdos posed this in the 1940s, expecting an affirmative answer. Disproved by Rudin (1958) under CH.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$\\texttt{erdosFirstConjecture} := \\forall X, \\forall S \\subseteq X,\\, \\texttt{IsConnected}\\;S \\to \\texttt{HasDiverseConnectedSubset}\\;S$",
-      "relatedConcepts": ["HasDiverseConnectedSubset", "point-set topology"],
-      "prerequisites": ["connected sets in Euclidean space"]
-    }
+    "mathContext": "Prerequisites: connected sets in Euclidean space"
   },
   {
     "id": "connected-cardinality-def",
     "proofId": "erdos-910",
     "type": "definition",
-    "range": { "startLine": 111, "endLine": 121 },
+    "range": {
+      "startLine": 111,
+      "endLine": 121
+    },
     "title": "Connected Subset Cardinality and Second Conjecture",
     "content": "Defines `connectedSubsetCardinality S` as the cardinal $|\\texttt{connectedSubsetsOf}(S)|$ and `continuum` as $|\\mathbb{R}| = 2^{\\aleph_0}$. Erdos's second conjecture asks whether connected sets in $\\mathbb{R}^n$ ($n \\geq 2$) always have more than $2^{\\aleph_0}$ connected subsets. Disproved by Rudin.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$\\texttt{erdosSecondConjecture} := \\forall n \\geq 2, \\forall S \\subseteq \\mathbb{R}^n \\text{ connected},\\, |\\texttt{connectedSubsetsOf}(S)| > 2^{\\aleph_0}$",
-      "relatedConcepts": ["Cardinal", "continuum", "aleph"],
-      "prerequisites": ["cardinal arithmetic", "continuum hypothesis"]
-    }
+    "mathContext": "Prerequisites: cardinal arithmetic, continuum hypothesis"
   },
   {
     "id": "continuum-hypothesis-def",
     "proofId": "erdos-910",
     "type": "definition",
-    "range": { "startLine": 129, "endLine": 130 },
+    "range": {
+      "startLine": 129,
+      "endLine": 130
+    },
     "title": "Continuum Hypothesis",
     "content": "Defines $\\text{CH} := \\aleph_1 = 2^{\\aleph_0}$: there is no cardinality strictly between the naturals and the reals. This axiom, independent of ZFC (Godel 1940, Cohen 1963), is essential to Rudin's construction.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$\\texttt{ContinuumHypothesis} := \\aleph_1 = 2^{\\aleph_0}$",
-      "relatedConcepts": ["aleph", "Cardinal.powerlt", "ZFC independence"],
-      "prerequisites": ["cardinal arithmetic", "Godel-Cohen independence"]
-    }
+    "mathContext": "Prerequisites: cardinal arithmetic, Godel-Cohen independence"
   },
   {
     "id": "rudin-set-def",
     "proofId": "erdos-910",
     "type": "definition",
-    "range": { "startLine": 132, "endLine": 141 },
+    "range": {
+      "startLine": 132,
+      "endLine": 141
+    },
     "title": "Rudin Set",
     "content": "A set $S$ is a Rudin set if it is connected and every proper connected subset is either a singleton $\\{x\\}$ or homeomorphic to $S$ itself. This self-similar rigidity means no diverse subsets exist. Also defines `HasExactlyContinuumConnectedSubsets`: $|\\texttt{connectedSubsetsOf}(S)| = 2^{\\aleph_0}$.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$\\texttt{IsRudinSet}(S) := \\texttt{IsConnected}\\;S \\wedge (\\forall T \\subsetneq S,\\, \\texttt{IsConnected}\\;T \\to (\\exists! x, T = \\{x\\}) \\lor T \\simeq_t S)$",
-      "relatedConcepts": ["IsConnected", "AreHomeomorphic", "self-similarity"],
-      "prerequisites": ["connected sets", "homeomorphism", "ExistsUnique"]
-    }
+    "mathContext": "Prerequisites: connected sets, homeomorphism, ExistsUnique"
   },
   {
     "id": "rudin-theorem",
     "proofId": "erdos-910",
     "type": "axiom",
-    "range": { "startLine": 149, "endLine": 154 },
+    "range": {
+      "startLine": 149,
+      "endLine": 154
+    },
     "title": "Rudin's Theorem (1958)",
     "content": "Axiomatizes: under CH, there exists a connected subset $S \\subseteq \\mathbb{R}^2$ that is a Rudin set with exactly $2^{\\aleph_0}$ connected subsets. Mary Ellen Rudin's construction uses a transfinite induction of length $\\aleph_1 = 2^{\\aleph_0}$ (via CH) to build $S$ point by point.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$\\texttt{CH} \\to \\exists S \\subseteq \\mathbb{R}^2,\\, \\texttt{IsRudinSet}(S) \\wedge |\\texttt{connectedSubsetsOf}(S)| = 2^{\\aleph_0}$",
-      "relatedConcepts": ["ContinuumHypothesis", "IsRudinSet", "transfinite induction"],
-      "prerequisites": ["continuum hypothesis", "ordinal induction", "point-set topology"]
-    }
+    "mathContext": "Prerequisites: continuum hypothesis, ordinal induction, point-set topology"
   },
   {
     "id": "no-diverse-subset-theorem",
     "proofId": "erdos-910",
     "type": "theorem",
-    "range": { "startLine": 160, "endLine": 175 },
+    "range": {
+      "startLine": 160,
+      "endLine": 175
+    },
     "title": "Rudin Sets Have No Diverse Subsets",
     "content": "Proves $\\neg\\texttt{HasDiverseConnectedSubset}(S)$ for any Rudin set $S$ with at least two points. If $T$ were diverse, it is a proper connected non-singleton subset, so by the Rudin property it must be homeomorphic to $S$ — contradicting the requirement $\\neg(T \\simeq_t S)$. Fully proved (no sorry).",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$\\texttt{IsRudinSet}(S) \\wedge S.\\text{nontrivial} \\to \\neg\\texttt{HasDiverseConnectedSubset}(S)$",
-      "relatedConcepts": ["IsRudinSet", "HasDiverseConnectedSubset", "proof by contradiction"],
-      "prerequisites": ["Rudin set definition", "case analysis"]
-    }
+    "mathContext": "Prerequisites: Rudin set definition, case analysis"
   },
   {
     "id": "first-conjecture-false",
     "proofId": "erdos-910",
     "type": "theorem",
-    "range": { "startLine": 177, "endLine": 190 },
+    "range": {
+      "startLine": 177,
+      "endLine": 190
+    },
     "title": "First Conjecture False Under CH",
     "content": "Proves $\\text{CH} \\to \\neg\\texttt{erdosFirstConjecture}$. By Rudin's theorem, CH gives a Rudin set $S \\subseteq \\mathbb{R}^2$. The conjecture applied to $S$ yields a diverse subset, contradicting the previous theorem. Has 1 sorry (nontriviality of Rudin set).",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$\\texttt{ContinuumHypothesis} \\to \\neg\\texttt{erdosFirstConjecture}$",
-      "relatedConcepts": ["rudin_theorem", "rudin_set_no_diverse_subset"],
-      "prerequisites": ["Rudin's theorem", "no-diverse-subset theorem"]
-    }
+    "mathContext": "Prerequisites: Rudin's theorem, no-diverse-subset theorem"
   },
   {
     "id": "second-conjecture-false",
     "proofId": "erdos-910",
     "type": "theorem",
-    "range": { "startLine": 192, "endLine": 200 },
+    "range": {
+      "startLine": 192,
+      "endLine": 200
+    },
     "title": "Second Conjecture False Under CH",
     "content": "States $\\text{CH} \\to \\neg\\texttt{erdosSecondConjecture}$. The Rudin set has exactly $2^{\\aleph_0}$ connected subsets, not more, contradicting the conjecture for $n = 2$. Has 1 sorry (embedding $\\mathbb{R}^2$ as $\\text{Fin}\\;2 \\to \\mathbb{R}$).",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$\\texttt{ContinuumHypothesis} \\to \\neg\\texttt{erdosSecondConjecture}$",
-      "relatedConcepts": ["rudin_theorem", "HasExactlyContinuumConnectedSubsets", "Cardinal"],
-      "prerequisites": ["Rudin's theorem", "cardinal comparison"]
-    }
+    "mathContext": "Prerequisites: Rudin's theorem, cardinal comparison"
   }
 ]
