@@ -39,6 +39,23 @@
         "module": "Mathlib.Analysis.Complex.Basic"
       }
     ],
+    "references": [
+      {
+        "key": "EHP1958",
+        "citation": "Erdős, P., Herzog, F., and Piranian, G. (1958). Metric properties of polynomials. J. Analyse Math. 6, 125–148.",
+        "type": "paper"
+      },
+      {
+        "key": "Pommerenke1961",
+        "citation": "Pommerenke, Ch. (1961). Über die analytische Kapazität. Math. Ann. 144, 285–296.",
+        "type": "paper"
+      },
+      {
+        "key": "Pommerenke1959",
+        "citation": "Pommerenke, Ch. (1959). On some problems by Erdős, Herzog and Piranian. Michigan Math. J. 6(3), 221–225.",
+        "type": "paper"
+      }
+    ],
     "originalContributions": [
       "Formalization of polynomial level sets (lemniscates)",
       "Projection measure definitions",
@@ -48,15 +65,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1043 was posed by Erdős, Herzog, and Piranian in their 1958 paper on metric properties of polynomials. They studied how 'spread out' the level set {z : |f(z)| ≤ 1} can be.\n\nFor f(z) = zⁿ, this level set is the closed unit disk, which projects to an interval of length 2 in every direction. The natural question: is 2 always achievable as the minimum projection length?\n\nPommerenke (1961) proved the answer is NO. He constructed polynomials where every projection has measure at least 2.386. However, he also proved that 3.3 is always achievable—every monic polynomial has some direction with projection measure ≤ 3.3.\n\nThese 'level sets' are called lemniscates, named after the figure-eight shape of {z : |z² - 1| = c}.",
+    "historicalContext": "**Origins in Polynomial Geometry (1958)**\n\nErdős, Herzog, and Piranian posed this problem in their 1958 paper 'Metric properties of polynomials' (J. Analyse Math. 6, 125–148), studying how the level set $L_f = \\{z \\in \\mathbb{C} : |f(z)| \\le 1\\}$ of a monic polynomial spreads in the complex plane. For $f(z) = z^n$, the level set is the closed unit disk $\\overline{B}(0,1)$, whose projection onto any line has length exactly 2 (the diameter). They conjectured this measure of 2 might be universally achievable.\n\n**The Level Set Tradition**: These sets are **lemniscates**, named after the figure-eight curve $|z^2 - 1| = c$ studied by Jakob Bernoulli (1694). The arc length integral for Bernoulli's lemniscate was a catalyst for Euler's and Gauss's work on elliptic integrals. In potential theory, level sets of monic polynomials have logarithmic capacity 1, a normalization due to Fekete's transfinite diameter theorem (1923).\n\n**Pommerenke's Resolution (1961)**: Christian Pommerenke, in 'Über die analytische Kapazität' (Math. Ann. 144, 285–296), proved the conjecture **FALSE**: there exist monic polynomials where every projection has measure $\\ge 2.386$, so no direction achieves the disk's measure of 2. He also proved the positive result that every monic polynomial has some projection $\\le 3.3$. The exact value of the **Pommerenke constant** $\\mathcal{P} = \\sup_f \\inf_u \\mu(\\pi_u(L_f)) \\in [2.386, 3.3]$ remains unknown.",
     "problemStatement": "Let f ∈ ℂ[x] be a monic non-constant polynomial. Consider the level set:\n\n$$ L_f = \\{z \\in \\mathbb{C} : |f(z)| \\leq 1\\} $$\n\nMust there exist a line ℓ such that the projection of $L_f$ onto ℓ has measure ≤ 2?\n\n**Answer**: NO (Pommerenke 1961)\n\n**Bounds**:\n- Some polynomials have all projections ≥ 2.386\n- Every polynomial has some projection ≤ 3.3",
     "proofStrategy": "We formalize the problem by:\n\n1. **Level sets**: Define {z : |f(z)| ≤ r} for polynomials\n2. **Projections**: Map ℂ to ℝ via z ↦ Re(z · conj(u)) for unit vector u\n3. **Projection measure**: Length of the projected set\n4. **EHP conjecture**: The (false) claim that measure ≤ 2 is always achievable\n5. **Pommerenke's results**: Counterexample (≥ 2.386) and upper bound (≤ 3.3)\n\nThe key insight is that while f(z) = zⁿ gives a round disk, other polynomials can create elongated level sets that are 'wide' in every direction.",
     "keyInsights": [
-      "**Level sets (lemniscates)**: The set {z : |f(z)| ≤ 1} generalizes the unit disk. For zⁿ it's a disk; for more complex polynomials, it can be multi-lobed.",
-      "**Projection measure**: The length of the 'shadow' when projecting onto a line. For a disk of radius 1, this is always 2.",
-      "**The answer is NO**: Pommerenke found polynomials where you can't achieve projection ≤ 2 in any direction.",
-      "**Upper bound 3.3**: While 2 isn't always achievable, 3.3 is. The gap between 2.386 and 3.3 represents what we don't know.",
-      "**Bernoulli lemniscate**: The classic {z : |z² - 1| = c} gives a figure-eight, illustrating how level sets can be non-convex."
+      "**Level sets (lemniscates)**: $L_f = \\{z : |f(z)| \\le 1\\}$ generalizes the unit disk — for $z^n$ it's a disk; for general monic polynomials it can be multi-lobed, non-convex, and even disconnected",
+      "**Projection measure**: The map $\\pi_u(z) = \\operatorname{Re}(z\\bar{u})$ projects $L_f$ onto a line; its Lebesgue measure $\\mu(\\pi_u(L_f))$ is the 'shadow length', always 2 for the unit disk by Cauchy's formula",
+      "**Pommerenke's counterexample**: There exist monic polynomials where $\\mu(\\pi_u(L_f)) \\ge 2.386$ for ALL directions $u$, disproving the EHP conjecture that measure $\\le 2$ is always achievable",
+      "**Universal upper bound 3.3**: While 2 is not always achievable, Pommerenke proved $\\inf_u \\mu(\\pi_u(L_f)) \\le 3.3$ for all monic $f$ — the Pommerenke constant $\\mathcal{P} \\in [2.386, 3.3]$ remains unknown",
+      "**Capacity constraints**: The logarithmic capacity $\\operatorname{cap}(L_f) = 1$ for monic polynomials implies area $\\le \\pi$ and diameter $\\le 4$, bounding the projection measure from above"
     ]
   },
   "sections": [
@@ -65,84 +82,84 @@
       "title": "Level Sets of Polynomials",
       "startLine": 43,
       "endLine": 62,
-      "summary": "Definition of level sets and the unit lemniscate."
+      "summary": "$L_f(r) = \\{z \\in \\mathbb{C} : \\|f(z)\\| \\le r\\}$ and unit lemniscate $L_f = L_f(1)$"
     },
     {
       "id": "projections",
       "title": "Projections onto Lines",
       "startLine": 64,
       "endLine": 80,
-      "summary": "Projecting complex sets onto real lines."
+      "summary": "Direction $u$, projection $\\pi_u(z) = \\operatorname{Re}(z\\bar{u})$, projection measure $\\mu(\\pi_u(S))$"
     },
     {
       "id": "examples",
       "title": "Basic Examples",
       "startLine": 82,
       "endLine": 92,
-      "summary": "The unit disk projects to measure 2 in all directions."
+      "summary": "Unit disk $\\overline{B}(0,1)$ projects to $[-1,1]$ with measure 2 in every direction"
     },
     {
       "id": "ehp-question",
       "title": "The EHP Question",
       "startLine": 94,
       "endLine": 107,
-      "summary": "The (false) conjecture that measure ≤ 2 is always achievable."
+      "summary": "EHP Conjecture: $\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 2$; min/max projection measures"
     },
     {
       "id": "counterexample",
       "title": "Pommerenke's Counterexample",
       "startLine": 109,
       "endLine": 134,
-      "summary": "Exists polynomial with all projections ≥ 2.386."
+      "summary": "Pommerenke (1961): $\\exists f$ monic with $\\mu(\\pi_u(L_f)) \\ge 2.386$ for all $u$; Pommerenke constant $\\mathcal{P}$"
     },
     {
       "id": "upper-bound",
       "title": "Pommerenke's Upper Bound",
       "startLine": 136,
       "endLine": 148,
-      "summary": "Every polynomial has some projection ≤ 3.3."
+      "summary": "$\\forall f$ monic, $\\exists u$ with $\\mu(\\pi_u(L_f)) \\le 3.3$; $\\inf_u \\mu \\le 3.3$"
     },
     {
       "id": "level-set-properties",
       "title": "Properties of Level Sets",
       "startLine": 150,
       "endLine": 165,
-      "summary": "Compactness, connectivity, capacity."
+      "summary": "$\\operatorname{cap}(L_f) = 1$, connected iff all roots $\\in L_f$, $L_f$ compact"
     },
     {
       "id": "width-function",
       "title": "The Width Function",
       "startLine": 167,
       "endLine": 184,
-      "summary": "Min/max width of sets in different directions."
+      "summary": "Width $w(S,u) = \\mu(\\pi_u(S))$, $w_{\\min}(S) = \\inf_u w$, $w_{\\max}(S) = \\sup_u w$"
     },
     {
       "id": "lemniscates",
       "title": "Lemniscates",
       "startLine": 186,
       "endLine": 200,
-      "summary": "The Bernoulli lemniscate and figure-eight shapes."
+      "summary": "`IsLemniscate` predicate, Bernoulli lemniscate $\\{z : |z^2 - 1| = c\\}$ (figure-eight, Bernoulli 1694)"
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 202,
       "endLine": 216,
-      "summary": "Transfinite diameter, Chebyshev polynomials."
+      "summary": "Transfinite diameter $d_\\infty(L_f) = 1$, Chebyshev optimality $\\|T_n\\|_{[-1,1]} = 2^{1-n}$, roots $\\in L_f$"
     },
     {
       "id": "bounds",
       "title": "Quantitative Bounds",
       "startLine": 218,
       "endLine": 228,
-      "summary": "Area ≤ π, diameter ≤ 4 for level sets."
+      "summary": "$\\text{Area}(L_f) \\le \\pi$, $\\text{diam}(L_f) \\le 4$ for monic polynomials"
     },
     {
       "id": "summary",
       "title": "Main Theorem",
       "startLine": 230,
       "endLine": 242,
-      "summary": "Combined answer: NO, but ≤ 3.3 always exists."
+      "summary": "`erdos_1043_answer`: $\\neg\\text{EHP} \\wedge (\\forall f,\\, \\exists u,\\, \\mu(\\pi_u(L_f)) \\le 3.3)$"
     }
   ],
   "conclusion": {
