@@ -24,11 +24,26 @@
     "erdosUrl": "https://erdosproblems.com/901",
     "erdosProblemStatus": "open",
     "mathlibDependencies": [
-      "Mathlib.Combinatorics.SetFamily.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Fintype.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      {
+        "theorem": "Mathlib.Combinatorics.SetFamily.Basic",
+        "description": "Mathlib.Combinatorics.SetFamily.Basic"
+      },
+      {
+        "theorem": "Mathlib.Data.Finset.Basic",
+        "description": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Mathlib.Data.Fintype.Basic",
+        "description": "Mathlib.Data.Fintype.Basic"
+      },
+      {
+        "theorem": "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+        "description": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+        "description": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
     ],
     "originalContributions": [
       "UniformHypergraph: structure for n-uniform hypergraphs as Finset (Finset V)",

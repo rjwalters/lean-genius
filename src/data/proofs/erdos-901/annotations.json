@@ -3,210 +3,195 @@
     "id": "uniform-hypergraph-def",
     "proofId": "erdos-901",
     "type": "definition",
-    "range": { "startLine": 38, "endLine": 46 },
+    "range": {
+      "startLine": 38,
+      "endLine": 46
+    },
     "title": "Uniform Hypergraph Structure",
     "content": "Defines an $n$-uniform hypergraph as a structure `UniformHypergraph V n` with a `Finset (Finset V)` of edges, each of cardinality exactly $n$. The `edgeCount` function returns $|E(H)|$.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$H = (V, E)$ where $E \\subseteq \\binom{V}{n}$, i.e., every $e \\in E$ satisfies $|e| = n$",
-      "relatedConcepts": ["Finset", "Fintype", "set family"],
-      "prerequisites": ["finite sets", "cardinality"]
-    }
+    "mathContext": "Prerequisites: finite sets, cardinality"
   },
   {
     "id": "two-coloring-def",
     "proofId": "erdos-901",
     "type": "definition",
-    "range": { "startLine": 51, "endLine": 51 },
+    "range": {
+      "startLine": 51,
+      "endLine": 51
+    },
     "title": "Two-Coloring",
     "content": "A 2-coloring is a function $c : V \\to \\{0, 1\\}$ (i.e., `V -> Fin 2`). This is the vertex coloring relevant to Property B.",
     "significance": "supporting",
-    "mathContext": {
-      "formalization": "$c : V \\to \\text{Fin}\\;2$",
-      "relatedConcepts": ["Fin", "vertex coloring"],
-      "prerequisites": ["function types"]
-    }
+    "mathContext": "Prerequisites: function types"
   },
   {
     "id": "monochromatic-edge-def",
     "proofId": "erdos-901",
     "type": "definition",
-    "range": { "startLine": 54, "endLine": 55 },
+    "range": {
+      "startLine": 54,
+      "endLine": 55
+    },
     "title": "Monochromatic Edge",
     "content": "An edge $e$ is monochromatic under coloring $c$ if all vertices receive the same color: $(\\forall v \\in e, c(v) = 0) \\lor (\\forall v \\in e, c(v) = 1)$.",
     "significance": "supporting",
-    "mathContext": {
-      "formalization": "$\\texttt{IsMonochromatic}(c, e) := (\\forall v \\in e,\\, c(v) = 0) \\lor (\\forall v \\in e,\\, c(v) = 1)$",
-      "relatedConcepts": ["vertex coloring", "proper coloring"],
-      "prerequisites": ["universal quantification over finite sets"]
-    }
+    "mathContext": "Prerequisites: universal quantification over finite sets"
   },
   {
     "id": "property-b-def",
     "proofId": "erdos-901",
     "type": "definition",
-    "range": { "startLine": 57, "endLine": 65 },
+    "range": {
+      "startLine": 57,
+      "endLine": 65
+    },
     "title": "Property B (Bernstein Property)",
     "content": "A hypergraph has Property B if there exists a 2-coloring with no monochromatic edge: $\\exists c : V \\to \\{0,1\\},\\, \\forall e \\in E,\\, \\neg\\texttt{IsMonochromatic}(c, e)$. Named after Felix Bernstein (1908). Its negation `LacksPropertyB` means every 2-coloring has a monochromatic edge.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$\\texttt{HasPropertyB}(H) := \\exists c,\\, \\forall e \\in E(H),\\, \\neg\\texttt{IsMonochromatic}(c, e)$; $\\texttt{LacksPropertyB}(H) := \\forall c,\\, \\exists e \\in E(H),\\, \\texttt{IsMonochromatic}(c, e)$",
-      "relatedConcepts": ["hypergraph coloring", "chromatic number", "2-colorability"],
-      "prerequisites": ["existential and universal quantification"]
-    }
+    "mathContext": "Prerequisites: existential and universal quantification"
   },
   {
     "id": "property-b-dichotomy",
     "proofId": "erdos-901",
     "type": "theorem",
-    "range": { "startLine": 68, "endLine": 71 },
+    "range": {
+      "startLine": 68,
+      "endLine": 71
+    },
     "title": "Property B Dichotomy",
     "content": "States $\\texttt{HasPropertyB}(H) \\iff \\neg\\texttt{LacksPropertyB}(H)$. This is a logical tautology ($\\exists \\forall \\neg \\iff \\neg \\forall \\exists$) but useful as a rewrite lemma. Currently `sorry`.",
     "significance": "supporting",
-    "mathContext": {
-      "formalization": "$\\texttt{HasPropertyB}(H) \\iff \\neg\\texttt{LacksPropertyB}(H)$",
-      "relatedConcepts": ["classical logic", "quantifier duality"],
-      "prerequisites": ["push_neg", "classical reasoning"]
-    }
+    "mathContext": "Prerequisites: push_neg, classical reasoning"
   },
   {
     "id": "m-function-def",
     "proofId": "erdos-901",
     "type": "definition",
-    "range": { "startLine": 75, "endLine": 78 },
+    "range": {
+      "startLine": 75,
+      "endLine": 78
+    },
     "title": "The Function $m(n)$",
     "content": "Defines $m(n) = \\inf\\{|E(H)| : H \\text{ is } n\\text{-uniform and lacks Property B}\\}$ via `sInf`. This is the central quantity: the minimum number of edges needed to force every 2-coloring to have a monochromatic edge.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$m(n) := \\inf\\{k \\in \\mathbb{N} \\mid \\exists H \\text{ $n$-uniform},\\, |E(H)| = k \\wedge \\texttt{LacksPropertyB}(H)\\}$",
-      "relatedConcepts": ["sInf", "extremal set theory", "Turán-type problem"],
-      "prerequisites": ["infimum of natural number sets"]
-    }
+    "mathContext": "Prerequisites: infimum of natural number sets"
   },
   {
     "id": "exact-values",
     "proofId": "erdos-901",
     "type": "theorem",
-    "range": { "startLine": 90, "endLine": 100 },
+    "range": {
+      "startLine": 90,
+      "endLine": 100
+    },
     "title": "Exact Values: $m(2) = 3$, $m(3) = 7$, $m(4) = 23$",
     "content": "States the known exact values. $m(2) = 3$: three edges on 4 vertices (the triangle minus one vertex type). $m(3) = 7$: the Fano plane $PG(2, 2)$, the unique Steiner triple system $S(2, 3, 7)$. $m(4) = 23$: found by Östergård (2014) via computer search. All currently `sorry`.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$m(2) = 3$, $m(3) = 7$, $m(4) = 23$",
-      "relatedConcepts": ["Fano plane", "Steiner triple system", "computer search"],
-      "prerequisites": ["explicit hypergraph constructions"]
-    }
+    "mathContext": "Prerequisites: explicit hypergraph constructions"
   },
   {
     "id": "erdos-lower-bound",
     "proofId": "erdos-901",
     "type": "theorem",
-    "range": { "startLine": 104, "endLine": 106 },
+    "range": {
+      "startLine": 104,
+      "endLine": 106
+    },
     "title": "Erdos Original Lower Bound",
     "content": "States $m(n) > 2^{n-1}$ (Erdos 1963-64). A random 2-coloring makes each $n$-edge monochromatic with probability $2^{1-n}$. If $|E| \\leq 2^{n-1}$, the expected number of monochromatic edges is $\\leq 1$, so some coloring avoids all. Currently `sorry`.",
     "significance": "supporting",
-    "mathContext": {
-      "formalization": "$m(n) > 2^{n-1}$",
-      "relatedConcepts": ["probabilistic method", "first moment method", "union bound"],
-      "prerequisites": ["linearity of expectation"]
-    }
+    "mathContext": "Prerequisites: linearity of expectation"
   },
   {
     "id": "beck-lower-bound",
     "proofId": "erdos-901",
     "type": "theorem",
-    "range": { "startLine": 108, "endLine": 112 },
+    "range": {
+      "startLine": 108,
+      "endLine": 112
+    },
     "title": "Beck Lower Bound",
     "content": "States $m(n) \\gg n^{1/3} \\cdot 2^n$ (Beck 1977-78). Beck improved Erdos's bound using the Lovasz Local Lemma applied to a dependency graph on edges. Currently `sorry`.",
     "significance": "supporting",
-    "mathContext": {
-      "formalization": "$\\forall \\varepsilon > 0, \\; m(n) > n^{1/3 - \\varepsilon} \\cdot 2^n$ eventually",
-      "relatedConcepts": ["Lovasz Local Lemma", "dependency graph", "probabilistic method"],
-      "prerequisites": ["LLL symmetric form"]
-    }
+    "mathContext": "Prerequisites: LLL symmetric form"
   },
   {
     "id": "rs-lower-bound",
     "proofId": "erdos-901",
     "type": "theorem",
-    "range": { "startLine": 114, "endLine": 118 },
+    "range": {
+      "startLine": 114,
+      "endLine": 118
+    },
     "title": "Radhakrishnan-Srinivasan Lower Bound",
     "content": "States $m(n) \\gg \\sqrt{n / \\log n} \\cdot 2^n$ (Radhakrishnan-Srinivasan 2000). The best known lower bound, proved via a clever resampling argument that improves on the standard LLL application. Currently `sorry`.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$m(n) > \\frac{1}{2}\\sqrt{n / \\log n} \\cdot 2^n$ eventually",
-      "relatedConcepts": ["resampling", "entropy compression", "Lovasz Local Lemma"],
-      "prerequisites": ["probabilistic method", "Real.sqrt", "Real.log"]
-    }
+    "mathContext": "Prerequisites: probabilistic method, Real.sqrt, Real.log"
   },
   {
     "id": "erdos-upper-bound",
     "proofId": "erdos-901",
     "type": "theorem",
-    "range": { "startLine": 128, "endLine": 131 },
+    "range": {
+      "startLine": 128,
+      "endLine": 131
+    },
     "title": "Erdos Upper Bound",
     "content": "States $m(n) < n^2 \\cdot 2^n$ (Erdos 1963-64). An explicit greedy construction produces an $n$-uniform hypergraph without Property B using $O(n^2 \\cdot 2^n)$ edges. Still essentially the best known upper bound. Currently `sorry`.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$m(n) < n^2 \\cdot 2^n$ for $n \\geq 2$",
-      "relatedConcepts": ["greedy construction", "sunflower lemma", "explicit constructions"],
-      "prerequisites": ["probabilistic method"]
-    }
+    "mathContext": "Prerequisites: probabilistic method"
   },
   {
     "id": "erdos-lovasz-conjecture",
     "proofId": "erdos-901",
     "type": "conjecture",
-    "range": { "startLine": 140, "endLine": 144 },
+    "range": {
+      "startLine": 140,
+      "endLine": 144
+    },
     "title": "Erdos-Lovasz Conjecture",
     "content": "States $m(n) = \\Theta(n \\cdot 2^n)$: there exist constants $c_1, c_2 > 0$ such that eventually $c_1 \\cdot n \\cdot 2^n \\leq m(n) \\leq c_2 \\cdot n \\cdot 2^n$. The gap between the known lower bound $\\sqrt{n/\\log n}$ and the conjectured $n$ in the coefficient of $2^n$ is the main open question.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "$\\texttt{ErdosLovaszConjecture} := \\exists c_1, c_2 > 0,\\, \\forall^\\infty n,\\, c_1 n \\cdot 2^n \\leq m(n) \\leq c_2 n \\cdot 2^n$",
-      "relatedConcepts": ["Filter.atTop", "asymptotic notation", "Theta notation"],
-      "prerequisites": ["eventually filter", "asymptotic bounds"]
-    }
+    "mathContext": "Prerequisites: eventually filter, asymptotic bounds"
   },
   {
     "id": "lll-property-b",
     "proofId": "erdos-901",
     "type": "theorem",
-    "range": { "startLine": 171, "endLine": 175 },
+    "range": {
+      "startLine": 171,
+      "endLine": 175
+    },
     "title": "Lovasz Local Lemma for Property B",
     "content": "States that if each edge of an $n$-uniform hypergraph shares vertices with fewer than $2^{n-1}$ other edges, then the hypergraph has Property B. This is the symmetric LLL applied to the events '$e$ is monochromatic' with $p = 2^{1-n}$ and dependency degree $d < 2^{n-1}$, satisfying $ep(d+1) \\leq 1$.",
     "significance": "key",
-    "mathContext": {
-      "formalization": "If $\\forall e \\in E,\\, |\\{e' \\in E : e \\cap e' \\neq \\emptyset\\}| < 2^{n-1}$, then $\\texttt{HasPropertyB}(H)$",
-      "relatedConcepts": ["Lovasz Local Lemma", "dependency graph", "sparse hypergraphs"],
-      "prerequisites": ["LLL symmetric form", "probability of monochromatic edge"]
-    }
+    "mathContext": "Prerequisites: LLL symmetric form, probability of monochromatic edge"
   },
   {
     "id": "chromatic-number-connection",
     "proofId": "erdos-901",
     "type": "theorem",
-    "range": { "startLine": 190, "endLine": 200 },
+    "range": {
+      "startLine": 190,
+      "endLine": 200
+    },
     "title": "Chromatic Number Characterization",
     "content": "Defines the chromatic number of a hypergraph via `sInf` and states that $\\texttt{LacksPropertyB}(H) \\iff \\chi(H) \\geq 3$. Property B is exactly 2-colorability, so its failure means the chromatic number exceeds 2. Currently `sorry`.",
     "significance": "supporting",
-    "mathContext": {
-      "formalization": "$\\texttt{LacksPropertyB}(H) \\iff \\texttt{chromaticNumber}(H) \\geq 3$",
-      "relatedConcepts": ["chromaticNumber", "proper coloring", "hypergraph chromatic number"],
-      "prerequisites": ["sInf", "proper hypergraph coloring"]
-    }
+    "mathContext": "Prerequisites: sInf, proper hypergraph coloring"
   },
   {
     "id": "complete-hypergraph-construction",
     "proofId": "erdos-901",
     "type": "theorem",
-    "range": { "startLine": 155, "endLine": 158 },
+    "range": {
+      "startLine": 155,
+      "endLine": 158
+    },
     "title": "Complete Hypergraph Lacks Property B",
     "content": "States that the complete $n$-uniform hypergraph on $2n - 1$ vertices lacks Property B. By the pigeonhole principle, any 2-coloring of $2n - 1$ vertices has at least $n$ vertices of one color, forming a monochromatic $n$-edge. Currently `sorry`.",
     "significance": "supporting",
-    "mathContext": {
-      "formalization": "$\\exists H : \\texttt{UniformHypergraph}\\;(\\text{Fin}\\;(2n-1))\\;n,\\, \\texttt{LacksPropertyB}(H)$",
-      "relatedConcepts": ["pigeonhole principle", "complete hypergraph", "Ramsey theory"],
-      "prerequisites": ["Fin type", "pigeonhole"]
-    }
+    "mathContext": "Prerequisites: Fin type, pigeonhole"
   }
 ]

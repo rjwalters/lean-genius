@@ -24,10 +24,22 @@
     "erdosUrl": "https://erdosproblems.com/910",
     "erdosProblemStatus": "solved",
     "mathlibDependencies": [
-      "Mathlib.Topology.Connected.Basic",
-      "Mathlib.Topology.Homeomorph",
-      "Mathlib.SetTheory.Cardinal.Basic",
-      "Mathlib.Topology.Order"
+      {
+        "theorem": "Mathlib.Topology.Connected.Basic",
+        "description": "Mathlib.Topology.Connected.Basic"
+      },
+      {
+        "theorem": "Mathlib.Topology.Homeomorph",
+        "description": "Mathlib.Topology.Homeomorph"
+      },
+      {
+        "theorem": "Mathlib.SetTheory.Cardinal.Basic",
+        "description": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Mathlib.Topology.Order",
+        "description": "Mathlib.Topology.Order"
+      }
     ],
     "originalContributions": [
       "connectedSubsets/connectedSubsetsOf: collections of connected subsets",
