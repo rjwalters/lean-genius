@@ -13,8 +13,9 @@ positive semidefinite matrices, using the Loewner (semidefinite) ordering.
 The classical AM-GM: (a + b)/2 >= sqrt(ab) for non-negative reals.
 The operator version: (A + B)/2 >=_L A # B for positive definite matrices.
 
-## What We Prove (17 theorems, 0 sorries)
+## What We Prove (19 theorems, 0 sorries)
 - PSD/PD basics: zero is PSD, sum/scaling of PSD, PD implies PSD
+- Trace non-negativity of PSD matrices (via standard basis vectors)
 - Loewner order: reflexivity, transitivity, addition, scaling
 - Arithmetic mean: PSD preservation, domination of lesser operand
 - Trace inequality: tr(AM) >= tr(GM)
@@ -22,12 +23,11 @@ The operator version: (A + B)/2 >=_L A # B for positive definite matrices.
 - Weighted arithmetic mean: PSD preservation, half-weight = AM
 - HM-GM-AM chain (from axioms)
 
-## What We Axiomatize (13 axioms, deep results needing spectral theorem)
+## What We Axiomatize (12 axioms, deep results needing spectral theorem)
 - Matrix square root (existence, PSD, squaring)
 - Geometric mean (existence, PD, commutativity, self-mean, monotonicity)
 - The operator AM-GM inequality itself
 - Harmonic mean, HM <= GM, congruence invariance
-- Trace non-negativity of PSD matrices
 
 ## References
 - Bhatia, "Positive Definite Matrices" (2007)
@@ -91,9 +91,22 @@ theorem RealPosSemidef.smul {A : Matrix n n ℝ} {c : ℝ}
   rw [h1, dotProduct_smul]
   exact mul_nonneg hc (hA.2 x)
 
-/-- Trace of PSD matrix is non-negative (axiomatized) -/
-axiom RealPosSemidef.trace_nonneg {A : Matrix n n ℝ}
-    (hA : RealPosSemidef A) : 0 ≤ A.trace
+/-- Diagonal entry equals the quadratic form evaluated at the standard basis vector -/
+private lemma diag_eq_quadratic (A : Matrix n n ℝ) (i : n) :
+    A i i = dotProduct (Pi.single i 1) (A.mulVec (Pi.single i 1)) := by
+  simp [dotProduct, mulVec, Pi.single, Function.update, Finset.sum_ite_eq', Finset.mem_univ]
+
+/-- Trace of PSD matrix is non-negative.
+
+This follows from the fact that each diagonal entry A i i equals eᵢᵀ A eᵢ ≥ 0 by the PSD
+condition, so the trace (sum of diagonal entries) is a sum of non-negatives. -/
+theorem RealPosSemidef.trace_nonneg {A : Matrix n n ℝ}
+    (hA : RealPosSemidef A) : 0 ≤ A.trace := by
+  unfold Matrix.trace Matrix.diag
+  apply Finset.sum_nonneg
+  intro i _
+  rw [diag_eq_quadratic A i]
+  exact hA.2 _
 
 /-
 ## Section 2: Loewner Order
@@ -231,12 +244,7 @@ theorem trace_arithMean_ge_trace_geomMean
     (matArithMean A B).trace ≥ (matGeomMean A B hA hB).trace := by
   have h := arithMean_sub_geomMean_posSemidef A B hA hB
   have htrace := h.trace_nonneg
-  have hsub : (matArithMean A B - matGeomMean A B hA hB).trace =
-      (matArithMean A B).trace - (matGeomMean A B hA hB).trace := by
-    simp only [trace, diag_apply, sub_apply]
-    exact Finset.sum_sub_distrib (f := fun i => matArithMean A B i i)
-      (g := fun i => matGeomMean A B hA hB i i)
-  rw [hsub] at htrace
+  rw [Matrix.trace_sub] at htrace
   linarith
 
 /-- If A = B then A # B = (A+B)/2 -/
