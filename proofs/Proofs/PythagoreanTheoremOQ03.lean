@@ -422,7 +422,10 @@ theorem cosh_second_order_at_zero :
     HasDerivAt (fun x => Real.cosh x - 1) 0 0 := by
   have h := hasDerivAt_cosh 0
   rw [Real.sinh_zero] at h
-  exact h.sub (hasDerivAt_const 0 1)
+  have hc := hasDerivAt_const (0 : ℝ) (1 : ℝ)
+  have hsub : HasDerivAt (fun x => Real.cosh x - (fun _ => (1 : ℝ)) x) (0 - 0) 0 := h.sub hc
+  simp only [sub_zero] at hsub
+  exact hsub
 
 /-- The flat limit for cos: (1 - cos(t)) / t² → 1/2 as t → 0.
     This captures cos(t) ≈ 1 - t²/2. -/
@@ -701,21 +704,19 @@ theorem hyperbolic_hypotenuse_strictly_longer (T : HyperbolicRightTriangle) :
     Real.cosh T.c > Real.cosh T.a := by
   rw [T.law]
   have hcb : 1 < Real.cosh T.b := by
-    have h1 := cosh_ge_one T.b
-    have hb_pos := T.b_pos
-    -- cosh(b) > cosh(0) = 1 since cosh is strictly increasing on [0, ∞) and b > 0
-    rw [Real.cosh_eq, Real.cosh_eq]
-    rw [Real.cosh_eq] at h1
-    have hexp : Real.exp T.b > Real.exp 0 := Real.exp_strictMono T.b_pos
-    have hneg : Real.exp (-T.b) < Real.exp 0 := Real.exp_strictMono (neg_neg_of_pos T.b_pos)
-    rw [Real.exp_zero] at hexp hneg
-    -- exp(b) > 1, exp(-b) < 1
-    -- exp(b) + exp(-b) > 1 + exp(-b) but we need > 2
-    -- Actually: exp(b) + exp(-b) > 2 by AM-GM: (exp(b) + exp(-b))/2 ≥ sqrt(exp(b)*exp(-b)) = 1
-    -- with strict ineq since exp(b) ≠ exp(-b)
-    have hprod : Real.exp T.b * Real.exp (-T.b) = 1 := by
-      rw [← Real.exp_add]; simp
-    nlinarith [sq_nonneg (Real.exp T.b - Real.exp (-T.b))]
+    -- Proof by contradiction: if cosh(b) ≤ 1, then cosh(b) = 1
+    -- which forces exp(b) = 1, contradicting b > 0
+    have hge := cosh_ge_one T.b
+    by_contra hle; push_neg at hle
+    have heq : Real.cosh T.b = 1 := le_antisymm hle hge
+    have : (Real.exp T.b + Real.exp (-T.b)) / 2 = 1 := by rw [← Real.cosh_eq]; exact heq
+    have hsum : Real.exp T.b + Real.exp (-T.b) = 2 := by linarith
+    have hprod : Real.exp T.b * Real.exp (-T.b) = 1 := by rw [← Real.exp_add]; simp
+    have : Real.exp T.b = 1 := by nlinarith [sq_nonneg (Real.exp T.b - 1)]
+    have : Real.exp T.b > 1 := by
+      calc Real.exp T.b > Real.exp 0 := Real.exp_strictMono T.b_pos
+        _ = 1 := Real.exp_zero
+    linarith
   have hca : 0 < Real.cosh T.a := cosh_pos T.a
   nlinarith
 
@@ -761,10 +762,30 @@ theorem hyperbolic_lawcos_to_pythag (a b c : ℝ) :
 /-- cosh is strictly increasing on [0, ∞): if 0 ≤ x < y then cosh(x) < cosh(y). -/
 theorem cosh_strictMono_nonneg {x y : ℝ} (hx : 0 ≤ x) (hxy : x < y) :
     Real.cosh x < Real.cosh y := by
-  rw [Real.cosh_eq, Real.cosh_eq]
+  have hcx : Real.cosh x = (Real.exp x + Real.exp (-x)) / 2 := Real.cosh_eq x
+  have hcy : Real.cosh y = (Real.exp y + Real.exp (-y)) / 2 := Real.cosh_eq y
+  rw [hcx, hcy]
+  -- Suffices to show exp(x) + exp(-x) < exp(y) + exp(-y)
+  suffices h : Real.exp x + Real.exp (-x) < Real.exp y + Real.exp (-y) by linarith
   have h1 : Real.exp x < Real.exp y := Real.exp_strictMono hxy
   have h2 : Real.exp (-y) < Real.exp (-x) := Real.exp_strictMono (neg_lt_neg hxy)
-  linarith
+  have hpx : Real.exp x * Real.exp (-x) = 1 := by rw [← Real.exp_add]; simp
+  have hpy : Real.exp y * Real.exp (-y) = 1 := by rw [← Real.exp_add]; simp
+  have hepx : 0 < Real.exp x := Real.exp_pos x
+  have hepy : 0 < Real.exp y := Real.exp_pos y
+  have hx1 : 1 ≤ Real.exp x := by
+    calc (1 : ℝ) = Real.exp 0 := Real.exp_zero.symm
+      _ ≤ Real.exp x := Real.exp_le_exp.mpr hx
+  -- exp(y) + exp(-y) - exp(x) - exp(-x) > 0
+  -- Multiply both sides by exp(x)*exp(y) > 0:
+  -- exp(x)*exp(y)^2 + exp(x) - exp(x)^2*exp(y) - exp(y)
+  -- = (exp(y) - exp(x))*(exp(x)*exp(y) - 1)
+  -- Both factors positive since exp(y) > exp(x) and exp(x)*exp(y) ≥ exp(x) ≥ 1
+  nlinarith [sq_nonneg (Real.exp x - Real.exp (-y)),
+             sq_nonneg (Real.exp y - Real.exp (-x)),
+             mul_pos hepx hepy,
+             mul_pos (show (0 : ℝ) < Real.exp y - Real.exp x by linarith)
+                     (show (0 : ℝ) < Real.exp x * Real.exp y - 1 by nlinarith)]
 
 /-- Given the hypotenuse c of a hyperbolic right triangle, the law
     cosh(c) = cosh(a)·cosh(b) uniquely determines cosh(b) from cosh(a)
@@ -778,6 +799,230 @@ theorem hyperbolic_unique_complement (a b₁ b₂ c : ℝ) (ha : 0 < a)
   exact mul_left_cancel₀ (ne_of_gt hca) this
 
 -- ============================================================
+-- PART XVI: Injectivity of cosh on [0, ∞) and Side-Length Comparisons
+-- ============================================================
+
+/-
+## cosh Injectivity and Side-Length Results
+
+The key missing piece: cosh is injective on [0, ∞), which lets us
+conclude c ≥ a and c ≥ b as inequalities on side lengths (not just
+on cosh values). Similarly, cos is injective on [0, π].
+-/
+
+/-- cosh is injective on [0, ∞): if cosh(x) = cosh(y) with x, y ≥ 0, then x = y. -/
+theorem cosh_injective_nonneg {x y : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y)
+    (h : Real.cosh x = Real.cosh y) : x = y := by
+  rcases lt_trichotomy x y with hlt | heq | hgt
+  · exact absurd h (ne_of_lt (cosh_strictMono_nonneg hx hlt))
+  · exact heq
+  · exact absurd h.symm (ne_of_lt (cosh_strictMono_nonneg hy hgt))
+
+/-- cosh is monotone on [0, ∞): x ≤ y ↔ cosh(x) ≤ cosh(y) for x, y ≥ 0. -/
+theorem cosh_le_cosh_iff_nonneg {x y : ℝ} (hx : 0 ≤ x) (hy : 0 ≤ y) :
+    Real.cosh x ≤ Real.cosh y ↔ x ≤ y := by
+  constructor
+  · intro h
+    by_contra hlt
+    push_neg at hlt
+    exact absurd (cosh_strictMono_nonneg hy hlt) (not_lt.mpr h)
+  · intro h
+    rcases eq_or_lt_of_le h with heq | hlt
+    · rw [heq]
+    · exact le_of_lt (cosh_strictMono_nonneg hx hlt)
+
+/-- In a hyperbolic right triangle, c ≥ a (actual side-length inequality). -/
+theorem hyperbolic_c_ge_a (T : HyperbolicRightTriangle) : T.c ≥ T.a := by
+  rw [ge_iff_le, ← cosh_le_cosh_iff_nonneg (le_of_lt T.a_pos) (le_of_lt T.c_pos)]
+  exact hyperbolic_hypotenuse_ge_leg_a T
+
+/-- In a hyperbolic right triangle, c ≥ b (actual side-length inequality). -/
+theorem hyperbolic_c_ge_b (T : HyperbolicRightTriangle) : T.c ≥ T.b := by
+  rw [ge_iff_le, ← cosh_le_cosh_iff_nonneg (le_of_lt T.b_pos) (le_of_lt T.c_pos)]
+  exact hyperbolic_hypotenuse_ge_leg_b T
+
+/-- In a hyperbolic right triangle, c > a (strict inequality). -/
+theorem hyperbolic_c_gt_a (T : HyperbolicRightTriangle) : T.c > T.a := by
+  by_contra h
+  push_neg at h
+  have hle : Real.cosh T.c ≤ Real.cosh T.a :=
+    (cosh_le_cosh_iff_nonneg (le_of_lt T.c_pos) (le_of_lt T.a_pos)).mpr h
+  linarith [hyperbolic_hypotenuse_strictly_longer T]
+
+/-- In a hyperbolic right triangle, c > b (strict inequality). -/
+theorem hyperbolic_c_gt_b (T : HyperbolicRightTriangle) : T.c > T.b :=
+  hyperbolic_c_gt_a T.swap
+
+-- ============================================================
+-- PART XVII: Full Laws of Cosines
+-- ============================================================
+
+/-
+## Full Laws of Cosines
+
+The Pythagorean theorem is a special case (C = π/2) of the law of cosines.
+Here we state and work with the full laws.
+-/
+
+/-- The full hyperbolic law of cosines for a triangle with sides a, b, c
+    and angle C opposite side c:
+      cosh(c) = cosh(a)·cosh(b) - sinh(a)·sinh(b)·cos(C) -/
+def HyperbolicLawOfCosines (a b c C : ℝ) : Prop :=
+  Real.cosh c = Real.cosh a * Real.cosh b - Real.sinh a * Real.sinh b * Real.cos C
+
+/-- The full spherical law of cosines for a triangle with sides a, b, c
+    and angle C opposite side c:
+      cos(c) = cos(a)·cos(b) + sin(a)·sin(b)·cos(C) -/
+def SphericalLawOfCosines (a b c C : ℝ) : Prop :=
+  Real.cos c = Real.cos a * Real.cos b + Real.sin a * Real.sin b * Real.cos C
+
+/-- The hyperbolic law of cosines reduces to cosh(c) = cosh(a)·cosh(b)
+    when C = π/2 (since cos(π/2) = 0). -/
+theorem hyperbolic_loc_right_angle (a b c : ℝ) :
+    HyperbolicLawOfCosines a b c (π / 2) ↔
+    Real.cosh c = Real.cosh a * Real.cosh b := by
+  unfold HyperbolicLawOfCosines
+  rw [Real.cos_pi_div_two]
+  constructor
+  · intro h; linarith
+  · intro h; linarith
+
+/-- The spherical law of cosines reduces to cos(c) = cos(a)·cos(b)
+    when C = π/2 (since cos(π/2) = 0). -/
+theorem spherical_loc_right_angle (a b c : ℝ) :
+    SphericalLawOfCosines a b c (π / 2) ↔
+    Real.cos c = Real.cos a * Real.cos b := by
+  unfold SphericalLawOfCosines
+  rw [Real.cos_pi_div_two]
+  constructor
+  · intro h; linarith
+  · intro h; linarith
+
+/-- The Euclidean law of cosines: c² = a² + b² - 2ab·cos(C). -/
+def EuclideanLawOfCosines (a b c C : ℝ) : Prop :=
+  c ^ 2 = a ^ 2 + b ^ 2 - 2 * a * b * Real.cos C
+
+/-- The Euclidean law of cosines reduces to a² + b² = c² when C = π/2. -/
+theorem euclidean_loc_right_angle (a b c : ℝ) :
+    EuclideanLawOfCosines a b c (π / 2) ↔ c ^ 2 = a ^ 2 + b ^ 2 := by
+  unfold EuclideanLawOfCosines
+  rw [Real.cos_pi_div_two]
+  constructor
+  · intro h; linarith
+  · intro h; linarith
+
+-- ============================================================
+-- PART XVIII: Gauss-Bonnet for Triangles
+-- ============================================================
+
+/-
+## Gauss-Bonnet for Triangles
+
+The Gauss-Bonnet theorem for geodesic triangles relates area to
+angle sum. For constant curvature surfaces:
+
+- **Euclidean** (κ = 0): α + β + γ = π (area is independent of angles)
+- **Spherical** (κ > 0): Area = κ · (α + β + γ - π) > 0 (angular excess)
+- **Hyperbolic** (κ < 0): Area = |κ| · (π - α - β - γ) > 0 (angular defect)
+-/
+
+/-- The area of a general hyperbolic triangle via the angular defect formula.
+    In the hyperbolic plane with curvature -1:
+      Area = π - (α + β + γ)
+    where α, β, γ are the interior angles. -/
+noncomputable def hyperbolicTriangleArea (α β γ : ℝ) : ℝ := π - (α + β + γ)
+
+/-- In hyperbolic geometry, the angle sum of any triangle is less than π,
+    so the area is positive. -/
+theorem hyperbolic_triangle_area_pos (α β γ : ℝ)
+    (hα : 0 < α) (hβ : 0 < β) (hγ : 0 < γ)
+    (hsum : α + β + γ < π) :
+    0 < hyperbolicTriangleArea α β γ := by
+  unfold hyperbolicTriangleArea; linarith
+
+/-- The area of a hyperbolic triangle is at most π (since angles are positive). -/
+theorem hyperbolic_triangle_area_lt_pi (α β γ : ℝ)
+    (hα : 0 < α) (hβ : 0 < β) (hγ : 0 < γ) :
+    hyperbolicTriangleArea α β γ < π := by
+  unfold hyperbolicTriangleArea; linarith
+
+/-- The area of a general spherical triangle via the angular excess formula.
+    On the unit sphere:
+      Area = (α + β + γ) - π
+    where α, β, γ are the interior angles. -/
+noncomputable def sphericalTriangleArea (α β γ : ℝ) : ℝ := α + β + γ - π
+
+/-- In spherical geometry, the angle sum of any triangle exceeds π,
+    so the area is positive. -/
+theorem spherical_triangle_area_pos (α β γ : ℝ)
+    (hα : 0 < α) (hβ : 0 < β) (hγ : 0 < γ)
+    (hsum : α + β + γ > π) :
+    0 < sphericalTriangleArea α β γ := by
+  unfold sphericalTriangleArea; linarith
+
+/-- The area of a spherical triangle is bounded: each angle < π implies excess < 2π. -/
+theorem spherical_triangle_area_lt_bound (α β γ : ℝ)
+    (hα : α < π) (hβ : β < π) (hγ : γ < π) :
+    sphericalTriangleArea α β γ < 2 * π := by
+  unfold sphericalTriangleArea; linarith
+
+/-- For a right triangle (γ = π/2), hyperbolic area = π/2 - α - β. -/
+theorem hyperbolic_right_triangle_area_eq (α β : ℝ) :
+    hyperbolicTriangleArea α β (π / 2) = π / 2 - α - β := by
+  unfold hyperbolicTriangleArea; ring
+
+/-- For a right triangle (γ = π/2), spherical area = α + β - π/2. -/
+theorem spherical_right_triangle_area_eq (α β : ℝ) :
+    sphericalTriangleArea α β (π / 2) = α + β - π / 2 := by
+  unfold sphericalTriangleArea; ring
+
+-- ============================================================
+-- PART XIX: Quantitative Approximation
+-- ============================================================
+
+/-
+## Quantitative Flat-Limit Approximation
+
+Both non-Euclidean Pythagorean theorems approximate the Euclidean one
+for small triangles. The correction term is a²b²/4 to leading order.
+-/
+
+/-- The error in the hyperbolic approximation: if we use cosh(x) ≈ 1 + x²/2,
+    then cosh(c) = cosh(a)·cosh(b) gives c² ≈ a² + b² plus correction a²b²/4. -/
+theorem hyperbolic_pythagorean_correction (a b : ℝ) :
+    (1 + a ^ 2 / 2) * (1 + b ^ 2 / 2) = 1 + (a ^ 2 + b ^ 2) / 2 + a ^ 2 * b ^ 2 / 4 := by
+  ring
+
+/-- The error in the spherical approximation: if we use cos(x) ≈ 1 - x²/2,
+    then cos(c) = cos(a)·cos(b) gives c² ≈ a² + b² plus correction a²b²/4. -/
+theorem spherical_pythagorean_correction (a b : ℝ) :
+    (1 - a ^ 2 / 2) * (1 - b ^ 2 / 2) = 1 - (a ^ 2 + b ^ 2) / 2 + a ^ 2 * b ^ 2 / 4 := by
+  ring
+
+/-- The correction term a²b²/4 is always non-negative. -/
+theorem correction_nonneg (a b : ℝ) : 0 ≤ a ^ 2 * b ^ 2 / 4 := by
+  positivity
+
+/-- cosh(x) ≥ 1 + x²/2 for all real x (a consequence of convexity). -/
+theorem cosh_ge_one_add_sq_div_two (x : ℝ) : Real.cosh x ≥ 1 + x ^ 2 / 2 := by
+  rw [Real.cosh_eq]
+  have hp : 0 < Real.exp x := Real.exp_pos x
+  have hn : 0 < Real.exp (-x) := Real.exp_pos (-x)
+  have hprod : Real.exp x * Real.exp (-x) = 1 := by rw [← Real.exp_add]; simp
+  nlinarith [sq_nonneg (Real.exp x - 1), sq_nonneg (Real.exp (-x) - 1),
+             sq_nonneg (Real.exp x - Real.exp (-x))]
+
+/-- The cosh product always exceeds the sum-based approximation:
+    cosh(a)·cosh(b) ≥ 1 + (a² + b²)/2 for all a, b. -/
+theorem cosh_product_ge_approx (a b : ℝ) :
+    Real.cosh a * Real.cosh b ≥ 1 + (a ^ 2 + b ^ 2) / 2 := by
+  have ha := cosh_ge_one_add_sq_div_two a
+  have hb := cosh_ge_one_add_sq_div_two b
+  have ha1 := cosh_ge_one a
+  have hb1 := cosh_ge_one b
+  nlinarith [sq_nonneg a, sq_nonneg b]
+
+-- ============================================================
 -- Summary
 -- ============================================================
 
@@ -786,18 +1031,17 @@ theorem hyperbolic_unique_complement (a b₁ b₂ c : ℝ) (ha : 0 < a)
 
 This file establishes the Pythagorean theorem in non-Euclidean geometries:
 
-### Hyperbolic Geometry (Part I, XII, XIII, XV)
+### Hyperbolic Geometry (Parts I, XII, XIII, XV, XVI)
 - Structure `HyperbolicRightTriangle` with the law cosh(c) = cosh(a)·cosh(b)
 - Basic properties: cosh_pos, cosh_ge_one, cosh_neg_eq, sinh_neg_eq
 - Fundamental identity: cosh²(x) - sinh²(x) = 1
 - Addition formulas: cosh(x+y), sinh(x+y)
 - Double angle formulas: cosh(2x), sinh(2x)
-- Hypotenuse is strictly longer than legs
-- Degenerate triangle cases
-- Monotonicity of cosh on [0, ∞)
+- Hypotenuse is strictly longer than legs (both cosh-level and side-length)
+- cosh injectivity and monotone characterization on [0, ∞)
 - Uniqueness of complementary leg
 
-### Spherical Geometry (Part II, III)
+### Spherical Geometry (Parts II, III)
 - Structure `SphericalRightTriangle` with the law cos(c) = cos(a)·cos(b)
 - General radius version: cos(c/R) = cos(a/R)·cos(b/R)
 - Hypotenuse-leg comparison
@@ -809,20 +1053,26 @@ This file establishes the Pythagorean theorem in non-Euclidean geometries:
 - Flat case (κ = 0): trivially satisfied
 - Positive/negative curvature: reduces to spherical/hyperbolic
 
-### Flat Limits (Part V)
+### Flat Limits and Approximation (Parts V, XIX)
 - HasDerivAt for cosh and sinh
 - Second-order Taylor connection to Euclidean case
-- Both cos and cosh approximate 1 - x²/2 and 1 + x²/2
+- cosh(x) ≥ 1 + x²/2 (convexity bound)
+- Both corrections are a²b²/4 to leading order
+- cosh product lower bound: cosh(a)·cosh(b) ≥ 1 + (a² + b²)/2
 
-### Area and Defect (Parts IX, X)
-- Hyperbolic angular defect: Area = π/2 - α - β > 0
-- Spherical angular excess: Area = α + β - π/2 > 0
+### Gauss-Bonnet for Triangles (Part XVIII)
+- Hyperbolic: Area = π - (α + β + γ) > 0 (angular defect)
+- Spherical: Area = (α + β + γ) - π > 0 (angular excess)
+- Right triangle specializations
+- Area bounds
 
-### Law of Cosines Connection (Part XIV)
-- Spherical and hyperbolic laws of cosines both reduce to Pythagorean
-  form when the angle C = π/2
+### Full Laws of Cosines (Parts XIV, XVII)
+- Hyperbolic: cosh(c) = cosh(a)·cosh(b) - sinh(a)·sinh(b)·cos(C)
+- Spherical: cos(c) = cos(a)·cos(b) + sin(a)·sin(b)·cos(C)
+- Euclidean: c² = a² + b² - 2ab·cos(C)
+- All three reduce to Pythagorean form when C = π/2
 
-### Proved Theorems: 50+ (0 sorries, 0 axioms)
+### Proved Theorems: 65+ (0 sorries, 0 axioms)
 - All results follow from Mathlib's trigonometric and exponential function library
 - No axioms needed: all theorems are fully proved
 -/
