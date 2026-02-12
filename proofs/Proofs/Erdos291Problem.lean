@@ -119,16 +119,6 @@ def leadingDigit (n p : ℕ) : ℕ :=
   if p ≤ 1 then n
   else leadingDigitAux p n n
 
-/--
-**Steinerberger's Observation:**
-If the leading digit of n in base p is p-1, then p | gcd(a_n, L_n).
-
-Example: If n starts with 2 in base 3, then 3 | gcd(a_n, L_n).
--/
-axiom steinerberger_criterion (n p : ℕ) (hp : Nat.Prime p) (hp_le : p ≤ n)
-    (hleading : leadingDigit n p = p - 1) :
-    p ∣ harmonicGCD n
-
 /-
 ## Part IV: Wolstenholme's Theorem
 -/
@@ -144,12 +134,6 @@ axiom wolstenholme_theorem (p : ℕ) (hp : Nat.Prime p) (hp5 : p ≥ 5) :
     p^2 ∣ (H (p - 1) * (p - 1).factorial).num.natAbs
 
 /-
-**Connection to the Problem:**
-Wolstenholme implies that for n with leading digit p-1 in base p,
-we have p | gcd(a_n, L_n). This follows from the characterization theorem.
--/
-
-/-
 ## Part V: Characterization of Divisibility
 -/
 
@@ -162,6 +146,48 @@ where k is the leading digit of n in base p.
 axiom divisibility_characterization (n p : ℕ) (hp : Nat.Prime p) (hp_le : p ≤ n) :
     p ∣ harmonicGCD n ↔
     p ∣ (H (leadingDigit n p) * (leadingDigit n p).factorial).num.natAbs
+
+/-
+## Part V.5: Steinerberger's Criterion (derived from Wolstenholme + Characterization)
+-/
+
+/-- For p = 3: H(2) * 2! = 3, and 3 ∣ 3.
+    This is the small-prime case of Steinerberger's criterion. -/
+private theorem three_dvd_H2_factorial :
+    (3 : ℕ) ∣ (H 2 * (Nat.factorial 2)).num.natAbs := by
+  -- H 2 = 3/2, 2! = 2, product = 3
+  have : H 2 * (Nat.factorial 2) = 3 := by
+    simp [H, Finset.sum_range_succ, Nat.factorial]
+    norm_num
+  rw [this]; norm_num
+
+/--
+**Steinerberger's Observation (now a theorem):**
+If the leading digit of n in base p is p-1, then p | gcd(a_n, L_n).
+Proved from the divisibility characterization and Wolstenholme's theorem.
+
+For p = 3: uses direct computation (H(2) * 2! = 3, divisible by 3).
+For p ≥ 5: Wolstenholme gives p² | numerator, hence p | numerator.
+-/
+theorem steinerberger_criterion (n p : ℕ) (hp : Nat.Prime p) (hp_le : p ≤ n)
+    (hp3 : p ≥ 3) (hleading : leadingDigit n p = p - 1) :
+    p ∣ harmonicGCD n := by
+  -- Use the divisibility characterization
+  rw [divisibility_characterization n p hp hp_le]
+  rw [hleading]
+  -- Case split: p = 3 or p ≥ 5
+  by_cases hp5 : p ≥ 5
+  · -- p ≥ 5: use Wolstenholme's theorem
+    have hwol := wolstenholme_theorem p hp hp5
+    -- p² | x implies p | x (since p | p² and p² | x)
+    have hp_dvd_sq : p ∣ p ^ 2 := dvd_pow_self p (show 2 ≠ 0 by omega)
+    exact dvd_trans hp_dvd_sq hwol
+  · -- p < 5 and p ≥ 3 and p is prime: must be p = 3
+    push_neg at hp5
+    have hp_range : p = 3 ∨ p = 4 := by omega
+    rcases hp_range with rfl | rfl
+    · exact three_dvd_H2_factorial
+    · exact absurd hp (by decide : ¬ Nat.Prime 4)
 
 /-
 ## Part VI: Heuristic and Density
@@ -501,17 +527,17 @@ theorem prime_div_gcd_le (n p : ℕ) (hp : Nat.Prime p) (hpdvd : p ∣ harmonicG
 
 /-- 3 divides gcd(a_6, L_6): since leadingDigit 6 3 = 2 = 3-1 -/
 theorem three_dvd_gcd_six : 3 ∣ harmonicGCD 6 := by
-  apply steinerberger_criterion 6 3 (by decide) (by omega)
+  apply steinerberger_criterion 6 3 (by decide) (by omega) (by omega)
   native_decide
 
 /-- 3 divides gcd(a_8, L_8): since leadingDigit 8 3 = 2 = 3-1 -/
 theorem three_dvd_gcd_eight : 3 ∣ harmonicGCD 8 := by
-  apply steinerberger_criterion 8 3 (by decide) (by omega)
+  apply steinerberger_criterion 8 3 (by decide) (by omega) (by omega)
   native_decide
 
 /-- 5 divides gcd(a_24, L_24): since leadingDigit 24 5 = 4 = 5-1 -/
 theorem five_dvd_gcd_24 : 5 ∣ harmonicGCD 24 := by
-  apply steinerberger_criterion 24 5 (by decide) (by omega)
+  apply steinerberger_criterion 24 5 (by decide) (by omega) (by omega)
   native_decide
 
 /-- Helper: leadingDigitAux 3 (2 * 3^k) fuel = 2 when fuel ≥ k -/
@@ -582,6 +608,7 @@ theorem three_dvd_gcd_two_pow_three (k : ℕ) (hk : k ≥ 1) :
   · have h3k : 3^k ≥ 3^1 := Nat.pow_le_pow_right (by omega) hk
     simp at h3k
     linarith
+  · omega
   · exact leadingDigit_two_times_pow_three k
 
 /-
