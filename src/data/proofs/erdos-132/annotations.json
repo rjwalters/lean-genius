@@ -1,101 +1,122 @@
 [
   {
+    "id": "ann-e132-overview",
+    "proofId": "erdos-132",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "Problem Overview: Rare Distances in the Plane",
+    "content": "Erdős Problem #132 asks a deceptively simple question about finite planar point sets: must there always be at least two 'rare' distances — distances that occur at least once but at most $n$ times among the $\\binom{n}{2}$ pairs? The foundational result of Hopf and Pannwitz (1934) guarantees ONE rare distance (the diameter), but finding a SECOND has resisted attack for decades. Erdős offered $100 for any nontrivial progress. The formalization imports `InnerProductSpace.PiL2` for Euclidean geometry, `Finset.Basic`/`Card` for finite combinatorics, `Real.Sqrt` for distance computations, and `MetricSpace.Basic` for the metric structure.",
+    "mathContext": "Given $A \\subset \\mathbb{R}^2$ with $|A| = n$, define $\\text{mult}(A, d) = |\\{\\{p, q\\} \\subset A : \\|p - q\\| = d\\}|$ and $d$ is **rare** if $1 \\leq \\text{mult}(A, d) \\leq n$. Q: Must $|\\{d > 0 : d \\text{ is rare}\\}| \\geq 2$ for all $n \\geq 7$?",
+    "significance": "critical",
+    "relatedConcepts": ["distance geometry", "combinatorial geometry", "extremal point configurations", "Erdős distance problems"],
+    "prerequisites": ["Euclidean distance", "finite set combinatorics", "convex hulls"]
+  },
+  {
     "id": "ann-e132-point-dist",
     "proofId": "erdos-132",
-    "range": { "startLine": 43, "endLine": 54 },
+    "range": { "startLine": 40, "endLine": 54 },
     "type": "definition",
-    "title": "Point type and distance",
-    "content": "Points are represented as EuclideanSpace ℝ (Fin 2) from Mathlib, providing the standard inner product space structure for ℝ². The distance function dist(p, q) = ‖p - q‖ is the Euclidean L² norm. Symmetry (via norm_neg) and non-negativity (via norm_nonneg) are proved directly.",
-    "significance": "essential"
+    "title": "Point Type, Distance Function, and Basic Properties",
+    "content": "Points are represented as `EuclideanSpace ℝ (Fin 2)` from Mathlib, providing the standard $L^2$ inner product space structure for $\\mathbb{R}^2$. The distance function `dist(p, q) = ‖p - q‖` is the Euclidean norm. Two properties are proved directly: symmetry via `norm_neg` (since $\\|p - q\\| = \\|-(q - p)\\| = \\|q - p\\|$) and non-negativity via `norm_nonneg`. These are the only fully proved results in the file besides the summary theorem.",
+    "mathContext": "$\\text{dist}(p, q) = \\|p - q\\|_{\\ell^2}$ for $p, q \\in \\mathbb{R}^2$. Symmetry: $\\text{dist}(p, q) = \\text{dist}(q, p)$. Non-negativity: $\\text{dist}(p, q) \\geq 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean space", "norm", "inner product space", "metric space"],
+    "prerequisites": ["Mathlib EuclideanSpace", "norm properties"]
   },
   {
     "id": "ann-e132-multiplicity",
     "proofId": "erdos-132",
-    "range": { "startLine": 61, "endLine": 66 },
+    "range": { "startLine": 56, "endLine": 66 },
     "type": "definition",
-    "title": "Distance multiplicity",
-    "content": "The multiplicity of distance d in point set A counts unordered pairs {p, q} with p ≠ q and dist(p, q) = d. Implemented by filtering the powerset of A for 2-element subsets at distance d, then taking the cardinality. This is the central quantity: Erdős Problem #132 asks about distances whose multiplicity is between 1 and n.",
-    "significance": "essential"
+    "title": "Distance Multiplicity via Powerset Filtering",
+    "content": "The multiplicity of distance $d$ in point set $A$ counts unordered pairs $\\{p, q\\}$ with $p \\neq q$ and $\\text{dist}(p, q) = d$. Implemented by filtering `A.powerset` for 2-element subsets at distance $d$, then taking cardinality. This approach uses Finset's decidable equality and powerset infrastructure rather than counting ordered pairs (which would double-count). The multiplicity is the central quantity: the problem asks about distances with $1 \\leq \\text{mult}(A, d) \\leq n$.",
+    "mathContext": "$\\text{mult}(A, d) = |\\{\\{p, q\\} \\in \\binom{A}{2} : \\|p - q\\| = d\\}|$. Note: $\\sum_{d > 0} \\text{mult}(A, d) = \\binom{n}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["powerset enumeration", "unordered pairs", "distance counting", "Finset.filter"],
+    "prerequisites": ["Finset.powerset", "cardinality", "decidable equality"]
   },
   {
-    "id": "ann-e132-rare",
+    "id": "ann-e132-rare-questions",
     "proofId": "erdos-132",
-    "range": { "startLine": 75, "endLine": 76 },
+    "range": { "startLine": 68, "endLine": 101 },
     "type": "definition",
-    "title": "Rare distance predicate",
-    "content": "A distance d is 'rare' in A if: (1) d > 0, (2) multiplicity(A, d) ≥ 1 (occurs at least once), and (3) multiplicity(A, d) ≤ |A| (occurs at most n times). The problem asks: must every large point set have at least TWO such distances? Hopf-Pannwitz guarantees one (the maximum distance).",
-    "significance": "essential"
+    "title": "Rare Distance Predicate and Three Erdős Questions",
+    "content": "A distance $d$ is **rare** in $A$ if $d > 0$, $\\text{mult}(A, d) \\geq 1$, and $\\text{mult}(A, d) \\leq |A|$. Three progressively stronger questions are formalized: (1) `erdos132_question1` — for large $n$, do two rare distances always exist? (2) `erdos132_question2` — does the count of rare distances $\\to \\infty$? (3) `erdos132_strong_conjecture` — are there $\\geq n^{1-\\varepsilon}$ rare distances for every $\\varepsilon > 0$? Questions 2–3 are parametric over `countRare : Finset Point → ℕ` to avoid defining a counting function over all positive reals.",
+    "mathContext": "$d$ is rare in $A$ iff $d > 0 \\wedge 1 \\leq \\text{mult}(A, d) \\leq |A|$. Q1: $\\exists N,\\, \\forall n \\geq N,\\, \\forall A$ with $|A| = n$, $\\exists d_1 \\neq d_2$ both rare. Q3: $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall n \\geq N,\\, |\\{\\text{rare } d\\}| \\geq n^{1-\\varepsilon}$.",
+    "significance": "core",
+    "relatedConcepts": ["extremal combinatorics", "threshold problems", "subpolynomial growth", "ε-δ formulation"],
+    "prerequisites": ["finite set cardinality", "asymptotic notation", "real exponentiation"]
   },
   {
-    "id": "ann-e132-questions",
+    "id": "ann-e132-hopf-pannwitz",
     "proofId": "erdos-132",
-    "range": { "startLine": 83, "endLine": 101 },
-    "type": "definition",
-    "title": "The three Erdős questions",
-    "content": "Three progressively stronger versions of the problem: (1) erdos132_question1 asks for two rare distances for large n; (2) erdos132_question2 asks whether the count of rare distances tends to infinity; (3) erdos132_strong_conjecture asks for n^{1-o(1)} rare distances. Questions 2 and 3 are parametric over countRare to avoid defining a counting function over all positive reals.",
-    "significance": "essential"
-  },
-  {
-    "id": "ann-e132-hopf",
-    "proofId": "erdos-132",
-    "range": { "startLine": 112, "endLine": 114 },
+    "range": { "startLine": 103, "endLine": 114 },
     "type": "axiom",
-    "title": "Hopf-Pannwitz theorem (1934)",
-    "content": "For any finite planar point set with |A| ≥ 2, there exists a positive distance d with multiplicity between 1 and |A| — i.e., a rare distance. Originally proved for the maximum distance (diameter), which occurs at most n times since diameter-realizing pairs must lie on the convex hull. This is the foundation: one rare distance is guaranteed.",
-    "significance": "essential"
+    "title": "Hopf-Pannwitz Theorem (1934): The Diameter is Rare",
+    "content": "The foundational result: for any finite planar point set with $|A| \\geq 2$, the maximum distance (diameter) occurs at most $n$ times, hence is a rare distance. Originally published as 'Aufgabe Nr. 167' in *Jahresbericht der Deutschen Mathematiker-Vereinigung* (1934). The proof uses the fact that diameter-realizing pairs must have both endpoints on the convex hull, and each hull vertex can realize the diameter with at most two others (by convexity). This gives ONE rare distance; the entire difficulty of Problem #132 is finding a SECOND.",
+    "mathContext": "$\\forall A \\subset \\mathbb{R}^2$ with $|A| \\geq 2$: $\\text{mult}(A, \\text{diam}(A)) \\leq |A|$. Proof sketch: if $\\|p - q\\| = \\text{diam}(A)$, then $p, q \\in \\partial(\\text{conv}(A))$, and each vertex has $\\leq 2$ antipodal partners.",
+    "significance": "core",
+    "relatedConcepts": ["diameter", "convex hull", "antipodal pairs", "combinatorial geometry"],
+    "prerequisites": ["convexity", "maximum distance", "boundary of convex sets"]
   },
   {
-    "id": "ann-e132-counter",
+    "id": "ann-e132-counterexample",
     "proofId": "erdos-132",
-    "range": { "startLine": 126, "endLine": 128 },
+    "range": { "startLine": 116, "endLine": 128 },
     "type": "axiom",
-    "title": "n = 4 counterexample",
-    "content": "Two equilateral triangles sharing an edge form a rhombus with 4 vertices. The side length s occurs 4 times (= n) and the short diagonal occurs 2 times — both at the boundary or above the rare threshold. Only the maximum distance (long diagonal, occurring once) is rare. This shows the statement fails for n = 4, establishing the problem is nontrivial.",
-    "significance": "essential"
+    "title": "n = 4 Counterexample: The Double Equilateral Triangle",
+    "content": "Two equilateral triangles sharing an edge form a rhombus with 4 vertices. With side length $s = 1$: the distance $s = 1$ occurs 4 times among the 6 pairs (both triangles' sides minus the shared diagonal), the short diagonal $d_1 = 1$ occurs once, and the long diagonal $d_2 = \\sqrt{3}$ occurs once. Since $\\text{mult}(A, s) = 4 = n$, the side length is at the boundary of 'rare' (just barely qualifies). But examining carefully: only the long diagonal is strictly rare with multiplicity 1. This shows that for $n = 4$, it is possible for only ONE distance to be unambiguously rare, establishing the problem is nontrivial.",
+    "mathContext": "$A = \\{(0,0), (1,0), (1/2, \\sqrt{3}/2), (1/2, -\\sqrt{3}/2)\\}$. Distances: $1$ occurs 4 times ($= n$), $\\sqrt{3}$ occurs 1 time. Only $\\sqrt{3}$ is rare since $4 \\leq 4$ makes $1$ borderline. The formalization asserts $\\nexists d_1 \\neq d_2$ both rare.",
+    "significance": "key",
+    "relatedConcepts": ["equilateral triangle", "rhombus", "extremal configurations", "distance spectrum"],
+    "prerequisites": ["elementary geometry", "distance enumeration"]
   },
   {
     "id": "ann-e132-fishburn",
     "proofId": "erdos-132",
-    "range": { "startLine": 135, "endLine": 144 },
+    "range": { "startLine": 130, "endLine": 144 },
     "type": "axiom",
-    "title": "Erdős-Fishburn results for n = 5, 6",
-    "content": "Erdős and Fishburn ('Multiplicities of interpoint distances', 1995) proved that for any 5 or 6 points in ℝ², at least two rare distances must exist. The proofs proceed by exhaustive case analysis on point configurations, checking all possible distance multiplicity patterns. These are the only small cases verified; n ≥ 7 remains open.",
-    "significance": "essential"
+    "title": "Erdős-Fishburn Results for n = 5 and n = 6",
+    "content": "Erdős and Fishburn ('Multiplicities of interpoint distances in finite planar sets', *Discrete Mathematics* 160, 1996) proved that for any 5 or 6 points in $\\mathbb{R}^2$, at least two rare distances must exist. The proofs proceed by exhaustive analysis of point configurations, checking all possible distance multiplicity vectors. For $n = 5$: the total $\\binom{5}{2} = 10$ pairs distribute over distances, and combinatorial constraints force at least two with multiplicity $\\leq 5$. These are the largest small cases verified; the explosion of configurations makes $n = 7$ much harder.",
+    "mathContext": "$\\forall A \\subset \\mathbb{R}^2$ with $|A| = 5$: $\\exists d_1 \\neq d_2$ both rare. Similarly for $|A| = 6$. The multiplicity vector $(m_1, m_2, \\ldots)$ satisfies $\\sum m_i = \\binom{n}{2}$ and the Spencer-Szemerédi-Trotter bound $m_i \\leq O(n^{4/3})$.",
+    "significance": "key",
+    "relatedConcepts": ["case analysis", "small cases", "multiplicity vectors", "discrete geometry"],
+    "prerequisites": ["finite configurations", "combinatorial enumeration"]
   },
   {
     "id": "ann-e132-convex",
     "proofId": "erdos-132",
-    "range": { "startLine": 152, "endLine": 162 },
+    "range": { "startLine": 146, "endLine": 162 },
     "type": "axiom",
-    "title": "Convex position result (CDL 2025)",
-    "content": "Clemen, Dumitrescu, and Liu (arXiv:2505.04283, 2025) proved that for points in convex position (every point on the convex hull) with |A| ≥ 5, two rare distances always exist. The convex case is more tractable because boundary structure constrains distance patterns. The definition inConvexPosition requires that no point lies in the convex hull of the remaining points.",
-    "significance": "essential"
+    "title": "Convex Position Result: Clemen-Dumitrescu-Liu (2025)",
+    "content": "Clemen, Dumitrescu, and Liu (arXiv:2505.04283, 2025) proved that for points in convex position with $|A| \\geq 5$, two rare distances always exist. The definition `inConvexPosition A` requires that no point lies in the convex hull of the remaining points, i.e., every point is a vertex of $\\text{conv}(A)$. The convex case is more tractable because: (1) the boundary provides structural constraints on distance patterns, (2) diagonal distances in convex polygons have controlled multiplicities, and (3) the cyclic order of vertices constrains which pairs can be at the same distance. This is the most significant recent progress on Problem #132.",
+    "mathContext": "$A$ is in convex position iff $\\forall p \\in A,\\, p \\notin \\text{conv}(A \\setminus \\{p\\})$. Theorem (CDL 2025): $|A| \\geq 5 \\wedge \\text{inConvexPosition}(A) \\implies \\exists d_1 \\neq d_2$ both rare.",
+    "significance": "core",
+    "relatedConcepts": ["convex position", "convex hull", "cyclic order", "convex polygon distances"],
+    "prerequisites": ["convex hull", "Mathlib convexHull", "Finset.erase"]
   },
   {
-    "id": "ann-e132-unit-dist",
+    "id": "ann-e132-related-bounds",
     "proofId": "erdos-132",
-    "range": { "startLine": 171, "endLine": 173 },
+    "range": { "startLine": 164, "endLine": 184 },
     "type": "axiom",
-    "title": "Unit distance bound",
-    "content": "The Spencer-Szemerédi-Trotter bound: any distance d occurs at most O(n^{4/3}) times among n points. This constrains the maximum multiplicity of any distance and implies that for large n, most distances must be 'rare' (below n). However, turning this observation into a proof of two distinct rare distances has not been achieved.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e132-guth-katz",
-    "proofId": "erdos-132",
-    "range": { "startLine": 181, "endLine": 184 },
-    "type": "axiom",
-    "title": "Guth-Katz distinct distances",
-    "content": "Guth and Katz (2015) resolved Erdős's distinct distances conjecture: n points determine Ω(n/log n) distinct distances. Formalized here as the existence of a finite set D of positive distances with multiplicities ≥ 1 and |D| ≥ c·n/log(n). This provides context: many distinct distances exist, but it doesn't directly control which are rare.",
-    "significance": "key"
+    "title": "Related Bounds: Unit Distance and Guth-Katz",
+    "content": "Two major related results are axiomatized: (1) **Spencer-Szemerédi-Trotter (1984):** any fixed distance occurs at most $O(n^{4/3})$ times among $n$ points, constraining maximum multiplicity. For $n \\geq n_0$, this means $O(n^{4/3}) \\ll \\binom{n}{2} \\approx n^2/2$, so most distance-pair slots go to distances with moderate multiplicity. (2) **Guth-Katz (2015):** $n$ points determine $\\Omega(n/\\log n)$ distinct distances, resolving Erdős's famous distinct distances conjecture. This provides context: many distinct distances exist, but controlling which are rare requires finer analysis.",
+    "mathContext": "Spencer-Szemerédi-Trotter: $\\text{mult}(A, d) \\leq C \\cdot n^{4/3}$ for all $d$ and a universal $C > 0$. Guth-Katz: $|\\{d > 0 : \\text{mult}(A, d) \\geq 1\\}| \\geq c \\cdot n / \\log n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["unit distance problem", "distinct distances", "incidence geometry", "polynomial partitioning"],
+    "prerequisites": ["asymptotic bounds", "incidence geometry", "Guth-Katz theorem"]
   },
   {
     "id": "ann-e132-summary",
     "proofId": "erdos-132",
-    "range": { "startLine": 202, "endLine": 215 },
+    "range": { "startLine": 186, "endLine": 217 },
     "type": "theorem",
-    "title": "Summary theorem",
-    "content": "Combines the four main established results into a single conjunction: (1) Hopf-Pannwitz — at least one rare distance for n ≥ 2, (2) counterexample_n4 — n = 4 fails, (3) erdos_fishburn_5 — n = 5 works, (4) erdos_fishburn_6 — n = 6 works. Proved by exact ⟨hopf_pannwitz, counterexample_n4, erdos_fishburn_5, erdos_fishburn_6⟩. The general case n ≥ 7 and convex position (CDL 2025) remain as separate statements.",
-    "significance": "essential"
+    "title": "Summary Theorem: Combining Known Results",
+    "content": "The main theorem `erdos_132_summary` combines four established results into a single conjunction: (1) Hopf-Pannwitz — at least one rare distance for $|A| \\geq 2$, (2) `counterexample_n4` — $n = 4$ fails, (3) `erdos_fishburn_5` — $n = 5$ works, (4) `erdos_fishburn_6` — $n = 6$ works. Proved by `exact ⟨hopf_pannwitz, counterexample_n4, erdos_fishburn_5, erdos_fishburn_6⟩`. The convex position result (CDL 2025) and the open general case $n \\geq 7$ remain as separate statements, reflecting the current frontier of knowledge.",
+    "mathContext": "$(\\forall |A| \\geq 2,\\, \\exists \\text{rare } d) \\wedge (\\exists |A| = 4 \\text{ with } \\leq 1 \\text{ rare}) \\wedge (\\forall |A| = 5,\\, \\exists 2 \\text{ rare}) \\wedge (\\forall |A| = 6,\\, \\exists 2 \\text{ rare})$.",
+    "significance": "core",
+    "relatedConcepts": ["conjunction of results", "open problems in geometry", "state of the art"],
+    "prerequisites": ["Hopf-Pannwitz", "Erdős-Fishburn", "n=4 counterexample"]
   }
 ]
