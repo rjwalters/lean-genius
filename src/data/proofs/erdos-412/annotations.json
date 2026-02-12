@@ -4,80 +4,144 @@
     "proofId": "erdos-412",
     "range": { "startLine": 1, "endLine": 28 },
     "type": "concept",
-    "title": "Problem Statement",
-    "content": "Erdős Problem #412 asks whether all iterated sum-of-divisors sequences eventually merge. Given any two starting points m,n ≥ 2, does there exist i,j such that σᵢ(m) = σⱼ(n)? Communicated to Erdős by van Wijngaarden in the 1950s. Selfridge's numerical evidence suggests NO, but the problem remains OPEN.",
-    "significance": "critical"
+    "title": "Problem Statement and Historical Context",
+    "content": "Erdős Problem #412 asks whether all iterated sum-of-divisors sequences eventually merge. Given any two starting points m, n ≥ 2, does there exist i, j such that σᵢ(m) = σⱼ(n)?\n\nCommunicated to Erdős by van Wijngaarden in the 1950s. Selfridge's numerical evidence suggests NO, but Erdős and Graham wrote 'it seems unlikely that anything can be proved about this in the near future.' The problem remains OPEN.\n\nRelated to Problems #413 (barriers for omega function) and #414 (merging orbits of n + τ(n)).",
+    "significance": "critical",
+    "mathContext": {
+      "historicalNote": "Van Wijngaarden was a Dutch mathematician at the Mathematisch Centrum in Amsterdam. The problem appeared in Erdős's 1979 paper 'Some unconventional problems in number theory' and in the 1980 Erdős-Graham monograph. It belongs to a family of questions about the long-term dynamics of arithmetic functions under iteration.",
+      "references": [
+        {"key": "Er79d", "citation": "P. Erdős, 'Some unconventional problems in number theory,' Math. Mag. 52 (1979), 67–70"},
+        {"key": "ErGr80", "citation": "P. Erdős and R. L. Graham, 'Old and new problems and results in combinatorial number theory,' L'Enseignement Mathématique, Geneva (1980)"}
+      ],
+      "relatedConcepts": ["Dynamical systems on ℕ", "Arithmetic function iteration", "Collatz-type problems"],
+      "crossReferences": [
+        {"proofId": "erdos-413", "relationship": "Erdős #413 studies barriers for the omega function, another problem about iterated arithmetic function behavior"},
+        {"proofId": "erdos-414", "relationship": "Erdős #414 asks the analogous merging question for h(n) = n + τ(n) instead of σ(n)"}
+      ]
+    }
   },
   {
     "id": "ann-412-sigma-def",
     "proofId": "erdos-412",
-    "range": { "startLine": 42, "endLine": 45 },
+    "range": { "startLine": 40, "endLine": 60 },
     "type": "definition",
     "title": "Sum of Divisors Function",
-    "content": "We define σ(n) as the sum of all divisors of n, using Nat.divisors to get the finite set of divisors and summing with Finset.sum. For example: σ(6) = 1 + 2 + 3 + 6 = 12. Verified computationally for σ(1)=1, σ(2)=3, σ(6)=12, σ(12)=28, σ(28)=56.",
-    "significance": "critical"
+    "content": "`sigma n` = Σ_{d | n} d = sum of all divisors of n (including 1 and n).\n\nDefined as `(n.divisors).sum id` using Mathlib's `Nat.divisors` (finite set of divisors) and `Finset.sum`.\n\nVerified examples: σ(1) = 1, σ(2) = 3, σ(6) = 12, σ(12) = 28, σ(28) = 56. Note that 6 and 28 are perfect numbers (σ(n) = 2n).",
+    "significance": "critical",
+    "mathContext": {
+      "technique": "Uses `Nat.divisors` which returns the Finset of all divisors, then sums with `id` (the identity function). This is equivalent to Mathlib's `Nat.ArithmeticFunction.sigma 1` but defined directly for simplicity.",
+      "prerequisites": ["Nat.divisors", "Finset.sum"],
+      "keyProperty": "σ is multiplicative: σ(mn) = σ(m)·σ(n) when gcd(m,n) = 1. For prime p: σ(p) = p + 1. For prime power: σ(p^k) = (p^{k+1} - 1)/(p - 1). These are not used in this file but underpin the computational examples.",
+      "formalNotes": "The examples use `native_decide` for computational verification, which delegates to the kernel's native code compilation for efficient evaluation of concrete natural number computations.",
+      "crossReferences": [
+        {"proofId": "perfect-numbers", "relationship": "Perfect numbers satisfy σ(n) = 2n; this file verifies σ(6) = 12 = 2·6 and σ(28) = 56 = 2·28"}
+      ]
+    }
   },
   {
     "id": "ann-412-iter-def",
     "proofId": "erdos-412",
-    "range": { "startLine": 64, "endLine": 67 },
+    "range": { "startLine": 62, "endLine": 92 },
     "type": "definition",
-    "title": "Iterated Sigma",
-    "content": "The k-th iterate of σ: σ₀(n) = n and σₖ(n) = σ(σₖ₋₁(n)). Uses Function.iterate from Mathlib. Example sequences verified: from 2: 2→3→4→7→8→15; from 3: 3→4→7→8→15. The sequences from 2 and 3 merge at step 1!",
-    "significance": "critical"
+    "title": "Iterated Sum of Divisors",
+    "content": "`iterSigma k n` = σ^[k](n), the k-th iterate of σ applied to n.\n\nDefined via `Function.iterate`: σ₀(n) = n, σₖ₊₁(n) = σ(σₖ(n)).\n\n**Example sequences** (verified via native_decide):\n- From 2: 2 → 3 → 4 → 7 → 8 → 15 → ...\n- From 3: 3 → 4 → 7 → 8 → 15 → ...\n\nThe sequences merge at step 1: σ₁(2) = 3 = σ₀(3). This is a typical 'quick merger' where a prime p maps to p+1, immediately joining the sequence starting at p+1.",
+    "significance": "critical",
+    "mathContext": {
+      "technique": "`Function.iterate` from Mathlib provides f^[n] notation. The key theorems `iterSigma_zero` (identity) and `iterSigma_succ` (σ ∘ σ^[k]) are proved by unfolding the iterate definition.",
+      "prerequisites": ["Function.iterate", "Function.iterate_succ_apply'"],
+      "keyInsight": "For prime p, σ(p) = p + 1, so the sequence from p immediately enters the sequence from p + 1. This means primes and their successors are always σ-equivalent. The difficulty lies in numbers whose sequences grow through different composite values.",
+      "relatedConcepts": ["Discrete dynamical systems", "Orbit equivalence", "Collatz conjecture (another iteration problem on ℕ)"]
+    }
   },
   {
     "id": "ann-412-equiv-def",
     "proofId": "erdos-412",
-    "range": { "startLine": 96, "endLine": 105 },
+    "range": { "startLine": 94, "endLine": 105 },
     "type": "definition",
-    "title": "σ-Equivalence and the Conjecture",
-    "content": "Two numbers m, n are σ-equivalent if their iterated sequences eventually meet: ∃ i j, σᵢ(m) = σⱼ(n). The Erdős412Conjecture states all integers m, n ≥ 2 are σ-equivalent — that there is essentially one universal sequence all iterated σ-sequences eventually join.",
-    "significance": "critical"
+    "title": "σ-Equivalence and the Main Conjecture",
+    "content": "`SigmaEquivalent m n`: ∃ i j, σᵢ(m) = σⱼ(n). Two numbers are σ-equivalent if their iterated σ-sequences eventually reach a common value.\n\n`Erdos412Conjecture`: ∀ m n ≥ 2, SigmaEquivalent m n. All starting points lead to σ-sequences that eventually merge — there is essentially one 'universal' asymptotic sequence.\n\nσ-equivalence is reflexive (i = j = 0) and symmetric (swap i and j). Transitivity follows from the growth property: if σ-sequences from m and n both hit some common value v, then they agree from v onward.",
+    "significance": "critical",
+    "mathContext": {
+      "technique": "The equivalence relation is defined existentially. Transitivity relies on the fact that σ is deterministic: once two sequences reach the same value, they are identical thereafter. Combined with strict growth (σ(n) > n), this means two sequences either eventually merge or diverge forever.",
+      "keyProperty": "σ-equivalence partitions ℕ_{≥2} into equivalence classes. The conjecture asserts there is exactly one class. Selfridge's evidence suggests there may be more than one.",
+      "relatedConcepts": ["Orbit equivalence in dynamical systems", "Eventual periodicity", "Tail equivalence of sequences"],
+      "crossReferences": [
+        {"proofId": "erdos-414", "relationship": "Erdős #414 defines the analogous equivalence for h(n) = n + τ(n) and asks the same merging question"}
+      ]
+    }
   },
   {
     "id": "ann-412-verified",
     "proofId": "erdos-412",
-    "range": { "startLine": 109, "endLine": 119 },
+    "range": { "startLine": 107, "endLine": 119 },
     "type": "theorem",
     "title": "Verified Equivalences",
-    "content": "Four σ-equivalences proved computationally via native_decide: 2≡3 (σ₁(2)=3), 2≡4 (σ₂(2)=4), 5≡6 (σ(5)=6), 7≡8 (σ(7)=8). For primes p, σ(p) = p+1, giving immediate merges with p+1.",
-    "significance": "key"
+    "content": "Four σ-equivalences proved computationally:\n- `equiv_2_3`: σ₁(2) = 3 = σ₀(3)\n- `equiv_2_4`: σ₂(2) = 4 = σ₀(4)\n- `equiv_5_6`: σ₁(5) = 6 = σ₀(6)\n- `equiv_7_8`: σ₁(7) = 8 = σ₀(8)\n\nThe pattern: for primes p, σ(p) = p + 1, giving immediate merges. This accounts for many 'easy' equivalences but doesn't address the hard cases.",
+    "significance": "supporting",
+    "mathContext": {
+      "technique": "All proofs use `native_decide` to computationally verify the equalities. The witnesses (i, j) are provided explicitly as ⟨i, j, by native_decide⟩.",
+      "proofMethod": "Constructive witnesses with computational verification",
+      "keyInsight": "The easy cases all involve a prime p merging with p+1 after one step. The real challenge is pairs like large composites whose σ-sequences grow through different values. Finding pairs that never merge (or proving they must) requires understanding the global structure of the σ-iteration graph on ℕ."
+    }
   },
   {
     "id": "ann-412-aliquot",
     "proofId": "erdos-412",
-    "range": { "startLine": 123, "endLine": 136 },
+    "range": { "startLine": 121, "endLine": 136 },
     "type": "definition",
-    "title": "Aliquot Sum Connection",
-    "content": "The aliquot sum s(n) = σ(n) - n is the sum of proper divisors. Perfect numbers satisfy s(n) = n (verified: s(6)=6, s(28)=28). Problem #412 uses σ (including n), not s (excluding n), but the concepts are related.",
-    "significance": "key"
+    "title": "Aliquot Sum and Perfect Numbers",
+    "content": "`aliquotSum n` = σ(n) - n = sum of proper divisors of n.\n\n- **Perfect numbers**: s(n) = n (e.g., s(6) = 6, s(28) = 28)\n- **Amicable pairs**: s(m) = n and s(n) = m\n- **Aliquot sequences**: n → s(n) → s(s(n)) → ... (can decrease, unlike σ-sequences)\n\nProblem #412 uses σ (including n as a divisor), not s (excluding n). The σ-sequences are strictly increasing for n ≥ 2, while aliquot sequences can oscillate or converge to 0.",
+    "significance": "supporting",
+    "mathContext": {
+      "technique": "The aliquot sum is defined as `sigma n - n` using natural subtraction. The examples verify perfect number status via `native_decide`.",
+      "relatedConcepts": ["Perfect numbers (σ(n) = 2n)", "Amicable numbers (σ-cycle of length 2)", "Sociable numbers (σ-cycle of length k)", "Catalan-Dickson conjecture (aliquot sequences)"],
+      "keyProperty": "The key difference: σ-sequences grow monotonically (σ(n) > n for n ≥ 2), but aliquot sequences s^k(n) can decrease (when s(n) < n, i.e., n is deficient). This makes Problem #412's σ-iteration better behaved but harder to disprove.",
+      "crossReferences": [
+        {"proofId": "perfect-numbers", "relationship": "Perfect numbers are fixed points of the map n ↦ σ(n)/2, directly connected to the σ function studied here"}
+      ]
+    }
   },
   {
     "id": "ann-412-growth",
     "proofId": "erdos-412",
-    "range": { "startLine": 140, "endLine": 160 },
+    "range": { "startLine": 138, "endLine": 160 },
     "type": "theorem",
-    "title": "Growth Properties",
-    "content": "Two key growth results proved: (1) sigma_ge_succ: σ(n) ≥ n+1 for n ≥ 2, proved by showing {1,n} ⊆ divisors(n) and bounding the sum. (2) sigma_gt: σ(n) > n for n ≥ 2, an immediate corollary. These show iterated sequences are strictly increasing.",
-    "significance": "critical"
+    "title": "Growth Properties of σ",
+    "content": "`sigma_ge_succ`: σ(n) ≥ n + 1 for n ≥ 2.\n`sigma_gt`: σ(n) > n for n ≥ 2.\n\n**Proof of sigma_ge_succ**: For n ≥ 2, both 1 and n are divisors with 1 ≠ n. So {1, n} ⊆ divisors(n), and σ(n) = Σ_{d|n} d ≥ Σ_{d ∈ {1,n}} d = 1 + n.\n\nThis is the key structural result: σ-sequences from n ≥ 2 are **strictly increasing**, so they grow without bound.",
+    "significance": "critical",
+    "mathContext": {
+      "technique": "The proof constructs the subset {1, n} of divisors(n) using `Nat.one_mem_divisors` and `Nat.mem_divisors_self`, then applies `Finset.sum_le_sum_of_subset` to get the lower bound. The distinctness 1 ≠ n (since n ≥ 2) is needed for `Finset.sum_pair`.",
+      "proofMethod": "Subset bound on divisor sum",
+      "prerequisites": ["Nat.one_mem_divisors", "Nat.mem_divisors_self", "Finset.sum_le_sum_of_subset", "Finset.sum_pair"],
+      "consequences": ["No σ-periodic numbers for n ≥ 2", "All σ-sequences are unbounded", "The merging question reduces to whether unbounded increasing sequences always agree"],
+      "keyInsight": "The strict growth σ(n) > n makes Problem #412 a 'one-directional' dynamics problem. Unlike the Collatz conjecture where sequences can oscillate, σ-sequences only increase. This makes the problem harder to resolve — you can't use descent arguments or find cycles."
+    }
   },
   {
     "id": "ann-412-periodic",
     "proofId": "erdos-412",
-    "range": { "startLine": 166, "endLine": 173 },
+    "range": { "startLine": 162, "endLine": 173 },
     "type": "theorem",
-    "title": "No Periodicity",
-    "content": "IsSigmaPeriodic defines σ-periodic numbers (σₖ(n) = n for some k ≥ 1). Theorem no_sigma_periodic_step1 proves σ₁(n) > n for n ≥ 2, ruling out fixed points and showing sequences grow without bound.",
-    "significance": "key"
+    "title": "No σ-Periodicity",
+    "content": "`IsSigmaPeriodic n`: ∃ k ≥ 1, σ^[k](n) = n. A number is σ-periodic if its iterated σ-sequence returns to itself.\n\n`no_sigma_periodic_step1`: σ₁(n) > n for n ≥ 2, ruling out fixed points. By induction, σ^[k](n) > n for all k ≥ 1, so no n ≥ 2 is σ-periodic.\n\nNote: perfect numbers satisfy σ(n) = 2n ≠ n, so they are not σ-periodic either.",
+    "significance": "supporting",
+    "mathContext": {
+      "technique": "Direct application of `sigma_gt` after unfolding `Function.iterate_one`.",
+      "proofMethod": "Growth bound eliminates periodicity",
+      "keyInsight": "Ruling out periodicity is easy (one-line proof). The hard problem is whether non-periodic, strictly increasing sequences all eventually coincide. Growth tells us sequences diverge; it says nothing about whether different diverging sequences eventually agree."
+    }
   },
   {
     "id": "ann-412-summary",
     "proofId": "erdos-412",
-    "range": { "startLine": 188, "endLine": 192 },
+    "range": { "startLine": 174, "endLine": 192 },
     "type": "theorem",
     "title": "Summary Theorem",
-    "content": "erdos_412_summary combines three proved results: (1) σ(n) > n for all n ≥ 2, (2) 2 and 3 are σ-equivalent, (3) σ₁(n) > n for all n ≥ 2. Proved via ⟨sigma_gt, equiv_2_3, no_sigma_periodic_step1⟩.",
-    "significance": "critical"
+    "content": "`erdos_412_summary` packages three verified results:\n1. σ(n) > n for all n ≥ 2 (strict growth)\n2. 2 and 3 are σ-equivalent (σ₁(2) = 3)\n3. σ₁(n) > n for all n ≥ 2 (no fixed points)\n\nProved as a triple: `⟨sigma_gt, equiv_2_3, no_sigma_periodic_step1⟩`.\n\nThe main conjecture `Erdos412Conjecture` remains open and is not asserted.",
+    "significance": "critical",
+    "mathContext": {
+      "technique": "Anonymous constructor ⟨·, ·, ·⟩ for the conjunction.",
+      "openStatus": "The main conjecture (all pairs merge) is OPEN. Selfridge's computational evidence suggests NO, but no pair has been proven to never merge. Proving non-merging requires showing σ^[i](m) ≠ σ^[j](n) for all i, j — infinitely many inequalities."
+    }
   }
 ]

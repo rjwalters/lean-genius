@@ -7,7 +7,17 @@
     "title": "Euler's Totient Function",
     "content": "**φ(n)** counts integers k with 1 ≤ k ≤ n and gcd(k,n) = 1.\n\nExamples:\n- φ(1) = 1\n- φ(p) = p - 1 for prime p\n- φ(p^k) = p^{k-1}(p - 1)\n\nThis is the central function in the problem.",
     "significance": "critical",
-    "relatedConcepts": ["Multiplicative function", "Prime factorization"]
+    "relatedConcepts": ["Multiplicative function", "Prime factorization"],
+    "mathContext": {
+      "technique": "Uses Mathlib's `Nat.totient` which computes φ(n) as `(Finset.range n).filter (Nat.Coprime n) |>.card`. The multiplicativity φ(mn) = φ(m)φ(n) for gcd(m,n) = 1 is the key structural property.",
+      "prerequisites": ["Nat.Coprime", "Finset.filter", "Multiplicative arithmetic functions"],
+      "crossReferences": [
+        { "proofId": "euler-totient", "relationship": "Proves a^φ(n) ≡ 1 (mod n), the fundamental theorem about φ" },
+        { "proofId": "erdos-416", "relationship": "Studies V(x), the counting function for the range of φ — how many integers are totient values" },
+        { "proofId": "erdos-411", "relationship": "Studies iteration of g(n) = n + φ(n) and periodic doubling behavior" }
+      ],
+      "historicalNote": "Euler introduced φ in 1763 to generalize Fermat's little theorem. The function has since become central to number theory, appearing in Ramanujan sums, cyclotomic polynomials, and the structure of (Z/nZ)*."
+    }
   },
   {
     "id": "ann-e415-sigma",
@@ -16,7 +26,13 @@
     "type": "definition",
     "title": "Sum of Divisors",
     "content": "**σ(n)** is the sum of all divisors of n.\n\nExamples: σ(6) = 1 + 2 + 3 + 6 = 12.\n\nThe same ordering pattern results hold for σ.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": {
+      "technique": "Defined as `(Nat.divisors n).sum id` using Mathlib's divisor enumeration. Like φ, σ is multiplicative: σ(mn) = σ(m)σ(n) for gcd(m,n) = 1.",
+      "crossReferences": [
+        { "proofId": "erdos-412", "relationship": "Studies iterated σ convergence — the dynamical system n → n + σ(n)" }
+      ]
+    }
   },
   {
     "id": "ann-e415-tau",
@@ -25,7 +41,13 @@
     "type": "definition",
     "title": "Number of Divisors",
     "content": "**τ(n)** counts divisors of n.\n\nExamples: τ(6) = 4 (divisors: 1, 2, 3, 6).\n\nThe same triple-log bound applies to τ.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": {
+      "technique": "Defined as `(Nat.divisors n).card`. The average order of τ is log n (Dirichlet's divisor problem), but individual values fluctuate widely.",
+      "crossReferences": [
+        { "proofId": "erdos-414", "relationship": "Studies orbit coalescence of h(n) = n + τ(n), where τ drives the dynamics" }
+      ]
+    }
   },
   {
     "id": "ann-e415-omega",
@@ -34,7 +56,14 @@
     "type": "definition",
     "title": "Distinct Prime Divisors",
     "content": "**ω(n)** counts distinct prime divisors of n.\n\nExamples: ω(12) = ω(2² · 3) = 2.\n\nThis additive function also satisfies F(n) ≍ log log log n.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": {
+      "technique": "Defined as `n.primeFactors.card` using Mathlib's prime factorization. The Erdős-Kac theorem says ω(n) is approximately normally distributed with mean and variance log log n.",
+      "crossReferences": [
+        { "proofId": "erdos-413", "relationship": "Studies barriers for n + ω(n) — when m + ω(m) ≤ n for all m < n" }
+      ],
+      "historicalNote": "The Erdős-Kac theorem (1940) established that ω behaves like a Gaussian random variable — one of the founding results of probabilistic number theory."
+    }
   },
   {
     "id": "ann-e415-pattern",
@@ -43,7 +72,13 @@
     "type": "definition",
     "title": "Ordering Pattern",
     "content": "An **ordering pattern** on k elements is a permutation of Fin k.\n\nFor k = 3, there are 3! = 6 patterns:\n- 1 < 2 < 3 (increasing)\n- 3 < 2 < 1 (decreasing)\n- 1 < 3 < 2, 2 < 1 < 3, 2 < 3 < 1, 3 < 1 < 2\n\nThe question: which patterns appear in φ sequences?",
-    "significance": "critical"
+    "significance": "critical",
+    "mathContext": {
+      "technique": "Uses `Equiv.Perm (Fin k)` from `Mathlib.GroupTheory.Perm.Basic`. This represents patterns as bijections on finite types, inheriting the symmetric group structure. The pattern σ means: position i has rank σ(i).",
+      "prerequisites": ["Equiv.Perm", "Fin k", "Fintype.card_perm"],
+      "relatedConcepts": ["Permutation patterns", "Stanley-Wilf conjecture", "Pattern avoidance"],
+      "historicalNote": "Permutation patterns became a major area of combinatorics after the Marcus-Tardos proof (2004) of the Stanley-Wilf conjecture. Erdős's question predates this by decades, asking about pattern occurrence rather than avoidance."
+    }
   },
   {
     "id": "ann-e415-pattern-count",
@@ -52,7 +87,11 @@
     "type": "theorem",
     "title": "Pattern Count",
     "content": "There are exactly **k!** ordering patterns on k elements.\n\nThis grows very fast: 2! = 2, 3! = 6, 4! = 24, 5! = 120, ...\n\nFinding all k! patterns becomes exponentially harder.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": {
+      "technique": "Proved by `simp [OrderingPattern, Fintype.card_perm]` — Mathlib knows the symmetric group S_k has order k!. This is the cardinality of Equiv.Perm (Fin k).",
+      "proofMethod": "Direct computation from Mathlib's `Fintype.card_perm` which establishes |S_n| = n!."
+    }
   },
   {
     "id": "ann-e415-realizes",
@@ -61,7 +100,11 @@
     "type": "definition",
     "title": "Realizes Pattern",
     "content": "A sequence **realizes** a pattern if the relative ordering matches.\n\nFor example, [5, 3, 8] realizes the pattern (2, 1, 3) because:\n- 5 is medium (rank 2)\n- 3 is smallest (rank 1)\n- 8 is largest (rank 3)",
-    "significance": "critical"
+    "significance": "critical",
+    "mathContext": {
+      "technique": "Defined as `∀ i j : Fin k, pattern i < pattern j ↔ seq i < seq j`. This is an order-isomorphism condition: the permutation σ gives the rank of each position, and the sequence values must respect the same ordering.",
+      "keyProperty": "This requires all values to be distinct (strict inequalities). Ties in φ values (which are common) mean some patterns cannot be realized by sequences with repeated values."
+    }
   },
   {
     "id": "ann-e415-achievable",
@@ -70,7 +113,11 @@
     "type": "definition",
     "title": "Pattern Achievable",
     "content": "A pattern is **achievable at n** if some sequence φ(m+1), ..., φ(m+k) with m + k ≤ n realizes it.\n\nWe search through all starting points m to find each pattern.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": {
+      "technique": "Existential quantification over starting positions m: `∃ m : ℕ, m + k ≤ n ∧ PhiRealizesPattern m k pattern`. There are roughly n - k candidate windows in [1, n].",
+      "keyProperty": "The constraint m + k ≤ n ensures we only look at φ values within [1, n]. For F(n) to be large, we need all k! patterns to appear in some window — a much stronger requirement than finding any single pattern."
+    }
   },
   {
     "id": "ann-e415-all-achievable",
@@ -79,7 +126,11 @@
     "type": "definition",
     "title": "All Patterns Achievable",
     "content": "`AllPatternsAchievable n k` means ALL k! patterns appear somewhere in φ(1), ..., φ(n).\n\nThis is the condition that defines F(n).",
-    "significance": "critical"
+    "significance": "critical",
+    "mathContext": {
+      "technique": "Universal quantification over all permutations: `∀ pattern : OrderingPattern k, PatternAchievable n k pattern`. This requires finding each of the k! permutations as a subsequence ordering somewhere in the φ sequence.",
+      "keyProperty": "The jump from 'some patterns achievable' to 'all patterns achievable' is where the triple-log barrier arises. Even though most patterns appear frequently, the rarest pattern (conjectured: strictly decreasing) determines F(n)."
+    }
   },
   {
     "id": "ann-e415-F-def",
@@ -88,7 +139,12 @@
     "type": "definition",
     "title": "The Function F(n)",
     "content": "**F(n)** = largest k such that all k! patterns are achievable.\n\nEquivalently: F(n) + 1 is the smallest k where some pattern is missing.\n\nThe key question: How fast does F(n) grow?",
-    "significance": "critical"
+    "significance": "critical",
+    "mathContext": {
+      "technique": "Defined via `Nat.find` applied to the existence proof that some k fails: F(n) = Nat.find(...) - 1. The existence witness uses k = n + 1 (trivially too many values to fit in [1, n]).",
+      "prerequisites": ["Nat.find", "Well-ordering of ℕ"],
+      "keyProperty": "F is nondecreasing: more φ values means more windows to search for patterns. The growth rate is the central mystery."
+    }
   },
   {
     "id": "ann-e415-asymp-def",
@@ -97,7 +153,12 @@
     "type": "definition",
     "title": "Triple-Log Asymptotic",
     "content": "**F(n) ≍ log log log n** means:\n\nc₁ · log log log n ≤ F(n) ≤ c₂ · log log log n\n\nfor constants c₁, c₂ > 0 and large n.\n\nThis is INCREDIBLY slow growth!",
-    "significance": "critical"
+    "significance": "critical",
+    "mathContext": {
+      "technique": "Uses `Real.log` composed three times: `Real.log (Real.log (Real.log n))`. The asymptotic notation ≍ (Vinogradov notation) means bounded above and below by constant multiples.",
+      "prerequisites": ["Real.log", "Asymptotic notation (big-Theta)"],
+      "keyProperty": "For perspective: log log log(10^10^10) ≈ log log(10^10) ≈ log(23) ≈ 3.1. Even for astronomically large n, F(n) stays in single digits. This means you can never find more than a handful of consecutive φ values exhibiting all possible orderings."
+    }
   },
   {
     "id": "ann-e415-erdos-1936",
@@ -106,7 +167,15 @@
     "type": "theorem",
     "title": "Erdős 1936 Result",
     "content": "**Erdős (1936):** F(n) ≍ log log log n.\n\nThis is the main known result. The exact constant remains unknown!\n\nSource: 'On a problem of Chowla and some related problems'",
-    "significance": "critical"
+    "significance": "critical",
+    "mathContext": {
+      "technique": "Stated as `AsymptoticTripleLog F` with a sorry. The original proof by Erdős used Chowla's problem on consecutive values of arithmetic functions, combined with sieve methods to bound the number of 'independent' windows.",
+      "proofMethod": "Erdős's upper bound uses a pigeonhole argument: if k is large, some pattern among the k! possibilities must be missing. The lower bound constructs windows where the Chinese Remainder Theorem produces desired orderings.",
+      "historicalNote": "This appeared in Erdős's 1936 paper 'On a problem of Chowla and some related problems' in the Proceedings of the National Institute of Sciences of India. Chowla had asked about consecutive values sharing the same ordering.",
+      "references": [
+        { "authors": "P. Erdős", "title": "On a problem of Chowla and some related problems", "year": "1936", "venue": "Proc. Nat. Inst. Sci. India" }
+      ]
+    }
   },
   {
     "id": "ann-e415-q1",
@@ -115,7 +184,11 @@
     "type": "definition",
     "title": "Question 1: Exact Constant",
     "content": "**OPEN:** Is there a constant c such that\n\nF(n) = (c + o(1)) · log log log n?\n\nThe o(1) term goes to 0 as n → ∞.\n\nIf true, this would pin down the leading constant.",
-    "significance": "critical"
+    "significance": "critical",
+    "mathContext": {
+      "technique": "Expressed as: `∃ c : ℝ, c > 0 ∧ ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N, |F(n) / log log log n - c| < ε`. This is the standard definition of a limit: F(n) / log log log n → c.",
+      "keyProperty": "Even determining whether such a constant exists is open. The upper and lower bounds from Erdős's proof give different constants c₁ < c₂, and closing the gap has resisted all efforts for nearly 90 years."
+    }
   },
   {
     "id": "ann-e415-decreasing",
@@ -124,7 +197,12 @@
     "type": "definition",
     "title": "Strictly Decreasing Pattern",
     "content": "The **strictly decreasing pattern** is:\n\nφ(m+1) > φ(m+2) > ... > φ(m+k)\n\nThis is conjectured to be the hardest pattern to find — the first to fail as k increases.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": {
+      "technique": "Constructed as the reversal permutation: `fun i => ⟨k - 1 - i.val, ...⟩`. This maps position i to rank k - 1 - i, encoding the requirement that later positions have strictly smaller values.",
+      "keyProperty": "Since φ(n) ≈ n on average (more precisely, Σφ(n)/n → 6/π² by Mertens), finding long strictly decreasing runs is hard — φ tends to increase with n. The decreasing pattern fights the natural growth tendency.",
+      "historicalNote": "The conjecture that strictly decreasing is hardest connects to results of Erdős and Hall on consecutive values of φ. They showed long monotone runs in φ are rare."
+    }
   },
   {
     "id": "ann-e415-q2",
@@ -133,7 +211,11 @@
     "type": "definition",
     "title": "Question 2: First to Fail",
     "content": "**OPEN:** Is strictly decreasing always the first pattern to fail?\n\nIn other words: if some pattern is missing, is the decreasing pattern definitely missing?\n\nThis would identify the 'hardest' pattern.",
-    "significance": "critical"
+    "significance": "critical",
+    "mathContext": {
+      "technique": "Expressed as: `∀ n k, ¬AllPatternsAchievable n k → ¬PatternAchievable n k (StrictlyDecreasingPattern k)`. This is a universal implication: if ANY pattern fails, then the decreasing one must also fail.",
+      "keyProperty": "This is essentially asking about the extremal pattern. If true, it would mean F(n) = max k such that the strictly decreasing pattern is achievable — reducing the universal quantifier over k! patterns to a single pattern check."
+    }
   },
   {
     "id": "ann-e415-natural",
@@ -142,7 +224,11 @@
     "type": "definition",
     "title": "Natural Pattern",
     "content": "The **natural pattern** mimics the ordering of φ(1), φ(2), ..., φ(k).\n\nFor k = 5: φ(1)=1, φ(2)=1, φ(3)=2, φ(4)=2, φ(5)=4\nSo the natural pattern encodes: 1 ≤ 2 < 3 ≤ 4 < 5.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": {
+      "technique": "Defined with a sorry since extracting the rank permutation from φ(1),...,φ(k) requires breaking ties. The definition needs a sorting algorithm on Fin k that produces a permutation.",
+      "keyProperty": "The natural pattern captures the 'expected' behavior of φ. Since φ(p) = p - 1 for primes and primes are dense (by PNT), the natural pattern tends to be mostly increasing with occasional dips at highly composite numbers."
+    }
   },
   {
     "id": "ann-e415-q3",
@@ -151,7 +237,11 @@
     "type": "definition",
     "title": "Question 3: Most Common",
     "content": "**OPEN:** Is the natural pattern the most commonly occurring?\n\nThis asks whether the 'generic' behavior of φ produces the most common ordering pattern.",
-    "significance": "critical"
+    "significance": "critical",
+    "mathContext": {
+      "technique": "Expressed by comparing cardinalities of achieving sets: the set of m where the natural pattern appears should be at least as large as the set for any other pattern. Uses `Finset.filter` to count occurrences.",
+      "keyProperty": "This is a question about the mode of a distribution on S_k induced by the φ function. The natural pattern should be most common because φ(n) ≈ cn for 'typical' n, making the typical ordering close to the ordering of 1, 2, ..., k."
+    }
   },
   {
     "id": "ann-e415-k2",
@@ -160,7 +250,11 @@
     "type": "theorem",
     "title": "k = 2 Patterns",
     "content": "For k = 2, both patterns (increasing and decreasing) appear for small n.\n\n- φ(2) = 1 < φ(3) = 2 (increasing)\n- φ(3) = 2 > φ(4) = 2... wait, need strict inequality\n\nWith n ≥ 10, both strict patterns appear.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "mathContext": {
+      "technique": "Stated as `AllPatternsAchievable n 2` for n ≥ 10. The proof (sorry) would need to exhibit specific m values: φ(m+1) < φ(m+2) and φ(m'+1) > φ(m'+2) with m, m' + 2 ≤ n.",
+      "proofMethod": "Concrete verification: φ(4) = 2 < φ(5) = 4 gives increasing; φ(6) = 2 > φ(7) = 6 fails, but φ(8) = 4 > φ(9) = 6 also fails. Actually φ(7) = 6 > φ(8) = 4 gives decreasing."
+    }
   },
   {
     "id": "ann-e415-phi-prime",
@@ -169,7 +263,14 @@
     "type": "theorem",
     "title": "φ at Primes",
     "content": "**φ(p) = p - 1** for prime p.\n\nThis is because all integers 1, 2, ..., p-1 are coprime to p.\n\nConsecutive primes give increasing φ values.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": {
+      "technique": "Proved directly by `Nat.totient_prime hp` from Mathlib. This is one of the few theorems in the file that doesn't use sorry.",
+      "proofMethod": "Definitional: if p is prime, then gcd(k, p) = 1 for all 1 ≤ k < p, giving φ(p) = p - 1.",
+      "crossReferences": [
+        { "proofId": "euler-totient", "relationship": "Proves the full Euler theorem a^φ(n) ≡ 1 (mod n), which uses φ(p) = p - 1 as a key case" }
+      ]
+    }
   },
   {
     "id": "ann-e415-phi-small",
@@ -178,7 +279,11 @@
     "type": "theorem",
     "title": "φ Can Be Small",
     "content": "**φ is highly variable:** φ(n) can be much smaller than n.\n\nFor highly composite n (many small prime factors), φ(n)/n can be arbitrarily small.\n\nThis variability drives the pattern diversity.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": {
+      "technique": "Uses `Filter.atTop` to express 'infinitely often': `∃ᶠ n in Filter.atTop, (phi n : ℝ) < ε * n`. The proof would use n = primorial (product of first k primes), giving φ(n)/n = Π(1 - 1/p) → 0.",
+      "keyProperty": "By Mertens' theorem, Π_{p≤x}(1 - 1/p) ~ e^{-γ}/log x → 0 as x → ∞. So primorials give φ(n)/n → 0. This extreme variability is what makes all patterns achievable for moderate k."
+    }
   },
   {
     "id": "ann-e415-other-funcs",
@@ -187,7 +292,16 @@
     "type": "theorem",
     "title": "Other Functions",
     "content": "**Universality:** The same F(n) ≍ log log log n holds for:\n- σ(n) (sum of divisors)\n- τ(n) (number of divisors)\n- ω(n) (distinct prime factors)\n- Any 'decent' additive or multiplicative function\n\nThe triple-log is robust!",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": {
+      "technique": "Defines analogous F functions (F_sigma, F_tau) and states their triple-log asymptotics. The proof strategy is the same: CRT for lower bound, pigeonhole for upper bound.",
+      "crossReferences": [
+        { "proofId": "erdos-412", "relationship": "Studies σ iteration dynamics — the same σ function whose ordering patterns follow the triple-log law" },
+        { "proofId": "erdos-413", "relationship": "Studies ω barriers — the same ω function whose ordering patterns follow the triple-log law" },
+        { "proofId": "erdos-414", "relationship": "Studies τ orbit coalescence — the same τ function whose ordering patterns follow the triple-log law" }
+      ],
+      "keyProperty": "The universality reflects a deep principle: the triple-log comes from the number of permutations (k!) growing much faster than the number of 'independent' windows, and this trade-off is the same for any reasonable arithmetic function."
+    }
   },
   {
     "id": "ann-e415-why-triple",
@@ -196,7 +310,15 @@
     "type": "concept",
     "title": "Why Triple Log?",
     "content": "**Intuition for log log log n:**\n\n1. Need k! patterns in ~n/k windows\n2. k! ≈ (k/e)^k suggests k^k ≲ n\n3. Naive: k ≲ log n / log log n\n4. But φ values cluster (many collisions)\n5. Clustering adds another log factor → log log log n",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": {
+      "technique": "The heuristic: if φ values were uniformly random, we'd need ~k! windows to see all patterns. With n/k windows available, we need k! ≲ n/k, giving k ≈ log n / log log n. But φ values are far from random — the correlation structure (multiplicativity, clustering at even values) reduces effective independence by a multiplicative factor, adding the third log.",
+      "keyProperty": "Each additional log comes from a different source: log n from the number of windows, log log n from Stirling's approximation to k!, and the third log from the correlation structure of the arithmetic function.",
+      "references": [
+        { "authors": "P. Erdős", "title": "On a problem of Chowla and some related problems", "year": "1936", "venue": "Proc. Nat. Inst. Sci. India" },
+        { "authors": "R. R. Hall, G. Tenenbaum", "title": "Divisors", "year": "1988", "venue": "Cambridge University Press", "note": "Comprehensive treatment of the distribution of arithmetic functions" }
+      ]
+    }
   },
   {
     "id": "ann-e415-collisions",
@@ -205,7 +327,32 @@
     "type": "theorem",
     "title": "φ Collisions",
     "content": "**Many integers share the same φ value:**\n\n- φ(1) = φ(2) = 1\n- φ(3) = φ(4) = φ(6) = 2\n- φ(5) = φ(8) = φ(10) = φ(12) = 4\n\nThese collisions reduce the effective 'randomness' of φ sequences.",
-    "significance": "key"
+    "significance": "key",
+    "mathContext": {
+      "technique": "Expressed via `Finset.filter`: for any k, there exists a totient value v taken by at least k integers below 10^6. Uses the fact that φ(n) = φ(2n) whenever n is odd, immediately doubling the collision rate.",
+      "crossReferences": [
+        { "proofId": "erdos-416", "relationship": "V(x) counts distinct totient values ≤ x — exactly measuring the sparsity that creates these collisions" }
+      ],
+      "keyProperty": "Carmichael's totient conjecture (still open!) asserts that no totient value is taken exactly once. If true, every value in the range of φ has multiplicity ≥ 2. This structural collision is why the triple-log has a third log."
+    }
+  },
+  {
+    "id": "ann-e415-phi-range",
+    "proofId": "erdos-415",
+    "range": { "startLine": 196, "endLine": 198 },
+    "type": "theorem",
+    "title": "Range Size of φ",
+    "content": "The number of distinct values in {φ(1), ..., φ(n)} grows as n / log n.\n\nThis is much slower than n itself — most integers are NOT totient values.\n\nThe sparsity of the range contributes to the pattern ordering constraints.",
+    "significance": "key",
+    "mathContext": {
+      "technique": "Bounds `(Finset.image phi (Finset.range n)).card ≤ c * n / Real.log n`. Ford (1998) determined the exact order of V(x) up to constants, confirming the range is thin.",
+      "crossReferences": [
+        { "proofId": "erdos-416", "relationship": "Precisely this question: V(x) ~ cx / (log x)^α for what α? Ford gave tight bounds but an asymptotic remains open" }
+      ],
+      "references": [
+        { "authors": "K. Ford", "title": "The distribution of totients", "year": "1998", "venue": "Ramanujan J." }
+      ]
+    }
   },
   {
     "id": "ann-e415-main",
@@ -214,6 +361,11 @@
     "type": "theorem",
     "title": "Main Result",
     "content": "**Erdős Problem #415: OPEN**\n\nKnown: F(n) ≍ log log log n (Erdős 1936)\n\nUnknown:\n1. Exact constant c\n2. Whether strictly decreasing fails first\n3. Whether natural pattern is most common",
-    "significance": "critical"
+    "significance": "critical",
+    "mathContext": {
+      "technique": "The main theorem `erdos_415 : AsymptoticTripleLog F` is defined as `erdos_1936_F_asymptotic`, delegating to the sorry'd 1936 result. The open questions are stated as `Prop` definitions, not theorems, reflecting their unsettled status.",
+      "proofMethod": "The file serves as a formalization of the problem statement rather than a proof. All three open questions, 14 sorries, and the axiom for F_tau reflect the genuinely open nature of this problem.",
+      "keyProperty": "Despite being open for nearly 90 years, the three questions have seen essentially no progress beyond Erdős's original 1936 result. This makes it one of the most persistent open problems in combinatorial number theory."
+    }
   }
 ]

@@ -1,6 +1,6 @@
 {
   "id": "erdos-412",
-  "title": "Erdos Problem #412: Iterated Sum of Divisors Convergence",
+  "title": "Erdős Problem #412: Iterated Sum of Divisors Convergence",
   "slug": "erdos-412",
   "description": "Do all iterated sum-of-divisors sequences eventually meet? For every m,n ≥ 2, is there i,j such that σᵢ(m) = σⱼ(n)? Open. Selfridge provided evidence suggesting NO.",
   "meta": {
@@ -15,7 +15,8 @@
       "sum-of-divisors",
       "iteration",
       "convergence",
-      "open"
+      "open",
+      "dynamical-systems"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -23,43 +24,100 @@
     "erdosUrl": "https://erdosproblems.com/412",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-18",
+    "dateUpdated": "2026-02-12",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
-        "description": "Finite set of divisors of a natural number",
+        "description": "Finite set of divisors of a natural number, used to define σ(n)",
         "module": "Mathlib.Data.Nat.Factorization.Basic"
       },
       {
         "theorem": "Finset.sum",
-        "description": "Sum over finite sets",
+        "description": "Sum over finite sets, used in sigma definition as divisors.sum id",
         "module": "Mathlib.Algebra.BigOperators.Finprod"
       },
       {
         "theorem": "Function.iterate",
-        "description": "Function iteration",
+        "description": "Function iteration f^[k], used for iterated sigma σₖ(n)",
         "module": "Mathlib.Tactic"
+      },
+      {
+        "theorem": "Nat.one_mem_divisors",
+        "description": "1 is always a divisor, used in growth proof",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.mem_divisors_self",
+        "description": "n divides itself, used in growth proof",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Finset.sum_le_sum_of_subset",
+        "description": "Sum over subset ≤ sum over superset, key to sigma_ge_succ proof",
+        "module": "Mathlib.Algebra.BigOperators.Order"
       }
     ],
     "originalContributions": [
-      "Definition of sum-of-divisors sigma via Nat.divisors",
-      "Iterated sigma function with verified examples",
-      "Sigma-equivalence relation for sequences merging",
-      "Growth property: σ(n) > n for n ≥ 2",
-      "Verified equivalence examples for small numbers",
-      "Connection to aliquot sequences and perfect numbers"
-    ]
+      "Definition of sigma via Nat.divisors.sum id",
+      "Verified examples: σ(1)=1, σ(2)=3, σ(6)=12, σ(12)=28, σ(28)=56",
+      "Definition of iterSigma via Function.iterate",
+      "Verified sequences from 2 and 3 (merge at step 1)",
+      "Definition of SigmaEquivalent (orbit merging)",
+      "Formal statement of Erdos412Conjecture",
+      "Proved sigma_ge_succ: σ(n) ≥ n+1 for n ≥ 2",
+      "Proved sigma_gt: σ(n) > n for n ≥ 2",
+      "Four verified equivalences: 2≡3, 2≡4, 5≡6, 7≡8 via native_decide",
+      "Definition of aliquotSum and perfect number verification",
+      "Definition of IsSigmaPeriodic and no_sigma_periodic_step1",
+      "Summary theorem erdos_412_summary combining three results"
+    ],
+    "mathContext": {
+      "field": "Number Theory",
+      "subfield": "Arithmetic Function Dynamics",
+      "difficulty": "open-problem",
+      "keyTechniques": [
+        "Sum-of-divisors function via Nat.divisors",
+        "Function iteration via Function.iterate",
+        "Subset sum lower bound for growth proof",
+        "Computational verification via native_decide"
+      ],
+      "prerequisites": [
+        "Basic divisor theory (divisors, sum of divisors)",
+        "Function iteration and discrete dynamical systems",
+        "Finset operations (sum, filter, subset bounds)"
+      ],
+      "consequences": [
+        "σ-equivalence partitions ℕ_{≥2} into classes",
+        "Strict growth eliminates periodic orbits",
+        "Computational evidence for small equivalences"
+      ],
+      "crossReferences": [
+        {
+          "proofId": "erdos-413",
+          "relationship": "Erdős #413 studies barriers for the omega function, another iterated arithmetic function problem"
+        },
+        {
+          "proofId": "erdos-414",
+          "relationship": "Erdős #414 asks the analogous merging question for h(n) = n + τ(n)"
+        },
+        {
+          "proofId": "perfect-numbers",
+          "relationship": "Perfect numbers (σ(n) = 2n) are intimately connected to the σ function studied here"
+        }
+      ]
+    }
   },
   "overview": {
-    "historicalContext": "Erdős Problem #412 was communicated to Erdős by van Wijngaarden in the 1950s. It asks a natural question about the long-term behavior of iterated sum-of-divisors sequences.\n\nThe sum of divisors function σ(n) sums all divisors of n (including 1 and n itself). For example, σ(6) = 1 + 2 + 3 + 6 = 12. Iterating this function produces sequences like:\n- Starting from 2: 2 → 3 → 4 → 7 → 8 → 15 → 24 → 60 → ...\n- Starting from 3: 3 → 4 → 7 → 8 → 15 → 24 → 60 → ...\n\nNotice that these two sequences merge at 4! The conjecture asks whether ALL pairs of starting points eventually produce the same sequence.\n\nSelfridge provided numerical evidence suggesting the answer is NO, but Erdős and Graham wrote that 'it seems unlikely that anything can be proved about this in the near future.' The problem remains open.",
-    "problemStatement": "Let σ₁(n) = σ(n), the sum of divisors function, and σₖ(n) = σ(σₖ₋₁(n)).\n\n**Question**: Is it true that, for every $m, n \\geq 2$, there exist some $i, j$ such that $\\sigma_i(m) = \\sigma_j(n)$?\n\nIn other words: Do all iterated sum-of-divisors sequences eventually converge to a single universal sequence?\n\n**Status**: OPEN\n\n**Evidence**: Selfridge's numerical experiments suggest the answer is NO, but this has not been proven.",
-    "proofStrategy": "We formalize the problem statement and verify several key properties:\n\n1. **Sum of divisors**: Define σ(n) as the sum of all divisors of n using `Nat.divisors`.\n\n2. **Iteration**: Define σₖ(n) = σ^[k](n), the k-th iterate of σ.\n\n3. **σ-equivalence**: Two numbers are σ-equivalent if their sequences eventually meet.\n\n4. **Growth**: Prove σ(n) > n for n ≥ 2, showing sequences are strictly increasing.\n\n5. **Examples**: Verify specific equivalences computationally (e.g., 2 ≡ 3, 2 ≡ 4, 5 ≡ 6, 7 ≡ 8).\n\n6. **Related concepts**: Connect to aliquot sequences and perfect numbers.\n\nThe main conjecture is stated but left as an axiom since the problem is open.",
+    "historicalContext": "Erdős Problem #412 was communicated to Erdős by van Wijngaarden (a Dutch mathematician at the Mathematisch Centrum in Amsterdam) in the 1950s. It asks a natural question about the long-term behavior of iterated sum-of-divisors sequences.\n\nThe sum of divisors function σ(n) sums all divisors of n (including 1 and n itself). For example, σ(6) = 1 + 2 + 3 + 6 = 12. Iterating this function produces sequences like:\n- Starting from 2: 2 → 3 → 4 → 7 → 8 → 15 → 24 → 60 → ...\n- Starting from 3: 3 → 4 → 7 → 8 → 15 → 24 → 60 → ...\n\nNotice that these two sequences merge at 3 (after one step from 2). The conjecture asks whether ALL pairs of starting points eventually produce the same sequence.\n\nSelfridge provided numerical evidence suggesting the answer is NO, but Erdős and Graham wrote that 'it seems unlikely that anything can be proved about this in the near future.' The problem remains open and is part of a family of questions about the dynamics of arithmetic functions (see also #413 on omega-function barriers and #414 on n + τ(n) merging).\n\nThe problem has a Collatz-like flavor: it asks about the global structure of orbits under iteration of an arithmetic function. Unlike the Collatz problem, σ-sequences are strictly increasing (σ(n) > n for n ≥ 2), which eliminates cycles but makes the merging question equally intractable.",
+    "problemStatement": "Let $\\sigma_1(n) = \\sigma(n)$, the sum of divisors function, and $\\sigma_k(n) = \\sigma(\\sigma_{k-1}(n))$.\n\n**Question**: Is it true that, for every $m, n \\geq 2$, there exist some $i, j$ such that $\\sigma_i(m) = \\sigma_j(n)$?\n\nIn other words: Do all iterated sum-of-divisors sequences eventually converge to a single universal sequence?\n\n**Status**: OPEN\n\n**Evidence**: Selfridge's numerical experiments suggest the answer is NO, but this has not been proven.",
+    "proofStrategy": "The formalization establishes the problem framework and verifies basic properties:\n\n1. **σ definition** (verified): `sigma n` = `(n.divisors).sum id` with computational examples via `native_decide`\n\n2. **Iteration** (verified): `iterSigma k n` = σ^[k](n) via `Function.iterate`, with example sequences from 2 and 3\n\n3. **Equivalence** (formal): `SigmaEquivalent m n` = ∃ i j, σᵢ(m) = σⱼ(n), the orbit merging condition\n\n4. **Conjecture** (formal): `Erdos412Conjecture` = ∀ m n ≥ 2, SigmaEquivalent m n\n\n5. **Growth** (proved): `sigma_ge_succ` (σ(n) ≥ n+1) and `sigma_gt` (σ(n) > n) for n ≥ 2, via subset sum bound\n\n6. **Examples** (verified): Four equivalences for small numbers via `native_decide`\n\n7. **No periodicity** (proved): Strict growth rules out σ-periodic numbers\n\nThe main conjecture is stated but not asserted, as the problem is open.",
     "keyInsights": [
-      "**Sum of divisors**: σ(n) = Σ_{d | n} d includes both 1 and n. For prime p, σ(p) = p + 1.",
-      "**Inevitable growth**: Since σ(n) ≥ n + 1 for n ≥ 2, sequences grow without bound. No n ≥ 2 can be a fixed point.",
-      "**Quick mergers**: Many sequences merge early. For example, σ(2) = 3 and σ(5) = 6, so 2 and 5 quickly join larger sequences.",
-      "**The difficulty**: To prove convergence, you'd need to show all sequences hit a common value. To disprove it, you'd need to find two sequences that never meet—requiring infinitely many inequalities.",
-      "**Selfridge's evidence**: Numerical experiments suggest some sequences might never merge, but proving this remains out of reach."
+      "**Strict monotonicity**: σ(n) > n for n ≥ 2 (since 1 and n are distinct divisors). This means all σ-sequences are strictly increasing and unbounded. There are no fixed points or cycles.",
+      "**Primes merge immediately**: For prime p, σ(p) = p + 1, so the sequence from p immediately joins the sequence from p + 1. This accounts for many easy equivalences but doesn't resolve the general case.",
+      "**One-directional dynamics**: Unlike the Collatz conjecture where sequences can oscillate, σ-sequences only increase. This makes finding counterexamples harder (you can't find a descending pair) and proving convergence harder (you can't use descent arguments).",
+      "**Orbit structure**: σ-equivalence partitions ℕ_{≥2} into equivalence classes. The conjecture asserts there is exactly one class. Disproving it requires finding two infinite sequences that never share a common value — an infinitary statement.",
+      "**Aliquot connection**: The related aliquot sum s(n) = σ(n) - n can decrease, allowing cycles (perfect numbers, amicable pairs). Problem #412 uses σ, not s, which eliminates this rich periodic structure but makes the dynamics simpler to describe yet harder to fully understand."
     ]
   },
   "sections": [
@@ -68,66 +126,67 @@
       "title": "The Sum of Divisors Function",
       "startLine": 40,
       "endLine": 60,
-      "summary": "Definition and examples of σ(n) = Σ_{d|n} d"
+      "summary": "Definition sigma n = (n.divisors).sum id. Verified examples via native_decide: σ(1)=1, σ(2)=3, σ(6)=12, σ(12)=28, σ(28)=56."
     },
     {
       "id": "iteration",
       "title": "Iterated Sum of Divisors",
       "startLine": 62,
       "endLine": 92,
-      "summary": "Definition of σₖ(n) and example sequences"
+      "summary": "iterSigma k n = σ^[k](n) via Function.iterate. Example sequences from 2 and 3 verified; merge at step 1 (σ₁(2) = 3 = σ₀(3))."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 94,
       "endLine": 105,
-      "summary": "σ-equivalence and the main conjecture statement"
+      "summary": "SigmaEquivalent (∃ i j, σᵢ(m) = σⱼ(n)) and Erdos412Conjecture (all pairs ≥ 2 are equivalent). OPEN."
     },
     {
       "id": "examples",
       "title": "Verified Examples",
       "startLine": 107,
       "endLine": 119,
-      "summary": "Computationally verified equivalences for small numbers"
+      "summary": "Four σ-equivalences: 2≡3, 2≡4, 5≡6, 7≡8. All via prime p merging with p+1."
     },
     {
       "id": "aliquot",
       "title": "The Aliquot Sequence Connection",
       "startLine": 121,
       "endLine": 136,
-      "summary": "Relation to proper divisor sums and perfect numbers"
+      "summary": "aliquotSum = σ(n) - n. Perfect number verification: s(6)=6, s(28)=28. Contrasts σ-iteration (increasing) with s-iteration (can decrease)."
     },
     {
       "id": "growth",
       "title": "Growth of Iterated Sigma",
       "startLine": 138,
       "endLine": 160,
-      "summary": "Proof that σ(n) ≥ n+1 and σ(n) > n for n ≥ 2"
+      "summary": "sigma_ge_succ (σ(n) ≥ n+1 via {1,n} ⊆ divisors) and sigma_gt (strict growth). Key proof using Finset.sum_le_sum_of_subset."
     },
     {
       "id": "related",
       "title": "Related Concepts",
       "startLine": 162,
       "endLine": 173,
-      "summary": "σ-periodicity definition and no-periodicity proof"
+      "summary": "IsSigmaPeriodic definition and no_sigma_periodic_step1: strict growth eliminates all periodic behavior."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 175,
+      "startLine": 174,
       "endLine": 192,
-      "summary": "Proved summary theorem combining growth, equivalence, and no-periodicity"
+      "summary": "erdos_412_summary: triple of (growth, equivalence 2≡3, no periodicity). Main conjecture remains OPEN."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #412 on iterated sum-of-divisors convergence. We define σ-equivalence (sequences eventually meeting), prove growth properties (σ(n) > n for n ≥ 2), and verify examples of equivalence for small numbers. The main conjecture remains open.",
-    "implications": "The problem connects to fundamental questions about the long-term dynamics of arithmetic functions. Understanding when iterated sequences merge could illuminate deep structure in the divisor function.",
+    "summary": "This formalization captures Erdős Problem #412 on iterated sum-of-divisors convergence. We define σ-equivalence (sequences eventually meeting), prove growth properties (σ(n) > n for n ≥ 2), verify equivalences for small numbers, and rule out periodic behavior. The main conjecture — that all starting points ≥ 2 produce eventually merging sequences — remains open.",
+    "implications": "The problem connects to fundamental questions about the long-term dynamics of multiplicative arithmetic functions. Understanding the global orbit structure of the σ-iteration would illuminate deep connections between the divisor function, prime factorization, and the structure of ℕ.",
     "openQuestions": [
-      "Do all iterated σ-sequences eventually merge? (The main problem)",
-      "Can we find explicit pairs m, n whose sequences never meet?",
-      "What is the rate of merging for 'typical' pairs?",
-      "Are there infinitely many equivalence classes of σ-sequences?"
+      "Do all iterated σ-sequences eventually merge? (The main problem, OPEN)",
+      "Can we find explicit pairs m, n whose σ-sequences provably never meet?",
+      "How many σ-equivalence classes are there? Finitely many, or infinitely many?",
+      "What is the typical 'merging time' — how many iterations before σ-sequences from m and n first agree?",
+      "Is the merging behavior related to the prime factorization structure of the starting points?"
     ]
   }
 }
