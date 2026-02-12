@@ -325,10 +325,12 @@ theorem regular_odd_no_euler {V : Type*} [Fintype V] [DecidableEq V]
   have hall_odd : ∀ w : V, Odd (G.degree w) := by
     intro w; rw [hreg w]; exact hk
   -- The cardinality of {w | Odd (G.degree w)} = Fintype.card V
-  have : Fintype.card {w : V | Odd (G.degree w)} = Fintype.card V :=
-    Fintype.card_of_bijective
-      (f := fun ⟨w, _⟩ => w)
-      ⟨fun ⟨_, _⟩ ⟨_, _⟩ h => Subtype.ext h, fun w => ⟨⟨w, hall_odd w⟩, rfl⟩⟩
+  have : Fintype.card {w : V | Odd (G.degree w)} = Fintype.card V := by
+    rw [Fintype.card_subtype]
+    conv_rhs => rw [← Finset.card_univ (α := V)]
+    congr 1
+    ext w
+    simp [hall_odd w]
   omega
 
 end PetersenNonEulerian
