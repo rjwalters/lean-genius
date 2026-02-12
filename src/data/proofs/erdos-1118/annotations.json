@@ -3,7 +3,7 @@
     "id": "ann-1118-overview",
     "proofId": "erdos-1118",
     "range": { "startLine": 1, "endLine": 25 },
-    "type": "context",
+    "type": "concept",
     "title": "Problem Overview and Resolution",
     "content": "Erdős Problem #1118 concerns the measure-theoretic structure of superlevel sets $E(c) = \\{z : |f(z)| > c\\}$ for entire functions. Two questions: (1) What growth rate of $f$ ensures some $E(c)$ has finite planar measure? (2) If $E(c)$ is finite, must $E(c')$ be finite for smaller $c'$? Both were fully resolved: Camera (1977) and Gol'dberg (1979) proved the growth criterion $\\int_0^\\infty r / \\log\\log M(r) \\, dr < \\infty$, and Gol'dberg showed the threshold set can have gaps.",
     "mathContext": "For entire $f : \\mathbb{C} \\to \\mathbb{C}$, define $E(c) = \\{z : |f(z)| > c\\}$ and $T(f) = \\{c > 0 : |E(c)| < \\infty\\}$. Q1: $\\exists c,\\, |E(c)| < \\infty \\iff \\int_0^\\infty r/\\log\\log M(r)\\,dr < \\infty$. Q2: $T(f)$ can be $[m, \\infty)$ for $m > 0$.",
@@ -43,7 +43,7 @@
     "title": "Hayman's Growth Criterion and Camera-Gol'dberg Theorem",
     "content": "The growth integral $\\int_0^\\infty r/\\log\\log M(r)\\, dr$ is the exact characterization: it converges if and only if some superlevel set has finite measure. This is formalized as `HaymanConjecture` (the biconditional) and proved as `camera_goldberg_theorem`. The integral measures how fast $M(r)$ grows: for $M(r) = e^{r^\\rho}$, the integrand is $r/(\\rho \\log r)$, which diverges. For $M(r) = e^{e^{r^\\alpha}}$ with $\\alpha < 1$, the integral converges. The condition is delicate — between single and double exponential growth.",
     "mathContext": "$\\text{HaymanConjecture}: \\forall f$ non-constant entire, $(\\exists c > 0,\\, \\lambda(E(c)) < \\infty) \\iff \\int_0^\\infty \\frac{r}{\\log\\log M(r)}\\,dr < \\infty$.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": ["growth rate integral", "convergence criterion", "double exponential growth", "Hayman conjecture"],
     "prerequisites": ["improper integrals", "maximum modulus growth", "convergence tests"]
   },
@@ -55,7 +55,7 @@
     "title": "Gol'dberg's Complete Classification of Threshold Sets",
     "content": "Gol'dberg (1979) gave a complete classification of possible threshold set shapes, answering Question 2 **negatively**. The four possible types are: (1) $T(f) = \\emptyset$ (e.g., $e^z$ — no superlevel set is finite), (2) $T(f) = (0, \\infty)$ (e.g., polynomials — all positive thresholds work), (3) $T(f) = [m, \\infty)$ for any $m > 0$ (closed threshold), (4) $T(f) = (m, \\infty)$ for any $m > 0$ (open threshold). Cases (3) and (4) show $T(f)$ can have a gap at small $c$: the function grows enough near infinity that large regions satisfy $|f| > c$ for small $c$ but not for large $c$.",
     "mathContext": "For each of $\\emptyset$, $(0, \\infty)$, $[m, \\infty)$, $(m, \\infty)$ ($m > 0$), there exists non-constant entire $f$ with $T(f)$ equal to that set.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": ["complete classification", "threshold gaps", "interval types", "counterexample construction"],
     "prerequisites": ["set topology of $\\mathbb{R}$", "entire function construction", "measure estimates"]
   },
@@ -75,7 +75,7 @@
     "id": "ann-1118-examples",
     "proofId": "erdos-1118",
     "range": { "startLine": 148, "endLine": 161 },
-    "type": "context",
+    "type": "concept",
     "title": "Concrete Examples: Polynomials and Exponentials",
     "content": "Two canonical examples: (1) **Polynomials** of degree $d \\geq 1$: $T(p) = (0, \\infty)$ because $|p(z)| \\to \\infty$ as $|z| \\to \\infty$, so $E(c)$ is bounded (hence finite measure) for any $c > 0$. (2) **$e^z$**: $T(e^z) = \\emptyset$ because $E(c) = \\{z : |e^z| > c\\} = \\{z : \\text{Re}(z) > \\log c\\}$ is a half-plane with infinite measure for every $c > 0$. A third example shows $T(f)$ can be bounded below.",
     "mathContext": "Polynomial $p$ of degree $d \\geq 1$: $T(p) = (0, \\infty)$. $T(e^z) = \\emptyset$ since $\\{z : \\text{Re}(z) > \\log c\\}$ has infinite measure.",
@@ -103,7 +103,7 @@
     "title": "Main Theorems: Both Questions Resolved",
     "content": "The culminating results: (1) `erdos_1118_question1` = `camera_goldberg_theorem`: the growth integral criterion. (2) `erdos_1118_question2_negative`: constructive proof that $T(f)$ can have gaps, using `goldberg_counterexample` to find $f$ with $T(f) = [m, \\infty)$ and then exhibiting $c = m+1 \\in T(f)$ but $c' = m/2 \\notin T(f)$. (3) `erdos_1118`: conjunction of both answers. (4) `erdos_1118_summary`: adds the $T(f) = \\emptyset$ case from the full classification.",
     "mathContext": "Q1: $\\text{HaymanConjecture}$. Q2: $\\exists f,\\, \\exists c > 0,\\, \\lambda(E(c)) < \\infty \\wedge \\exists c' \\in (0, c),\\, \\lambda(E(c')) = \\infty$.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": ["complete resolution", "constructive witness", "derived theorem"],
     "prerequisites": ["Camera-Gol'dberg theorem", "Gol'dberg counterexample", "arithmetic reasoning"]
   }
