@@ -26,7 +26,7 @@ export const cayleyHamiltonMinpolyProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const cayleyHamiltonMinpolyAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const cayleyHamiltonMinpolyAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const cayleyHamiltonMinpolyData: ProofData = {
   proof: cayleyHamiltonMinpolyProof,
