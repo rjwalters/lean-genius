@@ -1,0 +1,78 @@
+{
+  "slug": "harmonic-divergence-oq-01",
+  "title": "Euler-Mascheroni Constant: Deep Connections and Open Rationality",
+  "phase": "NEW",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "γ = lim_{n→∞}(H_n - ln n) where H_n = Σ_{k=1}^n 1/k. Is γ rational or irrational?",
+    "plain": "The Euler-Mascheroni constant γ ≈ 0.5772 is the limit of the difference between harmonic numbers and the natural logarithm. Whether γ is rational or irrational is one of the most famous unsolved problems in mathematics.",
+    "whyMatters": [
+      "γ appears in Mertens' theorem on prime products",
+      "Robin's inequality (σ(n) < e^γ n ln ln n for n > 5040) is equivalent to RH",
+      "γ = -Γ'(1) connects harmonic numbers to the Gamma function",
+      "lim_{s→1}(ζ(s) - 1/(s-1)) = γ connects to the Riemann zeta function"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "γ exists and 1/2 < γ < 2/3",
+      "H_n = ln(n) + γ + O(1/n)",
+      "H_n is not an integer for n ≥ 2 (Theisinger 1915)",
+      "ln(n+1) ≤ H_n ≤ 1 + ln(n)",
+      "If γ = p/q then q > 10^{242080}"
+    ],
+    "open": [
+      "Is γ rational or irrational?",
+      "Is γ transcendental?"
+    ],
+    "goal": "Formalize all known structural results about γ using Mathlib API"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-02-12T08:30:00.000Z",
+    "iteration": 1,
+    "focus": "Comprehensive formalization of Euler-Mascheroni constant properties",
+    "blockers": [],
+    "nextAction": "None - file is complete with 0 sorries, 0 axioms",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 37 theorems about the Euler-Mascheroni constant, all sorry-free. Covers convergence, monotonicity, bounds (1/2 < γ < 2/3), log bounds on harmonic numbers, Theisinger's theorem via p-adic valuations, exponential bounds, rational exclusion, p-series comparison, and documented connections to Gamma and Zeta functions.",
+    "builtItems": [
+      "γ definition via Real.eulerMascheroniConstant",
+      "γ_seq_tendsto, γ_seq'_tendsto (PROVEN) - convergence of both sequences",
+      "harmonic_sub_log_tendsto (PROVEN) - H_n - ln(n+1) → γ",
+      "γ_seq_strictMono, γ_seq'_strictAnti (PROVEN) - monotonicity",
+      "one_half_lt_γ, γ_lt_two_thirds (PROVEN) - bounds",
+      "log_le_harmonic (PROVEN) - ln(n+1) ≤ H_n",
+      "harmonic_le_log (PROVEN) - H_n ≤ 1 + ln(n)",
+      "harmonic_padic_val (PROVEN) - v₂(H_n) = -log₂(n)",
+      "harmonic_non_integer (PROVEN) - Theisinger's theorem",
+      "exp_γ_bounds (PROVEN) - e^{1/2} < e^γ < e^{2/3}",
+      "γ_not_int (PROVEN) - γ is not an integer",
+      "γ_avoids_small_rationals (PROVEN) - γ ≠ 0, 1, 1/2, 1/3, 2/3",
+      "p_series_summable (PROVEN) - convergence for p > 1",
+      "harmonic_at_boundary (PROVEN) - divergence at p = 1"
+    ],
+    "insights": [
+      "Mathlib has comprehensive Euler-Mascheroni API in NumberTheory.Harmonic.EulerMascheroni",
+      "Harmonic.Bounds provides log sandwich bounds on harmonic numbers",
+      "Harmonic.Int provides Theisinger via p-adic valuations (padicValRat_two_harmonic)",
+      "Gamma function connection (γ = -Γ'(1)) exists in Mathlib but requires >32GB memory to build",
+      "Zeta function connection (Laurent coefficient) also exists but is too expensive to import",
+      "Mathlib.Data.Real.Irrational was deprecated to Mathlib.NumberTheory.Real.Irrational"
+    ],
+    "mathlibGaps": [
+      "No direct irrationality result for γ (open problem)",
+      "Gamma/Zeta imports require >32GB memory, impractical for Docker builds",
+      "No Euler-Maclaurin formula for higher-order asymptotics of H_n"
+    ],
+    "nextSteps": []
+  }
+}
