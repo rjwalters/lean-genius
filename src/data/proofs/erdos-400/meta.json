@@ -110,12 +110,20 @@
         {
           "proofId": "stirling-formula",
           "relationship": "Stirling's formula provides the asymptotic framework for analyzing factorial ratios"
+        },
+        {
+          "proofId": "binomial-theorem",
+          "relationship": "The binomial theorem underpins the k=2 case where a!·b! | n! reduces to integrality of generalized binomial coefficients"
+        },
+        {
+          "proofId": "legendre-partial",
+          "relationship": "Legendre's formula v_p(n!) = Σⱼ ⌊n/pʲ⌋ is the key tool for establishing the O(log n) upper bound on g_k(n)"
         }
       ]
     }
   },
   "overview": {
-    "historicalContext": "Erdős and Graham studied this problem in their influential 1980 monograph 'Old and new problems and results in combinatorial number theory' [ErGr80, p. 77]. The function g_k(n) measures the maximum amount by which the sum a₁ + ⋯ + aₖ can exceed n, subject to the constraint that a₁!⋯aₖ! divides n!.\n\nThe condition a₁!⋯aₖ! | n! is equivalent to n!/(a₁!⋯aₖ!) being a non-negative integer — a generalized multinomial coefficient. By Legendre's formula, this holds iff for every prime p, the sum of p-adic valuations Σᵢ v_p(aᵢ!) ≤ v_p(n!). Since v_p(m!) = Σⱼ ⌊m/pʲ⌋, the divisibility constraint translates into a family of inequalities involving floor functions across all primes.\n\nErdős and Graham established g_k(n) = O(log n): the excess is at most logarithmic. Intuitively, this is because any 'extra' in the sum a₁ + ⋯ + aₖ beyond n requires additional prime factors that must be accommodated within n!'s factorization. For a prime p, the extra factors grow roughly as excess/p, but n!'s total supply of p-factors is only n/(p-1), constraining the excess to O(log n).\n\nThe problem asks two refined questions: (a) whether the average of g_k(n) over n ≤ x grows as cₖ · x · log x, and (b) whether g_k(n) is concentrated around cₖ · log n for almost all n. The concentration question (b) is stronger and would imply (a). Both remain open.\n\nFor k = 2, the problem connects directly to binomial coefficients: a! · b! | n! iff n!/(a!·b!) is an integer. When a + b = n, this is always true (it's C(n,a)). The question becomes how much a + b can exceed n while maintaining integrality, connecting to Kummer's theorem on the p-adic structure of binomial coefficients.",
+    "historicalContext": "Erdős and Graham studied this problem in their influential 1980 monograph 'Old and new problems and results in combinatorial number theory' [ErGr80, p. 77]. The function g_k(n) measures the maximum amount by which the sum a₁ + ⋯ + aₖ can exceed n, subject to the constraint that a₁!⋯aₖ! divides n!.\n\nThe condition a₁!⋯aₖ! | n! is equivalent to n!/(a₁!⋯aₖ!) being a non-negative integer — a generalized multinomial coefficient. By Legendre's formula (discovered by Adrien-Marie Legendre in 1808, also known as de Polignac's formula from 1826), this holds iff for every prime p, the sum of p-adic valuations Σᵢ v_p(aᵢ!) ≤ v_p(n!). Since v_p(m!) = Σⱼ ⌊m/pʲ⌋, the divisibility constraint translates into a family of inequalities involving floor functions across all primes.\n\nErdős and Graham established g_k(n) = O(log n): the excess is at most logarithmic. Intuitively, this is because any 'extra' in the sum a₁ + ⋯ + aₖ beyond n requires additional prime factors that must be accommodated within n!'s factorization. For a prime p, the extra factors grow roughly as excess/p, but n!'s total supply of p-factors is only n/(p-1), constraining the excess to O(log n).\n\nThe problem asks two refined questions: (a) whether the average of g_k(n) over n ≤ x grows as cₖ · x · log x, and (b) whether g_k(n) is concentrated around cₖ · log n for almost all n. The concentration question (b) is stronger and would imply (a). Both remain open. Part (b) asks whether g_k(n) has a 'normal order' in the sense introduced by Hardy and Ramanujan in their seminal 1917 paper on ω(n), the number of distinct prime factors. The Hardy-Ramanujan theorem showed ω(n) ~ log log n for almost all n, and the analogous question for g_k is whether the excess function exhibits similar concentration.\n\nFor k = 2, the problem connects directly to binomial coefficients: a! · b! | n! iff n!/(a!·b!) is an integer. When a + b = n, this is always true (it's C(n,a)). The question becomes how much a + b can exceed n while maintaining integrality, connecting to Kummer's theorem (Ernst Kummer, 1852) on the p-adic structure of binomial coefficients: v_p(C(m+n,m)) equals the number of carries when adding m and n in base p.\n\nThe problem also connects to work of Luca and Stănică (2003) on the distribution of factorials modulo primes, and to Berend and Harmse's (1990) results on products of factorials dividing n!.",
     "problemStatement": "For $k \\ge 2$, let $g_k(n) = \\max\\{(a_1 + \\cdots + a_k) - n : a_1! \\cdots a_k! \\mid n!\\}$.\n\n**(a)** Is $\\sum_{n \\le x} g_k(n) \\sim c_k \\cdot x \\cdot \\log x$ for some constant $c_k > 0$?\n\n**(b)** Is $g_k(n) = c_k \\cdot \\log x + o(\\log x)$ for almost all $n \\le x$?\n\n**Status**: OPEN (both parts, all $k \\ge 2$)\n\n**Known**: $g_k(n) = O(\\log n)$ (Erdős-Graham), $g_k(n) \\ge 0$ (trivial tuple).",
     "proofStrategy": "The formalization proceeds in three layers:\n\n1. **Definitions** (fully formal):\n   - `FactorialDivides`: (∏ aᵢ!) | n! via `Fin k → ℕ` tuples\n   - `sumExcess`: Σ aᵢ - n (as ℤ for clean subtraction)\n   - `gExcess`: supremum of excess over valid tuples via `sSup`\n\n2. **Conjecture Statements** (formal propositions):\n   - `ErdosProblem400a`: average growth via `Filter.Tendsto`\n   - `ErdosProblem400b`: concentration via `Finset.filter` density\n   - `ErdosProblem400`: combined statement for all k ≥ 2\n\n3. **Known Results** (axiomatized):\n   - `gExcess_upper_bound`: O(log n) via Legendre's formula argument\n   - `gExcess_nonneg`: ≥ 0 via trivial tuple witness\n   - k = 2 specializations with binomial coefficient connection\n\nThe formalization captures the problem precisely while axiomatizing the known O(log n) bound whose proof requires detailed prime factorization analysis not yet available.",
     "keyInsights": [
@@ -128,46 +136,53 @@
   },
   "sections": [
     {
+      "id": "imports-preamble",
+      "title": "Imports and Preamble",
+      "startLine": 14,
+      "endLine": 19,
+      "summary": "Imports Mathlib dependencies: `Nat.Factorial.Basic` for $n!$, `Real.log` for $\\log n$, `Filter.atTop` and `Filter.Tendsto` for asymptotic limits, `Finset.range` for finite summation, and `Asymptotics` for the $O(\\cdot)$ framework."
+    },
+    {
       "id": "factorial-divisibility",
       "title": "Factorial Divisibility Condition",
       "startLine": 21,
       "endLine": 28,
-      "summary": "Defines FactorialDivides via Fin k → ℕ tuples: (∏ᵢ aᵢ!) | n!. Equivalent to generalized multinomial coefficient integrality."
+      "summary": "Defines `FactorialDivides` via `Fin k → ℕ` tuples: $(\\prod_{i=1}^k a_i!) \\mid n!$. Equivalent to requiring the generalized multinomial coefficient $\\binom{n}{a_1, \\ldots, a_k} \\cdot \\text{(correction)}$ to be a non-negative integer."
     },
     {
       "id": "excess-function",
-      "title": "The Excess Function g_k",
+      "title": "The Excess Function $g_k$",
       "startLine": 30,
       "endLine": 42,
-      "summary": "sumExcess (Σ aᵢ - n as ℤ) and gExcess = sSup of excesses over valid tuples. Noncomputable due to sSup."
+      "summary": "Defines `sumExcess` as $(\\sum a_i) - n \\in \\mathbb{Z}$ and `gExcess` as $g_k(n) = \\sup\\{e \\in \\mathbb{Z} : \\exists a,\\, (\\prod a_i!) \\mid n! \\land (\\sum a_i) - n = e\\}$. Both are `noncomputable` due to the use of `sSup` on $\\mathbb{Z}$."
     },
     {
       "id": "conjectures",
       "title": "The Conjectures",
       "startLine": 44,
       "endLine": 69,
-      "summary": "ErdosProblem400a (average ~ cₖ·x·log x via Tendsto), ErdosProblem400b (concentration via filter density → 0), and combined ErdosProblem400 for k ≥ 2."
+      "summary": "States the two open conjectures: **(a)** $\\sum_{n \\le x} g_k(n) \\sim c_k \\cdot x \\log x$ via `Filter.Tendsto`, and **(b)** $g_k(n) = c_k \\log x + o(\\log x)$ for almost all $n \\le x$ via `Finset.filter` density. Combined as `ErdosProblem400` for all $k \\ge 2$."
     },
     {
       "id": "upper-bound",
       "title": "Known Upper Bound",
       "startLine": 71,
       "endLine": 78,
-      "summary": "gExcess_upper_bound (axiom): g_k(n) ≤ C·log n. Erdős-Graham bound via Legendre's formula analysis."
+      "summary": "Axiomatizes the Erdős-Graham bound: $g_k(n) \\le C \\log n$ for some $C > 0$. The proof, via Legendre's formula $v_p(n!) = \\sum_j \\lfloor n/p^j \\rfloor$, constrains the excess by the prime factor budget of $n!$."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 80,
       "endLine": 94,
-      "summary": "gExcess_nonneg (trivial tuple gives 0) and g2_binomial_connection (k=2 reduces to pairs with a!·b! | n!)."
+      "summary": "Axiomatizes $g_k(n) \\ge 0$ (the trivial tuple $(n,0,\\ldots,0)$ gives excess $0$) and the $k=2$ binomial connection: $g_2(n) = \\sup\\{a+b-n : a!b! \\mid n!\\}$, reducing to pairs via Kummer's theorem."
     },
     {
       "id": "k-equals-2",
-      "title": "The k = 2 Case",
+      "title": "The $k = 2$ Case",
       "startLine": 96,
       "endLine": 114,
-      "summary": "g2_excess_characterization (maximum attained), average_g2_growth (k=2 instance of Conjecture (a)). Connects to Kummer's theorem on binomial coefficients."
+      "summary": "Axiomatizes the $k=2$ specialization: the supremum is attained (`g2_excess_characterization`) and the average $\\frac{1}{x}\\sum_{n \\le x} g_2(n) \\sim c_2 \\log x$ (`average_g2_growth`). Connects to Kummer's 1852 theorem on $v_p\\binom{m+n}{m}$."
     }
   ],
   "conclusion": {
