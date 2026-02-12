@@ -24,6 +24,23 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2026-01-24",
     "mathlib_version": "4.15.0",
+    "references": [
+      {
+        "key": "Er64f",
+        "citation": "Erdős, P. (1964). On extremal problems of graphs and generalized graphs. Israel J. Math. 2, 183-190.",
+        "type": "paper"
+      },
+      {
+        "key": "Er74c",
+        "citation": "Erdős, P. (1974). Problems and results on finite and infinite combinatorial analysis. In Proc. Budapest Coll. 1974, p. 80.",
+        "type": "paper"
+      },
+      {
+        "key": "KruskalKatona",
+        "citation": "Kruskal, J.B. (1963) and Katona, G.O.H. (1968). The Kruskal-Katona theorem on shadows of set systems.",
+        "type": "paper"
+      }
+    ],
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
@@ -46,6 +63,24 @@
         "module": "Mathlib.Order.Filter.AtTopBot"
       }
     ],
+    "relatedProblems": [
+      {
+        "id": "erdos-1076",
+        "relationship": "Extremal numbers for 3-uniform hypergraphs — same domain of extremal hypergraph theory"
+      },
+      {
+        "id": "erdos-1020",
+        "relationship": "Erdős Matching Conjecture — extremal r-uniform hypergraph problem"
+      },
+      {
+        "id": "erdos-1024",
+        "relationship": "Independent sets in linear hypergraphs — structural properties of uniform hypergraphs"
+      },
+      {
+        "id": "erdos-1157",
+        "relationship": "Brown-Erdős-Sós conjecture — extremal numbers for r-uniform hypergraphs"
+      }
+    ],
     "originalContributions": [
       "Hypergraph structure with r-uniformity constraint",
       "Hypergraph.induced subhypergraph construction with proof of uniformity preservation",
@@ -59,63 +94,65 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1075 sits at the intersection of extremal hypergraph theory and probabilistic combinatorics. In 1964, Erdős [Er64f] proved a foundational density result: any r-uniform hypergraph on n vertices with at least εn^r edges (for any fixed ε > 0) must contain a subhypergraph on m vertices with at least r^{-r} · m^r edges, where m grows with n. The constant r^{-r} is natural — it is precisely the density one obtains by selecting a random subset of vertices, since each r-element edge has probability roughly r^{-r} of being entirely contained in the random subset.\n\nIn [Er74c, p.80] (1974), Erdős posed the sharper question that became Problem #1075. He observed that the edge threshold (1+ε)(n/r)^r = (1+ε)n^r/r^r is much weaker than εn^r for large n, yet still guarantees slightly more edges than the 'typical' count. Can this weaker hypothesis — requiring only slightly above the expected number of edges rather than a fixed fraction of all possible edges — allow us to beat the random selection constant r^{-r} for the density of the subhypergraph?\n\nThe problem remains completely open. No improvement to c_r > r^{-r} has been achieved under either edge threshold. The decreasing values r^{-r} (1/27 for r=3, 1/256 for r=4, 1/3125 for r=5) suggest the problem becomes harder for larger r. Potential approaches include hypergraph regularity lemmas, spectral methods, and sophisticated probabilistic arguments, but controlling the density constant has proven elusive.",
-    "problemStatement": "**Problem Statement (Open)**\n\nLet r ≥ 3. Does there exist c_r > r^{-r} such that for any ε > 0, if n is sufficiently large:\n\nAny r-uniform hypergraph on n vertices with at least (1+ε)(n/r)^r edges contains a subgraph on m vertices with at least c_r·m^r edges, where m = m(n) → ∞ as n → ∞.\n\n**What's Known:**\n- Erdős [Er64f] proved this for c_r = r^{-r} with threshold εn^r\n- No improvement beyond r^{-r} is currently known\n\n**Key Point:** The edge threshold (1+ε)(n/r)^r is much smaller than εn^r, so the hypothesis is weaker. Can this lead to stronger conclusions?",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Hypergraph Structure:** Define r-uniform hypergraphs with uniformity constraint on edge cardinality\n\n2. **Induced Subhypergraph:** Hypergraph.induced restricts to edges fully contained in a vertex subset\n\n3. **Threshold Constant:** thresholdConstant(r) = r^{-r}, the bound from random selection\n\n4. **Known Result:** erdos_1964_result axiomatizes Erdős's 1964 theorem\n\n5. **Open Conjecture:** ErdosConjecture1075 asks for c_r > r^{-r}\n\n6. **Approaches:** Document regularity lemma, probabilistic, and algebraic potential methods",
+    "historicalContext": "**Extremal Hypergraph Theory and Dense Substructures**\n\nThe study of extremal problems for hypergraphs — how many edges force certain substructures — began with Turán's theorem (1941) for graphs and was extended to hypergraphs by Erdős, Katona, and others in the 1960s. While the graph case ($r = 2$) is largely understood (Turán, Kruskal-Katona, Erdős-Simonovits supersaturation), the hypergraph case ($r \\ge 3$) remains a frontier of combinatorics.\n\n**Erdős's 1964 Result [Er64f]**: Erdős proved that any $r$-uniform hypergraph on $n$ vertices with at least $\\varepsilon n^r$ edges contains a subhypergraph on $m$ vertices with at least $r^{-r} \\cdot m^r$ edges, where $m \\to \\infty$ with $n$. The proof uses the probabilistic method: randomly sampling vertices with probability $p = 1/r$ preserves each edge with probability $r^{-r}$, and concentration arguments make this derandomizable.\n\n**The 1974 Question [Er74c, p.80]**: Erdős observed that the edge threshold $(1+\\varepsilon)(n/r)^r = (1+\\varepsilon)n^r/r^r$ is vastly weaker than $\\varepsilon n^r$ (differing by a factor of $r^r/\\varepsilon$), yet still guarantees slightly more edges than the 'random baseline'. He asked: under this weaker hypothesis, can the density constant $c_r$ be improved beyond $r^{-r}$?\n\n**Why $r^{-r}$ is Natural**: The constant $r^{-r}$ is the probability that a random $r$-element subset survives when each element is independently included with probability $1/r$. This is the optimal sampling probability for the first moment method. Beating $r^{-r}$ would require exploiting structural properties of dense hypergraphs that go beyond what random sampling captures.\n\n**Current State**: The problem is completely open for all $r \\ge 3$. No improvement to $c_r > r^{-r}$ has been achieved under either threshold. Potential approaches include:\n- **Hypergraph regularity lemma** (Rödl-Schacht, Gowers): provides structural decomposition but constant control is difficult\n- **Spectral methods**: eigenvalue bounds for hypergraph adjacency operators\n- **Container method** (Balogh-Morris-Samotij, Saxton-Thomason): controls independent sets but less directly applicable to dense subgraphs\n- **Algebraic methods**: polynomial and linear-algebraic techniques for hypergraph extremal problems\n\n**Connection to Supersaturation**: The problem is conceptually related to Erdős-Simonovits supersaturation — when slightly above a Turán-type threshold, how much additional structure is forced? For graphs, Razborov's flag algebra method gives tight supersaturation bounds, but extensions to $r \\ge 3$ remain partial.",
+    "problemStatement": "**Problem Statement (Open)**\n\nLet $r \\ge 3$. Does there exist $c_r > r^{-r}$ such that for any $\\varepsilon > 0$, if $n$ is sufficiently large:\n\nAny $r$-uniform hypergraph on $n$ vertices with at least $(1+\\varepsilon)(n/r)^r$ edges contains a subgraph on $m$ vertices with at least $c_r \\cdot m^r$ edges, where $m = m(n) \\to \\infty$ as $n \\to \\infty$.\n\n**What's Known:**\n- Erdős [Er64f] proved this for $c_r = r^{-r}$ with the stronger threshold $\\varepsilon n^r$\n- No improvement beyond $r^{-r}$ is currently known under either threshold\n\n**Key Point:** The edge threshold $(1+\\varepsilon)(n/r)^r$ is much smaller than $\\varepsilon n^r$, so the hypothesis is weaker. Can this nevertheless lead to a stronger conclusion?",
+    "proofStrategy": "**Formalization Approach**\n\n**Hypergraph Structure**: Define $r$-uniform hypergraphs as a structure with `edges : Finset (Finset V)` and `uniform : ∀ e ∈ edges, e.card = r`. This uses Mathlib's `Finset` type for finiteness.\n\n**Induced Subhypergraph**: `Hypergraph.induced H S` filters edges to those contained in $S$. The uniformity of the result follows from the parent's uniformity — proved inline via `H.uniform e he.1`.\n\n**Threshold Constant**: `thresholdConstant r = (r : ℝ)^{-(r : ℤ)}` uses `Real.rpow` for the definition $r^{-r}$.\n\n**Axiomatization Strategy**: The 1964 result, monotonicity, concrete values, threshold comparison, and binomial asymptotics are all axiomatized. The open conjecture is a `def` (proposition) whose truth is unknown. The summary theorem packages the two main axioms.\n\n**Why Axioms Are Appropriate**:\n- `erdos_1964_result`: deep probabilistic argument with concentration inequalities\n- `threshold_decreasing`: elementary but involves real-analytic estimates\n- `threshold_values`: concrete computations with `Real.rpow`\n- `binomial_asymptotic`: standard but requires careful limit formulation",
     "keyInsights": [
-      "**Random Baseline:** Random subgraph selection gives edge density r^{-r} - this is what we want to beat",
-      "**Threshold Difference:** (1+ε)(n/r)^r = (1+ε)n^r/r^r is much smaller than εn^r for small ε",
-      "**Structural Requirement:** Improving c_r requires exploiting structure, not just random selection",
-      "**Decreasing Constants:** r^{-r} decreases rapidly: 1/27 for r=3, 1/256 for r=4, 1/3125 for r=5",
-      "**Connection to Turán:** Related to hypergraph Turán problems and supersaturation"
+      "**Random selection baseline**: Random subgraph selection gives edge density $r^{-r}$ — this is the probabilistic method's natural limit. Beating it requires structural, not random, arguments.",
+      "**Two edge thresholds**: The known result uses $\\varepsilon n^r$ (strong); the conjecture uses $(1+\\varepsilon)(n/r)^r = (1+\\varepsilon)n^r/r^r$ (weak). The ratio is $\\varepsilon r^r/(1+\\varepsilon)$, enormous for large $r$.",
+      "**Supersaturation perspective**: The conjecture asks whether slight excess above the random baseline forces denser-than-random subhypergraphs — a supersaturation question for hypergraph density.",
+      "**Super-exponential decay of $r^{-r}$**: Values $1/27, 1/256, 1/3125, \\ldots$ decrease faster than exponentially (related to Stirling: $r^{-r} \\approx \\sqrt{2\\pi r} e^{-r}/r!$), making the problem harder for larger $r$.",
+      "**Connection to Turán theory**: Related to hypergraph Turán problems (erdos-1076, erdos-1157) and matching conjectures (erdos-1020) — all concern structural constraints in dense hypergraphs.",
+      "**Regularity methods are natural but insufficient**: Hypergraph regularity lemmas decompose structure but controlling the density constant $c_r$ in the regular parts has not yielded improvements."
     ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Hypergraph Definitions",
-      "summary": "r-uniform hypergraphs, edge count, induced subhypergraph, threshold constant",
+      "summary": "Defines `Hypergraph V r` as a structure with `edges : Finset (Finset V)` and uniformity constraint. `Hypergraph.numEdges` counts edges. `Hypergraph.induced H S` restricts to edges $\\subseteq S$ with a proof term showing the result is still $r$-uniform. `thresholdConstant r = r^{-r}` gives the random selection baseline.",
       "startLine": 39,
       "endLine": 61
     },
     {
       "id": "known-result",
       "title": "Erdős's Known Result (1964)",
-      "summary": "c_r = r^{-r} with edge threshold εn^r, threshold monotonicity and values",
+      "summary": "Axiomatizes `erdos_1964_result`: with edge threshold $\\varepsilon n^r$, a dense $m$-vertex subhypergraph with $\\ge r^{-r} m^r$ edges exists. Also axiomatizes `threshold_decreasing` ($(r+1)^{-(r+1)} < r^{-r}$) and `threshold_values` ($3^{-3} = 1/27$, $4^{-4} = 1/256$, $5^{-5} = 1/3125$). These establish the baseline that Problem #1075 seeks to improve.",
       "startLine": 63,
       "endLine": 98
     },
     {
       "id": "conjecture",
       "title": "The Open Conjecture",
-      "summary": "ErdosConjecture1075: can c_r > r^{-r} with threshold (1+ε)(n/r)^r?",
+      "summary": "Defines `ErdosConjecture1075` as a `Prop`: $\\exists c_r > r^{-r}$ with edge threshold $(1+\\varepsilon)(n/r)^r$. The `def` (not `axiom`) signals an unresolved question. Also axiomatizes `threshold_comparison`: $(n/r)^r < n^r$ for $r \\ge 3$, quantifying the gap between the two thresholds. The conjecture is a supersaturation question — does slight density excess force structural improvements?",
       "startLine": 100,
       "endLine": 133
     },
     {
       "id": "asymptotics",
       "title": "Complete Hypergraphs and Asymptotics",
-      "summary": "C(m,r) edge count and binomial asymptotic C(m,r) ~ m^r/r!",
+      "summary": "Defines `completeHypergraphEdges m r = Nat.choose m r` and axiomatizes `binomial_asymptotic`: $\\binom{m}{r}/(m^r/r!) \\to 1$ as $m \\to \\infty$. This bridges the combinatorial edge count $\\binom{m}{r}$ with the density measure $m^r$ used in the problem statement, using `Filter.Tendsto` for the asymptotic.",
       "startLine": 135,
       "endLine": 148
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_1075_summary combining known result with threshold monotonicity",
+      "summary": "The `erdos_1075_summary` theorem packages the two established results (Erdős 1964 and threshold monotonicity) as a conjunction, proved by `⟨erdos_1964_result, threshold_decreasing⟩`. This serves as a single reference point for the known state of the problem. The open conjecture `ErdosConjecture1075` is deliberately excluded, reflecting its unresolved status.",
       "startLine": 150,
       "endLine": 180
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1075 asks whether the density constant c_r = r^{-r} in Erdős's 1964 result can be improved when using the weaker edge threshold (1+ε)(n/r)^r instead of εn^r. The problem remains OPEN - random selection gives r^{-r}, and improving it requires exploiting structural properties of dense hypergraphs.",
-    "implications": "**Connections and Impact**\n\n1. **Extremal Hypergraph Theory:** Central question about dense substructures\n\n2. **Supersaturation:** Related to counting copies of subgraphs above Turán threshold\n\n3. **Regularity Methods:** Hypergraph regularity lemmas are natural tools but controlling constants is hard\n\n4. **Probabilistic Combinatorics:** Shows limits of random selection methods\n\n5. **Algorithmic Implications:** Finding dense subgraphs is important in data science",
+    "summary": "Erdős Problem #1075 asks whether the density constant $c_r = r^{-r}$ from the 1964 result can be improved when using the weaker edge threshold $(1+\\varepsilon)(n/r)^r$ instead of $\\varepsilon n^r$. The constant $r^{-r}$ arises from random vertex selection and is the natural baseline. The problem is completely OPEN for all $r \\ge 3$ — no improvement has been achieved despite potential approaches from regularity, spectral, and algebraic methods. The formalization captures the known result, the open conjecture, and supporting asymptotic and comparison results with 0 sorries.",
+    "implications": "**Connections and Impact**\n\n1. **Extremal Hypergraph Theory**: Central open question about the density of guaranteed substructures in dense hypergraphs, sitting alongside Turán-type problems (erdos-1076) and matching conjectures (erdos-1020).\n\n2. **Supersaturation Phenomena**: Related to Erdős-Simonovits supersaturation for graphs and its hypergraph extensions — how much additional structure is forced by slight density excess above critical thresholds.\n\n3. **Limits of the Probabilistic Method**: The problem asks whether structural arguments can go beyond what random selection achieves ($r^{-r}$), testing the boundary between probabilistic and deterministic combinatorics.\n\n4. **Regularity and Container Methods**: Natural tools (hypergraph regularity, containers) are available but controlling the density constant in their output has proven elusive — the problem may require fundamentally new techniques.\n\n5. **Algorithmic Implications**: Finding dense subhypergraphs is important in data mining, network analysis, and theoretical computer science (approximate clique problems in hypergraphs).",
     "openQuestions": [
-      "Does there exist c_r > r^{-r} for any r ≥ 3?",
-      "Is r^{-r} optimal, and if so, what are the extremal constructions?",
-      "Can hypergraph regularity lemmas give improved constants?",
-      "What is the correct threshold function between εn^r and (1+ε)(n/r)^r?",
-      "How does the problem relate to sparse regularity approaches?"
+      "Does there exist c_r > r^{-r} for any r ≥ 3, even for r = 3?",
+      "Is r^{-r} optimal — are there extremal constructions showing c_r = r^{-r} is best possible?",
+      "Can hypergraph regularity lemmas or container methods yield improved constants?",
+      "What is the correct threshold function between εn^r and (1+ε)(n/r)^r for which improvement is possible?",
+      "Is there a spectral or algebraic approach that avoids the limitations of random sampling?",
+      "How does the problem relate to Razborov's flag algebra method and its hypergraph extensions?"
     ]
   }
 }
