@@ -38,18 +38,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Unit Distance Graphs and Independence**\n\nA unit distance graph has vertices as points in the plane and edges between points at distance exactly 1. This problem asks for the minimum possible independence number (largest set with no edges) across all n-point configurations.\n\n**The Density Approach**: Larman and Rogers (1972) connected this to the maximum density m₁ of measurable sets avoiding unit distances: f(n) ≥ m₁·n.\n\n**Key Results**:\n- Croft (1967): m₁ ≥ 0.22936, giving f(n) ≥ 0.22936n\n- Moser spindle: A 7-vertex graph with independence 2, giving f(n) ≤ (2/7)n\n- ACMVZ (2023): m₁ ≤ 0.247, showing density methods cannot achieve n/4\n\n**Connection to Hadwiger-Nelson**: Since ω·χ ≥ n for independence number ω and chromatic number χ, we have f(n) ≥ n/χ. With 5 ≤ χ ≤ 7, this gives f(n) ≥ n/7.",
+    "historicalContext": "**Unit Distance Graphs, Density, and the Independence Threshold**\n\nA *unit distance graph* (UDG) on $n$ points in $\\mathbb{R}^2$ has edges between points at Euclidean distance exactly 1. The *independence number* $\\alpha(G)$ is the size of the largest subset with no edges. Erdős defined $f(n) = \\min_G \\alpha(G)$ over all $n$-point UDGs and asked for its growth rate — in particular, whether $f(n) \\geq n/4$.\n\n**The Larman-Rogers Bridge (1972)**: The key insight connecting discrete and continuous. Let $m_1 = \\sup\\{\\overline{d}(S) : S \\subseteq \\mathbb{R}^2 \\text{ measurable, unit-distance-free}\\}$ be the maximum density of a measurable set avoiding unit distances. Larman and Rogers proved $f(n) \\geq m_1 \\cdot n$ by a probabilistic argument: a random translate of a high-density unit-distance-free set captures $\\geq m_1 n$ of any $n$ given points in expectation.\n\n**Croft's Construction (1967)**: Croft built explicit unit-distance-free sets from hexagonal lattices, proving $m_1 \\geq 0.22936$. Combined with Larman-Rogers: $f(n) \\geq 0.22936n$. This lower bound has stood for over 55 years.\n\n**The Moser Spindle (1961)**: Leo and William Moser constructed a 7-vertex UDG with independence number exactly 2 (and chromatic number 4). By tiling with $\\lfloor n/7 \\rfloor$ copies: $f(n) \\leq (2/7)n \\approx 0.286n$.\n\n**ACMVZ Barrier (2023)**: Ambrus, Csiszárik, Matolcsi, Varga, and Zsámboki proved $m_1 \\leq 0.247$ using Fourier-analytic methods — the constraint $d(p,q) \\neq 1$ translates to conditions on Bessel function zeros in the Fourier domain. Since $0.247 < 0.25 = 1/4$, this establishes a *barrier*: the density method alone cannot prove $f(n) \\geq n/4$.\n\n**De Grey and Hadwiger-Nelson (2018)**: The chromatic number $\\chi$ of $\\mathbb{R}^2$ satisfies $5 \\leq \\chi \\leq 7$ (de Grey improved the lower bound from 4 to 5). Since $\\alpha(G) \\cdot \\chi(G) \\geq |V(G)|$, we get $f(n) \\geq n/\\chi \\geq n/7$.\n\n**Current State**: Best bounds $0.22936n \\leq f(n) \\leq (2/7)n$, with the $n/4$ question requiring genuinely new techniques beyond density.",
     "problemStatement": "**Problem Statement**\n\nLet f(n) be the maximum k such that any n points in ℝ² contain k points with no two at distance 1. Estimate f(n).\n\n**Main Question**: Is f(n) ≥ n/4?\n\n**Best Known Bounds**: 0.22936n ≤ f(n) ≤ (2/7)n ≈ 0.285n\n\n**Status**: OPEN - bounds established but exact asymptotic unknown",
-    "proofStrategy": "**Approaches and Results**\n\n**Lower Bound (Density Method)**:\n1. Define m₁ = sup density of unit-distance-free measurable sets\n2. Larman-Rogers: f(n) ≥ m₁·n\n3. Croft: m₁ ≥ 0.22936\n4. Combined: f(n) ≥ 0.22936n\n\n**Upper Bound (Moser Spindle)**:\n1. The Moser spindle is a 7-vertex unit distance graph\n2. Its independence number is 2\n3. Copying this graph shows f(n) ≤ (2/7)n\n\n**The n/4 Barrier**:\n- ACMVZ (2023) proved m₁ ≤ 0.247\n- Since 0.247 < 0.25 = 1/4, density methods alone cannot prove f(n) ≥ n/4\n- New techniques would be needed to close the gap",
+    "proofStrategy": "**Three-Layer Formalization with Proved Theorems and Density Barrier**\n\nThe formalization builds from geometric definitions through axiomatized deep results to proved theorems, including a genuine impossibility result.\n\n**Layer 1 — Definitions (fully formalized)**: `euclideanDist` wraps Mathlib's `dist` on `EuclideanSpace \\mathbb{R} (\\text{Fin}\\, 2)`. `isUnitDistance` checks $d(p,q) = 1$. `UnitDistanceGraph n` stores a `Finset` of $n$ points with `card_eq` proof. `IsIndependentSet` requires $S \\subseteq V(G)$ and $\\forall p \\neq q \\in S,\\, d(p,q) \\neq 1$. `independenceNumber` uses `Finset.sup` over `powerset.filter`.\n\n**Layer 2 — Axiomatized quantities and results**: The function `f(n)` is axiomatized with `f_is_minimum` and `f_is_achieved` ensuring it is a valid extremal quantity. The density constant `m1` is axiomatized with positivity and boundedness. Key results axiomatized: `larman_rogers_theorem` ($f(n) \\geq m_1 n$), `croft_lower_bound` ($m_1 \\geq 0.22936$), `moser_spindle_exists` and `moser_spindle_upper_bound` ($f(n) \\leq (2/7)n$), `acmvz_upper_bound` ($m_1 \\leq 0.247$), Hadwiger-Nelson bounds ($5 \\leq \\chi \\leq 7$).\n\n**Layer 3 — Proved theorems**: `f_lower_bound` chains `larman_rogers_theorem` with `croft_lower_bound` via `nlinarith`. `best_known_bounds` packages both bounds via `exact ⟨f_lower_bound n, moser_spindle_upper_bound n⟩`. `quarter_threshold` verifies $0.247 < 1/4$ by `norm_num`. `density_insufficient_for_quarter` chains `acmvz_upper_bound` with `quarter_threshold` via `calc`. The summary theorem packages all three results.\n\n**Two sorries remain**: `quarter_conjecture_open` (the $n/4$ question is genuinely open) and `f_from_chromatic` (division monotonicity casting between $\\mathbb{N}$ and $\\mathbb{R}$).",
     "keyInsights": [
-      "f(n) is the minimum independence number across all n-point unit distance graphs",
-      "Best bounds: 0.22936n ≤ f(n) ≤ (2/7)n ≈ 0.285n",
-      "The density constant m₁ satisfies 0.22936 ≤ m₁ ≤ 0.247",
-      "Moser spindle (7 vertices, independence 2) gives the upper bound",
-      "The n/4 question CANNOT be resolved via density methods alone",
-      "Connected to Hadwiger-Nelson: f ≥ n/χ where χ is the chromatic number",
-      "De Grey (2018) showed χ ≥ 5, so n/5 is a theoretical lower limit",
-      "Gap between 0.22936 and 2/7 ≈ 0.285 remains open"
+      "**Discrete-continuous bridge**: The Larman-Rogers theorem $f(n) \\geq m_1 \\cdot n$ converts the combinatorial independence problem into a continuous density optimization — this is one of the most elegant applications of the probabilistic method in discrete geometry",
+      "**Density barrier at $1/4$**: ACMVZ (2023) proved $m_1 \\leq 0.247 < 1/4$, establishing that the Larman-Rogers approach *cannot* prove $f(n) \\geq n/4$ — any such proof requires fundamentally new techniques, perhaps structural rather than density-based",
+      "**Moser spindle extremality**: The 7-vertex Moser spindle with $\\alpha = 2$ gives $f(n) \\leq (2/7)n \\approx 0.286n$; improving this requires finding a finite UDG with $\\alpha/|V| < 2/7$, which is tied to the chromatic number problem",
+      "**Three levels of lower bounds**: $n/7$ (from $\\chi \\leq 7$), $n/5$ (if $\\chi = 5$ exactly), $0.22936n$ (Croft), and the hypothetical $n/4$ (open) — each requires increasingly sophisticated arguments",
+      "**Connection to chromatic number**: $f(n) \\geq n/\\chi(\\mathbb{R}^2)$ means resolving the Hadwiger-Nelson problem ($5 \\leq \\chi \\leq 7$) would immediately improve independence bounds — if $\\chi = 5$ then $f(n) \\geq n/5 = 0.2n$, weaker than Croft but structurally different"
     ]
   },
   "sections": [
@@ -58,60 +55,60 @@
       "title": "Unit Distance Graphs",
       "startLine": 39,
       "endLine": 62,
-      "summary": "Definitions of unit distance graphs, the distance function, unit distance relation, and independent sets."
+      "summary": "`euclideanDist` via Mathlib `dist`; `isUnitDistance(p,q) :\\equiv d(p,q) = 1$; `UnitDistanceGraph n` with `Finset` of $n$ points; `IsIndependentSet(G, S)` requiring no unit distance pairs; `independenceNumber` via `Finset.sup` over `powerset.filter`"
     },
     {
       "id": "function-f",
       "title": "The Function f(n)",
       "startLine": 64,
       "endLine": 79,
-      "summary": "Definition of f(n) as the minimum independence number and its relationship to the chromatic number."
+      "summary": "$f(n) = \\min_G \\alpha(G)$ axiomatized with `f_is_minimum` ($\\forall G,\\, \\alpha(G) \\geq f(n)$) and `f_is_achieved` ($\\exists G,\\, \\alpha(G) = f(n)$)"
     },
     {
       "id": "density-bound",
       "title": "Density-Based Lower Bound",
       "startLine": 81,
       "endLine": 117,
-      "summary": "The Larman-Rogers theorem connecting f(n) to density m₁, and Croft's lower bound m₁ ≥ 0.22936."
+      "summary": "$m_1 = \\sup\\{\\overline{d}(S) : S \\text{ unit-distance-free}\\}$ axiomatized; `larman_rogers_theorem`: $f(n) \\geq m_1 n$; `croft_lower_bound`: $m_1 \\geq 0.22936$; `f_lower_bound` proved via `nlinarith`"
     },
     {
       "id": "moser-spindle",
       "title": "The Moser Spindle Upper Bound",
       "startLine": 119,
       "endLine": 148,
-      "summary": "The Moser spindle construction giving f(n) ≤ (2/7)n ≈ 0.285n."
+      "summary": "Moser spindle: $\\exists G \\in \\text{UDG}(7) : \\alpha(G) = 2$; tiling gives `moser_spindle_upper_bound`: $f(n) \\leq (2/7)n$; `best_known_bounds` packages both via `exact ⟨f_lower_bound n, moser_spindle_upper_bound n⟩`"
     },
     {
       "id": "quarter-question",
       "title": "The n/4 Question",
       "startLine": 150,
       "endLine": 168,
-      "summary": "The main question f(n) ≥ n/4 and proof that density methods cannot achieve it (m₁ ≤ 0.247 < 1/4)."
+      "summary": "`acmvz_upper_bound`: $m_1 \\leq 0.247$; `quarter_threshold`: $0.247 < 1/4$ by `norm_num`; `density_insufficient_for_quarter`: $m_1 < 1/4$ — density methods *cannot* prove $f(n) \\geq n/4$"
     },
     {
       "id": "hadwiger-nelson",
       "title": "Connection to Hadwiger-Nelson",
       "startLine": 170,
       "endLine": 195,
-      "summary": "How chromatic number bounds (5 ≤ χ ≤ 7) relate to independence number bounds."
+      "summary": "`chromaticNumberPlane` axiomatized with $5 \\leq \\chi \\leq 7$; `independence_chromatic_relation`: $f(n) \\geq n/\\chi$; `f_from_chromatic`: $f(n) \\geq n/7$ (sorry — division monotonicity casting)"
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 197,
       "endLine": 221,
-      "summary": "Complete summary stating best bounds and the status of the n/4 question."
+      "summary": "`erdos_1070_summary`: $(\\forall n,\\, 0.22936n \\leq f(n)) \\land (\\forall n,\\, f(n) \\leq (2/7)n) \\land (m_1 < 1/4)$ via `exact ⟨f_lower_bound, moser_spindle_upper_bound, density_insufficient_for_quarter⟩`"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1070 asks for the minimum independence number f(n) of n-point unit distance graphs. Best bounds are 0.22936n ≤ f(n) ≤ (2/7)n. The question f(n) ≥ n/4 cannot be resolved via the density approach since m₁ ≤ 0.247 < 1/4. The problem connects to Hadwiger-Nelson (chromatic number of the plane).",
-    "implications": "**Theoretical Significance**\n\n1. **Graph Coloring**: Deeply connected to the Hadwiger-Nelson problem on the chromatic number of the plane\n\n2. **Density Theory**: The density m₁ bridges continuous and discrete settings\n\n3. **Extremal Combinatorics**: Fundamental question about structure of unit distance graphs\n\n4. **Impossibility Result**: ACMVZ shows limitations of the density approach",
+    "summary": "This formalization captures Erdős Problem #1070 on the independence number $f(n)$ of $n$-point unit distance graphs in $\\mathbb{R}^2$. The Larman-Rogers theorem bridges discrete independence to continuous density $m_1$, and Croft's construction gives $f(n) \\geq 0.22936n$. The Moser spindle provides the upper bound $f(n) \\leq (2/7)n$. The ACMVZ barrier ($m_1 \\leq 0.247 < 1/4$) is formalized as a proved theorem `density_insufficient_for_quarter`, establishing that Erdős's $n/4$ question requires genuinely new techniques. The summary theorem `erdos_1070_summary` packages all three results. Two sorries remain: `quarter_conjecture_open` (the open problem itself) and `f_from_chromatic` (a division monotonicity casting issue).",
+    "implications": "**Theoretical Significance**\n\n1. **Discrete-continuous duality**: The Larman-Rogers bridge $f(n) \\geq m_1 \\cdot n$ is a paradigmatic example of converting discrete combinatorial problems to continuous optimization. Similar techniques appear in sphere packing (Cohn-Elkies), graph limits (Lovász), and flag algebras (Razborov).\n\n2. **Density barrier as impossibility**: The proved theorem $m_1 < 1/4$ is a *barrier result* — it shows that an entire class of techniques (density-based arguments) is insufficient for the target bound. This is analogous to oracle separations in complexity theory or the Razborov-Rudich natural proofs barrier.\n\n3. **Moser spindle and chromatic number**: The Moser spindle simultaneously gives $\\alpha/n \\leq 2/7$ (independence bound) and $\\chi \\geq 4$ (coloring bound). Improving the upper bound on $f(n)/n$ requires finding finite UDGs with smaller $\\alpha/n$ ratios, which is equivalent to finding UDGs with larger chromatic number — directly linking to the Hadwiger-Nelson problem.\n\n4. **Fourier-analytic methods in combinatorics**: The ACMVZ bound $m_1 \\leq 0.247$ uses the Fourier transform and Bessel functions, exemplifying how harmonic analysis constrains combinatorial objects. This approach has also yielded breakthroughs in the Kakeya problem and Falconer's distance conjecture.\n\n5. **Formalization of open problems**: By axiomatizing $f(n)$ and proving what current methods achieve, the formalization creates a precise specification of the remaining gap — any claimed proof of $f(n) \\geq n/4$ would need to supply a proof term for `quarter_conjecture_open` without relying solely on `m1`.",
     "openQuestions": [
-      "Determine the exact asymptotic of f(n)/n as n → ∞",
-      "Is f(n) ≥ n/4? (requires new techniques beyond density)",
-      "Find better constructions for the upper bound",
-      "Improve the Croft lower bound on m₁",
-      "Resolve the Hadwiger-Nelson problem (5 ≤ χ ≤ 7)"
+      "What is $\\lim_{n \\to \\infty} f(n)/n$? The limit exists by a subadditivity argument and lies in $[0.22936, 2/7]$. Even determining whether it equals $m_1$ or exceeds it is unknown.",
+      "Is $f(n) \\geq n/4$? The ACMVZ barrier shows $m_1 < 1/4$, so a proof would need structural arguments beyond density — perhaps exploiting the geometry of specific configurations rather than random translations.",
+      "Can the Moser spindle upper bound $f(n) \\leq (2/7)n$ be improved? This requires a finite UDG with $\\alpha/|V| < 2/7$. De Grey's 1581-vertex graph with $\\chi = 5$ has $\\alpha/|V| \\approx 0.28$, close but not improving $2/7$.",
+      "Is $m_1$ computable to arbitrary precision? Current bounds $0.22936 \\leq m_1 \\leq 0.247$ leave a gap of $0.018$. Can the Fourier-analytic approach of ACMVZ be extended to narrow this further?",
+      "Does the analogous problem in $\\mathbb{R}^d$ for $d \\geq 3$ exhibit similar density barriers? The Larman-Rogers argument generalizes, but the Fourier analysis becomes significantly more complex in higher dimensions."
     ]
   }
 }
