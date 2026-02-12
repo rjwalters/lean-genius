@@ -26,129 +26,147 @@
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
-        "theorem": "Complex",
-        "description": "Complex numbers and analysis",
+        "theorem": "Complex.abs",
+        "description": "Complex absolute value for defining superlevel sets |f(z)| > c",
         "module": "Mathlib.Data.Complex.Basic"
       },
       {
-        "theorem": "MeasureTheory.Measure.Lebesgue",
-        "description": "Lebesgue measure for superlevel sets",
+        "theorem": "Analysis.Complex.Basic",
+        "description": "Complex differentiability for defining IsEntire via Differentiable ℂ",
+        "module": "Mathlib.Analysis.Complex.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.Measure.volume",
+        "description": "Lebesgue measure (volume) for HasFiniteMeasure predicate",
         "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
       },
       {
         "theorem": "Real.log",
-        "description": "Logarithm for growth integral",
+        "description": "Real logarithm for growth integral ∫ r/(log log M(r)) dr",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.Basic",
+        "description": "Ordered field structure on ℝ for threshold comparisons",
+        "module": "Mathlib.Data.Real.Basic"
       }
     ],
     "originalContributions": [
-      "IsEntire, IsNonConstantEntire: entire function predicates",
-      "superlevelSet: E(c) = {z : |f(z)| > c}",
-      "HasFiniteMeasure: finite planar measure predicate",
-      "maxModulus: M(r) = max_{|z|=r} |f(z)|",
-      "thresholdSet: T(f) = {c > 0 : |E(c)| < ∞}",
-      "growthIntegral: ∫ r/(log log M(r)) dr",
-      "HaymanConjecture: characterization of finite measure",
+      "IsEntire, IsNonConstantEntire: entire function predicates via Differentiable ℂ",
+      "superlevelSet f c = {z : |f(z)| > c}: superlevel set definition",
+      "HasFiniteMeasure via volume(E(c)) < ⊤: finite planar measure predicate",
+      "maxModulus f r = ⨆ (z : ℂ) (_ : |z| = r), |f(z)|: maximum modulus function",
+      "thresholdSet f = {c > 0 : HasFiniteMeasure f c}: threshold set T(f)",
+      "growthIntegral f = ∫ r/(log log M(r)) dr: Hayman's growth integral",
+      "HaymanConjecture: biconditional characterization of finite measure existence",
       "camera_goldberg_theorem axiom: Hayman's conjecture proved",
-      "goldberg_counterexample axiom: threshold set can be [m,∞)",
-      "goldberg_threshold_classification axiom: all shapes possible",
-      "superlevel_nested, finite_measure_monotone: monotonicity",
-      "threshold_is_upper_set: proved property",
-      "erdos_1118_question2_negative: derived from axioms"
+      "goldberg_counterexample axiom: T(f) = [m, ∞) is possible",
+      "goldberg_threshold_classification axiom: complete classification of all threshold shapes",
+      "superlevel_nested: proved E(c₂) ⊆ E(c₁) when c₁ < c₂",
+      "finite_measure_monotone: proved measure monotonicity via measure_mono",
+      "threshold_is_upper_set: proved T(f) is upward closed",
+      "erdos_1118_question2_negative: derived counterexample with arithmetic witnesses m+1 and m/2"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-1115",
+        "relationship": "Also concerns growth of entire functions — Problem #1115 asks about path length L(r) and growth rate, resolved by Hayman (positive) and Gol'dberg-Eremenko (negative)"
+      }
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #1118 (Finite Measure Superlevel Sets)**\n\n**Origins:**\nThis is Problem 2.40 in Hayman's 1974 collection, attributed to Erdős. It concerns entire functions and the measure-theoretic size of regions where |f(z)| is large.\n\n**The Setup:**\n- f: ℂ → ℂ is an entire (everywhere holomorphic) non-constant function\n- E(c) = {z : |f(z)| > c} is the superlevel set\n- Question: When does E(c) have finite planar measure?\n\n**Resolution:**\n- Camera (1977, PhD thesis) and Gol'dberg (1979) independently solved Question 1\n- Gol'dberg (1979) answered Question 2 negatively with complete classification",
-    "problemStatement": "**Problem Statement (Solved)**\n\nLet f(z) be a non-constant entire function.\n\n**Question 1:** If for some c > 0, the set E(c) = {z : |f(z)| > c} has finite measure, what is the minimum growth rate of f?\n\n**Question 2:** If E(c) has finite measure, must there exist c' < c with E(c') also having finite measure?\n\n**Answers:**\n\n**Q1:** Hayman conjectured that ∫₀^∞ r/(log log M(r)) dr < ∞ characterizes this. Camera and Gol'dberg proved this is correct.\n\n**Q2:** NO. Gol'dberg showed the threshold set T = {c > 0 : |E(c)| < ∞} can be:\n- ∅ (e.g., exp(z))\n- (0, ∞) (e.g., polynomials)\n- [m, ∞) for any m > 0\n- (m, ∞) for any m > 0",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Entire Functions:** Define IsEntire via Differentiable ℂ\n\n2. **Superlevel Sets:** superlevelSet f c = {z : |f(z)| > c}\n\n3. **Measure:** HasFiniteMeasure uses Lebesgue volume\n\n4. **Maximum Modulus:** M(r) = sup_{|z|=r} |f(z)|\n\n5. **Growth Integral:** ∫ r/(log log M(r)) dr\n\n6. **Threshold Set:** T(f) = {c > 0 : E(c) finite}\n\n7. **Camera-Gol'dberg:** Axiomatize growth characterization\n\n8. **Gol'dberg Classification:** All threshold shapes possible",
+    "historicalContext": "**Erdős Problem #1118 (Finite Measure Superlevel Sets)**\n\n**Origins and Context:**\nThis is Problem 2.40 in Hayman's influential 1974 collection *Research Problems in Function Theory*, attributed to Erdős. It sits at the intersection of complex analysis, measure theory, and entire function theory. The problem asks two fundamental questions about the measure-theoretic size of the set where an entire function is large in modulus.\n\n**The Setup:**\nFor a non-constant entire function $f : \\mathbb{C} \\to \\mathbb{C}$, define the superlevel set $E(c) = \\{z \\in \\mathbb{C} : |f(z)| > c\\}$ and the threshold set $T(f) = \\{c > 0 : \\lambda(E(c)) < \\infty\\}$ where $\\lambda$ is planar Lebesgue measure. Question 1 asks to characterize when $T(f) \\neq \\emptyset$ in terms of the growth of the maximum modulus $M(r) = \\max_{|z|=r} |f(z)|$. Question 2 asks whether $T(f)$ is necessarily all of $(0, \\infty)$ when nonempty.\n\n**Hayman's Conjecture:**\nHayman conjectured that the growth integral $\\int_0^\\infty r / \\log\\log M(r) \\, dr < \\infty$ is the exact criterion for $T(f) \\neq \\emptyset$. This integral measures a delicate threshold between single and double exponential growth: for $f(z) = e^{z^\\rho}$ the integrand is $r/(\\rho \\log r)$ which diverges, but for double-exponential growth the integral can converge.\n\n**Resolution:**\n- **Camera (1977):** In his PhD thesis at Imperial College London under Hayman's supervision, Camera proved the conjecture.\n- **Gol'dberg (1979):** Independently proved the same result and additionally gave a complete classification of all possible threshold set shapes, answering Question 2 negatively. Published in *Sibirskii Matematicheskii Zhurnal* (1979, pp. 512–518).\n\n**The Four Threshold Types:**\nGol'dberg showed that for any $m > 0$, there exist entire functions with $T(f) = \\emptyset$ (e.g., $e^z$), $T(f) = (0, \\infty)$ (polynomials), $T(f) = [m, \\infty)$ (closed threshold), or $T(f) = (m, \\infty)$ (open threshold). This is a complete classification since $T(f)$ is always an upper set.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nLet $f(z)$ be a non-constant entire function.\n\n**Question 1:** If for some $c > 0$, the set $E(c) = \\{z : |f(z)| > c\\}$ has finite planar measure, what is the minimum growth rate of $f$?\n\n**Question 2:** If $E(c)$ has finite measure, must there exist $c' < c$ with $E(c')$ also having finite measure?\n\n**Answers:**\n\n**Q1 (Camera 1977, Gol'dberg 1979):** $\\exists\\, c > 0$ with $\\lambda(E(c)) < \\infty$ if and only if $\\int_0^\\infty r / \\log\\log M(r)\\, dr < \\infty$, where $M(r) = \\max_{|z|=r} |f(z)|$.\n\n**Q2 (Gol'dberg 1979):** NO. The threshold set $T(f) = \\{c > 0 : \\lambda(E(c)) < \\infty\\}$ can take any of these forms:\n- $\\emptyset$ (e.g., $e^z$ — every superlevel set is a half-plane)\n- $(0, \\infty)$ (e.g., polynomials — all superlevel sets are bounded)\n- $[m, \\infty)$ for any $m > 0$ (closed gap at small thresholds)\n- $(m, \\infty)$ for any $m > 0$ (open gap at small thresholds)",
+    "proofStrategy": "**Formalization Approach**\n\nThe 276-line formalization balances axioms for deep analytic results with constructive Lean proofs for measure-theoretic properties:\n\n1. **Entire Functions (lines 41–47):** `IsEntire f` via `Differentiable ℂ f`, and `IsNonConstantEntire f` adding non-constancy. These use Mathlib's complex differentiability infrastructure.\n\n2. **Superlevel Sets (lines 49–55):** `superlevelSet f c = {z : |f(z)| > c}` and `HasFiniteMeasure f c` via `volume(E(c)) < ⊤`, connecting to Mathlib's Lebesgue measure.\n\n3. **Maximum Modulus (lines 57–59):** `maxModulus f r = ⨆ (z : ℂ) (_ : |z| = r), |f(z)|` using the indexed supremum to avoid explicit integration over the circle.\n\n4. **Growth Integral (lines 83–85):** `growthIntegral f = ∫ r/(log log M(r)) dr` over $r \\in (0, \\infty)$.\n\n5. **Axiomatized Deep Results:** Camera-Gol'dberg theorem (line 94), Gol'dberg counterexample (line 111), full classification (line 116), and maximum modulus properties (lines 130–142).\n\n6. **Proved Results (lines 170–191):** Three theorems proved constructively in Lean: `superlevel_nested` (set nesting by `linarith`), `finite_measure_monotone` (measure monotonicity by `measure_mono`), and `threshold_is_upper_set` (upward closure).\n\n7. **Derived Results (lines 227–274):** `erdos_1118_question2_negative` constructs explicit witnesses $c = m+1$ and $c' = m/2$ from `goldberg_counterexample`, combining set membership reasoning with arithmetic.",
     "keyInsights": [
-      "**Growth Rate:** ∫ r/(log log M(r)) dr < ∞ is the exact criterion",
-      "**Threshold Gaps:** T(f) need not contain all small c values",
-      "**Examples:** exp has T = ∅, polynomials have T = (0,∞)",
-      "**Monotonicity:** T is always an upper set (tail of ℝ₊)",
-      "**Complete Classification:** All interval types [m,∞), (m,∞), ∅, (0,∞) occur"
+      "**Delicate growth threshold:** The integral $\\int_0^\\infty r/\\log\\log M(r)\\, dr$ distinguishes between single exponential growth ($M(r) = e^{r^\\rho}$, integral diverges) and double exponential growth ($M(r) = e^{e^{r^\\alpha}}$ with $\\alpha < 1$, integral converges), placing the criterion at a precise boundary in the growth hierarchy",
+      "**Complete threshold classification:** Gol'dberg's four types $\\emptyset$, $(0,\\infty)$, $[m,\\infty)$, $(m,\\infty)$ exhaust all possibilities because $T(f)$ is always an upper set (proved constructively in the formalization) and every upper subset of $(0,\\infty)$ takes one of these forms",
+      "**Constructive vs. axiomatic balance:** The formalization proves the measure-theoretic core ($E(c_2) \\subseteq E(c_1)$, measure monotonicity, upper set property) directly in Lean while axiomatizing the deep analytic results (Camera-Gol'dberg, Gol'dberg classification) that require Nevanlinna theory beyond current Mathlib",
+      "**Concrete counterexample derivation:** The proof of `erdos_1118_question2_negative` is a genuine Lean derivation: from `goldberg_counterexample` giving $T(f) = [m,\\infty)$, it constructs witnesses $c = m+1 \\in T(f)$ and $c' = m/2 \\notin T(f)$ using membership reasoning and arithmetic (`linarith`)",
+      "**Half-plane geometry of $e^z$:** The key example $T(e^z) = \\emptyset$ follows because $\\{z : |e^z| > c\\} = \\{z : \\text{Re}(z) > \\log c\\}$ is a half-plane with infinite Lebesgue measure for every $c > 0$, showing that order-1 growth is too slow",
+      "**Connection to Nevanlinna theory:** The maximum modulus $M(r)$ and growth integral connect to the order $\\rho = \\limsup_{r\\to\\infty} \\log\\log M(r)/\\log r$ and type of entire functions, placing the problem within the classical Nevanlinna-Wiman-Valiron framework of value distribution theory"
     ]
   },
   "sections": [
     {
-      "id": "erd-s-problem-1118-entire-func",
-      "title": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets",
+      "id": "header-and-imports",
+      "title": "Header, Imports, and Namespace",
       "startLine": 1,
-      "endLine": 36,
-      "summary": "Erdős Problem #1118: Entire Functions with Finite Measure Superlevel Sets"
+      "endLine": 35,
+      "summary": "Module documentation citing Hayman's Problem 2.40, Camera (1977) and Gol'dberg (1979) references, imports of Complex.Basic, Real.Basic, Analysis.Complex.Basic, MeasureTheory.Measure.Lebesgue.Basic, and Analysis.SpecialFunctions.Log.Basic"
     },
     {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
+      "title": "Part I: Basic Definitions",
       "startLine": 37,
-      "endLine": 60,
-      "summary": "Basic Definitions"
+      "endLine": 59,
+      "summary": "Defines IsEntire (Differentiable ℂ f), IsNonConstantEntire, superlevelSet f c = {z : |f(z)| > c}, HasFiniteMeasure via volume < ⊤, and maxModulus via indexed supremum ⨆ over the circle |z| = r"
     },
     {
-      "id": "the-erd-s-questions",
-      "title": "The Erdős Questions",
+      "id": "erdos-questions",
+      "title": "Part II: The Erdős Questions",
       "startLine": 61,
-      "endLine": 78,
-      "summary": "The Erdős Questions"
+      "endLine": 77,
+      "summary": "Defines thresholdSet T(f) = {c > 0 : HasFiniteMeasure f c}, GrowthRateQuestion (Q1), and ThresholdMonotonicityQuestion (Q2) as placeholder propositions"
     },
     {
-      "id": "hayman-s-conjecture-and-growth",
-      "title": "Hayman's Conjecture and Growth Rate",
+      "id": "hayman-conjecture",
+      "title": "Part III: Hayman's Conjecture and Growth Rate",
       "startLine": 79,
-      "endLine": 105,
-      "summary": "Hayman's Conjecture and Growth Rate"
+      "endLine": 104,
+      "summary": "Defines growthIntegral and HaymanConjecture biconditional, then axiomatizes camera_goldberg_theorem plus separate growth_necessary and growth_sufficient directions"
     },
     {
-      "id": "gol-dberg-s-counterexample",
-      "title": "Gol'dberg's Counterexample",
+      "id": "goldberg-counterexample",
+      "title": "Part IV: Gol'dberg's Counterexample",
       "startLine": 106,
-      "endLine": 125,
-      "summary": "Gol'dberg's Counterexample"
+      "endLine": 124,
+      "summary": "Axiomatizes goldberg_counterexample (∃ f with T(f) = [m,∞)) and goldberg_threshold_classification (all four threshold types ∅, (0,∞), [m,∞), (m,∞) are realizable)"
     },
     {
-      "id": "properties-of-the-maximum-modu",
-      "title": "Properties of the Maximum Modulus",
+      "id": "max-modulus-properties",
+      "title": "Part V: Properties of the Maximum Modulus",
       "startLine": 126,
-      "endLine": 143,
-      "summary": "Properties of the Maximum Modulus"
+      "endLine": 142,
+      "summary": "Axiomatizes M(r) → ∞ for non-constant entire functions (Liouville), monotonicity of M(r), and polynomial growth bound M(r) ≤ C·r^d"
     },
     {
       "id": "examples",
-      "title": "Examples",
+      "title": "Part VI: Examples",
       "startLine": 144,
       "endLine": 161,
-      "summary": "Examples"
+      "summary": "Axiomatizes threshold sets for canonical examples: polynomials (T = (0,∞)), exp(z) (T = ∅), and fast-growing entire functions (T bounded below)"
     },
     {
       "id": "measure-theory-aspects",
-      "title": "Measure Theory Aspects",
+      "title": "Part VII: Measure Theory Aspects",
       "startLine": 162,
-      "endLine": 192,
-      "summary": "Measure Theory Aspects"
+      "endLine": 191,
+      "summary": "Axiomatizes measurability of superlevel sets; PROVES superlevel_nested (linarith), finite_measure_monotone (measure_mono), and threshold_is_upper_set — the constructive core"
     },
     {
       "id": "connections",
-      "title": "Connections",
+      "title": "Part VIII: Connections",
       "startLine": 193,
-      "endLine": 210,
-      "summary": "Connections"
+      "endLine": 209,
+      "summary": "Placeholder connections to Nevanlinna theory, value distribution theory, and Hayman's Problem 2.40"
     },
     {
-      "id": "summary",
-      "title": "Summary",
+      "id": "main-theorems",
+      "title": "Part IX: Summary and Main Theorems",
       "startLine": 211,
       "endLine": 276,
-      "summary": "Summary"
+      "summary": "Main results: erdos_1118_question1 (= camera_goldberg_theorem), erdos_1118_question2_negative (derived counterexample with witnesses m+1, m/2), erdos_1118 (conjunction), and erdos_1118_summary (with classification)"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1118 asked two questions about entire functions with finite-measure superlevel sets. Camera (1977) and Gol'dberg (1979) proved the growth rate criterion ∫ r/(log log M(r)) dr < ∞. Gol'dberg showed the threshold set T can have various shapes, disproving monotonicity to 0.",
-    "implications": "**Complex Analysis Connections**\n\n1. **Nevanlinna Theory:** Growth rates connect to order and type\n\n2. **Value Distribution:** How often f is large in modulus\n\n3. **Maximum Modulus:** Central role of M(r) in characterization\n\n4. **Measure Theory:** Lebesgue measure in complex plane",
+    "summary": "Erdős Problem #1118 asked two questions about entire functions with finite-measure superlevel sets. Camera (1977) and Gol'dberg (1979) proved the exact growth rate criterion $\\int_0^\\infty r/\\log\\log M(r)\\, dr < \\infty$, and Gol'dberg gave a complete classification showing the threshold set $T(f)$ can be $\\emptyset$, $(0,\\infty)$, $[m,\\infty)$, or $(m,\\infty)$, disproving downward monotonicity. The formalization proves the measure-theoretic core constructively while axiomatizing the deep analytic results.",
+    "implications": "**Connections to Complex Analysis**\n\n1. **Nevanlinna Theory:** The growth rate integral connects to the order and type of entire functions, fundamental invariants in Nevanlinna's value distribution theory\n\n2. **Wiman-Valiron Theory:** The maximum modulus $M(r)$ plays a central role in the Wiman-Valiron method for studying entire functions near their maximum\n\n3. **Value Distribution:** The problem quantifies how often $f$ takes large values in terms of planar measure, complementing Nevanlinna's counting function approach\n\n4. **Measure Theory in $\\mathbb{C}$:** The use of Lebesgue measure on the complex plane connects to potential theory and capacity estimates for sublevel sets",
     "openQuestions": [
-      "Finer classification of threshold set structures?",
-      "Higher-dimensional analogues for holomorphic maps?",
-      "Connections to other growth classifications?",
-      "Explicit constructions for each threshold type?"
+      "Can the Camera-Gol'dberg theorem be extended to meromorphic functions or quasiregular mappings?",
+      "What are the higher-dimensional analogues for holomorphic maps $f : \\mathbb{C}^n \\to \\mathbb{C}^n$?",
+      "Can the growth integral criterion be refined to give quantitative bounds on $\\lambda(E(c))$ as a function of $c$?",
+      "What is the Hausdorff dimension of the boundary $\\partial E(c)$ for typical entire functions?"
     ]
   }
 }
