@@ -48,6 +48,44 @@
       "Developed the n² sequence as a concrete example",
       "Stated the main conjecture: fast growth alone implies irrationality",
       "Proved convergence of the series under fast growth"
+    ],
+    "references": [
+      {
+        "key": "Er74b",
+        "citation": "Erdős, P., On the irrationality of certain series: problems and results, in: New Advances in Transcendence Theory (1974).",
+        "type": "paper"
+      },
+      {
+        "key": "ErGr80",
+        "citation": "Erdős, P. and Graham, R.L., Old and New Problems and Results in Combinatorial Number Theory, L'Enseignement Mathématique, Geneva (1980).",
+        "type": "book"
+      }
+    ],
+    "crossReferences": [
+      {
+        "proofId": "erdos-247",
+        "relationship": "Studies transcendence (stronger than irrationality) of lacunary sums. Problem #247 concerns sums where transcendence can be proved via the Lindemann-Weierstrass theorem."
+      },
+      {
+        "proofId": "erdos-257",
+        "relationship": "Irrationality of Lambert-type sums — closely related series irrationality problems from the same Erdős-Graham program."
+      },
+      {
+        "proofId": "erdos-251",
+        "relationship": "Irrationality of Σ pₙ/2ⁿ where pₙ is the n-th prime. Another instance of the 'when does a structured series have irrational sum?' question."
+      },
+      {
+        "proofId": "erdos-267",
+        "relationship": "Irrationality of Fibonacci reciprocal sums — a related question about arithmetic properties of structured series."
+      },
+      {
+        "proofId": "erdos-68",
+        "relationship": "Irrationality of factorial sums — one of Erdős's earliest irrationality problems, using related techniques."
+      },
+      {
+        "proofId": "liouville-theorem",
+        "relationship": "Liouville's theorem on Diophantine approximation provides the theoretical framework for irrationality proofs via rational approximation quality."
+      }
     ]
   },
   "overview": {
@@ -64,39 +102,60 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "summary": "Module docstring with problem statement, known results, Erdős-Graham references, and status. Imports Mathlib's `SpecificLimits`, `Irrational`, topology, filters, and tactics.",
+      "startLine": 1,
+      "endLine": 37
+    },
+    {
       "id": "seq-properties",
       "title": "Sequence Properties",
-      "summary": "Definitions of IncreasingSeq, FastGrowth (aₙ/n → ∞), GapsToInfinity, and SuperlogarithmicGrowth",
+      "summary": "Definitions of the growth hierarchy: `IncreasingSeq` (strict monotonicity), `FastGrowth` ($a_n/n \\to \\infty$), `GapsToInfinity` ($a_{n+1} - a_n \\to \\infty$), and `SuperlogarithmicGrowth` ($a_n \\geq Cn\\sqrt{\\log n \\cdot \\log\\log n}$).",
       "startLine": 39,
       "endLine": 57
     },
     {
       "id": "series-def",
-      "title": "Series Definition",
-      "summary": "The series ∑ aₙ/2^{aₙ}, partial sums, and convergence under fast growth",
+      "title": "Series Definition and Convergence",
+      "summary": "The series term $a_n/2^{a_n}$, partial sums via `Finset.range`, convergence theorem (comparison with $\\sum n/2^n$), and the `seriesSum` limit extracted via `Classical.choose`.",
       "startLine": 59,
       "endLine": 78
     },
     {
       "id": "known-results",
       "title": "Known Irrationality Results",
-      "summary": "Erdős's gaps-to-infinity theorem and superlogarithmic irrationality result (both with sorry)",
+      "summary": "Erdős's two partial results (both `sorry`): gaps $\\to \\infty$ implies irrational (1974), and superlogarithmic growth implies irrational. These bracket the open conjecture.",
       "startLine": 80,
       "endLine": 99
     },
     {
+      "id": "implications",
+      "title": "Growth Condition Implications",
+      "summary": "The implication chain: GapsToInfinity $\\Rightarrow$ FastGrowth $\\Leftarrow$ SuperlogarithmicGrowth. Both proofs use telescoping/growth comparison arguments (both `sorry`).",
+      "startLine": 101,
+      "endLine": 113
+    },
+    {
       "id": "examples",
       "title": "Example: Square Sequence",
-      "summary": "The sequence aₙ = n² has gaps → ∞ and satisfies fast growth, so its series is irrational",
-      "startLine": 117,
+      "summary": "The sequence $a_n = n^2$: strict monotonicity, fast growth ($n^2/n = n \\to \\infty$, fully proved), gaps $\\to \\infty$ ($2n+1 \\to \\infty$, fully proved), and irrationality of $\\sum n^2/2^{n^2}$ (by composition).",
+      "startLine": 115,
       "endLine": 152
     },
     {
       "id": "conjecture",
-      "title": "Main Conjecture",
-      "summary": "The open problem: fast growth (aₙ/n → ∞) alone should imply irrationality of ∑ aₙ/2^{aₙ}",
+      "title": "Main Conjecture and Counterexample Specification",
+      "summary": "The open conjecture (axiom): $\\mathrm{FastGrowth}(a) \\Rightarrow \\mathrm{Irrational}(\\sum a_n/2^{a_n})$. Plus the Erdős-Graham counterexample specification: what a sequence with $\\limsup(\\text{gaps}) = \\infty$ but rational sum would look like.",
       "startLine": 154,
-      "endLine": 177
+      "endLine": 179
+    },
+    {
+      "id": "summary",
+      "title": "Summary Comments",
+      "summary": "End-of-file documentation: status (OPEN), what's formalized, key sorries, and what a proof would require.",
+      "startLine": 181,
+      "endLine": 203
     }
   ],
   "conclusion": {
