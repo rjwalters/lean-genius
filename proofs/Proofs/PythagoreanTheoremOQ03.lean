@@ -422,7 +422,10 @@ theorem cosh_second_order_at_zero :
     HasDerivAt (fun x => Real.cosh x - 1) 0 0 := by
   have h := hasDerivAt_cosh 0
   rw [Real.sinh_zero] at h
-  exact h.sub (hasDerivAt_const 0 1)
+  have hc := hasDerivAt_const (0 : ℝ) (1 : ℝ)
+  have hsub : HasDerivAt (fun x => Real.cosh x - (fun _ => (1 : ℝ)) x) (0 - 0) 0 := h.sub hc
+  simp only [sub_zero] at hsub
+  exact hsub
 
 /-- The flat limit for cos: (1 - cos(t)) / t² → 1/2 as t → 0.
     This captures cos(t) ≈ 1 - t²/2. -/
@@ -701,21 +704,19 @@ theorem hyperbolic_hypotenuse_strictly_longer (T : HyperbolicRightTriangle) :
     Real.cosh T.c > Real.cosh T.a := by
   rw [T.law]
   have hcb : 1 < Real.cosh T.b := by
-    have h1 := cosh_ge_one T.b
-    have hb_pos := T.b_pos
-    -- cosh(b) > cosh(0) = 1 since cosh is strictly increasing on [0, ∞) and b > 0
-    rw [Real.cosh_eq, Real.cosh_eq]
-    rw [Real.cosh_eq] at h1
-    have hexp : Real.exp T.b > Real.exp 0 := Real.exp_strictMono T.b_pos
-    have hneg : Real.exp (-T.b) < Real.exp 0 := Real.exp_strictMono (neg_neg_of_pos T.b_pos)
-    rw [Real.exp_zero] at hexp hneg
-    -- exp(b) > 1, exp(-b) < 1
-    -- exp(b) + exp(-b) > 1 + exp(-b) but we need > 2
-    -- Actually: exp(b) + exp(-b) > 2 by AM-GM: (exp(b) + exp(-b))/2 ≥ sqrt(exp(b)*exp(-b)) = 1
-    -- with strict ineq since exp(b) ≠ exp(-b)
-    have hprod : Real.exp T.b * Real.exp (-T.b) = 1 := by
-      rw [← Real.exp_add]; simp
-    nlinarith [sq_nonneg (Real.exp T.b - Real.exp (-T.b))]
+    -- Proof by contradiction: if cosh(b) ≤ 1, then cosh(b) = 1
+    -- which forces exp(b) = 1, contradicting b > 0
+    have hge := cosh_ge_one T.b
+    by_contra hle; push_neg at hle
+    have heq : Real.cosh T.b = 1 := le_antisymm hle hge
+    have : (Real.exp T.b + Real.exp (-T.b)) / 2 = 1 := by rw [← Real.cosh_eq]; exact heq
+    have hsum : Real.exp T.b + Real.exp (-T.b) = 2 := by linarith
+    have hprod : Real.exp T.b * Real.exp (-T.b) = 1 := by rw [← Real.exp_add]; simp
+    have : Real.exp T.b = 1 := by nlinarith [sq_nonneg (Real.exp T.b - 1)]
+    have : Real.exp T.b > 1 := by
+      calc Real.exp T.b > Real.exp 0 := Real.exp_strictMono T.b_pos
+        _ = 1 := Real.exp_zero
+    linarith
   have hca : 0 < Real.cosh T.a := cosh_pos T.a
   nlinarith
 
@@ -761,10 +762,30 @@ theorem hyperbolic_lawcos_to_pythag (a b c : ℝ) :
 /-- cosh is strictly increasing on [0, ∞): if 0 ≤ x < y then cosh(x) < cosh(y). -/
 theorem cosh_strictMono_nonneg {x y : ℝ} (hx : 0 ≤ x) (hxy : x < y) :
     Real.cosh x < Real.cosh y := by
-  rw [Real.cosh_eq, Real.cosh_eq]
+  have hcx : Real.cosh x = (Real.exp x + Real.exp (-x)) / 2 := Real.cosh_eq x
+  have hcy : Real.cosh y = (Real.exp y + Real.exp (-y)) / 2 := Real.cosh_eq y
+  rw [hcx, hcy]
+  -- Suffices to show exp(x) + exp(-x) < exp(y) + exp(-y)
+  suffices h : Real.exp x + Real.exp (-x) < Real.exp y + Real.exp (-y) by linarith
   have h1 : Real.exp x < Real.exp y := Real.exp_strictMono hxy
   have h2 : Real.exp (-y) < Real.exp (-x) := Real.exp_strictMono (neg_lt_neg hxy)
-  linarith
+  have hpx : Real.exp x * Real.exp (-x) = 1 := by rw [← Real.exp_add]; simp
+  have hpy : Real.exp y * Real.exp (-y) = 1 := by rw [← Real.exp_add]; simp
+  have hepx : 0 < Real.exp x := Real.exp_pos x
+  have hepy : 0 < Real.exp y := Real.exp_pos y
+  have hx1 : 1 ≤ Real.exp x := by
+    calc (1 : ℝ) = Real.exp 0 := Real.exp_zero.symm
+      _ ≤ Real.exp x := Real.exp_le_exp.mpr hx
+  -- exp(y) + exp(-y) - exp(x) - exp(-x) > 0
+  -- Multiply both sides by exp(x)*exp(y) > 0:
+  -- exp(x)*exp(y)^2 + exp(x) - exp(x)^2*exp(y) - exp(y)
+  -- = (exp(y) - exp(x))*(exp(x)*exp(y) - 1)
+  -- Both factors positive since exp(y) > exp(x) and exp(x)*exp(y) ≥ exp(x) ≥ 1
+  nlinarith [sq_nonneg (Real.exp x - Real.exp (-y)),
+             sq_nonneg (Real.exp y - Real.exp (-x)),
+             mul_pos hepx hepy,
+             mul_pos (show (0 : ℝ) < Real.exp y - Real.exp x by linarith)
+                     (show (0 : ℝ) < Real.exp x * Real.exp y - 1 by nlinarith)]
 
 /-- Given the hypotenuse c of a hyperbolic right triangle, the law
     cosh(c) = cosh(a)·cosh(b) uniquely determines cosh(b) from cosh(a)
