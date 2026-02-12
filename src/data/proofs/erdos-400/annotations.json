@@ -1,128 +1,134 @@
 [
   {
-    "id": "erdos-400-divisibility",
+    "id": "ann-400-imports",
+    "proofId": "erdos-400",
+    "type": "concept",
+    "range": { "startLine": 14, "endLine": 19 },
+    "title": "Imports and Dependencies",
+    "content": "Imports `Nat.Factorial.Basic` for the factorial function $n!$, `Real.Basic` for $\\mathbb{R}$ and `Real.log$, `Asymptotics` for $O(\\cdot)$ notation, `Filter.Basic` for `Filter.atTop` used in asymptotic convergence, and `Tactic` for proof automation.",
+    "significance": "supporting",
+    "mathContext": "The formalization works over $\\mathbb{Z}$ for the excess function $g_k(n) = \\max\\{\\sum a_i - n\\}$ (since the excess could be negative in principle), but uses $\\mathbb{R}$ for asymptotics. The `Filter.atTop` framework encodes $\\lim_{x \\to \\infty}$ via Mathlib's filter-based limit theory, and `Asymptotics` provides the $O(\\cdot)$ and $o(\\cdot)$ machinery for the concentration conjecture.",
+    "relatedConcepts": ["factorial function", "Filter.atTop", "asymptotic analysis", "real logarithm"],
+    "prerequisites": ["Mathlib.Data.Nat.Factorial.Basic", "Mathlib.Analysis.Asymptotics.Asymptotics"]
+  },
+  {
+    "id": "ann-400-divisibility",
     "proofId": "erdos-400",
     "type": "definition",
-    "range": { "startLine": 21, "endLine": 28 },
+    "range": { "startLine": 27, "endLine": 28 },
     "title": "Factorial Divisibility Condition",
-    "content": "`FactorialDivides a n` requires (∏ᵢ aᵢ!) | n!. This multinomial-type condition determines which tuples (a₁,...,aₖ) contribute to the excess function.\n\nThe condition is equivalent to requiring that the generalized multinomial coefficient n!/(a₁!···aₖ!) be a non-negative integer, though the tuple need not partition n (the sum can exceed n).",
+    "content": "`FactorialDivides a n` requires $\\prod_{i=1}^k a_i! \\mid n!$. This multinomial-type divisibility condition determines which $k$-tuples $(a_1,\\ldots,a_k)$ contribute to the excess function $g_k(n)$.",
     "significance": "critical",
-    "mathContext": {
-      "technique": "Formalized using `Fin k → ℕ` for k-tuples and `Finset.prod` for the product of factorials. The divisibility is `(∏ i : Fin k, (a i).factorial) ∣ n.factorial`.",
-      "prerequisites": ["Nat.factorial", "Finset.prod", "Dvd"],
-      "keyProperty": "By Legendre's formula, a₁!···aₖ! | n! iff for every prime p, the sum of p-adic valuations v_p(aᵢ!) ≤ v_p(n!). Since v_p(m!) = Σⱼ ⌊m/pʲ⌋, this gives a concrete arithmetic characterization.",
-      "crossReferences": [
-        {"proofId": "kummer-theorem", "relationship": "Kummer's theorem characterizes when binomial coefficients (the k=2 case of this condition) are divisible by a prime, via carries in base-p addition"},
-        {"proofId": "erdos-728", "relationship": "Erdős #728 studies factorial divisibility with logarithmic gap constraints, a closely related problem"}
-      ]
-    }
+    "mathContext": "The condition $a_1! \\cdots a_k! \\mid n!$ is equivalent to the generalized multinomial coefficient $\\binom{n}{a_1,\\ldots,a_k} \\cdot \\frac{n!}{(a_1+\\cdots+a_k)!} \\cdot \\binom{a_1+\\cdots+a_k}{a_1,\\ldots,a_k}^{-1}$ being an integer. By Legendre's formula, this holds iff for every prime $p$, $\\sum_{j \\ge 1} \\lfloor n/p^j \\rfloor \\ge \\sum_{i=1}^k \\sum_{j \\ge 1} \\lfloor a_i/p^j \\rfloor$. The logarithmic bound $g_k(n) = O(\\log n)$ ultimately comes from this $p$-adic valuation constraint.",
+    "relatedConcepts": ["multinomial coefficient", "Legendre's formula", "p-adic valuation", "factorial prime factorization"],
+    "prerequisites": ["Nat.factorial", "Dvd", "Finset.prod"]
   },
   {
-    "id": "erdos-400-excess",
+    "id": "ann-400-excess",
     "proofId": "erdos-400",
     "type": "definition",
-    "range": { "startLine": 30, "endLine": 42 },
-    "title": "The Excess Function g_k(n)",
-    "content": "`sumExcess a n` = (Σ aᵢ) - n (as an integer, to handle cases where the sum is less than n).\n\n`gExcess k n` = sup { sumExcess a n : FactorialDivides a n }. This is the maximum amount by which the k-tuple sum can exceed n while maintaining the factorial divisibility constraint.\n\nThe supremum is well-defined because the set is non-empty (the trivial tuple gives excess 0) and bounded above (by O(log n), the Erdős-Graham bound).",
+    "range": { "startLine": 36, "endLine": 42 },
+    "title": "Sum Excess and $g_k(n)$",
+    "content": "`sumExcess a n = (\\sum a_i) - n$ computes the excess over $\\mathbb{Z}$. `gExcess k n = \\sup\\{e : \\exists a,\\, \\text{FactorialDivides}(a, n) \\wedge \\text{sumExcess}(a, n) = e\\}$ defines $g_k(n)$ as the supremum of all achievable excesses.",
     "significance": "critical",
-    "mathContext": {
-      "technique": "Defined using `sSup` (supremum of a set of integers). The use of ℤ rather than ℕ for the excess allows clean handling of the subtraction; the non-negativity is proved separately.",
-      "prerequisites": ["sSup", "Finset.sum"],
-      "formalNotes": "The `noncomputable` tag is needed because `sSup` on integers requires classical logic to select the maximum. The well-definedness of this supremum relies on the Erdős-Graham upper bound (axiomatized).",
-      "keyProperty": "g_k(n) captures the 'slack' in the factorial divisibility constraint: how far beyond a partition of n can we push the tuple while keeping the product of factorials dividing n!."
-    }
+    "mathContext": "The excess $g_k(n) = \\max\\{(a_1 + \\cdots + a_k) - n : a_1! \\cdots a_k! \\mid n!\\}$ measures how far the sum of the tuple can exceed $n$ while maintaining divisibility. Since the trivial tuple $(n, 0, \\ldots, 0)$ gives excess $0$, we have $g_k(n) \\ge 0$. The use of $\\operatorname{sSup}$ (supremum over a set of integers) is appropriate because the set is bounded above by $O(\\log n)$ and nonempty.",
+    "relatedConcepts": ["supremum", "integer subtraction", "bounded optimization", "sSup"],
+    "prerequisites": ["FactorialDivides", "Finset.sum", "sSup over ℤ"]
   },
   {
-    "id": "erdos-400-conjecture-a",
+    "id": "ann-400-conjecture-a",
     "proofId": "erdos-400",
-    "type": "conjecture",
-    "range": { "startLine": 44, "endLine": 54 },
-    "title": "Conjecture (a): Average Growth",
-    "content": "`ErdosProblem400a k`: There exists cₖ > 0 such that\nΣ_{n≤x} g_k(n) / (x · log x) → cₖ as x → ∞.\n\nThis asserts that the average value of g_k(n) for n ≤ x is asymptotically cₖ · log x, with the total sum growing as cₖ · x · log x.",
+    "type": "definition",
+    "range": { "startLine": 50, "endLine": 54 },
+    "title": "Part (a): Average Growth Conjecture",
+    "content": "`ErdosProblem400a k`: there exists $c_k > 0$ such that $\\frac{1}{x \\log x} \\sum_{n \\le x} g_k(n) \\to c_k$ as $x \\to \\infty$. Formalized via `Filter.Tendsto` to `nhds c`.",
     "significance": "critical",
-    "mathContext": {
-      "technique": "Formalized as `Filter.Tendsto` of the ratio Σ g_k(n) / (x · log x) to `nhds c` along `Filter.atTop`. This is the standard Lean 4 way to express asymptotic limits.",
-      "prerequisites": ["Filter.Tendsto", "Filter.atTop", "nhds", "Real.log"],
-      "keyProperty": "Part (a) is an average statement: it allows individual g_k(n) to fluctuate significantly, as long as the average settles down. Part (b) is the stronger pointwise concentration claim.",
-      "historicalNote": "The x · log x growth rate is natural: since g_k(n) = O(log n) and there are x terms, the sum is O(x · log x). The conjecture asserts this is tight with a specific constant."
-    }
+    "mathContext": "Part (a) asks whether the cumulative sum $\\sum_{n \\le x} g_k(n) \\sim c_k \\cdot x \\log x$. Since $g_k(n) = O(\\log n)$, the sum is $O(x \\log x)$, so the normalization by $x \\log x$ is natural. The constant $c_k$ encodes the average behavior of factorial divisibility: it reflects how typically \"loose\" the constraint $a_1! \\cdots a_k! \\mid n!$ is. For $k = 2$, the connection to binomial coefficients suggests $c_2$ should be computable in principle.",
+    "relatedConcepts": ["Cesàro average", "asymptotic density", "Filter.Tendsto", "nhds"],
+    "prerequisites": ["gExcess", "Finset.range", "Real.log", "Filter.atTop"]
   },
   {
-    "id": "erdos-400-conjecture-b",
+    "id": "ann-400-conjecture-b",
     "proofId": "erdos-400",
-    "type": "conjecture",
-    "range": { "startLine": 56, "endLine": 69 },
-    "title": "Conjecture (b): Concentration",
-    "content": "`ErdosProblem400b k`: There exists cₖ > 0 such that for all ε > 0, the fraction of n ≤ x with |g_k(n) - cₖ · log x| > ε · log x tends to 0.\n\nThis is a concentration-of-measure statement: g_k(n) is tightly concentrated around cₖ · log n for 'almost all' n.\n\n`ErdosProblem400`: Both parts hold for all k ≥ 2.",
+    "type": "definition",
+    "range": { "startLine": 58, "endLine": 65 },
+    "title": "Part (b): Concentration Conjecture",
+    "content": "`ErdosProblem400b k`: there exists $c_k > 0$ such that for every $\\varepsilon > 0$, the fraction of $n \\le x$ with $|g_k(n) - c_k \\log x| > \\varepsilon \\log x$ tends to $0$. This says $g_k(n)$ is concentrated around $c_k \\log x$.",
     "significance": "critical",
-    "mathContext": {
-      "technique": "Formalized using `Finset.filter` to count exceptional n, dividing by x, and asserting the ratio tends to 0. This is a discrete analogue of convergence in measure.",
-      "prerequisites": ["Finset.filter", "Finset.card"],
-      "keyProperty": "Part (b) implies part (a) by standard arguments: if g_k(n) ≈ cₖ · log n for almost all n, then the average is also ≈ cₖ · log x (the exceptional set contributes negligibly since each term is O(log n)).",
-      "relatedConcepts": ["Convergence in measure", "Chebyshev's inequality", "Normal order of arithmetic functions"]
-    }
+    "mathContext": "Part (b) is strictly stronger than part (a): concentration around the mean implies convergence of the average. The conjecture asserts $g_k(n) = c_k \\log n + o(\\log n)$ for \"almost all\" $n$ (in the density sense). This is analogous to the Erdős-Kac theorem for $\\omega(n)$: while individual values fluctuate, the typical behavior is sharply concentrated. The formalization uses the counting measure $|\\{n \\le x : \\ldots\\}| / x \\to 0$.",
+    "relatedConcepts": ["concentration of measure", "Erdős-Kac theorem", "almost all integers", "density zero"],
+    "prerequisites": ["gExcess", "Finset.filter", "Filter.Tendsto"]
   },
   {
-    "id": "erdos-400-upper",
+    "id": "ann-400-combined",
     "proofId": "erdos-400",
-    "type": "axiom",
-    "range": { "startLine": 71, "endLine": 78 },
+    "type": "definition",
+    "range": { "startLine": 68, "endLine": 69 },
+    "title": "Combined Problem Statement",
+    "content": "`ErdosProblem400`: both parts (a) and (b) hold for all $k \\ge 2$. The quantifier $\\forall k \\ge 2$ ensures the conjecture is uniform across all arities.",
+    "significance": "key",
+    "mathContext": "The restriction $k \\ge 2$ is necessary: for $k = 1$, the only tuple satisfying $a_1! \\mid n!$ is $a_1 \\le n$, giving $g_1(n) = 0$ trivially. For $k \\ge 2$, the interaction between multiple factorials creates nontrivial excess. The conjecture asks whether the same structural phenomenon (logarithmic growth with concentration) holds uniformly for all $k$, though the constants $c_k$ depend on $k$.",
+    "relatedConcepts": ["universal quantification", "arity dependence", "uniform asymptotics"],
+    "prerequisites": ["ErdosProblem400a", "ErdosProblem400b"]
+  },
+  {
+    "id": "ann-400-upper",
+    "proofId": "erdos-400",
+    "type": "theorem",
+    "range": { "startLine": 77, "endLine": 78 },
     "title": "Erdős-Graham Upper Bound",
-    "content": "`gExcess_upper_bound`: For k ≥ 2, there exists C > 0 such that g_k(n) ≤ C · log n for all n ≥ 1.\n\nThis establishes the correct order of magnitude. The proof uses Legendre's formula: v_p(n!) = Σⱼ ⌊n/pʲ⌋, which constrains how large the aᵢ can be while maintaining ∏ aᵢ! | n!.",
+    "content": "`gExcess_upper_bound` (axiom): $\\exists C > 0,\\, \\forall n \\ge 1,\\, g_k(n) \\le C \\log n$. The excess grows at most logarithmically in $n$.",
     "significance": "critical",
-    "mathContext": {
-      "technique": "The key idea is that if a₁ + ··· + aₖ = n + g (excess g), then the 'extra' factorial factors from the excess g must be accommodated within n!'s prime factorization. For a prime p, the excess contributes roughly g/p additional factors of p, which must not exceed the 'slack' in v_p(n!) ≈ n/(p-1). This forces g = O(log n).",
-      "whyAxiom": "The detailed prime factorization argument requires careful bookkeeping of Legendre's formula across all primes simultaneously, which is not yet formalized in this file.",
-      "references": [
-        {"key": "ErGr80", "citation": "P. Erdős and R. L. Graham, 'Old and new problems and results in combinatorial number theory,' L'Enseignement Mathématique, Geneva (1980), p. 77"}
-      ],
-      "crossReferences": [
-        {"proofId": "stirling-formula", "relationship": "Stirling's formula gives n! ≈ √(2πn)(n/e)^n, providing the framework for asymptotic analysis of factorial ratios"}
-      ]
-    }
+    "mathContext": "The bound $g_k(n) = O(\\log n)$ follows from Legendre's formula: $v_p(n!) = \\sum_{j \\ge 1} \\lfloor n/p^j \\rfloor \\approx n/(p-1)$. If $a_1 + \\cdots + a_k = n + g$ with $\\prod a_i! \\mid n!$, then for each prime $p \\le n$, the $p$-adic valuation constraint forces $g \\le O(\\log_p n)$. Summing over the logarithmic number of relevant primes gives $g = O(\\log n)$. This establishes the correct order of magnitude but not the precise constant.",
+    "relatedConcepts": ["Legendre's formula", "p-adic valuation", "logarithmic growth", "prime factorization"],
+    "prerequisites": ["gExcess", "Real.log", "Nat.factorial"]
   },
   {
-    "id": "erdos-400-nonneg",
+    "id": "ann-400-nonneg",
     "proofId": "erdos-400",
-    "type": "axiom",
-    "range": { "startLine": 80, "endLine": 87 },
-    "title": "Non-negativity of g_k(n)",
-    "content": "`gExcess_nonneg`: g_k(n) ≥ 0 for all k ≥ 2 and all n.\n\n**Proof sketch**: The trivial tuple (n, 0, 0, ..., 0) satisfies FactorialDivides because n! · 0! · ··· · 0! = n! · 1 = n!, which divides n!. Its excess is n + 0 + ··· + 0 - n = 0. So the supremum is at least 0.",
+    "type": "theorem",
+    "range": { "startLine": 86, "endLine": 87 },
+    "title": "Non-negativity of $g_k(n)$",
+    "content": "`gExcess_nonneg` (axiom): $g_k(n) \\ge 0$ for all $k \\ge 2$ and $n$. The trivial tuple $(n, 0, \\ldots, 0)$ achieves excess $0$ since $n! \\cdot 0!^{k-1} = n! \\mid n!$.",
     "significance": "supporting",
-    "mathContext": {
-      "technique": "This should be provable from the definitions by exhibiting the witness. It is axiomatized because the sSup API requires showing the set is non-empty and bounded above (or handling the conditionally complete lattice structure of ℤ), which involves technical overhead.",
-      "proofSketch": "Construct a : Fin k → ℕ with a ⟨0, ...⟩ = n and a i = 0 for i > 0. Then ∏ aᵢ! = n! · 1^(k-1) = n!, and sumExcess = n - n = 0."
-    }
+    "mathContext": "The trivial lower bound $g_k(n) \\ge 0$ follows from the tuple $a_1 = n, a_2 = \\cdots = a_k = 0$: then $\\sum a_i = n$ and $n! \\cdot (0!)^{k-1} = n! \\mid n!$. For non-trivial lower bounds, one can use Stirling's approximation to show that tuples like $(n/k + \\delta, \\ldots, n/k + \\delta)$ with small $\\delta$ satisfy the divisibility condition, giving $g_k(n) \\ge c \\log n$ for some $c > 0$.",
+    "relatedConcepts": ["trivial bound", "Stirling's approximation", "existence of feasible tuples"],
+    "prerequisites": ["gExcess", "FactorialDivides"]
   },
   {
-    "id": "erdos-400-binomial",
+    "id": "ann-400-binomial",
     "proofId": "erdos-400",
-    "type": "axiom",
-    "range": { "startLine": 89, "endLine": 94 },
-    "title": "Binomial Coefficient Connection (k = 2)",
-    "content": "`g2_binomial_connection`: For k = 2, g₂(n) = sup { a + b - n : a! · b! | n! }.\n\nThe condition a! · b! | n! means n!/(a! · b!) is a non-negative integer. When a + b = n, this is the binomial coefficient C(n, a), which is always an integer. When a + b > n, this is a generalized ratio whose integrality is non-trivial.",
-    "significance": "supporting",
-    "mathContext": {
-      "technique": "Unfolds the Fin 2 → ℕ representation to explicit pair (a, b) notation for the k = 2 case.",
-      "keyProperty": "By Kummer's theorem, v_p(C(m+n, m)) equals the number of carries when adding m and n in base p. For the excess problem, we need v_p(n!/(a!·b!)) ≥ 0 for all primes p, which constrains how a + b can exceed n.",
-      "crossReferences": [
-        {"proofId": "kummer-theorem", "relationship": "Kummer's theorem gives v_p(C(m+n,m)) = number of carries in base-p addition, directly controlling when a!·b! | (a+b)! and hence relevant to the k=2 case"},
-        {"proofId": "erdos-728-factorial-divisibility", "relationship": "Erdős #728 (factorial divisibility) studies the closely related question of when a!·b! | n! with gap constraints"}
-      ]
-    }
+    "type": "theorem",
+    "range": { "startLine": 92, "endLine": 94 },
+    "title": "Binomial Coefficient Connection ($k = 2$)",
+    "content": "`g2_binomial_connection` (axiom): $g_2(n) = \\sup\\{a + b - n : a! \\cdot b! \\mid n!\\}$. For $k = 2$, the divisibility condition $a! \\cdot b! \\mid n!$ is equivalent to the multinomial coefficient $\\binom{n}{a} \\cdot \\binom{a}{n-b}$ being well-defined.",
+    "significance": "key",
+    "mathContext": "When $k = 2$, the condition $a! \\cdot b! \\mid n!$ means $n! / (a! \\cdot b!)$ is an integer. If $a + b = n$, this is the binomial coefficient $\\binom{n}{a}$, which is always an integer. For $a + b > n$ (positive excess), the condition is more restrictive: it requires $\\binom{a+b}{a} \\mid \\binom{a+b}{n} \\cdot \\frac{(a+b)!}{n!}$. The maximum excess $g_2(n)$ thus encodes how far beyond $n$ the sum $a + b$ can go while maintaining integrality of $n!/(a! \\cdot b!)$.",
+    "relatedConcepts": ["binomial coefficient", "integrality", "Kummer's theorem", "carries in addition"],
+    "prerequisites": ["gExcess", "Nat.factorial", "Nat.choose"]
   },
   {
-    "id": "erdos-400-k2-detail",
+    "id": "ann-400-k2-char",
     "proofId": "erdos-400",
-    "type": "axiom",
-    "range": { "startLine": 96, "endLine": 114 },
-    "title": "The k = 2 Case: Characterization and Asymptotics",
-    "content": "`g2_excess_characterization`: For n ≥ 1, the maximum in g₂(n) is achieved by some pair (a, b) with a! · b! | n! and a + b - n = g₂(n).\n\n`average_g2_growth`: The average of g₂ over [1, x] grows as c₂ · log x for some constant c₂ > 0. This is the k = 2 instance of Conjecture (a).\n\nThe largest excess comes from choosing a ≈ n (so a! has most of n!'s factors) and b as large as possible given that b! must divide n!/a! = C(n,a) · (n-a)!.",
-    "significance": "supporting",
-    "mathContext": {
-      "technique": "The characterization uses existential quantification to assert the supremum is attained (the set is finite for fixed n, so the max exists). The average growth axiom is the specific k = 2 case of ErdosProblem400a.",
-      "keyInsight": "For k = 2, the problem reduces to: given n, find the largest g ≥ 0 such that there exist a, b with a + b = n + g and a! · b! | n!. The constraint is equivalent to the multinomial coefficient n!/(a! · b!) being a positive integer, which connects to the p-adic structure of factorials via Legendre's formula.",
-      "historicalNote": "The k = 2 case connects to deep questions about the divisibility properties of binomial coefficients, a topic with roots in Kummer's 1852 theorem. The constant c₂, if it exists, encodes subtle information about how prime factorizations of factorials interact."
-    }
+    "type": "theorem",
+    "range": { "startLine": 102, "endLine": 104 },
+    "title": "$k = 2$ Excess Characterization",
+    "content": "`g2_excess_characterization` (axiom): for $n \\ge 1$, there exist $a, b \\in \\mathbb{N}$ achieving the supremum $g_2(n)$, i.e., $a! \\cdot b! \\mid n!$ and $a + b - n = g_2(n)$.",
+    "significance": "key",
+    "mathContext": "This axiom asserts the supremum in $g_2(n)$ is attained — the maximum exists, not just the supremum. This is nontrivial because the feasible set $\\{(a, b) : a! \\cdot b! \\mid n!\\}$ is finite (bounded by $a, b \\le n + O(\\log n)$ from the upper bound), so compactness guarantees a maximizer. The characterization enables explicit computation: for small $n$, one can enumerate all valid pairs and find $g_2(n)$ directly.",
+    "relatedConcepts": ["attainment of supremum", "finite feasible set", "explicit computation"],
+    "prerequisites": ["gExcess", "FactorialDivides", "gExcess_upper_bound"]
+  },
+  {
+    "id": "ann-400-average-g2",
+    "proofId": "erdos-400",
+    "type": "theorem",
+    "range": { "startLine": 109, "endLine": 113 },
+    "title": "Average Growth of $g_2$",
+    "content": "`average_g2_growth` (axiom): $\\exists c > 0$ such that $\\sum_{n \\le x} g_2(n) / (x \\log x) \\to c$. This is the $k = 2$ case of Part (a), axiomatized as a known (or expected) result.",
+    "significance": "key",
+    "mathContext": "The $k = 2$ case is the most accessible because of the direct connection to binomial coefficients. The constant $c_2$ should be computable via the density of pairs $(a, b)$ with $a! \\cdot b! \\mid n!$ and large excess. By Kummer's theorem, $v_p(\\binom{a+b}{a})$ counts the number of carries when adding $a$ and $b$ in base $p$, so the excess relates to the carry structure across all primes $p \\le n$.",
+    "relatedConcepts": ["Kummer's theorem", "carry counting", "average order", "Filter.Tendsto"],
+    "prerequisites": ["gExcess", "ErdosProblem400a", "Finset.range"]
   }
 ]
