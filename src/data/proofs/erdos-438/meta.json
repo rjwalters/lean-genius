@@ -10,17 +10,97 @@
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos438Problem.lean",
     "tags": [
+      "erdos",
       "number-theory",
+      "additive-combinatorics",
       "sumsets",
       "squares",
       "density",
-      "erdos"
+      "regularity-lemma"
     ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 438,
     "erdosUrl": "https://erdosproblems.com/438",
     "erdosProblemStatus": "solved",
+    "dateUpdated": "2026-02-12",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.range",
+        "description": "Finite range {0,...,N} used to represent {1,...,N}",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets, used for density calculations",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets by predicates (residue class membership)",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.product",
+        "description": "Cartesian product A ×ˢ A used in sumset definition",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.image",
+        "description": "Image of function over finite set, used to compute sumset",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "native_decide",
+        "description": "Computational verification for cardinality proofs (squares_mod_32_count)",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of IsSquare, sumset, IsSquareFreeSumset, maxSquareFreeDensity",
+      "Mod 3 construction and correctness axioms",
+      "Massias residues definition and construction",
+      "Axiom: massias_construction_works (square-free property)",
+      "Axiom: los_upper_bound (0.475N, Lagarias-Odlyzko-Shearer)",
+      "Axiom: kls_theorem (11/32 tight bound, Khalfalah-Lodha-Szemerédi)",
+      "Definition: squares_mod_32 with proved cardinality (native_decide)",
+      "Axiom: massias_avoids_squares and massias_is_maximal (optimality)",
+      "Summary theorem combining construction, upper bound, and maximality"
+    ],
+    "mathContext": {
+      "field": "Additive Combinatorics",
+      "subfield": "Sumset Density Problems",
+      "difficulty": "advanced",
+      "keyTechniques": [
+        "Modular arithmetic: quadratic residues mod 32",
+        "Extremal combinatorics: maximum independent set in sumset graph",
+        "Character sum methods (Lagarias-Odlyzko-Shearer)",
+        "Szemerédi regularity lemma for modular-to-integer transfer",
+        "Computational verification via native_decide"
+      ],
+      "prerequisites": [
+        "Quadratic residues and modular arithmetic",
+        "Sumsets and additive combinatorics",
+        "Szemerédi regularity lemma (conceptual)",
+        "Density of subsets of {1,...,N}"
+      ],
+      "consequences": [
+        "Complete resolution of the square-free sumset density problem",
+        "Demonstration of regularity method for density transfer",
+        "Optimal modular construction for sumset avoidance"
+      ],
+      "crossReferences": [
+        {
+          "proofId": "erdos-439",
+          "relationship": "Erdős #439 generalizes to kth powers: how large can A be if A+A avoids kth powers?"
+        },
+        {
+          "proofId": "erdos-587",
+          "relationship": "Erdős #587 asks the analogous question for difference sets A-A instead of sumsets A+A"
+        }
+      ]
+    },
     "relatedProblems": [
       {
         "id": "erdos-439",
@@ -33,70 +113,77 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #438 asks for the maximum density of a set A in {1,...,N} such that no sum a+b with a,b in A is a perfect square. The simplest construction takes all n congruent to 1 mod 3: since a+b is 2 mod 3 but squares are only 0 or 1 mod 3, this gives density 1/3.\n\nMassias improved this to density 11/32 using a mod 32 construction. The key observation is that there are only 7 quadratic residues mod 32 (namely 0, 1, 4, 9, 16, 17, 25), and one can find 11 residue classes whose pairwise sums avoid all of these. The specific residues are {1, 5, 9, 13, 14, 17, 21, 25, 26, 29, 30}, and 11 is provably the maximum.\n\nKhalfalah, Lodha, and Szemerédi (2002) proved that 11/32 is the true asymptotic density, using Szemerédi's regularity lemma to transfer the modular optimality result to the integer setting. Earlier, Lagarias, Odlyzko, and Shearer (1983) had established the weaker bound of 0.475N using character sum methods.",
-    "problemStatement": "**Problem Statement**\n\nHow large can A ⊆ {1,...,N} be if A+A contains no square numbers?\n\n**Answer**: |A| = (11/32 + o(1))N\n\n**Lower Bound**: Massias construction achieves 11/32.\n\n**Upper Bound**: Khalfalah-Lodha-Szemerédi (2002) proved no set can exceed 11/32 + o(1).\n\n**Key**: 11/32 = 0.34375 is the exact asymptotic density.",
-    "proofStrategy": "**Proof Strategy**\n\n**Lower Bound (Massias Construction)**:\n1. Squares mod 32 are: 0, 1, 4, 9, 16, 17, 25 (7 values)\n2. Find maximal set R of residues such that for all a,b ∈ R, (a+b) mod 32 is not a square\n3. R = {1,5,9,13,14,17,21,25,26,29,30} works and has 11 elements\n4. Taking all n ≡ r (mod 32) for r ∈ R gives density 11/32\n\n**Upper Bound (KLS 2002)**:\n1. Lagarias-Odlyzko-Shearer (1983): |A| ≤ 0.475N using character sums\n2. For modular version (A ⊆ ℤ/Nℤ), LOS proved 11/32 is sharp\n3. KLS used Szemerédi regularity to transfer modular result to integers",
+    "historicalContext": "Erdős Problem #438 asks for the maximum density of a set A in {1,...,N} such that no sum a+b with a,b in A is a perfect square. The problem connects to the broader theme of sumset avoidance in additive combinatorics, pioneered by Erdős and his collaborators from the 1960s onward.\n\nThe simplest construction takes all n congruent to 1 mod 3: since a+b ≡ 2 (mod 3) but squares are only 0 or 1 mod 3, this gives density 1/3 ≈ 0.333. Jean-Paul Massias improved this to density 11/32 ≈ 0.344 using a mod 32 construction. The key observation is that there are only 7 quadratic residues mod 32 (namely 0, 1, 4, 9, 16, 17, 25), and one can find exactly 11 residue classes whose pairwise sums avoid all of these. The specific residues are {1, 5, 9, 13, 14, 17, 21, 25, 26, 29, 30}, and 11 is provably the maximum (an independent set problem on a 32-vertex graph).\n\nIn 1983, Jeffrey Lagarias, Andrew Odlyzko, and James Shearer established the upper bound |A| ≤ 0.475N using exponential sum and character sum methods. They also proved that 11/32 is the optimal density in the cyclic group ℤ/Nℤ.\n\nThe complete resolution came from Ayman Khalfalah, Rishika Lodha, and Endre Szemerédi in 2002, who proved that 11/32 is the true asymptotic density for subsets of {1,...,N}. Their proof uses the Szemerédi regularity lemma — Szemerédi's foundational tool from 1975 — to transfer the modular optimality result to the integer setting. This demonstrated the power of regularity methods for density problems.\n\nThe problem is related to the Furstenberg-Sárközy theorem (1977/1978), which shows that any set of positive upper density must contain two elements whose difference is a perfect square. Problem #438 asks the complementary question for sums rather than differences.",
+    "problemStatement": "How large can $A \\subseteq \\{1,\\ldots,N\\}$ be if $A+A$ contains no perfect square?\n\n**Answer**: $|A| = (11/32 + o(1))N$\n\n**Lower bound**: Massias construction achieves $11/32$ via $11$ residue classes mod $32$.\n\n**Upper bound**: Khalfalah-Lodha-Szemerédi (2002) proved $|A| \\le (11/32 + \\varepsilon)N$ for large $N$.\n\n**Key**: $11/32 = 0.34375$ is the exact asymptotic density.",
+    "proofStrategy": "The formalization proceeds in two directions:\n\n**Lower Bound (Massias Construction)**:\n1. Squares mod $32$ are: $\\{0, 1, 4, 9, 16, 17, 25\\}$ ($7$ values, verified by `native_decide`)\n2. Find maximal set $R$ of residues such that for all $a,b \\in R$, $(a+b) \\bmod 32 \\notin$ squares\n3. $R = \\{1,5,9,13,14,17,21,25,26,29,30\\}$ works and has $11$ elements\n4. Taking all $n \\equiv r \\pmod{32}$ for $r \\in R$ gives density $11/32$\n\n**Upper Bound (KLS 2002)**:\n1. Lagarias-Odlyzko-Shearer (1983): $|A| \\le 0.475N$ using character sums\n2. For modular version ($A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$), LOS proved $11/32$ is sharp\n3. KLS used Szemerédi regularity to transfer modular result to integers",
     "keyInsights": [
-      "The maximum density is exactly 11/32 ≈ 0.344",
-      "Simple mod 3 construction gives 1/3, but mod 32 improves to 11/32",
-      "There are only 7 squares mod 32, constraining which residues work",
-      "11 residues mod 32 can avoid all square sums (Massias)",
-      "Szemerédi regularity transfers modular bounds to integer bounds",
-      "Related to Furstenberg-Sárközy theorem about difference sets"
+      "**Exact density $11/32$**: The maximum density is not a simple fraction like $1/3$ but the more subtle $11/32 \\approx 0.344$, determined by the interaction of quadratic residues with modular arithmetic at the 'right' modulus",
+      "**Why mod $32$?** The number $32 = 2^5$ is special because quadratic residues mod $2^k$ stabilize: for $k \\ge 3$, the residues are $\\{0, 1\\} \\cup \\{r : r \\equiv 0,1 \\pmod{8}\\}$. The modulus $32$ captures all the relevant $2$-adic structure",
+      "**Graph theory connection**: Finding the optimal residue set is equivalent to finding a maximum independent set in the graph where vertices are residues mod $32$ and edges connect pairs whose sum is a quadratic residue. This is a finite combinatorial optimization problem",
+      "**Regularity transfer**: Szemerédi's regularity lemma bridges the gap between modular and integer density bounds. The key idea: a dense set in $\\{1,\\ldots,N\\}$ must 'look like' a union of residue classes at some scale, and the modular bound constrains the density",
+      "**Furstenberg-Sárközy contrast**: While the Furstenberg-Sárközy theorem says dense sets must have square differences ($A - A \\ni \\square$), this problem asks how dense $A$ can be while avoiding square sums ($A + A \\not\\ni \\square$). The sum version has a definite answer; the difference version is about thresholds"
     ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "startLine": 25,
+      "endLine": 34,
+      "summary": "Imports Mathlib's `Nat.Basic`, `Finset.Basic`, `Finset.Card`, `Real.Basic`, `Zsqrtd.Basic`, and `Order.Field.Basic`. Opens `Finset` and `Nat` namespaces for sumset and modular arithmetic."
+    },
+    {
       "id": "definitions",
       "title": "Basic Definitions",
-      "startLine": 43,
-      "endLine": 63,
-      "summary": "Defines IsSquare, sumset A+A, IsSquareFreeSumset, and the maximum density function."
+      "startLine": 38,
+      "endLine": 54,
+      "summary": "Defines `IsSquare n` $:= \\exists m,\\, n = m^2$, `sumset A` $= A + A = \\{a+b : a,b \\in A\\}$ via `(A \\times^s A).\\text{image}$, `IsSquareFreeSumset` requiring $A+A \\cap \\{\\text{squares}\\} = \\emptyset$, and `maxSquareFreeDensity N`."
     },
     {
       "id": "mod3",
-      "title": "Simple mod 3 Construction",
-      "startLine": 65,
-      "endLine": 85,
-      "summary": "The basic construction: take n ≡ 1 (mod 3), achieving density 1/3."
+      "title": "Simple mod $3$ Construction",
+      "startLine": 58,
+      "endLine": 74,
+      "summary": "Axiomatizes: squares are $0$ or $1 \\pmod{3}$, so $\\{n : n \\equiv 1 \\pmod{3}\\}$ gives square-free sumset (since $1+1 \\equiv 2 \\pmod{3}$). Achieves density $\\approx N/3$."
     },
     {
       "id": "massias",
-      "title": "Massias Construction (mod 32)",
-      "startLine": 87,
-      "endLine": 110,
-      "summary": "The improved construction using 11 residue classes mod 32, achieving density 11/32."
+      "title": "Massias Construction (mod $32$)",
+      "startLine": 79,
+      "endLine": 95,
+      "summary": "Defines `massias_residues` $= \\{1,5,9,13,14,17,21,25,26,29,30\\}$ ($11$ classes mod $32$). The construction `massias_construction N` filters $\\{1,\\ldots,N\\}$ by these residues, achieving density $11/32 \\approx 0.344$."
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "startLine": 112,
-      "endLine": 132,
-      "summary": "LOS bound (0.475N) and KLS tight bound (11/32 + o(1))N."
+      "startLine": 100,
+      "endLine": 109,
+      "summary": "Axiomatizes `los_upper_bound`: $|A| \\le 0.475N + C$ (Lagarias-Odlyzko-Shearer 1983) and `kls_theorem`: $|A| \\le (11/32 + \\varepsilon)N$ for large $N$ (Khalfalah-Lodha-Szemerédi 2002)."
     },
     {
       "id": "why-11-32",
-      "title": "Why 11/32?",
-      "startLine": 134,
-      "endLine": 153,
-      "summary": "Explains the 7 squares mod 32 and why 11 is the maximum residue count."
+      "title": "Why $11/32$?",
+      "startLine": 114,
+      "endLine": 128,
+      "summary": "Defines `squares_mod_32` $= \\{0,1,4,9,16,17,25\\}$ with `native_decide`-proved $|\\cdot| = 7$. Axiomatizes `massias_avoids_squares` (all pairwise sums avoid squares) and `massias_is_maximal` (no $12$ residues can work)."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 130,
+      "title": "Summary Theorem",
+      "startLine": 138,
       "endLine": 148,
-      "summary": "erdos_438_summary combining construction, KLS theorem, and maximality."
+      "summary": "`erdos_438_summary` packages: (1) Massias construction is square-free, (2) KLS tight bound $(11/32 + \\varepsilon)N$, (3) $11$ is maximum. **Status: SOLVED.**"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #438 asks for the maximum size of A ⊆ {1,...,N} with A+A square-free. The answer is |A| = (11/32 + o(1))N, achieved by the Massias construction and proved tight by Khalfalah-Lodha-Szemerédi (2002).",
-    "implications": "**Significance**\n\n1. **Additive Combinatorics**: Fundamental result about sumset structure\n\n2. **Density Problems**: Shows how modular constraints determine optimal density\n\n3. **Regularity Method**: Demonstrates power of Szemerédi regularity for transferring modular to integer results\n\n4. **Complete Resolution**: Both upper and lower bounds are tight (11/32)",
+    "summary": "Erdős Problem #438 asks for the maximum size of A ⊆ {1,...,N} with A+A square-free. The answer is |A| = (11/32 + o(1))N, achieved by the Massias construction (11 residue classes mod 32) and proved tight by Khalfalah-Lodha-Szemerédi (2002) using the Szemerédi regularity lemma.",
+    "implications": "The result demonstrates the power of the regularity method for transferring modular density bounds to integer settings. It shows that the optimal density for sumset avoidance problems can be determined by finite combinatorial optimization (maximum independent set in a graph defined by quadratic residues). The exact value 11/32 is a consequence of the 2-adic structure of perfect squares.",
     "openQuestions": [
-      "Exact formula for max|A| for small N (before asymptotics dominate)",
-      "Generalization to A+A avoiding kth powers (Problem #439)",
-      "Best bounds for A-A avoiding squares (Problem #587)",
-      "Quantitative bounds on the o(1) error term"
+      "What is the exact formula for max|A| for small N (before asymptotics dominate)?",
+      "What is the optimal density for A+A avoiding kth powers (Problem #439)?",
+      "What are the best bounds for A-A avoiding squares (Problem #587)?",
+      "What quantitative bounds can be obtained on the o(1) error term in the KLS theorem?",
+      "Is there a shorter proof of the KLS upper bound avoiding Szemerédi regularity?"
     ]
   }
 }
