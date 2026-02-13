@@ -52,98 +52,123 @@
     ]
   },
   "overview": {
-    "historicalContext": "List coloring generalizes ordinary graph coloring by allowing each vertex to have its own set of available colors. The question is whether a proper coloring exists for ANY assignment of lists of size k.\n\n**Historical Development:**\n- 1980: Erdős, Rubin, Taylor posed the problem\n- 1992: Alon & Tarsi proved YES using algebraic methods\n- 1994: Thomassen proved all planar graphs are 5-choosable\n- The 'List Coloring Conjecture' (χ_L ≤ 4 for planar) remains OPEN\n\n**Key insight:** χ_L can exceed χ, even for bipartite graphs!",
-    "problemStatement": "**Definition:** The list chromatic number χ_L(G) is the minimum k such that for ANY assignment of lists of k colors to vertices, a proper list coloring exists.\n\n**Question:** For planar bipartite graphs, is χ_L(G) ≤ 3?\n\n**Answer:** YES (Alon-Tarsi 1992)\n\nThis is remarkable because:\n- Bipartite graphs have χ = 2\n- But χ_L can be larger (even K_{2,4} needs χ_L = 3)\n- Planarity bounds χ_L at 3 for bipartite graphs",
-    "proofStrategy": "The formalization:\n\n1. Defines list assignment and list coloring\n2. Defines k-choosability and χ_L\n3. Shows χ_L ≥ χ always\n4. Defines planarity and states Four Color Theorem\n5. States Alon-Tarsi theorem as main result\n6. Introduces graph polynomial and Combinatorial Nullstellensatz\n7. Shows bound is tight (K_{2,4})\n8. Connects to other results (Thomassen, outerplanar)",
+    "historicalContext": "List coloring, introduced by Vizing (1976) and independently by Erdős, Rubin, and Taylor (1980), generalizes ordinary graph coloring by allowing each vertex its own palette of available colors. This seemingly modest generalization reveals deep new phenomena: the list chromatic number $\\chi_L(G)$ can strictly exceed $\\chi(G)$, even for bipartite graphs where $\\chi = 2$.\n\n**Timeline of key results:**\n- **1976**: Vizing introduced list coloring and conjectured $\\chi_L = \\chi'$ for line graphs (the List Edge Coloring Conjecture).\n- **1979–1980**: Erdős, Rubin, and Taylor systematically studied choosability. They proved $\\chi_L(K_{n,n}) = \\lceil \\log_2 n \\rceil + 1$ — showing the gap between $\\chi$ and $\\chi_L$ for bipartite graphs. They posed Problem #630: is $\\chi_L \\le 3$ for planar bipartite graphs?\n- **1992**: Noga Alon and Michael Tarsi proved YES using a remarkable algebraic technique. Their key tool was the **graph polynomial** $P_G = \\prod_{(u,v) \\in E}(x_u - x_v)$ and a coefficient criterion: if a certain monomial coefficient is nonzero, the graph is choosable. For bipartite planar graphs, they showed this coefficient is nonzero by relating it to the number of even vs. odd Eulerian subgraphs in an appropriate orientation.\n- **1994**: Carsten Thomassen proved $\\chi_L \\le 5$ for all planar graphs, using an elegant inductive proof on the outer face. This remains the best known bound for general planar graphs.\n- **1999**: Alon formalized the Combinatorial Nullstellensatz as a general algebraic tool, building on the 1992 work with Tarsi. It has since found applications throughout combinatorics.\n\n**The algebraic revolution**: The Alon–Tarsi theorem exemplifies how algebraic methods can resolve purely combinatorial problems. The graph polynomial approach has since been applied to many other coloring problems, establishing algebraic combinatorics as a major paradigm.",
+    "problemStatement": "**Definition:** The **list chromatic number** $\\chi_L(G)$ is the minimum $k$ such that for ANY assignment of lists of $k$ colors to vertices, a proper list coloring exists (each vertex colored from its own list, adjacent vertices different).\n\n**Question (Erdős–Rubin–Taylor 1980):** Does every planar bipartite graph $G$ satisfy $\\chi_L(G) \\le 3$?\n\n**Answer:** YES (Alon–Tarsi 1992)\n\n**Significance:**\n- Bipartite graphs have $\\chi = 2$, but $\\chi_L$ can be 3 (e.g., $K_{2,4}$)\n- Planarity bounds $\\chi_L$ at exactly 3 for bipartite graphs\n- The proof uses the Combinatorial Nullstellensatz, an algebraic technique\n- The bound is tight: $K_{2,4}$ achieves $\\chi_L = 3$",
+    "proofStrategy": "The Lean formalization captures the complete mathematical landscape:\n\n1. **Coloring basics**: Sorry'd `chromaticNumber` and `IsKColorable` with proper coloring predicate.\n2. **List coloring**: `ListAssignment V C`, `IsListColoring G L f` (respects lists + proper), `IsKChoosable G k` (universal over list assignments), sorry'd `listChromaticNumber`.\n3. **List vs. ordinary**: Sorry'd `list_chromatic_ge_chromatic` ($\\chi_L \\ge \\chi$), sorry'd complete graph equality, axiomatized bipartite gap.\n4. **Planar graphs**: Sorry'd `IsPlanar`, axiomatized `euler_formula`, `four_color_theorem` ($\\chi \\le 4$), `thomassen_five_list` ($\\chi_L \\le 5$).\n5. **Bipartite graphs**: Sorry'd `bipartite_iff_no_odd_cycle`, sorry'd `bipartite_chi_le_2`, sorry'd gap existence.\n6. **Alon–Tarsi**: Axiomatized main theorem and equivalent `IsKChoosable` formulation (partially proved).\n7. **Algebraic method**: Sorry'd `graphPolynomial` as `MvPolynomial V ℤ`, axiomatized Nullstellensatz and coefficient result.\n8. **Sharpness**: Sorry'd `bound_is_tight` and axiomatized `k24_list_chromatic`.\n9. **Generalizations**: Sorry'd unbounded bipartite $\\chi_L$, axiomatized $K_{n,n}$ lower bound, `listColoringConjecture` definition, outerplanar results.\n10. **Summary**: `erdos_630_status` combining main theorem and tightness.",
     "keyInsights": [
-      "**χ_L ≥ χ always:** List coloring is harder than ordinary coloring.",
-      "**Bipartite χ_L > χ possible:** K_{n,n} has χ = 2 but χ_L grows with n.",
-      "**Planarity constrains χ_L:** For planar bipartite, χ_L ≤ 3.",
-      "**Algebraic proof:** Uses Combinatorial Nullstellensatz on graph polynomial.",
-      "**Tight bound:** K_{2,4} achieves χ_L = 3."
+      "**List coloring is strictly harder than ordinary coloring:** Even for bipartite graphs ($\\chi = 2$), the adversary choosing lists can force $\\chi_L = 3$. In $K_{2,4}$, giving the two vertices on one side lists $\\{1,2\\}$ and $\\{3,4\\}$ while giving the four on the other side lists that 'mix' these forces 3 colors. The gap $\\chi_L - \\chi$ grows logarithmically for $K_{n,n}$.",
+      "**Planarity is the key constraint:** Without planarity, bipartite $\\chi_L$ is unbounded ($K_{n,n}$ grows). Planarity limits edge density via Euler's formula ($|E| \\le 2|V| - 4$ for bipartite planar), which constrains the graph polynomial's structure enough for the algebraic argument.",
+      "**The Combinatorial Nullstellensatz converts coloring to algebra:** The graph polynomial $P_G = \\prod_{uv \\in E}(x_u - x_v)$ encodes adjacency. A proper coloring makes $P_G \\ne 0$. The Nullstellensatz says: if the coefficient of $\\prod_v x_v^{d_v}$ in $P_G$ is nonzero (where $d_v = |L(v)| - 1$), then a list coloring exists for any lists of size $d_v + 1$.",
+      "**Alon–Tarsi orientation theorem:** The coefficient in question counts the difference between even and odd Eulerian subgraphs in a specific orientation. For bipartite planar graphs, this difference is always nonzero (it relates to the permanent of a matrix), completing the proof.",
+      "**The List Coloring Conjecture remains OPEN:** While $\\chi \\le 4$ for planar graphs (4CT) and $\\chi_L \\le 5$ (Thomassen), whether $\\chi_L \\le 4$ is unknown. Problem #630 resolves the bipartite case at $\\chi_L \\le 3$, but the general planar case is one of the most important open problems in graph coloring."
     ]
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Header, Imports, and Namespace",
+      "summary": "Module docstring with problem statement, resolution history, and Combinatorial Nullstellensatz reference; Mathlib import; namespace and variable declarations",
+      "startLine": 1,
+      "endLine": 27
+    },
+    {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "summary": "Chromatic number and colorability",
+      "title": "Basic Graph Coloring",
+      "summary": "Sorry'd noncomputable chromaticNumber and IsKColorable predicate (proper k-coloring via Fin k)",
       "startLine": 29,
       "endLine": 37
     },
     {
       "id": "list-coloring",
-      "title": "List Coloring",
-      "summary": "List assignment, choosability, χ_L",
+      "title": "List Coloring Framework",
+      "summary": "ListAssignment type (V → Finset C), IsListColoring predicate (list-respecting proper coloring), IsKChoosable (universal over lists), sorry'd listChromaticNumber",
       "startLine": 39,
       "endLine": 58
     },
     {
       "id": "list-properties",
-      "title": "Properties of χ_L",
-      "summary": "Comparison with χ",
+      "title": "Properties of List Chromatic Number",
+      "summary": "Sorry'd χ_L ≥ χ, sorry'd complete graph equality, axiomatized K_{n,n} gap (χ_L > 2 despite χ = 2)",
       "startLine": 60,
       "endLine": 81
     },
     {
       "id": "planar-graphs",
-      "title": "Planar Graphs",
-      "summary": "Euler's formula, Four Color Theorem",
+      "title": "Planar Graphs: Euler, 4CT, Thomassen",
+      "summary": "Sorry'd IsPlanar, axiomatized Euler's formula, Four Color Theorem (χ ≤ 4), and Thomassen's 5-list theorem (χ_L ≤ 5)",
       "startLine": 83,
       "endLine": 103
     },
     {
       "id": "bipartite-graphs",
       "title": "Bipartite Graphs",
-      "summary": "Bipartite characterization and χ",
+      "summary": "Sorry'd bipartite ↔ no odd cycle, sorry'd bipartite χ ≤ 2, sorry'd existence of bipartite graphs with χ_L > 2",
       "startLine": 105,
       "endLine": 121
     },
     {
       "id": "alon-tarsi",
-      "title": "The Alon-Tarsi Theorem",
-      "summary": "Main result: planar bipartite χ_L ≤ 3",
+      "title": "The Alon–Tarsi Theorem (Main Result)",
+      "summary": "Axiomatized alon_tarsi_theorem (planar bipartite → χ_L ≤ 3) and partially proved equivalent planar_bipartite_3_choosable (IsKChoosable 3)",
       "startLine": 123,
       "endLine": 138
     },
     {
       "id": "algebraic-method",
-      "title": "The Algebraic Method",
-      "summary": "Graph polynomial and Nullstellensatz",
+      "title": "The Algebraic Method: Nullstellensatz",
+      "summary": "Sorry'd graphPolynomial (MvPolynomial V ℤ), axiomatized combinatorial_nullstellensatz (nonzero coefficient → choosability), axiomatized alon_tarsi_coefficient (coefficient nonzero for planar bipartite)",
       "startLine": 140,
       "endLine": 157
     },
     {
       "id": "sharpness",
-      "title": "Sharpness",
-      "summary": "Bound is tight at 3",
+      "title": "Sharpness: Bound is Tight at 3",
+      "summary": "Sorry'd bound_is_tight (existence of planar bipartite with χ_L = 3) and axiomatized k24_list_chromatic (K_{2,4} has χ_L = 3, 6 vertices)",
       "startLine": 159,
       "endLine": 172
     },
     {
       "id": "generalizations",
-      "title": "Generalizations",
-      "summary": "Non-planar bipartite, K_{n,n}",
+      "title": "Generalizations and Related Problems",
+      "summary": "Sorry'd unbounded non-planar bipartite χ_L, axiomatized K_{n,n} lower bound (⌈log₂ n⌉ + 1), List Coloring Conjecture definition (OPEN), sorry'd outerplanar definitions and axiomatized 3-choosability",
       "startLine": 174,
-      "endLine": 207
+      "endLine": 223
     },
     {
       "id": "main-status",
-      "title": "Main Problem Status",
-      "summary": "Complete status summary",
+      "title": "Main Problem Status and Verification",
+      "summary": "erdos_630_status combining Alon–Tarsi theorem and tightness (proved from axioms), plus #check verifications of key declarations",
       "startLine": 225,
       "endLine": 254
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #630 is SOLVED. Alon and Tarsi (1992) proved that every planar bipartite graph has list chromatic number at most 3. The proof uses the Combinatorial Nullstellensatz, an algebraic technique relating polynomial coefficients to colorability. The bound is tight: K_{2,4} achieves χ_L = 3.",
-    "implications": "This problem connects to:\n\n1. **List Coloring Theory:** Relationship between χ and χ_L\n2. **Planar Graph Theory:** Constraints from planarity\n3. **Algebraic Combinatorics:** Combinatorial Nullstellensatz applications\n4. **Four Color Theorem:** Extension to list coloring\n5. **Open problems:** List Coloring Conjecture (χ_L ≤ 4 for planar)",
+    "summary": "Erdős Problem #630 is **SOLVED**. Alon and Tarsi (1992) proved that every planar bipartite graph has $\\chi_L \\le 3$. The proof uses the Combinatorial Nullstellensatz to convert the coloring problem into an algebraic question about polynomial coefficients, then shows the relevant coefficient is nonzero for bipartite planar graphs via the Alon–Tarsi orientation theorem. The bound is tight: $K_{2,4}$ achieves $\\chi_L = 3$. The formalization captures the complete framework: list coloring definitions, the algebraic method, planarity and bipartiteness constraints, sharpness, and connections to the still-OPEN List Coloring Conjecture.",
+    "implications": "This result illustrates the power of algebraic methods in combinatorics: (1) **Algebraic combinatorics** — the Combinatorial Nullstellensatz has become one of the most versatile tools in the field, applied to restricted sumsets, permanent bounds, and hypergraph coloring; (2) **Planar graph theory** — understanding list coloring of planar graphs is central, with the List Coloring Conjecture ($\\chi_L \\le 4$) among the most important open problems; (3) **Complexity theory** — while ordinary coloring of bipartite graphs is trivial (polynomial), list coloring is NP-hard even for planar bipartite graphs with lists of size 3, yet the Alon–Tarsi theorem guarantees existence; (4) **Graph polynomial theory** — the graph polynomial framework connects coloring, orientations, and algebra in a unified way.",
     "openQuestions": [
-      "Is χ_L ≤ 4 for all planar graphs? (List Coloring Conjecture)",
-      "Can the algebraic method be extended to prove χ_L ≤ 4?",
-      "What is the exact value of χ_L for K_{n,n}?",
-      "Are there simpler proofs of Alon-Tarsi?",
-      "What other graph classes have bounded χ_L despite unbounded χ?"
+      "Is $\\chi_L \\le 4$ for all planar graphs? (The List Coloring Conjecture — OPEN since 1994)",
+      "Can the Alon–Tarsi algebraic method be extended to prove the List Coloring Conjecture?",
+      "What is $\\chi_L(K_{n,n})$ exactly for all $n$? (Known to be $\\lceil \\log_2 n \\rceil + 1$, but is there a cleaner proof?)",
+      "Are there simpler (non-algebraic) proofs of the Alon–Tarsi theorem for planar bipartite graphs?",
+      "For which graph classes does $\\chi_L = \\chi$? (True for complete graphs, but the exact characterization is unknown)"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "proofId": "erdos-627",
+      "relationship": "Problem #627 studies the chromatic number–clique number ratio. List coloring adds another layer: χ_L can exceed χ even when χ is small (bipartite)."
+    },
+    {
+      "proofId": "erdos-626",
+      "relationship": "Problem #626 explores chromatic number vs girth. Both problems study how structural constraints (planarity, girth, bipartiteness) affect chromatic parameters."
+    },
+    {
+      "proofId": "erdos-628",
+      "relationship": "Problem #628 (Tihany Conjecture) also concerns graphs achieving high chromatic number without large cliques, a theme shared with the list coloring gap phenomenon."
+    },
+    {
+      "proofId": "ramseys-theorem",
+      "relationship": "Ramsey theory provides structural bounds used in the K_{n,n} list chromatic number computation and in understanding extremal coloring problems."
+    }
+  ]
 }
