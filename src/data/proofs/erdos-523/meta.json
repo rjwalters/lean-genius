@@ -58,101 +58,101 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #523 (Maximum of Random Polynomials)**\n\n**Origin:**\nErdős posed this problem in [Er61] (1961, p.253), asking about the maximum modulus of random ±1 polynomials on the unit circle.\n\n**Key Results:**\n- Salem-Zygmund (1954): Established that √(n log n) is the correct order of magnitude\n- Halász (1973): Proved the exact asymptotic with constant C = 1\n\n**Significance:**\nThis is a fundamental result in the theory of Littlewood polynomials and random Fourier series, connecting probability, complex analysis, and harmonic analysis.",
+    "historicalContext": "Erdos Problem #523 concerns the maximum modulus of random $\\pm 1$ polynomials on the unit circle, a fundamental question at the intersection of probability, complex analysis, and harmonic analysis.\n\nThe story begins with Raphael Salem and Antoni Zygmund's 1954 paper 'Some properties of trigonometric series whose terms have random signs,' where they established that $\\max_{|z|=1} |\\sum_{k=0}^n \\varepsilon_k z^k| = \\Theta(\\sqrt{n \\log n})$ with high probability. Their proof combined the first and second moment methods with union bounds over discretized points on the circle. This left open the question of whether the ratio converges to a definite constant.\n\nErdos posed the exact-constant question in 1961 ([Er61], p.253): does $\\max_{|z|=1} |f(z)| / \\sqrt{n \\log n} \\to C$ almost surely for some $C > 0$? The answer came from Gabor Halasz in 1973, who proved $C = 1$ exactly. Halasz's proof was a tour de force combining sharp chaining arguments for the upper bound with second-moment methods for the lower bound.\n\nThe problem connects deeply to Littlewood polynomials (polynomials with $\\pm 1$ coefficients), studied by J.E. Littlewood since the 1960s. The result shows that 'typical' Littlewood polynomials have maximum $\\approx \\sqrt{n \\log n}$, much larger than the $L^2$ norm $\\sqrt{n+1}$ -- the extra $\\sqrt{\\log n}$ factor reflects the peaking phenomenon where the supremum of $n$ correlated random variables exceeds their typical size by $\\sqrt{\\log n}$. This connects to Kahane's theory of random Fourier series and the modern theory of Gaussian processes.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet f(z) = ∑_{k=0}^n εₖ z^k be a random polynomial where εₖ ∈ {-1,1} independently uniformly at random.\n\nDoes there exist C > 0 such that, almost surely,\n$$\\max_{|z|=1} |f(z)| = (C + o(1))\\sqrt{n \\log n}?$$\n\n**Answer: YES, with C = 1**\n\n(Halász 1973)",
     "proofStrategy": "**Formalization Approach**\n\n1. **Sign Vectors:** SignVector, IsValidSign\n\n2. **Random Polynomial:** randomPolynomial, evalOnCircle\n\n3. **Maximum Modulus:** maxModulus, expectedScale\n\n4. **Salem-Zygmund:** salem_zygmund_order (order of magnitude)\n\n5. **Halász:** halasz_theorem (C = 1 exactly)\n\n6. **L² Analysis:** L2Norm, L2_norm_exact\n\n7. **Probability:** AlmostSureConvergence, halasz_almost_sure\n\n8. **Littlewood:** IsLittlewood, typical_littlewood",
     "keyInsights": [
-      "**Random ±1 Polynomials:** Littlewood polynomials with random signs",
-      "**√(n log n) Scaling:** The natural scale for maximum on circle",
-      "**C = 1:** The exact constant (Halász)",
-      "**L² vs L^∞:** Max exceeds L² norm by √(log n) factor",
-      "**Almost Sure:** Convergence with probability 1"
+      "**$\\sqrt{n \\log n}$ decomposition**: The scaling decomposes as $\\sqrt{n} \\cdot \\sqrt{\\log n}$, where $\\sqrt{n}$ is the $L^2$ norm (Parseval) and $\\sqrt{\\log n}$ is the maximum-to-$L^2$ ratio (peaking over $\\sim n$ effective degrees of freedom on the circle)",
+      "**Exact constant $C = 1$**: Halasz's result $C = 1$ means no hidden multiplicative constant -- the maximum is asymptotically exactly $\\sqrt{n \\log n}$, not $2\\sqrt{n \\log n}$ or $\\sqrt{2n \\log n}$. This required sharp two-sided bounds, not just order-of-magnitude estimates",
+      "**Random vs. deterministic**: While most Littlewood polynomials have $\\max \\approx \\sqrt{n \\log n}$ (random result), the minimum over all Littlewood polynomials is $\\Theta(\\sqrt{n \\log n})$ too -- flat polynomials with $\\max = O(\\sqrt{n})$ do not exist for large $n$",
+      "**Chaining vs. moments**: The upper bound uses the chaining technique (entropy integral), while the lower bound uses the second moment method. This two-pronged approach is paradigmatic in the theory of suprema of stochastic processes",
+      "**Almost sure convergence**: The result holds with probability 1, not just in probability. This stronger statement uses Borel-Cantelli arguments and requires careful control of the probability tails"
     ]
   },
   "sections": [
     {
-      "id": "erd-s-problem-523-maximum-of-r",
-      "title": "Erdős Problem #523: Maximum of Random Polynomials on Unit Circle",
+      "id": "header",
+      "title": "Problem Header and Imports",
       "startLine": 1,
-      "endLine": 37,
-      "summary": "Erdős Problem #523: Maximum of Random Polynomials on Unit Circle"
+      "endLine": 36,
+      "summary": "Documentation header with references to Salem-Zygmund (1954), Halasz (1973), and Erdos (1961). Imports Mathlib modules for $\\mathbb{C}$, $\\mathbb{R}$, logarithms, finite sets, and big operators."
     },
     {
       "id": "random-polynomials",
       "title": "Random Polynomials",
-      "startLine": 38,
-      "endLine": 60,
-      "summary": "Random Polynomials"
+      "startLine": 42,
+      "endLine": 59,
+      "summary": "Defines `SignVector n` ($\\pm 1$ coefficient vectors), `IsValidSign` (validity predicate), `randomPolynomial` ($f(z) = \\sum \\varepsilon_k z^k$), `maxModulus` ($\\sup_{|z|=1} |f(z)|$), and `evalOnCircle` ($f(e^{i\\theta})$)."
     },
     {
-      "id": "the-scaling-function",
+      "id": "scaling",
       "title": "The Scaling Function",
-      "startLine": 61,
-      "endLine": 72,
-      "summary": "The Scaling Function"
+      "startLine": 65,
+      "endLine": 71,
+      "summary": "Defines `expectedScale n` $= \\sqrt{n \\log n}$ and `scaledMaxModulus` $= M_n / \\sqrt{n \\log n}$, the normalized ratio whose convergence is the central question."
     },
     {
-      "id": "salem-zygmund-result",
-      "title": "Salem-Zygmund Result",
-      "startLine": 73,
-      "endLine": 88,
-      "summary": "Salem-Zygmund Result"
+      "id": "salem-zygmund",
+      "title": "Salem-Zygmund Result (1954)",
+      "startLine": 79,
+      "endLine": 87,
+      "summary": "Axiomatizes the Salem-Zygmund theorem: $\\exists c_1, c_2 > 0$ bounding $\\max |f(z)|$ between $c_1 \\sqrt{n \\log n}$ and $c_2 \\sqrt{n \\log n}$ with high probability. Establishes the order but not the exact constant."
     },
     {
-      "id": "the-erd-s-question",
-      "title": "The Erdős Question",
-      "startLine": 89,
-      "endLine": 100,
-      "summary": "The Erdős Question"
+      "id": "erdos-question",
+      "title": "The Erdos Question (1961)",
+      "startLine": 93,
+      "endLine": 99,
+      "summary": "Formalizes Erdos's question: does $\\max |f(z)| = (C + o(1))\\sqrt{n \\log n}$ almost surely for some $C > 0$?"
     },
     {
-      "id": "hal-sz-s-theorem",
-      "title": "Halász's Theorem",
-      "startLine": 101,
-      "endLine": 122,
-      "summary": "Halász's Theorem"
+      "id": "halasz-theorem",
+      "title": "Halasz's Theorem (1973)",
+      "startLine": 107,
+      "endLine": 121,
+      "summary": "The definitive answer: YES with $C = 1$. Axiomatizes `halasz_theorem`, defines `halaszConstant = 1`, and proves `erdos_523_answer` by witnessing the existential."
     },
     {
       "id": "probabilistic-framework",
       "title": "Probabilistic Framework",
-      "startLine": 123,
-      "endLine": 143,
-      "summary": "Probabilistic Framework"
+      "startLine": 128,
+      "endLine": 142,
+      "summary": "Defines `probabilitySpace`, `uniformSignDistribution`, `AlmostSureConvergence C`, and axiomatizes `halasz_almost_sure` (a.s. convergence to $C = 1$)."
     },
     {
-      "id": "properties-of-random-polynomia",
-      "title": "Properties of Random Polynomials",
-      "startLine": 144,
-      "endLine": 165,
-      "summary": "Properties of Random Polynomials"
+      "id": "l2-analysis",
+      "title": "$L^2$ Analysis and Maximum-to-$L^2$ Gap",
+      "startLine": 148,
+      "endLine": 164,
+      "summary": "Defines `L2Norm` via integration over the circle. Axiomatizes $\\|f\\|_2 = \\sqrt{n+1}$ (Parseval) and the lower bound $M \\geq \\sqrt{n \\log n}/2$, quantifying the $\\sqrt{\\log n}$ gap between $L^2$ and $L^\\infty$ norms."
     },
     {
-      "id": "littlewood-polynomials",
+      "id": "littlewood",
       "title": "Littlewood Polynomials",
-      "startLine": 166,
-      "endLine": 184,
-      "summary": "Littlewood Polynomials"
+      "startLine": 170,
+      "endLine": 183,
+      "summary": "Defines `IsLittlewood` (polynomials with $\\pm 1$ coefficients), `LittlewoodProblem` (deterministic extremal question), and axiomatizes `typical_littlewood` (most Littlewood polynomials have $\\max \\approx \\sqrt{n \\log n}$)."
     },
     {
-      "id": "upper-and-lower-bounds",
+      "id": "bounds",
       "title": "Upper and Lower Bounds",
-      "startLine": 185,
-      "endLine": 204,
-      "summary": "Upper and Lower Bounds"
+      "startLine": 189,
+      "endLine": 203,
+      "summary": "Matching bounds: `upper_bound_high_prob` ($\\max \\leq (1+\\varepsilon)\\sqrt{n \\log n}$ w.h.p.) and `lower_bound_high_prob` ($\\max \\geq (1-\\varepsilon)\\sqrt{n \\log n}$ w.h.p.). Notes proof techniques: chaining for upper, second moment for lower."
     },
     {
-      "id": "related-problems",
+      "id": "related",
       "title": "Related Problems",
-      "startLine": 205,
-      "endLine": 223,
-      "summary": "Related Problems"
+      "startLine": 210,
+      "endLine": 222,
+      "summary": "Defines `RudinConjecture` (minimum max over Littlewood polynomials), `mahlerMeasure` (geometric mean on circle), and `szegoConnection` (Toeplitz determinant link)."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 224,
-      "endLine": 255,
-      "summary": "Summary"
+      "title": "Summary: SOLVED",
+      "startLine": 238,
+      "endLine": 253,
+      "summary": "Four concluding theorems: `erdos_523`, `erdos_523_constant` ($C = 1$), `erdos_523_main`, and `erdos_523_solved`. **Status: Completely solved by Halasz (1973).**"
     }
   ],
   "conclusion": {
