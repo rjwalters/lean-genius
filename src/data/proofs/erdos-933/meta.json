@@ -57,24 +57,19 @@
     ],
     "crossReferences": [
       {
-        "id": "erdos-931",
-        "relationship": "Companion problem on same prime factor sets in products of consecutive integers. Both analyze prime factorization structure of n(n+1)···(n+k); #931 asks when consecutive blocks share the same set of prime factors, while #933 measures the {2,3}-smooth part's growth."
+        "targetId": "erdos-931",
+        "relationship": "companion",
+        "description": "Companion problem on same prime factor sets in products of consecutive integers. Both analyze prime factorization structure of n(n+1)...(n+k); #931 asks when consecutive blocks share the same set of prime factors, while #933 measures the {2,3}-smooth part's growth."
       },
       {
-        "id": "erdos-935",
-        "relationship": "Complementary study: #935 examines the 'powerful part' (r-powerful component) of consecutive products, while #933 examines the 'smooth part'. Both ask how large specific multiplicative components of n(n+1) can grow relative to n."
+        "targetId": "erdos-935",
+        "relationship": "complementary",
+        "description": "Complementary study: #935 examines the 'powerful part' (r-powerful component) of consecutive products, while #933 examines the 'smooth part'. Both ask how large specific multiplicative components of n(n+1) can grow relative to n."
       },
       {
-        "id": "erdos-929",
-        "relationship": "Studies smooth numbers in short intervals—when consecutive integers are all B-smooth. Shares the smooth number framework and Dickman function analysis; #933 focuses on {2,3}-smoothness of products rather than B-smoothness of individuals."
-      },
-      {
-        "id": "erdos-932",
-        "relationship": "Studies smooth numbers in prime gaps. Both problems involve bounding smooth numbers with restricted prime factors; #932 uses prime gap structure while #933 uses the consecutive product n(n+1)."
-      },
-      {
-        "id": "kummer-theorem",
-        "relationship": "Provides p-adic valuation techniques applicable to products of consecutive integers. The Lifting the Exponent Lemma used in #933 is closely related to Kummer's carry-counting approach for computing v_p of binomial coefficients."
+        "targetId": "kummer-theorem",
+        "relationship": "technique",
+        "description": "Provides p-adic valuation techniques applicable to products of consecutive integers. The Lifting the Exponent Lemma used in #933 is closely related to Kummer's carry-counting approach for computing v_p of binomial coefficients."
       }
     ]
   },
