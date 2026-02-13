@@ -1,0 +1,39 @@
+{
+  "id": "erdos-291",
+  "title": "Harmonic Number Divisibility",
+  "status": "completed",
+  "phase": "COMPLETE",
+  "leanFile": "proofs/Proofs/Erdos291Problem.lean",
+  "knowledge": {
+    "insights": [
+      "Leading digit characterization: p | gcd(a_n, L_n) iff p | numerator(H_k) where k = leading digit of n in base p",
+      "General family: for any prime p >= 3, (p-1)*p^k has leading digit p-1, so p | gcd for these n",
+      "Sum of inverses mod p is zero: follows from k -> k^(-1) being a bijection on units",
+      "GCD values for n=1..10: 1,1,1,1,1,3,3,3,1,1 - first gcd>1 at n=6, returns to 1 at n=9",
+      "n=6,7,8 all have gcd=3 because their leading digit in base 3 is 2 = 3-1",
+      "Second infinite family {4*5^k} gives infinitely many n with 5 | gcd",
+      "Part 1 (gcd=1 infinitely often) remains OPEN - requires understanding correlations across primes"
+    ],
+    "builtItems": [
+      "leadingDigitAux_pm1_pow: general leading digit lemma for (p-1)*p^k",
+      "leadingDigit_pm1_times_pow: for p>1, leadingDigit((p-1)*p^k, p) = p-1",
+      "five_dvd_gcd_four_pow_five: 5 | gcd for n = 4*5^k family",
+      "infinitely_many_five_dvd: {n | 5 | harmonicGCD n} is infinite",
+      "prime_dvd_gcd_pm1_pow: general theorem for all primes p >= 3",
+      "sum_inv_ZMod_eq_zero_*: verified for p = 3,5,7,11,13",
+      "small_examples_extended: computed gcd for n = 7,8,9,10",
+      "seven_gcd_one_values: 7 verified values with gcd = 1",
+      "part2_via_five: alternate proof of Part 2 using p=5 family"
+    ],
+    "mathlibGaps": [
+      "No general Wolstenholme theorem in Mathlib (need harmonic sum analysis mod p^2)",
+      "Divisibility characterization axiom not provable without detailed p-adic analysis"
+    ],
+    "nextSteps": [
+      "Prove Wolstenholme's theorem (p^2 | numerator H_{p-1}) to remove axiom",
+      "Prove the divisibility characterization to remove second axiom",
+      "Extend computational verification beyond n = 10"
+    ],
+    "progressSummary": "COMPLETE: Added generalized leading digit lemma for (p-1)*p^k, second infinite family via p=5, sum-of-inverses computational verification in ZMod, extended examples through n=10. File has 9 new theorems. Two axioms remain (Wolstenholme, characterization)."
+  }
+}
