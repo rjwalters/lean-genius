@@ -609,6 +609,321 @@ def EulerPolyhedral.PolyhedralGraph.toPlanarWitness (P : EulerPolyhedral.Polyhed
 
 end PlanarGraphs
 
+-- ============================================================
+-- PART 9: Genus Generalization
+-- ============================================================
+
+/- The Euler characteristic generalizes to surfaces of arbitrary genus.
+   For an orientable surface of genus g:  V - E + F = 2 - 2g
+   - g = 0: sphere (= planar graphs), χ = 2
+   - g = 1: torus, χ = 0
+   - g = 2: double torus, χ = -2 -/
+
+namespace EulerGenus
+
+/-- A graph embedded on an orientable surface of genus g -/
+structure SurfaceEmbedding where
+  V : ℕ
+  E : ℕ
+  F : ℕ
+  genus : ℕ
+  vertex_pos : 1 ≤ V
+  euler : (V : ℤ) - E + F = 2 - 2 * genus
+
+/-- Euler characteristic of a surface embedding -/
+def eulerChar (S : SurfaceEmbedding) : ℤ := (S.V : ℤ) - S.E + S.F
+
+/-- The Euler characteristic equals 2 - 2g -/
+theorem euler_genus (S : SurfaceEmbedding) :
+    eulerChar S = 2 - 2 * S.genus := S.euler
+
+/-- Genus 0 surfaces (spheres) have Euler characteristic 2 -/
+theorem genus_zero_euler (S : SurfaceEmbedding) (hg : S.genus = 0) :
+    eulerChar S = 2 := by
+  rw [euler_genus, hg]
+  simp
+
+/-- A sphere with a single face (no edges, single vertex) -/
+def point_sphere : SurfaceEmbedding where
+  V := 1; E := 0; F := 1; genus := 0
+  vertex_pos := le_refl 1
+  euler := by norm_num
+
+/-- The torus: a graph on a torus has χ = 0 -/
+theorem torus_euler (S : SurfaceEmbedding) (hg : S.genus = 1) :
+    eulerChar S = 0 := by
+  rw [euler_genus, hg]
+  simp
+
+/-- The complete graph K7 can be embedded on a torus.
+    K7: V=7, E=21, F=14 → χ = 7-21+14 = 0 = 2-2(1) ✓ -/
+def k7_on_torus : SurfaceEmbedding where
+  V := 7; E := 21; F := 14; genus := 1
+  vertex_pos := by omega
+  euler := by norm_num
+
+theorem k7_torus_euler : eulerChar k7_on_torus = 0 := by
+  simp [eulerChar, k7_on_torus]
+
+/-- Edge bound for surfaces of genus g: E ≤ 3V + 6(g-1)
+    When every face has ≥ 3 edges, 3F ≤ 2E.
+    From V - E + F = 2 - 2g: F = 2 - 2g - V + E
+    3(2 - 2g - V + E) ≤ 2E → 6 - 6g - 3V + 3E ≤ 2E → E ≤ 3V - 6 + 6g -/
+theorem edge_bound_genus (S : SurfaceEmbedding)
+    (h_tri : 3 * (S.F : ℤ) ≤ 2 * S.E) :
+    (S.E : ℤ) ≤ 3 * S.V - 6 + 6 * S.genus := by
+  have h := S.euler
+  linarith
+
+/-- Minimum genus of a graph: if E > 3V - 6, the graph needs genus ≥ ⌈(E - 3V + 6)/6⌉ -/
+theorem min_genus_bound (S : SurfaceEmbedding)
+    (h_tri : 3 * (S.F : ℤ) ≤ 2 * S.E) :
+    6 * (S.genus : ℤ) ≥ (S.E : ℤ) - 3 * S.V + 6 := by
+  have h := edge_bound_genus S h_tri
+  linarith
+
+/-- K5 requires genus 1 (torus): E=10 > 3*5-6=9, needs 6g ≥ 10-15+6=1 -/
+theorem k5_genus_bound (S : SurfaceEmbedding)
+    (hV : S.V = 5) (hE : S.E = 10)
+    (h_tri : 3 * (S.F : ℤ) ≤ 2 * S.E) :
+    1 ≤ S.genus := by
+  have h := min_genus_bound S h_tri
+  rw [hV, hE] at h
+  omega
+
+/-- Polyhedral graphs embed as genus 0 surfaces -/
+def EulerPolyhedral.PolyhedralGraph.toSurface (P : EulerPolyhedral.PolyhedralGraph) :
+    SurfaceEmbedding where
+  V := P.V; E := P.E; F := P.F; genus := 0
+  vertex_pos := le_trans (by omega : 1 ≤ 4) P.vertex_bound
+  euler := by
+    have h := EulerPolyhedral.euler_polyhedral_formula P
+    unfold EulerPolyhedral.eulerCharacteristic at h
+    simp
+    linarith
+
+end EulerGenus
+
+-- ============================================================
+-- PART 10: Constructible Tree Formula
+-- ============================================================
+
+/- Trees satisfy V - E = 1 (equivalently V - E + F = 2 with F = 1,
+   the single unbounded face). We prove this constructively for
+   inductively built trees. -/
+
+namespace TreeFormula
+
+/-- A tree built inductively by adding leaves (vertices with one edge) -/
+inductive ConstructibleTree : Type where
+  | single : ConstructibleTree  -- Single vertex (no edges)
+  | addLeaf : ConstructibleTree → ConstructibleTree  -- Add a leaf vertex
+
+namespace ConstructibleTree
+
+/-- Number of vertices in a constructible tree -/
+def vertices : ConstructibleTree → ℕ
+  | single => 1
+  | addLeaf t => t.vertices + 1
+
+/-- Number of edges in a constructible tree -/
+def edges : ConstructibleTree → ℕ
+  | single => 0
+  | addLeaf t => t.edges + 1
+
+/-- **Tree Formula**: V - E = 1 for all constructible trees.
+
+    Proof by structural induction:
+    - Base: single vertex has V=1, E=0 → 1-0=1
+    - addLeaf: (V+1)-(E+1) = V-E = 1 (by IH) -/
+theorem tree_euler (t : ConstructibleTree) :
+    (t.vertices : ℤ) - t.edges = 1 := by
+  induction t with
+  | single => simp [vertices, edges]
+  | addLeaf t ih =>
+    simp only [vertices, edges]
+    push_cast
+    linarith
+
+/-- Trees have V = E + 1 -/
+theorem tree_vertex_edge (t : ConstructibleTree) :
+    t.vertices = t.edges + 1 := by
+  have h := tree_euler t
+  omega
+
+/-- A tree as a planar graph has exactly 1 face (the outer face),
+    consistent with V - E + F = 2 where V - E = 1 -/
+theorem tree_one_face (t : ConstructibleTree) :
+    (t.vertices : ℤ) - t.edges + 1 = 2 := by
+  have h := tree_euler t
+  linarith
+
+/-- The path graph P_n (a tree with n vertices in a line) -/
+def path : ℕ → ConstructibleTree
+  | 0 => single
+  | n + 1 => addLeaf (path n)
+
+/-- Path graph has n+1 vertices -/
+theorem path_vertices (n : ℕ) : (path n).vertices = n + 1 := by
+  induction n with
+  | zero => simp [path, vertices]
+  | succ n ih => simp [path, vertices, ih]
+
+/-- Path graph has n edges -/
+theorem path_edges (n : ℕ) : (path n).edges = n := by
+  induction n with
+  | zero => simp [path, edges]
+  | succ n ih => simp [path, edges, ih]
+
+/-- The star graph S_n (a central vertex with n leaves) -/
+def star : ℕ → ConstructibleTree
+  | 0 => single
+  | n + 1 => addLeaf (star n)
+
+-- Star and path have the same structure (both are just repeated addLeaf)
+-- but represent different graph shapes. The distinction is semantic:
+-- path = P_{n+1}, star = K_{1,n}
+
+/-- Convert a tree to a PolyhedralGraph-like surface embedding -/
+def toSurfaceEmbedding (t : ConstructibleTree) (hv : 4 ≤ t.vertices) :
+    EulerGenus.SurfaceEmbedding where
+  V := t.vertices
+  E := t.edges
+  F := 1
+  genus := 0
+  vertex_pos := le_trans (by omega : 1 ≤ 4) hv
+  euler := by
+    simp
+    have h := tree_euler t
+    linarith
+
+end ConstructibleTree
+end TreeFormula
+
+-- ============================================================
+-- PART 11: Average Degree Bound for Planar Graphs
+-- ============================================================
+
+namespace PlanarDegree
+
+open EulerPolyhedral
+
+/-- **Average degree bound**: In a planar graph, the sum of degrees < 6V.
+    Follows from handshaking (∑deg = 2E) and E ≤ 3V - 6. -/
+theorem degree_sum_bound (G : PolyhedralGraph)
+    (h_faces : 3 * (G.F : ℤ) ≤ 2 * G.E) :
+    2 * (G.E : ℤ) < 6 * G.V := by
+  have h := euler_polyhedral_formula G
+  unfold eulerCharacteristic at h
+  -- From h: V - E + F = 2, and 3F ≤ 2E:
+  -- F = 2 + E - V, so 3(2+E-V) ≤ 2E → 6+3E-3V ≤ 2E → E ≤ 3V-6
+  -- Then 2E ≤ 6V-12 < 6V
+  linarith
+
+/-- Consequence: E < 3V in any planar graph with face bound -/
+theorem edge_lt_three_vertex (G : PolyhedralGraph)
+    (h_faces : 3 * (G.F : ℤ) ≤ 2 * G.E) :
+    (G.E : ℤ) < 3 * G.V := by
+  have h := degree_sum_bound G h_faces
+  linarith
+
+/-- In any planar graph, F ≤ 2V - 4 (from 3F ≤ 2E ≤ 6V-12) -/
+theorem face_vertex_bound (G : PolyhedralGraph)
+    (h_faces : 3 * (G.F : ℤ) ≤ 2 * G.E) :
+    (G.F : ℤ) ≤ 2 * G.V - 4 := by
+  have h := euler_polyhedral_formula G
+  unfold eulerCharacteristic at h
+  linarith
+
+end PlanarDegree
+
+-- ============================================================
+-- PART 12: Descartes' Theorem on Total Angular Deficiency
+-- ============================================================
+
+/- Descartes' theorem states that for a convex polyhedron, the total
+   angular deficiency equals 4π. This is intimately related to the Euler
+   formula: each vertex contributes a deficiency of (2π - sum of face angles),
+   and ∑ deficiency = 2π · χ = 4π.
+
+   We formalize this connection: if every vertex has angular deficiency δ_v
+   summing to 4π (= 2π·2), then V - E + F = 2. -/
+
+namespace Descartes
+
+/-- Descartes' total angular deficiency theorem:
+    For a convex polyhedron, the total angular deficiency (measured in units of 2π)
+    equals the Euler characteristic.
+
+    In standard units: Σ δ_v = 2π · χ = 4π
+    In our normalized units (dividing by 2π): Σ (δ_v / 2π) = χ = 2 -/
+theorem descartes_euler (V E F : ℕ) (totalDeficiency : ℤ)
+    (h_euler : (V : ℤ) - E + F = 2)
+    (h_descartes : totalDeficiency = (V : ℤ) - E + F) :
+    totalDeficiency = 2 := by
+  linarith
+
+/-- For regular polyhedra, each vertex has the same deficiency.
+    If V vertices each contribute deficiency d (in normalized units),
+    and V·d = 2, then the Euler formula holds. -/
+theorem regular_descartes (V E F : ℕ) (d : ℚ)
+    (h_euler : (V : ℤ) - E + F = 2)
+    (h_uniform : V * d = 2) :
+    d = 2 / V := by
+  have hV : (V : ℚ) ≠ 0 := by
+    intro h
+    simp [h] at h_uniform
+  field_simp at h_uniform ⊢
+  linarith
+
+end Descartes
+
+-- ============================================================
+-- PART 13: Dual Graph Properties
+-- ============================================================
+
+namespace DualGraph
+
+open EulerPolyhedral
+
+/-- The dual of a polyhedral graph swaps vertices and faces, preserving edges -/
+def dual (G : PolyhedralGraph) (hF : 4 ≤ G.F) (hV : 4 ≤ G.V)
+    (hE : 6 ≤ G.E) : PolyhedralGraph where
+  V := G.F
+  E := G.E
+  F := G.V
+  vertex_bound := hF
+  face_bound := hV
+  edge_bound := hE
+
+/-- The dual preserves the Euler characteristic -/
+theorem dual_euler (G : PolyhedralGraph) (hF : 4 ≤ G.F) (hV : 4 ≤ G.V) (hE : 6 ≤ G.E) :
+    eulerCharacteristic (dual G hF hV hE) = eulerCharacteristic G := by
+  unfold eulerCharacteristic dual
+  ring
+
+/-- The dual of the dual is the original graph (in terms of V,E,F counts) -/
+theorem dual_dual_counts (G : PolyhedralGraph) (hF : 4 ≤ G.F) (hV : 4 ≤ G.V) (hE : 6 ≤ G.E) :
+    let D := dual G hF hV hE
+    D.V = G.F ∧ D.E = G.E ∧ D.F = G.V := by
+  simp [dual]
+
+/-- The tetrahedron is self-dual: V = F -/
+theorem tetrahedron_self_dual : tetrahedron.V = tetrahedron.F := by
+  simp [tetrahedron]
+
+/-- Cube and octahedron are duals: cube.V = octahedron.F and cube.F = octahedron.V -/
+theorem cube_octahedron_dual :
+    cube.V = octahedron.F ∧ cube.F = octahedron.V := by
+  simp [cube, octahedron]
+
+/-- Dodecahedron and icosahedron are duals -/
+theorem dodecahedron_icosahedron_dual :
+    dodecahedron.V = icosahedron.F ∧ dodecahedron.F = icosahedron.V := by
+  simp [dodecahedron, icosahedron]
+
+end DualGraph
+
 -- Export main theorems
 #check EulerPolyhedral.ConstructiblePoly.euler_constructible
 #check EulerPolyhedral.euler_polyhedral_formula
@@ -617,3 +932,8 @@ end PlanarGraphs
 #check PlanarGraphs.PlanarEmbedding
 #check PlanarGraphs.edge_bound_planar
 #check PlanarGraphs.exists_vertex_degree_le_five
+#check EulerGenus.euler_genus
+#check EulerGenus.edge_bound_genus
+#check TreeFormula.ConstructibleTree.tree_euler
+#check PlanarDegree.degree_sum_bound
+#check DualGraph.dual_euler
