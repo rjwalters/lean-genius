@@ -13,7 +13,10 @@
       "number-theory",
       "primes",
       "totient-function",
-      "Linnik"
+      "Linnik",
+      "Dirichlet",
+      "natural-density",
+      "open-problem"
     ],
     "badge": "wip",
     "sorries": 2,
@@ -21,6 +24,7 @@
     "erdosUrl": "https://erdosproblems.com/456",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-15",
+    "dateUpdated": "2026-02-12",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
@@ -30,8 +34,18 @@
       },
       {
         "theorem": "Nat.totient",
-        "description": "Euler's totient function",
+        "description": "Euler's totient function φ(n) = |{1 ≤ k ≤ n : gcd(k,n) = 1}|",
         "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "sInf",
+        "description": "Infimum of a set of natural numbers, used for 'smallest' definitions",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets by predicates, used for density computations",
+        "module": "Mathlib.Data.Finset.Basic"
       }
     ],
     "originalContributions": [
@@ -47,73 +61,149 @@
       "Defined AlmostAll in the natural density sense",
       "Formalized all three conjectures as ErdosProblem456_Part1/2/3",
       "Stated part2_implies_part1 and part1_implies_infinitely_many (with sorry)"
+    ],
+    "references": [
+      {
+        "authors": "P. Erdős",
+        "title": "Problem statement on comparing pₙ and mₙ",
+        "venue": "erdosproblems.com/456",
+        "note": "Original three-part conjecture"
+      },
+      {
+        "authors": "P. G. L. Dirichlet",
+        "title": "Beweis des Satzes, dass jede unbegrenzte arithmetische Progression...",
+        "year": "1837",
+        "venue": "Abhandlungen der Königlich Preußischen Akademie der Wissenschaften",
+        "note": "Proved infinitely many primes in any arithmetic progression with gcd(a,d)=1"
+      },
+      {
+        "authors": "Yu. V. Linnik",
+        "title": "On the least prime in an arithmetic progression",
+        "year": "1944",
+        "venue": "Rec. Math. [Mat. Sbornik] N.S.",
+        "note": "Proved p(n) ≤ n^L for some absolute constant L (Linnik's theorem)"
+      },
+      {
+        "authors": "T. Xylouris",
+        "title": "Über die Nullstellen der Dirichletschen L-Funktionen und die kleinste Primzahl in einer arithmetischen Progression",
+        "year": "2011",
+        "venue": "PhD thesis, Universität Bonn",
+        "note": "Best known Linnik constant L ≤ 5.18"
+      }
+    ],
+    "mathContext": {
+      "field": "Number Theory",
+      "subfield": "Analytic Number Theory / Arithmetic Functions",
+      "difficulty": "advanced",
+      "keyTechniques": [
+        "Dirichlet's theorem on primes in arithmetic progressions",
+        "Linnik's theorem bounding the least prime in a progression",
+        "Euler's totient function and its preimage structure",
+        "Natural density as a measure of 'almost all'",
+        "sInf for defining 'smallest' in well-ordered sets"
+      ],
+      "prerequisites": [
+        "Euler's totient function and its multiplicativity",
+        "Dirichlet's theorem on primes in arithmetic progressions",
+        "Linnik's theorem and Linnik's constant",
+        "Natural density and the concept of 'almost all' integers",
+        "Basic properties of sInf for well-ordered sets"
+      ],
+      "consequences": [
+        "Understanding the inverse problem for Euler's totient function",
+        "Insight into how quickly one can find m with n | φ(m) compared to finding primes ≡ 1 (mod n)",
+        "Connection between additive and multiplicative structure of arithmetic progressions"
+      ],
+      "crossReferences": [
+        {
+          "proofId": "erdos-458",
+          "relationship": "Both study properties of primes in arithmetic progressions and their distribution"
+        },
+        {
+          "proofId": "euler-totient",
+          "relationship": "Uses Euler's totient function φ(n) as the central arithmetic function"
+        }
+      ]
+    },
+    "relatedProblems": [
+      {
+        "id": "erdos-458",
+        "relationship": "Primes in arithmetic progressions"
+      }
     ]
   },
   "overview": {
-    "historicalContext": "Erdős compared two natural arithmetic functions of n: pₙ, the smallest prime ≡ 1 (mod n), and mₙ, the smallest positive integer m with n | φ(m). Both functions are well-defined: pₙ exists by Dirichlet's theorem on primes in arithmetic progressions, and mₙ exists because φ(pₙ) = pₙ − 1 is divisible by n.\n\nThe inequality mₙ ≤ pₙ holds trivially, since pₙ is itself a candidate for mₙ. When n = q − 1 for prime q, we must have mₙ = pₙ = q, showing equality occurs infinitely often. However, Erdős conjectured that strict inequality mₙ < pₙ holds for 'almost all' n in the density sense, and furthermore that the ratio pₙ/mₙ diverges for almost all n.\n\nVan Doorn made the key observation that for n = 2^{2k+1}, we have mₙ ≤ 2n (since φ(2n) = n divides n trivially), while Linnik's theorem gives pₙ ≫ n^L for some constant L > 1. This provides explicit families where mₙ < pₙ. Erdős also proved that mₙ/n → ∞ for almost all n, indicating that mₙ itself grows faster than linearly.",
-    "problemStatement": "Three questions: (1) Is mₙ < pₙ for almost all n? (2) Does pₙ/mₙ → ∞ for almost all n? (3) Are there infinitely many primes p such that p−1 is the only n with mₙ = p?",
-    "proofStrategy": "We define pₙ and mₙ using sInf with their key properties axiomatised. Dirichlet's theorem ensures pₙ exists. Known results (mₙ ≤ pₙ, Linnik's bound, Erdős infinitude, van Doorn observation) are stated. The three conjectures use an AlmostAll predicate defined via natural density. Relationships between parts are stated with sorry proofs.",
+    "historicalContext": "Erdős Problem #456 compares two natural arithmetic functions of n. The first, pₙ, is the smallest prime congruent to 1 modulo n — guaranteed to exist by Dirichlet's theorem (1837) on primes in arithmetic progressions. The second, mₙ, is the smallest positive integer m such that n divides Euler's totient φ(m).\n\nPeter Gustav Lejeune Dirichlet (1805-1859) proved in 1837 that every arithmetic progression a, a+d, a+2d, ... with gcd(a,d) = 1 contains infinitely many primes. This landmark result — one of the great achievements of 19th-century number theory — ensures pₙ is well-defined. Yuri Vladimirovich Linnik (1915-1972) proved in 1944 that the smallest such prime satisfies pₙ ≤ n^L for some absolute constant L, now called Linnik's constant. The best known bound, L ≤ 5.18, was established by Triantafyllos Xylouris in his 2011 Bonn thesis, improving earlier work by Heath-Brown (L ≤ 5.5, 1992).\n\nThe trivial inequality mₙ ≤ pₙ holds because φ(pₙ) = pₙ - 1 is divisible by n (since pₙ ≡ 1 mod n), making pₙ a candidate for mₙ. Equality mₙ = pₙ occurs when n = q - 1 for a prime q: then mₙ must be at least q (since φ(m) divisible by q - 1 requires m to have a prime factor ≡ 1 mod (q-1), and q is the smallest such prime).\n\nVan Doorn observed that for n = 2^{2k+1}, we have φ(2n) = φ(2^{2k+2}) = 2^{2k+1} = n, so mₙ ≤ 2n. Since pₙ grows polynomially by Linnik's theorem, this gives explicit families where mₙ < pₙ. Erdős proved that mₙ < pₙ for infinitely many n and that mₙ/n → ∞ for almost all n.\n\nThe three open questions ask progressively stronger statements: (1) is mₙ < pₙ for almost all n (density 1), (2) does pₙ/mₙ → ∞ (the gap widens), and (3) are there infinitely many 'rigid' primes p where p - 1 is the unique n with mₙ = p?",
+    "problemStatement": "Let $p_n$ be the smallest prime $\\equiv 1 \\pmod{n}$ and $m_n$ the smallest positive $m$ with $n \\mid \\varphi(m)$.\n\n**(1)** Is $m_n < p_n$ for almost all $n$?\n\n**(2)** Does $p_n / m_n \\to \\infty$ for almost all $n$?\n\n**(3)** Are there infinitely many primes $p$ such that $p - 1$ is the only $n$ with $m_n = p$?\n\n**Status**: OPEN (all three parts)",
+    "proofStrategy": "The formalization proceeds in stages:\n\n1. **Core definitions**: $p_n$ and $m_n$ via `sInf` over appropriate sets of naturals\n2. **Dirichlet's theorem**: Axiomatized to ensure $p_n$ is well-defined for all $n \\ge 1$\n3. **Properties**: Axiomatized properties of $p_n$ (primality, congruence, minimality) and $m_n$ (positivity, divisibility, minimality)\n4. **Known results**: $m_n \\le p_n$ (trivial), Linnik's bound $p_n \\le n^L$, Erdős infinitude, van Doorn's observation\n5. **Natural density**: `AlmostAll P` defined as $|\\{n \\le M : \\neg P(n)\\}| / M \\to 0$\n6. **Three conjectures**: `ErdosProblem456_Part1/2/3` with implications Part 2 $\\Rightarrow$ Part 1 $\\Rightarrow$ infinitely many",
     "keyInsights": [
-      "**Trivial Inequality**: mₙ ≤ pₙ always holds since φ(pₙ) = pₙ − 1 is divisible by n — pₙ is a candidate for mₙ",
-      "**Linnik's Theorem**: pₙ ≤ n^L for some constant L (best known L ≈ 5.18) bounds the smallest prime in the progression",
-      "**Van Doorn Observation**: For n = 2^{2k+1}, mₙ ≤ 2n gives explicit strict inequality since pₙ grows polynomially",
-      "**Equality Cases**: When n = q−1 for prime q, necessarily mₙ = pₙ = q — Part 3 asks if these are the 'only' such cases",
-      "**Hierarchy of Conjectures**: Part 2 (ratio divergence) implies Part 1 (strict inequality), which implies infinitely many strict cases"
+      "**Trivial inequality $m_n \\le p_n$**: Since $\\varphi(p_n) = p_n - 1$ and $n \\mid p_n - 1$, the prime $p_n$ itself witnesses $n \\mid \\varphi(p_n)$, so $m_n \\le p_n$ by minimality",
+      "**Linnik's theorem**: The bound $p_n \\le n^L$ (with $L \\le 5.18$ due to Xylouris) shows $p_n$ grows at most polynomially. Meanwhile $m_n$ can be much smaller — e.g., $m_n \\le 2n$ for $n = 2^{2k+1}$",
+      "**Equality cases**: When $n = q - 1$ for prime $q$, we must have $m_n = p_n = q$. These are the 'hard' cases where the totient preimage requires a prime in the specific progression",
+      "**Van Doorn's observation**: For $n = 2^{2k+1}$, $\\varphi(2n) = 2^{2k+1} = n$, so $m_n \\le 2n \\ll p_n$. This uses the simple structure of $\\varphi$ at powers of $2$",
+      "**Hierarchy**: Part 2 ($p_n/m_n \\to \\infty$) $\\Rightarrow$ Part 1 ($m_n < p_n$ a.a.) $\\Rightarrow$ infinitely many $n$ with $m_n < p_n$. The converses likely fail, making Part 2 strictly stronger"
     ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "startLine": 28,
+      "endLine": 33,
+      "summary": "Imports `Nat.Prime.Basic` for the `Nat.Prime` predicate and `Nat.Totient` for Euler's totient function $\\varphi$. Opens `Nat` namespace for convenience."
+    },
+    {
       "id": "core-functions",
-      "title": "Core Functions",
-      "startLine": 33,
+      "title": "Core Definitions",
+      "startLine": 35,
       "endLine": 48,
-      "summary": "Defines smallestPrimeMod1 (pₙ) and smallestTotientDiv (mₙ) via sInf. States Dirichlet existence."
+      "summary": "Defines `smallestPrimeMod1 n` $= \\inf\\{p : p$ prime, $n \\mid p - 1\\}$ and `smallestTotientDiv n` $= \\inf\\{m > 0 : n \\mid \\varphi(m)\\}$ via `sInf`. Both are noncomputable (depend on Dirichlet's theorem for well-definedness)."
     },
     {
       "id": "pn-properties",
-      "title": "Properties of pₙ",
+      "title": "Properties of $p_n$",
       "startLine": 50,
       "endLine": 69,
-      "summary": "Axiomatises pₙ: primality, congruence pₙ ≡ 1 (mod n), and minimality among such primes."
+      "summary": "Axiomatizes Dirichlet's theorem (infinitely many primes $\\equiv 1 \\pmod{n}$) and three properties of $p_n$: `smallestPrimeMod1_prime` ($p_n$ is prime), `smallestPrimeMod1_cong` ($n \\mid p_n - 1$), `smallestPrimeMod1_minimal` ($p_n \\le p$ for any prime $p \\equiv 1$)."
     },
     {
       "id": "mn-properties",
-      "title": "Properties of mₙ",
+      "title": "Properties of $m_n$",
       "startLine": 71,
       "endLine": 86,
-      "summary": "Axiomatises mₙ: positivity, n | φ(mₙ), and minimality among candidates."
+      "summary": "Axiomatizes three properties of $m_n$: `smallestTotientDiv_pos` ($m_n > 0$), `smallestTotientDiv_divides` ($n \\mid \\varphi(m_n)$), `smallestTotientDiv_minimal` ($m_n \\le m$ for any $m > 0$ with $n \\mid \\varphi(m)$)."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 88,
       "endLine": 118,
-      "summary": "States mₙ ≤ pₙ, Linnik's bound pₙ ≤ n^L, Erdős infinitude result, mₙ/n → ∞, and van Doorn's power-of-two observation."
+      "summary": "States five known results: `m_le_p` ($m_n \\le p_n$, trivial), `linnik_bound` ($p_n \\le n^L$), `erdos_strict_inequality` ($m_n < p_n$ infinitely often), `m_over_n_diverges` ($m_n/n \\to \\infty$ a.a.), `van_doorn_power_of_two` ($m_n \\le 2n$ for $n = 2^{2k+1}$)."
     },
     {
       "id": "density",
       "title": "Natural Density",
       "startLine": 120,
       "endLine": 128,
-      "summary": "Defines AlmostAll via natural density: P holds for all but a density-0 set."
+      "summary": "Defines `AlmostAll P`: $\\forall \\varepsilon > 0,\\, \\exists N,\\, \\forall M \\ge N,\\, |\\{n < M : \\neg P(n)\\}| < M$. This encodes 'the exceptional set has density $0$' in the natural density sense."
     },
     {
       "id": "conjectures",
-      "title": "The Erdős Conjectures",
+      "title": "The Three Erdős Conjectures",
       "startLine": 130,
       "endLine": 167,
-      "summary": "Three open questions: Part 1 (almost-all strict inequality), Part 2 (ratio divergence), Part 3 (unique preimage primes). States Part 2 ⇒ Part 1 ⇒ infinitely many (with sorry)."
+      "summary": "Defines `ErdosProblem456_Part1`: $m_n < p_n$ for a.a. $n$. `Part2`: $p_n/m_n \\to \\infty$ for a.a. $n$ (formalized as $\\forall C,\\, C \\cdot m_n \\le p_n$ a.a.). `Part3`: infinitely many 'rigid' primes $p$ with unique preimage $n = p - 1$. States `part2_implies_part1` (sorry) and `part1_implies_infinitely_many` (sorry)."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem 456 explores the comparative growth of pₙ and mₙ through three progressively stronger conjectures. Known results establish mₙ ≤ pₙ, Linnik's polynomial bound, and van Doorn's explicit strict inequality family. All three conjectures remain open.",
-    "implications": "Resolving these questions would illuminate the relationship between Dirichlet primes in arithmetic progressions and the preimage structure of Euler's totient function, connecting analytic number theory to inverse problems in arithmetic.",
+    "summary": "Erdős Problem #456 explores the comparative growth of pₙ (smallest prime ≡ 1 mod n) and mₙ (smallest m with n | φ(m)) through three progressively stronger conjectures. Known results establish mₙ ≤ pₙ trivially, Linnik's polynomial bound on pₙ, and van Doorn's explicit strict inequality family for powers of 2. All three conjectures remain open.",
+    "implications": "Resolving these questions would illuminate the relationship between Dirichlet primes in arithmetic progressions and the preimage structure of Euler's totient function. Part 1 would show that for 'generic' n, finding an m with n | φ(m) is easier than finding a prime in the progression. Part 2 would quantify how much easier. Part 3 connects to Carmichael's totient conjecture and the inverse totient problem.",
     "openQuestions": [
-      "Is mₙ < pₙ for almost all n?",
-      "Does pₙ/mₙ → ∞ for almost all n?",
-      "Are there infinitely many primes p where p−1 is the unique n with mₙ = p?",
-      "What is the typical growth rate of pₙ/mₙ?",
-      "Can sieve methods or the Bombieri-Vinogradov theorem make progress on Part 1?"
+      "Is mₙ < pₙ for almost all n? (Part 1)",
+      "Does pₙ/mₙ → ∞ for almost all n? (Part 2)",
+      "Are there infinitely many primes p where p−1 is the unique n with mₙ = p? (Part 3)",
+      "What is the typical growth rate of pₙ/mₙ — polynomial, exponential, or something else?",
+      "Can the Bombieri-Vinogradov theorem or large sieve make progress on Part 1?"
     ]
   }
 }
