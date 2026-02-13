@@ -351,9 +351,13 @@ example : ∃ B : Set ℕ, HasDensityZero B ∧
     exact Nat.pow_right_injective (by norm_num : 1 < 2)
   exact lorentz_theorem _ hA_inf
 
-/-- For A = primes, Lorentz's construction gives a very sparse B. -/
-axiom primes_have_sparse_complement :
-    ∃ B : Set ℕ, HasDensityZero B ∧ CoversAllButFinitely {n : ℕ | n.Prime} B
+/-- For A = primes, Lorentz's construction gives a very sparse B.
+
+**Proof**: Apply Lorentz's theorem to the primes, which are infinite
+by Euclid's theorem (`Nat.infinite_setOf_prime`). -/
+theorem primes_have_sparse_complement :
+    ∃ B : Set ℕ, HasDensityZero B ∧ CoversAllButFinitely {n : ℕ | n.Prime} B :=
+  lorentz_theorem _ Nat.infinite_setOf_prime
 
 /- ## Stronger Results
 
