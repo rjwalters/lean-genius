@@ -77,7 +77,14 @@
       "Connection to Erdős-Hajnal conjecture on forbidden induced subgraphs"
     ],
     "relatedProblems": [
-      "ramseys-theorem"
+      {
+        "id": "ramseys-theorem",
+        "relationship": "Ramsey's theorem provides the existential foundation: random graphs G(n,1/2) satisfy the Ramsey condition ω,α ≤ O(log n), guaranteeing the graphs studied in Problem #636 exist in abundance"
+      },
+      {
+        "id": "erdos-637",
+        "relationship": "Companion problem on distinct degree sequences (rather than signatures) in induced subgraphs of Ramsey graphs — both study the structural complexity forced by the Ramsey condition"
+      }
     ]
   },
   "overview": {
