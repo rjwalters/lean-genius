@@ -43,23 +43,28 @@
     "references": [
       {
         "key": "Beeson",
-        "citation": "Beeson, M. Proof that 7 and 11 are not dissectable into congruent triangles.",
+        "citation": "Beeson, M. 'Triangle Tiling I: The tile is an acute triangle or a right triangle.' (2012). Proves that 7 and 11 are not dissectable into congruent triangles via exhaustive geometric case analysis.",
         "type": "paper"
       },
       {
         "key": "Soifer",
-        "citation": "Soifer, A. Similar triangle dissections: all n except 2, 3, 5 work.",
-        "type": "paper"
+        "citation": "Soifer, A. 'How Does One Cut a Triangle?' (1990, 2nd ed. 2009). Springer. Complete solution for similar triangle dissections: all n ≥ 1 except 2, 3, 5.",
+        "type": "book"
       },
       {
         "key": "SWW",
-        "citation": "Snover, S., Waiveris, C., and Williams, J. Rep-tiles revisited: self-similar dissections.",
+        "citation": "Snover, S., Waiveris, C., and Williams, J. 'Rep-Tiling for Triangles.' Discrete Mathematics 91(2), 193–200 (1991). Characterizes which n allow dissection into n similar copies of the original triangle.",
         "type": "paper"
       },
       {
         "key": "Zhang2025",
-        "citation": "Zhang (2025). On sufficient conditions for triangle dissectability.",
+        "citation": "Zhang (2025). 'On sufficient conditions for triangle dissectability.' Establishes that for fixed aspect ratios, sufficiently large n²ab are dissectable.",
         "type": "paper"
+      },
+      {
+        "key": "ErdosGraham",
+        "citation": "Erdős, P. and Graham, R.L. 'Old and New Problems and Results in Combinatorial Number Theory.' L'Enseignement Mathématique, Monograph 28 (1980). Contains the original problem statement.",
+        "type": "book"
       }
     ],
     "originalContributions": [
@@ -75,106 +80,113 @@
     "relatedProblems": ["erdos-633"]
   },
   "overview": {
-    "historicalContext": "**Triangle Dissection Problem**\n\nErdős asked: for which n can some triangle be dissected into n congruent (same size and shape) triangular pieces?\n\n**Known Positive Results**: Perfect squares k² (divide sides into k parts), plus 2k², 3k², 6k², and sums of two squares k²+m². Also 27 via special construction.\n\n**Known Negative Results**: Beeson proved 7 and 11 are impossible.\n\n**The Similar Case**: Soifer completely solved the analogous problem for similar (not congruent) triangles: all n except 2, 3, 5 work.\n\n**Open**: Whether 19 works remains unknown. A $25 prize is offered for a complete characterization.",
-    "problemStatement": "**Problem Statement**\n\nFind all positive integers n such that there exists at least one triangle which can be dissected into n congruent triangles.\n\n**Status**: OPEN ($25 prize)\n\n**Known**: Works for k², 2k², 3k², 6k², k²+m², 27. Fails for 7, 11. Unknown for 19.",
-    "proofStrategy": "**The Formalization**\n\n1. Defines triangles via side lengths (a, b, c) with triangle inequality\n2. Defines congruence as equality of side length multisets\n3. Defines similar triangles (proportional sides)\n4. Defines dissection structure and congruent dissection\n5. States positive results for various n forms\n6. Axiomatizes Beeson's impossibility proofs for 7, 11\n7. States the 4k+3 prime conjecture\n8. Covers Soifer's theorem on similar dissections\n9. Covers Snover-Waiveris-Williams self-similar characterization\n10. Analyzes the open case n = 19",
+    "historicalContext": "**Triangle Dissection Problem — A Bridge Between Geometry and Number Theory**\n\nPaul Erdős posed this problem with a $25 prize, asking for a complete characterization of which positive integers $n$ allow some triangle to be dissected into $n$ congruent triangles. The problem appears in Erdős and Graham's 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory*.\n\n**Known Positive Results**: The most natural construction uses **grid subdivision**: dividing each side of a triangle into $k$ equal parts produces $k^2$ congruent triangles. More sophisticated constructions yield $2k^2$ (via right triangle reflections), $3k^2$ (via equilateral triangle trisections), $6k^2$ (combining both), and $k^2 + m^2$ (via a two-scale grid). The special case $n = 27$ also works via an equilateral triangle construction that does not fit any of these parametric families.\n\n**Known Negative Results**: Michael Beeson proved in 2012 that no triangle can be dissected into exactly 7 or 11 congruent triangles, using exhaustive geometric case analysis of the possible edge-matching patterns at vertices. Both 7 and 11 are primes of the form $4k + 3$, which led to the conjecture that all such primes (except 3, which is $3 \\cdot 1^2$) are non-dissectable.\n\n**The Similar Case**: Alexander Soifer completely solved the analogous problem for *similar* (rather than congruent) triangles in his 1990 book *How Does One Cut a Triangle?*: all $n \\geq 1$ except 2, 3, and 5 admit similar dissections. The stark contrast between the similar and congruent cases highlights how rigidity (disallowing scaling) fundamentally changes the combinatorics.\n\n**Open**: The case $n = 19$ (the next prime of form $4k + 3$) remains unknown, and the complete characterization is still open with the $25 prize unclaimed.",
+    "problemStatement": "**Problem Statement**\n\nFind all positive integers $n$ such that there exists at least one triangle which can be dissected into $n$ congruent triangles.\n\n**Formally**: Characterize $\\{ n \\in \\mathbb{N} : \\exists \\, T, \\, T \\text{ can be partitioned into } n \\text{ congruent triangles} \\}$.\n\n**Status**: OPEN ($25 prize)\n\n**Known**: Works for $k^2$, $2k^2$, $3k^2$, $6k^2$, $k^2 + m^2$, and $27$. Fails for 7 and 11. Unknown for 19.",
+    "proofStrategy": "**The Formalization Strategy**\n\nThe formalization takes a **structural approach**, building up from basic geometric primitives to the full problem statement:\n\n1. **Triangle representation**: Triangles are defined by their three side lengths $(a, b, c)$ satisfying positivity and the triangle inequality, abstracting away coordinates\n2. **Congruence via multisets**: Two triangles are congruent if their side-length multisets $\\{a, b, c\\}$ agree — this elegantly handles all six orderings without explicit permutations\n3. **Dissection structure**: A dissection of $T$ into $n$ pieces is modeled as a function $\\text{Fin}\\, n \\to \\text{Triangle}$ with an area constraint\n4. **Separation of concerns**: Known results are stated as individual theorems with `sorry` (positive cases) or `axiom` (Beeson's negative results), cleanly separating what is constructive from what requires deep geometric arguments\n5. **The conjecture**: The $4k+3$ conjecture is stated as a Lean proposition, with the exception for $p = 3$ handled explicitly\n6. **Comparative analysis**: The formalization also covers Soifer's complete solution for similar dissections and the Snover–Waiveris–Williams characterization of self-similar dissections, providing context for the harder congruent case",
     "keyInsights": [
-      "Congruent dissection is much harder than similar dissection",
-      "Perfect squares k² always work (grid subdivision)",
-      "7 and 11 are the only known failures - both are primes of form 4k+3",
-      "The conjecture: primes of form 4k+3 (except 3) never work",
-      "19 is the smallest open case (also prime of form 4k+3)",
-      "For similar triangles, only 2, 3, 5 fail (Soifer)"
+      "**Multiset congruence** captures triangle congruence without coordinates: $\\{a, b, c\\} = \\{a', b', c'\\}$ naturally handles all six possible side orderings, making the equivalence relation trivially reflexive, symmetric, and transitive",
+      "**Grid subdivision** is the fundamental positive construction: dividing each side of any triangle into $k$ equal segments yields $k^2$ congruent sub-triangles via barycentric coordinates, which is why perfect squares are always dissectable",
+      "**The 4k+3 pattern** connects dissectability to quadratic residues: integers representable as sums of two squares are exactly those whose prime factorization has all $4k+3$ primes appearing to even powers (Fermat's theorem on sums of two squares), mirroring the structure of known dissectable values",
+      "**Congruence vs. similarity gap**: Soifer's complete answer ($n \\neq 2, 3, 5$) for similar dissections shows that scaling freedom eliminates most obstructions — the congruence constraint forces exact edge matching at every vertex, creating rigid combinatorial constraints",
+      "**27 as an outlier**: The dissectability of 27 = $3^3$ shows the problem is not purely about quadratic forms — this special equilateral construction does not fit the $k^2$, $2k^2$, $3k^2$, or $k^2 + m^2$ families, suggesting additional sufficient conditions may exist",
+      "**Self-similar vs. congruent**: The Snover–Waiveris–Williams theorem restricts self-similar dissections (pieces similar to the original) to $n \\in \\{k^2, k^2 + m^2, 3k^2\\}$ — a much tighter characterization than the general congruent case"
     ]
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Header and Imports",
+      "summary": "Documentation of Erdős Problem #634 with known results, references, and Mathlib import for access to multisets, big operators, and primality.",
+      "startLine": 1,
+      "endLine": 34
+    },
+    {
       "id": "triangles",
       "title": "Triangles and Congruence",
-      "summary": "Basic geometric definitions",
+      "summary": "Defines the `Triangle` structure via side lengths $(a, b, c) \\in \\mathbb{R}_{>0}$ satisfying the triangle inequality, and `Congruent` as multiset equality $\\{a, b, c\\} = \\{a', b', c'\\}$, with proofs that congruence is reflexive, symmetric, and transitive.",
       "startLine": 36,
       "endLine": 66
     },
     {
       "id": "similar",
       "title": "Similar Triangles",
-      "summary": "Weaker notion than congruence",
+      "summary": "Defines `Similar` as proportionality of side lengths ($\\exists k > 0$, $T_2 = k \\cdot T_1$) and states that congruent triangles are similar (with scaling factor $k = 1$).",
       "startLine": 68,
       "endLine": 81
     },
     {
       "id": "dissection",
       "title": "Triangle Dissection",
-      "summary": "Central definition of the problem",
+      "summary": "Central definitions: `Dissection T n` as a function $\\text{Fin}\\, n \\to \\text{Triangle}$ with area constraint, `IsCongruentDissection` requiring all pieces mutually congruent, and `IsDissectable n` asserting existence of some triangle admitting such a dissection.",
       "startLine": 83,
       "endLine": 101
     },
     {
       "id": "positive",
       "title": "Known Positive Results",
-      "summary": "Values that ARE dissectable",
+      "summary": "Theorems asserting dissectability for $k^2$ (grid subdivision), $2k^2$, $3k^2$ (equilateral trisection), $6k^2$, $k^2 + m^2$ (two-scale grids), and the special case $27$ — all with `sorry` proofs pending geometric constructions.",
       "startLine": 103,
       "endLine": 132
     },
     {
       "id": "beeson",
       "title": "Beeson's Negative Results",
-      "summary": "7 and 11 are NOT dissectable",
+      "summary": "Axiomatizes Beeson's 2012 results: $\\neg\\text{IsDissectable}\\, 7$ and $\\neg\\text{IsDissectable}\\, 11$, plus the proven observation that both 7 and 11 are primes of the form $4k + 3$.",
       "startLine": 134,
       "endLine": 156
     },
     {
       "id": "conjecture",
       "title": "The 4k+3 Conjecture",
-      "summary": "Primes of form 4k+3 may fail",
+      "summary": "States the conjecture that primes of form $4k + 3$ are non-dissectable, with the refined version excluding $p = 3$ (since $3 = 3 \\cdot 1^2$ is dissectable). Proves $3$ is dissectable by specializing `three_squares_dissectable`.",
       "startLine": 158,
       "endLine": 176
     },
     {
       "id": "open",
       "title": "Open Cases",
-      "summary": "19 is the smallest unknown",
+      "summary": "Analyzes $n = 19$: proves it is prime (`by decide`), of form $4 \\cdot 4 + 3$, and that the refined $4k+3$ conjecture would imply $\\neg\\text{IsDissectable}\\, 19$.",
       "startLine": 178,
       "endLine": 196
     },
     {
       "id": "soifer",
-      "title": "Similar Triangles (Soifer)",
-      "summary": "Complete answer for similar case",
+      "title": "Similar Triangles (Soifer's Result)",
+      "summary": "Defines `IsSimilarDissection` and `IsSimilarDissectable`, then axiomatizes Soifer's complete theorem: all $n \\geq 1$ except $2, 3, 5$ admit similar dissections, with the three exceptions also axiomatized.",
       "startLine": 198,
       "endLine": 223
     },
     {
       "id": "self-similar",
-      "title": "Self-Similar Dissections",
-      "summary": "Snover-Waiveris-Williams theorem",
+      "title": "Self-Similar Dissections (Snover–Waiveris–Williams)",
+      "summary": "Defines `IsSelfSimilarDissection` (pieces similar to the original) and axiomatizes the SWW characterization: $n$ is self-similar-dissectable iff $n \\in \\{k^2\\} \\cup \\{k^2 + m^2\\} \\cup \\{3k^2\\}$.",
       "startLine": 225,
       "endLine": 245
     },
     {
       "id": "recent",
-      "title": "Recent Progress",
-      "summary": "Zhang (2025) and other developments",
+      "title": "Recent Progress (Zhang 2025)",
+      "summary": "Axiomatizes Zhang's 2025 result on sufficient conditions: for fixed $a \\geq b \\geq 1$, all sufficiently large $n^2 a b$ are dissectable. Also defines `KnownDissectable` as the union of all known parametric families.",
       "startLine": 247,
       "endLine": 263
     },
     {
       "id": "main-result",
-      "title": "Main Results",
-      "summary": "Erdős Problem #634 partial answer",
+      "title": "Main Results — Erdős Problem #634",
+      "summary": "The partial answer theorem `erdos_634_partial`: $\\forall k \\geq 1, \\text{IsDissectable}(k^2) \\wedge \\neg\\text{IsDissectable}\\, 7 \\wedge \\neg\\text{IsDissectable}\\, 11$, combining the grid subdivision theorem with Beeson's axioms.",
       "startLine": 265,
       "endLine": 313
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #634 asks for which n some triangle can be dissected into n congruent triangles. OPEN: Known to work for k², 2k², 3k², 6k², k²+m², 27. Known to fail for 7, 11 (Beeson). The case n=19 and complete characterization remain open with a $25 prize.",
-    "implications": "**Theoretical Significance**\n\n1. **Geometry vs Number Theory**: Dissectability connects geometry to number-theoretic properties (4k+3 primes)\n\n2. **Congruence vs Similarity**: The similar problem is completely solved; congruence is much harder\n\n3. **Algorithmic Questions**: No known algorithm to decide dissectability for arbitrary n\n\n4. **Open Prize Problem**: One of the remaining Erdős problems with unclaimed prize",
+    "summary": "Erdős Problem #634 asks for a complete characterization of which positive integers $n$ allow some triangle to be dissected into $n$ congruent triangles. The formalization captures the known positive results ($k^2$, $2k^2$, $3k^2$, $6k^2$, $k^2 + m^2$, 27), Beeson's impossibility proofs for 7 and 11, the $4k+3$ prime conjecture, Soifer's complete solution for similar dissections, and the Snover–Waiveris–Williams characterization of self-similar dissections.",
+    "implications": "**Theoretical Significance**\n\n1. **Geometry–Number Theory Bridge**: The pattern that non-dissectable values are primes of form $4k + 3$ connects dissection geometry to quadratic residues and Fermat's theorem on sums of two squares — integers not representable as $a^2 + b^2$ are exactly those with a $4k+3$ prime factor appearing to an odd power\n\n2. **Rigidity vs. Flexibility**: The contrast between the completely solved similar case (only 3 exceptions) and the wide-open congruent case demonstrates how removing even one degree of freedom (scaling) can transform a tractable problem into a deep open question\n\n3. **Constructive vs. Obstructive Arguments**: The positive results are constructive (explicit dissections), while the negative results require exhaustive case analysis — no unified obstruction theory exists\n\n4. **Computational Aspects**: Beeson's proofs for 7 and 11 use computer-assisted exhaustive search over vertex configurations — extending this to 19 would require significantly more computational resources",
     "openQuestions": [
-      "Is 19 dissectable? (smallest unknown case)",
-      "Complete characterization of dissectable n?",
-      "Is the 4k+3 prime conjecture true?",
-      "What is the density of dissectable numbers?",
-      "Are there infinitely many non-dissectable n?"
+      "Is 19 dissectable into congruent triangles? This is the smallest unknown case and the next prime of form $4k + 3$ after 7 and 11",
+      "Is the $4k+3$ prime conjecture true? If so, it would give a clean number-theoretic characterization of non-dissectable primes",
+      "Are there non-prime non-dissectable values, or is non-dissectability purely a prime phenomenon?",
+      "What is the asymptotic density of dissectable numbers? The known families $k^2, 2k^2, 3k^2, k^2 + m^2$ have density zero individually, but their union may cover a positive fraction of integers",
+      "Can Beeson's computer-assisted methods scale to $n = 19$, or does a fundamentally new approach (perhaps algebraic or topological) need to be developed?"
     ]
   }
 }
