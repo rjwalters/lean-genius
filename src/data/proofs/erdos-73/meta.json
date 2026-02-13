@@ -21,106 +21,157 @@
     "erdosNumber": 73,
     "erdosUrl": "https://erdosproblems.com/73",
     "erdosProblemStatus": "solved",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "SimpleGraph.Basic", "description": "Simple graph structure with adjacency relation", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
+      { "theorem": "SimpleGraph.Subgraph", "description": "Induced subgraphs for the hereditary condition", "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph" },
+      { "theorem": "Walk.IsCycle", "description": "Cycle detection for the odd cycle characterization", "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting" },
+      { "theorem": "Finset.card", "description": "Cardinality of finite sets for independence number", "module": "Mathlib.Data.Finset.Card" }
+    ],
+    "references": [
+      {
+        "key": "Re1999",
+        "citation": "Reed, B. (1999). Mangoes and Blueberries. Combinatorica 19(2), 267–296.",
+        "type": "paper"
+      },
+      {
+        "key": "EP1965",
+        "citation": "Erdős, P. and Pósa, L. (1965). On independent circuits contained in a graph. Canadian Journal of Mathematics 17, 347–352.",
+        "type": "paper"
+      },
+      {
+        "key": "Gy1987",
+        "citation": "Gyárfás, A. (1987). Problems from the world surrounding perfect graphs. Zastosowania Matematyki 19, 413–441.",
+        "type": "paper"
+      },
+      {
+        "key": "ErdosProblems",
+        "citation": "Erdős Problems. Problem #73.",
+        "type": "website"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of IsIndependentSet and independenceNumber for SimpleGraph",
+      "Definition of k-independence condition (satisfiesIndependenceCondition)",
+      "Definition of IsBipartite via vertex partition into independent sets",
+      "Odd cycle characterization axiom (bipartite_iff_no_odd_cycle)",
+      "Definition of isAlmostBipartite and bipartiteDeficiency",
+      "Axiomatization of Reed's theorem with reed_bound function",
+      "Proved erdos_73_solved from reed_theorem",
+      "Triangle (K_3) as concrete non-bipartite example",
+      "Chromatic number connection via almost_bipartite_chromatic"
+    ],
     "relatedProblems": [
       {
         "id": "erdos-922",
-        "relationship": "Related problem on independent sets in graphs"
+        "relationship": "thematic",
+        "description": "Related problem on independent sets in graphs"
+      },
+      {
+        "id": "erdos-106",
+        "relationship": "thematic",
+        "description": "Graph coloring and chromatic number — connected via $\\chi$-boundedness"
+      },
+      {
+        "id": "erdos-47",
+        "relationship": "thematic",
+        "description": "Ramsey-type problems in graph theory — similar flavor of local-to-global structural results"
       }
     ]
   },
   "overview": {
-    "historicalContext": "**The 'Mangoes and Blueberries' Theorem**\n\nThis problem characterizes graphs that are 'almost bipartite' through the lens of independent sets. The colorful name comes from Reed's 1999 paper in Combinatorica, which solved this and related problems.\n\n**The Bipartite Connection**: Bipartite graphs have the property that every subgraph on n vertices has an independent set of size at least n/2 (just take one side of the bipartition). Erdős asked: if we allow this bound to be off by k/2, does this force the graph to be bipartite plus a bounded number of 'exceptional' vertices?\n\n**The Trivial Case**: When k=0, the answer is immediate. If G isn't bipartite, it contains an odd cycle. An odd cycle on 2m+1 vertices has independence number m, which is less than (2m+1)/2. So any non-bipartite graph fails the k=0 condition.\n\n**Reed's Contribution**: The general case k ≥ 1 required sophisticated structural analysis, showing that graphs satisfying the condition decompose into a bipartite 'core' plus O_k(1) vertices.",
-    "problemStatement": "**Problem Statement**\n\nLet k ≥ 0. Let G be a graph such that every subgraph H on n vertices contains an independent set of size ≥ (n-k)/2. Must G be the union of a bipartite graph and O_k(1) many vertices?\n\n**Notation**: O_k(1) means a constant depending only on k, not on the size of G.\n\n**Intuition**: The condition says every subgraph is 'close to bipartite' in terms of independence number. The question asks if this local property forces a global structure.\n\n**Answer**: YES. Reed proved that such graphs can be decomposed into a bipartite graph plus at most f(k) additional vertices for some function f.",
-    "proofStrategy": "**Proof Approach (Reed 1999)**\n\nReed's proof in 'Mangoes and Blueberries' uses structural graph theory techniques:\n\n1. **Extremal Analysis**: Consider a minimal counterexample - a graph G satisfying the independence condition but requiring many non-bipartite vertices.\n\n2. **Odd Cycle Structure**: Analyze how odd cycles can coexist in G. The independence condition severely restricts their interaction.\n\n3. **Vertex Removal**: Show that removing a bounded number of vertices eliminates all odd cycles, leaving a bipartite graph.\n\n4. **Bounding the Exception Set**: Prove the bound on exceptional vertices depends only on k, not on |V(G)|.\n\n**Key Technique**: The proof leverages the fact that odd cycles of different lengths that share vertices create subgraphs with small independence number, which the condition forbids.",
+    "historicalContext": "**Origins: Independence and Bipartiteness**\n\nThe connection between independence number and bipartiteness is classical: a graph $G$ is bipartite if and only if $\\alpha(G[S]) \\ge |S|/2$ for every induced subgraph $G[S]$. This follows from the odd cycle characterization — an odd cycle $C_{2m+1}$ has $\\alpha = m < (2m+1)/2$, so any non-bipartite graph violates the condition.\n\n**Erdős's Question**\n\nErdős asked a natural structural question: if we relax the condition to $\\alpha(G[S]) \\ge (|S| - k)/2$ for some fixed $k \\ge 0$, must $G$ still be 'close to bipartite'? Specifically, can $G$ be made bipartite by removing at most $f(k)$ vertices, where $f(k)$ depends only on $k$ and not on $|V(G)|$? The power of this question lies in the quantifier structure — a fixed finite bound controlling an arbitrarily large graph.\n\n**Reed's Solution (1999)**\n\nBruce Reed proved the affirmative answer in his paper 'Mangoes and Blueberries' (Combinatorica 1999). The proof uses the Erdős-Pósa theorem for odd cycles: the $k$-independence condition bounds the number of vertex-disjoint odd cycles in $G$, and bounded packing implies a bounded transversal (a set of vertices hitting all odd cycles). Reed's bound is $f(k) \\le 2^k$, but the optimal growth rate remains unknown.\n\n**Significance**\n\nThe result is a prototype for structural graph theory results showing that 'approximate' satisfaction of a property (bipartiteness) forces 'approximate' structure (few exceptional vertices). This paradigm appears throughout the Graph Minors Project of Robertson and Seymour.",
+    "problemStatement": "**Problem Statement**\n\nLet $k \\ge 0$. Let $G$ be a graph such that every induced subgraph $H$ on $n$ vertices contains an independent set of size $\\ge (n-k)/2$. Must $G$ be the union of a bipartite graph and $O_k(1)$ many vertices?\n\n**Notation**: $O_k(1)$ means a constant depending only on $k$, not on the size of $G$.\n\n**Answer**: YES. Reed proved that such graphs can be decomposed into a bipartite graph plus at most $f(k) \\le 2^k$ additional vertices.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Graph primitives**: Defines `IsIndependentSet`, `independenceNumber`, `IsBipartite` directly on `SimpleGraph V` with `Fintype V`\n2. **The condition**: `satisfiesIndependenceCondition G k` quantifies over all subsets $S$ of the finite vertex set\n3. **Almost-bipartite structure**: `isAlmostBipartite G bound` and `bipartiteDeficiency G` capture vertex-deletion distance to bipartiteness\n4. **Reed's theorem**: Axiomatized via `reed_bound : ℕ → ℕ` and `reed_theorem`, with `erdos_73_solved` proved by unpacking\n5. **Special cases**: The $k = 0$ base case and $K_3$ example provide concrete verification\n6. **Coloring connection**: Links to chromatic number via $\\chi(G) \\le f(k) + 2$",
     "keyInsights": [
-      "The k=0 case reduces to: 'every subgraph has independence number ≥ n/2' implies bipartite",
-      "Odd cycles are the obstruction to bipartiteness, and the independence condition limits their structure",
-      "The bound O_k(1) is crucial - it's independent of graph size, showing the condition has strong global implications",
-      "The problem connects independence number (a global property) to bipartiteness (a structural property)",
-      "Reed's paper also addressed related 'fractional' versions of this question"
+      "**Local-to-global**: The $k$-independence condition is a local property (holds for all subgraphs) that forces a global structure (bipartite plus bounded exceptions)",
+      "**Odd cycles as obstructions**: The only obstruction to bipartiteness is odd cycles, and the $k$-independence condition limits how many vertex-disjoint odd cycles can exist",
+      "**Erdős-Pósa connection**: Reed's proof crucially uses the Erdős-Pósa theorem (1965) — bounded packing of odd cycles implies bounded transversal",
+      "**$\\chi$-boundedness**: The result implies $\\chi(G) \\le f(k) + 2$, placing this in the framework of Gyárfás's $\\chi$-bounded graph families",
+      "**Quantifier structure**: The bound $f(k)$ depends only on $k$, not on $|V(G)|$ — this uniformity is the deep content of the theorem",
+      "**Exponential gap**: Reed's bound $f(k) \\le 2^k$ is likely not optimal — whether polynomial bounds suffice is open"
     ]
   },
   "sections": [
     {
       "id": "independent-sets",
-      "title": "Independent Sets",
+      "title": "Independent Sets and $\\alpha(G)$",
       "startLine": 39,
       "endLine": 58,
-      "summary": "Definition of independent sets and independence number"
+      "summary": "Defines `IsIndependentSet` and `independenceNumber` $\\alpha(G)$. Proves basic properties: empty set and singletons are independent."
     },
     {
       "id": "independence-condition",
-      "title": "The Independence Condition",
+      "title": "The $k$-Independence Condition",
       "startLine": 60,
       "endLine": 70,
-      "summary": "The k-independence condition that defines 'almost bipartite' behavior"
+      "summary": "Defines `satisfiesIndependenceCondition G k`: $\\alpha(G[S]) \\ge (|S| - k)/2$ for all $S$. The $k = 0$ case is `satisfiesStrictCondition`."
     },
     {
       "id": "bipartite",
-      "title": "Bipartite Graphs",
+      "title": "Bipartite Graphs and Odd Cycles",
       "startLine": 72,
       "endLine": 86,
-      "summary": "Definition of bipartite graphs and characterization via odd cycles"
+      "summary": "Defines `IsBipartite` via vertex partition and `hasNoOddCycle`. Axiomatizes the classical equivalence $G$ bipartite $\\iff$ no odd cycles."
     },
     {
       "id": "trivial-case",
-      "title": "The Trivial k=0 Case",
+      "title": "The Trivial $k = 0$ Case",
       "startLine": 88,
       "endLine": 113,
-      "summary": "Why odd cycles violate the strict condition"
+      "summary": "Axiomatizes $\\alpha(C_{2m+1}) = m$. Proves $2m < 2m+1$ (odd cycles violate strict condition). States `trivial_case` (sorry): strict condition $\\Rightarrow$ bipartite."
     },
     {
       "id": "almost-bipartite",
       "title": "Almost Bipartite Structure",
       "startLine": 115,
       "endLine": 129,
-      "summary": "Definition of f(k)-almost-bipartite and bipartite deficiency"
+      "summary": "Defines `isAlmostBipartite G bound` (remove $\\le$ bound vertices for bipartiteness) and `bipartiteDeficiency` (minimum such bound)."
     },
     {
       "id": "reed-theorem",
-      "title": "Reed's Theorem",
+      "title": "Reed's Theorem: $k$-Independence $\\Rightarrow$ Almost Bipartite",
       "startLine": 131,
       "endLine": 151,
-      "summary": "The main result: k-independence implies almost-bipartite"
+      "summary": "Axiomatizes `reed_bound` and `reed_theorem`. Proves `erdos_73_solved` by unpacking the axiom into existential form."
     },
     {
       "id": "special-cases",
-      "title": "Special Cases",
+      "title": "Special Case $k = 0$",
       "startLine": 153,
       "endLine": 168,
-      "summary": "The k=0 case gives exact bipartiteness"
+      "summary": "Axiomatizes $f(0) = 0$ and derives `strict_implies_bipartite` (sorry on the final isomorphism step $G[V] \\cong G$)."
     },
     {
       "id": "examples",
-      "title": "Examples",
+      "title": "Triangle Example: $K_3$",
       "startLine": 170,
       "endLine": 184,
-      "summary": "K_3 (triangle) as a concrete example"
+      "summary": "Defines `triangleGraph` on `Fin 3`. States (sorry) that $K_3$ violates strict condition and is 1-almost-bipartite."
     },
     {
       "id": "bounds",
-      "title": "Bounds on f(k)",
+      "title": "Explicit Bounds: $f(k) \\le 2^k$",
       "startLine": 186,
       "endLine": 196,
-      "summary": "Explicit bounds from Reed's proof"
+      "summary": "Axiomatizes $f(k) \\le 2^k$ from Reed's proof. Defines the open question of optimal $f(k)$."
     },
     {
       "id": "chromatic",
-      "title": "Chromatic Number Connection",
+      "title": "Chromatic Number: $\\chi(G) \\le f(k) + 2$",
       "startLine": 198,
       "endLine": 207,
-      "summary": "Bipartite = 2-colorable, almost-bipartite has bounded chromatic number"
+      "summary": "Axiomatizes bipartite $\\iff$ 2-colorable and $k$-almost-bipartite $\\Rightarrow$ $\\chi(G) \\le k + 2$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #73 asked whether graphs where every subgraph has large independent sets must be 'almost bipartite'. Reed's 1999 proof confirmed this, showing such graphs decompose into a bipartite core plus O_k(1) exceptional vertices. The result demonstrates how local independence properties force global structure.",
-    "implications": "**Theoretical Significance**\n\n1. **Structural Graph Theory**: Demonstrates that independence number conditions can characterize near-bipartiteness\n\n2. **Extremal Combinatorics**: The bounded exception set shows the condition is 'robust' - small violations of bipartiteness are impossible\n\n3. **Algorithm Design**: Suggests algorithms for recognizing almost-bipartite graphs via independence number computation\n\n4. **Coloring Theory**: Connects to chromatic number (bipartite = 2-colorable) through independence",
+    "summary": "Erdős Problem #73 asked whether graphs where every subgraph has large independent sets must be 'almost bipartite'. Reed's 1999 proof confirmed this: the $k$-independence condition forces bipartite deficiency at most $f(k) \\le 2^k$. The formalization captures the full chain from definitions through Reed's theorem to the chromatic number corollary.",
+    "implications": "**Connections and Significance**\n\n1. **Structural graph theory**: Prototype for 'approximate property implies approximate structure' results, a theme in the Robertson-Seymour Graph Minors Project\n2. **Erdős-Pósa framework**: The proof relies on packing-transversal duality for odd cycles, connecting to a major theme in combinatorics\n3. **$\\chi$-boundedness**: The corollary $\\chi(G) \\le f(k) + 2$ places the result in Gyárfás's theory of $\\chi$-bounded graph classes\n4. **Algorithmic implications**: The bounded deficiency suggests FPT algorithms for recognizing $k$-independence graphs",
     "openQuestions": [
-      "What is the optimal bound f(k) on exceptional vertices?",
-      "Can the result be extended to hypergraphs?",
-      "What is the computational complexity of finding the bipartite decomposition?",
-      "Are there weighted or fractional versions?",
-      "Full Lean formalization of Reed's structural argument"
+      "What is the optimal growth rate of $f(k)$? Is $f(k) = O(k)$ or $f(k) = O(\\text{poly}(k))$?",
+      "Can the Erdős-Pósa constant for odd cycles be improved to give better bounds?",
+      "Is there a polynomial-time algorithm to find the minimum odd cycle transversal for graphs satisfying the $k$-independence condition?",
+      "Complete the 5 remaining sorries: trivial_case, bipartite_deficiency_zero, strict_implies_bipartite, K3_violates_strict, K3_almost_bipartite"
     ]
   }
 }

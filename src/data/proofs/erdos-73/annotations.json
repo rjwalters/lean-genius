@@ -2,136 +2,133 @@
   {
     "id": "ann-73-header",
     "proofId": "erdos-73",
-    "range": { "startLine": 1, "endLine": 24 },
+    "range": { "startLine": 26, "endLine": 35 },
     "type": "concept",
-    "title": "Problem Statement",
-    "content": "Erdős Problem #73 asks: If every subgraph of G on n vertices has an independent set of size ≥ (n-k)/2, must G be 'almost bipartite'? Reed's 1999 paper 'Mangoes and Blueberries' proves YES - such graphs decompose into a bipartite core plus O_k(1) exceptional vertices.",
-    "significance": "critical"
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib modules for simple graphs (`SimpleGraph.Basic`, `SimpleGraph.Subgraph`), walk counting for cycle analysis (`Connectivity.WalkCounting`), finite sets (`Finset.Card`), and finite types (`Fintype.Basic`). Opens `SimpleGraph` and `Finset` namespaces, with universe-polymorphic vertex type `V` having `Fintype` and `DecidableEq` instances.",
+    "mathContext": "The formalization uses `SimpleGraph V` as the graph model, where edges are an irreflexive symmetric relation on $V$. `Fintype V` ensures the vertex set is finite (necessary for cardinality arguments), and `DecidableRel G.Adj` enables computational reasoning about adjacency.",
+    "significance": "supporting",
+    "relatedConcepts": ["SimpleGraph", "Fintype", "DecidableEq", "Finset"],
+    "prerequisites": ["Lean 4 imports", "Mathlib SimpleGraph"]
   },
   {
     "id": "ann-73-independent",
     "proofId": "erdos-73",
-    "range": { "startLine": 41, "endLine": 43 },
+    "range": { "startLine": 42, "endLine": 51 },
     "type": "definition",
-    "title": "Independent Set",
-    "content": "An independent set S in graph G is a set of vertices with no edges between them: for all u,v in S, u and v are not adjacent. Independent sets are central to graph coloring - a k-coloring partitions vertices into k independent sets.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-73-independence-num",
-    "proofId": "erdos-73",
-    "range": { "startLine": 45, "endLine": 47 },
-    "type": "definition",
-    "title": "Independence Number",
-    "content": "The independence number α(G) is the size of the largest independent set in G. For bipartite graphs with parts A and B, α(G) ≥ max(|A|, |B|) ≥ n/2. This is why bipartite graphs satisfy the k=0 condition.",
-    "significance": "key"
+    "title": "Independent Sets and Basic Properties",
+    "content": "**IsIndependentSet G S**: A set $S \\subseteq V(G)$ where no two vertices in $S$ are adjacent. Defined as $\\forall u, v \\in S,\\, \\neg G.\\text{Adj}\\, u\\, v$.\n\n**independenceNumber G**: $\\alpha(G) = \\max\\{|S| : S \\text{ is independent in } G\\}$, computed as a supremum over all subsets of the finite vertex set.\n\n**exists_independent_set** (proved): The empty set is always independent.\n\n**singleton_independent** (proved): Singletons $\\{v\\}$ are independent by the loopless property of simple graphs.",
+    "mathContext": "The independence number $\\alpha(G)$ is a fundamental graph invariant. For bipartite graphs $G = (A \\cup B, E)$, $\\alpha(G) \\ge \\max(|A|, |B|) \\ge |V|/2$. This inequality is the starting point for Erdős's question: what happens when we relax $\\alpha(H) \\ge |V(H)|/2$ to $\\alpha(H) \\ge (|V(H)| - k)/2$?",
+    "significance": "critical",
+    "relatedConcepts": ["independence number", "Ramsey theory", "vertex cover duality", "König's theorem"],
+    "prerequisites": ["SimpleGraph", "Finset.card", "Finset.sup"]
   },
   {
     "id": "ann-73-condition",
     "proofId": "erdos-73",
-    "range": { "startLine": 62, "endLine": 66 },
+    "range": { "startLine": 64, "endLine": 70 },
     "type": "definition",
-    "title": "The k-Independence Condition",
-    "content": "A graph satisfies the k-independence condition if every induced subgraph H on n vertices has an independent set of size ≥ (n-k)/2. This 'slackened bipartite condition' allows independence number to be slightly less than n/2.",
-    "significance": "critical"
+    "title": "The $k$-Independence Condition",
+    "content": "**satisfiesIndependenceCondition G k**: Every induced subgraph $H$ of $G$ on vertex set $S$ has an independent set $I \\subseteq S$ with $2|I| \\ge |S| - k$. Equivalently, $\\alpha(G[S]) \\ge (|S| - k)/2$ for all $S$.\n\n**satisfiesStrictCondition G**: The $k = 0$ case, requiring $\\alpha(G[S]) \\ge |S|/2$ for all $S$.",
+    "mathContext": "The condition $\\alpha(G[S]) \\ge (|S| - k)/2$ for all $S \\subseteq V$ is a hereditary property — it passes to all induced subgraphs. When $k = 0$ this characterizes bipartite graphs. The parameter $k$ measures how far the graph is from having this bipartite-like property, introducing a 'slack' of $k/2$ in the independence ratio.",
+    "significance": "critical",
+    "relatedConcepts": ["hereditary graph property", "independence ratio", "Ramsey-type condition"],
+    "prerequisites": ["IsIndependentSet", "induced subgraph", "Finset"]
   },
   {
     "id": "ann-73-bipartite",
     "proofId": "erdos-73",
-    "range": { "startLine": 74, "endLine": 78 },
+    "range": { "startLine": 75, "endLine": 86 },
     "type": "definition",
-    "title": "Bipartite Graph",
-    "content": "A graph is bipartite if its vertices can be partitioned into two independent sets A and B, with all edges going between A and B. Equivalently: G is bipartite iff G has no odd cycles. This characterization is key to the problem.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-73-odd-cycle",
-    "proofId": "erdos-73",
-    "range": { "startLine": 80, "endLine": 86 },
-    "type": "theorem",
-    "title": "Odd Cycle Characterization",
-    "content": "A graph is bipartite if and only if it contains no odd cycles. An odd cycle on 2m+1 vertices has independence number exactly m (you can take every other vertex). Since m < (2m+1)/2, odd cycles violate the k=0 condition.",
-    "significance": "key"
+    "title": "Bipartite Graphs and Odd Cycle Characterization",
+    "content": "**IsBipartite G**: Vertex set partitions into two independent sets $A \\cup B = V$, $A \\cap B = \\emptyset$, with all edges between $A$ and $B$.\n\n**hasNoOddCycle G**: No cycle in $G$ has odd length.\n\n**bipartite_iff_no_odd_cycle** (axiom): $G$ is bipartite $\\iff$ $G$ has no odd cycles. This is the classical characterization — a graph is bipartite precisely when it is 2-colorable, which happens iff there is no odd cycle.",
+    "mathContext": "The bipartite characterization theorem states $G$ is bipartite $\\iff$ $G$ contains no odd cycle. This is equivalent to $G$ being 2-chromatic ($\\chi(G) \\le 2$). The proof uses BFS: start coloring from any vertex with alternating colors; if a contradiction arises, the two paths to the conflicting vertex form an odd cycle.",
+    "significance": "critical",
+    "relatedConcepts": ["graph coloring", "2-colorability", "BFS characterization", "Walk.IsCycle"],
+    "prerequisites": ["SimpleGraph", "Walk", "Set.univ"]
   },
   {
     "id": "ann-73-trivial",
     "proofId": "erdos-73",
-    "range": { "startLine": 102, "endLine": 113 },
+    "range": { "startLine": 91, "endLine": 113 },
     "type": "theorem",
-    "title": "The Trivial k=0 Case",
-    "content": "If every subgraph has an independent set of size ≥ n/2, then G is bipartite. Proof: If G isn't bipartite, it has an odd cycle C_{2m+1}. But α(C_{2m+1}) = m < (2m+1)/2, contradiction. Reed noted this case is trivial.",
-    "significance": "key"
+    "title": "The Trivial $k = 0$ Case",
+    "content": "**odd_cycle_independence** (axiom): An odd cycle $C_{2m+1}$ has independence number exactly $m$ — select every other vertex around the cycle.\n\n**odd_cycle_violates_strict** (proved): $2m < 2m + 1$, so $\\alpha(C_{2m+1}) = m < (2m+1)/2$, violating the $k = 0$ condition.\n\n**trivial_case** (sorry): If $\\alpha(G[S]) \\ge |S|/2$ for all $S$, then $G$ is bipartite. The proof is by contrapositive: a non-bipartite graph contains an odd cycle, which violates the condition.",
+    "mathContext": "The $k = 0$ case is Reed's 'trivial observation': if $G$ has an odd cycle $C_{2m+1}$, then taking $S = V(C_{2m+1})$ gives $\\alpha(G[S]) = m < (2m+1)/2 = |S|/2$, contradicting the condition. This reduces to the classical equivalence between bipartiteness and absence of odd cycles.",
+    "significance": "key",
+    "relatedConcepts": ["odd cycle", "proof by contradiction", "independence number of cycles"],
+    "prerequisites": ["bipartite_iff_no_odd_cycle", "satisfiesStrictCondition", "IsBipartite"]
   },
   {
     "id": "ann-73-almost",
     "proofId": "erdos-73",
-    "range": { "startLine": 117, "endLine": 120 },
+    "range": { "startLine": 119, "endLine": 129 },
     "type": "definition",
-    "title": "Almost Bipartite",
-    "content": "A graph is f(k)-almost-bipartite if removing at most f(k) vertices leaves a bipartite graph. The key question: does f(k) depend only on k, not on graph size? Reed proved yes - there's a universal bound depending only on k.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-73-deficiency",
-    "proofId": "erdos-73",
-    "range": { "startLine": 122, "endLine": 124 },
-    "type": "definition",
-    "title": "Bipartite Deficiency",
-    "content": "The bipartite deficiency of G is the minimum number of vertices to remove to make G bipartite. This measures 'how far' G is from being bipartite. Reed's theorem bounds this by f(k) when the k-independence condition holds.",
-    "significance": "key"
+    "title": "Almost Bipartite Structure",
+    "content": "**isAlmostBipartite G bound**: There exists $S \\subseteq V$ with $|S| \\le \\text{bound}$ such that $G[V \\setminus S]$ is bipartite. The graph becomes bipartite after removing at most `bound` vertices.\n\n**bipartiteDeficiency G**: The minimum number of vertices to remove to make $G$ bipartite, $\\min\\{|S| : G[V \\setminus S] \\text{ is bipartite}\\}$. This is also called the **odd cycle transversal number**.\n\n**bipartite_deficiency_zero** (sorry): Bipartite graphs have deficiency 0.",
+    "mathContext": "The bipartite vertex deletion number (or odd cycle transversal number) $\\text{ocn}(G) = \\min\\{|S| : G - S \\text{ is bipartite}\\}$ is NP-hard to compute in general. Reed's theorem shows that the $k$-independence condition forces $\\text{ocn}(G) \\le f(k)$, providing a structural bound independent of $|V(G)|$.",
+    "significance": "critical",
+    "relatedConcepts": ["odd cycle transversal", "vertex deletion distance", "NP-hardness", "graph modification problems"],
+    "prerequisites": ["IsBipartite", "Finset.card", "induced subgraph"]
   },
   {
     "id": "ann-73-reed",
     "proofId": "erdos-73",
-    "range": { "startLine": 133, "endLine": 145 },
-    "type": "axiom",
-    "title": "Reed's Theorem (1999)",
-    "content": "For every k ≥ 0, there exists f(k) such that: if every subgraph of G on n vertices has an independent set of size ≥ (n-k)/2, then G is f(k)-almost-bipartite. The bound f(k) is independent of |V(G)| - this is the surprising part.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-73-main",
-    "proofId": "erdos-73",
-    "range": { "startLine": 147, "endLine": 151 },
+    "range": { "startLine": 141, "endLine": 151 },
     "type": "theorem",
-    "title": "Main Theorem",
-    "content": "Combining definitions: If G satisfies the k-independence condition, then there exists a set S of at most f(k) vertices such that G \\ S is bipartite. This completely answers Erdős's question in the affirmative.",
-    "significance": "critical"
+    "title": "Reed's Theorem (1999)",
+    "content": "**reed_bound**: An axiomatized function $f : \\mathbb{N} \\to \\mathbb{N}$ bounding the number of exceptional vertices.\n\n**reed_theorem** (axiom): If $G$ satisfies the $k$-independence condition, then $G$ is $f(k)$-almost-bipartite.\n\n**erdos_73_solved** (proved): Unpacks Reed's theorem into the explicit form: there exists $S \\subseteq V$ with $|S| \\le f(k)$ such that $G[V \\setminus S]$ is bipartite. This directly answers Erdős's question.",
+    "mathContext": "Reed's proof in 'Mangoes and Blueberries' (Combinatorica 1999) uses a structural decomposition: analyze how odd cycles interact in $G$. The $k$-independence condition limits the number of vertex-disjoint odd cycles (since each creates a deficit in $\\alpha$), and bounded odd cycle packing implies bounded odd cycle transversal by the Erdős-Pósa theorem for odd cycles.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős-Pósa theorem", "odd cycle packing", "Combinatorica", "structural graph decomposition"],
+    "prerequisites": ["satisfiesIndependenceCondition", "isAlmostBipartite", "IsBipartite"]
   },
   {
     "id": "ann-73-k0",
     "proofId": "erdos-73",
-    "range": { "startLine": 155, "endLine": 168 },
+    "range": { "startLine": 156, "endLine": 168 },
     "type": "theorem",
-    "title": "Special Case: k=0",
-    "content": "When k=0, Reed's bound is f(0)=0. This means the strict condition (independence ≥ n/2 for all subgraphs) implies EXACT bipartiteness - no vertices need removal. This matches the 'trivial case' Reed mentioned.",
-    "significance": "key"
+    "title": "Special Case: $k = 0$ and Exact Bipartiteness",
+    "content": "**reed_bound_zero** (axiom): $f(0) = 0$, so the strict condition forces exact bipartiteness.\n\n**strict_implies_bipartite** (sorry): When $k = 0$, Reed's theorem gives a set $S$ of size 0 to remove, meaning $G$ is already bipartite. The proof unpacks the bound and uses $S = \\emptyset$ to conclude $G[V \\setminus \\emptyset] = G[V] \\cong G$ is bipartite.",
+    "mathContext": "The $k = 0$ case establishes $f(0) = 0$: the strict independence condition $\\alpha(G[S]) \\ge |S|/2$ for all $S$ is equivalent to bipartiteness. This is the base case for Reed's induction. The remaining sorry involves showing that $G$ induced on $V = V \\setminus \\emptyset$ is isomorphic to $G$ itself.",
+    "significance": "key",
+    "relatedConcepts": ["graph isomorphism", "Set.compl_empty", "base case"],
+    "prerequisites": ["reed_theorem", "reed_bound_zero", "trivial_case"]
   },
   {
     "id": "ann-73-triangle",
     "proofId": "erdos-73",
-    "range": { "startLine": 172, "endLine": 184 },
+    "range": { "startLine": 173, "endLine": 184 },
     "type": "definition",
-    "title": "Triangle Example",
-    "content": "K_3 (the triangle) is the simplest non-bipartite graph. It has 3 vertices, independence number 1, so 2*1 < 3 = n. It violates the k=0 condition. But it's 1-almost-bipartite: removing any vertex leaves K_2, which is bipartite.",
-    "significance": "supporting"
+    "title": "Triangle Example: $K_3$",
+    "content": "**triangleGraph**: The complete graph $K_3$ on `Fin 3`, defined by $u \\sim v \\iff u \\ne v$.\n\n**K3_violates_strict** (sorry): $K_3$ violates the $k = 0$ condition since $\\alpha(K_3) = 1 < 3/2$.\n\n**K3_almost_bipartite** (sorry): $K_3$ is 1-almost-bipartite — removing any vertex leaves an edge $K_2$, which is bipartite.",
+    "mathContext": "$K_3$ is the simplest non-bipartite graph: $\\alpha(K_3) = 1$ and $\\chi(K_3) = 3$. It satisfies the $k = 1$ condition (every subgraph on $n$ vertices has $\\alpha \\ge (n-1)/2$) but not $k = 0$. Its bipartite deficiency is 1, illustrating that removing a single vertex suffices.",
+    "significance": "supporting",
+    "relatedConcepts": ["complete graph", "Fin 3", "chromatic number", "clique number"],
+    "prerequisites": ["SimpleGraph", "IsIndependentSet", "isAlmostBipartite"]
   },
   {
     "id": "ann-73-bounds",
     "proofId": "erdos-73",
-    "range": { "startLine": 188, "endLine": 189 },
+    "range": { "startLine": 189, "endLine": 196 },
     "type": "theorem",
-    "title": "Explicit Bounds",
-    "content": "Reed's proof gives f(k) ≤ 2^k as an explicit (but likely not optimal) bound. The optimal growth rate of f(k) remains of interest - is it polynomial? Linear? The proof technique gives exponential, but better may be possible.",
-    "significance": "supporting"
+    "title": "Explicit Bounds on $f(k)$",
+    "content": "**reed_bound_explicit** (axiom): $f(k) \\le 2^k$. Reed's proof gives an exponential bound, but the optimal growth rate of $f(k)$ is unknown.\n\n**openQuestion_optimal_bound**: Defines the optimal bound as the tightest function $f$ that makes Reed's theorem work for all graphs. Is $f(k)$ polynomial? Linear? The exponential bound from the proof may be far from optimal.",
+    "mathContext": "The exponential bound $f(k) \\le 2^k$ comes from Reed's structural argument. By the Erdős-Pósa theorem, bounded odd cycle packing implies bounded transversal, but the Erdős-Pósa constant can be exponential. Whether $f(k) = O(k)$ or $f(k) = O(\\text{poly}(k))$ is an open combinatorial question.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős-Pósa theorem", "exponential vs polynomial bounds", "optimal transversal size"],
+    "prerequisites": ["reed_bound", "reed_theorem"]
   },
   {
     "id": "ann-73-chromatic",
     "proofId": "erdos-73",
-    "range": { "startLine": 200, "endLine": 207 },
+    "range": { "startLine": 201, "endLine": 207 },
     "type": "theorem",
     "title": "Chromatic Number Connection",
-    "content": "Bipartite graphs are exactly 2-colorable. If G is f(k)-almost-bipartite, then χ(G) ≤ f(k) + 2: color the bipartite part with 2 colors, and give each removed vertex its own color. This connects independence conditions to coloring.",
-    "significance": "key"
+    "content": "**bipartite_iff_two_colorable** (axiom): $G$ is bipartite $\\iff$ $\\chi(G) \\le 2$.\n\n**almost_bipartite_chromatic** (axiom): If $G$ is $k$-almost-bipartite, then $\\chi(G) \\le k + 2$. Proof: color the bipartite remainder with 2 colors, and give each of the $\\le k$ removed vertices a unique additional color.",
+    "mathContext": "Combining with Reed's theorem: if $G$ satisfies the $k$-independence condition, then $\\chi(G) \\le f(k) + 2$. This is a $\\chi$-boundedness result — the $k$-independence condition bounds the chromatic number independently of graph size. The class of $\\chi$-bounded graph families is a central topic in structural graph theory (Gyárfás 1987).",
+    "significance": "key",
+    "relatedConcepts": ["chi-boundedness", "Gyárfás conjecture", "graph coloring", "chromatic number"],
+    "prerequisites": ["IsBipartite", "isAlmostBipartite", "Fin"]
   }
 ]
