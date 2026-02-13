@@ -1,6 +1,6 @@
 {
   "slug": "erdos-1056",
-  "title": "Erdős #1056",
+  "title": "Erd\u0151s #1056",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T14:31:40.058Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Verified solutions for k=2 through k=6",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,12 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Verified solutions for all 2 \u2264 k \u2264 6. k=4 (p=23), k=5 (p=71), k=6 (p=71) are new. Wilson constraints verified. Factorial pattern documented.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1056OQ01.lean - 226 lines, 0 sorries",
+      "HasSolution2..6 definitions for k-interval solutions",
+      "erdos_k4: HasSolution4 23 2 5 9 12 22 (NEW)",
+      "erdos_k5: HasSolution5 71 8 10 20 52 62 64 (NEW)",
+      "erdos_k6: HasSolution6 71 8 10 20 52 62 64 71 (NEW)",
+      "Wilson constraints for p=11,17,23,71",
+      "Factorial patterns: (b_i-1)! congruent mod p"
+    ],
+    "insights": [
+      "Solutions correspond to sequences where consecutive factorials are congruent mod p",
+      "k=4 solution uses p=23 with boundaries [2,5,9,12,22]",
+      "k=5 and k=6 both use p=71 - same prime works for multiple k values",
+      "k=6 extends k=5 by splitting [62,71) into [62,64) and [64,71)",
+      "Larger k found for primes up to 1000: k=8 with p=599",
+      "Wilson obstruction: cannot partition [1,p) with all products \u2261 1",
+      "All products can be verified by native_decide in Lean"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #1056 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$. Does there exist a prime $p$ and consecutive intervals $I_1,\\ldots,I_k$ such that\\[\\prod_{n\\in I_i}n \\equiv 1\\pmod{p}\\]for all $1\\leq i\\leq k$?\n\n\n\nThis is problem A15 in Guy's collection \\cite{Gu04}, where he reports that in a letter in 1979 Erd\\H{o}s observed that\\[3\\cdot 4\\equiv 5\\cdot 6\\cdot 7\\equiv 1\\pmod{11},\\]establishing the case $k=2$. Makowski \\cite{Ma83} found, for $k=3$,\\[2\\cdot 3\\cdot 4\\cdot 5\\equiv 6\\cdot 7\\cdot 8\\cdot 9\\cdot 10\\cdot 11\\equiv 12\\cdot 13\\cdot 14\\cdot 15\\equiv 1\\pmod{17}.\\]Noll and Simmons asked, more generally, whether there are solutions to $q_1!\\equiv\\cdots \\equiv q_k!\\pmod{p}$ for arbitrarily large $k$ (with $q_1<\\cdots<q_k$).\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Ma83] M\\polhk akowski, Andrzej, On a number-theoretical problem of {E}rd\\H{o}s. Elem. Math. (1983), 101--102.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1055\n- Problem #1057\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n- Ma83\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "nextSteps": [
+      "Prove Wilson constraint from Mathlib (general, not just specific primes)",
+      "Prove factorial_connection theorem (interval product \u2261 1 implies factorial congruence)",
+      "Prove Wilson obstruction theorem (no full partition has all products \u2261 1)",
+      "Search for larger k with bigger primes (k=8 found for p=599 but products too large for native_decide)",
+      "Investigate asymptotic: does max k grow with p?"
+    ],
+    "markdown": "# Erd\u0151s #1056 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$. Does there exist a prime $p$ and consecutive intervals $I_1,\\ldots,I_k$ such that\\[\\prod_{n\\in I_i}n \\equiv 1\\pmod{p}\\]for all $1\\leq i\\leq k$?\n\n\n\nThis is problem A15 in Guy's collection \\cite{Gu04}, where he reports that in a letter in 1979 Erd\\H{o}s observed that\\[3\\cdot 4\\equiv 5\\cdot 6\\cdot 7\\equiv 1\\pmod{11},\\]establishing the case $k=2$. Makowski \\cite{Ma83} found, for $k=3$,\\[2\\cdot 3\\cdot 4\\cdot 5\\equiv 6\\cdot 7\\cdot 8\\cdot 9\\cdot 10\\cdot 11\\equiv 12\\cdot 13\\cdot 14\\cdot 15\\equiv 1\\pmod{17}.\\]Noll and Simmons asked, more generally, whether there are solutions to $q_1!\\equiv\\cdots \\equiv q_k!\\pmod{p}$ for arbitrarily large $k$ (with $q_1<\\cdots<q_k$).\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Ma83] M\\polhk akowski, Andrzej, On a number-theoretical problem of {E}rd\\H{o}s. Elem. Math. (1983), 101--102.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1055\n- Problem #1057\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n- Ma83\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
   "tags": [
