@@ -27,37 +27,69 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
-        "description": "Prime numbers for divisibility",
-        "module": "Mathlib.Data.Nat.Basic"
+        "description": "Primality predicate for the IsPowerful definition: p.Prime → p ∣ n → p^2 ∣ n",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
       },
       {
-        "theorem": "Nat.Factorization",
-        "description": "Factorization for powerful definition",
+        "theorem": "Nat.factorization",
+        "description": "Prime factorization for the IsPowerfulAlt characterization n = a²b³",
         "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.divisors",
+        "description": "Divisor enumeration for counting representations and examples",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for IsSumOfKPowerful and counting representations",
+        "module": "Mathlib.Data.Finset.Basic"
       }
     ],
     "originalContributions": [
-      "IsPowerful, IsPowerfulAlt: powerful number definitions",
-      "powerful_iff_alt: equivalence n = a²b³",
-      "one_is_powerful, square_is_powerful, cube_is_powerful",
-      "powerful_mul: product closure",
-      "IsSumOf3Powerful, IsSumOf3PowerfulOrZero",
-      "ErdosIvicQuestion: formal problem statement",
-      "heath_brown_theorem: main result axiom",
-      "IsRPowerful: r-powerful generalization",
-      "generalizedQuestion: Problem #1107 connection"
+      "`IsPowerful n := n > 0 ∧ ∀ p, p.Prime → p ∣ n → p^2 ∣ n` and `IsPowerfulAlt n := ∃ a b, a > 0 ∧ b > 0 ∧ n = a^2 * b^3`",
+      "Proved `one_is_powerful` (vacuously, omega+contradiction). Sorry gaps: `powerful_iff_alt`, `square_is_powerful`, `cube_is_powerful`, `powerful_mul`",
+      "`IsSumOf3Powerful` (strict: all 3 positive powerful) and `IsSumOf3PowerfulOrZero` (relaxed: 0 or powerful, giving 'at most 3')",
+      "`ErdosIvicQuestion := ∃ N, ∀ n ≥ N, IsSumOf3PowerfulOrZero n` — the formal 1986 Oberwolfach problem",
+      "Axiomatized: `heath_brown_theorem` (main result), `heath_brown_explicit` (with placeholder bound), `small_exceptions` (finite set of non-representable numbers), `powerful_density` (counting function ~ c·√x)",
+      "`IsRPowerful r n` generalization with `two_powerful_eq_powerful` (simp), `generalizedQuestion` for erdos-1107 connection",
+      "Examples: 4=2² powerful, 8=2³ powerful, 72=8×9 powerful (using powerful_mul), `_2_exceptional_without_zero` (sorry)",
+      "Three main results: `erdos_941 := heath_brown_theorem`, `erdos_941_main`, `erdos_941_solved`"
+    ],
+    "crossReferences": [
+      {
+        "id": "erdos-940",
+        "relationship": "Direct companion: #940 asks the density question—does the set of sums of ≤r r-powerful numbers have density 0? Baker-Brüdern proved density 0 for r=2, k=2 (pairs). #941 is the representation theorem for r=2, k=3 (triples). Together they show: density 0 with 2 summands, density 1 with 3."
+      },
+      {
+        "id": "erdos-1107",
+        "relationship": "Generalization: #1107 asks whether all large integers are sums of ≤(r+1) r-powerful numbers. Heath-Brown's theorem (#941) is the case r=2. The generalized question is formalized as `generalizedQuestion r k` in this file."
+      },
+      {
+        "id": "erdos-1081",
+        "relationship": "Refined counting for squarefull pairs: #1081 asks for the precise asymptotic of the counting function A₂(x). While #941 proves universal representation with 3 summands, #1081 studies the finer arithmetic of 2-summand representations."
+      },
+      {
+        "id": "erdos-943",
+        "relationship": "Studies the representation function r(n) counting ways to write n as a sum of two powerful numbers. Asks whether r(n) = n^{o(1)}. Complements #941's existence result with a multiplicity question."
+      },
+      {
+        "id": "lagranges-four-square-theorem",
+        "relationship": "Classical antecedent: Lagrange proved every integer is a sum of 4 squares. Heath-Brown's result is analogous: every large integer is a sum of 3 squarefull numbers. Both are Waring-type representation theorems for specific multiplicative classes."
+      }
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #941 (Sums of Three Powerful Numbers)**\n\n**Origin:**\nErdős and Ivić posed this problem in 1986 at Oberwolfach: Are all sufficiently large integers the sum of at most three powerful numbers?\n\n**Powerful Numbers:**\nA number n is powerful (or squarefull) if every prime dividing n divides it at least twice: p | n → p² | n. Equivalently, n = a²b³ for some a, b ≥ 1.\n\n**Heath-Brown's Proof (1988):**\nHeath-Brown proved the affirmative answer using methods from the theory of ternary quadratic forms.\n\n**Related Problems:**\n- #940: Other variants of powerful representations\n- #1107: Generalization to r-powerful numbers (p | n → p^r | n)",
+    "historicalContext": "Erdős Problem #941 asks whether all sufficiently large integers can be written as sums of at most three powerful (squarefull) numbers.\n\nA number $n$ is powerful if every prime $p \\mid n$ satisfies $p^2 \\mid n$; equivalently, $n = a^2 b^3$ for positive integers $a, b$. Powerful numbers (OEIS A001694) begin: 1, 4, 8, 9, 16, 25, 27, 32, 36, 49, 64, 72, ... Their count up to $x$ is $\\sim (\\zeta(3/2)/\\zeta(3)) x^{1/2} \\approx 1.943 \\sqrt{x}$ (Golomb 1970).\n\nThe problem was posed by Erdős and Ivić at the 1986 Oberwolfach meeting. Just two years later, Heath-Brown (1988) resolved it affirmatively in his paper 'Ternary quadratic forms and sums of three square-full numbers.' The proof uses the Hardy-Littlewood circle method: writing $n = a^2 x + b^2 y + c^2 z$ with $x, y, z$ cubes reduces the problem to showing certain ternary quadratic forms represent all large integers. The singular series and singular integral are both shown to be positive, completing the proof.\n\nThe contrast with the companion problem #940 is striking: Baker-Brüdern (1994) showed that sums of TWO powerful numbers have density 0, yet Heath-Brown showed that with THREE summands, ALL large integers are representable. This phase transition from density 0 (two summands) to density 1 (three summands) mirrors phenomena in Waring's problem.\n\nThe formalization has 5 sorries in structural proofs (`powerful_iff_alt`, `square_is_powerful`, `cube_is_powerful`, `powerful_mul`, `_2_exceptional_without_zero`) while axiomatizing the deep results (`heath_brown_theorem`, `powerful_density`). The sorry gaps are all in elementary powerful-number properties that could be resolved with careful `Prime.dvd_of_dvd_pow` + `Nat.pow_dvd_pow_of_dvd` chains.",
     "problemStatement": "**Problem Statement (Solved)**\n\nAre all large integers the sum of at most three powerful numbers?\n\nA number n is powerful if p | n implies p² | n.\n\n**Answer: YES** (Heath-Brown 1988)\n\nEvery sufficiently large positive integer is the sum of at most three powerful numbers.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Powerful Numbers:** IsPowerful (p|n → p²|n), IsPowerfulAlt (n = a²b³)\n\n2. **Basic Properties:** one_is_powerful, square_is_powerful, cube_is_powerful, powerful_mul\n\n3. **Sum Representations:** IsSumOf3Powerful, IsSumOf3PowerfulOrZero\n\n4. **Main Question:** ErdosIvicQuestion (∃ N, ∀ n ≥ N, sum of 3)\n\n5. **Heath-Brown:** heath_brown_theorem axiom\n\n6. **Generalizations:** IsRPowerful for r-powerful numbers",
+    "proofStrategy": "The formalization is organized into nine parts:\n\n1. **Powerful Numbers** (lines 38–84): `IsPowerful n := n > 0 ∧ ∀ p, p.Prime → p ∣ n → p^2 ∣ n`. `IsPowerfulAlt n := ∃ a b, n = a²b³`. `powerful_iff_alt` (sorry). Proved: `one_is_powerful`. Sorry: `square_is_powerful`, `cube_is_powerful`, `powerful_mul`\n2. **Examples** (lines 86–105): 4 = 2² (via square_is_powerful), 8 = 2³ (via cube_is_powerful), 72 = 8×9 (via powerful_mul). `powerfulNumbers` list\n3. **Sum Representations** (lines 107–124): `IsSumOfKPowerful n k` (Finset-based), `IsSumOf3Powerful` (explicit triple, strict), `IsSumOf3PowerfulOrZero` (relaxed, 0 allowed)\n4. **Erdős-Ivić Question** (lines 126–141): `ErdosIvicQuestion := ∃ N, ∀ n ≥ N, IsSumOf3PowerfulOrZero n`. `ErdosIvicQuestion'` (explicit unfolding)\n5. **Heath-Brown's Theorem** (lines 143–157): `heath_brown_theorem` axiom. `heathBrownBound := 10000` placeholder. `heath_brown_explicit` axiom\n6. **Small Cases** (lines 159–179): `notSumOf3Powerful`, `small_exceptions` axiom (finite exceptional set), `_2_exceptional_without_zero` (sorry)\n7. **Counting Representations** (lines 181–197): `numRepresentations` (noncomputable counting), `powerful_density` axiom (~ c√x)\n8. **Generalizations** (lines 199–215): `IsRPowerful r n` with `two_powerful_eq_powerful` (simp). `generalizedQuestion r k` for erdos-1107\n9. **Summary** (lines 217–241): `erdos_941 := heath_brown_theorem`, `erdos_941_main`, `erdos_941_solved`",
     "keyInsights": [
-      "**Powerful = Squarefull:** p | n → p² | n",
-      "**Equivalent Form:** n = a²b³ characterization",
-      "**Density:** Powerful numbers have density ~ c√n",
-      "**Heath-Brown Method:** Ternary quadratic forms",
-      "**Generalization:** r-powerful for r ≥ 3 (#1107)"
+      "**Powerful = squarefull = a²b³**: Three equivalent characterizations. The prime-divisibility form is natural for Lean, the parametric form is useful for construction, and 'squarefull' connects to the r-powerful hierarchy.",
+      "**Heath-Brown's unexpected method**: The proof via ternary quadratic forms was surprising—the problem seems purely about additive decomposition, but the solution exploits the multiplicative structure of powerful numbers through the a²b³ parametrization.",
+      "**Phase transition at k=3 for r=2**: With 2 powerful summands: density 0 (Baker-Brüdern). With 3: ALL large integers representable (Heath-Brown). The critical threshold k₀(2) lies between 2 and 3. For r≥3, both the density 0 conjecture (k=r) and universal representation (k=r+1) are OPEN.",
+      "**5-sorry architecture in elementary proofs**: All sorries are in basic powerful-number properties (square_is_powerful, cube_is_powerful, powerful_mul, powerful_iff_alt, _2_exceptional_without_zero). These need `Prime.dvd_of_dvd_pow` → `Nat.pow_dvd_pow_of_dvd` chains. The deep result (heath_brown_theorem) is correctly axiomatized.",
+      "**IsSumOf3PowerfulOrZero vs IsSumOf3Powerful**: The 'OrZero' version allows 0 as a summand, effectively encoding 'at most 3'. This is crucial: Heath-Brown's theorem applies to the relaxed version. Note 0 is NOT powerful (requires n > 0), so 0 genuinely extends the class.",
+      "**Two-parameter landscape (r, k)**: This file's `generalizedQuestion r k` places erdos-941 at (2,3) in a grid where the solved diagonal is (2,2)→density 0, (2,3)→universal. Open: all (r,k) with r≥3. The minimal k₀(r) for universal representation is the key quantity."
     ]
   },
   "sections": [
@@ -66,80 +98,81 @@
       "title": "Erdős Problem #941: Sums of Three Powerful Numbers",
       "startLine": 1,
       "endLine": 37,
-      "summary": "Erdős Problem #941: Sums of Three Powerful Numbers"
+      "summary": "File header with problem statement, references [He88], OEIS A056828. Imports: Mathlib.Data.Nat.Basic, Mathlib.Data.Nat.Factorization.Basic, Mathlib.NumberTheory.Divisors, Mathlib.Data.Finset.Basic. Opens `Nat` namespace."
     },
     {
       "id": "powerful-numbers",
       "title": "Powerful Numbers",
       "startLine": 38,
       "endLine": 85,
-      "summary": "Powerful Numbers"
+      "summary": "Two definitions: `IsPowerful n := n > 0 ∧ ∀ p, p.Prime → p ∣ n → p^2 ∣ n` and `IsPowerfulAlt n := ∃ a b, a > 0 ∧ b > 0 ∧ n = a^2 * b^3`. Proves `one_is_powerful` (omega+contradiction). Four sorries: `powerful_iff_alt` (equivalence), `square_is_powerful`, `cube_is_powerful`, `powerful_mul` (all need Prime.dvd_of_dvd_pow chains)."
     },
     {
       "id": "examples-of-powerful-numbers",
       "title": "Examples of Powerful Numbers",
       "startLine": 86,
       "endLine": 106,
-      "summary": "Examples of Powerful Numbers"
+      "summary": "List `powerfulNumbers := [1,4,8,9,16,25,27,32,36,49,64,72,81,100]`. Three examples: 4=2² (via square_is_powerful), 8=2³ (via cube_is_powerful), 72=8×9 (via powerful_mul composing cube_is_powerful and square_is_powerful with norm_num)."
     },
     {
       "id": "sum-representations",
       "title": "Sum Representations",
       "startLine": 107,
       "endLine": 125,
-      "summary": "Sum Representations"
+      "summary": "Three definitions: `IsSumOfKPowerful n k` (Finset-based, exact k summands), `IsSumOf3Powerful n` (explicit triple, all positive powerful), `IsSumOf3PowerfulOrZero n` (relaxed: each summand is 0 or powerful, giving 'at most 3' semantics)."
     },
     {
       "id": "the-erd-s-ivi-question",
       "title": "The Erdős-Ivić Question",
       "startLine": 126,
       "endLine": 142,
-      "summary": "The Erdős-Ivić Question"
+      "summary": "Defines `ErdosIvicQuestion := ∃ N, ∀ n ≥ N, IsSumOf3PowerfulOrZero n` (the 1986 Oberwolfach problem). Alternative `ErdosIvicQuestion'` with explicit existentials for a, b, c."
     },
     {
       "id": "heath-brown-s-theorem",
       "title": "Heath-Brown's Theorem",
       "startLine": 143,
       "endLine": 158,
-      "summary": "Heath-Brown's Theorem"
+      "summary": "Axiomatizes `heath_brown_theorem : ErdosIvicQuestion` (1988, ternary quadratic forms + circle method). Placeholder `heathBrownBound := 10000`. Axiom `heath_brown_explicit` with the placeholder bound."
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
       "startLine": 159,
       "endLine": 180,
-      "summary": "Small Cases"
+      "summary": "Defines `notSumOf3Powerful`. Axiomatizes `small_exceptions` (finite set of non-representable numbers). States `_2_exceptional_without_zero` (sorry): 2 is not a sum of 3 positive powerful numbers (since 1 is the only powerful ≤2)."
     },
     {
       "id": "counting-representations",
       "title": "Counting Representations",
       "startLine": 181,
       "endLine": 198,
-      "summary": "Counting Representations"
+      "summary": "Noncomputable `numRepresentations n` counting ways to write n as sum of 3 powerful numbers (via Finset.filter). Axiomatizes `powerful_density`: |{powerful ≤ N}| / N^{1/2} → c > 0 (Golomb's asymptotic ~1.943√x)."
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
       "startLine": 199,
       "endLine": 216,
-      "summary": "Generalizations"
+      "summary": "Defines `IsRPowerful r n := n > 0 ∧ ∀ p, p.Prime → p ∣ n → p^r ∣ n`. Proves `two_powerful_eq_powerful` (simp: IsRPowerful 2 = IsPowerful). Defines `generalizedQuestion r k` for the erdos-1107 connection (∃ N, ∀ n ≥ N, sum of ≤k r-powerful)."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 217,
       "endLine": 241,
-      "summary": "Summary"
+      "summary": "Three equivalent main results: `erdos_941 := heath_brown_theorem` (one-line), `erdos_941_main := erdos_941`, `erdos_941_solved := erdos_941`. Docstring: YES, Heath-Brown 1988, powerful = squarefull = a²b³."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #941 asks whether all large integers are the sum of at most three powerful numbers. Heath-Brown (1988) proved the affirmative answer. A powerful number n satisfies p | n → p² | n, equivalently n = a²b³. This resolved a 1986 Oberwolfach problem of Erdős and Ivić.",
-    "implications": "**Connections**\n\n1. **Ternary Quadratic Forms:** Heath-Brown's method\n\n2. **Problem #940:** Related variants\n\n3. **Problem #1107:** Generalization to r-powerful\n\n4. **Additive Number Theory:** Waring-type problems",
+    "summary": "Erdős Problem #941 asks whether all large integers are sums of at most 3 powerful numbers. Heath-Brown (1988) proved YES using ternary quadratic forms and the circle method. The formalization defines IsPowerful (p|n→p²|n) and IsPowerfulAlt (n=a²b³), axiomatizes Heath-Brown's theorem, and formalizes the r-powerful generalization connecting to erdos-940 and erdos-1107. Five sorries remain in elementary powerful-number properties.",
+    "implications": "Heath-Brown's theorem demonstrates that powerful numbers, despite being sparse (count ~c√x), have rich additive structure—every large integer decomposes into at most 3. This is a Waring-type phenomenon: the 'Waring number' for powerful numbers is at most 3. Combined with Baker-Brüdern's density 0 result for 2 summands, we see a sharp phase transition at k=3 for the squarefull case. Whether this extends to r-powerful numbers for r≥3 is the central open question of erdos-940/1107.",
     "openQuestions": [
-      "What is the smallest N such that all n ≥ N work?",
-      "How many representations does a typical n have?",
-      "What about sums of 2 powerful numbers?",
-      "Explicit bounds for the r-powerful generalization?"
+      "What is the smallest N₀ such that all n ≥ N₀ are sums of 3 powerful numbers?",
+      "How many representations r(n) does a typical n have as a sum of 3 powerful numbers?",
+      "Is every large integer a sum of just 2 powerful numbers? (Open: the diagonal case)",
+      "For r ≥ 3, are all large integers sums of ≤(r+1) r-powerful numbers? (erdos-1107)",
+      "Can the 5 sorries (powerful_iff_alt, square/cube_is_powerful, powerful_mul, _2_exceptional) be resolved via Mathlib's Prime.dvd_of_dvd_pow?"
     ]
   }
 }
