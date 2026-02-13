@@ -137,19 +137,34 @@ def coverOrientation [PartialOrder V] [DecidableEq V]
     intro u v huv
     exact (hcover u v).mpr (Or.inl huv)
 
+/-- Rank function: count elements strictly below -/
+noncomputable def posetRank [PartialOrder V] [Fintype V] [DecidableLT V] (a : V) : ℕ :=
+  (Finset.univ.filter (· < a)).card
+
+/-- The rank function is strictly monotone with respect to the partial order -/
+theorem posetRank_strictMono [PartialOrder V] [Fintype V] [DecidableLT V]
+    {a b : V} (h : a < b) : posetRank a < posetRank b := by
+  unfold posetRank
+  apply Finset.card_lt_card
+  constructor
+  · intro x hx
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢
+    exact lt_trans hx h
+  · simp only [Finset.not_subset]
+    exact ⟨a, by simp [Finset.mem_filter, h], by simp [Finset.mem_filter]⟩
+
 /-- One direction of the characterization: cover graphs admit robust orientations -/
-theorem cover_graph_admits_robust [PartialOrder V] [DecidableEq V]
+theorem cover_graph_admits_robust [PartialOrder V] [DecidableEq V] [Fintype V] [DecidableLT V]
     (hcover : isCoverGraphOf G) :
     admitsRobustAcyclicOrientation G := by
   refine ⟨coverOrientation G hcover, ?_, ?_⟩
-  · -- Acyclicity: the partial order gives a ranking
-    -- We need rank : V → ℕ with u ⋖ v → rank u < rank v
-    -- This holds for any order-embedding into ℕ
-    sorry
-  · -- No dependent arcs: in a covering relation, reversing u ⋖ v doesn't
-    -- create a directed path from u to v via other coverings (by definition
-    -- of covering, there's nothing strictly between u and v)
-    sorry
+  · -- Acyclicity: the rank function is a witness
+    exact ⟨posetRank, fun u v huv => posetRank_strictMono huv.lt⟩
+  · -- No dependent arcs: for every arc u ⋖ v, the rank function witnesses rank u < rank v
+    -- even when considering all other arcs
+    intro ⟨u, v, huv, hdep⟩
+    have hrank := hdep posetRank (fun a b hab _ => posetRank_strictMono hab.lt)
+    exact absurd (posetRank_strictMono huv.lt) (not_lt.mpr hrank)
 
 /-
 ## Sufficient Condition: Bipartite Graphs
@@ -252,9 +267,8 @@ axiom nesetril_rodl_counterexample (g : ℕ) (hg : g ≥ 3) :
 2. `bipartiteOrientation_acyclic` - Bipartite orientation is acyclic
 3. `bipartiteOrientation_robust` - Bipartite orientation is robustly acyclic
 4. `bipartite_admits_robust` - Bipartite graphs admit robust orientations
-
-### With sorry (deep structural proofs):
-5. `cover_graph_admits_robust` - Cover graphs admit robust orientations
+5. `posetRank_strictMono` - Rank function is strictly monotone on partial orders
+6. `cover_graph_admits_robust` - Cover graphs admit robust orientations
 
 ### Axiomatized (deep results):
 6. `cover_graph_characterization` - Robust orientation ↔ cover graph
