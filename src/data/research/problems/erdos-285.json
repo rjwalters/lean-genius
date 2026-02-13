@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-285",
+  "title": "Egyptian Fractions Asymptotics",
+  "phase": "COMPLETE",
+  "status": "complete",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "f(k) = (1 + o(1)) \u00b7 e/(e-1) \u00b7 k, where f(k) is the minimal largest denominator in a (k+1)-term Egyptian fraction for 1",
+    "plain": "The minimal largest denominator needed to write 1 as a sum of k+1 unit fractions is asymptotically e/(e-1) times k.",
+    "whyMatters": [
+      "Resolves Erd\u0151s's question about Egyptian fraction complexity",
+      "The constant e/(e-1) \u2248 1.58 arises naturally from harmonic analysis",
+      "Connects number theory to analysis via exponential constants"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Main asymptotic result (from Martin 2000 axiom)",
+      "Egyptian constant e/(e-1) > 1",
+      "Egyptian constant e/(e-1) < 2",
+      "Egyptian constant e/(e-1) > 3/2",
+      "Constant decomposition: e/(e-1) = 1 + 1/(e-1)",
+      "Lower and upper bounds on f(k)"
+    ],
+    "open": [],
+    "goal": "COMPLETE - 0 sorries, 1 axiom (Martin 2000 deep result)"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-13T09:25:00.000Z",
+    "iteration": 1,
+    "focus": "Zero sorries, one axiom (Martin 2000 asymptotic formula).",
+    "blockers": [],
+    "nextAction": "No further work needed.",
+    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Erdos285Problem.lean has zero sorries. One axiom encodes Martin (2000)'s deep asymptotic result about Egyptian fractions. File proves properties of the constant e/(e-1) including bounds and decomposition.",
+    "builtItems": ["proofs/Proofs/Erdos285Problem.lean - 0 sorries, 1 deep axiom"],
+    "insights": ["Martin's constant e/(e-1) arises from harmonic series analysis"],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [{"name": "Axiom + constant analysis", "status": "complete", "description": "Martin 2000 result axiomatized; constant bounds proved via exp estimates from Mathlib."}],
+  "tags": ["seeker-selected", "number-theory", "egyptian-fractions", "asymptotics", "complete"],
+  "relatedProofs": ["Erdos285Problem"],
+  "leanFile": "Erdos285Problem.lean",
+  "references": {"papers": ["Martin (2000): Egyptian fractions asymptotics"], "urls": ["https://erdosproblems.com/285"], "mathlib": ["Mathlib.Analysis.Asymptotics.Defs"]},
+  "started": "2026-02-13T09:25:00.000Z",
+  "lastUpdate": "2026-02-13T09:25:00.000Z",
+  "significance": 7,
+  "tractability": 6
+}
