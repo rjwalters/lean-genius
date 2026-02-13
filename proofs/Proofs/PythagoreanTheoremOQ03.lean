@@ -38,6 +38,7 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.Calculus.MeanValue
 import Mathlib.Tactic
 
 set_option linter.unusedVariables false
@@ -1003,14 +1004,86 @@ theorem spherical_pythagorean_correction (a b : ℝ) :
 theorem correction_nonneg (a b : ℝ) : 0 ≤ a ^ 2 * b ^ 2 / 4 := by
   positivity
 
-/-- cosh(x) ≥ 1 + x²/2 for all real x (a consequence of convexity). -/
+/-- sinh(x) ≥ x for x ≥ 0, proved via the Mean Value Theorem.
+    The derivative of sinh(x) - x is cosh(x) - 1 ≥ 0, so the function
+    is nondecreasing. Since it equals 0 at x = 0, it is nonneg for x ≥ 0. -/
+theorem sinh_ge_id (x : ℝ) (hx : 0 ≤ x) : Real.sinh x ≥ x := by
+  suffices h : Real.sinh x - x ≥ 0 by linarith
+  let g : ℝ → ℝ := fun y => Real.sinh y - y
+  have hg0 : g 0 = 0 := by
+    show Real.sinh 0 - 0 = 0
+    rw [Real.sinh_zero]; ring
+  have hg_cont : ContinuousOn g (Set.Icc 0 x) := by
+    apply ContinuousOn.sub
+    · exact Real.continuous_sinh.continuousOn
+    · exact continuous_id.continuousOn
+  have hg_diff : DifferentiableOn ℝ g (interior (Set.Icc 0 x)) := by
+    apply DifferentiableOn.mono _ interior_subset
+    apply DifferentiableOn.sub
+    · exact fun t _ => (hasDerivAt_sinh t).differentiableAt.differentiableWithinAt
+    · exact differentiable_id.differentiableOn
+  have hg_deriv : ∀ t ∈ interior (Set.Icc 0 x), 0 ≤ deriv g t := by
+    intro t ht
+    have hd : HasDerivAt g (Real.cosh t - 1) t := (hasDerivAt_sinh t).sub (hasDerivAt_id t)
+    rw [hd.deriv]
+    linarith [cosh_ge_one t]
+  have hg_mono : MonotoneOn g (Set.Icc 0 x) :=
+    monotoneOn_of_deriv_nonneg (convex_Icc 0 x) hg_cont hg_diff hg_deriv
+  have h0_mem : (0 : ℝ) ∈ Set.Icc 0 x := Set.left_mem_Icc.mpr hx
+  have hx_mem : x ∈ Set.Icc 0 x := Set.right_mem_Icc.mpr hx
+  have := hg_mono h0_mem hx_mem hx
+  rw [hg0] at this
+  exact this
+
+/-- cosh(x) ≥ 1 + x²/2 for x ≥ 0, proved via the Mean Value Theorem.
+    The derivative of cosh(x) - 1 - x²/2 is sinh(x) - x ≥ 0, so the function
+    is nondecreasing. Since it equals 0 at x = 0, it is nonneg for x ≥ 0. -/
+private theorem cosh_ge_one_add_sq_div_two_nonneg (x : ℝ) (hx : 0 ≤ x) :
+    Real.cosh x ≥ 1 + x ^ 2 / 2 := by
+  suffices h : Real.cosh x - 1 - x ^ 2 / 2 ≥ 0 by linarith
+  let f : ℝ → ℝ := fun y => Real.cosh y - 1 - y ^ 2 / 2
+  have hf0 : f 0 = 0 := by
+    show Real.cosh 0 - 1 - 0 ^ 2 / 2 = 0
+    rw [Real.cosh_zero]; ring
+  have hf_cont : ContinuousOn f (Set.Icc 0 x) := by
+    apply ContinuousOn.sub
+    · apply ContinuousOn.sub
+      · exact Real.continuous_cosh.continuousOn
+      · exact continuous_const.continuousOn
+    · exact ((continuous_pow 2).div_const 2).continuousOn
+  have hf_diff : DifferentiableOn ℝ f (interior (Set.Icc 0 x)) := by
+    apply DifferentiableOn.mono _ interior_subset
+    intro t _
+    apply DifferentiableAt.differentiableWithinAt
+    exact ((hasDerivAt_cosh t).sub (hasDerivAt_const t 1)).sub
+      ((hasDerivAt_pow 2 t).div_const 2) |>.differentiableAt
+  have hf_deriv : ∀ t ∈ interior (Set.Icc 0 x), 0 ≤ deriv f t := by
+    intro t ht
+    have hd3 : HasDerivAt (fun y : ℝ => y ^ 2 / 2) t t := by
+      convert (hasDerivAt_pow 2 t).div_const 2 using 1; ring
+    have hd : HasDerivAt f (Real.sinh t - t) t := by
+      show HasDerivAt (fun y => Real.cosh y - 1 - y ^ 2 / 2) (Real.sinh t - t) t
+      convert ((hasDerivAt_cosh t).sub (hasDerivAt_const t 1)).sub hd3 using 1; ring
+    rw [hd.deriv]
+    have ht_mem := interior_subset ht
+    linarith [sinh_ge_id t ht_mem.1]
+  have hf_mono : MonotoneOn f (Set.Icc 0 x) :=
+    monotoneOn_of_deriv_nonneg (convex_Icc 0 x) hf_cont hf_diff hf_deriv
+  have h0_mem : (0 : ℝ) ∈ Set.Icc 0 x := Set.left_mem_Icc.mpr hx
+  have hx_mem : x ∈ Set.Icc 0 x := Set.right_mem_Icc.mpr hx
+  have := hf_mono h0_mem hx_mem hx
+  rw [hf0] at this
+  exact this
+
+/-- cosh(x) ≥ 1 + x²/2 for all real x (a consequence of convexity).
+    Extends to negative x using evenness: cosh(-x) = cosh(x) and (-x)² = x². -/
 theorem cosh_ge_one_add_sq_div_two (x : ℝ) : Real.cosh x ≥ 1 + x ^ 2 / 2 := by
-  rw [Real.cosh_eq]
-  have hp : 0 < Real.exp x := Real.exp_pos x
-  have hn : 0 < Real.exp (-x) := Real.exp_pos (-x)
-  have hprod : Real.exp x * Real.exp (-x) = 1 := by rw [← Real.exp_add]; simp
-  nlinarith [sq_nonneg (Real.exp x - 1), sq_nonneg (Real.exp (-x) - 1),
-             sq_nonneg (Real.exp x - Real.exp (-x))]
+  by_cases hx : 0 ≤ x
+  · exact cosh_ge_one_add_sq_div_two_nonneg x hx
+  · push_neg at hx
+    have hx' : 0 ≤ -x := le_of_lt (neg_pos.mpr hx)
+    have := cosh_ge_one_add_sq_div_two_nonneg (-x) hx'
+    rwa [cosh_neg_eq, neg_sq] at this
 
 /-- The cosh product always exceeds the sum-based approximation:
     cosh(a)·cosh(b) ≥ 1 + (a² + b²)/2 for all a, b. -/
