@@ -22,27 +22,14 @@
     "erdosUrl": "https://erdosproblems.com/648",
     "erdosProblemStatus": "solved",
     "mathlib_version": "4.15.0",
+    "dateAdded": "2026-01-19",
     "mathlibDependencies": [
-      {
-        "theorem": "Nat.primeFactors",
-        "description": "Prime factorization of natural numbers",
-        "module": "Mathlib.Data.Nat.Factorization.Basic"
-      },
-      {
-        "theorem": "Nat.primeCounting",
-        "description": "Prime counting function π(n)",
-        "module": "Mathlib.NumberTheory.PrimeCounting"
-      },
-      {
-        "theorem": "Real.sqrt",
-        "description": "Square root for asymptotic bounds",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
-      },
-      {
-        "theorem": "Real.log",
-        "description": "Logarithm for asymptotic bounds",
-        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
-      }
+      { "theorem": "Nat.Prime", "description": "Prime number predicate and basic lemmas", "module": "Mathlib.Data.Nat.Prime.Basic" },
+      { "theorem": "Nat.Factorization", "description": "Prime factorization of natural numbers", "module": "Mathlib.Data.Nat.Factorization.Basic" },
+      { "theorem": "Finset", "description": "Finite sets for sequence elements", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Real.sqrt", "description": "Square root for asymptotic bounds √(n/log n)", "module": "Mathlib.Data.Real.Sqrt" },
+      { "theorem": "Real.log", "description": "Natural logarithm for asymptotic bounds", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
+      { "theorem": "Filter.Tendsto", "description": "Limit formalization for asymptotic conjecture", "module": "Mathlib.Order.Filter.Basic" }
     ],
     "references": [
       {
@@ -52,135 +39,146 @@
       },
       {
         "key": "Er95c",
-        "citation": "Erdős, P. Original problem statement.",
+        "citation": "Erdős, P. Original problem statement on decreasing greatest prime factors.",
         "type": "paper"
       },
       {
         "key": "A391750",
-        "citation": "OEIS A391750: Values of g(n).",
+        "citation": "OEIS A391750: Values of g(n), the longest increasing sequence below n with strictly decreasing GPFs.",
         "type": "database"
+      },
+      {
+        "key": "dB51",
+        "citation": "de Bruijn, N.G. (1951). On the number of positive integers ≤ x and free of prime factors > y. Indag. Math., 13, 50–60.",
+        "type": "paper"
+      },
+      {
+        "key": "Di30",
+        "citation": "Dickman, K. (1930). On the frequency of numbers containing prime factors of a certain relative magnitude. Ark. Mat. Astron. Fys., 22A(10), 1–14.",
+        "type": "paper"
       }
     ],
     "originalContributions": [
-      "Formal definition of greatest prime factor function P(n)",
-      "Definition of smooth numbers and counting function Ψ(x,y)",
-      "Structure for decreasing GPF sequences",
-      "Definition of the extremal function g(n)",
-      "Axiomatization of Cambie's upper bound g(n) ≤ O((n/log n)^(1/2))",
-      "Axiomatization of construction lower bound g(n) ≥ Ω((n/log n)^(1/2))",
-      "Statement of Cambie's constant question c ∈ [2, 2√2]",
-      "Connection to smooth numbers and de Bruijn estimates",
+      "Formal definition of greatest prime factor function P(n) via gpfAx axiom",
+      "Definition of B-smooth numbers and isSmooth predicate",
+      "Structure for GPF-descending sequences via isGPFDescendingSeq",
+      "Definition of the extremal function g(n) via sSup",
+      "Explicit example sequences [3,4], [7,9,16], [7,10,27,64] with proved GPF orderings",
+      "Axiomatization of Cambie's upper bound g(n) ≤ O(√(n/log n))",
+      "Axiomatization of construction lower bound g(n) ≥ Ω(√(n/log n))",
+      "Proved cambie_main combining both bounds",
+      "Statement of Cambie's constant question c ∈ [2, 2√2] via Filter.Tendsto",
+      "Proved c_upper_lt_three: 2√2 < 3",
+      "Connection to smooth numbers and smallest prime factor spf",
       "OEIS sequence connection A391750"
     ],
-    "relatedProblems": []
+    "relatedProblems": [
+      { "id": "erdos-683", "relationship": "Largest prime divisor of binomial coefficients — both study P(n) behavior on structured number families" },
+      { "id": "erdos-680", "relationship": "Prime factors and arithmetic progressions — related prime factorization questions" },
+      { "id": "erdos-719", "relationship": "Smooth numbers and prime factor distribution in number-theoretic sequences" },
+      { "id": "erdos-753", "relationship": "Prime factor properties of structured integer sequences" }
+    ]
   },
   "overview": {
-    "historicalContext": "**Decreasing Greatest Prime Factors**\n\nP(n) denotes the greatest prime factor of n (e.g., P(12) = 3, P(15) = 5).\n\n**The Problem**: Find the longest increasing sequence a₁ < a₂ < ... < aₜ < n such that P(a₁) > P(a₂) > ... > P(aₜ) - integers increase but their greatest prime factors decrease.\n\n**Example**: The sequence 6, 4 works since P(6)=3 > P(4)=2.\n\n**Resolution**: Stijn Cambie (2025) proved g(n) ≍ (n/log n)^(1/2).\n\n**Open Question**: What is the exact constant c in g(n) ~ c√(n/log n)? Known: c ∈ [2, 2√2].",
-    "problemStatement": "**Problem Statement**\n\nLet g(n) denote the largest t such that there exist integers 2 ≤ a₁ < a₂ < ⋯ < aₜ < n with P(a₁) > P(a₂) > ⋯ > P(aₜ), where P(m) is the greatest prime factor of m.\n\nWhat is the asymptotic behavior of g(n)?\n\n**Status**: SOLVED (Cambie 2025)\n\n**Answer**: g(n) ≍ (n/log n)^(1/2)",
-    "proofStrategy": "**The Formalization**\n\n1. Defines P(n) = greatest prime factor\n2. Defines smooth numbers: n is y-smooth if P(n) ≤ y\n3. Defines the DecreasingGPFSeq structure\n4. Defines g(n) as supremum of sequence lengths\n5. Proves trivial bounds (trees, prime counting)\n6. Axiomatizes Cambie's upper bound O((n/log n)^(1/2))\n7. Axiomatizes construction lower bound Ω((n/log n)^(1/2))\n8. States the constant question c ∈ [2, 2√2]\n9. Connects to smooth number theory\n10. Links to OEIS A391750",
+    "historicalContext": "The greatest prime factor $P(n) = \\max\\{p : p \\text{ prime}, p \\mid n\\}$ is a fundamental arithmetic function whose distribution was first studied by Dickman (1930) and de Bruijn (1951). Erdős posed Problem #648: given the function $g(n)$ measuring the longest increasing sequence $a_1 < a_2 < \\cdots < a_t < n$ with strictly decreasing greatest prime factors $P(a_1) > P(a_2) > \\cdots > P(a_t)$, determine the asymptotic behavior of $g(n)$.\n\nThe problem sits at the intersection of multiplicative number theory and extremal combinatorics. Building long GPF-descending sequences requires exploiting smooth numbers — integers whose prime factors are all small. Prime powers like $2^k, 3^k$ have small GPF but can be arbitrarily large, enabling the 'trick' of placing them late in an increasing sequence.\n\nStijn Cambie solved the problem in 2025 (arXiv:2503.22691), proving $g(n) \\asymp \\sqrt{n/\\log n}$. The lower bound $g(n) \\ge 2\\sqrt{n/\\log n}$ uses an explicit construction selecting one integer per prime $p \\le \\sqrt{n/\\log n}$, leveraging the Prime Number Theorem $\\pi(y) \\sim y/\\log y$. The upper bound $g(n) \\le 2\\sqrt{2}\\sqrt{n/\\log n}$ uses smooth number counting estimates from the theory of the Dickman function $\\rho(u)$.\n\nThe exact constant $c$ in $g(n) \\sim c\\sqrt{n/\\log n}$ remains open, with $c \\in [2, 2\\sqrt{2}]$. Whether the limit even exists is unknown. The OEIS sequence A391750 records values of $g(n)$ for small $n$.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nLet $P(m)$ denote the greatest prime factor of $m$. Let $g(n)$ be the largest $t$ such that there exist integers $2 \\le a_1 < a_2 < \\cdots < a_t < n$ with $P(a_1) > P(a_2) > \\cdots > P(a_t)$.\n\nEstimate $g(n)$.\n\n**Answer** (Cambie 2025): $g(n) \\asymp (n/\\log n)^{1/2}$.\n\nMore precisely, $2\\sqrt{n/\\log n} \\le g(n) \\le 2\\sqrt{2}\\sqrt{n/\\log n}$ for large $n$.\n\n**Open**: What is the exact constant $c$ in $g(n) \\sim c\\sqrt{n/\\log n}$? Known: $c \\in [2, 2\\sqrt{2}]$.",
+    "proofStrategy": "**The Formalization**\n\n1. **P(n) axiomatization**: Define `gpf` via `gpfAx` with proved properties (primality, divisibility, maximality)\n2. **Concrete examples**: Verify $P$-values for small integers and build example sequences $[3,4]$, $[7,9,16]$, $[7,10,27,64]$\n3. **Sequence structure**: Define `isGPFDescendingSeq` using `List.Chain'` for both value-increasing and GPF-decreasing properties\n4. **Extremal function**: Define $g(n)$ via `sSup` over valid sequence lengths\n5. **Explicit bounds**: Prove $g(n) \\ge k$ for $k = 1,2,3,4$ using concrete witnesses\n6. **Smooth numbers**: Define `isSmooth B n` and prove smoothness of prime powers\n7. **Cambie's theorem**: Axiomatize lower/upper bounds, prove `cambie_main` combining them\n8. **Constant question**: State the asymptotic conjecture via `Filter.Tendsto`\n9. **Related functions**: Define smallest prime factor `spf` and prove duality with `gpf`",
     "keyInsights": [
-      "P(n) = greatest prime factor is a key arithmetic function",
-      "Smooth numbers (bounded P) are crucial to the construction",
-      "The sequence must have STRICTLY decreasing GPF values",
-      "Powers of 2 are useful: P(2^k) = 2 is minimal",
-      "The exponent 1/2 comes from balancing smooth number counts",
-      "The constant c ∈ [2, 2√2] is not yet precisely determined"
+      "**Prime powers are key**: $P(2^k) = 2$ regardless of $k$, so $2^{\\lfloor \\log_2 n \\rfloor}$ provides arbitrarily large numbers with GPF = 2",
+      "**Prime Number Theorem**: $\\pi(y) \\sim y/\\log y$ determines how many distinct GPF values are available below a threshold",
+      "**Smooth number density**: The Dickman function $\\rho(u)$ governs the proportion of $y$-smooth numbers $\\le x$ when $y = x^{1/u}$",
+      "**The exponent 1/2**: Comes from balancing $\\pi(y)$ terms against the constraint that all $a_i < n$",
+      "**Constant gap**: $c \\in [2, 2\\sqrt{2}]$ is a factor of $\\sqrt{2}$ gap between upper and lower bounds",
+      "**OEIS A391750**: Tabulates $g(n)$ for small $n$, providing computational evidence for the asymptotic"
     ]
   },
   "sections": [
     {
       "id": "gpf",
       "title": "Greatest Prime Factor",
-      "summary": "The fundamental arithmetic function P(n)",
+      "summary": "Axiomatizes `gpfAx` and defines `gpf n` $= P(n)$ with properties: $P(p) = p$, $P(n) \\mid n$, $P(n)$ prime, and maximality. Proves $P(0) = P(1) = 0$",
       "startLine": 28,
-      "endLine": 57
+      "endLine": 80
+    },
+    {
+      "id": "examples",
+      "title": "Concrete GPF Examples",
+      "summary": "Axiomatizes $P(4) = 2$, $P(6) = 3$, $P(8) = 2$, $P(9) = 3$, $P(10) = 5$, $P(12) = 3$, $P(16) = 2$, $P(27) = 3$, $P(64) = 2$; proves $P(2) = 2$, $P(3) = 3$",
+      "startLine": 82,
+      "endLine": 117
+    },
+    {
+      "id": "sequences",
+      "title": "Descending GPF Sequences",
+      "summary": "Defines `isGPFDescendingSeq` via `List.Chain'` (values increasing, GPFs decreasing), `isValidGPFSeq n`, and extremal function $g(n) = \\sup\\{t\\}$",
+      "startLine": 119,
+      "endLine": 147
+    },
+    {
+      "id": "example-seqs",
+      "title": "Example Sequences",
+      "summary": "Proves $P(3) > P(4)$, $P(7) > P(9) > P(16)$, and $P(7) > P(10) > P(27) > P(64)$ — lengths 2, 3, 4 respectively",
+      "startLine": 149,
+      "endLine": 198
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Explicit Lower Bounds",
+      "summary": "States $g(n) \\ge 1, 2, 3, 4$ for $n \\ge 3, 5, 17, 65$ respectively (all sorry)",
+      "startLine": 200,
+      "endLine": 218
     },
     {
       "id": "smooth",
       "title": "Smooth Numbers",
-      "summary": "Numbers with bounded greatest prime factor",
-      "startLine": 59,
-      "endLine": 78
-    },
-    {
-      "id": "sequences",
-      "title": "Decreasing GPF Sequences",
-      "summary": "The central object of the problem",
-      "startLine": 80,
-      "endLine": 97
-    },
-    {
-      "id": "examples",
-      "title": "Examples and Small Cases",
-      "summary": "Understanding through examples",
-      "startLine": 99,
-      "endLine": 119
-    },
-    {
-      "id": "upper",
-      "title": "Upper Bound",
-      "summary": "The greedy bound on g(n)",
-      "startLine": 121,
-      "endLine": 143
-    },
-    {
-      "id": "lower",
-      "title": "Lower Bound Construction",
-      "summary": "Building long sequences",
-      "startLine": 145,
-      "endLine": 157
+      "summary": "Defines `isSmooth B n` ($P(n) \\le B$); states `power_of_two_smooth` and `prime_power_smooth` (sorry)",
+      "startLine": 220,
+      "endLine": 240
     },
     {
       "id": "cambie",
       "title": "Cambie's Theorem (2025)",
-      "summary": "The main asymptotic result",
-      "startLine": 159,
-      "endLine": 177
+      "summary": "Axiomatizes lower bound $g(n) \\ge c_1\\sqrt{n/\\log n}$ ($c_1 \\ge 2$) and upper bound $g(n) \\le c_2\\sqrt{n/\\log n}$ ($c_2 \\le 2\\sqrt{2}$); proves `cambie_main` combining both",
+      "startLine": 242,
+      "endLine": 278
     },
     {
       "id": "constant",
       "title": "The Constant Question",
-      "summary": "What is the exact constant c?",
-      "startLine": 179,
-      "endLine": 208
+      "summary": "Axiomatizes `cambie_asymptotic_conjecture`: $g(n)/\\sqrt{n/\\log n} \\to c \\in [2, 2\\sqrt{2}]$ via `Filter.Tendsto`; proves $2\\sqrt{2} < 3$",
+      "startLine": 280,
+      "endLine": 309
     },
     {
-      "id": "smooth-connection",
-      "title": "Connection to Smooth Numbers",
-      "summary": "Role of smooth numbers in the analysis",
-      "startLine": 210,
-      "endLine": 223
+      "id": "construction",
+      "title": "Construction Strategy",
+      "summary": "Demonstrates the prime power construction approach: pick primes $p_1 > \\cdots > p_k$, find integers with matching GPFs in increasing order",
+      "startLine": 311,
+      "endLine": 334
     },
     {
       "id": "related",
-      "title": "Related Sequences",
-      "summary": "Other prime factor properties",
-      "startLine": 225,
-      "endLine": 248
-    },
-    {
-      "id": "oeis",
-      "title": "OEIS Connection",
-      "summary": "Sequence A391750",
-      "startLine": 250,
-      "endLine": 261
+      "title": "Related Functions",
+      "summary": "Defines `spf n` $= p(n)$ via `Nat.minFac`; axiomatizes $p(n) \\le P(n)$; proves $p(p) = P(p)$ for primes",
+      "startLine": 336,
+      "endLine": 352
     },
     {
       "id": "main-result",
       "title": "Main Results",
-      "summary": "Summary of Erdős #648",
-      "startLine": 263,
-      "endLine": 303
+      "summary": "Proves `erdos_648_summary` and `erdos_648` from Cambie's bounds; verifies `length_four_exists` $= [7, 10, 27, 64]$ concretely",
+      "startLine": 354,
+      "endLine": 397
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #648 asks for the asymptotic behavior of g(n), the longest increasing sequence below n with strictly decreasing greatest prime factors. SOLVED by Stijn Cambie (2025): g(n) ≍ (n/log n)^(1/2). The constant c in g(n) ~ c√(n/log n) lies in [2, 2√2].",
-    "implications": "**Theoretical Significance**\n\n1. **Arithmetic Functions**: Connects P(n) behavior to sequence combinatorics\n\n2. **Smooth Numbers**: Shows importance of smooth number theory\n\n3. **Asymptotic Analysis**: Precise order of magnitude determined\n\n4. **Open Constant**: The exact constant remains to be determined",
+    "summary": "Erdős Problem #648 asks for the asymptotic behavior of $g(n)$, the longest increasing sequence below $n$ with strictly decreasing greatest prime factors. Stijn Cambie (2025) proved $g(n) \\asymp \\sqrt{n/\\log n}$, with constants $c_1 \\ge 2$ and $c_2 \\le 2\\sqrt{2}$. The formalization axiomatizes both bounds and derives the combined result `cambie_main`, with concrete examples verifying sequences of length up to 4.",
+    "implications": "**Theoretical Significance**\n\n1. **Arithmetic Functions**: Connects $P(n)$ behavior to sequence combinatorics and extremal problems\n\n2. **Smooth Number Theory**: The Dickman function and de Bruijn estimates are essential to the upper bound\n\n3. **Prime Number Theorem**: The lower bound construction leverages $\\pi(y) \\sim y/\\log y$ directly\n\n4. **Open Constant**: The gap $[2, 2\\sqrt{2}]$ for the asymptotic constant remains to be closed",
     "openQuestions": [
-      "What is the exact constant c in g(n) ~ c√(n/log n)?",
-      "Does the limit g(n)/√(n/log n) exist?",
-      "What about increasing GPF sequences (dual problem)?",
-      "Analogous questions for smallest prime factor p(n)?"
+      "What is the exact constant c in g(n) ~ c√(n/log n)? Currently c ∈ [2, 2√2]",
+      "Does the limit g(n)/√(n/log n) exist, or do liminf and limsup differ?",
+      "What about the dual problem: longest increasing sequence with increasing smallest prime factors?",
+      "Analogous questions for other arithmetic functions (number of prime factors, Ω(n), ω(n))?"
     ]
   }
 }

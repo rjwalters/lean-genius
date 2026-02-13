@@ -1,299 +1,146 @@
 [
   {
-    "id": "ann-648-header",
+    "id": "ann-648-imports",
     "proofId": "erdos-648",
-    "range": { "startLine": 1, "endLine": 31 },
+    "range": { "startLine": 33, "endLine": 41 },
     "type": "concept",
-    "title": "Problem Overview",
-    "content": "**Erdős Problem #648: Decreasing Greatest Prime Factors**\n\nLet g(n) be the longest increasing sequence below n with strictly decreasing greatest prime factors.\n\n**Status**: SOLVED (Cambie)\n\n**Answer**: g(n) ≍ (n/log n)^(1/2)",
-    "significance": "critical"
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib for prime numbers (`Nat.Prime.Basic`), prime factorization (`Nat.Factorization.Basic`), finite sets (`Finset.Basic`), real square roots (`Data.Real.Sqrt`), and logarithms (`SpecialFunctions.Log.Basic`). Opens `Nat` and `Finset` namespaces within `Erdos648`.",
+    "mathContext": "The formalization uses `Nat.Prime` and `Nat.Factorization` for the greatest prime factor function, `Real.sqrt` and `Real.log` for the asymptotic bounds $g(n) \\asymp \\sqrt{n/\\log n}$, and `Filter.Tendsto` for the conjectured limit.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.Prime", "Nat.Factorization", "Real.sqrt", "Real.log"],
+    "prerequisites": ["Lean 4 imports", "Mathlib"]
   },
   {
-    "id": "ann-648-gpf-axiom",
+    "id": "ann-648-gpf",
     "proofId": "erdos-648",
-    "range": { "startLine": 57, "endLine": 58 },
-    "type": "axiom",
-    "title": "GPF Axiom",
-    "content": "**gpfAx n**: Axiomatized greatest prime factor.\n\nThe largest prime that divides n, axiomatized for simplicity.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-648-gpf-def",
-    "proofId": "erdos-648",
-    "range": { "startLine": 60, "endLine": 62 },
+    "range": { "startLine": 57, "endLine": 80 },
     "type": "definition",
-    "title": "Greatest Prime Factor",
-    "content": "**gpf n**: P(n) = greatest prime factor of n.\n\nReturns 0 if n ≤ 1, otherwise uses gpfAx.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-648-gpf-one",
-    "proofId": "erdos-648",
-    "range": { "startLine": 64, "endLine": 65 },
-    "type": "theorem",
-    "title": "GPF of One",
-    "content": "**gpf_one**: P(1) = 0 by convention.\n\nBase case for the greatest prime factor function.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-648-gpf-zero",
-    "proofId": "erdos-648",
-    "range": { "startLine": 67, "endLine": 68 },
-    "type": "theorem",
-    "title": "GPF of Zero",
-    "content": "**gpf_zero**: P(0) = 0 by convention.\n\nBase case for the greatest prime factor function.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-648-gpf-prime",
-    "proofId": "erdos-648",
-    "range": { "startLine": 70, "endLine": 71 },
-    "type": "axiom",
-    "title": "GPF of Prime",
-    "content": "**gpf_prime**: P(p) = p for any prime p.\n\nThe only prime factor of a prime is itself.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-648-gpf-dvd",
-    "proofId": "erdos-648",
-    "range": { "startLine": 73, "endLine": 74 },
-    "type": "axiom",
-    "title": "GPF Divides",
-    "content": "**gpf_dvd**: P(n) | n for n > 1.\n\nThe greatest prime factor divides the number.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-648-gpf-is-prime",
-    "proofId": "erdos-648",
-    "range": { "startLine": 76, "endLine": 77 },
-    "type": "axiom",
-    "title": "GPF is Prime",
-    "content": "**gpf_is_prime**: P(n) is prime for n > 1.\n\nBy definition of prime factorization.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-648-gpf-max",
-    "proofId": "erdos-648",
-    "range": { "startLine": 79, "endLine": 80 },
-    "type": "axiom",
-    "title": "GPF is Maximum",
-    "content": "**gpf_max**: Any prime dividing n is ≤ P(n).\n\nP(n) is the maximum prime factor.",
-    "significance": "supporting"
+    "title": "Greatest Prime Factor P(n)",
+    "content": "**gpfAx n** (axiom): The core greatest prime factor function, axiomatized.\n\n**gpf n**: Returns 0 if $n \\le 1$, otherwise `gpfAx n`. Properties axiomatized:\n- **gpf_prime**: $P(p) = p$ for prime $p$\n- **gpf_dvd**: $P(n) \\mid n$ for $n > 1$\n- **gpf_is_prime**: $P(n)$ is prime for $n > 1$\n- **gpf_max**: Any prime dividing $n$ satisfies $p \\le P(n)$\n\nProved: **gpf_one** = 0, **gpf_zero** = 0.",
+    "mathContext": "The greatest prime factor $P(n) = \\max\\{p : p \\text{ prime}, p \\mid n\\}$ is a fundamental arithmetic function studied in analytic number theory. Its distribution is connected to the Dickman function $\\rho(u)$: the proportion of integers $\\le x$ with $P(n) \\le x^{1/u}$ is asymptotically $\\rho(u)$. De Bruijn (1951) refined this to the smooth number counting function $\\Psi(x,y)$.",
+    "significance": "critical",
+    "relatedConcepts": ["Nat.primeFactors", "Dickman function", "smooth numbers", "Nat.minFac"],
+    "prerequisites": ["Nat.Prime", "Nat.Factorization"]
   },
   {
     "id": "ann-648-examples",
     "proofId": "erdos-648",
     "range": { "startLine": 86, "endLine": 117 },
-    "type": "concept",
-    "title": "Concrete Examples",
-    "content": "**GPF Examples**:\n- P(2) = 2, P(3) = 3\n- P(4) = 2 (4 = 2²)\n- P(6) = 3 (6 = 2·3)\n- P(8) = 2, P(9) = 3\n- P(10) = 5, P(12) = 3\n- P(16) = 2, P(27) = 3, P(64) = 2",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-648-descending-def",
-    "proofId": "erdos-648",
-    "range": { "startLine": 130, "endLine": 132 },
-    "type": "definition",
-    "title": "GPF-Descending Sequence",
-    "content": "**isGPFDescendingSeq seq**: A sequence is GPF-descending if values are strictly increasing while GPFs are strictly decreasing.\n\nThis is the central structure of the problem.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-648-valid-seq",
-    "proofId": "erdos-648",
-    "range": { "startLine": 138, "endLine": 140 },
-    "type": "definition",
-    "title": "Valid GPF Sequence",
-    "content": "**isValidGPFSeq n seq**: A GPF-descending sequence where all elements are in [2, n).\n\nValid sequences are bounded below n.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-648-g-def",
-    "proofId": "erdos-648",
-    "range": { "startLine": 146, "endLine": 147 },
-    "type": "definition",
-    "title": "Function g(n)",
-    "content": "**g n**: Maximum length of a valid GPF-descending sequence below n.\n\nThis is the extremal function the problem asks about.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-648-example-3-4",
-    "proofId": "erdos-648",
-    "range": { "startLine": 158, "endLine": 161 },
     "type": "theorem",
-    "title": "Example: [3, 4]",
-    "content": "**example_3_4_gpf_descending**: P(3) > P(4), i.e., 3 > 2.\n\nThe pair [3, 4] has increasing values but decreasing GPF.",
-    "significance": "supporting"
+    "title": "GPF Concrete Examples",
+    "content": "Axiomatizes concrete GPF values: $P(4) = 2$, $P(6) = 3$, $P(8) = 2$, $P(9) = 3$, $P(10) = 5$, $P(12) = 3$, $P(16) = 2$, $P(27) = 3$, $P(64) = 2$. Proves $P(2) = 2$ and $P(3) = 3$ from `gpf_prime`.\n\nThese values illustrate how prime powers (e.g., $2^6 = 64$, $3^3 = 27$) have small GPF despite being large numbers — the key to building long GPF-descending sequences.",
+    "mathContext": "Powers of small primes are $B$-smooth for small $B$: $P(2^k) = 2$, $P(3^k) = 3$, etc. The GPF-descending problem exploits this: large numbers with small GPF can appear late in an increasing sequence while contributing small GPF values early in the decreasing GPF sequence.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime powers", "smooth numbers", "B-smooth"],
+    "prerequisites": ["gpf", "gpf_prime"]
   },
   {
-    "id": "ann-648-example-7-9-16",
+    "id": "ann-648-descending-seq",
     "proofId": "erdos-648",
-    "range": { "startLine": 175, "endLine": 181 },
-    "type": "theorem",
-    "title": "Example: [7, 9, 16]",
-    "content": "**example_7_9_16_gpf_descending**: P(7) > P(9) > P(16).\n\nA length-3 GPF-descending sequence: 7 > 3 > 2.",
-    "significance": "supporting"
+    "range": { "startLine": 130, "endLine": 147 },
+    "type": "definition",
+    "title": "GPF-Descending Sequences and g(n)",
+    "content": "**isGPFDescendingSeq seq**: Values strictly increasing (`Chain' (· < ·)`) while GPFs strictly decreasing (`Chain' (· > ·)` on `map gpf`).\n\n**isValidGPFSeq n seq**: GPF-descending with all elements in $[2, n)$.\n\n**g n**: $\\sup\\{t : \\exists \\text{ valid sequence of length } t\\}$ — the extremal function Erdős asked about.",
+    "mathContext": "The function $g(n)$ measures the longest antichain-like structure in the partial order where integers are ordered by value but compared by GPF. The constraint $a_1 < a_2 < \\cdots < a_t$ with $P(a_1) > P(a_2) > \\cdots > P(a_t)$ forces a delicate balance: large GPF values (primes, products with large prime factors) must appear early, while smooth numbers dominate later positions.",
+    "significance": "critical",
+    "relatedConcepts": ["List.Chain'", "sSup", "extremal function", "antichain"],
+    "prerequisites": ["gpf", "List", "sSup"]
   },
   {
-    "id": "ann-648-example-length-4",
+    "id": "ann-648-example-seqs",
     "proofId": "erdos-648",
-    "range": { "startLine": 189, "endLine": 198 },
+    "range": { "startLine": 158, "endLine": 198 },
     "type": "theorem",
-    "title": "Example: Length 4",
-    "content": "**example_length_4_exists**: [7, 10, 27, 64] has P values [7, 5, 3, 2].\n\nA length-4 GPF-descending sequence.",
-    "significance": "key"
+    "title": "Example GPF-Descending Sequences",
+    "content": "**example_3_4_gpf_descending** (proved): $P(3) = 3 > P(4) = 2$, giving a length-2 sequence.\n\n**example_7_9_16_gpf_descending** (proved): $P(7) = 7 > P(9) = 3 > P(16) = 2$, length 3.\n\n**example_length_4_exists** (proved): $[7, 10, 27, 64]$ with $P$-values $[7, 5, 3, 2]$, length 4.\n\nThe construction strategy: pick distinct primes $p_1 > p_2 > \\cdots > p_k$ and find integers $a_i$ with $P(a_i) = p_i$ arranged in increasing order.",
+    "mathContext": "The example $[7, 10, 27, 64]$ illustrates the key idea: each element is chosen so its GPF equals a specific decreasing prime. The number 10 = 2·5 has $P(10) = 5$, while $27 = 3^3$ has $P(27) = 3$ and $64 = 2^6$ has $P(64) = 2$. Prime powers of small primes can be arbitrarily large yet have small GPF, enabling long sequences.",
+    "significance": "key",
+    "relatedConcepts": ["construction strategy", "prime powers", "gpf examples"],
+    "prerequisites": ["gpf", "isGPFDescendingSeq"]
   },
   {
-    "id": "ann-648-g-lower-bounds",
+    "id": "ann-648-lower-bounds",
     "proofId": "erdos-648",
     "range": { "startLine": 204, "endLine": 218 },
     "type": "theorem",
-    "title": "Lower Bounds on g(n)",
-    "content": "**g_ge_one, g_ge_two, g_ge_three, g_ge_four**:\n- g(n) ≥ 1 for n ≥ 3\n- g(n) ≥ 2 for n ≥ 5\n- g(n) ≥ 3 for n ≥ 17\n- g(n) ≥ 4 for n ≥ 65",
-    "significance": "supporting"
+    "title": "Explicit Lower Bounds on g(n)",
+    "content": "**g_ge_one** (sorry): $g(n) \\ge 1$ for $n \\ge 3$.\n**g_ge_two** (sorry): $g(n) \\ge 2$ for $n \\ge 5$ using $[3, 4]$.\n**g_ge_three** (sorry): $g(n) \\ge 3$ for $n \\ge 17$ using $[7, 9, 16]$.\n**g_ge_four** (sorry): $g(n) \\ge 4$ for $n \\ge 65$ using $[7, 10, 27, 64]$.",
+    "mathContext": "These concrete bounds establish $g(n) \\ge k$ for specific thresholds. The thresholds grow rapidly: $n \\ge 3, 5, 17, 65, \\ldots$ The general pattern involves finding $k$ distinct prime values and $k$ integers with those GPF values arranged increasingly below $n$. The asymptotic result $g(n) \\asymp \\sqrt{n/\\log n}$ shows these lower bounds are far from optimal for large $n$.",
+    "significance": "key",
+    "relatedConcepts": ["explicit construction", "sSup lower bound", "sequence thresholds"],
+    "prerequisites": ["g", "isValidGPFSeq", "example sequences"]
   },
   {
     "id": "ann-648-smooth",
     "proofId": "erdos-648",
-    "range": { "startLine": 230, "endLine": 230 },
+    "range": { "startLine": 230, "endLine": 240 },
     "type": "definition",
     "title": "Smooth Numbers",
-    "content": "**isSmooth B n**: n is B-smooth if P(n) ≤ B.\n\nSmooth numbers have bounded greatest prime factor.",
-    "significance": "key"
+    "content": "**isSmooth B n**: $n$ is $B$-smooth if $P(n) \\le B$.\n\n**power_of_two_smooth** (sorry): $2^k$ is 2-smooth for $k \\ge 1$.\n\n**prime_power_smooth** (sorry): $p^k$ is $p$-smooth for prime $p$, $k \\ge 1$.",
+    "mathContext": "$B$-smooth numbers (integers whose prime factors are all $\\le B$) are counted by the function $\\Psi(x, B) = |\\{n \\le x : P(n) \\le B\\}|$. De Bruijn (1951) showed $\\Psi(x, x^{1/u}) \\sim x \\rho(u)$ where $\\rho$ is the Dickman function satisfying $u\\rho'(u) = -\\rho(u-1)$. For $u = 2$: $\\rho(2) = 1 - \\ln 2 \\approx 0.307$, so about 30.7% of integers $\\le x$ are $\\sqrt{x}$-smooth. This density estimate is central to Cambie's upper bound.",
+    "significance": "key",
+    "relatedConcepts": ["Dickman function", "de Bruijn estimate", "Ψ(x,y)", "smooth number density"],
+    "prerequisites": ["gpf", "Nat.Prime"]
   },
   {
-    "id": "ann-648-power-two-smooth",
+    "id": "ann-648-cambie-bounds",
     "proofId": "erdos-648",
-    "range": { "startLine": 232, "endLine": 235 },
+    "range": { "startLine": 252, "endLine": 278 },
     "type": "theorem",
-    "title": "Powers of 2 Smooth",
-    "content": "**power_of_two_smooth**: 2^k is 2-smooth for k ≥ 1.\n\nPowers of 2 have the smallest possible GPF.",
-    "significance": "supporting"
+    "title": "Cambie's Theorem: g(n) ≍ √(n/log n)",
+    "content": "**cambie_lower_bound** (axiom): $\\exists c_1 \\ge 2$ such that $g(n) \\ge c_1 \\sqrt{n/\\log n}$ for $n \\ge 10$.\n\n**cambie_upper_bound** (axiom): $\\exists c_2 \\le 2\\sqrt{2}$ such that $g(n) \\le c_2 \\sqrt{n/\\log n}$ for $n \\ge 10$.\n\n**cambie_main** (proved from axioms): Combines both bounds to establish $g(n) \\asymp \\sqrt{n/\\log n}$.",
+    "mathContext": "Cambie's 2025 proof establishes the order of magnitude of $g(n)$. The **lower bound** uses an explicit construction: for each prime $p \\le \\sqrt{n/\\log n}$, select an integer in $[2, n)$ with GPF exactly $p$, arranged increasingly. The number of primes $\\le y$ is $\\pi(y) \\sim y/\\log y$ by the Prime Number Theorem, and with $y \\sim \\sqrt{n/\\log n}$ this yields $\\sim c_1 \\sqrt{n/\\log n}$ terms.\n\nThe **upper bound** uses a counting argument: a GPF-descending sequence of length $t$ requires $t$ distinct GPF values (primes), so $t \\le \\pi(P_{\\max})$. Since elements are $< n$, the smooth number estimates bound the achievable length.",
+    "significance": "critical",
+    "relatedConcepts": ["Prime Number Theorem", "π(x)", "smooth number estimates", "explicit construction"],
+    "prerequisites": ["g", "Real.sqrt", "Real.log", "cambie_lower_bound", "cambie_upper_bound"]
   },
   {
-    "id": "ann-648-prime-power-smooth",
+    "id": "ann-648-constant",
     "proofId": "erdos-648",
-    "range": { "startLine": 237, "endLine": 240 },
-    "type": "theorem",
-    "title": "Prime Power Smooth",
-    "content": "**prime_power_smooth**: p^k is p-smooth for prime p.\n\nPrime powers are smooth with respect to that prime.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-648-cambie-lower",
-    "proofId": "erdos-648",
-    "range": { "startLine": 252, "endLine": 254 },
-    "type": "axiom",
-    "title": "Cambie's Lower Bound",
-    "content": "**cambie_lower_bound**: g(n) ≥ c₁ · √(n/log n) for some c₁ ≥ 2.\n\nExplicit construction achieves this bound.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-648-cambie-upper",
-    "proofId": "erdos-648",
-    "range": { "startLine": 260, "endLine": 262 },
-    "type": "axiom",
-    "title": "Cambie's Upper Bound",
-    "content": "**cambie_upper_bound**: g(n) ≤ c₂ · √(n/log n) for some c₂ ≤ 2√2.\n\nThe key is counting smooth numbers appropriately.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-648-cambie-main",
-    "proofId": "erdos-648",
-    "range": { "startLine": 268, "endLine": 278 },
-    "type": "theorem",
-    "title": "Cambie's Main Result",
-    "content": "**cambie_main**: g(n) ≍ (n/log n)^(1/2).\n\nBoth lower and upper bounds of order √(n/log n).\n\nThe main result solving Erdős #648.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-648-asymptotic-conjecture",
-    "proofId": "erdos-648",
-    "range": { "startLine": 291, "endLine": 294 },
-    "type": "axiom",
-    "title": "Asymptotic Conjecture",
-    "content": "**cambie_asymptotic_conjecture**: Does g(n)/√(n/log n) → c for some c ∈ [2, 2√2]?\n\nAsks whether the limit exists.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-648-constant-bounds",
-    "proofId": "erdos-648",
-    "range": { "startLine": 296, "endLine": 300 },
+    "range": { "startLine": 291, "endLine": 309 },
     "type": "definition",
-    "title": "Constant Bounds",
-    "content": "**c_lower** = 2\n**c_upper** = 2√2 ≈ 2.83\n\nBounds on the potential asymptotic constant.",
-    "significance": "key"
+    "title": "The Constant Question: c ∈ [2, 2√2]",
+    "content": "**cambie_asymptotic_conjecture** (axiom): $g(n)/\\sqrt{n/\\log n} \\to c$ for some $c \\in [2, 2\\sqrt{2}]$, formalized via `Filter.Tendsto`.\n\n**c_lower** = 2, **c_upper** = $2\\sqrt{2} \\approx 2.83$.\n\n**c_upper_lt_three** (proved): $2\\sqrt{2} < 3$ via $\\sqrt{2} < 1.5$.",
+    "mathContext": "Determining the exact constant $c$ in $g(n) \\sim c\\sqrt{n/\\log n}$ remains open. The lower bound $c \\ge 2$ comes from the explicit prime power construction. The upper bound $c \\le 2\\sqrt{2}$ comes from refined smooth number counting. Whether the limit even exists is itself a conjecture — it could be that $\\liminf$ and $\\limsup$ differ. The OEIS sequence A391750 tabulates $g(n)$ for small $n$.",
+    "significance": "key",
+    "relatedConcepts": ["Filter.Tendsto", "nhds", "OEIS A391750", "liminf vs limsup"],
+    "prerequisites": ["cambie_main", "Real.sqrt", "Filter.atTop"]
   },
   {
-    "id": "ann-648-c-upper-lt-three",
-    "proofId": "erdos-648",
-    "range": { "startLine": 302, "endLine": 309 },
-    "type": "theorem",
-    "title": "Upper Bound < 3",
-    "content": "**c_upper_lt_three**: 2√2 < 3.\n\nVerifies the upper bound constant is less than 3.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-648-prime-power-seq",
+    "id": "ann-648-construction",
     "proofId": "erdos-648",
     "range": { "startLine": 332, "endLine": 334 },
     "type": "definition",
-    "title": "Prime Power Sequence",
-    "content": "**primePowerSequence**: Example construction using [7, 10, 27, 64].\n\nDemonstrates the construction strategy.",
-    "significance": "supporting"
+    "title": "Construction Strategy",
+    "content": "**primePowerSequence**: The example $[(7,1), (10,1), (27,1), (64,1)]$ encoding the construction.\n\nThe strategy: pick primes $p_1 > p_2 > \\cdots > p_k$ and for each find the smallest integer $\\ge$ previous with GPF $= p_i$. Prime powers $p^m$ serve this role: $7^1 = 7$, $2 \\cdot 5 = 10$, $3^3 = 27$, $2^6 = 64$.",
+    "mathContext": "The construction generalizes to: for primes $p_1 > p_2 > \\cdots > p_k$ where $p_k = 2$, pick $a_i = p_i^{e_i}$ or products of primes $\\le p_i$. The challenge is ensuring $a_1 < a_2 < \\cdots < a_k < n$. Since $a_k$ can be as large as $2^{\\lfloor \\log_2 n \\rfloor}$ and $a_1$ must have GPF $= p_1$, the number of usable primes is bounded by how many fit below $\\sqrt{n/\\log n}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime power construction", "greedy algorithm", "smooth number selection"],
+    "prerequisites": ["gpf", "isGPFDescendingSeq"]
   },
   {
-    "id": "ann-648-spf",
+    "id": "ann-648-related",
     "proofId": "erdos-648",
-    "range": { "startLine": 344, "endLine": 344 },
+    "range": { "startLine": 344, "endLine": 352 },
     "type": "definition",
-    "title": "Smallest Prime Factor",
-    "content": "**spf n**: The smallest prime dividing n.\n\nDual to greatest prime factor.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-648-spf-le-gpf",
-    "proofId": "erdos-648",
-    "range": { "startLine": 346, "endLine": 347 },
-    "type": "axiom",
-    "title": "SPF ≤ GPF",
-    "content": "**spf_le_gpf**: p(n) ≤ P(n) for n > 1.\n\nSmallest prime factor is at most the greatest.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-648-spf-eq-gpf-prime",
-    "proofId": "erdos-648",
-    "range": { "startLine": 349, "endLine": 352 },
-    "type": "theorem",
-    "title": "SPF = GPF for Primes",
-    "content": "**spf_eq_gpf_prime**: p(p) = P(p) = p for primes.\n\nPrimes have a unique prime factor.",
-    "significance": "supporting"
+    "title": "Smallest Prime Factor and Duality",
+    "content": "**spf n**: $p(n) = $ `n.minFac`, the smallest prime dividing $n$.\n\n**spf_le_gpf** (axiom): $p(n) \\le P(n)$ for $n > 1$.\n\n**spf_eq_gpf_prime** (proved): $p(p) = P(p) = p$ for primes, since primes have a unique prime factor.",
+    "mathContext": "The smallest prime factor $p(n)$ is dual to $P(n)$. For a prime $p$, both coincide. For composite $n$, the gap $P(n) - p(n)$ measures the 'spread' of prime factors. The dual problem — longest increasing sequence with *increasing* smallest prime factors — has different asymptotics because $p(n) = 2$ for all even numbers, making the constraint much weaker.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.minFac", "prime factorization spread", "dual problem"],
+    "prerequisites": ["gpf", "Nat.Prime"]
   },
   {
     "id": "ann-648-summary",
     "proofId": "erdos-648",
-    "range": { "startLine": 370, "endLine": 376 },
+    "range": { "startLine": 370, "endLine": 397 },
     "type": "theorem",
-    "title": "Summary Theorem",
-    "content": "**erdos_648_summary**: Combines lower and upper bounds.\n\nStates the full result with both directions.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-648-main",
-    "proofId": "erdos-648",
-    "range": { "startLine": 378, "endLine": 384 },
-    "type": "theorem",
-    "title": "Main Result",
-    "content": "**erdos_648**: Erdős Problem #648 is SOLVED.\n\nQuestion: What is the asymptotic behavior of g(n)?\n\nAnswer: g(n) ≍ (n/log n)^(1/2)\n\nSolved by Stijn Cambie.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-648-length-four",
-    "proofId": "erdos-648",
-    "range": { "startLine": 386, "endLine": 397 },
-    "type": "theorem",
-    "title": "Length 4 Verification",
-    "content": "**length_four_exists**: Concrete verification that [7, 10, 27, 64] is a valid length-4 GPF-descending sequence below 100.\n\nAll conditions verified explicitly.",
-    "significance": "supporting"
+    "title": "Main Results Summary",
+    "content": "**erdos_648_summary** (proved from axioms): Combines both Cambie bounds into a single statement with $c_1 \\ge 2$ and $c_2 \\le 2\\sqrt{2}$.\n\n**erdos_648** (proved from `cambie_main`): The main theorem restating $g(n) \\asymp \\sqrt{n/\\log n}$.\n\n**length_four_exists** (proved): Concrete verification that $[7, 10, 27, 64]$ is a valid length-4 GPF-descending sequence below 100.",
+    "mathContext": "The summary theorem packages the complete solution to Erdős #648: the order of magnitude of $g(n)$ is $\\sqrt{n/\\log n}$. The proved `cambie_main` derives from the two axiomatized bounds. The concrete `length_four_exists` provides a constructive witness, verified by explicit GPF computation.",
+    "significance": "critical",
+    "relatedConcepts": ["order of magnitude", "asymptotic equivalence", "constructive witness"],
+    "prerequisites": ["cambie_lower_bound", "cambie_upper_bound", "g"]
   }
 ]
