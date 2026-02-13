@@ -27,6 +27,11 @@
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
+        "theorem": "Nat.Basic",
+        "description": "Natural number arithmetic and ordering",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
         "theorem": "Set",
         "description": "Set operations and membership",
         "module": "Mathlib.Data.Set.Basic"
@@ -35,6 +40,11 @@
         "theorem": "Finset",
         "description": "Finite sets and cardinality",
         "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "BigOperators",
+        "description": "Finite sums and products over Finsets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
       }
     ],
     "originalContributions": [
@@ -61,76 +71,105 @@
     ]
   },
   "overview": {
-    "historicalContext": "This problem was asked by Erdős and Newman. Erdős (1980) first showed the answer is NO for C = 3, 4 and infinitely many other values of C. Nešetřil and Rödl (1985) gave the complete negative answer: NO for ALL C, even when the number of partition pieces is allowed to depend on A itself. The proof uses Ramsey-theoretic methods.",
-    "problemStatement": "Suppose A ⊆ ℕ and C > 0 is such that 1_A * 1_A(n) ≤ C for all n ∈ ℕ (i.e., every integer has at most C representations as a sum of two elements from A). Can A be partitioned into t = t(C) subsets A₁,...,Aₜ such that 1_{Aᵢ} * 1_{Aᵢ}(n) < C for all 1 ≤ i ≤ t and n ∈ ℕ?",
-    "proofStrategy": "The formalization defines the representation function r_A(n) = |{(a,b) ∈ A² : a + b = n}|, bounded convolution, and the partition question. The Nešetřil-Rödl theorem is axiomatized: for every C ≥ 1, there exists a 'bad' set A with r_A ≤ C that cannot be partitioned into pieces with r < C, no matter how many pieces are used.",
+    "historicalContext": "The representation function $r_A(n) = |\\{(a,b) \\in A^2 : a+b=n\\}|$ is a central object in additive combinatorics, measuring how 'additively rich' a set is. Simon Sidon (1932) initiated the study of sets where all pairwise sums are distinct ($r_A \\leq 2$), now called Sidon or $B_2$ sets. Erdős and Turán (1941) proved the foundational upper bound $|A \\cap [1,N]| \\leq \\sqrt{N} + O(N^{1/4})$ for Sidon sets, launching a rich theory connecting additive number theory to combinatorics.\n\nProblem #328, posed by Erdős and Donald J. Newman (see [ErGr80, p.48]), asks whether bounded convolution ($r_A \\leq C$) can always be 'improved' by partitioning: can we split $A$ into $t(C)$ pieces each with $r_{A_i} < C$? Erdős (1980) [Er80e] first showed the answer is NO for $C=3,4$ and infinitely many other values. The complete resolution came from Jaroslav Nešetřil and Vojtěch Rödl (1985) [NeRo85], who proved the answer is NO for ALL $C \\geq 1$, using Ramsey-theoretic methods. Their result is even stronger: no partition works even when $t$ is allowed to depend on $A$ itself, not just on $C$. This reveals a fundamental rigidity in additive structure: the representation function cannot be reduced by any combinatorial decomposition.",
+    "problemStatement": "Suppose $A \\subseteq \\mathbb{N}$ and $C > 0$ such that $\\mathbf{1}_A * \\mathbf{1}_A(n) \\leq C$ for all $n \\in \\mathbb{N}$ (i.e., every integer has at most $C$ representations as a sum of two elements from $A$). Can $A$ be partitioned into $t = t(C)$ subsets $A_1, \\ldots, A_t$ such that $\\mathbf{1}_{A_i} * \\mathbf{1}_{A_i}(n) < C$ for all $1 \\leq i \\leq t$ and $n \\in \\mathbb{N}$?\n\n**Answer: NO** (Nešetřil-Rödl 1985). For every $C \\geq 1$, there exist sets $A$ with $r_A \\leq C$ that cannot be partitioned into ANY number of pieces with $r_{A_i} < C$.",
+    "proofStrategy": "The formalization defines the representation function $r_A(n)$, bounded convolution, Sidon/$B_h$ sets, and the partition question. Erdős's partial results for $C=3,4$ are axiomatized, followed by the full Nešetřil-Rödl theorem for all $C$. The proof of the disproof follows from the Nešetřil-Rödl theorem applied to the Erdős-Newman question. Special cases (Sidon sets, unique-sum sets) and density bounds ($|A \\cap [1,N]| \\leq C\\sqrt{N}+1$) round out the formalization.",
     "keyInsights": [
-      "The representation function r_A(n) counts sumset representations",
-      "Sidon sets (B₂ sets) have r_A ≤ 2",
-      "Partitioning cannot always reduce maximum representation",
-      "Even Sidon sets cannot be reduced to unique-sum sets",
-      "Ramsey theory provides the counterexamples",
-      "The obstruction holds for ALL values of C"
+      "**Representation function**: $r_A(n) = |\\{(a,b) \\in A^2 : a+b=n\\}|$ measures additive richness; bounded $r_A$ characterizes 'thin' sets",
+      "**Sidon sets as $C=2$**: Sidon ($B_2$) sets have $r_A \\leq 2$; even these cannot be partitioned into unique-sum sets ($r \\leq 1$)",
+      "**Ramsey obstruction**: The Nešetřil-Rödl proof views pairs summing to the same value as hyperedges; partition = coloring, and Ramsey theory forces monochromatic 'bad' configurations",
+      "**Strong form**: The negative answer holds even when $t$ is allowed to depend on $A$ (not just $C$), ruling out all partition-based strategies",
+      "**Density bound**: Sets with $r_A \\leq C$ satisfy $|A \\cap [1,N]| = O(C\\sqrt{N})$, and the counterexamples achieve this bound",
+      "**Unique sums are hereditary**: Unlike bounded convolution, the property $r_A \\leq 1$ (unique sums) IS preserved by subsets—showing the partition obstruction is specific to $C \\geq 2$"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "erdos-774",
+        "relationship": "Related problem on representation functions and additive bases"
+      }
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Problem Overview",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Header documentation: Erdős-Newman question, Nešetřil-Rödl disproof, references to [ErGr80], [Er80e], [NeRo85]"
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "startLine": 27,
+      "endLine": 32,
+      "summary": "Imports from Mathlib: `Nat.Basic`, `Set.Basic`, `Finset.Basic`, `BigOperators` for finite sums"
+    },
     {
       "id": "representation-function",
       "title": "Representation Function",
       "startLine": 34,
       "endLine": 58,
-      "summary": "Definition of r_A(n) and bounded convolution"
+      "summary": "Definitions of $r_A(n)$ via `representationFunction` (on `Set ℕ`) and `rA` (on `Finset ℕ`), plus `hasBoundedConvolution` requiring $r_A(n) \\leq C$ for all $n$"
     },
     {
       "id": "sidon-sets",
-      "title": "B_h Sets (Sidon Sets)",
+      "title": "$B_h$ Sets (Sidon Sets)",
       "startLine": 60,
       "endLine": 83,
-      "summary": "Sidon sets, B_h sets, and their convolution bounds"
+      "summary": "`isSidonSet` (all pairwise sums distinct, $r_A \\leq 2$), `isBhSet` ($B_h$ generalization), and `sidon_bounded_convolution` linking Sidon sets to $C=2$"
     },
     {
       "id": "partition-question",
       "title": "The Partition Question",
       "startLine": 85,
       "endLine": 114,
-      "summary": "Formal statement of the Erdős-Newman question"
+      "summary": "`isPartition`, `hasStrictlySmaller`, and `erdos_newman_question`: $\\forall C, \\exists t(C), \\forall A$ with $r_A \\leq C$, can $A$ be split into $\\leq t$ pieces with $r_{A_i} < C$?"
     },
     {
       "id": "erdos-partial",
-      "title": "Erdős's Partial Results",
+      "title": "Erdős's Partial Results (1980)",
       "startLine": 116,
       "endLine": 139,
-      "summary": "Erdős (1980): NO for C = 3 and C = 4"
+      "summary": "`erdos_C3_counterexample` and `erdos_C4_counterexample`: for $C=3$ and $C=4$, there exist bad sets with no valid partition"
     },
     {
       "id": "nesetril-rodl",
-      "title": "Nešetřil-Rödl's Complete Solution",
+      "title": "Nešetřil-Rödl Complete Solution (1985)",
       "startLine": 141,
       "endLine": 174,
-      "summary": "Complete negative answer for all C, including strong version"
+      "summary": "`nesetril_rodl_theorem` ($\\forall C \\geq 1$, counterexamples exist), `erdos_newman_disproved` ($\\neg$ Erdős-Newman), `nesetril_rodl_strong` (no partition works even with $t$ depending on $A$)"
     },
     {
       "id": "special-cases",
-      "title": "Special Cases and Density",
+      "title": "Special Cases: Sidon and Unique Sums",
       "startLine": 176,
+      "endLine": 202,
+      "summary": "`sidon_case` (even Sidon sets fail), `hasUniqueSums` ($r_A \\leq 1$), `unique_sums_hereditary` (unique sums closed under subsets)"
+    },
+    {
+      "id": "density",
+      "title": "Density Considerations",
+      "startLine": 204,
       "endLine": 214,
-      "summary": "Sidon sets (C=2), unique sum sets, and density bounds"
+      "summary": "`density_bound`: $|A \\cap [1,N]| \\leq C\\sqrt{N}+1$ for sets with bounded convolution; counterexamples achieve this bound"
     },
     {
       "id": "summary",
-      "title": "Summary",
+      "title": "Summary Theorem",
       "startLine": 216,
       "endLine": 247,
-      "summary": "Complete disproof combining Nešetřil-Rödl with Erdős-Newman negation"
+      "summary": "`erdos_328_summary`: combines `nesetril_rodl_theorem` with `erdos_newman_disproved` to state the complete resolution"
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #328 is DISPROVED. Nešetřil and Rödl (1985) showed that for ALL values of C ≥ 1, there exist sets A with bounded convolution r_A ≤ C that cannot be partitioned into ANY number of pieces with strictly smaller convolution r_{Aᵢ} < C. This is a fundamental obstruction in additive combinatorics, showing that bounded representation is a robust property.",
-    "implications": "The result demonstrates that the additive structure captured by the representation function cannot be 'improved' through partition arguments. This has implications for the theory of Sidon sets (B₂ sequences), B_h sequences, and more generally for understanding when additive properties are hereditary under partition.",
+    "summary": "Erdős Problem #328 is DISPROVED. Nešetřil and Rödl (1985) showed that for ALL values of C ≥ 1, there exist sets A with bounded convolution r_A ≤ C that cannot be partitioned into ANY number of pieces with strictly smaller convolution. This is a fundamental rigidity result: the additive structure captured by the representation function cannot be 'improved' through combinatorial decomposition.",
+    "implications": "The result reveals that bounded representation is a robust, non-decomposable property in additive combinatorics. Unlike unique sums (r_A ≤ 1), which are hereditary under subsets, bounded convolution for C ≥ 2 resists partition-based reduction. This connects to broader themes in Ramsey theory about the inevitability of structure under coloring.",
     "openQuestions": [
-      "What is the growth rate of the smallest counterexample for each C?",
-      "Analogous questions for other additive structures",
-      "Connections to hypergraph Ramsey numbers"
+      "What is the minimum size of a counterexample set A ⊆ [1,N] for each C, as a function of N and C?",
+      "For C = 2 (Sidon sets), what is the largest t such that some Sidon set CAN be partitioned into t unique-sum pieces?",
+      "Does the analogous question for B_h sets (h ≥ 3) also have a negative answer?",
+      "What quantitative Ramsey bounds govern the Nešetřil-Rödl construction?",
+      "Can the counterexamples be made constructive, or are they inherently Ramsey-theoretic?"
     ]
   }
 }
