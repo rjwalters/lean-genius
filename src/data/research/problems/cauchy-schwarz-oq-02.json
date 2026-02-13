@@ -1,55 +1,95 @@
 {
   "slug": "cauchy-schwarz-oq-02",
   "title": "Bunyakovsky-Schwarz Integral Inequality Formalization",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "|∫ f · g dμ| ≤ ‖f‖_L2 · ‖g‖_L2 for f, g ∈ L²(μ)",
+    "plain": "The Bunyakovsky-Schwarz integral inequality: for square-integrable functions f and g, the absolute value of the integral of their product is bounded by the product of their L² norms.",
+    "whyMatters": [
+      "Fundamental inequality in functional analysis and measure theory",
+      "Integral generalization of finite-dimensional Cauchy-Schwarz",
+      "Key tool in probability theory (Var(XY) bounds) and PDE theory"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Abstract L2 Cauchy-Schwarz: |⟪f,g⟫| ≤ ‖f‖·‖g‖",
+      "L2 inner product = integral bridge (L2_inner_eq_integral)",
+      "Integral absolute value form: |∫ f·g dμ| ≤ ‖f‖_L2·‖g‖_L2 (bunyakovsky_schwarz_abs)",
+      "Integral squared form: (∫ f·g dμ)² ≤ ‖f‖²·‖g‖² (bunyakovsky_schwarz_sq)",
+      "Equality characterization: equality iff f = c·g in L2 (cauchy_schwarz_L2_eq_iff)"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "COMPLETE: Full formalization of Bunyakovsky-Schwarz integral inequality in L²"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-02-11T06:59:43.224Z",
+    "phase": "COMPLETE",
+    "since": "2026-02-13T12:15:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "File complete with 6 theorems, 0 sorries, 0 axioms",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - formalization complete",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: CauchySchwarzIntegral.lean fully formalizes the Bunyakovsky-Schwarz integral inequality using Mathlib's L² space as an inner product space. 6 theorems, 0 sorries, 0 axioms. Builds cleanly in Docker.",
+    "builtItems": [
+      "cauchy_schwarz_L2: abstract CS on L2 (abs_real_inner_le_norm)",
+      "cauchy_schwarz_L2_sq: squared form on L2",
+      "L2_inner_eq_integral: bridge from L2 inner product to ∫ f*g dμ",
+      "bunyakovsky_schwarz_abs: |∫ f·g dμ| ≤ ‖f‖·‖g‖",
+      "bunyakovsky_schwarz_sq: (∫ f·g dμ)² ≤ ‖f‖²·‖g‖²",
+      "cauchy_schwarz_L2_eq_iff: equality iff linearly dependent"
+    ],
+    "insights": [
+      "Mathlib's L²(μ) is already an InnerProductSpace, so abstract CS applies directly",
+      "Key bridge: L2.inner_def connects abstract inner product to ∫ inner (f a) (g a) dμ",
+      "For ℝ-valued functions, inner x y = x * y, simplifying the integral form",
+      "Gallery integration already exists at src/data/proofs/cauchy-schwarz-integral/"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "L2 inner product space approach",
+      "status": "SUCCESS",
+      "description": "Use Mathlib's L2 inner product space instance and bridge to integral form"
+    }
+  ],
   "tags": [
     "seeker-selected",
     "analysis",
     "measure-theory",
-    "cauchy-schwarz"
+    "cauchy-schwarz",
+    "0-sorry",
+    "complete"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "CauchySchwarzIntegral.lean",
+    "CauchySchwarz.lean"
+  ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Bunyakovsky (1859): Integral form of Cauchy-Schwarz",
+      "Schwarz (1885): Independent proof for variational calculus"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.Analysis.InnerProductSpace.Basic"
+    ]
   },
   "started": "2026-02-11T07:03:36.101Z",
-  "lastUpdate": "2026-02-11T07:03:36.101Z",
+  "lastUpdate": "2026-02-13T12:15:00Z",
   "significance": 7,
   "tractability": 6
 }
