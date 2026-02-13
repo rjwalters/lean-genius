@@ -7,6 +7,7 @@
     "author": "de Mathan (1980), Pollington (1979), Peres-Schlag (2010)",
     "sourceUrl": "https://erdosproblems.com/464",
     "date": "1979",
+    "dateUpdated": "2026-02-12",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos464Problem.lean",
     "tags": [
@@ -14,7 +15,9 @@
       "diophantine-approximation",
       "lacunary-sequences",
       "fractional-parts",
-      "density"
+      "density",
+      "continued-fractions",
+      "equidistribution"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -22,87 +25,140 @@
     "erdosUrl": "https://erdosproblems.com/464",
     "erdosProblemStatus": "solved",
     "mathlib_version": "4.15.0",
-    "mathlibDependencies": [],
-    "originalContributions": []
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.floor",
+        "description": "Floor function for integers",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Int.ceil",
+        "description": "Ceiling function for integers",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on reals",
+        "module": "Mathlib.Data.Real.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of lacunary sequence predicate IsLacunary",
+      "Distance-to-nearest-integer function distToInt",
+      "NotDense predicate capturing non-density of fractional parts",
+      "Axiomatization of de Mathan-Pollington theorem and Peres-Schlag bound"
+    ],
+    "mathContext": "Diophantine Approximation — Lacunary Sequences and Equidistribution",
+    "references": [
+      {
+        "authors": "B. de Mathan",
+        "title": "Numbers contravening a condition in density modulo 1",
+        "year": 1980,
+        "journal": "Acta Mathematica Hungarica"
+      },
+      {
+        "authors": "A. D. Pollington",
+        "title": "On the density of sequence {nₖξ}",
+        "year": 1979,
+        "journal": "Illinois Journal of Mathematics"
+      },
+      {
+        "authors": "Y. Peres, W. Schlag",
+        "title": "Two Erdős problems on lacunary sequences: chromatic number and Diophantine approximation",
+        "year": 2010,
+        "journal": "Bulletin of the London Mathematical Society"
+      },
+      {
+        "authors": "Y. Katznelson",
+        "title": "Chromatic numbers of Cayley graphs on Z and recurrence",
+        "year": 2001,
+        "journal": "Combinatorica"
+      },
+      {
+        "authors": "R. K. Akhunzhanov, N. G. Moshchevitin",
+        "title": "On the chromatic number of a distance graph associated with a lacunary sequence",
+        "year": 2004,
+        "journal": "Doklady Mathematics"
+      }
+    ],
+    "crossReferences": [
+      {
+        "targetId": "erdos-466",
+        "relationship": "Related problem on lacunary sums modulo 1"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #464 asks about the density of fractional parts for lacunary sequences. A sequence A = {n₁ < n₂ < ...} is lacunary with parameter ε > 0 if n_{k+1} ≥ (1+ε)n_k for all k—this means the sequence grows at least exponentially.\n\nFor any real θ, consider the set {‖θn_k‖ : k ≥ 1} where ‖x‖ is the distance to the nearest integer. The question: must there exist irrational θ such that this set is NOT dense in [0, 1/2]?\n\nSolved independently by de Mathan (1980) and Pollington (1979) with bound ε⁴/log(1/ε). Improved by Katznelson (2001), Akhunzhanov-Moshchevitin (2004), Dubickas (2006), and finally Peres-Schlag (2010) who achieved ε/log(1/ε). The conjectured optimal bound is ε.",
+    "historicalContext": "Erdős Problem #464 sits at the crossroads of Diophantine approximation and combinatorial number theory. The question concerns lacunary sequences—sequences $A = \\{n_1 < n_2 < \\cdots\\}$ satisfying $n_{k+1} \\geq (1+\\varepsilon)n_k$ for some $\\varepsilon > 0$—which grow at least exponentially.\n\nThe classical Weyl equidistribution theorem (1916) guarantees that for almost every $\\theta$, the sequence $\\{\\theta n_k\\}$ is equidistributed modulo 1. Erdős asked the reverse: for a lacunary sequence, must there exist irrational $\\theta$ where the fractional parts $\\|\\theta n_k\\|$ are NOT dense?\n\nAndrew Pollington (University of Texas, born 1951) proved this in 1979, and Bernard de Mathan (Université de Bordeaux, 1935–2013) independently proved it in 1980. Both showed that for any lacunary $A$, there exists $\\theta$ with $\\inf_k \\|\\theta n_k\\| > 0$, with a quantitative bound of order $\\varepsilon^4/\\log(1/\\varepsilon)$.\n\nSubsequent improvements came from Katznelson (2001) who connected the problem to chromatic numbers of Cayley graphs on $\\mathbb{Z}$, Akhunzhanov-Moshchevitin (2004), and Dubickas (2006). The current best bound is due to Yuval Peres and Wilhelm Schlag (2010), who achieved $\\varepsilon/\\log(1/\\varepsilon)$ using a refined probabilistic pigeonhole argument. The conjectured optimal bound is $\\Theta(\\varepsilon)$ (without the log factor), which remains open.",
     "problemStatement": "Let $A = \\{n_1 < n_2 < \\cdots\\} \\subset \\mathbb{N}$ be a lacunary sequence (there exists $\\varepsilon > 0$ with $n_{k+1} \\geq (1+\\varepsilon)n_k$ for all $k$).\n\nMust there exist an irrational $\\theta$ such that $\\{\\|\\theta n_k\\| : k \\geq 1\\}$ is NOT dense in $[0, 1/2]$?\n\n**Answer:** YES\n\n**Quantitative bounds:**\n- Original (de Mathan/Pollington): $\\inf_k \\|\\theta n_k\\| \\gg \\varepsilon^4/\\log(1/\\varepsilon)$\n- Best known (Peres-Schlag 2010): $\\inf_k \\|\\theta n_k\\| \\gg \\varepsilon/\\log(1/\\varepsilon)$\n- Conjectured optimal: $\\gg \\varepsilon$",
-    "proofStrategy": "The Lean formalization defines lacunary sequences, distance to nearest integer, and the density property. The main theorem of de Mathan-Pollington is axiomatized: for any lacunary A, there exists irrational θ with a gap in the fractional distances. The improved Peres-Schlag bound is also stated. The proof shows that hasGap implies non-density.",
+    "proofStrategy": "The Lean formalization proceeds in four parts:\n\n1. **Definitions**: The predicate `IsLacunary a ε` captures exponential growth ($n_{k+1} \\geq (1+\\varepsilon)n_k$ with $\\varepsilon > 0$ and strict monotonicity). The function `distToInt x = \\min(x - \\lfloor x \\rfloor, \\lceil x \\rceil - x)` computes $\\|x\\|$, and `NotDense θ a` asserts $\\exists \\delta > 0,\\, \\forall k,\\, \\|\\theta n_k\\| \\geq \\delta$.\n\n2. **de Mathan-Pollington Theorem** (axiomatized): For any lacunary sequence, $\\exists$ irrational $\\theta$ with `NotDense θ a`.\n\n3. **Peres-Schlag Improvement** (axiomatized): The gap $\\delta$ satisfies $\\delta \\geq c \\cdot \\varepsilon / \\log(1/\\varepsilon)$ for some absolute constant $c > 0$.\n\n4. **Main Theorem**: Directly applies de Mathan-Pollington to conclude Problem #464.",
     "keyInsights": [
-      "**Lacunary sequences:** n_{k+1} ≥ (1+ε)n_k implies exponential-like growth, making A very sparse",
-      "**Distance to integer:** ‖x‖ = |x - round(x)| ∈ [0, 1/2] measures how far x is from integers",
-      "**de Mathan-Pollington (1979-80):** For lacunary A, ∃ irrational θ with inf_k ‖θn_k‖ > 0",
-      "**Bound evolution:** ε⁴/log → improved → ε/log (2010) → conjectured ε",
-      "**Chromatic connection:** Related to Problem #894 on chromatic numbers of distance graphs",
-      "**Peres-Schlag (2010):** Current best bound ε/log(1/ε) uses sophisticated Diophantine methods"
+      "**Lacunary growth**: $n_{k+1} \\geq (1+\\varepsilon)n_k$ forces at least geometric growth $n_k \\geq n_1(1+\\varepsilon)^{k-1}$, making the sequence exponentially sparse in $\\mathbb{N}$",
+      "**Distance to nearest integer**: $\\|x\\| = \\min(x - \\lfloor x \\rfloor, \\lceil x \\rceil - x) \\in [0, 1/2]$ is the key metric; when $\\|\\theta n_k\\| \\geq \\delta > 0$ for all $k$, the fractional parts avoid a neighborhood of integers",
+      "**Weyl vs. Erdős**: Weyl's theorem says almost all $\\theta$ give equidistributed $\\{\\theta n_k\\}$; Erdős asks whether lacunarity guarantees at least one $\\theta$ breaks density—a measure-zero phenomenon",
+      "**Chromatic number connection**: Katznelson (2001) showed the problem is equivalent to bounding the chromatic number of the Cayley graph on $\\mathbb{Z}$ with difference set $\\{n_k\\}$, linking Diophantine approximation to graph coloring",
+      "**Bound progression**: $\\varepsilon^4/\\log(1/\\varepsilon)$ (1979-80) → improved bounds (2001-06) → $\\varepsilon/\\log(1/\\varepsilon)$ (2010) → conjectured $\\Theta(\\varepsilon)$, illustrating steady progress on the quantitative question"
     ]
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 24,
+      "endLine": 31,
+      "summary": "Imports `Mathlib.Data.Real.Basic` and `Mathlib.Data.Nat.Basic` for floor/ceiling operations and real arithmetic. Opens the `Erdos464` namespace."
+    },
+    {
       "id": "lacunary-sequences",
       "title": "Lacunary Sequences",
-      "startLine": 40,
-      "endLine": 70,
-      "summary": "Defines lacunary sequences and proves exponential growth property."
+      "startLine": 33,
+      "endLine": 35,
+      "summary": "Defines `IsLacunary a ε` as the conjunction $\\varepsilon > 0 \\land \\text{StrictMono}(a) \\land \\forall k,\\, a(k+1) \\geq (1+\\varepsilon) \\cdot a(k)$. This captures the exponential growth condition that is the key hypothesis."
     },
     {
       "id": "distance-to-integer",
       "title": "Distance to Nearest Integer",
-      "startLine": 72,
-      "endLine": 90,
-      "summary": "Defines ‖x‖ and its basic properties (range [0, 1/2])."
+      "startLine": 37,
+      "endLine": 39,
+      "summary": "Defines `distToInt x = \\min(x - \\lfloor x \\rfloor, \\lceil x \\rceil - x)`, which computes $\\|x\\| \\in [0, 1/2]$, the distance from $x$ to the nearest integer. This is the standard Diophantine approximation metric."
     },
     {
       "id": "density-question",
       "title": "The Density Question",
-      "startLine": 92,
-      "endLine": 109,
-      "summary": "Defines fractional distances, density, and gaps in [0, 1/2]."
+      "startLine": 41,
+      "endLine": 43,
+      "summary": "Defines `NotDense θ a` as $\\exists \\delta > 0,\\, \\forall k,\\, \\|\\theta \\cdot a(k)\\| \\geq \\delta$. This formalizes that the fractional distances are bounded away from zero, hence not dense in $[0, 1/2]$."
     },
     {
-      "id": "main-theorems",
-      "title": "Main Theorems",
-      "startLine": 111,
-      "endLine": 145,
-      "summary": "States de Mathan-Pollington theorem and Peres-Schlag improved bound."
+      "id": "de-mathan-pollington",
+      "title": "de Mathan-Pollington Theorem",
+      "startLine": 49,
+      "endLine": 55,
+      "summary": "Axiomatizes the main result: for any lacunary $a$ with parameter $\\varepsilon$, $\\exists$ irrational $\\theta$ with `NotDense θ a`. This is the 1979-80 theorem of de Mathan and Pollington resolving Erdős's question affirmatively."
     },
     {
-      "id": "optimal-bound",
-      "title": "Conjectured Optimal Bound",
-      "startLine": 147,
-      "endLine": 166,
-      "summary": "The conjectured ε bound (without log factor) and history of improvements."
+      "id": "peres-schlag",
+      "title": "Peres-Schlag Improvement",
+      "startLine": 61,
+      "endLine": 67,
+      "summary": "Axiomatizes the quantitative improvement: there exist $\\theta$ and $c > 0$ with $\\|\\theta \\cdot a(k)\\| \\geq c \\cdot \\varepsilon / \\log(1/\\varepsilon)$ for all $k$, subject to $\\varepsilon < 1$. This is the current best bound from Peres-Schlag (2010)."
     },
     {
-      "id": "chromatic-connection",
-      "title": "Connection to Chromatic Numbers",
-      "startLine": 168,
-      "endLine": 183,
-      "summary": "Relation to Problem #894 and Katznelson's chromatic number approach."
-    },
-    {
-      "id": "examples",
-      "title": "Examples",
-      "startLine": 185,
-      "endLine": 208,
-      "summary": "Powers of 2 and powers of q as lacunary examples."
-    },
-    {
-      "id": "summary",
-      "title": "Summary",
-      "startLine": 210,
-      "endLine": 237,
-      "summary": "Complete answer and problem status."
+      "id": "main-theorem",
+      "title": "Main Theorem",
+      "startLine": 73,
+      "endLine": 83,
+      "summary": "States and proves `erdos_464`: for any lacunary sequence, $\\exists$ irrational $\\theta$ with `NotDense θ a`. The proof is a direct application of `de_mathan_pollington`. Closes the `Erdos464` namespace."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #464 was SOLVED by de Mathan (1980) and Pollington (1979). For any lacunary sequence A, there exists irrational θ such that the fractional parts {‖θn_k‖} are not dense. The best known bound is ε/log(1/ε) (Peres-Schlag 2010), with conjectured optimal ε.",
-    "implications": "This result shows that lacunary sequences are 'too sparse' for their fractional parts to fill [0, 1/2] densely for all θ. The connection to chromatic numbers of distance graphs (Problem #894) reveals deep interplay between Diophantine approximation and graph theory.",
+    "summary": "This formalization captures Erdős Problem #464, which was SOLVED independently by de Mathan (1980) and Pollington (1979). For any lacunary sequence A with ratio parameter ε, there exists an irrational θ such that the fractional parts ‖θn_k‖ are bounded away from zero. The best quantitative bound is ε/log(1/ε) due to Peres and Schlag (2010).",
+    "implications": "The result reveals that lacunary sequences are 'too sparse' for their fractional parts to fill [0, 1/2] densely for all irrational θ. Katznelson's reformulation in terms of chromatic numbers of Cayley graphs connects this Diophantine problem to combinatorial graph theory, revealing unexpected structural links between number theory and discrete mathematics.",
     "openQuestions": [
-      "Can the Peres-Schlag bound ε/log(1/ε) be improved to ε?",
-      "What is the exact optimal constant?",
-      "Are there sequences with slower growth where non-density still holds?"
+      "Can the Peres-Schlag bound ε/log(1/ε) be improved to the conjectured optimal Θ(ε)?",
+      "What is the exact optimal constant in the linear bound?",
+      "Does the chromatic number reformulation yield further quantitative improvements?",
+      "Are there sequences with sub-exponential growth (e.g., polynomial) where non-density still holds for some θ?"
     ]
   }
 }
