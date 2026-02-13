@@ -1285,7 +1285,7 @@ lemma congruent_point_x_ne_zero {n : ℕ} {hn : n > 0}
   simp only at h
   rw [hx0] at h
   simp at h
-  exact hnt (sq_eq_zero_iff.mp h)
+  exact hnt h
 
 /-- Given a non-torsion point on y² = x³ - n²x, X² ≠ n².
 This is because X = ±n gives Y² = (±n)(0)(±2n) = 0. -/
@@ -1332,8 +1332,8 @@ theorem inverse_koblitz_pythagorean {n : ℕ} {hn : n > 0}
   -- Simplify: all terms have denominator |Y|², so compare numerators
   field_simp
   -- |X² - n²|² + (2n|X|)² = (X² + n²)²
-  -- Since |a|² = a² for rationals, this reduces to algebra
-  rw [sq_abs, sq_abs, sq_abs]
+  -- After field_simp, absolute values are cleared; the identity is pure algebra
+  simp only [sq_abs]
   ring
 
 /-- Key identity: |X| · |X² - n²| = Y² for points on y² = x³ - n²x.
@@ -1346,7 +1346,9 @@ lemma abs_x_mul_abs_diff_sq_eq_y_sq {n : ℕ} {hn : n > 0}
   simp only at h
   -- h : Y² = X³ + (-n²)·X + 0, i.e., Y² = X³ - n²X = X(X² - n²)
   have key : P.y ^ 2 = P.x * (P.x ^ 2 - (n : ℚ) ^ 2) := by linarith
-  rw [← abs_mul, key, abs_of_nonneg (sq_nonneg P.y)]
+  rw [← abs_mul]
+  rw [abs_of_nonneg (by linarith [sq_nonneg P.y] : 0 ≤ P.x * (P.x ^ 2 - (n : ℚ) ^ 2))]
+  linarith
 
 /-- **The Area Identity for the Inverse Map**
 
