@@ -19,9 +19,15 @@
       {"theorem": "mem_derangements_iff_fixedPoints_eq_empty", "description": "Derangement iff no fixed points", "module": "Mathlib.Combinatorics.Derangements.Basic"}
     ],
     "originalContributions": ["Recurrence relation", "Limit approaches 1/e", "Algebraic properties (not a subgroup)", "Concrete examples D(2) through D(6)"],
+    "references": [
+      {"authors": "P. R. de Montmort", "title": "Essay d'Analyse sur les Jeux de Hazard", "year": "1708", "venue": "Paris", "note": "First systematic study of derangements, arising from the 'jeu de treize' card game"},
+      {"authors": "L. Euler", "title": "Calcul de la probabilité dans le jeu de rencontre", "year": "1751", "venue": "Mémoires de l'Académie Royale des Sciences de Berlin", "note": "Derived the inclusion-exclusion formula D(n) = n! Σ(-1)^k/k!"},
+      {"authors": "W. A. Whitworth", "title": "Choice and Chance", "year": "1878", "venue": "Cambridge", "note": "Introduced the subfactorial notation !n for D(n)"},
+      {"authors": "R. P. Stanley", "title": "Enumerative Combinatorics, Vol. 1", "year": "1997", "venue": "Cambridge University Press", "note": "Standard reference for derangement theory and the exponential formula"}
+    ],
     "dateAdded": "12/26/25",
     "wiedijkNumber": 88,
-    "relatedProofs": ["euler-totient", "fundamental-arithmetic", "cramers-rule"]
+    "mathlib_version": "4.15.0"
   },
   "overview": {
     "historicalContext": "The derangement problem — also known as the 'problème des rencontres' (problem of coincidences) or the 'hat-check problem' — was first studied by Pierre Rémond de Montmort in his 1708 book 'Essay d'Analyse sur les Jeux de Hazard'. Montmort computed $D_n$ for small $n$ and conjectured the general formula. Nikolaus Bernoulli corresponded with Montmort about the problem, and Euler later derived the formula $D_n = n! \\sum (-1)^k/k!$ using inclusion-exclusion in 1751. The subfactorial notation $!n$ was introduced by William Allen Whitworth in 1878. The convergence $D_n/n! \\to 1/e$ is a celebrated result in combinatorial probability — it means that for large $n$, a random permutation has roughly a 36.79% chance of being a derangement, regardless of $n$. This is an early example of a 'universal' probability that doesn't depend on the problem size.",
@@ -101,5 +107,19 @@
       "Can the formalization be extended to partial derangements (permutations with exactly $k$ fixed points)?",
       "Is there a formalization of the exponential generating function $\\sum D_n x^n/n! = e^{-x}/(1-x)$?"
     ]
-  }
+  },
+  "relatedProblems": [
+    {
+      "id": "euler-totient",
+      "relationship": "Both use inclusion-exclusion on finite sets: derangements count permutations with no fixed points via $|\\complement \\bigcup A_i|$, while Euler's totient counts integers coprime to $n$ via sieving by prime divisors."
+    },
+    {
+      "id": "binomial-theorem",
+      "relationship": "The derangement formula involves binomial coefficients $\\binom{n}{k}$ from inclusion-exclusion, and the limit $D_n/n! \\to 1/e$ connects to the exponential series underlying the binomial expansion."
+    },
+    {
+      "id": "birthday-problem",
+      "relationship": "Both are classic combinatorial probability problems. The birthday problem counts collisions in random mappings, while derangements count fixed-point-free permutations. Both exhibit surprising threshold behavior."
+    }
+  ]
 }
