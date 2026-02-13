@@ -26,20 +26,36 @@
     "dateAdded": "2026-01-23",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
+      { "theorem": "SimpleGraph", "description": "Simple graph on `Fin n` for the $G(n, m)$ model", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
+      { "theorem": "Real.log", "description": "Logarithm for the threshold $(1/2)n \\log n$", "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic" },
+      { "theorem": "Real.exp", "description": "Exponential for the limiting probability $e^{-e^{-2c}}$", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" },
+      { "theorem": "Filter.Tendsto", "description": "Asymptotic limit for Korshunov and Komlós-Szemerédi results", "module": "Mathlib.Order.Filter.Basic" }
+    ],
+    "references": [
       {
-        "theorem": "SimpleGraph",
-        "description": "Simple graph structure",
-        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+        "key": "ErRe1966",
+        "citation": "Erdős, P. and Rényi, A. (1966). On the existence of a factor of degree one of a connected random graph. Acta Math. Acad. Sci. Hungar. 17, 359–368.",
+        "type": "paper"
       },
       {
-        "theorem": "Real.log",
-        "description": "Logarithm for thresholds",
-        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+        "key": "Po1976",
+        "citation": "Pósa, L. (1976). Hamiltonian circuits in random graphs. Discrete Mathematics 14, 359–364.",
+        "type": "paper"
       },
       {
-        "theorem": "Real.exp",
-        "description": "Exponential for limiting probability",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+        "key": "Ko1977",
+        "citation": "Korshunov, A.D. (1977). Solution of a problem of Erdős and Rényi on Hamilton cycles in nonoriented graphs. Soviet Math. Dokl. 17, 760–764.",
+        "type": "paper"
+      },
+      {
+        "key": "KoSz1983",
+        "citation": "Komlós, J. and Szemerédi, E. (1983). Limit distribution for the existence of Hamiltonian cycles in a random graph. Discrete Mathematics 43, 55–63.",
+        "type": "paper"
+      },
+      {
+        "key": "ErdosProblems",
+        "citation": "Erdős Problems. Problem #746.",
+        "type": "website"
       }
     ],
     "originalContributions": [
@@ -55,121 +71,132 @@
       "komlos_szemeredi_theorem axiom: limiting probability e^{-e^{-2c}}",
       "limitingProbability, limiting_prob_at_zero: probability function",
       "IsConnected, hamiltonian_implies_connected: connectivity"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-47",
+        "relationship": "thematic",
+        "description": "Ramsey-type graph theory problems — both concern structural properties forced by graph parameters"
+      },
+      {
+        "id": "erdos-73",
+        "relationship": "thematic",
+        "description": "Almost bipartite graphs — structural graph theory with threshold-type results"
+      },
+      {
+        "id": "erdos-106",
+        "relationship": "thematic",
+        "description": "Chromatic number problems — connected via random graph thresholds for coloring"
+      }
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #746 (Hamiltonicity of Random Graphs)**\n\n**Origin:**\nErdős and Rényi (1966) conjectured that random graphs with ≥ (1/2+ε)n log n edges are almost surely Hamiltonian. They proved the weaker result about perfect matchings.\n\n**Key Results:**\n- Pósa (1976): Hamiltonicity for Cn log n edges\n- Korshunov (1977): Sharp threshold (1/2)n log n + (1/2)n log log n + ω(n)n\n- Komlós-Szemerédi (1983): Limiting probability e^{-e^{-2c}}\n\n**Significance:**\nThis is a fundamental result in random graph theory, showing that the Hamiltonicity threshold coincides with the connectivity threshold.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nIs it true that, almost surely, a random graph on n vertices with ≥ (1/2 + ε)n log n edges is Hamiltonian?\n\n**Answer: YES**\n\n**Sharp Threshold:**\n(1/2)n log n + (1/2)n log log n\n\n**Limiting Probability (Komlós-Szemerédi):**\nWith (1/2)n log n + (1/2)n log log n + cn edges,\nP(Hamiltonian) → e^{-e^{-2c}}",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Model:** GraphOnN, numEdges, ErdosRenyiModel\n\n2. **Thresholds:** hamiltonianThreshold, preciseThreshold\n\n3. **Hamiltonicity:** IsHamiltonianCycle, IsHamiltonian\n\n4. **Matchings:** IsPerfectMatching, HasPerfectMatching\n\n5. **Results:** erdos_renyi_matching, posa_theorem, korshunov_theorem\n\n6. **Precise:** komlos_szemeredi_theorem, limitingProbability\n\n7. **Connectivity:** IsConnected, threshold coincidence",
+    "historicalContext": "**The Erdős-Rényi Random Graph Revolution**\n\nErdős and Rényi's 1959–1966 papers on random graphs $G(n, m)$ revolutionized combinatorics by introducing probabilistic methods to study graph properties. They discovered that many graph properties exhibit **sharp thresholds**: the property jumps from almost surely absent to almost surely present as $m$ crosses a critical value.\n\n**The Matching-Hamiltonicity Connection**\n\nIn 1966, Erdős and Rényi proved that $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\log n$ almost surely has a perfect matching. Since a Hamiltonian cycle decomposes into two perfect matchings, they conjectured the same threshold for Hamiltonicity — one of the most natural questions in random graph theory.\n\n**The Path to Resolution**\n\nPósa (1976) proved Hamiltonicity for $Cn \\log n$ edges using his **rotation-extension technique**, a landmark method that became central to probabilistic combinatorics. Korshunov (1977) established the sharp threshold as $(1/2) n \\log n + (1/2) n \\log \\log n + o(n)$, confirming Erdős-Rényi's conjecture. Finally, Komlós and Szemerédi (1983) determined the precise limiting distribution: with $m = (1/2) n \\log n + (1/2) n \\log \\log n + cn$ edges, $\\Pr[\\text{Hamiltonian}] \\to e^{-e^{-2c}}$ — a **Gumbel (double exponential)** distribution.\n\n**The Threshold Coincidence**\n\nRemarkably, the Hamiltonicity threshold coincides with the connectivity threshold. Both are controlled by the same bottleneck: vertices of degree 0 or 1. The factor 2 in the Gumbel exponent $e^{-2c}$ reflects the two failure modes (degree 0 and degree 1) at the critical edge count.",
+    "problemStatement": "**Problem Statement (SOLVED)**\n\nIs it true that, almost surely, a random graph $G(n, m)$ on $n$ vertices with $m \\ge (1/2 + \\varepsilon) n \\log n$ edges is Hamiltonian?\n\n**Answer**: YES\n\n**Sharp Threshold**: $(1/2) n \\log n + (1/2) n \\log \\log n$\n\n**Limiting Probability** (Komlós-Szemerédi 1983): With $m = (1/2) n \\log n + (1/2) n \\log \\log n + cn$ edges,\n$$\\Pr[G(n,m) \\text{ is Hamiltonian}] \\to e^{-e^{-2c}} \\text{ as } n \\to \\infty$$",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Graph model**: `GraphOnN n = SimpleGraph (Fin n)` with `numEdges` and `ErdosRenyiModel`\n2. **Threshold functions**: `hamiltonianThreshold n ε = (1/2 + ε)n log n` and `preciseThreshold n`\n3. **Hamiltonicity**: `IsHamiltonianCycle` (vertex list) and `IsHamiltonian` (existential)\n4. **Matchings**: `IsPerfectMatching` and `HasPerfectMatching` as stepping stones\n5. **Historical chain**: Axiomatizes Erdős-Rényi (matching), Pósa ($Cn \\log n$), Korshunov (sharp threshold), Komlós-Szemerédi (limiting probability $e^{-e^{-2c}}$)\n6. **Connectivity**: `IsConnected` via `Reachable`, threshold coincidence\n7. **Summary**: Composes axioms to confirm the conjecture",
     "keyInsights": [
-      "**Sharp Threshold:** (1/2)n log n + (1/2)n log log n",
-      "**Limiting Distribution:** P = e^{-e^{-2c}} double exponential",
-      "**Connectivity Coincidence:** Same threshold as Hamiltonicity",
-      "**Perfect Matching:** Weaker property at same threshold",
-      "**Pósa to Korshunov:** Constant improved to 1/2"
+      "**Sharp threshold**: The Hamiltonicity threshold $(1/2) n \\log n + (1/2) n \\log \\log n$ is precise to the second-order term, a remarkable achievement in random graph theory",
+      "**Gumbel limiting distribution**: $\\Pr = e^{-e^{-2c}}$ is a double exponential, with the factor 2 reflecting two failure modes (degree 0 and degree 1 vertices)",
+      "**Threshold coincidence**: Connectivity and Hamiltonicity share the same threshold — the last isolated vertex disappears simultaneously with the graph becoming Hamiltonian",
+      "**Pósa's rotation-extension**: The key technique — start with a long path, rotate endpoints to extend — became a cornerstone method in probabilistic combinatorics",
+      "**Matching as stepping stone**: Erdős-Rényi's matching result ($1/2 + \\varepsilon$ factor) anticipated the Hamiltonicity threshold, since a Hamilton cycle is two perfect matchings",
+      "**Dirac vs random**: Dirac's theorem needs $\\delta(G) \\ge n/2$, but random graphs are Hamiltonian with $\\delta(G) \\sim 2c \\log n \\ll n/2$ — randomness compensates for low degree"
     ]
   },
   "sections": [
     {
-      "id": "erd-s-problem-746-hamiltonicit",
-      "title": "Erdős Problem #746: Hamiltonicity of Random Graphs",
-      "startLine": 1,
-      "endLine": 38,
-      "summary": "Erdős Problem #746: Hamiltonicity of Random Graphs"
-    },
-    {
       "id": "random-graph-model",
-      "title": "Random Graph Model",
+      "title": "Random Graph Model: $G(n, m)$",
       "startLine": 39,
       "endLine": 61,
-      "summary": "Random Graph Model"
+      "summary": "Defines `GraphOnN`, `numEdges`, `ErdosRenyiModel`, and the threshold functions $(1/2 + \\varepsilon) n \\log n$ and $(1/2) n \\log n + (1/2) n \\log \\log n$."
     },
     {
       "id": "hamiltonicity",
-      "title": "Hamiltonicity",
+      "title": "Hamiltonicity and Dirac's Theorem",
       "startLine": 62,
       "endLine": 81,
-      "summary": "Hamiltonicity"
+      "summary": "Defines `IsHamiltonianCycle` (vertex list formulation) and `IsHamiltonian`. Axiomatizes Dirac's theorem: $\\delta(G) \\ge n/2 \\Rightarrow$ Hamiltonian."
     },
     {
       "id": "perfect-matchings",
       "title": "Perfect Matchings",
       "startLine": 82,
       "endLine": 95,
-      "summary": "Perfect Matchings"
+      "summary": "Defines `IsPerfectMatching` and `HasPerfectMatching` — the weaker property that shares the Hamiltonicity threshold."
     },
     {
-      "id": "erd-s-r-nyi-result-on-matching",
-      "title": "Erdős-Rényi Result on Matchings",
+      "id": "erdos-renyi-matching",
+      "title": "Erdős-Rényi (1966): Matching Threshold",
       "startLine": 96,
       "endLine": 106,
-      "summary": "Erdős-Rényi Result on Matchings"
+      "summary": "Axiomatizes that $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\log n$ a.s. has a perfect matching."
     },
     {
-      "id": "the-erd-s-question",
+      "id": "erdos-question",
       "title": "The Erdős Question",
       "startLine": 107,
       "endLine": 117,
-      "summary": "The Erdős Question"
+      "summary": "Formalizes `ErdosQuestion746`: is $G(n, (1/2 + \\varepsilon) n \\log n)$ a.s. Hamiltonian?"
     },
     {
-      "id": "p-sa-s-result",
-      "title": "Pósa's Result",
+      "id": "posa-result",
+      "title": "Pósa (1976): $Cn \\log n$ Suffices",
       "startLine": 118,
       "endLine": 132,
-      "summary": "Pósa's Result"
+      "summary": "Axiomatizes Pósa's theorem: $\\exists C > 0$ such that $G(n, Cn \\log n)$ is a.s. Hamiltonian."
     },
     {
-      "id": "korshunov-s-improvement",
-      "title": "Korshunov's Improvement",
+      "id": "korshunov",
+      "title": "Korshunov (1977): Sharp Threshold",
       "startLine": 133,
       "endLine": 151,
-      "summary": "Korshunov's Improvement"
+      "summary": "Axiomatizes the sharp threshold $(1/2) n \\log n + (1/2) n \\log \\log n + \\omega(n) n$ with $\\omega \\to \\infty$."
     },
     {
-      "id": "koml-s-szemer-di-precise-resul",
-      "title": "Komlós-Szemerédi Precise Result",
+      "id": "komlos-szemeredi",
+      "title": "Komlós-Szemerédi (1983): $\\Pr \\to e^{-e^{-2c}}$",
       "startLine": 152,
       "endLine": 179,
-      "summary": "Komlós-Szemerédi Precise Result"
+      "summary": "Axiomatizes the limiting probability. Defines `limitingProbability c = e^{-e^{-2c}}`. Proves $\\Pr(c=0) = e^{-1}$."
     },
     {
       "id": "the-answer",
-      "title": "The Answer",
+      "title": "The Answer: YES",
       "startLine": 180,
       "endLine": 194,
-      "summary": "The Answer"
+      "summary": "Proves `erdos_746_answer` by instantiating Korshunov's theorem."
     },
     {
-      "id": "connection-to-connectivity",
-      "title": "Connection to Connectivity",
+      "id": "connectivity",
+      "title": "Connectivity and Threshold Coincidence",
       "startLine": 195,
       "endLine": 217,
-      "summary": "Connection to Connectivity"
+      "summary": "Defines `IsConnected` via `Reachable`. Axiomatizes connectivity threshold. States threshold coincidence with Hamiltonicity."
     },
     {
       "id": "related-properties",
-      "title": "Related Properties",
+      "title": "Minimum Degree and Related Properties",
       "startLine": 218,
       "endLine": 230,
-      "summary": "Related Properties"
+      "summary": "Defines `MinDegree` and axiomatizes concentration of minimum degree in $G(n, m)$ around $2m/n$."
     },
     {
       "id": "summary",
-      "title": "Summary",
+      "title": "Summary: Problem Completely Solved",
       "startLine": 231,
       "endLine": 262,
-      "summary": "Summary"
+      "summary": "Proves `erdos_746`, `erdos_746_main`, `erdos_746_precise`, `erdos_746_solved` — composing axioms to confirm the full resolution."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #746 asks whether random graphs with ≥ (1/2+ε)n log n edges are almost surely Hamiltonian. The answer is YES. Korshunov established the sharp threshold, and Komlós-Szemerédi proved the limiting probability is e^{-e^{-2c}} at threshold.",
-    "implications": "**Connections**\n\n1. **Connectivity:** Same threshold (1/2)n log n\n\n2. **Perfect Matching:** Erdős-Rényi's original result\n\n3. **Phase Transition:** Sharp threshold behavior\n\n4. **Dirac's Theorem:** Minimum degree connection",
+    "summary": "Erdős Problem #746 asked whether $G(n, m)$ with $m \\ge (1/2 + \\varepsilon) n \\log n$ is a.s. Hamiltonian. The answer is YES, established through a chain of results: Erdős-Rényi matching (1966), Pósa rotation-extension (1976), Korshunov sharp threshold (1977), and Komlós-Szemerédi limiting probability $e^{-e^{-2c}}$ (1983). The formalization axiomatizes each result and composes them.",
+    "implications": "**Connections and Significance**\n\n1. **Phase transitions**: Paradigmatic example of sharp threshold behavior in random combinatorial structures\n2. **Threshold coincidence**: Connectivity and Hamiltonicity share the threshold $(1/2) n \\log n$, governed by minimum degree\n3. **Gumbel statistics**: The $e^{-e^{-2c}}$ distribution connects random graphs to extreme value theory\n4. **Algorithmic applications**: Polynomial-time algorithms for finding Hamiltonian cycles in random graphs above threshold",
     "openQuestions": [
-      "What about directed Hamiltonicity?",
-      "Thresholds for other graph properties?",
-      "Higher-order corrections to the limiting distribution?",
-      "Algorithmic aspects of finding Hamiltonian cycles?"
+      "What is the threshold for Hamiltonicity in the directed random graph $D(n, m)$?",
+      "Can Pósa's rotation-extension technique be made algorithmic (find the cycle in polynomial time)?",
+      "What are higher-order corrections to the $e^{-e^{-2c}}$ limiting distribution?",
+      "Prove `hamiltonian_implies_connected` (the remaining sorry — a Hamiltonian cycle is a connected spanning subgraph)"
     ]
   }
 }
