@@ -51,103 +51,105 @@
     ]
   },
   "overview": {
-    "historicalContext": "This conjecture was posed by Erdős and Gallai around 1959 and remains one of the oldest open problems in graph decomposition theory. The problem asks whether every connected graph on n vertices can be partitioned into at most ⌈n/2⌉ edge-disjoint paths, where the edges of each path are used exactly once across all paths.\n\nSubstantial progress has been made toward understanding path and cycle decompositions. Lovász (1968) proved that every graph can be partitioned into at most ⌊n/2⌋ edge-disjoint paths and cycles, which implies every graph can be partitioned into at most n-1 paths. Chung (1978) showed that connected graphs can be partitioned into at most ⌈n/2⌉ edge-disjoint trees, and Pyber (1996) proved that connected graphs can be covered by n/2 + O(n^{3/4}) paths.\n\nFan (2002) made a major breakthrough by proving that the conjecture holds if we drop the edge-disjoint requirement—that is, connected graphs can be covered by ⌈n/2⌉ paths (with possible edge overlaps). However, the full edge-disjoint version remains stubbornly open after more than 60 years.",
-    "problemStatement": "Let $G$ be a connected graph on $n$ vertices. The **Erdős-Gallai conjecture** asks: can the edges of $G$ always be partitioned into at most $\\lceil n/2 \\rceil$ edge-disjoint paths?\n\n**Status**: OPEN - This is a falsifiable conjecture that could potentially be disproven by exhibiting a counterexample.",
-    "proofStrategy": "The formalization defines the key structures for path partitions in Mathlib's SimpleGraph framework: GraphPath (sequences of adjacent vertices), PathPartition (edge-disjoint collections covering all edges), and PathCover (covering without disjointness). The main conjecture is stated as ErdosGallaiConjecture, and related results by Lovász, Chung, Pyber, and Fan are included as axioms. The formalization also connects to Hajós' conjecture about cycle decompositions of Eulerian graphs.",
+    "historicalContext": "**Erdos Problem #583: Edge-Disjoint Path Partition**\n\n**The question:**\nCan every connected graph on $n$ vertices be partitioned into at most $\\lceil n/2 \\rceil$ edge-disjoint paths? This conjecture, attributed to Erdos and Gallai (c. 1959), is one of the oldest unsolved problems in graph decomposition theory.\n\n**Why $\\lceil n/2 \\rceil$?**\nThe bound comes from counting odd-degree vertices. By the handshaking lemma, every graph has an even number of odd-degree vertices, say $2k$. Each path has exactly 2 endpoints of odd degree within it (the path's two ends, unless the path is a single edge between even-degree vertices). So at least $k$ paths are needed to 'absorb' the $2k$ odd-degree vertices. Since $2k \\le n$, we get $k \\le \\lfloor n/2 \\rfloor$ paths for the odd-degree vertices, plus possibly one more for remaining even-degree edges, giving $\\lceil n/2 \\rceil$.\n\n**Lovasz (1968):**\nLaszlo Lovasz proved the first major result: every graph (not necessarily connected) partitions into at most $\\lfloor n/2 \\rfloor$ edge-disjoint paths AND cycles. The key insight is that cycles handle even-degree components without using additional path slots. The proof proceeds by induction: remove a vertex $v$, decompose $G - v$, then extend paths through $v$. This gives $\\lfloor n/2 \\rfloor$ for paths+cycles, but converting cycles to paths may increase the count.\n\n**Chung (1978):**\nFan Chung proved that connected graphs partition into $\\le \\lceil n/2 \\rceil$ edge-disjoint TREES. Since trees are more flexible than paths (they can branch), this achieves the conjectured bound with a weaker structural requirement. Chung's proof uses the Nash-Williams arboricity theorem to control the number of trees.\n\n**Pyber (1996):**\nLaszlo Pyber showed that connected graphs can be covered by $n/2 + O(n^{3/4})$ paths (not necessarily edge-disjoint). The $O(n^{3/4})$ error comes from a probabilistic argument: randomly partition vertices into groups of size $\\sim n^{1/4}$, apply Lovasz within each group, then stitch together. This is asymptotically $n/2$ but does not resolve the exact bound.\n\n**Fan (2002):**\nGenghua Fan proved the breakthrough: connected graphs can be COVERED by $\\le \\lceil n/2 \\rceil$ paths. This achieves the exact bound conjectured by Erdos-Gallai, but drops the edge-disjoint requirement -- paths may share edges. Fan's constructive proof starts from any path cover and iteratively merges paths that share edges, but the merging process cannot guarantee disjointness at termination.\n\n**The open gap:**\nThe conjecture sits precisely between two solved problems:\n- Lovasz: $\\lfloor n/2 \\rfloor$ paths+cycles (disjoint, but allows cycles)\n- Fan: $\\lceil n/2 \\rceil$ paths (exact bound, but paths may overlap)\n\nClosing this gap -- achieving both the exact bound AND edge-disjointness -- has resisted all attacks for 60+ years.",
+    "problemStatement": "Let $G$ be a connected graph on $n$ vertices. The **Erdos-Gallai conjecture** asks: can the edges of $G$ always be partitioned into at most $\\lceil n/2 \\rceil$ edge-disjoint paths?\n\n**Status**: OPEN - This is a falsifiable conjecture that could potentially be disproven by exhibiting a counterexample.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization builds the theory of edge-disjoint path partitions in eleven parts:\n\n1. **Basic definitions (Part 1):** `GraphPath G` as a structure with `List V` of distinct adjacent vertices. `edgeSet` extracts `Sym2 V` edges. `EdgeDisjoint` requires pairwise empty edge intersection. `CoversAllEdges` requires every graph edge to appear. `PathPartition` bundles disjointness and coverage.\n\n2. **The conjecture (Part 2):** `ErdosGallaiConjecture n` universally quantifies over all connected graphs on $n$ vertices, asking for a `PathPartition` of size $\\le (n+1)/2$. `satisfiesConjecture G` checks individual graphs.\n\n3. **Lovasz (Part 3):** `GraphCycle G` with wraparound adjacency. `PathCyclePartition` combining paths and cycles. `lovasz_theorem` axiom: $\\le \\lfloor n/2 \\rfloor$ total. `lovasz_corollary`: $\\le n-1$ paths.\n\n4. **Chung (Part 4):** `TreePartition G` tracking `numTrees`. `chung_theorem` axiom: $\\le \\lceil n/2 \\rceil$ trees. `chung_implies_tree_bound` derives the numeric bound.\n\n5. **Pyber (Part 5):** `PathCover G` (covering without disjointness). `pyber_theorem` axiom: $n/2 + O(n^{3/4})$ paths.\n\n6. **Fan (Part 6):** `fan_theorem` axiom: $\\le \\lceil n/2 \\rceil$ covering paths. `fan_covers_conjecture` records the result.\n\n7. **Hajos (Part 7):** `IsEulerian G` via even degree. `HajosConjecture n`: $\\le \\lfloor n/2 \\rfloor$ edge-disjoint cycles for Eulerian graphs.\n\n8. **Special cases (Part 8):** `tree_satisfies`, `complete_graph_satisfies`, `cycle_satisfies` as axioms.\n\n9-10. **Main statement and bounds (Parts 9-10):** `erdos_583_conjecture` as `Iff.rfl`. Tightness via `star_needs_few_paths` and `bipartite_tight`.\n\n11. **Summary (Part 11):** `erdos_583_summary` combining conjecture, Lovasz, and Fan via tuple construction.",
     "keyInsights": [
-      "**Edge-disjoint vs. covering**: Fan proved the covering version (allowing edge overlaps), but the edge-disjoint partition version remains open. This gap is the key unsolved difficulty.",
-      "**Paths vs. paths-and-cycles**: Lovász's ⌊n/2⌋ bound for paths and cycles together shows the challenge is specifically about avoiding cycles.",
-      "**Tree decompositions**: Chung's theorem gives ⌈n/2⌉ edge-disjoint trees, showing the bound is achievable for more flexible structures.",
-      "**Asymptotic near-miss**: Pyber's n/2 + O(n^{3/4}) result is tantalizingly close but doesn't settle the exact bound.",
-      "**Hajós connection**: The related conjecture for Eulerian graphs (even-degree vertices) and cycle decompositions shows deep connections in graph decomposition theory."
+      "**The odd-degree obstruction:** Every graph has an even number of odd-degree vertices. Each path in a decomposition 'uses up' exactly two odd-degree vertices (its endpoints contribute odd degree within the path). So $2k$ odd-degree vertices require at least $k$ paths. Since $2k \\le n$, the bound $\\lceil n/2 \\rceil$ is tight for graphs where all vertices have odd degree (which requires $n$ even). This counting argument motivates the bound but doesn't prove it.",
+      "**Paths vs cycles vs trees:** The hierarchy of known results reveals the structural difficulty: Lovasz achieves $\\lfloor n/2 \\rfloor$ with paths AND cycles (cycles handle even-degree components 'for free'); Chung achieves $\\lceil n/2 \\rceil$ with trees (branching absorbs extra edges); but paths, being linear and non-branching, cannot easily absorb excess edges or handle high-degree vertices, which is why the pure path version remains harder.",
+      "**The disjointness barrier:** Fan's theorem shows the bound is achievable for covering (paths may share edges). The difficulty is entirely in the disjointness requirement. When merging overlapping paths, splitting at shared edges can increase the path count. This suggests the problem is not about the number of paths needed to 'reach' all edges, but about the geometric constraint of arranging non-overlapping linear structures.",
+      "**Complete bipartite graphs as hard cases:** $K_{n,n}$ on $2n$ vertices has $n^2$ edges. Each path uses at most $2n - 1$ edges, so $\\ge n^2/(2n-1) \\approx n/2$ paths are needed. This approaches the conjectured bound $\\lceil 2n/2 \\rceil = n$ and shows the conjecture is tight. The difficulty is constructing an explicit path partition achieving $n$ paths for $K_{n,n}$.",
+      "**Connection to Hajos' conjecture:** The related Hajos conjecture (every Eulerian graph decomposes into $\\le \\lfloor n/2 \\rfloor$ edge-disjoint cycles) is the 'dual' problem for even-degree graphs. Since Eulerian graphs have Euler circuits, the question reduces to decomposing a single closed walk into short cycles. Both conjectures have been open for decades, suggesting a common structural barrier in graph decomposition theory."
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "summary": "GraphPath, edgeSet, EdgeDisjoint, CoversAllEdges, PathPartition",
+      "title": "Part 1: Basic Definitions",
+      "summary": "Defines `GraphPath G` via `List V` with `Nodup` and consecutive adjacency. `edgeSet` extracts `Sym2 V` edges. `EdgeDisjoint paths` requires pairwise empty edge intersection. `CoversAllEdges` requires every graph edge in some path. `PathPartition G` bundles both with `size` = `paths.length`.",
       "startLine": 33,
       "endLine": 70
     },
     {
       "id": "main-conjecture",
-      "title": "The Erdős-Gallai Conjecture",
-      "summary": "ErdosGallaiConjecture, satisfiesConjecture",
+      "title": "Part 2: The Erdos-Gallai Conjecture",
+      "summary": "Defines `ErdosGallaiConjecture n`: every connected graph on $n$ vertices admits a `PathPartition` of size $\\le (n+1)/2 = \\lceil n/2 \\rceil$. `satisfiesConjecture G` checks individual graphs against the bound.",
       "startLine": 72,
       "endLine": 86
     },
     {
       "id": "lovasz-theorem",
-      "title": "Lovász's Theorem (1968)",
-      "summary": "GraphCycle, PathCyclePartition, lovasz_theorem, lovasz_corollary",
+      "title": "Part 3: Lovasz's Theorem (1968)",
+      "summary": "Defines `GraphCycle G` with wraparound adjacency ($\\ge 3$ vertices) and `PathCyclePartition`. Axiomatizes `lovasz_theorem`: every graph decomposes into $\\le \\lfloor n/2 \\rfloor$ edge-disjoint paths and cycles combined. Corollary: $\\le n-1$ paths suffice (by splitting cycles).",
       "startLine": 88,
       "endLine": 115
     },
     {
       "id": "chung-theorem",
-      "title": "Chung's Theorem (1978)",
-      "summary": "TreePartition, chung_theorem, chung_implies_tree_bound",
+      "title": "Part 4: Chung's Theorem (1978)",
+      "summary": "Defines `TreePartition G` and axiomatizes `chung_theorem`: connected graphs decompose into $\\le \\lceil n/2 \\rceil$ edge-disjoint trees. Achieves the conjectured bound but with branching structures instead of linear paths. `chung_implies_tree_bound` derives the numeric bound.",
       "startLine": 117,
       "endLine": 136
     },
     {
       "id": "pyber-theorem",
-      "title": "Pyber's Theorem (1996)",
-      "summary": "PathCover, pyber_theorem",
+      "title": "Part 5: Pyber's Theorem (1996)",
+      "summary": "Defines `PathCover G` (covering without disjointness). Axiomatizes `pyber_theorem`: connected graphs admit a path cover of size $n/2 + O(n^{3/4})$. Asymptotically close to $n/2$ but the error term prevents resolving the exact conjecture.",
       "startLine": 138,
       "endLine": 153
     },
     {
       "id": "fan-theorem",
-      "title": "Fan's Theorem (2002)",
-      "summary": "fan_theorem, fan_covers_conjecture",
+      "title": "Part 6: Fan's Theorem (2002)",
+      "summary": "Axiomatizes `fan_theorem`: connected graphs have a `PathCover` of size $\\le \\lceil n/2 \\rceil$. This proves the EXACT bound without edge-disjointness. `fan_covers_conjecture` records the result. The open gap is achieving disjointness with this bound.",
       "startLine": 155,
       "endLine": 168
     },
     {
       "id": "hajos-conjecture",
-      "title": "Hajós' Conjecture",
-      "summary": "IsEulerian, HajosConjecture",
+      "title": "Part 7: Hajos' Conjecture",
+      "summary": "Defines `IsEulerian G` via `Even (G.degree v)` for all vertices. `HajosConjecture n`: Eulerian graphs decompose into $\\le \\lfloor n/2 \\rfloor$ edge-disjoint cycles. The cycle analog of Erdos-Gallai, also open.",
       "startLine": 170,
       "endLine": 186
     },
     {
       "id": "special-cases",
-      "title": "Special Cases",
-      "summary": "tree_satisfies, complete_graph_satisfies, cycle_satisfies",
+      "title": "Part 8: Special Cases",
+      "summary": "Three axiomatized cases: `tree_satisfies` (trees decompose trivially), `complete_graph_satisfies` ($K_n$ has known decompositions, including Hamiltonian path decompositions for odd $n$), and `cycle_satisfies` (a cycle is a single path when opened).",
       "startLine": 188,
       "endLine": 205
     },
     {
       "id": "main-statement",
-      "title": "Erdős Problem #583 Statement",
-      "summary": "erdos_583_conjecture",
+      "title": "Part 9: Main Statement",
+      "summary": "Proves `erdos_583_conjecture n` as `Iff.rfl` -- the conjecture is definitionally equal to its unfolded universal statement over connected graphs.",
       "startLine": 207,
       "endLine": 220
     },
     {
       "id": "bounds-examples",
-      "title": "Lower Bounds and Examples",
-      "summary": "star_needs_few_paths, bipartite_tight",
+      "title": "Part 10: Lower Bounds and Examples",
+      "summary": "Axiomatizes tightness: `star_needs_few_paths` (stars are easy, showing the bound is not always tight) and `bipartite_tight` ($K_{n,n}$ requires $\\ge n/2$ paths, demonstrating the bound is tight up to constants for some graph families).",
       "startLine": 222,
       "endLine": 240
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_583_summary combining main conjecture, Lovász, and Fan results",
+      "title": "Part 11: Summary",
+      "summary": "Proves `erdos_583_summary` bundling: (1) the conjecture is equivalent to its unfolded form, (2) Lovasz's $\\lfloor n/2 \\rfloor$ paths+cycles, and (3) Fan's $\\lceil n/2 \\rceil$ covering paths. Proved by `exact \\langle \\text{fun } n \\Rightarrow \\text{Iff.rfl}, \\text{lovasz\\_theorem}, \\text{fan\\_theorem} \\rangle`.",
       "startLine": 241,
       "endLine": 260
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #583 (the Erdős-Gallai Conjecture) remains open: can every connected graph on n vertices be partitioned into at most ⌈n/2⌉ edge-disjoint paths? The formalization captures the conjecture and key related results by Lovász, Chung, Pyber, and Fan.",
-    "implications": "A proof would establish a fundamental structural property of connected graphs, with applications in network design and routing. A counterexample would likely reveal new extremal behavior in graph decompositions.",
+    "summary": "Erdos Problem #583 (the Erdos-Gallai conjecture, c. 1959) remains open after 60+ years: can every connected graph on $n$ vertices be partitioned into at most $\\lceil n/2 \\rceil$ edge-disjoint paths? The formalization captures the conjecture and four major partial results -- Lovasz ($\\lfloor n/2 \\rfloor$ paths+cycles), Chung ($\\lceil n/2 \\rceil$ trees), Pyber ($n/2 + O(n^{3/4})$ paths asymptotically), and Fan ($\\lceil n/2 \\rceil$ covering paths without disjointness) -- framing the open gap between exact-bound and disjointness.",
+    "implications": "**Connections and Impact**\n\n1. **Graph decomposition theory:** Resolution would establish a fundamental structural property of connected graphs, characterizing the minimum number of linear substructures needed to cover all edges\n\n2. **Network routing:** Path decompositions model routing in communication networks where messages follow disjoint routes; the bound $\\lceil n/2 \\rceil$ would guarantee efficient routing with at most $n/2$ channels\n\n3. **Lovasz-Hajos circle of problems:** The Erdos-Gallai and Hajos conjectures are the path and cycle instances of a broader question about decomposing graphs into simple substructures with bounded multiplicity\n\n4. **Arboricity and linear arboricity:** Chung's tree result connects to the Nash-Williams arboricity theorem; the path version would establish an analog for 'linear arboricity' (partition into paths instead of trees)\n\n5. **Odd-degree vertex theory:** The conjecture's bound is determined by the parity structure of vertex degrees, connecting to T-joins, Chinese postman theory, and matching theory",
     "openQuestions": [
-      "Is there a connected graph requiring more than ⌈n/2⌉ edge-disjoint paths?",
-      "Can the gap between Pyber's O(n^{3/4}) error and the conjectured exact bound be closed?",
-      "Is Hajós' conjecture about Eulerian graphs and cycle decompositions true?"
+      "Is there a connected graph requiring more than $\\lceil n/2 \\rceil$ edge-disjoint paths? (A counterexample would disprove the conjecture.)",
+      "Can the gap between Pyber's $n/2 + O(n^{3/4})$ and the conjectured $\\lceil n/2 \\rceil$ be closed, even to $n/2 + O(\\sqrt{n})$?",
+      "Is Hajos' conjecture (Eulerian graphs decompose into $\\le \\lfloor n/2 \\rfloor$ cycles) true?",
+      "For which graph families (beyond trees, complete graphs, cycles) is the conjecture known to hold?",
+      "Is there a connection between the Erdos-Gallai conjecture and the linear arboricity conjecture?"
     ]
   }
 }
