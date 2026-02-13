@@ -27,45 +27,68 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.factorization",
-        "description": "Prime factorization",
+        "description": "Prime factorization as Finsupp ℕ ℕ, used for extracting p-adic valuations of n and n+1",
         "module": "Mathlib.Data.Nat.Factorization.Basic"
       },
       {
         "theorem": "Real.log",
-        "description": "Natural logarithm",
+        "description": "Natural logarithm for the smoothRatio normalization n·log(n)",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
         "theorem": "padicValNat",
-        "description": "p-adic valuation for lifting the exponent",
+        "description": "p-adic valuation for the Lifting the Exponent Lemma application v₃(2^{3^r}+1)=r+1",
         "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      },
+      {
+        "theorem": "Nat.Coprime",
+        "description": "Coprimality predicate used for consecutive_coprime: gcd(n,n+1)=1",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
       }
     ],
     "originalContributions": [
-      "power2, power3: largest powers of 2, 3 dividing n",
-      "smoothPart23: the {2,3}-smooth part of n",
-      "consecutiveSmoothPart: smooth part of n(n+1)",
-      "smoothRatio: the ratio 2^k 3^l / (n log n)",
-      "ErdosQuestion933: formal problem statement",
-      "mahler_upper_bound axiom: 2^k 3^l < n^{1+o(1)}",
-      "erdos_lower_bound axiom: infinitely often > n log n",
-      "steinerbergerN: n = 2^{3^r} construction",
-      "steinerberger_divisibility axiom: 3^{r+1} | 2^{3^r} + 1",
-      "lifting_the_exponent axiom: LTE lemma",
-      "consecutive_coprime: n and n+1 coprime",
-      "steinerberger_proof axiom: main result"
+      "Custom definitions `power2`, `power3`, `smoothPart23` extracting the {2,3}-smooth part via `Nat.factorization`; `consecutiveSmoothPart` for n(n+1)",
+      "Noncomputable `smoothRatio` definition with n≤1 guard, encoding the normalized ratio 2^k·3^l/(n·log n)",
+      "`ErdosQuestion933` as ∀ M, ∃ n ≥ 2, smoothRatio n > M — limsup=∞ without Filter.atTop",
+      "Axiomatization of Mahler's S-unit upper bound (n^{1+o(1)}), Erdős's lower bound (> n·log n i.o.), and Steinerberger's proof",
+      "`steinerbergerN r = 2^(3^r)` construction with `steinerberger_divisibility` axiom (3^{r+1} | 2^{3^r}+1) via LTE",
+      "Fully proved: `consecutive_coprime` (via Nat.coprime_self_add_one), `steinerberger_n_plus_1` (rfl), examples by native_decide",
+      "Three equivalent main statements: `erdos_933`, `erdos_933_main`, `erdos_933_solved`"
+    ],
+    "crossReferences": [
+      {
+        "id": "erdos-931",
+        "relationship": "Companion problem on same prime factor sets in products of consecutive integers. Both analyze prime factorization structure of n(n+1)···(n+k); #931 asks when consecutive blocks share the same set of prime factors, while #933 measures the {2,3}-smooth part's growth."
+      },
+      {
+        "id": "erdos-935",
+        "relationship": "Complementary study: #935 examines the 'powerful part' (r-powerful component) of consecutive products, while #933 examines the 'smooth part'. Both ask how large specific multiplicative components of n(n+1) can grow relative to n."
+      },
+      {
+        "id": "erdos-929",
+        "relationship": "Studies smooth numbers in short intervals—when consecutive integers are all B-smooth. Shares the smooth number framework and Dickman function analysis; #933 focuses on {2,3}-smoothness of products rather than B-smoothness of individuals."
+      },
+      {
+        "id": "erdos-932",
+        "relationship": "Studies smooth numbers in prime gaps. Both problems involve bounding smooth numbers with restricted prime factors; #932 uses prime gap structure while #933 uses the consecutive product n(n+1)."
+      },
+      {
+        "id": "kummer-theorem",
+        "relationship": "Provides p-adic valuation techniques applicable to products of consecutive integers. The Lifting the Exponent Lemma used in #933 is closely related to Kummer's carry-counting approach for computing v_p of binomial coefficients."
+      }
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #933 (Smooth Part of Consecutive Products)**\n\n**The Setup:**\nWrite n(n+1) = 2^k · 3^l · m where gcd(m, 6) = 1. The question is about how large the {2,3}-smooth part 2^k · 3^l can be compared to n log n.\n\n**Key Results:**\n- Mahler (upper): 2^k · 3^l < n^{1+o(1)} from S-unit equation theory\n- Erdős (lower): For infinitely many n, 2^k · 3^l > n log n\n\n**Steinerberger's Simple Proof:**\nTake n = 2^{3^r}. Then n+1 = 2^{3^r} + 1 is divisible by 3^{r+1} (Lifting the Exponent Lemma). So k = 3^r, l ≥ r+1, and the ratio grows without bound.",
+    "historicalContext": "Erdős Problem #933 sits at the intersection of smooth number theory, S-unit equations, and p-adic valuation theory.\n\nThe problem was posed by Erdős in his 1976 paper 'Problems and results on consecutive integers' [Er76d]. Given $n(n+1) = 2^k \\cdot 3^l \\cdot m$ with $\\gcd(m, 6) = 1$, Erdős asked whether $\\limsup 2^k 3^l / (n \\log n) = \\infty$. The $\\{2,3\\}$-smooth part $2^k \\cdot 3^l$ measures how much of $n(n+1)$ is composed of the two smallest primes.\n\nThe upper bound was already known from Mahler's 1933 work on S-unit equations: the smooth part is at most $n^{1+o(1)}$. This follows from the deep theory of linear forms in logarithms (Baker 1966) and finiteness results for S-unit equations (Evertse 1984 gave at most $3 \\cdot 7^{|S|+1}$ solutions to $x + y = 1$ in S-units).\n\nSteinerberger provided an elegant explicit proof using $n = 2^{3^r}$. Since $n$ is a pure power of 2, all powers of 2 in $n(n+1)$ come from $n$: $k = 3^r$. The key arithmetic fact is $3^{r+1} \\mid 2^{3^r} + 1$, which follows from the Lifting the Exponent Lemma (LTE): $v_3(2^{3^r} + 1) = v_3(3) + v_3(3^r) = 1 + r$. So $l \\geq r + 1$ and the smooth part $\\geq n \\cdot 3^{r+1}$.\n\nThe formalization in Lean 4 axiomatizes Mahler's bound, Erdős's claim, and Steinerberger's proof, while fully proving `consecutive_coprime` (via `Nat.coprime_self_add_one`) and computing examples by `native_decide`. The 5 sorries come from proof-level gaps in `limsup_infinite` and the factorization additivity theorems `power2_consecutive` and `power3_consecutive`.",
     "problemStatement": "**Problem Statement (Solved)**\n\nIf n(n+1) = 2^k · 3^l · m where gcd(m, 6) = 1, is it true that:\n\n$$\\limsup_{n \\to \\infty} \\frac{2^k 3^l}{n \\log n} = \\infty?$$\n\n**Answer: YES**\n\n**Steinerberger's Proof:**\nFor n = 2^{3^r} (r ≥ 1):\n- k = 3^r (n is a power of 2)\n- l = r + 1 (by LTE, 3^{r+1} | 2^{3^r} + 1)\n- Ratio = 3^{r+1} / log n → ∞",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Smooth Parts:** Define power2, power3, smoothPart23\n\n2. **Consecutive Products:** consecutiveSmoothPart for n(n+1)\n\n3. **The Ratio:** smoothRatio = 2^k 3^l / (n log n)\n\n4. **Mahler Bound:** Axiomatize n^{1+o(1)} upper bound\n\n5. **Erdős Claim:** Axiomatize infinitely often > n log n\n\n6. **Steinerberger:** Define n = 2^{3^r} construction\n\n7. **LTE Lemma:** Axiomatize 3^{r+1} | 2^{3^r} + 1\n\n8. **Main Result:** limsup = ∞",
+    "proofStrategy": "The formalization is organized into nine parts:\n\n1. **Basic Definitions** (lines 34–60): `power2 n = 2^(n.factorization 2)`, `power3 n = 3^(n.factorization 3)`, `smoothPart23 = power2 * power3`, `consecutiveSmoothPart n = smoothPart23(n*(n+1))`, `exp2Consecutive`, `exp3Consecutive`, `smoothRatio` (noncomputable, guarded for n≤1)\n2. **The Erdős Question** (lines 61–67): `ErdosQuestion933 := ∀ M, ∃ n ≥ 2, smoothRatio n > M` — sequential encoding of limsup = ∞\n3. **Mahler's Upper Bound** (lines 69–82): `mahler_upper_bound` axiom (∀ ε > 0, ∃ N, ∀ n ≥ N, smooth < n^{1+ε}), `mahlerSUnitConnection` placeholder\n4. **Erdős's Lower Bound** (lines 84–111): `erdos_lower_bound` axiom (i.o. > n·log n), `limsup_infinite` theorem (2 sorries in the ratio manipulation)\n5. **Steinerberger's Construction** (lines 113–139): `steinerbergerN r = 2^(3^r)`, `steinerberger_n_plus_1` (rfl), `steinerberger_divisibility` axiom, `steinerberger_gives_large_smooth` (sorry), `steinerberger_proof` axiom\n6. **Why the Construction Works** (lines 141–159): `power2_mod3` axiom, `lifting_the_exponent` axiom, `LTEConnection` definition explaining the LTE application\n7. **Properties of n(n+1)** (lines 161–179): `consecutive_coprime` (fully proved), `power2_consecutive` (sorry), `power3_consecutive` (sorry)\n8. **Examples** (lines 181–197): Two `native_decide` examples (n=8, n=512), `exampleSequence := steinerbergerN`\n9. **Summary** (lines 199–230): `erdos_933 := steinerberger_proof`, `erdos_933_main` (unfolded), `erdos_933_solved` (synonym)",
     "keyInsights": [
-      "**{2,3}-Smooth Part:** Extract powers of 2 and 3 from n(n+1)",
-      "**Consecutive Coprime:** n and n+1 share no prime factors",
-      "**Steinerberger's n:** 2^{3^r} gives extremal examples",
-      "**Lifting the Exponent:** v_3(2^{3^r} + 1) = r + 1",
-      "**Mahler Upper:** S-unit equations give n^{1+o(1)}"
+      "**The {2,3}-smooth part captures 'small prime content'**: For n(n+1), coprimality ensures the smooth parts of n and n+1 multiply independently. The question is how large this product can be—Erdős showed it exceeds the 'trivial' bound n·log n infinitely often.",
+      "**Steinerberger's construction is doubly exponential but elementary**: n = 2^{3^r} is a tower of exponentials, but the proof only needs the LTE Lemma (an olympiad-level result). The construction separates powers of 2 (in n) from powers of 3 (in n+1) using coprimality.",
+      "**Mahler's upper bound comes from transcendence theory**: The S-unit equation machinery (Baker, Evertse) gives n^{1+o(1)} as the limit. This is deep—effective bounds require Baker's theorem on linear forms in logarithms, giving explicit but astronomically large constants.",
+      "**The LTE Lemma is the computational engine**: v_p(a^n + b^n) = v_p(a+b) + v_p(n) for odd p with p | a+b, p ∤ a,b. Applied with p=3, a=2, b=1, n=3^r: v_3(2^{3^r}+1) = 1 + r. This is the single arithmetic fact that makes Steinerberger's proof work.",
+      "**5-sorry architecture with clean axiom boundaries**: Axiomatized: Mahler's bound (S-unit theory), Erdős's lower bound (original claim), Steinerberger's proof (main result), LTE application (divisibility), power2_mod3. Fully proved: consecutive_coprime, steinerberger_n_plus_1, examples. Sorry gaps: limsup_infinite (2, ratio manipulation), power2/3_consecutive (factorization additivity).",
+      "**Connection to abc conjecture**: If abc holds, much stronger bounds on smooth parts of consecutive products follow. The open question 'connections to abc conjecture?' is natural—abc would give S(n(n+1)) < n^{1+ε} with effective constants and sharper thresholds."
     ]
   },
   "sections": [
@@ -74,80 +97,81 @@
       "title": "Erdős Problem #933: Smooth Part of Consecutive Products",
       "startLine": 1,
       "endLine": 33,
-      "summary": "Erdős Problem #933: Smooth Part of Consecutive Products"
+      "summary": "File header with problem statement, references [Er76d], and imports: Mathlib.Data.Nat.Factorization.Basic, Mathlib.Analysis.SpecialFunctions.Log.Basic, Mathlib.NumberTheory.Padics.PadicVal. Opens `Nat` and `Real` namespaces."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 34,
       "endLine": 60,
-      "summary": "Basic Definitions"
+      "summary": "Six definitions building the smooth part machinery: `power2 n = 2^(n.factorization 2)`, `power3 n = 3^(n.factorization 3)`, `smoothPart23 = power2 * power3`, `consecutiveSmoothPart n = smoothPart23(n*(n+1))`, `exp2Consecutive`/`exp3Consecutive` (exponent extractors), and noncomputable `smoothRatio` with n≤1 guard."
     },
     {
       "id": "the-erd-s-question",
       "title": "The Erdős Question",
       "startLine": 61,
       "endLine": 68,
-      "summary": "The Erdős Question"
+      "summary": "Defines `ErdosQuestion933 := ∀ M : ℝ, ∃ n : ℕ, n ≥ 2 ∧ smoothRatio n > M` — the sequential characterization of limsup smoothRatio = ∞, avoiding Filter-based limsup."
     },
     {
       "id": "mahler-s-upper-bound",
       "title": "Mahler's Upper Bound",
       "startLine": 69,
       "endLine": 83,
-      "summary": "Mahler's Upper Bound"
+      "summary": "Axiomatizes `mahler_upper_bound`: ∀ ε > 0, ∃ N, ∀ n ≥ N, consecutiveSmoothPart n < n^{1+ε}. Placeholder `mahlerSUnitConnection` notes the S-unit equation origin. From Baker-Evertse theory."
     },
     {
       "id": "erd-s-s-lower-bound",
       "title": "Erdős's Lower Bound",
       "startLine": 84,
       "endLine": 112,
-      "summary": "Erdős's Lower Bound"
+      "summary": "Axiomatizes `erdos_lower_bound` (i.o. > n·log n). Theorem `limsup_infinite` attempts to derive ErdosQuestion933 from the axiom but has 2 sorries in the ratio manipulation (div_gt_iff + bound restructuring)."
     },
     {
       "id": "steinerberger-s-construction",
       "title": "Steinerberger's Construction",
       "startLine": 113,
       "endLine": 140,
-      "summary": "Steinerberger's Construction"
+      "summary": "Defines `steinerbergerN r = 2^(3^r)`. Proves `steinerberger_n_plus_1` (rfl). Axiomatizes `steinerberger_divisibility` (3^{r+1} | 2^{3^r}+1). States `steinerberger_gives_large_smooth` (sorry). Axiomatizes `steinerberger_proof : ErdosQuestion933`."
     },
     {
       "id": "why-the-construction-works",
       "title": "Why the Construction Works",
       "startLine": 141,
       "endLine": 160,
-      "summary": "Why the Construction Works"
+      "summary": "Axiomatizes `power2_mod3` (2^{3^r} ≡ 2 mod 3) and `lifting_the_exponent` (3^{r+1} | 2^{3^r}+1). Defines `LTEConnection` explaining the LTE application: v_p(a^n+b^n) = v_p(a+b) + v_p(n) with p=3, a=2, b=1, n=3^r."
     },
     {
       "id": "properties-of-n-n-1",
       "title": "Properties of n(n+1)",
       "startLine": 161,
       "endLine": 180,
-      "summary": "Properties of n(n+1)"
+      "summary": "Proves `consecutive_coprime` (one-line: `Nat.coprime_self_add_one n`). States `power2_consecutive` and `power3_consecutive` (factorization additivity for coprime products, both sorry) showing v_p(n(n+1)) = v_p(n) + v_p(n+1)."
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 181,
       "endLine": 198,
-      "summary": "Examples"
+      "summary": "Two concrete examples verified by `native_decide`: steinerbergerN 1 = 8 (8·9=72=2³·3², ratio≈4.33), steinerbergerN 2 = 512 (512·513=2⁹·3³·19, smooth=13824). Defines `exampleSequence := steinerbergerN`."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 199,
       "endLine": 230,
-      "summary": "Summary"
+      "summary": "Three equivalent main results: `erdos_933 := steinerberger_proof` (one-line), `erdos_933_main` (explicit ∀M∃n unfolding), `erdos_933_solved` (synonym). Docstring summarizes: YES, Steinerberger's proof via n=2^{3^r}, k=3^r, l=r+1, Mahler upper bound."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #933 asks whether the {2,3}-smooth part of n(n+1) can exceed n log n infinitely often. The answer is YES, as shown by Steinerberger: taking n = 2^{3^r} gives 2^k · 3^l = n · 3^{r+1}, with ratio 3^{r+1}/log n → ∞.",
-    "implications": "**Number Theory Connections**\n\n1. **S-Unit Equations:** Mahler's bound comes from finiteness of solutions\n\n2. **Lifting the Exponent:** Key tool for computing p-adic valuations\n\n3. **Smooth Numbers:** Structure of consecutive products\n\n4. **Explicit Constructions:** Steinerberger's sequence is computable",
+    "summary": "Erdős Problem #933 asks whether the {2,3}-smooth part of n(n+1) can exceed n·log n infinitely often. The answer is YES, proved by Steinerberger using the explicit construction n = 2^{3^r}: the Lifting the Exponent Lemma gives v₃(2^{3^r}+1) = r+1, so the smooth part is ≥ n·3^{r+1}. The formalization axiomatizes Mahler's S-unit upper bound, Erdős's claim, Steinerberger's proof, and the LTE divisibility, while fully proving consecutive_coprime and computing examples by native_decide.",
+    "implications": "This problem illustrates the interplay between elementary number theory (LTE Lemma, coprimality) and deep transcendence theory (Mahler's S-unit bounds). Steinerberger's construction shows that doubly-exponential sequences can serve as extremal examples in smooth number problems. The gap between the n·log n lower bound and n^{1+o(1)} upper bound remains: determining the exact growth rate of the limsup is open. The connection to the abc conjecture suggests that stronger bounds would follow from this central conjecture in number theory.",
     "openQuestions": [
-      "What is the exact growth rate of the limsup?",
-      "Are there other extremal constructions besides 2^{3^r}?",
-      "Generalizations to other sets of primes?",
-      "Connections to abc conjecture?"
+      "What is the exact growth rate of limsup 2^k·3^l/(n·log n)? Is it polynomial, or slower?",
+      "Are there extremal constructions besides Steinerberger's n = 2^{3^r}? What about n = 3^{2^r}?",
+      "For general S = {p₁,...,p_k}, what is the threshold for the S-smooth part of n(n+1)?",
+      "Does the abc conjecture give effective bounds improving on Mahler's n^{1+o(1)}?",
+      "Can the 5 sorries (limsup_infinite, power2/3_consecutive, steinerberger_gives_large_smooth) be resolved via Mathlib tactics?"
     ]
   }
 }
