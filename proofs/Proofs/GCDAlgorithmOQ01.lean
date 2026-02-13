@@ -26,6 +26,10 @@ computation infrastructure toward Dixon's theorem.
 - [x] Translation invariance: steps(a + kb, b) = steps(a, b)
 - [x] Swap lemma: a < b implies steps(a,b) = steps(b,a) + 1
 - [x] Finite average computation definitions
+- [x] Crude bounds: steps ≤ b, steps(a,1) = 1, steps(a,a) = 1
+- [x] GCD step invariant and termination characterization
+- [x] Tight Lamé optimality: fib(n+1) is minimal b achieving n steps
+- [x] Coprime step lower bound: coprime with b > 1 → steps ≥ 2
 - [ ] Full average-case analysis (Dixon's theorem — requires measure theory)
 -/
 
@@ -96,8 +100,7 @@ theorem lame_pair_bound (n : ℕ) :
       have hpos : 0 < a % b := Nat.pos_of_ne_zero h
       have := euclideanSteps_ge_one b hpos; omega
     constructor
-    · -- fib 2 = 1 ≤ b
-      show fib (1 + 1) ≤ b
+    · show fib (1 + 1) ≤ b
       have : fib (1 + 1) = 1 := by native_decide
       omega
     · intro h; omega
@@ -111,26 +114,13 @@ theorem lame_pair_bound (n : ℕ) :
     · have hr_pos : 0 < r := Nat.pos_of_ne_zero hr0
       have ⟨ib_r, ir⟩ := ih (n + 1) (by omega) b r hsteps' hr_pos
       constructor
-      · -- Need: fib(n+3) ≤ b
-        show fib (n + 2 + 1) ≤ b
+      · show fib (n + 2 + 1) ≤ b
         rw [show n + 2 + 1 = (n + 1) + 2 from by omega, fib_add_two]
-        -- ib_r: fib(n+2) ≤ r
-        -- Need to also get fib(n+1) ≤ b % r
-        -- When n+1 ≥ 2 (i.e., n ≥ 1), ir gives fib(n+1) ≤ b % r
-        -- When n = 0, n+1 = 1, fib(1) = 1, and b % r ≥ 0, but we need more
-        -- Actually: b = (b/r)*r + b%r, and b/r ≥ 1 since b > r
-        -- So b ≥ r + b%r ≥ fib(n+2) + b%r
-        -- If n ≥ 1: b%r ≥ fib(n+1) by ir, so b ≥ fib(n+2) + fib(n+1)
-        -- If n = 0: fib(n+2) + fib(n+1) = fib(2) + fib(1) = 1 + 1 = 2
-        --   ib_r gives fib(1) ≤ r, so r ≥ 1; also r < b means b ≥ 2
-        --   and fib(n+3) = fib(3) = 2 ≤ b. ✓
         have h_eq := Nat.div_add_mod b r
         have hq : 1 ≤ b / r := Nat.div_pos (by omega) hr_pos
         have hqr : r ≤ b / r * r := le_mul_of_one_le_left (Nat.zero_le r) hq
         match n with
         | 0 =>
-          -- fib 3 = 2, need b ≥ 2
-          -- ib_r: fib 2 ≤ r, so r ≥ 1; r < b so b ≥ 2
           change fib 3 ≤ b
           have h3 : fib 3 = 2 := by native_decide
           have h2 : fib 2 = 1 := by native_decide
@@ -138,11 +128,8 @@ theorem lame_pair_bound (n : ℕ) :
           omega
         | n + 1 =>
           have ir' := ir (by omega)
-          -- ib_r: fib(n+3) ≤ r, ir': fib(n+2) ≤ b % r
-          -- b = (b/r)*r + b%r ≥ r + b%r ≥ fib(n+3) + fib(n+2)
           linarith
       · intro _
-        -- Need fib(n+2) ≤ a % b = r
         exact ib_r
 
 /-- **Lamé's Theorem**: fib(steps + 1) ≤ b when b > 0. -/
@@ -181,7 +168,6 @@ theorem euclideanSteps_fib : ∀ n : ℕ, 1 ≤ n →
     show euclideanSteps (fib (k + 3)) (fib (k + 2)) = k + 1
     cases k with
     | zero =>
-      -- euclideanSteps (fib 3) (fib 2) = 1 — verify computationally
       native_decide
     | succ k =>
       have hfk2_pos : 0 < fib (k + 2 + 1) := Nat.fib_pos.mpr (by omega)
@@ -209,15 +195,10 @@ theorem fib_exponential_lower : ∀ n : ℕ, 2 ^ n ≤ fib (2 * n + 1) := by
   induction n with
   | zero => simp [fib_one]
   | succ k ih =>
-    -- fib(2(k+1)+1) = fib(2k+3) = fib((2k+1)+2) = fib(2k+2) + fib(2k+1)
     rw [show 2 * (k + 1) + 1 = (2 * k + 1) + 2 from by omega, fib_add_two]
-    -- fib(2k+2) = fib((2k)+2) = fib(2k) + fib(2k+1)
     have h_fib_succ : fib ((2 * k + 1) + 1) = fib (2 * k) + fib (2 * k + 1) := by
       rw [show (2 * k + 1) + 1 = (2 * k) + 2 from by omega, fib_add_two]
     rw [h_fib_succ]
-    -- Now goal: 2^(k+1) ≤ fib(2k+1) + (fib(2k) + fib(2k+1))
-    -- = 2*fib(2k+1) + fib(2k)
-    -- ≥ 2*fib(2k+1) ≥ 2*2^k = 2^(k+1)
     have : 2 ^ (k + 1) = 2 * 2 ^ k := by ring
     omega
 
@@ -271,17 +252,9 @@ example : euclideanSteps 1000 373 ≤ 5 * decimalDigits 373 := by native_decide
 
 /-
 ## GCD Preservation
-
-The step-counting function mirrors `Nat.gcd`: both follow the same
-recurrence a → (b, a % b), so gcd(a,b) equals gcd(b, a%b) at each step.
 -/
 
-/-- GCD is preserved through the Euclidean steps. -/
-theorem euclideanSteps_gcd (a b : ℕ) : Nat.gcd a b = Nat.gcd a b := rfl
-
-/-- The Euclidean algorithm computes gcd: after all steps, remainder is 0
-    and the last non-zero value is the gcd. We prove this by showing
-    that `euclideanSteps a b = 0 ↔ b = 0`. -/
+/-- The Euclidean algorithm computes gcd: steps = 0 ↔ b = 0. -/
 theorem euclideanSteps_eq_zero_iff (a b : ℕ) :
     euclideanSteps a b = 0 ↔ b = 0 := by
   constructor
@@ -306,11 +279,6 @@ theorem euclideanSteps_right_zero (b : ℕ) : euclideanSteps b 0 = 0 :=
 
 /-
 ## Tight Lamé Bound (Equality Characterization)
-
-When equality holds in Lamé's theorem — i.e., when the algorithm
-takes exactly n steps on input (a, b) with b = fib(n+1) — the
-remainders must follow the Fibonacci sequence. This characterizes
-the worst-case inputs.
 -/
 
 /-- If steps = 1, then a % b = 0 (the algorithm terminates in one step). -/
@@ -320,8 +288,7 @@ theorem steps_one_remainder_zero (a b : ℕ) (hb : 0 < b)
   have h0 : euclideanSteps b (a % b) = 0 := by omega
   rwa [euclideanSteps_eq_zero_iff] at h0
 
-/-- If steps ≥ 2 and b = fib(n+1), then the remainder a%b ≥ fib(n).
-    This is the second component of the Lamé pair bound. -/
+/-- If steps ≥ 2, then the remainder a%b ≥ fib(n). -/
 theorem lame_remainder_bound (a b n : ℕ) (hb : 0 < b)
     (hs : euclideanSteps a b = n) (hn : 2 ≤ n) :
     fib n ≤ a % b :=
@@ -343,20 +310,13 @@ theorem euclideanSteps_add_mul (a b k : ℕ) (hb : 0 < b) :
     · rw [euclideanSteps_pos_eq a b hb, hab, euclideanSteps_zero]
   · rw [euclideanSteps_pos_eq a b hb]
 
-/-- Euclidean steps is symmetric: steps(a, b) when a < b just adds one step. -/
-theorem euclideanSteps_swap (a b : ℕ) (ha : 0 < a) (hb : 0 < b) (hab : a < b) :
+/-- Euclidean steps when a < b: swapping adds one step. -/
+theorem euclideanSteps_swap (a b : ℕ) (_ha : 0 < a) (hb : 0 < b) (hab : a < b) :
     euclideanSteps a b = euclideanSteps b a + 1 := by
-  rw [euclideanSteps_pos_eq a b hb]
-  have : a % b = a := Nat.mod_eq_of_lt hab
-  rw [this]
-  rw [euclideanSteps_pos_eq b a ha]
-  ring
+  rw [euclideanSteps_pos_eq a b hb, Nat.mod_eq_of_lt hab]
 
 /-
 ## Finite Average Computation
-
-Infrastructure for computing exact averages over bounded inputs,
-providing numerical evidence for Dixon's asymptotic formula.
 -/
 
 /-- Total Euclidean steps over all pairs (a, b) with a ∈ [1,N], b ∈ [1,a]. -/
@@ -377,6 +337,92 @@ example : totalSteps 2 = 3 := by native_decide
 example : totalSteps 3 = 7 := by native_decide
 
 /-
+## Step Reduction and Crude Bounds
+-/
+
+/-- The Euclidean algorithm makes progress: the step count decreases after one reduction. -/
+theorem euclideanSteps_reduction (a b : ℕ) (hb : 0 < b) :
+    euclideanSteps b (a % b) = euclideanSteps a b - 1 := by
+  rw [euclideanSteps_pos_eq a b hb]; omega
+
+/-- Steps ≤ b: a crude but useful upper bound. -/
+theorem euclideanSteps_le_second (a b : ℕ) : euclideanSteps a b ≤ b := by
+  induction a, b using euclideanSteps.induct with
+  | case1 a => simp
+  | case2 a b hb ih =>
+    rw [euclideanSteps_pos_eq a b (Nat.pos_of_ne_zero hb)]
+    have hmod_lt : a % b < b := Nat.mod_lt a (Nat.pos_of_ne_zero hb)
+    omega
+
+/-- gcd(a, 1) always takes exactly 1 step. -/
+theorem euclideanSteps_one (a : ℕ) : euclideanSteps a 1 = 1 := by
+  rw [euclideanSteps_pos_eq a 1 (by omega)]
+  simp [Nat.mod_one]
+
+/-- Steps for (a, a) when a > 0 is always 1. -/
+theorem euclideanSteps_self (a : ℕ) (ha : 0 < a) : euclideanSteps a a = 1 := by
+  rw [euclideanSteps_pos_eq a a ha, Nat.mod_self, euclideanSteps_zero]
+
+/-
+## GCD Preserved Through Steps
+-/
+
+/-- The GCD is preserved through one step of the Euclidean algorithm:
+    gcd(b, a mod b) = gcd(a, b). -/
+theorem gcd_step_invariant (a b : ℕ) (_hb : 0 < b) :
+    Nat.gcd b (a % b) = Nat.gcd a b := by
+  have : Nat.gcd a b = Nat.gcd b a := Nat.gcd_comm a b
+  have : Nat.gcd b a = Nat.gcd (a % b) b := Nat.gcd_rec b a
+  have : Nat.gcd (a % b) b = Nat.gcd b (a % b) := Nat.gcd_comm (a % b) b
+  linarith
+
+/-- When the remainder is zero, the GCD equals b. -/
+theorem gcd_eq_of_mod_zero (a b : ℕ) (_hb : 0 < b) (hab : a % b = 0) :
+    Nat.gcd a b = b := by
+  calc Nat.gcd a b = Nat.gcd b a := Nat.gcd_comm a b
+    _ = Nat.gcd (a % b) b := Nat.gcd_rec b a
+    _ = Nat.gcd 0 b := by rw [hab]
+    _ = b := Nat.gcd_zero_left b
+
+/-
+## Lamé Lower Bound (Optimality)
+-/
+
+/-- For any n ≥ 1, there exists a pair achieving exactly n steps. -/
+theorem exists_pair_with_steps (n : ℕ) (hn : 1 ≤ n) :
+    ∃ a b, 0 < b ∧ euclideanSteps a b = n := by
+  exact ⟨fib (n + 2), fib (n + 1), Nat.fib_pos.mpr (by omega),
+         euclideanSteps_fib n hn⟩
+
+/-- The minimal b achieving n steps is exactly fib(n+1). -/
+theorem lame_tight (n : ℕ) (hn : 1 ≤ n) :
+    (∀ a b, 0 < b → euclideanSteps a b = n → fib (n + 1) ≤ b) ∧
+    (∃ a b, 0 < b ∧ euclideanSteps a b = n ∧ b = fib (n + 1)) := by
+  constructor
+  · intro a b hb hs
+    exact (lame_pair_bound n a b hs hb).1
+  · exact ⟨fib (n + 2), fib (n + 1), Nat.fib_pos.mpr (by omega),
+           euclideanSteps_fib n hn, rfl⟩
+
+/-
+## Coprime Pairs and Step Counts
+-/
+
+/-- For coprime inputs with b > 1, the algorithm uses at least 2 steps. -/
+theorem coprime_steps_ge_two (a b : ℕ) (hb : 1 < b) (hcop : Nat.Coprime a b) :
+    2 ≤ euclideanSteps a b := by
+  rw [euclideanSteps_pos_eq a b (by omega)]
+  have hr : a % b ≠ 0 := by
+    intro h
+    have : b ∣ a := Nat.dvd_of_mod_eq_zero h
+    have : b ∣ Nat.gcd a b := Nat.dvd_gcd this (dvd_refl b)
+    rw [hcop] at this
+    exact absurd (Nat.le_of_dvd (by omega) this) (by omega)
+  have hpos : 0 < a % b := Nat.pos_of_ne_zero hr
+  have := euclideanSteps_ge_one b hpos
+  omega
+
+/-
 ## Summary
 
 ### Proved Results
@@ -395,6 +441,15 @@ example : totalSteps 3 = 7 := by native_decide
 13. **lame_remainder_bound** — steps ≥ 2 → fib(n) ≤ a%b
 14. **euclideanSteps_add_mul** — steps(a + kb, b) = steps(a, b)
 15. **euclideanSteps_swap** — a < b → steps(a,b) = steps(b,a) + 1
+16. **euclideanSteps_reduction** — steps decrease by 1 each reduction
+17. **euclideanSteps_le_second** — steps ≤ b (crude bound)
+18. **euclideanSteps_one** — steps(a, 1) = 1
+19. **euclideanSteps_self** — steps(a, a) = 1
+20. **gcd_step_invariant** — gcd preserved through steps
+21. **gcd_eq_of_mod_zero** — a%b = 0 → gcd(a,b) = b
+22. **exists_pair_with_steps** — ∀ n ≥ 1, ∃ pair with exactly n steps
+23. **lame_tight** — fib(n+1) is the minimal b achieving n steps
+24. **coprime_steps_ge_two** — coprime with b > 1 → steps ≥ 2
 
 ### Dixon's Theorem (not formalized)
 The average number of steps is (12 ln 2 / π²) ln N ≈ 0.8427 ln N.
