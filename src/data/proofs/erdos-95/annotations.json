@@ -1,119 +1,98 @@
 [
   {
-    "id": "ann-95-header",
+    "id": "erdos-95-imports",
     "proofId": "erdos-95",
-    "range": { "startLine": 1, "endLine": 29 },
     "type": "concept",
-    "title": "Problem Overview",
-    "content": "**Erdős Problem #95: Sum of Squared Distance Multiplicities**\n\nFor n points in R² with distance multiplicities f(uᵢ), prove ∑f(uᵢ)² ≪ n^{3+ε}.\n\n**Answer: YES** (Guth-Katz 2015)\n\nThey proved the stronger bound ∑f(uᵢ)² ≪ n³ log n. Prize: $500.",
-    "significance": "critical"
+    "range": { "startLine": 31, "endLine": 37 },
+    "title": "Imports and Setup",
+    "content": "Imports `EuclideanDist` for the `EuclideanSpace` type and norm, `Finset.Basic` for finite set operations, and `Real.Basic` for real number arithmetic. Opens `Finset` namespace for convenient access to `sum`, `filter`, `image`, `card`.",
+    "significance": "supporting",
+    "mathContext": "The import of `Analysis.InnerProductSpace.EuclideanDist` provides `EuclideanSpace ℝ (Fin 2)` — the standard model of $\\mathbb{R}^2$ as an inner product space with the Euclidean norm $\\|p - q\\| = \\sqrt{(p_1 - q_1)^2 + (p_2 - q_2)^2}$. The `Real.Basic` import provides `Real.log` needed for the Guth-Katz bound.",
+    "relatedConcepts": ["EuclideanSpace", "inner product space", "Finset", "Real.log"],
+    "prerequisites": ["Lean 4 import system", "Mathlib analysis modules"]
   },
   {
-    "id": "ann-95-point",
+    "id": "erdos-95-point-config",
     "proofId": "erdos-95",
-    "range": { "startLine": 43, "endLine": 44 },
     "type": "definition",
-    "title": "Point",
-    "content": "**Point in R²:** A point in 2D Euclidean space.\n\nDefined as EuclideanSpace ℝ (Fin 2), the standard 2D plane.",
-    "significance": "key"
+    "range": { "startLine": 43, "endLine": 60 },
+    "title": "Points, Configurations, and Distance Multiplicity",
+    "content": "`Point := EuclideanSpace ℝ (Fin 2)` (the plane $\\mathbb{R}^2$). `dist p q := \\|p - q\\|`. `PointConfig`: a `Finset Point` with `card > 0`. `distanceSet P`: all pairwise distances via `image` on the Cartesian product. `multiplicity P d`: counts pairs at distance $d$ via `filter` on the product.",
+    "significance": "critical",
+    "mathContext": "The distance set $\\Delta(P) = \\{\\|p - q\\| : p, q \\in P\\}$ is the central object in Erdős's distinct distances problem. The multiplicity function $f(d) = |\\{(p, q) \\in P \\times P : \\|p - q\\| = d\\}|$ counts ordered pairs, so $\\sum_d f(d) = n(n-1)$ (not $\\binom{n}{2}$). The formalization uses the Cartesian product $P.\\text{points} \\times^s P.\\text{points}$, which includes $(p, p)$ pairs with distance 0.",
+    "relatedConcepts": ["distance set", "Erdős distinct distances", "EuclideanSpace", "Finset.card"],
+    "prerequisites": ["EuclideanSpace ℝ (Fin 2)", "Finset.image", "Finset.filter", "norm"]
   },
   {
-    "id": "ann-95-config",
+    "id": "erdos-95-sum-mult",
     "proofId": "erdos-95",
-    "range": { "startLine": 49, "endLine": 52 },
-    "type": "definition",
-    "title": "PointConfig",
-    "content": "**Point Configuration:** A finite set of points in R².\n\nThe input to our problem: n points x₁,...,xₙ. We require at least one point.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-95-distances",
-    "proofId": "erdos-95",
-    "range": { "startLine": 54, "endLine": 56 },
-    "type": "definition",
-    "title": "distanceSet",
-    "content": "**Distance Set:** All pairwise distances in a configuration.\n\nIf the configuration has t distinct distances, this set has size t.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-95-mult",
-    "proofId": "erdos-95",
-    "range": { "startLine": 58, "endLine": 60 },
-    "type": "definition",
-    "title": "multiplicity",
-    "content": "**Distance Multiplicity f(d):** How many pairs of points are exactly distance d apart.\n\nA distance with high multiplicity appears many times among point pairs.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-95-sum",
-    "proofId": "erdos-95",
-    "range": { "startLine": 66, "endLine": 69 },
     "type": "theorem",
-    "title": "sum_multiplicities",
-    "content": "**Trivial Sum:** ∑f(uᵢ) = C(n,2) = n(n-1)/2.\n\nEvery pair contributes to exactly one distance, so the sum of multiplicities equals the number of pairs.",
-    "significance": "key"
+    "range": { "startLine": 66, "endLine": 73 },
+    "title": "Sum of Multiplicities and Squared Sum",
+    "content": "`sum_multiplicities` (sorry): $\\sum_d f(d) = n(n-1)$, the trivial counting identity. `sumSquaredMultiplicities P`: $\\sum_d f(d)^2$, measuring how concentrated the distance distribution is.",
+    "significance": "key",
+    "mathContext": "The identity $\\sum_d f(d) = n(n-1)$ follows because every ordered pair $(p, q)$ with $p \\neq q$ contributes to exactly one distance. The sum of squares $\\sum_d f(d)^2$ is related to the number of **isosceles triples**: $\\sum_d f(d)^2 = |\\{(p_1, q_1, p_2, q_2) : \\|p_1 - q_1\\| = \\|p_2 - q_2\\|\\}|$, counting quadruples of points forming two pairs at the same distance. By Cauchy-Schwarz, $\\sum f(d)^2 \\ge (\\sum f(d))^2 / t = n^2(n-1)^2/t$ where $t = |\\Delta(P)|$, linking to the distinct distances lower bound.",
+    "relatedConcepts": ["counting identity", "Cauchy-Schwarz inequality", "isosceles triples", "distinct distances"],
+    "prerequisites": ["distanceSet", "multiplicity", "Finset.sum"]
   },
   {
-    "id": "ann-95-squared",
+    "id": "erdos-95-conjecture",
     "proofId": "erdos-95",
-    "range": { "startLine": 71, "endLine": 73 },
     "type": "definition",
-    "title": "sumSquaredMultiplicities",
-    "content": "**Sum of Squared Multiplicities:** ∑f(uᵢ)².\n\nThis measures concentration: if all distances are distinct, sum ≈ n²; if one distance dominates, sum can be n⁴.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-95-conjecture",
-    "proofId": "erdos-95",
     "range": { "startLine": 79, "endLine": 85 },
-    "type": "definition",
-    "title": "ErdosConjecture",
-    "content": "**Erdős's Conjecture:** For all ε > 0, ∑f(uᵢ)² ≪_ε n^{3+ε}.\n\nThis bounds how concentrated distances can be. The exponent 3+ε is nearly tight.",
-    "significance": "critical"
+    "title": "Erdős's Conjecture",
+    "content": "`ErdosConjecture`: $\\forall \\varepsilon > 0, \\exists C > 0, \\forall P$, $\\sum f(d)^2 \\le C \\cdot n^{3+\\varepsilon}$. This bounds the concentration of distance multiplicities.",
+    "significance": "critical",
+    "mathContext": "The exponent $3 + \\varepsilon$ is essentially tight: the $\\sqrt{n} \\times \\sqrt{n}$ integer lattice achieves $\\sum f(d)^2 = \\Theta(n^3 \\log n)$. The conjecture says this lattice-like behavior is essentially the worst case. A trivial upper bound is $\\sum f(d)^2 \\le (\\max_d f(d)) \\cdot \\sum f(d) \\le n^2 \\cdot n^2 = n^4$, so the conjecture improves this by nearly a factor of $n$. The $\\varepsilon$ formulation was standard for Erdős: he often conjectured bounds up to sub-polynomial factors.",
+    "relatedConcepts": ["asymptotic notation", "lattice extremal example", "sub-polynomial factors", "big-O notation"],
+    "prerequisites": ["sumSquaredMultiplicities", "PointConfig", "real analysis (limits)"]
   },
   {
-    "id": "ann-95-guthkatz",
+    "id": "erdos-95-guth-katz",
     "proofId": "erdos-95",
-    "range": { "startLine": 91, "endLine": 100 },
-    "type": "axiom",
-    "title": "guth_katz_theorem",
-    "content": "**Guth-Katz Theorem (2015):** ∑f(uᵢ)² ≪ n³ log n.\n\nStronger than Erdős asked:\n- No ε in the exponent\n- Replace n^ε with log n\n\nPart of their landmark paper on distinct distances.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-95-proved",
-    "proofId": "erdos-95",
-    "range": { "startLine": 102, "endLine": 112 },
     "type": "theorem",
-    "title": "erdos_conjecture_proved",
-    "content": "**Erdős's Conjecture is Proved:** Guth-Katz implies the conjecture.\n\nSince log n = o(n^ε) for any ε > 0, the n³ log n bound implies n^{3+ε}.",
-    "significance": "critical"
+    "range": { "startLine": 91, "endLine": 112 },
+    "title": "Guth-Katz Theorem and Derivation",
+    "content": "`guth_katz_theorem` (axiom): $\\exists C > 0, \\forall P$, $\\sum f(d)^2 \\le C \\cdot n^3 \\log n$. `erdos_conjecture_proved` (1 sorry): derives the conjecture from Guth-Katz using $\\log n = o(n^\\varepsilon)$ for any $\\varepsilon > 0$.",
+    "significance": "critical",
+    "mathContext": "Guth and Katz (2015) proved this in their landmark *Annals of Mathematics* paper 'On the Erdős distinct distances problem in the plane'. The bound $n^3 \\log n$ is **best possible** up to the constant, since the $\\sqrt{n} \\times \\sqrt{n}$ integer lattice achieves $\\sum f(d)^2 = \\Theta(n^3 \\log n)$ (the log factor comes from the number of representations of integers as sums of two squares, which is $\\Theta(\\log n)$ on average). The derivation `erdos_conjecture_proved` needs the analytic fact that $\\log n \\le n^\\varepsilon$ for large $n$, which is a sorry.",
+    "relatedConcepts": ["Guth-Katz 2015", "Annals of Mathematics", "integer lattice", "sums of two squares"],
+    "prerequisites": ["guth_katz_theorem", "ErdosConjecture", "Real.log", "asymptotic analysis"]
   },
   {
-    "id": "ann-95-poly",
+    "id": "erdos-95-polynomial",
     "proofId": "erdos-95",
-    "range": { "startLine": 118, "endLine": 136 },
     "type": "concept",
-    "title": "Polynomial Method",
-    "content": "**The Guth-Katz Approach:**\n\n1. **Point-Line Duality:** Distances ↔ incidences in 3D\n2. **Polynomial Partitioning:** Divide space using algebraic surfaces\n3. **Ruled Surfaces:** Lines at same distance form quadric surfaces\n4. **Incidence Bounds:** Control point-line incidences\n\nThis technique revolutionized combinatorial geometry.",
-    "significance": "key"
+    "range": { "startLine": 118, "endLine": 133 },
+    "title": "The Polynomial Method (Commentary)",
+    "content": "Four key techniques in the Guth-Katz proof: (1) **Point-line duality** transforming distance problems to 3D incidence problems via the Elekes-Sharir framework; (2) **Polynomial partitioning** dividing $\\mathbb{R}^3$ using algebraic surfaces; (3) **Ruled surface analysis** for lines at constant distance; (4) **Incidence bounds** controlling point-line incidences in $\\mathbb{R}^3$.",
+    "significance": "key",
+    "mathContext": "The **Elekes-Sharir framework** (2010) transforms the distance problem: for each pair $(p, q)$ at distance $d$, consider the set of rigid motions mapping $p$ to $q$. This gives lines in $\\mathbb{R}^3$ (parameterizing rotations by angle and translation). Distance multiplicities become line incidences. **Polynomial partitioning** (Guth-Katz 2010, building on Dvir 2009) uses the polynomial ham-sandwich theorem: given $n$ points in $\\mathbb{R}^3$, there exists a degree-$D$ polynomial whose zero set partitions space into $O(D^3)$ cells, each containing $O(n/D^3)$ points. This gives a recursive structure for bounding incidences.",
+    "relatedConcepts": ["Elekes-Sharir framework", "polynomial partitioning", "ham-sandwich theorem", "Szemerédi-Trotter"],
+    "prerequisites": ["algebraic geometry basics", "incidence geometry", "ruled quadric surfaces"]
   },
   {
-    "id": "ann-95-convex",
+    "id": "erdos-95-convex",
     "proofId": "erdos-95",
-    "range": { "startLine": 142, "endLine": 148 },
-    "type": "axiom",
-    "title": "convex_polygon_case",
-    "content": "**Convex Polygon Case (Fishburn/Altman 1963):** For points in convex position, ∑f(uᵢ)² = O(n³).\n\nThe convex case was solved decades before the general case.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-95-main",
-    "proofId": "erdos-95",
-    "range": { "startLine": 158, "endLine": 177 },
     "type": "theorem",
-    "title": "erdos_95",
-    "content": "**Erdős Problem #95: SOLVED**\n\nMain theorem combining:\n1. Erdős's conjecture holds\n2. With the stronger Guth-Katz bound n³ log n\n\nPrize: $500 (collected by Guth and Katz)",
-    "significance": "critical"
+    "range": { "startLine": 140, "endLine": 144 },
+    "title": "Convex Polygon Case (Fishburn/Altman)",
+    "content": "`convex_polygon_case` (axiom): for points in convex position, $\\sum f(d)^2 = O(n^3)$. The convexity hypothesis is modeled as `True →` (placeholder). This was solved decades before the general case.",
+    "significance": "supporting",
+    "mathContext": "Altman (1963) proved that $n$ points in convex position determine $O(n)$ distinct distances, each with multiplicity $O(n)$. Hence $\\sum f(d)^2 \\le O(n) \\cdot O(n)^2 = O(n^3)$ — matching the exponent without the $\\log n$ factor. The axiom uses `True →` as a placeholder for the convexity condition since formalizing 'all points on the convex hull' would require additional infrastructure. Fishburn extended Altman's work to get the sharp bound.",
+    "relatedConcepts": ["Altman 1963", "convex position", "distinct distances in convex sets", "convex hull"],
+    "prerequisites": ["sumSquaredMultiplicities", "PointConfig", "convex geometry"]
+  },
+  {
+    "id": "erdos-95-main",
+    "proofId": "erdos-95",
+    "type": "theorem",
+    "range": { "startLine": 165, "endLine": 183 },
+    "title": "Main Theorem and Summary",
+    "content": "`erdos_95`: the conjunction `ErdosConjecture ∧ (∃ C > 0, ∀ P, ∑f(d)² ≤ C · n³ log n)`, proved by `⟨erdos_conjecture_proved, guth_katz_theorem⟩`. Also `erdos_95_answer` and `erdos_95_status` as documentation strings. `#check` commands verify the key definitions typecheck.",
+    "significance": "critical",
+    "mathContext": "The main theorem packages both results: (1) the original conjecture $\\sum f(d)^2 \\ll_\\varepsilon n^{3+\\varepsilon}$ is confirmed, and (2) the stronger Guth-Katz bound $\\sum f(d)^2 \\ll n^3 \\log n$ is stated. The conjunction makes explicit that the Guth-Katz result strictly improves on Erdős's original question. The $\\$500$ prize was collected by Guth and Katz — one of the largest Erdős prizes ever awarded, reflecting the difficulty and centrality of the distinct distances problem family.",
+    "relatedConcepts": ["Erdős prizes", "distinct distances resolution", "conjunction of results", "term-mode proof"],
+    "prerequisites": ["erdos_conjecture_proved", "guth_katz_theorem", "ErdosConjecture"]
   }
 ]
