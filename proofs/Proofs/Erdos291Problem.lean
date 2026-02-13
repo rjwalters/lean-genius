@@ -36,6 +36,7 @@ import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Rat.Defs
 import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
 
 open Nat Finset BigOperators
@@ -695,5 +696,237 @@ occur for infinitely many n?
 on the leading digit of n in base p.
 -/
 theorem erdos_291 : question_part2 := part2_trivially_true
+
+/-
+## Part XIX: Generalized Leading Digit for (p-1)·p^k
+
+For any prime p and any k, the number (p-1)·p^k in base p has leading digit p-1.
+This generalizes the pattern used for the 2·3^k family.
+-/
+
+/-- Helper: leadingDigitAux ((p-1) * p^k) fuel = p-1 when fuel ≥ k and p > 1 -/
+private theorem leadingDigitAux_pm1_pow (p k fuel : ℕ) (hp : p > 1)
+    (hfuel : fuel ≥ k) :
+    leadingDigitAux p ((p - 1) * p^k) fuel = p - 1 := by
+  induction k generalizing fuel with
+  | zero =>
+    simp only [pow_zero, mul_one]
+    unfold leadingDigitAux
+    -- p - 1 < p for p > 1
+    simp only [show (if fuel = 0 then p - 1
+      else if p - 1 < p then p - 1
+      else leadingDigitAux p ((p - 1) / p) (fuel - 1)) = p - 1 from by
+      split_ifs with h1 h2
+      · rfl
+      · rfl
+      · omega]
+  | succ j ih =>
+    have h_ge_p : (p - 1) * p^(j + 1) ≥ p := by
+      have : p^(j + 1) ≥ 1 := Nat.one_le_pow (j + 1) p (by omega)
+      have : (p - 1) * p^(j + 1) ≥ p - 1 := Nat.le_mul_of_pos_right _ this
+      have : p - 1 ≥ 1 := by omega
+      calc (p - 1) * p^(j + 1) = (p - 1) * (p^j * p) := by ring_nf
+        _ ≥ 1 * (1 * p) := by apply Nat.mul_le_mul <;> [omega; exact Nat.mul_le_mul_right p (Nat.one_le_pow j p (by omega))]
+        _ = p := by ring
+    have h_not_lt_p : ¬ ((p - 1) * p^(j + 1) < p) := by omega
+    have h_fuel_pos : fuel ≠ 0 := by omega
+    unfold leadingDigitAux
+    simp only [h_fuel_pos, ↓reduceIte, h_not_lt_p]
+    have hdiv : (p - 1) * p^(j + 1) / p = (p - 1) * p^j := by
+      have : (p - 1) * p^(j + 1) = (p - 1) * p^j * p := by ring
+      rw [this]
+      exact Nat.mul_div_cancel _ (by omega)
+    rw [hdiv]
+    exact ih (fuel - 1) (by omega)
+
+/-- p^k ≥ k for p ≥ 2 (exponential dominates linear) -/
+private theorem pow_ge_of_ge_two (p k : ℕ) (hp : p ≥ 2) : p^k ≥ k := by
+  induction k with
+  | zero => simp
+  | succ j ih =>
+    calc p^(j + 1) = p^j * p := pow_succ p j
+      _ ≥ p^j * 2 := Nat.mul_le_mul_left _ hp
+      _ = p^j + p^j := by ring
+      _ ≥ j + 1 := by
+        have h1 : p^j ≥ 1 := Nat.one_le_pow j p (by omega)
+        omega
+
+/-- For any p > 1 and any k, leadingDigit ((p-1) * p^k) p = p - 1.
+    This says (p-1)·p^k in base p is (p-1) followed by k zeros. -/
+theorem leadingDigit_pm1_times_pow (p k : ℕ) (hp : p > 1) :
+    leadingDigit ((p - 1) * p^k) p = p - 1 := by
+  unfold leadingDigit
+  simp only [show ¬(p ≤ 1) from by omega, ↓reduceIte]
+  apply leadingDigitAux_pm1_pow p k _ hp
+  -- fuel = (p-1) * p^k ≥ k
+  have h : p^k ≥ k := pow_ge_of_ge_two p k (by omega)
+  have h2 : p - 1 ≥ 1 := by omega
+  calc (p - 1) * p^k ≥ 1 * p^k := by exact Nat.mul_le_mul_right _ h2
+    _ = p^k := by ring
+    _ ≥ k := h
+
+/-
+## Part XX: Second Infinite Family via p = 5
+-/
+
+/-- For n = 4·5^k and k ≥ 1, 5 divides gcd(a_n, L_n).
+    Uses: leadingDigit(4·5^k, 5) = 4 = 5-1 and Steinerberger. -/
+theorem five_dvd_gcd_four_pow_five (k : ℕ) (hk : k ≥ 1) :
+    (5 : ℕ) ∣ harmonicGCD (4 * 5^k) := by
+  apply steinerberger_criterion _ 5 (by decide)
+  · have h5k : 5^k ≥ 5^1 := Nat.pow_le_pow_right (by omega) hk
+    simp at h5k
+    linarith
+  · omega
+  · exact leadingDigit_pm1_times_pow 5 k (by omega)
+
+/-- There are infinitely many n with 5 | gcd(a_n, L_n), using the family {4·5^k}.
+    This provides a second independent infinite family (alongside {2·3^k}). -/
+theorem infinitely_many_five_dvd : Set.Infinite {n : ℕ | (5 : ℕ) ∣ harmonicGCD n} := by
+  apply Set.infinite_of_injective_forall_mem (f := fun k => 4 * 5 ^ (k + 1))
+  · intro k₁ k₂ h
+    have h1 : (5 : ℕ) ^ (k₁ + 1) = 5 ^ (k₂ + 1) := by linarith
+    have h2 : k₁ + 1 = k₂ + 1 := Nat.pow_right_injective (by norm_num : 1 < 5) h1
+    omega
+  · intro k
+    simp only [Set.mem_setOf_eq]
+    exact five_dvd_gcd_four_pow_five (k + 1) (by omega)
+
+/-- General family: for prime p ≥ 3 and k ≥ 1, p divides gcd(a_{(p-1)·p^k}, L_{(p-1)·p^k}).
+    This is the general form of Steinerberger's observation. -/
+theorem prime_dvd_gcd_pm1_pow (p k : ℕ) (hp : Nat.Prime p) (hp3 : p ≥ 3) (hk : k ≥ 1) :
+    p ∣ harmonicGCD ((p - 1) * p^k) := by
+  apply steinerberger_criterion _ p hp
+  · have hpk : p^k ≥ p^1 := Nat.pow_le_pow_right (Nat.Prime.pos hp) hk
+    simp at hpk
+    have : p - 1 ≥ 1 := by omega
+    calc (p - 1) * p^k ≥ 1 * p := Nat.mul_le_mul this hpk
+      _ = p := one_mul p
+  · omega
+  · exact leadingDigit_pm1_times_pow p k (Nat.Prime.one_lt hp)
+
+/-
+## Part XXI: Sum of Inverses Modulo p
+-/
+
+/-- In ZMod p, the sum of inverses of 1 through p-1 equals zero.
+    This is because k → k⁻¹ is a bijection on {1,...,p-1},
+    so ∑ k⁻¹ = ∑ k = p(p-1)/2 ≡ 0 (mod p) for p odd.
+
+    Verified computationally for p = 3, 5, 7, 11, 13. -/
+theorem sum_inv_ZMod_eq_zero_3 :
+    ∑ i ∈ Finset.range 2, ((i + 1 : ℕ) : ZMod 3)⁻¹ = 0 := by decide
+
+theorem sum_inv_ZMod_eq_zero_5 :
+    ∑ i ∈ Finset.range 4, ((i + 1 : ℕ) : ZMod 5)⁻¹ = 0 := by decide
+
+theorem sum_inv_ZMod_eq_zero_7 :
+    ∑ i ∈ Finset.range 6, ((i + 1 : ℕ) : ZMod 7)⁻¹ = 0 := by decide
+
+theorem sum_inv_ZMod_eq_zero_11 :
+    ∑ i ∈ Finset.range 10, ((i + 1 : ℕ) : ZMod 11)⁻¹ = 0 := by decide
+
+theorem sum_inv_ZMod_eq_zero_13 :
+    ∑ i ∈ Finset.range 12, ((i + 1 : ℕ) : ZMod 13)⁻¹ = 0 := by decide
+
+/-- The sum of all elements of ZMod p equals zero for p ≥ 3.
+    Since ∑_{k=0}^{p-1} k = p(p-1)/2 and p is odd (p ≥ 3), this is 0 mod p. -/
+theorem sum_ZMod_eq_zero_3 : ∑ i ∈ Finset.range 3, (i : ZMod 3) = 0 := by decide
+theorem sum_ZMod_eq_zero_5 : ∑ i ∈ Finset.range 5, (i : ZMod 5) = 0 := by decide
+theorem sum_ZMod_eq_zero_7 : ∑ i ∈ Finset.range 7, (i : ZMod 7) = 0 := by decide
+
+/-
+## Part XXII: Strengthening Part 2 with Multiple Families
+-/
+
+/-- Alternate proof of Part 2 using p = 5 family.
+    This demonstrates the robustness of the approach. -/
+theorem part2_via_five : question_part2 := by
+  unfold question_part2
+  apply Set.infinite_of_injective_forall_mem (f := fun k => 4 * 5 ^ (k + 1))
+  · intro k₁ k₂ h
+    have h1 : (5 : ℕ) ^ (k₁ + 1) = 5 ^ (k₂ + 1) := by linarith
+    have h2 : k₁ + 1 = k₂ + 1 := Nat.pow_right_injective (by norm_num : 1 < 5) h1
+    omega
+  · intro k
+    simp only [Set.mem_setOf_eq]
+    have h5_dvd : (5 : ℕ) ∣ harmonicGCD (4 * 5 ^ (k + 1)) :=
+      five_dvd_gcd_four_pow_five (k + 1) (by omega)
+    have hgcd_pos : harmonicGCD (4 * 5 ^ (k + 1)) > 0 := by
+      unfold harmonicGCD
+      exact Nat.gcd_pos_of_pos_right _ (L_pos _)
+    exact Nat.lt_of_lt_of_le (by norm_num : 1 < 5) (Nat.le_of_dvd hgcd_pos h5_dvd)
+
+/-
+## Part XXIII: Extended Small Examples
+-/
+
+/-- H(7) = 363/140 -/
+theorem H_seven : H 7 = 363 / 140 := by
+  simp [H, Finset.sum_range_succ]; norm_num
+
+/-- H(8) = 761/280 -/
+theorem H_eight : H 8 = 761 / 280 := by
+  simp [H, Finset.sum_range_succ]; norm_num
+
+/-- L(7) = 420 -/
+theorem L_seven : L 7 = 420 := by native_decide
+
+/-- L(8) = 840 -/
+theorem L_eight : L 8 = 840 := by native_decide
+
+/-- L(9) = 2520 -/
+theorem L_nine : L 9 = 2520 := by native_decide
+
+/-- L(10) = 2520 -/
+theorem L_ten : L 10 = 2520 := by native_decide
+
+/-- H(9) = 7129/2520 -/
+theorem H_nine : H 9 = 7129 / 2520 := by
+  simp [H, Finset.sum_range_succ]; norm_num
+
+/-- H(10) = 7381/2520 -/
+theorem H_ten : H 10 = 7381 / 2520 := by
+  simp [H, Finset.sum_range_succ]; norm_num
+
+/-- Extended small examples: harmonicGCD for n = 7 through 10 -/
+theorem small_examples_extended :
+    harmonicGCD 7 = 3 ∧ harmonicGCD 8 = 3 ∧ harmonicGCD 9 = 1 ∧ harmonicGCD 10 = 1 := by
+  have ha7 : a 7 = 1089 := a_eq 7 1089 (by rw [H_seven, L_seven]; norm_num)
+  have ha8 : a 8 = 2283 := a_eq 8 2283 (by rw [H_eight, L_eight]; norm_num)
+  have ha9 : a 9 = 7129 := a_eq 9 7129 (by rw [H_nine, L_nine]; norm_num)
+  have ha10 : a 10 = 7381 := a_eq 10 7381 (by rw [H_ten, L_ten]; norm_num)
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · rw [harmonicGCD_eq 7 1089 420 ha7 L_seven]; native_decide
+  · rw [harmonicGCD_eq 8 2283 840 ha8 L_eight]; native_decide
+  · rw [harmonicGCD_eq 9 7129 2520 ha9 L_nine]; native_decide
+  · rw [harmonicGCD_eq 10 7381 2520 ha10 L_ten]; native_decide
+
+/-- n = 7 has gcd = 3 (leading digit of 7 base 3 is 2 = 3-1) -/
+theorem gcd_three_at_seven : harmonicGCD 7 = 3 := small_examples_extended.1
+
+/-- n = 8 has gcd = 3 (confirming Steinerberger: leading digit 8 base 3 = 2 = 3-1) -/
+theorem gcd_three_at_eight : harmonicGCD 8 = 3 := small_examples_extended.2.1
+
+/-- n = 9 has gcd = 1 (the smallest n > 5 with gcd = 1) -/
+theorem gcd_one_at_nine : harmonicGCD 9 = 1 := small_examples_extended.2.2.1
+
+/-- n = 10 has gcd = 1 -/
+theorem gcd_one_at_ten : harmonicGCD 10 = 1 := small_examples_extended.2.2.2
+
+/-
+## Part XXIV: Concrete Evidence for Part 1
+
+The first few n with gcd(a_n, L_n) = 1 are: 1, 2, 3, 4, 5, 9, 10, ...
+Note n = 6, 7, 8 all have gcd = 3 (leading digit 2 in base 3).
+-/
+
+/-- There exist at least 7 values of n with gcd(a_n, L_n) = 1 -/
+theorem seven_gcd_one_values :
+    harmonicGCD 1 = 1 ∧ harmonicGCD 2 = 1 ∧ harmonicGCD 3 = 1 ∧
+    harmonicGCD 4 = 1 ∧ harmonicGCD 5 = 1 ∧ harmonicGCD 9 = 1 ∧ harmonicGCD 10 = 1 :=
+  ⟨small_examples.1, small_examples.2.1, small_examples.2.2.1,
+   small_examples.2.2.2.1, small_examples.2.2.2.2.1,
+   gcd_one_at_nine, gcd_one_at_ten⟩
 
 end Erdos291
