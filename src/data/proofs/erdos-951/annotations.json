@@ -5,124 +5,208 @@
     "type": "context",
     "range": { "startLine": 1, "endLine": 33 },
     "title": "Problem Overview: Beurling Prime Numbers",
-    "content": "Erdős Problem #951 asks whether Beurling prime sequences are always sparser than the actual primes. A Beurling sequence 1 < a₁ < a₂ < ... has the property that products ∏aᵢ^{kᵢ} are well-separated (differ by at least 1). The question asks: is #{aᵢ ≤ x} ≤ π(x) always? This asks whether primes are the 'densest' such sequence.",
-    "significance": "major"
+    "content": "Erdős Problem #951 asks whether Beurling prime sequences are always sparser than the actual primes. A Beurling sequence 1 < a₁ < a₂ < ... has the property that products ∏aᵢ^{kᵢ} are well-separated (differ by at least 1). The question asks: is #{aᵢ ≤ x} ≤ π(x) always? This asserts primes are 'extremal' for density among well-separated multiplicative generators. The problem arose from an audience question (possibly S. Shapiro) during an Erdős lecture at Queens College.",
+    "significance": "major",
+    "mathContext": {
+      "latex": "\\text{Given } 1 < a_1 < a_2 < \\cdots \\text{ with } |\\prod a_i^{k_i} - \\prod a_j^{\\ell_j}| \\geq 1 \\text{ for distinct tuples, is } \\#\\{a_i \\leq x\\} \\leq \\pi(x)?",
+      "relatedConcepts": ["Beurling generalized primes", "prime counting function", "multiplicative number theory", "extremal density"],
+      "prerequisites": ["prime number theorem", "fundamental theorem of arithmetic", "asymptotic density"]
+    }
   },
   {
     "id": "erdos-951-well-separated",
     "proofId": "erdos-951",
     "type": "definition",
-    "range": { "startLine": 50, "endLine": 61 },
+    "range": { "startLine": 43, "endLine": 48 },
     "title": "Well-Separated Products Property",
-    "content": "The key condition defining Beurling primes: for any two distinct products ∏aᵢ^{kᵢ} and ∏aⱼ^{ℓⱼ}, their absolute difference is at least 1. This uses Finsupp (finitely supported functions) to represent exponent tuples, where k : ℕ →₀ ℕ means k(i) is the exponent of aᵢ, with only finitely many non-zero values.",
-    "significance": "major"
+    "content": "The key condition defining Beurling primes: for any two distinct finitely supported exponent tuples k, ℓ : ℕ →₀ ℕ, the products |∏aᵢ^{k(i)} - ∏aⱼ^{ℓ(j)}| ≥ 1. Uses Finsupp for exponent tuples — k(i) is the exponent of aᵢ, with only finitely many nonzero. For ordinary primes, this is the Fundamental Theorem of Arithmetic: distinct prime factorizations yield distinct integers, which differ by ≥ 1.",
+    "significance": "major",
+    "mathContext": {
+      "latex": "\\text{WellSeparatedProducts}(a) :\\Leftrightarrow \\forall k \\neq \\ell \\in \\mathbb{N}_0^{(\\mathbb{N})},\\; \\left|\\prod_{i \\in \\text{supp}(k)} a_i^{k(i)} - \\prod_{j \\in \\text{supp}(\\ell)} a_j^{\\ell(j)}\\right| \\geq 1",
+      "relatedConcepts": ["Finsupp", "unique factorization", "well-spacing condition", "integer spacing"],
+      "prerequisites": ["Finsupp.Basic", "Finset.prod", "abs_sub"]
+    }
   },
   {
     "id": "erdos-951-beurling-structure",
     "proofId": "erdos-951",
     "type": "definition",
-    "range": { "startLine": 62, "endLine": 74 },
+    "range": { "startLine": 49, "endLine": 54 },
     "title": "BeurlingPrimes Structure",
-    "content": "A Beurling prime sequence packages three properties: (1) strictly increasing sequence a : ℕ → ℝ, (2) all terms are > 1 (like primes), and (3) products are well-separated. This structure encapsulates what it means to be a 'generalized prime' sequence in Beurling's sense.",
-    "significance": "major"
+    "content": "A Lean structure packaging three properties: (1) `strictly_increasing`: a(n) < a(m) for n < m, (2) `all_gt_one`: a(n) > 1 for all n (like primes), and (3) `well_separated`: WellSeparatedProducts a. This captures Beurling's 1937 definition of generalized prime systems. The strictness ensures injectivity; the lower bound 1 ensures products grow; the separation condition is the key constraint.",
+    "significance": "major",
+    "mathContext": {
+      "latex": "\\text{BeurlingPrimes} := \\{a : \\mathbb{N} \\to \\mathbb{R} \\mid a \\text{ strictly increasing}, \\; a_n > 1\\;\\forall n, \\; \\text{WellSep}(a)\\}",
+      "relatedConcepts": ["generalized prime system", "multiplicative basis", "axiomatic primes"],
+      "prerequisites": ["StrictMono", "WellSeparatedProducts"]
+    }
   },
   {
     "id": "erdos-951-beurling-pi",
     "proofId": "erdos-951",
     "type": "definition",
-    "range": { "startLine": 81, "endLine": 87 },
+    "range": { "startLine": 56, "endLine": 60 },
     "title": "Beurling Prime Counting Function",
-    "content": "π_a(x) = #{n : a_n ≤ x} counts how many Beurling primes are at most x. This is the analogue of the prime counting function π(x) for an arbitrary Beurling sequence. The conjecture compares this to the standard prime counting function.",
-    "significance": "supporting"
+    "content": "π_a(x) = Set.ncard {n : ℕ | a(n) ≤ x} counts how many Beurling primes are ≤ x. Uses Set.ncard since the set is finite (proven in beurlingPi_finite). For the actual primes, this equals π(x). For the powers-of-2 sequence, this is ⌊log₂ x⌋, which is much smaller than π(x) ≈ x/ln x.",
+    "significance": "supporting",
+    "mathContext": {
+      "latex": "\\pi_a(x) = \\#\\{n \\in \\mathbb{N} : a_n \\leq x\\}",
+      "relatedConcepts": ["prime counting function", "Set.ncard", "counting function"],
+      "prerequisites": ["Set.ncard", "Set.Finite"]
+    }
   },
   {
     "id": "erdos-951-prime-pi",
     "proofId": "erdos-951",
     "type": "definition",
-    "range": { "startLine": 88, "endLine": 101 },
+    "range": { "startLine": 62, "endLine": 63 },
     "title": "Standard Prime Counting",
-    "content": "primePi(x) = π(x) is the standard prime counting function from number theory. We use Mathlib's Nat.primeCounting and state concrete values like π(2) = 1, π(10) = 4, π(100) = 25 as axioms to ground the definition.",
-    "significance": "supporting"
+    "content": "primePi(x) = Nat.primeCounting(⌊x⌋) wraps Mathlib's prime counting function. Nat.primeCounting n counts primes ≤ n. By the prime number theorem, π(x) ~ x/ln(x). The Erdős conjecture asks whether π_a(x) ≤ π(x) universally, i.e., no generalized prime system can outpace the actual primes.",
+    "significance": "supporting",
+    "mathContext": {
+      "latex": "\\pi(x) = \\#\\{p \\leq x : p \\text{ prime}\\} = \\text{Nat.primeCounting}(\\lfloor x \\rfloor)",
+      "relatedConcepts": ["prime number theorem", "Chebyshev bounds", "Nat.primeCounting"],
+      "prerequisites": ["Nat.primeCounting", "Nat.floor"]
+    }
   },
   {
-    "id": "erdos-951-conjecture",
+    "id": "erdos-951-finite",
     "proofId": "erdos-951",
     "type": "theorem",
-    "range": { "startLine": 109, "endLine": 118 },
-    "title": "The Main Conjecture",
-    "content": "Erdős #951: For ANY Beurling prime sequence (aᵢ), we have π_a(x) ≤ π(x) for all x > 0. This asserts that the ordinary primes are the densest sequence satisfying the well-separation property. No proof or counterexample is known - this is a major open problem.",
-    "significance": "major"
+    "range": { "startLine": 65, "endLine": 71 },
+    "title": "Finiteness of Counting Set",
+    "content": "The set {n | a(n) ≤ x} is finite for any Beurling sequence and any x. Proof idea: since a is strictly increasing with a(n) > 1, we have a(n) ≥ 1 + n·ε for some ε > 0 (or more precisely, a(n) > a(0) > 1 and strict monotonicity gives a(n) → ∞). So only finitely many terms can be ≤ x. Currently a sorry — provable via Monotone.tendsto_atTop.",
+    "significance": "supporting",
+    "mathContext": {
+      "latex": "a \\text{ strictly increasing with } a_n > 1 \\;\\Rightarrow\\; \\{n : a_n \\leq x\\} \\text{ is finite}",
+      "relatedConcepts": ["Set.Finite", "strictly increasing divergence", "finiteness of sublevel sets"],
+      "prerequisites": ["StrictMono", "Set.Finite", "Filter.Tendsto"]
+    }
   },
   {
     "id": "erdos-951-primes-beurling",
     "proofId": "erdos-951",
     "type": "theorem",
-    "range": { "startLine": 125, "endLine": 155 },
+    "range": { "startLine": 72, "endLine": 93 },
     "title": "Primes Form a Beurling Sequence",
-    "content": "The ordinary prime numbers 2, 3, 5, 7, 11, ... form a Beurling prime sequence. Why? By the Fundamental Theorem of Arithmetic, distinct products of primes give distinct positive integers, which differ by at least 1. So primes satisfy the well-separation condition, and for them π_a(x) = π(x) exactly.",
-    "significance": "major"
+    "content": "The ordinary prime numbers 2, 3, 5, 7, 11, ... form a Beurling prime sequence. Defined via primeSeq(n) = Nat.nth Nat.Prime n (the nth prime). Three axioms supply: (1) strict increase (follows from prime ordering), (2) all > 1 (all primes ≥ 2), (3) well-separation (by FTA: distinct prime factorizations give distinct positive integers). The actualPrimes structure assembles these into a BeurlingPrimes value.",
+    "significance": "major",
+    "mathContext": {
+      "latex": "p_n = n\\text{th prime} \\;\\Rightarrow\\; (p_n) \\text{ is a Beurling prime sequence with } \\pi_a = \\pi",
+      "relatedConcepts": ["Nat.nth", "Nat.Prime", "fundamental theorem of arithmetic", "unique factorization"],
+      "prerequisites": ["Nat.nth", "Nat.Prime", "Nat.Prime.pos"]
+    }
   },
   {
     "id": "erdos-951-powers-of-two",
     "proofId": "erdos-951",
     "type": "example",
-    "range": { "startLine": 162, "endLine": 196 },
+    "range": { "startLine": 95, "endLine": 119 },
     "title": "Powers of 2 Example",
-    "content": "The sequence 2, 4, 8, 16, ... (powers of 2) forms a Beurling prime sequence. Products are distinct powers of 2, hence well-separated. But this sequence is much sparser than primes: only log₂(x) terms up to x, versus π(x) ≈ x/ln(x). This shows not all Beurling sequences are as dense as primes.",
-    "significance": "supporting"
-  },
-  {
-    "id": "erdos-951-beurling-integers",
-    "proofId": "erdos-951",
-    "type": "definition",
-    "range": { "startLine": 209, "endLine": 224 },
-    "title": "Beurling Integers",
-    "content": "Products of Beurling primes (with repetition allowed) are called Beurling integers. For ordinary primes, these are just the positive integers. IsBeurlingInteger checks if x can be written as ∏aᵢ^{kᵢ}. The counting function N_a(x) counts Beurling integers up to x.",
-    "significance": "supporting"
-  },
-  {
-    "id": "erdos-951-beurlings-conjecture",
-    "proofId": "erdos-951",
-    "type": "theorem",
-    "range": { "startLine": 225, "endLine": 236 },
-    "title": "Beurling's Conjecture",
-    "content": "A related deep result: if the Beurling integer counting function satisfies N_a(x) = x + o(log x) (i.e., grows like the natural numbers with small error), then the sequence must actually BE the primes. This shows the primes are uniquely determined by having 'integer-like' products.",
-    "significance": "major"
+    "content": "The sequence 2, 4, 8, 16, ... (defined as powersOfTwo(n) = 2^{n+1}) forms a Beurling prime sequence. Two theorems are fully proved: powersOfTwo_increasing (via pow_lt_pow_right) and powersOfTwo_gt_one (via pow_le_pow_right). Well-separation is axiomatized — it holds because products of distinct powers of 2 give distinct integers. This sequence is much sparser: π_a(x) = ⌊log₂ x⌋ versus π(x) ≈ x/ln x, supporting the conjecture.",
+    "significance": "supporting",
+    "mathContext": {
+      "latex": "a_n = 2^{n+1} \\;\\Rightarrow\\; \\pi_a(x) = \\lfloor \\log_2 x \\rfloor \\ll \\pi(x) \\approx \\frac{x}{\\ln x}",
+      "relatedConcepts": ["geometric sequence", "binary representation", "logarithmic growth"],
+      "prerequisites": ["pow_lt_pow_right", "pow_le_pow_right"]
+    }
   },
   {
     "id": "erdos-951-separation-distinct",
     "proofId": "erdos-951",
     "type": "theorem",
-    "range": { "startLine": 251, "endLine": 259 },
+    "range": { "startLine": 121, "endLine": 129 },
     "title": "Separation Implies Distinctness",
-    "content": "A key lemma: the well-separation condition |P₁ - P₂| ≥ 1 implies P₁ ≠ P₂. The proof is by contradiction: if P₁ = P₂ then |P₁ - P₂| = 0 < 1, violating the separation condition. This shows well-separated products are automatically distinct.",
-    "significance": "supporting"
+    "content": "A fully proved lemma: if products are well-separated (|P₁ - P₂| ≥ 1), then they are distinct (P₁ ≠ P₂). Proof by contradiction: if P₁ = P₂ then |P₁ - P₂| = 0 < 1, contradicting the separation bound. Uses `sub_self` and `abs_zero` simp lemmas plus `linarith`. This is a basic but necessary consequence — well-separation is strictly stronger than mere distinctness.",
+    "significance": "supporting",
+    "mathContext": {
+      "latex": "|P_1 - P_2| \\geq 1 \\;\\Rightarrow\\; P_1 \\neq P_2",
+      "relatedConcepts": ["contrapositive", "separation implies injectivity", "metric space separation"],
+      "prerequisites": ["abs_sub", "sub_self", "linarith"]
+    }
+  },
+  {
+    "id": "erdos-951-beurling-integers",
+    "proofId": "erdos-951",
+    "type": "definition",
+    "range": { "startLine": 131, "endLine": 137 },
+    "title": "Beurling Integers",
+    "content": "IsBeurlingInteger a x holds when x = ∏aᵢ^{k(i)} for some finitely supported exponent tuple k. These are the 'generalized integers' — for ordinary primes, they are exactly the positive integers by the FTA. beurlingN a x counts how many Beurling integers lie in [1, x]. Beurling's theory studies N_a(x) and its relation to π_a(x) via generalized PNT analogs.",
+    "significance": "supporting",
+    "mathContext": {
+      "latex": "\\mathcal{N}_a = \\{\\prod a_i^{k(i)} : k \\in \\mathbb{N}_0^{(\\mathbb{N})}\\}, \\quad N_a(x) = \\#(\\mathcal{N}_a \\cap [1,x])",
+      "relatedConcepts": ["multiplicative monoid", "generalized integers", "counting function"],
+      "prerequisites": ["Finsupp", "Finset.prod", "Set.ncard"]
+    }
+  },
+  {
+    "id": "erdos-951-beurlings-conjecture",
+    "proofId": "erdos-951",
+    "type": "theorem",
+    "range": { "startLine": 139, "endLine": 143 },
+    "title": "Beurling's Conjecture",
+    "content": "A deep rigidity result (axiomatized): if N_a(x) = x + o(log x) — meaning the Beurling integers approximate the natural numbers with error smaller than log x — then a must be the actual primes. This characterizes primes uniquely by their counting properties. Diamond (1977) showed Beurling's original theorem (PNT for generalized primes) is sharp, but this conjecture goes further in asserting uniqueness.",
+    "significance": "major",
+    "mathContext": {
+      "latex": "N_a(x) = x + o(\\log x) \\;\\Rightarrow\\; a_n = p_n \\;\\forall n",
+      "relatedConcepts": ["rigidity theorem", "Diamond's counterexample", "generalized PNT", "uniqueness of primes"],
+      "prerequisites": ["Real.log", "asymptotic notation", "prime number theorem"]
+    }
+  },
+  {
+    "id": "erdos-951-conjecture",
+    "proofId": "erdos-951",
+    "type": "theorem",
+    "range": { "startLine": 145, "endLine": 150 },
+    "title": "The Main Conjecture",
+    "content": "Erdős #951 (OPEN): For ANY Beurling prime sequence (aᵢ), π_a(x) ≤ π(x) for all x > 0. Defined as a Prop (not axiomatized — genuinely open). If true, the ordinary primes are extremally dense among well-separated multiplicative generators. The powersOfTwo example and actualPrimes equality are the only verified instances.",
+    "significance": "major",
+    "mathContext": {
+      "latex": "\\forall \\text{Beurling } (a_n),\\; \\forall x > 0: \\; \\pi_a(x) \\leq \\pi(x)",
+      "relatedConcepts": ["extremal problem", "prime density", "open conjecture"],
+      "prerequisites": ["beurlingPi", "primePi", "BeurlingPrimes"]
+    }
   },
   {
     "id": "erdos-951-summary",
     "proofId": "erdos-951",
     "type": "context",
-    "range": { "startLine": 264, "endLine": 288 },
+    "range": { "startLine": 152, "endLine": 162 },
     "title": "Summary: Open Problem",
-    "content": "Erdős #951 remains OPEN. The conjecture π_a(x) ≤ π(x) is unproven. Known: (1) Powers of 2 are much sparser than primes (satisfy the bound easily). (2) Actual primes achieve equality. (3) Beurling's conjecture characterizes primes by their integer-counting properties. The question is whether primes are truly extremal for density among well-separated sequences.",
-    "significance": "major"
+    "content": "The summary theorem erdos_951_summary combines two known facts: (1) powersOfTwo_sparser: π_{2^n}(x) ≤ π(x) for x ≥ 4, and (2) actualPrimes_counting: π_a = π for the primes themselves. Both support the conjecture but neither settles it. The formalization has 1 sorry (beurlingPi_finite) and several axioms (primeSeq properties, well-separation of powers of 2, Beurling's conjecture). The Lean code faithfully captures the open status.",
+    "significance": "major",
+    "mathContext": {
+      "latex": "(\\pi_{2^n}(x) \\leq \\pi(x) \\text{ for } x \\geq 4) \\;\\wedge\\; (\\pi_{\\text{primes}}(x) = \\pi(x))",
+      "relatedConcepts": ["conjunction of partial results", "supporting evidence", "open problem formalization"],
+      "prerequisites": ["powersOfTwo_sparser", "actualPrimes_counting"]
+    }
   },
   {
     "id": "erdos-951-finsupp",
     "proofId": "erdos-951",
     "type": "technique",
-    "range": { "startLine": 38, "endLine": 39 },
+    "range": { "startLine": 37, "endLine": 39 },
     "title": "Finsupp for Exponent Tuples",
-    "content": "We use Finsupp.Basic for the type ℕ →₀ ℕ - functions from ℕ to ℕ with finite support. This elegantly represents exponent tuples (k₁, k₂, ...) where only finitely many kᵢ are non-zero. The product ∏aᵢ^{kᵢ} is then computed over the finite support set.",
-    "significance": "supporting"
+    "content": "The type ℕ →₀ ℕ (functions with finite support) elegantly represents exponent tuples (k₁, k₂, ...) where only finitely many kᵢ are nonzero. The product ∏_{i ∈ supp(k)} aᵢ^{k(i)} is then a finite product over the support set. This is a clean alternative to multisets or vectors, leveraging Mathlib's Finsupp API for equality testing and product computation.",
+    "significance": "supporting",
+    "mathContext": {
+      "latex": "k : \\mathbb{N} \\to_0 \\mathbb{N}, \\quad \\prod_{i \\in \\text{supp}(k)} a_i^{k(i)}",
+      "relatedConcepts": ["Finsupp", "finitely supported functions", "formal power series", "exponent vectors"],
+      "prerequisites": ["Finsupp.Basic", "Finsupp.support", "Finset.prod"]
+    }
   },
   {
     "id": "erdos-951-historical",
     "proofId": "erdos-951",
     "type": "context",
-    "range": { "startLine": 19, "endLine": 24 },
+    "range": { "startLine": 19, "endLine": 32 },
     "title": "Historical Context",
-    "content": "This problem arose during an Erdős lecture at Queens College, possibly posed by S. Shapiro. Beurling introduced generalized primes in 1937 to study how the prime number theorem depends on the specific properties of primes. Diamond (1977) showed Beurling's theorem about the prime number theorem is sharp.",
-    "significance": "supporting"
+    "content": "Beurling introduced generalized primes in his 1937 paper 'Analyse de la loi asymptotique de la distribution des nombres premiers généralisés', showing the prime number theorem extends to sequences whose integer counting function N(x) ~ x. Diamond (1977) constructed a Beurling system showing this condition is sharp. Erdős encountered the density question at Queens College; it remains one of the few open problems about Beurling primes that involves the actual prime sequence as a comparator.",
+    "significance": "supporting",
+    "mathContext": {
+      "latex": "\\text{Beurling (1937)}: N_a(x) \\sim x \\;\\Rightarrow\\; \\pi_a(x) \\sim \\frac{x}{\\ln x}",
+      "relatedConcepts": ["Beurling 1937", "Diamond 1977", "generalized PNT", "Queens College lecture"],
+      "prerequisites": ["prime number theorem", "asymptotic equivalence"]
+    }
   }
 ]
