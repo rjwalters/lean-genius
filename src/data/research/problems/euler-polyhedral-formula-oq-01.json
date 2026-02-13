@@ -1,62 +1,78 @@
 {
   "slug": "euler-polyhedral-formula-oq-01",
   "title": "Planar Graph Embedding Formalization for Euler Formula",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "V - E + F = 2 for connected planar graphs, with spanning tree construction, edge bounds, degeneracy, non-planarity certificates, genus theory, and connectivity extensions",
+    "plain": "Comprehensive formalization of Euler's polyhedral formula and its consequences for graph theory: spanning tree construction, edge bounds (E <= 3V-6), K5/K3,3 non-planarity, 5-degeneracy, genus bounds, Heawood number, and disconnected graph extensions.",
+    "whyMatters": [
+      "Euler's formula is foundational to graph theory and topology",
+      "Edge bounds derive non-planarity of K5 and K3,3",
+      "5-degeneracy gives 6-colorability of planar graphs",
+      "Genus theory extends to surfaces beyond the plane"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "V - E + F = 2 via spanning tree induction",
+      "E <= 3V - 6 for simple planar graphs",
+      "E <= 2V - 4 for bipartite planar graphs",
+      "2E <= 3V - 6 for girth >= 6 graphs",
+      "K5, K3,3, Petersen non-planarity",
+      "Every planar graph has vertex of degree <= 5",
+      "General face-edge double counting (d-2)E <= d(V-2)",
+      "Genus edge bounds and Heawood torus bound",
+      "Disconnected Euler formula V - E + F = 1 + c"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "All goals met - 0 sorries, 0 axioms"
   },
   "currentState": {
-    "phase": "DEEP_DIVE",
-    "since": "2026-02-11T22:00:00.000Z",
-    "iteration": 2,
-    "focus": "SimpleGraph bridge for Euler formula — planar embedding infrastructure.",
-    "blockers": ["Mathlib lacks formal planarity definition"],
-    "nextAction": "Extend to connected graph requirement, prove Six Color Theorem fully.",
+    "phase": "COMPLETED",
+    "since": "2026-02-13T18:00:00.000Z",
+    "iteration": 3,
+    "focus": "Eliminated final sorry in face_edge_double_count by reformulating without integer division",
+    "blockers": [],
+    "nextAction": "None - file is complete with 0 sorries, 0 axioms",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 3,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Built PlanarEmbedding structure on Mathlib SimpleGraph with face counting. Proved edge bounds (E≤3V-6, E≤2V-4 bipartite), K5/K3,3 non-planarity via SimpleGraph, minimum degree ≤5 using handshaking lemma. All theorems fully proven, 0 sorries. Bridges PolyhedralGraph to SimpleGraph.",
+    "progressSummary": "COMPLETED: 22+ theorems about Euler's formula and planar graphs, all sorry-free. Covers spanning tree Euler formula, Platonic solid examples, degeneracy theory, edge-face counting, non-planarity certificates (K5, K3,3, Petersen), genus theory, Heawood bound, and disconnected graph extensions.",
     "builtItems": [
-      "PlanarEmbedding structure in EulerPolyhedralFormula.lean:~475",
-      "edge_bound_planar (PROVEN) - E ≤ 3V-6",
-      "bipartite_edge_bound_planar (PROVEN) - E ≤ 2V-4",
-      "k5_not_planar_sg (PROVEN) - K5 non-planarity via SimpleGraph",
-      "k33_not_planar_sg (PROVEN) - K3,3 non-planarity via SimpleGraph",
-      "exists_vertex_degree_le_five (PROVEN) - min degree ≤5 via handshaking",
-      "toPlanarWitness bridge from PolyhedralGraph"
+      "SpanningBuild inductive type with euler_spanning (PROVEN)",
+      "buildTree, addCycleEdges constructors with counting theorems (PROVEN)",
+      "Platonic solid examples: tetra, cube, octa (PROVEN)",
+      "planar_five_degenerate, degeneracy_from_edge_bound (PROVEN)",
+      "face_edge_double_count: (d-2)E <= d(V-2) general formula (PROVEN)",
+      "edge_bound_simple E <= 3V-6, edge_bound_bipartite E <= 2V-4 (PROVEN)",
+      "k5_not_planar, k33_not_planar, petersen_not_planar (PROVEN)",
+      "avg_degree_lt_six, exists_low_degree_vertex via Mathlib SimpleGraph (PROVEN)",
+      "genus_edge_bound, min_genus, k5_min_genus, k7_min_genus (PROVEN)",
+      "heawood_torus_bound, torus_seven_degenerate (PROVEN)",
+      "euler_disconnected, euler_bridge_edge, euler_cycle_edge (PROVEN)"
     ],
     "insights": [
+      "General face-edge double count formula best stated as (d-2)*E <= d*(V-2) avoiding integer division",
       "SimpleGraph.edgeFinset and degree require SimpleGraph.Finite import",
       "SimpleGraph.DegreeSum provides sum_degrees_eq_twice_card_edges (handshaking lemma)",
       "PlanarEmbedding as structure with face count + Euler axiom is cleanest approach",
-      "min degree ≤5 proof: by_contra + push_neg + handshaking + edge bound = elegant",
-      "Finset.sum_const needs mul_comm to match 6*V vs V*6"
+      "min degree <=5 proof: by_contra + push_neg + handshaking + edge bound = elegant",
+      "Finset.sum_const needs mul_comm to match 6*V vs V*6",
+      "subst + omega handles Nat.cast coercion issues that linarith cannot"
     ],
     "mathlibGaps": [
       "Formal planarity definition (no Kuratowski/Wagner theorem in Mathlib)",
       "Face enumeration for embedded graphs",
       "Genus theory for surfaces"
     ],
-    "nextSteps": [
-      "Add connectedness requirement to PlanarEmbedding",
-      "Prove Six Color Theorem via induction on min degree vertex",
-      "Define graph minor operations in SimpleGraph",
-      "Build Kuratowski/Wagner characterization infrastructure"
-    ]
+    "nextSteps": []
   },
   "approaches": [],
   "tags": [
@@ -65,18 +81,24 @@
     "topology",
     "graph-theory",
     "0-sorry",
-    "1-axiom"
+    "0-axiom"
   ],
   "relatedProofs": [
-    "EulerPolyhedralFormula.lean"
+    "EulerPolyhedralFormula.lean",
+    "EulerPolyhedralOQ01.lean"
   ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.DegreeSum",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected"
+    ]
   },
   "started": "2026-02-11T07:03:36.101Z",
-  "lastUpdate": "2026-02-11T07:03:36.101Z",
+  "lastUpdate": "2026-02-13T18:00:00.000Z",
   "significance": 7,
   "tractability": 5
 }
