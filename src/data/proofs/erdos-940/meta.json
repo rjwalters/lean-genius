@@ -20,108 +20,164 @@
     "sorries": 2,
     "erdosNumber": 940,
     "erdosUrl": "https://erdosproblems.com/940",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for the isPowerful definition: ∀ p, p.Prime → p ∣ n → p^r ∣ n",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Squarefree",
+        "description": "Imported for potential connections to squarefree/squarefull duality",
+        "module": "Mathlib.NumberTheory.Squarefree"
+      },
+      {
+        "theorem": "Multiset",
+        "description": "Unordered multisets for SumsOfPowerful: k-element multisets of r-powerful summands",
+        "module": "Mathlib.Data.Multiset.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Topological filter limits for the natural density definition: |A∩[0,N]|/N → d",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Custom `isPowerful r n` predicate with fully proved: `one_isPowerful` (vacuously, omega+interval_cases), `zero_not_isPowerful` (contradiction), `power_isPowerful` (positivity+Prime.dvd_of_dvd_pow+pow_dvd_pow_of_dvd)",
+      "`SumsOfPowerful r k` via Multiset with `DiagonalSums r = SumsOfPowerful r r`; proved `zero_mem_SumsOfPowerful` (empty sum) and `one_mem_SumsOfPowerful` (singleton {1})",
+      "Natural density infrastructure: `countingFunction` via Finset.filter, `HasDensity`/`HasDensityZero` via Filter.Tendsto to nhds",
+      "OPEN conjecture formalization: `erdos_940_conjecture` (∀ r ≥ 3, density 0) and `erdos_940_infinitely_many` (complement infinite)",
+      "Axiomatized solved cases: `baker_brudern_theorem` (SumsOfPowerful 2 2 has density 0), `heath_brown_theorem` (∀ᶠ n, n ∈ SumsOfPowerful 2 3)",
+      "Open variants: `three_cubes_conjecture`, `cubefull_conjecture`, `universal_representation_conjecture`, `squarefull_diagonal_conjecture`",
+      "Proved `cubes_subset_cubefull` (via power_isPowerful) and `status_summary` conjunction; examples 4, 8, 72 by interval_cases",
+      "Related problem stubs: problem_941_related, problem_1081_related, problem_1107_related"
+    ],
+    "crossReferences": [
+      {
+        "id": "erdos-941",
+        "relationship": "Direct companion: #941 formalizes Heath-Brown's 1988 theorem that all sufficiently large integers are sums of ≤3 squarefull numbers. This is the solved representation theorem for r=2, k=3 that #940 builds upon. #940 asks the density question (k=r), while #941 is the universal representation result (k=r+1)."
+      },
+      {
+        "id": "erdos-1107",
+        "relationship": "Off-diagonal generalization: #1107 asks whether sums of r+1 (rather than r) many r-powerful numbers have density 0. This is the 'one extra summand' variant—Heath-Brown's r=2, k=3 result settles one case. Open for r≥3."
+      },
+      {
+        "id": "erdos-1081",
+        "relationship": "Refined counting for the squarefull case: #1081 asks for the precise asymptotic of the counting function A₂(x) = |{n ≤ x : n = a+b, a,b squarefull}|. Odoni (1981) disproved Erdős's conjecture. Shares the Baker-Brüdern density-0 framework."
+      },
+      {
+        "id": "erdos-935",
+        "relationship": "Studies the powerful part of consecutive products n(n+1)···(n+ℓ). Both problems involve r-powerful numbers but from different angles: #940 asks additive questions (sums of powerful numbers), #935 asks multiplicative questions (powerful components of products)."
+      },
+      {
+        "id": "erdos-943",
+        "relationship": "Studies the representation function r(n) counting ways to write n as a sum of two powerful numbers. Asks whether r(n) = n^{o(1)}. This refines the existence question from #940 to a counting question about the number of representations."
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős and Ivić, and recorded in the 1986 Oberwolfach problem book. It concerns a fundamental question about the additive structure of powerful numbers.\n\nA number n is r-powerful (or r-full) if every prime p dividing n satisfies p^r | n. For r = 2, these are called 'squarefull' numbers (4, 8, 9, 16, 25, ...). For r = 3, they are 'cubefull' numbers.\n\nErdős (1976) claimed the r = 2 case was 'easy', though the first rigorous proof came from Baker and Brüdern in 1994. Notably, Erdős initially claimed a simple counting argument showed infinitely many integers are not representable, but Schinzel discovered an error in this reasoning.\n\nHeath-Brown (1988) proved a complementary result: all sufficiently large integers ARE sums of at most three squarefull numbers. This creates an interesting contrast—the set of representable integers has density 0 (sparse) yet eventually contains all integers (with enough summands).",
+    "historicalContext": "Erdős Problem #940 concerns a fundamental question in additive number theory: how does the multiplicative structure of powerful numbers interact with additive operations?\n\nA number $n$ is $r$-powerful (or $r$-full) if every prime $p \\mid n$ satisfies $p^r \\mid n$. For $r = 2$, these are 'squarefull' numbers (4, 8, 9, 16, 25, 27, ...); their count up to $x$ is $\\sim (\\zeta(3/2)/\\zeta(3)) x^{1/2} \\approx 1.94 x^{1/2}$. For $r = 3$, 'cubefull' numbers are even sparser: $O(x^{1/3})$.\n\nThe problem was posed by Erdős and Ivić, recorded in the 1986 Oberwolfach problem book. Erdős initially claimed the $r = 2$ case was 'easy' via a simple counting argument, but Schinzel discovered an error in this reasoning. The first rigorous proof came from Baker and Brüdern in 1994, using the Hardy-Littlewood circle method to show that sums of two squarefull numbers have density 0.\n\nHeath-Brown's 1988 paper created a striking contrast: with 3 squarefull summands (instead of 2), ALL sufficiently large integers are representable. This 'phase transition' from density 0 (two summands) to density 1 (three summands) is a key phenomenon. The ternary case uses quadratic form theory and the local-global principle.\n\nFor $r \\geq 3$, the conjecture is completely open. Even the special case of sums of 3 cubes (a subset of cubefull sums) is unknown. The formalization achieves only 2 sorries: `conjecture_implies_infinite` (density 0 → infinite complement) and `heath_brown_complement_finite` (eventually universal → finite complement), both requiring filter-theoretic arguments.",
     "problemStatement": "Let $r \\geq 3$. A number $n$ is **$r$-powerful** if for every prime $p \\mid n$, we have $p^r \\mid n$.\n\n**Question 1**: Are there infinitely many integers that cannot be expressed as the sum of at most $r$ many $r$-powerful numbers?\n\n**Question 2**: Does the set of integers expressible as such sums have natural density 0?\n\n**Status**: OPEN for $r \\geq 3$\n\n**Partial Results**:\n- $r = 2$: Baker-Brüdern (1994) proved density is 0\n- Heath-Brown (1988): All large integers are sums of $\\leq 3$ squarefull numbers",
-    "proofStrategy": "We formalize the concept of r-powerful numbers and the set of their sums. The main conjecture (density 0 for r ≥ 3) is stated as a definition since it remains open.\n\nThe solved cases are axiomatized:\n- Baker-Brüdern's theorem: SumsOfPowerful 2 2 has density 0\n- Heath-Brown's theorem: Eventually all integers are in SumsOfPowerful 2 3\n\nWe also formalize several open variants, including the three cubes problem and the universal representation conjecture.",
+    "proofStrategy": "The formalization is organized into eleven parts:\n\n1. **r-Powerful Numbers** (lines 39–76): `isPowerful r n := n ≠ 0 ∧ ∀ p, p.Prime → p ∣ n → p^r ∣ n`. Proved: `one_isPowerful` (omega+interval_cases), `zero_not_isPowerful` (contradiction), `power_isPowerful` (positivity+Prime.dvd_of_dvd_pow+pow_dvd_pow_of_dvd)\n2. **The Set of Sums** (lines 78–104): `SumsOfPowerful r k` via Multiset, `DiagonalSums r = SumsOfPowerful r r`. Proved: `zero_mem_SumsOfPowerful`, `one_mem_SumsOfPowerful`\n3. **Natural Density** (lines 106–117): `countingFunction` via Finset.filter, `HasDensity A d` via Tendsto to nhds, `HasDensityZero := HasDensity A 0`\n4. **Main Conjecture** (lines 119–142): `erdos_940_conjecture` (∀ r ≥ 3, HasDensityZero (DiagonalSums r)), `erdos_940_infinitely_many`. `conjecture_implies_infinite` (sorry)\n5. **Squarefull Case** (lines 144–159): `baker_brudern_theorem` axiom, `squarefull_case := baker_brudern_theorem`\n6. **Heath-Brown** (lines 161–180): `heath_brown_theorem` axiom (∀ᶠ n in atTop, n ∈ SumsOfPowerful 2 3), `heath_brown_complement_finite` (sorry)\n7. **Cubefull Case** (lines 182–203): `three_cubes_conjecture` (OPEN), `cubes_subset_cubefull` (proved), `cubefull_conjecture` (OPEN)\n8. **Universal Representation** (lines 205–223): `universal_representation_conjecture` (∀ r ≥ 2, ∀ᶠ n, n ∈ DiagonalSums r), `squarefull_diagonal_conjecture` (OPEN)\n9. **Relationship** (lines 225–247): `status_summary` proved as conjunction of Baker-Brüdern + Heath-Brown\n10. **Examples** (lines 249–280): 4 squarefull, 8 cubefull, 72 squarefull by interval_cases\n11. **Related Problems** (lines 282–294): Stubs for #941, #1081, #1107",
     "keyInsights": [
-      "**r-powerful numbers**: n where every prime p | n satisfies p^r | n. Squarefull = 2-powerful, cubefull = 3-powerful",
-      "**Diagonal case**: The main question concerns ≤ r summands of r-powerful numbers (matching indices)",
-      "**Density vs representation**: Density 0 ≠ infinitely many missing. Heath-Brown shows density 0 but eventual coverage with 3 summands",
-      "**Schinzel's correction**: Erdős's original 'counting argument' for infinitely many non-representable integers had an error",
-      "**Open even for cubes**: For r = 3, we don't even know if sums of ≤ 3 cubes have density 0",
-      "**Related problems**: #941 (Heath-Brown), #1081 (refined r=2), #1107 (r+1 summands)"
+      "**Phase transition at k=3 for r=2**: With 2 squarefull summands, the representable set has density 0 (Baker-Brüdern). With 3, ALL large integers are representable (Heath-Brown). The critical threshold lies between k=2 and k=3, showing a sharp transition from sparse to universal.",
+      "**Diagonal case is the hard case**: The 'diagonal' DiagonalSums(r) = SumsOfPowerful(r, r) uses r summands for r-powerful numbers. Off-diagonal cases (more summands) are easier—Heath-Brown's r=2, k=3 is off-diagonal. The diagonal conjecture (density 0) is open for all r ≥ 3.",
+      "**Counting heuristic is delicate**: There are ~c_r·x^{1/r} r-powerful numbers ≤ x. Naively, sums of r of them give ~x^{r·(1/r)} = x candidates, suggesting density could be positive. The conjecture says this naive count overcounts massively. Schinzel found Erdős's original counting argument was flawed, showing this subtlety.",
+      "**Perfect powers vs. general r-powerful**: If restricted to perfect r-th powers, the problem becomes a Waring-type question. The extra r-powerful numbers (like 72 = 2³·3² for r=2) make the problem harder because the sumset is potentially larger.",
+      "**2-sorry architecture**: Fully proved: isPowerful properties, SumsOfPowerful membership, cubes_subset_cubefull, status_summary, concrete examples. Sorry gaps: conjecture_implies_infinite (density 0 → infinite complement, needs filter theory) and heath_brown_complement_finite (eventually universal → finite complement).",
+      "**Open even for cubes**: The special case three_cubes_conjecture—density 0 for sums of ≤3 cubes—is itself open. Since cubes ⊂ cubefull, this is strictly weaker than the r=3 case. If we can't even handle cubes, the full cubefull problem seems very hard."
     ]
   },
   "sections": [
     {
       "id": "powerful-numbers",
       "title": "r-Powerful Numbers",
-      "summary": "Definition of r-powerful (r-full) numbers and basic properties",
+      "summary": "Defines `isPowerful r n := n ≠ 0 ∧ ∀ p, p.Prime → p ∣ n → p^r ∣ n`. Three proved properties: `one_isPowerful` (vacuously, omega+interval_cases), `zero_not_isPowerful` (contradiction on n≠0), `power_isPowerful` (positivity+Prime.dvd_of_dvd_pow+Nat.pow_dvd_pow_of_dvd: n^r is r-powerful for n≥1).",
       "startLine": 39,
       "endLine": 76
     },
     {
       "id": "sums-set",
       "title": "The Set of Sums",
-      "summary": "Definition of SumsOfPowerful and DiagonalSums sets",
+      "summary": "Defines `SumsOfPowerful r k` via Multiset: n ∈ S iff ∃ multiset with card ≤ k, all elements isPowerful r, sum = n. `DiagonalSums r = SumsOfPowerful r r`. Proved: `zero_mem_SumsOfPowerful` (empty multiset) and `one_mem_SumsOfPowerful` (singleton {1}).",
       "startLine": 78,
       "endLine": 104
     },
     {
       "id": "density",
       "title": "Natural Density",
-      "summary": "Counting function and density definitions",
+      "summary": "Defines `countingFunction A N` via `Finset.range(N+1).filter(·∈A).card`. `HasDensity A d := Tendsto (λ N, countingFunction A N / N) atTop (nhds d)`. `HasDensityZero := HasDensity A 0`. Noncomputable due to decidability requirements.",
       "startLine": 106,
       "endLine": 117
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
-      "summary": "Erdős's density-0 conjecture for r ≥ 3",
+      "summary": "States `erdos_940_conjecture := ∀ r ≥ 3, HasDensityZero (DiagonalSums r)` and alternative `erdos_940_infinitely_many := ∀ r ≥ 3, (DiagonalSums r)ᶜ.Infinite`. Theorem `conjecture_implies_infinite` (sorry: density 0 → infinite complement, needs filter argument).",
       "startLine": 119,
       "endLine": 142
     },
     {
       "id": "squarefull",
       "title": "The Squarefull Case (r = 2)",
-      "summary": "Baker-Brüdern theorem: squarefull pairs have density 0",
+      "summary": "Axiomatizes `baker_brudern_theorem : HasDensityZero (SumsOfPowerful 2 2)` (Baker-Brüdern 1994, circle method). One-line corollary: `squarefull_case := baker_brudern_theorem`. Notes Erdős's 1976 'easy' claim and Tao's potential elementary approach.",
       "startLine": 144,
       "endLine": 159
     },
     {
       "id": "heath-brown",
       "title": "Heath-Brown's Representation Theorem",
-      "summary": "All large integers are sums of ≤ 3 squarefull numbers",
+      "summary": "Axiomatizes `heath_brown_theorem : ∀ᶠ n in atTop, n ∈ SumsOfPowerful 2 3` (1988, ternary quadratic forms). States `heath_brown_complement_finite` (sorry: eventually universal → finite complement). Demonstrates density 0 → density 1 phase transition at k=3.",
       "startLine": 161,
       "endLine": 180
     },
     {
       "id": "cubefull",
       "title": "The Cubefull Case and Three Cubes",
-      "summary": "Open problems for r = 3 and sums of cubes",
+      "summary": "States `three_cubes_conjecture` (OPEN: density 0 for sums of ≤3 cubes). Proves `cubes_subset_cubefull` (via power_isPowerful: cubes ⊂ 3-powerful). Defines `cubefull_conjecture := HasDensityZero (DiagonalSums 3)` (OPEN, stronger than three_cubes).",
       "startLine": 182,
       "endLine": 203
     },
     {
       "id": "universal",
       "title": "The Large Integer Representation Question",
-      "summary": "Open problem: universal representation for diagonal sums",
+      "summary": "States `universal_representation_conjecture` (∀ r ≥ 2, ∀ᶠ n, n ∈ DiagonalSums r, OPEN) and `squarefull_diagonal_conjecture` (∀ᶠ n, n ∈ DiagonalSums 2, OPEN: diagonal r=2 is unsettled even though off-diagonal r=2,k=3 is proved by Heath-Brown).",
       "startLine": 205,
       "endLine": 223
     },
     {
       "id": "relationship",
       "title": "Relationship Between the Questions",
-      "summary": "Summary of known and open cases",
+      "summary": "Proves `status_summary := ⟨baker_brudern_theorem, heath_brown_theorem⟩` packaging the two known results. Docstring summarizes the landscape: density 0 for r=2,k=2 (proved); universal for r=2,k=3 (proved); all other cases open.",
       "startLine": 225,
       "endLine": 247
     },
     {
       "id": "examples",
       "title": "Examples and Computations",
-      "summary": "Concrete examples: 4, 8, 72 as powerful numbers",
+      "summary": "Three concrete examples by `interval_cases`+`simp_all`+`omega`: 4=2² is squarefull, 8=2³ is cubefull, 72=2³·3² is squarefull (but not cubefull). Demonstrates the isPowerful predicate on specific numbers.",
       "startLine": 249,
       "endLine": 280
     },
     {
       "id": "related",
       "title": "Related Problems",
-      "summary": "Connections to Problems #941, #1081, #1107",
+      "summary": "Three definitional stubs: `problem_941_related` (Heath-Brown's theorem = ∀ᶠ n, n ∈ SumsOfPowerful 2 3), `problem_1081_related` (= HasDensityZero (SumsOfPowerful 2 2)), `problem_1107_related r` (= HasDensityZero (SumsOfPowerful r (r+1))).",
       "startLine": 282,
       "endLine": 294
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #940 on sums of r-powerful numbers. The main conjecture (density 0 for r ≥ 3) remains OPEN. We formalize the definition of r-powerful numbers, the set of sums, and axiomatize the known results: Baker-Brüdern's density-0 theorem for squarefull pairs and Heath-Brown's representation theorem for squarefull triples.",
-    "implications": "This problem connects additive combinatorics with multiplicative number theory. The contrast between density results (sparse sets) and representation results (eventual coverage) illustrates the subtle relationship between these concepts. Understanding powerful numbers has applications to ABC conjecture and related problems.",
+    "summary": "Erdős Problem #940 asks whether sums of ≤r r-powerful numbers have density 0 for r≥3. The formalization captures the full problem landscape: the isPowerful predicate with proved properties, SumsOfPowerful/DiagonalSums via Multiset, natural density via Filter.Tendsto, the OPEN main conjecture, axiomatized solved cases (Baker-Brüdern density 0 for squarefull pairs, Heath-Brown universal representation for squarefull triples), and open variants (three cubes, cubefull, universal representation). Two sorries remain in filter-theoretic implications.",
+    "implications": "This problem illustrates a fundamental tension in additive number theory: sets defined by multiplicative conditions (r-powerful) exhibit complex additive behavior. The phase transition from density 0 (k=2) to density 1 (k=3) for squarefull numbers mirrors similar phenomena in Waring's problem. Understanding this transition for r≥3 would deepen our knowledge of how multiplicative structure constrains additive decompositions. The connection to the ABC conjecture (via powerful number estimates) suggests that progress may require new tools from Diophantine geometry.",
     "openQuestions": [
-      "Does the set of sums of ≤ 3 cubes have density 0?",
-      "For r ≥ 3, does DiagonalSums r have density 0?",
-      "Is every large integer a sum of ≤ r r-powerful numbers (diagonal case)?",
-      "What is the exact threshold N₀ beyond which Heath-Brown's theorem holds?"
+      "Does the set of sums of ≤3 cubes have density 0? (Simplest open case)",
+      "For r≥3, does DiagonalSums(r) have density 0? (Main conjecture)",
+      "Is every large integer a sum of ≤r r-powerful numbers for some fixed r? (Universal diagonal representation)",
+      "What is the exact threshold k₀(r) where SumsOfPowerful(r,k) transitions from density 0 to density 1?",
+      "Can the 2 sorries (conjecture_implies_infinite, heath_brown_complement_finite) be resolved via Mathlib's filter API?"
     ]
   }
 }
