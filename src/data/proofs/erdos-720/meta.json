@@ -16,7 +16,9 @@
       "size-ramsey",
       "paths",
       "cycles",
-      "solved"
+      "solved",
+      "probabilistic-method",
+      "extremal-combinatorics"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -25,124 +27,149 @@
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$100",
     "dateAdded": "2026-01-23",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "v4.15.0",
+    "relatedProofs": ["erdos-559", "erdos-719"],
+    "relatedProblems": [
+      {
+        "id": "erdos-559",
+        "relationship": "Generalization: size Ramsey numbers for bounded-degree graphs"
+      },
+      {
+        "id": "erdos-719",
+        "relationship": "Related graph-theory Erdős problem on hypergraph decomposition"
+      }
+    ],
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
-        "description": "Simple graph structure",
+        "description": "Simple graph structure for GraphOnN",
         "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
       },
       {
         "theorem": "Filter.Tendsto",
-        "description": "Limit behavior for asymptotic questions",
+        "description": "Limit behavior for asymptotic questions (ErdosQuestion720a/b/c)",
         "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Nat.find",
+        "description": "Well-founded minimum for defining sizeRamseyNumber",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Edge counting via filtered pair sets",
+        "module": "Mathlib.Data.Finset.Basic"
       }
     ],
     "originalContributions": [
-      "GraphOnN, numEdges: graph basics",
-      "PathGraph, CycleGraph: path and cycle definitions",
-      "EdgeColoring, IsMonochromatic: coloring framework",
-      "sizeRamseyNumber, sizeRamseyPath, sizeRamseyCycle: R̂(G) definition",
-      "ErdosQuestion720a/b/c: original questions",
-      "beck_path_theorem, beck_cycle_theorem: linear bounds",
-      "dudek_pralat_bound: improved upper bound 900n",
-      "path_lower_bound, cycle_lower_bound: matching lower bounds",
-      "pathIsLinear, cycleIsLinear: Θ(n) characterization",
-      "answer_720a/b/c: answers to Erdős's questions"
+      "GraphOnN, numEdges: graph on Fin n with edge counting via Finset.filter",
+      "PathGraph, CycleGraph: adjacency definitions with proved symmetry and loopless",
+      "EdgeColoring, IsMonochromatic, ContainsMonochromaticCopy: coloring framework",
+      "sizeRamseyNumber: R̂(G) via Nat.find with complete_graph_ramsey witness",
+      "sizeRamseyPath, sizeRamseyCycle: specializations to paths and cycles",
+      "ErdosQuestion720a/b/c: Erdős's three questions as Filter.Tendsto statements",
+      "beck_path_theorem, beck_cycle_theorem: Beck's linear upper bounds (axioms)",
+      "dudek_pralat_bound: R̂(Pₙ) ≤ 900n improved bound (axiom)",
+      "path_lower_bound, cycle_lower_bound: matching linear lower bounds (axioms)",
+      "pathIsLinear, cycleIsLinear: Θ(n) characterization definitions",
+      "answer_720a/b/c: answers to Erdős's three questions (axioms)",
+      "tree_size_ramsey: generalization to bounded-degree trees (axiom)",
+      "erdos_720_beck: proved pathIsLinear ∧ cycleIsLinear from Beck + lower bounds"
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #720 (Size Ramsey Numbers of Paths and Cycles)**\n\n**Origin:**\nErdős, Faudree, Rousseau, and Schelp posed this problem in 1978. The size Ramsey number R̂(G) is the minimum number of edges m such that some graph H with m edges guarantees a monochromatic copy of G under any 2-edge-coloring.\n\n**The Questions:**\n1. For paths Pₙ: Does R̂(Pₙ)/n → ∞ and R̂(Pₙ)/n² → 0?\n2. For cycles Cₙ: Does R̂(Cₙ) = o(n²)?\n\n**Beck's Breakthrough (1983):**\nBeck proved a much stronger result: R̂(Pₙ) ≪ n and R̂(Cₙ) ≪ n. Both size Ramsey numbers are LINEAR in n, not just subquadratic!\n\n**Current Best Bounds:**\n- Paths: 3.75n ≤ R̂(Pₙ) ≤ 900n (Dudek-Prałat 2017)\n- The exact constant remains unknown",
+    "historicalContext": "**The Quest for Size Ramsey Numbers**\n\nThe size Ramsey number R̂(G) measures the minimum number of edges (not vertices) needed to guarantee a monochromatic copy of G under any 2-edge-coloring. It was introduced by Erdős, Faudree, Rousseau, and Schelp in 1978 as a refinement of classical Ramsey theory that accounts for graph sparsity.\n\n**The Original Questions (1978):**\n\nErdős and collaborators asked three questions about paths Pₙ and cycles Cₙ:\n1. Does R̂(Pₙ)/n → ∞? (Is size Ramsey superlinear?)\n2. Does R̂(Pₙ)/n² → 0? (Is size Ramsey subquadratic?)\n3. Does R̂(Cₙ) = o(n²)? (Same for cycles?)\n\n**Beck's Breakthrough (1983):**\n\nJózsef Beck proved a far stronger result than anyone expected: R̂(Pₙ) ≤ cn for some constant c. This shows size Ramsey numbers of paths are LINEAR in n — answering question (1) as NO (R̂(Pₙ)/n is bounded, not divergent) and question (2) as YES (much stronger than asked). He simultaneously proved R̂(Cₙ) ≤ c'n for cycles, answering question (3) as YES.\n\n**Subsequent Improvements:**\n\n- Haxell-Kohayakawa-Łuczak (1995): Improved cycle constants\n- Dudek-Prałat (2017): Proved R̂(Pₙ) ≤ 900n with explicit constant\n- Best lower bound: R̂(Pₙ) ≥ 3.75n\n- Friedman-Pippenger (1987): Extended to bounded-degree trees\n\n**Contrast with Ordinary Ramsey:**\n\nThe ordinary Ramsey number R(Pₙ) = 2n - 1 is known exactly. The size Ramsey number R̂(Pₙ) is also Θ(n), but the exact constant remains unknown despite a factor-of-240 gap between known bounds (3.75n ≤ R̂(Pₙ) ≤ 900n).",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet R̂(G) denote the size Ramsey number: the minimal number of edges m such that there exists a graph H with m edges where any 2-coloring of edges of H contains a monochromatic copy of G.\n\n**Questions:**\n1a. Does R̂(Pₙ)/n → ∞?\n1b. Does R̂(Pₙ)/n² → 0?\n2. Does R̂(Cₙ) = o(n²)?\n\n**Answers:**\n1a. NO — R̂(Pₙ)/n is bounded (Beck 1983)\n1b. YES — in fact R̂(Pₙ) = O(n), so R̂(Pₙ)/n² → 0\n2. YES — in fact R̂(Cₙ) = O(n), much stronger than o(n²)",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Model:** GraphOnN, numEdges for finite graphs\n\n2. **Path/Cycle Graphs:** PathGraph, CycleGraph definitions\n\n3. **Coloring Framework:** EdgeColoring, IsMonochromatic, ContainsMonochromaticCopy\n\n4. **Size Ramsey:** sizeRamseyNumber as minimal m\n\n5. **Original Questions:** ErdosQuestion720a/b/c\n\n6. **Beck's Theorem:** beck_path_theorem, beck_cycle_theorem (linear bounds)\n\n7. **Bounds:** Lower and upper bounds, Dudek-Prałat 900n\n\n8. **Answers:** answer_720a (NO), answer_720b (YES), answer_720c (YES)",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization builds the size Ramsey framework from scratch:\n\n1. **Graph Model**: GraphOnN n wraps SimpleGraph (Fin n); numEdges counts edges via Finset.filter on ordered pairs\n\n2. **Path/Cycle Construction**: PathGraph uses consecutive-vertex adjacency (i+1=j); CycleGraph adds the closing edge {0, n-1}. Both prove symmetry and irreflexivity directly\n\n3. **Coloring Framework**: EdgeColoring assigns Fin 2 colors to edge subtypes; ContainsMonochromaticCopy requires injective embeddings preserving adjacency under all colorings\n\n4. **Size Ramsey Definition**: sizeRamseyNumber uses Nat.find, with well-definedness guaranteed by complete_graph_ramsey (the complete graph always works as a witness)\n\n5. **Limit Formulation**: Erdős's questions use Filter.Tendsto with atTop and nhds 0, with Nat-to-Real casts for ratio computation\n\n6. **Beck's Theorem**: Axiomatized as existential bounds; the proved theorem erdos_720_beck combines upper and lower bounds to establish pathIsLinear ∧ cycleIsLinear via obtain/exact",
     "keyInsights": [
-      "**Surprise Result:** Beck showed R̂(Pₙ) = Θ(n), contradicting Erdős's expectation",
-      "**Linear Bound:** Both paths and cycles have linear size Ramsey numbers",
-      "**Ordinary vs Size:** R(Pₙ) = 2n-1 (exact), but R̂(Pₙ) has large constant gap",
-      "**Current Gap:** 3.75n ≤ R̂(Pₙ) ≤ 900n — factor of 240 between bounds",
-      "**Related Problem:** #559 generalizes to bounded-degree graphs"
+      "Beck's linear bound R̂(Pₙ) = O(n) was deeply surprising — Erdős expected superlinear growth, but the probabilistic method shows random graphs with O(n) edges already force monochromatic paths",
+      "Size Ramsey measures edge efficiency of Ramsey hosts, capturing a different aspect than the classical vertex count R(G). For paths, R(Pₙ) = 2n-1 is exact while R̂(Pₙ) has a factor-240 gap",
+      "The three questions form a hierarchy: (1a) superlinear? → NO; (1b) subquadratic? → YES (in fact linear); (2) cycles subquadratic? → YES (in fact linear). Beck's single result answered all three",
+      "The 3.75n ≤ R̂(Pₙ) ≤ 900n gap remains one of the most embarrassing open problems in Ramsey theory — the true constant is unknown despite 40 years of work",
+      "The generalization to bounded-degree graphs (Problem #559, Friedman-Pippenger for trees) suggests linearity is a universal phenomenon for sparse graph families"
     ]
   },
   "sections": [
     {
-      "id": "erd-s-problem-720-size-ramsey-",
-      "title": "Erdős Problem #720: Size Ramsey Numbers of Paths and Cycles",
+      "id": "header",
+      "title": "Problem Statement and History",
       "startLine": 1,
       "endLine": 41,
-      "summary": "Erdős Problem #720: Size Ramsey Numbers of Paths and Cycles"
+      "summary": "Erdős Problem #720 header: size Ramsey numbers of paths and cycles, posed 1978, solved by Beck 1983 with linear bounds. Three questions about growth rate, $100 prize."
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 42,
       "endLine": 74,
-      "summary": "Basic Definitions"
+      "summary": "GraphOnN wraps SimpleGraph (Fin n); numEdges via Finset.filter; PathGraph and CycleGraph with proved symmetry/loopless; axioms for edge counts |E(Pₙ)| = n-1, |E(Cₙ)| = n."
     },
     {
       "id": "size-ramsey-numbers",
       "title": "Size Ramsey Numbers",
       "startLine": 75,
       "endLine": 104,
-      "summary": "Size Ramsey Numbers"
+      "summary": "EdgeColoring, IsMonochromatic, ContainsMonochromaticCopy framework; sizeRamseyNumber defined via Nat.find with complete_graph_ramsey as existence witness."
     },
     {
-      "id": "erd-s-s-original-questions",
+      "id": "erdos-questions",
       "title": "Erdős's Original Questions",
       "startLine": 105,
       "endLine": 128,
-      "summary": "Erdős's Original Questions"
+      "summary": "sizeRamseyPath/Cycle specializations; ErdosQuestion720a (R̂(Pₙ)/n → ∞?), 720b (R̂(Pₙ)/n² → 0?), 720c (R̂(Cₙ)/n² → 0?) as Filter.Tendsto statements."
     },
     {
-      "id": "beck-s-theorem",
+      "id": "beck-theorem",
       "title": "Beck's Theorem",
       "startLine": 129,
       "endLine": 153,
-      "summary": "Beck's Theorem"
+      "summary": "beck_path_theorem: ∃ c > 0, R̂(Pₙ) ≤ cn; beck_cycle_theorem: ∃ c > 0, R̂(Cₙ) ≤ cn (both axioms). dudek_pralat_bound: R̂(Pₙ) ≤ 900n (explicit constant)."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
       "startLine": 154,
       "endLine": 178,
-      "summary": "Lower Bounds"
+      "summary": "path_lower_bound, cycle_lower_bound: ∃ c > 0, R̂(Pₙ) ≥ cn. pathIsLinear, cycleIsLinear: Θ(n) characterization as conjunction of upper and lower linear bounds."
     },
     {
-      "id": "answers-to-erd-s-s-questions",
+      "id": "answers",
       "title": "Answers to Erdős's Questions",
       "startLine": 179,
       "endLine": 195,
-      "summary": "Answers to Erdős's Questions"
+      "summary": "answer_720a: ¬ErdosQuestion720a (NO, bounded). answer_720b: ErdosQuestion720b (YES). answer_720c: ErdosQuestion720c (YES). All three derived from Beck's linear bounds."
     },
     {
-      "id": "the-surprising-linear-bound",
+      "id": "surprise-and-comparison",
       "title": "The Surprising Linear Bound",
       "startLine": 196,
       "endLine": 212,
-      "summary": "The Surprising Linear Bound"
+      "summary": "beckSurprise and ramseyComparison (both := True) document that R̂(Pₙ) = Θ(n) was unexpected. Contrast with R(Pₙ) = 2n-1 (exact). Exact size Ramsey constant remains open."
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 213,
       "endLine": 234,
-      "summary": "Related Results"
+      "summary": "tree_size_ramsey: bounded-degree trees have linear size Ramsey (Friedman-Pippenger). Connection to Problem #559 (bounded-degree graphs). exactConstantOpen: 3.75n ≤ R̂(Pₙ) ≤ 900n gap."
     },
     {
       "id": "summary",
-      "title": "Summary",
+      "title": "Summary Theorems",
       "startLine": 235,
       "endLine": 269,
-      "summary": "Summary"
+      "summary": "erdos_720: 720b ∧ 720c (both YES). erdos_720_main: adds ¬720a. erdos_720_beck: pathIsLinear ∧ cycleIsLinear (PROVED from Beck + lower bounds, 0 sorries)."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #720 asks about the asymptotic growth of size Ramsey numbers for paths and cycles. Beck (1983) proved both R̂(Pₙ) and R̂(Cₙ) are linear in n — much stronger than the original conjectures. The answer to 'R̂(Pₙ)/n → ∞?' is NO (it's bounded), while 'R̂(Pₙ)/n² → 0?' and 'R̂(Cₙ) = o(n²)?' are both YES.",
-    "implications": "**Connections**\n\n1. **Ramsey Theory:** Size Ramsey extends classical Ramsey to edge counts\n\n2. **Problem #559:** Generalization to bounded-degree graphs\n\n3. **Probabilistic Method:** Beck's proof uses probabilistic techniques\n\n4. **Exact Constants:** Determining the precise constant remains open",
+    "summary": "Erdős Problem #720 asks about the asymptotic growth of size Ramsey numbers for paths and cycles. Beck (1983) proved both R̂(Pₙ) and R̂(Cₙ) are linear in n — much stronger than the original conjectures. The answer to 'R̂(Pₙ)/n → ∞?' is NO (it's bounded), while 'R̂(Pₙ)/n² → 0?' and 'R̂(Cₙ) = o(n²)?' are both YES. The formalization includes 0 sorries, with erdos_720_beck fully proved from axiomatized bounds.",
+    "implications": "**Theoretical Significance**\n\n1. **Ramsey Theory**: Size Ramsey extends classical Ramsey to edge counts, revealing that sparse host graphs can still force monochromatic structures\n\n2. **Probabilistic Method**: Beck's proof is a landmark application — random graphs with O(n) edges have the Ramsey property with positive probability\n\n3. **Problem #559**: The generalization to bounded-degree graphs (Friedman-Pippenger for trees, open in general) suggests linearity is universal for sparse graph families\n\n4. **Exact Constants**: Determining lim R̂(Pₙ)/n remains a major open problem with a factor-240 gap between bounds",
     "openQuestions": [
-      "What is the exact value of the size Ramsey constant for paths?",
-      "Can the gap 3.75n ≤ R̂(Pₙ) ≤ 900n be closed?",
-      "What about size Ramsey numbers for other graph families?",
-      "Is there a constructive proof of the linear bound?"
+      "What is the exact value of lim R̂(Pₙ)/n? Current bounds: 3.75 ≤ ... ≤ 900",
+      "Can the Dudek-Prałat upper bound 900n be significantly improved?",
+      "Is there a constructive proof of Beck's linear bound (avoiding the probabilistic method)?",
+      "What are the size Ramsey numbers for other sparse graph families (grids, planar graphs)?",
+      "Does the linear bound extend to all bounded-degree graphs (Problem #559)?"
     ]
   }
 }
