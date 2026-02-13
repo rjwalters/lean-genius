@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-02-11T22:30:00.000Z",
-    "iteration": 3,
-    "focus": "Proved GRH_implies_RH using DirichletCharacter.LFunction_modOne_eq from Mathlib. Only 1 sorry remains (zero_in_strip_of_zero Re(s)>0 direction).",
+    "since": "2026-02-13T19:00:00.000Z",
+    "iteration": 4,
+    "focus": "Completed zero_in_strip_of_zero proof. File now has 0 sorries (excluding axioms for deep/open results). Also fixed GRH definition to include NeZero N constraint.",
     "blockers": ["RH itself is an open conjecture - we can only formalize surrounding results"],
-    "nextAction": "Complete zero_in_strip_of_zero sorry or add Nyman-Beurling criterion.",
+    "nextAction": "Add Nyman-Beurling criterion or Weil explicit formula formulation.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved GRH_implies_RH via DirichletCharacter.LFunction_modOne_eq (for χ : DirichletCharacter ℂ 1, L(χ,s) = ζ(s)). Added Mathlib.NumberTheory.LSeries.DirichletContinuation import. File now has only 1 sorry: zero_in_strip_of_zero (Re(s)>0 direction).",
+    "progressSummary": "PROGRESS: Proved zero_in_strip_of_zero (non-trivial zeros have Re(s) > 0), completing the only sorry in the file. File now has 0 sorries. Also fixed GRH definition with [NeZero N] constraint and fixed pre-existing compilation errors (map_zero ambiguity, le_of_eq direction).",
     "builtItems": [
       {
         "name": "no_zeros_re_ge_one",
@@ -58,7 +58,7 @@
       },
       {
         "name": "GeneralizedRiemannHypothesis",
-        "description": "GRH formulation for Dirichlet L-functions",
+        "description": "GRH formulation for Dirichlet L-functions (with [NeZero N])",
         "proven": false
       },
       {
@@ -80,31 +80,49 @@
         "name": "Li_criterion",
         "description": "Equivalent formulation via Li coefficients",
         "proven": true
+      },
+      {
+        "name": "zero_in_strip_of_zero",
+        "description": "Non-trivial zeros are in the critical strip 0 < Re(s) < 1 (PROVEN via functional equation + trivial zero classification)",
+        "proven": true
+      },
+      {
+        "name": "zeta_ne_zero_of_re_nonpos",
+        "description": "ζ(s) ≠ 0 when Re(s) ≤ 0 and s is not a non-positive integer",
+        "proven": true
+      },
+      {
+        "name": "zeta_neg_odd_ne_zero'",
+        "description": "ζ(-n) ≠ 0 for odd n ≥ 1",
+        "proven": true
       }
     ],
     "insights": [
       "Mathlib now has riemannZeta_ne_zero_of_one_le_re - PNT-strength non-vanishing on Re(s)≥1",
       "DirichletCharacter.LFunction is now available in Mathlib with non-vanishing results",
-      "DirichletCharacter.LFunction_modOne_eq: L(χ,s) = ζ(s) for the unique character mod 1 (in DirichletContinuation)",
-      "Conjugation symmetry (zeta_conj) axiomatized - not yet in Mathlib but mathematically straightforward",
+      "DirichletCharacter.LFunction_modOne_eq: L(χ,s) = ζ(s) for the unique character mod 1",
+      "Conjugation symmetry (zeta_conj) axiomatized - not yet in Mathlib",
       "RH can be reduced to checking upper half-plane zeros only (proven from conjugation)",
       "GRH formulated using Mathlib's DirichletCharacter.LFunction",
-      "GRH_implies_RH now PROVEN: specialize GRH to N=1, use LFunction_modOne_eq",
-      "PrimeNumberTheoremAnd project could replace some axioms with proofs if added as dependency",
-      "Zero confinement to open strip 0<Re(s)<1 partially proven (Re(s)<1 direction complete, Re(s)>0 has sorry)"
+      "GRH_implies_RH PROVEN: specialize GRH to N=1, use LFunction_modOne_eq",
+      "Zero confinement to critical strip FULLY PROVEN: both Re(s) > 0 and Re(s) < 1",
+      "Re(s) > 0 direction uses functional equation + trivial zero classification",
+      "Key technique: for Re(s) ≤ 0, functional equation ζ(1-s) = F(s)·ζ(s) gives contradiction since Re(1-s) ≥ 1",
+      "Odd negative integers: cos factor in functional equation is cos(mπ) ≠ 0",
+      "Even negative integers ≥ 2: these are exactly the trivial zeros",
+      "With open Nat, must use _root_.Odd, _root_.mul_eq_zero, _root_.map_zero to avoid ambiguity",
+      "Nat.cast_nonneg needed for linarith with ℝ-cast ℕ values"
     ],
     "mathlibGaps": [
       "riemannZeta_conj (conjugation symmetry) - needed for full conjugate zero proof",
-      "Zero classification for Re(s)≤0 (functional equation doesn't easily give this)",
-      "PNT itself (only non-vanishing is in Mathlib, not the asymptotic)"
+      "PNT asymptotic (only non-vanishing is in Mathlib, not π(x)~x/log(x))"
     ],
     "nextSteps": [
-      "Complete zero_in_strip_of_zero sorry (Re(s)>0 direction - needs zero classification for Re(s)≤0)",
       "Add Nyman-Beurling criterion (RH ↔ density of certain functions in L²)",
+      "Add Weil explicit formula formulation",
       "Explore adding PrimeNumberTheoremAnd as dependency to upgrade axioms",
-      "Add Weil explicit formula formulation"
-    ],
-    "markdown": "# Knowledge Base: Riemann Hypothesis\n\n## The Problem\n\n> All non-trivial zeros of the Riemann zeta function ζ(s) have real part equal to 1/2.\n\n## What We've Built (as of 2026-02-11)\n\n### RiemannHypothesis.lean (~770 lines)\n- Formal statement of RH using Mathlib's `riemannZeta`\n- PNT-strength non-vanishing: ζ(s)≠0 for Re(s)≥1 (PROVEN from Mathlib)\n- Zeros symmetric under s↦1-s (PROVEN via functional equation)\n- Conjugate symmetry: ζ(s)=0 ⟹ ζ(conj(s))=0 (from axiom)\n- RH ↔ checking upper half-plane only (PROVEN)\n- Equivalent formulations: Robin's inequality, Mertens bound, prime counting\n- GRH for Dirichlet L-functions (formalized)\n- **GRH implies RH (PROVEN via LFunction_modOne_eq)**\n\n### RiemannHypothesisConsequences.lean (~632 lines)\n- Mertens function with computed values up to 100\n- Chebyshev θ(x) and ψ(x) functions\n- Von Mangoldt function verifications\n- Zeta special values: ζ(2), ζ(4), ζ(-1), ζ(-3)\n- Li's criterion, zero counting formula\n\n### Mathlib Status (2026-02-11)\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Riemann zeta ζ(s) | ✅ | Full definition with analytic continuation |\n| Functional equation | ✅ | completedRiemannZeta_one_sub |\n| Non-vanishing Re(s)≥1 | ✅ | riemannZeta_ne_zero_of_one_le_re (PNT) |\n| Euler product | ✅ | riemannZeta_eulerProduct_tprod |\n| Special values | ✅ | ζ(2), ζ(4), ζ(-k) via Bernoulli |\n| Dirichlet L-functions | ✅ | DirichletCharacter.LFunction |\n| L → ζ bridge | ✅ | LFunction_modOne_eq (DirichletContinuation) |\n| L-function non-vanishing | ✅ | LFunction_ne_zero_of_one_le_re |\n| Conjugation symmetry | ❌ | Not in Mathlib (axiomatized here) |\n| PNT asymptotic | ❌ | Only non-vanishing, not π(x)~x/log(x) |\n\n## Remaining Sorries (1)\n- `zero_in_strip_of_zero` (Re(s)>0 direction) - needs zero classification for Re(s)≤0\n\n## Key References\n- Riemann (1859), Edwards (1974), Conrey (2003), Bombieri (2000)\n- PrimeNumberTheoremAnd: github.com/AlexKontorovich/PrimeNumberTheoremAnd\n- Loeffler & Stoll (2025): Formalizing zeta and L-functions in Lean (arXiv:2503.00959)\n"
+      "Consider proving zeta_conj to replace the axiom"
+    ]
   },
   "approaches": [],
   "tags": [
@@ -124,7 +142,7 @@
     ]
   },
   "started": "2026-01-01T21:55:27.885Z",
-  "lastUpdate": "2026-02-11T22:30:00.000Z",
+  "lastUpdate": "2026-02-13T19:00:00.000Z",
   "significance": 10,
   "tractability": 1
 }

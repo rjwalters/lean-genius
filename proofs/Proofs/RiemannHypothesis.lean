@@ -10,6 +10,9 @@ import Mathlib.NumberTheory.EulerProduct.DirichletLSeries
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.NumberTheory.LSeries.HurwitzZetaValues
 import Mathlib.Analysis.Asymptotics.Defs
 import Mathlib.Order.Filter.Basic
 import Mathlib.Analysis.Complex.ExponentialBounds
@@ -580,29 +583,132 @@ theorem no_zeros_re_ge_one (s : ℂ) (hs : 1 ≤ s.re) : riemannZeta s ≠ 0 :=
 
 /-- Non-vanishing on the critical line complement: ζ(s) ≠ 0 for Re(s) = 1 -/
 theorem no_zeros_on_re_one (s : ℂ) (hs : s.re = 1) : riemannZeta s ≠ 0 :=
-  no_zeros_re_ge_one s (le_of_eq hs)
+  no_zeros_re_ge_one s (ge_of_eq hs)
+
+/-- cos(n * π) ≠ 0 for any natural number n: since sin(nπ) = 0 and sin² + cos² = 1 -/
+private lemma cos_nat_mul_pi_ne_zero' (n : ℕ) : Real.cos (↑n * π) ≠ 0 := by
+  intro h
+  have h1 := Real.sin_sq_add_cos_sq (↑n * π)
+  rw [Real.sin_nat_mul_pi, h] at h1
+  norm_num at h1
+
+/-- ζ(s) ≠ 0 when Re(s) ≤ 0 and s is not a non-positive integer.
+Uses the functional equation: ζ(1-s) = F(s) · ζ(s), so ζ(s) = 0 implies ζ(1-s) = 0,
+but Re(1-s) ≥ 1 gives ζ(1-s) ≠ 0. -/
+private theorem zeta_ne_zero_of_re_nonpos (s : ℂ) (h_re : s.re ≤ 0)
+    (h_not_neg_nat : ∀ n : ℕ, s ≠ -↑n) : riemannZeta s ≠ 0 := by
+  intro hs_zero
+  have h_ne_one : s ≠ 1 := by
+    intro heq; rw [heq] at h_re; simp only [Complex.one_re] at h_re; linarith
+  have h_func := riemannZeta_one_sub h_not_neg_nat h_ne_one
+  simp only [hs_zero, mul_zero] at h_func
+  have h_one_le : 1 ≤ (1 - s).re := by
+    simp only [Complex.sub_re, Complex.one_re]; linarith
+  exact absurd h_func (riemannZeta_ne_zero_of_one_le_re h_one_le)
+
+/-- ζ(-n) ≠ 0 for odd n ≥ 1. Uses the functional equation applied to s = n+1:
+ζ(-n) = ζ(1-(n+1)) = 2·(2π)^(-(n+1))·Γ(n+1)·cos(π(n+1)/2)·ζ(n+1).
+When n is odd, n+1 is even so cos(π(n+1)/2) = cos(mπ) ≠ 0 for some m,
+and all other factors are nonzero. -/
+private lemma zeta_neg_odd_ne_zero' (n : ℕ) (hn : n ≥ 1) (hodd : _root_.Odd n) :
+    riemannZeta (-(n : ℂ)) ≠ 0 := by
+  have h_not_neg : ∀ m : ℕ, (↑(n + 1) : ℂ) ≠ -(↑m : ℂ) := by
+    intro m heq
+    have h1 := congr_arg Complex.re heq
+    simp only [Complex.natCast_re, Complex.neg_re] at h1
+    have h2 : (1 : ℝ) ≤ ↑(n + 1) := by exact_mod_cast (show 1 ≤ n + 1 by omega)
+    have h3 : (0 : ℝ) ≤ ↑m := Nat.cast_nonneg _
+    linarith
+  have h_ne_one : (↑(n + 1) : ℂ) ≠ 1 := by
+    intro heq
+    have := congr_arg Complex.re heq
+    simp only [Complex.natCast_re, Complex.one_re] at this
+    norm_cast at this; omega
+  have h_func := riemannZeta_one_sub h_not_neg h_ne_one
+  have h_eq : (1 : ℂ) - ↑(n + 1) = -(↑n : ℂ) := by push_cast; ring
+  rw [h_eq] at h_func
+  intro hzero
+  rw [hzero] at h_func
+  -- All five factors in the RHS product are nonzero
+  have h_two : (2 : ℂ) ≠ 0 := two_ne_zero
+  have h_pow : (2 * ↑π : ℂ) ^ (-(↑(n + 1) : ℂ)) ≠ 0 := by
+    rw [Complex.cpow_def_of_ne_zero]
+    · exact Complex.exp_ne_zero _
+    · simp only [ne_eq, _root_.mul_eq_zero, OfNat.ofNat_ne_zero,
+        Complex.ofReal_eq_zero, false_or]
+      exact Real.pi_pos.ne'
+  have h_gamma : Complex.Gamma (↑(n + 1) : ℂ) ≠ 0 :=
+    Complex.Gamma_ne_zero h_not_neg
+  have h_zeta : riemannZeta (↑(n + 1) : ℂ) ≠ 0 := by
+    apply riemannZeta_ne_zero_of_one_lt_re
+    simp only [Complex.natCast_re]
+    have : (1 : ℝ) < ↑(n + 1) := by exact_mod_cast (show 1 < n + 1 by omega)
+    linarith
+  obtain ⟨k, hk⟩ := hodd
+  -- cos(π(n+1)/2): n = 2k+1, n+1 = 2(k+1), so π(n+1)/2 = π(k+1) and cos(mπ) ≠ 0
+  have h_cos : Complex.cos (↑π * ↑(n + 1) / 2) ≠ 0 := by
+    have heq : ↑π * (↑(n + 1) : ℂ) / 2 = ↑((↑(k + 1) : ℝ) * π) := by
+      subst hk; push_cast; ring
+    rw [heq, ← Complex.ofReal_cos]
+    simp only [Complex.ofReal_ne_zero]
+    exact cos_nat_mul_pi_ne_zero' (k + 1)
+  -- The product 2 * pow * Γ * cos * ζ = 0, but each factor is nonzero
+  have h_eq_zero : 2 * (2 * ↑π) ^ (-(↑(n + 1) : ℂ)) * Complex.Gamma ↑(n + 1) *
+      Complex.cos (↑π * ↑(n + 1) / 2) * riemannZeta ↑(n + 1) = 0 := h_func.symm
+  rcases _root_.mul_eq_zero.mp h_eq_zero with h | h
+  · rcases _root_.mul_eq_zero.mp h with h | h
+    · rcases _root_.mul_eq_zero.mp h with h | h
+      · rcases _root_.mul_eq_zero.mp h with h | h
+        · exact h_two h
+        · exact h_pow h
+      · exact h_gamma h
+    · exact h_cos h
+  · exact h_zeta h
 
 /-- Combining no_zeros_re_ge_one with trivial zeros: any zero of ζ(s) in the critical
-strip must satisfy 0 < Re(s) < 1 (not just Re(s) < 1, but also Re(s) > 0). -/
+strip must satisfy 0 < Re(s) < 1 (not just Re(s) < 1, but also Re(s) > 0).
+
+**Proof**: If Re(s) ≤ 0 and ζ(s) = 0, then either:
+- s is not a non-positive integer: the functional equation gives ζ(1-s) = F(s)·ζ(s) = 0,
+  but Re(1-s) ≥ 1 gives ζ(1-s) ≠ 0, contradiction.
+- s = 0: ζ(0) = -1/2 ≠ 0, contradiction.
+- s = -n for odd n: ζ(-n) ≠ 0 by functional equation analysis, contradiction.
+- s = -2(k+1): this is a trivial zero, contradicting the hypothesis. -/
 theorem zero_in_strip_of_zero (s : ℂ)
     (hs : riemannZeta s = 0) (hnt : ¬isTrivialZero s) :
     s ∈ criticalStrip := by
   constructor
-  · -- Re(s) > 0: if Re(s) ≤ 0, then s is either 0 or a negative integer
-    -- At s = 0: ζ(0) = -1/2 ≠ 0
-    -- At s = -2n: these are trivial zeros, contradicting hnt
-    -- For other s with Re(s) ≤ 0: use functional equation
+  · -- Re(s) > 0: show ζ has no non-trivial zeros with Re(s) ≤ 0
     by_contra h_not
     push_neg at h_not
-    -- We need Re(s) ≥ 1 for 1-s, since Re(1-s) = 1 - Re(s) ≥ 1
-    have h_one_minus : 1 ≤ (1 - s).re := by
-      simp only [Complex.sub_re, Complex.one_re]
-      linarith
-    -- ζ(1-s) ≠ 0 since Re(1-s) ≥ 1
-    have h_nonzero := no_zeros_re_ge_one (1 - s) h_one_minus
-    -- But if s is in the strip, zeros_symmetric would give ζ(1-s) = 0
-    -- Instead, we handle this by cases: s must be a negative integer or 0
-    sorry
+    -- Case split: is s a non-positive integer or not?
+    by_cases h_neg_nat : ∃ n : ℕ, s = -↑n
+    · -- s = -n for some n ∈ ℕ
+      obtain ⟨n, rfl⟩ := h_neg_nat
+      -- Sub-case: n = 0
+      by_cases hn0 : n = 0
+      · subst hn0
+        simp only [_root_.Nat.cast_zero, neg_zero] at hs
+        rw [riemannZeta_zero] at hs; norm_num at hs
+      -- Sub-case: n ≥ 1, check parity
+      · have hn1 : n ≥ 1 := Nat.one_le_iff_ne_zero.mpr hn0
+        rcases Nat.even_or_odd n with ⟨k, hk⟩ | hodd
+        · -- n even and ≥ 2: s = -n is a trivial zero (n = k + k = 2*(k-1+1))
+          have hk_pos : k ≥ 1 := by omega
+          apply hnt
+          refine ⟨k - 1, ?_⟩
+          -- Need: -(↑n : ℂ) = -2 * (↑(k - 1) + 1)
+          -- Since k ≥ 1: k - 1 + 1 = k (in ℕ), and n = k + k = 2k
+          have : (↑(k - 1) : ℂ) + 1 = ↑k := by
+            have : (k - 1 + 1 : ℕ) = k := by omega
+            rw [show (↑(k - 1) : ℂ) + 1 = (↑(k - 1 + 1) : ℂ) from by push_cast; ring]
+            exact_mod_cast this
+          rw [this]; subst hk; push_cast; ring
+        · -- n odd: ζ(-n) ≠ 0
+          exact absurd hs (zeta_neg_odd_ne_zero' n hn1 hodd)
+    · -- s is not a non-positive integer
+      push_neg at h_neg_nat
+      exact absurd hs (zeta_ne_zero_of_re_nonpos s h_not h_neg_nat)
   · -- Re(s) < 1: if Re(s) ≥ 1, then ζ(s) ≠ 0
     by_contra h_not
     push_neg at h_not
@@ -645,7 +751,7 @@ axiom zeta_conj (s : ℂ) :
 /-- Zeros come in conjugate pairs: if ζ(s) = 0 then ζ(conj(s)) = 0 -/
 theorem zero_conj (s : ℂ) (hs : riemannZeta s = 0) :
     riemannZeta (starRingEnd ℂ s) = 0 := by
-  rw [zeta_conj, hs, map_zero]
+  rw [zeta_conj, hs, _root_.map_zero]
 
 /-- Non-trivial zeros come in conjugate pairs (within the critical strip).
 Since Re(conj(s)) = Re(s), conjugation preserves the critical strip. -/
@@ -700,7 +806,7 @@ GRH implies:
 For every Dirichlet character χ modulo N, all non-trivial zeros of L(s, χ) lie
 on the critical line Re(s) = 1/2. -/
 def GeneralizedRiemannHypothesis : Prop :=
-  ∀ (N : ℕ) (χ : DirichletCharacter ℂ N) (s : ℂ),
+  ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N) (s : ℂ),
     DirichletCharacter.LFunction χ s = 0 →
     0 < s.re → s.re < 1 →
     s.re = 1/2
@@ -717,7 +823,7 @@ theorem GRH_implies_RH (h : GeneralizedRiemannHypothesis) : RiemannHypothesis :=
   have hL : DirichletCharacter.LFunction (1 : DirichletCharacter ℂ 1) s = riemannZeta s :=
     congr_fun DirichletCharacter.LFunction_modOne_eq s
   -- Apply GRH to N=1 and the trivial character
-  exact h 1 1 s (hL ▸ hz) hpos hlt
+  exact h 1 (1 : DirichletCharacter ℂ 1) s (hL ▸ hz) hpos hlt
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XII: SUMMARY AND SIGNIFICANCE
