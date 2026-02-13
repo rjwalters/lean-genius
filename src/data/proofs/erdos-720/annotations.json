@@ -1,209 +1,146 @@
 [
   {
-    "id": "ann-720-graphonn",
+    "id": "ann-e720-overview",
     "proofId": "erdos-720",
-    "range": { "startLine": 46, "endLine": 47 },
-    "type": "definition",
-    "title": "GraphOnN",
-    "content": "SimpleGraph on n vertices.",
-    "significance": "key"
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "concept",
+    "title": "Problem Overview: Size Ramsey Numbers of Paths and Cycles",
+    "content": "Erdos Problem #720 ($100 prize) asks three questions about size Ramsey numbers: (1a) Does R-hat(P_n)/n tend to infinity? (1b) Does R-hat(P_n)/n^2 tend to 0? (2) Does R-hat(C_n) = o(n^2)? Beck (1983) proved a much stronger result: both R-hat(P_n) and R-hat(C_n) are LINEAR in n. This answers 1a as NO (R-hat(P_n)/n is bounded), and 1b and 2 as YES (much stronger than asked). The problem was posed by Erdos-Faudree-Rousseau-Schelp in 1978.",
+    "mathContext": "$\\hat{R}(G)$ = minimum $m$ such that some $H$ with $m$ edges forces a monochromatic copy of $G$ under any 2-edge-coloring. Questions: (1a) $\\hat{R}(P_n)/n \\to \\infty$? (1b) $\\hat{R}(P_n)/n^2 \\to 0$? (2) $\\hat{R}(C_n) = o(n^2)$? Answers: (1a) NO, (1b) YES, (2) YES. Beck: $\\hat{R}(P_n) = \\Theta(n)$ and $\\hat{R}(C_n) = \\Theta(n)$.",
+    "significance": "critical",
+    "prerequisites": ["size Ramsey number", "edge coloring", "monochromatic subgraph"],
+    "relatedConcepts": ["erdos-559", "ramsey-theory", "extremal-graph-theory"]
   },
   {
-    "id": "ann-720-numedges",
+    "id": "ann-e720-graph-defs",
     "proofId": "erdos-720",
-    "range": { "startLine": 49, "endLine": 51 },
+    "range": { "startLine": 42, "endLine": 73 },
     "type": "definition",
-    "title": "numEdges",
-    "content": "Count of edges in a graph.",
-    "significance": "key"
+    "title": "Graph Primitives: GraphOnN, numEdges, PathGraph, CycleGraph",
+    "content": "GraphOnN n wraps SimpleGraph (Fin n) for graphs on n labeled vertices. numEdges counts edges by filtering ordered pairs (i < j) with adjacency, returning a Finset cardinality. PathGraph n connects consecutive vertices via i.val + 1 = j.val with proved symmetry and irreflexivity. CycleGraph n (for n >= 3) extends PathGraph with a closing edge between vertex 0 and vertex n-1. Axioms path_edges and cycle_edges assert |E(P_n)| = n-1 and |E(C_n)| = n respectively.",
+    "mathContext": "$\\text{GraphOnN}(n) := \\text{SimpleGraph}(\\text{Fin } n)$. $|E(G)| = |\\{(i,j) : i < j \\land G.\\text{Adj}(i,j)\\}|$. $P_n$: $i \\sim j \\iff |i-j| = 1$, so $|E(P_n)| = n-1$. $C_n$: $P_n$ plus edge $\\{0, n-1\\}$, so $|E(C_n)| = n$.",
+    "significance": "key",
+    "prerequisites": ["SimpleGraph", "Fin", "Finset.filter", "Finset.card"],
+    "relatedConcepts": ["erdos-720"]
   },
   {
-    "id": "ann-720-pathgraph",
+    "id": "ann-e720-coloring-framework",
     "proofId": "erdos-720",
-    "range": { "startLine": 53, "endLine": 57 },
+    "range": { "startLine": 75, "endLine": 103 },
     "type": "definition",
-    "title": "PathGraph",
-    "content": "Path Pₙ on n vertices (n-1 edges).",
-    "significance": "critical"
+    "title": "Coloring Framework: EdgeColoring, IsMonochromatic, ContainsMonochromaticCopy",
+    "content": "EdgeColoring G assigns each edge (represented as a subtype of ordered pairs with adjacency) a color from Fin 2. IsMonochromatic checks that all edges of a subgraph H receive the same color. ContainsMonochromaticCopy H G requires that for every 2-coloring of H, there exists an injective embedding of G's vertices into H's vertices preserving adjacency. The size Ramsey number sizeRamseyNumber is then the minimum m such that some H with m edges satisfies ContainsMonochromaticCopy, with well-definedness guaranteed by complete_graph_ramsey (K_n always works).",
+    "mathContext": "$\\text{EdgeColoring}(G) : E(G) \\to \\{0,1\\}$. $\\text{ContainsMonochromaticCopy}(H, G) := \\forall c : E(H) \\to \\{0,1\\}, \\exists \\phi : V(G) \\hookrightarrow V(H), \\forall ij \\in E(G), \\phi(i)\\phi(j) \\in E(H)$. $\\hat{R}(G) = \\min\\{m : \\exists H, |E(H)| = m \\land \\text{ContainsMonochromaticCopy}(H,G)\\}$, defined via `Nat.find` with witness from `complete_graph_ramsey`.",
+    "significance": "critical",
+    "prerequisites": ["SimpleGraph", "Function.Injective", "Nat.find", "Fin 2"],
+    "relatedConcepts": ["erdos-720", "ramsey-theory"]
   },
   {
-    "id": "ann-720-cyclegraph",
+    "id": "ann-e720-erdos-questions",
     "proofId": "erdos-720",
-    "range": { "startLine": 59, "endLine": 65 },
+    "range": { "startLine": 105, "endLine": 127 },
     "type": "definition",
-    "title": "CycleGraph",
-    "content": "Cycle Cₙ on n vertices (n edges).",
-    "significance": "critical"
+    "title": "Erdos's Three Questions: Growth Rate of R-hat(P_n) and R-hat(C_n)",
+    "content": "sizeRamseyPath n = R-hat(P_n) and sizeRamseyCycle n = R-hat(C_n) specialize the size Ramsey number. Erdos's three questions are formalized as Filter.Tendsto statements: (a) R-hat(P_n)/n -> infinity (Tendsto to atTop), (b) R-hat(P_n)/n^2 -> 0 (Tendsto to nhds 0), (c) R-hat(C_n)/n^2 -> 0 (Tendsto to nhds 0). These use Lean's filter-based limit framework, with casts from Nat to Real for the ratio computations.",
+    "mathContext": "$\\text{ErdosQuestion720a} := \\hat{R}(P_n)/n \\to \\infty$ via `Tendsto (\\lambda n, \\hat{R}(P_n)/n) \\text{atTop} \\text{atTop}$`. $\\text{ErdosQuestion720b} := \\hat{R}(P_n)/n^2 \\to 0$ via `Tendsto ... (nhds 0)`. $\\text{ErdosQuestion720c} := \\hat{R}(C_n)/n^2 \\to 0$. The three questions probe whether the growth is superlinear, subquadratic, and subquadratic respectively.",
+    "significance": "critical",
+    "prerequisites": ["Filter.Tendsto", "Filter.atTop", "nhds", "Nat.cast"],
+    "relatedConcepts": ["erdos-720", "erdos-559"]
   },
   {
-    "id": "ann-720-edgecoloring",
+    "id": "ann-e720-beck-path",
     "proofId": "erdos-720",
-    "range": { "startLine": 79, "endLine": 80 },
-    "type": "definition",
-    "title": "EdgeColoring",
-    "content": "2-coloring of graph edges.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-720-monochromatic",
-    "proofId": "erdos-720",
-    "range": { "startLine": 82, "endLine": 86 },
-    "type": "definition",
-    "title": "IsMonochromatic",
-    "content": "All edges same color.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-720-contains",
-    "proofId": "erdos-720",
-    "range": { "startLine": 88, "endLine": 92 },
-    "type": "definition",
-    "title": "ContainsMonochromaticCopy",
-    "content": "H forces monochromatic G.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-720-sizeramsey",
-    "proofId": "erdos-720",
-    "range": { "startLine": 94, "endLine": 100 },
-    "type": "definition",
-    "title": "sizeRamseyNumber",
-    "content": "R̂(G): minimal edges for monochromatic copy.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-720-sizepath",
-    "proofId": "erdos-720",
-    "range": { "startLine": 106, "endLine": 108 },
-    "type": "definition",
-    "title": "sizeRamseyPath",
-    "content": "R̂(Pₙ): size Ramsey of path.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-720-sizecycle",
-    "proofId": "erdos-720",
-    "range": { "startLine": 110, "endLine": 112 },
-    "type": "definition",
-    "title": "sizeRamseyCycle",
-    "content": "R̂(Cₙ): size Ramsey of cycle.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-720-q720a",
-    "proofId": "erdos-720",
-    "range": { "startLine": 114, "endLine": 116 },
-    "type": "definition",
-    "title": "ErdosQuestion720a",
-    "content": "Does R̂(Pₙ)/n → ∞?",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-720-q720b",
-    "proofId": "erdos-720",
-    "range": { "startLine": 118, "endLine": 120 },
-    "type": "definition",
-    "title": "ErdosQuestion720b",
-    "content": "Does R̂(Pₙ)/n² → 0?",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-720-q720c",
-    "proofId": "erdos-720",
-    "range": { "startLine": 122, "endLine": 124 },
-    "type": "definition",
-    "title": "ErdosQuestion720c",
-    "content": "Does R̂(Cₙ) = o(n²)?",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-720-beckpath",
-    "proofId": "erdos-720",
-    "range": { "startLine": 130, "endLine": 135 },
+    "range": { "startLine": 129, "endLine": 138 },
     "type": "theorem",
-    "title": "beck_path_theorem",
-    "content": "Beck 1983: R̂(Pₙ) ≤ cn.",
-    "significance": "critical"
+    "title": "Beck's Theorem for Paths (1983): R-hat(P_n) = O(n)",
+    "content": "Beck (1983) proved the breakthrough result: there exists a constant c > 0 such that R-hat(P_n) <= c*n for all n >= 2. This is much stronger than Erdos's question about whether R-hat(P_n)/n -> infinity (it answers NO decisively). Beck's proof uses probabilistic methods: a random graph with O(n) edges has the desired Ramsey property with positive probability. The explicit constant was later improved by Dudek-Pralat (2017) to 900.",
+    "mathContext": "`beck_path_theorem : \\exists c > 0, \\forall n \\geq 2, \\hat{R}(P_n) \\leq c \\cdot n$. Combined with `path_lower_bound`, this gives $\\hat{R}(P_n) = \\Theta(n)$. The proof in [Be83] uses the probabilistic method: a random graph $G(N, p)$ with $N = O(n)$ and $p = O(1/n)$ yields $O(n)$ edges and forces monochromatic paths.",
+    "significance": "critical",
+    "prerequisites": ["sizeRamseyPath", "probabilistic method"],
+    "relatedConcepts": ["erdos-720", "erdos-559", "ramsey-theory"]
   },
   {
-    "id": "ann-720-beckcycle",
+    "id": "ann-e720-beck-cycle",
     "proofId": "erdos-720",
-    "range": { "startLine": 137, "endLine": 142 },
+    "range": { "startLine": 140, "endLine": 145 },
     "type": "theorem",
-    "title": "beck_cycle_theorem",
-    "content": "Beck 1983: R̂(Cₙ) ≤ c'n.",
-    "significance": "critical"
+    "title": "Beck's Theorem for Cycles (1983): R-hat(C_n) = O(n)",
+    "content": "Beck simultaneously proved that R-hat(C_n) <= c'*n for some constant c' > 0 and all n >= 3. Since cycles have n edges (one more than paths), the linear bound for cycles is slightly less obvious. The cycle result was further improved by Haxell-Kohayakawa-Luczak (1995) who gave better constants. Combined with cycle_lower_bound, this establishes R-hat(C_n) = Theta(n).",
+    "mathContext": "`beck_cycle_theorem : \\exists c > 0, \\forall n \\geq 3, \\hat{R}(C_n) \\leq c \\cdot n$. Haxell-Kohayakawa-Luczak refined the constant. Since $|E(C_n)| = n$, the size Ramsey number is at most a constant factor of the graph size itself.",
+    "significance": "critical",
+    "prerequisites": ["sizeRamseyCycle", "CycleGraph"],
+    "relatedConcepts": ["erdos-720", "ramsey-theory"]
   },
   {
-    "id": "ann-720-dudek",
+    "id": "ann-e720-dudek-pralat",
     "proofId": "erdos-720",
-    "range": { "startLine": 147, "endLine": 149 },
+    "range": { "startLine": 147, "endLine": 152 },
     "type": "theorem",
-    "title": "dudek_pralat_bound",
-    "content": "R̂(Pₙ) ≤ 900n improved bound.",
-    "significance": "key"
+    "title": "Dudek-Pralat (2017): R-hat(P_n) <= 900n",
+    "content": "Dudek and Pralat (2017) proved the explicit upper bound R-hat(P_n) <= 900n for n >= 2. This is the current best known upper bound. The constant 900, while explicit, is believed to be far from optimal. The definition beckPathConstant := 900 records this value. Combined with the lower bound 3.75n, there is a factor-of-240 gap between the best known bounds.",
+    "mathContext": "`dudek_pralat_bound : \\forall n \\geq 2, \\hat{R}(P_n) \\leq 900n$. Current best bounds: $3.75n \\leq \\hat{R}(P_n) \\leq 900n$. The gap factor is $900/3.75 = 240$. Determining the exact constant $\\lim_{n \\to \\infty} \\hat{R}(P_n)/n$ remains a major open problem.",
+    "significance": "key",
+    "prerequisites": ["sizeRamseyPath", "beck_path_theorem"],
+    "relatedConcepts": ["erdos-720"]
   },
   {
-    "id": "ann-720-pathlower",
+    "id": "ann-e720-lower-bounds",
     "proofId": "erdos-720",
-    "range": { "startLine": 155, "endLine": 158 },
+    "range": { "startLine": 154, "endLine": 177 },
     "type": "theorem",
-    "title": "path_lower_bound",
-    "content": "R̂(Pₙ) ≥ cn lower bound.",
-    "significance": "key"
+    "title": "Lower Bounds and Theta(n) Characterization",
+    "content": "path_lower_bound and cycle_lower_bound establish that R-hat(P_n) >= c*n and R-hat(C_n) >= c'*n for constants c, c' > 0. For paths, the best known lower bound is 3.75n (from probabilistic arguments showing random colorings of sparse graphs avoid monochromatic paths). The definitions pathIsLinear and cycleIsLinear formalize the Theta(n) characterization as the conjunction of upper and lower linear bounds with explicit constants c_1, c_2.",
+    "mathContext": "`path_lower_bound : \\exists c > 0, \\forall n \\geq 2, \\hat{R}(P_n) \\geq c \\cdot n`. Best known: $c \\geq 3.75$. `pathIsLinear := \\exists c_1, c_2 > 0, \\forall n \\geq 2, c_1 n \\leq \\hat{R}(P_n) \\leq c_2 n$, i.e., $\\hat{R}(P_n) = \\Theta(n)$. Similarly for cycles with $n \\geq 3$.",
+    "significance": "key",
+    "prerequisites": ["sizeRamseyPath", "sizeRamseyCycle"],
+    "relatedConcepts": ["erdos-720"]
   },
   {
-    "id": "ann-720-pathlinear",
+    "id": "ann-e720-answers",
     "proofId": "erdos-720",
-    "range": { "startLine": 165, "endLine": 168 },
-    "type": "definition",
-    "title": "pathIsLinear",
-    "content": "R̂(Pₙ) = Θ(n) characterization.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-720-answer-a",
-    "proofId": "erdos-720",
-    "range": { "startLine": 180, "endLine": 186 },
+    "range": { "startLine": 179, "endLine": 194 },
     "type": "theorem",
-    "title": "answer_720a",
-    "content": "Answer: NO, R̂(Pₙ)/n is bounded.",
-    "significance": "critical"
+    "title": "Answers to Erdos's Three Questions",
+    "content": "answer_720a: NO, R-hat(P_n)/n does NOT tend to infinity. Since R-hat(P_n) <= c*n (Beck), R-hat(P_n)/n <= c is bounded, contradicting divergence to infinity. answer_720b: YES, R-hat(P_n)/n^2 -> 0. Since R-hat(P_n) <= c*n, R-hat(P_n)/n^2 <= c/n -> 0. answer_720c: YES, R-hat(C_n)/n^2 -> 0. By the same argument with beck_cycle_theorem. All three answers are stronger than originally expected.",
+    "mathContext": "`answer_720a : \\neg \\text{ErdosQuestion720a}` — $\\hat{R}(P_n)/n \\not\\to \\infty$ since $\\hat{R}(P_n)/n \\leq c$. `answer_720b : \\text{ErdosQuestion720b}` — $\\hat{R}(P_n)/n^2 \\leq c/n \\to 0$. `answer_720c : \\text{ErdosQuestion720c}` — $\\hat{R}(C_n)/n^2 \\leq c'/n \\to 0$. The NO answer to (a) was the surprise: Erdos expected superlinear growth.",
+    "significance": "critical",
+    "prerequisites": ["beck_path_theorem", "beck_cycle_theorem", "Filter.Tendsto"],
+    "relatedConcepts": ["erdos-720"]
   },
   {
-    "id": "ann-720-answer-b",
+    "id": "ann-e720-surprise",
     "proofId": "erdos-720",
-    "range": { "startLine": 188, "endLine": 192 },
-    "type": "theorem",
-    "title": "answer_720b",
-    "content": "Answer: YES, R̂(Pₙ)/n² → 0.",
-    "significance": "critical"
+    "range": { "startLine": 196, "endLine": 233 },
+    "type": "insight",
+    "title": "The Surprising Linear Bound and Open Questions",
+    "content": "Beck's linear bound was deeply unexpected. The ordinary Ramsey number R(P_n) = 2n-1 is known exactly, but the size Ramsey number R-hat(P_n) behaves very differently. Erdos expected R-hat(P_n)/n -> infinity, meaning size Ramsey would grow superlinearly. The definitions beckSurprise and ramseyComparison (both := True) document this contrast. The exact constant lim R-hat(P_n)/n remains unknown despite decades of work. The problem connects to Problem #559, which generalizes to bounded-degree graphs (also proved linear by Friedman-Pippenger).",
+    "mathContext": "Ordinary Ramsey: $R(P_n) = 2n - 1$ (exact). Size Ramsey: $\\hat{R}(P_n) = \\Theta(n)$, but $\\lim_{n \\to \\infty} \\hat{R}(P_n)/n = ?$ is open. Current: $3.75 \\leq \\liminf \\hat{R}(P_n)/n \\leq \\limsup \\hat{R}(P_n)/n \\leq 900$.",
+    "significance": "key",
+    "prerequisites": ["ordinary Ramsey number", "pathIsLinear"],
+    "relatedConcepts": ["erdos-720", "erdos-559"]
   },
   {
-    "id": "ann-720-answer-c",
+    "id": "ann-e720-trees",
     "proofId": "erdos-720",
-    "range": { "startLine": 194, "endLine": 198 },
+    "range": { "startLine": 213, "endLine": 233 },
     "type": "theorem",
-    "title": "answer_720c",
-    "content": "Answer: YES, R̂(Cₙ) = o(n²).",
-    "significance": "critical"
+    "title": "Generalization to Trees and Bounded-Degree Graphs",
+    "content": "tree_size_ramsey axiomatizes the generalization: for any maximum degree bound Delta, every tree with max degree <= Delta has size Ramsey number O(n). This was proved by Friedman-Pippenger (1987). problemConnection559 notes that Problem #559 asks about R-hat(G) for bounded-degree graphs more generally. exactConstantOpen records the open problem of determining the exact constant for paths.",
+    "mathContext": "`tree_size_ramsey : \\forall \\Delta, \\exists c > 0, \\forall n, \\forall T : \\text{GraphOnN } n, \\hat{R}(T) \\leq c \\cdot n$. Friedman-Pippenger (1987) proved this for trees; the full bounded-degree conjecture (Problem #559) remains active research.",
+    "significance": "supporting",
+    "prerequisites": ["sizeRamseyNumber", "tree", "bounded degree"],
+    "relatedConcepts": ["erdos-720", "erdos-559"]
   },
   {
-    "id": "ann-720-main",
+    "id": "ann-e720-summary",
     "proofId": "erdos-720",
-    "range": { "startLine": 253, "endLine": 254 },
+    "range": { "startLine": 235, "endLine": 269 },
     "type": "theorem",
-    "title": "erdos_720",
-    "content": "Main: questions 1b and 2 answered YES.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-720-beck",
-    "proofId": "erdos-720",
-    "range": { "startLine": 261, "endLine": 271 },
-    "type": "theorem",
-    "title": "erdos_720_beck",
-    "content": "Both paths and cycles are Θ(n).",
-    "significance": "critical"
+    "title": "Summary Theorems: erdos_720, erdos_720_main, erdos_720_beck",
+    "content": "Three summary theorems combine the results. erdos_720 proves ErdosQuestion720b AND ErdosQuestion720c (both YES) as a conjunction of answer_720b and answer_720c. erdos_720_main adds the negation of ErdosQuestion720a (NO). erdos_720_beck is the fully proved theorem: pathIsLinear AND cycleIsLinear, constructed by unpacking beck_path_theorem, beck_cycle_theorem, path_lower_bound, and cycle_lower_bound to obtain the four constants and combine the bounds. This is the only nontrivial proof in the file (0 sorries).",
+    "mathContext": "`erdos_720 : \\text{ErdosQuestion720b} \\wedge \\text{ErdosQuestion720c}`. `erdos_720_main : \\text{ErdosQuestion720b} \\wedge \\text{ErdosQuestion720c} \\wedge \\neg\\text{ErdosQuestion720a}`. `erdos_720_beck : \\text{pathIsLinear} \\wedge \\text{cycleIsLinear}` — proved by `obtain`ing constants from Beck's theorem and lower bounds, then pairing them.",
+    "significance": "critical",
+    "prerequisites": ["beck_path_theorem", "beck_cycle_theorem", "path_lower_bound", "cycle_lower_bound"],
+    "relatedConcepts": ["erdos-720"]
   }
 ]
