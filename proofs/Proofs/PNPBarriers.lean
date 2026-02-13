@@ -5992,11 +5992,36 @@ def bitsToNat : List Bit → Nat
   | Bit.zero :: rest => 2 * bitsToNat rest
   | Bit.one :: rest => 1 + 2 * bitsToNat rest
 
-/-- The encoding is injective (stated as axiom - proof requires careful induction) -/
-axiom natToBits_injective : Function.Injective natToBits
+/-- The encoding is injective. Follows from the bitsToNat round-trip property:
+    if natToBits a = natToBits b, then a = bitsToNat (natToBits a) = bitsToNat (natToBits b) = b. -/
+theorem natToBits_injective : Function.Injective natToBits := by
+  intro a b hab
+  have ha := bitsToNat_natToBits a
+  have hb := bitsToNat_natToBits b
+  rw [hab] at ha
+  omega
 
-/-- Round-trip property for natural number encoding -/
-axiom bitsToNat_natToBits : ∀ n : Nat, bitsToNat (natToBits n) = n
+/-- Round-trip property for natural number encoding.
+    Proved by well-founded recursion matching the structure of natToBits. -/
+theorem bitsToNat_natToBits (n : Nat) : bitsToNat (natToBits n) = n := by
+  match n with
+  | 0 => simp [natToBits, bitsToNat]
+  | m + 1 =>
+    simp only [natToBits]
+    have h_div_lt : (m + 1) / 2 < m + 1 := Nat.div_lt_self (by omega) (by omega)
+    have ih := bitsToNat_natToBits ((m + 1) / 2)
+    split
+    · -- even case: (m+1) % 2 = 0
+      rename_i h_even
+      simp only [bitsToNat]
+      rw [ih]
+      omega
+    · -- odd case: (m+1) % 2 ≠ 0
+      rename_i h_odd
+      simp only [bitsToNat]
+      rw [ih]
+      omega
+termination_by n
 
 /-- Natural number encoding for Mathlib TM2 -/
 def natEncoding : Computability.Encoding Nat where
@@ -6233,14 +6258,29 @@ private theorem natToBits_length_succ (n : Nat) :
   conv_lhs => rw [natToBits]
   simp only [List.length_cons]
 
-/-- Encoding length is logarithmic (approximation).
-    This says the binary encoding length is at most log2(n) + 1 bits.
-    For n=0, length=0 ≤ 0+1=1. For n>0, length = floor(log2 n) + 1.
-    Proof axiomatized due to Mathlib API complexity with log2 lemmas. -/
-axiom encodingLength_log_approx_axiom : ∀ n : Nat, encodingLength n ≤ Nat.log2 n + 1
-
-theorem encodingLength_log_approx (n : Nat) :
-    encodingLength n ≤ Nat.log2 n + 1 := encodingLength_log_approx_axiom n
+/-- Encoding length is logarithmic: the binary encoding of n uses at most log2(n) + 1 bits.
+    Proved by well-founded recursion using the identity log2(n) = log2(n/2) + 1 for n ≥ 2. -/
+theorem encodingLength_log_approx (n : Nat) : encodingLength n ≤ Nat.log2 n + 1 := by
+  match n with
+  | 0 => simp [encodingLength, natToBits]
+  | m + 1 =>
+    unfold encodingLength
+    rw [natToBits_length_succ]
+    have h_div_lt : (m + 1) / 2 < m + 1 := Nat.div_lt_self (by omega) (by omega)
+    have ih := encodingLength_log_approx ((m + 1) / 2)
+    unfold encodingLength at ih
+    suffices h : (natToBits ((m + 1) / 2)).length ≤ Nat.log2 (m + 1) by omega
+    cases m with
+    | zero =>
+      simp [natToBits, Nat.log2]
+    | succ k =>
+      have h_ge2 : k + 2 ≥ 2 := by omega
+      have h_log : Nat.log2 (k + 2) = Nat.log2 ((k + 2) / 2) + 1 := by
+        rw [Nat.log2]
+        simp [h_ge2]
+      rw [h_log]
+      omega
+termination_by n
 
 /-- Our inputSize is compatible with encoding length -/
 theorem inputSize_encodingLength_compat (n : Nat) :

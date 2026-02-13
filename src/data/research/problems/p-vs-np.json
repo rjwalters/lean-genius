@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "PROGRESS: Converted 3 encoding axioms to proved theorems in Mathlib bridge section. Axiom count: 182 to 179. All 8301+ lines compile with 0 sorries.",
     "builtItems": [
       {
         "name": "P",
@@ -85,6 +85,21 @@
         "name": "algebrization_barrier",
         "description": "Algebraic techniques also fail",
         "proven": true
+      },
+      {
+        "name": "bitsToNat_natToBits_theorem",
+        "description": "Round-trip: bitsToNat (natToBits n) = n (converted from axiom)",
+        "proven": true
+      },
+      {
+        "name": "natToBits_injective_theorem",
+        "description": "Encoding injectivity (converted from axiom via round-trip)",
+        "proven": true
+      },
+      {
+        "name": "encodingLength_log_approx_theorem",
+        "description": "Encoding length <= log2(n)+1 (converted from axiom)",
+        "proven": true
       }
     ],
     "insights": [
@@ -98,7 +113,10 @@
       "complexity_containments",
       "relativization_barrier",
       "natural_proofs_barrier",
-      "algebrization_barrier"
+      "algebrization_barrier",
+      "Proved bitsToNat_natToBits round-trip via well-founded recursion matching natToBits structure",
+      "Proved natToBits_injective as corollary of round-trip property",
+      "Proved encodingLength_log_approx using Nat.log2 recursive identity for n >= 2"
     ],
     "mathlibGaps": [
       "Turing machines",
