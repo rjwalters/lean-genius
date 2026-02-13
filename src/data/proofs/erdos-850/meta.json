@@ -21,22 +21,18 @@
     "erdosUrl": "https://erdosproblems.com/850",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-01",
-    "mathlib_version": "4.x"
-  },
-  "overview": {
-    "historicalContext": "The Erdős-Woods conjecture asks whether three consecutive shifts of the 'same prime factors' relation can hold simultaneously for distinct integers x and y. Two numbers share the same prime factors when they have identical sets of prime divisors (ignoring multiplicities). For example, 12 = 2²·3 and 18 = 2·3² share prime factors {2,3}.\n\nThe two-shift version (matching prime factors for (x,y) and (x+1,y+1)) is solvable. The parametric family x = 2(2^r - 1) generates infinitely many solutions, and Makowski found the sporadic example (75, 1215): 75 = 3·5², 1215 = 3⁵·5 share primes {3,5}, and 76 = 2²·19, 1216 = 2⁶·19 share primes {2,19}. But adding a third condition (x+2,y+2) seems to be too constraining.\n\nShorey and Tijdeman proved that a strong form of the ABC conjecture (due to Baker) implies the answer is no for the three-shift version. Specifically, if for coprime a,b with a+b=c we have c ≤ C·rad(abc)^{7/6}, then no three-shift solution exists. This connects an elementary question about prime factorization to one of the deepest conjectures in number theory. The problem generalizes naturally to k shifts, and the k-shift problem is monotone: if the k-shift version has no solutions, then neither does the (k+1)-shift version.",
-    "problemStatement": "Do there exist distinct positive integers x and y such that x,y share the same prime factors, x+1,y+1 share the same prime factors, and x+2,y+2 also share the same prime factors?",
-    "proofStrategy": "We define SamePrimeFactors via Nat.primeFactors equality, state the conjecture for k=2, generalize to k-shift, and prove structural properties. The connection to the ABC conjecture via Shorey-Tijdeman is formalized. The equivalence relation structure of SamePrimeFactors is proved (reflexivity, symmetry, transitivity). The k-shift monotonicity theorem and the equivalence ErdosProblem850 ↔ KShiftProblem 2 are proved.",
-    "keyInsights": [
-      "**Two vs three shifts**: The two-shift version (k=1) has infinitely many solutions via the family x = 2(2^r-1), but the three-shift version (k=2) is conjectured unsolvable. This sharp transition is the crux of the problem.",
-      "**ABC connection**: Shorey and Tijdeman showed that Baker's strong ABC conjecture (c ≤ C·rad(abc)^{7/6} for coprime a+b=c) implies no three-shift solution exists. This reduction connects elementary number theory to deep conjectures.",
-      "**Makowski's example**: The pair (75, 1215) satisfies the two-shift condition: 75 and 1215 share primes {3,5}, and 76 and 1216 share primes {2,19}. This is not from the parametric family.",
-      "**k-shift monotonicity**: The problem is monotone in k — unsolvability for k implies unsolvability for k-1. This is proved via a simple restriction argument (interval_cases).",
-      "**Equivalence relation**: SamePrimeFactors is proved to be reflexive, symmetric, and transitive, making it a genuine equivalence relation on ℕ."
-    ],
+    "mathlib_version": "4.x",
     "mathlibDependencies": [
-      "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Data.Nat.Factorization.Basic"
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Finset of prime divisors of a natural number",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
     ],
     "originalContributions": [
       "SamePrimeFactors: equality of Nat.primeFactors sets",
@@ -52,6 +48,30 @@
       "problem850_is_2shift: proved ErdosProblem850 ↔ KShiftProblem 2",
       "kshift_monotone: proved k-shift monotonicity",
       "samePrimeFactors_refl/symm/trans: proved equivalence relation"
+    ],
+    "crossReferences": [
+      {
+        "targetId": "infinitude-primes",
+        "relationship": "foundational",
+        "description": "The infinitude of primes underlies the richness of the prime factor set relation — with finitely many primes, the k-shift problem would be trivially decidable"
+      },
+      {
+        "targetId": "fermats-last-theorem",
+        "relationship": "thematic",
+        "description": "Both problems connect to the ABC conjecture: FLT follows from ABC (Granville-Stark), and Problem 850 follows from Baker's strong ABC (Shorey-Tijdeman)"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #850: The Erdős-Woods Conjecture on Consecutive Radical Equivalences**\n\nThis problem originates from Erdős's collaboration with Alan R. Woods in the 1970s-1980s on the multiplicative structure of consecutive integers. The question asks whether the radical equivalence relation $\\mathrm{rad}(x) = \\mathrm{rad}(y)$ can hold simultaneously for three consecutive shifts $(x, y)$, $(x+1, y+1)$, $(x+2, y+2)$ when $x \\neq y$.\n\n**Historical Timeline:**\n- 1960s: Erdős studied the distribution of prime factors across consecutive integers\n- 1970s: Woods formulated the general k-shift question in his thesis on Diophantine representations\n- 1981: Makowski discovered the sporadic two-shift solution $(75, 1215)$\n- 1985: Masser and Oesterlé formulated the ABC conjecture\n- 1986: Shorey and Tijdeman proved that Baker's strong ABC conjecture ($c \\le C \\cdot \\mathrm{rad}(abc)^{7/6}$) implies no three-shift solution exists\n- 2012: Shinichi Mochizuki claimed a proof of ABC via inter-universal Teichmüller theory (remains controversial)\n\n**The Two-Shift Contrast:** The parametric family $x = 2(2^r - 1)$, $y = x(x+2)$ yields infinitely many two-shift solutions. The key insight is that $x + 2 = 2^{r+1}$ is a pure power of 2, making $\\mathrm{rad}(y) = \\mathrm{rad}(x)$. But the third shift condition imposes a constraint on $x+2$ and $y+2$ that appears combinatorially incompatible with the structure needed for the first two.\n\n**Connection to ABC:** The radical $\\mathrm{rad}(n) = \\prod_{p \\mid n} p$ is the central object in both Problem 850 and the ABC conjecture. The Shorey-Tijdeman reduction shows that controlling $c$ in terms of $\\mathrm{rad}(abc)$ is sufficient to rule out three-shift solutions, because such solutions would force $|x - y|$ to be small relative to the radicals involved.",
+    "problemStatement": "Do there exist distinct positive integers $x$ and $y$ such that $\\mathrm{rad}(x) = \\mathrm{rad}(y)$, $\\mathrm{rad}(x+1) = \\mathrm{rad}(y+1)$, and $\\mathrm{rad}(x+2) = \\mathrm{rad}(y+2)$? Conjectured answer: **NO** (the Erdős-Woods conjecture).",
+    "proofStrategy": "**Formalization Strategy**\n\n1. **Core Definition:** `SamePrimeFactors` via `Nat.primeFactors` equality — the radical equivalence relation\n2. **Main Conjecture:** `ErdosProblem850` as the negation of a three-fold existential\n3. **Solvable Variant:** `TwoShiftSolvable` with `ParametricFamily` and `MakowskiExample`\n4. **ABC Connection:** `radical`, `StrongABCConjecture` (Baker's form), `shorey_tijdeman` axiom\n5. **Generalization:** `KShiftProblem k` with proved equivalence and monotonicity\n6. **Structural Properties:** Equivalence relation proofs for `SamePrimeFactors`",
+    "keyInsights": [
+      "**Two-to-three transition**: The two-shift version ($k=1$) has infinitely many solutions via $x = 2(2^r - 1)$, but the three-shift version ($k=2$) is conjectured impossible — a sharp combinatorial phase transition in the multiplicative structure of consecutive integers",
+      "**ABC reduction**: Shorey and Tijdeman (1986) proved that Baker's strong ABC conjecture ($c \\le C \\cdot \\mathrm{rad}(abc)^{7/6}$ for coprime $a + b = c$) implies no three-shift solution exists, connecting an elementary question to deep Diophantine geometry",
+      "**Radical as invariant**: The radical $\\mathrm{rad}(n) = \\prod_{p \\mid n} p$ is the natural invariant — `SamePrimeFactors` is precisely $\\mathrm{rad}(x) = \\mathrm{rad}(y)$, and the problem asks about simultaneous radical-equivalence under translation",
+      "**Monotonicity structure**: The $k$-shift hierarchy is monotone: unsolvability propagates downward. This is formalized as `kshift_monotone` and proved by a simple restriction argument using `omega`",
+      "**Sporadic vs parametric**: Makowski's example $(75, 1215)$ shows that two-shift solutions are not all explained by the parametric family, suggesting the structure of solutions is richer than initially expected"
     ]
   },
   "sections": [
@@ -60,52 +80,53 @@
       "title": "Same Prime Factors",
       "startLine": 23,
       "endLine": 27,
-      "summary": "Defines SamePrimeFactors using Nat.primeFactors equality."
+      "summary": "Defines `SamePrimeFactors x y` as $x.\\mathrm{primeFactors} = y.\\mathrm{primeFactors}$, the radical equivalence relation on $\\mathbb{N}$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 29,
       "endLine": 38,
-      "summary": "States ErdosProblem850: no distinct x,y with same prime factors for three consecutive shifts."
+      "summary": "States `ErdosProblem850`: $\\nexists\\, x \\neq y$ with $\\mathrm{rad}(x+i) = \\mathrm{rad}(y+i)$ for $i \\in \\{0, 1, 2\\}$. Defined as a `Prop`."
     },
     {
       "id": "two-shift",
       "title": "Weaker Variant: Two Consecutive Shifts",
       "startLine": 40,
       "endLine": 60,
-      "summary": "Defines TwoShiftSolvable, the parametric family x=2(2^r-1), and MakowskiExample (75,1215). Proves makowski_distinct."
+      "summary": "Defines `TwoShiftSolvable` (the $k=1$ case IS solvable), `ParametricFamily(r)` giving $x = 2(2^r - 1)$, `MakowskiExample` $(75, 1215)$, and proves `makowski_distinct`."
     },
     {
       "id": "abc",
       "title": "Connection to ABC Conjecture",
       "startLine": 62,
       "endLine": 76,
-      "summary": "Defines radical and StrongABCConjecture (Baker's version). Axiomatizes Shorey-Tijdeman: strong ABC implies Problem 850."
+      "summary": "Defines `radical(n) = \\prod_{p \\mid n} p$ and `StrongABCConjecture` (Baker's form: $c \\le C \\cdot \\mathrm{rad}(abc)^{7/6}$). Axiomatizes `shorey_tijdeman`: strong ABC $\\Rightarrow$ Problem 850."
     },
     {
       "id": "k-shift",
       "title": "General k-Shift Version",
       "startLine": 78,
       "endLine": 103,
-      "summary": "Defines KShiftProblem for general k. Proves problem850_is_2shift (exact equivalence) and kshift_monotone (monotonicity)."
+      "summary": "Defines `KShiftProblem k` for general $k$. Proves `problem850_is_2shift` ($\\text{Problem 850} \\iff \\text{KShiftProblem}\\,2$) via `interval_cases` and `kshift_monotone` ($k \\Rightarrow k-1$) via `omega`."
     },
     {
       "id": "structural",
       "title": "Structural Observations",
       "startLine": 105,
       "endLine": 121,
-      "summary": "Proves SamePrimeFactors is an equivalence relation: reflexive, symmetric, and transitive."
+      "summary": "Proves `SamePrimeFactors` is an equivalence relation: `samePrimeFactors_refl` (by `rfl`), `samePrimeFactors_symm` (by `.symm`), `samePrimeFactors_trans` (by `.trans`)."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures the Erdős-Woods conjecture (Problem 850), the solvable two-shift variant with Makowski's example, the Shorey-Tijdeman conditional proof via ABC, the general k-shift framework with proved monotonicity, and the equivalence relation structure. 0 sorries.",
-    "implications": "Resolution would connect to deep questions about the multiplicative structure of consecutive integers and the ABC conjecture, one of the most important open problems in number theory.",
+    "summary": "The formalization captures the Erdős-Woods conjecture (Problem 850) as the impossibility of three consecutive radical-equivalences for distinct integers. It includes the solvable two-shift variant with both the parametric family and Makowski's sporadic example, the Shorey-Tijdeman conditional resolution via Baker's strong ABC conjecture, the general k-shift framework with proved equivalence and monotonicity, and the equivalence relation structure of SamePrimeFactors. 0 sorries.",
+    "implications": "**Connections to Number Theory**\n\n1. **ABC Conjecture**: The Shorey-Tijdeman reduction makes Problem 850 a test case for ABC — resolving ABC would resolve this problem\n2. **Multiplicative Structure of Consecutive Integers**: The k-shift hierarchy probes how prime factor sets interact under translation\n3. **Erdős-Woods Numbers**: The general k-shift framework connects to the theory of Erdős-Woods numbers in combinatorial number theory\n4. **Diophantine Geometry**: Baker's strong ABC form involves explicit exponents rather than $\\varepsilon$-asymptotics, connecting to effective Diophantine methods\n5. **Radical Distribution**: Understanding when $\\mathrm{rad}(n) = \\mathrm{rad}(m)$ for shifted pairs relates to the distribution of squarefree kernels",
     "openQuestions": [
-      "Can the three-shift version be resolved unconditionally, without assuming ABC?",
-      "What is the smallest k for which the k-shift problem is unsolvable?",
-      "Are there finitely or infinitely many two-shift solutions beyond the parametric family?",
-      "Does the weak ABC conjecture (without the 7/6 exponent) suffice for the Shorey-Tijdeman reduction?"
+      "Can the three-shift version be resolved unconditionally without assuming any form of the ABC conjecture?",
+      "What is the smallest k for which the k-shift problem is unsolvable (the Erdős-Woods threshold)?",
+      "Are there finitely or infinitely many two-shift solutions beyond the parametric family x = 2(2^r - 1)?",
+      "Does the standard ABC conjecture (with 1+ε exponent rather than Baker's 7/6) suffice for the Shorey-Tijdeman reduction?",
+      "Can computational search provide evidence for or against the three-shift conjecture up to some large bound N?"
     ]
   }
 }
