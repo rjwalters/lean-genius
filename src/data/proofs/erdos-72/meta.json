@@ -33,12 +33,12 @@
       }
     ],
     "mathlibDependencies": [
-      "Mathlib.Combinatorics.SimpleGraph.Basic",
-      "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting",
-      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Analysis.Asymptotics.Asymptotics",
-      "Mathlib.Topology.Instances.Real"
+      { "theorem": "Mathlib.Combinatorics.SimpleGraph.Basic", "description": "Core simple graph definitions and operations" },
+      { "theorem": "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting", "description": "Walk and cycle counting in simple graphs" },
+      { "theorem": "Mathlib.Combinatorics.SimpleGraph.Subgraph", "description": "Subgraph type and operations" },
+      { "theorem": "Mathlib.Data.Finset.Card", "description": "Cardinality of finite sets" },
+      { "theorem": "Mathlib.Analysis.Asymptotics.Asymptotics", "description": "Asymptotic analysis and big-O notation" },
+      { "theorem": "Mathlib.Topology.Instances.Real", "description": "Topological structure on the reals" }
     ],
     "originalContributions": [
       "countingFunction, hasDensityZero: natural density framework using Tendsto",
