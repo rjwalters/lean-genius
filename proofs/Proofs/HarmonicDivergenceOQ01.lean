@@ -7,8 +7,8 @@
 3. Theisinger's theorem: H_n is not an integer for n ≥ 2 (p-adic)
 4. Gamma function: γ = -Γ'(1), Γ'(n+1) = n!(-γ + H_n) (documented, >32GB)
 5. Zeta function: lim_{s→1}(ζ(s) - 1/(s-1)) = γ (documented, >32GB)
-6. Systematic rational exclusion: γ ≠ p/q for all q ≤ 6
-7. Denominator bound: if γ = p/q then q ≥ 7
+6. Systematic rational exclusion: γ ≠ p/q for all q ≤ 4
+7. Sandwich sequence gap and convergence rate
 8. Conditional irrationality: consequences of Irrational γ
 9. Approximation infrastructure: sandwich bounds and convergence rate
 
@@ -135,6 +135,95 @@ theorem harmonic_padic_val (n : ℕ) :
 
 /-- H_n is not an integer for n ≥ 2. -/
 theorem harmonic_non_integer {n : ℕ} (hn : 2 ≤ n) : ¬ (harmonic n).isInt :=
+  harmonic_not_int hn
+
+-- ============================================================
+-- Sandwich Sequence Gap and Convergence Rate
+-- The gap γ_seq'(n) - γ_seq(n) = log(n+1) - log(n) → 0
+-- This gives |γ - γ_seq(n)| < log(1 + 1/n) for n ≥ 1
+-- ============================================================
+
+/-- The gap between upper and lower sequences equals log((n+1)/n) for n ≥ 1.
+Since γ_seq(n) = H_n - log(n+1) and γ_seq'(n) = H_n - log(n) for n ≥ 1. -/
+theorem sandwich_gap (n : ℕ) (hn : n ≥ 1) :
+    γ_seq' n - γ_seq n = Real.log (n + 1) - Real.log n := by
+  simp only [γ_seq', γ_seq, Real.eulerMascheroniSeq', Real.eulerMascheroniSeq]
+  have : n ≠ 0 := by omega
+  simp [this]
+
+/-- γ is approximated by γ_seq(n) with error < log((n+1)/n).
+Since γ_seq(n) < γ < γ_seq'(n), the error is bounded by the gap. -/
+theorem γ_approx_error (n : ℕ) (hn : n ≥ 1) :
+    γ - γ_seq n < Real.log (↑n + 1) - Real.log ↑n := by
+  have h1 : γ < γ_seq' n := γ_lt_γ_seq' n
+  have h2 : γ_seq' n - γ_seq n = Real.log (↑n + 1) - Real.log ↑n := sandwich_gap n hn
+  linarith
+
+/-- The lower approximation error is positive: γ_seq(n) < γ. -/
+theorem γ_approx_error_pos (n : ℕ) : 0 < γ - γ_seq n := by
+  linarith [γ_seq_lt_γ n]
+
+/-- The sandwich gap tends to 0, proving the sequences converge to γ.
+This is an explicit convergence rate result. -/
+theorem sandwich_gap_tendsto :
+    Tendsto (fun n => γ_seq' n - γ_seq n) atTop (nhds 0) := by
+  have h1 := γ_seq_tendsto
+  have h2 := γ_seq'_tendsto
+  have h3 : Tendsto (fun n => γ_seq' n - γ_seq n) atTop (nhds (γ - γ)) :=
+    h2.sub h1
+  simp at h3
+  exact h3
+
+-- ============================================================
+-- Extended Rational Exclusion
+-- Using 1/2 < γ < 2/3, exclude all p/q with small denominator
+-- ============================================================
+
+theorem γ_ne_one_fourth : γ ≠ 1 / 4 := by linarith [one_half_lt_γ]
+theorem γ_ne_three_fourths : γ ≠ 3 / 4 := by linarith [γ_lt_two_thirds]
+theorem γ_ne_one_fifth : γ ≠ 1 / 5 := by linarith [one_half_lt_γ]
+theorem γ_ne_two_fifths : γ ≠ 2 / 5 := by linarith [one_half_lt_γ]
+theorem γ_ne_four_fifths : γ ≠ 4 / 5 := by linarith [γ_lt_two_thirds]
+theorem γ_ne_one_sixth : γ ≠ 1 / 6 := by linarith [one_half_lt_γ]
+theorem γ_ne_five_sixths : γ ≠ 5 / 6 := by linarith [γ_lt_two_thirds]
+
+-- Note on γ ≠ 3/5: 3/5 = 0.6 lies within (1/2, 2/3), so the basic Mathlib bounds
+-- 1/2 < γ < 2/3 do not suffice to exclude it. Excluding 3/5 requires computing
+-- γ_seq or γ_seq' at a sufficiently large index to narrow the interval.
+-- γ ≈ 0.5772... and 3/5 = 0.6, so they differ by ~0.023.
+
+/-- For all rationals p/q with q ≤ 4 and 0 < p/q < 1, we have γ ≠ p/q.
+The only candidates in (0,1) with q ≤ 4 are:
+  1/4, 1/3, 1/2, 2/3, 3/4 (all excluded by bounds). -/
+theorem γ_avoids_denom_le_4 :
+    γ ≠ 1/4 ∧ γ ≠ 1/3 ∧ γ ≠ 1/2 ∧ γ ≠ 2/3 ∧ γ ≠ 3/4 :=
+  ⟨γ_ne_one_fourth, γ_ne_one_third, γ_ne_one_half, γ_ne_two_thirds, γ_ne_three_fourths⟩
+
+-- ============================================================
+-- Conditional Irrationality: Consequences of Irrational γ
+-- If γ is irrational (widely believed), several results follow
+-- ============================================================
+
+-- Note: If γ is irrational and algebraic, Lindemann-Weierstrass implies exp(γ)
+-- is transcendental. Lindemann-Weierstrass is not in Mathlib.
+
+/-- If γ is irrational, then γ cannot equal any rational number. -/
+theorem irrational_γ_ne_rat (h : Irrational γ) (r : ℚ) : γ ≠ ↑r :=
+  h.ne_rat r
+
+-- ============================================================
+-- Harmonic Number Denominators and p-adic Structure
+-- ============================================================
+
+/-- H_n has 2-adic valuation -⌊log₂(n)⌋, implying its denominator
+is divisible by a large power of 2. -/
+theorem harmonic_two_adic_val (n : ℕ) :
+    padicValRat 2 (harmonic n) = -↑(Nat.log 2 n) :=
+  padicValRat_two_harmonic n
+
+/-- H_n is not an integer for n ≥ 2 (Theisinger 1915).
+This follows from the 2-adic valuation being negative. -/
+theorem harmonic_never_integer {n : ℕ} (hn : 2 ≤ n) : ¬ (harmonic n).isInt :=
   harmonic_not_int hn
 
 -- ============================================================
