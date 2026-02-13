@@ -39,20 +39,62 @@
         "id": "erdos-89",
         "relationship": "Related distinct distances problem"
       }
+    ],
+    "crossReferences": [
+      {
+        "targetId": "erdos-94",
+        "relationship": "companion",
+        "description": "Guth-Katz (2015) solved both #94 (distinct distances ≥ Ω(n/log n)) and #95 (∑f² ≤ n³ log n) in the same paper using polynomial partitioning"
+      },
+      {
+        "targetId": "erdos-93",
+        "relationship": "specialization",
+        "description": "Problem #93 asks about distinct distances for convex polygons; the convex case of #95 was solved earlier by Fishburn via Altman (1963)"
+      },
+      {
+        "targetId": "erdos-89",
+        "relationship": "variant",
+        "description": "Problem #89 concerns distinct distances in general position; #95 asks about the second moment of the distance distribution rather than counting distinct distances"
+      },
+      {
+        "targetId": "erdos-90",
+        "relationship": "dual",
+        "description": "Problem #90 (unit distance problem) bounds the maximum multiplicity max f(uᵢ); #95 bounds the second moment ∑f(uᵢ)² — these are dual perspectives on distance concentration"
+      },
+      {
+        "targetId": "erdos-101",
+        "relationship": "technique",
+        "description": "Problem #101 (four-point lines) uses incidence geometry methods closely related to the Guth-Katz polynomial partitioning framework"
+      }
+    ],
+    "mathlibDependencies": [
+      "EuclideanSpace",
+      "Finset.card",
+      "Finset.sum",
+      "Real.log"
     ]
   },
   "overview": {
-    "historicalContext": "**The Guth-Katz Revolution**\n\nThis problem is part of Erdős's famous distinct distances family. While Problem #94 asks for the minimum number of distinct distances (answered: Ω(n/log n)), this companion problem asks about the *distribution* of distance multiplicities.\n\n**The Setup**: Given n points in ℝ², let f(uᵢ) count how many pairs have distance uᵢ. The sum ∑f(uᵢ) = C(n,2) is trivial (every pair contributes once). But what about ∑f(uᵢ)²?\n\n**Erdős's Conjecture**: For all ε > 0, ∑f(uᵢ)² ≪ n^{3+ε}. This says distance multiplicities can't be too concentrated.\n\n**The Solution**: Guth and Katz (2015) proved the stronger bound ∑f(uᵢ)² ≪ n³ log n. This was part of their landmark paper that also resolved the main distinct distances conjecture (#94).\n\n**Earlier Progress**: Fishburn solved the convex polygon case using Altman's work (1963).",
+    "historicalContext": "**The Guth-Katz Revolution**\n\nThis problem belongs to Erdős's celebrated distinct distances family, which he began studying in 1946. While Problem #94 asks for the minimum number of distinct distances (answered: Ω(n/log n)), this companion problem asks about the *second moment* of the distance distribution.\n\n**The Setup**: Given n points in ℝ², let f(uᵢ) count how many ordered pairs have distance uᵢ. The sum ∑f(uᵢ) = n(n-1) is trivial. But ∑f(uᵢ)² measures concentration.\n\n**Erdős's Conjecture (1976)**: For all ε > 0, ∑f(uᵢ)² ≪ n^{3+ε}. The exponent 3 is nearly tight: the √n × √n integer lattice achieves Θ(n³/√(log n)) via the Landau-Ramanujan theorem.\n\n**The Solution**: Guth and Katz (2015, Annals of Mathematics) proved ∑f(uᵢ)² ≪ n³ log n, which is stronger than conjectured. Their proof introduced polynomial partitioning to combinatorial geometry, building on the Elekes-Sharir (2010) framework that reduces distance problems to point-line incidences in ℝ³. The key innovation was classifying incidences on ruled quadric surfaces using the Cayley-Salmon theorem.\n\n**Earlier Progress**: Fishburn solved the convex polygon case using Altman's 1963 result that convex n-gons have O(n) distinct distances. Spencer-Szemerédi-Trotter (1984) obtained weaker bounds using the Szemerédi-Trotter incidence theorem. The $500 Erdős prize was collected by Guth and Katz.",
     "problemStatement": "**Problem Statement**\n\nLet x₁,...,xₙ ∈ ℝ² determine distances {u₁,...,uₜ}. If distance uᵢ occurs between f(uᵢ) pairs of points, prove:\n\n∑ᵢ f(uᵢ)² ≪_ε n^{3+ε} for all ε > 0\n\n**Interpretation**: This bounds how 'concentrated' the distance distribution can be. If one distance appeared n² times, the sum would be n⁴, which is forbidden.\n\n**Answer**: PROVED by Guth and Katz (2015)\n\n**Their Result**: ∑ᵢ f(uᵢ)² ≪ n³ log n\n\nThis is stronger than Erdős asked (removing the ε and replacing with log n).",
-    "proofStrategy": "**The Guth-Katz Approach (2015)**\n\nThe proof uses revolutionary algebraic techniques:\n\n1. **Point-Line Duality**: Transform the distance problem into an incidence problem in 3D.\n\n2. **Ruled Surfaces**: Distances correspond to lines on a quadric surface. Point pairs at the same distance become concurrent lines.\n\n3. **Polynomial Partitioning**: Partition ℝ³ using algebraic surfaces to control incidences.\n\n4. **Elekes-Sharir Framework**: Reduce to counting incidences between points and lines in ℝ³.\n\n5. **The Key Bound**: Prove that n points and n lines in ℝ³ have O(n^{3/2}) incidences unless many lines lie on a common ruled surface.\n\n**Why n³ log n?**: The log factor comes from careful combinatorial analysis of how distance multiplicities can accumulate across the partition cells.\n\n**Impact**: This paper revolutionized incidence geometry and opened new directions in combinatorial geometry.",
+    "proofStrategy": "**The Guth-Katz Approach (2015)**\n\nThe proof uses revolutionary algebraic techniques:\n\n1. **Elekes-Sharir Reduction**: Transform the distance problem into an incidence problem. For each pair (xᵢ, xⱼ) at distance d, associate a line in a parametric 3D space. The sum ∑f(uᵢ)² becomes a count of point-line incidences.\n\n2. **Polynomial Partitioning**: Use a degree-D polynomial to partition ℝ³ into O(D³) cells, each containing ≤ n/D³ points. This is the polynomial ham-sandwich theorem (Guth-Katz 2010, after Stone-Tukey).\n\n3. **Ruled Surface Classification**: Lines contributing many incidences must concentrate on algebraic surfaces. By the Cayley-Salmon theorem, a degree-D surface contains at most O(D²) lines unless it is *ruled* (a quadric or plane). Classify all ruled components.\n\n4. **Incidence Bound**: Prove O(n^{3/2}) incidences for n points and n lines in ℝ³ when no low-degree surface contains too many lines. This yields ∑f² = O(n³ log n).\n\n**Why n³ log n?**: The log factor comes from summing contributions across O(log n) dyadic scales of the polynomial partitioning. Each scale contributes O(n³).",
     "keyInsights": [
-      "The sum ∑f(uᵢ)² measures concentration of the distance distribution",
-      "Guth-Katz proved n³ log n, stronger than the conjectured n^{3+ε}",
-      "Same paper also solved Problem #94 (distinct distances lower bound)",
-      "Uses polynomial partitioning - a technique that transformed combinatorial geometry",
-      "Point-line duality converts distances to incidences in higher dimensions",
-      "The convex case was solved earlier by Fishburn using Altman's methods",
-      "$500 prize reflects the difficulty and importance of this result"
+      "The sum ∑f(uᵢ)² is the second moment (energy) of the distance distribution — it measures concentration",
+      "Guth-Katz proved n³ log n, stronger than the conjectured n^{3+ε}, eliminating ε from the exponent",
+      "The same Annals 2015 paper solved Problem #94 (distinct distances lower bound Ω(n/log n))",
+      "Polynomial partitioning — partitioning ℝ³ by algebraic surfaces — revolutionized combinatorial geometry",
+      "The Elekes-Sharir framework reduces planar distance problems to 3D point-line incidences, making algebraic methods applicable",
+      "The √n × √n lattice shows the exponent 3 is optimal: it achieves ∑f² = Θ(n³/√(log n)) via Landau-Ramanujan"
+    ],
+    "originalContributions": [
+      "Lean formalization of point configurations with Finset Point and EuclideanSpace ℝ (Fin 2)",
+      "Clean definition of distance multiplicity via Finset.filter on the Cartesian product",
+      "Definition of sumSquaredMultiplicities as the second moment ∑f(uᵢ)²",
+      "Formal statement of Erdős's conjecture as ∀ε > 0, ∃C, ∀P: ∑f² ≤ C·n^{3+ε}",
+      "Axiomatization of Guth-Katz theorem with explicit n³ log n bound using Real.log",
+      "Proof that Guth-Katz implies Erdős's conjecture (modulo log n = o(n^ε) sorry)",
+      "Axiomatization of convex polygon case (Fishburn/Altman)",
+      "Summary theorem erdos_95 combining both results as a conjunction"
     ]
   },
   "sections": [
@@ -61,66 +103,66 @@
       "title": "Problem Statement and Background",
       "startLine": 1,
       "endLine": 34,
-      "summary": "Header documentation with the problem statement, solution by Guth-Katz, and references."
+      "summary": "Header documentation: Erdős Problem #95 statement, Guth-Katz solution (2015), $500 prize, references to GK15 Annals paper and Fishburn/Altman convex case."
     },
     {
       "id": "point-configs",
       "title": "Point Configurations and Distances",
       "startLine": 35,
       "endLine": 61,
-      "summary": "Defines Point (R²), PointConfig, distanceSet, and multiplicity function."
+      "summary": "Defines Point as EuclideanSpace ℝ (Fin 2), dist via ‖p - q‖, PointConfig as nonempty Finset Point, distanceSet via Cartesian product image, and multiplicity via filter count."
     },
     {
       "id": "sum-squared",
       "title": "The Sum of Squared Multiplicities",
       "startLine": 62,
       "endLine": 74,
-      "summary": "Defines sumSquaredMultiplicities and the counting identity ∑f(uᵢ) = C(n,2)."
+      "summary": "States sum_multiplicities (∑f = n(n-1), sorry) and defines sumSquaredMultiplicities as Finset.sum of f(d)². The first moment is trivial; the second moment captures concentration."
     },
     {
       "id": "erdos-conjecture",
       "title": "Erdős's Conjecture",
       "startLine": 75,
       "endLine": 86,
-      "summary": "States the conjecture: ∑f(uᵢ)² ≪_ε n^{3+ε} for all ε > 0."
+      "summary": "Defines ErdosConjecture as the Prop: ∀ε > 0, ∃C > 0, ∀P, (∑f²:ℝ) ≤ C · n^{3+ε}. Uses Real exponentiation and cast from ℕ."
     },
     {
       "id": "guth-katz",
       "title": "Guth-Katz Theorem (2015)",
       "startLine": 87,
       "endLine": 113,
-      "summary": "Axiomatizes the stronger bound ∑f(uᵢ)² ≪ n³ log n and derives the conjecture from it."
+      "summary": "Axiomatizes guth_katz_theorem (∃C, ∀P, ∑f² ≤ C·n³·log n) and proves erdos_conjecture_proved using it with one sorry for log n = o(n^ε)."
     },
     {
       "id": "polynomial-method",
       "title": "The Polynomial Method",
       "startLine": 114,
       "endLine": 133,
-      "summary": "Commentary on the proof techniques: point-line duality, polynomial partitioning, ruled surfaces, incidence bounds."
+      "summary": "Commentary section (no Lean declarations): describes point-line duality, polynomial partitioning, ruled surface structure, and the O(n^{3/2}) incidence bound in ℝ³."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 134,
       "endLine": 148,
-      "summary": "Convex polygon case (Fishburn/Altman) and lattice point extremal examples."
+      "summary": "Axiomatizes convex_polygon_case (Fishburn/Altman: ∑f² = O(n³) for convex configurations) with placeholder True hypothesis. Notes lattice extremal examples."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 149,
       "endLine": 187,
-      "summary": "Combined theorem stating both the conjecture and the Guth-Katz bound, with answer and status strings."
+      "summary": "Main theorem erdos_95 = ErdosConjecture ∧ guth_katz_theorem, proved by ⟨erdos_conjecture_proved, guth_katz_theorem⟩. Includes answer/status strings and #check commands."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #95 asked for an upper bound on the sum of squared distance multiplicities. Guth and Katz (2015) proved ∑f(uᵢ)² ≪ n³ log n, stronger than the conjectured n^{3+ε}. This result came from their landmark paper that also resolved the main distinct distances conjecture.",
-    "implications": "**Theoretical Significance**\n\n1. **Polynomial Method**: Established polynomial partitioning as a fundamental tool in combinatorics\n\n2. **Incidence Geometry**: The Elekes-Sharir-Guth-Katz framework spawned numerous subsequent results\n\n3. **Algebraic Techniques**: Showed that algebraic geometry can solve hard combinatorial problems\n\n4. **Distance Distribution**: Reveals structure in how distances can be distributed among point sets\n\n5. **Higher Dimensions**: Techniques extend to higher-dimensional distance problems",
+    "summary": "Erdős Problem #95 asked for an upper bound on the sum of squared distance multiplicities. Guth and Katz (2015) proved ∑f(uᵢ)² ≪ n³ log n, stronger than the conjectured n^{3+ε}. This result came from their landmark Annals paper that also resolved the distinct distances conjecture (#94). The formalization has 2 sorries: a counting identity and an asymptotic comparison.",
+    "implications": "**Theoretical Significance**\n\n1. **Polynomial Method**: Established polynomial partitioning as a fundamental tool in combinatorics, spawning dozens of subsequent results\n\n2. **Incidence Geometry**: The Elekes-Sharir-Guth-Katz framework became the standard approach for distance and incidence problems\n\n3. **Algebraic Techniques**: Demonstrated that algebraic geometry (ruled surfaces, Cayley-Salmon) can resolve hard combinatorial problems\n\n4. **Distance Distribution**: Reveals that no planar point configuration can have overly concentrated distance multiplicities\n\n5. **Higher Dimensions**: Techniques extend to higher-dimensional distance and incidence problems (Solymosi-Tao, Zahl)",
     "openQuestions": [
-      "Is the log n factor necessary, or can it be removed?",
+      "Is the log n factor necessary, or can it be removed to achieve O(n³)?",
       "What is the tight constant in the n³ log n bound?",
       "Extend to higher dimensions with optimal bounds",
-      "Characterize point configurations achieving the maximum",
+      "Characterize point configurations achieving near-maximum ∑f²",
       "Full Lean formalization of the Guth-Katz polynomial method"
     ]
   }
