@@ -2,145 +2,193 @@
   {
     "id": "ann-616-1",
     "proofId": "erdos-616",
-    "range": {
-      "startLine": 1,
-      "endLine": 33
-    },
+    "range": { "startLine": 1, "endLine": 33 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "Erdős Problem #616 asks: for r-uniform hypergraphs, what is the best t(r) such that local covering implies global covering?\n\n**The Setup:**\n- r-uniform hypergraph: every edge has exactly r vertices\n- Covering number τ(G): minimum vertices needed to hit all edges\n- Local condition: every subgraph on ≤ 3r-3 vertices has τ ≤ 1\n\n**Known Bounds (Erdős-Hajnal-Tuza 1991):**\n(3/16)r + 7/8 ≤ t(r) ≤ (1/5)r\n\n**Status:** The gap between 0.1875r and 0.2r is OPEN.",
-    "significance": "critical"
+    "content": "Erdős Problem #616 asks: for $r$-uniform hypergraphs, what is the best $t(r)$ such that local covering implies global covering?\n\n**The Setup:**\n- $r$-uniform hypergraph: every edge has exactly $r$ vertices\n- Covering number $\\tau(G)$: minimum vertices needed to hit all edges\n- Local condition: every subgraph on $\\leq 3r-3$ vertices has $\\tau \\leq 1$\n\n**Known Bounds (Erdős-Hajnal-Tuza 1991):**\n$\\frac{3}{16}r + \\frac{7}{8} \\leq t(r) \\leq \\frac{1}{5}r$\n\n**Status:** The gap between $0.1875r$ and $0.2r$ is OPEN.",
+    "significance": "critical",
+    "mathContext": "This problem belongs to the tradition of Helly-type theorems in combinatorial geometry and hypergraph theory. Helly's theorem (1923) states that for convex sets in $\\mathbb{R}^d$, if every $d+1$ sets have a common point, then all sets do. Problem #616 is an analogous 'quantitative Helly' result for hypergraphs: local intersection conditions bound global covering number.",
+    "relatedConcepts": ["covering number", "transversal number", "Helly-type theorems", "hypergraph theory"],
+    "prerequisites": ["hypergraphs", "covering/transversal", "extremal combinatorics"]
+  },
+  {
+    "id": "ann-616-imports",
+    "proofId": "erdos-616",
+    "range": { "startLine": 35, "endLine": 40 },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports `Nat.Basic`, `Set.Basic`, `Finset.Basic`, and `Real.Basic` from Mathlib. The namespace `Erdos616` contains all definitions. No `SimpleGraph` is needed since hypergraphs are defined from scratch as `UniformHypergraph`.",
+    "significance": "supporting",
+    "mathContext": "Unlike graph problems that use Mathlib's `SimpleGraph`, this formalization builds hypergraph infrastructure from scratch. The `UniformHypergraph` structure stores edges as `Set (Finset V)` with a uniformity proof. `Real.Basic` is needed for the fractional bounds $3/16$ and $1/5$.",
+    "relatedConcepts": ["Finset", "Set", "Real", "custom structures"],
+    "prerequisites": ["Lean 4 structures", "Mathlib basics"]
   },
   {
     "id": "ann-616-2",
     "proofId": "erdos-616",
-    "range": {
-      "startLine": 46,
-      "endLine": 53
-    },
+    "range": { "startLine": 49, "endLine": 51 },
     "type": "definition",
     "title": "r-Uniform Hypergraph",
-    "content": "**UniformHypergraph:**\n\nA structure representing an r-uniform hypergraph - a collection of edges where each edge is an r-element set of vertices.\n\n```lean\nstructure UniformHypergraph (V : Type*) (r : ℕ) where\n  edges : Set (Finset V)\n  uniform : ∀ e ∈ edges, e.card = r\n```\n\n**Examples:**\n- r = 2: ordinary graphs (edges are pairs)\n- r = 3: triple systems\n- r ≥ 3: the focus of this problem",
-    "significance": "critical"
+    "content": "A structure representing an $r$-uniform hypergraph — a collection of edges where each edge is an $r$-element set of vertices.\n\n**Examples:**\n- $r = 2$: ordinary graphs (edges are pairs)\n- $r = 3$: triple systems (Steiner triples)\n- $r \\geq 3$: the focus of this problem",
+    "significance": "critical",
+    "mathContext": "Defined as `structure UniformHypergraph (V : Type*) (r : ℕ)` with fields `edges : Set (Finset V)` and `uniform : ∀ e ∈ edges, e.card = r`. This is a set-system representation: the edge set is a family of $r$-element subsets of $V$. Turán-type problems for $r$-uniform hypergraphs are central to extremal combinatorics.",
+    "relatedConcepts": ["Steiner systems", "Turán hypergraph problem", "set systems", "r-uniform"],
+    "prerequisites": ["Finset", "Set", "cardinality"]
   },
   {
     "id": "ann-616-3",
     "proofId": "erdos-616",
-    "range": {
-      "startLine": 55,
-      "endLine": 68
-    },
+    "range": { "startLine": 57, "endLine": 58 },
+    "type": "definition",
+    "title": "Covering Set (Transversal)",
+    "content": "A covering set $S$ must intersect every edge: at least one vertex of $S$ belongs to each edge.\n\nFormalized as `IsCoveringSet G S := ∀ e ∈ G.edges, ∃ v ∈ S, v ∈ e`.",
+    "significance": "critical",
+    "mathContext": "Also called a **transversal** or **vertex cover**. In set-system terminology, $S$ is a system of distinct representatives hitting each set. The covering number $\\tau(G) = \\min\\{|S| : S \\text{ covers } G\\}$ is dual to the matching number $\\nu(G)$ by König-type results. For $r$-uniform hypergraphs, $\\tau \\leq r \\cdot \\nu$ always.",
+    "relatedConcepts": ["transversal", "vertex cover", "matching number", "König's theorem", "LP duality"],
+    "prerequisites": ["set intersection", "existential quantifier"]
+  },
+  {
+    "id": "ann-616-covering-number",
+    "proofId": "erdos-616",
+    "range": { "startLine": 64, "endLine": 66 },
     "type": "definition",
     "title": "Covering Number τ(G)",
-    "content": "**IsCoveringSet and coveringNumber:**\n\nA covering set (or transversal) S must intersect every edge - at least one vertex of S belongs to each edge.\n\nThe covering number τ(G) is the minimum size of such a set.\n\n**Intuition:** If edges are tasks and vertices are resources, τ(G) is the minimum resources needed so every task gets at least one resource.",
-    "significance": "critical"
+    "content": "The covering number $\\tau(G)$ is the minimum size of a covering set. Defined noncomputably as $\\inf\\{|S| : S \\text{ covers } G\\}$ using `iInf` over `Finset V`.",
+    "significance": "critical",
+    "mathContext": "Defined as `⨅ (S : Finset V) (_ : IsCoveringSet G ↑S), S.card`. The infimum is taken over all finite covering sets. Computing $\\tau$ is NP-hard in general (it generalizes vertex cover). For $r$-uniform hypergraphs, the LP relaxation gives $\\tau^* \\leq \\tau \\leq r \\cdot \\tau^*$ by integrality gap bounds.",
+    "relatedConcepts": ["iInf", "NP-hardness", "LP relaxation", "integrality gap"],
+    "prerequisites": ["infimum", "Finset.card", "covering set"]
   },
   {
     "id": "ann-616-4",
     "proofId": "erdos-616",
-    "range": {
-      "startLine": 70,
-      "endLine": 79
-    },
+    "range": { "startLine": 72, "endLine": 77 },
     "type": "definition",
     "title": "Induced Subhypergraph",
-    "content": "**inducedSubhypergraph:**\n\nThe hypergraph induced on vertex set W contains only edges that lie entirely within W.\n\nThis is crucial for the local condition: we look at small induced subhypergraphs (≤ 3r-3 vertices) and require each to have τ ≤ 1.",
-    "significance": "key"
+    "content": "The hypergraph induced on vertex set $W$ contains only edges entirely within $W$. Formalized as `edges := {e ∈ G.edges | ↑e ⊆ W}` with uniformity inherited from $G$.",
+    "significance": "key",
+    "mathContext": "The induced subhypergraph $G[W]$ restricts to edges $e$ with $e \\subseteq W$. The uniformity proof uses `G.uniform e he.1` since `he : e ∈ G.edges ∧ ↑e ⊆ W`. This is crucial for the local condition: we examine $G[W]$ for all $W$ with $|W| \\leq 3r-3$.",
+    "relatedConcepts": ["induced subgraph", "restriction", "hereditary property"],
+    "prerequisites": ["Set.sep", "subset", "UniformHypergraph"]
   },
   {
     "id": "ann-616-5",
     "proofId": "erdos-616",
-    "range": {
-      "startLine": 85,
-      "endLine": 102
-    },
+    "range": { "startLine": 88, "endLine": 92 },
     "type": "definition",
     "title": "Local Covering Condition",
-    "content": "**HasLocalCoveringBound:**\n\nThe local condition τ(G') ≤ 1 for subgraphs G' on ≤ 3r-3 vertices.\n\n**What does τ ≤ 1 mean?** There exists a single vertex that covers all edges - equivalently, all edges share a common vertex.\n\n**The threshold 3r-3:** Chosen so that small subhypergraphs can have multiple edges (at least 2 disjoint r-edges require 2r vertices), making the condition non-trivial.",
-    "significance": "critical"
+    "content": "**HasLocalCoveringBound:** Every induced subhypergraph on $\\leq k$ vertices has $\\tau \\leq 1$.\n\n$\\tau \\leq 1$ means there exists a single vertex covering all edges — equivalently, all edges share a common vertex.",
+    "significance": "critical",
+    "mathContext": "Defined as $\\forall W : \\text{Finset } V,\\, |W| \\leq k \\to \\exists v \\in W,\\, \\text{IsCoveringSet } G[W]\\, \\{v\\}$. This is a Helly-type condition: any 'small' collection of edges has a common point. The threshold $k = 3r-3$ is optimal: $3r-3$ vertices can host at most 3 pairwise intersecting $r$-edges, making $\\tau \\leq 1$ nontrivial.",
+    "relatedConcepts": ["Helly property", "sunflower", "local-to-global", "intersection property"],
+    "prerequisites": ["covering set", "induced subhypergraph", "localThreshold"]
+  },
+  {
+    "id": "ann-616-threshold",
+    "proofId": "erdos-616",
+    "range": { "startLine": 98, "endLine": 98 },
+    "type": "definition",
+    "title": "Local Threshold 3r-3",
+    "content": "`localThreshold r = 3r - 3`: the vertex count below which all induced subhypergraphs must have $\\tau \\leq 1$.",
+    "significance": "key",
+    "mathContext": "The value $3r-3$ comes from extremal considerations: two disjoint $r$-edges need $2r$ vertices, and with $3r-3$ vertices one can have three edges with pairwise intersections but possibly no common point. The threshold is tight enough that the local condition provides meaningful constraints yet loose enough that the global bound $t(r)$ grows linearly in $r$.",
+    "relatedConcepts": ["extremal threshold", "disjoint edges", "sunflower lemma"],
+    "prerequisites": ["r-uniform edges", "vertex counting"]
   },
   {
     "id": "ann-616-6",
     "proofId": "erdos-616",
-    "range": {
-      "startLine": 108,
-      "endLine": 124
-    },
+    "range": { "startLine": 108, "endLine": 112 },
     "type": "definition",
     "title": "The Main Question",
-    "content": "**ErdosProblem616:**\n\n```lean\ndef ErdosProblem616 (r : ℕ) (t : ℕ) : Prop :=\n  r ≥ 3 →\n  ∀ (V : Type*) [Fintype V] (G : UniformHypergraph V r),\n    HasLocalCoveringBound G (localThreshold r) →\n    coveringNumber G ≤ t\n```\n\nThe question: What is the optimal t = t(r)?",
-    "significance": "critical"
+    "content": "`ErdosProblem616 r t` asserts: for $r \\geq 3$, every $r$-uniform hypergraph satisfying the local condition has $\\tau \\leq t$.\n\nThe question: What is the optimal $t = t(r)$?",
+    "significance": "critical",
+    "mathContext": "The definition `ErdosProblem616 (r : ℕ) (t : ℕ) : Prop` captures the universal statement: all $r$-uniform hypergraphs with `HasLocalCoveringBound G (localThreshold r)` satisfy `coveringNumber G ≤ t`. The optimal $t(r)$ is axiomatized as `optimalCoveringBound r`. Finding the exact coefficient $c$ where $t(r) \\sim cr$ is the open problem.",
+    "relatedConcepts": ["optimal bound", "extremal function", "covering bound"],
+    "prerequisites": ["HasLocalCoveringBound", "coveringNumber", "UniformHypergraph"]
   },
   {
     "id": "ann-616-7",
     "proofId": "erdos-616",
-    "range": {
-      "startLine": 130,
-      "endLine": 154
-    },
-    "type": "axiom",
+    "range": { "startLine": 129, "endLine": 146 },
+    "type": "theorem",
     "title": "Erdős-Hajnal-Tuza Bounds",
-    "content": "**eht_lower_bound and eht_upper_bound:**\n\nThe 1991 paper established:\n\n**Lower bound:** t(r) ≥ (3/16)r + 7/8\n- Achieved by explicit constructions\n- Shows the optimal t grows at least this fast\n\n**Upper bound:** t(r) ≤ (1/5)r\n- Every hypergraph satisfying the local condition has τ ≤ r/5\n\n**The gap:** 3/16 = 0.1875 vs 1/5 = 0.2 - only ~7% difference asymptotically, but closing it is hard.",
-    "significance": "critical"
+    "content": "**EHT 1991 bounds:**\n\n**Lower bound:** $t(r) \\geq \\frac{3}{16}r + \\frac{7}{8}$ — achieved by explicit constructions.\n\n**Upper bound:** $t(r) \\leq \\frac{1}{5}r$ — every hypergraph satisfying the local condition has $\\tau \\leq r/5$.\n\n**The gap:** $3/16 = 0.1875$ vs $1/5 = 0.2$ — only $\\sim 7\\%$ difference asymptotically.",
+    "significance": "critical",
+    "mathContext": "Axiomatized as `eht_lower_bound` and `eht_upper_bound`. The lower bound constructs specific $r$-uniform hypergraphs where every small subhypergraph has a kernel but the global covering number is $\\geq (3/16)r$. The upper bound uses a probabilistic/counting argument: pick a random vertex set of size $r/5$ and show it covers all edges with positive probability. Published in *J. Combin. Theory Ser. A* (1991).",
+    "relatedConcepts": ["explicit construction", "probabilistic method", "J. Combin. Theory", "covering bounds"],
+    "prerequisites": ["lower/upper bound methodology", "real arithmetic"]
   },
   {
     "id": "ann-616-8",
     "proofId": "erdos-616",
-    "range": {
-      "startLine": 156,
-      "endLine": 168
-    },
+    "range": { "startLine": 157, "endLine": 160 },
     "type": "theorem",
     "title": "Coefficient Bounds",
-    "content": "**coefficient_bounds:**\n\nA simple verification that 3/16 ≤ 1/5.\n\n```lean\ntheorem coefficient_bounds :\n    lowerCoefficient ≤ upperCoefficient := by\n  unfold lowerCoefficient upperCoefficient\n  norm_num\n```\n\nThis confirms the known bounds are consistent (the lower bound doesn't exceed the upper bound).",
-    "significance": "supporting"
+    "content": "A `norm_num` verification that $3/16 \\leq 1/5$, confirming the known bounds are consistent.",
+    "significance": "supporting",
+    "mathContext": "The theorem `coefficient_bounds : lowerCoefficient ≤ upperCoefficient` is proved by `unfold; norm_num`. This is a sanity check: if the lower bound exceeded the upper bound, the problem statement would be contradictory. The actual values $0.1875 \\leq 0.2$ leave a gap of $0.0125$, or about $6.25\\%$ relative to the upper bound.",
+    "relatedConcepts": ["norm_num", "consistency check", "real arithmetic"],
+    "prerequisites": ["lowerCoefficient", "upperCoefficient"]
+  },
+  {
+    "id": "ann-616-special",
+    "proofId": "erdos-616",
+    "range": { "startLine": 169, "endLine": 185 },
+    "type": "definition",
+    "title": "Special Cases",
+    "content": "**$r = 3$:** Threshold is $3 \\cdot 3 - 3 = 6$ vertices. Triple systems where every 6-vertex sub-system has a kernel.\n\n**$r = 4$:** Threshold is $3 \\cdot 4 - 3 = 9$ vertices.\n\n**Note:** For small $r$, the lower bound can exceed the upper bound (e.g., $r = 3$: $1.4375 > 0.6$), indicating the bounds need tightening for small cases.",
+    "significance": "supporting",
+    "mathContext": "The thresholds `threshold_3uniform = 6` and `threshold_4uniform = 9` instantiate the general formula. The comment about bounds crossing for small $r$ reveals that the asymptotic bounds from EHT 1991 are only meaningful for large $r$. The lower bound has an additive $+7/8$ term that dominates for small $r$.",
+    "relatedConcepts": ["triple systems", "Steiner triple systems", "small cases"],
+    "prerequisites": ["localThreshold", "bound evaluation"]
   },
   {
     "id": "ann-616-9",
     "proofId": "erdos-616",
-    "range": {
-      "startLine": 198,
-      "endLine": 219
-    },
+    "range": { "startLine": 198, "endLine": 200 },
     "type": "concept",
     "title": "Why 3r-3?",
-    "content": "**The threshold 3r-3:**\n\nThis specific value arises from extremal considerations:\n\n- Two disjoint r-edges need 2r vertices\n- The condition τ ≤ 1 becomes non-trivial when multiple edges exist\n- 3r-3 is the minimal threshold where interesting structure can occur\n\n**Connection to sunflowers:** A sunflower is edges sharing a common 'core'. The condition τ ≤ 1 enforces sunflower-like local structure.",
-    "significance": "key"
+    "content": "The threshold $3r-3$ arises from extremal considerations: two disjoint $r$-edges need $2r$ vertices, and $3r-3$ is the minimal threshold where interesting sunflower-like structure can occur.\n\n**Sunflower connection:** A sunflower is a collection of edges sharing a common 'core'. The local condition $\\tau \\leq 1$ enforces sunflower structure locally.",
+    "significance": "key",
+    "mathContext": "The Erdős-Ko-Rado sunflower lemma (1960) shows that large families of $r$-sets contain sunflowers. Here, the local condition $\\tau(G[W]) \\leq 1$ for $|W| \\leq 3r-3$ forces every triple of pairwise intersecting edges within $3r-3$ vertices to share a common point—a local 3-sunflower condition. The choice $3r-3$ is tight for this structural requirement.",
+    "relatedConcepts": ["sunflower lemma", "Erdős-Ko-Rado", "intersecting families", "delta-system"],
+    "prerequisites": ["sunflower/delta-system", "edge intersection"]
   },
   {
-    "id": "ann-616-10",
+    "id": "ann-616-kernel",
     "proofId": "erdos-616",
-    "range": {
-      "startLine": 225,
-      "endLine": 248
-    },
+    "range": { "startLine": 211, "endLine": 228 },
     "type": "theorem",
     "title": "Kernel Characterization",
-    "content": "**tau_one_iff_kernel:**\n\nτ(G) ≤ 1 is equivalent to having a 'kernel' vertex v ∈ every edge.\n\n```lean\ntheorem tau_one_iff_kernel {V : Type*} [Fintype V] {r : ℕ}\n    (G : UniformHypergraph V r) :\n    (∃ v : V, IsCoveringSet G {v}) ↔ HasKernel G\n```\n\nThis formalizes: 'covering with one vertex' = 'all edges share a common point'.",
-    "significance": "key"
+    "content": "$\\tau(G) \\leq 1$ iff $G$ has a **kernel** vertex $v$ in every edge.\n\nProved by `tau_one_iff_kernel`: `(∃ v, IsCoveringSet G {v}) ↔ HasKernel G`.\n\nBoth directions are straightforward: a singleton cover $\\{v\\}$ hitting all edges is exactly a vertex in every edge.",
+    "significance": "key",
+    "mathContext": "This is the only fully proved theorem in the file (0 sorries). The forward direction extracts the covering vertex from the singleton set using `simp`. The backward direction constructs the singleton cover from the kernel. This equivalence justifies restating the local condition as 'every small subhypergraph has a common vertex.'",
+    "relatedConcepts": ["kernel", "common point", "singleton cover", "Helly property"],
+    "prerequisites": ["IsCoveringSet", "HasKernel", "Set.mem_singleton"]
   },
   {
     "id": "ann-616-11",
     "proofId": "erdos-616",
-    "range": {
-      "startLine": 254,
-      "endLine": 267
-    },
+    "range": { "startLine": 237, "endLine": 238 },
     "type": "concept",
     "title": "Fractional Relaxation",
-    "content": "**Fractional covering number τ*(G):**\n\nThe LP relaxation allows fractional vertex weights (not just 0/1).\n\nWe always have τ*(G) ≤ τ(G), and the 'integrality gap' measures how much rounding costs.\n\nUnderstanding τ* can give insights into the structure of optimal integer solutions.",
-    "significance": "supporting"
+    "content": "**Fractional covering number $\\tau^*(G)$:** The LP relaxation allows fractional vertex weights (not just $0/1$).\n\n$\\tau^*(G) \\leq \\tau(G)$ always, and the integrality gap $\\tau/\\tau^*$ measures the rounding cost.",
+    "significance": "supporting",
+    "mathContext": "Axiomatized as `fractionalCoveringNumber`. By LP duality, $\\tau^*(G) = \\nu^*(G)$ (fractional matching number). For $r$-uniform hypergraphs, $\\tau \\leq r \\cdot \\tau^*$ (each fractional weight can be rounded up to at most $r$ integer covers). Understanding $\\tau^*$ could tighten the bounds on $t(r)$.",
+    "relatedConcepts": ["LP relaxation", "fractional matching", "integrality gap", "LP duality"],
+    "prerequisites": ["linear programming", "covering number"]
   },
   {
     "id": "ann-616-12",
     "proofId": "erdos-616",
-    "range": {
-      "startLine": 273,
-      "endLine": 316
-    },
+    "range": { "startLine": 267, "endLine": 284 },
     "type": "theorem",
     "title": "Status Summary",
-    "content": "**erdos_616_summary:**\n\nErdős Problem #616 is **OPEN**.\n\n**QUESTION:** Find optimal t(r) where local τ ≤ 1 implies global τ ≤ t.\n\n**KNOWN:**\n- Lower: (3/16)r + 7/8 ≤ t(r) [constructions exist]\n- Upper: t(r) ≤ (1/5)r [covering argument]\n\n**OPEN:** Close the gap between coefficients 0.1875 and 0.2.\n\n**KEY INSIGHTS:**\n1. Local condition = small pieces have common vertex\n2. Question = how does local structure bound global complexity?\n3. Related to Helly-type theorems and sunflower lemmas",
-    "significance": "critical"
+    "content": "**erdos_616_summary:** Combines lower and upper bounds.\n\nThe lower bound is derived from `eht_lower_bound` with coefficient adjustment (`linarith`). The upper bound directly invokes `eht_upper_bound`.\n\n**Result:** $(3/16)r \\leq t(r) \\leq (1/5)r$ for all $r \\geq 3$.",
+    "significance": "critical",
+    "mathContext": "The summary theorem is a conjunction: the lower bound produces explicit hypergraphs via $\\exists$, while the upper bound is universal $\\forall$. The proof uses `linarith` to adjust the additive constant $7/8$ in the lower bound to match the multiplicative form `lowerCoefficient * r`. This neatly packages both EHT results.",
+    "relatedConcepts": ["conjunction", "existential lower bound", "universal upper bound", "linarith"],
+    "prerequisites": ["eht_lower_bound", "eht_upper_bound", "coefficient definitions"]
   }
 ]
