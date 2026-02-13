@@ -1,56 +1,122 @@
 [
   {
-    "id": "r-uniform",
+    "id": "ann-e719-hypergraph-def",
     "proofId": "erdos-719",
-    "range": { "startLine": 22, "endLine": 25 },
+    "range": { "startLine": 23, "endLine": 29 },
     "type": "definition",
     "title": "r-Uniform Hypergraph",
-    "content": "An r-uniform hypergraph has all edges (hyperedges) of size exactly r. For r=2, this is an ordinary graph.",
-    "significance": "high"
+    "content": "An r-uniform hypergraph on a finite vertex set V is a family of r-element subsets (edges). Represented as a Finset of Finsets with a proof that every member has cardinality r. For r=2, this is an ordinary graph where edges are 2-element sets.",
+    "mathContext": "$H = (V, E)$ where $E \\subseteq \\binom{V}{r}$, i.e., every edge $e \\in E$ satisfies $|e| = r$. The structure `RUniformHypergraph V r` packages `edges : Finset (Finset V)` with `uniform : ∀ e ∈ edges, e.card = r`.",
+    "significance": "critical",
+    "prerequisites": ["Finset", "Fintype", "DecidableEq"],
+    "relatedConcepts": ["erdos-719", "erdos-718", "erdos-720"]
   },
   {
-    "id": "complete-clique",
+    "id": "ann-e719-complete-clique",
     "proofId": "erdos-719",
-    "range": { "startLine": 27, "endLine": 31 },
+    "range": { "startLine": 31, "endLine": 40 },
     "type": "definition",
-    "title": "Complete Clique K_{r+1}^r",
-    "content": "The complete r-uniform hypergraph on r+1 vertices: all (r+1 choose r) = r+1 possible r-edges. For r=2, this is a triangle K₃.",
-    "significance": "high"
+    "title": "Complete Clique K_{r+1}^r and Related Predicates",
+    "content": "The complete r-uniform clique on a vertex set S consists of all r-element subsets of S, computed as S.powerset.filter. When |S| = r+1, this gives K_{r+1}^r with C(r+1,r) = r+1 edges. IsFullClique checks that S has r+1 vertices and the edges match. IsSingleEdge represents a trivial 'clique' consisting of one r-edge.",
+    "mathContext": "$\\text{completeClique}(r, S) = \\{e \\subseteq S : |e| = r\\}$. When $|S| = r+1$, this has $\\binom{r+1}{r} = r+1$ elements. For $r=2$, $K_3^2$ is the triangle (3 edges). `IsFullClique` requires $|S| = r+1$ and `edges = completeClique r S`. `IsSingleEdge` requires $|e| = r$ and `edges = {e}`.",
+    "significance": "critical",
+    "prerequisites": ["Finset.powerset", "Finset.filter", "Nat.choose"],
+    "relatedConcepts": ["erdos-719"]
   },
   {
-    "id": "turan-number",
+    "id": "ann-e719-decomposition",
     "proofId": "erdos-719",
-    "range": { "startLine": 33, "endLine": 35 },
+    "range": { "startLine": 47, "endLine": 72 },
     "type": "definition",
-    "title": "Hypergraph Turán Number",
-    "content": "ex_r(n; K_{r+1}^r) is the maximum number of r-edges on n vertices avoiding a complete (r+1)-clique. For r ≥ 3, this is a major open problem.",
-    "significance": "high"
+    "title": "Decomposition Framework",
+    "content": "A valid decomposition of an r-uniform hypergraph consists of a family of pieces (each a Finset of edges) satisfying three conditions: (1) pieces_valid — each piece is a single edge or a full (r+1)-clique; (2) pairwise_disjoint — no two pieces share an r-edge; (3) covers — every edge of H belongs to some piece. This is packaged as a structure IsValidDecomp.",
+    "mathContext": "$\\text{IsValidDecomp}(r, H, \\mathcal{P})$ requires: (1) $\\forall P \\in \\mathcal{P}, P \\cong K_r^r \\text{ or } P \\cong K_{r+1}^r$; (2) $\\forall P_1 \\neq P_2 \\in \\mathcal{P}, P_1 \\cap P_2 = \\emptyset$; (3) $\\bigcup_{P \\in \\mathcal{P}} P = E(H)$. The edge-disjointness `PiecesEdgeDisjoint` requires $\\forall e, \\neg(e \\in P_1 \\wedge e \\in P_2)$.",
+    "significance": "critical",
+    "prerequisites": ["Finset", "IsDecompPiece", "PiecesEdgeDisjoint"],
+    "relatedConcepts": ["erdos-719", "erdos-83"]
   },
   {
-    "id": "erdos-sauer",
+    "id": "ann-e719-turan-number",
     "proofId": "erdos-719",
-    "range": { "startLine": 39, "endLine": 46 },
+    "range": { "startLine": 74, "endLine": 90 },
+    "type": "definition",
+    "title": "Turán Number and Clique-Freeness",
+    "content": "IsCliqueFree checks that no (r+1)-element subset has all its r-subsets as edges. The Turán number turanHypergraph(n,r) = sup{|E(H)| : H is K_{r+1}^r-free on n vertices}, defined via sSup. For r=2, Turán's theorem (1941) gives ex_2(n; K_3) = floor(n²/4). For r ≥ 3, this value is itself a major open problem.",
+    "mathContext": "$\\text{ex}_r(n; K_{r+1}^r) = \\max\\{|E(H)| : H \\text{ is } K_{r+1}^r\\text{-free on } [n]\\}$. For $r=2$: $\\text{ex}_2(n; K_3) = \\lfloor n^2/4 \\rfloor$ (Turán 1941), achieved by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. For $r \\geq 3$: determining $\\text{ex}_r(n; K_{r+1}^r)$ is equivalent to determining the Turán density $\\pi(K_{r+1}^r)$, conjectured to be $(r-1)/r$ but proved only for $r=2$.",
+    "significance": "critical",
+    "prerequisites": ["sSup", "Finset.card", "IsCliqueFree"],
+    "relatedConcepts": ["erdos-719", "erdos-718", "erdos-720"]
+  },
+  {
+    "id": "ann-e719-conjecture",
+    "proofId": "erdos-719",
+    "range": { "startLine": 92, "endLine": 105 },
     "type": "conjecture",
-    "title": "Erdős–Sauer Conjecture",
-    "content": "Every r-uniform hypergraph on n vertices can be decomposed into at most ex_r(n; K_{r+1}^r) edge-disjoint copies of single edges and complete cliques.",
-    "significance": "high"
+    "title": "Erdős-Sauer Conjecture (OPEN)",
+    "content": "The main conjecture: for every r ≥ 2 and every r-uniform hypergraph H on n vertices, there exists a valid decomposition into at most ex_r(n; K_{r+1}^r) pieces. Each piece is a single r-edge or a complete (r+1)-clique, and no two pieces share an r-edge. This connects Turán-type extremal bounds with decomposition structure.",
+    "mathContext": "$\\forall n, r \\geq 2, \\forall H \\in \\mathcal{H}_r(n), \\exists \\mathcal{P}, \\text{IsValidDecomp}(r, H, \\mathcal{P}) \\wedge |\\mathcal{P}| \\leq \\text{ex}_r(n; K_{r+1}^r)$. The bound is tight: a $K_{r+1}^r$-free hypergraph with $\\text{ex}_r(n; K_{r+1}^r)$ edges requires exactly that many single-edge pieces (no cliques to merge).",
+    "significance": "critical",
+    "prerequisites": ["turanHypergraph", "IsValidDecomp", "RUniformHypergraph"],
+    "relatedConcepts": ["erdos-719", "erdos-718", "erdos-720", "erdos-83"]
   },
   {
-    "id": "graph-case",
+    "id": "ann-e719-graph-case",
     "proofId": "erdos-719",
-    "range": { "startLine": 50, "endLine": 54 },
-    "type": "note",
-    "title": "Graph Case (r = 2)",
-    "content": "For ordinary graphs, the conjecture asks: can every graph on n vertices be decomposed into ≤ ⌊n²/4⌋ edges and triangles with no shared edge? The bound comes from Turán's theorem.",
-    "significance": "high"
+    "range": { "startLine": 107, "endLine": 123 },
+    "type": "theorem",
+    "title": "Graph Case (r=2): Turán's Theorem",
+    "content": "For ordinary graphs (r=2), Turán's theorem gives ex_2(n; K_3) = floor(n²/4). The theorem graph_case_bound shows that if the conjecture holds for a graph H, the decomposition uses at most floor(n²/4) pieces. The proof rewrites the Turán number using the turan_graph axiom.",
+    "mathContext": "For $r=2$: can every graph on $n$ vertices be decomposed into $\\leq \\lfloor n^2/4 \\rfloor$ edges and triangles? The bound $\\lfloor n^2/4 \\rfloor$ equals the number of edges in the Turán graph $T(n,2) = K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. The proof uses `turan_graph n ▸ hbound` to substitute the explicit value.",
+    "significance": "key",
+    "prerequisites": ["turan_graph", "Turán's theorem"],
+    "relatedConcepts": ["erdos-719", "erdos-83"]
   },
   {
-    "id": "turan-density",
+    "id": "ann-e719-choose-succ",
     "proofId": "erdos-719",
-    "range": { "startLine": 72, "endLine": 76 },
-    "type": "note",
-    "title": "Turán Density Problem",
-    "content": "For r ≥ 3, even the exact value of ex_r(n; K_{r+1}^r) is unknown. This is a central open problem in extremal combinatorics, making the conjecture doubly difficult.",
-    "significance": "medium"
+    "range": { "startLine": 127, "endLine": 130 },
+    "type": "lemma",
+    "title": "C(r+1, r) = r+1: Clique Edge Count",
+    "content": "A complete (r+1)-clique K_{r+1}^r has exactly r+1 r-edges. This is proved by applying Nat.choose_symm to get C(r+1,r) = C(r+1,1) = r+1. This quantifies the 'savings' of using clique pieces: each clique piece replaces r+1 single-edge pieces.",
+    "mathContext": "$\\binom{r+1}{r} = \\binom{r+1}{1} = r+1$ by `Nat.choose_symm`. Each $(r+1)$-clique piece covers $r+1$ edges, so using clique pieces can reduce the total piece count by a factor of up to $r+1$.",
+    "significance": "key",
+    "prerequisites": ["Nat.choose_symm", "Nat.choose"],
+    "relatedConcepts": ["erdos-719"]
+  },
+  {
+    "id": "ann-e719-empty-case",
+    "proofId": "erdos-719",
+    "range": { "startLine": 134, "endLine": 147 },
+    "type": "theorem",
+    "title": "Empty Hypergraph: Trivial Satisfaction",
+    "content": "The empty hypergraph (no edges) trivially satisfies the Erdős-Sauer conjecture with the empty decomposition (0 pieces). All three proof obligations are vacuously true since there are no edges to cover, no pieces to validate, and no pairs to check disjointness.",
+    "mathContext": "$H = (V, \\emptyset) \\Rightarrow \\mathcal{P} = \\emptyset$ satisfies $\\text{IsValidDecomp}$ vacuously, and $|\\mathcal{P}| = 0 \\leq \\text{ex}_r(n; K_{r+1}^r)$. The proof uses `Finset.not_mem_empty` to discharge all goals by contradiction.",
+    "significance": "supporting",
+    "prerequisites": ["Finset.not_mem_empty"],
+    "relatedConcepts": ["erdos-719"]
+  },
+  {
+    "id": "ann-e719-sorry-bounds",
+    "proofId": "erdos-719",
+    "range": { "startLine": 149, "endLine": 164 },
+    "type": "insight",
+    "title": "Remaining Sorries: Counting Lemmas",
+    "content": "Two results remain as sorry: (1) decomp_pieces_le_edges — any valid decomposition has at most |E(H)| pieces, since edge-disjointness ensures each piece covers at least one unique edge; (2) trivial_decomp_exists — the decomposition where every edge is its own piece always works. These are structural lemmas about the decomposition framework, not about the conjecture itself.",
+    "mathContext": "(1) $|\\mathcal{P}| \\leq |E(H)|$: by edge-disjointness and coverage, define an injection $\\mathcal{P} \\to E(H)$ sending each piece to one of its edges. (2) $\\mathcal{P} = \\{\\{e\\} : e \\in E(H)\\}$: each singleton is a valid `IsSingleEdge` piece, disjointness is trivial, and coverage is immediate.",
+    "significance": "key",
+    "prerequisites": ["IsValidDecomp", "Finset.card"],
+    "relatedConcepts": ["erdos-719"]
+  },
+  {
+    "id": "ann-e719-related",
+    "proofId": "erdos-719",
+    "range": { "startLine": 166, "endLine": 176 },
+    "type": "concept",
+    "title": "Related Problems: Turán Numbers and Triangle Decompositions",
+    "content": "The Erdős-Sauer conjecture relates to several other Erdős problems: #718 concerns lower bounds on hypergraph Turán numbers, #720 concerns Turán densities for higher uniformity, and #83 concerns edge-disjoint triangle decompositions of dense graphs. The conjecture bridges Turán-type extremal theory with structural decomposition theory.",
+    "mathContext": "The hierarchy: (1) Turán density $\\pi(K_{r+1}^r) = \\lim_{n \\to \\infty} \\text{ex}_r(n; K_{r+1}^r)/\\binom{n}{r}$ — known only for $r=2$ ($\\pi(K_3) = 1/2$); (2) Exact Turán numbers — known only for $r=2$; (3) Erdős-Sauer decomposition — uses the Turán number as the piece bound. Each level builds on the one below.",
+    "significance": "supporting",
+    "prerequisites": ["Turán numbers", "hypergraph extremal theory"],
+    "relatedConcepts": ["erdos-718", "erdos-720", "erdos-83"]
   }
 ]
