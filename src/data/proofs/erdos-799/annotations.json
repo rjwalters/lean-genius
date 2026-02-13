@@ -1,170 +1,170 @@
 [
   {
-    "id": "ann-799-1",
+    "id": "ann-799-imports",
     "proofId": "erdos-799",
-    "range": {
-      "startLine": 1,
-      "endLine": 29
-    },
+    "range": { "startLine": 31, "endLine": 39 },
     "type": "concept",
-    "title": "Problem Overview",
-    "content": "Erd\u0151s Problem #799: List Chromatic Number of Random Graphs. Status: SOLVED (Alon 1992, Alon-Krivelevich-Sudakov 1999)",
-    "significance": "critical"
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib's `SimpleGraph.Basic` and `SimpleGraph.Coloring` (for chromatic number), along with `Fintype`, `Finset` (for finite vertex sets and color lists), and `Order.Basic` (for `sInf` in the list chromatic number definition). Opens `SimpleGraph` and `Finset` namespaces.",
+    "mathContext": "The formalization builds on Mathlib's `SimpleGraph` and `chromaticNumber` to define the list chromatic number $\\chi_L(G)$ as a refinement.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "simple graphs", "graph coloring", "finite sets"],
+    "prerequisites": ["Lean 4", "Mathlib graph library"]
   },
   {
-    "id": "ann-799-2",
+    "id": "ann-799-colorlist",
     "proofId": "erdos-799",
-    "range": {
-      "startLine": 48,
-      "endLine": 52
-    },
+    "range": { "startLine": 48, "endLine": 52 },
     "type": "definition",
-    "title": "Colorlistassignment",
-    "content": "A function assigning to each vertex a finite set of available colors.",
-    "significance": "key"
+    "title": "Color List Assignment",
+    "content": "Defines a color list assignment as a function $L : V \\to \\text{Finset}\\,C$ mapping each vertex to a finite set of available colors. This is the key ingredient that distinguishes list coloring from ordinary coloring: different vertices may have different palettes. Introduced by Vizing (1976) and independently by Erdős, Rubin, and Taylor (1979).",
+    "mathContext": "$L : V \\to \\text{Finset}\\,C$ assigns to each vertex $v$ a set $L(v)$ of permitted colors. In ordinary coloring, $L(v) = \\{1,\\ldots,k\\}$ for all $v$.",
+    "significance": "key",
+    "relatedConcepts": ["list coloring", "vertex coloring", "Vizing's conjecture", "Erdős–Rubin–Taylor"],
+    "prerequisites": ["graph theory", "finite sets"]
   },
   {
-    "id": "ann-799-3",
+    "id": "ann-799-validcoloring",
     "proofId": "erdos-799",
-    "range": {
-      "startLine": 54,
-      "endLine": 61
-    },
+    "range": { "startLine": 54, "endLine": 61 },
     "type": "definition",
-    "title": "Isvalidlistcoloring",
-    "content": "A coloring where each vertex receives a color from its list, and adjacent vertices receive distinct colors. (f : V \u2192 C) : Prop := (\u2200 v, f v \u2208 L v) \u2227 (\u2200 v w, G.Adj v w \u2192 f v \u2260 f w)",
-    "significance": "key"
+    "title": "Valid List Coloring",
+    "content": "A coloring $f : V \\to C$ is a valid list coloring if (1) each vertex uses a color from its list ($f(v) \\in L(v)$) and (2) adjacent vertices receive distinct colors ($f(v) \\neq f(w)$ when $v \\sim w$). This is a conjunction of a 'list constraint' and the standard 'properness' constraint.",
+    "mathContext": "$f \\text{ is valid} \\iff (\\forall v,\\; f(v) \\in L(v)) \\wedge (\\forall v \\sim w,\\; f(v) \\neq f(w))$",
+    "significance": "key",
+    "relatedConcepts": ["proper coloring", "graph homomorphism", "constraint satisfaction"],
+    "prerequisites": ["graph coloring basics"]
   },
   {
-    "id": "ann-799-4",
+    "id": "ann-799-listcolorable",
     "proofId": "erdos-799",
-    "range": {
-      "startLine": 63,
-      "endLine": 71
-    },
+    "range": { "startLine": 63, "endLine": 71 },
     "type": "definition",
-    "title": "Islistcolorable",
-    "content": "A graph G is k-list colorable if for any assignment of lists of size k to each vertex, a valid list coloring exists. \u2200 (C : Type) [DecidableEq C] (L : ColorListAssignment V C), (\u2200 v, (L v).card \u2265 k) \u2192 \u2203 f : V \u2192 C, IsValidListColoring G L f",
-    "significance": "key"
+    "title": "k-List Colorable",
+    "content": "A graph $G$ is **$k$-list colorable** (or $k$-choosable) if for *every* assignment of lists of size $\\geq k$ to each vertex, a valid list coloring exists. The universal quantification over all list assignments is what makes list coloring harder than ordinary coloring — we must handle adversarially chosen palettes.",
+    "mathContext": "$G \\text{ is } k\\text{-choosable} \\iff \\forall L : V \\to \\text{Finset}\\,C,\\; (\\forall v,\\; |L(v)| \\geq k) \\implies \\exists f,\\; f \\text{ is a valid list coloring}$",
+    "significance": "key",
+    "relatedConcepts": ["choosability", "adversarial coloring", "online coloring", "Galvin's theorem"],
+    "prerequisites": ["list coloring", "universal quantification"]
   },
   {
-    "id": "ann-799-5",
+    "id": "ann-799-listchromatic",
     "proofId": "erdos-799",
-    "range": {
-      "startLine": 73,
-      "endLine": 78
-    },
+    "range": { "startLine": 73, "endLine": 78 },
     "type": "definition",
-    "title": "Listchromaticnumber",
-    "content": "\u03c7_L(G) is the minimum k such that G is k-list colorable. sInf {k : \u2115 | IsListColorable G k}",
-    "significance": "key"
+    "title": "List Chromatic Number",
+    "content": "The **list chromatic number** (or **choice number**) $\\chi_L(G) = \\min\\{k : G \\text{ is } k\\text{-choosable}\\}$, defined as the infimum of the set of valid $k$. This is the central object of study in Erdős Problem #799. For complete bipartite graphs $K_{n,n}$, Galvin and others showed $\\chi_L(K_{n,n}) = \\lfloor \\log_2 n \\rfloor + 1$, while $\\chi(K_{n,n}) = 2$.",
+    "mathContext": "$\\chi_L(G) = \\inf\\{k \\in \\mathbb{N} : G \\text{ is } k\\text{-choosable}\\}$",
+    "significance": "critical",
+    "relatedConcepts": ["choice number", "choosability", "chromatic number", "list coloring conjecture"],
+    "prerequisites": ["graph coloring", "infimum"]
   },
   {
-    "id": "ann-799-6",
+    "id": "ann-799-comparison",
     "proofId": "erdos-799",
-    "range": {
-      "startLine": 84,
-      "endLine": 90
-    },
-    "type": "axiom",
-    "title": "List Chromatic Ge Chromatic",
-    "content": "The list chromatic number is at least the ordinary chromatic number. This is because we can give every vertex the same list of \u03c7(G) colors. listChromaticNumber G \u2265 G.chromaticNumber",
-    "significance": "key"
-  },
-  {
-    "id": "ann-799-7",
-    "proofId": "erdos-799",
-    "range": {
-      "startLine": 92,
-      "endLine": 99
-    },
-    "type": "axiom",
-    "title": "List Chromatic Gap Unbounded",
-    "content": "There exist bipartite graphs (\u03c7 = 2) with arbitrarily large \u03c7_L. The complete bipartite graph K_{n,n} satisfies \u03c7_L(K_{n,n}) \u2265 \u230alog\u2082 n\u230b + 1. \u2200 k : \u2115, \u2203 (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V), G.chromaticNumber = 2 \u2227 listChromaticNumber G \u2265 k",
-    "significance": "key"
-  },
-  {
-    "id": "ann-799-8",
-    "proofId": "erdos-799",
-    "range": {
-      "startLine": 105,
-      "endLine": 109
-    },
-    "type": "definition",
-    "title": "Listchromaticrandom",
-    "content": "The list chromatic number of a graph on n vertices drawn from G(n, 1/2). We axiomatize the almost-sure behavior rather than the probability model.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-799-9",
-    "proofId": "erdos-799",
-    "range": {
-      "startLine": 111,
-      "endLine": 117
-    },
-    "type": "axiom",
-    "title": "Chromatic Number Random Graph",
-    "content": "For G \u2208 G(n, 1/2), \u03c7(G) \u224d n / (2 log\u2082 n) almost surely. \u2203 c\u2081 c\u2082 : \u211d, c\u2081 > 0 \u2227 c\u2082 > 0 \u2227 \u2200 n : \u2115, n \u2265 2 \u2192 c\u2081 * (n : \u211d) / Real.log n \u2264 (listChromaticRandom n : \u211d)",
-    "significance": "key"
-  },
-  {
-    "id": "ann-799-10",
-    "proofId": "erdos-799",
-    "range": {
-      "startLine": 123,
-      "endLine": 133
-    },
-    "type": "axiom",
-    "title": "Alon 1992",
-    "content": "For the random graph G on n vertices with edge probability 1/2: \u03c7_L(G) \u226a (log log n / log n) \u00b7 n almost surely.  This was the first proof that \u03c7_L(G) = o(n) for random graphs, using the probabilistic method and the Lov\u00e1sz Local Lemma. \u2203 C : \u211d, C > 0 \u2227 \u2200 n : \u2115, n \u2265 2 \u2192 (listChromaticRandom n : \u211d) \u2264 C",
-    "significance": "key"
-  },
-  {
-    "id": "ann-799-11",
-    "proofId": "erdos-799",
-    "range": {
-      "startLine": 135,
-      "endLine": 141
-    },
-    "type": "axiom",
-    "title": "List Chromatic Sublinear",
-    "content": "Alon's theorem implies that \u03c7_L(G) grows slower than linearly in n. \u2200 \u03b5 : \u211d, \u03b5 > 0 \u2192 \u2203 N\u2080 : \u2115, \u2200 n : \u2115, n \u2265 N\u2080 \u2192 (listChromaticRandom n : \u211d) \u2264 \u03b5 * n",
-    "significance": "key"
-  },
-  {
-    "id": "ann-799-12",
-    "proofId": "erdos-799",
-    "range": {
-      "startLine": 147,
-      "endLine": 159
-    },
-    "type": "axiom",
-    "title": "Alon Krivelevich Sudakov 1999",
-    "content": "Alon, Krivelevich, and Sudakov (1999) proved that for G \u2208 G(n, 1/2): \u03c7_L(G) \u224d n / log n almost surely.  More precisely: - Upper bound: \u03c7_L(G) \u2264 C\u2081 \u00b7 n / log n (semi-random / R\u00f6dl nibble method) - Lower bound: \u03c7_L(G) \u2265 C\u2082 \u00b7 n / log n (adversarial list construction) \u2203 C\u2081 C\u2082 : \u211d, C\u2081 > 0 \u2227 C\u2082 > 0 \u2227 \u2200 n ",
-    "significance": "key"
-  },
-  {
-    "id": "ann-799-13",
-    "proofId": "erdos-799",
-    "range": {
-      "startLine": 165,
-      "endLine": 176
-    },
-    "type": "axiom",
-    "title": "List Vs Ordinary Ratio",
-    "content": "For G \u2208 G(n, 1/2): - \u03c7(G) \u2248 n / (2 log\u2082 n) - \u03c7_L(G) \u224d n / log n  So \u03c7_L(G) / \u03c7(G) \u2192 2 / ln 2 \u2248 2.885 as n \u2192 \u221e. The list chromatic number exceeds the ordinary one by a constant factor. \u2200 \u03b5 : \u211d, \u03b5 > 0 \u2192 \u2203 N\u2080 : \u2115, \u2200 n : \u2115, n \u2265 N\u2080 \u2192 |(listChromaticRandom n : \u211d) / ((n : \u211d) / Real.log n) - 1| \u2264 \u03b5",
-    "significance": "key"
-  },
-  {
-    "id": "ann-799-14",
-    "proofId": "erdos-799",
-    "range": {
-      "startLine": 182,
-      "endLine": 199
-    },
+    "range": { "startLine": 84, "endLine": 90 },
     "type": "theorem",
-    "title": "Erdos 799",
-    "content": "Question: Is \u03c7_L(G) = o(n) for almost all graphs on n vertices?  Answer: YES  For the random graph G(n, 1/2): 1. Alon (1992): \u03c7_L(G) \u226a (log log n / log n) \u00b7 n 2. AKS (1999): \u03c7_L(G) \u224d n / log n  Both bounds show \u03c7_L(G) = o(n) almost surely. \u2203 C\u2081 C\u2082 : \u211d, C\u2081 > 0 \u2227 C\u2082 > 0 \u2227 \u2200 n : \u2115, n \u2265 2 \u2192 C\u2082 * (n : \u211d)",
-    "significance": "core"
+    "title": "χ_L(G) ≥ χ(G)",
+    "content": "The list chromatic number is always at least the ordinary chromatic number. The proof is immediate: if we give every vertex the *same* list $\\{1, \\ldots, k\\}$, then a valid list coloring is just an ordinary proper $k$-coloring. So $k$-choosability implies $k$-colorability, hence $\\chi_L \\geq \\chi$. The **List Coloring Conjecture** (Vizing, Albertson–Collins, 1981) asserts that $\\chi_L = \\chi'$ for line graphs, i.e., $\\text{ch}'(G) = \\chi'(G)$ for all graphs.",
+    "mathContext": "$\\chi_L(G) \\geq \\chi(G)$. Proof: uniform lists $L(v) = [k]$ reduce list coloring to ordinary coloring.",
+    "significance": "key",
+    "relatedConcepts": ["chromatic number comparison", "list coloring conjecture", "Vizing's conjecture"],
+    "prerequisites": ["graph coloring", "list coloring"]
+  },
+  {
+    "id": "ann-799-gap",
+    "proofId": "erdos-799",
+    "range": { "startLine": 92, "endLine": 99 },
+    "type": "theorem",
+    "title": "Unbounded Gap χ_L − χ",
+    "content": "There exist bipartite graphs ($\\chi = 2$) with arbitrarily large $\\chi_L$. The key example is $K_{n,n}$: Erdős, Rubin, and Taylor (1979) proved $\\chi_L(K_{n,n}) \\geq \\lfloor \\log_2 n \\rfloor + 1$ using a probabilistic argument. The construction assigns lists so that any coloring creates a monochromatic edge with positive probability.",
+    "mathContext": "$\\forall k,\\; \\exists G \\text{ bipartite},\\; \\chi(G) = 2 \\wedge \\chi_L(G) \\geq k$. In particular, $\\chi_L(K_{n,n}) = \\lfloor \\log_2 n \\rfloor + 1$.",
+    "significance": "key",
+    "relatedConcepts": ["complete bipartite graphs", "Erdős–Rubin–Taylor theorem", "chromatic-choosability gap"],
+    "prerequisites": ["bipartite graphs", "logarithmic functions"]
+  },
+  {
+    "id": "ann-799-random",
+    "proofId": "erdos-799",
+    "range": { "startLine": 105, "endLine": 109 },
+    "type": "definition",
+    "title": "List Chromatic Number of Random Graph",
+    "content": "Axiomatizes $\\chi_L(G(n,1/2))$ as a deterministic function of $n$, representing the almost-sure behavior. This sidesteps the need to formalize the Erdős–Rényi probability model $G(n,p)$ in Lean, which would require measure theory on graph spaces. The almost-sure statements are captured by the bounds in subsequent axioms.",
+    "mathContext": "We define $\\chi_L^{\\text{rand}}(n)$ representing $\\chi_L(G)$ for $G \\sim G(n, 1/2)$, valid almost surely as $n \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős–Rényi model", "random graphs", "almost sure convergence", "probabilistic graph theory"],
+    "prerequisites": ["probability theory", "random graph models"]
+  },
+  {
+    "id": "ann-799-chromaticrand",
+    "proofId": "erdos-799",
+    "range": { "startLine": 111, "endLine": 117 },
+    "type": "theorem",
+    "title": "Chromatic Number of Random Graphs",
+    "content": "For $G \\sim G(n, 1/2)$, the chromatic number satisfies $\\chi(G) \\sim n / (2\\log_2 n)$ almost surely. This landmark result, proved by Bollobás (1988) for the upper bound and Łuczak (1991) for concentration, shows that random graphs are hard to color. The factor of 2 in the denominator comes from the independence number $\\alpha(G) \\sim 2\\log_2 n$ and the greedy bound $\\chi \\geq n/\\alpha$.",
+    "mathContext": "$\\chi(G(n,1/2)) \\sim \\frac{n}{2\\log_2 n}$ a.s. Since $\\alpha(G(n,1/2)) \\sim 2\\log_2 n$, we have $\\chi \\geq n/\\alpha \\sim n/(2\\log_2 n)$.",
+    "significance": "key",
+    "relatedConcepts": ["random graph chromatic number", "independence number", "Bollobás", "Łuczak"],
+    "prerequisites": ["random graphs", "chromatic number", "independence number"]
+  },
+  {
+    "id": "ann-799-alon1992",
+    "proofId": "erdos-799",
+    "range": { "startLine": 123, "endLine": 133 },
+    "type": "theorem",
+    "title": "Alon's Theorem (1992)",
+    "content": "Noga Alon proved the first sublinear bound on $\\chi_L(G)$ for random graphs: $\\chi_L(G(n,1/2)) \\leq C \\cdot \\frac{\\log\\log n}{\\log n} \\cdot n$ almost surely. The proof uses the **Lovász Local Lemma** (LLL): for a given list assignment with lists of size $k$, the probability that any single vertex cannot be colored is small, and the LLL shows that with positive probability all vertices can be simultaneously colored. This was the paper that first resolved Erdős Problem #799 affirmatively.",
+    "mathContext": "$\\chi_L(G(n,1/2)) = O\\left(\\frac{n \\log\\log n}{\\log n}\\right)$ a.s. The LLL gives $\\Pr[\\text{valid coloring exists}] > 0$ when $k = \\Omega(n\\log\\log n / \\log n)$.",
+    "significance": "critical",
+    "relatedConcepts": ["Lovász Local Lemma", "probabilistic method", "random graph coloring", "sublinear bounds"],
+    "prerequisites": ["probability theory", "Lovász Local Lemma", "graph coloring"]
+  },
+  {
+    "id": "ann-799-sublinear",
+    "proofId": "erdos-799",
+    "range": { "startLine": 135, "endLine": 141 },
+    "type": "theorem",
+    "title": "Sublinear Growth Corollary",
+    "content": "Derives the $o(n)$ statement directly from Alon's 1992 bound: since $\\log\\log n / \\log n \\to 0$, we get $\\chi_L(G)/n \\to 0$. This is the precise affirmative answer to Erdős's question. The epsilon-N formulation captures the formal definition of $o(n)$: for every $\\varepsilon > 0$, there exists $N_0$ such that $\\chi_L(G) \\leq \\varepsilon n$ for all $n \\geq N_0$.",
+    "mathContext": "$\\chi_L(G) = o(n) \\iff \\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall n \\geq N_0,\\; \\chi_L(G(n,1/2)) \\leq \\varepsilon n$",
+    "significance": "key",
+    "relatedConcepts": ["little-o notation", "sublinear growth", "asymptotic analysis"],
+    "prerequisites": ["asymptotic notation", "real analysis"]
+  },
+  {
+    "id": "ann-799-aks1999",
+    "proofId": "erdos-799",
+    "range": { "startLine": 147, "endLine": 159 },
+    "type": "theorem",
+    "title": "Alon–Krivelevich–Sudakov (1999)",
+    "content": "The tight asymptotic: $\\chi_L(G(n,1/2)) = \\Theta(n/\\log n)$ almost surely. The **upper bound** uses the semi-random method (Rödl nibble): iteratively color vertices by choosing colors that avoid conflicts, with random tie-breaking. The **lower bound** constructs adversarial list assignments: give each vertex a random subset of $[n/\\log n]$ colors, then show that with high probability no valid coloring exists. This completely determines the order of magnitude of $\\chi_L$ for random graphs.",
+    "mathContext": "$\\exists C_1, C_2 > 0,\\; \\forall n \\geq 2,\\; C_2 \\cdot \\frac{n}{\\log n} \\leq \\chi_L(G(n,1/2)) \\leq C_1 \\cdot \\frac{n}{\\log n}$ a.s.",
+    "significance": "critical",
+    "relatedConcepts": ["semi-random method", "Rödl nibble", "adversarial list construction", "tight asymptotics"],
+    "prerequisites": ["probabilistic combinatorics", "concentration inequalities", "graph coloring"]
+  },
+  {
+    "id": "ann-799-ratio",
+    "proofId": "erdos-799",
+    "range": { "startLine": 165, "endLine": 176 },
+    "type": "theorem",
+    "title": "Asymptotic Ratio χ_L/χ",
+    "content": "For $G \\sim G(n,1/2)$, the ratio $\\chi_L(G)/\\chi(G)$ converges to $2/\\ln 2 \\approx 2.885$. This arises because $\\chi(G) \\sim n/(2\\log_2 n) = n\\ln 2/(2\\ln n)$ while $\\chi_L(G) \\sim n/\\ln n$, so the ratio is $2\\ln n / (\\ln 2 \\cdot \\ln n) \\cdot (\\ln n / \\ln n) = 2/\\ln 2$. The constant $2/\\ln 2$ is a fundamental quantity connecting the 'list' and 'ordinary' chromatic worlds for random graphs.",
+    "mathContext": "$\\frac{\\chi_L(G)}{\\chi(G)} \\to \\frac{2}{\\ln 2} \\approx 2.885$ as $n \\to \\infty$, since $\\chi \\sim \\frac{n}{2\\log_2 n}$ and $\\chi_L \\sim \\frac{n}{\\log n}$.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic ratio", "natural logarithm vs log base 2", "chromatic-choosability comparison"],
+    "prerequisites": ["asymptotic analysis", "logarithm base conversion"]
+  },
+  {
+    "id": "ann-799-main",
+    "proofId": "erdos-799",
+    "range": { "startLine": 195, "endLine": 199 },
+    "type": "theorem",
+    "title": "Erdős Problem #799: Solved",
+    "content": "The main theorem resolves Erdős Problem #799 by directly applying the Alon–Krivelevich–Sudakov 1999 result. The $\\Theta(n/\\log n)$ bound implies $\\chi_L(G) = o(n)$, answering YES. The proof is a one-line application of the axiom, reflecting how the full problem reduces to the AKS tight bound. This is one of the cleanest resolutions in the Erdős problem collection.",
+    "mathContext": "$\\chi_L(G(n,1/2)) = \\Theta(n/\\log n) = o(n)$, answering Erdős Problem #799 affirmatively.",
+    "significance": "critical",
+    "relatedConcepts": ["Erdős problems", "problem resolution", "random graph theory"],
+    "prerequisites": ["Alon–Krivelevich–Sudakov theorem", "asymptotic notation"]
   }
 ]
