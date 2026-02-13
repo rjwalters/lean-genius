@@ -33,6 +33,21 @@
       {"authors": "H. A. Schwarz", "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem der Variationsrechnung", "year": "1885", "venue": "Acta Societatis Scientiarum Fennicae", "note": "Independent proof of the integral version"},
       {"authors": "J. M. Steele", "title": "The Cauchy-Schwarz Master Class", "year": "2004", "venue": "Cambridge University Press", "note": "Comprehensive treatment of Cauchy-Schwarz and related inequalities"}
     ],
+    "mathlib_version": "4.15.0",
+    "relatedProblems": [
+      {
+        "id": "cauchy-schwarz-integral",
+        "relationship": "The integral (Bunyakovsky-Schwarz) version extends Cauchy-Schwarz from finite sums to L² inner products: (∫fg)² ≤ (∫f²)(∫g²)"
+      },
+      {
+        "id": "triangle-inequality",
+        "relationship": "The triangle inequality ‖u+v‖ ≤ ‖u‖+‖v‖ is derived as a corollary of Cauchy-Schwarz in this formalization"
+      },
+      {
+        "id": "amgm-inequality",
+        "relationship": "AM-GM inequality is another fundamental inequality; Cauchy-Schwarz can be derived from AM-GM and vice versa in certain settings"
+      }
+    ],
     "dateAdded": "12/26/25",
     "wiedijkNumber": 78
   },
