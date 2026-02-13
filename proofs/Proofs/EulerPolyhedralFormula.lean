@@ -924,6 +924,158 @@ theorem dodecahedron_icosahedron_dual :
 
 end DualGraph
 
+-- ============================================================
+-- PART 14: Classification of Platonic Solids
+-- ============================================================
+
+/- The Platonic solids are the only convex polyhedra that are both
+   vertex-transitive and face-transitive (equivalently: all faces are
+   congruent regular p-gons and all vertices have the same degree q).
+
+   From double-counting and Euler's formula:
+   - pF = 2E (each face has p edges, each edge borders 2 faces)
+   - qV = 2E (each vertex has q edges, each edge has 2 endpoints)
+   - V - E + F = 2
+
+   Substituting V = 2E/q and F = 2E/p:
+     2E/q - E + 2E/p = 2
+     E(2/q - 1 + 2/p) = 2
+     E(2p + 2q - pq) = 2pq
+
+   Since E > 0 and p,q > 0: 2p + 2q - pq > 0, i.e., 2p + 2q > pq.
+
+   With p ≥ 3 and q ≥ 3, the only solutions are:
+   (p,q) = (3,3), (3,4), (3,5), (4,3), (5,3)
+   corresponding to tetrahedron, octahedron, icosahedron, cube, dodecahedron. -/
+
+namespace PlatonicClassification
+
+/-- A regular polyhedron has all faces being p-gons and all vertices
+    having degree q. The counts satisfy double-counting identities. -/
+structure RegularPolyhedron where
+  p : ℕ  -- number of edges per face
+  q : ℕ  -- degree of each vertex (edges meeting at each vertex)
+  V : ℕ  -- number of vertices
+  E : ℕ  -- number of edges
+  F : ℕ  -- number of faces
+  p_ge : 3 ≤ p   -- each face has at least 3 edges
+  q_ge : 3 ≤ q   -- each vertex has at least 3 edges
+  E_pos : 0 < E   -- at least one edge
+  face_count : p * F = 2 * E    -- double counting edges via faces
+  vertex_count : q * V = 2 * E  -- double counting edges via vertices
+  euler : (V : ℤ) - E + F = 2   -- Euler's formula
+
+/-- The Schläfli inequality: for a regular polyhedron, 2p + 2q > pq.
+    This is the fundamental constraint that limits Platonic solids to 5. -/
+theorem schlafli_inequality (R : RegularPolyhedron) :
+    R.p * R.q < 2 * R.p + 2 * R.q := by
+  have hE := R.E_pos
+  have hfc := R.face_count
+  have hvc := R.vertex_count
+  have heuler := R.euler
+  have key : (R.E : ℤ) * (2 * R.p + 2 * R.q - R.p * R.q) = 2 * R.p * R.q := by
+    have h1 : (R.p : ℤ) * R.F = 2 * R.E := by exact_mod_cast hfc
+    have h2 : (R.q : ℤ) * R.V = 2 * R.E := by exact_mod_cast hvc
+    nlinarith
+  have hpq_pos : (0 : ℤ) < R.p * R.q := by positivity
+  have hE_pos : (0 : ℤ) < R.E := by exact_mod_cast hE
+  have h_diff_pos : (0 : ℤ) < 2 * R.p + 2 * R.q - R.p * R.q := by
+    nlinarith
+  omega
+
+/-- The edge count formula: E * (2p + 2q - pq) = 2pq -/
+theorem edge_formula (R : RegularPolyhedron) :
+    (R.E : ℤ) * (2 * R.p + 2 * R.q - R.p * R.q) = 2 * R.p * R.q := by
+  have h1 : (R.p : ℤ) * R.F = 2 * R.E := by exact_mod_cast R.face_count
+  have h2 : (R.q : ℤ) * R.V = 2 * R.E := by exact_mod_cast R.vertex_count
+  nlinarith
+
+/-- If p ≥ 3 and q ≥ 6, then pq ≥ 2p + 2q, contradicting the Schläfli inequality -/
+theorem no_large_q (R : RegularPolyhedron) : R.q ≤ 5 := by
+  by_contra h
+  push_neg at h
+  have := schlafli_inequality R
+  have hp := R.p_ge
+  have : R.q ≥ 6 := h
+  nlinarith
+
+/-- If q ≥ 3 and p ≥ 6, then pq ≥ 2p + 2q, contradicting the Schläfli inequality -/
+theorem no_large_p (R : RegularPolyhedron) : R.p ≤ 5 := by
+  by_contra h
+  push_neg at h
+  have := schlafli_inequality R
+  have hq := R.q_ge
+  have : R.p ≥ 6 := h
+  nlinarith
+
+/-- **Classification of Platonic Solids**: The only regular polyhedra have
+    (p, q) ∈ {(3,3), (3,4), (3,5), (4,3), (5,3)}.
+
+    This is proved by showing 2p + 2q > pq with p,q ≥ 3,
+    then enumerating all solutions with p,q ∈ {3,4,5}. -/
+theorem platonic_classification (R : RegularPolyhedron) :
+    (R.p = 3 ∧ R.q = 3) ∨  -- tetrahedron
+    (R.p = 3 ∧ R.q = 4) ∨  -- octahedron
+    (R.p = 3 ∧ R.q = 5) ∨  -- icosahedron
+    (R.p = 4 ∧ R.q = 3) ∨  -- cube
+    (R.p = 5 ∧ R.q = 3) := by  -- dodecahedron
+  have hp_le := no_large_p R
+  have hq_le := no_large_q R
+  have hp_ge := R.p_ge
+  have hq_ge := R.q_ge
+  have hineq := schlafli_inequality R
+  interval_cases R.p <;> interval_cases R.q <;> omega
+
+/-- Each Platonic solid has a unique edge count determined by (p,q). -/
+theorem platonic_edge_counts (R : RegularPolyhedron) :
+    (R.p = 3 ∧ R.q = 3 → R.E = 6) ∧
+    (R.p = 3 ∧ R.q = 4 → R.E = 12) ∧
+    (R.p = 3 ∧ R.q = 5 → R.E = 30) ∧
+    (R.p = 4 ∧ R.q = 3 → R.E = 12) ∧
+    (R.p = 5 ∧ R.q = 3 → R.E = 30) := by
+  refine ⟨fun ⟨hp, hq⟩ => ?_, fun ⟨hp, hq⟩ => ?_, fun ⟨hp, hq⟩ => ?_,
+          fun ⟨hp, hq⟩ => ?_, fun ⟨hp, hq⟩ => ?_⟩ <;> {
+    subst hp; subst hq
+    have := edge_formula R
+    have := R.E_pos
+    omega
+  }
+
+/-- Each Platonic solid's full (V, E, F) counts are uniquely determined. -/
+theorem platonic_VEF_counts (R : RegularPolyhedron) :
+    (R.p = 3 ∧ R.q = 3 → R.V = 4 ∧ R.E = 6 ∧ R.F = 4) ∧
+    (R.p = 3 ∧ R.q = 4 → R.V = 6 ∧ R.E = 12 ∧ R.F = 8) ∧
+    (R.p = 3 ∧ R.q = 5 → R.V = 12 ∧ R.E = 30 ∧ R.F = 20) ∧
+    (R.p = 4 ∧ R.q = 3 → R.V = 8 ∧ R.E = 12 ∧ R.F = 6) ∧
+    (R.p = 5 ∧ R.q = 3 → R.V = 20 ∧ R.E = 30 ∧ R.F = 12) := by
+  refine ⟨fun ⟨hp, hq⟩ => ?_, fun ⟨hp, hq⟩ => ?_, fun ⟨hp, hq⟩ => ?_,
+          fun ⟨hp, hq⟩ => ?_, fun ⟨hp, hq⟩ => ?_⟩ <;> {
+    subst hp; subst hq
+    have hef := edge_formula R
+    have hfc : (R.p : ℤ) * R.F = 2 * R.E := by exact_mod_cast R.face_count
+    have hvc : (R.q : ℤ) * R.V = 2 * R.E := by exact_mod_cast R.vertex_count
+    have := R.E_pos
+    omega
+  }
+
+/-- There are exactly 5 Platonic solids (no more, no less).
+    This is the completeness direction: all 5 pairs are realized. -/
+theorem platonic_all_exist :
+    (∃ R : RegularPolyhedron, R.p = 3 ∧ R.q = 3) ∧
+    (∃ R : RegularPolyhedron, R.p = 3 ∧ R.q = 4) ∧
+    (∃ R : RegularPolyhedron, R.p = 3 ∧ R.q = 5) ∧
+    (∃ R : RegularPolyhedron, R.p = 4 ∧ R.q = 3) ∧
+    (∃ R : RegularPolyhedron, R.p = 5 ∧ R.q = 3) := by
+  exact ⟨
+    ⟨⟨3, 3, 4, 6, 4, by omega, by omega, by omega, by omega, by omega, by omega⟩, rfl, rfl⟩,
+    ⟨⟨3, 4, 6, 12, 8, by omega, by omega, by omega, by omega, by omega, by omega⟩, rfl, rfl⟩,
+    ⟨⟨3, 5, 12, 30, 20, by omega, by omega, by omega, by omega, by omega, by omega⟩, rfl, rfl⟩,
+    ⟨⟨4, 3, 8, 12, 6, by omega, by omega, by omega, by omega, by omega, by omega⟩, rfl, rfl⟩,
+    ⟨⟨5, 3, 20, 30, 12, by omega, by omega, by omega, by omega, by omega, by omega⟩, rfl, rfl⟩
+  ⟩
+
+end PlatonicClassification
+
 -- Export main theorems
 #check EulerPolyhedral.ConstructiblePoly.euler_constructible
 #check EulerPolyhedral.euler_polyhedral_formula
@@ -937,3 +1089,4 @@ end DualGraph
 #check TreeFormula.ConstructibleTree.tree_euler
 #check PlanarDegree.degree_sum_bound
 #check DualGraph.dual_euler
+#check PlatonicClassification.platonic_classification
