@@ -24,11 +24,11 @@
     "erdosUrl": "https://erdosproblems.com/627",
     "erdosProblemStatus": "open",
     "mathlibDependencies": [
-      "Mathlib.Combinatorics.SimpleGraph.Basic",
-      "Mathlib.Order.Filter.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Tactic"
+      { "theorem": "SimpleGraph", "description": "Simple undirected graphs (Mathlib.Combinatorics.SimpleGraph.Basic)" },
+      { "theorem": "Filter.Tendsto", "description": "Filter-based limits (Mathlib.Order.Filter.Basic)" },
+      { "theorem": "Real.log", "description": "Logarithm function (Mathlib.Analysis.SpecialFunctions.Log.Basic)" },
+      { "theorem": "Finset", "description": "Finite sets (Mathlib.Data.Finset.Basic)" },
+      { "theorem": "Tactic", "description": "Core tactic library (Mathlib.Tactic)" }
     ],
     "originalContributions": [
       "Definition of χ/ω ratio (chiOmegaRatio) for SimpleGraph V",

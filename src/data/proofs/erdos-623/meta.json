@@ -22,10 +22,10 @@
     "erdosUrl": "https://erdosproblems.com/623",
     "erdosProblemStatus": "open",
     "mathlibDependencies": [
-      "Mathlib.SetTheory.Cardinal.Ordinal",
-      "Mathlib.SetTheory.Cardinal.Cofinality",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Set.Finite"
+      { "theorem": "Cardinal.aleph", "description": "Aleph cardinal numbers (Mathlib.SetTheory.Cardinal.Ordinal)" },
+      { "theorem": "Cardinal.IsLimit", "description": "Limit cardinals and cofinality (Mathlib.SetTheory.Cardinal.Cofinality)" },
+      { "theorem": "Finset", "description": "Finite sets (Mathlib.Data.Finset.Basic)" },
+      { "theorem": "Set.Finite", "description": "Finite set predicate (Mathlib.Data.Set.Finite)" }
     ],
     "originalContributions": [
       "Definition of free functions (IsFreeFunction) and independent sets (IsIndependent) in Lean 4",
