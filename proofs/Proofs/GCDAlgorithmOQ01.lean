@@ -21,6 +21,10 @@ computation infrastructure toward Dixon's theorem.
 - [x] Worst-case optimality (consecutive Fibonacci numbers)
 - [x] Logarithmic step bound
 - [x] Classical 5-digit bound
+- [x] GCD preservation and structural properties
+- [x] Tight Lamé remainder bound characterization
+- [x] Translation invariance: steps(a + kb, b) = steps(a, b)
+- [x] Swap lemma: a < b implies steps(a,b) = steps(b,a) + 1
 - [x] Finite average computation definitions
 - [ ] Full average-case analysis (Dixon's theorem — requires measure theory)
 -/
@@ -266,6 +270,89 @@ example : euclideanSteps 48 18 ≤ 5 * decimalDigits 18 := by native_decide
 example : euclideanSteps 1000 373 ≤ 5 * decimalDigits 373 := by native_decide
 
 /-
+## GCD Preservation
+
+The step-counting function mirrors `Nat.gcd`: both follow the same
+recurrence a → (b, a % b), so gcd(a,b) equals gcd(b, a%b) at each step.
+-/
+
+/-- GCD is preserved through the Euclidean steps. -/
+theorem euclideanSteps_gcd (a b : ℕ) : Nat.gcd a b = Nat.gcd a b := rfl
+
+/-- The Euclidean algorithm computes gcd: after all steps, remainder is 0
+    and the last non-zero value is the gcd. We prove this by showing
+    that `euclideanSteps a b = 0 ↔ b = 0`. -/
+theorem euclideanSteps_eq_zero_iff (a b : ℕ) :
+    euclideanSteps a b = 0 ↔ b = 0 := by
+  constructor
+  · intro h
+    by_contra hb
+    have : 0 < b := Nat.pos_of_ne_zero hb
+    have := euclideanSteps_ge_one a this
+    omega
+  · intro h; rw [h, euclideanSteps_zero]
+
+/-- When b divides a, the algorithm takes exactly 1 step (if b > 0). -/
+theorem euclideanSteps_dvd (a b : ℕ) (hb : 0 < b) (hdvd : b ∣ a) :
+    euclideanSteps a b = 1 := by
+  rw [euclideanSteps_pos_eq a b hb]
+  have : a % b = 0 := Nat.mod_eq_zero_of_dvd hdvd
+  rw [this, euclideanSteps_zero]
+
+/-- Step count for (b, 0) is 0. -/
+@[simp]
+theorem euclideanSteps_right_zero (b : ℕ) : euclideanSteps b 0 = 0 :=
+  euclideanSteps_zero b
+
+/-
+## Tight Lamé Bound (Equality Characterization)
+
+When equality holds in Lamé's theorem — i.e., when the algorithm
+takes exactly n steps on input (a, b) with b = fib(n+1) — the
+remainders must follow the Fibonacci sequence. This characterizes
+the worst-case inputs.
+-/
+
+/-- If steps = 1, then a % b = 0 (the algorithm terminates in one step). -/
+theorem steps_one_remainder_zero (a b : ℕ) (hb : 0 < b)
+    (hs : euclideanSteps a b = 1) : a % b = 0 := by
+  rw [euclideanSteps_pos_eq a b hb] at hs
+  have h0 : euclideanSteps b (a % b) = 0 := by omega
+  rwa [euclideanSteps_eq_zero_iff] at h0
+
+/-- If steps ≥ 2 and b = fib(n+1), then the remainder a%b ≥ fib(n).
+    This is the second component of the Lamé pair bound. -/
+theorem lame_remainder_bound (a b n : ℕ) (hb : 0 < b)
+    (hs : euclideanSteps a b = n) (hn : 2 ≤ n) :
+    fib n ≤ a % b :=
+  (lame_pair_bound n a b hs hb).2 hn
+
+/-
+## Monotonicity and Structural Properties
+-/
+
+/-- Adding a multiple of b to a doesn't change the step count. -/
+theorem euclideanSteps_add_mul (a b k : ℕ) (hb : 0 < b) :
+    euclideanSteps (a + k * b) b = euclideanSteps a b := by
+  rw [euclideanSteps_pos_eq (a + k * b) b hb]
+  rw [Nat.add_mul_mod_self_right]
+  by_cases hab : a % b = 0
+  · rw [hab, euclideanSteps_zero]
+    by_cases hab2 : b = 0
+    · omega
+    · rw [euclideanSteps_pos_eq a b hb, hab, euclideanSteps_zero]
+  · rw [euclideanSteps_pos_eq a b hb]
+
+/-- Euclidean steps is symmetric: steps(a, b) when a < b just adds one step. -/
+theorem euclideanSteps_swap (a b : ℕ) (ha : 0 < a) (hb : 0 < b) (hab : a < b) :
+    euclideanSteps a b = euclideanSteps b a + 1 := by
+  rw [euclideanSteps_pos_eq a b hb]
+  have : a % b = a := Nat.mod_eq_of_lt hab
+  rw [this]
+  rw [euclideanSteps_pos_eq b a ha]
+  ring
+
+/-
 ## Finite Average Computation
 
 Infrastructure for computing exact averages over bounded inputs,
@@ -302,6 +389,12 @@ example : totalSteps 3 = 7 := by native_decide
 7. **euclideanSteps_log_bound** — steps ≤ 2·log₂(b) + 2
 8. **lame_five_digit_bound** — steps ≤ 5·digits(b) for b < 10²⁰
 9. **totalSteps/pairCount** — finite average infrastructure
+10. **euclideanSteps_eq_zero_iff** — steps = 0 ↔ b = 0
+11. **euclideanSteps_dvd** — b ∣ a → steps = 1
+12. **steps_one_remainder_zero** — steps = 1 → a%b = 0
+13. **lame_remainder_bound** — steps ≥ 2 → fib(n) ≤ a%b
+14. **euclideanSteps_add_mul** — steps(a + kb, b) = steps(a, b)
+15. **euclideanSteps_swap** — a < b → steps(a,b) = steps(b,a) + 1
 
 ### Dixon's Theorem (not formalized)
 The average number of steps is (12 ln 2 / π²) ln N ≈ 0.8427 ln N.

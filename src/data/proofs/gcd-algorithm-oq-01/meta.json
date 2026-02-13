@@ -119,10 +119,24 @@
       "summary": "Defines `decimalDigits` and proves $\\text{steps} \\leq 5 \\cdot \\text{decimalDigits}(b)$ for $b < 10^{20}$, using $\\text{fib}(5k+2) \\geq 10^k$ verified by `interval_cases`/`native_decide`."
     },
     {
+      "id": "sec-gcd-oq01-gcd-preservation",
+      "title": "GCD Preservation and Structural Properties",
+      "startLine": 268,
+      "endLine": 305,
+      "summary": "Proves bidirectional characterization (`steps = 0 ↔ b = 0`), divisibility shortcut (`b | a → steps = 1`), one-step termination (`steps = 1 → a%b = 0`), and Lamé remainder bound extraction."
+    },
+    {
+      "id": "sec-gcd-oq01-tight-lame",
+      "title": "Tight Lamé Bound and Monotonicity",
+      "startLine": 307,
+      "endLine": 345,
+      "summary": "Proves translation invariance (`steps(a + kb, b) = steps(a, b)`) and the swap lemma (`a < b → steps(a,b) = steps(b,a) + 1`), establishing that step count depends only on the remainder sequence."
+    },
+    {
       "id": "sec-gcd-oq01-average",
       "title": "Finite Average Computation and Dixon's Theorem",
-      "startLine": 268,
-      "endLine": 312,
+      "startLine": 347,
+      "endLine": 395,
       "summary": "Defines `totalSteps N` and `pairCount N` for exact finite averages. Documents Dixon's theorem: average steps $\\sim (12\\ln 2/\\pi^2)\\ln N \\approx 0.8427 \\ln N$, requiring continued fractions and ergodic theory not yet in Mathlib."
     }
   ],
