@@ -14,7 +14,9 @@
       "extremal-combinatorics",
       "erdos",
       "cycles",
-      "density"
+      "density",
+      "solved",
+      "regularity-method"
     ],
     "badge": "wip",
     "sorries": 3,
@@ -22,11 +24,36 @@
     "erdosUrl": "https://erdosproblems.com/72",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$100",
+    "mathlib_version": "v4.15.0",
+    "relatedProofs": ["erdos-71"],
     "relatedProblems": [
       {
         "id": "erdos-71",
         "relationship": "Bollobás's result on arithmetic progressions (referenced in problem statement)"
       }
+    ],
+    "mathlibDependencies": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting",
+      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Analysis.Asymptotics.Asymptotics",
+      "Mathlib.Topology.Instances.Real"
+    ],
+    "originalContributions": [
+      "countingFunction, hasDensityZero: natural density framework using Tendsto",
+      "powersOfTwo, perfectSquares: density-0 set definitions",
+      "averageDegree, cycleLengths, containsCycleIn: graph theory predicates on SimpleGraph",
+      "isUnavoidable, isStronglyUnavoidable: the unavoidability property",
+      "Erdos72Statement: the formal problem statement",
+      "bollobas_arithmetic_progression: axiom for AP unavoidability",
+      "verstraete_existence: non-constructive solution axiom",
+      "liu_montgomery_powers_of_two: powers of 2 are unavoidable",
+      "erdos_72_solved: combining Liu-Montgomery with density-zero for the solution",
+      "erdos_was_wrong: formal refutation of Erdős's belief",
+      "powersOfTwo_all_even: evenness property (proved for k ≥ 1)",
+      "optimalThreshold, liu_montgomery_explicit_bound: quantitative bounds",
+      "liu_montgomery_general: general theorem for logarithmic-growth even sets"
     ]
   },
   "overview": {
