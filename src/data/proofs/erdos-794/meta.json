@@ -26,106 +26,142 @@
     "mathlibDependencies": [
       {
         "theorem": "Finset",
-        "description": "Finite sets",
+        "description": "Finite sets for vertices, edges, and filtering",
         "module": "Mathlib.Data.Finset.Basic"
       },
       {
+        "theorem": "Finset.card",
+        "description": "Cardinality for counting vertices and edges",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
         "theorem": "SimpleGraph",
-        "description": "Simple graph structure",
+        "description": "Simple graph structure (imported but not directly used)",
         "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
       }
     ],
     "originalContributions": [
-      "Hypergraph3 structure for 3-uniform hypergraphs",
-      "ContainsK4Minus predicate (4 vertices, 3 edges)",
+      "Hypergraph3 structure for 3-uniform hypergraphs with edge_card and edge_subset proofs",
+      "ContainsK4Minus predicate (4 vertices, 3 edges via Finset.filter)",
       "Contains5_7 predicate (5 vertices, 7 edges)",
-      "balogh_observation axiom: 5-7 implies K₄⁻",
-      "Erdos794Conjecture and Erdos794Simplified definitions",
-      "HarrisCounterexample structure for n=3 case",
-      "harris_counterexample_exists axiom",
-      "erdos_794_disproved and erdos_794_original_false theorems",
-      "turanDensityK4Minus and frankl_furedi_lower bound",
-      "erdos_794_summary combining all results"
+      "balogh_observation axiom and second_condition_redundant theorem",
+      "Erdos794Conjecture and Erdos794Simplified with simplified_implies_original PROVED",
+      "HarrisCounterexample structure and harris_counterexample_exists axiom",
+      "n3_threshold PROVED by norm_num: 3³+1 = 28",
+      "erdos_794_disproved PROVED: ¬Erdos794Simplified from Harris's counterexample",
+      "erdos_794_original_false PROVED: ¬Erdos794Conjecture via equivalence",
+      "turanDensityK4Minus, frankl_furedi_lower, current_conjecture (density 2/7)",
+      "erdos_794_summary and erdos_794 packaging all results"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-1020",
+        "relationship": "Core hypergraph extremal theory: the Erdős Matching Conjecture asks for maximum edges in an r-uniform hypergraph with no k independent edges, solved for r=2,3"
+      },
+      {
+        "id": "erdos-1022",
+        "relationship": "Hypergraph coloring (Property B): when can vertices be 2-colored so no edge is monochromatic, sharing the forbidden substructure framework"
+      },
+      {
+        "id": "erdos-1009",
+        "relationship": "Edge-disjoint triangles beyond Turán threshold (Győri 1988): paradigm for what happens when edge density exceeds the extremal bound"
+      },
+      {
+        "id": "erdos-1010",
+        "relationship": "Triangle supersaturation (Lovász-Simonovits 1976): when edges exceed the Turán bound, forbidden subgraphs appear abundantly — the graph-theoretic analogue of #794's density question"
+      },
+      {
+        "id": "erdos-1008",
+        "relationship": "C₄-free subgraphs via dependent random choice (Conlon-Fox-Sudakov 2014): extremal graph theory using probabilistic methods for forbidden subgraph problems"
+      },
+      {
+        "id": "erdos-1021",
+        "relationship": "Extremal numbers for bipartite pair graphs: Turán-type bounds beyond Kővári-Sós-Turán, sharing the forbidden subgraph density framework"
+      },
+      {
+        "id": "erdos-1017",
+        "relationship": "Clique partition of graph edges (Erdős-Goodman-Pósa 1966): minimum cliques to partition edges, with K₄-free case by Győri-Keszegh — related clique structure analysis"
+      }
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #794** concerns the Turán-type density problem for 3-uniform hypergraphs. Erdős posed this question in 1969, asking whether every 3-uniform hypergraph on 3n vertices with at least n³+1 edges must contain certain unavoidable substructures: either K₄⁻ (4 vertices with 3 edges) or a 5-vertex configuration with 7 edges.\n\nBalogh made the crucial observation that the second condition is redundant — any 5-vertex, 7-edge subhypergraph automatically contains a 4-vertex, 3-edge subhypergraph. This simplified the question to whether n³+1 edges forces K₄⁻ alone. Meanwhile, Frankl and Füredi (1984) proved that the Turán density for avoiding K₄⁻ is at least 2/7, while Turán had earlier conjectured it to be 1/4.\n\nHarris provided the definitive counterexample, disproving the conjecture for n=3. His construction places 9 vertices in three groups {1,2,3}, {4,5,6}, {7,8,9}, takes all 27 cross-product edges (one from each group), and adds the single edge {1,2,3}. This yields exactly 28 = 3³+1 edges while avoiding K₄⁻, showing the threshold n³+1 (corresponding to density 2/9) is insufficient. The correct density threshold is at least 2/7, and the problem as stated was likely too optimistic.",
-    "problemStatement": "**Original Statement (DISPROVED)**\n\nIs it true that every 3-uniform hypergraph on $3n$ vertices with at least $n^3+1$ edges must contain either:\n1. A subgraph on 4 vertices with 3 edges (K₄⁻), OR\n2. A subgraph on 5 vertices with 7 edges?\n\n**Resolution:**\n- Balogh observed that condition (2) implies condition (1), so it can be dropped\n- Harris provided a counterexample: 9 vertices, 28 edges, no K₄⁻\n- The counterexample: 27 edges from {a,b,c} where a∈{1,2,3}, b∈{4,5,6}, c∈{7,8,9}, plus edge {1,2,3}",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Basic Structures:**\n   - Hypergraph3: 3-uniform hypergraph\n   - ContainsK4Minus: 4 vertices, 3 edges\n   - Contains5_7: 5 vertices, 7 edges\n\n2. **Balogh's Observation:**\n   - balogh_observation axiom: Contains5_7 → ContainsK4Minus\n   - Shows second condition is redundant\n\n3. **Harris's Counterexample:**\n   - 9 vertices (n=3), 28 = 3³+1 edges\n   - Avoids K₄⁻\n   - Disproves the conjecture\n\n4. **Density Bounds:**\n   - frankl_furedi_lower: density ≥ 2/7\n   - current_conjecture: density = 2/7",
+    "historicalContext": "**3-Uniform Hypergraph Turán Density: A Disproved Conjecture**\n\nErdős posed Problem #794 in 1969, asking whether 3n vertices with n³+1 edges in a 3-uniform hypergraph must contain either K₄⁻ (4 vertices, 3 edges) or a 5-vertex configuration with 7 edges.\n\n**Balogh's Simplification**\n\nBalogh made the crucial observation that the 5-7 condition is redundant: any 5 vertices with 7 of the possible 10 edges must contain a 4-vertex subset with 3 of the possible 4 edges. The counting argument is elegant: each edge is counted by 2 of the 5 possible 4-vertex subsets, so 7 edges give 14 total across 5 subsets, averaging 2.8 per subset — at least one has ≥ 3.\n\n**Harris's Counterexample**\n\nHarris disproved the conjecture with a concrete construction for n=3 (9 vertices, 28 = 3³+1 edges). Partition {1,...,9} into A = {1,2,3}, B = {4,5,6}, C = {7,8,9}. Take all 27 cross-product triples {a,b,c} with a ∈ A, b ∈ B, c ∈ C, then add the single edge {1,2,3}. The tripartite structure prevents K₄⁻: any 4 vertices span at most 2 cross-product edges (since each edge uses one vertex per part), and the intra-partition edge {1,2,3} can't combine with cross-product edges to reach 3.\n\n**The True Density Threshold**\n\nFrankl and Füredi (1984) proved that the Turán density for K₄⁻ is at least 2/7 ≈ 0.286, using the 'Fano complement' construction. The n³+1 threshold on 3n vertices corresponds to density approximately 2/9 ≈ 0.222, which is well below 2/7 — so the conjecture was asking about a threshold that was too low. The exact Turán density for K₄⁻ is conjectured to be exactly 2/7, but proving the matching upper bound remains a major open problem in extremal hypergraph theory.\n\n**Connection to Turán's Conjecture**\n\nTurán had earlier conjectured that the Turán density for K₄⁻ was 1/4 (based on the complete balanced tripartite 3-graph). Since 2/7 > 1/4, Turán's conjecture was also disproved for this specific forbidden hypergraph.",
+    "problemStatement": "**Original Statement (DISPROVED)**\n\nIs it true that every 3-uniform hypergraph on 3n vertices with at least n³+1 edges must contain either:\n1. A subgraph on 4 vertices with 3 edges (K₄⁻), OR\n2. A subgraph on 5 vertices with 7 edges?\n\n**Resolution:**\n- Balogh: Condition (2) implies condition (1), so it's redundant\n- Harris: Counterexample with 9 vertices, 28 edges, no K₄⁻\n- Frankl-Füredi: The correct density threshold is ≥ 2/7 > 2/9 (the n³+1 density)",
+    "proofStrategy": "**Formalization Structure**\n\nThe Lean file (256 lines, 0 sorries) has eight parts:\n\n1. **Definitions** (lines 46-67): Hypergraph3 structure with edge_card and edge_subset, vertexCount, edgeCount\n\n2. **Target Subgraphs** (lines 69-87): ContainsK4Minus (∃ S, |S|=4, 3 edges within), Contains5_7 (∃ S, |S|=5, 7 edges within)\n\n3. **Balogh's Observation** (lines 89-104): balogh_observation axiom (5-7 → K₄⁻), second_condition_redundant (direct application)\n\n4. **Conjectures** (lines 106-135): Erdos794Conjecture, Erdos794Simplified, simplified_implies_original PROVED\n\n5. **Harris's Counterexample** (lines 137-176): HarrisCounterexample structure, n3_threshold PROVED (3³+1=28), harris_counterexample_exists axiom\n\n6. **Disproof** (lines 178-196): erdos_794_disproved PROVED (¬Simplified), erdos_794_original_false PROVED (¬Original)\n\n7. **Density** (lines 198-224): turanDensityK4Minus = 2/7, frankl_furedi_lower axiom, turan_conjecture (1/4), current_conjecture (2/7)\n\n8. **Summary** (lines 227-256): erdos_794_summary (conjunction of all results), erdos_794 = ¬Erdos794Conjecture\n\n**What is Proved vs Axiomatized**\n- **Proved**: simplified_implies_original, n3_threshold, erdos_794_disproved, erdos_794_original_false, erdos_794_summary, erdos_794\n- **Axiomatized**: balogh_observation, harris_counterexample_exists, frankl_furedi_lower\n- **Sorry**: None (0 sorry entries)",
     "keyInsights": [
-      "**Redundant Condition:** Balogh showed any 5-vertex, 7-edge subgraph contains a 4-vertex, 3-edge subgraph, making the second condition superfluous",
-      "**Product Construction:** Harris's counterexample uses 27 cross-product edges plus one additional edge, achieving exactly n³+1 edges",
-      "**Density Gap:** The threshold n³+1 implies density 2/9, but the true threshold is at least 2/7 (Frankl-Füredi)",
-      "**Likely Typo:** The original problem statement probably contained an error in the threshold value",
-      "**Turán Density:** The exact Turán density for avoiding K₄⁻ in 3-uniform hypergraphs is conjectured to be 2/7"
+      "Balogh's observation reduces the problem: any 5 vertices with 7 of 10 possible edges automatically contain a 4-vertex subset with 3 of 4 edges, by a double-counting argument (14 edge-subset incidences across 5 subsets)",
+      "Harris's tripartite product construction {a,b,c} with a∈A, b∈B, c∈C gives 27 K₄⁻-free edges, and adding {1,2,3} reaches exactly n³+1 = 28 without creating K₄⁻",
+      "The density gap: n³+1 on 3n vertices gives density ~2/9, but Frankl-Füredi proved the Turán density for K₄⁻ is ≥ 2/7, so the threshold was fundamentally too low",
+      "The exact Turán density π(K₄⁻) = 2/7 remains conjectural — proving the upper bound is a major open problem in hypergraph extremal theory",
+      "This is one of the cleanest formalizations: 0 sorry entries, with all theorems proved from 3 axioms (Balogh, Harris, Frankl-Füredi)"
     ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Basic Definitions",
-      "summary": "Hypergraph3, vertexCount, edgeCount",
+      "summary": "Hypergraph3 structure with vertices, edges, edge_card (3-uniformity), edge_subset proofs. vertexCount = |V|, edgeCount = |E|.",
       "startLine": 46,
       "endLine": 67
     },
     {
       "id": "target-subgraphs",
       "title": "Target Subgraphs",
-      "summary": "ContainsK4Minus, Contains5_7",
+      "summary": "ContainsK4Minus: ∃ S with |S|=4, S ⊆ V, and (E filtered by e ⊆ S).card = 3. Contains5_7: ∃ S with |S|=5 and 7 edges within.",
       "startLine": 69,
       "endLine": 87
     },
     {
       "id": "balogh",
       "title": "Balogh's Observation",
-      "summary": "balogh_observation axiom, second condition redundant",
+      "summary": "balogh_observation axiom: Contains5_7 → ContainsK4Minus (double counting: 7 edges × 2 subsets = 14, averaging 2.8 per 4-vertex subset). second_condition_redundant applies the axiom.",
       "startLine": 89,
       "endLine": 104
     },
     {
       "id": "conjecture",
-      "title": "Original Conjecture",
-      "summary": "Erdos794Conjecture, Erdos794Simplified",
+      "title": "Original and Simplified Conjectures",
+      "summary": "Erdos794Conjecture (both conditions), Erdos794Simplified (K₄⁻ only). simplified_implies_original PROVED via left injection. The two are equivalent via Balogh.",
       "startLine": 106,
       "endLine": 135
     },
     {
       "id": "counterexample",
       "title": "Harris's Counterexample",
-      "summary": "HarrisCounterexample, harris_counterexample_exists",
+      "summary": "HarrisCounterexample structure (9 vertices, 28 edges). n3_threshold PROVED: 3³+1=28. harris_counterexample_exists axiom: ∃ H on Fin 9 with 9 vertices, 28 edges, ¬ContainsK4Minus. Tripartite product plus {1,2,3}.",
       "startLine": 137,
       "endLine": 176
     },
     {
       "id": "disproof",
       "title": "Disproof",
-      "summary": "erdos_794_disproved, erdos_794_original_false",
+      "summary": "erdos_794_disproved PROVED: ¬Erdos794Simplified by applying Harris to the simplified conjecture. erdos_794_original_false PROVED: ¬Erdos794Conjecture by chaining with Balogh.",
       "startLine": 178,
       "endLine": 196
     },
     {
       "id": "density",
-      "title": "Edge Density",
-      "summary": "turanDensityK4Minus, frankl_furedi_lower",
+      "title": "Edge Density and Frankl-Füredi",
+      "summary": "turanDensityK4Minus = 2/7 (conjectured). frankl_furedi_lower axiom: density ≥ 2/7. turan_conjecture (1/4, disproved). current_conjecture (2/7, open upper bound).",
       "startLine": 198,
-      "endLine": 223
+      "endLine": 224
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_794_summary, erdos_794 main theorem",
+      "summary": "erdos_794_summary PROVED: ¬Conjecture ∧ (5-7 → K₄⁻) ∧ density ≥ 2/7. erdos_794 = ¬Erdos794Conjecture. Zero sorry entries in the entire file.",
       "startLine": 227,
       "endLine": 256
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #794 asked whether 3n vertices with n³+1 edges forces K₄⁻ or a 5-7 configuration. Balogh noted the 5-7 condition is redundant. Harris provided a counterexample: 9 vertices, 28 edges, avoiding K₄⁻. The problem is DISPROVED. The correct density threshold is at least 2/7 (Frankl-Füredi).",
-    "implications": "**Connections to Extremal Combinatorics**\n\n1. **Turán-Type Problems:** This is part of the theory of Turán densities for hypergraphs\n\n2. **Hypergraph Regularity:** Related to structure of dense hypergraphs\n\n3. **Ramsey Theory:** Connected to questions about unavoidable substructures\n\n4. **Algorithmic Aspects:** Finding dense subhypergraphs is computationally relevant\n\n5. **Historical Context:** Shows how problem statements can contain errors",
+    "summary": "Erdős Problem #794 is DISPROVED. The conjecture that 3n vertices with n³+1 edges forces K₄⁻ is false — Harris's tripartite product construction on 9 vertices with 28 edges avoids K₄⁻. Balogh showed the 5-7 condition was redundant. The correct Turán density for K₄⁻ is at least 2/7 (Frankl-Füredi), well above the conjectured threshold of 2/9.",
+    "implications": "**Theoretical Significance**\n\n1. **Hypergraph Turán Theory**: The problem highlights the difficulty of determining exact Turán densities for hypergraphs. Unlike graphs (where Turán's theorem gives exact answers), hypergraph Turán problems remain largely open — even for small forbidden structures like K₄⁻.\n\n2. **Tripartite Constructions**: Harris's counterexample uses the tripartite product, a fundamental construction in extremal combinatorics. The same technique appears in the Frankl-Füredi construction and many other extremal hypergraph results.\n\n3. **Density Thresholds**: The gap between 2/9 (Erdős's threshold) and 2/7 (Frankl-Füredi) shows how sensitive hypergraph Turán problems are to the exact density. A small change in density can cross the extremal threshold.\n\n4. **Problem Statement Quality**: Balogh's observation that the 5-7 condition was redundant suggests the original problem may have contained an error or been posed with incomplete information. This illustrates how even Erdős's problem statements sometimes needed correction.\n\n5. **Formalization Quality**: With 0 sorry entries and clean axiom-based structure, this is among the most complete formalizations in the gallery.",
     "openQuestions": [
-      "What is the exact Turán density for K₄⁻ in 3-uniform hypergraphs?",
-      "Is the density exactly 2/7 as conjectured?",
-      "What is the extremal construction achieving density 2/7?",
-      "How does this extend to other small forbidden 3-uniform hypergraphs?"
+      "What is the exact Turán density for K₄⁻ in 3-uniform hypergraphs? Is it exactly 2/7?",
+      "What is the extremal construction achieving density 2/7? Is it the Fano complement?",
+      "Can flag algebra methods resolve the upper bound π(K₄⁻) ≤ 2/7?",
+      "How does the Turán density change for K₄ (all 4 edges on 4 vertices) versus K₄⁻ (3 edges)?"
     ]
   }
 }
