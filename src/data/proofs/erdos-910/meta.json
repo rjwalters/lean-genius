@@ -8,7 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/910",
     "date": "1958",
     "status": "complete",
-    "proofRepoPath": "Proofs/Erdos910Problem.lean",
+    "proofRepoPath": "Proofs/Erdos910OQ01.lean",
     "tags": [
       "erdos",
       "topology",
@@ -18,8 +18,9 @@
       "set-theory",
       "counterexample"
     ],
-    "badge": "wip",
-    "sorries": 2,
+    "badge": "complete",
+    "sorries": 0,
+    "axiomCount": 1,
     "erdosNumber": 910,
     "erdosUrl": "https://erdosproblems.com/910",
     "erdosProblemStatus": "solved",
@@ -51,8 +52,9 @@
       "IsRudinSet: self-similar connected set definition",
       "rudin_theorem: axiomatized existence under CH",
       "rudin_set_no_diverse_subset: proved no diverse subsets (no sorry)",
-      "erdos_first_conjecture_false: proved negation under CH (1 sorry)",
-      "erdos_second_conjecture_false: stated negation under CH (1 sorry)"
+      "erdos_first_conjecture_false: proved negation under CH (0 sorries)",
+      "erdos_second_conjecture_false: proved negation under CH (0 sorries)",
+      "erdos_910_both_false: combined result disproving both conjectures"
     ]
   },
   "overview": {
@@ -115,7 +117,7 @@
       "title": "Disproving Erdős's Conjectures",
       "startLine": 156,
       "endLine": 204,
-      "summary": "Proves `rudin_set_no_diverse_subset` (fully proved). Proves `erdos_first_conjecture_false` (1 sorry). States `erdos_second_conjecture_false` (1 sorry for type embedding)."
+      "summary": "All three theorems fully proved (0 sorries): `rudin_set_no_diverse_subset`, `erdos_first_conjecture_false`, and `erdos_second_conjecture_false`. Combined in `erdos_910_both_false`."
     }
   ],
   "conclusion": {
