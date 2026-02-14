@@ -36,9 +36,9 @@
       "problem_id": "erdos-1",
       "submitted": "2026-01-12T09:31:03Z",
       "sorries": [
-        "theorem erdos_1_lower_bound {A : Finset ℕ} {N : ℕ}",
-        "theorem max_element_bound {A : Finset ℕ} (hA : A.Nonempty)",
-        "theorem subset_sums_spacing {A : Finset ℕ} (hA_pos : ∀ a ∈ A, 0 < a)"
+        "theorem erdos_1_lower_bound {A : Finset \u2115} {N : \u2115}",
+        "theorem max_element_bound {A : Finset \u2115} (hA : A.Nonempty)",
+        "theorem subset_sums_spacing {A : Finset \u2115} (hA_pos : \u2200 a \u2208 A, 0 < a)"
       ],
       "notes": "Distinct subset sums - tractability 9/10",
       "status": "expired",
@@ -64,14 +64,14 @@
         "theorem primeSum_irrational : Irrational primeSum := by",
         "theorem tao_identity : omegaSum = primeSum := by"
       ],
-      "notes": "Tao identity: double sum manipulation for ∑ω(n)/2^n = ∑1/(2^p-1)",
+      "notes": "Tao identity: double sum manipulation for \u2211\u03c9(n)/2^n = \u22111/(2^p-1)",
       "status": "expired",
       "last_check": {
         "timestamp": "2026-01-14T05:21:20Z",
         "percent": 100,
         "runtime_minutes": 0
       },
-      "outcome": "PROVED tao_identity. primeSum_irrational requires Tao-Teräväinen 2025 (beyond Aristotle scope). [Expired on Aristotle]",
+      "outcome": "PROVED tao_identity. primeSum_irrational requires Tao-Ter\u00e4v\u00e4inen 2025 (beyond Aristotle scope). [Expired on Aristotle]",
       "integrated": "2026-01-13",
       "theorems_proven": [
         "tao_identity"
@@ -95,7 +95,7 @@
       "problem_id": "erdos-659",
       "submitted": "2026-01-13T18:46:10Z",
       "sorries": [
-        "def isConfiguration : Finset (ℝ × ℝ) → TwoDistanceConfig → Prop := fun _ _ => sorry"
+        "def isConfiguration : Finset (\u211d \u00d7 \u211d) \u2192 TwoDistanceConfig \u2192 Prop := fun _ _ => sorry"
       ],
       "notes": "Definition sorries: moreeOsburnLattice, isConfiguration. Testing concurrent job limits.",
       "status": "expired",
@@ -152,7 +152,7 @@
       "problem_id": "erdos-92",
       "submitted": "2026-01-13T23:59:00Z",
       "sorries": [
-        "theorem f_le_n_minus_one (n : ℕ) (hn : n ≥ 1) : f n ≤ n - 1 := by",
+        "theorem f_le_n_minus_one (n : \u2115) (hn : n \u2265 1) : f n \u2264 n - 1 := by",
         "theorem strong_implies_weak (h : StrongConjecture) : WeakConjecture := by"
       ],
       "notes": "HARD sorries: f_le_n_minus_one (trivial bound from definitions), strong_implies_weak (limits analysis). Both are provable!",
@@ -174,7 +174,7 @@
       "problem_id": "erdos-97",
       "submitted": "2026-01-14T17:10:00Z",
       "sorries": [
-        "theorem kEquidistant_implies_unitDistance_bound (k : ℕ)"
+        "theorem kEquidistant_implies_unitDistance_bound (k : \u2115)"
       ],
       "notes": "Resubmitted after previous job expired. HARD sorry: kEquidistant_implies_unitDistance_bound (counting argument). danzerPoints is a construction.",
       "status": "expired",
@@ -262,9 +262,9 @@
         "lemma computeA_22 : computeA (![2, 2] : HomologyClass 2) = 10 := by",
         "lemma computeA_31 : computeA (![3, 1] : HomologyClass 2) = 11 := by",
         "theorem GL5_class : GLnClass K 5 =",
-        "theorem GLn_product_expansion (n : ℕ) :",
-        "theorem L_ne_zero (hK : (1 : K.carrier) ≠ 0) : K.L ≠ 0 ∨ K.L = 0 := by",
-        "theorem triangular_sum (n : ℕ) :"
+        "theorem GLn_product_expansion (n : \u2115) :",
+        "theorem L_ne_zero (hK : (1 : K.carrier) \u2260 0) : K.L \u2260 0 \u2228 K.L = 0 := by",
+        "theorem triangular_sum (n : \u2115) :"
       ],
       "notes": "GL5, Fl5, computeA cases - overnight run",
       "status": "expired",
@@ -401,8 +401,8 @@
       "sorries": [
         "theorem f_3_value : f 3 = 3 := by",
         "theorem f_4_lb : 4 < f 4 := by",
-        "theorem f_4_ub : f 4 ≤ 5 := by",
-        "theorem f_finite (n : ℕ) (hn : 3 ≤ n) : (CardSet n).Nonempty := by",
+        "theorem f_4_ub : f 4 \u2264 5 := by",
+        "theorem f_finite (n : \u2115) (hn : 3 \u2264 n) : (CardSet n).Nonempty := by",
         "theorem f_three_eq : f 3 = 3 := by"
       ],
       "notes": "Happy Ending Problem - small cases f(3), f(4) bounds",
@@ -417,8 +417,8 @@
       "problem_id": "erdos-45",
       "submitted": "2026-01-14T19:34:08Z",
       "sorries": [
-        "lemma egyptian_fraction_bound (D' : Finset ℕ) (hsum : reciprocalSum D' = 1)",
-        "theorem croot_existence (k : ℕ) (hk : k ≥ 2) :"
+        "lemma egyptian_fraction_bound (D' : Finset \u2115) (hsum : reciprocalSum D' = 1)",
+        "theorem croot_existence (k : \u2115) (hk : k \u2265 2) :"
       ],
       "notes": "Monochromatic divisor sums - Croot theorem",
       "status": "expired",
@@ -439,13 +439,13 @@
       "problem_id": "erdos-157",
       "submitted": "2026-01-14T19:34:20Z",
       "sorries": [
-        "def exampleSidonSet : Finset ℕ := {1, 2, 5, 10, 11, 13}",
-        "def IsSidonAlt (A : Set ℕ) : Prop :=",
-        "theorem example_is_sidon : IsSidon (↑exampleSidonSet : Set ℕ) := by",
+        "def exampleSidonSet : Finset \u2115 := {1, 2, 5, 10, 11, 13}",
+        "def IsSidonAlt (A : Set \u2115) : Prop :=",
+        "theorem example_is_sidon : IsSidon (\u2191exampleSidonSet : Set \u2115) := by",
         "theorem pilatte_existence : Erdos157Conjecture := by",
-        "theorem powers_of_two_sidon : IsSidon { n | ∃ k : ℕ, n = 2^k } := by",
-        "theorem sidon_iff_sidon_alt (A : Set ℕ) : IsSidon A ↔ IsSidonAlt A := by",
-        "theorem sidon_not_basis_2 (A : Set ℕ) (hA : A.Infinite) (hSidon : IsSidon A) :"
+        "theorem powers_of_two_sidon : IsSidon { n | \u2203 k : \u2115, n = 2^k } := by",
+        "theorem sidon_iff_sidon_alt (A : Set \u2115) : IsSidon A \u2194 IsSidonAlt A := by",
+        "theorem sidon_not_basis_2 (A : Set \u2115) (hA : A.Infinite) (hSidon : IsSidon A) :"
       ],
       "notes": "Sidon asymptotic basis - Pilatte theorem",
       "status": "expired",
@@ -501,7 +501,7 @@
       "problem_id": "erdos-4",
       "submitted": "2026-01-14T19:34:44Z",
       "sorries": [
-        "theorem improved_stronger (n : ℕ) (hn : n ≥ 100) :"
+        "theorem improved_stronger (n : \u2115) (hn : n \u2265 100) :"
       ],
       "notes": "Prime gaps - technical inequality",
       "status": "expired",
@@ -543,7 +543,7 @@
       "problem_id": "erdos-30",
       "submitted": "2026-01-14T19:35:14Z",
       "sorries": [
-        "theorem sidon_is_b2 (A : Finset ℕ) : IsSidonSet A ↔ IsBhSet A 2 := by"
+        "theorem sidon_is_b2 (A : Finset \u2115) : IsSidonSet A \u2194 IsBhSet A 2 := by"
       ],
       "notes": "Covering systems",
       "status": "expired",
@@ -559,7 +559,7 @@
       "sorries": [
         "theorem f_one : f 1 = 1 := by",
         "theorem f_two : f 2 = 3 := by",
-        "theorem lower_bound_simplified (n : ℕ) (hn : n ≥ 2) :"
+        "theorem lower_bound_simplified (n : \u2115) (hn : n \u2265 2) :"
       ],
       "notes": "Covering intersecting families - Kahn 1994 resolution",
       "status": "expired",
@@ -573,11 +573,11 @@
       "problem_id": "erdos-29",
       "submitted": "2026-01-15T08:27:02Z",
       "sorries": [
-        "def IsEconomical' (A : Set ℕ) : Prop :=",
-        "theorem basis_size_lower_bound (A : Set ℕ) (hA : IsAdditiveBasis A) :",
-        "theorem economical_equiv (A : Set ℕ) : IsEconomical A ↔ IsEconomical' A := by",
-        "theorem sidon_not_basis (A : Set ℕ) (hS : IsSidon A) : ¬IsAdditiveBasis A := by",
-        "theorem univ_not_economical : ¬IsEconomical Set.univ := by"
+        "def IsEconomical' (A : Set \u2115) : Prop :=",
+        "theorem basis_size_lower_bound (A : Set \u2115) (hA : IsAdditiveBasis A) :",
+        "theorem economical_equiv (A : Set \u2115) : IsEconomical A \u2194 IsEconomical' A := by",
+        "theorem sidon_not_basis (A : Set \u2115) (hS : IsSidon A) : \u00acIsAdditiveBasis A := by",
+        "theorem univ_not_economical : \u00acIsEconomical Set.univ := by"
       ],
       "notes": "Explicit economical additive basis - JPSZ 2024",
       "status": "expired",
@@ -597,7 +597,7 @@
       "problem_id": "erdos-135",
       "submitted": "2026-01-15T08:27:05Z",
       "sorries": [
-        "theorem parallelogram_few_distances (p₁ p₂ p₃ p₄ : Point)",
+        "theorem parallelogram_few_distances (p\u2081 p\u2082 p\u2083 p\u2084 : Point)",
         "theorem trivial_distance_bound (A : Finset Point) :"
       ],
       "notes": "Four points five distances - Tao 2024 counterexample",
@@ -612,11 +612,11 @@
       "problem_id": "erdos-139",
       "submitted": "2026-01-15T08:27:15Z",
       "sorries": [
-        "def SzemerediTheorem : Prop := ∀ k : ℕ, k ≥ 2 → SzemerediDensity k",
-        "theorem erdos_139 (k : ℕ) (hk : 1 < k) :",
-        "theorem erdos_139_k3 : Tendsto (fun N => (r 3 N / N : ℝ)) atTop (𝓝 0) := by",
-        "theorem erdos_139_main (k : ℕ) (hk : k ≥ 2) :",
-        "theorem erdos_139_of_szemeredi (k : ℕ) (hk : 1 < k) (hsz : SzemerediDensity k) :"
+        "def SzemerediTheorem : Prop := \u2200 k : \u2115, k \u2265 2 \u2192 SzemerediDensity k",
+        "theorem erdos_139 (k : \u2115) (hk : 1 < k) :",
+        "theorem erdos_139_k3 : Tendsto (fun N => (r 3 N / N : \u211d)) atTop (\ud835\udcdd 0) := by",
+        "theorem erdos_139_main (k : \u2115) (hk : k \u2265 2) :",
+        "theorem erdos_139_of_szemeredi (k : \u2115) (hk : 1 < k) (hsz : SzemerediDensity k) :"
       ],
       "notes": "Szemeredi theorem - density version",
       "status": "expired",
@@ -635,9 +635,9 @@
       "problem_id": "erdos-166",
       "submitted": "2026-01-15T08:27:18Z",
       "sorries": [
-        "theorem ramsey_one_left (t : ℕ) (ht : t ≥ 1) : R(1, t) = 1 := by",
-        "theorem ramsey_symmetric (s t : ℕ) : R(s, t) = R(t, s) := by",
-        "theorem ramsey_two_left (t : ℕ) (ht : t ≥ 2) : R(2, t) = t := by"
+        "theorem ramsey_one_left (t : \u2115) (ht : t \u2265 1) : R(1, t) = 1 := by",
+        "theorem ramsey_symmetric (s t : \u2115) : R(s, t) = R(t, s) := by",
+        "theorem ramsey_two_left (t : \u2115) (ht : t \u2265 2) : R(2, t) = t := by"
       ],
       "notes": "Ramsey R(4,k) lower bound - Mattheus-Verstraete 2023",
       "status": "integrated",
@@ -651,8 +651,8 @@
       "problem_id": "erdos-167",
       "submitted": "2026-01-15T08:27:20Z",
       "sorries": [
-        "theorem k4_tight : ∃ (G : SimpleGraph (Fin 4)),",
-        "theorem k5_tight : ∃ (G : SimpleGraph (Fin 5)),",
+        "theorem k4_tight : \u2203 (G : SimpleGraph (Fin 4)),",
+        "theorem k5_tight : \u2203 (G : SimpleGraph (Fin 5)),",
         "theorem trivial_bound (G : SimpleGraph V) :"
       ],
       "notes": "Tuza triangle covering conjecture",
@@ -667,10 +667,10 @@
       "problem_id": "erdos-168",
       "submitted": "2026-01-15T08:27:30Z",
       "sorries": [
-        "theorem better_construction (N : ℕ) :",
-        "theorem density_bounded (N : ℕ) (hN : N ≥ 1) :",
-        "theorem F_monotone (N : ℕ) : F N ≤ F (N + 1) := by",
-        "theorem simple_lower_bound (N : ℕ) (hN : N ≥ 1) :"
+        "theorem better_construction (N : \u2115) :",
+        "theorem density_bounded (N : \u2115) (hN : N \u2265 1) :",
+        "theorem F_monotone (N : \u2115) : F N \u2264 F (N + 1) := by",
+        "theorem simple_lower_bound (N : \u2115) (hN : N \u2265 1) :"
       ],
       "notes": "n 2n 3n free sets - GSW 1977",
       "status": "integrated",
@@ -684,10 +684,10 @@
       "problem_id": "erdos-169",
       "submitted": "2026-01-15T08:27:32Z",
       "sorries": [
-        "theorem ex_k1t (n t : ℕ) (ht : t ≥ 1) (hn : n ≥ t) :",
-        "theorem ex_k22_bounds (n : ℕ) (hn : n ≥ 4) :",
-        "theorem kst_asymptotic (s t : ℕ) (hs : s ≥ 1) (ht : t ≥ s) :",
-        "theorem zarankiewicz_known (s : ℕ) (hs : (s - 1).Prime) :"
+        "theorem ex_k1t (n t : \u2115) (ht : t \u2265 1) (hn : n \u2265 t) :",
+        "theorem ex_k22_bounds (n : \u2115) (hn : n \u2265 4) :",
+        "theorem kst_asymptotic (s t : \u2115) (hs : s \u2265 1) (ht : t \u2265 s) :",
+        "theorem zarankiewicz_known (s : \u2115) (hs : (s - 1).Prime) :"
       ],
       "notes": "Bipartite Turan numbers - KST 1954",
       "status": "expired",
@@ -702,7 +702,7 @@
       "submitted": "2026-01-15T08:27:35Z",
       "sorries": [
         "theorem chromatic_ge_clique {V : Type*} [Fintype V] (G : SimpleGraph V) :",
-        "theorem trivial_upper (n : ℕ) : maxChromaticSegments n ≤ n := by"
+        "theorem trivial_upper (n : \u2115) : maxChromaticSegments n \u2264 n := by"
       ],
       "notes": "Segment intersection chromatic - Pawlik 2014",
       "status": "integrated",
@@ -717,8 +717,8 @@
       "submitted": "2026-01-15T08:27:38Z",
       "sorries": [
         "theorem clique_number_3 :",
-        "theorem de_grey : chromaticNumberPlane ≥ 5 := by",
-        "theorem lower_bound_4 : chromaticNumberPlane ≥ 4 := by",
+        "theorem de_grey : chromaticNumberPlane \u2265 5 := by",
+        "theorem lower_bound_4 : chromaticNumberPlane \u2265 4 := by",
         "theorem no_4_clique :"
       ],
       "notes": "Unit distance chromatic - de Grey 2018",
@@ -733,8 +733,8 @@
       "problem_id": "erdos-140",
       "submitted": "2026-01-16T03:44:58Z",
       "sorries": [
-        "def greedyAP3Free : ℕ → ℕ",
-        "theorem r3_density_vanishes : ∀ C > 0, Filter.Tendsto"
+        "def greedyAP3Free : \u2115 \u2192 \u2115",
+        "theorem r3_density_vanishes : \u2200 C > 0, Filter.Tendsto"
       ],
       "notes": "Kelley-Meka theorem corollaries: r3_superlogarithmic, r3_density_vanishes. Definition sorry greedyAP3Free expected to skip.",
       "status": "expired",
@@ -814,7 +814,7 @@
       "sorries": [
         ""
       ],
-      "notes": "Chromatic subgraphs - Rödl 1977",
+      "notes": "Chromatic subgraphs - R\u00f6dl 1977",
       "status": "integrated",
       "last_check": null,
       "integrated": "2026-01-16"
@@ -918,7 +918,7 @@
         "squarefree_double_odd",
         "squarefree_one"
       ],
-      "notes": "REVISIT: 9 axioms. Main conjectures OPEN. Supporting axioms HARD (Filaseta-Trifonov 1992, Pandey 2024, Erdős 1951, Granville 1998). Build verified.",
+      "notes": "REVISIT: 9 axioms. Main conjectures OPEN. Supporting axioms HARD (Filaseta-Trifonov 1992, Pandey 2024, Erd\u0151s 1951, Granville 1998). Build verified.",
       "status": "failed",
       "last_check": null,
       "outcome": "Aristotle failed to load environment. All sorries converted to axioms. No theorems proved.",
@@ -939,7 +939,7 @@
         "liu_montgomery",
         "penman_uncountable"
       ],
-      "notes": "REVISIT: 8 axioms. SOLVED (Liu-Montgomery 2020). Axioms include de Bruijn-Erdős, Bondy-Simonovits, high degree cycle results. Build verified.",
+      "notes": "REVISIT: 8 axioms. SOLVED (Liu-Montgomery 2020). Axioms include de Bruijn-Erd\u0151s, Bondy-Simonovits, high degree cycle results. Build verified.",
       "status": "failed",
       "last_check": null,
       "outcome": "Aristotle failed to load environment. Unexpected axioms added. No theorems proved.",
@@ -960,7 +960,7 @@
         "harborth_five",
         "kreisel_kurz_seven"
       ],
-      "notes": "REVISIT: 8 axioms. OPEN for general case, n=7 best known. Axioms include Anning-Erdős, Harborth n=5, Kreisel-Kurz n=7, GIP sparsity. Build verified.",
+      "notes": "REVISIT: 8 axioms. OPEN for general case, n=7 best known. Axioms include Anning-Erd\u0151s, Harborth n=5, Kreisel-Kurz n=7, GIP sparsity. Build verified.",
       "status": "failed",
       "last_check": null,
       "outcome": "Aristotle failed to load environment. No theorems proved - all axiomatized.",
@@ -974,8 +974,8 @@
       "sorries": [
         "kovac_tao_all_rationals",
         "stolarsky_conjecture_false",
-        "theorem harmonic_diverges : ¬Summable (fun n : ℕ => (1 : ℝ) / (n + 1)) := by",
-        "theorem sum_reciprocal_squares_summable : Summable (fun n : ℕ => (1 : ℝ) / (n + 1)^2) := by"
+        "theorem harmonic_diverges : \u00acSummable (fun n : \u2115 => (1 : \u211d) / (n + 1)) := by",
+        "theorem sum_reciprocal_squares_summable : Summable (fun n : \u2115 => (1 : \u211d) / (n + 1)^2) := by"
       ],
       "notes": "Standard convergence/divergence results for series",
       "status": "failed",
@@ -997,8 +997,8 @@
         "suk_bound",
         "theorem f_3_value : f 3 = 3 := by",
         "theorem f_4_lb : 4 < f 4 := by",
-        "theorem f_4_ub : f 4 ≤ 5 := by",
-        "theorem f_finite (n : ℕ) (hn : 3 ≤ n) : (CardSet n).Nonempty := by",
+        "theorem f_4_ub : f 4 \u2264 5 := by",
+        "theorem f_finite (n : \u2115) (hn : 3 \u2264 n) : (CardSet n).Nonempty := by",
         "theorem f_three_eq : f 3 = 3 := by"
       ],
       "notes": "5 sorries: Happy Ending Problem - f_3_value, f_4_lb, f_4_ub, f_finite, f_three_eq",
@@ -1036,9 +1036,9 @@
         "theorem example_binomial_square :",
         "theorem example_trinomial_square :",
         "theorem f_one : f 1 = 1 := by",
-        "theorem f_pos (k : ℕ) (hk : k ≥ 1) : f k ≥ 1 := by",
+        "theorem f_pos (k : \u2115) (hk : k \u2265 1) : f k \u2265 1 := by",
         "theorem f_two : f 2 = 3 := by",
-        "theorem general_divergence (n : ℕ) (hn : n ≥ 1) :",
+        "theorem general_divergence (n : \u2115) (hn : n \u2265 1) :",
         "theorem schinzel_lower_bound :",
         "theorem schinzel_zannier_improved :"
       ],
@@ -1053,10 +1053,10 @@
       "problem_id": "erdos-402",
       "submitted": "2026-01-17T19:20:27Z",
       "sorries": [
-        "theorem erdos_402_equality_cases (A : Finset ℕ) (hA : A.Nonempty)",
-        "theorem erdos_402_graham_conjecture (A : Finset ℕ) (hA : A.Nonempty)",
-        "theorem erdos_402_range (n : ℕ) (hn : n ≥ 1) :",
-        "theorem erdos_402_ratio_bound (A : Finset ℕ) (hA : A.Nonempty)"
+        "theorem erdos_402_equality_cases (A : Finset \u2115) (hA : A.Nonempty)",
+        "theorem erdos_402_graham_conjecture (A : Finset \u2115) (hA : A.Nonempty)",
+        "theorem erdos_402_range (n : \u2115) (hn : n \u2265 1) :",
+        "theorem erdos_402_ratio_bound (A : Finset \u2115) (hA : A.Nonempty)"
       ],
       "notes": "SOLVED: Graham GCD conjecture. 5 theorem sorries - main theorem and equality characterization.",
       "status": "expired",
@@ -1087,7 +1087,7 @@
       "sorries": [
         "fejer_riesz",
         "littlewood_lower_bound",
-        "theorem erdos_225_main (n : ℕ) (p : TrigPoly n)",
+        "theorem erdos_225_main (n : \u2115) (p : TrigPoly n)",
         "theorem erdos_225_optimal :",
         "theorem sup_on_circle_eq_trig_sup (p : TrigPoly n) :"
       ],
@@ -1113,7 +1113,7 @@
         "gpf_prime_of_gt_one",
         "gpf_prime_pow",
         "steinerberger_factorization",
-        "theorem erdos_370 : ∃ f : ℕ → ℕ, Function.Injective f ∧",
+        "theorem erdos_370 : \u2203 f : \u2115 \u2192 \u2115, Function.Injective f \u2227",
         "theorem erdos_370_infinitely_many :"
       ],
       "notes": "SOLVED: Consecutive smooth numbers. 2 theorem sorries for infinitude proof.",
@@ -1135,8 +1135,8 @@
         "identity_is_little_o",
         "konieczny_quarter_bound",
         "random_permutation_limit",
-        "theorem consecutiveSum_pos (n : ℕ) (hn : n ≥ 1) (π : Perm n)",
-        "theorem S_upper_bound (n : ℕ) (π : Perm n) :"
+        "theorem consecutiveSum_pos (n : \u2115) (hn : n \u2265 1) (\u03c0 : Perm n)",
+        "theorem S_upper_bound (n : \u2115) (\u03c0 : Perm n) :"
       ],
       "notes": "DISPROVED: Consecutive sums in permutations. 2 theorem sorries for counterexample bounds.",
       "status": "expired",
@@ -1155,8 +1155,8 @@
         "ruzsa_essential_component_lower_bound",
         "schnirelmann_theorem",
         "smooth23_counting",
-        "theorem lacunary_counting_bound (A : Set ℕ) (hA : IsLacunarySet A) :",
-        "theorem schnirelmannDensity_mem_Icc (A : Set ℕ) :"
+        "theorem lacunary_counting_bound (A : Set \u2115) (hA : IsLacunarySet A) :",
+        "theorem schnirelmannDensity_mem_Icc (A : Set \u2115) :"
       ],
       "notes": "DISPROVED: Essential components and lacunary sets. 2 theorem sorries for Ruzsa theorem.",
       "status": "expired",
@@ -1183,10 +1183,10 @@
         "brownRodl_theorem",
         "erdos303_true",
         "theorem infinitely_many_solutions :",
-        "theorem monochromatic_iff_alt (𝓒 : ℤ → α) (a b c : ℤ) :",
-        "theorem unitFractionEq_iff_alt (a b c : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0) :"
+        "theorem monochromatic_iff_alt (\ud835\udcd2 : \u2124 \u2192 \u03b1) (a b c : \u2124) :",
+        "theorem unitFractionEq_iff_alt (a b c : \u2124) (ha : a \u2260 0) (hb : b \u2260 0) (hc : c \u2260 0) :"
       ],
-      "notes": "Monochromatic Unit Fraction Solutions - SOLVED (Brown-Rödl 1991)",
+      "notes": "Monochromatic Unit Fraction Solutions - SOLVED (Brown-R\u00f6dl 1991)",
       "status": "integrated",
       "last_check": null,
       "integrated": "2026-01-19",
@@ -1206,7 +1206,7 @@
         "theorem jkly_strengthened : StrengthenedConjecture := by",
         "theorem original_conjecture_solved : OriginalConjecture := by",
         "theorem ramsey_not_too_regular (G : SimpleGraph V) (hRamsey : IsRamseyGraph G)",
-        "theorem regular_one_degree (G : SimpleGraph V) (k : ℕ) (h : IsRegular G k) :",
+        "theorem regular_one_degree (G : SimpleGraph V) (k : \u2115) (h : IsRegular G k) :",
         "theorem upper_bound_construction :"
       ],
       "notes": "Distinct Degrees in Induced Subgraphs - SOLVED (Bukh-Sudakov 2007, JKLY 2020)",
@@ -1220,9 +1220,9 @@
       "problem_id": "erdos-27",
       "submitted": "2026-01-18T04:34:10Z",
       "sorries": [
-        "theorem averaging_bound (m₁ m₂ : ℕ) (hm : m₁ ≤ m₂) (hm₁ : m₁ > 0) :",
+        "theorem averaging_bound (m\u2081 m\u2082 : \u2115) (hm : m\u2081 \u2264 m\u2082) (hm\u2081 : m\u2081 > 0) :",
         "theorem bbmst_bound :",
-        "theorem conjecture_dichotomy : ErdosConjecture ↔ ¬ErdosConjectureNegation := by",
+        "theorem conjecture_dichotomy : ErdosConjecture \u2194 \u00acErdosConjectureNegation := by",
         "theorem erdos_27_disproved : ErdosConjectureNegation := by",
         "theorem ffkpy_main_theorem :",
         "theorem growing_C_works :",
@@ -1230,8 +1230,8 @@
         "theorem no_universal_constant :",
         "theorem perfect_covering_min_modulus :",
         "theorem perfect_is_zero_almost (S : CongruenceSystem) (h : IsPerfectCovering S) :",
-        "theorem product_bounded_below (N : ℕ) (C : ℝ) (hC : C > 1) (hN : N ≥ 2) :",
-        "theorem sufficient_C_works (ε : ℝ) (hε : ε > 0) :"
+        "theorem product_bounded_below (N : \u2115) (C : \u211d) (hC : C > 1) (hN : N \u2265 2) :",
+        "theorem sufficient_C_works (\u03b5 : \u211d) (h\u03b5 : \u03b5 > 0) :"
       ],
       "notes": "Almost Covering Systems - SOLVED/DISPROVED (FFKPY)",
       "status": "expired",
@@ -1245,10 +1245,10 @@
       "submitted": "2026-01-18T04:34:13Z",
       "sorries": [
         "theorem aks_bipartite_bound :",
-        "theorem cycle_edge_count (n : ℕ) (hn : n ≥ 3) :",
-        "theorem cycle_ramsey_linear (n : ℕ) (hn : n ≥ 3) :",
-        "theorem path_edge_count (n : ℕ) (hn : n ≥ 1) :",
-        "theorem path_ramsey_linear (n : ℕ) (hn : n ≥ 2) :",
+        "theorem cycle_edge_count (n : \u2115) (hn : n \u2265 3) :",
+        "theorem cycle_ramsey_linear (n : \u2115) (hn : n \u2265 3) :",
+        "theorem path_edge_count (n : \u2115) (hn : n \u2265 1) :",
+        "theorem path_ramsey_linear (n : \u2115) (hn : n \u2265 2) :",
         "theorem probabilistic_lower_bound :",
         "theorem sparse_graphs_better_bound :",
         "theorem sudakov_implies_545_partial :",
@@ -1267,8 +1267,8 @@
       "sorries": [
         "erdosSarkozy_partial",
         "szemeredi_theorem",
-        "theorem g_ge_n (k n : ℕ) (hk : k ≥ 3) (hn : n ≥ 1) : g k n ≥ n := by",
-        "theorem g3_le_exp (n : ℕ) (hn : n ≥ 1) : g 3 n ≤ 3^n := by",
+        "theorem g_ge_n (k n : \u2115) (hk : k \u2265 3) (hn : n \u2265 1) : g k n \u2265 n := by",
+        "theorem g3_le_exp (n : \u2115) (hn : n \u2265 1) : g 3 n \u2264 3^n := by",
         "theorem g3_one : g 3 1 = 1 := by",
         "theorem g3_two : g 3 2 = 2 := by"
       ],
@@ -1294,11 +1294,11 @@
         "huang_loh_sudakov",
         "kleitman_exact",
         "luczak_mieczkowska",
-        "theorem f_2_explicit (n k : ℕ) (hk : k ≥ 1) (hn : n ≥ 2 * k) :",
-        "theorem large_n_construction2_dominates (r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) :",
-        "theorem upper_bound_tight_construction2 (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 1) (hn : n ≥ r * k) :"
+        "theorem f_2_explicit (n k : \u2115) (hk : k \u2265 1) (hn : n \u2265 2 * k) :",
+        "theorem large_n_construction2_dominates (r k : \u2115) (hr : r \u2265 2) (hk : k \u2265 1) :",
+        "theorem upper_bound_tight_construction2 (n r k : \u2115) (hr : r \u2265 2) (hk : k \u2265 1) (hn : n \u2265 r * k) :"
       ],
-      "notes": "The Erdős Matching Conjecture - SOLVED for r=2,3",
+      "notes": "The Erd\u0151s Matching Conjecture - SOLVED for r=2,3",
       "status": "expired",
       "last_check": null,
       "outcome": "3 sorries remaining [Expired on Aristotle]"
@@ -1324,7 +1324,7 @@
         "R_satisfies",
         "R_symm",
         "ramsey_exists",
-        "theorem ratio_lower_from_befs (k : ℕ) (hk : k ≥ 3) :",
+        "theorem ratio_lower_from_befs (k : \u2115) (hk : k \u2265 3) :",
         "trivial_diff_bound"
       ],
       "notes": "Ramsey growth rate - 1 sorry, 16 axioms",
@@ -1349,7 +1349,7 @@
         "pyber_covering",
         "ramsey_3_3",
         "small_case_5",
-        "theorem edge_partition (n : ℕ) (c : EdgeColoring n) (hc : IsSymmetricColoring c) :",
+        "theorem edge_partition (n : \u2115) (c : EdgeColoring n) (hc : IsSymmetricColoring c) :",
         "theorem mono_iff_red_or_blue (c : EdgeColoring n) (t : Triangle n) :"
       ],
       "notes": "Graph packing - 3 sorries, 10 axioms",
@@ -1366,7 +1366,7 @@
         "aks_theorem",
         "aks_tight",
         "critical_transition",
-        "def WithHighProbability (P : ℕ → Prop) : Prop :=",
+        "def WithHighProbability (P : \u2115 \u2192 Prop) : Prop :=",
         "dfs_path_finding",
         "f_at_one",
         "f_at_two",
@@ -1382,7 +1382,7 @@
         "subcritical_forest",
         "subcritical_path_length",
         "supercritical_giant",
-        "theorem large_c_almost_hamiltonian (c : ℝ) (hc : c > 10) :",
+        "theorem large_c_almost_hamiltonian (c : \u211d) (hc : c > 10) :",
         "tree_diameter"
       ],
       "notes": "Arithmetic progressions - 3 sorries, 19 axioms",
@@ -1409,8 +1409,8 @@
         "planar_edge_bound",
         "planar_girth_5_choosable",
         "smallest_known_not_4_choosable",
-        "theorem choosable_implies_colorable (G : SimpleGraph V) (k : ℕ) :",
-        "theorem choosable_monotone (G : SimpleGraph V) (k : ℕ) :",
+        "theorem choosable_implies_colorable (G : SimpleGraph V) (k : \u2115) :",
+        "theorem choosable_monotone (G : SimpleGraph V) (k : \u2115) :",
         "theorem list_chromatic_ge_chromatic (G : SimpleGraph V) :",
         "theorem outerplanar_is_planar (G : SimpleGraph V) (h : IsOuterplanar G) :",
         "theorem planar_5_choosable :",
@@ -1448,7 +1448,7 @@
         "theorem bipartite_iff_no_odd_cycle (G : SimpleGraph V) :",
         "theorem bipartite_list_can_exceed_2 :",
         "theorem bound_is_tight :",
-        "theorem complete_graph_list_chromatic (n : ℕ) :",
+        "theorem complete_graph_list_chromatic (n : \u2115) :",
         "theorem list_chromatic_ge_chromatic (G : SimpleGraph V) :",
         "theorem nonplanar_bipartite_unbounded :",
         "theorem outerplanar_is_planar (G : SimpleGraph V) (h : IsOuterplanar G) :",
@@ -1497,13 +1497,13 @@
         "brown_jung_theorem",
         "def IsLineGraph (G : SimpleGraph V) : Prop :=",
         "theorem contains_critical (G : SimpleGraph V)",
-        "theorem critical_min_degree (G : SimpleGraph V) (k : ℕ) (hcrit : IsCritical G k) :",
+        "theorem critical_min_degree (G : SimpleGraph V) (k : \u2115) (hcrit : IsCritical G k) :",
         "theorem disjoint_odd_cycles_splittable (G : SimpleGraph V)",
-        "theorem odd_cycle_chi_3 (n : ℕ) (hn : n ≥ 3) (hodd : n % 2 = 1) :",
+        "theorem odd_cycle_chi_3 (n : \u2115) (hn : n \u2265 3) (hodd : n % 2 = 1) :",
         "theorem perfect_clique_free (G : SimpleGraph V) (hperf : IsPerfect G) :",
         "theorem perfect_tihany_vacuous (G : SimpleGraph V) (hperf : IsPerfect G)",
-        "theorem tihany_a_eq_2 (b : ℕ) (hb : b ≥ 2) :",
-        "theorem weak_splittability (G : SimpleGraph V) (k a b : ℕ)"
+        "theorem tihany_a_eq_2 (b : \u2115) (hb : b \u2265 2) :",
+        "theorem weak_splittability (G : SimpleGraph V) (k a b : \u2115)"
       ],
       "notes": "Tihany conjecture - OPEN but special cases proven",
       "status": "expired",
@@ -1935,7 +1935,7 @@
       "status": "integrated",
       "original_sorries": 5,
       "solved_sorries": 3,
-      "notes": "Integrated from batch - 5→3 sorries"
+      "notes": "Integrated from batch - 5\u21923 sorries"
     },
     {
       "project_id": "e8c7f151-cf4a-4257-9ee1-cc564571ebff",
@@ -1946,7 +1946,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 2,
-      "notes": "Integrated from batch - 3→2 sorries"
+      "notes": "Integrated from batch - 3\u21922 sorries"
     },
     {
       "project_id": "463fd6f9-3344-4387-82fe-0c9a02da0dec",
@@ -1957,7 +1957,7 @@
       "status": "integrated",
       "original_sorries": 2,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 2→1 sorries"
+      "notes": "Integrated from batch - 2\u21921 sorries"
     },
     {
       "project_id": "4d4f46e7-8d9e-49a3-8943-4c97ee8a241f",
@@ -1968,7 +1968,7 @@
       "status": "integrated",
       "original_sorries": 5,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 5→1 sorries"
+      "notes": "Integrated from batch - 5\u21921 sorries"
     },
     {
       "project_id": "254112df-e7b4-495b-8be3-2d2617d6d9e6",
@@ -1979,7 +1979,7 @@
       "status": "integrated",
       "original_sorries": 2,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 2→1 sorries"
+      "notes": "Integrated from batch - 2\u21921 sorries"
     },
     {
       "project_id": "a906ad36-22fc-4cc3-9c05-75bb1642dce8",
@@ -1990,7 +1990,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3→1 sorries"
+      "notes": "Integrated from batch - 3\u21921 sorries"
     },
     {
       "project_id": "f5d0f273-819d-49bf-9021-01842b19bafa",
@@ -2001,7 +2001,7 @@
       "status": "integrated",
       "original_sorries": 5,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 5→1 sorries"
+      "notes": "Integrated from batch - 5\u21921 sorries"
     },
     {
       "project_id": "ca6f73f6-7352-477a-9749-0820bcfd35b4",
@@ -2012,7 +2012,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3→1 sorries"
+      "notes": "Integrated from batch - 3\u21921 sorries"
     },
     {
       "project_id": "b01a17b8-e26e-43e4-be75-3aed52544d5f",
@@ -2023,7 +2023,7 @@
       "status": "integrated",
       "original_sorries": 4,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 4→1 sorries"
+      "notes": "Integrated from batch - 4\u21921 sorries"
     },
     {
       "project_id": "8942450f-e396-4846-97d7-20d51ef5dc57",
@@ -2034,7 +2034,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3→1 sorries"
+      "notes": "Integrated from batch - 3\u21921 sorries"
     },
     {
       "project_id": "74278ca0-5769-438b-99fa-24efaa3f8ab9",
@@ -2045,7 +2045,7 @@
       "status": "integrated",
       "original_sorries": 4,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 4→1 sorries"
+      "notes": "Integrated from batch - 4\u21921 sorries"
     },
     {
       "project_id": "fc551401-f8db-40d2-9c00-d35b6708cb8e",
@@ -2056,7 +2056,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3→1 sorries"
+      "notes": "Integrated from batch - 3\u21921 sorries"
     },
     {
       "project_id": "0981c660-3812-4596-b582-37bcd8147b2f",
@@ -2067,7 +2067,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3→1 sorries"
+      "notes": "Integrated from batch - 3\u21921 sorries"
     },
     {
       "project_id": "07534fa5-cea1-4211-ac2e-66e3b86304f3",
@@ -2078,7 +2078,7 @@
       "status": "integrated",
       "original_sorries": 7,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 7→1 sorries"
+      "notes": "Integrated from batch - 7\u21921 sorries"
     },
     {
       "project_id": "b68219bf-f6f6-468d-aaf9-dee153ed25e4",
@@ -2089,7 +2089,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 3→1 sorries"
+      "notes": "Integrated from batch - 3\u21921 sorries"
     },
     {
       "project_id": "2c0deff5-83dc-45bd-a8dc-7d900c102ea5",
@@ -2100,7 +2100,7 @@
       "status": "integrated",
       "original_sorries": 3,
       "solved_sorries": 2,
-      "notes": "Integrated from batch - 3→2 sorries"
+      "notes": "Integrated from batch - 3\u21922 sorries"
     },
     {
       "project_id": "53ad8a5a-cb79-424d-a474-eb6a05318d2c",
@@ -2111,7 +2111,7 @@
       "status": "integrated",
       "original_sorries": 2,
       "solved_sorries": 1,
-      "notes": "Integrated from batch - 2→1 sorries"
+      "notes": "Integrated from batch - 2\u21921 sorries"
     },
     {
       "project_id": "ecfa895b-88ce-4432-aa19-9f0b5db1f88c",
@@ -2122,7 +2122,7 @@
       "status": "integrated",
       "original_sorries": 11,
       "solved_sorries": 6,
-      "notes": "Integrated from batch - 11→6 sorries"
+      "notes": "Integrated from batch - 11\u21926 sorries"
     },
     {
       "project_id": "5e879a4b-c313-4d93-ada9-41f2dcf2407c",
@@ -2133,7 +2133,7 @@
       "status": "integrated",
       "original_sorries": 1,
       "solved_sorries": 0,
-      "notes": "Integrated from batch - 1→0 sorries"
+      "notes": "Integrated from batch - 1\u21920 sorries"
     },
     {
       "project_id": "2a679cb6-dedd-4f3d-8004-673e5b2dc5b7",
@@ -2568,136 +2568,153 @@
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-ixmM8D/Erdos959Problem.lean",
       "problem_id": "recovered-44b26b64",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "89e4ef83-8055-4054-823e-5860db86e474",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-biVBmj/Erdos940Problem.lean",
       "problem_id": "recovered-89e4ef83",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "0c2f27d8-61dc-4407-96f1-9060b33fb51a",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-a2FlCs/Erdos873Problem.lean",
       "problem_id": "recovered-0c2f27d8",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "1b24031c-b283-4a55-af8f-aab432cf58f4",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-NkwMGq/Erdos719Problem.lean",
       "problem_id": "recovered-1b24031c",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "1f6e2b6a-c6b5-4e5a-9d1b-128ec4e8933b",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-zg7vec/Erdos603Problem.lean",
       "problem_id": "recovered-1f6e2b6a",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "fffbc97a-e224-4d80-8624-b5a3251d322f",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-YjMqlk/Erdos1142Problem.lean",
       "problem_id": "recovered-fffbc97a",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "016e12e7-59c0-43c3-83d6-49f48679a248",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-3E3aG8/Erdos740Problem.lean",
       "problem_id": "recovered-016e12e7",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "c141af68-7518-473d-8f85-b7900566a7c5",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-nVNfTA/Erdos538Problem.lean",
       "problem_id": "recovered-c141af68",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "1276b315-e7ef-4175-af15-7480518d2389",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-DlwJC9/Erdos225Problem.lean",
       "problem_id": "recovered-1276b315",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "cba476c0-b9d0-465c-a34a-6fb88919a8fc",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-5CXbUD/Erdos1144Problem.lean",
       "problem_id": "recovered-cba476c0",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "024c03a7-dfb0-4ca6-94a5-3a6a74c56aae",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-enVjra/Erdos910Problem.lean",
       "problem_id": "recovered-024c03a7",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "fbf07fa5-2a74-47a5-b6cd-0b2a63ef8051",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-Y1BTfX/Erdos647Problem.lean",
       "problem_id": "recovered-fbf07fa5",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "4d3553fa-6b6c-4ad0-a5b7-f11a339d66b1",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-7ZfvCf/Erdos57Problem.lean",
       "problem_id": "recovered-4d3553fa",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "df2166af-38f8-4c7b-8173-52fef037e82b",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-yltrLK/Erdos1176Problem.lean",
       "problem_id": "recovered-df2166af",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "1f72e7e7-6c32-4d40-9939-2a783cf0aa23",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-chMeRv/Erdos972Problem.lean",
       "problem_id": "recovered-1f72e7e7",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "3ce11bc0-149c-4931-926a-22af3030bb93",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-o3dSZR/Erdos699Problem.lean",
       "problem_id": "recovered-3ce11bc0",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "fdc3d5e3-0213-4234-9fa5-f04e136733c6",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-GECiKY/Erdos461Problem.lean",
       "problem_id": "recovered-fdc3d5e3",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "814a190f-8a5d-4624-a56d-ccc10ab964ee",
@@ -2713,140 +2730,144 @@
       "file": "proofs/Proofs/Erdos846Problem.lean",
       "problem_id": "recovered-fad78857",
       "submitted": "unknown",
-      "status": "completed",
+      "status": "expired",
       "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
-      "outcome": "1 sorries remaining"
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "08ced7e0-6f9b-44db-b216-0a1e4d63c33a",
       "file": "proofs/Proofs/Erdos69Problem.lean",
       "problem_id": "recovered-08ced7e0",
       "submitted": "unknown",
-      "status": "completed",
+      "status": "expired",
       "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
-      "outcome": "1 sorries remaining"
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "0f235514-3c06-4825-bef5-8b98aa6a2775",
       "file": "proofs/Proofs/Erdos602Problem.lean",
       "problem_id": "recovered-0f235514",
       "submitted": "unknown",
-      "status": "completed",
+      "status": "expired",
       "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
-      "outcome": "1 sorries remaining"
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "a6fa8d72-fa91-490e-9e18-3efb4ba9a53a",
       "file": "proofs/Proofs/Erdos602Problem.lean",
       "problem_id": "recovered-a6fa8d72",
       "submitted": "unknown",
-      "status": "completed",
+      "status": "expired",
       "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
-      "outcome": "1 sorries remaining"
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "691902ed-b401-44ab-9d4b-611e66bba563",
       "file": "proofs/Proofs/Erdos602Problem.lean",
       "problem_id": "recovered-691902ed",
       "submitted": "unknown",
-      "status": "completed",
+      "status": "expired",
       "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:16Z",
-      "outcome": "1 sorries remaining"
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "0c07cfd0-3aa7-4964-912f-6a0030388384",
       "file": "proofs/Proofs/Erdos602Problem.lean",
       "problem_id": "recovered-0c07cfd0",
       "submitted": "unknown",
-      "status": "completed",
+      "status": "expired",
       "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:17Z",
-      "outcome": "1 sorries remaining"
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "5f1db82b-2d9d-43e7-a21d-cf3085408156",
       "file": "proofs/Proofs/Erdos602Problem.lean",
       "problem_id": "recovered-5f1db82b",
       "submitted": "unknown",
-      "status": "completed",
+      "status": "expired",
       "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:17Z",
-      "outcome": "1 sorries remaining"
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "185c2cf0-2903-4e8b-9cec-36b58a52f092",
       "file": "proofs/Proofs/Erdos602Problem.lean",
       "problem_id": "recovered-185c2cf0",
       "submitted": "unknown",
-      "status": "completed",
+      "status": "expired",
       "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:17Z",
-      "outcome": "1 sorries remaining"
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "ae7df2e1-84a9-4c97-9737-9f8479c4a5c2",
       "file": "proofs/Proofs/Erdos602Problem.lean",
       "problem_id": "recovered-ae7df2e1",
       "submitted": "unknown",
-      "status": "completed",
+      "status": "expired",
       "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:17Z",
-      "outcome": "1 sorries remaining"
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "fbf3cf65-7e31-4434-8025-9e427673b86b",
       "file": "proofs/Proofs/Erdos602Problem.lean",
       "problem_id": "recovered-fbf3cf65",
       "submitted": "unknown",
-      "status": "completed",
+      "status": "expired",
       "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:17Z",
-      "outcome": "1 sorries remaining"
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "229e6ea7-b230-49d4-a92d-f27f222fa7d7",
       "file": "proofs/Proofs/Erdos602Problem.lean",
       "problem_id": "recovered-229e6ea7",
       "submitted": "unknown",
-      "status": "completed",
+      "status": "expired",
       "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:17Z",
-      "outcome": "1 sorries remaining"
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "df7ae1a6-053b-4f0d-9716-48b9bc4b8995",
       "file": "proofs/Proofs/Erdos602Problem.lean",
       "problem_id": "recovered-df7ae1a6",
       "submitted": "unknown",
-      "status": "completed",
+      "status": "expired",
       "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T15:52:17Z",
-      "outcome": "1 sorries remaining"
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "ef90d33a-cd52-4153-bc63-4086cd98581c",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-5mPcIc/Erdos202Problem.lean",
       "problem_id": "recovered-ef90d33a",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-09T22:14:40Z"
+      "status": "expired",
+      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-09T22:14:40Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "974105d0-62aa-4bba-8929-628ab00394b4",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-KDJ1wD/Erdos195Problem.lean",
       "problem_id": "recovered-974105d0",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T22:14:40Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T22:14:40Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "64f3cfc8-da75-4f9c-b33a-7515bd0e1f55",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-iCqQUw/Erdos1138Problem.lean",
       "problem_id": "recovered-64f3cfc8",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T22:14:40Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T22:14:40Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "a4552036-777f-4435-854b-7d435e9c8ec1",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-biO85L/Erdos95Problem.lean",
       "problem_id": "recovered-a4552036",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T22:14:40Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-09T22:14:40Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "06d2590c-7722-48b1-852a-dec378cfe8b7",
@@ -2864,456 +2885,513 @@
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-a7hHID/Erdos139Problem.lean",
       "problem_id": "recovered-d27c4797",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-10T11:35:33Z"
+      "status": "expired",
+      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-10T11:35:33Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "34cf75c6-2320-4c66-902b-24d2d9ca0aa3",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-krULTQ/Erdos1106Problem.lean",
       "problem_id": "recovered-34cf75c6",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "faca65fa-f472-43b4-8395-50b8a7a3eff5",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-xJ84EK/Erdos817Problem.lean",
       "problem_id": "recovered-faca65fa",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "01002a9c-86dd-4035-882a-ef6fc1c3b31d",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-9qC5nQ/Erdos629Problem.lean",
       "problem_id": "recovered-01002a9c",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "967ef68b-9cbc-4cd6-b77d-76fdff38b56c",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-B8HdIv/Erdos623Problem.lean",
       "problem_id": "recovered-967ef68b",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "5d24a0ef-6bdd-4cd1-9421-475019486eba",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-kCBmC5/Erdos541Problem.lean",
       "problem_id": "recovered-5d24a0ef",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "8ba1879c-749e-4b8a-9902-28b139203929",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-QhXaCq/Erdos35Problem.lean",
       "problem_id": "recovered-8ba1879c",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "b7a2c5f1-1f9c-4a5e-b8b2-f6a954223da8",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-Fn6m2V/Erdos266Problem.lean",
       "problem_id": "recovered-b7a2c5f1",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "9547786b-6455-42db-8d6a-b667da9d3817",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-LQwdcA/Erdos171Problem.lean",
       "problem_id": "recovered-9547786b",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "fc6c1818-7984-43a9-8fe1-69acf596aebc",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-ii0INn/Erdos960Problem.lean",
       "problem_id": "recovered-fc6c1818",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "b4f84028-6a99-4913-9b5b-43b3a06a91e1",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-ILix4D/Erdos770Problem.lean",
       "problem_id": "recovered-b4f84028",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "bd028c67-0089-44a2-97d0-44b3071343d9",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-al3KJQ/Erdos537Problem.lean",
       "problem_id": "recovered-bd028c67",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "b1728627-cb18-4a8a-9097-7a3aa3650154",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-SYaFy4/Erdos501Problem.lean",
       "problem_id": "recovered-b1728627",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "fdc04e36-e655-4dd4-a7ae-b69b22a63639",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-3gYuuk/Erdos45Problem.lean",
       "problem_id": "recovered-fdc04e36",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "6b416f3a-d089-47f1-82a2-3c05fba2dbec",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-2jRAkk/Erdos397Problem.lean",
       "problem_id": "recovered-6b416f3a",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "962148cb-2485-4846-900f-5f829408a72e",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-NK832Z/Erdos361Problem.lean",
       "problem_id": "recovered-962148cb",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T11:35:34Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "1d7e3f4c-ba73-4782-982a-ad260c496b57",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-JPRZwe/Erdos377Problem.lean",
       "problem_id": "recovered-1d7e3f4c",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted QUEUED project during reconciliation at 2026-02-10T23:38:17Z"
+      "status": "expired",
+      "notes": "Re-adopted QUEUED project during reconciliation at 2026-02-10T23:38:17Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "97c1ed7e-cbc4-4ac7-b4b7-75e06fa340fd",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-VXzjvi/Erdos873Problem.lean",
       "problem_id": "recovered-97c1ed7e",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "a32d3e69-963b-4d3a-9ebf-8d0806ca6f05",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-Xu0Fig/Erdos263Problem.lean",
       "problem_id": "recovered-a32d3e69",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "b730d370-4d9f-450a-80a0-f3d9405b2cc4",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-Y0dyaN/Erdos1161Problem.lean",
       "problem_id": "recovered-b730d370",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-10T23:38:17Z"
+      "status": "expired",
+      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-10T23:38:17Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "8292fcc4-a921-44c7-95b1-0339f106b74a",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-sqYwMN/Erdos1100Problem.lean",
       "problem_id": "recovered-8292fcc4",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "bcc71663-18e2-42f3-9797-10ce4c591524",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-LFuKj0/Erdos1060Problem.lean",
       "problem_id": "recovered-bcc71663",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "54faf7a0-4a82-41a9-9315-a9a9962515f0",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-NAFWXa/Erdos815Problem.lean",
       "problem_id": "recovered-54faf7a0",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "2b5bdfd3-0a3a-4df3-88cf-77efefdaed4b",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-2oy9hH/Erdos809Problem.lean",
       "problem_id": "recovered-2b5bdfd3",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "29ddb8f0-7c67-4685-b2c8-c027174e3bcd",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-H8GlxE/Erdos779Problem.lean",
       "problem_id": "recovered-29ddb8f0",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "2989e872-0a90-4e20-a3db-85827e1604a6",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-mvdi6f/Erdos377Problem.lean",
       "problem_id": "recovered-2989e872",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-10T23:38:17Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "d3ce4d3c-cab9-4197-ac50-f1d31960c231",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-eXdp9m/Erdos43Problem.lean",
       "problem_id": "recovered-d3ce4d3c",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted QUEUED project during reconciliation at 2026-02-11T18:23:20Z"
+      "status": "expired",
+      "notes": "Re-adopted QUEUED project during reconciliation at 2026-02-11T18:23:20Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "be67da90-65d9-475c-ac96-c75543104489",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-n8mCs9/Erdos39Problem.lean",
       "problem_id": "recovered-be67da90",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted QUEUED project during reconciliation at 2026-02-11T18:23:20Z"
+      "status": "expired",
+      "notes": "Re-adopted QUEUED project during reconciliation at 2026-02-11T18:23:20Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "749bd68c-933d-4bb5-be7a-908b1555d794",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-xcKseN/Erdos363Problem.lean",
       "problem_id": "recovered-749bd68c",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "17e47d20-c9a2-4192-b9f2-e692f4e6acdc",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-iVc3x8/Erdos230Problem.lean",
       "problem_id": "recovered-17e47d20",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "1185cf66-4bf7-4f67-86a8-8262687ef080",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-8gNXeG/Erdos207Problem.lean",
       "problem_id": "recovered-1185cf66",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "5b1bd0fe-5c74-41cb-a76c-ae2f6fef4112",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-cXSQpM/Erdos1055Problem.lean",
       "problem_id": "recovered-5b1bd0fe",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-11T18:23:20Z"
+      "status": "expired",
+      "notes": "Re-adopted IN_PROGRESS project during reconciliation at 2026-02-11T18:23:20Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "2d5b219c-3870-4f21-aff8-c0fe3a967184",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-GMfhBS/Erdos97Problem.lean",
       "problem_id": "recovered-2d5b219c",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "73f788e1-6001-42d4-b2f2-d8ad0e533fda",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-U4h0CV/Erdos875Problem.lean",
       "problem_id": "recovered-73f788e1",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "7cbef983-2afa-4df6-9d85-b7084ed25375",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-4ZH18l/Erdos76Problem.lean",
       "problem_id": "recovered-7cbef983",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "73c2695e-be5f-4640-9b46-31c6b6e375f1",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-yqE4c5/Erdos662Problem.lean",
       "problem_id": "recovered-73c2695e",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "168435a9-7ab1-4a76-a606-787102ea2cd1",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-erkAhk/Erdos637Problem.lean",
       "problem_id": "recovered-168435a9",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "08d1fc63-cf4e-4ea4-8755-bab6189eb5d9",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-pKiRbL/Erdos559Problem.lean",
       "problem_id": "recovered-08d1fc63",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:20Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "1f3d989d-cf0f-42ec-95e5-d700ac7fcf6d",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-jePcbc/Erdos546Problem.lean",
       "problem_id": "recovered-1f3d989d",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:21Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:21Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "64bf1962-c50f-41f3-8023-1bcb523ed130",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-IsMcy4/Erdos417Problem.lean",
       "problem_id": "recovered-64bf1962",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:21Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-11T18:23:21Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "ebef15de-cdb9-4155-9551-2409d1d0ed5d",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-oMD5FU/Erdos1104Problem.lean",
       "problem_id": "recovered-ebef15de",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted QUEUED project during reconciliation at 2026-02-13T18:59:08Z"
+      "status": "expired",
+      "notes": "Re-adopted QUEUED project during reconciliation at 2026-02-13T18:59:08Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "14a22af2-77e9-4fc1-8f30-2b612faabdac",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-IWzQIo/Erdos919Problem.lean",
       "problem_id": "recovered-14a22af2",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted QUEUED project during reconciliation at 2026-02-13T18:59:08Z"
+      "status": "expired",
+      "notes": "Re-adopted QUEUED project during reconciliation at 2026-02-13T18:59:08Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "76376e45-d689-40f4-a551-30a8a846a016",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-bW70s6/Erdos733Problem.lean",
       "problem_id": "recovered-76376e45",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted QUEUED project during reconciliation at 2026-02-13T18:59:08Z"
+      "status": "expired",
+      "notes": "Re-adopted QUEUED project during reconciliation at 2026-02-13T18:59:08Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "572a6782-93c8-4876-bd30-0e0838ee1474",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-8Zy5B5/Erdos666Problem.lean",
       "problem_id": "recovered-572a6782",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "bcd867e5-0c83-43e3-bc92-cce059fca666",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-CBwBEx/Erdos624Problem.lean",
       "problem_id": "recovered-bcd867e5",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "b959f85e-6d1a-4d6e-b2a5-b2d420dbae4b",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-948sMt/Erdos552Problem.lean",
       "problem_id": "recovered-b959f85e",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "8580308c-1d89-4425-8363-309116ae6b75",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-jvXbSD/Erdos27Problem.lean",
       "problem_id": "recovered-8580308c",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "f2663f83-457c-41c7-931f-19ef3fb89b11",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-8dZuuR/Erdos995Problem.lean",
       "problem_id": "recovered-f2663f83",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "471c564d-4373-433c-90dc-c4c608bd98dc",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-fPk1qk/Erdos991Problem.lean",
       "problem_id": "recovered-471c564d",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "8ae9ada3-7d28-4528-94dd-62bcf288d43f",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-mYlXgY/Erdos961Problem.lean",
       "problem_id": "recovered-8ae9ada3",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "f92e5e82-68bb-42a1-b4a9-19913470b13a",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-q9P5z5/Erdos895Problem.lean",
       "problem_id": "recovered-f92e5e82",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "226da951-ced2-46bd-b343-5a2b2867ea95",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-i9Npvk/Erdos793Problem.lean",
       "problem_id": "recovered-226da951",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:08Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "2997087f-e6a2-463d-99b6-0f530b8543d3",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-QDMbBq/Erdos728Problem.lean",
       "problem_id": "recovered-2997087f",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:09Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:09Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "c94ac8a7-61fb-4f47-86dc-f10120102290",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-iBFrCw/Erdos727Problem.lean",
       "problem_id": "recovered-c94ac8a7",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:09Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:09Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "3419d218-47b3-449a-8115-04e1548484af",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-yf4y1I/Erdos686Problem.lean",
       "problem_id": "recovered-3419d218",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:09Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:09Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "416c7d3d-0d87-4eb7-83af-14a01c3ef298",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-klunqd/Erdos555Problem.lean",
       "problem_id": "recovered-416c7d3d",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:09Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:09Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "59bf4920-d140-4b65-ac39-c933b019d811",
       "file": "/var/folders/0h/l9gwswj97wb82mh27zyw305r0000gn/T/aristotle-preprocess-KVtkWE/Erdos516Problem.lean",
       "problem_id": "recovered-59bf4920",
       "submitted": "unknown",
-      "status": "completed",
-      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:09Z"
+      "status": "expired",
+      "notes": "Re-adopted COMPLETE project during reconciliation at 2026-02-13T18:59:09Z",
+      "outcome": "Project not found on server (recovered job from reconciliation)"
     },
     {
       "project_id": "fc6016d6-8e43-4916-ae3a-ee48228ff7a8",
@@ -3346,7 +3424,7 @@
     "Aristotle = proof search (known results), Claude = creative work (OPEN problems)",
     "Don't send OPEN conjectures to Aristotle - no proof exists to find",
     "DO attempt OPEN problems ourselves - that's our mission!",
-    "ALLOW OVERNIGHT RUNS - Erdős #728 took 6 hours and succeeded with 1416 lines!",
+    "ALLOW OVERNIGHT RUNS - Erd\u0151s #728 took 6 hours and succeeded with 1416 lines!",
     "Aristotle can formalize hard theorems if a proof exists somewhere",
     "Use --no-wait for async workflow, check status next morning",
     "Classify sorries: TRIVIAL (fast), HARD (overnight OK), OPEN (Claude only)"
@@ -10287,6 +10365,6 @@
     "2026-01-11: Verified problems via erdosproblems.com directly",
     "REMOVED as OPEN: erdos-17, erdos-18, erdos-19, erdos-20",
     "erdos-205 and erdos-333 already have Lean proofs (check codebase)",
-    "erdos-69 (Tao-Teräväinen 2025) omitted - analytic proof may be hard to formalize"
+    "erdos-69 (Tao-Ter\u00e4v\u00e4inen 2025) omitted - analytic proof may be hard to formalize"
   ]
 }
