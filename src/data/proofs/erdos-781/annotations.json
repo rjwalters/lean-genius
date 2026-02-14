@@ -5,8 +5,11 @@
     "range": { "startLine": 37, "endLine": 38 },
     "type": "definition",
     "title": "Two-Coloring",
-    "content": "A 2-coloring of {1,...,n} is represented as a function `Fin n → Bool`, assigning each integer one of two colors.",
-    "significance": "key"
+    "content": "A 2-coloring of {1,...,n} is represented as a function `Fin n -> Bool`, assigning each integer one of two colors.",
+    "mathContext": "A 2-coloring $\\chi: [n] \\to \\{0, 1\\}$ partitions $\\{1, \\ldots, n\\}$ into two color classes. Ramsey-type questions ask for the minimal $n$ forcing monochromatic substructures under all such colorings.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey theory", "Partition regularity", "Schur's theorem"],
+    "prerequisites": ["Fin", "Bool"]
   },
   {
     "id": "ann-e781-strictly-increasing",
@@ -15,7 +18,10 @@
     "type": "definition",
     "title": "Strictly Increasing Sequence",
     "content": "`StrictlyIncreasing seq` means that for any i < j, we have seq i < seq j. This is a prerequisite for a valid wave.",
-    "significance": "supporting"
+    "mathContext": "A sequence $(x_1, \\ldots, x_k)$ is strictly increasing if $x_1 < x_2 < \\cdots < x_k$. This ensures the wave elements are distinct and ordered.",
+    "significance": "supporting",
+    "relatedConcepts": ["Monotone sequences", "Order theory", "Erdős-Szekeres theorem"],
+    "prerequisites": ["Fin", "Nat ordering"]
   },
   {
     "id": "ann-e781-descending-wave",
@@ -23,8 +29,11 @@
     "range": { "startLine": 44, "endLine": 50 },
     "type": "definition",
     "title": "Descending Wave Condition",
-    "content": "`IsDescendingWave seq` captures the condition x_j ≥ (x_{j-1} + x_{j+1})/2 for all interior points. Equivalently: 2·x_j ≥ x_{j-1} + x_{j+1}, meaning the point x_j lies at or above the midpoint of its neighbors.",
-    "significance": "critical"
+    "content": "`IsDescendingWave seq` captures the condition x_j >= (x_{j-1} + x_{j+1})/2 for all interior points. Equivalently: 2*x_j >= x_{j-1} + x_{j+1}, meaning the point x_j lies at or above the midpoint of its neighbors.",
+    "mathContext": "The descending wave condition $2x_j \\geq x_{j-1} + x_{j+1}$ for all $1 < j < k$ is equivalent to requiring $x_j - x_{j-1} \\geq x_{j+1} - x_j$, i.e., the differences $\\Delta_i = x_{i+1} - x_i$ form a non-increasing sequence. The sequence 'decelerates.'",
+    "significance": "critical",
+    "relatedConcepts": ["Convexity", "Second differences", "Quasi-progressions"],
+    "prerequisites": ["StrictlyIncreasing", "Natural number arithmetic"]
   },
   {
     "id": "ann-e781-non-increasing-gaps",
@@ -32,8 +41,23 @@
     "range": { "startLine": 52, "endLine": 58 },
     "type": "definition",
     "title": "Non-Increasing Gaps",
-    "content": "`HasNonIncreasingGaps seq` is the equivalent characterization: gaps (x_{i+1} - x_i) form a non-increasing sequence. For a descending wave x₁ < x₂ < ... < xₖ, we have (x₂ - x₁) ≥ (x₃ - x₂) ≥ ... ≥ (xₖ - xₖ₋₁).",
-    "significance": "key"
+    "content": "`HasNonIncreasingGaps seq` is the equivalent characterization: gaps (x_{i+1} - x_i) form a non-increasing sequence. For a descending wave x_1 < x_2 < ... < x_k, we have (x_2 - x_1) >= (x_3 - x_2) >= ... >= (x_k - x_{k-1}).",
+    "mathContext": "Defining $\\Delta_i = x_{i+1} - x_i$ for $1 \\leq i < k$, the condition is $\\Delta_1 \\geq \\Delta_2 \\geq \\cdots \\geq \\Delta_{k-1} > 0$. The gaps form a non-increasing positive sequence, which constrains how the wave can spread across $[n]$.",
+    "significance": "key",
+    "relatedConcepts": ["Difference sequences", "Convex sequences", "Telescoping"],
+    "prerequisites": ["IsDescendingWave"]
+  },
+  {
+    "id": "ann-e781-gap-equiv",
+    "proofId": "erdos-781",
+    "range": { "startLine": 60, "endLine": 63 },
+    "type": "axiom",
+    "title": "Wave-Gap Equivalence",
+    "content": "`descending_wave_equiv_gaps` proves that for strictly increasing sequences, the descending wave condition is equivalent to having non-increasing gaps. This connects the midpoint characterization to the gap characterization.",
+    "mathContext": "For strictly increasing $x_1 < \\cdots < x_k$: $2x_j \\geq x_{j-1} + x_{j+1}$ iff $(x_j - x_{j-1}) \\geq (x_{j+1} - x_j)$ iff $\\Delta_{j-1} \\geq \\Delta_j$. The equivalence follows by rearranging the inequality.",
+    "significance": "supporting",
+    "relatedConcepts": ["Characterization theorems", "Equivalent conditions"],
+    "prerequisites": ["IsDescendingWave", "HasNonIncreasingGaps", "StrictlyIncreasing"]
   },
   {
     "id": "ann-e781-wave-structure",
@@ -42,7 +66,10 @@
     "type": "definition",
     "title": "Descending Wave Structure",
     "content": "`DescendingWaveIn S k` bundles: a sequence of k elements from S, proof they're in S, proof the sequence is strictly increasing, and proof it satisfies the descending wave condition.",
-    "significance": "key"
+    "mathContext": "A $k$-term descending wave in $S \\subseteq \\mathbb{N}$ is a tuple $(x_1, \\ldots, x_k) \\in S^k$ with $x_1 < \\cdots < x_k$ and $\\Delta_1 \\geq \\cdots \\geq \\Delta_{k-1}$. The structure bundles existence, membership, monotonicity, and the wave property.",
+    "significance": "key",
+    "relatedConcepts": ["Dependent types", "Bundled structures", "Subtype"],
+    "prerequisites": ["IsDescendingWave", "StrictlyIncreasing", "Finset"]
   },
   {
     "id": "ann-e781-monochromatic",
@@ -51,7 +78,10 @@
     "type": "definition",
     "title": "Monochromatic Wave",
     "content": "`HasMonochromaticWave n k c` asserts that the coloring c of {1,...,n} contains a k-term descending wave where all terms share the same color.",
-    "significance": "critical"
+    "mathContext": "A monochromatic $k$-wave in coloring $\\chi$ is a descending wave $(x_1, \\ldots, x_k)$ with $\\chi(x_1) = \\chi(x_2) = \\cdots = \\chi(x_k)$. The Ramsey-type function $f(k)$ is the threshold where such waves become unavoidable.",
+    "significance": "critical",
+    "relatedConcepts": ["Monochromatic subsets", "Ramsey numbers", "Van der Waerden's theorem"],
+    "prerequisites": ["DescendingWaveIn", "TwoColoring"]
   },
   {
     "id": "ann-e781-f-function",
@@ -60,8 +90,22 @@
     "type": "definition",
     "title": "The Function f(k)",
     "content": "**f(k)** is the central object: the minimal n such that EVERY 2-coloring of {1,...,n} contains a monochromatic k-term descending wave. This is the Ramsey-type threshold function.",
-    "mathContext": "The question asks whether f(k) = k² - k + 1, which would give quadratic growth.",
-    "significance": "critical"
+    "mathContext": "$f(k) = \\min\\{n : \\forall \\chi: [n] \\to \\{0,1\\}, \\exists \\text{ monochromatic } k\\text{-term descending wave}\\}$. Erdős conjectured $f(k) = k^2 - k + 1$, but the true growth is $\\Theta(k^3)$.",
+    "significance": "critical",
+    "relatedConcepts": ["Ramsey functions", "Van der Waerden numbers", "Hales-Jewett numbers"],
+    "prerequisites": ["HasMonochromaticWave"]
+  },
+  {
+    "id": "ann-e781-f-axioms",
+    "proofId": "erdos-781",
+    "range": { "startLine": 91, "endLine": 97 },
+    "type": "axiom",
+    "title": "f(k) Existence and Minimality",
+    "content": "`f_exists` and `f_minimal` axiomatize the defining properties of f(k): every 2-coloring of {1,...,f(k)} has a monochromatic k-wave, and no smaller n suffices.",
+    "mathContext": "$f(k)$ satisfies: (1) $\\forall \\chi: [f(k)] \\to \\{0,1\\}$, $\\chi$ contains a monochromatic $k$-wave; (2) $\\forall n < f(k)$, $\\exists \\chi: [n] \\to \\{0,1\\}$ with no monochromatic $k$-wave.",
+    "significance": "key",
+    "relatedConcepts": ["Compactness arguments", "Minimal elements", "Well-ordering"],
+    "prerequisites": ["f", "HasMonochromaticWave"]
   },
   {
     "id": "ann-e781-conjecture",
@@ -69,36 +113,47 @@
     "range": { "startLine": 101, "endLine": 107 },
     "type": "definition",
     "title": "The Original Conjecture (FALSE)",
-    "content": "`ErdosConjecture781` states: for all k ≥ 1, f(k) = k² - k + 1. This conjecture is FALSE, as proven by Alon and Spencer.",
-    "significance": "critical"
+    "content": "`ErdosConjecture781` states: for all k >= 1, f(k) = k^2 - k + 1. This conjecture is FALSE, as proven by Alon and Spencer.",
+    "mathContext": "The conjecture $f(k) = k^2 - k + 1 = k(k-1) + 1$ would give quadratic growth in $k$. For $k = 1, 2, 3$, this gives $1, 3, 7$ respectively. The conjecture is correct for small $k$ but fails for large $k$.",
+    "significance": "critical",
+    "relatedConcepts": ["Disproved conjectures", "Growth rate analysis", "Counterexamples"],
+    "prerequisites": ["f"]
   },
   {
     "id": "ann-e781-bef-lower",
     "proofId": "erdos-781",
     "range": { "startLine": 111, "endLine": 118 },
-    "type": "theorem",
+    "type": "axiom",
     "title": "BEF Lower Bound (1990)",
-    "content": "**Brown-Erdős-Freedman Lower Bound:** f(k) ≥ k² - k + 1. This lower bound IS correct—it's the upper bound that was too optimistic.",
-    "significance": "key"
+    "content": "**Brown-Erdős-Freedman Lower Bound:** f(k) >= k^2 - k + 1. This lower bound IS correct - it's the upper bound that was too optimistic.",
+    "mathContext": "$f(k) \\geq k^2 - k + 1$. The proof constructs an explicit 2-coloring of $[k^2 - k]$ avoiding monochromatic $k$-waves, using a careful interleaving of color classes. This quadratic lower bound is tight for small $k$.",
+    "significance": "key",
+    "relatedConcepts": ["Explicit constructions", "Lower bound methods", "Coloring avoidance"],
+    "prerequisites": ["f", "ErdosConjecture781"]
   },
   {
     "id": "ann-e781-bef-upper",
     "proofId": "erdos-781",
     "range": { "startLine": 120, "endLine": 127 },
-    "type": "theorem",
+    "type": "axiom",
     "title": "BEF Upper Bound (1990)",
-    "content": "**Brown-Erdős-Freedman Upper Bound:** f(k) ≤ (k³ - 4k + 9)/3. This was the original upper bound, which already showed possible cubic behavior.",
-    "significance": "supporting"
+    "content": "**Brown-Erdős-Freedman Upper Bound:** f(k) <= (k^3 - 4k + 9)/3. This was the original upper bound, which already showed possible cubic behavior.",
+    "mathContext": "$f(k) \\leq \\frac{k^3 - 4k + 9}{3}$. This cubic upper bound by Brown, Erdős, and Freedman already suggested that the quadratic conjecture might be too optimistic, since the proved upper bound was cubic, not quadratic.",
+    "significance": "supporting",
+    "relatedConcepts": ["Pigeonhole principle", "Greedy algorithms", "Upper bound methods"],
+    "prerequisites": ["f"]
   },
   {
     "id": "ann-e781-alon-spencer",
     "proofId": "erdos-781",
     "range": { "startLine": 129, "endLine": 137 },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Alon-Spencer: Cubic Growth",
-    "content": "**The Key Result (1989):** f(k) ≫ k³. There exists c > 0 such that f(k) ≥ c·k³ for all k. This DISPROVES the conjecture since k³ ≫ k² - k + 1 for large k.",
-    "mathContext": "The probabilistic construction shows colorings can avoid descending waves for n = Θ(k³).",
-    "significance": "critical"
+    "content": "**The Key Result (1989):** f(k) >> k^3. There exists c > 0 such that f(k) >= c*k^3 for all k. This DISPROVES the conjecture since k^3 >> k^2 - k + 1 for large k.",
+    "mathContext": "$\\exists c > 0$ such that $f(k) \\geq c \\cdot k^3$ for all $k \\geq 1$. Combined with the BEF upper bound $f(k) = O(k^3)$, this establishes $f(k) = \\Theta(k^3)$. The cubic lower bound uses probabilistic colorings.",
+    "significance": "critical",
+    "relatedConcepts": ["Probabilistic method", "Lovász Local Lemma", "Random colorings"],
+    "prerequisites": ["f", "BEF_lower_bound"]
   },
   {
     "id": "ann-e781-disproved",
@@ -106,26 +161,35 @@
     "range": { "startLine": 139, "endLine": 146 },
     "type": "theorem",
     "title": "Conjecture Disproved",
-    "content": "`conjecture_disproved` proves ¬ErdosConjecture781. The argument: if f(k) = k² - k + 1 (quadratic), but Alon-Spencer shows f(k) ≥ c·k³ (cubic), then for large k we get a contradiction since cubic dominates quadratic.",
-    "significance": "critical"
+    "content": "`conjecture_disproved` proves not(ErdosConjecture781). The argument: if f(k) = k^2 - k + 1 (quadratic), but Alon-Spencer shows f(k) >= c*k^3 (cubic), then for large k we get a contradiction since cubic dominates quadratic.",
+    "mathContext": "If $f(k) = k^2 - k + 1$ for all $k$, then for $k > 1/c$, we'd need $k^2 - k + 1 \\geq c k^3$, i.e., $c \\leq (k^2 - k + 1)/k^3 \\to 0$ as $k \\to \\infty$, contradicting $c > 0$.",
+    "significance": "critical",
+    "relatedConcepts": ["Proof by contradiction", "Asymptotic domination", "Growth rate comparison"],
+    "prerequisites": ["ErdosConjecture781", "alon_spencer_cubic"]
   },
   {
     "id": "ann-e781-small-k",
     "proofId": "erdos-781",
-    "range": { "startLine": 148, "endLine": 161 },
+    "range": { "startLine": 148, "endLine": 168 },
     "type": "theorem",
     "title": "Small k Values",
-    "content": "For k = 1, 2, 3, the conjecture happens to be correct: f(1) = 1, f(2) = 2, f(3) = 7. The formula k² - k + 1 gives 1, 3, 7 respectively. (Note: f(2) = 2 < 3, even simpler than predicted.)",
-    "significance": "supporting"
+    "content": "For k = 1, 2, 3, the conjecture happens to be correct: f(1) = 1, f(2) = 2, f(3) = 7. The formula k^2 - k + 1 gives 1, 3, 7 respectively. (Note: f(2) = 2 < 3, even simpler than predicted.)",
+    "mathContext": "The values $f(1) = 1$, $f(2) = 2$, $f(3) = 7$ are computed directly. For $k = 2$, the conjecture predicts $3$ but the actual value is $2$ (any 2-element subset is a 2-wave). The conjecture first fails for larger $k$ where cubic growth dominates.",
+    "significance": "supporting",
+    "relatedConcepts": ["Base cases", "Small instances", "Computational verification"],
+    "prerequisites": ["f_1", "f_2", "f_3"]
   },
   {
     "id": "ann-e781-construction",
     "proofId": "erdos-781",
     "range": { "startLine": 172, "endLine": 186 },
-    "type": "theorem",
+    "type": "axiom",
     "title": "Alon-Spencer Construction",
-    "content": "The construction axiom asserts: for some c > 0 and all n ≤ c·k³, there exists a 2-coloring of {1,...,n} with no monochromatic k-term descending wave. This probabilistic construction is the key to the disproof.",
-    "significance": "critical"
+    "content": "The construction axiom asserts: for some c > 0 and all n <= c*k^3, there exists a 2-coloring of {1,...,n} with no monochromatic k-term descending wave. This probabilistic construction is the key to the disproof.",
+    "mathContext": "For $n \\leq c k^3$, there exists $\\chi: [n] \\to \\{0,1\\}$ with no monochromatic $k$-wave. The construction uses the Lovász Local Lemma: a random coloring avoids waves with positive probability because the events 'wave $W$ is monochromatic' have limited dependencies.",
+    "significance": "critical",
+    "relatedConcepts": ["Probabilistic constructions", "Lovász Local Lemma", "Dependency graphs", "Second moment method"],
+    "prerequisites": ["HasMonochromaticWave", "TwoColoring"]
   },
   {
     "id": "ann-e781-ascending",
@@ -133,8 +197,23 @@
     "range": { "startLine": 190, "endLine": 207 },
     "type": "definition",
     "title": "Ascending Waves",
-    "content": "`IsAscendingWave seq` is the dual notion: gaps are non-decreasing. The Alon-Spencer paper treats both cases, showing f(k) and g(k) (for ascending waves) both grow as Θ(k³).",
-    "significance": "supporting"
+    "content": "`IsAscendingWave seq` is the dual notion: gaps are non-decreasing. The Alon-Spencer paper treats both cases, showing f(k) and g(k) (for ascending waves) both grow as Theta(k^3).",
+    "mathContext": "An ascending wave satisfies $\\Delta_1 \\leq \\Delta_2 \\leq \\cdots \\leq \\Delta_{k-1}$, the reverse of the descending condition. Alon and Spencer's paper 'Ascending Waves' proves $g(k) = \\Theta(k^3)$ as well, showing the cubic growth is robust to the direction of gap monotonicity.",
+    "significance": "supporting",
+    "relatedConcepts": ["Duality", "Ascending sequences", "Symmetric problems"],
+    "prerequisites": ["IsDescendingWave"]
+  },
+  {
+    "id": "ann-e781-ascending-similar",
+    "proofId": "erdos-781",
+    "range": { "startLine": 204, "endLine": 207 },
+    "type": "axiom",
+    "title": "Ascending-Descending Similarity",
+    "content": "`ascending_descending_similar` shows both f(k) and g(k) are Theta(k^3). The cubic growth rate is a universal feature of wave problems, regardless of whether gaps increase or decrease.",
+    "mathContext": "$\\exists c_1, c_2 > 0$ such that $c_1 k^3 \\leq f(k) \\leq c_2 k^3$ and $c_1 k^3 \\leq g(k) \\leq c_2 k^3$. The matching upper and lower bounds confirm $f(k) = \\Theta(k^3)$ and $g(k) = \\Theta(k^3)$.",
+    "significance": "key",
+    "relatedConcepts": ["Theta notation", "Tight bounds", "Universality"],
+    "prerequisites": ["f", "g", "alon_spencer_cubic"]
   },
   {
     "id": "ann-e781-quasi",
@@ -142,8 +221,11 @@
     "range": { "startLine": 211, "endLine": 221 },
     "type": "definition",
     "title": "Quasi-Progressions",
-    "content": "`IsQuasiProgression seq d error` means the gaps are approximately d, within ±error. Descending waves are quasi-progressions where gaps systematically decrease rather than being random.",
-    "significance": "supporting"
+    "content": "`IsQuasiProgression seq d error` means the gaps are approximately d, within +/-error. Descending waves are quasi-progressions where gaps systematically decrease rather than being random.",
+    "mathContext": "A $(d, \\delta)$-quasi-progression satisfies $d - \\delta \\leq x_{i+1} - x_i \\leq d + \\delta$ for all $i$. Descending waves have $\\Delta_i \\in [\\Delta_{k-1}, \\Delta_1]$, making them quasi-progressions with $d \\approx (x_k - x_1)/(k-1)$ and error bounded by $\\Delta_1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Arithmetic progressions", "Szemerédi's theorem", "Approximate structure"],
+    "prerequisites": ["IsDescendingWave", "StrictlyIncreasing"]
   },
   {
     "id": "ann-e781-summary",
@@ -151,8 +233,11 @@
     "range": { "startLine": 247, "endLine": 254 },
     "type": "theorem",
     "title": "Main Results Summary",
-    "content": "`erdos_781_summary` combines: (1) BEF lower bound f(k) ≥ k² - k + 1 holds, (2) but f(k) grows cubically (∃c > 0, f(k) ≥ c·k³), (3) therefore ¬ErdosConjecture781.",
-    "significance": "critical"
+    "content": "`erdos_781_summary` combines: (1) BEF lower bound f(k) >= k^2 - k + 1 holds, (2) but f(k) grows cubically (there exists c > 0, f(k) >= c*k^3), (3) therefore not(ErdosConjecture781).",
+    "mathContext": "The summary theorem proves the conjunction: $\\left(\\forall k \\geq 1, f(k) \\geq k^2 - k + 1\\right) \\wedge \\left(\\exists c > 0, \\forall k \\geq 1, f(k) \\geq c k^3\\right) \\wedge \\neg\\text{ErdosConjecture781}$.",
+    "significance": "critical",
+    "relatedConcepts": ["Proof aggregation", "Conjunction introduction", "Summary theorems"],
+    "prerequisites": ["BEF_lower_bound", "alon_spencer_cubic", "conjecture_disproved"]
   },
   {
     "id": "ann-e781-main",
@@ -160,7 +245,10 @@
     "range": { "startLine": 256, "endLine": 257 },
     "type": "theorem",
     "title": "Main Theorem: Erdős #781 is Disproved",
-    "content": "The final theorem `erdos_781` states: ¬ErdosConjecture781. The conjectured formula f(k) = k² - k + 1 is FALSE.",
-    "significance": "critical"
+    "content": "The final theorem `erdos_781` states: not(ErdosConjecture781). The conjectured formula f(k) = k^2 - k + 1 is FALSE.",
+    "mathContext": "$\\neg(\\forall k \\geq 1, f(k) = k^2 - k + 1)$. The negation is proved by the cubic lower bound: for large $k$, $f(k) \\geq c k^3 > k^2 - k + 1$.",
+    "significance": "critical",
+    "relatedConcepts": ["Negation", "Disproof", "Counterexample arguments"],
+    "prerequisites": ["conjecture_disproved"]
   }
 ]
