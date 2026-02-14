@@ -36,11 +36,25 @@
     "proofRepoPath": "Proofs/Erdos444Problem.lean",
     "date": "1980",
     "dateAdded": "2026-01-18",
-    "relatedProblems": [
-      { "id": "erdos-414", "relation": "Studies h(n) = n + τ(n); the divisor function τ is the case A = ℕ of the generalized divisor function d_A" },
-      { "id": "erdos-381", "relation": "Counting highly composite numbers; directly related to the extremal numbers achieving large d_A values" },
-      { "id": "erdos-945", "relation": "Consecutive integers with distinct divisor counts; complementary question about divisor function behavior" },
-      { "id": "erdos-419", "relation": "Limit points of τ((n+1)!)/τ(n!); divisor function ratios and growth on special sequences" }
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "Finset.filter", "description": "Filtering divisors in A for d_A(n)", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Finset.card", "description": "Counting A-divisors", "module": "Mathlib.Data.Finset.Card" },
+      { "theorem": "Finset.sum", "description": "Harmonic sum H_A(x)", "module": "Mathlib.Algebra.BigOperators.Group.Finset" },
+      { "theorem": "Filter.atTop", "description": "Asymptotic lim sup formulation", "module": "Mathlib.Order.Filter.AtTopBot" }
+    ],
+    "originalContributions": [
+      "Defined d_A(n) as generalized divisor function via Finset.filter on divisors in A",
+      "Defined H_A(x) as partial harmonic sum and M_A(x) as maximum A-divisor count",
+      "Stated erdos_graham_conjecture using Filter.atTop and ∃ᶠ quantifier",
+      "Axiomatized Erdős-Sárközy proof, A=ℕ and A=primes specializations",
+      "Stated exponential_lower_bound and no_uniform_bound structural properties",
+      "Proved erdos_444_summary and limsup_infinite from axiomatized result"
+    ],
+    "crossReferences": [
+      { "id": "erdos-414", "relationship": "Studies h(n) = n + τ(n); the divisor function τ is the case A = ℕ of the generalized divisor function d_A." },
+      { "id": "erdos-381", "relationship": "Counting highly composite numbers; directly related to the extremal numbers achieving large d_A values." },
+      { "id": "erdos-1057", "relationship": "Carmichael number counting uses divisor structure; the divisor function behavior connects to generalized divisor extrema." }
     ]
   },
   "sections": [

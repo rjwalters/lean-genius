@@ -6,7 +6,7 @@
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #444** (SOLVED): For infinite A ⊆ ℕ, is lim sup_{x→∞} M_A(x) / H_A(x)^k = ∞ for all k? YES — proved by Erdős and Sárközy (1980). The maximum restricted divisor count grows faster than any power of the harmonic sum over A.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "This problem connects **extremal multiplicative number theory** (how large can divisor counts get?) with **harmonic analysis** (the harmonic sum as a natural density measure). The result is striking in its universality: it holds for ALL infinite A ⊆ ℕ, regardless of how sparse or irregular A is. The key insight is that for any A, one can construct numbers with disproportionately many A-divisors by taking products of small elements of A — the multiplicative structure of ℕ always allows such extremal constructions.",
     "relatedConcepts": ["extremal multiplicative number theory", "harmonic sums", "divisor function maxima"],
     "prerequisites": []
@@ -18,7 +18,7 @@
     "type": "definition",
     "title": "Generalized Divisor Function d_A(n)",
     "content": "**d_A(n) = |{a ∈ A : a | n}|** counts divisors of n belonging to A. When A = ℕ, this is the standard divisor function d(n) = τ(n). When A = primes, this is ω(n), the number of distinct prime factors.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The **generalized divisor function** d_A is a multiplicative-flavored counting function that measures how 'divisible' n is with respect to A. When A is the set of all naturals, d_A = τ (the number-of-divisors function), whose average order is log n (Dirichlet) and maximal order is exp((1+o(1)) log 2 · log n / log log n) (Wigert/Ramanujan). When A = primes, d_A = ω, whose average order is log log n (Hardy-Ramanujan) and maximal order is (1+o(1)) log n / log log n. The problem asks whether the relationship M_A(x) ≫ H_A(x)^k always holds, capturing the idea that extremal divisibility is a **universal phenomenon** independent of which divisors are allowed.",
     "relatedConcepts": ["divisor function τ(n)", "prime omega function ω(n)", "multiplicative functions", "Wigert's theorem"],
     "prerequisites": ["Finset.filter", "Finset.card", "Nat.dvd"]
@@ -30,7 +30,7 @@
     "type": "definition",
     "title": "Partial Harmonic Sum H_A(x)",
     "content": "**H_A(x) = Σ_{a∈A, a<x} 1/a** is the partial sum of reciprocals of elements of A up to x. This measures the 'density' of A: for A = ℕ, H_A(x) ∼ log x; for A = primes, H_A(x) ∼ log log x (Mertens).",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The harmonic sum Σ 1/a is a natural measure of the 'weight' of a set of integers. By the **integral test**, Σ_{a ≤ x} 1/a ∼ log x when A = ℕ. Mertens' theorems (1874) give Σ_{p ≤ x} 1/p = log log x + M + O(1/log x) where M ≈ 0.2615 is Mertens' constant. More generally, if A has counting function A(x) ∼ cx/(log x)^α, then H_A(x) ∼ c(log x)^{1-α}/(1-α) for α < 1. The harmonic sum captures the 'effective size' of A better than the counting function because it accounts for the contribution of each element to divisibility: a divides roughly x/a integers up to x, and Σ 1/a measures total divisibility potential.",
     "relatedConcepts": ["Mertens' theorems", "harmonic series", "partial sums of reciprocals", "Abel summation"],
     "prerequisites": ["Finset.sum", "Real division"]
@@ -54,7 +54,7 @@
     "type": "definition",
     "title": "The Erdős-Graham Conjecture (PROVED)",
     "content": "**erdos_graham_conjecture**: For any infinite A ⊆ ℕ and any k ≥ 1, lim sup_{x→∞} M_A(x) / H_A(x)^k = ∞. Equivalently: for any C > 0, frequently M_A(x) > C · H_A(x)^k.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The conjecture captures the idea that **extremal divisibility always outpaces polynomial growth in the density measure**. The 'for all k' quantifier is crucial: it says M_A grows faster than ANY fixed power of H_A. This rules out bounds of the form M_A(x) = O(H_A(x)^K) for any fixed K. The formalization uses Lean's `Filter.atTop` and `∃ᶠ` (frequently) to express the lim sup condition: for each C > 0, the set {x : M_A(x) > C · H_A(x)^k} is cofinite. The proof by Erdős and Sárközy uses a **greedy construction**: given A, build n = Π a_i^{e_i} for suitably chosen elements a_i ∈ A and exponents e_i, ensuring d_A(n) = Π(e_i + 1) grows super-polynomially in H_A.",
     "relatedConcepts": ["lim sup", "Filter.atTop", "frequently (∃ᶠ)", "greedy construction"],
     "prerequisites": ["InfiniteSubset", "M_A", "H_A"]
@@ -66,7 +66,7 @@
     "type": "axiom",
     "title": "Erdős-Sárközy Proof (1980)",
     "content": "**erdos_graham_conjecture_true**: The conjecture is TRUE. Proved by Erdős and Sárközy in 'Some asymptotic formulas on generalized divisor functions IV' (1980).",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The proof of Erdős and Sárközy appears in their series of papers 'Some asymptotic formulas on generalized divisor functions' (I–IV). The key technique is an **extremal product construction**: given A = {a₁ < a₂ < ...}, consider n = a₁^{e₁} · a₂^{e₂} · ... · aₘ^{eₘ}. Then d_A(n) ≥ Π(eᵢ + 1), while n < x requires Σ eᵢ log aᵢ < log x. By choosing the eᵢ to maximize the product Π(eᵢ + 1) subject to the constraint Σ eᵢ log aᵢ ≤ log x, one obtains d_A(n) that grows super-polynomially in H_A(x). The optimization is analogous to the **Lagrange multiplier** problem for highly composite numbers.",
     "relatedConcepts": ["Erdős-Sárközy series", "extremal product construction", "Lagrange multiplier analogy"],
     "prerequisites": ["erdos_graham_conjecture"]
@@ -102,7 +102,7 @@
     "type": "axiom",
     "title": "A-Highly Composite Numbers",
     "content": "**highly_composite_relative**: For any A, k, and target C, there exist x with M_A(x) > C · H_A(x)^k. The extremal numbers are products of small elements of A with optimized exponents.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The concept of **A-highly composite numbers** generalizes Ramanujan's highly composite numbers. For general A = {a₁ < a₂ < ...}, the extremal n maximizing d_A(n) subject to n ≤ x is of the form n = a₁^{e₁} · a₂^{e₂} · ... · aₘ^{eₘ} with exponents optimized via a Lagrange-type argument. The number of A-divisors is d_A(n) = Π(eᵢ + 1) (at least), while H_A(x) ∼ Σ_{i≤m} 1/aᵢ. The optimization yields d_A(n) ≈ exp(c · H_A(x)) for some c > 0 depending on A, which exceeds H_A(x)^k for any fixed k. The construction works because the product Π(eᵢ + 1) grows exponentially in the number of factors, while the constraint Σ eᵢ log aᵢ ≤ log x grows only linearly.",
     "relatedConcepts": ["highly composite numbers (generalized)", "product optimization", "Lagrange multipliers"],
     "prerequisites": ["InfiniteSubset", "d_A", "M_A"]
@@ -138,7 +138,7 @@
     "type": "theorem",
     "title": "Summary: Main Results",
     "content": "**erdos_444_summary**: The conjecture is PROVED. **limsup_infinite**: For any infinite A and any k ≥ 1, M_A(x)/H_A(x)^k → ∞. This is a direct Lean proof from the main axiom, demonstrating the formal structure.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The file contains two Lean theorems proved from the axiomatized result. `erdos_444_summary` is a trivial restatement (`:= erdos_graham_conjecture_true`). `limsup_infinite` unfolds the definition for specific A and k, using `exact erdos_graham_conjecture_true A hA k hk C hC`. These demonstrate how the axiomatized result can be instantiated. The result belongs to the intersection of **extremal combinatorics** (optimizing divisor counts) and **analytic number theory** (harmonic sum asymptotics), and is part of the broader program of Erdős and his collaborators to understand the extremal behavior of arithmetic functions.",
     "relatedConcepts": ["formal proof from axiom", "instantiation", "extremal combinatorics meets analytic number theory"],
     "prerequisites": ["erdos_graham_conjecture_true"]
