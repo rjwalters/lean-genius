@@ -17,29 +17,36 @@
   },
   "currentState": {
     "phase": "EXPLORATION",
-    "since": "2026-01-14T00:00:00Z",
-    "iteration": 3,
-    "focus": "Eliminated primes_have_sparse_complement axiom (5\u21924 axioms). primes_density_zero requires PNT not in Mathlib.",
-    "activeApproach": "Full formalization with axiomatized main theorem (Lorentz 1954).",
+    "since": "2026-02-14T00:00:00Z",
+    "iteration": 4,
+    "focus": "Created Erdos31PrimesDensity.lean: proves primes_density_zero from Chebyshev bounds (1 sorry for splitting argument). Reduces axioms from 4 to 3 for main file.",
+    "activeApproach": "Prove helper results in separate files, then integrate back. Chebyshev theta bound approach avoids PNT dependency.",
     "blockers": [
-      "None - remaining axioms are \"deep\" mathematical results:"
+      "primeCounting_le_chebyshev sorry: splitting argument (primes at sqrt(N)) needs careful Finset formalization",
+      "lorentz_theorem, lorentz_B_bound, lorentz_strengthened remain as axioms (deep results)"
     ],
-    "nextAction": "Remaining 4 axioms require deep mathematical infrastructure (Lorentz theorem, PNT). Monitor Mathlib for PNT addition.",
+    "nextAction": "Submit Erdos31PrimesDensity.lean to Aristotle for the splitting argument sorry. Integrate primes_density_zero proof into main file.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "File has 569 lines, 4 axioms (down from 5), 0 sorries. Eliminated primes_have_sparse_complement by proving it from lorentz_theorem + Nat.infinite_setOf_prime. Remaining axioms: primes_density_zero (needs PNT), lorentz_theorem (main result), lorentz_B_bound (quantitative), lorentz_strengthened (stronger version).",
+    "progressSummary": "Main file has 569 lines, 4 axioms, 0 sorries. New helper file Erdos31PrimesDensity.lean (163 lines) proves primes_density_zero from Chebyshev theta bound with 1 sorry (splitting argument). Once sorry is filled, primes_density_zero axiom can be removed from main file (4→3 axioms).",
     "builtItems": [
-      "PROVED: primes_have_sparse_complement (was axiom, now theorem via lorentz_theorem + Euclid)"
+      "PROVED: primes_have_sparse_complement (was axiom, now theorem via lorentz_theorem + Euclid)",
+      "NEW FILE: Erdos31PrimesDensity.lean - proves primes_density_zero from Chebyshev bounds",
+      "PROVED: countingFn_primes_le_primeCounting - bridges counting function with π(N)",
+      "PROVED: chebyshevTheta_le - θ(N) ≤ N·log(4) from primorial bound",
+      "PROVED: chebyshev_bound_tendsto_zero - upper bound tends to zero",
+      "PROVED: primes_density_zero (modulo 1 sorry in primeCounting_le_chebyshev)"
     ],
     "insights": [
-      "primes_have_sparse_complement follows trivially from lorentz_theorem + Nat.infinite_setOf_prime",
-      "primes_density_zero requires PNT or Chebyshev bounds, neither available in Mathlib v4.26.0",
-      "Nat.primeCounting exists in Mathlib but no upper bounds (no PNT, no Chebyshev)",
+      "primes_density_zero CAN be proved from Chebyshev bounds without PNT - key insight",
+      "Mathlib has primorial_le_4_pow which gives θ(n) ≤ n·log(4)",
+      "The splitting argument (primes at √N) is mathematically clear but Finset-heavy in Lean",
+      "Tendsto proofs for sqrt/log quotients require careful real analysis with filter_upwards",
       "lorentz_B_bound and lorentz_strengthened are never referenced by any theorem in file"
     ],
     "mathlibGaps": [],
@@ -60,7 +67,7 @@
     "mathlib": []
   },
   "started": "2026-01-14T00:00:00.000Z",
-  "lastUpdate": "2026-01-14T00:00:00.000Z",
+  "lastUpdate": "2026-02-14T00:00:00.000Z",
   "significance": 7,
   "tractability": 7
 }
