@@ -23,24 +23,29 @@
     "erdosProblemStatus": "open",
     "mathlibDependencies": [
       {
-        "theorem": "Mathlib.Data.Nat.Prime.Basic",
-        "description": "Basic from Mathlib.Data.Nat.Prime"
+        "theorem": "Nat.factors",
+        "description": "Prime factorization with multiplicity for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
       },
       {
-        "theorem": "Mathlib.Data.Finset.Basic",
-        "description": "Basic from Mathlib.Data.Finset"
+        "theorem": "Finset.Icc",
+        "description": "Closed intervals [a, b] as finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
       },
       {
-        "theorem": "Mathlib.Data.Finset.Card",
-        "description": "Card from Mathlib.Data.Finset"
+        "theorem": "Finset.card_image_le",
+        "description": "Image cardinality is at most domain cardinality",
+        "module": "Mathlib.Data.Finset.Card"
       },
       {
-        "theorem": "Mathlib.Data.Real.Basic",
-        "description": "Basic from Mathlib.Data.Real"
+        "theorem": "Real.log",
+        "description": "Natural logarithm on real numbers for the Erdős-Graham bound",
+        "module": "Mathlib.Data.Real.Basic"
       },
       {
-        "theorem": "Mathlib.Tactic",
-        "description": "Tactic from Mathlib"
+        "theorem": "Nat.Prime.dvd_mul",
+        "description": "Prime divisibility of products for list membership lemmas",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
       }
     ],
     "originalContributions": [
@@ -52,15 +57,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "This problem originates from Erdős and Graham's 1980 monograph (p.92). They introduced the $t$-smooth component of an integer — the largest divisor whose prime factors are all $< t$ — and asked whether the number of distinct smooth components in a short interval $\\{n+1, \\ldots, n+t\\}$ is linear in $t$. They proved the weaker bound $f(n,t) \\gg t/\\log t$. The problem connects smooth number theory to short interval statistics, a topic central to analytic number theory.",
-    "problemStatement": "Define $s_t(n)$ as the largest divisor of $n$ all of whose prime factors are $< t$. Let $f(n,t) = |\\{s_t(m) : n < m \\leq n+t\\}|$. Is $f(n,t) \\gg t$ uniformly in $n$?",
-    "proofStrategy": "The formalization takes a constructive approach: `smoothComponent` is defined via `Nat.factors` filtering (not axiomatized), enabling proved properties. Core theorems `smoothComponent_dvd` ($s_t(n) \\mid n$), `smoothComponent_smooth` (all prime factors $< t$), and `smoothComponent_pos` ($s_t(n) > 0$) are all fully proved. The maximality theorem `smoothComponent_largest` remains a `sorry` with documented proof strategy via coprime decomposition. The counting function `smoothDistinctCount` uses `Finset.Icc` and `Finset.image`. The main conjecture `ErdosProblem461` asks for $f(n,t) \\geq Ct$, and the known bound $f(n,t) \\gg t/\\log t$ is axiomatized.",
+    "historicalContext": "This problem originates from Erdős and Graham's 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (Monographie no. 28, L'Enseignement Mathématique, p.92). They introduced the $t$-smooth component of an integer — the largest divisor whose prime factors are all $< t$ — and asked whether the number of distinct smooth components in a short interval $\\{n+1, \\ldots, n+t\\}$ is linear in $t$.\n\nErdős and Graham proved the weaker bound $f(n,t) \\gg t/\\log t$ using sieve methods and multiplicative function estimates. The problem connects to the broader study of smooth (or 'friable') numbers, a central topic in analytic number theory with applications to cryptography (factoring algorithms like the number field sieve rely on smooth number density). Key related work includes Hildebrand's 1986 estimates for $\\Psi(x, y)$ (the count of $y$-smooth numbers up to $x$), Tenenbaum's probabilistic approach, and Ford's 2008 Annals paper on divisor distribution.\n\nThe problem remains OPEN: the logarithmic gap between the known $t/\\log t$ and the conjectured $t$ has not been closed.",
+    "problemStatement": "Define $s_t(n)$ as the largest divisor of $n$ all of whose prime factors are $< t$. Let $f(n,t) = |\\{s_t(m) : n < m \\leq n+t\\}|$. Is $f(n,t) \\gg t$ uniformly in $n$?\n\nFormally: $\\exists C > 0, \\exists t_0, \\forall t \\geq t_0, \\forall n : f(n,t) \\geq C \\cdot t$.",
+    "proofStrategy": "The formalization takes a constructive approach: `smoothComponent` is defined via `Nat.factors` filtering (not axiomatized), enabling proved properties. Core theorems `smoothComponent_dvd` ($s_t(n) \\mid n$), `smoothComponent_smooth` (all prime factors $< t$), and `smoothComponent_pos` ($s_t(n) > 0$) are all fully proved. The maximality theorem `smoothComponent_largest` remains a `sorry` with documented proof strategy via coprime decomposition. The counting function uses `Finset.Icc` and `Finset.image`. The Erdős–Graham bound $f(n,t) \\gg t/\\log t$ is axiomatized.",
     "keyInsights": [
-      "The $t$-smooth component captures the 'smooth part' of an integer — the product of all prime power divisors with primes $< t$",
-      "Erdős–Graham proved $f(n,t) \\gg t/\\log t$, falling short of the conjectured linear bound by a logarithmic factor",
-      "The trivial upper bound $f(n,t) \\leq t$ is proved; the conjecture asks for $f(n,t) = \\Theta(t)$",
-      "The formalization is notably strong: most theorems are fully proved, with only the maximality property `smoothComponent_largest` as a sorry",
-      "The smooth-rough decomposition $n = s_t(n) \\cdot c$ (where all primes of $c$ are $\\geq t$) is key infrastructure prepared for the maximality proof"
+      "**Constructive smooth component:** $s_t(n)$ is defined as `(n.factors.filter (· < t)).prod`, not axiomatized — enabling fully proved core properties (divisibility, smoothness, positivity)",
+      "**Erdős–Graham bound falls a log factor short:** The known $f(n,t) \\gg t/\\log t$ vs conjectured $f(n,t) \\gg t$ parallels the prime counting gap ($\\pi(t) \\sim t/\\log t$ vs $t$)",
+      "**Near-complete formalization:** Only 1 sorry (`smoothComponent_largest`) out of ~15 results; the coprime decomposition infrastructure is already in place",
+      "**Uniform $\\forall n$ quantification:** The conjecture requires the bound for ALL starting points, not just typical ones — substantially stronger than an average-case statement",
+      "**Smooth-rough decomposition as key tool:** The factorization $n = s_t(n) \\cdot r_t(n)$ where $\\gcd(s_t(n), r_t(n)) = 1$ underlies the maximality proof strategy"
     ]
   },
   "sections": [
@@ -69,35 +74,41 @@
       "title": "Smooth Components",
       "startLine": 22,
       "endLine": 106,
-      "summary": "Constructive definition of `smoothComponent` via `Nat.factors` filtering. Includes infrastructure lemmas (`list_prod_filter_dvd`, `prime_dvd_list_prod_mem`, `no_small_prime_in_complement`) and three core proved theorems: $s_t(n) \\mid n$, all prime factors $< t$, $s_t(n) > 0$. The maximality theorem `smoothComponent_largest` has `sorry` with a documented coprime decomposition strategy."
+      "summary": "Constructive definition of $s_t(n) = (n.\\text{factors}.\\text{filter}(\\cdot < t)).\\text{prod}$. **Proves** infrastructure lemmas, $s_t(n) \\mid n$, smoothness, positivity, complement coprimality. The maximality `smoothComponent_largest` has the file's only sorry."
     },
     {
       "id": "counting",
       "title": "Counting Distinct Smooth Components",
       "startLine": 108,
       "endLine": 112,
-      "summary": "Defines $f(n,t) = |\\text{image}(s_t, [n+1, n+t])|$ using `Finset.Icc` and `Finset.image`. Noncomputable since `smoothComponent` involves factorization."
+      "summary": "Defines $f(n,t) = |\\text{image}(s_t, [n+1, n+t])|$ via `Finset.Icc` and `Finset.image`."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 114,
       "endLine": 121,
-      "summary": "States `ErdosProblem461`: $\\exists C > 0,\\, \\exists t_0,\\, \\forall t \\geq t_0,\\, \\forall n,\\, f(n,t) \\geq Ct$. Quantifies uniformly over all starting points $n$."
+      "summary": "States `ErdosProblem461`: $\\exists C > 0, \\exists t_0, \\forall t \\geq t_0, \\forall n : f(n,t) \\geq Ct$."
     },
     {
       "id": "known-results",
       "title": "Known Results",
       "startLine": 123,
       "endLine": 129,
-      "summary": "Axiomatizes the Erdős–Graham bound $f(n,t) \\geq C \\cdot t/\\log t$ using `Real.log`. The logarithmic gap between this and the conjectured $Ct$ is the open question."
+      "summary": "Axiomatizes the Erdős–Graham bound $f(n,t) \\geq C \\cdot t/\\log t$ using `Real.log`."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 131,
       "endLine": 172,
-      "summary": "Six fully proved results: $s_t(1) = 1$, $s_t(0) = 1$, $t \\leq 1 \\implies s_t(n) = 1$, $s_t(p) = p$ if $p < t$ else $1$, $f(n,t) \\leq t$, and $f(n,0) = 0$. All use `Nat.factors` properties and `Finset` cardinality bounds."
+      "summary": "**Proves** 6 results: $s_t(1) = 1$, $s_t(0) = 1$, $t \\leq 1 \\implies s_t(n) = 1$, $s_t(p)$ for primes, $f(n,t) \\leq t$, $f(n,0) = 0$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "erdos-450",
+      "relationship": "Both problems study density phenomena in short intervals: #450 asks about divisor density in $(n, 2n)$ intervals, #461 asks about distinct smooth component counts. Both connect to Ford's work on divisor distribution and the anatomy of integers."
     }
   ],
   "conclusion": {
