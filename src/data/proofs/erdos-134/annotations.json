@@ -2,11 +2,14 @@
   {
     "id": "header-comment",
     "proofId": "erdos-134",
-    "type": "concept",
-    "range": { "startLine": 1, "endLine": 33 },
-    "title": "Problem Overview",
-    "content": "Erdős Problem #134 asks about extending triangle-free graphs with bounded degree to diameter-2 graphs. SOLVED by Alon with O(n^{2-ε}) edges, stronger than the original δn² conjecture.",
-    "significance": "critical"
+    "type": "context",
+    "range": { "startLine": 1, "endLine": 46 },
+    "title": "Problem Overview and Setup",
+    "content": "**Erdős Problem #134: Triangle-Free Graphs with Diameter 2**\n\nAsks whether triangle-free graphs with max degree < n^{1/2-ε} can be extended to diameter-2 triangle-free graphs by adding few edges. SOLVED by Alon with O(n^{2-ε}) edges, much stronger than the original δn² conjecture.\n\nThe imports bring in Mathlib's `SimpleGraph` for graph adjacency, `Walk` for path connectivity, `Fintype.card` for vertex counting, and `Real.rpow` for degree bounds involving real exponents. The variable section declares `V` as a finite type with decidable equality — the vertex set of all graphs in the formalization.",
+    "mathContext": "The problem operates in the space of simple graphs $G = (V, E)$ with $|V| = n$. The key parameters are $\\varepsilon, \\delta > 0$ controlling the degree bound $\\Delta(G) < n^{1/2-\\varepsilon}$ and the edge budget $\\delta n^2$.",
+    "significance": "critical",
+    "relatedConcepts": ["SimpleGraph", "Triangle-free graphs", "Graph diameter", "Extremal graph theory"],
+    "prerequisites": ["Graph theory basics", "Fintype", "Real exponentiation"]
   },
   {
     "id": "has-triangle",
@@ -14,8 +17,11 @@
     "type": "definition",
     "range": { "startLine": 51, "endLine": 56 },
     "title": "Triangle in a Graph",
-    "content": "Three vertices u, v, w form a triangle (K₃) if all three edges u-v, v-w, u-w exist. This is the forbidden subgraph in triangle-free graphs.",
-    "significance": "key"
+    "content": "**HasTriangle(G):** Three vertices u, v, w form a triangle (K₃) if all three edges u-v, v-w, u-w exist and all three vertices are distinct. This existential definition checks for any K₃ subgraph.",
+    "mathContext": "A triangle is a complete subgraph $K_3$: $\\exists u, v, w \\in V$ with $u \\neq v \\neq w \\neq u$ and $\\{u,v\\}, \\{v,w\\}, \\{u,w\\} \\in E(G)$. By Turán's theorem, the maximum number of edges in a triangle-free graph on $n$ vertices is $\\lfloor n^2/4 \\rfloor$.",
+    "significance": "key",
+    "relatedConcepts": ["Complete subgraph K₃", "Turán's theorem", "Forbidden subgraphs"],
+    "prerequisites": ["SimpleGraph.Adj", "Vertex distinctness"]
   },
   {
     "id": "triangle-free",
@@ -23,109 +29,130 @@
     "type": "definition",
     "range": { "startLine": 58, "endLine": 63 },
     "title": "Triangle-Free Graph",
-    "content": "A graph is triangle-free if it contains no K₃ subgraph. This is the main constraint that must be preserved when extending to diameter 2.",
-    "significance": "critical"
+    "content": "**IsTriangleFree(G) = ¬HasTriangle G:** A graph is triangle-free if no three vertices form a complete subgraph. This is the core constraint that must be preserved when adding edges to achieve diameter 2 — the tension between adding enough edges for connectivity while avoiding triangles drives the entire problem.",
+    "mathContext": "Triangle-free graphs are extremal objects studied since Mantel (1907) and Turán (1941). They have at most $n^2/4$ edges (Turán's theorem). The constraint $\\text{IsTriangleFree}(G')$ for the extended graph $G' \\supseteq G$ limits how many edges can be added.",
+    "significance": "critical",
+    "relatedConcepts": ["Turán's theorem", "Mantel's theorem", "Ramsey theory", "Extremal graph theory"],
+    "prerequisites": ["Negation of existential", "K₃-free graphs"]
   },
   {
-    "id": "max-degree",
+    "id": "degree-defs",
     "proofId": "erdos-134",
     "type": "definition",
-    "range": { "startLine": 72, "endLine": 77 },
-    "title": "Maximum Degree",
-    "content": "maxDegree(G) is the maximum number of neighbors any vertex has. The conjecture requires max degree < n^{1/2-ε}.",
-    "significance": "critical"
+    "range": { "startLine": 65, "endLine": 77 },
+    "title": "Vertex Degree and Maximum Degree",
+    "content": "**vertexDegree(G, v):** The number of neighbors of v, computed as `(G.neighborFinset v).card`.\n\n**maxDegree(G):** The maximum degree over all vertices, computed as the supremum of vertexDegree over `Finset.univ`. The conjecture requires maxDegree(G) < n^{1/2-ε}, a subpolynomial bound relative to the vertex count.",
+    "mathContext": "The maximum degree $\\Delta(G) = \\max_{v \\in V} \\deg(v)$ controls the local density of the graph. The critical threshold $\\Delta(G) < n^{1/2-\\varepsilon}$ means each vertex has $o(\\sqrt{n})$ neighbors. Since a triangle-free graph has at most $\\sqrt{n}$ edges through any vertex (by the Kővári-Sós-Turán theorem), this is just below the natural barrier.",
+    "significance": "critical",
+    "relatedConcepts": ["Kővári-Sós-Turán theorem", "Degree sequence", "Neighborhood", "Finset.sup"],
+    "prerequisites": ["neighborFinset", "Finset.card", "Finset.sup"]
   },
   {
     "id": "diameter-2",
     "proofId": "erdos-134",
     "type": "definition",
-    "range": { "startLine": 87, "endLine": 92 },
-    "title": "Diameter at Most 2",
-    "content": "A graph has diameter 2 if any two distinct vertices are connected by a path of length at most 2. Equivalent to every non-adjacent pair having a common neighbor.",
-    "significance": "critical"
+    "range": { "startLine": 79, "endLine": 99 },
+    "title": "Paths and Diameter at Most 2",
+    "content": "**hasPathOfLength(G, u, v, k):** There exists a walk of length exactly k from u to v.\n\n**hasDiameter2(G):** Every pair of distinct vertices is connected by a path of length 1 (adjacent) or 2 (common neighbor). This is equivalent to requiring the graph's diameter is at most 2.\n\n**edgeCount(G):** The total number of edges, computed as `G.edgeFinset.card`.",
+    "mathContext": "A graph has diameter $\\leq 2$ iff $\\forall u \\neq v$, $d(u,v) \\leq 2$. Equivalently, every pair of non-adjacent vertices shares a common neighbor: $\\forall u \\neq v$ with $uv \\notin E$, $\\exists w$ with $uw, wv \\in E$. Diameter-2 graphs are dense: they require $\\Omega(\\sqrt{n})$ edges per vertex on average.",
+    "significance": "critical",
+    "relatedConcepts": ["Graph diameter", "Walk length", "Common neighbors", "Distance in graphs"],
+    "prerequisites": ["SimpleGraph.Walk", "Walk.length", "edgeFinset"]
   },
   {
-    "id": "extendable",
+    "id": "extension-defs",
     "proofId": "erdos-134",
     "type": "definition",
-    "range": { "startLine": 119, "endLine": 128 },
-    "title": "Extendable to Diameter 2",
-    "content": "extendableToDiameter2WithBudget(G, k) means G can be extended to a triangle-free diameter-2 graph by adding at most k edges. This is the main property studied.",
-    "significance": "critical"
+    "range": { "startLine": 101, "endLine": 128 },
+    "title": "Graph Extension Framework",
+    "content": "**isSupergraph(G, G'):** Every edge of G is also in G' — the extension preserves all original edges.\n\n**addedEdges(G, G'):** The number of new edges, computed as `(G'.edgeFinset \\ G.edgeFinset).card`.\n\n**extendableToDiameter2WithBudget(G, k):** The central predicate — ∃ G' ⊇ G with IsTriangleFree(G'), hasDiameter2(G'), and addedEdges(G, G') ≤ k. This captures the precise question: can we achieve diameter 2 while staying triangle-free within a given edge budget?",
+    "mathContext": "The extension problem is: given $G$ with $\\Delta(G) < n^{1/2-\\varepsilon}$ and $\\text{IsTriangleFree}(G)$, find $G' \\supseteq G$ with $\\text{IsTriangleFree}(G')$, $\\text{diam}(G') \\leq 2$, and $|E(G') \\setminus E(G)| \\leq k$. The budget $k$ is the key parameter: the conjecture asks for $k = \\delta n^2$, Alon achieves $k = O(n^{2-\\varepsilon})$.",
+    "significance": "critical",
+    "relatedConcepts": ["Supergraph", "Edge budget", "Graph augmentation", "Feasibility"],
+    "prerequisites": ["edgeFinset difference", "Finset.card", "Existential quantification"]
   },
   {
     "id": "conjecture",
     "proofId": "erdos-134",
     "type": "concept",
-    "range": { "startLine": 134, "endLine": 147 },
+    "range": { "startLine": 130, "endLine": 147 },
     "title": "Erdős-Gyárfás Conjecture",
-    "content": "The main conjecture: for any ε, δ > 0 and large n, triangle-free graphs with max degree < n^{1/2-ε} can be extended to diameter-2 triangle-free by adding ≤ δn² edges.",
-    "significance": "critical"
+    "content": "**erdosGyarfasConjecture:** The formal statement quantifies over all ε, δ > 0 and asserts existence of N such that for all n ≥ N, all triangle-free graphs G on n vertices with maxDegree(G) < n^{1/2-ε} are extendable with budget ⌊δn²⌋.\n\nThe formalization uses `Fintype.card V` for n, `Real.rpow` for the exponent 1/2 - ε, and `Nat.floor` for converting the real budget δn² to a natural number. The nested universal quantifiers (ε, δ, V, G) make this a Π₃ statement in arithmetic.",
+    "mathContext": "The conjecture states: $\\forall \\varepsilon, \\delta > 0$, $\\exists N$ such that $\\forall n \\geq N$, $\\forall G$ triangle-free with $\\Delta(G) < n^{1/2-\\varepsilon}$, $G$ extends to a triangle-free diameter-2 graph by adding $\\leq \\lfloor \\delta n^2 \\rfloor$ edges.",
+    "significance": "critical",
+    "relatedConcepts": ["Extremal graph theory", "Phase transitions", "Asymptotic thresholds"],
+    "prerequisites": ["Real exponentiation", "Floor function", "Asymptotic quantifiers"]
   },
   {
     "id": "weak-result",
     "proofId": "erdos-134",
-    "type": "theorem",
-    "range": { "startLine": 153, "endLine": 167 },
-    "title": "Erdős-Gyárfás Weak Result",
-    "content": "Original result: the conjecture holds when max degree ≪ log n / log log n. This is much weaker than the full conjecture.",
-    "significance": "key"
+    "type": "concept",
+    "range": { "startLine": 149, "endLine": 167 },
+    "title": "Erdős-Gyárfás Original Weak Result",
+    "content": "**erdos_gyarfas_weak:** The conjecture holds when maxDegree(G) ≤ C · log n / log log n for any constant C. This is exponentially weaker than n^{1/2-ε} — it only handles extremely sparse graphs where the maximum degree grows as slowly as an iterated logarithm.\n\nThe gap between log n / log log n and n^{1/2-ε} represents a vast improvement achieved by Alon's probabilistic methods. The original proof likely used a direct greedy or counting argument.",
+    "mathContext": "The weak bound $\\Delta(G) \\leq C \\cdot \\frac{\\log n}{\\log \\log n}$ grows extremely slowly: for $n = 10^6$, this gives $\\Delta \\leq C \\cdot \\frac{6\\ln 10}{\\ln(6\\ln 10)} \\approx 5C$. In contrast, $n^{1/2-\\varepsilon}$ with $\\varepsilon = 0.01$ gives $\\Delta < n^{0.49} \\approx 977$, an enormous improvement.",
+    "significance": "key",
+    "relatedConcepts": ["Iterated logarithm", "Greedy algorithms", "Sparse graphs"],
+    "prerequisites": ["Real.log", "Asymptotic comparison"]
   },
   {
     "id": "simonovits",
     "proofId": "erdos-134",
-    "type": "theorem",
+    "type": "concept",
     "range": { "startLine": 169, "endLine": 183 },
     "title": "Simonovits Counterexample",
-    "content": "For large enough C, there exist triangle-free graphs with max degree ≤ C√n that cannot be extended to diameter-2 triangle-free with o(n²) edges. Shows 1/2 is the critical exponent.",
-    "significance": "critical"
+    "content": "**simonovits_counterexample:** For large enough C, there exist triangle-free graphs with maxDegree ≤ C√n that cannot be extended to diameter-2 triangle-free with δn² edges for any δ. This shows the exponent 1/2 is sharp — the ε gap below 1/2 in the conjecture is necessary.\n\nThe construction uses `Filter.atTop` to express 'for all sufficiently large n', producing an existential over vertex types. The counterexample demonstrates a phase transition: below √n degree, extension is cheap; at √n, it becomes expensive.",
+    "mathContext": "Simonovits showed $\\exists C > 0$ such that $\\forall \\delta > 0$, for infinitely many $n$, $\\exists G$ triangle-free with $\\Delta(G) \\leq C\\sqrt{n}$ but $G$ not extendable with $\\delta n^2$ edges. This establishes the threshold: $n^{1/2-\\varepsilon}$ works (Alon) but $n^{1/2}$ does not (Simonovits).",
+    "significance": "critical",
+    "relatedConcepts": ["Phase transition", "Sharp threshold", "Filter.atTop", "Counterexample construction"],
+    "prerequisites": ["Filter.eventually", "Existential over types"]
   },
   {
     "id": "alon-theorem",
     "proofId": "erdos-134",
-    "type": "theorem",
-    "range": { "startLine": 189, "endLine": 206 },
-    "title": "Alon's Theorem",
-    "content": "For any ε > 0 and large n, triangle-free graphs with max degree < n^{1/2-ε} can be extended to diameter-2 triangle-free with O(n^{2-ε}) edges. MUCH stronger than the original conjecture.",
-    "significance": "critical"
-  },
-  {
-    "id": "implies-conjecture",
-    "proofId": "erdos-134",
-    "type": "theorem",
-    "range": { "startLine": 208, "endLine": 213 },
-    "title": "Alon Implies Conjecture",
-    "content": "Since O(n^{2-ε}) ≤ δn² for large n (as n^{-ε} → 0), Alon's result implies the original Erdős-Gyárfás conjecture.",
-    "significance": "key"
+    "type": "concept",
+    "range": { "startLine": 185, "endLine": 213 },
+    "title": "Alon's Theorem and Its Consequence",
+    "content": "**alon_theorem:** For any ε > 0, there exist C > 0 and N such that for n ≥ N, any triangle-free G with maxDegree < n^{1/2-ε} extends to diameter-2 triangle-free with ≤ ⌈Cn^{2-ε}⌉ edges. This is MUCH stronger than δn² since n^{2-ε}/n² = n^{-ε} → 0.\n\n**alon_implies_conjecture:** States that alon_theorem implies erdosGyarfasConjecture. Axiomatized rather than proved in Lean, though the implication is straightforward: O(n^{2-ε}) ≤ δn² for large n.\n\nAlon's proof uses the probabilistic method: randomly add edges and show that with positive probability, the extension achieves diameter 2 while preserving triangle-freeness. The degree constraint ensures triangles are unlikely.",
+    "mathContext": "Alon proved: $\\forall \\varepsilon > 0$, $\\exists C, N$ s.t. $\\forall n \\geq N$, $\\forall G$ triangle-free with $\\Delta(G) < n^{1/2-\\varepsilon}$, $G$ extends to a triangle-free diameter-2 graph by adding $\\leq Cn^{2-\\varepsilon}$ edges. Since $\\lim_{n\\to\\infty} Cn^{2-\\varepsilon}/(\\delta n^2) = 0$, this implies the original conjecture for large $n$.",
+    "significance": "critical",
+    "relatedConcepts": ["Probabilistic method", "Lovász Local Lemma", "Random graph extension", "Quantitative improvement"],
+    "prerequisites": ["Ceiling function", "Asymptotic domination", "Probabilistic combinatorics"]
   },
   {
     "id": "critical-exponent",
     "proofId": "erdos-134",
-    "type": "concept",
+    "type": "insight",
     "range": { "startLine": 215, "endLine": 225 },
     "title": "Critical Exponent 1/2",
-    "content": "The exponent 1/2 is critical: below 1/2-ε extension is possible with o(n²) edges (Alon), but at 1/2 with large constant, extension may need Ω(n²) edges (Simonovits). The ε gap below 1/2 is essential. Triangle-free graphs with degree constraints relate to Turán's theorem, Ramsey theory, and spectral graph theory.",
-    "mathContext": "This phase transition at degree n^{1/2} is reminiscent of other thresholds in extremal graph theory where polynomial bounds shift from possible to impossible.",
-    "significance": "key"
+    "content": "**Phase Transition at n^{1/2}:** The exponent 1/2 marks a sharp threshold:\n- Below 1/2 - ε: Extension possible with o(n²) edges (Alon)\n- At 1/2 with large constant: Extension may need Ω(n²) edges (Simonovits)\n\nThis phase transition is reminiscent of other thresholds in extremal graph theory (e.g., the Erdős-Gallai theorem for path lengths, or the appearance of giant components at average degree 1 in random graphs). The ε gap is essential — it provides the 'room' for probabilistic arguments to work.",
+    "mathContext": "The threshold $\\Delta = n^{1/2}$ arises naturally: a vertex of degree $d$ in a triangle-free graph has an independent neighborhood, so its neighbors contribute at most $d$ edges. To reach diameter 2, non-adjacent pairs need common neighbors. With $\\Delta = n^{1/2}$, neighborhoods are just large enough to make triangle avoidance difficult during extension.",
+    "significance": "key",
+    "relatedConcepts": ["Phase transitions in graphs", "Sharp thresholds", "Friedgut's theorem", "Bollobás threshold phenomena"],
+    "prerequisites": ["Threshold phenomena", "Extremal graph theory"]
   },
   {
     "id": "common-neighbor",
     "proofId": "erdos-134",
     "type": "definition",
-    "range": { "startLine": 231, "endLine": 245 },
-    "title": "Common Neighbor Property",
-    "content": "**commonNeighborProperty(G)**: every pair of non-adjacent vertices has a common neighbor. For connected graphs, this is equivalent to diameter 2 (axiom diameter2_equiv). This characterization is useful because it converts a global property (diameter) into a local condition (common neighbors).",
-    "mathContext": "The equivalence between diameter 2 and the common neighbor property is standard in graph theory. It provides an alternative way to verify diameter-2 extensions.",
-    "significance": "supporting"
+    "range": { "startLine": 227, "endLine": 245 },
+    "title": "Common Neighbor Property and Diameter Equivalence",
+    "content": "**commonNeighborProperty(G):** Every pair of non-adjacent vertices has a common neighbor w with w ≠ u, w ≠ v, G.Adj u w, and G.Adj w v.\n\n**diameter2_equiv** (axiom): For connected graphs, hasDiameter2(G) ↔ commonNeighborProperty(G). This equivalence converts the global diameter condition into a local condition that's easier to verify during graph extension.\n\nThe common neighbor formulation is particularly useful for probabilistic proofs: one can estimate the probability that a random edge addition creates common neighbors for all non-adjacent pairs.",
+    "mathContext": "The equivalence $\\text{diam}(G) \\leq 2 \\iff \\forall u \\neq v, uv \\notin E \\Rightarrow N(u) \\cap N(v) \\neq \\emptyset$ holds for connected graphs. The common neighbor property also relates to the complement graph: $G$ has diameter $\\leq 2$ iff $\\overline{G}$ has no induced $P_3$ (path on 3 vertices).",
+    "significance": "supporting",
+    "relatedConcepts": ["Complement graph", "Induced subgraph characterization", "Neighborhood intersection"],
+    "prerequisites": ["Graph connectivity", "Neighborhood intersection", "Biconditional"]
   },
   {
     "id": "main-theorem",
     "proofId": "erdos-134",
     "type": "theorem",
-    "range": { "startLine": 257, "endLine": 295 },
+    "range": { "startLine": 247, "endLine": 295 },
     "title": "Main Results: erdos_134_solved and erdos_134_main",
-    "content": "**erdos_134_solved** (PROVED): derives erdosGyarfasConjecture directly from alon_implies_conjecture.\n\n**erdos_134_main** (PROVED): Combines two results:\n1. The conjecture is true (from Alon)\n2. The stronger O(n^{2-ε}) bound (from alon_theorem)\n\nProof uses `exact ⟨alon_implies_conjecture, ...⟩` with `obtain` to extract constants from alon_theorem.",
-    "mathContext": "The summary theorem packages both the qualitative result (the conjecture holds) and the quantitative improvement (O(n^{2-ε}) vs δn²) into a single statement.",
-    "significance": "critical"
+    "content": "**erdos_134_solved** (PROVED): Derives `erdosGyarfasConjecture` directly from `alon_implies_conjecture`. A one-line proof establishing the conjecture is true.\n\n**erdos_134_main** (PROVED): Packages both results as a conjunction:\n1. The conjecture is true (from alon_implies_conjecture)\n2. The stronger O(n^{2-ε}) bound (from alon_theorem)\n\nThe proof uses `constructor` to split the conjunction, then `obtain ⟨C, hC, N, hN⟩ := alon_theorem ε hε` to destructure Alon's theorem and extract the constants. These are the only two proved (non-axiom) theorems in the file.",
+    "mathContext": "The main theorem states $\\text{erdosGyarfasConjecture} \\wedge (\\forall \\varepsilon > 0, \\exists C, N \\text{ s.t. the } O(n^{2-\\varepsilon}) \\text{ bound holds})$. The conjunction captures both the qualitative answer (YES) and the quantitative improvement over the original question.",
+    "significance": "critical",
+    "relatedConcepts": ["Conjunction elimination", "Existential instantiation", "Theorem packaging"],
+    "prerequisites": ["And.intro", "obtain destructuring", "Axiom application"]
   }
 ]
