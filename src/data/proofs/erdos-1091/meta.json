@@ -1,10 +1,10 @@
 {
   "id": "erdos-1091",
-  "title": "Erdős Problem #1091: Odd Cycles with Diagonals in K₄-Free Graphs",
+  "title": "Erdos Problem #1091: Odd Cycles with Diagonals in K4-Free Graphs",
   "slug": "erdos-1091",
-  "description": "Must a K₄-free graph with χ(G) = 4 contain an odd cycle with at least two diagonals? Answer: YES (Voss 1982). General f(r) question: OPEN.",
+  "description": "Must a K4-free graph with chi(G) = 4 contain an odd cycle with at least two diagonals? Answer: YES (Voss 1982). General f(r) question: OPEN.",
   "meta": {
-    "author": "Erdős (problem), Larson (1979), Voss (1982)",
+    "author": "Erdos (problem), Larson (1979), Voss (1982)",
     "sourceUrl": "https://erdosproblems.com/1091",
     "date": "1982",
     "status": "complete",
@@ -25,109 +25,134 @@
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
-        "description": "Basic simple graph structure",
+        "description": "Basic simple graph structure for vertices and edges",
         "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
       },
       {
         "theorem": "SimpleGraph.Coloring",
-        "description": "Graph coloring definitions",
+        "description": "Proper graph colorings for chromatic number",
         "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
       },
       {
         "theorem": "SimpleGraph.IsClique",
-        "description": "Clique and clique-free definitions",
+        "description": "Clique and clique-free predicates for K4-free condition",
         "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
       },
       {
-        "theorem": "Finset.card",
-        "description": "Cardinality of finite sets",
-        "module": "Mathlib.Data.Finset.Basic"
+        "theorem": "SimpleGraph.induce",
+        "description": "Induced subgraphs for local colorability",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph"
       }
     ],
     "originalContributions": [
-      "Formalized Cycle structure with vertices, adjacency, and closing edge",
-      "Defined Cycle.isOdd, Cycle.isDiagonal, Cycle.diagonalCount",
-      "Defined IsK4Free and chromaticNumber",
-      "Stated Larson's theorem (1979): one diagonal guaranteed",
-      "Stated Bollobás-Erdős conjecture (proved by Larson)",
-      "Stated Voss's theorem (1982): two diagonals guaranteed",
-      "Defined PentagonalWheel as counterexample for three diagonals",
-      "Proved three_diagonals_not_guaranteed from pentagonal wheel",
-      "Formalized IsLocallyColorable and GeneralQuestion (OPEN)",
-      "Connected to Mycielski construction for triangle-free graphs"
-    ]
+      "Cycle structure: vertices list with adjacency, closing edge, length >= 3",
+      "Cycle.isOdd, Cycle.isDiagonal, Cycle.diagonalCount: odd cycle and diagonal predicates",
+      "IsK4Free, chromaticNumber: clique-free and coloring number definitions",
+      "larson_one_diagonal: Larson's 1979 theorem (axiomatized)",
+      "BollobasErdosAlternative: structural alternatives for diagonal-free K4-free graphs",
+      "voss_two_diagonals: Voss's 1982 strengthening (axiomatized)",
+      "voss_implies_larson: verified corollary (>= 2 implies >= 1)",
+      "PentagonalWheel: explicit W5 construction as SimpleGraph (Fin 6)",
+      "three_diagonals_not_guaranteed: verified impossibility of >= 3 diagonals",
+      "IsLocallyColorable, GeneralQuestion: open f(r) question formalized",
+      "K4_free_high_chi_possible: verified existence witness",
+      "erdos_1091_summary: verified combined result"
+    ],
+    "dateAdded": "2026-01-26"
   },
   "overview": {
-    "historicalContext": "This problem concerns the structure of K₄-free graphs with high chromatic number. Erdős originally asked about the existence of just one diagonal in odd cycles.\n\nLarson (1979) proved that one diagonal always exists, and moreover proved the Bollobás-Erdős conjecture: if a K₄-free graph has no odd cycle with a diagonal, then it must be bipartite, have a cut vertex, or have a vertex of degree ≤ 2.\n\nVoss (1982) strengthened this to show that TWO diagonals are always guaranteed. The pentagonal wheel (5-cycle with central hub) shows that three diagonals cannot always be guaranteed.\n\nThe general question asks whether there exists f(r) → ∞ such that locally 3-colorable graphs with χ ≥ 4 have odd cycles with at least f(r) diagonals. This remains OPEN.",
-    "problemStatement": "**Problem**: Let $G$ be a $K_4$-free graph with chromatic number 4. Must $G$ contain an odd cycle with at least two diagonals?\n\n**Answer**: YES (Voss 1982)\n\n**More General Question** (OPEN): Is there some $f(r) \\to \\infty$ such that every graph with $\\chi(G) \\geq 4$, in which every subgraph on $\\leq r$ vertices has $\\chi \\leq 3$, contains an odd cycle with at least $f(r)$ diagonals?\n\n**Known Results**:\n- Larson (1979): At least 1 diagonal guaranteed\n- Voss (1982): At least 2 diagonals guaranteed\n- Pentagonal wheel: Shows 3 diagonals cannot be guaranteed\n- General f(r) question: OPEN",
-    "proofStrategy": "The formalization defines cycles as lists of vertices with adjacency conditions, and diagonals as non-consecutive edges. The key theorems by Larson and Voss are stated as axioms. The pentagonal wheel is explicitly constructed to prove that 3 diagonals cannot be universally guaranteed. The general f(r) question is formalized but left open.",
+    "historicalContext": "Erdos Problem #1091 concerns the structure of odd cycles in graphs that are K4-free (contain no complete graph on 4 vertices) but have high chromatic number. The problem has its roots in the broader question of how clique-freeness constrains graph structure when the chromatic number is large.\n\nThe Bollobas-Erdos conjecture proposed that K4-free graphs without odd cycles having diagonals must have very restricted structure: they are bipartite, have a cut vertex, or have a low-degree vertex. Larson (1979) proved this conjecture and established that every K4-free graph with chi >= 4 must contain an odd cycle with at least one diagonal.\n\nVoss (1982) significantly strengthened Larson's result by proving that at least TWO diagonals are guaranteed. This answered the specific question of Problem #1091 affirmatively. The pentagonal wheel W5 (a 5-cycle with a central hub vertex) serves as an extremal counterexample: it is K4-free with chi = 4, but every odd cycle has at most 2 diagonals, showing that 3 diagonals cannot be universally guaranteed and making Voss's bound tight.\n\nThe problem connects to Mycielski's classical construction, which shows that triangle-free (and hence K4-free) graphs can have arbitrarily high chromatic number. The general open question asks whether there exists f(r) -> infinity such that graphs with chi >= 4 that are locally 3-colorable (every subgraph on <= r vertices has chi <= 3) must contain odd cycles with >= f(r) diagonals. This remains one of the open parts of the problem.",
+    "problemStatement": "**Problem**: Let $G$ be a $K_4$-free graph with chromatic number 4. Must $G$ contain an odd cycle with at least two diagonals?\n\n**Answer**: YES (Voss 1982)\n\n**More General Question** (OPEN): Is there some $f(r) \\to \\infty$ such that every graph with $\\chi(G) \\geq 4$, in which every subgraph on $\\leq r$ vertices has $\\chi \\leq 3$, contains an odd cycle with at least $f(r)$ diagonals?",
+    "proofStrategy": "The formalization defines cycles as vertex lists with adjacency proofs, diagonals as non-consecutive edges, and the standard graph predicates (K4-free, chromatic number). Larson's and Voss's theorems are axiomatized. The pentagonal wheel is explicitly constructed as SimpleGraph (Fin 6) with verified symmetry and loop-freeness, and the impossibility of 3 diagonals is fully proved by contradiction. The general f(r) question is formalized using induced subgraphs for local colorability but left open.",
     "keyInsights": [
-      "**K₄-free doesn't mean low χ**: The pentagonal wheel is K₄-free but has χ = 4.",
-      "**Progressive strengthening**: 0 diagonals (trivial) → 1 (Larson) → 2 (Voss) → not 3 (counterexample).",
-      "**Bollobás-Erdős structure**: Absence of odd cycles with diagonals forces very specific graph structure.",
-      "**Local vs global coloring**: The f(r) question explores how local colorability constrains global structure.",
-      "**Pentagonal wheel is extremal**: It achieves exactly 2 diagonals, showing Voss's bound is tight."
+      "K4-free does not mean low chromatic number: the pentagonal wheel is K4-free but has chi = 4, and Mycielski's construction gives triangle-free graphs with arbitrarily high chi",
+      "Progressive strengthening: 0 diagonals (trivial) -> 1 diagonal (Larson 1979) -> 2 diagonals (Voss 1982) -> not 3 diagonals (pentagonal wheel counterexample)",
+      "The Bollobas-Erdos structure theorem shows that absence of odd cycles with diagonals in K4-free graphs forces extreme restrictions: bipartiteness, cut vertices, or low degree",
+      "The pentagonal wheel W5 = C5 + K1 is the extremal example achieving exactly 2 diagonals in every odd cycle, making Voss's bound tight",
+      "The general f(r) question explores the frontier between local and global colorability: how does the local structure (small subgraphs 3-colorable) constrain global cycle structure?",
+      "Three verified theorems (voss_implies_larson, three_diagonals_not_guaranteed, erdos_1091_summary) demonstrate non-trivial mathematical reasoning in Lean"
     ]
   },
   "sections": [
     {
+      "id": "docstring",
+      "title": "Module Docstring",
+      "startLine": 1,
+      "endLine": 18,
+      "summary": "Problem statement, answer (YES for 2 diagonals), history (Larson 1979, Voss 1982), and general open question about f(r)."
+    },
+    {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "summary": "Cycle, isOdd, isDiagonal, diagonalCount, IsK4Free, chromaticNumber",
+      "title": "Part 1: Basic Definitions",
       "startLine": 27,
-      "endLine": 68
+      "endLine": 68,
+      "summary": "Cycle structure (vertex list with adjacency), isOdd, isDiagonal (non-consecutive edge), diagonalCount (unordered pairs), IsK4Free (no 4-clique), chromaticNumber (min colors)."
     },
     {
       "id": "larson-theorem",
-      "title": "Larson's Theorem (1979)",
-      "summary": "larson_one_diagonal, BollobasErdosAlternative, bollobas_erdos_conjecture",
+      "title": "Part 2: Larson's Theorem (1979)",
       "startLine": 70,
-      "endLine": 94
+      "endLine": 94,
+      "summary": "larson_one_diagonal (axiom): K4-free, chi >= 4 implies odd cycle with >= 1 diagonal. BollobasErdosAlternative structure and bollobas_erdos_conjecture (axiom)."
     },
     {
       "id": "voss-theorem",
-      "title": "Voss's Theorem (1982)",
-      "summary": "voss_two_diagonals, voss_implies_larson",
+      "title": "Part 3: Voss's Theorem (1982)",
       "startLine": 96,
-      "endLine": 111
+      "endLine": 111,
+      "summary": "voss_two_diagonals (axiom): K4-free, chi >= 4 implies odd cycle with >= 2 diagonals. voss_implies_larson (verified corollary)."
     },
     {
       "id": "counterexample",
-      "title": "Counterexample for Three Diagonals",
-      "summary": "PentagonalWheel construction, three_diagonals_not_guaranteed",
+      "title": "Part 4: Pentagonal Wheel Counterexample",
       "startLine": 113,
-      "endLine": 157
+      "endLine": 157,
+      "summary": "PentagonalWheel definition as SimpleGraph (Fin 6) with proved symmetry/loop-freeness. Axioms for K4-free, chi=4, max 2 diagonals. Verified three_diagonals_not_guaranteed by contradiction."
     },
     {
       "id": "general-question",
-      "title": "The General Question (OPEN)",
-      "summary": "IsLocallyColorable, GeneralQuestion",
+      "title": "Part 5: General Question (OPEN)",
       "startLine": 159,
-      "endLine": 175
+      "endLine": 175,
+      "summary": "IsLocallyColorable (induced subgraph coloring) and GeneralQuestion (existence of f(r) -> infinity). The main unsolved part of Problem #1091."
     },
     {
       "id": "related-results",
-      "title": "Related Results",
-      "summary": "K4_free_high_chi_possible, mycielski_construction",
+      "title": "Part 6: Related Results",
       "startLine": 177,
-      "endLine": 189
+      "endLine": 189,
+      "summary": "K4_free_high_chi_possible (verified via PentagonalWheel), mycielski_construction (axiom: triangle-free graphs with arbitrary chi)."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_1091_summary combining Voss + counterexample",
+      "title": "Part 7: Summary",
       "startLine": 191,
-      "endLine": 209
+      "endLine": 209,
+      "summary": "erdos_1091_summary (verified): combines Voss (>= 2 guaranteed) and pentagonal wheel (>= 3 not guaranteed) into a single theorem."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1091 asks whether K₄-free graphs with χ = 4 must contain odd cycles with multiple diagonals. The first question (two diagonals) was solved affirmatively by Voss (1982), building on Larson's 1979 result for one diagonal. The pentagonal wheel shows that three diagonals cannot be guaranteed. The general f(r) question remains OPEN.",
-    "implications": "This problem reveals deep connections between clique-freeness, chromatic number, and cycle structure. The pentagonal wheel serves as an extremal example showing the tightness of Voss's bound. The open general question connects local colorability properties to global cycle structure.",
+    "summary": "Erdos Problem #1091 is partially solved. The specific question (two diagonals in K4-free chi=4 graphs) was answered YES by Voss (1982), building on Larson (1979). The pentagonal wheel shows that three diagonals cannot be guaranteed, making Voss's bound tight. The general f(r) question remains OPEN. The formalization includes 3 fully verified theorems and the extremal pentagonal wheel construction.",
+    "implications": "The problem reveals deep connections between clique-freeness, chromatic number, and cycle structure in graphs. The pentagonal wheel serves as an extremal example showing the tightness of Voss's bound. The open general question connects local colorability to global cycle structure, a frontier area in structural graph theory.",
     "openQuestions": [
-      "Is there f(r) → ∞ for the general locally 3-colorable case?",
-      "What other structural properties force odd cycles with diagonals?",
-      "Can the pentagonal wheel characterization be generalized?",
-      "What is the relationship to Mycielski-type constructions?"
+      "Is there f(r) -> infinity for the general locally 3-colorable case?",
+      "Can the pentagonal wheel characterization be generalized to other wheel-like constructions?",
+      "What is the relationship between diagonal count in odd cycles and the Mycielski hierarchy?",
+      "What structural properties beyond K4-freeness guarantee more diagonals in odd cycles?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "proofId": "erdos-984",
+      "relationship": "Both are Erdos problems in combinatorics involving structural constraints on graphs/sets with extremal colorings or partitions"
+    },
+    {
+      "proofId": "erdos-723",
+      "relationship": "Both involve combinatorial structures (graphs/projective planes) where counting arguments and explicit constructions determine extremal behavior"
+    },
+    {
+      "proofId": "erdos-107",
+      "relationship": "Both are Erdos problems with a clear progression of bounds (trivial -> intermediate -> tight), with explicit extremal constructions showing tightness"
+    }
+  ]
 }
