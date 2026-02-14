@@ -5,8 +5,11 @@
     "range": { "startLine": 31, "endLine": 33 },
     "type": "definition",
     "title": "Tree Definition",
-    "content": "A **tree** is a connected acyclic graph.\n\nEquivalently: a connected graph with n vertices and n-1 edges, or a graph where any two vertices have a unique path between them.",
-    "significance": "supporting"
+    "content": "A **tree** is a connected acyclic graph. Equivalently: a connected graph with $n$ vertices and $n-1$ edges, or a graph where any two vertices have a unique path between them. In Lean, `IsTree G` is defined as `G.Connected ∧ G.IsAcyclic`.",
+    "mathContext": "IsTree G ↔ G.Connected ∧ G.IsAcyclic",
+    "significance": "supporting",
+    "prerequisites": ["SimpleGraph.Connected", "SimpleGraph.IsAcyclic"],
+    "relatedConcepts": ["forests", "spanning trees", "graph connectivity"]
   },
   {
     "id": "ann-e549-bipartite-with",
@@ -14,8 +17,11 @@
     "range": { "startLine": 35, "endLine": 39 },
     "type": "definition",
     "title": "Bipartite with Parts",
-    "content": "A graph is **bipartite with parts A and B** if:\n- A and B are disjoint\n- A ∪ B = all vertices\n- Every edge goes between A and B\n\nAll trees are bipartite!",
-    "significance": "supporting"
+    "content": "A graph is **bipartite with parts $A$ and $B$** if $A \\cap B = \\emptyset$, $A \\cup B$ is all vertices, and every edge goes between $A$ and $B$. All trees are bipartite — the two-coloring given by BFS distance parity always works.",
+    "mathContext": "IsBipartiteWith G A B ↔ A ∩ B = ∅ ∧ A ∪ B = Set.univ ∧ ∀ u v, G.Adj u v → (u ∈ A ∧ v ∈ B) ∨ (u ∈ B ∧ v ∈ A)",
+    "significance": "supporting",
+    "prerequisites": ["Set.univ", "Set.inter", "SimpleGraph.Adj"],
+    "relatedConcepts": ["bipartite graphs", "graph coloring", "König's theorem"]
   },
   {
     "id": "ann-e549-bipartite-tree",
@@ -23,8 +29,11 @@
     "range": { "startLine": 41, "endLine": 54 },
     "type": "definition",
     "title": "BipartiteTree Structure",
-    "content": "A `BipartiteTree k` is a tree with a specific bipartition:\n- Part A has exactly k vertices\n- Part B has exactly 2k vertices\n- Total: 3k vertices\n\nThis is the class of trees Erdős conjectured has R(T) = 4k - 1.",
-    "significance": "critical"
+    "content": "A `BipartiteTree k` is a Lean structure packaging a tree with a specific bipartition: part $A$ has exactly $k$ vertices, part $B$ has exactly $2k$ vertices, for a total of $3k$ vertices. The structure includes the graph, tree proof, partition sets, disjointness, coverage, cardinalities, and the bipartiteness witness. This is the class of trees for which Erdős conjectured $R(T) = 4k - 1$.",
+    "mathContext": "structure BipartiteTree (k : ℕ) where\n  graph : SimpleGraph V\n  isTree : IsTree graph\n  partA.card = k, partB.card = 2*k\n  Disjoint partA partB, partA ∪ partB = Finset.univ",
+    "significance": "critical",
+    "prerequisites": ["IsTree", "IsBipartiteWith", "Finset.card", "Fintype"],
+    "relatedConcepts": ["bipartite graphs", "tree parameters", "Erdős-Ko-Rado for trees"]
   },
   {
     "id": "ann-e549-edge-coloring",
@@ -32,8 +41,11 @@
     "range": { "startLine": 58, "endLine": 59 },
     "type": "definition",
     "title": "Edge 2-Coloring",
-    "content": "An **edge 2-coloring** assigns true or false (red or blue) to each edge.\n\nWe use `Sym2 V → Bool` where Sym2 V represents unordered pairs.",
-    "significance": "supporting"
+    "content": "An **edge 2-coloring** assigns true or false (red or blue) to each edge. Formalized as `Sym2 V → Bool`, where `Sym2 V` represents unordered pairs, naturally modeling undirected edges of a simple graph.",
+    "mathContext": "EdgeTwoColoring V := Sym2 V → Bool",
+    "significance": "supporting",
+    "prerequisites": ["Sym2", "Bool"],
+    "relatedConcepts": ["graph coloring", "Ramsey theory", "dichromatic number"]
   },
   {
     "id": "ann-e549-mono-copy",
@@ -41,18 +53,23 @@
     "range": { "startLine": 61, "endLine": 65 },
     "type": "definition",
     "title": "Monochromatic Copy",
-    "content": "A graph H appears **monochromatically** in color c if there's an injective map f: V(H) → V(G) such that:\n- f preserves edges: H.Adj u v → G.Adj (f u) (f v)\n- All images have color c\n\nThis is the structure Ramsey numbers guarantee.",
-    "significance": "critical"
+    "content": "A graph $H$ appears **monochromatically** in color $c$ under coloring $c$ of $G$ if there is an injective map $f: V(H) \\to V(G)$ that preserves edges ($H.\\text{Adj}\\ u\\ v \\Rightarrow G.\\text{Adj}\\ (f\\ u)\\ (f\\ v)$) and all image edges have color $c$. This is the combinatorial structure whose guaranteed existence defines Ramsey numbers.",
+    "mathContext": "HasMonochromaticCopy G H c color ↔ ∃ f : W → V, Injective f ∧ ∀ u v, H.Adj u v → G.Adj (f u) (f v) ∧ c ⟦(f u, f v)⟧ = color",
+    "significance": "critical",
+    "prerequisites": ["Function.Injective", "SimpleGraph.Adj", "Sym2"],
+    "relatedConcepts": ["graph homomorphism", "graph embedding", "Ramsey property"]
   },
   {
     "id": "ann-e549-ramsey-num",
     "proofId": "erdos-549",
-    "range": { "startLine": 67, "endLine": 74 },
+    "range": { "startLine": 67, "endLine": 83 },
     "type": "definition",
     "title": "Ramsey Number R(H)",
-    "content": "**R(H)** is the minimum n such that every 2-coloring of K_n contains a monochromatic copy of H.\n\nFor any graph H, R(H) exists and is finite (Ramsey's theorem).",
+    "content": "$R(H)$ is the minimum $n$ such that every 2-coloring of $K_n$ contains a monochromatic copy of $H$. Formalized via `Nat.find` applied to the existence proof (sorry'd). The alternative predicate `IsRamseyNumber` explicitly requires both the upper bound (every coloring of $K_n$ has a mono copy) and the lower bound (there exists a coloring of $K_{n-1}$ avoiding $H$ in both colors).",
+    "mathContext": "RamseyNumber H = Nat.find (∃ n, ∀ c : EdgeTwoColoring (Fin n), HasMonochromaticCopy (completeGraph (Fin n)) H c true ∨ ...false)\nIsRamseyNumber H n ↔ (∀ colorings of K_n have mono copy) ∧ (∃ coloring of K_{n-1} avoiding H)",
     "significance": "critical",
-    "relatedConcepts": ["Ramsey theory", "Graph embedding"]
+    "prerequisites": ["Nat.find", "completeGraph", "HasMonochromaticCopy"],
+    "relatedConcepts": ["Ramsey's theorem", "diagonal Ramsey numbers", "graph Ramsey theory"]
   },
   {
     "id": "ann-e549-star",
@@ -60,144 +77,106 @@
     "range": { "startLine": 87, "endLine": 91 },
     "type": "definition",
     "title": "Star Graph S_n",
-    "content": "The **star graph S_n** has:\n- One center vertex (index 0)\n- n leaf vertices (indices 1..n)\n- Edges only between center and leaves\n\nR(S_n) = 2n - 1 (known result).",
-    "significance": "key"
+    "content": "The **star graph $S_n$** has one center vertex (index 0) and $n$ leaf vertices (indices 1..n), with edges only between center and leaves. The adjacency is `(u = 0 ∧ v ≠ 0) ∨ (v = 0 ∧ u ≠ 0)`. The Ramsey number $R(S_n) = 2n - 1$ is a classical result.",
+    "mathContext": "starGraph n : SimpleGraph (Fin (n+1))\nstarGraph.Adj u v ↔ (u = 0 ∧ v ≠ 0) ∨ (v = 0 ∧ u ≠ 0)\nR(S_n) = 2n - 1",
+    "significance": "key",
+    "prerequisites": ["SimpleGraph", "Fin"],
+    "relatedConcepts": ["degree sequence", "caterpillar graphs", "star Ramsey numbers"]
   },
   {
     "id": "ann-e549-double-star",
     "proofId": "erdos-549",
-    "range": { "startLine": 93, "endLine": 104 },
+    "range": { "startLine": 93, "endLine": 108 },
     "type": "definition",
-    "title": "Double Star",
-    "content": "The **double star** for parameter k:\n- First star S_k: center at 0, leaves at 1..k\n- Second star S_{2k}: center at k+1, leaves at k+2..3k+1\n- One edge connecting the two centers\n\nThis tree has 3k + 2 vertices and is the counterexample!",
-    "significance": "critical"
+    "title": "Double Star (Counterexample)",
+    "content": "The **double star** for parameter $k$: first star $S_k$ has center 0 with leaves $1, \\ldots, k$; second star $S_{2k}$ has center $k+1$ with leaves $k+2, \\ldots, 3k+1$; an edge connects the two centers. This tree has $3k + 2$ vertices and is bipartite with parts of size roughly $k$ and $2k$. It is the key counterexample — the high-degree vertices (centers with degrees $k+1$ and $2k+1$) enable denser Ramsey colorings, pushing $R(T)$ above $4k - 1$.",
+    "mathContext": "doubleStar k : SimpleGraph (Fin (3*k + 2))\nCenter 0 adjacent to 1..k and k+1; center k+1 adjacent to 0 and k+2..3k+1\ndoubleStar_vertices : Fintype.card (Fin (3*k+2)) = 3*k+2",
+    "significance": "critical",
+    "prerequisites": ["starGraph", "SimpleGraph", "Fin"],
+    "relatedConcepts": ["caterpillar graphs", "spider graphs", "extremal trees"]
   },
   {
     "id": "ann-e549-conjecture",
     "proofId": "erdos-549",
-    "range": { "startLine": 112, "endLine": 115 },
+    "range": { "startLine": 110, "endLine": 115 },
     "type": "definition",
     "title": "Erdős's Conjecture",
-    "content": "**The Original Conjecture:**\n\nFor every k ≥ 1 and every bipartite (k, 2k) tree T:\n\nR(T) = 4k - 1\n\nThis would give an exact formula for a large class of trees.",
-    "significance": "critical"
+    "content": "**erdosConjecture549**: For every $k \\geq 1$ and every bipartite $(k, 2k)$ tree $T$, $R(T) = 4k - 1$. This would give an exact formula for all trees in this bipartition class, extending the classical result $R(P_n) = n$ and refining Chvátal-Harary's bound $R(T) \\leq 2n - 2$.",
+    "mathContext": "erdosConjecture549 ↔ ∀ k ≥ 1, ∀ T : BipartiteTree k, RamseyNumber T.graph = 4*k - 1",
+    "significance": "critical",
+    "prerequisites": ["BipartiteTree", "RamseyNumber"],
+    "relatedConcepts": ["Ramsey exact values", "tree Ramsey conjectures", "Burr-Erdős conjecture"]
   },
   {
     "id": "ann-e549-counterexample",
     "proofId": "erdos-549",
-    "range": { "startLine": 119, "endLine": 122 },
+    "range": { "startLine": 117, "endLine": 135 },
     "type": "theorem",
     "title": "Norin-Sun-Zhao Counterexample",
-    "content": "**The Conjecture is FALSE!**\n\nNorin, Sun, and Zhao found a bipartite (k, 2k) tree T with R(T) > 4k - 1.\n\nThe counterexample is the double star.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e549-lower-bound-counter",
-    "proofId": "erdos-549",
-    "range": { "startLine": 124, "endLine": 127 },
-    "type": "theorem",
-    "title": "Double Star Lower Bound",
-    "content": "**Norin-Sun-Zhao Bound:**\n\nR(double star) ≥ (4.2 - o(1))k\n\nSince 4.2k > 4k - 1 for large k, this disproves the conjecture.",
-    "significance": "critical"
-  },
-  {
-    "id": "ann-e549-constant",
-    "proofId": "erdos-549",
-    "range": { "startLine": 129, "endLine": 135 },
-    "type": "definition",
-    "title": "The Constant 4.2",
-    "content": "The Norin-Sun-Zhao constant is approximately **4.2**.\n\nFor any ε > 0 and large enough k:\n\nR(double star) ≥ (4.2 - ε) · k",
-    "significance": "key"
+    "content": "**norin_sun_zhao_counterexample** (sorry): There exists $k \\geq 1$ and a bipartite $(k, 2k)$ tree $T$ with $R(T) > 4k - 1$. **double_star_lower_bound** (sorry): There exists $c > 4$ such that $R(\\text{doubleStar}(k)) \\geq c \\cdot k$ for all $k \\geq 1$. **double_star_asymptotic** (sorry): The constant is approximately $4.2$ — for any $\\varepsilon > 0$ and large enough $k$, $R(\\text{doubleStar}(k)) \\geq (4.2 - \\varepsilon) k$. Since $4.2k > 4k - 1$ for large $k$, this disproves the conjecture.",
+    "mathContext": "norin_sun_zhao_counterexample : ∃ k ≥ 1, ∃ T : BipartiteTree k, RamseyNumber T.graph > 4*k - 1\ndouble_star_lower_bound : ∃ c > 4, ∀ k ≥ 1, RamseyNumber (doubleStar k) ≥ c * k\nnorinSunZhaoConstant := 4.2",
+    "significance": "critical",
+    "prerequisites": ["doubleStar", "RamseyNumber", "BipartiteTree"],
+    "relatedConcepts": ["Ramsey lower bounds", "probabilistic method", "explicit constructions"]
   },
   {
     "id": "ann-e549-flag-algebra",
     "proofId": "erdos-549",
-    "range": { "startLine": 139, "endLine": 145 },
+    "range": { "startLine": 137, "endLine": 149 },
     "type": "theorem",
     "title": "Flag Algebra Upper Bound",
-    "content": "**Flag Algebra Method:**\n\nR(T) ≤ (4.21526 + o(1))k for all bipartite (k, 2k) trees.\n\nFlag algebras use semidefinite programming to prove graph limits. The bound 4.21526 is computed, not proved by hand.",
+    "content": "**flag_algebra_upper_bound** (sorry): For any $\\varepsilon > 0$ and large enough $k$, every bipartite $(k, 2k)$ tree $T$ satisfies $R(T) \\leq (4.21526 + \\varepsilon) k$. Flag algebras use semidefinite programming over graph homomorphism densities to obtain tight bounds. **bounds_gap** (proved by `native_decide`): $4.21526 - 4.2 < 0.02$, so the true constant for the double star is determined to within $0.016$.",
+    "mathContext": "flagAlgebraConstant := 4.21526\nflag_algebra_upper_bound : ∀ ε > 0, ∃ K, ∀ k ≥ K, ∀ T : BipartiteTree k, RamseyNumber T.graph ≤ (4.21526 + ε) * k\nbounds_gap : 4.21526 - 4.2 < 0.02 (proved)",
     "significance": "critical",
-    "relatedConcepts": ["Semidefinite programming", "Graph limits"]
+    "prerequisites": ["BipartiteTree", "RamseyNumber", "flagAlgebraConstant"],
+    "relatedConcepts": ["flag algebras", "semidefinite programming", "graph limits", "Razborov's method"]
   },
   {
-    "id": "ann-e549-gap",
+    "id": "ann-e549-special-cases",
     "proofId": "erdos-549",
-    "range": { "startLine": 147, "endLine": 149 },
+    "range": { "startLine": 151, "endLine": 181 },
     "type": "theorem",
-    "title": "Bounds Gap",
-    "content": "**Tight Bounds:**\n\n4.21526 - 4.2 < 0.02\n\nThe true constant is known to within 0.02!",
-    "significance": "key"
+    "title": "Special Cases Where Conjecture Holds",
+    "content": "**pathGraph** and **broomGraph**: Explicit constructions of paths ($P_n$: linear chain) and brooms (path + star at one end). **bounded_degree_conjecture** (sorry): For any fixed maximum degree $\\Delta$, trees with max degree $\\leq \\Delta$ satisfy $R(T) = 4k - 1$ for large enough $k$. **broom_ramsey** (sorry): Brooms satisfy the original conjecture. The key insight: the counterexample requires unbounded degree (the star centers have degrees $k$ and $2k$), so degree-bounded trees remain well-behaved.",
+    "mathContext": "bounded_degree_conjecture : ∀ Δ, ∃ K, ∀ k ≥ K, ∀ T with max degree ≤ Δ, RamseyNumber T.graph = 4*k - 1\nbroom_ramsey : ∀ a b ≥ 1, ∃ k, RamseyNumber (broomGraph a b) = 4*k - 1",
+    "significance": "key",
+    "prerequisites": ["BipartiteTree", "RamseyNumber", "SimpleGraph.degree"],
+    "relatedConcepts": ["bounded degree graphs", "Szemerédi regularity lemma", "tree decomposition"]
   },
   {
-    "id": "ann-e549-path",
+    "id": "ann-e549-lower-bound",
     "proofId": "erdos-549",
-    "range": { "startLine": 153, "endLine": 157 },
-    "type": "definition",
-    "title": "Path Graph",
-    "content": "The **path graph P_n** is the simplest tree: n vertices in a line.\n\nP_n is bipartite with parts of size ⌈n/2⌉ and ⌊n/2⌋.\n\nR(P_n) = n for n ≥ 2.",
-    "significance": "supporting"
-  },
-  {
-    "id": "ann-e549-broom",
-    "proofId": "erdos-549",
-    "range": { "startLine": 159, "endLine": 169 },
-    "type": "definition",
-    "title": "Broom Graph",
-    "content": "A **broom** is a path with a star attached at one end:\n- Path of length pathLen\n- Star with starSize leaves at the end\n\nBrooms are 'nice' trees that still satisfy R(T) = 4k - 1.",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e549-bounded-deg",
-    "proofId": "erdos-549",
-    "range": { "startLine": 171, "endLine": 176 },
-    "type": "theorem",
-    "title": "Bounded Degree Case",
-    "content": "**Special Case: Bounded Degree**\n\nFor any fixed maximum degree Δ, trees with max degree ≤ Δ satisfy R(T) = 4k - 1.\n\nThe counterexample needs unbounded degree (star centers have degree k and 2k).",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e549-general-lower",
-    "proofId": "erdos-549",
-    "range": { "startLine": 185, "endLine": 188 },
+    "range": { "startLine": 183, "endLine": 195 },
     "type": "theorem",
     "title": "General Lower Bound",
-    "content": "**Lower Bound Always Holds:**\n\nR(T) ≥ 4k - 1 for ALL bipartite (k, 2k) trees.\n\nThe conjecture fails only as an upper bound. No tree can have R(T) < 4k - 1.",
-    "significance": "key"
+    "content": "**general_lower_bound** (sorry): $R(T) \\geq 4k - 1$ for ALL bipartite $(k, 2k)$ trees. The conjecture fails only as an upper bound. **lower_bound_construction** (sorry): The explicit construction uses $K_{2k-1, 2k-1}$: color edges within each part red, edges between parts blue. The red graph is $K_{2k-1}$ (too small for a tree needing $2k$ vertices in one color class) and the blue graph is $K_{2k-1,2k-1}$ (bipartite, so any tree embedded in one color needs both parts, but $2k-1 < 2k$).",
+    "mathContext": "general_lower_bound : ∀ k ≥ 1, ∀ T : BipartiteTree k, RamseyNumber T.graph ≥ 4*k - 1\nlower_bound_construction : ∀ k ≥ 1, ∀ T, ∃ c : EdgeTwoColoring (Fin (4*k-2)), avoids T in both colors",
+    "significance": "key",
+    "prerequisites": ["BipartiteTree", "RamseyNumber", "completeGraph"],
+    "relatedConcepts": ["Ramsey lower bounds", "bipartite Ramsey", "coloring constructions"]
   },
   {
-    "id": "ann-e549-lower-construction",
+    "id": "ann-e549-related",
     "proofId": "erdos-549",
-    "range": { "startLine": 190, "endLine": 195 },
+    "range": { "startLine": 197, "endLine": 224 },
     "type": "theorem",
-    "title": "Lower Bound Construction",
-    "content": "**Construction for R(T) ≥ 4k - 1:**\n\n2-color K_{4k-2} using the bipartite structure K_{2k-1, 2k-1}:\n- Red edges within each part\n- Blue edges between parts\n\nNeither color contains T (too few vertices in each 'side').",
-    "significance": "key"
-  },
-  {
-    "id": "ann-e549-chvatal",
-    "proofId": "erdos-549",
-    "range": { "startLine": 199, "endLine": 202 },
-    "type": "theorem",
-    "title": "Chvátal-Harary Bound",
-    "content": "**General Tree Bound (Chvátal-Harary):**\n\nFor any tree T on n vertices: R(T) ≤ 2n - 2.\n\nThis is a universal upper bound for all trees.",
-    "significance": "supporting",
-    "relatedConcepts": ["Extremal graph theory"]
-  },
-  {
-    "id": "ann-e549-burr-erdos",
-    "proofId": "erdos-549",
-    "range": { "startLine": 216, "endLine": 224 },
-    "type": "definition",
-    "title": "Burr-Erdős Formula",
-    "content": "**Burr-Erdős Conjecture:**\n\nFor 'nice' graphs H with chromatic number χ:\n\nR(H) = (χ - 1)(|H| - 1) + 1\n\nFor trees (χ = 2), this gives R(T) = |T|, which is too small. The 4k - 1 formula is a refinement for the (k, 2k) case.",
-    "significance": "supporting"
+    "title": "Related Classical Results",
+    "content": "**chvatal_harary** (sorry): $R(T) \\leq 2n - 2$ for any tree on $n$ vertices — the universal upper bound. **star_ramsey** (sorry): $R(S_n) = 2n - 1$. **path_ramsey** (sorry): $R(P_n) = n$ for $n \\geq 2$. **tree_burr_erdos** (proved): The Burr-Erdős formula $(\\chi - 1)(|H| - 1) + 1$ specialized to trees ($\\chi = 2$) gives $2|T| - 1$. These classical results contextualize problem #549: Erdős sought a refinement of these bounds for the specific $(k, 2k)$ bipartition class.",
+    "mathContext": "chvatal_harary : RamseyNumber T ≤ 2 * |V| - 2\nstar_ramsey : RamseyNumber (starGraph n) = 2*n - 1\npath_ramsey : RamseyNumber (pathGraph n) = n\ntree_burr_erdos : burrErdosFormula T 2 = 2*|V| - 1 (proved)",
+    "significance": "key",
+    "prerequisites": ["RamseyNumber", "IsTree", "starGraph", "pathGraph"],
+    "relatedConcepts": ["Chvátal-Harary theorem", "Burr-Erdős conjecture", "graph Ramsey numbers"]
   },
   {
     "id": "ann-e549-main",
     "proofId": "erdos-549",
-    "range": { "startLine": 228, "endLine": 238 },
+    "range": { "startLine": 226, "endLine": 249 },
     "type": "theorem",
-    "title": "Main Result",
-    "content": "**Erdős Problem #549: SOLVED (Disproved)**\n\nThe conjecture R(T) = 4k - 1 for bipartite (k, 2k) trees is FALSE.\n\nCounterexample: The double star has R ≥ 4.2k.\n\nBest bounds: 4.2k ≤ R(double star) ≤ 4.21526k.",
-    "significance": "critical"
+    "title": "Main Result: Conjecture Disproved",
+    "content": "**erdos_549** (sorry): $\\neg\\text{erdosConjecture549}$ — the conjecture is false. **erdos_549_counterexample** (sorry): For sufficiently large $k_0$, every $k \\geq k_0$ has a bipartite $(k, 2k)$ tree $T$ with $R(T) \\neq 4k - 1$. The proof strategy is to use the double star counterexample from Norin-Sun-Zhao: since $R(\\text{doubleStar}(k)) \\geq 4.2k > 4k - 1$ for large $k$, the conjecture fails.",
+    "mathContext": "erdos_549 : ¬erdosConjecture549\nerdos_549_counterexample : ∃ k₀, ∀ k ≥ k₀, ∃ T : BipartiteTree k, RamseyNumber T.graph ≠ 4*k - 1",
+    "significance": "critical",
+    "prerequisites": ["erdosConjecture549", "norin_sun_zhao_counterexample", "double_star_lower_bound"],
+    "relatedConcepts": ["disproved conjectures", "Ramsey exact values", "asymptotic Ramsey theory"]
   }
 ]
