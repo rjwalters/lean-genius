@@ -1,0 +1,108 @@
+{
+  "slug": "cayley-hamilton-oq-02",
+  "title": "Computing Matrix Functions via Cayley-Hamilton Reduction",
+  "phase": "COMPLETE",
+  "status": "complete",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For any polynomial p and matrix A over a commutative ring R: aeval A p = aeval A (p %ₘ A.charpoly), with deg(p %ₘ A.charpoly) < deg(A.charpoly) = n",
+    "plain": "Any polynomial function of an n×n matrix A can be reduced to a polynomial of degree at most n-1 in A, by computing the remainder modulo the characteristic polynomial.",
+    "whyMatters": [
+      "Foundation for efficient matrix power computation: reduce X^k modulo charpoly before evaluating",
+      "Key to computing matrix exponentials: exp(tA) lives in span{I, A, ..., A^(n-1)}",
+      "Enables ODE solvers for dx/dt = Ax via finite-dimensional matrix exponential computation",
+      "Establishes that evaluation factors through R[X]/(charpoly), a finite-dimensional algebra"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Polynomial reduction: aeval A p = aeval A (p %ₘ A.charpoly)",
+      "Degree bound: reduced polynomial has degree < deg(charpoly) = n",
+      "Power reduction: A^k = aeval A (X^k %ₘ A.charpoly)",
+      "Existence of reduced representative for any polynomial evaluation",
+      "Congruence: same remainder mod charpoly implies same matrix evaluation",
+      "Multiples of charpoly annihilate A",
+      "Annihilator ideal closed under addition and left multiplication",
+      "Partial sum reduction: finite power series reduce via charpoly",
+      "Partial sum degree bound: reduced partial sums have degree < n",
+      "Nilpotent characterization: charpoly = X^n implies A^n = 0",
+      "Higher nilpotent powers vanish: A^k = 0 for k >= n when nilpotent",
+      "Idempotent power: A^k = A for k > 0 when A^2 = A",
+      "Identity powers: I^k = I",
+      "Zero powers: 0^k = 0 for k > 0",
+      "Scalar power reduction: scalar matrices reduce via charpoly",
+      "2x2 power reduction as special case"
+    ],
+    "open": [],
+    "goal": "COMPLETE - all 19 theorems proved, zero sorries"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-13T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "All sorries closed. CayleyHamiltonOQ02.lean has 0 sorries and builds cleanly via Docker.",
+    "blockers": [],
+    "nextAction": "No further work needed.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: CayleyHamiltonOQ02.lean has zero sorries and builds cleanly. Proves the polynomial reduction theorem (the core result), degree bounds, power reduction, congruence theory, annihilator ideal structure, partial sum reduction for power series, and special cases for nilpotent, idempotent, identity, zero, and scalar matrices. Also includes 2x2 specialization.",
+    "builtItems": [
+      "proofs/Proofs/CayleyHamiltonOQ02.lean - 19 theorems, zero sorries",
+      "charpoly_annihilates: Cayley-Hamilton annihilation",
+      "aeval_eq_aeval_modByMonic: core polynomial reduction theorem",
+      "aeval_sub_mod_eq_zero: difference annihilation",
+      "degree_reduced_lt_charpoly, degree_reduced_lt_dim: degree bounds",
+      "power_eq_aeval_mod: matrix power reduction",
+      "aeval_reduced: existence of reduced representative",
+      "congruence: congruence modulo charpoly",
+      "charpoly_multiple_annihilates, annihilator_add, annihilator_mul_left: ideal structure",
+      "partial_sum_reduces, partial_sum_reduced_bound: power series reduction",
+      "nilpotent_from_charpoly, nilpotent_higher_powers_vanish: nilpotent theory",
+      "idempotent_power: idempotent matrices",
+      "identity_powers, zero_powers, scalar_power_reduction: special cases",
+      "power_2x2_reduction: 2x2 specialization"
+    ],
+    "insights": [
+      "The polynomial reduction theorem is the single most important corollary of Cayley-Hamilton for applications",
+      "All matrix function computations (exp, log, sqrt) reduce to finite-dimensional problems via this reduction",
+      "The quotient ring R[X]/(charpoly) is the natural algebraic setting for matrix polynomial evaluation",
+      "Partial sum reduction connects formal power series to finite matrix computations",
+      "For nilpotent matrices, the exponential series terminates exactly (no approximation needed)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Direct proof via polynomial division and Cayley-Hamilton annihilation",
+      "status": "complete",
+      "description": "Uses Polynomial.modByMonic_add_div for the division algorithm, Matrix.aeval_self_charpoly for Cayley-Hamilton, and derives all results from these two foundations. Clean proofs averaging 3-5 lines each."
+    }
+  ],
+  "tags": ["seeker-selected", "linear-algebra", "matrix-theory", "cayley-hamilton", "polynomial-reduction", "extension", "complete"],
+  "relatedProofs": ["cayley-hamilton", "cayley-hamilton-reduction", "cayley-hamilton-minpoly", "CayleyHamiltonOQ01"],
+  "leanFile": "CayleyHamiltonOQ02.lean",
+  "references": {
+    "papers": [
+      "Cayley (1858): Original Cayley-Hamilton theorem",
+      "Hamilton (1853): Quaternion algebra and matrix relations",
+      "Higham (2008): Functions of Matrices, Ch. 1 (matrix polynomial reduction)"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.Algebra.Polynomial.Div"
+    ]
+  },
+  "started": "2026-02-13T00:00:00.000Z",
+  "lastUpdate": "2026-02-13T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 8
+}
