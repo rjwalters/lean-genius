@@ -62,79 +62,98 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #222** concerns the gaps between consecutive integers that can be expressed as sums of two squares. This connects classical number theory (Fermat's theorem) with modern analytic techniques.\n\n**Historical Development:**\n- **Fermat (1640):** Characterized which integers are sums of two squares\n- **Landau (1908):** Counted sums of two squares up to x as cx/√(log x)\n- **Bambah-Chowla (1947):** Proved the upper bound gap ≪ n^(1/4)\n- **Erdős (1951):** Showed infinitely many gaps are Ω(log n / √(log log n))\n- **Richards (1982):** Improved to limsup(gap/log n) ≥ 1/4\n- **DEKKM (2022):** Best current constant ≈ 0.868\n\n**Key Insight:** The 1/4 exponent in the upper bound reflects the 2-dimensional nature of the representation problem (a² + b²).",
-    "problemStatement": "**Problem Statement**\n\nLet $n_1 < n_2 < \\cdots$ be the sequence of integers which are sums of two squares:\n$$0, 1, 2, 4, 5, 8, 9, 10, 13, 16, 17, 18, 20, 25, \\ldots$$\n\n**Question:** Find good upper and lower bounds for the consecutive gaps $n_{k+1} - n_k$.\n\n**Results:**\n- **Lower bound:** For infinitely many $k$,\n$$n_{k+1} - n_k \\gg \\frac{\\log n_k}{\\sqrt{\\log\\log n_k}}$$\nwith $\\limsup \\frac{n_{k+1} - n_k}{\\log n_k} \\geq 0.868$\n\n- **Upper bound:** For all $k$,\n$$n_{k+1} - n_k \\ll n_k^{1/4}$$",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Define IsSumTwoSquares, the sequence {n_k}, and gap function.\n\n2. **Fermat's Criterion:** An integer n > 0 is a sum of two squares iff every prime p ≡ 3 (mod 4) divides n to an even power.\n\n3. **Density Result:** Landau's theorem gives the counting function ~ cx/√(log x).\n\n4. **Lower Bounds:** Axiomatize Erdős (1951), Richards (1982), and DEKKM (2022) results.\n\n5. **Upper Bound:** Axiomatize Bambah-Chowla (1947) result.\n\n6. **Connection to Primes:** Explain why gaps occur where primes ≡ 3 (mod 4) cluster.",
+    "historicalContext": "Erdős Problem #222 studies gaps between consecutive integers representable as sums of two squares. The question connects Fermat's classical characterization (1640) — an integer $n > 0$ is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ divides $n$ to an even power — with modern analytic number theory.\n\nEdmund Landau (1908) determined the density: the count of sums of two squares up to $x$ is asymptotic to $cx/\\sqrt{\\log x}$, where $c \\approx 0.7642$ is the Landau-Ramanujan constant. This implies the average gap is $\\sim \\sqrt{\\log n}$, but Erdős showed in 1951 that the maximum gaps are much larger.\n\nThe key results on gaps span seven decades. Bambah and Chowla (1947) proved the upper bound: every interval $[n, n + Cn^{1/4}]$ contains a sum of two squares, using the geometry of lattice points on circles. For the lower bound, Erdős (1951) used sieve methods to show that infinitely many gaps are $\\Omega(\\log n / \\sqrt{\\log \\log n})$. Richards (1982) improved this to $\\limsup(\\text{gap}/\\log n) \\ge 1/4$. Most recently, Dietmann, Elsholtz, Kalmynin, Konyagin, and Maynard (2022) pushed the constant to $\\ge 0.868$, using Maynard's breakthrough sieve techniques that also revolutionized prime gap research.\n\nThe conjectured truth is $\\limsup(\\text{gap}/\\log n) = 1$. Whether the upper bound exponent $1/4$ can be improved remains open.",
+    "problemStatement": "Let $n_1 < n_2 < \\cdots$ be the sequence of integers that are sums of two squares: $0, 1, 2, 4, 5, 8, 9, 10, 13, 16, \\ldots$ Find good upper and lower bounds for the consecutive gaps $n_{k+1} - n_k$.",
+    "proofStrategy": "The formalization defines `IsSumTwoSquares` as a representability predicate ($n = a^2 + b^2$ for integers $a, b$), then axiomatizes the enumeration function `nthSumTwoSquares` with strict monotonicity. The gap function is defined as the consecutive difference. Fermat's criterion is stated as an axiom connecting representability to $p$-adic valuations of primes $\\equiv 3 \\pmod{4}$. Landau's density theorem is formalized using `Tendsto` with the `atTop` filter. The lower bounds (Erdős 1951, Richards 1982, DEKKM 2022) use `∀ᶠ` (eventually) and explicit subsequences. The summary theorem proves the conjunction of bounds by extracting witnesses from the axiomatized results.",
     "keyInsights": [
-      "**Fermat's Two-Square Theorem:** n is a sum of two squares iff every prime p ≡ 3 (mod 4) appears to an even power in n's factorization.",
-      "**Density:** Sums of two squares have density ~ 1/√(log n), sparser than primes but denser than perfect squares.",
-      "**Upper Bound n^(1/4):** Comes from the geometric fact that lattice points on circles are well-distributed.",
-      "**Lower Bound:** Large gaps occur in intervals where all integers have odd powers of primes ≡ 3 (mod 4).",
-      "**Limsup Conjecture:** The true constant in limsup(gap/log n) is conjectured to be 1.",
-      "**Average vs Maximum:** Average gap is √(log n), but maximum gaps are much larger at Ω(log n).",
-      "**OEIS Sequences:** Gaps are A256435, sums of two squares are A001481."
+      "**The Fermat-Euler criterion governs gap structure**: Gaps occur precisely where consecutive integers all have some prime $p \\equiv 3 \\pmod{4}$ to an odd power. Large gaps arise when primes $\\equiv 3 \\pmod{4}$ 'conspire' to block all nearby integers from being sums of two squares.",
+      "**Density $\\sim 1/\\sqrt{\\log n}$ implies average gap $\\sim \\sqrt{\\log n}$**: By Landau's theorem, sums of two squares are sparser than primes (density $\\sim 1/\\log n$) but denser than perfect squares (density $\\sim 1/\\sqrt{n}$). The average gap $\\sqrt{\\log n}$ is logarithmic, but maximum gaps are $\\Omega(\\log n)$ — a quadratic improvement over the average.",
+      "**The $n^{1/4}$ upper bound reflects 2-dimensional geometry**: The Bambah-Chowla bound uses the fact that lattice points $(a,b)$ with $a^2 + b^2 \\le n$ are distributed on a disk of radius $\\sqrt{n}$. The annular region between radii $\\sqrt{n}$ and $\\sqrt{n + n^{1/4}}$ has area $\\sim n^{1/4} \\cdot \\pi$, guaranteeing at least one lattice point.",
+      "**Maynard's sieve revolution**: The DEKKM (2022) improvement to $\\ge 0.868$ uses the same multi-dimensional sieve techniques that Maynard (2015) developed for bounded gaps between primes. The sieve detects integers $n$ in an interval where every prime $p \\equiv 3 \\pmod{4}$ up to some bound divides $n$ to an odd power.",
+      "**The conjectured limsup equals 1**: It is believed that $\\limsup(\\text{gap}_k / \\log n_k) = 1$, matching the heuristic from the Cramér-type model where an integer $n$ is a sum of two squares independently with probability $\\sim c/\\sqrt{\\log n}$."
     ]
   },
   "sections": [
     {
       "id": "sums-two-squares",
       "title": "Sums of Two Squares",
-      "summary": "Definition and basic properties of integers representable as a² + b²",
+      "summary": "Defines `IsSumTwoSquares n` as $\\exists a, b \\in \\mathbb{Z}: n = a^2 + b^2$, and `SumTwoSquaresSeq` as the set $\\{n \\in \\mathbb{N} : n \\text{ is a sum of two squares}\\}$. Includes concrete examples: $0, 1, 2, 5, 13$.",
       "startLine": 42,
       "endLine": 61
     },
     {
       "id": "fermat-criterion",
       "title": "Fermat's Criterion",
-      "summary": "Characterization: n is sum of two squares iff primes p ≡ 3 (mod 4) have even exponents",
+      "summary": "States the Fermat-Euler characterization: $n > 0$ is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ has even $p$-adic valuation in $n$. Also states that primes $p \\equiv 1 \\pmod{4}$ are themselves sums of two squares.",
       "startLine": 63,
       "endLine": 80
     },
     {
       "id": "gap-function",
       "title": "The Gap Function",
-      "summary": "Definitions of nthSumTwoSquares and gap between consecutive terms",
+      "summary": "Axiomatizes `nthSumTwoSquares : ℕ → ℕ` as a strictly increasing enumeration of sums of two squares, and defines `gap k = nthSumTwoSquares(k+1) - nthSumTwoSquares(k)` as the consecutive difference.",
       "startLine": 82,
       "endLine": 98
     },
     {
       "id": "density",
       "title": "Density of Sums of Two Squares",
-      "summary": "Landau's theorem: count ~ cx/√(log x)",
+      "summary": "States Landau's theorem (1908): $\\texttt{countSumTwoSquares}(x) \\cdot \\sqrt{\\log x} / x \\to c$ as $x \\to \\infty$, where $c \\approx 0.7642$ is the Landau-Ramanujan constant. Formalized via `Tendsto` and the `atTop` filter.",
       "startLine": 100,
       "endLine": 110
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds on Gaps",
-      "summary": "Erdős (1951), Richards (1982), and DEKKM (2022) lower bounds",
+      "summary": "Three progressively stronger lower bounds: Erdős (1951) gives $\\text{gap} \\ge c \\log n / \\sqrt{\\log \\log n}$ infinitely often; Richards (1982) gives $\\limsup(\\text{gap}/\\log n) \\ge 1/4$; DEKKM (2022) improves to $\\ge 0.868$.",
       "startLine": 112,
       "endLine": 132
     },
     {
       "id": "upper-bound",
       "title": "Bambah-Chowla Upper Bound",
-      "summary": "All gaps are O(n^(1/4))",
+      "summary": "States the universal upper bound: $\\text{gap}_k \\le C \\cdot n_k^{1/4}$ for all $k$, meaning every interval $[n, n + Cn^{1/4}]$ contains a sum of two squares.",
       "startLine": 134,
       "endLine": 139
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "summary": "Main theorem combining lower and upper bounds with proof",
+      "title": "Summary Theorem",
+      "summary": "Proves `erdos_222_summary`: the conjunction of the Erdős lower bound (infinitely many gaps $\\ge c \\log n / \\sqrt{\\log \\log n}$) and the Bambah-Chowla upper bound ($\\text{gap} \\le Cn^{1/4}$), by extracting witnesses from the axiomatized results.",
       "startLine": 141,
       "endLine": 163
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #222 asks for bounds on gaps between consecutive sums of two squares. The problem is solved in the sense that good bounds exist: gaps are at most O(n^(1/4)) and infinitely often at least Ω(log n / √(log log n)). The limsup of gap/log n is at least 0.868 (DEKKM 2022), conjecturally 1. The characterization via Fermat's criterion (primes ≡ 3 mod 4 must have even exponents) explains the structure of gaps.",
-    "implications": "**Implications for Number Theory**\n\n1. **Local-Global Principle:** The structure of gaps reflects the distribution of primes in residue classes.\n\n2. **Analytic Methods:** Combining sieve methods with analytic techniques gives the best results.\n\n3. **Comparison with Primes:** Gaps in sums of two squares have polynomial upper bounds (n^(1/4)), contrasting with prime gaps.\n\n4. **Higher Dimensions:** Similar questions for sums of k squares have different character.",
+    "summary": "This formalization captures the complete state of Erdős Problem #222, from Fermat's characterization of sums of two squares through Landau's density theorem to the modern gap bounds. The summary theorem proves that gaps are at most $O(n^{1/4})$ (Bambah-Chowla) and infinitely often at least $\\Omega(\\log n / \\sqrt{\\log \\log n})$ (Erdős), with the best limsup constant $\\ge 0.868$ (DEKKM 2022).",
+    "implications": "The gap structure of sums of two squares illustrates how arithmetic constraints (Fermat's criterion via primes $\\equiv 3 \\pmod{4}$) interact with geometric facts (lattice point distribution on circles). The polynomial upper bound $n^{1/4}$ contrasts sharply with prime gaps, where the best unconditional bound is $n^{0.525}$. The problem also demonstrates how Maynard's sieve techniques, originally developed for prime gaps, transfer to other number-theoretic sequences.",
     "openQuestions": [
-      "Is limsup(gap/log n) exactly equal to 1?",
-      "Can the upper bound exponent 1/4 be improved?",
-      "What is the distribution of gaps (beyond limsup)?",
-      "How do gaps in sums of k squares behave for k > 2?",
-      "Can explicit constructions achieve the lower bound?"
+      "Is $\\limsup(\\text{gap}_k / \\log n_k) = 1$? The current best lower bound is $0.868$; the heuristic from probabilistic models predicts 1.",
+      "Can the Bambah-Chowla exponent $1/4$ be improved? The exponent arises from the 2-dimensional lattice point count, so improvement would require new geometric or analytic ideas.",
+      "What is the distribution of gaps beyond limsup? Is there a probabilistic model (analogous to Cramér's model for primes) that accurately predicts the full distribution?",
+      "How do gaps in sums of $k$ squares behave for $k \\ge 3$? For $k = 4$ (by Lagrange's theorem, every integer is a sum of 4 squares), there are no gaps at all."
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The PNT gives density $\\sim 1/\\log x$ for primes; Landau's theorem gives density $\\sim c/\\sqrt{\\log x}$ for sums of two squares, making them denser than primes"
+    },
+    {
+      "targetId": "prime-reciprocal-divergence",
+      "relationship": "related",
+      "description": "The divergence of $\\sum 1/p$ implies primes are dense; similarly $\\sum_{n \\in S_2} 1/n$ diverges for sums of two squares, and the rate connects to Landau's constant"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "The distribution of primes $p \\equiv 3 \\pmod{4}$ governs which integers are sums of two squares; the infinitude of such primes is essential"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "foundational",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions (specifically $p \\equiv 1, 3 \\pmod{4}$) underlies both Fermat's criterion and the density computation"
+    }
+  ]
 }
