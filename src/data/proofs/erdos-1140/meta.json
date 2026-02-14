@@ -27,6 +27,11 @@
         "theorem": "Nat.Prime",
         "description": "Primality predicate",
         "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets for KnownValues",
+        "module": "Mathlib.Data.Finset.Basic"
       }
     ],
     "originalContributions": [
@@ -34,56 +39,88 @@
       "Verified counterexample n = 4 (not prime)",
       "Proof that even n > 2 never satisfies the property",
       "Main disproof via finiteness axiom"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-1141",
+        "relationship": "Companion problem: are there infinitely many n where n - k² is prime for all coprime k with k² < n? Open, with 41 known values up to 1722"
+      },
+      {
+        "id": "erdos-1142",
+        "relationship": "Companion problem: are there infinitely many n where n - 2^k is prime for all 2^k < n? Open, with 7 known values"
+      },
+      {
+        "id": "erdos-1138",
+        "relationship": "Primes in short intervals and maximal gaps; connects to the logarithmic rarity of primes that constrains simultaneous primality conditions"
+      },
+      {
+        "id": "quadratic-reciprocity",
+        "relationship": "Gauss's law of quadratic reciprocity: determines when 2 is a quadratic residue mod p, directly relevant to which residue classes support n - 2x² being prime"
+      },
+      {
+        "id": "fermat-two-squares",
+        "relationship": "Fermat's theorem on sums of two squares (p = a² + b² iff p ≡ 1 mod 4): same modular constraint structure as erdos-1140's split on n mod 4"
+      },
+      {
+        "id": "bertrands-postulate",
+        "relationship": "Bertrand's postulate guarantees primes in (n, 2n]; contextualizes the rarity of erdos-1140's requirement that ALL n - 2x² be prime"
+      },
+      {
+        "id": "dirichlets-theorem",
+        "relationship": "Infinitely many primes in arithmetic progressions: provides macro-view of prime distribution by residue classes, essential context for the residue-class-dependent finiteness"
+      }
     ]
   },
   "overview": {
-    "historicalContext": "Erdős asked whether infinitely many n exist such that n - 2x² is prime for every valid x. Computing small cases reveals the values 2, 5, 7, 13, 31, 61, 181, 199. Epure and Gica (2010) proved that these (with at most one possible exception in the n ≡ 3 mod 4 case) are the only such values, definitively disproving the conjecture.\n\nThe proof splits into cases by residue modulo 4. For n ≡ 1 (mod 4), they show only {5, 13, 61, 181} work. For n ≡ 3 (mod 4), they use a result of Mollin and Williams (1989) to show only {7, 31, 199} work (with at most one exception).",
+    "historicalContext": "**Primes of the Form n - 2x²: A Disproved Erdős Conjecture**\n\nErdős asked whether infinitely many natural numbers n have the remarkable property that n - 2x² is prime for every valid x. Computing small cases reveals eight such values: 2, 5, 7, 13, 31, 61, 181, and 199.\n\n**The Pattern's Fragility**\n\nFor n = 199 (the largest known value), all ten values 199, 197, 191, 181, 167, 149, 127, 101, 71, 37 must be simultaneously prime — and they are. But as n grows, the number of primality constraints grows as √(n/2), making success exponentially unlikely by the prime number theorem.\n\n**The Disproof: Epure-Gica (2010)**\n\nEpure and Gica settled the problem by splitting into three cases:\n\n1. **Even n > 2**: Trivially fail since n - 2·0² = n is even and composite.\n\n2. **n ≡ 1 (mod 4)**: Only {5, 13, 61, 181} work. The proof uses quadratic residue analysis: for each small prime p, the values n - 2x² cycle through residue classes mod p. Combining constraints via the Chinese Remainder Theorem creates a sieve that eliminates all but finitely many candidates.\n\n3. **n ≡ 3 (mod 4)**: Only {7, 31, 199} work, with at most one possible exception. This deeper case connects to class numbers of imaginary quadratic fields Q(√(-2n)). Mollin and Williams (1989) showed that if all shifts n - 2x² are prime, the class number h(-8n) is severely constrained. By Siegel's theorem (h(-D) → ∞ as D → ∞), only finitely many n can satisfy these constraints.\n\n**The Ineffective Exception**\n\nThe 'at most one exception' in the n ≡ 3 (mod 4) case arises because Siegel's lower bound on class numbers is ineffective — it proves h(-D) > D^{1/2-ε} for large D but cannot specify how large. If the generalized Riemann hypothesis holds, the exception does not exist.",
     "problemStatement": "**Problem:** Do there exist infinitely many $n$ such that $n - 2x^2$ is prime for all $x$ with $2x^2 < n$?\n\n**Answer:** NO — Only finitely many $n$ exist: $\\{2, 5, 7, 13, 31, 61, 181, 199\\}$ (with at most one additional exception).",
-    "proofStrategy": "The formalization verifies small cases computationally (n = 2, 5, 7, 13 all satisfy the property using interval_cases and decide). The even case is handled by noting n itself must be prime. The Epure-Gica finiteness result is stated as an axiom, and the disproof follows by contradiction: if infinitely many n existed, we could find one above any bound B, contradicting finiteness.",
+    "proofStrategy": "**Formalization Structure**\n\nThe Lean file has four parts:\n\n1. **Definitions**: AllShiftsArePrime(n) as ∀ x, 2x² < n → Nat.Prime(n - 2x²), and KnownValues as the Finset {2, 5, 7, 13, 31, 61, 181, 199}\n\n2. **Computational verification**: n = 2, 5, 7, 13 proved using interval_cases (enumerates valid x) + decide (checks primality). Counterexample n = 4 proved by providing x = 0\n\n3. **Even case** (fully proved): even_case shows even n > 2 fail because n itself must be prime. Uses Nat.Prime.not_dvd_one\n\n4. **Finiteness** (axiomatized): erdos_1140_finite states ∃ B, ∀ n > B, ¬AllShiftsArePrime n. The main theorem erdos_1140 derives ¬(∀ N, ∃ n > N, AllShiftsArePrime n) by contradiction — fully proved from the axiom\n\n**What is Proved vs Axiomatized**\n\n- **Proved**: n_eq_2, n_eq_5, n_eq_7, n_eq_13 (computational), n_eq_4_fails (counterexample), even_case (parity argument), erdos_1140 (disproof from axiom)\n- **Axiomatized**: epure_gica_mod_1 (n ≡ 1 mod 4 case), epure_gica_mod_3 (n ≡ 3 mod 4 case), erdos_1140_finite (combined finiteness)",
     "keyInsights": [
-      "**Modular arithmetic is key:** The proof splits by n mod 4",
-      "**Even n > 2 fail trivially:** n - 2·0² = n must be prime, but n is even",
-      "**Only 8 values work:** {2, 5, 7, 13, 31, 61, 181, 199}",
-      "**Quadratic residues:** The constraint n - 2x² is prime restricts n to specific residue classes"
+      "The x = 0 constraint alone forces n to be prime — so AllShiftsArePrime(n) implies n is prime, immediately eliminating all even n > 2",
+      "The proof splits on n mod 4: the n ≡ 1 case uses elementary sieving by quadratic residues, while the n ≡ 3 case requires deep algebraic number theory (class numbers of Q(√(-2n)))",
+      "For n = 199, all ten values 199, 197, 191, 181, 167, 149, 127, 101, 71, 37 are prime — a remarkable coincidence that cannot persist indefinitely",
+      "The 'at most one exception' in the mod 3 case reflects the ineffectivity of Siegel's class number bound — a fundamental barrier in analytic number theory related to possible Siegel zeros",
+      "The disproof is a rare example where a conjecture about infinitely many primes is refuted — most such problems (Dirichlet's theorem, twin prime conjecture) ask for positive existence"
     ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Basic Definitions",
-      "summary": "AllShiftsArePrime predicate and known values",
+      "summary": "Defines AllShiftsArePrime(n) as ∀ x, 2x² < n → Nat.Prime(n - 2x²), the core predicate. Also defines KnownValues = {2, 5, 7, 13, 31, 61, 181, 199} as a Finset. The quantifier ranges over x ∈ {0, ..., ⌊√((n-1)/2)⌋}, with x = 0 forcing n itself to be prime.",
       "startLine": 26,
       "endLine": 39
     },
     {
       "id": "examples",
-      "title": "Verified Examples",
-      "summary": "Computationally verified cases for small n",
+      "title": "Verified Examples and Counterexample",
+      "summary": "Computationally verifies AllShiftsArePrime for n = 2 (trivial: only x = 0), n = 5, 7 (x ∈ {0,1}), and n = 13 (x ∈ {0,1,2}) using interval_cases + decide. Also verifies ¬AllShiftsArePrime(4) since 4 is composite. These are fully-proved theorems with no axioms.",
       "startLine": 41,
       "endLine": 72
     },
     {
       "id": "epure-gica",
-      "title": "Epure-Gica Theorem",
-      "summary": "Finiteness result by residue class",
+      "title": "Epure-Gica Theorem (Axiomatized)",
+      "summary": "Two axioms from Epure-Gica (2010): epure_gica_mod_1 (n ≡ 1 mod 4 → n ∈ {5,13,61,181}) and epure_gica_mod_3 (n ≡ 3 mod 4 → n ∈ {7,31,199} or n > 199). Plus the fully-proved even_case theorem eliminating even n > 2 via the parity argument (n must be prime).",
       "startLine": 74,
       "endLine": 96
     },
     {
       "id": "main-result",
-      "title": "Main Result",
-      "summary": "Erdős Problem #1140 disproved",
+      "title": "Main Result: DISPROVED",
+      "summary": "States erdos_1140_finite (∃ B, ∀ n > B, ¬AllShiftsArePrime n) as an axiom packaging the three cases. Derives erdos_1140: ¬(∀ N, ∃ n > N, AllShiftsArePrime n) by contradiction — assuming infinitely many exist, find one above the bound B, contradicting finiteness. This is fully proved from the axiom.",
       "startLine": 98,
       "endLine": 114
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1140 was disproved by Epure and Gica (2010). Only finitely many n satisfy the property that n - 2x² is prime for all valid x. The complete list is {2, 5, 7, 13, 31, 61, 181, 199} with at most one exception.",
-    "implications": "This result shows that the pattern of 'n - 2x² always prime' is extremely rare and cannot persist to infinity. It connects to the broader theme of how quadratic forms interact with prime distribution.",
+    "summary": "Erdős Problem #1140 was disproved by Epure and Gica (2010). The property AllShiftsArePrime(n) — that n - 2x² is prime for all valid x — holds for only finitely many n. The complete list is {2, 5, 7, 13, 31, 61, 181, 199} with at most one exception. The proof combines elementary parity arguments, quadratic residue sieving, and deep results on class numbers of imaginary quadratic fields.",
+    "implications": "**Theoretical Significance**\n\n1. **Quadratic Forms and Primes**: The problem reveals the tension between quadratic structure (the polynomial n - 2x²) and prime distribution. While Bunyakovsky's conjecture predicts any irreducible polynomial represents infinitely many primes for varying input, requiring ALL outputs to be prime simultaneously is far too restrictive.\n\n2. **Class Number Connection**: The n ≡ 3 (mod 4) case connects to the deep theory of imaginary quadratic fields via the class number h(-8n). This is one of the few elementary-sounding problems where algebraic number theory is essential for the resolution.\n\n3. **Siegel's Ineffectivity**: The 'at most one exception' reflects a fundamental limitation: Siegel's bound h(-D) > C(ε)D^{1/2-ε} has an ineffective constant C(ε). Computing it would either resolve the exception or prove the existence of a Siegel zero — one of the deepest open problems in analytic number theory.\n\n4. **Pattern Fragility**: The eight known values demonstrate how striking numerical patterns can be finite — a cautionary tale against conjecturing from small examples in number theory.\n\n5. **Companion Problems**: The open status of erdos-1141 (n - k² prime for coprime k) and erdos-1142 (n - 2^k prime) shows that small variations in the quadratic constraint can change the problem's difficulty dramatically.",
     "openQuestions": [
-      "Does the one possible exception in the n ≡ 3 (mod 4) case actually exist?",
-      "Analogous questions for n - 3x², n - 5x², etc.",
-      "See related Problem #1141 on erdosproblems.com"
+      "Does the one possible exception in the n ≡ 3 (mod 4) case actually exist? Resolving this would require either effective Siegel bounds or GRH.",
+      "What happens for n - 3x²? n - 5x²? Are the analogous finite sets computable for each coefficient?",
+      "Is AllShiftsArePrime decidable for individual n? (Yes: finite check. But is the finiteness of the full set decidable without Epure-Gica?)",
+      "What is the connection to Bunyakovsky's conjecture? If n - 2x² represents infinitely many primes for fixed n, what is the density of primes represented?"
     ]
   }
 }
