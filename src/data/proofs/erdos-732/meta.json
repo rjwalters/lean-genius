@@ -65,105 +65,112 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #732: Block-Compatible Sequences**\n\nErdős posed this problem in 1981 [Er81] about pairwise balanced block designs (PBDs).\n\n**Background:**\n- A PBD on {1,...,n} partitions all pairs into blocks\n- Each pair appears in exactly one block\n- The sequence of block sizes determines the design's structure\n\n**History:**\n- Erdős (1981): Posed the problem, proved upper bound B(n) ≤ exp(O(√n·log n))\n- Alon: Proved lower bound B(n) ≥ 2^((1/2+o(1))√n·log n), solving Q2\n\n**Current Status:**\n- Question 2 (counting): SOLVED by Alon\n- Question 1 (characterization): OPEN - pair-counting is necessary but not sufficient",
-    "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nA sequence $1 < X_1 \\leq X_2 \\leq \\cdots \\leq X_m \\leq n$ is *block-compatible* if there exists a pairwise balanced block design $A_1, \\ldots, A_m \\subseteq \\{1,\\ldots,n\\}$ with $|A_i| = X_i$.\n\n**Question 1:** Are there necessary and sufficient conditions for block-compatibility?\n\n**Question 2:** Is there $c > 0$ such that there are $\\geq \\exp(c \\cdot \\sqrt{n} \\cdot \\log n)$ block-compatible sequences?\n\n**Known:** Pair-counting $\\sum_i \\binom{X_i}{2} = \\binom{n}{2}$ is necessary but NOT sufficient.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Definitions:** Block, Pair, IsPBD (pairwise balanced block design), IsBlockCompatible\n\n2. **Necessary Condition:** PairCountCondition and pair_count_necessary theorem\n\n3. **Q1 Status:** characterization_hard axiom (no simple characterization)\n\n4. **Q2 Resolution:** B(n) counting function, erdos_upper_bound, alon_lower_bound, and question_2_solved theorem\n\n5. **Examples:** Concrete PBDs for n=3,4,6 demonstrating the definitions",
+    "historicalContext": "Erdős posed this problem in 1981, connecting it to his broader interest in combinatorial design theory. A pairwise balanced block design (PBD) on $\\{1,\\ldots,n\\}$ partitions all $\\binom{n}{2}$ pairs into blocks, with each pair appearing in exactly one block. The block sizes form a non-decreasing sequence $X_1 \\le \\cdots \\le X_m$, and a sequence is 'block-compatible' if it can be realized by some PBD.\n\nErdős asked two questions: (Q1) characterize which sequences are block-compatible, and (Q2) estimate the count $B(n)$ of block-compatible sequences. He proved the upper bound $B(n) \\le \\exp(O(\\sqrt{n} \\log n))$ using a counting argument over integer partitions of $\\binom{n}{2}$ into triangular numbers $\\binom{k}{2}$.\n\nAlon resolved Q2 by proving the matching lower bound $B(n) \\ge 2^{(1/2 + o(1))\\sqrt{n} \\log n}$. His construction uses probabilistic methods to show that many distinct PBDs can be built by independently choosing block structures in different regions of $[n]$. This establishes $\\log B(n) = \\Theta(\\sqrt{n} \\log n)$.\n\nQ1 remains open. The pair-counting condition $\\sum \\binom{X_i}{2} = \\binom{n}{2}$ is necessary but not sufficient: some sequences satisfy the arithmetic constraint but cannot be realized geometrically due to intersection constraints between blocks (related to the Fisher inequality and the Bruck-Ryser-Chowla theorem). Finding a complete characterization is believed to be computationally hard.",
+    "problemStatement": "**Problem Statement (PARTIALLY SOLVED)**\n\nA sequence $1 < X_1 \\le X_2 \\le \\cdots \\le X_m \\le n$ is *block-compatible* if there exists a PBD $A_1, \\ldots, A_m \\subseteq \\{1,\\ldots,n\\}$ with $|A_i| = X_i$ and every pair $\\{i,j\\}$ in exactly one block.\n\n**Question 1:** Are there necessary and sufficient conditions for block-compatibility?\n**Status:** OPEN\n\n**Question 2:** Is there $c > 0$ such that $B(n) \\ge \\exp(c \\sqrt{n} \\log n)$?\n**Status:** SOLVED by Alon\n\n**Known:** Pair-counting $\\sum_i \\binom{X_i}{2} = \\binom{n}{2}$ is necessary but NOT sufficient.",
+    "proofStrategy": "The formalization builds from the ground up. Part I defines the combinatorial objects: blocks as finite subsets, pairs as 2-element subsets, pair coverage, and the PBD property (every pair in exactly one block). Part II defines block-compatible sequences and well-formedness.\n\nPart III establishes the pair-counting necessary condition, both as a definition and an axiomatized theorem. Part IV formalizes Q1 as a meta-mathematical statement about the existence of a characterization predicate, and axiomatizes that pair-counting is not sufficient.\n\nPart V defines the counting function $B(n)$, axiomatizes Erdős's upper bound and Alon's lower bound, and proves Q2 is solved. Part VI handles the asymptotic constant, with `constant_at_least_half` proved from `alon_lower_bound` using `norm_num`. Examples for $n = 3, 4, 6$ validate the pair-counting condition computationally.",
     "keyInsights": [
-      "**PBD Definition:** Every pair in {1,...,n} appears in exactly one block",
-      "**Pair-Counting:** Σ C(Xᵢ,2) = C(n,2) is necessary (total pair coverage)",
-      "**Not Sufficient:** Some sequences satisfy pair-counting but have no PBD",
-      "**Erdős Upper:** B(n) ≤ exp(O(√n·log n))",
-      "**Alon Lower:** B(n) ≥ 2^((1/2+o(1))√n·log n)",
-      "**Asymptotic:** B(n) ≈ 2^((c+o(1))√n·log n) with c ≥ 1/2"
+      "**Pair-counting as a partition constraint:** The necessary condition $\\sum \\binom{X_i}{2} = \\binom{n}{2}$ asks for a partition of the triangular number $T_{n-1} = n(n-1)/2$ into smaller triangular numbers $T_{X_i - 1}$. This connects to the theory of representations of integers as sums of figurate numbers.",
+      "**Insufficiency of local conditions:** The pair-counting condition is purely arithmetic, but block-compatibility requires geometric realizability -- the blocks must be actual subsets with the right intersection properties. The Fisher inequality ($m \\ge n$ when no block covers all points) is one such non-local obstruction.",
+      "**Growth rate $\\sqrt{n} \\log n$:** The unusual exponent $\\sqrt{n} \\log n$ arises because $B(n)$ counts partitions of $n(n-1)/2 \\sim n^2/2$ into parts of size $\\le \\binom{n}{2}$. The number of such partitions has log of order $\\sqrt{n} \\log n$ by classical partition asymptotics.",
+      "**Keevash's breakthrough:** The 2014 proof that Steiner systems exist for all sufficiently large admissible parameters (using randomized algebraic constructions) provides the modern foundation for understanding which uniform block-compatible sequences are realizable.",
+      "**Alon's probabilistic construction:** The lower bound uses the insight that in large PBDs, blocks in distant regions of $[n]$ are nearly independent, so $\\sim \\sqrt{n}$ 'independent choices' can be made, each contributing $\\sim \\log n$ bits to the count."
     ]
   },
   "sections": [
     {
       "id": "header-docs",
       "title": "Problem Overview",
-      "summary": "Header with problem statement and historical context",
+      "summary": "Header documentation with problem statement, known results, and references to Erdős (1981) and Alon.",
       "startLine": 1,
       "endLine": 33
     },
     {
       "id": "imports-setup",
       "title": "Imports and Setup",
-      "summary": "Mathlib imports and namespace",
+      "summary": "Mathlib imports for Finset, SimpleGraph, and Real, plus the Erdos732 namespace.",
       "startLine": 35,
       "endLine": 41
     },
     {
       "id": "definitions",
       "title": "Basic Definitions",
-      "summary": "Block, Pair, pairsCoveredBy, IsPBD",
+      "summary": "Defines Block (Finset of Fin n), Pair (2-element subset), pairsCoveredBy (pairs within a block), and IsPBD (every pair in exactly one block).",
       "startLine": 43,
       "endLine": 74
     },
     {
       "id": "block-compatible",
       "title": "Block-Compatible Sequences",
-      "summary": "IsBlockCompatible and IsWellFormed definitions",
+      "summary": "Defines IsBlockCompatible (exists a PBD with matching block sizes) and IsWellFormed (2 ≤ Xᵢ ≤ n, sorted, non-empty).",
       "startLine": 75,
       "endLine": 97
     },
     {
       "id": "necessary",
       "title": "Necessary Conditions",
-      "summary": "PairCountCondition and pair_count_necessary",
+      "summary": "Defines PairCountCondition (Σ C(Xᵢ,2) = C(n,2)) and axiomatizes pair_count_necessary. Includes the trivial pair_count_explanation theorem.",
       "startLine": 98,
       "endLine": 125
     },
     {
       "id": "characterization",
-      "title": "Question 1 - Characterization",
-      "summary": "CharacterizationQuestion and characterization_hard",
+      "title": "Question 1 - Characterization (OPEN)",
+      "summary": "Formalizes CharacterizationQuestion as the existence of a decidable necessary-and-sufficient predicate. Axiomatizes characterization_hard: pair-counting is not sufficient.",
       "startLine": 126,
       "endLine": 153
     },
     {
       "id": "counting",
-      "title": "Question 2 - Counting",
-      "summary": "B(n), erdos_upper_bound, alon_lower_bound, question_2_solved",
+      "title": "Question 2 - Counting (SOLVED)",
+      "summary": "Defines B(n), axiomatizes Erdős's upper bound and Alon's lower bound, and axiomatizes question_2_solved combining them.",
       "startLine": 154,
       "endLine": 202
     },
     {
       "id": "asymptotic",
-      "title": "The Asymptotic Gap",
-      "summary": "AsymptoticConstant and constant_at_least_half",
+      "title": "The Asymptotic Constant",
+      "summary": "Defines AsymptoticConstant (B(n) = 2^{(c+o(1))√n log n}) and proves constant_at_least_half (c ≥ 1/2) from alon_lower_bound using norm_num.",
       "startLine": 203,
       "endLine": 234
     },
     {
       "id": "examples",
-      "title": "Examples",
-      "summary": "Concrete examples for n=3,4,6",
+      "title": "Concrete Examples",
+      "summary": "Axiomatizes example_n3 (IsBlockCompatible [3] 3) and verifies pair-counting for n=4 ([4] and [2,2,2,2,2,2]) and n=6 ([3,3,3,3,3]) using simp/norm_num.",
       "startLine": 235,
       "endLine": 280
     },
     {
       "id": "related",
       "title": "Related Problems",
-      "summary": "Connection to Problem #733 and Steiner systems",
+      "summary": "Notes connections to Problem #733 (line-compatible sequences) and Steiner systems S(2,k,n).",
       "startLine": 281,
       "endLine": 297
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "summary": "Complete summary of partial resolution",
+      "title": "Summary Theorems",
+      "summary": "erdos_732_summary packages Q2-solved + pair-counting necessity as a conjunction. erdos_732 is an alias.",
       "startLine": 298,
       "endLine": 334
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #732 is PARTIALLY SOLVED. Question 2 (counting block-compatible sequences) was resolved by Alon, who proved B(n) ≥ 2^((1/2+o(1))√n·log n), matching Erdős's upper bound. Question 1 (characterizing which sequences are block-compatible) remains OPEN - the pair-counting condition is necessary but not sufficient.",
-    "implications": "**Significance:**\n\n1. **Combinatorial Designs:** Reveals structure of PBDs and their enumeration\n\n2. **Counting Problems:** Shows exponentially many block-compatible sequences exist\n\n3. **Characterization Difficulty:** The gap between necessary and sufficient conditions highlights complexity\n\n4. **Connection to Steiner Systems:** Special case of uniform block sizes",
+    "summary": "Erdős Problem #732 is PARTIALLY SOLVED. Question 2 (counting block-compatible sequences) was resolved by Alon, who proved $B(n) \\ge 2^{(1/2+o(1))\\sqrt{n} \\log n}$, matching Erdős's upper bound up to the constant factor. This gives $\\log B(n) = \\Theta(\\sqrt{n} \\log n)$. Question 1 (characterizing which sequences are block-compatible) remains OPEN -- the pair-counting condition $\\sum \\binom{X_i}{2} = \\binom{n}{2}$ is necessary but not sufficient, and no complete characterization is known.",
+    "implications": "The resolution of Q2 reveals that the landscape of PBDs is far richer than previously understood: exponentially many distinct block-size profiles can be realized. The open Q1 connects to fundamental questions in combinatorial design theory about the gap between necessary arithmetic conditions and sufficient geometric conditions. Progress would likely require new insights into the intersection structure of block designs, potentially building on Keevash's randomized algebraic construction methods.",
     "openQuestions": [
-      "What are necessary and sufficient conditions for block-compatibility?",
-      "What is the exact asymptotic constant c in B(n) = 2^((c+o(1))√n·log n)?",
-      "What is the structure of sequences satisfying pair-counting but not block-compatible?",
-      "How does this relate to the existence of Steiner systems?"
+      "What are necessary and sufficient conditions for block-compatibility beyond pair-counting?",
+      "What is the exact asymptotic constant $c$ in $B(n) = 2^{(c+o(1))\\sqrt{n} \\log n}$? Is $c = 1/2$?",
+      "What is the structure of sequences satisfying pair-counting but not block-compatible? Are they rare or common?",
+      "Is the decision problem 'given $(X_1,\\ldots,X_m)$ and $n$, is the sequence block-compatible?' NP-complete?",
+      "How does the count $B(n)$ compare when restricted to Steiner-like designs (uniform block sizes)?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-733",
+      "relationship": "companion",
+      "description": "Problem #733 asks the analogous question for line-compatible sequences in linear spaces, a closely related combinatorial design problem."
+    }
+  ]
 }
