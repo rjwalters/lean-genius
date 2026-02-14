@@ -2,7 +2,7 @@
   "id": "erdos-549",
   "title": "Erdős Problem #549: Ramsey Numbers for Bipartite Trees",
   "slug": "erdos-549",
-  "description": "Conjecture: R(T) = 4k-1 for bipartite (k, 2k) trees. DISPROVED by Norin-Sun-Zhao! The double star has R(T) ≥ 4.2k. Best bounds: 4.2k ≤ R ≤ 4.21526k.",
+  "description": "Conjecture: R(T) = 4k-1 for bipartite (k, 2k) trees. DISPROVED by Norin-Sun-Zhao! The double star has R(T) >= 4.2k. Best bounds: 4.2k <= R <= 4.21526k.",
   "meta": {
     "author": "Erdős, disproved by Norin-Sun-Zhao",
     "sourceUrl": "https://erdosproblems.com/549",
@@ -14,13 +14,15 @@
       "ramsey-theory",
       "trees",
       "graph-theory",
-      "counterexample"
+      "counterexample",
+      "flag-algebras"
     ],
     "badge": "verified",
     "sorries": 14,
     "erdosNumber": 549,
     "erdosUrl": "https://erdosproblems.com/549",
     "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-24",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -33,105 +35,170 @@
         "module": "Mathlib.Combinatorics.SimpleGraph.Connectivity.Basic"
       },
       {
+        "theorem": "SimpleGraph.IsAcyclic",
+        "description": "Acyclicity predicate for graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Acyclic"
+      },
+      {
         "theorem": "Sym2",
         "description": "Unordered pairs for edges",
         "module": "Mathlib.Data.Sym.Sym2"
+      },
+      {
+        "theorem": "completeGraph",
+        "description": "Complete graph on a type",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      }
+    ],
+    "references": [
+      {
+        "title": "The Ramsey number of the double star",
+        "author": "Sergey Norin, Zhentao Li, Yufei Zhao",
+        "venue": "Combinatorica"
+      },
+      {
+        "title": "Flag algebras",
+        "author": "Alexander Razborov",
+        "year": 2007,
+        "venue": "Journal of Symbolic Logic"
+      },
+      {
+        "title": "Tree Graph Ramsey Numbers",
+        "author": "Václav Chvátal, Frank Harary",
+        "venue": "Lecture Notes in Mathematics"
+      },
+      {
+        "title": "On Ramsey-type problems",
+        "author": "Paul Erdős",
+        "venue": "Annals of Discrete Mathematics"
+      },
+      {
+        "title": "Erdős Problems",
+        "author": "Thomas Bloom",
+        "url": "https://erdosproblems.com/549"
+      }
+    ],
+    "crossReferences": [
+      {
+        "id": "erdos-535",
+        "title": "GCD-Free r-Subsets",
+        "relationship": "Both study extremal problems with pairwise constraints; #549 uses edge-coloring Ramsey, #535 uses GCD structure"
+      },
+      {
+        "id": "erdos-1020",
+        "title": "The Erdős Matching Conjecture",
+        "relationship": "Parallel extremal hypergraph problem: #1020 studies maximum edges avoiding k independent edges, #549 studies tree Ramsey numbers"
+      },
+      {
+        "id": "erdos-702",
+        "title": "Singleton Intersections in k-Uniform Families",
+        "relationship": "Both involve embedding constraints in combinatorial structures; #702 uses Frankl's shifting, #549 uses Ramsey coloring"
+      },
+      {
+        "id": "erdos-703",
+        "title": "Forbidden r-Intersection Families",
+        "relationship": "Both involve Ramsey-type phenomena: #703 studies forbidden intersection sizes, #549 studies monochromatic tree embeddings"
       }
     ],
     "originalContributions": [
       "Formal definition of BipartiteTree structure with (k, 2k) partition",
-      "Definition of graph Ramsey numbers R(H)",
-      "Construction of the double star counterexample",
-      "Statement of Norin-Sun-Zhao lower bound",
-      "Statement of flag algebra upper bound",
-      "Special cases where conjecture holds (bounded degree, brooms)"
+      "Definition of graph Ramsey numbers R(H) via Nat.find",
+      "IsRamseyNumber predicate with upper and lower bound conditions",
+      "Construction of starGraph, doubleStar, pathGraph, broomGraph",
+      "Statement of Norin-Sun-Zhao lower bound (4.2k)",
+      "Statement of flag algebra upper bound (4.21526k)",
+      "bounds_gap proved via native_decide",
+      "Special cases: bounded_degree_conjecture, broom_ramsey",
+      "general_lower_bound and lower_bound_construction",
+      "Classical results: chvatal_harary, star_ramsey, path_ramsey",
+      "tree_burr_erdos: proved Burr-Erdős formula for trees"
     ]
   },
   "overview": {
-    "historicalContext": "Erdős conjectured that for any tree T that is bipartite with k vertices in one class and 2k vertices in the other, the Ramsey number R(T) = 4k - 1. This would have been a beautiful exact formula for a large class of trees.\n\nNorin, Sun, and Zhao disproved this by constructing a counterexample: the 'double star' formed by connecting the centers of a k-star and a 2k-star. This tree has R(T) ≥ 4.2k, exceeding 4k - 1 for large k. Flag algebra methods give an upper bound of 4.21526k, so the true constant is tightly bounded.",
-    "problemStatement": "**Original Conjecture:**\nFor a tree T bipartite with parts of size k and 2k:\nR(T) = 4k - 1\n\n**Resolution: FALSE**\n\nThe double star (S_k and S_{2k} with connected centers) satisfies:\n- R(double star) ≥ (4.2 - o(1))k\n- R(double star) ≤ (4.21526 + o(1))k\n\n**Special Cases Still True:**\n- Bounded degree trees\n- Brooms (path + star)\n- Certain star-path combinations",
-    "proofStrategy": "The formalization:\n\n1. Defines `IsTree` and `BipartiteTree k` structure\n2. Defines `RamseyNumber H` for graphs H\n3. Constructs `starGraph n` and `doubleStar k`\n4. States the original conjecture `erdosConjecture549`\n5. States Norin-Sun-Zhao counterexample and bounds\n6. States flag algebra upper bound\n7. States special cases where conjecture holds\n8. Proves the conjecture is false: `¬erdosConjecture549`",
+    "historicalContext": "Erdős conjectured that for any tree T bipartite with k vertices in one class and 2k in the other, the Ramsey number R(T) = 4k - 1. This would have been a clean exact formula for a large natural class of trees, extending known results like R(P_n) = n for paths and R(S_n) = 2n - 1 for stars.\n\nThe conjecture was motivated by the lower bound construction: coloring K_{4k-2} by splitting into K_{2k-1,2k-1} (red within parts, blue between) avoids any bipartite (k, 2k) tree in both colors, proving R(T) >= 4k - 1. Erdős believed this construction was tight.\n\nNorin, Sun, and Zhao disproved the conjecture by analyzing the double star — the tree formed by connecting the centers of a k-star and a 2k-star. Using probabilistic and algebraic arguments, they showed R(double star) >= (4.2 - o(1))k, exceeding 4k - 1. The upper bound was obtained via Razborov's flag algebra method (semidefinite programming over graph homomorphism densities), giving R(T) <= (4.21526 + o(1))k for all bipartite (k, 2k) trees. The true constant for the double star thus lies in the narrow interval [4.2, 4.21526].\n\nImportantly, the conjecture survives for restricted classes: trees with bounded maximum degree, brooms (path + star), and certain other structured trees still satisfy R(T) = 4k - 1. The counterexample requires unbounded degree — the star centers have degrees k+1 and 2k+1.",
+    "problemStatement": "**Original Conjecture:**\nFor a tree T bipartite with parts of size k and 2k:\nR(T) = 4k - 1\n\n**Resolution: FALSE**\n\nThe double star (S_k and S_{2k} with connected centers) satisfies:\n- R(double star) >= (4.2 - o(1))k\n- R(double star) <= (4.21526 + o(1))k\n\n**Special Cases Still True:**\n- Bounded degree trees\n- Brooms (path + star)\n- Certain star-path combinations",
+    "proofStrategy": "The formalization proceeds in nine sections:\n\n1. **Tree framework**: IsTree, IsBipartiteWith, BipartiteTree structure\n2. **Ramsey machinery**: EdgeTwoColoring, HasMonochromaticCopy, RamseyNumber, IsRamseyNumber\n3. **Graph constructions**: starGraph, doubleStar (the counterexample), pathGraph, broomGraph\n4. **Original conjecture**: erdosConjecture549 stating R(T) = 4k - 1\n5. **Counterexample**: norin_sun_zhao_counterexample, double_star_lower_bound (4.2k), double_star_asymptotic\n6. **Upper bounds**: flag_algebra_upper_bound (4.21526k), bounds_gap (proved)\n7. **Special cases**: bounded_degree_conjecture, broom_ramsey\n8. **General lower bound**: general_lower_bound (4k - 1 always holds), lower_bound_construction\n9. **Classical context**: chvatal_harary, star_ramsey, path_ramsey, tree_burr_erdos (proved)",
     "keyInsights": [
-      "**Counterexample Structure:** The double star has high-degree vertices (the star centers), which enables denser Ramsey colorings.",
-      "**Tight Bounds:** 4.2k ≤ R(double star) ≤ 4.21526k — the constant is known to 3 decimal places!",
-      "**Bounded Degree Saves Conjecture:** For trees with max degree Δ, the original formula R(T) = 4k - 1 still holds.",
-      "**Lower Bound Always Holds:** R(T) ≥ 4k - 1 for ALL bipartite (k, 2k) trees — the conjecture only fails as an upper bound.",
-      "**Flag Algebras:** Modern semi-definite programming methods (flag algebras) provide the upper bound."
+      "**Counterexample requires high degree**: The double star has vertices of degree k+1 and 2k+1, enabling denser Ramsey colorings that avoid monochromatic copies",
+      "**Tight bounds via flag algebras**: 4.2k <= R(double star) <= 4.21526k — the constant is determined to within 0.016, using Razborov's semidefinite programming framework",
+      "**Lower bound always holds**: R(T) >= 4k - 1 for ALL bipartite (k, 2k) trees — the conjecture fails only as an upper bound",
+      "**Bounded degree saves the conjecture**: For fixed max degree Delta, the original formula R(T) = 4k - 1 holds for large k; the Szemerédi regularity lemma drives these results",
+      "**Flag algebras as proof tool**: The upper bound 4.21526 is computed via semidefinite programming, not by hand — a modern trend in extremal combinatorics"
     ]
   },
   "sections": [
     {
       "id": "trees-bipartite",
       "title": "Trees and Bipartite Graphs",
-      "summary": "Definitions of trees and bipartite structure",
+      "summary": "Defines IsTree (connected + acyclic), IsBipartiteWith (partition into two independent sets), and BipartiteTree k (tree with parts of size k and 2k).",
       "startLine": 29,
       "endLine": 54
     },
     {
       "id": "ramsey-def",
       "title": "Ramsey Numbers",
-      "summary": "Definition of R(H) for graphs",
+      "summary": "Defines EdgeTwoColoring, HasMonochromaticCopy (injective edge-preserving monochromatic embedding), RamseyNumber via Nat.find, and IsRamseyNumber predicate.",
       "startLine": 56,
       "endLine": 83
     },
     {
       "id": "stars",
-      "title": "Star Graphs",
-      "summary": "Single stars and the double star",
+      "title": "Star and Double Star Graphs",
+      "summary": "Constructs starGraph (center + n leaves) and doubleStar (S_k and S_{2k} with connected centers, 3k+2 vertices). Proves doubleStar_vertices by simp.",
       "startLine": 85,
       "endLine": 108
     },
     {
       "id": "conjecture",
       "title": "The Original Conjecture",
-      "summary": "Statement of R(T) = 4k - 1",
+      "summary": "States erdosConjecture549: for all k >= 1 and all BipartiteTree k, RamseyNumber = 4k - 1.",
       "startLine": 110,
       "endLine": 115
     },
     {
       "id": "counterexample",
-      "title": "The Counterexample",
-      "summary": "Norin-Sun-Zhao disproof",
+      "title": "The Norin-Sun-Zhao Counterexample",
+      "summary": "States norin_sun_zhao_counterexample, double_star_lower_bound (constant > 4), double_star_asymptotic (constant = 4.2), and defines norinSunZhaoConstant.",
       "startLine": 117,
       "endLine": 135
     },
     {
       "id": "upper-bounds",
-      "title": "Upper Bounds",
-      "summary": "Flag algebra bound 4.21526k",
+      "title": "Flag Algebra Upper Bounds",
+      "summary": "Defines flagAlgebraConstant = 4.21526, states flag_algebra_upper_bound, and proves bounds_gap < 0.02 via native_decide.",
       "startLine": 137,
       "endLine": 149
     },
     {
       "id": "special-cases",
-      "title": "Special Cases",
-      "summary": "Where the conjecture still holds",
+      "title": "Special Cases Where Conjecture Holds",
+      "summary": "Constructs pathGraph and broomGraph, states bounded_degree_conjecture (max degree Delta implies R = 4k-1) and broom_ramsey.",
       "startLine": 151,
       "endLine": 181
     },
     {
       "id": "lower-bound",
-      "title": "Lower Bound Construction",
-      "summary": "R(T) ≥ 4k - 1 always holds",
+      "title": "General Lower Bound Construction",
+      "summary": "States general_lower_bound (R(T) >= 4k-1 always) and lower_bound_construction using K_{2k-1,2k-1} coloring.",
       "startLine": 183,
       "endLine": 195
     },
     {
       "id": "related",
-      "title": "Related Results",
-      "summary": "Chvátal-Harary, star and path Ramsey numbers",
+      "title": "Classical Results and Burr-Erdős",
+      "summary": "States chvatal_harary (R(T) <= 2n-2), star_ramsey (R(S_n) = 2n-1), path_ramsey (R(P_n) = n). Defines burrErdosFormula and proves tree_burr_erdos.",
       "startLine": 197,
       "endLine": 224
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #549 conjectured R(T) = 4k - 1 for bipartite (k, 2k) trees. This was DISPROVED by Norin, Sun, and Zhao using the double star counterexample, which has R(T) ≥ 4.2k. The conjecture remains true for special cases like bounded-degree trees and brooms. The formalization captures the counterexample, both bounds, and the special cases.",
-    "implications": "This result connects to:\n\n1. **Tree Ramsey Theory:** Precise formulas vs asymptotic bounds\n2. **Flag Algebras:** Modern optimization methods in extremal combinatorics\n3. **Degree Constraints:** High-degree vertices allow denser colorings\n4. **Burr-Erdős Conjecture:** The relationship between chromatic number and Ramsey numbers\n5. **Structural Graph Theory:** How tree shape affects Ramsey numbers",
+    "summary": "Erdős Problem #549 conjectured R(T) = 4k - 1 for bipartite (k, 2k) trees. This was DISPROVED by Norin, Sun, and Zhao using the double star counterexample, which has R(T) >= 4.2k. Flag algebra methods give the tight upper bound 4.21526k. The conjecture remains true for bounded-degree trees and brooms. The formalization captures the counterexample, both bounds, special cases, the general lower bound construction, and classical context from Chvátal-Harary and Burr-Erdős.",
+    "implications": "This result demonstrates a recurring theme in Ramsey theory: natural conjectures about exact values can fail when high-degree vertices create unexpected coloring flexibility. The resolution via flag algebras (semidefinite programming) exemplifies modern computational methods in extremal combinatorics, complementing classical probabilistic and algebraic techniques. The survival of the conjecture for bounded-degree trees shows that vertex degree is the critical parameter controlling tree Ramsey numbers.",
     "openQuestions": [
-      "What is the exact limiting constant for R(double star)/k?",
-      "Are there other bipartite trees that violate the 4k-1 bound?",
-      "What is the maximum R(T)/k over all bipartite (k, 2k) trees?",
-      "Does the conjecture hold for trees with max degree 3?"
+      "What is the exact limiting constant for R(double star)/k? (Currently known to lie in [4.2, 4.21526])",
+      "Are there other bipartite (k, 2k) trees violating 4k - 1 besides the double star family?",
+      "What is the maximum R(T)/k over all bipartite (k, 2k) trees T?",
+      "Does the conjecture hold for all trees with maximum degree 3?"
     ]
   }
 }
