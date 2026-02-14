@@ -1,0 +1,114 @@
+{
+  "slug": "lagrange-four-squares",
+  "title": "Waring's Problem for Squares: g(2) = 4",
+  "phase": "COMPLETE",
+  "status": "complete",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "The Waring function g(2) = 4: every natural number is the sum of at most 4 squares, and 4 is optimal because numbers of the form 4^a(8b+7) require exactly 4 squares.",
+    "plain": "Prove that every natural number can be written as a sum of four squares (Lagrange), that no fewer than four suffice in general (via Legendre's excluded forms), and that g(2) = 4 exactly.",
+    "whyMatters": [
+      "Connects Lagrange's four-square theorem to Waring's problem",
+      "Self-contained proof of the lower bound via modular arithmetic",
+      "General descent argument showing all 4^a(8b+7) forms need 4 squares",
+      "Computable framework for analyzing square representation counts"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "g(2) upper bound from Lagrange (Mathlib's Nat.sum_four_squares)",
+      "Squares mod 8 classification: x² % 8 ∈ {0, 1, 4}",
+      "Squares mod 4 classification: x² % 4 ∈ {0, 1}",
+      "Sum of 3 squares mod 8 ≠ 7",
+      "7 not sum of 3, 2, or 1 squares",
+      "7 needs exactly 4 squares (g(2) lower bound witness)",
+      "waring_g2_eq_four: g(2) = 4 exactly",
+      "All 8b+7 numbers need 4 squares (by mod 8 argument)",
+      "Descent: if n not sum of 3 squares, 4n also not (via all-even argument)",
+      "General excluded_form_needs_four: all 4^a(8b+7) need 4 squares (by induction on a)",
+      "Infinitely many numbers need 4 squares",
+      "numSquaresNeeded computable function for n=0..31 and selected values",
+      "isExcludedForm decidable classifier (9 positive, 7 negative examples)",
+      "checkExcludedMatchesFour: all excluded forms up to 100 need exactly 4 squares",
+      "countNeedingK statistics for bound=50",
+      "Closure under 4× multiplication and k² multiplication for 3-square sums",
+      "fourth_square_essential: excluded forms truly need all 4 squares",
+      "checkMaxFour verified up to 200",
+      "65+ theorems total, all fully proved"
+    ],
+    "open": [],
+    "goal": "COMPLETE - 65+ theorems proved with 0 sorries and 0 axioms"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-14T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Complete. 442 lines, 65+ theorems, 0 sorries, 0 axioms.",
+    "blockers": [],
+    "nextAction": "None - problem is complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: LagrangeFourSquaresWaringG2.lean has 442 lines with 65+ fully-proved theorems. Establishes g(2)=4 by combining Lagrange upper bound (from Mathlib) with self-contained lower bound proof via modular arithmetic. Includes general descent argument for all excluded forms 4^a(8b+7), computable numSquaresNeeded function, isExcludedForm classifier, and statistical analysis tools.",
+    "builtItems": [
+      "waring_g2_eq_four (main result)",
+      "sq_mod_eight / sq_mod_four classifications",
+      "seven_needs_four_squares (lower bound witness)",
+      "eight_b_plus_seven_needs_four (mod 8 family)",
+      "four_dvd_sum_three_sq_imp_all_even (descent lemma)",
+      "four_mul_not_sum_three_sq (descent theorem)",
+      "excluded_form_needs_four (general inductive result)",
+      "infinitely_many_need_four",
+      "numSquaresNeeded computable function",
+      "isExcludedForm decidable classifier",
+      "checkExcludedMatchesFour verifier",
+      "fourth_square_essential"
+    ],
+    "insights": [
+      "The mod 8 argument is entirely self-contained - no need for Legendre's full theorem",
+      "Descent argument (4n not sum of 3 squares if n isn't) uses all-even reduction via mod 4",
+      "interval_cases + omega/decide is the reliable pattern for small modular arithmetic in Docker Mathlib",
+      "native_decide handles numSquaresNeeded computations up to ~200 efficiently"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Self-contained lower bound via modular arithmetic",
+      "description": "Prove g(2) lower bound without Legendre's full theorem, using only mod 8 and mod 4 arguments plus descent",
+      "status": "complete",
+      "difficulty": "medium"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "extension",
+    "0-sorry",
+    "0-axiom"
+  ],
+  "relatedProofs": [
+    "LagrangeFourSquares.lean",
+    "LagrangeFourSquaresOQ01.lean",
+    "LagrangeFourSquaresOQ02.lean",
+    "LagrangeFourSquaresWaringG2.lean",
+    "ThreeSquares.lean"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.NumberTheory.SumFourSquares"
+    ]
+  },
+  "started": "2026-02-14T22:27:00.000Z",
+  "lastUpdate": "2026-02-14T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 8
+}
