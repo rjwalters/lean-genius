@@ -18,59 +18,135 @@
     "mathlibDependencies": [
       {
         "theorem": "WeierstrassCurve",
-        "description": "Elliptic curve definitions",
+        "description": "General Weierstrass curve structure for elliptic curves",
         "module": "Mathlib.AlgebraicGeometry.EllipticCurve.Weierstrass"
+      },
+      {
+        "theorem": "LSeries",
+        "description": "L-series definitions for defining L(E,s)",
+        "module": "Mathlib.NumberTheory.LSeries.Basic"
+      },
+      {
+        "theorem": "Complex.exp",
+        "description": "Complex exponential and analytic functions for L-function theory",
+        "module": "Mathlib.Analysis.Complex.Basic"
       }
     ],
     "originalContributions": [
-      "Formal statement of BSD conjecture (weak and strong forms)",
-      "Definition of L-functions for elliptic curves",
-      "Known cases (rank 0 and 1)",
-      "Educational context"
+      "EllipticCurveQ structure: simplified short Weierstrass form y^2 = x^3 + ax + b",
+      "toWeierstrassCurve: verified embedding into Mathlib's WeierstrassCurve",
+      "toWeierstrassCurve_discriminant: discriminant formula verified by ring",
+      "toWeierstrassCurve_c4: c4 = -48a verified",
+      "L-function definition via Euler product with local factors",
+      "Weak and strong BSD conjecture statements as Props",
+      "Rank 0 and rank 1 proven cases axiomatized (Kolyvagin, Gross-Zagier)",
+      "Gross-Zagier formula axiomatized",
+      "Congruent number connection and computational evidence"
     ],
     "dateAdded": "12/29/25",
-    "millenniumProblem": "bsd"
+    "millenniumProblem": "bsd",
+    "proofRepoPath": "Proofs/BirchSwinnertonDyer.lean"
   },
   "overview": {
-    "historicalContext": "The BSD conjecture arose from extensive computational experiments in the 1960s. It connects arithmetic (rational points) with analysis (L-functions) in a precise quantitative way.",
+    "historicalContext": "The BSD conjecture arose from pioneering computational experiments by Bryan Birch and Peter Swinnerton-Dyer at Cambridge in the early 1960s. Using the EDSAC computer, they computed the product of local factors N_p/p for many elliptic curves and observed that the growth rate of this product as p -> infinity appeared to correlate with the number of rational points on the curve. In 1965, they published their conjecture: the rank of the Mordell-Weil group E(Q) equals the order of vanishing of the L-function L(E, s) at s = 1.\n\nThe first major progress came from Coates and Wiles (1977), who proved BSD for elliptic curves with complex multiplication when L(E, 1) != 0. The breakthrough decade was the 1980s-90s: Gross and Zagier (1986) established their celebrated formula relating L'(E, 1) to the height of Heegner points, and Kolyvagin (1990) introduced Euler systems to prove the rank 0 and rank 1 cases. These results established that if L(E, 1) != 0 then rank = 0, and if L(E, 1) = 0 but L'(E, 1) != 0 then rank = 1, with the Shafarevich-Tate group finite in both cases.\n\nWiles' proof of the modularity theorem for semistable curves (1995) -- which famously proved Fermat's Last Theorem as a corollary -- was essential for BSD because it guaranteed that L(E, s) has analytic continuation, making the order of vanishing at s = 1 well-defined. Breuil-Conrad-Diamond-Taylor (2001) completed the modularity theorem for all elliptic curves over Q.\n\nIn 2000, the Clay Mathematics Institute designated BSD as one of seven Millennium Prize Problems, carrying a $1,000,000 prize. Despite massive computational evidence (verified for all curves with conductor <= 500,000 with no counterexamples), the conjecture remains open for rank >= 2. Bhargava and Shankar (2015) showed the average rank of elliptic curves is at most 7/6, providing statistical evidence that BSD is 'usually true', but a proof for individual curves of higher rank remains elusive.",
     "problemStatement": "**Weak BSD:** rank(E(Q)) = ord_{s=1} L(E,s)\n\n**Strong BSD:** The leading Taylor coefficient of L(E,s) at s=1 equals a precise formula involving periods, regulators, and the Shafarevich-Tate group.",
-    "proofStrategy": "This file provides:\n1. Abstract definitions of elliptic curves and L-functions\n2. The formal BSD statement\n3. Known proven cases (rank 0, rank 1)",
+    "proofStrategy": "The formalization provides a complete educational framework for BSD. Part I defines EllipticCurveQ in short Weierstrass form with verified embedding into Mathlib's WeierstrassCurve (discriminant and c4 theorems proved by ring). Part II defines L-functions via Euler products with local factors, analytic continuation (from modularity), and the root number. Part III states the analytic rank and both weak and strong BSD as Props. Part IV axiomatizes the proven cases (rank 0, rank 1, Gross-Zagier formula) and presents computational evidence and the congruent number application.",
     "keyInsights": [
-      "The conjecture is OPEN - one of the Millennium Prize Problems",
-      "Proven for rank 0 and rank 1 by Gross-Zagier and Kolyvagin",
-      "Modularity theorem is essential (proven by Wiles et al.)"
+      "BSD connects two fundamentally different invariants of an elliptic curve: the algebraic rank (from Mordell-Weil, counting independent rational points) and the analytic rank (from the L-function, an analytic object encoding arithmetic data)",
+      "The modularity theorem (Wiles et al.) is a prerequisite for even stating BSD precisely, since L(E,s) needs analytic continuation to define ord_{s=1}",
+      "Rank 0 and rank 1 are proved via Kolyvagin's Euler systems and the Gross-Zagier formula, but these methods fundamentally cannot reach rank >= 2",
+      "The strong form of BSD predicts a precise leading coefficient formula involving 5 arithmetic invariants, making it far more than just an equality of ranks",
+      "The congruent number problem provides a beautiful application: n is a congruent number iff rank(E_n) > 0 iff L(E_n, 1) = 0",
+      "The formalization connects directly to Mathlib via toWeierstrassCurve with verified discriminant and c4 formulas"
     ]
   },
   "sections": [
     {
+      "id": "docstring",
+      "title": "Module Docstring",
+      "startLine": 20,
+      "endLine": 93,
+      "summary": "Comprehensive overview: BSD statement (weak and strong), status table (proven vs conjectured components), historical timeline (1960s-2001), Mathlib dependencies, and references."
+    },
+    {
       "id": "elliptic-curves",
-      "title": "Elliptic Curves",
-      "startLine": 1,
-      "endLine": 100,
-      "summary": "Definition of elliptic curves and the Mordell-Weil group."
+      "title": "Part I: Elliptic Curves over Q",
+      "startLine": 104,
+      "endLine": 200,
+      "summary": "EllipticCurveQ structure (short Weierstrass form), discriminant and j-invariant definitions, toWeierstrassCurve embedding into Mathlib, verified discriminant/c4 theorems."
+    },
+    {
+      "id": "mordell-weil",
+      "title": "Mordell-Weil and Algebraic Rank",
+      "startLine": 128,
+      "endLine": 191,
+      "summary": "Mordell-Weil theorem (E(Q) finitely generated), algebraic rank definition, torsion subgroup. The rank r is the key algebraic unknown in BSD."
     },
     {
       "id": "l-functions",
-      "title": "L-Functions",
-      "startLine": 101,
-      "endLine": 180,
-      "summary": "Definition of the L-function and analytic continuation."
+      "title": "Part II: L-Functions",
+      "startLine": 193,
+      "endLine": 314,
+      "summary": "L(E,s) via Euler product with local factors, a_p = p+1-#E(F_p), root number w(E), modularity theorem (axiomatized), analytic continuation and functional equation."
     },
     {
-      "id": "bsd",
-      "title": "The BSD Conjecture",
-      "startLine": 181,
-      "endLine": 260,
-      "summary": "Statement of weak and strong BSD."
+      "id": "analytic-rank",
+      "title": "Analytic Rank",
+      "startLine": 320,
+      "endLine": 353,
+      "summary": "Analytic rank r_an = ord_{s=1} L(E,s), parity constraint from functional equation, connection to weak BSD."
+    },
+    {
+      "id": "bsd-statement",
+      "title": "Part III: The BSD Conjecture",
+      "startLine": 351,
+      "endLine": 483,
+      "summary": "Formal statement of weak BSD (rank = analytic rank) and strong BSD (leading coefficient formula with Omega, R, Sha, c_p, torsion). Both stated as Props, correctly reflecting open status."
+    },
+    {
+      "id": "proven-cases",
+      "title": "Part IV: Proven Cases",
+      "startLine": 485,
+      "endLine": 594,
+      "summary": "Rank 0 (Kolyvagin 1990), rank 1 (Gross-Zagier + Kolyvagin), CM curves (Coates-Wiles 1977). Gross-Zagier formula L'(E,1) = c * h(P_K). All axiomatized."
+    },
+    {
+      "id": "computational",
+      "title": "Computational Evidence",
+      "startLine": 596,
+      "endLine": 656,
+      "summary": "Verified for millions of curves, congruent number application E_n: y^2 = x^3 - n^2x, obstacles to proving general BSD (Sha computation, higher rank)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Status",
+      "startLine": 708,
+      "endLine": 749,
+      "summary": "BSD remains OPEN since 1965. Proven for rank 0 and 1. Millennium Prize: $1,000,000. Central to arithmetic geometry."
     }
   ],
   "conclusion": {
-    "summary": "The BSD Conjecture remains open. This formalization provides the mathematical framework and statement, along with the known partial results.",
-    "implications": "BSD is central to arithmetic geometry. A proof would have profound implications for understanding elliptic curves and their rational points.",
+    "summary": "The BSD Conjecture remains one of the deepest open problems in mathematics. This formalization provides a comprehensive framework: elliptic curves connected to Mathlib via verified embeddings, L-functions defined via Euler products, both weak and strong BSD formally stated, and proven cases (rank 0, 1) axiomatized. The formalization serves as educational infrastructure for understanding this Millennium Prize Problem.",
+    "implications": "A proof of BSD would have profound consequences: it would provide an algorithm for computing the rank of any elliptic curve (via L-function computation), resolve the congruent number problem completely, establish finiteness of the Shafarevich-Tate group, and represent a landmark in the Langlands program connecting arithmetic and automorphic forms.",
     "openQuestions": [
-      "Is the Shafarevich-Tate group always finite?",
-      "Can we extend the rank 0 and 1 results to higher rank?",
-      "What is the connection to the Bloch-Kato conjecture?"
+      "Is the Shafarevich-Tate group always finite? (Implied by strong BSD)",
+      "Can Kolyvagin's Euler system method be extended to rank >= 2?",
+      "What is the connection between BSD and the Bloch-Kato conjecture for general motives?",
+      "Can p-adic methods (Iwasawa theory) provide progress toward higher rank cases?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "proofId": "fundamental-theorem-algebra",
+      "relationship": "Both concern deep connections between algebraic structures and analytic properties -- BSD connects rational points (algebra) with L-functions (analysis)"
+    },
+    {
+      "proofId": "hilbert-17",
+      "relationship": "Both are landmark problems connecting algebra and analysis -- Hilbert 17 (sums of squares and positive polynomials) and BSD (rational points and L-functions)"
+    },
+    {
+      "proofId": "kepler-conjecture",
+      "relationship": "Both are famous long-standing conjectures that required fundamentally new techniques -- BSD remains open while Kepler was resolved by Hales (1998)"
+    }
+  ]
 }
