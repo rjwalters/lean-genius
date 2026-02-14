@@ -99,6 +99,23 @@
       "summary": "#check statements confirming the Mathlib API surface."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "foundational",
+      "description": "The derangement formula D(n) = n! * sum((-1)^k/k!) is a direct application of the inclusion-exclusion principle, counting permutations that avoid all n fixed-point events."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Both use inclusion-exclusion over arithmetic/combinatorial structures: derangements over permutation fixed points, Euler's totient over prime divisibility."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "related",
+      "description": "The factorial n! in the derangement formula connects to prime factorization: D(n)/n! converges to 1/e, linking combinatorics to analysis via the Fundamental Theorem of Arithmetic."
+    }
+  ],
   "conclusion": {
     "summary": "The derangements formula $D_n = n! \\sum (-1)^k/k!$ is verified using Mathlib's `Combinatorics.Derangements` module. The formalization includes the formal definition (no fixed points), the recurrence relation $D_{n+2} = (n+1)(D_n + D_{n+1})$, the closed-form sum, concrete examples, and algebraic properties. The connection to $1/e$ through the Taylor series truncation is the central mathematical insight.",
     "implications": "The derangements formula is foundational in combinatorial probability. The convergence $D_n/n! \\to 1/e$ is an archetype of 'universal' probabilities in random combinatorics — the probability of a derangement stabilizes by $n = 5$ and is essentially independent of $n$ for large $n$. The inclusion-exclusion derivation serves as a pedagogical template for sieve methods in analytic combinatorics.",

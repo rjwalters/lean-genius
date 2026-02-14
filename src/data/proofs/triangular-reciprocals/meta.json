@@ -44,6 +44,23 @@
     {"id": "triangular-connection", "title": "Connection to Triangular Numbers", "startLine": 267, "endLine": 291, "summary": "Proves 1/T_n = 2/(n(n+1)) by showing n(n+1) is always even (case split on parity of n), then field_simp and linarith."},
     {"id": "examples", "title": "Pedagogical Examples", "startLine": 293, "endLine": 305, "summary": "Computes T_1 = 1, T_2 = 3, T_3 = 6, T_4 = 10, T_5 = 15 via native_decide. Exports main theorems with #check."}
   ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "Both are classical infinite series with exact closed-form sums. The geometric series sum(r^n) = 1/(1-r) and sum(2/(n(n+1))) = 2 are paradigmatic examples of convergent series."
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "related",
+      "description": "Triangular numbers T(n) = n(n+1)/2 are partial sums of the arithmetic series 1 + 2 + ... + n. The reciprocal sum inverts this relationship."
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The harmonic series sum(1/n) diverges, but sum(2/(n(n+1))) converges to 2. The key difference is the extra factor 1/(n+1) which provides sufficient decay via telescoping."
+    }
+  ],
   "conclusion": {
     "summary": "The telescoping series identity ∑1/T_n = 2 is fully verified, including convergence via comparison with the p-series, the epsilon-N limit argument, and the connection between triangular numbers and the product n(n+1).",
     "implications": "The telescoping technique generalizes to ∑1/(n(n+k)) via partial fractions with k terms, extending to all figurate number reciprocals (pentagonal, hexagonal, etc.). The comparison test framework connects these sums to p-series theory. Leibniz's 1673 evaluation of this series was a milestone in the development of calculus and infinite series theory.",
