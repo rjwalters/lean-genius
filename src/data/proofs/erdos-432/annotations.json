@@ -6,7 +6,7 @@
     "range": { "startLine": 34, "endLine": 38 },
     "title": "Sumset A + B",
     "content": "**sumset A B** = {a + b : a ∈ A, b ∈ B}. The Minkowski sum of two subsets of ℕ. The pairwise coprime constraint is imposed on this set, creating a tension between additive richness and multiplicative independence.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The **sumset** (or Minkowski sum) is the central object of additive combinatorics. By the Cauchy-Davenport theorem, for finite subsets A, B of ℤ/pℤ, |A + B| ≥ min(p, |A| + |B| - 1) — sumsets tend to be large. Freiman's theorem gives a structural characterization when |A + A| is small. The Plünnecke-Ruzsa inequality bounds |kA - lA| in terms of |A + A|/|A|. Problem #432 asks the opposite question: how large can a sumset be under a severe multiplicative restriction (pairwise coprimality)? This inverts the usual additive combinatorics paradigm, where one bounds sumsets from below.",
     "relatedConcepts": ["Minkowski sum", "Cauchy-Davenport theorem", "Freiman's theorem", "Plünnecke-Ruzsa inequality"],
     "prerequisites": ["Set ℕ", "set membership"]
@@ -30,7 +30,7 @@
     "range": { "startLine": 48, "endLine": 59 },
     "title": "Pairwise Coprimality",
     "content": "**IsPairwiseCoprime S**: gcd(x, y) = 1 for all distinct x, y ∈ S. **SumsetPairwiseCoprime A B**: the sumset A + B is pairwise coprime. This means every pair of sums a₁ + b₁ and a₂ + b₂ shares no common prime factor.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "A **pairwise coprime** set is one where no prime divides two distinct elements. The maximal size of a pairwise coprime subset of {1,...,n} is exactly π(n) + 1 (the primes plus 1): take {1, 2, 3, 5, 7, 11, ...}. Any larger set must contain two elements sharing a prime factor. The constraint is **multiplicative** in nature, while the sumset is **additive** — the problem lives at the intersection of these two worlds. By the fundamental theorem of arithmetic, pairwise coprimality means the elements of A + B partition the primes: each prime 'belongs to' at most one element.",
     "relatedConcepts": ["Nat.Coprime", "greatest common divisor", "prime factorization", "coprime set extremal size"],
     "prerequisites": ["Nat.Coprime", "Nat.GCD.Basic"]
@@ -54,7 +54,7 @@
     "range": { "startLine": 86, "endLine": 98 },
     "title": "Erdős Problem #432 (OPEN)",
     "content": "**ErdosProblem432**: Does there exist a bound f(n) ≤ n, growing to infinity, such that for all infinite A, B with pairwise coprime sumset, countingFn(A + B, n) ≤ f(n)? The problem asks for the best possible f.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The formalization asks for the existence of a non-trivial upper bound f on the counting function. The trivial bound is f(n) = n. The coprime-set bound gives f(n) ≤ π(n) + 1 ∼ n/log n. The real question is whether the **sumset structure** forces something much smaller. Possible scenarios: (1) f(n) ∼ π(n) — the sumset doesn't help, one can build A, B with coprime sumset as dense as the primes; (2) f(n) = O(n^α) for some α < 1 — polynomial thinning; (3) f(n) = O((log n)^k) — near-logarithmic density. Tao's comment that the problem 'looks difficult' suggests that even determining the correct order of magnitude is far from current techniques. The difficulty lies in the interplay between additive structure (sumset) and multiplicative structure (coprimality).",
     "relatedConcepts": ["density of coprime sets", "sumset density bounds", "additive-multiplicative interplay"],
     "prerequisites": ["countingFn", "IsInfiniteSet", "SumsetPairwiseCoprime"]
@@ -66,7 +66,7 @@
     "range": { "startLine": 106, "endLine": 111 },
     "title": "Prime Divides at Most One Element",
     "content": "If A + B is pairwise coprime, then each prime p divides at most one element of A + B. The elements of A + B partition the primes: their factorizations are disjoint.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "This is the key structural lemma. If p | x and p | y with x ≠ y, then gcd(x, y) ≥ p > 1, contradicting pairwise coprimality. Consequently, the **prime factorizations are disjoint** across elements of A + B. The primes are partitioned among the sumset elements, and by PNT there are only π(n) ∼ n/log n primes up to n. This immediately gives |A + B ∩ [1,n]| ≤ π(n) + 1. The question is whether the sumset structure A + B further constrains which primes can be 'assigned' to sumset elements — for instance, the additive constraint a₁ + b₁ ≡ 0 (mod p) and a₂ + b₂ ≡ 0 (mod q) simultaneously restricts the residues of A, B modulo pq.",
     "relatedConcepts": ["prime uniqueness", "disjoint factorizations", "prime partition", "Chinese Remainder Theorem"],
     "prerequisites": ["Nat.Prime", "Nat.Coprime", "divisibility"]
