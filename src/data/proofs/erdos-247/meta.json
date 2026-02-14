@@ -7,7 +7,7 @@
     "author": "Paul Erdős",
     "sourceUrl": "https://erdosproblems.com/247",
     "date": "1975",
-    "status": "axiom",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos247Problem.lean",
     "tags": [
       "erdos",
@@ -20,64 +20,135 @@
     "sorries": 0,
     "erdosNumber": 247,
     "erdosUrl": "https://erdosproblems.com/247",
-    "erdosProblemStatus": "partially-solved"
+    "erdosProblemStatus": "partially-solved",
+    "dateAdded": "02/14/26",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Transcendental",
+        "description": "Predicate for transcendence over a field (element is not algebraic)",
+        "module": "Mathlib.RingTheory.Algebraic.Basic"
+      },
+      {
+        "theorem": "tsum",
+        "description": "Infinite series summation as a topological limit of partial sums",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "StrictMono",
+        "description": "Strict monotonicity predicate for sequences",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function and basic lemmas including factorial_lt_of_lt",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      }
+    ],
+    "references": [
+      {
+        "key": "Er75",
+        "citation": "Erdős, P. (1975). Some problems and results on the irrationality of the sum of infinite series. J. Math. Sci., 10:1-7.",
+        "type": "paper"
+      },
+      {
+        "key": "Er88",
+        "citation": "Erdős, P. (1988). On the irrationality of certain series: problems and results. In: New Advances in Transcendence Theory, Cambridge Univ. Press, pp. 102-109.",
+        "type": "paper"
+      },
+      {
+        "key": "Li1844",
+        "citation": "Liouville, J. (1844). Sur des classes très étendues de quantités dont la valeur n'est ni algébrique ni même réductible à des irrationelles algébriques. C. R. Acad. Sci. Paris, 18:883-885.",
+        "type": "paper"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of lacunarySum as tsum over 1/2^{n_k}",
+      "Definition of HasWeakGrowth (lim sup n_k/k = infinity) and HasStrongGrowth (superpolynomial growth)",
+      "Formal statement of the open Erdos Problem #247 conjecture",
+      "Axiomatization of Erdos's 1975 transcendence theorem for superpolynomial growth",
+      "Proofs of strict monotonicity for factorial, exponential, and quadratic index sequences",
+      "Axiomatization of superpolynomial growth for k! and 2^k",
+      "Derived transcendence of Sigma 1/2^{k!} and Sigma 1/2^{2^k} from the main axiom",
+      "Explicit construction of the open case: squareSeq and square_sum for n_k = k^2",
+      "Summary theorem packaging the three main results"
+    ],
+    "relatedProblems": [
+      "erdos-246",
+      "erdos-248"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős posed this problem about transcendental numbers in the context of lacunary series - infinite sums where the terms become increasingly sparse. The study of transcendental numbers began with Liouville (1844) who constructed the first explicit examples. Hermite (1873) proved e is transcendental, and Lindemann (1882) proved π is transcendental. Erdős's problem asks about a family of numbers defined by their binary expansions: when n_k grows quickly, the number Σ 1/2^{n_k} has 1s at increasingly sparse positions in its binary expansion. In 1975, Erdős proved transcendence under the strong condition that n_k grows faster than any polynomial. The general conjecture (just faster-than-linear growth) remains open and was described by Erdős in 1988 as 'hopeless at present'.",
-    "problemStatement": "Let n₁ < n₂ < ⋯ be a strictly increasing sequence of positive integers such that lim sup n_k/k = ∞. Is the sum Σ_{k=1}^∞ 1/2^{n_k} necessarily transcendental? Erdős proved YES under the stronger condition that lim sup n_k/k^t = ∞ for ALL t ≥ 1 (superpolynomial growth). The general case remains open.",
-    "proofStrategy": "The proof of Erdős's partial result uses Liouville-type approximation arguments. If α is algebraic of degree d, then for any rational p/q, we have |α - p/q| > c/q^d for some constant c > 0. This is because the minimal polynomial of α cannot be too small at rational points. For lacunary sums with superpolynomial growth, we can construct very good rational approximations by truncating the series - the tail is exponentially small. When growth is faster than any polynomial, these approximations are too good for any algebraic number, forcing transcendence.",
+    "historicalContext": "The study of transcendental numbers began with Liouville's 1844 construction of the first explicit transcendental, the Liouville constant L = sum 10^{-k!}, which is transcendental precisely because factorial growth makes it approximable by rationals far better than any algebraic number allows. Hermite (1873) proved e transcendental and Lindemann (1882) proved pi transcendental, but these results relied on special properties of exponential functions rather than approximation arguments. Erdos returned to Liouville-type methods in 1975, proving that the lacunary sum sum 1/2^{n_k} is transcendental whenever the sequence n_k grows faster than any polynomial (superpolynomial growth). His proof generalizes Liouville's insight: truncating the sum at the K-th term gives a rational p/q with q = 2^{n_K}, and when n_k grows superpolynomially, the tail sum is smaller than c/q^d for any fixed algebraic degree d. The full conjecture, that mere faster-than-linear growth (lim sup n_k/k = infinity) suffices, remains open. Erdos noted in 1988 that these problems 'seem hopeless at present.' The simplest open case is n_k = k^2, where the sum sum 1/2^{k^2} (related to the Jacobi theta function theta_3) resists all known techniques.",
+    "problemStatement": "Let n_1 < n_2 < ... be a strictly increasing sequence of positive integers such that lim sup n_k/k = infinity. Is the sum S = sum_{k=1}^{infinity} 1/2^{n_k} necessarily transcendental? Erdos (1975) proved YES under the stronger condition that lim sup n_k/k^t = infinity for ALL t >= 1 (superpolynomial growth). The general conjecture for merely faster-than-linear growth remains open.",
+    "proofStrategy": "The formalization axiomatizes Erdos's 1975 theorem and derives concrete corollaries. The lacunary sum is defined using Mathlib's tsum (topological sum). Two growth conditions are defined: HasWeakGrowth (for all C, exists k with n_k > C*k) captures faster-than-linear growth, and HasStrongGrowth (for all polynomial degree t and constant C, exists k with n_k > C*k^t) captures superpolynomial growth. The main axiom erdos_transcendence_strong asserts transcendence under strong growth plus strict monotonicity. Three example sequences are examined: k! and 2^k satisfy strong growth (axiomatized), yielding transcendence corollaries proved by direct application of the main axiom. The quadratic sequence k^2 satisfies only weak growth, illustrating the open gap. A summary theorem packages the three main results.",
     "keyInsights": [
-      "The sum Σ 1/2^{n_k} is a binary number with 1s at positions n_k - its transcendence depends on how 'randomly' these 1s are distributed",
-      "Liouville's theorem: algebraic numbers cannot be approximated too well by rationals, with the quality of approximation bounded by the algebraic degree",
-      "Truncating the lacunary sum gives rational approximations; superpolynomial growth makes the tail exponentially smaller than Liouville's bound allows",
-      "The gap between weak growth (n_k/k → ∞) and strong growth (n_k/k^t → ∞ for all t) remains unbridged - even quadratic growth is open"
+      "The sum S = sum 1/2^{n_k} is a binary number with 1s at positions n_k; its transcendence depends on how sparsely these 1s are distributed",
+      "Liouville's approximation theorem provides the key tool: if alpha is algebraic of degree d, then |alpha - p/q| > c/q^d, bounding how well rationals can approximate alpha",
+      "Truncating the lacunary sum at term K gives rational p_K/2^{n_K} with error sum_{j>K} 1/2^{n_j} < 1/2^{n_{K+1}-1}; superpolynomial growth makes this error smaller than any Liouville bound",
+      "The gap between weak growth (faster than linear) and strong growth (faster than any polynomial) is where the difficulty concentrates; even quadratic growth n_k = k^2 is open",
+      "The Liouville constant sum 10^{-k!} is the classical ancestor of these lacunary transcendence results, using factorial growth to achieve approximation quality exceeding any algebraic degree"
     ]
   },
   "sections": [
     {
       "id": "lacunary-sum",
-      "title": "The Lacunary Sum",
-      "startLine": 36,
+      "title": "Part I: The Lacunary Sum",
+      "startLine": 34,
       "endLine": 38,
-      "summary": "Definition of the lacunary sum Σ 1/2^{n_k}"
+      "summary": "Defines lacunarySum (n : N -> N) : R as the topological sum tsum (fun k => 1/2^{n k}). This is the central object of the problem: an infinite binary expansion with 1s at positions determined by the sequence n. The 'lacunary' (gappy) character emerges when n_k grows fast, making the 1s increasingly sparse."
     },
     {
       "id": "growth-conditions",
-      "title": "Growth Conditions",
-      "startLine": 42,
+      "title": "Part II: Growth Conditions",
+      "startLine": 40,
       "endLine": 50,
-      "summary": "Weak growth (faster than linear) and strong growth (faster than any polynomial)"
+      "summary": "Defines two growth conditions on the index sequence. HasWeakGrowth requires that for all C > 0, there exists k > 0 with n_k > C*k, equivalent to lim sup n_k/k = infinity (faster-than-linear growth). HasStrongGrowth strengthens this to require n_k > C*k^t for ALL polynomial degrees t >= 1 and all constants C > 0, meaning the sequence outgrows every polynomial (superpolynomial growth)."
     },
     {
       "id": "conjecture",
-      "title": "The Open Conjecture",
-      "startLine": 54,
+      "title": "Part III: The Main Conjecture (OPEN)",
+      "startLine": 52,
       "endLine": 62,
-      "summary": "Statement of Erdős Problem #247"
+      "summary": "Defines erdos_247_conjecture as a Prop: for all strictly increasing n with HasWeakGrowth, the lacunary sum is Transcendental over Q. This is the full open conjecture. The formalization uses Mathlib's Transcendental predicate and StrictMono to state it precisely."
     },
     {
       "id": "erdos-theorem",
-      "title": "Erdős's Theorem (1975)",
-      "startLine": 66,
+      "title": "Part IV: Erdos's Partial Result (1975)",
+      "startLine": 64,
       "endLine": 79,
-      "summary": "Transcendence under strong growth conditions"
+      "summary": "Axiomatizes erdos_transcendence_strong: for strictly increasing n with HasStrongGrowth, the lacunary sum is transcendental. This is Erdos's 1975 theorem, the strongest known result toward the full conjecture. The doc comment outlines the Liouville-type proof: algebraic numbers of degree d satisfy |alpha - p/q| > c/q^d, but superpolynomial growth in n_k produces rational approximations violating this bound for every d."
     },
     {
       "id": "examples",
-      "title": "Examples and Corollaries",
-      "startLine": 83,
+      "title": "Part V: Examples",
+      "startLine": 81,
       "endLine": 109,
-      "summary": "Factorial and exponential sequences yield transcendental sums"
+      "summary": "Provides two concrete applications. First proves factorial_strictMono (k -> (k+1)! is StrictMono) and pow2_strictMono (k -> 2^k is StrictMono) using Mathlib's factorial_lt_of_lt and pow_lt_pow_right. Then axiomatizes factorial_strong_growth and pow2_strong_growth (both k! and 2^k outgrow every polynomial). Finally derives factorial_sum_transcendental (sum 1/2^{k!} is transcendental) and pow2_sum_transcendental (sum 1/2^{2^k} is transcendental) by direct application of erdos_transcendence_strong."
+    },
+    {
+      "id": "gap",
+      "title": "Part VI: The Gap Between Conditions",
+      "startLine": 111,
+      "endLine": 124,
+      "summary": "Examines squareSeq (k -> (k+1)^2) as the canonical example in the gap between weak and strong growth. Proves square_strictMono via Nat.pow_lt_pow_left. Defines square_sum := lacunarySum squareSeq. The sum sum 1/2^{k^2} satisfies weak growth but not strong growth, so Erdos's theorem does not apply. Whether this sum is transcendental remains open."
+    },
+    {
+      "id": "summary",
+      "title": "Part VII: Summary",
+      "startLine": 126,
+      "endLine": 143,
+      "summary": "Packages the main results as problem_247_summary: a conjunction of (1) Erdos's theorem for strong growth, (2) transcendence of the factorial sum, and (3) transcendence of the double-exponential sum. Proved via exact \\<erdos_transcendence_strong, factorial_sum_transcendental, pow2_sum_transcendental\\>. The file ends with #check commands for the conjecture and theorem."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #247 on the transcendence of lacunary sums. Erdős's 1975 theorem (axiomatized here) establishes transcendence under superpolynomial growth. The general conjecture for just-faster-than-linear growth remains one of the tantalizing open problems in transcendental number theory.",
-    "implications": "If the full conjecture were proved, it would establish a clean characterization: any infinite binary number with 1s growing faster than linearly sparse must be transcendental. This would connect the arithmetic complexity (algebraic vs transcendental) to the combinatorial sparseness of the binary representation.",
+    "summary": "This formalization captures Erdos Problem #247 on the transcendence of lacunary sums sum 1/2^{n_k}. The central objects are two growth conditions (faster-than-linear vs superpolynomial) and the lacunary sum defined via tsum. Erdos's 1975 theorem, axiomatized here, establishes transcendence under superpolynomial growth using Liouville-type approximation arguments. Two concrete transcendence results (for k! and 2^k index sequences) are derived as corollaries. The quadratic sequence k^2 illustrates the open gap.",
+    "implications": "If the full conjecture were proved, it would establish that any infinite binary number with 1s growing faster than linearly sparse must be transcendental. This would provide a clean characterization linking the arithmetic complexity (algebraic vs transcendental) of a real number to the combinatorial sparseness of its binary representation. The open case n_k = k^2 connects to the theory of theta functions and modular forms, since sum q^{k^2} is essentially a Jacobi theta function.",
     "openQuestions": [
-      "Is Σ 1/2^{k²} transcendental? (The simplest open case)",
-      "Can we at least prove Σ 1/2^{k²} is not a root of any quadratic polynomial?",
-      "What is the exact threshold: how slowly can n_k grow while still guaranteeing transcendence?",
-      "Does the base matter? Is the analogous result for Σ 1/3^{n_k} also true?"
+      "Is sum 1/2^{k^2} transcendental? (The simplest open case, connected to Jacobi theta functions)",
+      "Can we at least prove sum 1/2^{k^2} is irrational, or not a root of any polynomial of degree <= d?",
+      "What is the exact growth threshold: how slowly can n_k grow while still guaranteeing transcendence?",
+      "Does the base matter? Is the analogous result for sum 1/3^{n_k} also true, and does the proof technique extend?"
     ]
   }
 }
