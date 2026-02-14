@@ -1,35 +1,48 @@
 {
   "slug": "cauchy-schwarz-oq-02",
-  "title": "Bunyakovsky-Schwarz Integral Inequality Formalization",
+  "title": "Cauchy-Schwarz Extensions: Hölder, Bessel, and L² Structure Theorems",
   "phase": "COMPLETE",
   "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "|∫ f · g dμ| ≤ ‖f‖_L2 · ‖g‖_L2 for f, g ∈ L²(μ)",
-    "plain": "The Bunyakovsky-Schwarz integral inequality: for square-integrable functions f and g, the absolute value of the integral of their product is bounded by the product of their L² norms.",
+    "formal": "Extensions of Cauchy-Schwarz: Hölder's inequality, Bessel's inequality, Pythagorean theorem in L², parallelogram law, polarization identity, weighted CS, AM-GM from CS, L1-L2 norm comparison",
+    "plain": "A comprehensive collection of extensions and consequences of the Cauchy-Schwarz inequality, including Hölder's inequality for finite sums, Bessel's inequality for orthonormal families, the Pythagorean theorem and parallelogram law in L², and norm comparison theorems.",
     "whyMatters": [
-      "Fundamental inequality in functional analysis and measure theory",
-      "Integral generalization of finite-dimensional Cauchy-Schwarz",
-      "Key tool in probability theory (Var(XY) bounds) and PDE theory"
+      "Hölder's inequality generalizes Cauchy-Schwarz to conjugate exponents p,q",
+      "Bessel's inequality is foundational for Fourier analysis and orthogonal expansions",
+      "Pythagorean theorem and parallelogram law characterize inner product spaces",
+      "These results form the core toolkit of functional analysis"
     ]
   },
   "knownResults": {
     "proven": [
-      "Abstract L2 Cauchy-Schwarz: |⟪f,g⟫| ≤ ‖f‖·‖g‖",
-      "L2 inner product = integral bridge (L2_inner_eq_integral)",
-      "Integral absolute value form: |∫ f·g dμ| ≤ ‖f‖_L2·‖g‖_L2 (bunyakovsky_schwarz_abs)",
-      "Integral squared form: (∫ f·g dμ)² ≤ ‖f‖²·‖g‖² (bunyakovsky_schwarz_sq)",
-      "Equality characterization: equality iff f = c·g in L2 (cauchy_schwarz_L2_eq_iff)"
+      "Hölder's inequality for finite sums (NNReal): ∑ f·g ≤ (∑ f^p)^(1/p)·(∑ g^q)^(1/q)",
+      "Cauchy-Schwarz as Hölder p=q=2 special case",
+      "L² membership ↔ integrability of squared norm",
+      "L² inner product integrable: ∫ f·g is well-defined for f,g ∈ L²",
+      "L² inner product = integral bridge: ⟨f,g⟩ = ∫ f·g dμ",
+      "L² norm squared = integral: ‖f‖² = ∫ f² dμ",
+      "Non-negativity of L² norm squared via integral",
+      "Pythagorean theorem in L²: ⟨f,g⟩=0 → ‖f+g‖²=‖f‖²+‖g‖²",
+      "Pythagorean iff characterization: ‖f+g‖²=‖f‖²+‖g‖² ↔ ⟨f,g⟩=0",
+      "Parallelogram law: ‖f+g‖²+‖f-g‖²=2(‖f‖²+‖g‖²)",
+      "Polarization identity: ⟨f,g⟩=(‖f+g‖²-‖f-g‖²)/4",
+      "Alternative polarization: ⟨f,g⟩=(‖f+g‖²-‖f‖²-‖g‖²)/2",
+      "Weighted Cauchy-Schwarz: (∑wᵢaᵢbᵢ)²≤(∑wᵢaᵢ²)(∑wᵢbᵢ²)",
+      "AM-GM from Cauchy-Schwarz: √(ab)≤(a+b)/2",
+      "L1≤√n·L2 norm comparison: (∑|aᵢ|)²≤n·∑aᵢ²",
+      "Triangle inequality via Cauchy-Schwarz",
+      "Bessel's inequality (finite): ∑⟨x,eᵢ⟩²≤‖x‖² for orthonormal eᵢ"
     ],
     "open": [],
-    "goal": "COMPLETE: Full formalization of Bunyakovsky-Schwarz integral inequality in L²"
+    "goal": "COMPLETE: 18 theorems extending Cauchy-Schwarz family, plus 6 base theorems in CauchySchwarzIntegral.lean"
   },
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-02-13T12:15:00Z",
     "iteration": 1,
-    "focus": "File complete with 6 theorems, 0 sorries, 0 axioms",
+    "focus": "CauchySchwarzOQ02.lean: 18 theorems, 0 sorries, 0 axioms. Builds cleanly in Docker.",
     "blockers": [],
     "nextAction": "None - formalization complete",
     "attemptCounts": {
@@ -39,53 +52,76 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: CauchySchwarzIntegral.lean fully formalizes the Bunyakovsky-Schwarz integral inequality using Mathlib's L² space as an inner product space. 6 theorems, 0 sorries, 0 axioms. Builds cleanly in Docker.",
+    "progressSummary": "COMPLETE: Two files formalize the Cauchy-Schwarz family. CauchySchwarzIntegral.lean (on main, 6 theorems) covers the core Bunyakovsky-Schwarz integral inequality. CauchySchwarzOQ02.lean (18 theorems, 0 sorries, 0 axioms) extends with Hölder, Bessel, Pythagorean theorem in L², parallelogram law, polarization identity, weighted CS, AM-GM from CS, and norm comparison theorems. Both build cleanly in Docker.",
     "builtItems": [
-      "cauchy_schwarz_L2: abstract CS on L2 (abs_real_inner_le_norm)",
-      "cauchy_schwarz_L2_sq: squared form on L2",
-      "L2_inner_eq_integral: bridge from L2 inner product to ∫ f*g dμ",
-      "bunyakovsky_schwarz_abs: |∫ f·g dμ| ≤ ‖f‖·‖g‖",
-      "bunyakovsky_schwarz_sq: (∫ f·g dμ)² ≤ ‖f‖²·‖g‖²",
-      "cauchy_schwarz_L2_eq_iff: equality iff linearly dependent"
+      "proofs/Proofs/CauchySchwarzOQ02.lean - 18 theorems, 0 sorries, 0 axioms",
+      "holder_finite_nnreal: Hölder's inequality for NNReal on finite sets",
+      "cauchy_schwarz_from_holder: CS as Hölder p=q=2 case",
+      "memLp_two_iff_sq_integrable: L² membership characterization",
+      "L2_inner_integrable: f·g integrable for f,g ∈ L²",
+      "L2_inner_eq_integral': L² inner product = ∫ f·g dμ",
+      "L2_norm_sq_eq_integral: ‖f‖² = ∫ f² dμ",
+      "L2_norm_sq_nonneg: 0 ≤ ∫ f² dμ",
+      "pythagorean_L2: orthogonal ⟹ ‖f+g‖²=‖f‖²+‖g‖²",
+      "pythagorean_L2_iff: Pythagorean iff characterization",
+      "parallelogram_law: ‖f+g‖²+‖f-g‖²=2(‖f‖²+‖g‖²)",
+      "parallelogram_law_L2: specialized to L²",
+      "polarization_identity: ⟨f,g⟩=(‖f+g‖²-‖f-g‖²)/4",
+      "polarization_identity': ⟨f,g⟩=(‖f+g‖²-‖f‖²-‖g‖²)/2",
+      "weighted_cauchy_schwarz: weighted CS for finite sums",
+      "amgm_from_cauchy_schwarz: AM-GM derived from CS",
+      "L1_le_sqrt_n_L2: L1-L2 norm comparison",
+      "triangle_ineq_via_CS: triangle inequality from CS",
+      "bessel_finite: Bessel's inequality for finite orthonormal families"
     ],
     "insights": [
-      "Mathlib's L²(μ) is already an InnerProductSpace, so abstract CS applies directly",
-      "Key bridge: L2.inner_def connects abstract inner product to ∫ inner (f a) (g a) dμ",
-      "For ℝ-valued functions, inner x y = x * y, simplifying the integral form",
-      "Gallery integration already exists at src/data/proofs/cauchy-schwarz-integral/"
+      "Mathlib's NNReal.inner_le_Lp_mul_Lq provides Hölder directly",
+      "Real.HolderConjugate.conjExponent gives p=q=2 specialization",
+      "Weighted CS reduces to standard CS via √w substitution",
+      "Bessel proved via projection: p=∑⟨x,eᵢ⟩eᵢ, then ‖x-p‖²≥0",
+      "Parallelogram law and polarization are purely algebraic in inner product spaces"
     ],
     "mathlibGaps": [],
     "nextSteps": []
   },
   "approaches": [
     {
-      "name": "L2 inner product space approach",
+      "name": "Extension via Mathlib inner product space infrastructure",
       "status": "SUCCESS",
-      "description": "Use Mathlib's L2 inner product space instance and bridge to integral form"
+      "description": "Uses Mathlib's L2 inner product space, NNReal Hölder inequality, and algebraic identities for inner product spaces. Bessel proved via orthogonal projection argument."
     }
   ],
   "tags": [
     "seeker-selected",
     "analysis",
     "measure-theory",
+    "functional-analysis",
     "cauchy-schwarz",
+    "holder-inequality",
+    "bessel-inequality",
     "0-sorry",
     "complete"
   ],
   "relatedProofs": [
+    "CauchySchwarzOQ02.lean",
     "CauchySchwarzIntegral.lean",
     "CauchySchwarz.lean"
   ],
+  "leanFile": "CauchySchwarzOQ02.lean",
   "references": {
     "papers": [
       "Bunyakovsky (1859): Integral form of Cauchy-Schwarz",
-      "Schwarz (1885): Independent proof for variational calculus"
+      "Schwarz (1885): Independent proof for variational calculus",
+      "Hölder (1889): Generalization to conjugate exponents",
+      "Bessel (1828): Inequality for Fourier coefficients"
     ],
     "urls": [],
     "mathlib": [
       "Mathlib.MeasureTheory.Function.L2Space",
       "Mathlib.MeasureTheory.Integral.Bochner.Basic",
-      "Mathlib.Analysis.InnerProductSpace.Basic"
+      "Mathlib.MeasureTheory.Integral.MeanInequalities",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.MeanInequalities"
     ]
   },
   "started": "2026-02-11T07:03:36.101Z",
