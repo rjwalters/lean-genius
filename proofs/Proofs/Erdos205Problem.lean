@@ -63,18 +63,26 @@ theorem bigOmega_prime {p : ℕ} (hp : p.Prime) : bigOmega p = 1 := by
   simp [bigOmega, Nat.primeFactorsList_prime hp]
 
 /-- Ω(p^k) = k for prime p.
-    Uses the fact that primeFactorsList of p^k has length k. -/
+    Proved by induction using multiplicativity of primeFactorsList. -/
 theorem bigOmega_prime_pow {p k : ℕ} (hp : p.Prime) : bigOmega (p ^ k) = k := by
-  simp [bigOmega, Nat.primeFactorsList_prime_pow hp]
+  induction k with
+  | zero => simp [bigOmega]
+  | succ k ih =>
+    rw [pow_succ, mul_comm]
+    simp only [bigOmega]
+    have h := Nat.perm_primeFactorsList_mul hp.ne_zero (pow_ne_zero k hp.ne_zero)
+    rw [h.length_eq, List.length_append, Nat.primeFactorsList_prime hp, List.length_singleton]
+    simp [bigOmega] at ih
+    omega
 
 /-- Ω is completely additive: Ω(ab) = Ω(a) + Ω(b) for a, b > 0.
     Prime factors of a*b are a permutation of the concatenation of
     prime factors of a and b. -/
 theorem bigOmega_mul {a b : ℕ} (ha : a ≠ 0) (hb : b ≠ 0) :
     bigOmega (a * b) = bigOmega a + bigOmega b := by
-  simp [bigOmega]
+  simp only [bigOmega]
   have h := Nat.perm_primeFactorsList_mul ha hb
-  exact h.length_eq
+  rw [h.length_eq, List.length_append]
 
 /-
 ## Part 2: The Erdős Conjecture (Problem 205)
@@ -133,25 +141,29 @@ axiom threshold_dominates_loglog :
     This follows from Finset.inf'_le: the infimum over a set is ≤ any element. -/
 theorem remainder_achieves_min (n k : ℕ) (h : 2^k < n) :
     minOmegaRemainder n ≤ bigOmega (n - 2^k) := by
-  have hn1 : n > 1 := by omega
+  have hn1 : n > 1 := by
+    have : 1 ≤ 2^k := Nat.one_le_two_pow
+    linarith
   unfold minOmegaRemainder
   rw [if_pos hn1]
-  -- k ≤ Nat.log 2 n since 2^k < n
-  have hk_bound : k ∈ Finset.range (Nat.log 2 n + 1) := by
-    simp [Finset.mem_range]
-    exact Nat.lt_succ_of_le (Nat.log_le_of_le_pow (by omega) (le_of_lt h))
+  -- k is in the valid range: 2^k < n implies k < log 2 n + 1
+  have hk_lt : k < Nat.log 2 n + 1 := by
+    by_contra h_not
+    push_neg at h_not
+    have h1 : 2 ^ (Nat.log 2 n + 1) ≤ 2 ^ k :=
+      Nat.pow_le_pow_right (by omega) h_not
+    have h2 : n < 2 ^ (Nat.log 2 n + 1) :=
+      Nat.lt_pow_succ_log_self (by omega : 1 < 2) n
+    omega
   -- k is in the filtered valid set
-  have hk_valid : k ∈ (Finset.range (Nat.log 2 n + 1)).filter (fun j => 2^j < n) := by
-    simp [Finset.mem_filter]
-    exact ⟨hk_bound, h⟩
+  have hk_valid : k ∈ (Finset.range (Nat.log 2 n + 1)).filter (fun j => 2^j < n) :=
+    Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hk_lt, h⟩
   -- The filtered set is nonempty (it contains k)
   have hne : ((Finset.range (Nat.log 2 n + 1)).filter (fun j => 2^j < n)).Nonempty :=
     ⟨k, hk_valid⟩
-  -- Finset.inf' is ≤ any element in the set
-  simp only
-  split
-  · exact Finset.inf'_le _ hk_valid
-  · omega
+  -- Use dif_pos since hne is a decidable nonempty proof
+  rw [dif_pos hne]
+  exact Finset.inf'_le _ hk_valid
 
 /-- Auxiliary: log log is monotone increasing for x ≥ 16.
     (Actually needs x > e^e ≈ 15.15, but 16 suffices for our purposes.) -/
@@ -292,7 +304,7 @@ The key covering system uses the orders of 2 modulo small primes:
 
 The residue classes {0 mod 2, 0 mod 4, 0 mod 3, 0 mod 12, 0 mod 8, 0 mod 24}
 cover all non-negative integers. For n in a suitable arithmetic progression
-mod 3·5·7·13·17·241 = 11184810, every n - 2^k is divisible by one of these primes.
+mod 3·5·7·13·17·241 = 5592405, every n - 2^k is divisible by one of these primes.
 -/
 
 /-- A covering system: residue classes that cover all of ℤ.
@@ -300,10 +312,10 @@ mod 3·5·7·13·17·241 = 11184810, every n - 2^k is divisible by one of these 
 def IsCoveringSystem (S : List (ℕ × ℕ)) : Prop :=
   ∀ n : ℤ, ∃ am ∈ S, (n : ℤ) % (am.2 : ℤ) = (am.1 : ℤ) % (am.2 : ℤ)
 
-/-- The Erdős covering modulus: 3 · 5 · 7 · 13 · 17 · 241 = 11184810 -/
+/-- The Erdős covering modulus: 3 · 5 · 7 · 13 · 17 · 241 = 5592405 -/
 def erdosCoveringModulus : ℕ := 3 * 5 * 7 * 13 * 17 * 241
 
-theorem erdosCoveringModulus_val : erdosCoveringModulus = 11184810 := by native_decide
+theorem erdosCoveringModulus_val : erdosCoveringModulus = 5592405 := by native_decide
 
 /-- A de Polignac number is an odd number that cannot be written as 2^k + p
     for any prime p and k ≥ 0. Named after Alphonse de Polignac (1849). -/
