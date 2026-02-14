@@ -22,15 +22,16 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős posed this during the 1989 Great Western Number Theory problem session. Bourgain connected it to the Kakeya conjecture via his sums-differences formulation. Katz and Tao gave the best upper bound (n^{11/6}), while Lemm (2015) and AlphaEvolve (2025) pushed the lower bound past n^{1.778}.",
-    "problemStatement": "Let D(A) be the set of common differences of 3-term APs in an n-element set A ⊆ ℤ. Is |D(A)| = O(n^{3/2})?",
-    "proofStrategy": "We formalize IsThreeAP and commonDifferences, state the O(n^{3/2}) conjecture, record the Katz–Tao upper bound, Erdős–Spencer/Ruzsa/Lemm lower bounds, define Bourgain's sums-differences exponent, and state Chan's equivalence theorem.",
+    "historicalContext": "Erdős posed this problem at the 1989 Great Western Number Theory problem session in Asilomar, California. He asked: given an n-element set of integers, how many distinct common differences can three-term arithmetic progressions have? The Erdős-Spencer probabilistic argument (using random subsets of {1,...,N}) showed that Ω(n^{3/2}) is achievable, and Erdős conjectured this is the correct order. Jean Bourgain later connected the problem to his work on the Kakeya conjecture in geometric measure theory, reformulating it as a question about restricted sums and differences. In 1999, Nets Katz and Terence Tao established the best known upper bound of O(n^{11/6}) using incidence geometry techniques. Matan Lemm improved the lower bound in 2015 past n^{1.778}, and in 2025 Google DeepMind's AlphaEvolve achieved a marginal further improvement via automated search. The problem remains open, with its resolution expected to have implications for the Kakeya conjecture.",
+    "problemStatement": "Let $A \\subseteq \\mathbb{Z}$ with $|A| = n$, and let $D(A) = \\{d : \\exists\\, a \\text{ s.t. } a, a+d, a+2d \\in A\\}$. Is $|D(A)| = O(n^{3/2})$?",
+    "proofStrategy": "The formalization defines IsThreeAP and commonDifferences, then develops a comprehensive infrastructure of proven structural results: subset bounds, monotonicity, symmetry, translation invariance, and dilation covariance. The main conjecture and known bounds are stated as axioms. Bourgain's restricted sums-differences framework is formalized, and Chan's equivalence theorem connecting the two formulations is recorded. A summary theorem combines the bounds to capture the current state of knowledge: $1.778 < c^* \\le 11/6$.",
     "keyInsights": [
-      "Erdős–Spencer: probabilistic construction gives Ω(n^{3/2}) common differences",
-      "Katz–Tao: best upper bound is O(n^{11/6}) ≈ O(n^{1.833})",
-      "Lemm: best lower bound is Ω(n^{1.778}), improved slightly by AlphaEvolve",
-      "Equivalent to Bourgain's restricted sums-differences problem",
-      "Connected to the Kakeya conjecture in geometric measure theory"
+      "The Erdős-Spencer probabilistic method gives Ω(n^{3/2}) common differences, matching the conjectured upper bound and establishing the combinatorial baseline",
+      "Katz-Tao's O(n^{11/6}) upper bound uses incidence geometry connecting discrete APs to line configurations in the plane, the same toolkit underlying Kakeya conjecture progress",
+      "Lemm's n^{1.778} lower bound broke through the n^{3/2} barrier, suggesting the true exponent may be strictly between 3/2 and 11/6 — potentially falsifying Erdős's original conjecture",
+      "Chan's equivalence theorem shows the 3-AP exponent equals the Bourgain sums-differences exponent, unifying a discrete combinatorial problem with continuous harmonic analysis",
+      "The formalization proves 14 infrastructure lemmas without axioms, including translation invariance D(A+c) = D(A), dilation covariance, negation symmetry, and exact computations for small sets",
+      "The connection to the Kakeya conjecture means resolving this problem would impact fundamental questions in geometric measure theory about Besicovitch sets in R^n"
     ]
   },
   "sections": [
@@ -39,51 +40,67 @@
       "title": "Core Definitions",
       "startLine": 36,
       "endLine": 54,
-      "summary": "Defines IsThreeAP, commonDifferences, commonDiffFinset, and numCommonDiff for counting distinct common differences."
+      "summary": "Defines IsThreeAP (the predicate for a, a+d, a+2d all in A), commonDifferences (the set D(A)), and finite-set versions commonDiffFinset and numCommonDiff for cardinality computations."
+    },
+    {
+      "id": "infrastructure",
+      "title": "Proven Infrastructure Lemmas",
+      "startLine": 56,
+      "endLine": 179,
+      "summary": "Fourteen fully-proven structural results: D(A) ⊆ A-A, |D(A)| ≤ |A|², 0 ∈ D(A) for nonempty A, monotonicity, negation symmetry, exact computations for singletons and pairs, and the connection between finite and set-level membership."
+    },
+    {
+      "id": "invariance",
+      "title": "Structural Invariance Theorems",
+      "startLine": 180,
+      "endLine": 292,
+      "summary": "Translation invariance D(A+c) = D(A), dilation covariance (d ∈ D(A) implies cd ∈ D(cA)), negation closure as a set identity, symmetry iff, direct witness construction, and the concrete computation D({a,a+1,a+2}) = {-1,0,1}."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 56,
-      "endLine": 63,
-      "summary": "States the O(n^{3/2}) conjecture: |D(A)| ≤ C · n^{3/2} for all n-element sets."
+      "startLine": 293,
+      "endLine": 301,
+      "summary": "States the O(n^{3/2}) conjecture: ∃C such that |D(A)| ≤ C·n^{3/2} for all n-element sets A ⊆ ℤ."
     },
     {
       "id": "upper-bound",
       "title": "Katz–Tao Upper Bound",
-      "startLine": 65,
-      "endLine": 71,
-      "summary": "The best known upper bound: f(n) ≤ C · n^{11/6} (Katz–Tao, 1999)."
+      "startLine": 302,
+      "endLine": 308,
+      "summary": "Axiomatizes the best known upper bound: f(n) ≤ C·n^{11/6} (Katz–Tao, 1999), the exponent 11/6 ≈ 1.833."
     },
     {
       "id": "lower-bounds",
       "title": "Lower Bounds",
-      "startLine": 73,
-      "endLine": 99,
-      "summary": "Erdős–Spencer (n^{3/2}), Erdős–Ruzsa (n^{1+c} explicit), Lemm (n^{1.778}), and AlphaEvolve improvements."
+      "startLine": 310,
+      "endLine": 336,
+      "summary": "Axiomatizes four lower bounds: Erdős-Spencer (n^{3/2} probabilistic), Erdős-Ruzsa (n^{1+c} explicit), Lemm (n^{1.778}), and AlphaEvolve (slight improvement on Lemm)."
     },
     {
       "id": "bourgain",
       "title": "Bourgain's Sums-Differences Equivalence",
-      "startLine": 101,
-      "endLine": 127,
-      "summary": "Defines restricted sums/differences, BourgainExponent, and Chan's equivalence between the 3-AP problem and Bourgain's formulation."
+      "startLine": 338,
+      "endLine": 364,
+      "summary": "Defines restrictedSum, restrictedDiff, and BourgainExponent, then states Chan's equivalence theorem connecting the 3-AP common differences exponent to the Bourgain sums-differences critical exponent."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "startLine": 129,
-      "endLine": 137,
-      "summary": "Proves the current bounds summary from the axiomatized results."
+      "title": "Summary Theorem",
+      "startLine": 366,
+      "endLine": 374,
+      "summary": "Proves current_bounds_summary: 1.778 < c* ≤ 11/6 by combining lemm_lower and katz_tao_upper axioms. This is the only non-infrastructure theorem that is fully proved."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #1097 on common differences in 3-term APs, including the O(n^{3/2}) conjecture, Katz–Tao upper bound, multiple lower bounds, and the equivalence to Bourgain's sums-differences problem.",
-    "implications": "Progress on this problem would impact the Kakeya conjecture through Bourgain's arithmetic approach. The gap between n^{1.778} and n^{1.833} remains one of the key open problems in additive combinatorics.",
+    "summary": "Formalizes Erdős Problem #1097 on common differences in 3-term APs, developing 14 proven infrastructure lemmas alongside axiomatized research bounds. Captures the O(n^{3/2}) conjecture, four lower bounds (Erdős-Spencer, Erdős-Ruzsa, Lemm, AlphaEvolve), the Katz-Tao upper bound, and the deep connection to Bourgain's sums-differences problem via Chan's equivalence.",
+    "implications": "Progress on this problem would directly impact the Kakeya conjecture through Bourgain's arithmetic approach. The formalization's infrastructure lemmas (translation invariance, dilation covariance, symmetry) provide a foundation for any future Lean-based work on additive combinatorics. The gap between n^{1.778} and n^{11/6} remains one of the central open problems connecting combinatorics to harmonic analysis.",
     "openQuestions": [
-      "Is the true exponent 3/2 or something larger?",
-      "Can Katz–Tao's 11/6 upper bound be improved?",
-      "Does the connection to Kakeya yield progress in either direction?"
+      "Is the true exponent 3/2 as Erdős conjectured, or is Lemm's n^{1.778} closer to the truth?",
+      "Can the Katz-Tao 11/6 upper bound be improved using recent decoupling techniques?",
+      "Does the connection to Kakeya yield progress in either direction — from geometry to combinatorics or vice versa?",
+      "Can the Erdős-Ruzsa explicit construction be improved to match the probabilistic n^{3/2} bound?",
+      "What is the correct exponent for higher-length arithmetic progressions (k-APs for k ≥ 4)?"
     ]
   }
 }
