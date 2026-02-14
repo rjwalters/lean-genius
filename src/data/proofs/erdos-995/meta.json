@@ -53,93 +53,126 @@
       "Proved geometric sequence 2^k is lacunary",
       "Proved powers of 3 are lacunary",
       "Noted connection to Strong Law of Large Numbers"
+    ],
+    "crossReferences": [
+      {
+        "targetProofId": "erdos-996",
+        "relationship": "related",
+        "description": "Companion problem on the Strong Law of Large Numbers for lacunary sums — same setup ∑f({αn_k}) but studies almost sure convergence of ergodic averages"
+      },
+      {
+        "targetProofId": "erdos-992",
+        "relationship": "uses-same-technique",
+        "description": "Discrepancy of sequences mod 1 — the Erdős-Gál theorem gives discrepancy bounds for lacunary sequences, directly measuring equidistribution of fractional parts"
+      },
+      {
+        "targetProofId": "erdos-987",
+        "relationship": "uses-same-technique",
+        "description": "Exponential sums and sequence discrepancy — Erdős-Turán inequality controls equidistribution via Weyl sums, the main analytic tool for lacunary sequence problems"
+      },
+      {
+        "targetProofId": "erdos-994",
+        "relationship": "related",
+        "description": "Khintchine's equidistribution conjecture (disproved) — explores limits of equidistribution theory for fractional parts {αn_k}"
+      },
+      {
+        "targetProofId": "erdos-999",
+        "relationship": "related",
+        "description": "Duffin-Schaeffer conjecture (solved 2020) — metric Diophantine approximation for almost all α, connected through the measure-theoretic framework of fractional part distribution"
+      },
+      {
+        "targetProofId": "laws-of-large-numbers",
+        "relationship": "generalizes",
+        "description": "Classical Strong Law of Large Numbers — lacunary sums satisfy analogous laws due to quasi-independence of {αn_k} terms"
+      }
     ]
   },
   "overview": {
-    "historicalContext": "This problem originated from Erdős's 1949 paper 'On the strong law of large numbers', where he studied the behavior of sums involving fractional parts of lacunary sequences. A sequence n₁ < n₂ < ⋯ is lacunary if n_{k+1}/n_k ≥ q > 1 for all k.\n\nErdős proved both lower and upper bounds: he constructed examples where the sum grows at least as fast as N(log log N)^{1/2-ε}, and proved that for all lacunary sequences it grows at most as o(N(log N)^{1/2+ε}).\n\nIn his 1964 paper on Diophantine approximations, Erdős stated he believed the lower bound is closer to the truth. The gap between (log log N) and (log N) in the exponents remains unresolved.",
+    "historicalContext": "Erdős Problem #995 originated from Erdős's 1949 paper 'On the strong law of large numbers', where he discovered that sums ∑f({α n_k}) along lacunary sequences exhibit quasi-random behavior. A sequence n₁ < n₂ < ⋯ is lacunary (Hadamard gap condition) if n_{k+1}/n_k ≥ q > 1.\n\nThe connection to probability runs deep: Kac (1946) proved that cos(2πn_kα) behaves like independent random variables for lacunary {n_k}, satisfying a Central Limit Theorem. This suggested that lacunary sums should obey the Law of the Iterated Logarithm (LIL), giving the conjectured o(N√(log log N)) bound.\n\nErdős established both bounds: a constructive lower bound showing some lacunary sums grow as fast as N(log log N)^{1/2-ε}, and a universal upper bound of o(N(log N)^{1/2+ε}). In his 1964 Diophantine approximation paper, he stated his belief that the lower bound is closer to the truth.\n\nThe gap between (log log N)^{1/2} and (log N)^{1/2} has resisted 75+ years of effort. Partial progress by Berkes (1975), Philipp-Stout (1975), and Aistleitner-Berkes (2010) improved the upper bound in special cases, but the general gap remains one of the longest-standing open problems in metric number theory.",
     "problemStatement": "**Problem**: Let $n_1 < n_2 < \\cdots$ be a lacunary sequence of integers and $f \\in L^2([0,1])$. Estimate the growth of, for almost all $\\alpha$:\n$$\\sum_{1 \\leq k \\leq N} f(\\{\\alpha n_k\\})$$\n\nIs it true that for almost all $\\alpha$:\n$$\\sum_{1 \\leq k \\leq N} f(\\{\\alpha n_k\\}) = o(N\\sqrt{\\log\\log N})?$$\n\n**Known Bounds**:\n- Lower: $\\limsup \\geq N(\\log\\log N)^{1/2-\\epsilon}$ for some examples\n- Upper: Always $o(N(\\log N)^{1/2+\\epsilon})$\n\n**Status**: OPEN",
-    "proofStrategy": "The formalization defines lacunary sequences (n_{k+1} ≥ q·n_k for q > 1) and the sum ∑f({α n_k}). The main conjecture is stated using measure-theoretic 'almost everywhere' (∀ᵐ). Lower and upper bounds are axiomatized based on Erdős's 1949 and 1964 papers. Examples show 2^k and 3^k are lacunary.",
+    "proofStrategy": "The formalization defines lacunary sequences via IsLacunary (n_{k+1} ≥ q·n_k for q > 1) and lacunarySum as ∑_{k∈Finset.range N} f(frac(α·n_k)). The main conjecture ErdosConjecture uses measure-theoretic ∀ᵐ α for 'almost all'. Lower and upper bounds are axiomatized from Erdős's 1949 and 1964 papers: erdos_lower_bound_1949 (existential, with limsup = ⊤) and erdos_upper_bound (universal). The structural results bound_gap_lower_exists and bound_gap_upper_universal are combined into erdos_995_statement. Examples verify 2^k and 3^k are lacunary (fully proved), and the Fibonacci sequence is defined. The single sorry is in exponent_gap (log log N < log N for N ≥ 3).",
     "keyInsights": [
-      "**Lacunary means gaps grow**: n_{k+1}/n_k ≥ q > 1, so terms grow at least exponentially.",
-      "**Fractional parts are equidistributed**: For irrational α, {α n_k} is equidistributed in [0,1].",
-      "**The gap in bounds**: Lower has (log log N)^{1/2}, upper has (log N)^{1/2} - a huge difference!",
-      "**Erdős's intuition**: He believed the lower bound is closer to truth, suggesting upper bound can be improved.",
-      "**Connection to probability**: The sum behaves like a random walk, with variance growing with N."
+      "**Law of the Iterated Logarithm scale**: The conjecture o(N√(log log N)) is exactly the LIL prediction for sums of independent random variables with variance N. Kac's CLT (1946) for lacunary trigonometric series motivates this — if lacunary sums satisfy CLT, they should also satisfy LIL.",
+      "**Quasi-independence from exponential gaps**: The lacunarity condition n_{k+1}/n_k ≥ q > 1 forces exponential spacing, which makes cos(2π n_k α) nearly orthogonal in L²([0,1]). This quasi-independence is the core mechanism behind all results: CLT, SLLN, and the growth bounds.",
+      "**The enormous gap**: At N = 10^{10^{10}}, (log N)^{1/2} ≈ 151,000 while (log log N)^{1/2} ≈ 4.9 — a factor of 30,000 gap. Closing this is one of the most fundamental open problems in metric number theory.",
+      "**Existential vs universal asymmetry**: The lower bound is existential (∃ specific f, n reaching the bound) while the upper bound is universal (∀ f, n satisfy the bound). The true growth rate could depend on the specific lacunary sequence and function.",
+      "**Weyl sum maximal inequalities**: The upper bound proof reduces to controlling max_{N≤M} |∑_{k≤N} e(α n_k)|. Improving this maximal inequality from (log M)^{1/2+ε} to (log log M)^{1/2+ε} would resolve the conjecture."
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "frac, IsLacunary, IsLacunarySeq, lacunarySum",
+      "summary": "frac (fractional part), IsLacunary (gap condition with ratio q > 1), IsLacunarySeq (existential), lacunarySum (∑f({αn_k}))",
       "startLine": 36,
       "endLine": 54
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "summary": "ErdosConjecture, ErdosQuestion",
+      "summary": "ErdosConjecture (a.e. α: sum is o(N√(log log N))), ErdosQuestion (universal over all lacunary sequences and L² functions)",
       "startLine": 55,
       "endLine": 72
     },
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
-      "summary": "erdos_lower_bound_1949, LowerBoundGrowth",
+      "summary": "erdos_lower_bound_1949 (∃ f, n: limsup reaches N(log log N)^{1/2-ε}), LowerBoundGrowth (formalized growth condition)",
       "startLine": 73,
       "endLine": 94
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
-      "summary": "erdos_upper_bound, UpperBoundGrowth",
+      "summary": "erdos_upper_bound (∀ lacunary n: sum is o(N(log N)^{1/2+ε})), UpperBoundGrowth (formalized via limsup ≤ 1)",
       "startLine": 95,
       "endLine": 117
     },
     {
       "id": "the-gap",
       "title": "The Gap",
-      "summary": "bound_gap_lower_exists, bound_gap_upper_universal, exponent_gap",
+      "summary": "bound_gap_lower_exists, bound_gap_upper_universal (axioms packaging the bounds), exponent_gap (log log N < log N, sorry)",
       "startLine": 118,
       "endLine": 138
     },
     {
       "id": "examples",
       "title": "Examples",
-      "summary": "geometricSeq, geometric_is_lacunary, powersOf3, fib",
+      "summary": "geometricSeq 2^k (proved lacunary), powersOf3 3^k (proved lacunary), fib (eventually lacunary, ratio → φ)",
       "startLine": 140,
       "endLine": 172
     },
     {
       "id": "slln-connection",
       "title": "Connection to Strong Law of Large Numbers",
-      "summary": "slln_connection",
+      "summary": "slln_connection (axiom: lacunary sums bounded by C√N, the zeroth-order estimate from variance ~ N)",
       "startLine": 174,
       "endLine": 184
     },
     {
       "id": "erdos-opinion",
       "title": "Erdős's Opinion",
-      "summary": "ErdosRefinedConjecture",
+      "summary": "ErdosRefinedConjecture (upper bound improvable to (log log N)^{1/2+ε}, matching lower bound)",
       "startLine": 186,
       "endLine": 198
     },
     {
       "id": "main-results",
       "title": "Main Results",
-      "summary": "erdos_995_statement, erdos_995_summary",
+      "summary": "erdos_995_statement (proved: ⟨lower_exists, upper_universal⟩), erdos_995_summary (= erdos_995_statement)",
       "startLine": 200,
       "endLine": 228
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #995 asks for the precise growth rate of sums ∑f({α n_k}) for lacunary sequences. The known bounds leave a gap: the lower bound involves (log log N)^{1/2} while the upper bound involves (log N)^{1/2}. Erdős conjectured the lower bound is closer to the truth. The problem remains OPEN.",
-    "implications": "This problem sits at the intersection of analysis, probability, and number theory. It connects to the Strong Law of Large Numbers, equidistribution of fractional parts, and metric Diophantine approximation. Resolving the gap would illuminate the fine structure of lacunary sums.",
+    "summary": "Erdős Problem #995 asks whether ∑f({α n_k}) = o(N√(log log N)) for lacunary sequences — the LIL prediction for quasi-independent sums. The known bounds leave a 75-year gap: the lower bound involves (log log N)^{1/2} while the upper bound involves (log N)^{1/2}. Erdős (1964) conjectured the lower bound is closer to the truth. The formalization captures both bounds as axioms and combines them into the summary theorem. Two lacunary examples (2^k, 3^k) are fully proved.",
+    "implications": "This problem is fundamental to metric number theory and sits at the interface of harmonic analysis, probability, and ergodic theory. Resolving the gap would: (1) determine whether lacunary sums truly satisfy the LIL at the finest scale, validating Kac's quasi-independence principle beyond CLT, (2) require new techniques for Weyl sum maximal inequalities that could advance analytic number theory broadly, (3) illuminate the connection between lacunary structure and almost sure invariance principles, with applications to the distribution of ζ(1/2 + it) along lacunary sequences of t-values.",
     "openQuestions": [
-      "Is the sum o(N √(log log N)) for all lacunary sequences?",
-      "Can the upper bound (log N)^{1/2+ε} be improved?",
-      "What is the exact constant in the growth rate?",
-      "Does the answer depend on the lacunarity constant q?"
+      "Is the sum o(N √(log log N)) for all lacunary sequences? (The main conjecture — would confirm LIL-scale behavior)",
+      "Can the upper bound (log N)^{1/2+ε} be improved, even for specific lacunary sequences like 2^k?",
+      "Does the answer depend on the lacunarity ratio q, or only on the lacunarity being satisfied?",
+      "Can almost sure invariance principles (embedding lacunary sums into Brownian motion) resolve the gap?",
+      "What are the implications for the distribution of Riemann zeta values ζ(1/2 + in_k t) along lacunary subsequences?"
     ]
   }
 }
