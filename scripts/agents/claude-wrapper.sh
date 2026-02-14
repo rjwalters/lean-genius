@@ -27,6 +27,11 @@
 
 set -uo pipefail
 
+# Allow spawning Claude from within a Claude Code session.
+# The CLAUDECODE env var prevents nested sessions, but this wrapper
+# intentionally launches independent agent processes.
+unset CLAUDECODE 2>/dev/null || true
+
 # Configuration
 MAX_RETRIES="${MAX_RETRIES:-5}"
 INITIAL_BACKOFF=60       # 1 minute
