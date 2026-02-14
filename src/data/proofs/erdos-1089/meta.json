@@ -2,9 +2,9 @@
   "id": "erdos-1089",
   "title": "Erdős Problem #1089: Distinct Distances in Higher Dimensions",
   "slug": "erdos-1089",
-  "description": "Let g_d(n) be minimal such that every g_d(n) points in ℝ^d determine at least n distinct distances. Does lim_{d→∞} g_d(n)/d^{n-1} exist? Known: g_d(n) ≫ d^{n-1}, but g_d(n) ≤ c^{d^{1-b_n}}. OPEN.",
+  "description": "Let g_d(n) be minimal such that every g_d(n) points in R^d determine at least n distinct distances. Does lim_{d->inf} g_d(n)/d^{n-1} exist? Known: g_d(n) >> d^{n-1}, but g_d(n) <= c^{d^{1-b_n}}. OPEN.",
   "meta": {
-    "author": "Kelly, Erdős (1975)",
+    "author": "Paul Erdős, L. M. Kelly, H. T. Croft",
     "sourceUrl": "https://erdosproblems.com/1089",
     "date": "1975",
     "status": "complete",
@@ -17,91 +17,147 @@
       "combinatorial-geometry",
       "open-problem"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 2,
     "erdosNumber": 1089,
     "erdosUrl": "https://erdosproblems.com/1089",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "02/14/26",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Standard representation of R^d as Fin d -> R with Euclidean norm",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets with decidable membership for point configurations",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit along a filter, used to state the convergence conjecture",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "sInf",
+        "description": "Infimum of a set of natural numbers, used to define g_d(n)",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      }
+    ],
+    "references": [
+      {
+        "key": "Er75f",
+        "citation": "Erdős, P. (1975). Problems and results in combinatorial geometry. In: Discrete Geometry and Convexity, Annals of the New York Academy of Sciences, 440:1-11.",
+        "type": "paper"
+      },
+      {
+        "key": "Cr62",
+        "citation": "Croft, H. T. (1962). On a claim of Erdős concerning distinct distances in ℝ³. Bull. London Math. Soc., 4:268-272.",
+        "type": "paper"
+      },
+      {
+        "key": "GK15",
+        "citation": "Guth, L. and Katz, N. H. (2015). On the Erdős distinct distances problem in the plane. Annals of Mathematics, 181(2):745-786.",
+        "type": "paper"
+      }
+    ],
+    "originalContributions": [
+      "Type-safe definition of Point d := EuclideanSpace R (Fin d) and Euclidean distance",
+      "Definition of distinctDistances as a Finset of positive pairwise distances",
+      "Definition of threshold function g(d,n) via sInf over point configurations",
+      "Axiomatized exact values g_1(3)=4, g_2(3)=6, g_3(3)=7 (Croft) and g_d(1)=2, g_d(2)=3",
+      "Axiomatized cube construction: cubeVertices with 2^d vertices and at most d distinct distances",
+      "Axiomatized Erdos lower bound g_d(n) >= c*d^{n-1} and Erdos-Straus upper bound",
+      "Definition of gRatio and formal statement of limit conjecture using Filter.Tendsto",
+      "Proved ratio_bounded_below from erdos_lower_bound using linarith",
+      "Axiomatized monotonicity in both d and n, and inverse relationship with f_d(n)"
+    ],
+    "relatedProblems": [
+      "erdos-1083",
+      "erdos-1088"
+    ]
   },
   "overview": {
-    "historicalContext": "This is the higher-dimensional generalization of the famous distinct distances problem. Kelly posed this problem about the threshold function g_d(n)—the minimum number of points in ℝ^d that guarantee n distinct pairwise distances. Erdős (1975) showed 'easily' that g_d(n) ≫ d^{n-1}. The hypercube provides a key construction: its 2^d vertices achieve only d distinct distances. Croft (1962) computed g_3(3) = 7, showing even small cases require careful analysis.",
-    "problemStatement": "Let g_d(n) be minimal such that every collection of g_d(n) points in ℝ^d determines at least n distinct distances. Estimate g_d(n). In particular, does lim_{d→∞} g_d(n)/d^{n-1} exist?",
-    "proofStrategy": "The Lean formalization defines g_d(n) as the infimum of thresholds guaranteeing n distinct distances. The cube construction provides the key lower bound: 2^d vertices have distances √1, √2, ..., √d (at most d values). Known bounds are captured as axioms: Erdős's lower bound g_d(n) ≫ d^{n-1} and Erdős-Straus upper bound g_d(n) ≤ c^{d^{1-b_n}}. The gap between bounds leaves the limit question open.",
+    "historicalContext": "The distinct distances problem originates with Erdos's 1946 question: how many distinct distances are determined by n points in the plane? In 2015, Guth and Katz resolved the planar case up to logarithmic factors, proving Omega(n/log n) distances. Problem #1089 is the higher-dimensional generalization, introduced by Erdos with Kelly in 1975. Rather than fixing the dimension and varying the number of points, it fixes the number of desired distances n and asks how many points in R^d guarantee n distinct distances. The threshold function g_d(n) captures this. Croft (1962) computed g_3(3) = 7 by exhaustive analysis of 6-point configurations in 3-space. The d-dimensional unit cube {0,1}^d provides a key construction: its 2^d vertices achieve only d distinct distances (sqrt(1), sqrt(2), ..., sqrt(d)), yielding g_d(d+1) > 2^d. Erdos proved the polynomial lower bound g_d(n) >> d^{n-1}, while the Erdos-Straus upper bound g_d(n) <= c^{d^{1-b_n}} is exponentially larger, leaving a huge gap.",
+    "problemStatement": "Let g_d(n) be the minimal number such that every collection of g_d(n) points in R^d determines at least n distinct pairwise distances. Estimate g_d(n) as a function of d for fixed n. In particular, does lim_{d -> infinity} g_d(n)/d^{n-1} exist?",
+    "proofStrategy": "The formalization defines points as EuclideanSpace R (Fin d), distances via the norm, and g(d,n) as the sInf of thresholds guaranteeing n distinct distances. Known exact values (g_1(3)=4, g_2(3)=6, g_3(3)=7) are axiomatized. The cube construction is axiomatized with its key properties (2^d vertices, at most d distances), yielding cube_lower_bound (with sorry). The Erdos lower bound g_d(n) >= c*d^{n-1} and Erdos-Straus upper bound are axiomatized. The ratio gRatio(d,n) = g(d,n)/d^{n-1} is defined and the convergence conjecture is stated using Filter.Tendsto. ratio_bounded_below is proved from the lower bound axiom. Monotonicity properties and the inverse relationship with f_d(n) from problem #1083 are axiomatized.",
     "keyInsights": [
-      "g_d(n) = min{m : every m-point set in ℝ^d has ≥ n distinct distances}",
-      "Cube bound: 2^d vertices of the d-cube have only d distinct distances",
-      "Known small values: g_1(3)=4, g_2(3)=6, g_3(3)=7 (Croft 1962)",
-      "Lower bound: g_d(n) ≫ d^{n-1} (Erdős, 'easy')",
-      "Upper bound: g_d(n) ≤ c^{d^{1-b_n}} for some constants (Erdős-Straus)",
-      "Inverse of f_d(n) from problem #1083: g_d(n) > m iff f_d(m) < n"
+      "g_d(n) = min{m : every m-point set in R^d has >= n distinct distances} is the central threshold function",
+      "The d-cube {0,1}^d has 2^d vertices but only d distinct distances sqrt(1),...,sqrt(d), giving g_d(d+1) > 2^d",
+      "Known small values g_1(3)=4, g_2(3)=6, g_3(3)=7 show rapid growth even for n=3",
+      "The gap between Erdos's lower bound d^{n-1} and Erdos-Straus upper bound c^{d^{1-b_n}} is enormous",
+      "The normalized ratio gRatio(d,n) = g(d,n)/d^{n-1} is bounded below but its convergence as d -> infinity is unknown",
+      "g_d(n) and f_d(n) are inverse perspectives: g asks the threshold, f asks the maximum achievable"
     ]
   },
   "sections": [
     {
       "id": "points",
       "title": "Points and Distances",
-      "summary": "Points in ℝ^d and distinct distance counting",
       "startLine": 38,
-      "endLine": 57
+      "endLine": 57,
+      "summary": "Defines Point d as EuclideanSpace R (Fin d), dist as the Euclidean norm ||p - q||, distinctDistances as the Finset of positive pairwise distances (filtering out self-distances where dist = 0), and numDistinctDistances as the cardinality of this set. All distance-related definitions are noncomputable since they involve real-valued norms."
     },
     {
       "id": "gfunction",
       "title": "The Function g_d(n)",
-      "summary": "Definition of the threshold function",
       "startLine": 59,
-      "endLine": 75
+      "endLine": 75,
+      "summary": "Defines determinesNDistances (numDistinctDistances P >= n) and the threshold function g(d,n) := sInf {m | every m-point set in R^d has >= n distinct distances}. Axiomatizes g_well_defined: for n >= 1, the threshold exists as a finite number. The sInf formulation ensures g gives the minimal such m."
     },
     {
       "id": "small",
       "title": "Small Cases",
-      "summary": "Known exact values: g_1(3)=4, g_2(3)=6, g_3(3)=7",
       "startLine": 77,
-      "endLine": 97
+      "endLine": 97,
+      "summary": "Axiomatizes exact values: g_1(3)=4 (four collinear points), g_2(3)=6 (six planar points), g_3(3)=7 (Croft 1962, seven points in 3-space). States g_d_1 (g_d(1)=2, any two points give one distance, sorry'd) and axiomatizes g_d_2 (g_d(2)=3 for d >= 1)."
     },
     {
       "id": "lower",
       "title": "Lower Bound",
-      "summary": "Cube construction and d^{n-1} bound",
       "startLine": 99,
-      "endLine": 121
+      "endLine": 122,
+      "summary": "Axiomatizes the cube construction: cubeVertices d (a Finset of Point d), cube_card (2^d vertices), cube_distances (at most d distinct distances). States cube_lower_bound: g_d(d+1) > 2^d (sorry'd, should follow from cube axioms). Axiomatizes erdos_lower_bound: g_d(n) >= c*d^{n-1} for some constant c > 0, Erdos's polynomial lower bound."
     },
     {
       "id": "upper",
       "title": "Upper Bound",
-      "summary": "Erdős-Straus exponential bound",
-      "startLine": 123,
-      "endLine": 132
+      "startLine": 124,
+      "endLine": 133,
+      "summary": "Axiomatizes erdos_straus_upper_bound: for n >= 2, there exist constants c > 1 and b > 0 such that g_d(n) <= c^{d^{1-b}} for all d >= 1. This exponential upper bound is much larger than the polynomial lower bound d^{n-1}, leaving the true growth rate of g_d(n) wide open."
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
-      "summary": "Does g_d(n)/d^{n-1} converge as d → ∞?",
-      "startLine": 134,
-      "endLine": 156
+      "startLine": 135,
+      "endLine": 157,
+      "summary": "Defines gRatio(d,n) = g(d,n)/d^{n-1} as the normalized ratio. States erdos1089Conjecture(n): the limit of gRatio(d,n) exists as d -> infinity, using Filter.Tendsto and nhds. Defines ratioIsBounded(n) as a weaker question. Proves ratio_bounded_below from erdos_lower_bound using linarith, showing the ratio does not go to zero."
     },
     {
       "id": "mono",
       "title": "Monotonicity Properties",
-      "summary": "How g_d(n) varies with d and n",
-      "startLine": 158,
-      "endLine": 170
+      "startLine": 159,
+      "endLine": 171,
+      "summary": "Axiomatizes g_mono_n (g_d(n) increasing in n: more required distances needs at least as many points) and g_mono_d (g_d(n) generally increasing in d for n >= 2: higher dimensions allow more points with few distances, so the threshold grows)."
     },
     {
       "id": "inverse",
       "title": "Connection to f_d(n)",
-      "summary": "Relationship with problem #1083",
-      "startLine": 172,
-      "endLine": 184
+      "startLine": 173,
+      "endLine": 201,
+      "summary": "Defines f(d,n) := sSup {k | exists P with |P|=n and numDistinctDistances P = k} as the maximum distinct distances achievable by n points in R^d. Axiomatizes g_f_relationship: g(d,n) = sInf {m | f(d,m) >= n}, making g the inverse of f. Defines erdos1089OpenProblem as the conjunction of erdos1089Conjecture for all n >= 2."
     }
   ],
   "conclusion": {
-    "summary": "The threshold function g_d(n) captures how many points in ℝ^d guarantee n distinct distances. The cube construction shows g_d(d+1) > 2^d, while Erdős proved g_d(n) ≫ d^{n-1}. The Erdős-Straus upper bound g_d(n) ≤ c^{d^{1-b_n}} leaves a huge gap. Whether g_d(n)/d^{n-1} converges as d → ∞ remains the central open question.",
-    "implications": "This connects to the famous distinct distances problem in the plane (Guth-Katz 2015) and understanding how distance structure changes with dimension. The focus on fixed n as d → ∞ differs from typical questions about n points in fixed dimension.",
+    "summary": "The formalization captures the threshold function g_d(n) for distinct distances in R^d, with known exact values, the cube construction lower bound, Erdos's polynomial lower bound, and the Erdos-Straus exponential upper bound. The central open question -- whether g_d(n)/d^{n-1} converges as d -> infinity -- is formally stated using Filter.Tendsto. The huge gap between lower and upper bounds leaves the true growth rate unknown.",
+    "implications": "Understanding g_d(n) connects the planar distinct distances problem (Guth-Katz 2015) to high-dimensional geometry. The cube construction reveals that even simple geometric objects in high dimensions can have surprisingly few distinct distances. Resolution of the limit question would determine whether g_d(n) is truly polynomial in d (if the ratio converges to a nonzero finite limit) or grows faster.",
     "openQuestions": [
-      "Does lim_{d→∞} g_d(n)/d^{n-1} exist for each fixed n?",
-      "What is the true growth rate of g_d(n)?",
-      "Can the upper and lower bounds be improved?",
-      "What is g_4(3)? Higher exact values unknown."
+      "Does lim_{d->infinity} g_d(n)/d^{n-1} exist for each fixed n >= 2?",
+      "What is the true growth rate: polynomial d^{n-1} or superpolynomial?",
+      "Can the Erdos-Straus upper bound be improved to polynomial?",
+      "What is g_4(3)? No exact values beyond dimension 3 are known"
     ]
   }
 }
