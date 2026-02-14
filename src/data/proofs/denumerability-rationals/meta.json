@@ -6,8 +6,8 @@
   "meta": {
     "author": "Georg Cantor (1874)",
     "date": "1874",
-    "status": "verified",
-    "proofRepoPath": "Proofs/DenumerabilityRationals.lean",
+    "status": "complete",
+    "proofRepoPath": "proofs/Proofs/DenumerabilityRationals.lean",
     "tags": [
       "set-theory",
       "infinity",
@@ -40,7 +40,7 @@
       "Cardinality theorem connecting to cardinal arithmetic",
       "Pedagogical documentation with diagonal visualization"
     ],
-    "dateAdded": "12/26/25",
+    "dateAdded": "2025-12-26",
     "wiedijkNumber": 3,
     "references": [
       {
@@ -60,22 +60,10 @@
       }
     ],
     "crossReferences": [
-      {
-        "proofId": "cantor-diagonalization",
-        "relationship": "Direct companion: Cantor's diagonalization (Wiedijk #22) proves ℝ is UNcountable, establishing the strict inequality |ℚ| = ℵ₀ < 2^ℵ₀ = |ℝ|. Together, these two results inaugurated the theory of infinite cardinalities."
-      },
-      {
-        "proofId": "cantors-theorem",
-        "relationship": "Generalization: Cantor's theorem (Wiedijk #63) proves |A| < |P(A)| for any set A, generalizing the ℚ vs ℝ gap to an infinite hierarchy of infinities."
-      },
-      {
-        "proofId": "schroeder-bernstein",
-        "relationship": "The Schroeder-Bernstein theorem (Wiedijk #25) provides the key tool for establishing cardinality equalities: mutual injections imply bijection. This formalization uses Equiv directly, but Schroeder-Bernstein underlies many alternative proofs of countability."
-      },
-      {
-        "proofId": "continuum-hypothesis",
-        "relationship": "Directly motivated by countability: the Continuum Hypothesis asks whether 2^ℵ₀ = ℵ₁, i.e., whether there is a cardinality strictly between |ℚ| = ℵ₀ and |ℝ| = 2^ℵ₀."
-      }
+      { "id": "cantor-diagonalization", "relation": "Direct companion: Cantor's diagonalization (Wiedijk #22) proves ℝ is UNcountable, establishing |ℚ| = ℵ₀ < 2^ℵ₀ = |ℝ|." },
+      { "id": "cantors-theorem", "relation": "Generalization: Cantor's theorem (Wiedijk #63) proves |A| < |P(A)| for any set A, extending the cardinality hierarchy." },
+      { "id": "schroeder-bernstein", "relation": "Schroeder-Bernstein (Wiedijk #25) turns mutual injections into bijections — a key tool for cardinality equalities." },
+      { "id": "continuum-hypothesis", "relation": "Directly motivated: is 2^ℵ₀ = ℵ₁, i.e., is there a cardinality between |ℚ| = ℵ₀ and |ℝ| = 2^ℵ₀?" }
     ]
   },
   "overview": {
