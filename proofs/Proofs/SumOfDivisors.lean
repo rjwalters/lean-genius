@@ -117,8 +117,10 @@ theorem sigma_prime_13 : sigma 1 13 = 13 + 1 := by native_decide
 
 /-- σ(p) = p + 1 for prime p: primes have exactly two divisors. -/
 theorem sigma_prime (p : ℕ) (hp : p.Prime) : sigma 1 p = p + 1 := by
-  simp [sigma_apply, hp.divisors, Finset.sum_pair hp.one_lt.ne']
-  ring
+  have h : sigma 1 (p ^ 1) = ∑ j ∈ Finset.range 2, p ^ (j * 1) :=
+    sigma_apply_prime_pow hp
+  simp [pow_one, Finset.sum_range_succ] at h
+  linarith
 
 /-
 ## Part 3: Number Classification
@@ -391,16 +393,16 @@ the prime factorization.
 
 /-- σ_k is a multiplicative arithmetic function. -/
 theorem sigma_multiplicative (k : ℕ) : ArithmeticFunction.IsMultiplicative (sigma k) :=
-  sigma_isMultiplicative
+  isMultiplicative_sigma
 
 /-- σ(1) = 1, from multiplicativity. -/
 theorem sigma_one_from_mult : sigma 1 1 = 1 :=
-  sigma_isMultiplicative.map_one
+  isMultiplicative_sigma.map_one
 
 /-- Multiplicativity: σ(mn) = σ(m) · σ(n) when gcd(m,n) = 1. -/
 theorem sigma_mul_coprime (m n : ℕ) (h : Nat.Coprime m n) :
     sigma 1 (m * n) = sigma 1 m * sigma 1 n :=
-  sigma_isMultiplicative.map_mul_of_coprime h
+  isMultiplicative_sigma.map_mul_of_coprime h
 
 /-- Example: σ(6) = σ(2) · σ(3) since gcd(2,3) = 1. -/
 theorem sigma_six_mult : sigma 1 (2 * 3) = sigma 1 2 * sigma 1 3 :=
@@ -425,19 +427,12 @@ This is the formula that, combined with multiplicativity, lets us compute
 σ(n) from the prime factorization of n.
 -/
 
-/-- The divisors of p^k (for prime p) are {p^0, p^1, ..., p^k}. -/
-theorem divisors_prime_pow_eq (p k : ℕ) (hp : p.Prime) :
-    (p ^ k).divisors = (Finset.range (k + 1)).map
-      ⟨fun i => p ^ i, Nat.pow_left_injective hp.two_le⟩ :=
-  Nat.divisors_prime_pow hp
-
 /-- σ(p^k) = Σ_{i=0}^k p^i for prime p.
     This is the fundamental formula for σ on prime powers. -/
 theorem sigma_prime_pow (p k : ℕ) (hp : p.Prime) :
     sigma 1 (p ^ k) = ∑ i ∈ Finset.range (k + 1), p ^ i := by
-  simp only [sigma_apply]
-  rw [Nat.divisors_prime_pow hp]
-  simp [Finset.sum_map, Function.Embedding.coeFn_mk]
+  rw [sigma_apply_prime_pow hp]
+  congr 1; ext i; ring
 
 /-- σ(p) = 1 + p for prime p (special case k=1). -/
 theorem sigma_prime_pow_one (p : ℕ) (hp : p.Prime) :
@@ -505,7 +500,7 @@ theorem sigma_thirty_via_factorization :
   have h2 := sigma_prime 2 (by norm_num)
   have h3 := sigma_prime 3 (by norm_num)
   have h5 := sigma_prime 5 (by norm_num)
-  rw [h2, h3, h5]; ring
+  rw [h2, h3, h5]
 
 /-
 ## Part 14: Smallest Abundant Number
