@@ -279,7 +279,7 @@ theorem ceva_converse_standard (d e f : ℝ) (hd0 : 0 < d) (hd1 : d < 1)
   -- Extract the common point P and its line parameters
   obtain ⟨P, ⟨s, hs1, hs2⟩, ⟨t, ht1, ht2⟩, ⟨u, hu1, hu2⟩⟩ := hconc
   -- Simplify the line equations
-  simp only [Prod.fst, Prod.snd] at hs1 hs2 ht1 ht2 hu1 hu2
+  simp only [] at hs1 hs2 ht1 ht2 hu1 hu2
   -- From AD: P = (s(1-d), sd) since A = (0,0)
   have hP1_AD : P.1 = s * (1 - d) := by linarith
   have hP2_AD : P.2 = s * d := by linarith
@@ -405,9 +405,9 @@ theorem affine_preserves_line (M : AffineMap2D) (hdet : M.det ≠ 0)
     M.apply P ∈ lineThrough (M.apply A) (M.apply B) := by
   obtain ⟨t, ht1, ht2⟩ := hP
   refine ⟨t, ?_, ?_⟩
-  · simp only [AffineMap2D.apply, Prod.fst]
+  · simp only [AffineMap2D.apply]
     linear_combination M.a₁₁ * ht1 + M.a₁₂ * ht2
-  · simp only [AffineMap2D.apply, Prod.snd]
+  · simp only [AffineMap2D.apply]
     linear_combination M.a₂₁ * ht1 + M.a₂₂ * ht2
 
 /-- Affine maps preserve concurrency (with nonzero determinant) -/
@@ -446,18 +446,17 @@ theorem stdToTriangle_origin (A B C : Point) :
 /-- stdToTriangle maps (1,0) to B -/
 theorem stdToTriangle_e1 (A B C : Point) :
     (stdToTriangle A B C).apply (1, 0) = B := by
-  ext <;> simp [stdToTriangle, AffineMap2D.apply] <;> ring
+  ext <;> simp [stdToTriangle, AffineMap2D.apply]
 
 /-- stdToTriangle maps (0,1) to C -/
 theorem stdToTriangle_e2 (A B C : Point) :
     (stdToTriangle A B C).apply (0, 1) = C := by
-  ext <;> simp [stdToTriangle, AffineMap2D.apply] <;> ring
+  ext <;> simp [stdToTriangle, AffineMap2D.apply]
 
 /-- The determinant of stdToTriangle equals the signed area -/
 theorem stdToTriangle_det (A B C : Point) :
     (stdToTriangle A B C).det = signedArea A B C := by
   simp [stdToTriangle, AffineMap2D.det, signedArea]
-  ring_nf
 
 /-- For a non-degenerate triangle, stdToTriangle is invertible -/
 theorem stdToTriangle_invertible (A B C : Point) (hnd : triangleNonDegenerate A B C) :
@@ -572,25 +571,16 @@ theorem ceva_geometric_general (A B C : Point)
   -- And M maps affine combinations correctly
   have hMD : M.apply (1 - d, d) = affineComb B C d := by
     rw [show ((1 - d, d) : Point) = affineComb (1, 0) (0, 1) d from by
-      ext <;> simp [affineComb] <;> ring]
-    rw [affine_preserves_comb]
-    congr 1
-    · exact hMB
-    · exact hMC
+      ext <;> simp [affineComb]]
+    rw [affine_preserves_comb, hMB, hMC]
   have hME : M.apply (0, 1 - e) = affineComb C A e := by
     rw [show ((0, 1 - e) : Point) = affineComb (0, 1) (0, 0) e from by
-      ext <;> simp [affineComb] <;> ring]
-    rw [affine_preserves_comb]
-    congr 1
-    · exact hMC
-    · exact hMA
+      ext <;> simp [affineComb]]
+    rw [affine_preserves_comb, hMC, hMA]
   have hMF : M.apply (f, 0) = affineComb A B f := by
     rw [show ((f, 0) : Point) = affineComb (0, 0) (1, 0) f from by
-      ext <;> simp [affineComb] <;> ring]
-    rw [affine_preserves_comb]
-    congr 1
-    · exact hMA
-    · exact hMB
+      ext <;> simp [affineComb]]
+    rw [affine_preserves_comb, hMA, hMB]
   -- Rewrite the mapped result
   rw [hMA, hMD, hMB, hME, hMC, hMF] at hmapped
   exact hmapped
@@ -679,24 +669,20 @@ theorem ceva_converse_general (A B C : Point)
   have hMB : M.apply B = (1, 0) := triangleToStd_B A B C hnd
   have hMC : M.apply C = (0, 1) := triangleToStd_C A B C hnd
   -- M preserves affine combinations
-  have hMD : M.apply (affineComb B C d) = affineComb (M.apply B) (M.apply C) d :=
-    affine_preserves_comb M B C d
-  have hME : M.apply (affineComb C A e) = affineComb (M.apply C) (M.apply A) e :=
-    affine_preserves_comb M C A e
-  have hMF : M.apply (affineComb A B f) = affineComb (M.apply A) (M.apply B) f :=
-    affine_preserves_comb M A B f
+  have hMD : M.apply (affineComb B C d) = affineComb (1, 0) (0, 1) d := by
+    rw [affine_preserves_comb M B C d, hMB, hMC]
+  have hME : M.apply (affineComb C A e) = affineComb (0, 1) (0, 0) e := by
+    rw [affine_preserves_comb M C A e, hMC, hMA]
+  have hMF : M.apply (affineComb A B f) = affineComb (0, 0) (1, 0) f := by
+    rw [affine_preserves_comb M A B f, hMA, hMB]
   -- Compute the standard triangle cevian points
-  rw [hMA, hMB, hMC] at hMD hME hMF hmapped
-  -- Standard triangle: D = affineComb (1,0) (0,1) d = (1-d, d)
   have hD_std : affineComb (1, 0) (0, 1) d = (1 - d, d) := by
-    ext <;> simp [affineComb] <;> ring
-  -- Standard triangle: E = affineComb (0,1) (0,0) e = (0, 1-e)
+    ext <;> simp [affineComb]
   have hE_std : affineComb (0, 1) (0, 0) e = (0, 1 - e) := by
-    ext <;> simp [affineComb] <;> ring
-  -- Standard triangle: F = affineComb (0,0) (1,0) f = (f, 0)
+    ext <;> simp [affineComb]
   have hF_std : affineComb (0, 0) (1, 0) f = (f, 0) := by
-    ext <;> simp [affineComb] <;> ring
-  rw [hMD, hME, hMF, hD_std, hE_std, hF_std] at hmapped
+    ext <;> simp [affineComb]
+  rw [hMA, hMB, hMC, hMD, hME, hMF, hD_std, hE_std, hF_std] at hmapped
   -- Now we have concurrency in the standard triangle
   exact ceva_converse_standard d e f hd0 hd1 he0 he1 hf0 hf1 hmapped
 
@@ -757,9 +743,9 @@ theorem angle_bisector_param_pos (a b c : ℝ) (ha : 0 < a) (hb : 0 < b) (hc : 0
   have hbc : 0 < b + c := by linarith
   have hca : 0 < c + a := by linarith
   have hab : 0 < a + b := by linarith
-  refine ⟨div_pos hb hbc, div_lt_one_of_lt (by linarith) hbc,
-          div_pos hc hca, div_lt_one_of_lt (by linarith) hca,
-          div_pos ha hab, div_lt_one_of_lt (by linarith) hab⟩
+  refine ⟨div_pos hb hbc, (div_lt_one hbc).mpr (by linarith),
+          div_pos hc hca, (div_lt_one hca).mpr (by linarith),
+          div_pos ha hab, (div_lt_one hab).mpr (by linarith)⟩
 
 /-- **Angle Bisectors are Concurrent (Incenter)**
 
@@ -776,35 +762,9 @@ theorem angle_bisectors_concurrent (A B C : Point)
   exact ceva_geometric_general A B C hnd _ _ _ hd0 hd1 he0 he1 hf0 hf1
     (angle_bisectors_ceva a b c ha hb hc)
 
-/-- Altitudes satisfy the Ceva condition when the parameters relate to
-    side lengths and angles. For a triangle with side lengths a, b, c:
-    - The foot of the altitude from A to BC divides BC as
-      BD/BC = (a² + b² - c²)/(2a²), giving d = cos B · a/a = ...
-    - In terms of the formula: d*e*f = (1-d)*(1-e)*(1-f)
-
-    Using the parametrization d = (a²+b²-c²)/(2a²) for the foot
-    from C to AB, etc., the Ceva condition becomes
-    cos²A · cos²B · cos²C related identity. We use a simpler approach:
-    directly verify the algebraic identity for right-triangle parameters. -/
-
-/-- For the standard right triangle A=(0,0), B=(1,0), C=(0,1), the
-    altitudes have feet at:
-    - D (foot from A to BC) = (1/2, 1/2) → d = 1/2
-    - E (foot from B to CA) = (0, 0) ... this is a vertex case
-
-    Instead, we prove altitudes are concurrent for any triangle where
-    all altitude feet are interior. For a triangle with sides a, b, c
-    and corresponding heights, the altitude foot from A divides BC as
-    BD = c·cos(B), DC = b·cos(C), so d = BD/(BD+DC).
-
-    A clean algebraic approach: the orthocenter exists iff the Ceva
-    condition holds for the altitude parameters. We verify this using
-    the relation cot(A)·cot(B) + cot(B)·cot(C) + cot(C)·cot(A) = 1
-    for the angles of a triangle. -/
-
--- For altitudes, the trigonometric Ceva condition is:
--- (cos B · cos C) / (sin B · sin C) etc., but this is complex.
--- Instead, use a purely algebraic approach for a specific example.
+-- Altitudes satisfy the Ceva condition when the parameters relate to
+-- side lengths and angles. We use the projection formula approach:
+-- d = b·cos(C)/a, e = c·cos(A)/b, f = a·cos(B)/c.
 
 /-- For an equilateral triangle, all altitudes have d = e = f = 1/2,
     which is the same as medians. This verifies altitude concurrence
@@ -813,75 +773,9 @@ theorem equilateral_altitudes_ceva :
     cevaCondition (1/2) (1/2) (1/2) := by
   unfold cevaCondition; ring
 
-/-- For an isosceles right triangle with legs 1, 1 and hypotenuse √2,
-    the altitude from the right angle vertex has foot at the midpoint
-    of the hypotenuse (d = 1/2), and the other two altitudes have
-    specific parameters. Since the medians and altitudes coincide
-    for the right-angle vertex in this case, and the other feet
-    have parameters d = 1/3, e = 1/2, f = 2/3 won't work.
-
-    Instead: for a general acute triangle with altitude parameters
-    d₁ = c·cos(B)/a, d₂ = a·cos(C)/b, d₃ = b·cos(A)/c,
-    verifying d₁·d₂·d₃ = (1-d₁)·(1-d₂)·(1-d₃) uses:
-      cos(A)·cos(B)·cos(C) products from the cosine rule.
-
-    We verify concretely for the 3-4-5 right triangle. -/
-
-/-- For a 3-4-5 right triangle:
-    - Side a = 5 (BC), b = 4 (CA), c = 3 (AB)
-    - cos A = (b²+c²-a²)/(2bc) = (16+9-25)/24 = 0
-    - cos B = (a²+c²-b²)/(2ac) = (25+9-16)/30 = 18/30 = 3/5
-    - cos C = (a²+b²-c²)/(2ab) = (25+16-9)/40 = 32/40 = 4/5
-    Altitude foot from A: D on BC, BD = c·cos B = 3·(3/5) = 9/5
-    So d = BD/a = 9/25 (if we parametrize as BD/BC)
-    Altitude foot from B: E on CA, CE = a·cos C = 5·(4/5) = 4
-    So e = CE/b = 4/4 = 1 ... this hits a vertex, since B = π/2
-
-    For right triangles, one altitude goes through a vertex, which
-    degenerates. Use a 5-12-13 ... still right. Use 7-8-9 (acute). -/
-
--- For a 7-8-9 triangle (acute):
--- cos A = (64+81-49)/(2·8·9) = 96/144 = 2/3
--- cos B = (49+81-64)/(2·7·9) = 66/126 = 11/21
--- cos C = (49+64-81)/(2·7·8) = 32/112 = 2/7
--- d = c·cos B / a = 7·(11/21)/9 = 11/27 (foot from A divides BC)
--- Wait, we need BD = c·cos(B). With sides a=BC=9, b=CA=8, c=AB=7:
--- Foot of altitude from A to BC: BD = c·cos(B) = 7·(11/21) = 11/3, DC = b·cos(C) = 8·(2/7) = 16/7
--- d = BD/a = (11/3)/9 = 11/27
--- Foot of altitude from B to CA: CE = a·cos(C) = 9·(2/7) = 18/7, EA = c·cos(A) = 7·(2/3) = 14/3
--- e = CE/b = (18/7)/8 = 18/56 = 9/28
--- Foot of altitude from C to AB: AF = b·cos(A) = 8·(2/3) = 16/3, FB = a·cos(B) = 9·(11/21) = 33/7
--- f = AF/c = (16/3)/7 = 16/21
--- Ceva: d·e·f = (11/27)·(9/28)·(16/21)
--- = (11·9·16)/(27·28·21) = 1584/15876 = 44/441
--- (1-d)·(1-e)·(1-f) = (16/27)·(19/28)·(5/21)
--- = (16·19·5)/(27·28·21) = 1520/15876 = ... 1520/15876 ≠ 1584/15876 hmm
-
--- Let me recheck. Actually the correct parameterization is:
--- D divides BC: D = (1-d)B + dC where d = DC/BC
--- BD = (1-d)·a, DC = d·a. From projection: BD = c·cos(B), so 1-d = c·cos(B)/a
--- and DC = b·cos(C), so d = b·cos(C)/a
--- Similarly e = a·cos(A)/b (divides CA), f = b·cos(B)/c (divides AB)...
--- Actually this gets complicated. Let me just prove a clean numerical example.
-
-/-- Altitude concurrence for the 3-5-7 triangle (all acute since 3²+5²=34>49=7²? No, 34<49).
-    Try 5-6-7 (acute: 5²+6²=61>49=7²):
-    cos A = (36+49-25)/(2·6·7) = 60/84 = 5/7
-    cos B = (25+49-36)/(2·5·7) = 38/70 = 19/35
-    cos C = (25+36-49)/(2·5·6) = 12/60 = 1/5
-    Altitude from A: foot on BC (a=7): BD = c·cos B = 5·(19/35) = 19/7; d = b·cos C / a = 6·(1/5)/7 = 6/35
-    Altitude from B: foot on CA (b=6): CE = a·cos C = 7·(1/5) = 7/5; e = c·cos A / b = 5·(5/7)/6 = 25/42
-    Altitude from C: foot on AB (c=5): AF = b·cos A = 6·(5/7) = 30/7; f = a·cos B / c = 7·(19/35)/5 = 19/25
-
-    Ceva: d·e·f = (6/35)·(25/42)·(19/25) = (6·25·19)/(35·42·25) = (6·19)/(35·42) = 114/1470 = 19/245
-    (1-d)·(1-e)·(1-f) = (29/35)·(17/42)·(6/25) = (29·17·6)/(35·42·25) = 2958/36750 = ...
-    This doesn't simplify nicely. Let me just use the clean algebraic identity instead. -/
-
--- The cleanest approach: prove the Ceva condition for altitudes algebraically
--- using the projection formula d = b·cos(C)/a, e = c·cos(A)/b, f = a·cos(B)/c
--- Then d·e·f = (b·cos C · c·cos A · a·cos B) / (a·b·c) = cos A · cos B · cos C
--- And (1-d)·(1-e)·(1-f) = (a-b·cos C)/a · ... = (c·cos B)/a · (a·cos C)/b · (b·cos A)/c
--- = cos A · cos B · cos C. So d·e·f = (1-d)·(1-e)·(1-f) always! ✓
+-- The altitude Ceva condition follows algebraically from the projection formulas:
+-- d = b·cos(C)/a, e = c·cos(A)/b, f = a·cos(B)/c
+-- Then d·e·f = cos(A)·cos(B)·cos(C) = (1-d)·(1-e)·(1-f).
 
 /-- **Altitude Ceva Condition (Algebraic)**
 
@@ -907,11 +801,24 @@ theorem altitude_ceva_algebraic (a b c : ℝ) (ha : 0 < a) (hb : 0 < b) (hc : 0 
   -- 1 - d = (a - b*cosC)/a = c*cosB/a (from projection formula)
   -- 1 - e = (b - c*cosA)/b = a*cosC/b
   -- 1 - f = (c - a*cosB)/c = b*cosA/c
-  field_simp
-  -- Both sides equal (a*b*c)² · (cosA · cosB · cosC) / (a*b*c)²
-  -- i.e., both sides reduce to b*cosC * c*cosA * a*cosB = c*cosB * a*cosC * b*cosA
-  nlinarith [h_proj_a, h_proj_b, h_proj_c,
-             mul_pos ha hb, mul_pos hb hc, mul_pos ha hc]
+  -- Use projection formulas: a - b*cosC = c*cosB, etc.
+  -- LHS = d*e*f = (b*cosC/a)*(c*cosA/b)*(a*cosB/c) = cosA*cosB*cosC
+  -- RHS = (1-d)*(1-e)*(1-f) = (c*cosB/a)*(a*cosC/b)*(b*cosA/c) = cosA*cosB*cosC
+  -- Both sides are equal, so rewrite using projection formulas then use ring.
+  have h1 : a - b * cosC = c * cosB := by linarith [h_proj_a]
+  have h2 : b - c * cosA = a * cosC := by linarith [h_proj_b]
+  have h3 : c - a * cosB = b * cosA := by linarith [h_proj_c]
+  -- Rewrite (1 - b*cosC/a) = c*cosB/a, etc.
+  -- Both sides equal cosA*cosB*cosC after projection formula substitution
+  -- LHS = b*cosC/a * c*cosA/b * a*cosB/c = cosA*cosB*cosC
+  -- RHS = (a-b*cosC)/a * (b-c*cosA)/b * (c-a*cosB)/c
+  --     = c*cosB/a * a*cosC/b * b*cosA/c = cosA*cosB*cosC
+  -- After field_simp, both are polynomials. We substitute h1,h2,h3 and use ring.
+  suffices h : b * cosC * (c * cosA) * (a * cosB) =
+    (a - b * cosC) * (b - c * cosA) * (c - a * cosB) by
+    field_simp; linarith
+  -- Substitute: a - b*cosC = c*cosB, b - c*cosA = a*cosC, c - a*cosB = b*cosA
+  rw [h1, h2, h3]; ring
 
 /-
 ## Routh's Theorem (Area Ratio)
@@ -962,7 +869,7 @@ theorem routh_zero_iff_ceva (d e f : ℝ)
     (This is a well-known result: cevians through the centroid
     at 1/3 divisions create a triangle with 1/7 the area.) -/
 theorem routh_medial_thirds :
-    routhRatio (1/3) (1/3) (1/3) = 1 / 28 := by
+    routhRatio (1/3) (1/3) (1/3) = 1 / 7 := by
   unfold routhRatio
   norm_num
 
@@ -996,5 +903,5 @@ theorem routh_medial_thirds :
 24. `angle_bisectors_concurrent` - Angle bisectors meet at incenter
 25. `altitude_ceva_algebraic` - Altitude parameters satisfy Ceva condition
 26. `routh_zero_iff_ceva` - Routh's ratio = 0 iff Ceva condition
-27. `routh_medial_thirds` - Routh's ratio for 1/3 divisions = 1/28
+27. `routh_medial_thirds` - Routh's ratio for 1/3 divisions = 1/7
 -/
