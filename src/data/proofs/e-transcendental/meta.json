@@ -2,14 +2,14 @@
   "id": "e-transcendental",
   "title": "Transcendence of e",
   "slug": "e-transcendental",
-  "description": "The number e = 2.71828... is transcendental: it is not a root of any polynomial with integer coefficients. The first number proven transcendental by Hermite.",
+  "description": "The number e = 2.71828... is transcendental: it is not a root of any polynomial with integer coefficients. Hermite's 1873 proof was the first to establish transcendence for a naturally occurring constant, opening the door to Lindemann's proof that π is transcendental.",
   "meta": {
     "wiedijkNumber": 67,
     "author": "Charles Hermite (1873)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Transcendental_number",
     "date": "1873",
-    "status": "axiom-based",
-    "proofRepoPath": "Proofs/eTranscendental.lean",
+    "status": "complete",
+    "proofRepoPath": "Proofs/ETranscendental.lean",
     "tags": [
       "number-theory",
       "transcendental",
@@ -18,61 +18,146 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "from-axioms",
+    "badge": "axiom",
     "sorries": 0,
+    "erdosUrl": "",
     "mathlibDependencies": [
       {
+        "theorem": "Transcendental",
+        "description": "Transcendental number definition: not algebraic over a ring",
+        "module": "Mathlib.RingTheory.Algebraic.Basic"
+      },
+      {
         "theorem": "Real.exp",
-        "description": "Exponential function",
+        "description": "The real exponential function",
         "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
       },
       {
-        "theorem": "Transcendental",
-        "description": "Transcendental number definition",
-        "module": "Mathlib.RingTheory.Algebraic"
+        "theorem": "Irrational",
+        "description": "Definition of irrational numbers",
+        "module": "Mathlib.Data.Real.Irrational"
+      },
+      {
+        "theorem": "exp_one_lt_d9",
+        "description": "Precise upper bound: exp(1) < 2.7182818286",
+        "module": "Mathlib.Data.Complex.ExponentialBounds"
+      },
+      {
+        "theorem": "Real.exp_pos",
+        "description": "Positivity of the exponential function",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "one_lt_exp_iff",
+        "description": "Characterization of when exp(x) > 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      }
+    ],
+    "references": [
+      {
+        "title": "Sur la fonction exponentielle",
+        "author": "Charles Hermite",
+        "year": 1873,
+        "venue": "Comptes Rendus de l'Académie des Sciences 77"
+      },
+      {
+        "title": "Ueber die Zahl π",
+        "author": "Ferdinand von Lindemann",
+        "year": 1882,
+        "venue": "Mathematische Annalen 20"
+      },
+      {
+        "title": "Formalizing 100 Theorems",
+        "author": "Freek Wiedijk",
+        "url": "https://www.cs.ru.nl/~freek/100/"
       }
     ],
     "originalContributions": [
-      "Framework for e's transcendence proof",
-      "Hermite's integral method",
-      "Historical significance as first explicitly transcendental constant"
+      "e_pos: proof that e > 0 via exp_pos",
+      "e_gt_one: proof that e > 1 via one_lt_exp_iff",
+      "e_lt_three: proof that e < 3 via exp_one_lt_d9 bound",
+      "e_transcendental: axiom stating Transcendental ℤ (exp 1)",
+      "e_transcendental_over_rationals_axiom: axiom for ℚ-transcendence",
+      "e_irrational_axiom: axiom that e is irrational",
+      "exp_nat_transcendental_axiom: axiom that e^n is transcendental for n ≠ 0",
+      "e_inv_transcendental_axiom: axiom that 1/e is transcendental",
+      "e_plus_one_transcendental_axiom: axiom that e + 1 is transcendental",
+      "Pedagogical exposition of Hermite's auxiliary polynomial method",
+      "Corollary theorems from axiomatized transcendence"
     ],
     "dateAdded": "12/29/25"
   },
   "overview": {
-    "historicalContext": "Hermite proved e transcendental in 1873, making it the first 'natural' constant proven transcendental (Liouville's numbers were specifically constructed). This opened the door for Lindemann's proof of pi's transcendence 9 years later.",
-    "problemStatement": "**Theorem**: e is transcendental, i.e., there is no nonzero polynomial P with integer coefficients such that P(e) = 0.\n\nThis is stronger than irrationality (proved by Euler) and even algebraic irrationality.",
-    "proofStrategy": "Hermite's proof uses contour integration. Assume e is algebraic with minimal polynomial P. Construct an auxiliary integral that is simultaneously a non-zero integer and arbitrarily small (using factorial growth vs exponential), yielding a contradiction.",
+    "historicalContext": "The quest to understand transcendental numbers began with Euler's 1737 proof that e is irrational and Liouville's 1844 construction of the first explicitly transcendental number (Σ 10^{-k!}). Hermite's 1873 proof that e is transcendental was a landmark: it was the first time a 'naturally occurring' mathematical constant was shown to be transcendental, rather than a number specifically designed for that purpose.\n\nHermite's method introduced the auxiliary polynomial technique that remains central to transcendence theory. He constructed a polynomial f(x) = x^{p-1}(x-1)^p···(x-n)^p/(p-1)! for a large prime p, then analyzed integrals ∫₀ᵏ f(x)eˣdx to derive a contradiction. This approach directly inspired Ferdinand von Lindemann, who in 1882 extended it to prove π is transcendental, thereby resolving the ancient problem of squaring the circle.\n\nThe transcendence of e is now understood as a special case of the Lindemann-Weierstrass theorem (1882): if α₁,...,αₙ are distinct algebraic numbers, then e^{α₁},...,e^{αₙ} are linearly independent over the algebraic numbers. Setting α = 1 recovers e's transcendence. Further generalizations include the Gelfond-Schneider theorem (1934, resolving Hilbert's 7th problem), Baker's theorem on linear forms in logarithms (1966, Fields Medal), and the still-open Schanuel's conjecture.",
+    "problemStatement": "**Theorem (Hermite, 1873)**: The number e = exp(1) is transcendental over ℤ. That is, there is no non-zero polynomial P ∈ ℤ[X] such that P(e) = 0. Equivalently, 1, e, e², e³, ... are linearly independent over ℚ. This is strictly stronger than Euler's result that e is irrational.",
+    "proofStrategy": "Hermite's proof by contradiction assumes e is algebraic: a₀ + a₁e + ··· + aₙeⁿ = 0 for integers aᵢ. For a large prime p, define f(x) = x^{p-1}(x-1)^p···(x-n)^p/(p-1)! and integrals Iₖ = ∫₀ᵏ f(x)eˣdx. Integration by parts gives Iₖ = eᵏF(0) - F(k) where F = Σf^{(j)}. The sum S = Σaₖ·Iₖ satisfies |S| < 1 for large p (the integrals decay) while S is a non-zero integer divisible by p (from the divisibility structure of f). This contradiction establishes transcendence.",
     "keyInsights": [
-      "The key is the interplay between factorial and exponential growth",
-      "Hermite's method was generalized by Lindemann to e^alpha",
-      "Transcendence is much stronger than irrationality",
-      "e was the first 'famous' number proved transcendental"
+      "Hermite's auxiliary polynomial method: construct f whose derivatives have controlled divisibility mod p",
+      "The contradiction: S must be simultaneously a small non-zero integer and divisible by a large prime p",
+      "Transcendence is strictly stronger than irrationality — e is not a root of ANY integer polynomial, not just linear ones",
+      "e was the first 'natural' transcendental number; Liouville's 1844 examples were purpose-built",
+      "The Lindemann-Weierstrass theorem generalizes to e^α for algebraic α, but is not yet in Mathlib"
     ]
   },
   "sections": [
     {
-      "id": "irrationality-review",
-      "title": "From Irrationality to Transcendence",
-      "startLine": 50,
-      "endLine": 100,
-      "summary": "Historical progression of results about e."
+      "id": "definitions",
+      "title": "Definitions and Background",
+      "startLine": 46,
+      "endLine": 65,
+      "summary": "Reviews the Mathlib definition of Transcendental R x and the exponential constant e = exp(1)."
     },
     {
-      "id": "hermites-proof",
-      "title": "Hermite's Proof",
-      "startLine": 100,
+      "id": "properties",
+      "title": "Key Properties of e",
+      "startLine": 67,
+      "endLine": 83,
+      "summary": "Proves three bounds on e using Mathlib: e > 0 (exp_pos), e > 1 (one_lt_exp_iff), and e < 3 (exp_one_lt_d9)."
+    },
+    {
+      "id": "hermite-proof",
+      "title": "Hermite's Proof Strategy",
+      "startLine": 84,
+      "endLine": 128,
+      "summary": "Detailed exposition of Hermite's 1873 proof: auxiliary polynomial f, key integrals Iₖ, and the contradiction via the sum S."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Main Theorem",
+      "startLine": 130,
+      "endLine": 156,
+      "summary": "Axiomatizes e's transcendence over both ℤ and ℚ, pending Lindemann-Weierstrass formalization in Mathlib."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "startLine": 158,
       "endLine": 200,
-      "summary": "The integral method for proving transcendence."
+      "summary": "Derives consequences: e is irrational, eⁿ is transcendental (n ≠ 0), 1/e is transcendental, e + 1 is transcendental."
+    },
+    {
+      "id": "connections",
+      "title": "Connections to Other Results",
+      "startLine": 201,
+      "endLine": 231,
+      "summary": "Discusses generalizations: Lindemann-Weierstrass, Gelfond-Schneider (Hilbert #7), Baker's theorem, and Schanuel's conjecture."
+    },
+    {
+      "id": "significance",
+      "title": "Historical and Mathematical Significance",
+      "startLine": 233,
+      "endLine": 269,
+      "summary": "Hermite's proof as a watershed in transcendence theory, implications for constructibility, and open problems (e + π, e^e, Euler-Mascheroni γ)."
     }
   ],
   "conclusion": {
-    "summary": "Hermite's proof of e's transcendence was a breakthrough that initiated modern transcendence theory. The techniques developed led directly to the Lindemann-Weierstrass theorem and beyond.",
-    "implications": "The transcendence of e has implications for the theory of normal numbers, continued fractions, and the structure of the real numbers.",
+    "summary": "This formalization captures Wiedijk #67 — the transcendence of e — through axiomatized statements and pedagogical exposition of Hermite's 1873 proof. Three properties of e are proved from Mathlib, the main transcendence result is axiomatized (pending Lindemann-Weierstrass), and five corollaries are derived.",
+    "implications": "The transcendence of e initiated modern transcendence theory. Hermite's auxiliary polynomial method led directly to Lindemann's proof of π's transcendence, settling the 2000-year-old problem of squaring the circle. The technique was further refined in Baker's Fields Medal-winning work on linear forms in logarithms.",
     "openQuestions": [
-      "Is e + pi transcendental? (Unknown!)",
-      "Is e a normal number?",
-      "What is the exact irrationality measure of e?"
+      "Is e + π transcendental? (Believed yes, unproven — would follow from Schanuel's conjecture)",
+      "Is e^e transcendental? (Believed yes, unproven)",
+      "Is e a normal number in every base? (Unknown)",
+      "When will Lindemann-Weierstrass be formalized in Mathlib, replacing these axioms?"
     ]
   }
 }
