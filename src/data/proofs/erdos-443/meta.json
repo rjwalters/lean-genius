@@ -54,112 +54,104 @@
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #443 appears in the Erdős-Graham book (1980, p.88). Given integers m and n, the product sets A_m = {k(m-k) : 1 ≤ k ≤ m/2} consist of products of complementary parts. Erdős asked two questions: can |A_m ∩ B_n| be arbitrarily large, and is it bounded by (mn)^{o(1)}?\n\nHegyvári (2025) proved the key upper bound |A_m ∩ B_n| ≤ m^{O(1/log log m)} when m > n, answering the subpolynomial question affirmatively. Cambie independently obtained similar results. The achievability result — that every finite intersection size s is realized by infinitely many pairs (m,n) — was also established.\n\nThe products k(m-k) can be written as (m/2)² - (k - m/2)², connecting the problem to differences of squares and Diophantine equations. Hegyvári's proof uses sieve methods and divisibility constraints from the equation k(m-k) = l(n-l) to bound the number of solutions.",
-    "problemStatement": "**Problem Statement**\n\nFor integers $m, n \\geq 1$, define:\n$$A_m = \\{ k(m-k) : 1 \\leq k \\leq m/2 \\}$$\n$$B_n = \\{ l(n-l) : 1 \\leq l \\leq n/2 \\}$$\n\n**Questions:**\n1. Can $|A_m \\cap B_n|$ be arbitrarily large?\n2. Is $|A_m \\cap B_n| \\leq (mn)^{o(1)}$ for all sufficiently large $m, n$?\n\n**Answer:** YES to both!\n1. For any integer $s$, infinitely many pairs $(m,n)$ achieve $|A_m \\cap B_n| = s$\n2. When $m > n$, we have $|A_m \\cap B_n| \\leq m^{O(1/\\log\\log m)}$",
-    "proofStrategy": "The formalization defines productValue, productSet, commonProducts, and commonProductCount as computable objects. The Diophantine equation k(m-k) = l(n-l) is reformulated via difference of squares. Hegyvári's upper bound and the achievability result are axiomatized, with the summary theorem proving both answers from axioms. Growth rate analysis shows the exponent O(1/log log m) → 0.",
+    "historicalContext": "This problem originates from the 1980 Erdős-Graham monograph 'Old and New Problems and Results in Combinatorial Number Theory' (p.88). For integers $m, n \\ge 1$, the product set $A_m = \\{k(m-k) : 1 \\le k \\le m/2\\}$ consists of products of complementary parts summing to $m$. The identity $k(m-k) = (m/2)^2 - (k - m/2)^2$ reveals these as shifted square complements, connecting the problem to differences of squares and quadratic Diophantine equations.\n\nErdős and Graham asked two questions: whether $|A_m \\cap B_n|$ can be arbitrarily large, and whether it is always bounded by $(mn)^{o(1)}$. The affirmative answer to both creates an interesting tension: the intersection can achieve any finite size, yet it must grow slower than any polynomial.\n\nThe problem remained open for 45 years until Hegyvári resolved it in 2025, proving $|A_m \\cap B_n| \\le m^{O(1/\\log\\log m)}$ for $m > n$. The key insight is that common products correspond to divisors of the integer $m^2 - n^2$ (via the completed-square reformulation), and the divisor function satisfies $d(N) \\le N^{O(1/\\log\\log N)}$ by Wigert's 1907 theorem. Hegyvári's proof combines this observation with sieve-theoretic arguments exploiting divisibility constraints from the equation $k(m-k) = l(n-l)$. Cambie independently obtained similar results.",
+    "problemStatement": "For integers $m, n \\ge 1$, define $A_m = \\{k(m-k) : 1 \\le k \\le m/2\\}$ and $B_n = \\{l(n-l) : 1 \\le l \\le n/2\\}$. Two questions: (1) Can $|A_m \\cap B_n|$ be arbitrarily large? (2) Is $|A_m \\cap B_n| \\le (mn)^{o(1)}$?",
+    "proofStrategy": "The formalization defines productValue, productSet, commonProducts, and commonProductCount as computable Finset objects. The Diophantine equation $k(m-k) = l(n-l)$ is formalized as sameProduct, with equivalences to expanded and completed-square forms axiomatized. Hegyvári's upper bound, the subpolynomial consequence, and the achievability result are axiomatized. The summary theorems are proved by assembling intersection_unbounded (itself proved from axioms) and the subpolynomial bound.",
     "keyInsights": [
-      "**Difference of Squares:** k(m-k) = (m/2)² - (k - m/2)² when m is even. This reformulation makes the problem about matching quadratic forms.",
-      "**Diophantine Connection:** Finding common products means solving k(m-k) = l(n-l), a system that can be analyzed via factorization and divisibility.",
-      "**Subpolynomial Growth:** The bound m^{O(1/log log m)} is subpolynomial—it grows slower than any power m^ε but faster than any polylog.",
-      "**Unbounded Intersection:** Despite the upper bound, every finite size is achieved by infinitely many pairs, showing the bound is essentially tight.",
-      "**Sieve Methods:** Hegyvári's proof uses sieve techniques to count solutions with specific divisibility properties.",
-      "**Erdős-Graham Legacy:** This problem exemplifies their style: simple to state, deep to analyze, connecting number theory and combinatorics."
+      "The identity $k(m-k) = (m/2)^2 - (k - m/2)^2$ transforms the problem from products of complementary parts to differences of squares. Finding $A_m \\cap B_n$ then reduces to solving $m^2 - (2k-m)^2 = n^2 - (2l-n)^2$, which factors as $(m-n)(m+n) = ((2k-m) - (2l-n))((2k-m) + (2l-n))$, a divisor-counting problem.",
+      "The bound $m^{O(1/\\log\\log m)}$ is precisely the maximal order of the divisor function $d(n)$, as established by Wigert in 1907. This is the natural bound because each common product generates a divisor of the integer $m^2 - n^2$, and the total number of such divisors cannot exceed $d(m^2 - n^2)$.",
+      "The growth rate $m^{C/\\log\\log m}$ occupies a rare intermediate position: it is subpolynomial ($o(m^\\varepsilon)$ for all $\\varepsilon > 0$) yet super-polylogarithmic ($\\omega((\\log m)^A)$ for all $A$). This is characteristic of problems controlled by the divisor function.",
+      "The achievability result — that every finite size $s$ is realized by infinitely many $(m,n)$ — shows the divisor-function upper bound is essentially tight. The construction uses number-theoretic arguments to produce pairs $(m,n)$ with prescribed intersection sizes.",
+      "The connection to sieve methods is through Hegyvári's use of divisibility constraints: if $k(m-k) = l(n-l)$, then $k \\mid ln$ or $(n-l) \\mid (m-k)$. Combining these constraints with sieve estimates controls the solution count."
     ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Basic Definitions",
-      "summary": "Definition of productValue, productSet, commonProducts, and commonProductCount",
+      "summary": "Defines productValue $m$ $k$ $= k(m-k)$, productSet $m$ as the Finset $A_m$, commonProducts as $A_m \\cap B_n$, and commonProductCount as $|A_m \\cap B_n|$. All are computable, enabling concrete evaluation via native_decide.",
       "startLine": 37,
       "endLine": 60
     },
     {
       "id": "properties",
       "title": "Elementary Properties",
-      "summary": "Basic facts: maximum at k=m/2, symmetry, bounds",
+      "summary": "Establishes that $k(m-k)$ is maximized at $k = m/2$ (axiomatized), vanishes at endpoints (proved via simp/ring), is bounded by $m^2/4$, and satisfies symmetry $k(m-k) = (m-k)k$. The set $A_m$ has $\\le m/2$ elements and is nonempty for $m \\ge 2$.",
       "startLine": 62,
-      "endLine": 89
-    },
-    {
-      "id": "size",
-      "title": "Size of A_m",
-      "summary": "A_m has approximately m/2 elements",
-      "startLine": 91,
-      "endLine": 105
+      "endLine": 98
     },
     {
       "id": "diophantine",
       "title": "The Diophantine Equation",
-      "summary": "Reformulating k(m-k) = l(n-l) as a quadratic equation",
-      "startLine": 107,
-      "endLine": 126
+      "summary": "Defines sameProduct: $k(m-k) = l(n-l)$, with equivalences to expanded form $km - k^2 = ln - l^2$ and completed-square form $m^2 - (2k-m)^2 = n^2 - (2l-n)^2$ over $\\mathbb{Z}$. The latter reformulation connects intersection counting to the divisor function.",
+      "startLine": 99,
+      "endLine": 116
     },
     {
       "id": "main-results",
       "title": "Main Results - Hegyvári (2025)",
-      "summary": "The key bounds: m^{O(1/log log m)} upper and achievability",
-      "startLine": 128,
-      "endLine": 152
+      "summary": "Axiomatizes Hegyvári's bound $|A_m \\cap B_n| \\le m^{C/\\log\\log m}$ for $m > n$, the subpolynomial consequence $|A_m \\cap B_n| \\le (mn)^\\varepsilon$ eventually, and achievability of every finite intersection size. Proves intersection_unbounded as a corollary.",
+      "startLine": 117,
+      "endLine": 141
     },
     {
       "id": "examples",
       "title": "Special Cases and Examples",
-      "summary": "Concrete computations for small m, n",
-      "startLine": 154,
-      "endLine": 176
+      "summary": "Proves $A_m \\cap A_m = A_m$ (common_self via Finset.inter_self). Computes $A_4 = \\{3, 4\\}$ and $A_6 = \\{5, 8, 9\\}$ via native_decide, illustrating disjointness for small product sets.",
+      "startLine": 142,
+      "endLine": 162
     },
     {
       "id": "quadratic",
-      "title": "Relation to Quadratic Residues",
-      "summary": "Connection to squares and difference of squares",
-      "startLine": 178,
-      "endLine": 190
+      "title": "Quadratic Structure",
+      "summary": "Axiomatizes the difference-of-squares identity $k(m-k) = (m/2)^2 - (k - m/2)^2$ for even $m$, writing $A_m$ as shifted square complements. The product_set_squares_relation axiom captures the general case.",
+      "startLine": 163,
+      "endLine": 175
     },
     {
       "id": "arithmetic",
-      "title": "Connection to Arithmetic Progressions",
-      "summary": "Interpretation via sums of arithmetic progressions",
-      "startLine": 192,
-      "endLine": 203
+      "title": "Arithmetic Progressions Connection",
+      "summary": "Defines triangularNumber $m = m(m-1)/2$ and axiomatizes product_partition_interpretation: $k(m-k)$ equals a partial sum of $\\{1, \\ldots, m-1\\}$, connecting products to partitioning consecutive integers.",
+      "startLine": 176,
+      "endLine": 186
     },
     {
       "id": "growth",
       "title": "Growth Rate Analysis",
-      "summary": "The exponent 1/log log m tends to zero",
-      "startLine": 205,
-      "endLine": 218
+      "summary": "Axiomatizes $1/\\log\\log m \\to 0$ (exponent_tends_to_zero) confirming subpolynomial growth, and the uniform bound $|A_m \\cap B_n| \\le m^\\varepsilon$ for large $m$ and $n \\le m$ (subpolynomial_growth).",
+      "startLine": 188,
+      "endLine": 201
     },
     {
       "id": "technique",
       "title": "Proof Technique",
-      "summary": "Hegyvári's approach using divisibility constraints",
-      "startLine": 210,
-      "endLine": 219
+      "summary": "Axiomatizes the key divisibility constraint: $k(m-k) = l(n-l) \\Rightarrow k \\mid ln$ or $(n-l) \\mid (m-k)$. Hegyvári's sieve argument exploits these constraints to bound the Diophantine solution count.",
+      "startLine": 202,
+      "endLine": 210
     },
     {
       "id": "related",
       "title": "Related Problems",
-      "summary": "Comparison with binomial coefficients and other common-value problems",
-      "startLine": 222,
-      "endLine": 234
+      "summary": "Defines binomialSet for comparison with common values of $\\binom{n}{2}$. Axiomatizes that product-set intersections have different structure from binomial intersections, illustrating how the generating quadratic form affects behavior.",
+      "startLine": 211,
+      "endLine": 224
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Main theorem combining both results",
-      "startLine": 236,
-      "endLine": 261
+      "summary": "Proves erdos_443_summary: (1) $\\forall s, \\exists m, n: s \\le |A_m \\cap B_n|$ and (2) $\\forall \\varepsilon > 0$, eventually $|A_m \\cap B_n| \\le (mn)^\\varepsilon$. Both components assembled from axioms via intersection_unbounded and subpolynomial_bound. The alias erdos_443 marks the resolution.",
+      "startLine": 225,
+      "endLine": 249
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #443 asks whether the intersection of product sets A_m ∩ B_n can be arbitrarily large and whether it's bounded by (mn)^{o(1)}. Both questions were answered affirmatively by Hegyvári (2025) and Cambie. The intersection can achieve any finite size, but is always bounded by m^{O(1/log log m)}.",
-    "implications": "**Implications for Number Theory**\n\n1. **Subpolynomial Bounds:** The bound m^{O(1/log log m)} represents a rarely-seen growth rate—between polynomial and polylogarithmic.\n\n2. **Diophantine Equations:** The problem reduces to understanding solutions of quadratic Diophantine equations, a classical topic with modern applications.\n\n3. **Sieve Theory:** Hegyvári's proof demonstrates the power of sieve methods in combinatorial number theory.\n\n4. **Erdős-Graham Problems:** This illustrates how seemingly simple questions about intersections can require deep techniques.",
+    "summary": "Erdős Problem #443 is SOLVED (Hegyvári 2025, Cambie). Both questions are answered YES: $|A_m \\cap B_n|$ can achieve any finite value, yet is bounded by $m^{O(1/\\log\\log m)}$ — the maximal order of the divisor function. The 249-line formalization with 0 sorries axiomatizes the deep results (Hegyvári's bound, achievability, divisibility constraints, difference-of-squares reformulation) and proves the summary theorems by assembling them.",
+    "implications": "This problem exemplifies the Erdős-Graham philosophy of discovering deep structure in elementary-looking questions. The resolution connects products of complementary parts to the divisor function — one of the most studied objects in multiplicative number theory. The bound $m^{O(1/\\log\\log m)}$, identical to the maximal order of $d(n)$, suggests that this is the 'correct' answer rather than an artifact of the proof method. The 45-year gap between problem and solution (1980-2025) underscores the difficulty of tight Diophantine intersection bounds.",
     "openQuestions": [
-      "What is the exact asymptotic for the maximum of |A_m ∩ B_n| over all n < m?",
-      "Can the constant C in m^{C/log log m} be made explicit?",
-      "What is the distribution of |A_m ∩ B_n| for random pairs (m,n)?",
-      "Are there structural characterizations of pairs (m,n) with large intersection?"
+      "What is the exact maximum of $|A_m \\cap B_n|$ over all $n < m$ for fixed $m$? Is it $\\Theta(m^{C/\\log\\log m})$ for some explicit constant $C$, matching the divisor-function bound?",
+      "Can the constant $C$ in Hegyvári's bound $m^{C/\\log\\log m}$ be made explicit? The current proof inherits the constant from Wigert's divisor-function estimate.",
+      "What is the distribution of $|A_m \\cap B_n|$ for 'random' pairs $(m,n)$ in a large range? Is the typical intersection size much smaller than the worst case?",
+      "Does the problem generalize to higher-degree products, e.g., $k(m-k)(m-2k)$? The divisor-function connection may extend to higher-dimensional Diophantine equations."
     ]
   }
 }

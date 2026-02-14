@@ -58,91 +58,90 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #271: Stanley Sequences**\n\nStanley sequences are greedy constructions avoiding three-term arithmetic progressions. Given n, the sequence A(n) starts with 0, n and continues by always choosing the smallest integer that maintains AP-freeness.\n\n**Historical Development:**\n- **Odlyzko & Stanley (1978):** Characterized A(1), A(3^k), A(2·3^k); proposed dichotomy conjecture\n- **Lindhurst (1990):** Computational evidence that A(4) may have quadratic-log growth\n- **Moy (2011):** Proved aₖ ≤ (1/2+ε)k² for large k\n- **van Doorn & Sothanaphan:** Explicit bound aₖ ≤ (k-1)(k+2)/2 + n\n\n**Status:** OPEN for general n; partially solved for special cases.",
-    "problemStatement": "**Problem Statement (Partially Open)**\n\nFor any $n$, let $A(n) = \\{a_0, a_1, a_2, \\ldots\\}$ with:\n- $a_0 = 0$, $a_1 = n$\n- For $k \\geq 1$: $a_{k+1}$ is the least integer keeping the sequence AP-free\n\n**Questions:**\n1. Can the $a_k$ be explicitly determined?\n2. How fast do they grow?\n\n**Known:**\n- $A(1)$ = integers with no digit 2 in base 3\n- $a_k \\leq (k-1)(k+2)/2 + n$ for all $k$\n\n**Conjectured (Odlyzko-Stanley):**\nEvery sequence has either:\n- $a_k \\sim k^{\\log_2 3}$, or\n- $a_k \\sim k^2/\\log k$",
-    "proofStrategy": "**Formalization Approach**\n\n1. **AP Definitions:** IsThreeAP, IsAPFree predicates\n\n2. **Stanley Sequences:** stanleySequence function, basic properties\n\n3. **Base-3 Characterization:** hasDigit2InBase3, noDigit2InBase3 for A(1)\n\n4. **Growth Rates:** log2of3, hasPolynomialGrowth, hasQuadraticLogGrowth\n\n5. **Upper Bounds:** Moy's theorem, van Doorn-Sothanaphan explicit bound\n\n6. **Conjectures:** Odlyzko-Stanley dichotomy, A(4) conjecture",
+    "historicalContext": "Stanley sequences arise from one of the most natural constructions in additive combinatorics: starting with two seeds $0$ and $n$, greedily adjoin the smallest integer that introduces no three-term arithmetic progression. The resulting sequence $A(n)$ is the lexicographically earliest AP-free sequence starting with $0, n$.\n\nThe study of these sequences began with Odlyzko and Stanley (1978), who completely characterized $A(1)$: its elements are exactly the integers with no digit 2 in base 3 (equivalently, sums of distinct powers of 3). They also characterized $A(3^k)$ and $A(2 \\cdot 3^k)$, and made the bold conjecture that every Stanley sequence has one of exactly two growth rates: either $a_k \\sim k^{\\log_2 3} \\approx k^{1.585}$ (the 'nice' rate achieved by $A(1)$) or $a_k \\sim k^2/\\log k$ (a 'generic' rate).\n\nLindhurst (1990) provided extensive computational evidence that $A(4)$ (OEIS A005487) exhibits the slower $k^2/\\log k$ growth, making it the prototypical 'generic' sequence. However, no proof exists for any specific $n$ having this growth rate.\n\nOn the upper bound side, Moy (2011) proved $a_k \\le (1/2 + \\varepsilon)k^2$ for large $k$, confirming that growth is at most quadratic. Van Doorn and Sothanaphan sharpened this to the fully explicit $a_k \\le (k-1)(k+2)/2 + n$ for all $k \\ge 0$. The general problem — determining the growth rate for arbitrary $n$ — remains open.",
+    "problemStatement": "For any $n \\ge 1$, let $A(n) = \\{a_0, a_1, a_2, \\ldots\\}$ with $a_0 = 0$, $a_1 = n$, and $a_{k+1}$ the least integer keeping $\\{a_0, \\ldots, a_{k+1}\\}$ free of three-term arithmetic progressions. Can the $a_k$ be explicitly determined? How fast do they grow?",
+    "proofStrategy": "The formalization defines AP-freeness (IsThreeAP, IsAPFree), constructs Stanley sequences via the greedy algorithm, axiomatizes the base-3 characterization of $A(1)$, formalizes the two conjectured growth rates ($k^{\\log_2 3}$ and $k^2/\\log k$), states the Odlyzko-Stanley dichotomy conjecture, and proves the known upper bounds (Moy, van Doorn-Sothanaphan). The main theorem erdos_271 packages the characterization of $A(1)$ and the explicit upper bound.",
     "keyInsights": [
-      "**A(1) Characterization:** Base-3 numbers with only digits 0 and 1",
-      "**Growth Exponent:** log₂3 ≈ 1.585 for 'nice' sequences like A(1)",
-      "**Dichotomy Conjecture:** Two possible growth rates - no intermediates",
-      "**A(4) Mystery:** Computational data suggests quadratic-log growth",
-      "**Upper Bound:** aₖ ≤ (k-1)(k+2)/2 + n (explicit, for all k)",
-      "**Connection to Combinatorics:** Stanley sequences are fundamental in additive combinatorics"
+      "The base-3 characterization of $A(1)$ reveals a self-similar Cantor-set structure: the elements are sums of distinct powers of 3, and the growth exponent $\\log_2 3 \\approx 1.585$ arises because there are $2^m$ such numbers below $3^m$ — two choices (0 or 1) for each of $m$ ternary digits.",
+      "The dichotomy conjecture asserts a sharp phase transition: sequences are either 'structured' (admitting base-3 characterizations with $k^{\\log_2 3}$ growth) or 'chaotic' (with denser $k^2/\\log k$ growth). No intermediate growth rate is observed, suggesting a deep rigidity phenomenon.",
+      "The gap between the proven quadratic upper bound $a_k = O(k^2)$ and the conjectured $k^2/\\log k$ is only a logarithmic factor, yet closing it has resisted all approaches. The $\\log k$ savings in the denominator would require understanding cancellations in the greedy process.",
+      "The connection between AP-freeness and base representations is specific to base 3: a set $S \\subseteq \\{0, 1, 2\\}^n$ (viewed in $\\mathbb{Z}/3\\mathbb{Z}$) is AP-free iff it is a cap set. The $A(1)$ characterization is the infinite analog of cap sets in $\\mathbb{F}_3^n$.",
+      "Stanley sequences differ fundamentally from random AP-free sets: the greedy construction imposes a rigid deterministic structure that may explain the dichotomy. Understanding why greediness forces exactly two growth rates is the central challenge."
     ]
   },
   "sections": [
     {
       "id": "ap-definitions",
       "title": "Arithmetic Progressions",
-      "summary": "IsThreeAP, IsAPFree, IsAPFree' predicates",
+      "summary": "Defines IsThreeAP(a,b,c) for a < b < c with 2b = a + c, and two equivalent AP-free predicates: IsAPFree (no three elements form a 3-AP) and IsAPFree' (explicit formulation with ordered triples).",
       "startLine": 39,
       "endLine": 66
     },
     {
       "id": "stanley-sequences",
       "title": "Stanley Sequences",
-      "summary": "stanleySequence definition and basic properties",
+      "summary": "Constructs A(n) via the greedy algorithm: a₀ = 0, a₁ = n, each subsequent term is the smallest integer preserving AP-freeness. Axiomatizes strict monotonicity and the AP-free property of all initial segments.",
       "startLine": 68,
       "endLine": 107
     },
     {
       "id": "a1-characterization",
       "title": "The Sequence A(1)",
-      "summary": "Base-3 characterization, elements, growth rate",
+      "summary": "Complete characterization: n ∈ A(1) iff n has no digit 2 in base 3 (equivalently, n is a sum of distinct powers of 3). Lists initial elements 0,1,3,4,9,10,12,13,27,... and proves growth rate a_k ~ k^{log₂3} ≈ k^{1.585}.",
       "startLine": 109,
       "endLine": 156
     },
     {
       "id": "odlyzko-stanley",
       "title": "Odlyzko-Stanley Characterizations",
-      "summary": "A(3^k), A(2·3^k) characterizations",
+      "summary": "Axiomatizes that A(3^k) and A(2·3^k) also admit explicit base-3 characterizations (Odlyzko-Stanley 1978), generalizing the A(1) result to two infinite families of 'structured' Stanley sequences.",
       "startLine": 158,
       "endLine": 178
     },
     {
       "id": "growth-conjectures",
       "title": "Growth Rate Conjectures",
-      "summary": "Dichotomy conjecture, A(4) conjecture",
+      "summary": "Defines the two conjectured growth rates: hasPolynomialGrowth (a_k ~ k^{log₂3}) and hasQuadraticLogGrowth (a_k ~ k²/log k). States the Odlyzko-Stanley dichotomy conjecture (every A(n) has one of these rates) and Lindhurst's conjecture that A(4) has quadratic-log growth.",
       "startLine": 180,
       "endLine": 227
     },
     {
       "id": "upper-bounds",
       "title": "Upper Bounds",
-      "summary": "Moy's theorem, van Doorn-Sothanaphan explicit bound",
+      "summary": "Axiomatizes Moy's asymptotic bound a_k ≤ (1/2+ε)k² for large k, the van Doorn-Sothanaphan explicit bound a_k ≤ (k-1)(k+2)/2 + n for all k, and derives the simplified quadratic upper bound a_k = O(k²).",
       "startLine": 229,
       "endLine": 258
     },
     {
       "id": "specific-values",
       "title": "Specific Values",
-      "summary": "A(1), A(2), A(4) computed elements",
+      "summary": "Lists computed initial segments: A(1) = OEIS A003278 (sums of distinct powers of 3), A(2) = OEIS A033157 (widening gaps), A(4) = OEIS A005487 (dense initial terms, conjectured k²/log k growth).",
       "startLine": 260,
       "endLine": 283
     },
     {
       "id": "sum-free-connection",
       "title": "Connection to Sum-Free Sets",
-      "summary": "IsSumFree, difference from AP-free",
+      "summary": "Defines IsSumFree (no a+b=c with a,b,c ∈ S) and proves AP-freeness and sum-freeness are logically independent: {1,2,4} is AP-free but not sum-free since 2+2=4. Connects to Schur numbers and Ramsey theory.",
       "startLine": 285,
       "endLine": 312
     },
     {
       "id": "main-results",
       "title": "Main Results",
-      "summary": "erdos_271 theorem, historical timeline",
+      "summary": "The theorem erdos_271 packages two proven results: A(1) has the base-3 characterization, and a_k ≤ (k-1)(k+2)/2 + n holds universally. Records the historical timeline (1978-2011) and restates the open dichotomy conjecture.",
       "startLine": 314,
       "endLine": 362
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #271 is PARTIALLY SOLVED. A(1) has an explicit base-3 characterization, and similar results hold for A(3^k) and A(2·3^k). Upper bounds are proven: aₖ ≤ (1/2+ε)k² eventually (Moy) and aₖ ≤ (k-1)(k+2)/2 + n always. The Odlyzko-Stanley dichotomy conjecture (two possible growth rates) remains OPEN.",
-    "implications": "**Combinatorial Significance**\n\n1. **Additive Combinatorics:** Stanley sequences are fundamental objects avoiding arithmetic progressions\n\n2. **Base-k Representations:** The A(1) characterization connects to digital representations\n\n3. **Growth Rate Questions:** The dichotomy conjecture would classify all such sequences\n\n4. **Algorithmic Aspects:** Greedy algorithms for AP-avoidance",
+    "summary": "Erdős Problem #271 is PARTIALLY SOLVED. The sequence $A(1)$ has a complete base-3 characterization ($n \\in A(1)$ iff no digit 2 in base 3), with analogous results for $A(3^k)$ and $A(2 \\cdot 3^k)$. Universal upper bounds are proven: $a_k \\le (1/2+\\varepsilon)k^2$ eventually (Moy 2011) and $a_k \\le (k-1)(k+2)/2 + n$ for all $k$ (van Doorn-Sothanaphan). The Odlyzko-Stanley dichotomy conjecture — that every Stanley sequence has growth rate either $k^{\\log_2 3}$ or $k^2/\\log k$ — remains OPEN.",
+    "implications": "Stanley sequences sit at the intersection of additive combinatorics, digital representations, and greedy algorithms. The $A(1)$ characterization reveals a self-similar Cantor-set structure connecting AP-avoidance to base-3 digit restrictions, while the dichotomy conjecture suggests a sharp phase transition between structured and chaotic behavior in greedy AP-free constructions. The connection to cap sets in $\\mathbb{F}_3^n$ links this problem to the Ellenberg-Gijswijt breakthrough and modern additive combinatorics.",
     "openQuestions": [
-      "Prove the Odlyzko-Stanley dichotomy conjecture",
-      "Determine the growth rate of A(4)",
-      "Find explicit formulas for more sequences",
-      "Characterize which n give polynomial vs. quadratic-log growth"
+      "Prove the Odlyzko-Stanley dichotomy conjecture: is it true that every $A(n)$ has growth rate either $k^{\\log_2 3}$ or $k^2/\\log k$, with no intermediate rates?",
+      "Prove rigorously that $A(4)$ has quadratic-log growth $a_k \\sim k^2/\\log k$ — currently supported only by computational evidence (Lindhurst 1990).",
+      "Characterize exactly which starting values $n$ produce the 'nice' growth rate $k^{\\log_2 3}$ vs the 'generic' rate $k^2/\\log k$. Is the set of 'nice' $n$ related to powers of 3?",
+      "Can the quadratic upper bound $a_k = O(k^2)$ be improved to $O(k^2/\\log k)$ for all $n$, or does there exist $n$ with genuinely quadratic growth?"
     ]
   }
 }

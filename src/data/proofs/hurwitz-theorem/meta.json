@@ -10,9 +10,9 @@
     "status": "verified",
     "tags": [
       "algebra",
-      "number-theory",
       "quaternions",
       "division-algebras",
+      "topology",
       "advanced"
     ],
     "proofRepoPath": "Proofs/HurwitzTheorem.lean",
@@ -69,36 +69,36 @@
       "id": "n-square-concept",
       "title": "The N-Square Identity Concept",
       "startLine": 56,
-      "endLine": 100,
-      "summary": "Defines `normSq v = \\sum_i v_i^2$ and the `NSquareIdentity n` structure: a bilinear multiplication `mul` satisfying $\\|a\\|^2 \\cdot \\|b\\|^2 = \\|\\text{mul}(a,b)\\|^2$ with left/right linearity and scalar homogeneity."
+      "endLine": 89,
+      "summary": "Defines `normSq v = \\sum_i v_i^2` and the `NSquareIdentity n` structure: a bilinear multiplication `mul` satisfying $\\|a\\|^2 \\cdot \\|b\\|^2 = \\|\\text{mul}(a,b)\\|^2$ with left/right linearity and scalar homogeneity."
     },
     {
       "id": "trivial-identity",
-      "title": "The Trivial Identity ($n = 1$)",
+      "title": "The 1-Square Identity ($n = 1$)",
       "startLine": 91,
       "endLine": 119,
-      "summary": "Defines `oneMul a b = (a_0 \\cdot b_0)` and proves `one_square_identity` via `ring`. Constructs `oneSquareIdentity : NSquareIdentity 1`, corresponding to $\\mathbb{R}$."
+      "summary": "Defines `oneMul a b = (a₀ · b₀)` and proves `one_square_identity` via `ring`. Constructs `oneSquareIdentity : NSquareIdentity 1`, corresponding to $\\mathbb{R}$."
     },
     {
       "id": "brahmagupta",
-      "title": "Brahmagupta–Fibonacci Identity ($n = 2$)",
+      "title": "Brahmagupta-Fibonacci Identity ($n = 2$)",
       "startLine": 121,
-      "endLine": 182,
-      "summary": "Defines `twoMul a b = (a_0 b_0 - a_1 b_1,\\; a_0 b_1 + a_1 b_0)$, encoding complex multiplication. Proves `two_square_identity : $(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$` via `ring`. Constructs `twoSquareIdentity : NSquareIdentity 2`."
+      "endLine": 145,
+      "summary": "Defines `twoMul` encoding complex multiplication and proves $(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$ via `ring`. Constructs `twoSquareIdentity : NSquareIdentity 2`."
     },
     {
       "id": "euler-identity",
       "title": "Euler's Four-Square Identity ($n = 4$)",
-      "startLine": 183,
-      "endLine": 225,
-      "summary": "Defines `fourMul` encoding Hamilton's quaternion multiplication $q_1 q_2$ with the 4-component formula. Proves `four_square_identity` via `ring` (64-term polynomial expansion). Constructs `fourSquareIdentity : NSquareIdentity 4`."
+      "startLine": 146,
+      "endLine": 182,
+      "summary": "Defines `fourMul` encoding Hamilton's quaternion multiplication and proves the 64-term identity via `ring`. Constructs `fourSquareIdentity : NSquareIdentity 4`. Related to the `lagrange-four-squares` gallery entry."
     },
     {
       "id": "quaternion-connection",
       "title": "Connection to Mathlib Quaternions",
-      "startLine": 226,
+      "startLine": 183,
       "endLine": 243,
-      "summary": "Shows how Mathlib's `Quaternion.normSq_mul` ($|q_1 q_2|^2 = |q_1|^2 |q_2|^2$) provides an alternative verification of the 4-square identity through the quaternion algebra structure."
+      "summary": "Bridges the explicit coordinate proof with Mathlib's `Quaternion.normSq_mul` for an alternative abstract verification. Constructs `fourSquareIdentity : NSquareIdentity 4`."
     },
     {
       "id": "octonions",

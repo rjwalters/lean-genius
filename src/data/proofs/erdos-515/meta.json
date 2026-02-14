@@ -65,91 +65,90 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #515**\n\nA problem in complex analysis about integrability along paths.\n\n**Key History:**\n- Huber (1957): Proved that for each λ > 0, a path C_λ exists with finite integral (different path for each λ)\n- Zhang (1977): Proved a single path works when f has finite order\n- Lewis-Rossi-Weitsman (1984): Proved a single path works for ALL transcendental entire functions\n\n**Remarkable Extension:**\nThe LRW result actually holds for e^u where u is any subharmonic function, not just log|f| for entire f.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nLet f(z) be an entire function, not a polynomial. Does there exist a locally rectifiable path C tending to infinity such that, for EVERY λ > 0, the integral\n\n∫_C |f(z)|^{-λ} dz\n\nis finite?\n\n**Answer: YES** (Lewis-Rossi-Weitsman, 1984)\n\nA single path C works for all λ > 0 simultaneously.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Entire Functions:** Define IsEntire, IsTranscendental, HasFiniteOrder\n\n2. **Paths:** Define PathToInfinity, LocallyRectifiable, IsGoodPath\n\n3. **Path Integrals:** Define pathIntegralInversePower, IntegralIsFinite\n\n4. **Questions:** Formalize HuberQuestion (weak) and ErdosQuestion (strong)\n\n5. **Partial Results:** Axiomatize Huber (1957) and Zhang (1977)\n\n6. **Main Result:** Axiomatize Lewis-Rossi-Weitsman (1984)",
+    "historicalContext": "This problem originates in the study of growth and value distribution of entire functions, a central topic in complex analysis since Picard's theorems. Huber (1957), in his influential paper 'On subharmonic functions and differential geometry in the large,' proved that for each fixed $\\lambda > 0$ and any transcendental entire $f$, there exists a path $C_\\lambda \\to \\infty$ with $\\int_{C_\\lambda} |f|^{-\\lambda} < \\infty$. The path could depend on $\\lambda$.\n\nErdős asked the stronger question: can a single path work for all $\\lambda > 0$ simultaneously? This is a quantifier swap from $\\forall \\lambda \\, \\exists C$ to $\\exists C \\, \\forall \\lambda$, which is typically much harder in analysis.\n\nZhang (1977) proved the intermediate case: for entire functions of finite order $\\rho$ (meaning $|f(z)| \\le C \\exp(|z|^\\rho)$), a single path suffices. The key was that finite-order functions have controlled zero density, allowing a path to be constructed that avoids all zeros while maintaining rapid growth.\n\nLewis, Rossi, and Weitsman resolved the general case in 1984 in their paper 'On the growth of subharmonic functions along paths' (Ark. Mat.). Their proof works not just for $\\log|f|$ but for any subharmonic function $u$, showing that the result is fundamentally about potential theory: the path selects directions of maximal growth of $u$, and the maximum principle guarantees this growth is sufficient for integrability. The subharmonic generalization was key — it stripped away the complex-analytic structure to reveal the underlying potential-theoretic principle.",
+    "problemStatement": "Let $f(z)$ be a transcendental entire function. Does there exist a locally rectifiable path $C$ tending to infinity such that $\\int_C |f(z)|^{-\\lambda} \\, dz < \\infty$ for every $\\lambda > 0$?",
+    "proofStrategy": "The formalization defines entire functions (IsEntire via Differentiable, IsTranscendental, HasFiniteOrder), paths (PathToInfinity via Filter.Tendsto, LocallyRectifiable, IsGoodPath), and the path integral (pathIntegralInversePower using Mathlib's integration). The weak (HuberQuestion) and strong (ErdosQuestion, UniversalQuestion) forms are defined with explicit quantifier structures. Historical results (Huber, Zhang) and the resolution (LRW) are axiomatized. The summary theorems are proved by assembling axioms.",
     "keyInsights": [
-      "**Uniformity in λ:** The key difficulty is finding ONE path that works for ALL λ > 0",
-      "**Path Avoids Small Values:** The path must avoid regions where f is small",
-      "**Growth Exploitation:** Entire functions grow rapidly along most rays; the path uses this",
-      "**Subharmonic Generalization:** Result extends beyond entire functions to subharmonic functions",
-      "**Three Stages:** Huber (each λ) → Zhang (finite order) → LRW (all f)"
+      "The core difficulty is a quantifier swap: Huber's $\\forall \\lambda \\, \\exists \\gamma$ vs. Erdős's $\\exists \\gamma \\, \\forall \\lambda$. The universal path must simultaneously avoid the 'bad' regions for all $\\lambda$, which means it must keep $|f|$ growing superpolynomially — faster than any power $|z|^A$.",
+      "The LRW proof constructs the path by selecting, at each radius $r$, the angular direction $\\theta(r)$ maximizing the subharmonic function $u = \\log|f|$. The maximum principle guarantees $\\max_\\theta u(re^{i\\theta})$ grows at least as fast as the circular mean, which tends to $\\infty$ for non-constant subharmonic $u$.",
+      "The subharmonic generalization is the deepest insight: the proof uses only the sub-mean-value property and maximum principle of $\\log|f|$, not holomorphicity. This means the result holds for $e^u$ where $u$ is any subharmonic function on $\\mathbb{C}$ tending to $\\infty$.",
+      "For finite-order functions, Zhang's proof exploits the controlled zero density (by Jensen's formula, the number of zeros in $|z| < r$ is $O(r^\\rho)$) to route the path between zero clusters. For infinite-order functions, the zeros can be much denser, requiring the more delicate potential-theoretic approach of LRW.",
+      "The three-stage resolution (Huber 1957, Zhang 1977, LRW 1984) spanning 27 years reflects the increasing difficulty: each step required fundamentally new ideas, from potential-theoretic estimates to controlled zero-avoidance to the full maximum-principle argument."
     ]
   },
   "sections": [
     {
       "id": "entire-functions",
       "title": "Entire Functions",
-      "summary": "IsEntire, IsTranscendental, HasFiniteOrder definitions",
+      "summary": "Defines IsEntire (globally holomorphic via Differentiable $\\mathbb{C}$ $f$), IsTranscendental (entire and not a polynomial), and HasFiniteOrder ($|f(z)| \\le C\\exp(|z|^\\rho)$ for some $\\rho, C > 0$). These capture the precise function-theoretic hypotheses.",
       "startLine": 42,
       "endLine": 66
     },
     {
       "id": "paths",
-      "title": "Paths in ℂ",
-      "summary": "PathToInfinity, LocallyRectifiable, IsGoodPath definitions",
+      "title": "Paths in C",
+      "summary": "Defines PathToInfinity (continuous with $|\\gamma(t)| \\to \\infty$ via Filter.Tendsto), LocallyRectifiable (finite arc length on bounded segments, placeholder body), and IsGoodPath (both properties). These ensure the path integral is well-defined.",
       "startLine": 68,
       "endLine": 92
     },
     {
       "id": "path-integrals",
       "title": "Path Integrals",
-      "summary": "pathIntegralInversePower, IntegralIsFinite definitions",
+      "summary": "Defines pathIntegralInversePower as $\\int_0^\\infty \\|f(\\gamma(t))\\|^{-\\lambda} \\|\\gamma'(t)\\| \\, dt$ using Mathlib's integration and Real.rpow. IntegralIsFinite requires the integral to be $< \\top$.",
       "startLine": 94,
       "endLine": 111
     },
     {
       "id": "questions",
       "title": "The Questions",
-      "summary": "HuberQuestion, ErdosQuestion, UniversalQuestion definitions",
+      "summary": "Formalizes the quantifier structure: HuberQuestion ($\\forall \\lambda, \\exists \\gamma$: path may depend on $\\lambda$), ErdosQuestion ($\\exists \\gamma, \\forall \\lambda$: single path for all $\\lambda$), and UniversalQuestion (ErdosQuestion for all transcendental $f$). The $\\exists\\forall$ vs. $\\forall\\exists$ distinction is the mathematical heart.",
       "startLine": 113,
       "endLine": 144
     },
     {
       "id": "partial-results",
       "title": "Partial Results",
-      "summary": "huber_1957, zhang_1977 axioms",
+      "summary": "Axiomatizes Huber's 1957 theorem (path exists for each fixed $\\lambda$, Comment. Math. Helv.) and Zhang's 1977 theorem (single path for finite-order functions, Kexue Tongbao). The gap is the infinite-order case.",
       "startLine": 146,
       "endLine": 167
     },
     {
       "id": "main-result",
       "title": "The Main Result",
-      "summary": "lewis_rossi_weitsman_1984 axiom",
+      "summary": "Axiomatizes lewis_rossi_weitsman_1984 : UniversalQuestion — the complete solution for all transcendental entire functions (Ark. Mat. 1984). Also axiomatizes lrw_subharmonic_version extending to arbitrary subharmonic functions (placeholder body).",
       "startLine": 169,
       "endLine": 188
     },
     {
       "id": "insights",
       "title": "Why This is Surprising",
-      "summary": "Key insights about growth, uniformity, subharmonic functions",
+      "summary": "Comments (not formalized) explain the key mathematical ideas: entire functions grow rapidly along most rays (cos $\\pi\\rho$ theorem), the path avoids zeros by navigating between clusters, uniformity in $\\lambda$ follows from superpolynomial growth along the path, and the subharmonic generalization reveals potential theory as the true setting.",
       "startLine": 190,
       "endLine": 214
     },
     {
       "id": "construction",
       "title": "Construction Ideas",
-      "summary": "Path construction, avoiding zeros, growth along rays",
+      "summary": "Comments describe the LRW path construction: at each radius $r$, select the angle $\\theta(r)$ maximizing $|f(re^{i\\theta})|$. The resulting path chases the maximum modulus, keeping $|f|$ large and $|f|^{-\\lambda}$ integrable. Zero avoidance follows from the sparseness of zeros relative to the growth.",
       "startLine": 216,
       "endLine": 240
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_515_summary, erdos_515, erdos_515_answer theorems",
+      "summary": "Proves erdos_515_summary by assembling LRW, Huber (via unfolding HuberQuestion), and a True placeholder for Zhang. The theorems erdos_515 and erdos_515_answer are direct aliases for lewis_rossi_weitsman_1984.",
       "startLine": 242,
-      "endLine": 297
+      "endLine": 290
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #515 asked whether, for a transcendental entire function f, there exists a locally rectifiable path C → ∞ such that ∫_C |f(z)|^{-λ} dz < ∞ for ALL λ > 0. The answer is YES, proved by Lewis, Rossi, and Weitsman (1984). This completed a progression: Huber (1957) showed a path exists for each λ separately, Zhang (1977) proved a single path works for finite order functions, and LRW proved the general case.",
-    "implications": "**Complex Analysis Connections**\n\n1. **Path Integral Theory:** Understanding integrability of functions along paths\n\n2. **Subharmonic Functions:** Result generalizes to e^u for subharmonic u\n\n3. **Growth Rates:** Connection between function growth and path integrability\n\n4. **Geometric Function Theory:** How paths can be chosen to control integrals\n\n5. **Entire Function Classification:** Different behavior based on order",
+    "summary": "Erdős Problem #515 is SOLVED (Lewis-Rossi-Weitsman, 1984). For every transcendental entire function $f$, there exists a single locally rectifiable path $C \\to \\infty$ such that $\\int_C |f(z)|^{-\\lambda} \\, dz < \\infty$ for all $\\lambda > 0$ simultaneously. The 290-line formalization with 0 sorries captures the quantifier structure ($\\exists \\gamma \\, \\forall \\lambda$ vs. $\\forall \\lambda \\, \\exists \\gamma$), axiomatizes the three historical milestones (Huber 1957, Zhang 1977, LRW 1984), and proves summary theorems by assembling them.",
+    "implications": "The LRW theorem reveals a deep structural property of subharmonic functions: despite their values being unbounded below (near zeros), the maximal growth direction always dominates sufficiently for inverse-power integrability. The subharmonic generalization places the result in potential theory rather than complex analysis, suggesting connections to heat kernel estimates and Brownian motion on Riemannian manifolds (via Huber's original geometric motivation). The quantifier swap from Huber to Erdős illustrates a recurring theme in analysis: uniformity is harder than pointwise results, but often holds due to structural reasons.",
     "openQuestions": [
-      "Explicit construction of the path for specific functions?",
-      "Optimal path (minimizing the integral)?",
-      "Rate of decay of the integral as a function of λ?",
-      "Higher-dimensional analogues?",
-      "Meromorphic function extensions?"
+      "Can the universal path be constructed explicitly for specific functions like $e^{e^z}$ or lacunary series? The LRW proof is existential (via the maximum principle), not constructive.",
+      "Among all paths $C \\to \\infty$ satisfying the integrability condition, is there an 'optimal' path minimizing $\\int_C |f|^{-\\lambda}$ for a given $\\lambda$? How does this optimal path depend on $\\lambda$?",
+      "What is the precise rate of decay of $\\int_C |f|^{-\\lambda}$ as $\\lambda \\to \\infty$ along the LRW path? Is it related to the order of $f$?",
+      "Does the result extend to higher dimensions — for entire functions $f : \\mathbb{C}^n \\to \\mathbb{C}$, does there exist a path (or submanifold) to infinity with analogous integrability?"
     ]
   }
 }
