@@ -1,5 +1,23 @@
 [
   {
+    "id": "ann-e107-imports",
+    "proofId": "erdos-107",
+    "range": {
+      "startLine": 24,
+      "endLine": 28
+    },
+    "type": "context",
+    "title": "Imports and Setup",
+    "content": "Imports full Mathlib and opens `Finset` and `BigOperators` for working with finite sets and summation notation. The proof resides in the `Erdos107` namespace.",
+    "mathContext": {
+      "latex": "\\text{import Mathlib}, \\quad \\text{open } \\text{Finset}, \\text{BigOperators}",
+      "description": "The formalization uses Mathlib's EuclideanSpace, Collinear, convexHull, Finset, and Filter.atTop."
+    },
+    "significance": "context",
+    "relatedConcepts": ["mathlib", "euclidean-space", "finset"],
+    "prerequisites": ["lean4-basics"]
+  },
+  {
     "id": "ann-e107-general-position",
     "proofId": "erdos-107",
     "range": {
@@ -8,48 +26,68 @@
     },
     "type": "definition",
     "title": "General Position",
-    "content": "A finite set of points in ℝ² is in **general position** if no three points are collinear. This is formalized using Mathlib's `Collinear` predicate: for any three distinct points p, q, r in the set, {p, q, r} is not collinear.",
+    "content": "A finite set of points in $\\mathbb{R}^2$ is in **general position** if no three points are collinear. This is formalized using Mathlib's `Collinear` predicate over $\\mathbb{R}$: for any three distinct points $p, q, r \\in S$, the set $\\{p, q, r\\}$ is not collinear. General position is the standard non-degeneracy condition in combinatorial geometry, ensuring that the convex hull structure is well-behaved.",
+    "mathContext": {
+      "latex": "\\text{InGeneralPosition}(S) \\;:\\Leftrightarrow\\; \\forall\\, p, q, r \\in S,\\; p \\neq q \\neq r \\neq p \\;\\Rightarrow\\; \\neg\\,\\text{Collinear}_{\\mathbb{R}}(\\{p, q, r\\})",
+      "description": "Uses Mathlib's Collinear predicate which checks if points lie on a common affine line. Three points are collinear iff they are affinely dependent."
+    },
     "significance": "key",
-    "relatedConcepts": ["collinearity", "general-position", "point-sets"]
+    "relatedConcepts": ["collinearity", "general-position", "affine-dependence", "non-degeneracy"],
+    "prerequisites": ["euclidean-plane", "affine-geometry"]
   },
   {
     "id": "ann-e107-convex-ngon",
     "proofId": "erdos-107",
     "range": {
       "startLine": 38,
-      "endLine": 41
+      "endLine": 46
     },
     "type": "definition",
-    "title": "Convex n-gon",
-    "content": "A set of n points forms a **convex n-gon** if the set has exactly n points and each point is a vertex of the convex hull (i.e., no point lies in the convex hull of the others). This elegant characterization avoids dealing with edge orderings.",
+    "title": "Convex n-gon and Containment",
+    "content": "A set of $n$ points forms a **convex $n$-gon** if the set has exactly $n$ points and each point is a vertex of the convex hull (i.e., no point lies in the convex hull of the remaining points). This is the **convex position** characterization: $S$ is in convex position iff every point of $S$ is an extreme point of $\\operatorname{conv}(S)$. A point set **contains a convex $n$-gon** if it has a subset forming one.",
+    "mathContext": {
+      "latex": "\\text{IsConvexNGon}(n, S) \\;:\\Leftrightarrow\\; |S| = n \\;\\wedge\\; \\forall\\, p \\in S,\\; p \\notin \\operatorname{conv}(S \\setminus \\{p\\})",
+      "description": "Uses Mathlib's convexHull over ℝ and Finset.erase. The definition avoids ordering the vertices, capturing convex position purely via the extreme point property."
+    },
     "significance": "critical",
-    "relatedConcepts": ["convex-hull", "polygon", "vertex"]
+    "relatedConcepts": ["convex-hull", "extreme-point", "convex-position", "polygon"],
+    "prerequisites": ["convex-sets", "finset-operations"]
   },
   {
     "id": "ann-e107-f-definition",
     "proofId": "erdos-107",
     "range": {
-      "startLine": 54,
+      "startLine": 48,
       "endLine": 56
     },
     "type": "definition",
     "title": "The Function f(n)",
-    "content": "**f(n)** is defined as the infimum of CardSet(n), the set of N values such that any N points in general position must contain a convex n-gon. This is the central object of study in the Happy Ending Problem.",
+    "content": "The central object of study: $f(n) = \\inf\\{N \\mid \\text{any } N \\text{ points in general position contain a convex } n\\text{-gon}\\}$. The set `CardSet(n)` collects all threshold values $N$, and $f(n)$ is its infimum. The Erdos-Szekeres theorem proves this infimum is achieved (i.e., $f(n)$ is finite for all $n \\geq 3$).",
+    "mathContext": {
+      "latex": "f(n) = \\inf\\,\\bigl\\{\\, N \\in \\mathbb{N} \\;\\big|\\; \\forall\\, S \\subseteq \\mathbb{R}^2,\\; |S| = N \\wedge \\text{gen. pos.}(S) \\;\\Rightarrow\\; S \\supseteq \\text{convex } n\\text{-gon}\\,\\bigr\\}",
+      "description": "Defined noncomputably via sInf since the existence of the minimum requires the Erdos-Szekeres theorem. The function is a Ramsey-type extremal function."
+    },
     "significance": "critical",
-    "relatedConcepts": ["ramsey-type", "extremal-function", "convex-polygon"]
+    "relatedConcepts": ["extremal-function", "ramsey-type", "infimum", "threshold-function"],
+    "prerequisites": ["general-position", "convex-ngon", "natural-number-infimum"]
   },
   {
-    "id": "ann-e107-klein-result",
+    "id": "ann-e107-small-cases",
     "proofId": "erdos-107",
     "range": {
-      "startLine": 60,
-      "endLine": 66
+      "startLine": 58,
+      "endLine": 85
     },
     "type": "theorem",
-    "title": "Klein's Result (1931)",
-    "content": "**f(4) = 5**: Any 5 points in general position contain 4 points forming a convex quadrilateral. The proof involves case analysis on the convex hull: if the hull has 4+ points, we're done; if it has 3 points, the 2 interior points with 2 hull vertices form a quad.",
+    "title": "Small Cases: f(3)=3, f(4)=5, f(5)=9",
+    "content": "The known exact values of $f$: **$f(3) = 3$** (trivial: three non-collinear points form a triangle), **$f(4) = 5$** (Klein 1931: case analysis on the convex hull of 5 points), and **$f(5) = 9$** (Makai-Turan: any 9 points in general position contain a convex pentagon). Klein's proof of $f(4) = 5$ was the observation that sparked the entire problem: if the convex hull of 5 points is a quadrilateral or pentagon, we're done; if it's a triangle, the two interior points with two hull vertices form a convex quadrilateral.",
+    "mathContext": {
+      "latex": "f(3) = 3, \\quad f(4) = 5, \\quad f(5) = 9",
+      "description": "f(3) has a sorry proof (needs case analysis), f(4) and f(5) are axiomatized. The pattern 3, 5, 9 matches 2^{n-2}+1 for n=3,4,5, supporting the conjecture."
+    },
     "significance": "key",
-    "relatedConcepts": ["convex-hull", "quadrilateral", "case-analysis"]
+    "relatedConcepts": ["case-analysis", "convex-hull-structure", "base-cases"],
+    "prerequisites": ["general-position", "convex-ngon"]
   },
   {
     "id": "ann-e107-ersz-lower",
@@ -59,74 +97,68 @@
       "endLine": 95
     },
     "type": "theorem",
-    "title": "Erdős-Szekeres Lower Bound",
-    "content": "**2^{n-2}+1 ≤ f(n)**: There exist 2^{n-2} points in general position with no convex n-gon. The construction uses a recursive 'double sequence' that carefully avoids creating convex n-gons while maximizing point count.",
+    "title": "Erdos-Szekeres Lower Bound (1960)",
+    "content": "**$2^{n-2}+1 \\leq f(n)$** for all $n \\geq 3$: There exist $2^{n-2}$ points in general position containing no convex $n$-gon. The construction is recursive: start with a suitable configuration for $n-1$ and carefully place new points to double the count while preventing any convex $n$-gon. This shows the conjectured value $2^{n-2}+1$ would be tight.",
+    "mathContext": {
+      "latex": "\\forall\\, n \\geq 3:\\quad 2^{n-2} + 1 \\leq f(n)",
+      "description": "Axiomatized. The construction uses a 'double sequence' (Horton set variant). The points are arranged so that certain orientations prevent large convex subsets."
+    },
     "significance": "critical",
-    "relatedConcepts": ["lower-bound", "construction", "recursive"]
+    "relatedConcepts": ["lower-bound", "extremal-construction", "horton-set", "recursive-construction"],
+    "prerequisites": ["f-definition", "general-position"]
   },
   {
-    "id": "ann-e107-ersz-upper",
+    "id": "ann-e107-upper-bounds",
     "proofId": "erdos-107",
     "range": {
       "startLine": 97,
-      "endLine": 104
-    },
-    "type": "theorem",
-    "title": "Erdős-Szekeres Upper Bound (1935)",
-    "content": "**f(n) ≤ C(2n-4, n-2)+1**: The original upper bound uses Ramsey-theoretic arguments. This grows roughly as 4^n, much larger than the conjectured 2^{n-2}+1.",
-    "significance": "key",
-    "relatedConcepts": ["upper-bound", "ramsey-theory", "binomial"]
-  },
-  {
-    "id": "ann-e107-suk-bound",
-    "proofId": "erdos-107",
-    "range": {
-      "startLine": 106,
-      "endLine": 114
-    },
-    "type": "theorem",
-    "title": "Suk's Breakthrough (2017)",
-    "content": "**f(n) ≤ 2^{(1+o(1))n}**: A major breakthrough that reduced the exponential base from 4 to 2. The proof uses a novel 'cups and caps' argument with improved counting.",
-    "significance": "critical",
-    "relatedConcepts": ["breakthrough", "cups-caps", "upper-bound"]
-  },
-  {
-    "id": "ann-e107-hmpt-bound",
-    "proofId": "erdos-107",
-    "range": {
-      "startLine": 116,
       "endLine": 124
     },
     "type": "theorem",
-    "title": "HMPT Bound (2020)",
-    "content": "**f(n) ≤ 2^{n+O(√(n log n))}**: The current best upper bound, due to Holmsen, Mojarrad, Pach, and Tardos. The gap to the conjectured 2^{n-2}+1 is now only O(√(n log n)) in the exponent.",
+    "title": "Upper Bounds: ES (1935), Suk (2017), HMPT (2020)",
+    "content": "Three progressively tighter upper bounds on $f(n)$:\n\n1. **Erdos-Szekeres (1935)**: $f(n) \\leq \\binom{2n-4}{n-2} + 1 \\sim 4^n/\\sqrt{n}$, using Ramsey theory\n2. **Suk (2017)**: $f(n) \\leq 2^{(1+o(1))n}$, a breakthrough reducing the base from 4 to 2 via a novel cups-and-caps argument with improved counting\n3. **HMPT (2020)**: $f(n) \\leq 2^{n + O(\\sqrt{n \\log n})}$, the current best bound by Holmsen-Mojarrad-Pach-Tardos\n\nThe gap between lower bound $2^{n-2}+1$ and upper bound $2^{n+O(\\sqrt{n\\log n})}$ is now only $O(\\sqrt{n \\log n})$ in the exponent.",
+    "mathContext": {
+      "latex": "2^{n-2}+1 \\;\\leq\\; f(n) \\;\\leq\\; 2^{n + C\\sqrt{n \\log n}}",
+      "description": "All three bounds axiomatized. Suk's bound uses Filter.atTop for the o(1) term. HMPT uses an existential constant C > 0. The exponential gap has been dramatically narrowed from ~4^n to ~2^{O(sqrt(n log n))} above 2^n."
+    },
     "significance": "critical",
-    "relatedConcepts": ["current-best", "upper-bound", "hmpt"]
+    "relatedConcepts": ["ramsey-theory", "cups-and-caps", "upper-bound", "asymptotic-analysis"],
+    "prerequisites": ["f-definition", "binomial-coefficient", "asymptotic-notation"]
   },
   {
     "id": "ann-e107-main-conjecture",
     "proofId": "erdos-107",
     "range": {
-      "startLine": 128,
+      "startLine": 126,
       "endLine": 138
     },
     "type": "concept",
-    "title": "The Happy Ending Conjecture",
-    "content": "**Conjecture**: f(n) = 2^{n-2}+1 for all n ≥ 3. This is stated as a Prop without asserting truth value since it remains OPEN. Erdős offered $500 for a proof, $100 for a counterexample. The name 'Happy Ending' comes from Szekeres and Klein's marriage.",
+    "title": "The Happy Ending Conjecture (OPEN)",
+    "content": "**Conjecture (Erdos-Szekeres)**: $f(n) = 2^{n-2}+1$ for all $n \\geq 3$. This is defined as a `Prop` without asserting truth, since it remains **OPEN**. Erdos offered **$500** for a proof and **$100** for a counterexample. The conjecture is supported by the three known values ($f(3)=3, f(4)=5, f(5)=9$, all matching $2^{n-2}+1$) and by the tightening upper bounds. The name 'Happy Ending' comes from George Szekeres and Esther Klein's marriage, prompted by their collaboration on this problem.",
+    "mathContext": {
+      "latex": "\\text{HappyEndingConjecture} :\\Leftrightarrow \\forall\\, n \\geq 3,\\; f(n) = 2^{n-2} + 1",
+      "description": "Stated as def (a Prop) rather than axiom, correctly reflecting its open status. The value f(6) is unknown: the conjecture predicts f(6) = 17."
+    },
     "significance": "critical",
-    "relatedConcepts": ["conjecture", "open-problem", "erdos-prize"]
+    "relatedConcepts": ["open-problem", "erdos-prize", "combinatorial-geometry"],
+    "prerequisites": ["f-definition", "ersz-lower-bound"]
   },
   {
     "id": "ann-e107-existence",
     "proofId": "erdos-107",
     "range": {
-      "startLine": 142,
-      "endLine": 152
+      "startLine": 140,
+      "endLine": 170
     },
     "type": "theorem",
-    "title": "Existence of f(n)",
-    "content": "**Erdős-Szekeres (1935)**: For every n ≥ 3, f(n) is finite - i.e., CardSet(n) is nonempty. This fundamental result shows that the problem is well-defined: there always exists some N forcing a convex n-gon.",
+    "title": "Existence and Verified Bounds",
+    "content": "**Erdos-Szekeres (1935)**: For every $n \\geq 3$, $f(n)$ is finite, i.e., `CardSet(n)` is nonempty. This is the foundational result that makes the problem well-defined. The proof uses the upper bound: $\\binom{2n-4}{n-2}+1 \\in \\text{CardSet}(n)$. Additionally, explicit bounds for $f(4)$ are stated: $4 < f(4)$ (4 points can avoid a quadrilateral) and $f(4) \\leq 5$ (Klein's result).",
+    "mathContext": {
+      "latex": "\\forall\\, n \\geq 3,\\; \\text{CardSet}(n) \\neq \\emptyset \\quad\\text{(i.e., } f(n) < \\infty\\text{)}",
+      "description": "f_finite has a sorry; the proof would instantiate the Ramsey-theoretic argument. The small-case bounds f_4_lb and f_4_ub together with f_four_eq give a complete picture for n=4."
+    },
     "significance": "key",
-    "relatedConcepts": ["existence", "well-defined", "finiteness"]
+    "relatedConcepts": ["finiteness", "well-definedness", "ramsey-theorem"],
+    "prerequisites": ["ersz-upper-bound", "cardset-definition"]
   }
 ]

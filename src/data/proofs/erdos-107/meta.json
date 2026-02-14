@@ -1,10 +1,10 @@
 {
   "id": "erdos-107",
-  "title": "Erdős Problem #107: The Happy Ending Problem",
+  "title": "Erdos Problem #107: The Happy Ending Problem",
   "slug": "erdos-107",
-  "description": "Let f(n) be minimal such that any f(n) points in ℝ², no three collinear, contain n points forming a convex n-gon. The conjecture f(n) = 2^{n-2} + 1 remains OPEN.",
+  "description": "Let f(n) be minimal such that any f(n) points in R^2, no three collinear, contain n points forming a convex n-gon. The conjecture f(n) = 2^{n-2} + 1 remains OPEN.",
   "meta": {
-    "author": "Erdős-Szekeres",
+    "author": "Erdos-Szekeres",
     "sourceUrl": "https://erdosproblems.com/107",
     "date": "1935",
     "status": "formalized",
@@ -20,57 +20,128 @@
     "erdosNumber": 107,
     "erdosUrl": "https://erdosproblems.com/107",
     "erdosProblemStatus": "open",
-    "erdosPrizeValue": "$500"
+    "erdosPrizeValue": "$500",
+    "mathlibDependencies": [
+      {
+        "theorem": "Collinear",
+        "description": "Affine collinearity predicate, used to define general position",
+        "module": "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace"
+      },
+      {
+        "theorem": "convexHull",
+        "description": "Convex hull operator, used to define convex n-gons via extreme points",
+        "module": "Mathlib.Analysis.Convex.Hull"
+      },
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space type for R^2 point sets",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      }
+    ],
+    "originalContributions": [
+      "InGeneralPosition: general position predicate using Collinear",
+      "IsConvexNGon: convex n-gon via extreme-point characterization",
+      "CardSet and f(n): Ramsey-type threshold function",
+      "Erdos-Szekeres lower bound 2^{n-2}+1 (axiomatized)",
+      "Suk bound 2^{(1+o(1))n} with Filter.atTop formalization",
+      "HMPT bound 2^{n+O(sqrt(n log n))} with existential constant",
+      "HappyEndingConjecture as Prop (correctly open)"
+    ],
+    "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "The 'Happy Ending Problem' was so named because Szekeres and Klein, who worked on it together, ended up getting married. Klein observed f(4)=5 in 1931. Erdős and Szekeres established foundational bounds in 1935 and 1960. The conjecture that f(n) = 2^{n-2}+1 remains one of the most famous open problems in combinatorial geometry.",
-    "problemStatement": "Let f(n) be minimal such that any f(n) points in ℝ², no three on a line, contain n points which form the vertices of a convex n-gon. Prove that f(n) = 2^{n-2} + 1.",
-    "proofStrategy": "The formalization defines convex n-gons via the convex hull property (each point is a vertex of the hull), states the known bounds as axioms (Erdős-Szekeres lower/upper, Suk 2017, HMPT 2020), and expresses the main conjecture as a Prop without asserting its truth value since it remains open.",
+    "historicalContext": "The 'Happy Ending Problem' is one of the most celebrated questions in combinatorial geometry, named because George Szekeres and Esther Klein, who collaborated on it, fell in love and married in 1937. The problem originated in 1931 when Klein observed that among any 5 points in the plane in general position (no three collinear), four must form a convex quadrilateral. She challenged her friends, including Szekeres and Paul Erdos, to generalize this.\n\nErdos and Szekeres published their foundational paper in 1935, proving that for every n >= 3, there exists a finite threshold f(n) such that any f(n) points in general position must contain a convex n-gon. Their proof used a Ramsey-theoretic argument yielding the upper bound f(n) <= C(2n-4, n-2) + 1, which grows roughly as 4^n. In a second paper (1960), they constructed 2^{n-2} points in general position with no convex n-gon, establishing the lower bound f(n) >= 2^{n-2} + 1 and leading to their conjecture that this is tight.\n\nThe upper bound remained essentially unchanged for 80 years until Andrew Suk's breakthrough in 2017, proving f(n) <= 2^{(1+o(1))n} using a novel approach to the cups-and-caps theorem. This was further refined by Holmsen, Mojarrad, Pach, and Tardos (2020) to f(n) <= 2^{n + O(sqrt(n log n))}, the current best bound. The gap in the exponent between the lower bound (n-2) and upper bound (n + O(sqrt(n log n))) is now remarkably small, yet closing it remains open.\n\nThe only known exact values are f(3) = 3 (trivial), f(4) = 5 (Klein 1931), and f(5) = 9 (Makai-Turan). All match 2^{n-2} + 1. The value f(6) is unknown; the conjecture predicts f(6) = 17. Erdos offered $500 for a proof of the conjecture, making it one of his most famous prize problems.",
+    "problemStatement": "Let f(n) be minimal such that any f(n) points in R^2, no three on a line, contain n points which form the vertices of a convex n-gon. Prove that f(n) = 2^{n-2} + 1.",
+    "proofStrategy": "The formalization defines convex n-gons via the convex hull property (each point is an extreme point of the hull), capturing convex position without vertex ordering. The function f(n) is defined as the infimum of the threshold set CardSet(n). Known bounds are axiomatized: the Erdos-Szekeres lower bound 2^{n-2}+1 <= f(n), three progressively tighter upper bounds (ES 1935, Suk 2017, HMPT 2020), and small cases f(4) = 5 and f(5) = 9. The main conjecture is expressed as a Prop (not an axiom) to correctly reflect its open status. The Suk bound formalizes the o(1) term using Lean's Filter.atTop.",
     "keyInsights": [
-      "Erdős-Szekeres (1960) proved the lower bound 2^{n-2}+1 ≤ f(n) via explicit construction",
-      "Erdős-Szekeres (1935) proved upper bound f(n) ≤ C(2n-4,n-2)+1 using Ramsey theory",
-      "Suk (2017) breakthrough: f(n) ≤ 2^{(1+o(1))n}",
-      "HMPT (2020) current best: f(n) ≤ 2^{n+O(√(n log n))}",
-      "Gap between 2^{n-2}+1 and 2^{n+O(√(n log n))} remains open"
+      "The convex n-gon definition via extreme points (p not in conv(S \\ {p})) elegantly avoids vertex ordering, making it purely combinatorial",
+      "Erdos-Szekeres (1960) proved the lower bound 2^{n-2}+1 <= f(n) via a recursive 'double sequence' construction (Horton-set variant)",
+      "The original ES upper bound ~4^n stood for 80 years until Suk (2017) reduced the exponential base from 4 to 2, a dramatic improvement",
+      "HMPT (2020) further tightened to 2^{n+O(sqrt(n log n))}, leaving only an O(sqrt(n log n)) gap in the exponent",
+      "All three known values f(3)=3, f(4)=5, f(5)=9 match 2^{n-2}+1, but f(6) remains unknown",
+      "The Happy Ending name reflects the Szekeres-Klein romance, making this one of the few mathematical problems named for a love story"
     ]
   },
   "sections": [
     {
-      "id": "definitions",
+      "id": "docstring",
+      "title": "Module Docstring",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Historical introduction covering Klein (1931), Erdos-Szekeres (1935, 1960), Suk (2017), and HMPT (2020). States the problem and lists key milestones."
+    },
+    {
+      "id": "core-definitions",
       "title": "Core Definitions",
-      "summary": "Definitions for general position, convex n-gons, and the function f(n)",
       "startLine": 30,
-      "endLine": 57
+      "endLine": 56,
+      "summary": "Defines InGeneralPosition (no three collinear via Mathlib's Collinear), IsConvexNGon (extreme point characterization), HasConvexNGon (subset containment), CardSet (threshold set), and f(n) (infimum of CardSet)."
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "summary": "Known values f(3)=3, f(4)=5, f(5)=9",
       "startLine": 58,
-      "endLine": 85
+      "endLine": 85,
+      "summary": "Known exact values: f(3)=3 (sorry proof), f(4)=5 (Klein 1931, axiomatized), f(5)=9 (Makai-Turan, axiomatized). All match the conjectured 2^{n-2}+1."
     },
     {
-      "id": "main-bounds",
-      "title": "Main Bounds",
-      "summary": "Erdős-Szekeres, Suk, and HMPT bounds on f(n)",
+      "id": "lower-bound",
+      "title": "Erdos-Szekeres Lower Bound",
       "startLine": 86,
-      "endLine": 125
+      "endLine": 95,
+      "summary": "Axiomatized: 2^{n-2}+1 <= f(n) for n >= 3. Construction provides 2^{n-2} points with no convex n-gon via recursive doubling."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "startLine": 97,
+      "endLine": 124,
+      "summary": "Three progressively tighter bounds: ES (1935) C(2n-4,n-2)+1 via Ramsey theory, Suk (2017) 2^{(1+o(1))n} via cups-caps, HMPT (2020) 2^{n+O(sqrt(n log n))}. All axiomatized."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture (OPEN)",
-      "summary": "The Happy Ending conjecture: f(n) = 2^{n-2}+1",
       "startLine": 126,
-      "endLine": 153
+      "endLine": 138,
+      "summary": "HappyEndingConjecture defined as a Prop: f(n) = 2^{n-2}+1 for all n >= 3. Correctly stated without asserting truth. $500 Erdos prize."
+    },
+    {
+      "id": "existence",
+      "title": "Existence and Verified Bounds",
+      "startLine": 140,
+      "endLine": 170,
+      "summary": "f_finite: CardSet(n) is nonempty for n >= 3. Explicit bounds f_4_lb and f_4_ub bracket f(4). All have sorry proofs requiring case analysis or the Ramsey argument."
+    },
+    {
+      "id": "historical-notes",
+      "title": "Historical Notes",
+      "startLine": 171,
+      "endLine": 188,
+      "summary": "Commentary on the 'Happy Ending' name origin (Szekeres-Klein marriage), the gap between bounds, and key references (ES 1935/1960, Suk 2017, HMPT 2020)."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #107 (Happy Ending Problem) with core definitions for convex n-gons in general position, state the known bounds as axioms, and express the main conjecture f(n) = 2^{n-2}+1 as a Prop. The conjecture remains open with a $500 prize.",
-    "implications": "Resolution would settle one of the most famous problems in combinatorial geometry and complete our understanding of convex polygon containment in point sets.",
+    "summary": "Erdos Problem #107 (Happy Ending Problem) is formalized with definitions for convex n-gons in general position, known bounds as axioms, and the main conjecture f(n) = 2^{n-2}+1 as a Prop. The conjecture remains OPEN with a $500 Erdos prize. The formalization captures the dramatic 80-year narrowing of bounds from ~4^n (1935) to 2^{n+O(sqrt(n log n))} (2020), with the lower bound 2^{n-2}+1 conjectured to be tight.",
+    "implications": "Resolution would complete our understanding of convex polygon containment in planar point sets and settle one of the most famous open problems in combinatorial geometry. The problem connects to Ramsey theory (the original proof uses Ramsey-type arguments), discrete geometry, and the theory of order types.",
     "openQuestions": [
-      "Is f(n) = 2^{n-2}+1 for all n ≥ 3?",
-      "Can the HMPT upper bound be improved to match the lower bound?",
-      "What is f(6)? (Currently unknown)"
+      "Is f(n) = 2^{n-2}+1 for all n >= 3? (The main conjecture, $500 prize)",
+      "What is f(6)? The conjecture predicts 17, but no proof is known",
+      "Can the HMPT upper bound 2^{n+O(sqrt(n log n))} be improved to 2^{n+o(sqrt(n))}?",
+      "Is there a non-constructive proof that avoids the Ramsey-theoretic overhead?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "proofId": "erdos-467",
+      "relationship": "Both are Erdos problems in combinatorial geometry involving extremal point configurations and convex structure"
+    },
+    {
+      "proofId": "erdos-984",
+      "relationship": "Both are Ramsey-type problems in combinatorics where existence of structured subconfigurations is guaranteed above a threshold"
+    },
+    {
+      "proofId": "erdos-909",
+      "relationship": "Both are Erdos problems with deep topological/geometric content, connecting combinatorial structure to fundamental properties of spaces"
+    }
+  ]
 }
