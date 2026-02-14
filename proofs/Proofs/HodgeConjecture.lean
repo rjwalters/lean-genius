@@ -799,7 +799,7 @@ def HodgeClass.smul {p : ℕ} {H : PureHodgeStructure (2 * p)}
 /-- The zero Hodge class (the zero element of V_ℚ is always a Hodge class
 since ι(0) = 0 ∈ V^{p,p} for any submodule). -/
 def HodgeClass.zero {p : ℕ} (H : PureHodgeStructure (2 * p)) : HodgeClass H :=
-  ⟨0, by simp [map_zero]; exact Submodule.zero_mem _⟩
+  ⟨0, by simp [map_zero]⟩
 
 /-- **The zero class is algebraic** (witnessed by the empty sum).
 
@@ -926,19 +926,19 @@ This was established through work of Deligne, Faltings, and others:
 
 **Why an axiom?** Requires comparison isomorphisms between Betti, de Rham,
 and étale cohomology, plus the theory of absolute Hodge cycles. -/
-axiom hodge_tate_equivalent_abelian :
-    (HodgeConjectureFullStatement → TateConjecture) ∧
-    (TateConjecture → HodgeConjectureFullStatement)
+axiom hodge_tate_equivalent_abelian.{v} :
+    (HodgeConjectureFullStatement.{v} → TateConjecture) ∧
+    (TateConjecture → HodgeConjectureFullStatement.{v})
 
 /-- **Hodge implies Tate for abelian varieties.** -/
-theorem hodge_implies_tate_abelian (h : HodgeConjectureFullStatement) :
+theorem hodge_implies_tate_abelian (h : HodgeConjectureFullStatement.{u}) :
     TateConjecture :=
-  hodge_tate_equivalent_abelian.1 h
+  (hodge_tate_equivalent_abelian.{u}).1 h
 
 /-- **Tate implies Hodge for abelian varieties.** -/
 theorem tate_implies_hodge_abelian (h : TateConjecture) :
-    HodgeConjectureFullStatement :=
-  hodge_tate_equivalent_abelian.2 h
+    HodgeConjectureFullStatement.{u} :=
+  (hodge_tate_equivalent_abelian.{u}).2 h
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART IXe: GENERALIZED HODGE CONJECTURE
