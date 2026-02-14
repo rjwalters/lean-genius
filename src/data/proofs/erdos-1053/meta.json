@@ -19,71 +19,106 @@
       "Guy: Unsolved Problems in Number Theory, B2",
       "Gronwall (1913): lim sup σ(n)/(n log log n) = e^γ",
       "Robin (1984): σ(n) < e^γ · n · log log n (conditional on RH)",
+      "Ramanujan (1915): Highly composite numbers (extensive study of σ(n)/n extremes)",
+      "Alaoglu–Erdős (1944): Structure of colossally abundant numbers",
       "OEIS A007539: k-perfect numbers",
       "https://erdosproblems.com/1053"
     ],
     "leanFile": "Proofs/Erdos1053Problem.lean",
     "sorries": 0,
     "sourceUrl": "https://erdosproblems.com/1053",
-    "erdosUrl": "https://erdosproblems.com/1053"
+    "erdosUrl": "https://erdosproblems.com/1053",
+    "crossReferences": [
+      {
+        "proofId": "perfect-numbers",
+        "relationship": "specializes",
+        "description": "The k=2 case (classical perfect numbers) is treated in depth, including the Euclid–Euler characterization that this formalization axiomatizes."
+      },
+      {
+        "proofId": "riemann-hypothesis",
+        "relationship": "depends-on",
+        "description": "Robin's inequality, which gives the conditional k = O(log log n) bound, is equivalent to the Riemann Hypothesis."
+      },
+      {
+        "proofId": "euler-totient",
+        "relationship": "related",
+        "description": "Euler's totient φ(n) and σ(n) are both fundamental multiplicative arithmetic functions; their interplay governs perfect number structure."
+      }
+    ],
+    "dateAdded": "2025-01-15"
   },
   "sections": [
     {
-      "id": "core-definitions",
-      "title": "Core Definitions",
+      "id": "imports",
+      "title": "Imports and Setup",
       "startLine": 26,
-      "endLine": 38,
-      "summary": "Define sigma, IsKPerfect, and perfectMultiplicity."
+      "endLine": 29,
+      "summary": "Imports Mathlib divisor theory, basic natural number arithmetic, and tactic framework."
+    },
+    {
+      "id": "core-definitions",
+      "title": "Core Definitions: σ(n) and k-Perfection",
+      "startLine": 30,
+      "endLine": 45,
+      "summary": "Axiomatizes the sum-of-divisors function σ(n), defines k-perfect numbers (σ(n) = kn), and the abundancy index σ(n)/n."
     },
     {
       "id": "classical-perfect",
-      "title": "Classical Perfect Numbers",
-      "startLine": 40,
-      "endLine": 54,
-      "summary": "k=1 uniqueness, k=2 examples, Euler's even perfect number characterization."
+      "title": "Classical Perfect Numbers (k = 1, 2)",
+      "startLine": 47,
+      "endLine": 60,
+      "summary": "Uniqueness of 1-perfect numbers, examples of 2-perfect (perfect) numbers, and Euler's characterization of even perfect numbers via Mersenne primes."
     },
     {
       "id": "multiperfect",
       "title": "Multiperfect Numbers (k ≥ 3)",
-      "startLine": 56,
-      "endLine": 65,
-      "summary": "Triperfect examples, largest known k=11."
+      "startLine": 62,
+      "endLine": 71,
+      "summary": "Known triperfect examples (k=3) and the existence of 11-perfect numbers, the largest known multiplicity."
     },
     {
       "id": "main-conjecture",
-      "title": "The Main Conjecture",
-      "startLine": 67,
-      "endLine": 75,
-      "summary": "k = o(log log n) for k-perfect numbers."
+      "title": "The Main Conjecture: k = o(log log n)",
+      "startLine": 75,
+      "endLine": 85,
+      "summary": "States Erdős's central question: must the perfection multiplicity k grow strictly slower than log log n?"
     },
     {
       "id": "bounds",
-      "title": "Known Bounds and Related Results",
-      "startLine": 77,
+      "title": "Gronwall's Theorem and Robin's Inequality",
+      "startLine": 87,
       "endLine": 100,
-      "summary": "Gronwall's theorem, Robin's inequality, Guy's finiteness conjecture, Robin criterion connection."
+      "summary": "Gronwall's 1913 result establishing e^γ · log log n as the natural scale, and Robin's 1984 conditional upper bound from the Riemann Hypothesis."
+    },
+    {
+      "id": "finiteness-and-criterion",
+      "title": "Guy's Finiteness Conjecture and Robin's Criterion",
+      "startLine": 102,
+      "endLine": 117,
+      "summary": "Guy's stronger conjecture (finitely many k-perfect numbers for each k ≥ 3) and the derivation of k = O(log log n) from Robin's criterion."
     }
   ],
   "overview": {
-    "historicalContext": "The study of perfect numbers (σ(n) = 2n) dates to Euclid. Multiperfect numbers (σ(n) = kn for k ≥ 3) have been studied since the Renaissance. Erdős asked about the growth rate of k relative to n: Gronwall's 1913 theorem shows σ(n)/n can reach ~e^γ · log log n, so k = O(log log n) is the natural scale. The question is whether k-perfect numbers are constrained to k = o(log log n).",
-    "problemStatement": "If n is k-perfect (σ(n) = k·n), must k = o(log log n)? That is, does the multiplicative perfection ratio grow strictly slower than log log n?",
-    "proofStrategy": "We formalize the sum-of-divisors function, define k-perfect numbers, state known examples for k ≤ 11, present Gronwall's upper bound and Robin's conditional inequality, and state the main o(log log n) conjecture alongside Guy's finiteness conjecture.",
+    "historicalContext": "The study of perfect numbers ($\\sigma(n) = 2n$) is among the oldest in mathematics, originating with Euclid's *Elements* (Book IX, Proposition 36, c. 300 BCE). The generalization to multiperfect numbers ($\\sigma(n) = kn$ for $k \\geq 3$) was explored by medieval and Renaissance mathematicians, with Robert Recorde noting 120 as triperfect in 1557. Systematic computational searches in the 20th century found multiperfect numbers up to $k = 11$. Thomas Gronwall's 1913 theorem established that $\\limsup \\sigma(n)/(n \\log\\log n) = e^\\gamma$, setting the natural scale. Guy Robin's 1984 breakthrough showed his inequality $\\sigma(n) < e^\\gamma \\cdot n \\cdot \\log\\log n$ (for $n \\geq 5041$) is equivalent to the Riemann Hypothesis, creating a deep connection between perfect number theory and the distribution of primes. Erdős's question asks whether the integers where $\\sigma(n)/n$ is exactly an integer are forced strictly below Gronwall's extremal growth rate.",
+    "problemStatement": "If $n$ is $k$-perfect ($\\sigma(n) = k \\cdot n$), must $k = o(\\log\\log n)$? That is, does the multiplicative perfection ratio grow strictly slower than $\\log\\log n$ along the sequence of $k$-perfect numbers?",
+    "proofStrategy": "The formalization axiomatizes the sum-of-divisors function $\\sigma(n)$, defines $k$-perfect numbers, catalogs known examples for $k = 1$ through $k = 11$, states the Euclid–Euler characterization for even perfect numbers, presents Gronwall's extremal bound and Robin's conditional inequality, and formally states the main $o(\\log\\log n)$ conjecture alongside Guy's stronger finiteness conjecture. The final section explicitly derives $k = O(\\log\\log n)$ from Robin's inequality.",
     "keyInsights": [
-      "k=2: perfect numbers (Euclid–Euler characterization for even case)",
-      "Largest known k is 11; only finitely many k-perfect numbers known for each k ≥ 3",
-      "Gronwall (1913): σ(n)/n can be as large as e^γ · log log n",
-      "Robin (1984): σ(n) < e^γ · n · log log n for n ≥ 5041, conditional on RH",
-      "Guy conjectures finitely many k-perfect numbers for each k ≥ 3 — stronger than Erdős's question"
+      "The abundancy index $\\sigma(n)/n$ is a multiplicative function: for coprime $m,n$, $\\sigma(mn)/(mn) = (\\sigma(m)/m)(\\sigma(n)/n)$, so high abundancy requires many prime factors",
+      "Gronwall's theorem sets $e^\\gamma \\cdot \\log\\log n$ as the extremal growth rate for $\\sigma(n)/n$, achieved along primorial-type numbers — Erdős asks if $k$-perfect numbers can reach this ceiling",
+      "Robin's inequality is equivalent to the Riemann Hypothesis, connecting k-perfect number growth to the deepest conjecture in analytic number theory",
+      "The gap between $O(\\log\\log n)$ (conditional on RH) and $o(\\log\\log n)$ (Erdős's question) is the precise frontier: can $k$-perfect numbers approach the Gronwall bound?",
+      "Guy's finiteness conjecture (each $k \\geq 3$ has finitely many $k$-perfect numbers) is strictly stronger and would resolve Erdős's question trivially",
+      "No $k = 12$ perfect number is known despite exhaustive search, suggesting the frontier of computability has been reached near $k = 11$"
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #1053 asks whether k-perfect numbers must satisfy k = o(log log n). Robin's inequality gives k = O(log log n) conditionally on RH. Guy conjectures the stronger statement that each k ≥ 3 has only finitely many k-perfect numbers. The problem connects to the Riemann Hypothesis via Robin's criterion.",
-    "implications": "A resolution would shed light on the extremal behavior of the sum-of-divisors function and the structure of highly composite numbers. The connection to Robin's inequality means progress could relate to the Riemann Hypothesis.",
+    "summary": "This formalization captures Erdős Problem #1053 and its mathematical context: the growth rate of the perfection multiplicity $k$ for $k$-perfect numbers. The key tension is between Gronwall's theorem (showing $\\sigma(n)/n$ can reach $\\sim e^\\gamma \\cdot \\log\\log n$) and the open question of whether $k$-perfect numbers — where $\\sigma(n)/n$ is exactly an integer — can saturate this bound. Robin's inequality gives $k = O(\\log\\log n)$ conditional on RH; the $o(\\log\\log n)$ question remains open.",
+    "implications": "A resolution would reveal deep structural constraints on when $\\sigma(n)/n$ can be an integer versus merely large. A proof of $k = o(\\log\\log n)$ would show that the multiplicative structure required for exact divisibility by $n$ prevents $\\sigma(n)$ from approaching its theoretical maximum. This connects to the distribution of smooth numbers, the anatomy of colossally abundant numbers, and ultimately to the Riemann Hypothesis through Robin's criterion.",
     "openQuestions": [
-      "Must k = o(log log n) for k-perfect numbers?",
-      "Are there only finitely many k-perfect numbers for each k ≥ 3? (Guy's conjecture)",
-      "Does a k=12 perfect number exist?",
-      "Do odd perfect numbers (k=2, n odd) exist?"
+      "Must $k = o(\\log\\log n)$ for $k$-perfect numbers? (Erdős Problem #1053)",
+      "Are there only finitely many $k$-perfect numbers for each $k \\geq 3$? (Guy's conjecture, strictly stronger)",
+      "Does a $k = 12$ perfect number exist, or is $k = 11$ the absolute maximum?",
+      "Do odd perfect numbers ($k = 2$, $n$ odd) exist? (Open since antiquity, known: if one exists, $n > 10^{1500}$)"
     ]
   }
 }
