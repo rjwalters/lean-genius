@@ -1,0 +1,53 @@
+{
+  "slug": "borsuk-ulam-oq-01",
+  "title": "Computational Complexity of Approximate Borsuk-Ulam",
+  "phase": "COMPLETE",
+  "status": "complete",
+  "tier": "B",
+  "path": "survey+build",
+  "problemStatement": {
+    "formal": "For continuous f: Sⁿ → ℝⁿ and ε > 0, finding x ∈ Sⁿ with ‖f(x) - f(-x)‖ < ε is PPAD-complete. We formalize the problem, prove exact→approximate reduction, state Tucker's lemma, and define PPAD.",
+    "plain": "The computational complexity of finding an approximately antipodal pair for a continuous function on the sphere is PPAD-complete. This means it is computationally hard (no polynomial-time algorithm unless PPAD ⊆ P) but a solution is guaranteed to exist.",
+    "whyMatters": [
+      "Connects topology (Borsuk-Ulam) to computational complexity (PPAD)",
+      "The approximate problem is PPAD-complete (Papadimitriou 1994)",
+      "Tucker's lemma is the combinatorial bridge between topology and computation",
+      "Same complexity class as Nash equilibrium computation"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Approximate antipodal pair definition (IsApproxAntipodalPair)",
+      "Exact antipodal pair implies approximate for any ε > 0",
+      "Exact pair gives zero norm difference",
+      "Approximate Borsuk-Ulam solvability (from exact theorem)",
+      "Gadget function (f(x) - f(-x)) Lipschitz bound: 2L for L-Lipschitz f",
+      "Antipode preserves sphere membership",
+      "Norm of antipodal difference equality"
+    ],
+    "axiomatized": [
+      "Borsuk-Ulam exact theorem (proved in BorsukUlam.lean modulo covering space axiom)",
+      "Tucker's lemma (combinatorial antipodal labeling theorem)",
+      "PPAD solution existence (parity argument / handshaking lemma)"
+    ]
+  },
+  "knowledge": {
+    "insights": [
+      "The PPAD-completeness of approximate Borsuk-Ulam is via Tucker's lemma: triangulate the sphere with mesh < ε, label vertices by the dominant coordinate of f(x)-f(-x), complementary edges yield approximate antipodal pairs",
+      "For fixed dimension n, the running time is polynomial in L/ε (where L is the Lipschitz constant)",
+      "For variable dimension, the problem is PPAD-complete - same hardness as Nash equilibrium",
+      "The gadget function g(x) = f(x) - f(-x) is odd and 2L-Lipschitz, which bounds the mesh size needed",
+      "PPAD captures problems guaranteed by directed parity arguments: a directed graph with a known source must have a sink"
+    ],
+    "builtItems": [
+      "BorsukUlamOQ01.lean: ~334 lines, 7 proved theorems, 3 axioms, 0 sorries",
+      "Approximate antipodal pair formalization (IsApproxAntipodalPair, HasApproxAntipodalPair)",
+      "Tucker's lemma statement (SignedLabeling, IsComplementaryEdge)",
+      "PPAD complexity class formalization (PPADInstance, IsSink, IsSolution)",
+      "Lipschitz sphere function structure and gadget Lipschitz bound proof",
+      "ApproxBorsukUlamProblem structure connecting complexity to topology"
+    ],
+    "nextSteps": [],
+    "progressSummary": "COMPLETE: Full survey+build of computational complexity of approximate Borsuk-Ulam. Formalized the problem, Tucker's lemma, PPAD class, exact→approximate reduction, and Lipschitz bounds. 7 proved theorems, 3 axioms (deep topological/combinatorial results)."
+  }
+}
