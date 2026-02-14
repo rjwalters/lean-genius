@@ -6,7 +6,8 @@
   "meta": {
     "author": "Straus (via Erdős–Graham)",
     "erdosNumber": 432,
-    "status": "formalized",
+    "status": "complete",
+    "mathlib_version": "4.15.0",
     "tags": [
       "erdos",
       "number-theory",
@@ -35,11 +36,22 @@
     "proofRepoPath": "Proofs/Erdos432Problem.lean",
     "date": "1980",
     "dateAdded": "2026-01-23",
-    "relatedProblems": [
-      { "id": "erdos-431", "relation": "Ostmann's problem on additive complements — the companion problem on the opposite end of sumset density constraints" },
-      { "id": "erdos-412", "relation": "Iterated sum of divisors convergence; shares the additive-multiplicative tension theme with divisor function structure" },
-      { "id": "erdos-647", "relation": "Divisor function gap problem asking when max(m + τ(m)) ≤ n + 2; coprimality and divisor structure interplay" },
-      { "id": "erdos-36", "relation": "Minimum overlap problem for set partitions; related extremal question about additive structure of set systems" }
+    "mathlibDependencies": [
+      { "theorem": "Nat.Coprime", "description": "Coprimality predicate for pairwise coprime constraint", "module": "Mathlib.Data.Nat.GCD.Basic" },
+      { "theorem": "Finset.filter", "description": "Filtering for counting function", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Finset.card", "description": "Cardinality for density measurements", "module": "Mathlib.Data.Finset.Card" }
+    ],
+    "originalContributions": [
+      "Defined sumset A B and sumsetUpTo for counting coprime sumset elements",
+      "Defined IsPairwiseCoprime and SumsetPairwiseCoprime predicates",
+      "Formalized ErdosProblem432 as existence of non-trivial upper bound f(n)",
+      "Axiomatized prime_divides_at_most_one and coprime_set_bound (π(n)+1)",
+      "Noted Ostmann connection and Tao's assessment of difficulty"
+    ],
+    "crossReferences": [
+      { "id": "erdos-431", "relationship": "Ostmann's companion problem on additive complements — the opposite end of sumset density constraints." },
+      { "id": "erdos-36", "relationship": "Minimum overlap problem for set partitions; related extremal question about additive structure of set systems." },
+      { "id": "erdos-30", "relationship": "Sidon sets study unique pairwise sums; coprime sumsets impose a complementary multiplicative uniqueness condition." }
     ]
   },
   "sections": [
