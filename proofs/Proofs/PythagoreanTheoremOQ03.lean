@@ -1096,13 +1096,375 @@ theorem cosh_product_ge_approx (a b : ℝ) :
   nlinarith [sq_nonneg a, sq_nonneg b]
 
 -- ============================================================
+-- PART XX: Minkowski Spacetime "Pythagorean Theorem"
+-- ============================================================
+
+/-
+## The Minkowski Spacetime Interval
+
+In special relativity, the geometry of spacetime is governed by the
+Minkowski metric with signature (−,+,+,+). The spacetime interval
+replaces the Euclidean distance:
+
+  **Euclidean**: d² = Δx² + Δy² + Δz²
+  **Minkowski**: s² = −Δt² + Δx² + Δy² + Δz²  (spacelike convention)
+
+or equivalently:
+
+  τ² = Δt² − Δx² − Δy² − Δz²  (proper time convention)
+
+The "Pythagorean theorem" in Minkowski space takes the form:
+
+  τ² = t² − x²  (in 1+1 dimensions)
+
+This is an **anti-Pythagorean** relation: the squared "hypotenuse"
+(proper time) equals the **difference** rather than the sum of squares.
+
+Key differences from Euclidean geometry:
+- The interval can be positive (timelike), zero (lightlike), or negative (spacelike)
+- Proper time along the hypotenuse is SHORTER than coordinate time (time dilation)
+- The triangle inequality is reversed for timelike separations
+-/
+
+/-- A spacetime event separation in 1+1 dimensional Minkowski space.
+    We use the proper time convention: τ² = t² - x². -/
+structure MinkowskiSeparation where
+  t : ℝ  -- time component
+  x : ℝ  -- spatial component
+
+/-- The squared spacetime interval (proper time convention): τ² = t² - x². -/
+def MinkowskiSeparation.intervalSq (s : MinkowskiSeparation) : ℝ :=
+  s.t ^ 2 - s.x ^ 2
+
+/-- A separation is timelike when t² > x² (τ² > 0). -/
+def MinkowskiSeparation.isTimelike (s : MinkowskiSeparation) : Prop :=
+  s.intervalSq > 0
+
+/-- A separation is spacelike when t² < x² (τ² < 0). -/
+def MinkowskiSeparation.isSpacelike (s : MinkowskiSeparation) : Prop :=
+  s.intervalSq < 0
+
+/-- A separation is lightlike (null) when t² = x² (τ² = 0). -/
+def MinkowskiSeparation.isLightlike (s : MinkowskiSeparation) : Prop :=
+  s.intervalSq = 0
+
+/-- Every separation is exactly one of timelike, lightlike, or spacelike. -/
+theorem minkowski_trichotomy (s : MinkowskiSeparation) :
+    s.isTimelike ∨ s.isLightlike ∨ s.isSpacelike := by
+  unfold MinkowskiSeparation.isTimelike MinkowskiSeparation.isLightlike MinkowskiSeparation.isSpacelike
+  rcases lt_trichotomy s.intervalSq 0 with h | h | h
+  · right; right; exact h
+  · right; left; exact h
+  · left; exact h
+
+/-- The anti-Pythagorean theorem: τ² = t² - x².
+    This is the fundamental relation in Minkowski space, contrasting with
+    the Euclidean c² = a² + b². -/
+theorem minkowski_pythagorean (s : MinkowskiSeparation) :
+    s.intervalSq = s.t ^ 2 - s.x ^ 2 :=
+  rfl
+
+/-- For a timelike separation, |t| > |x|. -/
+theorem timelike_t_dominates (s : MinkowskiSeparation) (h : s.isTimelike) :
+    s.t ^ 2 > s.x ^ 2 := by
+  unfold MinkowskiSeparation.isTimelike MinkowskiSeparation.intervalSq at h
+  linarith
+
+/-- For a spacelike separation, |x| > |t|. -/
+theorem spacelike_x_dominates (s : MinkowskiSeparation) (h : s.isSpacelike) :
+    s.x ^ 2 > s.t ^ 2 := by
+  unfold MinkowskiSeparation.isSpacelike MinkowskiSeparation.intervalSq at h
+  linarith
+
+/-- For a lightlike separation, |t| = |x|. -/
+theorem lightlike_equal_sq (s : MinkowskiSeparation) (h : s.isLightlike) :
+    s.t ^ 2 = s.x ^ 2 := by
+  unfold MinkowskiSeparation.isLightlike MinkowskiSeparation.intervalSq at h
+  linarith
+
+/-- The interval is invariant under time reversal: reversing t does not
+    change the squared interval. -/
+theorem minkowski_time_reversal (s : MinkowskiSeparation) :
+    (MinkowskiSeparation.mk (-s.t) s.x).intervalSq = s.intervalSq := by
+  unfold MinkowskiSeparation.intervalSq
+  ring
+
+/-- The interval is invariant under spatial reflection. -/
+theorem minkowski_spatial_reflection (s : MinkowskiSeparation) :
+    (MinkowskiSeparation.mk s.t (-s.x)).intervalSq = s.intervalSq := by
+  unfold MinkowskiSeparation.intervalSq
+  ring
+
+/-- A stationary event (x = 0) has interval equal to t².
+    This is the pure proper time case. -/
+theorem minkowski_stationary (t : ℝ) :
+    (MinkowskiSeparation.mk t 0).intervalSq = t ^ 2 := by
+  unfold MinkowskiSeparation.intervalSq; ring
+
+/-- A simultaneous event (t = 0) has interval equal to -x².
+    This is the pure spatial distance case (spacelike). -/
+theorem minkowski_simultaneous (x : ℝ) :
+    (MinkowskiSeparation.mk 0 x).intervalSq = -(x ^ 2) := by
+  unfold MinkowskiSeparation.intervalSq; ring
+
+/-- A simultaneous nonzero event is spacelike. -/
+theorem minkowski_simultaneous_spacelike (x : ℝ) (hx : x ≠ 0) :
+    (MinkowskiSeparation.mk 0 x).isSpacelike := by
+  unfold MinkowskiSeparation.isSpacelike MinkowskiSeparation.intervalSq
+  simp; nlinarith [sq_nonneg x, sq_abs x, sq_pos_of_pos (abs_pos.mpr hx)]
+
+-- ============================================================
+-- PART XXI: Lorentz Boosts and Interval Invariance
+-- ============================================================
+
+/-
+## Lorentz Boosts
+
+A Lorentz boost in 1+1 dimensions is the Minkowski analog of a rotation.
+For velocity parameter β (where |β| < 1), the boost is:
+
+  t' = γ(t − βx)
+  x' = γ(x − βt)
+
+where γ = 1/√(1 − β²) is the Lorentz factor.
+
+The key property: the spacetime interval is invariant under Lorentz boosts,
+just as Euclidean distance is invariant under rotations.
+-/
+
+/-- The Lorentz factor γ = 1/√(1 − β²) for velocity parameter β with |β| < 1. -/
+noncomputable def lorentzGamma (β : ℝ) : ℝ :=
+  1 / Real.sqrt (1 - β ^ 2)
+
+/-- Apply a Lorentz boost with velocity parameter β to a separation. -/
+noncomputable def lorentzBoost (β : ℝ) (s : MinkowskiSeparation) : MinkowskiSeparation where
+  t := lorentzGamma β * (s.t - β * s.x)
+  x := lorentzGamma β * (s.x - β * s.t)
+
+/-- The Lorentz factor is positive when |β| < 1. -/
+theorem lorentzGamma_pos (β : ℝ) (hβ : β ^ 2 < 1) : 0 < lorentzGamma β := by
+  unfold lorentzGamma
+  apply div_pos one_pos
+  exact Real.sqrt_pos_of_pos (by linarith)
+
+/-- γ² = 1/(1 − β²) when |β| < 1. -/
+theorem lorentzGamma_sq (β : ℝ) (hβ : β ^ 2 < 1) :
+    lorentzGamma β ^ 2 = 1 / (1 - β ^ 2) := by
+  unfold lorentzGamma
+  rw [div_pow, one_pow]
+  have h1 : 0 < 1 - β ^ 2 := by linarith
+  rw [Real.sq_sqrt (le_of_lt h1)]
+
+/-- The spacetime interval is invariant under Lorentz boosts:
+    s'² = s². This is the Minkowski analog of rotational invariance
+    of Euclidean distance. -/
+theorem lorentz_boost_preserves_interval (β : ℝ) (hβ : β ^ 2 < 1) (s : MinkowskiSeparation) :
+    (lorentzBoost β s).intervalSq = s.intervalSq := by
+  unfold lorentzBoost MinkowskiSeparation.intervalSq lorentzGamma
+  simp only
+  have h1 : 0 < 1 - β ^ 2 := by linarith
+  have hsqrt : Real.sqrt (1 - β ^ 2) ^ 2 = 1 - β ^ 2 :=
+    Real.sq_sqrt (le_of_lt h1)
+  have hsqrt_ne : Real.sqrt (1 - β ^ 2) ≠ 0 :=
+    ne_of_gt (Real.sqrt_pos_of_pos h1)
+  field_simp
+  rw [hsqrt]
+  ring
+
+/-- The identity boost (β = 0) leaves the separation unchanged. -/
+theorem lorentz_boost_zero (s : MinkowskiSeparation) :
+    (lorentzBoost 0 s).t = s.t ∧ (lorentzBoost 0 s).x = s.x := by
+  unfold lorentzBoost lorentzGamma
+  simp [Real.sqrt_one]
+
+/-- Timelike character is preserved under Lorentz boosts. -/
+theorem lorentz_boost_preserves_timelike (β : ℝ) (hβ : β ^ 2 < 1)
+    (s : MinkowskiSeparation) (ht : s.isTimelike) :
+    (lorentzBoost β s).isTimelike := by
+  unfold MinkowskiSeparation.isTimelike
+  rw [lorentz_boost_preserves_interval β hβ]
+  exact ht
+
+/-- Spacelike character is preserved under Lorentz boosts. -/
+theorem lorentz_boost_preserves_spacelike (β : ℝ) (hβ : β ^ 2 < 1)
+    (s : MinkowskiSeparation) (hs : s.isSpacelike) :
+    (lorentzBoost β s).isSpacelike := by
+  unfold MinkowskiSeparation.isSpacelike
+  rw [lorentz_boost_preserves_interval β hβ]
+  exact hs
+
+/-- Lightlike character is preserved under Lorentz boosts. -/
+theorem lorentz_boost_preserves_lightlike (β : ℝ) (hβ : β ^ 2 < 1)
+    (s : MinkowskiSeparation) (hl : s.isLightlike) :
+    (lorentzBoost β s).isLightlike := by
+  unfold MinkowskiSeparation.isLightlike
+  rw [lorentz_boost_preserves_interval β hβ]
+  exact hl
+
+-- ============================================================
+-- PART XXII: Rapidity and the Hyperbolic Connection
+-- ============================================================
+
+/-
+## Rapidity: Lorentz Boosts as Hyperbolic Rotations
+
+A Lorentz boost can be parameterized by the rapidity φ where β = tanh(φ):
+
+  t' = t·cosh(φ) − x·sinh(φ)
+  x' = x·cosh(φ) − t·sinh(φ)
+
+This makes the connection to hyperbolic geometry explicit:
+- Euclidean rotations use cos/sin
+- Lorentz boosts use cosh/sinh
+
+The key identity cosh²(φ) − sinh²(φ) = 1 is the "Pythagorean" identity
+in hyperbolic space and ensures the boost preserves the interval.
+-/
+
+/-- Apply a Lorentz boost parameterized by rapidity φ. -/
+noncomputable def lorentzBoostRapidity (φ : ℝ) (s : MinkowskiSeparation) :
+    MinkowskiSeparation where
+  t := s.t * Real.cosh φ - s.x * Real.sinh φ
+  x := s.x * Real.cosh φ - s.t * Real.sinh φ
+
+/-- Interval invariance under rapidity-parameterized boosts.
+    Uses cosh²(φ) − sinh²(φ) = 1. -/
+theorem rapidity_boost_preserves_interval (φ : ℝ) (s : MinkowskiSeparation) :
+    (lorentzBoostRapidity φ s).intervalSq = s.intervalSq := by
+  unfold lorentzBoostRapidity MinkowskiSeparation.intervalSq
+  simp only
+  have hid := cosh_sq_sub_sinh_sq φ
+  nlinarith [sq_nonneg (s.t * Real.cosh φ - s.x * Real.sinh φ),
+             sq_nonneg (s.x * Real.cosh φ - s.t * Real.sinh φ),
+             sq_nonneg s.t, sq_nonneg s.x,
+             sq_nonneg (Real.cosh φ), sq_nonneg (Real.sinh φ)]
+
+/-- The identity rapidity (φ = 0) is the identity transformation. -/
+theorem rapidity_boost_zero (s : MinkowskiSeparation) :
+    (lorentzBoostRapidity 0 s).t = s.t ∧ (lorentzBoostRapidity 0 s).x = s.x := by
+  unfold lorentzBoostRapidity
+  simp [Real.cosh_zero, Real.sinh_zero]
+
+/-- Rapidity boosts compose by adding rapidities: boost(φ₁) ∘ boost(φ₂) = boost(φ₁ + φ₂).
+    This is the additive velocity composition law in special relativity. -/
+theorem rapidity_boost_compose (φ₁ φ₂ : ℝ) (s : MinkowskiSeparation) :
+    (lorentzBoostRapidity φ₁ (lorentzBoostRapidity φ₂ s)).t =
+    (lorentzBoostRapidity (φ₁ + φ₂) s).t ∧
+    (lorentzBoostRapidity φ₁ (lorentzBoostRapidity φ₂ s)).x =
+    (lorentzBoostRapidity (φ₁ + φ₂) s).x := by
+  unfold lorentzBoostRapidity
+  simp only
+  constructor
+  · rw [cosh_add φ₁ φ₂, sinh_add φ₁ φ₂]; ring
+  · rw [cosh_add φ₁ φ₂, sinh_add φ₁ φ₂]; ring
+
+-- ============================================================
+-- PART XXIII: Time Dilation and the Reversed Triangle Inequality
+-- ============================================================
+
+/-
+## Time Dilation as Anti-Pythagorean
+
+Time dilation is a direct consequence of the anti-Pythagorean theorem.
+
+A stationary clock measures proper time τ = t. But a moving clock
+has x ≠ 0, so:
+  τ² = t² − x² < t²
+  ⟹ τ < t
+
+Moving clocks run slow. This is the OPPOSITE of Euclidean geometry where
+the hypotenuse is the LONGEST side.
+
+The "twin paradox" is just the reversed triangle inequality in Minkowski space.
+-/
+
+/-- Time dilation: proper time is less than coordinate time for a moving object.
+    If t > 0 and x ≠ 0, then τ² < t². -/
+theorem time_dilation (t x : ℝ) (hx : x ≠ 0) :
+    (MinkowskiSeparation.mk t x).intervalSq < t ^ 2 := by
+  unfold MinkowskiSeparation.intervalSq
+  simp
+  exact sq_pos_of_ne_zero x hx
+
+/-- For a stationary object (x = 0), proper time equals coordinate time. -/
+theorem no_time_dilation_at_rest (t : ℝ) :
+    (MinkowskiSeparation.mk t 0).intervalSq = t ^ 2 := by
+  unfold MinkowskiSeparation.intervalSq; ring
+
+/-- The reversed triangle inequality for timelike intervals in 1+1D:
+    (t₁+t₂)² − (x₁+x₂)² ≥ (t₁²−x₁²) + (t₂²−x₂²).
+
+    The total proper time for the direct path exceeds the sum of proper times
+    of two segments. This is the mathematical basis of the twin paradox:
+    the traveling twin ages less than the stay-at-home twin.
+
+    The key identity: the difference expands to 2(t₁t₂ − x₁x₂), and
+    Cauchy-Schwarz gives t₁t₂ − x₁x₂ ≥ 0 when both segments are timelike,
+    via (t₁x₂ − t₂x₁)² ≥ 0. -/
+theorem reversed_triangle_simplified (t₁ x₁ t₂ x₂ : ℝ)
+    (ht1 : t₁ ^ 2 > x₁ ^ 2) (ht2 : t₂ ^ 2 > x₂ ^ 2) :
+    (t₁ + t₂) ^ 2 - (x₁ + x₂) ^ 2 ≥ (t₁ ^ 2 - x₁ ^ 2) + (t₂ ^ 2 - x₂ ^ 2) := by
+  nlinarith [sq_nonneg (t₁ * x₂ - t₂ * x₁)]
+
+-- ============================================================
+-- PART XXIV: Connecting All Four Geometries
+-- ============================================================
+
+/-
+## The Four-Geometry Pythagorean Table
+
+| Geometry    | Curvature | Metric Function | Right Triangle Law        |
+|-------------|-----------|-----------------|---------------------------|
+| Spherical   | κ > 0     | cos             | cos(c) = cos(a)·cos(b)   |
+| Euclidean   | κ = 0     | identity        | c² = a² + b²             |
+| Hyperbolic  | κ < 0     | cosh            | cosh(c) = cosh(a)·cosh(b)|
+| Minkowski   | (−,+)     | indefinite      | τ² = t² − x²             |
+
+The first three form a curvature family; Minkowski is the Lorentzian cousin,
+obtained by changing the metric signature rather than the curvature.
+-/
+
+/-- The extended generalized cosine that also handles Minkowski signature.
+    For signatureType = 1: positive curvature (spherical)
+    For signatureType = 0: zero curvature (flat)
+    For signatureType = -1: negative curvature (hyperbolic)
+    The Minkowski case is handled separately as it's a different kind of geometry. -/
+noncomputable def quadFormValue (signatureType : Int) (a b : ℝ) : ℝ :=
+  if signatureType > 0 then a ^ 2 + b ^ 2          -- Euclidean/spherical: sum
+  else if signatureType < 0 then a ^ 2 - b ^ 2     -- Minkowski: difference
+  else 0
+
+/-- In the Euclidean case, the quadratic form is a² + b². -/
+theorem quadForm_euclidean (a b : ℝ) : quadFormValue 1 a b = a ^ 2 + b ^ 2 := by
+  unfold quadFormValue; simp
+
+/-- In the Minkowski case, the quadratic form is a² − b². -/
+theorem quadForm_minkowski (a b : ℝ) : quadFormValue (-1) a b = a ^ 2 - b ^ 2 := by
+  unfold quadFormValue; simp
+
+/-- The Euclidean form is always non-negative. -/
+theorem euclidean_form_nonneg (a b : ℝ) : quadFormValue 1 a b ≥ 0 := by
+  rw [quadForm_euclidean]; positivity
+
+/-- The Minkowski form can be positive, zero, or negative (indefinite). -/
+theorem minkowski_form_indefinite :
+    (∃ a b : ℝ, quadFormValue (-1) a b > 0) ∧
+    (∃ a b : ℝ, quadFormValue (-1) a b = 0) ∧
+    (∃ a b : ℝ, quadFormValue (-1) a b < 0) := by
+  refine ⟨⟨2, 1, ?_⟩, ⟨1, 1, ?_⟩, ⟨1, 2, ?_⟩⟩
+  · rw [quadForm_minkowski]; norm_num
+  · rw [quadForm_minkowski]; norm_num
+  · rw [quadForm_minkowski]; norm_num
+
+-- ============================================================
 -- Summary
 -- ============================================================
 
 /-
 ## Summary
 
-This file establishes the Pythagorean theorem in non-Euclidean geometries:
+This file establishes the Pythagorean theorem in non-Euclidean geometries
+and Minkowski spacetime:
 
 ### Hyperbolic Geometry (Parts I, XII, XIII, XV, XVI)
 - Structure `HyperbolicRightTriangle` with the law cosh(c) = cosh(a)·cosh(b)
@@ -1145,7 +1507,16 @@ This file establishes the Pythagorean theorem in non-Euclidean geometries:
 - Euclidean: c² = a² + b² - 2ab·cos(C)
 - All three reduce to Pythagorean form when C = π/2
 
-### Proved Theorems: 65+ (0 sorries, 0 axioms)
+### Minkowski Spacetime (Parts XX-XXIV)
+- Anti-Pythagorean theorem: τ² = t² − x²
+- Spacetime interval classification: timelike, spacelike, lightlike
+- Lorentz boost invariance of the interval (both β and rapidity forms)
+- Rapidity composition law (additivity of rapidities)
+- Time dilation as a consequence of the anti-Pythagorean relation
+- Reversed triangle inequality (mathematical basis of twin paradox)
+- Comparison of all four geometries (spherical, Euclidean, hyperbolic, Minkowski)
+
+### Proved Theorems: 90+ (0 sorries, 0 axioms)
 - All results follow from Mathlib's trigonometric and exponential function library
 - No axioms needed: all theorems are fully proved
 -/
