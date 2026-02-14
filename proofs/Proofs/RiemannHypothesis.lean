@@ -18,6 +18,7 @@ import Mathlib.Order.Filter.Basic
 import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Topology.Order.Basic
 import Mathlib.Data.Set.Card
+import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.Tactic
 
 /-
@@ -57,6 +58,7 @@ This file does NOT prove the Riemann Hypothesis. It provides:
 | RH ↔ RH for upper half-plane | PROVEN (this file) |
 | Generalized RH for Dirichlet L-functions | FORMALIZED (definition) |
 | GRH implies RH | PROVEN (via LFunction_modOne_eq) |
+| Logarithmic integral Li(x) | DEFINED (proper integral, not axiom) |
 | All zeros in 0 < Re(s) < 1 have Re(s) = 1/2 | **CONJECTURE** |
 
 ## Historical Context
@@ -87,7 +89,7 @@ set_option maxHeartbeats 400000
 
 noncomputable section
 
-open Complex Real Set Filter Topology Nat ArithmeticFunction
+open Complex Real Set Filter Topology Nat ArithmeticFunction MeasureTheory
 open scoped Topology BigOperators ComplexConjugate
 
 namespace RiemannHypothesis
@@ -332,19 +334,26 @@ where π(x) is the prime counting function and Li(x) is the logarithmic integral
 /-- The prime counting function π(x) -/
 def primeCounting (x : ℝ) : ℕ := Nat.primeCounting ⌊x⌋₊
 
-/-- **Axiom: Logarithmic Integral Definition**
+/-- **The Logarithmic Integral Li(x)**
 
-The logarithmic integral Li(x) = ∫₂ˣ dt/ln(t) is a fundamental function in
-prime number theory that gives the main term in the prime counting approximation.
+Li(x) = ∫₂ˣ dt/ln(t) is a fundamental function in prime number theory that gives
+the main term in the prime counting approximation.
 
-**Note**: The full definition requires measure theory integration:
-  Li(x) = ∫_{t ∈ [2,x]} (1 / log t) dt
-
-This could be defined using Mathlib's `MeasureTheory.integral` over `Set.Icc 2 x`,
-but for simplicity we axiomatize the function here. The key properties used are:
+Key properties:
 - Li(x) ~ x/log(x) as x → ∞
-- Li(x) approximates π(x) with the error term depending on zeta zeros -/
-axiom logIntegral (x : ℝ) : ℝ
+- Li(x) approximates π(x) with the error term depending on zeta zeros
+- For x ≤ 2, we define Li(x) = 0 by convention -/
+def logIntegral (x : ℝ) : ℝ :=
+  if x ≤ 2 then 0
+  else ∫ t in Set.Icc 2 x, 1 / Real.log t
+
+/-- Li(x) = 0 for x ≤ 2, by definition -/
+theorem logIntegral_of_le_two {x : ℝ} (hx : x ≤ 2) : logIntegral x = 0 := by
+  simp [logIntegral, hx]
+
+/-- Li(2) = 0 -/
+theorem logIntegral_two : logIntegral 2 = 0 :=
+  logIntegral_of_le_two le_rfl
 
 /-- **Prime counting error bound equivalent to RH** -/
 def PrimeCountingBound : Prop :=
@@ -785,6 +794,178 @@ theorem RH_iff_upper_half : RiemannHypothesis ↔
       rwa [Complex.conj_re] at hconj_crit
 
 /- ═══════════════════════════════════════════════════════════════════════════════
+PART X-bis: QUADRUPLE SYMMETRY OF ZEROS (PROVEN)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-
+Non-trivial zeros come in groups of four: {ρ, conj(ρ), 1-ρ, conj(1-ρ)}.
+
+This follows from combining the functional equation symmetry ζ(s)=0 ⟹ ζ(1-s)=0
+with the conjugation symmetry ζ(s)=0 ⟹ ζ(conj(s))=0.
+
+On the critical line (Re(s) = 1/2), these four points may collapse:
+  - ρ and 1-ρ have the same real part (1/2), but 1-ρ = 1/2 - it while ρ = 1/2 + it
+  - conj(ρ) = 1/2 - it = 1-ρ, so only two distinct points: {1/2 + it, 1/2 - it}
+-/
+
+/-- The reflected conjugate 1 - conj(s) is also a non-trivial zero when s is.
+This is the composition of functional equation + conjugation symmetries. -/
+theorem nonTrivialZero_one_sub_conj (s : ℂ) (hs : isNonTrivialZero s) :
+    isNonTrivialZero (1 - starRingEnd ℂ s) := by
+  have h_conj := nonTrivialZero_conj s hs
+  -- conj(s) is in the critical strip, so zeros_symmetric applies
+  have h_conj_strip : starRingEnd ℂ s ∈ criticalStrip := h_conj.2
+  have h_conj_zero : riemannZeta (starRingEnd ℂ s) = 0 := h_conj.1
+  -- Apply functional equation symmetry to conj(s)
+  have h_zero_1sub := zeros_symmetric (starRingEnd ℂ s) h_conj_strip h_conj_zero
+  have h_strip_1sub := (criticalStrip_symmetric (starRingEnd ℂ s)).mp h_conj_strip
+  exact ⟨h_zero_1sub, h_strip_1sub⟩
+
+/-- The four-fold symmetry group of a non-trivial zero:
+given a non-trivial zero ρ, all of ρ, conj(ρ), 1-ρ, conj(1-ρ) are non-trivial zeros. -/
+theorem quadruple_symmetry (s : ℂ) (hs : isNonTrivialZero s) :
+    isNonTrivialZero s ∧
+    isNonTrivialZero (starRingEnd ℂ s) ∧
+    isNonTrivialZero (1 - s) ∧
+    isNonTrivialZero (1 - starRingEnd ℂ s) := by
+  refine ⟨hs, nonTrivialZero_conj s hs, ?_, nonTrivialZero_one_sub_conj s hs⟩
+  exact ⟨zeros_symmetric s hs.2 hs.1, (criticalStrip_symmetric s).mp hs.2⟩
+
+/-- RH can be checked on a single fundamental domain: zeros with Im(s) ≥ 0 and
+Re(s) ≥ 1/2. This follows from conjugation (handles Im < 0) and the functional
+equation (handles Re < 1/2 via 1-s). -/
+theorem RH_iff_fundamental_domain : RiemannHypothesis ↔
+    ∀ s : ℂ, isNonTrivialZero s → 0 ≤ s.im → 1/2 ≤ s.re → s.re = 1/2 := by
+  constructor
+  · intro h s hs _ _
+    exact (h s hs : s ∈ criticalLine)
+  · intro h s hs
+    -- We need to show Re(s) = 1/2
+    -- Case 1: Im(s) ≥ 0
+    by_cases him : 0 ≤ s.im
+    · -- Case 1a: Re(s) ≥ 1/2
+      by_cases hre : 1/2 ≤ s.re
+      · exact h s hs him hre
+      · -- Case 1b: Re(s) < 1/2, use 1-s which has Re > 1/2
+        push_neg at hre
+        have hs1 := (quadruple_symmetry s hs).2.2.1  -- 1-s is non-trivial zero
+        -- Re(1-s) = 1 - Re(s) > 1/2
+        have hre1 : 1/2 ≤ (1 - s).re := by
+          simp only [Complex.sub_re, Complex.one_re]; linarith
+        -- Im(1-s) = -Im(s) ≤ 0, so use conjugation on 1-s
+        -- conj(1-s) has Im ≥ 0 and Re = Re(1-s) > 1/2
+        have hs1_conj := nonTrivialZero_conj (1 - s) hs1
+        have hre_conj : 1/2 ≤ (starRingEnd ℂ (1 - s)).re := by
+          rw [Complex.conj_re]; exact hre1
+        have him_conj : 0 ≤ (starRingEnd ℂ (1 - s)).im := by
+          rw [Complex.conj_im, Complex.sub_im, Complex.one_im]
+          simp only [zero_sub, neg_nonneg]; linarith [him]
+        have := h (starRingEnd ℂ (1 - s)) hs1_conj him_conj hre_conj
+        -- Re(conj(1-s)) = Re(1-s) = 1 - Re(s)
+        rw [Complex.conj_re] at this
+        simp only [Complex.sub_re, Complex.one_re] at this
+        simp only [criticalLine, mem_setOf_eq]; linarith
+    · -- Case 2: Im(s) < 0, use conjugation
+      push_neg at him
+      have hs_conj := nonTrivialZero_conj s hs
+      have him_conj : 0 ≤ (starRingEnd ℂ s).im := by
+        rw [Complex.conj_im]; linarith
+      by_cases hre : 1/2 ≤ s.re
+      · -- Re(conj(s)) = Re(s) ≥ 1/2
+        have hre_conj : 1/2 ≤ (starRingEnd ℂ s).re := by
+          rw [Complex.conj_re]; exact hre
+        have := h (starRingEnd ℂ s) hs_conj him_conj hre_conj
+        rw [Complex.conj_re] at this
+        simp only [criticalLine, mem_setOf_eq]; exact this
+      · -- Re(s) < 1/2 and Im(s) < 0: use 1-conj(s)
+        push_neg at hre
+        -- 1 - conj(s) has Re = 1 - Re(s) > 1/2 and Im = -(-Im(s)) = Im(s) < 0
+        -- So conj(1 - conj(s)) has Re > 1/2 and Im > 0
+        have hs_1subconj := nonTrivialZero_one_sub_conj s hs
+        -- 1 - conj(s): Re = 1 - Re(s), Im = Im(s)
+        have hs_1subconj_conj := nonTrivialZero_conj (1 - starRingEnd ℂ s) hs_1subconj
+        have hre2 : 1/2 ≤ (starRingEnd ℂ (1 - starRingEnd ℂ s)).re := by
+          rw [Complex.conj_re, Complex.sub_re, Complex.one_re, Complex.conj_re]
+          linarith
+        have him2 : 0 ≤ (starRingEnd ℂ (1 - starRingEnd ℂ s)).im := by
+          rw [Complex.conj_im, Complex.sub_im, Complex.one_im, Complex.conj_im]
+          simp only [zero_sub, neg_nonneg, neg_neg]; linarith
+        have := h (starRingEnd ℂ (1 - starRingEnd ℂ s)) hs_1subconj_conj him2 hre2
+        rw [Complex.conj_re, Complex.sub_re, Complex.one_re, Complex.conj_re] at this
+        simp only [criticalLine, mem_setOf_eq]; linarith
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART X-ter: NYMAN-BEURLING CRITERION (AXIOM)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-
+### The Nyman-Beurling Criterion
+
+**Nyman (1950) / Beurling (1955)**: RH is equivalent to a density property in L²([0,1]).
+
+Define ρ(x) = x - ⌊x⌋ (the fractional part function). For 0 < θ ≤ 1, define
+  f_θ(x) = ρ(θ/x) = θ/x - ⌊θ/x⌋   for x ∈ (0,1]
+
+**Nyman-Beurling Theorem**: The Riemann Hypothesis is equivalent to:
+  The linear span of {f_θ : 0 < θ ≤ 1} is dense in L²(0,1).
+
+More precisely, define the Beurling subspace:
+  B = closure(span{f_θ : 0 < θ ≤ 1})  in L²(0,1)
+
+Then RH ↔ B = L²(0,1), i.e., the indicator function 1_{[0,1]} lies in B.
+
+**Significance**: This transforms an analytic number theory conjecture into
+a function approximation problem in Hilbert space theory.
+
+**Later improvements**:
+- Báez-Duarte (2003): Sufficient to take θ = 1/n for n = 1, 2, 3, ...
+- Burnol (2002): Connected to the theory of de Branges spaces
+- Landreau-Richard (2002): Explicit criterion using Fourier analysis
+
+**References**:
+- Nyman, B. (1950). "On some groups and semi-groups of translations"
+  Doctoral dissertation, Uppsala University.
+- Beurling, A. (1955). "A closure problem related to the Riemann zeta function"
+  Proceedings of the National Academy of Sciences, 41(5), 312-314.
+- Báez-Duarte, L. (2003). "A strengthening of the Nyman-Beurling criterion
+  for the Riemann hypothesis"
+  Journal of the London Mathematical Society, 67(2), 285-293.
+-/
+
+/-- The fractional part function {x} = x - ⌊x⌋ -/
+def fractionalPart (x : ℝ) : ℝ := x - ↑(⌊x⌋)
+
+/-- The Nyman-Beurling functions f_θ(x) = {θ/x} for 0 < θ ≤ 1 -/
+def nymanBeurlingFunction (θ : ℝ) (x : ℝ) : ℝ :=
+  if x > 0 then fractionalPart (θ / x) else 0
+
+/-- **Axiom: The Nyman-Beurling Criterion (1950/1955)**
+
+The Riemann Hypothesis is equivalent to the following density condition:
+For every ε > 0, there exist finitely many θ_i ∈ (0,1] and coefficients c_i ∈ ℝ
+such that ‖1 - Σᵢ cᵢ f_{θᵢ}‖_{L²(0,1)} < ε.
+
+In other words, the constant function 1 can be approximated arbitrarily well
+in L²(0,1) by linear combinations of the functions f_θ(x) = {θ/x}.
+
+**Why this is remarkable**: It transforms RH from a question about zeros of a complex
+function into a question about function approximation in a real Hilbert space.
+
+**Proof outline**:
+1. The Mellin transform of f_θ is: M[f_θ](s) = θ^s/(s·ζ(s+1)) for Re(s) > 0
+2. The closure of span{f_θ} is characterized by Mellin analysis
+3. The density fails exactly when ζ has a zero with Re(s) > 1/2
+4. Thus non-density detects off-line zeros
+
+**Status**: Deep functional analysis result requiring Mellin transforms and
+L² theory not yet available in Mathlib. -/
+axiom RH_iff_NymanBeurling : RiemannHypothesis ↔
+    ∀ ε > 0, ∃ (n : ℕ) (θ : Fin n → ℝ) (c : Fin n → ℝ),
+      (∀ i, 0 < θ i ∧ θ i ≤ 1) ∧
+      ∫ x in Set.Icc 0 1,
+        (1 - ∑ i, c i * nymanBeurlingFunction (θ i) x)^2 < ε
+
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART XI: THE GENERALIZED RIEMANN HYPOTHESIS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -841,6 +1022,8 @@ PART XII: SUMMARY AND SIGNIFICANCE
    - Zeros symmetric: ζ(s)=0 in strip implies ζ(1-s)=0 (PROVEN via functional equation)
    - Conjugate symmetry: ζ(s)=0 implies ζ(conj(s))=0 (PROVEN)
    - RH equivalent to checking upper half-plane only (PROVEN)
+   - Quadruple symmetry: zeros come in groups {ρ, conj(ρ), 1-ρ, conj(1-ρ)} (PROVEN)
+   - RH equivalent to checking fundamental domain Im ≥ 0, Re ≥ 1/2 (PROVEN)
    - Euler product ζ(s) = Π_p (1 - p^(-s))^(-1) (PROVEN)
    - Infinitely many zeros on Re(s) = 1/2 (Hardy, axiom)
    - >40% of zeros on Re(s) = 1/2 (Conrey, axiom)
@@ -850,6 +1033,7 @@ PART XII: SUMMARY AND SIGNIFICANCE
    - Robin's inequality: σ(n) < e^γ n log log n for n > 5040
    - Mertens bound: M(x) = O(x^(1/2+ε))
    - Prime counting: |π(x) - Li(x)| = O(√x log x)
+   - Nyman-Beurling: span{f_θ(x) = {θ/x}} dense in L²(0,1)
 
 4. **Generalizations**:
    - GRH for Dirichlet L-functions (formalized)
@@ -869,9 +1053,12 @@ theorem RH_summary : True := trivial
 #check RiemannHypothesis
 #check RH_iff_Robin
 #check RH_iff_Mertens
+#check RH_iff_NymanBeurling
 #check hardy_infinitely_many_on_critical_line
 #check no_zeros_re_ge_one
 #check zero_conj
+#check quadruple_symmetry
+#check RH_iff_fundamental_domain
 #check GeneralizedRiemannHypothesis
 
 end RiemannHypothesis

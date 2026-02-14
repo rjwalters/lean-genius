@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-02-13T19:00:00.000Z",
-    "iteration": 4,
-    "focus": "Completed zero_in_strip_of_zero proof. File now has 0 sorries (excluding axioms for deep/open results). Also fixed GRH definition to include NeZero N constraint.",
+    "since": "2026-02-13T22:00:00.000Z",
+    "iteration": 5,
+    "focus": "Proved quadruple symmetry of non-trivial zeros and RH_iff_fundamental_domain. Added Nyman-Beurling criterion formulation. File has 0 sorries.",
     "blockers": ["RH itself is an open conjecture - we can only formalize surrounding results"],
-    "nextAction": "Add Nyman-Beurling criterion or Weil explicit formula formulation.",
+    "nextAction": "Add Weil explicit formula formulation or prove zeta_conj axiom from Mathlib internals.",
     "attemptCounts": {
-      "total": 4,
+      "total": 5,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved zero_in_strip_of_zero (non-trivial zeros have Re(s) > 0), completing the only sorry in the file. File now has 0 sorries. Also fixed GRH definition with [NeZero N] constraint and fixed pre-existing compilation errors (map_zero ambiguity, le_of_eq direction).",
+    "progressSummary": "PROGRESS: Proved quadruple symmetry of non-trivial zeros (zeros come in groups {ρ, conj(ρ), 1-ρ, conj(1-ρ)}), proved RH_iff_fundamental_domain (RH equivalent to checking Im≥0, Re≥1/2 quadrant). Added Nyman-Beurling criterion formulation (RH ↔ L² density). File has 0 sorries.",
     "builtItems": [
       {
         "name": "no_zeros_re_ge_one",
@@ -95,6 +95,26 @@
         "name": "zeta_neg_odd_ne_zero'",
         "description": "ζ(-n) ≠ 0 for odd n ≥ 1",
         "proven": true
+      },
+      {
+        "name": "nonTrivialZero_one_sub_conj",
+        "description": "1 - conj(s) is non-trivial zero when s is (combining functional eq + conjugation)",
+        "proven": true
+      },
+      {
+        "name": "quadruple_symmetry",
+        "description": "Non-trivial zeros come in quadruples: {ρ, conj(ρ), 1-ρ, conj(1-ρ)}",
+        "proven": true
+      },
+      {
+        "name": "RH_iff_fundamental_domain",
+        "description": "RH ↔ checking only zeros with Im≥0 and Re≥1/2",
+        "proven": true
+      },
+      {
+        "name": "RH_iff_NymanBeurling",
+        "description": "Nyman-Beurling criterion: RH ↔ span of f_θ(x)={θ/x} dense in L²(0,1)",
+        "proven": false
       }
     ],
     "insights": [
@@ -111,17 +131,20 @@
       "Odd negative integers: cos factor in functional equation is cos(mπ) ≠ 0",
       "Even negative integers ≥ 2: these are exactly the trivial zeros",
       "With open Nat, must use _root_.Odd, _root_.mul_eq_zero, _root_.map_zero to avoid ambiguity",
-      "Nat.cast_nonneg needed for linarith with ℝ-cast ℕ values"
+      "Nat.cast_nonneg needed for linarith with ℝ-cast ℕ values",
+      "Quadruple symmetry: combining zeros_symmetric (functional eq) with zero_conj (conjugation) gives 4-fold group",
+      "Fundamental domain reduction: RH can be checked on Im≥0, Re≥1/2 quarter-strip (proven via all four symmetries)",
+      "Nyman-Beurling transforms RH into L² approximation problem - deep connection to Mellin transforms"
     ],
     "mathlibGaps": [
       "riemannZeta_conj (conjugation symmetry) - needed for full conjugate zero proof",
       "PNT asymptotic (only non-vanishing is in Mathlib, not π(x)~x/log(x))"
     ],
     "nextSteps": [
-      "Add Nyman-Beurling criterion (RH ↔ density of certain functions in L²)",
       "Add Weil explicit formula formulation",
       "Explore adding PrimeNumberTheoremAnd as dependency to upgrade axioms",
-      "Consider proving zeta_conj to replace the axiom"
+      "Consider proving zeta_conj to replace the axiom (needs hurwitzZetaEven conjugation in Mathlib)",
+      "Add Selberg class formulation and state RH for general L-functions"
     ]
   },
   "approaches": [],
