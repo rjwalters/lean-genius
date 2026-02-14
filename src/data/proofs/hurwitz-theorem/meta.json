@@ -178,6 +178,33 @@
       "summary": "Defines the `DivisionAlgebra` inductive type (reals, complex, quaternions, octonions) with a `dimension` function, proves each has an admissible dimension. Documents the Cayley–Dickson ladder and physical significance."
     }
   ],
+  "crossReferences": [
+    {
+      "targetProofId": "lagrange-four-squares",
+      "relationship": "The four-square identity proved in Hurwitz's theorem ($n = 4$) is the key algebraic ingredient in Lagrange's theorem: Euler's identity shows that the product of two sums of four squares is again a sum of four squares, reducing the proof to prime cases.",
+      "sharedConcepts": ["sum of squares", "quaternion norm multiplicativity", "Euler's four-square identity"]
+    },
+    {
+      "targetProofId": "fermat-two-squares",
+      "relationship": "Fermat's two-square theorem characterizes which primes are sums of two squares, using the Brahmagupta-Fibonacci identity ($n = 2$ case of Hurwitz). The Gaussian integer norm $|z_1 z_2|^2 = |z_1|^2 |z_2|^2$ is precisely the 2-square identity encoding complex multiplication.",
+      "sharedConcepts": ["sum of two squares", "complex multiplication", "Brahmagupta-Fibonacci identity"]
+    },
+    {
+      "targetProofId": "euler-identity",
+      "relationship": "Euler's identity $e^{i\\pi} + 1 = 0$ relies on complex number arithmetic, which is the $n = 2$ normed division algebra. The norm-multiplicativity $|z_1 z_2| = |z_1| |z_2|$ underlying Euler's formula is the 2-square identity.",
+      "sharedConcepts": ["complex numbers", "norm multiplicativity", "algebraic structure of C"]
+    },
+    {
+      "targetProofId": "cayley-hamilton",
+      "relationship": "The $n = 3$ impossibility proof uses matrix invertibility (a $3 \\times 3$ matrix with orthonormal rows has unit determinant). Cayley-Hamilton provides the general framework for matrix algebra and characteristic polynomials used in such arguments.",
+      "sharedConcepts": ["matrix determinant", "matrix invertibility", "linear algebra"]
+    },
+    {
+      "targetProofId": "quadratic-reciprocity",
+      "relationship": "Quadratic reciprocity governs which integers are squares modulo primes, connecting to the sum-of-squares representations central to Hurwitz's theorem. The Legendre symbol machinery underlies the arithmetic of quadratic forms that Hurwitz studied.",
+      "sharedConcepts": ["quadratic forms", "modular arithmetic", "algebraic number theory"]
+    }
+  ],
   "conclusion": {
     "summary": "This formalization of Hurwitz's theorem is one of the most substantial in the gallery, spanning 1679 lines of Lean 4. The existence direction is fully constructive: the 1-, 2-, and 4-square identities are proved completely using algebraic tactics. The key original contribution is the ~800-line purely algebraic proof that $n = 3$ is impossible, using the Parseval identity and matrix invertibility rather than topology. The full biconditional and division algebra classification round out a deep treatment of this foundational algebraic result.",
     "implications": "**Connections and Implications**\n\n1. **Division Algebra Classification:** Hurwitz's theorem is equivalent to the classification of finite-dimensional real normed division algebras as $\\mathbb{R}, \\mathbb{C}, \\mathbb{H}, \\mathbb{O}$—four algebras governing much of modern algebra and physics\n\n2. **Parallelizable Spheres:** The existence of $n$-square identities is equivalent to the parallelizability of $S^{n-1}$ (Bott–Milnor, Kervaire 1958). This topological reformulation connects abstract algebra to differential topology\n\n3. **Cayley–Dickson Construction:** The 'doubling' process $\\mathbb{R} \\to \\mathbb{C} \\to \\mathbb{H} \\to \\mathbb{O}$ shows these algebras form a natural sequence, with each step sacrificing an algebraic property (ordering, commutativity, associativity)\n\n4. **Physics Applications:** The four algebras appear throughout physics: $\\mathbb{C}$ in quantum mechanics, $\\mathbb{H}$ in $SU(2)$ gauge theory and 3D rotations, $\\mathbb{O}$ in exceptional Lie groups ($G_2, F_4, E_6, E_7, E_8$) and string theory\n\n5. **Automated Algebraic Verification:** The `ring` tactic's ability to verify the 2- and 4-square identities automatically demonstrates the power of formal proof assistants for algebraic identities",
