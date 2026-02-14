@@ -39,13 +39,7 @@
   Tags: number-theory, partitions, prime-factors, analytic-number-theory
 -/
 
-import Mathlib.Combinatorics.Partition
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Order.Filter.AtTopBot
-import Mathlib.Topology.Order.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos1106
 
@@ -100,10 +94,20 @@ def primeFactorsOfProduct (n : ℕ) : Finset ℕ :=
 
 theorem F_eq_card (n : ℕ) : F n = (primeFactorsOfProduct n).card := rfl
 
-/-- F is monotone: adding more factors can only increase primes. -/
+/-- F is monotone: adding more factors can only increase primes.
+    Proof: Icc 1 m ⊆ Icc 1 n when m ≤ n, so partitionProduct m ∣ partitionProduct n,
+    hence primeFactors of the former is a subset of the latter. -/
 theorem F_mono : Monotone F := by
   intro m n hmn
-  sorry -- Requires showing primeFactors of product grows
+  unfold F
+  apply Finset.card_le_card
+  apply Nat.primeFactors_mono
+  · -- partitionProduct m ∣ partitionProduct n
+    unfold partitionProduct
+    apply Finset.prod_dvd_prod_of_subset
+    exact Finset.Icc_subset_Icc_right hmn
+  · -- partitionProduct n ≠ 0
+    exact Nat.ne_of_gt (partitionProduct_pos n)
 
 /- ## Part IV: Known Results -/
 
