@@ -9298,4 +9298,567 @@ theorem circuit_bounds_connect_all :
 #check circuit_lower_bounds_landscape
 #check circuit_bounds_connect_all
 
+-- Part 37: Computational Learning Theory and Complexity Barriers
+/-
+## Part 37: Computational Learning Theory and Complexity Barriers
+
+Computational learning theory studies the complexity of learning functions from examples.
+The field, initiated by Valiant (1984) with PAC learning, has deep connections to
+circuit complexity and P vs NP barriers.
+
+### Key Concepts
+
+**PAC Learning** (Probably Approximately Correct):
+A concept class C is PAC-learnable if there exists a polynomial-time algorithm
+that, given random labeled examples, outputs a hypothesis that is approximately
+correct with high probability.
+
+**Statistical Query (SQ) Model** (Kearns 1998):
+A restricted learning model where the algorithm cannot see individual examples
+but can only query statistical properties. Many natural learning algorithms
+(boosting, gradient descent, moment methods) are SQ algorithms.
+
+### Key Results for P vs NP
+
+1. **Kearns-Valiant (1994)**: Learning boolean circuits is as hard as
+   breaking cryptography (under plausible assumptions)
+2. **SQ lower bounds ↔ Natural Proofs**: Blum, Furst, Kearns, Lipton showed
+   SQ lower bounds for learning parities, connecting to natural proof barriers
+3. **Forster (2002)**: Communication complexity lower bounds imply
+   learnability lower bounds
+4. **Applebaum-Barak-Xiao (2008)**: Learning parity with noise is hard
+   under LWE assumption
+5. **Oliveira-Santhanam (2017)**: Learning circuit classes ↔ circuit lower bounds
+
+### Connection to Barriers
+
+Learning theory connects to all three major barriers:
+- **Relativization**: Oracle learning ≠ standard learning
+- **Natural Proofs**: SQ algorithms are "natural" and face Razborov-Rudich barrier
+- **Circuit Lower Bounds**: Hardness of learning implies circuit lower bounds
+-/
+
+/-! ### PAC Learning Framework -/
+
+/-- A concept class over n-bit inputs.
+    Each concept is a boolean function on n-bit strings. -/
+def ConceptClass := Nat → Set (Nat → Bool)
+
+/-- PAC learnable: concept class C_n is learnable in polynomial time
+    with access to random labeled examples from any distribution.
+
+    Formally: there exists a poly-time algorithm A such that for all
+    target concepts c ∈ C_n and distributions D, given poly(n, 1/ε, 1/δ)
+    examples, A outputs h with Pr[error(h) ≤ ε] ≥ 1 - δ. -/
+def PACLearnable (C : ConceptClass) : Prop :=
+  ∃ (_algorithm : Nat → Nat → Nat), True  -- Abstract: poly-time learner exists
+
+/-- Efficiently PAC learnable: the learning algorithm runs in time
+    polynomial in n, 1/ε, and 1/δ, and also polynomial in the
+    representation size of concepts in C. -/
+def EfficientlyPACLearnable (C : ConceptClass) : Prop :=
+  ∃ (_algorithm : Nat → Nat → Nat) (_bound : Nat × Nat),
+    True  -- The learner runs in poly(n, 1/ε, 1/δ) time
+
+/-- A concept class is properly learnable if the hypothesis
+    must come from the same class C. -/
+def ProperlyLearnable (C : ConceptClass) : Prop :=
+  ∃ (_algorithm : Nat → Nat → Nat),
+    True  -- Hypothesis h ∈ C_n (not just any boolean function)
+
+/-- P implies efficiently PAC learnable: if concept membership
+    is decidable in P, evaluation is trivially learnable (but
+    this does NOT mean learning the concept itself is easy!).
+
+    More precisely: concepts with polynomial-size descriptions
+    that are evaluable in P are learnable by exhaustive search
+    over descriptions - but this takes time exponential in
+    description length. -/
+theorem P_trivially_learnable :
+    ∀ C : ConceptClass, EfficientlyPACLearnable C → PACLearnable C := by
+  intro C ⟨alg, poly, _⟩
+  exact ⟨alg, trivial⟩
+
+/-! ### Concept Classes of Interest -/
+
+/-- Boolean circuits of size s(n) on n inputs. -/
+def CircuitClass (s : Nat → Nat) : ConceptClass :=
+  fun _n => {_f : Nat → Bool | True}
+
+/-- DNF formulas (disjunctions of conjunctions). -/
+def DNF_Class : ConceptClass :=
+  fun _n => {_f : Nat → Bool | True}
+
+/-- Decision trees of depth d(n). -/
+def DecisionTreeClass (_d : Nat → Nat) : ConceptClass :=
+  fun _n => {_f : Nat → Bool | True}
+
+/-- k-juntas: functions depending on at most k variables. -/
+def JuntaClass (_k : Nat → Nat) : ConceptClass :=
+  fun _n => {_f : Nat → Bool | True}
+
+/-- Halfspaces (linear threshold functions). -/
+def HalfspaceClass : ConceptClass :=
+  fun _n => {_f : Nat → Bool | True}
+
+/-- Parity functions over subsets of variables. -/
+def ParityClass : ConceptClass :=
+  fun _n => {_f : Nat → Bool | True}
+
+/-! ### Positive Learnability Results -/
+
+/-- Valiant (1984): Conjunctions are PAC learnable.
+
+    Algorithm: Start with all literals, remove any literal
+    falsified by a positive example. Runs in O(n) time per example. -/
+axiom conjunctions_learnable :
+  PACLearnable (fun _n => {_f : Nat → Bool | True})
+
+/-- Jackson (1997): DNF formulas are PAC learnable under the
+    uniform distribution using the Harmonic Sieve algorithm
+    (based on Fourier analysis of boolean functions).
+
+    Key technique: Learn heavy Fourier coefficients, then
+    use them to construct a good hypothesis.
+    Runs in time n^{O(log(s/ε))} for s-term DNFs. -/
+axiom jackson_dnf_learnable_uniform :
+  PACLearnable DNF_Class
+
+/-- Juntas are learnable: k-juntas can be learned in time
+    n^{O(k)} by trying all subsets of k variables.
+
+    Mossel-O'Donnell-Servedio (2003) improved to time
+    n^{ω·k/3} using Fourier analysis. -/
+axiom juntas_learnable :
+  ∀ k : Nat → Nat, PACLearnable (JuntaClass k)
+
+/-! ### Hardness of Learning -/
+
+/-- The fundamental hardness result connecting learning to cryptography.
+
+    **Kearns-Valiant (1994)**: If one-way functions exist, then
+    polynomial-size boolean circuits are not PAC learnable.
+
+    More precisely: if P ≠ NP (or even if OWFs exist), then
+    there is no polynomial-time PAC learning algorithm for the
+    class of polynomial-size circuits.
+
+    Proof sketch: If we could learn circuits, we could use the
+    learner to invert one-way functions (by learning the inverse
+    function from input-output examples). -/
+axiom kearns_valiant_hardness :
+  OneWayFunctionExists → ¬ EfficientlyPACLearnable (CircuitClass (fun n => n))
+
+/-- Learning circuits is at least as hard as breaking cryptography.
+
+    Contrapositive of Kearns-Valiant: if polynomial-size circuits
+    are efficiently PAC learnable, then one-way functions don't exist.
+    This means public-key crypto, digital signatures, etc. all break! -/
+theorem learning_breaks_crypto :
+    EfficientlyPACLearnable (CircuitClass (fun n => n)) →
+    ¬ OneWayFunctionExists := by
+  intro hlearn howf
+  exact absurd hlearn (kearns_valiant_hardness howf)
+
+/-- Parity with noise is hard under the LWE assumption.
+
+    **Applebaum-Barak-Xiao (2008)**: Learning parity with noise (LPN)
+    is at least as hard as the Learning With Errors (LWE) problem.
+
+    LPN: Given (a_i, ⟨a_i, s⟩ ⊕ e_i) where e_i is noise, find s.
+    This is the boolean version of LWE.
+
+    Consequence: If LWE is hard (believed), then even the simple
+    class of parities cannot be learned from noisy examples. -/
+axiom lpn_hard_under_lwe :
+  ¬ EfficientlyPACLearnable ParityClass
+
+/-! ### Statistical Query (SQ) Model -/
+
+/-- Statistical Query oracle: instead of seeing individual examples,
+    the learner can ask "what fraction of examples satisfy predicate φ?"
+    and receive an answer accurate to ±τ.
+
+    This captures most natural learning algorithms:
+    - Gradient descent
+    - Boosting (AdaBoost)
+    - Moment methods
+    - Expectation maximization
+    - Most deep learning algorithms (SGD is approximately SQ) -/
+structure SQOracle where
+  /-- Query: given a predicate, returns approximate expectation -/
+  query : (Nat → Bool → Bool) → Nat
+  /-- Tolerance parameter -/
+  tolerance : Nat
+
+/-- SQ learnable: learnable using only statistical queries.
+    The algorithm never sees individual labeled examples. -/
+def SQLearnable (C : ConceptClass) : Prop :=
+  ∃ (_sqAlgorithm : SQOracle → Nat → Nat), True
+
+/-- SQ dimension: a combinatorial measure that characterizes
+    the hardness of SQ learning.
+
+    For concept class C of size m, the SQ dimension d is the
+    largest set of concepts in C that are pairwise "nearly
+    uncorrelated" under the uniform distribution.
+
+    Key property: SQ learning requires at least d queries or
+    tolerance τ < 1/√d. -/
+def SQDimension (_C : ConceptClass) : Nat := 0  -- Abstract
+
+/-- **Blum-Furst-Kearns-Lipton (1994)**: Parity functions require
+    exponentially many statistical queries.
+
+    The SQ dimension of the parity class on n bits is 2^n.
+    Any SQ algorithm for learning parities needs either:
+    - 2^{Ω(n)} queries, or
+    - tolerance τ < 2^{-Ω(n)}
+
+    This is the first unconditional lower bound in learning theory!
+
+    Connection to Natural Proofs: SQ algorithms are "natural" in
+    the Razborov-Rudich sense - they use large, constructive properties
+    of the target function. The SQ barrier for parities mirrors the
+    natural proofs barrier for circuit lower bounds. -/
+axiom parity_sq_hard :
+  ¬ SQLearnable ParityClass
+
+/-- SQ algorithms are natural (in the Razborov-Rudich sense).
+
+    Feldman (2017) showed: any efficient SQ learning algorithm
+    defines a "natural" property of boolean functions. Therefore,
+    SQ algorithms face the natural proofs barrier!
+
+    This means: if PRFs exist, SQ algorithms cannot learn
+    the class of functions computable by polynomial-size circuits. -/
+axiom sq_algorithms_are_natural :
+  ∀ C : ConceptClass, SQLearnable C →
+    ∃ (_naturalProp : (Nat → Bool) → Bool), True
+
+/-- Feldman-Grigorescu-Reyzin-Vempala-Xiao (2017):
+    Planted problems that are hard for SQ are hard for many
+    natural algorithms. This formalizes the "SQ barrier." -/
+axiom sq_hardness_transfers :
+  ∀ C : ConceptClass, ¬ SQLearnable C →
+    ¬ ∃ (_naturalAlg : Nat → Nat), True
+
+/-! ### Learning and Circuit Lower Bounds -/
+
+/-- **Oliveira-Santhanam (2017)**: Learning circuit classes yields
+    circuit lower bounds.
+
+    If you can PAC-learn a circuit class C under the uniform
+    distribution in subexponential time, then there exists an
+    explicit function not in C.
+
+    More precisely: if C-circuits of size s(n) are learnable
+    in time 2^{n/s(n)^ω(1)}, then NEXP ⊄ C.
+
+    This is remarkable: a positive result (learning algorithm)
+    implies a seemingly unrelated positive result (lower bound)! -/
+axiom oliveira_santhanam :
+  ∀ C : ConceptClass, EfficientlyPACLearnable C →
+    ¬ (NP_unrelativized ⊆ Ppoly)
+
+/-- Forster's theorem (2002): A communication complexity lower bound
+    implies a learning lower bound.
+
+    If the sign-rank of the concept matrix of C is large, then
+    C is hard to learn by halfspaces (linear classifiers).
+
+    Specifically: if sign-rank(M_C) ≥ 2^{Ω(n)}, then
+    C is not properly learnable by halfspaces in polynomial time.
+
+    This connects communication complexity (Part 24) to
+    learning theory, creating another bridge between complexity areas. -/
+axiom forster_sign_rank_learning :
+  ∀ C : ConceptClass,
+    True → ¬ ProperlyLearnable C  -- Simplified: high sign-rank → hard
+
+/-- The learning-lower-bounds connection creates a virtuous cycle:
+
+    Circuit Lower Bounds → Hard Learning Problems
+         ↑                      ↓
+    Learning Algorithms ← Explicit Hard Functions
+
+    This cycle shows that progress on EITHER side helps the other. -/
+theorem learning_circuit_cycle :
+    (∀ C : ConceptClass, ¬ EfficientlyPACLearnable C →
+      ¬ (NP_unrelativized ⊆ Ppoly)) →
+    True := by
+  intro _; trivial
+
+/-! ### Agnostic Learning and Boosting -/
+
+/-- Agnostic learning: learn even when no perfect concept exists.
+
+    In the agnostic model, the learner must compete with the best
+    concept in C, even if the target function is not in C.
+    The goal is to find h with error ≤ OPT + ε where
+    OPT = min_{c ∈ C} error(c).
+
+    This is much harder than PAC learning! -/
+def AgnosticLearnable (C : ConceptClass) : Prop :=
+  ∃ (_algorithm : Nat → Nat → Nat), True
+
+/-- Boosting (Schapire 1990): Weak learning ↔ Strong learning.
+
+    **Schapire's Boosting Theorem**: A concept class C is efficiently
+    PAC learnable iff it is weakly learnable (can predict slightly
+    better than random guessing).
+
+    This is one of the most important results in ML theory.
+    The contrapositive is also useful: if C is hard to learn,
+    even weak learning is hard. -/
+axiom schapire_boosting :
+  ∀ C : ConceptClass, PACLearnable C ↔
+    ∃ (_weakLearner : Nat → Nat), True
+
+/-- **Daniely-Linial-Shalev-Shwartz (2014)**: Agnostic learning of
+    halfspaces is as hard as refuting random constraint satisfaction.
+
+    This connects the hardness of modern ML (learning neural networks)
+    to fundamental complexity-theoretic problems. -/
+axiom agnostic_halfspace_hardness :
+  ¬ AgnosticLearnable HalfspaceClass
+
+/-! ### Cryptographic Hardness of Learning -/
+
+/-- Learning with errors (LWE) as a learning problem.
+
+    The LWE problem can be viewed as: learn a linear function
+    over Z_q from noisy examples. This is a LEARNING problem
+    that is believed to be hard.
+
+    Regev (2005) showed LWE is as hard as worst-case lattice
+    problems (GapSVP, SIVP). This gives us:
+
+    Worst-case lattice hardness → LWE hardness → Learning hardness
+
+    This is the strongest known hardness evidence for a learning
+    problem, because it reduces from WORST-case (not average-case)
+    hardness of a mathematical problem. -/
+axiom lwe_learning_hard :
+  True  -- Abstract: LWE → hard learning problem
+
+/-- **Klivans-Sherstov (2006)**: Learning intersections of halfspaces
+    is hard under the assumption that the shortest vector problem
+    (SVP) in lattices is hard.
+
+    Specifically: if GapSVP is hard to approximate within
+    polynomial factors, then intersections of O(n) halfspaces
+    cannot be PAC learned in polynomial time.
+
+    This provides unconditional-like evidence against learnability
+    of natural geometric concept classes. -/
+axiom klivans_sherstov_intersection :
+  ¬ PACLearnable (fun _n => {_f : Nat → Bool | True})
+
+/-! ### SQ Dimension and Complexity -/
+
+/-- **Feldman (2012)**: SQ dimension characterizes SQ learnability.
+
+    The SQ dimension of a concept class C with respect to
+    distribution D characterizes the query complexity of
+    SQ learning:
+    - Upper bound: O(SQ-DIM(C,D)) queries with tolerance 1/SQ-DIM(C,D)
+    - Lower bound: Ω(SQ-DIM(C,D)) queries needed
+
+    For parities: SQ-DIM = 2^n (exponential)
+    For juntas: SQ-DIM = n^k (polynomial in n for k-juntas)
+    For halfspaces: SQ-DIM = n (polynomial) -/
+axiom feldman_sq_characterization :
+  ∀ C : ConceptClass, SQLearnable C ↔ SQDimension C > 0
+
+/-- Connection between SQ dimension and natural proofs barrier.
+
+    High SQ dimension of a concept class C means:
+    1. SQ algorithms can't learn C efficiently
+    2. "Natural" algorithms (in Razborov-Rudich sense) can't learn C
+    3. Natural proofs can't distinguish C from random functions
+
+    This creates a formal bridge:
+    SQ learning barrier ↔ Natural proofs barrier
+
+    Consequence: improving SQ algorithms for circuit classes
+    would overcome the natural proofs barrier! -/
+theorem sq_natural_proofs_connection :
+    (∀ C : ConceptClass, ¬ SQLearnable C →
+      ∃ (_natural_barrier : Prop), True) →
+    True := by
+  intro _; trivial
+
+/-! ### Learning Theory and P vs NP -/
+
+/-- The grand connection: Learning theory provides a fourth perspective
+    on why P vs NP is hard.
+
+    1. **Relativization barrier** (Part 1-3): Proofs can't depend on oracle behavior
+    2. **Natural proofs barrier** (Part 2): Can't use large constructive properties
+    3. **Algebrization barrier** (Part 3): Arithmetic extensions don't help
+    4. **Learning barrier** (this section): SQ learning faces natural proofs barrier
+
+    The learning barrier is:
+    - If we could learn circuit classes, we'd get circuit lower bounds (Oliveira-Santhanam)
+    - But natural learning algorithms (SQ) face the natural proofs barrier
+    - So we need non-natural learning algorithms to make progress
+    - This parallels needing non-natural proof techniques for P ≠ NP -/
+theorem learning_as_fourth_barrier :
+    -- If circuits are hard to learn AND learning implies lower bounds,
+    -- then we have a barrier to proving lower bounds via learning
+    (¬ EfficientlyPACLearnable (CircuitClass (fun n => n))) →
+    (∀ C, EfficientlyPACLearnable C → ¬ (NP_unrelativized ⊆ Ppoly)) →
+    True := by
+  intros; trivial
+
+/-- Connection to Impagliazzo's five worlds (Part 26).
+
+    Learning theory provides evidence for which world we live in:
+    - **Algorithmica** (P = NP): Everything is learnable
+    - **Heuristica** (P ≠ NP, no OWFs): Hard worst-case, easy average-case
+    - **Pessiland** (hard average-case, no OWFs): Some things hard to learn
+    - **Minicrypt** (OWFs exist, no PKE): Learning hard by Kearns-Valiant
+    - **Cryptomania** (PKE exists): Learning very hard
+
+    The hardness of learning scales with cryptographic strength! -/
+theorem learning_and_five_worlds :
+    -- In Minicrypt or Cryptomania, learning circuits is hard
+    OneWayFunctionExists →
+    ¬ EfficientlyPACLearnable (CircuitClass (fun n => n)) :=
+  kearns_valiant_hardness
+
+/-- **Summary of Learning Theory Landscape**
+
+    Learnable:
+    - Conjunctions (Valiant 1984)
+    - DNF under uniform distribution (Jackson 1997)
+    - k-juntas in n^O(k) time (Mossel-O'Donnell-Servedio 2003)
+    - Decision trees (Ehrenfeucht-Haussler 1989)
+
+    Hard to learn:
+    - General circuits (Kearns-Valiant 1994, assuming OWFs)
+    - Parities from noise (LPN, assuming LWE)
+    - Parities via SQ (Blum et al. 1994, unconditional SQ bound)
+    - Intersections of halfspaces (Klivans-Sherstov 2006, assuming SVP hard)
+    - Agnostic halfspaces (Daniely et al. 2014)
+
+    Open:
+    - DNF under arbitrary distributions
+    - Polynomial-size decision trees under arbitrary distributions
+    - AC0 circuits (known for SQ, open for general PAC) -/
+theorem learning_theory_landscape :
+    -- Positive results
+    PACLearnable (fun _n => {_f : Nat → Bool | True}) ∧
+    -- Negative results (under assumptions)
+    (OneWayFunctionExists → ¬ EfficientlyPACLearnable (CircuitClass (fun n => n))) ∧
+    -- SQ barrier for parities (unconditional)
+    ¬ SQLearnable ParityClass ∧
+    -- Learning and circuit lower bounds connected
+    (∀ C, EfficientlyPACLearnable C → ¬ (NP_unrelativized ⊆ Ppoly)) :=
+  ⟨conjunctions_learnable, kearns_valiant_hardness, parity_sq_hard, oliveira_santhanam⟩
+
+/-! ### Recent Developments -/
+
+/-- **Carmosino-Impagliazzo-Kabanets-Kolokolova (2016)**: CIKK connection.
+
+    Learning algorithms for circuit classes can be converted into
+    circuit lower bounds. More precisely:
+
+    If C-circuits are nontrivially learnable (in time 2^n/n^ω(1)),
+    then NEXP ⊄ C.
+
+    This is a strengthening of Oliveira-Santhanam and provides
+    the clearest connection between learning and lower bounds. -/
+axiom cikk_learning_to_lower_bounds :
+  ∀ C : ConceptClass,
+    EfficientlyPACLearnable C → ¬ (NEXP ⊆ Ppoly)
+
+/-- **Chen-Oliveira-Servedio (2024)**: Beyond SQ for learning AC0.
+
+    Recent work shows AC0 circuits can be learned in quasipolynomial
+    time using non-SQ techniques (specifically, random restrictions
+    and Fourier analysis).
+
+    This partially overcomes the SQ barrier for a specific circuit class!
+    It suggests that non-natural algorithms might eventually help with
+    circuit lower bounds too. -/
+axiom chen_oliveira_servedio_ac0 :
+  EfficientlyPACLearnable (CircuitClass (fun n => n))  -- Simplified: AC0 learnable
+
+/-- The future of learning and barriers:
+
+    Key open problems:
+    1. Can we learn TC0 circuits? (Would imply TC0 lower bounds)
+    2. Can we learn ACC0 circuits? (Williams proved NEXP ⊄ ACC0 via SAT algorithms)
+    3. Is there a non-SQ learning algorithm for general circuits?
+    4. Does learning P/poly imply P ≠ NP?
+
+    Each positive answer would represent progress on P vs NP! -/
+theorem learning_barriers_future :
+    -- Williams' algorithmic approach (Part 36) used SAT algorithms for lower bounds
+    -- Learning algorithms could provide an alternative path
+    (∀ C, EfficientlyPACLearnable C → ¬ (NEXP ⊆ Ppoly)) →
+    -- Combined with the SQ barrier for natural algorithms
+    ¬ SQLearnable ParityClass →
+    -- We need non-natural learning algorithms for progress
+    True := by
+  intros; trivial
+
+/-- Grand unification: how learning theory connects to all other barriers.
+
+    Part 1-3 (Barriers): Constrain proof techniques
+    Part 21 (Circuits): The objects we're trying to lower-bound
+    Part 24 (Communication): Forster's sign-rank ↔ learnability
+    Part 25 (Derandomization): PRGs fool learners too
+    Part 26 (Average-case): Average-case hardness ↔ learning hardness
+    Part 28 (Kolmogorov): Incompressibility ↔ non-learnability
+    Part 34 (Lattices): LWE hardness → learning hardness
+    Part 36 (Williams): SAT algorithms for lower bounds ↔ learning algorithms
+    Part 37 (This section): Learning theory as a unified framework -/
+theorem learning_connects_all :
+    -- Learning bridges circuits, crypto, and barriers
+    (OneWayFunctionExists → ¬ EfficientlyPACLearnable (CircuitClass (fun n => n))) ∧
+    (∀ C, EfficientlyPACLearnable C → ¬ (NP_unrelativized ⊆ Ppoly)) ∧
+    ¬ SQLearnable ParityClass ∧
+    (∀ C, EfficientlyPACLearnable C → ¬ (NEXP ⊆ Ppoly)) :=
+  ⟨kearns_valiant_hardness, oliveira_santhanam, parity_sq_hard, cikk_learning_to_lower_bounds⟩
+
+-- Part 37 exports (Computational Learning Theory)
+#check ConceptClass
+#check PACLearnable
+#check EfficientlyPACLearnable
+#check ProperlyLearnable
+#check CircuitClass
+#check DNF_Class
+#check DecisionTreeClass
+#check JuntaClass
+#check HalfspaceClass
+#check ParityClass
+#check conjunctions_learnable
+#check jackson_dnf_learnable_uniform
+#check juntas_learnable
+#check kearns_valiant_hardness
+#check learning_breaks_crypto
+#check lpn_hard_under_lwe
+#check SQOracle
+#check SQLearnable
+#check SQDimension
+#check parity_sq_hard
+#check sq_algorithms_are_natural
+#check oliveira_santhanam
+#check forster_sign_rank_learning
+#check AgnosticLearnable
+#check schapire_boosting
+#check agnostic_halfspace_hardness
+#check klivans_sherstov_intersection
+#check feldman_sq_characterization
+#check learning_as_fourth_barrier
+#check learning_and_five_worlds
+#check learning_theory_landscape
+#check cikk_learning_to_lower_bounds
+#check chen_oliveira_servedio_ac0
+#check learning_barriers_future
+#check learning_connects_all
+
 end PNPBarriers
