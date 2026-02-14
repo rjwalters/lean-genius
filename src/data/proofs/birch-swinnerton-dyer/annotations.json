@@ -3,14 +3,11 @@
     "id": "ann-bsd-intro",
     "proofId": "birch-swinnerton-dyer",
     "range": {"startLine": 20, "endLine": 100},
-    "type": "context",
+    "type": "concept",
     "title": "BSD Conjecture: Overview and Imports",
     "content": "**The Birch and Swinnerton-Dyer Conjecture** -- one of the seven Millennium Prize Problems ($1,000,000). The conjecture connects the algebraic rank of an elliptic curve $E/\\mathbb{Q}$ (the number of independent rational points) with the analytic rank (the order of vanishing of $L(E,s)$ at $s=1$). The file imports Mathlib's elliptic curve infrastructure (`WeierstrassCurve`), L-series, complex analysis, and arithmetic functions. All definitions are noncomputable.",
-    "mathContext": {
-      "latex": "\\text{rank}(E(\\mathbb{Q})) = \\text{ord}_{s=1}\\, L(E, s)",
-      "description": "Weak BSD equates algebraic rank (from Mordell-Weil) with analytic rank (from L-function). Strong BSD gives the leading coefficient in terms of periods, regulators, Sha, and Tamagawa numbers."
-    },
-    "significance": "context",
+    "mathContext": "$$\\text{rank}(E(\\mathbb{Q})) = \\text{ord}_{s=1}\\, L(E, s)$$\nWeak BSD equates algebraic rank (from Mordell-Weil) with analytic rank (from L-function). Strong BSD gives the leading coefficient in terms of periods, regulators, $\\text{III}$, and Tamagawa numbers.",
+    "significance": "critical",
     "relatedConcepts": ["millennium-prize", "elliptic-curve", "L-function", "analytic-rank"],
     "prerequisites": ["algebraic-geometry", "complex-analysis", "number-theory"]
   },
@@ -21,10 +18,7 @@
     "type": "definition",
     "title": "Elliptic Curves over Q",
     "content": "**EllipticCurveQ** is defined in short Weierstrass form $y^2 = x^3 + ax + b$ with $\\Delta = -16(4a^3 + 27b^2) \\neq 0$ (smoothness). The j-invariant is $j = -1728 \\cdot 4a^3/\\Delta$. A conversion `toWeierstrassCurve` embeds this into Mathlib's general `WeierstrassCurve` (setting $a_1 = a_2 = a_3 = 0$, $a_4 = a$, $a_6 = b$). Three verified theorems confirm the discriminant and $c_4$ match Mathlib's formulas.",
-    "mathContext": {
-      "latex": "E: y^2 = x^3 + ax + b, \\quad \\Delta = -16(4a^3 + 27b^2) \\neq 0, \\quad j = \\frac{-1728 \\cdot 4a^3}{\\Delta}",
-      "description": "The simplified EllipticCurveQ structure allows clear exposition while maintaining full compatibility with Mathlib via toWeierstrassCurve. The discriminant and c4 theorems are fully verified (no sorry)."
-    },
+    "mathContext": "$$E: y^2 = x^3 + ax + b, \\quad \\Delta = -16(4a^3 + 27b^2) \\neq 0, \\quad j = \\frac{-1728 \\cdot 4a^3}{\\Delta}$$\nThe simplified EllipticCurveQ structure allows clear exposition while maintaining full compatibility with Mathlib via `toWeierstrassCurve`. The discriminant and $c_4$ theorems are fully verified (no sorry).",
     "significance": "key",
     "relatedConcepts": ["weierstrass-form", "discriminant", "j-invariant", "mathlib-compatibility"],
     "prerequisites": ["algebraic-curves", "rational-numbers"]
@@ -32,14 +26,11 @@
   {
     "id": "ann-mordell-weil",
     "proofId": "birch-swinnerton-dyer",
-    "range": {"startLine": 128, "endLine": 191},
-    "type": "theorem",
-    "title": "Mordell-Weil Theorem",
+    "range": {"startLine": 215, "endLine": 265},
+    "type": "definition",
+    "title": "Mordell-Weil Group and Algebraic Rank",
     "content": "**Mordell-Weil Theorem (1922-28)**: The group $E(\\mathbb{Q})$ of rational points on an elliptic curve is finitely generated: $E(\\mathbb{Q}) \\cong \\mathbb{Z}^r \\oplus T$, where $r$ is the **algebraic rank** (the key unknown in BSD) and $T$ is the finite torsion subgroup. By Mazur's theorem (1977), $T$ is one of exactly 15 possible groups. Computing $r$ is a major open algorithmic problem -- descent methods give upper bounds, but determining the exact rank is hard for rank $\\geq 2$.",
-    "mathContext": {
-      "latex": "E(\\mathbb{Q}) \\cong \\mathbb{Z}^r \\oplus T, \\quad |T| < \\infty, \\quad r = \\text{rank}(E(\\mathbb{Q}))",
-      "description": "The algebraic rank r is the number of independent rational points of infinite order. Mordell-Weil is foundational but does not give an algorithm for computing r -- BSD would provide one via L-function computation."
-    },
+    "mathContext": "$$E(\\mathbb{Q}) \\cong \\mathbb{Z}^r \\oplus T, \\quad |T| < \\infty, \\quad r = \\text{rank}(E(\\mathbb{Q}))$$\nThe `MordellWeilGroup` structure wraps a carrier type with `AddCommGroup` instance. The algebraic rank and torsion subgroup are axiomatized. Mazur's torsion theorem constrains $T$ to 15 isomorphism classes: $\\mathbb{Z}/n\\mathbb{Z}$ for $n = 1,\\ldots,10,12$ and $\\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2n\\mathbb{Z}$ for $n = 1,2,3,4$.",
     "significance": "critical",
     "relatedConcepts": ["mordell-weil", "algebraic-rank", "torsion-subgroup", "mazur-theorem"],
     "prerequisites": ["abelian-groups", "height-functions"]
@@ -47,14 +38,11 @@
   {
     "id": "ann-l-function",
     "proofId": "birch-swinnerton-dyer",
-    "range": {"startLine": 193, "endLine": 271},
+    "range": {"startLine": 288, "endLine": 345},
     "type": "definition",
     "title": "L-Functions of Elliptic Curves",
     "content": "**$L(E, s)$** is defined via an Euler product for $\\text{Re}(s) > 3/2$: $L(E, s) = \\prod_p L_p(E, s)^{-1}$, where local factors at good primes are $L_p = 1 - a_p p^{-s} + p^{1-2s}$ with $a_p = p + 1 - \\#E(\\mathbb{F}_p)$. The **root number** $w(E) \\in \\{\\pm 1\\}$ determines the parity of the analytic rank. By the **modularity theorem** (Wiles 1995, BCDT 2001), $L(E, s)$ has analytic continuation to all of $\\mathbb{C}$.",
-    "mathContext": {
-      "latex": "L(E, s) = \\prod_{p} L_p(E, s)^{-1}, \\quad a_p = p + 1 - \\#E(\\mathbb{F}_p), \\quad w(E) \\in \\{\\pm 1\\}",
-      "description": "The L-function encodes point counts over finite fields into an analytic object. The Euler product converges for Re(s) > 3/2; analytic continuation comes from modularity. The functional equation relates L(E,s) to L(E,2-s) with sign w(E)."
-    },
+    "mathContext": "$$L(E, s) = \\prod_{p} L_p(E, s)^{-1}, \\quad a_p = p + 1 - \\#E(\\mathbb{F}_p), \\quad w(E) \\in \\{\\pm 1\\}$$\nThe L-function encodes point counts over finite fields into an analytic object. The Euler product converges for $\\text{Re}(s) > 3/2$; analytic continuation comes from modularity. The functional equation relates $L(E,s)$ to $L(E,2-s)$ with sign $w(E)$. The conductor $N = \\prod_p p^{f_p}$ measures bad reduction.",
     "significance": "critical",
     "relatedConcepts": ["euler-product", "local-factor", "root-number", "modularity"],
     "prerequisites": ["complex-analysis", "finite-fields", "modular-forms"]
@@ -62,14 +50,11 @@
   {
     "id": "ann-modularity",
     "proofId": "birch-swinnerton-dyer",
-    "range": {"startLine": 273, "endLine": 314},
-    "type": "theorem",
+    "range": {"startLine": 361, "endLine": 388},
+    "type": "definition",
     "title": "Modularity Theorem (Wiles 1995)",
     "content": "**Modularity Theorem**: Every elliptic curve $E/\\mathbb{Q}$ is modular -- its L-function equals that of a weight 2 newform: $L(E, s) = L(f, s)$. This was proved for semistable curves by Wiles (1995, completing Fermat's Last Theorem) and extended to all $E/\\mathbb{Q}$ by Breuil-Conrad-Diamond-Taylor (2001). The key consequences are: (1) $L(E,s)$ has analytic continuation to all $\\mathbb{C}$, and (2) a functional equation $\\Lambda(E, s) = w(E) \\cdot \\Lambda(E, 2-s)$.",
-    "mathContext": {
-      "latex": "L(E, s) = L(f, s) \\quad \\text{for a weight 2 newform } f, \\quad \\Lambda(E, s) = w(E) \\cdot \\Lambda(E, 2-s)",
-      "description": "Axiomatized in the formalization. Modularity is essential for BSD because without analytic continuation, ord_{s=1} L(E,s) is not even defined."
-    },
+    "mathContext": "$$L(E, s) = L(f, s) \\quad \\text{for a weight 2 newform } f, \\quad \\Lambda(E, s) = w(E) \\cdot \\Lambda(E, 2-s)$$\nAxiomatized in the formalization via `modularity_theorem`. The `ModularForm` structure wraps a function $\\mathbb{C} \\to \\mathbb{C}$ with transformation and holomorphy conditions (both placeholders). Without analytic continuation, $\\text{ord}_{s=1} L(E,s)$ is not even defined, making modularity essential for stating BSD.",
     "significance": "critical",
     "relatedConcepts": ["modular-forms", "fermat-last-theorem", "functional-equation", "wiles"],
     "prerequisites": ["automorphic-forms", "galois-representations"]
@@ -77,14 +62,11 @@
   {
     "id": "ann-analytic-rank",
     "proofId": "birch-swinnerton-dyer",
-    "range": {"startLine": 320, "endLine": 353},
+    "range": {"startLine": 411, "endLine": 423},
     "type": "definition",
     "title": "Analytic Rank",
     "content": "The **analytic rank** $r_{\\text{an}}(E) = \\text{ord}_{s=1} L(E, s)$ is the order of vanishing of the L-function at the central point $s = 1$. The functional equation constrains its parity: $w(E) = +1$ implies $r_{\\text{an}}$ is even, $w(E) = -1$ implies odd. BSD predicts $r_{\\text{an}} = r_{\\text{alg}}$ -- the heart of the conjecture.",
-    "mathContext": {
-      "latex": "r_{\\text{an}}(E) = \\text{ord}_{s=1}\\, L(E, s), \\quad (-1)^{r_{\\text{an}}} = w(E)",
-      "description": "The parity constraint from the functional equation is the parity conjecture, proved by the Dokchitsers (2010). The analytic rank can be computed numerically to high precision."
-    },
+    "mathContext": "$$r_{\\text{an}}(E) = \\text{ord}_{s=1}\\, L(E, s), \\quad (-1)^{r_{\\text{an}}} = w(E)$$\nThe parity constraint from the functional equation is the parity conjecture, proved by the Dokchitsers (2010). The `analytic_rank_parity` theorem formalizes $r_{\\text{an}} \\bmod 2 = \\begin{cases} 0 & w(E) = +1 \\\\ 1 & w(E) = -1 \\end{cases}$.",
     "significance": "critical",
     "relatedConcepts": ["order-of-vanishing", "central-value", "parity-conjecture"],
     "prerequisites": ["L-function", "functional-equation"]
@@ -92,14 +74,11 @@
   {
     "id": "ann-bsd-statement",
     "proofId": "birch-swinnerton-dyer",
-    "range": {"startLine": 351, "endLine": 483},
-    "type": "concept",
+    "range": {"startLine": 439, "endLine": 557},
+    "type": "definition",
     "title": "BSD Conjecture: Formal Statement",
     "content": "**Weak BSD**: $\\text{rank}(E(\\mathbb{Q})) = \\text{ord}_{s=1} L(E, s)$.\n\n**Strong BSD**: The leading Taylor coefficient at $s = 1$ equals\n$$\\lim_{s \\to 1} \\frac{L(E,s)}{(s-1)^r} = \\frac{\\Omega \\cdot R \\cdot |\\text{III}| \\cdot \\prod c_p}{|E(\\mathbb{Q})_{\\text{tors}}|^2}$$\nwhere $\\Omega$ = real period, $R$ = regulator (Neron-Tate height pairing determinant), $\\text{III}$ = Shafarevich-Tate group (conjectured finite), $c_p$ = Tamagawa numbers at bad primes. Strong BSD implies weak BSD and the finiteness of $\\text{III}$.",
-    "mathContext": {
-      "latex": "\\lim_{s \\to 1} \\frac{L(E,s)}{(s-1)^r} = \\frac{\\Omega \\cdot R \\cdot |\\text{III}| \\cdot \\prod_p c_p}{|E(\\mathbb{Q})_{\\text{tors}}|^2}",
-      "description": "Both weak and strong BSD are stated as Props without asserting truth, correctly reflecting their open status. The strong form involves 5 arithmetic invariants, each difficult to compute independently."
-    },
+    "mathContext": "$$\\lim_{s \\to 1} \\frac{L(E,s)}{(s-1)^r} = \\frac{\\Omega \\cdot R \\cdot |\\text{III}| \\cdot \\prod_p c_p}{|E(\\mathbb{Q})_{\\text{tors}}|^2}$$\n`BSD_Weak E` is defined as `algebraicRank E = analyticRank E`. `BSD_Strong E` additionally requires the leading coefficient formula via `BSDConstant`. Both are `Prop` values -- stated without asserting truth, correctly reflecting open status. The `BSDConstant` involves 5 arithmetic invariants, each axiomatized separately.",
     "significance": "critical",
     "relatedConcepts": ["regulator", "shafarevich-tate", "tamagawa-number", "real-period"],
     "prerequisites": ["mordell-weil", "L-function", "neron-tate-height"]
@@ -107,45 +86,96 @@
   {
     "id": "ann-proven-cases",
     "proofId": "birch-swinnerton-dyer",
-    "range": {"startLine": 485, "endLine": 594},
+    "range": {"startLine": 580, "endLine": 628},
     "type": "theorem",
-    "title": "Proven Cases: Rank 0, 1, and Gross-Zagier",
-    "content": "**Rank 0** (Kolyvagin 1990): $L(E, 1) \\neq 0 \\Rightarrow \\text{rank} = 0$ and $\\text{III}$ is finite.\n**Rank 1** (Gross-Zagier 1986 + Kolyvagin): $L(E, 1) = 0, L'(E, 1) \\neq 0 \\Rightarrow \\text{rank} = 1$ and $\\text{III}$ is finite.\n**CM curves** (Coates-Wiles 1977): BSD for CM curves with $L(E, 1) \\neq 0$.\n\nThe **Gross-Zagier formula** $L'(E, 1) = c \\cdot \\hat{h}(P_K)$ bridges L-functions and Heegner points. If $L'(E, 1) \\neq 0$, the Heegner point $P_K$ has nonzero height, hence is non-torsion, giving an explicit generator.\n\n**Rank $\\geq 2$ is completely open!**",
-    "mathContext": {
-      "latex": "L(E, 1) \\neq 0 \\Rightarrow r = 0; \\quad L'(E, 1) \\neq 0 \\Rightarrow r \\leq 1; \\quad L'(E, 1) = c \\cdot \\hat{h}(P_K)",
-      "description": "These are axiomatized as they require deep machinery (Euler systems, Heegner points). Kolyvagin's Euler system method is the deepest technique available for BSD, but it cannot handle rank >= 2."
-    },
+    "title": "Proven Cases: Rank 0, 1, and CM",
+    "content": "**Rank 0** (Kolyvagin 1990): $L(E, 1) \\neq 0 \\Rightarrow \\text{rank} = 0$ and $\\text{III}$ is finite.\n**Rank 1** (Gross-Zagier 1986 + Kolyvagin): $L(E, 1) = 0, L'(E, 1) \\neq 0 \\Rightarrow \\text{rank} = 1$ and $\\text{III}$ is finite.\n**CM curves** (Coates-Wiles 1977): BSD for CM curves with $L(E, 1) \\neq 0$.\n\nEach case wraps an axiom with a theorem for clean API. `BSD_rank_zero` takes a hypothesis `LFunction E 1 \\neq 0` and returns both `algebraicRank E = 0` and `analyticRank E = 0`.\n\n**Rank $\\geq 2$ is completely open!**",
+    "mathContext": "$$L(E, 1) \\neq 0 \\Rightarrow r = 0; \\quad L'(E, 1) \\neq 0 \\Rightarrow r \\leq 1; \\quad L'(E, 1) = c \\cdot \\hat{h}(P_K)$$\nKolyvagin's Euler system method is the deepest technique available for BSD. The Gross-Zagier formula bridges L-functions and Heegner points. Both methods fundamentally cannot handle rank $\\geq 2$.",
     "significance": "critical",
     "relatedConcepts": ["kolyvagin", "gross-zagier", "heegner-point", "euler-system"],
     "prerequisites": ["L-function", "mordell-weil", "CM-theory"]
   },
   {
-    "id": "ann-computational",
+    "id": "ann-gross-zagier",
     "proofId": "birch-swinnerton-dyer",
-    "range": {"startLine": 596, "endLine": 656},
-    "type": "concept",
-    "title": "Computational Evidence and Obstacles",
-    "content": "BSD has been verified computationally for millions of elliptic curves (all with conductor $N \\leq 500{,}000$) with no counterexamples. The leading coefficient matches the predicted formula to high precision. The **congruent number problem** provides a beautiful application: $n$ is a congruent number iff $\\text{rank}(E_n) > 0$ where $E_n: y^2 = x^3 - n^2x$, and BSD predicts this is equivalent to $L(E_n, 1) = 0$.\n\n**Why BSD is hard**: (1) Kolyvagin's Euler system method only works for rank $\\leq 1$; (2) $\\text{III}$ cannot be computed in general; (3) finding generators for rank $\\geq 2$ is computationally difficult. Bhargava-Shankar showed average rank $\\leq 1$.",
-    "mathContext": {
-      "latex": "n \\text{ congruent} \\;\\Leftrightarrow\\; \\text{rank}(E_n) > 0 \\;\\Leftrightarrow\\; L(E_n, 1) = 0, \\quad E_n: y^2 = x^3 - n^2x",
-      "description": "The congruent number problem reduces via BSD to computing L-values. Computational verification via LMFDB databases provides overwhelming evidence for BSD."
-    },
+    "range": {"startLine": 666, "endLine": 668},
+    "type": "theorem",
+    "title": "Gross-Zagier Formula and Heegner Points",
+    "content": "The **Gross-Zagier Formula** (1986): $L'(E, 1) = c \\cdot \\hat{h}(P_K)$ where $P_K$ is a Heegner point from an imaginary quadratic field $K$, $\\hat{h}$ is the Neron-Tate height, and $c$ involves periods and Tamagawa numbers. If $L'(E, 1) \\neq 0$, the Heegner point is non-torsion, giving an explicit generator of $E(\\mathbb{Q})$. The `HeegnerPoint` structure wraps a placeholder point with a discriminant field for the quadratic field.",
+    "mathContext": "$$L'(E, 1) = \\frac{8\\pi^2 \\langle f, f \\rangle}{\\sqrt{|D|}} \\cdot \\hat{h}(P_K)$$\nThe formula bridges the analytic world (L-function derivative) and the algebraic world (height of a rational point). The `NeronTateHeight` is axiomatized as a bilinear form $\\hat{h}: E(\\mathbb{Q}) \\times E(\\mathbb{Q}) \\to \\mathbb{R}$; the regulator is its Gram determinant.",
     "significance": "key",
-    "relatedConcepts": ["congruent-numbers", "LMFDB", "average-rank", "bhargava-shankar"],
-    "prerequisites": ["bsd-conjecture", "computational-number-theory"]
+    "relatedConcepts": ["heegner-point", "neron-tate-height", "regulator", "CM-field"],
+    "prerequisites": ["L-function-derivative", "height-pairing", "imaginary-quadratic-field"]
+  },
+  {
+    "id": "ann-congruent-numbers",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 691, "endLine": 885},
+    "type": "definition",
+    "title": "Congruent Number Problem and Famous Curves",
+    "content": "The **congruent number problem**: $n$ is congruent iff it is the area of a rational right triangle iff $\\text{rank}(E_n) > 0$ where $E_n: y^2 = x^3 - n^2x$. By BSD, this is equivalent to $L(E_n, 1) = 0$. The file defines `congruentNumberCurve n` and proves $\\Delta = 64n^6$ and $j = 108$ (CM by $\\mathbb{Z}[i]$). Three famous curves (`curveMinusX`, `curveJZero`, `cremona11a1`) have verified discriminants and j-invariants. BSD is proved for each via `BSD_rank_zero` with axiomatized L-values.",
+    "mathContext": "$$n \\text{ congruent} \\;\\Leftrightarrow\\; \\text{rank}(E_n) > 0 \\;\\Leftrightarrow\\; L(E_n, 1) = 0, \\quad E_n: y^2 = x^3 - n^2x$$\nCongruent numbers $\\{5, 6, 7, 15, 20, 21, 24, 30, 34\\}$ have axiomatized positive rank. Non-congruent numbers $\\{1, 2, 3\\}$ have rank 0 (proved by Fermat via infinite descent). The `congruentNumberCurve_discriminant` and `congruentNumberCurve_jInvariant` theorems are fully proved by `norm_num` and `field_simp`.",
+    "significance": "key",
+    "relatedConcepts": ["congruent-numbers", "CM-curves", "cremona-database", "j-invariant"],
+    "prerequisites": ["elliptic-curve", "algebraic-rank"]
+  },
+  {
+    "id": "ann-koblitz",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 1186, "endLine": 1254},
+    "type": "theorem",
+    "title": "Koblitz Correspondence: Triangles and Curve Points",
+    "content": "**The Koblitz correspondence** establishes a bijection between rational right triangles with area $n$ and non-torsion rational points on $y^2 = x^3 - n^2x$. Forward: $(a,b,c) \\mapsto ((c/2)^2, \\, (c/2)(a^2-b^2)/4)$. The proof that $Y^2 = X^3 - n^2X$ uses `nlinarith` with the Pythagorean identity $a^2 + b^2 = c^2$. The proof that $Y \\neq 0$ uses the irrationality of $\\sqrt{2}$: if $a^2 = b^2$ then $c^2 = 2a^2$, contradicting `irrational_sqrt_two`.\n\nThe structural theorem `triangle_gives_congruent_number_point` subsumes all individual point verifications.",
+    "mathContext": "$$\\text{Forward}: (a,b,c) \\mapsto \\left((c/2)^2, \\; \\frac{c(a^2-b^2)}{8}\\right) \\qquad Y^2 = X(X-n)(X+n)$$\nThe forward map is proved via `triangle_to_point_on_curve` (pure algebraic identity) and `triangle_to_point_y_ne_zero` (using $\\sqrt{2} \\notin \\mathbb{Q}$ from Mathlib's `irrational_sqrt_two`). This is one of the most elegant parts of the formalization: a single theorem replacing all case-by-case verifications.",
+    "significance": "key",
+    "relatedConcepts": ["koblitz-correspondence", "right-triangle", "irrational-sqrt-2", "nlinarith"],
+    "prerequisites": ["RightTriangle", "congruentNumberCurve", "irrational_sqrt_two"]
+  },
+  {
+    "id": "ann-inverse-koblitz",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 1325, "endLine": 1372},
+    "type": "theorem",
+    "title": "Inverse Koblitz: Point to Triangle",
+    "content": "**Inverse Koblitz map**: $(X, Y) \\mapsto (a, b, c) = (|X^2-n^2|/|Y|, \\; 2n|X|/|Y|, \\; (X^2+n^2)/|Y|)$. Three theorems are fully proved: `inverse_koblitz_pythagorean` ($a^2 + b^2 = c^2$ via `field_simp` and `ring`), `inverse_koblitz_area` ($ab/2 = n$ using the key identity $|X| \\cdot |X^2-n^2| = Y^2$), and supporting lemmas that $X \\neq 0$ and $X^2 \\neq n^2$ when $Y \\neq 0$.",
+    "mathContext": "$$a^2 + b^2 = \\frac{(X^2-n^2)^2 + 4n^2X^2}{Y^2} = \\frac{(X^2+n^2)^2}{Y^2} = c^2$$\n$$ab/2 = \\frac{n \\cdot |X| \\cdot |X^2-n^2|}{Y^2} = \\frac{n \\cdot Y^2}{Y^2} = n$$\nThe key identity `abs_x_mul_abs_diff_sq_eq_y_sq` uses $Y^2 = X(X^2 - n^2)$ with $Y^2 \\geq 0$ to get $|X| \\cdot |X^2 - n^2| = Y^2$. Together with the forward map, this establishes the full bijection.",
+    "significance": "key",
+    "relatedConcepts": ["inverse-correspondence", "field_simp", "nlinarith", "absolute-value"],
+    "prerequisites": ["congruent_point_x_ne_zero", "abs_x_mul_abs_diff_sq_eq_y_sq"]
+  },
+  {
+    "id": "ann-hasse-bound",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 1407, "endLine": 1411},
+    "type": "theorem",
+    "title": "Hasse Bound and Point Counting",
+    "content": "The **Hasse bound** (1933): $|a_p| \\leq 2\\sqrt{p}$, equivalently $a_p^2 \\leq 4p$, where $a_p = p + 1 - \\#E(\\mathbb{F}_p)$ is the trace of Frobenius. This is a consequence of the Riemann Hypothesis for curves over finite fields (Weil 1948). The axiomatized `hasse_bound` gives $(\\text{traceOfFrobenius}\\, E\\, p)^2 \\leq 4p$, and `hasse_bound_consequence` derives $0 \\leq 4p - a_p^2$ by `omega`.",
+    "mathContext": "$$|a_p| \\leq 2\\sqrt{p} \\quad \\Leftrightarrow \\quad a_p^2 \\leq 4p, \\quad a_p = p + 1 - \\#E(\\mathbb{F}_p)$$\nThe Hasse bound constrains local point counts and is fundamental for computing L-functions. For large $p$, $\\#E(\\mathbb{F}_p) \\approx p$, so the L-function Euler product converges for $\\text{Re}(s) > 3/2$.",
+    "significance": "key",
+    "relatedConcepts": ["trace-of-frobenius", "weil-conjectures", "point-counting", "schoof-algorithm"],
+    "prerequisites": ["finite-fields", "riemann-hypothesis-for-curves"]
+  },
+  {
+    "id": "ann-related-conjectures",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 1455, "endLine": 1491},
+    "type": "concept",
+    "title": "Related Conjectures and Generalizations",
+    "content": "The **parity conjecture** (a weak form of BSD): $\\text{rank}(E(\\mathbb{Q})) \\equiv \\text{ord}_{s=1} L(E,s) \\pmod{2}$. Proved for semistable curves by Dokchitser-Dokchitser (2011). BSD generalizes to **number fields** ($E/K$) and **abelian varieties** ($A/\\mathbb{Q}$ of dimension $g > 1$), where almost nothing is known. The `ParityConjecture`, `BSD_NumberField`, and `BSD_AbelianVariety` are all defined as `Prop` values.",
+    "mathContext": "$$\\text{rank}(E(\\mathbb{Q})) \\equiv \\text{ord}_{s=1} L(E,s) \\pmod{2} \\quad \\Leftrightarrow \\quad (-1)^{\\text{rank}} = w(E)$$\nThe parity conjecture is the strongest unconditional result toward BSD for general rank. BSD over number fields and for abelian varieties represent vast generalizations within the Langlands program.",
+    "significance": "supporting",
+    "relatedConcepts": ["parity-conjecture", "dokchitser", "langlands-program", "abelian-variety"],
+    "prerequisites": ["BSD_Weak", "rootNumber", "functional-equation"]
   },
   {
     "id": "ann-summary",
     "proofId": "birch-swinnerton-dyer",
-    "range": {"startLine": 708, "endLine": 749},
+    "range": {"startLine": 1497, "endLine": 1534},
     "type": "concept",
-    "title": "Status Summary",
-    "content": "**BSD Conjecture: OPEN since 1965.** Proven cases: rank 0 (Kolyvagin), rank 1 (Gross-Zagier + Kolyvagin), CM curves with $L(E,1) \\neq 0$ (Coates-Wiles), parity conjecture (Dokchitsers). Open for rank $\\geq 2$. Central to modern number theory, connecting arithmetic and analysis. Millennium Prize: $1,000,000.",
-    "mathContext": {
-      "latex": "\\text{Proven: } r_{\\text{an}} \\leq 1; \\quad \\text{Open: } r_{\\text{an}} \\geq 2; \\quad \\text{Prize: \\$1{,}000{,}000}",
-      "description": "The formalization provides the mathematical framework and formal statement without claiming to prove BSD. It serves as educational infrastructure for one of the deepest open problems in mathematics."
-    },
-    "significance": "context",
+    "title": "Status Summary and Significance",
+    "content": "**BSD Conjecture: OPEN since 1965.** Proven cases: rank 0 (Kolyvagin), rank 1 (Gross-Zagier + Kolyvagin), CM curves with $L(E,1) \\neq 0$ (Coates-Wiles), parity conjecture (Dokchitsers). Open for rank $\\geq 2$. Central to modern number theory, connecting arithmetic and analysis. Millennium Prize: $1,000,000. The `#check` commands at the end confirm all key definitions are well-typed.",
+    "mathContext": "$$\\text{Proven: } r_{\\text{an}} \\leq 1; \\quad \\text{Open: } r_{\\text{an}} \\geq 2; \\quad \\text{Prize: \\$1{,}000{,}000}$$\nThe formalization serves as educational infrastructure for one of the deepest open problems in mathematics, with verified Mathlib embeddings and substantial proven algebraic content (discriminants, j-invariants, Koblitz correspondence, point verifications).",
+    "significance": "supporting",
     "relatedConcepts": ["open-problem", "millennium-prize", "arithmetic-geometry"],
     "prerequisites": ["all-preceding-sections"]
   }
