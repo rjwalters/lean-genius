@@ -47,17 +47,42 @@
     "dateAdded": "02/14/26"
   },
   "overview": {
-    "historicalContext": "The relationship between a circle's area and circumference was known to Archimedes: he viewed the disk as composed of infinitely many concentric rings, each of circumference $C(\\rho) = 2\\pi\\rho$, so $A(r) = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$. The inverse relationship $C = dA/dr$ follows by the fundamental theorem of calculus. This elegant connection generalizes to all dimensions: the surface area of an $n$-ball is the derivative of its volume with respect to radius.",
+    "historicalContext": "The relationship between a circle's area and circumference was understood by Archimedes of Syracuse (~287–212 BCE) in *Measurement of a Circle*: he viewed the disk as composed of infinitely many concentric rings, each of circumference $C(\\rho) = 2\\pi\\rho$, yielding $A(r) = \\int_0^r 2\\pi\\rho\\, d\\rho = \\pi r^2$. The inverse relationship $C = dA/dr$ follows by the Fundamental Theorem of Calculus, independently discovered by Newton and Leibniz in the 1660s–1680s. This elegant connection—that **boundary measure equals the derivative of enclosed measure**—generalizes to all dimensions: the surface area of an $n$-ball is the derivative of its volume with respect to radius, a fact formalized by Federer and Fleming in their 1960 foundational work on geometric measure theory. The isoperimetric equality $C^2 = 4\\pi A$ appearing as a corollary here is the equality case of the classical isoperimetric inequality, studied by Zenodorus (~200 BCE) and rigorously proved by Weierstrass (1870s) using the calculus of variations.",
     "problemStatement": "**Circumference via Differentiation**:\n\nFor the area function $A(r) = \\pi r^2$, prove:\n$$\\frac{dA}{dr} = 2\\pi r = C(r)$$\n\nwhere $C(r)$ is the circumference of a circle with radius $r$.",
     "proofStrategy": "Define $A(r) = \\pi r^2$ as a real-valued function and use Mathlib's calculus infrastructure. The power rule gives $d(r^2)/dr = 2r$, and constant multiplication gives $d(\\pi r^2)/dr = \\pi \\cdot 2r = 2\\pi r$. This is packaged using `HasDerivAt` for the strongest form, with `deriv` and `Differentiable` corollaries.",
     "keyInsights": [
       "The derivative $dA/dr = 2\\pi r$ has a beautiful geometric interpretation: increasing the radius by $dr$ adds an annular strip of width $dr$ and length $C(r)$",
       "The isoperimetric equality $C^2 = 4\\pi A$ follows purely by algebra from the definitions",
       "The second derivative $d^2A/dr^2 = 2\\pi$ is constant, reflecting that circumference grows linearly with radius",
-      "This relationship generalizes to all dimensions: $S_n(r) = dV_n/dr$ where $S_n$ is surface area and $V_n$ is volume"
+      "This relationship generalizes to all dimensions: $S_n(r) = dV_n/dr$ where $S_n$ is surface area and $V_n$ is volume",
+      "The **scaling laws** $A(cr) = c^2 A(r)$ and $C(cr) = c \\cdot C(r)$ reflect the dimensional analysis: area scales as length$^2$, perimeter as length$^1$, connected to the homogeneity degree of each function"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle",
+      "relationship": "extends",
+      "description": "This proof answers the open question from the Area of a Circle entry: whether $C = 2\\pi r$ can be derived by differentiating $A = \\pi r^2$. It extends that formalization from the integral/measure-theoretic direction to the differential calculus direction."
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "related",
+      "description": "The isoperimetric equality $C^2 = 4\\pi A$ proved here as a corollary is the equality case of the full isoperimetric inequality formalized in the Isoperimetric Theorem entry."
+    },
+    {
+      "targetId": "pi-transcendental",
+      "relationship": "related",
+      "description": "Both formalizations use $\\pi$ as defined in Mathlib's trigonometric module. The transcendence of $\\pi$ ensures the circumference $2\\pi r$ is transcendental for any nonzero rational radius."
+    }
+  ],
   "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Imports and Module Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Imports Mathlib's calculus infrastructure (`Deriv.Basic`, `Deriv.Pow`), trigonometric definitions for $\\pi$, and Lebesgue volume-of-balls. Opens the `Real` and `MeasureTheory` namespaces within `CircumferenceFromArea`."
+    },
     {
       "id": "definitions",
       "title": "Area and Circumference Functions",
