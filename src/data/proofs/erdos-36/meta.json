@@ -5,7 +5,10 @@
   "description": "Partition {1,...,2N} into equal sets A, B. Minimize over partitions the maximum number of pairs (a,b) with a−b=k. Determine c = lim M(N)/N. Known: 0.379 < c < 0.381. Open.",
   "meta": {
     "erdosNumber": 36,
-    "status": "formalized",
+    "status": "complete",
+    "author": "Erdős (1955), Scherk (1955), White (2022), Haugland (2016)",
+    "proofRepoPath": "Proofs/Erdos36Problem.lean",
+    "mathlib_version": "4.15.0",
     "tags": [
       "erdos",
       "combinatorics",
@@ -33,11 +36,23 @@
       "https://erdosproblems.com/36",
       "https://en.wikipedia.org/wiki/Minimum_overlap_problem"
     ],
-    "relatedProblems": [
-      { "id": "erdos-335", "relation": "Erdős #335 studies density additivity in sumsets, a closely related partition-structure question in additive combinatorics" },
-      { "id": "erdos-66", "relation": "Erdős #66 studies the representation function r_A(n) asymptotics, the same counting machinery underlying the overlap function" },
-      { "id": "erdos-861", "relation": "Erdős #861 counts Sidon sets (B₂ sequences with unique pairwise sums), the opposite extreme of minimal overlap" },
-      { "id": "erdos-343", "relation": "Erdős #343 asks about subcompleteness of dense multisets, using similar Fourier and density techniques" }
+    "mathlibDependencies": [
+      { "theorem": "Finset.filter", "description": "Filtering pairs for overlap counting", "module": "Mathlib.Data.Finset.Basic" },
+      { "theorem": "Finset.card", "description": "Cardinality of filtered sets", "module": "Mathlib.Data.Finset.Card" },
+      { "theorem": "Real.sqrt", "description": "Square root for Scherk's 1−1/√2 bound", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" }
+    ],
+    "originalContributions": [
+      "Defined overlap(A,B,k) as representation function of A−B",
+      "Defined maxOverlap and minMaxOverlap M(N) as minimax quantities",
+      "Stated erdos_36_limit_exists: limit c = lim M(N)/N exists and is positive",
+      "Axiomatized four progressively tighter bounds: Erdős (1/4), Scherk (1−1/√2), White (0.379005), Haugland-TTT (0.380876)",
+      "Recorded exact small values M(1)=1 through M(5)=3",
+      "Noted Erdős's disproved c=1/2 conjecture and Fourier-analytic techniques"
+    ],
+    "crossReferences": [
+      { "id": "erdos-335", "relationship": "Erdős #335 studies density additivity in sumsets, a closely related partition-structure question in additive combinatorics." },
+      { "id": "erdos-66", "relationship": "Erdős #66 studies the representation function r_A(n) asymptotics, the same counting machinery underlying the overlap function." },
+      { "id": "erdos-30", "relationship": "Erdős #30 on Sidon sets (B₂ sequences with unique pairwise sums) represents the opposite extreme of minimal overlap — maximizing distinctness of differences." }
     ]
   },
   "sections": [
