@@ -56,91 +56,138 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #692: Divisor Density Unimodality**\n\nThis problem concerns the density δ₁(n,m) of integers with exactly one divisor in the interval (n,m). Erdős asked whether this density is unimodal in m.\n\n**Historical Development:**\n- **Erdős (1986)**: Posed the question at Oberwolfach, proved δ₁(n,m) ≪ 1/(log n)^c\n- **Ford (2008)**: \"The distribution of integers with a divisor in a given interval\" - sharper bounds for various ranges\n- **Cambie (2025)**: DISPROVED unimodality with explicit counterexamples\n\n**The Resolution:**\nCambie computed:\n- δ₁(3,6) = 0.35\n- δ₁(3,7) ≈ 0.33\n- δ₁(3,8) ≈ 0.3619\n\nThis shows decrease-then-increase, violating unimodality. Moreover, Cambie proved the sequence has superpolynomially many local maxima!",
+    "historicalContext": "This problem concerns the density $\\delta_1(n,m)$ of integers with exactly one divisor in the open interval $(n,m)$, and whether this density is unimodal as a function of $m$.\n\n**Erdős (1986):** Posed the unimodality question at the Oberwolfach Number Theory conference. He proved the quantitative bound $\\delta_1(n,m) \\leq 1/(\\log n)^c$ for some $c > 0$, showing the density decays as $n$ grows. The bound follows from the Hardy-Ramanujan observation that a typical integer $k$ has about $\\log \\log k$ prime factors, so its divisors are spread out and having exactly one in a short interval requires special multiplicative structure.\n\n**Ford (2008):** Kevin Ford's landmark paper 'The distribution of integers with a divisor in a given interval' (Annals of Mathematics, 2008) gave precise asymptotics for the related function $H(x,y,z) = \\#\\{n \\leq x : \\exists d \\mid n,\\; y < d < z\\}$. Ford proved $H(x,y,z) \\asymp x \\cdot \\delta(u)$ where $u = \\log z / \\log y$ and $\\delta(u)$ involves the Dickman function $\\rho(u)$. This resolved Problem #446 and provided the foundational framework for studying $\\delta_1$.\n\n**Cambie (2025):** Stijn Cambie disproved unimodality with an elegant computational counterexample. For $n = 3$, he computed $\\delta_1(3,6) \\approx 0.35$, $\\delta_1(3,7) \\approx 0.33$, $\\delta_1(3,8) \\approx 0.3619$ via inclusion-exclusion over divisibility conditions, showing a decrease-then-increase pattern that violates any unimodal shape. He further proved the dramatically stronger result that the number of local maxima grows superpolynomially in $M$, driven by the prime counting function $\\pi(m) - \\pi(n) \\sim m/\\log m$.",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet $\\delta_1(n,m)$ be the density of integers with exactly one divisor in $(n,m)$.\n\n**Original Question (Erdős 1986):**\nIs $\\delta_1(n,m)$ unimodal for $m > n + 1$? That is, does it increase then decrease?\n\n**Answer: NO**\n\n**Cambie's Counterexample (2025):**\nFor $n = 3$:\n- $\\delta_1(3,6) = 0.35$\n- $\\delta_1(3,7) \\approx 0.33$\n- $\\delta_1(3,8) \\approx 0.3619$\n\nThe sequence **decreases then increases**, refuting unimodality.\n\n**Stronger Result:** The sequence has superpolynomially many local maxima.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Core Definitions:** divisorsInInterval counts divisors in (n,m), delta1 is the density via limsup\n\n2. **Erdős's Bound:** Axiomatize δ₁(n,m) ≪ 1/(log n)^c\n\n3. **Ford's Bounds:** State the 2008 refinements\n\n4. **Unimodality:** Define IsUnimodal predicate\n\n5. **Cambie's Disproof:** Axiomatize the counterexample values and the negation\n\n6. **Superpolynomial Maxima:** Formalize the stronger oscillation result",
+    "proofStrategy": "**Formalization Architecture**\n\n1. **Core Definitions (lines 49–79):** `divisorsInInterval` counts $|\\mathcal{D}(k) \\cap (n,m)|$ via `Finset.filter` on `Nat.divisors`. `countWithOneDivisor` counts integers $k \\leq N$ with exactly one such divisor. `delta1` defines $\\delta_1(n,m) = \\limsup_{N \\to \\infty} \\frac{\\text{count}(N,n,m)}{N}$ using `Filter.limsup` over `Filter.atTop`.\n\n2. **Historical Bounds (lines 87–111):** Erdős's bound $\\delta_1(n,m) \\leq 1/(\\log n)^c$ and Ford's 2008 sharper bounds are axiomatized, encoding the quantitative decay.\n\n3. **Unimodality Framework (lines 119–134):** `IsUnimodal` formalizes the definition (non-decreasing to peak, non-increasing after). `erdosUnimodalityQuestion` asks whether $\\delta_1(n,\\cdot)$ satisfies this.\n\n4. **Cambie's Disproof (lines 142–175):** Axiomatized counterexample values for $n=3$, the negation of unimodality for $n=2,3$, and the universal negation.\n\n5. **Superpolynomial Oscillation (lines 187–213):** `SuperpolynomialGrowth` captures $g(n) = \\omega(n^k)$ for all $k$, and `cambie_superpolynomial_maxima` asserts this for the local maxima count.\n\n6. **Synthesis (lines 277–295):** `erdos_692` combines the bound with the disproof via `constructor`.",
     "keyInsights": [
-      "**Explicit Counterexample:** δ₁(3,6) > δ₁(3,7) < δ₁(3,8) shows non-monotonicity",
-      "**Small Values Suffice:** Unimodality fails even for n = 2 and n = 3",
-      "**Superpolynomial Oscillation:** Not just a few exceptions - infinitely many local maxima grow superpolynomially",
-      "**Competing Effects:** More divisors can fit in (n,m) but also more likely to have multiple divisors",
-      "**39-Year Problem:** Asked in 1986, resolved in 2025",
-      "**Connection to Problem 446:** Related to general divisor distribution questions"
+      "**Minimal Counterexample at $n = 3$:** The density values $\\delta_1(3,6) > \\delta_1(3,7) < \\delta_1(3,8)$ show non-monotonicity at the smallest non-trivial $n$, computed via inclusion-exclusion over divisibility by 4, 5, and 20",
+      "**Prime Boundary Oscillation Mechanism:** When $m$ passes through a prime $p$, multiples of $p$ gain a new divisor in $(n,m)$: those with zero divisors before contribute positively to $\\delta_1$, while those with exactly one contribute negatively — the net effect oscillates with local prime structure",
+      "**Superpolynomial Growth of Local Maxima:** Not just occasional non-monotonicity — the count of local maxima of $\\delta_1(n,\\cdot)$ up to $M$ grows faster than any polynomial in $M$, driven by $\\pi(M) \\sim M/\\log M$",
+      "**Ford's Framework Underpins the Analysis:** Ford's 2008 Annals result $H(x,y,z) \\asymp x \\cdot \\delta(\\log z/\\log y)$ via the Dickman function gives the 'at least one divisor' density; the 'exactly one' variant $\\delta_1$ oscillates more due to inclusion-exclusion cancellation",
+      "**39-Year Resolution (1986–2025):** Erdős's Oberwolfach question survived nearly four decades, suggesting the community expected unimodality to hold — Cambie's computational approach overturned this intuition"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-446",
+      "relationship": "foundational",
+      "description": "Ford (2008) resolved Problem #446 on the density of integers with a divisor in $(n,2n)$, providing the asymptotic framework $H(x,y,z) \\asymp x \\cdot \\delta(u)$ that underpins the analysis of $\\delta_1$ in Problem #692"
+    },
+    {
+      "targetId": "erdos-690",
+      "relationship": "parallel",
+      "description": "Parallel unimodality question for $k$-th prime factor density $d_k(p)$, also resolved by Cambie (2025): YES for $k \\leq 3$, NO for $4 \\leq k \\leq 20$ — contrasting answer to #692's universal NO"
+    },
+    {
+      "targetId": "erdos-693",
+      "relationship": "related",
+      "description": "Studies gaps between integers in $[n, n^k]$ having a divisor in $(n,2n)$; shares the divisor-in-interval theme and cites Problem #446's Ford framework"
+    },
+    {
+      "targetId": "erdos-648",
+      "relationship": "methodology",
+      "description": "Cambie (2025) also resolved Problem #648 on decreasing greatest prime factors using Dickman function $\\rho(u)$ and smooth number theory, the same analytic tools underlying Ford's divisor distribution bounds"
+    },
+    {
+      "targetId": "erdos-691",
+      "relationship": "thematic",
+      "description": "Studies density of multiples (Behrend sequences) with Tenenbaum's sharp threshold; shares the multiplicative number theory and density-theoretic methodology"
+    }
+  ],
   "sections": [
     {
-      "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "summary": "divisorsInInterval, countWithOneDivisor, delta1",
-      "startLine": 43,
+      "id": "imports-namespace",
+      "title": "Imports and Namespace",
+      "summary": "Imports Mathlib modules for `Nat.divisors`, `Finset.filter`, `Filter.limsup`, real analysis, and topology; opens `Nat`, `Real`, `Filter`, `Finset` namespaces within `Erdos692`",
+      "startLine": 32,
+      "endLine": 41
+    },
+    {
+      "id": "divisors-interval",
+      "title": "Divisors in Interval",
+      "summary": "Defines `divisorsInInterval(k, n, m) = |\\mathcal{D}(k) \\cap (n,m)|$ via `Finset.filter` and `hasExactlyOneDivisor` for the exactness predicate",
+      "startLine": 49,
+      "endLine": 61
+    },
+    {
+      "id": "counting-density",
+      "title": "Counting Function and Density $\\delta_1$",
+      "summary": "Defines `countWithOneDivisor(N, n, m)` counting integers $k \\leq N$ with one divisor in $(n,m)$, and `delta1(n,m) = \\limsup_{N \\to \\infty} \\text{count}/N$ via `Filter.limsup`",
+      "startLine": 63,
       "endLine": 79
     },
     {
       "id": "erdos-bound",
       "title": "Erdős's Upper Bound",
-      "summary": "δ₁(n,m) ≪ 1/(log n)^c",
-      "startLine": 81,
+      "summary": "Axiomatizes $\\forall n \\geq 2,\\; \\exists c > 0,\\; \\delta_1(n,m) \\leq 1/(\\log n)^c$ — Erdős's 1986 quantitative decay bound, uniform in $m$",
+      "startLine": 87,
       "endLine": 94
     },
     {
       "id": "ford-bounds",
-      "title": "Ford's Sharper Bounds",
-      "summary": "2008 refinements for various ranges",
-      "startLine": 96,
+      "title": "Ford's Sharper Bounds (2008)",
+      "summary": "Axiomatizes Ford's regime-dependent bounds on $\\delta_1(n,m)$ from his Annals paper, refining Erdős's estimate using $H(x,y,z) \\asymp x \\cdot \\delta(\\log z / \\log y)$",
+      "startLine": 102,
       "endLine": 111
     },
     {
       "id": "unimodality-definition",
-      "title": "Unimodularity Definition",
-      "summary": "IsUnimodal predicate and Erdős's question",
-      "startLine": 113,
+      "title": "Unimodality and Erdős's Question",
+      "summary": "Defines `IsUnimodal f start` (non-decreasing to peak, non-increasing after) and `erdosUnimodalityQuestion n`: is $m \\mapsto \\delta_1(n,m)$ unimodal for $m > n+1$?",
+      "startLine": 119,
       "endLine": 134
     },
     {
       "id": "cambie-counterexample",
-      "title": "Cambie's Counterexample",
-      "summary": "Explicit values showing unimodality fails",
-      "startLine": 136,
-      "endLine": 179
+      "title": "Cambie's Counterexample Values ($n = 3$)",
+      "summary": "Axiomatizes $\\delta_1(3,6) > 0.34$, $\\delta_1(3,7) < 0.34$, $\\delta_1(3,8) > 0.36$ — the decrease-then-increase pattern computed via inclusion-exclusion over divisibility by 4, 5, and 20",
+      "startLine": 142,
+      "endLine": 157
+    },
+    {
+      "id": "disproof",
+      "title": "Disproof of Unimodality",
+      "summary": "Axiomatizes $\\neg\\,\\text{erdosUnimodalityQuestion}\\,3$ and $\\neg\\,\\text{erdosUnimodalityQuestion}\\,2$, then the universal negation $\\neg(\\forall n \\geq 2,\\; \\text{unimodal})$",
+      "startLine": 159,
+      "endLine": 175
+    },
+    {
+      "id": "local-maxima-defs",
+      "title": "Local Maxima and Superpolynomial Growth",
+      "summary": "Defines `IsLocalMaximum`, `countLocalMaxima` on $[\\text{start}+1, M]$, and `SuperpolynomialGrowth g` meaning $g(n) = \\omega(n^k)$ for every $k$",
+      "startLine": 187,
+      "endLine": 203
     },
     {
       "id": "superpolynomial-maxima",
-      "title": "Superpolynomial Local Maxima",
-      "summary": "Cambie's stronger oscillation result",
-      "startLine": 181,
-      "endLine": 217
+      "title": "Superpolynomially Many Local Maxima",
+      "summary": "Axiomatizes that for fixed $n \\geq 2$, the count of local maxima of $\\delta_1(n,\\cdot)$ up to $M$ grows superpolynomially — driven by $\\pi(M) \\sim M/\\log M$",
+      "startLine": 209,
+      "endLine": 213
     },
     {
-      "id": "related-results",
-      "title": "Related Results",
-      "summary": "Connection to Problem 446 and Ford's work",
-      "startLine": 219,
-      "endLine": 239
-    },
-    {
-      "id": "physical-interpretation",
-      "title": "Physical Interpretation",
-      "summary": "Why competing effects cause oscillation",
-      "startLine": 241,
-      "endLine": 257
+      "id": "ford-distribution",
+      "title": "Ford's Distribution Function $H(x,y,z)$",
+      "summary": "Defines `fordDistribution(x,y,z) = \\#\\{n \\leq x : \\exists d \\mid n,\\; y < d < z\\}$ and the oscillation interpretation connecting 'at least one' to 'exactly one' via inclusion-exclusion",
+      "startLine": 232,
+      "endLine": 256
     },
     {
       "id": "main-results",
-      "title": "Main Results",
-      "summary": "erdos_692 theorem combining all results",
-      "startLine": 259,
-      "endLine": 307
+      "title": "Main Summary Theorems",
+      "summary": "`erdos_692` combines the upper bound with Cambie's disproof via `constructor`; `erdos_692_status` records $\\neg\\,\\text{erdosUnimodalityQuestion}\\,3$ resolving a 39-year-old problem",
+      "startLine": 277,
+      "endLine": 295
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #692 is DISPROVED. The density δ₁(n,m) of integers with exactly one divisor in (n,m) is NOT unimodal in m. Cambie (2025) provided explicit counterexamples for n = 2, 3 and proved the sequence has superpolynomially many local maxima. The problem remained open for 39 years (1986-2025).",
-    "implications": "**Number-Theoretic Significance**\n\n1. **Divisor Distribution:** The behavior of divisor counts in intervals is more complex than expected\n\n2. **Oscillatory Phenomena:** The superpolynomial maxima show wild oscillation, not gradual decay\n\n3. **Computational Verification:** Cambie's resolution combined computation with theoretical analysis\n\n4. **Related Problems:** Provides insight into the general question of how integers distribute divisors",
+    "summary": "Erdős Problem #692 is DISPROVED. The density $\\delta_1(n,m)$ of integers with exactly one divisor in $(n,m)$ is NOT unimodal in $m$. Cambie (2025) provided explicit counterexamples for $n = 2, 3$ and proved the dramatically stronger result that the number of local maxima grows superpolynomially. The formalization encodes Erdős's 1986 bound, Ford's 2008 refinements, and Cambie's complete resolution, combining them in the summary theorem `erdos_692`.",
+    "implications": "**Number-Theoretic Significance**\n\n1. **Divisor Distribution Complexity:** The oscillatory behavior of $\\delta_1$ reveals that divisor counts in intervals have far more intricate structure than the smooth decay suggested by Erdős's bound\n\n2. **Prime Boundary Effects:** Each prime $p$ entering the interval $(n,m)$ creates a discontinuity in $\\delta_1$, with the net effect depending on local divisor statistics — a phenomenon invisible to averaged bounds\n\n3. **Resolution of Problem #446 Context:** Ford's Annals framework for the 'at least one divisor' function $H(x,y,z)$ was necessary but insufficient — the 'exactly one' restriction via inclusion-exclusion introduces additional oscillation\n\n4. **Parallel to Problem #690:** Cambie's simultaneous resolution of the $k$-th prime factor density unimodality question (YES for $k \\leq 3$, NO for $k \\geq 4$) shows both expected and unexpected behavior can coexist in closely related problems",
     "openQuestions": [
-      "What is the exact growth rate of the number of local maxima?",
-      "For which specific n (if any) is δ₁(n,m) 'almost' unimodal?",
-      "What is the structure of the local maxima locations?",
-      "How do Ford's bounds relate to the oscillation structure?"
+      "What is the exact growth rate of the number of local maxima of δ₁(n,·) up to M — is it comparable to π(M)?",
+      "For which n (if any) does δ₁(n,m) exhibit 'approximate' unimodality in the sense that oscillations become negligible relative to the main trend?",
+      "Can the prime boundary oscillation mechanism be made quantitative enough to predict the exact locations of local maxima?",
+      "What is the analog of Cambie's result for the 'at least k divisors' density δ_k(n,m) with k ≥ 2?"
     ]
   }
 }
