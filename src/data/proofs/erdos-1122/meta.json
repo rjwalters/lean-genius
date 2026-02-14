@@ -21,123 +21,162 @@
     "erdosNumber": 1122,
     "erdosUrl": "https://erdosproblems.com/1122",
     "erdosProblemStatus": "open",
+    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
-        "description": "Definition of prime numbers and basic properties",
+        "description": "Prime numbers and basic properties",
         "module": "Mathlib.Data.Nat.Prime.Basic"
       },
       {
         "theorem": "Nat.gcd",
-        "description": "GCD computation and coprimality for natural numbers",
+        "description": "GCD computation and coprimality",
         "module": "Mathlib.Data.Nat.GCD.Basic"
       },
       {
         "theorem": "Real.log",
-        "description": "Real logarithm and its properties (log_mul, log_le_log)",
+        "description": "Real logarithm with log_mul, log_le_log",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
         "theorem": "Filter.Tendsto",
-        "description": "Filter-based limits for expressing asymptotic convergence",
+        "description": "Filter-based limits for asymptotic convergence",
         "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Nat.primeFactors",
+        "description": "Set of prime factors for omega definition",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
       }
     ],
     "originalContributions": [
-      "log_completely_additive: proved log(ab) = log(a) + log(b) for natural numbers",
-      "empty_defect_means_increasing: proved empty defect set implies monotonicity",
-      "zero_is_logarithmic: proved the zero function has logarithmic form",
-      "logarithmic_is_additive: proved logarithmic functions are additive",
-      "empty_implies_littleO: proved empty defect implies o(X) density",
-      "log_has_empty_defect: proved log has empty defect set",
-      "erdos_1122_summary: consolidated three known positive results"
+      "IsAdditive and IsCompletelyAdditive definitions with coprimality guard",
+      "log_completely_additive: proved via Nat.cast_mul and Real.log_mul",
+      "monotonicityDefectSet, defectCount, defectIsLittleO definitions",
+      "empty_defect_means_increasing: proved by contradiction with Set.mem_empty",
+      "hasLogarithmicForm definition with existential constant c",
+      "zero_is_logarithmic and logarithmic_is_additive proved directly",
+      "erdos_empty_defect and erdos_vanishing_increments axioms (1946 results)",
+      "satisfiesMangerelDensity and hasBoundedPrimeValues definitions",
+      "mangerel_2022 axiom (2022 partial progress)",
+      "erdos1122Conjecture definition and erdos_1122 axiom (OPEN)",
+      "empty_implies_littleO proved via Finset.filter_eq_empty_iff",
+      "conditionHierarchy definition, omega definition and axioms",
+      "erdos_1122_summary combining three positive results via refine"
     ]
   },
   "overview": {
-    "historicalContext": "This problem originates from Erdős's 1946 work on additive functions. An additive function f satisfies f(ab) = f(a) + f(b) when gcd(a,b) = 1. The canonical example is f(n) = c·log(n). Erdős proved that if f is strictly increasing (no defects), or if increments f(n+1) - f(n) → 0, then f must be logarithmic. The conjecture asks whether merely having sparse defects (o(X) of them up to X) suffices. Mangerel made significant progress in 2022, proving the result when defects are O(X/(log X)^{2+c}).",
-    "problemStatement": "Let f: ℕ → ℝ be an additive function (f(ab) = f(a) + f(b) when gcd(a,b) = 1). Define A = {n ≥ 1 : f(n+1) < f(n)} as the monotonicity defect set. If |A ∩ [1,X]| = o(X), must f(n) = c·log(n) for some c ∈ ℝ?",
-    "proofStrategy": "The formalization defines additive functions, the defect set, and little-o density conditions. Known results are axiomatized: Erdős's theorems for empty defects and vanishing increments, and Mangerel's 2022 theorem for stronger density bounds. The main conjecture is stated and axiomatized as open. Several lemmas are proved directly, including that logarithmic functions are additive, empty defects imply monotonicity, and the condition hierarchy between empty/Mangerel/o(X) defects.",
+    "historicalContext": "This problem originates from Erdős's 1946 work on additive functions. An additive function f satisfies f(ab) = f(a) + f(b) when gcd(a,b) = 1. The canonical example is f(n) = c·log(n). Erdős proved that if f is strictly increasing (no defects), or if increments f(n+1) - f(n) → 0, then f must be logarithmic. The conjecture asks whether merely having sparse defects (o(X) of them up to X) suffices. Mangerel made significant progress in 2022, proving the result when defects are O(X/(log X)^{2+c}) with bounded prime values.",
+    "problemStatement": "Let f: ℕ → ℝ be an additive function (f(ab) = f(a) + f(b) when gcd(a,b) = 1). Define A = {n ≥ 1 : f(n+1) < f(n)} as the monotonicity defect set. If |A ∩ [1,X]| = o(X), must f(n) = c·log(n) for some c ∈ ℝ?\n\n**Status: OPEN** — partial progress by Erdős (1946) and Mangerel (2022).",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean file provides a complete framework in 217 lines:\n\n1. **Additive Functions (lines 44-63):** Define `IsAdditive f` (f(ab) = f(a) + f(b) for coprime a,b ≥ 1) and `IsCompletelyAdditive f` (same without coprimality). Prove `log_completely_additive` via `Nat.cast_mul` and `Real.log_mul`. Define `valueDeterminedByPrimes`.\n\n2. **Defect Set (lines 65-91):** Define `monotonicityDefectSet f` = {n ≥ 1 : f(n+1) < f(n)}, `defectCount f X` via `Finset.filter`, `defectIsLittleO f` (ε-N definition), and `hasEmptyDefectSet f`. Prove `empty_defect_means_increasing` by contradiction.\n\n3. **Logarithmic Form (lines 93-111):** Define `hasLogarithmicForm f` (∃ c, f(n) = c·log(n)). Prove `zero_is_logarithmic` (c = 0) and `logarithmic_is_additive` using `Real.log_mul` and `ring`.\n\n4. **Known Results (lines 113-126):** Axiomatize `erdos_empty_defect` and `erdos_vanishing_increments` (using `Filter.Tendsto` and `nhds 0`).\n\n5. **Mangerel's Progress (lines 128-144):** Define `satisfiesMangerelDensity` (X/(log X)^{2+c} bound) and `hasBoundedPrimeValues`. Axiomatize `mangerel_2022`.\n\n6. **Conjecture (lines 146-154):** Define `erdos1122Conjecture` and axiomatize `erdos_1122`.\n\n7. **Hierarchy (lines 156-179):** Prove `empty_implies_littleO` directly. Define `conditionHierarchy`.\n\n8. **Examples (lines 181-199):** Prove `log_has_empty_defect` via `Real.log_le_log`. Define `omega` and axiomatize its additive/non-logarithmic properties.\n\n9. **Summary (lines 201-217):** `erdos_1122_summary` via `refine ⟨?_, ?_, ?_⟩` with `exact` for each component.",
     "keyInsights": [
-      "Additive functions are determined by values on prime powers",
-      "log(n) is the unique (up to scaling) completely additive monotone function",
-      "Empty defect ⊂ Mangerel density ⊂ o(X) defects forms a strict hierarchy",
-      "The gap between Mangerel's result and the conjecture remains open",
-      "Related to Problem #491 on additive functions in short intervals"
+      "**Additive Determined by Primes:** Additive functions are determined by values on prime powers, since any n factors as a product of coprime prime powers. The `valueDeterminedByPrimes` definition captures this via `Nat.primeFactors` and `Nat.factorization`.",
+      "**log is the Unique Monotone Additive:** Erdős proved that the only increasing additive function is c·log. The formalization captures this as `erdos_empty_defect`: empty defect set + additive → logarithmic.",
+      "**Condition Hierarchy:** Empty defect ⊂ Mangerel density ⊂ o(X) density forms a strict chain. The formalization proves `empty_implies_littleO` directly and axiomatizes `mangerel_implies_littleO`.",
+      "**The Gap:** Between Mangerel's O(X/(log X)^{2+c}) and the conjecture's o(X) lies the open problem. The `hasBoundedPrimeValues` condition in Mangerel's theorem is an additional restriction not present in the conjecture.",
+      "**omega as Counterexample:** ω(n) = |{p : p | n}| is additive but not logarithmic, showing additivity alone doesn't force logarithmic form — some monotonicity condition is essential."
     ]
   },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "opens": ["Nat", "Real", "Filter"],
+    "namespace": "Erdos1122",
+    "lineCount": 217,
+    "axiomCount": 7,
+    "theoremCount": 7,
+    "definitionCount": 14
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-491",
+      "relationship": "related-problem",
+      "description": "Erdős #491 concerns additive functions in short intervals, directly related to the monotonicity defect approach. Mangerel's 2022 paper addresses both problems."
+    },
+    {
+      "targetId": "erdos-1052",
+      "relationship": "uses-same-technique",
+      "description": "Both use number-theoretic functions (additive for #1122, divisor sums for #1052) with Finset-based computations and coprimality conditions."
+    }
+  ],
   "sections": [
     {
       "id": "sec-additive",
       "title": "Additive Functions",
       "startLine": 44,
       "endLine": 63,
-      "summary": "Defines additive and completely additive functions, proves log is completely additive"
+      "summary": "Defines `IsAdditive f` (f(ab) = f(a) + f(b) for coprime a,b ≥ 1) and `IsCompletelyAdditive f` (for all a,b ≥ 1). Proves `log_completely_additive` via `Nat.cast_mul` and `Real.log_mul`. Defines `valueDeterminedByPrimes` using `Nat.primeFactors` and `Nat.factorization`."
     },
     {
       "id": "sec-defect-set",
       "title": "Monotonicity Defect Set",
       "startLine": 65,
       "endLine": 91,
-      "summary": "Defines the defect set A, counting functions, and o(X) density condition"
+      "summary": "Defines `monotonicityDefectSet f` = {n ≥ 1 : f(n+1) < f(n)}, `defectCount` via `Finset.filter` on `Finset.range`, `defectIsLittleO` (ε-N formulation), and `hasEmptyDefectSet`. Proves `empty_defect_means_increasing` by contradiction with `Set.mem_empty`."
     },
     {
       "id": "sec-logarithmic",
       "title": "Logarithmic Form",
       "startLine": 93,
       "endLine": 111,
-      "summary": "Characterizes f(n) = c·log(n) and proves properties of logarithmic functions"
+      "summary": "Defines `hasLogarithmicForm f` = ∃ c, f(n) = c·log(n). Proves `zero_is_logarithmic` (use 0, simp) and `logarithmic_is_additive` via `obtain ⟨c, hc⟩`, `Real.log_mul`, and `ring`."
     },
     {
       "id": "sec-erdos-results",
       "title": "Erdős's Known Results",
       "startLine": 113,
       "endLine": 126,
-      "summary": "Axiomatizes Erdős's theorems for empty defects and vanishing increments"
+      "summary": "Axiomatizes `erdos_empty_defect` (1946) and `erdos_vanishing_increments` (Kátai-Wirsing). Defines `incrementsVanish` using `Tendsto (fun n => f(n+1) - f n) atTop (nhds 0)`."
     },
     {
       "id": "sec-mangerel",
       "title": "Mangerel's Progress",
       "startLine": 128,
       "endLine": 144,
-      "summary": "Formalizes the 2022 partial result with density and bounded prime conditions"
+      "summary": "Defines `satisfiesMangerelDensity` (X/(log X)^{2+c} bound with ∃ c > 0, C > 0) and `hasBoundedPrimeValues` (|f(p)| ≤ ε·log(p) eventually). Axiomatizes `mangerel_2022`."
     },
     {
       "id": "sec-conjecture",
       "title": "The Conjecture",
       "startLine": 146,
       "endLine": 154,
-      "summary": "States and axiomatizes the main open conjecture"
+      "summary": "Defines `erdos1122Conjecture : Prop := ∀ f, IsAdditive f → defectIsLittleO f → hasLogarithmicForm f`. Axiomatizes `erdos_1122 : erdos1122Conjecture` as OPEN."
     },
     {
       "id": "sec-hierarchy",
       "title": "Condition Hierarchy",
       "startLine": 156,
       "endLine": 179,
-      "summary": "Proves empty implies o(X) and states the condition hierarchy"
+      "summary": "Proves `empty_implies_littleO` via `Finset.filter_eq_empty_iff` and `Set.not_mem_empty`. Axiomatizes `mangerel_implies_littleO`. Defines `conditionHierarchy` as the conjunction of both implications."
     },
     {
       "id": "sec-examples",
       "title": "Examples",
       "startLine": 181,
       "endLine": 199,
-      "summary": "Concrete examples: log(n) has empty defect, ω(n) is additive but not logarithmic"
+      "summary": "Proves `log_has_empty_defect` via `Real.log_le_log` and `ext`/`simp`. Defines `omega` via `Nat.primeFactors.card`. Axiomatizes `omega_is_additive` and `omega_not_logarithmic`."
     },
     {
       "id": "sec-summary",
       "title": "Summary of Known Results",
       "startLine": 201,
       "endLine": 217,
-      "summary": "Consolidates the three known positive results into one theorem"
+      "summary": "Proves `erdos_1122_summary` as a triple conjunction via `refine ⟨?_, ?_, ?_⟩` with `exact erdos_empty_defect`, `exact erdos_vanishing_increments`, `exact mangerel_2022`."
     }
   ],
   "conclusion": {
-    "summary": "Problem #1122 remains OPEN. Erdős proved f = c·log for empty defect sets and vanishing increments. Mangerel (2022) extended to O(X/(log X)^{2+c}) defects with bounded prime values. The full conjecture for o(X) defects is unresolved.",
-    "implications": "A positive answer would characterize logarithmic functions among additive functions by a weak monotonicity property, connecting multiplicative number theory to real analysis.",
+    "summary": "Problem #1122 remains OPEN. The formalization captures 7 proved theorems (0 sorries), 7 axioms (including the open conjecture), and 14 definitions across 217 lines. Erdős proved f = c·log for empty defect sets and vanishing increments. Mangerel (2022) extended to O(X/(log X)^{2+c}) defects with bounded prime values. The full conjecture for o(X) defects is unresolved.",
+    "implications": "A positive answer would characterize logarithmic functions among additive functions by a weak monotonicity property, establishing that the real logarithm is essentially the only additive function that is 'almost increasing'. This connects multiplicative number theory to real analysis and has implications for the distribution of additive functions.",
     "openQuestions": [
       "Does |A ∩ [1,X]| = o(X) imply f = c·log for all additive f?",
-      "Can Mangerel's density bound be weakened?",
-      "Is the bounded prime values condition necessary?",
-      "What is the relationship to Problem #491?"
+      "Can Mangerel's X/(log X)^{2+c} density bound be weakened toward o(X)?",
+      "Is the bounded prime values condition in Mangerel's theorem necessary?",
+      "What is the relationship between this problem and Erdős #491 on short intervals?"
     ]
   }
 }
