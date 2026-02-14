@@ -4,89 +4,145 @@
   "slug": "erdos-1059",
   "description": "Are there infinitely many primes p such that p - k! is composite for every k with 1 ≤ k! < p? Examples include p = 101 and p = 211. The heuristic suggests most large primes satisfy this property. Status: OPEN.",
   "meta": {
-    "erdosNumber": 1059,
-    "status": "formalized",
+    "author": "Paul Erdős, Richard Guy",
+    "sourceUrl": "https://erdosproblems.com/1059",
+    "date": "2004",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1059Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
       "primes",
       "factorials",
       "composite-numbers",
-      "open"
+      "open-problem"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1059,
+    "erdosUrl": "https://erdosproblems.com/1059",
+    "erdosProblemStatus": "open",
+    "dateAdded": "02/14/26",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate and basic lemmas",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.factorial",
+        "description": "Factorial function with monotonicity and growth lemmas",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Predicate for infinite sets used to state the conjecture",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite set operations for factorial enumeration",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
     ],
     "references": [
-      "Guy [Gu04], Problem A2",
-      "OEIS A064152",
-      "https://erdosproblems.com/1059"
+      {
+        "key": "Gu04",
+        "citation": "Guy, R. K. (2004). Unsolved Problems in Number Theory, 3rd ed. Problem A2. Springer.",
+        "type": "book"
+      },
+      {
+        "key": "OEIS-A064152",
+        "citation": "OEIS A064152: Primes p such that p - k! is composite for all k with 1 <= k! < p.",
+        "type": "database"
+      },
+      {
+        "key": "EP1059",
+        "citation": "Erdős Problems #1059. https://erdosproblems.com/1059",
+        "type": "website"
+      }
     ],
-    "leanFile": "Proofs/Erdos1059Problem.lean",
-    "sorries": 0,
-    "sourceUrl": "https://erdosproblems.com/1059",
-    "erdosUrl": "https://erdosproblems.com/1059"
+    "originalContributions": [
+      "Definition of AllFactorialSubtractionsComposite predicate combining non-primality and >=2 conditions",
+      "Proved factorial_lt_bound: k! < 101 implies k <= 4 via contradiction and factorial monotonicity",
+      "Proved example_101: all factorial subtractions from 101 are composite, using interval_cases",
+      "Proved example_211: all factorial subtractions from 211 are composite",
+      "Proved counterexample_89: 89 fails because 89 - 6 = 83 is prime",
+      "Axiomatized erdos_1059_conjecture: infinite set of primes with all factorial subtractions composite",
+      "Axiomatized factorial_count_bound: existence of l with l! < n <= (l+1)!",
+      "Axiomatized erdos_alternative_approach: infinitely many n in (l!, (l+1)!] with large prime factors and composite subtractions",
+      "Proved primality of 101 and 211 by decide, and two_witnesses packaging both examples"
+    ],
+    "relatedProblems": [
+      "erdos-1058",
+      "erdos-1060"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdos Problem #1059 appears as Problem A2 in Richard Guy's Unsolved Problems in Number Theory (3rd edition, 2004), attributed to Erdos. The problem explores the interplay between primes and the sparse sequence of factorials through subtraction. Factorials grow super-exponentially (faster than any exponential), so only O(log n / log log n) factorials lie below a given n, meaning the condition involves checking very few values. The OEIS sequence A064152 lists primes satisfying the property: 2, 3, 5, 101, 211, 541, 1097, .... Notably, there is a gap between 5 and 101, reflecting the transition from trivially small primes (where few factorials exist) to genuinely interesting examples. The problem connects to broader questions about the distribution of primes near structured sequences and the additive structure of the primes.",
+    "problemStatement": "Are there infinitely many primes p such that p - k! is composite for every k with 1 <= k! < p? Equivalently, for such primes, no factorial subtracted from p yields a prime. The known examples include p = 101 (where 100, 99, 95, 77 are all composite) and p = 211 (where 210, 209, 205, 187, 91 are all composite). The prime p = 89 fails because 89 - 6 = 83 is prime.",
+    "proofStrategy": "The formalization defines AllFactorialSubtractionsComposite as the conjunction of non-primality and >=2 for all factorial subtractions. Concrete examples are verified by first proving factorial_lt_bound (bounding k when k! < n, via contradiction with factorial monotonicity), then using interval_cases to enumerate all relevant k values and decide/omega to check each subtraction. The main conjecture and Erdos's alternative are axiomatized as Set.Infinite statements. Primality of witness primes is established by decide.",
+    "keyInsights": [
+      "Only O(log n / log log n) factorials are below n due to super-exponential growth, so the condition involves checking very few subtractions",
+      "Each n - k! is composite with probability approximately 1 - 1/ln(n), so the probability all subtractions are composite converges to 1 for large n",
+      "The proof technique for examples uses factorial_lt_bound (k! < 101 implies k <= 4) to reduce to finitely many cases, then interval_cases and decide",
+      "Erdos suggested an alternative: find infinitely many n in (l!, (l+1)!] with all prime factors exceeding l and all factorial subtractions composite, which removes the primality requirement on n",
+      "The counterexample p = 89 (89 - 6 = 83 is prime) shows the property is not trivially universal among primes"
+    ]
   },
   "sections": [
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 23,
-      "endLine": 39,
-      "summary": "Define IsFactorial, factorialsLessThan, and AllFactorialSubtractionsComposite — the property that n minus every factorial below n is composite."
+      "startLine": 25,
+      "endLine": 32,
+      "summary": "Defines AllFactorialSubtractionsComposite (n : N) : Prop requiring that for all k with k! < n, both (n - k!) is not prime AND n - k! >= 2. The >= 2 condition excludes 0 and 1, which are technically not prime but also not composite. This is the central predicate of the formalization."
     },
     {
       "id": "concrete-examples",
       "title": "Concrete Examples",
-      "startLine": 41,
-      "endLine": 56,
-      "summary": "p = 101 and p = 211 satisfy the property; p = 89 does not since 89 - 6 = 83 is prime."
+      "startLine": 34,
+      "endLine": 88,
+      "summary": "Proves three concrete results. First, factorial_lt_bound and factorial_lt_bound_211 establish that k! < 101 implies k <= 4 and k! < 211 implies k <= 5, using contradiction with Nat.factorial_le. Then example_101 and example_211 prove AllFactorialSubtractionsComposite for 101 and 211 using interval_cases to enumerate k values and decide/omega for each case. Finally counterexample_89 proves 89 fails the property because 89 - 3! = 83 is prime."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 58,
-      "endLine": 62,
-      "summary": "The open conjecture: infinitely many primes p have all factorial subtractions composite."
+      "startLine": 90,
+      "endLine": 97,
+      "summary": "Axiomatizes erdos_1059_conjecture: the set {p : N | p.Prime and AllFactorialSubtractionsComposite p} is Set.Infinite. This is the core open problem. Using Set.Infinite rather than a direct cardinality statement provides a clean formalization of 'infinitely many.'"
     },
     {
       "id": "structural-observations",
       "title": "Structural Observations",
-      "startLine": 64,
-      "endLine": 79,
-      "summary": "The factorials below n form a finite, small set of size O(log n / log log n), making the condition involve few checks."
+      "startLine": 99,
+      "endLine": 106,
+      "summary": "Axiomatizes factorial_count_bound: for any n >= 2, there exists l with l! < n <= (l+1)!. This captures the structural fact that factorials partition the natural numbers into intervals (l!, (l+1)!], and only l+1 factorials are below n. Since l ~ log n / log log n by Stirling's approximation, the number of factorials to check grows extremely slowly."
     },
     {
       "id": "alternative-approach",
-      "title": "Erdős's Alternative Approach",
-      "startLine": 81,
-      "endLine": 89,
-      "summary": "Erdős suggested a potentially easier variant: find infinitely many n in (l!, (l+1)!] with all prime factors exceeding l and all factorial subtractions composite."
+      "title": "Erdos's Alternative Approach",
+      "startLine": 108,
+      "endLine": 119,
+      "summary": "Axiomatizes erdos_alternative_approach: infinitely many n exist in intervals (l!, (l+1)!] such that all prime factors of n exceed l AND n - k! is composite for all 1 <= k <= l. This weakens the conjecture by dropping the primality requirement on n itself, instead requiring n to have only large prime factors (a smooth-number condition). Erdos suggested this might be more tractable."
     },
     {
-      "id": "probabilistic-heuristic",
-      "title": "Probabilistic Heuristic",
-      "startLine": 91,
-      "endLine": 103,
-      "summary": "Heuristic analysis: each subtraction is prime with probability ~1/ln(N), and there are few factorials to check, so the property should hold for most large primes."
+      "id": "verified-examples",
+      "title": "Verified Examples Summary",
+      "startLine": 121,
+      "endLine": 143,
+      "summary": "Proves prime_101 and prime_211 (both by decide), confirming that the example numbers are indeed prime. Packages everything as two_witnesses: a conjunction asserting both 101 and 211 are prime witnesses for the conjecture. This provides a clean theorem confirming the conjecture holds for at least two nontrivial primes."
     }
   ],
-  "overview": {
-    "historicalContext": "This problem appears as Problem A2 in Guy's collection, attributed to Erdős. It asks about the interaction between primes and factorials through subtraction, connecting prime distribution with the sparse sequence of factorials.",
-    "problemStatement": "Are there infinitely many primes p such that p - k! is composite for every k with 1 ≤ k! < p?",
-    "proofStrategy": "We formalize the factorial-subtraction property, verify concrete examples (101, 211), state the infinitude conjecture, and analyze the structural and probabilistic aspects. Erdős's alternative approach via smooth numbers is also formalized.",
-    "keyInsights": [
-      "Only O(log n / log log n) factorials are below n, so the condition involves few checks",
-      "Each n - k! is composite with high probability (~1 - 1/ln n), making the condition mild",
-      "p = 101 and p = 211 are verified examples; p = 89 fails because 89 - 6 = 83 is prime",
-      "Erdős suggested an alternative: find n in (l!, (l+1)!] with large prime factors and composite subtractions",
-      "The heuristic strongly suggests infinitely many such primes exist"
-    ]
-  },
   "conclusion": {
-    "summary": "Erdős Problem #1059 remains open. The conjecture that infinitely many primes p have all factorial subtractions composite is strongly supported by heuristic arguments and verified examples, but no proof exists.",
-    "implications": "A resolution would illuminate the relationship between prime distribution and factorial arithmetic. Erdős's alternative approach may be more tractable and would provide structural insight into smooth-number gaps.",
+    "summary": "Erdos Problem #1059 is formalized with a clean definition of the factorial-subtraction property, verified examples (101, 211), a counterexample (89), and axiomatized conjectures for both the main problem and Erdos's alternative approach. The proof technique for examples -- bounding k via factorial growth, then exhaustive case analysis with decide -- is effective and reusable for checking additional witnesses.",
+    "implications": "A resolution would illuminate the relationship between the additive structure of primes and the sparse factorial sequence. The heuristic analysis suggests positive density among primes, which if proved would be a strong quantitative result. Erdos's alternative approach via smooth numbers connects to deep questions about smooth numbers in short intervals.",
     "openQuestions": [
-      "What is the density of primes satisfying the factorial-subtraction property?",
-      "Can Erdős's alternative approach (via smooth numbers) be established?",
-      "Is there a prime p > 211 failing the property with a small factorial subtraction being prime?"
+      "What is the density of primes satisfying the factorial-subtraction property among all primes?",
+      "Can Erdos's alternative approach (via smooth numbers in factorial intervals) be established?",
+      "Is there a pattern to which primes fail the property, beyond the observation that small factorials are the typical obstruction?",
+      "Can the property be extended: for which other super-exponentially growing sequences a_k does p - a_k composite for all a_k < p hold for infinitely many primes?"
     ]
   }
 }
