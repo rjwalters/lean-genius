@@ -50,97 +50,99 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #994 (Khintchine's Equidistribution Conjecture)**\n\n**Origin:**\nKhintchine (1923) conjectured that for almost all real α, the sequence {kα} (fractional parts) is equidistributed in EVERY measurable set E ⊆ (0,1).\n\n**Weyl's Theorem (True):**\nFor any FIXED measurable E, for almost all α, equidistribution holds. The exceptional set depends on E.\n\n**Khintchine's Conjecture (False):**\nCan the exceptional set be made independent of E? That is: for almost all α, does equidistribution hold for ALL E simultaneously?\n\n**Marstrand's Disproof (1970):**\nNo! The quantifier exchange fails. For any α, one can construct a 'bad' set E where equidistribution fails.",
-    "problemStatement": "**Problem Statement (Disproved)**\n\nLet E ⊆ (0,1) be measurable with Lebesgue measure λ(E). Is it true that for almost all α:\n\n  lim_{n→∞} (1/n) ∑_{k=1}^n 1_{kα ∈ E} = λ(E)\n\nfor ALL measurable E?\n\n**Answer: NO** (Marstrand 1970)\n\nThe conjecture is FALSE. The quantifiers ∀E and ∀ᵐα cannot be exchanged.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Fractional Parts:** frac, fracSequence for {kα}\n\n2. **Counting:** countInE, empiricalFrequency\n\n3. **Equidistribution:** IsEquidistributed as limit definition\n\n4. **Weyl's Theorem:** weyl_theorem, WeylStatement (true)\n\n5. **Khintchine:** KhintchineConjecture (false)\n\n6. **Quantifier Difference:** WeylOrder (∀E ∀ᵐα) vs KhintchineOrder (∀ᵐα ∀E)\n\n7. **Disproof:** marstrand_disproof, marstrand_construction\n\n8. **Bad Sets:** bad_set_exists — E depends on α",
+    "historicalContext": "**Erdős Problem #994** concerns a conjecture of Aleksandr Khintchine from 1923, disproved by John Marstrand in 1970, about the equidistribution of fractional parts $\\{k\\alpha\\}$ in measurable subsets of $(0,1)$.\n\n**Khintchine's Original Work (1923):**\nAleksandr Yakovlevich Khintchine (1894–1959) was a Soviet mathematician who made foundational contributions to number theory, probability theory, and ergodic theory. In his 1923 paper 'Ein Satz über Kettenbrüche, mit arithmetischen Anwendungen' (A theorem on continued fractions, with arithmetic applications), he conjectured that for almost all real $\\alpha$, the sequence $\\{k\\alpha\\}_{k=1}^{\\infty}$ is equidistributed in every measurable subset $E \\subseteq (0,1)$ simultaneously. This was a natural strengthening of Hermann Weyl's celebrated equidistribution theorem (1916).\n\n**Weyl's Theorem (1916):**\nHermann Weyl proved that for any irrational $\\alpha$, the sequence $\\{k\\alpha\\}$ is equidistributed modulo 1 in the sense that $\\frac{1}{n}|\\{k \\leq n : \\{k\\alpha\\} \\in (a,b)\\}| \\to b - a$ for any interval $(a,b) \\subseteq (0,1)$. More generally, for any fixed measurable $E$, equidistribution holds for almost all $\\alpha$—but the exceptional null set depends on $E$.\n\n**Marstrand's Disproof (1970):**\nJohn Martin Marstrand (1928–2015), a British mathematician known for his work in geometric measure theory (including Marstrand's projection theorem), showed that Khintchine's conjecture is false. For any irrational $\\alpha$, one can construct a measurable set $E_\\alpha$ tailored to the continued fraction expansion of $\\alpha$ such that the sequence $\\{k\\alpha\\}$ fails to equidistribute in $E_\\alpha$. The key insight is that while each individual null set $N_E$ of exceptional $\\alpha$ has measure zero, the uncountable union $\\bigcup_E N_E$ over all measurable $E$ need not have measure zero.\n\n**The Quantifier Exchange:**\nThe heart of the problem is a quantifier exchange: Weyl's theorem gives $\\forall E,\\; \\forall^{\\text{a.e.}} \\alpha$, while Khintchine conjectured $\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$. Marstrand showed these are genuinely different—the exceptional null set cannot be made independent of $E$.",
+    "problemStatement": "**Problem Statement (Disproved)**\n\nLet $E \\subseteq (0,1)$ be measurable with Lebesgue measure $\\lambda(E)$. Is it true that for almost all $\\alpha$:\n\n$$\\lim_{n \\to \\infty} \\frac{1}{n} \\sum_{k=1}^{n} \\mathbf{1}_{\\{k\\alpha\\} \\in E} = \\lambda(E)$$\n\nfor ALL measurable $E$ simultaneously?\n\n**Answer: NO** (Marstrand 1970)\n\nThe conjecture is FALSE. The quantifiers $\\forall E$ and $\\forall^{\\text{a.e.}} \\alpha$ cannot be exchanged. For every irrational $\\alpha$, there exists a measurable $E_\\alpha$ where equidistribution fails.",
+    "proofStrategy": "**Formalization Approach**\n\nThe Lean formalization carefully distinguishes between what is true and what is false:\n\n1. **Fractional Parts** (lines 44–56):\n   - `frac x = x - ⌊x⌋`: the fractional part, with proved bounds $0 \\leq \\{x\\} < 1$\n   - `fracSequence α k = \\{k\\alpha\\}`: the sequence studied by Weyl and Khintchine\n\n2. **Empirical Frequency** (lines 66–76):\n   - `countInE α E n`: counts $|\\{k \\leq n : \\{k\\alpha\\} \\in E\\}|$ using `Finset.filter`\n   - `empiricalFrequency α E n = \\text{countInE}(\\alpha, E, n) / n$\n   - `IsEquidistributed α E μ`: defined as `Tendsto` of empirical frequency to $\\mu$\n\n3. **Weyl's Theorem** (lines 82–96):\n   - Axiomatized: for fixed measurable $E \\subseteq (0,1)$, $\\forall^{\\text{a.e.}} \\alpha$, equidistribution holds\n   - `WeylStatement`: the proposition $\\forall E,\\; \\forall^{\\text{a.e.}} \\alpha$\n   - `weyl_is_true`: proved by applying the axiom\n\n4. **Khintchine's Conjecture** (lines 102–113):\n   - `KhintchineConjecture`: $\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$\n   - `KhintchineConjecture'`: equivalent formulation with explicit null set\n\n5. **Quantifier Analysis** (lines 123–132):\n   - `WeylOrder` vs `KhintchineOrder`: makes the quantifier difference explicit\n   - `quantifier_exchange_fails`: axiomatizes that the exchange is invalid\n\n6. **Marstrand's Disproof** (lines 138–152):\n   - `marstrand_disproof`: $\\neg$`KhintchineConjecture`\n   - `marstrand_construction`: existential witness\n   - `bad_set_exists`: for any irrational $\\alpha$, a bad $E$ can be constructed\n\n7. **Summary Theorems** (lines 209–220):\n   - `erdos_994`: the main result, proved from `marstrand_disproof`\n   - `weyl_vs_khintchine`: combines both directions",
     "keyInsights": [
-      "**Quantifier Exchange:** ∀E ∀ᵐα ≠ ∀ᵐα ∀E",
-      "**Weyl True:** For fixed E, a.e. α works (exceptional set depends on E)",
-      "**Khintchine False:** No universal exceptional set for all E",
-      "**Marstrand:** Constructs bad E for any given α",
-      "**Intervals Work:** Equidistribution always holds for intervals"
+      "**The Quantifier Trap:** Weyl gives $\\forall E,\\; \\forall^{\\text{a.e.}} \\alpha$ (equidistribution), while Khintchine conjectured $\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$. These look similar but are genuinely different—the null set of exceptional $\\alpha$ depends on $E$ and cannot be uniformized",
+      "**Uncountable Union Failure:** Each measurable $E$ produces a null set $N_E$ of 'bad' $\\alpha$. While each $N_E$ has measure zero, the union $\\bigcup_E N_E$ over the uncountably many measurable $E$ can have positive measure—or even be all of $\\mathbb{R}$. This is why countable additivity of measure does not help",
+      "**Continued Fraction Engineering:** Marstrand's construction exploits the continued fraction expansion $\\alpha = [a_0; a_1, a_2, \\ldots]$. By choosing $E$ to 'track' the specific convergents of $\\alpha$, one can make $\\{k\\alpha\\}$ systematically avoid $E$, breaking equidistribution",
+      "**Intervals vs. General Sets:** Weyl's original theorem shows equidistribution in intervals for ALL irrational $\\alpha$—no exceptional set at all. The failure only occurs for general measurable sets, highlighting how much harder the geometry of arbitrary sets is compared to intervals",
+      "**Discrepancy Theory Connection:** The failure of Khintchine's conjecture is intimately related to discrepancy theory: the discrepancy $D_n(\\alpha, E) = |\\frac{1}{n}\\sum \\mathbf{1}_{\\{k\\alpha\\} \\in E} - \\lambda(E)|$ may not tend to zero for specially constructed $E$",
+      "**A Template for Quantifier Failure:** This problem serves as a canonical example in analysis of why $\\forall x\\; \\forall^{\\text{a.e.}} y\\; P(x,y)$ does not imply $\\forall^{\\text{a.e.}} y\\; \\forall x\\; P(x,y)$, even when $P$ is 'nice' (equidistribution)"
     ]
   },
   "sections": [
     {
-      "id": "erd-s-problem-994-khintchine-s",
-      "title": "Erdős Problem #994: Khintchine's Equidistribution Conjecture",
+      "id": "header-and-imports",
+      "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 39,
-      "summary": "Erdős Problem #994: Khintchine's Equidistribution Conjecture"
+      "endLine": 38,
+      "summary": "Module docstring stating the problem, its status (DISPROVED by Marstrand 1970), and key references. Imports `Mathlib.Data.Real.Basic`, `MeasureTheory.Measure.Lebesgue.Basic`, `Order.Filter.Basic`, and `Topology.Basic`."
     },
     {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
+      "title": "Fractional Parts and Indicator",
       "startLine": 40,
-      "endLine": 61,
-      "summary": "Basic Definitions"
+      "endLine": 60,
+      "summary": "Defines `frac x = x - ⌊x⌋` with proved bounds $0 \\leq \\{x\\} < 1$ (via `Int.floor_le` and `Int.sub_one_lt_floor`). Defines `fracSequence α k = \\{k\\alpha\\}$ and the indicator function for set membership."
     },
     {
-      "id": "counting-hits-in-e",
-      "title": "Counting Hits in E",
+      "id": "counting-hits",
+      "title": "Counting Hits and Empirical Frequency",
       "startLine": 62,
-      "endLine": 77,
-      "summary": "Counting Hits in E"
+      "endLine": 76,
+      "summary": "Defines `countInE α E n` using `Finset.filter` to count $|\\{k \\leq n : \\{k\\alpha\\} \\in E\\}|$. Defines `empiricalFrequency` as this count divided by $n$, and `IsEquidistributed α E μ` as the `Tendsto` limit condition."
     },
     {
-      "id": "weyl-s-theorem-what-is-true",
+      "id": "weyl-theorem",
       "title": "Weyl's Theorem (What IS True)",
       "startLine": 78,
-      "endLine": 97,
-      "summary": "Weyl's Theorem (What IS True)"
+      "endLine": 96,
+      "summary": "Axiomatizes Weyl's equidistribution theorem: for fixed measurable $E \\subseteq (0,1)$, $\\forall^{\\text{a.e.}} \\alpha$, the empirical frequency converges to $\\lambda(E)$. Defines `WeylStatement` and proves `weyl_is_true` from the axiom."
     },
     {
-      "id": "khintchine-s-conjecture-what-w",
+      "id": "khintchine-conjecture",
       "title": "Khintchine's Conjecture (What Was Conjectured)",
       "startLine": 98,
-      "endLine": 114,
-      "summary": "Khintchine's Conjecture (What Was Conjectured)"
+      "endLine": 113,
+      "summary": "Defines `KhintchineConjecture` as $\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$ (the quantifier-exchanged version of Weyl). Provides an equivalent formulation `KhintchineConjecture'` with an explicit null set $S$ of measure zero."
     },
     {
-      "id": "the-key-difference",
-      "title": "The Key Difference",
+      "id": "key-difference",
+      "title": "The Key Quantifier Difference",
       "startLine": 115,
-      "endLine": 133,
-      "summary": "The Key Difference"
+      "endLine": 132,
+      "summary": "Defines `WeylOrder` ($\\forall E,\\; \\forall^{\\text{a.e.}} \\alpha$) and `KhintchineOrder` ($\\forall^{\\text{a.e.}} \\alpha,\\; \\forall E$) side by side. Axiomatizes `quantifier_exchange_fails`: Weyl being true does NOT imply Khintchine is true."
     },
     {
-      "id": "marstrand-s-disproof",
+      "id": "marstrand-disproof",
       "title": "Marstrand's Disproof",
       "startLine": 134,
-      "endLine": 153,
-      "summary": "Marstrand's Disproof"
+      "endLine": 152,
+      "summary": "Axiomatizes `marstrand_disproof` ($\\neg$`KhintchineConjecture`), `marstrand_construction` (existential witness of $\\alpha$ and $E$), and `bad_set_exists` (for any irrational $\\alpha$, a measurable $E$ can be constructed where equidistribution fails)."
     },
     {
       "id": "what-goes-wrong",
-      "title": "What Goes Wrong",
+      "title": "Analysis of Failure Mechanism",
       "startLine": 154,
       "endLine": 170,
-      "summary": "What Goes Wrong"
+      "summary": "Defines placeholder propositions `exceptionalSetIssue` (the uncountable union of null sets problem) and `avoidanceConstruction` (Marstrand's continued-fraction-based construction of bad sets). Currently `True` placeholders documenting the ideas."
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 171,
       "endLine": 191,
-      "summary": "Related Results"
+      "summary": "Axiomatizes `weyl_equidistribution`: for irrational $\\alpha$, equidistribution holds in all intervals $(a,b)$ with limit $b - a$. Defines placeholders for the interval-vs-general-set distinction and the discrepancy issue."
     },
     {
-      "id": "summary",
-      "title": "Summary",
+      "id": "summary-theorems",
+      "title": "Summary Theorems",
       "startLine": 192,
       "endLine": 222,
-      "summary": "Summary"
+      "summary": "Proves `erdos_994 : ¬KhintchineConjecture` from `marstrand_disproof`, `erdos_994_disproof` pairing the negative result with `weyl_is_true`, and `weyl_vs_khintchine` combining both directions into a single conjunction."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #994 asks whether Khintchine's equidistribution conjecture is true: for a.e. α, does {kα} equidistribute in ALL measurable E? Marstrand (1970) showed this is FALSE. While Weyl's theorem says for any fixed E, a.e. α works, you cannot exchange quantifiers to get a single exceptional set for all E.",
-    "implications": "**Connections**\n\n1. **Weyl's Theorem:** The true statement — equidistribution for fixed sets\n\n2. **Discrepancy Theory:** Measures deviation from equidistribution\n\n3. **Continued Fractions:** Marstrand's construction uses CF expansion of α\n\n4. **Measure Theory:** Uncountably many E causes the failure",
+    "summary": "This formalization captures Erdős Problem #994 by carefully formalizing both what is true (Weyl's equidistribution theorem) and what is false (Khintchine's conjecture), making the quantifier difference explicit. The core definitions (`frac`, `fracSequence`, `empiricalFrequency`, `IsEquidistributed`) are fully formalized with two proved properties of the fractional part. Weyl's theorem and Marstrand's disproof are axiomatized. The summary theorems combine both results, and `bad_set_exists` captures the universal nature of the counterexample.",
+    "implications": "**Connections and Implications**\n\n1. **Ergodic Theory:** The failure of Khintchine's conjecture reflects a fundamental limitation of pointwise ergodic theorems—the irrational rotation $x \\mapsto x + \\alpha$ is ergodic, but equidistribution in all measurable sets simultaneously is a strictly stronger condition than ergodicity\n\n2. **Continued Fractions and Diophantine Approximation:** Marstrand's construction depends on the Diophantine properties of $\\alpha$ encoded in its continued fraction expansion, connecting this problem to the metric theory of continued fractions\n\n3. **Discrepancy Theory:** The failure of equidistribution for some $E$ means the sequence $\\{k\\alpha\\}$ has unbounded discrepancy with respect to certain test sets, linking to the broader theory of uniform distribution modulo 1\n\n4. **Measure-Theoretic Subtleties:** This is a canonical example of why $\\forall x\\; \\forall^{\\text{a.e.}} y$ does not imply $\\forall^{\\text{a.e.}} y\\; \\forall x$—the uncountable union of null sets need not be null\n\n5. **Fourier Analysis:** Weyl's criterion connects equidistribution to the decay of exponential sums $\\sum e^{2\\pi i k \\alpha}$, placing this problem at the intersection of harmonic analysis and number theory",
     "openQuestions": [
-      "What restrictions on E make Khintchine-type statements true?",
-      "What is the 'size' of the set of α for which a given E fails?",
-      "How does discrepancy depend on the structure of E?",
-      "What about higher-dimensional analogues?"
+      "For which classes of measurable sets $E$ does a Khintchine-type statement hold? The problem is trivially true for intervals and finite unions of intervals—where exactly is the boundary?",
+      "Can the 'bad set' $E_\\alpha$ in Marstrand's construction be taken to have any prescribed measure $\\lambda(E) \\in (0,1)$?",
+      "What is the Hausdorff dimension of the set of $\\alpha$ for which a given $E$ fails equidistribution?",
+      "Is there a quantitative version: for Marstrand's bad set, how far from $\\lambda(E)$ can the empirical frequency stay?",
+      "Does the higher-dimensional analogue hold: for $(\\alpha_1, \\ldots, \\alpha_d)$ and sets $E \\subseteq [0,1)^d$, does a Khintchine-type statement fail in the same way?"
     ]
   }
 }
