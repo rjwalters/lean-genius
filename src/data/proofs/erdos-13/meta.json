@@ -22,11 +22,10 @@
     "erdosUrl": "https://erdosproblems.com/13",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$100",
-    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
         "theorem": "Finset",
-        "description": "Finite sets",
+        "description": "Finite sets with decidable membership",
         "module": "Mathlib.Data.Finset.Basic"
       },
       {
@@ -35,89 +34,131 @@
         "module": "Mathlib.Data.Finset.Card"
       },
       {
-        "theorem": "Nat.div",
-        "description": "Natural number division",
-        "module": "Mathlib.Data.Nat.Basic"
+        "theorem": "Finset.range",
+        "description": "Finite set {0, 1, ..., n-1}",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filter a finite set by a decidable predicate",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Fin.sum_univ_two",
+        "description": "Sum over Fin 2 equals sum of two terms",
+        "module": "Mathlib.Logic.Fin.Basic"
+      }
+    ],
+    "references": [
+      {
+        "title": "Solution to Erdős Problem #13",
+        "author": "Benjamin Bedert",
+        "year": 2023,
+        "url": "https://erdosproblems.com/13"
+      },
+      {
+        "title": "Erdős Problems",
+        "author": "Thomas Bloom",
+        "url": "https://erdosproblems.com/13"
+      },
+      {
+        "title": "Unsolved Problems in Number Theory",
+        "author": "Richard K. Guy",
+        "venue": "Springer, 3rd edition",
+        "year": 2004
       }
     ],
     "originalContributions": [
-      "Formalization of divisibility-free set condition",
-      "Upper third construction and optimality proof",
-      "Axiomatization of Bedert's theorem",
-      "Generalization to r-sum version",
-      "Connection to sum-free sets"
-    ]
+      "IsBadTriple: definition of forbidden divisibility triples",
+      "DivisibilityFree: predicate for sets without bad triples",
+      "divisibilityFree_iff: proved equivalence of two formulations",
+      "upperThird: construction of the optimal (2N/3, N] set",
+      "upperThird_divisibilityFree: axiom that upper third is divisibility-free",
+      "upperThird_card: axiom giving exact cardinality",
+      "upperThird_achieves_bound: axiom that upper third achieves N/3",
+      "bedert_theorem: axiom stating Bedert's N/3 + O(1) bound",
+      "upperThird_optimal: axiom that upper third is essentially optimal",
+      "RDivisibilityFree: generalization to r-element sums",
+      "rDivisibilityFree_two: proved r=2 recovers original condition",
+      "ErdosRSumConjecture: formal statement of the r-sum conjecture",
+      "erdos_rsum_two: proved r=2 case equals Bedert's theorem",
+      "mem_upperThird_iff: proved membership characterization",
+      "SumFree: definition of sum-free sets",
+      "upperThird_sumFree: axiom that upper third is sum-free"
+    ],
+    "dateAdded": "12/29/25"
   },
   "overview": {
-    "historicalContext": "This problem explores the interaction between divisibility and additive structure. A set A ⊆ {1,...,N} is 'divisibility-free' if no element divides the sum of two larger elements.\n\nErdős and Sárközy observed that the interval (2N/3, N] satisfies this condition and has size approximately N/3. They conjectured this is optimal.\n\nBedert (2023) proved the conjecture, earning the $100 prize. The proof shows |A| ≤ N/3 + O(1) for any divisibility-free set.",
-    "problemStatement": "**Problem (Erdős-Sárközy):** Let A ⊆ {1,...,N} such that there are no a,b,c ∈ A with a | (b+c) and a < min(b,c). Is |A| ≤ N/3 + O(1)?\n\n**Answer (Bedert 2023):** YES.\n\n**Optimal construction:** The interval (2N/3, N] achieves size N/3 and is divisibility-free.\n\n**Prize:** $100 (claimed by Bedert)",
-    "proofStrategy": "The formalization defines:\n\n1. `IsBadTriple a b c`: a | (b+c) and a < min(b,c)\n2. `DivisibilityFree A`: A contains no bad triples\n3. `upperThird N`: the interval (2N/3, N] ∩ ℕ\n\nWe axiomatize:\n- Bedert's theorem: |A| ≤ N/3 + O(1)\n- Upper third is divisibility-free\n- Upper third achieves the bound\n- Generalization to r-sums",
+    "historicalContext": "Erdős and Sárközy studied sets A ⊆ {1,...,N} avoiding the divisibility relation a | (b+c) with a < min(b,c). They observed that the interval (2N/3, N] ∩ ℕ is divisibility-free and has size approximately N/3, and conjectured this is optimal: every divisibility-free set has |A| ≤ N/3 + O(1).\n\nThe problem sat open for decades until Benjamin Bedert solved it in 2023, earning Erdős's $100 prize. Bedert's proof confirmed the tight bound, showing the upper third construction cannot be significantly improved. The solution required careful analysis of divisibility constraints and additive structure.\n\nThe problem connects to several areas: sum-free sets (the upper third is also sum-free since a + b > 4N/3 > N ≥ c), extremal combinatorics, and the theory of restricted arithmetic structures. The natural generalization to r-element sums — asking whether |A| ≤ N/(r+1) + O(1) when no a divides b₁ + ··· + bᵣ with a < min(bᵢ) — remains open for r ≥ 3.",
+    "problemStatement": "**Problem (Erdős-Sárközy):** Let A ⊆ {1,...,N} such that there are no a,b,c ∈ A with a | (b+c) and a < min(b,c). Is |A| ≤ N/3 + O(1)?\n\n**Answer (Bedert 2023):** YES. The upper third (2N/3, N] is the optimal construction.",
+    "proofStrategy": "We define IsBadTriple and DivisibilityFree, construct the optimal set upperThird(N), and axiomatize Bedert's theorem. Key proved results include: the equivalence of two divisibility-free formulations, a membership characterization for upperThird, and the reduction of the r=2 case of the general conjecture to Bedert's theorem. The r-sum generalization is formalized with RDivisibilityFree and ErdosRSumConjecture.",
     "keyInsights": [
-      "**The upper third is optimal:** Elements in (2N/3, N] cannot form bad triples because if a < b,c and a | (b+c), then b+c ≥ 2a. But in the upper third, b+c > 4N/3 while 2a < 2N, limiting possibilities.",
-      "**Connection to sum-free sets:** The upper third is ALSO sum-free (a + b ≠ c for all a,b,c). This is because a + b > 4N/3 > N ≥ c.",
-      "**The r-sum generalization:** For no a | (b₁+...+bᵣ) with a < min(bᵢ), conjecture |A| ≤ N/(r+1) + O(1). The r=2 case is Bedert's theorem.",
-      "**Why N/3?** Intuitively, elements from all three residue classes mod 3 tend to create bad triples. The upper third essentially uses elements from one 'region'.",
-      "**Bedert's breakthrough:** The proof required careful analysis of divisibility constraints and achieved the tight bound with only O(1) error."
+      "The upper third (2N/3, N] is optimal: elements a,b,c with a < b,c satisfy b + c > 4N/3 while 2a < 2N, preventing a | (b+c)",
+      "The same construction is also sum-free: a + b > 4N/3 > N ≥ c forces a + b ≠ c",
+      "The r-sum generalization to N/(r+1) remains open for r ≥ 3; the upper fraction r/(r+1) is the candidate",
+      "Bedert's 2023 solution earned the $100 Erdős prize",
+      "The key proof technique: r=2 case of the r-sum conjecture reduces directly to Bedert's theorem"
     ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "summary": "Bad triples and divisibility-free sets",
+      "summary": "Defines IsBadTriple (a | (b+c) with a < min(b,c)), DivisibilityFree (no bad triples), and proves their equivalence.",
       "startLine": 46,
       "endLine": 67
     },
     {
       "id": "upper-third",
       "title": "The Upper Third Construction",
-      "summary": "The optimal divisibility-free set",
+      "summary": "Defines upperThird(N) = {k : 2N < 3k, k ≤ N}, axiomatizes it is divisibility-free and has cardinality N - 2N/3.",
       "startLine": 69,
       "endLine": 100
     },
     {
       "id": "bedert",
       "title": "Bedert's Theorem (2023)",
-      "summary": "|A| ≤ N/3 + O(1) is optimal",
+      "summary": "Axiomatizes the main result: |A| ≤ N/3 + C for divisibility-free A ⊆ {1,...,N}, and the optimality of the upper third.",
       "startLine": 102,
       "endLine": 126
     },
     {
       "id": "generalization",
       "title": "The r-Sum Generalization",
-      "summary": "Extension to r-element sums",
+      "summary": "Defines RDivisibilityFree for r-element sums, proves r=2 recovers original, defines upperFraction and ErdosRSumConjecture, proves r=2 case is Bedert.",
       "startLine": 128,
       "endLine": 179
     },
     {
       "id": "intuition",
       "title": "Why N/3?",
-      "summary": "Intuition for the bound",
+      "summary": "Intuition via residue classes mod 3 and membership characterization mem_upperThird_iff (proved).",
       "startLine": 181,
       "endLine": 204
     },
     {
       "id": "sum-free",
       "title": "Connection to Sum-Free Sets",
-      "summary": "The upper third is also sum-free",
+      "summary": "Defines SumFree and axiomatizes that the upper third is also sum-free: a + b > 4N/3 > N ≥ c.",
       "startLine": 206,
       "endLine": 226
     },
     {
       "id": "summary",
       "title": "Problem Status",
-      "summary": "SOLVED - Bedert 2023",
+      "summary": "Summary: SOLVED by Bedert (2023). Upper third is divisibility-free, sum-free, and optimal. The r-sum conjecture for r ≥ 3 remains open.",
       "startLine": 228,
       "endLine": 251
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #13, asking whether divisibility-free sets A ⊆ {1,...,N} satisfy |A| ≤ N/3 + O(1). Bedert (2023) proved this affirmatively. The upper third (2N/3, N] is both divisibility-free and sum-free, achieving the optimal bound.",
-    "implications": "This problem connects several areas:\n\n1. **Number theory:** Divisibility constraints on sets\n2. **Additive combinatorics:** Sum-free sets and their variants\n3. **Extremal combinatorics:** Maximum size of constrained sets\n4. **The r-sum conjecture:** Open generalization for r ≥ 3",
+    "summary": "We formalize Erdős Problem #13, asking whether divisibility-free sets A ⊆ {1,...,N} satisfy |A| ≤ N/3 + O(1). Bedert (2023) proved this affirmatively, earning the $100 prize. The upper third (2N/3, N] is simultaneously divisibility-free, sum-free, and optimal up to O(1).",
+    "implications": "Bedert's solution closes one of Erdős's combinatorial number theory problems. The formalization includes the natural r-sum generalization, connecting to extremal combinatorics and sum-free set theory. The r ≥ 3 case remains an active open problem.",
     "openQuestions": [
       "Is |A| ≤ N/(r+1) + O(1) for the r-sum version when r ≥ 3?",
-      "What is the exact constant in the O(1) term for Bedert's bound?",
-      "Are there other optimal constructions besides the upper third?"
+      "What is the exact constant in the O(1) term of Bedert's bound?",
+      "Are there other optimal constructions besides the upper third?",
+      "What is the relationship to Erdős Problem #12 (infinite version)?"
     ]
   }
 }
