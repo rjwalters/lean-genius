@@ -8,6 +8,7 @@
     "sourceUrl": "https://erdosproblems.com/287",
     "date": "1932",
     "status": "complete",
+    "leanFile": "Proofs/Erdos287Problem.lean",
     "proofRepoPath": "Proofs/Erdos287Problem.lean",
     "tags": [
       "erdos",
@@ -38,6 +39,13 @@
         "theorem": "List.sort",
         "description": "Sorting lists",
         "module": "Mathlib.Data.List.Sort"
+      }
+    ],
+    "crossReferences": [
+      {
+        "target": "erdos-268",
+        "relationship": "related",
+        "description": "Both problems involve harmonic/unit fraction sums and connections to Egyptian fractions"
       }
     ],
     "originalContributions": [

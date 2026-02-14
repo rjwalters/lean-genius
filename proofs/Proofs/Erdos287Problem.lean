@@ -1,4 +1,4 @@
-/-
+/-!
 Erdős Problem #287: Unit Fraction Decomposition Gaps
 
 Source: https://erdosproblems.com/287
@@ -22,7 +22,7 @@ import Mathlib.Data.List.Basic
 
 namespace Erdos287
 
-/-
+/-!
 ## Part I: Definitions
 -/
 
@@ -40,7 +40,7 @@ def IsUnitFractionDecomp (ns : List ℕ) : Prop :=
 def maxGap (ns : List ℕ) : ℕ :=
   (ns.zip ns.tail).foldl (fun acc p => max acc (p.2 - p.1)) 0
 
-/-
+/-!
 ## Part II: The Example
 -/
 
@@ -48,7 +48,7 @@ def maxGap (ns : List ℕ) : ℕ :=
 axiom example_2_3_6 :
     IsUnitFractionDecomp [2, 3, 6] ∧ maxGap [2, 3, 6] = 3
 
-/-
+/-!
 ## Part III: Known Lower Bound
 -/
 
@@ -61,7 +61,7 @@ n, n+1, ..., n+k for any n, k.
 axiom no_consecutive_reciprocals :
     ∀ ns : List ℕ, IsUnitFractionDecomp ns → maxGap ns ≥ 2
 
-/-
+/-!
 ## Part IV: The Conjecture
 -/
 
@@ -73,7 +73,7 @@ If true, the example [2, 3, 6] would be optimal (max gap = 3).
 axiom erdos_287_conjecture :
     ∀ ns : List ℕ, IsUnitFractionDecomp ns → maxGap ns ≥ 3
 
-/-
+/-!
 ## Part V: Main Theorem
 -/
 
