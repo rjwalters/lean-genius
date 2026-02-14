@@ -50,18 +50,50 @@
       "Formalized p-adic analysis framework including Legendre's formula and factorial valuation",
       "Proved case analysis for p = 3 and p = 5 from the Yu-Liu characterization",
       "Formalized the Erdős-Graham perfect-power generalization"
+    ],
+    "crossReferences": [
+      {
+        "targetProofId": "wilsons-theorem",
+        "relationship": "uses",
+        "description": "Wilson's theorem (p-1)! ≡ -1 (mod p) provides the key modular constraint on the factorial term, enabling the divisibility argument that p divides the sum"
+      },
+      {
+        "targetProofId": "kummer-theorem",
+        "relationship": "uses-same-technique",
+        "description": "Kummer's theorem on p-adic valuations of binomial coefficients — the same p-adic machinery (Legendre's formula) used to analyze v_p((p-1)!)"
+      },
+      {
+        "targetProofId": "erdos-404",
+        "relationship": "related",
+        "description": "Neighboring Erdős problem on factorial divisibility properties — shares the factorial arithmetic and p-adic analysis framework"
+      },
+      {
+        "targetProofId": "erdos-407",
+        "relationship": "related",
+        "description": "Erdős problem on exponential Diophantine equations — same family of problems combining growth-rate arguments with Baker's method"
+      },
+      {
+        "targetProofId": "erdos-400",
+        "relationship": "related",
+        "description": "Erdős problem involving prime power representations — connected through the study of when arithmetic expressions equal prime powers"
+      },
+      {
+        "targetProofId": "pell-equation",
+        "relationship": "uses-same-technique",
+        "description": "Pell equations arise in the case analysis for p = 3: the equation 2 + a² = 3^k reduces to a Pellian recurrence for the solutions"
+      }
     ]
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed this problem, noting that $(p-1)! + a^{p-1}$ is rarely a perfect power (though $6! + 2^6 = 28^2$ is one example). Brindza and Erdős (1991) proved finiteness using Baker's theory of linear forms in logarithms, giving effective but large bounds. Yu and Liu (1996) achieved a complete resolution by refining these bounds and performing exhaustive case analysis, finding exactly three solutions.",
+    "historicalContext": "Erdős and Graham posed this problem in the 1970s, observing that $(p-1)! + a^{p-1}$ is rarely a perfect power of $p$. The factorial grows super-exponentially while $p^k$ grows only exponentially, so solutions should be sparse.\n\nBrindza and Erdős (1991) proved finiteness using Baker's theory of linear forms in logarithms. Baker's method (1966) gives effective bounds for Diophantine equations involving exponentials: if $\\Lambda = b_1 \\log \\alpha_1 + \\cdots + b_n \\log \\alpha_n \\neq 0$, then $|\\Lambda| > B^{-C}$ for an explicit $C$ depending on the $\\alpha_i$. Applied to $(p-1)! + a^{p-1} = p^k$, this yields an effective (though astronomically large) bound on all solution parameters.\n\nYu and Liu (1996) achieved a complete resolution by refining these bounds through careful $p$-adic analysis and exhaustive case checking for small primes. Their strategy: (1) show $p \\geq 7$ is impossible via factorial growth, (2) for $p = 3$, solve $2 + a^2 = 3^k$ (a generalized Ramanujan-Nagell equation), (3) for $p = 5$, solve $24 + a^4 = 5^k$ by $p$-adic methods.\n\nThe problem connects to Brocard's problem ($n! + 1 = m^2$, still open for $n > 7$) and Catalan's conjecture (proved by Mihailescu 2002: the only consecutive perfect powers are $8$ and $9$). The example $6! + 2^6 = 28^2$ (noted by Erdős-Graham) shows the perfect-power phenomenon extends beyond prime-power bases.",
     "problemStatement": "Let $p$ be an odd prime. Is it true that the equation $(p-1)! + a^{p-1} = p^k$ has only finitely many solutions?",
-    "proofStrategy": "The formalization combines: (1) Wilson's theorem showing $(p-1)! \\equiv -1 \\pmod{p}$, (2) Fermat's little theorem showing $a^{p-1} \\equiv 1 \\pmod{p}$ when $p \\nmid a$, establishing that $p$ divides the sum, (3) $p$-adic analysis via Legendre's formula showing $v_p((p-1)!) = 0$, (4) growth-rate arguments eliminating $p \\geq 7$, and (5) explicit case analysis for $p = 3$ and $p = 5$. The finiteness (Brindza–Erdős) and complete characterization (Yu–Liu) are axiomatized as the deep external results.",
+    "proofStrategy": "The formalization builds a complete treatment in five layers:\n\n1. **Definitions**: The `Solution` structure bundles $(p, a, k)$ with primality and equation proofs; `IsSolution` provides the unbundled predicate. The bundled form enables set-theoretic finiteness reasoning.\n\n2. **Computational verification**: Three solutions verified by `norm_num` kernel reduction: $2! + 1 = 3$, $2! + 25 = 27$, $4! + 1 = 25$.\n\n3. **Deep external results** (axiomatized): Brindza-Erdős finiteness via Baker's linear forms in logarithms, and Yu-Liu complete characterization.\n\n4. **Structural analysis**: Wilson's theorem gives $(p-1)! \\equiv -1 \\pmod{p}$, Fermat gives $a^{p-1} \\equiv 1 \\pmod{p}$, so $p \\mid (p-1)! + a^{p-1}$. Legendre's formula shows $v_p((p-1)!) = 0$ since $1, \\ldots, p-1$ are all coprime to $p$. For $p \\mid a$, the power $a^{p-1}$ contributes $v_p \\geq p-1$, bounding $k$.\n\n5. **Case analysis**: Growth-rate argument eliminates $p \\geq 7$ (since $(p-1)! \\geq 720$). For $p = 3$: $2 + a^2 = 3^k$ yields $(1,1)$ and $(5,3)$. For $p = 5$: $24 + a^4 = 5^k$ yields $(1,2)$ only.\n\nThe final `erdos_405` is a term-mode proof: `⟨brindza_erdos_1991, yu_liu_1996⟩`.",
     "keyInsights": [
-      "Wilson's theorem gives $(p-1)! \\equiv -1 \\pmod{p}$, while Fermat gives $a^{p-1} \\equiv 1 \\pmod{p}$ for $p \\nmid a$, so the sum is divisible by $p$ — a necessary condition for equaling $p^k$",
-      "The $p$-adic valuation $v_p((p-1)!) = 0$ by Legendre's formula, since none of $1, \\ldots, p-1$ is divisible by $p$; this severely constrains the equation",
-      "For $p \\geq 7$, the factorial $(p-1)! \\geq 720$ grows too fast relative to $p^k$ for any matching to occur",
-      "Only $p \\in \\{3, 5\\}$ can yield solutions: $2 + a^2 = 3^k$ has solutions $(1,1)$ and $(5,3)$, while $24 + a^4 = 5^k$ has only $(1,2)$",
-      "The connection to Brocard's problem ($n! + 1 = m^2$) and Catalan's conjecture shows this sits in a rich landscape of factorial Diophantine equations"
+      "**Wilson + Fermat alignment**: Wilson's theorem gives $(p-1)! \\equiv -1 \\pmod{p}$, while Fermat gives $a^{p-1} \\equiv 1 \\pmod{p}$ for $p \\nmid a$, so the sum is divisible by $p$ — a necessary condition for equaling $p^k$. This 'modular alignment' is the structural reason solutions can exist at all.",
+      "**Pivotal $p$-adic constraint**: The fact $v_p((p-1)!) = 0$ (by Legendre's formula, since none of $1, \\ldots, p-1$ is divisible by $p$) is the key rigidity. It means the factorial term contributes no factors of $p$, so the entire $p$-adic structure of the left side comes from $a^{p-1}$.",
+      "**Factorial growth eliminates large primes**: For $p \\geq 7$, $(p-1)! \\geq 720$ grows super-exponentially while $p^k$ grows merely exponentially in $k$. The mismatch eliminates all but $p \\in \\{3, 5\\}$.",
+      "**Ramanujan-Nagell connection**: The $p = 3$ case $2 + a^2 = 3^k$ is a generalized Ramanujan-Nagell equation. The classical Ramanujan-Nagell equation $x^2 + 7 = 2^n$ has exactly 5 solutions; the $p = 3$ case here has similar finite character.",
+      "**Brocard's problem link**: The solution $4! + 1 = 25 = 5^2$ is a Brocard-type coincidence ($n! + 1$ being a perfect square). Brocard's problem asks for all $n$ with $n! + 1 = m^2$; only $n = 4, 5, 7$ are known, and finiteness is unproved."
     ]
   },
   "sections": [
@@ -137,12 +169,13 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #405 is completely solved. The equation $(p-1)! + a^{p-1} = p^k$ has exactly three solutions: $(p,a,k) = (3,1,1), (3,5,3), (5,1,2)$, corresponding to $2! + 1 = 3$, $2! + 25 = 27$, and $4! + 1 = 25$.",
-    "implications": "The complete resolution demonstrates the power of combining elementary number theory (Wilson's and Fermat's theorems) with $p$-adic methods (Legendre's formula) and transcendental number theory (Baker's linear forms in logarithms) for Diophantine equations. The formalization cleanly separates the computationally verifiable parts (three solutions) from the deep external results (finiteness and completeness).",
+    "summary": "Erdős Problem #405 is completely solved. The equation $(p-1)! + a^{p-1} = p^k$ has exactly three solutions: $(p,a,k) = (3,1,1), (3,5,3), (5,1,2)$, corresponding to $2! + 1 = 3$, $2! + 25 = 27$, and $4! + 1 = 25$. Finiteness was proved by Brindza-Erdős (1991) using Baker's theory; complete characterization by Yu-Liu (1996) through refined $p$-adic analysis.",
+    "implications": "The complete resolution demonstrates the power of combining elementary number theory (Wilson's and Fermat's theorems) with $p$-adic methods (Legendre's formula) and transcendental number theory (Baker's linear forms in logarithms) for Diophantine equations. The formalization cleanly separates the computationally verifiable parts (three solutions via `norm_num`) from the deep external results (finiteness and completeness axiomatized). The connection to Brocard's problem and Catalan's conjecture places this in the rich landscape of factorial Diophantine equations.",
     "openQuestions": [
       "Are there infinitely many primes $p$ for which $(p-1)! + a^{p-1}$ is a perfect power for some $a$?",
+      "Can Brocard's problem ($n! + 1 = m^2$) be resolved — are there only finitely many solutions beyond $n = 4, 5, 7$?",
       "What is the density of pairs $(p, a)$ for which $(p-1)! + a^{p-1}$ is a perfect power?",
-      "Can Brocard-type methods be extended to characterize when $n! + a^n$ equals a perfect power?"
+      "Can Baker's method be made constructive enough to verify the Yu-Liu result in Mathlib without axioms?"
     ]
   }
 }
