@@ -17,7 +17,7 @@
       "series",
       "open-problem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 16,
     "erdosNumber": 1049,
     "erdosUrl": "https://erdosproblems.com/1049",
@@ -43,6 +43,11 @@
         "theorem": "IsAlgebraic",
         "description": "Algebraic number predicate",
         "module": "Mathlib.RingTheory.Algebraic"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate and basic lemmas",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
       }
     ],
     "references": [
@@ -58,14 +63,15 @@
       }
     ],
     "originalContributions": [
-      "Formal definition of divisor function τ(n)",
-      "Definition of the series S(t) = ∑ 1/(t^n - 1)",
-      "The classical identity S(t) = D(t) = ∑ τ(n)/t^n",
-      "Axiomatization of Erdős's irrationality result for integers",
-      "Statement of Chowla's conjecture for rationals",
-      "Definition of Erdős-Borwein constant S(2)",
-      "Connection to Lambert series",
-      "Transcendentality and algebraic independence conjectures"
+      "Formal definition of divisor function τ(n) via Nat.divisors.card",
+      "Definition of the series S(t) = ∑ 1/(t^n - 1) and D(t) = ∑ τ(n)/t^n",
+      "Statement of the classical identity S(t) = D(t) via double-sum interchange",
+      "Axiomatization of Erdős's 1948 irrationality result for integer t >= 2",
+      "Formal definition of Chowla's conjecture for all rational t > 1",
+      "Definition of Erdős-Borwein constant S(2) and proof of its irrationality",
+      "TranscendentalConjecture and AlgebraicIndependenceConjecture statements",
+      "Lambert series formulation with isLambertSeries and S_as_lambert",
+      "Asymptotic bounds 1/(t-1) <= S(t) <= t/(t-1)^2"
     ],
     "relatedProblems": [
       "erdos-1048",
@@ -73,98 +79,98 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Divisor Sums and Irrationality**\n\nThe series ∑_{n≥1} 1/(t^n - 1) equals ∑_{n≥1} τ(n)/t^n, where τ(n) is the divisor counting function.\n\n**Erdős (1948)** proved this sum is irrational when t is an integer ≥ 2.\n\n**Chowla's Conjecture**: The sum should be irrational for ALL rational t > 1.\n\nThe value S(2) ≈ 1.606695... is called the Erdős-Borwein constant.",
-    "problemStatement": "**Problem Statement**\n\nFor a rational number t > 1, is the sum\n\n∑_{n=1}^∞ 1/(t^n - 1) = ∑_{n=1}^∞ τ(n)/t^n\n\nirrational?\n\n**Status**: OPEN\n\n**Partial Result**: YES for integer t ≥ 2 (Erdős 1948).",
-    "proofStrategy": "**The Formalization**\n\n1. Defines the divisor function τ(n) = |{d : d|n}|\n2. Defines the series S(t) = ∑ 1/(t^n - 1)\n3. Defines the divisor series D(t) = ∑ τ(n)/t^n\n4. Proves the classical identity S(t) = D(t)\n5. Axiomatizes Erdős's irrationality result for integers\n6. States Chowla's conjecture for all rationals\n7. Defines the Erdős-Borwein constant S(2)\n8. Connects to Lambert series theory\n9. States transcendentality conjectures\n10. Provides asymptotic bounds",
+    "historicalContext": "The study of arithmetic properties of the series S(t) = sum 1/(t^n - 1) originates in classical analytic number theory. The series naturally arises as a Lambert series with constant coefficients, connecting it to the divisor function tau(n) via the identity S(t) = sum tau(n)/t^n. In 1948, Paul Erdos published 'On arithmetical properties of Lambert series' in the Journal of the Indian Mathematical Society, proving that S(t) is irrational whenever t is an integer >= 2. His proof used careful analysis of the p-adic structure of partial sums. Sarvadaman Chowla conjectured that the irrationality should hold for all rational t > 1, not just integers. This conjecture remains open and connects to broader questions about Lambert series, transcendence theory, and the Erdos-Borwein constant E = S(2) ~ 1.606695. The problem appears as #1049 in the Erdos problems collection and is closely related to #1048 (Lambert series generalizations) and #1050 (related irrationality questions).",
+    "problemStatement": "For a rational number t > 1, is the sum S(t) = sum_{n>=1} 1/(t^n - 1) irrational? By the classical identity, this equals sum_{n>=1} tau(n)/t^n where tau(n) counts the divisors of n. Status: OPEN. Partial result: Erdos (1948) proved S(t) is irrational for integer t >= 2. Chowla conjectured the result holds for all rational t > 1.",
+    "proofStrategy": "The formalization defines the divisor function tau(n) = |{d : d | n}| using Mathlib's Nat.divisors.card and proves basic properties (tau(1)=1, multiplicativity). The series S(t) and the divisor series D(t) are defined as tsum over natural numbers. The classical identity S(t) = D(t) is stated with a proof outline via double-sum interchange: sum tau(n)/t^n = sum_{d,m} 1/t^{dm} = sum_d 1/(t^d - 1). Erdos's irrationality result for integer t >= 2 is axiomatized, with derived corollaries S(2) and S(3) irrational. Chowla's conjecture is formally stated, and stronger conjectures about transcendentality and algebraic independence are formulated. The connection to Lambert series is made explicit.",
     "keyInsights": [
-      "The identity ∑ 1/(t^n-1) = ∑ τ(n)/t^n is classical",
-      "Erdős proved irrationality for integer t ≥ 2 in 1948",
-      "Chowla's conjecture extends this to all rational t > 1",
-      "S(2) ≈ 1.606695 is the Erdős-Borwein constant",
-      "The series is a Lambert series with a_n = 1",
-      "Transcendentality for algebraic t > 1 is also conjectured"
+      "The identity sum 1/(t^n-1) = sum tau(n)/t^n follows from interchanging a double sum: each 1/(t^d-1) = sum_m 1/t^{dm}, and grouping by n=dm collects tau(n) terms",
+      "Erdos's 1948 proof for integer t >= 2 exploits the p-adic structure of the partial sums of 1/(t^n-1), showing they cannot converge to a rational",
+      "Chowla's conjecture for non-integer rationals remains open because the p-adic techniques break down when t is not an integer",
+      "The Erdos-Borwein constant S(2) ~ 1.606695 appears in combinatorics as the average number of 1s in binary representations related to mergesort analysis",
+      "The transcendental conjecture (S(t) transcendental for algebraic t > 1) is strictly stronger than Chowla's, since transcendental implies irrational",
+      "Lambert series sum a_n q^n/(1-q^n) provide a systematic framework; S(t) is the special case a_n = 1, q = 1/t"
     ]
   },
   "sections": [
     {
       "id": "divisor",
-      "title": "The Divisor Function",
-      "summary": "τ(n) = number of divisors",
+      "title": "Part I: The Divisor Function",
+      "summary": "Defines tau(n) = Nat.divisors.card as the number of positive divisors of n. Proves tau_one (tau(1) = 1) by simp. States tau_prime (tau(p) = 2), tau_prime_pow (tau(p^k) = k+1), tau_multiplicative (tau(mn) = tau(m)*tau(n) for coprime m,n), tau_pos (tau(n) >= 1 for n >= 1), and tau_le (tau(n) <= n) as sorry'd theorems.",
       "startLine": 26,
       "endLine": 61
     },
     {
       "id": "series",
-      "title": "The Series",
-      "summary": "S(t) and D(t) definitions",
+      "title": "Part II: The Series",
+      "summary": "Defines the main series S(t) = tsum 1/(t^n - 1) and the divisor series D(t) = tsum tau(n)/t^n, both as noncomputable real-valued functions. States convergence theorems S_summable and D_summable for t > 1 (sorry'd).",
       "startLine": 63,
       "endLine": 85
     },
     {
       "id": "identity",
-      "title": "The Identity",
-      "summary": "S(t) = D(t)",
+      "title": "Part III: The Identity S(t) = D(t)",
+      "summary": "States the classical identity S_eq_D: sum 1/(t^n-1) = sum tau(n)/t^n. Includes the double_sum_identity (interchange of summation over divisor pairs (d,m)) and geometric_divisor (sum_m 1/t^{dm} = 1/(t^d-1) as a geometric series). All sorry'd but with detailed proof outlines in doc comments.",
       "startLine": 87,
       "endLine": 112
     },
     {
       "id": "erdos-result",
-      "title": "Erdős's Result",
-      "summary": "Irrationality for integers",
+      "title": "Part IV: Erdős's Result for Integers",
+      "summary": "Axiomatizes erdos_integer_irrational: S(t) is Irrational for integer t >= 2 (Erdos 1948). Defines S_at_2 and proves S_at_2_irrational as a corollary by applying the axiom with t=2 and norm_num. States S_at_2_first_terms expanding the series as 1 + 1/3 + 1/7 + 1/15 + remainder.",
       "startLine": 114,
       "endLine": 134
     },
     {
       "id": "chowla",
-      "title": "Chowla's Conjecture",
-      "summary": "Conjecture for all rationals",
+      "title": "Part V: Chowla's Conjecture",
+      "summary": "Defines ChowlaConjecture as the proposition that S(t) is irrational for all rational t > 1. States chowla_conjecture_open as a tautological axiom indicating the conjecture is unresolved. Proves chowla_for_integers showing the conjecture holds for integer t >= 2 via Erdos's result.",
       "startLine": 136,
       "endLine": 151
     },
     {
       "id": "special",
-      "title": "Special Values",
-      "summary": "Erdős-Borwein constant",
+      "title": "Part VI: Special Values",
+      "summary": "Axiomatizes S_at_2_approx bounding S(2) between 1.606 and 1.607. Defines erdosBorweinConstant := S_at_2. Defines S_at_3 and proves S_at_3_irrational. States asymptotic behavior: S_tendsto_infinity (S(t) -> +inf as t -> 1+) and S_tendsto_zero (S(t) -> 0 as t -> +inf).",
       "startLine": 153,
       "endLine": 178
     },
     {
       "id": "algebraic",
-      "title": "Algebraic Properties",
-      "summary": "Transcendentality conjectures",
+      "title": "Part VII: Algebraic Properties",
+      "summary": "Defines TranscendentalConjecture (S(t) is transcendental for algebraic t > 1) and AlgebraicIndependenceConjecture (placeholder for full algebraic independence statement). Proves transcendental_implies_chowla showing the transcendental conjecture subsumes Chowla's.",
       "startLine": 180,
       "endLine": 197
     },
     {
       "id": "lambert",
-      "title": "Lambert Series",
-      "summary": "Connection to Lambert series",
+      "title": "Part VIII: Connection to Lambert Series",
+      "summary": "Defines isLambertSeries as sum a_n * q^n / (1 - q^n). States S_as_lambert showing S(t) equals the Lambert series with a_n = 1 and q = 1/t. Includes lambert_arithmetic_property axiom (placeholder for arithmetic properties of Lambert series).",
       "startLine": 199,
       "endLine": 217
     },
     {
       "id": "partial",
-      "title": "Partial Results",
-      "summary": "Known progress on conjecture",
+      "title": "Part IX: Partial Results",
+      "summary": "Includes placeholder axioms partial_rational_results and linear_independence_partial for known partial progress on Chowla's conjecture. Proves S_bounds giving 1/(t-1) <= S(t) <= t/(t-1)^2 (sorry'd), providing useful numerical approximation bounds.",
       "startLine": 219,
       "endLine": 238
     },
     {
       "id": "main",
-      "title": "Main Results",
-      "summary": "Summary of Erdős #1049",
+      "title": "Part X: Main Results",
+      "summary": "States erdos_1049_partial and erdos_1049 as the main theorem: for integer t >= 2, S(t) is irrational. Defines erdos_1049_answer and erdos_1049_status as String descriptions of the problem's open status. The full Chowla conjecture for non-integer rationals remains unresolved.",
       "startLine": 240,
       "endLine": 275
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1049 asks whether ∑_{n≥1} 1/(t^n - 1) is irrational for rational t > 1. This equals ∑ τ(n)/t^n by a classical identity. OPEN: Erdős (1948) proved YES for integer t ≥ 2. Chowla's conjecture that this holds for all rational t > 1 remains unresolved.",
-    "implications": "**Theoretical Significance**\n\n1. **Number Theory**: Connects divisor function to transcendence theory\n\n2. **Irrationality Proofs**: Techniques extend Erdős's methods\n\n3. **Lambert Series**: Special case of broader Lambert series theory\n\n4. **Mathematical Constants**: Erdős-Borwein constant S(2) ≈ 1.606695...",
+    "summary": "Erdos Problem #1049 asks whether S(t) = sum 1/(t^n - 1) is irrational for rational t > 1. The classical identity S(t) = sum tau(n)/t^n connects this to the divisor function. Erdos (1948) proved irrationality for integer t >= 2 using p-adic analysis of partial sums. Chowla's conjecture extending this to all rational t > 1 remains open. The formalization axiomatizes Erdos's result, states both Chowla's conjecture and stronger transcendentality conjectures, and connects the series to Lambert series theory.",
+    "implications": "The problem sits at the intersection of analytic number theory, irrationality theory, and Lambert series. Erdos's 1948 techniques pioneered the use of p-adic methods for irrationality proofs of naturally-arising series. The Erdos-Borwein constant S(2) ~ 1.606695 appears unexpectedly in the analysis of algorithms (average-case mergesort complexity). Resolution of Chowla's conjecture would advance understanding of the arithmetic nature of Lambert series values. The transcendental conjecture connects to the broader program of determining the transcendence of values of classical analytic functions at algebraic points.",
     "openQuestions": [
-      "Is S(t) irrational for all rational t > 1? (Chowla's conjecture)",
-      "Is S(t) transcendental for algebraic t > 1?",
-      "What are the Diophantine approximation properties of S(t)?",
-      "Linear independence of S(t) for different t values?"
+      "Is S(t) irrational for all rational t > 1? (Chowla's conjecture, the central open question)",
+      "Is S(t) transcendental for algebraic t > 1? (strictly stronger than Chowla's conjecture)",
+      "Are S(2), S(3), S(5), ... algebraically independent over Q?",
+      "What are the irrationality measures of S(t) for integer t >= 2, and do they exhibit Diophantine patterns?"
     ]
   }
 }
