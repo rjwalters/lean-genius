@@ -342,12 +342,19 @@ private theorem polymath50Tuple_admissible : IsAdmissible polymath50Tuple := by
                               · -- p is prime, ≥ 2, ≠ all primes ≤ 47, so p ≥ 53
                                 have hp53 : p ≥ 53 := by
                                   have h2le := hp.two_le
-                                  have hodd := hp.eq_two_or_odd.elim
-                                    (fun h => absurd h hp2) id
                                   by_contra hlt
                                   push_neg at hlt
-                                  have : p = 49 ∨ p = 51 := by omega
-                                  rcases this with rfl | rfl <;> exact absurd hp (by decide)
+                                  -- p ∈ {2,...,52}, prime, not equal to any prime ≤ 47
+                                  interval_cases p <;>
+                                    first | exact absurd rfl hp2 | exact absurd rfl hp3
+                                           | exact absurd rfl hp5 | exact absurd rfl hp7
+                                           | exact absurd rfl hp11 | exact absurd rfl hp13
+                                           | exact absurd rfl hp17 | exact absurd rfl hp19
+                                           | exact absurd rfl hp23 | exact absurd rfl hp29
+                                           | exact absurd rfl hp31 | exact absurd rfl hp37
+                                           | exact absurd rfl hp41 | exact absurd rfl hp43
+                                           | exact absurd rfl hp47
+                                           | exact absurd hp (by decide)
                                 linarith
 
 private theorem polymath50Tuple_le_246 : ∀ a ∈ polymath50Tuple, a ≤ 246 := by native_decide
