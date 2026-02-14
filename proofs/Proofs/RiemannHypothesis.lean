@@ -1007,7 +1007,140 @@ theorem GRH_implies_RH (h : GeneralizedRiemannHypothesis) : RiemannHypothesis :=
   exact h 1 (1 : DirichletCharacter ℂ 1) s (hL ▸ hz) hpos hlt
 
 /- ═══════════════════════════════════════════════════════════════════════════════
-PART XII: SUMMARY AND SIGNIFICANCE
+PART XII: THE DE BRUIJN-NEWMAN CONSTANT
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-
+### The de Bruijn-Newman Constant Λ
+
+**De Bruijn (1950)** and **Newman (1976)** introduced a remarkable one-parameter
+deformation of the Riemann xi function that quantifies how close RH is to being true.
+
+Define the family of entire functions
+  H_t(z) = ∫₀^∞ e^{tu²} Φ(u) cos(zu) du
+where Φ(u) = Σ_{n=1}^∞ (2π²n⁴e^{9u} - 3πn²e^{5u}) exp(-πn²e^{4u}).
+
+Key properties:
+- H₀(z) = (1/8)ξ(1/2 + iz/2), where ξ is the Riemann xi function
+- All zeros of H_t are real ↔ RH (when t = 0)
+- For each t, H_t is entire and of order 1
+- There exists a unique Λ ∈ ℝ such that:
+  - H_t has all real zeros for t ≥ Λ
+  - H_t has some non-real zeros for t < Λ
+
+**The de Bruijn-Newman constant Λ** is the unique real number such that H_t has
+only real zeros if and only if t ≥ Λ.
+
+**RH is equivalent to Λ ≤ 0**.
+
+**Historical bounds on Λ**:
+- De Bruijn (1950): Λ ≤ 1/2
+- Newman (1976): Λ exists and conjectured Λ ≥ 0
+- Csordas, Smith, Varga (1994): Λ ≥ -50 (first lower bound)
+- Odlyzko (2000): Λ ≥ -2.7 × 10⁻⁹
+- Ki, Kim, Lee (2009): Λ < 1/2
+- **Rodgers-Tao (2020): Λ ≥ 0** (confirmed Newman's conjecture)
+- Platt-Trudgian (2021): Λ ≤ 0.2
+
+So the current state of knowledge is: 0 ≤ Λ ≤ 0.2, and RH asserts Λ = 0.
+
+**References**:
+- De Bruijn, N.G. (1950). "The roots of trigonometric integrals"
+  Duke Mathematical Journal, 17, 197-226.
+- Newman, C.M. (1976). "Fourier transforms with only real zeros"
+  Proceedings of the AMS, 61(2), 245-251.
+- Rodgers, B. & Tao, T. (2020). "The de Bruijn-Newman constant is non-negative"
+  Forum of Mathematics, Pi, 8, e6.
+- Platt, D.J. & Trudgian, T.S. (2021). "The Riemann hypothesis is true up to 3×10¹²"
+  Bulletin of the LMS, 53(3), 792-797.
+-/
+
+/-- The de Bruijn-Newman constant Λ: the unique real number such that
+the deformed xi function H_t has only real zeros iff t ≥ Λ.
+
+Existence and uniqueness of Λ are proven facts (de Bruijn 1950, Newman 1976):
+- For large enough t, H_t has all real zeros (de Bruijn showed this for t ≥ 1/2)
+- The set {t : H_t has all real zeros} is a closed half-line [Λ, ∞)
+- This uses the heat flow: the PDE ∂H/∂t = ∂²H/∂z² implies zeros only move
+  towards the real axis as t increases -/
+axiom deBruijnNewmanConstant : ℝ
+
+/-- **Rodgers-Tao Theorem (2020)**: The de Bruijn-Newman constant is non-negative.
+
+This confirmed Newman's 1976 conjecture that Λ ≥ 0 and was a major breakthrough.
+The proof uses:
+1. A connection between zeros of H_t and eigenvalues of GUE random matrices
+2. Dynamics of zeros under the backward heat flow
+3. A contradictory "barrier" argument showing Λ < 0 leads to impossible
+   zero configurations
+
+This means RH cannot be "improved" - if the zeros of ζ are on the critical line,
+they are as close to leaving as they can possibly be (in the de Bruijn-Newman sense).
+
+**References**:
+- Rodgers, B. & Tao, T. (2020). "The de Bruijn-Newman constant is non-negative"
+  Forum of Mathematics, Pi, 8, e6. doi:10.1017/fmp.2020.6 -/
+axiom rodgers_tao : 0 ≤ deBruijnNewmanConstant
+
+/-- **Upper bound on de Bruijn-Newman constant (Platt-Trudgian, 2021)**:
+Λ ≤ 0.2.
+
+Combined with Rodgers-Tao (Λ ≥ 0), this gives 0 ≤ Λ ≤ 0.2.
+RH is the assertion that Λ = 0.
+
+**References**:
+- Platt, D.J. & Trudgian, T.S. (2021). "The Riemann hypothesis is true up to 3×10¹²"
+  Bulletin of the London Mathematical Society, 53(3), 792-797. -/
+axiom deBruijnNewman_upper_bound : deBruijnNewmanConstant ≤ 1/5
+
+/-- **RH is equivalent to Λ = 0** (de Bruijn 1950, Newman 1976)
+
+The Riemann Hypothesis is precisely the statement that the de Bruijn-Newman
+constant equals zero. This gives a quantitative measure of RH: how far Λ
+is from zero measures how close the zeros of ζ are to the critical line.
+
+**Proof sketch**:
+- H₀(z) = (1/8)ξ(1/2 + iz/2) where ξ is the Riemann xi function
+- H₀ has all real zeros ↔ all zeros of ξ(1/2 + iz/2) are real
+  ↔ all zeros of ξ(s) have Re(s) = 1/2 ↔ RH
+- By definition, H₀ has all real zeros ↔ 0 ≥ Λ
+- Combined with Rodgers-Tao (Λ ≥ 0): RH ↔ Λ = 0 -/
+axiom RH_iff_deBruijnNewman_eq_zero : RiemannHypothesis ↔ deBruijnNewmanConstant = 0
+
+/-- From Rodgers-Tao and the equivalence, RH is equivalent to Λ ≤ 0 (PROVEN).
+
+Since Rodgers-Tao gives Λ ≥ 0, the condition Λ ≤ 0 is equivalent to Λ = 0. -/
+theorem RH_iff_deBruijnNewman_le_zero :
+    RiemannHypothesis ↔ deBruijnNewmanConstant ≤ 0 := by
+  constructor
+  · intro h
+    rw [RH_iff_deBruijnNewman_eq_zero] at h
+    linarith
+  · intro h
+    rw [RH_iff_deBruijnNewman_eq_zero]
+    linarith [rodgers_tao]
+
+/-- The current best bounds on the de Bruijn-Newman constant: 0 ≤ Λ ≤ 0.2 (PROVEN).
+
+This combines Rodgers-Tao (2020) with Platt-Trudgian (2021). -/
+theorem deBruijnNewman_bounds :
+    0 ≤ deBruijnNewmanConstant ∧ deBruijnNewmanConstant ≤ 1/5 :=
+  ⟨rodgers_tao, deBruijnNewman_upper_bound⟩
+
+/-- If RH is false, then 0 < Λ ≤ 0.2 (PROVEN from axioms).
+
+This gives quantitative information: even if RH fails, the de Bruijn-Newman
+constant is at most 0.2, meaning zeros can't be too far from the critical line. -/
+theorem deBruijnNewman_of_not_RH (h : ¬RiemannHypothesis) :
+    0 < deBruijnNewmanConstant ∧ deBruijnNewmanConstant ≤ 1/5 := by
+  constructor
+  · by_contra h_not_pos
+    push_neg at h_not_pos
+    exact h (RH_iff_deBruijnNewman_le_zero.mpr h_not_pos)
+  · exact deBruijnNewman_upper_bound
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XIII: SUMMARY AND SIGNIFICANCE
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-- Summary of what we know about the Riemann Hypothesis:
@@ -1028,25 +1161,34 @@ PART XII: SUMMARY AND SIGNIFICANCE
    - Infinitely many zeros on Re(s) = 1/2 (Hardy, axiom)
    - >40% of zeros on Re(s) = 1/2 (Conrey, axiom)
    - First 10^13 zeros verified computationally (axiom)
+   - RH ↔ Λ ≤ 0 (PROVEN from axioms)
+   - 0 ≤ Λ ≤ 0.2 (PROVEN from Rodgers-Tao + Platt-Trudgian axioms)
 
 3. **Equivalent statements**:
    - Robin's inequality: σ(n) < e^γ n log log n for n > 5040
    - Mertens bound: M(x) = O(x^(1/2+ε))
    - Prime counting: |π(x) - Li(x)| = O(√x log x)
    - Nyman-Beurling: span{f_θ(x) = {θ/x}} dense in L²(0,1)
+   - De Bruijn-Newman: Λ = 0 (quantitative characterization)
 
 4. **Generalizations**:
    - GRH for Dirichlet L-functions (formalized)
    - GRH implies RH (PROVEN via LFunction_modOne_eq)
 
-5. **Why it matters**:
+5. **Quantitative status** (de Bruijn-Newman constant):
+   - Rodgers-Tao (2020): Λ ≥ 0 (axiom)
+   - Platt-Trudgian (2021): Λ ≤ 0.2 (axiom)
+   - RH ↔ Λ = 0 (PROVEN from axioms)
+   - If RH is false: 0 < Λ ≤ 0.2 (PROVEN)
+
+6. **Why it matters**:
    - Best possible error term in Prime Number Theorem
    - Bounds on prime gaps
    - Distribution of primes in arithmetic progressions
    - Connections to random matrix theory
    - Applications in cryptography and primality testing
 
-6. **Status**: Open since 1859, $1M Millennium Prize
+7. **Status**: Open since 1859, $1M Millennium Prize
 -/
 theorem RH_summary : True := trivial
 
@@ -1060,5 +1202,11 @@ theorem RH_summary : True := trivial
 #check quadruple_symmetry
 #check RH_iff_fundamental_domain
 #check GeneralizedRiemannHypothesis
+#check deBruijnNewmanConstant
+#check rodgers_tao
+#check RH_iff_deBruijnNewman_eq_zero
+#check RH_iff_deBruijnNewman_le_zero
+#check deBruijnNewman_bounds
+#check deBruijnNewman_of_not_RH
 
 end RiemannHypothesis
