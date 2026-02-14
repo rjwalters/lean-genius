@@ -226,7 +226,8 @@ start_output_monitor() {
                 local found_error=false
                 for pattern in "500 Internal Server Error" "Rate limit exceeded" \
                     "overloaded" "temporarily unavailable" "503 Service" \
-                    "502 Bad Gateway" "No messages returned"; do
+                    "502 Bad Gateway" "No messages returned" \
+                    "PreToolUse.*hook error"; do
                     if echo "${tail_content}" | grep -qi "${pattern}" 2>/dev/null; then
                         found_error=true
                         break
@@ -346,6 +347,7 @@ run_with_retry() {
         # stdout with a pipe fd, causing Claude to switch to non-interactive --print mode.
         start_output_monitor "${temp_output}" "${monitor_pid_file}"
         set +e  # Temporarily disable errexit to capture exit code
+        unset CLAUDECODE  # Prevent nested session guard from blocking subprocess
         script -q "${temp_output}" claude "$@"
         exit_code=$?
         set -e
