@@ -35,30 +35,90 @@
     "dateAdded": "12/29/25"
   },
   "overview": {
-    "historicalContext": "The isoperimetric problem is one of the oldest in mathematics, known to the ancient Greeks. The legendary Queen Dido founded Carthage by using an ox hide cut into a thin strip to enclose maximum land. Rigorous proofs came in the 19th century.",
+    "historicalContext": "The isoperimetric problem is one of the oldest in mathematics. According to Virgil's *Aeneid* (29–19 BCE), Queen Dido of Carthage was promised as much land as a bull's hide could encompass; she cut it into thin strips and formed a semicircle against the coast, maximizing the enclosed area. The ancient Greeks knew the circle was optimal, and Zenodorus (~200 BCE) gave geometric arguments. The first attempt at a rigorous proof was by Jakob Steiner (1838) using his **symmetrization** method, but this assumed the optimal curve exists. Karl Weierstrass (1870s) filled this gap using the direct method of the calculus of variations. Adolf Hurwitz (1902) gave an elegant proof via **Fourier analysis** and the Wirtinger inequality. The Brunn-Minkowski inequality (1887–1896) provides yet another route. The theorem generalizes to Riemannian manifolds, where Lévy and Gromov established isoperimetric comparisons, and to metric measure spaces via Lott-Sturm-Villani theory.",
     "problemStatement": "**Isoperimetric Theorem**: For any simple closed curve with perimeter L enclosing area A:\n\n$$4\\pi A \\leq L^2$$\n\nEquality holds if and only if the curve is a circle.",
     "proofStrategy": "Modern proofs use calculus of variations, Fourier analysis, or the Brunn-Minkowski inequality. The key is showing that any deviation from circular shape decreases the area-to-perimeter ratio.",
     "keyInsights": [
       "The circle is uniquely optimal among all shapes",
       "Generalizes to spheres in higher dimensions",
       "Connected to eigenvalue problems and heat diffusion",
-      "Foundation for geometric measure theory"
+      "Foundation for geometric measure theory",
+      "The **Sobolev inequality** $\\|f\\|_{L^{n/(n-1)}} \\le C_n \\|\\nabla f\\|_{L^1}$ is a functional-analytic reformulation via the co-area formula, connecting geometry to PDE theory"
     ]
   },
-  "sections": [
+  "crossReferences": [
     {
-      "id": "perimeter-area",
-      "title": "Perimeter and Area",
-      "startLine": 50,
-      "endLine": 100,
-      "summary": "Definitions for closed curves."
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "The area formula $A = \\pi r^2$ and circumference $C = 2\\pi r$ used to define Circle and verify the optimal isoperimetric ratio $1/(4\\pi)$ are formalized in the Area of a Circle entry."
     },
     {
-      "id": "isoperimetric-inequality",
-      "title": "Isoperimetric Inequality",
-      "startLine": 100,
-      "endLine": 180,
-      "summary": "Main inequality and equality case."
+      "targetId": "area-of-circle-oq-01",
+      "relationship": "related",
+      "description": "The isoperimetric equality $C^2 = 4\\pi A$ proved in the Circumference from Area entry is the equality case of this theorem restricted to circles."
+    },
+    {
+      "targetId": "picks-theorem",
+      "relationship": "related",
+      "description": "Pick's theorem relates area to lattice points for polygons. Both results connect perimeter/boundary information to enclosed area, though in different settings (continuous vs discrete)."
+    }
+  ],
+  "sections": [
+    {
+      "id": "docstring-setup",
+      "title": "Module Documentation and Imports",
+      "startLine": 1,
+      "endLine": 78,
+      "summary": "Extensive docstring covering the mathematical statement $4\\pi A \\le L^2$, four historical proof approaches (Steiner symmetrization, Fourier/Wirtinger, Brunn-Minkowski, calculus of variations), and status. Imports Mathlib's trigonometric constants, measure theory, and tactic library."
+    },
+    {
+      "id": "curve-definitions",
+      "title": "Simple Closed Curves and Circle Definitions",
+      "startLine": 81,
+      "endLine": 134,
+      "summary": "Defines `SimpleClosedCurve` (perimeter $L > 0$, area $A \\ge 0$) and `Circle` (radius $r > 0$) with derived `perimeter = 2\\pi r$, `area = \\pi r^2$, and coercion `Circle.toCurve`. Proves positivity of circle's perimeter and area."
+    },
+    {
+      "id": "isoperimetric-ratio",
+      "title": "Isoperimetric Ratio",
+      "startLine": 140,
+      "endLine": 182,
+      "summary": "Defines the dimensionless ratio $\\rho = A/L^2$ and the optimal value $1/(4\\pi)$. Proves `circle_achieves_optimal_ratio`: every circle attains the theoretical maximum via algebraic computation (`field_simp` + `ring`)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: The Isoperimetric Inequality",
+      "startLine": 188,
+      "endLine": 233,
+      "summary": "Axiomatizes $4\\pi A \\le L^2$ for all simple closed curves. Derives the ratio form $A/L^2 \\le 1/(4\\pi)$ as a corollary. Documents why the proof is beyond current Mathlib (requires symmetrization, Fourier analysis, or Brunn-Minkowski)."
+    },
+    {
+      "id": "equality-case",
+      "title": "Equality Characterization",
+      "startLine": 239,
+      "endLine": 276,
+      "summary": "Defines `IsOptimal` ($4\\pi A = L^2$) and proves circles satisfy it. Axiomatizes the converse: optimality implies circularity. This **rigidity** result is the key qualitative insight."
+    },
+    {
+      "id": "examples-comparison",
+      "title": "Examples: Square vs Circle",
+      "startLine": 281,
+      "endLine": 370,
+      "summary": "Defines `Square` and `EquilateralTriangle`, computes their isoperimetric ratios ($1/16$ and $1/(12\\sqrt{3})$ respectively), and proves both are strictly suboptimal compared to circles."
+    },
+    {
+      "id": "higher-dimensions",
+      "title": "Higher-Dimensional Generalizations",
+      "startLine": 374,
+      "endLine": 398,
+      "summary": "States the 3D isoperimetric inequality $36\\pi V^2 \\le S^3$ (sphere is optimal) and the general $n$-dimensional form involving $\\omega_n$, the volume of the unit $n$-ball."
+    },
+    {
+      "id": "applications",
+      "title": "Applications and Connections",
+      "startLine": 404,
+      "endLine": 449,
+      "summary": "Discusses applications in physics (soap bubbles), biology (cell shapes), engineering (optimal tanks), and connections to Sobolev inequalities, concentration of measure, geometric measure theory, and optimal transport."
     }
   ],
   "conclusion": {
