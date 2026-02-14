@@ -18,10 +18,7 @@ with only finitely many exceptions. Strengthens Problem 384.
 - Selfridge (1977)
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos1094
 
@@ -35,8 +32,8 @@ def LPFBound (n k : ℕ) : Prop :=
 def IsException (n k : ℕ) : Prop :=
   0 < k ∧ 2 * k ≤ n ∧ ¬LPFBound n k
 
--- LPFBound and IsException are decidable since they involve only ℕ arithmetic
--- This enables native_decide on specific instances
+instance (n k : ℕ) : Decidable (LPFBound n k) := by unfold LPFBound; exact inferInstance
+instance (n k : ℕ) : Decidable (IsException n k) := by unfold IsException LPFBound; exact inferInstance
 
 -- ## Part 2: The Main Conjecture
 
@@ -80,10 +77,10 @@ theorem exception_94_10 : IsException 94 10 := by native_decide
 
 theorem exception_95_10 : IsException 95 10 := by native_decide
 
--- C(241,16) and C(284,28) are very large - keep as axioms
 -- C(241,16) ≈ 1.6 × 10²⁷, C(284,28) ≈ 2.4 × 10³⁸
-axiom exception_241_16 : IsException 241 16
-axiom exception_284_28 : IsException 284 28
+-- Previously axioms, now proved by native_decide
+theorem exception_241_16 : IsException 241 16 := by native_decide
+theorem exception_284_28 : IsException 284 28 := by native_decide
 
 -- ## Part 4: Verified Non-Exceptions
 
@@ -136,8 +133,9 @@ theorem not_exception_k_zero (n : ℕ) : ¬IsException n 0 := by
     So k = 1 never gives exceptions. -/
 theorem bound_k_one (n : ℕ) (hn : n ≥ 2) : LPFBound n 1 := by
   unfold LPFBound
-  simp [Nat.choose_one_right, Nat.div_one]
-  exact Nat.minFac_le (by omega)
+  simp only [Nat.choose_one_right, Nat.div_one]
+  calc n.minFac ≤ n := Nat.minFac_le (by omega : 0 < n)
+    _ ≤ max n 1 := le_max_left _ _
 
 theorem not_exception_k_one (n : ℕ) : ¬IsException n 1 := by
   intro ⟨_, h2k, hbound⟩
@@ -211,7 +209,7 @@ theorem choose_gt_one_10_3 : (10 : ℕ).choose 3 > 1 := by native_decide
 
 **What remains open:**
 - The finiteness conjecture itself
-- 2 large exceptions (C(241,16), C(284,28)) kept as axioms
+- 2 large exceptions (C(241,16), C(284,28)) now proved by native_decide
 - Connection to Problem 384
 - Selfridge's conjecture, stronger bounds
 
