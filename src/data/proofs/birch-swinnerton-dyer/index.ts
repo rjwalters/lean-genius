@@ -27,7 +27,7 @@ export const birchSwinnertonDyerProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const birchSwinnertonDyerAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const birchSwinnertonDyerAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const birchSwinnertonDyerTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const birchSwinnertonDyerData: ProofData = {
