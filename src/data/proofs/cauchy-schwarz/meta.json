@@ -121,6 +121,33 @@
       "endLine": 231
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "extends",
+      "description": "The Bunyakovsky-Schwarz integral inequality extends Cauchy-Schwarz from finite sums to L² inner products: (∫fg)² ≤ (∫f²)(∫g²). This formalization proves the measure-theoretic version."
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "proves",
+      "description": "The triangle inequality ‖u+v‖ ≤ ‖u‖+‖v‖ is derived as a direct corollary of Cauchy-Schwarz in both formalizations, demonstrating the foundational role of Cauchy-Schwarz in normed space theory."
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "AM-GM and Cauchy-Schwarz are the two most fundamental inequalities in analysis. Cauchy-Schwarz for n=2 can be derived from AM-GM applied to a²/b² + b²/a², and conversely."
+    },
+    {
+      "targetId": "hurwitz-theorem",
+      "relationship": "foundational",
+      "description": "Hurwitz's theorem on normed division algebras (ℝ, ℂ, ℍ, 𝕆) relies on the inner product space structure where Cauchy-Schwarz is the fundamental inequality."
+    },
+    {
+      "targetId": "yang-mills",
+      "relationship": "foundational",
+      "description": "The Yang-Mills formalization uses Hilbert spaces and inner products (Wightman axioms) where Cauchy-Schwarz underpins the spectral theory and mass gap definition."
+    }
+  ],
   "conclusion": {
     "summary": "The formalization presents the Cauchy-Schwarz inequality in three forms: abstract inner product ($|\\langle u,v\\rangle| \\leq \\|u\\|\\|v\\|$), elementary two-variable (via the Lagrange identity), and finite sum (via EuclideanSpace embedding). It includes complete equality characterization (linear dependence) and two applications: the triangle inequality and the correlation coefficient bound. All proofs are complete with zero sorries.",
     "implications": "**Implications and Connections**\n\n1. **Foundation for Normed Spaces:** The triangle inequality, derived here as a corollary, is the key axiom for normed vector spaces and metric spaces.\n\n2. **Quantum Mechanics:** The Heisenberg uncertainty principle $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$ is a consequence of Cauchy-Schwarz applied to wave functions in $L^2$.\n\n3. **Statistics:** The bound $|\\rho| \\leq 1$ on the Pearson correlation coefficient, proved here, is fundamental to regression analysis and hypothesis testing.\n\n4. **Functional Analysis:** Cauchy-Schwarz ensures that inner product spaces are normed spaces, enabling the Hilbert space theory underlying modern analysis.\n\n5. **Machine Learning:** Cosine similarity $\\cos\\theta = \\langle u,v\\rangle/(\\|u\\|\\|v\\|)$ is well-defined precisely because Cauchy-Schwarz guarantees $|\\cos\\theta| \\leq 1$.",
