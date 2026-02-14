@@ -54,94 +54,126 @@
       "folkman_1970 axiom: k=2 case",
       "nesetril_rodl_1976 axiom: general k case",
       "erdos_924 theorem: main result"
+    ],
+    "crossReferences": [
+      {
+        "targetProofId": "erdos-920",
+        "relationship": "related",
+        "description": "Studies chromatic numbers of K_k-free graphs — the twin problem of high chromatic complexity in clique-free graphs"
+      },
+      {
+        "targetProofId": "erdos-922",
+        "relationship": "same-author",
+        "description": "Another result by Jon Folkman (1970) on chromatic number bounds via independent sets"
+      },
+      {
+        "targetProofId": "erdos-923",
+        "relationship": "same-author",
+        "description": "Result by Rödl (1977) on triangle-free subgraphs with high chromatic number"
+      },
+      {
+        "targetProofId": "erdos-925",
+        "relationship": "related",
+        "description": "Studies independent sets in non-Ramsey graphs, directly addressing Ramsey-type bounds"
+      },
+      {
+        "targetProofId": "erdos-1090",
+        "relationship": "uses-same-technique",
+        "description": "Also uses the Hales-Jewett theorem (central to the Nešetřil-Rödl proof) for monochromatic collinear points"
+      },
+      {
+        "targetProofId": "erdos-927",
+        "relationship": "related",
+        "description": "Studies distinct clique sizes in graphs — complementary perspective on clique structure"
+      }
     ]
   },
   "overview": {
-    "historicalContext": "**Erdős Problem #924**\n\nA question posed by Erdős and Hajnal in Ramsey theory, asking whether graphs can exhibit Ramsey-type behavior while avoiding large cliques.\n\n**Key History:**\n- Erdős-Hajnal: Original question about forced monochromatic cliques\n- Folkman (1970): Proved existence for k = 2, introduced \"Folkman graphs\"\n- Nešetřil-Rödl (1976): Proved the general case using Hales-Jewett methods\n\n**The Folkman Number:**\nf(l; k) is the minimum vertices for a Folkman graph, an active area of research.",
+    "historicalContext": "A question posed by Erdős and Hajnal in Ramsey theory, asking whether graphs can exhibit Ramsey-type behavior while avoiding large cliques.\n\nThe classical Ramsey theorem (1930) guarantees that sufficiently large complete graphs K_n force monochromatic K_l in any k-coloring. But K_n contains all cliques up to K_n. The Erdős-Hajnal question asks: can we achieve the same Ramsey forcing while forbidding K_{l+1}?\n\nFolkman (1970) proved the k = 2 case using shift graph constructions, introducing what are now called 'Folkman graphs'. His paper was published posthumously — Folkman died in 1969. Nešetřil and Rödl (1976) proved the general case for all k ≥ 2 using the Hales-Jewett theorem and partite constructions.\n\nThe Folkman number f(l; k) — the minimum vertices needed — has been an active area of research. The most-studied case f(3; 2) = 786 was determined through decades of work by Graham, Spencer, Frankl-Rödl, Dudek-Rödl, Lange-Radziszowski-Xu, and others.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet k ≥ 2 and l ≥ 3. Does there exist a graph G which contains no K_{l+1} (clique of size l+1) such that every k-coloring of the edges of G contains a monochromatic copy of K_l?\n\n**Answer: YES** (Folkman 1970 for k=2, Nešetřil-Rödl 1976 for general k)\n\nSuch graphs are called **Folkman graphs**. The key insight is that Ramsey-type forcing can occur without large clique substructures.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Graph Basics:** Define cliques, K_n-free graphs using SimpleGraph\n\n2. **Edge Colorings:** Define k-colorings and monochromatic subgraphs\n\n3. **Ramsey Property:** HasRamseyProperty and ErdosHajnalQuestion\n\n4. **Folkman Graphs:** IsFolkmanGraph, FolkmanNumber definitions\n\n5. **Historical Axioms:** folkman_1970 and nesetril_rodl_1976\n\n6. **Main Theorem:** erdos_924 = nesetril_rodl_1976",
+    "proofStrategy": "The formalization builds from basic graph theory to the main result in layers: (1) Define cliques and K_n-freeness using Mathlib's SimpleGraph, (2) Define edge colorings as functions G.edgeSet → Fin k, (3) Construct monochromatic subgraphs (color classes) as SimpleGraph instances with verified symmetry and looplessness, (4) Define the Ramsey property and Erdős-Hajnal question, (5) Axiomatize Folkman's 1970 theorem (k=2) and the Nešetřil-Rödl 1976 theorem (general k), (6) Prove erdos_924 = nesetril_rodl_1976. The summary theorem combines all three key results (general, k=2, and f(3;2) existence).",
     "keyInsights": [
-      "**Ramsey Without Density:** Complete graphs trivially have the Ramsey property. Folkman graphs achieve it while avoiding large cliques.",
-      "**Folkman Numbers:** f(3; 2) = 786 - K_4-free graphs forcing monochromatic triangles",
-      "**Hales-Jewett Connection:** Nešetřil-Rödl proof uses Hales-Jewett theorem",
-      "**Shift Graph Construction:** Folkman's original proof used shift graphs",
-      "**Applications:** Bounds on Ramsey numbers, structural Ramsey theory"
+      "**Ramsey without density**: Complete graphs trivially have the Ramsey property by being large enough. Folkman graphs achieve the same forcing while keeping ω(G) ≤ l — demonstrating that Ramsey phenomena arise from graph structure, not mere size or density.",
+      "**Folkman numbers are enormous**: f(3; 2) = 786 compared to R(3,3) = 6. The 'price of avoiding K_4' is 130x more vertices. For larger parameters, Folkman numbers grow as towers of exponentials.",
+      "**Hales-Jewett connection**: The Nešetřil-Rödl proof embeds clique structure into combinatorial lines in high-dimensional cubes [m]^n, using Hales-Jewett to guarantee monochromatic combinatorial lines in any coloring.",
+      "**Shift graph construction**: Folkman's original proof used shift graphs — vertices are l-element subsets with adjacency from interlacing. This controls clique size (via pigeonhole on minimum elements) while the ordered structure forces Ramsey properties.",
+      "**Structural Ramsey theory**: This result is foundational to the broader program of understanding which forbidden subgraph constraints are compatible with Ramsey-type forcing."
     ]
   },
   "sections": [
     {
       "id": "graph-basics",
       "title": "Basic Graph Concepts",
-      "summary": "completeGraph, IsCliqueOfSize, IsCliqueFree definitions",
+      "summary": "completeGraph via ⊤, IsCliqueOfSize via Finset/IsClique, IsCliqueFree, ContainsClique",
       "startLine": 36,
       "endLine": 67
     },
     {
       "id": "edge-colorings",
       "title": "Edge Colorings",
-      "summary": "EdgeColoring, MonochromaticSubgraph, HasMonochromaticClique",
+      "summary": "EdgeColoring as G.edgeSet → Fin k, MonochromaticSubgraph with symm/loopless proofs, HasMonochromaticClique",
       "startLine": 69,
       "endLine": 104
     },
     {
       "id": "ramsey-property",
       "title": "The Ramsey Property",
-      "summary": "HasRamseyProperty, ErdosHajnalQuestion definitions",
+      "summary": "HasRamseyProperty (∀ colorings, ∃ monochromatic K_l), ErdosHajnalQuestion (∃ K_{l+1}-free with Ramsey property)",
       "startLine": 106,
       "endLine": 125
     },
     {
       "id": "folkman-graphs",
       "title": "Folkman Graphs",
-      "summary": "IsFolkmanGraph, FolkmanNumber definitions",
+      "summary": "IsFolkmanGraph = IsCliqueFree ∧ HasRamseyProperty, FolkmanNumber via Nat.find",
       "startLine": 127,
       "endLine": 145
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "summary": "folkman_1970, nesetril_rodl_1976 axioms",
+      "summary": "folkman_1970 axiom (k=2), nesetril_rodl_1976 axiom (general k ≥ 2)",
       "startLine": 147,
       "endLine": 165
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "f(3;2) bounds and exact value",
+      "summary": "FolkmanNumber_3_2, graham_upper_bound (≤ 941), folkman_3_2_exact (= 786)",
       "startLine": 167,
       "endLine": 196
     },
     {
       "id": "ramsey-connection",
       "title": "Connection to Ramsey Theory",
-      "summary": "Comparison with classical Ramsey numbers",
+      "summary": "RamseyNumber definition, folkman_vs_ramsey comparison",
       "startLine": 198,
       "endLine": 220
     },
     {
       "id": "proof-techniques",
       "title": "Proof Techniques",
-      "summary": "Hales-Jewett, partite construction, shift graphs",
+      "summary": "Hales-Jewett method, partite construction, shift graphs, GeneralizedFolkmanNumber",
       "startLine": 222,
-      "endLine": 245
+      "endLine": 265
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_924_summary, erdos_924, erdos_924_answer theorems",
+      "summary": "erdos_924_summary (proved), erdos_924 = nesetril_rodl_1976 (proved), erdos_924_answer (proved)",
       "startLine": 268,
-      "endLine": 321
+      "endLine": 317
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #924 asked whether K_{l+1}-free graphs can force monochromatic K_l in every k-coloring. The answer is YES, proved by Folkman (1970) for k=2 and Nešetřil-Rödl (1976) for general k. Such graphs are called Folkman graphs, and the minimum vertex count is called the Folkman number.",
-    "implications": "**Ramsey Theory Connections**\n\n1. **Structural Ramsey Theory:** Shows Ramsey-type phenomena don't require dense structures\n\n2. **Folkman Numbers:** Active research on computing exact values (e.g., f(3;2) = 786)\n\n3. **Coloring Algorithms:** Implications for graph coloring complexity\n\n4. **Hypergraph Extensions:** Results extend to r-uniform hypergraphs\n\n5. **Bounds on Ramsey Numbers:** Provides new approaches to Ramsey number estimation",
+    "summary": "Erdős Problem #924 asked whether K_{l+1}-free graphs can force monochromatic K_l in every k-coloring of edges. The answer is YES, proved by Folkman (1970) for k=2 and Nešetřil-Rödl (1976) for general k. The formalization captures the complete solution: erdos_924 is defined directly as nesetril_rodl_1976, and a summary theorem combines the general result, Folkman's special case, and f(3;2) existence.",
+    "implications": "This result is foundational to structural Ramsey theory — the study of which combinatorial structures are Ramsey. It shows that Ramsey-type phenomena are not artifacts of having dense subgraphs (like complete graphs) but can emerge from carefully constructed sparse graphs. The Folkman numbers f(l;k) provide quantitative measures of the 'cost' of avoiding large cliques while maintaining Ramsey forcing. Applications extend to bounds on Ramsey numbers, graph coloring complexity, hypergraph extensions (r-uniform hypergraph Folkman numbers), and the broader theory of partition regularity.",
     "openQuestions": [
-      "Exact values of Folkman numbers for larger parameters?",
-      "Explicit constructions of small Folkman graphs?",
-      "Algorithmic complexity of recognizing Folkman graphs?",
-      "Bounds on vertex-Folkman numbers?",
-      "Online Ramsey theory analogues?"
+      "What are exact Folkman numbers for larger parameters (e.g., f(4; 2), f(3; 3))?",
+      "Can explicit, efficiently constructible Folkman graphs with near-optimal vertex count be found?",
+      "What is the algorithmic complexity of recognizing Folkman graphs?",
+      "How do vertex-Folkman numbers (forcing monochromatic K_l in vertex colorings) compare?",
+      "Can online Ramsey theory analogues be established for Folkman-type problems?"
     ]
   }
 }
