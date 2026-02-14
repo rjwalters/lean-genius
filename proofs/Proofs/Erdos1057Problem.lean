@@ -880,3 +880,175 @@ theorem small_carmichaels_three_factors :
 theorem C_ge_one_above_561 (x : ℕ) (hx : x ≥ 561) : C x ≥ 1 := by
   calc C x ≥ C 561 := C_mono 561 x hx
     _ ≥ 1 := C_561_pos
+
+/-
+## Additional Carmichael Number Verifications
+-/
+
+/-- 10585 = 5 × 29 × 73 is a Carmichael number -/
+theorem carmichael_10585 : IsCarmichael 10585 := by
+  refine ⟨by norm_num, by native_decide, ?_, ?_⟩
+  · rw [Nat.squarefree_iff_prime_squarefree]
+    intro p hp hp2
+    have hpdvd : p ∣ 10585 := dvd_trans (dvd_mul_left p p) hp2
+    have hpf : p ∈ Nat.primeFactors 10585 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 10585 = {5, 29, 73} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    rcases hpf with rfl | rfl | rfl <;> omega
+  · intro p hp hpdvd
+    have hpf : p ∈ Nat.primeFactors 10585 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 10585 = {5, 29, 73} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    -- Need: 4 | 10584, 28 | 10584, 72 | 10584
+    rcases hpf with rfl | rfl | rfl <;> norm_num
+
+/-- 15841 = 7 × 31 × 73 is a Carmichael number -/
+theorem carmichael_15841 : IsCarmichael 15841 := by
+  refine ⟨by norm_num, by native_decide, ?_, ?_⟩
+  · rw [Nat.squarefree_iff_prime_squarefree]
+    intro p hp hp2
+    have hpdvd : p ∣ 15841 := dvd_trans (dvd_mul_left p p) hp2
+    have hpf : p ∈ Nat.primeFactors 15841 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 15841 = {7, 31, 73} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    rcases hpf with rfl | rfl | rfl <;> omega
+  · intro p hp hpdvd
+    have hpf : p ∈ Nat.primeFactors 15841 :=
+      Nat.mem_primeFactors.mpr ⟨hp, hpdvd, by norm_num⟩
+    have : Nat.primeFactors 15841 = {7, 31, 73} := by native_decide
+    rw [this] at hpf
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpf
+    -- Need: 6 | 15840, 30 | 15840, 72 | 15840
+    rcases hpf with rfl | rfl | rfl <;> norm_num
+
+/-
+## Deeper Number-Theoretic Properties
+-/
+
+/-- n - 1 is even for any Carmichael number (immediate from oddness) -/
+theorem carmichael_pred_even (n : ℕ) (h : IsCarmichael n) : 2 ∣ (n - 1) := by
+  have hodd := carmichael_odd n h
+  have hgt := carmichael_gt_one n h
+  obtain ⟨k, hk⟩ := hodd
+  have : n - 1 = 2 * k := by omega
+  exact ⟨k, this⟩
+
+/-- For a Carmichael number, (n-1) is divisible by every (p-1) where p is a prime factor.
+    This is a restatement using primeFactors membership. -/
+theorem carmichael_korselt_via_primeFactors (n : ℕ) (h : IsCarmichael n)
+    (p : ℕ) (hp : p ∈ n.primeFactors) : (p - 1) ∣ (n - 1) := by
+  have hprime := (Nat.mem_primeFactors.mp hp).1
+  have hpdvd := (Nat.mem_primeFactors.mp hp).2.1
+  exact carmichael_korselt_dvd n h p hprime hpdvd
+
+/-- The smallest prime factor of a Carmichael number is at most the cube root.
+    Since n has ≥3 distinct prime factors p₁ < p₂ < p₃, and n ≥ p₁·p₂·p₃ ≥ p₁³,
+    we get p₁ ≤ n^{1/3}. Stated as: p₁³ ≤ n. -/
+theorem carmichael_smallest_prime_cube_le (n : ℕ) (h : IsCarmichael n) (p : ℕ)
+    (hp : p.Prime) (hpn : p ∣ n)
+    (hmin : ∀ q : ℕ, q.Prime → q ∣ n → p ≤ q) :
+    p ^ 3 ≤ n := by
+  -- n has ≥ 3 prime factors
+  have h3 := carmichael_at_least_3_primes n h
+  have hsq := carmichael_squarefree n h
+  -- n = product of prime factors, and there are ≥ 3 of them
+  -- Since n is squarefree, n = ∏ p in n.primeFactors, p
+  have hprod := (Nat.prod_primeFactors_of_squarefree hsq).symm
+  -- There exist at least 3 distinct primes dividing n
+  -- We use: p ≤ every prime factor, and there are ≥ 3 factors, each ≥ p
+  -- So n = ∏ primes ≥ p^3
+  have hcard := h3
+  -- Product of ≥ 3 elements each ≥ p is ≥ p^3
+  rw [hprod]
+  calc p ^ 3 = p * p * p := by ring
+    _ ≤ ∏ q ∈ n.primeFactors, q := by
+        -- We need: product of n.primeFactors ≥ p * p * p
+        -- Each factor q ∈ n.primeFactors satisfies q ≥ p (by hmin)
+        -- And there are ≥ 3 factors
+        -- Strategy: take 3 elements from primeFactors, each ≥ p
+        obtain ⟨S, hS_sub, hS_card⟩ := Finset.exists_subset_card_le hcard
+        -- S ⊆ n.primeFactors with |S| ≥ 3, pick 3 from S
+        obtain ⟨T, hT_sub, hT_card⟩ := Finset.exists_subset_card_le (show 3 ≤ S.card from hS_card)
+        have hT_pf : T ⊆ n.primeFactors := Finset.Subset.trans hT_sub hS_sub
+        -- Each element of T is ≥ p
+        have hT_ge_p : ∀ q ∈ T, p ≤ q := by
+          intro q hq
+          have hqpf := hT_pf hq
+          have hqprime := (Nat.mem_primeFactors.mp hqpf).1
+          have hqdvd := (Nat.mem_primeFactors.mp hqpf).2.1
+          exact hmin q hqprime hqdvd
+        -- Product of T ≥ p^3 (since |T| ≥ 3 and each element ≥ p ≥ 2)
+        have hp_pos : p ≥ 1 := by have := hp.two_le; omega
+        calc p * p * p ≤ ∏ q ∈ T, q := by
+              -- We need a 3-element subset. Since |T| ≥ 3, pick exactly 3.
+              obtain ⟨U, hU_sub, hU_card⟩ := Finset.exists_subset_card_le (show 3 ≤ T.card from hT_card)
+              have hU_card_eq : U.card = 3 := by
+                have h3le := hU_card
+                -- U ⊆ T ⊆ primeFactors, elements are distinct primes so U.card ≤ T.card
+                have hUle := Finset.card_le_card hU_sub
+                omega
+              -- Factor: get 3 elements a, b, c from U
+              -- Product of U ≥ p^3
+              have hU_ge : ∀ q ∈ U, p ≤ q := fun q hq => hT_ge_p q (hU_sub hq)
+              calc p * p * p
+                    ≤ ∏ q ∈ U, q := by
+                    -- ∏ q ∈ U, q ≥ ∏ q ∈ U, p = p^|U| = p^3
+                    have : ∏ q ∈ U, p ≤ ∏ q ∈ U, q :=
+                      Finset.prod_le_prod (fun q _ => by omega) (fun q hq => hU_ge q hq)
+                    have : ∏ q ∈ U, p = p ^ U.card := Finset.prod_const p
+                    rw [hU_card_eq] at this
+                    have hprod_const : p ^ 3 = p * p * p := by ring
+                    linarith
+                _ ≤ ∏ q ∈ T, q :=
+                    Finset.prod_le_prod_of_subset_of_one_le' hU_sub
+                      (fun q hq _ => by have := (Nat.mem_primeFactors.mp (hT_pf hq)).1.one_lt; omega)
+          _ ≤ ∏ q ∈ n.primeFactors, q :=
+              Finset.prod_le_prod_of_subset_of_one_le' hT_pf
+                (fun q hq _ => by have := (Nat.mem_primeFactors.mp hq).1.one_lt; omega)
+
+/-- For a Carmichael number n, the product of all (p-1) for prime p | n divides (n-1)^k
+    where k = number of prime factors. This follows from each (p-1) dividing (n-1). -/
+theorem carmichael_prod_pred_dvd_pow (n : ℕ) (h : IsCarmichael n) :
+    (∏ p ∈ n.primeFactors, (p - 1)) ∣ (n - 1) ^ n.primeFactors.card := by
+  apply Finset.prod_dvd_pow_card
+  intro p hp
+  exact carmichael_korselt_via_primeFactors n h p hp
+
+/-- The LCM of all (p-1) for prime p | n divides (n-1).
+    This is the "combined" Korselt condition. -/
+theorem carmichael_lcm_dvd (n : ℕ) (h : IsCarmichael n) :
+    n.primeFactors.lcm (fun p => p - 1) ∣ (n - 1) := by
+  apply Finset.lcm_dvd
+  intro p hp
+  exact carmichael_korselt_via_primeFactors n h p hp
+
+/-- Carmichael numbers satisfy a strong congruence: n ≡ 1 (mod lcm{p-1 : p | n}) -/
+theorem carmichael_mod_lcm (n : ℕ) (h : IsCarmichael n) :
+    n % (n.primeFactors.lcm (fun p => p - 1)) =
+    1 % (n.primeFactors.lcm (fun p => p - 1)) := by
+  have hgt := carmichael_gt_one n h
+  have hlcm := carmichael_lcm_dvd n h
+  obtain ⟨k, hk⟩ := hlcm
+  -- n - 1 = lcm * k, so n = lcm * k + 1
+  have hn : n = n.primeFactors.lcm (fun p => p - 1) * k + 1 := by omega
+  rw [hn]
+  rw [Nat.mul_add_mod]
+
+/-- Updated list of small Carmichael numbers (OEIS A002997, first 9) -/
+def smallCarmichaelsExtended : List ℕ :=
+  [561, 1105, 1729, 2465, 2821, 6601, 8911, 10585, 15841]
+
+/-- All nine listed Carmichael numbers are verified -/
+theorem nine_carmichaels_verified :
+    IsCarmichael 561 ∧ IsCarmichael 1105 ∧ IsCarmichael 1729 ∧
+    IsCarmichael 2465 ∧ IsCarmichael 2821 ∧ IsCarmichael 6601 ∧
+    IsCarmichael 8911 ∧ IsCarmichael 10585 ∧ IsCarmichael 15841 :=
+  ⟨carmichael_561, carmichael_1105, carmichael_1729, carmichael_2465,
+   carmichael_2821, carmichael_6601, carmichael_8911, carmichael_10585,
+   carmichael_15841⟩
