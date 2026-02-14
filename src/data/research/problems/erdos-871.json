@@ -1,37 +1,71 @@
 {
   "slug": "erdos-871",
   "title": "Erdős #871: Partitioning Additive Bases of Order 2",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "A",
   "path": "fast",
+  "leanFile": "proofs/Proofs/Erdos871Problem.lean",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Erdős #871: Partitioning Additive Bases of Order 2.",
-    "whyMatters": []
+    "formal": "Let A be an additive basis of order 2 with r_A(n) → ∞. Can A be partitioned into two disjoint additive bases of order 2? Answer: NO.",
+    "plain": "Erdős asked whether an additive basis A of order 2 with representation function tending to infinity can always be partitioned into two disjoint bases of order 2. Disproved by Larsen (2026).",
+    "whyMatters": [
+      "Tests limits of additive basis decomposition",
+      "Extends Erdős-Nathanson (1989) fixed-threshold counterexample",
+      "Disproved by Larsen & Larsen (2026) using AI-assisted construction",
+      "Reveals critical growth-rate gap between r(n)→∞ and c·log(n)"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Erdős-Nathanson (1989): FALSE for fixed threshold r_A(n) ≥ t",
+      "Erdős-Nathanson (1989): TRUE when r_A(n) > c·log(n) for large c",
+      "Larsen & Larsen (2026): FALSE even when r_A(n) → ∞",
+      "basis2_equiv: Two definitions of additive basis are equivalent",
+      "blocking_prevents_partition: Blocking property prevents partition",
+      "erdos_871_disproved: The conjecture is FALSE",
+      "larsen_subsumes_erdos_nathanson: Larsen result implies all fixed-threshold cases"
+    ],
+    "open": [
+      "Exact critical growth rate between ∞ and c·log(n) for partition possibility"
+    ],
+    "goal": "Formalize the disproof and supporting infrastructure"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-23T08:04:56.547Z",
+    "phase": "COMPLETE",
+    "since": "2026-02-14T13:00:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Verified Docker build passes, 0 sorries, 4 axioms",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - file compiles cleanly",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Erdos871Problem.lean compiles cleanly in Docker. 0 sorries, 4 axioms (deep construction results from Erdős-Nathanson 1989 and Larsen 2026). Includes representation function definitions, additive basis characterizations, structural properties of sumsets, blocking property framework, and the complete disproof chain.",
+    "builtItems": [
+      "repFunc: representation function r_A(n)",
+      "sumset: definition of A + A",
+      "IsAdditiveBasis2: additive basis of order 2",
+      "RepTendsToInfty: r_A(n) → ∞",
+      "RepEventuallyGe: r_A(n) ≥ t eventually",
+      "CanPartitionIntoBases: partition into two disjoint bases",
+      "HasBlockingProperty: blocking condition for partitions",
+      "basis2_equiv: equivalence of basis definitions",
+      "repTendsToInfty_implies_basis: growth implies basis",
+      "blocking_prevents_partition: blocking ⇒ no partition",
+      "erdos_871_disproved: ¬Erdos871Conjecture",
+      "growth_rate_dichotomy: gap between ∞ and c·log(n)",
+      "larsen_subsumes_erdos_nathanson: subsumption result"
+    ],
+    "insights": [
+      "4 axioms for deep constructions: erdos_nathanson_1989, erdos_nathanson_positive, larsen_counterexample, larsen_construction_blocking",
+      "Critical growth-rate gap: r(n)→∞ is insufficient but c·log(n) suffices",
+      "File compiles cleanly with Lean v4.26.0 Docker Mathlib"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -46,12 +80,17 @@
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Erdős, P. & Nathanson, M. (1989). Partitions of bases into disjoint unions of bases. Acta Arithmetica LII.",
+      "Larsen, D. & Larsen, M. (2026). Robust additive bases without minimal subbases. arXiv:2601.18507."
+    ],
+    "urls": [
+      "https://erdosproblems.com/871"
+    ],
     "mathlib": []
   },
   "started": "2026-01-23T08:04:56.547Z",
-  "lastUpdate": "2026-01-23T08:04:56.547Z",
+  "lastUpdate": "2026-02-14T13:00:00.000Z",
   "significance": 7,
   "tractability": 7
 }
