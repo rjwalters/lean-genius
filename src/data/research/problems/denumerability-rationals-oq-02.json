@@ -1,0 +1,38 @@
+{
+  "id": "denumerability-rationals-oq-02",
+  "title": "Cantor's Characterization of the Rationals",
+  "description": "ℚ is, up to order-isomorphism, the unique countable dense linear order without endpoints (Cantor 1895). Uses the back-and-forth method.",
+  "category": "order-theory",
+  "status": "completed",
+  "phase": "COMPLETE",
+  "difficulty": "intermediate",
+  "leanFile": "proofs/Proofs/DenumerabilityRationalsOQ02.lean",
+  "knowledge": {
+    "score": 10,
+    "tier": "COMPLETE",
+    "insights": [
+      "Mathlib provides Order.iso_of_countable_dense which directly proves the characterization",
+      "Order.PartialIso captures finite partial isomorphisms (building blocks of back-and-forth)",
+      "Order.exists_between_finsets is the key density extension lemma",
+      "exact_mod_cast and simp [Int.cast_le] have API differences in Docker Mathlib v4.26.0",
+      "For Fin n → ℚ strict monotonicity, use Nat.cast_lt.mpr with explicit show",
+      "For ↪o map_rel_iff', use change + exact Int.cast_le/Nat.cast_le"
+    ],
+    "builtItems": [
+      "cantor_characterization: α ≃o ℚ for any countable dense linear order without endpoints",
+      "countable_dense_linear_orders_iso: general form for any two such orders",
+      "integers_embed: ℤ ↪o ℚ (order embedding)",
+      "naturals_embed: ℕ ↪o ℚ (order embedding)",
+      "density_extension_lemma: key lemma for back-and-forth",
+      "midpoint_between, two_between, three_between: density propagation results",
+      "card_rat_aleph0, card_rat_eq_nat: cardinal arithmetic connections",
+      "no_integer_between: ℤ is not dense"
+    ],
+    "progressSummary": "COMPLETE: Full formalization of Cantor's characterization theorem. 0 sorries, 0 axioms. All theorems proved using Mathlib's Order.iso_of_countable_dense. Fixed API compatibility issues with Docker Mathlib v4.26.0.",
+    "nextSteps": []
+  },
+  "sorries": 0,
+  "axioms": 0,
+  "theorems": 18,
+  "completedAt": "2026-02-14T21:30:00Z"
+}
