@@ -18,7 +18,7 @@
     "type": "definition",
     "title": "Overlap Function",
     "content": "**overlap A B k** counts the pairs $(a, b) \\in A \\times B$ with $a - b = k$. This is the representation function of the difference set $A - B$ at the integer $k$.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The overlap function is a special case of the additive representation function $r_{A-B}(k) = |\\{(a,b) : a \\in A, b \\in B, a - b = k\\}|$. In additive combinatorics, such functions encode the additive structure of sets. By the Cauchy-Schwarz inequality, $\\sum_k r(k)^2 \\geq (\\sum_k r(k))^2 / |\\text{supp}|$, which gives the trivial lower bound. The implementation filters the Cartesian product $A \\times B$ for the constraint $a - b = k$, counting solutions via `.card`.",
     "relatedConcepts": ["representation function", "difference set", "Cauchy-Schwarz inequality", "additive structure"],
     "prerequisites": ["Finset.filter", "Finset.card", "Cartesian product"]
@@ -42,7 +42,7 @@
     "type": "definition",
     "title": "M(N): Minimum Maximum Overlap",
     "content": "**minMaxOverlap N** = $M(N) = \\min_{(A,B)} \\max_k \\text{overlap}(A, B, k)$ where the minimum is over all equal partitions $\\{A, B\\}$ of $\\{1, \\ldots, 2N\\}$. This is the central quantity of Erdős Problem #36.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The min-max nature of $M(N)$ makes this a two-player game: the partitioner tries to spread the differences evenly, while the adversary picks the most concentrated shift $k$. The asymptotic ratio $M(N)/N$ converges to a constant $c \\in (0.379, 0.381)$. Computing $M(N)$ exactly is feasible only for small $N$; the problem is NP-hard in general. Known exact values $(M(1)=1, M(2)=1, M(3)=2, M(4)=2, M(5)=3)$ were computed by exhaustive search.",
     "relatedConcepts": ["minimax optimization", "equal partition", "asymptotic density", "computational complexity"],
     "prerequisites": ["overlap", "maxOverlap"]
@@ -54,7 +54,7 @@
     "type": "conjecture",
     "title": "Erdős Problem #36: Asymptotic Constant",
     "content": "**erdos_36_limit_exists**: The limit $c = \\lim_{N \\to \\infty} M(N)/N$ exists and is positive. The problem asks to determine the exact value of $c$. Currently known: $0.379005 < c < 0.380876$.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "The existence of the limit follows from subadditivity arguments: $M(N)$ satisfies approximate subadditivity, so $M(N)/N$ converges by Fekete's lemma. The formalization states this as an $\\varepsilon$-$N_0$ definition of the limit. Determining the exact value of $c$ is the core open question. Erdős originally conjectured $c = 1/2$, which was spectacularly wrong — the true value is near $0.38$. Whether $c$ is algebraic, transcendental, or even rational remains completely unknown.",
     "relatedConcepts": ["Fekete's lemma", "subadditivity", "asymptotic limit", "ε-N₀ definition"],
     "prerequisites": ["minMaxOverlap", "real analysis"]
@@ -90,7 +90,7 @@
     "type": "theorem",
     "title": "White (2022): Best Known Lower Bound 0.379005",
     "content": "**white_lower**: $M(N)/N > 0.379005$ for all $N \\geq 1$. Obtained via elementary Fourier analysis reduced to a convex optimization program.",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "White's breakthrough (2022) extended Scherk's Fourier approach into a systematic convex optimization framework. The key idea: express the overlap constraint as a semidefinite program (SDP) in the Fourier coefficients of the partition function. The dual of this SDP gives a certificate proving the lower bound. The computation involves: (1) writing the overlap as a convolution, (2) bounding the convolution via Fourier coefficients, (3) optimizing the bound as a convex program. The result $c > 0.379005$ narrowed the gap to the upper bound to less than $0.002$. The method is 'elementary' in that it uses only discrete Fourier analysis on $\\mathbb{Z}$, not continuous methods.",
     "relatedConcepts": ["convex optimization", "semidefinite programming", "Fourier convolution", "duality"],
     "prerequisites": ["Fourier analysis on ℤ", "convex optimization"]
@@ -102,7 +102,7 @@
     "type": "theorem",
     "title": "Upper Bound: Haugland (2016) → TTT-Discover (2026)",
     "content": "**upper_bound**: $M(N)/N < 0.380876$. Originally Haugland (2016) proved $< 0.380926$ via step-function constructions. Improved to $0.380876$ by TTT-Discover LLM (2026).",
-    "significance": "critical",
+    "significance": "key",
     "mathContext": "Upper bounds come from explicit partition constructions. Haugland (2016) used piecewise-constant (step function) approximations to the optimal partition density. The idea: model the partition as a function $f : [0,1] \\to [0,1]$ (the density of $A$ near position $t \\cdot 2N$), then optimize $f$ to minimize the maximum overlap. Step functions with many pieces give increasingly tight bounds. TTT-Discover (an AI system, 2026) further optimized these constructions to $c < 0.380876$, narrowing the gap to White's lower bound to less than $0.002$. The near-coincidence of upper and lower bounds suggests the true value is close to $0.380$.",
     "relatedConcepts": ["explicit constructions", "step functions", "partition density", "AI-assisted optimization"],
     "prerequisites": ["minMaxOverlap"]
