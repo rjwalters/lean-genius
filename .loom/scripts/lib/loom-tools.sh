@@ -14,7 +14,7 @@
 _find_repo_root() {
     local dir="${1:-$(pwd)}"
     while [[ "$dir" != "/" ]]; do
-        if [[ -d "$dir/.git" ]] || [[ -f "$dir/.git" ]] || [[ -d "$dir/.loom" ]]; then
+        if [[ -d "$dir/.git" ]] || [[ -d "$dir/.loom" ]]; then
             echo "$dir"
             return 0
         fi
@@ -48,6 +48,19 @@ find_loom_tools() {
         if [[ -d "$loom_source/loom-tools/src/loom_tools" ]]; then
             LOOM_TOOLS_DIR="$loom_source/loom-tools"
             LOOM_TOOLS_SRC="$loom_source/loom-tools/src"
+            return 0
+        fi
+    fi
+
+    # Fallback: loom-source-path missing, try install-metadata.json
+    if [[ -f "$repo_root/.loom/install-metadata.json" ]]; then
+        local loom_source
+        loom_source="$(sed -n 's/.*"loom_source" *: *"\(.*\)".*/\1/p' "$repo_root/.loom/install-metadata.json")"
+        if [[ -n "$loom_source" ]] && [[ -d "$loom_source/loom-tools/src/loom_tools" ]]; then
+            LOOM_TOOLS_DIR="$loom_source/loom-tools"
+            LOOM_TOOLS_SRC="$loom_source/loom-tools/src"
+            # Recreate loom-source-path for future runs
+            echo "$loom_source" > "$repo_root/.loom/loom-source-path"
             return 0
         fi
     fi
