@@ -63,14 +63,14 @@
       "title": "Introduction and Imports",
       "startLine": 1,
       "endLine": 54,
-      "summary": "Module docstring explaining Hurwitz's theorem, its connection to normed division algebras, and the proof approach. Imports Mathlib modules for normed fields, inner product spaces, quaternions, matrices, and determinants."
+      "summary": "Module docstring explaining Hurwitz's theorem: $(x_1^2 + \\cdots + x_n^2)(y_1^2 + \\cdots + y_n^2) = z_1^2 + \\cdots + z_n^2$ holds iff $n \\in \\{1,2,4,8\\}$. Imports Mathlib modules for normed fields, inner product spaces, quaternions, matrices, and determinants."
     },
     {
       "id": "n-square-concept",
       "title": "The N-Square Identity Concept",
       "startLine": 56,
       "endLine": 89,
-      "summary": "Defines `normSq v = \\sum_i v_i^2` and the `NSquareIdentity n` structure: a bilinear multiplication `mul` satisfying $\\|a\\|^2 \\cdot \\|b\\|^2 = \\|\\text{mul}(a,b)\\|^2$ with left/right linearity and scalar homogeneity."
+      "summary": "Defines `normSq v = $\\sum_i v_i^2$` and the `NSquareIdentity n` structure: a bilinear multiplication `mul` satisfying $\\|a\\|^2 \\cdot \\|b\\|^2 = \\|\\text{mul}(a,b)\\|^2$ for all $a, b \\in \\mathbb{R}^n$, with left/right linearity and scalar homogeneity."
     },
     {
       "id": "trivial-identity",
@@ -112,7 +112,7 @@
       "title": "Helper Definitions and Orthonormality",
       "startLine": 317,
       "endLine": 451,
-      "summary": "Defines inner products $\\langle u, v \\rangle = \\sum_i u_i v_i$, standard basis vectors $e_i$, and derives orthonormality constraints from `NSquareIdentity 3`: the 9 vectors $m_{ij} = \\text{mul}(e_i, e_j)$ form orthonormal rows and columns."
+      "summary": "Defines $\\langle u, v \\rangle = \\sum_i u_i v_i$, standard basis $e_i$, proves $\\|e_i\\|^2 = 1$, $\\|v\\|^2 = \\langle v, v \\rangle$, and norm expansion $\\|a+b\\|^2 = \\|a\\|^2 + 2\\langle a,b \\rangle + \\|b\\|^2$. Derives that $m_{ij} = \\text{mul}(e_i, e_j)$ form orthonormal rows and columns."
     },
     {
       "id": "parseval-helpers",
