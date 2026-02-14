@@ -2,217 +2,181 @@
   {
     "id": "normSq-def",
     "proofId": "hurwitz-theorem",
+    "range": {
+      "startLine": 72,
+      "endLine": 74
+    },
     "type": "definition",
-    "range": { "startLine": 72, "endLine": 74 },
     "title": "Squared Norm Definition",
-    "content": "The squared Euclidean norm of a vector $v = (v_1, \\ldots, v_n)$ is defined as $\\|v\\|^2 = \\sum_{i=1}^n v_i^2$. This is the quantity that appears on both sides of an $n$-square identity: we seek bilinear $\\text{mul}$ with $\\|a\\|^2 \\cdot \\|b\\|^2 = \\|\\text{mul}(a,b)\\|^2$.",
-    "mathContext": "$\\text{normSq}(v) = \\sum_{i \\in \\text{Fin}\\; n} v_i^2$, formalized as a sum over `Fin n`",
-    "significance": "key",
-    "relatedConcepts": ["Euclidean norm", "sum of squares", "quadratic form"],
-    "prerequisites": ["Fin type", "Finset.sum"]
+    "content": "The squared Euclidean norm of a vector v = (v_1, ..., v_n) is defined as the sum of squares: ||v||^2 = v_1^2 + v_2^2 + ... + v_n^2. This is the quantity that appears in n-square identities.",
+    "significance": "key"
   },
   {
     "id": "nsquare-structure",
     "proofId": "hurwitz-theorem",
+    "range": {
+      "startLine": 76,
+      "endLine": 89
+    },
     "type": "definition",
-    "range": { "startLine": 76, "endLine": 89 },
     "title": "N-Square Identity Structure",
-    "content": "The central definition: an `NSquareIdentity n` consists of a bilinear multiplication `mul` satisfying $\\|a\\|^2 \\cdot \\|b\\|^2 = \\|\\text{mul}(a,b)\\|^2$, with explicit linearity and scalar homogeneity axioms. This structure captures the algebraic essence of normed composition algebras.",
-    "mathContext": "$\\text{NSquareIdentity}(n)$: bilinear $\\mu: \\mathbb{R}^n \\times \\mathbb{R}^n \\to \\mathbb{R}^n$ with $\\|a\\|^2 \\|b\\|^2 = \\|\\mu(a,b)\\|^2$. Equivalently, a composition algebra structure on $\\mathbb{R}^n$.",
-    "significance": "critical",
-    "relatedConcepts": ["composition algebra", "normed division algebra", "bilinear map", "norm-multiplicativity"],
-    "prerequisites": ["normSq", "bilinearity", "Fin type"]
+    "content": "An NSquareIdentity consists of a bilinear multiplication operation 'mul' such that ||a||^2 * ||b||^2 = ||mul(a,b)||^2. This is the formal statement that 'the product of two sums of n squares is again a sum of n squares with bilinear coordinates'.",
+    "significance": "critical"
   },
   {
     "id": "one-square",
     "proofId": "hurwitz-theorem",
+    "range": {
+      "startLine": 95,
+      "endLine": 100
+    },
     "type": "theorem",
-    "range": { "startLine": 102, "endLine": 119 },
-    "title": "The 1-Square Identity ($n = 1$)",
-    "content": "The trivial identity $x^2 \\cdot y^2 = (xy)^2$ corresponding to real number multiplication. Defined as `oneMul a b = (a_0 \\cdot b_0)` and proved via `simp` and `ring`. The simplest normed division algebra: $\\mathbb{R}$ itself.",
-    "mathContext": "$a_0^2 \\cdot b_0^2 = (a_0 b_0)^2$",
-    "significance": "supporting",
-    "relatedConcepts": ["real numbers", "scalar multiplication", "ring tactic"],
-    "prerequisites": ["normSq", "NSquareIdentity"]
+    "title": "The 1-Square Identity",
+    "content": "The trivial identity x^2 * y^2 = (xy)^2. This corresponds to the real numbers R as a 1-dimensional normed division algebra. The multiplication is just scalar multiplication.",
+    "significance": "supporting"
   },
   {
     "id": "brahmagupta",
     "proofId": "hurwitz-theorem",
+    "range": {
+      "startLine": 125,
+      "endLine": 133
+    },
     "type": "theorem",
-    "range": { "startLine": 121, "endLine": 145 },
-    "title": "Brahmagupta-Fibonacci Identity ($n = 2$)",
-    "content": "Discovered by Brahmagupta in 628 CE and rediscovered by Fibonacci in 1202: $(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$. This encodes complex multiplication: $|z_1 z_2|^2 = |z_1|^2 |z_2|^2$. The multiplication formula `twoMul a b = (a₀b₀ − a₁b₁, a₀b₁ + a₁b₀)` is exactly the real and imaginary parts of $(a_0 + a_1 i)(b_0 + b_1 i)$. Proved by `ring`.",
-    "mathContext": "$(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2$",
-    "significance": "key",
-    "relatedConcepts": ["complex multiplication", "Gaussian integers", "sum of two squares theorem", "ring tactic"],
-    "prerequisites": ["normSq", "NSquareIdentity", "complex numbers"]
+    "title": "Brahmagupta-Fibonacci Identity",
+    "content": "Discovered by Brahmagupta in 628 CE and rediscovered by Fibonacci in 1202. The identity (a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2 shows that the product of two sums of two squares is always another sum of two squares. The ring tactic expands both sides and verifies they're equal.",
+    "significance": "key"
+  },
+  {
+    "id": "four-mul-def",
+    "proofId": "hurwitz-theorem",
+    "range": {
+      "startLine": 146,
+      "endLine": 165
+    },
+    "type": "definition",
+    "title": "Quaternion Multiplication Formula",
+    "content": "This 4x4 formula encodes Hamilton's quaternion multiplication. For quaternions q = a0 + a1*i + a2*j + a3*k, the product formula involves all 16 pairwise products, but organized to give a quaternion result. The key relations are i^2 = j^2 = k^2 = ijk = -1.",
+    "significance": "key"
   },
   {
     "id": "euler-identity",
     "proofId": "hurwitz-theorem",
+    "range": {
+      "startLine": 146,
+      "endLine": 165
+    },
     "type": "theorem",
-    "range": { "startLine": 146, "endLine": 182 },
-    "title": "Euler's Four-Square Identity ($n = 4$)",
-    "content": "Euler discovered this in 1748, and Hamilton later recognized it as encoding quaternion multiplication. The `fourMul` definition gives all four components of the quaternion product $q_1 q_2$ using $i^2 = j^2 = k^2 = ijk = -1$. The `ring` tactic verifies the 64-term polynomial identity $\\|a\\|^2 \\|b\\|^2 = \\|\\text{fourMul}(a,b)\\|^2$ by expanding and simplifying both sides. This identity is also the key to Lagrange's proof that every positive integer is a sum of four squares.",
-    "mathContext": "$|q_1 q_2|^2 = |q_1|^2 |q_2|^2$ for $q_i \\in \\mathbb{H}$, where $q = a + bi + cj + dk$",
-    "significance": "key",
-    "relatedConcepts": ["Euler's identity", "Lagrange's four-square theorem", "ring tactic", "quaternion norm"],
-    "prerequisites": ["normSq", "NSquareIdentity", "quaternion algebra"]
+    "title": "Euler's Four-Square Identity",
+    "content": "Euler discovered this in 1748, nearly 100 years before Hamilton understood quaternions! Euler found the algebraic identity without knowing the underlying algebraic structure. The ring tactic verifies the 64-term polynomial identity by algebraic expansion.",
+    "significance": "key"
   },
   {
     "id": "quaternion-mathlib",
     "proofId": "hurwitz-theorem",
+    "range": {
+      "startLine": 183,
+      "endLine": 188
+    },
     "type": "insight",
-    "range": { "startLine": 183, "endLine": 225 },
-    "title": "Quaternion Connection and Mathlib Verification",
-    "content": "Mathlib's `Quaternion.normSq_mul` states $|q_1 q_2|^2 = |q_1|^2 |q_2|^2$ for the quaternion type, giving an alternative abstract verification of the 4-square identity. This bridges the explicit coordinate proof with Mathlib's algebraic infrastructure, and constructs `fourSquareIdentity : NSquareIdentity 4`.",
-    "mathContext": "`Quaternion.normSq_mul : normSq (q1 * q2) = normSq q1 * normSq q2`",
-    "significance": "supporting",
-    "relatedConcepts": ["Mathlib quaternions", "normSq_mul", "abstract vs coordinate proofs"],
-    "prerequisites": ["Mathlib.Algebra.Quaternion", "four_square_identity"]
+    "title": "Mathlib's Quaternion Verification",
+    "content": "Mathlib provides Quaternion.normSq_mul which proves that ||q1*q2||^2 = ||q1||^2 * ||q2||^2 for quaternions. This is exactly the 4-square identity stated in terms of the quaternion norm, giving an alternative verification.",
+    "significance": "supporting"
   },
   {
     "id": "octonion-axiom",
     "proofId": "hurwitz-theorem",
+    "range": {
+      "startLine": 200,
+      "endLine": 215
+    },
     "type": "concept",
-    "range": { "startLine": 244, "endLine": 316 },
-    "title": "8-Square Identity (Axiomatized)",
-    "content": "The existence of an 8-square identity is axiomatized since Degen's full identity (1818) has 480 terms and Mathlib lacks an octonion formalization. It corresponds to multiplication in the non-associative Cayley algebra $\\mathbb{O}$, the final step of the Cayley-Dickson construction. The octonions lose associativity but retain alternativity: $a(ab) = a^2 b$ and $(ab)b = ab^2$.",
-    "mathContext": "$\\exists \\mu : \\mathbb{R}^8 \\times \\mathbb{R}^8 \\to \\mathbb{R}^8$ bilinear with $\\|a\\|^2 \\|b\\|^2 = \\|\\mu(a,b)\\|^2$",
-    "significance": "key",
-    "relatedConcepts": ["octonions", "Cayley algebra", "non-associative algebra", "Degen's identity", "alternativity"],
-    "prerequisites": ["NSquareIdentity", "Cayley-Dickson construction"]
+    "title": "8-Square Identity Exists",
+    "content": "We state the existence of the 8-square identity as an axiom. The full formula (Degen's identity from 1818) has 8 output components, each a sum of 8 products of the 16 input variables - too complex to display here. It corresponds to octonion multiplication.",
+    "significance": "key"
   },
   {
-    "id": "n3-setup",
+    "id": "no-three-intuition",
     "proofId": "hurwitz-theorem",
-    "type": "technique",
-    "range": { "startLine": 317, "endLine": 451 },
-    "title": "Setup for $n = 3$ Impossibility",
-    "content": "Defines inner products, standard basis vectors $e_1, e_2, e_3$, and derives the orthonormality constraints that any hypothetical 3-square identity must satisfy. The 9 unit vectors $m_{ij} = \\text{mul}(e_i, e_j)$ form a $3 \\times 3$ matrix whose rows and columns are each orthonormal triples — an overdetermined system in $\\mathbb{R}^3$. The cross product obstruction gives intuition: $|a \\times b| = |a||b|\\sin\\theta \\neq |a||b|$ for non-perpendicular vectors.",
-    "mathContext": "From a hypothetical NSquareIdentity 3, the matrix $(m_{ij}) = (\\mu(e_i, e_j))$ satisfies: $\\langle m_{i\\cdot}, m_{i'\\cdot} \\rangle = \\delta_{ii'}$ (row orthonormality) and $\\langle m_{\\cdot j}, m_{\\cdot j'} \\rangle = \\delta_{jj'}$ (column orthonormality). This is $|a \\times b|^2 = |a|^2|b|^2 - (a \\cdot b)^2 \\neq |a|^2|b|^2$ in general (Lagrange identity).",
-    "significance": "key",
-    "relatedConcepts": ["cross product", "Lagrange identity", "Frobenius theorem", "orthonormal system", "standard basis"],
-    "prerequisites": ["NSquareIdentity", "inner product", "standard basis"]
-  },
-  {
-    "id": "ortho-triple-zero-ann",
-    "proofId": "hurwitz-theorem",
-    "type": "theorem",
-    "range": { "startLine": 491, "endLine": 580 },
-    "title": "Orthogonal to Orthonormal Triple is Zero",
-    "content": "Key lemma: In $\\mathbb{R}^3$, a vector orthogonal to all three vectors of an orthonormal basis must be zero. Proved via matrix invertibility: the $3 \\times 3$ matrix with orthonormal rows has $|\\det| = 1$, hence is invertible, so its kernel is trivial. This is the foundation for all subsequent Parseval arguments.",
-    "mathContext": "$\\langle w, v_i \\rangle = 0$ for all $i \\in \\{1,2,3\\} \\Rightarrow w = 0$ (since $[v_1|v_2|v_3]^T$ is invertible with $|\\det| = 1$)",
-    "significance": "critical",
-    "relatedConcepts": ["matrix invertibility", "orthogonal matrix", "determinant", "trivial kernel"],
-    "prerequisites": ["orthonormal basis", "Matrix.invertibleOfIsUnitDet", "determinant"]
-  },
-  {
-    "id": "parseval-identity-ann",
-    "proofId": "hurwitz-theorem",
-    "type": "theorem",
-    "range": { "startLine": 581, "endLine": 647 },
-    "title": "Parseval Identity in $\\mathbb{R}^3$",
-    "content": "For any orthonormal basis $\\{v_1, v_2, v_3\\}$ and any vector $w$: $\\|w\\|^2 = \\langle w, v_1 \\rangle^2 + \\langle w, v_2 \\rangle^2 + \\langle w, v_3 \\rangle^2$. This is the engine of the $n = 3$ impossibility proof, converting norm constraints into inner product equations.",
-    "mathContext": "$\\|w\\|^2 = \\sum_{i=1}^3 \\langle w, v_i \\rangle^2$ for orthonormal $\\{v_1, v_2, v_3\\}$",
-    "significance": "critical",
-    "relatedConcepts": ["Parseval's theorem", "orthonormal expansion", "Fourier coefficients", "Bessel's inequality"],
-    "prerequisites": ["inner product", "orthonormal basis", "normSq", "ortho_triple_zero"]
-  },
-  {
-    "id": "unit-ortho-pm",
-    "proofId": "hurwitz-theorem",
-    "type": "theorem",
-    "range": { "startLine": 648, "endLine": 678 },
-    "title": "Unit Vector Orthogonal to Two Equals $\\pm$ Third",
-    "content": "If $u$ is a unit vector orthogonal to two vectors of an orthonormal triple, then $u = \\pm v_3$. Follows from Parseval: $1 = 0 + 0 + \\langle u, v_3 \\rangle^2$, so $\\langle u, v_3 \\rangle = \\pm 1$, forcing $u = \\pm v_3$. This rigidity is what makes the $n = 3$ constraints overdetermined.",
-    "mathContext": "$\\|u\\| = 1,\\; \\langle u, v_1 \\rangle = \\langle u, v_2 \\rangle = 0 \\Rightarrow u = \\pm v_3$",
-    "significance": "key",
-    "relatedConcepts": ["uniqueness up to sign", "Parseval consequence", "orthogonal complement", "rigidity"],
-    "prerequisites": ["Parseval identity", "orthonormal basis"]
-  },
-  {
-    "id": "bilinear-parseval-ann",
-    "proofId": "hurwitz-theorem",
-    "type": "theorem",
-    "range": { "startLine": 679, "endLine": 793 },
-    "title": "Bilinear Parseval Identity",
-    "content": "Proves the bilinear (polarized) form of Parseval's identity: $\\langle u, w \\rangle = \\sum_i \\langle u, v_i \\rangle \\langle w, v_i \\rangle$ for an orthonormal basis $\\{v_i\\}$. This extends the quadratic Parseval identity via polarization and is used to derive inner product relations between the $m_{ij}$ vectors. The proof uses `linear_combination` for the algebraic manipulation.",
-    "mathContext": "$\\langle u, w \\rangle = \\sum_{i=1}^3 \\langle u, v_i \\rangle \\langle w, v_i \\rangle$ (polarized Parseval identity)",
-    "significance": "key",
-    "relatedConcepts": ["polarization identity", "bilinear form", "linear_combination tactic"],
-    "prerequisites": ["Parseval identity", "inner product bilinearity"]
-  },
-  {
-    "id": "n3-contradiction",
-    "proofId": "hurwitz-theorem",
-    "type": "technique",
-    "range": { "startLine": 798, "endLine": 1172 },
-    "title": "The $n = 3$ Contradiction: Core Argument",
-    "content": "The core impossibility argument spanning ~375 lines. From a hypothetical 3-square identity, the 9 unit vectors $m_{ij}$ satisfy: rows are orthonormal, columns are orthonormal, and bilinearity imposes cross-constraints. Parseval forces $m_{13} = \\pm m_{21}$ and $m_{23} = \\pm m_{11}$, but then column 3 orthogonality ($\\langle m_{13}, m_{23} \\rangle = 0$) requires $\\langle m_{21}, m_{11} \\rangle = 0$, which contradicts row 1/row 2 constraints.",
-    "mathContext": "Row orthonormality + column orthonormality + Parseval $\\Rightarrow m_{13} = \\pm m_{21},\\; m_{23} = \\pm m_{11}$. Then $\\langle m_{13}, m_{23} \\rangle = 0$ forces $\\langle m_{21}, m_{11} \\rangle = 0$, contradicting the overdetermined system.",
-    "significance": "critical",
-    "relatedConcepts": ["proof by contradiction", "overdetermined system", "sign constraints"],
-    "prerequisites": ["unit_ortho_pm_third", "bilinear Parseval", "orthonormality constraints"]
+    "range": {
+      "startLine": 200,
+      "endLine": 215
+    },
+    "type": "insight",
+    "title": "Why n=3 Fails: Intuition",
+    "content": "The cross product in R^3 has |a x b| = |a||b|sin(theta), which equals |a||b| only for perpendicular vectors. Parallel vectors give |a x b| = 0, violating the norm-multiplicativity requirement. No rearrangement can fix this - it's a fundamental obstruction.",
+    "significance": "key"
   },
   {
     "id": "no-three-theorem",
     "proofId": "hurwitz-theorem",
+    "range": {
+      "startLine": 244,
+      "endLine": 245
+    },
     "type": "theorem",
-    "range": { "startLine": 1173, "endLine": 1556 },
-    "title": "No 3-Square Identity Exists",
-    "content": "Final assembly of the $n = 3$ impossibility proof: `no_three_square_identity : NSquareIdentity 3 → False`. This ~380-line proof is the key original contribution, completing the case analysis over all sign combinations ($m_{13} = \\pm m_{21}$, $m_{23} = \\pm m_{11}$) and showing each leads to contradiction. The purely algebraic approach avoids topology entirely.",
-    "mathContext": "$\\text{NSquareIdentity}(3) \\to \\bot$: the $3 \\times 3$ matrix $(m_{ij})$ cannot simultaneously have orthonormal rows and orthonormal columns with bilinear structure",
-    "significance": "critical",
-    "relatedConcepts": ["impossibility proof", "case analysis", "Hamilton's failure", "Frobenius theorem"],
-    "prerequisites": ["n3-contradiction core", "Parseval identity", "ortho_triple_zero"]
+    "title": "No 3-Square Identity",
+    "content": "The key negative result: there is NO 3-square identity. Hamilton searched for 15 years before realizing he needed 4 dimensions. This theorem, proved by Hurwitz in 1898, explains why his search was doomed. The full proof requires representation theory or topology.",
+    "significance": "critical"
   },
   {
     "id": "admissible-set",
     "proofId": "hurwitz-theorem",
+    "range": {
+      "startLine": 251,
+      "endLine": 279
+    },
     "type": "definition",
-    "range": { "startLine": 1557, "endLine": 1558 },
     "title": "Admissible Dimensions",
-    "content": "`admissibleDimensions = {1, 2, 4, 8}`: the dimensions of the four normed division algebras, all powers of 2 from the Cayley-Dickson doubling.",
-    "mathContext": "$\\{1, 2, 4, 8\\} = \\{2^0, 2^1, 2^2, 2^3\\}$",
-    "significance": "key",
-    "relatedConcepts": ["powers of two", "Cayley-Dickson construction", "normed division algebras"],
-    "prerequisites": ["NSquareIdentity"]
+    "content": "The set {1, 2, 4, 8} contains exactly those n for which an n-square identity exists. These are the dimensions of the four normed division algebras: R, C, H (quaternions), and O (octonions).",
+    "significance": "critical"
   },
   {
     "id": "hurwitz-main",
     "proofId": "hurwitz-theorem",
+    "range": {
+      "startLine": 281,
+      "endLine": 315
+    },
     "type": "theorem",
-    "range": { "startLine": 1584, "endLine": 1592 },
     "title": "Hurwitz's Main Theorem",
-    "content": "The biconditional: `Nonempty(NSquareIdentity n) ↔ n ∈ {1, 2, 4, 8}`. The forward direction uses `hurwitz_only_if` (axiomatized for the general case beyond $n = 3$). The reverse direction is fully constructive, using the four explicit identities. This is the culmination of the 1679-line development.",
-    "mathContext": "$\\text{Nonempty}(\\text{NSquareIdentity}\\; n) \\Leftrightarrow n \\in \\{1, 2, 4, 8\\}$",
-    "significance": "critical",
-    "relatedConcepts": ["biconditional", "classification theorem", "constructive existence", "lagrange-four-squares"],
-    "prerequisites": ["identities_exist_for_admissible", "hurwitz_only_if", "admissibleDimensions"]
+    "content": "The complete biconditional: n-square identities exist if and only if n is in {1, 2, 4, 8}. The 'if' direction is constructive (we built the identities). The 'only if' direction is the hard part, requiring impossibility proofs for n = 3, 5, 6, 7, etc.",
+    "significance": "critical"
   },
   {
     "id": "division-algebras-enum",
     "proofId": "hurwitz-theorem",
+    "range": {
+      "startLine": 321,
+      "endLine": 323
+    },
     "type": "definition",
-    "range": { "startLine": 1618, "endLine": 1629 },
-    "title": "The Four Division Algebras and Dimension Function",
-    "content": "Inductive type enumerating the four normed division algebras: $\\mathbb{R}$ (dim 1), $\\mathbb{C}$ (dim 2), $\\mathbb{H}$ (dim 4), $\\mathbb{O}$ (dim 8), with a dimension function mapping each to its size. The Cayley-Dickson construction builds each from the previous by doubling, and each step sacrifices an algebraic property.",
-    "mathContext": "$\\text{DivisionAlgebra} = \\{\\mathbb{R}, \\mathbb{C}, \\mathbb{H}, \\mathbb{O}\\}$ with $\\dim(\\mathbb{R}) = 1, \\dim(\\mathbb{C}) = 2, \\dim(\\mathbb{H}) = 4, \\dim(\\mathbb{O}) = 8$",
-    "significance": "key",
-    "relatedConcepts": ["Cayley-Dickson construction", "normed division algebra", "inductive type", "classification"],
-    "prerequisites": ["hurwitz_theorem"]
+    "title": "The Four Division Algebras",
+    "content": "An enumeration of the only four finite-dimensional normed division algebras over R: the reals (1D), complex numbers (2D), quaternions (4D), and octonions (8D). The Cayley-Dickson construction builds each from the previous by 'doubling'.",
+    "significance": "key"
+  },
+  {
+    "id": "dimension-function",
+    "proofId": "hurwitz-theorem",
+    "range": {
+      "startLine": 325,
+      "endLine": 334
+    },
+    "type": "definition",
+    "title": "Dimension Function",
+    "content": "Maps each division algebra to its dimension: 1, 2, 4, or 8. Note these are all powers of 2 - this is no coincidence, as the Cayley-Dickson construction doubles dimension at each step.",
+    "significance": "supporting"
   },
   {
     "id": "physical-significance",
     "proofId": "hurwitz-theorem",
+    "range": {
+      "startLine": 383,
+      "endLine": 393
+    },
     "type": "insight",
-    "range": { "startLine": 1640, "endLine": 1679 },
-    "title": "Physical and Mathematical Significance",
-    "content": "The four algebras appear throughout physics: $\\mathbb{R}$ for classical mechanics, $\\mathbb{C}$ for quantum mechanics, $\\mathbb{H}$ for 3D rotations via $SU(2)$ and spacetime Lorentz transformations, $\\mathbb{O}$ for exceptional Lie groups ($G_2, F_4, E_6, E_7, E_8$) and string theory. The parallelizable spheres $S^0, S^1, S^3, S^7$ give the topological counterpart (Bott-Milnor, Kervaire 1958).",
-    "mathContext": "$\\mathbb{R} \\to \\mathbb{C} \\to \\mathbb{H} \\to \\mathbb{O}$ corresponds to parallelizable $S^{n-1}$ with $n \\in \\{1, 2, 4, 8\\}$ (Bott-Milnor 1958)",
-    "significance": "supporting",
-    "relatedConcepts": ["parallelizable spheres", "Bott-Milnor theorem", "exceptional Lie groups", "gauge theory", "string theory"],
-    "prerequisites": ["DivisionAlgebra", "hurwitz_theorem"]
+    "title": "Physical Significance",
+    "content": "These four algebras appear throughout physics: R for classical mechanics, C for quantum mechanics, H for 3D rotations and special relativity, O for string theory and exceptional structures. The deep connection between these algebraic constraints and physical reality remains mysterious.",
+    "significance": "supporting"
   }
 ]
