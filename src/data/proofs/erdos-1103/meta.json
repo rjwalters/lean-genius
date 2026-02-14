@@ -104,6 +104,23 @@
       "summary": "Proves `SquarefreeSumset \\emptyset` (vacuous), subset monotonicity, and `squarefree_one`. Axiomatizes the singleton characterization: $\\text{SquarefreeSumset}\\{a\\} \\iff \\text{Squarefree}(2a)$."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "foundational",
+      "description": "Squarefreeness depends on the prime factorization structure. The infinitude of primes means the squarefree-sumset condition imposes constraints modulo p^2 for infinitely many primes simultaneously."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees primes in [n, 2n], providing density information relevant to the sieve methods used in van Doorn-Tao's lower bound for squarefree sumset growth."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The prime number theorem governs the density of primes, which determines the density of squarefree numbers (6/pi^2) via Euler's product formula and underpins the sieve estimates in the growth bounds."
+    }
+  ],
   "conclusion": {
     "summary": "The formalization captures Erdős Problem 1103 on squarefree sumsets with the main conjecture and state-of-the-art bounds by van Doorn–Tao and Konyagin. The open conjecture is stated as a definition (Prop), and deep results are axiomatized.",
     "implications": "Resolving whether exponential growth is necessary would illuminate the fundamental interaction between additive structure and multiplicative constraints in number theory, with connections to sieve methods, the distribution of squarefree numbers, and the geometry of numbers.",

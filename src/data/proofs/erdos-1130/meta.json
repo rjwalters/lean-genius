@@ -103,6 +103,18 @@
       "summary": "States `ErdosProblem1130`: $\\exists C > 0,\\, \\forall n \\ge 2,\\, \\forall P,\\, \\Upsilon(P) \\le C \\cdot \\log n$. This is the final $O(\\log n)$ statement combining all prior results."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "related",
+      "description": "Taylor's theorem provides the polynomial approximation framework that Lagrange interpolation generalizes. The Lebesgue function measures how much worse interpolation is compared to best polynomial approximation."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "The Lebesgue constant for interpolation is analogous to the Lebesgue constant for partial Fourier sums. Both measure operator norm growth and both achieve optimal O(log n) rates with appropriate node/coefficient choices."
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem 1130 is PROVED: the Υ functional grows as (2/π) log n + O(1). The formalization captures the InterpolationNodes structure, Lagrange basis, Lebesgue function, Υ functional, and three deep results (Erdős √n bound, sharp log bound, de Boor–Pinkus equioscillation characterization).",
     "implications": "The result governs optimal interpolation node placement: the Lebesgue function's subinterval behavior matches its global behavior up to constants. This connects to the Runge phenomenon (why equidistant nodes fail), confirms Chebyshev-type nodes are near-optimal even for subinterval measures, and informs practical numerical analysis algorithms.",

@@ -70,6 +70,23 @@
       "summary": "Harmonic tail divergence (enough sum available), reciprocal sum upper/lower bounds per block, spreading constraint (max endpoint ≥ k for k blocks), and the easier problem without non-adjacency (Erdős–Graham remark)."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "foundational",
+      "description": "The divergence of the harmonic series is the necessary condition ensuring enough reciprocal sum is available from any tail of N. Without this, the target sum 1 might be unreachable from large intervals."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "Geometric series provide comparison bounds for harmonic subsums over intervals: sum_{n=a}^{b} 1/n is bounded by (b-a+1)/a, connecting interval block reciprocal sums to geometric decay estimates."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees primes in [n,2n], relevant to the Hickerson-Montgomery construction which uses intervals near powers of 2. Prime locations constrain which intervals can achieve exact rational sums."
+    }
+  ],
   "conclusion": {
     "summary": "Formalizes Erdős Problem #289: decomposing 1 as a sum of reciprocals from disjoint non-adjacent interval blocks. The formalization captures the IntervalBlock structure, non-adjacency constraint, rational reciprocal sums, and the existential threshold conjecture. Key supporting results include the Hickerson–Montgomery example (5 blocks summing to 2), harmonic tail divergence, reciprocal sum bounds, and the spreading constraint.",
     "implications": "A resolution would advance Egyptian fraction theory by revealing whether the non-adjacency constraint fundamentally limits unit fraction decompositions. A positive answer would require new constructive techniques for rational approximation with constrained harmonic sums. Connection to Croot's work on the Erdős–Graham conjecture suggests possible approaches via dense subset methods.",

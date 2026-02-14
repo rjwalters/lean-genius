@@ -49,6 +49,23 @@
     {"id": "roots-of-unity", "title": "Roots of Unity Connection", "startLine": 164, "endLine": 190, "summary": "Proves exp(2πik/n)^n = 1 via exp_nat_mul, field_simp to cancel n, then exp(k · 2πi) = (exp(2πi))^k = 1^k = 1. Uses Complex.exp_two_pi_mul_I."},
     {"id": "special-cases", "title": "Special Cases and Applications", "startLine": 191, "endLine": 240, "summary": "n = 0 (trivial: x^0 = 1) and n = 1 (identity) special cases. Concluding discussion of applications in signal processing, electrical engineering, physics, and number theory. Final #check exports."}
   ],
+  "crossReferences": [
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "De Moivre's theorem is equivalent to Euler's formula e^{iθ} = cos θ + i sin θ raised to the nth power. Euler's identity e^{iπ} + 1 = 0 is the special case θ = π, n = 1."
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "De Moivre's theorem generates multiple-angle formulas (cos 2θ, cos 3θ, etc.) which connect to the law of cosines through Chebyshev polynomials."
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "related",
+      "description": "De Moivre's theorem shows cos(θ/3) satisfies a cubic equation, providing the algebraic framework for proving the impossibility of angle trisection by ruler and compass."
+    }
+  ],
   "conclusion": {
     "summary": "De Moivre's theorem is proved via Euler's formula and the exponential power rule, with extensions to integer exponents, multiple-angle corollaries, and a roots-of-unity connection. The proof demonstrates how the exponential representation of complex numbers reduces trigonometric identities to elementary algebraic manipulations.",
     "implications": "De Moivre's theorem is the algebraic engine behind the discrete Fourier transform (DFT/FFT), AC circuit phasor analysis, and cyclotomic field theory. The integer extension gives a complete description of the unit circle group structure, while the multiple-angle corollaries generate all Chebyshev polynomials.",
