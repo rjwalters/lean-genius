@@ -48,6 +48,23 @@
     {"id": "converse", "title": "Converse and Ptolemy's Inequality", "startLine": 209, "endLine": 231, "summary": "The converse: $AC \\cdot BD = AB \\cdot CD + AD \\cdot BC$ implies concyclicity. Ptolemy's inequality $AC \\cdot BD \\le AB \\cdot CD + AD \\cdot BC$ holds for all four-point configurations, with equality iff concyclic. Related to the cross-ratio being real and positive."},
     {"id": "history", "title": "Historical Context: The Almagest", "startLine": 233, "endLine": 268, "summary": "Historical discussion of chord tables ($\\text{chord}(\\theta) = d\\sin(\\theta/2)$), the equivalence to the sine addition formula $\\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta$, Ptolemy's legacy in astronomy (al-Khwarizmi, al-Biruni), and `#check` verification of all five exported theorems."}
   ],
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "Ptolemy's theorem generalizes the Pythagorean theorem: when the cyclic quadrilateral is a rectangle, AC*BD = AB*CD + BC*DA reduces to the Pythagorean relation on the diagonal."
+    },
+    {
+      "targetId": "herons-formula",
+      "relationship": "related",
+      "description": "Both are foundational classical geometry results. Ptolemy's theorem (c. 150 AD) and Heron's formula (c. 60 AD) provide algebraic tools for geometric computation from antiquity."
+    },
+    {
+      "targetId": "triangle-angle-sum",
+      "relationship": "related",
+      "description": "The inscribed angle theorem, closely related to the triangle angle sum, underpins the proof that opposite angles in a cyclic quadrilateral sum to 180 degrees."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization verifies Ptolemy's Theorem (Wiedijk #95) using Mathlib's cospherical geometry framework. It provides the main theorem, three alternative formulations, a diagonal-product corollary, three numerical examples (including the Pythagorean theorem as a special case), and discusses the converse characterization and Ptolemy's inequality.",
     "implications": "Ptolemy's theorem bridges ancient and modern mathematics. It yields the trigonometric addition formulas (the foundation of trigonometry), generalizes the Pythagorean theorem, and characterizes cyclic quadrilaterals. The complex-number proof reveals connections to conformal mappings and inversive geometry. Ptolemy's inequality generalizes to higher dimensions and is related to the positive semidefiniteness of the Cayley-Menger determinant.",
