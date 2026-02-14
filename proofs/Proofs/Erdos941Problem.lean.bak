@@ -1,27 +1,4 @@
 /-
-This file was edited by Aristotle (https://aristotle.harmonic.fun).
-
-Lean version: leanprover/lean4:v4.24.0
-Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
-This project request had uuid: cd2c6b62-599e-4c7f-a20c-359c4f0947c1
-
-To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
-Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
-
-The following was proved by Aristotle:
-
-- theorem powerful_iff_alt (n : ℕ) (hn : n > 0) :
-    IsPowerful n ↔ IsPowerfulAlt n
-
-- theorem powerful_mul (m n : ℕ) (hm : IsPowerful m) (hn : IsPowerful n) :
-    IsPowerful (m * n)
-
-- theorem _2_exceptional_without_zero :
-    ¬(∃ a b c : ℕ, a > 0 ∧ b > 0 ∧ c > 0 ∧
-       IsPowerful a ∧ IsPowerful b ∧ IsPowerful c ∧ 2 = a + b + c)
--/
-
-/-
   Erdős Problem #941: Sums of Three Powerful Numbers
 
   Source: https://erdosproblems.com/941
@@ -54,7 +31,6 @@ import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Finset.Basic
 
-
 open Nat
 
 namespace Erdos941
@@ -75,29 +51,7 @@ def IsPowerfulAlt (n : ℕ) : Prop :=
 /-- The two definitions are equivalent. -/
 theorem powerful_iff_alt (n : ℕ) (hn : n > 0) :
     IsPowerful n ↔ IsPowerfulAlt n := by
-  refine' ⟨ _, _ ⟩;
-  · intro h;
-    -- Let $n = \prod_{p \mid n} p^{e_p}$ be the prime factorization of $n$.
-    obtain ⟨f, hf⟩ : ∃ f : ℕ → ℕ, (∀ p, Nat.Prime p → p ∣ n → f p ≥ 2) ∧ n = ∏ p ∈ Nat.primeFactors n, p ^ f p := by
-      use fun p => Nat.factorization n p;
-      refine' ⟨ _, Eq.symm <| Nat.factorization_prod_pow_eq_self hn.ne' ⟩;
-      intro p pp dp; have := h.2 p pp dp; rw [ ← Nat.factorization_le_iff_dvd ] at this <;> aesop;
-    -- We can write $f(p) = 2a_p + 3b_p$ for some non-negative integers $a_p$ and $b_p$.
-    obtain ⟨a, b, ha⟩ : ∃ a b : ℕ → ℕ, (∀ p, Nat.Prime p → p ∣ n → f p = 2 * a p + 3 * b p) := by
-      use fun p => if f p % 2 = 0 then f p / 2 else (f p - 3) / 2, fun p => if f p % 2 = 0 then 0 else 1;
-      grind;
-    -- Let $a = \prod_{p \mid n} p^{a_p}$ and $b = \prod_{p \mid n} p^{b_p}$.
-    set a_val := ∏ p ∈ Nat.primeFactors n, p ^ a p
-    set b_val := ∏ p ∈ Nat.primeFactors n, p ^ b p;
-    -- Then $n = a^2 b^3$.
-    have h_eq : n = a_val ^ 2 * b_val ^ 3 := by
-      rw [ hf.2, ← Finset.prod_pow, ← Finset.prod_pow ];
-      rw [ ← Finset.prod_mul_distrib ] ; exact Finset.prod_congr rfl fun p hp => by rw [ ha p ( Nat.prime_of_mem_primeFactors hp ) ( Nat.dvd_of_mem_primeFactors hp ) ] ; ring;
-    exact ⟨ a_val, b_val, Finset.prod_pos fun p hp => pow_pos ( Nat.Prime.pos ( Nat.prime_of_mem_primeFactors hp ) ) _, Finset.prod_pos fun p hp => pow_pos ( Nat.Prime.pos ( Nat.prime_of_mem_primeFactors hp ) ) _, h_eq ⟩;
-  · unfold Erdos941.IsPowerfulAlt Erdos941.IsPowerful;
-    simp +zetaDelta at *;
-    intro x hx y hy h; subst h; simp_all +decide [ Nat.Prime.dvd_mul ] ;
-    intro p pp dp; rcases dp with ( dp | dp ) <;> [ exact dvd_mul_of_dvd_left ( pow_dvd_pow_of_dvd ( pp.dvd_of_dvd_pow dp ) 2 ) _; exact dvd_mul_of_dvd_right ( pow_dvd_pow_of_dvd ( pp.dvd_of_dvd_pow dp ) 2 |> fun h => dvd_trans h ( pow_dvd_pow _ <| show 3 ≥ 2 by decide ) ) _ ] ;
+  sorry
 
 /-- 1 is powerful (vacuously). -/
 theorem one_is_powerful : IsPowerful 1 := by
@@ -109,10 +63,6 @@ theorem one_is_powerful : IsPowerful 1 := by
       omega)
     omega
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-numerals are data in Lean, but the expected type is a proposition
-  0 < ?m.21 : Prop-/
 /-- Perfect squares are powerful. -/
 theorem square_is_powerful (a : ℕ) (ha : a > 0) : IsPowerful (a^2) := by
   constructor
@@ -121,10 +71,6 @@ theorem square_is_powerful (a : ℕ) (ha : a > 0) : IsPowerful (a^2) := by
     -- p | a² → p | a → p² | a²
     sorry
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-numerals are data in Lean, but the expected type is a proposition
-  0 < ?m.21 : Prop-/
 /-- Perfect cubes are powerful. -/
 theorem cube_is_powerful (b : ℕ) (hb : b > 0) : IsPowerful (b^3) := by
   constructor
@@ -135,10 +81,7 @@ theorem cube_is_powerful (b : ℕ) (hb : b > 0) : IsPowerful (b^3) := by
 /-- Products of powerful numbers are powerful. -/
 theorem powerful_mul (m n : ℕ) (hm : IsPowerful m) (hn : IsPowerful n) :
     IsPowerful (m * n) := by
-  -- By definition of powerful numbers, we need to show that for every prime $p$ dividing $m * n$, $p^2$ divides $m * n$.
-  unfold Erdos941.IsPowerful at *;
-  simp_all +decide [ Nat.Prime.dvd_mul ];
-  rintro p pp ( h | h ) <;> [ exact dvd_mul_of_dvd_left ( hm.2 p pp h ) _; exact dvd_mul_of_dvd_right ( hn.2 p pp h ) _ ]
+  sorry
 
 /-
 ## Part II: Examples of Powerful Numbers
@@ -147,15 +90,9 @@ theorem powerful_mul (m n : ℕ) (hm : IsPowerful m) (hn : IsPowerful n) :
 /-- The first few powerful numbers: 1, 4, 8, 9, 16, 25, 27, 32, ... -/
 def powerfulNumbers : List ℕ := [1, 4, 8, 9, 16, 25, 27, 32, 36, 49, 64, 72, 81, 100]
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-Unknown identifier `square_is_powerful`-/
 /-- 4 = 2² is powerful. -/
 example : IsPowerful 4 := square_is_powerful 2 (by omega)
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-Unknown identifier `cube_is_powerful`-/
 /-- 8 = 2³ is powerful. -/
 example : IsPowerful 8 := cube_is_powerful 2 (by omega)
 
@@ -203,9 +140,6 @@ def ErdosIvicQuestion' : Prop :=
     (c = 0 ∨ IsPowerful c) ∧
     n = a + b + c
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-Unexpected axioms were added during verification: ['Erdos941.heath_brown_theorem', 'harmonicSorry216362']-/
 /-
 ## Part V: Heath-Brown's Theorem
 -/
@@ -216,12 +150,7 @@ Unexpected axioms were added during verification: ['Erdos941.heath_brown_theorem
 axiom heath_brown_theorem : ErdosIvicQuestion
 
 /-- Heath-Brown's explicit bound (if known). -/
-noncomputable def heathBrownBound : ℕ := 10000
-
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-Unexpected axioms were added during verification: ['Erdos941.heath_brown_explicit', 'harmonicSorry105584']-/
--- placeholder
+noncomputable def heathBrownBound : ℕ := 10000 -- placeholder
 
 /-- All n ≥ N₀ can be written as sum of 3 powerful numbers. -/
 axiom heath_brown_explicit :
@@ -235,9 +164,6 @@ axiom heath_brown_explicit :
 def notSumOf3Powerful (n : ℕ) : Prop :=
   ¬IsSumOf3PowerfulOrZero n
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-Unexpected axioms were added during verification: ['Erdos941.small_exceptions', 'harmonicSorry224505']-/
 /-- The exceptional small numbers. -/
 axiom small_exceptions :
   ∃ S : Finset ℕ, S.card > 0 ∧
@@ -250,14 +176,8 @@ theorem _2_exceptional_without_zero :
   intro ⟨a, b, c, ha, hb, hc, hpa, hpb, hpc, heq⟩
   -- The only powerful number ≤ 2 is 1
   -- But 2 = 1 + 1 + 0 doesn't work if we require all positive
-  grind
+  sorry
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-Invalid field `card`: The environment does not contain `Function.card`
-  fun (b : ℕ) => Erdos941.IsPowerful a ∧ Erdos941.IsPowerful b ∧ Erdos941.IsPowerful (n - a - b)
-has type
-  ℕ → Prop-/
 /-
 ## Part VII: Counting Representations
 -/
@@ -269,12 +189,6 @@ noncomputable def numRepresentations (n : ℕ) : ℕ :=
       IsPowerful a ∧ IsPowerful b ∧ IsPowerful (n - a - b)
     ).card > 0).card
 
-/- Aristotle failed to load this code into its environment. Double check that the syntax is correct.
-
-failed to synthesize
-  LocallyFiniteOrder ℝ
-
-Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.-/
 /-- Asymptotic density of powerful numbers. -/
 axiom powerful_density :
   ∃ c : ℝ, c > 0 ∧

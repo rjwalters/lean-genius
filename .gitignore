@@ -68,11 +68,7 @@ package-lock.json
 aristotle-results/
 .loom/signals/
 .loom/*.json
-.loom/state.json
 .loom/state/
-.loom/worktrees/
-.loom/*.log
-.loom/*.sock
 .loom-in-use
 .loom/.daemon.pid
 .loom/.daemon.log
@@ -97,3 +93,7 @@ aristotle-results/
 .loom/manifest.json
 .loom/stuck-config.json
 .loom/metrics/
+.loom/worktrees/
+.loom/state.json
+.loom/*.log
+.loom/*.sock
