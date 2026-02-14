@@ -22,52 +22,146 @@
     "sorries": 0,
     "mathlibDependencies": [
       {
-        "theorem": "Mathlib.Geometry.Euclidean.Basic",
-        "description": "Basic Euclidean geometry",
-        "module": "Mathlib.Geometry.Euclidean.Basic"
+        "theorem": "Mathlib.LinearAlgebra.CrossProduct",
+        "description": "Cross product in ℝ³ used for line-through and line-intersection operations",
+        "module": "Mathlib.LinearAlgebra.CrossProduct"
+      },
+      {
+        "theorem": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+        "description": "Matrix determinant used for collinearity and concurrency predicates",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      },
+      {
+        "theorem": "Mathlib.Data.Real.Basic",
+        "description": "Real number field for projective coordinate computations",
+        "module": "Mathlib.Data.Real.Basic"
       }
     ],
     "originalContributions": [
-      "Framework for projective points, lines, and conics",
-      "Hexagon inscribed in conic structure",
-      "Pascal line construction"
+      "Framework for projective points, lines, and conics in ℝ³",
+      "Cross-product-based line-through and intersection operations",
+      "Hexagon inscribed in conic structure with validity conditions",
+      "Pascal line construction via opposite-side intersections",
+      "Formalization of Brianchon's dual theorem structures"
     ],
-    "dateAdded": "12/29/25"
+    "dateAdded": "12/29/25",
+    "leanFile": {
+      "lineCount": 322,
+      "structures": 1,
+      "axioms": 1,
+      "theorems": 1,
+      "definitions": 16,
+      "instances": 0
+    }
   },
   "overview": {
-    "historicalContext": "Pascal discovered this theorem at age 16 in 1639, calling it the 'Mystic Hexagram'. It is dual to Brianchon's theorem and is fundamental to projective geometry. Pascal's original proof is lost, but he claimed to derive over 400 corollaries from it.",
-    "problemStatement": "**Pascal's Theorem**: Let ABCDEF be a hexagon inscribed in a conic section. Let P = AB cap DE, Q = BC cap EF, R = CD cap FA. Then P, Q, R are collinear.\n\nThis line is called the Pascal line of the hexagon.",
-    "proofStrategy": "Modern proofs use projective geometry and the theory of conics. One approach uses the fact that the intersection properties are preserved under projective transformations, allowing reduction to a simpler configuration.",
+    "historicalContext": "Blaise Pascal discovered this theorem in 1639, at age 16, calling it the *Hexagrammum Mysticum* (Mystic Hexagram). His original proof, presented to the Académie Parisienne, was lost, but its statement was recorded by Leibniz, who found it among Pascal's papers. Pascal claimed to derive over 400 corollaries from this single result.\n\nThe theorem became a cornerstone of projective geometry, which was systematically developed by Jean-Victor Poncelet in his 1822 *Traité des propriétés projectives des figures*. Charles-Julien Brianchon discovered the dual theorem in 1806 as a student at the École Polytechnique: if a hexagon is circumscribed about a conic, the three main diagonals are concurrent.\n\nThe configuration of 60 Pascal lines arising from permutations of six points on a conic — the *Hexagrammum Mysticum* configuration — attracted major attention from Jakob Steiner (1828), Thomas Kirkman (1849), Arthur Cayley (1849), and George Salmon (1852), who discovered its remarkable incidence properties: 20 Steiner points, 60 Kirkman points, and 15 Plücker lines.\n\nPascal's theorem appears as #28 in Freek Wiedijk's list of 100 greatest theorems. The formalization here uses projective coordinates in $\\mathbb{R}^3$ with the cross product serving double duty for line-through and line-intersection, and the key algebraic identity axiomatized via the Cayley-Bacharach / Bézout argument.",
+    "problemStatement": "**Pascal's Theorem**: Let $ABCDEF$ be a hexagon inscribed in a conic section. Let $P = AB \\cap DE$, $Q = BC \\cap EF$, $R = CD \\cap FA$. Then $P$, $Q$, $R$ are **collinear**.\n\nThe line through $P$, $Q$, $R$ is called the **Pascal line** of the hexagon.",
+    "proofStrategy": "The formalization uses **projective coordinates** in $\\mathbb{R}^3$: points and lines are nonzero vectors, the line through $p, q$ is the cross product $p \\times q$, and collinearity is characterized by $\\det(P, Q, R) = 0$. A conic is a symmetric $3 \\times 3$ matrix $C$ with $p^T C p = 0$ defining the conic locus. The key axiom `conic_implies_pascal_constraint` encodes the Cayley-Bacharach argument: two degenerate cubics $\\overline{AB} \\cup \\overline{CD} \\cup \\overline{EF}$ and $\\overline{BC} \\cup \\overline{DE} \\cup \\overline{FA}$ intersect in 9 points (Bézout), 6 on the conic, so the remaining 3 ($P, Q, R$) are collinear.",
     "keyInsights": [
-      "The theorem holds for any conic: circle, ellipse, parabola, or hyperbola",
-      "Dual to Brianchon's theorem about circumscribed hexagons",
-      "Generalizes to the 'mystic hexagram' with 60 Pascal lines",
-      "Foundation for projective geometry and algebraic geometry"
+      "**Cross-product duality**: The same cross product operation computes both the line through two points and the intersection of two lines — a manifestation of projective point-line duality in $\\mathbb{RP}^2$",
+      "**Determinant = collinearity**: Three projective points $P, Q, R$ are collinear iff $\\det(P, Q, R) = 0$, since $(p \\times q) \\cdot r = \\det(p, q, r)$ connects the cross product to linear dependence",
+      "**Conic universality**: In projective coordinates all non-degenerate conics are projectively equivalent — there is no distinction between ellipses, parabolas, and hyperbolas, so Pascal's theorem applies uniformly",
+      "**Pappus as degenerate case**: When the conic degenerates to a pair of lines $l_1 \\cup l_2$, Pascal's theorem specializes to Pappus's theorem (c. 340 AD), which is equivalent to commutativity of the coordinate field",
+      "**60 Pascal lines**: The $6!/(2 \\cdot 6) = 60$ hexagon orderings yield 60 Pascal lines forming a configuration with 20 Steiner points, 60 Kirkman points, and 15 Plücker lines"
     ]
   },
   "sections": [
     {
-      "id": "projective-setup",
-      "title": "Projective Geometry Setup",
-      "startLine": 45,
-      "endLine": 100,
-      "summary": "Points, lines, and incidence in projective plane."
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Imports `Mathlib.LinearAlgebra.CrossProduct` and `Mathlib.LinearAlgebra.Matrix.Determinant.Basic` for cross products and determinants in $\\mathbb{R}^3$."
     },
     {
-      "id": "pascals-theorem",
-      "title": "Pascal's Theorem",
-      "startLine": 100,
-      "endLine": 180,
-      "summary": "Main theorem statement and axiomatized proof."
+      "id": "projective-points-lines",
+      "title": "Projective Points and Lines",
+      "startLine": 55,
+      "endLine": 73,
+      "summary": "Defines `ProjPoint` and `ProjLine` as `Fin 3 → ℝ` (vectors in $\\mathbb{R}^3$), with `valid` predicates ensuring nonzero representatives in $\\mathbb{RP}^2$."
+    },
+    {
+      "id": "fundamental-operations",
+      "title": "Fundamental Operations",
+      "startLine": 74,
+      "endLine": 87,
+      "summary": "Defines `lineThrough`, `lineIntersection` (both via cross product), and `pointOnLine` (via dot product $p \\cdot l = 0$)."
+    },
+    {
+      "id": "collinearity-concurrency",
+      "title": "Collinearity and Concurrency",
+      "startLine": 88,
+      "endLine": 108,
+      "summary": "Defines `threeVectorMatrix`, `collinear` ($\\det(p,q,r) = 0$), and `concurrent` ($\\det(l,m,n) = 0$) — dual predicates via the same determinant condition."
+    },
+    {
+      "id": "conic-sections",
+      "title": "Conic Sections",
+      "startLine": 109,
+      "endLine": 133,
+      "summary": "Defines `Conic` as a symmetric $3 \\times 3$ matrix $C$, `conicQuadraticForm` ($p^T C p = \\sum_{i,j} C_{ij} p_i p_j$), `pointOnConic`, non-degeneracy ($\\det C \\neq 0$), and symmetry."
+    },
+    {
+      "id": "inscribed-hexagon",
+      "title": "Inscribed Hexagon and Pascal Points",
+      "startLine": 134,
+      "endLine": 172,
+      "summary": "Defines `InscribedHexagon C` with 6 vertices on conic $C$, and the three Pascal points: $P = (A \\times B) \\times (D \\times E)$, $Q = (B \\times C') \\times (E \\times F)$, $R = (C' \\times D) \\times (F \\times A)$."
+    },
+    {
+      "id": "pascal-constraint",
+      "title": "Pascal's Constraint",
+      "startLine": 173,
+      "endLine": 187,
+      "summary": "Defines `pascalConstraint`: compute opposite-side intersections $P, Q, R$ via cross products, then check $\\det(P, Q, R) = 0$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Pascal's Hexagon Theorem",
+      "startLine": 188,
+      "endLine": 231,
+      "summary": "The axiom `conic_implies_pascal_constraint` and **Theorem** `pascal_hexagon_theorem` (Wiedijk #28): for hexagon inscribed in conic, Pascal points $P, Q, R$ are collinear."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases: Pappus's Theorem",
+      "startLine": 232,
+      "endLine": 248,
+      "summary": "Defines `collinearOnLine` for Pappus's theorem — the degenerate case where the conic is a pair of lines $l_1 \\cup l_2$."
+    },
+    {
+      "id": "brianchon-dual",
+      "title": "Brianchon's Dual Theorem",
+      "startLine": 249,
+      "endLine": 322,
+      "summary": "Defines `hexagonDiagonal1/2/3` for Brianchon's theorem (1806): if a hexagon is circumscribed about a conic, the three main diagonals $AD$, $BE$, $CF$ are concurrent. Includes historical notes on the 60 Pascal lines."
     }
   ],
   "conclusion": {
-    "summary": "Pascal's theorem is a cornerstone of projective geometry, discovered by a teenage prodigy. It reveals deep structure in the incidence relations of conics and points.",
-    "implications": "The theorem led to the development of projective geometry and continues to inspire research in algebraic geometry and combinatorics.",
+    "summary": "Pascal's Hexagon Theorem is formalized in projective coordinates using cross products and determinants. The key geometric fact — that six conic points force collinearity of opposite-side intersections — is axiomatized via the Cayley-Bacharach argument, and the main theorem follows by definitional unfolding.",
+    "implications": "The formalization demonstrates how projective coordinate methods reduce classical incidence geometry to linear algebra. The framework of `ProjPoint`, `ProjLine`, cross products, and determinants provides a reusable foundation for formalizing other projective theorems (Desargues, Pappus, Brianchon).",
     "openQuestions": [
-      "What is the combinatorial structure of all Pascal lines for 6 points?",
-      "How does Pascal's theorem generalize to higher dimensions?",
-      "What are the connections to modern algebraic geometry?"
+      "Can the Cayley-Bacharach axiom be proved from Mathlib's algebraic geometry, eliminating the axiom?",
+      "Can the Brianchon dual be formally proved from Pascal's theorem via projective duality?",
+      "Can the 60-Pascal-line configuration be formalized, including Steiner and Kirkman point counts?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetProofId": "desargues-theorem",
+      "relationship": "Both are fundamental incidence theorems of projective geometry; Desargues concerns perspective triangles while Pascal concerns inscribed hexagons",
+      "sharedConcepts": ["projective-geometry", "collinearity", "incidence-theorem"]
+    },
+    {
+      "targetProofId": "pythagorean-theorem",
+      "relationship": "Both are classical geometry theorems on Wiedijk's 100 list; the Pythagorean theorem operates in Euclidean geometry while Pascal's operates in projective geometry",
+      "sharedConcepts": ["Wiedijk-100-theorems", "classical-geometry"]
+    },
+    {
+      "targetProofId": "area-of-circle",
+      "relationship": "Circles are special cases of conics; Pascal's theorem applied to a hexagon inscribed in a circle is a key special case",
+      "sharedConcepts": ["conic-sections", "classical-geometry"]
+    }
+  ]
 }
