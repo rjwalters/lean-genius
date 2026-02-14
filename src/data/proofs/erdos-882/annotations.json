@@ -1,14 +1,27 @@
 [
   {
+    "id": "ann-882-imports",
+    "proofId": "erdos-882",
+    "range": { "startLine": 25, "endLine": 35 },
+    "type": "concept",
+    "title": "Imports and Setup",
+    "content": "Imports Mathlib modules for natural number logarithms (`Nat.log`), finite sets and their powerset (`Finset.Powerset`), and big operators for summation (`BigOperators`). These form the foundation for defining subset sums over finite subsets of $\\{1,\\ldots,n\\}$.",
+    "mathContext": "The formalization requires $\\text{Nat.log}$ for expressing $\\lfloor \\log_b n \\rfloor$, `Finset.powerset` for enumerating $\\mathcal{P}(A)$, and `Finset.sum` for computing $\\sum_{a \\in S} a$ over finite subsets $S \\subseteq A$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib", "finite-sets", "big-operators", "natural-logarithm"],
+    "prerequisites": ["Lean 4 import system", "Mathlib library structure"]
+  },
+  {
     "id": "ann-882-header",
     "proofId": "erdos-882",
-    "range": { "startLine": 1, "endLine": 23 },
+    "range": { "startLine": 37, "endLine": 42 },
     "type": "concept",
     "title": "Problem Overview",
-    "content": "**Erdős Problem #882** asks: what is the maximum size of A ⊆ {1,...,n} such that no two distinct non-empty subset sums divide each other? The answer is asymptotically log₂ n.",
-    "mathContext": "This problem combines combinatorics (subset selection) with number theory (divisibility). The constraint that no two sums divide each other is weaker than requiring all sums to be distinct.",
+    "content": "**Erdős Problem #882** asks: what is the maximum size of $A \\subseteq \\{1,\\ldots,n\\}$ such that no two distinct non-empty subset sums divide each other? The answer is asymptotically $\\log_2 n$.",
+    "mathContext": "The problem lies at the intersection of additive combinatorics and divisibility theory. The constraint $\\neg(s_1 \\mid s_2)$ for distinct subset sums $s_1, s_2 \\in \\Sigma(A)$ is strictly weaker than requiring all sums to be distinct, yet the extremal answer $|A| = (1+o(1))\\log_2 n$ matches the distinct subset sums problem (Erdős #1).",
     "significance": "critical",
-    "relatedConcepts": ["subset-sums", "divisibility", "extremal-combinatorics"]
+    "relatedConcepts": ["subset-sums", "divisibility", "extremal-combinatorics", "additive-number-theory"],
+    "prerequisites": ["divisibility in natural numbers", "subset sums", "asymptotic notation"]
   },
   {
     "id": "ann-882-icc1n",
@@ -16,8 +29,11 @@
     "range": { "startLine": 43, "endLine": 44 },
     "type": "definition",
     "title": "Icc1n",
-    "content": "The set {1, 2, ..., n} represented as a Finset, filtering range(n+1) for elements ≥ 1 and ≤ n.",
-    "significance": "supporting"
+    "content": "The set $\\{1, 2, \\ldots, n\\}$ represented as a `Finset`, filtering `range(n+1)` for elements $x$ with $1 \\leq x \\leq n$.",
+    "mathContext": "In Lean's `Finset` API, `Finset.range (n+1)` gives $\\{0,1,\\ldots,n\\}$. Filtering for $1 \\leq x$ removes $0$ to obtain the positive integer interval $[1,n] \\cap \\mathbb{N}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.Icc", "integer-interval", "positive-natural-numbers"],
+    "prerequisites": ["Finset.range", "Finset.filter"]
   },
   {
     "id": "ann-882-nonemptysubsets",
@@ -25,8 +41,11 @@
     "range": { "startLine": 46, "endLine": 48 },
     "type": "definition",
     "title": "nonemptySubsets",
-    "content": "All non-empty subsets of a finite set A, computed as A.powerset filtered to exclude ∅.",
-    "significance": "key"
+    "content": "All non-empty subsets of a finite set $A$, computed as $\\mathcal{P}(A) \\setminus \\{\\emptyset\\}$.",
+    "mathContext": "For a set $A$ with $|A| = k$, there are $2^k - 1$ non-empty subsets. The subset sums of $A$ are indexed by these subsets: $\\Sigma(A) = \\{\\sum_{a \\in S} a : \\emptyset \\neq S \\subseteq A\\}$. Note that $|\\Sigma(A)| \\leq 2^k - 1$ with equality when all subset sums are distinct.",
+    "significance": "key",
+    "relatedConcepts": ["powerset", "subset-enumeration", "exponential-growth"],
+    "prerequisites": ["Finset.powerset", "cardinality"]
   },
   {
     "id": "ann-882-subsetsums",
@@ -34,8 +53,11 @@
     "range": { "startLine": 50, "endLine": 52 },
     "type": "definition",
     "title": "subsetSums",
-    "content": "The set {∑_{a ∈ S} a : ∅ ≠ S ⊆ A} of all non-empty subset sums. This is the image of nonemptySubsets under the sum function.",
-    "significance": "critical"
+    "content": "The set $\\Sigma(A) = \\{\\sum_{a \\in S} a : \\emptyset \\neq S \\subseteq A\\}$ of all non-empty subset sums. This is the image of `nonemptySubsets` under the sum function.",
+    "mathContext": "For $A \\subseteq \\{1,\\ldots,n\\}$ with $|A| = k$, we have $\\Sigma(A) \\subseteq \\{1, 2, \\ldots, k \\cdot n\\}$ since each sum is positive and at most $\\sum_{a \\in A} a \\leq k \\cdot n$. The number of distinct subset sums satisfies $|\\Sigma(A)| \\leq \\min(2^k - 1, kn)$.",
+    "significance": "critical",
+    "relatedConcepts": ["subset-sum-problem", "additive-combinatorics", "Finset.image"],
+    "prerequisites": ["Finset.sum", "Finset.image", "additive-combinatorics"]
   },
   {
     "id": "ann-882-divfree",
@@ -43,8 +65,11 @@
     "range": { "startLine": 54, "endLine": 56 },
     "type": "definition",
     "title": "DivisibilityFree",
-    "content": "A set S is divisibility-free if no two distinct elements a, b ∈ S satisfy a | b or b | a. This is the key property we want for subset sums.",
-    "significance": "critical"
+    "content": "A set $S$ is **divisibility-free** (also called an **antichain** in the divisibility order) if no two distinct elements $a, b \\in S$ satisfy $a \\mid b$ or $b \\mid a$.",
+    "mathContext": "In the poset $(\\mathbb{N}, \\mid)$, a divisibility-free set is an antichain: no element divides another. By Dilworth's theorem, the maximum antichain size in $\\{1,\\ldots,n\\}$ under divisibility is $\\lceil n/2 \\rceil$ (the odd numbers in $(n/2, n]$). Here we apply this concept not to $A$ itself but to $\\Sigma(A)$, which is much more restrictive.",
+    "significance": "critical",
+    "relatedConcepts": ["antichain", "Dilworth-theorem", "partial-order", "divisibility-poset"],
+    "prerequisites": ["divisibility", "partial orders", "antichains"]
   },
   {
     "id": "ann-882-validsubset",
@@ -52,8 +77,11 @@
     "range": { "startLine": 58, "endLine": 60 },
     "type": "definition",
     "title": "ValidSubset",
-    "content": "A is a valid subset of {1,...,n} if all elements are in [1,n] and the subset sums are divisibility-free.",
-    "significance": "critical"
+    "content": "A set $A$ is a **valid subset** of $\\{1,\\ldots,n\\}$ if all elements lie in $[1,n]$ and the subset sums $\\Sigma(A)$ are divisibility-free.",
+    "mathContext": "The constraint `ValidSubset n A` requires both $A \\subseteq \\{1,\\ldots,n\\}$ and that $\\Sigma(A)$ forms an antichain in $(\\mathbb{N}, \\mid)$. The extremal function $f(n) = \\max\\{|A| : \\text{ValidSubset}(n, A)\\}$ is what Problem #882 asks us to determine.",
+    "significance": "critical",
+    "relatedConcepts": ["extremal-function", "combinatorial-optimization", "antichain-in-subset-sums"],
+    "prerequisites": ["DivisibilityFree", "Icc1n", "subsetSums"]
   },
   {
     "id": "ann-882-maxvalidsize",
@@ -61,17 +89,23 @@
     "range": { "startLine": 68, "endLine": 74 },
     "type": "definition",
     "title": "maxValidSize",
-    "content": "The maximum cardinality |A| over all valid subsets A. This is what the problem asks us to determine.",
-    "significance": "key"
+    "content": "The maximum cardinality $f(n) = \\max\\{|A| : \\text{ValidSubset}(n, A)\\}$. Defined using `Nat.find` for the supremum, defaulting to $0$ if no valid subset exists.",
+    "mathContext": "The use of `Nat.find` and `noncomputable def` reflects that computing $f(n)$ exactly requires searching over exponentially many subsets. The existence of a maximum is guaranteed since $|A| \\leq n$ for any $A \\subseteq \\{1,\\ldots,n\\}$, bounding the search space.",
+    "significance": "key",
+    "relatedConcepts": ["extremal-combinatorics", "Nat.find", "noncomputable-definition"],
+    "prerequisites": ["Nat.find", "ValidSubset", "well-ordering"]
   },
   {
     "id": "ann-882-greedy",
     "proofId": "erdos-882",
     "range": { "startLine": 82, "endLine": 84 },
-    "type": "axiom",
+    "type": "theorem",
     "title": "Greedy Lower Bound",
-    "content": "The greedy algorithm achieves |A| ≥ log₃ n - 1. This is a weak lower bound compared to log₂ n.",
-    "significance": "key"
+    "content": "The greedy algorithm achieves $|A| \\geq \\log_3 n - 1$. Elements are selected one by one, ensuring each new element doesn't create divisibility among subset sums. This is a weak lower bound compared to the optimal $\\log_2 n$.",
+    "mathContext": "The greedy approach selects elements from $\\{1,\\ldots,n\\}$ sequentially, skipping any element that would create a divisibility pair in $\\Sigma(A)$. Each new element at most triples the range of possible sums, yielding $|A| \\geq \\log_3 n - 1$. The factor of $3$ (rather than $2$) reflects the crudeness of this bound: a new element $a$ added to $A$ creates sums $a$ and $a + s$ for each existing sum $s$, potentially tripling the effective count.",
+    "significance": "key",
+    "relatedConcepts": ["greedy-algorithm", "logarithmic-bounds", "constructive-combinatorics"],
+    "prerequisites": ["ValidSubset", "logarithmic functions", "greedy algorithms"]
   },
   {
     "id": "ann-882-sandor",
@@ -79,8 +113,23 @@
     "range": { "startLine": 86, "endLine": 93 },
     "type": "definition",
     "title": "Sándor's Construction",
-    "content": "A = {2^i + m·2^m : 0 ≤ i < m} achieves |A| = m ≈ log₂ n. This clever construction uses powers of 2 with a common large offset.",
-    "significance": "critical"
+    "content": "**Sándor's construction**: $A = \\{2^i + m \\cdot 2^m : 0 \\leq i < m\\}$ achieves $|A| = m \\approx \\log_2 n$. The key insight is that the large common offset $m \\cdot 2^m$ separates subset sums into different magnitude classes.",
+    "mathContext": "For each element $a_i = 2^i + m \\cdot 2^m$, all elements share the common large term $m \\cdot 2^m$, while the small perturbations $2^i$ are powers of $2$. A subset sum $\\sum_{i \\in I} a_i = |I| \\cdot m \\cdot 2^m + \\sum_{i \\in I} 2^i$. Since the $2^i$ part uniquely determines $I$ (binary representation) and different $|I|$ values give different multiples of $m \\cdot 2^m$, divisibility between distinct sums is avoided.",
+    "significance": "critical",
+    "relatedConcepts": ["powers-of-two", "binary-representation", "additive-structure"],
+    "prerequisites": ["binary representation", "subset-sum structure", "divisibility arguments"]
+  },
+  {
+    "id": "ann-882-sandor-valid",
+    "proofId": "erdos-882",
+    "range": { "startLine": 90, "endLine": 93 },
+    "type": "theorem",
+    "title": "Sándor Construction Validity",
+    "content": "Sándor's construction is valid and achieves $|A| = m$ for $n \\approx m \\cdot 2^m$, giving $|A| \\sim \\log_2 n$ asymptotically.",
+    "mathContext": "With $n = 2^{m-1} + m \\cdot 2^m$, we have $\\log_2 n \\sim m + \\log_2 m \\sim m$ for large $m$. The construction gives exactly $m$ elements, so $|A|/\\log_2 n \\to 1$ as $m \\to \\infty$, confirming the $(1+o(1))\\log_2 n$ answer.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic-analysis", "construction-optimality"],
+    "prerequisites": ["SandorConstruction", "asymptotic notation"]
   },
   {
     "id": "ann-882-elrss",
@@ -88,8 +137,11 @@
     "range": { "startLine": 95, "endLine": 102 },
     "type": "definition",
     "title": "ELRSS Construction",
-    "content": "A = {2^m - 2^(m-1), ..., 2^m - 1} achieves |A| > log₂ n - 1. This construction by Erdős, Lev, Rauzy, Sándor, and Sárközy (1999) also guarantees distinct subset sums.",
-    "significance": "critical"
+    "content": "**ELRSS (1999) construction**: $A = \\{2^{m-1}, 2^{m-1}+1, \\ldots, 2^m - 1\\}$ (the interval $[2^{m-1}, 2^m - 1]$) achieves $|A| = 2^{m-1} > \\log_2 n - 1$ for $n = 2^m$. This construction by Erdős, Lev, Rauzy, Sándor, and Sárközy also guarantees all subset sums are distinct.",
+    "mathContext": "The elements of $A$ all lie in $[2^{m-1}, 2^m)$, so each element has the same number of binary digits. A subset sum of $k$ such elements satisfies $k \\cdot 2^{m-1} \\leq \\sum \\leq k \\cdot (2^m - 1)$. For different subset sizes $k_1 < k_2$, the sums lie in disjoint magnitude ranges, preventing divisibility. Within the same size $k$, the sums are distinct and close in magnitude, also preventing divisibility.",
+    "significance": "critical",
+    "relatedConcepts": ["binary-interval", "distinct-subset-sums", "magnitude-separation"],
+    "prerequisites": ["binary representation", "interval arithmetic", "divisibility analysis"]
   },
   {
     "id": "ann-882-distinct",
@@ -97,8 +149,11 @@
     "range": { "startLine": 110, "endLine": 113 },
     "type": "definition",
     "title": "DistinctSubsetSums",
-    "content": "Property that all non-empty subset sums are distinct. This is implied by divisibility-free, giving the upper bound connection.",
-    "significance": "key"
+    "content": "Property that all non-empty subset sums are distinct: for $S \\neq T$ both non-empty subsets of $A$, $\\sum_{s \\in S} s \\neq \\sum_{t \\in T} t$. This is the condition studied in **Erdős Problem #1**.",
+    "mathContext": "The distinct subset sums property means $|\\Sigma(A)| = 2^{|A|} - 1$, the maximum possible. Erdős and Moser conjectured that if $A \\subseteq \\{1,\\ldots,n\\}$ has distinct subset sums, then $|A| \\leq \\log_2 n + O(1)$. The best known result is $|A| \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + O(1)$ by Dubroff, Fox, and Xu (2021).",
+    "significance": "key",
+    "relatedConcepts": ["Erdős-Moser-conjecture", "distinct-sums", "Conway-Guy-sequence"],
+    "prerequisites": ["subset sums", "counting arguments", "binary representation"]
   },
   {
     "id": "ann-882-divimplies",
@@ -106,35 +161,59 @@
     "range": { "startLine": 115, "endLine": 120 },
     "type": "theorem",
     "title": "div_free_implies_distinct",
-    "content": "If subset sums are divisibility-free, they must be distinct. This connects the problem to Erdős #1.",
-    "significance": "key"
+    "content": "**Key lemma**: If the subset sums of $A$ are divisibility-free, then they must all be distinct. This connects Problem #882 to the upper bound machinery of Problem #1.",
+    "mathContext": "If two distinct non-empty subsets $S, T$ had the same sum $s = \\sum S = \\sum T$, then $s \\mid s$ trivially, contradicting the divisibility-free property (since $s$ and $s$ are the same element but come from different subsets, they represent the same value in $\\Sigma(A)$ — so they are not 'distinct elements'). More precisely, divisibility-free on $\\Sigma(A)$ as a set means equal sums collapse, but the antichain condition on the resulting set trivially holds for equal elements. The formal argument is: if $s_1 = s_2$ and both are in $\\Sigma(A)$, they are the same element, not a counter-example.",
+    "significance": "key",
+    "relatedConcepts": ["logical-implication", "Erdős-problem-1", "antichain-distinctness"],
+    "prerequisites": ["DivisibilityFree", "DistinctSubsetSums", "divisibility reflexivity"]
+  },
+  {
+    "id": "ann-882-distinctbound",
+    "proofId": "erdos-882",
+    "range": { "startLine": 121, "endLine": 123 },
+    "type": "theorem",
+    "title": "distinct_sums_bound",
+    "content": "If $A$ has distinct subset sums, then $|A| \\leq \\log_2(\\sigma(A)) + 1$ where $\\sigma(A) = \\sum_{a \\in A} a$. This follows because $2^{|A|} - 1$ distinct positive sums must fit in $\\{1,\\ldots,\\sigma(A)\\}$.",
+    "mathContext": "With $k = |A|$ and $\\sigma = \\sum A$, the $2^k - 1$ distinct non-empty subset sums all lie in $\\{1, 2, \\ldots, \\sigma\\}$. By pigeonhole, $2^k - 1 \\leq \\sigma$, giving $k \\leq \\log_2(\\sigma + 1) \\leq \\log_2 \\sigma + 1$.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole-principle", "counting-argument", "logarithmic-bound"],
+    "prerequisites": ["distinct subset sums", "pigeonhole principle", "logarithm properties"]
   },
   {
     "id": "ann-882-sumbound",
     "proofId": "erdos-882",
     "range": { "startLine": 125, "endLine": 129 },
-    "type": "theorem",
+    "type": "lemma",
     "title": "sum_bound",
-    "content": "For A ⊆ {1,...,n}, the sum σ(A) = ∑A ≤ |A| · n. This bounds the total sum by the set size times the maximum element.",
-    "significance": "supporting"
+    "content": "For $A \\subseteq \\{1,\\ldots,n\\}$, the total sum satisfies $\\sigma(A) = \\sum_{a \\in A} a \\leq |A| \\cdot n$. This is the only fully proved result in the file, using `Finset.sum_le_sum`.",
+    "mathContext": "The bound $\\sum_{a \\in A} a \\leq |A| \\cdot n$ follows since each $a \\leq n$. Combined with the distinct sums bound $|A| \\leq \\log_2(\\sigma) + 1$ and $\\sigma \\leq |A| \\cdot n$, this gives $|A| \\leq \\log_2(|A| \\cdot n) + 1 = \\log_2 |A| + \\log_2 n + 1$, yielding $|A| \\leq \\log_2 n + O(\\log \\log n)$ after solving the implicit inequality.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.sum_le_sum", "trivial-bound", "sum-of-bounded-terms"],
+    "prerequisites": ["Finset.sum", "bound propagation"]
   },
   {
     "id": "ann-882-upperrefined",
     "proofId": "erdos-882",
     "range": { "startLine": 131, "endLine": 134 },
-    "type": "axiom",
+    "type": "theorem",
     "title": "Refined Upper Bound",
-    "content": "|A| ≤ log₂ n + ½ log₂(log n) + 3 for n ≥ 16. This follows from the distinct subset sums bound.",
-    "significance": "critical"
+    "content": "$|A| \\leq \\log_2 n + \\frac{1}{2}\\log_2(\\log_2 n) + 3$ for $n \\geq 16$. This follows from the Dubroff-Fox-Xu (2021) improvement on the distinct subset sums bound.",
+    "mathContext": "The chain of reasoning is: ValidSubset $\\Rightarrow$ divisibility-free $\\Sigma(A)$ $\\Rightarrow$ distinct subset sums (by `div_free_implies_distinct`) $\\Rightarrow$ $|A| \\leq \\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + O(1)$ (by the best known bound on Erdős #1). The constant $3$ is chosen to make the bound valid for all $n \\geq 16$.",
+    "significance": "critical",
+    "relatedConcepts": ["Dubroff-Fox-Xu-bound", "Erdős-problem-1-upper-bound", "refined-counting"],
+    "prerequisites": ["div_free_implies_distinct", "distinct_sums_bound", "logarithm inequalities"]
   },
   {
     "id": "ann-882-conjectured",
     "proofId": "erdos-882",
     "range": { "startLine": 136, "endLine": 138 },
-    "type": "axiom",
+    "type": "theorem",
     "title": "Conjectured Bound",
-    "content": "Conjectured: |A| ≤ log₂ n + O(1), i.e., the ½ log₂(log n) term can be removed.",
-    "significance": "key"
+    "content": "**Conjecture** (Erdős-Moser): $|A| \\leq \\log_2 n + O(1)$, i.e., the $\\frac{1}{2}\\log_2(\\log n)$ term can be removed. This remains open as of 2026.",
+    "mathContext": "The Erdős-Moser conjecture asserts that the Conway-Guy sequence is asymptotically optimal for the distinct subset sums problem. If true, it would imply $f(n) = \\log_2 n + O(1)$ for Problem #882 as well, since divisibility-free implies distinct sums.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős-Moser-conjecture", "Conway-Guy-sequence", "open-problem"],
+    "prerequisites": ["upper_bound_refined", "Erdős-Moser conjecture"]
   },
   {
     "id": "ann-882-lowermax",
@@ -142,8 +221,11 @@
     "range": { "startLine": 146, "endLine": 148 },
     "type": "theorem",
     "title": "lower_bound_max",
-    "content": "For n ≥ 4, there exists a valid A with |A| ≥ log₂ n - 2. Uses ELRSS or Sándor construction.",
-    "significance": "key"
+    "content": "For $n \\geq 4$, there exists a valid $A$ with $|A| \\geq \\log_2 n - 2$. Uses either the ELRSS construction (choosing $m = \\lfloor \\log_2 n \\rfloor$) or Sándor's construction.",
+    "mathContext": "Taking $m = \\lfloor \\log_2 n \\rfloor$ in the ELRSS construction gives $A \\subseteq \\{1,\\ldots,2^m\\} \\subseteq \\{1,\\ldots,n\\}$ with $|A| = 2^{m-1} \\geq \\log_2 n - 1$ elements. The axiom states $|A| \\geq \\log_2 n - 2$ with extra slack for boundary effects.",
+    "significance": "key",
+    "relatedConcepts": ["existential-construction", "ELRSS-application", "logarithmic-lower-bound"],
+    "prerequisites": ["ELRSSConstruction", "Nat.log properties"]
   },
   {
     "id": "ann-882-uppermax",
@@ -151,8 +233,11 @@
     "range": { "startLine": 152, "endLine": 156 },
     "type": "theorem",
     "title": "upper_bound_max",
-    "content": "For n ≥ 16, every valid A satisfies |A| ≤ log₂ n + ½ log₂(log n) + 3.",
-    "significance": "key"
+    "content": "For $n \\geq 16$, every valid $A$ satisfies $|A| \\leq \\log_2 n + \\frac{1}{2}\\log_2(\\log_2 n) + 3$. This is the only non-axiom theorem proving an upper bound, delegating to `upper_bound_refined`.",
+    "mathContext": "This theorem instantiates the refined upper bound axiom. The gap between the lower bound $\\log_2 n - 2$ and upper bound $\\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + 3$ is $\\frac{1}{2}\\log_2 \\log_2 n + 5$, which is $o(\\log n)$. Both bounds confirm $f(n) = (1+o(1))\\log_2 n$.",
+    "significance": "key",
+    "relatedConcepts": ["extremal-bound", "upper-bound-proof", "asymptotic-gap"],
+    "prerequisites": ["upper_bound_refined", "ValidSubset"]
   },
   {
     "id": "ann-882-singleton",
@@ -160,8 +245,11 @@
     "range": { "startLine": 162, "endLine": 163 },
     "type": "theorem",
     "title": "example_singleton",
-    "content": "A = {1} is valid for any n ≥ 1. Its only subset sum is 1, which is trivially divisibility-free.",
-    "significance": "supporting"
+    "content": "$A = \\{1\\}$ is valid for any $n \\geq 1$. Its only subset sum is $1$, and a singleton set is trivially divisibility-free.",
+    "mathContext": "$\\Sigma(\\{1\\}) = \\{1\\}$. A set with one element is vacuously an antichain (there are no pairs of distinct elements), so `DivisibilityFree` holds.",
+    "significance": "supporting",
+    "relatedConcepts": ["base-case", "vacuous-truth", "singleton-set"],
+    "prerequisites": ["DivisibilityFree", "ValidSubset"]
   },
   {
     "id": "ann-882-example23",
@@ -169,26 +257,35 @@
     "range": { "startLine": 166, "endLine": 169 },
     "type": "theorem",
     "title": "example_2_3",
-    "content": "A = {2, 3} is valid for n ≥ 3. Subset sums are {2, 3, 5}, and none of 2, 3, 5 divide each other.",
-    "significance": "supporting"
+    "content": "$A = \\{2, 3\\}$ is valid for $n \\geq 3$. Subset sums are $\\{2, 3, 5\\}$, and no element divides another: $2 \\nmid 3$, $3 \\nmid 2$, $2 \\nmid 5$, $5 \\nmid 2$, $3 \\nmid 5$, $5 \\nmid 3$.",
+    "mathContext": "This example shows that even small sets can satisfy the divisibility-free condition. Contrast with $A = \\{1, 2\\}$: subset sums are $\\{1, 2, 3\\}$ where $1 \\mid 2$ and $1 \\mid 3$, failing the condition. The choice of coprime elements with coprime sum is key.",
+    "significance": "supporting",
+    "relatedConcepts": ["concrete-example", "coprimality", "small-case-verification"],
+    "prerequisites": ["DivisibilityFree", "subset sum computation"]
   },
   {
     "id": "ann-882-erdos1",
     "proofId": "erdos-882",
     "range": { "startLine": 175, "endLine": 177 },
-    "type": "axiom",
+    "type": "theorem",
     "title": "Erdős #1 Connection",
-    "content": "Connection to Erdős Problem #1: ValidSubset implies DistinctSubsetSums, giving the upper bound.",
-    "significance": "key"
+    "content": "Every valid subset (divisibility-free subset sums) also has distinct subset sums. This is the key bridge to the upper bound theory of Erdős Problem #1.",
+    "mathContext": "This axiom states: $\\text{ValidSubset}(n, A) \\Rightarrow \\text{DistinctSubsetSums}(A)$. The proof follows from `div_free_implies_distinct` applied to the divisibility-free hypothesis. This connection is what allows the upper bound $\\log_2 n + O(\\log \\log n)$ from distinct subset sums theory to apply to Problem #882.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős-problem-1", "distinct-subset-sums", "problem-reduction"],
+    "prerequisites": ["div_free_implies_distinct", "ValidSubset"]
   },
   {
     "id": "ann-882-sidon",
     "proofId": "erdos-882",
     "range": { "startLine": 179, "endLine": 183 },
-    "type": "axiom",
+    "type": "theorem",
     "title": "Sidon Connection",
-    "content": "**sidon_sets_have_distinct_pairwise_sums:** Distinct subset sums imply divisibility-free subset sums. This connects to Sidon sets (Erdős #13), which have distinct pairwise sums.",
-    "significance": "supporting"
+    "content": "**Sidon sets** (Erdős Problem #13) have distinct pairwise sums $a + b$ for all $\\{a,b\\} \\subseteq A$. The axiom states that distinct subset sums implies divisibility-free subset sums, but this is actually the converse of the true implication and may be mathematically imprecise.",
+    "mathContext": "A Sidon set (or $B_2$ set) satisfies $a_1 + a_2 = a_3 + a_4 \\Rightarrow \\{a_1, a_2\\} = \\{a_3, a_4\\}$. The maximum Sidon set in $\\{1,\\ldots,n\\}$ has size $\\sim \\sqrt{n}$, much larger than the $\\log_2 n$ of Problem #882. The connection is thematic: both problems restrict the additive structure of subsets of $\\{1,\\ldots,n\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Sidon-set", "B2-set", "Erdős-problem-13", "additive-combinatorics"],
+    "prerequisites": ["DistinctSubsetSums", "Sidon set definition"]
   },
   {
     "id": "ann-882-statement",
@@ -196,16 +293,22 @@
     "range": { "startLine": 189, "endLine": 198 },
     "type": "theorem",
     "title": "erdos_882_statement",
-    "content": "Main theorem combining lower and upper bounds: log₂ n - 2 ≤ maxValidSize(n) ≤ log₂ n + ½ log₂(log n) + 3 for n ≥ 16. The proof uses lower_bound_max and upper_bound_max.",
-    "significance": "critical"
+    "content": "**Main theorem** combining lower and upper bounds: $\\log_2 n - 2 \\leq f(n) \\leq \\log_2 n + \\frac{1}{2}\\log_2(\\log_2 n) + 3$ for $n \\geq 16$. Proved by `constructor` combining `lower_bound_max` and `upper_bound_max`.",
+    "mathContext": "This theorem formally establishes that $f(n) = (1+o(1))\\log_2 n$ by showing both bounds have leading term $\\log_2 n$. The proof is constructive in the lower bound (exhibiting $A$) and universal in the upper bound (for all valid $A$). The Lean proof uses the `constructor` tactic to split the conjunction and delegates each half to the appropriate lemma.",
+    "significance": "critical",
+    "relatedConcepts": ["main-theorem", "sandwich-inequality", "asymptotic-equivalence"],
+    "prerequisites": ["lower_bound_max", "upper_bound_max", "omega tactic"]
   },
   {
     "id": "ann-882-summary",
     "proofId": "erdos-882",
-    "range": { "startLine": 200, "endLine": 214 },
+    "range": { "startLine": 200, "endLine": 215 },
     "type": "theorem",
     "title": "erdos_882_summary",
-    "content": "**erdos_882_summary** combines the lower and upper bounds into a single theorem, equivalent to erdos_882_statement. The proof delegates directly to erdos_882_statement.\n\nThe answer is (1 + o(1)) log₂ n. SOLVED.",
-    "significance": "critical"
+    "content": "**Summary theorem** restating `erdos_882_statement` with a documentation string confirming the problem is SOLVED. The proof delegates directly to `erdos_882_statement`. The answer is $f(n) = (1 + o(1)) \\log_2 n$.",
+    "mathContext": "The summary serves as the canonical \"answer\" to Erdős Problem #882: the maximum $|A|$ such that $\\Sigma(A)$ is an antichain in $(\\mathbb{N}, \\mid)$ is $(1+o(1))\\log_2 n$. The remaining gap between $\\log_2 n + O(1)$ (conjectured) and $\\log_2 n + \\frac{1}{2}\\log_2 \\log_2 n + O(1)$ (proved) is the subject of the Erdős-Moser conjecture.",
+    "significance": "critical",
+    "relatedConcepts": ["problem-resolution", "Erdős-Moser-conjecture", "open-gap"],
+    "prerequisites": ["erdos_882_statement"]
   }
 ]
