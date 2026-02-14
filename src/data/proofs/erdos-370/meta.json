@@ -2,9 +2,9 @@
   "id": "erdos-370",
   "title": "Consecutive Smooth Numbers",
   "slug": "erdos-370",
-  "description": "Are there infinitely many n such that both n and n+1 have their largest prime factor less than their square root? Steinerberger found an elegant solution using n = m² - 1.",
+  "description": "Are there infinitely many n such that both n and n+1 have their largest prime factor less than their square root? Steinerberger found an elegant solution using n = m^2 - 1.",
   "meta": {
-    "author": "Aristotle (Harmonic), Erdős-Graham, Steinerberger",
+    "author": "Aristotle (Harmonic), Erdos-Graham, Steinerberger",
     "sourceUrl": "https://erdosproblems.com/370",
     "date": "1980",
     "status": "axiom",
@@ -33,17 +33,48 @@
         "n64_sqrt_smooth",
         "example_63"
       ]
-    }
+    },
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt",
+        "description": "Real square root for the sqrt-smooth comparison gpf(n) < sqrt(n)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.sqrt_lt_sqrt",
+        "description": "Monotonicity of sqrt, used in the n=63 and n=64 proofs",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Set.Infinite",
+        "description": "Infinite set predicate for the main infinitude theorem",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "gpf axiomatization: 6 axioms capturing greatest prime factor behavior",
+      "IsSmooth/IsSqrtSmooth/ConsecutiveSqrtSmooth: smooth number predicates",
+      "SteinerbergerConstruction: n = m^2 - 1 with difference-of-squares factorization",
+      "steinerberger_succ: verified identity n+1 = m^2 (proved by Aristotle)",
+      "n63_sqrt_smooth/n64_sqrt_smooth: verified concrete example (proved by Aristotle)",
+      "example_63: combined verification of n=63 (proved by Aristotle)",
+      "ValidSteinerbergerM: predicate for valid construction parameters",
+      "PomeranceExponent: critical exponent 1/sqrt(e) for density arguments",
+      "erdos_370_infinitely_many: infinitude statement (sorry'd)",
+      "erdos_370: injective-function encoding of infinitude (sorry'd)"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem from Erdős-Graham (1980) asks about consecutive integers whose largest prime factors are unusually small. Pomerance observed that relaxing the exponent from 1/2 to 1/√e - ε gives a positive density result. Steinerberger found an elegant construction: n = m² - 1 works when m is chosen appropriately.",
-    "problemStatement": "Are there infinitely many n such that gpf(n) < √n and gpf(n+1) < √(n+1), where gpf denotes the greatest prime factor?",
-    "proofStrategy": "We axiomatize gpf with key properties and formalize the Steinerberger construction n = m² - 1 = (m-1)(m+1). For n = 63 = 8² - 1, we verify gpf(63) = 7 < √63 and gpf(64) = 2 < √64. The main theorem states infinitely many such n exist.",
+    "historicalContext": "This problem appears in Erdos and Graham's influential monograph 'Old and New Problems and Results in Combinatorial Number Theory' (1980, p. 69). They asked whether infinitely many consecutive integers n, n+1 both have their largest prime factor less than their square root. Such numbers are called 'sqrt-smooth' -- their prime factorizations are dominated by small primes relative to the number's magnitude.\n\nThe trivial observation is that sqrt-smooth numbers exist (e.g., any perfect square p^2 with p prime has gpf = p = sqrt(p^2)) but finding consecutive pairs is much harder. Pomerance observed that if the exponent 1/2 is relaxed to 1/sqrt(e) - epsilon (approximately 0.6065), the statement follows from density considerations via the Dickman-de Bruijn function, which gives the proportion of 'u-smooth' numbers. At u = sqrt(e), exactly half of all integers are u-smooth, making consecutive pairs abundant.\n\nSteinerberger found the elegant solution: take n = m^2 - 1 = (m-1)(m+1). Then n+1 = m^2, so gpf(n+1) = gpf(m). If m is a power of 2, gpf(m^2) = 2 < m = sqrt(m^2). For n itself, we need gpf((m-1)(m+1)) < m. When m = 8: n = 63 = 7 * 9, gpf(63) = 7 < sqrt(63) approximately 7.94, and gpf(64) = 2 < 8. There are infinitely many valid choices of m, resolving the problem.\n\nThe proof was partially verified by Aristotle proof search, which confirmed the n=63 example and the key identity n+1 = m^2. The main infinitude theorem remains sorry'd, requiring a proof that infinitely many m yield valid constructions.",
+    "problemStatement": "Are there infinitely many n such that gpf(n) < sqrt(n) and gpf(n+1) < sqrt(n+1), where gpf denotes the greatest prime factor?",
+    "proofStrategy": "The formalization axiomatizes gpf with 6 properties (value at 1, divisibility, primality, prime/prime-power values, product bound) and defines three smoothness predicates. The Steinerberger construction n = m^2 - 1 is formalized with the factorization (m-1)(m+1) axiomatized and the successor identity n+1 = m^2 verified. The worked example n=63 is fully verified (Aristotle proved all 4 component theorems). The main infinitude theorem is stated in two forms (Set.Infinite and injective function) but remains sorry'd. Pomerance's density perspective is included with the critical exponent 1/sqrt(e) and a weak Dickman density axiom.",
     "keyInsights": [
-      "The key construction is n = m² - 1 = (m-1)(m+1)",
-      "Then n + 1 = m², so gpf(n+1) = gpf(m)",
-      "For powers of 2: gpf(2^(2k)) = 2 < 2^k = √(4^k)",
-      "Example: n = 63, gpf(63) = 7 < √63 ≈ 7.94, gpf(64) = 2 < 8"
+      "The difference-of-squares factorization n = m^2 - 1 = (m-1)(m+1) is the key construction: it forces n+1 = m^2, making gpf(n+1) = gpf(m) automatically small when m is a prime power",
+      "For m = 2^k (powers of 2), gpf(m^2) = 2 < m = sqrt(m^2), so n+1 is always sqrt-smooth -- the challenge is making n sqrt-smooth too",
+      "The concrete example n=63 (m=8=2^3) works because 63 = 7*9 has gpf = 7 < 7.94 = sqrt(63), a tight but valid margin",
+      "Pomerance's density observation shows the critical exponent is 1/sqrt(e) approximately 0.6065: above this, density arguments work; below (including 1/2), explicit constructions are needed",
+      "The Dickman-de Bruijn function rho(u) governs smooth number density: rho(sqrt(e)) = 1/2 is the threshold where half of integers are u-smooth",
+      "Aristotle successfully verified 4 of the 6 non-axiom theorems, demonstrating automated proof search for concrete number-theoretic computations"
     ]
   },
   "sections": [
@@ -52,58 +83,73 @@
       "title": "Aristotle Attribution",
       "startLine": 1,
       "endLine": 10,
-      "summary": "Generated by Aristotle proof search. Lists theorems proved automatically."
+      "summary": "Generated by Aristotle proof search (Harmonic). Lists 4 automatically proved theorems: steinerberger_succ, n63_sqrt_smooth, n64_sqrt_smooth, example_63."
     },
     {
       "id": "header",
       "title": "Problem Overview",
       "startLine": 12,
-      "endLine": 38,
-      "summary": "Problem statement with historical context and the elegant Steinerberger solution."
+      "endLine": 48,
+      "summary": "Problem statement, history (Erdos-Graham 1980, Pomerance density observation, Steinerberger construction), key insight n = m^2 - 1, worked example n=63."
     },
     {
       "id": "gpf-definition",
-      "title": "Greatest Prime Factor",
+      "title": "Greatest Prime Factor Axiomatization",
       "startLine": 50,
       "endLine": 73,
-      "summary": "Axiomatize gpf with key properties for primes, prime powers, and products."
+      "summary": "6 axioms for gpf: value at n<=1, divisibility, primality, gpf of prime, gpf of prime power, and product bound gpf(mn) <= max(gpf(m), gpf(n))."
     },
     {
       "id": "smooth-numbers",
-      "title": "Smooth Numbers",
+      "title": "Smooth Number Definitions",
       "startLine": 75,
       "endLine": 90,
-      "summary": "Define B-smooth and √-smooth numbers, and ConsecutiveSqrtSmooth predicate."
+      "summary": "IsSmooth (B-smooth: gpf(n) <= B), IsSqrtSmooth (gpf(n) < sqrt(n) via real casting), ConsecutiveSqrtSmooth (both n and n+1 sqrt-smooth)."
     },
     {
       "id": "steinerberger",
-      "title": "The Steinerberger Construction",
+      "title": "Steinerberger Construction and Examples",
       "startLine": 92,
       "endLine": 156,
-      "summary": "Construction n = m² - 1 with verified examples n=63 (m=8) and n=224 (m=15)."
+      "summary": "SteinerbergerConstruction m = m^2 - 1 with factorization axiom and verified successor identity. Examples: n=63 (m=8) fully verified by Aristotle, n=224 (m=15) stated. ValidSteinerbergerM predicate for valid m."
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem",
+      "title": "Main Infinitude Theorem",
       "startLine": 158,
       "endLine": 201,
-      "summary": "State that infinitely many n satisfy the condition (sorry'd)."
+      "summary": "Two sorry'd statements: erdos_370_infinitely_many (Set.Infinite) and erdos_370 (injective function). Aristotle failed to load due to namespace issues. Proof requires showing infinitely many valid m exist."
     },
     {
       "id": "pomerance",
       "title": "Pomerance's Density Perspective",
       "startLine": 203,
       "endLine": 248,
-      "summary": "Connection to Dickman function and the critical exponent 1/√e."
+      "summary": "PomeranceExponent = 1/sqrt(e) approximately 0.6065 and Dickman density axiom. Explains why relaxing the exponent makes the problem trivial by density, while 1/2 requires constructive methods."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #370 about consecutive smooth numbers. The Steinerberger construction n = m² - 1 provides infinitely many examples where both n and n+1 have their largest prime factor less than their square root.",
-    "implications": "This connects the distribution of smooth numbers to elementary number theory. The elegant solution shows how sometimes deep-sounding problems have simple answers.",
+    "summary": "Erdos Problem #370 is SOLVED: there are infinitely many n where both n and n+1 are sqrt-smooth. The Steinerberger construction n = m^2 - 1 = (m-1)(m+1) provides an elegant infinite family of examples. The formalization verifies the concrete case n=63 (via Aristotle proof search) and connects to the deeper theory of smooth number density via Pomerance's observation and the Dickman function.",
+    "implications": "The elegant Steinerberger solution demonstrates how difference-of-squares factorization can reduce deep-sounding number-theoretic questions to elementary observations. The connection to the Dickman function reveals that the exponent 1/2 is below the density threshold 1/sqrt(e), explaining why the problem requires constructive methods rather than probabilistic arguments.",
     "openQuestions": [
-      "What is the density of such n?",
-      "How does the count of such n up to N grow?",
-      "Are there infinitely many n with gpf(n), gpf(n+1), gpf(n+2) all small?"
+      "What is the asymptotic density or count of n <= N with ConsecutiveSqrtSmooth(n)?",
+      "Are there infinitely many n with gpf(n), gpf(n+1), gpf(n+2) all less than their square roots (triples)?",
+      "What is the smallest n satisfying ConsecutiveSqrtSmooth(n) with gpf(n) = gpf(n+1)? (i.e., same largest prime factor)",
+      "Can the Steinerberger construction be optimized to find the densest infinite family?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "proofId": "erdos-1136",
+      "relationship": "Both are Erdos problems about sets of integers satisfying additive/multiplicative constraints, resolved by clever constructions"
+    },
+    {
+      "proofId": "erdos-984",
+      "relationship": "Both are Erdos problems in combinatorial number theory where extremal constructions play a central role"
+    },
+    {
+      "proofId": "erdos-527",
+      "relationship": "Both involve density and structure questions where the answer depends on a critical threshold parameter"
+    }
+  ]
 }
