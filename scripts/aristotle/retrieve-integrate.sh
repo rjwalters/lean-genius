@@ -118,6 +118,13 @@ integrate_solution() {
 
         if echo "$result" | grep -q "ERROR"; then
             echo -e "  ${RED}Retrieve failed:${NC} $result"
+
+            # If project no longer exists on server, mark as expired
+            if echo "$result" | grep -q "not found"; then
+                echo -e "  ${YELLOW}Project expired on server — marking as expired${NC}"
+                update_job_status "$project_id" "expired" "Project not found on server during retrieval"
+            fi
+
             return 1
         fi
 
