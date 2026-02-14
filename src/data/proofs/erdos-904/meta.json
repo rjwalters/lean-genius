@@ -21,78 +21,126 @@
     "sorries": 0,
     "erdosNumber": 904,
     "erdosUrl": "https://erdosproblems.com/904",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      { "theorem": "SimpleGraph.Basic", "description": "Simple graph structure and adjacency", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
+      { "theorem": "SimpleGraph.Finite", "description": "Finite graph operations", "module": "Mathlib.Combinatorics.SimpleGraph.Finite" },
+      { "theorem": "SimpleGraph.Clique", "description": "Cliques in simple graphs", "module": "Mathlib.Combinatorics.SimpleGraph.Clique" },
+      { "theorem": "Fintype", "description": "Finite types and cardinality", "module": "Mathlib.Data.Fintype.Basic" },
+      { "theorem": "Finset", "description": "Finite sets and cardinality", "module": "Mathlib.Data.Finset.Basic" }
+    ],
+    "originalContributions": [
+      "vertexDegree, edgeCount: graph-theoretic basics",
+      "IsTriangle: three mutually adjacent distinct vertices",
+      "triangleDegreeSum: d(x)+d(y)+d(z)",
+      "turanThreshold: n²/4",
+      "IsDense: edgeCount > turanThreshold",
+      "HasHighDegreeSum: 2(d(x)+d(y)+d(z)) ≥ 3n",
+      "BollobasErdosConjecture: formal conjecture statement",
+      "edwards_1978: the conjecture is true (axiom)",
+      "erdos_904: main theorem",
+      "complete_bipartite_triangle_free: sharpness of threshold",
+      "turan_extremal: Turán's theorem on extremality",
+      "degree_sum_tight: 3/2 is optimal",
+      "supersaturation: many triangles above threshold",
+      "erdos_904_main: instantiated main theorem"
+    ]
   },
   "overview": {
-    "historicalContext": "This problem was conjectured by Béla Bollobás and Paul Erdős as a strengthening of Turán's theorem. While Turán's theorem guarantees that a graph with more than n²/4 edges must contain a triangle, the Bollobás-Erdős conjecture asked whether such a graph must contain a triangle whose vertices have high combined degree. C.S. Edwards proved the conjecture in 1978, showing that not only does a triangle exist, but we can find one where the sum of degrees is at least (3/2)n.",
-    "problemStatement": "If G is a graph with n vertices and more than n²/4 edges, then G contains a triangle on vertices x, y, z such that d(x) + d(y) + d(z) ≥ (3/2)n, where d(v) denotes the degree of vertex v.",
-    "proofStrategy": "Edwards' proof uses a careful analysis of the degree sequence and greedy selection of high-degree vertices. The key insight is that dense graphs must have many vertices of high degree, and these high-degree vertices are likely to form triangles among themselves. The proof combines degree counting arguments with structural properties of dense graphs.",
+    "historicalContext": "Turán's theorem (1941) is the cornerstone of extremal graph theory: the maximum number of edges in a triangle-free graph on $n$ vertices is $\\lfloor n^2/4 \\rfloor$, achieved uniquely by the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$. Any graph exceeding this threshold must contain a triangle.\n\nBéla Bollobás and Paul Erdős asked a deeper question: can we find not just ANY triangle, but one whose vertices have high combined degree? Specifically, they conjectured that any graph with $n$ vertices and more than $n^2/4$ edges contains a triangle $\\{x, y, z\\}$ with $d(x) + d(y) + d(z) \\geq \\frac{3}{2}n$. C.S. Edwards (1978) [Ed78] proved this conjecture using degree counting arguments and careful vertex selection.\n\nThe constant $\\frac{3}{2}$ is optimal: for any $\\varepsilon > 0$ and large $n$, there exist dense graphs where some triangle has degree sum below $(\\frac{3}{2}+\\varepsilon)n$. The result is an early example of 'structured extremal' results—not just proving existence of a subgraph, but finding one with additional properties. It prefigures modern supersaturation and stability results in extremal combinatorics.",
+    "problemStatement": "If $G$ is a graph with $n$ vertices and more than $n^2/4$ edges, then $G$ contains a triangle on vertices $x, y, z$ such that\n$$d(x) + d(y) + d(z) \\geq \\frac{3}{2}n$$\nwhere $d(v)$ denotes the degree of vertex $v$ in $G$.\n\n**Solved** by Edwards (1978). The constant $\\frac{3}{2}$ is best possible.",
+    "proofStrategy": "The formalization uses Mathlib's `SimpleGraph` framework. The key definitions are `IsDense G` (edgeCount > $n^2/4$), `IsTriangle G x y z` (three mutually adjacent vertices), and `HasHighDegreeSum G x y z` ($2(d(x)+d(y)+d(z)) \\geq 3n$, avoiding fractions). Edwards' theorem is axiomatized as `BollobasErdosConjecture`, with supporting results on sharpness (complete bipartite graph achieves the threshold), Turán extremality, degree sum tightness ($\\frac{3}{2}$ is optimal), and supersaturation (many triangles above threshold).",
     "keyInsights": [
-      "Turán's theorem is the foundation: >n²/4 edges guarantees triangles",
-      "The complete bipartite graph K_{n/2,n/2} shows the threshold is sharp",
-      "Dense graphs must have high-degree vertices that cluster together",
-      "The constant 3/2 is optimal - cannot be improved",
-      "This is an early result in extremal graph theory about structured subgraphs"
+      "**Turán foundation**: $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$; exceeding this forces a triangle. The Bollobás-Erdős conjecture asks for a STRUCTURED triangle",
+      "**Integer encoding**: The condition $d(x)+d(y)+d(z) \\geq \\frac{3}{2}n$ is formalized as $2(d(x)+d(y)+d(z)) \\geq 3n$ to stay in $\\mathbb{N}$",
+      "**Complete bipartite sharpness**: $K_{n/2,n/2}$ has exactly $\\lfloor n^2/4 \\rfloor$ edges and is triangle-free, so the edge threshold cannot be relaxed",
+      "**Degree sum optimality**: The constant $\\frac{3}{2}$ is tight—there exist dense graphs where no triangle exceeds $(\\frac{3}{2}+\\varepsilon)n$",
+      "**Supersaturation**: Above the Turán threshold, not just one but $\\Omega(n)$ triangles exist; Edwards' theorem refines this by finding a 'good' triangle among them",
+      "**Modern context**: This is an ancestor of stability results (Simonovits stability theorem) and degree conditions for Hamiltonicity (Ore's theorem, Dirac's theorem)"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "erdos-77",
+        "relationship": "Related Turán-type extremal graph theory problem"
+      }
     ]
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Overview",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Header: Bollobás-Erdős conjecture, Edwards' 1978 proof, Turán context, reference [Ed78]"
+    },
+    {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 30,
+      "endLine": 47,
+      "summary": "Imports `SimpleGraph.Basic`, `SimpleGraph.Finite`, `SimpleGraph.Clique`; variables `V : Type*` with `[Fintype V] [DecidableEq V]`"
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Graph-theoretic setup: vertices, edges, degrees, and triangles",
       "startLine": 43,
-      "endLine": 76
+      "endLine": 76,
+      "summary": "`vertexDegree` ($d(v)$), `edgeCount` ($|E(G)|$), `IsTriangle` ($K_3$ subgraph), `triangleDegreeSum` ($d(x)+d(y)+d(z)$)"
     },
     {
       "id": "turan-context",
       "title": "Turán's Theorem Context",
-      "summary": "The n²/4 threshold and its significance",
       "startLine": 77,
-      "endLine": 103
+      "endLine": 103,
+      "summary": "`turanThreshold` ($\\lfloor n^2/4 \\rfloor$), `IsDense` ($|E| > n^2/4$), `turan_triangle` (dense $\\implies \\exists$ triangle)"
     },
     {
       "id": "bollobas-erdos-conjecture",
       "title": "The Bollobás-Erdős Conjecture",
-      "summary": "The statement that dense graphs contain high-degree-sum triangles",
       "startLine": 104,
-      "endLine": 122
+      "endLine": 122,
+      "summary": "`HasHighDegreeSum` ($2(d(x)+d(y)+d(z)) \\geq 3n$), `BollobasErdosConjecture`: dense $\\implies \\exists$ high-degree-sum triangle"
     },
     {
       "id": "edwards-theorem",
       "title": "Edwards' Theorem (1978)",
-      "summary": "The proof that settles the conjecture",
       "startLine": 123,
-      "endLine": 141
+      "endLine": 141,
+      "summary": "`edwards_1978`: the conjecture is true; `erdos_904 := edwards_1978`"
     },
     {
       "id": "sharpness",
       "title": "Sharpness and Extremality",
-      "summary": "Why the threshold n²/4 and constant 3/2 are optimal",
       "startLine": 142,
-      "endLine": 161
+      "endLine": 161,
+      "summary": "`complete_bipartite_triangle_free` ($K_{n/2,n/2}$ achieves $\\lfloor n^2/4 \\rfloor$ edges, no triangles), `turan_extremal` (no triangle-free graph exceeds $\\lfloor n^2/4 \\rfloor$)"
     },
     {
       "id": "stronger-results",
       "title": "Stronger Results",
-      "summary": "Degree sum tightness and supersaturation",
       "startLine": 162,
-      "endLine": 186
+      "endLine": 186,
+      "summary": "`degree_sum_tight` ($\\frac{3}{2}$ is best possible), `supersaturation` (dense graphs have many triangles)"
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "The main theorem applied to dense graphs",
       "startLine": 187,
-      "endLine": 199
+      "endLine": 199,
+      "summary": "`erdos_904_main`: instantiated Edwards' theorem for a specific dense graph $G$"
     }
   ],
   "conclusion": {
-    "summary": "Edwards (1978) proved the Bollobás-Erdős conjecture: any graph with n vertices and more than n²/4 edges contains a triangle whose vertices have degree sum at least (3/2)n. This strengthens Turán's theorem by showing that dense graphs contain not just any triangle, but triangles with high-degree vertices.",
-    "implications": "This result is foundational in extremal graph theory, demonstrating that density conditions force the existence of structured subgraphs. It has connections to supersaturation results and generalizations to larger cliques.",
+    "summary": "Edwards (1978) proved the Bollobás-Erdős conjecture: any graph with n vertices and more than n²/4 edges contains a triangle whose vertices have degree sum at least (3/2)n. The edge threshold n²/4 and the constant 3/2 are both optimal. This strengthens Turán's theorem by finding structured triangles in dense graphs.",
+    "implications": "This result launched a line of research on degree conditions for structured subgraphs in extremal graph theory. It connects to supersaturation phenomena, stability theorems (Simonovits), and modern results on degree conditions for cliques, cycles, and Hamiltonian structures.",
     "openQuestions": [
-      "Optimal constants for larger cliques (4-cliques, k-cliques)",
-      "Extensions to hypergraphs",
-      "Variations with different degree constraints"
+      "What is the optimal degree-sum threshold for K_4 (4-cliques) in graphs above the Turán threshold ex(n, K_4)?",
+      "For general K_r, what is the maximum guaranteed degree sum of an r-clique in a graph with more than ex(n, K_r) edges?",
+      "Can Edwards' result be extended to weighted graphs with minimum weighted-degree-sum triangles?",
+      "What is the precise count of triangles with degree sum ≥ (3/2)n in dense graphs (quantitative supersaturation)?",
+      "Does a stability version hold: if the best triangle has degree sum close to (3/2)n, is the graph close to a specific structure?"
     ]
   }
 }
