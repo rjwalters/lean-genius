@@ -484,10 +484,13 @@ axiom qr_product_non_residues (a b p : ℕ) (hp : Nat.Prime p) (hp_odd : p % 2 =
     (ha_nz : a % p ≠ 0) (hb_nz : b % p ≠ 0) :
     IsKthPowerResidue (a * b) 2 p
 
-/-- The number of kth power residues mod p divides (p-1)/gcd(k, p-1). -/
-axiom count_kth_residues (k p : ℕ) (hp : Nat.Prime p) (hk : k ≥ 1) :
+/-- The number of kth power residues mod p: (p-1)/gcd(k, p-1).
+    This is a basic divisibility fact since gcd(k, p-1) always divides p-1. -/
+theorem count_kth_residues (k p : ℕ) (_hp : Nat.Prime p) (_hk : k ≥ 1) :
     ∃ (count : ℕ), count * Nat.gcd k (p - 1) = p - 1 ∧
-      count = (p - 1) / Nat.gcd k (p - 1)
+      count = (p - 1) / Nat.gcd k (p - 1) := by
+  have hdvd := Nat.gcd_dvd_right k (p - 1)
+  exact ⟨(p - 1) / Nat.gcd k (p - 1), Nat.div_mul_cancel hdvd, rfl⟩
 
 /-- For prime p > 2, exactly half of nonzero residues are quadratic residues. -/
 theorem half_are_qr (p : ℕ) (_hp : Nat.Prime p) (_hp_gt2 : p > 2) :
@@ -542,6 +545,13 @@ theorem lambda_values_positive :
 ## Part XII: Euler's Criterion and ZMod Connections
 -/
 
+/-- For prime p > 2, p - 1 is even. (Placed here for forward reference.) -/
+private theorem prime_sub_one_even' (p : ℕ) (hp : Nat.Prime p) (hp_gt2 : p > 2) :
+    2 ∣ (p - 1) := by
+  have hodd := hp.odd_of_ne_two (by omega)
+  rw [Nat.odd_iff] at hodd
+  omega
+
 /-- Euler's criterion (forward): if a is a quadratic residue mod p, then a^((p-1)/2) ≡ 1 (mod p).
     Proved via ZMod.EulerCriterion and Fermat's Little Theorem. -/
 theorem euler_criterion_forward (a p : ℕ) (hp : Nat.Prime p) (hp_odd : p > 2)
@@ -552,17 +562,21 @@ theorem euler_criterion_forward (a p : ℕ) (hp : Nat.Prime p) (hp_odd : p > 2)
   -- a^((p-1)/2) = (x^2)^((p-1)/2) = x^(p-1) ≡ 1 (mod p) by FLT
   have hx_nz : x % p ≠ 0 := by
     intro h
-    rw [h] at hx
-    simp [Nat.zero_pow (by omega : 2 ≠ 0)] at hx
-    exact ha hx
+    -- x % p = 0 means p ∣ x, so x^2 % p = 0
+    have hx2 : x ^ 2 % p = 0 := by
+      have : p ∣ x := Nat.dvd_of_mod_eq_zero h
+      have : p ∣ x ^ 2 := dvd_pow this (by omega : 2 ≠ 0)
+      exact Nat.mod_eq_zero_of_dvd this
+    -- But hx says x^2 % p = a % p, so a % p = 0
+    rw [hx2] at hx
+    exact ha hx.symm
+  have hdvd := prime_sub_one_even' p hp hp_odd
   calc a ^ ((p - 1) / 2) % p
       = (a % p) ^ ((p - 1) / 2) % p := by rw [Nat.pow_mod]
     _ = (x ^ 2 % p) ^ ((p - 1) / 2) % p := by rw [hx]
-    _ = x ^ 2 ^ ((p - 1) / 2) % p := by rw [← Nat.pow_mod]
-    _ = x ^ (2 * ((p - 1) / 2)) % p := by ring_nf
-    _ = x ^ (p - 1) % p := by
-        congr 1
-        exact Nat.mul_div_cancel' (prime_sub_one_even p hp hp_odd)
+    _ = (x ^ 2) ^ ((p - 1) / 2) % p := by rw [← Nat.pow_mod]
+    _ = x ^ (2 * ((p - 1) / 2)) % p := by rw [← pow_mul]
+    _ = x ^ (p - 1) % p := by rw [Nat.mul_div_cancel' hdvd]
     _ = 1 := fermat_little_theorem x p hp hx_nz
 
 /-- Euler's criterion (backward): if a^((p-1)/2) ≡ 1 (mod p) then a is a QR.
