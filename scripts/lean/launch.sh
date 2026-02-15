@@ -580,6 +580,34 @@ find_claude_child() {
     '
 }
 
+# Helper: Kill all processes in a tmux session before destroying it.
+# This prevents orphaned claude/timeout processes when tmux SIGHUP
+# doesn't propagate across process group boundaries.
+kill_session_processes() {
+    local session="$1"
+
+    # Find and kill claude process before destroying the session
+    local pane_pid
+    pane_pid=$(tmux list-panes -t "$session" -F '#{pane_pid}' 2>/dev/null | head -1)
+
+    if [[ -n "$pane_pid" ]]; then
+        # Kill entire process tree under the pane
+        local children
+        children=$(pgrep -P "$pane_pid" 2>/dev/null || true)
+        if [[ -n "$children" ]]; then
+            echo "$children" | xargs kill 2>/dev/null || true
+        fi
+        # Also kill the pane process itself
+        kill "$pane_pid" 2>/dev/null || true
+    fi
+
+    # Now kill the tmux session
+    tmux kill-session -t "$session" 2>/dev/null || true
+
+    # Brief wait for processes to exit
+    sleep 1
+}
+
 # Helper: Get process elapsed time in minutes
 get_elapsed_minutes() {
     local pid="$1"
@@ -960,9 +988,8 @@ respawn_agent() {
 
     daemon_log "INFO" "Respawning $agent_type agent (session: $session)"
 
-    # Kill old session
-    tmux kill-session -t "$session" 2>/dev/null || true
-    sleep 1
+    # Kill old session and its processes
+    kill_session_processes "$session"
 
     case "$agent_type" in
         enricher)
@@ -1051,8 +1078,7 @@ respawn_agent() {
 kill_and_respawn() {
     local session="$1"
     daemon_log "WARN" "Force-killing stuck session: $session"
-    tmux kill-session -t "$session" 2>/dev/null || true
-    sleep 2
+    kill_session_processes "$session"
     respawn_agent "$session"
 }
 
@@ -1354,6 +1380,16 @@ cmd_daemon() {
 
         total_respawns=$((total_respawns + cycle_respawns))
 
+        # 2a-post. Sweep for orphaned claude processes (detached from any tmux session)
+        local orphan_pids
+        orphan_pids=$(ps aux | grep '[c]laude -p.*\(researcher\|enricher\|deployer\|seeker\|aristotle\)' | awk '$7 == "??" {print $2}')
+        if [[ -n "$orphan_pids" ]]; then
+            local orphan_count
+            orphan_count=$(echo "$orphan_pids" | wc -l | tr -d ' ')
+            daemon_log "WARN" "Found $orphan_count orphaned claude process(es), killing..."
+            echo "$orphan_pids" | xargs kill 2>/dev/null || true
+        fi
+
         # 2b. Pool gap detection: spawn missing agents whose sessions vanished
         # (get_all_agent_sessions only returns existing sessions, so if a session
         # exits entirely, the health check above never sees it)
@@ -1539,8 +1575,28 @@ cmd_stop() {
         if [[ -n "$remaining_sessions" ]]; then
             while IFS= read -r session; do
                 echo -e "  Killing stale session: $session"
-                tmux kill-session -t "$session" 2>/dev/null || true
+                kill_session_processes "$session"
             done <<< "$remaining_sessions"
+        fi
+
+        # Sweep for orphaned claude processes that survived session destruction
+        echo -e "${BLUE}Sweeping orphaned claude processes...${NC}"
+        local orphan_pids
+        orphan_pids=$(ps aux | grep '[c]laude -p.*\(researcher\|enricher\|deployer\|seeker\|aristotle\)' | awk '$7 == "??" {print $2}')
+        if [[ -n "$orphan_pids" ]]; then
+            local orphan_count
+            orphan_count=$(echo "$orphan_pids" | wc -l | tr -d ' ')
+            echo -e "  Killing $orphan_count orphaned claude process(es)"
+            echo "$orphan_pids" | xargs kill 2>/dev/null || true
+            sleep 1
+            # Force-kill any that didn't exit gracefully
+            local remaining_orphans
+            remaining_orphans=$(ps aux | grep '[c]laude -p.*\(researcher\|enricher\|deployer\|seeker\|aristotle\)' | awk '$7 == "??" {print $2}')
+            if [[ -n "$remaining_orphans" ]]; then
+                echo "$remaining_orphans" | xargs kill -9 2>/dev/null || true
+            fi
+        else
+            echo -e "  No orphaned processes found"
         fi
 
         # Update state (preserves agents, session_stats, etc.)
