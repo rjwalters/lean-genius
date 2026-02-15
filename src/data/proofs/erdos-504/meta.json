@@ -3,6 +3,7 @@
   "title": "Erdős Problem #504: Maximum Angle in Point Sets",
   "slug": "erdos-504",
   "description": "Determine α_n, the supremum of angles α such that every n-point set in the plane contains three points forming an angle at least α.",
+  "leanFile": "Proofs/Erdos504Problem.lean",
   "meta": {
     "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/504",
@@ -16,15 +17,15 @@
     "erdosProblemStatus": "solved"
   },
   "overview": {
-    "historicalContext": "Also known as Blumenthal's Problem, this question asks for the largest angle α such that every n-point planar set must contain three points forming an angle at least α. Szekeres established initial bounds in 1941, and Erdős and Szekeres (1960) proved the elegant formula α_{2^n} = π(1-1/n) for powers of 2.\n\nErdős and Szekeres conjectured this formula extended to all N between consecutive powers of 2, but Sendov dramatically disproved this in 1992. He showed that for N in the lower part of each range, a different formula applies: α_N = π(1-1/(2n-1)).\n\nSendov completed the full solution in 1993, revealing a beautiful dependence on binary representation. The formula changes depending on whether N falls above or below 2^{n-1} + 2^{n-3}, connecting discrete geometry to the binary structure of natural numbers.",
-    "problemStatement": "Let α_n be the supremum of all 0 ≤ α ≤ π such that in every set A ⊂ ℝ² of n points there exist three distinct points x, y, z ∈ A such that the angle ∠xyz is at least α. Determine α_n.",
-    "proofStrategy": "The formalization defines angles between points via the dot product formula, the maximum angle function for point sets, and the α_n infimum. Sendov's complete solution is stated as axioms covering two ranges: the upper range uses π(1-1/n) and the lower range uses π(1-1/(2n-1)). The summary theorem combines both formulas with the Erdős-Szekeres counterexample.",
+    "historicalContext": "This problem, also known as **Blumenthal's Problem**, asks for the largest angle $\\alpha$ guaranteed to appear among three points in any $n$-point planar set. The question originates from Leonard Blumenthal's work on metric geometry in the 1930s and was popularized by Erdős.\n\nThe first significant progress came from George Szekeres in 1941, who established initial bounds on $\\alpha_n$. In their influential 1960 paper, Erdős and Szekeres proved the elegant formula $\\alpha_{2^n} = \\pi(1 - 1/n)$ for powers of 2, showing that regular $2^n$-gons are optimal. They conjectured that this formula $\\alpha_N = \\pi(1 - 1/n)$ held for all $N$ with $2^{n-1} < N \\le 2^n$.\n\nBlagovest Sendov dramatically disproved this conjecture in 1992, showing that for $N$ in the lower part of each range $(2^{n-1}, 2^{n-1} + 2^{n-3}]$, the correct formula is $\\alpha_N = \\pi(1 - 1/(2n-1))$. Sendov completed the full determination of $\\alpha_N$ for all $N$ in his 1993 paper \"On the theorem of Erdős–Szekeres\" (Rendiconti del Circolo Matematico di Palermo), revealing a remarkable dependence on the binary representation of $N$: the formula changes at the threshold $5 \\cdot 2^{n-3}$, connecting discrete geometry to number-theoretic structure.",
+    "problemStatement": "Let $\\alpha_n$ be the supremum of all $0 \\le \\alpha \\le \\pi$ such that in every set $A \\subset \\mathbb{R}^2$ of $n$ points there exist three distinct points $x, y, z \\in A$ such that the angle $\\angle xyz$ is at least $\\alpha$. Determine $\\alpha_n$.",
+    "proofStrategy": "The formalization defines angles between points via the standard dot product formula $\\angle(x,y,z) = \\arccos\\bigl(\\frac{(x-y) \\cdot (z-y)}{\\|x-y\\|\\|z-y\\|}\\bigr)$, then constructs the $\\alpha_n$ function as an infimum over all $n$-point configurations. Sendov's complete solution is axiomatized in two cases: the **upper range** formula $\\alpha_N = \\pi(1-1/n)$ for $2^{n-1} + 2^{n-3} < N \\le 2^n$, and the **lower range** formula $\\alpha_N = \\pi(1-1/(2n-1))$ for $2^{n-1} < N \\le 2^{n-1} + 2^{n-3}$. A summary theorem combines both formulas with the Erdős–Szekeres counterexample.",
     "keyInsights": [
-      "Optimal configurations are vertices of regular polygons",
-      "α_n decreases as n increases (more points allows smaller max angle)",
-      "The formula depends on where N falls in binary: above or below 2^{n-1} + 2^{n-3}",
-      "Sendov's counterexample showed the Erdős-Szekeres conjecture was too optimistic",
-      "Regular 2^n-gons achieve the optimal configuration for N = 2^n"
+      "**Regular polygon optimality**: For $N = 2^k$, the vertices of a regular $2^k$-gon achieve the minimum possible maximum angle, with the inscribed angle theorem providing the geometric mechanism",
+      "**Monotonicity of $\\alpha_n$**: Since any $(n+1)$-point set contains $n$-point subsets, $\\alpha_n$ is non-increasing — more points means the guaranteed maximum angle can only decrease",
+      "**Binary threshold phenomenon**: The formula changes at $N = 5 \\cdot 2^{n-3}$, splitting each dyadic interval $(2^{n-1}, 2^n]$ into upper and lower ranges with different optimal configurations",
+      "**Failure of naive generalization**: Sendov's 1992 counterexample showed that extending $\\alpha_{2^n} = \\pi(1-1/n)$ to all $N$ in $(2^{n-1}, 2^n]$ fails — the lower range demands a different formula $\\pi(1-1/(2n-1))$",
+      "**Convexity of optimal configurations**: Optimal point sets achieving $\\alpha_N$ always lie in convex position (all points on the convex hull), since interior points create larger angles via the inscribed angle theorem"
     ],
     "originalContributions": [
       "Axiomatized maxAngleInSet to avoid sorry in Finset.sup' nonempty proof",
@@ -32,63 +33,80 @@
       "Summary theorem combining both Sendov formulas with the counterexample result"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "erdos-507",
+      "relationship": "related",
+      "description": "Heilbronn's triangle problem — another extremal problem on point configurations in the plane, asking for the smallest triangle area rather than largest angle"
+    },
+    {
+      "targetId": "erdos-506",
+      "relationship": "related",
+      "description": "Minimum circles from n points — a sibling discrete geometry problem on point set configurations and incidence geometry"
+    },
+    {
+      "targetId": "erdos-1026",
+      "relationship": "related",
+      "description": "Monotonic subsequence optimization — uses the classical Erdős–Szekeres theorem (1935), which shares foundational roots with the point-set geometry studied here"
+    }
+  ],
   "sections": [
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "range": { "startLine": 43, "endLine": 66 },
-      "content": "Defines the angle between three points using the dot product formula (arccos of normalized dot product), with axioms for range [0, π] and symmetry."
+      "content": "Defines the angle $\\angle(x,y,z)$ at vertex $y$ using the dot product formula $\\arccos\\bigl(\\frac{(x-y)\\cdot(z-y)}{\\|x-y\\|\\|z-y\\|}\\bigr)$, with axioms for range $[0,\\pi]$ and symmetry $\\angle(x,y,z) = \\angle(z,y,x)$."
     },
     {
       "id": "max-angle",
       "title": "Maximum Angle in a Point Set",
       "range": { "startLine": 68, "endLine": 83 },
-      "content": "Axiomatized maxAngleInSet function giving the largest angle formed by three distinct points in a finite set, with positivity and upper bound axioms."
+      "content": "Axiomatized `maxAngleInSet` function giving $\\max_{x,y,z \\in A}\\angle(x,y,z)$ for a finite set $A$, with positivity for $|A| \\ge 3$ and the upper bound $\\le \\pi$."
     },
     {
       "id": "alpha-n",
       "title": "The α_n Function",
       "range": { "startLine": 85, "endLine": 111 },
-      "content": "Defines α_n as the infimum of maxAngleInSet over all n-point sets. Includes well-definedness, monotonicity, and small cases (α_3 = α_4 = π)."
+      "content": "Defines $\\alpha_n = \\inf\\{\\operatorname{maxAngle}(A) : |A| = n\\}$ as the infimum over all $n$-point configurations. Includes well-definedness ($0 < \\alpha_n \\le \\pi$ for $n \\ge 3$), monotonicity ($\\alpha_n \\le \\alpha_m$ for $m \\le n$), and small cases $\\alpha_3 = \\alpha_4 = \\pi$."
     },
     {
       "id": "erdos-szekeres",
       "title": "Erdős-Szekeres Results (1960)",
       "range": { "startLine": 113, "endLine": 127 },
-      "content": "The formula α_{2^n} = π(1-1/n) for powers of 2, proved by Erdős and Szekeres in 1960."
+      "content": "The Erdős–Szekeres formula $\\alpha_{2^n} = \\pi(1 - 1/n)$ for powers of 2, where the regular $2^n$-gon achieves the minimum maximum angle."
     },
     {
       "id": "sendov-solution",
       "title": "Sendov's Complete Solution (1993)",
       "range": { "startLine": 129, "endLine": 167 },
-      "content": "The full solution: two formulas depending on where N falls relative to 2^{n-1} + 2^{n-3}."
+      "content": "The full determination of $\\alpha_N$: for the upper range $2^{n-1} + 2^{n-3} < N \\le 2^n$, $\\alpha_N = \\pi(1-1/n)$; for the lower range $2^{n-1} < N \\le 2^{n-1} + 2^{n-3}$, $\\alpha_N = \\pi(1-1/(2n-1))$."
     },
     {
       "id": "counterexample",
       "title": "Counterexample to Erdős-Szekeres Conjecture",
       "range": { "startLine": 169, "endLine": 182 },
-      "content": "Sendov's 1992 disproof of the Erdős-Szekeres conjecture, axiomatized as an existence statement."
+      "content": "Sendov's 1992 disproof of the Erdős–Szekeres conjecture: $\\exists\\, n, N$ with $2^{n-1} < N \\le 2^n$ such that $\\alpha_N \\ne \\pi(1-1/n)$."
     },
     {
       "id": "optimal-configs",
       "title": "Optimal Configurations and Convex Position",
       "range": { "startLine": 184, "endLine": 219 },
-      "content": "Regular polygon vertices, optimality for 2^k, and the result that optimal configurations are in convex position."
+      "content": "Defines regular $n$-gon vertices via $\\bigl(\\cos(2\\pi k/n), \\sin(2\\pi k/n)\\bigr)$, proves optimality for $N = 2^k$, and shows optimal configurations achieving $\\alpha_N$ are always in convex position."
     },
     {
       "id": "summary",
       "title": "Summary",
       "range": { "startLine": 221, "endLine": 255 },
-      "content": "The erdos_504_summary theorem combining both Sendov formulas and the counterexample into a single proved statement."
+      "content": "The `erdos_504_summary` theorem combining Sendov's upper and lower range formulas with the Erdős–Szekeres counterexample into a single proved statement using the axiomatized results."
     }
   ],
   "conclusion": {
-    "summary": "The maximum angle problem was completely solved by Sendov in 1993 after decades of partial results. The solution reveals a beautiful dependence on binary representation: the formula changes depending on where N falls relative to 2^{n-1} + 2^{n-3}.",
-    "implications": "The solution connects discrete geometry to number theory through the binary structure of N. It also demonstrates that naive generalizations (like the Erdős-Szekeres conjecture) can fail even when special cases look promising.",
+    "summary": "The maximum angle problem was completely solved by Blagovest Sendov in 1993 after over fifty years of partial results. The solution reveals a surprising dependence on binary representation: the formula for $\\alpha_N$ changes at the threshold $N = 5 \\cdot 2^{n-3}$ within each dyadic interval $(2^{n-1}, 2^n]$, with two distinct optimal configurations for the upper and lower ranges.",
+    "implications": "Sendov's solution connects discrete geometry to number theory through the binary structure of $N$. It demonstrates that natural-looking generalizations (like the Erdős–Szekeres conjecture extending $\\alpha_{2^n} = \\pi(1-1/n)$ to all $N$) can fail even when every special case works perfectly. The role of convex position in optimal configurations links to the broader Erdős–Szekeres Happy Ending theorem on convex subsets of point sets.",
     "openQuestions": [
-      "What is the analogous result in higher dimensions?",
-      "How do optimal configurations generalize beyond regular polygons?",
-      "Are there efficient algorithms to find the maximum angle configuration?"
+      "What is the higher-dimensional analogue: given n points in $\\mathbb{R}^d$ for $d \\ge 3$, what is the maximum solid angle guaranteed among any d+1 points?",
+      "Can the binary threshold phenomenon be understood via a deeper structural principle, perhaps related to Turán-type extremal theory?",
+      "For which values of N are the optimal configurations achieving $\\alpha_N$ unique up to similarity?"
     ]
   }
 }
