@@ -9,6 +9,7 @@
     "date": "1961",
     "status": "formalized",
     "proofRepoPath": "Proofs/Erdos980Problem.lean",
+    "leanFile": "proofs/Proofs/Erdos980Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -40,44 +41,52 @@
       "title": "Power Residues and Nonresidues",
       "startLine": 42,
       "endLine": 103,
-      "summary": "Definitions of k-th power residues and nonresidues, the least nonresidue function, and bounds"
+      "summary": "Defines IsPowerResidue, IsPowerNonresidue, and leastPowerNonresidue (using Nat.find). States Vinogradov's bound n(p) = O(p^{1/(4√e)+ε}) and the GRH conditional bound n(p) = O((log p)²)."
     },
     {
       "id": "sum-function",
       "title": "The Sum Function S_k(x)",
       "startLine": 105,
       "endLine": 121,
-      "summary": "Definition and properties of the sum of least k-th power nonresidues over primes"
+      "summary": "Defines sumLeastNonresidues S_k(x) = Σ_{p<x} n_k(p) using Finset.range with primality filter. Axiomatizes nonnegativity."
     },
     {
       "id": "constants",
       "title": "The Constants c_k",
       "startLine": 123,
       "endLine": 158,
-      "summary": "The positive constants c_k appearing in the asymptotic formula, with explicit c₂"
+      "summary": "Defines c_2 = Σ p_j/2^j (≈ 3.67) as a tprime series, axiomatizes c_2_positive and c_2_approx (3.5 < c₂ < 4). Defines general c_k with positivity axiom for k ≥ 2."
     },
     {
       "id": "erdos-1961",
       "title": "Erdős's Result (1961)",
       "startLine": 160,
       "endLine": 182,
-      "summary": "The quadratic case k=2 with explicit constant c₂ = Σ p_j/2^j"
+      "summary": "Axiomatizes Erdős's 1961 result: Σ_{p<x} n_2(p) ~ c₂ · x/log x in both absolute error and ratio convergence forms."
     },
     {
       "id": "elliott-1967",
       "title": "Elliott's Generalization (1967)",
       "startLine": 184,
       "endLine": 214,
-      "summary": "Extension to all k ≥ 2, completing the solution of Problem #980"
+      "summary": "Axiomatizes Elliott's 1967 generalization to all k ≥ 2. States erdos_980_solution (the main theorem), average interpretation, special cases (n₂(p) = 2 for p ≡ ±3 mod 8), Pólya-Vinogradov connection, and the summary theorem."
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem #980 is SOLVED. The conjecture is true: for all k ≥ 2, the sum Σ_{p<x} n_k(p) ~ c_k · x/log x with c_k > 0. Erdős proved the k=2 case in 1961 with the explicit constant c₂ = Σ p_j/2^j. Elliott completed the solution in 1967 by proving the general case for all k ≥ 2.",
     "implications": "The result shows that on average, the least k-th power nonresidue among primes p < x grows like c_k · log x. This connects to character sum estimates and the distribution of power residue symbols.",
     "openQuestions": [
-      "What are the exact values of c_k for k > 2?",
-      "Can the error term in the asymptotic be improved?",
-      "How does the distribution of individual n_k(p) values compare to the average?"
+      "What are the exact values of c_k for k > 2? Can they be expressed as explicit prime-weighted series like c₂?",
+      "Can the error term in the asymptotic Σ n_k(p) = c_k · x/log x + E(x) be improved? What is the best possible bound on E(x)?",
+      "How does the distribution of individual n_k(p) values compare to the average? What fraction of primes have n_k(p) = 2?",
+      "Is there an analog for composite moduli, or does the result fundamentally require primality?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "uses",
+      "description": "The prime number theorem π(x) ~ x/log x is foundational to interpreting the asymptotic Σ n_k(p) ~ c_k · x/log x."
+    }
+  ]
 }
