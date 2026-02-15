@@ -7,7 +7,7 @@
     "author": "Erdős-Graham-Ivić-Pomerance (1996), Sawhney (rediscovery)",
     "sourceUrl": "https://erdosproblems.com/419",
     "date": "1996",
-    "status": "complete",
+    "status": "enhanced",
     "proofRepoPath": "Proofs/Erdos419Problem.lean",
     "tags": [
       "erdos",
@@ -26,7 +26,7 @@
     "erdosProblemStatus": "solved",
     "dateAdded": "2026-01-22",
     "dateUpdated": "2026-02-12",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.24.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.divisors",
@@ -91,6 +91,7 @@
     ]
   },
   "leanFile": {
+    "path": "Proofs/Erdos419Problem.lean",
     "imports": [
       "Mathlib.NumberTheory.Divisors",
       "Mathlib.NumberTheory.ArithmeticFunction",
@@ -101,9 +102,15 @@
     "opens": ["Nat", "ArithmeticFunction"],
     "namespace": "Erdos419",
     "lineCount": 252,
+    "mainTheorems": [
+      "sawhney_characterization", "limit_set_properties", "erdos_419_summary"
+    ],
+    "mainDefinitions": [
+      "tau", "factorialDivisorRatio", "padicValFactorial", "limitPointSet"
+    ],
     "axiomCount": 21,
     "theoremCount": 3,
-    "definitionCount": 4
+    "sorryCount": 0
   },
   "crossReferences": [
     {
