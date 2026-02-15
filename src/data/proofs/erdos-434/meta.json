@@ -68,65 +68,39 @@
       "Greedy construction equals topK (rfl)",
       "Proved zero_representable, mem_representable, add_representable"
     ],
-    "mathContext": {
-      "field": "Number Theory / Combinatorics",
-      "subfield": "Numerical Semigroups / Frobenius Problem",
-      "difficulty": "undergraduate/research",
-      "keyTechniques": [
-        "Multiset-based representability definition (existential over Multiset ℕ with sum constraint)",
-        "Set.Icc for interval construction of topK and problem433Set",
-        "Set.ncard/Set.encard for counting non-representable integers",
-        "sSup for Frobenius number definition",
-        "IsGreatest for maximum formulation"
-      ],
-      "prerequisites": [
-        "Multiset theory (sum, membership, addition)",
-        "Set cardinality (ncard, encard)",
-        "GCD and coprimality (Nat.Coprime)",
-        "Order theory (sSup, IsGreatest)"
-      ],
-      "consequences": [
-        "The greedy approach (largest numbers first) is provably optimal for maximizing non-representables",
-        "Connects the classical Frobenius/coin problem to extremal combinatorics",
-        "The Sylvester formula gives exact counts for 2-element sets"
-      ],
-      "crossReferences": [
-        { "proofId": "erdos-433", "relationship": "Companion problem: #433 maximizes the Frobenius NUMBER g(k,n) ~ n²/(k-1), while #434 maximizes the COUNT of non-representables. Both from Erdős-Graham 1980." }
-      ],
-      "references": [
-        {
-          "title": "On the extremal Frobenius problem in a new aspect",
-          "authors": ["G. Kiss"],
-          "year": 2002,
-          "venue": "Ann. Univ. Sci. Budapest. Eötvös Sect. Math.",
-          "relevance": "Proved that {n-k+1,...,n} maximizes the count of non-representable integers (the main result)"
-        },
-        {
-          "title": "Old and New Problems and Results in Combinatorial Number Theory",
-          "authors": ["P. Erdős", "R.L. Graham"],
-          "year": 1980,
-          "venue": "L'Enseignement Mathématique, Monograph No. 28",
-          "relevance": "Original source of Problems #433 and #434 on extremal Frobenius problems"
-        },
-        {
-          "title": "Mathematical Questions with their Solutions, Educational Times",
-          "authors": ["J.J. Sylvester"],
-          "year": 1884,
-          "venue": "Educational Times",
-          "relevance": "Classical formula: for coprime a, b, the Frobenius number is ab-a-b and the count is (a-1)(b-1)/2"
-        },
-        {
-          "title": "The Diophantine Frobenius Problem",
-          "authors": ["J.L. Ramírez-Alfonsín"],
-          "year": 2005,
-          "venue": "Oxford University Press",
-          "relevance": "Comprehensive survey proving NP-hardness for ≥ 3 elements and collecting known results"
-        }
-      ]
-    }
+    "references": [
+      {
+        "title": "On the extremal Frobenius problem in a new aspect",
+        "authors": ["G. Kiss"],
+        "year": 2002,
+        "venue": "Ann. Univ. Sci. Budapest. Eötvös Sect. Math.",
+        "relevance": "Proved that {n-k+1,...,n} maximizes the count of non-representable integers (the main result)"
+      },
+      {
+        "title": "Old and New Problems and Results in Combinatorial Number Theory",
+        "authors": ["P. Erdős", "R.L. Graham"],
+        "year": 1980,
+        "venue": "L'Enseignement Mathématique, Monograph No. 28",
+        "relevance": "Original source of Problems #433 and #434 on extremal Frobenius problems"
+      },
+      {
+        "title": "Mathematical Questions with their Solutions, Educational Times",
+        "authors": ["J.J. Sylvester"],
+        "year": 1884,
+        "venue": "Educational Times",
+        "relevance": "Classical formula: for coprime a, b, the Frobenius number is ab-a-b and the count is (a-1)(b-1)/2"
+      },
+      {
+        "title": "The Diophantine Frobenius Problem",
+        "authors": ["J.L. Ramírez-Alfonsín"],
+        "year": 2005,
+        "venue": "Oxford University Press",
+        "relevance": "Comprehensive survey proving NP-hardness for ≥ 3 elements and collecting known results"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #434 is closely related to the classical Frobenius problem (also called the coin problem or money changing problem). Given a set of positive integers with gcd = 1, only finitely many integers are non-representable as sums of elements from the set.\n\nThe Frobenius number is the largest such non-representable integer. For two coprime integers a and b, Sylvester proved in 1884 that this equals ab - a - b, and the count of non-representables is (a-1)(b-1)/2.\n\nProblem #434 asks a different question: not what is the largest non-representable integer, but which k-element subset of {1, ..., n} maximizes the COUNT of non-representable integers. Kiss (2002) proved that the answer is the 'top k' set: {n-k+1, ..., n}. Intuitively, using larger numbers creates more gaps in what's representable.\n\nThe problem connects to numerical semigroup theory, where the 'genus' of a semigroup (number of gaps) is a central invariant. Problem #434 asks which generators maximize the genus.",
+    "historicalContext": "Erdős Problem #434 is closely related to the classical Frobenius problem (also called the coin problem or money changing problem). Given a set of positive integers with gcd = 1, only finitely many integers are non-representable as sums of elements from the set.\n\nThe Frobenius number is the largest such non-representable integer. For two coprime integers a and b, Sylvester proved in 1884 that this equals ab - a - b, and the count of non-representables is (a-1)(b-1)/2.\n\nProblem #434 asks a different question: not what is the largest non-representable integer, but which k-element subset of {1, ..., n} maximizes the COUNT of non-representable integers. Kiss (2002) proved that the answer is the 'top k' set: {n-k+1, ..., n}. Intuitively, using larger numbers creates more gaps in what's representable.\n\nThe problem connects to numerical semigroup theory, where the 'genus' of a semigroup (number of gaps) is a central invariant. Problem #434 asks which generators maximize the genus. The result is also remarkable from an optimization perspective: the greedy algorithm (always pick the largest available number) produces the provably optimal solution — a rare case in combinatorial optimization where greedy is exactly optimal.\n\nRamírez-Alfonsín (2005) showed that computing the Frobenius number for sets of 3 or more elements is NP-hard, making the clean explicit solution to the extremal problem all the more surprising.",
     "problemStatement": "Let k ≤ n. What choice of A ⊆ {1, ..., n} of size |A| = k maximizes the number of integers not representable as the sum of finitely many elements from A (with repetitions allowed)?\n\n**Answer**: YES, it is A = {n-k+1, ..., n}\n\nThis was proved by Kiss (2002).",
     "proofStrategy": "The formalization builds up representability theory from multisets: IsRepresentableAs uses existential over Multiset ℕ with membership and sum constraints. Three basic lemmas (zero_representable, mem_representable, add_representable) show the representable set is a submonoid of (ℕ, +). The NonRepresentable set and its counts (ncard/encard) are defined, along with the Frobenius number via sSup. The topK set {n-k+1,...,n} is defined as Set.Icc, and Kiss's theorem (axiom) states it maximizes nCardNonRepresentable. Supporting results include the Sylvester-Frobenius formula (axiom), small examples ({2,3}, {3,5}, topK(5,2)=proved), the greedy construction (definitionally equal to topK), finiteness when gcd=1, and connections to Problem #433.",
     "keyInsights": [
@@ -134,9 +108,32 @@
       "**Frobenius number vs Count**: Problem #434 maximizes the COUNT of non-representables (the 'genus'), not the largest non-representable (the Frobenius number). Problem #433 does the latter.",
       "**topK is Optimal (Kiss 2002)**: {n-k+1, ..., n} maximizes non-representables. Large numbers create more gaps because their multiples are widely spaced.",
       "**Sylvester Formula**: For coprime a, b: Frobenius number = ab-a-b, count = (a-1)(b-1)/2. For consecutive n-1, n: count = (n-2)(n-1)/2, growing quadratically.",
-      "**Greedy is Optimal**: The greedy approach (always pick the largest number) produces topK and is provably optimal — a rare case in combinatorial optimization."
+      "**Greedy is Optimal**: The greedy approach (always pick the largest number) produces topK and is provably optimal — a rare case in combinatorial optimization.",
+      "**NP-hardness contrast**: Computing the Frobenius number for ≥ 3 elements is NP-hard (Ramírez-Alfonsín 2005), yet the extremal problem has an elegant explicit solution."
     ]
   },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Multiset.Basic",
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Order.BoundedOrder.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "Erdos434",
+    "lineCount": 311,
+    "axiomCount": 4,
+    "theoremCount": 15,
+    "definitionCount": 10
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-433",
+      "relationship": "related-problem",
+      "description": "Companion problem: #433 maximizes the Frobenius NUMBER g(k,n) ~ n²/(k-1), while #434 maximizes the COUNT of non-representables. Both posed by Erdős-Graham in their 1980 monograph."
+    }
+  ],
   "sections": [
     {
       "id": "representability",
