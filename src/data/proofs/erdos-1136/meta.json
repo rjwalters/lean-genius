@@ -52,17 +52,62 @@
     ],
     "dateAdded": "2026-01-26"
   },
+  "leanFile": {
+    "path": "Proofs/Erdos1136Problem.lean",
+    "lineCount": 114,
+    "namespace": "Erdos1136",
+    "imports": [
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Order.Filter.Basic"
+    ],
+    "mainTheorems": [
+      "multiples_of_3_avoid",
+      "erdos_1136",
+      "erdos_1136_optimal"
+    ],
+    "mainDefinitions": [
+      "AvoidsPowerOfTwoSums",
+      "lowerDensity",
+      "MullerSet"
+    ],
+    "axiomCount": 3,
+    "theoremCount": 3
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-984",
+      "relationship": "related-problem",
+      "description": "Both are Erdős problems in additive combinatorics involving density bounds for sets with prescribed arithmetic constraints."
+    },
+    {
+      "targetId": "erdos-107",
+      "relationship": "related-problem",
+      "description": "Both are Erdős problems where a trivial construction gives a baseline bound that is later improved to the optimal value."
+    },
+    {
+      "targetId": "erdos-527",
+      "relationship": "thematic",
+      "description": "Both involve density and structure of sets defined by arithmetic constraints, connecting combinatorics with number-theoretic analysis."
+    },
+    {
+      "targetId": "partition-theorem",
+      "relationship": "thematic",
+      "description": "Both involve partition-type arguments over natural numbers. The pairing argument $(a, 2^k - a)$ in Muller's optimality proof partitions integers into complementary pairs."
+    }
+  ],
   "overview": {
-    "historicalContext": "Erdos posed this problem at the 1987 DMV (Deutsche Mathematiker-Vereinigung) conference in Berlin, asking whether one can find a subset of the natural numbers with density exceeding 1/3 where no two elements sum to a power of 2. The threshold 1/3 is natural because a trivial construction achieves it: the set of multiples of 3 works, since if 3 divides both a and b then 3 divides a+b, but 2^k is never divisible by 3 (as 2 is coprime to 3).\n\nThe problem remained open for over 20 years until Jorg Muller resolved it completely in 2011. Muller's solution went far beyond Erdos's question: he constructed a set with density 1/2 (not just > 1/3) and proved this is optimal -- no set avoiding power-of-two sums can have density greater than 1/2. His construction uses a beautiful binary-digit criterion: a number n belongs to the set if and only if its binary representation contains two consecutive 1-bits at some position.\n\nThe optimality proof uses an elegant pairing argument. For each power 2^k, the map a -> 2^k - a pairs the integers {1, ..., 2^k - 1}, and any set avoiding power-of-two sums can contain at most one element from each pair. As k grows, this forces the density to be at most 1/2. The problem connects to the broader theory of sum-free sets and additive number theory, where density questions for sets avoiding prescribed additive patterns are central.",
+    "historicalContext": "Erdős posed this problem at the 1987 DMV (Deutsche Mathematiker-Vereinigung) conference in Berlin, asking whether one can find a subset of the natural numbers with density exceeding $1/3$ where no two elements sum to a power of 2. The threshold $1/3$ is natural because a trivial construction achieves it: the set of multiples of 3 works, since if $3 \\mid a$ and $3 \\mid b$ then $3 \\mid (a+b)$, but $2^k \\equiv (-1)^k \\pmod{3}$ is never divisible by 3.\n\nThe problem remained open for over 20 years until Jörg Müller resolved it completely in 2011. Müller's solution went far beyond Erdős's question: he constructed a set with density $1/2$ (not just $> 1/3$) and proved this is optimal --- no set avoiding power-of-two sums can have density greater than $1/2$. His construction uses a binary-digit criterion: $n$ belongs to the set if and only if its binary representation contains two consecutive 1-bits at some position, characterized algebraically by the condition $n \\equiv 3 \\cdot 2^i \\pmod{2^{i+2}}$ for some $i \\geq 0$.\n\nThe optimality proof uses an elegant pairing argument. For each power $2^k$, the involution $a \\mapsto 2^k - a$ pairs the integers $\\{1, \\ldots, 2^k - 1\\}$, and any set avoiding power-of-two sums can contain at most one element from each pair. As $k \\to \\infty$, this forces the density to be at most $1/2$. The problem connects to the broader theory of sum-free sets in additive combinatorics, where density questions for sets avoiding prescribed additive patterns are central. Related work includes Cameron-Erdős conjectures on the number of sum-free sets and Freiman's theorem on the structure of sets with small sumset.",
     "problemStatement": "**Problem:** Does there exist $A \\subset \\mathbb{N}$ with lower density $> 1/3$ such that $a + b \\neq 2^k$ for any $a, b \\in A$ and $k \\geq 0$?\n\n**Answer:** YES -- Muller constructed such a set with optimal density $1/2$.\n\n**Construction:** $A = \\{n \\in \\mathbb{N} : n \\equiv 3 \\cdot 2^i \\pmod{2^{i+2}} \\text{ for some } i \\geq 0\\}$",
-    "proofStrategy": "The formalization proceeds in four parts. Part I defines the AvoidsPowerOfTwoSums predicate and lower density using Finset counting and infimum. Part II proves the trivial bound: multiples of 3 avoid power-of-two sums (verified via Nat.dvd_add and primality of 3) with density 1/3 (axiomatized). Part III defines Muller's set via the modular condition n % 2^{i+2} = 3 * 2^i and axiomatizes its two key properties: avoidance and density 1/2. Part IV proves the main theorems: erdos_1136 (existence, verified from axioms using linarith) and erdos_1136_optimal (complete characterization combining both directions).",
+    "proofStrategy": "The formalization proceeds in four parts. Part I defines the `AvoidsPowerOfTwoSums` predicate and lower density using Finset counting and infimum. Part II proves the trivial bound: multiples of 3 avoid power-of-two sums (verified via `Nat.dvd_add` and coprimality of 2 and 3) with density $1/3$ (axiomatized). Part III defines Muller's set via the modular condition $n \\bmod 2^{i+2} = 3 \\cdot 2^i$ and axiomatizes its two key properties: avoidance and density $1/2$. Part IV proves the main theorems: `erdos_1136` (existence, verified from axioms using `linarith`) and `erdos_1136_optimal` (complete characterization combining both directions).",
     "keyInsights": [
-      "**Binary structure:** The constraint a+b = 2^k means a and b are binary complements up to bit k, making binary representation analysis the natural tool",
-      "**Trivial bound 1/3:** Multiples of 3 work because 2^k mod 3 alternates between 1 and 2, never hitting 0 -- this is fully verified in Lean",
-      "**Muller's construction:** Numbers with consecutive 1-bits in binary achieve density exactly 1/2, exploiting the carry-propagation structure of binary addition",
-      "**Pairing argument for optimality:** For each 2^k, the pairs (a, 2^k-a) allow at most one element each, forcing density <= 1/2 in the limit",
-      "**Gap from 1/3 to 1/2:** Muller showed the true threshold is 1/2, a 50% improvement over the trivial bound, completely resolving the problem",
-      "**Verified vs axiomatized:** The trivial bound proof and main theorems are verified; Muller's construction properties are axiomatized due to the binary-digit analysis complexity"
+      "**Binary structure of the constraint**: The equation $a + b = 2^k$ means $a$ and $b$ are binary complements up to bit $k$ (i.e., $b = 2^k - a$), making binary representation analysis the natural framework for this problem.",
+      "**Trivial bound via coprimality**: Multiples of 3 work because $\\gcd(2, 3) = 1$ implies $3 \\nmid 2^k$ for all $k$, but $3 \\mid (a+b)$ when $3 \\mid a$ and $3 \\mid b$. This is fully verified in Lean using `Nat.dvd_add`.",
+      "**Consecutive 1-bits and carry propagation**: Müller's key insight is that numbers with consecutive 1-bits in binary cannot sum to a power of 2. The addition $a + b = 2^k$ requires no carry conflicts, but consecutive 1-bits force carry propagation that produces contradictions.",
+      "**Pairing argument for the upper bound**: For each $2^k$, the involution $a \\mapsto 2^k - a$ pairs complementary integers. Any set avoiding power-of-two sums picks at most one from each pair, giving density $\\leq 1/2$ --- a clean double-counting argument.",
+      "**Factor-of-3/2 improvement**: Müller showed the true threshold is $1/2$, a 50% improvement over the trivial bound of $1/3$. The gap illustrates how binary structure provides much finer control than divisibility arguments alone.",
+      "**Verified vs axiomatized division**: The trivial bound proof and main existence/optimality theorems are fully verified in Lean; only Müller's binary-digit analysis (carry propagation) and the density computation are axiomatized."
     ]
   },
   "sections": [
@@ -71,66 +116,52 @@
       "title": "Module Docstring",
       "startLine": 1,
       "endLine": 27,
-      "summary": "Problem statement, history (Erdos 1987, Muller 2011), construction description, and reference. Lists the key milestones from trivial 1/3 to optimal 1/2."
+      "summary": "Problem statement, history (Erdős 1987 DMV conference, Müller 2011), construction description $n \\equiv 3 \\cdot 2^i \\pmod{2^{i+2}}$, and reference."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
       "startLine": 29,
       "endLine": 36,
-      "summary": "Imports Nat.Basic, Real.Basic, Finset.Basic, and Filter.Basic from Mathlib. Opens Finset namespace and creates Erdos1136 namespace."
+      "summary": "Imports `Nat.Basic`, `Real.Basic`, `Finset.Basic`, and `Filter.Basic` from Mathlib. Opens `Finset` namespace."
     },
     {
       "id": "definitions",
-      "title": "Part I: Basic Definitions",
+      "title": "Part I: Core Definitions",
       "startLine": 38,
       "endLine": 49,
-      "summary": "Defines AvoidsPowerOfTwoSums predicate (universal over pairs and exponents) and lowerDensity (infimum of Finset counting ratios)."
+      "summary": "Defines `AvoidsPowerOfTwoSums(A)` as $\\forall a, b \\in A, \\forall k, a + b \\neq 2^k$ and `lowerDensity(A) = \\inf_{N > 0} |A \\cap [0,N)| / N$."
     },
     {
       "id": "trivial-bound",
-      "title": "Part II: Trivial Bound",
+      "title": "Part II: Trivial Bound via Multiples of 3",
       "startLine": 51,
       "endLine": 71,
-      "summary": "Verified proof: multiples_of_3_avoid shows 3|a and 3|b implies 3|(a+b) but 3 does not divide 2^k. Axiom: multiples_of_3_density states density of 3N is 1/3."
+      "summary": "Verified proof that $3\\mathbb{N}$ avoids power-of-two sums (since $3 \\mid (a+b)$ but $3 \\nmid 2^k$), plus axiomatized density $\\underline{d}(3\\mathbb{N}) = 1/3$."
     },
     {
       "id": "muller-construction",
-      "title": "Part III: Muller's Construction",
+      "title": "Part III: Müller's Binary Construction",
       "startLine": 73,
       "endLine": 92,
-      "summary": "Defines MullerSet via modular condition n % 2^{i+2} = 3*2^i (consecutive 1-bits in binary). Axiomatizes muller_construction (avoidance + density 1/2) and muller_optimality (density upper bound 1/2)."
+      "summary": "Defines `MullerSet` via $n \\bmod 2^{i+2} = 3 \\cdot 2^i$. Axiomatizes avoidance + density $1/2$ (`muller_construction`) and the upper bound $\\underline{d}(A) \\leq 1/2$ (`muller_optimality`)."
     },
     {
       "id": "main-result",
-      "title": "Part IV: Main Result",
+      "title": "Part IV: Main Theorems",
       "startLine": 94,
       "endLine": 114,
-      "summary": "Verified theorems: erdos_1136 (existence with density > 1/3, via MullerSet + linarith) and erdos_1136_optimal (exact optimum 1/2, combining both axioms). Problem fully SOLVED."
+      "summary": "Verified `erdos_1136` (existence with $\\underline{d}(A) > 1/3$ via `linarith` on $1/2 > 1/3$) and `erdos_1136_optimal` (exact optimum $1/2$, combining both axioms)."
     }
   ],
   "conclusion": {
-    "summary": "Erdos Problem #1136 was solved by Muller in 2011. The maximum density for a set of natural numbers where no two elements sum to a power of 2 is exactly 1/2, achieved by the set of integers with consecutive 1-bits in binary. The formalization verifies the main theorems from axiomatized construction properties, with the trivial multiples-of-3 proof fully verified.",
-    "implications": "The result reveals a deep connection between additive structure and binary representations. The constraint 'no sum equals a power of 2' is fundamentally a constraint on binary digit patterns, which Muller exploited to find and prove the optimal construction. The pairing argument for the upper bound is a prototype for density bounds in additive combinatorics.",
+    "summary": "Erdős Problem #1136 was solved by Müller in 2011. The maximum density for a set of natural numbers where no two elements sum to a power of 2 is exactly $1/2$, achieved by the set of integers with consecutive 1-bits in binary ($n \\equiv 3 \\cdot 2^i \\pmod{2^{i+2}}$). The formalization verifies the main existence and optimality theorems from axiomatized construction properties, with the trivial multiples-of-3 proof fully verified in Lean.",
+    "implications": "The result reveals that the constraint '$a + b \\neq 2^k$' is fundamentally about binary digit patterns, not divisibility. Müller's construction exploits carry propagation in binary addition, a technique with potential applications to other additive problems over powers of a fixed base. The pairing argument for the upper bound is a clean instance of the probabilistic/counting method in combinatorics, partitioning a universe into complementary pairs and bounding the maximum independent set.",
     "openQuestions": [
-      "What is the optimal density for avoiding sums equal to 3^k, or more generally p^k for prime p?",
-      "Can Muller's binary-digit technique be extended to higher-order constraints (e.g., a+b+c = 2^k)?",
-      "What is the structure of all optimal sets -- is MullerSet essentially unique?",
-      "What happens with upper density instead of lower density?"
+      "What is the optimal density for avoiding sums equal to $3^k$, or more generally $p^k$ for a fixed prime $p$? The binary structure argument does not directly generalize to other bases.",
+      "Can Müller's binary-digit technique be extended to higher-order constraints such as $a + b + c = 2^k$ (three-term power-of-two sums)?",
+      "Is Müller's set essentially the unique optimal construction, or do other sets also achieve density $1/2$ while avoiding power-of-two sums?",
+      "What happens if lower density is replaced by upper density $\\overline{d}(A) = \\limsup |A \\cap [0,N)|/N$? Is the optimal bound still $1/2$?"
     ]
-  },
-  "crossReferences": [
-    {
-      "proofId": "erdos-984",
-      "relationship": "Both are Erdos problems in additive combinatorics involving density bounds for sets with prescribed arithmetic constraints"
-    },
-    {
-      "proofId": "erdos-107",
-      "relationship": "Both are Erdos problems where a trivial construction gives a baseline bound that is later improved to the optimal value"
-    },
-    {
-      "proofId": "erdos-527",
-      "relationship": "Both involve density and structure of sets defined by analytic/arithmetic constraints, connecting combinatorics with analysis"
-    }
-  ]
+  }
 }
