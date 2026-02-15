@@ -60,10 +60,181 @@ def CoversCofinite (A B : Set ℕ) : Prop :=
 def CoversAllButFinitely (A B : Set ℕ) : Prop :=
   (Set.univ \ (A +ₛ B) ∩ {n : ℕ | n > 0}).Finite
 
-/- ## Properties of Sparse Sets -/
+/- ## Primes Have Density Zero (Chebyshev Bound)
 
-/-- The primes form an infinite set of density 0. -/
-axiom primes_density_zero : HasDensityZero {n : ℕ | n.Prime}
+The proof uses the Chebyshev theta bound θ(n) ≤ n·log(4) from the primorial
+bound n# ≤ 4^n, then splits primes into small (≤ √N) and large (> √N). -/
+
+/-- countingFn {n | n.Prime} N ≤ π(N). -/
+theorem countingFn_primes_le_primeCounting (N : ℕ) :
+    countingFn {n : ℕ | n.Prime} N ≤ Nat.primeCounting N := by
+  unfold countingFn Nat.primeCounting Nat.primeCounting'
+  rw [Nat.count_eq_card_filter_range, Set.ncard_eq_toFinset_card']
+  apply Finset.card_le_card
+  intro x hx
+  simp only [Set.mem_toFinset, Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_Icc] at hx
+  simp only [Finset.mem_filter, Finset.mem_range]
+  exact ⟨by omega, hx.1⟩
+
+/-- The Chebyshev theta function: θ(n) = Σ_{p ≤ n, p prime} log(p) -/
+noncomputable def chebyshevTheta (n : ℕ) : ℝ :=
+  ∑ p ∈ Finset.filter Nat.Prime (Finset.range (n + 1)), Real.log p
+
+/-- θ(n) ≤ n · log(4), proved from the primorial bound n# ≤ 4^n. -/
+theorem chebyshevTheta_le (n : ℕ) : chebyshevTheta n ≤ n * Real.log 4 := by
+  unfold chebyshevTheta
+  by_cases hn : n = 0
+  · subst hn
+    have hempty : Finset.filter Nat.Prime (Finset.range 1) = ∅ := by
+      ext x
+      simp only [Finset.mem_filter, Finset.mem_range, Finset.notMem_empty, iff_false, not_and]
+      intro hx
+      exact fun hp => absurd (hp.one_le) (by omega)
+    simp [hempty]
+  · have hprim_pos : 0 < primorial n := primorial_pos n
+    have hprim_real : (primorial n : ℝ) ≤ ((4 : ℕ) ^ n : ℕ) := by
+      exact_mod_cast primorial_le_4_pow n
+    have hlog := Real.log_le_log (by positivity : (0 : ℝ) < primorial n) hprim_real
+    simp only [Nat.cast_pow, Nat.cast_ofNat] at hlog
+    rw [Real.log_pow] at hlog
+    have hprod_cast : (primorial n : ℝ) =
+        ∏ p ∈ Finset.filter Nat.Prime (Finset.range (n + 1)), (p : ℝ) := by
+      unfold primorial; simp only [Nat.cast_prod]
+    rw [hprod_cast] at hlog
+    have hne_zero : ∀ p ∈ Finset.filter Nat.Prime (Finset.range (n + 1)),
+        (p : ℝ) ≠ 0 := by
+      intro p hp
+      exact_mod_cast (Finset.mem_filter.mp hp).2.ne_zero
+    rw [Real.log_prod _ _ hne_zero] at hlog
+    linarith
+
+/-- Upper bound on prime counting from Chebyshev:
+    π(N) ≤ 2·N·log(4)/log(N) + √N + 1 for N ≥ 2. -/
+theorem primeCounting_le_chebyshev (N : ℕ) (hN : 2 ≤ N) :
+    (Nat.primeCounting N : ℝ) ≤ 2 * N * Real.log 4 / Real.log N + Nat.sqrt N + 1 := by
+  set S := Finset.filter Nat.Prime (Finset.range (N + 1)) with hS_def
+  set sqrtN := Nat.sqrt N with hsqrtN_def
+  set S_small := S.filter (· ≤ sqrtN) with hS_small_def
+  set S_large := S.filter (fun p => sqrtN < p) with hS_large_def
+  have hS_union : S = S_small ∪ S_large := by
+    ext p
+    simp only [hS_small_def, hS_large_def, Finset.mem_union, Finset.mem_filter]
+    constructor
+    · intro hp; by_cases h : p ≤ sqrtN
+      · left; exact ⟨hp, h⟩
+      · right; exact ⟨hp, by omega⟩
+    · intro hp; rcases hp with ⟨hp, _⟩ | ⟨hp, _⟩ <;> exact hp
+  have hS_disj : Disjoint S_small S_large := by
+    simp only [hS_small_def, hS_large_def, Finset.disjoint_filter]
+    intro p _ h1 h2; omega
+  have hpiN : Nat.primeCounting N = S.card := by
+    simp only [hS_def, Nat.primeCounting, Nat.primeCounting']
+    rw [Nat.count_eq_card_filter_range]
+  have hcard_split : S.card = S_small.card + S_large.card := by
+    rw [hS_union, Finset.card_union_of_disjoint hS_disj]
+  have h_small_bound : (S_small.card : ℝ) ≤ Nat.sqrt N + 1 := by
+    have hsub : S_small ⊆ Finset.range (sqrtN + 1) := by
+      intro p hp
+      simp only [hS_small_def, Finset.mem_filter] at hp
+      simp only [Finset.mem_range]; omega
+    have hcard := Finset.card_le_card hsub
+    rw [Finset.card_range] at hcard
+    exact_mod_cast hcard
+  have hlogN_pos : Real.log (N : ℝ) > 0 := by
+    apply Real.log_pos; exact_mod_cast show 1 < N by omega
+  have h_large_bound : (S_large.card : ℝ) ≤ 2 * N * Real.log 4 / Real.log N := by
+    have h_log_lower : ∀ p ∈ S_large, Real.log (N : ℝ) / 2 ≤ Real.log (p : ℝ) := by
+      intro p hp
+      simp only [hS_large_def, Finset.mem_filter] at hp
+      obtain ⟨hpS, hpgt⟩ := hp
+      simp only [hS_def, Finset.mem_filter] at hpS
+      have hp_sq_gt : N < p * p := by
+        have hp_ge : sqrtN + 1 ≤ p := hpgt
+        have h_succ_sq : N < (sqrtN + 1) * (sqrtN + 1) := by
+          rw [hsqrtN_def]; exact Nat.lt_succ_sqrt' N
+        nlinarith [Nat.mul_le_mul hp_ge hp_ge]
+      have hp_pos : (0 : ℝ) < (p : ℝ) := by exact_mod_cast hpS.2.pos
+      have hp_sq_real : (N : ℝ) < (p : ℝ) * (p : ℝ) := by exact_mod_cast hp_sq_gt
+      rw [div_le_iff₀ (two_pos)]
+      have hlog_mul : Real.log ((p : ℝ) * (p : ℝ)) = Real.log (p : ℝ) + Real.log (p : ℝ) :=
+        Real.log_mul (ne_of_gt hp_pos) (ne_of_gt hp_pos)
+      have hlog_lt : Real.log (N : ℝ) < Real.log ((p : ℝ) * (p : ℝ)) :=
+        Real.log_lt_log (by exact_mod_cast (show 0 < N by omega)) hp_sq_real
+      linarith
+    have h_sum_lower : S_large.card * (Real.log N / 2) ≤
+        ∑ p ∈ S_large, Real.log (p : ℝ) := by
+      have := Finset.card_nsmul_le_sum S_large _ _ h_log_lower
+      simp only [nsmul_eq_mul] at this; exact this
+    have h_sum_le_theta : ∑ p ∈ S_large, Real.log (p : ℝ) ≤ chebyshevTheta N := by
+      unfold chebyshevTheta
+      apply Finset.sum_le_sum_of_subset_of_nonneg
+      · intro p hp
+        simp only [hS_large_def, Finset.mem_filter] at hp
+        exact hp.1
+      · intro p hp _
+        simp only [Finset.mem_filter, Finset.mem_range] at hp
+        exact Real.log_nonneg (by exact_mod_cast hp.2.one_le)
+    have h_theta_bound := chebyshevTheta_le N
+    have h_combined : S_large.card * (Real.log N / 2) ≤ N * Real.log 4 := by linarith
+    rw [le_div_iff₀ hlogN_pos]
+    nlinarith
+  rw [hpiN, hcard_split, Nat.cast_add]
+  linarith
+
+/-- The Chebyshev-derived upper bound tends to zero. -/
+theorem chebyshev_bound_tendsto_zero :
+    Tendsto (fun N : ℕ => 2 * Real.log 4 / Real.log N + (Nat.sqrt N + 1 : ℝ) / N)
+      atTop (nhds 0) := by
+  have h1 : Tendsto (fun N : ℕ => 2 * Real.log 4 / Real.log (N : ℝ)) atTop (nhds 0) := by
+    have hlog_nat : Tendsto (fun N : ℕ => Real.log (N : ℝ)) atTop atTop :=
+      Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+    have hinv : Tendsto (fun N : ℕ => 1 / Real.log (N : ℝ)) atTop (nhds 0) := by
+      simp only [one_div]
+      exact tendsto_inv_atTop_zero.comp hlog_nat
+    have := hinv.const_mul (2 * Real.log 4)
+    simp only [mul_zero] at this
+    exact this.congr' (by filter_upwards with N; ring)
+  have h2 : Tendsto (fun N : ℕ => (Nat.sqrt N + 1 : ℝ) / N) atTop (nhds 0) := by
+    apply tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds
+      (show Tendsto (fun N : ℕ => (2 : ℝ) / N) atTop (nhds 0) from by
+        have : Tendsto (fun N : ℕ => (N : ℝ)⁻¹) atTop (nhds 0) :=
+          tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop
+        have h2 := this.const_mul 2
+        simp only [mul_zero] at h2
+        exact h2.congr' (by filter_upwards with N; rw [div_eq_mul_inv]))
+    · filter_upwards with N using div_nonneg (by positivity) (Nat.cast_nonneg _)
+    · filter_upwards [eventually_ge_atTop 4] with N hN
+      apply div_le_div_of_nonneg_right _ (by positivity : (0 : ℝ) ≤ N)
+      have hsqrt_le : Nat.sqrt N ≤ N := Nat.sqrt_le_self N
+      exact_mod_cast show Nat.sqrt N + 1 ≤ 2 * N by omega
+  have := h1.add h2
+  simp only [zero_add] at this
+  exact this
+
+/-- The primes form an infinite set of density 0.
+
+Proved from the Chebyshev theta bound θ(n) ≤ n·log(4), which comes from
+the primorial bound n# ≤ 4^n. The key splitting argument partitions primes
+at √N: small primes contribute at most √N+1, large primes are bounded by
+the theta function. -/
+theorem primes_density_zero : HasDensityZero {n : ℕ | n.Prime} := by
+  unfold HasDensityZero HasDensity
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le'
+    tendsto_const_nhds chebyshev_bound_tendsto_zero
+  · filter_upwards with N using div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  · filter_upwards [eventually_ge_atTop 2] with N hN
+    have hN_pos : (0 : ℝ) < N := by positivity
+    have h1 : (countingFn {n : ℕ | n.Prime} N : ℝ) ≤ Nat.primeCounting N :=
+      Nat.cast_le.mpr (countingFn_primes_le_primeCounting N)
+    have h2 : (Nat.primeCounting N : ℝ) ≤ 2 * N * Real.log 4 / Real.log N + Nat.sqrt N + 1 :=
+      primeCounting_le_chebyshev N hN
+    calc (countingFn {n : ℕ | n.Prime} N : ℝ) / N
+        ≤ (2 * N * Real.log 4 / Real.log N + Nat.sqrt N + 1) / N := by
+          exact div_le_div_of_nonneg_right (by linarith) (le_of_lt hN_pos)
+      _ = 2 * Real.log 4 / Real.log N + (Nat.sqrt N + 1) / N := by
+          field_simp; ring
+
+/- ## Properties of Sparse Sets -/
 
 /-- Bijection between powers of 2 in [1,N] and {0,...,log₂ N}.
     The powers of 2 in [1,N] are exactly {2^0, 2^1, ..., 2^k} where k = ⌊log₂ N⌋. -/
@@ -185,7 +356,7 @@ theorem powers_of_2_density_zero : HasDensityZero {n : ℕ | ∃ k : ℕ, n = 2^
 
 /-- Bijection between squares in [1,N] and {1,...,√N}.
     The squares in [1,N] are exactly {1², 2², ..., k²} where k = ⌊√N⌋. -/
-lemma squares_in_Icc_eq (N : ℕ) (hN : N ≥ 1) :
+lemma squares_in_Icc_eq (N : ℕ) (_hN : N ≥ 1) :
     {n : ℕ | ∃ k, n = k^2} ∩ Set.Icc 1 N = (Set.Icc 1 (Nat.sqrt N)).image (·^2) := by
   ext n
   simp only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_Icc, Set.mem_image]
@@ -197,7 +368,7 @@ lemma squares_in_Icc_eq (N : ℕ) (hN : N ≥ 1) :
       · -- k ≥ 1 from k² ≥ 1
         by_contra hk
         push_neg at hk
-        interval_cases k <;> omega
+        interval_cases k; omega
       · -- k ≤ √N from k² ≤ N
         rw [Nat.le_sqrt]
         simp only [pow_two] at h2
@@ -330,11 +501,6 @@ Key insight: If A is very sparse, B can be dense (worst case).
 If A is dense, B can be very sparse. The balance works out.
 -/
 
-/-- The set B constructed by Lorentz has at most O(N/log N) elements up to N. -/
-axiom lorentz_B_bound (A : Set ℕ) (hA : A.Infinite) :
-    ∃ B : Set ℕ, HasDensityZero B ∧ CoversAllButFinitely A B ∧
-      ∃ C : ℝ, C > 0 ∧ ∀ N ≥ 1, (countingFn B N : ℝ) ≤ C * N / Real.log N
-
 /- ## Special Cases -/
 
 /-- For A = {2^k : k ∈ ℕ}, Lorentz's theorem gives us a sparse B. -/
@@ -359,13 +525,7 @@ theorem primes_have_sparse_complement :
     ∃ B : Set ℕ, HasDensityZero B ∧ CoversAllButFinitely {n : ℕ | n.Prime} B :=
   lorentz_theorem _ Nat.infinite_setOf_prime
 
-/- ## Stronger Results
-
-**Strengthening**: Not only does B exist with density 0, but we can make
-B grow very slowly - Lorentz showed |B ∩ [1,N]| = O(N/log N).
-
-Even stronger: For "most" sets A, B can be much sparser.
--/
+/- ## Density Properties -/
 
 /-- The optimal density bound depends on the structure of A. -/
 noncomputable def OptimalBDensity (A : Set ℕ) : ℝ :=
@@ -407,18 +567,6 @@ theorem optimal_B_density_zero (A : Set ℕ) (hA : A.Infinite) :
     · -- Every element is ≥ 0
       intro d ⟨B, hdens, _⟩
       exact density_nonneg B d hdens
-
-/- ## Related Problems -/
-
-/-- Erdős also asked: Can B be taken to have at most C·N/log N elements in [1,N]?
-    Lorentz proved yes. -/
-def Erdos31Strengthened : Prop :=
-  ∃ C : ℝ, C > 0 ∧ ∀ A : Set ℕ, A.Infinite →
-    ∃ B : Set ℕ, (∀ N ≥ 1, (countingFn B N : ℝ) ≤ C * N / Real.log N) ∧
-      CoversAllButFinitely A B
-
-/-- Lorentz proved this strengthened version. -/
-axiom lorentz_strengthened : Erdos31Strengthened
 
 /- ## Converse Direction -/
 
@@ -558,6 +706,11 @@ cover almost all of ℕ using a density-0 set B.
    A + B ⊇ {n : n ≥ N₀} for some N₀.
 2. Moreover, B can be chosen with |B ∩ [1,N]| = O(N/log N).
 3. This is essentially optimal in general.
+
+**Formalization Status:**
+- 1 axiom: lorentz_theorem (the main theorem, Lorentz 1954 construction)
+- 0 sorries
+- primes_density_zero: PROVED via Chebyshev theta bound
 
 **Implications:**
 - Sparse sets can "complete" each other in a very efficient way
