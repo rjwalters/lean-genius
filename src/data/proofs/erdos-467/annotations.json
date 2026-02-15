@@ -10,7 +10,8 @@
     "title": "Residue Assignment",
     "content": "A `ResidueAssignment x` is a function assigning to each prime $p \\leq x$ a residue class $a_p$. The assignment determines which integers each prime 'covers': prime $p$ covers $n$ when $n \\equiv a_p \\pmod{p}$.",
     "significance": "essential",
-    "mathContext": "combinatorial number theory / covering systems. LaTeX: \\text{ResidueAssignment}(x) : \\{p \\leq x : p \\text{ prime}\\} \\to \\mathbb{Z}/p\\mathbb{Z}. Lean: def ResidueAssignment (x : ℕ) := (p : ℕ) → p.Prime → p ≤ x → ℕ. Technique: dependent function type over primes ≤ x. Uses dependent types to restrict to primes ≤ x. The residue is a natural number; congruence is checked via `n % p = a % p`.. Related: covering congruences, Chinese Remainder Theorem. Cross-refs: erdos-467-partition, erdos-467-dual-covering"
+    "mathContext": "\\text{ResidueAssignment}(x) : \\{p \\leq x : p \\text{ prime}\\} \\to \\mathbb{Z}/p\\mathbb{Z}: Dependent function type assigning each prime $p \\leq x$ a residue class. Uses natural number residues with congruence checked via $n \\bmod p = a_p \\bmod p$. Each assignment determines which integers each prime 'covers'.",
+    "relatedConcepts": ["covering congruences", "Chinese Remainder Theorem", "dependent function types", "ZMod"]
   },
   {
     "id": "erdos-467-partition",
@@ -23,7 +24,8 @@
     "title": "Prime Partition Structure",
     "content": "A `PrimePartition x` partitions primes $\\leq x$ into sets $A$ and $B$ via a Boolean classifier `inA`. Both sets must be non-empty (witnessed by existential proofs).",
     "significance": "essential",
-    "mathContext": "combinatorial number theory. LaTeX: \\{p \\leq x : p \\text{ prime}\\} = A \\sqcup B,\\quad A \\neq \\emptyset,\\, B \\neq \\emptyset. Lean: structure PrimePartition (x : ℕ) where inA : (p : ℕ) → p.Prime → p ≤ x → Bool; nonemptyA : ...; nonemptyB : .... Technique: Boolean classification with non-emptiness witnesses. Uses `Bool` for the classifier rather than `Prop`, enabling computation. The non-emptiness fields are existential proofs.. Cross-refs: erdos-467-residue-assign, erdos-467-dual-covering"
+    "mathContext": "\\{p \\leq x : p \\text{ prime}\\} = A \\sqcup B,\\quad A \\neq \\emptyset,\\, B \\neq \\emptyset: Boolean classifier with non-emptiness witnesses. Uses `Bool` rather than `Prop` for the classifier, enabling computation. The structure packages the partition function together with existential proofs that both parts are non-empty.",
+    "relatedConcepts": ["set partition", "Boolean classification", "non-emptiness witness"]
   },
   {
     "id": "erdos-467-coverage-defs",
@@ -36,7 +38,8 @@
     "title": "Coverage and Dual Covering",
     "content": "Defines `CoveredByA`, `CoveredByB`, and `IsDualCovering`. An integer $n$ is covered by $A$ if $\\exists p \\in A,\\, n \\equiv a_p \\pmod{p}$. A dual covering requires every $n < x$ is covered by both $A$ and $B$ independently.",
     "significance": "essential",
-    "mathContext": "covering systems. LaTeX: \\text{IsDualCovering} :\\Leftrightarrow \\forall n < x,\\, (\\exists p \\in A,\\, n \\equiv a_p) \\wedge (\\exists q \\in B,\\, n \\equiv a_q). Lean: def IsDualCovering (x : ℕ) (assign : ResidueAssignment x) (part : PrimePartition x) : Prop := ∀ n : ℕ, n < x → CoveredByA x assign part n ∧ CoveredByB x assign part n. Technique: universal quantification with conjunction of two coverage conditions. Related: covering system definition, exact covering systems. Cross-refs: erdos-467-conjecture, erdos-467-double-hit"
+    "mathContext": "\\text{IsDualCovering} :\\Leftrightarrow \\forall n < x,\\, (\\exists p \\in A,\\, n \\equiv a_p \\pmod{p}) \\wedge (\\exists q \\in B,\\, n \\equiv a_q \\pmod{q}): Universal quantification requiring every integer $n < x$ to be covered by at least one prime from each partition class. This is strictly stronger than a single covering system.",
+    "relatedConcepts": ["covering systems", "exact covering systems", "Helly-type conditions"]
   },
   {
     "id": "erdos-467-conjecture",
@@ -49,7 +52,8 @@
     "title": "Main Conjecture: Erdős Problem 467",
     "content": "For all sufficiently large $x$, there exist a residue assignment and a prime partition achieving dual coverage. The problem asks whether the redundancy in prime residue classes ($\\sum 1/p$ diverges) is enough to split primes into two halves that each cover everything.",
     "significance": "essential",
-    "mathContext": "combinatorial number theory / covering systems. LaTeX: \\exists X,\\, \\forall x \\geq X,\\, \\exists (a_p)_{p \\leq x},\\, \\exists A \\sqcup B,\\, \\text{IsDualCovering}(x). Lean: axiom erdos_467_conjecture : ∃ X : ℕ, ∀ x : ℕ, x ≥ X → ∃ assign : ResidueAssignment x, ∃ part : PrimePartition x, IsDualCovering x assign part. Technique: existential statement — asks for construction or probabilistic existence. Related: Erdős covering congruence problems, Hough's theorem, Lovász Local Lemma. Refs: Erdős–Graham (1980), p.93, erdosproblems.com/467. Cross-refs: erdos-467-coverage-defs, erdos-467-mertens. Design: Axiomatized since the problem is open. The quantifier structure (∃X, ∀x≥X, ∃assign, ∃part) carefully captures 'for sufficiently large x'."
+    "mathContext": "\\exists X,\\, \\forall x \\geq X,\\, \\exists (a_p)_{p \\leq x},\\, \\exists A \\sqcup B,\\, \\text{IsDualCovering}(x): Existential statement asking whether primes can be split into two groups that each independently cover all residues. Axiomatized since the problem is open. The quantifier structure ($\\exists X, \\forall x \\geq X, \\exists \\text{assign}, \\exists \\text{part}$) captures 'for sufficiently large $x$'. The divergence of $\\sum 1/p$ (Euler) suggests enough redundancy exists.",
+    "relatedConcepts": ["Erdős covering congruence problems", "Hough's theorem", "Lovász Local Lemma", "prime harmonic series"]
   },
   {
     "id": "erdos-467-residue-basics",
