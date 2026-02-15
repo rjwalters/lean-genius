@@ -2,7 +2,7 @@
   "id": "divisibility-by-3-oq-01",
   "title": "Formal Divisibility Rules for Various Bases and Moduli",
   "slug": "divisibility-by-3-oq-01",
-  "description": "A comprehensive collection of formally verified divisibility rules: general last-k-digits framework, power-of-2/5 generalizations, truncation methods for 13, casting out nines/threes, digital root theory, and coprime factorization rules.",
+  "description": "A comprehensive collection of formally verified divisibility rules: general last-k-digits framework, power-of-2/5 generalizations, truncation methods for 7, 11, 13, 17, and 19, casting out nines/threes, digital root theory, and coprime factorization rules.",
   "meta": {
     "author": "Extension of Divisibility by 3 (Wiedijk #85)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Divisibility_rule",
@@ -39,6 +39,11 @@
       "General last-k-digits framework unifying 2/4/8/5/25/125 rules",
       "Power-of-2 and power-of-5 general theorems",
       "Divisibility by 13 via truncation method (add 4x last digit)",
+      "Divisibility by 7 via truncation method (subtract 2x last digit)",
+      "Divisibility by 11 via truncation method (subtract 1x last digit)",
+      "Divisibility by 17 via truncation method (subtract 5x last digit)",
+      "Divisibility by 19 via truncation method (add 2x last digit)",
+      "Alternating 3-digit grouping observations for 7, 11, 13 (1001 = 7·11·13)",
       "Casting out nines and threes for addition and multiplication",
       "Digital root definition with divisibility characterization",
       "8 coprime factorization rules (6, 12, 15, 18, 36, 45, 60, 90)",
@@ -109,19 +114,40 @@
       "summary": "Rules for 6, 12, 15, 18, 36, 45, 60, 90 via coprime factor decomposition."
     },
     {
+      "id": "truncation-7-11",
+      "title": "Truncation Methods for 7 and 11",
+      "startLine": 375,
+      "endLine": 440,
+      "summary": "Divisibility by 7 via subtract-2x-last-digit and divisibility by 11 via subtract-last-digit, both proved via integer arithmetic and coprimality."
+    },
+    {
+      "id": "truncation-17-19",
+      "title": "Truncation Methods for 17 and 19",
+      "startLine": 442,
+      "endLine": 510,
+      "summary": "Divisibility by 17 via subtract-5x-last-digit and divisibility by 19 via add-2x-last-digit."
+    },
+    {
+      "id": "alternating-grouping",
+      "title": "Alternating Digit Grouping",
+      "startLine": 512,
+      "endLine": 538,
+      "summary": "Observations about alternating 3-digit groups: 1001 = 7·11·13 implies 1000 ≡ -1 (mod 7, 11, 13)."
+    },
+    {
       "id": "summary",
       "title": "Summary Theorem",
-      "startLine": 377,
-      "endLine": 420,
+      "startLine": 540,
+      "endLine": 575,
       "summary": "Master summary combining digit-sum, last-digit, and power generalization rules."
     }
   ],
   "conclusion": {
-    "summary": "This extension provides a comprehensive, formally verified collection of divisibility rules covering three major families: last-k-digits, digit-sum, and truncation methods. All 40+ theorems are proved without sorry or axiom, building on Mathlib's digit and modular arithmetic infrastructure.",
+    "summary": "This extension provides a comprehensive, formally verified collection of divisibility rules covering three major families: last-k-digits, digit-sum, and truncation methods. Truncation rules are proved for all primes up to 19 coprime to 10 (7, 11, 13, 17, 19). All 50+ theorems are proved without sorry or axiom, building on Mathlib's digit and modular arithmetic infrastructure.",
     "implications": "The proof demonstrates the power of unifying theorems:\n\n**1. One theorem, many rules**: The general last-k-digits theorem (d|M → d|n ↔ d|(n%M)) instantly gives all power-of-2 and power-of-5 rules.\n\n**2. Base-agnostic digit sums**: The digit-sum framework works in any base, giving rules for divisibility by 37, 99, 999, and more via base 1000/100.\n\n**3. Digital root theory**: The complete characterization of digital root connects elementary arithmetic to modular algebra.\n\n**4. Practical checking**: Casting out nines and coprime factorization provide verified foundations for mental arithmetic techniques.",
     "openQuestions": [
-      "Can alternating digit sum rules (for b ≡ -1 mod d) be unified with this framework?",
-      "What is the complete classification of truncation methods for all primes?",
+      "Can the truncation method be generalized to a single parametric theorem for arbitrary primes?",
+      "Extend truncation coverage beyond 19 (23, 29, 31, 37, 41, 43)",
       "How do these rules extend to divisibility in polynomial rings?"
     ]
   }

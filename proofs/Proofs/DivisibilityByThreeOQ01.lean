@@ -373,18 +373,149 @@ theorem ninety_dvd_iff (n : ℕ) : 90 ∣ n ↔ 9 ∣ n ∧ 10 ∣ n :=
   coprime_mul_dvd_iff 9 10 n (by native_decide)
 
 -- ============================================================
--- Part VIII: Observations about alternating three-digit groups
+-- Part VIII: Truncation Methods for 7 and 11
 -- ============================================================
 
--- 1000 % 7 = 6 = 7 - 1, so 7 rule works via alternating 3-digit groups
+-- The truncation (osculator) method removes the last digit and adjusts by
+-- a multiplier c. For p coprime to 10, if 10c ≡ 1 (mod p) (positive osculator)
+-- then p | n ↔ p | (n/10 + c·(n%10)). If 10c ≡ -1 (mod p) (negative osculator)
+-- then p | n ↔ p | (n/10 - c·(n%10)).
+
+/-- **Divisibility by 7 truncation**: 7 | n ↔ 7 | (n/10 - 2·(n%10)).
+    Proof: 10(q - 2r) = n - 21r, and 21 = 3·7. -/
+theorem seven_dvd_truncation (n : ℕ) :
+    7 ∣ n ↔ (7 : ℤ) ∣ (↑(n / 10) - 2 * ↑(n % 10)) := by
+  constructor
+  · intro ⟨k, hk⟩
+    have key : (10 : ℤ) * (↑(n / 10) - 2 * ↑(n % 10)) = ↑n - 21 * ↑(n % 10) := by
+      push_cast; omega
+    have h21 : (7 : ℤ) ∣ (↑n - 21 * ↑(n % 10)) :=
+      ⟨↑k - 3 * ↑(n % 10), by push_cast; omega⟩
+    rw [← key] at h21
+    exact IsCoprime.dvd_of_dvd_mul_left (by decide : IsCoprime (7 : ℤ) 10) h21
+  · intro h7
+    have key : (10 : ℤ) * (↑(n / 10) - 2 * ↑(n % 10)) = ↑n - 21 * ↑(n % 10) := by
+      push_cast; omega
+    have h10 : (7 : ℤ) ∣ (10 * (↑(n / 10) - 2 * ↑(n % 10))) :=
+      dvd_mul_of_dvd_right h7 10
+    rw [key] at h10
+    have h21 : (7 : ℤ) ∣ (21 * ↑(n % 10)) := ⟨3 * ↑(n % 10), by ring⟩
+    have hadd := Int.dvd_add h10 h21
+    simp only [sub_add_cancel] at hadd
+    exact_mod_cast hadd
+
+/-- **Divisibility by 11 truncation**: 11 | n ↔ 11 | (n/10 - (n%10)).
+    Proof: 10(q - r) = n - 11r. -/
+theorem eleven_dvd_truncation (n : ℕ) :
+    11 ∣ n ↔ (11 : ℤ) ∣ (↑(n / 10) - ↑(n % 10)) := by
+  constructor
+  · intro ⟨k, hk⟩
+    have key : (10 : ℤ) * (↑(n / 10) - ↑(n % 10)) = ↑n - 11 * ↑(n % 10) := by
+      push_cast; omega
+    have h11 : (11 : ℤ) ∣ (↑n - 11 * ↑(n % 10)) :=
+      ⟨↑k - ↑(n % 10), by push_cast; omega⟩
+    rw [← key] at h11
+    exact IsCoprime.dvd_of_dvd_mul_left (by decide : IsCoprime (11 : ℤ) 10) h11
+  · intro h11
+    have key : (10 : ℤ) * (↑(n / 10) - ↑(n % 10)) = ↑n - 11 * ↑(n % 10) := by
+      push_cast; omega
+    have h10 : (11 : ℤ) ∣ (10 * (↑(n / 10) - ↑(n % 10))) :=
+      dvd_mul_of_dvd_right h11 10
+    rw [key] at h10
+    have h11m : (11 : ℤ) ∣ (11 * ↑(n % 10)) := ⟨↑(n % 10), by ring⟩
+    have hadd := Int.dvd_add h10 h11m
+    simp only [sub_add_cancel] at hadd
+    exact_mod_cast hadd
+
+-- Verification
+example : 7 ∣ 49 := by native_decide
+example : 7 ∣ 1001 := by native_decide
+example : ¬(7 ∣ 100) := by native_decide
+example : 11 ∣ 121 := by native_decide
+example : 11 ∣ 1001 := by native_decide
+example : ¬(11 ∣ 100) := by native_decide
+
+-- ============================================================
+-- Part IX: Truncation Methods for 17 and 19
+-- ============================================================
+
+/-- **Divisibility by 17 truncation**: 17 | n ↔ 17 | (n/10 - 5·(n%10)).
+    Proof: 10(q - 5r) = n - 51r, and 51 = 3·17. -/
+theorem seventeen_dvd_truncation (n : ℕ) :
+    17 ∣ n ↔ (17 : ℤ) ∣ (↑(n / 10) - 5 * ↑(n % 10)) := by
+  constructor
+  · intro ⟨k, hk⟩
+    have key : (10 : ℤ) * (↑(n / 10) - 5 * ↑(n % 10)) = ↑n - 51 * ↑(n % 10) := by
+      push_cast; omega
+    have h51 : (17 : ℤ) ∣ (↑n - 51 * ↑(n % 10)) :=
+      ⟨↑k - 3 * ↑(n % 10), by push_cast; omega⟩
+    rw [← key] at h51
+    exact IsCoprime.dvd_of_dvd_mul_left (by decide : IsCoprime (17 : ℤ) 10) h51
+  · intro h17
+    have key : (10 : ℤ) * (↑(n / 10) - 5 * ↑(n % 10)) = ↑n - 51 * ↑(n % 10) := by
+      push_cast; omega
+    have h10 : (17 : ℤ) ∣ (10 * (↑(n / 10) - 5 * ↑(n % 10))) :=
+      dvd_mul_of_dvd_right h17 10
+    rw [key] at h10
+    have h51 : (17 : ℤ) ∣ (51 * ↑(n % 10)) := ⟨3 * ↑(n % 10), by ring⟩
+    have hadd := Int.dvd_add h10 h51
+    simp only [sub_add_cancel] at hadd
+    exact_mod_cast hadd
+
+/-- **Divisibility by 19 truncation**: 19 | n ↔ 19 | (n/10 + 2·(n%10)).
+    Proof: 10(q + 2r) = n + 19r. -/
+theorem nineteen_dvd_truncation (n : ℕ) :
+    19 ∣ n ↔ (19 : ℤ) ∣ (↑(n / 10) + 2 * ↑(n % 10)) := by
+  constructor
+  · intro ⟨k, hk⟩
+    have key : (10 : ℤ) * (↑(n / 10) + 2 * ↑(n % 10)) = ↑n + 19 * ↑(n % 10) := by
+      push_cast; omega
+    have h19 : (19 : ℤ) ∣ (↑n + 19 * ↑(n % 10)) :=
+      ⟨↑k + ↑(n % 10), by push_cast; omega⟩
+    rw [← key] at h19
+    exact IsCoprime.dvd_of_dvd_mul_left (by decide : IsCoprime (19 : ℤ) 10) h19
+  · intro h19
+    have key : (10 : ℤ) * (↑(n / 10) + 2 * ↑(n % 10)) = ↑n + 19 * ↑(n % 10) := by
+      push_cast; omega
+    have h10 : (19 : ℤ) ∣ (10 * (↑(n / 10) + 2 * ↑(n % 10))) :=
+      dvd_mul_of_dvd_right h19 10
+    rw [key] at h10
+    have h19m : (19 : ℤ) ∣ (19 * ↑(n % 10)) := ⟨↑(n % 10), by ring⟩
+    have hsub := Int.dvd_sub h10 h19m
+    simp only [add_sub_cancel_right] at hsub
+    exact_mod_cast hsub
+
+-- Verification
+example : 17 ∣ 51 := by native_decide
+example : 17 ∣ 289 := by native_decide
+example : ¬(17 ∣ 100) := by native_decide
+example : 19 ∣ 57 := by native_decide
+example : 19 ∣ 361 := by native_decide
+example : ¬(19 ∣ 100) := by native_decide
+
+-- ============================================================
+-- Part X: Alternating Digit Grouping
+-- ============================================================
+
+-- 1001 = 7 × 11 × 13 means 1000 ≡ -1 (mod 7, 11, 13).
+-- So alternating 3-digit group sums test divisibility by 7, 11, 13.
+example : 1001 = 7 * 11 * 13 := by native_decide
 example : 1000 % 7 = 6 := by native_decide
--- 1000 % 11 = 10 = 11 - 1, so 11 rule also works via 3-digit groups
 example : 1000 % 11 = 10 := by native_decide
--- 1000 % 13 = 12 = 13 - 1, so 13 rule works via 3-digit groups
 example : 1000 % 13 = 12 := by native_decide
 
+-- Osculator constants table (10c ≡ 1 mod p → positive, 10c ≡ -1 mod p → negative)
+-- 7: neg c=2 (10·2=20, 20+1=21=3·7), pos c=5 (10·5=50, 50-1=49=7·7)
+-- 11: neg c=1 (10·1=10, 10+1=11), pos c=10 (impractical)
+-- 13: pos c=4 (10·4=40, 40-1=39=3·13), neg c=9
+-- 17: neg c=5 (10·5=50, 50+1=51=3·17), pos c=12 (impractical)
+-- 19: pos c=2 (10·2=20, 20-1=19), neg c=17 (impractical)
+example : 10 * 5 % 7 = 1 := by native_decide
+example : 10 * 4 % 13 = 1 := by native_decide
+example : 10 * 2 % 19 = 1 := by native_decide
+
 -- ============================================================
--- Part IX: Summary Theorem
+-- Part XI: Summary Theorem
 -- ============================================================
 
 /-- Master summary of divisibility rules proved in this extension -/
