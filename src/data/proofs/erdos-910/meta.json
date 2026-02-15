@@ -9,6 +9,7 @@
     "date": "1958",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos910OQ01.lean",
+    "leanFile": "proofs/Proofs/Erdos910OQ01.lean",
     "tags": [
       "erdos",
       "topology",
@@ -80,9 +81,9 @@
     {
       "id": "homeomorphism",
       "title": "Homeomorphism Between Subsets",
-      "startLine": 65,
-      "endLine": 83,
-      "summary": "Defines `AreHomeomorphic S T := Nonempty (S \\simeq_t T)`. Proves reflexivity via `Homeomorph.refl` and symmetry via `Homeomorph.symm`."
+      "startLine": 44,
+      "endLine": 69,
+      "summary": "Defines `AreHomeomorphic S T := Nonempty (S ≃ₜ T)` as topological equivalence via continuous bijection with continuous inverse. Proves reflexivity via `Homeomorph.refl` and symmetry via `Homeomorph.symm`, establishing two of the three equivalence relation properties."
     },
     {
       "id": "first-question",
@@ -131,8 +132,16 @@
       "What is the minimum cardinality of a connected subset of $\\mathbb{R}^2$ that is a Rudin set (under CH)?"
     ]
   },
-  "relatedProofs": [
-    "erdos-911",
-    "erdos-533"
+  "crossReferences": [
+    {
+      "targetId": "erdos-909",
+      "relationship": "related",
+      "description": "Erdős Problem #909 on dimension of product spaces is another Erdős topology problem using set-theoretic methods."
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "broader-context",
+      "description": "The Borsuk-Ulam theorem is a foundational result in algebraic topology, connecting to the broader study of topological properties of Euclidean space."
+    }
   ]
 }
