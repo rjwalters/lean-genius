@@ -1,164 +1,110 @@
 [
   {
-    "id": "ann-e416-header",
+    "id": "ann-e416-imports",
     "proofId": "erdos-416",
-    "range": {
-      "startLine": 1,
-      "endLine": 23
-    },
+    "range": { "startLine": 25, "endLine": 32 },
     "type": "concept",
-    "title": "Problem Overview",
-    "content": "**Erdős Problem #416** asks about counting values in the range of Euler's totient function φ. Let V(x) count n ≤ x such that φ(m) = n is solvable. The problem asks: (i) Does V(2x)/V(x) → 2? (ii) Is there an asymptotic formula for V(x)?",
-    "mathContext": "V(x) = |{n ≤ x : ∃m, φ(m) = n}|. Not every integer is a totient value - e.g., 3 is never φ(m) since φ is even for inputs > 2.",
-    "significance": "critical",
-    "relatedConcepts": [
-      "totient-function",
-      "asymptotics",
-      "counting"
-    ]
+    "title": "Imports and Namespace",
+    "content": "Imports the full Mathlib library and opens namespaces for sets, filters, big operators, asymptotics, and classical logic. Uses `Classical.propDecidable` as a local instance to enable decidable propositions throughout.",
+    "mathContext": "The `Asymptotics` namespace provides $o$, $O$, $\\Theta$ notation (Landau symbols) via `IsLittleO`, `IsBigO`, `IsTheta`. The `atTop` filter represents the limit $x \\to \\infty$. `Classical.propDecidable` is needed for the `Finset.filter` in the definition of $V(x)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Asymptotics library", "Filter.atTop", "Classical.propDecidable"],
+    "prerequisites": ["Lean 4 module system", "Mathlib filters and asymptotics"]
   },
   {
     "id": "ann-e416-V-def",
     "proofId": "erdos-416",
-    "range": {
-      "startLine": 34,
-      "endLine": 46
-    },
+    "range": { "startLine": 47, "endLine": 48 },
     "type": "definition",
     "title": "The Counting Function V(x)",
-    "content": "**V(x)** counts positive integers n ≤ x that are **totient values** - meaning there exists m with φ(m) = n. The definition filters integers in [1, ⌊x⌋] for those that appear as totient values.",
-    "mathContext": "V(x) = |{n ∈ [1, ⌊x⌋] : ∃m ∈ ℕ, φ(m) = n}|. Examples: 1, 2, 4 are totient values; 3 is not.",
+    "content": "$V(x)$ counts positive integers $n \\le x$ that are totient values — meaning there exists $m$ with $\\varphi(m) = n$. The definition filters `Finset.Icc 1 ⌊x⌋₊` for those satisfying `∃ m, m.totient = n`.",
+    "mathContext": "$V(x) = |\\{n \\in [1, \\lfloor x \\rfloor] : n \\in \\operatorname{Im}(\\varphi)\\}|$. The totient image $\\operatorname{Im}(\\varphi) = \\{1, 2, 4, 6, 8, 10, 12, \\ldots\\}$ is a proper subset of the positive integers. The gaps (non-totient values like 3, 5, 7, 9, ...) become increasingly rare in a relative sense, but $V(x)/x \\to 0$.",
     "significance": "critical",
-    "relatedConcepts": [
-      "euler-totient",
-      "counting-function",
-      "image-set"
-    ]
+    "relatedConcepts": ["Euler's totient function", "image of a function", "counting function", "Finset.filter"],
+    "prerequisites": ["Nat.totient", "Finset.Icc", "Nat.floor"]
   },
   {
     "id": "ann-e416-basic",
     "proofId": "erdos-416",
-    "range": {
-      "startLine": 52,
-      "endLine": 73
-    },
+    "range": { "startLine": 52, "endLine": 73 },
     "type": "theorem",
-    "title": "Basic Properties",
-    "content": "We prove basic properties: V is nonnegative, V is monotone increasing, and verify that 1, 2, and 4 are totient values (with witnesses φ(1)=1, φ(3)=2, φ(5)=4).",
-    "mathContext": "These foundational results establish V is well-behaved. The witnesses for small totient values use native_decide for computation.",
+    "title": "Basic Properties and Small Witnesses",
+    "content": "Proves $V(x) \\ge 0$ (from `Nat.cast_nonneg`), monotonicity $V(x) \\le V(y)$ for $x \\le y$ (from `Finset.Icc_subset_Icc`), and verifies that 1, 2, and 4 are totient values with explicit witnesses $\\varphi(1) = 1$, $\\varphi(3) = 2$, $\\varphi(5) = 4$.",
+    "mathContext": "Monotonicity follows because $[1, \\lfloor x \\rfloor] \\subseteq [1, \\lfloor y \\rfloor]$ when $x \\le y$, so the filtered set can only grow. The witnesses use `native_decide` for computational verification of $\\varphi(3) = 2$ and $\\varphi(5) = 4$.",
     "significance": "supporting",
-    "relatedConcepts": [
-      "monotonicity",
-      "witnesses",
-      "computation"
-    ]
+    "relatedConcepts": ["monotonicity", "Nat.cast_nonneg", "native_decide", "totient witnesses"],
+    "prerequisites": ["V definition", "Finset.card_le_card", "Nat.floor_le_floor"]
   },
   {
     "id": "ann-e416-pillai",
     "proofId": "erdos-416",
-    "range": {
-      "startLine": 77,
-      "endLine": 83
-    },
-    "type": "axiom",
+    "range": { "startLine": 83, "endLine": 83 },
+    "type": "theorem",
     "title": "Pillai's Bound (1929)",
-    "content": "**Pillai (1929)**: V(x) = o(x). The density of totient values is 0 - most integers are NOT in the range of φ. This was the first quantitative result about the sparsity of totient values.",
-    "mathContext": "V =o[atTop] id means V(x)/x → 0 as x → ∞. The totient range is sparse.",
+    "content": "**Pillai (1929)**: $V(x) = o(x)$. The density of totient values is 0 — most integers are NOT in the range of $\\varphi$. This was the first quantitative result about the sparsity of totient values. Axiomatized using Lean's `IsLittleO` notation: `V =o[atTop] id`.",
+    "mathContext": "$V =o[\\text{atTop}]\\, \\text{id}$ means $V(x)/x \\to 0$ as $x \\to \\infty$. Pillai's proof uses the observation that for each prime $p$, the integers $n$ with $p | \\varphi^{-1}(n)$ contribute a density $\\le 1/p$, and summing over primes gives a vanishing contribution.",
     "significance": "key",
-    "relatedConcepts": [
-      "little-o",
-      "density",
-      "pillai"
-    ]
+    "relatedConcepts": ["little-o notation", "density zero", "IsLittleO", "Pillai"],
+    "prerequisites": ["V definition", "Filter.atTop", "Asymptotics.IsLittleO"]
   },
   {
     "id": "ann-e416-erdos",
     "proofId": "erdos-416",
-    "range": {
-      "startLine": 83,
-      "endLine": 90
-    },
-    "type": "axiom",
+    "range": { "startLine": 91, "endLine": 92 },
+    "type": "theorem",
     "title": "Erdős's Refinement (1935)",
-    "content": "**Erdős (1935)**: V(x) = x · (log x)^(-1+o(1)). This refines Pillai's result: V(x) behaves like x/log x up to sub-polynomial factors in the exponent.",
-    "mathContext": "The exponent -1+o(1) means V(x) is roughly x/log x but with a slowly varying correction.",
+    "content": "**Erdős (1935)**: $V(x) = x \\cdot (\\log x)^{-1+o(1)}$. Refines Pillai's bound: $V(x)$ behaves like $x/\\log x$ up to sub-polynomial factors in the exponent. The density decays logarithmically, comparable to the prime counting function $\\pi(x) \\sim x/\\log x$.",
+    "mathContext": "The formula means $\\exists\\, f = o(1)$ such that $V(x) = x \\cdot (\\log x)^{-1+f(x)}$. Since $f(x) \\to 0$, the exponent $-1 + f(x) \\to -1$, so $V(x) \\approx x/\\log x$. Erdős's proof uses sieve methods applied to the set of integers with a given number of prime factors.",
     "significance": "key",
-    "relatedConcepts": [
-      "erdos-1935",
-      "logarithmic-decay",
-      "refinement"
-    ]
+    "relatedConcepts": ["Erdős 1935", "logarithmic density", "sub-polynomial correction", "sieve methods"],
+    "prerequisites": ["Pillai's bound", "Real.log", "IsLittleO"]
   },
   {
     "id": "ann-e416-maier-pomerance",
     "proofId": "erdos-416",
-    "range": {
-      "startLine": 92,
-      "endLine": 100
-    },
-    "type": "axiom",
-    "title": "Maier-Pomerance (1988)",
-    "content": "**Maier-Pomerance (1988)**: V(x) = (x/log x) · e^((C+o(1))(log log log x)²) for an explicit constant C > 0. The correction factor is exponential in the square of the triple logarithm.",
-    "mathContext": "This shows the true growth rate has a doubly-exponentially small correction term in the exponent.",
+    "range": { "startLine": 100, "endLine": 102 },
+    "type": "theorem",
+    "title": "Maier-Pomerance Formula (1988)",
+    "content": "**Maier–Pomerance (1988)**: $V(x) = \\frac{x}{\\log x} \\cdot e^{(C+o(1))(\\log\\log\\log x)^2}$ for an explicit constant $C > 0$. The correction factor is exponential in the square of the triple logarithm, showing the fine structure of the totient range involves very slowly varying functions.",
+    "mathContext": "The constant $C$ is related to the distribution of smooth numbers: totient values $n = \\varphi(m)$ tend to be smooth (having only small prime factors), and the $(\\log\\log\\log x)^2$ term captures the entropy of the prime factorization structure. Formalized using `Real.exp` and iterated `Real.log`.",
     "significance": "key",
-    "relatedConcepts": [
-      "maier-pomerance",
-      "explicit-constant",
-      "triple-logarithm"
-    ]
+    "relatedConcepts": ["Maier-Pomerance", "triple logarithm", "smooth numbers", "explicit constant"],
+    "prerequisites": ["Erdős's bound", "Real.exp", "iterated logarithms"]
   },
   {
     "id": "ann-e416-ford",
     "proofId": "erdos-416",
-    "range": {
-      "startLine": 102,
-      "endLine": 115
-    },
-    "type": "axiom",
+    "range": { "startLine": 111, "endLine": 117 },
+    "type": "theorem",
     "title": "Ford's Tight Bounds (1998)",
-    "content": "**Ford (1998)**: The most precise bounds known. V(x) is determined up to constant factors with an intricate formula involving log log log x and log log log log x. Still falls short of an asymptotic formula.",
-    "mathContext": "V(x) ≍ G(x) where G involves C₁(log log log x - log log log log x)² + C₂ log log log x - C₃ log log log log x.",
+    "content": "**Ford (1998)**: The most precise bounds known. $V(x) = \\Theta(G(x))$ where $G(x) = \\frac{x}{\\log x} \\cdot e^{C_1(\\log\\log\\log x - \\log\\log\\log\\log x)^2 + C_2 \\log\\log\\log x - C_3 \\log\\log\\log\\log x}$ with explicit constants $C_1, C_2, C_3 > 0$. Determines $V(x)$ up to constant factors but not an asymptotic.",
+    "mathContext": "The $\\Theta$-bound means $\\exists\\, c_1, c_2 > 0$ such that $c_1 G(x) \\le V(x) \\le c_2 G(x)$ for large $x$. Formalized as `V =Θ[atTop] G`. The quadruple logarithm $\\log\\log\\log\\log x$ grows incredibly slowly — it equals about 1.15 even for $x = e^{e^{e^e}} \\approx 10^{10^{23.7}}$.",
     "significance": "critical",
-    "relatedConcepts": [
-      "ford-1998",
-      "theta-bounds",
-      "iterated-logarithms"
-    ]
+    "relatedConcepts": ["Ford 1998", "Theta bounds", "IsTheta", "quadruple logarithm"],
+    "prerequisites": ["Maier-Pomerance formula", "Asymptotics.IsTheta", "iterated Real.log"]
   },
   {
     "id": "ann-e416-open",
     "proofId": "erdos-416",
-    "range": {
-      "startLine": 121,
-      "endLine": 148
-    },
+    "range": { "startLine": 128, "endLine": 148 },
     "type": "definition",
     "title": "The Open Questions",
-    "content": "**Part (i)**: Does V(2x)/V(x) → 2? This asks if doubling the range roughly doubles the count. **Part (ii)**: Is there an asymptotic formula V(x) ~ f(x)? Ford's Θ-bounds don't answer this. Both remain OPEN.",
-    "mathContext": "An asymptotic V(x) ~ cx/log x would imply the doubling ratio tends to 2. But Ford's formula is too complicated for this to be obvious.",
+    "content": "**Part (i)**: Does $V(2x)/V(x) \\to 2$? Formalized as `Tendsto (fun x => V(2*x) / V(x)) atTop (𝓝 2)`. **Part (ii)**: Does an asymptotic formula $V(x) \\sim f(x)$ exist? Formalized as `∃ f, Tendsto (fun x => V(x) / f(x)) atTop (𝓝 1)`. Both remain OPEN. The combined conjecture is `Erdos416Conjecture := Part_i ∧ Part_ii`.",
+    "mathContext": "An asymptotic $V(x) \\sim f(x)$ means $V(x)/f(x) \\to 1$. If $f(x) = c \\cdot x/\\log x$, then $V(2x)/V(x) \\to (2x/\\log(2x))/(x/\\log x) = 2\\log x/\\log(2x) \\to 2$ since $\\log(2x)/\\log x \\to 1$. But Ford's complicated $G(x)$ has $G(2x)/G(x) \\not\\to 2$ in general without further analysis.",
     "significance": "critical",
-    "relatedConcepts": [
-      "open-problem",
-      "doubling-ratio",
-      "asymptotic-formula"
-    ]
+    "relatedConcepts": ["Tendsto", "neighborhood filter", "asymptotic equivalence", "open conjecture"],
+    "prerequisites": ["V definition", "Filter.atTop", "nhds"]
   },
   {
     "id": "ann-e416-three",
     "proofId": "erdos-416",
-    "range": {
-      "startLine": 152,
-      "endLine": 156
-    },
-    "type": "axiom",
+    "range": { "startLine": 154, "endLine": 154 },
+    "type": "theorem",
     "title": "3 is Not a Totient Value",
-    "content": "We prove that 3 is NOT a totient value - no m exists with φ(m) = 3. This is because φ(m) is even for all m > 2, so odd totient values can only be 1.",
-    "mathContext": "The proof uses interval_cases to check small values exhaustively. For m > some threshold, φ(m) ≥ 4.",
+    "content": "Axiomatized: $\\nexists\\, m,\\; \\varphi(m) = 3$. Since $\\varphi(m)$ is even for all $m > 2$, the only odd totient value is 1 ($= \\varphi(1) = \\varphi(2)$). This illustrates the parity obstruction that eliminates half of all positive integers from the totient range.",
+    "mathContext": "For $m > 2$: if $p | m$ is an odd prime, then $(p-1) | \\varphi(m)$, making $\\varphi(m)$ even. If $m = 2^k$ for $k \\ge 2$, then $\\varphi(m) = 2^{k-1}$ is even. Only $\\varphi(1) = \\varphi(2) = 1$ is odd. So $3 \\notin \\operatorname{Im}(\\varphi)$.",
     "significance": "supporting",
-    "relatedConcepts": [
-      "non-totient",
-      "parity",
-      "exhaustive-check"
-    ]
+    "relatedConcepts": ["non-totient", "parity of totient", "Carmichael's conjecture"],
+    "prerequisites": ["Nat.totient", "prime factorization", "exhaustive checking"]
   }
 ]
