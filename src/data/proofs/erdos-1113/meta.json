@@ -1,6 +1,6 @@
 {
   "id": "erdos-1113",
-  "title": "Erdős Problem #1113: Sierpinski Numbers Without Covering Sets",
+  "title": "Erdos Problem #1113: Sierpinski Numbers Without Covering Sets",
   "slug": "erdos-1113",
   "description": "Are there Sierpinski numbers with no finite covering set? OPEN. Izotov's candidate m = 734110615000775^4 is conjectured uncovered. If NO, infinitely many Fermat primes would exist.",
   "meta": {
@@ -43,7 +43,7 @@
       },
       {
         "theorem": "Nat.Basic",
-        "description": "Basic natural number operations including exponentiation for 2^k * m + 1",
+        "description": "Basic natural number operations including exponentiation for $2^k \\cdot m + 1$",
         "module": "Mathlib.Data.Nat.Basic"
       }
     ],
@@ -59,10 +59,23 @@
       "erdos_1113_summary combining Izotov, perfect power, and FFK compatibility (verified)",
       "sierpinski_infinitely_many: Sierpinski's theorem that infinitely many covered numbers exist"
     ],
+    "leanFile": {
+      "lineCount": 207,
+      "structureCount": 0,
+      "axiomCount": 9,
+      "theoremCount": 5,
+      "defCount": 14,
+      "imports": [
+        "Mathlib.Data.Nat.Basic",
+        "Mathlib.Data.Nat.Prime.Basic",
+        "Mathlib.Data.Finset.Basic",
+        "Mathlib.Data.Nat.Parity"
+      ]
+    },
     "references": [
       {
         "key": "Si60",
-        "citation": "Sierpinski, W., Sur un problème concernant les nombres k·2^n+1, Elem. Math. (1960), 73-74.",
+        "citation": "Sierpinski, W., Sur un probleme concernant les nombres k*2^n+1, Elem. Math. (1960), 73-74.",
         "type": "paper"
       },
       {
@@ -82,94 +95,94 @@
       },
       {
         "key": "EG80",
-        "citation": "Erdős, P. and Graham, R., Old and New Problems and Results in Combinatorial Number Theory, Monogr. Enseign. Math. 28, Geneva, 1980.",
+        "citation": "Erdos, P. and Graham, R., Old and New Problems and Results in Combinatorial Number Theory, Monogr. Enseign. Math. 28, Geneva, 1980.",
         "type": "book"
       }
     ]
   },
   "overview": {
-    "historicalContext": "In 1960, Wacław Sierpiński proved a striking result: there exist infinitely many odd positive integers m such that 2^k · m + 1 is composite for every k >= 0. His proof relied on covering systems -- finite sets of primes whose modular periodicities 'cover' all residue classes of k, guaranteeing that some prime in the set always divides 2^k · m + 1. John Selfridge later identified 78557 as a Sierpinski number with covering set {3, 5, 7, 13, 19, 37, 73}, and it is conjectured (but not yet proven) to be the smallest Sierpinski number. The 'Seventeen or Bust' distributed computing project has been working since 2002 to verify this, reducing the candidates to just a few remaining values.\n\nErdős and Graham (1980) posed a deeper question: must every Sierpinski number have a finite covering set, or can Sierpinski numbers exist for 'non-periodic' reasons? This is Problem #1113 in the Erdős collection. The question probes whether covering systems are the only mechanism producing Sierpinski numbers, or whether other number-theoretic phenomena (such as the algebraic structure of perfect powers) can also force universal compositeness. The answer has profound implications: if ALL Sierpinski numbers have covering sets, then a classical argument shows infinitely many Fermat primes must exist -- a conclusion considered extremely unlikely given that only five Fermat primes (F_0 through F_4) are known.\n\nIn 1995, Izotov proposed the candidate m = 734110615000775^4, a Sierpinski number conjectured to have no finite covering set. Notably, this candidate is a perfect 4th power. This observation led Filaseta, Finch, and Kozek (2008) to formulate the FFK Conjecture: every Sierpinski number is either a perfect power (m = n^k for some k >= 2) or has a finite covering set. This elegant refinement suggests that uncovered Sierpinski numbers, if they exist, must arise from the multiplicative structure of perfect powers rather than from arbitrary number-theoretic coincidences.\n\nThe connection to Fermat primes provides the strongest indirect evidence that uncovered Sierpinski numbers exist. Setting m = 1 in the Sierpinski sequence gives 2^k + 1, whose prime values are exactly the Fermat primes. If every Sierpinski number has a covering set, then covering-system arguments can be bootstrapped to show infinitely many Fermat primes exist. Since F_5 = 4294967297 = 641 × 6700417 is composite and no Fermat prime beyond F_4 = 65537 has been found, the mathematical community strongly suspects that only finitely many Fermat primes exist -- making the affirmative answer to Problem #1113 highly likely.",
+    "historicalContext": "In 1960, Waclaw Sierpinski proved a striking result: there exist infinitely many odd positive integers m such that 2^k * m + 1 is composite for every k >= 0. His proof relied on covering systems -- finite sets of primes whose modular periodicities 'cover' all residue classes of k, guaranteeing that some prime in the set always divides 2^k * m + 1. John Selfridge later identified 78557 as a Sierpinski number with covering set {3, 5, 7, 13, 19, 37, 73}, and it is conjectured (but not yet proven) to be the smallest Sierpinski number. The 'Seventeen or Bust' distributed computing project has been working since 2002 to verify this, reducing the candidates to just a few remaining values.\n\nErdos and Graham (1980) posed a deeper question: must every Sierpinski number have a finite covering set, or can Sierpinski numbers exist for 'non-periodic' reasons? This is Problem #1113 in the Erdos collection. The question probes whether covering systems are the only mechanism producing Sierpinski numbers, or whether other number-theoretic phenomena (such as the algebraic structure of perfect powers) can also force universal compositeness. The answer has profound implications: if ALL Sierpinski numbers have covering sets, then a classical argument shows infinitely many Fermat primes must exist -- a conclusion considered extremely unlikely given that only five Fermat primes ($F_0$ through $F_4$) are known.\n\nIn 1995, Izotov proposed the candidate $m = 734110615000775^4$, a Sierpinski number conjectured to have no finite covering set. Notably, this candidate is a perfect 4th power. This observation led Filaseta, Finch, and Kozek (2008) to formulate the FFK Conjecture: every Sierpinski number is either a perfect power ($m = n^k$ for some $k \\geq 2$) or has a finite covering set. This elegant refinement suggests that uncovered Sierpinski numbers, if they exist, must arise from the multiplicative structure of perfect powers rather than from arbitrary number-theoretic coincidences.\n\nThe connection to Fermat primes provides the strongest indirect evidence that uncovered Sierpinski numbers exist. Setting $m = 1$ in the Sierpinski sequence gives $2^k + 1$, whose prime values are exactly the Fermat primes. If every Sierpinski number has a covering set, then covering-system arguments can be bootstrapped to show infinitely many Fermat primes exist. Since $F_5 = 4294967297 = 641 \\times 6700417$ is composite and no Fermat prime beyond $F_4 = 65537$ has been found, the mathematical community strongly suspects that only finitely many Fermat primes exist -- making the affirmative answer to Problem #1113 highly likely.",
     "problemStatement": "**Problem Statement (OPEN)**\n\nA Sierpinski number $m$ is an odd positive integer where $2^k \\cdot m + 1$ is composite for all $k \\geq 0$.\n\nA covering set $P$ for $m$ is a finite set of primes such that every $2^k \\cdot m + 1$ is divisible by some $p \\in P$.\n\n**Question:** Are there Sierpinski numbers with no finite covering set?\n\n**Evidence for YES:**\n- Izotov's candidate $m = 734110615000775^4$\n- If NO, infinitely many Fermat primes exist (unlikely)\n\n**Status: OPEN**",
-    "proofStrategy": "The formalization is structured in seven parts. Part 1 imports Nat.Basic, Nat.Prime.Basic, Finset.Basic, and Nat.Parity from Mathlib, establishing the arithmetic foundation. Part 2 defines IsSierpinskiNumber (odd, positive, all terms composite) with an equivalent AllComposite characterization via sierpinskiSequence, connected by the verified sierpinski_iff_all_composite. Part 3 defines IsCoveringSet (finite primes covering divisibility) and HasFiniteCoveringSet, with the axiom covering_set_implies_sierpinski confirming covered numbers are Sierpinski. Part 4 formalizes the main question as ErdosProblem1113 (existence of uncovered Sierpinski) and AllSierpinskiHaveCoverings (universal covering), proving their equivalence via push_neg. Part 5 axiomatizes 78557, Izotov's candidate (with izotov_is_power verified by norm_num), and Sierpinski's infinitude theorem. Part 6 defines IsPerfectPower and FFKConjecture, verifying ffk_consistent_with_izotov. Part 7 defines Fermat numbers, axiomatizes F5's factorization and the Erdős-Graham connection, and proves the summary theorem combining all key results.",
+    "proofStrategy": "The formalization is structured in seven parts. Part 1 imports Nat.Basic, Nat.Prime.Basic, Finset.Basic, and Nat.Parity from Mathlib, establishing the arithmetic foundation. Part 2 defines `IsSierpinskiNumber` (odd, positive, all $2^k \\cdot m + 1$ composite) with an equivalent `AllComposite` characterization via `sierpinskiSequence`, connected by the verified `sierpinski_iff_all_composite`. Part 3 defines `IsCoveringSet` (finite primes covering divisibility) and `HasFiniteCoveringSet`, with the axiom `covering_set_implies_sierpinski` confirming covered numbers are Sierpinski. Part 4 formalizes the main question as `ErdosProblem1113` (existence of uncovered Sierpinski) and `AllSierpinskiHaveCoverings` (universal covering), proving their equivalence via `push_neg`. Part 5 axiomatizes 78557, Izotov's candidate (with `izotov_is_power` verified by `norm_num`), and Sierpinski's infinitude theorem. Part 6 defines `IsPerfectPower` and `FFKConjecture`, verifying `ffk_consistent_with_izotov`. Part 7 defines Fermat numbers, axiomatizes $F_5$'s factorization and the Erdos-Graham connection, and proves the summary theorem combining all key results.",
     "keyInsights": [
-      "Covering sets exploit modular periodicity: since 2^k mod p has period dividing p-1, a finite set of primes can cover all residue classes of k, explaining why every term is composite",
-      "The covering set {3, 5, 7, 13, 19, 37, 73} for 78557 works because these primes' periodicities partition N via lcm(2, 4, 3, 12, 18, 36, 72) = 36 -- each k mod 36 class has a covering prime",
-      "Izotov's candidate 734110615000775^4 is a perfect 4th power, consistent with the FFK prediction that uncovered Sierpinski numbers must be algebraically special",
-      "The Erdős-Graham observation creates a powerful contrapositive: disproving uncovered Sierpinski numbers would prove infinitely many Fermat primes, which no known technique can establish",
-      "The problem_equivalence theorem (verified via push_neg) shows Problem #1113 is exactly the negation of AllSierpinskiHaveCoverings, reducing an existential question to a universal one",
-      "The FFK power result shows that for any l >= 1, there exists m where 2^k · m^i + 1 is composite for all 1 <= i <= l and k >= 0, demonstrating deep simultaneous compositeness phenomena"
+      "**Covering sets** exploit modular periodicity: since $2^k \\bmod p$ has period dividing $p-1$, a finite set of primes can cover all residue classes of $k$, explaining why every term is composite",
+      "The covering set $\\{3, 5, 7, 13, 19, 37, 73\\}$ for 78557 works because these primes' periodicities partition $\\mathbb{N}$ via $\\text{lcm}(2, 4, 3, 12, 18, 36, 72) = 36$ -- each $k \\bmod 36$ class has a covering prime",
+      "**Izotov's candidate** $734110615000775^4$ is a perfect 4th power, consistent with the FFK prediction that uncovered Sierpinski numbers must be algebraically special",
+      "The **Erdos-Graham observation** creates a powerful contrapositive: disproving uncovered Sierpinski numbers would prove infinitely many Fermat primes, which no known technique can establish",
+      "The `problem_equivalence` theorem (verified via `push_neg`) shows Problem #1113 is exactly the negation of `AllSierpinskiHaveCoverings`, reducing an existential question to a universal one",
+      "The **FFK power result** shows that for any $l \\geq 1$, there exists $m$ where $2^k \\cdot m^i + 1$ is composite for all $1 \\leq i \\leq l$ and $k \\geq 0$, demonstrating deep simultaneous compositeness phenomena"
     ]
   },
   "sections": [
     {
       "id": "imports-overview",
       "title": "Problem Overview and Imports",
-      "summary": "Module docstring describing Problem #1113 and imports from Mathlib (Nat.Basic, Nat.Prime.Basic, Finset.Basic, Nat.Parity). Sets up the arithmetic foundation for Sierpinski numbers and covering systems.",
+      "summary": "Module docstring describing Problem #1113 and imports from Mathlib (`Nat.Basic`, `Nat.Prime.Basic`, `Finset.Basic`, `Nat.Parity`). Sets up the arithmetic foundation for Sierpinski numbers and covering systems.",
       "startLine": 1,
       "endLine": 40
     },
     {
       "id": "sierpinski-numbers",
       "title": "Sierpinski Numbers",
-      "summary": "Defines IsSierpinskiNumber (odd, positive, all 2^k·m+1 composite), sierpinskiSequence helper, AllComposite predicate, and proves sierpinski_iff_all_composite establishing their equivalence.",
+      "summary": "Defines `IsSierpinskiNumber` ($m$ odd, positive, all $2^k \\cdot m + 1$ composite), `sierpinskiSequence` helper, `AllComposite` predicate, and proves `sierpinski_iff_all_composite` establishing their equivalence.",
       "startLine": 42,
       "endLine": 62
     },
     {
       "id": "covering-sets",
       "title": "Covering Sets",
-      "summary": "Defines IsCoveringSet (finite primes P where for every k, some p in P divides 2^k·m+1) and HasFiniteCoveringSet. Axiomatizes covering_set_implies_sierpinski: covered numbers are Sierpinski.",
+      "summary": "Defines `IsCoveringSet` (finite primes $P$ where $\\forall k, \\exists p \\in P, p \\mid 2^k \\cdot m + 1$) and `HasFiniteCoveringSet`. Axiomatizes `covering_set_implies_sierpinski`: covered numbers are Sierpinski.",
       "startLine": 64,
       "endLine": 79
     },
     {
       "id": "main-question",
       "title": "The Main Question (OPEN)",
-      "summary": "Formalizes ErdosProblem1113 (exists uncovered Sierpinski number) and AllSierpinskiHaveCoverings (every Sierpinski is covered). Proves problem_equivalence showing these are exact negations via push_neg.",
+      "summary": "Formalizes `ErdosProblem1113` ($\\exists$ uncovered Sierpinski number) and `AllSierpinskiHaveCoverings` ($\\forall$ Sierpinski numbers are covered). Proves `problem_equivalence` showing these are exact negations via `push_neg`.",
       "startLine": 81,
       "endLine": 99
     },
     {
       "id": "known-examples",
       "title": "78557 and Sierpinski's Theorem",
-      "summary": "Axiomatizes 78557 as smallest known Sierpinski number with covering set {3,5,7,13,19,37,73}. Axiomatizes Sierpinski's 1960 infinitude theorem: for every N, a covered Sierpinski number exceeding N exists.",
+      "summary": "Axiomatizes 78557 as smallest known Sierpinski number with covering set $\\{3,5,7,13,19,37,73\\}$. Axiomatizes Sierpinski's 1960 infinitude theorem: $\\forall N, \\exists m > N$, $m$ is Sierpinski with a finite covering set.",
       "startLine": 101,
       "endLine": 119
     },
     {
       "id": "izotov",
       "title": "Izotov's Candidate (1995)",
-      "summary": "Axiomatizes izotovCandidate = 734110615000775^4 as Sierpinski. Verifies izotov_is_power (it is a perfect 4th power) via norm_num/rfl. This is the strongest evidence for Problem #1113 having answer YES.",
+      "summary": "Axiomatizes `izotovCandidate` $= 734110615000775^4$ as Sierpinski. Verifies `izotov_is_power` ($m$ is a perfect 4th power) via `norm_num`/`rfl`. Strongest evidence for Problem #1113 having answer YES.",
       "startLine": 121,
       "endLine": 130
     },
     {
       "id": "ffk-conjecture",
       "title": "FFK Conjecture and Power Result",
-      "summary": "Defines IsPerfectPower (m = n^k, k >= 2) and FFKConjecture (Sierpinski implies perfect power or covered). Verifies ffk_consistent_with_izotov. Axiomatizes the FFK power result on simultaneous compositeness.",
+      "summary": "Defines `IsPerfectPower` ($m = n^k$, $k \\geq 2$) and `FFKConjecture` (Sierpinski $\\Rightarrow$ perfect power $\\vee$ covered). Verifies `ffk_consistent_with_izotov`. Axiomatizes the FFK power result on simultaneous compositeness for $2^k \\cdot m^i + 1$.",
       "startLine": 132,
       "endLine": 154
     },
     {
       "id": "fermat-connection",
       "title": "Connection to Fermat Primes",
-      "summary": "Defines FermatNumber (2^(2^n)+1) and IsFermatPrime. Axiomatizes known Fermat primes F0-F4, F5's factorization (641 × 6700417), and the Erdős-Graham connection: universal covering implies infinitely many Fermat primes.",
+      "summary": "Defines `FermatNumber` ($F_n = 2^{2^n} + 1$) and `IsFermatPrime`. Axiomatizes known Fermat primes $F_0$-$F_4$, $F_5$'s factorization ($641 \\times 6700417$), and the Erdos-Graham connection: universal covering $\\Rightarrow$ infinitely many Fermat primes.",
       "startLine": 156,
       "endLine": 184
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
-      "summary": "Proves erdos_1113_summary combining: (1) Izotov's candidate is Sierpinski, (2) it is a perfect power, (3) FFK conjecture is compatible. Verified from axioms and norm_num results. Problem Status: OPEN.",
+      "summary": "Proves `erdos_1113_summary` combining: (1) Izotov's candidate is Sierpinski, (2) it is a perfect power, (3) FFK conjecture is compatible. Verified from axioms and `norm_num` results. **Problem Status: OPEN.**",
       "startLine": 186,
       "endLine": 207
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #1113 remains OPEN. The formalization captures the full landscape: Sierpinski numbers via covering systems (78557 with its 7-element covering set), Izotov's conjectured uncovered candidate (734110615000775^4, verified as a perfect 4th power), the FFK Conjecture refining the question to perfect powers, and the deep connection to Fermat primes. The verified summary theorem combines Izotov's Sierpinski property, perfect power status, and FFK compatibility into a single result.",
-    "implications": "Resolution of Problem #1113 would have far-reaching consequences. An affirmative answer (uncovered Sierpinski numbers exist) would demonstrate that covering systems are not the sole mechanism for universal compositeness, opening new directions in analytic number theory. A negative answer would imply infinitely many Fermat primes via the Erdős-Graham connection -- a result that would revolutionize our understanding of Fermat numbers and would likely require entirely new techniques in prime distribution theory.",
+    "summary": "Erdos Problem #1113 remains OPEN. The formalization captures the full landscape: Sierpinski numbers via covering systems (78557 with its 7-element covering set), Izotov's conjectured uncovered candidate ($734110615000775^4$, verified as a perfect 4th power), the FFK Conjecture refining the question to perfect powers, and the deep connection to Fermat primes. The verified summary theorem combines Izotov's Sierpinski property, perfect power status, and FFK compatibility into a single result.",
+    "implications": "Resolution of Problem #1113 would have far-reaching consequences. An affirmative answer (uncovered Sierpinski numbers exist) would demonstrate that covering systems are not the sole mechanism for universal compositeness, opening new directions in analytic number theory. A negative answer would imply infinitely many Fermat primes via the Erdos-Graham connection -- a result that would revolutionize our understanding of Fermat numbers and would likely require entirely new techniques in prime distribution theory.",
     "openQuestions": [
-      "Does Izotov's candidate m = 734110615000775^4 truly lack a covering set, or can one be found computationally?",
+      "Does Izotov's candidate $m = 734110615000775^4$ truly lack a covering set, or can one be found computationally?",
       "Is the FFK Conjecture true -- are perfect powers the only possible uncovered Sierpinski numbers?",
       "Are there non-power Sierpinski numbers without covering sets, contradicting FFK?",
       "What is the relationship between the density of covered Sierpinski numbers and the number-theoretic properties of their covering sets?"
@@ -177,16 +190,16 @@
   },
   "crossReferences": [
     {
-      "proofId": "erdos-370",
-      "relationship": "Both problems involve prime factorization structure of arithmetic sequences -- Problem #370 studies greatest prime factors of consecutive integers while Problem #1113 studies prime divisors covering the Sierpinski sequence 2^k·m+1"
+      "targetProofId": "erdos-370",
+      "relationship": "Both problems involve prime factorization structure of arithmetic sequences -- Problem #370 studies greatest prime factors of consecutive integers while Problem #1113 studies prime divisors covering the Sierpinski sequence $2^k \\cdot m + 1$"
     },
     {
-      "proofId": "erdos-984",
+      "targetProofId": "erdos-984",
       "relationship": "Both involve combinatorial number theory with finite set constructions -- Sidon sets (finite sets with unique pairwise sums) and covering sets (finite prime sets with complete divisibility coverage)"
     },
     {
-      "proofId": "erdos-107",
-      "relationship": "Both are Erdős problems where existence questions connect to deep structural phenomena -- the Happy Ending problem asks about convex subsets while Problem #1113 asks about uncovered Sierpinski numbers"
+      "targetProofId": "erdos-107",
+      "relationship": "Both are Erdos problems where existence questions connect to deep structural phenomena -- the Happy Ending problem asks about convex subsets while Problem #1113 asks about uncovered Sierpinski numbers"
     }
   ]
 }
