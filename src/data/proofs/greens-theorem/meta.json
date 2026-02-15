@@ -10,6 +10,7 @@
     "date": "1828",
     "status": "axiom-based",
     "proofRepoPath": "Proofs/GreensTheorem.lean",
+    "leanFile": "proofs/Proofs/GreensTheorem.lean",
     "tags": [
       "analysis",
       "vector-calculus",
@@ -20,61 +21,144 @@
     ],
     "badge": "from-axioms",
     "sorries": 0,
+    "axiomCount": 2,
     "mathlibDependencies": [
       {
         "theorem": "Real",
-        "description": "Real number field",
+        "description": "Real number field for vector field components and integrals",
         "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "linarith",
+        "description": "Linear arithmetic tactic for Rectangle positivity proofs",
+        "module": "Mathlib.Tactic"
+      },
+      {
+        "theorem": "mul_pos",
+        "description": "Positivity of products, used for Rectangle.area_pos",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      },
+      {
+        "theorem": "norm_num",
+        "description": "Numeric normalization for concrete area computations",
+        "module": "Mathlib.Tactic.NormNum"
       }
     ],
     "originalContributions": [
-      "Framework for 2D vector fields and rectangles",
-      "Area computation via Green's theorem",
-      "Connection to Stokes' theorem and Cauchy's integral theorem"
+      "VectorField2D structure with component functions P, Q : R² → R",
+      "Curl2D abstraction representing ∂Q/∂x − ∂P/∂y at each point",
+      "Rectangle structure with width/height/area and full positivity proofs",
+      "Axiomatized lineIntegral and doubleIntegralCurl as abstract functions",
+      "Green's theorem for rectangles as a core axiom",
+      "General Green's theorem statement with GreenRegion placeholder",
+      "Three area vector fields with curl ≡ 1: (0,x), (−y,0), (−y/2,x/2)",
+      "Div2D structure for 2D divergence theorem connection",
+      "SatisfiesCauchyRiemann predicate and zero-circulation theorem",
+      "Fully proved rectangle properties: width_pos, height_pos, area_pos",
+      "Concrete examples: unitSquare_area = 1, exampleRectangle_area = 6"
     ],
     "dateAdded": "12/29/25"
   },
   "overview": {
-    "historicalContext": "George Green was a self-taught British mathematician who published his work in 1828. The theorem now bearing his name is a special case of the generalized Stokes' theorem and is fundamental to vector calculus, electromagnetism, and fluid dynamics.",
-    "problemStatement": "**Green's Theorem**: For a positively oriented, piecewise smooth, simple closed curve C bounding region D:\n\n$$\\oint_C (P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right) dA$$",
-    "proofStrategy": "For rectangular regions, the proof uses Fubini's theorem and the Fundamental Theorem of Calculus. The double integral splits into iterated integrals, which evaluate to boundary contributions that combine to give the line integral.",
+    "historicalContext": "George Green (1793–1841) was a self-taught British mathematician who published his landmark 'An Essay on the Application of Mathematical Analysis to the Theories of Electricity and Magnetism' in 1828, printed privately in only 52 copies. The work introduced what is now called Green's theorem, Green's function, and the concept of potential. It was largely ignored until William Thomson (Lord Kelvin) rediscovered it in 1845 and brought it to wider attention.\n\nThe theorem is the 2-dimensional special case of the generalized Stokes' theorem $\\int_{\\partial M} \\omega = \\int_M d\\omega$, first stated in full generality by Élie Cartan in the language of differential forms. In the standard formulation, it relates the circulation $\\oint_C \\mathbf{F} \\cdot d\\mathbf{r}$ of a vector field around a closed curve to the integral of the curl over the enclosed region.\n\nGreen's theorem is fundamental to electromagnetism (Maxwell's equations), fluid dynamics (vorticity and circulation), and complex analysis (Cauchy's integral theorem as a consequence). It appears as #21 on Wiedijk's list of 100 greatest theorems.",
+    "problemStatement": "**Green's Theorem**: For a positively oriented, piecewise smooth, simple closed curve $C$ bounding region $D$, and a continuously differentiable vector field $\\mathbf{F} = (P, Q)$:\n\n$$\\oint_C (P\\,dx + Q\\,dy) = \\iint_D \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right) dA$$\n\nThe left side is the **circulation** of $\\mathbf{F}$ around $C$; the right side is the total **curl** (rotation density) over $D$.",
+    "proofStrategy": "The formalization proceeds in stages. First, `VectorField2D` and `Curl2D` structures define the mathematical objects. The `Rectangle` structure $[a,b] \\times [c,d]$ with $a < b$, $c < d$ provides the geometric foundation, with positivity of width, height, and area fully proved using `linarith` and `mul_pos`.\n\nThe integral functions `lineIntegral` and `doubleIntegralCurl` are axiomatized as abstract noncomputable functions (returning 0 as stubs) since Mathlib lacks direct support for path integrals and oriented double integrals. Green's theorem for rectangles is stated as an axiom equating these. The general form uses a placeholder `GreenRegion` structure.\n\nThe key proof insight for rectangles is explained in comments: split via Fubini's theorem into iterated integrals, apply FTC to each inner integral, and recombine to get the boundary line integral. Three area vector fields demonstrate the application $\\text{Area}(D) = \\oint_C x\\,dy$.",
     "keyInsights": [
-      "Relates local behavior (curl) to global behavior (circulation)",
-      "Area can be computed as a line integral: Area = integral of x dy",
-      "Special case of Stokes' theorem in 2D",
-      "Cauchy's integral theorem follows when the curl vanishes"
+      "**Local-to-global principle**: Green's theorem converts a local property (curl at each point) into a global one (total circulation around the boundary). This is the archetype for all Stokes-type theorems.",
+      "**Area as a line integral**: Choosing vector fields with curl $\\equiv 1$ gives $\\text{Area}(D) = \\oint_C x\\,dy = -\\oint_C y\\,dx = \\frac{1}{2}\\oint_C (x\\,dy - y\\,dx)$. The symmetric form is the continuous analog of the Shoelace formula for polygon area.",
+      "**Fubini + FTC strategy**: For rectangles, the double integral splits via Fubini into iterated integrals. The FTC evaluates each inner integral at the endpoints, recovering boundary integrals along the four edges.",
+      "**Cauchy's integral theorem as corollary**: For holomorphic $f = u + iv$, the Cauchy-Riemann equations force $\\text{curl} = 0$, so $\\oint_C f\\,dz = 0$. This connects vector calculus to complex analysis.",
+      "**Generalized Stokes' theorem**: Green's theorem is $\\int_{\\partial D} \\omega = \\int_D d\\omega$ for the 1-form $\\omega = P\\,dx + Q\\,dy$ with exterior derivative $d\\omega = (\\partial_x Q - \\partial_y P)\\,dx \\wedge dy$. The 3D version is the classical Stokes' theorem; the 1D version is the FTC."
     ]
   },
   "sections": [
     {
       "id": "vector-fields",
-      "title": "Vector Fields in the Plane",
+      "title": "Part 1: Vector Fields in the Plane",
       "startLine": 48,
-      "endLine": 65,
-      "summary": "2D vector fields and curl definition."
+      "endLine": 64,
+      "summary": "Defines `VectorField2D` as a structure with components $P, Q : \\mathbb{R}^2 \\to \\mathbb{R}$, assigning a vector $(P(x,y), Q(x,y))$ to each point. Defines `Curl2D` with a `value` function abstracting $\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}$, the scalar measure of rotation density."
     },
     {
-      "id": "greens-theorem",
-      "title": "Green's Theorem",
+      "id": "rectangles",
+      "title": "Part 2: Rectangular Regions",
+      "startLine": 66,
+      "endLine": 101,
+      "summary": "Defines `Rectangle` as $[a,b] \\times [c,d]$ with $a < b$, $c < d$. Derives `width`, `height`, `area` and **fully proves** all three are positive: `width_pos` and `height_pos` by `linarith`, `area_pos` by `mul_pos`. No sorries."
+    },
+    {
+      "id": "integrals",
+      "title": "Part 3: Line and Double Integrals (Abstract)",
+      "startLine": 103,
+      "endLine": 129,
+      "summary": "Defines `lineIntegral` and `doubleIntegralCurl` as noncomputable stub functions (returning 0). Axiomatized because Mathlib lacks direct path-integral and oriented-double-integral support. Captures the key functional signatures needed for Green's theorem."
+    },
+    {
+      "id": "greens-rectangle",
+      "title": "Part 4: Green's Theorem for Rectangles",
       "startLine": 130,
-      "endLine": 190,
-      "summary": "Core statement for rectangles and general regions."
+      "endLine": 161,
+      "summary": "The core axiom `greens_theorem_rectangle`: $\\oint_{\\partial R} (P\\,dx + Q\\,dy) = \\iint_R \\text{curl}(\\mathbf{F})\\,dA$. Comments detail the Fubini + FTC proof strategy, showing how the double integral reduces to boundary integrals along the four edges."
     },
     {
-      "id": "applications",
-      "title": "Applications",
-      "startLine": 190,
-      "endLine": 280,
-      "summary": "Area computation, connection to Stokes and Cauchy."
+      "id": "general",
+      "title": "Part 5: General Green's Theorem",
+      "startLine": 162,
+      "endLine": 188,
+      "summary": "States `greens_theorem_general` for arbitrary `GreenRegion` (currently a placeholder with `dummy : Unit`). The proof strategy — decompose into rectangles, apply the rectangular case, cancel internal boundaries — is documented but the axiom body is `True`."
+    },
+    {
+      "id": "area-applications",
+      "title": "Part 6: Area via Green's Theorem",
+      "startLine": 189,
+      "endLine": 233,
+      "summary": "Three vector fields with curl $\\equiv 1$: `areaVectorField` $(0, x)$, `areaVectorField'` $(-y, 0)$, `areaVectorFieldSymmetric` $(-y/2, x/2)$. Each gives $\\text{Area}(D) = \\oint_{\\partial D} \\mathbf{F} \\cdot d\\mathbf{r}$ via Green's theorem. Connected to planimeters."
+    },
+    {
+      "id": "connections",
+      "title": "Part 7: Connections to Stokes, Divergence, and Cauchy",
+      "startLine": 235,
+      "endLine": 293,
+      "summary": "Defines `Div2D` (divergence structure) and `SatisfiesCauchyRiemann` (curl $\\equiv 0$). Proves `cauchy_integral_zero_of_cauchy_riemann`: if the curl vanishes everywhere, the line integral around any rectangle is zero. Documents connections to Stokes' theorem ($\\int_{\\partial S} \\omega = \\int_S d\\omega$) and the 2D divergence theorem."
+    },
+    {
+      "id": "examples",
+      "title": "Part 8: Numerical Examples",
+      "startLine": 295,
+      "endLine": 353,
+      "summary": "Concrete rectangles: `unitSquare` $[0,1]^2$ with area $= 1$ and `exampleRectangle` $[0,2] \\times [0,3]$ with area $= 6$, both **fully proved** by `norm_num`. Documents the unit-square circulation example ($\\mathbf{F} = (-y, x)$, curl $= 2$) and the circle area computation via parametric integration."
     }
   ],
   "conclusion": {
-    "summary": "Green's theorem is fundamental to multivariable calculus and physics. It connects local properties of a vector field to global properties, enabling powerful computational techniques and theoretical insights.",
-    "implications": "Applications include fluid flow, electromagnetism, and complex analysis. The theorem generalizes to Stokes' theorem on manifolds, which is central to differential geometry and topology.",
+    "summary": "This formalization captures Green's theorem (Wiedijk #21) as the foundational connection between line integrals and double integrals in the plane. The rectangular case is axiomatized with a clear Fubini + FTC proof strategy. Rectangle properties (positivity of width, height, area) and concrete area computations (unit square, rectangle) are fully proved. Three area vector fields demonstrate the elegant application $\\text{Area} = \\oint x\\,dy$, and connections to Stokes' theorem, the divergence theorem, and Cauchy's integral theorem are formalized.",
+    "implications": "Green's theorem is foundational to electromagnetism (Maxwell's equations in integral form), fluid dynamics (Kelvin's circulation theorem), and complex analysis (Cauchy's integral theorem/formula). The formalization framework — abstract integral functions with axiomatic equality — provides a template for formalizing other Stokes-type theorems. Full proof would require Mathlib support for path integrals and oriented measure theory.",
     "openQuestions": [
-      "What is the minimal regularity needed for Green's theorem?",
-      "How does Green's theorem extend to non-orientable surfaces?",
-      "What are the computational implications for numerical methods?"
+      "Can the abstract lineIntegral and doubleIntegralCurl be replaced with Mathlib's Lebesgue integral machinery?",
+      "What is the minimal regularity needed — does Green's theorem hold for Lipschitz curves and L¹ curl?",
+      "Can the GreenRegion placeholder be replaced with a concrete simply-connected domain definition?",
+      "How does the theorem extend to multiply-connected regions (regions with holes)?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "foundational",
+      "description": "The Fundamental Theorem of Calculus is the 1D special case of Stokes' theorem and the key tool in proving Green's theorem for rectangles: FTC evaluates the inner integrals at boundary points."
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "application",
+      "description": "The area of a circle (πr²) can be derived via Green's theorem using the vector field (0, x) and parametrizing the circle, demonstrating the area-as-line-integral technique."
+    },
+    {
+      "targetId": "navier-stokes",
+      "relationship": "broader-context",
+      "description": "The Navier-Stokes equations use Green's theorem (and its 3D generalization) to convert between differential and integral formulations of fluid conservation laws."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "related",
+      "description": "Both theorems concern integral inequalities/equalities in analysis. Cauchy-Schwarz bounds inner products of functions, while Green's theorem equates two different integrals of vector field data."
+    }
+  ]
 }
