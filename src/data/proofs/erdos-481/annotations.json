@@ -36,7 +36,8 @@
     "title": "The Density Condition",
     "content": "Σ(1/aᵢ) > 1 is the crucial condition. It measures the 'coverage density' of the transformations. When > 1, there's enough overlap to force collisions. The condition is tight: Σ(1/aᵢ) ≤ 1 allows avoidance.",
     "mathContext": "Think of [0, N] being covered by intervals of length N/aᵢ. If Σ(1/aᵢ) > 1, the total coverage exceeds N, so pigeonhole guarantees overlaps. Examples: r=2, a₁=a₂=2 gives Σ=1 (boundary); r=3, a₁=a₂=a₃=2 gives Σ=3/2>1 (applies).",
-    "significance": "critical"
+    "significance": "critical",
+    "relatedConcepts": ["density condition", "pigeonhole principle", "covering lemma", "harmonic series"]
   },
   {
     "id": "ann-481-5",
@@ -92,7 +93,8 @@
     "type": "theorem",
     "title": "Klarner's Theorem",
     "content": "klarner_theorem formalizes that the Erdős-Graham conjecture is true. The proof is a direct application of the axiom. Kolpakov-Talambutsa (2022) extended this to more general settings, including affine maps on the real line.",
-    "significance": "critical"
+    "significance": "critical",
+    "relatedConcepts": ["Klarner 1982", "free semigroup characterization", "Kolpakov-Talambutsa extension"]
   },
   {
     "id": "ann-481-11",
