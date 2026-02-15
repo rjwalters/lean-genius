@@ -20,18 +20,111 @@
     "sorries": 2,
     "erdosNumber": 453,
     "erdosUrl": "https://erdosproblems.com/453",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-15",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime",
+        "description": "Primality predicate for natural numbers",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Real logarithm function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Convergence via filter tendsto",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Convex",
+        "description": "Convexity definitions for real spaces",
+        "module": "Mathlib.Analysis.Convex.Basic"
+      }
+    ],
+    "references": [
+      {
+        "key": "pomerance1979",
+        "title": "The prime number graph",
+        "author": "C. Pomerance",
+        "year": 1979,
+        "journal": "Mathematics of Computation",
+        "volume": "33",
+        "pages": "399-408"
+      },
+      {
+        "key": "guy2004",
+        "title": "Unsolved Problems in Number Theory (Problem A14)",
+        "author": "R.K. Guy",
+        "year": 2004,
+        "publisher": "Springer"
+      }
+    ],
+    "originalContributions": [
+      "nthPrime definition and prime sequence properties",
+      "ErdosStrausConjecture and SelfridgeConjecture formal definitions",
+      "conjectures_mutually_exclusive theorem (fully proved)",
+      "IsConvexHullVertex characterization for discrete sequences",
+      "LogConvexityProperty equivalence with vertex definition",
+      "counterexample_set_infinite theorem (fully proved from axioms)",
+      "log_convexity_iff_vertex identity (proved by rfl)"
+    ]
   },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Analysis.Convex.Basic"
+    ],
+    "opens": ["Nat", "Real"],
+    "namespace": "Erdos453",
+    "lineCount": 304,
+    "axiomCount": 6,
+    "theoremCount": 12,
+    "definitionCount": 7
+  },
+  "crossReferences": [
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "foundational",
+      "description": "Bertrand's postulate bounds prime gaps; the prime gap structure underlies the prime number graph used in Pomerance's proof"
+    },
+    {
+      "targetId": "erdos-216",
+      "relationship": "technique",
+      "description": "Both use convex hull geometry — Problem #216 for empty convex polygons in point sets, Problem #453 for the prime number graph"
+    },
+    {
+      "targetId": "erdos-233",
+      "relationship": "related",
+      "description": "Both study prime gap structure: Problem #233 on sum of squares of gaps, Problem #453 on product inequalities from convexity of log primes"
+    },
+    {
+      "targetId": "erdos-218",
+      "relationship": "related",
+      "description": "Both concern local behavior of the prime sequence: Problem #218 on gap comparison densities, Problem #453 on product comparisons at individual primes"
+    },
+    {
+      "targetId": "erdos-203",
+      "relationship": "thematic",
+      "description": "Both are solved Erdős problems about prime distribution: Problem #203 on covering systems avoiding primes, Problem #453 on prime products and squares"
+    }
+  ],
   "overview": {
-    "historicalContext": "Erdős and Straus originally conjectured that for all large n, some i < n satisfies p_n² < p_{n+i}·p_{n-i}. Selfridge disagreed, conjecturing the opposite. Pomerance (1979) proved Selfridge correct using an elegant convex hull argument on the prime number graph. This is Problem A14 in Guy's 'Unsolved Problems in Number Theory'.",
+    "historicalContext": "Erdős and Straus originally conjectured that for all large n, some i < n satisfies p_n² < p_{n+i}·p_{n-i}. Selfridge disagreed, conjecturing the opposite. Pomerance (1979) proved Selfridge correct using an elegant convex hull argument on the prime number graph.\n\nThe proof is remarkably short: consider the graph of points (n, log p_n). By the Prime Number Theorem, p_n ~ n log n, so log p_n / n → 0. This means the non-horizontal part of the upper convex hull boundary is concave with infinitely many vertices. At each vertex n, the strict convexity condition 2·log p_n > log p_{n-i} + log p_{n+i} holds for all i, which exponentiates to p_n² > p_{n+i}·p_{n-i}.\n\nThis is Problem A14 in Guy's 'Unsolved Problems in Number Theory'. Pomerance published the result in 'The prime number graph' (Mathematics of Computation, 1979), a paper that also studied the convexity properties of the prime sequence more broadly.",
     "problemStatement": "Is it true that, for all sufficiently large n, there exists some i < n such that p_n² < p_{n+i}·p_{n-i}, where p_k is the k-th prime?",
-    "proofStrategy": "The formalization defines the Erdős-Straus conjecture and Selfridge's counter-conjecture. Pomerance's proof uses the convex hull of points (n, log p_n): since log p_n / n → 0, the boundary has infinitely many vertices where 2·log p_n > log p_{n-i} + log p_{n+i}, which implies p_n² > p_{n+i}·p_{n-i}.",
+    "proofStrategy": "The formalization defines the Erdős-Straus conjecture and Selfridge's counter-conjecture, proves they are mutually exclusive (a genuine Lean proof by contradiction using omega), then axiomatizes Pomerance's result. The key geometric machinery — the convex hull vertex characterization, the o(n) lemma guaranteeing infinitely many vertices, and the log-to-product bridge — is formalized to capture the structure of Pomerance's short proof. The infinitude of the counterexample set is proved as a genuine theorem using Set.infinite_iff_nat_lt.",
     "keyInsights": [
       "The prime number graph (n, log p_n) has a concave upper boundary for large n",
       "Convex hull vertices correspond to primes violating the Erdős-Straus conjecture",
       "log p_n / n → 0 by the Prime Number Theorem (p_n ~ n log n)",
       "2·log p_n > log p_{n-i} + log p_{n+i} implies p_n² > p_{n+i}·p_{n-i}",
-      "Infinitely many vertices exist, so infinitely many counterexamples exist"
+      "Infinitely many vertices exist, so infinitely many counterexamples exist",
+      "The proof illustrates how geometric reasoning (convex hulls) can resolve questions about arithmetic objects (primes)"
     ]
   },
   "sections": [
@@ -69,11 +162,39 @@
       "startLine": 173,
       "endLine": 197,
       "summary": "The answer is NO - infinitely many counterexamples exist"
+    },
+    {
+      "id": "prime-graph",
+      "title": "The Prime Number Graph",
+      "startLine": 199,
+      "endLine": 245,
+      "summary": "Geometric interpretation and log convexity properties"
+    },
+    {
+      "id": "density",
+      "title": "Density of Counterexamples",
+      "startLine": 247,
+      "endLine": 261,
+      "summary": "The counterexample set is infinite (proved)"
+    },
+    {
+      "id": "guy-connection",
+      "title": "Connection to Guy's Collection",
+      "startLine": 263,
+      "endLine": 275,
+      "summary": "Problem A14 in Guy's Unsolved Problems in Number Theory"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 277,
+      "endLine": 304,
+      "summary": "Combined result: Erdős-Straus false, Selfridge true"
     }
   ],
   "conclusion": {
     "summary": "Erdős Problem #453 is SOLVED. The answer is NO. Pomerance (1979) proved there are infinitely many n such that p_n² > p_{n+i}·p_{n-i} for ALL i < n, contradicting the Erdős-Straus conjecture and confirming Selfridge's intuition.",
-    "implications": "The prime number graph provides geometric insight into prime distribution. Convex hull analysis is a powerful tool for studying multiplicative properties of primes.",
+    "implications": "The prime number graph provides geometric insight into prime distribution. Convex hull analysis is a powerful tool for studying multiplicative properties of primes. The technique of converting arithmetic questions into geometric ones via logarithms is broadly applicable.",
     "openQuestions": [
       "What is the density of n with p_n² > p_{n+i}·p_{n-i} for all i?",
       "Can the convex hull vertices be characterized more precisely?",
