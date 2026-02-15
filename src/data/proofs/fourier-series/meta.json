@@ -3,6 +3,7 @@
   "title": "Fourier Series",
   "slug": "fourier-series",
   "description": "Every periodic function can be represented as an infinite sum of sines and cosines (Fourier series). A cornerstone of analysis with applications throughout science.",
+  "leanFile": "Proofs/FourierSeries.lean",
   "meta": {
     "wiedijkNumber": 76,
     "author": "Joseph Fourier (1822)",
@@ -20,66 +21,180 @@
     ],
     "badge": "from-axioms",
     "sorries": 0,
+    "dateAdded": "2025-12-29",
+    "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
         "theorem": "fourierCoeff",
-        "description": "Fourier coefficients",
+        "description": "Fourier coefficients on AddCircle",
         "module": "Mathlib.Analysis.Fourier.AddCircle"
       },
       {
-        "theorem": "L2.innerProductSpace",
-        "description": "L^2 inner product",
+        "theorem": "fourierBasis",
+        "description": "Hilbert basis of Fourier monomials for L²",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "orthonormal_fourier",
+        "description": "Orthonormality of Fourier monomials in L²",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "hasSum_fourier_series_L2",
+        "description": "L² convergence of Fourier series",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "hasSum_fourier_series_of_summable",
+        "description": "Uniform convergence when coefficients are summable",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "span_fourier_closure_eq_top",
+        "description": "Density of trigonometric polynomials (Stone-Weierstrass)",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "tsum_sq_fourierCoeff",
+        "description": "Parseval's theorem: Σ|ĉₙ|² = ‖f‖²",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "Lp",
+        "description": "Lp spaces including L²",
         "module": "Mathlib.MeasureTheory.Function.L2Space"
       }
     ],
     "originalContributions": [
-      "Framework for Fourier coefficients and series",
-      "L^2 convergence (Parseval's theorem)",
-      "Pointwise and uniform convergence conditions"
-    ],
-    "dateAdded": "12/29/25"
+      "fourier_mul: multiplicative property e_n · e_m = e_{n+m}",
+      "fourier_conj: conjugation property conj(e_n) = e_{-n}",
+      "orthonormal_fourier_system: wrapper for orthonormality",
+      "parseval_fourier: Parseval's theorem (energy equality)",
+      "bessel_fourier: Bessel's inequality for finite partial sums",
+      "hasSum_fourier_uniform: uniform convergence with summable coefficients",
+      "fourier_coeffs_determine_function: uniqueness of Fourier representation",
+      "fourier_coeff_tendsto_zero_of_L2: Riemann-Lebesgue lemma for L²"
+    ]
   },
   "overview": {
-    "historicalContext": "Fourier introduced his series in 1807 while studying heat conduction, publishing the full theory in 1822. The question of convergence provoked intense debate and led to major developments in analysis, including the rigorous definition of functions and integrals.",
-    "problemStatement": "**Fourier Series**: A periodic function f with period 2*pi can be represented as:\n\n$$f(x) = \\frac{a_0}{2} + \\sum_{n=1}^{\\infty} (a_n \\cos(nx) + b_n \\sin(nx))$$\n\nwhere the Fourier coefficients are integrals of f against the trigonometric functions.",
-    "proofStrategy": "For L^2 functions, the proof uses the theory of Hilbert spaces: the trigonometric functions form an orthonormal basis for L^2([0,2*pi]). Parseval's theorem shows the series converges in L^2 norm. Pointwise convergence requires additional regularity.",
+    "historicalContext": "**Fourier Series — Wiedijk #76**\n\nFourier series are one of the most important tools in mathematical analysis, decomposing periodic functions into sums of sines and cosines (or complex exponentials).\n\n**Historical Development:**\n- **Joseph Fourier (1807)** introduced the series in his work on heat conduction, published fully in *Théorie analytique de la chaleur* (1822)\n- **Dirichlet (1829)** gave the first rigorous convergence proof for piecewise smooth functions\n- **Paul du Bois-Reymond (1876)** showed a continuous function whose Fourier series diverges at a point\n- **Lennart Carleson (1966)** proved the landmark result that Fourier series of $L^2$ functions converge pointwise almost everywhere\n\n**Modern formalization:** Mathlib formalizes Fourier series on `AddCircle T` (= $\\mathbb{R}/T\\mathbb{Z}$) with normalized Haar measure. The key objects are `fourierCoeff`, `fourier` (monomials), and `fourierBasis` (Hilbert basis for $L^2$). This formalization proves $L^2$ convergence, Parseval's theorem, Bessel's inequality, and uniqueness.",
+    "problemStatement": "**Fourier Series**: A periodic function $f$ with period $T$ can be represented as:\n\n$$f(x) = \\sum_{n=-\\infty}^{\\infty} c_n e^{2\\pi i n x / T}$$\n\nwhere the **Fourier coefficients** are: $c_n = \\int_{\\mathbb{R}/T\\mathbb{Z}} f(x) e^{-2\\pi i n x / T}\\, dx$\n\n**Key results formalized:**\n1. **$L^2$ Convergence**: The partial sums converge to $f$ in $L^2$ norm\n2. **Parseval's Theorem**: $\\sum |c_n|^2 = \\|f\\|_{L^2}^2$ (energy conservation)\n3. **Uniqueness**: Fourier coefficients uniquely determine the $L^2$ function",
+    "proofStrategy": "The formalization leverages Mathlib's extensive Fourier analysis library on `AddCircle T`.\n\n1. **Haar measure**: Use `haarAddCircle` as the canonical probability measure on $\\mathbb{R}/T\\mathbb{Z}$\n2. **Fourier monomials**: `fourier n` gives $e_n(x) = e^{2\\pi i n x / T}$, proved to satisfy $e_n \\cdot e_m = e_{n+m}$ and $\\overline{e_n} = e_{-n}$\n3. **Orthonormality**: `orthonormal_fourier` proves $\\langle e_n, e_m \\rangle = \\delta_{nm}$\n4. **Hilbert basis**: `fourierBasis` establishes completeness in $L^2$\n5. **$L^2$ convergence**: `hasSum_fourier_series_L2` proves the series converges\n6. **Parseval**: `tsum_sq_fourierCoeff` gives $\\sum|c_n|^2 = \\int|f|^2$\n7. **Uniqueness**: Proved from $L^2$ convergence via `HasSum.unique`",
     "keyInsights": [
-      "L^2 convergence holds for all square-integrable functions",
-      "Pointwise convergence requires smoothness conditions",
-      "The Fourier series is the best L^2 approximation by trig polynomials",
-      "Foundation for signal processing, PDEs, and quantum mechanics"
+      "**$L^2$ convergence is unconditional**: For ANY square-integrable function, the Fourier series converges in $L^2$ norm — no smoothness conditions needed. This is the power of Hilbert space theory.",
+      "**Parseval's theorem = energy conservation**: $\\sum_{n \\in \\mathbb{Z}} |c_n|^2 = \\|f\\|_{L^2}^2$ says total energy in frequency domain equals total energy in time domain. The Fourier transform is an isometry.",
+      "**Orthonormality makes everything work**: $\\langle e_n, e_m \\rangle = \\delta_{nm}$ means projecting onto $e_n$ extracts the $n$-th coefficient. This is the key property behind Fourier analysis.",
+      "**Uniform convergence requires more**: While $L^2$ convergence is free, uniform convergence needs $\\sum|c_n| < \\infty$, which requires smoothness (e.g., $C^1$ gives $c_n = O(1/n)$ via integration by parts).",
+      "**Completeness via Stone-Weierstrass**: The Fourier monomials span a dense subspace of continuous functions on the circle, which extends to $L^2$ completeness via the Hilbert space structure.",
+      "**Uniqueness from completeness**: If $f$ and $g$ have the same Fourier coefficients, their Fourier series converge to the same limit, so $f = g$ in $L^2$. The proof uses `HasSum.unique`."
     ]
   },
   "sections": [
     {
+      "id": "imports-setup",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 111,
+      "summary": "Imports Mathlib's Fourier analysis, inner product spaces, $L^2$ spaces, and tactics. Opens namespaces and sets `noncomputable section` (needed for measure theory)."
+    },
+    {
+      "id": "haar-measure",
+      "title": "Haar Measure on AddCircle",
+      "startLine": 121,
+      "endLine": 132,
+      "summary": "Demonstrates `haarAddCircle` as the normalized Haar measure on $\\mathbb{R}/T\\mathbb{Z}$ and verifies it is a probability measure via `IsProbabilityMeasure`."
+    },
+    {
+      "id": "fourier-monomials",
+      "title": "Fourier Monomials",
+      "startLine": 142,
+      "endLine": 166,
+      "summary": "Defines Fourier monomials $e_n(x) = e^{2\\pi i n x / T}$ via Mathlib's `fourier n`. Proves multiplicative property $e_n \\cdot e_m = e_{n+m}$ and conjugation $\\overline{e_n} = e_{-n}$."
+    },
+    {
       "id": "fourier-coefficients",
       "title": "Fourier Coefficients",
-      "startLine": 50,
-      "endLine": 100,
-      "summary": "Definition and computation of a_n, b_n."
+      "startLine": 176,
+      "endLine": 196,
+      "summary": "Defines Fourier coefficients $c_n = \\int f(x) e_{-n}(x)\\, d\\mu$ via Mathlib's `fourierCoeff`. Proves the coefficient equals the inner product $\\langle f, e_n \\rangle$."
+    },
+    {
+      "id": "orthonormality",
+      "title": "Orthonormality",
+      "startLine": 206,
+      "endLine": 234,
+      "summary": "Proves the Fourier system $\\{e_n\\}$ is orthonormal in $L^2$: $\\langle e_n, e_m \\rangle = \\delta_{nm}$. Separate lemmas for orthogonality ($n \\neq m \\Rightarrow \\langle e_n, e_m \\rangle = 0$) and normalization ($\\|e_n\\| = 1$)."
+    },
+    {
+      "id": "completeness",
+      "title": "Hilbert Basis (Completeness)",
+      "startLine": 244,
+      "endLine": 261,
+      "summary": "Establishes `fourierBasis` as a `HilbertBasis ℤ ℂ (Lp ℂ 2 haarAddCircle)`. Proves density of trigonometric polynomials via Stone-Weierstrass (`span_fourier_closure_eq_top`)."
     },
     {
       "id": "l2-convergence",
-      "title": "L^2 Convergence",
-      "startLine": 100,
-      "endLine": 180,
-      "summary": "Parseval's theorem and mean-square convergence."
+      "title": "$L^2$ Convergence",
+      "startLine": 271,
+      "endLine": 288,
+      "summary": "Proves $f = \\sum_{n \\in \\mathbb{Z}} c_n e_n$ in $L^2$ via `hasSum_fourier_series_L2`. The partial sums converge to $f$ in $L^2$ norm for any square-integrable $f$."
     },
     {
-      "id": "pointwise-convergence",
-      "title": "Pointwise Convergence",
-      "startLine": 180,
-      "endLine": 260,
-      "summary": "Dirichlet conditions and Fejer's theorem."
+      "id": "parseval",
+      "title": "Parseval's Theorem",
+      "startLine": 298,
+      "endLine": 315,
+      "summary": "Proves $\\sum_{n \\in \\mathbb{Z}} |c_n|^2 = \\int |f|^2\\, d\\mu$ via `tsum_sq_fourierCoeff`. Energy is conserved between time and frequency domains."
+    },
+    {
+      "id": "bessel",
+      "title": "Bessel's Inequality",
+      "startLine": 325,
+      "endLine": 351,
+      "summary": "Proves Bessel's inequality: $\\sum_{n \\in S} |c_n|^2 \\leq \\int |f|^2$ for any finite set $S \\subseteq \\mathbb{Z}$. Uses Parseval and `sum_le_tsum` for nonneg terms."
+    },
+    {
+      "id": "uniform-convergence",
+      "title": "Uniform Convergence",
+      "startLine": 361,
+      "endLine": 375,
+      "summary": "Proves that if $\\sum|c_n| < \\infty$ (summable coefficients), the Fourier series converges uniformly via `hasSum_fourier_series_of_summable`."
+    },
+    {
+      "id": "uniqueness-riemann-lebesgue",
+      "title": "Uniqueness and Riemann-Lebesgue",
+      "startLine": 411,
+      "endLine": 450,
+      "summary": "Proves uniqueness: same Fourier coefficients $\\Rightarrow$ same $L^2$ function (via `HasSum.unique`). States the Riemann-Lebesgue lemma: $c_n \\to 0$ as $|n| \\to \\infty$."
+    },
+    {
+      "id": "verification",
+      "title": "Type Verification",
+      "startLine": 456,
+      "endLine": 466,
+      "summary": "Uses `#check` to verify all main theorems are well-typed: orthonormality, $L^2$ convergence, Parseval, Bessel, uniform convergence, uniqueness, Riemann-Lebesgue."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "technique",
+      "description": "Both use Mathlib's number-theoretic infrastructure; Fourier analysis on the circle connects to analytic number theory"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The PNT can be proved using Fourier analysis (via the Selberg-Erdős approach or complex analysis on Dirichlet series)"
     }
   ],
   "conclusion": {
-    "summary": "Fourier series revolutionized analysis and have become indispensable in science and engineering. They decompose complex signals into simple frequencies, enabling everything from music synthesis to medical imaging.",
-    "implications": "Applications span signal processing, partial differential equations, quantum mechanics, data compression, and more. The theory led to functional analysis, distribution theory, and modern harmonic analysis.",
+    "summary": "This formalization of Fourier series (Wiedijk #76) leverages Mathlib's `AddCircle` framework to prove $L^2$ convergence, Parseval's theorem ($\\sum|c_n|^2 = \\|f\\|^2$), Bessel's inequality, uniform convergence for summable coefficients, uniqueness, and the Riemann-Lebesgue lemma. The key insight is that the Fourier monomials form a Hilbert basis for $L^2(\\mathbb{R}/T\\mathbb{Z})$, making all results flow from orthonormality and completeness.",
+    "implications": "Fourier series are foundational for signal processing, PDEs (heat, wave, Laplace equations), quantum mechanics, image compression (JPEG/DCT), and analytic number theory (modular forms). The $L^2$ theory led to functional analysis, distribution theory, and modern harmonic analysis. Carleson's 1966 theorem on almost-everywhere convergence remains one of the deepest results in analysis.",
     "openQuestions": [
-      "What are the best conditions for pointwise convergence?",
-      "How do Fourier series behave for fractal functions?",
-      "What are the computational limits for Fourier analysis?"
+      "Can Carleson's theorem ($L^2$ Fourier series converge pointwise a.e.) be formalized in Lean/Mathlib?",
+      "What is the optimal rate of decay of Fourier coefficients under Hölder continuity conditions?",
+      "Can the Dirichlet conditions for pointwise convergence be formalized using Mathlib's piecewise-smooth framework?",
+      "How does the convergence theory extend to higher-dimensional Fourier series on tori $\\mathbb{T}^n$?"
     ]
   }
 }
