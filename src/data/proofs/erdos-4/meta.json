@@ -6,7 +6,7 @@
   "meta": {
     "author": "Ford-Green-Konyagin-Maynard-Tao",
     "erdosNumber": 4,
-    "status": "formalized",
+    "status": "enhanced",
     "tags": [
       "erdos",
       "prime-gaps",
@@ -22,10 +22,46 @@
     "sourceUrl": "https://erdosproblems.com/4",
     "erdosProblemStatus": "solved",
     "erdosPrizeValue": "$10000",
-    "leanFile": "Proofs/Erdos4Problem.lean",
     "proofRepoPath": "Proofs/Erdos4Problem.lean",
     "date": "2016-2018",
     "dateAdded": "2026-01-23",
+    "mathlib_version": "4.24.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.nth",
+        "description": "Enumerate elements satisfying a decidable predicate, used for nthPrime",
+        "module": "Mathlib.Order.OrderIsoNat"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate, used as the predicate for Nat.nth",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on ℝ, used for iterated logarithms lg, lg2, lg3, lg4",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for asymptotic analysis, used in Cramér's conjecture and growth rate axioms",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Filter convergence, used in average_gap_asymptotic",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Defined nthPrime and primeGap via Nat.nth Nat.Prime",
+      "Defined erdosFunction and rankinFunction with iterated logarithms",
+      "Stated erdos_4_conjecture with universal quantifier over C > 0",
+      "Axiomatized Rankin (1938), Maynard (2016), FGKT (2016), FGKMT (2018) results",
+      "Axiomatized Baker-Harman-Pintz upper bound n^0.525",
+      "Defined Cramér's conjecture and Firoozbakht's conjecture as Prop",
+      "Proved erdos_4_solved via maynard_theorem"
+    ],
     "references": [
       "Rankin, R.A. (1938): 'The difference between consecutive prime numbers', J. London Math. Soc. 13, 242–247",
       "Maynard, J. (2016): 'Large gaps between primes', Annals of Mathematics 183, 915–933",
@@ -35,13 +71,48 @@
       "Cramér, H. (1936): 'On the order of magnitude of the difference between consecutive prime numbers', Acta Arithmetica 2, 23–46",
       "Granville, A. (1995): 'Harald Cramér and the distribution of prime numbers', Scandinavian Actuarial Journal 1, 12–28",
       "https://erdosproblems.com/4"
-    ],
-    "relatedProblems": [
-      { "id": "erdos-1", "relation": "Erdős #1 concerns small gaps between primes (Bertrand's postulate), the complementary question to large gaps" },
-      { "id": "erdos-369", "relation": "Erdős #369 on consecutive smooth numbers involves similar sieve techniques and prime factorization structure" }
     ]
   },
+  "leanFile": {
+    "path": "Proofs/Erdos4Problem.lean",
+    "lineCount": 243,
+    "namespace": "Erdos4",
+    "imports": [
+      "Mathlib"
+    ],
+    "mainTheorems": [
+      "erdos_4_solved",
+      "improved_stronger"
+    ],
+    "mainDefinitions": [
+      "nthPrime",
+      "primeGap",
+      "lg",
+      "lg2",
+      "lg3",
+      "lg4",
+      "erdosFunction",
+      "rankinFunction",
+      "erdos_4_conjecture",
+      "improvedErdosFunction",
+      "bhp_exponent",
+      "cramer_conjecture",
+      "cramer_granville_constant",
+      "erdos_stronger_conjecture",
+      "firoozbakht_conjecture"
+    ],
+    "axiomCount": 8,
+    "theoremCount": 2,
+    "sorryCount": 1
+  },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "summary": "Module docstring covering Problem #4 history (Rankin 1938 through FGKMT 2018). Single `import Mathlib` for all dependencies. Opens `Set`, `Nat`, `Real` namespaces.",
+      "startLine": 25,
+      "endLine": 29
+    },
     {
       "id": "prime-notation",
       "title": "Prime Notation",
@@ -149,5 +220,27 @@
       "Is Firoozbakht's conjecture (p_n^{1/n} strictly decreasing) true?",
       "Can the FGKMT bound be improved by another iterated-log factor?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1",
+      "relationship": "complement",
+      "description": "Erdős #1 concerns small gaps between primes (Bertrand's postulate), the complementary question to the large gaps studied here"
+    },
+    {
+      "targetId": "erdos-369",
+      "relationship": "related",
+      "description": "Erdős #369 on consecutive smooth numbers involves similar sieve techniques and prime factorization structure"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate gives p_{n+1} < 2p_n, a weak upper bound on prime gaps that contrasts with the large gaps studied here"
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "uses",
+      "description": "The Prime Number Theorem gives the average gap log n and the asymptotic p_n ~ n log n used in average_gap_asymptotic"
+    }
+  ]
 }
