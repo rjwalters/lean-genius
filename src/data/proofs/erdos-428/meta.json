@@ -6,6 +6,7 @@
   "meta": {
     "author": "Erdős, Graham (1980)",
     "sourceUrl": "https://erdosproblems.com/428",
+    "date": "1980",
     "status": "enhanced",
     "proofRepoPath": "Proofs/Erdos428Problem.lean",
     "tags": [
@@ -24,7 +25,7 @@
     "erdosUrl": "https://erdosproblems.com/428",
     "erdosProblemStatus": "open",
     "dateAdded": "2025-01-15",
-    "mathlib_version": "4.15.0",
+    "mathlib_version": "4.24.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -66,125 +67,133 @@
       "Proved primeCounting_pos, singleton_offset, empty_trivial",
       "Proved erdos428_requires_infinite via finite_set_zero_density",
       "Proved allOffsetsPrime_mono (subset monotonicity)"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/Erdos428Problem.lean",
+    "lineCount": 131,
+    "namespace": "root",
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Tactic"
     ],
-    "mathContext": {
-      "field": "Number Theory",
-      "subfield": "Analytic Number Theory / Additive Combinatorics",
-      "difficulty": "olympiad/research",
-      "keyTechniques": [
-        "Filter.liminf and Filter.limsup for asymptotic density conditions",
-        "Filter.Frequently (∃ᶠ) for infinitely-many quantification",
-        "Set.ncard for cardinality of set intersections",
-        "Proof by contradiction via finite_set_zero_density to force infinite sets",
-        "Subset monotonicity argument for AllOffsetsPrime antitonicity"
-      ],
-      "prerequisites": [
-        "Prime number theory (Nat.Prime, primality testing)",
-        "Filter theory (liminf, limsup, atTop, Frequently)",
-        "Set theory (ncard, Icc, Infinite vs Finite)",
-        "Divisibility and modular arithmetic"
-      ],
-      "consequences": [
-        "Connects prime distribution to additive combinatorics",
-        "The limsup variant conditionally holds under the k-tuple conjecture",
-        "Solutions must use infinite offset sets (erdos428_requires_infinite)"
-      ],
-      "crossReferences": [
-        { "proofId": "prime-number-theorem", "relationship": "PNT gives π(n) ~ n/ln(n), the asymptotic for the denominator of primeDensityRatio" },
-        { "proofId": "bertrands-postulate", "relationship": "Guarantees π(n) grows unboundedly, essential for finite_set_zero_density" },
-        { "proofId": "twin-primes-special", "relationship": "AllOffsetsPrime {2} n gives twin primes; the k-tuple conjecture generalizes twin prime conjecture" },
-        { "proofId": "erdos-427", "relationship": "Consecutive Erdős-Graham problem on prime sums divisibility, both in the same 1980 monograph" }
-      ],
-      "references": [
-        {
-          "title": "Old and New Problems and Results in Combinatorial Number Theory",
-          "authors": ["P. Erdős", "R.L. Graham"],
-          "year": 1980,
-          "venue": "L'Enseignement Mathématique, Monograph No. 28",
-          "relevance": "Source of Problem 428 and the proof that the k-tuple conjecture implies the limsup variant"
-        },
-        {
-          "title": "Some problems of 'Partitio Numerorum' III: On the expression of a number as a sum of primes",
-          "authors": ["G.H. Hardy", "J.E. Littlewood"],
-          "year": 1923,
-          "venue": "Acta Mathematica",
-          "relevance": "Original statement of the prime k-tuple conjecture used in the Erdős-Graham conditional result"
-        },
-        {
-          "title": "Small gaps between primes",
-          "authors": ["J. Maynard"],
-          "year": 2015,
-          "venue": "Annals of Mathematics",
-          "relevance": "Major progress toward the k-tuple conjecture: proved bounded gaps between primes, strengthening Zhang's 2013 breakthrough"
-        },
-        {
-          "title": "Bounded gaps between primes",
-          "authors": ["Y. Zhang"],
-          "year": 2014,
-          "venue": "Annals of Mathematics",
-          "relevance": "First proof of bounded gaps between primes (gap ≤ 70,000,000), a landmark step toward the twin prime conjecture"
-        }
-      ]
-    }
+    "mainTheorems": [
+      "liminf_implies_limsup",
+      "primeCounting_pos",
+      "singleton_offset",
+      "empty_trivial",
+      "allOffsetsPrime_mono",
+      "primeDensityRatio_nonneg",
+      "erdos428_requires_infinite"
+    ],
+    "mainDefinitions": [
+      "primeCounting",
+      "primeDensityRatio",
+      "AllOffsetsPrime",
+      "ErdosProblem428",
+      "ErdosProblem428Limsup",
+      "PrimeKTupleConjecture"
+    ],
+    "axiomCount": 2,
+    "theoremCount": 7,
+    "sorryCount": 0
   },
   "overview": {
-    "historicalContext": "Erdős and Graham posed this problem in their 1980 monograph [ErGr80] on combinatorial number theory. It asks whether a set of 'prime-generating offsets' can have positive density relative to the prime counting function π(x). Informally: can you find a substantial set A of natural numbers such that for infinitely many n, subtracting any element of A from n always yields a prime?\n\nThe problem has a natural connection to the Hardy-Littlewood prime k-tuple conjecture, one of the central open problems in analytic number theory. Erdős and Graham showed that the weaker limsup variant holds assuming the k-tuple conjecture: there exists A with limsup |A ∩ [1,x]|/π(x) > 0 achieving the desired property. The essential difficulty is strengthening limsup to liminf, which requires the offset set to maintain its density consistently rather than just along a subsequence.\n\nThe problem sits at the intersection of prime distribution theory and additive combinatorics. A positive answer would demonstrate a remarkably regular structure in the distribution of prime-generating translations, while a negative answer would reveal fundamental irregularity in how primes are distributed relative to arithmetic offsets.",
+    "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory' (L'Enseignement Mathématique, Monograph No. 28). It asks whether a set of 'prime-generating offsets' can have positive density relative to the prime counting function $\\pi(x)$. Informally: can you find a substantial set $A$ of natural numbers such that for infinitely many $n$, subtracting any element of $A$ from $n$ always yields a prime?\n\nThe problem connects to the Hardy-Littlewood prime $k$-tuple conjecture (1923), one of the central open problems in analytic number theory. Hardy and Littlewood conjectured that any admissible pattern of primes occurs infinitely often; the twin prime conjecture is the simplest special case ($H = \\{0, 2\\}$). Erdős and Graham showed that the weaker limsup variant of Problem #428 holds assuming the $k$-tuple conjecture, using a greedy construction of admissible tuples combined with the Prime Number Theorem.\n\nThe essential difficulty is strengthening limsup to liminf: the offset set must maintain its density consistently, not just along a subsequence. Major progress toward the $k$-tuple conjecture came from Yitang Zhang (2014), who proved bounded gaps between primes ($\\liminf p_{n+1} - p_n \\leq 7 \\times 10^7$), and James Maynard (2015), who improved this dramatically and proved that for any $m$, infinitely many intervals of bounded length contain $m$ primes. Despite this progress, the full $k$-tuple conjecture remains open, and Problem #428 in its liminf form is wide open.\n\nThe problem sits at the intersection of analytic number theory (prime counting, sieve theory) and additive combinatorics (density of structured sets). A positive answer would demonstrate remarkable regularity in the distribution of prime-generating translations.",
     "problemStatement": "Is there a set $A \\subseteq \\mathbb{N}$ satisfying $\\liminf_{x \\to \\infty} |A \\cap [1,x]| / \\pi(x) > 0$ such that for infinitely many $n$, all $n - a$ are prime for every $a \\in A$ with $0 < a < n$?",
-    "proofStrategy": "The formalization defines primeCounting π(n) via `Finset.filter Nat.Prime (Finset.range (n + 1))` and primeDensityRatio as `(A ∩ Set.Icc 1 n).ncard / π(n)`. The AllOffsetsPrime predicate requires all n-a to be prime for a ∈ A. The main conjecture ErdosProblem428 combines `Filter.liminf > 0` with `Filter.Frequently AllOffsetsPrime`. Key structural results: (1) liminf_implies_limsup via Filter.liminf_le_limsup, (2) the k-tuple conjecture implies the limsup variant (axiom from Erdős-Graham), (3) erdos428_requires_infinite: any solution needs an infinite set, proved by contradiction using finite_set_zero_density. Supporting lemmas establish primeCounting_pos (n ≥ 2), singleton_offset, empty_trivial, allOffsetsPrime_mono, and primeDensityRatio_nonneg.",
+    "proofStrategy": "The formalization defines `primeCounting` $\\pi(n)$ via `Finset.filter Nat.Prime` and `primeDensityRatio` as $|A \\cap [1,n]|_{\\text{ncard}} / \\pi(n)$. The `AllOffsetsPrime` predicate requires all $n - a$ to be prime. The main conjecture `ErdosProblem428` combines `Filter.liminf > 0` with `Filter.Frequently AllOffsetsPrime`. Key structural results: (1) `liminf_implies_limsup` via `Filter.liminf_le_limsup`, (2) the $k$-tuple conjecture implies the limsup variant (axiom from Erdős-Graham), (3) `erdos428_requires_infinite`: any solution needs an infinite set, proved by contradiction using `finite_set_zero_density`. Seven theorems are fully verified; two deep results are axiomatized.",
     "keyInsights": [
-      "**Limsup vs Liminf**: The limsup variant holds under the k-tuple conjecture, but strengthening to liminf is the essential open difficulty — requiring consistent rather than subsequential density",
-      "**Density Barrier**: Finite offset sets trivially satisfy AllOffsetsPrime for some n but have zero prime density (finite_set_zero_density), so any solution requires an infinite set (erdos428_requires_infinite)",
-      "**k-Tuple Connection**: The Hardy-Littlewood prime k-tuple conjecture implies the limsup variant via the Erdős-Graham construction using greedy admissible tuples",
-      "**Subset Monotonicity**: AllOffsetsPrime is antitone under subset inclusion (allOffsetsPrime_mono), so finding large offset sets is the challenge — shrinking A makes AllOffsetsPrime easier but density harder",
+      "**Limsup vs Liminf**: The limsup variant holds under the $k$-tuple conjecture, but strengthening to liminf is the essential open difficulty -- requiring consistent rather than subsequential density",
+      "**Density Barrier**: Finite offset sets trivially satisfy `AllOffsetsPrime` for some $n$ but have zero prime density (`finite_set_zero_density`), so any solution requires an infinite set (`erdos428_requires_infinite`)",
+      "**$k$-Tuple Connection**: The Hardy-Littlewood prime $k$-tuple conjecture implies the limsup variant via the Erdős-Graham construction using greedy admissible tuples",
+      "**Subset Antitonicity**: `AllOffsetsPrime` is antitone under subset inclusion (`allOffsetsPrime_mono`), so finding large offset sets is the challenge -- shrinking $A$ makes `AllOffsetsPrime` easier but density harder",
       "**Prime Distribution**: The problem fundamentally asks how regular the distribution of primes is when viewed through arithmetic translations, connecting analytic number theory to combinatorics"
     ]
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Imports `Nat.Prime.Basic`, `Data.Real.Basic`, `Filter.Basic`, `LiminfLimsup`, `Tactic`. Module docstring states the problem: $\\liminf |A \\cap [1,x]|/\\pi(x) > 0$ with infinitely many prime-generating $n$."
+    },
+    {
       "id": "density",
       "title": "Prime Counting and Density",
       "startLine": 23,
       "endLine": 31,
-      "summary": "Defines primeCounting π(n) via `Finset.filter Nat.Prime (Finset.range (n + 1)).card` and primeDensityRatio as `(A ∩ Set.Icc 1 n).ncard / (primeCounting n : ℝ)`. Both are noncomputable due to Set.ncard. The prime density measures |A|/π(n), not natural density |A|/n."
+      "summary": "Defines `primeCounting` $\\pi(n) = |\\{p \\leq n : p \\text{ prime}\\}|$ via `Finset.filter` and `primeDensityRatio` $= |A \\cap [1,n]|_{\\text{ncard}} / \\pi(n)$. Both noncomputable due to `Set.ncard`."
     },
     {
       "id": "offset",
       "title": "Prime Offset Property",
       "startLine": 33,
       "endLine": 37,
-      "summary": "AllOffsetsPrime A n requires ∀ a ∈ A, 0 < a → a < n → (n - a).Prime. This is the core predicate: n acts as a 'prime hub' for offset set A, generating primes when shifted by any element of A."
+      "summary": "Defines `AllOffsetsPrime A n`: $\\forall a \\in A,\\, 0 < a < n \\implies (n - a)$ is prime. The number $n$ acts as a 'prime hub' for offset set $A$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 39,
       "endLine": 46,
-      "summary": "ErdosProblem428 combines Filter.liminf > 0 (positive prime density) with ∃ᶠ n in atTop (infinitely many prime-generating n). The use of liminf rather than limsup is the essential open difficulty."
+      "summary": "`ErdosProblem428`: $\\exists A,\\, (\\exists^\\infty n,\\, \\text{AllOffsetsPrime}\\, A\\, n) \\wedge \\liminf \\text{primeDensityRatio}(A) > 0$. Uses `Filter.liminf` and `Filter.Frequently`."
     },
     {
       "id": "limsup",
-      "title": "Limsup Variant and k-Tuple Conjecture",
+      "title": "Limsup Variant and Implication",
       "startLine": 48,
+      "endLine": 62,
+      "summary": "`ErdosProblem428Limsup` (weaker variant with `Filter.limsup`). Proved: `liminf_implies_limsup` via $\\liminf \\leq \\limsup$ from `Filter.liminf_le_limsup`."
+    },
+    {
+      "id": "ktuple",
+      "title": "Prime $k$-Tuple Conjecture",
+      "startLine": 64,
       "endLine": 75,
-      "summary": "Defines ErdosProblem428Limsup (weaker variant with limsup), proves liminf_implies_limsup via Filter.liminf_le_limsup, formalizes PrimeKTupleConjecture (admissibility condition: ∀ p prime, ∃ n, ∀ h ∈ H, ¬(p ∣ n+h)), and states erdos_graham_limsup as axiom connecting k-tuple conjecture to the limsup variant."
+      "summary": "`PrimeKTupleConjecture` (Hardy-Littlewood): admissible tuples occur infinitely often. Axiom `erdos_graham_limsup`: $k$-tuple conjecture $\\implies$ limsup variant."
     },
     {
       "id": "basic",
       "title": "Basic Properties",
       "startLine": 77,
       "endLine": 131,
-      "summary": "Seven structural results: primeCounting_pos (π(n) > 0 for n ≥ 2 via witness 2), singleton_offset (singletons trivially satisfy AllOffsetsPrime), empty_trivial (∅ satisfies vacuously), allOffsetsPrime_mono (subset monotonicity/antitonicity), primeDensityRatio_nonneg (ratio ≥ 0), finite_set_zero_density (axiom: finite sets have liminf density 0), erdos428_requires_infinite (solutions need infinite A, proved by contradiction via linarith)."
+      "summary": "Seven verified results: `primeCounting_pos` ($\\pi(n) > 0$ for $n \\geq 2$, witness: 2), `singleton_offset`, `empty_trivial`, `allOffsetsPrime_mono` (antitonicity), `primeDensityRatio_nonneg`, `finite_set_zero_density` (axiom), `erdos428_requires_infinite` (by contradiction via `linarith`)."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem #428 on prime offsets with positive density, proving the liminf-to-limsup implication, establishing the k-tuple conjecture connection via the Erdős-Graham axiom, and demonstrating that any solution must use an infinite offset set (erdos428_requires_infinite). The 131-line proof has 0 sorries and 2 axioms: erdos_graham_limsup (the deep Erdős-Graham conditional result) and finite_set_zero_density (π(n) → ∞ argument).",
-    "implications": "A positive resolution would demonstrate remarkable regularity in prime distribution through arithmetic translations. The problem connects analytic number theory (prime counting function π, liminf/limsup analysis), additive combinatorics (translation-invariant properties of sets), and the Hardy-Littlewood circle method (via the k-tuple conjecture). The subset monotonicity result shows the tension at the heart of the problem: larger sets are harder to make AllOffsetsPrime but easier to give positive density.",
+    "summary": "The formalization captures Erdős Problem #428 on prime offsets with positive density. Seven theorems are fully verified (including the key `erdos428_requires_infinite` and `liminf_implies_limsup`), and two deep results are axiomatized (`erdos_graham_limsup` and `finite_set_zero_density`). The 131-line proof has 0 sorries.",
+    "implications": "A positive resolution would demonstrate remarkable regularity in prime distribution through arithmetic translations. The problem connects analytic number theory ($\\pi(x)$, liminf/limsup analysis), additive combinatorics (translation-invariant properties of sets), and the Hardy-Littlewood circle method (via the $k$-tuple conjecture). The antitonicity result shows the fundamental tension: larger sets are harder to make `AllOffsetsPrime` but easier to give positive density.",
     "openQuestions": [
-      "Can the limsup result be strengthened to liminf unconditionally?",
-      "What is the maximal density achievable for prime-generating offset sets?",
-      "Does the k-tuple conjecture imply the full liminf version?",
-      "What is the structure of optimal offset sets for specific n?",
-      "Is the problem related to recent breakthroughs on bounded gaps between primes (Zhang, Maynard-Tao)?"
+      "Can the limsup result be strengthened to liminf unconditionally, or does the $k$-tuple conjecture imply the full liminf version?",
+      "What is the maximal achievable $\\liminf |A \\cap [1,x]|/\\pi(x)$ for prime-generating offset sets?",
+      "What is the structure of optimal offset sets -- do they have arithmetic or multiplicative regularity?",
+      "Is the problem related to recent breakthroughs on bounded gaps between primes (Zhang 2014, Maynard 2015)?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "uses",
+      "description": "The PNT gives $\\pi(n) \\sim n/\\ln n$, the asymptotic for the denominator of primeDensityRatio"
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate guarantees $\\pi(n) \\to \\infty$, essential for finite_set_zero_density"
+    },
+    {
+      "targetId": "erdos-427",
+      "relationship": "sibling",
+      "description": "Consecutive Erdős-Graham problem on prime sums divisibility, both from the same 1980 monograph"
+    },
+    {
+      "targetId": "twin-primes-special",
+      "relationship": "related",
+      "description": "AllOffsetsPrime {2} n gives twin primes; the $k$-tuple conjecture generalizes the twin prime conjecture"
+    }
+  ]
 }
