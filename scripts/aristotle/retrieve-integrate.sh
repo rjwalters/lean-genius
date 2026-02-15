@@ -105,7 +105,18 @@ integrate_solution() {
 
     local basename=$(basename "$original_file" .lean)
     local solution_file="$RESULTS_DIR/${basename}-solved.lean"
-    local original_path="$PROJECT_ROOT/$original_file"
+
+    # If the file path is a temp/absolute path (from preprocessing), map to proofs/Proofs/
+    local original_path
+    if [[ "$original_file" == /* ]]; then
+        original_path="$PROOFS_DIR/${basename}.lean"
+        if [[ ! -f "$original_path" ]]; then
+            echo -e "  ${YELLOW}Temp path, no matching proof file: $original_path${NC}"
+            original_path="$PROJECT_ROOT/$original_file"
+        fi
+    else
+        original_path="$PROJECT_ROOT/$original_file"
+    fi
 
     echo -e "${BLUE}Processing:${NC} $problem_id ($project_id)"
 
