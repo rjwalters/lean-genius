@@ -17,7 +17,8 @@
     "type": "definition",
     "title": "Power Sum Definition",
     "content": "**powerSum z k:**\n\nThe k-th power sum S_k = ∑ᵢ zᵢᵏ.\n\nFor complex numbers z₁, ..., zₙ, this sum can exhibit cancellation when the zᵢ are distributed around the unit circle.",
-    "significance": "critical"
+    "significance": "critical",
+    "relatedConcepts": ["Newton's identities", "symmetric polynomials", "cancellation in exponential sums"]
   },
   {
     "id": "ann-519-3",
@@ -56,7 +57,8 @@
     "title": "Atkinson's Theorem (1961)",
     "content": "**atkinson_theorem:**\n\nFor all n ≥ 1 and all z with z₁ = 1: max_k |S_k| > 1/6\n\n**This was the breakthrough** - the first proof that an absolute constant c > 0 exists, independent of n.\n\nThe answer to Turán's question is YES.",
     "mathContext": "Atkinson's proof used analytic techniques to show that power sums cannot all be small simultaneously.",
-    "significance": "critical"
+    "significance": "critical",
+    "relatedConcepts": ["Atkinson 1961", "absolute constant", "extremal complex analysis"]
   },
   {
     "id": "ann-519-7",
@@ -85,7 +87,8 @@
     "title": "Roots of Unity",
     "content": "**nthRootsOfUnity and roots_of_unity_sum:**\n\nFor n-th roots of unity ω₀, ..., ω_{n-1}:\n- S_k = 0 if n ∤ k\n- S_k = n if n | k\n\nRoots of unity show perfect cancellation for most k, but spike to n when k is a multiple of n.",
     "mathContext": "This demonstrates that cancellation is possible, but the z₁ = 1 constraint doesn't apply to general roots of unity configurations.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": ["roots of unity", "discrete Fourier transform", "character sums", "orthogonality relations"]
   },
   {
     "id": "ann-519-10",
