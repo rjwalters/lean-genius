@@ -1,0 +1,46 @@
+{
+  "id": "erdos-1023-oq-01",
+  "name": "Union-Free Families with Additional Constraints",
+  "parentProblem": "erdos-1023",
+  "status": "completed",
+  "phase": "COMPLETE",
+  "type": "open-question",
+  "tags": ["combinatorics", "set-families", "extremal-combinatorics", "antichains"],
+  "leanFile": "proofs/Proofs/Erdos1023OQ01.lean",
+  "knowledge": {
+    "score": 8,
+    "insights": [
+      "k-union-free families generalize 2-union-free: forbid unions of exactly k sets",
+      "Antichains are k-union-free for ALL k ≥ 2 (not just k=2)",
+      "Union-free implies k-union-free for every k ≥ 2",
+      "unionFreeMax ≤ kUnionFreeMax: relaxing the constraint increases the maximum",
+      "kUnionFreeMax ≥ C(n, n/2) for all k ≥ 2 (middle layer lower bound)",
+      "Asymptotic constant √(2/π) can be concretely defined eliminating 2 axioms from main file",
+      "stirlingConstant² = 2/π (proved from sqrt properties)",
+      "Intersection-free families are the dual notion; antichains are also intersection-free",
+      "Middle layer achieves bound for intersection-free, union-free, and k-union-free simultaneously"
+    ],
+    "builtItems": [
+      "isKUnionOf, isKUnionFree definitions in Erdos1023OQ01.lean",
+      "antichain_kUnionFree theorem (antichains are k-union-free for k ≥ 2)",
+      "unionFree_implies_kUnionFree theorem",
+      "kUnionFreeMax extremal function and bounds",
+      "stirlingConstant = √(2/π) concrete definition",
+      "stirlingConstant_pos and stirlingConstant_sq theorems",
+      "isIntersectionFree definition and antichain duality theorem",
+      "intersectionFreeMax lower bound via middle layer",
+      "unionFreeMax_eq_middle theorem (F(n) = C(n, n/2))",
+      "erdos_1023_asymptotic theorem (main result from concrete constant)",
+      "Computational verification: middleLayer_card for n = 0, 2, 4, 6"
+    ],
+    "nextSteps": [
+      "Prove problem_447_solution axiom (2-union-free max = C(n, n/2))",
+      "Prove Stirling central binomial approximation axiom",
+      "Investigate whether kUnionFreeMax(n, k) = C(n, n/2) for all k ≥ 2 (upper bounds)",
+      "Formalize symmetric difference-free families (started definition)"
+    ],
+    "progressSummary": "COMPLETED: Created comprehensive Lean 4 formalization of union-free family generalizations. Defined k-union-free families, proved structural relationships, concretized the asymptotic constant, and verified computationally for small n. Reduced axiom count from 5 to 2 compared to main file."
+  },
+  "lastUpdated": "2026-02-15T03:30:00Z",
+  "lastAgent": "researcher-1"
+}
