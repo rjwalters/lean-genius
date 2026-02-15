@@ -158,8 +158,8 @@
   {
     "id": "ann-e4-cramer",
     "proofId": "erdos-4",
-    "range": { "startLine": 151, "endLine": 160 },
-    "type": "conjecture",
+    "range": { "startLine": 158, "endLine": 160 },
+    "type": "definition",
     "title": "Cramér's Conjecture (1936, OPEN)",
     "content": "**cramer_conjecture**: $p_{n+1} - p_n = O((\\log p_n)^2)$. The conjectured true upper bound on maximal prime gaps, based on a probabilistic model of primes.",
     "significance": "key",
@@ -230,8 +230,8 @@
   {
     "id": "ann-e4-stronger",
     "proofId": "erdos-4",
-    "range": { "startLine": 196, "endLine": 204 },
-    "type": "conjecture",
+    "range": { "startLine": 202, "endLine": 204 },
+    "type": "definition",
     "title": "Erdős's Stronger Conjecture ($10,000 Prize)",
     "content": "**erdos_stronger_conjecture**: There exists $c > 0$ such that infinitely many $n$ have $g_n > (\\log n)^{1+c}$. This would be a vast strengthening of Problem #4. OPEN.",
     "significance": "key",
@@ -242,8 +242,8 @@
   {
     "id": "ann-e4-firoozbakht",
     "proofId": "erdos-4",
-    "range": { "startLine": 207, "endLine": 214 },
-    "type": "conjecture",
+    "range": { "startLine": 212, "endLine": 214 },
+    "type": "definition",
     "title": "Firoozbakht's Conjecture (1982, OPEN)",
     "content": "**firoozbakht_conjecture**: $p_n^{1/n}$ is strictly decreasing for $n \\geq 1$. This implies $g_n < (\\log p_n)^2 - \\log p_n$, a strong gap upper bound.",
     "significance": "key",
