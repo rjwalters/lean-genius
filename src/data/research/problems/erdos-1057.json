@@ -1,0 +1,140 @@
+{
+  "slug": "erdos-1057",
+  "title": "Erdős #1057 — Counting Carmichael Numbers",
+  "phase": "COMPLETE",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let C(x) count Carmichael numbers in [1,x]. Is C(x) = x^{1-o(1)}?",
+    "plain": "A Carmichael number is a composite n satisfying a^n ≡ a (mod n) for all integers a. Equivalently (Korselt's criterion): n is squarefree and (p-1) | (n-1) for all prime divisors p of n. The conjecture asks whether the counting function C(x) satisfies C(x) = x^{1-o(1)}.",
+    "whyMatters": [
+      "Carmichael numbers are the strongest Fermat pseudoprimes, fooling the Fermat primality test for every base",
+      "The gap between best known lower bound x^{0.3389} and the conjectured x^{1-o(1)} is a major open question",
+      "Alford-Granville-Pomerance (1994) proved infinitely many exist, but density remains open",
+      "Connected to Korselt's criterion, squarefree integers, and analytic number theory"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Korselt's criterion forward direction: squarefree + (p-1)|(n-1) → a^n ≡ a (mod n) (FULLY PROVED)",
+      "Carmichael numbers are odd (PROVED)",
+      "Carmichael numbers cannot be semiprime (PROVED via Korselt pair argument)",
+      "Carmichael numbers have ≥3 prime factors (PROVED)",
+      "Carmichael numbers are not prime powers (PROVED)",
+      "First 9 Carmichael numbers verified: 561, 1105, 1729, 2465, 2821, 6601, 8911, 10585, 15841",
+      "No Carmichael number below 561 (PROVED via decidable check + native_decide)",
+      "Counting function C(x) properties: monotonicity, C(0)=C(1)=0, C(560)=0, C(561)≥1, C(2821)≥5, C(8911)≥7",
+      "Smallest prime factor ≤ cube root (PROVED)",
+      "LCM of (p-1) divides (n-1) for all primes p|n (PROVED)",
+      "Product of (p-1) divides (n-1)^k (PROVED)",
+      "Chernick's construction: (6k+1)(12k+1)(18k+1) is Carmichael when all three are prime (PROVED)",
+      "Chernick algebraic identities and divisibility conditions (PROVED)",
+      "Squarefree-ness of products of three distinct primes (PROVED)",
+      "Coprime product divisibility for distinct prime finsets (PROVED)"
+    ],
+    "open": [
+      "Main conjecture: C(x) = x^{1-o(1)} — genuinely OPEN",
+      "Korselt backward direction (Fermat characterization → Korselt criterion) — needs primitive roots"
+    ],
+    "goal": "Comprehensive formalization of Carmichael number theory with Korselt's criterion proved"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-14T20:30:00.000Z",
+    "iteration": 1,
+    "focus": "Proved Korselt forward direction, replacing axiom with full proof",
+    "blockers": [],
+    "nextAction": "None - formalization is comprehensive. Main conjecture is genuinely OPEN.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 78 theorems across two files (66 in main + 12 in Chernick), 0 sorries, 7 axioms (all appropriate). Key achievement: proved Korselt's forward direction (Korselt criterion → Fermat characterization) using ZMod.pow_card_sub_one_eq_one, coprime product divisibility, and squarefree reconstruction. Docker build verified on Mathlib v4.26.0.",
+    "builtItems": [
+      "satisfiesKorselt, IsCarmichael, satisfiesFermat: core definitions",
+      "pow_mod_prime_of_dvd (PROVED): a^n ≡ a (mod p) when (p-1)|(n-1)",
+      "prod_primes_dvd_of_each_dvd (PROVED): coprime product divisibility via Finset induction",
+      "korselt_forward (PROVED): Korselt criterion → Fermat characterization",
+      "korselt_theorem (PROVED forward, axiom backward): full equivalence",
+      "carmichael_561 through carmichael_15841 (PROVED): 9 verified Carmichael numbers",
+      "carmichael_odd (PROVED): all Carmichael numbers are odd",
+      "korselt_two_primes_impossible (PROVED): Korselt fails for semiprimes",
+      "carmichael_not_semiprime (PROVED): no two-prime Carmichael numbers",
+      "carmichael_at_least_3_primes (PROVED): ≥3 prime factors",
+      "carmichael_not_prime_power (PROVED): not prime powers",
+      "carmichael_ge_561 (PROVED): smallest is 561 via native_decide",
+      "C_mono, C_zero, C_one, C_below_561, C_561_pos (PROVED): counting function basics",
+      "C_2821_ge_5, C_8911_ge_7 (PROVED): counting function lower bounds",
+      "C_unbounded (PROVED): uses AGP infinitude axiom",
+      "carmichael_smallest_prime_cube_le (PROVED): smallest prime ≤ cube root",
+      "carmichael_lcm_dvd (PROVED): LCM condition",
+      "carmichael_mod_lcm (PROVED): strong congruence mod lcm",
+      "chernick_carmichael (PROVED): Chernick's 1939 construction",
+      "squarefree_of_three_distinct_primes (PROVED): general squarefree lemma"
+    ],
+    "insights": [
+      "Korselt forward direction proof strategy: per-prime Fermat via ZMod → coprime aggregation → squarefree product",
+      "ZMod.pow_card_sub_one_eq_one is the key Fermat's little theorem API",
+      "Finset.induction_on handles coprime product divisibility cleanly",
+      "native_decide efficient for Fin 561 quantification in Docker",
+      "The ▸ tactic rewrites everywhere including inside pow exponents; use rwa instead",
+      "Nat.prod_primeFactors_of_squarefree reconstructs squarefree numbers from prime factors"
+    ],
+    "mathlibGaps": [
+      "No direct Finset.prod_primes_dvd in Mathlib (proved manually via induction)",
+      "Korselt backward direction needs primitive roots theory"
+    ],
+    "nextSteps": [
+      "No further proof work needed - formalization is comprehensive",
+      "Korselt backward could be proved with ZMod primitive root API if needed"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Korselt forward via ZMod + coprime product",
+      "description": "Prove a^n ≡ a (mod p) for each prime p|n using ZMod.pow_card_sub_one_eq_one, then aggregate via coprime product divisibility and squarefree reconstruction.",
+      "status": "succeeded"
+    }
+  ],
+  "tags": [
+    "erdos",
+    "number-theory",
+    "carmichael-numbers",
+    "pseudoprimes",
+    "korselt-criterion",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "Erdos1057Problem.lean",
+    "Erdos1057Chernick.lean"
+  ],
+  "leanFile": "Erdos1057Problem.lean",
+  "references": {
+    "papers": [
+      "Erdős (1956) - On pseudoprimes and Carmichael numbers",
+      "Alford-Granville-Pomerance (1994) - There are infinitely many Carmichael numbers",
+      "Pomerance (1989) - Two methods in elementary analytic number theory",
+      "Lichtman (2022) - Improved bounds on the counting function",
+      "Chernick (1939) - On Fermat's simple theorem"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1057"
+    ],
+    "mathlib": [
+      "ZMod.pow_card",
+      "ZMod.pow_card_sub_one_eq_one",
+      "ZMod.natCast_eq_natCast_iff'",
+      "Nat.prod_primeFactors_of_squarefree",
+      "Nat.Coprime.mul_dvd_of_dvd_of_dvd",
+      "Nat.squarefree_iff_prime_squarefree"
+    ]
+  },
+  "started": "2026-02-14T20:00:00.000Z",
+  "lastUpdate": "2026-02-14T20:30:00.000Z",
+  "significance": 7,
+  "tractability": 6
+}
