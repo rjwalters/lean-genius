@@ -965,60 +965,25 @@ theorem carmichael_smallest_prime_cube_le (n : ℕ) (h : IsCarmichael n) (p : �
   -- So n = ∏ primes ≥ p^3
   have hcard := h3
   -- Product of ≥ 3 elements each ≥ p is ≥ p^3
+  -- Every prime factor q satisfies p ≤ q (p is the smallest)
+  have hge : ∀ q ∈ n.primeFactors, p ≤ q := by
+    intro q hq
+    exact hmin q (Nat.mem_primeFactors.mp hq).1 (Nat.mem_primeFactors.mp hq).2.1
   rw [hprod]
-  calc p ^ 3 = p * p * p := by ring
-    _ ≤ ∏ q ∈ n.primeFactors, q := by
-        -- We need: product of n.primeFactors ≥ p * p * p
-        -- Each factor q ∈ n.primeFactors satisfies q ≥ p (by hmin)
-        -- And there are ≥ 3 factors
-        -- Strategy: take 3 elements from primeFactors, each ≥ p
-        obtain ⟨S, hS_sub, hS_card⟩ := Finset.exists_subset_card_le hcard
-        -- S ⊆ n.primeFactors with |S| ≥ 3, pick 3 from S
-        obtain ⟨T, hT_sub, hT_card⟩ := Finset.exists_subset_card_le (show 3 ≤ S.card from hS_card)
-        have hT_pf : T ⊆ n.primeFactors := Finset.Subset.trans hT_sub hS_sub
-        -- Each element of T is ≥ p
-        have hT_ge_p : ∀ q ∈ T, p ≤ q := by
-          intro q hq
-          have hqpf := hT_pf hq
-          have hqprime := (Nat.mem_primeFactors.mp hqpf).1
-          have hqdvd := (Nat.mem_primeFactors.mp hqpf).2.1
-          exact hmin q hqprime hqdvd
-        -- Product of T ≥ p^3 (since |T| ≥ 3 and each element ≥ p ≥ 2)
-        have hp_pos : p ≥ 1 := by have := hp.two_le; omega
-        calc p * p * p ≤ ∏ q ∈ T, q := by
-              -- We need a 3-element subset. Since |T| ≥ 3, pick exactly 3.
-              obtain ⟨U, hU_sub, hU_card⟩ := Finset.exists_subset_card_le (show 3 ≤ T.card from hT_card)
-              have hU_card_eq : U.card = 3 := by
-                have h3le := hU_card
-                -- U ⊆ T ⊆ primeFactors, elements are distinct primes so U.card ≤ T.card
-                have hUle := Finset.card_le_card hU_sub
-                omega
-              -- Factor: get 3 elements a, b, c from U
-              -- Product of U ≥ p^3
-              have hU_ge : ∀ q ∈ U, p ≤ q := fun q hq => hT_ge_p q (hU_sub hq)
-              calc p * p * p
-                    ≤ ∏ q ∈ U, q := by
-                    -- ∏ q ∈ U, q ≥ ∏ q ∈ U, p = p^|U| = p^3
-                    have : ∏ q ∈ U, p ≤ ∏ q ∈ U, q :=
-                      Finset.prod_le_prod (fun q _ => by omega) (fun q hq => hU_ge q hq)
-                    have : ∏ q ∈ U, p = p ^ U.card := Finset.prod_const p
-                    rw [hU_card_eq] at this
-                    have hprod_const : p ^ 3 = p * p * p := by ring
-                    linarith
-                _ ≤ ∏ q ∈ T, q :=
-                    Finset.prod_le_prod_of_subset_of_one_le' hU_sub
-                      (fun q hq _ => by have := (Nat.mem_primeFactors.mp (hT_pf hq)).1.one_lt; omega)
-          _ ≤ ∏ q ∈ n.primeFactors, q :=
-              Finset.prod_le_prod_of_subset_of_one_le' hT_pf
-                (fun q hq _ => by have := (Nat.mem_primeFactors.mp hq).1.one_lt; omega)
+  -- p^3 ≤ p^card ≤ ∏ q, since card ≥ 3 and each q ≥ p
+  calc p ^ 3 ≤ p ^ n.primeFactors.card :=
+        Nat.pow_le_pow_right hp.pos h3
+    _ = ∏ _q ∈ n.primeFactors, p := (Finset.prod_const p).symm
+    _ ≤ ∏ q ∈ n.primeFactors, q :=
+        Finset.prod_le_prod (fun q _ => by omega) (fun q hq => hge q hq)
 
 /-- For a Carmichael number n, the product of all (p-1) for prime p | n divides (n-1)^k
     where k = number of prime factors. This follows from each (p-1) dividing (n-1). -/
 theorem carmichael_prod_pred_dvd_pow (n : ℕ) (h : IsCarmichael n) :
     (∏ p ∈ n.primeFactors, (p - 1)) ∣ (n - 1) ^ n.primeFactors.card := by
-  apply Finset.prod_dvd_pow_card
-  intro p hp
-  exact carmichael_korselt_via_primeFactors n h p hp
+  rw [← Finset.prod_const]
+  exact Finset.prod_dvd_prod_of_dvd _ (fun _ => n - 1) (fun _ hp =>
+    carmichael_korselt_via_primeFactors n h _ hp)
 
 /-- The LCM of all (p-1) for prime p | n divides (n-1).
     This is the "combined" Korselt condition. -/
@@ -1034,11 +999,11 @@ theorem carmichael_mod_lcm (n : ℕ) (h : IsCarmichael n) :
     1 % (n.primeFactors.lcm (fun p => p - 1)) := by
   have hgt := carmichael_gt_one n h
   have hlcm := carmichael_lcm_dvd n h
-  obtain ⟨k, hk⟩ := hlcm
-  -- n - 1 = lcm * k, so n = lcm * k + 1
-  have hn : n = n.primeFactors.lcm (fun p => p - 1) * k + 1 := by omega
-  rw [hn]
-  rw [Nat.mul_add_mod]
+  -- L ∣ (n - 1) means 1 ≡ n [MOD L], then use symmetry
+  have h1len : 1 ≤ n := by omega
+  have : Nat.ModEq (n.primeFactors.lcm (fun p => p - 1)) 1 n :=
+    (Nat.modEq_iff_dvd' h1len).mpr hlcm
+  exact this.symm
 
 /-- Updated list of small Carmichael numbers (OEIS A002997, first 9) -/
 def smallCarmichaelsExtended : List ℕ :=
