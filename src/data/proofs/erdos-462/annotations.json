@@ -10,19 +10,10 @@
     "title": "Problem Background",
     "content": "Erdős Problem 462 asks about the distribution of $\\sum p(n)/n$ in short intervals of length $\\sqrt{x} \\cdot (\\log x)^2$. The global sum over composites $n < x$ satisfies $\\sum_{n < x,\\, n \\text{ composite}} p(n)/n \\sim c \\cdot \\sqrt{x}/(\\log x)^2$. The conjecture asks whether this sum is equidistributed on its natural scale. From Erdős–Graham (1980), p.92.",
     "significance": "essential",
-    "mathContext": "analytic number theory / prime distribution. LaTeX: \\sum_{\\substack{n < x \\\\ n \\text{ composite}}} \\frac{p(n)}{n} \\sim c \\cdot \\frac{\\sqrt{x}}{(\\log x)^2}. The constant $c > 0$ in the asymptotic was established by Alladi and Erdős (1977) via partial summation over the distribution of least prime factors. The key identity decomposes composites by their smallest prime: $\\sum_{p(n) = q} 1/n = (1/q) \\cdot \\sum_{\\text{$q$-smooth } m} 1/m$, connecting to the Dickman-de Bruijn $\\rho$-function. The $\\sqrt{x}/(\\log x)^2$ growth rate arises from the dominant contribution of composites $n$ with $p(n) \\approx \\sqrt{n}$.. Related: de Bruijn's result on smooth number distribution, Alladi–Erdős (1977) on distribution of p(n), Huxley's short interval prime estimates. Refs: Erdős–Graham (1980), p.92, erdosproblems.com/462",
-    "crossReferences": [
-      {
-        "targetProofId": "erdos-461",
-        "relationship": "related",
-        "description": "Parallel short-interval equidistribution problem for smooth number components — both ask whether a quantity captures Ω(1) on the natural scale"
-      },
-      {
-        "targetProofId": "erdos-463",
-        "relationship": "related",
-        "description": "Studies composites near their least prime factor — uses the same p(n) ≤ √n bound central to Problem #462"
-      }
-    ]
+    "mathContext": {
+      "latex": "\\sum_{\\substack{n < x \\\\ n \\text{ composite}}} \\frac{p(n)}{n} \\sim c \\cdot \\frac{\\sqrt{x}}{(\\log x)^2}",
+      "description": "The global asymptotic established by Alladi and Erdős (1977). The constant c > 0 arises from partial summation over the distribution of least prime factors via the Dickman-de Bruijn ρ-function. The dominant contribution comes from composites with p(n) ≈ √n."
+    }
   },
   {
     "id": "erdos-462-lpf",
@@ -35,7 +26,10 @@
     "title": "Least Prime Factor Definition",
     "content": "The least prime factor $p(n)$ returns 0 for $n \\leq 1$ and `Nat.minFac n` otherwise. For $n \\geq 2$, $p(n)$ is the smallest prime dividing $n$. For primes, $p(p) = p$; for composites, $p(n) \\leq \\sqrt{n}$.",
     "significance": "essential",
-    "mathContext": "number theory. LaTeX: p(n) = \\min\\{q : q \\text{ prime},\\, q \\mid n\\}. Lean: noncomputable def leastPrimeFactor (n : ℕ) : ℕ := if h : n ≤ 1 then 0 else n.minFac. Technique: case split on n ≤ 1, then delegation to Nat.minFac. Returns 0 for n ≤ 1 as a sentinel value. Noncomputable since Nat.minFac involves trial division (but is nevertheless computable in practice via #eval). The function classifies integers by their smooth/rough type: n is y-smooth iff p(n) > y, and y-rough iff p(n) ≤ y.. Related: Nat.minFac, Nat.minFac_prime, smooth number classification via least prime factor. Cross-refs: erdos-462-lpf-properties, erdos-462-sums"
+    "mathContext": {
+      "latex": "p(n) = \\min\\{q : q \\text{ prime},\\, q \\mid n\\}",
+      "description": "Defined via Nat.minFac with a case split on n ≤ 1 (returns 0 as sentinel). Classifies integers by smooth/rough type: n is y-smooth iff p(n) > y. Noncomputable since Nat.minFac involves trial division."
+    }
   },
   {
     "id": "erdos-462-lpf-properties",
@@ -48,7 +42,10 @@
     "title": "Least Prime Factor Properties",
     "content": "Three axiomatized properties for $n \\geq 2$: (1) `leastPrimeFactor_prime`: $p(n)$ is prime. (2) `leastPrimeFactor_dvd`: $p(n) \\mid n$. (3) `leastPrimeFactor_le`: $p(n) \\leq q$ for any prime $q \\mid n$ (minimality). These are all provable from `Nat.minFac_prime`, `Nat.minFac_dvd`, and `Nat.minFac_le`.",
     "significance": "essential",
-    "mathContext": "number theory. LaTeX: p(n) \\text{ prime},\\quad p(n) \\mid n,\\quad \\forall q \\text{ prime},\\, q \\mid n \\implies p(n) \\leq q. Lean: axiom leastPrimeFactor_prime (n : ℕ) (hn : 2 ≤ n) : (leastPrimeFactor n).Prime. Technique: axiomatized (all provable from Nat.minFac properties in Mathlib). Could be proved rather than axiomatized using `Nat.minFac_prime (by omega)`, `Nat.minFac_dvd n`, and `Nat.minFac_le hpn`. Good Aristotle candidates — all three have direct Mathlib proofs.. Related: Nat.minFac_prime, Nat.minFac_dvd, Nat.minFac_le. Cross-refs: erdos-462-lpf, erdos-462-basic-properties"
+    "mathContext": {
+      "latex": "p(n) \\text{ prime},\\quad p(n) \\mid n,\\quad \\forall q \\text{ prime},\\, q \\mid n \\Rightarrow p(n) \\leq q",
+      "description": "All three properties are provable from Mathlib's Nat.minFac API (good Aristotle candidates). Axiomatized here for simplicity, but could be replaced with direct proofs."
+    }
   },
   {
     "id": "erdos-462-composite-sum",
@@ -61,7 +58,10 @@
     "title": "Composite Sum Definition",
     "content": "Defines `compositeSum(x) = \\sum_{n=2}^{x-1} [n \\text{ composite}] \\cdot p(n)/n`. Sums over `Finset.Icc 2 (x-1)`, filtering out primes by setting their contribution to 0. This captures the global behavior: the sum over composites grows as $\\Theta(\\sqrt{x}/(\\log x)^2)$.",
     "significance": "essential",
-    "mathContext": "analytic number theory. LaTeX: S(x) = \\sum_{\\substack{2 \\leq n < x \\\\ n \\text{ composite}}} \\frac{p(n)}{n}. Lean: noncomputable def compositeSum (x : ℕ) : ℝ := (Finset.Icc 2 (x - 1)).sum fun n => if n.Prime then 0 else (leastPrimeFactor n : ℝ) / (n : ℝ). Technique: conditional summation filtering primes via an if-then-else in the summand. Primes contribute 0 to this sum (since p(prime)/prime = 1 is boring). For the full sum including primes, one would add $\\sum_{p < x} 1 = \\pi(x)$, but the composite-only version isolates the number-theoretically interesting behavior. The filtering avoids needing a separate `Finset.filter` and keeps the type as a direct `Finset.sum`.. Related: Alladi–Erdős (1977) asymptotic, distribution of smooth numbers. Cross-refs: erdos-462-asymptotic, erdos-462-interval-sum"
+    "mathContext": {
+      "latex": "S(x) = \\sum_{\\substack{2 \\leq n < x \\\\ n \\text{ composite}}} \\frac{p(n)}{n}",
+      "description": "Conditional summation filtering primes via if-then-else in the summand. Primes contribute 0 since p(prime)/prime = 1 is uninteresting. The composite-only version isolates the number-theoretically interesting behavior."
+    }
   },
   {
     "id": "erdos-462-interval-sum",
@@ -74,7 +74,10 @@
     "title": "Interval Sum Definition",
     "content": "Defines `intervalSum(a, b) = \\sum_{n=a}^{b} p(n)/n` over `Finset.Icc a b`. Unlike `compositeSum`, this includes primes (for which $p(n)/n = 1$). The conjecture asks whether this sum is bounded below on intervals of the natural length scale.",
     "significance": "essential",
-    "mathContext": "analytic number theory. LaTeX: I(a,b) = \\sum_{n=a}^{b} \\frac{p(n)}{n}. Lean: noncomputable def intervalSum (a b : ℕ) : ℝ := (Finset.Icc a b).sum fun n => (leastPrimeFactor n : ℝ) / (n : ℝ). Technique: direct summation over a closed interval. Includes all integers in [a,b], not just composites. For $n \\leq 1$, $p(n) = 0$ so the contribution is 0. For primes, $p(n)/n = n/n = 1$. The design choice to include primes (unlike compositeSum) is because the conjecture asks about an interval sum where prime contributions are positive and help.. Cross-refs: erdos-462-conjecture, erdos-462-composite-sum"
+    "mathContext": {
+      "latex": "I(a,b) = \\sum_{n=a}^{b} \\frac{p(n)}{n}",
+      "description": "Direct summation over a closed interval including all integers. For n ≤ 1, p(n) = 0 so contribution is 0. For primes, p(n)/n = 1. Including primes (unlike compositeSum) is a design choice since their positive contributions help the lower bound."
+    }
   },
   {
     "id": "erdos-462-asymptotic",
@@ -87,7 +90,10 @@
     "title": "Known Asymptotic: $\\Theta(\\sqrt{x}/(\\log x)^2)$",
     "content": "The composite sum satisfies $c_1 \\cdot \\sqrt{x}/(\\log x)^2 \\leq S(x) \\leq c_2 \\cdot \\sqrt{x}/(\\log x)^2$ for constants $0 < c_1 \\leq c_2$ and all $x \\geq x_0$. This two-sided bound establishes the growth rate and motivates the interval length $C\\sqrt{x}(\\log x)^2$ in the conjecture.",
     "significance": "essential",
-    "mathContext": "analytic number theory. LaTeX: S(x) = \\Theta\\left(\\frac{\\sqrt{x}}{(\\log x)^2}\\right). Lean: axiom compositeSum_asymptotic : ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ ≤ c₂ ∧ ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x → c₁ * ↑x ^ (1/2 : ℝ) / (Real.log ↑x) ^ 2 ≤ compositeSum x ∧ compositeSum x ≤ c₂ * ↑x ^ (1/2 : ℝ) / (Real.log ↑x) ^ 2. Technique: axiomatized; the proof uses partial summation (Abel summation) over the distribution of p(n). The contribution from composites with p(n) = q is $\\sum_{q|n, p(n)=q} 1/n \\approx (1/q) \\cdot \\Psi(x/q, q) / (x/q)$ where $\\Psi$ counts smooth numbers. Summing over primes $q \\leq \\sqrt{x}$ gives the $\\sqrt{x}/(\\log x)^2$ behavior. Uses `Real.log` and `(x : ℝ) ^ (1/2 : ℝ)` for $\\sqrt{x}$.. Related: Alladi–Erdős (1977), de Bruijn's smooth number asymptotic, Dickman ρ-function, partial summation / Abel summation. Refs: Erdős–Graham (1980), p.92, Alladi and Erdős, 'On an additive arithmetic function', Pacific J. Math. (1977). Cross-refs: erdos-462-composite-sum, erdos-462-conjecture"
+    "mathContext": {
+      "latex": "S(x) = \\Theta\\!\\left(\\frac{\\sqrt{x}}{(\\log x)^2}\\right)",
+      "description": "The proof uses Abel summation over the distribution of p(n). The contribution from composites with p(n) = q is approximately (1/q) · Ψ(x/q, q)/(x/q), where Ψ counts smooth numbers. Summing over primes q ≤ √x gives the √x/(log x)² behavior."
+    }
   },
   {
     "id": "erdos-462-conjecture",
@@ -100,14 +106,10 @@
     "title": "Main Conjecture: Short Interval Equidistribution",
     "content": "There exist $C > 0$ and $\\delta > 0$ such that $\\sum_{x \\leq n \\leq x + C\\sqrt{x}(\\log x)^2} p(n)/n \\geq \\delta$ for all sufficiently large $x$. This asks whether the least prime factor sum is equidistributed on its natural scale: intervals of length $\\sqrt{x}(\\log x)^2$ should capture a bounded-below fraction of the global sum.",
     "significance": "essential",
-    "mathContext": "analytic number theory / short interval problems. LaTeX: \\exists C, \\delta > 0,\\, \\exists x_0,\\, \\forall x \\geq x_0,\\, \\sum_{x \\leq n \\leq x + C\\sqrt{x}(\\log x)^2} \\frac{p(n)}{n} \\geq \\delta. Lean: def ErdosProblem462 : Prop := ∃ C : ℝ, 0 < C ∧ ∃ δ : ℝ, 0 < δ ∧ ∃ x₀ : ℕ, ∀ x : ℕ, x₀ ≤ x → δ ≤ intervalSum x ⌊↑x + C * ↑x ^ (1/2 : ℝ) * (Real.log ↑x) ^ 2⌋₊. Technique: existential statement with floor function for the interval endpoint. The conjecture is a statement about uniform distribution — it asserts no anomalously empty intervals exist at the natural scale. This is weaker than asking for asymptotic equidistribution (which would require the interval sum to approach a specific constant). The ⌊·⌋₊ (Nat floor) converts the real endpoint to ℕ for intervalSum.. Related: Huxley's short interval estimates (1972), prime number theorem in short intervals, Selberg sieve in short intervals, Maier's matrix method (which shows anomalies CAN occur for some sums in short intervals). Refs: Erdős–Graham (1980), p.92. Cross-refs: erdos-462-asymptotic, erdos-462-interval-sum. Design: Uses `⌊...⌋₊` (Nat floor) for the right endpoint since intervalSum takes ℕ arguments.",
-    "crossReferences": [
-      {
-        "targetProofId": "prime-number-theorem",
-        "relationship": "uses-same-technique",
-        "description": "The paradigmatic equidistribution result — Problem #462 asks a PNT-in-short-intervals analogue for the least prime factor sum"
-      }
-    ]
+    "mathContext": {
+      "latex": "\\exists C, \\delta > 0,\\, \\exists x_0,\\, \\forall x \\geq x_0 : \\sum_{x \\leq n \\leq x + C\\sqrt{x}(\\log x)^2} \\frac{p(n)}{n} \\geq \\delta",
+      "description": "Existential statement with ⌊·⌋₊ (Nat floor) for the interval endpoint. Asserts no anomalously empty intervals exist at the natural scale. Maier (1985) showed such equidistribution can fail for prime counting at fine scales, but the coarser scale here makes it more plausible."
+    }
   },
   {
     "id": "erdos-462-prime-self",
@@ -120,7 +122,10 @@
     "title": "Least Prime Factor of a Prime",
     "content": "For a prime $p$, $p(p) = p$ — the least prime factor of a prime is itself. Axiomatized; provable from `Nat.Prime.minFac_eq`.",
     "significance": "supporting",
-    "mathContext": "number theory. LaTeX: p \\text{ prime} \\implies p(p) = p. Lean: axiom leastPrimeFactor_prime_self (p : ℕ) (hp : p.Prime) : leastPrimeFactor p = p. Technique: direct from Nat.Prime.minFac_eq. Could be proved with `simp [leastPrimeFactor, Nat.Prime.minFac_eq hp, show ¬p ≤ 1 from ...]`. Good Aristotle candidate.. Cross-refs: erdos-462-lpf"
+    "mathContext": {
+      "latex": "p \\text{ prime} \\implies p(p) = p",
+      "description": "Direct from Nat.Prime.minFac_eq. Good Aristotle candidate — provable with simp [leastPrimeFactor, Nat.Prime.minFac_eq hp]."
+    }
   },
   {
     "id": "erdos-462-ge-two",
@@ -133,7 +138,10 @@
     "title": "Lower Bound: $p(n) \\geq 2$",
     "content": "For $n \\geq 2$, the least prime factor satisfies $p(n) \\geq 2$. This is immediate since the smallest prime is 2. Bounds individual terms in the sum: $p(n)/n \\geq 2/n$.",
     "significance": "supporting",
-    "mathContext": "number theory. LaTeX: n \\geq 2 \\implies p(n) \\geq 2. Lean: axiom leastPrimeFactor_ge_two (n : ℕ) (hn : 2 ≤ n) : 2 ≤ leastPrimeFactor n. Technique: every prime is ≥ 2 (Nat.Prime.two_le), and p(n) is prime for n ≥ 2 by leastPrimeFactor_prime. This gives the lower bound on per-term contributions to the sum. Cross-refs: erdos-462-lpf-properties, erdos-462-sqrt-bound"
+    "mathContext": {
+      "latex": "n \\geq 2 \\implies p(n) \\geq 2",
+      "description": "Every prime is ≥ 2 (Nat.Prime.two_le), and p(n) is prime for n ≥ 2. Provides the lower bound on per-term contributions to the sum."
+    }
   },
   {
     "id": "erdos-462-sqrt-bound",
@@ -146,19 +154,9 @@
     "title": "Upper Bound: $p(n) \\leq \\sqrt{n}$ for Composites",
     "content": "For composite $n \\geq 2$, $p(n) \\leq \\sqrt{n}$. This is because a composite $n$ has a factor $\\leq \\sqrt{n}$, and the least prime factor is the smallest such factor. This bounds individual terms: $p(n)/n \\leq 1/\\sqrt{n}$ for composites, explaining why the sum converges slowly.",
     "significance": "essential",
-    "mathContext": "number theory. LaTeX: n \\geq 2,\\, n \\text{ composite} \\implies p(n) \\leq \\sqrt{n}. Lean: axiom leastPrimeFactor_le_sqrt (n : ℕ) (hn : 2 ≤ n) (hc : ¬n.Prime) : (leastPrimeFactor n : ℝ) ≤ (n : ℝ) ^ (1/2 : ℝ). Technique: standard trial division bound: if n is composite then n = ab with 1 < a ≤ b, so a ≤ √n; the least prime factor divides a and hence is ≤ √n. States the bound in ℝ using `(n : ℝ) ^ (1/2 : ℝ)` rather than `Nat.sqrt` to avoid integer truncation issues. The ℝ formulation is essential for the asymptotic analysis where the sum p(n)/n ≤ 1/√n per term.. Related: trial division bound, Nat.minFac_le_sqrt. Cross-refs: erdos-462-asymptotic, erdos-462-ge-two"
-  },
-  {
-    "id": "erdos-462-equidistribution-context",
-    "proofId": "erdos-462",
-    "type": "context",
-    "range": {
-      "startLine": 61,
-      "endLine": 70
-    },
-    "title": "Equidistribution on Natural Scales",
-    "content": "The conjecture is a short-interval equidistribution problem. Since $S(x) = \\Theta(\\sqrt{x}/(\\log x)^2)$, the sum grows by $\\Theta(1)$ over intervals of length $\\Theta(\\sqrt{x}(\\log x)^2)$ on average. The conjecture asks whether this holds not just on average but uniformly — i.e., no interval of the natural scale is anomalously empty. This is analogous to short-interval prime number theorem questions where one asks if $\\pi(x+h) - \\pi(x) \\sim h/\\log x$.",
-    "significance": "supporting",
-    "mathContext": "analytic number theory. LaTeX: \\Delta S = S(x + h) - S(x) \\geq \\delta \\text{ for } h = C\\sqrt{x}(\\log x)^2. The analogy to short-interval PNT is instructive but imperfect: Maier (1985) showed that for the prime counting function, there ARE anomalous intervals where $\\pi(x+h) - \\pi(x)$ deviates from $h/\\log x$ by a multiplicative constant. This 'Maier phenomenon' means equidistribution fails at fine scales for primes. Whether a similar phenomenon occurs for the p(n)/n sum is unknown — but the natural scale here ($\\sqrt{x}(\\log x)^2$) is much coarser than the scale where Maier's anomalies appear ($x^{\\varepsilon}$), so equidistribution is more plausible.. Related: Prime number theorem in short intervals, Huxley (1972), Maier (1985) matrix method, Selberg sieve applications. Cross-refs: erdos-462-conjecture, erdos-462-asymptotic"
+    "mathContext": {
+      "latex": "n \\geq 2,\\, n \\text{ composite} \\implies p(n) \\leq \\sqrt{n}",
+      "description": "Standard trial division bound: composite n = ab with 1 < a ≤ b implies a ≤ √n. Stated in ℝ using (n : ℝ)^(1/2) to avoid integer truncation. The per-term bound p(n)/n ≤ 1/√n explains the √x factor in the global asymptotic."
+    }
   }
 ]
