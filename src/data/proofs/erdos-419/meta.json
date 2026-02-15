@@ -142,6 +142,16 @@
       "targetId": "erdos-400",
       "relationship": "related-problem",
       "description": "Both study divisibility and growth properties of factorial-related quantities, exploring how the rich prime factorization of n! controls arithmetic functions."
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "uses-result",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions guarantees infinitely many n+1 = pk for each fixed k, ensuring each limit point 1 + 1/k is achieved infinitely often."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related-problem",
+      "description": "The prime number theorem underlies the density estimates for primes p with n+1 = pk, and Mertens' theorem (a consequence) explains the log log n factor in the τ(n!) asymptotics."
     }
   ],
   "sections": [
