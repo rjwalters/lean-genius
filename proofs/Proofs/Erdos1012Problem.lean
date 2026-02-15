@@ -238,9 +238,9 @@ theorem threshold_closed_form (n k : ℕ) (hn : n ≥ k + 2) :
     edgeThreshold n k = (n - k - 1) * (n - k - 2) / 2 + (k + 2) * (k + 1) / 2 + 1 := by
   unfold edgeThreshold
   rw [Nat.choose_two_right, Nat.choose_two_right]
-  congr 1; congr 1
-  · congr 1; omega
-  · congr 1; omega
+  have h1 : n - k - 1 - 1 = n - k - 2 := by omega
+  have h2 : k + 2 - 1 = k + 1 := by omega
+  rw [h1, h2]
 
 /-- When n ≥ 2k+3, the cycle length n-k is at least 3 -/
 theorem cycle_length_ge_3 (n k : ℕ) (hn : n ≥ 2 * k + 3) : n - k ≥ 3 := by omega
@@ -262,7 +262,7 @@ theorem threshold_k0_ge_3 (n : ℕ) (hn : n ≥ 3) : edgeThreshold n 0 ≥ 3 := 
       have : n - 1 - 1 ≥ 1 := by omega
       calc (n - 1) * (n - 1 - 1) ≥ 2 * 1 := by
             apply Nat.mul_le_mul <;> omega
-        _ = 2 := by ring
+        _ = 2 := by omega
     omega
   omega
 
