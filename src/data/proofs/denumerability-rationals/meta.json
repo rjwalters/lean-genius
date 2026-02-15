@@ -10,6 +10,7 @@
     "date": "1874",
     "status": "complete",
     "proofRepoPath": "Proofs/DenumerabilityRationals.lean",
+    "leanFile": "proofs/Proofs/DenumerabilityRationals.lean",
     "tags": [
       "set-theory",
       "infinity",
@@ -19,28 +20,39 @@
     ],
     "badge": "mathlib",
     "sorries": 0,
+    "axiomCount": 0,
     "dateAdded": "2025-12-26",
     "mathlib_version": "4.15.0",
     "mathlibDependencies": [
       {
         "theorem": "Denumerable ℚ",
-        "description": "Instance proving the rationals are denumerable",
+        "description": "Instance proving the rationals are denumerable via Cantor pairing on (ℤ × ℕ+)",
         "module": "Mathlib.Data.Rat.Denumerable"
       },
       {
         "theorem": "Denumerable.eqv",
-        "description": "The explicit equivalence between a denumerable type and ℕ",
+        "description": "The explicit equivalence α ≃ ℕ for any Denumerable type",
         "module": "Mathlib.Logic.Denumerable"
       },
       {
         "theorem": "Equiv.bijective",
-        "description": "Every equivalence is bijective",
+        "description": "Every equivalence is bijective (injective ∧ surjective)",
         "module": "Mathlib.Logic.Equiv.Basic"
       },
       {
         "theorem": "Cardinal.mk_denumerable",
-        "description": "Cardinality of denumerable types equals aleph-null",
+        "description": "Cardinality of any Denumerable type equals ℵ₀",
         "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Equiv.surjective",
+        "description": "Every equivalence is surjective, used for the listing perspective",
+        "module": "Mathlib.Logic.Equiv.Basic"
+      },
+      {
+        "theorem": "Equiv.injective",
+        "description": "Every equivalence is injective, used for the labeling perspective",
+        "module": "Mathlib.Logic.Equiv.Basic"
       }
     ],
     "originalContributions": [
@@ -50,7 +62,8 @@
       "exists_surjection_nat_to_rat and exists_injection_rat_to_nat",
       "encodeRatToNat and decodeNatToRat with round-trip proofs",
       "card_rat_eq_aleph0 and card_rat_eq_card_nat via Cardinal.mk_denumerable",
-      "Pedagogical documentation with diagonal visualization"
+      "rationals_infinite: Infinite ℚ via inferInstance",
+      "Pedagogical documentation with diagonal visualization and philosophical commentary"
     ],
     "references": [
       {
@@ -131,56 +144,56 @@
       "title": "Header and Documentation",
       "startLine": 1,
       "endLine": 44,
-      "summary": "Module docstring explaining the theorem, approach, Mathlib dependencies, and historical context. Imports: Mathlib.Data.Rat.Denumerable, Mathlib.Logic.Denumerable, Mathlib.Logic.Equiv.Basic, Mathlib.SetTheory.Cardinal.Basic, Mathlib.Tactic."
+      "summary": "Module docstring explaining the theorem, approach, Mathlib dependencies, and historical context. Imports `Mathlib.Data.Rat.Denumerable`, `Mathlib.Logic.Denumerable`, `Mathlib.Logic.Equiv.Basic`, `Mathlib.SetTheory.Cardinal.Basic`, `Mathlib.Tactic`."
     },
     {
       "id": "main-result",
       "title": "The Main Result: ℚ is Denumerable",
       "startLine": 46,
       "endLine": 63,
-      "summary": "Confirms Denumerable ℚ via inferInstance and defines natEquivRat : ℕ ≃ ℚ := (Denumerable.eqv ℚ).symm — the explicit bijection used throughout the file."
+      "summary": "Confirms `Denumerable ℚ` via `inferInstance` and defines `natEquivRat : ℕ ≃ ℚ := (Denumerable.eqv ℚ).symm` — the explicit bijection used throughout the file."
     },
     {
       "id": "alternative-formulations",
       "title": "Alternative Formulations",
       "startLine": 65,
       "endLine": 92,
-      "summary": "Four equivalent statements: rationals_denumerable (∃ bijection), rationals_countable (Countable ℚ), exists_surjection_nat_to_rat (surjection), exists_injection_rat_to_nat (injection). All extracted from the single Denumerable instance."
+      "summary": "Four equivalent statements: `rationals_denumerable` ($\\exists$ bijection), `rationals_countable` (`Countable ℚ`), `exists_surjection_nat_to_rat` (surjection), `exists_injection_rat_to_nat` (injection). All extracted from the single `Denumerable` instance."
     },
     {
       "id": "encoding",
       "title": "The Encoding Explained",
       "startLine": 94,
       "endLine": 119,
-      "summary": "Documents the Cantor pairing function encoding. Defines encodeRatToNat and decodeNatToRat as wrappers, proves both round-trip identities decode_encode and encode_decode by simp."
+      "summary": "Documents the Cantor pairing function encoding. Defines `encodeRatToNat` and `decodeNatToRat` as wrappers, proves both round-trip identities `decode_encode` and `encode_decode` by `simp`."
     },
     {
       "id": "comparison",
       "title": "Comparison with the Reals",
       "startLine": 121,
       "endLine": 132,
-      "summary": "Commentary contrasting |ℚ| = ℵ₀ with |ℝ| = 2^ℵ₀. Proves rationals_infinite : Infinite ℚ via inferInstance. Notes ℚ has Lebesgue measure zero despite density."
+      "summary": "Contrasts $|\\mathbb{Q}| = \\aleph_0$ with $|\\mathbb{R}| = 2^{\\aleph_0}$. Proves `rationals_infinite : Infinite ℚ` via `inferInstance`. Notes $\\mathbb{Q}$ has Lebesgue measure zero despite density."
     },
     {
       "id": "visualization",
       "title": "Cantor's Diagonal Enumeration",
       "startLine": 134,
       "endLine": 158,
-      "summary": "ASCII visualization of the classical anti-diagonal traversal enumerating all positive rationals. Shows how non-reduced fractions are skipped and negatives are interleaved. Commentary only (no Lean declarations)."
+      "summary": "ASCII visualization of the classical anti-diagonal traversal enumerating all positive rationals along diagonals $p + q = \\text{const}$. Shows how non-reduced fractions are skipped and negatives are interleaved."
     },
     {
       "id": "cardinality",
       "title": "Connection to Cardinal Arithmetic",
       "startLine": 160,
       "endLine": 173,
-      "summary": "Proves card_rat_eq_aleph0 : Cardinal.mk ℚ = Cardinal.aleph0 via Cardinal.mk_denumerable, and card_rat_eq_card_nat by rewriting both sides. Bridges type-theoretic and set-theoretic perspectives."
+      "summary": "Proves `card_rat_eq_aleph0 : Cardinal.mk ℚ = \\aleph_0` via `Cardinal.mk_denumerable`, and `card_rat_eq_card_nat` by rewriting both sides. Bridges type-theoretic and set-theoretic perspectives."
     },
     {
       "id": "philosophical",
       "title": "Philosophical Significance",
       "startLine": 175,
       "endLine": 191,
-      "summary": "Commentary on philosophical implications: infinity comes in sizes, density ≠ cardinality, countability is robust, the reals are special. Exports four key results via #check."
+      "summary": "Four philosophical implications: infinity comes in sizes, density $\\neq$ cardinality, countability is robust, the reals are special. Exports key results via `#check`."
     }
   ],
   "conclusion": {
