@@ -40,51 +40,114 @@
     "dateAdded": "12/27/25"
   },
   "overview": {
-    "historicalContext": "Euler proved this result in 1737, showing that primes are 'dense enough' for their reciprocals to diverge. This is a remarkable strengthening of Euclid's theorem on the infinitude of primes.\n\nEuler's proof used the connection between the harmonic series and the product over primes (Euler's product formula). The divergence shows that primes, while becoming sparser, don't thin out too quickly.",
-    "problemStatement": "**Theorem (Euler, 1737)**: The sum of reciprocals of prime numbers diverges:\n\n$$\\sum_{p \\text{ prime}} \\frac{1}{p} = \\frac{1}{2} + \\frac{1}{3} + \\frac{1}{5} + \\frac{1}{7} + \\cdots = \\infty$$\n\nThis is Wiedijk's 100 Theorems #81.",
-    "proofStrategy": "**Erdos's Elementary Proof**:\n\n1. Assume for contradiction that the sum converges to S\n2. Define 'smooth numbers' (those with all prime factors <= k)\n3. Estimate the count of smooth numbers up to n\n4. If the sum converges, there are 'too few' smooth numbers\n5. But we can also show there are 'enough' smooth numbers\n6. Contradiction!",
+    "historicalContext": "Leonhard Euler proved in 1737 that $\\sum_p 1/p$ diverges, using his celebrated product formula $\\prod_p (1 - 1/p)^{-1} = \\sum_n 1/n$: taking logarithms of both sides, the left side yields $\\sum_p 1/p$ plus convergent correction terms, while the right side diverges. This was a dramatic strengthening of Euclid's infinitude of primes (~300 BCE). Franz Mertens sharpened Euler's result in 1874, proving $\\sum_{p \\leq n} 1/p = \\ln(\\ln(n)) + M + o(1)$ where $M \\approx 0.2615$ is the Meissel-Mertens constant. Paul Erdős later gave an elegant elementary proof using smooth number estimates, appearing in Aigner and Ziegler's \"Proofs from THE BOOK.\" The result connects to the Riemann zeta function via the prime zeta function $P(s) = \\sum_p p^{-s}$, convergent for $\\text{Re}(s) > 1$, and to the Prime Number Theorem through the relationship between $\\sum_{p \\leq n} 1/p$ and $\\pi(n) \\sim n/\\ln(n)$.",
+    "problemStatement": "**Theorem (Euler, 1737)**: The sum of reciprocals of prime numbers diverges:\n\n$$\\sum_{p \\text{ prime}} \\frac{1}{p} = \\frac{1}{2} + \\frac{1}{3} + \\frac{1}{5} + \\frac{1}{7} + \\cdots = \\infty$$\n\nFormalized as `¬ Summable (fun p : Nat.Primes => 1 / (p : ℝ))`. This is Wiedijk's 100 Theorems #81.",
+    "proofStrategy": "The Lean formalization directly invokes Mathlib's `Nat.Primes.not_summable_one_div`, which follows **Erdős's elementary proof**: (1) Assume $\\sum 1/p$ converges to $S$; (2) Choose $k$ so the tail $\\sum_{p > p_k} 1/p < 1/2$; (3) Count $k$-smooth numbers (all prime factors $\\leq p_k$) up to $n$ — there are at most $2^k \\sqrt{n}$ of them; (4) Count non-$k$-smooth numbers — each has a prime factor $p > p_k$, and there are at most $\\sum_{p > p_k} n/p < n/2$ such numbers; (5) So for large $n$, $n \\leq 2^k \\sqrt{n} + n/2$, giving $n \\leq 4^k$ — a contradiction. The file also proves the sharp generalization: $\\sum_p p^r$ converges iff $r < -1$.",
     "keyInsights": [
-      "The prime series diverges much slower than the harmonic series: sum_{p<=n} 1/p ~ ln(ln(n))",
-      "In contrast, the harmonic series grows as ln(n)",
-      "For r < -1, the series sum_p p^r converges; r = -1 is the critical case"
+      "**Double-logarithmic growth**: The partial sums $\\sum_{p \\leq n} 1/p \\sim \\ln(\\ln(n)) + M$ grow incredibly slowly — the Meissel-Mertens constant $M \\approx 0.2615$ quantifies the precise rate",
+      "**Critical exponent at $r = -1$**: The prime $p$-series $\\sum_p p^r$ converges iff $r < -1$; the case $r = -1$ is exactly the boundary, making this the prime analogue of the harmonic series",
+      "**Euler product bridge**: Euler's proof exploits $\\prod_p (1 - 1/p)^{-1} = \\sum_n 1/n$; taking logarithms converts the divergence of the harmonic series into divergence of $\\sum 1/p$",
+      "**Smooth number counting**: Erdős's elementary proof avoids analytic machinery entirely — it uses only the observation that smooth numbers up to $n$ number at most $2^k \\sqrt{n}$, while non-smooth numbers are bounded by $n \\sum_{p > p_k} 1/p$",
+      "**Density interpretation**: The divergence means primes are not 'too sparse' — in probabilistic terms, a random integer $n$ is prime with probability $\\sim 1/\\ln(n)$, and $\\sum 1/\\ln(n)$ diverges"
     ]
   },
   "sections": [
     {
-      "id": "main-theorem",
-      "title": "Prime Reciprocal Divergence",
-      "startLine": 57,
-      "endLine": 89,
-      "summary": "The main result: the prime reciprocal series is not summable."
+      "id": "imports-documentation",
+      "title": "Imports and Module Documentation",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Imports `Mathlib.NumberTheory.SumPrimeReciprocals` for the main theorem and `Topology.Algebra.InfiniteSum.Basic` for summability. Documents the historical context (Euler 1737), proof strategy (Erdős's elementary argument), and the comparison $H_n \\sim \\ln(n)$ vs $\\sum_{p \\leq n} 1/p \\sim \\ln(\\ln(n))$."
     },
     {
-      "id": "generalization",
-      "title": "The p-Series over Primes",
+      "id": "main-theorem",
+      "title": "Main Theorem: $\\sum 1/p$ Diverges",
+      "startLine": 57,
+      "endLine": 77,
+      "summary": "Proves `¬ Summable (fun p : Nat.Primes => 1 / (p : ℝ))` via `Nat.Primes.not_summable_one_div`, plus an alternative formulation using inverse notation `(p : ℝ)⁻¹`."
+    },
+    {
+      "id": "indicator-formulation",
+      "title": "Indicator Function Formulation",
+      "startLine": 78,
+      "endLine": 89,
+      "summary": "Expresses the prime reciprocal sum as a sub-sum of the harmonic series using `Set.indicator`: for each $n$, the term is $1/n$ if $n$ is prime, else $0$. Proved via `not_summable_one_div_on_primes`."
+    },
+    {
+      "id": "p-series-criterion",
+      "title": "The $p$-Series over Primes",
       "startLine": 91,
       "endLine": 109,
-      "summary": "General criterion: sum_p p^r converges iff r < -1."
+      "summary": "Proves the sharp convergence criterion: $\\sum_p p^r$ converges iff $r < -1$ via `Nat.Primes.summable_rpow`. The critical exponent $r = -1$ is recovered as a special case."
     },
     {
       "id": "significance",
-      "title": "Why This Matters",
+      "title": "Significance for Prime Distribution",
       "startLine": 111,
       "endLine": 126,
-      "summary": "Connections to prime distribution and analytic number theory."
+      "summary": "Documents connections to analytic number theory: Basel problem ($\\sum 1/n^2 = \\pi^2/6$), harmonic series ($\\sum 1/n \\sim \\ln n$), Prime Number Theorem ($\\pi(n) \\sim n/\\ln n$), Mertens' theorems, and the Riemann zeta function."
     },
     {
       "id": "convergent-cases",
-      "title": "Convergent Cases",
+      "title": "Convergent Cases: $\\sum 1/p^2$",
       "startLine": 128,
       "endLine": 146,
-      "summary": "The sum of squared reciprocals of primes converges."
+      "summary": "Proves $\\sum_p 1/p^2$ converges by converting to the $r = -2$ case of the general criterion. Uses `Real.rpow_neg` and `Real.rpow_two` for the algebraic manipulation. The prime zeta values $P(2) \\approx 0.4522$ and $P(3) \\approx 0.1747$ are noted."
+    },
+    {
+      "id": "erdos-proof-strategy",
+      "title": "Erdős's Proof Strategy",
+      "startLine": 147,
+      "endLine": 158,
+      "summary": "Documents Erdős's elementary proof from \"Proofs from THE BOOK\": assume convergence, count $k$-smooth numbers ($\\leq 2^k \\sqrt{n}$), bound non-smooth numbers ($< n/2$), derive contradiction $n \\leq 4^k$ for all $n$."
+    },
+    {
+      "id": "final-checks",
+      "title": "Verification and Namespace",
+      "startLine": 160,
+      "endLine": 164,
+      "summary": "Type-checks the three main results: `prime_reciprocal_not_summable`, `indicator_primes_not_summable`, and `prime_power_summable_iff`. Closes the `PrimeReciprocalDivergence` namespace."
     }
   ],
   "conclusion": {
-    "summary": "The divergence of the prime reciprocal series reveals that primes, while becoming increasingly rare among integers, remain 'dense enough' for their reciprocals to form a divergent sum. This connects to deep results in analytic number theory.",
-    "implications": "**Connections:**\n\n**1. Mertens' Theorems**\nPrecise asymptotics for sums over primes.\n\n**2. Riemann Zeta Function**\nThe prime zeta function P(s) = sum_p p^(-s).\n\n**3. Prime Number Theorem**\nPrimes thin out as n/ln(n).\n\n**4. Probabilistic Number Theory**\nRandom models for prime distribution.",
+    "summary": "This formalization proves that $\\sum_p 1/p$ diverges using Mathlib's `Nat.Primes.not_summable_one_div`, provides the indicator function formulation as a sub-sum of the harmonic series, proves the sharp convergence criterion $\\sum_p p^r < \\infty \\Leftrightarrow r < -1$, and demonstrates the convergent case $\\sum_p 1/p^2 < \\infty$. All proofs are complete with no axioms or sorries.",
+    "implications": "The divergence of $\\sum 1/p$ is a cornerstone of analytic number theory. It implies that primes have logarithmic density zero but \"natural density\" sufficient for divergence. Mertens' second theorem ($\\sum_{p \\leq n} 1/p = \\ln \\ln n + M + O(1/\\ln n)$) sharpens this to precise asymptotics. The result connects to the Riemann zeta function via $\\ln \\zeta(s) = \\sum_p \\sum_{k=1}^\\infty p^{-ks}/k$, making the $s \\to 1^+$ divergence of $\\zeta(s)$ equivalent to prime reciprocal divergence. The prime $p$-series criterion proved here ($r < -1$ for convergence) is the prime analogue of the classical $p$-series test.",
     "openQuestions": [
-      "Precise error terms in the asymptotic sum_{p<=n} 1/p ~ ln(ln(n)) + M",
-      "Connections to the Riemann Hypothesis via the prime zeta function"
+      "What is the precise error term in $\\sum_{p \\leq n} 1/p = \\ln \\ln n + M + E(n)$? Under the Riemann Hypothesis, $E(n) = O(1/\\ln n)$ with specific constants",
+      "Can the Meissel-Mertens constant $M \\approx 0.2615$ be expressed in terms of known constants? It equals $\\gamma + \\sum_p [\\ln(1 - 1/p) + 1/p]$ where $\\gamma$ is the Euler-Mascheroni constant",
+      "Can Erdős's elementary proof be formalized purely in Lean without relying on Mathlib's analytic infrastructure? This would provide a second, independent proof path"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "proofId": "infinitude-primes",
+      "relationship": "strengthens",
+      "description": "The divergence of $\\sum 1/p$ is a quantitative strengthening of Euclid's theorem: not only infinitely many primes, but dense enough for reciprocal divergence"
+    },
+    {
+      "proofId": "harmonic-divergence",
+      "relationship": "related",
+      "description": "The prime reciprocal sum is a sparse sub-sum of the harmonic series; both diverge but $\\sum 1/p \\sim \\ln \\ln n$ grows far slower than $H_n \\sim \\ln n$"
+    },
+    {
+      "proofId": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel problem ($\\sum 1/n^2 = \\pi^2/6$) connects to the prime zeta function $P(2) = \\sum 1/p^2 \\approx 0.4522$; both relate to $\\zeta(s)$"
+    },
+    {
+      "proofId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "The PNT ($\\pi(n) \\sim n/\\ln n$) is equivalent to Mertens-type estimates; prime reciprocal divergence is a weaker consequence of the PNT"
+    },
+    {
+      "proofId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's postulate ($\\exists$ prime in $(n, 2n]$) and prime reciprocal divergence both quantify how dense primes are; Erdős proved both elementarily"
+    },
+    {
+      "proofId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions uses similar analytic techniques; the divergence of $\\sum 1/p$ for $p \\equiv a \\pmod{q}$ with $\\gcd(a,q) = 1$ is a key ingredient"
+    }
+  ]
 }
