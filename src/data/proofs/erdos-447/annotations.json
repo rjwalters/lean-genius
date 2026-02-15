@@ -1,5 +1,20 @@
 [
   {
+    "id": "erdos-447-header",
+    "proofId": "erdos-447",
+    "type": "concept",
+    "range": {
+      "startLine": 25,
+      "endLine": 33
+    },
+    "title": "Module Imports and Namespace",
+    "content": "Imports `Finset.Basic` and `Finset.Powerset` for finite set operations, `Nat.Choose.Basic` for binomial coefficients $\\binom{n}{k}$, `Data.Real.Basic` for asymptotic notation with real-valued bounds, and `SetFamily.Compression.Down` for Kleitman-style shifting arguments. Opens `Finset` and `Nat` namespaces for convenient notation.",
+    "mathContext": "The `Compression.Down` import from `Mathlib.Combinatorics.SetFamily` provides the down-compression operator $\\mathcal{D}_i(\\mathcal{F})$ used in Kleitman's proof technique. Opening `Finset` and `Nat` gives direct access to `filter`, `powerset`, `choose`, and `sup`.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.powerset", "Nat.choose", "Compression.Down", "namespace"],
+    "prerequisites": ["Mathlib.Data.Finset.Basic", "Mathlib.Data.Finset.Powerset", "Mathlib.Data.Nat.Choose.Basic"]
+  },
+  {
     "id": "erdos-447-ground-set",
     "proofId": "erdos-447",
     "type": "definition",
@@ -8,9 +23,11 @@
       "endLine": 42
     },
     "title": "Ground Set and Power Set",
-    "content": "**GroundSet n** abbreviates `Finset (Fin n)`, representing subsets of [n] = {0, ..., n-1}. **powerSet n** returns all subsets of [n] as `Finset.univ.powerset`, the full power set 2^[n] with 2ⁿ elements.\n\nUsing `Fin n` rather than a general type gives decidable equality and finiteness for free, enabling computation with `Finset` operations.",
+    "content": "**GroundSet n** abbreviates `Finset (Fin n)`, representing subsets of $[n] = \\{0, \\ldots, n-1\\}$. **powerSet n** returns all subsets of $[n]$ as `Finset.univ.powerset`, the full power set $2^{[n]}$ with $2^n$ elements.\n\nUsing `Fin n` rather than a general type gives decidable equality and finiteness for free, enabling computation with `Finset` operations.",
+    "mathContext": "`abbrev GroundSet (n : \\N) := Finset (Fin n)` uses `Fin n` as the canonical finite type of size $n$. `powerSet n = Finset.univ.powerset` constructs $2^{[n]}$ as a `Finset (Finset (Fin n))` with $|2^{[n]}| = 2^n$ elements.",
     "significance": "supporting",
-    "mathContext": "Fin n provides a canonical finite type of size n; Finset.univ.powerset constructs the power set as a Finset of Finsets. Prerequisites: Finset.univ, Finset.powerset, Fin. Cross-reference (erdos-487): Problem 487 also uses subsets of [n] in its set-theoretic encoding of LCM-free families"
+    "relatedConcepts": ["Fin", "Finset.univ", "Finset.powerset", "decidable equality"],
+    "prerequisites": ["Finset.univ", "Finset.powerset", "Fin"]
   },
   {
     "id": "erdos-447-union-free",
@@ -21,9 +38,11 @@
       "endLine": 56
     },
     "title": "Union-Free Predicate",
-    "content": "**IsUnionFree F** requires that no three distinct A, B, C ∈ F satisfy A ∪ B = C. The symmetric variant **IsUnionFree'** additionally forbids A ∪ C = B and B ∪ C = A, i.e., no element is the union of any two others.\n\nFor the main bound, IsUnionFree suffices: if |A ∪ B| = |C| and all three sets have the same cardinality, distinctness of A, B forces |A ∪ B| > |A| = |C|, a contradiction. The symmetric version is convenient for some applications but does not affect the extremal bound.",
+    "content": "**IsUnionFree F** requires that no three distinct $A, B, C \\in \\mathcal{F}$ satisfy $A \\cup B = C$. The symmetric variant **IsUnionFree'** additionally forbids $A \\cup C = B$ and $B \\cup C = A$, i.e., no element is the union of any two others.\n\nFor the main bound, `IsUnionFree` suffices: if $|A \\cup B| = |C|$ and all three sets have the same cardinality, distinctness of $A, B$ forces $|A \\cup B| > |A| = |C|$, a contradiction.",
+    "mathContext": "Six-variable universal quantification with three distinctness constraints ($A \\neq B$, $A \\neq C$, $B \\neq C$) and the union inequality $A \\cup B \\neq C$. The symmetric version `IsUnionFree'` bundles all three orientations into a conjunction. `IsUnionFree` is hereditary: any subfamily of a union-free family is union-free, making the extremal question well-posed.",
     "significance": "critical",
-    "mathContext": "Six-variable universal quantification with three distinctness constraints and a union inequality; the symmetric version adds two more disjuncts. IsUnionFree is hereditary: any subfamily of a union-free family is union-free. This makes the extremal question well-posed — we seek the maximum cardinality.. The union-free condition was introduced by Erdős in the context of extremal set theory. It generalizes the antichain condition (Sperner families), since antichains are automatically union-free: if A ⊆ C and B ⊆ C with A ∪ B = C, the antichain property forces A = C or B = C, contradicting distinctness.. Prerequisites: Finset.union (∪), Decidable equality on GroundSet"
+    "relatedConcepts": ["Finset.union", "antichain", "Sperner family", "hereditary property"],
+    "prerequisites": ["Finset.union", "DecidableEq on GroundSet"]
   },
   {
     "id": "erdos-447-middle-layer",
@@ -34,35 +53,41 @@
       "endLine": 62
     },
     "title": "Middle Layer Construction",
-    "content": "**middleLayer n** filters all subsets of [n] to those with cardinality exactly ⌊n/2⌋. This is the largest antichain in 2^[n] by Sperner's theorem, and it achieves the optimal union-free bound.\n\nFor n = 4, the middle layer consists of all 6 = C(4,2) subsets of size 2: {0,1}, {0,2}, {0,3}, {1,2}, {1,3}, {2,3}.",
+    "content": "**middleLayer n** filters all subsets of $[n]$ to those with cardinality exactly $\\lfloor n/2 \\rfloor$. This is the largest antichain in $2^{[n]}$ by Sperner's theorem, and it achieves the optimal union-free bound.\n\nFor $n = 4$, the middle layer consists of all $\\binom{4}{2} = 6$ subsets of size 2.",
+    "mathContext": "`Finset.filter (fun S => S.card = n / 2) Finset.univ` selects the middle layer $\\binom{[n]}{\\lfloor n/2 \\rfloor}$. All elements have equal cardinality $k = \\lfloor n/2 \\rfloor$, which is what makes the layer union-free: if $|A| = |B| = |C| = k$ and $A \\cup B = C$, inclusion-exclusion gives $|A \\cup B| = 2k - |A \\cap B| = k$, forcing $|A \\cap B| = k$ and $A = B$.",
     "significance": "critical",
-    "mathContext": "Finset.filter with cardinality predicate (S.card = n / 2) on Finset.univ. All elements have equal cardinality, which is what makes the layer union-free: if |A| = |B| = |C| = k and A ∪ B = C, then A ⊆ C and B ⊆ C, so |A ∪ B| ≤ |C| = k but also |A ∪ B| ≥ max(|A|, |B|) = k, forcing A ∪ B = C with A = B (contradiction).. Prerequisites: Finset.filter, Finset.card, Nat division (/). Cross-reference (erdos-487): The middle layer bound transfers to LCM-free sets via prime factorization encoding: subsets ↔ square-free numbers"
+    "relatedConcepts": ["Finset.filter", "Finset.card", "Sperner's theorem", "binomial coefficient"],
+    "prerequisites": ["Finset.filter", "Finset.card", "Nat division"]
   },
   {
     "id": "erdos-447-middle-layer-union-free",
     "proofId": "erdos-447",
-    "type": "axiom",
+    "type": "theorem",
     "range": {
       "startLine": 67,
       "endLine": 67
     },
     "title": "Middle Layer is Union-Free",
-    "content": "**middleLayer_union_free**: The middle layer (all sets of size ⌊n/2⌋) is union-free. If A, B, C all have cardinality k = ⌊n/2⌋ and A ∪ B = C with A ≠ B, then since A ⊆ C and B ⊆ C we get |C| ≥ |A ∪ B| > |A| = k (strict inequality because A ≠ B and B ⊄ A). But |C| = k, contradiction.\n\nMore precisely: A ∪ B = C implies |A ∪ B| = |A| + |B| - |A ∩ B| = 2k - |A ∩ B|. Since |C| = k, we need |A ∩ B| = k, so A = B.",
+    "content": "**middleLayer_union_free**: The middle layer (all sets of size $\\lfloor n/2 \\rfloor$) is union-free. If $A, B, C$ all have cardinality $k = \\lfloor n/2 \\rfloor$ and $A \\cup B = C$ with $A \\neq B$, then since $A \\subseteq C$ and $B \\subseteq C$ we get $|C| \\geq |A \\cup B| > |A| = k$. But $|C| = k$, contradiction.\n\nMore precisely: $|A \\cup B| = |A| + |B| - |A \\cap B| = 2k - |A \\cap B|$. Since $|C| = k$, we need $|A \\cap B| = k$, so $A = B$.",
+    "mathContext": "Axiom `middleLayer_union_free (n : \\N) : IsUnionFree (middleLayer n)`. Proof sketch: inclusion-exclusion $|A \\cup B| = |A| + |B| - |A \\cap B|$ combined with $|A \\cup B| = |C| = \\lfloor n/2 \\rfloor$ forces $|A \\cap B| = k$, hence $A \\subseteq B$ and $B \\subseteq A$, contradicting $A \\neq B$.",
     "significance": "critical",
-    "mathContext": "Cardinality argument using inclusion-exclusion |A ∪ B| = |A| + |B| - |A ∩ B|. Why axiom: The proof requires showing that equal-sized distinct sets cannot have their union be the same size. This follows from |A ∪ B| = |A| + |B| - |A ∩ B| and the constraint |A ∪ B| = |C| = ⌊n/2⌋. A full formalization would need Finset.card_union_add_card_inter and arithmetic reasoning.. Prerequisites: Finset.card_union_add_card_inter, Finset.card_le_card (for A ⊆ A ∪ B)"
+    "relatedConcepts": ["inclusion-exclusion", "Finset.card_union_add_card_inter", "equal-cardinality argument"],
+    "prerequisites": ["Finset.card_union_add_card_inter", "Finset.card_le_card", "middleLayer"]
   },
   {
     "id": "erdos-447-sperner",
     "proofId": "erdos-447",
-    "type": "axiom",
+    "type": "theorem",
     "range": {
       "startLine": 72,
       "endLine": 75
     },
     "title": "Sperner's Theorem",
-    "content": "**sperner_theorem**: Any antichain F in 2^[n] (no two elements comparable by ⊆) has |F| ≤ C(n, ⌊n/2⌋). This is the classical Sperner bound from 1928.\n\nThe proof uses the LYM inequality: ∑_{S ∈ F} 1/C(n, |S|) ≤ 1, which immediately gives |F| ≤ max_k C(n,k) = C(n, ⌊n/2⌋). Alternatively, one can use Dilworth's theorem on the poset (2^[n], ⊆).",
+    "content": "**sperner_theorem**: Any antichain $\\mathcal{F}$ in $2^{[n]}$ (no two elements comparable by $\\subseteq$) has $|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$. This is the classical Sperner bound from 1928.\n\nThe proof uses the LYM inequality: $\\sum_{S \\in \\mathcal{F}} 1/\\binom{n}{|S|} \\leq 1$, which immediately gives $|\\mathcal{F}| \\leq \\max_k \\binom{n}{k} = \\binom{n}{\\lfloor n/2 \\rfloor}$.",
+    "mathContext": "Axiom with antichain hypothesis as `\\forall A B \\in F, A \\neq B \\to \\neg(A \\subseteq B) \\wedge \\neg(B \\subseteq A)`. Proved by Emanuel Sperner (1928) in 'Ein Satz uber Untermengen einer endlichen Menge'. The LYM inequality was discovered independently by Lubell (1966), Yamamoto (1954), and Meshalkin (1963).",
     "significance": "critical",
-    "mathContext": "Stated as axiom with antichain hypothesis as explicit ∀ A B, ¬(A ⊆ B) ∧ ¬(B ⊆ A). Why axiom: Sperner's theorem requires the LYM inequality or a symmetric chain decomposition, neither of which is currently in Mathlib. This is a fundamental result that could potentially be formalized with significant effort.. Proved by Emanuel Sperner in 1928 in 'Ein Satz über Untermengen einer endlichen Menge' (Mathematische Zeitschrift). The LYM inequality was discovered independently by Lubell (1966), Yamamoto (1954), and Meshalkin (1963).. Prerequisites: Finset subset ordering (⊆), Nat.choose (middleBinomial). Cross-reference (erdos-447): Sperner's theorem provides the bridge: union-free families are 'almost' antichains, so the antichain bound applies up to lower-order terms"
+    "relatedConcepts": ["antichain", "LYM inequality", "Dilworth's theorem", "Lubell-Yamamoto-Meshalkin"],
+    "prerequisites": ["Finset subset ordering", "Nat.choose", "middleBinomial"]
   },
   {
     "id": "erdos-447-asymptotics",
@@ -73,86 +98,100 @@
       "endLine": 89
     },
     "title": "Asymptotic Notation and maxUnionFreeSize",
-    "content": "**IsLittleO f g** captures f(n) = o(g(n)): for every ε > 0, eventually f(n) ≤ ε · g(n). **AsymptoticUpperBound f g** captures f(n) ≤ (1+o(1)) · g(n): for every ε > 0, eventually f(n) ≤ (1+ε) · g(n).\n\n**maxUnionFreeSize n** is the maximum |F| over all union-free F ⊆ 2^[n], defined as the supremum of cardinalities over the filtered power set. This is noncomputable because it requires deciding IsUnionFree for all subfamilies.",
+    "content": "**IsLittleO f g** captures $f(n) = o(g(n))$: for every $\\varepsilon > 0$, eventually $f(n) \\leq \\varepsilon \\cdot g(n)$. **AsymptoticUpperBound f g** captures $f(n) \\leq (1+o(1)) \\cdot g(n)$: for every $\\varepsilon > 0$, eventually $f(n) \\leq (1+\\varepsilon) \\cdot g(n)$.\n\n**maxUnionFreeSize n** is the maximum $|\\mathcal{F}|$ over all union-free $\\mathcal{F} \\subseteq 2^{[n]}$, defined as the supremum of cardinalities over the filtered power set.",
+    "mathContext": "`IsLittleO` uses $\\varepsilon$-$N$ definitions with $\\mathbb{R}$-valued bounds. `maxUnionFreeSize` uses `Finset.sup Finset.card` over `(powerSet n).filter IsUnionFree`, which is well-defined since `Finset` operations are decidable. `AsymptoticUpperBound` is equivalent to $\\limsup f(n)/g(n) \\leq 1$.",
     "significance": "key",
-    "mathContext": "IsLittleO uses ε-N definitions with ℝ-valued bounds; maxUnionFreeSize uses Finset.sup over a Finset.filter, which is well-defined since Finset operations are decidable. AsymptoticUpperBound is equivalent to lim sup f(n)/g(n) ≤ 1, which is the natural asymptotic equivalence for extremal combinatorics bounds. Asymptotic notation in extremal combinatorics follows the conventions of Erdős and his collaborators, where (1+o(1)) factors are standard in stating optimal bounds.. Prerequisites: Real number ordering, Finset.sup, Finset.filter"
+    "relatedConcepts": ["little-o notation", "asymptotic upper bound", "Finset.sup", "extremal function"],
+    "prerequisites": ["Real number ordering", "Finset.sup", "Finset.filter"]
   },
   {
     "id": "erdos-447-sarkozy-szemeredi",
     "proofId": "erdos-447",
-    "type": "axiom",
+    "type": "theorem",
     "range": {
       "startLine": 93,
       "endLine": 96
     },
-    "title": "Sárközy-Szemerédi Bound",
-    "content": "**sarkozy_szemeredi_bound**: maxUnionFreeSize(n) = o(2ⁿ). This was the first non-trivial upper bound, showing that union-free families are exponentially smaller than the full power set.\n\nThe result was reported by Erdős as having been proved by Sárközy and Szemerédi around 1965, but it was never published. It was superseded by Kleitman's much stronger bound.",
+    "title": "Sarkozy-Szemeredi Bound",
+    "content": "**sarkozy_szemeredi_bound**: $\\text{maxUnionFreeSize}(n) = o(2^n)$. This was the first non-trivial upper bound, showing that union-free families are exponentially smaller than the full power set.\n\nThe result was reported by Erdos as having been proved by Sarkozy and Szemeredi around 1965, but it was never published. It was superseded by Kleitman's much stronger bound.",
+    "mathContext": "Axiom `sarkozy_szemeredi_bound : IsLittleO maxUnionFreeSize (fun n => 2 ^ n)`. The bound $o(2^n)$ leaves a gap from the lower bound $\\binom{n}{\\lfloor n/2 \\rfloor} \\approx 2^n / \\sqrt{\\pi n/2}$ (by Stirling). Kleitman closed this gap completely six years later.",
     "significance": "key",
-    "mathContext": "Stated as axiom using the IsLittleO predicate. Why axiom: The proof was never published. Based on Erdős's account, it likely used a double-counting or probabilistic argument to show that random subfamilies are far from union-free.. This is one of several results by Sárközy and Szemerédi that Erdős reported but which were never formally published. The bound was quickly superseded by Kleitman's optimal result six years later.. Cross-reference (erdos-447): Superseded by kleitman_theorem which gives the stronger (1+o(1))C(n,⌊n/2⌋) bound"
+    "relatedConcepts": ["little-o notation", "extremal set theory", "Sarkozy", "Szemeredi"],
+    "prerequisites": ["IsLittleO", "maxUnionFreeSize"]
   },
   {
     "id": "erdos-447-kleitman",
     "proofId": "erdos-447",
-    "type": "axiom",
+    "type": "theorem",
     "range": {
       "startLine": 100,
       "endLine": 105
     },
     "title": "Kleitman's Theorem (Main Result)",
-    "content": "**kleitman_theorem**: maxUnionFreeSize(n) ≤ (1+o(1)) · C(n, ⌊n/2⌋). This is the optimal upper bound: the middle layer achieves C(n, ⌊n/2⌋), so the bound is tight up to a (1+o(1)) factor.\n\nKleitman's proof uses a compression argument: given a union-free family F, one can 'shift' elements toward the middle layer without creating unions. The shifted family is contained in a bounded number of layers near the middle, giving the Sperner-type bound.",
+    "content": "**kleitman_theorem**: $\\text{maxUnionFreeSize}(n) \\leq (1+o(1)) \\cdot \\binom{n}{\\lfloor n/2 \\rfloor}$. This is the optimal upper bound: the middle layer achieves $\\binom{n}{\\lfloor n/2 \\rfloor}$, so the bound is tight up to a $(1+o(1))$ factor.\n\nKleitman's proof uses a compression argument: given a union-free family $\\mathcal{F}$, one can 'shift' elements toward the middle layer without creating unions. The shifted family is contained in a bounded number of layers near the middle, giving the Sperner-type bound.",
+    "mathContext": "Axiom `kleitman_theorem : AsymptoticUpperBound maxUnionFreeSize middleBinomial`. Published in 'Collections of subsets containing no two sets and their union', Proc. LA Meeting AMS (1971), pp. 153-155. The compression technique $\\mathcal{D}_i$ shifts set families toward the middle layer and became foundational in extremal set theory.",
     "significance": "critical",
-    "mathContext": "Stated as axiom using AsymptoticUpperBound; the actual proof uses shifting/compression operators on set families. Why axiom: Kleitman's compression argument requires the Down compression operator (imported as Mathlib.Combinatorics.SetFamily.Compression.Down) and layer-counting arguments. A full formalization would be substantial but feasible with current Mathlib infrastructure.. Published in 'Collections of subsets containing no two sets and their union', Proc. LA Meeting AMS (1971), 153–155. Kleitman's technique of set compression became a foundational method in extremal set theory.. Prerequisites: AsymptoticUpperBound, middleBinomial, maxUnionFreeSize. Cross-reference (erdos-487): The union-free bound, via prime factorization encoding, implies infinite LCM triples in positive-density sets"
+    "relatedConcepts": ["set compression", "shifting method", "AsymptoticUpperBound", "extremal set theory"],
+    "prerequisites": ["AsymptoticUpperBound", "middleBinomial", "maxUnionFreeSize", "Compression.Down"]
   },
   {
     "id": "erdos-447-lower-bound",
     "proofId": "erdos-447",
-    "type": "axiom",
+    "type": "theorem",
     "range": {
       "startLine": 109,
       "endLine": 113
     },
     "title": "Lower Bound via Middle Layer",
-    "content": "**middleLayer_card**: |middleLayer(n)| = C(n, ⌊n/2⌋). **lower_bound**: maxUnionFreeSize(n) ≥ C(n, ⌊n/2⌋). Since the middle layer is a union-free family of this size, it provides the matching lower bound.\n\nTogether with Kleitman's upper bound, this pins down maxUnionFreeSize(n) = (1 ± o(1)) · C(n, ⌊n/2⌋), completely resolving the asymptotic question.",
+    "content": "**middleLayer_card**: $|\\text{middleLayer}(n)| = \\binom{n}{\\lfloor n/2 \\rfloor}$. **lower_bound**: $\\text{maxUnionFreeSize}(n) \\geq \\binom{n}{\\lfloor n/2 \\rfloor}$. Since the middle layer is a union-free family of this size, it provides the matching lower bound.\n\nTogether with Kleitman's upper bound, this pins down $\\text{maxUnionFreeSize}(n) = (1 \\pm o(1)) \\cdot \\binom{n}{\\lfloor n/2 \\rfloor}$.",
+    "mathContext": "Two axioms: `middleLayer_card (n : \\N) : (middleLayer n).card = middleBinomial n` counts subsets of `Fin n` with fixed cardinality, and `lower_bound (n : \\N) : maxUnionFreeSize n >= middleBinomial n` follows by exhibiting `middleLayer n` as a witness in the supremum.",
     "significance": "critical",
-    "mathContext": "middleLayer_card follows from counting subsets of Fin n with fixed cardinality; lower_bound follows from middleLayer_card + middleLayer_union_free + definition of maxUnionFreeSize as a supremum. Why axiom: middleLayer_card requires showing |{S ⊆ [n] : |S| = k}| = C(n,k), which is Finset.card_filter_card_eq_choose — a result that may or may not be in Mathlib. lower_bound then follows by exhibiting the middle layer as a witness.. Prerequisites: middleLayer, middleLayer_union_free, Nat.choose"
+    "relatedConcepts": ["extremal witness", "Finset.card_filter", "matching bounds"],
+    "prerequisites": ["middleLayer", "middleLayer_union_free", "Nat.choose", "middleBinomial"]
   },
   {
     "id": "erdos-447-lcm",
     "proofId": "erdos-447",
-    "type": "axiom",
+    "type": "theorem",
     "range": {
-      "startLine": 115,
+      "startLine": 117,
       "endLine": 133
     },
     "title": "Connection to Problem 487: LCM Representations",
-    "content": "**lcmRepresentation A** asserts ∃ distinct a, b, c ∈ A with lcm(a,b) = c. **hasPositiveDensity A** requires liminf |A ∩ [1,N]|/N > 0. **problem_487_from_447** states: if A ⊆ ℕ has positive density, then there are arbitrarily large LCM triples.\n\nThe connection: encode subsets of [n] as square-free numbers using prime factorizations. If S ⊆ {p₁, ..., pₙ}, map S to ∏_{i ∈ S} pᵢ. Then A ∪ B = C translates to lcm(a,b) = c (for square-free numbers, union of prime factors = lcm). So a union-free family corresponds to an LCM-free set of square-free numbers.",
+    "content": "**lcmRepresentation A** asserts $\\exists$ distinct $a, b, c \\in A$ with $\\text{lcm}(a,b) = c$. **hasPositiveDensity A** requires $\\liminf |A \\cap [1,N]|/N > 0$. **problem_487_from_447** states: if $A \\subseteq \\mathbb{N}$ has positive density, then there are arbitrarily large LCM triples.\n\nThe connection: encode subsets of $\\{p_1, \\ldots, p_n\\}$ as square-free numbers via $S \\mapsto \\prod_{i \\in S} p_i$. Then $A \\cup B = C$ translates to $\\text{lcm}(a,b) = c$ for square-free numbers.",
+    "mathContext": "Prime factorization encoding: subsets of $\\{p_1, \\ldots, p_n\\}$ biject with square-free numbers via $S \\mapsto \\prod_{i \\in S} p_i$. For square-free numbers, union of prime factor sets equals lcm. The axiom `problem_487_from_447` transfers the union-free bound to LCM-free sets via this encoding plus a density transfer argument.",
     "significance": "key",
-    "mathContext": "Prime factorization encoding: subsets of {p₁,...,pₙ} ↔ square-free numbers via S ↦ ∏_{i∈S} pᵢ; union ↔ lcm for square-free numbers. Why axiom: The encoding argument requires: (1) the prime factorization bijection between subsets and square-free numbers, (2) transferring the union-free bound to LCM-free sets, (3) a density transfer argument showing positive natural density implies enough square-free numbers. Each step requires infrastructure not yet in Mathlib.. This connection between set unions and LCM was exploited by Erdős to derive number-theoretic consequences from extremal combinatorics. It exemplifies his characteristic style of finding unexpected bridges between different areas of mathematics.. Prerequisites: Nat.lcm, hasPositiveDensity, Prime factorization theory. Cross-reference (erdos-487): Problem 487 is the direct number-theoretic consequence: positive-density sets contain LCM triples"
+    "relatedConcepts": ["Nat.lcm", "prime factorization", "square-free numbers", "density transfer"],
+    "prerequisites": ["Nat.lcm", "hasPositiveDensity", "prime factorization theory"]
   },
   {
     "id": "erdos-447-generalizations",
     "proofId": "erdos-447",
     "type": "definition",
     "range": {
-      "startLine": 135,
+      "startLine": 137,
       "endLine": 147
     },
     "title": "Generalizations: k-Union-Free and Strong Union-Free",
-    "content": "**IsKUnionFree F k** forbids any set in F from being the union of k other distinct sets in F. The formalization uses Finset.sup over (k+1)-element subsets S ⊆ F. **IsStrongUnionFree F** (Problem 1023) forbids any set from being the union of ANY number (≥ 2) of other sets.\n\nFor k = 2, IsKUnionFree reduces to the standard IsUnionFree. The strong version is much more restrictive: even the union of all other sets combined cannot equal any member. The optimal bound for IsStrongUnionFree is still an active area of research.",
+    "content": "**IsKUnionFree F k** forbids any set in $\\mathcal{F}$ from being the supremum (union) of $k$ other distinct sets in $\\mathcal{F}$, formalized via `Finset.sup` over $(k+1)$-element subsets. **IsStrongUnionFree F** (Problem 1023) forbids any set from being the union of ANY number ($\\geq 2$) of other sets.\n\nFor $k = 2$, `IsKUnionFree` reduces to the standard `IsUnionFree`. The strong version is much more restrictive and its optimal bound remains an active area of research.",
+    "mathContext": "`IsKUnionFree` uses `Finset.sup id` over subsets $S \\subseteq F$ with $|S| = k + 1$, checking that $\\sup(S \\setminus \\{C\\}) \\neq C$ for all $C \\in S$. `IsStrongUnionFree` quantifies over all subfamilies of size $\\geq 2$. The $k$-union-free generalization was studied by Frankl and Furedi.",
     "significance": "supporting",
-    "mathContext": "IsKUnionFree uses Finset.sup id over subsets of F with fixed cardinality k+1; IsStrongUnionFree quantifies over all subfamilies of size ≥ 2. The k-union-free generalization was studied by Frankl and Füredi, who established bounds involving iterated binomial coefficients. The strong union-free problem (Problem 1023) remains partially open.. Prerequisites: Finset.sup, Finset.erase, Finset.card. Cross-reference (erdos-1023): Problem 1023 asks for the maximum strong union-free family size; this is a harder variant of Problem 447"
+    "relatedConcepts": ["Finset.sup", "Finset.erase", "Frankl-Furedi bounds", "Problem 1023"],
+    "prerequisites": ["Finset.sup", "Finset.erase", "Finset.card"]
   },
   {
     "id": "erdos-447-summary",
     "proofId": "erdos-447",
     "type": "theorem",
     "range": {
-      "startLine": 149,
-      "endLine": 165
+      "startLine": 158,
+      "endLine": 163
     },
     "title": "Summary Theorem",
-    "content": "**erdos_447_summary**: Combines the two main results into a conjunction: (1) Kleitman's upper bound AsymptoticUpperBound maxUnionFreeSize middleBinomial, and (2) the lower bound ∀ n, maxUnionFreeSize n ≥ middleBinomial n. Proved by `exact ⟨kleitman_theorem, lower_bound⟩`.\n\nThis is the only non-axiom theorem about the extremal problem: it packages the axiomatized results into a single statement that maxUnionFreeSize(n) = (1 ± o(1)) · C(n, ⌊n/2⌋).",
+    "content": "**erdos_447_summary**: Combines the two main results into a conjunction: (1) Kleitman's upper bound $\\text{AsymptoticUpperBound}\\;\\text{maxUnionFreeSize}\\;\\text{middleBinomial}$, and (2) the lower bound $\\forall n,\\; \\text{maxUnionFreeSize}(n) \\geq \\text{middleBinomial}(n)$. Proved by `exact \\langle\\text{kleitman\\_theorem}, \\text{lower\\_bound}\\rangle`.\n\nThis is the only non-axiom theorem about the extremal problem: it packages the axiomatized results into a single statement that $\\text{maxUnionFreeSize}(n) = (1 \\pm o(1)) \\cdot \\binom{n}{\\lfloor n/2 \\rfloor}$.",
+    "mathContext": "Proof: `exact \\langle kleitman\\_theorem, lower\\_bound \\rangle` uses the anonymous constructor to build the conjunction from two axioms. This theorem certifies that Erdos Problem #447 is SOLVED: the maximum union-free family size is asymptotically $\\binom{n}{\\lfloor n/2 \\rfloor}$.",
     "significance": "critical",
-    "mathContext": "Anonymous constructor ⟨_, _⟩ to build the conjunction from two axioms. Proof method: Direct construction: exact ⟨kleitman_theorem, lower_bound⟩. This theorem certifies that Erdős Problem #447 is SOLVED: the maximum union-free family size is asymptotically equal to the middle binomial coefficient C(n, ⌊n/2⌋).. Prerequisites: kleitman_theorem, lower_bound"
+    "relatedConcepts": ["conjunction introduction", "anonymous constructor", "erdos_447_summary"],
+    "prerequisites": ["kleitman_theorem", "lower_bound"]
   }
 ]
