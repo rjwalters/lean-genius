@@ -54,9 +54,103 @@ def IsCarmichael (n : ℕ) : Prop :=
 def satisfiesFermat (n : ℕ) : Prop :=
   ∀ a : ℕ, a^n % n = a % n
 
+/-
+## Korselt's Theorem (Forward Direction)
+
+We prove that Korselt's criterion implies the Fermat characterization.
+The key steps are:
+1. For each prime p | n with (p-1) | (n-1), show a^n ≡ a (mod p) using Fermat's little theorem
+2. Since n is squarefree, n = ∏ primes, and coprimality gives n | (a^n - a)
+-/
+
+/-- Fermat's little theorem with divisibility: if p is prime and (p-1) | (n-1),
+    then a^n ≡ a (mod p) -/
+theorem pow_mod_prime_of_dvd (p : ℕ) (hp : p.Prime) (n : ℕ) (hn : n ≥ 1)
+    (hdvd : (p - 1) ∣ (n - 1)) (a : ℕ) : a ^ n % p = a % p := by
+  have hfact : Fact (Nat.Prime p) := ⟨hp⟩
+  suffices h : (a : ZMod p) ^ n = (a : ZMod p) by
+    have h2 : ((a ^ n : ℕ) : ZMod p) = ((a : ℕ) : ZMod p) := by push_cast; exact h
+    rwa [ZMod.natCast_eq_natCast_iff'] at h2
+  by_cases ha : (a : ZMod p) = 0
+  · simp [ha, zero_pow (by omega : n ≠ 0)]
+  · obtain ⟨k, hk⟩ := hdvd
+    have hn1 : n = (p - 1) * k + 1 := by omega
+    rw [hn1, pow_add, pow_mul, pow_one]
+    have hfermat : (a : ZMod p) ^ (p - 1) = 1 :=
+      ZMod.pow_card_sub_one_eq_one ha
+    rw [hfermat, one_pow, one_mul]
+
+/-- Product of distinct primes from a Finset divides d if each prime divides d -/
+theorem prod_primes_dvd_of_each_dvd (S : Finset ℕ) (d : ℕ)
+    (hprime : ∀ p ∈ S, Nat.Prime p)
+    (hdvd : ∀ p ∈ S, p ∣ d) :
+    (∏ p ∈ S, p) ∣ d := by
+  induction S using Finset.induction_on with
+  | empty => simp
+  | @insert a s ha ih =>
+    rw [Finset.prod_insert ha]
+    have ha_prime := hprime a (Finset.mem_insert_self a s)
+    have ha_dvd := hdvd a (Finset.mem_insert_self a s)
+    have hs_prime : ∀ p ∈ s, Nat.Prime p := fun p hp =>
+      hprime p (Finset.mem_insert_of_mem hp)
+    have hs_dvd : ∀ p ∈ s, p ∣ d := fun p hp =>
+      hdvd p (Finset.mem_insert_of_mem hp)
+    have hprod_dvd := ih hs_prime hs_dvd
+    apply Nat.Coprime.mul_dvd_of_dvd_of_dvd _ ha_dvd hprod_dvd
+    apply Nat.Coprime.prod_right
+    intro p hp
+    have hp_prime := hprime p (Finset.mem_insert_of_mem hp)
+    have hne : a ≠ p := fun h => ha (h ▸ hp)
+    exact (ha_prime.coprime_iff_not_dvd).mpr fun h =>
+      hne (hp_prime.eq_one_or_self_of_dvd a h |>.resolve_left ha_prime.one_lt.ne')
+
+/-- a^n ≥ a for n ≥ 1 -/
+private theorem pow_ge_self' (a n : ℕ) (hn : n ≥ 1) : a ^ n ≥ a := by
+  rcases a with _ | a
+  · simp
+  · calc (a + 1) ^ n ≥ (a + 1) ^ 1 := Nat.pow_le_pow_right (by omega) hn
+      _ = a + 1 := pow_one _
+
+/-- Korselt's theorem (forward): Korselt's criterion implies the Fermat characterization -/
+theorem korselt_forward (n : ℕ) (hn : n > 1) (hsq : Squarefree n)
+    (hkor : ∀ p : ℕ, p.Prime → p ∣ n → (p - 1) ∣ (n - 1)) :
+    satisfiesFermat n := by
+  intro a
+  have hge := pow_ge_self' a n (by omega)
+  -- For each prime p | n: a^n ≡ a (mod p), hence p | (a^n - a)
+  have hdvd_each : ∀ p ∈ n.primeFactors, p ∣ (a ^ n - a) := by
+    intro p hp
+    have hprime := (Nat.mem_primeFactors.mp hp).1
+    have hpdvd := (Nat.mem_primeFactors.mp hp).2.1
+    have hmeq : a ≡ a ^ n [MOD p] :=
+      (pow_mod_prime_of_dvd p hprime n (by omega) (hkor p hprime hpdvd) a).symm
+    rwa [Nat.modEq_iff_dvd' hge] at hmeq
+  -- Since n is squarefree, n = ∏ p in n.primeFactors, p
+  have hprod_dvd : (∏ p ∈ n.primeFactors, p) ∣ (a ^ n - a) :=
+    prod_primes_dvd_of_each_dvd n.primeFactors (a ^ n - a)
+      (fun p hp => (Nat.mem_primeFactors.mp hp).1)
+      hdvd_each
+  have hprod_eq : ∏ p ∈ n.primeFactors, p = n :=
+    Nat.prod_primeFactors_of_squarefree hsq
+  have hn_dvd : n ∣ (a ^ n - a) := by
+    have : (∏ p ∈ n.primeFactors, p) ∣ (a ^ n - a) := hprod_dvd
+    rwa [hprod_eq] at this
+  obtain ⟨k, hk⟩ := hn_dvd
+  have : a ^ n = n * k + a := by omega
+  rw [this, Nat.mul_add_mod]
+
+/-- Korselt's theorem (backward): the Fermat characterization implies Korselt's criterion.
+    Requires primitive roots and is more technical; axiomatized. -/
+axiom korselt_backward :
+  ∀ n : ℕ, n > 1 → ¬n.Prime → satisfiesFermat n → satisfiesKorselt n
+
 /-- Korselt's theorem: the two definitions are equivalent -/
-axiom korselt_theorem :
-  ∀ n : ℕ, n > 1 → ¬n.Prime → (satisfiesKorselt n ↔ satisfiesFermat n)
+theorem korselt_theorem (n : ℕ) (hn : n > 1) (hnp : ¬n.Prime) :
+    satisfiesKorselt n ↔ satisfiesFermat n := by
+  constructor
+  · intro ⟨hsq, hkor⟩
+    exact korselt_forward n hn hsq hkor
+  · exact korselt_backward n hn hnp
 
 /-
 ## Small Carmichael Numbers
@@ -951,7 +1045,7 @@ theorem carmichael_korselt_via_primeFactors (n : ℕ) (h : IsCarmichael n)
     Since n has ≥3 distinct prime factors p₁ < p₂ < p₃, and n ≥ p₁·p₂·p₃ ≥ p₁³,
     we get p₁ ≤ n^{1/3}. Stated as: p₁³ ≤ n. -/
 theorem carmichael_smallest_prime_cube_le (n : ℕ) (h : IsCarmichael n) (p : ℕ)
-    (hp : p.Prime) (hpn : p ∣ n)
+    (hp : p.Prime) (_hpn : p ∣ n)
     (hmin : ∀ q : ℕ, q.Prime → q ∣ n → p ≤ q) :
     p ^ 3 ≤ n := by
   -- n has ≥ 3 prime factors
