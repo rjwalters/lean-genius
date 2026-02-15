@@ -23,31 +23,43 @@
     "mathlibDependencies": [
       {
         "theorem": "Nat.primeCounting",
-        "description": "Prime counting function",
+        "description": "Prime counting function π(x)",
         "module": "Mathlib.NumberTheory.PrimeCounting"
       },
       {
         "theorem": "Asymptotics.IsEquivalent",
-        "description": "Asymptotic equivalence notation",
-        "module": "Mathlib.Analysis.Asymptotics.Asymptotics"
+        "description": "Asymptotic equivalence notation (~[filter])",
+        "module": "Mathlib.Analysis.Asymptotics.Defs"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm on ℝ",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "intervalIntegral",
+        "description": "Integration over intervals for Li(x) definition",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic"
       }
     ],
     "originalContributions": [
-      "Multiple equivalent formulations (ratio, asymptotic, error term, Li)",
-      "Consequences: prime density, nth prime, Mertens sum",
-      "Connection to Riemann Hypothesis and error bounds"
+      "Multiple equivalent formulations (ratio, asymptotic, error term, Li) with proved equivalences",
+      "Consequences: prime density → 0, nth prime ~ n ln n, Mertens sum, prime gaps",
+      "Connection to Riemann Hypothesis via von Koch's conditional error bound",
+      "Chebyshev's pre-PNT bounds as elementary comparison"
     ],
     "dateAdded": "12/29/25"
   },
   "overview": {
-    "historicalContext": "The Prime Number Theorem was conjectured by Legendre (1798) and Gauss (1849), then proved independently by Hadamard and de la Vallee Poussin in 1896. It describes how primes become less frequent as numbers grow, with approximately x/ln(x) primes up to x.",
-    "problemStatement": "**Theorem**: The prime counting function pi(x) satisfies:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x)}{x/\\ln x} = 1$$\n\nEquivalently, pi(x) ~ x/ln(x), meaning the ratio approaches 1 as x approaches infinity.",
-    "proofStrategy": "The modern proof uses complex analysis and the Riemann zeta function. Key steps include establishing a zero-free region for zeta(s) on the line Re(s) = 1, then applying Tauberian theorems to convert this analytic information into the asymptotic formula for pi(x).",
+    "historicalContext": "The Prime Number Theorem was conjectured by Legendre (1798) and Gauss (1849, in the form π(x) ~ Li(x)), then proved independently by Hadamard and de la Vallée Poussin in 1896 using the non-vanishing of ζ(1+it). Erdős and Selberg gave an elementary proof in 1949. Avigad et al. provided the first formal proof in Isabelle (2004), and Kontorovich, Tao, et al. completed a full Lean 4 formalization (2024) in the PrimeNumberTheoremAnd project.",
+    "problemStatement": "**Theorem**: The prime counting function π(x) satisfies:\n\n$$\\lim_{x \\to \\infty} \\frac{\\pi(x)}{x/\\ln x} = 1$$\n\nEquivalently, π(x) ~ x/ln(x). The density of primes near x is approximately 1/ln(x), and the logarithmic integral Li(x) = ∫₂ˣ dt/ln t gives a substantially better numerical approximation.",
+    "proofStrategy": "The analytic proof (Hadamard, de la Vallée Poussin) establishes a zero-free region for ζ(s) on Re(s) = 1 using the identity 3 + 4cos(θ) + cos(2θ) ≥ 0, then applies Tauberian theorems to convert this analytic information into the asymptotic formula. The formalization axiomatizes PNT based on the PrimeNumberTheoremAnd project, then derives consequences and equivalent formulations.",
     "keyInsights": [
-      "The distribution of primes is governed by the Riemann zeta function",
-      "Li(x) = integral from 2 to x of dt/ln(t) is a better approximation than x/ln(x)",
-      "The Riemann Hypothesis would give the optimal error term O(sqrt(x) log(x))",
-      "Chebyshev's bounds (1852) showed the limit, if it exists, must be 1"
+      "The distribution of primes is governed by the Riemann zeta function via Euler's product ζ(s) = Π_p(1−p⁻ˢ)⁻¹",
+      "Li(x) = ∫₂ˣ dt/ln(t) is a far better approximation than x/ln(x) — at 10⁹, Li is off by 1,701 vs x/ln x off by 2.6 million",
+      "The Riemann Hypothesis would give the optimal error term O(√x · log x) via von Koch's theorem",
+      "Chebyshev's bounds (1852) showed the limit, if it exists, must be 1 — 44 years before existence was proved",
+      "Four equivalent formulations — ratio, asymptotic, error term, Li — are all proved equivalent in the formalization"
     ]
   },
   "sections": [
@@ -56,30 +68,58 @@
       "title": "Basic Definitions",
       "startLine": 66,
       "endLine": 90,
-      "summary": "Prime counting function and approximation functions."
+      "summary": "Defines primePi (via Mathlib's Nat.primeCounting), primeApprox (x/ln x), and logIntegral Li(x) = ∫₂ˣ dt/ln t."
     },
     {
       "id": "main-theorem",
       "title": "The Prime Number Theorem",
       "startLine": 92,
       "endLine": 130,
-      "summary": "Multiple formulations: ratio, equivalence, error term, logarithmic integral."
+      "summary": "Four equivalent formulations: ratio (π·ln x/x → 1), asymptotic (π ~ x/ln x), error (π − x/ln x = o(x/ln x)), and Li form (π ~ Li)."
+    },
+    {
+      "id": "equivalences",
+      "title": "Equivalence of Formulations",
+      "startLine": 127,
+      "endLine": 188,
+      "summary": "Axiomatized equivalences between all four PNT formulations, including Li(x) ~ x/ln(x) via asymptotic expansion."
+    },
+    {
+      "id": "main-axiom",
+      "title": "The Main Theorem (Axiomatized)",
+      "startLine": 190,
+      "endLine": 216,
+      "summary": "PNT axiomatized based on PrimeNumberTheoremAnd project; corollaries derive asymptotic and Li forms."
     },
     {
       "id": "consequences",
-      "title": "Consequences",
+      "title": "Consequences of PNT",
       "startLine": 218,
       "endLine": 310,
-      "summary": "Prime density, nth prime asymptotics, Mertens sum, prime gaps."
+      "summary": "Prime density → 0, nth prime ~ n ln n, Mertens' sum of reciprocals ~ ln ln x, and prime gaps are sublinear."
+    },
+    {
+      "id": "rh-connection",
+      "title": "Stronger Versions (Conditional on RH)",
+      "startLine": 308,
+      "endLine": 351,
+      "summary": "Riemann Hypothesis stated; von Koch's theorem gives |π(x)−Li(x)| = O(√x ln x) conditionally."
+    },
+    {
+      "id": "elementary-bounds",
+      "title": "Elementary Bounds",
+      "startLine": 353,
+      "endLine": 410,
+      "summary": "Chebyshev's pre-PNT bounds (0.92 < π·ln x/x < 1.11), infinitude of primes, and Euler product connection."
     }
   ],
   "conclusion": {
-    "summary": "The Prime Number Theorem is one of the crowning achievements of 19th century mathematics, connecting the discrete world of primes to the continuous world of analysis through the Riemann zeta function.",
-    "implications": "The PNT has applications in cryptography, computational number theory, and forms the foundation for understanding prime distribution. It also motivates the Riemann Hypothesis.",
+    "summary": "The Prime Number Theorem is one of the crowning achievements of 19th century mathematics, connecting the discrete world of primes to the continuous world of analysis through the Riemann zeta function. The formalization presents four equivalent formulations with axiomatized equivalences, derives key consequences, and connects to the Riemann Hypothesis.",
+    "implications": "PNT is foundational for cryptography (RSA key generation relies on prime density estimates), computational number theory (primality testing algorithms), and modern analytic number theory. It motivates the Riemann Hypothesis and underpins results from Dirichlet's theorem to the Green-Tao theorem on primes in arithmetic progressions.",
     "openQuestions": [
-      "The Riemann Hypothesis: do all non-trivial zeros of zeta have real part 1/2?",
-      "What is the true size of the error term |pi(x) - Li(x)|?",
-      "Can we prove PNT by elementary methods with good error bounds?"
+      "The Riemann Hypothesis: do all non-trivial zeros of ζ(s) have real part 1/2?",
+      "What is the true size of the error term |π(x) − Li(x)|? (Cramér's conjecture: O(√x · ln²x))",
+      "Can PNT be proved elementarily with error bounds matching the analytic proof?"
     ]
   }
 }
