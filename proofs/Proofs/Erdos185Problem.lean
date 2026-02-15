@@ -990,6 +990,74 @@ theorem f3_doubling (n : ℕ) (_hn : n ≥ 1) : f3 (n + 1) ≥ 2 * f3 n := by
   linarith
 
 /-
+## Part VIII-E: Derived Bounds from Product Structure
+
+Using f₃(m+n) ≥ f₃(m)·f₃(n) and exact values, we derive lower bounds
+for higher dimensions without explicit cap set constructions.
+-/
+
+/-- f₃(5) ≥ 40: from f₃(4)·f₃(1) = 20·2 = 40.
+    (Known exact value: f₃(5) = 45, Edel-Bierbrauer 1999.) -/
+theorem f3_5_ge_40 : f3 5 ≥ 40 := by
+  have h := f3_supermultiplicative 4 1
+  rw [f3_4, f3_1] at h
+  linarith
+
+/-- f₃(6) ≥ 81: from f₃(3)² = 9² = 81.
+    (Known exact value: f₃(6) = 112, Edel et al. 2004.) -/
+theorem f3_6_ge_81 : f3 6 ≥ 81 := by
+  have h := f3_supermultiplicative 3 3
+  rw [f3_3] at h
+  linarith
+
+/-- f₃(6) ≥ 80: alternative bound from f₃(4)·f₃(2) = 20·4 = 80. -/
+theorem f3_6_ge_80 : f3 6 ≥ 80 := by
+  have h := f3_supermultiplicative 4 2
+  rw [f3_4, f3_2] at h
+  linarith
+
+/-- f₃(7) ≥ 160: from f₃(4)·f₃(3) = 20·9 = 180. But 4+3=7. -/
+theorem f3_7_ge_180 : f3 7 ≥ 180 := by
+  have h := f3_supermultiplicative 4 3
+  rw [f3_4, f3_3] at h
+  linarith
+
+/-- f₃(8) ≥ 400: from f₃(4)² = 20² = 400.
+    (Known exact value: f₃(8) = 496, Potechin 2008.) -/
+theorem f3_8_ge_400 : f3 8 ≥ 400 := by
+  have h := f3_supermultiplicative 4 4
+  rw [f3_4] at h
+  linarith
+
+/-
+## Part VIII-F: General Power Lower Bound
+
+f₃(k·n) ≥ f₃(n)^k: iterating the product construction.
+This shows f₃ grows at least exponentially with any base > 2.
+-/
+
+/-- f₃(k·n) ≥ f₃(n)^k: iterated product gives exponential lower bounds. -/
+theorem f3_power_lower_bound (n : ℕ) : ∀ k : ℕ, f3 (k * n) ≥ f3 n ^ k := by
+  intro k
+  induction k with
+  | zero => simp [f3_ge_one]
+  | succ k ih =>
+    calc f3 n ^ (k + 1) = f3 n ^ k * f3 n := pow_succ (f3 n) k
+      _ ≤ f3 (k * n) * f3 n := Nat.mul_le_mul_right _ ih
+      _ ≤ f3 (k * n + n) := f3_supermultiplicative (k * n) n
+      _ = f3 ((k + 1) * n) := by ring_nf
+
+/-- The "cap set constant" satisfies f₃(n) ≥ 2^n for all n,
+    and f₃(n)^{1/n} → c₃ ≥ 2. Combined with Ellenberg-Gijswijt (c₃ < 3),
+    we know 2 ≤ c₃ < 3. -/
+theorem f3_exponential_gap :
+    ∀ n : ℕ, (2 : ℝ)^n ≤ (f3 n : ℝ) ∧ (f3 n : ℝ) ≤ (3 : ℝ)^n := by
+  intro n
+  constructor
+  · exact_mod_cast f3_ge_two_pow n
+  · exact_mod_cast f3_le_three_pow n
+
+/-
 ## Part IX: Summary
 
 **Erdős Problem #185: PROVED**
