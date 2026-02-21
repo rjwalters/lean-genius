@@ -18,7 +18,7 @@
       "wiedijk-100"
     ],
     "badge": "original",
-    "sorries": 4,
+    "sorries": 2,
     "mathlibDependencies": [
       {
         "theorem": "Finset.Nonempty",
@@ -35,7 +35,10 @@
       "Formalization of cube dissection definitions",
       "Statement of the impossibility theorem",
       "Proof framework using infinite descent",
-      "Comparison with squaring the square"
+      "Comparison with squaring the square",
+      "Proved chain_length_bounded via Fintype.card_le_of_injective",
+      "Proved smallest_cube_top_is_floor via Finset.exists_min_image",
+      "Created DissectionOfCubesOQ01.lean: formalized collision pairs and minimum collision lower bound"
     ],
     "dateAdded": "12/28/25"
   },

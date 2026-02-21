@@ -42,7 +42,11 @@ The proof proceeds by infinite descent:
 - [x] Definitions for cube dissections
 - [x] Key structural lemmas
 - [x] Proof framework using well-foundedness
-- [ ] Complete proof (some sorries for geometric details)
+- [x] `chain_length_bounded`: proved via Fintype.card_le_of_injective (injectivity from strict decrease)
+- [x] `smallest_cube_top_is_floor`: proved via Finset.exists_min_image
+- [ ] `smaller_cube_above`: needs 3D geometric covering formalization (axiom)
+- [ ] `all_different_implies_long_chains`: depends on smaller_cube_above (axiom)
+- [ ] Complete geometric covering proof (requires formal 3D tiling axioms)
 
 ## Historical Note
 
@@ -91,7 +95,6 @@ structure Cube where
   side : ℝ
   /-- Side length is positive -/
   side_pos : 0 < side
-  deriving Repr
 
 /-- The side length of a cube -/
 def Cube.size (c : Cube) : ℝ := c.side
@@ -151,34 +154,31 @@ touching any horizontal "floor" must have its top face entirely surrounded
 by taller cubes. This creates a new floor at a higher level.
 -/
 
-/-- The set of cubes touching the bottom (z = 0) -/
-def CubeDissection.cubesTouchingBottom (d : CubeDissection) : Finset Cube :=
+/-- The set of cubes touching the bottom (z = 0).
+    Uses classical decidability since equality of reals is not decidable constructively. -/
+noncomputable def CubeDissection.cubesTouchingBottom (d : CubeDissection) : Finset Cube :=
+  haveI : DecidablePred (fun c : Cube => c.touchesBottom) := fun c => Classical.propDecidable _
   d.cubes.filter (fun c => c.touchesBottom)
 
 /-- The set of cubes touching a horizontal plane at height h -/
-def CubeDissection.cubesTouchingPlane (d : CubeDissection) (h : ℝ) : Finset Cube :=
+noncomputable def CubeDissection.cubesTouchingPlane (d : CubeDissection) (h : ℝ) : Finset Cube :=
+  haveI : DecidablePred (fun c : Cube => c.z = h) := fun c => Classical.propDecidable _
   d.cubes.filter (fun c => c.z = h)
 
-/-- If a dissection has all different sizes, the smallest cube on the floor
-    has its top face covered by strictly smaller cubes -/
-/-- **Axiom: Smallest cube on floor has minimal size property.**
+/-- **Theorem: Smallest cube on floor has minimal size property.**
 
-    The existence of a minimal element follows from Finset.Nonempty and the
-    well-ordering on finite sets of positive reals. The smallest cube on any
-    floor has its top face covered by strictly smaller cubes due to the
-    "all different sizes" constraint. -/
-axiom smallest_cube_top_is_floor_axiom (d : CubeDissection) (h_diff : d.allDifferentSizes)
-    (h_nonempty : d.cubesTouchingBottom.Nonempty) :
-    ∃ c ∈ d.cubesTouchingBottom,
-      (∀ c' ∈ d.cubesTouchingBottom, c.size ≤ c'.size) ∧ True
-
+    The existence of a minimal element follows from `Finset.exists_min_image` applied
+    to the nonempty set of cubes touching the bottom, ordered by side length.
+    This is the key starting point for the infinite descent argument. -/
 lemma smallest_cube_top_is_floor (d : CubeDissection) (h_diff : d.allDifferentSizes)
     (h_nonempty : d.cubesTouchingBottom.Nonempty) :
     ∃ c ∈ d.cubesTouchingBottom,
       (∀ c' ∈ d.cubesTouchingBottom, c.size ≤ c'.size) ∧
       -- The top face of c (at height c.side) is covered by other cubes
-      True :=
-  smallest_cube_top_is_floor_axiom d h_diff h_nonempty
+      True := by
+  obtain ⟨c, hc_mem, hc_min⟩ :=
+    Finset.exists_min_image d.cubesTouchingBottom Cube.size h_nonempty
+  exact ⟨c, hc_mem, hc_min, trivial⟩
 
 -- ============================================================
 -- PART 4: The Infinite Descent Argument
@@ -226,18 +226,34 @@ lemma all_different_implies_long_chains (d : CubeDissection) (h_diff : d.allDiff
     ∀ n : ℕ, hasDecreasingChain d n :=
   all_different_implies_long_chains_axiom d h_diff
 
-/-- **Axiom: A decreasing chain length is bounded by the set cardinality.**
+/-- **Theorem: A decreasing chain length is bounded by the set cardinality.**
 
     A strictly decreasing chain of cubes must have all distinct elements
-    (since sizes are strictly decreasing). Therefore the chain length cannot
-    exceed the total number of cubes in the finite set. -/
-axiom chain_length_bounded_axiom (d : CubeDissection) (n : ℕ) (h : hasDecreasingChain d n) :
-    n ≤ d.cubes.card
-
-/-- The cardinality bound: a decreasing chain in a finite set can't exceed the set size -/
+    (since sizes are strictly decreasing, different positions give different cubes).
+    Therefore the chain length cannot exceed the total number of cubes. -/
 lemma chain_length_bounded (d : CubeDissection) (n : ℕ) (h : hasDecreasingChain d n) :
-    n ≤ d.cubes.card :=
-  chain_length_bounded_axiom d n h
+    n ≤ d.cubes.card := by
+  obtain ⟨chain, hchain_mem, hchain_decr⟩ := h
+  -- The chain is injective: strictly decreasing sizes imply distinct cubes
+  have hinj : Function.Injective chain := by
+    intro i j hij
+    rcases lt_trichotomy i j with h1 | rfl | h1
+    · -- i < j: (chain j).size < (chain i).size, but chain i = chain j implies equal sizes
+      have hlt := hchain_decr i j h1
+      have heq : (chain i).size = (chain j).size := congr_arg Cube.size hij
+      linarith
+    · rfl
+    · -- j < i: symmetric case
+      have hlt := hchain_decr j i h1
+      have heq : (chain i).size = (chain j).size := congr_arg Cube.size hij
+      linarith
+  -- Lift chain to the subtype ↥d.cubes and apply Fintype cardinality bound
+  let chain' : Fin n → ↥d.cubes := fun i => ⟨chain i, hchain_mem i⟩
+  have hinj' : Function.Injective chain' := fun i j hij => hinj (Subtype.mk.inj hij)
+  have h1 : Fintype.card (Fin n) ≤ Fintype.card ↥d.cubes :=
+    Fintype.card_le_of_injective chain' hinj'
+  simp only [Fintype.card_fin, Fintype.card_coe] at h1
+  exact h1
 
 -- ============================================================
 -- PART 5: The Main Theorem
