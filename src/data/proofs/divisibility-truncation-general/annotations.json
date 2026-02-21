@@ -1,32 +1,30 @@
-{
-  "annotations": [
-    {
-      "lineStart": 46,
-      "lineEnd": 66,
-      "type": "key-theorem",
-      "title": "General Positive Osculator Theorem",
-      "content": "The main theorem: for any d coprime to 10 and c satisfying d | 10c-1, we have d | n ↔ d | (n/10 + c*(n%10)). The proof uses the key algebraic identity 10*(q+cr) = n + (10c-1)*r, proved by `linear_combination -hdiv`."
-    },
-    {
-      "lineStart": 82,
-      "lineEnd": 123,
-      "type": "key-theorem",
-      "title": "General Negative Osculator Theorem",
-      "content": "Symmetric theorem for the negative osculator case: d | 10c+1 gives d | n ↔ d | (n/10 - c*(n%10)). Used for d=7,11,17 where 10c ≡ -1 (mod d)."
-    },
-    {
-      "lineStart": 37,
-      "lineEnd": 44,
-      "type": "key-step",
-      "title": "Division-Modulus Identity",
-      "content": "The foundation: n = 10*(n/10) + n%10 cast to ℤ. This is proved by `push_cast; omega` using Nat.div_add_mod. Used as `hdiv` in both main theorems via `linear_combination -hdiv`."
-    },
-    {
-      "lineStart": 129,
-      "lineEnd": 145,
-      "type": "example",
-      "title": "Classical Rules as Corollaries",
-      "content": "Seven (c=2, neg): 10*2+1=21=3*7. Eleven (c=1, neg): 10*1+1=11. Thirteen (c=4, pos): 10*4-1=39=3*13. These are the classic pencil-and-paper divisibility rules now proved as one-liners from the general theorem."
-    }
-  ]
-}
+[
+  {
+    "lineStart": 46,
+    "lineEnd": 66,
+    "type": "key-theorem",
+    "title": "General Positive Osculator Theorem",
+    "content": "The main theorem: for any d coprime to 10 and c satisfying d | 10c-1, we have d | n ↔ d | (n/10 + c*(n%10)). The proof uses the key algebraic identity 10*(q+cr) = n + (10c-1)*r, proved by `linear_combination -hdiv`."
+  },
+  {
+    "lineStart": 82,
+    "lineEnd": 123,
+    "type": "key-theorem",
+    "title": "General Negative Osculator Theorem",
+    "content": "Symmetric theorem for the negative osculator case: d | 10c+1 gives d | n ↔ d | (n/10 - c*(n%10)). Used for d=7,11,17 where 10c ≡ -1 (mod d)."
+  },
+  {
+    "lineStart": 37,
+    "lineEnd": 44,
+    "type": "key-step",
+    "title": "Division-Modulus Identity",
+    "content": "The foundation: n = 10*(n/10) + n%10 cast to ℤ. This is proved by `push_cast; omega` using Nat.div_add_mod. Used as `hdiv` in both main theorems via `linear_combination -hdiv`."
+  },
+  {
+    "lineStart": 129,
+    "lineEnd": 145,
+    "type": "example",
+    "title": "Classical Rules as Corollaries",
+    "content": "Seven (c=2, neg): 10*2+1=21=3*7. Eleven (c=1, neg): 10*1+1=11. Thirteen (c=4, pos): 10*4-1=39=3*13. These are the classic pencil-and-paper divisibility rules now proved as one-liners from the general theorem."
+  }
+]
