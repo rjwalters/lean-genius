@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended Yang-Mills formalization from 916 to 1140+ lines. Added exactly solvable 2D Yang-Mills with Migdal formula (proved area law and string tension positivity), transfer matrix formalism (proved mass gap from eigenvalue ratio), and Polyakov loop confinement/deconfinement theory (proved mutual exclusivity). 50+ proven theorems total.",
+    "progressSummary": "PROGRESS: Added Parts XVIII-XIX (232 lines). SU(2) representation theory with Casimir values proved (C₂=3/4 fundamental, C₂=2 adjoint). Center symmetry Z_N structure with Z_2={1,-1} classification and confinement/deconfinement connection. Fixed 3 pre-existing build errors. File: 1365 lines, 0 sorries, 13 axioms.",
     "builtItems": [
       "LatticeSite, LatticeLink types (YangMillsMassGap.lean)",
       "LinkVariable, LatticeGaugeTransform structures",
@@ -52,7 +52,24 @@
       "partition_dominated_by_ground_state: λ₁/λ₀ < 1 when gapped",
       "PolyakovLoop structure",
       "ConfinedPhase, DeconfinedPhase structures",
-      "confinement_deconfinement_exclusive: proved mutual exclusivity"
+      "confinement_deconfinement_exclusive: proved mutual exclusivity",
+      "SU2Representation structure with j, dim, dim_eq fields",
+      "su2Casimir function: j*(j+1)",
+      "su2Trivial, su2Fundamental, su2Adjoint instances",
+      "su2TrivialCasimir, su2FundamentalCasimir, su2AdjointCasimir proofs",
+      "su2AdjointCasimir_gt_fundamental, su2Casimir_adjoint_fundamental_ratio",
+      "su2Casimir_grows: higher-spin Casimirs grow as j²",
+      "su2FundamentalStringTension: σ = 3g²/16 for SU(2) fundamental",
+      "CenterElement structure (phase, power_one, norm_one)",
+      "centerIdentity: trivial center element ω=1",
+      "su2CenterNontrivial: center element ω=-1",
+      "su2_center_classification: C(SU(2)) = {1, -1} proved by factoring ω²-1",
+      "su2_has_two_center_elements: two distinct center elements",
+      "centerTransformPolyakov: P → ω·P center transformation",
+      "centerTransform_preserves_zero: ω·0 = 0",
+      "confinement_implies_center_symmetry_unbroken: confined ↔ Z_N unbroken",
+      "deconfinement_implies_center_symmetry_broken: deconfined → ∃P: ω·P ≠ P",
+      "stringTension_center_symmetric: string tension is Z_N invariant"
     ],
     "insights": [
       "Lattice gauge theory is the most tractable part of Yang-Mills formalization",
@@ -66,7 +83,15 @@
       "Transfer matrix eigenvalue ratio directly gives mass gap",
       "Polyakov loop serves as order parameter for confinement transition",
       "Confinement/deconfinement is a clean logical dichotomy",
-      "The linter may revert file changes during Docker builds - need to reapply after"
+      "The linter may revert file changes during Docker builds - need to reapply after",
+      "Added SU(2) representation theory: trivial (j=0, C₂=0), fundamental (j=1/2, C₂=3/4), adjoint (j=1, C₂=2)",
+      "Proved SU(2) Casimir formula C₂(j) = j(j+1) with specific values via norm_num",
+      "Proved string tension for SU(2) fundamental: σ = 3g²/16 from Migdal formula",
+      "Added center symmetry Z_N structure: CenterElement structure with phase^N=1 constraint",
+      "Proved Z_2 = {1, -1} for SU(2): factorization (ω-1)(ω+1)=0 from ω²=1",
+      "Proved confinement ↔ center symmetry unbroken: confined phase has ω·P = 0 = P",
+      "Proved deconfinement → center symmetry broken: deconfined P has -P ≠ P",
+      "Fixed 3 pre-existing build errors: migdal_area_law, correlation_decay_rate, partition_dominated"
     ],
     "mathlibGaps": [
       "Principal bundles",
