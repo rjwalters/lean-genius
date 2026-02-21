@@ -46,10 +46,24 @@
       "startLine": 57,
       "endLine": 72,
       "summary": "Sawhney: max = N/25 for large N, extremal sets are {n ≡ 7 or 18 (mod 25)}."
+    },
+    {
+      "id": "squarefree-theory",
+      "title": "Squarefree Number Theory",
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "IsSquarefree definition, quadratic residue structure, and van Doorn's bound via p² | ab+1."
+    },
+    {
+      "id": "extremal-structure",
+      "title": "Extremal Set Characterization",
+      "startLine": 90,
+      "endLine": 105,
+      "summary": "Uniqueness of the mod-25 extremal sets and structural characterization for large N."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Sárközy (1992) asked for the maximum size of A ⊆ {1,...,N} such that ab + 1 is never squarefree for a, b ∈ A. The sets {n ≡ 7 (mod 25)} and {n ≡ 18 (mod 25)} satisfy the property because 7·7 + 1 = 50 = 2·5², so 5² always divides ab + 1 for these residue classes. Van Doorn gave an upper bound of ≈ 0.108N. Sawhney proved the answer is exactly N/25 for large N.",
+    "historicalContext": "**Erdős and Sárközy** (1992) asked for the maximum size of $A \\subseteq \\{1,\\ldots,N\\}$ such that $ab + 1$ is never squarefree for all $a, b \\in A$. The key construction uses residue classes modulo 25: for $a \\equiv b \\equiv 7 \\pmod{25}$, $ab + 1 \\equiv 50 \\equiv 0 \\pmod{25}$, so $5^2 \\mid ab+1$; similarly for $a \\equiv b \\equiv 18 \\pmod{25}$ (since $18^2+1 = 325 = 13 \\cdot 25$). This gives lower bound $\\lfloor N/25 \\rfloor$. **Van Doorn** improved the upper bound to $\\approx 0.108N$ using quadratic residue arguments ($a^2 + 1 \\equiv 0 \\pmod{p^2}$ for primes $p \\equiv 1 \\pmod{4}$). **Weisenberg** refined this further. Finally, **Sawhney** proved the exact answer is $N/25$ for sufficiently large $N$, with the extremal sets being precisely the two mod-25 residue classes.",
     "problemStatement": "Determine the maximum size of A ⊆ {1,...,N} such that ab + 1 is never squarefree for all a, b ∈ A.",
     "proofStrategy": "We define IsSquarefree constructively, axiomatize maxNonSqfreeSet, and record the mod 25 lower bound, van Doorn's upper bound, and Sawhney's exact solution with structural characterization.",
     "keyInsights": [
