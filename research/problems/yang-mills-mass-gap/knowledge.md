@@ -160,3 +160,36 @@ The mass gap is connected to:
 **Reality Check**: This is arguably the hardest Millennium Problem mathematically. Even stating it precisely requires substantial infrastructure.
 
 **Next Scout**: Long-term project - QFT formalization is a major undertaking
+
+---
+
+## Session 2026-02-21 (Session 1) - SU(2) Representation Theory and Center Symmetry
+
+**Mode**: REVISIT (pool status correction + fresh work on in-progress problem)
+**Outcome**: progress
+
+### What I Did
+- Fixed pool status inconsistencies (2d-navier-stokes, navier-stokes-existence, bounded-prime-gaps marked as skipped but were completed)
+- Claimed yang-mills-mass-gap for fresh iteration
+- Added Part XVIII: SU(2) Representation Theory (Casimir values)
+- Added Part XIX: Center Symmetry Z_N
+- Fixed 3 pre-existing build errors (migdal_area_law, correlation_decay_rate, partition_dominated_by_ground_state)
+- All new theorems proved with 0 sorries
+
+### Key Findings
+- SU(2) spin-j Casimir: C₂(j) = j(j+1); for j=1/2 gives 3/4, j=1 gives 2
+- SU(2) string tension from Migdal formula: σ = g²·(3/4)/(2·2) = 3g²/16
+- Z_2 center classification: ω²=1 and |ω|=1 gives ω ∈ {1, -1} via polynomial factoring
+- Confinement ↔ center symmetry unbroken: confined phase has ω·P = 0 = P for all P
+- Deconfinement → center symmetry broken: ∃P with -P ≠ P when P ≠ 0
+
+### Files Modified
+- `proofs/Proofs/YangMillsMassGap.lean`: 1133 → 1365 lines (+232), 0 sorries, fixed 3 build errors
+- `src/data/research/problems/yang-mills-mass-gap.json`: Updated knowledge fields
+- `research/problems/yang-mills-mass-gap/knowledge.md`: This session log
+
+### Next Steps
+- Add SU(2) heat kernel expansion: Z = Σ (2j+1)² exp(-j(j+1)·A/β)
+- Instantiate MigdalFormula with concrete SU(2) values
+- Add center symmetry group structure (CenterElement forms a group under multiplication)
+- Explore SU(3) Z_3 center with complex cube roots of unity
