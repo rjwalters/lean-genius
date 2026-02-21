@@ -28,8 +28,15 @@
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Module imports and problem overview for Erdős Problem #330 on minimal bases with positive density."
+    },
+    {
       "id": "definitions",
-      "title": "Definitions",
+      "title": "Core Definitions",
       "startLine": 23,
       "endLine": 55,
       "summary": "IsRepresentable, IsAsympBasis, upperDensity, HasPosDensity, IsMinimalBasis, unrepresentableWithout."
@@ -39,7 +46,7 @@
       "title": "Known Results",
       "startLine": 57,
       "endLine": 72,
-      "summary": "Minimal bases have infinitely many unrep. integers upon removal; minimal bases with positive density exist."
+      "summary": "Minimal bases have infinitely many unrep. integers upon removal; minimal bases with positive density exist (Härtter-Stöhr)."
     },
     {
       "id": "open-question",
@@ -47,10 +54,17 @@
       "startLine": 74,
       "endLine": 85,
       "summary": "Does a minimal basis with positive density exist where each element's removal leaves a positive-density set unrepresentable?"
+    },
+    {
+      "id": "implications",
+      "title": "Implications and Context",
+      "startLine": 86,
+      "endLine": 100,
+      "summary": "Connection to Erdős-Nathanson theory, quantitative minimality, and broader additive combinatorics."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Nathanson posed this question about minimal additive bases. A set A is a basis of order h if every large enough integer is a sum of at most h elements of A. A basis is minimal if removing any element destroys the property. Härtter (1956) and Stöhr (1955) showed minimal bases with positive density exist, but whether the stronger property (each removal yields positive-density unrepresentables) holds is unknown.",
+    "historicalContext": "**Erdős Problem #330** was posed by Erdős and Nathanson in their study of minimal additive bases. A set $A \\subseteq \\mathbb{N}$ is an **asymptotic basis of order $h$** if every sufficiently large integer is representable as a sum of at most $h$ elements from $A$. A basis is **minimal** if removing any single element destroys this property — every element is qualitatively essential.\n\nThe foundational existence results come from Stöhr (1955) and Härtter (1956), who showed that minimal asymptotic bases with **positive upper density** exist for every order $h \\geq 2$. Problem #330 asks for a stronger quantitative property: not just that each removal destroys the basis, but that it leaves a **positive-density set** of integers unrepresentable. This remains an **open problem** as of 2025.",
     "problemStatement": "Does there exist a minimal asymptotic additive basis A ⊂ ℕ of order h with positive upper density such that for every n ∈ A, the set of integers not representable without n also has positive upper density?",
     "proofStrategy": "We define representability, asymptotic basis, upper density (axiomatized), minimality, and the unrepresentable set constructively. Known existence results are recorded as axioms. The open question is formalized as an existential statement.",
     "keyInsights": [
