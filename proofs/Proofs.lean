@@ -96,6 +96,7 @@ import Proofs.InfinitudePrimes
 import Proofs.InfinitudePrimes4k1
 import Proofs.InfinitudePrimes4k3
 import Proofs.IntermediateValueTheorem
+import Proofs.InverseGalois
 import Proofs.IsoperimetricTheorem
 import Proofs.IsoscelesTriangle
 import Proofs.KeplerConjecture

@@ -1,0 +1,86 @@
+{
+  "slug": "abel-ruffini-oq-01",
+  "title": "The Inverse Galois Problem: Does every finite group appear as a Galois group ...",
+  "phase": "IN_PROGRESS",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "IN_PROGRESS",
+    "since": "2026-02-21T19:21:07.129Z",
+    "iteration": 1,
+    "focus": "First formalization: formal conjecture statement, cyclotomic Galois theory, abelian/solvable realization results",
+    "blockers": [],
+    "nextAction": "Look for cyclotomic irreducibility in Mathlib, then prove more concrete cyclic group realizations",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: First session complete. Created full gallery entry with formal conjecture, cyclotomic Galois theory, specific examples. Key Mathlib infrastructure identified.",
+    "builtItems": [
+      "proofs/Proofs/InverseGalois.lean: full gallery proof file (11 proven theorems, 3 axioms, 4 sorries)",
+      "src/data/proofs/inverse-galois/meta.json: gallery metadata",
+      "src/data/proofs/inverse-galois/annotations.json: 8 mathematical annotations",
+      "src/data/proofs/inverse-galois/index.ts: TypeScript gallery registration",
+      "research/problems/abel-ruffini-oq-01/knowledge.md: this knowledge file"
+    ],
+    "insights": [
+      "IsCyclotomicExtension.isGalois proves CyclotomicField n \u211a is Galois over \u211a",
+      "IsCyclotomicExtension.Aut.commGroup gives abelian Galois group for cyclotomic extensions",
+      "galCyclotomicEquivUnitsZMod: Gal(\u03a6\u2099/\u211a) \u2245 (ZMod n)\u02e3 when cyclotomic poly is irreducible",
+      "Cyclotomic irreducibility over \u211a (Gauss 1801) is NOT a standalone Mathlib theorem - assumed as hypothesis in Mathlib",
+      "A\u2085 is not solvable - proved in Lean. Shafarevich's theorem not in Lean.",
+      "Known results: abelian groups (Kronecker-Weber), solvable groups (Shafarevich), S\u2099 (Hilbert)",
+      "The IGP is genuinely open - best known open case is Mathieu group M\u2082\u2083",
+      "(ZMod p)\u02e3 is cyclic of order p-1 for prime p - gives cyclic group realizations"
+    ],
+    "mathlibGaps": [
+      "Polynomial.cyclotomic n \u211a is irreducible: classical theorem not directly stated in Mathlib as standalone",
+      "Kronecker-Weber theorem: every abelian extension of \u211a is cyclotomic - not in Mathlib",
+      "Hilbert irreducibility theorem: needed for symmetric group realization - not in Mathlib",
+      "Shafarevich theorem on solvable groups: deep algebraic number theory - not in Lean"
+    ],
+    "nextSteps": [
+      "Search Mathlib for a theorem like 'cyclotomic n is irreducible over \u211a' - maybe under minpoly/isAlgebraic",
+      "Consider proving C\u2099 realizability for small n using explicit polynomial constructions",
+      "Look for S\u2083 realization using explicit polynomial f(x) = x\u00b3 - 2 (discriminant -108, Galois group S\u2083)",
+      "Check if Mathlib has Kronecker-Weber in any form (even partial)",
+      "Build computation of finrank of CyclotomicField n \u211a using IsCyclotomicExtension.finrank"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "challenging",
+    "algebra",
+    "galois-theory",
+    "group-theory",
+    "field-theory",
+    "classic",
+    "intermediate"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-21T19:21:07.129Z",
+  "lastUpdate": "2026-02-21T19:30:00Z",
+  "significance": 6,
+  "tractability": 6
+}
