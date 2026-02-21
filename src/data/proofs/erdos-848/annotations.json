@@ -7,7 +7,7 @@
     "title": "Problem Overview",
     "content": "Erdős Problem 848 asks for the maximum size of A ⊆ {1,...,N} such that ab + 1 is never squarefree for all a, b ∈ A. Solved by Sawhney: the answer is ⌊N/25⌋ for large N.",
     "mathContext": "The problem sits at the intersection of extremal combinatorics and multiplicative number theory. The non-squarefreeness constraint ab + 1 ≡ 0 (mod p²) for some prime p forces elements of A into specific residue classes. The extremal sets are arithmetic progressions mod 25, arising from 5² | ab + 1 when a ≡ b ≡ 7 or 18 (mod 25).",
-    "significance": "essential",
+    "significance": "key",
     "relatedConcepts": ["extremal-combinatorics", "squarefree", "multiplicative-number-theory"]
   },
   {
@@ -18,7 +18,7 @@
     "title": "Squarefree Definition",
     "content": "**`IsSquarefree n`** holds when no prime squared divides n. Equivalently, in the prime factorization n = Π p^{aₚ}, all exponents aₚ are 0 or 1.",
     "mathContext": "The density of squarefree numbers is 6/π² ≈ 0.608. Most numbers are squarefree, so requiring ab + 1 to be non-squarefree is a non-trivial constraint.",
-    "significance": "essential",
+    "significance": "key",
     "relatedConcepts": ["squarefree-density", "prime-factorization"]
   },
   {
@@ -29,7 +29,7 @@
     "title": "Non-Squarefree Product Property",
     "content": "**`HasNonSqfreeProductProp A`** requires that for ALL pairs a, b ∈ A (including a = b), the product ab + 1 is not squarefree. **`maxNonSqfreeSet N`** is the maximum cardinality of such a set in {1,...,N}.",
     "mathContext": "The 'including a = b' part means a² + 1 must also be non-squarefree for every a ∈ A. Since a² + 1 ≡ 0 (mod p²) has 2 solutions mod p² for p ≡ 1 (mod 4) and 0 for p ≡ 3 (mod 4), this constrains A to specific residue classes.",
-    "significance": "essential",
+    "significance": "key",
     "relatedConcepts": ["extremal-sets", "quadratic-residues"]
   },
   {
@@ -40,7 +40,7 @@
     "title": "Mod 25 Construction (Lower Bound)",
     "content": "The set {n ≡ 7 (mod 25)} satisfies the property: for a ≡ b ≡ 7 (mod 25), ab + 1 ≡ 49 + 1 = 50 ≡ 0 (mod 25), so 5² | ab + 1. This gives |A| ≈ N/25.",
     "mathContext": "The residue 7 mod 25 satisfies 7² + 1 = 50 = 2 · 25, so 25 | a² + 1 for all a ≡ 7 (mod 25). Similarly 18² + 1 = 325 = 13 · 25. The symmetry 7 + 18 = 25 reflects the two square roots of -1 mod 25.",
-    "significance": "essential",
+    "significance": "key",
     "relatedConcepts": ["construction", "modular-arithmetic", "lower-bound"]
   },
   {
@@ -62,7 +62,7 @@
     "title": "Sawhney's Exact Solution",
     "content": "**Sawhney's theorem**: For all sufficiently large N, maxNonSqfreeSet(N) = ⌊N/25⌋. The extremal construction is tight.",
     "mathContext": "This closes the gap between the N/25 lower bound and the 0.108N upper bound. The proof uses modern tools from additive combinatorics and the structure of multiplicative characters modulo prime squares.",
-    "significance": "essential",
+    "significance": "key",
     "relatedConcepts": ["exact-solution", "additive-combinatorics"]
   },
   {
@@ -73,7 +73,7 @@
     "title": "Structural Characterization of Extremal Sets",
     "content": "Any extremal set of size N/25 for large N must consist entirely of elements ≡ 7 (mod 25) or entirely of elements ≡ 18 (mod 25). No mixing of residue classes is possible.",
     "mathContext": "This uniqueness result (up to the 7 ↔ 18 symmetry) is stronger than just determining the maximum size. It says the extremal configuration is rigid: any set achieving the maximum must be one of exactly two arithmetic progressions.",
-    "significance": "essential",
+    "significance": "key",
     "relatedConcepts": ["uniqueness", "stability", "extremal-graph-theory"]
   }
 ]
