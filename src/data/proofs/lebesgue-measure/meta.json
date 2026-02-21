@@ -30,6 +30,21 @@
         "theorem": "MeasurableSet",
         "description": "Measurable sets",
         "module": "Mathlib.MeasureTheory.MeasurableSpace.Basic"
+      },
+      {
+        "theorem": "lintegral_tendsto_of_tendsto_of_monotone",
+        "description": "Monotone convergence theorem for lintegral",
+        "module": "Mathlib.MeasureTheory.Integral.Lebesgue.Basic"
+      },
+      {
+        "theorem": "tendsto_integral_of_dominated_convergence",
+        "description": "Dominated convergence theorem for Bochner integral",
+        "module": "Mathlib.MeasureTheory.Integral.DominatedConvergence"
+      },
+      {
+        "theorem": "integral_prod",
+        "description": "Fubini's theorem for product measures",
+        "module": "Mathlib.MeasureTheory.Measure.Prod"
       }
     ],
     "originalContributions": [
@@ -40,46 +55,123 @@
     "dateAdded": "12/29/25"
   },
   "overview": {
-    "historicalContext": "Lebesgue introduced his measure and integral in his 1901 thesis, revolutionizing analysis. Unlike the Riemann integral, the Lebesgue integral handles limits more gracefully, enabling powerful theorems like dominated convergence.",
-    "problemStatement": "**Lebesgue Measure**: There exists a complete, translation-invariant measure mu on R^n such that:\n- mu([a,b]) = b - a for intervals\n- mu is countably additive on disjoint measurable sets\n- The measurable sets form a sigma-algebra containing all Borel sets",
-    "proofStrategy": "Construct Lebesgue outer measure using infima of covering collections of intervals. Define measurable sets using Caratheodory's criterion. Verify the measure has the required properties.",
+    "historicalContext": "Henri Lebesgue (1875-1941) introduced his measure and integral in his 1902 doctoral thesis *Intégrale, longueur, aire*, submitted at the Sorbonne under Émile Borel's influence. The work resolved fundamental limitations of Bernhard Riemann's 1854 integral, which could not handle limits of integrable functions or highly discontinuous functions like Dirichlet's indicator of the rationals. Lebesgue's key innovation was to partition the *range* of a function rather than its domain, enabling integration of a vastly larger class of functions. Constantin Carathéodory (1914) later provided an elegant alternative construction via outer measures and his measurability criterion, which is the approach used in Mathlib. Giuseppe Vitali's 1905 construction of a non-measurable set showed that not every subset of $\\mathbb{R}$ can be assigned a measure, demonstrating the necessity of restricting to a $\\sigma$-algebra. The Lebesgue integral's powerful limit theorems — monotone convergence (Beppo Levi, 1906) and dominated convergence (Lebesgue, 1910) — became indispensable tools, forming the foundation of Andrey Kolmogorov's axiomatization of probability theory (1933) and the $L^p$ spaces central to Stefan Banach's functional analysis.",
+    "problemStatement": "**Lebesgue Measure**: There exists a complete, translation-invariant measure $\\mu$ on $\\mathbb{R}^n$ such that:\n- $\\mu([a,b]) = b - a$ for intervals\n- $\\mu$ is countably additive on disjoint measurable sets\n- The measurable sets form a $\\sigma$-algebra containing all Borel sets\n- $\\mu(E + c) = \\mu(E)$ for all measurable $E$ and $c \\in \\mathbb{R}$",
+    "proofStrategy": "Mathlib constructs Lebesgue measure via **Haar measure theory** on the locally compact group $(\\mathbb{R}, +)$. The construction uses the Carathéodory extension theorem: define an outer measure from infima of coverings by intervals, then restrict to sets satisfying Carathéodory's measurability criterion. This file demonstrates the key properties and convergence theorems that make Lebesgue integration indispensable: translation invariance, measure of intervals, monotone and dominated convergence, and Fubini's theorem for product measures.",
     "keyInsights": [
-      "Lebesgue measure extends 'length' far beyond intervals",
-      "Not all sets are measurable (Vitali set construction)",
-      "The Lebesgue integral is more powerful than Riemann's",
-      "Foundation for probability theory and modern analysis"
+      "**Carathéodory's criterion** provides a clean characterization of measurable sets: $E$ is measurable iff $\\mu^*(A) = \\mu^*(A \\cap E) + \\mu^*(A \\setminus E)$ for all $A$, making the $\\sigma$-algebra structure automatic",
+      "**Translation invariance uniquely determines** Lebesgue measure up to a scalar multiple — any translation-invariant Borel measure on $\\mathbb{R}$ is a constant times Lebesgue measure, a deep consequence of Haar measure theory",
+      "**Dominated convergence is the workhorse theorem** of modern analysis: it provides the minimal hypotheses (pointwise a.e. convergence plus an integrable bound) under which limits commute with integrals, replacing the far more restrictive uniform convergence condition",
+      "**Vitali's non-measurable set** (1905) uses the Axiom of Choice to construct a set with no consistent measure, proving that the restriction to $\\sigma$-algebras is unavoidable — not a technical inconvenience but a mathematical necessity",
+      "**The Lebesgue integral unifies** probability and analysis: Kolmogorov's axioms (1933) define probability as a measure, expected values as Lebesgue integrals, and the strong law of large numbers as a consequence of dominated convergence"
     ]
   },
   "sections": [
     {
-      "id": "outer-measure",
-      "title": "Outer Measure Construction",
-      "startLine": 50,
-      "endLine": 120,
-      "summary": "Building measure via coverings by intervals."
+      "id": "imports-and-docstring",
+      "title": "Imports and Documentation",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Imports from Mathlib's measure theory, integration, and topology libraries. The module docstring outlines the five main results formalized: Lebesgue measure construction, translation invariance, monotone convergence, dominated convergence, and Fubini's theorem."
     },
     {
-      "id": "measurable-sets",
-      "title": "Measurable Sets",
-      "startLine": 120,
-      "endLine": 200,
-      "summary": "Caratheodory criterion and sigma-algebra."
+      "id": "measure-construction",
+      "title": "Lebesgue Measure on $\\mathbb{R}$",
+      "startLine": 62,
+      "endLine": 100,
+      "summary": "Demonstrates that `volume` in Mathlib is the Lebesgue measure on $\\mathbb{R}$. Proves $\\mu([a,b]) = b-a$, $\\mu((a,b)) = b-a$, $\\mu(\\{x\\}) = 0$, and $\\mu(\\mathbb{R}) = \\infty$ using Mathlib's `Real.volume_Icc` and related lemmas."
     },
     {
-      "id": "properties",
-      "title": "Key Properties",
-      "startLine": 200,
-      "endLine": 280,
-      "summary": "Translation invariance, completeness, countable additivity."
+      "id": "translation-invariance",
+      "title": "Translation Invariance",
+      "startLine": 102,
+      "endLine": 128,
+      "summary": "Establishes that Lebesgue measure is left-invariant under addition: $\\mu(E + c) = \\mu(E)$. This follows from Mathlib's Haar measure infrastructure via `IsAddLeftInvariant` and `measure_preimage_add`."
+    },
+    {
+      "id": "lebesgue-integral",
+      "title": "The Lebesgue Integral",
+      "startLine": 130,
+      "endLine": 170,
+      "summary": "Introduces both the `lintegral` ($[0,\\infty]$-valued) and Bochner integral (signed/complex-valued) notations. Proves integration of constants over intervals, linearity $\\int(f+g) = \\int f + \\int g$, and scalar multiplication $\\int(cf) = c\\int f$."
+    },
+    {
+      "id": "monotone-convergence",
+      "title": "Monotone Convergence Theorem",
+      "startLine": 172,
+      "endLine": 210,
+      "summary": "Proves the monotone convergence theorem: if $f_n \\nearrow f$ pointwise, then $\\int f_n \\to \\int f$. Also proves the series corollary $\\int \\sum_n f_n = \\sum_n \\int f_n$ via `lintegral_tsum`."
+    },
+    {
+      "id": "dominated-convergence",
+      "title": "Dominated Convergence Theorem",
+      "startLine": 212,
+      "endLine": 239,
+      "summary": "Proves the dominated convergence theorem: if $|f_n| \\leq g$ for integrable $g$ and $f_n \\to f$ a.e., then $\\int f_n \\to \\int f$. Delegates to Mathlib's `tendsto_integral_of_dominated_convergence`."
+    },
+    {
+      "id": "fubini-theorem",
+      "title": "Fubini's Theorem",
+      "startLine": 241,
+      "endLine": 294,
+      "summary": "Proves both the Tonelli form (non-negative functions: iterated lintegral equals product lintegral) and the general Fubini form (integrable functions: order of iterated integrals can be swapped). Uses Mathlib's `lintegral_prod` and `integral_prod`."
+    },
+    {
+      "id": "completeness-null-sets",
+      "title": "Completeness and Null Sets",
+      "startLine": 296,
+      "endLine": 324,
+      "summary": "Shows that countable sets have measure zero and applies this to prove $\\mu(\\mathbb{Q}) = 0$. Notes the Cantor set as a famous example of an uncountable null set."
+    },
+    {
+      "id": "riemann-comparison",
+      "title": "Comparison with Riemann Integration",
+      "startLine": 326,
+      "endLine": 370,
+      "summary": "Proves that bounded measurable functions on $[a,b]$ are Lebesgue integrable. Axiomatizes the Dirichlet function integral $\\int_{[0,1]} \\mathbf{1}_{\\mathbb{Q}} = 0$ as a demonstration that Lebesgue integration handles functions that are not Riemann integrable."
+    },
+    {
+      "id": "applications",
+      "title": "Applications and $L^p$ Spaces",
+      "startLine": 372,
+      "endLine": 413,
+      "summary": "Demonstrates $L^2$ space membership and states Holder's inequality. Includes verification `#check` statements confirming the formalized theorems are well-typed."
     }
   ],
   "conclusion": {
-    "summary": "Lebesgue measure is the foundation of modern analysis and probability. It provides the right notion of 'size' for doing integration theory in full generality.",
-    "implications": "Applications include probability theory, functional analysis, harmonic analysis, and PDEs. The Lebesgue integral's limit theorems are essential throughout mathematics.",
+    "summary": "This formalization demonstrates the core infrastructure of Lebesgue measure theory as built in Mathlib: the measure itself (via Haar measure on $\\mathbb{R}$), its key properties (translation invariance, interval measure, null sets), and the three great convergence theorems (monotone, dominated, Fubini). The proofs leverage Mathlib's deep measure theory library, showing how formal mathematics can present these foundational results with full rigor.",
+    "implications": "Lebesgue measure and integration underpin virtually all of modern analysis: probability theory rests on measure spaces (Kolmogorov's axioms), functional analysis uses $L^p$ spaces built from the Lebesgue integral, Fourier analysis requires $L^2$ completeness, and PDE theory relies on Sobolev spaces defined via weak derivatives and Lebesgue integrability. The dominated convergence theorem alone is invoked thousands of times across mathematical research, making it arguably the single most useful theorem in analysis.",
     "openQuestions": [
-      "What is the structure of non-measurable sets?",
-      "How does Lebesgue measure generalize to infinite dimensions?",
-      "What are the connections to fractal dimension?"
+      "Can the Dirichlet function integral axiom be replaced by a full proof using Mathlib's `integral_eq_zero_of_ae` and the countability of $\\mathbb{Q}$?",
+      "Can Holder's inequality be formally stated and proved rather than axiomatized as `True`?",
+      "How does Lebesgue measure generalize to infinite-dimensional spaces, where no translation-invariant $\\sigma$-finite measure exists (a result relevant to path integrals in quantum mechanics)?",
+      "What is the measure-theoretic relationship between the Cantor set (uncountable, measure zero) and sets of positive measure but empty interior?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "fundamental-theorem-calculus",
+      "relationship": "The Fundamental Theorem of Calculus holds in the Lebesgue setting: if $f$ is absolutely continuous, then $f' \\in L^1$ and $\\int_a^b f' = f(b) - f(a)$."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "Fourier series convergence in $L^2$ relies on the completeness of the Lebesgue $L^2$ space and the Riesz-Fischer theorem."
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "The Central Limit Theorem is stated and proved using measure-theoretic probability, where random variables are measurable functions and expectations are Lebesgue integrals."
+    },
+    {
+      "targetId": "laws-of-large-numbers",
+      "relationship": "The Strong Law of Large Numbers uses dominated convergence and measure-theoretic tools to establish almost sure convergence of sample means."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "The integral Cauchy-Schwarz inequality $|\\int fg| \\leq \\|f\\|_2 \\|g\\|_2$ is a special case of Holder's inequality in the Lebesgue $L^2$ space."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "Cantor's theorem that $\\mathbb{R}$ is uncountable connects to the existence of uncountable null sets (like the Cantor set) and non-measurable sets (Vitali's construction)."
+    }
+  ]
 }
