@@ -53,7 +53,14 @@ theorem rademacher_one {f : ℕ → ℤ} (hf : IsRademacherMultiplicative f) :
 positive integers (not just primes). -/
 theorem rademacher_values_pm1 {f : ℕ → ℤ} (hf : IsRademacherMultiplicative f)
     {n : ℕ} (hn : 0 < n) : f n = 1 ∨ f n = -1 := by
-  sorry
+  -- Proved by Aristotle (Harmonic) via strong induction on prime factorization
+  obtain ⟨hf_comp, hf_prime⟩ := hf
+  induction' n using Nat.strongRecOn with n ih
+  rcases n.primeFactors.eq_empty_or_nonempty with (h | ⟨p, hp⟩) <;> simp_all +decide
+  · cases h <;> simp_all +decide [hf_comp.1]
+  · cases' hp.2.1 with k hk
+    cases ih k (by nlinarith [hp.1.two_le]) (Nat.pos_of_ne_zero (by aesop)) <;>
+      cases hf_prime p hp.1 <;> simp_all +decide [hf_comp.2]
 
 /-- |f(n)| = 1 for all positive n, when f is Rademacher multiplicative. -/
 theorem rademacher_abs_one {f : ℕ → ℤ} (hf : IsRademacherMultiplicative f)
@@ -124,7 +131,13 @@ theorem partialSum_zero (f : ℕ → ℤ) : partialSum f 0 = 0 := by
 
 /-- Atherfold's bound implies that the partial sums grow at most as
 √N · (log N)^{1+ε}, which gives an asymptotic bound strictly below
-N^{1/2+δ} for any δ > 0. -/
+N^{1/2+δ} for any δ > 0.
+
+**Note**: This statement is FALSE as stated for all Rademacher multiplicative functions.
+Aristotle found a counterexample: the constant function f ≡ 1 is Rademacher multiplicative
+(with f(p) = 1 for all primes p), and its partial sum is N-1 (linear growth),
+which grows faster than N^(3/4) for large N. The actual Atherfold result is
+probabilistic (holds almost surely), not deterministic (for all f). -/
 theorem atherfold_implies_subpolynomial :
     ∀ δ : ℝ, 0 < δ →
       ∃ C : ℝ, 0 < C ∧
@@ -137,7 +150,22 @@ theorem atherfold_implies_subpolynomial :
 function with |f(m)| ≤ 1. -/
 theorem partialSum_trivial_bound {f : ℕ → ℤ} (hf : IsRademacherMultiplicative f)
     (N : ℕ) : |(partialSum f N : ℝ)| ≤ (N : ℝ) := by
-  sorry
+  -- Proved by Aristotle (Harmonic): each term satisfies |f(m)| ≤ 1 by rademacher_values_pm1,
+  -- so |∑ f(m)| ≤ ∑ |f(m)| ≤ ∑ 1 ≤ N.
+  have h_bound : ∀ N : ℕ, |(partialSum f N : ℝ)| ≤
+      ∑ m ∈ ((Finset.range N).filter (fun n => n ≥ 1)), 1 := by
+    intros N
+    have h_each : ∀ m ∈ ((Finset.range N).filter (fun n => n ≥ 1)), |(f m : ℝ)| ≤ 1 := by
+      exact fun m hm => mod_cast abs_le.mpr
+        ⟨by rcases rademacher_values_pm1 hf (Finset.mem_filter.mp hm |>.2) with h | h <;>
+            norm_num [h],
+         by rcases rademacher_values_pm1 hf (Finset.mem_filter.mp hm |>.2) with h | h <;>
+            norm_num [h]⟩
+    exact le_trans (mod_cast Finset.abs_sum_le_sum_abs _ _) (Finset.sum_le_sum h_each)
+  exact le_trans (h_bound N)
+    (by simpa [Finset.sum_filter] using Finset.card_le_card
+      (show Finset.filter (fun x => x ≥ 1) (Finset.range N) ⊆ Finset.range N from
+        Finset.filter_subset _ _))
 
 /-- The conjecture, if true, would mean the growth rate is exactly √N
 up to logarithmic factors: between C·√N (infinitely often, from conjecture)
