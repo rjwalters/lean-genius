@@ -1,0 +1,103 @@
+{
+  "id": "bezout-identity-oq-02",
+  "title": "Euclid's Lemma via coprime_iff_linear_combination",
+  "slug": "bezout-identity-oq-02",
+  "description": "Euclid's lemma proved formally using coprime_iff_linear_combination: if gcd(a,b)=1 and a|b·c, then a|c. The witness x·c+y·k is constructed directly from Bézout coefficients and the divisibility assumption.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euclid%27s_lemma",
+    "date": "~300 BCE (formalized 2026)",
+    "status": "verified",
+    "tags": ["number-theory", "algorithms", "classic", "beginner", "bezout", "euclid"],
+    "proofRepoPath": "Proofs/BezoutIdentityOQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {"theorem": "Nat.gcd_eq_gcd_ab", "description": "Bézout's identity for naturals: gcd(a,b) = a * gcdA + b * gcdB", "module": "Mathlib.Data.Nat.GCD.Basic"},
+      {"theorem": "Nat.gcdA / Nat.gcdB", "description": "Explicit Bézout coefficients for natural numbers", "module": "Mathlib.Data.Nat.GCD.Basic"},
+      {"theorem": "Int.natCast_dvd_natCast", "description": "Divisibility preserved under ℕ → ℤ cast: m ∣ n ↔ (↑m : ℤ) ∣ ↑n", "module": "Mathlib.Data.Int.GCD"},
+      {"theorem": "Nat.Prime.coprime_iff_not_dvd", "description": "Prime p is coprime to n iff p does not divide n", "module": "Mathlib.Data.Nat.Prime.Basic"},
+      {"theorem": "Nat.eq_one_of_dvd_one", "description": "If n ∣ 1 in ℕ, then n = 1", "module": "Mathlib.Data.Nat.GCD.Basic"}
+    ],
+    "originalContributions": [
+      "coprime_iff_linear_combination: Nat.Coprime a b ↔ ∃ x y : ℤ, a*x + b*y = 1 (re-proved for self-containment)",
+      "euclids_lemma_int: Euclid's lemma for integers via IsCoprime, with explicit witness u*c + v*k proved by linear_combination v*hk - c*huv",
+      "euclids_lemma_nat: Euclid's lemma for naturals using coprime_iff_linear_combination as the bridge to integer arithmetic",
+      "euclids_lemma_prime: classic prime version (p prime, p|a*b → p|a or p|b) via Nat.Prime.coprime_iff_not_dvd",
+      "Four worked examples with concrete Bézout witnesses and verification"
+    ],
+    "dateAdded": "2026-02-21"
+  },
+  "overview": {
+    "historicalContext": "**Euclid's Lemma** is one of the oldest and most fundamental results in number theory, appearing in Euclid's *Elements* (~300 BCE) as Proposition VII.30: *'If a prime p divides the product a·b, then p divides a or p divides b.'*\n\nThe modern algebraic proof via Bézout's identity was understood much later. The key insight: if gcd(p, a) = 1, then Bézout's identity gives integers x, y with p·x + a·y = 1. Multiplying by b: p·x·b + a·b·y = b. Since p divides both p·x·b and (using the hypothesis) a·b, p must divide b.\n\nIn Lean 4, this argument is crystallized by the `coprime_iff_linear_combination` theorem: `Nat.Coprime a b ↔ ∃ x y : ℤ, a*x + b*y = 1`. This converts the arithmetic fact 'gcd = 1' into the algebraic witness needed for the proof. The `linear_combination` tactic then closes the goal in a single line.",
+    "problemStatement": "**Euclid's Lemma (Natural Number Version)**:\n\nIf `Nat.Coprime a b` (i.e., gcd(a, b) = 1) and `a ∣ b * c`, then `a ∣ c`.\n\n**Prime Version**: If p is prime and `p ∣ a * b`, then `p ∣ a` or `p ∣ b`.\n\n**Open Question**: Can this be formally proved using `coprime_iff_linear_combination` as the core tool?\n\n**Answer**: YES — see `euclids_lemma_nat` in this formalization.",
+    "proofStrategy": "The proof strategy has four steps:\n\n1. **Extract Bézout coefficients**: Apply `coprime_iff_linear_combination` to get x, y : ℤ with `a*x + b*y = 1`\n\n2. **Cast to ℤ**: Convert `a ∣ b*c` (ℕ) to `(a:ℤ) ∣ (b:ℤ)*(c:ℤ)` using `exact_mod_cast`, get k with `b*c = a*k`\n\n3. **Construct witness**: The divisibility `a ∣ c` is witnessed by `x*c + y*k`. The key identity:\n   `c = (a*x + b*y)*c = a*(x*c) + (b*c)*y = a*(x*c) + (a*k)*y = a*(x*c + y*k)`\n   proved by `linear_combination y * hk - c * hbez`\n\n4. **Cast back**: Use `rw [← Int.natCast_dvd_natCast]` to return to ℕ\n\nThe `linear_combination` verification checks: `y*(b*c - a*k) - c*(a*x + b*y - 1) = 0` by ring.",
+    "keyInsights": [
+      "**coprime_iff_linear_combination is the right bridge**: It converts 'gcd = 1' (arithmetic) into 'Bézout coefficients exist' (algebraic). The algebraic form is what makes the multiplication argument work.",
+      "**The witness is explicit**: `x*c + y*k` where `a*x + b*y = 1` and `b*c = a*k`. No choice or magic — the witness is deterministic from the hypotheses.",
+      "**linear_combination closes the algebra**: Once you have the witness, `linear_combination y * hk - c * hbez` is a ring identity checked automatically.",
+      "**Working in ℤ avoids subtraction issues**: Natural number arithmetic doesn't support negative Bézout coefficients. Casting to ℤ, doing the algebra, and casting back is the clean path.",
+      "**IsCoprime IS the Bézout condition**: In Lean 4, `IsCoprime a b = ∃ u v, u*a + v*b = 1`, so `euclids_lemma_int` is the most direct version."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports",
+      "startLine": 1,
+      "endLine": 5,
+      "summary": "Imports GCD basics for naturals, GCD for integers (Bézout coefficients), coprime ring theory (IsCoprime), prime number basics, and Tactic (linear_combination, exact_mod_cast)."
+    },
+    {
+      "id": "module-docstring",
+      "title": "Module Documentation",
+      "startLine": 7,
+      "endLine": 39,
+      "summary": "Documents the open question (can coprime_iff_linear_combination prove Euclid's lemma?), the answer (yes!), the key proof idea with the explicit witness x*c + y*k, and proof status (0 sorries)."
+    },
+    {
+      "id": "coprime-iff",
+      "title": "coprime_iff_linear_combination (Core Tool)",
+      "startLine": 42,
+      "endLine": 78,
+      "summary": "Re-proves coprime_iff_linear_combination: Nat.Coprime a b ↔ ∃ x y : ℤ, a*x + b*y = 1. Forward direction uses Nat.gcdA/gcdB and push_cast/linarith. Backward direction shows gcd | 1 via exact_mod_cast and Nat.eq_one_of_dvd_one."
+    },
+    {
+      "id": "euclids-int",
+      "title": "Euclid's Lemma for Integers",
+      "startLine": 81,
+      "endLine": 101,
+      "summary": "euclids_lemma_int: IsCoprime version. Unpacks IsCoprime to get u, v with u*a + v*b = 1. Gets k with b*c = a*k. Witness u*c + v*k, proved by linear_combination v * hk - c * huv."
+    },
+    {
+      "id": "euclids-nat",
+      "title": "Euclid's Lemma for Naturals (Main Result)",
+      "startLine": 103,
+      "endLine": 130,
+      "summary": "euclids_lemma_nat: the main answer to the OQ. Uses coprime_iff_linear_combination to get Bézout coefficients x, y over ℤ. Casts divisibility to ℤ with exact_mod_cast. Constructs witness x*c + y*k by linear_combination y * hk - c * hbez."
+    },
+    {
+      "id": "euclids-prime",
+      "title": "Prime Version of Euclid's Lemma",
+      "startLine": 132,
+      "endLine": 152,
+      "summary": "euclids_lemma_prime: if p prime and p | a*b then p|a or p|b. Case splits on p | a. If p ∤ a, uses Nat.Prime.coprime_iff_not_dvd to get Nat.Coprime p a, then applies euclids_lemma_nat."
+    },
+    {
+      "id": "examples",
+      "title": "Worked Examples",
+      "startLine": 154,
+      "endLine": 190,
+      "summary": "Four examples: (3,7,6), (5,8,15), prime 7|14*3, and direct witness verification 3*(5*6+(-2)*14) = 6."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization answers the open question affirmatively: YES, Euclid's lemma can be proved formally using coprime_iff_linear_combination. The proof is clean: extract Bézout coefficients via coprime_iff_linear_combination, cast to ℤ, construct explicit witness x*c + y*k, close with linear_combination. Zero sorries.",
+    "implications": "Completes the BezoutIdentity family: BezoutIdentity.lean (gcd as linear combination), BezoutIdentityOQ01.lean (extended Euclidean algorithm), BezoutIdentityOQ02.lean (Euclid's lemma, this file), BezoutIdentityOQ03.lean (CRT via Bézout). Euclid's lemma is the key step toward the Fundamental Theorem of Arithmetic.",
+    "openQuestions": [
+      "Can the Fundamental Theorem of Arithmetic (unique prime factorization) be derived cleanly from euclids_lemma_prime?",
+      "Can Euclid's lemma be generalized to Bézout domains using IsCoprime in CommRing?",
+      "Can a computable version use extGcd from BezoutIdentityOQ01 to give an explicit algorithm?"
+    ]
+  }
+}
