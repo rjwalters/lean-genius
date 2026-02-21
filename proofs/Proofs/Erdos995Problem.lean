@@ -134,8 +134,12 @@ axiom bound_gap_upper_universal :
 /-- The ratio of exponents in the bounds -/
 theorem exponent_gap (N : ℕ) (hN : N ≥ 3) :
     Real.log (Real.log N) < Real.log N := by
-  -- log log N < log N for N ≥ 3
-  sorry
+  -- Proved by Aristotle (Harmonic): log log N < log N for N ≥ 3
+  have h_log_lt : Real.log N < N := by
+    exact lt_of_le_of_lt (Real.log_le_sub_one_of_pos (by positivity)) (by norm_num)
+  apply Real.log_lt_log
+  · exact Real.log_pos (by norm_cast; linarith)
+  · exact h_log_lt
 
 /-
 ## Part 6: Examples
