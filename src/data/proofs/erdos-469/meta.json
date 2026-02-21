@@ -28,8 +28,15 @@
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Module imports and problem context for primitive pseudoperfect numbers."
+    },
+    {
       "id": "definitions",
-      "title": "Definitions",
+      "title": "Core Definitions",
       "startLine": 22,
       "endLine": 37,
       "summary": "IsPseudoperfect, IsPrimitivePseudoperfect, primitivePseudoperfectSet."
@@ -47,10 +54,17 @@
       "startLine": 61,
       "endLine": 70,
       "summary": "Does the sum of reciprocals of primitive pseudoperfect numbers converge?"
+    },
+    {
+      "id": "implications",
+      "title": "Implications and Context",
+      "startLine": 71,
+      "endLine": 85,
+      "summary": "Connection to analytic number theory, density questions, and OEIS A006036."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős (1970) and Benkoski–Erdős (1974) studied pseudoperfect numbers (also called semiperfect numbers): n is pseudoperfect if it equals a sum of distinct proper divisors. A pseudoperfect number is primitive if no proper divisor shares this property. The sequence begins 6, 20, 28, 88, 104, 272, 304, 350, ... (OEIS A006036).",
+    "historicalContext": "**Erdős Problem #469** concerns **primitive pseudoperfect numbers** (also called semiperfect numbers). A number $n$ is **pseudoperfect** if it equals the sum of a subset of its proper divisors. It is **primitive** pseudoperfect if no proper divisor of $n$ is pseudoperfect.\n\nThe sequence was studied by Erdős (1970) and Benkoski–Erdős (1974), beginning $6, 20, 28, 88, 104, 272, 304, 350, \\ldots$ (OEIS A006036). Every **perfect number** (where $\\sigma(n) = 2n$, meaning all proper divisors sum to $n$) is pseudoperfect. Since perfect numbers are the 'base case' of pseudoperfect, the first primitive pseudoperfect number is $6$ (the smallest perfect number). The problem asks whether the sum $\\sum_{n \\in A} 1/n$ over all primitive pseudoperfect numbers $A$ **converges**. This remains **open** as of 2025.",
     "problemStatement": "Does the sum Σ_{n ∈ A} 1/n converge, where A is the set of primitive pseudoperfect numbers?",
     "proofStrategy": "We define IsPseudoperfect using Finset subsets of properDivisors, define primitivity by requiring no proper divisor to be pseudoperfect, and record basic structural results. The convergence question is formalized as a bounded partial sums condition.",
     "keyInsights": [
