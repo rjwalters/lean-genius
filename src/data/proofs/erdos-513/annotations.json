@@ -8,7 +8,7 @@
     "content": "Erdos Problem #513 asks for the exact value of the supremum of **liminf mu(r)/M(r)** over all transcendental entire functions, where **mu(r)** is the maximum term and **M(r)** is the maximum modulus. This quantity measures how well the single largest term of a power series approximates the overall maximum of the function on a circle of radius r. The answer is known to lie strictly between **1/2** (Kovari) and **2/pi** (Clunie-Hayman), but the exact value remains open.",
     "mathContext": "For an entire function f(z) = sum a_n z^n, the maximum term mu(r) = max_n |a_n| r^n captures the contribution of the dominant term at scale r, while the maximum modulus M(r) = max_{|z|=r} |f(z)| captures the global maximum. The ratio mu(r)/M(r) measures how 'single-term dominated' the function is. For polynomials this ratio tends to 1, but for transcendental entire functions the interference between infinitely many terms can reduce it. The Wiman-Valiron theory systematically studies this relationship.",
     "relatedConcepts": ["Wiman-Valiron theory", "entire functions", "maximum modulus principle", "power series", "complex analysis"],
-    "significance": "essential"
+    "significance": "key"
   },
   {
     "id": "erdos-513-max-term",
@@ -41,7 +41,7 @@
     "content": "**termModulusRatio a r** computes mu(r)/M(r) with a guard returning 0 when M(r) = 0. **IsTranscendentalEntire a** requires infinitely many nonzero coefficients, ensuring the function is not a polynomial. These two definitions set up the optimization problem: maximize the liminf of the ratio over all transcendental entire functions.",
     "mathContext": "The restriction to transcendental (non-polynomial) entire functions is crucial: for a polynomial of degree d, the ratio mu(r)/M(r) tends to 1 as r -> infinity since the leading term dominates. The interesting behavior occurs for transcendental functions where infinitely many terms contribute, creating interference patterns that can permanently reduce the ratio below 1.",
     "relatedConcepts": ["transcendental functions", "polynomial vs transcendental growth", "liminf optimization"],
-    "significance": "essential"
+    "significance": "key"
   },
   {
     "id": "erdos-513-trivial-bound",
@@ -74,7 +74,7 @@
     "content": "**kovari_lower_bound** (axiomatized) asserts the existence of a transcendental entire function whose liminf mu(r)/M(r) **exceeds 1/2**. This is the best known lower bound for the supremum. The theorem **supremum_exceeds_half** simply forwards this result, confirming the answer to Erdos's question is strictly greater than 1/2.",
     "mathContext": "Kovari's construction (unpublished) likely uses lacunary series -- power series with large gaps between nonzero terms. For such series, the dominant term carries most of the mass, pushing the ratio close to 1. The challenge is maintaining a high liminf rather than just a high limsup, which requires the gaps to grow in a carefully controlled manner.",
     "relatedConcepts": ["lacunary series", "Kovari's theorem", "extremal entire functions", "gap series"],
-    "significance": "essential"
+    "significance": "key"
   },
   {
     "id": "erdos-513-clunie-hayman",
@@ -85,7 +85,7 @@
     "content": "**clunie_hayman_upper_bound** (axiomatized) states that for **every** transcendental entire function, liminf mu(r)/M(r) <= 2/pi - c for an absolute constant c > 0. This gives a strict upper bound below 2/pi ~ 0.6366. The proved theorem **half_lt_two_div_pi** verifies that 1/2 < 2/pi, confirming the known bounds are consistent and the interval (1/2, 2/pi) in which the answer lies is non-empty.",
     "mathContext": "The value 2/pi arises naturally as the average of |cos(theta)| over [0, 2pi], which connects to the Fourier-analytic structure of the problem. Clunie and Hayman's proof uses the Borel-Caratheodory lemma and properties of the Phragmen-Lindelof indicator to show that phase cancellation among terms prevents the ratio from reaching 2/pi. The strict gap c > 0 below 2/pi is the deepest part of their result.",
     "relatedConcepts": ["Clunie-Hayman theorem", "Borel-Caratheodory lemma", "Phragmen-Lindelof indicator", "phase cancellation"],
-    "significance": "essential"
+    "significance": "key"
   },
   {
     "id": "erdos-513-gap-theorem",
@@ -107,6 +107,6 @@
     "content": "The axiom **erdos_513_exact_value** asserts the existence of an exact value L in (1/2, 2/pi) such that: (1) every transcendental entire function has liminf ratio **at most L** (L is an upper bound); (2) for every epsilon > 0, some transcendental entire function has liminf ratio **exceeding L - epsilon** (L is tight). This formalization captures the supremum as a genuine extremal constant of complex analysis.",
     "mathContext": "Determining L would resolve a fundamental question in the Wiman-Valiron theory connecting the maximum term to the maximum modulus. The answer likely involves a specific transcendental constant related to the geometry of phase alignment in power series. Analogous extremal problems in function theory (e.g., the Bloch constant, the Landau constant) have exact values that are often expressible in terms of gamma functions and elliptic integrals, suggesting L may have a similarly elegant closed form.",
     "relatedConcepts": ["extremal constants", "Wiman-Valiron theory", "Bloch constant", "Landau constant", "supremum characterization"],
-    "significance": "essential"
+    "significance": "key"
   }
 ]
