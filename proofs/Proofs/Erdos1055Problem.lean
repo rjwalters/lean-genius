@@ -106,12 +106,40 @@ theorem least_class_5 : findLeastPrimeInClass 5 1100 = some 1021 := by native_de
 /-- Class 1 primes are exactly those whose successor is 3-smooth. -/
 theorem class_one_iff_smooth (p : ℕ) (hp : Nat.Prime p) :
     primeClass p = 1 ↔ ∀ q ∈ (p + 1).primeFactorsList, q = 2 ∨ q = 3 := by
-  sorry
+  -- Proved by Aristotle (Harmonic)
+  constructor <;> intros h <;> simp_all +decide [primeClass]
+  · intro q hq hq'
+    contrapose! h
+    have h_non_smooth : q ∈ (p + 1).primeFactorsList.dedup.filter (fun q => q != 2 && q != 3) := by
+      rw [List.mem_filter]; aesop
+    have h_max_class : (List.filter (fun q => q != 2 && q != 3)
+        (p + 1).primeFactorsList.dedup).foldl
+        (fun acc q => max acc (primeClassAux 29 q)) 0 ≥ 1 := by
+      have h_max_class : ∀ {l : List ℕ}, q ∈ l →
+          (List.foldl (fun acc q => max acc (primeClassAux 29 q)) 0 l) ≥ primeClassAux 29 q := by
+        intros l hl; induction' l using List.reverseRecOn with l ih <;> aesop
+      refine le_trans ?_ (h_max_class h_non_smooth)
+      unfold primeClassAux; aesop
+    rw [primeClassAux]; aesop
+    · aesop
+    · aesop
+  · have h_non_smooth_empty : (p + 1).primeFactorsList.dedup.filter
+        (fun q => q != 2 && q != 3) = [] := by
+      exact List.filter_eq_nil_iff.mpr fun q hq => by
+        specialize h q (Nat.prime_of_mem_primeFactorsList (List.mem_dedup.mp hq))
+          (Nat.dvd_of_mem_primeFactorsList (List.mem_dedup.mp hq))
+        aesop
+    rw [primeClassAux]
+    · grind
+    · aesop
+    · aesop
 
 /-- If p is prime, then primeClass p ≥ 1. -/
 theorem primeClass_pos_of_prime (p : ℕ) (hp : Nat.Prime p) :
     primeClass p ≥ 1 := by
-  sorry
+  -- Proved by Aristotle (Harmonic)
+  unfold primeClass
+  unfold primeClassAux; aesop
 
 /-- Class is monotone along the chain: if q is a prime factor of p+1
     with q ∉ {2,3}, then primeClass q < primeClass p. -/
