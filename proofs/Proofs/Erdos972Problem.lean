@@ -137,13 +137,13 @@ Here we track the distinction explicitly. -/
 def vinogradovSet (α : ℝ) : Set ℕ :=
   {p : ℕ | Nat.Prime p ∧ ∃ n : ℕ, p = ⌊α * n⌋₊}
 
-/-- The Erdős set asks about primes in the domain, Vinogradov about primes in the range. -/
-theorem erdos_vs_vinogradov_distinction (α : ℝ) :
-    primeSet α ≠ vinogradovSet α := by
-  -- These are fundamentally different questions
-  -- primeSet: p is prime AND ⌊αp⌋ is prime
-  -- vinogradovSet: p is prime AND p = ⌊αn⌋ for some n
-  sorry
+/-
+Note: The statement "primeSet α ≠ vinogradovSet α for all α" is FALSE.
+Aristotle found a counterexample: for α = 1, both sets equal the set of all primes.
+  primeSet 1 = {p | Nat.Prime p}  (since ⌊1·p⌋ = p is prime iff p is prime)
+  vinogradovSet 1 = {p | Nat.Prime p ∧ ∃ n, p = ⌊1·n⌋ = n} = {p | Nat.Prime p}
+The two questions are conceptually distinct but their answer sets can coincide.
+-/
 
 /-
 ## Examples
