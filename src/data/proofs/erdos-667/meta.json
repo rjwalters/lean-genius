@@ -22,14 +22,15 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "Erdős, Faudree, Rousseau, and Schelp studied H(n;p,q), the largest clique guaranteed in n-vertex graphs where every p-set has ≥ q edges. They defined c(p,q) = lim inf log H/log n and asked whether it is strictly increasing in q. Known bounds include the Ramsey-type bounds for q = 1 and c(p, ⌊(p-1)/2⌋) ≤ 1/2.",
+    "historicalContext": "**Erdős, Faudree, Rousseau, and Schelp** (EFRS) studied $H(n;p,q)$, the largest clique guaranteed in $n$-vertex graphs where every $p$-vertex subset spans $\\geq q$ edges. They defined $c(p,q) = \\liminf_{n\\to\\infty} \\log H(n;p,q)/\\log n$ and asked whether it is strictly increasing in $q$. The problem interpolates between classical Ramsey theory ($q=1$, reduces to independence-number bounds) and complete graphs ($q = \\binom{p-1}{2}+1$, forces $G = K_n$). The EFRS bound $c(p, \\lfloor(p-1)/2\\rfloor) \\leq 1/2$ shows a dramatic jump at the top of the range. Classical Ramsey bounds give $1/(p-1) \\leq c(p,1) \\leq 2/(p+1)$; the intermediate values remain largely open.",
     "problemStatement": "Is c(p,q) strictly increasing in q for 1 ≤ q ≤ C(p-1,2) + 1?",
     "proofStrategy": "The formalization axiomatises H(n;p,q) with monotonicity and boundary values, then defines c(p,q) with known Ramsey bounds and the EFRS bound. The strict monotonicity conjecture is the main statement.",
     "keyInsights": [
       "H(n;p,q) generalises Ramsey numbers by requiring q edges per p-set",
       "c(p,1) corresponds to classical Ramsey: 1/(p-1) ≤ c ≤ 2/(p+1)",
       "c(p, C(p-1,2)+1) = 1 trivially (every graph is complete)",
-      "EFRS proved c(p, ⌊(p-1)/2⌋) ≤ 1/2"
+      "EFRS proved c(p, ⌊(p-1)/2⌋) ≤ 1/2",
+      "For p=3, the conjecture reduces to c(3,1) < c(3,2)=1, which is fully proved"
     ]
   },
   "sections": [
@@ -60,6 +61,13 @@
       "startLine": 74,
       "endLine": 82,
       "summary": "c(p,q) is strictly increasing in q."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases and Evidence",
+      "startLine": 84,
+      "endLine": 115,
+      "summary": "p=3 fully resolved; p=4 proved at top step via EFRS; intermediate q values remain open."
     }
   ],
   "conclusion": {
