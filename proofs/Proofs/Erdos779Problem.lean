@@ -185,8 +185,9 @@ The heuristic argument for why the conjecture should be true:
 /-- The primorial grows very fast: roughly e^(n log n) by the prime number theorem. -/
 theorem primorial_growth_heuristic : ∀ n ≥ 1, primorial n ≥ 2^n := by
   intro n _
-  -- For small n this is clear; for large n follows from PNT
-  sorry
+  -- Proved by Aristotle (Harmonic): each prime factor ≥ 2, so product ≥ 2^n
+  exact le_trans (by norm_num)
+    (Finset.prod_le_prod' fun _ _ => Nat.Prime.two_le (Nat.prime_nth_prime _))
 
 /-
 ## Connection to Other Problems

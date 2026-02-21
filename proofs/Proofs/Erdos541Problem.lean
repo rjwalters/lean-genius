@@ -135,13 +135,20 @@ The detailed combinatorial argument shows these lead to contradictory cardinalit
 -/
 
 /-- Connection to Olson's theorem: in Z/pZ, zero-sum subsequences always exist -/
+-- Proved by Aristotle (Harmonic)
 theorem zero_sum_exists (p : ℕ) [hp : Fact p.Prime] (a : Fin p → ZMod p) :
     ∃ (S : Finset (Fin p)), S ≠ ∅ ∧ (∑ i ∈ S, a i) = 0 := by
-  -- This follows from the pigeonhole principle on partial sums
-  -- Consider s₀ = 0, s₁ = a₁, s₂ = a₁ + a₂, ..., sₚ = a₁ + ... + aₚ
-  -- These p+1 values in Z/pZ must have a collision: sᵢ = sⱼ for some i < j
-  -- Then Σₖ∈{i+1,...,j} aₖ = sⱼ - sᵢ = 0
-  sorry
+  by_contra h_contra;
+  have h_pigeonhole : ∃ i j : Fin (p + 1), i < j ∧ (∑ k ∈ Finset.univ.filter (fun k => k.val < i.val), a k) = (∑ k ∈ Finset.univ.filter (fun k => k.val < j.val), a k) := by
+    by_cases h_eq : ∀ i j : Fin (p + 1), i < j → (∑ k ∈ Finset.univ.filter (fun k => k.val < i.val), a k) ≠ (∑ k ∈ Finset.univ.filter (fun k => k.val < j.val), a k);
+    · have h_pigeonhole : Finset.card (Finset.image (fun i : Fin (p + 1) => ∑ k ∈ Finset.univ.filter (fun k => k.val < i.val), a k) (Finset.univ : Finset (Fin (p + 1)))) = p + 1 := by
+        rw [ Finset.card_image_of_injective _ fun i j hij => le_antisymm ( le_of_not_gt fun hi => h_eq _ _ hi hij.symm ) ( le_of_not_gt fun hj => h_eq _ _ hj hij ), Finset.card_fin ];
+      exact absurd h_pigeonhole ( ne_of_lt ( lt_of_le_of_lt ( Finset.card_le_univ _ ) ( by norm_num ) ) );
+    · grind;
+  obtain ⟨ i, j, hij, h ⟩ := h_pigeonhole; refine' h_contra ⟨ Finset.univ.filter ( fun k => k.val < j.val ) \ Finset.univ.filter ( fun k => k.val < i.val ), _, _ ⟩ <;> simp_all +decide [ Finset.sum_sdiff ] ;
+  · simp_all +decide [ Finset.subset_iff ];
+    exact ⟨ ⟨ i, Nat.lt_of_lt_of_le hij ( Nat.le_of_lt_succ ( Fin.is_lt j ) ) ⟩, hij, le_rfl ⟩;
+  · rw [ ← Finset.sum_sdiff <| show Finset.filter ( fun k : Fin p => ( k : ℕ ) < i ) Finset.univ ⊆ Finset.filter ( fun k : Fin p => ( k : ℕ ) < j ) Finset.univ from fun x hx => Finset.mem_filter.mpr ⟨ Finset.mem_filter.mp hx |>.1, lt_trans ( Finset.mem_filter.mp hx |>.2 ) hij ⟩ ] at * ; aesop
 
 /-
 ## Historical Context

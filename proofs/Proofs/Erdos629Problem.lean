@@ -861,9 +861,13 @@ def completeBipartite (m n : ℕ) : SimpleGraph (Fin m ⊕ Fin n) where
 
 /- Aristotle took a wrong turn (reason code: 0). Please try again. -/
 /-- Complete bipartite graphs are bipartite (obviously). -/
+-- Proved by Aristotle (Harmonic)
 theorem completeBipartite_is_bipartite (m n : ℕ) :
     IsBipartite (completeBipartite m n) := by
-  sorry
+  use fun v => match v with
+    | Sum.inl _ => 0
+    | Sum.inr _ => 1;
+  unfold Erdos629.IsProperColoring; aesop;
 
 /- Aristotle took a wrong turn (reason code: 0). Please try again. -/
 /-- K_{n,n} has list chromatic number ≈ log₂ n + 1. -/

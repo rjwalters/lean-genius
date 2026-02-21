@@ -156,8 +156,9 @@ The conjecture holds in modified forms for r ≤ 1.
 noncomputable def φ_minus_1 : ℝ := (Real.sqrt 5 - 1) / 2
 
 /-- φ - 1 ≈ 0.618. -/
+-- Proved by Aristotle (Harmonic)
 theorem phi_minus_1_value : φ_minus_1 > 0.618 ∧ φ_minus_1 < 0.619 := by
-  sorry
+  exact ⟨ by rw [ show φ_minus_1 = ( Real.sqrt 5 - 1 ) / 2 by rfl ] ; nlinarith [ Real.sqrt_nonneg 5, Real.sq_sqrt ( show 0 ≤ 5 by norm_num ) ], by rw [ show φ_minus_1 = ( Real.sqrt 5 - 1 ) / 2 by rfl ] ; nlinarith [ Real.sqrt_nonneg 5, Real.sq_sqrt ( show 0 ≤ 5 by norm_num ) ] ⟩
 
 /-- **Case r ≤ 1/2**: Component containing 0 has diameter ≥ 2. -/
 axiom pommerenke_case_small_r (f : BoundedMonicPoly r) (hr : r ≤ 1/2) :

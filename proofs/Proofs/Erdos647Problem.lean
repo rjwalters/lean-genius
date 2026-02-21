@@ -182,10 +182,13 @@ def ErdosAsymptoticConjecture : Prop :=
   Filter.Tendsto (fun n => (excess n : ℝ)) Filter.atTop Filter.atTop
 
 /-- If Erdős's asymptotic conjecture is true, only finitely many solutions exist -/
+-- Proved by Aristotle (Harmonic)
 theorem asymptotic_implies_finite (h : ErdosAsymptoticConjecture) :
     Set.Finite ErdosSolutions := by
-  -- If excess → ∞, then eventually excess > 2, meaning no solutions
-  sorry
+  obtain ⟨N, hN⟩ : ∃ N, ∀ n > N, (Finset.range n).sup mPlusTau - n > 2 := by
+    have := h.eventually_gt_atTop 2;
+    rw [ Filter.eventually_atTop ] at this; rcases this with ⟨ N, hN ⟩ ; exact ⟨ N, fun n hn => by have := hN n hn.le; exact_mod_cast this ⟩ ;
+  exact Set.finite_iff_bddAbove.2 ⟨ N, fun n hn => not_lt.1 fun contra => not_le_of_gt ( hN n contra ) ( Nat.sub_le_of_le_add <| by linarith [ show ( Finset.range n ).sup Erdos647.mPlusTau ≤ n + 2 from hn ( n - 1 ) ( Nat.sub_lt ( by linarith ) zero_lt_one ) |> fun x => by cases n <;> aesop ] ) ⟩
 
 /-
 ## Connection to Highly Composite Numbers

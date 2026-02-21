@@ -80,7 +80,10 @@ theorem distFrequency_nonneg (A : Finset (EuclideanSpace ℝ (Fin 2))) (d : ℝ)
 /-- The maximum frequency is at least the second frequency. -/
 theorem maxFreq_ge_second (A : Finset (EuclideanSpace ℝ (Fin 2))) :
     secondFrequency A ≤ maxFrequency A := by
-  sorry
+  -- Proved by Aristotle (Harmonic)
+  unfold secondFrequency maxFrequency
+  simp +zetaDelta at *
+  exact fun b hb x hx hx' => hx'.symm ▸ Finset.le_sup (f := distFrequency A) hx
 
 /-- The frequency gap for the empty set is zero. -/
 theorem frequencyGap_empty : frequencyGap ∅ = 0 := by
@@ -111,7 +114,25 @@ axiom clemen_dumitrescu_liu_general (n r : ℕ) (hn : 2 ≤ n)
 /-- The sum of all distance frequencies is at most n choose 2. -/
 theorem total_pairs (A : Finset (EuclideanSpace ℝ (Fin 2))) :
     (distinctDistances A).sum (distFrequency A) ≤ A.card.choose 2 := by
-  sorry
+  -- Proved by Aristotle (Harmonic): sum of frequencies ≤ number of pairs ≤ n choose 2
+  have h_sum : ((distinctDistances A).sum (distFrequency A)) * 2 ≤
+      ((A ×ˢ A).filter (fun p => p.1 ≠ p.2)).card := by
+    have h_sub : ((distinctDistances A).sum (fun d =>
+        ((A ×ˢ A).filter (fun p => p.1 ≠ p.2 ∧ dist p.1 p.2 = d)).card)) ≤
+        ((A ×ˢ A).filter (fun p => p.1 ≠ p.2)).card := by
+      rw [← Finset.card_biUnion]
+      · exact Finset.card_le_card fun x hx => by aesop
+      · exact fun x hx y hy hxy =>
+          Finset.disjoint_left.mpr fun p hp hp' => hxy (by aesop)
+    refine' le_trans _ h_sub
+    rw [Finset.sum_mul _ _ _]
+    exact Finset.sum_le_sum fun x hx => Nat.div_mul_le_self _ _
+  have h_pairs : ((A ×ˢ A).filter (fun p => p.1 ≠ p.2)).card = A.card * (A.card - 1) := by
+    rw [show { p ∈ A ×ˢ A | ¬p.1 = p.2 } = Finset.offDiag A by ext; aesop]
+    simp +decide [Finset.offDiag_card]
+    rw [Nat.mul_sub_left_distrib, Nat.mul_one]
+  rw [Nat.choose_two_right]
+  grind
 
 /-- If there are k distinct distances, the average frequency is at most n(n-1)/(2k). -/
 theorem avg_frequency_bound (A : Finset (EuclideanSpace ℝ (Fin 2)))
