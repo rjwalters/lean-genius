@@ -206,8 +206,8 @@
       "phase": "BREAKTHROUGH",
       "path": "full",
       "started": "2026-01-01T05:32:39.472Z",
-      "status": "graduated",
-      "lastUpdate": "2026-02-21T18:51:26.154Z",
+      "status": "blocked",
+      "lastUpdate": "2026-02-21T19:21:07.126Z",
       "completed": "2026-02-07T00:59:53.359Z"
     },
     {
@@ -215,8 +215,8 @@
       "phase": "BREAKTHROUGH",
       "path": "full",
       "started": "2026-01-01T05:32:39.476Z",
-      "status": "graduated",
-      "lastUpdate": "2026-02-21T18:51:26.153Z",
+      "status": "blocked",
+      "lastUpdate": "2026-02-21T19:21:07.126Z",
       "completed": "2026-02-07T00:59:53.358Z"
     },
     {
@@ -382,8 +382,8 @@
       "phase": "BREAKTHROUGH",
       "path": "full",
       "started": "2026-01-01T21:55:27.888Z",
-      "status": "graduated",
-      "lastUpdate": "2026-02-21T18:51:26.152Z",
+      "status": "blocked",
+      "lastUpdate": "2026-02-21T19:21:07.125Z",
       "completed": "2026-02-11T05:41:00.787Z"
     },
     {
@@ -3197,11 +3197,12 @@
     },
     {
       "slug": "bezout-identity-oq-03",
-      "phase": "NEW",
+      "phase": "BREAKTHROUGH",
       "path": "fast",
       "started": "2026-02-21T18:51:26.155Z",
-      "status": "active",
-      "lastUpdate": "2026-02-21T18:51:26.155Z"
+      "status": "graduated",
+      "lastUpdate": "2026-02-21T19:21:07.131Z",
+      "completed": "2026-02-21T19:21:07.131Z"
     },
     {
       "slug": "binomial-theorem-oq-02",
@@ -3210,6 +3211,166 @@
       "started": "2026-02-21T18:51:26.155Z",
       "status": "active",
       "lastUpdate": "2026-02-21T18:51:26.155Z"
+    },
+    {
+      "slug": "abel-ruffini-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.129Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.129Z"
+    },
+    {
+      "slug": "area-of-circle-oq-01-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.130Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.130Z"
+    },
+    {
+      "slug": "ballot-problem-oq-01-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.130Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.130Z"
+    },
+    {
+      "slug": "basel-problem-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.130Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.130Z"
+    },
+    {
+      "slug": "buffons-needle-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.131Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.131Z"
+    },
+    {
+      "slug": "cantor-diagonalization-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.131Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.131Z"
+    },
+    {
+      "slug": "cantors-theorem-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.131Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.131Z"
+    },
+    {
+      "slug": "cauchy-schwarz-integral-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.131Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.131Z"
+    },
+    {
+      "slug": "cayley-hamilton-minpoly-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.131Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.131Z"
+    },
+    {
+      "slug": "cayley-hamilton-reduction-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.132Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.132Z"
+    },
+    {
+      "slug": "central-limit-theorem-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.132Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.132Z"
+    },
+    {
+      "slug": "chinese-remainder-non-coprime-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.132Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.132Z"
+    },
+    {
+      "slug": "continuum-hypothesis-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.133Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.133Z"
+    },
+    {
+      "slug": "cramers-rule-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.133Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.133Z"
+    },
+    {
+      "slug": "de-moivre-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.133Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.133Z"
+    },
+    {
+      "slug": "desargues-theorem-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.134Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.134Z"
+    },
+    {
+      "slug": "dirichlets-theorem-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.134Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.134Z"
+    },
+    {
+      "slug": "dissection-of-cubes-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.134Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.134Z"
+    },
+    {
+      "slug": "divisibility-by-3-oq-01-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.134Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.134Z"
+    },
+    {
+      "slug": "e-transcendental-oq-01",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-02-21T19:21:07.134Z",
+      "status": "active",
+      "lastUpdate": "2026-02-21T19:21:07.134Z"
     }
   ],
   "config": {
