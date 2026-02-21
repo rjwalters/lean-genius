@@ -7,7 +7,7 @@
     "title": "Problem Overview",
     "content": "**Erdos Problem #728: Factorial Divisibility**\n\nCan a!b! divide n!(a+b-n)! when:\n1. a, b > epsilon * n\n2. a + b is in the range (n + C log n, n + C' log n)?\n\n**Origin:** Erdos, Graham, Ruzsa, Straus (1975)\n**Status:** SOLVED by Barreto & ChatGPT-5.2\n**Key:** The b = n/2 construction works",
     "mathContext": "This refines Erdos's 1968 result that a!b! | n! implies a+b <= n + O(log n).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Factorial divisibility", "p-adic valuation", "Legendre's formula"]
   },
   {
@@ -18,7 +18,8 @@
     "title": "Factorial Divisibility",
     "content": "**factorialDivisibility a b n:**\n\nThe key condition: a! * b! divides n! * (a + b - n)!\n\n```lean\ndef factorialDivisibility (a b n : N) : Prop :=\n  a + b >= n and a! * b! | n! * (a + b - n)!\n```\n\nThis generalizes the simpler condition a!b! | n!",
     "mathContext": "When a + b = n, this becomes the binomial coefficient condition.",
-    "significance": "critical"
+    "relatedConcepts": ["binomial coefficients", "Kummer's theorem", "p-adic valuation of factorials", "multinomial divisibility"],
+    "significance": "key"
   },
   {
     "id": "ann-e728-gap",
@@ -27,7 +28,8 @@
     "type": "definition",
     "title": "Logarithmic Gap",
     "content": "**hasLogarithmicGap a b n C C':**\n\nThe sum a + b lies in the \"logarithmic gap\" above n:\n- n + C * log(n) < a + b\n- a + b < n + C' * log(n)\n\nThis is the interesting regime where Erdos's 1968 bound is nearly tight.",
-    "significance": "critical"
+    "relatedConcepts": ["logarithmic gaps", "Erdős 1968 bound", "prime number theorem", "tight bounds"],
+    "significance": "key"
   },
   {
     "id": "ann-e728-size",
@@ -45,7 +47,7 @@
     "type": "definition",
     "title": "Full Solution Condition",
     "content": "**isErdos728Solution a b n epsilon C C':**\n\nA complete solution satisfies:\n1. n > 0\n2. hasSizeCondition (a, b large)\n3. factorialDivisibility (the divisibility holds)\n4. hasLogarithmicGap (a + b in the right range)\n\nThe problem asks: do such triples exist?",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e728-erdos1968",
@@ -55,7 +57,8 @@
     "title": "Erdos 1968 Bound",
     "content": "**erdos_1968_bound:**\n\nIf a! * b! divides n!, then a + b <= n + K * log(n) for some constant K.\n\n```lean\naxiom erdos_1968_bound :\n    exists K > 0, forall a b n,\n      a! * b! | n! -> (a + b : R) <= n + K * log n\n```\n\nThis classical result shows divisibility tightly constrains a + b.",
     "mathContext": "The proof uses properties of prime factorizations and the Prime Number Theorem.",
-    "significance": "critical"
+    "relatedConcepts": ["prime number theorem", "Legendre formula", "p-adic valuation bounds", "prime factorization"],
+    "significance": "key"
   },
   {
     "id": "ann-e728-resolution",
@@ -65,7 +68,8 @@
     "title": "Main Resolution",
     "content": "**erdos_728_resolution:**\n\nThe answer is YES: for any 0 < C < C', infinitely many solutions exist.\n\n```lean\naxiom erdos_728_resolution :\n    forall epsilon near 0, forall 0 < C < C',\n      exists a b n, isErdos728Solution a b n epsilon C C'\n```\n\n**Proved by:** Barreto & ChatGPT-5.2",
     "mathContext": "Notable as one of the first Erdos problems resolved with AI assistance.",
-    "significance": "critical"
+    "relatedConcepts": ["AI-assisted mathematics", "existential construction proofs", "b=n/2 construction", "Erdős problem 729"],
+    "significance": "key"
   },
   {
     "id": "ann-e728-construction",
@@ -75,7 +79,7 @@
     "title": "The b = n/2 Construction",
     "content": "**constructionTemplate:**\n\nFor even n, set:\n- b = n/2\n- a = n/2 + O(log n)\n\nThis construction:\n1. Satisfies the size condition (both ~ n/2)\n2. Achieves the logarithmic gap (a + b = n + O(log n))\n3. Can be verified for divisibility via Legendre's formula",
     "mathContext": "The key insight: b = n/2 provides enough 'room' for the construction.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e728-construction-works",
