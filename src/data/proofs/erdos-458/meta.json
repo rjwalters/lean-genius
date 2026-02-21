@@ -23,23 +23,31 @@
     "erdosProblemStatus": "open"
   },
   "overview": {
-    "historicalContext": "This problem explores the growth rate of the LCM function between consecutive primes. The LCM function lcm(1,...,n) is closely related to Chebyshev's ψ function, with log(lcm(1,...,n)) ~ n. The conjecture asks whether the growth between primes p_k and p_{k+1} is bounded by multiplication by p_k. Erdős and Graham described this as 'almost certainly' true, but noted the proof requires controlling prime gaps - essentially requiring Legendre's conjecture.",
+    "historicalContext": "**Erdős Problem #458** originates in Erdős and Graham's study of LCM growth between consecutive primes. The LCM function $\\text{lcm}(1, \\ldots, n)$ is deeply connected to prime distribution: $\\log \\text{lcm}(1, \\ldots, n) = \\psi(n) \\sim n$ by Chebyshev's theorem (and PNT). The conjecture asks whether the multiplicative growth factor from $p_k$ to $p_{k+1}$ is at most $p_k$.\n\nErdős and Graham described this as **'almost certainly true'** but noted that any proof would require controlling prime gaps at a level close to **Legendre's conjecture** (that there is always a prime between $n^2$ and $(n+1)^2$). The key obstacle: primes $q$ with $p_k < q^2 < p_{k+1}$ contribute factors that must be carefully bounded. The problem remains **open** as of 2025.",
     "problemStatement": "Let [1,...,n] denote the least common multiple of {1,...,n}. Let p_k be the k-th prime. Is it true that for all k ≥ 1: lcm(1,...,p_{k+1}-1) < p_k · lcm(1,...,p_k)?",
     "proofStrategy": "We define lcm_upto using Finset.lcm and the nth prime using Nat.nth. The main conjecture is expressed as a Prop. We verify small cases (k=1,2) computationally. The connection to Legendre's conjecture is formalized: we need to control primes q with p_k < q² < p_{k+1}.",
     "keyInsights": [
-      "Between consecutive primes, LCM only grows by composite factors (powers of smaller primes)",
-      "The key obstacle is controlling primes q where p_k < q² < p_{k+1}",
-      "Legendre's conjecture would imply at most one such q exists",
-      "Chebyshev's bounds give log(lcm(1,...,n)) ~ n asymptotically"
+      "Between consecutive primes $p_k$ and $p_{k+1}$, the LCM only grows by composite factors (powers of primes already present), making the bound plausible but hard to prove.",
+      "The key obstacle: primes $q$ with $p_k < q^2 < p_{k+1}$ contribute factors of $q^2$ to $\\text{lcm}(1, \\ldots, p_{k+1}-1)$ that are not in $\\text{lcm}(1, \\ldots, p_k)$, and these could cause the ratio to exceed $p_k$.",
+      "Legendre's conjecture (there is always a prime between consecutive squares) would imply at most one such $q$ exists for large $k$, giving sufficient control.",
+      "Chebyshev's theorem gives $\\log \\text{lcm}(1, \\ldots, n) = \\psi(n) \\sim n$, so asymptotically the ratio $\\text{lcm}(1,\\ldots,p_{k+1})/\\text{lcm}(1,\\ldots,p_k) \\approx e^{p_{k+1}-p_k}$.",
+      "The formalization uses `Finset.lcm` over `Finset.range` and `Nat.nth` for the prime enumeration, with small cases verified via `native_decide`."
     ]
   },
   "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Overview",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module imports and problem overview for LCM inequality between consecutive primes."
+    },
     {
       "id": "lcm-function",
       "title": "The LCM Function",
       "startLine": 34,
       "endLine": 91,
-      "summary": "Define lcm_upto and verify small values: lcm(1,...,5) = 60, etc."
+      "summary": "Define lcm_upto using Finset.lcm and verify small values: lcm(1,...,5) = 60, etc."
     },
     {
       "id": "nth-prime",
