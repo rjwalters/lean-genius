@@ -2,188 +2,169 @@
   {
     "id": "ann-e453-header",
     "proofId": "erdos-453",
-    "range": {
-      "startLine": 1,
-      "endLine": 31
-    },
+    "range": { "startLine": 1, "endLine": 31 },
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #453: Prime Products and Squares**\n\nIs it true that for all large n, there exists i < n with p_n² < p_{n+i}·p_{n-i}?\n\n**Answer:** NO.\n\n**History:**\n- Erdős-Straus: Conjectured YES\n- Selfridge: Conjectured NO\n- Pomerance (1979): Proved Selfridge correct\n\n**Key Insight:** Convex hull of (n, log p_n) has infinitely many vertices.\n\n**Status:** SOLVED",
-    "mathContext": "p_n^2 \\stackrel{?}{<} p_{n+i} \\cdot p_{n-i} \\text{ for some } i < n: The problem asks whether the square of the n-th prime is always eventually less than the product of symmetric neighbors. Pomerance showed this fails for infinitely many n using convex hull geometry on the prime number graph.",
-    "significance": "critical",
-    "relatedConcepts": [
-      "Prime number graph",
-      "Convex hull",
-      "Prime Number Theorem"
-    ]
+    "mathContext": "$p_n^2 \\stackrel{?}{<} p_{n+i} \\cdot p_{n-i}$ for some $i < n$: Pomerance showed infinitely many $n$ have $p_n^2 > p_{n+i} \\cdot p_{n-i}$ for ALL $i < n$, using convex hull geometry on the prime graph $(n, \\log p_n)$.",
+    "significance": "key",
+    "relatedConcepts": ["prime number graph", "convex hull", "Prime Number Theorem", "Pomerance 1979", "Selfridge conjecture", "Erdős-Straus conjecture"],
+    "prerequisites": ["nthPrime", "ErdosStrausConjecture", "SelfridgeConjecture", "pomerance_1979"]
   },
   {
     "id": "ann-e453-nthprime",
     "proofId": "erdos-453",
-    "range": {
-      "startLine": 46,
-      "endLine": 51
-    },
+    "range": { "startLine": 46, "endLine": 51 },
     "type": "definition",
     "title": "The n-th Prime",
     "content": "**nthPrime:**\n\np_n denotes the n-th prime (1-indexed: p_1=2, p_2=3, ...).\n\n```lean\nnoncomputable def nthPrime (n : ℕ) : ℕ :=\n  if n = 0 then 0 else Nat.Prime.nthPrime (n - 1)\n```\n\nThe prime sequence is fundamental to the problem statement.",
-    "mathContext": "p_n = \\text{the } n\\text{-th prime}, \\quad p_1 = 2,\\ p_2 = 3,\\ p_3 = 5, \\ldots: 1-indexed prime enumeration using Mathlib's Nat.Prime.nthPrime (0-indexed) with an offset adjustment. Returns 0 for n=0.",
-    "significance": "key"
+    "mathContext": "$p_n = $ the $n$-th prime, with $p_1 = 2, p_2 = 3, p_3 = 5, \\ldots$ 1-indexed enumeration using Mathlib's `Nat.Prime.nthPrime` (0-indexed) with offset. By PNT, $p_n \\sim n \\log n$ as $n \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.Prime.nthPrime", "prime enumeration", "1-indexed primes", "Prime Number Theorem", "noncomputable def"],
+    "prerequisites": ["Nat.Prime", "Nat.Prime.nthPrime"]
   },
   {
     "id": "ann-e453-erdos-straus",
     "proofId": "erdos-453",
-    "range": {
-      "startLine": 74,
-      "endLine": 80
-    },
+    "range": { "startLine": 74, "endLine": 80 },
     "type": "definition",
     "title": "Erdős-Straus Conjecture",
     "content": "**ErdosStrausConjecture:**\n\nFor all large n, there exists i < n with p_n² < p_{n+i}·p_{n-i}.\n\n```lean\ndef ErdosStrausConjecture : Prop :=\n  ∃ N : ℕ, ∀ n ≥ N, ∃ i : ℕ, i < n ∧ i > 0 ∧\n    (nthPrime n : ℤ) ^ 2 < (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ)\n```\n\nErdős and Straus originally believed this was true.",
-    "mathContext": "\\exists N,\\ \\forall n \\geq N,\\ \\exists\\, 0 < i < n : p_n^2 < p_{n+i} \\cdot p_{n-i}: The conjecture asserts an eventual universal property: every sufficiently large prime index n admits a symmetric pair whose product exceeds p_n². Cast over ℤ to handle the comparison correctly.",
-    "significance": "critical"
+    "mathContext": "$\\exists N,\\ \\forall n \\geq N,\\ \\exists\\, 0 < i < n : p_n^2 < p_{n+i} \\cdot p_{n-i}$. The conjecture asserts that eventually, every prime index $n$ admits a symmetric pair with larger product. Cast over $\\mathbb{Z}$ for comparison.",
+    "significance": "key",
+    "relatedConcepts": ["ErdosStrausConjecture", "symmetric primes", "∃ quantifier", "eventually true", "Int cast"],
+    "prerequisites": ["nthPrime", "Nat.cast", "Int.pow"]
   },
   {
     "id": "ann-e453-selfridge",
     "proofId": "erdos-453",
-    "range": {
-      "startLine": 82,
-      "endLine": 89
-    },
+    "range": { "startLine": 82, "endLine": 89 },
     "type": "definition",
     "title": "Selfridge's Conjecture",
     "content": "**SelfridgeConjecture:**\n\nInfinitely many n have p_n² > p_{n+i}·p_{n-i} for all i < n.\n\n```lean\ndef SelfridgeConjecture : Prop :=\n  ∀ N : ℕ, ∃ n ≥ N,\n    ∀ i : ℕ, 0 < i → i < n →\n      (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ)\n```\n\nSelfridge disagreed with Erdős-Straus and was proved correct.",
-    "mathContext": "\\forall N,\\ \\exists n \\geq N,\\ \\forall\\, 0 < i < n : p_n^2 > p_{n+i} \\cdot p_{n-i}: Selfridge's counter-conjecture is the negation of Erdős-Straus in a strong form: not just that some n fails, but infinitely many n are 'locally maximal' in the sense that p_n² dominates all symmetric products.",
-    "significance": "critical"
+    "mathContext": "$\\forall N,\\ \\exists n \\geq N,\\ \\forall\\, 0 < i < n : p_n^2 > p_{n+i} \\cdot p_{n-i}$. Infinitely many 'locally maximal' primes where $p_n^2$ dominates all symmetric products. The negation of Erdős-Straus in strong form.",
+    "significance": "key",
+    "relatedConcepts": ["SelfridgeConjecture", "locally maximal primes", "∀ quantifier", "pomerance_1979", "counter-conjecture"],
+    "prerequisites": ["nthPrime", "Nat.cast", "Int.pow", "ErdosStrausConjecture"]
   },
   {
     "id": "ann-e453-exclusive",
     "proofId": "erdos-453",
-    "range": {
-      "startLine": 91,
-      "endLine": 101
-    },
+    "range": { "startLine": 91, "endLine": 101 },
     "type": "theorem",
     "title": "Mutually Exclusive",
     "content": "**conjectures_mutually_exclusive:**\n\nThe Erdős-Straus and Selfridge conjectures cannot both be true.\n\n```lean\ntheorem conjectures_mutually_exclusive :\n    ErdosStrausConjecture → ¬SelfridgeConjecture\n```\n\nIf all large n satisfy E-S, there cannot be infinitely many counterexamples.",
-    "mathContext": "\\text{ErdősStraus} \\Rightarrow \\neg\\text{Selfridge}: Fully proved in Lean by contradiction: if E-S holds from some N, then Selfridge provides an n ≥ N with opposing inequalities, and omega resolves the contradiction on integers.",
-    "significance": "key"
+    "mathContext": "$\\text{ErdősStraus} \\Rightarrow \\neg\\text{Selfridge}$: Proved in Lean by contradiction using `omega`. If E-S holds from some $N$, Selfridge provides $n \\geq N$ with opposing inequality, giving a contradiction by `omega` on integer comparisons.",
+    "significance": "key",
+    "relatedConcepts": ["mutual exclusivity", "contradiction proof", "omega tactic", "propositional logic", "Int comparison"],
+    "prerequisites": ["ErdosStrausConjecture", "SelfridgeConjecture", "omega"]
   },
   {
     "id": "ann-e453-logprime",
     "proofId": "erdos-453",
-    "range": {
-      "startLine": 107,
-      "endLine": 112
-    },
+    "range": { "startLine": 107, "endLine": 112 },
     "type": "definition",
     "title": "Log-Prime Function",
     "content": "**logPrime:**\n\na_n = log p_n for the n-th prime.\n\n```lean\nnoncomputable def logPrime (n : ℕ) : ℝ :=\n  log (nthPrime n)\n```\n\nThe graph of (n, log p_n) is the prime number graph used in Pomerance's proof.",
-    "mathContext": "a_n = \\log p_n: The logarithmic transformation converts the multiplicative problem (comparing products of primes) into an additive one (comparing sums of log-primes), enabling convex hull analysis.",
-    "significance": "key"
+    "mathContext": "$a_n = \\log p_n$. Taking logs converts the multiplicative inequality $p_n^2 < p_{n+i} p_{n-i}$ into the additive $2 \\log p_n < \\log p_{n+i} + \\log p_{n-i}$, enabling convex hull analysis.",
+    "significance": "key",
+    "relatedConcepts": ["Real.log", "prime number graph", "logarithmic transformation", "convex hull analysis", "multiplicative to additive"],
+    "prerequisites": ["nthPrime", "Real.log", "noncomputable def"]
   },
   {
     "id": "ann-e453-ratio",
     "proofId": "erdos-453",
-    "range": {
-      "startLine": 114,
-      "endLine": 120
-    },
+    "range": { "startLine": 114, "endLine": 120 },
     "type": "axiom",
     "title": "Ratio Tends to Zero",
     "content": "**logPrime_ratio_tendsto_zero:**\n\nlog p_n / n → 0 as n → ∞.\n\n```lean\naxiom logPrime_ratio_tendsto_zero :\n    Filter.Tendsto (fun n => logPrime n / n) Filter.atTop (nhds 0)\n```\n\nThis follows from PNT: p_n ~ n log n, so log p_n ~ log n + log log n = o(n).",
-    "mathContext": "\\frac{\\log p_n}{n} \\to 0 \\text{ as } n \\to \\infty: By PNT, p_n ~ n log n, so log p_n ~ log n + log log n. Both terms are o(n), establishing the sublinearity condition needed for the convex hull lemma.",
-    "significance": "key"
+    "mathContext": "$\\frac{\\log p_n}{n} \\to 0$: By PNT, $p_n \\sim n \\log n$, so $\\log p_n \\sim \\log n + \\log \\log n = o(n)$. This sublinearity of $\\log p_n$ is the key hypothesis for Pomerance's convex hull lemma.",
+    "significance": "key",
+    "relatedConcepts": ["Prime Number Theorem", "Filter.Tendsto", "nhds", "sublinear growth", "logPrime_ratio_tendsto_zero"],
+    "prerequisites": ["logPrime", "Filter.Tendsto", "Filter.atTop", "nhds", "Real.log"]
   },
   {
     "id": "ann-e453-vertex",
     "proofId": "erdos-453",
-    "range": {
-      "startLine": 122,
-      "endLine": 128
-    },
+    "range": { "startLine": 122, "endLine": 128 },
     "type": "definition",
     "title": "Convex Hull Vertex",
     "content": "**IsConvexHullVertex:**\n\nA point (n, a_n) is on the upper convex hull boundary if 2·a_n > a_{n-i} + a_{n+i} for all i.\n\n```lean\ndef IsConvexHullVertex (a : ℕ → ℝ) (n : ℕ) : Prop :=\n  ∀ i : ℕ, 0 < i → i < n → 2 * a n > a (n - i) + a (n + i)\n```\n\nAt a vertex, the point lies above the line between neighbors.",
-    "mathContext": "\\forall\\, 0 < i < n : 2a_n > a_{n-i} + a_{n+i}: A discrete analogue of strict concavity at a point. The condition means (n, a_n) lies strictly above the midpoint of the chord from (n-i, a_{n-i}) to (n+i, a_{n+i}), characterizing vertices of the upper convex hull.",
-    "significance": "critical"
+    "mathContext": "$\\forall\\, 0 < i < n : 2a_n > a_{n-i} + a_{n+i}$. Discrete strict concavity: $(n, a_n)$ lies strictly above the midpoint of any chord between $(n-i, a_{n-i})$ and $(n+i, a_{n+i})$. Translates to $p_n^2 > p_{n+i} p_{n-i}$ after exponentiation.",
+    "significance": "key",
+    "relatedConcepts": ["convex hull vertex", "discrete concavity", "upper convex hull", "chord condition", "IsConvexHullVertex"],
+    "prerequisites": ["Real", "pomerance_convex_hull_lemma", "logPrime"]
   },
   {
     "id": "ann-e453-lemma",
     "proofId": "erdos-453",
-    "range": {
-      "startLine": 130,
-      "endLine": 136
-    },
+    "range": { "startLine": 130, "endLine": 136 },
     "type": "axiom",
     "title": "Pomerance's Lemma",
     "content": "**pomerance_convex_hull_lemma:**\n\nFor any sequence with a_n = o(n), there are infinitely many convex hull vertices.\n\n```lean\naxiom pomerance_convex_hull_lemma (a : ℕ → ℝ)\n    (h : Filter.Tendsto (fun n => a n / n) Filter.atTop (nhds 0)) :\n    ∀ N : ℕ, ∃ n ≥ N, IsConvexHullVertex a n\n```\n\nThe non-horizontal boundary is concave with infinitely many vertices.",
-    "mathContext": "a_n = o(n) \\Rightarrow \\text{infinitely many } n \\text{ are convex hull vertices}: The key geometric insight: if a sequence grows sublinearly, the upper convex hull of (n, a_n) has a non-horizontal boundary that is concave, forcing infinitely many points to be genuine vertices (not interior to any edge).",
-    "significance": "critical"
+    "mathContext": "$a_n = o(n) \\Rightarrow$ infinitely many convex hull vertices. The geometric intuition: if $a_n/n \\to 0$, the upper convex hull of $(n, a_n)$ has infinitely many genuine vertices (not collinear interior points). Applied to $a_n = \\log p_n$ with PNT giving $\\log p_n = o(n)$.",
+    "significance": "key",
+    "relatedConcepts": ["pomerance_convex_hull_lemma", "sublinear sequences", "convex hull geometry", "infinitely many vertices", "Filter.Tendsto"],
+    "prerequisites": ["IsConvexHullVertex", "Filter.Tendsto", "Filter.atTop", "nhds", "logPrime_ratio_tendsto_zero"]
   },
   {
     "id": "ann-e453-pomerance",
     "proofId": "erdos-453",
-    "range": {
-      "startLine": 152,
-      "endLine": 159
-    },
+    "range": { "startLine": 152, "endLine": 159 },
     "type": "axiom",
     "title": "Pomerance (1979)",
     "content": "**pomerance_1979:**\n\nInfinitely many n have p_n² > p_{n+i}·p_{n-i} for all i < n.\n\n```lean\naxiom pomerance_1979 :\n    ∀ N : ℕ, ∃ n ≥ N,\n      ∀ i : ℕ, 0 < i → i < n →\n        (nthPrime n : ℤ) ^ 2 > (nthPrime (n + i) : ℤ) * (nthPrime (n - i) : ℤ)\n```\n\nPublished in 'The prime number graph', Math. Comp. (1979).",
-    "mathContext": "\\forall N,\\ \\exists n \\geq N,\\ \\forall\\, 0 < i < n : p_n^2 > p_{n+i} \\cdot p_{n-i}: Pomerance's main theorem, combining the convex hull lemma (applied to a_n = log p_n with the PNT sublinearity condition) with the log-to-product exponentiation step.",
-    "significance": "critical"
+    "mathContext": "Pomerance's theorem: $\\forall N,\\ \\exists n \\geq N,\\ \\forall\\, 0 < i < n : p_n^2 > p_{n+i} \\cdot p_{n-i}$. Proof: apply `pomerance_convex_hull_lemma` to $a_n = \\log p_n$ (sublinear by PNT), then exponentiate the vertex condition $2 \\log p_n > \\log p_{n+i} + \\log p_{n-i}$.",
+    "significance": "key",
+    "relatedConcepts": ["Pomerance 1979", "Math. Comp.", "prime number graph", "pomerance_convex_hull_lemma", "SelfridgeConjecture"],
+    "prerequisites": ["nthPrime", "pomerance_convex_hull_lemma", "logPrime_ratio_tendsto_zero", "IsConvexHullVertex"]
   },
   {
     "id": "ann-e453-selfridge-correct",
     "proofId": "erdos-453",
-    "range": {
-      "startLine": 161,
-      "endLine": 164
-    },
+    "range": { "startLine": 161, "endLine": 164 },
     "type": "theorem",
     "title": "Selfridge Was Correct",
     "content": "**selfridge_correct:**\n\nSelfridge's conjecture is true.\n\n```lean\ntheorem selfridge_correct : SelfridgeConjecture := pomerance_1979\n```\n\nDirect application of Pomerance's result.",
-    "mathContext": "\\text{SelfridgeConjecture} = \\text{pomerance\\_1979}: Pomerance's theorem is definitionally equal to Selfridge's conjecture, so the proof is a direct term-level assignment — no tactics needed.",
-    "significance": "key"
+    "mathContext": "`selfridge_correct : SelfridgeConjecture := pomerance_1979`. Definitionally equal — Pomerance's theorem is syntactically the Selfridge conjecture, so the proof is a direct term assignment with no tactics.",
+    "significance": "key",
+    "relatedConcepts": ["selfridge_correct", "definitional equality", "pomerance_1979", "term-mode proof", "SelfridgeConjecture"],
+    "prerequisites": ["SelfridgeConjecture", "pomerance_1979"]
   },
   {
     "id": "ann-e453-erdos-wrong",
     "proofId": "erdos-453",
-    "range": {
-      "startLine": 166,
-      "endLine": 171
-    },
+    "range": { "startLine": 166, "endLine": 171 },
     "type": "theorem",
     "title": "Erdős-Straus Were Wrong",
     "content": "**erdos_straus_wrong:**\n\nThe Erdős-Straus conjecture is false.\n\n```lean\ntheorem erdos_straus_wrong : ¬ErdosStrausConjecture := by\n  intro hES\n  exact conjectures_mutually_exclusive hES selfridge_correct\n```\n\nFollows from mutual exclusivity and Selfridge being correct.",
-    "mathContext": "\\neg \\text{ErdősStraus}: A two-step proof: assume E-S, apply mutual exclusivity to get ¬Selfridge, contradicting selfridge_correct. This chain (Pomerance → Selfridge → ¬E-S) is the complete logical structure.",
-    "significance": "key"
+    "mathContext": "$\\neg\\text{ErdősStraus}$: Proof by contradiction: assume E-S, apply `conjectures_mutually_exclusive` to get $\\neg$Selfridge, then `exact` contradiction with `selfridge_correct`. The chain: Pomerance → Selfridge → $\\neg$E-S.",
+    "significance": "key",
+    "relatedConcepts": ["erdos_straus_wrong", "proof by contradiction", "conjectures_mutually_exclusive", "selfridge_correct", "intro tactic"],
+    "prerequisites": ["ErdosStrausConjecture", "conjectures_mutually_exclusive", "selfridge_correct"]
   },
   {
     "id": "ann-e453-solution",
     "proofId": "erdos-453",
-    "range": {
-      "startLine": 177,
-      "endLine": 188
-    },
+    "range": { "startLine": 177, "endLine": 188 },
     "type": "theorem",
     "title": "Erdős Problem #453: SOLVED",
     "content": "**erdos_453_solution:**\n\nThe answer to Problem #453 is NO.\n\n```lean\ntheorem erdos_453_solution : ¬ErdosStrausConjecture :=\n  erdos_straus_wrong\n```\n\nIt is NOT true that for all large n, some i exists with p_n² < p_{n+i}·p_{n-i}.",
-    "mathContext": "\\neg\\bigl(\\exists N,\\ \\forall n \\geq N,\\ \\exists\\, 0 < i < n : p_n^2 < p_{n+i} p_{n-i}\\bigr): The final answer to Problem #453, delegating to erdos_straus_wrong. The answer is definitively NO — the Erdős-Straus conjecture is false.",
-    "significance": "critical"
+    "mathContext": "$\\neg\\bigl(\\exists N,\\ \\forall n \\geq N,\\ \\exists\\, 0 < i < n : p_n^2 < p_{n+i} p_{n-i}\\bigr)$. The answer to Problem #453 is definitively NO, delegating to `erdos_straus_wrong`. Pomerance's 1979 result resolves the Erdős-Straus vs Selfridge debate.",
+    "significance": "key",
+    "relatedConcepts": ["erdos_453_solution", "Problem #453 resolution", "erdos_straus_wrong", "Pomerance 1979", "SOLVED status"],
+    "prerequisites": ["ErdosStrausConjecture", "erdos_straus_wrong"]
   },
   {
     "id": "ann-e453-summary",
     "proofId": "erdos-453",
-    "range": {
-      "startLine": 280,
-      "endLine": 302
-    },
+    "range": { "startLine": 280, "endLine": 302 },
     "type": "theorem",
     "title": "Summary",
     "content": "**erdos_453_summary:**\n\nCombines the main results.\n\n```lean\ntheorem erdos_453_summary :\n    ¬ErdosStrausConjecture ∧ SelfridgeConjecture\n```\n\n**Key Results:**\n1. Erdős-Straus conjecture is FALSE\n2. Selfridge's counter-conjecture is TRUE\n3. Pomerance's proof uses convex hull geometry\n4. Problem A14 in Guy's UPINT\n\n**Status:** SOLVED",
-    "mathContext": "\\neg\\text{ErdősStraus} \\wedge \\text{Selfridge}: The conjunction packages both halves of the resolution: the original conjecture is false AND the counter-conjecture is true. Proved by the pair ⟨erdos_straus_wrong, selfridge_correct⟩.",
-    "significance": "key"
+    "mathContext": "$\\neg\\text{ErdősStraus} \\wedge \\text{Selfridge}$. Proved by `⟨erdos_straus_wrong, selfridge_correct⟩`. This conjunction packages both halves: the original conjecture is false AND the counter-conjecture is true. Also Problem A14 in Guy's 'Unsolved Problems in Number Theory'.",
+    "significance": "key",
+    "relatedConcepts": ["erdos_453_summary", "Guy's UPINT", "conjunction", "And.intro", "problem resolution"],
+    "prerequisites": ["erdos_straus_wrong", "selfridge_correct", "ErdosStrausConjecture", "SelfridgeConjecture"]
   }
 ]
