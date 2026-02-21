@@ -46,10 +46,24 @@
       "startLine": 75,
       "endLine": 87,
       "summary": "Determine the exact value of sup liminf μ(r)/M(r) over all transcendental entire functions."
+    },
+    {
+      "id": "structural-theorems",
+      "title": "Proved Structural Theorems",
+      "startLine": 89,
+      "endLine": 120,
+      "summary": "Five proved theorems: ratio in [0,1], set membership, degenerate case, and ratio-equals-quotient when M(r)>0."
+    },
+    {
+      "id": "formal-conjecture",
+      "title": "Formal Conjecture: Exact Supremum",
+      "startLine": 122,
+      "endLine": 155,
+      "summary": "Axiom erdos_513_exact_value asserts the existence of L in (1/2, 2/π) that is the tight supremum of liminf μ(r)/M(r)."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős (1961) asked for the greatest possible value of liminf_{r→∞} μ(r)/M(r) over all transcendental entire functions, where μ(r) is the maximum term and M(r) the maximum modulus. Kövári showed the value exceeds 1/2, and Clunie and Hayman (1964) proved it is at most 2/π minus an absolute constant. The exact value remains unknown.",
+    "historicalContext": "Erdős (1961) asked for the greatest possible value of $\\liminf_{r\\to\\infty} \\mu(r)/M(r)$ over all transcendental entire functions, where $\\mu(r) = \\max_n |a_n|r^n$ is the **maximum term** and $M(r) = \\max_{|z|=r}|f(z)|$ the **maximum modulus**. The problem sits at the heart of **Wiman–Valiron theory**, which systematically relates the dominant term to global growth. Kövári (unpublished) showed via lacunary series that the supremum exceeds 1/2. Clunie and Hayman (1964, *J. Analyse Math.*) proved the supremum is strictly less than $2/\\pi \\approx 0.6366$, where $2/\\pi$ arises as the average of $|\\cos\\theta|$. The exact value in $(1/2, 2/\\pi)$ remains one of the outstanding open problems in classical complex analysis.",
     "problemStatement": "Determine the greatest possible value of liminf_{r→∞} μ(r)/M(r) over all transcendental entire functions f(z) = Σ aₙzⁿ.",
     "proofStrategy": "We axiomatize maxTerm and maxModulus, define the ratio constructively, and record Kövári's lower bound and the Clunie–Hayman upper bound as axioms. The open question is formalized as the existence of an exact supremum in (1/2, 2/π).",
     "keyInsights": [
