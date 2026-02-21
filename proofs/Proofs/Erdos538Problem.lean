@@ -178,10 +178,14 @@ For A ⊆ {1,...,N} with r-bounded representations:
 -/
 
 /-- For each a ∈ A, the number of primes p with pa ≤ N is at most N/a. -/
+-- Proved by Aristotle (Harmonic)
 theorem primes_for_element_bound (A : Finset ℕ) (N : ℕ) (a : ℕ)
     (ha : a ∈ A) (hA : A ⊆ Finset.range (N + 1)) (ha0 : a > 0) :
     ((Finset.range (N + 1)).filter (fun p => p.Prime ∧ p * a ≤ N)).card ≤ N / a := by
-  sorry
+  have h_prime_to_int : Finset.filter (fun p => Nat.Prime p ∧ p * a ≤ N) (Finset.range (N + 1)) ⊆ Finset.image (fun x => x) (Finset.Icc 1 (N / a)) := by
+    norm_num +zetaDelta at *;
+    exact fun p hp => Finset.mem_Icc.mpr ⟨ Nat.Prime.pos ( Finset.mem_filter.mp hp |>.2.1 ), Nat.le_div_iff_mul_le ha0 |>.2 ( Finset.mem_filter.mp hp |>.2.2 ) ⟩;
+  exact le_trans ( Finset.card_le_card h_prime_to_int ) ( Finset.card_image_le.trans ( by simpa ) )
 
 /-- The double counting inequality: bounding the sum of reprCount.
     Σ_{m=1}^{N} reprCount(A, m) ≤ |A| · N since each a ∈ A contributes

@@ -763,10 +763,19 @@ def ExactAsymptoticConjecture : Prop :=
 /- ## Part VIII: Historical Bounds -/
 
 /-- Croot (2003) lower bound: f(N) > N / L(N)^{√2 + o(1)}. -/
+-- Proved by Aristotle (Harmonic)
 theorem croot_lower :
     ∀ ε > 0, ∀ᶠ N in Filter.atTop,
       (f N : ℝ) > N / (L N) ^ (Real.sqrt 2 + ε) := by
-  sorry
+  intro ε hε_pos;
+  have h_lower_bound : ∀ N : ℕ, N ≥ 1 → (Erdos202.f N : ℝ) ≥ N := by
+    exact fun N hN => mod_cast Erdos202.f_ge_N N hN;
+  have h_L_growth : ∀ᶠ N in Filter.atTop, (Erdos202.L N : ℝ) ^ (Real.sqrt 2 + ε) > 1 := by
+    have h_L_growth : ∀ᶠ N in Filter.atTop, 1 < Erdos202.L N := by
+      unfold Erdos202.L;
+      filter_upwards [ Filter.eventually_gt_atTop 2, Filter.eventually_gt_atTop ⌈Real.exp 1⌉₊ ] with N hN₁ hN₂ using by rw [ if_neg ( by linarith ) ] ; exact lt_of_le_of_lt ( by norm_num ) ( Real.exp_lt_exp.mpr ( Real.sqrt_lt_sqrt ( by positivity ) ( mul_lt_mul_of_pos_left ( Real.log_lt_log ( by positivity ) ( show ( Real.log N : ℝ ) > 1 by rw [ gt_iff_lt ] ; rw [ Real.lt_log_iff_exp_lt ( by positivity ) ] ; exact Nat.lt_of_ceil_lt hN₂ ) ) ( Real.log_pos ( by norm_cast; linarith ) ) ) ) ) ;
+    filter_upwards [ h_L_growth ] with N hN using Real.one_lt_rpow hN ( by positivity );
+  filter_upwards [ h_L_growth, Filter.eventually_ge_atTop 1 ] with N hN₁ hN₂ using lt_of_lt_of_le ( div_lt_self ( by positivity ) hN₁ ) ( h_lower_bound N hN₂ )
 
 /- Aristotle ran out of time. -/
 /-- Croot (2003) upper bound: f(N) < N / L(N)^{1/6 - o(1)}. -/
@@ -780,8 +789,9 @@ theorem croot_upper :
 
 /-- For N = 6, we can achieve r = 3 with classes 0 mod 2, 1 mod 4, 3 mod 6.
     These cover 0,2,4,... and 1,5,9,... and 3,9,15,... which are disjoint. -/
+-- Proved by Aristotle (Harmonic)
 theorem example_N6 : f 6 ≥ 3 := by
-  sorry
+  exact le_trans ( by norm_num ) ( Erdos202.f_ge_N 6 ( by norm_num ) )
 
 /- Aristotle ran out of time. -/
 /-- The density of covered integers in a disjoint system. -/
@@ -790,9 +800,10 @@ noncomputable def coveringDensity (S : DisjointSystem) : ℝ :=
 
 /- Aristotle ran out of time. -/
 /-- A disjoint system can cover at most density 1. -/
+-- Proved by Aristotle (Harmonic)
 theorem covering_density_le_one (S : DisjointSystem) :
     coveringDensity S ≤ 1 := by
-  sorry
+  convert sum_inv_moduli_le_one S using 1
 
 /- Aristotle ran out of time. -/
 end Erdos202
