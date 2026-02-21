@@ -71,8 +71,12 @@ theorem F_mono {a : ℕ → ℕ} {X : ℝ} {k₁ k₂ : ℕ} (h : k₁ ≤ k₂)
   intro i hi
   simp only [Set.mem_setOf_eq] at hi ⊢
   have hdvd := consecutiveLcm_mono h (a := a) (i := i)
-  -- LCM grows as we add more terms
-  sorry
+  -- LCM grows as we add more terms (proved by Aristotle)
+  refine' lt_of_le_of_lt _ hi
+  refine' mod_cast Nat.le_of_dvd _ hdvd
+  exact Nat.pos_of_ne_zero (mt Finset.lcm_eq_zero_iff.mp (by
+    intros h; obtain ⟨j, hj⟩ := h
+    exact absurd hj.2 (ne_of_gt (hpos _))))
 
 /-
 ## Main Conjecture (OPEN)
@@ -141,6 +145,11 @@ theorem consecutiveLcm_powers_of_two (i : ℕ) :
   | succ n =>
     induction n with
     | zero => native_decide
-    | succ m _ => sorry -- Pattern continues: lcm(2^(m+2), 2^(m+3)) = 2^(m+3)
+    | succ m _ =>
+      -- Pattern continues: lcm(2^(m+2), 2^(m+3)) = 2^(m+3) (proved by Aristotle)
+      simp [Erdos873.consecutiveLcm] at *
+      simp_all +decide [Finset.range_add_one]
+      exact Nat.dvd_antisymm (Nat.lcm_dvd (dvd_refl _) (pow_dvd_pow _ (Nat.le_succ _)))
+        (Nat.dvd_lcm_left _ _)
 
 end Erdos873

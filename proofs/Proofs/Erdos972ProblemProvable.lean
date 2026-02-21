@@ -72,10 +72,8 @@ theorem primeSet_lt_one_finite_or_special (α : ℝ) (hα : 0 < α) (hα1 : α <
   have hαp : α * p < p := by
     calc α * p < 1 * p := mul_lt_mul_of_pos_right hα1 (Nat.cast_pos.mpr (Nat.Prime.pos hp.1))
       _ = p := one_mul _
-  -- Since α * p < p and floor is at most α * p, we have ⌊α * p⌋ < p
-  have hfloor : (⌊α * p⌋₊ : ℝ) ≤ α * p := Nat.floor_le (by positivity)
-  have hp_pos : (0 : ℝ) < p := Nat.cast_pos.mpr (Nat.Prime.pos hp.1)
-  sorry -- Technical: ⌊α * p⌋ ≤ α * p < p implies ⌊α * p⌋ < p
+  -- Since α * p < p, the floor satisfies ⌊α * p⌋ < p (proved via Nat.floor_lt)
+  exact Nat.floor_lt (by positivity) |>.2 hαp
 
 /-
 ## The Main Conjecture (OPEN)
@@ -136,13 +134,13 @@ Here we track the distinction explicitly. -/
 def vinogradovSet (α : ℝ) : Set ℕ :=
   {p : ℕ | Nat.Prime p ∧ ∃ n : ℕ, p = ⌊α * n⌋₊}
 
-/-- The Erdős set asks about primes in the domain, Vinogradov about primes in the range. -/
-theorem erdos_vs_vinogradov_distinction (α : ℝ) :
-    primeSet α ≠ vinogradovSet α := by
-  -- These are fundamentally different questions
-  -- primeSet: p is prime AND ⌊αp⌋ is prime
-  -- vinogradovSet: p is prime AND p = ⌊αn⌋ for some n
-  sorry
+/-
+Note: The statement "primeSet α ≠ vinogradovSet α for all α" is FALSE.
+Aristotle found a counterexample: for α = 1, both sets equal the set of all primes.
+  primeSet 1 = {p | Nat.Prime p}  (since ⌊1·p⌋ = p is prime)
+  vinogradovSet 1 = {p | Nat.Prime p ∧ ∃ n, p = n} = {p | Nat.Prime p}
+The two questions are conceptually distinct but their answer sets can coincide.
+-/
 
 /-
 ## Examples
@@ -212,9 +210,13 @@ theorem goldenRatio_gt_one : goldenRatio > 1 := by
   linarith
 
 /-- The golden ratio is irrational.
-This is a classical result: √5 is irrational, so (1 + √5)/2 is irrational.
-We state this as an axiom since the Mathlib API for irrationality is complex. -/
-theorem goldenRatio_irrational : Irrational goldenRatio := by sorry
+Proof: √5 is irrational (5 is prime), so 1 + √5 is irrational (rational + irrational),
+so (1 + √5)/2 is irrational (irrational / nonzero rational).
+Proved by Aristotle using Nat.Prime.irrational_sqrt and Irrational lemmas. -/
+theorem goldenRatio_irrational : Irrational goldenRatio := by
+  unfold goldenRatio
+  exact_mod_cast Nat.Prime.irrational_sqrt (by norm_num) |> Irrational.ratCast_add 1 |>
+    Irrational.div_ratCast <| by norm_num
 
 /-- The problem for the golden ratio is a special case of the conjecture. -/
 theorem golden_ratio_case : erdos972Conjecture → (primeSet goldenRatio).Infinite := by
