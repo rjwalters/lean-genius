@@ -1,0 +1,84 @@
+{
+  "slug": "basel-problem-oq-01",
+  "title": "Is ζ(5) irrational",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "SURVEYED",
+    "since": "2026-02-21T19:21:07.130Z",
+    "iteration": 1,
+    "focus": "Proved convergence and bounds; open conjecture stated",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved convergence, positivity, bounds (1 ≤ ζ(5) ≤ π⁴/90), stated open conjecture; axiomatized Apéry/Rivoal/Zudilin partial results",
+    "builtItems": [
+      "summable_one_div_pow_five: Summable (fun n => 1/(n:ℝ)^5)",
+      "zetaFive_ge_one: 1 ≤ ζ(5) via hasSum_ite_eq + hasSum_le",
+      "zetaFive_le_zeta_four: ζ(5) ≤ π⁴/90 via hasSum_le + one_div_le_one_div_of_le",
+      "zetaFive_le_zeta_two: ζ(5) ≤ π²/6 via hasSum_le + one_div_le_one_div_of_le",
+      "zeta_five_irrational: sorry (OPEN PROBLEM)",
+      "apery_theorem, rivoal_theorem, zudilin_theorem as axioms",
+      "zudilin_witness, not_all_of_four_rational: consequences of Zudilin",
+      "File: proofs/Proofs/ZetaFiveIrrationality.lean (builds with only 1 expected sorry)"
+    ],
+    "insights": [
+      "ζ(5) is an OPEN problem - irrationality unknown as of 2026",
+      "Apéry 1978 proved ζ(3) irrational; analogous technique fails for ζ(5)",
+      "Rivoal 2000: infinitely many odd zeta values are irrational",
+      "Zudilin 2001: at least one of ζ(5), ζ(7), ζ(9), ζ(11) is irrational",
+      "hasSum_ite_eq + hasSum_le is the correct way to prove tsum ≥ single term in Mathlib v4.26.0",
+      "sum_le_tsum is NOT available for ℝ in Mathlib v4.26.0 (only ENNReal has it)",
+      "one_div_le_one_div_of_le is the correct lemma for 1/a ≥ 1/b from a ≤ b"
+    ],
+    "mathlibGaps": [
+      "Apéry theorem for ζ(3) not in Mathlib (stated as axiom)",
+      "Rivoal theorem (infinitely many irrational odd zeta values) not in Mathlib",
+      "Zudilin four-value theorem not in Mathlib"
+    ],
+    "nextSteps": [
+      "Monitor Mathlib for Apéry theorem formalization",
+      "Could extend to prove ζ(5) is algebraically independent of π (likely open)"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "challenging",
+    "analysis",
+    "series",
+    "convergence",
+    "wiedijk-100",
+    "zeta-function",
+    "classic"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-21T19:21:07.130Z",
+  "lastUpdate": "2026-02-22T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 6
+}
