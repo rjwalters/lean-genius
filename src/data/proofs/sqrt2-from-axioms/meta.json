@@ -38,13 +38,15 @@
     "dateAdded": "12/27/25"
   },
   "overview": {
-    "historicalContext": "This proof is attributed to Hippasus of Metapontum (~500 BCE). Legend says he was thrown overboard for revealing that sqrt(2) is irrational, challenging the Pythagorean belief that all numbers are rational.\n\nThe proof demonstrates the method of infinite descent: assuming sqrt(2) = a/b in lowest terms leads to both a and b being even, contradicting the assumption.",
+    "historicalContext": "This proof is attributed to Hippasus of Metapontum (~500 BCE), a member of the Pythagorean school who discovered that the diagonal of a unit square cannot be expressed as a ratio of integers. According to legend, Hippasus was thrown overboard while at sea for revealing this truth, which shook the Pythagorean doctrine that 'all is number' — meaning rational number.\n\nThe Greeks called such lengths *incommensurable* with the side: no common unit of measurement can divide both exactly. The result appears formally in Euclid's *Elements* Book X (c. 300 BCE). Theaetetus (~400 BCE) extended it, proving √n is irrational for any non-perfect-square n.\n\nThe proof exemplifies *infinite descent*: assuming √2 = a/b in lowest terms forces both a and b to be even, contradicting 'lowest terms'. This parity argument became a template replicated across number theory — the same structure proves √p irrational for any prime p.",
     "problemStatement": "**Theorem**: There are no natural numbers a, b with b > 0 such that a^2 = 2 * b^2 and gcd(a,b) = 1.\n\nThis is equivalent to saying sqrt(2) is irrational, since if sqrt(2) = a/b in lowest terms, then a^2 = 2b^2.",
     "proofStrategy": "**The Classic Proof by Contradiction**:\n\n1. Assume sqrt(2) = a/b where a, b are coprime\n2. Then 2b^2 = a^2, so a^2 is even\n3. Therefore a is even (key lemma!), say a = 2k\n4. Substituting: 2b^2 = 4k^2, so b^2 = 2k^2\n5. Therefore b^2 is even, so b is even\n6. But both a and b even contradicts gcd(a,b) = 1!",
     "keyInsights": [
-      "The key lemma is: if n^2 is even, then n is even (proved by contrapositive)",
-      "We build even/odd definitions and parity lemmas from scratch",
-      "This ~200 line proof shows the architecture hidden in Mathlib's one-liner"
+      "The key lemma is: if n^2 is even, then n is even — proved by contrapositive: if n is odd (n = 2k+1), then n² = 4k² + 4k + 1 is also odd, so the implication holds by contraposition",
+      "Even/odd definitions and all parity lemmas are built from scratch using only existential witnesses, showing the full proof architecture hidden inside Mathlib's one-liner `exact irrational_sqrt_two`",
+      "The proof uses infinite descent implicitly: assuming a/b in lowest terms leads to 2|a and 2|b, so a/2 and b/2 give a 'smaller' representation — repeating this descent has no finite stopping point unless no such a/b exists",
+      "The contrapositive technique generalizes directly to √p for any prime p: replace 'divisible by 2' with 'divisible by p', and the same argument shows p|a² → p|a (using the prime property), then p|b — contradiction with coprimality",
+      "This ~200-line pedagogical proof illustrates the trade-off in formalization: Mathlib's one-liner `exact irrational_sqrt_two` hides real number construction, the square root definition, and the actual irrationality argument — this file makes all of that structure explicit"
     ]
   },
   "sections": [
