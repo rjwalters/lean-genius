@@ -7,7 +7,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #903** asks: for n = p² + p + 1 with p a prime power, if a block design has t > n blocks, must t ≥ n + p? The answer is YES, proved by Erdős-Fowler-Sós-Wilson (1985). The problem reveals a rigidity phenomenon: once a block design exceeds the projective-plane minimum, its block count must jump by at least p.",
     "mathContext": "Block designs with the pair-coverage property (every pair in exactly one block) are also called *pairwise balanced designs* (PBDs). The parameter n = p² + p + 1 is the point count of a projective plane of order p, and the de Bruijn-Erdős theorem (1948) establishes t ≥ n as a universal lower bound. This problem asks whether the lower bound is essentially the only achievable value near n — answering yes, with a gap of width p.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["block-designs", "projective-planes", "de-bruijn-erdos", "finite-geometry", "pairwise-balanced-designs"],
     "crossReferences": [
       {
@@ -30,7 +30,8 @@
     "title": "BlockDesign Structure",
     "content": "A block design on {1,...,n} is a collection of subsets (blocks) such that every pair of distinct elements is contained in exactly one block. This is the 2-(n, k, 1) design property when blocks are uniform, or a pairwise balanced design (PBD) in the non-uniform case.",
     "mathContext": "The structure `BlockDesign n` captures a PBD(n) — a partition of the complete graph K_n into cliques (blocks). The `pair_coverage` axiom encodes λ = 1 pair-coverage: for every distinct x, y ∈ {1,...,n}, there exists a unique block containing both. This is equivalent to saying the blocks form the lines of a *linear space* on n points. The formalization uses `Finset (Finset ℕ)` for blocks, restricting to finite set-system combinatorics.",
-    "significance": "critical",
+    "significance": "key",
+    "relatedConcepts": ["PBD", "BlockDesign structure", "pair_coverage", "linear space", "pairwise-balanced-design"],
     "crossReferences": [
       {
         "targetProofId": "erdos-734",
@@ -82,7 +83,8 @@
     "title": "de Bruijn-Erdős Theorem",
     "content": "Every block design on n ≥ 2 points has at least n blocks. This foundational 1948 result of de Bruijn and Erdős provides the universal lower bound t ≥ n for pairwise balanced designs.",
     "mathContext": "The original proof by de Bruijn and Erdős (1948) uses a clever double-counting argument. For each point x, let r_x be the number of blocks containing x. Then Σ r_x = Σ |A_i| (counting incidences), and Σ r_x(r_x - 1) = n - 1 for each x (each pair through x is in exactly one block). By Cauchy-Schwarz on the r_x, one obtains t ≥ n. Equality holds iff all r_x are equal — which characterizes projective planes and near-pencil designs.",
-    "significance": "critical",
+    "significance": "key",
+    "relatedConcepts": ["de_bruijn_erdos", "double counting", "Cauchy-Schwarz", "replication number", "t ≥ n"],
     "crossReferences": [
       {
         "targetProofId": "erdos-734",
@@ -119,7 +121,8 @@
     "title": "ProjectivePlane Structure",
     "content": "A projective plane of order q has q² + q + 1 points and q² + q + 1 lines, with each line containing q + 1 points and every two points determining a unique line. The Fano plane (q = 2) is the smallest example.",
     "mathContext": "The axioms capture the incidence structure PG(2, GF(q)): (1) `num_points` = q²+q+1 points, (2) `num_lines` = q²+q+1 lines (duality), (3) `line_size` = q+1 points per line, (4) `two_points_one_line` = the unique-line axiom. Missing from the formalization is the dual axiom (two lines meet in a unique point) — but this follows from the other axioms for finite planes. The formalization also omits *non-Desarguesian planes*, which exist for non-prime orders (the smallest is the Hall plane of order 9).",
-    "significance": "critical",
+    "significance": "key",
+    "relatedConcepts": ["ProjectivePlane", "PG(2,q)", "Fano plane", "line_size", "two_points_one_line"],
     "crossReferences": [
       {
         "targetProofId": "erdos-664",
@@ -158,7 +161,8 @@
     "title": "EFSW 1985: The Gap Theorem",
     "content": "Erdős-Fowler-Sós-Wilson (1985) proved the central conjecture: for a block design on n = p² + p + 1 points, if t > n then t ≥ n + p. This creates a forbidden interval (n, n + p) of unachievable block counts.",
     "mathContext": "The proof by Erdős, Fowler, Sós, and Wilson uses a detailed analysis of the *replication numbers* r_x (blocks through point x) and *intersection numbers* (|A_i ∩ A_j|). When t > n, the replication numbers must deviate from the uniform value q + 1 (the projective-plane value). The deviation is quantified using the variance Σ(r_x - r̄)², and a careful algebraic argument shows that sufficient deviation forces t ≥ n + p. The paper appeared in the Proceedings of the London Mathematical Society, 1985.",
-    "significance": "critical"
+    "significance": "key",
+    "relatedConcepts": ["EFSW 1985", "gap theorem", "replication numbers", "efsw_1985", "forbidden block counts"]
   },
   {
     "id": "ann-903-strong",
@@ -188,7 +192,8 @@
     "title": "The Gap: Forbidden Block Counts",
     "content": "Values in the open interval (n, n+p) are NOT achievable by any block design on n = p² + p + 1 points. This is the core 'gap phenomenon' — the de Bruijn-Erdős bound is not merely tight but isolated.",
     "mathContext": "The gap phenomenon is analogous to spectral gaps in other areas of combinatorics. Compare with the Ramsey multiplicity problem (erdos-905): just as edge-triangle counts have gaps near the Turán threshold, block-design counts have gaps near the projective-plane minimum. Both reflect *rigidity* of extremal configurations — small perturbations from the extremal structure force large parameter jumps.",
-    "significance": "critical",
+    "significance": "key",
+    "relatedConcepts": ["gap phenomenon", "forbidden block counts", "combinatorial rigidity", "gap_theorem", "achievableBlocks"],
     "crossReferences": [
       {
         "targetProofId": "erdos-905",
@@ -262,6 +267,7 @@
     "title": "erdos_903_summary (Proved)",
     "content": "The main summary theorem combining three results: (1) de Bruijn-Erdős: t ≥ n for all block designs, (2) projective plane achieves t = n, (3) EFSW: t > n implies t ≥ n + p. All three conjuncts are proved from the axioms.",
     "mathContext": "The proof structure uses `refine ⟨?_, ?_, ?_⟩` to split the conjunction into three goals. The first goal requires showing n ≥ 2 (needed by `de_bruijn_erdos`), which is proved from the prime power hypothesis: if q = p^k with p prime and k ≥ 1, then q ≥ 2, so q²+q+1 ≥ 7 ≥ 2. This is the most substantial sub-proof, using `calc` and `omega` tactics. The second goal is discharged by `projective_plane_design`, and the third by `efsw_1985`. This theorem serves as a certificate that the formalization captures the complete answer to Erdős Problem #903.",
-    "significance": "critical"
+    "significance": "key",
+    "relatedConcepts": ["erdos_903_summary", "conjunction proof", "de_bruijn_erdos", "projective_plane_design", "efsw_1985"]
   }
 ]
