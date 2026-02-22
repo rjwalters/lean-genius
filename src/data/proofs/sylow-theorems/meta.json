@@ -44,13 +44,15 @@
     "dateAdded": "12/27/25"
   },
   "overview": {
-    "historicalContext": "Peter Ludwig Mejdell Sylow proved these theorems in 1872. They generalize Cauchy's theorem and provide crucial structural information about finite groups.\n\nThe Sylow theorems are among the most important tools in finite group theory, used extensively in classification problems including the classification of finite simple groups.",
+    "historicalContext": "Peter Ludwig Mejdell Sylow (1832-1918) was a Norwegian mathematician who spent most of his career as a high school teacher in Halden, proving these landmark theorems as a side pursuit. He published them in *Mathematische Annalen* (1872, vol. 5) — a single paper that transformed finite group theory.\n\nGeorg Frobenius (1849-1917) gave streamlined alternative proofs in 1887 and strengthened the counting theorem. William Burnside (1852-1927) deployed Sylow's theorems extensively, proving in 1904 that all groups of order p^a·q^b are solvable — a result later reproved by Feit-Thompson (1963) as part of the monumental Odd Order Theorem.\n\nThe theorems became a cornerstone of the Classification of Finite Simple Groups (CFSG), completed ~2004 by Aschbacher, Smith, and others: Sylow counting immediately eliminates most orders from being simple, while conjugacy ensures uniform subgroup structure within each prime family.",
     "problemStatement": "**The Three Sylow Theorems** for a group G of order n = p^k * m where p is prime and p does not divide m:\n\n1. **Existence**: G has a subgroup of order p^k (Sylow p-subgroup)\n2. **Conjugacy**: All Sylow p-subgroups are conjugate to each other\n3. **Counting**: The number n_p of Sylow p-subgroups satisfies: n_p divides m and n_p ≡ 1 (mod p)\n\nThis is Wiedijk's 100 Theorems #72.",
     "proofStrategy": "**Sylow I (Existence)**:\nUse induction on |G| and analyze the class equation.\n\n**Sylow II (Conjugacy)**:\nLet P act on cosets G/Q by multiplication and use orbit-stabilizer.\n\n**Sylow III (Counting)**:\nP acts on the set of Sylow p-subgroups by conjugation; the only fixed point is P itself.",
     "keyInsights": [
-      "Existence guarantees every finite group has maximal p-subgroups",
-      "Conjugacy means all maximal p-subgroups are structurally identical",
-      "The counting constraints severely limit possible group structures"
+      "Existence (Sylow I) is proved via the class equation |G| = |Z(G)| + Σ|Cl(x)|: either the center Z(G) has an element of order p (Cauchy applied to the abelian center), or some conjugacy class has size not divisible by p, providing a proper subgroup on which to apply induction",
+      "Conjugacy (Sylow II) follows from orbit-stabilizer: let P act on cosets G/Q; if P ≠ Q then |P∩Q| < |P|, so every P-orbit on G/Q has size > 1; but P is a p-group so all orbit sizes are p-powers, meaning |G/Q| ≡ 0 mod p — contradicting |G/Q| = m where p ∤ m, so P = gQg⁻¹",
+      "The counting constraints n_p ≡ 1 (mod p) and n_p | m severely limit possible group structures: for |G| = 15 both constraints force n_3 = n_5 = 1, so every group of order 15 is cyclic — a complete classification from arithmetic alone",
+      "Unique Sylow subgroups are automatically normal: n_p = 1 means the subgroup is its own unique conjugate, i.e., gPg⁻¹ = P for all g ∈ G — this equivalence (n_p = 1 ⟺ P ⊴ G) is the primary way normality is established in classification arguments",
+      "Sylow's theorems are a blueprint for the Classification of Finite Simple Groups: any simple group must have n_p > 1 for every prime p dividing its order (otherwise a normal Sylow subgroup exists), and Sylow counting constraints then force |G| to be extremely large — ruling out all 'small' orders from being simple"
     ]
   },
   "sections": [
