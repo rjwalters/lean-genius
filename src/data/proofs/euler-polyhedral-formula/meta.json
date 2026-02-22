@@ -34,13 +34,15 @@
     "dateAdded": "12/27/25"
   },
   "overview": {
-    "historicalContext": "Euler discovered this formula in 1758 while studying polyhedra. The formula V - E + F = 2 is one of the most beautiful results in mathematics, connecting three seemingly unrelated counts with a simple constant.\n\nCauchy provided the first rigorous proof in 1813. The result generalizes to the Euler characteristic chi = 2 - 2g for surfaces of genus g.",
+    "historicalContext": "Euler discovered this formula in 1758 while studying polyhedra, though René Descartes had noticed a closely related result in 1639 (remaining unpublished until 1860). The formula V - E + F = 2 is one of the most beautiful results in mathematics, connecting three apparently unrelated counts — vertices, edges, and faces — through a single universal constant.\n\nCauchy provided the first rigorous proof in 1813 using triangulation, reducing a general polyhedron to the sphere. Legendre gave an independent spherical geometry proof the same year. The formula is equivalent to the topological statement that every convex polyhedron is homeomorphic to a sphere, whose Euler characteristic χ = 2. Poincaré generalized this in 1895 to all compact orientable surfaces: χ = 2 − 2g for genus g, founding algebraic topology. The Euler characteristic became the first example of a topological invariant preserved under continuous deformation.",
     "problemStatement": "**Theorem (Euler, 1758)**: For any convex polyhedron with V vertices, E edges, and F faces:\n\n$$V - E + F = 2$$\n\nThis is Wiedijk's 100 Theorems #13 and represents a fundamental topological invariant.",
     "proofStrategy": "**Proof by Edge Reduction**:\n\n1. **Base Case**: The tetrahedron has V=4, E=6, F=4, so 4 - 6 + 4 = 2\n2. **Inductive Step**: For any polyhedron with E > 6 edges:\n   - Remove an edge (merges two faces): decreases E and F by 1\n   - Contract an edge (merges two vertices): decreases V and E by 1\n3. Both operations preserve V - E + F\n4. By reduction to tetrahedron, all polyhedra have V - E + F = 2",
     "keyInsights": [
-      "The Euler characteristic is a topological invariant - it depends only on the surface type",
-      "All convex polyhedra are homeomorphic to a sphere, which has chi = 2",
-      "The formula extends to V - E + F = 2 - 2g for surfaces of genus g"
+      "The Euler characteristic is a topological invariant — it depends only on the surface type, not on the specific triangulation or embedding used to compute it",
+      "All convex polyhedra are homeomorphic to a sphere (genus 0), which explains why they all share χ = 2 rather than it being a coincidence about counts",
+      "The formula extends to V - E + F = 2 - 2g for compact orientable surfaces of genus g, with the torus (g=1) giving χ = 0 and the double torus (g=2) giving χ = -2",
+      "The constructive proof via ConstructiblePoly induction is completely axiom-free: only the tetrahedron base case V=4, E=6, F=4 needs verification; every other polyhedron follows by structural induction on subdivideEdge and subdivideFace operations",
+      "The Schläfli inequality 2p + 2q > pq — derived from Euler's formula via double counting — limits regular polyhedra to exactly 5 types, providing a formal proof that only 5 Platonic solids exist"
     ]
   },
   "sections": [
