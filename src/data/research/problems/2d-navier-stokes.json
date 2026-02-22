@@ -1,23 +1,114 @@
 {
-  "id": "2d-navier-stokes",
-  "name": "2D Navier-Stokes Regularity",
-  "status": "completed",
-  "leanFile": "proofs/Proofs/NavierStokes.lean",
+  "slug": "2d-navier-stokes",
+  "title": "2D Navier-Stokes Regularity",
+  "phase": "ACTIVE",
+  "status": "progress",
+  "tier": "A",
+  "path": "partial",
+  "problemStatement": {
+    "formal": "\\text{For smooth initial vorticity } \\omega_0 \\in H^1(\\mathbb{R}^2), \\text{ prove global existence and uniqueness of smooth solutions to 2D Navier-Stokes.}",
+    "plain": "Prove that 2D Navier-Stokes equations have global smooth solutions for all smooth initial data (Ladyzhenskaya 1969 result).",
+    "whyMatters": [
+      "Foundational result: 2D NS is completely solved, unlike 3D (Millennium Problem)",
+      "Demonstrates Lean4's capacity for PDE formalization",
+      "The enstrophy bound is the key structural insight distinguishing 2D from 3D"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Conditional enstrophy bound: E(t) ≤ E(0) for all t > 0 (via GlobalNSSolution2D structure)",
+      "Exponential enstrophy decay: E(t) ≤ E(0)·exp(-2νμ₁t) under Poincaré inequality",
+      "Enstrophy dissipation is nonneg: E(0) - E(t) ≥ 0",
+      "Long-time vanishing: enstrophy decays to 0 exponentially"
+    ],
+    "open": [
+      "Actual existence of solutions (construction from initial data requires Sobolev infrastructure)",
+      "Uniqueness (Lions-Prodi, requires Sobolev space framework)"
+    ],
+    "goal": "Prove GlobalNSSolution2D is inhabited for any H^1 initial vorticity"
+  },
+  "currentState": {
+    "phase": "PROGRESS",
+    "since": "2026-02-22T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Proved exact exponential enstrophy decay via integrating factor trick",
+    "blockers": [
+      "Full existence proof requires Sobolev space H^1 theory",
+      "Galerkin approximation scheme not in Mathlib",
+      "Compact embeddings H^1 ↪ L^2 on bounded domains needed"
+    ],
+    "nextAction": "Check Mathlib Sobolev space status; explore if existence can be approached via abstract fixed-point methods",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
   "knowledge": {
-    "score": 10,
-    "insights": [
-      "File already fully proved with 0 sorries and 0 axioms - Docker build passes cleanly",
-      "Previously skipped 4 times with 'No PDE infrastructure' notes - but file existed and was complete",
-      "90 theorems/lemmas covering 2D global existence, enstrophy bounds, and 3D conditional regularity",
-      "2D case fully solved: global enstrophy bound via GlobalNSSolution2D (no axioms)",
-      "3D case conditional: proven under NSAxioms structure (uses Lean structures, not axiom declarations)",
-      "All 35 original axioms eliminated through proof (35 -> 12 -> 1 -> 0)",
-      "Builds cleanly in Docker with specific Mathlib imports (not 'import Mathlib')"
-    ],
+    "progressSummary": "PROGRESS: Added enstrophy_exponential_decay_exact theorem to NavierStokes.lean proving E(t) ≤ E(0)·exp(-2νμ₁t) via integrating factor technique. This closes the gap between the differential inequality E' ≤ -2νμ₁E (already proven) and the actual exponential bound. Full existence still blocked on PDE infrastructure.",
     "builtItems": [
-      "Verified Docker build passes for NavierStokes.lean"
+      "enstrophy_exponential_decay_exact in proofs/Proofs/NavierStokes.lean:TwoDimensionalGlobal - Exact exponential decay E(t) ≤ E(0)·exp(-2νμ₁t) via integrating factor g(s)=E(s)·exp(cs)",
+      "Fixed deprecation: differentiableAt_id' → differentiableAt_fun_id in NavierStokes.lean"
     ],
-    "progressSummary": "COMPLETED: File was already fully proved and builds cleanly in Docker. 90 theorems with 0 sorries, 0 axioms. The pool had this marked as SKIPPED but the proof file was complete.",
-    "nextSteps": []
-  }
+    "insights": [
+      "The integrating factor trick g(s) = E(s)·exp(2νμ₁s) converts the differential inequality into a monotonicity argument, avoiding Gronwall directly",
+      "antitoneOn_of_deriv_nonpos is the key Mathlib lemma for both enstrophy bound and exponential decay",
+      "The HasDerivAt product rule (HasDerivAt.mul) + chain rule (HasDerivAt.exp) are sufficient for computing g'",
+      "HasDerivAt.const_smul (with 𝕜 = ℝ) gives HasDerivAt for linear functions; simp [smul_eq_mul] cleans up",
+      "set c := ... with hc_eq introduces definitional equality; ring may not unfold it - use simp only [hc_eq] first",
+      "GlobalNSSolution2D structure models but does not construct solutions - the conditional proofs are mathematically sound but existence requires PDE infrastructure",
+      "2D NS existence needs: Sobolev H^1(ℝ²), Galerkin approximations, compact embeddings, Gronwall ODE comparison"
+    ],
+    "mathlibGaps": [
+      "Sobolev spaces H^s on domains (limited in Mathlib 4.26.0)",
+      "Galerkin approximation scheme",
+      "Compact Sobolev embeddings H^1 ↪ L^2",
+      "Weak formulation of PDE solutions",
+      "Div-free constraint (divergence-free vector fields)"
+    ],
+    "nextSteps": [
+      "Check Mathlib.Analysis.SobolevSpace status in v4.26.0",
+      "Consider formalization of Stokes equations (linear, simpler)",
+      "Add OQ annotation to NS gallery about existence inhabitation",
+      "Long-term: Galerkin approximation for 2D NS existence"
+    ],
+    "markdown": "# Knowledge Base: 2D Navier-Stokes Regularity\n\n## Current Status\n\n**Phase**: PROGRESS\n\nThe gallery already has NavierStokes.lean with conditional 2D NS results. Key achievements:\n- `GlobalNSSolution2D` structure models global solutions (Part X-B)\n- `enstrophy_exponential_decay_exact` (NEW, 2026-02-22): E(t) ≤ E(0)·exp(-2νμ₁t)\n- `navier_stokes_2d_solved`: ∀ sol, ∀ t > 0, ∃ bound, E(t) ≤ bound\n\n## What Was Proved (Session 2026-02-22)\n\n### Exact Exponential Enstrophy Decay\n\nThe previous `enstrophy_deriv_bound` proved the differential inequality:\n```\nderiv E t ≤ -2νμ₁ · E t\n```\n\nThis session proved the exact exponential bound:\n```lean\ntheorem enstrophy_exponential_decay_exact\n    (sol : GlobalNSSolution2DPoincare) (t : ℝ) (ht : t > 0) :\n    sol.E t ≤ sol.E 0 * Real.exp (-2 * sol.ν * sol.mu₁ * t)\n```\n\n**Proof technique**: Integrating factor g(s) = E(s)·exp(2νμ₁s).\n- g'(s) = (-2νP + 2νμ₁E)·exp(cs) ≤ 0 (by Poincaré: P ≥ μ₁E)\n- g antitone → g(t) ≤ g(0) = E(0)\n- E(t) = g(t)·exp(-ct) ≤ E(0)·exp(-ct)\n\n## What's Still Missing\n\n### Existence (Blocked)\n\nThe `GlobalNSSolution2D` structure is inhabited IF you provide a solution.\nActually constructing solutions from initial data requires:\n1. Sobolev H^1 theory on ℝ² or a torus\n2. Energy estimates for Galerkin approximations\n3. Compactness via Aubin-Lions lemma\n4. Passage to limits\n\nThis is ~3000-5000 lines of work.\n\n### Uniqueness (Blocked)\n\nLions-Prodi uniqueness requires:\n- Working in W^{1,∞} × L^2 function spaces\n- Gronwall inequality in integral form\n- Full Sobolev embedding in 2D\n\n## Mathlib Infrastructure Status (v4.26.0)\n\n| Component | Status |\n|-----------|--------|\n| ContinuousOn | ✅ Full |\n| HasDerivAt, HaDerivAtFilter | ✅ Full |\n| antitoneOn_of_deriv_nonpos | ✅ Available |\n| Real.hasDerivAt_exp | ✅ Available |\n| HasDerivAt.mul (product rule) | ✅ Available |\n| HasDerivAt.exp (chain rule) | ✅ Available |\n| Sobolev spaces H^s | ⚠️ Limited |\n| Galerkin approximations | ❌ Not available |\n| Compact Sobolev embeddings | ❌ Not available |\n| Navier-Stokes weak solutions | ❌ Not available |\n"
+  },
+  "approaches": [
+    {
+      "name": "Conditional structural proofs",
+      "description": "Use GlobalNSSolution2D structure to prove consequences assuming solution exists",
+      "status": "active",
+      "sorries": 0
+    },
+    {
+      "name": "Full existence via Galerkin",
+      "description": "Construct solutions from initial data via Galerkin approximations",
+      "status": "blocked",
+      "sorries": -1
+    }
+  ],
+  "tags": [
+    "analysis",
+    "pde",
+    "formalization",
+    "navier-stokes",
+    "enstrophy",
+    "exponential-decay"
+  ],
+  "relatedProofs": [
+    "navier-stokes-regularity"
+  ],
+  "references": {
+    "papers": [
+      "Ladyzhenskaya (1969): The Mathematical Theory of Viscous Incompressible Flow",
+      "Lions-Prodi (1959): Un théorème d'existence et unicité dans les équations de Navier-Stokes"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.Calculus.Monotone (antitoneOn_of_deriv_nonpos)",
+      "Mathlib.Analysis.SpecialFunctions.ExpDeriv (HasDerivAt.exp)"
+    ]
+  },
+  "started": "2026-02-22T19:00:00.000Z"
 }

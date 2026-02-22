@@ -2263,6 +2263,93 @@ theorem enstrophy_deriv_bound (sol : GlobalNSSolution2DPoincare) (t : ℝ) (ht :
   exact hbound
 
 
+/-- **PROVED: Exact Exponential Enstrophy Decay (2D with Poincaré)**
+    Under P ≥ μ₁E (Poincaré inequality) with ν > 0, the exact bound holds:
+      E(t) ≤ E(0) · exp(-2νμ₁t)
+
+    Proof via integrating factor: g(s) = E(s) · exp(2νμ₁s) satisfies
+      g'(s) = (E'(s) + 2νμ₁·E(s)) · exp(2νμ₁s) ≤ 0
+    by the Poincaré inequality (P ≥ μ₁E → -2νP + 2νμ₁E ≤ 0), so g is
+    antitone. Therefore g(t) ≤ g(0) = E(0), giving E(t) ≤ E(0)·exp(-2νμ₁t).
+
+    This closes the gap noted in `enstrophy_deriv_bound`: the differential
+    inequality E' ≤ -2νμ₁E implies the exact exponential bound. -/
+theorem enstrophy_exponential_decay_exact (sol : GlobalNSSolution2DPoincare)
+    (t : ℝ) (ht : t > 0) :
+    sol.E t ≤ sol.E 0 * Real.exp (-2 * sol.ν * sol.mu₁ * t) := by
+  -- The decay constant c = 2νμ₁ > 0
+  set c := 2 * sol.ν * sol.mu₁ with hc_eq
+  have hc_pos : 0 < c := mul_pos (mul_pos (by norm_num) sol.ν_pos) sol.mu₁_pos
+  -- Work on [0, t+1]
+  set T := t + 1 with hT_eq
+  have hT_pos : 0 < T := by linarith
+  -- The integrating factor function g(s) = E(s) · exp(c · s)
+  -- We apply antitoneOn_of_deriv_nonpos to g on [0, T]
+  -- (1) g is continuous on [0, T]
+  have hg_cont : ContinuousOn (fun s => sol.E s * Real.exp (c * s)) (Icc 0 T) := by
+    apply ContinuousOn.mul
+    · exact sol.E_cont.mono Icc_subset_Ici_self
+    · exact (Real.continuous_exp.comp (continuous_const.mul continuous_id)).continuousOn
+  -- (2) g is differentiable on (0, T)
+  have hg_diff : DifferentiableOn ℝ (fun s => sol.E s * Real.exp (c * s))
+      (interior (Icc 0 T)) := by
+    rw [interior_Icc]
+    intro s hs
+    exact ((sol.enstrophy_ode s hs.1).differentiableAt.mul
+      (Real.differentiableAt_exp.comp s
+        ((differentiableAt_const c).mul differentiableAt_fun_id))).differentiableWithinAt
+  -- (3) g'(s) ≤ 0 on (0, T)
+  have hg'_nonpos : ∀ s ∈ interior (Icc 0 T),
+      deriv (fun s => sol.E s * Real.exp (c * s)) s ≤ 0 := by
+    rw [interior_Icc]
+    intro s hs
+    have hs_pos : s > 0 := hs.1
+    -- HasDerivAt for exp(c · s): use chain rule via const_smul + exp
+    have hlin : HasDerivAt (fun x => c * x) c s := by
+      have h := (hasDerivAt_id s).const_smul (𝕜 := ℝ) c
+      simp [smul_eq_mul] at h
+      exact h
+    have hexp : HasDerivAt (fun x => Real.exp (c * x)) (Real.exp (c * s) * c) s :=
+      hlin.exp
+    -- HasDerivAt for g = E · exp(c · s) via product rule
+    have hg_has : HasDerivAt (fun x => sol.E x * Real.exp (c * x))
+        ((-2 * sol.ν * sol.P s) * Real.exp (c * s) +
+          sol.E s * (Real.exp (c * s) * c)) s :=
+      (sol.enstrophy_ode s hs_pos).mul hexp
+    rw [hg_has.deriv]
+    -- Show the value ≤ 0: factor out exp(cs) and use Poincaré
+    have hpoincare := sol.poincare s (le_of_lt hs_pos)
+    have hexp_nonneg := Real.exp_nonneg (c * s)
+    -- Rearrange: value = (-2νP + cE) · exp(cs) ≤ 0
+    have hrearrange : (-2 * sol.ν * sol.P s) * Real.exp (c * s) +
+        sol.E s * (Real.exp (c * s) * c) =
+        (-2 * sol.ν * sol.P s + sol.E s * c) * Real.exp (c * s) := by ring
+    rw [hrearrange]
+    apply mul_nonpos_of_nonpos_of_nonneg _ hexp_nonneg
+    -- Need: -2νP + cE ≤ 0, i.e., cE = 2νμ₁E ≤ 2νP (from P ≥ μ₁E, ν > 0)
+    nlinarith [sol.ν_pos, sol.mu₁_pos]
+  -- (4) g is antitone on [0, T]
+  have hg_antitone : AntitoneOn (fun s => sol.E s * Real.exp (c * s)) (Icc 0 T) :=
+    antitoneOn_of_deriv_nonpos (convex_Icc 0 T) hg_cont hg_diff hg'_nonpos
+  -- (5) Apply antitone: g(t) ≤ g(0)
+  have h0_mem : (0 : ℝ) ∈ Icc 0 T := left_mem_Icc.mpr (le_of_lt hT_pos)
+  have ht_mem : t ∈ Icc 0 T := ⟨le_of_lt ht, by linarith⟩
+  have hgt_le : sol.E t * Real.exp (c * t) ≤ sol.E 0 * Real.exp (c * 0) :=
+    hg_antitone h0_mem ht_mem (le_of_lt ht)
+  -- Simplify g(0): exp(c·0) = exp(0) = 1
+  simp only [mul_zero, Real.exp_zero, mul_one] at hgt_le
+  -- hgt_le : E(t) · exp(c·t) ≤ E(0)
+  -- Conclude: E(t) ≤ E(0) · exp(-c·t) = E(0) · exp(-2νμ₁t)
+  calc sol.E t
+      = sol.E t * (Real.exp (c * t) * Real.exp (-(c * t))) := by
+          rw [← Real.exp_add, add_neg_cancel, Real.exp_zero, mul_one]
+      _ = sol.E t * Real.exp (c * t) * Real.exp (-(c * t)) := by ring
+      _ ≤ sol.E 0 * Real.exp (-(c * t)) :=
+          mul_le_mul_of_nonneg_right hgt_le (Real.exp_nonneg _)
+      _ = sol.E 0 * Real.exp (-2 * sol.ν * sol.mu₁ * t) := by
+          congr 1; simp only [hc_eq]; ring
+
+
 /-- **PROVED: Enstrophy Dissipation Identity**
     The total enstrophy dissipated up to time t equals the enstrophy lost:
     E(0) - E(t) ≥ 0 (enstrophy can only decrease in 2D).
