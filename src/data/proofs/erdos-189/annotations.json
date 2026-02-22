@@ -37,8 +37,8 @@
     "type": "definition",
     "title": "Rectangle Definition",
     "content": "Four points form a **rectangle** if they have three consecutive right angles: a-b perpendicular to b-c and b-c perpendicular to c-d. The fourth angle is automatically right. We also require the quadrilateral to be non-degenerate (distinct consecutive vertices).",
-    "mathContext": "Perpendicularity is expressed via the inner product: `inner (a - b) (c - b) = 0` means a-b is perpendicular to b-c.",
-    "significance": "critical",
+    "mathContext": "Perpendicularity is expressed via the inner product: `inner (a - b) (c - b) = 0` means a-b is perpendicular to b-c; $\\text{inner}(u, v) = 0 \\Leftrightarrow u \\perp v$.",
+    "significance": "key",
     "relatedConcepts": ["rectangle", "perpendicularity", "inner-product"]
   },
   {
@@ -65,8 +65,8 @@
     "type": "definition",
     "title": "The Erdos Problem Statement",
     "content": "**Erdos189Statement** formalizes the question: For ANY finite coloring of the plane, does SOME color class contain rectangles of EVERY positive area? This is a universal-existential statement: for all n, for all n-colorings, exists a color such that for all A > 0, that color has a rectangle of area A.",
-    "mathContext": "The statement quantifies over the number of colors n, the coloring function, and requires existence of a 'universal' color.",
-    "significance": "critical",
+    "mathContext": "The statement quantifies over the number of colors $n$, the coloring function, and requires existence of a 'universal' color: $\\forall n\\, \\forall c: \\mathbb{R}^2 \\to \\text{Fin}\\,n\\, \\exists i\\, \\forall A > 0\\, \\exists \\text{rect} \\subset c^{-1}(i)$ with area $A$.",
+    "significance": "key",
     "relatedConcepts": ["erdos-problem", "ramsey-type", "universality"]
   },
   {
@@ -79,8 +79,8 @@
     "type": "theorem",
     "title": "Kovac's Counterexample (2023)",
     "content": "**Kovac's breakthrough**: There exists a 25-coloring of the plane such that NO color class contains rectangle vertices of area 1. This is axiomatized since the construction involves partitioning the plane into Jordan measurable regions with specific properties.",
-    "mathContext": "The axiom states: there exists a coloring with 25 colors such that for all colors, there is no rectangle of area 1 in that color class.",
-    "significance": "critical",
+    "mathContext": "The axiom states: $\\exists c : \\mathbb{R}^2 \\to \\text{Fin}\\,25\\, \\forall i < 25\\, \\neg\\exists$ rectangle with all 4 vertices in $c^{-1}(i)$ of area 1; the construction uses Jordan measurable color regions.",
+    "significance": "key",
     "relatedConcepts": ["counterexample", "kovac", "25-coloring"]
   },
   {
@@ -93,8 +93,8 @@
     "type": "theorem",
     "title": "Main Theorem: The Answer is NO",
     "content": "**erdos_189_is_false** proves that the Erdos statement is false. The proof is a clean derivation from Kovac's counterexample: if the statement were true, the 25-coloring would have some color with rectangles of every area, including area 1. But Kovac showed no color has area-1 rectangles. Contradiction!",
-    "mathContext": "The proof uses the 25-coloring to instantiate the universal quantifiers, then applies Kovac's result for the contradiction.",
-    "significance": "critical",
+    "mathContext": "The proof uses the 25-coloring to instantiate the universal quantifiers, then applies Kovac's result for the contradiction; formally: assume Erdos189Statement, apply to the 25-coloring, get a color with area-1 rectangle, contradicting Kovac's axiom.",
+    "significance": "key",
     "relatedConcepts": ["disproof", "contradiction", "main-result"]
   },
   {
