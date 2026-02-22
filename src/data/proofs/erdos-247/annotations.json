@@ -6,7 +6,8 @@
     "type": "definition",
     "title": "Lacunary Sum Definition",
     "content": "**lacunarySum**: The infinite series Σ_{k=1}^∞ 1/2^{n_k} for a sequence n : ℕ → ℕ. In binary, this creates a number with 1s at positions n_k. The 'lacunary' (gappy) structure emerges when n_k grows quickly, making the 1s increasingly sparse.",
-    "significance": "critical",
+    "mathContext": "$\\text{lacunarySum}(n) = \\sum_{k=1}^{\\infty} \\frac{1}{2^{n_k}} \\in (0, 1]$; converges since $\\sum 1/2^k < \\infty$ and $n_k \\geq k$ (strictly increasing).",
+    "significance": "key",
     "relatedConcepts": ["infinite series", "binary representation", "tsum"]
   },
   {
@@ -16,7 +17,8 @@
     "type": "definition",
     "title": "Weak Growth Condition",
     "content": "**HasWeakGrowth**: For all C > 0, there exists k with n_k > C·k. This is equivalent to lim sup n_k/k = ∞, meaning the sequence eventually grows faster than any linear function. Example: k² satisfies this but k does not.",
-    "significance": "critical",
+    "mathContext": "$\\text{HasWeakGrowth}(n) \\Leftrightarrow \\limsup_{k \\to \\infty} n_k/k = \\infty \\Leftrightarrow \\forall C > 0, \\exists k: n_k > Ck$; contrast: $n_k = k$ fails, $n_k = k^2$ passes.",
+    "significance": "key",
     "relatedConcepts": ["limsup", "growth rate", "linear functions"]
   },
   {
@@ -26,7 +28,8 @@
     "type": "definition",
     "title": "Strong Growth Condition",
     "content": "**HasStrongGrowth**: For ALL exponents t ≥ 1 and all C > 0, there exists k with n_k > C·k^t. This means the sequence grows faster than ANY polynomial. Factorial and exponential functions satisfy this; polynomial functions do not.",
-    "significance": "critical",
+    "mathContext": "$\\text{HasStrongGrowth}(n) \\Leftrightarrow \\forall t \\geq 1, \\limsup_{k \\to \\infty} n_k/k^t = \\infty$; implies $\\text{HasWeakGrowth}$ (take $t=1$); examples: $n_k = k!$, $n_k = 2^k$.",
+    "significance": "key",
     "relatedConcepts": ["polynomial growth", "superpolynomial", "limsup"]
   },
   {
@@ -36,7 +39,8 @@
     "type": "definition",
     "title": "The Open Conjecture",
     "content": "**erdos_247_conjecture**: The full conjecture states that weak growth (faster than linear) suffices for transcendence. This remains OPEN - we only know that strong growth (faster than any polynomial) works. The gap between these conditions is where the difficulty lies.",
-    "significance": "critical",
+    "mathContext": "Conjecture: $\\text{HasWeakGrowth}(n) \\Rightarrow \\text{Transcendental}(\\text{lacunarySum}(n))$; known: $\\text{HasStrongGrowth}(n) \\Rightarrow \\text{Transcendental}$; open: does $n_k = k^2$ (weak but not strong) give transcendental $\\sum 1/2^{k^2}$?",
+    "significance": "key",
     "relatedConcepts": ["open problems", "transcendence", "Erdős problems"]
   },
   {
@@ -46,7 +50,8 @@
     "type": "theorem",
     "title": "Erdős's Theorem (1975)",
     "content": "**erdos_transcendence_strong** (axiom): Under strong growth conditions, the lacunary sum is transcendental. The proof uses Liouville-type arguments: if α is algebraic of degree d, then |α - p/q| > c/q^d. But lacunary sums with superpolynomial growth can be approximated by their partial sums (rationals) with error smaller than any Liouville bound.",
-    "significance": "critical",
+    "mathContext": "$\\text{HasStrongGrowth}(n) \\Rightarrow \\neg\\text{Algebraic}(\\sum 1/2^{n_k})$; key: $|\\sum_{k=1}^{\\infty} 1/2^{n_k} - \\sum_{k=1}^N 1/2^{n_k}| \\leq 2/2^{n_{N+1}}$, which beats Liouville's bound $c/2^{d \\cdot n_N}$ when $n_{N+1}/n_N \\to \\infty$.",
+    "significance": "key",
     "relatedConcepts": ["Liouville theorem", "algebraic numbers", "approximation theory"]
   },
   {

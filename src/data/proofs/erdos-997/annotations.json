@@ -7,8 +7,8 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #997: Well-Distributed Sequences and Primes**\n\nThe question asks whether the sequence {αpₙ} of fractional parts of prime multiples is non-well-distributed for ALL values of α.\n\n**Key History:**\n- 1955: Hlawka-Petersen introduced well-distributed sequences\n- 1964: Erdős claimed to prove existence of such α\n- 1985: Erdős retracted claim ('proof perhaps never existed')\n- 2024: Champagne-Le-Liu-Wooley proved existence\n\n**Status:** OPEN for the universal statement",
     "mathContext": "Well-distribution is a strengthening of equidistribution requiring uniform convergence across all starting points.",
-    "significance": "critical",
-    "relatedConcepts": ["Equidistribution", "Fractional parts", "Prime distribution"]
+    "significance": "key",
+    "relatedConcepts": ["Equidistribution", "Fractional parts", "Prime distribution", "WellDistributed"]
   },
   {
     "id": "ann-e997-frac",
@@ -17,7 +17,8 @@
     "type": "definition",
     "title": "Fractional Part",
     "content": "**frac:**\n\nThe fractional part of x is x - ⌊x⌋, always in [0, 1).\n\n**Definition:**\n```lean\nnoncomputable def frac (x : ℝ) : ℝ := x - ⌊x⌋\n```\n\nThis is the key operation for studying {αn} sequences modulo 1.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": ["floor function", "modulo 1", "Int.floor", "unit interval"]
   },
   {
     "id": "ann-e997-frac-range",
@@ -45,7 +46,8 @@
     "title": "Well-Distributed Sequence",
     "content": "**WellDistributed:**\n\nA sequence is well-distributed if for every ε > 0, there exists K such that for all k ≥ K, all n, and all intervals I:\n|count - |I|·k| < ε·k\n\n**Key Property:** Uniform over ALL starting points n.\n\n**Definition:**\n```lean\ndef WellDistributed (x : UnitSequence) : Prop :=\n  ∀ ε : ℝ, ε > 0 →\n    ∃ K : ℕ, ∀ k : ℕ, k ≥ K →\n      ∀ n : ℕ, ∀ a b : ℝ, 0 ≤ a → b ≤ 1 → a < b →\n        |↑(countInInterval x n k (Ioc a b)) - (b - a) * ↑k| < ε * ↑k\n```",
     "mathContext": "This is the Hlawka-Petersen (1955) notion of well-distribution.",
-    "significance": "critical"
+    "significance": "key",
+    "relatedConcepts": ["WellDistributed", "Hlawka-Petersen", "uniform distribution", "equidistribution comparison"]
   },
   {
     "id": "ann-e997-comparison",
@@ -72,7 +74,7 @@
     "type": "definition",
     "title": "Prime Multiple Sequence",
     "content": "**primeMultipleSequence:**\n\nGiven α, the sequence n ↦ {α · pₙ} of fractional parts.\n\n**Definition:**\n```lean\nnoncomputable def primeMultipleSequence (α : ℝ) : UnitSequence :=\n  fun n => frac (α * primeSequence n)\n```\n\nThis is the central object of Erdős's question.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e997-lacunary",
@@ -110,7 +112,8 @@
     "title": "CLLW Theorem (2024)",
     "content": "**CLLW_theorem:**\n\nChampagne, Le, Liu, and Wooley proved that there exists an irrational α such that {αpₙ} is not well-distributed.\n\n**Statement:**\n```lean\naxiom CLLW_theorem :\n    ∃ α : ℝ, Irrational α ∧ ¬WellDistributed (primeMultipleSequence α)\n```\n\nThis resolved the existence question that Erdős attempted 60 years earlier.",
     "mathContext": "Reference: arXiv:2406.19491 (2024)",
-    "significance": "critical"
+    "significance": "key",
+    "relatedConcepts": ["CLLW_theorem", "arXiv:2406.19491", "SAT-free existence proof", "Champagne-Le-Liu-Wooley"]
   },
   {
     "id": "ann-e997-conjecture",
@@ -119,7 +122,8 @@
     "type": "definition",
     "title": "Erdős 997 Conjecture",
     "content": "**Erdos997Conjecture:**\n\nThe full conjecture: for ALL α, {αpₙ} is not well-distributed.\n\n**Definition:**\n```lean\ndef Erdos997Conjecture : Prop :=\n  ∀ α : ℝ, ¬WellDistributed (primeMultipleSequence α)\n```\n\nThe 2024 result proves ∃, but the ∀ statement remains OPEN.",
-    "significance": "critical"
+    "significance": "key",
+    "relatedConcepts": ["Erdos997Conjecture", "universal quantifier", "open problem", "prime multiples"]
   },
   {
     "id": "ann-e997-rational",
@@ -165,6 +169,7 @@
     "type": "theorem",
     "title": "Summary",
     "content": "**erdos_997_summary:**\n\n**Question:** Is {αpₙ} non-well-distributed for all α?\n\n**Status:** OPEN\n\n**Known:**\n- 2024: Existence proved (CLLW)\n- Rational α: trivially not well-distributed\n- Lacunary sequences: almost all α work\n\n**Open:**\n- Does it hold for all irrational α?\n- What is the measure of exceptional α?\n- Can CLLW be generalized?",
-    "significance": "critical"
+    "significance": "key",
+    "relatedConcepts": ["erdos_997_summary", "open conjecture", "CLLW 2024", "lacunary theorem"]
   }
 ]

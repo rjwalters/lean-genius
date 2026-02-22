@@ -35,30 +35,52 @@
     "dateAdded": "12/29/25"
   },
   "overview": {
-    "historicalContext": "The gambler's ruin problem has been studied since the origins of probability theory with Pascal, Fermat, and Huygens. It shows that even in a fair game, the player with less capital is at a severe disadvantage over long time horizons.",
+    "historicalContext": "The gambler's ruin problem has been studied since the origins of probability theory. Pascal and Fermat exchanged letters in 1654 about 'le problème des partis' (the division problem), effectively founding the theory of probability. Christiaan Huygens formalized the gambler's ruin in his 1657 treatise *De Ratiociniis in Ludo Aleae*, computing ruin probabilities as the first systematic results in probability. Nicholas Bernoulli studied the problem in his 1713 doctoral dissertation, discovering the St. Petersburg paradox as a related curiosity about infinite expected values.\n\nThe modern framework emerged in the 20th century. Louis Bachelier's 1900 thesis applied martingale-like reasoning to financial markets. Paul Lévy developed the theory of martingales in the 1930s, and Jean Ville coined the term 'martingale' in 1939 to describe fair betting sequences. Joseph Doob's 1953 masterwork *Stochastic Processes* established the Optional Stopping Theorem (also called the Fair Games Theorem) as a cornerstone of modern probability: for any bounded stopping time $\\tau$, $E[X_\\tau] = E[X_0]$.\n\nThis is Wiedijk's theorem #62 ('You cannot beat a fair game with any strategy'). The theorem explains why betting systems like the martingale doubling strategy, the D'Alembert system, and Fibonacci betting all fail: bounded capital means bounded stopping time, so expected earnings remain zero.",
     "problemStatement": "**Fair Games Theorem**: In a fair game where a player wins or loses $1 with equal probability, a player starting with finite capital n playing against an opponent with infinite capital will eventually go bankrupt with probability 1.\n\nThe expected time to ruin is infinite, but ruin is certain.",
     "proofStrategy": "Model the game as a random walk on integers. The player's wealth is a martingale. By the martingale convergence theorem and recurrence properties of 1D random walks, the walk will hit 0 with probability 1.",
     "keyInsights": [
-      "Fair games are still ruinous for the finite player",
-      "The random walk is recurrent in 1D: it returns to every point",
-      "Expected time to ruin is infinite despite certain ruin",
-      "Illustrates the difference between expected value and certain outcome"
+      "Fair games are still ruinous for the finite player: starting with wealth $W_0$ against an infinitely rich opponent, ruin probability is 1, even though $E[W_n] = W_0$ (wealth is constant in expectation)",
+      "The random walk is recurrent in 1D by Pólya's theorem (1921): a simple random walk on $\\mathbb{Z}$ returns to every point with probability 1. This is why ruin is certain — the walk must eventually hit 0.",
+      "Expected time to ruin is infinite despite certain ruin: $E[\\tau] = \\infty$ while $P(\\tau < \\infty) = 1$. This is a classic example where the event is almost sure but takes 'forever' on average.",
+      "No betting strategy can beat a fair game: the Optional Stopping Theorem says $E[X_\\tau] = E[X_0]$ for any bounded stopping time $\\tau$, so clever strategies cannot change expected outcomes — only redistribute variance.",
+      "Connection to financial mathematics: arbitrage-free prices are martingales under a risk-neutral measure by the First Fundamental Theorem of Asset Pricing (Harrison-Pliska 1979). The fair games theorem is thus the foundation of modern option pricing theory (Black-Scholes, 1973)."
     ]
   },
   "sections": [
     {
-      "id": "fair-game-model",
-      "title": "Fair Game Model",
-      "startLine": 50,
-      "endLine": 100,
-      "summary": "Random walk representation of gambling."
+      "id": "introduction",
+      "title": "Introduction: The Fair Games Paradox",
+      "startLine": 8,
+      "endLine": 84,
+      "summary": "Overview: in a fair game, no betting strategy changes expected value. Explains why 'quit while ahead' is a fallacy and why casinos profit even from near-fair games."
     },
     {
-      "id": "ruin-probability",
-      "title": "Ruin Probability",
-      "startLine": 100,
-      "endLine": 180,
-      "summary": "Proof that ruin occurs with probability 1."
+      "id": "martingale-definition",
+      "title": "Martingale Framework",
+      "startLine": 88,
+      "endLine": 161,
+      "summary": "Formal definitions of martingales (fair games), stopping times, and bounded strategies. isFairGame uses Mathlib's Martingale typeclass."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Optional Stopping Theorem",
+      "startLine": 163,
+      "endLine": 266,
+      "summary": "E[f_τ] = E[f_π] for bounded stopping times τ ≤ π. Proved via sub- and supermartingale sandwich. Wiedijk #62."
+    },
+    {
+      "id": "applications",
+      "title": "Applications: Betting Systems and Finance",
+      "startLine": 350,
+      "endLine": 427,
+      "summary": "Gambler's ruin probability, failure of martingale/Fibonacci betting systems, financial mathematics connections (Black-Scholes, Doob's inequality)."
+    },
+    {
+      "id": "historical",
+      "title": "Historical Context",
+      "startLine": 429,
+      "endLine": 450,
+      "summary": "Timeline from Bachelier (1906) through Lévy (1934), Ville (1939), Doob (1953). Explains the name 'martingale' and Wiedijk's characterization."
     }
   ],
   "conclusion": {

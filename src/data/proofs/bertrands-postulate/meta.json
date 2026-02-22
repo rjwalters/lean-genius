@@ -45,8 +45,9 @@
     "keyInsights": [
       "The central binomial coefficient $\\binom{2n}{n}$ encodes information about primes in $(n, 2n]$",
       "Primes in $(n, 2n]$ divide $\\binom{2n}{n}$ exactly once (they appear in $(2n)!$ but not in $(n!)^2$)",
-      "The absence of such primes would make $\\binom{2n}{n}$ \"too small\" compared to its known lower bound",
-      "Erdős's proof is entirely elementary—no complex analysis or calculus required"
+      "The absence of such primes would make $\\binom{2n}{n}$ \"too small\" compared to its known lower bound $4^n/(2n)$, giving a contradiction for $n \\geq 512$",
+      "Erdős's proof is entirely elementary—no complex analysis or calculus required; it was his first published paper, written at age 19, and established a template for elementary proofs in analytic number theory",
+      "Nagura's 1952 refinement strengthened Bertrand: for $n > 25$, there is always a prime between $n$ and $6n/5$, reducing the gap ratio from 2 to 1.2; further refinements by Baker-Harman-Pintz (2001) show a prime always exists in $(x, x + x^{0.525})$, much tighter than $[x, 2x]$"
     ]
   },
   "sections": [
@@ -70,6 +71,20 @@
       "startLine": 108,
       "endLine": 119,
       "summary": "The theorem for n ≥ 512, where the Erdős-style analysis of C(2n,n) applies directly."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases: The Descending Prime Chain",
+      "startLine": 121,
+      "endLine": 141,
+      "summary": "For n < 512, an explicit descending chain of primes (983, 491, 241, 127, 61, 31, 17, 11, 7, 5, 3, 2) covers all cases. Each prime is more than half but at most double the next."
+    },
+    {
+      "id": "pnt-connection",
+      "title": "Connection to the Prime Number Theorem",
+      "startLine": 143,
+      "endLine": 154,
+      "summary": "Bertrand's Postulate as a stepping stone toward the Prime Number Theorem: π(x) ~ x/ln(x). While Bertrand guarantees ≥1 prime in (n, 2n], the PNT predicts ~n/ln(n) primes."
     }
   ],
   "conclusion": {

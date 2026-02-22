@@ -39,7 +39,8 @@
       "The gap (n+1)^2 - n^2 = 2n + 1 grows linearly",
       "Each interval contains multiple primes (often 3-7 for small n)",
       "Related to the Prime Number Theorem: primes near n have density ~1/ln(n)",
-      "Computational verification extends far beyond n = 20"
+      "Computational verification extends far beyond n = 20",
+      "Baker–Harman–Pintz (2001) proved there is always a prime in $(n^2, n^2 + n^{0.525})$, the best unconditional bound toward Legendre's conjecture; under the Riemann Hypothesis the gap shrinks to $O(\\sqrt{n}\\log n)$"
     ]
   },
   "sections": [
@@ -48,21 +49,35 @@
       "title": "Definitions",
       "startLine": 20,
       "endLine": 35,
-      "summary": "LegendreAt predicate and formal conjecture statement."
+      "summary": "LegendreAt predicate, legendreWitness helper, and formal conjecture statement."
     },
     {
-      "id": "verified-cases",
-      "title": "Verified Cases",
-      "startLine": 37,
+      "id": "first-ten-cases",
+      "title": "First Decade (n = 1..10)",
+      "startLine": 48,
+      "endLine": 75,
+      "summary": "Verified cases n = 1 to 10 with explicit prime witnesses: 2, 5, 11, 17, 29, 37, 53, 67, 83, 101."
+    },
+    {
+      "id": "second-ten-cases",
+      "title": "Second Decade (n = 11..20)",
+      "startLine": 78,
       "endLine": 105,
-      "summary": "20 verified cases with explicit prime witnesses for n = 1 to 20."
+      "summary": "Verified cases n = 11 to 20 with explicit prime witnesses: 127, 149, 173, 197, 227, 257, 293, 331, 367, 401."
     },
     {
       "id": "witness-table",
       "title": "Summary Table",
       "startLine": 107,
       "endLine": 132,
-      "summary": "Table showing intervals and first prime witness for each n."
+      "summary": "Table showing intervals (n², (n+1)²) and first prime witness for each n from 1 to 20."
+    },
+    {
+      "id": "gap-formula",
+      "title": "Gap Formula and Open Conjecture",
+      "startLine": 133,
+      "endLine": 155,
+      "summary": "square_gap_linear proves (n+1)² = n² + 2n + 1; the full conjecture stated as an axiom since the general case remains unproven since 1798."
     }
   ],
   "conclusion": {

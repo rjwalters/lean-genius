@@ -27,10 +27,11 @@
     "problemStatement": "Let n₁ < n₂ < ⋯ be a strictly increasing sequence of positive integers such that lim sup n_k/k = ∞. Is the sum Σ_{k=1}^∞ 1/2^{n_k} necessarily transcendental? Erdős proved YES under the stronger condition that lim sup n_k/k^t = ∞ for ALL t ≥ 1 (superpolynomial growth). The general case remains open.",
     "proofStrategy": "The proof of Erdős's partial result uses Liouville-type approximation arguments. If α is algebraic of degree d, then for any rational p/q, we have |α - p/q| > c/q^d for some constant c > 0. This is because the minimal polynomial of α cannot be too small at rational points. For lacunary sums with superpolynomial growth, we can construct very good rational approximations by truncating the series - the tail is exponentially small. When growth is faster than any polynomial, these approximations are too good for any algebraic number, forcing transcendence.",
     "keyInsights": [
-      "The sum Σ 1/2^{n_k} is a binary number with 1s at positions n_k - its transcendence depends on how 'randomly' these 1s are distributed",
-      "Liouville's theorem: algebraic numbers cannot be approximated too well by rationals, with the quality of approximation bounded by the algebraic degree",
-      "Truncating the lacunary sum gives rational approximations; superpolynomial growth makes the tail exponentially smaller than Liouville's bound allows",
-      "The gap between weak growth (n_k/k → ∞) and strong growth (n_k/k^t → ∞ for all t) remains unbridged - even quadratic growth is open"
+      "The sum $\\sum 1/2^{n_k}$ is a binary number with 1s at positions $n_k$ — its transcendence depends on how 'randomly' these 1s are distributed. If they are too regularly spaced, the number might be algebraic; if too sparse, it must be transcendental.",
+      "Liouville's theorem: algebraic numbers of degree $d$ cannot be approximated by rationals better than $|\\alpha - p/q| > c/q^d$; the Liouville constant $\\sum 1/10^{k!}$ was the first explicit transcendental number, constructed precisely to violate this bound.",
+      "Truncating the lacunary sum $\\sum_{k=1}^N 1/2^{n_k}$ gives a rational approximation $p/2^{n_N}$ with error $\\sum_{k=N+1}^\\infty 1/2^{n_k} \\leq 2/2^{n_{N+1}}$; superpolynomial growth makes this error smaller than any Liouville bound, forcing transcendence.",
+      "The gap between weak growth ($n_k/k \\to \\infty$) and strong growth ($n_k/k^t \\to \\infty$ for all $t$) remains unbridged — even quadratic growth $n_k = k^2$ is open. Erdős described the general case as 'hopeless at present' in 1988.",
+      "Connection to Mahler's method (1929): Mahler proved that certain 'Mahler functions' (power series satisfying functional equations like $f(x^d) = R(x, f(x))$) take transcendental values at algebraic arguments. The lacunary sum $\\sum x^{n_k}$ satisfies Mahler-type relations when $n_k = d^k$, connecting Erdős #247 to deep algebraic number theory."
     ]
   },
   "sections": [

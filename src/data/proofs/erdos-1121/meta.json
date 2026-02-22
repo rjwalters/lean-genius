@@ -33,10 +33,11 @@
     "problemStatement": "If C₁,...,Cₙ are circles in ℝ² with radii r₁,...,rₙ such that no line disjoint from all circles divides them into two non-empty sets, then all circles can be covered by a single circle of radius r = r₁ + ... + rₙ.",
     "proofStrategy": "The formalization defines circles, lines, and the 'no separating line' condition precisely. The Goodman-Goodman theorem is axiomatized. Special cases (two circles, overlapping circles) and the higher-dimensional generalization are also formalized.",
     "keyInsights": [
-      "The 'no separating line' condition defines a connected configuration",
-      "The covering radius equals exactly the sum of radii",
-      "The result generalizes to balls in higher dimensions",
-      "Overlapping circles always satisfy the no-separating-line condition"
+      "The 'no separating line' condition defines a connected configuration; equivalently, the convex hulls of any two subgroups of circles must 'touch' — this is why the geometry of convex hulls is central to the Goodman-Goodman proof",
+      "The covering radius equals exactly the sum of radii — this bound is tight: consider n collinear circles of radius 1 far apart with no two overlapping; then the covering circle needs radius ≥ n - 1 + 1 = n = sum",
+      "The result generalizes to balls in higher dimensions: balls B₁,...,Bₙ in ℝᵈ with no separating hyperplane can be covered by a ball of radius r₁ + ... + rₙ, with the same proof strategy",
+      "Overlapping circles always satisfy the no-separating-line condition: if all pairs overlap (d(centers) ≤ r₁+r₂), no separating line can exist since the line would have to pass between overlapping circles",
+      "Connection to Helly's theorem (1923): Helly says a family of convex sets in ℝᵈ has a common point iff every d+1 of them do; Goodman-Goodman can be seen as a radius-aware generalization, replacing 'common point exists' with 'common covering ball of controlled radius exists'"
     ]
   },
   "sections": [
