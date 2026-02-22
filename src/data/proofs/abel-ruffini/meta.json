@@ -48,66 +48,66 @@
     "problemStatement": "Theorem (Abel-Ruffini): There is no general solution in radicals to polynomial equations of degree five or higher.\n\nMore precisely: there exist polynomials of degree 5 (and higher) whose roots cannot be expressed using only addition, subtraction, multiplication, division, and nth roots applied to the coefficients.\n\nGalois's formulation: A polynomial equation is solvable by radicals if and only if its Galois group is a solvable group.\n\nThe symmetric group $S_5$ is not solvable (because the alternating group $A_5$ is simple and non-abelian), so the general quintic, which has Galois group $S_5$, cannot be solved by radicals.",
     "proofStrategy": "The proof connects two seemingly unrelated concepts:\n\n1. FIELD EXTENSIONS: Define what it means for an element to be 'solvable by radicals' - expressible using field operations and nth roots from a base field.\n\n2. GALOIS GROUPS: For a polynomial p(x), its Galois group Gal(p) captures the symmetries of its roots. This group acts on the roots by permuting them while preserving all algebraic relations.\n\n3. THE BRIDGE: An element is solvable by radicals if and only if its minimal polynomial has a solvable Galois group.\n\n4. GROUP THEORY: A group is solvable if it has a composition series with abelian quotients. Crucially:\n   - S2, S3, S4 are solvable (explaining why quadratics, cubics, quartics have formulas)\n   - S5 is NOT solvable (because A5 is a simple non-abelian group)\n\n5. CONCLUSION: The general quintic has Galois group S5. Since S5 is not solvable, the quintic cannot be solved by radicals.",
     "keyInsights": [
-      "Solvability of polynomials is determined by group-theoretic properties of their symmetries",
-      "The alternating group A5 is the smallest non-abelian simple group, with 60 elements",
-      "S5 is not solvable because it contains A5, which has no non-trivial normal subgroups",
-      "Specific quintics like x^5 - x - 1 have Galois group exactly S5",
-      "The proof explains WHY degree 5 is special: S4 happens to be solvable, but S5 is not",
-      "Galois theory precisely characterizes which polynomials are solvable, not just which degrees"
+      "**The Galois Bridge:** `solvableByRad.isSolvable'` captures: $\\alpha$ solvable by radicals over $F$ $\\Rightarrow$ $\\text{Gal}(\\text{minpoly}(\\alpha))$ solvable. The contrapositive (used in `not_solvable_by_rad_of_not_solvable_gal`) gives the impossibility: $\\text{Gal}(q)$ not solvable $\\Rightarrow$ roots of $q$ not solvable by radicals.",
+      "**Degree 5 Threshold via Derived Series:** $S_4 \\supset A_4 \\supset V_4 \\supset \\mathbb{Z}/2 \\supset \\{e\\}$ (all abelian quotients, $S_4$ solvable) vs $S_5 \\supset A_5 \\supset A_5 \\supset \\cdots$ (stuck — $A_5$ is simple, no proper normal subgroups). This is why degree 4 has a formula but degree 5 does not.",
+      "**A₅ is the Key Obstruction:** $|A_5| = 60$, $A_5$ is the smallest non-abelian simple group. `alternatingGroup.isSimpleGroup_five` formalizes this. The Klein four-group $V_4 = \\{e,(12)(34),(13)(24),(14)(23)\\}$ makes $A_4$ solvable; no analog exists in $A_5$.",
+      "**Mathlib Integration Pattern:** The proof is a composition of Mathlib lemmas: `solvableByRad.isSolvable'` (Mathlib) + `Equiv.Perm.not_solvable` (Mathlib) → `not_solvable_by_rad_of_not_solvable_gal` (3-line `intro`/`exact`). Zero sorries in 185 lines.",
+      "**S_n Unsolvability for n ≥ 5:** `symmetric_group_not_solvable` proves $\\forall n \\geq 5$, $S_n$ not solvable, using `Cardinal.mk (Fin n) ≥ 5` via `simp`. Instances for $S_0, S_1$ (`inferInstance`) vs the impossibility for $S_5, S_6, \\ldots$ illustrate the sharp boundary.",
+      "**Original Contributions Are Wrappers:** The file's original theorems (`galois_bridge`, `symmetric_group_not_solvable`, `not_solvable_by_rad_of_not_solvable_gal`) are pedagogical wrappers that make the Mathlib results explicit and user-facing — a pattern for presenting Mathlib-based formalizations."
     ]
   },
   "sections": [
     {
       "id": "imports",
-      "title": "Imports and Setup",
+      "title": "Imports and Module Docstring",
       "startLine": 1,
-      "endLine": 20,
-      "summary": "Import Mathlib's Galois theory, group theory (solvable groups), and the Abel-Ruffini theorem components."
+      "endLine": 57,
+      "summary": "Four Mathlib imports: `AbelRuffini` (`solvableByRad.isSolvable'`, `IsSolvableByRad`), `GroupTheory.Solvable` (`IsSolvable`, `Equiv.Perm.not_solvable`), `SpecificGroups.Alternating` (`alternatingGroup.isSimpleGroup_five`), `FieldTheory.Galois.Basic` (`Polynomial.Gal`). The `/-!` module docstring lists all contributions and Mathlib dependencies."
     },
     {
-      "id": "solvable-def",
-      "title": "Solvable by Radicals",
-      "startLine": 22,
-      "endLine": 50,
-      "summary": "The inductive definition: an element is solvable by radicals if it can be built from the base field using field operations and nth roots."
+      "id": "galois-bridge",
+      "title": "The Galois Bridge",
+      "startLine": 59,
+      "endLine": 75,
+      "summary": "`galois_bridge`: if $\\alpha$ is solvable by radicals over $F$ and $\\alpha$ is a root of irreducible $q$, then `IsSolvable q.Gal`. One-line proof: `solvableByRad.isSolvable' hq hroot hrad`. This is Part II of the formalization — the key bridge between field theory and group theory."
     },
     {
-      "id": "main-theorem",
-      "title": "The Abel-Ruffini Theorem",
-      "startLine": 52,
-      "endLine": 85,
-      "summary": "If an element is solvable by radicals, its minimal polynomial has a solvable Galois group. This is Mathlib's solvableByRad.isSolvable'."
+      "id": "nonsolvable",
+      "title": "S_n Not Solvable; A₅ Simple",
+      "startLine": 77,
+      "endLine": 112,
+      "summary": "Four theorems: `symmetric_group_not_solvable` ($n \\geq 5 \\Rightarrow S_n$ not solvable, via `Equiv.Perm.not_solvable` and `Cardinal.mk (Fin n) \\geq 5`), `s5_not_solvable` (n=5, using `le_rfl`), `s6_not_solvable` (n=6), `a5_is_simple` (`IsSimpleGroup (alternatingGroup (Fin 5))`). Part III of the formalization."
     },
     {
-      "id": "a5-simple",
-      "title": "A5 is Simple",
-      "startLine": 87,
-      "endLine": 115,
-      "summary": "The alternating group on 5 elements is a simple group - it has no non-trivial normal subgroups. This makes S5 unsolvable."
+      "id": "small-solvable",
+      "title": "Small Symmetric Groups are Solvable",
+      "startLine": 114,
+      "endLine": 128,
+      "summary": "`s0_solvable` and `s1_solvable`: `IsSolvable (Equiv.Perm (Fin 0))` and `IsSolvable (Equiv.Perm (Fin 1))` via `inferInstance`. Mathlib provides these typeclass instances automatically. The dividing line between solvable $S_n$ (n ≤ 4) and non-solvable $S_n$ (n ≥ 5) is explicit."
     },
     {
-      "id": "s5-not-solvable",
-      "title": "S5 is Not Solvable",
-      "startLine": 117,
-      "endLine": 145,
-      "summary": "Since A5 is simple and non-abelian, S5 cannot have a composition series with all abelian quotients, so S5 is not solvable."
+      "id": "abel-ruffini",
+      "title": "Abel-Ruffini Contrapositive",
+      "startLine": 131,
+      "endLine": 149,
+      "summary": "`exists_quintic` (trivially `X^5`) and `not_solvable_by_rad_of_not_solvable_gal`: if `¬ IsSolvable q.Gal` then `¬ IsSolvableByRad F α`. Proof: `intro hrad; exact hns (galois_bridge α q hq hroot hrad)`. This is the full Abel-Ruffini argument compressed to 3 lines. Part V of the formalization."
     },
     {
-      "id": "quintic",
-      "title": "The General Quintic",
-      "startLine": 147,
-      "endLine": 180,
-      "summary": "Combining the pieces: the general quintic has Galois group S5, which is not solvable, so the quintic cannot be solved by radicals."
+      "id": "threshold",
+      "title": "Why Degree 5 is the Threshold",
+      "startLine": 151,
+      "endLine": 183,
+      "summary": "Parts VI–VII docstring: the derived series $S_4 \\supset A_4 \\supset V_4 \\supset \\mathbb{Z}/2 \\supset \\{e\\}$ (abelian quotients → formula exists) vs $S_5 \\supset A_5 \\supset A_5 \\supset \\cdots$ (stuck at simple $A_5 \\Rightarrow$ no formula). Historical note: Abel (1824), Galois (1832). First major impossibility proof in mathematics."
     }
   ],
   "conclusion": {
     "summary": "This formalization demonstrates one of mathematics' most beautiful connections: the solution of polynomial equations reduces to group theory. Galois's insight that symmetry groups control solvability unified algebra in a profound way.\n\nThe key results: Mathlib's solvableByRad.isSolvable' proves that solvability by radicals implies a solvable Galois group. The simplicity of A5 (alternatingGroup.isSimple_five) implies S5 is not solvable. Together, these show the general quintic is unsolvable.",
     "implications": "Galois theory has far-reaching consequences:\n\n1. CONSTRUCTIBILITY: Similar techniques prove that angle trisection and cube doubling are impossible with compass and straightedge.\n\n2. INVERSE GALOIS PROBLEM: Which groups appear as Galois groups over Q? This remains open for many groups.\n\n3. ALGEBRAIC NUMBER THEORY: Galois groups of field extensions are central to understanding number fields and their arithmetic.\n\n4. MODERN ALGEBRA: Galois's ideas pioneered the abstract study of groups, fields, and their relationships - the foundation of modern algebra.\n\n5. SPECIFIC SOLUTIONS: While the general quintic is unsolvable, specific quintics may be solvable. Galois theory tells us exactly which ones.",
     "openQuestions": [
-      "The Inverse Galois Problem: Does every finite group appear as a Galois group over Q?",
-      "Can we algorithmically compute Galois groups efficiently for arbitrary polynomials?",
-      "What are the computational complexity bounds for determining polynomial solvability?",
-      "How do Galois groups behave in families of polynomials?"
+      "Can we formalize a *specific* unsolvable quintic in Lean — e.g., $x^5 - x - 1$ over $\\mathbb{Q}$ has Galois group exactly $S_5$? This requires formalizing the Galois group computation, not just citing Mathlib's general result.",
+      "Mathlib notes that `IsSolvable` instances for $S_2, S_3, S_4$ were not available at time of writing. Can these be added and `s2_solvable`, `s3_solvable`, `s4_solvable` proved by `inferInstance`, completing the full picture of which $S_n$ are solvable?",
+      "The Inverse Galois Problem — every finite group appears as a Galois group over $\\mathbb{Q}$ — is a deep open problem. Can partial results (e.g., every abelian group is a Galois group over $\\mathbb{Q}$ by Kronecker-Weber) be formalized in Lean?",
+      "The file relies on `Equiv.Perm.not_solvable` and `solvableByRad.isSolvable'` as black boxes. Can we expose the full proof chain — derived series, composition factors, simplicity of $A_5$ — as individual Lean lemmas for a pedagogically complete formalization?"
     ]
   }
 }
