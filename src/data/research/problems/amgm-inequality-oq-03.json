@@ -1,0 +1,108 @@
+{
+  "slug": "amgm-inequality-oq-03",
+  "title": "How do weighted power means interpolate between AM and GM?",
+  "phase": "SURVEYED",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For non-negative weights w summing to 1, define M_r(z, w) = (∑ w_i · z_i^r)^(1/r) for r ≠ 0 and M_0(z, w) = ∏ z_i^{w_i}. Then M_r is monotone in r: r ≤ s → M_r(z, w) ≤ M_s(z, w).",
+    "plain": "The weighted power mean of order r is M_r(z, w) = (∑ w_i · z_i^r)^(1/r). As r varies from -∞ to +∞, M_r forms a continuous monotone family interpolating from min(z) through HM, GM, AM to max(z). The AM-GM inequality GM ≤ AM is the special case r=0 ≤ r=1 of this monotonicity.",
+    "whyMatters": [
+      "Unifies AM, GM, HM (and all other power means) into a single parametric family",
+      "The AM-GM inequality is the special case of power mean monotonicity at r=0,1",
+      "Used in optimization, information theory, and the study of Hölder/Minkowski inequalities",
+      "Connects to Lp norm theory and Hardy-Littlewood-Pólya inequalities"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "GM ≤ AM (Real.geom_mean_le_arith_mean_weighted in Mathlib)",
+      "AM ≤ M_p for p ≥ 1 (Real.arith_mean_le_rpow_mean in Mathlib)",
+      "Jensen's inequality: (∑ w_i · z_i)^p ≤ ∑ w_i · z_i^p for p ≥ 1",
+      "GM ≤ M_p for p ≥ 1 (by transitivity: GM ≤ AM ≤ M_p)"
+    ],
+    "open": [
+      "General monotonicity M_r ≤ M_s for all r ≤ s (requires continuous extension to r=0)",
+      "The limit lim_{r→0} M_r = GM requires L'Hôpital or exp/log analysis"
+    ],
+    "goal": "Formalize the power mean inequality M_r ≤ M_s for r ≤ s in Lean 4, including the r=0 geometric mean as a limit"
+  },
+  "currentState": {
+    "phase": "SURVEYED",
+    "since": "2026-02-22T14:00:00.000Z",
+    "iteration": 2,
+    "focus": "Formalized definitions and proved the key cases (GM ≤ AM ≤ M_p for p ≥ 1) using Mathlib APIs.",
+    "blockers": [
+      "General monotonicity requires continuous extension / limit analysis at r=0"
+    ],
+    "nextAction": "Prove the full monotonicity M_r ≤ M_s using Jensen applied to t ↦ t^(s/r), handling r=0 limit separately",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Created AmgmInequalityOQ03.lean with formal definitions and key proved theorems. The key Mathlib APIs are Real.arith_mean_le_rpow_mean (AM ≤ M_p for p ≥ 1) and Real.geom_mean_le_arith_mean_weighted (GM ≤ AM). The general monotonicity M_r ≤ M_s is axiomatized with a proof sketch.",
+    "builtItems": [
+      "AmgmInequalityOQ03.lean - definitions and key proved theorems",
+      "weightedPowerMean definition: M_r(z, w) = (∑ w_i · z_i^r)^(1/r)",
+      "weightedGeomMean: ∏ z_i^{w_i}",
+      "weightedArithMean: ∑ w_i · z_i",
+      "Proved: GM ≤ AM, AM ≤ M_p (p≥1), GM ≤ M_p (p≥1), Jensen's inequality",
+      "Axiomatized: general monotonicity M_r ≤ M_s for r ≤ s"
+    ],
+    "insights": [
+      "Real.arith_mean_le_rpow_mean: (∑ w_i · z_i) ≤ (∑ w_i · z_i^p)^(1/p) for p ≥ 1",
+      "Real.rpow_arith_mean_le_arith_mean_rpow: (∑ w_i · z_i)^p ≤ ∑ w_i · z_i^p (Jensen)",
+      "Real.geom_mean_le_arith_mean_weighted: ∏ z_i^{w_i} ≤ ∑ w_i · z_i",
+      "The AM-GM inequality is power mean monotonicity at (r=0, s=1)",
+      "For 0 < r ≤ s: M_r ≤ M_s follows from Jensen applied to convex t ↦ t^(s/r)",
+      "The r=0 case (geometric mean) requires lim_{r→0} M_r analysis using exp/log"
+    ],
+    "mathlibGaps": [
+      "No direct power mean monotonicity M_r ≤ M_s for general r,s in Mathlib",
+      "The continuous extension to r=0 (geometric mean limit) not formalized in Mathlib"
+    ],
+    "nextSteps": [
+      "Prove general monotonicity using Jensen for 0 < r ≤ s case",
+      "Handle r=0 case using Real.tendsto_rpow_atTop or limit analysis",
+      "Prove HM ≤ GM using M_{-1} ≤ M_0 monotonicity"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Survey with Mathlib building blocks",
+      "description": "Define power mean, prove known cases (GM ≤ AM, AM ≤ M_p) from Mathlib, axiomatize general monotonicity",
+      "status": "succeeded",
+      "outcome": "Survey complete with key theorems proved from Mathlib"
+    }
+  ],
+  "tags": [
+    "analysis",
+    "inequalities",
+    "mean-inequalities",
+    "wiedijk-100",
+    "classic",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "amgm-inequality"
+  ],
+  "references": {
+    "papers": [
+      "Hardy, G.H., Littlewood, J.E., Pólya, G. (1934). Inequalities. Cambridge University Press.",
+      "Bullen, P.S. (2003). Handbook of Means and Their Inequalities. Springer."
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.MeanInequalities - Real.geom_mean_le_arith_mean_weighted",
+      "Mathlib.Analysis.MeanInequalitiesPow - Real.arith_mean_le_rpow_mean, Real.rpow_arith_mean_le_arith_mean_rpow"
+    ]
+  },
+  "started": "2026-02-21T18:51:26.154Z",
+  "lastUpdate": "2026-02-22T14:00:00.000Z",
+  "significance": 7,
+  "tractability": 6
+}
