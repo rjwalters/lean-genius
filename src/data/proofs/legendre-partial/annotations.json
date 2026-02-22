@@ -24,7 +24,7 @@
     "title": "LegendreAt Predicate",
     "content": "`LegendreAt n` means there exists a prime p with n^2 < p < (n+1)^2.\n\nExamples:\n- LegendreAt 1: prime in (1, 4), witness: 2 or 3\n- LegendreAt 10: prime in (100, 121), witness: 101, 103, 107, 109, 113",
     "mathContext": "LegendreAt n := exists p, Prime p AND n^2 < p < (n+1)^2",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["predicate", "existence"]
   },
   {
