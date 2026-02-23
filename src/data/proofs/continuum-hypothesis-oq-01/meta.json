@@ -127,7 +127,8 @@
     }
   ],
   "conclusion": {
-    "text": "The Lean formalization reveals the core tension in the CH axiom-adoption question: natural axioms exist for both CH and ¬CH, but they differ in their relationship to large cardinal axioms. V=L settles CH positively but excludes measurable cardinals (Scott, 1961). PFA and MM settle CH negatively (¬CH, 2^ℵ₀ = ℵ₂) while remaining consistent with large cardinals. This large-cardinal compatibility asymmetry explains why most contemporary set theorists lean toward the ¬CH side, though Woodin's Ultimate-L program keeps open the possibility of a canonical inner model satisfying GCH while accommodating all large cardinals.",
+    "summary": "The Lean formalization reveals the core tension in the CH axiom-adoption question: natural axioms exist for both CH and ¬CH, but they differ in their relationship to large cardinal axioms. V=L settles CH positively but excludes measurable cardinals (Scott, 1961). PFA and MM settle CH negatively (¬CH, 2^ℵ₀ = ℵ₂) while remaining consistent with large cardinals.",
+    "implications": "This large-cardinal compatibility asymmetry explains why most contemporary set theorists lean toward the ¬CH side, though Woodin's Ultimate-L program keeps open the possibility of a canonical inner model satisfying GCH while accommodating all large cardinals.",
     "openQuestions": [
       "Does Woodin's Ultimate-L program yield a canonical inner model satisfying GCH and all large cardinal axioms?",
       "Is there a mathematically compelling axiom that decides CH and is also large-cardinal compatible?",
