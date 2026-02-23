@@ -2,7 +2,7 @@
   "slug": "area-of-circle-oq-01-oq-02",
   "title": "Can the integral direction be formalized: A(r) = integral from 0 to r of C(rh...",
   "phase": "COMPLETE",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -19,9 +19,9 @@
     "phase": "COMPLETE",
     "since": "2026-02-21T19:21:07.130Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Proof complete - A(r) = ∫₀ʳ C(ρ)dρ formalized via FTC Part 2. See proofs/Proofs/AreaFromCircumferenceIntegral.lean",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - problem fully resolved.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
