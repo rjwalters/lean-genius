@@ -3,10 +3,20 @@
 # find-candidates.sh - Find Lean files suitable for Aristotle submission
 #
 # Usage:
-#   ./find-candidates.sh              # List all candidates
+#   ./find-candidates.sh              # List all candidates (both tiers)
 #   ./find-candidates.sh --count      # Just count candidates
 #   ./find-candidates.sh --best N     # Top N candidates (fewest sorries)
 #   ./find-candidates.sh --json       # Output as JSON
+#   ./find-candidates.sh --tier1-only # Return only companion files (Tier 1)
+#
+# Two-tier candidate system:
+#   Tier 1 (preferred): *Aristotle.lean companion files
+#     - Purpose-built for Aristotle: only routine lemma sorries, no axioms
+#     - Created by Researchers alongside main proof files
+#     - Score = theorem_sorries only (no axiom penalty)
+#   Tier 2 (fallback): *Problem.lean and other existing files
+#     - Regular proof files submitted when no Tier 1 slots available
+#     - Score = theorem_sorries only
 #
 # Candidates are files that:
 #   - Have theorem/lemma sorries (something to prove)
@@ -26,12 +36,14 @@ JOBS_FILE="$PROJECT_ROOT/research/aristotle-jobs.json"
 COUNT_ONLY=false
 BEST_N=0
 JSON_OUTPUT=false
+TIER1_ONLY=false
 
 while [[ $# -gt 0 ]]; do
     case $1 in
         --count) COUNT_ONLY=true; shift ;;
         --best) BEST_N="$2"; shift 2 ;;
         --json) JSON_OUTPUT=true; shift ;;
+        --tier1-only) TIER1_ONLY=true; shift ;;
         *) echo "Unknown option: $1" >&2; exit 1 ;;
     esac
 done
@@ -91,8 +103,10 @@ get_blocked_files() {
 }
 
 # Analyze a single file. Returns score -1 for hard rejects.
+# Args: file, tier (1 or 2)
 analyze_file() {
     local file="$1"
+    local tier="${2:-2}"
     local basename=$(basename "$file" .lean)
 
     # Count different types of sorries
@@ -102,7 +116,7 @@ analyze_file() {
 
     # Hard reject: files with definition sorries
     if [[ "$def_sorry" -gt 0 ]]; then
-        echo "$basename|$total_sorry|$def_sorry|$axiom_count|0|-1"
+        echo "$basename|$total_sorry|$def_sorry|$axiom_count|0|-1|$tier"
         return
     fi
 
@@ -112,7 +126,7 @@ analyze_file() {
 
     # Hard reject: all theorem sorries are True placeholders
     if [[ "$thm_sorry_count" -gt 0 && "$thm_sorry_count" -eq "$true_thm_count" ]]; then
-        echo "$basename|$total_sorry|$def_sorry|$axiom_count|0|-1"
+        echo "$basename|$total_sorry|$def_sorry|$axiom_count|0|-1|$tier"
         return
     fi
 
@@ -120,24 +134,23 @@ analyze_file() {
     local thm_sorry=$((total_sorry - def_sorry))
 
     # Score: lower is better
-    # - Axioms get small penalty (auto-converted by preprocessing now, but still slightly harder)
-    # - Fewer sorries = easier to prove
-    local score=$((thm_sorry + axiom_count * 2))
+    # Axiom penalty removed — axioms are background facts, not obstacles.
+    # Companion files explicitly shouldn't have axioms; regular files are scored
+    # purely on theorem sorry count.
+    local score="$thm_sorry"
 
-    echo "$basename|$total_sorry|$def_sorry|$axiom_count|$thm_sorry|$score"
+    echo "$basename|$total_sorry|$def_sorry|$axiom_count|$thm_sorry|$score|$tier"
 }
 
-# Main logic
-main() {
-    local submitted_files
-    submitted_files=$(get_submitted_files)
+# Collect candidates from a set of files
+collect_candidates() {
+    local tier="$1"
+    local submitted_files="$2"
+    local blocked_files="$3"
+    shift 3
+    local files=("$@")
 
-    local blocked_files
-    blocked_files=$(get_blocked_files)
-
-    local candidate_data=()
-
-    for file in "$PROOFS_DIR"/Erdos*Problem.lean; do
+    for file in "${files[@]}"; do
         [[ -f "$file" ]] || continue
 
         local basename=$(basename "$file" .lean)
@@ -153,7 +166,7 @@ main() {
         fi
 
         # Analyze file
-        local analysis=$(analyze_file "$file")
+        local analysis=$(analyze_file "$file" "$tier")
         local total_sorry=$(echo "$analysis" | cut -d'|' -f2)
         local score=$(echo "$analysis" | cut -d'|' -f6)
 
@@ -167,8 +180,45 @@ main() {
             continue
         fi
 
-        candidate_data+=("$analysis")
+        echo "$analysis"
     done
+}
+
+# Main logic
+main() {
+    local submitted_files
+    submitted_files=$(get_submitted_files)
+
+    local blocked_files
+    blocked_files=$(get_blocked_files)
+
+    local candidate_data=()
+
+    # Tier 1: Companion files (*Aristotle.lean)
+    local tier1_files=()
+    while IFS= read -r f; do
+        tier1_files+=("$f")
+    done < <(find "$PROOFS_DIR" -name "*Aristotle.lean" -type f 2>/dev/null | sort)
+
+    if [[ ${#tier1_files[@]} -gt 0 ]]; then
+        while IFS= read -r line; do
+            [[ -n "$line" ]] && candidate_data+=("$line")
+        done < <(collect_candidates 1 "$submitted_files" "$blocked_files" "${tier1_files[@]}")
+    fi
+
+    # Tier 2: Regular proof files (unless --tier1-only)
+    if [[ "$TIER1_ONLY" != true ]]; then
+        local tier2_files=()
+        while IFS= read -r f; do
+            tier2_files+=("$f")
+        done < <(find "$PROOFS_DIR" -name "Erdos*Problem.lean" -type f 2>/dev/null | sort)
+
+        if [[ ${#tier2_files[@]} -gt 0 ]]; then
+            while IFS= read -r line; do
+                [[ -n "$line" ]] && candidate_data+=("$line")
+            done < <(collect_candidates 2 "$submitted_files" "$blocked_files" "${tier2_files[@]}")
+        fi
+    fi
 
     if [[ ${#candidate_data[@]} -eq 0 ]]; then
         if [[ "$COUNT_ONLY" == true ]]; then
@@ -183,9 +233,10 @@ main() {
         return
     fi
 
-    # Sort by score (lower is better)
+    # Sort: Tier 1 first (by score), then Tier 2 (by score)
+    # Use stable sort: primary key = tier, secondary key = score
     local sorted_data
-    sorted_data=$(printf '%s\n' "${candidate_data[@]}" | sort -t'|' -k6 -n)
+    sorted_data=$(printf '%s\n' "${candidate_data[@]}" | sort -t'|' -k7 -n -k6 -n)
 
     if [[ "$COUNT_ONLY" == true ]]; then
         echo "$sorted_data" | wc -l | tr -d ' '
@@ -199,7 +250,7 @@ main() {
     if [[ "$JSON_OUTPUT" == true ]]; then
         echo "["
         local first=true
-        while IFS='|' read -r name total def axiom thm score; do
+        while IFS='|' read -r name total def axiom thm score tier; do
             [[ -z "$name" ]] && continue
             if [[ "$first" == true ]]; then
                 first=false
@@ -213,7 +264,9 @@ main() {
     "def_sorries": $def,
     "axioms": $axiom,
     "theorem_sorries": $thm,
-    "score": $score
+    "score": $score,
+    "tier": $tier,
+    "companion_file": $([ "$tier" -eq 1 ] && echo "true" || echo "false")
   }
 EOF
         done <<< "$sorted_data"
@@ -222,16 +275,26 @@ EOF
     else
         echo "=== Aristotle Candidates ==="
         echo ""
-        printf "%-40s %8s %8s %8s %8s\n" "File" "Sorries" "DefSorry" "Axioms" "Score"
-        printf "%-40s %8s %8s %8s %8s\n" "----" "-------" "--------" "------" "-----"
+        printf "%-40s %5s %8s %8s %8s %8s\n" "File" "Tier" "Sorries" "DefSorry" "Axioms" "Score"
+        printf "%-40s %5s %8s %8s %8s %8s\n" "----" "----" "-------" "--------" "------" "-----"
 
-        while IFS='|' read -r name total def axiom thm score; do
+        while IFS='|' read -r name total def axiom thm score tier; do
             [[ -z "$name" ]] && continue
-            printf "%-40s %8d %8d %8d %8d\n" "$name" "$total" "$def" "$axiom" "$score"
+            local tier_label
+            [[ "$tier" -eq 1 ]] && tier_label="T1" || tier_label="T2"
+            printf "%-40s %5s %8d %8d %8d %8d\n" "$name" "$tier_label" "$total" "$def" "$axiom" "$score"
         done <<< "$sorted_data"
 
+        local total_count tier1_count tier2_count
+        total_count=$(echo "$sorted_data" | grep -c '|' 2>/dev/null; true)
+        tier1_count=$(echo "$sorted_data" | grep -c '|1$' 2>/dev/null; true)
+        tier2_count=$(echo "$sorted_data" | grep -c '|2$' 2>/dev/null; true)
+        total_count="${total_count:-0}"
+        tier1_count="${tier1_count:-0}"
+        tier2_count="${tier2_count:-0}"
         echo ""
-        echo "Total candidates: $(echo "$sorted_data" | grep -c '|' || echo 0)"
+        echo "Total candidates: $total_count (T1 companion: $tier1_count, T2 regular: $tier2_count)"
+        echo "T1 companion files are preferred. T2 files are fallback when T1 slots exhausted."
         echo "Best candidates have low score (few sorries, no def sorries)"
     fi
 }

@@ -12,6 +12,9 @@
 #   ARISTOTLE_API_KEY - Required for submission
 #   ARISTOTLE_TARGET  - Target number of active jobs (default 10)
 #
+# Submission order: Tier 1 companion files (*Aristotle.lean) first,
+# then Tier 2 regular files (*Problem.lean) to fill remaining slots.
+#
 
 set -euo pipefail
 
@@ -47,6 +50,9 @@ while [[ $# -gt 0 ]]; do
             echo "  --count N    Submit exactly N files"
             echo "  --target N   Maintain N active jobs (default: 10)"
             echo "  --dry-run    Show what would be submitted"
+            echo ""
+            echo "Submission order: Tier 1 companion files (*Aristotle.lean) first,"
+            echo "then Tier 2 regular files (*Problem.lean) to fill remaining slots."
             exit 0
             ;;
         *) echo "Unknown option: $1" >&2; exit 1 ;;
@@ -156,9 +162,16 @@ check_server_capacity() {
 # Returns: 0=success, 1=error, 2=rate-limited (caller should stop submitting), 3=rejected by preprocessing
 submit_file() {
     local file="$1"
-    local problem_id=$(basename "$file" .lean | sed 's/Problem$//' | tr '[:upper:]' '[:lower:]' | sed 's/erdos/erdos-/')
+    local problem_id=$(basename "$file" .lean | sed 's/Problem$//' | sed 's/Aristotle$//' | tr '[:upper:]' '[:lower:]' | sed 's/erdos/erdos-/')
 
-    echo -e "${BLUE}Submitting:${NC} $file"
+    local is_companion=false
+    [[ "$file" == *Aristotle.lean ]] && is_companion=true
+
+    if [[ "$is_companion" == true ]]; then
+        echo -e "${BLUE}Submitting [T1 companion]:${NC} $file"
+    else
+        echo -e "${BLUE}Submitting [T2 regular]:${NC} $file"
+    fi
 
     # Preprocess the file (fix docstrings, reject unsuitable files)
     local preprocess_log=""
@@ -227,6 +240,8 @@ submit_file() {
     local tmp_file=$(mktemp)
     local preprocessed_flag="false"
     [[ -n "$preprocess_log" ]] && preprocessed_flag="true"
+    local companion_flag="false"
+    [[ "$is_companion" == true ]] && companion_flag="true"
 
     jq --arg pid "$project_id" \
        --arg file "$file" \
@@ -234,6 +249,7 @@ submit_file() {
        --arg now "$now" \
        --argjson preprocessed "$preprocessed_flag" \
        --arg preprocess_log "${preprocess_log:-}" \
+       --argjson companion "$companion_flag" \
        '.jobs += [{
          project_id: $pid,
          file: $file,
@@ -242,7 +258,8 @@ submit_file() {
          status: "submitted",
          preprocessed: $preprocessed,
          preprocessing_log: (if $preprocess_log != "" then $preprocess_log else null end),
-         notes: "Batch submission"
+         companion_file: $companion,
+         notes: (if $companion then "Companion file submission (T1)" else "Batch submission (T2)" end)
        }]' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
 
     # Create completion signal for daemon stats tracking
@@ -304,7 +321,8 @@ main() {
     echo "Will submit: $to_submit files"
     echo ""
 
-    # Get best candidates
+    # Get best candidates — two-tier system:
+    # Tier 1 (companion *Aristotle.lean files) come first, then Tier 2 (regular files)
     local candidates
     candidates=$("$FIND_CANDIDATES" --json --best "$to_submit" 2>/dev/null)
 
@@ -313,7 +331,15 @@ main() {
         return 0
     fi
 
-    # Submit each candidate
+    local tier1_count
+    tier1_count=$(echo "$candidates" | jq '[.[] | select(.tier == 1)] | length')
+    local tier2_count
+    tier2_count=$(echo "$candidates" | jq '[.[] | select(.tier == 2)] | length')
+
+    echo "Candidates: $tier1_count Tier 1 companion files + $tier2_count Tier 2 regular files"
+    echo ""
+
+    # Submit each candidate (already sorted: T1 first, then T2)
     local submitted=0
     local failed=0
     local skipped=0

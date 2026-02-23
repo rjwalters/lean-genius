@@ -29,6 +29,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+CYAN='\033[0;36m'
 NC='\033[0m'
 
 RETRIEVE_ONLY=false
@@ -102,6 +103,7 @@ integrate_solution() {
     local project_id=$(echo "$job" | jq -r '.project_id')
     local original_file=$(echo "$job" | jq -r '.file')
     local problem_id=$(echo "$job" | jq -r '.problem_id')
+    local is_companion=$(echo "$job" | jq -r '.companion_file // false')
 
     local basename=$(basename "$original_file" .lean)
     local solution_file="$RESULTS_DIR/${basename}-solved.lean"
@@ -118,7 +120,11 @@ integrate_solution() {
         original_path="$PROJECT_ROOT/$original_file"
     fi
 
-    echo -e "${BLUE}Processing:${NC} $problem_id ($project_id)"
+    if [[ "$is_companion" == "true" ]]; then
+        echo -e "${BLUE}Processing [companion]:${NC} $problem_id ($project_id)"
+    else
+        echo -e "${BLUE}Processing:${NC} $problem_id ($project_id)"
+    fi
 
     # Retrieve solution
     if [[ "$DRY_RUN" == true ]]; then
@@ -172,11 +178,20 @@ integrate_solution() {
 
                 echo -e "  ${GREEN}Integrated${NC}"
 
+                # For companion files, remind Researcher to incorporate into main proof
+                if [[ "$is_companion" == "true" ]]; then
+                    local main_file="${basename/Aristotle/Problem}"
+                    echo -e "  ${CYAN}[Companion file]${NC} Proved lemmas available in ${basename}.lean"
+                    echo -e "  ${CYAN}→ Researcher should incorporate into ${main_file}.lean${NC}"
+                fi
+
                 # Move to processed
                 mv "$solution_file" "$PROCESSED_DIR/"
 
                 # Update job status
-                update_job_status "$project_id" "integrated" "$new_sorries sorries remaining"
+                local outcome_note="$new_sorries sorries remaining"
+                [[ "$is_companion" == "true" ]] && outcome_note="$new_sorries sorries remaining (companion file — merge into ${basename/Aristotle/Problem}.lean)"
+                update_job_status "$project_id" "integrated" "$outcome_note"
 
                 # Create completion signal for daemon stats tracking
                 local completions_dir="$PROJECT_ROOT/.loom/signals/completions"
