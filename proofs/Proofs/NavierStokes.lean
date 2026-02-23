@@ -2350,6 +2350,70 @@ theorem enstrophy_exponential_decay_exact (sol : GlobalNSSolution2DPoincare)
           congr 1; simp only [hc_eq]; ring
 
 
+/-- **PROVED: Long-time Vanishing of Enstrophy (2D with Poincaré)**
+    For any ε > 0, enstrophy eventually drops below ε:
+    ∀ ε > 0, ∃ T > 0, ∀ t > T, E(t) < ε.
+
+    This is the precise statement that enstrophy decays to zero as t → ∞,
+    a consequence of the exponential decay bound E(t) ≤ E(0)·exp(-2νμ₁t).
+
+    The proof chooses T = max(log(E₀p/ε)/c, 1) where E₀p = E(0) + 1 and c = 2νμ₁.
+    For t > T ≥ log(E₀p/ε)/c, we have exp(-ct) < ε/E₀p, giving E₀p·exp(-ct) < ε. -/
+theorem enstrophy_eventually_small (sol : GlobalNSSolution2DPoincare) :
+    ∀ ε > 0, ∃ T > 0, ∀ t > T, sol.E t < ε := by
+  intro ε hε
+  set c := 2 * sol.ν * sol.mu₁ with hc_def
+  have hc : 0 < c := mul_pos (mul_pos (by norm_num) sol.ν_pos) sol.mu₁_pos
+  have hE0_nn : 0 ≤ sol.E 0 := sol.E_nonneg 0 le_rfl
+  -- Use E₀p = E(0) + 1 > 0 to avoid E(0) = 0 edge case
+  set E₀p := sol.E 0 + 1 with hE0p_def
+  have hE₀p_pos : 0 < E₀p := by linarith
+  have hE₀pε_pos : 0 < E₀p / ε := div_pos hE₀p_pos hε
+  -- Choose T = max(log(E₀p/ε)/c, 1) > 0 always
+  set T := max (Real.log (E₀p / ε) / c) 1 with hT_def
+  have hT_pos : 0 < T := lt_of_lt_of_le one_pos (le_max_right _ _)
+  -- T ≥ log(E₀p/ε)/c by construction
+  have hT_ge_log : Real.log (E₀p / ε) / c ≤ T := le_max_left _ _
+  refine ⟨T, hT_pos, fun t ht => ?_⟩
+  have ht_pos : 0 < t := lt_trans hT_pos ht
+  -- t > T ≥ log(E₀p/ε)/c, so c*t > log(E₀p/ε)
+  have ht_gt_log : Real.log (E₀p / ε) / c < t :=
+    lt_of_le_of_lt hT_ge_log ht
+  have hct_gt : Real.log (E₀p / ε) < c * t := by
+    rwa [div_lt_iff hc, mul_comm] at ht_gt_log
+  -- Step 1: E(t) ≤ E₀p * exp(-c*t)
+  have hE_bound : sol.E t ≤ E₀p * Real.exp (-c * t) := by
+    have hstep := enstrophy_exponential_decay_exact sol t ht_pos
+    -- hstep : E(t) ≤ E(0) * exp(-2*ν*μ₁*t) = E(0) * exp(-c*t)
+    have hexp_eq : -2 * sol.ν * sol.mu₁ * t = -c * t := by rw [hc_def]; ring
+    calc sol.E t
+        ≤ sol.E 0 * Real.exp (-2 * sol.ν * sol.mu₁ * t) := hstep
+      _ = sol.E 0 * Real.exp (-c * t) := by rw [hexp_eq]
+      _ ≤ E₀p * Real.exp (-c * t) :=
+            mul_le_mul_of_nonneg_right (by linarith) (Real.exp_nonneg _)
+  -- Step 2: exp(-c*t) < ε/E₀p
+  -- Since -c*t < log(ε/E₀p) = -log(E₀p/ε)
+  have hexp_bound : Real.exp (-c * t) < ε / E₀p := by
+    -- log(ε/E₀p) = -log(E₀p/ε) via log(a*b) = log a + log b
+    have hlogeq : Real.log (ε / E₀p) = -Real.log (E₀p / ε) := by
+      have hmul : (ε / E₀p) * (E₀p / ε) = 1 := by field_simp
+      have hlog_mul := Real.log_mul (ne_of_gt (div_pos hε hE₀p_pos))
+                                    (ne_of_gt hE₀pε_pos)
+      rw [hmul, Real.log_one] at hlog_mul
+      linarith
+    -- exp(-c*t) < exp(log(ε/E₀p)) = ε/E₀p
+    rw [← Real.exp_log (div_pos hε hE₀p_pos)]
+    apply Real.exp_lt_exp.mpr
+    rw [hlogeq]
+    linarith
+  -- Step 3: Combine
+  calc sol.E t
+      ≤ E₀p * Real.exp (-c * t) := hE_bound
+    _ < E₀p * (ε / E₀p) := by
+          apply mul_lt_mul_of_pos_left hexp_bound hE₀p_pos
+    _ = ε := by field_simp
+
+
 /-- **PROVED: Enstrophy Dissipation Identity**
     The total enstrophy dissipated up to time t equals the enstrophy lost:
     E(0) - E(t) ≥ 0 (enstrophy can only decrease in 2D).
