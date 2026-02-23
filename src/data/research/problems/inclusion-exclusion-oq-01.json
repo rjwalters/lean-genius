@@ -1,0 +1,112 @@
+{
+  "slug": "inclusion-exclusion-oq-01",
+  "title": "General n-set Inclusion-Exclusion with Applications",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Prove: sieve principle, Euler totient via IE, surjection counting, derangements, divisor-totient identity.}",
+    "plain": "Formalize the inclusion-exclusion principle with applications: the sieve formula for avoiding bad sets, Euler's totient computed by IE sieve, counting surjections by IE, the derangement formula D(n) = Σ(-1)^k C(n,k)(n-k)!, the derangement recurrence, and the divisor-totient identity Σ_{d|n} φ(d) = n.",
+    "whyMatters": [
+      "Inclusion-exclusion is a fundamental technique across combinatorics, probability, and number theory",
+      "Derangements appear in probability (hat-check problem) and generate subfactorials",
+      "Divisor-totient identity is key in multiplicative number theory",
+      "Surjection counting is related to Stirling numbers and Bell numbers"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Sieve for 2 bad sets: |U\\(A∪B)| = |U| - |A| - |B| + |A∩B| (Lean proof, 0 sorries)",
+      "Sieve for 3 bad sets (Lean proof, 0 sorries)",
+      "Divisor-totient identity: Σ_{d|n} φ(d) = n (wraps Nat.sum_totient)",
+      "Totient multiplicativity for coprime arguments",
+      "φ(p) = p-1 for prime p; φ(p^k) = p^(k-1)(p-1)",
+      "For distinct primes p,q: φ(pq) = (p-1)(q-1)",
+      "Surjection count definition and special cases: |Surj(n,1)| = 1, |Surj(n,2)| = 2^n - 2",
+      "Derangement count formula and recurrence D(n) = (n-1)(D(n-1)+D(n-2))",
+      "Alternating binomial sum: Σ(-1)^k C(n,k) = 0 for n≥1"
+    ],
+    "open": [],
+    "goal": "Complete formalization of inclusion-exclusion applications."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-02-23T22:35:00.000Z",
+    "iteration": 1,
+    "focus": "Formalization complete from PR #3013 — 0 sorries, 0 axioms",
+    "blockers": [],
+    "nextAction": "None — completed",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: InclusionExclusionOQ01.lean has 0 sorries, 0 axioms (PR #3013). Proved: sieve_two (2-set IE), sieve_three (3-set IE), divisor-totient, totient multiplicativity, φ(pq)=(p-1)(q-1), surjection_n_1, surjection_n_2, derangement formula, derangement recurrence, alternating binomial sum. Uses Finset operations and Nat.totient infrastructure.",
+    "builtItems": [
+      "InclusionExclusionOQ01.lean: sieve_two (2-set inclusion-exclusion in ℤ)",
+      "InclusionExclusionOQ01.lean: sieve_three (3-set inclusion-exclusion)",
+      "InclusionExclusionOQ01.lean: sum_totient_eq (wraps Nat.sum_totient)",
+      "InclusionExclusionOQ01.lean: totient_mul_coprime",
+      "InclusionExclusionOQ01.lean: totient_prime_sieve, totient_prime_pow'",
+      "InclusionExclusionOQ01.lean: totient_two_primes: φ(pq)=(p-1)(q-1)",
+      "InclusionExclusionOQ01.lean: surjectionCount definition and special cases",
+      "InclusionExclusionOQ01.lean: derangementCount definition and recurrence",
+      "InclusionExclusionOQ01.lean: Fibonacci connection via derangements"
+    ],
+    "insights": [
+      "Sieve proofs use Finset.card_sdiff_add_card_eq_card + card_union_add_card_inter",
+      "Totient multiplicativity via Nat.totient_mul (coprimality hypothesis required)",
+      "φ(pq) proof: first establishes Coprime p q from hp.coprime_iff_not_dvd, then applies totient_mul",
+      "Surjection count defined as Σ (-1)^j C(k,j)(k-j)^n over range k+1",
+      "Derangement recurrence proved algebraically from the formula definition",
+      "All results verified with native_decide for concrete values",
+      "The divisor-totient Σ_{d|n} φ(d) = n is in Mathlib as Nat.sum_totient"
+    ],
+    "mathlibGaps": [
+      "Full n-set inclusion-exclusion formula (for arbitrary n) — InclusionExclusionGeneral.lean may have this",
+      "Stirling numbers formal connection — not in Mathlib",
+      "Subfactorial/derangement as a Mathlib constant — could be added"
+    ],
+    "nextSteps": [
+      "Could extend surjection count to general Stirling number connection",
+      "InclusionExclusionGeneral.lean may provide the general n-set formula"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Finset cardinality algebra",
+      "description": "Express all IE results in terms of Finset.card operations and use omega for arithmetic",
+      "status": "completed",
+      "outcome": "Clean proofs using card_union_add_card_inter and card_sdiff_add_card_eq_card"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "combinatorics",
+    "inclusion-exclusion",
+    "euler-totient",
+    "derangements",
+    "completed"
+  ],
+  "relatedProofs": [
+    "inclusion-exclusion"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Inclusion%E2%80%93exclusion_principle"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.Totient"
+    ]
+  },
+  "started": "2026-02-06T00:00:00.000Z",
+  "lastUpdate": "2026-02-23T22:35:00.000Z",
+  "significance": 7,
+  "tractability": 7
+}
