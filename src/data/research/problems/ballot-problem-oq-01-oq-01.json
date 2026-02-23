@@ -2,70 +2,67 @@
   "slug": "ballot-problem-oq-01-oq-01",
   "title": "Complete proof of the Dvoretzky-Motzkin cycle lemma in Lean 4",
   "phase": "COMPLETE",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "For a {+1, -k}-list l with sum S > 0, the number of good rotations (all cyclic prefix sums positive) equals exactly S = a - k*b where a is the count of +1's and b the count of -k's.",
-    "plain": "The Dvoretzky-Motzkin Cycle Lemma states that for a sequence of +1's and -k's with positive sum S, exactly S of the n cyclic rotations have all positive partial sums. This extends the classical ballot problem (k=1) to general k.",
+    "formal": "|\\text{goodRotations}(l)| = a - k \\cdot b",
+    "plain": "For a ballot sequence with a copies of +1 and b copies of -k satisfying a > k*b, exactly a-k*b cyclic rotations have all partial sums positive.",
     "whyMatters": [
-      "Fundamental combinatorial result used in lattice path counting, parking functions, and ballot problems",
-      "The cycle lemma provides a clean bijective proof of the Catalan number formula and its generalizations",
-      "Key tool in the theory of random walks and Brownian motion"
+      "The cycle lemma is fundamental in combinatorics, underlying Catalan number identities, parking functions, and noncrossing partition theory",
+      "Ballot sequences and their rotation counts appear in random walk analysis, queueing theory, and discrete probability",
+      "Formalizing the cycle lemma in Lean 4 demonstrates Mathlib combinatorics infrastructure for list and sequence reasoning"
     ]
   },
   "knownResults": {
     "proven": [
-      "ballot_discrete_ivt: For {+1,-k}-lists, if prefix sum v is achieved at some position and final sum exceeds v, then v is achieved at some position j < l.length (Proved in BallotProblemOQ01OQ01.lean)",
-      "Upper bound: |goodRotations l| ≤ l.sum (proved in BallotProblemOQ01.lean)",
-      "Cycle lemma infrastructure: cyclicRotation, prefixSum, minPrefixSum all formalized"
+      "cycle_lemma: |goodRotations l| = a - k*b (BallotProblemOQ01.lean, 0 sorries)",
+      "ballot_discrete_ivt: discrete IVT for {+1,-k}-sequences (BallotProblemOQ01OQ01.lean, 0 sorries)",
+      "goodRotations_card_le: upper bound via prefix sum injection",
+      "goodRotations_card_ge: lower bound via levelPos injection from integer levels",
+      "level_achieved_ge_min: every integer level in [minPrefixSum, minPrefixSum+sum) is achieved",
+      "rightmostAtLevel_good: the rightmost position at each level is a good rotation"
     ],
     "open": [
-      "rightmost_is_good_rotation: The rightmost position achieving each prefix sum level is a good rotation (proof sketch provided)",
-      "goodRotations_card_ge: Lower bound |goodRotations l| ≥ l.sum (requires rightmost_is_good)"
+      "generalized_ballot_count: exact formula (a-kb)*C(a+b,a) via double-counting (1 sorry remaining)"
     ],
-    "goal": "Complete the cycle lemma: |goodRotations l| = l.sum"
+    "goal": "Complete formal proof of |goodRotations l| = a - k*b for {+1,-k}-ballot sequences"
   },
   "currentState": {
     "phase": "COMPLETE",
-    "since": "2026-02-22T13:00:00.000Z",
+    "since": "2026-02-23T06:53:00.000Z",
     "iteration": 2,
-    "focus": "Proved the key discrete IVT lemma. Formal proof complete, proof sketches provided for remaining steps.",
+    "focus": "Complete formal proof compiled",
     "blockers": [],
-    "nextAction": "Aristotle submission for remaining sorries in BallotProblemOQ01.lean",
+    "nextAction": "Done - PR submitted",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 0,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Proved ballot_discrete_ivt (the discrete IVT for ballot sequences) using the Finset.max' approach. This is the key missing piece for the Cycle Lemma lower bound. The main idea: let S = positions with prefix sum ≤ v, j = max'(S). Then j+1 ∉ S implies step must be +1 (not -k), which forces P(j) = v exactly.",
+    "progressSummary": "COMPLETE: cycle_lemma proved with 0 sorries in BallotProblemOQ01.lean via goodRotations_card_le + goodRotations_card_ge. ballot_discrete_ivt proved in BallotProblemOQ01OQ01.lean. 1 sorry remains for generalized_ballot_count.",
     "builtItems": [
-      "BallotProblemOQ01OQ01.lean - proves ballot_discrete_ivt with 0 sorries",
-      "Formal sketch of rightmost-is-good argument (two cases: non-wrapping and wrapping)"
+      "BallotProblemOQ01.lean: cycle_lemma proved (|goodRotations l| = a - k*b)",
+      "BallotProblemOQ01OQ01.lean: ballot_discrete_ivt proved via Finset.max' argument",
+      "Gallery entry: src/data/proofs/ballot-problem-oq-01-oq-01/ created"
     ],
     "insights": [
-      "Finset.max' approach is cleaner than Finset.argmax for finding rightmost element satisfying a property",
-      "List.sum_take_succ l j hj_lt rewrites (l.take (j+1)).sum = (l.take j).sum + l[j]",
-      "List.getElem_mem hj_lt gives l[j] ∈ l from index bound",
-      "The -k case in ballot_discrete_ivt: if l[j] = -k then P(j+1) = P(j) - k ≤ v - k < v, contradicting hj1_gt",
-      "Finset.le_max' S (j+1) hj1_in gives j+1 ≤ j (contradiction with omega)"
+      "Finset.max' technique: define S = {positions with prefix sum <= v}, take max, prove it achieves exactly v",
+      "cycle_lemma lower bound: inject integer levels [minPS, minPS+sum) to goodRotations via levelPos",
+      "cycle_lemma upper bound: goodRotation_prefixSum_injective shows distinct good rotations have distinct prefix sums",
+      "rightmostAtLevel_good: rightmostness handles non-wrapping case; min-prefix-sum bound handles wrapping"
     ],
-    "mathlibGaps": [
-      "No direct discrete IVT for List prefix sums - had to prove from scratch using Finset.max'"
-    ],
-    "nextSteps": [
-      "Submit BallotProblemOQ01.lean to Aristotle for rightmost_is_good_rotation and goodRotations_card_ge",
-      "Alternatively, formalize the rightmost-is-good proof sketch from BallotProblemOQ01OQ01.lean"
-    ]
+    "mathlibGaps": [],
+    "nextSteps": []
   },
   "approaches": [
     {
-      "name": "Finset.max' approach",
-      "description": "Define S = positions with P(i) ≤ v, j = max'(S). Show j+1 ∉ S implies step is +1, giving P(j) = v.",
-      "status": "succeeded",
-      "outcome": "ballot_discrete_ivt proved with 0 sorries"
+      "name": "Two-bound approach",
+      "description": "Prove upper and lower bounds independently, combine via le_antisymm",
+      "status": "success",
+      "sorries": 0
     }
   ],
   "tags": [
@@ -79,23 +76,14 @@
     "generalization",
     "research"
   ],
-  "relatedProofs": [
-    "ballot-problem-oq-01"
-  ],
+  "relatedProofs": ["ballot-problem-oq-01"],
   "references": {
-    "papers": [
-      "Dvoretzky, A. and Motzkin, T. (1947). A problem of arrangements. Duke Math. J. 14, 305-313."
-    ],
+    "papers": ["Dvoretzky, A. and Motzkin, T. (1947). A problem of arrangements. Duke Math. J. 14, 305-313."],
     "urls": [],
-    "mathlib": [
-      "Finset.max'_mem",
-      "Finset.le_max'",
-      "List.sum_take_succ",
-      "List.getElem_mem"
-    ]
+    "mathlib": ["Finset.max'_mem", "Finset.le_max'", "List.sum_take_succ", "List.getElem_mem"]
   },
   "started": "2026-02-21T19:21:07.130Z",
-  "lastUpdate": "2026-02-22T13:00:00.000Z",
+  "lastUpdate": "2026-02-23T06:53:00.000Z",
   "significance": 6,
   "tractability": 6
 }

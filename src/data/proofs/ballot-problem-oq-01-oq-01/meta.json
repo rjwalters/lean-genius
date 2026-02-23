@@ -1,0 +1,106 @@
+{
+  "id": "ballot-problem-oq-01-oq-01",
+  "title": "Discrete IVT for the Dvoretzky-Motzkin Cycle Lemma",
+  "slug": "ballot-problem-oq-01-oq-01",
+  "description": "A formal proof of the discrete intermediate value theorem for ballot-type sequences, establishing that prefix sums of {+1, -k}-lists hit every integer value in a range. This is the key analytic lemma used to prove the lower bound in the Dvoretzky-Motzkin Cycle Lemma.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cycle_lemma",
+    "date": "2026",
+    "status": "complete",
+    "proofRepoPath": "Proofs/BallotProblemOQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "ballot-problem",
+      "cycle-lemma",
+      "discrete-ivt",
+      "lattice-paths",
+      "finset",
+      "research"
+    ],
+    "badge": "open",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.max'_mem",
+        "description": "The maximum element of a nonempty Finset is a member of the Finset",
+        "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "Finset.le_max'",
+        "description": "Every element of a Finset is ≤ the Finset's maximum",
+        "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "List.sum_take_succ",
+        "description": "Prefix sum at i+1 equals prefix sum at i plus the i-th element",
+        "module": "Mathlib.Data.List.Basic"
+      },
+      {
+        "theorem": "List.getElem_mem",
+        "description": "The element at a valid index is a member of the list",
+        "module": "Mathlib.Data.List.Defs"
+      }
+    ],
+    "originalContributions": [
+      "ballot_discrete_ivt: for {+1,-k}-lists, if prefix sum v is achieved and the final sum exceeds v, then some strict prefix also achieves v (proved via Finset.max' of the set of positions with prefix sum ≤ v)",
+      "cycle_lemma_lower_bound_via_ivt: informal derivation showing how ballot_discrete_ivt gives the lower bound |goodRotations l| ≥ l.sum in the cycle lemma",
+      "rightmost_is_good_sketch: formal sketch showing why the rightmost position at each level is a good rotation (non-wrapping and wrapping cases)"
+    ],
+    "dateAdded": "02/23/26",
+    "relatedProblems": [
+      {
+        "id": "ballot-problem-oq-01",
+        "relationship": "Parent proof: BallotProblemOQ01.lean contains the full cycle_lemma proof (|goodRotations l| = a - k*b) using this discrete IVT infrastructure"
+      },
+      {
+        "id": "ballot-problem",
+        "relationship": "Classical ballot problem: Bertrand's ballot theorem giving probability (a-b)/(a+b)"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "**The Discrete IVT and the Cycle Lemma**\n\nThe Dvoretzky-Motzkin Cycle Lemma (1947) states: given a sequence with $a$ copies of $+1$ and $b$ copies of $-k$ satisfying $a > kb$, exactly $a - kb$ of the $a + b$ cyclic rotations have all partial sums positive.\n\nThe proof has two parts:\n- **Upper bound** ($|\\text{goodRotations}| \\leq a-kb$): Via an injection from good rotations to distinct prefix sum levels — proved in BallotProblemOQ01.lean via `goodRotations_card_le`.\n- **Lower bound** ($|\\text{goodRotations}| \\geq a-kb$): Requires showing that for each level $v$ in $[\\mu, \\mu + S)$ (where $\\mu$ is the minimum prefix sum and $S$ is the total sum), there exists a good rotation achieving level $v$. This uses:\n  1. A **discrete IVT** to show every level is achieved by some prefix\n  2. The **rightmost position** at each level is a good rotation\n\nThe discrete IVT formalized here (`ballot_discrete_ivt`) captures the essential analytic content: if a {+1, -k}-sequence achieves prefix sum $v$ at some position, and the final sum exceeds $v$, then the rightmost position with prefix sum $\\leq v$ actually has prefix sum exactly $v$. This is because the rightmost such position must be followed by $+1$ (not $-k$, which would give prefix sum $\\leq v-k < v$).",
+    "problemStatement": "**Theorem (ballot_discrete_ivt)**: For a list $l$ of integers from $\\{1, -k\\}$:\n- If some position $i_0 \\leq |l|$ satisfies $\\text{prefixSum}(i_0) = v$\n- And the total sum $l.\\text{sum} > v$\n\nThen there exists a position $j < |l|$ with $\\text{prefixSum}(j) = v$.\n\n**Corollary (used in cycle lemma)**: For every level $v \\in [\\mu, \\mu + S)$, the rightmost position achieving prefix sum $v$ is a strict prefix ($j < |l|$) and is a good rotation.",
+    "proofStrategy": "The proof uses a **Finset.max' argument**:\n\n1. Define $S = \\{i \\in [0, |l|] \\mid \\text{prefixSum}(i) \\leq v\\}$.\n2. $S$ is nonempty (contains the witness $i_0$).\n3. Let $j = \\max(S)$ — the rightmost position with prefix sum $\\leq v$.\n4. $j < |l|$: since $\\text{prefixSum}(|l|) = l.\\text{sum} > v$, $|l| \\notin S$.\n5. $\\text{prefixSum}(j+1) > v$: since $j+1 \\notin S$ (by maximality of $j$).\n6. $l[j] = 1$: if $l[j] = -k$, then $\\text{prefixSum}(j+1) = \\text{prefixSum}(j) - k \\leq v - k < v$, contradicting step 5.\n7. Therefore $\\text{prefixSum}(j) = v$ (since $\\text{prefixSum}(j) + 1 = \\text{prefixSum}(j+1) > v$ and $\\text{prefixSum}(j) \\leq v$).\n\nThe `Finset.max'` machinery (rather than a direct induction) makes this a clean 40-line proof.",
+    "keyInsights": [
+      "The Finset.max' approach avoids induction: define S = positions with prefix sum ≤ v, take the maximum, and analyze the element at that position",
+      "The key case split: l[j] must be +1 (not -k) because -k would give prefix sum ≤ v-k < v at j+1, contradicting maximality of j",
+      "The boundary case j = |l| is excluded because prefixSum(|l|) = l.sum > v, so |l| ∉ S",
+      "This lemma is essentially a discrete version of the intermediate value theorem: prefix sums change by exactly ±1 or -(k-1) steps",
+      "The full cycle lemma lower bound uses ballot_discrete_ivt to show every level in [minPrefixSum, minPrefixSum+sum) is achieved, then injects these levels to distinct good rotations"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Problem Overview",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Header documenting the open question and proof strategy. Imports: `Mathlib.Tactic`, `Mathlib.Data.List.Basic`, `Mathlib.Data.Finset.Basic`."
+    },
+    {
+      "id": "ballot-discrete-ivt",
+      "title": "Discrete IVT for Ballot Sequences",
+      "startLine": 39,
+      "endLine": 89,
+      "summary": "Theorem `ballot_discrete_ivt`: For a {+1,-k}-list, if some position achieves prefix sum v and the final sum exceeds v, then a strict prefix achieves prefix sum exactly v. Proved via `Finset.max'` of positions with prefix sum ≤ v; the maximal such position must be followed by +1 (not -k), forcing its prefix sum to equal exactly v."
+    },
+    {
+      "id": "lower-bound-corollary",
+      "title": "Cycle Lemma Lower Bound via Discrete IVT",
+      "startLine": 91,
+      "endLine": 130,
+      "summary": "Informal derivations: `cycle_lemma_lower_bound_via_ivt` sketches how ballot_discrete_ivt gives |goodRotations| ≥ l.sum; `rightmost_is_good_sketch` explains why the rightmost position at each level v ∈ [minPS, minPS+S) is a good rotation (splitting into non-wrapping and wrapping cases)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file proves `ballot_discrete_ivt`, the discrete intermediate value theorem for {+1,-k}-sequences. Combined with the infrastructure in BallotProblemOQ01.lean, the full Dvoretzky-Motzkin Cycle Lemma (`cycle_lemma`: |goodRotations l| = a - k*b) is proved with 0 sorries.",
+    "implications": "**Mathematical Significance**\n\n1. **Cycle Lemma Completion**: The `cycle_lemma` theorem in BallotProblemOQ01.lean is now fully proved (0 sorries). It establishes that for any {+1,-k}-sequence with $a > kb$, exactly $a - kb$ cyclic rotations have all partial sums positive.\n\n2. **Ballot Problem Connection**: Setting $k=1$ recovers the classical Bertrand ballot theorem: exactly $a-b$ of the $a+b$ rotations are good, giving probability $(a-b)/(a+b)$.\n\n3. **Lattice Path Interpretation**: The cycle lemma counts lattice paths from $(0,0)$ to $(a+b, a-kb)$ that stay strictly above the $x$-axis. It is fundamental in combinatorics (parking functions, noncrossing partitions, Catalan number identities).\n\n4. **Finset.max' Technique**: The proof of `ballot_discrete_ivt` demonstrates a clean Lean 4 technique: rather than induction over list positions, define a Finset of relevant positions and use `Finset.max'` to extract the extremal element with desired properties.\n\n5. **Rightmost Position Pattern**: The 'rightmost position' is a recurring proof technique: it ensures uniqueness (injection into levels) and good behavior (followed by +1, not -k).",
+    "openQuestions": [
+      "Can generalized_ballot_count be proved: the exact formula (a-kb) * C(a+b,a) counts cyclic sequences with exactly good rotations via double counting?",
+      "Can the result be extended to arbitrary (not necessarily ±1/-k) sequences via a more abstract cycle lemma?",
+      "Can the lattice path interpretation be formally connected: bijection between good rotations and Dyck-like paths?"
+    ]
+  }
+}
