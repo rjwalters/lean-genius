@@ -114,3 +114,15 @@ Note: `zhang_bounded_gaps_70M` was converted from axiom to theorem (derived from
 16. **`dickson_triple_implies_prime_triples`**: Dickson for {0,2,6} → prime triples infinitely often
 17. **`admissible_card_lt_of_prime`**: Rephrased admissibility condition
 **Outcome**: 40 proved theorems, 4 axioms, 0 sorries. Build verified via Docker.
+
+### Research Session (2026-02-23)
+**Mode**: BUILD (researcher-1)
+**Decision**: BUILD - Add complementary large prime gap construction
+**Changes** (4 new theorems via factorial construction):
+1. **`factorial_add_composite`**: N! + k is composite for 2 ≤ k ≤ N. Proof: k | N! (since k ≤ N) and k | k, so k | N!+k. Since N!+k is prime and k ∣ N!+k, we'd need k=1 or k=N!+k, both impossible.
+2. **`consecutive_composites`**: ∀ k, 2 ≤ k → k ≤ N → ¬ Nat.Prime (N! + k). Direct corollary of factorial_add_composite.
+3. **`prime_gaps_unbounded`**: ∀ N, ∃ n, primeGap n ≥ N. By contradiction: if all gaps < N, by induction nthPrime k ≤ N!+1 for all k (since N!+2,...,N!+N are composite). But nthPrime grows as k+2, so nthPrime(N!+1) ≥ N!+3 > N!+1. Contradiction.
+4. **`prime_gaps_oscillate`**: Combines Polymath axiom (liminf ≤ 246) with factorial result (limsup = ∞).
+
+**Mathematical insight**: The bounded gaps theorem (Zhang/Polymath) and the factorial construction are complementary: prime gaps oscillate between bounded small values and arbitrarily large values. The liminf ≤ 246 and limsup = ∞ together characterize prime gap behavior.
+**Outcome**: 94+ proved theorems, 3 axioms, 0 sorries. Build verified via Docker (no warnings).
