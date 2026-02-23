@@ -9,10 +9,7 @@
     "type": "concept",
     "title": "Mathlib's Denumerable Instance",
     "content": "The `Denumerable ℚ` instance is provided by Mathlib. This typeclass asserts that ℚ is in bijection with ℕ, with explicit encoding/decoding functions.",
-    "mathContext": "$\\text{Denumerable}(\\alpha) \\Leftrightarrow \\exists f : \\mathbb{N} \\xrightarrow{\\sim} \\alpha$; Mathlib's `Rat.instDenumerable` instance encodes rationals as reduced fractions via Cantor pairing on $(\\mathbb{Z}, \\mathbb{N}^+)$.",
-    "significance": "key",
-    "relatedConcepts": ["Denumerable typeclass", "Mathlib.Data.Rat.Denumerable", "Cantor pairing", "inferInstance"],
-    "prerequisites": ["Lean 4 typeclasses", "Mathlib.Logic.Denumerable", "Nat.pair function"]
+    "significance": "key"
   },
   {
     "id": "equiv-definition",
@@ -24,10 +21,7 @@
     "type": "definition",
     "title": "The Explicit Bijection",
     "content": "`Denumerable.eqv` gives an equivalence `ℚ ≃ ℕ`. We use `.symm` to get `ℕ ≃ ℚ`, which lets us enumerate rationals by natural numbers.",
-    "mathContext": "$\\text{natEquivRat} = (\\text{Denumerable.eqv}(\\mathbb{Q}))^{-1} : \\mathbb{N} \\xrightarrow{\\sim} \\mathbb{Q}$; the Equiv type bundles the functions with proof of bijectivity.",
-    "significance": "key",
-    "relatedConcepts": ["Equiv type", "Denumerable.eqv", "natEquivRat", "bijection construction"],
-    "prerequisites": ["Mathlib.Logic.Equiv.Basic", "Denumerable typeclass"]
+    "significance": "key"
   },
   {
     "id": "main-theorem",
@@ -39,10 +33,7 @@
     "type": "theorem",
     "title": "Cantor's Classical Statement",
     "content": "This is the classical formulation: there exists a bijection f : ℕ ≃ ℚ. The proof extracts the bijection from Mathlib's Denumerable instance.",
-    "mathContext": "$\\exists f : \\mathbb{N} \\to \\mathbb{Q},\\ \\text{Bijective}(f)$; proved via `Equiv.bijective natEquivRat`, which decomposes bijectivity into injectivity and surjectivity.",
-    "significance": "key",
-    "relatedConcepts": ["rationals_denumerable", "bijective function", "Wiedijk #3", "Cantor 1874"],
-    "prerequisites": ["natEquivRat definition", "Equiv.bijective", "Function.Bijective"]
+    "significance": "critical"
   },
   {
     "id": "countable-corollary",
@@ -54,10 +45,7 @@
     "type": "lemma",
     "title": "Countability Follows",
     "content": "Every denumerable type is countable. The converse is false: finite types are countable but not denumerable.",
-    "mathContext": "$\\text{Countable}(\\mathbb{Q})$ follows from $\\text{Denumerable}(\\mathbb{Q})$ since `Denumerable → Countable`; countable covers both finite and countably infinite sets.",
-    "significance": "supporting",
-    "relatedConcepts": ["Countable typeclass", "Denumerable implies Countable", "inferInstance", "finite vs countably infinite"],
-    "prerequisites": ["Countable typeclass", "Denumerable typeclass hierarchy"]
+    "significance": "supporting"
   },
   {
     "id": "round-trip",
@@ -69,10 +57,7 @@
     "type": "insight",
     "title": "Round-Trip Properties",
     "content": "The encode and decode functions are mutual inverses. These proofs verify that no information is lost in the encoding.",
-    "mathContext": "$\\text{decode} \\circ \\text{encode} = \\text{id}_{\\mathbb{Q}}$ and $\\text{encode} \\circ \\text{decode} = \\text{id}_{\\mathbb{N}}$; both proved by `simp` via `Equiv.symm_apply_apply` and `Equiv.apply_symm_apply`.",
-    "significance": "key",
-    "relatedConcepts": ["encodeRatToNat", "decodeNatToRat", "round-trip proof", "simp tactic"],
-    "prerequisites": ["encodeRatToNat/decodeNatToRat definitions", "Equiv.symm properties"]
+    "significance": "key"
   },
   {
     "id": "cardinality",
@@ -84,9 +69,6 @@
     "type": "theorem",
     "title": "Cardinal Equality",
     "content": "In cardinal arithmetic, |ℚ| = ℵ₀. This connects the type-theoretic notion (Denumerable) to the set-theoretic notion (cardinality).",
-    "mathContext": "$|\\mathbb{Q}| = \\aleph_0$; formally `Cardinal.mk ℚ = Cardinal.aleph0`, proved via `Cardinal.mk_denumerable ℚ` which bridges the Denumerable typeclass to ZFC-style cardinality.",
-    "significance": "key",
-    "relatedConcepts": ["Cardinal.aleph0", "Cardinal.mk_denumerable", "aleph-null", "set-theoretic cardinality"],
-    "prerequisites": ["Mathlib.SetTheory.Cardinal.Basic", "Cardinal.mk", "Cardinal.aleph0"]
+    "significance": "key"
   }
 ]
