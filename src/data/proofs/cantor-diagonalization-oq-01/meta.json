@@ -1,0 +1,120 @@
+{
+  "id": "cantor-diagonalization-oq-01",
+  "title": "The Continuum Hypothesis: Is There a Cardinality Between Countable and Continuum?",
+  "slug": "cantor-diagonalization-oq-01",
+  "description": "Cantor's diagonal argument proves aleph_0 < 2^aleph_0, but can it tell us whether any cardinal lies between them? This extension explores the beth number hierarchy, König's constraint, and why CH is independent of the diagonal argument.",
+  "meta": {
+    "author": "Cantor (1891), Gödel (1940), Cohen (1963)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Continuum_hypothesis",
+    "date": "1891",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ01.lean",
+    "tags": [
+      "set-theory",
+      "cardinality",
+      "diagonalization",
+      "continuum-hypothesis",
+      "beth-numbers",
+      "extension",
+      "foundations",
+      "infinity"
+    ],
+    "badge": "from-axioms",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.cantor",
+        "description": "Cantor's theorem: κ < 2^κ for any cardinal",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.aleph_succ",
+        "description": "aleph successor: aleph(α+1) = succ(aleph α)",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Order.succ_le_of_lt",
+        "description": "a < b implies succ a ≤ b",
+        "module": "Mathlib.Order.SuccPred.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Beth number hierarchy definition and strict monotonicity proof",
+      "CH ↔ no intermediate cardinal equivalence",
+      "König's cofinality constraint axiomatized",
+      "Formal connection between diagonalization and CH"
+    ],
+    "dateAdded": "02/22/26"
+  },
+  "overview": {
+    "historicalContext": "Cantor's 1891 diagonal argument proved the reals are uncountable, establishing the gap ℵ₀ < 2^ℵ₀. Cantor had conjectured in 1878 that no cardinality exists between countable and the continuum — the Continuum Hypothesis (CH). After 62 years, Gödel (1940) proved CH is consistent with ZFC using the constructible universe L, and Cohen (1963) proved ¬CH is also consistent using forcing. Together they showed CH is *independent* of ZFC — the diagonal argument cannot determine whether the jump from ℵ₀ to 2^ℵ₀ is minimal.",
+    "problemStatement": "**Open Question**: Does Cantor's diagonalization argument tell us whether any cardinality lies between ℵ₀ and 2^ℵ₀?\n\n**Answer**: The diagonal proves ℵ₀ < 2^ℵ₀ and generates the beth number tower ℵ₀ < 2^ℵ₀ < 2^(2^ℵ₀) < ⋯, but cannot determine whether intermediate cardinals exist. CH (no intermediate) and ¬CH (intermediate exists) are both consistent with ZFC.",
+    "proofStrategy": "Formally establish what the diagonal argument CAN prove: the beth number hierarchy (strict monotonicity via Cardinal.cantor applied iteratively), the bound ℵ₁ ≤ 2^ℵ₀, and the equivalence CH ↔ no intermediate cardinal. Then use König's theorem and ZFC independence to show the diagonal cannot determine the exact size of the jump.",
+    "keyInsights": [
+      "The diagonal proves ℵ₀ < 2^ℵ₀ but cannot determine whether this jump is minimal",
+      "The beth number hierarchy shows the diagonal generates infinitely many distinct cardinals via iteration",
+      "CH is equivalent to: the diagonal jump from ℵ₀ to 2^ℵ₀ has no intermediate cardinal",
+      "König's theorem gives ZFC-provable constraints: cf(2^ℵ₀) > ℵ₀, ruling out singular alephs like ℵ_ω",
+      "Under ¬CH, ℵ₁ itself is an intermediate cardinal between ℵ₀ and 2^ℵ₀"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Imports, problem description, and overview of what the diagonal argument can and cannot prove about CH."
+    },
+    {
+      "id": "diagonal-gap",
+      "title": "The Diagonal Gap",
+      "startLine": 58,
+      "endLine": 107,
+      "summary": "The fundamental diagonal gap ℵ₀ < 2^ℵ₀ and the power set inequality |A| < |P(A)| for any set A."
+    },
+    {
+      "id": "aleph-one-bound",
+      "title": "ℵ₁ ≤ 2^ℵ₀ — The Minimal Uncountable Bound",
+      "startLine": 109,
+      "endLine": 155,
+      "summary": "ℵ₁ is the smallest uncountable cardinal, so ℵ₁ ≤ 2^ℵ₀ from the diagonal gap and successor structure."
+    },
+    {
+      "id": "beth-tower",
+      "title": "The Beth Number Tower",
+      "startLine": 157,
+      "endLine": 229,
+      "summary": "The iterated diagonal hierarchy: beth_n < beth_{n+1} = 2^(beth_n) for all n, with beth_0 = ℵ₀."
+    },
+    {
+      "id": "ch-analysis",
+      "title": "CH — Minimal Jump or Gap?",
+      "startLine": 231,
+      "endLine": 323,
+      "summary": "CH is equivalent to no intermediate cardinal. Under ¬CH, ℵ₁ is explicitly intermediate. Key equivalence proved."
+    },
+    {
+      "id": "konig-constraint",
+      "title": "König's Constraint on 2^ℵ₀",
+      "startLine": 325,
+      "endLine": 383,
+      "summary": "König's theorem: cf(2^ℵ₀) > ℵ₀, ruling out singular alephs like ℵ_ω as the continuum."
+    },
+    {
+      "id": "diagonal-limit",
+      "title": "The Limit of Diagonalization",
+      "startLine": 385,
+      "endLine": 435,
+      "summary": "Summary: the diagonal proves the gap exists and generates the beth tower, but cannot determine whether CH holds."
+    }
+  ],
+  "conclusion": {
+    "text": "Cantor's diagonal argument is powerful enough to generate the entire beth number tower ℵ₀ < 2^ℵ₀ < 2^(2^ℵ₀) < ⋯ and to establish the fundamental bounds ℵ₀ < ℵ₁ ≤ 2^ℵ₀. But it reaches its fundamental limit when asked whether any cardinality lies *between* ℵ₀ and 2^ℵ₀. The Continuum Hypothesis — that no such intermediate cardinal exists — is provably independent of ZFC (Gödel-Cohen), meaning the diagonal argument, however iterated, cannot resolve this question.",
+    "openQuestions": [
+      "Does there exist a cardinal κ with ℵ₀ < κ < 2^ℵ₀? (The Continuum Hypothesis — independent of ZFC)",
+      "Is the Continuum Hypothesis decided by large cardinal axioms?",
+      "Does Woodin's Ultimate-L program eventually settle CH?"
+    ]
+  }
+}

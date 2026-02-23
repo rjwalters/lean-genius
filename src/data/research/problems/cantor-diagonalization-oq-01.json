@@ -1,0 +1,82 @@
+{
+  "slug": "cantor-diagonalization-oq-01",
+  "title": "The Continuum Hypothesis: Is there a cardinality between countable and continuum",
+  "phase": "COMPLETE",
+  "status": "complete",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-21T19:21:07.131Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Formal proof built and verified via Docker. Beth number hierarchy, CH ↔ no intermediate cardinal, König constraint all formalized. 1 sorry remaining (beth_unbounded).",
+    "builtItems": [
+      "CantorDiagonalizationOQ01.lean: cantor_gap (ℵ₀ < 2^ℵ₀)",
+      "CantorDiagonalizationOQ01.lean: aleph_one_le_continuum (ℵ₁ ≤ 2^ℵ₀)",
+      "CantorDiagonalizationOQ01.lean: beth : ℕ → Cardinal.{0} (beth number hierarchy)",
+      "CantorDiagonalizationOQ01.lean: beth_strictly_increasing (beth n < beth (n+1))",
+      "CantorDiagonalizationOQ01.lean: CH ↔ ¬HasIntermediateCardinal",
+      "CantorDiagonalizationOQ01.lean: not_ch_has_intermediate (¬CH → ℵ₁ is intermediate)",
+      "CantorDiagonalizationOQ01.lean: cantor_diagonal_open_question_summary (master theorem)"
+    ],
+    "insights": [
+      "The diagonal argument proves ℵ₀ < 2^ℵ₀ (beth₁) but cannot determine whether intermediate cardinals exist",
+      "CH ↔ no cardinal between ℵ₀ and 2^ℵ₀ - proved as clean equivalence using le_antisymm",
+      "Beth number hierarchy: beth_n < beth_{n+1} via Cardinal.cantor applied iteratively",
+      "Under ¬CH, ℵ₁ is itself an explicit intermediate cardinal: ℵ₀ < ℵ₁ < 2^ℵ₀",
+      "König's constraint: cf(2^ℵ₀) > ℵ₀, so 2^ℵ₀ cannot be ℵ_ω or any singular aleph",
+      "ℵ₁ = Order.succ ℵ₀ and ℵ₁ ≤ 2^ℵ₀ by Order.succ_le_of_lt + Cardinal.cantor",
+      "Universe pinning to Cardinal.{0} required throughout to avoid metavariable errors"
+    ],
+    "mathlibGaps": [
+      "König's cofinality theorem (cf(2^ℵ₀) > ℵ₀) axiomatized - would need Cardinal.IsRegular machinery",
+      "Cofinality of ℵ_ω = ω axiomatized - needs detailed Ordinal.cof computation"
+    ],
+    "nextSteps": [
+      "Aristotle submission: beth_lt_of_lt and other sorry-free lemmas could be verified",
+      "Try to prove König's cofinality bound formally using Mathlib's Cardinal.IsRegular",
+      "Explore whether beth_unbounded (∀ κ, ∃ n, κ < beth n) can be proved formally"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "challenging",
+    "set-theory",
+    "infinity",
+    "cardinality",
+    "classic",
+    "intermediate"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-21T19:21:07.131Z",
+  "lastUpdate": "2026-02-23T04:53:57.000Z",
+  "significance": 6,
+  "tractability": 6
+}
