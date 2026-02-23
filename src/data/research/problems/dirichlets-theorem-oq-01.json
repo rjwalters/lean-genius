@@ -1,88 +1,89 @@
 {
-    "slug": "dirichlets-theorem-oq-01",
-    "title": "Siegel zeros: Can L(1, chi) be very close to 0 for real characters",
+  "slug": "dirichlets-theorem-oq-01",
+  "title": "Siegel zeros: Can L(1, chi) be very close to 0 for real characters",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
     "phase": "SURVEYED",
-    "status": "active",
-    "tier": "B",
-    "path": "full",
-    "problemStatement": {
-        "formal": "\\text{(formal statement to be added)}",
-        "plain": "AVAILABLE.",
-        "whyMatters": []
-    },
-    "knownResults": {
-        "proven": [],
-        "open": [],
-        "goal": ""
-    },
-    "currentState": {
-        "phase": "SURVEYED",
-        "since": "2026-02-22T21:00:34Z",
-        "iteration": 1,
-        "focus": "Initial exploration of the problem.",
-        "blockers": [],
-        "nextAction": "Begin problem exploration.",
-        "attemptCounts": {
-            "total": 0,
-            "currentApproach": 0,
-            "approachesTried": 0
-        }
-    },
-    "knowledge": {
-        "progressSummary": "SURVEYED: Formalized the Siegel zero question. L(1,chi) \u2260 0 is fully proved in Mathlib. Whether L(1,chi) can be exponentially small (Siegel zeros) is OPEN. Formalized: definition of Siegel zeros, Siegel theorem lower bound (axiom), GRH conditional (axiom), Landau-Page theorem (axiom), key implication no-Siegel-zero => effective bound.",
-        "builtItems": [
-            "DirichletsTheoremOQ01.lean - Siegel zero formalization: IsSiegelZero, HasSiegelZero, SiegelZeroConjecture definitions",
-            "L_one_ne_zero: the known nonvanishing result (wraps Mathlib)",
-            "no_siegel_zero_gives_lower_bound: trivially true from nonvanishing",
-            "siegel_zero_location_constraint: chains Siegel theorem axiom to give lower bound",
-            "Axioms: siegel_theorem, grh_implies_no_siegel_zeros, landau_page_theorem (not in Mathlib)",
-            "Gallery entry: src/data/proofs/dirichlets-theorem-oq-01/ (meta.json, index.ts, annotations.json)"
-        ],
-        "insights": [
-            "L(1,chi) \u2260 0 is PROVED (Mathlib: LFunction_apply_one_ne_zero)",
-            "Siegel zeros are real zeros beta of L(s,chi) in (1-c/log(q), 1) - distinct from the zero at s=1 question",
-            "Siegel theorem gives ineffective L(1,chi) > C(eps)/q^eps - C(eps) cannot be computed",
-            "No Siegel zeros <=> effective lower bound L(1,chi) >> 1/log(q)",
-            "GRH implies no Siegel zeros (but GRH itself is open)",
-            "Landau-Page theorem: at most ONE exceptional character per conductor range",
-            "The open question is about quantitative smallness, not zero value"
-        ],
-        "mathlibGaps": [
-            "Siegel theorem (ineffective lower bound for L(1,chi)) not in Mathlib",
-            "Landau-Page theorem not in Mathlib",
-            "GRH itself not in Mathlib",
-            "Effective zero-free regions for L-functions not in Mathlib"
-        ],
-        "nextSteps": [
-            "Submit siegel_zero_implies_small_L_one MVT sorry to Aristotle (routine analysis lemma)",
-            "Monitor Mathlib for Siegel theorem or Landau-Page formalization progress",
-            "Consider Linnik constant bounds (conditional on Siegel theorem axiom)"
-        ]
-    },
-    "approaches": [],
-    "tags": [
-        "seeker-selected",
-        "extension",
-        "challenging",
-        "number-theory",
-        "primes",
-        "classic",
-        "dirichlet",
-        "analytic-number-theory",
-        "l-functions",
-        "arithmetic-progressions"
+    "since": "2026-02-21T19:21:07.134Z",
+    "iteration": 1,
+    "focus": "Formalization complete: 0 sorries, full state of knowledge captured",
+    "blockers": [
+      "Siegel zeros is an open problem; no effective lower bound without GRH or new mathematics"
     ],
-    "relatedProofs": [
-        "src/data/proofs/dirichlets-theorem-oq-01",
-        "src/data/proofs/dirichlets-theorem"
+    "nextAction": "None - surveyed and complete",
+    "attemptCounts": {
+      "total": 3,
+      "currentApproach": 3,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: Lean formalization captures full state of knowledge. 0 sorries. siegel_zero_implies_small_L_one proved via MVT. Deep results (Siegel 1935, Landau-Page, GRH) correctly axiomized. Core question (Siegel zeros existence) remains OPEN - not in Mathlib and not expected to be resolved soon.",
+    "builtItems": [
+      "DirichletsTheoremOQ01.lean: L_one_ne_zero (wraps LFunction_apply_one_ne_zero)",
+      "DirichletsTheoremOQ01.lean: IsSiegelZero, HasSiegelZero, SiegelZeroConjecture definitions",
+      "DirichletsTheoremOQ01.lean: siegel_zero_implies_small_L_one (MVT step proved, 0 sorries)",
+      "DirichletsTheoremOQ01.lean: no_siegel_zero_gives_lower_bound",
+      "DirichletsTheoremOQ01.lean: nonvanishing_implies_no_exact_siegel_zeros",
+      "DirichletsTheoremOQ01.lean: siegel_zero_location_constraint",
+      "DirichletsTheoremOQ01.lean: axioms for siegel_theorem, grh_implies_no_siegel_zeros, landau_page_theorem"
     ],
-    "references": {
-        "papers": [],
-        "urls": [],
-        "mathlib": []
-    },
-    "started": "2026-02-21T19:21:07.134Z",
-    "lastUpdate": "2026-02-23T11:58:00.000Z",
-    "significance": 6,
-    "tractability": 6
+    "insights": [
+      "L(1, χ) ≠ 0 is fully proved in Mathlib via LFunction_apply_one_ne_zero from Mathlib.NumberTheory.LSeries.Nonvanishing",
+      "IsSiegelZero defined: β ∈ (1 - c/log(N), 1) ∧ LFunction χ β = 0 (real zero near 1)",
+      "SiegelZeroConjecture formalized: no real primitive character of any conductor has a Siegel zero",
+      "siegel_zero_implies_small_L_one proved using MVT (norm_image_sub_le_of_norm_deriv_le_segment) + differentiable_LFunction + HasDerivAt.comp_ofReal",
+      "Siegel theorem (1935) and Landau-Page theorem not in Mathlib; axiomized with correct types",
+      "GRH implies no Siegel zeros: axiomized. Under GRH, effective lower bound L(1,χ) ≫ 1/(log q)²",
+      "Problem is OPEN: Siegel zeros expected impossible but no unconditional effective lower bound known",
+      "siegel_zero_location_constraint: chains siegel_theorem axiom to give concrete L(1,χ) bound via Siegel"
+    ],
+    "mathlibGaps": [
+      "siegel_theorem: Siegel 1935 ineffective lower bound L(1,χ) > C(ε)/q^ε — not in Mathlib",
+      "landau_page_theorem: at most one exceptional character per range — not in Mathlib",
+      "grh_implies_no_siegel_zeros: conditional on GRH — requires GRH itself",
+      "Zero-free region theory for Dirichlet L-functions — partially in Mathlib but not the explicit bounds"
+    ],
+    "nextSteps": [
+      "Siegel zero question is OPEN - no progress possible without new mathematics",
+      "Could add an Aristotle companion file for routine supporting lemmas if any are added",
+      "Watch Mathlib for Siegel theorem additions (unlikely near-term)"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "challenging",
+    "number-theory",
+    "primes",
+    "classic",
+    "dirichlet",
+    "analytic-number-theory",
+    "l-functions",
+    "arithmetic-progressions"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-21T19:21:07.134Z",
+  "lastUpdate": "2026-02-23T22:20:00.000Z",
+  "significance": 6,
+  "tractability": 6
 }
