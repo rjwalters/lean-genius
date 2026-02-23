@@ -45,7 +45,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Created ContinuumHypothesisOQ01.lean (307 lines, 0 sorries). Key theorems: aleph_one_le_continuum (ZFC-provable), not_CH_implies_aleph_two_le_continuum (ZFC), VeqL_implies_CH (V=L direction), PFA_implies_not_CH (¬CH direction), VeqL_not_large_cardinal_compatible (Scott's theorem), open_question_is_substantive, axiom_selection_tension (V=L + measurables → False).",
+    "progressSummary": "COMPLETE: 0-sorry proof (all axiomatized where appropriate) + gallery entry created. PR #3129.",
     "builtItems": [
       "ContinuumHypothesisOQ01.Decides: what it means for an axiom to settle CH",
       "ContinuumHypothesisOQ01.aleph_one_le_continuum: ℵ₁ ≤ 2^ℵ₀ proved via Cantor + succ_le_of_lt",
@@ -57,14 +57,20 @@
       "ContinuumHypothesisOQ01.asymmetry_in_large_cardinal_compatibility: key asymmetry theorem",
       "ContinuumHypothesisOQ01.open_question_is_substantive: both sides have natural axioms",
       "ContinuumHypothesisOQ01.axiom_selection_tension: V=L + measurables → False",
-      "ContinuumHypothesisOQ01.ch_landscape_summary: combined summary theorem"
+      "ContinuumHypothesisOQ01.ch_landscape_summary: combined summary theorem",
+      "ContinuumHypothesisOQ01.lean: Decides def, aleph_one_le_continuum, not_CH_implies_aleph_two_le_continuum, VeqL_implies_CH, PFA_implies_not_CH, VeqL_not_large_cardinal_compatible, asymmetry_in_large_cardinal_compatibility, open_question_is_substantive",
+      "src/data/proofs/continuum-hypothesis-oq-01/: gallery entry with meta.json, index.ts, annotations.json, tacticStates.json"
     ],
     "insights": [
       "Key asymmetry: V=L (→ CH) is incompatible with measurable cardinals; PFA (→ ¬CH) is compatible — this gives ¬CH-direction a structural advantage",
       "open Cardinal must be separate from open ContinuumHypothesis (...) — combined form is invalid syntax",
       "ContinuumHypothesis.CH definition: continuum = aleph_one, so CH → continuum = aleph 1 directly",
       "MeasurableCardinal structure must be Type 1 since Cardinal.{0} : Type 1",
-      "Ordinal arithmetic: (1 : Ordinal) = Order.succ 0 proved via rw [Order.succ_eq_add_one, zero_add]"
+      "Ordinal arithmetic: (1 : Ordinal) = Order.succ 0 proved via rw [Order.succ_eq_add_one, zero_add]",
+      "Proof builds cleanly with 0 sorries - all deep results axiomatized where necessary (V=L, PFA, Scott theorem)",
+      "Key asymmetry: V=L->CH but excludes measurable cardinals (Scott 1961); PFA->notCH but compatible with large cardinals - explains contemporary set theorist consensus",
+      "Decides predicate captures axiom landscape: (Phi->CH) or (Phi->notCH)",
+      "Gallery entry created at src/data/proofs/continuum-hypothesis-oq-01/ with full meta.json documentation"
     ],
     "mathlibGaps": [
       "No Mathlib formalization of forcing (Cohen's independence proof) — requires ~3000 lines",
