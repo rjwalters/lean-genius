@@ -22,7 +22,7 @@
       "grh"
     ],
     "badge": "open",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "LFunction_apply_one_ne_zero",
@@ -43,6 +43,21 @@
         "theorem": "Real.log",
         "description": "Natural logarithm of real numbers — used for the zero-free region bound c/log(q)",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "differentiable_LFunction",
+        "description": "For non-trivial Dirichlet character χ, LFunction χ is ℂ-differentiable everywhere",
+        "module": "Mathlib.NumberTheory.LSeries.DirichletContinuation"
+      },
+      {
+        "theorem": "HasDerivAt.comp_ofReal",
+        "description": "Converts ℂ-derivative at real point to ℝ-derivative of real restriction",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Deriv"
+      },
+      {
+        "theorem": "norm_image_sub_le_of_norm_deriv_le_segment'",
+        "description": "MVT: if derivative norm ≤ C on [a,b], then ‖f b - f a‖ ≤ C * (b - a)",
+        "module": "Mathlib.Analysis.Calculus.MeanValue"
       }
     ],
     "originalContributions": [
@@ -55,7 +70,8 @@
       "Axiom siegel_theorem: L(1,χ) > C(ε)/q^ε for any ε > 0 (Siegel 1935, ineffective)",
       "Axiom grh_implies_no_siegel_zeros: GRH → effective lower bound L(1,χ) ≫ 1/(log q)²",
       "Axiom landau_page_theorem: at most one exceptional character per conductor range",
-      "Theorem siegel_zero_location_constraint: chains Siegel axiom to give concrete lower bound"
+      "Theorem siegel_zero_location_constraint: chains Siegel axiom to give concrete lower bound",
+      "Theorem siegel_zero_implies_small_L_one (MVT step proved using differentiable_LFunction + HasDerivAt.comp_ofReal + norm_image_sub_le_of_norm_deriv_le_segment'"
     ],
     "dateAdded": "02/23/26"
   },

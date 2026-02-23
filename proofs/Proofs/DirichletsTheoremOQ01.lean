@@ -117,17 +117,43 @@ def SiegelZeroConjecture : Prop :=
     This formalizes the key observation: the Siegel zero problem and the
     problem of lower-bounding L(1,χ) are EQUIVALENT. -/
 theorem siegel_zero_implies_small_L_one {N : ℕ} [NeZero N]
-    (χ : DirichletCharacter ℂ N) (β : ℝ) (hN : 2 ≤ N)
+    (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1) (β : ℝ) (hN : 2 ≤ N)
     (hβ_zero : LFunction χ β = 0)
     (hβ_pos : 0 < β) (hβ_lt : β < 1)
-    -- Assuming LFunction is differentiable (Mathlib provides analytic continuation)
+    -- Bounding the derivative of LFunction on [β, 1]
     (hL_deriv_bound : ∃ M : ℝ, 0 < M ∧
       ∀ s : ℝ, β ≤ s → s ≤ 1 → ‖(deriv (fun t : ℝ => LFunction χ t) s)‖ ≤ M) :
     ∃ M : ℝ, ‖LFunction χ 1‖ ≤ (1 - β) * M := by
   -- The key idea: L(1,χ) = L(1,χ) - L(β,χ) since L(β,χ) = 0
   -- By MVT: |L(1,χ)| ≤ (1-β) · sup|L'(s)| for s ∈ [β,1]
   obtain ⟨M, hM, hbound⟩ := hL_deriv_bound
-  exact ⟨M, by sorry⟩
+  refine ⟨M, ?_⟩
+  -- Let f := fun t : ℝ => LFunction χ t (real restriction of LFunction χ)
+  -- LFunction χ is ℂ-differentiable for non-trivial χ (differentiable_LFunction)
+  -- HasDerivAt.comp_ofReal converts ℂ-derivative to ℝ-derivative of restriction
+  -- norm_image_sub_le_of_norm_deriv_le_segment' gives the MVT bound
+  set f := fun t : ℝ => LFunction χ (t : ℂ) with hf_def
+  -- For each x ∈ [β,1], f has a HasDerivWithinAt witness
+  have hderiv : ∀ x ∈ Set.Icc β 1,
+      HasDerivWithinAt f (deriv (LFunction χ) (↑x : ℂ)) (Set.Icc β 1) x := fun x _ =>
+    ((differentiable_LFunction hχ (↑x : ℂ)).hasDerivAt.comp_ofReal).hasDerivWithinAt.mono
+      (Set.subset_univ _)
+  -- The derivative norm is bounded: f' x = deriv (LFunction χ) ↑x and ‖f' x‖ ≤ M
+  have hbound' : ∀ x ∈ Set.Ico β 1, ‖deriv (LFunction χ) (↑x : ℂ)‖ ≤ M := fun x hx => by
+    have hderiv_eq : deriv f x = deriv (LFunction χ) (↑x : ℂ) :=
+      ((differentiable_LFunction hχ (↑x : ℂ)).hasDerivAt.comp_ofReal).deriv
+    rw [← hderiv_eq]
+    exact hbound x hx.1 (le_of_lt hx.2)
+  -- Apply MVT: ∀ x ∈ Icc β 1, ‖f x - f β‖ ≤ M * (x - β)
+  have hmvt := norm_image_sub_le_of_norm_deriv_le_segment' hderiv hbound'
+  -- Specialize to x = 1
+  have h1_in : (1 : ℝ) ∈ Set.Icc β 1 := ⟨le_of_lt hβ_lt, le_refl 1⟩
+  have hbound1 := hmvt 1 h1_in
+  -- ‖f 1 - f β‖ ≤ M * (1 - β). Since f β = LFunction χ β = 0:
+  simp only [hf_def, Complex.ofReal_one] at hbound1
+  rw [show (β : ℂ) = ((β : ℝ) : ℂ) from rfl, hβ_zero, sub_zero] at hbound1
+  -- Now hbound1 : ‖LFunction χ 1‖ ≤ M * (1 - β)
+  linarith [mul_comm M (1 - β)]
 
 /-- Conversely: if no Siegel zero exists, we get the **effective lower bound**
     L(1,χ) ≫ 1/log(N), known as the "zero-free region lower bound".
