@@ -1,0 +1,85 @@
+{
+  "slug": "buffons-needle-oq-01",
+  "title": "Generalizations to curved needles",
+  "phase": "PROGRESS",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For N : PolygonalNoodle n, N.expectedCrossings d = 2 * N.totalLength / (pi * d)",
+    "plain": "Buffons Noodle: expected crossings of a polygonal path with parallel line grid equals 2L/(pi*d), depending only on total length.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "PROGRESS",
+    "since": "2026-02-21T19:21:07.131Z",
+    "iteration": 1,
+    "focus": "Proved polygonal noodle theorem; smooth curve case documented as open",
+    "blockers": [],
+    "nextAction": "Extend to smooth curves using Mathlib arc length theory",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Buffons Noodle theorem for polygonal paths formally proved. E[crossings] = 2L/(pi*d) depends only on total length via linearity of expectation. Shape independence theorem proved. Smooth curve generalization documented as requiring arc length theory.",
+    "builtItems": [
+      "proofs/Proofs/BuffonsNoodle.lean: BuffonsNoodle namespace with noodle theorem",
+      "segmentCrossingProb: crossing probability definition 2*l/(pi*d)",
+      "PolygonalNoodle structure: n segments with lengths",
+      "buffon_noodle_polygon: E[crossings] = 2L/(pi*d) main theorem",
+      "buffon_noodle_shape_independence: same length => same crossings",
+      "needle_equals_noodle: straight needle = any equal-length polygon",
+      "circle_expected_crossings: 4r/d formula proved",
+      "square_expected_crossings: 8s/(pi*d) formula proved",
+      "src/data/proofs/buffons-needle-oq-01/ gallery entry"
+    ],
+    "insights": [
+      "Key: crossing probability 2l/(pi*d) is LINEAR in l, enabling summation over polygon segments",
+      "Linearity of expectation: E[total crossings] = sum E[segment crossings], regardless of segment correlations",
+      "Proof is purely algebraic: factor out 2/(pi*d) from Finset.sum using Finset.mul_sum",
+      "Smooth curve generalization requires Mathlib.Analysis.Calculus.ArcLength (not fully developed)",
+      "Cauchy-Crofton formula: noodle theorem is a special case of integral geometry identity",
+      "Correct Mathlib v4.26.0 import: Mathlib.Algebra.BigOperators.Ring.Finset (NOT Group.Finset)"
+    ],
+    "mathlibGaps": [
+      "Arc length theory for smooth curves not fully developed in Mathlib",
+      "No SmoothCurve type with arc length for integral geometry in Mathlib"
+    ],
+    "nextSteps": [
+      "Prove smooth curve version when Mathlib.Analysis.Calculus.ArcLength matures",
+      "Add Cauchy-Crofton formula (integral over all lines)",
+      "Higher-dimensional versions: curves in R^n crossing hyperplanes"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "challenging",
+    "probability",
+    "geometric-probability",
+    "integration",
+    "wiedijk-100",
+    "monte-carlo"
+  ],
+  "relatedProofs": [
+    "buffons-needle"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-21T19:21:07.131Z",
+  "lastUpdate": "2026-02-23T02:28:43.756143Z",
+  "significance": 6,
+  "tractability": 6
+}
