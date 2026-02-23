@@ -15,8 +15,6 @@ Key special cases:
 - M₁(z, w) = Σ wᵢ · zᵢ  [the weighted arithmetic mean AM]
 - M_{-1}(z, w) = (Σ wᵢ / zᵢ)^{-1}  [the weighted harmonic mean HM]
 - lim_{r→0} M_r(z, w) = ∏ zᵢ^{wᵢ}  [the weighted geometric mean GM]
-- lim_{r→∞} M_r(z, w) = max zᵢ
-- lim_{r→-∞} M_r(z, w) = min zᵢ
 
 The **Power Mean Inequality** (monotonicity): For r ≤ s,
 
@@ -30,31 +28,25 @@ In particular:  HM ≤ GM ≤ AM  (taking r = -1, 0, 1).
 2. `arith_mean_le_power_mean` — AM ≤ M_p for p ≥ 1 (from Mathlib Jensen)
 3. `geom_mean_le_arith_mean` — GM ≤ AM (from Mathlib)
 4. `geom_mean_le_power_mean_of_one_le` — GM ≤ M_p for p ≥ 1
-5. `harmonic_mean_le_geom_mean` — HM ≤ GM (from power mean monotonicity)
-6. Monotonicity stated as an axiom (full proof requires continuous extension)
+5. `harmonic_mean_le_geom_mean_direct` — HM ≤ GM (direct proof via AM-GM on inverses)
+6. `power_mean_monotone_pos` — M_r ≤ M_s for 0 < r ≤ s (proved via Jensen)
+7. General monotonicity (negative r case) stated as an axiom
 
-## Mathematical Context
+## Key Proof Ideas
 
-The power mean M_r varies continuously in r (for zᵢ > 0) and the limits at
-r = 0, ±∞ exist. The family {M_r}_{r ∈ ℝ ∪ {±∞}} is a continuous monotone
-function of r, interpolating between min and max with:
-  ... ≤ M_{-2} ≤ HM = M_{-1} ≤ GM = M₀ ≤ AM = M₁ ≤ M₂ ≤ ... ≤ max
+**HM ≤ GM**: Apply AM-GM to inverse values yᵢ = zᵢ⁻¹:
+  (∏ zᵢ^wᵢ)⁻¹ = ∏ (zᵢ⁻¹)^wᵢ ≤ ∑ wᵢ/zᵢ = 1/HM
+So HM ≤ GM.
 
-The AM-GM inequality is the special case of this monotonicity at r = 0 ≤ 1 = s.
-
-## Proof of Monotonicity (sketch)
-
-For 0 < r ≤ s, to show M_r ≤ M_s:
-- Apply Jensen with convex function t ↦ t^{s/r} (convex since s/r ≥ 1):
-  M_r^s = (Σ wᵢ · zᵢ^r)^{s/r} ≤ Σ wᵢ · (zᵢ^r)^{s/r} = Σ wᵢ · zᵢ^s = M_s^s
-  so M_r ≤ M_s.
-- The r = 0 case requires l'Hôpital's rule applied to ln(M_r) as r → 0.
-- For r < 0 < s, use transitivity through GM.
+**M_r ≤ M_s for 0 < r ≤ s**: Apply Jensen (t ↦ t^(s/r) is convex) to inputs aᵢ = zᵢ^r:
+  (Σ wᵢ zᵢ^r)^(s/r) ≤ Σ wᵢ zᵢ^s
+Raise both sides to 1/s: M_r = (Σ wᵢ zᵢ^r)^(1/r) ≤ (Σ wᵢ zᵢ^s)^(1/s) = M_s.
 
 ## References
 
 - Hardy, G.H., Littlewood, J.E., Pólya, G. (1934). Inequalities. Cambridge.
 - Mathlib: `Mathlib.Analysis.MeanInequalitiesPow`
+- Mathlib TODO: "generalized mean inequality with any p ≤ q, including negative numbers"
 -/
 
 import Mathlib.Analysis.MeanInequalities
@@ -84,25 +76,17 @@ theorem power_mean_one_eq_arith_mean :
 
 /-- **AM ≤ M_p for p ≥ 1** (Jensen's inequality / power mean inequality).
 
-This is a direct consequence of Mathlib's `Real.arith_mean_le_rpow_mean`:
-the weighted arithmetic mean is ≤ the power mean of order p when p ≥ 1.
-
-Interpretation: As p increases from 1, M_p grows larger than AM. -/
+This is a direct consequence of Mathlib's `Real.arith_mean_le_rpow_mean`. -/
 theorem arith_mean_le_power_mean
     (hw : ∀ i ∈ s, 0 ≤ w i)
     (hw' : ∑ i ∈ s, w i = 1)
     (hz : ∀ i ∈ s, 0 ≤ z i)
     {p : ℝ} (hp : 1 ≤ p)
     (hpne : p ≠ 0) :
-    weightedArithMean s w z ≤ weightedPowerMean s w z p hpne := by
-  exact Real.arith_mean_le_rpow_mean s w z hw hw' hz hp
+    weightedArithMean s w z ≤ weightedPowerMean s w z p hpne :=
+  Real.arith_mean_le_rpow_mean s w z hw hw' hz hp
 
-/-- **GM ≤ AM** (classical AM-GM inequality from Mathlib).
-
-For non-negative reals with weights summing to 1:
-  ∏ zᵢ^{wᵢ} ≤ ∑ wᵢ · zᵢ
-
-This is the most fundamental instance of power mean monotonicity: M₀ ≤ M₁. -/
+/-- **GM ≤ AM** (classical AM-GM inequality from Mathlib). -/
 theorem geom_mean_le_arith_mean
     (hw : ∀ i ∈ s, 0 ≤ w i)
     (hw' : ∑ i ∈ s, w i = 1)
@@ -110,12 +94,7 @@ theorem geom_mean_le_arith_mean
     weightedGeomMean s w z ≤ weightedArithMean s w z :=
   Real.geom_mean_le_arith_mean_weighted s w z hw hw' hz
 
-/-- **GM ≤ M_p for p ≥ 1** (transitivity through AM).
-
-The geometric mean is ≤ the power mean of any order p ≥ 1:
-  GM ≤ AM ≤ M_p  (since 0 ≤ 1 ≤ p)
-
-This uses GM ≤ AM and AM ≤ M_p as building blocks. -/
+/-- **GM ≤ M_p for p ≥ 1** (transitivity through AM). -/
 theorem geom_mean_le_power_mean_of_one_le
     (hw : ∀ i ∈ s, 0 ≤ w i)
     (hw' : ∑ i ∈ s, w i = 1)
@@ -126,12 +105,10 @@ theorem geom_mean_le_power_mean_of_one_le
   (geom_mean_le_arith_mean s w z hw hw' hz).trans
     (arith_mean_le_power_mean s w z hw hw' hz hp hpne)
 
-/-- **Jensen's inequality for power functions** (the core mechanism).
+/-- **Jensen's inequality for power functions**.
 
 For p ≥ 1, the function t ↦ t^p is convex, so:
-  (Σ wᵢ · zᵢ)^p ≤ Σ wᵢ · zᵢ^p
-
-This is what powers the AM ≤ M_p inequality. -/
+  (Σ wᵢ · zᵢ)^p ≤ Σ wᵢ · zᵢ^p -/
 theorem jensen_pow_ineq
     (hw : ∀ i ∈ s, 0 ≤ w i)
     (hw' : ∑ i ∈ s, w i = 1)
@@ -140,19 +117,115 @@ theorem jensen_pow_ineq
     (∑ i ∈ s, w i * z i) ^ p ≤ ∑ i ∈ s, w i * z i ^ p :=
   Real.rpow_arith_mean_le_arith_mean_rpow s w z hw hw' hz hp
 
-/-- **Power Mean Monotonicity** (the general interpolation theorem).
+/-- **HM ≤ GM** (direct proof via AM-GM on inverse values).
 
-For r ≤ s, the power mean is monotone:  M_r(z, w) ≤ M_s(z, w)
+**Proof**: Apply AM-GM to yᵢ = zᵢ⁻¹:
+  GM(z⁻¹) ≤ AM(z⁻¹) = ∑ wᵢ/zᵢ = 1/HM
+Key step: GM(z⁻¹) = 1/GM(z), proved via GM(z⁻¹)·GM(z) = ∏ zᵢ⁻¹^wᵢ·zᵢ^wᵢ = 1.
+So 1/GM ≤ 1/HM, i.e., HM ≤ GM. -/
+theorem harmonic_mean_le_geom_mean_direct
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hw' : ∑ i ∈ s, w i = 1)
+    (hz : ∀ i ∈ s, 0 < z i) :
+    (∑ i ∈ s, w i * (z i)⁻¹)⁻¹ ≤ weightedGeomMean s w z := by
+  -- GM > 0
+  have hGM_pos : 0 < weightedGeomMean s w z := by
+    unfold weightedGeomMean
+    apply Finset.prod_pos
+    intro i hi
+    exact Real.rpow_pos_of_pos (hz i hi) (w i)
+  -- GM(z⁻¹) · GM(z) = 1, hence GM(z⁻¹) = GM(z)⁻¹
+  have hprod_one : weightedGeomMean s w (fun i => (z i)⁻¹) * weightedGeomMean s w z = 1 := by
+    simp only [weightedGeomMean, ← Finset.prod_mul_distrib]
+    apply Finset.prod_eq_one
+    intro i hi
+    rw [← Real.mul_rpow (inv_nonneg.mpr (le_of_lt (hz i hi))) (le_of_lt (hz i hi)),
+        inv_mul_cancel₀ (ne_of_gt (hz i hi)),
+        Real.one_rpow]
+  have geom_inv : weightedGeomMean s w (fun i => (z i)⁻¹) = (weightedGeomMean s w z)⁻¹ := by
+    apply mul_right_cancel₀ (ne_of_gt hGM_pos)
+    rw [hprod_one, inv_mul_cancel₀ (ne_of_gt hGM_pos)]
+  -- Apply AM-GM to z⁻¹: GM(z⁻¹) ≤ ∑ wᵢ·zᵢ⁻¹
+  have hzinvnn : ∀ i ∈ s, 0 ≤ (z i)⁻¹ := fun i hi => inv_nonneg.mpr (le_of_lt (hz i hi))
+  have amgm_inv : weightedGeomMean s w (fun i => (z i)⁻¹) ≤ ∑ i ∈ s, w i * (z i)⁻¹ :=
+    Real.geom_mean_le_arith_mean_weighted s w (fun i => (z i)⁻¹) hw hw' hzinvnn
+  -- Substitute: GM(z)⁻¹ ≤ ∑ wᵢ·zᵢ⁻¹
+  rw [geom_inv] at amgm_inv
+  -- AM_inv > 0 (since it's ≥ GM(z)⁻¹ > 0)
+  have h_AM_pos : 0 < ∑ i ∈ s, w i * (z i)⁻¹ :=
+    lt_of_lt_of_le (inv_pos.mpr hGM_pos) amgm_inv
+  -- Invert: (∑ wᵢ/zᵢ)⁻¹ ≤ GM(z)
+  -- Key: 1 ≤ GM * Σ, multiply both sides by Σ⁻¹ to get Σ⁻¹ ≤ GM
+  have h_sum_ne : (∑ i ∈ s, w i * (z i)⁻¹) ≠ 0 := ne_of_gt h_AM_pos
+  have key : 1 ≤ weightedGeomMean s w z * (∑ i ∈ s, w i * (z i)⁻¹) :=
+    calc (1 : ℝ) = weightedGeomMean s w z * (weightedGeomMean s w z)⁻¹ :=
+            (mul_inv_cancel₀ (ne_of_gt hGM_pos)).symm
+      _ ≤ weightedGeomMean s w z * (∑ i ∈ s, w i * (z i)⁻¹) :=
+            mul_le_mul_of_nonneg_left amgm_inv (le_of_lt hGM_pos)
+  have step := mul_le_mul_of_nonneg_right key (inv_nonneg.mpr (le_of_lt h_AM_pos))
+  rw [one_mul] at step
+  rwa [mul_assoc, mul_inv_cancel₀ h_sum_ne, mul_one] at step
 
-This gives the full interpolation chain:
-  min ≤ ... ≤ HM ≤ GM ≤ AM ≤ M₂ ≤ M₃ ≤ ... ≤ max
+/-- **Power Mean Monotonicity for 0 < r ≤ s** (proved via Jensen).
 
-Proof sketch (for 0 < r ≤ s):
-  Apply Jensen with convex t ↦ t^(s/r) (since s/r ≥ 1):
-  M_r^s = (Σ wᵢ · zᵢ^r)^(s/r) ≤ Σ wᵢ · (zᵢ^r)^(s/r) = M_s^s
-  so M_r ≤ M_s.
-  The case r = 0 requires the limit analysis: lim_{r→0} ln(M_r) = Σ wᵢ · ln(zᵢ) = ln(GM).
-  For r < 0: transform to the r > 0 case via reciprocals. -/
+For 0 < r ≤ s, the power mean M_r(z,w) ≤ M_s(z,w).
+
+**Proof**: Let q = s/r ≥ 1. Apply Jensen to aᵢ = zᵢ^r:
+  (Σ wᵢ zᵢ^r)^(s/r) ≤ Σ wᵢ (zᵢ^r)^(s/r) = Σ wᵢ zᵢ^s
+Raise to 1/s: (Σ wᵢ zᵢ^r)^(1/r) ≤ (Σ wᵢ zᵢ^s)^(1/s). -/
+theorem power_mean_monotone_pos
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hw' : ∑ i ∈ s, w i = 1)
+    (hz : ∀ i ∈ s, 0 < z i)
+    {r t : ℝ} (hr : 0 < r) (hrt : r ≤ t)
+    (hrne : r ≠ 0) (htne : t ≠ 0) :
+    weightedPowerMean s w z r hrne ≤ weightedPowerMean s w z t htne := by
+  simp only [weightedPowerMean]
+  have ht_pos : 0 < t := lt_of_lt_of_le hr hrt
+  -- q = t/r ≥ 1
+  have hq : 1 ≤ t / r := by
+    calc (1 : ℝ) = r * r⁻¹ := (mul_inv_cancel₀ (ne_of_gt hr)).symm
+      _ ≤ t * r⁻¹ := mul_le_mul_of_nonneg_right hrt (inv_nonneg.mpr (le_of_lt hr))
+      _ = t / r := by ring
+  -- zᵢ^r ≥ 0
+  have hzr_nn : ∀ i ∈ s, 0 ≤ (fun i => z i ^ r) i :=
+    fun i hi => Real.rpow_nonneg (le_of_lt (hz i hi)) r
+  -- Jensen: (Σ wᵢ (zᵢ^r))^(t/r) ≤ Σ wᵢ (zᵢ^r)^(t/r)
+  have jensen : (∑ i ∈ s, w i * z i ^ r) ^ (t / r) ≤ ∑ i ∈ s, w i * (z i ^ r) ^ (t / r) :=
+    Real.rpow_arith_mean_le_arith_mean_rpow s w (fun i => z i ^ r) hw hw' hzr_nn hq
+  -- Simplify: (zᵢ^r)^(t/r) = zᵢ^t
+  have simp_sum : ∑ i ∈ s, w i * (z i ^ r) ^ (t / r) = ∑ i ∈ s, w i * z i ^ t :=
+    Finset.sum_congr rfl fun i hi => by
+      congr 1
+      rw [← Real.rpow_mul (le_of_lt (hz i hi))]
+      congr 1
+      field_simp
+  rw [simp_sum] at jensen
+  -- Σ wᵢ zᵢ^r ≥ 0 and Σ wᵢ zᵢ^t ≥ 0
+  have hsum_r : 0 ≤ ∑ i ∈ s, w i * z i ^ r :=
+    Finset.sum_nonneg fun i hi => mul_nonneg (hw i hi) (Real.rpow_nonneg (le_of_lt (hz i hi)) r)
+  -- Raise both sides to 1/t > 0
+  have hmono : ((∑ i ∈ s, w i * z i ^ r) ^ (t / r)) ^ (1 / t) ≤
+               (∑ i ∈ s, w i * z i ^ t) ^ (1 / t) :=
+    Real.rpow_le_rpow (Real.rpow_nonneg hsum_r _) jensen (by positivity)
+  -- Simplify LHS: ((Σ wᵢ zᵢ^r)^(t/r))^(1/t) = (Σ wᵢ zᵢ^r)^(1/r)
+  have lhs_simp : ((∑ i ∈ s, w i * z i ^ r) ^ (t / r)) ^ (1 / t) =
+                  (∑ i ∈ s, w i * z i ^ r) ^ (1 / r) := by
+    rw [← Real.rpow_mul hsum_r]
+    congr 1
+    field_simp
+  rw [lhs_simp] at hmono
+  exact hmono
+
+/-- **Power Mean Monotonicity** (general statement, partially proved).
+
+For r ≤ s with r, s ≠ 0, M_r(z, w) ≤ M_s(z, w).
+
+**Status**:
+- `power_mean_monotone_pos` proves this for 0 < r ≤ s.
+- The negative r case (r < 0 or mixed signs) requires additional work.
+- Mathlib4 has a TODO for this: "generalized mean inequality with any p ≤ q,
+  including negative numbers" (Mathlib.Analysis.MeanInequalities). -/
 axiom power_mean_monotone
     (hw : ∀ i ∈ s, 0 ≤ w i)
     (hw' : ∑ i ∈ s, w i = 1)
@@ -161,36 +234,30 @@ axiom power_mean_monotone
     (hr : r ≠ 0) (hs : s_exp ≠ 0) :
     weightedPowerMean s w z r hr ≤ weightedPowerMean s w z s_exp hs
 
-/-- **Harmonic Mean ≤ Geometric Mean** (from power mean monotonicity).
+/-- **Harmonic Mean ≤ Geometric Mean** (proved via `harmonic_mean_le_geom_mean_direct`).
 
-HM = M_{-1} ≤ M₀ = GM, since -1 ≤ 0.
-
-Note: The GM here is defined as the limit of M_r as r → 0, which equals ∏ zᵢ^{wᵢ}. -/
+The `hHM` hypothesis documents the connection between M_{-1} and the harmonic mean
+formula, but the inequality itself is proved without using the power mean axiom. -/
 theorem harmonic_mean_le_geom_mean_via_power
     (hw : ∀ i ∈ s, 0 ≤ w i)
     (hw' : ∑ i ∈ s, w i = 1)
     (hz : ∀ i ∈ s, 0 < z i)
-    -- The harmonic mean = M_{-1}
-    (hHM : weightedPowerMean s w z (-1) (by norm_num) = (∑ i ∈ s, w i * (z i)⁻¹)⁻¹) :
-    (∑ i ∈ s, w i * (z i)⁻¹)⁻¹ ≤ weightedGeomMean s w z := by
-  -- The geometric mean is the r=0 limit; here we axiomatize it
-  sorry
+    (_hHM : weightedPowerMean s w z (-1) (by norm_num) = (∑ i ∈ s, w i * (z i)⁻¹)⁻¹) :
+    (∑ i ∈ s, w i * (z i)⁻¹)⁻¹ ≤ weightedGeomMean s w z :=
+  harmonic_mean_le_geom_mean_direct s w z hw hw' hz
 
 /-- **Summary: The Interpolation Chain**.
 
 The power means M_r form a continuous monotone family in r ∈ [-∞, +∞]:
 
-    min(z) = M_{-∞} ≤ ... ≤ HM = M_{-1} ≤ GM = M_0 ≤ AM = M_1 ≤ M_2 ≤ ... ≤ M_{+∞} = max(z)
+    min(z) ≤ ... ≤ HM = M_{-1} ≤ GM = M_0 ≤ AM = M_1 ≤ M_2 ≤ ... ≤ max(z)
 
-Key proved relationships (from Mathlib):
-- [✓] GM ≤ AM  (`geom_mean_le_arith_mean`)
-- [✓] AM ≤ M_p for p ≥ 1  (`arith_mean_le_power_mean`)
+Key proved relationships:
+- [✓] GM ≤ AM  (`geom_mean_le_arith_mean` — from Mathlib)
+- [✓] AM ≤ M_p for p ≥ 1  (`arith_mean_le_power_mean` — from Mathlib)
 - [✓] GM ≤ M_p for p ≥ 1  (`geom_mean_le_power_mean_of_one_le`)
-- [✓] Jensen's inequality  (`jensen_pow_ineq`)
-- [axiom] General monotonicity M_r ≤ M_s for r ≤ s  (`power_mean_monotone`)
-
-The general monotonicity proof requires:
-1. Jensen applied to t ↦ t^(s/r) for 0 < r ≤ s
-2. L'Hôpital analysis for the r → 0 limit
-3. Reduction to r > 0 case for negative r -/
+- [✓] Jensen's inequality  (`jensen_pow_ineq` — from Mathlib)
+- [✓] HM ≤ GM  (`harmonic_mean_le_geom_mean_direct` — proved here)
+- [✓] M_r ≤ M_s for 0 < r ≤ s  (`power_mean_monotone_pos` — proved here)
+- [axiom] General monotonicity for negative r (open in Mathlib4 as of 2026) -/
 theorem power_mean_interpolation_summary : True := trivial

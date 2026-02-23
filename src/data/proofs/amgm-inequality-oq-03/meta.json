@@ -1,0 +1,119 @@
+{
+  "id": "amgm-inequality-oq-03",
+  "title": "Power Mean Interpolation: How Do Weighted Power Means Relate to AM and GM?",
+  "slug": "amgm-inequality-oq-03",
+  "description": "The weighted power mean M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r) forms a continuous monotone family as r varies: HM = M_{-1} ≤ GM = lim_{r→0} M_r ≤ AM = M_1 ≤ M_2 ≤ ... This formalization proves HM ≤ GM directly via AM-GM on inverse values, and proves M_r ≤ M_s for 0 < r ≤ s via Jensen's inequality. The general monotonicity for negative r remains open in Mathlib4 (explicitly noted as a TODO).",
+  "meta": {
+    "author": "Hardy, Littlewood, Pólya (1934); formalized here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Power_mean",
+    "date": "1934",
+    "status": "open-question",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ03.lean",
+    "tags": [
+      "analysis",
+      "inequalities",
+      "mean-inequalities",
+      "classic",
+      "research",
+      "open-problem"
+    ],
+    "badge": "open",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.geom_mean_le_arith_mean_weighted",
+        "description": "Weighted AM-GM: ∏ zᵢ^wᵢ ≤ ∑ wᵢzᵢ",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      },
+      {
+        "theorem": "Real.arith_mean_le_rpow_mean",
+        "description": "AM ≤ M_p for p ≥ 1: ∑ wᵢzᵢ ≤ (∑ wᵢzᵢ^p)^(1/p)",
+        "module": "Mathlib.Analysis.MeanInequalitiesPow"
+      },
+      {
+        "theorem": "Real.rpow_arith_mean_le_arith_mean_rpow",
+        "description": "Jensen for power functions: (∑ wᵢzᵢ)^p ≤ ∑ wᵢzᵢ^p for p ≥ 1",
+        "module": "Mathlib.Analysis.MeanInequalitiesPow"
+      },
+      {
+        "theorem": "Real.mul_rpow",
+        "description": "Multiplicativity of real power: (a·b)^r = a^r · b^r for a,b ≥ 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "harmonic_mean_le_geom_mean_direct: HM ≤ GM proved directly via GM(z⁻¹)·GM(z) = 1 and AM-GM on z⁻¹",
+      "power_mean_monotone_pos: M_r ≤ M_s for 0 < r ≤ s proved via Jensen applied to t ↦ t^(s/r)",
+      "Key algebraic trick: GM(z⁻¹) = GM(z)⁻¹ proved using Real.mul_rpow + Finset.prod_mul_distrib",
+      "Avoids div_le_iff/le_div_iff (unavailable in Lean4) via explicit multiplicative calc proofs"
+    ],
+    "dateAdded": "02/23/26"
+  },
+  "overview": {
+    "historicalContext": "The AM-GM inequality (∏ zᵢ^wᵢ ≤ ∑ wᵢzᵢ) is one of the most classical results in mathematics, known since antiquity. Hardy, Littlewood, and Pólya (1934) unified AM, GM, HM, and all intermediate means into the power mean family M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r).\n\nThe Power Mean Inequality states that M_r ≤ M_s for r ≤ s — this single monotonicity theorem captures HM ≤ GM ≤ AM as special cases (r=-1,0,1). The case r → 0 requires L'Hôpital analysis to show lim_{r→0} M_r = GM (the geometric mean).\n\nAs of Mathlib 4.26.0, the general monotonicity M_r ≤ M_s is not fully formalized — Mathlib has a TODO comment noting 'generalized mean inequality with any p ≤ q, including negative numbers'. This open question formalizes what is currently provable.",
+    "problemStatement": "**Open Question (amgm-inequality-oq-03)**: Fully formalize the Power Mean Inequality M_r ≤ M_s for all r ≤ s (including negative r, mixed signs, and the r=0 geometric mean as a limit).\n\n**Definitions**:\n- M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r)  for r ≠ 0, with wᵢ ≥ 0 and ∑ wᵢ = 1\n- M_0(z,w) = ∏ zᵢ^wᵢ  (geometric mean, as the limit lim_{r→0} M_r)\n\n**Known chain**: HM = M_{-1} ≤ M_0 = GM ≤ M_1 = AM ≤ M_2 ≤ ... ≤ max(z)\n\n**Mathlib status**: `Mathlib.Analysis.MeanInequalities` contains a TODO for the general case.",
+    "proofStrategy": "We prove the key special cases that ARE provable in Lean 4:\n\n**HM ≤ GM** (`harmonic_mean_le_geom_mean_direct`):\n1. Show GM(z⁻¹) · GM(z) = 1 using `Real.mul_rpow` and `Finset.prod_mul_distrib`\n2. Apply AM-GM to inverse values z⁻¹: GM(z⁻¹) ≤ ∑ wᵢ/zᵢ = 1/HM\n3. Since GM(z⁻¹) = 1/GM(z), we get 1/GM ≤ 1/HM, hence HM ≤ GM\n4. Algebraic inversion: multiply key inequality 1 ≤ GM·Σ by Σ⁻¹ > 0\n\n**M_r ≤ M_s for 0 < r ≤ s** (`power_mean_monotone_pos`):\n1. Let q = s/r ≥ 1; apply Jensen to aᵢ = zᵢ^r with exponent q\n2. Jensen: (∑ wᵢzᵢ^r)^(s/r) ≤ ∑ wᵢ(zᵢ^r)^(s/r) = ∑ wᵢzᵢ^s\n3. Raise both sides to 1/s > 0: (∑ wᵢzᵢ^r)^(1/r) ≤ (∑ wᵢzᵢ^s)^(1/s)",
+    "keyInsights": [
+      "GM(z⁻¹) · GM(z) = 1 is proved term-by-term: each zᵢ⁻¹^wᵢ · zᵢ^wᵢ = (zᵢ⁻¹·zᵢ)^wᵢ = 1^wᵢ = 1",
+      "The inversion step HM ≤ GM from GM⁻¹ ≤ 1/HM avoids div_le_iff by using explicit multiplicative algebra",
+      "For 0 < r ≤ s: Jensen applies to convex function t ↦ t^(s/r) with exponent s/r ≥ 1",
+      "The r=0 case (geometric mean as a limit) requires L'Hôpital and is the main Mathlib gap",
+      "General monotonicity for negative r (HM ≤ GM is the r=-1 to r=0 case) remains open in Mathlib4",
+      "Lean 4 parsing: ∑ i ∈ s, BODY is greedy — always parenthesize: (∑ i ∈ s, BODY) * c, not ∑ i ∈ s, BODY * c"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Definitions",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Overview of power mean interpolation, proof ideas, and references."
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions: Power Mean, Geometric Mean, Arithmetic Mean",
+      "startLine": 57,
+      "endLine": 75,
+      "summary": "weightedPowerMean M_p = (∑ wᵢzᵢ^p)^(1/p), weightedGeomMean = ∏ zᵢ^wᵢ, weightedArithMean = ∑ wᵢzᵢ."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results (from Mathlib)",
+      "startLine": 72,
+      "endLine": 118,
+      "summary": "M₁ = AM (power_mean_one_eq_arith_mean), AM ≤ M_p for p ≥ 1 (arith_mean_le_power_mean), GM ≤ AM (geom_mean_le_arith_mean), Jensen (jensen_pow_ineq). All proved directly from Mathlib."
+    },
+    {
+      "id": "hm-le-gm",
+      "title": "HM ≤ GM (New Proof)",
+      "startLine": 120,
+      "endLine": 170,
+      "summary": "harmonic_mean_le_geom_mean_direct: direct proof via AM-GM on inverse values. Key steps: GM(z⁻¹)·GM(z)=1, GM(z⁻¹) ≤ ∑ wᵢ/zᵢ (AM-GM on z⁻¹), then algebraic inversion."
+    },
+    {
+      "id": "power-mean-mono-pos",
+      "title": "Power Mean Monotonicity for 0 < r ≤ s (New Proof)",
+      "startLine": 165,
+      "endLine": 213,
+      "summary": "power_mean_monotone_pos: M_r ≤ M_s for 0 < r ≤ s. Uses Jensen with exponent s/r ≥ 1, then raises to 1/s. Also proves r·r⁻¹ ≤ t·r⁻¹ for hq : 1 ≤ t/r without le_div_iff."
+    },
+    {
+      "id": "general-monotonicity",
+      "title": "General Monotonicity (Axiom + Discussion)",
+      "startLine": 214,
+      "endLine": 258,
+      "summary": "power_mean_monotone axiomatized for general r,s. The negative r case (including HM ≤ GM as M_{-1} ≤ M_0) remains open in Mathlib4. Summary theorem catalogues what is proved vs. open."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves two new key cases of the Power Mean Inequality: HM ≤ GM (harmonic_mean_le_geom_mean_direct) and M_r ≤ M_s for 0 < r ≤ s (power_mean_monotone_pos). The proofs avoid lemma names unavailable in Lean4/Mathlib v4.26.0 (div_le_iff, le_div_iff, inv_le_inv_of_le) by using explicit multiplicative algebra. The file compiles with 0 sorries except for the axiomatized general monotonicity.",
+    "implications": "**If the full Power Mean Inequality were formalized in Mathlib**:\n\n**For inequalities**: Would provide a single theorem subsuming HM ≤ GM ≤ AM ≤ M_2 ≤ ..., simplifying many proofs that currently chain through AM-GM.\n\n**For analysis**: The r=0 case (geometric mean as a limit) requires formalizing L'Hôpital-style arguments or exp/log analysis, which would be valuable infrastructure.\n\n**For Lean**: Current Mathlib TODO acknowledges this gap. Completing it would strengthen the mean inequalities library significantly.",
+    "openQuestions": [
+      "Prove M_r ≤ M_s for r ≤ s < 0 (negative power means) — requires inverse analysis",
+      "Prove the r=0 case: lim_{r→0} M_r = GM (geometric mean as a limit) — requires L'Hôpital or exp/log continuity",
+      "Prove M_r ≤ M_s for r < 0 < s (crossing zero) — the most subtle case",
+      "Add this to Mathlib as a proper contribution filling the existing TODO"
+    ]
+  }
+}
