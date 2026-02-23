@@ -1,0 +1,72 @@
+{
+  "slug": "area-of-circle-oq-01-oq-02",
+  "title": "Can the integral direction be formalized: A(r) = integral from 0 to r of C(rh...",
+  "phase": "COMPLETE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-21T19:21:07.130Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved A(r) = integral from 0 to r of C(rho) drho via FTC Part 2. 0 sorries, 0 axioms.",
+    "builtItems": [
+      "AreaFromCircumferenceIntegral.lean: area_from_integral (main theorem)",
+      "AreaFromCircumferenceIntegral.lean: annulus_area_from_integral (generalization)",
+      "AreaFromCircumferenceIntegral.lean: annulus_area_formula (explicit π(r2²-r1²) form)",
+      "AreaFromCircumferenceIntegral.lean: diff_area_eq_circumference (FTC Part 1 duality)",
+      "AreaFromCircumferenceIntegral.lean: unit_disk_area, area_scaling (corollaries)"
+    ],
+    "insights": [
+      "FTC Part 2 (integral_eq_sub_of_hasDerivAt) directly solves the problem when we know dA/dr = C(r)",
+      "circumference continuity implies IntervalIntegrable on any [0,r] via Continuous.intervalIntegrable",
+      "The formula holds for all r : ℝ (not just r >= 0) because Mathlib uses signed intervalIntegral",
+      "Annulus area formula ∫_{r1}^{r2} 2πρ dρ = π(r2² - r1²) is a free corollary of the same FTC argument",
+      "The integration and differentiation directions together give the full FTC duality for circle geometry"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "challenging",
+    "analysis",
+    "geometry",
+    "calculus",
+    "differentiation",
+    "extension",
+    "research"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-21T19:21:07.130Z",
+  "lastUpdate": "2026-02-21T19:21:07.130Z",
+  "significance": 6,
+  "tractability": 6
+}
