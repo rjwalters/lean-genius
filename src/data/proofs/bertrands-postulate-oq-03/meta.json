@@ -130,7 +130,8 @@
     }
   ],
   "conclusion": {
-    "text": "Starting from Bertrand's Postulate, we prove π(n) ≥ log₂(n) via iterated doubling — a simple but concrete lower bound. The question of the optimal short-interval exponent θ remains one of the deepest open problems in analytic number theory. Baker-Harman-Pintz (2001) holds the record at θ = 0.525 using sophisticated sieve methods. Cramér's conjecture would push θ to zero with only a (log p)² correction, and Legendre's conjecture asks for primes in every [n², (n+1)²] — both open after more than a century.",
+    "summary": "Starting from Bertrand's Postulate, we prove π(n) ≥ log₂(n) via iterated doubling — a simple but concrete lower bound. The question of the optimal short-interval exponent θ remains one of the deepest open problems in analytic number theory.",
+    "implications": "Baker-Harman-Pintz (2001) holds the record at θ = 0.525 using sophisticated sieve methods. Cramér's conjecture would push θ to zero with only a (log p)² correction, and Legendre's conjecture asks for primes in every [n², (n+1)²] — both open after more than a century.",
     "openQuestions": [
       "What is the smallest θ for which every sufficiently large interval [x, x+x^θ] contains a prime? (BHP gives θ=0.525; is θ<1/2 achievable?)",
       "Does every interval [n², (n+1)²] contain a prime? (Legendre's Conjecture — open since 1845)",
