@@ -1,0 +1,122 @@
+{
+  "slug": "combinations-formula-oq-01",
+  "title": "Generalized Binomial Coefficients and Extended Identities",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Prove the key binomial identities: Vandermonde, Hockey Stick, Product Identity, and bounds.}",
+    "plain": "Extend the combinations formula with core identities: Vandermonde's convolution C(m+n,r) = Σ C(m,k)C(n,r-k), Hockey Stick Σ C(i+r,r) = C(n+r+1,r+1), Product identity C(n,k)C(k,j) = C(n,j)C(n-j,k-j), and bounds C(n,k) ≤ 2^n and C(2n,n) ≤ 4^n.",
+    "whyMatters": [
+      "Vandermonde's identity is fundamental for counting arguments and generating functions",
+      "Hockey stick identity enables telescoping sums in combinatorial proofs",
+      "Product identity is used in probability and double counting arguments",
+      "Central binomial bound C(2n,n) ≤ 4^n is key in Erdős's proof of Bertrand's postulate"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Vandermonde's Identity: C(m+n, r) = Σ_{k=0}^{r} C(m,k) * C(n,r-k) (Lean proof, 0 sorries)",
+      "Hockey Stick Identity: Σ_{i=0}^{n} C(i+r,r) = C(n+r+1,r+1) (Lean proof, 0 sorries)",
+      "Product Identity: C(n,k)*C(k,j) = C(n,j)*C(n-j,k-j) for j≤k≤n (Lean proof, 0 sorries)",
+      "Row Sum: Σ_{k=0}^{n} C(n,k) = 2^n (Mathlib's Nat.sum_range_choose)",
+      "Alternating Row Sum: Σ (-1)^k C(n,k) = 0 for n≥1 (Int.alternating_sum_range_choose_of_ne)",
+      "Binomial Bound: C(n,k) ≤ 2^n (proved)",
+      "Central Binomial Bound: C(2n,n) ≤ 4^n (proved, key for Bertrand's postulate)"
+    ],
+    "open": [
+      "Newton's generalized binomial theorem: (1+x)^α = Σ C(α,k)x^k for non-integer α (partial Mathlib coverage)",
+      "q-analog of binomial coefficients for quantum groups",
+      "Lucas's theorem mod p (separate topic)"
+    ],
+    "goal": "Prove and formalize the core extended binomial identities."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-02-23T22:30:00.000Z",
+    "iteration": 1,
+    "focus": "Formalization complete from PR #2980 — 0 sorries, all core identities proved",
+    "blockers": [],
+    "nextAction": "None — completed",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: CombinationsFormulaOQ01.lean has 0 sorries (PR #2980). All core identities proved: Vandermonde (via Nat.add_choose_eq), Hockey Stick (by induction using Nat.choose_succ_succ), Product Identity (factorial cancellation), Row/Alternating sums from Mathlib, and bounds C(n,k)≤2^n, C(2n,n)≤4^n.",
+    "builtItems": [
+      "CombinationsFormulaOQ01.lean: vandermonde (Vandermonde's convolution identity)",
+      "CombinationsFormulaOQ01.lean: hockey_stick (induction proof)",
+      "CombinationsFormulaOQ01.lean: choose_product (product/double-counting identity)",
+      "CombinationsFormulaOQ01.lean: choose_row_sum (wraps Nat.sum_range_choose)",
+      "CombinationsFormulaOQ01.lean: choose_alternating_sum (wraps Int.alternating_sum_range_choose_of_ne)",
+      "CombinationsFormulaOQ01.lean: choose_le_pow2 (C(n,k) ≤ 2^n)",
+      "CombinationsFormulaOQ01.lean: central_binom_le (C(2n,n) ≤ 4^n)",
+      "CombinationsFormulaOQ01.lean: identities_summary (all identities packaged)",
+      "Concrete Fibonacci connection via Pascal diagonal sums (verified examples)"
+    ],
+    "insights": [
+      "Vandermonde proved via Nat.add_choose_eq + Finset.Nat.sum_antidiagonal_eq_sum_range_succ",
+      "Hockey Stick proved by induction using Nat.choose_succ_succ as the Pascal step",
+      "Product Identity proved via factorial cancellation: multiply both sides by j!(k-j)!(n-k)! and show both = n!",
+      "Nat.choose_mul_factorial_mul_factorial is the key Mathlib lemma: C(a,b) * b! * (a-b)! = a!",
+      "C(n,k) ≤ 2^n: single term is bounded by the full row sum (Finset.single_le_sum)",
+      "C(2n,n) ≤ 4^n chains through choose_le_pow2 and pow_mul",
+      "Fibonacci connection: diagonal sums Σ C(n-j,j) = F(n+1) — verified for small cases",
+      "The file provides concrete native_decide verifications for all identities"
+    ],
+    "mathlibGaps": [
+      "Newton's generalized binomial theorem for non-integer α not in base Mathlib",
+      "q-analogs of binomial coefficients not in Mathlib",
+      "Lucas's theorem is in Mathlib (Nat.choose_prime_pow_mul_pow)"
+    ],
+    "nextSteps": [
+      "Could extend to generalized binomial coefficients C(α,k) for real/complex α using Mathlib's Complex.choose or Pochhammer symbols",
+      "Could formalize Zhu-Vandermonde identity (generalization to non-integers)"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Factorial cancellation",
+      "description": "For Product Identity: multiply both sides by j!(k-j)!(n-k)! and reduce to n!",
+      "status": "completed",
+      "outcome": "Clean proof with Nat.choose_mul_factorial_mul_factorial"
+    },
+    {
+      "name": "Induction on Pascal",
+      "description": "For Hockey Stick: induction using Nat.choose_succ_succ",
+      "status": "completed",
+      "outcome": "Straightforward induction proof"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "combinatorics",
+    "generalization",
+    "binomial-coefficients",
+    "identities",
+    "completed"
+  ],
+  "relatedProofs": [
+    "combinations-formula"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
+      "https://en.wikipedia.org/wiki/Hockey_stick_identity"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Choose.Sum"
+    ]
+  },
+  "started": "2026-02-22T00:00:00.000Z",
+  "lastUpdate": "2026-02-23T22:30:00.000Z",
+  "significance": 7,
+  "tractability": 7
+}
