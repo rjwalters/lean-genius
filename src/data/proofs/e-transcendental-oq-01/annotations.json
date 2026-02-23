@@ -1,0 +1,114 @@
+[
+  {
+    "line": 82,
+    "col": 0,
+    "type": "axiom",
+    "content": "**e is transcendental over ℚ** (Hermite, 1873). Re-stated as axiom for self-containedness; proved in `eTranscendental.lean`.",
+    "metadata": {
+      "name": "e_transcendental_q",
+      "status": "axiom"
+    }
+  },
+  {
+    "line": 85,
+    "col": 0,
+    "type": "axiom",
+    "content": "**π is transcendental over ℚ** (Lindemann, 1882). Re-stated as axiom; proved in `PiTranscendental.lean`.",
+    "metadata": {
+      "name": "pi_transcendental_q",
+      "status": "axiom"
+    }
+  },
+  {
+    "line": 105,
+    "col": 0,
+    "type": "theorem",
+    "content": "**Vieta's Identity for e**: e satisfies T² - (e+π)T + eπ = 0. **Fully proved by `ring`** — no axioms, no sorry. This is a pure algebraic identity: e² - (e+π)e + eπ = e² - e² - eπ + eπ = 0.",
+    "metadata": {
+      "name": "e_root_of_vieta_quadratic",
+      "status": "proved",
+      "tactic": "ring"
+    }
+  },
+  {
+    "line": 111,
+    "col": 0,
+    "type": "theorem",
+    "content": "**Vieta's Identity for π**: π satisfies T² - (e+π)T + eπ = 0. **Fully proved by `ring`** — the symmetric counterpart.",
+    "metadata": {
+      "name": "pi_root_of_vieta_quadratic",
+      "status": "proved",
+      "tactic": "ring"
+    }
+  },
+  {
+    "line": 144,
+    "col": 0,
+    "type": "axiom",
+    "content": "**Algebraic Closure Lemma**: If s and p are algebraic over ℚ, and x satisfies x² - sx + p = 0, then x is algebraic. This axiom is **provable** in Mathlib using `Algebra.IsAlgebraic.trans` (transitivity of algebraic extensions): ℚ ⊂ ℚ(s,p) ⊂ ℚ(s,p,x) are both algebraic extensions.",
+    "metadata": {
+      "name": "algebraic_root_of_algebraic_quadratic",
+      "status": "axiom-provable"
+    }
+  },
+  {
+    "line": 153,
+    "col": 0,
+    "type": "theorem",
+    "content": "**Main Theorem**: At least one of e+π or e·π is transcendental. **Proof sketch**: Assume both algebraic. By Vieta, e satisfies a quadratic with algebraic coefficients. By the algebraic closure lemma, e is algebraic. But e is transcendental (Hermite). Contradiction. The proof uses `by_contra`, `simp only [not_or, Transcendental, not_not]`, and `ring`.",
+    "metadata": {
+      "name": "e_plus_pi_or_e_times_pi_transcendental",
+      "status": "proved-with-axiom"
+    }
+  },
+  {
+    "line": 192,
+    "col": 0,
+    "type": "theorem",
+    "content": "**Contrapositive**: If eπ is algebraic, then e+π must be transcendental. Follows directly from the main theorem by case analysis.",
+    "metadata": {
+      "name": "sum_transcendental_if_prod_algebraic",
+      "status": "proved-with-axiom"
+    }
+  },
+  {
+    "line": 200,
+    "col": 0,
+    "type": "theorem",
+    "content": "**Contrapositive**: If e+π is algebraic, then eπ must be transcendental. The symmetric counterpart.",
+    "metadata": {
+      "name": "prod_transcendental_if_sum_algebraic",
+      "status": "proved-with-axiom"
+    }
+  },
+  {
+    "line": 215,
+    "col": 0,
+    "type": "theorem",
+    "content": "**Open Conjecture**: e + π is transcendental. **Sorry** — genuinely unknown as of 2026. Numerical value: e + π ≈ 5.8598744820488...",
+    "metadata": {
+      "name": "e_plus_pi_transcendental",
+      "status": "open"
+    }
+  },
+  {
+    "line": 224,
+    "col": 0,
+    "type": "theorem",
+    "content": "**Open Conjecture**: e · π is transcendental. **Sorry** — genuinely unknown. Numerical value: e · π ≈ 8.5397342226735...",
+    "metadata": {
+      "name": "e_times_pi_transcendental",
+      "status": "open"
+    }
+  },
+  {
+    "line": 232,
+    "col": 0,
+    "type": "theorem",
+    "content": "**Open Question**: e + π is irrational. **Also open!** Surprisingly, even rational vs irrational is unknown — the same depth as transcendence.",
+    "metadata": {
+      "name": "e_plus_pi_irrational",
+      "status": "open"
+    }
+  }
+]

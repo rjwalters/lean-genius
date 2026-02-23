@@ -1,0 +1,78 @@
+{
+  "slug": "e-transcendental-oq-01",
+  "title": "Is e + pi transcendental",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "PROGRESS",
+    "since": "2026-02-21T19:21:07.134Z",
+    "iteration": 1,
+    "focus": "Gallery entry created with key conditional result proved",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created gallery entry for e+pi transcendence open question. Proved the key conditional result: at least one of e+pi or e*pi is transcendental (via Vieta symmetric polynomial identity + e transcendence). Gallery entry ETranscendentalOQ01.lean builds cleanly with Docker.",
+    "builtItems": [
+      "ETranscendentalOQ01.lean: theorem e_root_of_vieta_quadratic (proved by ring)",
+      "ETranscendentalOQ01.lean: theorem pi_root_of_vieta_quadratic (proved by ring)",
+      "ETranscendentalOQ01.lean: theorem e_plus_pi_or_e_times_pi_transcendental (proved with axiom)",
+      "ETranscendentalOQ01.lean: theorem sum_transcendental_if_prod_algebraic",
+      "ETranscendentalOQ01.lean: theorem prod_transcendental_if_sum_algebraic",
+      "Gallery entry: src/data/proofs/e-transcendental-oq-01/ with meta.json, index.ts, annotations.json, tacticStates.json"
+    ],
+    "insights": [
+      "The Vieta identity e² - (e+π)e + eπ = 0 is fully provable by ring — a key building block",
+      "If both e+π and eπ are algebraic, then e satisfies a quadratic with algebraic coefficients, making e algebraic — contradiction with Hermite",
+      "Even the irrationality of e+π is open (not just transcendence) — surprising to most",
+      "Schanuel Conjecture → e,π algebraically independent → e+π transcendental: the known conditional route",
+      "Nesterenko 1996 proves π, e^π, Γ(1/4) algebraically independent but does NOT directly give e+π",
+      "algebraic_root_of_algebraic_quadratic axiom is provable via Algebra.IsAlgebraic.trans in Mathlib"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Replace algebraic_root_of_algebraic_quadratic axiom with Mathlib proof using Algebra.IsAlgebraic.trans",
+      "Investigate if Mathlib has a direct proof that IsAlgebraic is preserved under adjunction",
+      "Consider adding more consequences of Nesterenko (e.g., π+e^π transcendental formally)"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "challenging",
+    "number-theory",
+    "transcendental",
+    "e",
+    "analysis",
+    "wiedijk-100",
+    "classic"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-21T19:21:07.134Z",
+  "lastUpdate": "2026-02-23T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 6
+}
