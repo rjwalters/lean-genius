@@ -35,7 +35,8 @@
             "L_one_ne_zero: the known nonvanishing result (wraps Mathlib)",
             "no_siegel_zero_gives_lower_bound: trivially true from nonvanishing",
             "siegel_zero_location_constraint: chains Siegel theorem axiom to give lower bound",
-            "Axioms: siegel_theorem, grh_implies_no_siegel_zeros, landau_page_theorem (not in Mathlib)"
+            "Axioms: siegel_theorem, grh_implies_no_siegel_zeros, landau_page_theorem (not in Mathlib)",
+            "Gallery entry: src/data/proofs/dirichlets-theorem-oq-01/ (meta.json, index.ts, annotations.json)"
         ],
         "insights": [
             "L(1,chi) \u2260 0 is PROVED (Mathlib: LFunction_apply_one_ne_zero)",
@@ -53,9 +54,9 @@
             "Effective zero-free regions for L-functions not in Mathlib"
         ],
         "nextSteps": [
-            "Add to gallery as open question entry with clear distinction: L(1,chi)\u22600 (proved) vs Siegel zeros (open)",
-            "Check if Linnik constant bounds could be formalized (conditional on Siegel theorem)",
-            "Submit to Aristotle - no sorry-free theorems to prove (all interesting lemmas are open)"
+            "Submit siegel_zero_implies_small_L_one MVT sorry to Aristotle (routine analysis lemma)",
+            "Monitor Mathlib for Siegel theorem or Landau-Page formalization progress",
+            "Consider Linnik constant bounds (conditional on Siegel theorem axiom)"
         ]
     },
     "approaches": [],
@@ -71,14 +72,17 @@
         "l-functions",
         "arithmetic-progressions"
     ],
-    "relatedProofs": [],
+    "relatedProofs": [
+        "src/data/proofs/dirichlets-theorem-oq-01",
+        "src/data/proofs/dirichlets-theorem"
+    ],
     "references": {
         "papers": [],
         "urls": [],
         "mathlib": []
     },
     "started": "2026-02-21T19:21:07.134Z",
-    "lastUpdate": "2026-02-22T21:00:34Z",
+    "lastUpdate": "2026-02-23T11:58:00.000Z",
     "significance": 6,
     "tractability": 6
 }
