@@ -1,0 +1,139 @@
+{
+  "id": "cantors-theorem-oq-01",
+  "title": "The Cardinality of 𝒫(ℝ): What is |P(R)|?",
+  "slug": "cantors-theorem-oq-01",
+  "description": "The power set of the reals has cardinality 2^𝔠 = 2^(2^ℵ₀) = ℶ₂, the second beth number. This is definitively provable in ZFC via Cantor's theorem and the beth hierarchy. The residual open question — what is the aleph-index of ℶ₂? — is independent of ZFC (Easton's theorem). Under GCH + CH, |𝒫(ℝ)| = ℵ₂; without GCH, König's constraint rules out many values but the exact index remains undetermined.",
+  "meta": {
+    "author": "Cantor (1891); Easton (1970); formalized here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Beth_number",
+    "date": "1891",
+    "status": "open-question",
+    "proofRepoPath": "Proofs/CantorsTheoremOQ01.lean",
+    "tags": [
+      "set-theory",
+      "cardinality",
+      "diagonal-argument",
+      "beth-numbers",
+      "continuum-hypothesis",
+      "open-problem",
+      "classic",
+      "foundations"
+    ],
+    "badge": "open",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.cantor",
+        "description": "Cantor's theorem: κ < 2^κ for any cardinal κ",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.mk_set",
+        "description": "Power set cardinality: #(Set α) = 2^#α",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "Cardinal.mk_real",
+        "description": "The cardinality of ℝ equals the continuum: #ℝ = 𝔠",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      },
+      {
+        "theorem": "Cardinal.beth_strictMono",
+        "description": "The beth hierarchy is strictly increasing: α < β → ℶα < ℶβ",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cardinal.aleph_one_le_continuum",
+        "description": "ZFC proves ℵ₁ ≤ 𝔠 (without CH it may be strict)",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      },
+      {
+        "theorem": "Cardinal.two_power_aleph0",
+        "description": "2^ℵ₀ = 𝔠 (definition of the continuum as 2^aleph_0)",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      }
+    ],
+    "originalContributions": [
+      "card_powerSet_real_formula: |𝒫(ℝ)| = 2^𝔠 = 2^(2^ℵ₀) proved directly from Cardinal.mk_set + Cardinal.mk_real",
+      "card_powerSet_real_eq_beth_two: |𝒫(ℝ)| = ℶ₂ proved by unrolling the beth recurrence via Order.succ_eq_add_one",
+      "aleph_two_le_card_powerSet_real_of_not_CH: ℵ₂ ≤ |𝒫(ℝ)| under ¬CH via successor cardinal argument",
+      "gch_and_ch_implies_powerSet_real_eq_aleph_two: conditional |𝒫(ℝ)| = ℵ₂ under CH + GCH",
+      "Key technique: beth_succ requires explicit rewrite (2 : Ordinal) = Order.succ 1 since omega does not work for Ordinal arithmetic"
+    ],
+    "dateAdded": "02/23/26"
+  },
+  "overview": {
+    "historicalContext": "Cantor's 1891 diagonal argument proved |ℝ| < |𝒫(ℝ)|, establishing that the power set of any set is strictly larger. Combined with the identification |ℝ| = 2^ℵ₀ = 𝔠 (the continuum), this gives |𝒫(ℝ)| = 2^𝔠.\n\nThe beth number hierarchy (Sierpiński, 1947) organizes this: ℶ₀ = ℵ₀ = |ℕ|, ℶ₁ = 2^ℵ₀ = 𝔠 = |ℝ|, ℶ₂ = 2^𝔠 = |𝒫(ℝ)|, and so on. So |𝒫(ℝ)| = ℶ₂ is a clean, definitive ZFC theorem.\n\nHowever, the question of which aleph number equals ℶ₂ is deeply non-trivial. Gödel (1938) showed CH is consistent with ZFC; Cohen (1963) showed ¬CH is consistent. Easton (1970) showed that 2^κ for regular κ can be almost anything consistent with König's theorem: cf(2^κ) > κ. In particular, |𝒫(ℝ)| can consistently equal ℵ₂, ℵ₃, ℵ_{ω₁+1}, or many other values — but never ℵ_ω (since cf(ℵ_ω) = ω ≤ 𝔠).",
+    "problemStatement": "**Open Question (cantors-theorem-oq-01)**: What is the cardinality of 𝒫(ℝ), the power set of the real numbers?\n\n**ZFC Answer**: |𝒫(ℝ)| = 2^𝔠 = 2^(2^ℵ₀) = ℶ₂ (definitively provable)\n\n**Residual Open Question**: What aleph number is ℶ₂?\n- ZFC proves: ℵ₁ < ℶ₂ and cf(ℶ₂) > 𝔠\n- Under CH + GCH: ℶ₂ = ℵ₂\n- Without GCH: the exact aleph-index of ℶ₂ is independent of ZFC\n\n**Easton's theorem** (1970): For regular cardinals κ, 2^κ can be any cardinal with cofinality > κ, consistent with ZFC.",
+    "proofStrategy": "We formalize the ZFC-provable facts using Mathlib's cardinal arithmetic:\n\n**Step 1: |ℝ| = 𝔠** via `Cardinal.mk_real`\n\n**Step 2: Power set formula** via `Cardinal.mk_set: #(Set α) = 2^#α`\n\n**Step 3: |ℝ| < |𝒫(ℝ)|** via `Cardinal.cantor: κ < 2^κ` applied to κ = #ℝ\n\n**Step 4: Beth hierarchy** — unroll ℶ₂ = 2^ℶ₁ = 2^𝔠 using `Cardinal.beth_succ`. Key: ordinal literal `2 = Order.succ 1` must be proved via `Order.succ_eq_add_one` + `norm_num` (omega fails on Ordinal).\n\n**Step 5: ℵ₁ < ℶ₂** via `aleph_one_le_continuum` + `continuum < beth_two`\n\n**Step 6: Conditional ℵ₂ under CH+GCH** — using successor cardinal formula `aleph_succ` and the GCH assumption 2^𝔠 = (𝔠)⁺.",
+    "keyInsights": [
+      "The beth-number answer ℶ₂ is definitive and provable in ZFC — no axioms beyond ZFC needed",
+      "The aleph-index of ℶ₂ is where ZFC independence appears: CH says ℶ₂ = ℵ₂, but this is not provable",
+      "König's theorem (cf(2^𝔠) > 𝔠) rules out ℵ_ω and other singular cardinals with cofinality ≤ 𝔠",
+      "Lean4 ordinal arithmetic: omega does NOT work for Ordinal; use rw [Order.succ_eq_add_one]; norm_num",
+      "Cardinal.beth_succ requires Ordinal argument in successor form — literal numerals need explicit conversion",
+      "Universe level pinning: all Cardinal statements use Cardinal.{0} to avoid universe metavariable issues"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Overview",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Imports, module comment explaining the ZFC-provable answer (ℶ₂) and the open aleph-index question, with historical context."
+    },
+    {
+      "id": "cardinality-of-reals",
+      "title": "Part 1: The Cardinality of ℝ",
+      "startLine": 50,
+      "endLine": 63,
+      "summary": "card_real_eq_continuum: |ℝ| = 𝔠 via Cardinal.mk_real. card_real_gt_aleph_zero: 𝔠 > ℵ₀ via aleph0_lt_continuum."
+    },
+    {
+      "id": "power-set-formula",
+      "title": "Part 2-3: Power Set Formula and Cantor's Theorem",
+      "startLine": 65,
+      "endLine": 95,
+      "summary": "card_powerSet_real_formula: |𝒫(ℝ)| = 2^𝔠. card_real_lt_card_powerSet_real: |ℝ| < |𝒫(ℝ)| via Cardinal.cantor. continuum_lt_card_powerSet_real: 𝔠 < |𝒫(ℝ)|."
+    },
+    {
+      "id": "beth-numbers",
+      "title": "Part 4: Beth Number Interpretation",
+      "startLine": 97,
+      "endLine": 125,
+      "summary": "beth_one_eq_continuum: ℶ₁ = 𝔠 by unrolling beth_succ at 1 = Order.succ 0. card_powerSet_real_eq_beth_two: |𝒫(ℝ)| = ℶ₂. beth_two_gt_beth_one: ℶ₂ > ℶ₁ via beth_strictMono."
+    },
+    {
+      "id": "aleph-hierarchy",
+      "title": "Part 5: Position in the Aleph Hierarchy",
+      "startLine": 126,
+      "endLine": 160,
+      "summary": "aleph_one_le_continuum_zfc, aleph_one_lt_card_powerSet_real, CH definition, not_ch_continuum_gt_aleph_one, aleph_two_le_card_powerSet_real_of_not_CH."
+    },
+    {
+      "id": "gch-question",
+      "title": "Part 6: The GCH Question — Open in ZFC",
+      "startLine": 161,
+      "endLine": 212,
+      "summary": "GCH_at_continuum definition. gch_and_ch_implies_powerSet_real_eq_aleph_two: |𝒫(ℝ)| = ℵ₂ under CH+GCH. not_gch_at_continuum_implies_gt_aleph_two: ℵ₂ < |𝒫(ℝ)| when GCH fails."
+    },
+    {
+      "id": "summary",
+      "title": "Part 7-8: König's Constraint and Summary",
+      "startLine": 213,
+      "endLine": 278,
+      "summary": "König's constraint axiom: cf(|𝒫(ℝ)|) > 𝔠. cantors_theorem_oq01_summary bundles all four ZFC facts. #check exports confirm all key theorems."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization proves all ZFC-provable facts about |𝒫(ℝ)|: the power set formula (= 2^𝔠), Cantor's strict inequality (|ℝ| < |𝒫(ℝ)|), the beth representation (= ℶ₂), and the aleph lower bound (ℵ₁ < |𝒫(ℝ)|). The file compiles with 0 sorries and 1 axiom (König's constraint). The proofs navigate Lean4's ordinal arithmetic limitations by using Order.succ_eq_add_one + norm_num instead of omega.",
+    "implications": "**What this establishes**:\n\n**Definitive ZFC answer**: |𝒫(ℝ)| = 2^𝔠 = 2^(2^ℵ₀) = ℶ₂. This is the cleanest possible answer — no set-theoretic independence, no choice of axioms beyond ZFC.\n\n**Independence boundary**: The aleph-index of ℶ₂ is where ZFC independence begins. CH says ℶ₁ = ℵ₁, GCH then gives ℶ₂ = ℵ₂. But both CH and GCH are independent of ZFC.\n\n**König's constraint**: cf(2^𝔠) > 𝔠 is a genuine ZFC theorem that rules out many potential values (e.g., ℵ_ω, ℵ_{ω·2}, etc.), showing the boundary between provable and independent.",
+    "openQuestions": [
+      "Is |𝒫(ℝ)| = ℵ₂? (Independent of ZFC — consistent both ways)",
+      "What is the exact aleph-index of ℶ₂? (Easton: essentially anything with cofinality > 𝔠)",
+      "Can König's constraint be formalized in Lean4 without axioms? (Requires formalizing infinite product cardinal arithmetic)",
+      "Is |𝒫(𝒫(ℝ))| = ℶ₃? (Yes — provable in ZFC, same pattern as ℶ₂)"
+    ]
+  }
+}
