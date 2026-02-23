@@ -44,7 +44,8 @@ This generalizes the classical formula P = (p - q)/(p + q) (the case k = 1).
 - [x] Cycle lemma upper bound: |goodRotations| ≤ sum (via injection to levels)
 - [x] Cycle lemma bounds on good rotation prefix sums
 - [x] Good rotations occur at or after rightmost minimum
-- [ ] Cycle lemma lower bound (1 sorry: level crossing surjectivity)
+- [x] Cycle lemma lower bound: level_achieved_ge_min (discrete IVT) + levelPos injection
+- [x] **The Cycle Lemma** (Dvoretzky-Motzkin, 1947): |goodRotations l| = a - k*b
 - [ ] Full proof of the generalized counting formula (1 sorry: double counting)
 
 ## References
@@ -73,7 +74,7 @@ theorem sum_eq_count_sub_mul_count {k : ℕ} {l : List ℤ}
   induction l with
   | nil => simp
   | cons x xs ih =>
-    have hx := h x (List.mem_cons_self x xs)
+    have hx := h x (List.mem_cons.mpr (Or.inl rfl))
     have hxs : ∀ y ∈ xs, y = 1 ∨ y = -(k : ℤ) := fun y hy =>
       h y (List.mem_cons_of_mem x hy)
     have hne : (1 : ℤ) ≠ -(k : ℤ) := by omega
@@ -89,7 +90,7 @@ theorem length_eq_count_add_count {k : ℕ} {l : List ℤ}
   induction l with
   | nil => simp
   | cons x xs ih =>
-    have hx := h x (List.mem_cons_self x xs)
+    have hx := h x (List.mem_cons.mpr (Or.inl rfl))
     have hxs : ∀ y ∈ xs, y = 1 ∨ y = -(k : ℤ) := fun y hy =>
       h y (List.mem_cons_of_mem x hy)
     have hne : (1 : ℤ) ≠ -(k : ℤ) := by omega
@@ -121,15 +122,18 @@ theorem kCountedSequence_perm (k a b : ℕ) (l : List ℤ) (hl : l ∈ kCountedS
   · subst hx1; simp [List.count_append, List.count_replicate, hne, hne.symm, h1]
   · by_cases hxk : x = -(k : ℤ)
     · subst hxk; simp [List.count_append, List.count_replicate, hne, hne.symm, h2]
-    · have : l.count x = 0 := by
+    · have hcl : l.count x = 0 := by
         rw [List.count_eq_zero]; intro hm; rcases h3 x hm with rfl | rfl <;> contradiction
-      rw [this]; simp [List.count_append, List.count_replicate, hx1, hxk]
+      have hcr : (List.replicate a (1 : ℤ) ++ List.replicate b (-(k : ℤ))).count x = 0 := by
+        rw [List.count_eq_zero, List.mem_append, List.mem_replicate, List.mem_replicate]
+        push_neg; exact ⟨fun _ => hx1, fun _ => hxk⟩
+      omega
 
 theorem kCountedSequence_finite (k a b : ℕ) : (kCountedSequence k a b).Finite := by
   let w := List.replicate a 1 ++ List.replicate b (-(k : ℤ))
   apply Set.Finite.subset (Finset.finite_toSet w.permutations.toFinset)
   intro l hl
-  simp only [Finset.coe_toSet, List.mem_toFinset, List.mem_permutations]
+  simp only [Finset.mem_coe, List.mem_toFinset, List.mem_permutations]
   exact kCountedSequence_perm k a b l hl
 
 theorem kCountedSequence_nonempty (k a b : ℕ) : (kCountedSequence k a b).Nonempty := by
@@ -163,7 +167,7 @@ theorem generalized_ballot_count (k a b : ℕ) (hab : k * b < a) :
 theorem generalized_ballot_prob (k a b : ℕ) (hab : k * b < a) :
     ((a : ℚ) - k * b) / (a + b) > 0 := by
   have h1 : (0 : ℚ) < a - k * b := by rw [sub_pos]; exact_mod_cast hab
-  have h2 : (0 : ℚ) < a + b := by have : 0 < a := by omega; positivity
+  have h2 : (0 : ℚ) < a + b := by exact_mod_cast Nat.add_pos_left (by omega : 0 < a) b
   exact div_pos h1 h2
 
 /- ## Part VI: Special Cases and Verification -/
@@ -238,11 +242,7 @@ private theorem sum_drop_eq (l : List ℤ) (i : ℕ) :
 private theorem take_drop_sum (l : List ℤ) (i j : ℕ)
     (hi : i ≤ l.length) (hij : i + j ≤ l.length) :
     ((l.drop i).take j).sum = (l.take (i + j)).sum - (l.take i).sum := by
-  have key : l.take (i + j) = l.take i ++ (l.drop i).take j := by
-    rw [← List.take_take]
-    conv_lhs => rw [← List.take_append_drop i l]
-    rw [List.take_append_eq_append_take]
-    simp [List.length_take, Nat.min_eq_left hi]; congr 1; omega
+  have key : l.take (i + j) = l.take i ++ (l.drop i).take j := List.take_add
   have := congr_arg List.sum key
   rw [List.sum_append] at this; omega
 
@@ -281,12 +281,10 @@ theorem prefixSum_length (l : List ℤ) : prefixSum l l.length = l.sum := by
 theorem prefixSum_doubled_periodic (l : List ℤ) (i : ℕ) (hi : i ≤ l.length) :
     prefixSum (l ++ l) (i + l.length) = prefixSum (l ++ l) i + l.sum := by
   simp only [prefixSum]
-  rw [show i + l.length = l.length + i from by omega]
-  rw [List.take_add, List.sum_append]
-  congr 1
-  · rw [List.take_left]
-  · have : (l ++ l).drop l.length = l := by simp [List.drop_append_eq_append_drop]
-    rw [this]
+  rw [show i + l.length = l.length + i from Nat.add_comm i l.length]
+  rw [List.take_add, List.sum_append, List.take_left, List.drop_left,
+      List.take_append_of_le_length hi]
+  ring
 
 def isGoodRotation (l : List ℤ) (i : ℕ) : Prop :=
   ∀ j, 0 < j → j ≤ l.length → 0 < ((cyclicRotation l i).take j).sum
@@ -407,12 +405,12 @@ theorem goodRotation_at_rightmostMin (l : List ℤ) (hn : 0 < l.length) (hS : 0 
     -- Need: 0 < P(m+j) - P(m) = P(m+j) - minPrefixSum
     -- Since m < m+j ≤ l.length, and m is rightmost min, P(m+j) > minPrefixSum
     have h1 := prefixSum_gt_after_rightmostMin l (m + j) (by omega) hmj
-    simp only [prefixSum] at h1 hm_val ⊢; omega
+    simp only [prefixSum] at h1 hm_val; omega
   · -- Case: m + j > l.length (wrapping)
     -- Need: 0 < P(m+j-n) + S - P(m) = P(m+j-n) + S - minPrefixSum
     push_neg at hmj
     have h1 := minPrefixSum_le l (m + j - l.length) (by omega)
-    simp only [prefixSum] at h1 hm_val ⊢; omega
+    simp only [prefixSum] at h1 hm_val; omega
 
 theorem goodRotations_nonempty (l : List ℤ) (hn : 0 < l.length) (hS : 0 < l.sum) :
     (goodRotations l).Nonempty :=
@@ -519,10 +517,48 @@ theorem goodRotations_card_le {l : List ℤ} (hS : 0 < l.sum) :
     position i < l.length with prefixSum l i = v. This follows from the +1 steps:
     since the only way to increase is by +1, the prefix sums pass through every
     integer level between the minimum and the maximum. -/
-theorem level_achieved_ge_min (l : List ℤ) (v : ℤ)
+theorem level_achieved_ge_min {k : ℕ} (l : List ℤ)
+    (hmem : ∀ x ∈ l, x = 1 ∨ x = -(k : ℤ))
+    (v : ℤ)
     (hlo : minPrefixSum l ≤ v) (hhi : v < minPrefixSum l + l.sum) :
     ∃ i, i < l.length ∧ prefixSum l i = v := by
-  sorry -- Discrete intermediate value theorem for prefix sums
+  have hv_lt_sum : v < l.sum := by linarith [minPrefixSum_le_zero l]
+  -- Use Finset.max' of {i ≤ l.length | prefixSum l i ≤ v}
+  let S := (Finset.range (l.length + 1)).filter (fun i => prefixSum l i ≤ v)
+  have hS_ne : S.Nonempty :=
+    ⟨rightmostMinPos l, Finset.mem_filter.mpr
+      ⟨Finset.mem_range.mpr (Nat.lt_succ_of_le (rightmostMinPos_le l)),
+       by rw [prefixSum_rightmostMinPos]; exact hlo⟩⟩
+  obtain ⟨j, hj_max⟩ : ∃ j, j = S.max' hS_ne := ⟨_, rfl⟩
+  have hj_mem : j ∈ S := hj_max ▸ Finset.max'_mem S hS_ne
+  have hj_le : j ≤ l.length :=
+    Nat.lt_succ_iff.mp (Finset.mem_range.mp (Finset.mem_filter.mp hj_mem).1)
+  have hj_le_v : prefixSum l j ≤ v := (Finset.mem_filter.mp hj_mem).2
+  have hj_lt : j < l.length := by
+    rcases Nat.eq_or_lt_of_le hj_le with rfl | h
+    · simp only [prefixSum, List.take_length] at hj_le_v; linarith
+    · exact h
+  -- j+1 ∉ S: prefixSum l (j+1) > v (by maximality of j)
+  have hj1_gt : v < prefixSum l (j + 1) := by
+    by_contra hle; push_neg at hle
+    have hj1_mem : j + 1 ∈ S := Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hle⟩
+    have := Finset.le_max' S (j + 1) hj1_mem
+    omega
+  -- The element at j is +1 (not -k)
+  have hj_elem : l[j] = (1 : ℤ) := by
+    rcases hmem l[j] (List.getElem_mem hj_lt) with h1 | hk
+    · exact h1
+    · exfalso
+      have hstep : prefixSum l (j + 1) = prefixSum l j + l[j] := by
+        simp only [prefixSum]; exact List.sum_take_succ l j hj_lt
+      rw [hstep, hk] at hj1_gt
+      linarith [show (0 : ℤ) ≤ k from Int.natCast_nonneg k]
+  -- Therefore prefixSum l j = v exactly
+  have hj_eq : prefixSum l j = v := by
+    have hstep : prefixSum l (j + 1) = prefixSum l j + 1 := by
+      simp only [prefixSum]; rw [List.sum_take_succ l j hj_lt, hj_elem]
+    linarith
+  exact ⟨j, hj_lt, hj_eq⟩
 
 /-- The rightmost position achieving level v is a good rotation.
     After this position, all prefix sums are strictly above v (by rightmost).
@@ -533,7 +569,81 @@ theorem rightmostAtLevel_good (l : List ℤ) (v : ℤ)
     (i : ℕ) (hi_lt : i < l.length) (hi_eq : prefixSum l i = v)
     (hi_right : ∀ j, i < j → j ≤ l.length → v < prefixSum l j) :
     isGoodRotation l i := by
-  sorry -- Similar to goodRotation_at_rightmostMin but for arbitrary levels
+  intro j hj hjn
+  rw [cyclicRotation_prefixSum l i j (le_of_lt hi_lt) hjn]
+  split_ifs with hij
+  · -- Non-wrapping case: 0 < P(i+j) - P(i)
+    have h1 : v < prefixSum l (i + j) := hi_right (i + j) (by omega) hij
+    simp only [prefixSum] at h1 hi_eq; omega
+  · -- Wrapping case: 0 < P(i+j-n) + S - P(i)
+    push_neg at hij
+    have h1 : minPrefixSum l ≤ prefixSum l (i + j - l.length) :=
+      minPrefixSum_le l (i + j - l.length) (by omega)
+    simp only [prefixSum] at h1 hi_eq; omega
+
+/-- Private helper: for each n : ℕ, the rightmost position in [0, l.length]
+    where prefix sum ≤ minPrefixSum l + n. Well-defined for all n ≥ 0. -/
+private noncomputable def levelPos (l : List ℤ) (n : ℕ) : ℕ :=
+  ((Finset.range (l.length + 1)).filter (fun i => prefixSum l i ≤ minPrefixSum l + n)).max'
+    ⟨rightmostMinPos l, Finset.mem_filter.mpr ⟨
+      Finset.mem_range.mpr (Nat.lt_succ_of_le (rightmostMinPos_le l)),
+      by rw [prefixSum_rightmostMinPos]; omega⟩⟩
+
+private theorem levelPos_mem (l : List ℤ) (n : ℕ) :
+    levelPos l n ∈ (Finset.range (l.length + 1)).filter
+      (fun i => prefixSum l i ≤ minPrefixSum l + n) := by
+  unfold levelPos; exact Finset.max'_mem _ _
+
+private theorem levelPos_le (l : List ℤ) (n : ℕ) : levelPos l n ≤ l.length :=
+  Nat.lt_succ_iff.mp (Finset.mem_range.mp (Finset.mem_filter.mp (levelPos_mem l n)).1)
+
+private theorem levelPos_prefixSum_le (l : List ℤ) (n : ℕ) :
+    prefixSum l (levelPos l n) ≤ minPrefixSum l + n :=
+  (Finset.mem_filter.mp (levelPos_mem l n)).2
+
+private theorem levelPos_max (l : List ℤ) (n m : ℕ)
+    (hm : m ≤ l.length) (hm_le : prefixSum l m ≤ minPrefixSum l + n) :
+    m ≤ levelPos l n :=
+  Finset.le_max' _ m (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hm_le⟩)
+
+private theorem levelPos_lt (l : List ℤ) (n : ℕ) (hn : (n : ℤ) < l.sum) :
+    levelPos l n < l.length := by
+  rcases Nat.eq_or_lt_of_le (levelPos_le l n) with h | h
+  · -- levelPos l n = l.length contradicts prefixSum ≤ minPrefixSum l + n < l.sum
+    have hle := levelPos_prefixSum_le l n
+    rw [h, prefixSum_length] at hle
+    linarith [minPrefixSum_le_zero l]
+  · exact h
+
+private theorem levelPos_right (l : List ℤ) (n m : ℕ)
+    (hm_gt : levelPos l n < m) (hm_le : m ≤ l.length) :
+    minPrefixSum l + (n : ℤ) < prefixSum l m := by
+  by_contra hle; push_neg at hle
+  exact absurd (levelPos_max l n m hm_le hle) (by omega)
+
+private theorem levelPos_eq {k : ℕ} (l : List ℤ)
+    (hmem : ∀ x ∈ l, x = 1 ∨ x = -(k : ℤ))
+    (n : ℕ) (hn : (n : ℤ) < l.sum) :
+    prefixSum l (levelPos l n) = minPrefixSum l + n := by
+  have hj_lt : levelPos l n < l.length := levelPos_lt l n hn
+  have hj_le : prefixSum l (levelPos l n) ≤ minPrefixSum l + n := levelPos_prefixSum_le l n
+  -- levelPos l n + 1 ∉ the filter (maximality)
+  have hj1_gt : minPrefixSum l + (n : ℤ) < prefixSum l (levelPos l n + 1) := by
+    by_contra hle; push_neg at hle
+    exact absurd (levelPos_max l n (levelPos l n + 1) (by omega) hle) (by omega)
+  -- The step at levelPos l n is +1 (not -k)
+  have helem : l[levelPos l n] = (1 : ℤ) := by
+    rcases hmem l[levelPos l n] (List.getElem_mem hj_lt) with h1 | hk
+    · exact h1
+    · exfalso
+      have hstep : prefixSum l (levelPos l n + 1) = prefixSum l (levelPos l n) + l[levelPos l n] := by
+        simp only [prefixSum]; exact List.sum_take_succ l (levelPos l n) hj_lt
+      rw [hstep, hk] at hj1_gt
+      linarith [show (0 : ℤ) ≤ k from Int.natCast_nonneg k]
+  -- Therefore prefixSum l (levelPos l n) = minPrefixSum l + n
+  have hstep : prefixSum l (levelPos l n + 1) = prefixSum l (levelPos l n) + 1 := by
+    simp only [prefixSum]; rw [List.sum_take_succ l (levelPos l n) hj_lt, helem]
+  linarith
 
 /-- Lower bound via level surjectivity: at least sum good rotations.
     For each integer level v in [minPrefixSum, minPrefixSum + sum),
@@ -542,7 +652,34 @@ theorem rightmostAtLevel_good (l : List ℤ) (v : ℤ)
 theorem goodRotations_card_ge {k a b : ℕ} {l : List ℤ}
     (hl : l ∈ kCountedSequence k a b) (hab : k * b < a) :
     (a - k * b : ℕ) ≤ (goodRotations l).card := by
-  sorry -- Combine level_achieved_ge_min, rightmostAtLevel_good, and injectivity
+  have hmem : ∀ x ∈ l, x = 1 ∨ x = -(k : ℤ) := hl.2.2
+  have hS : 0 < l.sum := kCountedSequence_pos_sum hl hab
+  have hsum : l.sum = (a : ℤ) - k * b := kCountedSequence_sum hl
+  -- Rewrite as cardinality inequality via injection
+  rw [← Finset.card_range (a - k * b)]
+  apply Finset.card_le_card_of_injOn (levelPos l)
+  · -- levelPos n ∈ goodRotations for each n ∈ Finset.range (a-k*b)
+    intro n hn
+    have hn_lt : n < a - k * b := Finset.mem_range.mp (Finset.mem_coe.mp hn)
+    have hn' : (n : ℤ) < l.sum := by rw [hsum]; omega
+    exact Finset.mem_coe.mpr (Finset.mem_filter.mpr
+      ⟨Finset.mem_range.mpr (levelPos_lt l n hn'),
+        rightmostAtLevel_good l (minPrefixSum l + n) hS
+          (by linarith [show (0 : ℤ) ≤ n from Int.natCast_nonneg n])
+          (by linarith)
+          (levelPos l n) (levelPos_lt l n hn')
+          (levelPos_eq l hmem n hn')
+          (fun m hm hml => levelPos_right l n m hm hml)⟩)
+  · -- levelPos is injective on Finset.range (a-k*b)
+    intro n₁ hn₁ n₂ hn₂ heq
+    simp only [Finset.mem_coe, Finset.mem_range] at hn₁ hn₂
+    have hn₁' : (n₁ : ℤ) < l.sum := by rw [hsum]; omega
+    have hn₂' : (n₂ : ℤ) < l.sum := by rw [hsum]; omega
+    have h₁ := levelPos_eq l hmem n₁ hn₁'
+    have h₂ := levelPos_eq l hmem n₂ hn₂'
+    rw [heq] at h₁
+    have : (n₁ : ℤ) = n₂ := by linarith
+    exact_mod_cast this
 
 /-- **The Cycle Lemma (Dvoretzky-Motzkin, 1947) for ballot sequences.** -/
 theorem cycle_lemma {k a b : ℕ} {l : List ℤ} (hl : l ∈ kCountedSequence k a b)
