@@ -4,7 +4,7 @@ import annotationsJson from './annotations.json'
 import tacticStatesJson from './tacticStates.json'
 import sourceRaw from '../../../../proofs/Proofs/ContinuumHypothesisOQ01.lean?raw'
 
-const meta = metaJson as {
+const meta = metaJson as unknown as {
   id: string
   title: string
   slug: string
