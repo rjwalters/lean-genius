@@ -217,13 +217,140 @@ theorem power_mean_monotone_pos
   rw [lhs_simp] at hmono
   exact hmono
 
+/-- **Algebraic identity**: For r ≠ 0 and z_i > 0,
+  M_r(z, w) = M_{-r}(z⁻¹, w)⁻¹
+
+The power mean of order r equals the reciprocal of the power mean of order -r
+applied to the reciprocal values.
+
+**Proof**:
+- Sum: (zᵢ⁻¹)^{-r} = zᵢ^r (via inv_rpow + rpow_neg + inv_inv)
+- Power: A^{1/r} = (A^{1/(-r)})⁻¹ (since 1/(-r) = -(1/r) and rpow_neg + inv_inv) -/
+lemma power_mean_neg_inv
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hz : ∀ i ∈ s, 0 < z i)
+    {r : ℝ} (hr : r ≠ 0) :
+    weightedPowerMean s w z r hr =
+      (weightedPowerMean s w (fun i => (z i)⁻¹) (-r) (neg_ne_zero.mpr hr))⁻¹ := by
+  simp only [weightedPowerMean]
+  -- Step 1: (zᵢ⁻¹)^{-r} = zᵢ^r
+  have sum_eq : ∑ i ∈ s, w i * (z i)⁻¹ ^ (-r) = ∑ i ∈ s, w i * z i ^ r := by
+    apply Finset.sum_congr rfl
+    intro i hi
+    congr 1
+    rw [Real.inv_rpow (le_of_lt (hz i hi)) (-r),
+        Real.rpow_neg (le_of_lt (hz i hi)) r,
+        inv_inv]
+  -- A = ∑ wᵢ zᵢ^r ≥ 0
+  have hA_nn : 0 ≤ ∑ i ∈ s, w i * z i ^ r :=
+    Finset.sum_nonneg fun i hi =>
+      mul_nonneg (hw i hi) (Real.rpow_nonneg (le_of_lt (hz i hi)) r)
+  -- Step 2: A^{1/r} = (A^{1/(-r)})⁻¹ since 1/(-r) = -(1/r)
+  rw [sum_eq, show (1 : ℝ) / (-r) = -(1 / r) from by ring,
+      Real.rpow_neg hA_nn, inv_inv]
+
+/-- Helper: ∑ wᵢ zᵢ^p > 0 when weights sum to 1 and all zᵢ > 0. -/
+private lemma weighted_sum_pos
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hw' : ∑ i ∈ s, w i = 1)
+    (hz : ∀ i ∈ s, 0 < z i)
+    {p : ℝ} :
+    0 < ∑ i ∈ s, w i * z i ^ p := by
+  -- Since ∑ wᵢ = 1 > 0 and all wᵢ ≥ 0, some wᵢ₀ > 0
+  obtain ⟨i₀, hi₀, hwi₀⟩ : ∃ i ∈ s, 0 < w i := by
+    by_contra h
+    push_neg at h
+    have hw_zero : ∀ i ∈ s, w i = 0 := fun i hi => le_antisymm (h i hi) (hw i hi)
+    linarith [Finset.sum_eq_zero hw_zero]
+  -- The term for i₀ is positive; the sum is at least that term
+  exact lt_of_lt_of_le
+    (mul_pos hwi₀ (Real.rpow_pos_of_pos (hz i₀ hi₀) p))
+    (Finset.single_le_sum
+      (fun i hi => mul_nonneg (hw i hi) (Real.rpow_nonneg (le_of_lt (hz i hi)) p))
+      hi₀)
+
+/-- Helper: The weighted power mean is positive when weights sum to 1 and zᵢ > 0. -/
+private lemma weightedPowerMean_pos
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hw' : ∑ i ∈ s, w i = 1)
+    (hz : ∀ i ∈ s, 0 < z i)
+    {p : ℝ} (hp : p ≠ 0) :
+    0 < weightedPowerMean s w z p hp :=
+  Real.rpow_pos_of_pos (weighted_sum_pos s w z hw hw' hz) (1 / p)
+
+/-- **Power Mean Monotonicity for r ≤ s < 0** (dual argument, fully proved).
+
+For r ≤ s with both negative, M_r(z,w) ≤ M_s(z,w).
+
+**Proof**: Let z' = z⁻¹. Since r ≤ s < 0, we have 0 < -s ≤ -r.
+By `power_mean_monotone_pos` applied to z' with exponents -s ≤ -r:
+  M_{-s}(z', w) ≤ M_{-r}(z', w)
+By `power_mean_neg_inv`: M_r(z) = M_{-r}(z')⁻¹ and M_s(z) = M_{-s}(z')⁻¹.
+Since 0 < M_{-s}(z') ≤ M_{-r}(z'), inverting reverses the inequality:
+  M_r(z) = M_{-r}(z')⁻¹ ≤ M_{-s}(z')⁻¹ = M_s(z). -/
+theorem power_mean_monotone_neg
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hw' : ∑ i ∈ s, w i = 1)
+    (hz : ∀ i ∈ s, 0 < z i)
+    {r t : ℝ} (hrt : r ≤ t) (ht : t < 0)
+    (hrne : r ≠ 0) (htne : t ≠ 0) :
+    weightedPowerMean s w z r hrne ≤ weightedPowerMean s w z t htne := by
+  have hr : r < 0 := lt_of_le_of_lt hrt ht
+  have hnr_pos : 0 < -r := neg_pos.mpr hr
+  have hnt_pos : 0 < -t := neg_pos.mpr ht
+  have hnrt : -t ≤ -r := neg_le_neg hrt
+  have hzinv : ∀ i ∈ s, 0 < (fun i => (z i)⁻¹) i :=
+    fun i hi => inv_pos.mpr (hz i hi)
+  -- Use consistent nonzero proofs throughout
+  have hrne_neg : -r ≠ 0 := neg_ne_zero.mpr hrne
+  have htne_neg : -t ≠ 0 := neg_ne_zero.mpr htne
+  -- M_{-t}(z⁻¹) ≤ M_{-r}(z⁻¹) by power_mean_monotone_pos
+  have h_mono : weightedPowerMean s w (fun i => (z i)⁻¹) (-t) htne_neg ≤
+                weightedPowerMean s w (fun i => (z i)⁻¹) (-r) hrne_neg :=
+    power_mean_monotone_pos s w (fun i => (z i)⁻¹) hw hw' hzinv hnt_pos hnrt
+      htne_neg hrne_neg
+  -- Both power means are positive
+  have h_neg_t_pos : 0 < weightedPowerMean s w (fun i => (z i)⁻¹) (-t) htne_neg :=
+    weightedPowerMean_pos s w (fun i => (z i)⁻¹) hw hw' hzinv htne_neg
+  have h_neg_r_pos : 0 < weightedPowerMean s w (fun i => (z i)⁻¹) (-r) hrne_neg :=
+    weightedPowerMean_pos s w (fun i => (z i)⁻¹) hw hw' hzinv hrne_neg
+  -- Convert M_r(z) and M_t(z) using the dual identity
+  rw [power_mean_neg_inv s w z hw hz hrne, power_mean_neg_inv s w z hw hz htne]
+  -- Goal: M_{-r}(z⁻¹)⁻¹ ≤ M_{-t}(z⁻¹)⁻¹
+  -- i.e., B⁻¹ ≤ A⁻¹ where A = M_{-t}(z⁻¹) ≤ B = M_{-r}(z⁻¹), 0 < A
+  -- Step: prove 1 ≤ A⁻¹ * B, then multiply both sides by B⁻¹
+  have h_t_ne : weightedPowerMean s w (fun i => (z i)⁻¹) (-t) htne_neg ≠ 0 :=
+    ne_of_gt h_neg_t_pos
+  have h_r_ne : weightedPowerMean s w (fun i => (z i)⁻¹) (-r) hrne_neg ≠ 0 :=
+    ne_of_gt h_neg_r_pos
+  have key : 1 ≤
+      (weightedPowerMean s w (fun i => (z i)⁻¹) (-t) htne_neg)⁻¹ *
+      (weightedPowerMean s w (fun i => (z i)⁻¹) (-r) hrne_neg) :=
+    calc (1 : ℝ)
+        = (weightedPowerMean s w (fun i => (z i)⁻¹) (-t) htne_neg) *
+          (weightedPowerMean s w (fun i => (z i)⁻¹) (-t) htne_neg)⁻¹ :=
+            (mul_inv_cancel₀ h_t_ne).symm
+      _ ≤ (weightedPowerMean s w (fun i => (z i)⁻¹) (-r) hrne_neg) *
+          (weightedPowerMean s w (fun i => (z i)⁻¹) (-t) htne_neg)⁻¹ :=
+            mul_le_mul_of_nonneg_right h_mono
+              (inv_nonneg.mpr (le_of_lt h_neg_t_pos))
+      _ = (weightedPowerMean s w (fun i => (z i)⁻¹) (-t) htne_neg)⁻¹ *
+          (weightedPowerMean s w (fun i => (z i)⁻¹) (-r) hrne_neg) :=
+            mul_comm _ _
+  have step := mul_le_mul_of_nonneg_right key
+    (inv_nonneg.mpr (le_of_lt h_neg_r_pos))
+  rw [one_mul] at step
+  rwa [mul_assoc, mul_inv_cancel₀ h_r_ne, mul_one] at step
+
 /-- **Power Mean Monotonicity** (general statement, partially proved).
 
 For r ≤ s with r, s ≠ 0, M_r(z, w) ≤ M_s(z, w).
 
 **Status**:
 - `power_mean_monotone_pos` proves this for 0 < r ≤ s.
-- The negative r case (r < 0 or mixed signs) requires additional work.
+- `power_mean_monotone_neg` proves this for r ≤ s < 0 (NEW — via dual argument).
+- The mixed-sign case (r < 0 < s) requires connecting to the geometric mean limit,
+  which remains open in Mathlib4.
 - Mathlib4 has a TODO for this: "generalized mean inequality with any p ≤ q,
   including negative numbers" (Mathlib.Analysis.MeanInequalities). -/
 axiom power_mean_monotone
@@ -259,5 +386,6 @@ Key proved relationships:
 - [✓] Jensen's inequality  (`jensen_pow_ineq` — from Mathlib)
 - [✓] HM ≤ GM  (`harmonic_mean_le_geom_mean_direct` — proved here)
 - [✓] M_r ≤ M_s for 0 < r ≤ s  (`power_mean_monotone_pos` — proved here)
-- [axiom] General monotonicity for negative r (open in Mathlib4 as of 2026) -/
+- [✓] M_r ≤ M_s for r ≤ s < 0  (`power_mean_monotone_neg` — proved here via dual argument)
+- [axiom] Mixed-sign case (r < 0 < s, crossing the geometric mean limit) -/
 theorem power_mean_interpolation_summary : True := trivial
