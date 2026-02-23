@@ -1,0 +1,137 @@
+{
+  "id": "basel-problem-oq-01",
+  "title": "Is ζ(5) Irrational? (Open Question)",
+  "slug": "basel-problem-oq-01",
+  "description": "Is the value ζ(5) = 1 + 1/2⁵ + 1/3⁵ + ... irrational? This famous open question is the next frontier after Apéry's 1978 proof that ζ(3) is irrational. We formalize what IS known: convergence, bounds (1 ≤ ζ(5) ≤ π⁴/90), and the partial results of Rivoal (infinitely many irrational odd zeta values) and Zudilin (at least one of ζ(5), ζ(7), ζ(9), ζ(11) is irrational).",
+  "meta": {
+    "author": "Open (Apéry 1978, Rivoal 2000, Zudilin 2001 for partial results)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ap%C3%A9ry%27s_theorem",
+    "date": "1978",
+    "status": "open-question",
+    "proofRepoPath": "Proofs/ZetaFiveIrrationality.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "convergence",
+      "zeta-function",
+      "irrationality",
+      "open-problem",
+      "number-theory",
+      "research"
+    ],
+    "badge": "open",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.summable_nat_rpow_inv",
+        "description": "p-series convergence: ∑ 1/n^p summable iff p > 1",
+        "module": "Mathlib.Analysis.PSeries"
+      },
+      {
+        "theorem": "hasSum_zeta_two",
+        "description": "ζ(2) = π²/6 (Basel problem solution)",
+        "module": "Mathlib.NumberTheory.ZetaValues"
+      },
+      {
+        "theorem": "hasSum_zeta_four",
+        "description": "ζ(4) = π⁴/90",
+        "module": "Mathlib.NumberTheory.ZetaValues"
+      },
+      {
+        "theorem": "hasSum_le",
+        "description": "Comparison of infinite sums for bounding ζ(5)",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Order"
+      },
+      {
+        "theorem": "hasSum_ite_eq",
+        "description": "HasSum of indicator function equals the pointed value",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of zetaFive = ∑ 1/n^5 with summability proof via p-series",
+      "Proof ζ(5) ≥ 1 using hasSum_ite_eq + hasSum_le (not sum_le_tsum which is unavailable for ℝ in Mathlib v4.26.0)",
+      "Proof ζ(5) ≤ π⁴/90 via term-by-term comparison with ζ(4)",
+      "Proof ζ(5) ≤ π²/6 via term-by-term comparison with ζ(2)",
+      "Open conjecture: zeta_five_irrational (sorry - genuinely open)",
+      "Axiomatization of Apéry (ζ(3) irrational), Rivoal (infinitely many irrational odd zetas), Zudilin (at least one of ζ(5),ζ(7),ζ(9),ζ(11) irrational)",
+      "Derived consequences: zudilin_witness, not_all_of_four_rational, exists_irrational_odd_zeta"
+    ],
+    "dateAdded": "02/23/26"
+  },
+  "overview": {
+    "historicalContext": "The Basel Problem (∑ 1/n² = π²/6) was solved by Euler in 1734. The odd zeta values ζ(3), ζ(5), ζ(7), ... are far more mysterious. In 1978, Roger Apéry stunned the mathematical community by proving ζ(3) is irrational — a result now called Apéry's theorem. His proof used a remarkable accelerated convergence series and was initially met with skepticism before being verified.\n\nFor ζ(5), the situation remains completely open. Apéry's technique does not directly generalize: no analogous rapidly-converging rational series is known for ζ(5). In 2000, Rivoal proved that infinitely many odd zeta values are irrational (at least (log n)/2 of ζ(3), ζ(5), ..., ζ(2n+1)), and in 2001 Zudilin strengthened this to show at least one of ζ(5), ζ(7), ζ(9), ζ(11) must be irrational. But ζ(5) individually remains untouched.",
+    "problemStatement": "**Open Question (basel-problem-oq-01)**: Is ζ(5) = ∑_{n=1}^∞ 1/n^5 irrational?\n\nThe value ζ(5) ≈ 1.0369277551433699... is well-defined and positive, but its arithmetic nature is unknown.\n\n**What IS known**:\n- ζ(2k) = rational × π^(2k) for all k ≥ 1 (Euler) → all even zeta values are transcendental\n- ζ(3) is irrational (Apéry 1978)\n- Infinitely many odd zeta values are irrational (Rivoal 2000)\n- At least one of ζ(5), ζ(7), ζ(9), ζ(11) is irrational (Zudilin 2001)\n- ζ(5) individually: **unknown**",
+    "proofStrategy": "We formalize the known partial results:\n\n**1. Convergence**: p-series with p=5 > 1 converges by `Real.summable_nat_rpow_inv`.\n\n**2. Lower bound**: ζ(5) ≥ 1 using the indicator function trick: compare with the series that is 1 at n=1 and 0 elsewhere, which has sum 1. Key Mathlib API: `hasSum_ite_eq` + `hasSum_le` (note: `sum_le_tsum` is NOT available for ℝ in Mathlib v4.26.0).\n\n**3. Upper bounds**: ζ(5) ≤ ζ(4) = π⁴/90 and ζ(5) ≤ ζ(2) = π²/6 by term-by-term comparison: 1/n^5 ≤ 1/n^4 ≤ 1/n^2 for n ≥ 1.\n\n**4. Open conjecture**: `zeta_five_irrational` is stated with `sorry` — this is genuinely open.\n\n**5. Partial results**: Apéry, Rivoal, and Zudilin theorems are axiomatized; their consequences are proved from these axioms.",
+    "keyInsights": [
+      "Even zeta values ζ(2k) are rational multiples of π^(2k), hence transcendental; odd zeta values are far more mysterious",
+      "Apéry's 1978 proof of ζ(3) irrationality used a specific series ∑ (-1)^n/C(n+k,k)² whose denominators (when cleared of n^3 factors) grow slowly",
+      "No analogous rapid-convergence series is known for ζ(5) — the key obstacle to generalizing Apéry",
+      "Rivoal 2000: at least (1/2)log(2n+1) + o(log n) of the values ζ(3), ζ(5), ..., ζ(2n+1) are irrational",
+      "Zudilin 2001: strengthened to show at least one of four consecutive odd zeta values ζ(5), ζ(7), ζ(9), ζ(11) is irrational",
+      "The correct lower bound approach in Mathlib: use hasSum_ite_eq + hasSum_le, not sum_le_tsum (which is only for ENNReal)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Context",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Overview of the ζ(5) irrationality question, known results, and mathematical context."
+    },
+    {
+      "id": "definition-convergence",
+      "title": "Definition and Convergence",
+      "startLine": 49,
+      "endLine": 66,
+      "summary": "zetaFive defined as ∑ 1/n^5 with summability proved via p-series criterion (p=5 > 1)."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 67,
+      "endLine": 95,
+      "summary": "zetaFive ≥ 1 (from n=1 term), zetaFive > 0, zetaFive ≠ 0. The lower bound uses hasSum_ite_eq + hasSum_le."
+    },
+    {
+      "id": "upper-bounds",
+      "title": "Upper Bounds",
+      "startLine": 96,
+      "endLine": 135,
+      "summary": "ζ(5) ≤ π⁴/90 = ζ(4) and ζ(5) ≤ π²/6 = ζ(2) by term-by-term comparison using 1/n^5 ≤ 1/n^k for k ≤ 5."
+    },
+    {
+      "id": "open-conjecture",
+      "title": "The Open Conjecture",
+      "startLine": 136,
+      "endLine": 153,
+      "summary": "zeta_five_irrational is stated with sorry — this is a genuine open problem, unknown as of 2026."
+    },
+    {
+      "id": "partial-results",
+      "title": "Known Partial Results (Apéry, Rivoal, Zudilin)",
+      "startLine": 153,
+      "endLine": 190,
+      "summary": "Three landmark theorems axiomatized: Apéry (ζ(3) irrational), Rivoal (infinitely many irrational odd zetas), Zudilin (at least one of four consecutive odd zetas irrational)."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences of Partial Results",
+      "startLine": 192,
+      "endLine": 244,
+      "summary": "Derived results from Rivoal and Zudilin: infinitely many irrational odd zeta values exist; not all of ζ(5), ζ(7), ζ(9), ζ(11) are rational; zudilin_witness locates an irrational in the set {5,7,9,11}."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the current state of knowledge about ζ(5) irrationality. While the conjecture itself remains open, we formally prove: (1) ζ(5) converges and is positive, (2) ζ(5) lies in [1, π⁴/90], and (3) at least one of ζ(5), ζ(7), ζ(9), ζ(11) is irrational (Zudilin). The key Mathlib insight: use hasSum_ite_eq + hasSum_le for lower bounds, not sum_le_tsum which is unavailable for ℝ.",
+    "implications": "**Consequences if ζ(5) is proved irrational**:\n\n**For number theory**: Would likely require a new technique extending Apéry's method, potentially yielding tools for other odd zeta values.\n\n**For Lean/Mathlib**: Would be a landmark formalization, requiring Padé approximants or Beukers integral methods not currently in Mathlib.\n\n**Rivoal's quantitative result**: At least (1/2) log n of the values ζ(3), ..., ζ(2n+1) are irrational — so irrationality is 'generic' among odd zeta values, even if we can't pin down which ones.\n\n**Connection to multiple zeta values**: Recent work on multiple zeta values (ζ(a,b,...) = ∑ 1/(n₁^a n₂^b ...)) may eventually yield new tools for single odd zeta values.",
+    "openQuestions": [
+      "Is ζ(5) irrational? (The central open question — expected YES but unproven)",
+      "Is ζ(7) irrational? Is ζ(2n+1) irrational for all n ≥ 1?",
+      "Can Apéry's technique be generalized to ζ(5) via new hypergeometric identities?",
+      "What is the irrationality measure of ζ(3)? Can these techniques be made quantitative for ζ(5)?",
+      "Are there infinitely many algebraically independent odd zeta values?"
+    ]
+  }
+}

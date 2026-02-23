@@ -1,7 +1,7 @@
 {
   "slug": "basel-problem-oq-01",
   "title": "Is ζ(5) irrational",
-  "phase": "NEW",
+  "phase": "COMPLETE",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
+    "phase": "COMPLETE",
     "since": "2026-02-21T19:21:07.130Z",
     "iteration": 1,
-    "focus": "Proved convergence and bounds; open conjecture stated",
+    "focus": "Gallery entry created; proof builds with 1 expected sorry (open conjecture)",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No further action - problem is an open question; gallery entry complete",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved convergence, positivity, bounds (1 ≤ ζ(5) ≤ π⁴/90), stated open conjecture; axiomatized Apéry/Rivoal/Zudilin partial results",
+    "progressSummary": "COMPLETE: Gallery entry created; proof builds (1 expected sorry for open conjecture); accessible in web gallery",
     "builtItems": [
       "summable_one_div_pow_five: Summable (fun n => 1/(n:ℝ)^5)",
       "zetaFive_ge_one: 1 ≤ ζ(5) via hasSum_ite_eq + hasSum_le",
@@ -38,7 +38,9 @@
       "zeta_five_irrational: sorry (OPEN PROBLEM)",
       "apery_theorem, rivoal_theorem, zudilin_theorem as axioms",
       "zudilin_witness, not_all_of_four_rational: consequences of Zudilin",
-      "File: proofs/Proofs/ZetaFiveIrrationality.lean (builds with only 1 expected sorry)"
+      "File: proofs/Proofs/ZetaFiveIrrationality.lean (builds with only 1 expected sorry)",
+      "Gallery entry: src/data/proofs/basel-problem-oq-01/ with meta.json, index.ts, annotations.json",
+      "listings.json updated with basel-problem-oq-01 entry (badge: open, sorries: 1)"
     ],
     "insights": [
       "ζ(5) is an OPEN problem - irrationality unknown as of 2026",
@@ -47,7 +49,8 @@
       "Zudilin 2001: at least one of ζ(5), ζ(7), ζ(9), ζ(11) is irrational",
       "hasSum_ite_eq + hasSum_le is the correct way to prove tsum ≥ single term in Mathlib v4.26.0",
       "sum_le_tsum is NOT available for ℝ in Mathlib v4.26.0 (only ENNReal has it)",
-      "one_div_le_one_div_of_le is the correct lemma for 1/a ≥ 1/b from a ≤ b"
+      "one_div_le_one_div_of_le is the correct lemma for 1/a ≥ 1/b from a ≤ b",
+      "Gallery entry created with badge=open, status=open-question to distinguish from verified proofs"
     ],
     "mathlibGaps": [
       "Apéry theorem for ζ(3) not in Mathlib (stated as axiom)",
