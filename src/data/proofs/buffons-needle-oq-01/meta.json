@@ -1,0 +1,134 @@
+{
+  "id": "buffons-needle-oq-01",
+  "title": "Buffon's Noodle: Curved Needle Generalization",
+  "slug": "buffons-needle-oq-01",
+  "description": "Buffon's Noodle Theorem: any curve of length L dropped randomly on a floor with parallel lines (spacing d) has expected crossings 2L/(πd) — the same formula as a straight needle! The key insight is linearity of expectation: the shape of the noodle does not matter, only its total arc length.",
+  "meta": {
+    "author": "Barbier (1860), extending Buffon (1777)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle",
+    "date": "1860",
+    "status": "open-question",
+    "proofRepoPath": "Proofs/BuffonsNoodle.lean",
+    "tags": [
+      "probability",
+      "geometric-probability",
+      "integration",
+      "linearity-of-expectation",
+      "integral-geometry",
+      "cauchy-crofton",
+      "extension",
+      "challenging"
+    ],
+    "badge": "open",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.mul_sum",
+        "description": "Distributes constant multiplication over finite sums",
+        "module": "Mathlib.Algebra.BigOperators.Ring.Finset"
+      },
+      {
+        "theorem": "Real.pi_pos",
+        "description": "π > 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Fin.sum_univ_four",
+        "description": "Sum over Fin 4 splits into four terms",
+        "module": "Mathlib.Data.Fin.Tuple.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Definition of PolygonalNoodle structure with segment lengths",
+      "Proof of Buffon's Noodle Theorem for polygons: E[crossings] = 2L/(πd)",
+      "Shape independence theorem: same total length → same expected crossings",
+      "needle_equals_noodle: single needle has same expectation as any equal-length polygon",
+      "Scaling theorem: expected crossings scale linearly with segment lengths",
+      "Concrete applications: circle (4r/d), square (8s/(πd)), regular n-gon (2ns/(πd))",
+      "Documentation of Cauchy-Crofton connection and smooth curve generalization requirements"
+    ],
+    "dateAdded": "02/23/26"
+  },
+  "overview": {
+    "historicalContext": "In 1777, Georges-Louis Leclerc, Comte de Buffon, posed his famous needle problem: what is the probability that a needle of length L dropped on a floor with parallel lines (spacing d) crosses a line? The answer, 2L/(πd), connects probability to π in a surprising way.\n\nIn 1860, Joseph-Émile Barbier generalized this to curved 'needles' — any rectifiable curve. The key insight was that the expected number of crossings depends ONLY on the total arc length, not on the shape. A coiled spring of length L has the same expected crossings as a straight needle of length L. This is Buffon's Noodle Theorem.\n\nThe generalization to smooth curves uses a beautiful argument based on linearity of expectation: approximate the curve by polygonal segments, apply the needle formula to each segment, sum up. The result depends only on total length because the needle formula is linear in length.",
+    "problemStatement": "**Theorem (Buffon-Barbier, 1860)**: For any polygonal path with segments of lengths L₁,...,Lₙ ≥ 0, when dropped randomly on a floor with parallel lines spaced distance d apart, the expected number of line crossings is:\n\n$$E[\\text{crossings}] = \\frac{2(L_1 + \\cdots + L_n)}{\\pi d} = \\frac{2L}{\\pi d}$$\n\nwhere L = L₁ + ... + Lₙ is the total length. This formula depends only on L, not on the shape.\n\n**Open Question (smooth case)**: Does this extend to smooth rectifiable curves? Yes, mathematically (Buffon-Barbier), but the formal Lean proof requires arc length theory for smooth curves, which is not yet fully formalized.",
+    "proofStrategy": "**Key Idea**: Linearity of expectation.\n\n**Polygonal Case** (fully proved):\n1. Define `segmentCrossingProb ℓ d = 2ℓ/(πd)` (from Buffon's Needle)\n2. For a PolygonalNoodle with n segments of lengths L₁,...,Lₙ, define `expectedCrossings = ∑ᵢ segmentCrossingProb Lᵢ d`\n3. **Proof**: Factor out 2/(πd) from the sum:\n   ```\n   ∑ᵢ 2Lᵢ/(πd) = (2/(πd)) × ∑ᵢ Lᵢ = 2L/(πd)\n   ```\n   This uses `Finset.mul_sum` to pull the constant factor out.\n\n**Shape Independence**: Immediate corollary — if N₁.totalLength = N₂.totalLength then N₁.expectedCrossings = N₂.expectedCrossings.\n\n**Smooth Curve Extension** (open in Lean): The polygonal approximation argument shows the formula is preserved under limits in arc length. Requires Mathlib's arc length theory.",
+    "keyInsights": [
+      "The crossing probability formula 2ℓ/(πd) is LINEAR in ℓ — this is the entire reason the noodle generalization works",
+      "Linearity of expectation: E[sum of crossings] = sum of E[crossings], even for correlated events",
+      "The shape of the noodle is irrelevant — only the total arc length determines the expected crossings",
+      "The proof is purely algebraic once we accept the needle formula: just factor out 2/(πd) from a finite sum",
+      "The Cauchy-Crofton formula generalizes this to arbitrary measures on the space of lines",
+      "Applications: stereology uses this principle to estimate fiber lengths from cross-sections"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and History",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Historical context: Buffon (1777) for needles, Barbier (1860) for curved needles. Statement of the noodle theorem and the Cauchy-Crofton connection."
+    },
+    {
+      "id": "crossing-prob",
+      "title": "Crossing Probability for Single Segments",
+      "startLine": 60,
+      "endLine": 93,
+      "summary": "segmentCrossingProb ℓ d = 2ℓ/(πd), with linearity, zero, and nonnegativity properties."
+    },
+    {
+      "id": "polygonal-noodle",
+      "title": "Polygonal Noodle Structure",
+      "startLine": 96,
+      "endLine": 133,
+      "summary": "PolygonalNoodle structure with n segments, totalLength, and expectedCrossings definitions."
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Noodle Theorem (Polygonal Case)",
+      "startLine": 135,
+      "endLine": 165,
+      "summary": "buffon_noodle_polygon: E[crossings] = 2L/(πd). Proved by factoring out 2/(πd) using Finset.mul_sum."
+    },
+    {
+      "id": "shape-independence",
+      "title": "Shape Independence",
+      "startLine": 166,
+      "endLine": 190,
+      "summary": "Two noodles with the same total length have identical expected crossings. needle_equals_noodle: single needle = any equal-length polygon."
+    },
+    {
+      "id": "scaling",
+      "title": "Scaling Theorem",
+      "startLine": 191,
+      "endLine": 215,
+      "summary": "Expected crossings scale linearly with segment lengths: scaling by c multiplies crossings by c."
+    },
+    {
+      "id": "smooth-generalization",
+      "title": "Smooth Curve Generalization (Open)",
+      "startLine": 216,
+      "endLine": 257,
+      "summary": "buffon_noodle_smooth axiom: the smooth curve version. Documents what's needed: arc length theory, polygonal approximation, continuity of crossing functional."
+    },
+    {
+      "id": "examples",
+      "title": "Numerical Examples",
+      "startLine": 270,
+      "endLine": 305,
+      "summary": "circle_expected_crossings (4r/d), square_expected_crossings (8s/(πd)), regular_polygon_crossings (2ns/(πd))."
+    }
+  ],
+  "conclusion": {
+    "summary": "Buffon's Noodle Theorem is one of the most elegant results in geometric probability: the expected number of crossings with a parallel line grid depends only on total arc length, not shape. We formally prove this for polygonal noodles using `Finset.mul_sum` to factor out the constant 2/(πd). The smooth curve generalization requires arc length theory not yet fully available in Lean/Mathlib.",
+    "implications": "**Mathematical Significance**:\n\n**1. Linearity of Expectation in Geometry**\nThe noodle theorem is a beautiful application of linearity of expectation to geometric probability. It demonstrates that seemingly complex geometric properties (which crossings occur) are governed by simple linear summation.\n\n**2. Foundation for Stereology**\nIn microscopy and materials science, stereology uses the noodle theorem to estimate fiber lengths from 2D cross-sections: measure crossings with random lines to estimate total fiber length.\n\n**3. Cauchy-Crofton Formula**\nThe noodle theorem is a special case of the Cauchy-Crofton formula:\n   ∫∫ n(C, l) dρ dθ = 2 · length(C)\nwhere the integral is over all lines l in the plane. This deep result in integral geometry generalizes to arbitrary measures on lines and curves.\n\n**4. Formalization Gap**\nThe smooth curve case requires `Mathlib.Analysis.Calculus.ArcLength` to be more fully developed. This is an active area in Mathlib where contributions would enable many more geometric probability results.",
+    "openQuestions": [
+      "Formally prove the smooth curve case using Mathlib's arc length theory for C¹ curves",
+      "Formalize the full Cauchy-Crofton formula in integral geometry",
+      "Higher-dimensional versions: expected crossings with hyperplane arrangements in ℝⁿ",
+      "Connection to Buffon's coin (circular needle) and generalizations to 2D objects",
+      "Stochastic geometry: distribution of crossings, not just expectation"
+    ]
+  }
+}
