@@ -110,7 +110,8 @@
     }
   ],
   "conclusion": {
-    "text": "Cantor's diagonal argument is powerful enough to generate the entire beth number tower ℵ₀ < 2^ℵ₀ < 2^(2^ℵ₀) < ⋯ and to establish the fundamental bounds ℵ₀ < ℵ₁ ≤ 2^ℵ₀. But it reaches its fundamental limit when asked whether any cardinality lies *between* ℵ₀ and 2^ℵ₀. The Continuum Hypothesis — that no such intermediate cardinal exists — is provably independent of ZFC (Gödel-Cohen), meaning the diagonal argument, however iterated, cannot resolve this question.",
+    "summary": "Cantor's diagonal argument is powerful enough to generate the entire beth number tower ℵ₀ < 2^ℵ₀ < 2^(2^ℵ₀) < ⋯ and to establish the fundamental bounds ℵ₀ < ℵ₁ ≤ 2^ℵ₀.",
+    "implications": "But it reaches its fundamental limit when asked whether any cardinality lies *between* ℵ₀ and 2^ℵ₀. The Continuum Hypothesis — that no such intermediate cardinal exists — is provably independent of ZFC (Gödel-Cohen), meaning the diagonal argument, however iterated, cannot resolve this question.",
     "openQuestions": [
       "Does there exist a cardinal κ with ℵ₀ < κ < 2^ℵ₀? (The Continuum Hypothesis — independent of ZFC)",
       "Is the Continuum Hypothesis decided by large cardinal axioms?",
