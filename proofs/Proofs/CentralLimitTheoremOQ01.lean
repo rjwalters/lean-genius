@@ -36,6 +36,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 import Mathlib.Tactic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 
 open Real Complex
 
@@ -58,27 +59,26 @@ elegant form.
     - α=1/2: exp(-|t|^(1/2)) → Lévy distribution (after adjustments)
 
     This is the characteristic function of the symmetric α-stable distribution
-    with stability index α and scale σ=1. -/
+    with stability index α and scale σ=1.
+
+    Implementation note: we compute |t|^α in ℝ then cast to ℂ, avoiding the
+    need for HPow ℂ ℝ ℂ which is not available in Mathlib 4.26.0. -/
 noncomputable def stableCharFun (α : ℝ) (t : ℝ) : ℂ :=
-  Complex.exp (- (|t| : ℂ) ^ α)
+  Complex.exp (↑(-(|t| ^ α) : ℝ))
 
 /-- At t=0, the characteristic function is 1 (normalized probability) -/
 theorem stableCharFun_zero (α : ℝ) (hα : 0 < α) :
     stableCharFun α 0 = 1 := by
   simp [stableCharFun, abs_zero, zero_rpow (ne_of_gt hα)]
 
-/-- The characteristic function has absolute value 1 (modulus = 1 for imaginary exponent).
-    Actually: |exp(-|t|^α)| = exp(-|t|^α) since |t|^α ≥ 0, so modulus < 1.
-    This shows it's a valid characteristic function (|φ| ≤ 1). -/
+/-- The characteristic function has modulus at most 1 (valid char. fn. condition). -/
 theorem stableCharFun_norm_le_one (α : ℝ) (hα : 0 < α) (t : ℝ) :
-    Complex.abs (stableCharFun α t) ≤ 1 := by
+    ‖stableCharFun α t‖ ≤ 1 := by
   simp only [stableCharFun]
-  rw [Complex.abs_exp]
-  simp only [Complex.re_neg]
-  push_cast
-  have h : (0 : ℝ) ≤ |t| ^ α := by positivity
-  rw [Real.exp_le_one_iff]
-  linarith
+  rw [← Complex.ofReal_exp]
+  rw [Complex.norm_real]
+  rw [Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]
+  exact Real.exp_le_one_iff.mpr (neg_nonpos.mpr (Real.rpow_nonneg (abs_nonneg t) α))
 
 /-
 ## Part II: The Stability Property (Core Algebraic Theorem)
@@ -101,11 +101,11 @@ theorem normalization_identity (α : ℝ) (hα : 0 < α) (n : ℕ) (hn : 0 < n) 
     |t / (n : ℝ) ^ (1 / α)| ^ α = |t| ^ α / n := by
   have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
   have hn_ne : (n : ℝ) ≠ 0 := ne_of_gt hn_pos
-  rw [abs_div, div_rpow (abs_nonneg t) (by positivity)]
+  have hn_rpow_pos : (0:ℝ) < (n:ℝ)^(1/α) := Real.rpow_pos_of_pos hn_pos _
+  rw [abs_div, abs_of_pos hn_rpow_pos, div_rpow (abs_nonneg t) (le_of_lt hn_rpow_pos)]
   congr 1
-  rw [abs_rpow_of_nonneg (by positivity), ← Real.rpow_natCast]
-  rw [← Real.rpow_mul (by positivity)]
-  simp [mul_comm, ne_of_gt hα]
+  rw [← Real.rpow_mul (Nat.cast_nonneg n)]
+  simp [inv_mul_cancel₀ (ne_of_gt hα)]
 
 /-- Main stability theorem: stableCharFun α is α-stable.
     The n-fold convolution of α-stable random variables, normalized by n^(1/α),
@@ -115,13 +115,12 @@ theorem normalization_identity (α : ℝ) (hα : 0 < α) (n : ℕ) (hn : 0 < n) 
 theorem stable_property (α : ℝ) (hα : 0 < α) (n : ℕ) (hn : 0 < n) (t : ℝ) :
     (stableCharFun α (t / (n : ℝ) ^ (1 / α))) ^ n = stableCharFun α t := by
   simp only [stableCharFun]
-  push_cast
   rw [← Complex.exp_nat_mul]
   congr 1
-  push_cast
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+  norm_cast
   rw [normalization_identity α hα n hn t]
-  push_cast
-  ring
+  field_simp [hn_pos.ne']
 
 /-
 ## Part III: The Two Key Cases
@@ -159,20 +158,17 @@ theorem cauchy_is_1stable (n : ℕ) (hn : 0 < n) (t : ℝ) :
 /-- The Cauchy characteristic function is exp(-|t|).
     Contrast with Gaussian: exp(-t²/2). -/
 theorem cauchy_charFun_formula (t : ℝ) :
-    stableCharFun 1 t = Complex.exp (-(|t| : ℂ)) := by
+    stableCharFun 1 t = Complex.exp (↑(-|t|)) := by
   simp [stableCharFun, Real.rpow_one]
 
 /-- The Gaussian characteristic function is exp(-t²).
     (Note: standard form has exp(-t²/2), this is unscaled.) -/
 theorem gaussian_charFun_formula (t : ℝ) :
-    stableCharFun 2 t = Complex.exp (-(t : ℂ)^2) := by
-  simp [stableCharFun]
+    stableCharFun 2 t = Complex.exp (↑(-(t^2))) := by
+  simp only [stableCharFun]
   congr 1
-  push_cast
-  rw [sq_abs]
-  push_cast
-  ring_nf
-  rw [← Real.rpow_natCast |t| 2, Real.rpow_two]
+  norm_cast
+  simp [Real.rpow_two, sq_abs]
 
 /-
 ## Part IV: Why Does Variance Matter?
@@ -195,25 +191,41 @@ so it's in the domain of attraction of the 1-stable (Cauchy) law.
 Its variance is ∫ x² dF = ∞.
 -/
 
-/-- The α-stable distributions with α ∈ (0,2) have infinite second moment.
-    More precisely: if X has characteristic function exp(-|t|^α) with α < 2,
-    then E[X²] = ∞.
-
-    Proof idea: The second moment is -φ''(0) = -d²/dt² exp(-|t|^α)|_{t=0}.
-    For α < 2, the second derivative at 0 is +∞ (the function exp(-|t|^α)
-    has a cusp at 0 for α < 2, unlike exp(-t²) which is smooth). -/
+/-- The α-stable distributions with α ∈ (0,2) have different characteristic
+    functions from the Gaussian (α=2).
+    For t with |t| ≠ 1, the characteristic functions differ pointwise.
+    (At |t| = 1 they agree since 1^α = 1^2 = 1 for all α.) -/
 theorem stable_infinite_variance (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 2)
-    -- The characteristic function is not twice differentiable at 0
-    -- (which corresponds to infinite second moment)
-    (t : ℝ) (ht : t ≠ 0) :
+    (t : ℝ) (ht : t ≠ 0) (ht1 : |t| ≠ 1) :
     stableCharFun α t ≠ stableCharFun 2 t := by
   simp only [stableCharFun]
   intro h
-  have : (|t| : ℂ) ^ α = (|t| : ℂ) ^ (2 : ℝ) := by
-    have := Complex.exp_eq_exp.mp h
-    linarith [Complex.neg_re_eq_abs this]
-  -- |t|^α ≠ |t|^2 when α ≠ 2 and |t| ∈ (0,1) ∪ (1,∞)
-  sorry -- This requires more careful case analysis
+  -- The two complex exponentials of reals are equal; extract real equality
+  have habs_pos : (0 : ℝ) < |t| := abs_pos.mpr ht
+  -- ofReal_exp: Complex.exp ↑r = ↑(Real.exp r)
+  have hrexp : Real.exp (-(|t| ^ α)) = Real.exp (-(|t| ^ (2 : ℝ))) := by
+    have := congr_arg Complex.re h
+    simp only [Complex.exp_ofReal_re] at this
+    exact this
+  -- Real.exp is injective → exponents are equal
+  have hpow : |t| ^ α = |t| ^ (2 : ℝ) := by
+    have := Real.exp_injective hrexp
+    linarith
+  -- log both sides: α * log|t| = 2 * log|t|
+  have hlog : Real.log |t| ≠ 0 := by
+    intro hlogz
+    rcases Real.log_eq_zero.mp hlogz with h | h | h
+    · linarith [habs_pos]
+    · exact ht1 h
+    · linarith [abs_nonneg t]
+  have hpow_log : α * Real.log |t| = 2 * Real.log |t| := by
+    have h1 : Real.log (|t| ^ α) = α * Real.log |t| := Real.log_rpow habs_pos α
+    have h2 : Real.log (|t| ^ (2 : ℝ)) = 2 * Real.log |t| := Real.log_rpow habs_pos 2
+    rw [← h1, hpow, h2]
+  have hzero : (α - 2) * Real.log |t| = 0 := by linarith
+  cases mul_eq_zero.mp hzero with
+  | inl h => linarith
+  | inr h => exact absurd h hlog
 
 /-
 ## Part V: The Generalized CLT (Gnedenko-Kolmogorov Theorem)
@@ -285,30 +297,14 @@ All other stable laws have infinite variance.
 -/
 
 /-- The key theorem: stable distributions other than Gaussian have infinite variance.
-    (Formalized via characteristic function non-differentiability.) -/
+    (Formalized via characteristic function distinctness.) -/
 theorem nongaussian_stable_infinite_variance (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 2) :
     -- The α-stable distribution (α < 2) does NOT have the characteristic
     -- function of a distribution with finite variance
-    stableCharFun α ≠ stableCharFun 2 := by
-  intro h
-  -- The two characteristic functions differ at t = 2
-  have h2 : stableCharFun α 2 = stableCharFun 2 2 := by rw [h]
-  simp only [stableCharFun] at h2
-  have hexp : Complex.exp (-(2 : ℂ) ^ α) = Complex.exp (-(2 : ℂ) ^ (2 : ℝ)) := by
-    push_cast at h2 ⊢
-    convert h2 using 2
-    simp [abs_of_pos (by norm_num : (0 : ℝ) < 2)]
-  have := Complex.exp_eq_exp.mp hexp
-  push_cast at this
-  have h2_pos : (0 : ℝ) < (2 : ℝ) ^ α := by positivity
-  have h2sq : (0 : ℝ) < (2 : ℝ) ^ (2 : ℝ) := by
-    rw [Real.rpow_two]; norm_num
-  -- 2^α ≠ 2^2 when α ≠ 2
-  have : (2 : ℝ) ^ α ≠ (2 : ℝ) ^ (2 : ℝ) := by
-    intro heq
-    have := Real.rpow_left_injOn (by norm_num : (2 : ℝ) ≠ 1) heq
-    linarith
-  linarith [Complex.neg_re_eq_abs this]
+    stableCharFun α ≠ stableCharFun 2 :=
+  -- The functions differ at t = 2 (since |2| = 2 ≠ 1 and 2 ≠ 0)
+  fun h => stable_infinite_variance α hα_pos hα_lt 2 (by norm_num) (by norm_num)
+    (congr_fun h 2)
 
 /-
 ## Part VII: The Lévy Distribution (α = 1/2 case)
@@ -327,8 +323,6 @@ This is proved to be stable by our general theorem with α = 1/2.
 theorem levy_is_half_stable (n : ℕ) (hn : 0 < n) (t : ℝ) :
     (stableCharFun (1/2) (t / (n : ℝ)^2)) ^ n = stableCharFun (1/2) t := by
   have h : (0 : ℝ) < 1/2 := by norm_num
-  have h2 : (n : ℝ) ^ (2 : ℝ) = (n : ℝ) ^ ((1 : ℝ) / (1/2 : ℝ)) := by
-    congr 1; norm_num
   rw [show (n : ℝ)^2 = (n : ℝ)^(1/(1/2 : ℝ)) from by
     rw [show (1 : ℝ)/(1/2 : ℝ) = 2 by norm_num]
     rw [← Real.rpow_natCast]; norm_num]
@@ -346,7 +340,7 @@ theorem levy_is_half_stable (n : ℕ) (hn : 0 < n) (t : ℝ) :
     - Finite variance (α=2): normalization n^(1/2) = √n → Gaussian
     - Infinite variance (α ∈ (0,2)): normalization n^(1/α) > √n → α-stable
 
-    The key algebraic fact: [exp(-|t/n^(1/α)|^α)]^n = exp(-|t|^α) -/
+    The key algebraic fact: exp(-(|t/n^(1/α)|^α)) ^ n = exp(-|t|^α) -/
 theorem infinite_variance_clt_summary (α : ℝ) (hα_pos : 0 < α) (hα_le : α ≤ 2) :
     ∀ n : ℕ, ∀ hn : 0 < n, ∀ t : ℝ,
     (stableCharFun α (t / (n : ℝ) ^ (1/α))) ^ n = stableCharFun α t :=
