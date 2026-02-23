@@ -6,7 +6,7 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∃ C : ℕ, ∀ᶠ n in atTop, nthPrime (n+1) - nthPrime n ≤ C. Specifically C = 246 (Polymath 8b) and conditionally C = 12 (under Elliott-Halberstam).",
+    "formal": "\u2203 C : \u2115, \u2200\u1da0 n in atTop, nthPrime (n+1) - nthPrime n \u2264 C. Specifically C = 246 (Polymath 8b) and conditionally C = 12 (under Elliott-Halberstam).",
     "plain": "There are infinitely many pairs of primes that differ by at most 246. This was proved by Zhang (2013, with bound 70,000,000) and optimized by Polymath 8b (2014, bound 246). Maynard-Tao (2015) generalized to m-tuples.",
     "whyMatters": [
       "Landmark result in analytic number theory (Zhang 2013)",
@@ -21,13 +21,16 @@
       "Admissible tuple framework: empty, singleton, subset, card < 2 cases",
       "Specific admissible tuples: {0,2}, {0,2,6}, {0,4,6}, {0,2,6,8}, {0,2,6,8,12}, {0,4,6,10,12}",
       "Non-admissibility: {0,1}, {0,1,2}, {0,1,2,3,4}, general range criterion",
-      "Polymath 50-tuple constructive existence (50 elements, diameter ≤ 246)",
+      "Polymath 50-tuple constructive existence (50 elements, diameter \u2264 246)",
       "Zhang bound 70M follows from Polymath bound 246",
-      "nthPrime properties: primality, strict monotonicity, positivity, p₀=2, p₁=3",
-      "Prime gap properties: positivity, evenness for n≥1, gap ≥ 2 for n≥1",
-      "Consequences: liminf ≤ 246, bounded consecutive gaps from m-tuples",
+      "nthPrime properties: primality, strict monotonicity, positivity, p\u2080=2, p\u2081=3",
+      "Prime gap properties: positivity, evenness for n\u22651, gap \u2265 2 for n\u22651",
+      "Consequences: liminf \u2264 246, bounded consecutive gaps from m-tuples",
       "Dickson connections: twin primes from {0,2}, prime triples from {0,2,6}",
-      "Elliott-Halberstam conditional bound (12) implies Polymath bound (246)"
+      "Elliott-Halberstam conditional bound (12) implies Polymath bound (246)",
+      "Factorial construction: N_fac+k is composite for 2 <= k <= N (elementary, no sieve theory)",
+      "Prime gaps unbounded: forall N, exists n, primeGap n >= N (proved via factorial construction)",
+      "Oscillatory behavior: prime_gaps_oscillate combining Polymath + factorial results"
     ],
     "axiomatized": [
       "polymath_bounded_gaps_246: Polymath 8b main result (sieve theory)",
@@ -38,12 +41,14 @@
   "knowledge": {
     "insights": [
       "Admissible tuples are the right abstraction - their formal definition (for all p, |image mod p| < p) is clean and computable",
-      "The Polymath 50-tuple can be verified constructively via native_decide for each prime ≤ 47, then interval_cases + decide for composites 48-52",
+      "The Polymath 50-tuple can be verified constructively via native_decide for each prime \u2264 47, then interval_cases + decide for composites 48-52",
       "Zhang's original 70M bound follows trivially from Polymath's 246 (converted axiom to theorem)",
       "Dickson conjecture for specific tuples implies specific prime pattern conjectures (twin primes, triples)",
-      "Even prime gaps for n ≥ 1 follows from both p_n, p_{n+1} being odd primes (≥ 3)",
+      "Even prime gaps for n \u2265 1 follows from both p_n, p_{n+1} being odd primes (\u2265 3)",
       "The 3 remaining axioms are deep sieve theory (Selberg sieve, Bombieri-Vinogradov, GPY) - not in Mathlib",
-      "Fixed build issue: omega can't handle prime enumeration in range; use interval_cases + decide instead"
+      "Fixed build issue: omega can't handle prime enumeration in range; use interval_cases + decide instead",
+      "Factorial construction: N_fac+k is composite for 2 <= k <= N, giving arbitrarily large prime gap runs. Elementary - no sieve theory needed.",
+      "Prime gaps oscillate: liminf <= 246 (Zhang/Polymath) AND limsup = inf (factorial). Together they characterize the oscillatory nature of prime gaps."
     ],
     "builtItems": [
       "BoundedPrimeGaps.lean: 1350 lines, 90 proved theorems, 3 axioms, 0 sorries",
@@ -51,9 +56,12 @@
       "Polymath 50-tuple constructive proof of exists_admissible_50_tuple_246",
       "nthPrime and primeGap definitions with structural properties",
       "Connections to twin prime conjecture and Dickson conjecture",
-      "Fixed omega build error at line 349 using interval_cases"
+      "Fixed omega build error at line 349 using interval_cases",
+      "factorial_add_composite: N_fac+k composite for 2 <= k <= N (BoundedPrimeGaps.lean)",
+      "prime_gaps_unbounded: forall N, exists n, N <= primeGap n - proved by contradiction using factorial composites",
+      "prime_gaps_oscillate: combines Polymath (liminf <= 246) with factorial (limsup = inf)"
     ],
     "nextSteps": [],
-    "progressSummary": "COMPLETE: Comprehensive formalization of bounded prime gaps. 90 proved theorems, 3 axioms (deep sieve theory), 0 sorries. Fixed build error. Axioms are fundamental results requiring Selberg sieve infrastructure not available in Mathlib."
+    "progressSummary": "COMPLETE: Comprehensive formalization of bounded prime gaps. 94+ proved theorems, 3 axioms (deep sieve theory), 0 sorries. Includes complementary large prime gap construction via factorials."
   }
 }

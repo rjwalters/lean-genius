@@ -1290,6 +1290,112 @@ theorem nthPrime_le_of_gaps_bounded (H : ℕ)
       _ = 2 + (k + 1) * H := by ring
 
 /-
+## Part XXI: Large Prime Gaps (Factorial Construction)
+
+The complementary result to bounded prime gaps: prime gaps are UNBOUNDED.
+While Zhang/Polymath proved liminf(primeGap) ≤ 246, the factorial construction
+shows limsup(primeGap) = ∞.
+
+**Key idea**: N! + k is composite for each 2 ≤ k ≤ N, because k ∣ N! (as k ≤ N)
+and thus k ∣ N! + k. Since k ≥ 2 and N! > 0, the number N! + k is composite.
+This gives N - 1 consecutive composite numbers starting at N! + 2, forcing
+some prime gap ≥ N - 1 to exist.
+-/
+
+/-- The key lemma: N! + k is composite for 2 ≤ k ≤ N.
+    Since k ≤ N, we have k ∣ N!, so k ∣ N! + k. But k ≥ 2 and N! > 0 ensure
+    that k is neither 1 nor N! + k, contradicting primality. -/
+lemma factorial_add_composite (N k : ℕ) (hk2 : 2 ≤ k) (hkN : k ≤ N) :
+    ¬ Nat.Prime (N.factorial + k) := by
+  intro h
+  have hk_pos : 0 < k := by omega
+  -- k divides N! (since 0 < k ≤ N)
+  have hk_dvd_fac : k ∣ N.factorial := Nat.dvd_factorial hk_pos hkN
+  -- k divides N! + k
+  have hk_dvd_sum : k ∣ N.factorial + k := dvd_add hk_dvd_fac (dvd_refl k)
+  -- N! > 0, so 1 < k < N! + k
+  have hfac_pos : 0 < N.factorial := Nat.factorial_pos N
+  -- If N! + k is prime, its only divisors are 1 and itself
+  rcases h.eq_one_or_self_of_dvd k hk_dvd_sum with h1 | h2
+  · omega  -- k = 1 contradicts hk2 : 2 ≤ k
+  · omega  -- k = N! + k contradicts hfac_pos : 0 < N!
+
+/-- For any N, the numbers N! + 2, N! + 3, ..., N! + N are all composite.
+    (For N ≥ 2, this gives N - 1 consecutive composite numbers.) -/
+lemma consecutive_composites (N : ℕ) :
+    ∀ k : ℕ, 2 ≤ k → k ≤ N → ¬ Nat.Prime (N.factorial + k) :=
+  fun k hk2 hkN => factorial_add_composite N k hk2 hkN
+
+/-- Prime gaps are unbounded: for any N, some prime gap is at least N.
+
+    **Proof**: By contradiction. If all prime gaps were < N, then by induction,
+    nthPrime k ≤ N! + 1 for all k. The induction works because:
+    - Base: nthPrime 0 = 2 ≤ N! + 1 ✓
+    - Step: if nthPrime k ≤ N! + 1 and primeGap k < N, then
+      nthPrime (k+1) = nthPrime k + primeGap k ≤ N! + N.
+      If this equals N! + j for some 2 ≤ j ≤ N, it would be composite
+      (by factorial_add_composite), contradicting that nthPrime (k+1) is prime.
+      So nthPrime (k+1) ≤ N! + 1.
+    But nthPrime k ≥ k + 2 (by nthPrime_ge_add_two), so nthPrime (N! + 1) ≥ N! + 3,
+    contradicting nthPrime (N! + 1) ≤ N! + 1. -/
+theorem prime_gaps_unbounded (N : ℕ) : ∃ n : ℕ, N ≤ primeGap n := by
+  -- Handle N ≤ 1 directly: any positive gap suffices
+  by_cases hN : N ≤ 1
+  · exact ⟨0, by have := primeGap_pos 0; omega⟩
+  -- For N ≥ 2, argue by contradiction
+  push_neg at hN
+  -- hN : 2 ≤ N
+  by_contra habs
+  push_neg at habs
+  -- habs : ∀ n, primeGap n < N
+  -- Key claim: nthPrime k ≤ N! + 1 for all k (induction using composite barrier)
+  have hbound : ∀ k, nthPrime k ≤ N.factorial + 1 := by
+    intro k
+    induction k with
+    | zero =>
+      rw [nthPrime_zero]  -- nthPrime 0 = 2
+      have := Nat.factorial_pos N
+      omega  -- 2 ≤ N! + 1 since N! ≥ 1
+    | succ k ih =>
+      have hgap := habs k
+      -- nthPrime (k + 1) = nthPrime k + primeGap k
+      have hprime : Nat.Prime (nthPrime k + primeGap k) := by
+        rw [← nthPrime_succ_eq]; exact nthPrime_prime (k + 1)
+      rw [nthPrime_succ_eq]
+      -- Goal: nthPrime k + primeGap k ≤ N! + 1
+      -- Case 1: already ≤ N! + 1
+      by_cases hle : nthPrime k + primeGap k ≤ N.factorial + 1
+      · exact hle
+      -- Case 2: > N! + 1, so falls in the composite range {N!+2, ..., N!+N}
+      · push_neg at hle
+        -- N! + 2 ≤ nthPrime k + primeGap k ≤ N! + N (from ih + gap bound)
+        have hub : nthPrime k + primeGap k ≤ N.factorial + N := by omega
+        -- The offset j = (nthPrime k + primeGap k) - N! satisfies 2 ≤ j ≤ N
+        have hj_lb : 2 ≤ nthPrime k + primeGap k - N.factorial := by omega
+        have hj_ub : nthPrime k + primeGap k - N.factorial ≤ N := by omega
+        have heq : N.factorial + (nthPrime k + primeGap k - N.factorial) =
+                   nthPrime k + primeGap k := by omega
+        -- But N! + j is composite by factorial_add_composite
+        have hcomp := factorial_add_composite N (nthPrime k + primeGap k - N.factorial)
+          hj_lb hj_ub
+        rw [heq] at hcomp
+        -- hprime says nthPrime (k+1) = N! + j is prime: contradiction
+        exact absurd hprime hcomp
+  -- But nthPrime grows: nthPrime (N! + 1) ≥ (N! + 1) + 2 = N! + 3 > N! + 1
+  have hge := nthPrime_ge_add_two (N.factorial + 1)
+  have hle := hbound (N.factorial + 1)
+  omega  -- N! + 3 ≤ nthPrime (N! + 1) ≤ N! + 1: contradiction
+
+/-- The oscillatory nature of prime gaps:
+    - (Zhang/Polymath axiom): liminf(primeGap) ≤ 246 — small gaps occur infinitely often
+    - (Factorial construction): limsup(primeGap) = ∞ — large gaps also occur infinitely often
+    Together these show prime gaps oscillate between arbitrarily small and large values. -/
+theorem prime_gaps_oscillate :
+    (∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ primeGap n ≤ 246) ∧
+    (∀ N : ℕ, ∃ n : ℕ, N ≤ primeGap n) :=
+  ⟨infinitely_many_small_gaps, prime_gaps_unbounded⟩
+
+/-
 ## Summary
 
 This file establishes:
@@ -1323,8 +1429,11 @@ This file establishes:
 27. **Maynard-Tao monotonicity**: Result for m implies result for all m' ≤ m
 28. **Bounded gaps min**: Intersection of two bounded gap results
 29. **Conditional linear bound**: nthPrime ≤ 2 + n·H if all gaps ≤ H
+30. **Large prime gaps**: N! + k is composite for 2 ≤ k ≤ N (factorial construction)
+31. **Gaps unbounded**: ∀ N, ∃ n, primeGap n ≥ N (contrasts with Zhang/Polymath)
+32. **Oscillation**: prime gaps have liminf ≤ 246 AND limsup = ∞
 
-### Proved Theorems (90+ total, 0 sorries)
+### Proved Theorems (94+ total, 0 sorries)
 Key new theorems:
 - `exists_admissible_50_tuple_246` (formerly axiom, now proved via Engelsma/Polymath tuple)
 - `CramerConjecture`, `GranvilleConjecture`, `TwinPrimeConjecture` (formal conjectures)
@@ -1332,6 +1441,9 @@ Key new theorems:
 - `maynard_tao_monotone` (m-tuple result monotone in m)
 - `bounded_gaps_min` (intersection of gap bounds)
 - `nthPrime_le_of_gaps_bounded` (conditional linear bound)
+- `factorial_add_composite` (N! + k composite for 2 ≤ k ≤ N)
+- `prime_gaps_unbounded` (∀ N, ∃ n, N ≤ primeGap n, proved from factorial construction)
+- `prime_gaps_oscillate` (combines Zhang/Polymath with factorial construction)
 
 ### Axioms Used (3)
 - `polymath_bounded_gaps_246`: Polymath 8b optimization (2014)
