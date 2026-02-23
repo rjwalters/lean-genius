@@ -257,11 +257,49 @@ axiom nesterenko_algebraic_independence :
 theorem pi_plus_exp_pi_transcendental :
     Transcendental ℚ (Real.pi + Real.exp Real.pi) := by
   intro h_alg
-  -- If π + e^π = r for algebraic r, then P(π, e^π, Γ(1/4)) = 0
-  -- for the polynomial P(X,Y,Z) = X + Y - r, contradicting Nesterenko.
-  -- Formal proof: provide the polynomial P and apply nesterenko_algebraic_independence.
-  -- This requires connecting IsAlgebraic ℚ r to a polynomial evaluation.
-  sorry -- Formal but requires IsAlgebraic → polynomial witness construction
+  -- h_alg : IsAlgebraic ℚ (Real.pi + Real.exp Real.pi)
+  obtain ⟨f, hf_ne, hf_root⟩ := h_alg
+  -- f : ℚ[X], hf_ne : f ≠ 0, hf_root : Polynomial.aeval (π + e^π) f = 0
+  --
+  -- Strategy: construct P(X₀,X₁,X₂) := f(X₀+X₁) ∈ MvPolynomial (Fin 3) ℚ.
+  -- Then P ≠ 0 (specializing X₀↦T, X₁↦0 recovers f), and
+  -- P(π, e^π, Γ(1/4)) = f(π + e^π) = 0, contradicting Nesterenko.
+  --
+  -- Key Mathlib lemma used:
+  --   Polynomial.aeval_algHom_apply (φ : A →ₐ[R] B) (x : A) (p : R[X]) :
+  --     Polynomial.aeval (φ x) p = φ (Polynomial.aeval x p)
+  let x₀₁ : MvPolynomial (Fin 3) ℚ := MvPolynomial.X 0 + MvPolynomial.X 1
+  let P : MvPolynomial (Fin 3) ℚ := Polynomial.aeval x₀₁ f
+  -- P ≠ 0: specializing via X₀↦Polynomial.X, X₁↦0, X₂↦0 recovers f
+  have hP_ne : P ≠ 0 := by
+    intro hP_eq
+    apply hf_ne
+    -- ψ = MvPolynomial.aeval ![Poly.X, 0, 0] : MvPoly (Fin 3) ℚ →ₐ[ℚ] ℚ[X]
+    have hψP_zero : MvPolynomial.aeval (![Polynomial.X (R := ℚ), 0, 0]) P = 0 := by
+      rw [hP_eq]; exact map_zero _
+    have hψP_eq_f : MvPolynomial.aeval (![Polynomial.X (R := ℚ), 0, 0]) P = f := by
+      show MvPolynomial.aeval (![Polynomial.X (R := ℚ), 0, 0]) (Polynomial.aeval x₀₁ f) = f
+      -- aeval_algHom_apply: φ(aeval x p) = aeval (φ x) p
+      rw [← Polynomial.aeval_algHom_apply]
+      -- Now: Polynomial.aeval (MvPoly.aeval ![Poly.X,0,0] x₀₁) f = f
+      have hx₀₁ : MvPolynomial.aeval (![Polynomial.X (R := ℚ), 0, 0]) x₀₁ = Polynomial.X := by
+        simp [x₀₁, MvPolynomial.aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one]
+      rw [hx₀₁]
+      exact Polynomial.aeval_X_left_apply f
+    exact hψP_eq_f.symm.trans hψP_zero
+  -- P(π, e^π, Γ(1/4)) = f(π + e^π) = 0
+  have hP_eval : MvPolynomial.aeval (![Real.pi, Real.exp Real.pi, gammaQuarter]) P = 0 := by
+    show MvPolynomial.aeval (![Real.pi, Real.exp Real.pi, gammaQuarter]) (Polynomial.aeval x₀₁ f) = 0
+    -- aeval_algHom_apply: φ(aeval x p) = aeval (φ x) p
+    rw [← Polynomial.aeval_algHom_apply]
+    -- Now: Polynomial.aeval (MvPoly.aeval ![π, e^π, Γ] x₀₁) f = 0
+    have hx₀₁ : MvPolynomial.aeval (![Real.pi, Real.exp Real.pi, gammaQuarter]) x₀₁ =
+        Real.pi + Real.exp Real.pi := by
+      simp [x₀₁, MvPolynomial.aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one]
+    rw [hx₀₁]
+    exact hf_root
+  -- Apply Nesterenko: P = 0 contradicts hP_ne
+  exact hP_ne (nesterenko_algebraic_independence P hP_eval)
 
 -- ============================================================
 -- PART 8: Summary and Final Checks

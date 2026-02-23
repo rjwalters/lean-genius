@@ -2,7 +2,7 @@
     "slug": "chinese-remainder-non-coprime-oq-01",
     "title": "Can the construction be made more computationally efficient for large moduli",
     "phase": "COMPLETE",
-    "status": "active",
+    "status": "completed",
     "tier": "B",
     "path": "full",
     "problemStatement": {
@@ -19,9 +19,9 @@
         "phase": "COMPLETE",
         "since": "2026-02-22T20:43:06Z",
         "iteration": 1,
-        "focus": "Initial exploration of the problem.",
+        "focus": "COMPLETE - 3 efficiency improvements for non-coprime CRT formalized. See proofs/Proofs/ChineseRemainderNonCoprimeOQ01.lean",
         "blockers": [],
-        "nextAction": "Begin problem exploration.",
+        "nextAction": "None - problem fully resolved.",
         "attemptCounts": {
             "total": 0,
             "currentApproach": 0,

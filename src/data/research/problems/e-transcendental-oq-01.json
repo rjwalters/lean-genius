@@ -29,13 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created gallery entry for e+pi transcendence open question. Proved the key conditional result: at least one of e+pi or e*pi is transcendental (via Vieta symmetric polynomial identity + e transcendence). Gallery entry ETranscendentalOQ01.lean builds cleanly with Docker.",
+    "progressSummary": "PROGRESS: Proved pi_plus_exp_pi_transcendental from Nesterenko axiom (sorries reduced 4→3). Three remaining sorries are genuine OPEN problems (e+π, e·π transcendence, e+π irrationality).",
     "builtItems": [
       "ETranscendentalOQ01.lean: theorem e_root_of_vieta_quadratic (proved by ring)",
       "ETranscendentalOQ01.lean: theorem pi_root_of_vieta_quadratic (proved by ring)",
       "ETranscendentalOQ01.lean: theorem e_plus_pi_or_e_times_pi_transcendental (proved with axiom)",
       "ETranscendentalOQ01.lean: theorem sum_transcendental_if_prod_algebraic",
       "ETranscendentalOQ01.lean: theorem prod_transcendental_if_sum_algebraic",
+      "ETranscendentalOQ01.lean: theorem pi_plus_exp_pi_transcendental (proved from Nesterenko axiom, session 2026-02-23)",
       "Gallery entry: src/data/proofs/e-transcendental-oq-01/ with meta.json, index.ts, annotations.json, tacticStates.json"
     ],
     "insights": [
@@ -44,13 +45,16 @@
       "Even the irrationality of e+π is open (not just transcendence) — surprising to most",
       "Schanuel Conjecture → e,π algebraically independent → e+π transcendental: the known conditional route",
       "Nesterenko 1996 proves π, e^π, Γ(1/4) algebraically independent but does NOT directly give e+π",
-      "algebraic_root_of_algebraic_quadratic axiom is provable via Algebra.IsAlgebraic.trans in Mathlib"
+      "algebraic_root_of_algebraic_quadratic axiom is provable via Algebra.IsAlgebraic.trans in Mathlib",
+      "π + e^π is transcendental (from Nesterenko): construct P(X₀,X₁,X₂) = f(X₀+X₁); Polynomial.aeval_algHom_apply gives functoriality",
+      "Key Mathlib lemma: Polynomial.aeval_algHom_apply (φ : A →ₐ[R] B) (x : A) (p : R[X]) : aeval (φ x) p = φ (aeval x p)",
+      "Key Mathlib lemma: Polynomial.aeval_X_left_apply : aeval X p = p (evaluation at formal variable is identity)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Replace algebraic_root_of_algebraic_quadratic axiom with Mathlib proof using Algebra.IsAlgebraic.trans",
-      "Investigate if Mathlib has a direct proof that IsAlgebraic is preserved under adjunction",
-      "Consider adding more consequences of Nesterenko (e.g., π+e^π transcendental formally)"
+      "Monitor Schanuel Conjecture formalization in Mathlib for conditional e+π transcendence proof",
+      "e+π transcendental (direct), e·π transcendental, e+π irrational: all remain OPEN — no known proof path without Schanuel"
     ]
   },
   "approaches": [],
@@ -72,7 +76,7 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.134Z",
-  "lastUpdate": "2026-02-23T00:00:00.000Z",
+  "lastUpdate": "2026-02-23T12:30:00.000Z",
   "significance": 6,
   "tractability": 6
 }
