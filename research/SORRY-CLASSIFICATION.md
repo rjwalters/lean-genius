@@ -77,32 +77,90 @@ theorem erdos_340 (ε : ℝ) (hε : ε > 0) :
 
 **Aristotle spun on Erdős #340** because NO proof exists. That's for US to discover!
 
-## Pre-Submission Checklist
+## Aristotle Companion Files (Preferred Approach)
 
-Before running `./research/scripts/aristotle-submit.sh`:
+The recommended way to submit work to Aristotle is via **companion files**:
+
+```
+proofs/Proofs/Erdos340Problem.lean       ← main file: axioms, main conjecture
+proofs/Proofs/Erdos340Aristotle.lean     ← companion: only routine lemma sorries
+```
+
+Companion files are **Tier 1** in the submission pipeline — the Aristotle agent submits them first before falling back to regular `*Problem.lean` files.
+
+### Creating a Companion File
+
+```bash
+# Create alongside your main proof file
+touch proofs/Proofs/Erdos340Aristotle.lean
+```
+
+Use this template:
+```lean
+/-
+  Aristotle targets for Erdős Problem #340
+  Routine supporting lemmas for automated proof search.
+  See Erdos340Problem.lean for the main formalization.
+
+  Criteria for inclusion:
+  - NOT the main open conjecture
+  - Known result likely in Mathlib (monotonicity, cardinality, bounds, etc.)
+  - Clean theorem statement with no definition sorries
+  - No axioms (use theorem ... := by sorry instead)
+-/
+import Mathlib
+
+namespace Erdos340
+
+-- Routine lemmas that are NOT the main conjecture
+lemma orderedPairsLt_card (A : Finset ℕ) : A.card * (A.card - 1) ≤ ... := by sorry
+lemma sidon_lower_bound (A : Finset ℕ) (hA : IsSidon A) : ... := by sorry
+
+end Erdos340
+```
+
+### What Goes in a Companion File
+
+| Include | Exclude |
+|---------|---------|
+| Monotonicity lemmas | The main open conjecture |
+| Cardinality bounds | `axiom` declarations |
+| Known counting arguments | Definition sorries |
+| Standard inequalities | Placeholder `True` theorems |
+| Lemmas supporting the main proof | Any `sorry` on a definition |
+
+**Converting axioms for companion files**: If your main file uses `axiom` for supporting results, convert them in the companion file:
+```lean
+-- In main file (correct semantic — marks result as assumed):
+axiom sidon_bound (A : Finset ℕ) : A.card ≤ Nat.sqrt N + 1
+
+-- In companion file (Aristotle will attempt to prove):
+theorem sidon_bound (A : Finset ℕ) : A.card ≤ Nat.sqrt N + 1 := by sorry
+```
+
+### Pre-Submission Checklist
+
+Before the Aristotle agent submits your companion file:
 
 1. **List all sorries:**
    ```bash
-   grep -n "sorry" your-file.lean
+   grep -n "sorry" proofs/Proofs/Erdos340Aristotle.lean
    ```
 
-2. **Classify each one:**
-   - [ ] Is this a known result? → HARD (submit)
-   - [ ] Is this computational? → TRIVIAL (submit)
-   - [ ] Is this an open conjecture? → OPEN (do NOT submit)
+2. **Verify each sorry:**
+   - [ ] Is this a known result? → HARD (include)
+   - [ ] Is this computational? → TRIVIAL (include)
+   - [ ] Is this an open conjecture? → OPEN (do NOT include — keep in main file)
+   - [ ] Is this a definition sorry? → Remove (blocks everything)
+   - [ ] Is this an axiom? → Convert to `theorem ... := by sorry`
 
-3. **Separate if needed:**
-   If your file contains OPEN conjectures, create a separate file:
-   ```bash
-   # Create provable-only version
-   cp Erdos340.lean Erdos340-provable.lean
-   # Remove or comment out OPEN theorems
-   ```
+3. **The file is ready when:**
+   - No definition sorries
+   - No `axiom` declarations
+   - No open conjectures
+   - All sorries are TRIVIAL or HARD supporting lemmas
 
-4. **Submit provable sorries only:**
-   ```bash
-   ./research/scripts/aristotle-submit.sh Erdos340-provable.lean erdos-340 "Excluding open conjecture"
-   ```
+The Aristotle agent auto-detects companion files. No manual submission needed.
 
 ## Naming Convention
 

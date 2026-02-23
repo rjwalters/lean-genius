@@ -99,9 +99,25 @@ This allows graceful shutdown - you finish current work before stopping.
 Before any other work, check for completed Aristotle jobs:
 
 ```bash
-# Use the aristotle_check_results MCP tool if available
-# Or check manually:
+# Check for completed jobs
 cat research/aristotle-jobs.json | jq '.jobs[] | select(.status == "completed")'
+
+# Check for companion files that got proofs incorporated
+cat research/aristotle-jobs.json | jq '.jobs[] | select(.status == "integrated" and .companion_file == true)'
+```
+
+**For companion file integrations**: If an `*Aristotle.lean` file was integrated, the proved lemmas need to be manually merged into the corresponding `*Problem.lean` file. Check the job outcome for guidance:
+
+```bash
+# Find companion files with proved lemmas to merge
+cat research/aristotle-jobs.json | jq -r '
+  .jobs[] | select(.status == "integrated" and .companion_file == true) | .outcome
+'
+```
+
+To see which companion files are still pending in Aristotle:
+```bash
+ls proofs/Proofs/*Aristotle.lean 2>/dev/null | xargs -I{} basename {} .lean
 ```
 
 Integrate any completed proofs before selecting new work.
@@ -147,10 +163,59 @@ Follow the research skill methodology:
 | **SURVEY** | Can state but not prove yet | Document findings |
 | **BLOCKED** | Needs > 1000 lines foundational work | Document blocker |
 
+### Create/Update Aristotle Companion File
+
+After writing or updating a main proof file, create a companion file with routine supporting lemmas:
+
+```bash
+# Create companion file for Erdős #N
+# Name: ErdosNAristotle.lean (alongside ErdosNProblem.lean)
+```
+
+**Template for companion files:**
+```lean
+/-
+  Aristotle targets for Erdős Problem #N
+  Routine supporting lemmas for automated proof search.
+  See ErdosNProblem.lean for the main formalization.
+
+  Criteria for inclusion:
+  - NOT the main open conjecture
+  - Known result likely in Mathlib (monotonicity, cardinality, bounds, etc.)
+  - Clean theorem statement with no definition sorries
+  - No axioms (use theorem ... := by sorry instead)
+-/
+import Mathlib
+
+namespace ErdosN
+
+-- [Routine lemmas here, one per theorem]
+-- GOOD: standard bounds, combinatorial identities, known estimates
+lemma helper_bound : ... := by sorry
+lemma routine_calc : ... := by sorry
+
+-- DO NOT include:
+-- * The main open conjecture
+-- * axiom declarations (convert to theorem ... := by sorry)
+-- * definition sorries
+
+end ErdosN
+```
+
+**What to include:**
+- Monotonicity lemmas, cardinality bounds, standard inequalities
+- Known results from literature that are likely in Mathlib
+- Supporting lemmas for the main proof (NOT the main conjecture itself)
+
+**What NOT to include:**
+- The main open conjecture (`erdos_N` theorem)
+- `axiom` declarations (Aristotle won't attempt these — use `theorem ... := by sorry`)
+- Definition sorries (blocks everything)
+
 ### Use Aristotle Strategically
 
 - **TRIVIAL sorries**: Try manually first
-- **HARD sorries**: Submit to Aristotle if stuck > 10 min
+- **HARD sorries**: Add to companion file (`ErdosNAristotle.lean`) — the Aristotle agent will detect and submit it automatically
 - **OPEN sorries**: Work manually - Aristotle can't help with unsolved problems
 
 ## Step 4: Update Knowledge

@@ -4,13 +4,15 @@ You are an autonomous agent that manages the flow of Lean proofs through Aristot
 
 ## Your Mission
 
-Maintain approximately **20 active Aristotle jobs** at all times, maximizing the throughput of automated proof search. When proofs complete, integrate the improvements and create PRs.
+Maintain approximately **5 active Aristotle jobs** at all times (the server hard limit), maximizing the throughput of automated proof search. When proofs complete, integrate the improvements and create PRs.
+
+**Priority**: Submit Tier 1 companion files (`*Aristotle.lean`) before Tier 2 regular files (`*Problem.lean`). Companion files are purpose-built for Aristotle with only routine lemma sorries — they have much higher success rates than files containing open conjectures.
 
 ## Environment
 
 You receive these environment variables:
 - `REPO_ROOT` - Path to the main repository
-- `ARISTOTLE_TARGET` - Target number of active jobs (default: 20)
+- `ARISTOTLE_TARGET` - Target number of active jobs (default: 5, server hard limit is 5)
 - `ARISTOTLE_INTERVAL` - Check interval in minutes (default: 30)
 - `ARISTOTLE_API_KEY` - API key for Aristotle (or loaded from ~/.aristotle_key)
 
@@ -164,10 +166,19 @@ gh pr edit --add-label aristotle-integration
 ### Step 6: Submit New Files
 
 ```bash
-$REPO_ROOT/scripts/aristotle/submit-batch.sh --target 20
+$REPO_ROOT/scripts/aristotle/submit-batch.sh --target 5
 ```
 
-This finds the best candidates and submits enough to reach 20 active jobs.
+This finds the best candidates and submits enough to reach 5 active jobs.
+
+**Two-tier submission order:**
+1. **Tier 1 first**: `*Aristotle.lean` companion files — purpose-built lemma sorries, highest success rate
+2. **Tier 2 fallback**: `*Problem.lean` regular files — used only when Tier 1 slots exhausted
+
+To check available companion files:
+```bash
+$REPO_ROOT/scripts/aristotle/find-candidates.sh --tier1-only
+```
 
 ### Step 7: Sleep
 
@@ -209,9 +220,11 @@ All scripts are in `$REPO_ROOT/scripts/aristotle/`:
 - Solution only differs in comments/formatting
 
 ### Candidate Quality (lower score = better)
+- Tier 1 companion files (`*Aristotle.lean`): Always preferred — purpose-built, no axioms, only provable lemmas
+- Tier 2 regular files: Score = theorem sorry count (lower is better)
 - 1-5 sorries: Best candidates
 - No definition sorries: Aristotle can prove these
-- No complex axiom chains: Cleaner proofs
+- Axioms are acceptable in Tier 2 files — they are background facts, not obstacles
 
 ## Error Handling
 

@@ -255,58 +255,84 @@ axiom jss_counterexample : ∃ G, ...                        -- Axiom (treated a
 theorem placeholder : True := by sorry                     -- No mathematical content
 ```
 
-**Implication for Erdős formalizations**: Our files use `axiom` for deep results (Ramsey bounds, probabilistic lemmas, etc.). These are semantically correct but Aristotle-unfriendly. Convert to theorem sorries before submission.
+**Implication for Erdős formalizations**: Our files use `axiom` for deep results (Ramsey bounds, probabilistic lemmas, etc.). These are semantically correct but Aristotle-unfriendly. Use companion files (see below) to expose only the provable supporting lemmas.
+
+## Aristotle Companion Files (Preferred Approach)
+
+The recommended way to work with Aristotle is via **companion files**:
+
+```
+proofs/Proofs/Erdos340Problem.lean       ← main file: definitions, axioms, main conjecture
+proofs/Proofs/Erdos340Aristotle.lean     ← companion: ONLY routine lemma sorries for Aristotle
+```
+
+**Why companion files?** Most `*Problem.lean` files have their primary `sorry` on the open mathematical conjecture — exactly what Aristotle can't prove. Companion files contain only the routine supporting lemmas that *are* provable from Mathlib.
+
+### Companion File Template
+
+```lean
+/-
+  Aristotle targets for Erdős Problem #N
+  Routine supporting lemmas for automated proof search.
+  See ErdosNProblem.lean for the main formalization.
+
+  Criteria for inclusion:
+  - NOT the main open conjecture
+  - Known result likely in Mathlib (monotonicity, cardinality, bounds, etc.)
+  - Clean theorem statement with no definition sorries
+  - No axioms (use theorem ... := by sorry instead)
+-/
+import Mathlib
+
+namespace ErdosN
+
+-- Routine supporting lemmas (NOT the main conjecture)
+lemma helper_bound : ... := by sorry
+lemma routine_calc : ... := by sorry
+
+end ErdosN
+```
+
+### Companion File Rules
+
+| Include | Exclude |
+|---------|---------|
+| Monotonicity lemmas | The main open conjecture |
+| Cardinality bounds | `axiom` declarations |
+| Standard inequalities | Definition sorries |
+| Known counting arguments | Placeholder `True` theorems |
+
+**Converting axioms for companion files**: If your main file uses `axiom` for a supporting result, convert it to `theorem ... := by sorry` in the companion file:
+```lean
+-- Main file (correct semantics — marks result as assumed):
+axiom sidon_bound (A : Finset ℕ) : A.card ≤ Nat.sqrt N + 1
+
+-- Companion file (Aristotle will attempt to prove this):
+theorem sidon_bound (A : Finset ℕ) : A.card ≤ Nat.sqrt N + 1 := by sorry
+```
+
+### How It Works
+
+- The Aristotle agent auto-detects `*Aristotle.lean` files as Tier 1 candidates
+- Tier 1 companion files are submitted **before** Tier 2 regular `*Problem.lean` files
+- When Aristotle proves lemmas, the companion file is integrated and the Researcher is notified to merge the proofs back into the main file
 
 ## Pre-Submission Checklist
 
+For companion files (`*Aristotle.lean`):
 1. **No definition sorries** - Aristotle will skip these and dependent theorems fail
-2. **Convert axioms to theorem sorries** - Axioms are unprovable; convert to `theorem X : ... := by sorry`
+2. **No axiom declarations** - Convert to `theorem ... := by sorry` (Aristotle skips axioms)
 3. **No placeholder True theorems** - Provide real mathematical content
 4. **No OPEN conjectures** - Aristotle searches for existing proofs, can't discover new ones
 5. **No `/-!` docstring sections** - Use `/-` instead (causes parsing errors)
-6. **Simple namespace structure** - Complex nesting may fail to load
 
 ```bash
-# Check for problems
-grep -n "def.*:=.*sorry" your-file.lean          # Definition sorries
-grep -n "^axiom " your-file.lean                  # Axioms (convert to theorems)
-grep -n "theorem.*: True" your-file.lean         # Placeholder theorems
-grep -n "theorem erdos_[0-9]*\s*:" your-file.lean # Potential OPEN problems
-grep -n "/-!" your-file.lean                      # Docstring sections (may fail)
+# Check companion file for problems
+grep -n "def.*:=.*sorry" proofs/Proofs/ErdosNAristotle.lean     # Definition sorries
+grep -n "^axiom " proofs/Proofs/ErdosNAristotle.lean             # Axioms (convert!)
+grep -n "theorem.*: True" proofs/Proofs/ErdosNAristotle.lean     # Placeholder theorems
+grep -n "/-!" proofs/Proofs/ErdosNAristotle.lean                  # Docstring sections
 ```
-
-## Preparing Files for Aristotle
-
-**IMPORTANT**: Most Erdős formalizations use `axiom` for deep mathematical results. These MUST be converted to theorem sorries before Aristotle can attempt proofs.
-
-```lean
--- BEFORE (in main file - Aristotle will SKIP):
-axiom keevash_sudakov_bound (n : ℕ) : countEdges n ≤ n^2 / 4
-
--- AFTER (for Aristotle submission - Aristotle will ATTEMPT):
-theorem keevash_sudakov_bound (n : ℕ) : countEdges n ≤ n^2 / 4 := by sorry
-```
-
-**Quick conversion command**:
-```bash
-# Convert all axioms to theorem sorries (creates backup)
-sed -i.bak 's/^axiom \([^:]*\):/theorem \1 :=/; s/theorem \([^:]*\) :=$/theorem \1 := by sorry/' file.lean
-```
-
-**Why this works**: Aristotle searches Mathlib and known results. If the result exists in Mathlib or can be derived from it, Aristotle will find the proof. Axioms are treated as "given" and never attempted.
-
-**Workflow for axiom-heavy files**:
-1. Copy the file to a `-provable.lean` variant
-2. Convert all `axiom` declarations to `theorem ... := by sorry`
-3. Verify no definition sorries exist (these block everything)
-4. Submit the provable variant to Aristotle
-5. Merge successful proofs back to the main file (keep working axioms as axioms if not proven)
-
-**Writing Aristotle-friendly files from the start**:
-If you plan to submit to Aristotle, consider using `theorem ... := by sorry` instead of `axiom` for results that might be provable from Mathlib. Reserve `axiom` only for:
-- Results definitely NOT in Mathlib (recent papers, etc.)
-- Foundational assumptions you truly want as axioms
-- OPEN problems (conjectures)
 
 ## Syntax Compatibility
 
@@ -322,15 +348,23 @@ See `research/SORRY-CLASSIFICATION.md` for full compatibility guide.
 
 ## Workflow
 
+The Aristotle agent handles submission automatically. For manual operations:
+
 ```bash
-# Submit file for overnight processing
-./research/scripts/aristotle-submit.sh proofs/Proofs/MyProof.lean my-problem "Notes"
+# Find available candidates (both tiers)
+./scripts/aristotle/find-candidates.sh
 
-# Check status of all jobs
-./research/scripts/aristotle-status.sh
+# Find only companion files (Tier 1)
+./scripts/aristotle/find-candidates.sh --tier1-only
 
-# Retrieve completed solutions
-./research/scripts/aristotle-status.sh --retrieve
+# Submit batch (companion files first, then regular)
+./scripts/aristotle/submit-batch.sh --target 5
+
+# Check job status
+./scripts/aristotle/check-jobs.sh --update
+
+# Retrieve and integrate completed solutions
+./scripts/aristotle/retrieve-integrate.sh
 ```
 
 ## Job Tracking
