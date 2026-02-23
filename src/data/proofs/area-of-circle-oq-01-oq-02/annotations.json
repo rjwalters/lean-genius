@@ -1,34 +1,32 @@
-{
-  "annotations": [
-    {
-      "id": "ftc-application",
-      "line": 80,
-      "type": "insight",
-      "text": "This is the core of the proof: FTC Part 2 (integral_eq_sub_of_hasDerivAt) turns the integration problem into a differentiation problem. Since we already proved dA/dr = C(r) in the companion entry, the FTC hands us the result directly."
-    },
-    {
-      "id": "integrability",
-      "line": 82,
-      "type": "technique",
-      "text": "Continuity implies integrability: any continuous function is Riemann integrable on any bounded interval. Mathlib's `Continuous.intervalIntegrable` packages this fact for us."
-    },
-    {
-      "id": "circleArea-zero",
-      "line": 85,
-      "type": "insight",
-      "text": "After applying FTC, the goal becomes circleArea r - circleArea 0 = circleArea r. The `simp [circleArea]` closes this by computing circleArea 0 = π * 0² = 0."
-    },
-    {
-      "id": "annulus-formula",
-      "line": 108,
-      "type": "application",
-      "text": "The annulus area formula generalizes the disk area: the area between two circles of radii r₁ and r₂ is π(r₂² - r₁²). This follows from the same FTC argument applied on [r₁, r₂] instead of [0, r]."
-    },
-    {
-      "id": "ftc-part1-duality",
-      "line": 124,
-      "type": "insight",
-      "text": "This theorem closes the circle (FTC duality): differentiating the integral ∫₀ˢ C(ρ) dρ recovers C(s). Combined with the main theorem, we have A = ∫C and C = A' — the full FTC package for circle geometry."
-    }
-  ]
-}
+[
+  {
+    "id": "ftc-application",
+    "line": 80,
+    "type": "insight",
+    "text": "This is the core of the proof: FTC Part 2 (integral_eq_sub_of_hasDerivAt) turns the integration problem into a differentiation problem. Since we already proved dA/dr = C(r) in the companion entry, the FTC hands us the result directly."
+  },
+  {
+    "id": "integrability",
+    "line": 82,
+    "type": "technique",
+    "text": "Continuity implies integrability: any continuous function is Riemann integrable on any bounded interval. Mathlib's `Continuous.intervalIntegrable` packages this fact for us."
+  },
+  {
+    "id": "circleArea-zero",
+    "line": 85,
+    "type": "insight",
+    "text": "After applying FTC, the goal becomes circleArea r - circleArea 0 = circleArea r. The `simp [circleArea]` closes this by computing circleArea 0 = π * 0² = 0."
+  },
+  {
+    "id": "annulus-formula",
+    "line": 108,
+    "type": "application",
+    "text": "The annulus area formula generalizes the disk area: the area between two circles of radii r₁ and r₂ is π(r₂² - r₁²). This follows from the same FTC argument applied on [r₁, r₂] instead of [0, r]."
+  },
+  {
+    "id": "ftc-part1-duality",
+    "line": 124,
+    "type": "insight",
+    "text": "This theorem closes the circle (FTC duality): differentiating the integral ∫₀ˢ C(ρ) dρ recovers C(s). Combined with the main theorem, we have A = ∫C and C = A' — the full FTC package for circle geometry."
+  }
+]
