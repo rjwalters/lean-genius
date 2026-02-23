@@ -1,0 +1,66 @@
+[
+  {
+    "line": 105,
+    "col": 0,
+    "before": "⊢ rexp 1 ^ 2 - (rexp 1 + π) * rexp 1 + rexp 1 * π = 0",
+    "after": "no goals",
+    "tactic": "ring",
+    "description": "Pure ring computation: e² - (e+π)e + eπ = e² - e² - eπ + eπ = 0"
+  },
+  {
+    "line": 111,
+    "col": 0,
+    "before": "⊢ π ^ 2 - (rexp 1 + π) * π + rexp 1 * π = 0",
+    "after": "no goals",
+    "tactic": "ring",
+    "description": "Pure ring computation: π² - (e+π)π + eπ = π² - eπ - π² + eπ = 0"
+  },
+  {
+    "line": 162,
+    "col": 2,
+    "before": "⊢ Transcendental ℚ (rexp 1 + π) ∨ Transcendental ℚ (rexp 1 * π)",
+    "after": "h : ¬Transcendental ℚ (rexp 1 + π) ∧ ¬Transcendental ℚ (rexp 1 * π)",
+    "tactic": "by_contra h",
+    "description": "Assume for contradiction that neither is transcendental"
+  },
+  {
+    "line": 163,
+    "col": 2,
+    "before": "h : ¬Transcendental ℚ (rexp 1 + π) ∧ ¬Transcendental ℚ (rexp 1 * π)",
+    "after": "h : IsAlgebraic ℚ (rexp 1 + π) ∧ IsAlgebraic ℚ (rexp 1 * π)",
+    "tactic": "simp only [not_or, Transcendental, not_not] at h",
+    "description": "Unfold Transcendental = ¬IsAlgebraic and simplify double negation"
+  },
+  {
+    "line": 164,
+    "col": 2,
+    "before": "h : IsAlgebraic ℚ (rexp 1 + π) ∧ IsAlgebraic ℚ (rexp 1 * π)",
+    "after": "hsum : IsAlgebraic ℚ (rexp 1 + π)\nhprod : IsAlgebraic ℚ (rexp 1 * π)",
+    "tactic": "obtain ⟨hsum, hprod⟩ := h",
+    "description": "Destructure to get both algebraicity hypotheses"
+  },
+  {
+    "line": 166,
+    "col": 2,
+    "before": "hsum : IsAlgebraic ℚ (rexp 1 + π)\nhprod : IsAlgebraic ℚ (rexp 1 * π)\n⊢ False",
+    "after": "hsum : IsAlgebraic ℚ (rexp 1 + π)\nhprod : IsAlgebraic ℚ (rexp 1 * π)\nhroot : rexp 1 ^ 2 - (rexp 1 + π) * rexp 1 + rexp 1 * π = 0",
+    "tactic": "have hroot : ... := by ring",
+    "description": "Establish that e is a root of the Vieta quadratic"
+  },
+  {
+    "line": 170,
+    "col": 2,
+    "before": "hsum hprod hroot present\n⊢ False",
+    "after": "he_alg : IsAlgebraic ℚ (rexp 1)",
+    "tactic": "have he_alg := algebraic_root_of_algebraic_quadratic hsum hprod hroot",
+    "description": "Apply the algebraic closure lemma: e is algebraic (since it's a root of a quadratic with algebraic coefficients)"
+  },
+  {
+    "line": 172,
+    "col": 2,
+    "before": "he_alg : IsAlgebraic ℚ (rexp 1)\n⊢ False",
+    "after": "no goals",
+    "tactic": "exact e_transcendental_q he_alg",
+    "description": "Contradiction: e_transcendental_q says e is NOT algebraic, but he_alg says it IS algebraic"
+  }
+]
