@@ -6,45 +6,42 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Formalize Descartes' Rule of Signs: the number of positive real roots of p (counted with multiplicity) is ≤ the number of sign changes in its coefficients, with difference even. Bridge custom signChangesInCoeffs to Mathlib's signVariations API.",
-    "plain": "Fully formalize Descartes' Rule of Signs in Lean 4 using Mathlib, connecting a custom sign-change counting formulation to Mathlib's polynomial root-sign infrastructure.",
+    "formal": "For p : ℝ[X]: (1) p.roots.countP (0 < ·) ≤ p.signVariations, and (2) ∃ k, p.roots.countP (0 < ·) + 2 * k = p.signVariations",
+    "plain": "Fully formalize Descartes' Rule of Signs in Lean 4 using Mathlib's signVariations API: the number of positive real roots is at most the number of sign variations, and differs from it by an even number.",
     "whyMatters": [
-      "Wiedijk's 100 Theorems #100 — a classic result with rich combinatorial and analytic connections",
-      "Bridge between custom counting definitions and Mathlib's polynomial.signVariations API",
-      "Rolle's theorem applications demonstrate derivative root interlacing"
+      "Wiedijk's 100 Theorems #100 — canonical formalization target",
+      "Establishes root-counting theory for real polynomials",
+      "Demonstrates Mathlib's polynomial analysis capabilities"
     ]
   },
   "knownResults": {
     "proven": [
-      "descartes_upper_bound: countPositiveRoots p ≤ signChangesInCoeffs p (uses axiom)",
-      "descartes_parity: parity condition (uses axiom)",
-      "descartes_rule_of_signs: combined statement",
-      "descartes_negative_roots: negative root bound via negSubst",
-      "neg_root_map_to_pos: negative roots of p map to positive roots of negSubst p",
-      "countPositiveRoots_eq_roots_countP: bridge to Mathlib's roots.countP (0 < ·)",
-      "descartes_upper_bound_via_signVariations: conditional bound via Mathlib (given bridge hypothesis)",
-      "zero_sign_changes_no_positive_roots, one_sign_change_at_most_one_root: corollaries",
-      "rolle_polynomial: Rolle between two roots gives derivative root",
-      "n_roots_implies_derivative_roots: n+1 roots give n derivative roots (all proved)",
-      "three_roots_two_derivative_roots: specialization for 3 roots",
-      "countPositiveRoots_le_natDegree: degree bound via card_roots_le_degree",
-      "realSign utilities: realSign_pos, realSign_neg, realSign_zero",
-      "negSubst_eval, negSubst_negSubst, oppositeSign_comm: helper lemmas"
+      "descartes_upper_bound: p.roots.countP (0 < ·) ≤ p.signVariations (0 axioms, from Mathlib)",
+      "signVariations_increase_by_pos_root: sv(p) + 1 ≤ sv((X - C r) * p) for r > 0",
+      "signVariations_neg_poly: sv(-p) = sv(p)",
+      "signVariations_const_mul: sv(C c * p) = sv(p) for c ≠ 0",
+      "no_positive_roots_of_zero_variations: sv(p) = 0 → no positive roots",
+      "nonneg_coeffs_have_zero_variations: nonneg coefficients → sv = 0",
+      "descartes_negative_roots: p.roots.countP (· < 0) ≤ sv(negSubst p) (0 axioms)",
+      "signVariations_X_sub_C: sv(X - C c) = 1 for c > 0",
+      "descartes_tight_X_sub_C: tight bound for X - C c (c > 0)",
+      "descartes_mul_bound: sv(p*q) ≤ sv(p) + sv(q)",
+      "one_sign_variation_one_positive_root: sv(p) = 1 → countP = 1 (uses parity axiom)"
     ],
     "open": [
-      "Prove signChangesInCoeffs p = p.signVariations to eliminate the main axiom"
+      "descartes_parity: ∃ k, countP(0 < ·, p.roots) + 2*k = sv(p) — parity result NOT yet in Mathlib"
     ],
-    "goal": "35 theorems proved, 8 axioms, 0 sorries. Main goal remaining: connect custom signChangesInCoeffs to Mathlib's signVariations to eliminate descartes_upper_bound_axiom."
+    "goal": "NEAR-COMPLETE: Upper bound axiom-free (from Mathlib). Parity result remains 1 axiom. Key gap: sv((X + C r) * p) = sv(p) for r > 0 not available in Mathlib."
   },
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-02-24T06:31:43.089Z",
-    "iteration": 1,
-    "focus": "DescartesRuleOfSignsOQ01.lean built (445 lines, 0 sorries). Gallery entry created. Upper bound proved from Mathlib, parity result axiomized.",
+    "iteration": 2,
+    "focus": "Rewritten to use Mathlib's signVariations API directly (reduced from 8 axioms to 1). Upper bound proved via Mathlib's roots_countP_pos_le_signVariations. Parity result axiomized.",
     "blockers": [
-      "signChangesInCoeffs is defined via Finset.filter pairs on Fin-indexed coefficients; signVariations uses List-based sign change counting. Equality requires careful coefficient list manipulation."
+      "Parity result: sv((X + C r) * p) = sv(p) for r > 0 is not in Mathlib; requires ~200 lines of sign sequence analysis via induction on coefficient structure"
     ],
-    "nextAction": "Prove signChangesInCoeffs p = p.signVariations using Polynomial.coeffs_list or similar. This would unlock descartes_upper_bound_via_signVariations as a fully axiom-free proof.",
+    "nextAction": "Prove sv((X + C r) * p) = sv(p) for r > 0, then chain with FTA factorization to get full parity.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -52,93 +49,75 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: DescartesRuleOfSignsOQ01.lean (445 lines, 0 sorries) proves upper bound from Mathlib, negative root framework via negSubst, linear case tight bound. Parity result axiomized. Gallery entry created.",
+    "progressSummary": "NEAR-COMPLETE: DescartesRuleOfSignsOQ01.lean (446 lines) uses Mathlib's signVariations directly. 19 theorems, 0 sorries, 1 axiom (parity). Huge improvement over prior 8-axiom custom-definition approach.",
     "builtItems": [
-      "countPositiveRoots_eq_roots_countP: countPositiveRoots p = p.roots.countP (0 < ·) for nonzero p — proved via Multiset.countP_eq_card_filter + gt_iff_lt",
-      "descartes_upper_bound_via_signVariations: conditional Mathlib bridge using roots_countP_pos_le_signVariations",
-      "n_roots_implies_derivative_roots: n+1 distinct roots → n derivative roots, proved using Fin.castSucc_lt_succ + rolle_polynomial",
-      "three_roots_two_derivative_roots: a < b < c roots → two derivative roots in (a,b) and (b,c)",
-      "countPositiveRoots_le_natDegree: uses Multiset.countP_le_card + Polynomial.card_roots_le_degree",
-      "nonzero_root_count_le_degree and negative_root_count_le_natDegree: sub-multiset cardinality bounds",
-      "negative_roots_le_sign_changes: wraps descartes_negative_roots",
-      "zero_sign_changes_no_positive_roots, one_sign_change_at_most_one_root, sign_changes_lt_k_fewer_roots: corollaries via omega",
-      "realSign utilities (realSign_pos, realSign_neg, realSign_zero): proved by simp",
-      "negSubst_eval, negSubst_negSubst, oppositeSign_comm: helper lemmas proved",
-      "descartes_upper_bound (PROVED, 0 axioms) in DescartesRuleOfSignsOQ01.lean:60",
-      "signVariations_increase_by_pos_root (PROVED): pos root insertion increases variations",
-      "negSubst framework: negSubst_eval, negSubst_negSubst, negative_root_iff_positive_of_negSubst",
-      "descartes_negative_roots (PROVED, 0 sorries): upper bound on negative roots",
-      "signVariations_X_sub_C, descartes_tight_X_sub_C (PROVED): tight linear case",
-      "descartes_parity AXIOM: parity result (open in Mathlib)",
-      "Gallery entry: src/data/proofs/descartes-rule-of-signs-oq-01/"
+      "DescartesRuleOfSignsOQ01.lean (446 lines, 19 theorems, 0 sorries, 1 axiom)",
+      "Gallery entry: src/data/proofs/descartes-rule-of-signs-oq-01/",
+      "Registered in proofs/Proofs.lean",
+      "descartes_upper_bound: proved directly from Mathlib's roots_countP_pos_le_signVariations",
+      "descartes_negative_roots: proved via negSubst composition + rootMultiplicity algebra",
+      "signVariations_X_sub_C: exact sv=1 for (X - C c) with c > 0",
+      "signVariations_C_const: sv=0 for constants",
+      "nonneg_coeffs_have_zero_variations: proved via List.destutter analysis",
+      "All 19 theorems have 0 sorries and rely on ≤ 1 axiom"
     ],
     "insights": [
-      "countPositiveRoots p = p.roots.countP (0 < ·): the bridge uses Multiset.countP_eq_card_filter + gt_iff_lt to align custom filter-based counting with Mathlib's countP",
-      "descartes_upper_bound_via_signVariations: once bridge hypothesis is proved, full Descartes follows from Mathlib's Polynomial.roots_countP_pos_le_signVariations in one line",
-      "KEY REMAINING GAP: signChangesInCoeffs p = p.signVariations — custom definition uses Finset.filter on Fin-indexed coefficients; signVariations uses List-based counting",
-      "Polynomial.card_roots_le_degree gives countPositiveRoots ≤ natDegree — combines Multiset.countP_le_card with card_roots_le_degree",
-      "Rolle pattern: n_roots_implies_derivative_roots uses StrictMono + Fin.castSucc_lt_succ for the ordering lemma",
-      "n_roots_implies_derivative_roots and rolle_polynomial are fully proved (no axioms)",
-      "8 axioms remain: descartes_upper_bound_axiom, descartes_parity_axiom, descartes_negative_roots_axiom, derivative_reduces_sign_changes_axiom, plus 4 examples (x2-1, x2+1, x^3-x, alternating)",
-      "The main axiom would fall if we could prove signChangesInCoeffs p = p.signVariations",
-      "Mathlib has roots_countP_pos_le_signVariations (upper bound) but NOT parity result",
-      "negSubst p = p.comp(-X) converts negative roots to positive roots elegantly",
-      "signVariations_X_sub_C: for (X-c) with c>0, signVariations = 1 (tight bound)",
-      "parity requires: complex conjugate pairs change signVariations by 0 or 2; real positive roots by 1 or 3",
-      "descartes_negative_roots proved via negSubst (0 axioms for negative root upper bound)"
+      "Rewrite from custom signChangesInCoeffs to Mathlib's signVariations: reduced 8 axioms to 1",
+      "Upper bound proved directly: just 1 line wrapping Mathlib's roots_countP_pos_le_signVariations",
+      "Negative root bound uses negSubst (p(-x)) and rootMultiplicity inequality chain",
+      "KEY REMAINING GAP: parity result (sv ≡ countP [MOD 2]) is NOT in Mathlib",
+      "The parity proof requires: (1) sv((X+Cr)*p) = sv(p) for r>0, (2) quadratic complex-pair factor changes sv by even amount",
+      "These would require sign sequence induction (~200 lines) not yet in Mathlib",
+      "Mathlib has: succ_signVariations_le_X_sub_C_mul (lower bound for sv increase), signVariations_le_eraseLead_succ (drop-lead bound)",
+      "To get exact equality sv((X-η)*p) = sv(p)+1 would need upper bound from Mathlib not yet proved"
     ],
     "mathlibGaps": [
-      "Polynomial.signVariations: defined but the equality signChangesInCoeffs p = p.signVariations needs proof connecting Fin-indexed coefficient function to the List representation",
-      "No direct Mathlib lemma connecting custom (filter+card on Fin pairs) to signVariations",
       "Parity result: signVariations ≡ roots.countP (0<.) [MOD 2] — not in Mathlib",
-      "Complex root conjugate pairing effect on sign variations — needed for parity proof"
+      "sv((X + C r) * p) = sv(p) for r > 0 (negative-root factor preserves sv)",
+      "Exact equality sv((X - C η) * p) = sv(p) + 1 for η > 0 (Mathlib only has ≥)"
     ],
     "nextSteps": [
-      "Attempt to prove signChangesInCoeffs p = p.signVariations using Polynomial.toList or coefficients enumeration",
-      "If equality is too hard, prove countPositiveRoots p ≤ p.signVariations directly (weaker but sufficient for main result)",
-      "Submit Aristotle companion file targeting the auxiliary utility lemmas"
+      "Prove sv((X + C r) * p) = sv(p) for r > 0 by sign-sequence induction",
+      "Use FTA factorization to combine sign variation changes for parity",
+      "Submit to Mathlib as extension of Algebra.Polynomial.RuleOfSigns"
     ]
   },
   "approaches": [
     {
-      "name": "Custom definitions + axioms for main bound",
-      "description": "Custom signChangesInCoeffs + countPositiveRoots definitions, main Descartes bound axiomatized",
-      "status": "in-progress",
+      "name": "Mathlib signVariations API (current)",
+      "description": "Uses Mathlib's signVariations directly; upper bound axiom-free from roots_countP_pos_le_signVariations; parity still axiomized",
+      "status": "active",
       "sorries": 0,
-      "axioms": 8
-    },
-    {
-      "name": "Conditional Mathlib bridge",
-      "description": "descartes_upper_bound_via_signVariations: given signChangesInCoeffs p = p.signVariations (bridge hypothesis), full Descartes from Mathlib",
-      "status": "in-progress",
-      "sorries": 0
+      "axioms": 1
     }
   ],
   "tags": [
-    "algebra",
     "polynomials",
-    "classic",
-    "rolle",
+    "algebra",
+    "real-analysis",
+    "root-counting",
+    "wiedijk-100",
     "seeker-selected"
   ],
   "relatedProofs": [
-    "Proofs/DescartesRuleOfSigns.lean"
+    "descartes-rule-of-signs",
+    "descartes-rule-of-signs-oq-01"
   ],
   "references": {
     "papers": [
-      "Descartes, La Géométrie (1637)"
+      "Descartes, R. (1637). La Géométrie",
+      "Gauss, C.F. (1826). Proof of parity result"
     ],
     "urls": [],
     "mathlib": [
       "Mathlib.Algebra.Polynomial.RuleOfSigns",
-      "Mathlib.Analysis.Calculus.LocalExtr.Rolle",
       "Polynomial.roots_countP_pos_le_signVariations",
-      "Polynomial.card_roots_le_degree",
-      "Multiset.countP_eq_card_filter"
+      "Polynomial.succ_signVariations_le_X_sub_C_mul",
+      "Polynomial.signVariations_le_eraseLead_succ"
     ]
   },
   "started": "2026-02-24T06:31:43.089Z",
-  "lastUpdate": "2026-02-24T09:05:00.000Z",
+  "lastUpdate": "2026-02-24T18:47:00.000Z",
   "significance": 7,
-  "tractability": 6
+  "tractability": 5
 }
