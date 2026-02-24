@@ -42,6 +42,7 @@ import Proofs.Derangements
 import Proofs.DesarguesTheorem
 import Proofs.DescartesRuleOfSigns
 import Proofs.DirichletsTheorem
+import Proofs.DirichletsTheoremOQ01
 import Proofs.DissectionOfCubes
 import Proofs.DivisibilityBy3
 import Proofs.Erdos124CompleteSequences
