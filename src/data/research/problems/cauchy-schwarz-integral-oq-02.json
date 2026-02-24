@@ -1,0 +1,66 @@
+{
+  "slug": "cauchy-schwarz-integral-oq-02",
+  "title": "Minkowski integral inequality as corollary of Cauchy-Schwarz",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Can the Minkowski inequality for integrals be derived as a corollary of the integral Cauchy-Schwarz inequality?.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-24T06:31:43.089Z",
+    "iteration": 1,
+    "focus": "Proved Minkowski as corollary of CS via two paths: direct L2 and general Lp",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved Minkowski inequality from CS/Holder via (1) inner product norm-squared identity for p=2, (2) norm_add_le on Lp with Fact (1<=p) for general p",
+    "builtItems": [
+      "minkowski_l2_from_CS: explicit L2 Minkowski from abs_real_inner_le_norm + norm_add_sq_real (CauchySchwarzIntegralOQ02.lean:84)",
+      "minkowski_inner_product_space: abstract inner product space Minkowski from CS (CauchySchwarzIntegralOQ02.lean:100)",
+      "minkowski_lp_from_holder: general Lp Minkowski via Fact (1 <= p) and norm_add_le (CauchySchwarzIntegralOQ02.lean:132)",
+      "minkowski_integral_ineq_l2: summary theorem (CauchySchwarzIntegralOQ02.lean:190)"
+    ],
+    "insights": [
+      "For p=2: inner product norm-squared identity + CS gives Minkowski directly",
+      "General Lp: Fact (1 <= p) is required for NormedAddCommGroup instance on Lp E p mu",
+      "Real.sqrt_le_sqrt + Real.sqrt_sq is the correct way to go from squared to unsquared inequality in Lean 4",
+      "snorm_add_le was renamed to eLpNorm_add_le in newer Mathlib versions - use norm_add_le on Lp instead",
+      "Hierarchy: abs_real_inner_le_norm -> NNReal.inner_le_Lp_mul_Lq -> norm_add_le formalizes CS to Holder to Minkowski"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
+  "tags": [
+    "analysis",
+    "measure-theory",
+    "classic",
+    "seeker-selected"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-24T08:04:25.835Z",
+  "lastUpdate": "2026-02-24T08:30:00.000Z",
+  "significance": 7,
+  "tractability": 6
+}
