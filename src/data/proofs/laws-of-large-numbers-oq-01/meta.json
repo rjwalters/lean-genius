@@ -1,0 +1,126 @@
+{
+  "id": "laws-of-large-numbers-oq-01",
+  "title": "LLN for Heavy-Tailed Distributions (Open Question)",
+  "slug": "laws-of-large-numbers-oq-01",
+  "description": "What happens with heavy-tailed distributions where variance is infinite? The standard WLLN proof via Chebyshev's inequality requires finite variance (E[X²] < ∞), but many important distributions (Pareto α ∈ (1,2), stable laws, Lévy) have infinite variance with finite first moment. We prove: Kolmogorov's SLLN requires only E[|X|] < ∞ — NOT finite variance — so both SLLN and WLLN hold for heavy-tailed distributions with finite mean.",
+  "meta": {
+    "author": "Kolmogorov (1930)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Law_of_large_numbers#Strong_law",
+    "date": "1930",
+    "status": "open-question",
+    "proofRepoPath": "Proofs/LawsOfLargeNumbersOQ01.lean",
+    "tags": [
+      "probability",
+      "statistics",
+      "law-of-large-numbers",
+      "heavy-tails",
+      "convergence",
+      "measure-theory",
+      "open-problem",
+      "research"
+    ],
+    "badge": "open",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ProbabilityTheory.strong_law_ae",
+        "description": "Kolmogorov's Strong Law of Large Numbers: for i.i.d. integrable X_i, sample mean converges a.s.",
+        "module": "Mathlib.Probability.StrongLaw"
+      },
+      {
+        "theorem": "MeasureTheory.tendstoInMeasure_of_tendsto_ae",
+        "description": "A.s. convergence implies convergence in measure, giving WLLN from SLLN",
+        "module": "Mathlib.MeasureTheory.Function.ConvergenceInMeasure"
+      },
+      {
+        "theorem": "ProbabilityTheory.IndepFun",
+        "description": "Independence of random variables in the probability measure setting",
+        "module": "Mathlib.Probability.Independence.Basic"
+      },
+      {
+        "theorem": "ProbabilityTheory.IdentDistrib",
+        "description": "Identical distribution (i.i.d. condition) for random variables",
+        "module": "Mathlib.Probability.Independence.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.Integrable",
+        "description": "Integrability (E[|X|] < ∞) — the minimal condition for SLLN",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Theorem slln_under_finite_mean_only: SLLN via direct application of strong_law_ae (only E[|X|] < ∞ needed)",
+      "Theorem wlln_for_heavy_tails: WLLN derived from SLLN via tendstoInMeasure_of_tendsto_ae",
+      "Axiom slln_necessity: converse direction (SLLN ⟹ E[|X|] < ∞), Kolmogorov characterization, requires Borel-Cantelli",
+      "Theorem lln_heavy_tail_answer: main theorem answering the open question — infinite variance does NOT cause LLN failure",
+      "Theorem pareto_lln_analysis: documents Pareto threshold (α > 1 for finite mean, α > 2 for finite variance)"
+    ],
+    "dateAdded": "02/23/26"
+  },
+  "overview": {
+    "historicalContext": "The Law of Large Numbers has two classical forms: the Weak LLN (sample mean converges in probability) and the Strong LLN (sample mean converges almost surely). The earliest proofs used Chebyshev's inequality, requiring finite variance E[X²] < ∞. This created a misconception: that infinite variance implies LLN failure.\n\nIn 1930, Kolmogorov proved the definitive characterization: for i.i.d. random variables, the SLLN holds if and only if E[|X|] < ∞. This is Kolmogorov's classical theorem, now formalized in Mathlib as `ProbabilityTheory.strong_law_ae`.\n\nThe 'open question' is pedagogically important: many textbooks teach Chebyshev's WLLN as THE law of large numbers, leaving students to believe heavy-tailed distributions (where Chebyshev fails) violate the LLN. This formalization corrects that misconception rigorously.",
+    "problemStatement": "**Open Question (laws-of-large-numbers-oq-01)**: For i.i.d. heavy-tailed distributions with E[|X|] < ∞ but E[X²] = ∞ (infinite variance), does the Law of Large Numbers hold?\n\n**Answer: YES** — Kolmogorov's SLLN requires only E[|X|] < ∞:\n- SLLN: (X₁ + ... + Xₙ)/n → E[X] almost surely\n- WLLN: (X₁ + ... + Xₙ)/n → E[X] in probability\n\n**The Chebyshev approach fails** (it needs E[X²] < ∞) but Kolmogorov's deeper theorem shows the true threshold is E[|X|] < ∞.\n\n**Examples where this applies**:\n- Pareto distribution with α ∈ (1,2): finite mean, infinite variance — LLN holds!\n- Stable distributions with index α ∈ (1,2): same situation\n- Power-law distributions: if power > 1 (finite mean), LLN holds regardless of variance",
+    "proofStrategy": "**Strategy**: Direct application of Kolmogorov's SLLN from Mathlib.\n\n**1. Core theorem**: `ProbabilityTheory.strong_law_ae` takes only:\n- `hint : Integrable (X 0) μ` (E[|X₀|] < ∞, the L¹ condition)\n- `hindep : Pairwise (IndepFun X)` (independence)\n- `hident : ∀ i, IdentDistrib (X i) (X 0)` (identical distribution)\n\nNotably absent: any L² condition! No `Memℒp 2`, no `HasFiniteVariance`.\n\n**2. SLLN → WLLN**: Apply `tendstoInMeasure_of_tendsto_ae` which converts a.s. convergence to convergence in measure (= convergence in probability for probability spaces).\n\n**3. Necessity (axiomized)**: The converse — that SLLN implies E[|X|] < ∞ — completes Kolmogorov's characterization but requires Borel-Cantelli lemma machinery not in Mathlib's `strong_law_ae`.\n\n**4. Main answer**: `lln_heavy_tail_answer` restates the key result clearly: SLLN holds for heavy-tailed distributions with E[|X|] < ∞, directly answering the open question.",
+    "keyInsights": [
+      "Kolmogorov's `strong_law_ae` in Mathlib requires only `Integrable` (L¹), NOT `Memℒp 2` (L²) — this directly proves SLLN for infinite-variance distributions",
+      "The Chebyshev WLLN proof requires E[X²] < ∞ (for variance-based concentration), but this is a proof artifact, not a mathematical necessity",
+      "The true threshold for LLN is E[|X|] < ∞ (finite first moment), not E[X²] < ∞ (finite second moment)",
+      "SLLN implies WLLN via `tendstoInMeasure_of_tendsto_ae`: almost sure convergence is strictly stronger than convergence in probability",
+      "Cauchy distribution (no finite moments at all) is the canonical LLN failure: by 1-stability, the sample mean's distribution is Cauchy(0,1) for ALL n"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Mathematical Context",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Overview of LLN for heavy-tailed distributions. Key insight: Kolmogorov's SLLN requires only E[|X|] < ∞, not finite variance."
+    },
+    {
+      "id": "slln",
+      "title": "Kolmogorov's SLLN Under Finite Mean Only",
+      "startLine": 57,
+      "endLine": 92,
+      "summary": "slln_under_finite_mean_only: direct application of strong_law_ae. Requires only Integrable, not L²."
+    },
+    {
+      "id": "wlln",
+      "title": "WLLN for Heavy-Tailed Distributions",
+      "startLine": 93,
+      "endLine": 117,
+      "summary": "wlln_for_heavy_tails: derives WLLN (convergence in probability) from SLLN via tendstoInMeasure_of_tendsto_ae."
+    },
+    {
+      "id": "necessity",
+      "title": "Necessity of Finite Mean (Converse)",
+      "startLine": 118,
+      "endLine": 153,
+      "summary": "slln_necessity (axiom): SLLN ⟹ E[|X|] < ∞. Completes Kolmogorov's characterization. Requires Borel-Cantelli."
+    },
+    {
+      "id": "pareto",
+      "title": "Pareto Distribution: Key Example",
+      "startLine": 154,
+      "endLine": 168,
+      "summary": "pareto_lln_analysis: documents the α > 1 threshold for Pareto. Chebyshev requires α > 2; Kolmogorov only α > 1."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Answer to the Open Question",
+      "startLine": 169,
+      "endLine": 198,
+      "summary": "lln_heavy_tail_answer: complete proof that SLLN holds for heavy-tailed distributions with E[|X|] < ∞."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization directly answers the open question: infinite variance does NOT cause LLN failure. The true threshold is E[|X|] < ∞ (Kolmogorov 1930). Mathlib's `strong_law_ae` requires only integrability, enabling clean proof of SLLN for all heavy-tailed distributions with finite mean. WLLN follows immediately via a.s. → in-probability convergence.",
+    "implications": "**For probability theory**: The proof clarifies a common pedagogical misconception. Chebyshev's inequality proof of WLLN (requiring L²) is a sufficient but not necessary argument. Kolmogorov's L¹ threshold is tight.\n\n**For applications**: Heavy-tailed distributions (Pareto, stable, power-law) arise throughout finance, network science, and physics. The LLN still applies whenever E[|X|] < ∞, giving practitioners reliable averaging even with extreme events.\n\n**For Mathlib**: This demonstrates that `ProbabilityTheory.strong_law_ae` is already the strongest form of SLLN. The only gap is the converse (necessity), which requires Borel-Cantelli applied to tail events {|Xₙ| > nε}.\n\n**For teaching**: The Cauchy distribution (α = 1 for stable laws) is the precise boundary — it has no finite moments, and indeed the sample mean of i.i.d. Cauchy(0,1) is again Cauchy(0,1) by 1-stability, so no concentration occurs.",
+    "openQuestions": [
+      "Can the converse (slln_necessity) be proved in Mathlib? Requires formalizing Borel-Cantelli for tail events {|Xₙ| > nε}",
+      "What is the LLN rate of convergence for heavy-tailed distributions? (Berry-Esseen type results for α ∈ (1,2))",
+      "For α-stable distributions with α ∈ (1,2), what is the limit distribution of n^{1/α}(S_n/n - E[X])? (Stable CLT)",
+      "Can Mathlib formalize the Stable Central Limit Theorem (convergence to stable laws for infinite variance)?"
+    ]
+  }
+}

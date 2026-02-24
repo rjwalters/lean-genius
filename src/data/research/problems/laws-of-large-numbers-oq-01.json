@@ -1,0 +1,69 @@
+{
+  "slug": "laws-of-large-numbers-oq-01",
+  "title": "LLN for heavy-tailed distributions with infinite variance",
+  "phase": "COMPLETE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: What happens with heavy-tailed distributions where variance is infinite? The WLLN via Chebyshev fails, but SLLN may still hold.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-24T06:31:43.090Z",
+    "iteration": 1,
+    "focus": "Proved SLLN and WLLN for heavy-tailed distributions using Mathlib strong_law_ae",
+    "blockers": [],
+    "nextAction": "Completed - PR created",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved SLLN and WLLN for heavy-tailed distributions with E[|X|] < ∞, using Kolmogorov strong_law_ae which requires only Integrable (L1), not Memℒp 2 (L2)",
+    "builtItems": [
+      "slln_under_finite_mean_only: SLLN via strong_law_ae, only Integrable needed (LawsOfLargeNumbersOQ01.lean:82)",
+      "wlln_for_heavy_tails: WLLN from SLLN via tendstoInMeasure_of_tendsto_ae (LawsOfLargeNumbersOQ01.lean:104)",
+      "slln_necessity: axiom for converse direction SLLN => integrable (LawsOfLargeNumbersOQ01.lean:145)",
+      "lln_heavy_tail_answer: main theorem answering open question (LawsOfLargeNumbersOQ01.lean:187)"
+    ],
+    "insights": [
+      "ProbabilityTheory.strong_law_ae requires only Integrable (X 0) mu, NOT Memℒp 2 - directly proves SLLN for infinite variance",
+      "Chebyshev WLLN failure (infinite variance) does NOT imply LLN failure - Chebyshev is a proof artifact not a threshold",
+      "True threshold for SLLN is E[|X|] < infinity (L1), not E[X^2] < infinity (L2) - Kolmogorov 1930",
+      "SLLN => WLLN via tendstoInMeasure_of_tendsto_ae: a.s. convergence implies convergence in measure",
+      "Cauchy distribution (no finite moments) is canonical LLN failure: by 1-stability, sample mean stays Cauchy for all n"
+    ],
+    "mathlibGaps": [
+      "slln_necessity (converse: SLLN => E[|X|] < inf) not in Mathlib - requires Borel-Cantelli on tail events {|Xn| > n*eps}"
+    ],
+    "nextSteps": []
+  },
+  "approaches": [],
+  "tags": [
+    "probability",
+    "statistics",
+    "analysis",
+    "convergence",
+    "seeker-selected"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-24T07:33:31.363Z",
+  "lastUpdate": "2026-02-24T08:00:00.000Z",
+  "significance": 7,
+  "tractability": 6
+}
