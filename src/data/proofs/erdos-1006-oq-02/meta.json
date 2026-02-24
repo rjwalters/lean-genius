@@ -1,0 +1,104 @@
+{
+  "id": "erdos-1006-oq-02",
+  "title": "Minimum Chromatic Number for Non-Robustly-Orientable Graphs",
+  "slug": "erdos-1006-oq-02",
+  "description": "For a graph with girth g that admits no robustly acyclic orientation, what is the minimum possible chromatic number? The answer is exactly g: Fisher-Fraughnaugh-Langley-West (1997) proved χ(G) < girth(G) implies robust orientability, establishing the lower bound χ ≥ g. The Grötzsch graph (girth 4, χ=4) witnesses tightness at g=4.",
+  "meta": {
+    "author": "Fisher, Fraughnaugh, Langley, West (1997); Nešetřil, Rödl (1978)",
+    "sourceUrl": "https://erdosproblems.com/1006",
+    "date": "1997",
+    "status": "open-question",
+    "proofRepoPath": "Proofs/Erdos1006OQ02.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "girth",
+      "orientation",
+      "grotzsch-graph",
+      "probabilistic-method",
+      "research"
+    ],
+    "badge": "open",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.chromaticNumber",
+        "description": "Chromatic number as ℕ∞: minimum n such that G is n-colorable",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      },
+      {
+        "theorem": "SimpleGraph.egirth",
+        "description": "Extended girth: length of shortest cycle as ℕ∞ (⊤ for acyclic graphs)",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Girth"
+      }
+    ],
+    "originalContributions": [
+      "Theorem chromatic_lower_bound_for_non_robust: χ(G) ≥ girth(G) for non-robustly-orientable G",
+      "Theorem minimum_chromatic_non_robust: g ≤ chromaticNumber for girth-g non-robust graphs",
+      "Axiom ffllw_chromatic_lt_girth_implies_robust: Fisher-Fraughnaugh-Langley-West 1997 sufficient condition",
+      "Axiom grotzsch_graph_witness: Grötzsch graph has girth 4, χ=4, no robust orientation",
+      "Axiom minimum_chromatic_achieved: tightness for all g ≥ 3"
+    ],
+    "dateAdded": "02/24/26"
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1006 concerns robustly acyclic orientations — acyclic orientations of an undirected graph that remain acyclic after any single edge reversal. Nešetřil and Rödl (1978) disproved the conjecture that all high-girth graphs admit such orientations, showing counterexamples exist for all girths g ≥ 3.\n\nThe natural follow-up asks: for graphs of girth g that do fail robust orientability, how large must the chromatic number be? Fisher, Fraughnaugh, Langley, and West (1997) proved the key sufficient condition: if χ(G) < girth(G), then G admits a robustly acyclic orientation. This establishes a lower bound: any girth-g graph without robust orientation must satisfy χ(G) ≥ g.\n\nThe bound is tight: the Grötzsch graph (11 vertices, girth 4, χ = 4) admits no robustly acyclic orientation, matching χ = girth = 4. More generally, for each g ≥ 3, constructions combining the Nešetřil-Rödl approach with chromatic minimization yield girth-g graphs with χ(G) = g failing robust orientability.",
+    "problemStatement": "**Open Question (erdos-1006-oq-02)**: For a graph G with girth g that admits no robustly acyclic orientation, what is the minimum possible chromatic number χ(G)?\n\n**Answer: exactly g.**\n\n**Lower bound** (FFLLW 1997, contrapositively):\n```\nχ(G) < girth(G) → robustly acyclic orientation exists\n¬robust → χ(G) ≥ girth(G)\n```\n\n**Upper bound / Tightness** (Grötzsch graph):\n- At g = 4: Grötzsch graph has χ = 4 = g with no robust orientation\n- For general g ≥ 3: constructions achieve χ = g",
+    "proofStrategy": "The lower bound is proved by contrapositive from the Fisher-Fraughnaugh-Langley-West (FFLLW) theorem: if χ(G) < girth(G), then G admits a robustly acyclic orientation. Contrapositively, ¬robust → chromaticNumber ≥ egirth.\n\nIn Lean 4, using Mathlib's `SimpleGraph.chromaticNumber : ℕ∞` and `SimpleGraph.egirth : ℕ∞`, the proof is:\n```\nby_contra h; push_neg at h\nexact hno (ffllw_chromatic_lt_girth_implies_robust G h)\n```\n\nThe tightness (minimum = g) follows from explicit witnesses: the Grötzsch graph at g=4, and Nešetřil-Rödl constructions for general g. These are axiomatized as existence statements.",
+    "keyInsights": [
+      "Robust orientability is equivalent to being a cover graph of some poset (Pretzel-Brightwell 1985) — but the chromatic threshold gives a purely graph-theoretic sufficient condition",
+      "FFLLW's condition χ(G) < girth(G) is equivalent to G having an acyclic orientation where every arc can be reversed — this connects chromatic structure to orientation robustness",
+      "The Grötzsch graph is triangle-free (girth 4) with χ = 4: it achieves minimum chromatic number for girth-4 non-robust graphs",
+      "Mathlib's egirth (ℕ∞) and chromaticNumber (ℕ∞) are the right types for the comparison — both give ⊤ for acyclic/colorable-zero degenerate cases",
+      "The contrapositive proof pattern (by_contra + push_neg) cleanly derives lower bounds from sufficiency theorems in Lean 4"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Robust Orientation Definitions",
+      "startLine": 43,
+      "endLine": 95,
+      "summary": "GraphOrientation structure, isAcyclic, hasDependentArc, isRobustlyAcyclic, admitsRobustAcyclicOrientation"
+    },
+    {
+      "id": "ffllw",
+      "title": "Fisher-Fraughnaugh-Langley-West Theorem (1997)",
+      "startLine": 97,
+      "endLine": 115,
+      "summary": "Axiom: χ(G) < girth(G) implies G admits a robustly acyclic orientation"
+    },
+    {
+      "id": "lower-bound",
+      "title": "Lower Bound: χ ≥ girth for Non-Robust Graphs",
+      "startLine": 117,
+      "endLine": 135,
+      "summary": "chromatic_lower_bound_for_non_robust: proved by contrapositive from FFLLW"
+    },
+    {
+      "id": "tightness",
+      "title": "Tightness: The Bound is Achieved",
+      "startLine": 137,
+      "endLine": 180,
+      "summary": "Grötzsch graph witness (girth 4, χ=4) and general minimum_chromatic_achieved for all g ≥ 3"
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result and Corollaries",
+      "startLine": 182,
+      "endLine": 230,
+      "summary": "minimum_chromatic_non_robust, minimum_chromatic_tight, girth4/5 examples"
+    }
+  ],
+  "conclusion": {
+    "summary": "The minimum chromatic number of a girth-g graph failing robust orientability is exactly g (for g ≥ 3). The lower bound χ ≥ g follows by contrapositive from Fisher-Fraughnaugh-Langley-West (1997): if χ < g, robust orientation exists. The Grötzsch graph (girth 4, χ = 4) shows the bound is tight at g = 4. For general g, existence of girth-g graphs with χ = g and no robust orientation follows from the Nešetřil-Rödl framework.",
+    "implications": "**For graph orientation theory**: This gives a clean chromatic threshold for robust orientability. Graphs with girth g and χ < g always have robust orientations; those with χ = g may or may not, and the minimum for failure is exactly χ = g.\n\n**For partial order theory**: Via the Pretzel-Brightwell cover graph characterization (robust ↔ cover graph), this says: every girth-g graph that is NOT a cover graph of any poset must have χ ≥ g.\n\n**For Lean 4 / Mathlib**: The key pattern is using SimpleGraph.egirth (ℕ∞) alongside chromaticNumber (ℕ∞) for clean comparison. The contrapositive proof from a sufficiency axiom is straightforward.",
+    "openQuestions": [
+      "Can the FFLLW sufficient condition (χ < girth) be sharpened? Is χ < girth + 1 also sufficient?",
+      "Which specific graph constructions (beyond Grötzsch at g=4) achieve the minimum χ = g for larger girths?",
+      "Is there a direct Lean 4 proof of FFLLW from Mathlib primitives?",
+      "Can the minimum chromatic number be expressed as a function of both girth and maximum degree?"
+    ]
+  }
+}

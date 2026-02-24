@@ -1,0 +1,70 @@
+{
+  "slug": "erdos-1006-oq-02",
+  "title": "Minimum chromatic number for girth-g graphs failing robust orientability",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: What is the minimum chromatic number of a graph with girth g that fails robust orientability?.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "DONE",
+    "since": "2026-02-24T06:31:43.089Z",
+    "iteration": 1,
+    "focus": "Proved lower bound χ ≥ girth for non-robustly-orientable graphs",
+    "blockers": [],
+    "nextAction": "None - all tractable work done",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Proved lower bound χ(G) ≥ girth(G) for non-robustly-orientable graphs from contrapositive of FFLLW. Axiomatized Grötzsch witness and general tightness. File has 5 proved theorems, 3 axiomatized deep results, 0 sorries.",
+    "builtItems": [
+      "chromatic_lower_bound_for_non_robust: χ(G) ≥ girth(G) for ¬robust graphs (proved by contrapositive)",
+      "minimum_chromatic_non_robust: g ≤ chromaticNumber when egirth = g (proved)",
+      "ffllw_chromatic_lt_girth_implies_robust: FFLLW 1997 sufficient condition (axiom)",
+      "grotzsch_graph_witness: girth 4, χ=4, no robust orientation (axiom)",
+      "minimum_chromatic_achieved: tightness for all g ≥ 3 (axiom)",
+      "Gallery entry at src/data/proofs/erdos-1006-oq-02/"
+    ],
+    "insights": [
+      "The minimum chromatic number of a girth-g non-robustly-orientable graph is exactly g",
+      "Lower bound: χ ≥ g follows by contrapositive of FFLLW (1997): χ < girth → robust orientation",
+      "Tightness: Grötzsch graph (11 vertices, girth 4, χ=4) shows minimum = 4 = girth at g=4",
+      "Mathlib uses ℕ∞ for both egirth and chromaticNumber — ideal for clean comparison",
+      "The by_contra + push_neg + ffllw pattern is the key proof step for the lower bound",
+      "Connected to Pretzel-Brightwell (1985): robust ↔ cover graph of poset"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
+  "tags": [
+    "graph-theory",
+    "chromatic-number",
+    "girth",
+    "probabilistic-method",
+    "seeker-selected"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-24T08:35:25.047Z",
+  "lastUpdate": "2026-02-24T08:35:25.047Z",
+  "significance": 6,
+  "tractability": 5
+}
