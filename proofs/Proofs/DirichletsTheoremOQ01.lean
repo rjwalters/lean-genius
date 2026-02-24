@@ -285,6 +285,97 @@ theorem siegel_zero_location_constraint
   exact ⟨C, hC, fun N _ hN2 χ hχ β _ _ =>
     hsiegel N χ hχ (by exact_mod_cast (show 1 < N by omega))⟩
 
+/-
+## Part VII: Structural Properties of Siegel Zeros
+-/
+
+/-- Extract the lower and upper bounds directly from the Siegel zero definition. -/
+theorem siegel_zero_bounds {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N}
+    {β c : ℝ} {hc : 0 < c} {hN : 2 ≤ N}
+    (h : IsSiegelZero χ β c hc hN) :
+    1 - c / Real.log N < β ∧ β < 1 :=
+  Set.mem_Ioo.mp h.1
+
+/-- A Siegel zero β is strictly positive when c < log(N).
+    This follows because the region (1 - c/log(N), 1) has positive lower bound
+    precisely when c/log(N) < 1, i.e., c < log(N). -/
+theorem siegel_zero_positive {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N}
+    {β c : ℝ} {hc : 0 < c} {hN : 2 ≤ N}
+    (h : IsSiegelZero χ β c hc hN)
+    (hsmall : c < Real.log N) :
+    0 < β := by
+  have hlogN_pos : 0 < Real.log N := Real.log_pos (by exact_mod_cast show 1 < N by omega)
+  have ⟨hlb, _⟩ := Set.mem_Ioo.mp h.1
+  have hlt : c / Real.log N < 1 := (div_lt_one hlogN_pos).mpr hsmall
+  linarith
+
+/-- A Siegel zero lies in (1/2, 1) when c < log(N)/2.
+    This places it squarely in the critical strip above 1/2,
+    the region that GRH claims is zero-free. -/
+theorem siegel_zero_in_upper_half {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N}
+    {β c : ℝ} {hc : 0 < c} {hN : 2 ≤ N}
+    (h : IsSiegelZero χ β c hc hN)
+    (hsmall : c < Real.log N / 2) :
+    1/2 < β ∧ β < 1 := by
+  have hlogN_pos : 0 < Real.log N := Real.log_pos (by exact_mod_cast show 1 < N by omega)
+  have ⟨hlb, hub⟩ := Set.mem_Ioo.mp h.1
+  have hlt : c / Real.log N < 1/2 := by
+    rw [div_lt_iff hlogN_pos]
+    linarith
+  exact ⟨by linarith, hub⟩
+
+/-- **GRH eliminates Siegel zeros** when c < log(N)/2.
+    Under the Generalized Riemann Hypothesis, L(s,χ) has no zeros with Re(s) ∈ (1/2, 1).
+    Since any Siegel zero with c < log(N)/2 lies in (1/2, 1), GRH rules it out. -/
+theorem grh_eliminates_siegel_zeros
+    (grh : ∀ (M : ℕ) [NeZero M] (χ' : DirichletCharacter ℂ M) (s : ℂ),
+      1/2 < s.re → s.re < 1 → LFunction χ' s ≠ 0)
+    {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
+    (c : ℝ) (hc : 0 < c) (hN : 2 ≤ N)
+    (hsmall : c < Real.log N / 2) :
+    ¬ HasSiegelZero χ c hc hN := by
+  intro ⟨β, hβ⟩
+  have hin := siegel_zero_in_upper_half hβ hsmall
+  have hne : LFunction χ (β : ℂ) ≠ 0 := by
+    apply grh N χ
+    · simp only [Complex.ofReal_re]; exact hin.1
+    · simp only [Complex.ofReal_re]; exact hin.2
+  exact hne hβ.2
+
+/-- **Consequence of Landau-Page**: At most one conductor N ≤ Q can have
+    a real zero of L(s,χ) in the region (1 - c/log(Q), 1).
+    Any two characters with Siegel zeros in this region share the same conductor. -/
+theorem at_most_one_exceptional_conductor
+    (Q : ℕ) (hQ : 2 ≤ Q) (c : ℝ) (hc : 0 < c)
+    {N₁ N₂ : ℕ} [NeZero N₁] [NeZero N₂]
+    (χ₁ : DirichletCharacter ℂ N₁) (χ₂ : DirichletCharacter ℂ N₂)
+    (hN₁ : N₁ ≤ Q) (hN₂ : N₂ ≤ Q) (hχ₁ : χ₁ ≠ 1) (hχ₂ : χ₂ ≠ 1)
+    (h₁ : ∃ β₁ : ℝ, β₁ ∈ Set.Ioo (1 - c / Real.log Q) 1 ∧ LFunction χ₁ β₁ = 0)
+    (h₂ : ∃ β₂ : ℝ, β₂ ∈ Set.Ioo (1 - c / Real.log Q) 1 ∧ LFunction χ₂ β₂ = 0) :
+    N₁ = N₂ :=
+  landau_page_theorem Q hQ c hc N₁ N₂ χ₁ χ₂ hN₁ hN₂ hχ₁ hχ₂ h₁ h₂
+
+/-- Under GRH, Siegel zeros cannot exist for any conductor N > exp(2c).
+    For such large N, the Siegel zero region (1 - c/log(N), 1) is contained in (1/2, 1),
+    and GRH rules out zeros there. -/
+theorem grh_implies_no_siegel_zeros_large_conductor
+    (grh : ∀ (M : ℕ) [NeZero M] (χ' : DirichletCharacter ℂ M) (s : ℂ),
+      1/2 < s.re → s.re < 1 → LFunction χ' s ≠ 0)
+    (c : ℝ) (hc : 0 < c) :
+    ∀ (N : ℕ) [NeZero N] (hN : 2 ≤ N),
+    Real.exp (2 * c) < N →
+    ∀ (χ : DirichletCharacter ℂ N), ¬ HasSiegelZero χ c hc hN := by
+  intro N _ hN hexp χ
+  apply grh_eliminates_siegel_zeros grh χ c hc hN
+  -- Need: c < Real.log N / 2
+  -- From: exp(2c) < N → log(exp(2c)) < log N → 2c < log N → c < log N / 2
+  have hlogN_pos : 0 < Real.log N := Real.log_pos (by exact_mod_cast show 1 < N by omega)
+  have hlog_ineq : Real.log (Real.exp (2 * c)) < Real.log N := by
+    apply Real.log_lt_log (Real.exp_pos _)
+    exact_mod_cast hexp
+  rw [Real.log_exp] at hlog_ineq
+  linarith
+
 end DirichletsTheoremOQ01
 
 end
