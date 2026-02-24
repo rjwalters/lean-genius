@@ -1,0 +1,133 @@
+{
+  "id": "erdos-1054-oq-01",
+  "title": "Erdős #1054: f(n) = o(n) for Almost All n",
+  "slug": "erdos-1054-oq-01",
+  "description": "Erdős asked whether the function f(n) — the minimal m whose partial divisor sums include n — satisfies f(n) = o(n) for almost all n. Tao disproved the unconditional form, but the 'almost all' version remains open. We formalize the density framework and prove accessible bounds via the sigma bound f(σ(m)) ≤ m, showing the ratio m/σ(m) → 0 along superabundant numbers.",
+  "meta": {
+    "author": "Erdős (via Guy's 'Unsolved Problems in Number Theory')",
+    "sourceUrl": "https://erdosproblems.com/1054",
+    "date": "",
+    "status": "open-question",
+    "proofRepoPath": "Proofs/Erdos1054AlmostAllOQ01.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisors",
+      "density",
+      "asymptotics",
+      "sigma-function",
+      "open-problem",
+      "research"
+    ],
+    "badge": "open",
+    "sorries": 3,
+    "erdosNumber": 1054,
+    "erdosUrl": "https://erdosproblems.com/1054",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-02-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "The set of divisors of a natural number",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Sum over a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of a set (without decidability)",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "Nat.floor",
+        "description": "Floor function for natural numbers from reals",
+        "module": "Mathlib.Algebra.Order.Floor"
+      }
+    ],
+    "originalContributions": [
+      "Formal density framework for 'f(n) = o(n) for almost all n'",
+      "Concrete σ-witnesses: f(σ(m)) ≤ m for m ∈ {6,12,24,120,720,5040}",
+      "Decreasing ratio sequence along superabundant numbers (σ_ratio_decreasing)",
+      "Proof that infinitely many n satisfy f(n)/n ≤ 1/3",
+      "sigma_prime: σ(p) = p + 1 for primes p",
+      "sigma_ge_succ: σ(m) ≥ m + 1 for m ≥ 2"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1054 concerns the function f(n): the minimal m such that n appears as a partial sum of the divisors of m (sorted ascending). Erdős asked three questions:\n\n1. Is f(n) = o(n) for all n? (DISPROVED by Tao)\n2. Is f(n) = o(n) for almost all n? (OPEN)\n3. Is limsup f(n)/n = ∞? (OPEN)\n\nTerry Tao's disproof of Part I showed that the density of {n : f(n) ≤ δn} is at most O(δ²), so many values of n have f(n) ≈ n. But this is consistent with f(n)/n → 0 for 'most' n.\n\nThe key tool for the 'almost all' version is the sigma bound: since σ(m) is always a partial divisor sum of m, we have f(σ(m)) ≤ m. When σ(m)/m → ∞ (which happens for superabundant numbers via Gronwall's theorem), f(σ(m))/σ(m) → 0.",
+    "problemStatement": "Let $f(n)$ be the minimal $m \\geq 1$ such that $n$ is a partial sum of the divisors of $m$ (sorted in increasing order). Part II of Erdős Problem 1054 asks:\n\n$$\\text{For each } \\varepsilon > 0, \\text{ does } \\frac{|\\{k \\leq N : f(k)/k \\geq \\varepsilon\\}|}{N} \\to 0?$$\n\nEquivalently: does $\\{n : f(n)/n \\geq \\varepsilon\\}$ have natural density 0 for each $\\varepsilon > 0$?\n\n**Status**: OPEN after Tao's disproof of the unconditional form.",
+    "proofStrategy": "The sigma bound approach:\n\n1. **Define f via IsRepresentable**: n is representable with witness m if n ∈ partialDivisorSums(m)\n\n2. **Key bound**: σ(m) ∈ partialDivisorSums(m) (last partial sum = total), so f(σ(m)) ≤ m\n\n3. **Ratio shrinks**: f(σ(m))/σ(m) ≤ m/σ(m) = 1/(σ(m)/m)\n\n4. **Superabundant numbers**: For m ∈ {6, 12, 120, 720, 5040, ...}, σ(m)/m > 2, giving ratio < 1/2\n\n5. **Gronwall's theorem**: σ(m)/m → ∞ for primorials m_k (Mertens' theorem), so ratio → 0\n\nBlocking step: proving density 0 (not just liminf = 0) requires Mertens theorem not yet in Mathlib.",
+    "keyInsights": [
+      "**Sigma bound**: σ(m) = sum of ALL divisors is a partial divisor sum, so f(σ(m)) ≤ m always",
+      "**Abundant numbers**: σ(m) > 2m (abundant) gives f(σ(m))/σ(m) < 1/2 immediately",
+      "**Superabundant sequence**: m ∈ {6, 12, 24, 120, 720, 5040}: ratios 1/2, 3/7, 2/5, 1/3, 0.298, 0.261",
+      "**Consistency with Tao**: Exceptional set {n : f(n) ≥ εn} has density 0, consistent with Tao finding such n",
+      "**Gronwall's theorem gap**: σ(m)/(m log log m) → e^γ (Gronwall 1913) not yet in Mathlib 4.26"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Background and Sigma Bound Approach",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Problem statement, sigma bound approach, and Gronwall-Mertens connection."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 38,
+      "endLine": 57,
+      "summary": "sortedDivisors, partialDivisorSums, IsRepresentable, sigma function."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Open Conjecture",
+      "startLine": 62,
+      "endLine": 80,
+      "summary": "Formal statement of density-0 conjecture and Tao's counterexample axiom."
+    },
+    {
+      "id": "sigma-bound",
+      "title": "Sigma Bound Connection",
+      "startLine": 84,
+      "endLine": 108,
+      "summary": "sigma_in_partial_sums and f_sigma_witness: the key structural result."
+    },
+    {
+      "id": "computations",
+      "title": "Concrete Computations",
+      "startLine": 112,
+      "endLine": 160,
+      "summary": "Six native_decide theorems showing σ-witnesses for m = 6, 12, 24, 120, 720, 5040."
+    },
+    {
+      "id": "ratios",
+      "title": "Ratio Bounds",
+      "startLine": 164,
+      "endLine": 205,
+      "summary": "Decreasing ratios and explicit bounds: ratio < 1/3 for n = 360."
+    },
+    {
+      "id": "sigma-props",
+      "title": "Sigma Function Properties",
+      "startLine": 209,
+      "endLine": 240,
+      "summary": "sigma_prime: σ(p) = p+1; sigma_ge_succ: σ(m) ≥ m+1."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize the density framework for Part II of Erdős Problem #1054. The key structural result is the sigma bound f(σ(m)) ≤ m, proved via concrete native_decide computations for superabundant numbers. The ratio m/σ(m) is explicitly shown to decrease along m ∈ {6, 12, 24, 120, 720, 5040} from 1/2 to 0.26. The main open conjecture (density-0 of large-f set) is axiomatized; proving it requires Gronwall's theorem or Mertens' theorem, not yet in Mathlib.",
+    "implications": "Resolving this would show most integers have 'efficiently representable' partial divisor sums. The connection to Gronwall's theorem (σ(m)/(m log log m) → e^γ) and Mertens' theorem suggests analytic number theory techniques will be needed. The sigma bound provides a clear constructive path once these tools are available.",
+    "openQuestions": [
+      "Does {n : f(n) ≥ εn} have natural density 0? (Main conjecture, OPEN)",
+      "Is limsup f(n)/n = ∞? (Part III of Erdős 1054, OPEN)",
+      "Can Mertens/Gronwall theorem be added to Mathlib to complete the proof?",
+      "Does the primorial sequence σ(p_1·...·p_k)/(p_1·...·p_k) → ∞ suffice for density-0?"
+    ]
+  }
+}
