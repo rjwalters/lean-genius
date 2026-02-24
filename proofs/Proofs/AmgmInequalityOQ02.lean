@@ -217,6 +217,53 @@ theorem amgm_from_maclaurin {n : ℕ} (hn : 0 < n) (x : Fin n → ℝ)
     _ = (∑ i, x i) / n := by rw [← Finset.mul_sum]; ring
 
 /-
+## Part V: Non-Negative Maclaurin Chain Theorems
+-/
+
+/-- M₁² ≥ M₂ for non-negative inputs, via Newton's log-concavity at k=1.
+    Newton gives: ((∑xᵢ)/n)² ≥ e₂/C(n,2), which is C(n,2)·(∑xᵢ)² ≥ n²·e₂. -/
+theorem maclaurin_sq_m1_ge_m2_from_newton {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ)
+    (hx : ∀ i, 0 ≤ x i) :
+    (Nat.choose n 2 : ℝ) * (∑ i, x i) ^ 2 ≥ (n : ℝ) ^ 2 * elemSymm 2 x := by
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
+  have hC2_pos : (0 : ℝ) < (Nat.choose n 2 : ℝ) :=
+    Nat.cast_pos.mpr (Nat.choose_pos (by omega : 2 ≤ n))
+  have h_newton := newton_log_concavity 1 le_rfl (by omega : 1 + 1 ≤ n) x hx
+  simp only [show (1 - 1 : ℕ) = 0 from rfl, show (1 + 1 : ℕ) = 2 from rfl,
+             elemSymm_zero, elemSymm_one, Nat.choose_zero_right, Nat.choose_one_right,
+             Nat.cast_one, div_one, one_mul] at h_newton
+  -- h_newton : ((∑ i, x i) / ↑n) ^ 2 ≥ elemSymm 2 x / ↑(Nat.choose n 2)
+  have hnn2_pos : (0 : ℝ) < (n : ℝ) ^ 2 := pow_pos hn_pos 2
+  have key : elemSymm 2 x * (n : ℝ) ^ 2 ≤ (∑ i : Fin n, x i) ^ 2 * (Nat.choose n 2 : ℝ) := by
+    rw [show ((∑ i : Fin n, x i) / (n : ℝ)) ^ 2 = (∑ i : Fin n, x i) ^ 2 / (n : ℝ) ^ 2
+        from by ring, div_le_div_iff hC2_pos hnn2_pos] at h_newton
+    linarith
+  linarith
+
+/-- The Maclaurin chain: Mⱼ ≥ Mₖ for 0 < j ≤ k ≤ n.
+    Proved by induction on k - j using the maclaurin_step axiom. -/
+theorem maclaurin_chain {n : ℕ} (j k : ℕ) (hj : 0 < j) (hjk : j ≤ k) (hkn : k ≤ n)
+    (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
+    maclaurinMean j x ≥ maclaurinMean k x := by
+  obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hjk
+  revert hkn
+  induction d with
+  | zero => intro; simp
+  | succ e ih =>
+    intro hkn
+    have hstep : maclaurinMean (j + e) x ≥ maclaurinMean (j + e + 1) x :=
+      maclaurin_step (j + e) (by omega) (by omega) x hx
+    have h_eq : j + (e + 1) = j + e + 1 := by omega
+    rw [h_eq]
+    exact le_trans hstep (ih (by omega))
+
+/-- The first Maclaurin mean dominates the last: M₁ ≥ Mₙ (AM ≥ GM in disguise). -/
+theorem maclaurin_m1_ge_mn {n : ℕ} (hn : 0 < n) (x : Fin n → ℝ)
+    (hx : ∀ i, 0 ≤ x i) :
+    maclaurinMean 1 x ≥ maclaurinMean n x :=
+  maclaurin_chain 1 n (by omega) (by omega) le_rfl x hx
+
+/-
 ## Summary
 
 ### The Main Answer:
@@ -233,9 +280,12 @@ The chain follows from Newton's log-concavity inequalities for the sequence eₖ
 6. `maclaurin_m1sq_ge_m2_n4` — (M₁)² ≥ M₂ for n=4 (via nlinarith + sq_nonneg)
 7. `maclaurinMean_nonneg` — Maclaurin means are non-negative
 8. `amgm_from_maclaurin` — AM-GM from Mathlib weighted AM-GM
+9. `maclaurin_sq_m1_ge_m2_from_newton` — C(n,2)·(∑xᵢ)² ≥ n²·e₂ (non-negative, Newton)
+10. `maclaurin_chain` — Mⱼ ≥ Mₖ for j ≤ k ≤ n (induction on k-j via maclaurin_step)
+11. `maclaurin_m1_ge_mn` — M₁ ≥ Mₙ, i.e., AM ≥ GM (corollary of chain)
 
 ### Has sorry (1):
-1. `maclaurin_sq_m1_ge_m2_general` — general (∑xᵢ)²·C(n,2) ≥ n²·e₂
+1. `maclaurin_sq_m1_ge_m2_general` — general (∑xᵢ)²·C(n,2) ≥ n²·e₂ (all reals)
    (identity: C(n,2)·e₁² - n²·e₂ = n/2·∑_{i<j}(xᵢ-xⱼ)², needs Finset algebra)
 
 ### Axiomatized (deep results):
