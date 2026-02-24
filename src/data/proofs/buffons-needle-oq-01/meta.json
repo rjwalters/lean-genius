@@ -36,6 +36,16 @@
         "theorem": "Fin.sum_univ_four",
         "description": "Sum over Fin 4 splits into four terms",
         "module": "Mathlib.Data.Fin.Tuple.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.intervalIntegral.integral_nonneg",
+        "description": "Integral of nonneg function is nonneg, used for arc length nonnegativity",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
+      },
+      {
+        "theorem": "ContinuousAt.tendsto",
+        "description": "Continuity implies convergence, used in approximation limit theorem",
+        "module": "Mathlib.Topology.Basic"
       }
     ],
     "originalContributions": [
@@ -45,7 +55,11 @@
       "needle_equals_noodle: single needle has same expectation as any equal-length polygon",
       "Scaling theorem: expected crossings scale linearly with segment lengths",
       "Concrete applications: circle (4r/d), square (8s/(πd)), regular n-gon (2ns/(πd))",
-      "Documentation of Cauchy-Crofton connection and smooth curve generalization requirements"
+      "planarCurveArcLength: formal arc length of C¹ planar curve via interval integral",
+      "smoothExpectedCrossings: noncomputable axiom + buffon_noodle_smooth_eq axiom",
+      "smooth_shape_independence: smooth curves with same arc length have same crossings (proved from axiom)",
+      "buffon_noodle_approx_limit: convergence theorem (proved via ContinuousAt.tendsto)",
+      "buffon_noodle_lipschitz: Lipschitz bound on expected crossings in arc length (proved)"
     ],
     "dateAdded": "02/23/26"
   },
