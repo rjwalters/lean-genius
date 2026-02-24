@@ -1,69 +1,103 @@
 {
   "slug": "e-transcendental-oq-01",
   "title": "Is e + pi transcendental",
-  "phase": "SURVEYED",
+  "phase": "COMPLETE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "Transcendental ℚ (Real.exp 1 + Real.pi)",
+    "plain": "Is the number e + π = 5.859... transcendental? Both e and π are individually transcendental, but the transcendence of their sum is an open problem.",
+    "whyMatters": [
+      "Fundamental open problem in transcendental number theory since 1882",
+      "Would follow from Schanuel's Conjecture (itself unproven)",
+      "Even the irrationality of e + π is open"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "e and π are the two roots of T² - (e+π)T + eπ = 0 (Vieta identity, proved by ring)",
+      "Root of quadratic with algebraic coefficients is algebraic (proved via isIntegral_trans)",
+      "At least one of e+π, eπ is transcendental (proved from e's transcendence + Vieta)",
+      "If eπ is algebraic, then e+π is transcendental",
+      "If e+π is algebraic, then eπ is transcendental",
+      "π is irrational (proved from Mathlib's irrational_pi)",
+      "π + e^π is transcendental (from Nesterenko's axiom)",
+      "If e and π are algebraically independent, then e+π is transcendental",
+      "If e and π are algebraically independent, then e·π is transcendental",
+      "If e and π are algebraically independent, then e+π is irrational"
+    ],
+    "open": [
+      "Is e + π irrational? (open even at this weaker level)",
+      "Is e + π transcendental? (main question, open since 1882)",
+      "Is e · π transcendental? (unknown)",
+      "Are e and π algebraically independent? (conjectured by Schanuel)"
+    ],
+    "goal": "Prove Transcendental ℚ (Real.exp 1 + Real.pi) — currently open; would likely require Schanuel's Conjecture or a new technique."
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-02-24T05:47:52Z",
+    "phase": "COMPLETE",
+    "since": "2026-02-24T10:00:00.000Z",
     "iteration": 3,
-    "focus": "Formalization complete: algebraic_root_of_algebraic_quadratic proved (was axiom), 3 open sorries remain for genuinely open conjectures",
-    "blockers": [
-      "Main conjecture (e + π transcendental) is an open problem in mathematics",
-      "Lindemann-Weierstrass not yet formalized in Mathlib (blocks removing foundational axioms)"
-    ],
-    "nextAction": "No further progress possible without new mathematics; formalization is complete given current knowledge",
+    "focus": "Formalization complete. 10+ proved theorems, 3 sorries for genuinely open conjectures, gallery entry updated.",
+    "blockers": [],
+    "nextAction": "None — problem fully explored and formalized.",
     "attemptCounts": {
       "total": 3,
-      "currentApproach": 1,
+      "currentApproach": 0,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: ETranscendentalOQ01.lean formalization complete. Key achievement (session 2026-02-24): algebraic_root_of_algebraic_quadratic converted from axiom to proved theorem using integral extension transitivity. File compiles with exactly 3 sorries, all for genuinely open mathematical conjectures.",
+    "progressSummary": "ETranscendentalOQ01.lean builds with 0 errors and 3 expected sorries (open conjectures). 10+ theorems proved spanning: Vieta identity, algebraic closure lemma, main conditional theorem (at least one of e+π, eπ transcendental), conditional consequences, algebraic independence framework, and π irrationality from Mathlib.",
     "builtItems": [
-      "ETranscendentalOQ01.lean: theorem e_root_of_vieta_quadratic (proved by ring)",
-      "ETranscendentalOQ01.lean: theorem pi_root_of_vieta_quadratic (proved by ring)",
-      "ETranscendentalOQ01.lean: theorem algebraic_root_of_algebraic_quadratic (PROVED from axiom, session 2026-02-24, lines 127-173)",
-      "ETranscendentalOQ01.lean: theorem e_plus_pi_or_e_times_pi_transcendental (proved using above)",
-      "ETranscendentalOQ01.lean: theorem sum_transcendental_if_prod_algebraic",
-      "ETranscendentalOQ01.lean: theorem prod_transcendental_if_sum_algebraic",
-      "ETranscendentalOQ01.lean: theorem pi_plus_exp_pi_transcendental (proved from Nesterenko axiom, session 2026-02-23)",
-      "Gallery entry: src/data/proofs/e-transcendental-oq-01/ with meta.json, index.ts, annotations.json, tacticStates.json"
+      "e_root_of_vieta_quadratic: e² - (e+π)e + eπ = 0 (proved by ring)",
+      "pi_root_of_vieta_quadratic: π² - (e+π)π + eπ = 0 (proved by ring)",
+      "algebraic_root_of_algebraic_quadratic: root of quadratic with algebraic coefficients is algebraic (via isIntegral_trans)",
+      "e_plus_pi_or_e_times_pi_transcendental: at least one of e+π, eπ is transcendental",
+      "sum_transcendental_if_prod_algebraic: eπ algebraic → e+π transcendental",
+      "prod_transcendental_if_sum_algebraic: e+π algebraic → eπ transcendental",
+      "pi_plus_exp_pi_transcendental: π + e^π is transcendental (Nesterenko axiom)",
+      "pi_irrational_from_mathlib: π is irrational (from Mathlib's irrational_pi)",
+      "e_pi_algebraicallyIndependent: definition of algebraic independence of (e, π)",
+      "e_plus_pi_transcendental_from_independence: alg-ind → Transcendental ℚ (e+π)",
+      "e_times_pi_transcendental_from_independence: alg-ind → Transcendental ℚ (e·π)",
+      "e_plus_pi_irrational_from_independence: alg-ind → Irrational (e+π)",
+      "summary_independence_implies: combined conditional theorem"
     ],
     "insights": [
-      "algebraic_root_of_algebraic_quadratic proof: isAlgebraic_iff_isIntegral + Algebra.adjoin ℚ {s,p} + Algebra.IsIntegral (transitivity) + isIntegral_trans. Key step: le_integralClosure_iff_isIntegral + Algebra.adjoin_le_iff decomposes to generators.",
-      "Monic polynomial witness: X^2 - C(s_A)*X + C(p_A), proved monic via Polynomial.monic_X_pow_add after reshaping to X^(1+1) + tail with degree bound",
-      "The Vieta identity e² - (e+π)e + eπ = 0 is fully provable by ring — a key building block",
-      "If both e+π and eπ are algebraic, then e satisfies a quadratic with algebraic coefficients, making e algebraic — contradiction with Hermite",
-      "Even the irrationality of e+π is open (not just transcendence) — surprising to most",
-      "Schanuel Conjecture → e,π algebraically independent → e+π transcendental: the known conditional route",
-      "Nesterenko 1996 proves π, e^π, Γ(1/4) algebraically independent but does NOT directly give e+π",
-      "π + e^π is transcendental (from Nesterenko): construct P(X₀,X₁,X₂) = f(X₀+X₁); Polynomial.aeval_algHom_apply gives functoriality",
-      "Key Mathlib lemma: Polynomial.aeval_algHom_apply (φ : A →ₐ[R] B) (x : A) (p : R[X]) : aeval (φ x) p = φ (aeval x p)"
+      "ℚ[X] notation causes 'Unknown identifier X' errors in Lean 4; use Polynomial ℚ instead",
+      "Polynomial lifting technique: to prove f(e+π) ≠ 0 given algebraic independence, lift f to P(X₀,X₁) = aeval (X₀+X₁) f, show P ≠ 0 by specializing at (Polynomial.X, 0), then apply independence",
+      "Key API: Polynomial.aeval_algHom_apply gives φ(aeval x p) = aeval (φ x) p",
+      "Key API: Polynomial.aeval_X_left_apply gives aeval Polynomial.X f = f",
+      "neg_mul rewrite needed: -Polynomial.C s_A * X = -(Polynomial.C s_A * X); alternatively use Polynomial.C_neg to convert to Polynomial.C (-s_A) * X",
+      "Mathlib has irrational_pi in Mathlib.Analysis.Real.Pi.Irrational",
+      "Lindemann-Weierstrass NOT in Mathlib4 as of 2026 — e and π transcendence require axioms",
+      "A linter/hook reverts edits to main repo files during Docker builds; edit worktree file instead"
     ],
     "mathlibGaps": [
-      "Lindemann-Weierstrass not in Mathlib (would remove e_transcendental_q and pi_transcendental_q axioms)"
+      "Lindemann-Weierstrass theorem (would enable proving e_transcendental_q and pi_transcendental_q without axioms)",
+      "Schanuel's Conjecture (would resolve the main open question entirely)"
     ],
     "nextSteps": [
-      "Monitor Schanuel Conjecture formalization in Mathlib for conditional e+π transcendence proof",
-      "Wait for Lindemann-Weierstrass in Mathlib to remove remaining foundational axioms",
-      "e+π transcendental (direct), e·π transcendental, e+π irrational: all remain OPEN — no known proof path without Schanuel"
+      "When Lindemann-Weierstrass is formalized in Mathlib, convert axioms to theorems",
+      "No further research needed on this problem — formalization is comprehensive"
     ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Vieta + Transcendence Contradiction",
+      "status": "complete",
+      "description": "Use Vieta's identity that e, π are roots of T² - (e+π)T + eπ = 0; if both symmetric polynomials are algebraic, then e is algebraic — contradiction.",
+      "outcome": "Proved e_plus_pi_or_e_times_pi_transcendental"
+    },
+    {
+      "name": "Algebraic Independence Conditional",
+      "status": "complete",
+      "description": "Assume Schanuel-type algebraic independence of e and π; derive transcendence of e+π, e·π, and irrationality of e+π via polynomial lifting technique.",
+      "outcome": "Proved three theorems conditional on algebraic independence"
+    }
+  ],
   "tags": [
     "seeker-selected",
     "extension",
@@ -77,12 +111,21 @@
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [],
+    "papers": [
+      "Hermite (1873): Sur la fonction exponentielle — proved e transcendental",
+      "Lindemann (1882): Über die Ludolph'sche Zahl — proved π transcendental",
+      "Nesterenko (1996): Modular functions and transcendence questions — proved π, e^π, Γ(1/4) algebraically independent"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Analysis.Real.Pi.Irrational (irrational_pi)",
+      "Mathlib.RingTheory.Algebraic.Basic (Transcendental, IsAlgebraic)",
+      "Mathlib.RingTheory.IntegralClosure (isIntegral_trans, Algebra.IsIntegral)",
+      "Mathlib.RingTheory.MvPolynomial.Basic (MvPolynomial.aeval)"
+    ]
   },
   "started": "2026-02-21T19:21:07.134Z",
-  "lastUpdate": "2026-02-24T05:47:52Z",
+  "lastUpdate": "2026-02-24T10:00:00.000Z",
   "significance": 6,
   "tractability": 6
 }
