@@ -1,66 +1,111 @@
 {
   "slug": "cauchy-schwarz-integral-oq-02",
   "title": "Minkowski integral inequality as corollary of Cauchy-Schwarz",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE: Can the Minkowski inequality for integrals be derived as a corollary of the integral Cauchy-Schwarz inequality?.",
-    "whyMatters": []
+    "formal": "Can the Minkowski inequality ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p be derived as a corollary of the integral Cauchy-Schwarz inequality?",
+    "plain": "Can the Minkowski inequality for integrals be derived as a corollary of the integral Cauchy-Schwarz inequality?",
+    "whyMatters": [
+      "Establishes the hierarchy: CS → Hölder → Minkowski in formal mathematics",
+      "For p=2, provides a more elementary proof than the general Hölder argument",
+      "Key for Lp space theory and functional analysis pedagogy"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "minkowski_l2_from_CS: ‖f+g‖_2 ≤ ‖f‖_2 + ‖g‖_2 proved directly from inner-product CS and norm-squared identity",
+      "minkowski_inner_product_space: Minkowski for abstract real inner product spaces",
+      "minkowski_lp_from_holder: general Lp Minkowski via Fact (1 ≤ p) and NormedAddCommGroup instance",
+      "minkowski_lp_triangle: second form of general Lp Minkowski",
+      "minkowski_integral_ineq_l2: full integral Minkowski for L²(μ)"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "ANSWERED: YES — Minkowski IS a corollary of CS for p=2, and via Hölder (generalized CS) for all p≥1. Lean file fully proved with 0 sorries."
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-24T06:31:43.089Z",
+    "phase": "SURVEYED",
+    "since": "2026-02-24T08:35:25.046Z",
     "iteration": 1,
-    "focus": "Proved Minkowski as corollary of CS via two paths: direct L2 and general Lp",
+    "focus": "Fully formalized. 0 sorries, 0 axioms. Both proof paths established.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No action needed. Problem is fully resolved.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Proved Minkowski inequality from CS/Holder via (1) inner product norm-squared identity for p=2, (2) norm_add_le on Lp with Fact (1<=p) for general p",
+    "progressSummary": "Fully formalized in CauchySchwarzIntegralOQ02.lean. Answer is YES: Minkowski is a corollary of CS in two ways. L² case proved directly from abs_real_inner_le_norm + norm_add_sq_real + Real.sqrt_le_sqrt. General Lp proved via norm_add_le with Fact (1 ≤ p) for the NormedAddCommGroup instance. 0 sorries, 0 axioms.",
     "builtItems": [
-      "minkowski_l2_from_CS: explicit L2 Minkowski from abs_real_inner_le_norm + norm_add_sq_real (CauchySchwarzIntegralOQ02.lean:84)",
-      "minkowski_inner_product_space: abstract inner product space Minkowski from CS (CauchySchwarzIntegralOQ02.lean:100)",
-      "minkowski_lp_from_holder: general Lp Minkowski via Fact (1 <= p) and norm_add_le (CauchySchwarzIntegralOQ02.lean:132)",
-      "minkowski_integral_ineq_l2: summary theorem (CauchySchwarzIntegralOQ02.lean:190)"
+      "minkowski_l2_from_CS: L² Minkowski from inner-product CS via norm-squared identity, uses nlinarith + Real.sqrt_le_sqrt",
+      "minkowski_inner_product_space: Minkowski for any real inner product space",
+      "minkowski_lp_from_holder: general Lp Minkowski for (E : Type*) [NormedAddCommGroup E] with Fact (1 ≤ p)",
+      "minkowski_lp_triangle: alternative form for ENNReal-indexed p",
+      "minkowski_integral_ineq_l2: full Minkowski integral inequality for L²(μ) using cs_integral_inequality",
+      "minkowski_from_cauchy_schwarz_answer: summary theorem confirming the answer is YES",
+      "Section documenting snorm_add_le → eLpNorm_add_le rename in Mathlib"
     ],
     "insights": [
-      "For p=2: inner product norm-squared identity + CS gives Minkowski directly",
-      "General Lp: Fact (1 <= p) is required for NormedAddCommGroup instance on Lp E p mu",
-      "Real.sqrt_le_sqrt + Real.sqrt_sq is the correct way to go from squared to unsquared inequality in Lean 4",
-      "snorm_add_le was renamed to eLpNorm_add_le in newer Mathlib versions - use norm_add_le on Lp instead",
-      "Hierarchy: abs_real_inner_le_norm -> NNReal.inner_le_Lp_mul_Lq -> norm_add_le formalizes CS to Holder to Minkowski"
+      "The key bridge for p=2: norm_add_sq_real gives ‖u+v‖² = ‖u‖² + 2⟪u,v⟫ + ‖v‖², then CS bound ⟪u,v⟫ ≤ ‖u‖·‖v‖ gives ‖u+v‖² ≤ (‖u‖+‖v‖)²",
+      "abs_real_inner_le_norm is Mathlib's CS for real inner product spaces",
+      "For general Lp: Fact (1 ≤ p) is required for the NormedAddCommGroup instance — without this typeclass, norm_add_le is unavailable",
+      "norm_add_le on Lp E p μ provides Minkowski internally via Hölder — one-liner proof",
+      "snorm_add_le was renamed to eLpNorm_add_le in newer Mathlib versions — use norm_add_le instead",
+      "The hierarchy is: abs_real_inner_le_norm (CS) → norm_add_sq_real → Minkowski (p=2)",
+      "The hierarchy is: NNReal.inner_le_Lp_mul_Lq (Hölder/CS) → norm_add_le (Minkowski for p≥1)"
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Consider proving equality condition: ‖f+g‖_p = ‖f‖_p + ‖g‖_p iff f,g proportional (as follow-up)",
+      "Consider complex case: same derivation should work with complex inner product CS"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Direct inner-product CS (p=2)",
+      "description": "Use norm_add_sq_real + abs_real_inner_le_norm to bound ‖f+g‖² ≤ (‖f‖+‖g‖)², then take square roots via Real.sqrt_le_sqrt",
+      "status": "success",
+      "sorries": 0
+    },
+    {
+      "name": "NormedAddCommGroup instance (general p)",
+      "description": "Lp E p μ with Fact (1 ≤ p) is a NormedAddCommGroup. norm_add_le provides Minkowski in one line.",
+      "status": "success",
+      "sorries": 0
+    }
+  ],
   "tags": [
     "analysis",
     "measure-theory",
     "classic",
     "seeker-selected"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "Proofs/CauchySchwarzIntegralOQ02.lean"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Minkowski (1896), Geometrie der Zahlen",
+      "Hölder (1889)"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Minkowski_inequality"
+    ],
+    "mathlib": [
+      "Mathlib.MeasureTheory.Function.L2Space",
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.MeanInequalities",
+      "abs_real_inner_le_norm",
+      "norm_add_sq_real",
+      "norm_add_le"
+    ]
   },
-  "started": "2026-02-24T08:04:25.835Z",
-  "lastUpdate": "2026-02-24T08:30:00.000Z",
+  "started": "2026-02-24T08:35:25.046Z",
+  "lastUpdate": "2026-02-24T09:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
