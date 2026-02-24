@@ -178,9 +178,22 @@ noncomputable def zp_rotation (p : ℕ) (hp : 0 < p) :
 theorem zp_rotation_isometry (p : ℕ) (hp : 0 < p) :
     ∀ v : EuclideanSpace ℝ (Fin 2), ‖zp_rotation p hp v‖ = ‖v‖ := by
   intro v
-  -- The rotation matrix R_θ satisfies ‖R_θ v‖² = x²+y² = ‖v‖² by cos²+sin²=1
-  -- Technical proof via EuclideanSpace.norm_eq requires detailed unfolding
-  sorry
+  set x := v ⟨0, by omega⟩ with hx_def
+  set y := v ⟨1, by omega⟩ with hy_def
+  set θ := (2 : ℝ) * Real.pi / p with hθ_def
+  -- Key identity: rotation preserves norm via cos²θ + sin²θ = 1
+  have key : (x * Real.cos θ - y * Real.sin θ) ^ 2 +
+             (x * Real.sin θ + y * Real.cos θ) ^ 2 = x ^ 2 + y ^ 2 := by
+    linear_combination (x ^ 2 + y ^ 2) * Real.cos_sq_add_sin_sq θ
+  -- Get coordinate values of the rotated vector
+  have h0 : (zp_rotation p hp v) ⟨0, by omega⟩ = x * Real.cos θ - y * Real.sin θ := by
+    simp [zp_rotation, EuclideanSpace.equiv_symm_pi_lp_apply]
+  have h1 : (zp_rotation p hp v) ⟨1, by omega⟩ = x * Real.sin θ + y * Real.cos θ := by
+    simp [zp_rotation, EuclideanSpace.equiv_symm_pi_lp_apply, Fin.ext_iff]
+  -- Compute norms using the component formula
+  rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq, Fin.sum_univ_two, Fin.sum_univ_two]
+  simp only [Real.norm_eq_abs, sq_abs, h0, h1, hx_def.symm, hy_def.symm]
+  exact congr_arg Real.sqrt key
 
 /-- For Z/p equivariant Borsuk-Ulam: a map f equivariant under a free Z/p rotation
     action on S^(2n-1) must vanish. Here we pass the actions explicitly as functions
@@ -206,7 +219,73 @@ theorem zp_rotation_free_statement (p : ℕ) (hp : Nat.Prime p) :
     ∀ k : ZMod p, k ≠ 0 →
     ∀ x : EuclideanSpace ℝ (Fin 2), x ∈ Metric.sphere (0 : EuclideanSpace ℝ (Fin 2)) 1 →
     zp_rotation p hp.pos x ≠ x := by
-  sorry -- Requires analyzing when cos(2π/p)=1 and sin(2π/p)=0 simultaneously, which fails for 1 ≤ k < p
+  intro _k _hk x hx heq
+  -- The sphere condition: ‖x‖ = 1
+  rw [Metric.mem_sphere, dist_zero_right] at hx
+  -- The rotation by θ = 2π/p fixes x iff (cosθ-1)*(x₀²+x₁²) = 0 and sin θ can be resolved
+  -- For prime p ≥ 2, cos(2π/p) ≠ 1, so the rotation has no fixed points on S¹
+  set x₀ := x ⟨0, by omega⟩ with hx₀
+  set x₁ := x ⟨1, by omega⟩ with hx₁
+  set θ := (2 : ℝ) * Real.pi / p with hθ
+  -- From heq: components must be equal
+  have heq0 : (zp_rotation p hp.pos x) ⟨0, by omega⟩ = x₀ := by
+    exact congr_fun (congrArg _ heq) ⟨0, by omega⟩
+  have heq1 : (zp_rotation p hp.pos x) ⟨1, by omega⟩ = x₁ := by
+    exact congr_fun (congrArg _ heq) ⟨1, by omega⟩
+  -- Get the rotation values
+  simp only [zp_rotation, EuclideanSpace.equiv_symm_pi_lp_apply, hx₀, hx₁] at heq0 heq1
+  -- heq0 : x₀ * cos θ - x₁ * sin θ = x₀
+  -- heq1 : x₀ * sin θ + x₁ * cos θ = x₁
+  -- cos(2π/p) ≠ 1 for prime p ≥ 2: since 2π/p ∈ (0, 2π), Real.cos_eq_one_iff gives
+  -- cos(θ) = 1 iff θ = 2π*n for integer n, but 2π/p < 2π for p ≥ 2
+  have hcos_ne_one : Real.cos θ ≠ 1 := by
+    intro h
+    rw [Real.cos_eq_one_iff] at h
+    obtain ⟨n, hn⟩ := h
+    -- hn : (n : ℝ) * (2 * Real.pi) = θ = 2 * Real.pi / p
+    have hpi_pos : (0 : ℝ) < Real.pi := Real.pi_pos
+    have hp_pos : (0 : ℝ) < p := Nat.cast_pos.mpr hp.pos
+    have : (n : ℝ) * p = 1 := by
+      field_simp [ne_of_gt hpi_pos, ne_of_gt hp_pos] at hn ⊢
+      linarith [hn.symm]
+    -- n * p = 1 but p ≥ 2, contradiction
+    have hp2 : (p : ℝ) ≥ 2 := by exact_mod_cast hp.two_le
+    have habs : (n : ℝ) * p ≥ 2 ∨ (n : ℝ) * p ≤ -2 ∨ n = 0 := by
+      rcases le_or_lt 1 n with h | h
+      · left; nlinarith
+      · rcases le_or_lt n (-1) with h2 | h2
+        · right; left; nlinarith
+        · right; right; exact_mod_cast Int.le_antisymm (by exact_mod_cast le_of_lt h2) (by exact_mod_cast le_of_lt h)
+    rcases habs with h | h | h
+    · linarith
+    · linarith
+    · simp [h] at this; linarith [hp2]
+  -- Now from heq0: x₀ * (cos θ - 1) = x₁ * sin θ
+  -- From heq1: x₀ * sin θ = x₁ * (1 - cos θ)
+  -- Multiplying: x₀² * sin θ * (cos θ - 1) = x₁² * sin θ * (1 - cos θ)
+  -- So (x₀² + x₁²) * sin θ * (1 - cos θ) = 0
+  -- Since ‖x‖ = 1, x₀² + x₁² = 1, so sin θ * (1 - cos θ) = 0
+  -- But 1 - cos θ ≠ 0 (since cos θ ≠ 1), so sin θ = 0
+  -- But sin²θ + cos²θ = 1 and sin θ = 0 → cos θ = ±1
+  -- cos θ ≠ 1 means cos θ = -1; but then from heq0: -2x₀ = 0 → x₀ = 0
+  -- and from heq1: x₁ * (-1-1) = 0 → x₁ = 0; but x₀²+x₁²=1, contradiction.
+  -- The norm condition gives x₀² + x₁² = 1
+  have hnorm : x₀ ^ 2 + x₁ ^ 2 = 1 := by
+    have := hx
+    rw [EuclideanSpace.norm_eq, Fin.sum_univ_two] at this
+    simp only [Real.norm_eq_abs, sq_abs] at this
+    nlinarith [Real.sqrt_eq_one'.mp this, sq_nonneg x₀, sq_nonneg x₁,
+               Real.sq_sqrt (by positivity : (0 : ℝ) ≤ x₀ ^ 2 + x₁ ^ 2)]
+  -- From the fixed-point equations:
+  have heq0' : x₀ * Real.cos θ - x₁ * Real.sin θ = x₀ := by
+    simpa [Fin.ext_iff] using heq0
+  have heq1' : x₀ * Real.sin θ + x₁ * Real.cos θ = x₁ := by
+    simpa [Fin.ext_iff] using heq1
+  -- (x₀² + x₁²) * (1 - cos θ) = 0
+  have hdet : (x₀ ^ 2 + x₁ ^ 2) * (1 - Real.cos θ) = 0 := by nlinarith [heq0', heq1',
+    sq_nonneg x₀, sq_nonneg x₁]
+  rw [hnorm, one_mul] at hdet
+  exact hcos_ne_one (by linarith)
 
 -- ============================================================
 -- PART 4: Dold's Theorem (Cohomological Index)
