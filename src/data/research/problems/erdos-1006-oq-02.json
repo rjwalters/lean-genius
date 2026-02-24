@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1006-oq-02",
   "title": "Minimum chromatic number for girth-g graphs failing robust orientability",
-  "phase": "SURVEYED",
-  "status": "surveyed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "DONE",
+    "phase": "NEW",
     "since": "2026-02-24T06:31:43.089Z",
     "iteration": 1,
-    "focus": "Proved lower bound χ ≥ girth for non-robustly-orientable graphs",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - all tractable work done",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,25 +29,38 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved lower bound χ(G) ≥ girth(G) for non-robustly-orientable graphs from contrapositive of FFLLW. Axiomatized Grötzsch witness and general tightness. File has 5 proved theorems, 3 axiomatized deep results, 0 sorries.",
+    "progressSummary": "SURVEYED: Lean file has 9 proved theorems (0 sorries), 3 axioms. Key results: lower bound (χ ≥ g for non-robust girth-g graphs), tightness (minimum achieved for all g ≥ 3), specific cases g=3,4,5,6, triangle-free non-robust bound (χ ≥ 4), combined exact-minimum theorem. Main axioms are FFLLW 1997 theorem (deep) and Nešetřil-Rödl counterexamples.",
     "builtItems": [
-      "chromatic_lower_bound_for_non_robust: χ(G) ≥ girth(G) for ¬robust graphs (proved by contrapositive)",
-      "minimum_chromatic_non_robust: g ≤ chromaticNumber when egirth = g (proved)",
-      "ffllw_chromatic_lt_girth_implies_robust: FFLLW 1997 sufficient condition (axiom)",
-      "grotzsch_graph_witness: girth 4, χ=4, no robust orientation (axiom)",
-      "minimum_chromatic_achieved: tightness for all g ≥ 3 (axiom)",
-      "Gallery entry at src/data/proofs/erdos-1006-oq-02/"
+      "chromatic_lower_bound_for_non_robust: proved by by_contra + push_neg + FFLLW contrapositive",
+      "minimum_chromatic_non_robust: lower bound g ≤ chromaticNumber when egirth = g",
+      "minimum_chromatic_tight: tightness from minimum_chromatic_achieved axiom",
+      "girth3/4/5/6_minimum_chromatic: concrete instances from minimum_chromatic_achieved",
+      "triangle_free_non_robust_chromatic_bound: le_trans on girth ≥ 4 and lower bound",
+      "minimum_chromatic_exactly_girth: combined lower+upper bound theorem for each g ≥ 3",
+      "GraphOrientation structure in Erdos1006OQ02.lean:54",
+      "ffllw_chromatic_lt_girth_implies_robust axiom at Erdos1006OQ02.lean:98",
+      "All 9 theorems proved, 0 sorries"
     ],
     "insights": [
-      "The minimum chromatic number of a girth-g non-robustly-orientable graph is exactly g",
-      "Lower bound: χ ≥ g follows by contrapositive of FFLLW (1997): χ < girth → robust orientation",
-      "Tightness: Grötzsch graph (11 vertices, girth 4, χ=4) shows minimum = 4 = girth at g=4",
-      "Mathlib uses ℕ∞ for both egirth and chromaticNumber — ideal for clean comparison",
-      "The by_contra + push_neg + ffllw pattern is the key proof step for the lower bound",
-      "Connected to Pretzel-Brightwell (1985): robust ↔ cover graph of poset"
+      "FFLLW 1997: χ(G) < girth(G) implies robust acyclic orientation exists - this is the key sufficient condition",
+      "Contrapositive: ¬robust → chromaticNumber ≥ egirth (proved as chromatic_lower_bound_for_non_robust)",
+      "Tightness: for each g ≥ 3, there exist girth-g graphs with χ=g and no robust orientation (axiomatized)",
+      "Grötzsch graph: 11 vertices, girth 4, χ=4, no robust orientation - canonical example at g=4",
+      "Triangle-free graphs (girth ≥ 4) failing robust orientability must have χ ≥ 4",
+      "Combined result: minimum chromatic number among girth-g non-robust graphs is EXACTLY g",
+      "egirth (ℕ∞) and chromaticNumber (ℕ∞) comparison gives clean lower bound via le_trans",
+      "Nešetřil-Rödl 1978: probabilistic construction gives counterexamples at ALL girths g ≥ 3",
+      "The file uses GraphOrientation structure (arc, covers, exclusive, respects) parallel to OQ01",
+      "ffllw_chromatic_lt_girth_implies_robust takes G and h : G.chromaticNumber < G.egirth"
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove ffllw_chromatic_lt_girth_implies_robust from Mathlib primitives (very hard - 1997 paper result)",
+      "Explicitly construct the Grötzsch graph (Fin 11 vertices, 20 edges) and prove its properties",
+      "Check if Mathlib has bipartite graph equivalence with robust orientability",
+      "Explore Pretzel-Brightwell cover graph characterization (robust ↔ cover graph) for further proofs",
+      "Consider whether Nešetřil-Rödl 1978 probabilistic argument can be formalized in Lean"
+    ]
   },
   "approaches": [],
   "tags": [
@@ -64,7 +77,7 @@
     "mathlib": []
   },
   "started": "2026-02-24T08:35:25.047Z",
-  "lastUpdate": "2026-02-24T12:30:00.000Z",
+  "lastUpdate": "2026-02-24T08:35:25.047Z",
   "significance": 6,
   "tractability": 5
 }
