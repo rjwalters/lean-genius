@@ -1,0 +1,96 @@
+{
+  "slug": "amgm-inequality-oq-02",
+  "title": "Maclaurin inequalities via elementary symmetric polynomials",
+  "phase": "IN_PROGRESS",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "theorem maclaurin_sq_m1_ge_m2_general {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ) : (Nat.choose n 2 : ℝ) * (∑ i, x i) ^ 2 ≥ (n : ℝ) ^ 2 * elemSymm 2 x",
+    "plain": "Maclaurin's inequalities: M_1 ≥ M_2 ≥ ... ≥ M_n where M_k = (e_k/C(n,k))^(1/k) and e_k is the k-th elementary symmetric polynomial. The first non-trivial step is M_1^2 ≥ M_2, i.e., C(n,2)*(Σxi)^2 ≥ n^2 * e_2(x).",
+    "whyMatters": [
+      "Classical mean inequality chain, #14 on Wiedijk's list of 100 theorems to formalize",
+      "Generalizes AM-GM inequality to all elementary symmetric means"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "maclaurin_sq_m1_ge_m2_general structured with Cauchy-Schwarz + binomial identity (1 sorry remaining for h_binom)",
+      "cauchy_schwarz_sum: n*Σxi^2 ≥ (Σxi)^2 via double sum technique",
+      "h_2cn2: 2*C(n,2) = n*(n-1) proved by induction using Pascal's rule",
+      "All 8 supporting lemmas proved (elemSymm recurrences, monotonicity, base cases)"
+    ],
+    "open": [
+      "h_binom: (Σxi)^2 = Σxi^2 + 2*e_2 (binomial identity) — sent to Aristotle companion file",
+      "Full Maclaurin chain M_2 ≥ M_3 ≥ ... ≥ M_n requires Newton's log-concavity (axiomatized)"
+    ],
+    "goal": "Prove the full Maclaurin chain inequality chain M_1 ≥ M_2 ≥ ... ≥ M_n in Lean 4"
+  },
+  "currentState": {
+    "phase": "IN_PROGRESS",
+    "since": "2026-02-24T06:31:43.087Z",
+    "iteration": 2,
+    "focus": "maclaurin_sq_m1_ge_m2_general has 1 sorry (h_binom) that is the target for Aristotle companion file AmgmInequalityOQ02Aristotle.lean",
+    "blockers": [
+      "h_binom: binomial expansion identity (Σxi)^2 = Σxi^2 + 2*e_2 — needs elemSymmA_succ_castSucc recurrence via powersetCard_succ_insert"
+    ],
+    "nextAction": "Aristotle proof search on AmgmInequalityOQ02Aristotle.lean to close h_binom via induction",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Proved the M_1^2 ≥ M_2 step (C(n,2)*(Σxi)^2 ≥ n^2*e_2) modulo one sorry for the binomial identity h_binom. The proof strategy: Cauchy-Schwarz gives n*Σxi^2 ≥ (Σxi)^2; then h_binom gives (Σxi)^2 = Σxi^2 + 2*e_2; combining with h_2cn2: 2*C(n,2)=n*(n-1) yields the result by nlinarith. Created Aristotle companion file for h_binom.",
+    "builtItems": [
+      "AmgmInequalityOQ02.lean — main formalization, 8 theorems proved, 1 sorry, 2 axioms",
+      "AmgmInequalityOQ02Aristotle.lean — Aristotle companion for h_binom (sq_sum_eq_sum_sq_add_two_esymm)"
+    ],
+    "insights": [
+      "Key algebraic reduction: C(n,2)*(Σxi)^2 - n^2*e_2 = (n/2) * (n*Σxi^2 - (Σxi)^2) ≥ 0 by Cauchy-Schwarz",
+      "Cauchy-Schwarz for sums: proved via double sum 0 ≤ Σ_i Σ_j (xi-xj)^2 = 2*(n*Σxi^2 - (Σxi)^2)",
+      "h_2cn2 proof uses Pascal's rule: C(k+1,2) = k + C(k,2) via Nat.choose_succ_succ",
+      "Companion file sq_sum_eq_sum_sq_add_two_esymm proved by induction once recurrence sorry is closed",
+      "Function.comp_apply normalizes (x ∘ Fin.castSucc) i to x (Fin.castSucc i) for nlinarith",
+      "For Fin 0 base case: Finset.card_le_card + Finset.card_univ gives s.card ≤ 0 → contradiction with s.card = 2"
+    ],
+    "mathlibGaps": [
+      "elemSymmA_succ_castSucc (powersetCard recurrence) — not directly in Mathlib, needs Finset.powersetCard_succ_insert"
+    ],
+    "nextSteps": [
+      "Run Aristotle on AmgmInequalityOQ02Aristotle.lean to prove elemSymmA_succ_castSucc",
+      "Once Aristotle closes elemSymmA_succ_castSucc, integrate h_binom proof into main file",
+      "Prove full Maclaurin chain using axiomatized Newton log-concavity"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Cauchy-Schwarz + binomial decomposition",
+      "status": "partial",
+      "description": "Reduce C(n,2)*(Σxi)^2 ≥ n^2*e_2 to Cauchy-Schwarz (n*Σxi^2 ≥ (Σxi)^2) plus binomial identity ((Σxi)^2 = Σxi^2 + 2*e_2). Both follow from elementary algebra.",
+      "result": "1 sorry remaining (h_binom). Aristotle companion file created."
+    }
+  ],
+  "tags": [
+    "analysis",
+    "inequalities",
+    "mean-inequalities",
+    "wiedijk-100",
+    "seeker-selected"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Finset.powersetCard",
+      "Nat.choose_succ_succ",
+      "Finset.sum_nonneg"
+    ]
+  },
+  "started": "2026-02-24T08:35:25.046Z",
+  "lastUpdate": "2026-02-24T09:15:00.000Z",
+  "significance": 8,
+  "tractability": 6
+}
