@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-gw-oq03-01-header",
+    "proofId": "angle-trisection-oq-02-oq-03",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "context",
+    "title": "The Gauss-Wantzel OQ Chain: From Galois Groups to Fermat Primes",
+    "content": "This file is the third level of the constructibility OQ chain. OQ01 proved the degree criterion (α constructible → [ℚ(α):ℚ] = 2^k, necessary but not sufficient). OQ02 proved the complete Galois criterion (α constructible ↔ Gal(minpoly) is a 2-group). OQ02-OQ03 (this file) applies OQ02 to cos(2π/n) to get the Gauss-Wantzel theorem: a regular n-gon is constructible ↔ φ(n) is a power of 2. The key is that Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)* has order φ(n), so the 2-group condition becomes φ(n) = 2^k.",
+    "mathContext": "**Gauss-Wantzel**: regular $n$-gon constructible $\\iff$ $\\varphi(n) = 2^k$. **Key chain**: $\\cos(2\\pi/n)$ generates maximal real subfield of $\\mathbb{Q}(\\zeta_n)$; $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$; $\\text{Gal}(\\Phi_n/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^*$. **Fermat primes**: $\\varphi(n) = 2^k \\iff n = 2^a \\cdot p_1 \\cdots p_r$ (distinct Fermat primes).",
+    "significance": "key",
+    "relatedConcepts": ["Gauss-Wantzel theorem", "Fermat primes", "Euler totient", "cyclotomic polynomials", "angle-trisection-oq-02"],
+    "prerequisites": ["Nat.totient", "IsCyclotomicExtension", "Gal_cyclotomic", "OQ02 Galois criterion"]
+  },
+  {
+    "id": "ann-gw-oq03-02-totient",
+    "proofId": "angle-trisection-oq-02-oq-03",
+    "range": { "startLine": 46, "endLine": 100 },
+    "type": "proof",
+    "title": "Totient Computations and Power-of-2 Test",
+    "content": "The core computations: Nat.totient n for n = 3..17, 257, 65537 are proved by decide/native_decide. The key helper not_pow_two_of_odd_prime_dvd shows that if p | n with p an odd prime, then n is not a power of 2. Proof: p | n and p | 2^k → p | 2 → p ≤ 2, contradicting p being an odd prime. This gives a clean characterization: φ(7) = 6 fails because 3 | 6 (3 is an odd prime factor); φ(9) = 6 fails similarly; φ(11) = 10 fails because 5 | 10.",
+    "mathContext": "**Key helper**: $p \\mid n$ with $p$ odd prime $\\Rightarrow$ $n \\neq 2^k$. Proof: $p \\mid 2^k \\Rightarrow p \\mid 2$ (by `Prime.dvd_of_dvd_pow`) $\\Rightarrow p \\leq 2$, contradicting $p$ odd prime (i.e., $p \\geq 3$). **Positive witnesses**: $\\varphi(3) = 2 = 2^1$, $\\varphi(17) = 16 = 2^4$, $\\varphi(257) = 256 = 2^8$, $\\varphi(65537) = 65536 = 2^{16}$.",
+    "significance": "technical",
+    "relatedConcepts": ["Nat.totient", "Nat.Prime.dvd_of_dvd_pow", "not_pow_two_of_odd_prime_dvd"],
+    "prerequisites": ["Nat.Prime", "Nat.le_of_dvd", "Nat.Prime.two_le"]
+  },
+  {
+    "id": "ann-gw-oq03-03-gauss17",
+    "proofId": "angle-trisection-oq-02-oq-03",
+    "range": { "startLine": 155, "endLine": 200 },
+    "type": "insight",
+    "title": "Gauss's 17-gon: The Greatest Mathematical Discovery of 1796",
+    "content": "The theorem `heptadecagon_constructible : IsConstructibleNgon 17` is proved by: (1) computing φ(17) = 16 = 2^4 by decide, (2) applying the Gauss-Wantzel axiom. The underlying mathematics: the cyclotomic polynomial Φ₁₇ has Galois group (ℤ/17ℤ)* ≅ ℤ/16ℤ (cyclic, since 17 is prime with φ(17) = 16 = 2^4). A cyclic group of order 2^4 is a 2-group, so by OQ02, cos(2π/17) is constructible. The explicit construction requires finding a 'resolvent' chain with 4 steps (each halving the degree from 16 to 8 to 4 to 2 to 1).",
+    "mathContext": "**Why φ(17) = 16**: 17 is prime, so φ(17) = 16 = 2^4. **Galois group**: Gal(Φ₁₇/ℚ) ≅ (ℤ/17ℤ)* ≅ ℤ/16ℤ. **Chain of resolvent quadratics** (Gauss's method): $\\cos(2\\pi/17)$ satisfies a degree-16 equation that factors into a chain of degree-2 equations. Gauss showed this by a ingenious combinatorial argument using the 'Gaussian periods'. **March 30, 1796**: date of discovery; Gauss recorded it in his mathematical diary (Notizenjournal) as his greatest discovery.",
+    "significance": "key",
+    "relatedConcepts": ["heptadecagon_constructible", "totient_17_pow2", "Gauss periods", "cyclotomic polynomial"],
+    "prerequisites": ["Nat.totient_prime", "IsPGroup.of_card", "gauss_wantzel_theorem"]
+  },
+  {
+    "id": "ann-gw-oq03-04-fermat",
+    "proofId": "angle-trisection-oq-02-oq-03",
+    "range": { "startLine": 220, "endLine": 275 },
+    "type": "proof",
+    "title": "Fermat Primes: The Complete Constructibility Characterization",
+    "content": "The key structural result is fermat_prime_totient_pow2: if p = 2^(2^k)+1 is a Fermat prime, then φ(p) = p-1 = 2^(2^k), which is a power of 2. Proof: Nat.totient_prime gives φ(p) = p-1; from p = 2^(2^k)+1 we get p-1 = 2^(2^k); omega closes the goal. The 5 known Fermat primes (3, 5, 17, 257, 65537) all give constructible polygons. No Fermat prime beyond 65537 is known; F₅ = 2^32+1 = 641 × 6700417 (composite, discovered by Euler 1732). The general theorem fermat_prime_ngon_constructible applies to any Fermat prime.",
+    "mathContext": "**Fermat prime**: $p = 2^{2^k}+1$ is prime. **Totient**: $\\varphi(p) = p-1 = 2^{2^k}$ (power of 2). **Key Mathlib**: `Nat.totient_prime : Nat.Prime p → φ p = p - 1`. **Known Fermat primes**: $F_0=3, F_1=5, F_2=17, F_3=257, F_4=65537$. **F₅ = 4294967297 = 641 × 6700417** (Euler, 1732). It is unknown whether any more Fermat primes exist.",
+    "significance": "key",
+    "relatedConcepts": ["IsFermatPrime", "fermat_prime_totient_pow2", "fermat_prime_ngon_constructible", "Nat.totient_prime"],
+    "prerequisites": ["Nat.totient_prime", "IsFermatPrime", "TotientIsPow2"]
+  },
+  {
+    "id": "ann-gw-oq03-05-axiom",
+    "proofId": "angle-trisection-oq-02-oq-03",
+    "range": { "startLine": 125, "endLine": 155 },
+    "type": "context",
+    "title": "The Main Axiom: Gauss-Wantzel",
+    "content": "The gauss_wantzel_theorem is axiomatized because the full proof requires assembled cyclotomic field theory that is not yet in Mathlib as a single theorem. The ingredients exist: IsCyclotomicExtension (the extension ℚ(ζₙ)/ℚ), the Galois group computation Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)*, and the OQ02 Galois criterion. Infrastructure estimate: ~300 lines to assemble. The key Mathlib lemmas needed: (1) IsCyclotomicExtension.degree_eq_totient for [ℚ(ζₙ):ℚ] = φ(n); (2) ZMod.unitsEquivCoprime for Gal ≅ (ℤ/nℤ)*; (3) the real subfield calculation [ℚ(ζₙ):ℚ(cos)] = 2.",
+    "mathContext": "**Assembled proof**: $n$-gon constructible $\\iff$ $\\cos(2\\pi/n)$ constructible $\\iff$ Gal$(\\Phi_n/\\mathbb{Q})$ is 2-group $\\iff$ $|(\\mathbb{Z}/n\\mathbb{Z})^*| = \\varphi(n)$ is $2^k$. **Mathlib gaps**: The theorem `IsCyclotomicExtension.degree_eq_totient` and the Galois group isomorphism for cyclotomic fields are in Mathlib, but the assembled result `regular_ngon_constructible_iff` is not. **Estimated work**: ~300 lines.",
+    "significance": "blocker",
+    "relatedConcepts": ["gauss_wantzel_theorem", "IsCyclotomicExtension", "ZMod.unitsEquivCoprime", "wantzel_galois_characterization"],
+    "prerequisites": ["Polynomial.cyclotomic", "IsCyclotomicExtension", "IsPGroup", "OQ02 axioms"]
+  }
+]

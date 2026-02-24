@@ -1,0 +1,92 @@
+{
+  "slug": "area-of-circle-oq-01-oq-03",
+  "title": "Isoperimetric inequality: C^2 >= 4*pi*A with equality only for circles",
+  "phase": "SURVEYED",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "circle_isoperimetric_equality: C\u00b2 = 4\u03c0A for circles",
+      "square_isoperimetric_strict: C\u00b2 > 4\u03c0A for squares (from \u03c0<4)",
+      "regular_ngon_isoperimetric_ratio: 4\u03c0A/C\u00b2 = \u03c0/(n\u00b7tan(\u03c0/n))"
+    ],
+    "open": [
+      "Wirtinger inequality (Fourier proof needed)",
+      "General isoperimetric inequality for smooth curves"
+    ],
+    "goal": "Prove isoperimetric_inequality_smooth: 4\u03c0\u00b7A(\u03b3) \u2264 C(\u03b3)\u00b2 for all smooth closed curves \u03b3"
+  },
+  "currentState": {
+    "phase": "SURVEYED",
+    "since": "2026-02-24T17:52:20.366Z",
+    "iteration": 1,
+    "focus": "Isoperimetric inequality proof architecture documented; equality case proved",
+    "blockers": [],
+    "nextAction": "Prove Wirtinger inequality using Mathlib Fourier infrastructure",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEY: Isoperimetric inequality C\u00b2\u22654\u03c0A: equality proved for circles (ring), strict for squares (\u03c0<4), n-gon ratio formula proved. Key gap: Wirtinger inequality (not in Mathlib). Mathlib HAS Fourier basis + Parseval; ~300 lines to assemble Wirtinger.",
+    "builtItems": [
+      "AreaOfCircleOQ01OQ03.lean: 6 theorems (0 sorries), 2 axioms (Wirtinger, equality_implies_circle), 2 sorries",
+      "circle_isoperimetric_equality: C\u00b2=4\u03c0A proved by ring",
+      "circle_isoperimetric_ratio: 4\u03c0A/C\u00b2=1 proved by field_simp",
+      "square_isoperimetric_strict: strict inequality from nlinarith + Real.pi_lt_four",
+      "square_isoperimetric_ratio: ratio = \u03c0/4 proved by field_simp",
+      "regular_ngon_isoperimetric_ratio: ratio = \u03c0/(n\u00b7tan(\u03c0/n)) proved by field_simp",
+      "circumference_is_deriv_of_area: C = dA/dr connects to OQ01",
+      "SmoothClosedCurve: structure for parametric curves with Green formula for area/circumference",
+      "Gallery entry src/data/proofs/area-of-circle-oq-01-oq-03/ created with meta.json + annotations.json"
+    ],
+    "insights": [
+      "Equality case (circle): C\u00b2=4\u03c0A is a ring computation (2\u03c0r)\u00b2=4\u03c0\u00b7\u03c0r\u00b2; no analysis needed",
+      "Square case: C\u00b2>4\u03c0A follows from \u03c0<4 (Real.pi_lt_four), ratio is \u03c0/4 \u2248 0.785",
+      "Regular n-gon ratio: 4\u03c0A/C\u00b2 = \u03c0/(n\u00b7tan(\u03c0/n)); limit \u2192 1 as n\u2192\u221e",
+      "Wirtinger inequality \u222bf\u00b2 \u2264 \u222b(f')\u00b2 (mean-zero periodic) is NOT in Mathlib",
+      "Mathlib HAS the Fourier infrastructure: fourierBasis (HilbertBasis), tsum_sq_fourierCoeff (Parseval), hasSum_fourier_series_L2",
+      "Hurwitz proof chain: Wirtinger + Cauchy-Schwarz + AM-GM \u2192 isoperimetric (~300 lines total)",
+      "Equality condition in Wirtinger: f = a\u00b7cos(t) + b\u00b7sin(t), giving circles as the only optimizers",
+      "Connection to OQ01: C = dA/dr is exactly the circle optimality condition"
+    ],
+    "mathlibGaps": [
+      "Wirtinger inequality: \u222bf\u00b2\u2264\u222b(f')\u00b2 for periodic mean-zero f (NOT in Mathlib)",
+      "isoperimetric_inequality_smooth: needs Wirtinger + integral Cauchy-Schwarz assembly",
+      "ngon_limit_tendsto_circle: needs Real.tendsto_tan_div_self or similar"
+    ],
+    "nextSteps": [
+      "Prove Wirtinger inequality using Mathlib Fourier: fourierBasis + tsum_sq_fourierCoeff + Parseval",
+      "Complete isoperimetric_inequality_smooth once Wirtinger is available",
+      "Prove ngon_limit_tendsto_circle using tendsto_tan_div_self",
+      "Add ellipse isoperimetric ratio: \u03c0\u00b7a\u00b7b/(\u03c0(a+b))\u00b2 involves elliptic integrals"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "analysis",
+    "geometry",
+    "calculus",
+    "differentiation",
+    "extension",
+    "seeker-selected"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-24T19:25:23.998Z",
+  "lastUpdate": "2026-02-24T19:36:36.158149+00:00",
+  "significance": 8,
+  "tractability": 5
+}

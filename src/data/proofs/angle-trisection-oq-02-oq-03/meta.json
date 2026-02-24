@@ -1,0 +1,83 @@
+{
+  "id": "angle-trisection-oq-02-oq-03",
+  "title": "Gauss-Wantzel Theorem: Regular n-Gon Constructibility",
+  "slug": "angle-trisection-oq-02-oq-03",
+  "description": "A regular n-gon is constructible by compass and straightedge if and only if Euler's totient φ(n) is a power of 2. Equivalently, n = 2^k · p₁ · ... · p_r where p₁,...,p_r are distinct Fermat primes. This is the third level of the constructibility OQ chain: OQ01 (degree criterion) → OQ02 (Galois criterion) → OQ02-OQ03 (regular polygon characterization).",
+  "meta": {
+    "author": "Gauss (1796), Wantzel (1837), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_polygon",
+    "date": "1837",
+    "status": "partial",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ03.lean",
+    "tags": [
+      "geometry",
+      "galois-theory",
+      "field-theory",
+      "classic",
+      "constructibility",
+      "2-groups",
+      "fermat-primes",
+      "euler-totient",
+      "extension",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient",
+        "description": "Euler's totient function φ(n) = card {k ≤ n | gcd(k,n) = 1}",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_prime",
+        "description": "For prime p: φ(p) = p - 1",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.Prime.dvd_of_dvd_pow",
+        "description": "If prime p divides n^k then p divides n",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "IsCyclotomicExtension",
+        "description": "Cyclotomic field extensions (infrastructure exists but Gauss-Wantzel not assembled)",
+        "module": "Mathlib.RingTheory.CyclotomicExtension.Basic"
+      }
+    ],
+    "originalContributions": [
+      "14 totient value computations (decide/native_decide) for n = 3..17, 257, 65537",
+      "not_pow_two_of_odd_prime_dvd: general prime divisibility argument",
+      "Constructibility results for 10 regular polygons (3,4,5,6,8,10,12,17,257,65537)",
+      "Non-constructibility for 4 polygons (7,9,11,13)",
+      "Fermat prime characterization: φ(p) = 2^(2^k) for p = 2^(2^k)+1",
+      "fermat_prime_ngon_constructible: general Fermat prime → constructible polygon",
+      "Connection to OQ02: Galois group order = φ(n) → 2-group criterion"
+    ],
+    "dateAdded": "02/24/26"
+  },
+  "overview": {
+    "historicalContext": "The problem of constructing regular polygons with compass and straightedge is one of the oldest in mathematics. The ancient Greeks knew how to construct the equilateral triangle (n=3), square (n=4), pentagon (n=5), and their doublings. For over 2000 years, no new constructions were found. Then on March 30, 1796, at age 18, Carl Friedrich Gauss discovered that the regular 17-gon is constructible — the first new construction since antiquity. He was so proud of this discovery that he requested a regular 17-gon be engraved on his tombstone (though the stonemason refused, saying it would look like a circle). Wantzel (1837) completed the theorem by proving the converse: non-constructibility when φ(n) ≠ 2^k.",
+    "problemStatement": "**Gauss-Wantzel Theorem**:\n\nA regular $n$-gon is constructible by compass and straightedge if and only if\n$$\\varphi(n) = 2^k$$\nfor some $k \\geq 0$, where $\\varphi$ is Euler's totient function.\n\nEquivalently: $n = 2^a \\cdot p_1 \\cdot p_2 \\cdots p_r$ where $p_1, \\ldots, p_r$ are **distinct Fermat primes** (primes of the form $2^{2^k}+1$).\n\n**Connection to OQ chain**:\n- OQ01: $[\\mathbb{Q}(\\alpha):\\mathbb{Q}] = 2^k$ (degree criterion)\n- OQ02: $\\alpha$ constructible $\\iff$ Gal(minpoly) is 2-group (Galois criterion)\n- OQ02-OQ03: Apply to $\\cos(2\\pi/n)$: $\\text{Gal}(\\Phi_n/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^*$ has order $\\varphi(n)$",
+    "proofStrategy": "The key reduction:\n1. A regular $n$-gon is constructible $\\iff$ $\\cos(2\\pi/n)$ is constructible from $\\mathbb{Q}$\n2. $\\cos(2\\pi/n) = (\\zeta_n + \\zeta_n^{-1})/2$ generates the **maximal real subfield** of $\\mathbb{Q}(\\zeta_n)$\n3. $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$ and $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}(\\cos(2\\pi/n))] = 2$\n4. By **OQ02 (Galois criterion)**: $\\cos(2\\pi/n)$ constructible $\\iff$ Gal$(\\Phi_n/\\mathbb{Q})$ is a 2-group\n5. Gal$(\\Phi_n/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^*$ has order $\\varphi(n)$\n6. So: constructible $\\iff$ $\\varphi(n) = 2^k$\n\n**φ(n) = 2^k** happens exactly when all odd prime factors of $n$ are **Fermat primes** (each appearing at most once).",
+    "keyInsights": [
+      "**Gauss's 17-gon**: φ(17) = 16 = 2⁴. The Galois group Gal(Φ₁₇/ℚ) ≅ (ℤ/17ℤ)* ≅ ℤ/16ℤ (cyclic of order 16, a 2-group).",
+      "**Non-constructibility of 7-gon**: φ(7) = 6 = 2·3. The factor of 3 in the Galois group prevents a 2-tower construction.",
+      "**The 9-gon fails**: Despite 3 being a Fermat prime, 9 = 3² fails because φ(9) = 6 (the square of a Fermat prime is not constructible).",
+      "**Only 5 known Fermat primes**: 3, 5, 17, 257, 65537. It is unknown whether any more exist.",
+      "**The axiom bridges OQ02 and OQ02-OQ03**: The key missing Mathlib ingredient is the assembled Gauss-Wantzel statement, which requires IsCyclotomicExtension + ZMod.unitsEquivCoprime (~300 lines estimate)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection",
+      "relationship": "extends",
+      "description": "Main impossibility proof; OQ02-OQ03 gives the complete constructibility characterization"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "extends",
+      "description": "OQ02 proves the Galois criterion; OQ02-OQ03 applies it to characterize constructible polygons"
+    }
+  ]
+}

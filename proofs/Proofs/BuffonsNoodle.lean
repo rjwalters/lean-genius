@@ -400,6 +400,40 @@ theorem regular_polygon_crossings (n : ℕ) (s d : ℝ)
   push_cast
   ring
 
+/-! ## Part X: Monotonicity and Additivity
+-/
+
+/-- **Monotonicity**: A longer noodle has at least as many expected crossings.
+    If N₁ has total length ≤ N₂, then E[crossings(N₁)] ≤ E[crossings(N₂)].
+    Direct consequence of linearity: the formula 2L/(πd) is increasing in L. -/
+theorem PolygonalNoodle.expectedCrossings_mono {m n : ℕ}
+    (N₁ : PolygonalNoodle m) (N₂ : PolygonalNoodle n) (d : ℝ) (hd : 0 < d)
+    (hlen : N₁.totalLength ≤ N₂.totalLength) :
+    N₁.expectedCrossings d ≤ N₂.expectedCrossings d := by
+  rw [buffon_noodle_polygon N₁ d hd, buffon_noodle_polygon N₂ d hd,
+      div_le_div_right (mul_pos pi_pos hd)]
+  linarith
+
+/-- **Additivity**: For two noodles of lengths L₁ and L₂, a noodle of total length L₁+L₂
+    has expected crossings equal to the sum of their individual expected crossings.
+    This is the algebraic content of linearity of expectation. -/
+theorem buffon_noodle_additive {m n : ℕ}
+    (N₁ : PolygonalNoodle m) (N₂ : PolygonalNoodle n) (d : ℝ) (hd : 0 < d) :
+    2 * (N₁.totalLength + N₂.totalLength) / (π * d) =
+    N₁.expectedCrossings d + N₂.expectedCrossings d := by
+  rw [← buffon_noodle_polygon N₁ d hd, ← buffon_noodle_polygon N₂ d hd]
+  ring
+
+/-- **Strict Monotonicity**: A strictly longer noodle has strictly more expected crossings
+    (when d > 0). Noodles of different lengths are distinguishable by their crossing counts. -/
+theorem PolygonalNoodle.expectedCrossings_strictMono {m n : ℕ}
+    (N₁ : PolygonalNoodle m) (N₂ : PolygonalNoodle n) (d : ℝ) (hd : 0 < d)
+    (hlen : N₁.totalLength < N₂.totalLength) :
+    N₁.expectedCrossings d < N₂.expectedCrossings d := by
+  rw [buffon_noodle_polygon N₁ d hd, buffon_noodle_polygon N₂ d hd,
+      div_lt_div_right (mul_pos pi_pos hd)]
+  linarith
+
 /-! ## Conclusion
 
 Buffon's Noodle Theorem reveals a profound truth about geometric probability:
@@ -418,13 +452,5 @@ The polygonal case proved here is the core of the argument:
 once linearity of expectation is applied to polygons, the smooth case follows
 by approximation. This is Buffon's theorem in its most elegant form.
 -/
-
-#check @buffon_noodle_polygon
-#check @buffon_noodle_shape_independence
-#check @needle_equals_noodle
-#check @circle_expected_crossings
-#check @buffon_noodle_approx_limit
-#check @smooth_shape_independence
-#check @buffon_noodle_smooth_eq
 
 end BuffonsNoodle

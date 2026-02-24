@@ -228,4 +228,32 @@ theorem lln_heavy_tail_answer
       (nhds (∫ x, X 0 x ∂μ)) :=
   ProbabilityTheory.strong_law_ae X hint hindep hident
 
+/-!
+## Section V: Lᵖ Distributions (p ≥ 1) also satisfy SLLN
+
+For p ≥ 1, any Lᵖ random variable is also L¹ (integrable).
+So SLLN applies whenever E[|X|ᵖ] < ∞ for ANY p ≥ 1.
+-/
+
+/-- **SLLN for Lᵖ distributions** (p ≥ 1).
+
+    If X has finite p-th moment for some p ≥ 1, then Kolmogorov's SLLN applies.
+    The key: `Memℒp X p μ` with `p ≥ 1` implies `Integrable X μ` (finite first moment).
+
+    This covers all classical cases:
+    - p = 1: L¹ (finite mean) — minimum for LLN
+    - p = 2: L² (finite variance) — Chebyshev's condition
+    - p > 2: higher moments — all sufficient for SLLN -/
+theorem slln_for_Lp_distributions
+    {p : ℝ≥0∞} (hp : 1 ≤ p)
+    (X : ℕ → Ω → ℝ)
+    (hLp : ∀ i, MeasureTheory.Memℒp (X i) p μ)
+    (hindep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ)
+    (hident : ∀ i, ProbabilityTheory.IdentDistrib (X i) (X 0) μ μ) :
+    ∀ᵐ ω ∂μ, Filter.Tendsto
+      (fun n : ℕ => (↑n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, X i ω)
+      Filter.atTop
+      (nhds (∫ x, X 0 x ∂μ)) :=
+  slln_under_finite_mean_only X ((hLp 0).integrable hp) hindep hident
+
 end LawsOfLargeNumbersOQ01

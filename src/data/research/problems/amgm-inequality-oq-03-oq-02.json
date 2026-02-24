@@ -1,63 +1,63 @@
 {
   "slug": "amgm-inequality-oq-03-oq-02",
-  "title": "Power Mean Limit: lim_{r→0} M_r = GM (Geometric Mean as a Limit)",
-  "phase": "SURVEYED",
+  "title": "Power Mean Limit: lim_{r\u21920} M_r = GM (Geometric Mean as a Limit)",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Filter.Tendsto (fun r => (∑ i ∈ s, w i * z i ^ r) ^ (1 / r)) (nhdsWithin 0 {0}ᶜ) (nhds (∏ i ∈ s, z i ^ w i))",
-    "plain": "lim_{r→0} M_r(z,w) = GM(z,w) where M_r = (∑ wᵢzᵢ^r)^(1/r) and GM = ∏ zᵢ^wᵢ.",
+    "formal": "Filter.Tendsto (fun r => (\u2211 i \u2208 s, w i * z i ^ r) ^ (1 / r)) (nhdsWithin 0 {0}\u1d9c) (nhds (\u220f i \u2208 s, z i ^ w i))",
+    "plain": "lim_{r\u21920} M_r(z,w) = GM(z,w) where M_r = (\u2211 w\u1d62z\u1d62^r)^(1/r) and GM = \u220f z\u1d62^w\u1d62.",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "lim_{r\u21920} M_r(z,w) = GM(z,w) = \u220f z\u1d62^w\u1d62 (main theorem, 0 sorries)",
+      "HM \u2264 GM \u2264 AM (power mean chain at r = -1, 0, 1)"
+    ],
     "open": [],
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
+    "phase": "COMPLETED",
     "since": "2026-02-24T12:34:25.509Z",
     "iteration": 2,
-    "focus": "New Lean file PowerMeanLimitOQ.lean created with 5 proved theorems and 4 sorries.",
+    "focus": "Power Mean Limit Theorem fully formalized in Lean 4",
     "blockers": [],
-    "nextAction": "Prove tendsto_log_sum_div_rpow using HasDerivAt composition for log(∑ wᵢzᵢ^r).",
+    "nextAction": "Complete - all theorems proved",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED + NEW FILE: Created PowerMeanLimitOQ.lean. Key proved: geomMean_eq_exp_sum_log (GM = exp(∑ wᵢ log zᵢ)), log_sum_weighted_rpow_zero (f(0)=0), powerMean_one_eq_arithMean. Main sorry: tendsto_powerMean_zero blocked by HasDerivAt chain for log(∑ wᵢzᵢ^r). Proof strategy documented.",
+    "progressSummary": "COMPLETED: Power Mean Limit Theorem lim_{r\u21920} M_r = GM fully proved in Lean 4 with 0 sorries. Proof chain via HasDerivAt composition for log(sum weighted rpow).",
     "builtItems": [
-      "PowerMeanLimitOQ.lean: new file registered in Proofs.lean",
-      "powerMean_eq_exp_log: M_r = exp((1/r)·log(∑ wᵢzᵢ^r)) via rpow_def_of_pos",
-      "hasDerivAt_sum_weighted_rpow_zero: d/dr[∑ wᵢzᵢ^r]|_{r=0} = ∑ wᵢ log zᵢ (chain rule sketch)",
-      "log_sum_weighted_rpow_zero: log(∑ wᵢzᵢ^0) = 0 when ∑ wᵢ = 1 (proved)",
-      "geomMean_eq_exp_sum_log: GM = exp(∑ wᵢ log zᵢ) via Real.exp_sum + Real.log_rpow (proved)",
-      "powerMean_one_eq_arithMean: M₁ = ∑ wᵢzᵢ via rpow_one (proved)",
-      "tendsto_log_sum_div_rpow: f(r)/r → ∑ wᵢ log zᵢ (sorry)",
-      "tendsto_powerMean_zero: main theorem M_r → GM (sorry)"
+      "sum_weighted_rpow_pos: private lemma proving \u2211 w\u1d62 z\u1d62^r > 0 when \u2211 w\u1d62 = 1",
+      "hasDerivAt_sum_weighted_rpow_zero: HasDerivAt for \u2211 w\u1d62 z\u1d62^r at r=0",
+      "log_sum_weighted_rpow_zero: log(\u2211 w\u1d62 z\u1d62^0) = 0 when \u2211 w\u1d62 = 1",
+      "hasDerivAt_log_sum_weighted_rpow: private lemma for HasDerivAt log(\u2211 w\u1d62 z\u1d62^r) at r=0",
+      "tendsto_log_sum_div_rpow: KEY - (log \u2211 w\u1d62 z\u1d62^r)/r \u2192 \u2211 w\u1d62 log z\u1d62 via slope",
+      "geomMean_eq_exp_sum_log: GM = exp(\u2211 w\u1d62 log z\u1d62) proved without sorry",
+      "powerMean_eq_exp_log: M_r = exp(log(\u2211 w\u1d62 z\u1d62^r)/r) for r \u2260 0",
+      "tendsto_powerMean_zero: MAIN - lim_{r\u21920} M_r = GM (0 sorries)",
+      "powerMean_neg1_le_geomMean_le_arithMean: HM \u2264 GM \u2264 AM (HM part proved via AM-GM on inverses)"
     ],
     "insights": [
-      "KEY IDENTITY: GM = exp(∑ wᵢ log zᵢ) proved via Real.exp_sum + Real.log_rpow",
-      "PROOF STRATEGY: f(r) = log(∑ wᵢzᵢ^r) with f(0) = 0 and f'(0) = ∑ wᵢ log zᵢ; limit = exp(f'(0))",
-      "DERIVATIVE: d/dr[zᵢ^r]|_{r=0} = log zᵢ via chain rule on exp(r·log zᵢ)",
-      "MAIN SORRY: tendsto_log_sum_div_rpow needs HasDerivAt for log ∘ (∑ wᵢzᵢ^r) at r=0",
-      "FILTER: nhdsWithin 0 {0}ᶜ is the correct punctured neighborhood filter",
-      "RELATED: AmgmInequalityOQ03 has power_mean_monotone_neg (proved) for negative r case",
-      "Lean 4 API: Real.rpow_def_of_pos (x > 0 → x^r = exp(r*log x)) is key"
+      "Key API: Real.hasStrictDerivAt_const_rpow for derivative of c^x w.r.t. x",
+      "Key API: hasDerivAt_iff_tendsto_slope connects HasDerivAt to the slope/difference quotient limit",
+      "HasDerivAt.sum for differentiating under finite sums",
+      "Chain rule Real.hasDerivAt_log.comp for log \u2218 (sum weighted rpow)",
+      "Proof chain: sum positivity \u2192 deriv at 0 \u2192 log chain rule \u2192 slope \u2192 exp limit \u2192 main theorem",
+      "HM \u2264 GM proved via AM-GM applied to inverses with Finset.prod_inv_distrib and inv_le_comm\u2080",
+      "Real.rpow_def_of_pos for converting (\u2211 w\u1d62 z\u1d62^r)^(1/r) to exp form"
     ],
     "mathlibGaps": [
-      "HasDerivAt for log(∑ wᵢzᵢ^r): composition of log with the sum derivative",
-      "HasDerivAt.tendsto_nhdsWithin: converting HasDerivAt to filter limit for f(r)/r → f'(0)"
+      "None - all needed lemmas available in Mathlib"
     ],
     "nextSteps": [
-      "Prove HasDerivAt for g(r) = log(∑ wᵢzᵢ^r) using HasDerivAt.log + hasDerivAt_sum_weighted_rpow_zero",
-      "Use that HasDerivAt implies f(r)/r → f'(0) (definition of derivative via Filter.Tendsto)",
-      "Import HM ≤ GM from AmgmInequalityOQ03.lean for the full chain",
-      "Consider Mathlib contribution: fills TODO in Analysis.MeanInequalitiesPow"
+      "None - fully completed"
     ]
   },
   "approaches": [],
@@ -75,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-02-24T16:50:26.648Z",
-  "lastUpdate": "2026-02-24T16:50:26.648Z",
+  "lastUpdate": "2026-02-24T19:23:38.297122Z",
   "significance": 6,
   "tractability": 6
 }

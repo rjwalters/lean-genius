@@ -36,7 +36,8 @@
       "finite_variance_implies_slln_applicable: (hL2 0).integrable (by norm_num)",
       "kolmogorov_slln_characterization: iff combining slln_under_finite_mean_only and slln_necessity",
       "lln_heavy_tail_answer: restates SLLN as direct answer to OQ",
-      "slln_necessity axiom: requires Borel-Cantelli for formal proof"
+      "slln_necessity axiom: requires Borel-Cantelli for formal proof",
+      "slln_for_Lp_distributions: Memℒp X p → SLLN via (hLp 0).integrable hp"
     ],
     "insights": [
       "KEY INSIGHT: ProbabilityTheory.strong_law_ae requires only Integrable X (L¹), not Memℒp X 2 (L²)",

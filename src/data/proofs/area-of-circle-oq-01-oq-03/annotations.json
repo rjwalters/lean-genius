@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-iso-oq03-01-header",
+    "proofId": "area-of-circle-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 55 },
+    "type": "context",
+    "title": "The Isoperimetric OQ Chain: From Area Formula to Global Inequality",
+    "content": "This file is the third in the area-of-circle open question chain. OQ01 proved C = dA/dr (circumference equals the derivative of area). OQ01-OQ02 proved A = ∫₀ʳ C(ρ) dρ (area equals the integral of circumference). OQ01-OQ03 (this file) establishes C² ≥ 4πA for all closed curves — the isoperimetric inequality. The equality for circles follows trivially from the ring computation (2πr)² = 4π·πr². The general inequality for arbitrary curves is a deeper result requiring Wirtinger's inequality from Fourier analysis.",
+    "mathContext": "**Isoperimetric inequality**: $C^2 \\geq 4\\pi A$ for all closed curves. **Circle optimality**: circles achieve equality $C^2 = 4\\pi A$. **Hurwitz proof** (1901): parameterize curve $\\gamma: [0,2\\pi] \\to \\mathbb{R}^2$, apply Green's theorem for area, then use Wirtinger's inequality $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi}(f')^2$ (valid for mean-zero periodic $f$). **Mathlib status**: isoperimetric inequality not in Mathlib; Wirtinger not in Mathlib; Fourier basis and Parseval ARE in Mathlib.",
+    "significance": "key",
+    "relatedConcepts": ["isoperimetric inequality", "Wirtinger inequality", "Fourier series", "area-of-circle-oq-01", "area-of-circle-oq-01-oq-02"],
+    "prerequisites": ["Real.pi", "ContDiff", "intervalIntegral", "Fourier analysis basics"]
+  },
+  {
+    "id": "ann-iso-oq03-02-circle-equality",
+    "proofId": "area-of-circle-oq-01-oq-03",
+    "range": { "startLine": 56, "endLine": 90 },
+    "type": "proof",
+    "title": "Circle Achieves Equality: C² = 4πA by Ring Computation",
+    "content": "The main positive result: circles satisfy the isoperimetric inequality with equality. The proof is a pure ring computation — no analysis needed. circleCirc r = 2πr, circleArea r = πr², and (2πr)² = 4π·πr² is verified by ring. This also proves circle_isoperimetric_ratio = 1 (the 4πA/C² ratio for circles equals 1, the maximum possible). The circumference_is_deriv_of_area theorem connects to OQ01: C = dA/dr is the key relationship that makes circles optimal.",
+    "mathContext": "**Circle equality**: $(2\\pi r)^2 = 4\\pi \\cdot \\pi r^2$ is the identity $4\\pi^2 r^2 = 4\\pi^2 r^2$. **Isoperimetric ratio**: $4\\pi A / C^2 \\in [0,1]$ with 1 achieved only for circles. **Connection to OQ01**: $C(r) = \\frac{d}{dr}(\\pi r^2) = 2\\pi r$ (proved in CircumferenceFromArea.lean). The fact that circles satisfy $C = A'$ is precisely what makes them isoperimetrically optimal — they are the 'eigenfunctions' of the problem.",
+    "significance": "key",
+    "relatedConcepts": ["circle_isoperimetric_equality", "circumference_is_deriv_of_area", "circleCirc", "circleArea"],
+    "prerequisites": ["ring tactic", "Real.pi", "deriv"]
+  },
+  {
+    "id": "ann-iso-oq03-03-square",
+    "proofId": "area-of-circle-oq-01-oq-03",
+    "range": { "startLine": 91, "endLine": 135 },
+    "type": "proof",
+    "title": "Squares Are Suboptimal: Strict Inequality from π < 4",
+    "content": "For a square with side s: C = 4s and A = s², so C² = 16s² and 4πA = 4πs². The isoperimetric inequality requires 4πs² < 16s², i.e., π < 4. This follows from Real.pi_lt_four. The square_isoperimetric_ratio theorem shows 4πA/C² = π/4 ≈ 0.785 for squares, about 21.5% below the optimal circle. The n-gon result then generalizes: regular n-gons have ratio π/(n·tan(π/n)), which increases monotonically from π/4 (square, n=4) toward 1 (circle, n→∞).",
+    "mathContext": "**Square ratio**: $4\\pi s^2 / (4s)^2 = \\pi/4 \\approx 0.785 < 1$. **Proof**: needs only $\\pi < 4$, proved as `Real.pi_lt_four` in Mathlib. **Regular n-gon**: ratio $= \\frac{\\pi}{n\\tan(\\pi/n)}$. For $n=3$ (triangle): $\\pi/(3\\sqrt{3}) \\approx 0.605$. For $n=6$ (hexagon): $\\pi/(6 \\cdot 1/\\sqrt{3}) = \\pi\\sqrt{3}/6 \\approx 0.907$. As $n \\to \\infty$: ratio $\\to 1$ since $n\\tan(\\pi/n) \\to \\pi$.",
+    "significance": "insight",
+    "relatedConcepts": ["square_isoperimetric_strict", "square_isoperimetric_ratio", "Real.pi_lt_four", "regular_ngon_isoperimetric_ratio"],
+    "prerequisites": ["nlinarith", "Real.pi_lt_four", "Nat.cast"]
+  },
+  {
+    "id": "ann-iso-oq03-04-wirtinger",
+    "proofId": "area-of-circle-oq-01-oq-03",
+    "range": { "startLine": 136, "endLine": 225 },
+    "type": "context",
+    "title": "Wirtinger's Inequality: The Missing Piece",
+    "content": "Wirtinger's inequality is axiomatized here because it is not yet in Mathlib. For a smooth 2π-periodic function f with zero mean (∫₀²π f = 0), it states ∫₀²π f² ≤ ∫₀²π (f')². Proof sketch: expand f in Fourier series f(t) = ∑_{n≥1}(aₙcos(nt) + bₙsin(nt)). By Parseval: ∫f² = π∑(aₙ² + bₙ²) and ∫(f')² = π∑n²(aₙ² + bₙ²) ≥ π∑(aₙ² + bₙ²) = ∫f². Mathlib has all the ingredients: fourierBasis (HilbertBasis ℤ ℂ for L²(AddCircle T)), tsum_sq_fourierCoeff (Parseval), hasSum_fourier_series_L2, and fourierCoeffOn_of_hasDerivAt. The assembled Wirtinger proof would be approximately 200-300 lines.",
+    "mathContext": "**Wirtinger inequality**: $\\int_0^{2\\pi} f^2 \\leq \\int_0^{2\\pi}(f')^2$ for mean-zero periodic $f$. **Proof via Parseval**: $\\int f^2 = \\pi\\sum_{n\\geq 1}(a_n^2 + b_n^2)$ and $\\int(f')^2 = \\pi\\sum_{n\\geq 1} n^2(a_n^2 + b_n^2) \\geq \\int f^2$. **Equality condition**: equality iff $f(t) = a_1\\cos t + b_1\\sin t$ (only first Fourier mode). **Mathlib**: `fourierBasis` in `Mathlib.Analysis.Fourier.AddCircle`, `tsum_sq_fourierCoeff` for Parseval.",
+    "significance": "blocker",
+    "relatedConcepts": ["wirtinger_inequality", "Fourier series", "Parseval theorem", "fourierBasis", "tsum_sq_fourierCoeff"],
+    "prerequisites": ["Fourier series on circle", "Parseval identity", "ContDiff", "intervalIntegral"]
+  },
+  {
+    "id": "ann-iso-oq03-05-sorry-analysis",
+    "proofId": "area-of-circle-oq-01-oq-03",
+    "range": { "startLine": 226, "endLine": 280 },
+    "type": "insight",
+    "title": "Two Sorries: Limit and Full Assembly",
+    "content": "The file has two sorries. (1) ngon_limit_tendsto_circle: the limit lim_{n→∞} π/(n·tan(π/n)) = 1 requires lim_{x→0} tan(x)/x = 1, which follows from L'Hôpital or the derivative of tan at 0. This should be provable in ~10 lines using Real.tendsto_sin_div_self and Real.cos_tendsto. (2) isoperimetric_inequality_smooth: this is the main theorem, which reduces to wirtinger_inequality but requires setting up integral Cauchy-Schwarz and AM-GM for the assembled bound. Once Wirtinger is proved (via Fourier analysis), this reduces to ~100 lines of standard analysis.",
+    "mathContext": "**Sorry 1** (ngon limit): $\\lim_{n\\to\\infty} \\frac{\\pi}{n\\tan(\\pi/n)} = 1$. Proof: $\\frac{\\tan x}{x} \\to 1$ as $x\\to 0$. In Mathlib: `Real.tendsto_tan_div_self` or derive from `Real.tendsto_sin_div` and `Real.tendsto_cos`. **Sorry 2** (isoperimetric for smooth curves): given Wirtinger, prove $4\\pi A \\leq L^2$ via: $A = \\frac{1}{2}|\\int (xy' - yx')| \\leq \\frac{1}{2}(\\|x\\|\\|y'\\| + \\|y\\|\\|x'\\|) \\leq \\frac{1}{2}(\\|x'\\|\\|y'\\| + \\|y'\\|\\|x'\\|) = \\|x'\\|\\|y'\\| \\leq \\frac{\\|x'\\|^2 + \\|y'\\|^2}{2} = \\frac{L^2}{4\\pi}$.",
+    "significance": "technical",
+    "relatedConcepts": ["isoperimetric_inequality_smooth", "ngon_limit_tendsto_circle", "wirtinger_inequality", "Cauchy-Schwarz"],
+    "prerequisites": ["tendsto_tan_div_self", "MeasureTheory.inner_mul_le_norm_mul_norm", "intervalIntegral Cauchy-Schwarz"]
+  }
+]
