@@ -21,7 +21,7 @@
       "nesterenko"
     ],
     "badge": "open",
-    "sorries": 4,
+    "sorries": 3,
     "mathlibDependencies": [
       {
         "theorem": "Transcendental",
@@ -47,7 +47,7 @@
     "originalContributions": [
       "Theorem e_root_of_vieta_quadratic: e satisfies T² - (e+π)T + eπ = 0 (proved by ring)",
       "Theorem pi_root_of_vieta_quadratic: π satisfies the same quadratic (proved by ring)",
-      "Axiom algebraic_root_of_algebraic_quadratic: root of quadratic with algebraic coefficients is algebraic (provable from transitivity of algebraic extensions)",
+      "Theorem algebraic_root_of_algebraic_quadratic: root of quadratic with algebraic coefficients is algebraic (PROVED via integral extension transitivity: use isAlgebraic_iff_isIntegral, Algebra.adjoin, Algebra.IsIntegral, and isIntegral_trans)",
       "Theorem e_plus_pi_or_e_times_pi_transcendental: at least one of e+π, eπ is transcendental (proved from e's transcendence + Vieta identity)",
       "Theorem sum_transcendental_if_prod_algebraic: if eπ algebraic, then e+π transcendental",
       "Theorem prod_transcendental_if_sum_algebraic: if e+π algebraic, then eπ transcendental",
@@ -60,7 +60,7 @@
   "overview": {
     "historicalContext": "In 1873, Charles Hermite proved that e is transcendental — the first proof that a 'naturally occurring' constant is not a root of any polynomial with integer coefficients. In 1882, Ferdinand von Lindemann extended the method to prove π is transcendental, finally settling the ancient problem of squaring the circle.\n\nYet despite knowing both e and π are transcendental, the arithmetic combination e + π = 5.8598... has resisted all attempts at classification for over 140 years. The difficulty is fundamental: our tools for proving transcendence (Hermite-Lindemann, Gelfond-Schneider, Baker's theorem) work by showing a number cannot satisfy ANY polynomial equation. For a sum like e + π, we'd need to show both e and π cannot conspire to produce an algebraic value — and current theory lacks the tools for this.\n\nThe best conditional result is Schanuel's Conjecture (1966), which if proven would immediately give that e and π are algebraically independent, hence e + π is transcendental. But Schanuel remains unproven despite decades of effort. In 1996, Yuri Nesterenko proved the spectacular result that π, e^π, and Γ(1/4) are algebraically independent — but this involves e^π ≈ 23.14, not e ≈ 2.71.",
     "problemStatement": "**Open Question (e-transcendental-oq-01)**: Is e + π transcendental?\n\nThe value e + π ≈ 5.8598744820488... is well-defined, but its arithmetic nature is unknown.\n\n**What IS known**:\n- e is transcendental (Hermite 1873) ✓\n- π is transcendental (Lindemann 1882) ✓\n- e^π is transcendental (Gelfond-Schneider 1934) ✓\n- At least one of e+π, eπ is transcendental (elementary, proved here) ✓\n- π, e^π, Γ(1/4) are algebraically independent (Nesterenko 1996) ✓\n\n**Open** (unknown as of 2026):\n- Is e + π irrational? (?)\n- Is e + π transcendental? (?)\n- Is e · π transcendental? (?)\n- Are e and π algebraically independent? (? — follows from Schanuel's Conjecture)",
-    "proofStrategy": "We formalize the known partial results:\n\n**1. Vieta's Symmetric Polynomial Identity** (fully proved, no sorry):\nThe numbers e and π are the two roots of the monic quadratic\n  T² - (e+π)·T + (e·π) = 0\nThis follows from Vieta's formulas: for a quadratic with roots α, β,\n  T² - (α+β)T + αβ = (T-α)(T-β).\nSubstituting T = e: e² - (e+π)e + eπ = 0. This is proved by `ring`.\n\n**2. Algebraic Closure Lemma** (axiomatized, provable in Mathlib):\nIf s = e+π and p = eπ are both algebraic over ℚ, and x satisfies x² - sx + p = 0,\nthen x is algebraic over ℚ. This follows from transitivity of algebraic extensions:\nℚ ⊂ ℚ(s,p) ⊂ ℚ(s,p,x) with each step algebraic.\n\n**3. Main Conditional Theorem** (proved using the above):\nAt least one of e+π or eπ is transcendental. Proof by contradiction:\n- Assume both are algebraic\n- Then e satisfies x² - (e+π)x + eπ = 0 with algebraic coefficients\n- By (2), e is algebraic — contradicting Hermite's theorem ✗\n\n**4. Open Conjectures** (sorry — genuinely open):\n- e + π transcendental: unknown\n- e · π transcendental: unknown\n- Irrationality of e + π: also unknown (surprising!)",
+    "proofStrategy": "We formalize the known partial results:\n\n**1. Vieta's Symmetric Polynomial Identity** (fully proved, no sorry):\nThe numbers e and π are the two roots of the monic quadratic\n  T² - (e+π)·T + (e·π) = 0\nThis follows from Vieta's formulas: for a quadratic with roots α, β,\n  T² - (α+β)T + αβ = (T-α)(T-β).\nSubstituting T = e: e² - (e+π)e + eπ = 0. This is proved by `ring`.\n\n**2. Algebraic Closure Lemma** (PROVED in Lean 4):\nIf s = e+π and p = eπ are both algebraic over ℚ, and x satisfies x² - sx + p = 0,\nthen x is algebraic over ℚ. Proved via: isAlgebraic_iff_isIntegral converts to integral,\nthen Algebra.adjoin ℚ {s, p} forms a subalgebra integral over ℚ (since s, p are integral),\nx is integral over this subalgebra (satisfies monic quadratic), then isIntegral_trans concludes.\n\n**3. Main Conditional Theorem** (proved using the above):\nAt least one of e+π or eπ is transcendental. Proof by contradiction:\n- Assume both are algebraic\n- Then e satisfies x² - (e+π)x + eπ = 0 with algebraic coefficients\n- By (2), e is algebraic — contradicting Hermite's theorem ✗\n\n**4. Open Conjectures** (sorry — genuinely open):\n- e + π transcendental: unknown\n- e · π transcendental: unknown\n- Irrationality of e + π: also unknown (surprising!)",
     "keyInsights": [
       "The Vieta identity e² - (e+π)e + eπ = 0 is a provable ring identity — e and π are roots of the same quadratic with 'symmetric' coefficients",
       "If both e+π and eπ were algebraic, then e would be algebraic over ℚ(e+π, eπ) ⊆ ℚ̄, making e algebraic — contradicting Hermite",
@@ -97,7 +97,7 @@
       "title": "Algebraic Closure Lemma",
       "startLine": 124,
       "endLine": 149,
-      "summary": "Axiom: root of quadratic with algebraic coefficients is algebraic. Provable from Algebra.IsAlgebraic.trans in Mathlib."
+      "summary": "PROVED theorem: root of quadratic with algebraic coefficients is algebraic. Uses isAlgebraic_iff_isIntegral, Algebra.adjoin, Algebra.IsIntegral (transitivity of integral extensions via isIntegral_trans)."
     },
     {
       "id": "main-theorem",
@@ -143,7 +143,7 @@
       "Is e · π transcendental?",
       "Are e and π algebraically independent? (Would follow from Schanuel's Conjecture)",
       "Is e^e transcendental?",
-      "Can the algebraic_root_of_algebraic_quadratic axiom be replaced by a Mathlib proof using Algebra.IsAlgebraic.trans?",
+      "Can the remaining foundational axioms (e_transcendental_q, pi_transcendental_q) be proved from Mathlib once Lindemann-Weierstrass is formalized?",
       "What is the transcendence degree of ℚ(e, π) over ℚ? (Expected: 2, but even transcendence degree ≥ 1 for ℚ(e+π) requires knowing e+π is transcendental)"
     ]
   }

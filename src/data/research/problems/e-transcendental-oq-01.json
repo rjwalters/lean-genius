@@ -1,7 +1,7 @@
 {
   "slug": "e-transcendental-oq-01",
   "title": "Is e + pi transcendental",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,44 +16,50 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "PROGRESS",
-    "since": "2026-02-21T19:21:07.134Z",
-    "iteration": 1,
-    "focus": "Gallery entry created with key conditional result proved",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "SURVEYED",
+    "since": "2026-02-24T05:47:52Z",
+    "iteration": 3,
+    "focus": "Formalization complete: algebraic_root_of_algebraic_quadratic proved (was axiom), 3 open sorries remain for genuinely open conjectures",
+    "blockers": [
+      "Main conjecture (e + π transcendental) is an open problem in mathematics",
+      "Lindemann-Weierstrass not yet formalized in Mathlib (blocks removing foundational axioms)"
+    ],
+    "nextAction": "No further progress possible without new mathematics; formalization is complete given current knowledge",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved pi_plus_exp_pi_transcendental from Nesterenko axiom (sorries reduced 4→3). Three remaining sorries are genuine OPEN problems (e+π, e·π transcendence, e+π irrationality).",
+    "progressSummary": "PROGRESS: ETranscendentalOQ01.lean formalization complete. Key achievement (session 2026-02-24): algebraic_root_of_algebraic_quadratic converted from axiom to proved theorem using integral extension transitivity. File compiles with exactly 3 sorries, all for genuinely open mathematical conjectures.",
     "builtItems": [
       "ETranscendentalOQ01.lean: theorem e_root_of_vieta_quadratic (proved by ring)",
       "ETranscendentalOQ01.lean: theorem pi_root_of_vieta_quadratic (proved by ring)",
-      "ETranscendentalOQ01.lean: theorem e_plus_pi_or_e_times_pi_transcendental (proved with axiom)",
+      "ETranscendentalOQ01.lean: theorem algebraic_root_of_algebraic_quadratic (PROVED from axiom, session 2026-02-24, lines 127-173)",
+      "ETranscendentalOQ01.lean: theorem e_plus_pi_or_e_times_pi_transcendental (proved using above)",
       "ETranscendentalOQ01.lean: theorem sum_transcendental_if_prod_algebraic",
       "ETranscendentalOQ01.lean: theorem prod_transcendental_if_sum_algebraic",
       "ETranscendentalOQ01.lean: theorem pi_plus_exp_pi_transcendental (proved from Nesterenko axiom, session 2026-02-23)",
       "Gallery entry: src/data/proofs/e-transcendental-oq-01/ with meta.json, index.ts, annotations.json, tacticStates.json"
     ],
     "insights": [
+      "algebraic_root_of_algebraic_quadratic proof: isAlgebraic_iff_isIntegral + Algebra.adjoin ℚ {s,p} + Algebra.IsIntegral (transitivity) + isIntegral_trans. Key step: le_integralClosure_iff_isIntegral + Algebra.adjoin_le_iff decomposes to generators.",
+      "Monic polynomial witness: X^2 - C(s_A)*X + C(p_A), proved monic via Polynomial.monic_X_pow_add after reshaping to X^(1+1) + tail with degree bound",
       "The Vieta identity e² - (e+π)e + eπ = 0 is fully provable by ring — a key building block",
       "If both e+π and eπ are algebraic, then e satisfies a quadratic with algebraic coefficients, making e algebraic — contradiction with Hermite",
       "Even the irrationality of e+π is open (not just transcendence) — surprising to most",
       "Schanuel Conjecture → e,π algebraically independent → e+π transcendental: the known conditional route",
       "Nesterenko 1996 proves π, e^π, Γ(1/4) algebraically independent but does NOT directly give e+π",
-      "algebraic_root_of_algebraic_quadratic axiom is provable via Algebra.IsAlgebraic.trans in Mathlib",
       "π + e^π is transcendental (from Nesterenko): construct P(X₀,X₁,X₂) = f(X₀+X₁); Polynomial.aeval_algHom_apply gives functoriality",
-      "Key Mathlib lemma: Polynomial.aeval_algHom_apply (φ : A →ₐ[R] B) (x : A) (p : R[X]) : aeval (φ x) p = φ (aeval x p)",
-      "Key Mathlib lemma: Polynomial.aeval_X_left_apply : aeval X p = p (evaluation at formal variable is identity)"
+      "Key Mathlib lemma: Polynomial.aeval_algHom_apply (φ : A →ₐ[R] B) (x : A) (p : R[X]) : aeval (φ x) p = φ (aeval x p)"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Lindemann-Weierstrass not in Mathlib (would remove e_transcendental_q and pi_transcendental_q axioms)"
+    ],
     "nextSteps": [
-      "Replace algebraic_root_of_algebraic_quadratic axiom with Mathlib proof using Algebra.IsAlgebraic.trans",
       "Monitor Schanuel Conjecture formalization in Mathlib for conditional e+π transcendence proof",
+      "Wait for Lindemann-Weierstrass in Mathlib to remove remaining foundational axioms",
       "e+π transcendental (direct), e·π transcendental, e+π irrational: all remain OPEN — no known proof path without Schanuel"
     ]
   },
@@ -76,7 +82,7 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.134Z",
-  "lastUpdate": "2026-02-23T12:30:00.000Z",
+  "lastUpdate": "2026-02-24T05:47:52Z",
   "significance": 6,
   "tractability": 6
 }
