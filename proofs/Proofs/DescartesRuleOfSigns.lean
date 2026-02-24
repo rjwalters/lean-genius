@@ -2,6 +2,7 @@ import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Algebra.Polynomial.Degree.Definitions
 import Mathlib.Algebra.Polynomial.Eval.Defs
 import Mathlib.Algebra.Polynomial.Coeff
+import Mathlib.Algebra.Polynomial.RuleOfSigns
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 import Mathlib.Analysis.Calculus.LocalExtr.Polynomial
@@ -472,5 +473,104 @@ theorem derivative_root_between_roots (p : ℝ[X]) (a b : ℝ) (hab : a < b)
     (ha : p.eval a = 0) (hb : p.eval b = 0) :
     ∃ c, a < c ∧ c < b ∧ (Polynomial.derivative p).eval c = 0 :=
   rolle_polynomial p a b hab ha hb
+
+/- ## Bridge to Mathlib's Polynomial.RuleOfSigns API
+
+Mathlib provides `Polynomial.signVariations` and the Descartes bound
+`roots_countP_pos_le_signVariations`. We bridge our custom definitions to
+Mathlib's API.
+-/
+
+/-- Our countPositiveRoots equals Mathlib's roots.countP (0 < ·) for nonzero p.
+    Both count the multiplicity of positive roots; the definitions differ only
+    in notation: filter+card vs countP. -/
+theorem countPositiveRoots_eq_roots_countP (p : ℝ[X]) (hp : p ≠ 0) :
+    countPositiveRoots p = p.roots.countP (0 < ·) := by
+  unfold countPositiveRoots
+  simp only [hp, ↓reduceIte]
+  simp [Multiset.countP_eq_card_filter, gt_iff_lt]
+
+/-- If our sign change count agrees with Mathlib's signVariations, then
+    Descartes' upper bound follows directly from Mathlib without the axiom. -/
+theorem descartes_upper_bound_via_signVariations (p : ℝ[X]) (hp : p ≠ 0)
+    (hbridge : signChangesInCoeffs p = p.signVariations) :
+    countPositiveRoots p ≤ signChangesInCoeffs p := by
+  rw [countPositiveRoots_eq_roots_countP p hp, hbridge]
+  exact p.roots_countP_pos_le_signVariations
+
+/- ## Consequences of Descartes' Bound -/
+
+/-- Zero sign changes means no positive roots.
+    Immediate corollary of the upper bound. -/
+theorem zero_sign_changes_no_positive_roots (p : ℝ[X]) (hp : p ≠ 0)
+    (h : signChangesInCoeffs p = 0) : countPositiveRoots p = 0 := by
+  have hle := descartes_upper_bound p hp
+  omega
+
+/-- One sign change means at most one positive root. -/
+theorem one_sign_change_at_most_one_root (p : ℝ[X]) (hp : p ≠ 0)
+    (h : signChangesInCoeffs p = 1) : countPositiveRoots p ≤ 1 := by
+  have hle := descartes_upper_bound p hp
+  omega
+
+/-- Descartes bound implies: if sign changes < k, then fewer than k positive roots. -/
+theorem sign_changes_lt_k_fewer_roots (p : ℝ[X]) (hp : p ≠ 0) (k : ℕ)
+    (h : signChangesInCoeffs p < k) : countPositiveRoots p < k :=
+  lt_of_le_of_lt (descartes_upper_bound p hp) h
+
+/- ## Applications of Rolle's Theorem -/
+
+/-- Between three distinct roots a < b < c of p, the derivative has at least
+    two roots: one in (a, b) and one in (b, c).
+    This is the key inductive step in the proof of Descartes' rule. -/
+theorem three_roots_two_derivative_roots (p : ℝ[X]) (a b c : ℝ)
+    (hab : a < b) (hbc : b < c)
+    (ha : p.eval a = 0) (hb : p.eval b = 0) (hc : p.eval c = 0) :
+    ∃ d e, a < d ∧ d < b ∧ b < e ∧ e < c ∧
+      (derivative p).eval d = 0 ∧
+      (derivative p).eval e = 0 := by
+  obtain ⟨d, had, hdb, hd⟩ := rolle_polynomial p a b hab ha hb
+  obtain ⟨e, hbe, hec, he⟩ := rolle_polynomial p b c hbc hb hc
+  exact ⟨d, e, had, hdb, hbe, hec, hd, he⟩
+
+/-- If a polynomial has n + 1 distinct roots a₀ < a₁ < ... < aₙ, then for each
+    consecutive pair, the derivative has a root strictly between them.
+    This gives n roots of the derivative from n + 1 roots of p. -/
+theorem n_roots_implies_derivative_roots (p : ℝ[X]) (n : ℕ)
+    (rootsF : Fin (n + 1) → ℝ)
+    (hstrict : StrictMono rootsF)
+    (heval : ∀ i, p.eval (rootsF i) = 0) :
+    ∀ i : Fin n, ∃ c, rootsF i.castSucc < c ∧ c < rootsF i.succ ∧
+      (derivative p).eval c = 0 := by
+  intro i
+  have hi : rootsF i.castSucc < rootsF i.succ := hstrict (Fin.castSucc_lt_succ i)
+  exact rolle_polynomial p (rootsF i.castSucc) (rootsF i.succ) hi
+    (heval i.castSucc) (heval i.succ)
+
+/-- A polynomial of degree d has at most d positive roots.
+    This follows from the standard root count bound and our bridge. -/
+theorem countPositiveRoots_le_natDegree (p : ℝ[X]) (hp : p ≠ 0) :
+    countPositiveRoots p ≤ p.natDegree := by
+  rw [countPositiveRoots_eq_roots_countP p hp]
+  exact le_trans (Multiset.countP_le_card _) (Polynomial.card_roots_le_degree p)
+
+/-- The number of non-zero roots is bounded by the degree.
+    Since filter (· ≠ 0) gives a sub-multiset of roots, its cardinality is ≤ roots.card,
+    and roots.card ≤ natDegree by the polynomial root bound. -/
+theorem nonzero_root_count_le_degree (p : ℝ[X]) (hp : p ≠ 0) :
+    Multiset.card (p.roots.filter (· ≠ 0)) ≤ p.natDegree :=
+  le_trans (Multiset.card_le_card (Multiset.filter_le _ _)) (Polynomial.card_roots_le_degree p)
+
+/-- The number of negative roots is bounded by the degree.
+    Since filter (· < 0) gives a sub-multiset of roots, its cardinality is ≤ roots.card,
+    and roots.card ≤ natDegree. -/
+theorem negative_root_count_le_natDegree (p : ℝ[X]) (hp : p ≠ 0) :
+    Multiset.card (p.roots.filter (· < 0)) ≤ p.natDegree :=
+  le_trans (Multiset.card_le_card (Multiset.filter_le _ _)) (Polynomial.card_roots_le_degree p)
+
+/-- The number of negative roots of p is bounded by signChangesInCoeffs (negSubst p). -/
+theorem negative_roots_le_sign_changes (p : ℝ[X]) (hp : p ≠ 0) :
+    Multiset.card (p.roots.filter (· < 0)) ≤ signChangesInCoeffs (negSubst p) :=
+  descartes_negative_roots p hp
 
 end DescartesRuleOfSigns
