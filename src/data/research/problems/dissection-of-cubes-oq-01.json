@@ -1,0 +1,114 @@
+{
+  "slug": "dissection-of-cubes-oq-01",
+  "title": "Minimum number of repeated sizes needed in a cube dissection",
+  "phase": "COMPLETE",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\exists d : \\text{CubeDissection},\\, d.\\text{cubes}.\\text{Nonempty} \\wedge (\\text{collidingCubes}\\, d).\\text{card} = 2",
+    "plain": "What is the minimum number of cubes that must participate in size collisions in any cube dissection? We prove ≥ 2 and ask whether exactly 2 is achievable (HasMinimalCollision).",
+    "whyMatters": [
+      "Quantifies 'how far from perfect' a cube dissection must be",
+      "Connects impossibility theorem (Wiedijk #82) to an open minimization problem",
+      "2D analog (squared squares) allows all different sizes, so dimension matters"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "every_dissection_has_collision: every nonempty dissection has a collision pair",
+      "collision_class_at_least_two: size class of a colliding cube has ≥ 2 members",
+      "at_least_two_colliding_cubes: collidingCubes.card ≥ 2 for any nonempty dissection",
+      "chain_length_bounded: proved via Fintype.card_le_of_injective (in DissectionOfCubes.lean)",
+      "smallest_cube_top_is_floor: proved via Finset.exists_min_image (in DissectionOfCubes.lean)"
+    ],
+    "open": [
+      "HasMinimalCollision: is there a valid dissection with exactly 2 colliding cubes?",
+      "smaller_cube_above_axiom: smallest cube on floor forces smaller cubes above (requires 3D geometric covering)",
+      "all_different_implies_long_chains_axiom: depends on smaller_cube_above (axiom in base file)"
+    ],
+    "goal": "Determine minimum collidingCubes.card over all valid cube dissections"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-23T00:00:00Z",
+    "iteration": 2,
+    "focus": "Gallery entry created, quantitative lower bound proved, open question formalized",
+    "blockers": [
+      "covers_unit_cube : True is a placeholder — geometric covering is not fully formalized",
+      "3D geometric axioms require significant formalization beyond current scope"
+    ],
+    "nextAction": "No further action — lower bound proved, open question formally stated",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE — lower bound (≥ 2 colliding cubes) proved, open question formally stated, gallery entry created with 7 annotations",
+    "builtItems": [
+      "DissectionOfCubesOQ01.lean: IsCollisionPair, sizeClass, collidingCubes, HasMinimalCollision",
+      "every_dissection_has_collision: corollary of Wiedijk #82 via push_neg",
+      "collision_class_at_least_two: Finset.one_lt_card with two distinct witnesses",
+      "at_least_two_colliding_cubes: Finset.card_pair + Finset.card_le_card gives ≥ 2",
+      "HasMinimalCollision: collidingCubes.card = 2 as formal open question",
+      "Gallery entry: src/data/proofs/dissection-of-cubes-oq-01/ with meta, annotations (7), index.ts"
+    ],
+    "insights": [
+      "A collision pair (c1, c2) contributes BOTH cubes to collidingCubes — each witnesses the other",
+      "Classical.decEq is required for Finset.filter on Cube (real-valued structure, equality not decidable)",
+      "covers_unit_cube : True is a placeholder that makes any Finset Cube a valid dissection — real geometry not captured",
+      "The geometric cascade (floor argument) suggests the true minimum is much larger than 2",
+      "2D allows all-different sizes (squared squares), so the 3D impossibility is dimension-specific",
+      "Finset.card_pair requires c1 ≠ c2 explicitly; Ne.symm handles the symmetric inequality in the proof"
+    ],
+    "mathlibGaps": [
+      "Real number equality is not decidable constructively — Classical.decEq required throughout",
+      "3D geometric covering formalization would require significant infrastructure not in Mathlib"
+    ],
+    "nextSteps": [
+      "No immediate next steps — problem is fully formalized as an OQ",
+      "Future work: prove smaller_cube_above_axiom with full geometric covering",
+      "Future work: determine actual minimum via lattice/volume arguments"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Finset cardinality via collision pair extraction",
+      "status": "succeeded",
+      "description": "Extract both cubes from the collision pair promised by Wiedijk #82, show both are in collidingCubes, use Finset.card_pair + Finset.card_le_card",
+      "outcome": "proved at_least_two_colliding_cubes: 2 ≤ (collidingCubes d).card"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "challenging",
+    "geometry",
+    "impossibility",
+    "infinite-descent",
+    "combinatorics",
+    "wiedijk-100"
+  ],
+  "relatedProofs": [
+    "dissection-of-cubes"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Squaring_the_square",
+      "https://www.cs.ru.nl/~freek/100/"
+    ],
+    "mathlib": [
+      "Finset.card_pair",
+      "Finset.one_lt_card",
+      "Finset.card_le_card",
+      "Classical.decEq"
+    ]
+  },
+  "started": "2026-02-21T19:21:07.134Z",
+  "lastUpdate": "2026-02-23T10:00:00Z",
+  "significance": 6,
+  "tractability": 6
+}
