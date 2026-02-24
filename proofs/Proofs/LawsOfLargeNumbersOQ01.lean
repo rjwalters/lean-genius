@@ -256,4 +256,27 @@ theorem slln_for_Lp_distributions
       (nhds (∫ x, X 0 x ∂μ)) :=
   slln_under_finite_mean_only X ((hLp 0).integrable hp) hindep hident
 
+/-!
+## Section VI: Mean-Zero and Centered Distributions
+-/
+
+/-- **SLLN for mean-zero distributions**: sample mean converges to 0 almost surely.
+
+    For centered or symmetric distributions with E[X₀] = 0 and E[|X₀|] < ∞,
+    the sample mean converges a.s. to 0.
+
+    Common cases: symmetric stable distributions with α ∈ (1, 2) (infinite variance
+    but finite mean, centered). These are ubiquitous in financial modeling. -/
+theorem slln_mean_zero
+    (X : ℕ → Ω → ℝ)
+    (hint : MeasureTheory.Integrable (X 0) μ)
+    (hmean : ∫ x, X 0 x ∂μ = 0)
+    (hindep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ)
+    (hident : ∀ i, ProbabilityTheory.IdentDistrib (X i) (X 0) μ μ) :
+    ∀ᵐ ω ∂μ, Filter.Tendsto
+      (fun n : ℕ => (↑n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, X i ω)
+      Filter.atTop
+      (nhds 0) := by
+  simpa [hmean] using slln_under_finite_mean_only X hint hindep hident
+
 end LawsOfLargeNumbersOQ01
