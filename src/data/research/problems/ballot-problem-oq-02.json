@@ -1,0 +1,69 @@
+{
+  "slug": "ballot-problem-oq-02",
+  "title": "Continuous-time versions of the ballot problem",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Formalize continuous-time versions of the ballot problem, connecting to Brownian motion and the reflection principle.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "IN_PROGRESS",
+    "since": "2026-02-24T06:31:43.088Z",
+    "iteration": 1,
+    "focus": "BallotProblemOQ02.lean exists (409 lines) but has 18 build errors. Needs error fixing before PR.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "IN_PROGRESS: BallotProblemOQ02.lean (409 lines) created with Brownian motion framework. 18 build errors remain. Needs a dedicated fixing session.",
+    "builtItems": [
+      "BrownianMotion structure in BallotProblemOQ02.lean:76",
+      "reflection_principle AXIOM, levy_arcsine_law AXIOM, donsker_clt AXIOM",
+      "prob_pos_eq_prob_neg, positive_and_negative_likely (PROVED)",
+      "discrete_ballot_probability: arithmetic fact proved"
+    ],
+    "insights": [
+      "BallotProblemOQ02.lean: continuous-time ballot problem via Brownian motion and reflection principle",
+      "Key structure: BrownianMotion with W : R -> Omega -> R, gaussian marginals, symmetry",
+      "18 build errors: ENNReal add_pos needs le_add_self, condCount namespace, lt_csInf renamed",
+      "FIX: lt_csInf renamed; use le_add_self for ENNReal strict mono"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Fix 18 build errors: check csInf API in Mathlib 4.26.0, use le_add_self for ENNReal",
+      "After fixing, register in Proofs.lean and create gallery entry"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "probability",
+    "combinatorics",
+    "counting",
+    "reflection-principle",
+    "seeker-selected"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-24T08:35:25.046Z",
+  "lastUpdate": "2026-02-24T08:35:25.046Z",
+  "significance": 7,
+  "tractability": 5
+}

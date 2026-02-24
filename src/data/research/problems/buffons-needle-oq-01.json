@@ -1,88 +1,56 @@
 {
   "slug": "buffons-needle-oq-01",
   "title": "Generalizations to curved needles",
-  "phase": "COMPLETE",
+  "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "For N : PolygonalNoodle n, N.expectedCrossings d = 2 * N.totalLength / (π * d); and for smooth C¹ curves, smoothExpectedCrossings γ a b d = 2 * planarCurveArcLength γ a b / (π * d) (axiom)",
-    "plain": "Buffon's Noodle: the expected number of crossings of any curve (polygonal or smooth) of length L with a parallel line grid (spacing d) equals 2L/(πd), depending only on total arc length, not shape.",
-    "whyMatters": [
-      "Fundamental result in geometric probability and integral geometry",
-      "Shows that arc length is the invariant that determines intersection count",
-      "Special case of the Cauchy-Crofton formula, a cornerstone of integral geometry",
-      "Motivates stereological estimation of curve lengths from cross-section counts"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Buffon's Noodle for polygons: E[crossings] = 2L/(πd) (proved via linearity of expectation)",
-      "Shape independence: same total length → same expected crossings (proved)",
-      "needle_equals_noodle: straight needle = any equal-length polygon (proved)",
-      "Approximation limit: if polygonal lengths → L, expected crossings → 2L/(πd) (proved)",
-      "Lipschitz bound: |E₁ - E₂| ≤ (2/(πd)) · |L₁ - L₂| (proved)",
-      "planarCurveArcLength_nonneg: arc length ≥ 0 (proved)",
-      "smooth_shape_independence: smooth curves with same arc length have same expected crossings (proved from axiom)",
-      "smooth_expected_crossings_nonneg: expected crossings ≥ 0 (proved from axiom)",
-      "circle: E[crossings] = 4r/d for circle of radius r (proved)",
-      "square: E[crossings] = 8s/(πd) for square of side s (proved)",
-      "regular n-gon: E[crossings] = 2ns/(πd) (proved)"
-    ],
-    "open": [
-      "Full formal proof of smooth curve Buffon theorem without axioms (requires kinematic measure theory on line space)",
-      "Formal Cauchy-Crofton formula: ∫₀^π ∫₋∞^∞ n(C,(θ,ρ)) dρ dθ = 2·length(C)",
-      "Higher-dimensional versions: curves in ℝⁿ crossing hyperplanes"
-    ],
-    "goal": "Prove E[crossings] = 2L/(πd) for smooth rectifiable curves without axioms, using Mathlib arc length theory and Cauchy-Crofton formula."
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
     "phase": "COMPLETE",
-    "since": "2026-02-24T12:00:00.000Z",
-    "iteration": 2,
-    "focus": "Added approximation limit theorem, Lipschitz bound, arc length definition, proper smooth curve axiom with shape independence. Polygonal case is fully proved; smooth case properly axiomatized.",
+    "since": "2026-02-21T19:21:07.131Z",
+    "iteration": 1,
+    "focus": "Gallery entry and Lean file (BuffonsNoodle.lean) already created. Polygonal noodle theorem fully proved. Smooth curve case axiomized.",
     "blockers": [],
-    "nextAction": "None — problem fully explored at current Mathlib maturity. Revisit when kinematic measure theory is added to Mathlib.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 2,
+      "total": 0,
       "currentApproach": 0,
-      "approachesTried": 1
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "BuffonsNoodle.lean builds with 0 errors. 11+ proved theorems spanning: polygonal noodle theorem, shape independence, needle=noodle, circle/square/n-gon examples, approximation limit, Lipschitz bound, arc length nonnegativity, smooth shape independence, smooth crossings nonnegativity. Smooth case properly axiomatized via planarCurveArcLength and smoothExpectedCrossings.",
+    "progressSummary": "COMPLETE: BuffonsNoodle.lean (430 lines) has polygonal noodle theorem proved, shape independence, scaling. Smooth curve case axiomized. Gallery entry exists with 11 original contributions.",
     "builtItems": [
-      "planarCurveArcLength: arc length of C¹ planar curve via interval integral of √(x'² + y'²)",
-      "planarCurveArcLength_nonneg: arc length ≥ 0 (proved via integral_nonneg + sqrt_nonneg)",
-      "smoothExpectedCrossings: noncomputable axiom for smooth curve expected crossings",
-      "buffon_noodle_smooth_eq: axiom stating smoothExpectedCrossings = 2L/(πd) for C¹ curves",
-      "smooth_shape_independence: same arc length → same expected crossings (proved from axiom)",
-      "smooth_expected_crossings_nonneg: expected crossings ≥ 0 (proved from axiom)",
-      "buffon_noodle_approx_limit: polygonal lengths → L implies expected crossings → 2L/(πd) (proved)",
-      "buffon_noodle_lipschitz: |E₁-E₂| ≤ (2/(πd))·|L₁-L₂| (proved)",
-      "buffon_noodle_polygon: main polygonal theorem (proved)",
-      "circle_expected_crossings, square_expected_crossings, regular_polygon_crossings (all proved)"
+      "PolygonalNoodle structure and totalLength in BuffonsNoodle.lean:121",
+      "buffon_noodle_polygon (PROVED): E[crossings] = 2L/(πd) for polygonal noodle",
+      "buffon_noodle_shape_independence (PROVED): same length → same expected crossings",
+      "buffon_noodle_scaling (PROVED): scaling noodle scales expected crossings",
+      "smoothExpectedCrossings (AXIOM): smooth curve extension",
+      "circle_expected_crossings, square_expected_crossings (PROVED)",
+      "Gallery entry: src/data/proofs/buffons-needle-oq-01/"
     ],
     "insights": [
-      "Key: crossing probability 2l/(πd) is LINEAR in l, enabling summation over polygon segments",
-      "Approximation limit uses ContinuousAt.tendsto.comp on the linear map x ↦ 2x/(πd)",
-      "Lipschitz bound: |E₁-E₂| = (2/(πd))|L₁-L₂| (actually EQUALITY, not just bound)",
-      "Smooth case properly axiomatized: smoothExpectedCrossings as noncomputable axiom + buffon_noodle_smooth_eq",
-      "arc length: ∫_a^b √(x'(t)² + y'(t)²) dt via MeasureTheory.intervalIntegral",
-      "Filter.Tendsto.div_const and ContinuousAt.tendsto are the key topology lemmas",
-      "Cauchy-Crofton formula would give the smooth case without axioms (not yet in Mathlib)",
-      "The existing Mathlib import Mathlib.MeasureTheory.Integral.IntervalIntegral enables the arc length def"
+      "Buffons noodle: expected crossings = 2L/(πd) depends only on total length, not shape",
+      "Proof via linearity of expectation: approximate curve as polygonal path, sum segment probabilities",
+      "Polygonal theorem fully proved in Lean; smooth curve limit requires MeasureTheory/Integral geometry not in Mathlib",
+      "Key structure: PolygonalNoodle with segment lengths, buffon_noodle_polygon theorem",
+      "circle_expected_crossings and square_expected_crossings derived as corollaries"
     ],
     "mathlibGaps": [
-      "Kinematic measure on space of lines in ℝ² (needed for full smooth proof)",
-      "Formal Cauchy-Crofton formula in Mathlib",
-      "ArcLength.lean module for differential geometry of curves"
+      "Integral geometry (Cauchy-Crofton formula) not in Mathlib — needed for smooth noodle proof",
+      "Smooth curve arc length integration limit theorem (polygonal → smooth) not proved"
     ],
-    "nextSteps": [
-      "Revisit when Mathlib adds kinematic measures / Crofton formula",
-      "Higher-dimensional analogs: Buffon's noodle in ℝⁿ",
-      "Connection to Minkowski's theorem on convex bodies"
-    ]
+    "nextSteps": []
   },
   "approaches": [],
   "tags": [
@@ -93,21 +61,16 @@
     "geometric-probability",
     "integration",
     "wiedijk-100",
-    "monte-carlo",
-    "integral-geometry",
-    "cauchy-crofton",
-    "linearity-of-expectation"
+    "monte-carlo"
   ],
-  "relatedProofs": [
-    "buffons-needle"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.131Z",
-  "lastUpdate": "2026-02-24T12:00:00.000Z",
+  "lastUpdate": "2026-02-21T19:21:07.131Z",
   "significance": 6,
   "tractability": 6
 }

@@ -89,6 +89,7 @@ import Proofs.DerangementsConvergence
 import Proofs.DesarguesTheorem
 import Proofs.DesarguesTheoremOQ01
 import Proofs.DescartesRuleOfSigns
+import Proofs.DescartesRuleOfSignsOQ01
 import Proofs.DescartesRuleOfSignsOQ03
 import Proofs.DirichletsTheorem
 import Proofs.DirichletsTheoremOQ01
