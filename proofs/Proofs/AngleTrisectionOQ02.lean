@@ -165,6 +165,25 @@ theorem constructible_implies_degree_dvd_pow2 (α : ℝ) (hα : IsIntegral ℚ �
   exact galois_2group_implies_degree_pow2 α hα hc
 
 /-
+## Part VII: Contrapositive Non-Constructibility Results
+-/
+
+/-- If the Galois group of minpoly(ℚ,α) is NOT a 2-group, then α is not constructible.
+    Contrapositive of the Wantzel-Galois characterization. -/
+theorem not_constructible_of_not_2group (α : ℝ) (hα : IsIntegral ℚ α)
+    (h : ¬ IsPGroup 2 (minpoly ℚ α).Gal) :
+    ¬ IsConstructibleFromQ α := by
+  rw [wantzel_galois_characterization α hα]
+  exact h
+
+/-- If the degree of minpoly(ℚ,α) is not divisible by any power of 2, then α is not constructible.
+    Contrapositive of constructible_implies_degree_dvd_pow2. -/
+theorem not_constructible_of_degree (α : ℝ) (hα : IsIntegral ℚ α)
+    (h : ∀ n : ℕ, ¬ (minpoly ℚ α).natDegree ∣ 2 ^ n) :
+    ¬ IsConstructibleFromQ α :=
+  fun hc => h _ (constructible_implies_degree_dvd_pow2 α hα hc)
+
+/-
 ## Summary
 
 ### The Main Answer:
@@ -180,6 +199,8 @@ An algebraic number α is constructible from ℚ iff Gal(minpoly(ℚ,α)) is a 2
 7. `x_sq_sub_2_gal_is_2group` - Gal(x²-2/ℚ) IS a 2-group (order 2)
 8. `x_4th_sub_2_gal_is_2group` - Gal(x⁴-2/ℚ) IS a 2-group (order 8)
 9. `constructible_implies_degree_dvd_pow2` - Galois criterion implies degree criterion
+10. `not_constructible_of_not_2group` - NOT 2-group Galois → not constructible
+11. `not_constructible_of_degree` - degree not ∣ any 2^n → not constructible
 
 ### Axiomatized (deep results):
 1. `wantzel_galois_characterization` - main constructibility ↔ 2-group theorem

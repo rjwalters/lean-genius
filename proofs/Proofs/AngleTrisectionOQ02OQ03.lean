@@ -265,18 +265,72 @@ theorem known_fermat_prime_ngons_constructible :
    polygon_257_constructible, polygon_65537_constructible⟩
 
 /-!
+## Section VIII: Composite Polygon Examples
+
+Composite numbers n can be constructible when φ(n) is a power of 2.
+Key examples: n = 15, 20 (constructible); n = 14, 18 (NOT constructible).
+-/
+
+theorem totient_14_eq : Nat.totient 14 = 6 := by decide
+theorem totient_15_eq : Nat.totient 15 = 8 := by decide
+theorem totient_18_eq : Nat.totient 18 = 6 := by decide
+theorem totient_20_eq : Nat.totient 20 = 8 := by decide
+
+/-- φ(15) = 8 = 2³ → regular 15-gon is constructible.
+    15 = 3 × 5, φ(15) = φ(3)·φ(5) = 2·4 = 8. -/
+theorem totient_15_pow2 : TotientIsPow2 15 := ⟨3, by decide⟩
+
+/-- φ(20) = 8 = 2³ → regular 20-gon is constructible.
+    20 = 4 × 5, φ(20) = φ(4)·φ(5) = 2·4 = 8. -/
+theorem totient_20_pow2 : TotientIsPow2 20 := ⟨3, by decide⟩
+
+/-- φ(14) = 6, NOT a power of 2 → regular 14-gon is NOT constructible.
+    14 = 2 × 7, φ(14) = φ(2)·φ(7) = 1·6 = 6 (divisible by 3). -/
+theorem totient_14_not_pow2 : ¬ TotientIsPow2 14 := by
+  intro ⟨k, hk⟩
+  have h : Nat.totient 14 = 6 := by decide
+  rw [h] at hk
+  exact not_pow_two_of_odd_prime_dvd (p := 3) (by decide) (by decide) (by norm_num) ⟨k, hk⟩
+
+/-- φ(18) = 6, NOT a power of 2 → regular 18-gon is NOT constructible.
+    18 = 2 × 9, φ(18) = φ(2)·φ(9) = 1·6 = 6 (divisible by 3). -/
+theorem totient_18_not_pow2 : ¬ TotientIsPow2 18 := by
+  intro ⟨k, hk⟩
+  have h : Nat.totient 18 = 6 := by decide
+  rw [h] at hk
+  exact not_pow_two_of_odd_prime_dvd (p := 3) (by decide) (by decide) (by norm_num) ⟨k, hk⟩
+
+/-- The regular 15-gon IS constructible: φ(15) = 8 = 2³. -/
+theorem polygon_15_constructible : IsConstructibleNgon 15 :=
+  (gauss_wantzel_theorem 15 (by norm_num)).mpr totient_15_pow2
+
+/-- The regular 20-gon IS constructible: φ(20) = 8 = 2³. -/
+theorem polygon_20_constructible : IsConstructibleNgon 20 :=
+  (gauss_wantzel_theorem 20 (by norm_num)).mpr totient_20_pow2
+
+/-- The regular 14-gon is NOT constructible: φ(14) = 6, not a power of 2. -/
+theorem polygon_14_not_constructible : ¬ IsConstructibleNgon 14 := by
+  rw [gauss_wantzel_theorem 14 (by norm_num)]
+  exact totient_14_not_pow2
+
+/-- The regular 18-gon is NOT constructible: φ(18) = 6, not a power of 2. -/
+theorem polygon_18_not_constructible : ¬ IsConstructibleNgon 18 := by
+  rw [gauss_wantzel_theorem 18 (by norm_num)]
+  exact totient_18_not_pow2
+
+/-!
 ## Summary
 
 ### Proved (0 sorries):
-1. `totient_X_eq` (14 theorems): φ(n) values for n = 3..17, 257, 65537 (by decide/native_decide)
+1. `totient_X_eq` (18 theorems): φ(n) values for n = 3..17, 257, 65537, 14, 15, 18, 20
 2. `not_pow_two_of_odd_prime_dvd`: general helper using prime divisibility
-3. `totient_X_pow2` (10 theorems): φ(n) = 2^k verified with explicit witnesses
-4. `totient_X_not_pow2` (4 theorems): φ(7)=6, φ(9)=6, φ(11)=10, φ(13)=12 not powers of 2
+3. `totient_X_pow2` (12 theorems): φ(n) = 2^k for n = 3,4,5,6,8,10,12,17,257,65537,15,20
+4. `totient_X_not_pow2` (6 theorems): φ(7)=6, φ(9)=6, φ(11)=10, φ(13)=12, φ(14)=6, φ(18)=6 not pow2
 5. `fermat_prime_X` (5 theorems): 3, 5, 17, 257, 65537 are Fermat primes
 6. `fermat_prime_totient_pow2`: φ(p) = 2^(2^k) for Fermat prime p = 2^(2^k)+1
 7. `fermat_prime_ngon_constructible`: Fermat primes give constructible polygons
-8. Constructibility theorems for n = 3, 4, 5, 6, 8, 10, 12, 17, 257, 65537
-9. Non-constructibility theorems for n = 7, 9, 11, 13
+8. Constructibility theorems for n = 3, 4, 5, 6, 8, 10, 12, 15, 17, 20, 257, 65537
+9. Non-constructibility theorems for n = 7, 9, 11, 13, 14, 18
 
 ### Axiomatized (1 axiom):
 - `gauss_wantzel_theorem`: n-gon constructible ↔ φ(n) = 2^k

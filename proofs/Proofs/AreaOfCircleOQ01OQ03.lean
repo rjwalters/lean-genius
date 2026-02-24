@@ -289,17 +289,83 @@ axiom equality_implies_circle (γ : SmoothClosedCurve)
       γ.area = circleArea r
 
 /-
+## Part VII: Algebraic Corollaries of the Isoperimetric Inequality
+
+These follow directly from 4πA ≤ C² without using the hard Wirtinger proof.
+They use the circle-specific inequality results we've proved.
+-/
+
+/-- Rearrangement: 4πA ≤ C² is equivalent to A ≤ C²/(4π).
+    For circles: A = C²/(4π) exactly. -/
+theorem isoperimetric_area_bound (C A : ℝ)
+    (h : 4 * π * A ≤ C ^ 2) :
+    A ≤ C ^ 2 / (4 * π) := by
+  have h4pi : 0 < 4 * π := by linarith [Real.pi_pos]
+  rw [le_div_iff h4pi]
+  linarith
+
+/-- Minimum circumference for given area: C ≥ 2·√(π·A).
+    Follows from 4πA ≤ C² by taking square roots.
+    The circle minimizes circumference for given area. -/
+theorem minimum_circumference_for_area (C A : ℝ) (hC : 0 < C) (hA : 0 < A)
+    (h : 4 * π * A ≤ C ^ 2) :
+    2 * Real.sqrt (π * A) ≤ C := by
+  have hpi : 0 < π := Real.pi_pos
+  -- Rewrite 2√(πA) = √(4πA) and C = √(C²), then use monotonicity of sqrt
+  have h2sqrt : 2 * Real.sqrt (π * A) = Real.sqrt (4 * π * A) := by
+    rw [show (4 : ℝ) * π * A = (2 : ℝ)^2 * (π * A) from by ring,
+        Real.sqrt_mul (by norm_num : 0 ≤ (2 : ℝ)^2),
+        Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 2)]
+  rw [h2sqrt, ← Real.sqrt_sq hC.le]
+  exact Real.sqrt_le_sqrt h
+
+/-- Scale invariance: the isoperimetric ratio 4πA/C² is unchanged by scaling.
+    If a curve has circumference C and area A, scaling by λ > 0 gives
+    circumference λC and area λ²A, leaving 4π(λ²A)/(λC)² = 4πA/C² unchanged. -/
+theorem isoperimetric_ratio_scale_invariant (C A λ : ℝ) (hC : C ≠ 0) (hλ : λ ≠ 0) :
+    4 * π * (λ ^ 2 * A) / (λ * C) ^ 2 = 4 * π * A / C ^ 2 := by
+  field_simp; ring
+
+/-- The circle achieves the maximum area for given circumference.
+    Among all smooth closed curves with circumference C = 2πr, the circle of radius r
+    encloses the maximum area πr². -/
+theorem circle_maximizes_area (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve)
+    (hC : γ.circumference = circleCirc r)
+    (hineq : 4 * π * γ.area ≤ γ.circumference ^ 2) :
+    γ.area ≤ circleArea r := by
+  rw [hC, circle_isoperimetric_equality r] at hineq
+  have h4pi : 0 < 4 * π := by linarith [Real.pi_pos]
+  exact (mul_le_mul_left h4pi).mp hineq
+
+/-- Strict inequality: if a smooth closed curve with given circumference is NOT a circle,
+    its enclosed area is strictly less than the circle's area. -/
+theorem non_circle_area_lt_circle (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve)
+    (hC : γ.circumference = circleCirc r)
+    (hineq : 4 * π * γ.area < γ.circumference ^ 2) :
+    γ.area < circleArea r := by
+  rw [hC, circle_isoperimetric_equality r] at hineq
+  have h4pi : 0 < 4 * π := by linarith [Real.pi_pos]
+  exact (mul_lt_mul_left h4pi).mp hineq
+
+/-
 ## Summary
 
 ### The Isoperimetric Inequality: C² ≥ 4πA
 
-### Proved (0 sorries, ring-level):
+### Proved (no sorries):
 1. `circle_isoperimetric_equality` — C² = 4πA for circles (equality case)
 2. `circle_isoperimetric_ratio` — 4πA/C² = 1 for circles
-3. `circle_isoperimetric_ratio` — C² > 4πA for squares (from π < 4)
+3. `square_isoperimetric_strict` — C² > 4πA for squares (from π < 4)
 4. `square_isoperimetric_ratio` — 4πA/C² = π/4 for squares
-5. `regular_ngon_isoperimetric_ratio` — 4πA/C² = π/(n·tan(π/n)) for n-gons
-6. `circumference_is_deriv_of_area` — C = dA/dr (connection to OQ01)
+5. `square_ratio_lt_one` — square ratio < 1 (confirming suboptimality)
+6. `regular_ngon_isoperimetric_ratio` — 4πA/C² = π/(n·tan(π/n)) for n-gons
+7. `circumference_is_deriv_of_area` — C = dA/dr (connection to OQ01)
+8. `circle_satisfies_isoperimetric` — circles satisfy C² = 4πA
+9. `isoperimetric_area_bound` — 4πA ≤ C² ⟹ A ≤ C²/(4π) [algebraic]
+10. `minimum_circumference_for_area` — 4πA ≤ C² ⟹ 2√(πA) ≤ C [from sqrt monotonicity]
+11. `isoperimetric_ratio_scale_invariant` — ratio 4πA/C² invariant under scaling [ring]
+12. `circle_maximizes_area` — if C = 2πr and 4πA ≤ C², then A ≤ πr²
+13. `non_circle_area_lt_circle` — strict: 4πA < C² ⟹ A < circleArea r
 
 ### Axioms (2):
 1. `wirtinger_inequality` — ∫f² ≤ ∫(f')² for periodic mean-zero f
@@ -307,13 +373,24 @@ axiom equality_implies_circle (γ : SmoothClosedCurve)
 2. `equality_implies_circle` — equality iff circle
    (Proof: equality in Wirtinger iff f = a cos + b sin)
 
-### 1 Sorry:
+### 2 Sorries:
 1. `isoperimetric_inequality_smooth` — reducible to wirtinger_inequality
    (needs integral Cauchy-Schwarz + AM-GM assembly, ~100 lines)
+2. `ngon_limit_tendsto_circle` — π/(n·tan(π/n)) → 1 as n → ∞
+   (standard: tan(x)/x → 1 as x → 0, needs HasDerivAt + filter composition)
 
-### 1 Limit (sorry):
-1. `ngon_limit_tendsto_circle` — n·tan(π/n) → π as n → ∞
-   (standard: x·tan(x)/x → 1 as x → 0)
+### Key Proof Path for Remaining Sorries:
+For `ngon_limit_tendsto_circle`:
+- Add `import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv`
+- Use `Real.hasDerivAt_tan (cos 0 ≠ 0) : HasDerivAt Real.tan 1 0`
+- Apply `.tendsto_slope_zero` to get `tan(t)/t → 1` in nhdsWithin 0 {0}ᶜ
+- Compose with `n ↦ π/n` using Filter.Tendsto.comp
+
+For `isoperimetric_inequality_smooth`:
+- The proof from Wirtinger: for unit-speed curve x(t), y(t) with period 2π:
+  - A ≤ (1/2)∫|xy' - yx'|dt ≤ (1/2)(∫x²)^(1/2)(∫y'²)^(1/2) + similar [Cauchy-Schwarz]
+  - Then use Wirtinger: ∫x² ≤ ∫x'² (when mean zero) and AM-GM
+  - Combined: 4πA ≤ (∫x'² + ∫y'²)/(2π) · (2π) = L²
 
 ### Key Insight:
 The isoperimetric inequality C² ≥ 4πA follows from Wirtinger's inequality,
