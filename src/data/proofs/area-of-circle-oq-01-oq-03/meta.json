@@ -1,0 +1,86 @@
+{
+  "id": "area-of-circle-oq-01-oq-03",
+  "title": "Isoperimetric Inequality: C² ≥ 4πA",
+  "slug": "area-of-circle-oq-01-oq-03",
+  "description": "For any closed curve with circumference C enclosing area A, the isoperimetric inequality C² ≥ 4πA holds, with equality if and only if the curve is a circle. Formalizes the equality case for circles and the proof architecture via Wirtinger's inequality.",
+  "meta": {
+    "author": "Hurwitz (1901), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Isoperimetric_inequality",
+    "date": "1901",
+    "status": "partial",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ01OQ03.lean",
+    "tags": [
+      "analysis",
+      "geometry",
+      "calculus",
+      "fourier-analysis",
+      "wirtinger",
+      "extension",
+      "research",
+      "isoperimetric"
+    ],
+    "badge": "open",
+    "sorries": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.pi_lt_four",
+        "description": "π < 4, used to prove square is suboptimal",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "ContDiff",
+        "description": "C^n smooth function type",
+        "module": "Mathlib.Analysis.Calculus.ContDiff.Basic"
+      },
+      {
+        "theorem": "intervalIntegral",
+        "description": "Signed integral over intervals for arc length and area formulas",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Equality case for circles: C² = 4πA proved by ring computation",
+      "Strict inequality for squares: C² > 4πA from π < 4",
+      "Regular n-gon isoperimetric ratio: 4πA/C² = π/(n·tan(π/n))",
+      "Connection to OQ01: C = dA/dr links to the circumference-as-derivative result",
+      "Proof architecture: Wirtinger's inequality implies isoperimetric via Cauchy-Schwarz + AM-GM",
+      "SmoothClosedCurve structure for parametric curves in ℝ²"
+    ],
+    "dateAdded": "02/24/26"
+  },
+  "overview": {
+    "historicalContext": "The isoperimetric problem — find the shape of maximum area for a given perimeter — is one of the oldest optimization problems in mathematics, traced to ancient Dido of Carthage (~900 BCE). The problem asks: among all closed curves of length $L$, which encloses the most area? The answer is a circle, and the isoperimetric inequality $C^2 \\geq 4\\pi A$ quantifies how much any curve falls short. Archimedes knew the result informally (~250 BCE), but a rigorous proof waited until the 19th century. Steiner (1838) gave an elegant proof using symmetrization, but didn't prove existence of the maximizer. Weierstrass (1870s) gave the first complete proof using calculus of variations. The most elegant proof is due to Hurwitz (1901), who used Fourier series and the Wirtinger inequality.",
+    "problemStatement": "**Isoperimetric Inequality**:\n\nFor any simple closed curve $\\gamma$ in the plane with circumference $C$ and enclosed area $A$:\n$$C^2 \\geq 4\\pi A$$\nwith equality if and only if $\\gamma$ is a circle.\n\n**Connection to OQ Chain**:\n- OQ01: $C = \\frac{dA}{dr}$ (circumference from differentiating area)\n- OQ01-OQ02: $A = \\int_0^r C(\\rho)\\,d\\rho$ (area from integrating circumference)\n- OQ01-OQ03 (this file): $C^2 \\geq 4\\pi A$ for ALL closed curves (isoperimetric inequality)",
+    "proofStrategy": "The **Hurwitz proof** (1901) uses Fourier analysis:\n1. Parameterize the curve $\\gamma(t) = (x(t), y(t))$ with $t \\in [0, 2\\pi]$\n2. Apply **Green's theorem**: $A = \\frac{1}{2}|\\int_0^{2\\pi}(xy' - yx')\\,dt|$\n3. Apply **Wirtinger's inequality**: for $f$ with zero mean, $\\int_0^{2\\pi} f^2\\,dt \\leq \\int_0^{2\\pi}(f')^2\\,dt$\n4. Combined with **Cauchy-Schwarz** and **AM-GM**: this gives $4\\pi A \\leq L^2$\n\nWirtinger follows from **Parseval's theorem** for Fourier series: with $f(t) = \\sum_{n \\geq 1}(a_n \\cos(nt) + b_n \\sin(nt))$, Parseval gives $\\int f^2 = \\pi \\sum(a_n^2 + b_n^2)$ and $\\int(f')^2 = \\pi \\sum n^2(a_n^2 + b_n^2) \\geq \\int f^2$.",
+    "keyInsights": [
+      "**Equality for circles** is a trivial ring computation: $(2\\pi r)^2 = 4\\pi \\cdot \\pi r^2$",
+      "**Squares are suboptimal** because $4\\pi/16 = \\pi/4 < 1$ (equivalently $C^2/(4\\pi A) = 16/\\pi > 1$)",
+      "**Regular n-gons** have ratio $\\pi/(n\\tan(\\pi/n)) \\to 1$ as $n \\to \\infty$, converging to circles from below",
+      "**Wirtinger's inequality** is the key missing piece — Mathlib has the Fourier infrastructure (fourierBasis, Parseval via tsum_sq_fourierCoeff) but not the assembled Wirtinger result",
+      "**The proof reduces to Wirtinger**: once Wirtinger is proved, the isoperimetric inequality follows by ~100 lines of Cauchy-Schwarz + AM-GM arguments",
+      "**Connection to OQ01**: the equality $C = dA/dr$ for circles is exactly what makes circles special in the isoperimetric inequality"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle",
+      "relationship": "extends",
+      "description": "The circle's isoperimetric optimality extends the basic area formula"
+    },
+    {
+      "targetId": "area-of-circle-oq-01",
+      "relationship": "extends",
+      "description": "OQ01 proves C = dA/dr; OQ03 proves C is isoperimetrically optimal"
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "OQ01-OQ02 proves A = ∫C dρ; OQ03 proves C²≥4πA completes the circle"
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "extends",
+      "description": "Wiedijk #43: the abstract version is in IsoperimetricTheorem.lean; this file provides the OQ-chain approach"
+    }
+  ]
+}
