@@ -1,8 +1,8 @@
 {
   "slug": "laws-of-large-numbers-oq-01",
   "title": "LLN for heavy-tailed distributions with infinite variance",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
+    "phase": "NEW",
     "since": "2026-02-24T06:31:43.090Z",
     "iteration": 1,
-    "focus": "Proved SLLN and WLLN for heavy-tailed distributions using Mathlib strong_law_ae",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Completed - PR created",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,24 +29,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Proved SLLN and WLLN for heavy-tailed distributions with E[|X|] < ∞, using Kolmogorov strong_law_ae which requires only Integrable (L1), not Memℒp 2 (L2)",
+    "progressSummary": "SURVEYED: Lean file has 6 proved theorems (0 sorries), 1 axiom. Key insight: Kolmogorov SLLN requires only L¹ (E[|X|]<∞), NOT L² (finite variance). Proved complete bi-conditional characterization. Added L²→L¹ theorem showing Chebyshev is special case of Kolmogorov.",
     "builtItems": [
-      "slln_under_finite_mean_only: SLLN via strong_law_ae, only Integrable needed (LawsOfLargeNumbersOQ01.lean:82)",
-      "wlln_for_heavy_tails: WLLN from SLLN via tendstoInMeasure_of_tendsto_ae (LawsOfLargeNumbersOQ01.lean:104)",
-      "slln_necessity: axiom for converse direction SLLN => integrable (LawsOfLargeNumbersOQ01.lean:145)",
-      "lln_heavy_tail_answer: main theorem answering open question (LawsOfLargeNumbersOQ01.lean:187)"
+      "slln_under_finite_mean_only: direct application of ProbabilityTheory.strong_law_ae",
+      "wlln_for_heavy_tails: uses MeasureTheory.tendstoInMeasure_of_tendsto_ae",
+      "finite_variance_implies_slln_applicable: (hL2 0).integrable (by norm_num)",
+      "kolmogorov_slln_characterization: iff combining slln_under_finite_mean_only and slln_necessity",
+      "lln_heavy_tail_answer: restates SLLN as direct answer to OQ",
+      "slln_necessity axiom: requires Borel-Cantelli for formal proof"
     ],
     "insights": [
-      "ProbabilityTheory.strong_law_ae requires only Integrable (X 0) mu, NOT Memℒp 2 - directly proves SLLN for infinite variance",
-      "Chebyshev WLLN failure (infinite variance) does NOT imply LLN failure - Chebyshev is a proof artifact not a threshold",
-      "True threshold for SLLN is E[|X|] < infinity (L1), not E[X^2] < infinity (L2) - Kolmogorov 1930",
-      "SLLN => WLLN via tendstoInMeasure_of_tendsto_ae: a.s. convergence implies convergence in measure",
-      "Cauchy distribution (no finite moments) is canonical LLN failure: by 1-stability, sample mean stays Cauchy for all n"
+      "KEY INSIGHT: ProbabilityTheory.strong_law_ae requires only Integrable X (L¹), not Memℒp X 2 (L²)",
+      "L² implies L¹: Memℒp X 2 → Integrable X via hL2.integrable (by norm_num)",
+      "SLLN ⟺ E[|X₀|] < ∞ (Kolmogorov 1930): sufficient from strong_law_ae, necessary axiomatized",
+      "slln_necessity (converse) requires Borel-Cantelli: if E[|X|]=∞ then |Xₙ|>n infinitely often, sum diverges",
+      "WLLN from SLLN: tendstoInMeasure_of_tendsto_ae converts ae convergence to in-measure convergence",
+      "Pareto(α, x_m): E[X]<∞ iff α>1, E[X²]<∞ iff α>2 — not formalized (Pareto not in Mathlib)",
+      "The file uses namespace LawsOfLargeNumbersOQ01 with IsProbabilityMeasure instance"
     ],
-    "mathlibGaps": [
-      "slln_necessity (converse: SLLN => E[|X|] < inf) not in Mathlib - requires Borel-Cantelli on tail events {|Xn| > n*eps}"
-    ],
-    "nextSteps": []
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove slln_necessity from Mathlib Borel-Cantelli lemma (substantial work)",
+      "Formalize Pareto distribution in Lean and prove its moment properties",
+      "Connect to Cauchy distribution counter-example (distribution with E[|X|]=∞)"
+    ]
   },
   "approaches": [],
   "tags": [
@@ -62,8 +68,8 @@
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-02-24T07:33:31.363Z",
-  "lastUpdate": "2026-02-24T08:00:00.000Z",
+  "started": "2026-02-24T08:35:25.048Z",
+  "lastUpdate": "2026-02-24T08:35:25.048Z",
   "significance": 7,
   "tractability": 6
 }

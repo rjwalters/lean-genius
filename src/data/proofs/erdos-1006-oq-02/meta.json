@@ -36,9 +36,16 @@
     "originalContributions": [
       "Theorem chromatic_lower_bound_for_non_robust: χ(G) ≥ girth(G) for non-robustly-orientable G",
       "Theorem minimum_chromatic_non_robust: g ≤ chromaticNumber for girth-g non-robust graphs",
+      "Theorem minimum_chromatic_tight: tightness - minimum is achieved for each g ≥ 3",
+      "Theorem girth3_minimum_chromatic: existence of girth-3 non-robust graph with χ=3",
+      "Theorem girth4_minimum_chromatic: Grötzsch graph witnesses girth 4 case",
+      "Theorem girth5_minimum_chromatic: existence of girth-5 non-robust graph with χ=5",
+      "Theorem girth6_minimum_chromatic: existence of girth-6 non-robust graph with χ=6",
+      "Theorem triangle_free_non_robust_chromatic_bound: triangle-free non-robust graphs have χ ≥ 4",
+      "Theorem minimum_chromatic_exactly_girth: combined lower bound and tightness in one theorem",
       "Axiom ffllw_chromatic_lt_girth_implies_robust: Fisher-Fraughnaugh-Langley-West 1997 sufficient condition",
       "Axiom grotzsch_graph_witness: Grötzsch graph has girth 4, χ=4, no robust orientation",
-      "Axiom minimum_chromatic_achieved: tightness for all g ≥ 3"
+      "Axiom minimum_chromatic_achieved: tightness via explicit construction for each g ≥ 3"
     ],
     "dateAdded": "02/24/26"
   },

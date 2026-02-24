@@ -196,6 +196,14 @@ theorem girth4_minimum_chromatic :
       ¬admitsRobustAcyclicOrientation G :=
   grotzsch_graph_witness
 
+/-- At girth 3 (graphs containing triangles): non-robust graphs need χ ≥ 3. -/
+theorem girth3_minimum_chromatic :
+    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
+      G.egirth = 3 ∧
+      G.chromaticNumber = 3 ∧
+      ¬admitsRobustAcyclicOrientation G :=
+  minimum_chromatic_achieved 3 (by norm_num)
+
 /-- At girth 5 (no cycles of length 3 or 4): non-robust graphs need χ ≥ 5. -/
 theorem girth5_minimum_chromatic :
     ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
@@ -203,6 +211,43 @@ theorem girth5_minimum_chromatic :
       G.chromaticNumber = 5 ∧
       ¬admitsRobustAcyclicOrientation G :=
   minimum_chromatic_achieved 5 (by norm_num)
+
+/-- At girth 6: non-robust graphs need χ ≥ 6. -/
+theorem girth6_minimum_chromatic :
+    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
+      G.egirth = 6 ∧
+      G.chromaticNumber = 6 ∧
+      ¬admitsRobustAcyclicOrientation G :=
+  minimum_chromatic_achieved 6 (by norm_num)
+
+/-
+## Additional Structural Consequences
+-/
+
+/-- Triangle-free graphs (girth ≥ 4) that fail robust orientability must have χ ≥ 4.
+
+    This follows because such graphs have egirth ≥ 4, and the lower bound gives
+    chromaticNumber ≥ egirth ≥ 4.
+
+    The Grötzsch graph (girth 4, χ = 4) shows this bound is tight. -/
+theorem triangle_free_non_robust_chromatic_bound [Fintype V] (G : SimpleGraph V)
+    (hgirth : (4 : ℕ∞) ≤ G.egirth)
+    (hno : ¬admitsRobustAcyclicOrientation G) :
+    (4 : ℕ∞) ≤ G.chromaticNumber :=
+  le_trans hgirth (chromatic_lower_bound_for_non_robust G hno)
+
+/-- The minimum chromatic number of a girth-g non-robustly-orientable graph is EXACTLY g.
+
+    This combines the lower bound (χ ≥ g, from FFLLW contrapositively) with the
+    tightness result (some girth-g graph achieves χ = g with no robust orientation):
+    - Every girth-g non-robust graph satisfies (g : ℕ∞) ≤ chromaticNumber
+    - There exist girth-g non-robust graphs with chromaticNumber = g -/
+theorem minimum_chromatic_exactly_girth (g : ℕ) (hg : g ≥ 3) :
+    (∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
+      G.egirth = (g : ℕ∞) ∧ G.chromaticNumber = (g : ℕ∞) ∧ ¬admitsRobustAcyclicOrientation G) ∧
+    ∀ {W : Type} [Fintype W] (H : SimpleGraph W),
+      H.egirth = (g : ℕ∞) → ¬admitsRobustAcyclicOrientation H → (g : ℕ∞) ≤ H.chromaticNumber :=
+  ⟨minimum_chromatic_achieved g hg, fun H hgirth hno => minimum_chromatic_non_robust H g hgirth hno⟩
 
 /-
 ## Summary
@@ -213,6 +258,10 @@ theorem girth5_minimum_chromatic :
 3. `minimum_chromatic_tight` - tightness: minimum is achieved
 4. `girth4_minimum_chromatic` - Grötzsch graph witnesses girth 4 case
 5. `girth5_minimum_chromatic` - girth 5 case
+6. `girth3_minimum_chromatic` - girth 3 case (minimum_chromatic_achieved at g=3)
+7. `girth6_minimum_chromatic` - girth 6 case
+8. `triangle_free_non_robust_chromatic_bound` - triangle-free (girth ≥ 4) + non-robust → χ ≥ 4
+9. `minimum_chromatic_exactly_girth` - combined: lower bound AND tightness in one statement
 
 ### Key Answer:
 The minimum chromatic number of a girth-g graph failing robust orientability is
