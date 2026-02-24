@@ -1,0 +1,37 @@
+[
+  {
+    "id": "ann-erdos1054oq01-01-header",
+    "proofId": "erdos-1054-oq-01",
+    "range": { "startLine": 1, "endLine": 30 },
+    "annotation": "**The Sigma Bound Strategy**: The key insight is that σ(m) = sum of ALL divisors of m is always the LAST element of partialDivisorSums(m). So f(σ(m)) ≤ m, meaning f(σ(m))/σ(m) ≤ m/σ(m). When σ(m)/m → ∞ (Gronwall/Mertens), the ratio f(σ(m))/σ(m) → 0. This gives liminf f(n)/n = 0, consistent with the main conjecture.",
+    "type": "insight"
+  },
+  {
+    "id": "ann-erdos1054oq01-02-tao",
+    "proofId": "erdos-1054-oq-01",
+    "range": { "startLine": 65, "endLine": 80 },
+    "annotation": "**Tao's result vs. Almost All**: Tao showed f(n) = o(n) fails unconditionally — there exist infinitely many n with f(n) ≥ εn. But the density conjecture says these n form a zero-density set. The two results are NOT contradictory: a zero-density set is still infinite.",
+    "type": "insight"
+  },
+  {
+    "id": "ann-erdos1054oq01-03-native-decide",
+    "proofId": "erdos-1054-oq-01",
+    "range": { "startLine": 112, "endLine": 160 },
+    "annotation": "**Computational Witnesses**: These native_decide theorems verify (by computation) that σ(m) = N AND N ∈ partialDivisorSums(m). Together they prove f(N) ≤ m, bounding the ratio. The values m ∈ {6,12,24,120,720,5040} are the 'highly composite' numbers — Ramanujan's sequence where σ(m)/m is maximized.",
+    "type": "technique"
+  },
+  {
+    "id": "ann-erdos1054oq01-04-sigma-prime",
+    "proofId": "erdos-1054-oq-01",
+    "range": { "startLine": 209, "endLine": 230 },
+    "annotation": "**Prime Divisors**: For prime p, the only divisors are 1 and p, so σ(p) = 1 + p. The proof uses Nat.Prime.divisors (from Mathlib) and Finset.sum_pair to reduce to a simple arithmetic identity. Note: Finset.sum_pair requires the pair elements to be distinct, handled by hp.one_lt.ne : 1 ≠ p.",
+    "type": "technique"
+  },
+  {
+    "id": "ann-erdos1054oq01-05-mathlib-gap",
+    "proofId": "erdos-1054-oq-01",
+    "range": { "startLine": 195, "endLine": 205 },
+    "annotation": "**Mertens Theorem Gap**: The main blocker is Gronwall's theorem: limsup σ(n)/(n log log n) = e^γ (Euler-Mascheroni constant). This implies σ(primorial_k)/primorial_k ~ e^γ · log log p_k → ∞. Once this is in Mathlib, sigma_in_partial_sums + this bound would prove liminf f(n)/n = 0 rigorously.",
+    "type": "gap"
+  }
+]

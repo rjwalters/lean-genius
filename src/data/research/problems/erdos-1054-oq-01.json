@@ -1,0 +1,123 @@
+{
+  "slug": "erdos-1054-oq-01",
+  "title": "Smallest Divisors: f(n) = o(n) for Almost All n",
+  "phase": "SURVEYED",
+  "status": "active",
+  "tier": "B",
+  "path": "survey+build",
+  "problemStatement": {
+    "formal": "Let f(n) be the minimal m whose partial divisor sums include n. Is |{k ≤ n : f(k)/k ≥ ε}|/n → 0 for each ε > 0?",
+    "plain": "Erdős asked whether f(n) = o(n) unconditionally (disproved by Tao) and whether this holds for almost all n (OPEN). The 'almost all' version asks: for each ε > 0, the set of n where f(n)/n ≥ ε has natural density 0. Key evidence: the sigma bound f(σ(m)) ≤ m shows f is small on the image of σ, and σ(m)/m is unbounded.",
+    "whyMatters": [
+      "Part II of Erdős Problem 1054 — still open after Tao's disproof of Part I",
+      "Would show most integers have efficiently representable partial divisor sums",
+      "Connected to sigma function asymptotics (Gronwall's theorem, Mertens theorem)",
+      "The sigma bound f(σ(m)) ≤ m provides a direct approach via superabundant numbers"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "f(σ(m)) ≤ m for all m ≥ 1 (sigma bound, Erdos1054OQ01.lean)",
+      "f(p+1) ≤ p for all primes p (prime structure, Erdos1054OQ01.lean)",
+      "There are infinitely many n with f(n) < n (from infinitely many primes)",
+      "σ(2^a * 3^b) / (2^a * 3^b) → 6 as a,b → ∞ (explicit primorial bound)"
+    ],
+    "axiomatized": [
+      "tao_counterexample: f(n) = o(n) fails for all n (Tao's result)",
+      "mertens_sigma_primorial: σ(primorial k) / primorial k ~ e^γ log p_k → ∞ (Mertens theorem)"
+    ],
+    "open": [
+      "Main conjecture: HasDensity {n | f(n) ≥ ε * n} 0 for each ε > 0",
+      "Equivalently: limsup_N |{k ≤ N : f(k)/k ≥ ε}| / N = 0",
+      "Is limsup f(n)/n = ∞? (Part III of Erdős 1054)"
+    ],
+    "goal": "Formalize the 'almost all' open question and prove accessible density lower bounds via the sigma bound"
+  },
+  "currentState": {
+    "phase": "SURVEYED",
+    "since": "2026-02-24T09:00:00Z",
+    "iteration": 1,
+    "focus": "Created Erdos1054AlmostAllOQ.lean with formal density framework, sigma bound connection, and primorial approach",
+    "blockers": [
+      "Mertens theorem / Gronwall bound for σ(m)/m → ∞ not in Mathlib",
+      "Natural density of σ-values of superabundant numbers requires analytic NT",
+      "Proving HasDensity {n : f(n) ≥ εn} 0 requires difficult asymptotic estimates"
+    ],
+    "nextAction": "Monitor Mathlib for analytic NT additions; sigma bound path becomes viable once Mertens/Gronwall is available",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: Created Erdos1054AlmostAllOQ.lean formalizing the density framework for 'f(n) = o(n) for almost all n'. Key result: liminf_n f(n)/n = 0 follows from sigma bound + σ(m)/m → ∞ (the latter requires Mertens theorem, axiomatized). Proved: sigma bound connection, primorial ratio computation for small cases, open conjecture formalized as axiom.",
+    "builtItems": [
+      "Erdos1054AlmostAllOQ.lean: density framework with 8+ theorems, 2 axioms",
+      "SmallFSet definition: {n : f(n) ≤ ε * n} as formal set",
+      "has_small_f_along_sigma: f(σ(m))/σ(m) ≤ m/σ(m) (from sigma bound)",
+      "f_ratio_primorial_2_3: concrete computation for 2^a * 3^b case",
+      "liminf_f_ratio_eq_zero: stated as axiom (requires Mertens theorem)"
+    ],
+    "insights": [
+      "Key path: sigma bound f(σ(m)) ≤ m + Mertens theorem σ(m_k)/m_k → ∞ → liminf f(n)/n = 0",
+      "For m = 2^a * 3^b: σ(m)/m = ((2^(a+1)-1)/2^a) * ((3^(b+1)-1)/2*3^b) → 3 (explicit)",
+      "Primorial m_k = ∏ p ≤ p_k: σ(m_k)/m_k = ∏ (1+1/p) ~ e^γ log p_k → ∞ (Mertens)",
+      "Tao's counterexample: f(n) = o(n) fails, but along a zero-density set",
+      "The almost-all conjecture is consistent with Tao's result (exceptional set has density 0)",
+      "Filter.atTop formulation: ∀ ε > 0, ∀ᶠ n in atTop, f(n)/n < ε (weaker than almost-all)",
+      "Use HasDensity from FormalConjecturesForMathlib.Data.Set.Density for density statements"
+    ],
+    "mathlibGaps": [
+      "Mertens theorem: ∑_{p ≤ x} 1/p ~ log log x (needed for σ(primorial)/primorial → ∞)",
+      "Gronwall's theorem: limsup_{m→∞} σ(m)/(m log log m) = e^γ",
+      "Natural density API: HasDensity from formal-conjectures not yet in core Mathlib"
+    ],
+    "nextSteps": [
+      "Check if FormalConjecturesForMathlib density types are importable from project",
+      "Prove liminf f(n)/n = 0 rigorously once σ(m)/m → ∞ is available",
+      "Consider Bertrand's postulate path: ∀ n, ∃ prime p in (n, 2n), giving f(p+1)/(p+1) < 1 densely"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Sigma bound + Mertens path",
+      "description": "f(σ(m)) ≤ m combined with σ(primorial)/primorial → ∞ gives liminf f(n)/n = 0",
+      "status": "partial",
+      "sorries": 2
+    },
+    {
+      "name": "Direct density via Filter.atTop",
+      "description": "Show {n : f(n) ≥ εn} has upper density 0 for each ε > 0",
+      "status": "open",
+      "sorries": 1
+    }
+  ],
+  "tags": [
+    "number-theory",
+    "divisors",
+    "density",
+    "asymptotics",
+    "sigma-function",
+    "seeker-selected",
+    "erdos"
+  ],
+  "relatedProofs": ["erdos-1054"],
+  "references": {
+    "papers": [
+      "Erdős, Problem B2 in Guy's 'Unsolved Problems in Number Theory' (2004)",
+      "Tao: Disproof that f(n) = o(n) for all n",
+      "Gronwall: 'Some Asymptotic Expressions in the Theory of Numbers' (1913)",
+      "Mertens: 'Ein Beitrag zur analytischen Zahlentheorie' (1874)"
+    ],
+    "urls": ["https://erdosproblems.com/1054"],
+    "mathlib": [
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Order.Filter.Basic",
+      "FormalConjecturesForMathlib.Data.Set.Density"
+    ]
+  },
+  "started": "2026-02-24T09:00:00Z",
+  "significance": 6,
+  "tractability": 5
+}
