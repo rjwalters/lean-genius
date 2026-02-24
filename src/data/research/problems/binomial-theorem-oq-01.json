@@ -1,0 +1,74 @@
+{
+  "slug": "binomial-theorem-oq-01",
+  "title": "Newton generalized binomial theorem for fractional/negative exponents via formal power series",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-02-24T17:52:20.367Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: 16 theorems proved including standard_binomial theorem and ODE coefficient identities. 1 axiom remains (newton_generalized_binomial) requiring analytic function theory.",
+    "builtItems": [
+      "BinomialTheoremOQ01.lean: 16 proved theorems, 1 axiom, 0 sorries",
+      "standard_binomial: (1+x)^n = Σ genBinom(n,k) x^k proved",
+      "genBinom_recurrence_deriv: (k+1)*C(α,k+1) = C(α,k)*(α-k) proved",
+      "genBinom_ode_coeff: ODE coefficient identity proved",
+      "BinomialTheoremOQ01Aristotle.lean: companion file with 9 sorries for Aristotle"
+    ],
+    "insights": [
+      "genBinom generalizes Nat.choose to all alpha in Real",
+      "standard_binomial PROVED: (1+x)^n = finite sum genBinom terms for natural n (uses Mathlib add_pow)",
+      "genBinom_nat_eq_choose PROVED: connects genBinom to Nat.choose via descFactorial_eq_prod_range + Nat.cast_prod",
+      "ODE characterization: genBinom_ode_coeff shows (1+x)*f = alpha*f at coefficient level",
+      "Mathlib API: descFactorial_eq_prod_range in Factorial/BigOperators; Nat.cast_prod in BigOperators/Ring",
+      "Main axiom newton_generalized_binomial requires analytic function theory (ODE uniqueness or log/exp composition)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "To prove newton_generalized_binomial: use ODE approach - show (1+x)*f=alpha*f with f(0)=1 uniquely characterizes (1+x)^alpha",
+      "Or: use exp/log composition: (1+x)^alpha = exp(alpha*log(1+x)), compose hasSum_pow_div_log_of_abs_lt_one with exp series",
+      "Mathlib has hasSum_pow_div_log_of_abs_lt_one for log series; exp series via expSeries_div_hasSum_exp"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "algebra",
+    "combinatorics",
+    "classic",
+    "beginner",
+    "formal-power-series",
+    "seeker-selected"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-24T22:32:08.185Z",
+  "lastUpdate": "2026-02-24T22:32:08.185Z",
+  "significance": 7,
+  "tractability": 5
+}
