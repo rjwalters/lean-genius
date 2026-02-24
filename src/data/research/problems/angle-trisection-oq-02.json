@@ -1,72 +1,128 @@
 {
   "slug": "angle-trisection-oq-02",
   "title": "Constructible algebraic numbers characterized by Galois groups",
-  "phase": "NEW",
+  "phase": "SURVEYED",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE: Can we characterize which algebraic numbers are constructible in terms of their Galois groups?.",
-    "whyMatters": []
+    "formal": "α constructible from ℚ ↔ IsPGroup 2 (minpoly ℚ α).Gal",
+    "plain": "An algebraic number α is constructible from ℚ by compass and straightedge iff the Galois group of its minimal polynomial over ℚ is a 2-group (has order 2^n).",
+    "whyMatters": [
+      "Exact characterization strengthening the degree criterion (OQ01 necessary condition)",
+      "Explains WHY ∛2 and cos(20°) are not constructible (Galois groups have order 6)",
+      "Foundation for Gauss-Wantzel theorem on regular n-gon constructibility (OQ02-OQ03)"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "IsPGroup.iff_card: 2-group ↔ |G| = 2^n (Mathlib)",
+      "Gal(x³-2/ℚ) is NOT a 2-group (order 6, not 2-power)",
+      "Gal(8x³-6x-1/ℚ) is NOT a 2-group (cos(20°) min poly, order 6)",
+      "Gal(x²-2/ℚ) IS a 2-group (order 2 = 2¹)",
+      "Gal(x⁴-2/ℚ) IS a 2-group (order 8 = 2³)",
+      "constructible → degree of minpoly divides 2^n"
+    ],
+    "open": [
+      "wantzel_galois_characterization (axiomatized): requires Galois correspondence assembly",
+      "Explicit Galois group orders (axiomatized): need cyclotomic field theory"
+    ],
+    "goal": "Characterize constructibility exactly via 2-group Galois groups (Wantzel 1837)"
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-24T06:31:43.087Z",
+    "phase": "SURVEYED",
+    "since": "2026-02-24T22:00:00.000Z",
     "iteration": 1,
-    "focus": "Gallery entry and Lean file (AngleTrisectionOQ02.lean) already created. 0 sorries, Galois group characterization of constructibility.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "11 proved theorems, 6 axioms, 0 sorries. Knowledge JSON populated.",
+    "blockers": [
+      "wantzel_galois_characterization requires Galois correspondence (iff form, deep)",
+      "Galois group order computations require explicit splitting field calculations"
+    ],
+    "nextAction": "No immediate action needed. File is complete given axiom limitations.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: AngleTrisectionOQ02.lean formalizes Wantzel-Galois characterization. IsConstructibleFromQ defined, wantzel_galois_characterization axiomized, applications to cube root of 2 and cos(20°) proved. Gallery status: verified, 0 sorries.",
+    "progressSummary": "AngleTrisectionOQ02.lean has 11 proved theorems + 6 axioms + 0 sorries. Core structure: IsConstructibleFromQ defined via tower of degree-2 extensions; wantzel_galois_characterization (iff) axiomatized; concrete Galois group order facts axiomatized; contrapositive non-constructibility theorems proved. Added not_constructible_of_not_2group and not_constructible_of_degree as new contrapositive results.",
     "builtItems": [
-      "IsConstructibleFromQ definition in AngleTrisectionOQ02.lean:67",
-      "wantzel_galois_characterization AXIOM: α constructible ↔ Gal(min poly) is a 2-group",
-      "x_cube_sub_2_gal_not_2group PROVED: cube duplication impossible",
-      "cos20_gal_not_2group PROVED: 20° trisection impossible",
-      "constructible_implies_degree_dvd_pow2 PROVED: constructibility → degree is power of 2",
-      "Gallery entry: src/data/proofs/angle-trisection-oq-02/ (status: verified, 0 sorries)"
+      "IsConstructibleFromQ: def via IntermediateField with 2^n degree (tower condition)",
+      "isPGroup_iff_card_pow_two: IsPGroup.iff_card from Mathlib (proved)",
+      "not_pow_two_of_eq_six: 6 ≠ 2^n via Nat.Coprime 3 (2^n) and 3∣6 (proved)",
+      "x_cube_sub_2_gal_not_2group: S₃ (order 6) is not a 2-group (proved from axiom)",
+      "cos20_gal_not_2group: Galois group of cos(20°) minimal poly not 2-group (proved from axiom)",
+      "x_sq_sub_2_gal_is_2group: Gal(x²-2) is 2-group, IsPGroup.of_card show ... = 2^1 (proved)",
+      "x_4th_sub_2_gal_is_2group: Gal(x⁴-2) is 2-group, order 8 = 2³ (proved)",
+      "constructible_implies_degree_dvd_pow2: chain via wantzel + galois_2group_implies (proved)",
+      "not_constructible_of_not_2group: rw [wantzel...] + exact h (proved, new)",
+      "not_constructible_of_degree: fun hc => h _ (...) (proved, new)"
     ],
     "insights": [
-      "IsConstructibleFromQ: α constructible iff ∃ tower Q = K₀ ⊂ K₁ ⊂ ... ⊂ Kₙ of degree-2 extensions, each Kᵢ₊₁/Kᵢ has dimension ≤ 2",
-      "Galois characterization (Wantzel 1837): α constructible iff its minimal polynomial has degree a power of 2",
-      "IsPGroup 2 G: G is a 2-group iff |G| is a power of 2 — the Galois-theoretic formulation",
-      "Cube duplication impossible: X³-2 has Galois group S₃ of order 6, not a 2-group",
-      "Angle trisection (cos 20°) impossible: 8X³-6X-1 has Galois group of order 3, not a 2-group"
+      "KEY: `IsFiniteDimensional` doesn't exist in Mathlib → use `FiniteDimensional` typeclass",
+      "KEY: `finrank` not accessible as open name → use `Module.finrank ℚ K`",
+      "KEY: omega can't prove 6 = 2^n → False (exponentials not linear); use Nat.Coprime 3 (2^n) + 3∣gcd = 1",
+      "IsPGroup.of_card takes implicit n; use `show Nat.card G = 2^k from ...` to specify k",
+      "IsPGroup.iff_card: the primary API for 2-group characterization",
+      "Polynomial.Gal is the type for Galois groups in Mathlib",
+      "not_constructible_of_not_2group proof: rw [wantzel_galois_characterization α hα]; exact h",
+      "not_constructible_of_degree proof: fun hc => h _ (constructible_implies_degree_dvd_pow2 ...)"
     ],
     "mathlibGaps": [
-      "Wantzel theorem proper proof requires Galois correspondence for towers of degree-2 extensions — currently axiomized",
-      "GaloisGroup computation for specific polynomials requires number field theory"
+      "No explicit Mathlib theorem for |Gal(x^n - C a)| for specific values",
+      "Galois correspondence (wantzel_galois_characterization) not in Mathlib as stated",
+      "galois_2group_implies_degree_pow2: degree | |Gal| relationship not directly Mathlib"
     ],
-    "nextSteps": []
+    "nextSteps": [
+      "Check if Polynomial.Gal.card can compute |Gal(x²-2)|, |Gal(x³-2)| directly",
+      "Could add companion Aristotle file to try proving Galois order axioms",
+      "Related: AngleTrisectionOQ02OQ03.lean has 38 theorems on Gauss-Wantzel theorem"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Galois-group-2-group",
+      "description": "Characterize constructibility by whether Galois group of minpoly is a 2-group",
+      "status": "axiomatized",
+      "sorries": 0,
+      "notes": "Main theorem wantzel_galois_characterization axiomatized; supporting examples proved"
+    }
+  ],
   "tags": [
     "geometry",
     "galois-theory",
     "field-theory",
     "classic",
-    "seeker-selected"
+    "seeker-selected",
+    "constructibility",
+    "wantzel",
+    "2-group"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "AngleTrisectionOQ02.lean",
+    "AngleTrisectionOQ01.lean",
+    "AngleTrisectionOQ02OQ03.lean",
+    "AngleTrisection.lean"
+  ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Wantzel, P.L. (1837): Recherches sur les moyens de reconnaître si un problème de géométrie peut se résoudre avec la règle et le compas",
+      "Stewart, I. Galois Theory (4th ed.) Theorem 14.1"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "IsPGroup",
+      "IsPGroup.iff_card",
+      "IsPGroup.of_card",
+      "Polynomial.Gal",
+      "Nat.Coprime",
+      "IntermediateField",
+      "Module.finrank"
+    ]
   },
   "started": "2026-02-24T08:35:25.046Z",
-  "lastUpdate": "2026-02-24T08:35:25.046Z",
+  "lastUpdate": "2026-02-24T22:00:00.000Z",
   "significance": 8,
   "tractability": 6
 }
