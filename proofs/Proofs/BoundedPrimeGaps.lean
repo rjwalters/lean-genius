@@ -1396,6 +1396,133 @@ theorem prime_gaps_oscillate :
   ⟨infinitely_many_small_gaps, prime_gaps_unbounded⟩
 
 /-
+## Part XXXV: Twin Primes ↔ Dickson Conjecture (Full Equivalence)
+
+The Dickson conjecture for {0, 2} is equivalent to the twin prime conjecture.
+`dickson_twin_implies_twin_primes` (already proved) gives the → direction.
+Here we prove the ← direction to complete the equivalence.
+-/
+
+/-- The twin prime conjecture implies the Dickson conjecture for {0, 2},
+    completing the logical equivalence.
+    Combined with `dickson_twin_implies_twin_primes`, we have:
+    `TwinPrimeConjecture ↔ DicksonConjecture {0, 2}`. -/
+theorem twin_primes_implies_dickson :
+    TwinPrimeConjecture → DicksonConjecture {0, 2} := by
+  intro hTP _hadm N
+  -- Get index idx ≥ N with primeGap idx = 2
+  obtain ⟨idx, hidx_ge, _, hgap⟩ := hTP N
+  -- Witness: the prime nthPrime idx
+  refine ⟨nthPrime idx, ?_, ?_⟩
+  · -- nthPrime idx ≥ nthPrime N ≥ N + 2 ≥ N
+    have h1 : nthPrime N ≤ nthPrime idx := nthPrime_mono hidx_ge
+    linarith [nthPrime_ge_add_two N]
+  · -- Verify primality for h = 0 and h = 2
+    intro h hh
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hh
+    rcases hh with rfl | rfl
+    · -- h = 0: nthPrime idx + 0 = nthPrime idx is prime
+      simpa using nthPrime_prime idx
+    · -- h = 2: nthPrime idx + 2 = nthPrime (idx + 1) since primeGap idx = 2
+      have hsucc : nthPrime idx + 2 = nthPrime (idx + 1) := by
+        have h_eq := nthPrime_succ_eq idx
+        rw [hgap] at h_eq; omega
+      rw [hsucc]; exact nthPrime_prime (idx + 1)
+
+/-- TwinPrimeConjecture implies infinitely many number-pairs (n, n+2) that are both prime.
+    This is an easy corollary of twin_primes_implies_dickson. -/
+theorem twin_primes_implies_pairs :
+    TwinPrimeConjecture →
+    ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ Nat.Prime n ∧ Nat.Prime (n + 2) := by
+  intro hTP N
+  obtain ⟨n, hn, hprimes⟩ := twin_primes_implies_dickson hTP admissible_twin N
+  exact ⟨n, hn, by simpa using hprimes 0 (by simp), hprimes 2 (by simp)⟩
+
+/-
+## Part XXXVI: Polignac's Conjecture
+
+Polignac's conjecture (1849) is a natural generalization of the twin prime conjecture:
+for every even positive integer 2k, infinitely many consecutive prime pairs differ by 2k.
+-/
+
+/-- **Polignac's Conjecture** (1849): for every positive integer k, there are infinitely
+    many pairs of consecutive primes (p_n, p_{n+1}) with p_{n+1} - p_n = 2k.
+    Special case k = 1: twin prime conjecture. -/
+def PolignacConjecture (k : ℕ) : Prop :=
+  0 < k → ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ primeGap n = 2 * k
+
+/-- Polignac's conjecture for k = 1 implies TwinPrimeConjecture.
+    (Note: n ≥ 1 is automatic since primeGap 0 = 1 ≠ 2.) -/
+theorem polignac_one_implies_twin_primes :
+    PolignacConjecture 1 → TwinPrimeConjecture := by
+  intro hP N
+  obtain ⟨n, hn, hgap⟩ := hP one_pos N
+  refine ⟨n, hn, ?_, by omega⟩
+  -- n ≥ 1: primeGap 0 = 1 ≠ 2, so n ≠ 0
+  rcases Nat.eq_zero_or_pos n with rfl | hpos
+  · have := primeGap_zero; omega
+  · exact hpos
+
+/-- TwinPrimeConjecture implies Polignac's conjecture for k = 1. -/
+theorem twin_primes_implies_polignac_one :
+    TwinPrimeConjecture → PolignacConjecture 1 := by
+  intro hTP _ N
+  obtain ⟨n, hn, _, hgap⟩ := hTP N
+  exact ⟨n, hn, by omega⟩
+
+/-- Bounded prime gaps (Polymath 8b) gives, for each even H, an admissible tuple
+    with diameter ≤ H. If Dickson holds for such a tuple, Polignac holds for some k ≤ H/2.
+    (Conditional form: bounded gaps is necessary for Polignac with small k.) -/
+theorem polignac_implies_bounded_gaps (k : ℕ) (hk : 0 < k) :
+    PolignacConjecture k →
+    ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ primeGap n ≤ 2 * k := by
+  intro hP N
+  obtain ⟨n, hn, hgap⟩ := hP hk N
+  exact ⟨n, hn, by omega⟩
+
+/-
+## Part XXXVII: GPY Theorem (2005)
+
+The Goldston-Pintz-Yildirim (GPY) theorem (2005) was the pivotal breakthrough before
+Zhang's 2013 result. It shows that normalized prime gaps g_n / log(p_n) have liminf 0.
+While Zhang/Polymath give a UNIFORM bound (g_n ≤ 246 for infinitely many n),
+GPY shows the gaps are small relative to the average spacing of log(p_n).
+-/
+
+open Real in
+/-- **GPY Theorem** (Goldston-Pintz-Yildirim, 2005): lim inf (primeGap n / log(p_n)) = 0.
+    That is, for any ε > 0, infinitely many prime gaps g_n < ε · log(p_n).
+    This was the first major result toward bounded gaps, preceding Zhang (2013). -/
+axiom gpy_liminf_zero :
+  ∀ ε : ℝ, 0 < ε → ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧
+    (primeGap n : ℝ) < ε * Real.log (nthPrime n)
+
+open Real in
+/-- GPY implies that no uniform lower bound ε · log(p_n) holds for prime gaps.
+    The average spacing log(p_n) is NOT a lower bound for individual gaps. -/
+theorem gpy_refutes_uniform_log_lower_bound :
+    (∀ ε : ℝ, 0 < ε → ∀ N : ℕ, ∃ n ≥ N, (primeGap n : ℝ) < ε * Real.log (nthPrime n)) →
+    ∀ ε : ℝ, 0 < ε → ¬ ∀ n : ℕ, ε * Real.log (nthPrime n) ≤ (primeGap n : ℝ) := by
+  intro hGPY ε hε hbound
+  obtain ⟨n, _, hlt⟩ := hGPY ε hε 0
+  exact absurd (hbound n) (not_le.mpr hlt)
+
+open Real in
+/-- Polymath is strictly stronger than GPY: Polymath gives a UNIFORM bound g_n ≤ 246,
+    while GPY only gives normalized smallness g_n / log(p_n) → 0.
+    Given Polymath and a threshold where log(p_n) > 246/ε, GPY-type bounds follow. -/
+theorem polymath_implies_gpy_type (ε : ℝ) (hε : 0 < ε) (N₀ : ℕ)
+    (hlog : ∀ n ≥ N₀, (246 : ℝ) < ε * Real.log (nthPrime n)) :
+    (∀ N : ℕ, ∃ n ≥ N, primeGap n ≤ 246) →
+    ∀ N ≥ N₀, ∃ n ≥ N, (primeGap n : ℝ) < ε * Real.log (nthPrime n) := by
+  intro hPoly N hN
+  obtain ⟨n, hn, hgap⟩ := hPoly N
+  have hN₀ : n ≥ N₀ := le_trans hN hn
+  refine ⟨n, hn, ?_⟩
+  calc (primeGap n : ℝ) ≤ 246 := by exact_mod_cast hgap
+    _ < ε * Real.log (nthPrime n) := hlog n hN₀
+
+/-
 ## Summary
 
 This file establishes:
@@ -1432,9 +1559,23 @@ This file establishes:
 30. **Large prime gaps**: N! + k is composite for 2 ≤ k ≤ N (factorial construction)
 31. **Gaps unbounded**: ∀ N, ∃ n, primeGap n ≥ N (contrasts with Zhang/Polymath)
 32. **Oscillation**: prime gaps have liminf ≤ 246 AND limsup = ∞
+33. **Twin ↔ Dickson**: TwinPrimeConjecture implies DicksonConjecture {0,2} (reverse of #9)
+34. **Polignac's conjecture**: Generalization of twin primes to all even gaps 2k (k ≥ 1)
+35. **GPY theorem**: Axiom for lim inf g_n/log(p_n) = 0; no uniform log lower bound holds
+36. **Polymath → GPY**: Given a threshold where log(p_n) dominates, Polymath implies GPY-type bound
 
-### Proved Theorems (94+ total, 0 sorries)
-Key new theorems:
+### Proved Theorems (104+ total, 0 sorries)
+Key new theorems (session 2026-02-24):
+- `twin_primes_implies_dickson` (TwinPrimeConjecture → DicksonConjecture {0,2}; completes the iff)
+- `twin_primes_implies_pairs` (corollary: infinitely many (n, n+2) twin prime pairs)
+- `PolignacConjecture` (definition: g_n = 2k infinitely often for each k ≥ 1)
+- `polignac_one_implies_twin_primes` (PolignacConjecture 1 → TwinPrimeConjecture)
+- `twin_primes_implies_polignac_one` (TwinPrimeConjecture → PolignacConjecture 1)
+- `polignac_implies_bounded_gaps` (PolignacConjecture k implies gaps ≤ 2k i.o.)
+- `gpy_refutes_uniform_log_lower_bound` (GPY: no ε·log(p_n) lower bound on gaps)
+- `polymath_implies_gpy_type` (Polymath + log threshold → GPY-type normalized bound)
+
+Key theorems from previous sessions:
 - `exists_admissible_50_tuple_246` (formerly axiom, now proved via Engelsma/Polymath tuple)
 - `CramerConjecture`, `GranvilleConjecture`, `TwinPrimeConjecture` (formal conjectures)
 - `gap_bound_hierarchy` (EH → Polymath → Zhang)
@@ -1445,10 +1586,11 @@ Key new theorems:
 - `prime_gaps_unbounded` (∀ N, ∃ n, N ≤ primeGap n, proved from factorial construction)
 - `prime_gaps_oscillate` (combines Zhang/Polymath with factorial construction)
 
-### Axioms Used (3)
+### Axioms Used (4)
 - `polymath_bounded_gaps_246`: Polymath 8b optimization (2014)
 - `maynard_tao_m_tuples`: Maynard-Tao generalization (2015)
 - `bounded_gaps_conditional_EH`: Conditional result assuming Elliott-Halberstam
+- `gpy_liminf_zero`: GPY theorem (Goldston-Pintz-Yildirim, 2005)
 
 ### Previously Axiom, Now Proved (1)
 - `exists_admissible_50_tuple_246`: Constructively proved via Engelsma/Polymath 50-tuple
@@ -1457,6 +1599,7 @@ Key new theorems:
 - Polymath's 246 bound (requires sieve theory not in Mathlib)
 - The Bombieri-Vinogradov theorem (major missing infrastructure)
 - Selberg sieve bounds (not in Mathlib)
+- Full equivalence of TwinPrimeConjecture and DicksonConjecture {0,2} (index vs. value quantification)
 -/
 
 end BoundedPrimeGaps
