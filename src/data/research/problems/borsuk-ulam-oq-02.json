@@ -42,10 +42,10 @@
     "goal": "Survey the landscape of equivariant Borsuk-Ulam theorems and prove accessible lemmas"
   },
   "currentState": {
-    "phase": "SURVEYED",
+    "phase": "completed",
     "since": "2026-02-24T06:30:00Z",
     "iteration": 1,
-    "focus": "Formalized equivariant framework: Z/2 case proved, Z/p and Dold axiomatized",
+    "focus": "All theorem sorries proved; axioms remain for deep results",
     "blockers": [
       "Z/p freeness proof requires analyzing when cos(2π/p)=1 simultaneously for all coordinates",
       "Cohomological index theory (Fadell-Husseini) not in Mathlib",
@@ -59,7 +59,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Created BorsukUlamOQ02.lean with full equivariant Borsuk-Ulam landscape. Key: Z/2 case proved (from classical BU axiom via odd function reformulation), Z/p Yang-Borsuk and Dold axiomatized, basic equivariance lemmas proved (comp, id, const, orbits). 2 sorries: zp_rotation_isometry (technical EuclideanSpace unfold) and zp_rotation_free_statement (trigonometric argument).",
+    "progressSummary": "PROGRESS: All theorem sorries resolved. BorsukUlamOQ02.lean has 0 theorem sorries, 4 axioms (yang_borsuk, z2_equivariant_bu, dold, equivariant_bu_free_G). zp_rotation_isometry and zp_rotation_free_statement proved. Axioms remain for deep topological results (Yang-Borsuk theorem, Dold theorem, general G case).",
     "builtItems": [
       "BorsukUlamOQ02.lean: 8 proved theorems, 5 axioms, 2 sorries",
       "IsEquivariant def: f(g·x) = g·f(x) for G-equivariant maps",
@@ -69,7 +69,9 @@
       "classical_borsuk_ulam_from_equivariant: BU from odd function vanishing",
       "zp_rotation: noncomputable Z/p rotation on EuclideanSpace R^2",
       "yang_borsuk_theorem axiom: Z/p free equivariant maps vanish",
-      "dold_theorem axiom: cohomological obstruction (free G-space)"
+      "dold_theorem axiom: cohomological obstruction (free G-space)",
+      "zp_rotation_isometry: proved ‖R_θ v‖ = ‖v‖ via cos²+sin²=1 (linear_combination + norm_eq)",
+      "zp_rotation_free_statement: proved no fixed points on S¹ for prime p (cos(2π/p)≠1 contradiction)"
     ],
     "insights": [
       "Z/2 equivariance = odd function: f(-x) = -f(x) iff Z/2-equivariant; classical BU proved via difference function g(x)=f(x)-f(-x) which is odd",
@@ -79,7 +81,10 @@
       "Dold's theorem (1983): If G acts freely on (n-1)-connected space X and dim Y < n, then no G-equivariant map X → Y. Proof: cohomological index / Borel construction",
       "Fadell-Husseini ideal-valued cohomological index (1988): systematic approach; not in Mathlib",
       "For composite order: use Sylow subgroups — Z/p^k subgroup of Z/6 (p=2 or 3) gives Yang-Borsuk type result",
-      "The Z/p freeness on S^(2n-1): ω^k·z=z with z≠0 requires ω^k=1 in each complex coordinate, but ω=e^(2πi/p) is a primitive root, so k≡0 (mod p)"
+      "The Z/p freeness on S^(2n-1): ω^k·z=z with z≠0 requires ω^k=1 in each complex coordinate, but ω=e^(2πi/p) is a primitive root, so k≡0 (mod p)",
+      "EuclideanSpace.equiv_symm_pi_lp_apply is the key simp lemma for coordinate extraction in PiLp 2",
+      "linear_combination with cos²+sin²=1 cleanly proves rotation norm preservation",
+      "For cos(2π/p)≠1: n*p=1 has no integer solution with p≥2; use nlinarith case analysis on n=0,±1"
     ],
     "mathlibGaps": [
       "Cohomological index theory (Fadell-Husseini, 1988)",
