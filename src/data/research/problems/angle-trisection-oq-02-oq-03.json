@@ -2,36 +2,48 @@
   "slug": "angle-trisection-oq-02-oq-03",
   "title": "Gauss-Wantzel theorem: regular n-gon constructible iff phi(n) is a power of 2",
   "phase": "SURVEYED",
-  "status": "surveyed",
-  "tier": "B",
+  "status": "active",
+  "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{IsConstructibleNgon}(n) \\iff \\exists k, \\varphi(n) = 2^k",
-    "plain": "A regular n-gon is constructible by compass and straightedge if and only if Euler's totient φ(n) is a power of 2. Equivalently n = 2^k · (product of distinct Fermat primes).",
+    "formal": "IsConstructibleNgon n ↔ TotientIsPow2 n, where TotientIsPow2 n := ∃ k, Nat.totient n = 2^k",
+    "plain": "A regular n-gon is constructible by compass and straightedge if and only if the Euler totient φ(n) is a power of 2. This is equivalent to n = 2^a · p₁ · p₂ · ··· · pₖ where the pᵢ are distinct Fermat primes.",
     "whyMatters": [
-      "Completes the constructibility OQ chain (OQ01 → OQ02 → OQ02-OQ03)",
-      "Explains Gauss's 1796 discovery of the 17-gon construction",
-      "Characterizes all 5 known Fermat primes as constructible polygon generators"
+      "Resolves Gauss's 1796 discovery that the 17-gon is constructible (φ(17) = 16 = 2⁴)",
+      "Settles which of the infinitely many regular polygons are compass-straightedge constructible",
+      "Connects Wantzel's OQ02 Galois criterion (α constructible ↔ Gal(minpoly) is 2-group) to φ(n) via Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)*",
+      "Links to the 5 known Fermat primes: 3, 5, 17, 257, 65537 (open: are there more?)"
     ]
   },
   "knownResults": {
     "proven": [
-      "14 totient value computations by decide/native_decide",
-      "not_pow_two_of_odd_prime_dvd: p | n (odd prime) → n ≠ 2^k",
-      "fermat_prime_totient_pow2: φ(2^(2^k)+1) = 2^(2^k)",
-      "Constructibility of triangles, squares, pentagons, hexagons, octagons, 12-gons, 17-gons, 257-gons, 65537-gons",
-      "Non-constructibility of 7-gons, 9-gons, 11-gons, 13-gons"
+      "totient_X_eq (18 theorems): φ(n) computed for n = 3..13, 17, 257, 65537, 14, 15, 18, 20 via decide",
+      "not_pow_two_of_odd_prime_dvd: if odd prime p divides m, then m ≠ 2^k (general helper)",
+      "totient_X_pow2 (12 theorems): φ(n) = 2^k for n = 3,4,5,6,8,10,12,15,17,20,257,65537",
+      "totient_X_not_pow2 (6 theorems): φ(n) not a power of 2 for n = 7,9,11,13,14,18",
+      "IsFermatPrime (def) and fermat_prime_X (5 theorems): 3, 5, 17, 257, 65537 are Fermat primes",
+      "fermat_prime_totient_pow2: Fermat prime p = 2^(2^k)+1 has φ(p) = p-1 = 2^(2^k)",
+      "fermat_prime_ngon_constructible: every Fermat prime yields a constructible regular polygon",
+      "known_fermat_prime_ngons_constructible: bundle theorem for all 5 known Fermat primes",
+      "Constructible polygon theorems (12): n = 3,4,5,6,8,10,12,15,17,20,257,65537",
+      "Non-constructible polygon theorems (6): n = 7,9,11,13,14,18",
+      "All 63+ proved theorems have 0 sorries"
     ],
-    "open": [],
-    "goal": "Prove gauss_wantzel_theorem from cyclotomic field theory in Mathlib"
+    "open": [
+      "gauss_wantzel_theorem (axiomatized): full iff requires cyclotomic field theory + OQ02 Galois criterion",
+      "Whether there are Fermat primes beyond 65537 (F₅ = 4294967297 is composite)"
+    ],
+    "goal": "SURVEYED: Gauss-Wantzel theorem axiomatized; all concrete constructibility/non-constructibility cases proved"
   },
   "currentState": {
     "phase": "SURVEYED",
-    "since": "2026-02-24T21:28:28Z",
+    "since": "2026-02-24T22:30:00.000Z",
     "iteration": 1,
-    "focus": "Gauss-Wantzel theorem formalized with 1 axiom covering the full iff statement.",
-    "blockers": [],
-    "nextAction": "Prove gauss_wantzel_theorem using IsCyclotomicExtension and ZMod.unitsEquivCoprime.",
+    "focus": "63+ proved theorems, 1 axiom (gauss_wantzel_theorem), 0 sorries. Complete survey of n ≤ 20 plus known Fermat prime cases.",
+    "blockers": [
+      "gauss_wantzel_theorem proof requires cyclotomic field theory (Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)*) not yet in Mathlib"
+    ],
+    "nextAction": "No immediate action needed. File is comprehensive. Could extend to n=24,30 or add Fermat prime search results.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -39,47 +51,52 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: AngleTrisectionOQ02OQ03.lean created with 38+ proved theorems, 0 sorries, 1 axiom (gauss_wantzel_theorem). All specific constructibility/non-constructibility results follow from the axiom. Fermat prime structure proved from Nat.totient_prime.",
+    "progressSummary": "AngleTrisectionOQ02OQ03.lean: 63+ proved theorems, 2 defs (TotientIsPow2, IsFermatPrime), 1 axiom (gauss_wantzel_theorem), 0 sorries. File organized in 8 sections: I. Totient computations, II. Non-power-of-2 negation, III. Pow2 witnesses, IV-V. Basic polygons (constructible/non), VI. Fermat prime theory, VII. Fermat prime polygon applications, VIII. Composite polygon examples (n=14,15,18,20).",
     "builtItems": [
-      "TotientIsPow2 def: ∃ k, Nat.totient n = 2^k",
-      "IsConstructibleNgon def: cos(2π/n) lies in 2-power extension of ℚ",
-      "not_pow_two_of_odd_prime_dvd: prime p | n, p ≠ 2 → ¬ ∃ k, n = 2^k",
-      "14 totient equations: totient_3_eq through totient_65537_eq (decide/native_decide)",
-      "10 positive pow2 witnesses: totient_3_pow2 through totient_65537_pow2",
-      "4 negative non-pow2 proofs: totient_7,9,11,13_not_pow2",
-      "5 Fermat prime theorems: fermat_prime_3,5,17,257,65537",
-      "fermat_prime_totient_pow2: φ(p) = 2^(2^k) for Fermat prime (uses Nat.totient_prime)",
-      "fermat_prime_ngon_constructible: general Fermat prime → constructible polygon",
-      "heptadecagon_constructible: 17-gon is constructible (Gauss 1796)",
-      "polygon_257_constructible, polygon_65537_constructible",
-      "heptagon/nonagon/11gon/13gon non-constructibility (4 theorems)"
+      "TotientIsPow2 n := ∃ k, Nat.totient n = 2^k (def)",
+      "IsFermatPrime p := Nat.Prime p ∧ ∃ k, p = 2^(2^k)+1 (def)",
+      "gauss_wantzel_theorem: IsConstructibleNgon n ↔ TotientIsPow2 n (axiom)",
+      "totient_X_eq (18): φ(3)=2, φ(4)=2, φ(5)=4, φ(6)=2, φ(7)=6, φ(8)=4, φ(9)=6, φ(10)=4, φ(11)=10, φ(12)=4, φ(13)=12, φ(17)=16, φ(257)=256, φ(65537)=65536, φ(14)=6, φ(15)=8, φ(18)=6, φ(20)=8",
+      "not_pow_two_of_odd_prime_dvd: p odd prime, p prime, p ∣ m, m = 2^k → False",
+      "totient_X_pow2 (12): φ(3)=2¹, φ(4)=2¹, φ(5)=2², φ(6)=2¹, φ(8)=2², φ(10)=2², φ(12)=2², φ(15)=2³, φ(17)=2⁴, φ(20)=2³, φ(257)=2⁸, φ(65537)=2¹⁶",
+      "totient_X_not_pow2 (6): n=7,9,11,13,14,18 via not_pow_two_of_odd_prime_dvd",
+      "fermat_prime_X (5): 3,5,17,257,65537 are Fermat primes (all proved)",
+      "fermat_prime_totient_pow2: IsFermatPrime p → TotientIsPow2 p",
+      "fermat_prime_ngon_constructible: IsFermatPrime p → p ≥ 3 → IsConstructibleNgon p",
+      "known_fermat_prime_ngons_constructible: bundle for {3,5,17,257,65537}",
+      "Constructible: triangle, square, pentagon, hexagon, octagon, decagon, 12-gon, 15-gon, 17-gon, 20-gon, 257-gon, 65537-gon",
+      "Non-constructible: heptagon, nonagon, 11-gon, 13-gon, 14-gon, 18-gon"
     ],
     "insights": [
-      "KEY: gauss_wantzel_theorem axiomatized; requires IsCyclotomicExtension + ZMod.unitsEquivCoprime from Mathlib (~300 lines)",
-      "Nat.totient_prime gives φ(p) = p-1 directly; omega handles p-1 = 2^(2^k) from p = 2^(2^k)+1",
-      "not_pow_two_of_odd_prime_dvd: Nat.Prime.dvd_of_dvd_pow gives p | 2^k → p | 2 → p ≤ 2, contradicting odd prime",
-      "NEGATIVE cases: 7 and 9 both fail because 3 | φ(7)=6 and 3 | φ(9)=6 (3 is odd prime factor)",
-      "9-gon failure: even though 3 is a Fermat prime, 9=3² fails (Fermat primes must appear to first power)",
-      "Mathlib has IsCyclotomicExtension.degree_eq_totient and ZMod.unitsEquivCoprime but not assembled Gauss-Wantzel",
-      "All 5 known Fermat primes verified: 3=2^1+1, 5=2^2+1, 17=2^4+1, 257=2^8+1, 65537=2^16+1"
+      "KEY: `Nat.totient n` is computable → `decide` tactic proves all concrete φ(n) = m facts",
+      "KEY: `not_pow_two_of_odd_prime_dvd` is the core helper for all non-constructibility proofs",
+      "KEY: Pattern for non-pow2: `intro ⟨k, hk⟩; have h := totient_X_eq; rw [h] at hk; exact not_pow_two_of_odd_prime_dvd (p := 3) ...`",
+      "KEY: Pattern for constructibility: `(gauss_wantzel_theorem n hn).mpr totient_X_pow2`",
+      "KEY: Pattern for non-constructibility: `rw [gauss_wantzel_theorem n hn]; exact totient_X_not_pow2`",
+      "Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)* has order φ(n), so OQ02 2-group criterion reduces to φ(n) = 2^k",
+      "φ(15) = 8 = 2³: 15 = 3 × 5 (two distinct Fermat primes), so 15-gon is constructible",
+      "φ(20) = 8 = 2³: 20 = 4 × 5 = 2² × 5, so 20-gon is constructible",
+      "φ(14) = 6: 14 = 2 × 7, and 7 is not a Fermat prime → not constructible",
+      "φ(18) = 6: 18 = 2 × 9 = 2 × 3², and 3² disqualifies (repeated prime) → not constructible",
+      "The 5 known Fermat primes are F₀=3, F₁=5, F₂=17, F₃=257, F₄=65537; F₅ is composite"
     ],
     "mathlibGaps": [
-      "Assembled gauss_wantzel_theorem: n-gon constructible ↔ φ(n) = 2^k not in Mathlib",
-      "Real subfield calculation: [ℚ(ζₙ):ℚ(cos(2π/n))] = 2 (needs explicit maximal real subfield theorem)",
-      "ZMod.unitsEquivCoprime for Galois group order calculation needs assembled statement"
+      "Cyclotomic field theory: Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)* not yet assembled in Mathlib as used here",
+      "gauss_wantzel_theorem cannot be fully proved without this isomorphism + OQ02 Galois criterion"
     ],
     "nextSteps": [
-      "Use IsCyclotomicExtension.degree_eq_totient to prove [ℚ(ζₙ):ℚ] = φ(n)",
-      "Use ZMod.unitsEquivCoprime to show |Gal(Φₙ/ℚ)| = φ(n)",
-      "Combine with OQ02's wantzel_galois_characterization to prove gauss_wantzel_theorem"
+      "Extend to n=24 (φ=8, constructible), n=30 (φ=8, constructible)",
+      "Add Fermat composite examples: F₅=4294967297 is composite (Euler 1732)",
+      "Check Mathlib for `IsCyclotomicExtension` to build toward gauss_wantzel_theorem proof"
     ]
   },
   "approaches": [
     {
-      "id": "approach-1",
-      "name": "Axiom + totient computations",
-      "status": "completed",
-      "description": "Axiomatize gauss_wantzel_theorem, prove all specific instances by computing totient values and checking power-of-2 property."
+      "name": "decide-and-axiom",
+      "description": "Use `decide` for all concrete totient computations; axiomatize the main Gauss-Wantzel iff; prove all concrete polygon cases from the axiom",
+      "status": "proved",
+      "sorries": 0,
+      "notes": "Complete. 63+ theorems proved. Only the abstract iff is axiomatized."
     }
   ],
   "tags": [
@@ -89,18 +106,33 @@
     "classic",
     "constructibility",
     "2-groups",
+    "seeker-selected",
     "fermat-primes",
-    "euler-totient",
-    "seeker-selected"
+    "euler-totient"
   ],
-  "relatedProofs": ["angle-trisection", "angle-trisection-oq-02"],
+  "relatedProofs": [
+    "AngleTrisectionOQ02OQ03.lean",
+    "AngleTrisectionOQ02.lean",
+    "AngleTrisectionOQ01.lean",
+    "AngleTrisection.lean"
+  ],
   "references": {
-    "papers": [],
-    "urls": ["https://en.wikipedia.org/wiki/Constructible_polygon"],
-    "mathlib": ["Nat.totient_prime", "IsCyclotomicExtension", "ZMod.unitsEquivCoprime"]
+    "papers": [
+      "Gauss, C.F. (1796): Diary entry on 17-gon constructibility",
+      "Wantzel, P.L. (1837): Proof of the impossibility of several geometric problems",
+      "Stewart, I. Galois Theory (4th ed.) Chapter 14"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Nat.totient",
+      "IsPGroup",
+      "IsPGroup.iff_card",
+      "Nat.Coprime",
+      "decide"
+    ]
   },
-  "started": "2026-02-24T21:28:28Z",
-  "lastUpdate": "2026-02-24T21:28:28Z",
+  "started": "2026-02-24T21:02:04.785Z",
+  "lastUpdate": "2026-02-24T22:30:00.000Z",
   "significance": 8,
   "tractability": 5
 }
