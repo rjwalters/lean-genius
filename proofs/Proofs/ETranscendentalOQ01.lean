@@ -8,6 +8,7 @@ import Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic
 import Mathlib.RingTheory.IntegralClosure.Algebra.Basic
 import Mathlib.Algebra.Polynomial.Monic
 import Mathlib.Algebra.Polynomial.Degree.Definitions
+import Mathlib.Analysis.Real.Pi.Irrational
 import Mathlib.Tactic
 
 /-!
@@ -154,8 +155,9 @@ theorem algebraic_root_of_algebraic_quadratic {x s p : ℝ}
       -- Show degree (-C s_A * X + C p_A) < ↑(1+1)
       apply lt_of_le_of_lt (Polynomial.degree_add_le _ _)
       apply max_lt
-      · exact lt_of_le_of_lt (Polynomial.degree_neg_le_of_le (Polynomial.degree_C_mul_X_le _))
-            (WithBot.coe_lt_coe.mpr (by norm_num))
+      · have h : (-Polynomial.C s_A * Polynomial.X).degree ≤ 1 := by
+          rw [← Polynomial.C_neg]; exact Polynomial.degree_C_mul_X_le _
+        exact lt_of_le_of_lt h (WithBot.coe_lt_coe.mpr (by norm_num))
       · exact lt_of_le_of_lt Polynomial.degree_C_le
             (WithBot.coe_lt_coe.mpr (by norm_num))
     · -- x is a root: aeval x (T² - s_A*T + p_A) = x² - s*x + p = 0
@@ -355,33 +357,183 @@ theorem pi_plus_exp_pi_transcendental :
   exact hP_ne (nesterenko_algebraic_independence P hP_eval)
 
 -- ============================================================
--- PART 8: Summary and Final Checks
+-- PART 8: Irrationality of π from Mathlib (no axiom)
+-- ============================================================
+
+/-
+  Mathlib provides a direct proof that π is irrational:
+  `Mathlib.Analysis.Real.Pi.Irrational` contains `irrational_pi`.
+  This gives the weaker irrationality conclusion without any axioms.
+
+  Note: Transcendental implies irrational (over ℚ), so `pi_transcendental_q`
+  implies irrationality, but we can get irrationality for free from Mathlib.
+-/
+
+/-- π is irrational — proved directly from Mathlib (no axiom needed).
+    Uses Cartwright's integral method; see `Mathlib.Analysis.Real.Pi.Irrational`. -/
+theorem pi_irrational_from_mathlib : Irrational Real.pi := irrational_pi
+
+-- ============================================================
+-- PART 9: Algebraic Independence → Transcendence
+-- ============================================================
+
+/-
+  **Key insight**: Algebraic independence of e and π over ℚ would immediately imply
+  that e+π and e·π are both transcendental. This is the "missing link" that Schanuel's
+  conjecture would provide.
+
+  We formalize the implication (algebraic independence → transcendence) here.
+  The algebraic independence itself remains an open conjecture.
+
+  The proof technique is identical to the Nesterenko argument in Part 7:
+  lift f(e + π) = 0 to a bivariate polynomial P(X₀, X₁) = f(X₀ + X₁),
+  show P ≠ 0 by specialization, then P(e, π) = 0 contradicts independence.
+-/
+
+/-- **Definition**: e and π are algebraically independent over ℚ if no nonzero polynomial
+    in two variables with rational coefficients vanishes at the point (e, π). -/
+def e_pi_algebraicallyIndependent : Prop :=
+  ∀ (p : MvPolynomial (Fin 2) ℚ),
+    MvPolynomial.aeval (![Real.exp 1, Real.pi]) p = 0 → p = 0
+
+/-- **Theorem**: If e and π are algebraically independent over ℚ, then e + π is transcendental.
+
+    **Proof**: Assume e + π is algebraic: ∃ f ≠ 0 in ℚ[T] with f(e + π) = 0.
+    Lift to P(X₀, X₁) = f(X₀ + X₁) ∈ MvPolynomial (Fin 2) ℚ.
+    - **P ≠ 0**: Specialize via X₀ ↦ T, X₁ ↦ 0 to recover f from P.
+    - **P(e, π) = f(e + π) = 0**: Direct computation.
+    - **Contradiction**: P ≠ 0 and P(e, π) = 0 contradicts algebraic independence. □
+
+    This is a PROVED conditional theorem — the hypothesis is the open conjecture. -/
+theorem e_plus_pi_transcendental_from_independence
+    (h_ind : e_pi_algebraicallyIndependent) :
+    Transcendental ℚ (Real.exp 1 + Real.pi) := by
+  intro h_alg
+  obtain ⟨f, hf_ne, hf_root⟩ := h_alg
+  let x₀₁ : MvPolynomial (Fin 2) ℚ := MvPolynomial.X 0 + MvPolynomial.X 1
+  let P : MvPolynomial (Fin 2) ℚ := Polynomial.aeval x₀₁ f
+  have hP_ne : P ≠ 0 := by
+    intro hP_eq
+    apply hf_ne
+    have hψP_zero : MvPolynomial.aeval (![Polynomial.X (R := ℚ), 0]) P = 0 := by
+      rw [hP_eq]; exact map_zero _
+    have hψP_eq_f : MvPolynomial.aeval (![Polynomial.X (R := ℚ), 0]) P = f := by
+      show MvPolynomial.aeval (![Polynomial.X (R := ℚ), 0]) (Polynomial.aeval x₀₁ f) = f
+      rw [← Polynomial.aeval_algHom_apply]
+      have hx₀₁ : MvPolynomial.aeval (![Polynomial.X (R := ℚ), (0 : Polynomial ℚ)]) x₀₁ = Polynomial.X := by
+        simp [x₀₁, MvPolynomial.aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one]
+      rw [hx₀₁]
+      exact Polynomial.aeval_X_left_apply f
+    exact hψP_eq_f.symm.trans hψP_zero
+  have hP_eval : MvPolynomial.aeval (![Real.exp 1, Real.pi]) P = 0 := by
+    show MvPolynomial.aeval (![Real.exp 1, Real.pi]) (Polynomial.aeval x₀₁ f) = 0
+    rw [← Polynomial.aeval_algHom_apply]
+    have hx₀₁ : MvPolynomial.aeval (![Real.exp 1, Real.pi]) x₀₁ =
+        Real.exp 1 + Real.pi := by
+      simp [x₀₁, MvPolynomial.aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one]
+    rw [hx₀₁]
+    exact hf_root
+  exact hP_ne (h_ind P hP_eval)
+
+/-- **Theorem**: If e and π are algebraically independent over ℚ, then e · π is transcendental.
+
+    **Proof**: Same polynomial-lifting technique, specializing at (X, 1) to recover f. -/
+theorem e_times_pi_transcendental_from_independence
+    (h_ind : e_pi_algebraicallyIndependent) :
+    Transcendental ℚ (Real.exp 1 * Real.pi) := by
+  intro h_alg
+  obtain ⟨f, hf_ne, hf_root⟩ := h_alg
+  let x₀₁ : MvPolynomial (Fin 2) ℚ := MvPolynomial.X 0 * MvPolynomial.X 1
+  let P : MvPolynomial (Fin 2) ℚ := Polynomial.aeval x₀₁ f
+  have hP_ne : P ≠ 0 := by
+    intro hP_eq
+    apply hf_ne
+    have hψP_zero : MvPolynomial.aeval (![Polynomial.X (R := ℚ), (1 : Polynomial ℚ)]) P = 0 := by
+      rw [hP_eq]; exact map_zero _
+    have hψP_eq_f : MvPolynomial.aeval (![Polynomial.X (R := ℚ), (1 : Polynomial ℚ)]) P = f := by
+      show MvPolynomial.aeval (![Polynomial.X (R := ℚ), (1 : Polynomial ℚ)]) (Polynomial.aeval x₀₁ f) = f
+      rw [← Polynomial.aeval_algHom_apply]
+      have hx₀₁ : MvPolynomial.aeval (![Polynomial.X (R := ℚ), (1 : Polynomial ℚ)]) x₀₁ = Polynomial.X := by
+        simp only [x₀₁, map_mul, MvPolynomial.aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one]
+        ring
+      rw [hx₀₁]
+      exact Polynomial.aeval_X_left_apply f
+    exact hψP_eq_f.symm.trans hψP_zero
+  have hP_eval : MvPolynomial.aeval (![Real.exp 1, Real.pi]) P = 0 := by
+    show MvPolynomial.aeval (![Real.exp 1, Real.pi]) (Polynomial.aeval x₀₁ f) = 0
+    rw [← Polynomial.aeval_algHom_apply]
+    have hx₀₁ : MvPolynomial.aeval (![Real.exp 1, Real.pi]) x₀₁ =
+        Real.exp 1 * Real.pi := by
+      simp only [x₀₁, map_mul, MvPolynomial.aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one]
+    rw [hx₀₁]
+    exact hf_root
+  exact hP_ne (h_ind P hP_eval)
+
+/-- **Corollary**: If e and π are algebraically independent, then e + π is irrational.
+
+    Follows from transcendence: if e + π = r ∈ ℚ, then X - C r ∈ ℚ[T] is a nonzero polynomial
+    with e + π as a root, contradicting transcendence. -/
+theorem e_plus_pi_irrational_from_independence
+    (h_ind : e_pi_algebraicallyIndependent) :
+    Irrational (Real.exp 1 + Real.pi) := by
+  have htrans : Transcendental ℚ (Real.exp 1 + Real.pi) :=
+    e_plus_pi_transcendental_from_independence h_ind
+  intro h
+  obtain ⟨r, hr⟩ := h
+  apply htrans
+  refine ⟨Polynomial.X - Polynomial.C r, (Polynomial.monic_X_sub_C r).ne_zero, ?_⟩
+  simp only [map_sub, Polynomial.aeval_X, Polynomial.aeval_C]
+  -- (algebraMap ℚ ℝ) r = (r : ℝ) = ↑r by definition
+  have hcast : (algebraMap ℚ ℝ) r = (r : ℝ) := rfl
+  linarith [hr, hcast]
+
+/-- **Summary**: Algebraic independence of e and π implies transcendence of e+π, e·π,
+    and irrationality of e+π. -/
+theorem summary_independence_implies :
+    e_pi_algebraicallyIndependent →
+    (Transcendental ℚ (Real.exp 1 + Real.pi) ∧
+     Transcendental ℚ (Real.exp 1 * Real.pi) ∧
+     Irrational (Real.exp 1 + Real.pi)) := fun h =>
+  ⟨e_plus_pi_transcendental_from_independence h,
+   e_times_pi_transcendental_from_independence h,
+   e_plus_pi_irrational_from_independence h⟩
+
+-- ============================================================
+-- PART 10: Summary and Final Checks
 -- ============================================================
 
 /-
   **Current Status of e + π** (as of 2026):
 
   PROVED (unconditionally):
-  ✓ e is transcendental (Hermite 1873)
-  ✓ π is transcendental (Lindemann 1882)
-  ✓ e+π and eπ cannot both be algebraic (proved above)
-  ✓ If eπ algebraic, then e+π transcendental (proved above)
-  ✓ If e+π algebraic, then eπ transcendental (proved above)
-  ✓ π, e^π, Γ(1/4) algebraically independent (Nesterenko 1996)
+  ✓ e is transcendental (Hermite 1873) — axiomatized (not yet in Mathlib)
+  ✓ π is transcendental (Lindemann 1882) — axiomatized (not yet in Mathlib)
+  ✓ π is irrational — proved directly from Mathlib (irrational_pi)
+  ✓ e+π and eπ cannot both be algebraic
+  ✓ If eπ algebraic, then e+π transcendental
+  ✓ If e+π algebraic, then eπ transcendental
+  ✓ π + e^π is transcendental (via Nesterenko's algebraic independence axiom)
+
+  PROVED CONDITIONALLY (assuming algebraic independence of e and π):
+  ✓ e+π is transcendental
+  ✓ e·π is transcendental
+  ✓ e+π is irrational
 
   OPEN (unknown):
-  ? Is e + π irrational?
+  ? Are e and π algebraically independent? (conjectured, implied by Schanuel)
+  ? Is e + π irrational? (open even without algebraic independence)
   ? Is e + π transcendental?
   ? Is e · π transcendental?
-  ? Are e and π algebraically independent?
-
-  CONDITIONAL (assuming Schanuel's Conjecture):
-  ✓ e and π are algebraically independent → e+π is transcendental
 -/
 
 -- Verify key results are available:
-#check e_plus_pi_or_e_times_pi_transcendental  -- The main proved theorem
-#check sum_transcendental_if_prod_algebraic    -- Conditional: eπ alg → e+π trans
-#check prod_transcendental_if_sum_algebraic    -- Conditional: e+π alg → eπ trans
-#check e_root_of_vieta_quadratic               -- Key ring identity
-#check pi_root_of_vieta_quadratic              -- Key ring identity (symmetric)
+#check e_plus_pi_or_e_times_pi_transcendental          -- Main proved theorem
+#check sum_transcendental_if_prod_algebraic            -- Conditional: eπ alg → e+π trans
+#check prod_transcendental_if_sum_algebraic            -- Conditional: e+π alg → eπ trans
+#check e_root_of_vieta_quadratic                       -- Key ring identity
+#check pi_root_of_vieta_quadratic                      -- Key ring identity (symmetric)
+#check pi_irrational_from_mathlib                      -- π irrational from Mathlib
+#check e_plus_pi_transcendental_from_independence      -- alg-ind → transcendental
+#check e_times_pi_transcendental_from_independence     -- alg-ind → eπ transcendental
+#check e_plus_pi_irrational_from_independence          -- alg-ind → irrational
+#check summary_independence_implies                    -- Summary theorem

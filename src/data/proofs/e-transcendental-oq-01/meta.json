@@ -22,6 +22,7 @@
     ],
     "badge": "open",
     "sorries": 3,
+    "theoremCount": 13,
     "mathlibDependencies": [
       {
         "theorem": "Transcendental",
@@ -53,7 +54,13 @@
       "Theorem prod_transcendental_if_sum_algebraic: if e+π algebraic, then eπ transcendental",
       "Axioms: Schanuel's Conjecture (stated) and Nesterenko's Theorem (1996, stated)",
       "Open conjectures: e+π transcendental, eπ transcendental, e+π irrational (all unknown)",
-      "gammaQuarter: noncomputable definition of Re(Γ(1/4)) for Nesterenko's theorem statement"
+      "gammaQuarter: noncomputable definition of Re(Γ(1/4)) for Nesterenko's theorem statement",
+      "pi_irrational_from_mathlib: π is irrational, derived directly from Mathlib's irrational_pi",
+      "e_pi_algebraicallyIndependent: definition — for all p ∈ MvPolynomial (Fin 2) ℚ, aeval [e, π] p = 0 → p = 0",
+      "e_plus_pi_transcendental_from_independence: algebraic independence of (e,π) → e+π is transcendental (polynomial lifting via aeval_algHom_apply)",
+      "e_times_pi_transcendental_from_independence: algebraic independence of (e,π) → e·π is transcendental",
+      "e_plus_pi_irrational_from_independence: algebraic independence of (e,π) → e+π is irrational",
+      "summary_independence_implies: combined theorem — algebraic independence implies all three results simultaneously"
     ],
     "dateAdded": "02/23/26"
   },
@@ -128,10 +135,24 @@
       "summary": "Schanuel's Conjecture stated (unproven). Nesterenko's Theorem (1996) axiomatized: π, e^π, Γ(1/4) algebraically independent."
     },
     {
+      "id": "pi-irrationality",
+      "title": "π Irrationality from Mathlib",
+      "startLine": 380,
+      "endLine": 395,
+      "summary": "Direct theorem: π is irrational, proved via Mathlib's irrational_pi from Mathlib.Analysis.Real.Pi.Irrational."
+    },
+    {
+      "id": "algebraic-independence",
+      "title": "Algebraic Independence Framework",
+      "startLine": 396,
+      "endLine": 500,
+      "summary": "Definition of e_pi_algebraicallyIndependent (no nonzero polynomial in MvPolynomial (Fin 2) ℚ vanishes at [e, π]). Three conditional theorems proved: e+π transcendental, e·π transcendental, e+π irrational — all under the assumption that e and π are algebraically independent. Technique: polynomial lifting via Polynomial.aeval_algHom_apply."
+    },
+    {
       "id": "summary",
       "title": "Summary and Final Checks",
-      "startLine": 278,
-      "endLine": 296,
+      "startLine": 500,
+      "endLine": 539,
       "summary": "Current status table: proved vs open results. Key theorems listed with #check."
     }
   ],
