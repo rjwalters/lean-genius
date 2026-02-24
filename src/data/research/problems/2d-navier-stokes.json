@@ -18,7 +18,8 @@
     "proven": [
       "Conditional enstrophy bound: E(t) ≤ E(0) for all t > 0 (via GlobalNSSolution2D structure)",
       "Exponential enstrophy decay: E(t) ≤ E(0)·exp(-2νμ₁t) under Poincaré inequality",
-      "Long-time vanishing: ∀ ε > 0, ∃ T > 0, ∀ t > T, E(t) < ε (NEW, 2026-02-22)",
+      "Long-time vanishing: ∀ ε > 0, ∃ T > 0, ∀ t > T, E(t) < ε (proved 2026-02-22)",
+      "Filter.Tendsto vanishing: Tendsto sol.E atTop (nhds 0) (NEW, 2026-02-24)",
       "Enstrophy dissipation is nonneg: E(0) - E(t) ≥ 0",
       "Enstrophy antitone on [0,∞): global monotone decrease"
     ],
@@ -30,38 +31,41 @@
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-02-22T00:00:00.000Z",
-    "iteration": 3,
-    "focus": "Proved enstrophy_eventually_small: long-time vanishing of enstrophy",
+    "since": "2026-02-24T00:00:00.000Z",
+    "iteration": 4,
+    "focus": "Proved enstrophy_tendsto_zero: Filter.Tendsto sol.E atTop (nhds 0); fixed two pre-existing API errors",
     "blockers": [
       "Full existence proof requires Sobolev space H^1 theory",
       "Galerkin approximation scheme not in Mathlib",
       "Compact embeddings H^1 ↪ L^2 on bounded domains needed"
     ],
-    "nextAction": "The conditional dynamical theory is now essentially complete. Consider Filter.Tendsto version of long-time vanishing, or start formalizing Stokes equations (linear, simpler PDE infrastructure).",
+    "nextAction": "Conditional dynamical theory is now complete (Filter.Tendsto version proved). Consider formalization of linear Stokes equations or adding gallery entry for NS problem.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 2,
+      "total": 4,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session 3 proved enstrophy_eventually_small: for any ε > 0, ∃ T > 0, ∀ t > T, E(t) < ε. This formalizes the complete dynamical picture: enstrophy not only decays exponentially but eventually drops below any threshold. Proof uses squeeze between 0 and E₀p·exp(-ct) with explicit T = max(log(E₀p/ε)/c, 1). Key Mathlib lemmas: Real.exp_lt_exp, Real.exp_log, Real.log_mul. Conditional theory is now essentially complete (existence/uniqueness still blocked on PDE infrastructure).",
+    "progressSummary": "PROGRESS: Session 4 (2026-02-24) proved enstrophy_tendsto_zero: Filter.Tendsto sol.E atTop (nhds 0). Also fixed two pre-existing API errors: (1) `congr 1; simp only [hc_eq]; ring` replaced with explicit `have heq` rewrite; (2) `div_lt_iff hc` (removed in Lean 4.26.0) replaced with `mul_lt_mul_of_pos_right` + `div_mul_cancel₀`. Session 3 proved enstrophy_eventually_small (∀ ε > 0, ∃ T > 0, ∀ t > T, E(t) < ε). Conditional dynamical theory now complete — Filter.Tendsto is the strongest possible convergence statement.",
     "builtItems": [
+      "enstrophy_tendsto_zero in proofs/Proofs/NavierStokes.lean:TwoDimensionalGlobal - Filter.Tendsto sol.E atTop (nhds 0) (NEW, session 4, 2026-02-24)",
       "enstrophy_eventually_small in proofs/Proofs/NavierStokes.lean:TwoDimensionalGlobal - Long-time vanishing: ∀ ε > 0, ∃ T > 0, ∀ t > T, E(t) < ε",
       "enstrophy_exponential_decay_exact in proofs/Proofs/NavierStokes.lean:TwoDimensionalGlobal - Exact exponential decay E(t) ≤ E(0)·exp(-2νμ₁t) via integrating factor g(s)=E(s)·exp(cs)",
-      "Fixed deprecation: differentiableAt_id' → differentiableAt_fun_id in NavierStokes.lean"
+      "Fixed deprecation: differentiableAt_id' → differentiableAt_fun_id in NavierStokes.lean",
+      "Fixed API change: div_lt_iff hc → mul_lt_mul_of_pos_right + div_mul_cancel₀ (Lean 4.26.0 compatibility)"
     ],
     "insights": [
+      "Filter.Tendsto proof: rw [Metric.tendsto_nhds]; intro ε hε; obtain from enstrophy_eventually_small; apply Filter.eventually_atTop.mpr; use T+1; rw [Real.dist_eq, sub_zero, abs_of_nonneg]",
+      "Key: T+1 > T ensures ht_gt_T : t > T from the eventually_atTop bound, then delegate to enstrophy_eventually_small",
+      "sol.E_nonneg for abs_of_nonneg: the structure carries E nonnegativity as a field",
       "Long-time vanishing proof: choose T = max(log(E₀p/ε)/c, 1) where E₀p = E(0)+1 to avoid E(0)=0 corner case",
       "Key log identity: log(ε/E₀p) = -log(E₀p/ε) proved via log(a·b) = log(a) + log(b) (Real.log_mul)",
       "The integrating factor trick g(s) = E(s)·exp(2νμ₁s) converts the differential inequality into a monotonicity argument, avoiding Gronwall directly",
       "antitoneOn_of_deriv_nonpos is the key Mathlib lemma for both enstrophy bound and exponential decay",
-      "The HasDerivAt product rule (HasDerivAt.mul) + chain rule (HasDerivAt.exp) are sufficient for computing g'",
-      "HasDerivAt.const_smul (with 𝕜 = ℝ) gives HasDerivAt for linear functions; simp [smul_eq_mul] cleans up",
+      "div_lt_iff was removed in Lean 4.26.0 — use `have h := mul_lt_mul_of_pos_right ht_gt_log hc; rwa [div_mul_cancel₀ _ (ne_of_gt hc), mul_comm] at h` instead",
       "GlobalNSSolution2D structure models but does not construct solutions - the conditional proofs are mathematically sound but existence requires PDE infrastructure",
-      "2D NS existence needs: Sobolev H^1(ℝ²), Galerkin approximations, compact embeddings, Gronwall ODE comparison",
-      "div_lt_iff and mul_lt_iff_lt_one_left are useful for translating t > log/c into c*t > log"
+      "2D NS existence needs: Sobolev H^1(ℝ²), Galerkin approximations, compact embeddings, Gronwall ODE comparison"
     ],
     "mathlibGaps": [
       "Sobolev spaces H^s on domains (limited in Mathlib 4.26.0)",
@@ -71,9 +75,9 @@
       "Div-free constraint (divergence-free vector fields)"
     ],
     "nextSteps": [
-      "Prove Filter.Tendsto version: Tendsto sol.E atTop (nhds 0) using squeeze theorem",
-      "Consider formalization of Stokes equations (linear, simpler PDE)",
-      "Add OQ annotation to NS gallery about existence inhabitation",
+      "Conditional dynamical theory is now COMPLETE (Filter.Tendsto proved). No further theorem proving feasible without PDE infrastructure.",
+      "Consider formalization of linear Stokes equations (simpler, a stepping stone)",
+      "Add gallery entry for the 2D NS problem (currently no gallery entry)",
       "Long-term: Galerkin approximation for 2D NS existence"
     ],
     "markdown": "# Knowledge Base: 2D Navier-Stokes Regularity\n\n## Current Status\n\n**Phase**: PROGRESS (Iteration 3)\n\nThe gallery has NavierStokes.lean with complete conditional 2D NS results:\n- `GlobalNSSolution2D` structure models global solutions (Part X-B)\n- `enstrophy_exponential_decay_exact` (2026-02-22): E(t) ≤ E(0)·exp(-2νμ₁t)\n- `enstrophy_eventually_small` (NEW, 2026-02-22): ∀ ε > 0, ∃ T > 0, ∀ t > T, E(t) < ε\n- `navier_stokes_2d_solved`: ∀ sol, ∀ t > 0, ∃ bound, E(t) ≤ bound\n\n## What Was Proved (Session 3, 2026-02-22)\n\n### Long-time Vanishing of Enstrophy\n\n```lean\ntheorem enstrophy_eventually_small (sol : GlobalNSSolution2DPoincare) :\n    ∀ ε > 0, ∃ T > 0, ∀ t > T, sol.E t < ε\n```\n\n**Proof strategy**:\n1. Set c = 2νμ₁ > 0, E₀p = E(0)+1 > 0\n2. Choose T = max(log(E₀p/ε)/c, 1) > 0 always\n3. For t > T: E(t) ≤ E₀p·exp(-ct) < E₀p·(ε/E₀p) = ε\n\n**Key steps**:\n- `div_lt_iff hc` converts t > log(E₀p/ε)/c into c·t > log(E₀p/ε)\n- `Real.log_mul` proves log(ε/E₀p) = -log(E₀p/ε)\n- `Real.exp_log` evaluates exp(log(ε/E₀p)) = ε/E₀p\n- `mul_lt_mul_of_pos_left` combines exp bound with E₀p positivity\n\n## What's Still Missing\n\n### Existence (Blocked)\n\nActually constructing solutions from initial data requires:\n1. Sobolev H^1 theory on ℝ² or a torus\n2. Energy estimates for Galerkin approximations  \n3. Compactness via Aubin-Lions lemma\n4. Passage to limits\nEstimate: ~3000-5000 lines of work\n\n### Uniqueness (Blocked)\n\nLions-Prodi requires: W^{1,∞} × L^2 function spaces, integral Gronwall, Sobolev embedding in 2D.\n\n## Mathlib Infrastructure Status (v4.26.0)\n\n| Component | Status |\n|-----------|--------|\n| ContinuousOn | ✅ Full |\n| HasDerivAt, HasDerivAtFilter | ✅ Full |\n| antitoneOn_of_deriv_nonpos | ✅ Available |\n| Real.hasDerivAt_exp | ✅ Available |\n| HasDerivAt.mul (product rule) | ✅ Available |\n| HasDerivAt.exp (chain rule) | ✅ Available |\n| Real.log_mul, Real.exp_log | ✅ Available |\n| div_lt_iff, mul_lt_mul_of_pos_left | ✅ Available |\n| Sobolev spaces H^s | ⚠️ Limited |\n| Galerkin approximations | ❌ Not available |\n| Compact Sobolev embeddings | ❌ Not available |\n| Navier-Stokes weak solutions | ❌ Not available |\n"
