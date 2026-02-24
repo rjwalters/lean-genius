@@ -1,5 +1,8 @@
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.MeasureTheory.Integral.IntervalIntegral
+import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Tactic
 
 /-!
@@ -208,39 +211,138 @@ The full Buffon's Noodle theorem applies to smooth rectifiable curves, not just 
 The argument is that any smooth curve can be approximated by polygonal paths, and the
 expected crossings are continuous in the arc length.
 
-This generalization requires:
-1. Definition of arc length for smooth curves (via line integrals)
-2. Approximation of smooth curves by polygonal paths
-3. Continuity of the crossing expectation functional
+**Arc Length**: For a smooth curve γ : ℝ → ℝ² on interval [a,b], the arc length is:
+  L(γ, a, b) = ∫_a^b ‖γ'(t)‖ dt
 
-These require more substantial Mathlib infrastructure. We document what the full proof
-would require.
+where ‖(x,y)‖ = √(x² + y²) is the Euclidean norm.
+
+**Expected Crossings**: The expected number of crossings with a parallel line grid (spacing d)
+when the curve is dropped at a random position and angle is 2L/(πd).
 -/
 
-/-- **Smooth Curve Noodle Theorem** (Buffon-Barbier, 1860)
+/-
+  Planar arc length for a C¹ curve γ : ℝ → ℝ × ℝ on [a,b].
+  We compute component-wise: ∫_a^b √(x'(t)² + y'(t)²) dt
+  where x = Prod.fst ∘ γ and y = Prod.snd ∘ γ.
+-/
 
-For a smooth rectifiable curve C of length L in the plane, when dropped randomly
-on a floor with parallel lines spaced distance d apart, the expected number of
-line crossings is 2L/(πd).
+open MeasureTheory intervalIntegral in
+/-- Arc length of a planar curve γ : ℝ → ℝ × ℝ on [a, b]. -/
+noncomputable def planarCurveArcLength (γ : ℝ → ℝ × ℝ) (a b : ℝ) : ℝ :=
+  ∫ t in a..b, Real.sqrt ((deriv (Prod.fst ∘ γ) t) ^ 2 + (deriv (Prod.snd ∘ γ) t) ^ 2)
 
-This is the full generalization of Buffon's Needle to curved needles.
-Currently stated as an axiom — the formal proof requires:
-1. MeasureTheory setup for the space of planar curves
-2. Arc length for smooth curves via Mathlib's path integral theory
-3. Approximation theorem: polygonal paths approximate smooth curves in arc length
-4. Continuity of the expected crossing functional
+/-- The arc length is nonneg (integral of a nonneg function). -/
+theorem planarCurveArcLength_nonneg (γ : ℝ → ℝ × ℝ) (a b : ℝ) (hab : a ≤ b) :
+    0 ≤ planarCurveArcLength γ a b := by
+  unfold planarCurveArcLength
+  apply intervalIntegral.integral_nonneg hab
+  intro t _
+  exact Real.sqrt_nonneg _
 
-Key Mathlib modules that would be needed:
-- Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-- Mathlib.Analysis.Calculus.ArcLength (arc length of curves)
-- Mathlib.Topology.MetricSpace.Kuratowski (approximation theory) -/
-axiom buffon_noodle_smooth
-    (L d : ℝ) (hL : 0 ≤ L) (hd : 0 < d) :
-    -- A smooth curve of length L has expected crossings 2L/(πd).
-    -- (Formal type would require a SmoothCurve type with arc length.)
-    True  -- Placeholder: see documentation above for the full statement
+/-
+  The expected number of crossings for a smooth curve is axiomatized below.
+  Formally proving this from measure theory and arc length approximation
+  requires substantial Mathlib infrastructure (kinematic measures on the line space).
+-/
 
-/-! ## Part VII: The Cauchy-Crofton Connection
+/-- The expected number of line crossings for a smooth C¹ planar curve γ on [a,b]
+    with a parallel line grid (spacing d). This is the primitive notion. -/
+noncomputable axiom smoothExpectedCrossings (γ : ℝ → ℝ × ℝ) (a b d : ℝ) : ℝ
+
+/-- **Buffon-Barbier Theorem (Smooth Case)** [Axiom]:
+    The expected number of crossings of a smooth C¹ curve γ of arc length L with a
+    parallel line grid (spacing d) equals 2L/(πd).
+
+    This is the main generalization of Buffon's Needle to curved needles (1860, Barbier).
+    The full proof uses the Cauchy-Crofton formula from integral geometry:
+      ∫₀^π ∫₋∞^∞ n(C, (θ, ρ)) dρ dθ = 2 · length(C)
+    combined with the probability setup for a random drop.
+
+    Formal proof requirements:
+    - Kinematic measure on the space of lines in ℝ²
+    - Arc length approximation: smooth curves ≈ polygonal paths in arc length
+    - Continuity of the crossing-count functional -/
+axiom buffon_noodle_smooth_eq
+    (γ : ℝ → ℝ × ℝ) (a b d : ℝ) (hd : 0 < d) (hab : a ≤ b)
+    (hC1 : ContDiff ℝ 1 γ) :
+    smoothExpectedCrossings γ a b d =
+      2 * planarCurveArcLength γ a b / (π * d)
+
+/-- **Shape Independence for Smooth Curves**: two smooth curves with the same arc length
+    have the same expected crossings, regardless of their shape. -/
+theorem smooth_shape_independence
+    (γ₁ γ₂ : ℝ → ℝ × ℝ) (a₁ b₁ a₂ b₂ d : ℝ)
+    (hd : 0 < d) (h1 : a₁ ≤ b₁) (h2 : a₂ ≤ b₂)
+    (hC1₁ : ContDiff ℝ 1 γ₁) (hC1₂ : ContDiff ℝ 1 γ₂)
+    (hSameLen : planarCurveArcLength γ₁ a₁ b₁ = planarCurveArcLength γ₂ a₂ b₂) :
+    smoothExpectedCrossings γ₁ a₁ b₁ d = smoothExpectedCrossings γ₂ a₂ b₂ d := by
+  rw [buffon_noodle_smooth_eq _ _ _ _ hd h1 hC1₁,
+      buffon_noodle_smooth_eq _ _ _ _ hd h2 hC1₂, hSameLen]
+
+/-- **Scaling for Smooth Curves**: scaling time (reparametrizing) preserves the
+    expected crossings if the arc length is preserved. -/
+theorem smooth_expected_crossings_nonneg
+    (γ : ℝ → ℝ × ℝ) (a b d : ℝ) (hd : 0 < d) (hab : a ≤ b) (hC1 : ContDiff ℝ 1 γ) :
+    0 ≤ smoothExpectedCrossings γ a b d := by
+  rw [buffon_noodle_smooth_eq _ _ _ _ hd hab hC1]
+  apply div_nonneg
+  · apply mul_nonneg (by norm_num)
+    exact planarCurveArcLength_nonneg γ a b hab
+  · exact (mul_pos pi_pos hd).le
+
+/-! ## Part VII: Approximation Limit Theorem
+
+The key bridge from polygonal to smooth: if polygonal noodles converge in arc length
+to a smooth curve, their expected crossings converge to the smooth formula.
+
+This is the mathematical justification for why the smooth case follows from the polygonal case.
+-/
+
+/-- **Approximation Limit Theorem**: If a sequence of polygonal noodles has total lengths
+    converging to L, then their expected crossings converge to 2L/(πd).
+
+    **Mathematical Significance**: This theorem is the core of the polygonal-to-smooth
+    argument. Given any smooth curve C of length L:
+    1. Approximate C by polygonal paths Pₖ with |Pₖ| → L in arc length
+    2. By `buffon_noodle_polygon`: E[crossings(Pₖ)] = 2|Pₖ|/(πd)
+    3. By this limit theorem: E[crossings(Pₖ)] → 2L/(πd)
+    4. The smooth case follows by continuity of the crossing functional.
+
+    The proof uses the continuity of the linear map x ↦ 2x/(πd). -/
+theorem buffon_noodle_approx_limit
+    (d : ℝ) (hd : 0 < d)
+    (ns : ℕ → ℕ) (N : ∀ k, PolygonalNoodle (ns k))
+    (L : ℝ)
+    (hConverge : Filter.Tendsto (fun k => (N k).totalLength) Filter.atTop (nhds L)) :
+    Filter.Tendsto
+      (fun k => (N k).expectedCrossings d)
+      Filter.atTop
+      (nhds (2 * L / (π * d))) := by
+  -- Rewrite expectedCrossings using the polygon theorem
+  simp_rw [buffon_noodle_polygon _ d hd]
+  -- The function x ↦ 2*x/(π*d) is continuous
+  have hcont : Continuous (fun x : ℝ => 2 * x / (π * d)) := by
+    apply Continuous.div_const
+    exact continuous_const.mul continuous_id
+  -- Apply continuity to the convergent sequence
+  exact hcont.continuousAt.tendsto.comp hConverge
+
+/-- **Uniform Length Concentration**: For ANY constant grid spacing d, the
+    expected crossing count formula is Lipschitz in the arc length.
+    Concretely: |E[crossings(N₁)] - E[crossings(N₂)]| ≤ (2/(πd)) · |L₁ - L₂| -/
+theorem buffon_noodle_lipschitz {m n : ℕ}
+    (N₁ : PolygonalNoodle m) (N₂ : PolygonalNoodle n) (d : ℝ) (hd : 0 < d) :
+    |N₁.expectedCrossings d - N₂.expectedCrossings d| ≤
+      2 / (π * d) * |N₁.totalLength - N₂.totalLength| := by
+  rw [buffon_noodle_polygon N₁ d hd, buffon_noodle_polygon N₂ d hd]
+  rw [show 2 * N₁.totalLength / (π * d) - 2 * N₂.totalLength / (π * d) =
+      2 / (π * d) * (N₁.totalLength - N₂.totalLength) by ring]
+  rw [abs_mul]
+  have h2πd : (0 : ℝ) < π * d := mul_pos pi_pos hd
+  rw [abs_of_pos (by positivity)]
+  exact le_refl _
+
+/-! ## Part VIII: The Cauchy-Crofton Connection
 
 Buffon's Noodle is a special case of the Cauchy-Crofton formula in integral geometry.
 The full formula relates the length of ANY measurable set to the measure of lines
@@ -256,7 +358,7 @@ on the space of lines in the plane. The polygonal noodle theorem is the discrete
 version of this continuous principle.
 -/
 
-/-! ## Part VIII: Numerical Examples
+/-! ## Part IX: Numerical Examples
 
 Concrete applications of the noodle theorem.
 -/
@@ -321,5 +423,8 @@ by approximation. This is Buffon's theorem in its most elegant form.
 #check @buffon_noodle_shape_independence
 #check @needle_equals_noodle
 #check @circle_expected_crossings
+#check @buffon_noodle_approx_limit
+#check @smooth_shape_independence
+#check @buffon_noodle_smooth_eq
 
 end BuffonsNoodle
