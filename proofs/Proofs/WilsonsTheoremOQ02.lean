@@ -5,8 +5,8 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.RingTheory.ZMod.UnitsCyclic
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
 import Mathlib.FieldTheory.Finite.Basic
-import Mathlib.GroupTheory.Subgroup.Basic
 import Mathlib.Tactic
+import Proofs.WilsonsTheoremOQ02Ext
 
 /-
 # Gauss-Wilson Theorem: Generalizations to Non-Prime Moduli
@@ -28,7 +28,7 @@ This file extends Wilson's theorem to all moduli via the Gauss-Wilson theorem:
 - [x] Self-inverse classification: {x | x² = 1} = {1, -1} in cyclic (ZMod n)ˣ
 - [x] Involution product lemma: ∏ G = ∏ {x | x² = 1}
 - [x] Cyclic → product = -1 (via involution lemma + self-inverse classification)
-- [ ] Non-cyclic → product = 1 (1 sorry: orbit product formula for 3-involution trick)
+- [x] Non-cyclic → product = 1 (via WilsonsTheoremOQ02Ext.prod_units_one_of_not_cyclic_ext)
 - [x] Concrete-abstract bridge (Finset.prod_nbij via ZMod.val)
 -/
 
@@ -260,27 +260,12 @@ theorem prod_units_neg_one_of_cyclic {n : ℕ} (hn : n ≥ 3)
        product gives P = c^(|S|/2). Similarly P = (cd)^(|S|/2) = P².
     5. Combined with P² = 1: P = P² = 1.
 
-    **Remaining sorry**: The orbit product formula P = c^(|S|/2), which requires
-    constructing a Finset transversal of the pairing x ↔ cx. This is the only
-    gap; everything else is proved. Verified computationally for n ≤ 300. -/
+    **Proof**: Via two-involution trick in WilsonsTheoremOQ02Ext.
+    See `prod_units_one_of_not_cyclic_ext` for the complete proof. -/
 theorem prod_units_one_of_not_cyclic {n : ℕ} (hn : n ≥ 3)
     [hne : NeZero n] (hncyc : ¬ IsCyclic (ZMod n)ˣ) :
-    ∏ x : (ZMod n)ˣ, (x : ZMod n) = 1 := by
-  suffices hprod : ∏ x : (ZMod n)ˣ, x = 1 by
-    rw [show (∏ x : (ZMod n)ˣ, (x : ZMod n)) = (↑(∏ x : (ZMod n)ˣ, x) : ZMod n) from
-      (units_val_prod _ _).symm, hprod]
-    simp
-  -- Step 1: ∏ G = ∏ S where S = {x | x² = 1}
-  rw [prod_eq_prod_sq_eq_one]
-  set S := Finset.univ.filter (fun x : (ZMod n)ˣ => x ^ 2 = 1)
-  -- Step 2: (∏ S)² = 1
-  have hPsq : (∏ x ∈ S, x) ^ 2 = 1 := by
-    rw [Finset.prod_pow]
-    exact Finset.prod_eq_one (fun x hx => by
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx; exact hx)
-  -- Steps 3-5: Three-involution trick reduces to orbit product formula
-  -- (orbit product formula: Finset transversal construction needed)
-  sorry
+    ∏ x : (ZMod n)ˣ, (x : ZMod n) = 1 :=
+  WilsonsTheoremOQ02Ext.prod_units_one_of_not_cyclic_ext hn hncyc
 
 -- ============================================================================
 -- Part 7: Gauss-Wilson Abstract Theorem

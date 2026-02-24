@@ -59,20 +59,22 @@ theorem unitOfSqEqOne_ne_neg_one {n : ℕ} [NeZero n] {x : ZMod n} (hx : x ^ 2 =
 private lemma neg_one_ne_one_zmod' {n : ℕ} (hn : n ≥ 3) : (-1 : ZMod n) ≠ 1 := by
   haveI : NeZero n := ⟨by omega⟩
   intro heq
-  have : (n : ℤ) ∣ (-2 : ℤ) := by
-    rw [show (-2 : ℤ) = -1 - 1 from by ring]
-    rw [ZMod.intCast_zmod_eq_zero_iff_dvd]
-    push_cast; linarith [heq]
-  have : n ≤ 2 := by
-    have := Int.natAbs_le.mp (Int.le_of_dvd (by norm_num) (dvd_abs.mpr this))
-    omega
-  omega
+  have h11 : (1 : ZMod n) + 1 = 0 := by
+    have := neg_add_cancel (1 : ZMod n)
+    rwa [heq] at this
+  have hchar : (2 : ZMod n) = 0 := by
+    have : (2 : ZMod n) = 1 + 1 := by norm_num
+    rw [this]; exact h11
+  have hdvd : n ∣ 2 := (ZMod.natCast_zmod_eq_zero_iff_dvd 2 n).mp (by exact_mod_cast hchar)
+  exact absurd (Nat.le_of_dvd (by norm_num) hdvd) (by omega)
 
 private lemma neg_one_ne_one_units' {n : ℕ} (hn : n ≥ 3) [NeZero n] :
     (-1 : (ZMod n)ˣ) ≠ 1 := by
   intro h
-  exact neg_one_ne_one_zmod' hn (by
-    have := congr_arg Units.val h; simp at this; exact this.symm)
+  apply neg_one_ne_one_zmod' hn
+  have hv := congr_arg (Units.val : (ZMod n)ˣ → ZMod n) h
+  simp only [Units.val_neg, Units.val_one] at hv
+  exact hv
 
 -- ============================================================================
 -- Section 3: CRT third square root construction
@@ -90,14 +92,17 @@ theorem exists_third_sqrt_coprime {a b : ℕ}
   refine ⟨?_, ?_, ?_⟩
   · rw [← map_one φ.symm, ← map_pow]; congr 1; ext <;> simp [sq]
   · intro h
-    have : (1 : ZMod a × ZMod b) = ((1, -1) : ZMod a × ZMod b) := by
+    have heq : (1 : ZMod a × ZMod b) = ((1, -1) : ZMod a × ZMod b) := by
       rw [← map_one φ, ← h, φ.apply_symm_apply]
-    simp at this; exact neg_one_ne_one_zmod' hb this.symm
+    have h2 : (1 : ZMod b) = -1 := by
+      have := congr_arg Prod.snd heq; simpa using this
+    exact neg_one_ne_one_zmod' hb h2.symm
   · intro h
-    have : (-1 : ZMod a × ZMod b) = ((1, -1) : ZMod a × ZMod b) := by
+    have heq : (-1 : ZMod a × ZMod b) = ((1, -1) : ZMod a × ZMod b) := by
       rw [← map_neg, ← map_one φ, ← h, φ.apply_symm_apply]
-    simp [Prod.ext_iff, Prod.neg_def] at this
-    exact neg_one_ne_one_zmod' ha this.1
+    have h1 : (-1 : ZMod a) = 1 := by
+      have := congr_arg Prod.fst heq; simpa using this
+    exact neg_one_ne_one_zmod' ha h1
 
 -- ============================================================================
 -- Section 4: Power of 2 third square root construction
@@ -106,7 +111,10 @@ theorem exists_third_sqrt_coprime {a b : ℕ}
 private theorem pow2_sq_sub_one_dvd (k : ℕ) (hk : k ≥ 3) :
     2 ^ k ∣ ((2 ^ (k - 1) + 1) ^ 2 - 1) := by
   have h1 : (2 ^ (k - 1) + 1) ^ 2 - 1 =
-      (2 ^ (k - 1) + 1 - 1) * (2 ^ (k - 1) + 1 + 1) := by omega
+      (2 ^ (k - 1) + 1 - 1) * (2 ^ (k - 1) + 1 + 1) := by
+    have hge : 1 ≤ 2 ^ (k - 1) + 1 := by omega
+    zify [hge, show 1 ≤ (2 ^ (k - 1) + 1) ^ 2 from by nlinarith]
+    ring
   rw [h1]; simp only [add_tsub_cancel_right]
   have h2 : 2 ^ (k - 1) + 2 = 2 * (2 ^ (k - 2) + 1) := by
     rw [show k - 1 = (k - 2) + 1 from by omega, pow_succ]; ring
@@ -232,7 +240,8 @@ private lemma coprime_split_of_odd_factor {n : ℕ} (hn : n ≥ 3)
     have : p ≥ 3 := by
       have := hp.two_le; rcases hp.eq_two_or_odd with h | h
       · exact absurd h hp_odd
-      · obtain ⟨k, hk⟩ := h; omega
+      · have hodd : Odd p := Nat.odd_iff.mpr h
+        obtain ⟨k, hk⟩ := hodd; omega
     omega
   -- n = a * b
   have hab_eq : n = a * b := by
@@ -241,7 +250,8 @@ private lemma coprime_split_of_odd_factor {n : ℕ} (hn : n ≥ 3)
   -- coprime
   have hab_cop : Nat.Coprime a b := by
     simp only [a, b]
-    exact (Nat.coprime_ordCompl hp hn_pos.ne').symm
+    -- coprime_ordCompl : Coprime (n/p^v) p; symm : Coprime p (n/p^v); pow_right : Coprime (p^v) (n/p^v)
+    exact (Nat.coprime_ordCompl hp hn_pos.ne').symm.pow_right v
   -- b ≥ 3: b ≠ 1 (else n = p^v, contradicted) and b ≠ 2 (else n = 2*p^v, contradicted)
   have hb_ne1 : b ≠ 1 := by
     intro hb1
@@ -250,7 +260,7 @@ private lemma coprime_split_of_odd_factor {n : ℕ} (hn : n ≥ 3)
     have hp_odd' : Odd p := by
       rcases hp.eq_two_or_odd with h | h
       · exact absurd h hp_odd
-      · exact h
+      · exact Nat.odd_iff.mpr h
     exact (hform p v hp hp_odd' hv_pos).1 (this ▸ rfl)
   have hb_ne2 : b ≠ 2 := by
     intro hb2
@@ -259,7 +269,7 @@ private lemma coprime_split_of_odd_factor {n : ℕ} (hn : n ≥ 3)
     have hp_odd' : Odd p := by
       rcases hp.eq_two_or_odd with h | h
       · exact absurd h hp_odd
-      · exact h
+      · exact Nat.odd_iff.mpr h
     exact (hform p v hp hp_odd' hv_pos).2 this
   -- b ≥ 1 since n ≥ 3 and a ≥ 3
   have hb_pos : b ≥ 1 := by
@@ -330,9 +340,13 @@ theorem card_sq_eq_one_ge_three {n : ℕ} (hn : n ≥ 3) [hne : NeZero n]
     · exact hu_mem
   have hcard3 : ({1, -1, u} : Finset (ZMod n)ˣ).card = 3 := by
     rw [Finset.card_insert_of_not_mem (by
-      simp [Finset.mem_insert, Finset.mem_singleton]
-      exact ⟨hne_1_N1, hu_ne1⟩)]
-    rw [Finset.card_insert_of_not_mem (by simp; exact hu_neN1)]
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      rintro (h | h)
+      · exact hne_1_N1 h
+      · exact hu_ne1 h.symm)]
+    rw [Finset.card_insert_of_not_mem (by
+      simp only [Finset.mem_singleton]
+      exact fun h => hu_neN1 h.symm)]
     rw [Finset.card_singleton]
   linarith [Finset.card_le_card hsub]
 
