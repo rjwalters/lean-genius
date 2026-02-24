@@ -1,0 +1,81 @@
+{
+  "slug": "amgm-inequality-oq-03-oq-02",
+  "title": "Power Mean Limit: lim_{r→0} M_r = GM (Geometric Mean as a Limit)",
+  "phase": "SURVEYED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Filter.Tendsto (fun r => (∑ i ∈ s, w i * z i ^ r) ^ (1 / r)) (nhdsWithin 0 {0}ᶜ) (nhds (∏ i ∈ s, z i ^ w i))",
+    "plain": "lim_{r→0} M_r(z,w) = GM(z,w) where M_r = (∑ wᵢzᵢ^r)^(1/r) and GM = ∏ zᵢ^wᵢ.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "SURVEYED",
+    "since": "2026-02-24T12:34:25.509Z",
+    "iteration": 2,
+    "focus": "New Lean file PowerMeanLimitOQ.lean created with 5 proved theorems and 4 sorries.",
+    "blockers": [],
+    "nextAction": "Prove tendsto_log_sum_div_rpow using HasDerivAt composition for log(∑ wᵢzᵢ^r).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED + NEW FILE: Created PowerMeanLimitOQ.lean. Key proved: geomMean_eq_exp_sum_log (GM = exp(∑ wᵢ log zᵢ)), log_sum_weighted_rpow_zero (f(0)=0), powerMean_one_eq_arithMean. Main sorry: tendsto_powerMean_zero blocked by HasDerivAt chain for log(∑ wᵢzᵢ^r). Proof strategy documented.",
+    "builtItems": [
+      "PowerMeanLimitOQ.lean: new file registered in Proofs.lean",
+      "powerMean_eq_exp_log: M_r = exp((1/r)·log(∑ wᵢzᵢ^r)) via rpow_def_of_pos",
+      "hasDerivAt_sum_weighted_rpow_zero: d/dr[∑ wᵢzᵢ^r]|_{r=0} = ∑ wᵢ log zᵢ (chain rule sketch)",
+      "log_sum_weighted_rpow_zero: log(∑ wᵢzᵢ^0) = 0 when ∑ wᵢ = 1 (proved)",
+      "geomMean_eq_exp_sum_log: GM = exp(∑ wᵢ log zᵢ) via Real.exp_sum + Real.log_rpow (proved)",
+      "powerMean_one_eq_arithMean: M₁ = ∑ wᵢzᵢ via rpow_one (proved)",
+      "tendsto_log_sum_div_rpow: f(r)/r → ∑ wᵢ log zᵢ (sorry)",
+      "tendsto_powerMean_zero: main theorem M_r → GM (sorry)"
+    ],
+    "insights": [
+      "KEY IDENTITY: GM = exp(∑ wᵢ log zᵢ) proved via Real.exp_sum + Real.log_rpow",
+      "PROOF STRATEGY: f(r) = log(∑ wᵢzᵢ^r) with f(0) = 0 and f'(0) = ∑ wᵢ log zᵢ; limit = exp(f'(0))",
+      "DERIVATIVE: d/dr[zᵢ^r]|_{r=0} = log zᵢ via chain rule on exp(r·log zᵢ)",
+      "MAIN SORRY: tendsto_log_sum_div_rpow needs HasDerivAt for log ∘ (∑ wᵢzᵢ^r) at r=0",
+      "FILTER: nhdsWithin 0 {0}ᶜ is the correct punctured neighborhood filter",
+      "RELATED: AmgmInequalityOQ03 has power_mean_monotone_neg (proved) for negative r case",
+      "Lean 4 API: Real.rpow_def_of_pos (x > 0 → x^r = exp(r*log x)) is key"
+    ],
+    "mathlibGaps": [
+      "HasDerivAt for log(∑ wᵢzᵢ^r): composition of log with the sum derivative",
+      "HasDerivAt.tendsto_nhdsWithin: converting HasDerivAt to filter limit for f(r)/r → f'(0)"
+    ],
+    "nextSteps": [
+      "Prove HasDerivAt for g(r) = log(∑ wᵢzᵢ^r) using HasDerivAt.log + hasDerivAt_sum_weighted_rpow_zero",
+      "Use that HasDerivAt implies f(r)/r → f'(0) (definition of derivative via Filter.Tendsto)",
+      "Import HM ≤ GM from AmgmInequalityOQ03.lean for the full chain",
+      "Consider Mathlib contribution: fills TODO in Analysis.MeanInequalitiesPow"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "analysis",
+    "inequalities",
+    "mean-inequalities",
+    "limits",
+    "seeker-selected"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-24T16:50:26.648Z",
+  "lastUpdate": "2026-02-24T16:50:26.648Z",
+  "significance": 6,
+  "tractability": 6
+}

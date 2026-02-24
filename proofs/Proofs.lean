@@ -9,6 +9,7 @@ import Proofs.AlgebraicNumbersCountable
 import Proofs.AmgmInequalityOQ02
 import Proofs.AmgmInequalityOQ02Aristotle
 import Proofs.AmgmInequalityOQ03
+import Proofs.PowerMeanLimitOQ
 import Proofs.AngleTrisection
 import Proofs.AngleTrisectionOQ01
 import Proofs.AngleTrisectionOQ02
