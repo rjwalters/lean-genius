@@ -1,8 +1,8 @@
 {
   "slug": "buffons-needle-oq-01",
   "title": "Generalizations to curved needles",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "SURVEYED",
+  "status": "surveyed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,28 +29,39 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: BuffonsNoodle.lean (430 lines) has polygonal noodle theorem proved, shape independence, scaling. Smooth curve case axiomized. Gallery entry exists with 11 original contributions.",
+    "progressSummary": "SURVEYED: BuffonsNoodle.lean (~460 lines, 0 sorries, 2 axioms) has polygonal noodle theorem fully proved plus new monotonicity/additivity theorems. Smooth curve case axiomized (Cauchy-Crofton not in Mathlib).",
     "builtItems": [
       "PolygonalNoodle structure and totalLength in BuffonsNoodle.lean:121",
       "buffon_noodle_polygon (PROVED): E[crossings] = 2L/(πd) for polygonal noodle",
       "buffon_noodle_shape_independence (PROVED): same length → same expected crossings",
       "buffon_noodle_scaling (PROVED): scaling noodle scales expected crossings",
       "smoothExpectedCrossings (AXIOM): smooth curve extension",
-      "circle_expected_crossings, square_expected_crossings (PROVED)",
+      "circle_expected_crossings, square_expected_crossings, regular_polygon_crossings (PROVED)",
+      "buffon_noodle_approx_limit (PROVED): convergent polygonal approximations → 2L/(πd)",
+      "buffon_noodle_lipschitz (PROVED): Lipschitz bound |E₁ - E₂| ≤ (2/(πd))|L₁ - L₂|",
+      "PolygonalNoodle.expectedCrossings_mono (PROVED): monotone in total length",
+      "buffon_noodle_additive (PROVED): 2(L₁+L₂)/(πd) = E[N₁] + E[N₂]",
+      "PolygonalNoodle.expectedCrossings_strictMono (PROVED): strict monotonicity",
       "Gallery entry: src/data/proofs/buffons-needle-oq-01/"
     ],
     "insights": [
-      "Buffons noodle: expected crossings = 2L/(πd) depends only on total length, not shape",
+      "Buffon's noodle: expected crossings = 2L/(πd) depends only on total length, not shape",
       "Proof via linearity of expectation: approximate curve as polygonal path, sum segment probabilities",
-      "Polygonal theorem fully proved in Lean; smooth curve limit requires MeasureTheory/Integral geometry not in Mathlib",
+      "Polygonal theorem fully proved in Lean; smooth curve limit requires Cauchy-Crofton integral geometry not in Mathlib",
       "Key structure: PolygonalNoodle with segment lengths, buffon_noodle_polygon theorem",
-      "circle_expected_crossings and square_expected_crossings derived as corollaries"
+      "Monotonicity theorem: E[crossings] is increasing in arc length (div_le_div_right + linarith)",
+      "Additivity: E[crossings for combined noodle] = E₁ + E₂ (ring after rewriting buffon_noodle_polygon)",
+      "Lipschitz property: |E[crossings(N₁)] - E[crossings(N₂)]| ≤ (2/(πd)) × |L₁ - L₂|"
     ],
     "mathlibGaps": [
       "Integral geometry (Cauchy-Crofton formula) not in Mathlib — needed for smooth noodle proof",
-      "Smooth curve arc length integration limit theorem (polygonal → smooth) not proved"
+      "Smooth curve arc length integration limit theorem (polygonal → smooth) not proved",
+      "smoothExpectedCrossings is axiomized — requires kinematic measure on line space"
     ],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove smooth curve case once Mathlib has kinematic measure on line space in ℝ²",
+      "Formalize Cauchy-Crofton formula: ∫∫ n(C,l) dρ dθ = 2·length(C)"
+    ]
   },
   "approaches": [],
   "tags": [
@@ -70,7 +81,7 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.131Z",
-  "lastUpdate": "2026-02-21T19:21:07.131Z",
+  "lastUpdate": "2026-02-24T21:15:00.000Z",
   "significance": 6,
   "tractability": 6
 }
