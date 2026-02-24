@@ -51,9 +51,10 @@
     "originalContributions": [
       "Theorem slln_under_finite_mean_only: SLLN via direct application of strong_law_ae (only E[|X|] < ∞ needed)",
       "Theorem wlln_for_heavy_tails: WLLN derived from SLLN via tendstoInMeasure_of_tendsto_ae",
+      "Theorem finite_variance_implies_slln_applicable: L² implies L¹ (Memℒp 2 → Integrable), so Chebyshev condition implies Kolmogorov condition",
+      "Theorem kolmogorov_slln_characterization: complete bi-conditional SLLN ⟺ E[|X₀|] < ∞ (combines sufficiency + slln_necessity axiom)",
       "Axiom slln_necessity: converse direction (SLLN ⟹ E[|X|] < ∞), Kolmogorov characterization, requires Borel-Cantelli",
-      "Theorem lln_heavy_tail_answer: main theorem answering the open question — infinite variance does NOT cause LLN failure",
-      "Theorem pareto_lln_analysis: documents Pareto threshold (α > 1 for finite mean, α > 2 for finite variance)"
+      "Theorem lln_heavy_tail_answer: main theorem answering the open question — infinite variance does NOT cause LLN failure"
     ],
     "dateAdded": "02/23/26"
   },

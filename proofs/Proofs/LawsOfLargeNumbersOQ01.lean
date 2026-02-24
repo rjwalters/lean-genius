@@ -163,8 +163,19 @@ The critical threshold E[|X|] < ∞ is precisely when α > 1.
 For Pareto(α, x_m): E[X] = αx_m/(α-1) < ∞ iff α > 1.
 -/
 
-/-- The Pareto distribution threshold analysis (documented as fact): -/
-theorem pareto_lln_analysis : True := trivial
+/-- Chebyshev's finite variance condition implies Kolmogorov's integrability condition.
+
+    If a random variable has finite variance (is in L²), then it has finite mean (is in L¹).
+    This shows the WLLN via Chebyshev is a special case: whenever Chebyshev applies,
+    Kolmogorov's SLLN also applies (and gives a stronger result).
+
+    The converse fails: there exist L¹ distributions that are NOT L²
+    (e.g., Pareto(α, x_m) with 1 < α ≤ 2 has finite mean but infinite variance). -/
+theorem finite_variance_implies_slln_applicable
+    (X : ℕ → Ω → ℝ)
+    (hL2 : ∀ i, MeasureTheory.Memℒp (X i) 2 μ) :
+    MeasureTheory.Integrable (X 0) μ :=
+  (hL2 0).integrable (by norm_num)
 
 /-!
 ## Main Theorem: Complete Answer to the Open Question
@@ -176,6 +187,28 @@ For i.i.d. heavy-tailed distributions with **finite first moment** E[|X|] < ∞:
 
 The threshold for LLN is exactly E[|X|] < ∞ (Kolmogorov 1930).
 -/
+
+/-- **Kolmogorov's complete characterization of SLLN** (1930).
+
+    For i.i.d. random variables X₀, X₁, ...:
+    SLLN holds (sample mean converges a.s.) ⟺ E[|X₀|] < ∞.
+
+    This is the "iff" form, combining:
+    - `slln_under_finite_mean_only`: E[|X₀|] < ∞ → SLLN (sufficient direction, from Mathlib)
+    - `slln_necessity`: SLLN → E[|X₀|] < ∞ (necessary direction, axiomatized) -/
+theorem kolmogorov_slln_characterization
+    (X : ℕ → Ω → ℝ)
+    (hindep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ)
+    (hident : ∀ i, ProbabilityTheory.IdentDistrib (X i) (X 0) μ μ) :
+    MeasureTheory.Integrable (X 0) μ ↔
+    ∃ (c : ℝ), ∀ᵐ ω ∂μ,
+      Filter.Tendsto (fun n : ℕ => (↑n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, X i ω)
+      Filter.atTop (nhds c) := by
+  constructor
+  · intro hint
+    exact ⟨∫ x, X 0 x ∂μ, slln_under_finite_mean_only X hint hindep hident⟩
+  · intro ⟨c, hconv⟩
+    exact slln_necessity X hindep hident ⟨c, hconv⟩
 
 /-- **Main theorem**: LLN holds for heavy-tailed distributions with finite mean.
 
