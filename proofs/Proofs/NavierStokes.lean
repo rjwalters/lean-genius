@@ -2347,7 +2347,8 @@ theorem enstrophy_exponential_decay_exact (sol : GlobalNSSolution2DPoincare)
       _ ≤ sol.E 0 * Real.exp (-(c * t)) :=
           mul_le_mul_of_nonneg_right hgt_le (Real.exp_nonneg _)
       _ = sol.E 0 * Real.exp (-2 * sol.ν * sol.mu₁ * t) := by
-          congr 1; simp only [hc_eq]; ring
+          have heq : -(c * t) = -2 * sol.ν * sol.mu₁ * t := by rw [hc_eq]; ring
+          rw [heq]
 
 
 /-- **PROVED: Long-time Vanishing of Enstrophy (2D with Poincaré)**
@@ -2380,7 +2381,8 @@ theorem enstrophy_eventually_small (sol : GlobalNSSolution2DPoincare) :
   have ht_gt_log : Real.log (E₀p / ε) / c < t :=
     lt_of_le_of_lt hT_ge_log ht
   have hct_gt : Real.log (E₀p / ε) < c * t := by
-    rwa [div_lt_iff hc, mul_comm] at ht_gt_log
+    have h := mul_lt_mul_of_pos_right ht_gt_log hc
+    rwa [div_mul_cancel₀ _ (ne_of_gt hc), mul_comm] at h
   -- Step 1: E(t) ≤ E₀p * exp(-c*t)
   have hE_bound : sol.E t ≤ E₀p * Real.exp (-c * t) := by
     have hstep := enstrophy_exponential_decay_exact sol t ht_pos
@@ -2412,6 +2414,28 @@ theorem enstrophy_eventually_small (sol : GlobalNSSolution2DPoincare) :
     _ < E₀p * (ε / E₀p) := by
           apply mul_lt_mul_of_pos_left hexp_bound hE₀p_pos
     _ = ε := by field_simp
+
+
+/-- **PROVED: Enstrophy Vanishes at Infinity (Filter.Tendsto)**
+    sol.E(t) → 0 as t → ∞, in the Filter.Tendsto sense.
+
+    This is the topological formulation of `enstrophy_eventually_small`:
+    for any open neighborhood U of 0, eventually sol.E t ∈ U.
+
+    **Proof**: For any ε > 0, apply `enstrophy_eventually_small` to get T > 0
+    with E(t) < ε for all t > T. Since T + 1 ≤ t implies t > T, we get
+    dist (E(t)) 0 = E(t) < ε, giving the Metric.tendsto_nhds criterion. -/
+theorem enstrophy_tendsto_zero (sol : GlobalNSSolution2DPoincare) :
+    Filter.Tendsto sol.E Filter.atTop (nhds 0) := by
+  rw [Metric.tendsto_nhds]
+  intro ε hε
+  obtain ⟨T, hT_pos, hsmall⟩ := enstrophy_eventually_small sol ε hε
+  apply Filter.eventually_atTop.mpr
+  refine ⟨T + 1, fun t ht => ?_⟩
+  have ht_gt_T : t > T := by linarith
+  have ht_nonneg : 0 ≤ t := by linarith
+  rw [Real.dist_eq, sub_zero, abs_of_nonneg (sol.E_nonneg t ht_nonneg)]
+  exact hsmall t ht_gt_T
 
 
 /-- **PROVED: Enstrophy Dissipation Identity**
