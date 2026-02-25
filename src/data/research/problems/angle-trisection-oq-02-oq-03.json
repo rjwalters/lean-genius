@@ -6,44 +6,29 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "IsConstructibleNgon n ↔ TotientIsPow2 n, where TotientIsPow2 n := ∃ k, Nat.totient n = 2^k",
-    "plain": "A regular n-gon is constructible by compass and straightedge if and only if the Euler totient φ(n) is a power of 2. This is equivalent to n = 2^a · p₁ · p₂ · ··· · pₖ where the pᵢ are distinct Fermat primes.",
-    "whyMatters": [
-      "Resolves Gauss's 1796 discovery that the 17-gon is constructible (φ(17) = 16 = 2⁴)",
-      "Settles which of the infinitely many regular polygons are compass-straightedge constructible",
-      "Connects Wantzel's OQ02 Galois criterion (α constructible ↔ Gal(minpoly) is 2-group) to φ(n) via Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)*",
-      "Links to the 5 known Fermat primes: 3, 5, 17, 257, 65537 (open: are there more?)"
-    ]
+    "formal": "axiom gauss_wantzel_theorem (n : ℕ) (hn : 3 ≤ n) : IsConstructibleNgon n ↔ TotientIsPow2 n",
+    "plain": "A regular n-gon is constructible by compass and straightedge if and only if phi(n) is a power of 2. Equivalently, n = 2^k * p1 * ... * pr where p1,...,pr are distinct Fermat primes.",
+    "whyMatters": ["Historical: Gauss discovered the 17-gon construction at age 18 (1796), the first new regular polygon since antiquity", "The criterion completely characterizes constructible polygons using elementary number theory", "The proof links Galois theory (2-groups) to arithmetic (Euler totient)"]
   },
   "knownResults": {
     "proven": [
-      "totient_X_eq (18 theorems): φ(n) computed for n = 3..13, 17, 257, 65537, 14, 15, 18, 20 via decide",
-      "not_pow_two_of_odd_prime_dvd: if odd prime p divides m, then m ≠ 2^k (general helper)",
-      "totient_X_pow2 (12 theorems): φ(n) = 2^k for n = 3,4,5,6,8,10,12,15,17,20,257,65537",
-      "totient_X_not_pow2 (6 theorems): φ(n) not a power of 2 for n = 7,9,11,13,14,18",
-      "IsFermatPrime (def) and fermat_prime_X (5 theorems): 3, 5, 17, 257, 65537 are Fermat primes",
-      "fermat_prime_totient_pow2: Fermat prime p = 2^(2^k)+1 has φ(p) = p-1 = 2^(2^k)",
-      "fermat_prime_ngon_constructible: every Fermat prime yields a constructible regular polygon",
-      "known_fermat_prime_ngons_constructible: bundle theorem for all 5 known Fermat primes",
-      "Constructible polygon theorems (12): n = 3,4,5,6,8,10,12,15,17,20,257,65537",
-      "Non-constructible polygon theorems (6): n = 7,9,11,13,14,18",
-      "All 63+ proved theorems have 0 sorries"
+      "totient_prod_is_pow2: products of coprime pow2-totient numbers have pow2 totient",
+      "odd_prime_pow_gt_one_not_pow2: for odd prime p and k >= 2, phi(p^k) is not pow2",
+      "units_zmod_is_2group_iff: (Z/nZ)* is 2-group iff phi(n) = 2^k [Mathlib bridge]",
+      "Constructibility: n = 3,4,5,6,8,10,12,15,17,20,34,51,85,255,257,65537",
+      "Non-constructibility: n = 7,9,11,13,14,18,21,25,35",
+      "F5 = 4294967297 = 641 x 6700417 is composite (not a Fermat prime)"
     ],
-    "open": [
-      "gauss_wantzel_theorem (axiomatized): full iff requires cyclotomic field theory + OQ02 Galois criterion",
-      "Whether there are Fermat primes beyond 65537 (F₅ = 4294967297 is composite)"
-    ],
-    "goal": "SURVEYED: Gauss-Wantzel theorem axiomatized; all concrete constructibility/non-constructibility cases proved"
+    "open": ["gauss_wantzel_theorem requires cyclotomic field theory (~300 lines to assemble in Mathlib)"],
+    "goal": "Prove gauss_wantzel_theorem from Mathlib's IsCyclotomicExtension and OQ02 Galois criterion"
   },
   "currentState": {
     "phase": "SURVEYED",
-    "since": "2026-02-24T22:30:00.000Z",
+    "since": "2026-02-25T05:11:31.913Z",
     "iteration": 1,
-    "focus": "63+ proved theorems, 1 axiom (gauss_wantzel_theorem), 0 sorries. Complete survey of n ≤ 20 plus known Fermat prime cases.",
-    "blockers": [
-      "gauss_wantzel_theorem proof requires cyclotomic field theory (Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)*) not yet in Mathlib"
-    ],
-    "nextAction": "No immediate action needed. File is comprehensive. Could extend to n=24,30 or add Fermat prime search results.",
+    "focus": "Extended proof file with arithmetic infrastructure and Galois bridge. Main axiom requires cyclotomic field theory.",
+    "blockers": ["gauss_wantzel_theorem needs assembled cyclotomic field theory not yet in Mathlib as a single theorem"],
+    "nextAction": "Attempt to reduce gauss_wantzel_theorem to Mathlib's IsCyclotomicExtension.finrank and Gal isomorphism",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -51,52 +36,52 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AngleTrisectionOQ02OQ03.lean: 63+ proved theorems, 2 defs (TotientIsPow2, IsFermatPrime), 1 axiom (gauss_wantzel_theorem), 0 sorries. File organized in 8 sections: I. Totient computations, II. Non-power-of-2 negation, III. Pow2 witnesses, IV-V. Basic polygons (constructible/non), VI. Fermat prime theory, VII. Fermat prime polygon applications, VIII. Composite polygon examples (n=14,15,18,20).",
+    "progressSummary": "PROGRESS: Extended AngleTrisectionOQ02OQ03.lean from 38 to ~60 proved theorems. Added arithmetic infrastructure (totient_prod_is_pow2, odd_prime_pow_gt_one_not_pow2, totient_pow2_of_two_power), the Galois bridge (units_zmod_is_2group_iff proved from ZMod.card_units_eq_totient), new constructible polygons (34,51,85,255), non-constructible polygons (21,25,35), and F5 composite result. Fixed pre-existing bug: fermat_prime_totient_pow2 used omega for 2^(2^k)+1-1=2^(2^k) which fails; replaced with simp.",
     "builtItems": [
-      "TotientIsPow2 n := ∃ k, Nat.totient n = 2^k (def)",
-      "IsFermatPrime p := Nat.Prime p ∧ ∃ k, p = 2^(2^k)+1 (def)",
-      "gauss_wantzel_theorem: IsConstructibleNgon n ↔ TotientIsPow2 n (axiom)",
-      "totient_X_eq (18): φ(3)=2, φ(4)=2, φ(5)=4, φ(6)=2, φ(7)=6, φ(8)=4, φ(9)=6, φ(10)=4, φ(11)=10, φ(12)=4, φ(13)=12, φ(17)=16, φ(257)=256, φ(65537)=65536, φ(14)=6, φ(15)=8, φ(18)=6, φ(20)=8",
-      "not_pow_two_of_odd_prime_dvd: p odd prime, p prime, p ∣ m, m = 2^k → False",
-      "totient_X_pow2 (12): φ(3)=2¹, φ(4)=2¹, φ(5)=2², φ(6)=2¹, φ(8)=2², φ(10)=2², φ(12)=2², φ(15)=2³, φ(17)=2⁴, φ(20)=2³, φ(257)=2⁸, φ(65537)=2¹⁶",
-      "totient_X_not_pow2 (6): n=7,9,11,13,14,18 via not_pow_two_of_odd_prime_dvd",
-      "fermat_prime_X (5): 3,5,17,257,65537 are Fermat primes (all proved)",
-      "fermat_prime_totient_pow2: IsFermatPrime p → TotientIsPow2 p",
-      "fermat_prime_ngon_constructible: IsFermatPrime p → p ≥ 3 → IsConstructibleNgon p",
-      "known_fermat_prime_ngons_constructible: bundle for {3,5,17,257,65537}",
-      "Constructible: triangle, square, pentagon, hexagon, octagon, decagon, 12-gon, 15-gon, 17-gon, 20-gon, 257-gon, 65537-gon",
-      "Non-constructible: heptagon, nonagon, 11-gon, 13-gon, 14-gon, 18-gon"
+      "totient_pow2_of_two_power: phi(2^k) is pow2 (k>=1) in AngleTrisectionOQ02OQ03.lean",
+      "totient_prod_is_pow2: product formula for TotientIsPow2 in AngleTrisectionOQ02OQ03.lean",
+      "odd_prime_pow_gt_one_not_pow2: structural non-pow2 for p^k (k>=2, p odd prime)",
+      "totient_9_not_pow2': structural proof via odd_prime_pow_gt_one_not_pow2",
+      "units_zmod_card_eq_totient: |{(Z/nZ)*}| = phi(n) from Mathlib",
+      "units_zmod_is_2group_iff: (Z/nZ)* 2-group iff TotientIsPow2 n (key Galois bridge, PROVED!)",
+      "Constructible polygons: 34, 51, 85, 255 (new!)",
+      "Non-constructible polygons: 21, 25, 35 (new!)",
+      "F5 composite: f5_factorization, f5_not_prime, f5_not_fermat_prime",
+      "polygon_15_constructible_via_product: alternative proof using totient_prod_is_pow2",
+      "Fixed: fermat_prime_totient_pow2 omega->simp (pre-existing bug with exponential arithmetic)",
+      "Extended file from 38 to ~60 proved theorems (0 sorries, 1 axiom)"
     ],
     "insights": [
-      "KEY: `Nat.totient n` is computable → `decide` tactic proves all concrete φ(n) = m facts",
-      "KEY: `not_pow_two_of_odd_prime_dvd` is the core helper for all non-constructibility proofs",
-      "KEY: Pattern for non-pow2: `intro ⟨k, hk⟩; have h := totient_X_eq; rw [h] at hk; exact not_pow_two_of_odd_prime_dvd (p := 3) ...`",
-      "KEY: Pattern for constructibility: `(gauss_wantzel_theorem n hn).mpr totient_X_pow2`",
-      "KEY: Pattern for non-constructibility: `rw [gauss_wantzel_theorem n hn]; exact totient_X_not_pow2`",
-      "Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)* has order φ(n), so OQ02 2-group criterion reduces to φ(n) = 2^k",
-      "φ(15) = 8 = 2³: 15 = 3 × 5 (two distinct Fermat primes), so 15-gon is constructible",
-      "φ(20) = 8 = 2³: 20 = 4 × 5 = 2² × 5, so 20-gon is constructible",
-      "φ(14) = 6: 14 = 2 × 7, and 7 is not a Fermat prime → not constructible",
-      "φ(18) = 6: 18 = 2 × 9 = 2 × 3², and 3² disqualifies (repeated prime) → not constructible",
-      "The 5 known Fermat primes are F₀=3, F₁=5, F₂=17, F₃=257, F₄=65537; F₅ is composite"
+      "totient_prod_is_pow2: products of coprime pow2-totient numbers have pow2 totient (proved via Nat.totient_mul + pow_add)",
+      "totient_pow2_of_two_power: phi(2^k) = 2^(k-1) for k >= 1 (proved via Nat.totient_prime_pow with simp for N subtraction)",
+      "odd_prime_pow_gt_one_not_pow2: for odd prime p and k >= 2, phi(p^k) not pow2 (proved via dvd_pow_self + not_pow_two_of_odd_prime_dvd)",
+      "units_zmod_card_eq_totient: |{(Z/nZ)*}| = phi(n) directly from ZMod.card_units_eq_totient [NeZero n]",
+      "units_zmod_is_2group_iff: (Z/nZ)* is 2-group iff phi(n) = 2^k (proved from Mathlib! The Galois bridge)",
+      "More constructible polygons: 34 (=2x17), 51 (=3x17), 85 (=5x17), 255 (=3x5x17)",
+      "More non-constructible: 21 (=3x7), 25 (=5^2), 35 (=5x7)",
+      "F5 = 4294967297 = 641x6700417 is composite (native_decide); not a Fermat prime",
+      "fermat_prime_totient_pow2 omega->simp fix: omega cannot prove 2^(2^k)+1-1=2^(2^k) (exponentials); simp works",
+      "ZMod.card_units_eq_totient requires [NeZero n] typeclass in Mathlib 4.26"
     ],
     "mathlibGaps": [
-      "Cyclotomic field theory: Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)* not yet assembled in Mathlib as used here",
-      "gauss_wantzel_theorem cannot be fully proved without this isomorphism + OQ02 Galois criterion"
+      "gauss_wantzel_theorem: no single Mathlib theorem for n-gon constructible iff phi(n) = 2^k",
+      "Need: assembled theorem connecting IsCyclotomicExtension + OQ02 Galois criterion + real subfield",
+      "IsCyclotomicExtension.finrank and Gal isomorphic to ZMod units exist separately but not assembled"
     ],
     "nextSteps": [
-      "Extend to n=24 (φ=8, constructible), n=30 (φ=8, constructible)",
-      "Add Fermat composite examples: F₅=4294967297 is composite (Euler 1732)",
-      "Check Mathlib for `IsCyclotomicExtension` to build toward gauss_wantzel_theorem proof"
+      "The main axiom gauss_wantzel_theorem needs ~300 lines of cyclotomic field theory to prove",
+      "Key missing pieces: IsCyclotomicExtension.finrank gives [Q(zeta_n):Q] = phi(n); real subfield [Q(zeta_n):Q(cos)] = 2",
+      "units_zmod_is_2group_iff is PROVED - connects Galois theory to arithmetic criterion",
+      "Next session: attempt to reduce gauss_wantzel_theorem to existing Mathlib cyclotomic lemmas",
+      "Check if IsCyclotomicExtension + IsGalois + Gal isomorphism is assembled in Mathlib 4.26"
     ]
   },
   "approaches": [
     {
-      "name": "decide-and-axiom",
-      "description": "Use `decide` for all concrete totient computations; axiomatize the main Gauss-Wantzel iff; prove all concrete polygon cases from the axiom",
-      "status": "proved",
-      "sorries": 0,
-      "notes": "Complete. 63+ theorems proved. Only the abstract iff is axiomatized."
+      "name": "arithmetic-infrastructure",
+      "description": "Build arithmetic lemmas: totient_prod_is_pow2, odd_prime_pow_gt_one_not_pow2, ZMod bridge",
+      "status": "completed",
+      "outcome": "All proved. Key lemma: units_zmod_is_2group_iff bridges Galois theory to arithmetic."
     }
   ],
   "tags": [
@@ -107,32 +92,26 @@
     "constructibility",
     "2-groups",
     "seeker-selected",
-    "fermat-primes",
-    "euler-totient"
+    "euler-totient",
+    "fermat-primes"
   ],
   "relatedProofs": [
-    "AngleTrisectionOQ02OQ03.lean",
-    "AngleTrisectionOQ02.lean",
-    "AngleTrisectionOQ01.lean",
-    "AngleTrisection.lean"
+    "angle-trisection-oq-02",
+    "angle-trisection"
   ],
   "references": {
-    "papers": [
-      "Gauss, C.F. (1796): Diary entry on 17-gon constructibility",
-      "Wantzel, P.L. (1837): Proof of the impossibility of several geometric problems",
-      "Stewart, I. Galois Theory (4th ed.) Chapter 14"
-    ],
+    "papers": [],
     "urls": [],
     "mathlib": [
-      "Nat.totient",
-      "IsPGroup",
+      "Nat.totient_mul",
+      "Nat.totient_prime_pow",
+      "ZMod.card_units_eq_totient",
       "IsPGroup.iff_card",
-      "Nat.Coprime",
-      "decide"
+      "dvd_pow_self"
     ]
   },
-  "started": "2026-02-24T21:02:04.785Z",
-  "lastUpdate": "2026-02-24T22:30:00.000Z",
+  "started": "2026-02-25T05:31:05.810Z",
+  "lastUpdate": "2026-02-25T05:45:00.000Z",
   "significance": 8,
   "tractability": 5
 }

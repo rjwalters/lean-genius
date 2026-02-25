@@ -227,15 +227,16 @@ theorem zp_rotation_free_statement (p : ℕ) (hp : Nat.Prime p) :
   set x₀ := x ⟨0, by omega⟩ with hx₀
   set x₁ := x ⟨1, by omega⟩ with hx₁
   set θ := (2 : ℝ) * Real.pi / p with hθ
-  -- From heq: components must be equal
-  have heq0 : (zp_rotation p hp.pos x) ⟨0, by omega⟩ = x₀ := by
-    exact congr_fun (congrArg _ heq) ⟨0, by omega⟩
-  have heq1 : (zp_rotation p hp.pos x) ⟨1, by omega⟩ = x₁ := by
-    exact congr_fun (congrArg _ heq) ⟨1, by omega⟩
-  -- Get the rotation values
-  simp only [zp_rotation, EuclideanSpace.equiv_symm_pi_lp_apply, hx₀, hx₁] at heq0 heq1
-  -- heq0 : x₀ * cos θ - x₁ * sin θ = x₀
-  -- heq1 : x₀ * sin θ + x₁ * cos θ = x₁
+  -- Coordinate values of the rotation (mirrors approach from zp_rotation_isometry)
+  have hrot0 : (zp_rotation p hp.pos x) ⟨0, by omega⟩ = x₀ * Real.cos θ - x₁ * Real.sin θ := by
+    simp [zp_rotation, EuclideanSpace.equiv_symm_pi_lp_apply]
+  have hrot1 : (zp_rotation p hp.pos x) ⟨1, by omega⟩ = x₀ * Real.sin θ + x₁ * Real.cos θ := by
+    simp [zp_rotation, EuclideanSpace.equiv_symm_pi_lp_apply, Fin.ext_iff]
+  -- From heq: rotation equals x at each coordinate
+  have heq0 : (zp_rotation p hp.pos x) ⟨0, by omega⟩ = x₀ :=
+    congrArg (· ⟨0, by omega⟩) heq
+  have heq1 : (zp_rotation p hp.pos x) ⟨1, by omega⟩ = x₁ :=
+    congrArg (· ⟨1, by omega⟩) heq
   -- cos(2π/p) ≠ 1 for prime p ≥ 2: since 2π/p ∈ (0, 2π), Real.cos_eq_one_iff gives
   -- cos(θ) = 1 iff θ = 2π*n for integer n, but 2π/p < 2π for p ≥ 2
   have hcos_ne_one : Real.cos θ ≠ 1 := by
@@ -259,7 +260,7 @@ theorem zp_rotation_free_statement (p : ℕ) (hp : Nat.Prime p) :
     rcases habs with h | h | h
     · linarith
     · linarith
-    · simp [h] at this; linarith [hp2]
+    · simp [h] at this
   -- Now from heq0: x₀ * (cos θ - 1) = x₁ * sin θ
   -- From heq1: x₀ * sin θ = x₁ * (1 - cos θ)
   -- Multiplying: x₀² * sin θ * (cos θ - 1) = x₁² * sin θ * (1 - cos θ)
@@ -271,16 +272,15 @@ theorem zp_rotation_free_statement (p : ℕ) (hp : Nat.Prime p) :
   -- and from heq1: x₁ * (-1-1) = 0 → x₁ = 0; but x₀²+x₁²=1, contradiction.
   -- The norm condition gives x₀² + x₁² = 1
   have hnorm : x₀ ^ 2 + x₁ ^ 2 = 1 := by
-    have := hx
-    rw [EuclideanSpace.norm_eq, Fin.sum_univ_two] at this
-    simp only [Real.norm_eq_abs, sq_abs] at this
-    nlinarith [Real.sqrt_eq_one'.mp this, sq_nonneg x₀, sq_nonneg x₁,
-               Real.sq_sqrt (by positivity : (0 : ℝ) ≤ x₀ ^ 2 + x₁ ^ 2)]
-  -- From the fixed-point equations:
-  have heq0' : x₀ * Real.cos θ - x₁ * Real.sin θ = x₀ := by
-    simpa [Fin.ext_iff] using heq0
-  have heq1' : x₀ * Real.sin θ + x₁ * Real.cos θ = x₁ := by
-    simpa [Fin.ext_iff] using heq1
+    have hsqrt := hx
+    rw [EuclideanSpace.norm_eq, Fin.sum_univ_two] at hsqrt
+    simp only [Real.norm_eq_abs, sq_abs] at hsqrt
+    -- hsqrt : Real.sqrt (x₀^2 + x₁^2) = 1
+    have hnn : (0 : ℝ) ≤ x₀ ^ 2 + x₁ ^ 2 := by positivity
+    nlinarith [Real.sq_sqrt hnn, Real.sqrt_nonneg (x₀ ^ 2 + x₁ ^ 2)]
+  -- From the fixed-point equations (combine rotation coords with heq):
+  have heq0' : x₀ * Real.cos θ - x₁ * Real.sin θ = x₀ := hrot0.symm.trans heq0
+  have heq1' : x₀ * Real.sin θ + x₁ * Real.cos θ = x₁ := hrot1.symm.trans heq1
   -- (x₀² + x₁²) * (1 - cos θ) = 0
   have hdet : (x₀ ^ 2 + x₁ ^ 2) * (1 - Real.cos θ) = 0 := by nlinarith [heq0', heq1',
     sq_nonneg x₀, sq_nonneg x₁]
@@ -367,5 +367,69 @@ theorem equivariant_bu_landscape :
       Continuous f ∧ IsEquivariant (G := ZMod 2) f) := by
   refine ⟨fun n f hcont => classical_borsuk_ulam_from_equivariant n f hcont,
           fun n => ⟨id, continuous_id, fun _ _ => rfl⟩⟩
+
+-- ============================================================
+-- PART 7: Additional Equivariance Properties
+-- ============================================================
+
+/-- The antipodal map is an involution: applying it twice gives the identity -/
+theorem antipode_involutive {n : ℕ} (x : EuclideanSpace ℝ (Fin (n + 1))) :
+    antipode (antipode x) = x := by simp [antipode]
+
+/-- The antipodal map has no fixed points on the sphere.
+    Proof: antipode x = x means -x = x, so x+x = 0, so 2•x = 0,
+    so ‖2•x‖ = 0, so 2‖x‖ = 0, but ‖x‖ = 1 on the sphere. -/
+theorem antipode_fixed_point_free {n : ℕ} {x : EuclideanSpace ℝ (Fin (n + 1))}
+    (hx : x ∈ Sphere n) : antipode x ≠ x := by
+  simp only [Sphere, Metric.mem_sphere, dist_zero_right] at hx
+  intro h
+  simp only [antipode] at h  -- h : -x = x
+  have hsum : x + x = 0 := by
+    have h1 := neg_add_cancel x  -- -x + x = 0
+    rw [h] at h1; exact h1
+  have h3 : (2 : ℝ) • x = 0 := (two_smul ℝ x).trans hsum
+  have h4 : ‖(2 : ℝ) • x‖ = 0 := by rw [h3, norm_zero]
+  rw [norm_smul] at h4
+  have h5 : ‖(2 : ℝ)‖ = 2 := by norm_num
+  rw [h5] at h4  -- h4 : 2 * ‖x‖ = 0, hx : ‖x‖ = 1
+  linarith
+
+/-- The Z/p rotation maps the sphere to itself (follows directly from isometry) -/
+theorem zp_rotation_maps_sphere (p : ℕ) (hp : 0 < p)
+    {x : EuclideanSpace ℝ (Fin 2)}
+    (hx : x ∈ Metric.sphere (0 : EuclideanSpace ℝ (Fin 2)) 1) :
+    zp_rotation p hp x ∈ Metric.sphere (0 : EuclideanSpace ℝ (Fin 2)) 1 := by
+  simp only [Metric.mem_sphere, dist_zero_right] at *
+  rw [zp_rotation_isometry]; exact hx
+
+/-- Z/2 action: element 0 acts as identity -/
+theorem z2_smul_zero {n : ℕ} (x : EuclideanSpace ℝ (Fin n)) :
+    (0 : ZMod 2) • x = x := by
+  simp [z2ActionEuclidean, HSMul.hSMul, SMul.smul]
+
+/-- Z/2 action: element 1 acts as negation (antipodal map) -/
+theorem z2_smul_one {n : ℕ} (x : EuclideanSpace ℝ (Fin n)) :
+    (1 : ZMod 2) • x = -x := by
+  have h : (1 : ZMod 2) ≠ 0 := by decide
+  simp [z2ActionEuclidean, HSMul.hSMul, SMul.smul, h]
+
+/-- The Z/2 action is an involution: applying any element twice gives the identity -/
+theorem z2_action_involutive {n : ℕ} (k : ZMod 2) (x : EuclideanSpace ℝ (Fin n)) :
+    k • (k • x) = x := by
+  fin_cases k <;>
+    simp [z2ActionEuclidean, HSMul.hSMul, SMul.smul]
+
+/-- Sum of two Z/2-equivariant maps is Z/2-equivariant
+    (negation distributes over addition: -(a+b) = -a + -b) -/
+theorem equivariant_add_z2 {n m : ℕ}
+    {f₁ f₂ : EuclideanSpace ℝ (Fin (n + 1)) → EuclideanSpace ℝ (Fin (m + 1))}
+    (hf₁ : IsEquivariant (G := ZMod 2) f₁) (hf₂ : IsEquivariant (G := ZMod 2) f₂) :
+    IsEquivariant (G := ZMod 2) (fun x => f₁ x + f₂ x) := by
+  intro g x
+  rw [show f₁ (g • x) = g • f₁ x from hf₁ g x,
+      show f₂ (g • x) = g • f₂ x from hf₂ g x]
+  fin_cases g
+  · simp only [z2_smul_zero]
+  · simp only [z2_smul_one]; abel
 
 end BorsukUlamOQ02
