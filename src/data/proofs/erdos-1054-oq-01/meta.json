@@ -114,10 +114,10 @@
     },
     {
       "id": "sigma-props",
-      "title": "Sigma Function Properties",
-      "startLine": 209,
-      "endLine": 240,
-      "summary": "sigma_prime: σ(p) = p+1; sigma_ge_succ: σ(m) ≥ m+1."
+      "title": "Sigma Function Properties and File Summary",
+      "startLine": 166,
+      "endLine": 234,
+      "summary": "Parts VII-VIII: sigma_prime (σ(p)=p+1 via Nat.Prime.divisors + Finset.sum_pair), sigma_ge_succ (σ(m)≥m+1 via subset bound on {1,m}), sigma_ratio_2a_3b formula and bound (2 sorries using multiplicativity/geometric series). Summary block lists all proved results, 2 axioms, 3 sorries, and open questions."
     }
   ],
   "conclusion": {
