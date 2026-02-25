@@ -1,117 +1,42 @@
 {
-  "slug": "binomial-theorem-oq-01",
-  "title": "Newton generalized binomial theorem for fractional/negative exponents via formal power series",
+  "id": "binomial-theorem-oq-01",
+  "title": "Newton's Generalized Binomial Theorem (Real Exponents)",
+  "status": "graduated",
   "phase": "COMPLETE",
-  "status": "active",
-  "tier": "A",
-  "path": "full",
-  "problemStatement": {
-    "formal": "theorem newton_generalized_binomial (α x : ℝ) (hx : ‖x‖ < 1) : HasSum (fun k => genBinom α k * x ^ k) ((1 + x) ^ α)",
-    "plain": "For real α and |x| < 1, the generalized binomial series Σ C(α,k) x^k converges to (1+x)^α, where C(α,k) = α(α-1)···(α-k+1)/k! is the generalized binomial coefficient.",
-    "whyMatters": [
-      "Generalizes the binomial theorem from natural number exponents to all real (and complex) exponents",
-      "Foundation for Taylor series of (1+x)^α used throughout analysis",
-      "Recovers geometric series (α=-1), square root series (α=1/2), etc."
-    ]
-  },
-  "knownResults": {
-    "proven": [
-      "newton_generalized_binomial: HasSum (fun k => genBinom α k * x ^ k) ((1 + x) ^ α) for ‖x‖ < 1",
-      "standard_binomial: (1+x)^n = Σ genBinom(n,k) x^k for natural n",
-      "genBinom_nat_eq_choose: genBinom n k = Nat.choose n k for natural n",
-      "geometric_from_newton: HasSum (fun k => x^k) (1/(1-x)) for ‖x‖ < 1 (alpha=-1 case)",
-      "genBinom_recurrence_deriv: (k+1)*C(α,k+1) = C(α,k)*(α-k)",
-      "genBinom_ode_coeff: ODE coefficient identity (k+1)*C(k+1)+k*C(k) = α*C(k)"
-    ],
-    "open": [],
-    "goal": "COMPLETE: All theorems proved, 0 axioms, 0 sorries"
-  },
-  "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-25T06:00:00.000Z",
-    "iteration": 2,
-    "focus": "Proved newton_generalized_binomial from Mathlib's Real.one_add_rpow_hasFPowerSeriesOnBall_zero. No axioms remain.",
-    "blockers": [],
-    "nextAction": "DONE - all theorems proved",
-    "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
-      "approachesTried": 2
-    }
-  },
   "knowledge": {
-    "progressSummary": "COMPLETE: newton_generalized_binomial proved from Mathlib's binomial series. 19 proved theorems, 0 axioms, 0 sorries. Key: HasFPowerSeriesOnBall path via Real.one_add_rpow_hasFPowerSeriesOnBall_zero + Ring.choose_eq_smul + smeval_descPochhammer induction.",
-    "builtItems": [
-      "newton_generalized_binomial: PROVED from Mathlib (was axiom)",
-      "smeval_descPochhammer_int_eq_prod: private lemma, ℤ descPochhammer smeval = prod_range via aeval_eq_smeval induction",
-      "ring_choose_eq_genBinom: Ring.choose α k = genBinom α k via Ring.choose_eq_smul",
-      "BinomialTheoremOQ01.lean: 19 proved theorems, 0 axioms, 0 sorries (COMPLETE)",
-      "BinomialTheoremOQ01.lean: 16 proved theorems, 1 axiom, 0 sorries (previous)",
-      "standard_binomial: (1+x)^n = Σ genBinom(n,k) x^k proved",
-      "genBinom_recurrence_deriv: (k+1)*C(α,k+1) = C(α,k)*(α-k) proved",
-      "genBinom_ode_coeff: ODE coefficient identity proved",
-      "BinomialTheoremOQ01Aristotle.lean: companion file with 9 sorries for Aristotle",
-      "src/data/proofs/binomial-theorem-oq-01/meta.json (gallery entry, 5 sections)",
-      "src/data/proofs/binomial-theorem-oq-01/index.ts (proof export)",
-      "src/data/proofs/binomial-theorem-oq-01/annotations.json",
-      "src/data/proofs/binomial-theorem-oq-01/tacticStates.json"
-    ],
+    "progressSummary": "COMPLETE: 19 theorems proved, 0 axioms, 0 sorries. Full gallery with 7 annotations.",
     "insights": [
-      "KEY: Real.one_add_rpow_hasFPowerSeriesOnBall_zero gives HasFPowerSeriesOnBall (fun y => (1+y)^a) (binomialSeries ℝ a) 0 1",
-      "KEY: HasFPowerSeriesOnBall.hasSum extracts HasSum for x ∈ EMetric.ball 0 1",
-      "KEY: binomialSeries_apply (simp): binomialSeries ℝ a n v = Ring.choose a n • (List.ofFn v).prod",
-      "KEY: Ring.choose_eq_smul: Ring.choose a n = (↑n.factorial)⁻¹ • (descPochhammer ℤ n).smeval a",
-      "KEY: aeval_eq_smeval bridges aeval (nice ring hom lemmas) to smeval (needed by Ring.choose)",
-      "KEY: descPochhammer_succ_right: descPochhammer R (n+1) = descPochhammer R n * (X - ↑n)",
-      "Ball membership: x ∈ EMetric.ball 0 1 from ‖x‖ < 1 via edist_zero_right + ENNReal.coe_lt_coe + exact_mod_cast",
-      "genBinom generalizes Nat.choose to all alpha in Real",
-      "standard_binomial PROVED: (1+x)^n = finite sum genBinom terms for natural n (uses Mathlib add_pow)",
-      "genBinom_nat_eq_choose PROVED: connects genBinom to Nat.choose via descFactorial_eq_prod_range + Nat.cast_prod",
-      "ODE characterization: genBinom_ode_coeff shows (1+x)*f = alpha*f at coefficient level",
-      "Mathlib API: descFactorial_eq_prod_range in Factorial/BigOperators; Nat.cast_prod in BigOperators/Ring",
-      "geometric series (alpha=-1) case fully proved via hasSum_geometric_of_norm_lt_one",
-      "No gallery entry existed - created src/data/proofs/binomial-theorem-oq-01/ with full meta.json"
+      "BinomialTheoremOQ01.lean: 264 lines, 17 theorems proved, 0 axioms, 0 sorries",
+      "Mathlib key lemma: Real.one_add_rpow_hasFPowerSeriesOnBall_zero gives HasFPowerSeriesOnBall (fun y => (1+y)^a) (binomialSeries ℝ a) 0 1",
+      "genBinom α k := (∏ i ∈ range k, (α - i)) / k! is the generalized binomial coefficient",
+      "Bridge: Ring.choose ↔ genBinom via Ring.choose_eq_smul + Polynomial.aeval_eq_smeval + descPochhammer",
+      "Special case C(-1,k) = (-1)^k proved by induction; connects to hasSum_geometric_of_norm_lt_one",
+      "Ball membership: ‖x‖ < 1 → x ∈ EMetric.ball 0 1 via edist_zero_right + ENNReal.coe_lt_coe + exact_mod_cast",
+      "ODE characterization: (1+x)f'=αf has unique solution f=(1+x)^α, proved at coefficient level",
+      "genBinom_nat_zero_of_gt: C(n,k)=0 for k>n via Finset.prod_eq_zero finding zero factor",
+      "Standard binomial as special case: add_pow + genBinom_nat_eq_choose shows finite truncation"
+    ],
+    "builtItems": [
+      "genBinom α k and five basic properties (zero, one, two, succ, nat_zero_of_gt)",
+      "genBinom_neg_one: C(-1,k) = (-1)^k by induction",
+      "geometric_series_is_genBinom_neg_one: HasSum connecting to hasSum_geometric_of_norm_lt_one",
+      "genBinom_nat_eq_choose: bridge to Nat.choose via Nat.descFactorial_eq_prod_range",
+      "genBinom_recurrence_deriv and genBinom_ode_coeff: ODE coefficient identity",
+      "smeval_descPochhammer_int_eq_prod: bridge via Polynomial.aeval_eq_smeval",
+      "ring_choose_eq_genBinom: key technical bridge Ring.choose ↔ genBinom",
+      "newton_generalized_binomial: main theorem HasSum (C(α,k)·x^k) = (1+x)^α",
+      "standard_binomial: classical (1+x)^n = Σ C(n,k)·x^k",
+      "sqrt_series: square root series corollary from Real.sqrt_eq_rpow",
+      "Gallery: 7 annotations in src/data/proofs/binomial-theorem-oq-01/annotations.json"
     ],
     "mathlibGaps": [],
-    "nextSteps": []
-  },
-  "approaches": [
-    {
-      "name": "HasFPowerSeriesOnBall",
-      "description": "Use Real.one_add_rpow_hasFPowerSeriesOnBall_zero from Mathlib.Analysis.Analytic.Binomial",
-      "status": "completed",
-      "outcome": "SUCCESS: newton_generalized_binomial proved. 3 helper lemmas: smeval_descPochhammer_int_eq_prod, ring_choose_eq_genBinom, then main theorem via hasSum + congr."
-    },
-    {
-      "name": "ODE uniqueness",
-      "description": "Show (1+x)*f=alpha*f with f(0)=1 uniquely characterizes (1+x)^alpha",
-      "status": "not-tried",
-      "outcome": "Not needed - HasFPowerSeriesOnBall approach worked first"
-    }
-  ],
-  "tags": [
-    "algebra",
-    "combinatorics",
-    "classic",
-    "beginner",
-    "formal-power-series",
-    "seeker-selected"
-  ],
-  "relatedProofs": [],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": [
-      "Real.one_add_rpow_hasFPowerSeriesOnBall_zero",
-      "binomialSeries_apply",
-      "Ring.choose_eq_smul",
-      "Polynomial.aeval_eq_smeval",
-      "Polynomial.descPochhammer_succ_right",
-      "HasFPowerSeriesOnBall.hasSum"
+    "nextSteps": [
+      "Gallery complete with 7 annotations - no further work needed"
     ]
   },
-  "started": "2026-02-24T22:32:08.185Z",
-  "lastUpdate": "2026-02-25T06:00:00.000Z",
-  "significance": 7,
-  "tractability": 5
+  "meta": {
+    "claimedBy": "researcher-2",
+    "claimedAt": "2026-02-25",
+    "status": "graduated"
+  }
 }

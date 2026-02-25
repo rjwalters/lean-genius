@@ -7,7 +7,7 @@
     "author": "Hardy, Littlewood, Pólya (1934); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Power_mean",
     "date": "1934",
-    "status": "open-question",
+    "status": "research",
     "proofRepoPath": "Proofs/PowerMeanLimitOQ.lean",
     "tags": [
       "analysis",
@@ -15,21 +15,20 @@
       "mean-inequalities",
       "limits",
       "calculus",
-      "research",
-      "open-problem"
+      "research"
     ],
-    "badge": "open",
-    "sorries": 4,
+    "badge": "research",
+    "sorries": 0,
     "mathlibDependencies": [
       {
-        "theorem": "Real.hasDerivAt_rpow_const",
-        "description": "Derivative of r ↦ x^r for fixed positive x: HasDerivAt (x ^ ·) (x^r * log x) r",
+        "theorem": "Real.hasStrictDerivAt_const_rpow",
+        "description": "Derivative of r ↦ x^r for fixed positive x: HasStrictDerivAt (x ^ ·) (x^r * log x) r",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Deriv"
       },
       {
-        "theorem": "Real.exp_sum",
-        "description": "exp(∑ f i) = ∏ exp(f i): connects GM as exp of sum",
-        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+        "theorem": "Real.hasDerivAt_log",
+        "description": "HasDerivAt for log at nonzero points: used for chain rule on log(∑ wᵢzᵢ^r)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Deriv"
       },
       {
         "theorem": "Real.log_rpow",
@@ -45,29 +44,34 @@
         "theorem": "Real.geom_mean_le_arith_mean_weighted",
         "description": "Weighted AM-GM: ∏ zᵢ^wᵢ ≤ ∑ wᵢzᵢ, used in HM ≤ GM ≤ AM chain",
         "module": "Mathlib.Analysis.MeanInequalities"
+      },
+      {
+        "theorem": "hasDerivAt_iff_tendsto_slope",
+        "description": "HasDerivAt iff slope limit: key bridge connecting derivative to f(r)/r → f'(0)",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Slope"
       }
     ],
     "originalContributions": [
-      "powerMean_eq_exp_log: M_r = exp((1/r)·log(∑ wᵢzᵢ^r)) for zᵢ > 0 (exp/log representation)",
+      "tendsto_powerMean_zero: MAIN THEOREM — lim_{r→0} (∑ wᵢzᵢ^r)^(1/r) = ∏ zᵢ^wᵢ (proved, 0 sorries)",
       "hasDerivAt_sum_weighted_rpow_zero: d/dr[∑ wᵢzᵢ^r]|_{r=0} = ∑ wᵢ log zᵢ (derivative under finite sum)",
-      "log_sum_weighted_rpow_zero: log(∑ wᵢzᵢ^0) = 0 when ∑ wᵢ = 1 (base case for limit)",
-      "geomMean_eq_exp_sum_log: GM = exp(∑ wᵢ log zᵢ) via Real.exp_sum + Real.log_rpow",
-      "powerMean_one_eq_arithMean: M₁ = ∑ wᵢzᵢ (arithmetic mean) via rpow_one",
-      "powerMean_neg1_le_geomMean_le_arithMean: HM ≤ GM ≤ AM proven for the r = -1, 0, 1 case",
-      "tendsto_powerMean_zero: main limit theorem lim_{r→0} M_r = GM (axiom sketch, proof strategy)"
+      "hasDerivAt_log_sum_weighted_rpow: HasDerivAt for log ∘ (∑ wᵢzᵢ^r) at r=0 via chain rule",
+      "tendsto_log_sum_div_rpow: (log ∑ wᵢzᵢ^r)/r → ∑ wᵢ log zᵢ via hasDerivAt_iff_tendsto_slope",
+      "geomMean_eq_exp_sum_log: GM = exp(∑ wᵢ log zᵢ) via Real.log_prod + Real.log_rpow",
+      "powerMean_neg1_le_geomMean_le_arithMean: HM ≤ GM ≤ AM proven for r = -1, 0, 1",
+      "sum_weighted_rpow_pos: ∑ wᵢzᵢ^r > 0 when ∑ wᵢ = 1 and all zᵢ > 0"
     ],
     "dateAdded": "02/24/26"
   },
   "overview": {
-    "historicalContext": "The power mean M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r) is undefined at r = 0, but the limit exists and equals the geometric mean GM = ∏ zᵢ^wᵢ. This was established by Hardy, Littlewood, and Pólya (1934) and makes the power mean a continuous interpolation between min (r → -∞), HM (r=-1), GM (r=0), AM (r=1), and max (r → +∞).\n\nThe proof uses L'Hôpital or the definition of derivative: f(r) = log(∑ wᵢzᵢ^r) satisfies f(0) = log(∑ wᵢ) = log(1) = 0 (when ∑ wᵢ = 1), and f'(0) = ∑ wᵢ log zᵢ. Therefore f(r)/r → f'(0) = ∑ wᵢ log zᵢ by the definition of derivative, and exp(f(r)/r) = M_r → exp(∑ wᵢ log zᵢ) = GM by continuity of exp.",
+    "historicalContext": "The power mean M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r) is undefined at r = 0, but the limit exists and equals the geometric mean GM = ∏ zᵢ^wᵢ. This was established by Hardy, Littlewood, and Pólya (1934) and makes the power mean a continuous interpolation between min (r → -∞), HM (r=-1), GM (r=0), AM (r=1), and max (r → +∞).\n\nThe proof uses the definition of derivative: f(r) = log(∑ wᵢzᵢ^r) satisfies f(0) = log(∑ wᵢ) = log(1) = 0 (when ∑ wᵢ = 1), and f'(0) = ∑ wᵢ log zᵢ. Therefore f(r)/r → f'(0) = ∑ wᵢ log zᵢ by the definition of derivative, and exp(f(r)/r) = M_r → exp(∑ wᵢ log zᵢ) = GM by continuity of exp. The Lean 4 formalization uses `hasDerivAt_iff_tendsto_slope` as the key bridge.",
     "problemStatement": "**Open Question (amgm-inequality-oq-03-oq-02)**: Formalize the limit lim_{r→0} M_r(z,w) = GM(z,w) in Lean 4.\n\n**Definitions**:\n- M_r(z,w) = (∑ wᵢzᵢ^r)^(1/r)  for r ≠ 0, wᵢ ≥ 0, ∑ wᵢ = 1, zᵢ > 0\n- GM(z,w) = ∏ zᵢ^wᵢ (weighted geometric mean)\n\n**The Limit**: Filter.Tendsto (fun r => (∑ wᵢzᵢ^r)^(1/r)) (nhdsWithin 0 {0}ᶜ) (nhds (∏ zᵢ^wᵢ))\n\n**Proof sketch**: f(r) = log(∑ wᵢzᵢ^r), f(0) = 0, f'(0) = ∑ wᵢ log zᵢ, so M_r = exp(f(r)/r) → exp(∑ wᵢ log zᵢ) = GM.",
-    "proofStrategy": "**Step 1**: Establish M_r = exp((1/r)·log(∑ wᵢzᵢ^r)) for zᵢ > 0 via Real.rpow_def_of_pos.\n\n**Step 2**: Prove d/dr[∑ wᵢzᵢ^r]|_{r=0} = ∑ wᵢ log zᵢ:\n- d/dr[zᵢ^r] = zᵢ^r · log zᵢ (chain rule on exp(r·log zᵢ))\n- At r=0: zᵢ^0 · log zᵢ = log zᵢ\n- Sum: d/dr[∑ wᵢzᵢ^r]|₀ = ∑ wᵢ log zᵢ (Finset.hasDerivAt_sum)\n\n**Step 3**: Establish g(r) = log(∑ wᵢzᵢ^r) has g(0) = 0 and g'(0) = ∑ wᵢ log zᵢ via chain rule on log.\n\n**Step 4**: Conclude (1/r)·g(r) = g(r)/r → g'(0) from the derivative definition.\n\n**Step 5**: Apply continuity of exp to get M_r = exp(g(r)/r) → exp(∑ wᵢ log zᵢ) = GM.",
+    "proofStrategy": "**Step 1**: Establish M_r = exp((1/r)·log(∑ wᵢzᵢ^r)) for zᵢ > 0 via Real.rpow_def_of_pos.\n\n**Step 2**: Prove d/dr[∑ wᵢzᵢ^r]|_{r=0} = ∑ wᵢ log zᵢ:\n- Each term: HasDerivAt (fun r => zᵢ^r) (log zᵢ) 0 via Real.hasStrictDerivAt_const_rpow + rpow_zero\n- Apply HasDerivAt.const_mul and HasDerivAt.sum\n\n**Step 3**: Establish g(r) = log(∑ wᵢzᵢ^r) has g(0) = 0 and g'(0) = ∑ wᵢ log zᵢ:\n- Chain rule: Real.hasDerivAt_log composed with step 2\n- g(0) = log(1) = 0 since ∑ wᵢzᵢ^0 = ∑ wᵢ = 1\n\n**Step 4**: Conclude g(r)/r → g'(0) via hasDerivAt_iff_tendsto_slope (congr on slope formula).\n\n**Step 5**: Apply Real.continuous_exp.continuousAt to get M_r = exp(g(r)/r) → exp(∑ wᵢ log zᵢ) = GM.",
     "keyInsights": [
-      "GM = exp(∑ wᵢ log zᵢ) is proved via Real.exp_sum + Real.log_rpow: exp(∑ wᵢ log zᵢ) = ∏ exp(wᵢ log zᵢ) = ∏ zᵢ^wᵢ",
-      "The limit proof reduces to: f(0) = 0, f'(0) = ∑ wᵢ log zᵢ, then f(r)/r → f'(0) by definition of derivative",
-      "Key Mathlib API: HasDerivAt (fun r => x^r) (x^r * log x) r for x > 0 (from rpow derivative)",
-      "The nhdsWithin 0 {0}ᶜ filter correctly captures 'limit as r → 0 with r ≠ 0'",
-      "Once the limit is established, the full monotonicity chain HM ≤ M_0 = GM ≤ AM follows from OQ03 results"
+      "Key API: hasDerivAt_iff_tendsto_slope — connects HasDerivAt to the slope limit f(r)/r → f'(0) when f(0) = 0",
+      "The limit proof: (g r - g 0) / (r - 0) = g r / r (since g 0 = 0), so the slope limit gives g(r)/r → g'(0)",
+      "GM = exp(∑ wᵢ log zᵢ) proved via Real.log_prod (on positive terms) + Real.log_rpow",
+      "The rpow_def_of_pos identity rewrites both M_r and the limit target to the exp form, making congr' close the goal",
+      "Once limit is established, HM ≤ GM ≤ AM follows from AM-GM on inverse values"
     ]
   },
   "sections": [
@@ -75,46 +79,45 @@
       "id": "header",
       "title": "Problem Statement and Proof Approach",
       "startLine": 1,
-      "endLine": 55,
-      "summary": "Overview of lim_{r→0} M_r = GM. Proof via exp/log: M_r = exp(f(r)/r) where f(r) = log(∑ wᵢzᵢ^r), f(0) = 0, f'(0) = ∑ wᵢ log zᵢ."
+      "endLine": 48,
+      "summary": "Overview of lim_{r→0} M_r = GM. Proof via exp/log: M_r = exp(f(r)/r) where f(r) = log(∑ wᵢzᵢ^r), f(0) = 0, f'(0) = ∑ wᵢ log zᵢ. Mathlib API references."
     },
     {
-      "id": "exp-log-repr",
-      "title": "Log-Exponential Representation",
-      "startLine": 60,
-      "endLine": 80,
-      "summary": "powerMean_eq_exp_log: M_r = exp((1/r)·log(∑ wᵢzᵢ^r)) via rpow_def_of_pos."
+      "id": "sum-positivity",
+      "title": "Sum Positivity Lemma",
+      "startLine": 52,
+      "endLine": 73,
+      "summary": "sum_weighted_rpow_pos: ∑ wᵢzᵢ^r > 0 when ∑ wᵢ = 1 and all zᵢ > 0. Finds a positive weight via contrapositive; uses single_le_sum."
     },
     {
       "id": "derivative",
-      "title": "Derivative of Sum at r = 0",
-      "startLine": 82,
-      "endLine": 128,
-      "summary": "hasDerivAt_sum_weighted_rpow_zero: d/dr[∑ wᵢzᵢ^r]|_{r=0} = ∑ wᵢ log zᵢ. log_sum_weighted_rpow_zero: f(0) = 0."
+      "title": "Derivative at r = 0",
+      "startLine": 76,
+      "endLine": 139,
+      "summary": "hasDerivAt_sum_weighted_rpow_zero: d/dr[∑ wᵢzᵢ^r]|_{r=0} = ∑ wᵢ log zᵢ. log_sum_weighted_rpow_zero: f(0) = 0. hasDerivAt_log_sum_weighted_rpow: chain rule gives HasDerivAt for log(∑ wᵢzᵢ^r)."
     },
     {
       "id": "main-limit",
-      "title": "Main Limit Theorem",
-      "startLine": 130,
-      "endLine": 175,
-      "summary": "tendsto_log_sum_div_rpow: f(r)/r → ∑ wᵢ log zᵢ. tendsto_powerMean_zero: M_r → GM (main theorem, sorry)."
+      "title": "Core Limit via Derivative Definition",
+      "startLine": 143,
+      "endLine": 200,
+      "summary": "tendsto_log_sum_div_rpow: (log ∑ wᵢzᵢ^r)/r → ∑ wᵢ log zᵢ using hasDerivAt_iff_tendsto_slope. tendsto_powerMean_zero: MAIN THEOREM M_r → GM via exp continuity."
     },
     {
-      "id": "identities",
-      "title": "Supporting Identities",
-      "startLine": 177,
-      "endLine": 210,
-      "summary": "geomMean_eq_exp_sum_log: GM = exp(∑ wᵢ log zᵢ). powerMean_one_eq_arithMean: M₁ = AM."
+      "id": "identities-and-chain",
+      "title": "Supporting Identities and HM ≤ GM ≤ AM",
+      "startLine": 202,
+      "endLine": 326,
+      "summary": "geomMean_eq_exp_sum_log: GM = exp(∑ wᵢ log zᵢ). powerMean_one_eq_arithMean: M₁ = AM. powerMean_eq_exp_log: M_r exp form. powerMean_neg1_le_geomMean_le_arithMean: HM ≤ GM ≤ AM."
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes the exp/log representation of the power mean, the derivative formula for ∑ wᵢzᵢ^r at r=0, and the identity GM = exp(∑ wᵢ log zᵢ). The main limit lim_{r→0} M_r = GM is stated with proof sketch (sorry). Together with AmgmInequalityOQ03.lean (power mean monotonicity), this completes the picture of the full chain HM ≤ GM ≤ AM ≤ M_2 ≤ ...",
-    "implications": "**For the power mean chain**: The limit establishes M_0 = GM, making the power mean family M_r continuous at r = 0. Combined with monotonicity for r > 0 and r < 0 (proved in OQ03), this gives the complete chain.\n\n**For Mathlib**: This is the 'r=0 case' explicitly listed as a TODO in Mathlib.Analysis.MeanInequalitiesPow. Formalizing it would fill a known gap.\n\n**For analysis teaching**: The limit lim_{r→0} M_r = GM is a classic application of L'Hôpital / derivative definition, connecting power means to the geometric mean.",
+    "summary": "This formalization proves the Power Mean Limit Theorem: lim_{r→0} M_r(z,w) = GM(z,w) with 0 sorries. The proof chain — derivative of ∑ wᵢzᵢ^r at r=0, chain rule for log composition, slope limit via hasDerivAt_iff_tendsto_slope, and exp continuity — is fully verified in Lean 4 using Mathlib. Additionally proves HM ≤ GM ≤ AM as corollaries. Together with AmgmInequalityOQ03.lean (power mean monotonicity), this completes the full chain HM = M_{-1} ≤ M_0 = GM ≤ M_1 = AM ≤ M_2 ≤ ...",
+    "implications": "**For the power mean chain**: The limit establishes M_0 = GM, making the power mean family M_r continuous at r = 0. Combined with monotonicity for r > 0 and r < 0 (proved in OQ03), this gives the complete chain.\n\n**For Mathlib**: This is the 'r=0 case' explicitly listed as a TODO in Mathlib.Analysis.MeanInequalitiesPow. This formalization fills that known gap and could be contributed upstream.\n\n**Key technique**: The `hasDerivAt_iff_tendsto_slope` lemma provides a clean bridge: 'f differentiable at 0 with f(0) = 0' immediately gives 'f(r)/r → f'(0)', which is the standard L'Hôpital-style step formalized without any division issues.",
     "openQuestions": [
-      "Complete the proof of tendsto_log_sum_div_rpow using HasDerivAt.lim or L'Hôpital in Lean 4",
-      "Establish the derivative of r ↦ log(∑ wᵢzᵢ^r) using chain rule and HasDerivAt composition",
-      "Prove the sum positivity ∑ wᵢzᵢ^r > 0 for the powerMean_eq_exp_log theorem",
-      "Connect to AmgmInequalityOQ03.lean to import HM ≤ GM for the full chain theorem"
+      "Generalize to M_r ≤ M_s for all r < 0 < s (crossing zero case — handled by combining OQ03 with this limit)",
+      "Add this to Mathlib as a proper contribution filling the existing TODO in MeanInequalitiesPow",
+      "Extend to p-power means on measure spaces (continuous index case)"
     ]
   }
 }

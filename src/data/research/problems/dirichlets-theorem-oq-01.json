@@ -1,7 +1,7 @@
 {
   "slug": "dirichlets-theorem-oq-01",
   "title": "Siegel zeros: Can L(1, chi) be very close to 0 for real characters",
-  "phase": "SURVEYED",
+  "phase": "NEW",
   "status": "surveyed",
   "tier": "B",
   "path": "full",
@@ -19,48 +19,45 @@
     "phase": "SURVEYED",
     "since": "2026-02-21T19:21:07.134Z",
     "iteration": 1,
-    "focus": "Formalization complete: 0 sorries, full state of knowledge captured",
-    "blockers": [
-      "Siegel zeros is an open problem; no effective lower bound without GRH or new mathematics"
-    ],
-    "nextAction": "None - surveyed and complete",
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Lean formalization captures full state of knowledge. 0 sorries. siegel_zero_implies_small_L_one proved via MVT. Deep results (Siegel 1935, Landau-Page, GRH) correctly axiomized. Core question (Siegel zeros existence) remains OPEN - not in Mathlib and not expected to be resolved soon.",
-    "builtItems": [
-      "DirichletsTheoremOQ01.lean: L_one_ne_zero (wraps LFunction_apply_one_ne_zero)",
-      "DirichletsTheoremOQ01.lean: IsSiegelZero, HasSiegelZero, SiegelZeroConjecture definitions",
-      "DirichletsTheoremOQ01.lean: siegel_zero_implies_small_L_one (MVT step proved, 0 sorries)",
-      "DirichletsTheoremOQ01.lean: no_siegel_zero_gives_lower_bound",
-      "DirichletsTheoremOQ01.lean: nonvanishing_implies_no_exact_siegel_zeros",
-      "DirichletsTheoremOQ01.lean: siegel_zero_location_constraint",
-      "DirichletsTheoremOQ01.lean: axioms for siegel_theorem, grh_implies_no_siegel_zeros, landau_page_theorem"
-    ],
+    "progressSummary": "SURVEYED: DirichletsTheoremOQ01.lean has 21 theorems, 3 axioms, 0 sorries. 8 gallery annotations added.",
     "insights": [
-      "L(1, χ) ≠ 0 is fully proved in Mathlib via LFunction_apply_one_ne_zero from Mathlib.NumberTheory.LSeries.Nonvanishing",
-      "IsSiegelZero defined: β ∈ (1 - c/log(N), 1) ∧ LFunction χ β = 0 (real zero near 1)",
-      "SiegelZeroConjecture formalized: no real primitive character of any conductor has a Siegel zero",
-      "siegel_zero_implies_small_L_one proved using MVT (norm_image_sub_le_of_norm_deriv_le_segment) + differentiable_LFunction + HasDerivAt.comp_ofReal",
-      "Siegel theorem (1935) and Landau-Page theorem not in Mathlib; axiomized with correct types",
-      "GRH implies no Siegel zeros: axiomized. Under GRH, effective lower bound L(1,χ) ≫ 1/(log q)²",
-      "Problem is OPEN: Siegel zeros expected impossible but no unconditional effective lower bound known",
-      "siegel_zero_location_constraint: chains siegel_theorem axiom to give concrete L(1,χ) bound via Siegel"
+      "DirichletsTheoremOQ01.lean: 475 lines, 21 theorems, 3 axioms, 0 sorries",
+      "Main theorem L_one_ne_zero wraps Mathlib's LFunction_apply_one_ne_zero (one line)",
+      "MVT proof siegel_zero_implies_small_L_one uses norm_image_sub_le_of_norm_deriv_le_segment' + HasDerivAt.comp_ofReal",
+      "Three deep axioms: siegel_theorem, grh_implies_no_siegel_zeros, landau_page_theorem (not in Mathlib)",
+      "GRH eliminates Siegel zeros: \u03b2 in (1/2,1) by location argument, GRH gives no zeros there",
+      "grh_implies_no_siegel_zeros_large_conductor: N > exp(2c) \u27f9 GRH eliminates Siegel zeros for \u03c7 mod N",
+      "at_most_one_exceptional_conductor: Landau-Page applied directly (wrapper theorem)",
+      "Gallery annotations: 8 annotations cover all main sections"
+    ],
+    "builtItems": [
+      "IsSiegelZero, HasSiegelZero, SiegelZeroConjecture definitions in DirichletsTheoremOQ01.lean",
+      "siegel_zero_implies_small_L_one: MVT bound on L(1,\u03c7)",
+      "no_siegel_zero_gives_lower_bound: positive norm from nonvanishing",
+      "grh_eliminates_siegel_zeros: GRH + location argument",
+      "grh_implies_no_siegel_zeros_large_conductor: quantified version",
+      "at_most_one_exceptional_conductor: Landau-Page wrapper",
+      "has_siegel_zero_mono, not_has_siegel_zero_of_smaller: monotonicity",
+      "8 annotations in src/data/proofs/dirichlets-theorem-oq-01/annotations.json"
     ],
     "mathlibGaps": [
-      "siegel_theorem: Siegel 1935 ineffective lower bound L(1,χ) > C(ε)/q^ε — not in Mathlib",
-      "landau_page_theorem: at most one exceptional character per range — not in Mathlib",
-      "grh_implies_no_siegel_zeros: conditional on GRH — requires GRH itself",
-      "Zero-free region theory for Dirichlet L-functions — partially in Mathlib but not the explicit bounds"
+      "Siegel theorem 1935: C(\u03b5) ineffective lower bound not in Mathlib",
+      "Landau-Page theorem: at-most-one exceptional character not in Mathlib",
+      "Full GRH formalization: only conditional axiom here"
     ],
     "nextSteps": [
-      "Siegel zero question is OPEN - no progress possible without new mathematics",
-      "Could add an Aristotle companion file for routine supporting lemmas if any are added",
-      "Watch Mathlib for Siegel theorem additions (unlikely near-term)"
+      "Gallery is complete with 8 annotations - documented for reference",
+      "Future: when Mathlib gets Siegel theorem or Landau-Page, replace axioms with proofs"
     ]
   },
   "approaches": [],
@@ -83,7 +80,7 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.134Z",
-  "lastUpdate": "2026-02-24T12:00:00.000Z",
+  "lastUpdate": "2026-02-21T19:21:07.134Z",
   "significance": 6,
   "tractability": 6
 }

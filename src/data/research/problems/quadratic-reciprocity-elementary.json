@@ -1,94 +1,37 @@
 {
-  "slug": "quadratic-reciprocity-elementary",
+  "id": "quadratic-reciprocity-elementary",
   "title": "Elementary Proofs of Quadratic Reciprocity",
-  "phase": "COMPLETE",
-  "status": "complete",
-  "tier": "A",
-  "path": "full",
-  "problemStatement": {
-    "formal": "For odd primes p ≠ q: legendreSym p q * legendreSym q p = (-1)^((p-1)/2 * (q-1)/2). First supplement: legendreSym p (-1) = (-1)^((p-1)/2). Second supplement: legendreSym p 2 = (-1)^((p²-1)/8).",
-    "plain": "Formalize elementary proofs of quadratic reciprocity via Gauss's lemma, Eisenstein's lattice point counting, and the Eisenstein proof chain. Include first and second supplements.",
-    "whyMatters": [
-      "Quadratic reciprocity is Gauss's 'golden theorem' - one of the most important in number theory",
-      "The Eisenstein lattice point proof is a beautiful geometric argument",
-      "Connects Legendre symbols to lattice point counting via Gauss sums"
-    ]
-  },
-  "knownResults": {
-    "proven": [
-      "gauss_lemma_statement: Gauss's lemma for Legendre symbols",
-      "eisenstein_lemma_statement: Eisenstein's counting lemma",
-      "lattice_point_identity: lattice point symmetry for proof",
-      "elementary_quadratic_reciprocity: main QR law via Mathlib",
-      "eisenstein_proof_chain: full Eisenstein proof chain",
-      "qr_when_p_one_mod_four: special case p ≡ 1 mod 4",
-      "qr_when_both_three_mod_four: both p,q ≡ 3 mod 4 case",
-      "first_supplement: legendreSym p (-1)",
-      "second_supplement: legendreSym p 2"
-    ],
-    "open": [],
-    "goal": "COMPLETE - 9+ theorems proved with 0 sorries and 0 axioms"
-  },
-  "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-11T00:00:00.000Z",
-    "iteration": 1,
-    "focus": "Complete. 357 lines, 0 sorries, 0 axioms.",
-    "blockers": [],
-    "nextAction": "None - problem is complete.",
-    "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 1
-    }
-  },
+  "status": "graduated",
+  "phase": "BREAKTHROUGH",
   "knowledge": {
-    "progressSummary": "COMPLETE: ElementaryQuadraticReciprocity.lean has 357 lines with 9+ fully-proved theorems. Covers Gauss's lemma, Eisenstein's lemma, lattice point identity, the main QR law, Eisenstein proof chain, special cases (p≡1 mod 4, both≡3 mod 4), and both supplements. All built on Mathlib's legendreSym and ZMod infrastructure.",
-    "builtItems": [
-      "gauss_lemma_statement", "eisenstein_lemma_statement",
-      "lattice_point_identity", "elementary_quadratic_reciprocity",
-      "eisenstein_proof_chain", "qr_when_p_one_mod_four",
-      "qr_when_both_three_mod_four", "first_supplement", "second_supplement"
-    ],
+    "progressSummary": "COMPLETE: elementary-quadratic-reciprocity gallery fully proves this. 9 theorems, 0 sorries, 7 annotations. Badge: mathlib.",
     "insights": [
-      "Mathlib's ZMod.quadraticReciprocity provides the core QR law directly",
-      "Eisenstein proof chain reconstructs the lattice point argument on top of Mathlib",
-      "Both supplements follow cleanly from Mathlib's Legendre symbol infrastructure"
+      "This problem is already covered by gallery elementary-quadratic-reciprocity",
+      "ElementaryQuadraticReciprocity.lean: 357 lines, 9 theorems, 0 axioms, 0 sorries",
+      "Eisenstein's 1844 elementary proof: Gauss's Lemma + Eisenstein's Lemma + lattice point counting",
+      "KEY: (p/q)*(q/p) = (-1)^((p-1)/2 * (q-1)/2) for distinct odd primes",
+      "Proof uses GaussEisensteinLemmas from Mathlib (Gauss/Eisenstein summation formulas)",
+      "Gallery has 7 annotations covering: Eisenstein approach, Gauss's Lemma, Eisenstein's Lemma, lattice counting, main theorem, full chain, supplementary laws",
+      "Status verified, badge mathlib - no further formalization needed"
     ],
-    "mathlibGaps": [],
-    "nextSteps": []
-  },
-  "approaches": [
-    {
-      "name": "Eisenstein lattice point proof via Mathlib",
-      "description": "Use Mathlib's legendreSym + ZMod infrastructure, reconstruct Eisenstein proof chain",
-      "status": "complete",
-      "difficulty": "medium"
-    }
-  ],
-  "tags": [
-    "seeker-selected",
-    "number-theory",
-    "algebra",
-    "quadratic-reciprocity",
-    "extension",
-    "0-sorry",
-    "0-axiom"
-  ],
-  "relatedProofs": [
-    "ElementaryQuadraticReciprocity.lean"
-  ],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": [
-      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
-      "Mathlib.NumberTheory.LegendreSymbol.Basic",
-      "Mathlib.Data.ZMod.Basic"
+    "builtItems": [
+      "ElementaryQuadraticReciprocity.lean - 9 proved theorems",
+      "Gallery elementary-quadratic-reciprocity - 7 annotations, status verified",
+      "Legendre symbol quadratic reciprocity from Mathlib: ZMod.quadratic_reciprocity",
+      "Gauss's lemma formalization via GaussEisensteinLemmas"
+    ],
+    "mathlibGaps": [
+      "No gaps - Mathlib has full QR proof via GaussEisensteinLemmas"
+    ],
+    "nextSteps": [
+      "Gallery is complete - no further work needed",
+      "The research pool ID 'quadratic-reciprocity-elementary' maps to gallery 'elementary-quadratic-reciprocity'"
     ]
   },
-  "started": "2026-02-08T06:11:43.710Z",
-  "lastUpdate": "2026-02-11T00:00:00.000Z",
-  "significance": 7,
-  "tractability": 6
+  "meta": {
+    "claimedBy": "researcher-2",
+    "claimedAt": "2026-02-25",
+    "status": "graduated",
+    "galleryId": "elementary-quadratic-reciprocity"
+  }
 }
