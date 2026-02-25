@@ -279,4 +279,125 @@ theorem slln_mean_zero
       (nhds 0) := by
   simpa [hmean] using slln_under_finite_mean_only X hint hindep hident
 
+/-!
+## Section VII: Derived Convergence Results
+
+Corollaries and extensions of Kolmogorov's SLLN under various conditions.
+-/
+
+/-- **SLLN for L∞ (essentially bounded) random variables**.
+
+    If X₀, X₁, ... are i.i.d. and essentially bounded (|Xᵢ| ≤ M a.s. for some M),
+    then the sample mean converges almost surely to E[X₀].
+
+    L∞ ↪ L¹: any bounded random variable has finite mean (and all moments).
+    Chebyshev's WLLN applies too, but Kolmogorov gives the stronger a.s. result. -/
+theorem slln_for_Linfty
+    (X : ℕ → Ω → ℝ)
+    (hLinfty : ∀ i, MeasureTheory.Memℒp (X i) ∞ μ)
+    (hindep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ)
+    (hident : ∀ i, ProbabilityTheory.IdentDistrib (X i) (X 0) μ μ) :
+    ∀ᵐ ω ∂μ, Filter.Tendsto
+      (fun n : ℕ => (↑n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, X i ω)
+      Filter.atTop
+      (nhds (∫ x, X 0 x ∂μ)) :=
+  slln_under_finite_mean_only X ((hLinfty 0).integrable le_top) hindep hident
+
+/-- **SLLN for composed functions** of i.i.d. random variables.
+
+    If X₀, X₁, ... are i.i.d. and f : ℝ → ℝ is measurable with E[|f(X₀)|] < ∞,
+    then the sample average of f(Xᵢ) converges a.s. to E[f(X₀)].
+
+    This is the **Monte Carlo method's foundation**: sample averages of f(Xᵢ) converge
+    to the integral of f with respect to the distribution of X₀.
+    Also called the **sample analog principle** in statistics. -/
+theorem slln_for_composed
+    (X : ℕ → Ω → ℝ) (f : ℝ → ℝ) (hf : Measurable f)
+    (hint : MeasureTheory.Integrable (f ∘ X 0) μ)
+    (hindep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ)
+    (hident : ∀ i, ProbabilityTheory.IdentDistrib (X i) (X 0) μ μ) :
+    ∀ᵐ ω ∂μ, Filter.Tendsto
+      (fun n : ℕ => (↑n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, f (X i ω))
+      Filter.atTop
+      (nhds (∫ x, f (X 0 x) ∂μ)) := by
+  have hindep' : Pairwise fun i j => ProbabilityTheory.IndepFun (f ∘ X i) (f ∘ X j) μ :=
+    fun i j hij => (hindep hij).comp hf hf
+  have hident' : ∀ i, ProbabilityTheory.IdentDistrib (f ∘ X i) (f ∘ X 0) μ μ :=
+    fun i => (hident i).comp hf
+  exact slln_under_finite_mean_only (fun i => f ∘ X i) hint hindep' hident'
+
+/-- **SLLN for negated (sign-flipped) distributions**.
+
+    If X₀, X₁, ... satisfy SLLN, so do -X₀, -X₁, ...
+    The sample mean of (-Xᵢ) converges to -E[X₀].
+
+    Shows LLN is stable under negation: E[|-X₀|] = E[|X₀|] < ∞ is preserved. -/
+theorem slln_negated
+    (X : ℕ → Ω → ℝ)
+    (hint : MeasureTheory.Integrable (X 0) μ)
+    (hindep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ)
+    (hident : ∀ i, ProbabilityTheory.IdentDistrib (X i) (X 0) μ μ) :
+    ∀ᵐ ω ∂μ, Filter.Tendsto
+      (fun n : ℕ => (↑n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, -X i ω)
+      Filter.atTop
+      (nhds (∫ x, -(X 0 x) ∂μ)) :=
+  slln_for_composed X (fun x => -x) measurable_neg hint.neg hindep hident
+
+/-- The integral of (-f) equals the negation of the integral of f. -/
+theorem slln_negated_integral_eq
+    (X : ℕ → Ω → ℝ)
+    (hint : MeasureTheory.Integrable (X 0) μ)
+    (hindep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ)
+    (hident : ∀ i, ProbabilityTheory.IdentDistrib (X i) (X 0) μ μ) :
+    ∀ᵐ ω ∂μ, Filter.Tendsto
+      (fun n : ℕ => (↑n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, -X i ω)
+      Filter.atTop
+      (nhds (-(∫ x, X 0 x ∂μ))) := by
+  simp only [MeasureTheory.integral_neg]
+  exact slln_negated X hint hindep hident
+
+/-- **SLLN for affinely transformed distributions**.
+
+    If X₀, X₁, ... are i.i.d. and a, b ∈ ℝ, then the sample mean
+    of (a·Xᵢ + b) converges a.s. to `∫ (a·X₀ + b) ∂μ = a·E[X₀] + b`.
+
+    Shows LLN is equivariant under affine transformations. -/
+theorem slln_affine_transform
+    (X : ℕ → Ω → ℝ) (a b : ℝ)
+    (hint : MeasureTheory.Integrable (X 0) μ)
+    (hindep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ)
+    (hident : ∀ i, ProbabilityTheory.IdentDistrib (X i) (X 0) μ μ) :
+    ∀ᵐ ω ∂μ, Filter.Tendsto
+      (fun n : ℕ => (↑n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, (a * X i ω + b))
+      Filter.atTop
+      (nhds (∫ x, (a * X 0 x + b) ∂μ)) :=
+  slln_for_composed X (fun x => a * x + b) (by fun_prop)
+    ((hint.const_mul a).add (MeasureTheory.integrable_const b)) hindep hident
+
+/-- **SLLN for bounded measurable functions** of i.i.d. variables.
+
+    If X₀, X₁, ... are i.i.d. and f : ℝ → ℝ is measurable with |f| ≤ M everywhere,
+    then the sample mean of f(Xᵢ) converges a.s. to E[f(X₀)].
+
+    Boundedness (|f| ≤ M) + probability measure (μ(Ω) = 1) → integrability.
+    This covers empirical means of bounded statistics, indicator functions, etc. -/
+theorem slln_for_bounded_measurable
+    (X : ℕ → Ω → ℝ) (f : ℝ → ℝ) (M : ℝ)
+    (hf : Measurable f)
+    (hbound : ∀ x, ‖f x‖ ≤ M)
+    (hindep : Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ)
+    (hident : ∀ i, ProbabilityTheory.IdentDistrib (X i) (X 0) μ μ)
+    (hmeas0 : MeasureTheory.AEStronglyMeasurable (X 0) μ) :
+    ∀ᵐ ω ∂μ, Filter.Tendsto
+      (fun n : ℕ => (↑n : ℝ)⁻¹ • ∑ i ∈ Finset.range n, f (X i ω))
+      Filter.atTop
+      (nhds (∫ x, f (X 0 x) ∂μ)) := by
+  apply slln_for_composed hf
+  · apply MeasureTheory.Integrable.mono' (MeasureTheory.integrable_const M)
+    · exact hf.comp_aemeasurable hmeas0.aemeasurable
+    · filter_upwards with ω
+      exact hbound (X 0 ω)
+  · exact hindep
+  · exact hident
+
 end LawsOfLargeNumbersOQ01
