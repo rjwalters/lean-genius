@@ -187,167 +187,100 @@ theorem chromatic_lower_bound_for_non_robust [Fintype V] (G : SimpleGraph V)
   exact hno (ffllw_chromatic_lt_girth_implies_robust G h)
 
 /-
-## Tightness: The Bound is Achieved
+## Tightness: Note on the Rank-Based Formulation
 
-We axiomatize the key examples showing the lower bound is sharp.
+**KEY OBSERVATION**: Under the rank-based definition of `admitsRobustAcyclicOrientation`
+used in this file, `every_finite_graph_has_robust` proves that EVERY finite graph admits
+a robustly acyclic orientation. This means `¬admitsRobustAcyclicOrientation G` is always
+False for finite G (under this definition).
+
+Therefore:
+- `chromatic_lower_bound_for_non_robust` is VACUOUSLY TRUE (hypothesis is never satisfied)
+- `minimum_chromatic_non_robust` is VACUOUSLY TRUE
+- `triangle_free_non_robust_chromatic_bound` is VACUOUSLY TRUE
+- Existence of non-robust finite graphs is UNPROVABLE (false under this definition)
+
+The CLASSICAL FFLLW theorem uses a path-based definition of robust acyclicity where:
+  "No arc is dependent" means "reversing any arc doesn't create a directed cycle"
+Under that definition, the Grötzsch graph (girth 4, χ = 4) genuinely lacks a robust
+orientation. But the rank-based formulation (used here for its algebraic simplicity)
+makes every colorable finite graph robustly orientable.
+
+The tightness results (Grötzsch witness, Nešetřil-Rödl construction) are valid for
+the CLASSICAL definition but are not provable under the rank-based definition.
 -/
-
-/-- The Grötzsch graph is a celebrated example:
-    - It is triangle-free (girth 4)
-    - It has chromatic number 4
-    - It admits NO robustly acyclic orientation
-    This shows the lower bound χ ≥ girth is achieved at girth 4. -/
-axiom grotzsch_graph_witness :
-    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
-      G.egirth = 4 ∧
-      G.chromaticNumber = 4 ∧
-      ¬admitsRobustAcyclicOrientation G
-
-/-- For each g ≥ 3, there exists a graph with girth g, chromatic number g,
-    and no robustly acyclic orientation.
-
-    This establishes that the minimum chromatic number of a girth-g
-    non-robustly-orientable graph is exactly g (achieved by this construction).
-
-    Existence follows from combining:
-    - Nešetřil-Rödl (1978): For all g ≥ 3, there exist girth-g graphs
-      without robust orientations. Their construction uses the probabilistic
-      method to obtain graphs with girth g and chromaticNumber ≥ g.
-    - The lower bound (above) forces chromaticNumber ≥ g.
-    - Specific constructions achieve the minimum chromaticNumber = g. -/
-axiom minimum_chromatic_achieved (g : ℕ) (hg : g ≥ 3) :
-    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
-      G.egirth = (g : ℕ∞) ∧
-      G.chromaticNumber = (g : ℕ∞) ∧
-      ¬admitsRobustAcyclicOrientation G
 
 /-
-## Main Result: Minimum Chromatic Number = Girth
+## Main Result: Chromatic Lower Bound (Vacuously True)
 
-For girth-g graphs failing robust orientability, the minimum chromatic number
-is exactly g.
+Under the rank-based formulation, `¬admitsRobustAcyclicOrientation G` is never
+satisfied for finite G. The following theorems are VACUOUSLY TRUE: their
+hypotheses can never be fulfilled for finite graphs.
 -/
 
-/-- The minimum chromatic number of a girth-g graph failing robust orientability is g.
+/-- The chromatic lower bound for (hypothetically) non-robustly-orientable graphs.
 
-    More precisely: given any graph G with egirth g that fails robust orientability,
-    its chromatic number is at least g; and this bound is achieved. -/
+    VACUOUSLY TRUE: under the rank-based definition, no finite graph satisfies
+    ¬admitsRobustAcyclicOrientation, so the hypothesis is always false.
+
+    Classically (path-based definition): girth-g non-robust graphs satisfy χ ≥ g. -/
 theorem minimum_chromatic_non_robust [Fintype V] (G : SimpleGraph V)
     (g : ℕ)
     (hgirth : G.egirth = (g : ℕ∞))
     (hno : ¬admitsRobustAcyclicOrientation G) :
     (g : ℕ∞) ≤ G.chromaticNumber := by
-  -- The lower bound theorem gives egirth ≤ chromaticNumber
-  have hbound := chromatic_lower_bound_for_non_robust G hno
-  -- Since egirth = g, we get g ≤ chromaticNumber
-  rw [hgirth] at hbound
-  exact hbound
-
-/-- The minimum is exactly g: there exist girth-g graphs with chromaticNumber = g
-    failing robust orientability. -/
-theorem minimum_chromatic_tight (g : ℕ) (hg : g ≥ 3) :
-    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
-      G.egirth = (g : ℕ∞) ∧
-      G.chromaticNumber = (g : ℕ∞) ∧
-      ¬admitsRobustAcyclicOrientation G :=
-  minimum_chromatic_achieved g hg
+  exact absurd (every_finite_graph_has_robust G) hno
 
 /-
-## Corollaries: Specific Girths
--/
-
-/-- At girth 4 (triangle-free graphs): non-robust-orientable graphs need χ ≥ 4.
-    The Grötzsch graph achieves exactly χ = 4. -/
-theorem girth4_minimum_chromatic :
-    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
-      G.egirth = 4 ∧
-      G.chromaticNumber = 4 ∧
-      ¬admitsRobustAcyclicOrientation G :=
-  grotzsch_graph_witness
-
-/-- At girth 3 (graphs containing triangles): non-robust graphs need χ ≥ 3. -/
-theorem girth3_minimum_chromatic :
-    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
-      G.egirth = 3 ∧
-      G.chromaticNumber = 3 ∧
-      ¬admitsRobustAcyclicOrientation G :=
-  minimum_chromatic_achieved 3 (by norm_num)
-
-/-- At girth 5 (no cycles of length 3 or 4): non-robust graphs need χ ≥ 5. -/
-theorem girth5_minimum_chromatic :
-    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
-      G.egirth = 5 ∧
-      G.chromaticNumber = 5 ∧
-      ¬admitsRobustAcyclicOrientation G :=
-  minimum_chromatic_achieved 5 (by norm_num)
-
-/-- At girth 6: non-robust graphs need χ ≥ 6. -/
-theorem girth6_minimum_chromatic :
-    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
-      G.egirth = 6 ∧
-      G.chromaticNumber = 6 ∧
-      ¬admitsRobustAcyclicOrientation G :=
-  minimum_chromatic_achieved 6 (by norm_num)
-
-/-
-## Additional Structural Consequences
+## Additional Structural Consequences (Vacuously True)
 -/
 
 /-- Triangle-free graphs (girth ≥ 4) that fail robust orientability must have χ ≥ 4.
 
-    This follows because such graphs have egirth ≥ 4, and the lower bound gives
-    chromaticNumber ≥ egirth ≥ 4.
-
-    The Grötzsch graph (girth 4, χ = 4) shows this bound is tight. -/
+    VACUOUSLY TRUE under rank-based definition (hypothesis never satisfied).
+    Classically: the Grötzsch graph (girth 4, χ = 4) shows this bound is tight. -/
 theorem triangle_free_non_robust_chromatic_bound [Fintype V] (G : SimpleGraph V)
     (hgirth : (4 : ℕ∞) ≤ G.egirth)
     (hno : ¬admitsRobustAcyclicOrientation G) :
     (4 : ℕ∞) ≤ G.chromaticNumber :=
-  le_trans hgirth (chromatic_lower_bound_for_non_robust G hno)
+  absurd (every_finite_graph_has_robust G) hno
 
-/-- The minimum chromatic number of a girth-g non-robustly-orientable graph is EXACTLY g.
+/-- Chromatic lower bound: girth-g non-robust graphs satisfy g ≤ χ(G).
 
-    This combines the lower bound (χ ≥ g, from FFLLW contrapositively) with the
-    tightness result (some girth-g graph achieves χ = g with no robust orientation):
-    - Every girth-g non-robust graph satisfies (g : ℕ∞) ≤ chromaticNumber
-    - There exist girth-g non-robust graphs with chromaticNumber = g -/
-theorem minimum_chromatic_exactly_girth (g : ℕ) (hg : g ≥ 3) :
-    (∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V) (G : SimpleGraph V),
-      G.egirth = (g : ℕ∞) ∧ G.chromaticNumber = (g : ℕ∞) ∧ ¬admitsRobustAcyclicOrientation G) ∧
+    VACUOUSLY TRUE: the hypothesis ¬admitsRobustAcyclicOrientation is always
+    false for finite graphs under the rank-based definition.
+
+    Classical interpretation: In the path-based formulation, this is the key
+    lower bound from the FFLLW theorem's contrapositive. -/
+theorem minimum_chromatic_lower_bound (g : ℕ) :
     ∀ {W : Type} [Fintype W] (H : SimpleGraph W),
       H.egirth = (g : ℕ∞) → ¬admitsRobustAcyclicOrientation H → (g : ℕ∞) ≤ H.chromaticNumber :=
-  ⟨minimum_chromatic_achieved g hg, fun H hgirth hno => minimum_chromatic_non_robust H g hgirth hno⟩
+  fun H hgirth hno => absurd (every_finite_graph_has_robust H) hno
 
 /-
 ## Summary
 
-### Proved (no sorry):
+### Proved (no sorry, no axioms):
 1. `coloringOrientation_acyclic` - coloring orientation is acyclic
 2. `coloringOrientation_no_dependent_arcs` - no dependent arcs in coloring orientation
 3. `coloringOrientation_robustlyAcyclic` - coloring orientation is robustly acyclic
 4. `colorable_admits_robust` - any k-colorable graph has a robust orientation (no girth needed!)
 5. `ffllw_chromatic_lt_girth_implies_robust` - FFLLW theorem: χ(G) < girth(G) → robust orientation
-6. `chromatic_lower_bound_for_non_robust` - χ(G) ≥ girth(G) for non-robustly-orientable G
-7. `minimum_chromatic_non_robust` - lower bound g ≤ chromaticNumber when egirth = g
-8. `minimum_chromatic_tight` - tightness: minimum is achieved
-9. `girth4_minimum_chromatic` - Grötzsch graph witnesses girth 4 case
-10. `girth5_minimum_chromatic` - girth 5 case
-11. `girth3_minimum_chromatic` - girth 3 case (minimum_chromatic_achieved at g=3)
-12. `girth6_minimum_chromatic` - girth 6 case
-13. `triangle_free_non_robust_chromatic_bound` - triangle-free (girth ≥ 4) + non-robust → χ ≥ 4
-14. `minimum_chromatic_exactly_girth` - combined: lower bound AND tightness in one statement
+6. `every_finite_graph_has_robust` - every finite graph has a robust orientation (stronger!)
+7. `chromatic_lower_bound_for_non_robust` - χ(G) ≥ girth(G) for non-robustly-orientable G
+8. `minimum_chromatic_non_robust` - lower bound g ≤ chromaticNumber (VACUOUSLY TRUE)
+9. `triangle_free_non_robust_chromatic_bound` - triangle-free + non-robust → χ ≥ 4 (VACUOUSLY TRUE)
+10. `minimum_chromatic_lower_bound` - girth-g non-robust → g ≤ χ(G) (VACUOUSLY TRUE)
 
 ### Key Answer:
 The minimum chromatic number of a girth-g graph failing robust orientability is
-exactly g (for g ≥ 3).
+exactly g (for g ≥ 3) — valid in the classical path-based formulation.
 
-### Key Insight (from rank-based formulation):
-Under the rank-based definition of robust acyclicity, EVERY finite graph admits a
-robustly acyclic orientation (via the coloring orientation). The FFLLW hypothesis
-χ(G) < girth(G) is sufficient in the classical path-based formulation but becomes
-vacuous here. The non-trivial constraints come from the axiomatized tightness results.
-
-### Axiomatized (deep results requiring external references):
-1. `grotzsch_graph_witness` - Grötzsch graph is triangle-free, χ=4, non-robust
-2. `minimum_chromatic_achieved` - tightness via explicit construction for each g ≥ 3
+### Key Insight (rank-based formulation):
+Under the rank-based definition of robust acyclicity used here, EVERY finite graph
+admits a robustly acyclic orientation (via the coloring orientation). This makes
+`¬admitsRobustAcyclicOrientation G` always False for finite G, so theorems 8-10
+are vacuously true. The rank-based formulation is algebraically simpler but differs
+from the classical path-based definition where the Grötzsch graph genuinely fails
+robust orientability.
 -/
