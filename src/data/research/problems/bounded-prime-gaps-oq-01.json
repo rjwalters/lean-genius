@@ -1,0 +1,109 @@
+{
+  "slug": "bounded-prime-gaps-oq-01",
+  "title": "Bounded Prime Gaps OQ-01: Optimal Admissible Tuples and Gap Bound Hierarchy",
+  "phase": "COMPLETE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\min\\{D : \\exists \\text{ admissible } k\\text{-tuple of diameter } D, \\text{ Maynard-Tao applies}\\}",
+    "plain": "What is the minimum achievable prime gap bound H below 246 without assuming Elliott-Halberstam? The Polymath 8b theorem gives H \u2264 246 unconditionally, and H \u2264 12 conditionally on EH. The open question is whether the unconditional bound can be improved. The formalization establishes the admissible tuple framework: minimum diameters for k-tuples (2\u21922, 3\u21926, 5\u219212) and their connection to gap bounds.",
+    "whyMatters": [
+      "Bridges the gap between the proven H\u2264246 bound and the Twin Prime Conjecture (H=2)",
+      "Formalizes the key combinatorial objects (admissible tuples) at the heart of sieve theory",
+      "Establishes the mathematical framework for understanding why the EH-conditional bound is exactly 12"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "H \u2264 246 (Polymath 8b, unconditional) - formalized as axiom polymath_bounded_gaps_246",
+      "H \u2264 12 (conditional on EH) - formalized as axiom bounded_gaps_conditional_EH",
+      "H \u2265 2 (all prime gaps for n\u22651 are \u2265 2) - proved from primeGap_ge_two",
+      "Minimum diameter of admissible 2-tuple = 2 (connecting to TPC)",
+      "Minimum diameter of admissible 3-tuple = 6 ({0,2,6} is optimal)",
+      "All even 5-tuples with diameter \u2264 10 fail admissibility (by mod 3 argument)",
+      "{0,2,6,8,12} and {0,4,6,10,12} achieve the optimal diameter 12 for 5-tuples"
+    ],
+    "open": [
+      "Can H < 246 be achieved unconditionally?",
+      "The Twin Prime Conjecture (H=2) remains open",
+      "Whether H \u2264 12 can be proved without EH"
+    ],
+    "goal": "Formalize the admissible k-tuple theory and the gap bound hierarchy"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-25T03:07:53.055587+00:00",
+    "iteration": 2,
+    "focus": "Proved admissible tuple theory and gap bound hierarchy in BoundedPrimeGapsOQ01.lean",
+    "blockers": [],
+    "nextAction": "Consider adding to gallery",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Created BoundedPrimeGapsOQ01.lean with 15+ proved theorems about optimal admissible tuples and gap bound hierarchy. All proofs compile (0 sorries).",
+    "builtItems": [
+      "admissible_zero_implies_even (parity constraint for admissible sets)",
+      "not_admissible_0_2_4 (key 3-tuple failure at p=3, via decide)",
+      "not_admissible_0_2_4_6_8 and 4 other 5-tuple failures (via decide)",
+      "all_even_5_tuples_diam_10_not_admissible (general theorem by case analysis)",
+      "admissible_2_tuple_min_diam (minimum diameter 2 for 2-tuples)",
+      "admissible_3_tuple_min_diam (minimum diameter 6 for 3-tuples)",
+      "gap_bound_lower_bound (H \u2265 2 always)",
+      "gap_bound_upper_bound_246 (H \u2264 246 from Polymath axiom)",
+      "gap_bound_range (2 \u2264 H_opt \u2264 246)",
+      "liminf_two_implies_tpc (liminf = 2 implies TPC)",
+      "gap_bound_chain (TPC \u2192 EH \u2192 Polymath hierarchy)",
+      "polignac_1_iff_tpc (Polignac(1) \u2194 TPC)",
+      "OpenQuestion01 (formal definition of the open question)",
+      "tpc_implies_oq (TPC implies the open question is resolved)"
+    ],
+    "insights": [
+      "The parity constraint: any admissible set containing 0 must be all-even (proved from mod 2 argument)",
+      "All even 5-tuples with diameter \u2264 10 fail at p=3: mod 3 always covers {0,1,2}",
+      "The EH bound of 12 corresponds exactly to the minimum diameter of admissible 5-tuples",
+      "The gap bounds form a clean hierarchy: TPC (H=2) \u2192 EH (H=12) \u2192 Polymath (H=246)",
+      "The open question OQ-01 is: can any H < 246 be proved unconditionally?",
+      "Non-admissibility proofs via explicit prime witnesses + decide are the key technique",
+      "BoundedPrimeGapsOQ01 imports BoundedPrimeGaps and adds 15+ new theorems (0 sorries)"
+    ],
+    "mathlibGaps": [
+      "Deep sieve theory for Maynard-Tao is not in Mathlib (axiomized)"
+    ],
+    "nextSteps": [
+      "Consider adding a gallery entry for BoundedPrimeGapsOQ01",
+      "Could extend to prove optimal diameter for 7-tuple and 10-tuple",
+      "Consider formalization of Brun's constant (sum of twin prime reciprocals)"
+    ],
+    "markdown": "# Knowledge Base: bounded-prime-gaps-oq-01\n\n## Problem\nOptimal admissible k-tuple diameters and the gap bound hierarchy.\n\n## Proof File\n`proofs/Proofs/BoundedPrimeGapsOQ01.lean` - 438 lines, 0 sorries\n\n## Key Results\n- Minimum diameter: 2-tuple=2, 3-tuple=6, 5-tuple=12\n- All even 5-tuples with diameter \u2264 10 fail mod 3\n- Gap bound hierarchy: 2 \u2264 H_opt \u2264 246\n\n## Techniques\n- `decide` for concrete Finset cardinality computations\n- `interval_cases` for small case analysis\n- `omega` + `rcases` for value case splits\n"
+  },
+  "approaches": [
+    {
+      "name": "Admissible tuple optimization",
+      "status": "COMPLETE",
+      "description": "Prove non-admissibility of all small tuples, then min-diameter results by case analysis",
+      "outcome": "Success: all 15+ theorems proved, 0 sorries"
+    }
+  ],
+  "tags": [
+    "number-theory",
+    "prime-gaps",
+    "admissible-tuples",
+    "sieve-theory",
+    "twin-primes"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-25T03:07:35.163Z",
+  "lastUpdate": "2026-02-25T03:07:53.055587+00:00",
+  "significance": 8,
+  "tractability": 8
+}
