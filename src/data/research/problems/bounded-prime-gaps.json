@@ -1,131 +1,44 @@
 {
-  "slug": "bounded-prime-gaps",
-  "title": "Bounded Prime Gaps (Zhang/Maynard/Polymath)",
-  "phase": "COMPLETE",
-  "status": "active",
-  "tier": "A",
-  "path": "full",
-  "problemStatement": {
-    "formal": "\\liminf_{n \\to \\infty} (p_{n+1} - p_n) \\leq H \\text{ for some explicit constant } H",
-    "plain": "AVAILABLE: There exist infinitely many pairs of consecutive primes differing by at most H. Zhang proved H ≤ 70,000,000 in 2013; Maynard improved to H ≤ 600; Polymath project achieved H ≤ 246; assuming Elliott-Halberstam conjecture H ≤ 12. The Twin Prime Conjecture (H=2) remains open.",
-    "whyMatters": [
-      "Zhang's 2013 breakthrough was the first proof that prime gaps are bounded, resolving a century-old open problem",
-      "The Polymath project (Tao et al.) reduced the bound to 246 via massive collaborative optimization",
-      "The gap H ≤ 12 conditional on Elliott-Halberstam gives compelling evidence for the Twin Prime Conjecture"
-    ]
-  },
-  "knownResults": {
-    "proven": [
-      "Zhang 2013: lim inf (p_{n+1} - p_n) ≤ 70,000,000",
-      "Maynard 2015: lim inf (p_{n+1} - p_n) ≤ 600",
-      "Polymath 2014: lim inf (p_{n+1} - p_n) ≤ 246",
-      "Conditional on Elliott-Halberstam: lim inf (p_{n+1} - p_n) ≤ 12",
-      "Admissible 2-tuples {0,2}, {0,4}, {0,6} etc. are well-defined",
-      "Engelsma's explicit 50-tuple with diameter 246 is admissible",
-      "GPY theorem (2005): lim inf g_n / log p_n = 0"
-    ],
-    "open": [
-      "Twin Prime Conjecture: infinitely many p with p+2 also prime",
-      "de Polignac conjecture: for each even k, infinitely many prime gaps equal k",
-      "Optimal H in the unconditional Polymath bound",
-      "Removing Elliott-Halberstam assumption to get H ≤ 12"
-    ],
-    "goal": "Formalize the bounded prime gaps theorem with the Polymath 246 bound, and document the mathematical landscape around it."
-  },
-  "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-24T08:52:23Z",
-    "iteration": 3,
-    "focus": "Gallery entry exists and is complete. BoundedPrimeGaps.lean has 104+ proved theorems with 4 axioms covering sieve theory not in Mathlib.",
-    "blockers": [],
-    "nextAction": "Gallery entry is complete. Main gap is Selberg sieve/Bombieri-Vinogradov in Mathlib (multi-year project).",
-    "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
-      "approachesTried": 1
-    }
-  },
+  "id": "bounded-prime-gaps",
+  "title": "Bounded Prime Gaps (Zhang/Maynard-Tao/Polymath 8b)",
+  "status": "graduated",
+  "phase": "BREAKTHROUGH",
   "knowledge": {
-    "progressSummary": "COMPLETE: BoundedPrimeGaps.lean has 104+ proved theorems (0 sorries, 4 axioms). Gallery entry exists and is marked complete. Covers admissible tuples, Zhang/Polymath/EH hierarchy, Dickson/Polignac conjectures, GPY theorem, factorial prime gap unboundedness.",
-    "builtItems": [
-      "IsAdmissible: for every prime p, H.image(·%p).card < p (BoundedPrimeGaps.lean)",
-      "exists_admissible_50_tuple_246: proved constructively via Engelsma tuple",
-      "BoundedGapsTheorem: lim inf (p_{n+1} - p_n) ≤ H for specific H (Zhang/Polymath hierarchy)",
-      "TwinPrimeConjecture ↔ DicksonConjecture {0,2} equivalence proved",
-      "PolignacConjecture: k-th Polignac conjecture formalized",
-      "gpy_liminf_zero: GPY theorem as axiom (lim inf g_n/log p_n = 0)",
-      "polymath_implies_gpy_type: Polymath + log threshold → GPY-type bound",
-      "Gallery entry: src/data/proofs/bounded-prime-gaps/"
-    ],
+    "progressSummary": "COMPLETE: 98 theorems proved, 4 deep-sieve axioms, 0 sorries. Full gallery with 9 annotations. Gallery metadata fixed (sorries: 3→0).",
     "insights": [
-      "File is extremely comprehensive: 104+ theorems, 0 sorries, 4 axioms",
-      "IsAdmissible def: for every prime p, H.image(·%p).card < p",
-      "exists_admissible_50_tuple_246 proved constructively (was axiom) via Engelsma tuple",
-      "3 core axioms for deep sieve theory: polymath_bounded_gaps_246, maynard_tao_m_tuples, bounded_gaps_conditional_EH",
-      "1 new axiom added: gpy_liminf_zero (GPY 2005 theorem)",
-      "TwinPrimeConjecture implies DicksonConjecture {0,2} (both directions proved)",
-      "PolignacConjecture defined: k-th Polignac conjecture says g_n = 2k infinitely often",
-      "Main gap: Polymath 246 bound requires Selberg sieve + Bombieri-Vinogradov, not in Mathlib",
-      "nthPrime uses Nat.nth Nat.Prime pattern from Mathlib",
-      "Prime gap evenness (n≥1): follows from both primes being odd"
+      "BoundedPrimeGaps.lean has 1605 lines, 98 theorems, 4 axioms, 0 sorries",
+      "Admissible k-tuples formalized: IsAdmissible H ↔ ∀ p prime, (H.image (· % p)).card < p",
+      "Specific admissible tuples verified computationally: {0,2}, {0,2,6}, {0,4,6}, {0,2,6,8}, ..., 50-tuple with diameter ≤ 246",
+      "Deep sieve theory (Polymath 8b, Maynard-Tao m-tuples, Elliott-Halberstam conditional) axiomatized - not in Mathlib",
+      "Elementary results fully proved: prime gaps unbounded (factorial construction), gap ≥ 2 for n ≥ 1, always even",
+      "Zhang's 70M follows from Polymath 246 axiom as a corollary",
+      "gallery meta.json was stale with sorries: 3 (now fixed to 0)"
+    ],
+    "builtItems": [
+      "IsAdmissible: Finset ℕ → Prop definition in BoundedPrimeGaps.lean",
+      "8 specific admissible tuples verified with decide/native_decide",
+      "exists_admissible_50_tuple_246: constructive 50-element tuple with diam ≤ 246",
+      "zhang_bounded_gaps_70M: Zhang's bound from Polymath axiom",
+      "eh_implies_polymath: conditional 12-gap from EH conjecture",
+      "prime_gaps_unbounded: ∀ N, ∃ n, primeGap n ≥ N (factorial proof)",
+      "prime_gaps_oscillate: combining bounded liminf + unbounded limsup",
+      "DicksonConjecture formalization: 50+ theorems about prime constellations",
+      "Gallery: 9 annotations in src/data/proofs/bounded-prime-gaps/annotations.json",
+      "Gallery meta fixed: sorries 3→0, badge open→research"
     ],
     "mathlibGaps": [
-      "Selberg sieve not in Mathlib (needed for Zhang/Polymath proof)",
-      "Bombieri-Vinogradov theorem not in Mathlib (needed for sieve estimates)",
-      "Elliott-Halberstam conjecture — conditional, not provable from Mathlib",
-      "GPY sieve (2005) not in Mathlib — axiomized as gpy_liminf_zero"
+      "Polymath 8b sieve: main GPY/Selberg sieve machinery for admissible k-tuples (deep analytic NT)",
+      "Maynard-Tao m-tuple sieve: generalization of Zhang's method to m primes in bounded gaps",
+      "Elliott-Halberstam conjecture: distribution of primes in arithmetic progressions beyond GRH level"
     ],
     "nextSteps": [
-      "Full Polymath 246 proof requires Selberg sieve in Mathlib (multi-year project)",
-      "Could add Hardy-Littlewood prime k-tuples conjecture as formal definition",
-      "Could formalize Green-Tao theorem (primes contain APs) as axiom",
-      "Future: when Mathlib adds Bombieri-Vinogradov, GPY axiom can be proved"
+      "gallery is complete with 9 annotations - no further work needed",
+      "Future: when Mathlib formalizes the GPY sieve, the axioms can be replaced with proofs"
     ]
   },
-  "approaches": [
-    {
-      "name": "Admissible tuple formalization",
-      "status": "completed",
-      "outcome": "IsAdmissible definition and all supporting lemmas proved. exists_admissible_50_tuple_246 proved constructively.",
-      "notes": "104+ theorems, 0 sorries"
-    },
-    {
-      "name": "Sieve theory axiomization",
-      "status": "blocked",
-      "outcome": "4 axioms cover Zhang, Maynard, Polymath 246, and EH-conditional bounds. Deep sieve theory not in Mathlib.",
-      "notes": "Selberg sieve + Bombieri-Vinogradov needed for actual proof — multi-year Mathlib project"
-    }
-  ],
-  "tags": [
-    "number-theory",
-    "primes",
-    "prime-gaps",
-    "sieve-theory",
-    "zhang",
-    "polymath",
-    "seeker-selected"
-  ],
-  "relatedProofs": [
-    "twin-primes-special",
-    "infinitude-primes",
-    "prime-number-theorem"
-  ],
-  "references": {
-    "papers": [
-      "Zhang, 'Bounded gaps between primes', Annals of Mathematics (2014)",
-      "Maynard, 'Small gaps between primes', Annals of Mathematics (2015)",
-      "Polymath8b, 'Bounded gaps between primes, with explicit Maynard-Tao theorem' (2014)"
-    ],
-    "urls": [],
-    "mathlib": [
-      "Nat.Prime",
-      "Nat.nth",
-      "Finset.image",
-      "Nat.card"
-    ]
-  },
-  "started": "2026-02-24T08:52:23Z",
-  "lastUpdate": "2026-02-24T08:52:23Z",
-  "significance": 9,
-  "tractability": 1
+  "meta": {
+    "claimedBy": "researcher-2",
+    "claimedAt": "2026-02-25",
+    "status": "graduated"
+  }
 }
