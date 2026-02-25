@@ -66,36 +66,43 @@
       "id": "definitions",
       "title": "Robust Orientation Definitions",
       "startLine": 43,
-      "endLine": 95,
-      "summary": "GraphOrientation structure, isAcyclic, hasDependentArc, isRobustlyAcyclic, admitsRobustAcyclicOrientation"
+      "endLine": 84,
+      "summary": "GraphOrientation structure (arc, covers, exclusive, respects), isAcyclic (rank-witness), hasDependentArc (rank-forcing), isRobustlyAcyclic (acyclic ∧ ¬dependent), admitsRobustAcyclicOrientation"
+    },
+    {
+      "id": "coloring-orientation",
+      "title": "Coloring Orientation Construction",
+      "startLine": 85,
+      "endLine": 134,
+      "summary": "coloringOrientation: orient u→v when col(u) < col(v). Proved: coloringOrientation_acyclic (col.val as rank), coloringOrientation_no_dependent_arcs (rank contradicts dependency), colorable_admits_robust"
     },
     {
       "id": "ffllw",
       "title": "Fisher-Fraughnaugh-Langley-West Theorem (1997)",
-      "startLine": 97,
-      "endLine": 115,
-      "summary": "Axiom: χ(G) < girth(G) implies G admits a robustly acyclic orientation"
+      "startLine": 135,
+      "endLine": 168,
+      "summary": "ffllw_chromatic_lt_girth_implies_robust: PROVED using colorable_of_fintype + coloring orientation. Stronger: every_finite_graph_has_robust — every finite graph admits a robust orientation (girth condition unused)."
     },
     {
-      "id": "lower-bound",
-      "title": "Lower Bound: χ ≥ girth for Non-Robust Graphs",
-      "startLine": 117,
-      "endLine": 135,
-      "summary": "chromatic_lower_bound_for_non_robust: proved by contrapositive from FFLLW"
+      "id": "lower-bound-and-vacuousness",
+      "title": "Lower Bound and Rank-Based Vacuousness",
+      "startLine": 169,
+      "endLine": 258,
+      "summary": "chromatic_lower_bound_for_non_robust: contrapositive proof. KEY OBSERVATION (line 189): rank-based isRobustlyAcyclic ≡ isAcyclic, so every finite graph admits rank-based robust orientation, making ¬admitsRobustAcyclicOrientation always False. Vacuously true theorems: minimum_chromatic_non_robust, triangle_free_non_robust_chromatic_bound, minimum_chromatic_lower_bound."
     },
     {
-      "id": "tightness",
-      "title": "Tightness: The Bound is Achieved",
-      "startLine": 137,
-      "endLine": 180,
-      "summary": "Grötzsch graph witness (girth 4, χ=4) and general minimum_chromatic_achieved for all g ≥ 3"
+      "id": "classical-definitions",
+      "title": "Classical Robust Acyclicity: The Correct Definition",
+      "startLine": 259,
+      "endLine": 379,
+      "summary": "hasClassicallyDependentArc (arc (u,v) is dependent if others FORCE rank u < rank v, implying u→...→v path), isClassicallyRobust, admitsClassicalRobustOrientation. Proof k3_no_classical_robust: K₃ has no classical robust orientation — exhaustive case analysis over all 6 acyclic orientations of the triangle, each case showing a dependent arc."
     },
     {
-      "id": "main-result",
-      "title": "Main Result and Corollaries",
-      "startLine": 182,
-      "endLine": 230,
-      "summary": "minimum_chromatic_non_robust, minimum_chromatic_tight, girth4/5 examples"
+      "id": "classical-witnesses",
+      "title": "Classical Witnesses and FFLLW Classical",
+      "startLine": 380,
+      "endLine": 449,
+      "summary": "k3_egirth_eq_3 and k3_chromaticNumber_eq_3 (axioms). girth3_classical_witness: K₃ witnesses girth-3 case. ffllw_classical (axiom): classical lower bound — girth-g non-classically-robust graphs have χ ≥ g. Summary block: 15 proved theorems, 3 axioms, explanation of rank-based vs classical distinction."
     }
   ],
   "conclusion": {
