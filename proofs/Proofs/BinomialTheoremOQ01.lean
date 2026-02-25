@@ -144,17 +144,64 @@ theorem genBinom_ode_coeff (α : ℝ) (k : ℕ) :
   ring
 
 /-
-  Section: Main Theorem (Axiomatized)
+  Section: Connecting genBinom to Mathlib's Ring.choose
+-/
+
+/-- Auxiliary: (descPochhammer ℤ n).smeval α equals the falling product.
+    This connects Pochhammer theory (used in Ring.choose) to the product formula
+    used in genBinom. Key: use aeval_eq_smeval to access richer aeval API. -/
+private lemma smeval_descPochhammer_int_eq_prod (n : ℕ) (α : ℝ) :
+    (Polynomial.descPochhammer ℤ n).smeval α =
+    ∏ j ∈ Finset.range n, (α - (j : ℝ)) := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [← Polynomial.aeval_eq_smeval, Polynomial.descPochhammer_succ_right,
+        map_mul, map_sub, Polynomial.aeval_X, map_natCast,
+        ← Polynomial.aeval_eq_smeval, ih, Finset.prod_range_succ]
+    push_cast; ring
+
+/-- Auxiliary: Ring.choose α k = genBinom α k.
+    Both equal the falling factorial α*(α-1)*...*(α-k+1) divided by k!
+    Ring.choose uses descPochhammer; genBinom uses Finset.prod. -/
+private lemma ring_choose_eq_genBinom (α : ℝ) (k : ℕ) :
+    Ring.choose α k = genBinom α k := by
+  rw [Ring.choose_eq_smul, smeval_descPochhammer_int_eq_prod]
+  simp only [genBinom, smul_eq_mul]
+  ring
+
+/-
+  Section: Main Theorem (proved from Mathlib's binomial series)
 -/
 
 /-- Newton's generalized binomial theorem: for any real alpha and |x| < 1, the
     power series Sum C(alpha,k) x^k converges to (1+x)^alpha.
 
-    Full proof: (1+x)^alpha = exp(alpha*log(1+x)); expand log(1+x) as a power
-    series and compose with the exp series, showing termwise agreement. Alternatively,
-    show the series satisfies y' = alpha*y/(1+x) with y(0) = 1. -/
-axiom newton_generalized_binomial (α x : ℝ) (hx : ‖x‖ < 1) :
-    HasSum (fun k => genBinom α k * x ^ k) ((1 + x) ^ α)
+    Proved from Mathlib's Real.one_add_rpow_hasFPowerSeriesOnBall_zero, which
+    establishes that the binomial formal power series (with Ring.choose coefficients)
+    converges to (1+x)^a on the unit ball around 0. We connect Ring.choose to our
+    genBinom via the shared descPochhammer / falling factorial formula. -/
+theorem newton_generalized_binomial (α x : ℝ) (hx : ‖x‖ < 1) :
+    HasSum (fun k => genBinom α k * x ^ k) ((1 + x) ^ α) := by
+  -- Step 1: Place x in the extended metric unit ball
+  have hball : x ∈ EMetric.ball (0 : ℝ) 1 := by
+    rw [EMetric.mem_ball, edist_zero_right]
+    rw [show (1 : ℝ≥0∞) = ((1 : NNReal) : ℝ≥0∞) from ENNReal.coe_one.symm,
+        ENNReal.coe_lt_coe]
+    exact_mod_cast hx
+  -- Step 2: Extract HasSum from HasFPowerSeriesOnBall
+  have key : HasFPowerSeriesOnBall (fun y : ℝ => (1 + y) ^ α) (binomialSeries ℝ α) 0 1 :=
+    Real.one_add_rpow_hasFPowerSeriesOnBall_zero
+  have h1 : HasSum (fun n => binomialSeries ℝ α n (fun _ => x)) ((1 + x) ^ α) := by
+    have := key.hasSum hball
+    simp only [zero_add] at this
+    exact this
+  -- Step 3: Rewrite binomialSeries coefficients as genBinom α k * x^k
+  apply h1.congr
+  intro k
+  simp only [binomialSeries_apply, List.ofFn_const, List.prod_replicate, smul_eq_mul]
+  congr 1
+  exact ring_choose_eq_genBinom α k
 
 /-- Newton's theorem for the square root: Sum C(1/2, k) x^k = sqrt(1+x). -/
 theorem sqrt_series (x : ℝ) (hx : ‖x‖ < 1) :
@@ -180,7 +227,7 @@ theorem geometric_from_newton (x : ℝ) (hx : ‖x‖ < 1) :
 /-
   Summary
 
-  Proved (0 sorries):
+  Proved (0 sorries, 0 axioms):
   1. genBinom_zero: C(alpha, 0) = 1
   2. genBinom_one: C(alpha, 1) = alpha
   3. genBinom_two: C(alpha, 2) = alpha*(alpha-1)/2
@@ -191,15 +238,15 @@ theorem geometric_from_newton (x : ℝ) (hx : ‖x‖ < 1) :
   8. geometric_series_is_genBinom_neg_one: geometric series as alpha = -1 case
   9. sqrt_series: Sum C(1/2,k) x^k = sqrt(1+x) for |x| < 1
   10. genBinom_series_summable: series converges for |x| < 1
-  11. genBinom_series_tsum: tsum formula via Newton's axiom
+  11. genBinom_series_tsum: tsum formula via newton_generalized_binomial
   12. geometric_from_newton: (1+x)^(-1) = 1/(1+x)
   13. standard_binomial: (1+x)^n = finite sum genBinom terms (for natural n)
   14. genBinom_nat_finite_sum: corollary of standard_binomial
   15. genBinom_recurrence_deriv: (k+1)*C(alpha,k+1) = C(alpha,k)*(alpha-k)
   16. genBinom_ode_coeff: ODE coefficient identity for (1+x)*f'=alpha*f
-
-  Axiomatized (1 axiom):
-  - newton_generalized_binomial: HasSum formula (requires analytic function theory)
+  17. smeval_descPochhammer_int_eq_prod: (descPochhammer ℤ n).smeval α = ∏ j in range n, (α-j)
+  18. ring_choose_eq_genBinom: Ring.choose α k = genBinom α k
+  19. newton_generalized_binomial: HasSum Sum C(α,k)x^k = (1+x)^α (PROVED!)
 
   Key Insights:
   - genBinom generalizes Nat.choose to all alpha in Real
@@ -209,9 +256,9 @@ theorem geometric_from_newton (x : ℝ) (hx : ‖x‖ < 1) :
   - For alpha=1/2: square root series (C(1/2,k) are half-integer binomial coefficients)
   - Convergence radius exactly 1: |x| < 1 is necessary and sufficient
   - Mathlib: genBinom connects to Nat.descFactorial via the falling factorial product
-  - ODE characterization: (1+x)*f' = alpha*f with f(0)=1 uniquely determines (1+x)^alpha
-  - ODE approach: if we could prove convergence and differentiate term by term, the
-    axiom follows from ODE uniqueness (Picard-Lindeloef theorem)
+  - Mathlib has Real.one_add_rpow_hasFPowerSeriesOnBall_zero in Analysis.Analytic.Binomial
+  - Ring.choose = genBinom via the shared descPochhammer / falling factorial formula
+  - Key chain: smeval descPochhammer ℤ via aeval_eq_smeval + descPochhammer_succ_right
 -/
 
 end BinomialTheoremOQ01
