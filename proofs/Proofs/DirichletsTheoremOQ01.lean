@@ -320,7 +320,9 @@ theorem siegel_zero_in_upper_half {N : ℕ} [NeZero N] {χ : DirichletCharacter 
   have hlogN_pos : 0 < Real.log N := Real.log_pos (by exact_mod_cast show 1 < N by omega)
   have ⟨hlb, hub⟩ := Set.mem_Ioo.mp h.1
   have hlt : c / Real.log N < 1/2 := by
-    rw [div_lt_iff hlogN_pos]
+    have h : 2 * (c / Real.log N) < 1 := by
+      rw [show 2 * (c / Real.log N) = 2 * c / Real.log N from by ring]
+      exact (div_lt_one hlogN_pos).mpr (by linarith)
     linarith
   exact ⟨by linarith, hub⟩
 
@@ -375,6 +377,98 @@ theorem grh_implies_no_siegel_zeros_large_conductor
     exact_mod_cast hexp
   rw [Real.log_exp] at hlog_ineq
   linarith
+
+/-
+## Part VIII: Additional Structural Results
+-/
+
+/-- A Siegel zero β is strictly less than 1 (by definition of the region). -/
+theorem siegel_zero_not_one {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N}
+    {β c : ℝ} {hc : 0 < c} {hN : 2 ≤ N}
+    (h : IsSiegelZero χ β c hc hN) :
+    β ≠ 1 :=
+  ne_of_lt h.1.2
+
+/-- A Siegel zero is a genuine zero of L(s, χ). -/
+theorem siegel_zero_is_LFunction_zero {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N}
+    {β c : ℝ} {hc : 0 < c} {hN : 2 ≤ N}
+    (h : IsSiegelZero χ β c hc hN) :
+    LFunction χ β = 0 := h.2
+
+/-- When c < log(N), the Siegel zero region is non-empty.
+    This is a necessary condition for Siegel zeros to potentially exist. -/
+theorem siegel_zero_region_nonempty {N : ℕ} [NeZero N] (hN : 2 ≤ N) (c : ℝ)
+    (hc : 0 < c) (hcN : c < Real.log N) :
+    Set.Nonempty (Set.Ioo (1 - c / Real.log N) (1 : ℝ)) := by
+  rw [Set.nonempty_Ioo]
+  have hlogN : 0 < Real.log N := Real.log_pos (by exact_mod_cast show 1 < N by omega)
+  linarith [(div_lt_one hlogN).mpr hcN, div_pos hc hlogN]
+
+/-- A Siegel zero lies in (0, 1) when c ≤ log(N). -/
+theorem siegel_zero_in_open_unit {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N}
+    {β c : ℝ} {hc : 0 < c} {hN : 2 ≤ N}
+    (h : IsSiegelZero χ β c hc hN)
+    (hcN : c ≤ Real.log N) :
+    0 < β ∧ β < 1 := by
+  have hlogN : 0 < Real.log N := Real.log_pos (by exact_mod_cast show 1 < N by omega)
+  have ⟨hlb, hub⟩ := siegel_zero_bounds h
+  have hge : 0 ≤ 1 - c / Real.log N := by
+    rw [sub_nonneg]; exact (div_le_one hlogN).mpr hcN
+  exact ⟨by linarith, hub⟩
+
+/-- **Monotonicity of Siegel zero existence**: If χ has a Siegel zero for constant c₁,
+    it also has one for any c₂ ≥ c₁ (the zero region gets larger as c increases). -/
+theorem has_siegel_zero_mono {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
+    {c₁ c₂ : ℝ} (hc₁ : 0 < c₁) (hc₂ : 0 < c₂) (hN : 2 ≤ N)
+    (hle : c₁ ≤ c₂) (h : HasSiegelZero χ c₁ hc₁ hN) :
+    HasSiegelZero χ c₂ hc₂ hN := by
+  obtain ⟨β, ⟨hlb, hub⟩, hzero⟩ := h
+  have hlogN : 0 < Real.log N := Real.log_pos (by exact_mod_cast show 1 < N by omega)
+  have hdiv : c₁ / Real.log N ≤ c₂ / Real.log N :=
+    (div_le_div_right hlogN).mpr hle
+  exact ⟨β, ⟨by linarith, hub⟩, hzero⟩
+
+/-- **Contrapositive of monotonicity**: If χ has no Siegel zero for c₂,
+    it has no Siegel zero for any c₁ ≤ c₂ either. -/
+theorem not_has_siegel_zero_of_smaller {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
+    {c₁ c₂ : ℝ} (hc₁ : 0 < c₁) (hc₂ : 0 < c₂) (hN : 2 ≤ N)
+    (hle : c₁ ≤ c₂) (h : ¬ HasSiegelZero χ c₂ hc₂ hN) :
+    ¬ HasSiegelZero χ c₁ hc₁ hN :=
+  fun h₁ => h (has_siegel_zero_mono χ hc₁ hc₂ hN hle h₁)
+
+/-- **Landau-Page uniqueness**: Two characters with distinct conductors cannot
+    both have Siegel zeros in the same region. -/
+theorem landau_page_uniqueness
+    (Q : ℕ) (hQ : 2 ≤ Q) (c : ℝ) (hc : 0 < c)
+    {N₁ N₂ : ℕ} [NeZero N₁] [NeZero N₂]
+    (χ₁ : DirichletCharacter ℂ N₁) (χ₂ : DirichletCharacter ℂ N₂)
+    (hN₁ : N₁ ≤ Q) (hN₂ : N₂ ≤ Q) (hχ₁ : χ₁ ≠ 1) (hχ₂ : χ₂ ≠ 1)
+    (hne : N₁ ≠ N₂)
+    (h₁ : ∃ β₁ : ℝ, β₁ ∈ Set.Ioo (1 - c / Real.log Q) 1 ∧ LFunction χ₁ β₁ = 0) :
+    ¬ ∃ β₂ : ℝ, β₂ ∈ Set.Ioo (1 - c / Real.log Q) 1 ∧ LFunction χ₂ β₂ = 0 :=
+  fun h₂ => hne (at_most_one_exceptional_conductor Q hQ c hc χ₁ χ₂ hN₁ hN₂ hχ₁ hχ₂ h₁ h₂)
+
+/-- **Siegel's theorem implies L(1, χ) > 0** (alternative nonvanishing proof).
+    Taking ε = 1/2, Siegel's theorem gives an explicit lower bound C/√N > 0. -/
+theorem siegel_implies_L_one_pos {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
+    (hχ : χ ≠ 1) (hN : 1 < (N : ℝ)) :
+    0 < ‖LFunction χ 1‖ := by
+  obtain ⟨C, hC, hsiegel⟩ := siegel_theorem (1/2) (by norm_num)
+  have hN_rpow : 0 < (N : ℝ) ^ ((1/2) : ℝ) :=
+    Real.rpow_pos_of_pos (by linarith) _
+  linarith [hsiegel N χ hχ hN, div_pos hC hN_rpow]
+
+/-- **GRH effective bound implies L(1, χ) > 0**.
+    Under GRH, L(1, χ) ≥ C/log(N)² > 0, a stronger and effective version. -/
+theorem grh_bound_implies_L_one_pos
+    (grh : ∀ (M : ℕ) [NeZero M] (χ' : DirichletCharacter ℂ M) (s : ℂ),
+      1/2 < s.re → s.re < 1 → LFunction χ' s ≠ 0)
+    {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1) (hN : 2 ≤ N) :
+    0 < ‖LFunction χ 1‖ := by
+  obtain ⟨C, hC, hbound⟩ := grh_implies_no_siegel_zeros grh
+  have hlogN_sq_pos : 0 < Real.log N ^ 2 :=
+    sq_pos_of_pos (Real.log_pos (by exact_mod_cast show 1 < N by omega))
+  linarith [hbound N χ hχ hN, div_pos hC hlogN_sq_pos]
 
 end DirichletsTheoremOQ01
 
