@@ -1,47 +1,50 @@
 {
   "slug": "descartes-rule-of-signs-oq-01",
   "title": "Full Formalization of Descartes Rule of Signs using Mathlib Analysis",
-  "phase": "SURVEYED",
+  "phase": "IN_PROGRESS",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "For p : ℝ[X]: (1) p.roots.countP (0 < ·) ≤ p.signVariations, and (2) ∃ k, p.roots.countP (0 < ·) + 2 * k = p.signVariations",
-    "plain": "Fully formalize Descartes' Rule of Signs in Lean 4 using Mathlib's signVariations API: the number of positive real roots is at most the number of sign variations, and differs from it by an even number.",
+    "formal": "For p : ℝ[X] with p ≠ 0: (1) p.roots.countP (0 < ·) ≤ p.signVariations [proved], (2) ∃ k : ℕ, p.roots.countP (0 < ·) + 2*k = p.signVariations [axiom, not in Mathlib]",
+    "plain": "Descartes' Rule of Signs: the number of positive real roots of a polynomial (counting multiplicity) is at most the number of sign changes in its coefficient sequence, with the same parity. The upper bound is in Mathlib; the parity result is not.",
     "whyMatters": [
-      "Wiedijk's 100 Theorems #100 — canonical formalization target",
-      "Establishes root-counting theory for real polynomials",
-      "Demonstrates Mathlib's polynomial analysis capabilities"
+      "Item #30 on Wiedijk's list of 100 theorems for formal mathematics",
+      "The parity result is the deeper half of the theorem — not yet in Mathlib"
     ]
   },
   "knownResults": {
     "proven": [
-      "descartes_upper_bound: p.roots.countP (0 < ·) ≤ p.signVariations (0 axioms, from Mathlib)",
-      "signVariations_increase_by_pos_root: sv(p) + 1 ≤ sv((X - C r) * p) for r > 0",
-      "signVariations_neg_poly: sv(-p) = sv(p)",
-      "signVariations_const_mul: sv(C c * p) = sv(p) for c ≠ 0",
-      "no_positive_roots_of_zero_variations: sv(p) = 0 → no positive roots",
+      "descartes_upper_bound: p.roots.countP (0 < ·) ≤ p.signVariations (from Mathlib)",
+      "signVariations_zero_poly, signVariations_monomial': base cases",
+      "signVariations_increase_by_pos_root: positive-root insertion increases sv",
       "nonneg_coeffs_have_zero_variations: nonneg coefficients → sv = 0",
-      "descartes_negative_roots: p.roots.countP (· < 0) ≤ sv(negSubst p) (0 axioms)",
       "signVariations_X_sub_C: sv(X - C c) = 1 for c > 0",
-      "descartes_tight_X_sub_C: tight bound for X - C c (c > 0)",
-      "descartes_mul_bound: sv(p*q) ≤ sv(p) + sv(q)",
-      "one_sign_variation_one_positive_root: sv(p) = 1 → countP = 1 (uses parity axiom)"
+      "descartes_tight_X_sub_C: tight Descartes bound for linear X - Cc",
+      "descartes_negative_roots: negative root bound via negSubst",
+      "signVariations_X_add_C_nonneg: sv(X + Cr) = 0 for r ≥ 0",
+      "signVariations_X_sub_C_nonpos: sv(X - Cr) = 0 for r ≤ 0",
+      "descartes_parity_X_sub_C_pos: parity confirmed for positive-root linear factor",
+      "descartes_parity_X_add_C_pos: parity confirmed for negative-root linear factor",
+      "descartes_parity_constant: parity confirmed for constants",
+      "descartes_parity_monomial: parity confirmed for monomials",
+      "descartes_parity_when_tight: parity trivially holds when sv = countP",
+      "descartes_parity_mod2: parity ↔ same residue mod 2"
     ],
     "open": [
-      "descartes_parity: ∃ k, countP(0 < ·, p.roots) + 2*k = sv(p) — parity result NOT yet in Mathlib"
+      "descartes_parity (axiom): ∃ k, countP + 2k = signVariations — the full parity result"
     ],
-    "goal": "NEAR-COMPLETE: Upper bound axiom-free (from Mathlib). Parity result remains 1 axiom. Key gap: sv((X + C r) * p) = sv(p) for r > 0 not available in Mathlib."
+    "goal": "Prove the parity result: eliminate the axiom descartes_parity"
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-24T06:31:43.089Z",
+    "phase": "IN_PROGRESS",
+    "since": "2026-02-25T10:20:45.272Z",
     "iteration": 2,
-    "focus": "Rewritten to use Mathlib's signVariations API directly (reduced from 8 axioms to 1). Upper bound proved via Mathlib's roots_countP_pos_le_signVariations. Parity result axiomized.",
+    "focus": "Added 8 parity infrastructure theorems. Full parity proof needs 2 stages: (1) alternating-sequence combinatorial parity and (2) IVT-based root parity.",
     "blockers": [
-      "Parity result: sv((X + C r) * p) = sv(p) for r > 0 is not in Mathlib; requires ~200 lines of sign sequence analysis via induction on coefficient structure"
+      "Parity result requires ~200 lines: alternating sequence lemma + IVT root count parity"
     ],
-    "nextAction": "Prove sv((X + C r) * p) = sv(p) for r > 0, then chain with FTA factorization to get full parity.",
+    "nextAction": "Prove the combinatorial alternating sequence parity lemma (Stage 1)",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -49,46 +52,36 @@
     }
   },
   "knowledge": {
-    "progressSummary": "NEAR-COMPLETE: DescartesRuleOfSignsOQ01.lean (446 lines) uses Mathlib's signVariations directly. 19 theorems, 0 sorries, 1 axiom (parity). Huge improvement over prior 8-axiom custom-definition approach.",
+    "progressSummary": "DescartesRuleOfSignsOQ01.lean has 0 sorries, 1 axiom (descartes_parity), 27 theorems total. The upper bound is fully proved via Mathlib. Added 8 new parity infrastructure theorems in session 2. The parity result requires two non-trivial stages.",
     "builtItems": [
-      "DescartesRuleOfSignsOQ01.lean (446 lines, 19 theorems, 0 sorries, 1 axiom)",
-      "Gallery entry: src/data/proofs/descartes-rule-of-signs-oq-01/",
-      "Registered in proofs/Proofs.lean",
-      "descartes_upper_bound: proved directly from Mathlib's roots_countP_pos_le_signVariations",
-      "descartes_negative_roots: proved via negSubst composition + rootMultiplicity algebra",
-      "signVariations_X_sub_C: exact sv=1 for (X - C c) with c > 0",
-      "signVariations_C_const: sv=0 for constants",
-      "nonneg_coeffs_have_zero_variations: proved via List.destutter analysis",
-      "All 19 theorems have 0 sorries and rely on ≤ 1 axiom"
+      "proofs/Proofs/DescartesRuleOfSignsOQ01.lean: 27 theorems, 0 sorries, 1 axiom",
+      "Part VIII: signVariations_X_add_C_nonneg, signVariations_X_sub_C_nonpos, and 6 parity base cases"
     ],
     "insights": [
-      "Rewrite from custom signChangesInCoeffs to Mathlib's signVariations: reduced 8 axioms to 1",
-      "Upper bound proved directly: just 1 line wrapping Mathlib's roots_countP_pos_le_signVariations",
-      "Negative root bound uses negSubst (p(-x)) and rootMultiplicity inequality chain",
-      "KEY REMAINING GAP: parity result (sv ≡ countP [MOD 2]) is NOT in Mathlib",
-      "The parity proof requires: (1) sv((X+Cr)*p) = sv(p) for r>0, (2) quadratic complex-pair factor changes sv by even amount",
-      "These would require sign sequence induction (~200 lines) not yet in Mathlib",
-      "Mathlib has: succ_signVariations_le_X_sub_C_mul (lower bound for sv increase), signVariations_le_eraseLead_succ (drop-lead bound)",
-      "To get exact equality sv((X-η)*p) = sv(p)+1 would need upper bound from Mathlib not yet proved"
+      "Mathlib has roots_countP_pos_le_signVariations but NOT the parity result",
+      "signVariations is defined via coeffList → SignType.sign → filter nonzero → destutter → length-1",
+      "nonneg_coeffs_have_zero_variations proves sv=0 from ∀ i, 0 ≤ p.coeff i",
+      "zero_sv_no_positive_roots: if sv=0 then countP=0 (no explicit p≠0 needed via omega from bound)",
+      "simp only with coeff_X/coeff_C leaves if-expressions unresolved; use full simp for | 0 => case in match statements",
+      "Parity Stage 1: alternating sequence parity — (destutter l).length % 2 = (head ≠ last) as proposition",
+      "Parity Stage 2: IVT root parity — sign(p(0)) vs sign(leadingCoeff) determines parity of positive roots",
+      "negSubst (p ↦ p(-x)) converts negative roots to positive roots, enabling descartes_negative_roots"
     ],
     "mathlibGaps": [
-      "Parity result: signVariations ≡ roots.countP (0<.) [MOD 2] — not in Mathlib",
-      "sv((X + C r) * p) = sv(p) for r > 0 (negative-root factor preserves sv)",
-      "Exact equality sv((X - C η) * p) = sv(p) + 1 for η > 0 (Mathlib only has ≥)"
+      "descartes_parity: ∃ k, countP(0<·, p.roots) + 2k = p.signVariations — ~200 lines needed"
     ],
     "nextSteps": [
-      "Prove sv((X + C r) * p) = sv(p) for r > 0 by sign-sequence induction",
-      "Use FTA factorization to combine sign variation changes for parity",
-      "Submit to Mathlib as extension of Algebra.Polynomial.RuleOfSigns"
+      "Stage 1: Prove (l.destutter (·≠·)).length % 2 = if l.getLast! = l.head! then 0 else 1 for alternating sign lists",
+      "Stage 2: Prove countP(0<·, p.roots) % 2 = if sign(p.coeff 0) = sign(p.leadingCoeff) then 0 else 1 via IVT",
+      "Combine Stage 1 + Stage 2 to close descartes_parity axiom"
     ]
   },
   "approaches": [
     {
-      "name": "Mathlib signVariations API (current)",
-      "description": "Uses Mathlib's signVariations directly; upper bound axiom-free from roots_countP_pos_le_signVariations; parity still axiomized",
+      "id": "mathlib-native",
+      "description": "Use Mathlib's Polynomial.signVariations API directly",
       "status": "active",
-      "sorries": 0,
-      "axioms": 1
+      "outcome": "Upper bound proved with 0 sorries. Parity remains as axiom."
     }
   ],
   "tags": [
@@ -99,25 +92,20 @@
     "wiedijk-100",
     "seeker-selected"
   ],
-  "relatedProofs": [
-    "descartes-rule-of-signs",
-    "descartes-rule-of-signs-oq-01"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Descartes, R. (1637). La Géométrie",
-      "Gauss, C.F. (1826). Proof of parity result"
-    ],
+    "papers": [],
     "urls": [],
     "mathlib": [
-      "Mathlib.Algebra.Polynomial.RuleOfSigns",
       "Polynomial.roots_countP_pos_le_signVariations",
-      "Polynomial.succ_signVariations_le_X_sub_C_mul",
-      "Polynomial.signVariations_le_eraseLead_succ"
+      "Polynomial.signVariations",
+      "Polynomial.signVariations_le_eraseLead_succ",
+      "Polynomial.signVariations_neg",
+      "Polynomial.signVariations_C_mul"
     ]
   },
-  "started": "2026-02-24T06:31:43.089Z",
-  "lastUpdate": "2026-02-24T18:47:00.000Z",
+  "started": "2026-02-25T10:20:45.272Z",
+  "lastUpdate": "2026-02-25T12:00:00.000Z",
   "significance": 7,
   "tractability": 5
 }

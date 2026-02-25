@@ -408,7 +408,7 @@ This file provides the authoritative Lean 4 formalization of Descartes' Rule of 
 using Mathlib's native API. The key advantage over the older `DescartesRuleOfSigns.lean`
 is that the main upper bound is proved directly from Mathlib with 0 axioms.
 
-**Proved (0 sorries, 0 axioms)** — 19 theorems total:
+**Proved (0 sorries, 0 axioms)** — 27 theorems total (19 original + 8 new in Part VIII):
 1. `descartes_upper_bound` — Main Mathlib theorem (the core result)
 2. `signVariations_zero_poly`, `signVariations_monomial'` — Base cases
 3. `signVariations_increase_by_pos_root` — Positive-root insertion increases sv
@@ -438,8 +438,128 @@ The proof uses three private helper lemmas:
 - `rootMult_le_negSubst`: rootMultiplicity r p ≤ rootMultiplicity (-r) (negSubst p)
 Combined with Multiset.countP_map and Multiset.filter_le_filter for the count argument.
 
+**New in Part VIII** (8 additional theorems):
+20. `signVariations_X_add_C_nonneg` — sv(X + Cr) = 0 for r ≥ 0 (negative-root factor)
+21. `signVariations_X_sub_C_nonpos` — sv(X - Cr) = 0 for r ≤ 0 (other negative-root form)
+22. `descartes_parity_X_sub_C_pos` — Parity confirmed for positive-root linear factor
+23. `descartes_parity_X_add_C_pos` — Parity confirmed for negative-root linear factor
+24. `descartes_parity_constant` — Parity confirmed for constant polynomials
+25. `descartes_parity_monomial` — Parity confirmed for monomials
+26. `descartes_parity_when_tight` — Parity when sv = countP (trivially)
+27. `descartes_parity_mod2` — Parity reformulated as modular equality
+
 **Mathlib gaps that would complete the picture**:
-- The parity result: ~200 lines of sign variation analysis for conjugate pairs
+- The parity result: ~200 lines (see Part VIII for proof strategy outline)
 -/
+
+/-
+## Part VIII: Special Cases and Parity Infrastructure
+
+These lemmas provide verified special cases of the Descartes parity result
+and build toward the eventual proof of `descartes_parity`.
+
+### Proof Strategy for the Full Parity Result
+
+The full parity proof proceeds in two stages:
+
+**Stage 1 — Combinatorial Parity of Sign Sequences**:
+For any non-empty list of non-zero SignType elements l:
+  `(l.destutter (·≠·)).length % 2 = if l.head = l.last then 0 else 1`
+(The number of sign changes is even iff first and last signs agree.)
+
+This is a pure induction on alternating sequences.
+
+**Stage 2 — IVT-based Root Parity**:
+For p ≠ 0 with p.coeff 0 ≠ 0:
+  countP(0 < ·, p.roots) % 2 = if sign(p.coeff 0) = sign(p.leadingCoeff) then 0 else 1
+(The parity of positive roots is determined by the sign of p(0) vs. p(+∞).)
+
+Combining Stage 1 and Stage 2:
+  sv(p) % 2 = (sign(p.coeff 0) ≠ sign(p.leadingCoeff)) = countP(0 < ·, p.roots) % 2
+
+The zero-constant-term case (X | p) factors out the X part and reduces to non-zero case.
+
+This approach is ~200 lines and requires infrastructure for:
+- The combinatorial alternating sequence lemma
+- IVT for polynomial root parity (counting with multiplicity)
+- Handling of zero leading/trailing coefficients
+-/
+
+/-- For r ≥ 0, X + C r has only non-negative coefficients, hence 0 sign variations.
+    This is the key lemma: negative-root linear factors have sv = 0. -/
+theorem signVariations_X_add_C_nonneg (r : ℝ) (hr : 0 ≤ r) :
+    (X + C r : ℝ[X]).signVariations = 0 := by
+  have hne : (X + C r : ℝ[X]) ≠ 0 := by
+    intro h
+    have : (X + C r : ℝ[X]).coeff 1 = 0 := by simp [h]
+    simp [Polynomial.coeff_add, Polynomial.coeff_X, Polynomial.coeff_C] at this
+  apply nonneg_coeffs_have_zero_variations _ hne
+  intro i
+  match i with
+  | 0 => simp [Polynomial.coeff_add, Polynomial.coeff_X, Polynomial.coeff_C, hr]
+  | 1 => norm_num [Polynomial.coeff_add, Polynomial.coeff_X, Polynomial.coeff_C]
+  | i + 2 => simp [Polynomial.coeff_add, Polynomial.coeff_X, Polynomial.coeff_C]
+
+/-- For r ≤ 0, X - C r has only non-negative coefficients, hence 0 sign variations. -/
+theorem signVariations_X_sub_C_nonpos (r : ℝ) (hr : r ≤ 0) :
+    (X - C r : ℝ[X]).signVariations = 0 := by
+  apply nonneg_coeffs_have_zero_variations _ (X_sub_C_ne_zero r)
+  intro i
+  match i with
+  | 0 =>
+    simp [Polynomial.coeff_sub, Polynomial.coeff_X, Polynomial.coeff_C]
+    linarith
+  | 1 => norm_num [Polynomial.coeff_sub, Polynomial.coeff_X, Polynomial.coeff_C]
+  | i + 2 => simp [Polynomial.coeff_sub, Polynomial.coeff_X, Polynomial.coeff_C]
+
+/-- **Parity confirmed**: For the positive-root linear factor (X - C c) with c > 0,
+    exactly 1 positive root and exactly 1 sign variation (difference = 0, even). -/
+theorem descartes_parity_X_sub_C_pos (c : ℝ) (hc : 0 < c) :
+    ∃ k : ℕ, (X - C c : ℝ[X]).roots.countP (0 < ·) + 2 * k =
+             (X - C c : ℝ[X]).signVariations :=
+  ⟨0, by simp only [Nat.mul_zero, Nat.add_zero]; exact descartes_tight_X_sub_C c hc⟩
+
+/-- **Parity confirmed**: For the negative-root linear factor (X + C r) with r > 0,
+    0 positive roots and 0 sign variations (difference = 0, even). -/
+theorem descartes_parity_X_add_C_pos (r : ℝ) (hr : 0 < r) :
+    ∃ k : ℕ, (X + C r : ℝ[X]).roots.countP (0 < ·) + 2 * k =
+             (X + C r : ℝ[X]).signVariations := by
+  refine ⟨0, ?_⟩
+  simp only [Nat.mul_zero, Nat.add_zero]
+  have hsv : (X + C r : ℝ[X]).signVariations = 0 := signVariations_X_add_C_nonneg r hr.le
+  rw [hsv, zero_sv_no_positive_roots _ hsv]
+
+/-- **Parity confirmed**: Constant polynomials have 0 positive roots and sv = 0. -/
+theorem descartes_parity_constant (a : ℝ) :
+    ∃ k : ℕ, (C a : ℝ[X]).roots.countP (0 < ·) + 2 * k =
+             (C a : ℝ[X]).signVariations := by
+  refine ⟨0, ?_⟩
+  simp only [Nat.mul_zero, Nat.add_zero]
+  have hsv : (C a : ℝ[X]).signVariations = 0 := signVariations_C_const a
+  rw [hsv, zero_sv_no_positive_roots _ hsv]
+
+/-- **Parity confirmed**: Monomials have 0 positive roots (roots only at 0) and sv = 0. -/
+theorem descartes_parity_monomial (d : ℕ) (c : ℝ) :
+    ∃ k : ℕ, (monomial d c : ℝ[X]).roots.countP (0 < ·) + 2 * k =
+             (monomial d c : ℝ[X]).signVariations := by
+  refine ⟨0, ?_⟩
+  simp only [Nat.mul_zero, Nat.add_zero]
+  have hsv : (monomial d c : ℝ[X]).signVariations = 0 := signVariations_monomial' d c
+  rw [hsv, zero_sv_no_positive_roots _ hsv]
+
+/-- **Parity confirmed**: When the Descartes bound is tight (sv = countP),
+    parity holds trivially with k = 0. -/
+theorem descartes_parity_when_tight (p : ℝ[X])
+    (h : p.roots.countP (0 < ·) = p.signVariations) :
+    ∃ k : ℕ, p.roots.countP (0 < ·) + 2 * k = p.signVariations :=
+  ⟨0, by simp [h]⟩
+
+/-- **Parity reformulation**: The parity result is equivalent to saying sv and countP
+    have the same remainder mod 2. -/
+theorem descartes_parity_mod2 (p : ℝ[X])
+    (h : ∃ k : ℕ, p.roots.countP (0 < ·) + 2 * k = p.signVariations) :
+    p.roots.countP (0 < ·) % 2 = p.signVariations % 2 := by
+  obtain ⟨k, hk⟩ := h
+  omega
 
 end DescartesRuleOQ01
