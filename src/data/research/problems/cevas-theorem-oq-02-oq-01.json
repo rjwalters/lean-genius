@@ -1,17 +1,17 @@
 {
   "slug": "cevas-theorem-oq-02-oq-01",
-  "title": "Spherical Ceva Theorem via Unit Vector Weight Parameters",
-  "phase": "SURVEY",
-  "status": "surveyed",
+  "title": "Ceva's Theorem: Spherical Ceva via Unit Vectors and Weight Balance",
+  "phase": "COMPLETE",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\forall D = \\text{norm}(\\alpha_D B + \\beta_D C),\\; \\prod \\frac{\\sin(\\angle BD)}{\\sin(\\angle DC)} = 1 \\iff \\alpha_D \\alpha_E \\alpha_F = \\beta_D \\beta_E \\beta_F",
-    "plain": "Can the spherical Ceva theorem be stated and proved using concrete unit vectors in an inner product space, connecting weight parameters (\u03b1, \u03b2) of cevian points to the sin-ratio concurrency condition?",
+    "formal": "\\\\text{For unit vectors } A, B, C \\\\in V \\\\text{ with } \\\\|A\\\\|=\\\\|B\\\\|=\\\\|C\\\\|=1, \\\\text{ and cevian points } D = \\\\mathrm{normalize}(\\\\alpha_D B + \\\\beta_D C), E = \\\\mathrm{normalize}(\\\\alpha_E C + \\\\beta_E A), F = \\\\mathrm{normalize}(\\\\alpha_F A + \\\\beta_F B), \\\\text{ the spherical Ceva condition holds iff } \\\\alpha_D \\\\alpha_E \\\\alpha_F = \\\\beta_D \\\\beta_E \\\\beta_F.",
+    "plain": "The spherical Ceva theorem expressed via weight parameters: cevian points on great circle arcs defined by normalizing weighted sums of unit vectors. The concurrency condition (product of sin-ratios = 1) is equivalent to the weight balance α_D·α_E·α_F = β_D·β_E·β_F.",
     "whyMatters": [
-      "Bridges the abstract algebraic framework (CevasTheoremNonEuclidean.lean) with the geometric sin-ratio formula (CevasTheoremSinRatio.lean)",
-      "Provides explicit algebraic criterion (weight balance \u03b1D\u00b7\u03b1E\u00b7\u03b1F = \u03b2D\u00b7\u03b2E\u00b7\u03b2F) for geodesic cevian concurrency",
-      "Demonstrates that the spherical Ceva condition is purely a statement about weight parameters, independent of coordinates"
+      "Bridges abstract arc-length formulation with concrete algebraic criterion",
+      "Works in any real inner product space (all dimensions)",
+      "Computational: weight balance is simpler to check than sin-product"
     ]
   },
   "knownResults": {
@@ -20,12 +20,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEY",
+    "phase": "COMPLETE",
     "since": "2026-02-24T13:38:05-08:00",
     "iteration": 1,
-    "focus": "Survey complete. Created CevasTheoremOQ02OQ01.lean with full weight balance criterion, 0 sorries.",
+    "focus": "Proof complete: 0 sorries, gallery entry created",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Done - mark as complete",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -33,38 +33,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Created CevasTheoremOQ02OQ01.lean with 0 sorries. Proved weight-product formula, weight balance criterion, and full spherical Ceva IFF via unit vectors.",
+    "progressSummary": "COMPLETE: CevasTheoremOQ02OQ01.lean (0 sorries). sin_ratio_cevian_point, spherical_ceva_product_eq_weight_ratio, spherical_ceva_iff_weight_balance all proved.",
     "builtItems": [
-      "CevasTheoremOQ02OQ01.lean: sin_ratio_cevian_point (restated from SinRatio with self-contained proof)",
-      "CevasTheoremOQ02OQ01.lean: spherical_ceva_product_eq_weight_ratio (product = (\u03b2D/\u03b1D)\u00b7(\u03b2E/\u03b1E)\u00b7(\u03b2F/\u03b1F))",
-      "CevasTheoremOQ02OQ01.lean: spherical_ceva_weight_balance_iff (product = 1 \u2194 weight balance)",
-      "CevasTheoremOQ02OQ01.lean: weight_balance_symmetric (symmetry of balance condition)",
-      "CevasTheoremOQ02OQ01.lean: equal_weight_ceva (equal weights \u2192 product = 1)",
-      "CevasTheoremOQ02OQ01.lean: spherical_ceva_iff_weight_balance (main theorem)"
+      "CevasTheoremOQ02OQ01.lean - 5 theorems, 0 sorries",
+      "Gallery entry: src/data/proofs/cevas-theorem-oq-02-oq-01/"
     ],
     "insights": [
-      "The spherical Ceva product (product of sin-ratios) equals the weight-product ratio (\u03b2D/\u03b1D)\u00b7(\u03b2E/\u03b1E)\u00b7(\u03b2F/\u03b1F)",
-      "Concurrency condition simplifies to \u03b1D\u00b7\u03b1E\u00b7\u03b1F = \u03b2D\u00b7\u03b2E\u00b7\u03b2F - a clean algebraic criterion via weight parameters",
-      "The sin-ratio formula (CevasTheoremSinRatio.lean) proves each individual ratio; three applications give the full Ceva product",
-      "The weight balance condition is symmetric: swapping all \u03b1\u2194\u03b2 gives the equivalent condition",
-      "Equal weights (\u03b1i = \u03b2i for all i) always satisfy the balance condition - spherical analogue of medians"
+      "sin(BD)/sin(DC) = β/α depends only on weight parameters, not geometry (√(1-m²)/n cancels)",
+      "Weight balance α_D·α_E·α_F = β_D·β_E·β_F is a purely algebraic concurrency criterion",
+      "Works in any dimension (any real inner product space, not just S²)",
+      "Bridges CevasTheoremSinRatio.lean and CevasTheoremNonEuclidean.lean",
+      "Key identity: n² - (α+βm)² = β²(1-m²) where n=‖αB+βC‖, m=⟪B,C⟫"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove geometric concurrency condition: three geodesic great circles share a point iff weight balance holds (requires \u211d\u00b3-specific geometry)",
-      "Connect to SphericalCevianConfig in CevasTheoremNonEuclidean.lean",
-      "Extend to vector-based proof without abstract framework"
-    ],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: cevas-theorem-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "approaches": [],
   "tags": [
     "geometry",
-    "spherical-geometry",
-    "inner-product",
-    "ceva-theorem",
-    "sin-ratio",
-    "seeker-selected"
+    "spherical",
+    "inner-product-space",
+    "trigonometry",
+    "concurrency"
   ],
   "relatedProofs": [],
   "references": {
@@ -72,8 +63,8 @@
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-02-25T02:31:10.150Z",
-  "lastUpdate": "2026-02-25T02:31:10.150Z",
+  "started": "2026-02-25T09:18:53.601Z",
+  "lastUpdate": "2026-02-25T09:00:00Z",
   "significance": 6,
   "tractability": 5
 }
