@@ -62,7 +62,7 @@
   {
     "id": "ann-demoivre-oq01-06-multiple-angle",
     "proofId": "de-moivre-oq-01",
-    "range": { "startLine": 124, "endLine": 201 },
+    "range": { "startLine": 125, "endLine": 201 },
     "type": "technique",
     "title": "Multiple Angle Formulas via cos_add/sin_add and Pythagorean Substitution",
     "content": "cos_two_mul_eq through sin_five_mul_eq prove explicit multiple angle formulas directly from cos_add/sin_add plus Pythagorean identity sin²θ + cos²θ = 1. Double angle: cos_add θ θ directly yields cos(2θ) = cos²θ - sin²θ, then linarith substitutes sin²θ = 1 - cos²θ to get 2cos²θ - 1. Triple angle: cos(3θ) = cos(2θ+θ) is expanded via cos_add, double-angle results are substituted, then sin²θ = 1-cos²θ is applied and ring closes. Quadruple angle uses the clever rewrite cos(4θ) = cos(2·(2θ)) = 2cos²(2θ) - 1, applying cos_two_mul_eq twice — Pythagorean substitution is then handled by ring alone. Higher angles chain this approach. A private helper cos_sq_add_sin_sq provides the Pythagorean identity in the needed orientation.",
