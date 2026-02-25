@@ -26,7 +26,7 @@
     "goal": "ANSWERED: Both OQ-01 and OQ-02 answered YES with complete constructive proofs"
   },
   "currentState": {
-    "phase": "SURVEYED",
+    "phase": "COMPLETE",
     "since": "2026-02-24T22:10:00.000Z",
     "iteration": 1,
     "focus": "Both files complete: OQ01 has extended Euclidean algorithm, OQ02 has Euclid's lemma. 0 sorries, 0 axioms.",
@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BezoutIdentityOQ01.lean: computable extGcd algorithm with bezout correctness + gcd correctness proofs. BezoutIdentityOQ02.lean: euclids_lemma_nat via coprime_iff_linear_combination, plus euclids_lemma_int via IsCoprime directly, plus euclids_lemma_prime. Both files: 0 sorries, 0 axioms, fully constructive.",
+    "progressSummary": "COMPLETE: FTA proved from Euclids Lemma (0 sorries, 0 axioms). Build verified in Docker.",
     "builtItems": [
       "extGcd: ℕ → ℕ → ℤ×ℤ×ℕ by well-founded recursion on b (computable)",
       "extGcd_bezout: a*x + b*y = gcd(a,b) (proved by strong induction)",
@@ -49,7 +49,14 @@
       "euclids_lemma_int: IsCoprime a b → a ∣ b*c → a ∣ c (proved by linear_combination y*hk - c*huv)",
       "euclids_lemma_nat: Nat.Coprime a b → a ∣ b*c → a ∣ c (proved via coprime_iff_linear_combination)",
       "euclids_lemma_prime: p prime → p ∣ a*b → p ∣ a ∨ p ∣ b (proved from coprime via prime)",
-      "bezout_via_extGcd: existence of Bézout coefficients via computable extGcd"
+      "bezout_via_extGcd: existence of Bézout coefficients via computable extGcd",
+      "euclids_lemma_prime: one-line proof via Nat.Coprime.dvd_of_dvd_mul_left (proofs/Proofs/BezoutIdentityOQ02OQ01.lean:59)",
+      "prime_dvd_of_dvd_list_prod: if prime p|list.prod then p divides some element (line 80)",
+      "prime_mem_of_dvd_prime_list: if prime p|product-of-primes then p is one of them (line 98)",
+      "fta_uniqueness: two prime lists with equal products are permutations (line 158)",
+      "fta_from_euclid: complete FTA for n>=2 with existence+uniqueness (line 205)",
+      "prime_factor_count_unique: uniqueness of multiplicities in factorization (line 226)",
+      "no_finite_list_contains_all_primes: infinitely many primes as consequence (line 251)"
     ],
     "insights": [
       "IsCoprime a b is DEFINED as ∃ u v, u*a + v*b = 1 in Mathlib → proof of euclids_lemma_int is trivial",
@@ -59,7 +66,12 @@
       "Strong induction (Nat.strongRecOn) needed for well-founded algorithm proofs",
       "Nat.Prime.coprime_iff_not_dvd: p prime → (Nat.Coprime p a ↔ ¬ p ∣ a)",
       "Bézout correctness proof: linear_combination hrec + hdiv * y' closes the recursive goal",
-      "native_decide verifies concrete computations (extGcd 12 8, extGcd 35 15, etc.)"
+      "native_decide verifies concrete computations (extGcd 12 8, extGcd 35 15, etc.)",
+      "FTA uniqueness requires exactly Euclids Lemma - proving a prime divides a product means it equals one of the prime factors",
+      "Nat.Coprime.dvd_of_dvd_mul_left takes one arg (not two underscores) in Mathlib 4.26.0",
+      "fta_uniqueness proof: induction on l1, head p divides l2.prod, use prime_mem_of_dvd_prime_list, remove p via List.perm_cons_erase, apply induction",
+      "List.perm_cons_erase is the key permutation tool for uniqueness induction",
+      "Nat.prod_primeFactorsList and Nat.prime_of_mem_primeFactorsList provide existence for free from Mathlib"
     ],
     "mathlibGaps": [],
     "nextSteps": [
