@@ -1,0 +1,101 @@
+{
+  "slug": "bezout-identity-oq-02-oq-02",
+  "title": "Euclid's Lemma in Bézout Domains and PIDs",
+  "phase": "COMPLETE",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\forall R \\text{ (CommRing)}, \\text{IsCoprime}(a, b) \\land a \\mid bc \\Rightarrow a \\mid c",
+    "plain": "Can euclids_lemma_int be generalized to arbitrary Bézout domains or PIDs? YES: it holds in any CommRing via IsCoprime, with IsRelPrime ↔ IsCoprime in IsBezout rings.",
+    "whyMatters": [
+      "Unifies Euclid's lemma across ℤ, ℚ[X], ℤ[i], and all Euclidean domains with a single proof",
+      "Shows that IsCoprime is the universal Bézout condition — ring axioms alone suffice",
+      "Connects IsRelPrime (arithmetic) and IsCoprime (algebraic) via the IsBezout typeclass"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "euclids_lemma_ring: holds in ANY CommRing via IsCoprime (linear_combination proof)",
+      "isBezout_coprime_iff: IsCoprime ↔ IsRelPrime in IsBezout rings",
+      "euclids_lemma_irreducible: irreducible p, p|ab → p|a or p|b in DecompositionMonoids"
+    ],
+    "open": [],
+    "goal": "Formalize Euclid's lemma at the maximum level of generality in Lean 4"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-25T00:28:10Z",
+    "iteration": 1,
+    "focus": "Completed: BezoutIdentityOQ02OQ02.lean (0 sorries, 0 axioms)",
+    "blockers": [],
+    "nextAction": "Gallery entry created and PR submitted",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved euclids_lemma_ring in ANY CommRing. Key finding: IsCoprime is already the abstract Bézout condition, so the proof needs no IsBezout — just ring axioms and linear_combination. Added IsBezout connection via IsRelPrime.isCoprime + IsBezout.span_pair_isPrincipal, and DecompositionMonoid version for irreducible=prime. Instances: ℤ, Polynomial ℚ, GaussianInt.",
+    "builtItems": [
+      "euclids_lemma_ring: ANY CommRing via IsCoprime (proofs/Proofs/BezoutIdentityOQ02OQ02.lean:65)",
+      "isBezout_relPrime_to_isCoprime: IsRelPrime → IsCoprime in IsBezout rings (BezoutIdentityOQ02OQ02.lean:96)",
+      "isCoprime_to_relPrime: IsCoprime → IsRelPrime in ANY CommRing (BezoutIdentityOQ02OQ02.lean:109)",
+      "isBezout_coprime_iff: complete characterization (BezoutIdentityOQ02OQ02.lean:123)",
+      "euclids_lemma_isbezout: IsRelPrime + IsBezout (BezoutIdentityOQ02OQ02.lean:128)",
+      "euclids_lemma_euclidean: EuclideanDomain version (BezoutIdentityOQ02OQ02.lean:141)",
+      "euclids_lemma_irreducible: DecompositionMonoid version (BezoutIdentityOQ02OQ02.lean:170)",
+      "Concrete instances: euclids_lemma_int, euclids_lemma_poly, euclids_lemma_gaussian",
+      "Gallery entry: src/data/proofs/bezout-identity-oq-02-oq-02/"
+    ],
+    "insights": [
+      "IsCoprime a b = ∃ u v, u*a + v*b = 1 IS the abstract Bézout condition — works in ANY CommRing",
+      "linear_combination v * hk - c * huv closes Euclid's lemma by pure ring arithmetic",
+      "IsBezout.span_pair_isPrincipal provides Submodule.IsPrincipal instance needed for IsRelPrime.isCoprime",
+      "IsRelPrime.isCoprime requires [Submodule.IsPrincipal (Ideal.span {x, y})] as instance — use haveI",
+      "IsBezout.isCoprime_of_dvd does NOT exist in Mathlib v4.26.0; use IsRelPrime.isCoprime instead",
+      "GCDMonoid.irreducible_iff_prime does NOT exist; use irreducible_iff_prime with DecompositionMonoid",
+      "irreducible_iff_prime requires [CancelCommMonoidWithZero M] [DecompositionMonoid M]",
+      "Polynomial ring over field needs noncomputable for EuclideanDomain/IsBezout instances"
+    ],
+    "mathlibGaps": [
+      "IsBezout.isCoprime_of_dvd not available in Mathlib v4.26.0",
+      "GCDMonoid.irreducible_iff_prime not available; use DecompositionMonoid"
+    ],
+    "nextSteps": [
+      "PR created and merged",
+      "Consider: constructive divisibility algorithm combining BezoutIdentityOQ01.extGcd with euclids_lemma_ring",
+      "Consider: Gauss's lemma (ℤ[X] version) — does linear_combination scale?"
+    ],
+    "markdown": "# Knowledge Base: bezout-identity-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "approaches": [],
+  "tags": [
+    "number-theory",
+    "abstract-algebra",
+    "ring-theory",
+    "bezout",
+    "euclid",
+    "generalization"
+  ],
+  "relatedProofs": [
+    "bezout-identity",
+    "bezout-identity-oq-02",
+    "bezout-identity-oq-02-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.RingTheory.Bezout - IsBezout, IsBezout.span_pair_isPrincipal",
+      "Mathlib.RingTheory.Coprime.Basic - IsCoprime, IsRelPrime, IsRelPrime.isCoprime",
+      "Mathlib.Algebra.Prime.Basic - irreducible_iff_prime, DecompositionMonoid",
+      "Mathlib.NumberTheory.Gaussian - GaussianInt EuclideanDomain"
+    ]
+  },
+  "started": "2026-02-25T00:02:52.485Z",
+  "lastUpdate": "2026-02-25T00:28:10Z",
+  "significance": 7,
+  "tractability": 7
+}
