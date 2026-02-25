@@ -74,7 +74,7 @@
   {
     "id": "ann-ballot-oq02-07-discrete",
     "proofId": "ballot-problem-oq-02",
-    "range": { "startLine": 336, "endLine": 385 },
+    "range": { "startLine": 336, "endLine": 356 },
     "type": "theorem",
     "title": "Discrete Ballot Theorem: (p-q)/(p+q) via Bertrand-Cycle Lemma",
     "content": "discrete_ballot_probability proves the classical Bertrand 1887 result: P(A leads throughout) = (p-q)/(p+q) for A getting p votes, B getting q votes with p>q. The proof uses Mathlib's Nat.ballot API (if available) or a combinatorial counting argument via cycle lemma: among all (p+q)! orderings of the votes, exactly p-q linear extensions have A leading throughout. The discrete and continuous theorems connect via the Donsker invariance principle: the scaled random walk S_{⌊nt⌋}/√n → W_t in distribution, so the discrete ballot probability (p-q)/(p+q) is the finite approximation of the continuous reflection principle. The file treats the CLT connection as a mathematical comment (Donsker 1951) rather than a formal proof.",
