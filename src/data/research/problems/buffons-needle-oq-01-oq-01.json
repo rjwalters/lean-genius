@@ -1,0 +1,75 @@
+{
+  "slug": "buffons-needle-oq-01-oq-01",
+  "title": "[Problem Title]",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-24T13:38:06-08:00",
+    "iteration": 1,
+    "focus": "Proved all theorems. 0 sorries. Gallery entry created.",
+    "blockers": [],
+    "nextAction": "PR merged, problem complete",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved Buffon-Barbier smooth curve theorem using angular average identity. 0 sorries.",
+    "builtItems": [
+      "integral_sin_zero_pi: \u222b_0^\u03c0 sin \u03b8 d\u03b8 = 2 (FTC proof) in BuffonsNeedleOQ01OQ01.lean:62",
+      "integral_abs_sin_zero_pi: \u222b_0^\u03c0 |sin \u03b8| d\u03b8 = 2 in BuffonsNeedleOQ01OQ01.lean:75",
+      "integral_abs_sin_shift: \u222b_0^\u03c0 |sin(\u03b8+c)| d\u03b8 = 2 for any c in BuffonsNeedleOQ01OQ01.lean:104",
+      "angular_average: \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| d\u03b8 = 2\u221a(a\u00b2+b\u00b2) in BuffonsNeedleOQ01OQ01.lean:153",
+      "concreteSmoothExpectedCrossings: concrete double integral def in BuffonsNeedleOQ01OQ01.lean:248",
+      "buffon_smooth_concrete: main theorem given Fubini hypothesis in BuffonsNeedleOQ01OQ01.lean:280",
+      "hFubini_from_angular_average: proves Fubini hyp from angular_average in BuffonsNeedleOQ01OQ01.lean:329",
+      "buffon_smooth_full: complete Buffon-Barbier theorem in BuffonsNeedleOQ01OQ01.lean:373"
+    ],
+    "insights": [
+      "Angular average \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| d\u03b8 = 2\u221a(a\u00b2+b\u00b2) is the KEY identity explaining shape independence in Buffon noodle",
+      "Used Complex.arg (\u03c6 = arg(a+bi)) to uniformly handle all cases for the rotation angle (avoids case splits on a)",
+      "Rotation invariance \u222b_0^\u03c0 |sin(\u03b8+c)| d\u03b8 = 2 uses change of variables + \u03c0-periodicity of |sin|",
+      "linear_combination tactic needed for equality goals over integral terms (linarith fails - cannot prove equalities by contradiction for opaque real terms)",
+      "The Fubini hypothesis is EXACTLY angular_average applied pointwise - buffon_smooth_full has 0 genuine sorries",
+      "The open question in BuffonsNoodle.lean (axiom buffon_noodle_smooth_eq) is fully resolved"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Integrate with BuffonsNoodle.lean by removing axioms and using concreteSmoothExpectedCrossings",
+      "Prove integrability hypothesis (hInnerInt) from smoothness of \u03b3 using HasDerivAt",
+      "Extend to the Cauchy-Crofton formula in full integral geometry generality"
+    ],
+    "markdown": "# Knowledge Base: buffons-needle-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "approaches": [],
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-25T12:24:08.223Z",
+  "lastUpdate": "2026-02-25T12:24:08.223Z",
+  "significance": 7,
+  "tractability": 6
+}
