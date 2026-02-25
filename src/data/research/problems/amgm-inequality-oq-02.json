@@ -1,7 +1,7 @@
 {
   "slug": "amgm-inequality-oq-02",
   "title": "Maclaurin inequalities via elementary symmetric polynomials",
-  "phase": "SURVEYED",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,60 +16,36 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
+    "phase": "PROGRESS",
     "since": "2026-02-24T06:31:43.087Z",
-    "iteration": 2,
-    "focus": "Survey complete. 11 proved theorems, 2 axioms, 1 sorry. Aristotle companion exists.",
+    "iteration": 1,
+    "focus": "Proved binomial identity and chain theorems. Axioms remain for newton_log_concavity and maclaurin_step.",
     "blockers": [],
-    "nextAction": "Prove elemSymmA_succ_castSucc using Finset.powersetCard_succ_insert to close h_binom sorry.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Lean file has 11 proved theorems (1 sorry), 2 axioms. Aristotle companion AmgmInequalityOQ02Aristotle.lean exists with proof strategy for the remaining sorry. Key: the solo sorry is h_binom = binomial expansion (∑xᵢ)² = ∑xᵢ² + 2·e₂, blocked by elemSymmA_succ_castSucc (Finset powersetCard recurrence for Fin(n+1)).",
+    "progressSummary": "PROGRESS: Zero sorries achieved. Proved binomial identity (∑xᵢ)²=∑xᵢ²+2·e₂ by induction, maclaurin_sq_m1_ge_m2_general (all reals), maclaurin_chain, maclaurin_m1_ge_mn. Axioms for newton_log_concavity and maclaurin_step remain.",
     "builtItems": [
-      "elemSymm def: ∑ s ∈ univ.powersetCard k, ∏ i ∈ s, x i",
-      "elemSymm_zero: e₀ = 1 (empty product)",
-      "elemSymm_one: e₁ = ∑ xᵢ (powersetCard_one + prod_singleton)",
-      "elemSymm_nonneg: non-negative inputs give eₖ ≥ 0",
-      "maclaurin_m1_ge_m2_n2: AM ≥ GM for n=2 via (√a-√b)² ≥ 0 and sqrt_mul",
-      "maclaurin_m1sq_ge_m2_n3: (M₁)² ≥ M₂ for n=3 via nlinarith + 3 sq_nonneg hints",
-      "maclaurin_m1sq_ge_m2_n4: (M₁)² ≥ M₂ for n=4 via nlinarith + 6 sq_nonneg hints",
-      "cauchy_schwarz_sum (private lemma): n·∑xᵢ² ≥ (∑xᵢ)² via ∑ᵢ∑ⱼ(xᵢ-xⱼ)² = 2(n·S₂-S₁²)",
-      "maclaurin_sq_m1_ge_m2_general: C(n,2)·(∑xᵢ)² ≥ n²·e₂ for all reals (1 sorry in h_binom)",
-      "maclaurinMean def: Mₖ = (eₖ/C(n,k))^(1/k)",
-      "maclaurinMean_nonneg: Mₖ ≥ 0 for non-negative inputs (rpow_nonneg + elemSymm_nonneg)",
-      "amgm_from_maclaurin: ∏ xᵢ^(1/n) ≤ (∑ xᵢ)/n via Real.geom_mean_le_arith_mean_weighted",
-      "maclaurin_sq_m1_ge_m2_from_newton: C(n,2)·(∑xᵢ)² ≥ n²·e₂ for NON-NEGATIVE inputs via Newton axiom",
-      "maclaurin_chain: Mⱼ ≥ Mₖ for j ≤ k ≤ n by induction on k-j using maclaurin_step",
-      "maclaurin_m1_ge_mn: M₁ ≥ Mₙ (AM ≥ GM in Maclaurin language) from maclaurin_chain",
-      "Aristotle companion AmgmInequalityOQ02Aristotle.lean: targets h_binom sorry via induction strategy"
+      "sq_sum_eq_sum_sq_add_two_elemSymm (private): AmgmInequalityOQ02.lean:~225",
+      "maclaurin_sq_m1_ge_m2_general: AmgmInequalityOQ02.lean:~260",
+      "maclaurin_chain: AmgmInequalityOQ02.lean:~368",
+      "maclaurin_m1_ge_mn: AmgmInequalityOQ02.lean:~387"
     ],
     "insights": [
-      "SOLO SORRY: h_binom = (∑ i : Fin n, x i)^2 = ∑ i, (x i)^2 + 2 * elemSymm 2 x inside maclaurin_sq_m1_ge_m2_general",
-      "PROOF STRATEGY: induction on n using elemSymm recurrence: e₂(x₀,...,xₙ) = e₂(x₀,...,xₙ₋₁) + xₙ·e₁(x₀,...,xₙ₋₁)",
-      "BLOCKING LEMMA: elemSymmA_succ_castSucc requires Finset.powersetCard_succ_insert applied to Fin.last n ∉ image Fin.castSucc univ",
-      "ARISTOLE COMPANION: AmgmInequalityOQ02Aristotle.lean has sq_sum_eq_sum_sq_add_two_esymm with full induction proof structure (only elemSymmA_succ_castSucc has sorry)",
-      "INDUCTIVE STEP CLOSURE: after rw [Fin.sum_univ_castSucc, elemSymmA_two_succ, elemSymmA_one], nlinarith closes the goal using hih, sq_nonneg hints",
-      "TWO APPROACHES for M₁² ≥ M₂: (1) Cauchy-Schwarz (for all reals, 1 sorry); (2) Newton axiom (non-negative only, 0 sorries) - both proved",
-      "2*C(n,2) = n(n-1): proved by induction on Pascal's rule (Nat.choose_succ_succ)",
-      "Maclaurin chain works: maclaurin_chain (Mⱼ ≥ Mₖ for j≤k≤n) is proved by induction on k-j once maclaurin_step is assumed",
-      "meta.json was missing: maclaurin_sq_m1_ge_m2_from_newton, maclaurin_chain, maclaurin_m1_ge_mn, maclaurinMean_nonneg, maclaurinMean def, newton_log_concavity axiom, maclaurin_step axiom"
+      "Binomial identity (∑xᵢ)²=∑xᵢ²+2·e₂ proved by induction on n using e₂ recurrence",
+      "maclaurin_chain induction IH takes two args (hjk and hkn) since hjk is not reverted before induction",
+      "field_simp alone closes field identity goals - do not add trailing ring",
+      "calc blocks with ≥ chains need explicit IH application via intermediate have"
     ],
-    "mathlibGaps": [
-      "Finset.powersetCard_succ_insert: needed for elemSymmA_succ_castSucc proof (may exist as powersetCard_insert or similar)",
-      "Fin.univ_castSucc: univ (Fin (n+1)) = insert (Fin.last n) (image Fin.castSucc univ) - needed for powersetCard partition",
-      "Newton log-concavity: (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)) - not in Mathlib, deep inductive result"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Prove elemSymmA_succ_castSucc using Finset.powersetCard_succ_insert (partition subsets of Fin(n+1) by membership of Fin.last n)",
-      "Once elemSymmA_succ_castSucc proved, sq_sum_eq_sum_sq_add_two_esymm follows via nlinarith in inductive step",
-      "Bridge elemSymmA ≡ elemSymm (identical definitions) to use companion proof in main file",
-      "Submit AmgmInequalityOQ02Aristotle.lean to Aristotle for automated proof search of elemSymmA_succ_castSucc",
-      "Consider proving Newton log-concavity: base case n=1 trivial, inductive step via Cauchy-Schwarz on sub-polynomials"
+      "Prove newton_log_concavity from first principles (log-concavity of eₖ/C(n,k) sequence)",
+      "Prove maclaurin_step using Maclaurin mean monotonicity"
     ]
   },
   "approaches": [],
@@ -87,7 +63,7 @@
     "mathlib": []
   },
   "started": "2026-02-24T08:35:25.046Z",
-  "lastUpdate": "2026-02-24T09:30:00.000Z",
+  "lastUpdate": "2026-02-25T00:00:00.000Z",
   "significance": 8,
   "tractability": 6
 }

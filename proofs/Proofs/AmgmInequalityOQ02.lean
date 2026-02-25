@@ -109,6 +109,120 @@ private lemma cauchy_schwarz_sum {n : ℕ} (x : Fin n → ℝ) :
     rw [h1, h2, h3]; ring
   linarith
 
+/-
+## Binomial Identity Helpers: (∑xᵢ)² = ∑xᵢ² + 2·e₂
+These private lemmas prove the binomial identity by induction using
+the recurrence e₂(x₀,...,xₙ) = e₂(x₀,...,xₙ₋₁) + xₙ·e₁(x₀,...,xₙ₋₁).
+-/
+
+-- Explicit castSucc embedding (avoids API naming issues in Docker Lean 4.26.0)
+private def csEmb (n : ℕ) : Fin n ↪ Fin (n + 1) :=
+  ⟨Fin.castSucc, fun _ _ h => Fin.castSucc_inj.mp h⟩
+
+@[simp] private lemma csEmb_apply (n : ℕ) (i : Fin n) : csEmb n i = Fin.castSucc i := rfl
+
+-- mapEmbedding via toEmbedding = map (Finset.sum_map uses .toEmbedding coercion)
+private lemma mapEmb_eq {n : ℕ} (s : Finset (Fin n)) :
+    (Finset.mapEmbedding (csEmb n)).toEmbedding s = s.map (csEmb n) := rfl
+
+private lemma fin_univ_insert_last (n : ℕ) :
+    (univ : Finset (Fin (n + 1))) = insert (Fin.last n) (univ.map (csEmb n)) := by
+  ext i
+  simp only [mem_univ, mem_insert, mem_map, true_and, csEmb_apply]
+  constructor
+  · intro _; exact Fin.lastCases (Or.inl rfl) (fun j => Or.inr ⟨j, rfl⟩) i
+  · intro _; trivial
+
+private lemma fin_last_not_mem_map (n : ℕ) :
+    Fin.last n ∉ (univ : Finset (Fin n)).map (csEmb n) := by
+  simp only [mem_map, mem_univ, true_and, csEmb_apply, not_exists]
+  intro i; exact (Fin.castSucc_lt_last i).ne
+
+private lemma pc_disj (n : ℕ) :
+    Disjoint
+      (powersetCard 2 ((univ : Finset (Fin n)).map (csEmb n)))
+      ((powersetCard 1 ((univ : Finset (Fin n)).map (csEmb n))).image
+        (insert (Fin.last n))) := by
+  apply Finset.disjoint_left.mpr
+  intro t ht1 ht2
+  simp only [mem_image, Finset.mem_powersetCard] at ht1 ht2
+  obtain ⟨s, hs, rfl⟩ := ht2
+  obtain ⟨ht1_sub, _⟩ := ht1
+  have hmem := ht1_sub (Finset.mem_insert_self (Fin.last n) _)
+  simp only [mem_map, mem_univ, true_and, csEmb_apply] at hmem
+  obtain ⟨i, hi⟩ := hmem
+  exact (Fin.castSucc_lt_last i).ne hi
+
+private lemma prod_map_csEmb {n : ℕ} (s : Finset (Fin n)) (x : Fin (n + 1) → ℝ) :
+    ∏ i ∈ s.map (csEmb n), x i = ∏ j ∈ s, x (Fin.castSucc j) := by
+  rw [Finset.prod_map]; simp only [csEmb_apply]
+
+-- Key recurrence: e₂(x₀,...,xₙ) = e₂(x₀,...,xₙ₋₁) + xₙ·e₁(x₀,...,xₙ₋₁)
+private lemma elemSymm_two_succ {n : ℕ} (x : Fin (n + 1) → ℝ) :
+    elemSymm 2 x =
+    elemSymm 2 (x ∘ Fin.castSucc) +
+    x (Fin.last n) * elemSymm 1 (x ∘ Fin.castSucc) := by
+  simp only [elemSymm]
+  rw [fin_univ_insert_last, Finset.powersetCard_succ_insert (fin_last_not_mem_map n)]
+  rw [Finset.sum_union (pc_disj n)]
+  congr 1
+  · rw [Finset.powersetCard_map, Finset.sum_map]
+    congr 1; ext s
+    simp only [mapEmb_eq]
+    rw [prod_map_csEmb]
+    simp only [Function.comp_apply]
+  · have insert_inj : Set.InjOn (insert (Fin.last n))
+        (powersetCard 1 ((univ : Finset (Fin n)).map (csEmb n))).toSet := by
+      intro s hs t ht hst
+      rw [Finset.mem_coe] at hs ht
+      rw [Finset.mem_powersetCard] at hs ht
+      have hs' : Fin.last n ∉ s := by
+        intro hmem
+        have h := hs.1 hmem
+        simp only [mem_map, mem_univ, true_and, csEmb_apply] at h
+        obtain ⟨i, hi⟩ := h
+        exact (Fin.castSucc_lt_last i).ne hi
+      have ht' : Fin.last n ∉ t := by
+        intro hmem
+        have h := ht.1 hmem
+        simp only [mem_map, mem_univ, true_and, csEmb_apply] at h
+        obtain ⟨i, hi⟩ := h
+        exact (Fin.castSucc_lt_last i).ne hi
+      rw [show s = (insert (Fin.last n) s).erase (Fin.last n) from
+          (Finset.erase_insert hs').symm, hst, Finset.erase_insert ht']
+    rw [Finset.sum_image insert_inj, Finset.powersetCard_map, Finset.sum_map]
+    have h_prod : ∀ s ∈ (powersetCard 1 (univ : Finset (Fin n))),
+        ∏ i ∈ insert (Fin.last n) ((Finset.mapEmbedding (csEmb n)).toEmbedding s), x i =
+        x (Fin.last n) * ∏ j ∈ s, (x ∘ Fin.castSucc) j := by
+      intro s _
+      rw [mapEmb_eq, Finset.prod_insert]
+      · simp only [Function.comp_apply]; rw [prod_map_csEmb]
+      · simp only [mem_map, csEmb_apply, not_exists, not_and]
+        intro j _; exact (Fin.castSucc_lt_last j).ne
+    rw [Finset.sum_congr rfl h_prod, ← Finset.mul_sum]
+
+-- Binomial identity by induction: (∑xᵢ)² = ∑xᵢ² + 2·e₂
+private theorem sq_sum_eq_sum_sq_add_two_elemSymm {n : ℕ} (x : Fin n → ℝ) :
+    (∑ i : Fin n, x i) ^ 2 = ∑ i : Fin n, (x i) ^ 2 + 2 * elemSymm 2 x := by
+  induction n with
+  | zero =>
+    have hzero : elemSymm 2 (x : Fin 0 → ℝ) = 0 := by
+      apply Finset.sum_eq_zero; intro s hs
+      exfalso
+      have h2 := (Finset.mem_powersetCard.mp hs).2
+      have h3 : s.card ≤ (univ : Finset (Fin 0)).card := Finset.card_le_card
+        (Finset.mem_powersetCard.mp hs).1
+      have h4 : (univ : Finset (Fin 0)).card = 0 := by simp
+      omega
+    simp [hzero]
+  | succ k ih =>
+    rw [Fin.sum_univ_castSucc, Fin.sum_univ_castSucc,
+        elemSymm_two_succ, elemSymm_one (x ∘ Fin.castSucc)]
+    simp only [Function.comp_apply]
+    have hih := ih (x ∘ Fin.castSucc)
+    simp only [Function.comp_apply] at hih
+    nlinarith [sq_nonneg (∑ i : Fin k, x i.castSucc), sq_nonneg (x (Fin.last k))]
+
 /-- General squared M₁ ≥ M₂ via sum-of-squares identity.
     Key reduction: C(n,2)·(∑xᵢ)² - n²·e₂ = n/2·(n·∑xᵢ² - (∑xᵢ)²) ≥ 0
     by Cauchy-Schwarz.
@@ -119,11 +233,10 @@ theorem maclaurin_sq_m1_ge_m2_general {n : ℕ} (hn : 2 ≤ n) (x : Fin n → �
   have h_cs : (n : ℝ) * ∑ i : Fin n, (x i) ^ 2 ≥ (∑ i : Fin n, x i) ^ 2 :=
     cauchy_schwarz_sum x
   -- Binomial identity: (∑xᵢ)² = ∑xᵢ² + 2·e₂
-  -- This follows from expanding (∑xᵢ)² = ∑ᵢ∑ⱼ xᵢxⱼ and separating diagonal/off-diagonal.
-  -- The off-diagonal sum ∑_{i≠j} xᵢxⱼ = 2·e₂ by symmetry of powersetCard 2.
+  -- Proved by induction on n using the recurrence e₂(x₀,...,xₙ) = e₂(x₀,...,xₙ₋₁) + xₙ·e₁
   have h_binom : (∑ i : Fin n, x i) ^ 2 =
-      ∑ i : Fin n, (x i) ^ 2 + 2 * elemSymm 2 x := by
-    sorry -- binomial expansion: provable by induction on n using elemSymm recurrence
+      ∑ i : Fin n, (x i) ^ 2 + 2 * elemSymm 2 x :=
+    sq_sum_eq_sum_sq_add_two_elemSymm x
   -- The formula 2·C(n,2) = n·(n-1) in ℕ, proved by induction
   have h_2cn2 : 2 * (Nat.choose n 2 : ℝ) = (n : ℝ) * ((n : ℝ) - 1) := by
     -- Prove by induction on n (works for all n ≥ 0)
@@ -235,9 +348,19 @@ theorem maclaurin_sq_m1_ge_m2_from_newton {n : ℕ} (hn : 2 ≤ n) (x : Fin n �
   -- h_newton : ((∑ i, x i) / ↑n) ^ 2 ≥ elemSymm 2 x / ↑(Nat.choose n 2)
   have hnn2_pos : (0 : ℝ) < (n : ℝ) ^ 2 := pow_pos hn_pos 2
   have key : elemSymm 2 x * (n : ℝ) ^ 2 ≤ (∑ i : Fin n, x i) ^ 2 * (Nat.choose n 2 : ℝ) := by
-    rw [show ((∑ i : Fin n, x i) / (n : ℝ)) ^ 2 = (∑ i : Fin n, x i) ^ 2 / (n : ℝ) ^ 2
-        from by ring, div_le_div_iff hC2_pos hnn2_pos] at h_newton
-    linarith
+    -- Cross-multiply: e₂/C ≤ S²/n² implies e₂·n² ≤ S²·C (for C, n² > 0)
+    have h1 : 0 ≤ ((∑ i : Fin n, x i) / (n : ℝ)) ^ 2 - elemSymm 2 x / (Nat.choose n 2 : ℝ) :=
+      sub_nonneg.mpr h_newton
+    have h2 : 0 < (n : ℝ) ^ 2 * (Nat.choose n 2 : ℝ) := mul_pos hnn2_pos hC2_pos
+    have h3 : 0 ≤ (((∑ i : Fin n, x i) / (n : ℝ)) ^ 2 -
+                   elemSymm 2 x / (Nat.choose n 2 : ℝ)) *
+                  ((n : ℝ) ^ 2 * (Nat.choose n 2 : ℝ)) := mul_nonneg h1 h2.le
+    have h4 : (((∑ i : Fin n, x i) / (n : ℝ)) ^ 2 -
+               elemSymm 2 x / (Nat.choose n 2 : ℝ)) *
+              ((n : ℝ) ^ 2 * (Nat.choose n 2 : ℝ)) =
+              (∑ i : Fin n, x i) ^ 2 * (Nat.choose n 2 : ℝ) - elemSymm 2 x * (n : ℝ) ^ 2 := by
+      field_simp [hn_pos.ne', hC2_pos.ne']
+    linarith [h4 ▸ h3]
   linarith
 
 /-- The Maclaurin chain: Mⱼ ≥ Mₖ for 0 < j ≤ k ≤ n.
@@ -255,7 +378,11 @@ theorem maclaurin_chain {n : ℕ} (j k : ℕ) (hj : 0 < j) (hjk : j ≤ k) (hkn 
       maclaurin_step (j + e) (by omega) (by omega) x hx
     have h_eq : j + (e + 1) = j + e + 1 := by omega
     rw [h_eq]
-    exact le_trans hstep (ih (by omega))
+    have h_e_le : j + e ≤ n := by omega
+    have hih := ih (Nat.le_add_right j e) h_e_le
+    calc maclaurinMean j x
+        ≥ maclaurinMean (j + e) x := hih
+      _ ≥ maclaurinMean (j + e + 1) x := hstep
 
 /-- The first Maclaurin mean dominates the last: M₁ ≥ Mₙ (AM ≥ GM in disguise). -/
 theorem maclaurin_m1_ge_mn {n : ℕ} (hn : 0 < n) (x : Fin n → ℝ)
@@ -271,7 +398,7 @@ Maclaurin's inequalities M₁ ≥ M₂ ≥ ⋯ ≥ Mₙ hold for non-negative re
 where Mₖ = (eₖ/C(n,k))^(1/k) and eₖ is the k-th elementary symmetric polynomial.
 The chain follows from Newton's log-concavity inequalities for the sequence eₖ/C(n,k).
 
-### Proved (no sorry or axiom):
+### Proved (no sorry):
 1. `elemSymm_zero` — e₀ = 1
 2. `elemSymm_one` — e₁ = ∑ xᵢ
 3. `elemSymm_nonneg` — non-negative inputs give non-negative eₖ
@@ -280,15 +407,13 @@ The chain follows from Newton's log-concavity inequalities for the sequence eₖ
 6. `maclaurin_m1sq_ge_m2_n4` — (M₁)² ≥ M₂ for n=4 (via nlinarith + sq_nonneg)
 7. `maclaurinMean_nonneg` — Maclaurin means are non-negative
 8. `amgm_from_maclaurin` — AM-GM from Mathlib weighted AM-GM
-9. `maclaurin_sq_m1_ge_m2_from_newton` — C(n,2)·(∑xᵢ)² ≥ n²·e₂ (non-negative, Newton)
-10. `maclaurin_chain` — Mⱼ ≥ Mₖ for j ≤ k ≤ n (induction on k-j via maclaurin_step)
-11. `maclaurin_m1_ge_mn` — M₁ ≥ Mₙ, i.e., AM ≥ GM (corollary of chain)
-
-### Has sorry (1):
-1. `maclaurin_sq_m1_ge_m2_general` — general (∑xᵢ)²·C(n,2) ≥ n²·e₂ (all reals)
-   (identity: C(n,2)·e₁² - n²·e₂ = n/2·∑_{i<j}(xᵢ-xⱼ)², needs Finset algebra)
+9. `sq_sum_eq_sum_sq_add_two_elemSymm` — (∑xᵢ)² = ∑xᵢ² + 2·e₂ (binomial identity, by induction)
+10. `maclaurin_sq_m1_ge_m2_general` — general (∑xᵢ)²·C(n,2) ≥ n²·e₂ (all reals, via binomial id)
+11. `maclaurin_sq_m1_ge_m2_from_newton` — C(n,2)·(∑xᵢ)² ≥ n²·e₂ (non-negative, Newton)
+12. `maclaurin_chain` — Mⱼ ≥ Mₖ for j ≤ k ≤ n (induction on k-j via maclaurin_step)
+13. `maclaurin_m1_ge_mn` — M₁ ≥ Mₙ, i.e., AM ≥ GM (corollary of chain)
 
 ### Axiomatized (deep results):
-1. `newton_log_concavity` — log-concavity of eₖ/C(n,k)
-2. `maclaurin_step` — Mₖ ≥ Mₖ₊₁ (general Maclaurin step)
+1. `newton_log_concavity` — log-concavity of eₖ/C(n,k) for non-negative inputs
+2. `maclaurin_step` — Mₖ ≥ Mₖ₊₁ for consecutive Maclaurin means
 -/
