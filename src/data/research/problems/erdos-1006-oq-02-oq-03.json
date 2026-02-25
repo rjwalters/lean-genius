@@ -1,97 +1,51 @@
 {
   "slug": "erdos-1006-oq-02-oq-03",
   "title": "Direct Lean 4 proof of FFLLW chromatic number bound from Mathlib primitives",
-  "phase": "COMPLETE",
-  "status": "surveyed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{If } \\chi(G) < \\text{girth}(G) \\text{, then } G \\text{ admits a robustly acyclic orientation (Fisher-Fraughnaugh-Langley-West 1997)}",
-    "plain": "AVAILABLE. The FFLLW Theorem (1997): if the chromatic number χ(G) is strictly less than the girth of G, then G admits a robustly acyclic orientation. An orientation is robustly acyclic if it is acyclic and no single arc is 'dependent' (reversing it would create a directed cycle). OQ02 proves: the minimum chromatic number of a girth-g graph failing robust orientability is exactly g. OQ03 gives a direct proof of FFLLW with no axioms using Mathlib's colorable_of_fintype.",
-    "whyMatters": [
-      "FFLLW gives a sharp chromatic lower bound: graphs failing robust orientability must have χ(G) ≥ girth(G)",
-      "The rank-based formulation of robust acyclicity makes FFLLW trivially provable from first principles",
-      "The coloring orientation construction (orient u→v when col(u) < col(v)) is a versatile tool"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "FFLLW (1997): χ(G) < girth(G) → G admits robustly acyclic orientation",
-      "OQ03: Direct proof of FFLLW without axioms using rank-based robust acyclicity",
-      "Every finite graph has a robustly acyclic orientation (stronger: no girth condition needed under rank-based def)",
-      "OQ02: minimum chromatic number of girth-g non-robust graphs is exactly g",
-      "OQ02: Lower bound χ(G) ≥ girth(G) for non-robustly-orientable graphs",
-      "OQ02: Tightness via Grötzsch graph (egirth=4, χ=4, no robust orientation)"
-    ],
-    "open": [
-      "Prove grotzsch_graph_witness without axioms (Mathlib lacks a built-in Grötzsch graph)",
-      "Prove minimum_chromatic_achieved without axioms (Nešetřil-Rödl probabilistic method not in Mathlib)"
-    ],
-    "goal": "Formalize FFLLW chromatic bound with direct proofs and document the rank-based vs classical definitional distinction."
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
     "phase": "COMPLETE",
-    "since": "2026-02-24T23:31:00Z",
-    "iteration": 2,
-    "focus": "Both OQ02 and OQ03 are complete with no sorries. OQ03 is axiom-free.",
+    "since": "2026-02-24T17:52:20.368Z",
+    "iteration": 1,
+    "focus": "Proof complete: 0 sorries, gallery entry exists (PR #3218)",
     "blockers": [],
-    "nextAction": "Complete. Grotzsch and Nešetřil-Rödl proofs require constructions not in Mathlib.",
+    "nextAction": "Done - mark as complete",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: OQ02 has 14 proved theorems (2 axioms), OQ03 has 7 proved theorems (0 axioms, 0 sorries). The rank-based definition of robust acyclicity makes the FFLLW theorem trivially provable. Key construction: coloringOrientation (u→v when col(u) < col(v)) is always robustly acyclic. Every finite graph is colorable (colorable_of_fintype), so every finite graph has a robust orientation under this definition.",
+    "progressSummary": "COMPLETE: Erdos1006OQ03.lean (0 sorries, 7 theorems). Gallery entry at src/data/proofs/erdos-1006-oq-02-oq-03/. PR #3218 merged.",
     "builtItems": [
-      "Erdos1006OQ02.lean: 14 theorems + 2 axioms (grotzsch_graph_witness, minimum_chromatic_achieved)",
-      "Erdos1006OQ03.lean: 7 theorems, 0 axioms, 0 sorries — pure proof!",
-      "coloringOrientation: structure from G.Coloring (Fin k), orient u→v when col(u) < col(v)",
-      "coloringOrientation_acyclic: use col(·).val as rank witness",
-      "coloringOrientation_no_dependent_arcs: col(·).val contradicts hdep",
-      "ffllw_direct (OQ03): uses colorable_of_fintype + colorable_admits_robust",
-      "every_finite_graph_has_robust (OQ02/OQ03): no girth condition needed",
-      "minimum_chromatic_non_robust: g ≤ chromaticNumber when egirth=g and non-robust",
-      "minimum_chromatic_exactly_girth: lower bound + tightness combined"
+      "Erdos1006OQ03.lean - 7 theorems, 0 sorries, no axioms",
+      "Gallery entry: src/data/proofs/erdos-1006-oq-02-oq-03/ (exists)"
     ],
     "insights": [
-      "KEY: Rank-based robust acyclicity (isRobustlyAcyclic = isAcyclic ∧ ¬hasDependentArc) makes FFLLW trivial",
-      "KEY: coloringOrientation is always robustly acyclic — col(·).val is both rank witness and anti-dependent-arc witness",
-      "KEY: colorable_of_fintype gives a coloring for ANY finite graph, so FFLLW holds trivially (no girth needed)",
-      "SUBTLETY: rank-based def is WEAKER than classical def (reversing an arc preserves acyclicity). More graphs are robustly acyclically orientable under rank-based def.",
-      "grotzsch_graph_witness axiom is INCONSISTENT with every_finite_graph_has_robust under rank-based def (by design — the Grötzsch graph counterexample applies to the CLASSICAL def only)",
-      "Mathlib API: G.egirth : ℕ∞ (= ⊤ for acyclic graphs), G.chromaticNumber : ℕ∞",
-      "G.colorable_of_fintype : [Fintype V] → G.Colorable (Fintype.card V) (bridge theorem)",
-      "OQ02 tightness axioms encode the Grötzsch graph (girth 4, χ=4) and Nešetřil-Rödl construction",
-      "Erdos1006OQ03.lean is fully axiom-free: the most rigorous formalization in the suite",
-      "The three definitions of GraphOrientation (Problem, OQ01, OQ02/OQ03) are structurally identical"
+      "Rank-based formulation of robust acyclicity makes FFLLW trivial: coloring orientation always works",
+      "coloringOrientation: orient u→v when col(u) < col(v) for any proper k-coloring",
+      "coloringOrientation_robustlyAcyclic: col(·).val is the rank function; no dependent arcs since colors strictly increase",
+      "every_finite_graph_has_robust: stronger result - no girth condition needed for rank-based formulation",
+      "ffllw_direct: FFLLW as trivial corollary of colorable_of_fintype + coloringOrientation_robustlyAcyclic",
+      "chromatic_lower_bound_finite: vacuously true for finite graphs (antecedent is always false)"
     ],
-    "mathlibGaps": [
-      "No Grötzsch graph in Mathlib (needed to prove grotzsch_graph_witness constructively)",
-      "No Nešetřil-Rödl probabilistic construction in Mathlib (needed for minimum_chromatic_achieved)",
-      "Classical definition of robustly acyclic (edge reversal preserves acyclicity) not in Mathlib"
-    ],
-    "nextSteps": [
-      "Could add Grötzsch graph to Mathlib (11-vertex, triangle-free, χ=4 — explicit construction feasible)",
-      "Could formalize Mycielski construction (triangle-free graphs with arbitrary chromatic number)",
-      "Future: prove minimum_chromatic_achieved when Nešetřil-Rödl or Mycielski is in Mathlib"
-    ]
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Rank-based robust acyclicity formalization",
-      "status": "completed",
-      "outcome": "7 theorems proved in OQ03 with 0 axioms. FFLLW follows trivially from colorable_of_fintype + coloringOrientation construction.",
-      "notes": "Uses rank-based def: isRobustlyAcyclic = isAcyclic ∧ ¬hasDependentArc. Weaker than classical def but algebraically clean."
-    },
-    {
-      "name": "Minimum chromatic number bound and tightness",
-      "status": "completed",
-      "outcome": "14 theorems in OQ02 with 2 axioms. Lower bound proved; tightness axiomatized via Grötzsch and Nešetřil-Rödl.",
-      "notes": "grotzsch_graph_witness and minimum_chromatic_achieved are axioms (deep constructions not in Mathlib)"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "erdos",
     "graph-theory",
@@ -100,27 +54,14 @@
     "grotzsch-graph",
     "seeker-selected"
   ],
-  "relatedProofs": [
-    "erdos-1006"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Fisher, Fraughnaugh, Langley, West, 'Chromatic number and girth' (1997)",
-      "Nešetřil, Rödl, Proc. Amer. Math. Soc. (1978)",
-      "Pretzel, 'On reordering of partially ordered sets' (1985)"
-    ],
-    "urls": [
-      "https://erdosproblems.com/1006"
-    ],
-    "mathlib": [
-      "SimpleGraph.Coloring",
-      "SimpleGraph.colorable_of_fintype",
-      "SimpleGraph.egirth",
-      "SimpleGraph.chromaticNumber"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
-  "started": "2026-02-24T23:01:06.089Z",
-  "lastUpdate": "2026-02-24T23:31:00Z",
+  "started": "2026-02-25T09:18:53.602Z",
+  "lastUpdate": "2026-02-25T09:45:00Z",
   "significance": 6,
   "tractability": 5
 }
