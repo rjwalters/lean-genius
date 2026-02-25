@@ -248,7 +248,7 @@ theorem fermat_prime_65537 : IsFermatPrime 65537 := ⟨prime_65537, 4, by norm_n
     Proof: use Nat.totient_prime (φ(p) = p - 1) and p = 2^(2^k) + 1. -/
 theorem fermat_prime_totient_pow2 (p : ℕ) (hp : IsFermatPrime p) : TotientIsPow2 p := by
   obtain ⟨hprime, k, hpk⟩ := hp
-  exact ⟨2 ^ k, by rw [Nat.totient_prime hprime, hpk]; omega⟩
+  exact ⟨2 ^ k, by rw [Nat.totient_prime hprime, hpk]; simp⟩
 
 /-- Every Fermat prime gives a constructible regular polygon.
     This is the "if" direction of Gauss-Wantzel for prime n. -/
@@ -319,27 +319,230 @@ theorem polygon_18_not_constructible : ¬ IsConstructibleNgon 18 := by
   exact totient_18_not_pow2
 
 /-!
+## Section IX: Arithmetic Lemmas for TotientIsPow2
+
+These lemmas provide the arithmetic infrastructure for the Gauss-Wantzel theorem.
+Key insight: φ is multiplicative, so φ(n) = 2^k iff each prime power factor has φ = 2^k.
+-/
+
+/-- φ(2^k) = 2^(k-1) is always a power of 2, for k ≥ 1.
+    Proof: Nat.totient_prime_pow gives φ(2^k) = 2^(k-1) * (2-1) = 2^(k-1). -/
+theorem totient_pow2_of_two_power (k : ℕ) (hk : 1 ≤ k) : TotientIsPow2 (2 ^ k) :=
+  ⟨k - 1, by
+    have h := Nat.totient_prime_pow Nat.prime_two hk
+    simp only [show (2 : ℕ) - 1 = 1 from rfl, mul_one] at h
+    exact h⟩
+
+/-- Products of coprime numbers with pow2 totients also have pow2 totient.
+    Key arithmetic lemma: if φ(m) = 2^a and φ(n) = 2^b and gcd(m,n) = 1,
+    then φ(mn) = φ(m)·φ(n) = 2^(a+b). -/
+theorem totient_prod_is_pow2 {m n : ℕ} (hm : TotientIsPow2 m) (hn : TotientIsPow2 n)
+    (hcop : Nat.Coprime m n) : TotientIsPow2 (m * n) := by
+  obtain ⟨a, ha⟩ := hm
+  obtain ⟨b, hb⟩ := hn
+  exact ⟨a + b, by rw [Nat.totient_mul hcop, ha, hb, pow_add]⟩
+
+/-- For an odd prime p and k ≥ 2, φ(p^k) = p^(k-1)·(p-1) is NOT a power of 2.
+    Proof: p is odd, so p ∣ p^(k-1)·(p-1), and odd primes divide no power of 2.
+    This shows why p^2 factors (like 9 = 3², 25 = 5²) fail the criterion. -/
+theorem odd_prime_pow_gt_one_not_pow2 {p : ℕ} (hp : Nat.Prime p) (hodd : p ≠ 2)
+    {k : ℕ} (hk : 2 ≤ k) : ¬ TotientIsPow2 (p ^ k) := by
+  intro ⟨m, hm⟩
+  rw [Nat.totient_prime_pow hp (by omega)] at hm
+  apply not_pow_two_of_odd_prime_dvd hp hodd _ ⟨m, hm⟩
+  exact dvd_mul_of_dvd_left (dvd_pow_self p (by omega)) _
+
+/-- Structural proof: 9 = 3² fails because 3 is odd prime appearing squared.
+    Alternative proof of totient_9_not_pow2 via odd_prime_pow_gt_one_not_pow2. -/
+theorem totient_9_not_pow2' : ¬ TotientIsPow2 9 := by
+  have h : ¬ TotientIsPow2 (3 ^ 2) :=
+    odd_prime_pow_gt_one_not_pow2 (by decide : Nat.Prime 3) (by decide : (3 : ℕ) ≠ 2)
+      (by norm_num : 2 ≤ 2)
+  norm_num at h
+  exact h
+
+/-!
+## Section X: (ℤ/nℤ)* and the Galois Theory Connection
+
+The group (ℤ/nℤ)* has order φ(n) — this is the key bridge between
+Galois theory (Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)*) and our number-theoretic criterion φ(n) = 2^k.
+-/
+
+/-- The group of units (ℤ/nℤ)* has cardinality φ(n), for n ≥ 1.
+    Direct consequence of ZMod.card_units_eq_totient in Mathlib.
+    This is the key bridge: Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)*, so |Gal| = φ(n). -/
+theorem units_zmod_card_eq_totient (n : ℕ) [NeZero n] :
+    Fintype.card (ZMod n)ˣ = Nat.totient n :=
+  ZMod.card_units_eq_totient n
+
+/-- (ℤ/nℤ)* is a 2-group if and only if φ(n) is a power of 2, for n ≥ 1.
+    By Gauss-Wantzel (via OQ02): this is equivalent to the n-gon being constructible.
+    Proof: |{(ℤ/nℤ)*}| = φ(n) (Mathlib), and a finite group is 2-group iff |G| = 2^k. -/
+theorem units_zmod_is_2group_iff (n : ℕ) [NeZero n] :
+    IsPGroup 2 (ZMod n)ˣ ↔ TotientIsPow2 n := by
+  unfold TotientIsPow2
+  rw [IsPGroup.iff_card]
+  constructor
+  · rintro ⟨k, hk⟩
+    exact ⟨k, by rwa [Nat.card_eq_fintype_card, ZMod.card_units_eq_totient] at hk⟩
+  · rintro ⟨k, hk⟩
+    exact ⟨k, by rwa [Nat.card_eq_fintype_card, ZMod.card_units_eq_totient]⟩
+
+/-!
+## Section XI: More Constructible Polygons via Products of Fermat Primes
+
+Products of distinct Fermat primes (times powers of 2) give constructible polygons.
+These examples illustrate the full generality of the Gauss-Wantzel theorem.
+-/
+
+theorem totient_34_eq : Nat.totient 34 = 16 := by decide
+theorem totient_51_eq : Nat.totient 51 = 32 := by decide
+theorem totient_85_eq : Nat.totient 85 = 64 := by decide
+theorem totient_255_eq : Nat.totient 255 = 128 := by native_decide
+
+/-- φ(34) = 16 = 2^4: 34 = 2 × 17, φ(34) = φ(2)·φ(17) = 1·16. -/
+theorem totient_34_pow2 : TotientIsPow2 34 := ⟨4, by decide⟩
+
+/-- φ(51) = 32 = 2^5: 51 = 3 × 17, φ(51) = φ(3)·φ(17) = 2·16. -/
+theorem totient_51_pow2 : TotientIsPow2 51 := ⟨5, by decide⟩
+
+/-- φ(85) = 64 = 2^6: 85 = 5 × 17, φ(85) = φ(5)·φ(17) = 4·16. -/
+theorem totient_85_pow2 : TotientIsPow2 85 := ⟨6, by decide⟩
+
+/-- φ(255) = 128 = 2^7: 255 = 3 × 5 × 17, φ(255) = φ(3)·φ(5)·φ(17) = 2·4·16. -/
+theorem totient_255_pow2 : TotientIsPow2 255 := ⟨7, by native_decide⟩
+
+/-- The regular 34-gon (2 × 17) is constructible: φ(34) = 16 = 2⁴. -/
+theorem polygon_34_constructible : IsConstructibleNgon 34 :=
+  (gauss_wantzel_theorem 34 (by norm_num)).mpr totient_34_pow2
+
+/-- The regular 51-gon (3 × 17) is constructible: φ(51) = 32 = 2⁵.
+    Two distinct Fermat primes: 3 (F₀) and 17 (F₂). -/
+theorem polygon_51_constructible : IsConstructibleNgon 51 :=
+  (gauss_wantzel_theorem 51 (by norm_num)).mpr totient_51_pow2
+
+/-- The regular 85-gon (5 × 17) is constructible: φ(85) = 64 = 2⁶.
+    Two distinct Fermat primes: 5 (F₁) and 17 (F₂). -/
+theorem polygon_85_constructible : IsConstructibleNgon 85 :=
+  (gauss_wantzel_theorem 85 (by norm_num)).mpr totient_85_pow2
+
+/-- The regular 255-gon (3 × 5 × 17) is constructible: φ(255) = 128 = 2⁷.
+    Three distinct Fermat primes: 3 (F₀), 5 (F₁), 17 (F₂). -/
+theorem polygon_255_constructible : IsConstructibleNgon 255 :=
+  (gauss_wantzel_theorem 255 (by norm_num)).mpr totient_255_pow2
+
+/-- Alternative proof of the 15-gon via totient_prod_is_pow2.
+    Shows how the product formula derives constructibility without native_decide. -/
+theorem polygon_15_constructible_via_product : IsConstructibleNgon 15 := by
+  apply (gauss_wantzel_theorem 15 (by norm_num)).mpr
+  have hcop : Nat.Coprime 3 5 := by decide
+  have h := totient_prod_is_pow2 totient_3_pow2 totient_5_pow2 hcop
+  norm_num at h
+  exact h
+
+/-!
+## Section XII: More Non-Constructible Polygons
+
+These examples show why the criterion is strict:
+- 21 = 3 × 7 fails because 7 is NOT a Fermat prime.
+- 25 = 5² fails because 5 appears SQUARED (even though 5 is a Fermat prime).
+- 35 = 5 × 7 fails because 7 is not a Fermat prime.
+-/
+
+theorem totient_21_eq : Nat.totient 21 = 12 := by decide
+theorem totient_25_eq : Nat.totient 25 = 20 := by decide
+theorem totient_35_eq : Nat.totient 35 = 24 := by decide
+
+/-- φ(21) = 12, not a power of 2: 21 = 3 × 7, φ(21) = 2·6 = 12. -/
+theorem totient_21_not_pow2 : ¬ TotientIsPow2 21 := by
+  intro ⟨k, hk⟩
+  have h : Nat.totient 21 = 12 := by decide
+  rw [h] at hk
+  exact not_pow_two_of_odd_prime_dvd (p := 3) (by decide) (by decide) (by norm_num) ⟨k, hk⟩
+
+/-- φ(25) = 20, not a power of 2: 25 = 5², φ(25) = 5·4 = 20.
+    5 is a Fermat prime, but 5² fails the criterion. Use odd_prime_pow_gt_one_not_pow2. -/
+theorem totient_25_not_pow2 : ¬ TotientIsPow2 25 := by
+  have h : ¬ TotientIsPow2 (5 ^ 2) :=
+    odd_prime_pow_gt_one_not_pow2 (by decide : Nat.Prime 5) (by decide : (5 : ℕ) ≠ 2)
+      (by norm_num : 2 ≤ 2)
+  norm_num at h
+  exact h
+
+/-- φ(35) = 24, not a power of 2: 35 = 5 × 7, φ(35) = 4·6 = 24. -/
+theorem totient_35_not_pow2 : ¬ TotientIsPow2 35 := by
+  intro ⟨k, hk⟩
+  have h : Nat.totient 35 = 24 := by decide
+  rw [h] at hk
+  exact not_pow_two_of_odd_prime_dvd (p := 3) (by decide) (by decide) (by norm_num) ⟨k, hk⟩
+
+/-- The regular 21-gon is NOT constructible: φ(21) = 12, 3 | 12. -/
+theorem polygon_21_not_constructible : ¬ IsConstructibleNgon 21 := by
+  rw [gauss_wantzel_theorem 21 (by norm_num)]
+  exact totient_21_not_pow2
+
+/-- The regular 25-gon is NOT constructible: φ(25) = 20, 5 | 20.
+    Despite 5 being a Fermat prime, 25 = 5² is not constructible. -/
+theorem polygon_25_not_constructible : ¬ IsConstructibleNgon 25 := by
+  rw [gauss_wantzel_theorem 25 (by norm_num)]
+  exact totient_25_not_pow2
+
+/-- The regular 35-gon is NOT constructible: φ(35) = 24, 3 | 24. -/
+theorem polygon_35_not_constructible : ¬ IsConstructibleNgon 35 := by
+  rw [gauss_wantzel_theorem 35 (by norm_num)]
+  exact totient_35_not_pow2
+
+/-!
+## Section XIII: F₅ = 2³²+1 is Composite (Euler 1732)
+
+The only known Fermat primes are 3, 5, 17, 257, 65537 (for k = 0,1,2,3,4).
+F₅ = 2^32 + 1 = 4294967297 = 641 × 6700417, discovered by Euler in 1732.
+It is unknown whether any Fermat prime beyond 65537 exists.
+-/
+
+/-- Euler's 1732 factorization: F₅ = 2^32 + 1 = 641 × 6700417. -/
+theorem f5_factorization : 641 * 6700417 = 4294967297 := by norm_num
+
+/-- F₅ = 2^32 + 1 equals 4294967297. -/
+theorem f5_value : 2 ^ 32 + 1 = 4294967297 := by norm_num
+
+/-- F₅ = 4294967297 is NOT prime (it factors as 641 × 6700417). -/
+theorem f5_not_prime : ¬ Nat.Prime 4294967297 := by native_decide
+
+/-- F₅ is NOT a Fermat prime. -/
+theorem f5_not_fermat_prime : ¬ IsFermatPrime 4294967297 :=
+  fun ⟨hprime, _⟩ => f5_not_prime hprime
+
+/-!
 ## Summary
 
 ### Proved (0 sorries):
-1. `totient_X_eq` (18 theorems): φ(n) values for n = 3..17, 257, 65537, 14, 15, 18, 20
-2. `not_pow_two_of_odd_prime_dvd`: general helper using prime divisibility
-3. `totient_X_pow2` (12 theorems): φ(n) = 2^k for n = 3,4,5,6,8,10,12,17,257,65537,15,20
-4. `totient_X_not_pow2` (6 theorems): φ(7)=6, φ(9)=6, φ(11)=10, φ(13)=12, φ(14)=6, φ(18)=6 not pow2
-5. `fermat_prime_X` (5 theorems): 3, 5, 17, 257, 65537 are Fermat primes
-6. `fermat_prime_totient_pow2`: φ(p) = 2^(2^k) for Fermat prime p = 2^(2^k)+1
-7. `fermat_prime_ngon_constructible`: Fermat primes give constructible polygons
-8. Constructibility theorems for n = 3, 4, 5, 6, 8, 10, 12, 15, 17, 20, 257, 65537
-9. Non-constructibility theorems for n = 7, 9, 11, 13, 14, 18
+1. `totient_X_eq` (22 theorems): φ(n) for n = 3..17, 21, 25, 34, 35, 51, 85, 255, 257, 65537, etc.
+2. `not_pow_two_of_odd_prime_dvd`: general prime divisibility helper
+3. `totient_pow2_of_two_power`: φ(2^k) = 2^(k-1) is pow2 for k ≥ 1
+4. `totient_prod_is_pow2`: product of coprime pow2-totient numbers has pow2 totient
+5. `odd_prime_pow_gt_one_not_pow2`: odd prime squared → totient not pow2
+6. `totient_9_not_pow2'`: structural proof that 9=3² fails via odd_prime_pow_gt_one_not_pow2
+7. `totient_X_pow2` (16 theorems): φ(n) = 2^k for n = 3,4,5,6,8,10,12,17,34,51,85,255,257,65537,15,20
+8. `totient_X_not_pow2` (9 theorems): φ not pow2 for n = 7,9,11,13,14,18,21,25,35
+9. `units_zmod_card_eq_totient`: |(ℤ/nℤ)*| = φ(n) (from Mathlib ZMod.card_units_eq_totient)
+10. `units_zmod_is_2group_iff`: (ℤ/nℤ)* is 2-group ↔ TotientIsPow2 n (proved!)
+11. `fermat_prime_X` (5 theorems): 3, 5, 17, 257, 65537 are Fermat primes
+12. `fermat_prime_totient_pow2`, `fermat_prime_ngon_constructible`: Fermat prime structure
+13. Constructibility: n = 3,4,5,6,8,10,12,15,17,20,34,51,85,255,257,65537 (16 polygons)
+14. Non-constructibility: n = 7,9,11,13,14,18,21,25,35 (9 polygons)
+15. F₅ facts: f5_factorization, f5_value, f5_not_prime, f5_not_fermat_prime
 
 ### Axiomatized (1 axiom):
 - `gauss_wantzel_theorem`: n-gon constructible ↔ φ(n) = 2^k
   (requires cyclotomic field theory + Galois criterion from OQ02)
 
-### Key insight:
-The Gauss-Wantzel theorem bridges OQ02 (Galois criterion for algebraic numbers)
-to the classical characterization of constructible polygons. The Galois group
-Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)* has order φ(n), so the 2-group condition becomes φ(n) = 2^k.
+### Key insights:
+- The arithmetic core: φ(n) = 2^k ↔ n = 2^a × (product of distinct Fermat primes)
+- The Galois bridge: |(ℤ/nℤ)*| = φ(n) (proved from Mathlib: units_zmod_card_eq_totient)
+  → 2-group condition ↔ φ(n) = 2^k (units_zmod_is_2group_iff, proved!)
+- The arithmetic structure: totient_prod_is_pow2 + odd_prime_pow_gt_one_not_pow2
+  give the complete arithmetic characterization in terms of prime factors.
 -/
 
 end AngleTrisectionOQ02OQ03
