@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "PROGRESS",
     "since": "2026-02-24T17:52:20.367Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,13 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: 16 theorems proved including standard_binomial theorem and ODE coefficient identities. 1 axiom remains (newton_generalized_binomial) requiring analytic function theory.",
+    "progressSummary": "PROGRESS: Created gallery entry for binomial-theorem-oq-01. BinomialTheoremOQ01.lean has 16 proved theorems (0 sorries, 1 axiom for newton_generalized_binomial). Main open task: prove the axiom from Mathlib analytic function theory (ODE uniqueness path).",
     "builtItems": [
       "BinomialTheoremOQ01.lean: 16 proved theorems, 1 axiom, 0 sorries",
       "standard_binomial: (1+x)^n = Σ genBinom(n,k) x^k proved",
       "genBinom_recurrence_deriv: (k+1)*C(α,k+1) = C(α,k)*(α-k) proved",
       "genBinom_ode_coeff: ODE coefficient identity proved",
-      "BinomialTheoremOQ01Aristotle.lean: companion file with 9 sorries for Aristotle"
+      "BinomialTheoremOQ01Aristotle.lean: companion file with 9 sorries for Aristotle",
+      "src/data/proofs/binomial-theorem-oq-01/meta.json (gallery entry, 5 sections)",
+      "src/data/proofs/binomial-theorem-oq-01/index.ts (proof export)",
+      "src/data/proofs/binomial-theorem-oq-01/annotations.json",
+      "src/data/proofs/binomial-theorem-oq-01/tacticStates.json"
     ],
     "insights": [
       "genBinom generalizes Nat.choose to all alpha in Real",
@@ -43,13 +47,22 @@
       "genBinom_nat_eq_choose PROVED: connects genBinom to Nat.choose via descFactorial_eq_prod_range + Nat.cast_prod",
       "ODE characterization: genBinom_ode_coeff shows (1+x)*f = alpha*f at coefficient level",
       "Mathlib API: descFactorial_eq_prod_range in Factorial/BigOperators; Nat.cast_prod in BigOperators/Ring",
-      "Main axiom newton_generalized_binomial requires analytic function theory (ODE uniqueness or log/exp composition)"
+      "Main axiom newton_generalized_binomial requires analytic function theory (ODE uniqueness or log/exp composition)",
+      "BinomialTheoremOQ01.lean EXISTS with 16 theorems proved (0 sorries, 1 axiom)",
+      "Key axiom: newton_generalized_binomial - HasSum C(alpha,k)*x^k = (1+x)^alpha for |x|<1",
+      "ODE approach: both series and (1+x)^alpha satisfy (1+x)y=alpha*y, y(0)=1",
+      "genBinom_ode_coeff proved: (k+1)*C(k+1)+k*C(k) = alpha*C(k) (coefficient ODE identity)",
+      "geometric series (alpha=-1) case fully proved via hasSum_geometric_of_norm_lt_one",
+      "standard_binomial proved: (1+x)^n = finite genBinom sum via add_pow + genBinom_nat_eq_choose",
+      "No gallery entry existed - created src/data/proofs/binomial-theorem-oq-01/ with full meta.json"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "To prove newton_generalized_binomial: use ODE approach - show (1+x)*f=alpha*f with f(0)=1 uniquely characterizes (1+x)^alpha",
       "Or: use exp/log composition: (1+x)^alpha = exp(alpha*log(1+x)), compose hasSum_pow_div_log_of_abs_lt_one with exp series",
-      "Mathlib has hasSum_pow_div_log_of_abs_lt_one for log series; exp series via expSeries_div_hasSum_exp"
+      "Mathlib has hasSum_pow_div_log_of_abs_lt_one for log series; exp series via expSeries_div_hasSum_exp",
+      "Prove newton_generalized_binomial from HasFPowerSeriesOnBall",
+      "ODE uniqueness path: (1+x)y=alpha*y with y(0)=1"
     ]
   },
   "approaches": [],
