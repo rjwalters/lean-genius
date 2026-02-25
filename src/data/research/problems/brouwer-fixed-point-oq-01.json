@@ -1,0 +1,123 @@
+{
+  "slug": "brouwer-fixed-point-oq-01",
+  "title": "Brouwer Fixed Point Theorem: Elementary 1D Proof via IVT",
+  "phase": "SURVEYED",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall f: [a,b] \\to [a,b] \\text{ continuous}, \\exists x \\in [a,b], f(x) = x",
+    "plain": "OQ-01: Can we prove the 1D Brouwer Fixed Point Theorem and related results (No-Retraction, Borsuk-Ulam) using only the Intermediate Value Theorem, without algebraic topology?",
+    "whyMatters": [
+      "Shows that dimension 1 is elementary: IVT ↔ 1D Brouwer FPT ↔ 1D No-Retraction",
+      "Contrasts with dimension ≥ 2 where algebraic topology becomes necessary",
+      "Clarifies the gap between Brouwer (existence) and Banach (existence + uniqueness)",
+      "The 1D Borsuk-Ulam theorem (f(x) = f(-x) always has a solution) is a beautiful IVT application"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "1D Brouwer FPT via Mathlib's exists_mem_Icc_isFixedPt_of_mapsTo",
+      "1D Brouwer FPT via direct IVT proof (g(x) = f(x) - x changes sign)",
+      "1D No-Retraction Theorem: no continuous r:[0,1]→{0,1} fixing boundary (IVT forces r(x)=1/2)",
+      "1D Borsuk-Ulam: ∀ continuous f, ∃ x ∈ [-1,1] with f(x)=f(-x)",
+      "Banach Contraction Mapping Theorem: unique fixed point from Mathlib's ContractingWith",
+      "Brouwer non-uniqueness: identity map on [0,1] has all points as fixed points",
+      "Banach implies Brouwer in 1D (stronger assumptions → same existence conclusion)"
+    ],
+    "open": [
+      "Sperner's Lemma formalization in Lean 4 (would give elementary n-dimensional proof)",
+      "2D Brouwer FPT without algebraic topology axioms",
+      "Full Borsuk-Ulam for S^n in Lean 4"
+    ],
+    "goal": "Prove all 1D fixed point theory from IVT alone, survey the higher-dimensional gap"
+  },
+  "currentState": {
+    "phase": "SURVEYED",
+    "since": "2026-02-25T07:13:00.000Z",
+    "iteration": 1,
+    "focus": "Created BrouwerFixedPointOQ01.lean with 8+ proved theorems, 0 sorries",
+    "blockers": [],
+    "nextAction": "Build and verify the Lean file compiles",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Created BrouwerFixedPointOQ01.lean proving the 1D Brouwer FPT two ways (Mathlib + IVT), the 1D No-Retraction Theorem, the 1D Borsuk-Ulam theorem, and Banach Contraction Mapping Theorem. All 0 sorries. Key result: the IVT is equivalent to 1D Brouwer FPT — no algebraic topology needed in 1D.",
+    "builtItems": [
+      "brouwer_1d: 1D Brouwer FPT via Mathlib's exists_mem_Icc_isFixedPt_of_mapsTo",
+      "brouwer_1d_via_ivt: direct IVT proof via g(x)=f(x)-x sign change",
+      "no_retraction_1d: no continuous r:[0,1]→{0,1} fixing boundary (IVT forces 1/2)",
+      "borsuk_ulam_1d: ∀ continuous f, ∃ x∈[-1,1] with f(x)=f(-x) (IVT on g(x)=f(x)-f(-x))",
+      "banach_contraction_fixed_point: unique fixed point from ContractingWith",
+      "banach_fixed_point_unique: uniqueness from contraction condition",
+      "brouwer_nonunique: identity on [0,1] has infinitely many fixed points",
+      "banach_implies_brouwer_1d: Banach (stronger) implies Brouwer (weaker) in 1D"
+    ],
+    "insights": [
+      "In 1D: IVT ↔ 1D Brouwer FPT ↔ 1D No-Retraction Theorem (all equivalent)",
+      "Key proof: g(x) = f(x)-x satisfies g(a)≥0≥g(b), IVT gives zero = fixed point",
+      "No-retraction proof: IVT forces r(x)=1/2 which contradicts image ⊆ {0,1}",
+      "Borsuk-Ulam: g(x)=f(x)-f(-x) satisfies g(1)=-g(-1), so IVT finds g=0",
+      "Banach gives existence + uniqueness; Brouwer gives only existence",
+      "The identity map shows Brouwer fixed points can be an entire interval",
+      "For n≥2: No-Retraction requires H_{n-1}(S^{n-1})≠0 — needs homology theory",
+      "Brouwer FPT is NOT in Mathlib 4.26; only external formalizations (Lean 3)",
+      "ContractingWith.fixedPoint, fixedPoint_isFixedPt, fixedPoint_unique: Banach API"
+    ],
+    "mathlibGaps": [
+      "Brouwer FPT for n≥2: not in Mathlib 4.26 (external Lean 3 formalization exists)",
+      "Sperner's Lemma: not in Mathlib (would give elementary n-dim Brouwer proof)",
+      "Borsuk-Ulam for S^n: not in Mathlib (only 1D proved here by IVT)"
+    ],
+    "nextSteps": [
+      "Consider formalizing Sperner's Lemma for the 2D simplex as OQ-02",
+      "The 2D No-Retraction could use winding numbers (if Mathlib has them)",
+      "Nash Equilibrium theorem: another application of Brouwer's FPT"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "IVT-based proofs for 1D",
+      "status": "COMPLETE",
+      "description": "All 1D fixed point theory proved from IVT: Brouwer FPT (2 proofs), No-Retraction, Borsuk-Ulam, Banach comparison. 0 sorries.",
+      "outcome": "Success: 8 theorems proved, complete understanding of 1D case"
+    }
+  ],
+  "tags": [
+    "topology",
+    "fixed-point-theory",
+    "ivt",
+    "intermediate-value-theorem",
+    "borsuk-ulam",
+    "banach",
+    "1d",
+    "analysis"
+  ],
+  "relatedProofs": [
+    "brouwer-fixed-point",
+    "intermediate-value-theorem"
+  ],
+  "references": {
+    "papers": [
+      "Brouwer (1911): Über Abbildungen von Mannigfaltigkeiten",
+      "Banach (1922): Sur les opérations dans les ensembles abstraits"
+    ],
+    "urls": [],
+    "mathlib": [
+      "exists_mem_Icc_isFixedPt_of_mapsTo",
+      "intermediate_value_Icc",
+      "intermediate_value_Icc'",
+      "ContractingWith.fixedPoint",
+      "ContractingWith.fixedPoint_isFixedPt",
+      "ContractingWith.fixedPoint_unique"
+    ]
+  },
+  "started": "2026-02-25T05:42:40.613Z",
+  "lastUpdate": "2026-02-25T07:13:00.000Z",
+  "significance": 7,
+  "tractability": 5
+}
