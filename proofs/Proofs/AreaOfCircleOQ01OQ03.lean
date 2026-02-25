@@ -25,13 +25,16 @@
   - Parseval's identity: available (tsum_sq_fourierCoeff)
   - The assembled Wirtinger proof would be ~200-300 lines
 
-  What This File Proves (0 sorries):
+  What This File Proves (17 theorems, 2 axioms, 1 sorry):
   1. Equality for circles: C² = 4πA  (ring computation)
   2. Strict inequality for squares: C² > 4πA  (π < 4)
   3. The isoperimetric ratio: A/(C²/4π) and its circle value
   4. Connection to OQ01: the equality case via C = dA/dr
   5. Regular polygon isoperimetric ratios
-  6. The Wirtinger–isoperimetric deduction chain (axiomatized Wirtinger)
+  6. ngon_limit_tendsto_circle: π/(n·tan(π/n)) → 1  (via tan x/x → 1 from hasDerivAt)
+  7. circleGamma_circumference: arc-length integral = 2πr  (√(sin²+cos²) = 1)
+  8. circleGamma_area: Green's theorem integral = πr²  (sin²+cos² = 1)
+  9. The Wirtinger–isoperimetric deduction chain (axiomatized Wirtinger)
 
   References:
   - Hurwitz (1901): Fourier series proof
@@ -41,8 +44,12 @@
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.Calculus.Deriv.Slope
+import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
@@ -174,14 +181,68 @@ theorem regular_ngon_isoperimetric_ratio (n : ℕ) (R : ℝ) (hn : 2 < n) (hR : 
   ring
 
 /-- As n → ∞, the regular n-gon approaches the circle (ratio → 1).
-    Specifically: π/(n·tan(π/n)) → π/(π) = 1 since n·tan(π/n) → π as n → ∞. -/
+    Specifically: π/(n·tan(π/n)) → π/(π) = 1 since n·tan(π/n) → π as n → ∞.
+
+    **Proof**: tan(h)/h → 1 as h → 0 (derivative of tan at 0 is 1).
+    Set h = π/n → 0 as n → ∞. Then π/(n·tan(π/n)) = 1/(tan(π/n)/(π/n)) → 1/1 = 1. -/
 theorem ngon_limit_tendsto_circle :
     Filter.Tendsto (fun n : ℕ => π / ((n : ℝ) * Real.tan (π / n)))
       Filter.atTop (nhds 1) := by
-  -- Key: (n : ℝ) * tan(π/n) → π as n → ∞
-  -- This follows from x·tan(x) → x as x → 0, with x = π/n
-  -- Limit of π/(n·tan(π/n)) = π/π = 1
-  sorry  -- requires standard analysis: lim_{x→0} tan(x)/x = 1
+  -- Step 1: tan(h)/h → 1 as h → 0, h ≠ 0
+  -- From hasDerivAt_tan at 0: derivative is 1/cos²(0) = 1
+  -- By hasDerivAt_iff_tendsto_slope: slope (= tan h / h) → 1
+  have htan_slope : Filter.Tendsto (fun h : ℝ => Real.tan h / h)
+      (nhdsWithin 0 {(0 : ℝ)}ᶜ) (nhds 1) := by
+    have h0 : Real.cos (0 : ℝ) ≠ 0 := by norm_num [Real.cos_zero]
+    have hd : HasDerivAt Real.tan 1 0 := by
+      have := Real.hasDerivAt_tan h0
+      rwa [Real.cos_zero, one_pow, div_one] at this
+    rw [hasDerivAt_iff_tendsto_slope] at hd
+    exact hd.congr' (Filter.Eventually.of_forall (fun y => by
+      simp [slope_def_field, Real.tan_zero]))
+  -- Step 2: π/n → 0 via atTop, staying ≠ 0 for n ≥ 1
+  have hpi_nhds : Filter.Tendsto (fun n : ℕ => (π : ℝ) / n)
+      Filter.atTop (nhdsWithin 0 {(0 : ℝ)}ᶜ) := by
+    apply Filter.tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within
+    · exact tendsto_const_div_atTop_nhds_zero_nat π
+    · filter_upwards [Filter.eventually_ge_atTop 1] with n hn
+      exact Set.mem_compl_singleton_iff.mpr
+        (div_ne_zero Real.pi_ne_zero (Nat.cast_ne_zero.mpr (by omega)))
+  -- Step 3: tan(π/n)/(π/n) → 1 by composition
+  have h_comp : Filter.Tendsto (fun n : ℕ => Real.tan (π / n) / (π / n))
+      Filter.atTop (nhds 1) :=
+    htan_slope.comp hpi_nhds
+  -- Step 4: 1/(tan(π/n)/(π/n)) → 1/1 = 1 by inversion (x → x⁻¹ continuous at 1)
+  have h_inv : Filter.Tendsto (fun n : ℕ => 1 / (Real.tan (π / n) / (π / n)))
+      Filter.atTop (nhds 1) := by
+    have key := h_comp.inv₀ (by norm_num : (1 : ℝ) ≠ 0)
+    simp only [inv_one] at key
+    exact key.congr' (Filter.Eventually.of_forall (fun n => (one_div _).symm))
+  -- Step 5: Show π/(n*tan(π/n)) = 1/(tan(π/n)/(π/n)) for n ≥ 3
+  -- (For n ≥ 3: 0 < π/n < π/2, so cos(π/n) > 0 and tan(π/n) > 0)
+  apply h_inv.congr'
+  filter_upwards [Filter.eventually_ge_atTop 3] with n hn
+  have hn3 : (3 : ℝ) ≤ n := by exact_mod_cast hn
+  have hn0 : (n : ℝ) ≠ 0 := by positivity
+  have hpn_pos : (0 : ℝ) < π / n := by positivity
+  have hpn_lt : π / (n : ℝ) < π / 2 := by
+    have h2n : (2 : ℝ) < n := by linarith
+    have hpi := Real.pi_pos
+    have hn_pos : (0 : ℝ) < n := by linarith
+    -- π/2 - π/n = π*(n-2)/(2n) > 0 since n > 2 and π > 0
+    have key : π / 2 - π / n = π * (n - 2) / (2 * n) := by field_simp; ring
+    linarith [div_pos (by nlinarith : 0 < π * (n - 2)) (by positivity : 0 < 2 * n)]
+  have hcos_pos : 0 < Real.cos (π / n) :=
+    Real.cos_pos_of_mem_Ioo
+      ⟨by linarith [hpn_pos, div_pos Real.pi_pos (by norm_num : (0 : ℝ) < 2)], hpn_lt⟩
+  have htan_ne : Real.tan (π / n) ≠ 0 := by
+    rw [Real.tan_eq_sin_div_cos]
+    exact div_ne_zero
+      (Real.sin_pos_of_pos_of_lt_pi hpn_pos
+        (lt_trans hpn_lt (div_lt_self Real.pi_pos one_lt_two))).ne'
+      hcos_pos.ne'
+  have hpn_ne : π / (n : ℝ) ≠ 0 := div_ne_zero Real.pi_ne_zero hn0
+  field_simp [hn0, htan_ne, hpn_ne]
 
 /-
 ## Part IV: Wirtinger's Inequality and the Isoperimetric Deduction
@@ -229,8 +290,65 @@ def circleGamma (r : ℝ) : SmoothClosedCurve where
   y := fun t => r * Real.sin t
   periodic_x := by intro t; simp [Real.cos_add_two_pi]
   periodic_y := by intro t; simp [Real.sin_add_two_pi]
-  smooth_x := by fun_prop
-  smooth_y := by fun_prop
+  smooth_x := contDiff_const.mul Real.contDiff_cos
+  smooth_y := contDiff_const.mul Real.contDiff_sin
+
+/-- The circumference of circleGamma equals circleCirc r (i.e., 2πr).
+    Proof: The arc-length integrand √((r·(-sin t))² + (r·cos t)²) = r by
+    the Pythagorean identity, so ∫₀²π r dt = 2πr. -/
+theorem circleGamma_circumference (r : ℝ) (hr : 0 < r) :
+    (circleGamma r).circumference = circleCirc r := by
+  unfold SmoothClosedCurve.circumference circleGamma circleCirc
+  simp only
+  -- Simplify the integrand to the constant r using trig identity
+  have hsimp : ∀ t : ℝ,
+      Real.sqrt ((deriv (fun t => r * Real.cos t) t) ^ 2 +
+                 (deriv (fun t => r * Real.sin t) t) ^ 2) = r := fun t => by
+    have hdx : deriv (fun t => r * Real.cos t) t = r * (-Real.sin t) :=
+      ((Real.hasDerivAt_cos t).const_mul r).deriv
+    have hdy : deriv (fun t => r * Real.sin t) t = r * Real.cos t :=
+      ((Real.hasDerivAt_sin t).const_mul r).deriv
+    rw [hdx, hdy]
+    have h1 : (r * -Real.sin t) ^ 2 + (r * Real.cos t) ^ 2 = r ^ 2 := by
+      have h := Real.sin_sq_add_cos_sq t
+      have : (r * -Real.sin t) ^ 2 + (r * Real.cos t) ^ 2 =
+             r ^ 2 * (Real.sin t ^ 2 + Real.cos t ^ 2) := by ring
+      rw [this, h, mul_one]
+    rw [h1, Real.sqrt_sq hr.le]
+  simp_rw [hsimp]
+  rw [intervalIntegral.integral_const, smul_eq_mul, sub_zero]
+  ring
+
+/-- The area of circleGamma equals circleArea r (i.e., πr²).
+    Proof: The Green's theorem integrand xy' - yx' = r²·(cos²t + sin²t) = r²,
+    so (1/2)|∫₀²π r² dt| = (1/2)·r²·2π = πr². -/
+theorem circleGamma_area (r : ℝ) (hr : 0 < r) :
+    (circleGamma r).area = circleArea r := by
+  unfold SmoothClosedCurve.area circleGamma circleArea
+  simp only
+  -- Simplify the Green's theorem integrand to the constant r²
+  have hint : ∀ t : ℝ,
+      r * Real.cos t * deriv (fun t => r * Real.sin t) t -
+      r * Real.sin t * deriv (fun t => r * Real.cos t) t = r ^ 2 := fun t => by
+    have hdx : deriv (fun t => r * Real.cos t) t = r * (-Real.sin t) :=
+      ((Real.hasDerivAt_cos t).const_mul r).deriv
+    have hdy : deriv (fun t => r * Real.sin t) t = r * Real.cos t :=
+      ((Real.hasDerivAt_sin t).const_mul r).deriv
+    rw [hdy, hdx]
+    have h : r * Real.cos t * (r * Real.cos t) - r * Real.sin t * (r * -Real.sin t) =
+             r ^ 2 * (Real.sin t ^ 2 + Real.cos t ^ 2) := by ring
+    rw [h, Real.sin_sq_add_cos_sq, mul_one]
+  simp_rw [hint]
+  rw [intervalIntegral.integral_const, smul_eq_mul, sub_zero,
+      abs_of_pos (by positivity)]
+  ring
+
+/-- For circleGamma r, the isoperimetric inequality is an equality: C² = 4πA.
+    This combines circleGamma_circumference and circleGamma_area. -/
+theorem circleGamma_isoperimetric_equality (r : ℝ) (hr : 0 < r) :
+    (circleGamma r).circumference ^ 2 = 4 * π * (circleGamma r).area := by
+  rw [circleGamma_circumference r hr, circleGamma_area r hr]
+  exact circle_isoperimetric_equality r
 
 /-- **Wirtinger's Inequality** (axiomatized — see proof notes above).
     The key ingredient needed to prove the isoperimetric inequality for general curves. -/
@@ -301,8 +419,11 @@ theorem isoperimetric_area_bound (C A : ℝ)
     (h : 4 * π * A ≤ C ^ 2) :
     A ≤ C ^ 2 / (4 * π) := by
   have h4pi : 0 < 4 * π := by linarith [Real.pi_pos]
-  rw [le_div_iff h4pi]
-  linarith
+  rw [← sub_nonneg]
+  have hkey : C ^ 2 / (4 * π) - A = (C ^ 2 - 4 * π * A) / (4 * π) := by
+    field_simp; ring
+  rw [hkey]
+  exact div_nonneg (by linarith) h4pi.le
 
 /-- Minimum circumference for given area: C ≥ 2·√(π·A).
     Follows from 4πA ≤ C² by taking square roots.
@@ -320,11 +441,12 @@ theorem minimum_circumference_for_area (C A : ℝ) (hC : 0 < C) (hA : 0 < A)
   exact Real.sqrt_le_sqrt h
 
 /-- Scale invariance: the isoperimetric ratio 4πA/C² is unchanged by scaling.
-    If a curve has circumference C and area A, scaling by λ > 0 gives
-    circumference λC and area λ²A, leaving 4π(λ²A)/(λC)² = 4πA/C² unchanged. -/
-theorem isoperimetric_ratio_scale_invariant (C A λ : ℝ) (hC : C ≠ 0) (hλ : λ ≠ 0) :
-    4 * π * (λ ^ 2 * A) / (λ * C) ^ 2 = 4 * π * A / C ^ 2 := by
-  field_simp; ring
+    If a curve has circumference C and area A, scaling by s ≠ 0 gives
+    circumference sC and area s²A, leaving 4π(s²A)/(sC)² = 4πA/C² unchanged. -/
+theorem isoperimetric_ratio_scale_invariant (C A s : ℝ) (hC : C ≠ 0) (hs : s ≠ 0) :
+    4 * π * (s ^ 2 * A) / (s * C) ^ 2 = 4 * π * A / C ^ 2 := by
+  field_simp [hs, hC]
+  ring
 
 /-- The circle achieves the maximum area for given circumference.
     Among all smooth closed curves with circumference C = 2πr, the circle of radius r
@@ -335,7 +457,7 @@ theorem circle_maximizes_area (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve)
     γ.area ≤ circleArea r := by
   rw [hC, circle_isoperimetric_equality r] at hineq
   have h4pi : 0 < 4 * π := by linarith [Real.pi_pos]
-  exact (mul_le_mul_left h4pi).mp hineq
+  exact le_of_mul_le_mul_left hineq h4pi
 
 /-- Strict inequality: if a smooth closed curve with given circumference is NOT a circle,
     its enclosed area is strictly less than the circle's area. -/
@@ -345,27 +467,31 @@ theorem non_circle_area_lt_circle (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve
     γ.area < circleArea r := by
   rw [hC, circle_isoperimetric_equality r] at hineq
   have h4pi : 0 < 4 * π := by linarith [Real.pi_pos]
-  exact (mul_lt_mul_left h4pi).mp hineq
+  exact lt_of_mul_lt_mul_left hineq h4pi.le
 
 /-
 ## Summary
 
 ### The Isoperimetric Inequality: C² ≥ 4πA
 
-### Proved (no sorries):
+### Proved (0 sorries in 17 theorems):
 1. `circle_isoperimetric_equality` — C² = 4πA for circles (equality case)
 2. `circle_isoperimetric_ratio` — 4πA/C² = 1 for circles
 3. `square_isoperimetric_strict` — C² > 4πA for squares (from π < 4)
 4. `square_isoperimetric_ratio` — 4πA/C² = π/4 for squares
 5. `square_ratio_lt_one` — square ratio < 1 (confirming suboptimality)
 6. `regular_ngon_isoperimetric_ratio` — 4πA/C² = π/(n·tan(π/n)) for n-gons
-7. `circumference_is_deriv_of_area` — C = dA/dr (connection to OQ01)
-8. `circle_satisfies_isoperimetric` — circles satisfy C² = 4πA
-9. `isoperimetric_area_bound` — 4πA ≤ C² ⟹ A ≤ C²/(4π) [algebraic]
-10. `minimum_circumference_for_area` — 4πA ≤ C² ⟹ 2√(πA) ≤ C [from sqrt monotonicity]
-11. `isoperimetric_ratio_scale_invariant` — ratio 4πA/C² invariant under scaling [ring]
-12. `circle_maximizes_area` — if C = 2πr and 4πA ≤ C², then A ≤ πr²
-13. `non_circle_area_lt_circle` — strict: 4πA < C² ⟹ A < circleArea r
+7. `ngon_limit_tendsto_circle` — π/(n·tan(π/n)) → 1 as n → ∞ (via tan x/x → 1)
+8. `circumference_is_deriv_of_area` — C = dA/dr (connection to OQ01)
+9. `circleGamma_circumference` — circleGamma(r).circumference = 2πr [arc-length integral]
+10. `circleGamma_area` — circleGamma(r).area = πr² [Green's theorem integral]
+11. `circleGamma_isoperimetric_equality` — C² = 4πA for circleGamma [corollary]
+12. `circle_satisfies_isoperimetric` — circles satisfy C² = 4πA
+13. `isoperimetric_area_bound` — 4πA ≤ C² ⟹ A ≤ C²/(4π) [algebraic]
+14. `minimum_circumference_for_area` — 4πA ≤ C² ⟹ 2√(πA) ≤ C [from sqrt monotonicity]
+15. `isoperimetric_ratio_scale_invariant` — ratio 4πA/C² invariant under scaling [ring]
+16. `circle_maximizes_area` — if C = 2πr and 4πA ≤ C², then A ≤ πr²
+17. `non_circle_area_lt_circle` — strict: 4πA < C² ⟹ A < circleArea r
 
 ### Axioms (2):
 1. `wirtinger_inequality` — ∫f² ≤ ∫(f')² for periodic mean-zero f
@@ -373,24 +499,18 @@ theorem non_circle_area_lt_circle (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve
 2. `equality_implies_circle` — equality iff circle
    (Proof: equality in Wirtinger iff f = a cos + b sin)
 
-### 2 Sorries:
+### 1 Sorry (reduced from 2):
 1. `isoperimetric_inequality_smooth` — reducible to wirtinger_inequality
    (needs integral Cauchy-Schwarz + AM-GM assembly, ~100 lines)
-2. `ngon_limit_tendsto_circle` — π/(n·tan(π/n)) → 1 as n → ∞
-   (standard: tan(x)/x → 1 as x → 0, needs HasDerivAt + filter composition)
+   Proof sketch: shift to zero mean; Cauchy-Schwarz + Wirtinger give
+   2A ≤ 2√(∫x'²)√(∫y'²); AM-GM gives A ≤ (∫x'²+∫y'²)/2;
+   arc-length C-S gives L² ≥ 2π(∫x'²+∫y'²); combining: 4πA ≤ L²
 
-### Key Proof Path for Remaining Sorries:
-For `ngon_limit_tendsto_circle`:
-- Add `import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv`
-- Use `Real.hasDerivAt_tan (cos 0 ≠ 0) : HasDerivAt Real.tan 1 0`
-- Apply `.tendsto_slope_zero` to get `tan(t)/t → 1` in nhdsWithin 0 {0}ᶜ
-- Compose with `n ↦ π/n` using Filter.Tendsto.comp
-
-For `isoperimetric_inequality_smooth`:
-- The proof from Wirtinger: for unit-speed curve x(t), y(t) with period 2π:
-  - A ≤ (1/2)∫|xy' - yx'|dt ≤ (1/2)(∫x²)^(1/2)(∫y'²)^(1/2) + similar [Cauchy-Schwarz]
-  - Then use Wirtinger: ∫x² ≤ ∫x'² (when mean zero) and AM-GM
-  - Combined: 4πA ≤ (∫x'² + ∫y'²)/(2π) · (2π) = L²
+### Proof of ngon_limit_tendsto_circle:
+- `Real.hasDerivAt_tan (cos 0 ≠ 0) : HasDerivAt tan (1/cos²0) 0 = HasDerivAt tan 1 0`
+- `hasDerivAt_iff_tendsto_slope`: slope(tan, 0) h = tan h / h → 1 as h → 0
+- `tendsto_const_div_atTop_nhds_zero_nat π`: π/n → 0 via atTop
+- Compose: tan(π/n)/(π/n) → 1, then 1/(tan(π/n)/(π/n)) → 1, matching π/(n·tan(π/n))
 
 ### Key Insight:
 The isoperimetric inequality C² ≥ 4πA follows from Wirtinger's inequality,
