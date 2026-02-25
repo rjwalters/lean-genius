@@ -1,7 +1,7 @@
 {
   "slug": "cauchy-schwarz-integral-oq-02",
   "title": "Minkowski integral inequality as corollary of Cauchy-Schwarz",
-  "phase": "SURVEY",
+  "phase": "COMPLETE",
   "status": "surveyed",
   "tier": "A",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEY",
+    "phase": "COMPLETE",
     "since": "2026-02-24T06:31:43.089Z",
     "iteration": 1,
-    "focus": "Survey complete. File proven with 0 sorries. Added Bochner form theorems.",
+    "focus": "COMPLETE: 0 sorries, Bochner Minkowski form proved, gallery comprehensive.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No further action needed — CauchySchwarzIntegralOQ02.lean proved with 0 sorries (PRs #3186, #3188, #3223).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Proof file already complete (0 sorries). Enhanced with Bochner integral form of Minkowski integral inequality.",
+    "progressSummary": "COMPLETE: CauchySchwarzIntegralOQ02.lean has 263 lines, 0 sorries. Proves Minkowski integral inequality as corollary of Cauchy-Schwarz via L² norm, Lp Hölder, and full Bochner two-variable form. Gallery at src/data/proofs/cauchy-schwarz-integral-oq-02/ is comprehensive. See PRs #3186, #3188, #3223.",
     "builtItems": [
       "minkowski_l2_from_CS in CauchySchwarzIntegralOQ02.lean: explicit L\u00b2 Minkowski from CS",
       "minkowski_inner_product_space: abstract IPS Minkowski from CS",
