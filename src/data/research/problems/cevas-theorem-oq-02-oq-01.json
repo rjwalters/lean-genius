@@ -1,0 +1,79 @@
+{
+  "slug": "cevas-theorem-oq-02-oq-01",
+  "title": "Spherical Ceva Theorem via Unit Vector Weight Parameters",
+  "phase": "SURVEY",
+  "status": "surveyed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall D = \\text{norm}(\\alpha_D B + \\beta_D C),\\; \\prod \\frac{\\sin(\\angle BD)}{\\sin(\\angle DC)} = 1 \\iff \\alpha_D \\alpha_E \\alpha_F = \\beta_D \\beta_E \\beta_F",
+    "plain": "Can the spherical Ceva theorem be stated and proved using concrete unit vectors in an inner product space, connecting weight parameters (\u03b1, \u03b2) of cevian points to the sin-ratio concurrency condition?",
+    "whyMatters": [
+      "Bridges the abstract algebraic framework (CevasTheoremNonEuclidean.lean) with the geometric sin-ratio formula (CevasTheoremSinRatio.lean)",
+      "Provides explicit algebraic criterion (weight balance \u03b1D\u00b7\u03b1E\u00b7\u03b1F = \u03b2D\u00b7\u03b2E\u00b7\u03b2F) for geodesic cevian concurrency",
+      "Demonstrates that the spherical Ceva condition is purely a statement about weight parameters, independent of coordinates"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "SURVEY",
+    "since": "2026-02-24T13:38:05-08:00",
+    "iteration": 1,
+    "focus": "Survey complete. Created CevasTheoremOQ02OQ01.lean with full weight balance criterion, 0 sorries.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: Created CevasTheoremOQ02OQ01.lean with 0 sorries. Proved weight-product formula, weight balance criterion, and full spherical Ceva IFF via unit vectors.",
+    "builtItems": [
+      "CevasTheoremOQ02OQ01.lean: sin_ratio_cevian_point (restated from SinRatio with self-contained proof)",
+      "CevasTheoremOQ02OQ01.lean: spherical_ceva_product_eq_weight_ratio (product = (\u03b2D/\u03b1D)\u00b7(\u03b2E/\u03b1E)\u00b7(\u03b2F/\u03b1F))",
+      "CevasTheoremOQ02OQ01.lean: spherical_ceva_weight_balance_iff (product = 1 \u2194 weight balance)",
+      "CevasTheoremOQ02OQ01.lean: weight_balance_symmetric (symmetry of balance condition)",
+      "CevasTheoremOQ02OQ01.lean: equal_weight_ceva (equal weights \u2192 product = 1)",
+      "CevasTheoremOQ02OQ01.lean: spherical_ceva_iff_weight_balance (main theorem)"
+    ],
+    "insights": [
+      "The spherical Ceva product (product of sin-ratios) equals the weight-product ratio (\u03b2D/\u03b1D)\u00b7(\u03b2E/\u03b1E)\u00b7(\u03b2F/\u03b1F)",
+      "Concurrency condition simplifies to \u03b1D\u00b7\u03b1E\u00b7\u03b1F = \u03b2D\u00b7\u03b2E\u00b7\u03b2F - a clean algebraic criterion via weight parameters",
+      "The sin-ratio formula (CevasTheoremSinRatio.lean) proves each individual ratio; three applications give the full Ceva product",
+      "The weight balance condition is symmetric: swapping all \u03b1\u2194\u03b2 gives the equivalent condition",
+      "Equal weights (\u03b1i = \u03b2i for all i) always satisfy the balance condition - spherical analogue of medians"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove geometric concurrency condition: three geodesic great circles share a point iff weight balance holds (requires \u211d\u00b3-specific geometry)",
+      "Connect to SphericalCevianConfig in CevasTheoremNonEuclidean.lean",
+      "Extend to vector-based proof without abstract framework"
+    ],
+    "markdown": "# Knowledge Base: cevas-theorem-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "approaches": [],
+  "tags": [
+    "geometry",
+    "spherical-geometry",
+    "inner-product",
+    "ceva-theorem",
+    "sin-ratio",
+    "seeker-selected"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-25T02:31:10.150Z",
+  "lastUpdate": "2026-02-25T02:31:10.150Z",
+  "significance": 6,
+  "tractability": 5
+}
