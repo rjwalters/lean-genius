@@ -109,9 +109,23 @@
     {
       "id": "main-theorem",
       "title": "Main Answer to the Open Question",
-      "startLine": 169,
-      "endLine": 198,
-      "summary": "lln_heavy_tail_answer: complete proof that SLLN holds for heavy-tailed distributions with E[|X|] < ∞."
+      "startLine": 191,
+      "endLine": 229,
+      "summary": "kolmogorov_slln_characterization (iff theorem) and lln_heavy_tail_answer: complete proof that SLLN holds for heavy-tailed distributions with E[|X|] < ∞. The iff form combines slln_under_finite_mean_only (sufficient) and slln_necessity (necessary)."
+    },
+    {
+      "id": "lp-distributions",
+      "title": "SLLN for Lᵖ and Mean-Zero Distributions",
+      "startLine": 238,
+      "endLine": 280,
+      "summary": "slln_for_Lp_distributions: any Lᵖ (p ≥ 1) implies L¹, so SLLN applies for all moment classes. slln_mean_zero: for centered distributions E[X₀]=0, sample mean converges to 0 a.s."
+    },
+    {
+      "id": "derived-results",
+      "title": "Derived Convergence Results",
+      "startLine": 288,
+      "endLine": 403,
+      "summary": "Extensions of SLLN: slln_for_Linfty (bounded RVs), slln_for_composed (f(Xᵢ) — Monte Carlo foundation), slln_negated, slln_affine_transform, slln_for_bounded_measurable. All reduce to slln_under_finite_mean_only via integrability arguments."
     }
   ],
   "conclusion": {
