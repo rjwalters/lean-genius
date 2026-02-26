@@ -1,0 +1,34 @@
+[
+  {
+    "id": "ann-btoq04-01-header",
+    "proofId": "binomial-theorem-oq-04",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "context",
+    "content": "**Vandermonde's Identity — Background**:\n\nPublished by Alexandre-Théophile Vandermonde (1772), this identity expresses the number of ways to choose r items from m+n objects as a convolution:\n$$\\binom{m+n}{r} = \\sum_{k=0}^r \\binom{m}{k}\\binom{n}{r-k}$$\n\nCombinatorial proof: each r-element subset of {1,...,m+n} contains k elements from the first m and r-k from the remaining n, for some 0 ≤ k ≤ r.\n\nAlgebraic proof: compare the coefficient of x^r in both sides of (1+x)^m · (1+x)^n = (1+x)^(m+n).",
+    "summary": "Context: Vandermonde's identity, its two classical proofs, and the sum-of-squares corollary"
+  },
+  {
+    "id": "ann-btoq04-02-main",
+    "proofId": "binomial-theorem-oq-04",
+    "range": { "startLine": 37, "endLine": 74 },
+    "type": "technique",
+    "content": "**Proof via Mathlib's Antidiagonal**:\n\nMathlib provides `Nat.add_choose_eq` which gives C(m+n,r) in antidiagonal form:\n```\nNat.add_choose_eq : Nat.choose (m+n) r = ∑ ij ∈ Nat.antidiagonal r, C(m, ij.1) * C(n, ij.2)\n```\n\nThe antidiagonal of r is the set `{(0,r), (1,r-1), ..., (r,0)}`. Then `Finset.Nat.sum_antidiagonal_eq_sum_range_succ` converts this to a sum over `Finset.range (r+1)`.\n\nThis gives a 2-line proof of the full Vandermonde identity.",
+    "summary": "Proof strategy: Nat.add_choose_eq + antidiagonal-to-range conversion = 2-line Vandermonde proof"
+  },
+  {
+    "id": "ann-btoq04-03-squares",
+    "proofId": "binomial-theorem-oq-04",
+    "range": { "startLine": 126, "endLine": 155 },
+    "type": "insight",
+    "content": "**The Sum-of-Squares Corollary**:\n\nSetting m = n = r in Vandermonde:\n$$\\binom{2n}{n} = \\sum_{k=0}^n \\binom{n}{k} \\cdot \\binom{n}{n-k}$$\n\nUsing the symmetry $\\binom{n}{n-k} = \\binom{n}{k}$:\n$$\\binom{2n}{n} = \\sum_{k=0}^n \\binom{n}{k}^2$$\n\nIn Lean, `Nat.choose_symm hkle : Nat.choose n (n-k) = Nat.choose n k` is the key lemma.\n\n**Verification**: C(8,4) = 70 = 1² + 4² + 6² + 4² + 1² = 1+16+36+16+1",
+    "summary": "Sum-of-squares: C(2n,n) = Σ C(n,k)² via Vandermonde + Nat.choose_symm"
+  },
+  {
+    "id": "ann-btoq04-04-summary",
+    "proofId": "binomial-theorem-oq-04",
+    "range": { "startLine": 179, "endLine": 194 },
+    "type": "mathematical",
+    "content": "**Summary: Key Results**:\n\nThe `vandermonde_key_results` theorem packages the four main results:\n1. **Identity**: C(m+n,r) = Σ C(m,k)*C(n,r-k)\n2. **Symmetry**: the sum is symmetric in m and n\n3. **Sum of squares**: C(2n,n) = Σ C(n,k)²\n4. **Monotonicity**: C(n,r) ≤ C(m+n,r)\n\nAll proved from Mathlib with 0 sorries and 0 axioms.",
+    "summary": "Summary theorem combining the four main results of Vandermonde's identity"
+  }
+]
