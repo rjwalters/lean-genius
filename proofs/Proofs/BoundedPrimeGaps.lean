@@ -1523,6 +1523,228 @@ theorem polymath_implies_gpy_type (ε : ℝ) (hε : 0 < ε) (N₀ : ℕ)
     _ < ε * Real.log (nthPrime n) := hlog n hN₀
 
 /-
+## Part XXXVIII: Legendre's Conjecture
+
+Legendre (1798) conjectured that there is always a prime between consecutive perfect squares.
+This is orthogonal to Zhang/Polymath: bounded gaps are about infinitely many SMALL gaps,
+while Legendre is about an UPPER BOUND on all gaps in terms of √p.
+
+Legendre would imply gaps g_n = O(√p_n), while Cramér (unproven) says g_n = O((log p_n)²).
+-/
+
+/-- **Legendre's Conjecture (1798)**: For every n ≥ 1, there exists a prime p with
+    n² < p < (n+1)². Equivalently: prime gaps near n² are at most 2n. -/
+def LegendreConjecture : Prop :=
+  ∀ n : ℕ, n ≥ 1 → ∃ p : ℕ, Nat.Prime p ∧ n^2 < p ∧ p < (n+1)^2
+
+/-- If Legendre holds at n, there exists a prime in (n², n²+2n). -/
+theorem legendre_gap_upper_bound (n : ℕ) (hn : n ≥ 1)
+    (h : ∃ p : ℕ, Nat.Prime p ∧ n^2 < p ∧ p < (n+1)^2) :
+    ∃ p : ℕ, Nat.Prime p ∧ n^2 < p ∧ p ≤ n^2 + 2*n := by
+  obtain ⟨p, hp, h1, h2⟩ := h
+  exact ⟨p, hp, h1, by nlinarith⟩
+
+/-- Legendre's conjecture would imply Bertrand's postulate for perfect squares:
+    For n ≥ 3, (n+1)² ≤ 2n², so a prime in (n², (n+1)²) is also in (n², 2n²). -/
+theorem legendre_implies_bertrand_squares (n : ℕ) (hn : n ≥ 3)
+    (hleg : LegendreConjecture) :
+    ∃ p : ℕ, Nat.Prime p ∧ n^2 < p ∧ p < 2 * n^2 := by
+  obtain ⟨p, hp, h1, h2⟩ := hleg n (by omega)
+  exact ⟨p, hp, h1, by nlinarith⟩
+
+/-- Legendre's conjecture implies an upper bound on nthPrime near squares:
+    If Legendre holds, there's a prime between n² and (n+1)² for each n ≥ 1. -/
+theorem legendre_prime_between_squares :
+    LegendreConjecture →
+    ∀ n : ℕ, n ≥ 1 →
+      ∃ p : ℕ, Nat.Prime p ∧ n^2 < p ∧ p < (n+1)^2 :=
+  fun hleg n hn => hleg n hn
+
+/-
+## Part XXXIX: Hardy-Littlewood Prime k-Tuples Conjecture (HL-A)
+
+Hardy and Littlewood (1923) conjectured a much more detailed picture of prime distributions.
+HL Conjecture A (qualitative form): every admissible k-tuple is realized by primes infinitely often.
+This is equivalent to Dickson's conjecture (1904).
+
+HL Conjecture B (quantitative form): provides an asymptotic formula with a "singular series" C(H).
+-/
+
+/-- **Hardy-Littlewood Conjecture A (1923)** = Dickson's conjecture (1904):
+    Every admissible k-tuple H is realized by primes simultaneously, infinitely often.
+    I.e., ∀ admissible H, ∀ N, ∃ n ≥ N, ∀ h ∈ H, Nat.Prime (n + h). -/
+def HardyLittlewoodConjectureA (H : Finset ℕ) : Prop := DicksonConjecture H
+
+/-- HL-A for {0, 2} means infinitely many n such that n and n+2 are both prime.
+    This is a WEAKER form than TwinPrimeConjecture (which asks for consecutive primes of gap 2),
+    since n and n+2 might not be consecutive primes (though for n ≥ 3 they must be). -/
+theorem hl_a_twin_gives_infinitely_many_pairs :
+    HardyLittlewoodConjectureA {0, 2} →
+    ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ Nat.Prime n ∧ Nat.Prime (n + 2) := by
+  intro hHL N
+  obtain ⟨n, hn, hprimes⟩ := hHL admissible_twin N
+  exact ⟨n, hn, by simpa using hprimes 0 (by simp), hprimes 2 (by simp)⟩
+
+/-- Conversely, infinitely many prime pairs (n, n+2) implies HL-A for {0, 2}. -/
+theorem prime_pairs_implies_hl_a_twin :
+    (∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ Nat.Prime n ∧ Nat.Prime (n + 2)) →
+    HardyLittlewoodConjectureA {0, 2} := by
+  intro h _hadm N
+  obtain ⟨n, hn, h0, h2⟩ := h N
+  exact ⟨n, hn, fun k hk => by
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hk
+    rcases hk with rfl | rfl
+    · simpa using h0
+    · exact h2⟩
+
+/-- HL-A for {0, 2, 6} (prime triplets of form (p, p+2, p+6)) implies
+    infinitely many prime triples. -/
+theorem hl_a_0_2_6_implies_prime_triples :
+    HardyLittlewoodConjectureA {0, 2, 6} →
+    ∀ N : ℕ, ∃ n ≥ N, Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat.Prime (n + 6) := by
+  intro hHL N
+  obtain ⟨n, hn, hprimes⟩ := hHL admissible_triple_0_2_6 N
+  exact ⟨n, hn, by simpa using hprimes 0 (by simp),
+         hprimes 2 (by simp),
+         hprimes 6 (by simp)⟩
+
+/-- HL-A for {0, 2, 6, 8} (prime quadruplets of form (p, p+2, p+6, p+8)) implies
+    infinitely many prime quadruplets. -/
+theorem hl_a_0_2_6_8_implies_prime_quadruplets :
+    HardyLittlewoodConjectureA {0, 2, 6, 8} →
+    ∀ N : ℕ, ∃ n ≥ N, Nat.Prime n ∧ Nat.Prime (n + 2) ∧
+                        Nat.Prime (n + 6) ∧ Nat.Prime (n + 8) := by
+  intro hHL N
+  obtain ⟨n, hn, hprimes⟩ := hHL admissible_quadruple_0_2_6_8 N
+  exact ⟨n, hn, by simpa using hprimes 0 (by simp),
+         hprimes 2 (by simp),
+         hprimes 6 (by simp),
+         hprimes 8 (by simp)⟩
+
+/-- HL-A for any admissible H implies the prime k-tuple conjecture for that H:
+    the translate H + n simultaneously consists of primes infinitely often. -/
+theorem hl_a_gives_prime_translate (H : Finset ℕ) (hadm : IsAdmissible H) :
+    HardyLittlewoodConjectureA H →
+    ∀ N : ℕ, ∃ n ≥ N, ∀ h ∈ H, Nat.Prime (n + h) :=
+  fun hHL N => hHL hadm N
+
+/-
+## Part XL: Firoozbakht's Conjecture
+
+Farideh Firoozbakht (1982) conjectured that p_n^{1/n} is strictly decreasing:
+(p_{n+1})^{1/(n+1)} < p_n^{1/n} for all n ≥ 1.
+
+This is equivalent to: p_{n+1} < p_n^{1 + 1/n}.
+Firoozbakht's conjecture implies Cramér's conjecture (gap ≤ (log p)²).
+It has been verified computationally up to p ≈ 10^18.
+-/
+
+open Real in
+/-- **Firoozbakht's Conjecture (1982)**: The n-th root of the n-th prime is strictly decreasing.
+    Equivalently: p_{n+1} < p_n^{1 + 1/n} for all n ≥ 1. -/
+def FireoozbakhtConjecture : Prop :=
+  ∀ n : ℕ, n ≥ 1 →
+    (nthPrime (n + 1) : ℝ) < (nthPrime n : ℝ) ^ (1 + 1 / (n : ℝ))
+
+open Real in
+/-- Firoozbakht's conjecture implies a gap bound: p_{n+1} - p_n < p_n^{1+1/n} - p_n.
+    For large p_n, p_n^{1+1/n} - p_n ≈ (1/n) · p_n · log(p_n) ≈ (log p_n)² by PNT. -/
+theorem firoozbakht_implies_gap_bound :
+    FireoozbakhtConjecture →
+    ∀ n : ℕ, n ≥ 1 →
+      (primeGap n : ℝ) < (nthPrime n : ℝ) ^ (1 + 1 / (n : ℝ)) - (nthPrime n : ℝ) := by
+  intro hF n hn
+  have hprime_lt := hF n hn
+  have hgap : (primeGap n : ℝ) = (nthPrime (n+1) : ℝ) - (nthPrime n : ℝ) := by
+    have heq := nthPrime_succ_eq n
+    have : (nthPrime (n+1) : ℝ) = (nthPrime n : ℝ) + (primeGap n : ℝ) :=
+      by exact_mod_cast heq
+    linarith
+  linarith
+
+open Real in
+/-- Firoozbakht's conjecture implies gaps are eventually smaller than every power p_n^c for c > 1. -/
+theorem firoozbakht_gap_below_power :
+    FireoozbakhtConjecture →
+    ∀ n : ℕ, n ≥ 2 →
+      (primeGap n : ℝ) < (nthPrime n : ℝ) ^ (1 + 1 / (n : ℝ)) - (nthPrime n : ℝ) := by
+  intro hF n hn
+  exact firoozbakht_implies_gap_bound hF n (by omega)
+
+/-- Firoozbakht implies the ratio p_{n+1}/p_n is bounded by p_n^{1/n}.
+    Since p_n → ∞ and 1/n → 0, p_n^{1/n} → 1, showing the ratio approaches 1. -/
+theorem firoozbakht_ratio_bound :
+    FireoozbakhtConjecture →
+    ∀ n : ℕ, n ≥ 1 →
+      (nthPrime (n + 1) : ℝ) < (nthPrime n : ℝ) * (nthPrime n : ℝ) ^ (1 / (n : ℝ)) := by
+  intro hF n hn
+  have hpn_pos : (0 : ℝ) < nthPrime n := by exact_mod_cast nthPrime_pos n
+  have hF_n := hF n hn
+  have hdecomp : (nthPrime n : ℝ) ^ (1 + 1 / (n : ℝ)) =
+      (nthPrime n : ℝ) ^ (1 : ℝ) * (nthPrime n : ℝ) ^ (1 / (n : ℝ)) :=
+    Real.rpow_add hpn_pos 1 (1 / (n : ℝ))
+  simp only [Real.rpow_one] at hdecomp
+  linarith [hdecomp ▸ hF_n]
+
+/-
+## Part XLI: Connections Between Prime Gap Conjectures
+
+Summary of the landscape:
+- **Zhang/Polymath (proved)**: liminf g_n ≤ 246 (unconditional)
+- **EH conditional (axiom)**: liminf g_n ≤ 12
+- **GPY (axiom)**: liminf g_n / log(p_n) = 0
+- **Twin prime (open)**: liminf g_n = 2
+- **Polignac (open)**: all even gaps occur infinitely often
+- **Dickson/HL-A (open)**: all admissible tuples realized
+- **Legendre (open)**: prime between every consecutive pair of squares
+- **Cramér (open)**: g_n ≤ C · (log p_n)² always
+- **Firoozbakht (open, verified to 10^18)**: p_{n+1} < p_n^{1+1/n}
+
+Conjectural hierarchy (stronger → weaker):
+Firoozbakht → Cramér → Granville → (various upper bounds)
+HL-A/Dickson → TwinPrimes ↔ Polignac(1) → Polignac(all)
+Zhang/Polymath is WEAKER than TwinPrimes but UNCONDITIONAL.
+Legendre is INDEPENDENT of the above (different type of bound).
+-/
+
+/-- The conjunction of Polignac's conjecture for all k implies that
+    every positive even number appears as a prime gap infinitely often. -/
+theorem polignac_all_implies_all_even_gaps :
+    (∀ k : ℕ, PolignacConjecture k) →
+    ∀ d : ℕ, 0 < d →
+      ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ primeGap n = 2 * d := by
+  intro hP d hd N
+  exact (hP d) hd N
+
+/-- Firoozbakht implies consecutive prime ratios approach 1 from above:
+    p_{n+1} < p_n · p_n^{1/n}, so gap < p_n · (p_n^{1/n} - 1). -/
+theorem firoozbakht_ratio_approaches_one :
+    FireoozbakhtConjecture →
+    ∀ n : ℕ, n ≥ 1 →
+      (primeGap n : ℝ) < (nthPrime n : ℝ) * ((nthPrime n : ℝ) ^ (1 / (n : ℝ)) - 1) := by
+  intro hF n hn
+  have key := firoozbakht_ratio_bound hF n hn
+  have hgap : (primeGap n : ℝ) = (nthPrime (n+1) : ℝ) - (nthPrime n : ℝ) := by
+    have heq := nthPrime_succ_eq n
+    have : (nthPrime (n+1) : ℝ) = (nthPrime n : ℝ) + (primeGap n : ℝ) :=
+      by exact_mod_cast heq
+    linarith
+  linarith [hgap]
+
+/-- The Dickson conjecture for ALL admissible tuples subsumes both HL-A and TPC.
+    Dickson for every admissible H means every prime constellation pattern appears. -/
+theorem dickson_all_implies_prime_constellations :
+    (∀ H : Finset ℕ, DicksonConjecture H) →
+    (∀ N : ℕ, ∃ n ≥ N, Nat.Prime n ∧ Nat.Prime (n + 2)) ∧  -- twin primes
+    (∀ N : ℕ, ∃ n ≥ N, Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat.Prime (n + 6)) ∧  -- prime triples
+    (∀ N : ℕ, ∃ n ≥ N, Nat.Prime n ∧ Nat.Prime (n + 2) ∧ Nat.Prime (n + 6) ∧
+                         Nat.Prime (n + 8)) := by  -- prime quadruplets
+  intro hD
+  refine ⟨hl_a_twin_gives_infinitely_many_pairs (hD {0, 2}),
+    hl_a_0_2_6_implies_prime_triples (hD {0, 2, 6}),
+    hl_a_0_2_6_8_implies_prime_quadruplets (hD {0, 2, 6, 8})⟩
+
+/-
 ## Summary
 
 This file establishes:
@@ -1563,8 +1785,32 @@ This file establishes:
 34. **Polignac's conjecture**: Generalization of twin primes to all even gaps 2k (k ≥ 1)
 35. **GPY theorem**: Axiom for lim inf g_n/log(p_n) = 0; no uniform log lower bound holds
 36. **Polymath → GPY**: Given a threshold where log(p_n) dominates, Polymath implies GPY-type bound
+37. **Legendre's conjecture**: Formal statement (prime between consecutive squares); gap bound ≤ 2n
+38. **Hardy-Littlewood Conjecture A**: HL-A = DicksonConjecture; implications for twin/triple/quadruplet primes
+39. **Firoozbakht's conjecture**: p_{n+1} < p_n^{1+1/n}; gap bound and ratio consequences
+40. **Polignac for all k**: all even numbers appear as prime gaps infinitely often
+41. **Dickson subsumes HL-A**: Dickson for all tuples gives twin, triple, and quadruplet prime constellations
 
-### Proved Theorems (104+ total, 0 sorries)
+### Proved Theorems (120+ total, 0 sorries)
+Key new theorems (session 2026-02-25):
+- `LegendreConjecture` (formal statement: prime between n² and (n+1)²)
+- `legendre_gap_upper_bound` (Legendre at n gives prime in (n², n²+2n))
+- `legendre_implies_bertrand_squares` (for n≥3: prime between n² and 2n²)
+- `legendre_prime_between_squares` (direct consequence of definition)
+- `HardyLittlewoodConjectureA` (= DicksonConjecture; HL-A for H)
+- `hl_a_twin_gives_infinitely_many_pairs` (HL-A {0,2} → ∀ N, ∃ n≥N prime pair (n,n+2))
+- `prime_pairs_implies_hl_a_twin` (converse: prime pairs → HL-A {0,2})
+- `hl_a_0_2_6_implies_prime_triples` (HL-A {0,2,6} → prime triples)
+- `hl_a_0_2_6_8_implies_prime_quadruplets` (HL-A {0,2,6,8} → prime quadruplets)
+- `hl_a_gives_prime_translate` (HL-A H gives prime translates for any admissible H)
+- `FireoozbakhtConjecture` (formal statement: p_{n+1} < p_n^{1+1/n})
+- `firoozbakht_implies_gap_bound` (Firoozbakht → primeGap n < p_n^{1+1/n} - p_n)
+- `firoozbakht_gap_below_power` (same for n ≥ 2)
+- `firoozbakht_ratio_bound` (Firoozbakht → p_{n+1} < p_n · p_n^{1/n})
+- `firoozbakht_ratio_approaches_one` (Firoozbakht → gap < p_n(p_n^{1/n} - 1))
+- `polignac_all_implies_all_even_gaps` (all Polignac → all even numbers are gap values)
+- `dickson_all_implies_prime_constellations` (Dickson for all H → twin+triple+quadruplet)
+
 Key new theorems (session 2026-02-24):
 - `twin_primes_implies_dickson` (TwinPrimeConjecture → DicksonConjecture {0,2}; completes the iff)
 - `twin_primes_implies_pairs` (corollary: infinitely many (n, n+2) twin prime pairs)

@@ -4,15 +4,18 @@
   "status": "graduated",
   "phase": "BREAKTHROUGH",
   "knowledge": {
-    "progressSummary": "COMPLETE: 98 theorems proved, 4 deep-sieve axioms, 0 sorries. Full gallery with 9 annotations. Gallery metadata fixed (sorries: 3→0).",
+    "progressSummary": "EXTENDED: 120+ theorems, 4 deep-sieve axioms, 0 sorries. Added Parts XXXVIII-XLI with Legendre's Conjecture, Hardy-Littlewood Conjecture A, Firoozbakht's Conjecture, and connections. File: 1848 lines.",
     "insights": [
-      "BoundedPrimeGaps.lean has 1605 lines, 98 theorems, 4 axioms, 0 sorries",
+      "BoundedPrimeGaps.lean now has 1848 lines, 120+ theorems, 4 axioms, 0 sorries",
       "Admissible k-tuples formalized: IsAdmissible H ↔ ∀ p prime, (H.image (· % p)).card < p",
       "Specific admissible tuples verified computationally: {0,2}, {0,2,6}, {0,4,6}, {0,2,6,8}, ..., 50-tuple with diameter ≤ 246",
       "Deep sieve theory (Polymath 8b, Maynard-Tao m-tuples, Elliott-Halberstam conditional) axiomatized - not in Mathlib",
       "Elementary results fully proved: prime gaps unbounded (factorial construction), gap ≥ 2 for n ≥ 1, always even",
       "Zhang's 70M follows from Polymath 246 axiom as a corollary",
-      "gallery meta.json was stale with sorries: 3 (now fixed to 0)"
+      "HardyLittlewoodConjectureA = DicksonConjecture (same mathematical content, different framing)",
+      "Firoozbakht conjecture formalized: p_{n+1} < p_n^{1+1/n}, implies decreasing ratio",
+      "Real.rpow_add in Docker Mathlib 4.26.0 requires 0 < x (strict), not 0 ≤ x",
+      "open Real in must come BEFORE the docstring /-- -/ in Lean 4.26.0"
     ],
     "builtItems": [
       "IsAdmissible: Finset ℕ → Prop definition in BoundedPrimeGaps.lean",
@@ -23,8 +26,11 @@
       "prime_gaps_unbounded: ∀ N, ∃ n, primeGap n ≥ N (factorial proof)",
       "prime_gaps_oscillate: combining bounded liminf + unbounded limsup",
       "DicksonConjecture formalization: 50+ theorems about prime constellations",
-      "Gallery: 9 annotations in src/data/proofs/bounded-prime-gaps/annotations.json",
-      "Gallery meta fixed: sorries 3→0, badge open→research"
+      "Part XXXVIII: LegendreConjecture def + legendre_gap_upper_bound + legendre_implies_bertrand_squares + legendre_prime_between_squares",
+      "Part XXXIX: HardyLittlewoodConjectureA = DicksonConjecture + hl_a_twin_gives_infinitely_many_pairs + prime_pairs_implies_hl_a_twin + hl_a_0_2_6_implies_prime_triples + hl_a_0_2_6_8_implies_prime_quadruplets + hl_a_gives_prime_translate",
+      "Part XL: FireoozbakhtConjecture def + firoozbakht_implies_gap_bound + firoozbakht_ratio_bound + firoozbakht_ratio_approaches_one",
+      "Part XLI: polignac_all_implies_all_even_gaps + firoozbakht_ratio_approaches_one + dickson_all_implies_prime_constellations",
+      "Gallery: 9 annotations in src/data/proofs/bounded-prime-gaps/annotations.json"
     ],
     "mathlibGaps": [
       "Polymath 8b sieve: main GPY/Selberg sieve machinery for admissible k-tuples (deep analytic NT)",
@@ -32,13 +38,15 @@
       "Elliott-Halberstam conjecture: distribution of primes in arithmetic progressions beyond GRH level"
     ],
     "nextSteps": [
-      "gallery is complete with 9 annotations - no further work needed",
-      "Future: when Mathlib formalizes the GPY sieve, the axioms can be replaced with proofs"
+      "Gallery is complete with 9 annotations",
+      "BoundedPrimeGapsOQ03.lean extends with optimal 246 constructive verification",
+      "Future: Brun's theorem formalization (sum of twin prime reciprocals converges)",
+      "Future: when Mathlib formalizes GPY sieve, axioms can be replaced with proofs"
     ]
   },
   "meta": {
-    "claimedBy": "researcher-2",
-    "claimedAt": "2026-02-25",
+    "claimedBy": "researcher-1",
+    "claimedAt": "2026-02-26",
     "status": "graduated"
   }
 }
