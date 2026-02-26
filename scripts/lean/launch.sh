@@ -68,6 +68,7 @@ Usage:
   $0 spawn <type>        Spawn one additional agent
   $0 scale <type> <N>    Scale agent pool to N instances (supports scale-down)
   $0 status              Show current status
+  $0 wake [type]         Wake a sleeping agent early (all, aristotle, researcher, deployer, seeker, enricher)
   $0 daemon [options]    Run continuous monitoring daemon
 
 Start Options:
@@ -1950,6 +1951,53 @@ cmd_scale() {
     esac
 }
 
+# Command: wake - signal sleeping agent(s) to start their next cycle early
+cmd_wake() {
+    local agent_type="${1:-all}"
+
+    mkdir -p "$SIGNALS_DIR"
+
+    case "$agent_type" in
+        all)
+            touch "$SIGNALS_DIR/wake-all"
+            echo -e "${GREEN}Wake signal sent to all agents${NC}"
+            ;;
+        aristotle)
+            touch "$SIGNALS_DIR/wake-aristotle"
+            echo -e "${GREEN}Wake signal sent to aristotle-agent${NC}"
+            ;;
+        researcher)
+            for i in 1 2 3 4 5; do
+                if tmux has-session -t "researcher-$i" 2>/dev/null; then
+                    touch "$SIGNALS_DIR/wake-researcher-$i"
+                    echo -e "${GREEN}Wake signal sent to researcher-$i${NC}"
+                fi
+            done
+            ;;
+        deployer)
+            touch "$SIGNALS_DIR/wake-deployer"
+            echo -e "${GREEN}Wake signal sent to deployer${NC}"
+            ;;
+        seeker)
+            touch "$SIGNALS_DIR/wake-seeker-agent"
+            echo -e "${GREEN}Wake signal sent to seeker-agent${NC}"
+            ;;
+        enricher)
+            for i in 1 2 3 4 5; do
+                if tmux has-session -t "enricher-$i" 2>/dev/null; then
+                    touch "$SIGNALS_DIR/wake-enricher-$i"
+                    echo -e "${GREEN}Wake signal sent to enricher-$i${NC}"
+                fi
+            done
+            ;;
+        *)
+            echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
+            echo "Valid types: all, aristotle, researcher, deployer, seeker, enricher"
+            exit 1
+            ;;
+    esac
+}
+
 # Command: status
 cmd_status() {
     ./scripts/lean/status.sh
@@ -1981,6 +2029,10 @@ main() {
             ;;
         status)
             cmd_status
+            ;;
+        wake)
+            shift
+            cmd_wake "$@"
             ;;
         daemon)
             shift
