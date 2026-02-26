@@ -56,35 +56,40 @@
       "title": "The Setting",
       "startLine": 93,
       "endLine": 111,
-      "summary": "Modeling vote counting as sequences of +1 and -1."
+      "summary": "Modeling vote counting as sequences of +1 and -1.",
+      "mathContext": "Vote sequences: elements of $\\{+1, -1\\}^{p+q}$ with exactly $p$ values $+1$ and $q$ values $-1$. `countedSequence p q` is the Finset of all such lists, with $|\\text{countedSequence}\\, p\\, q| = \\binom{p+q}{p}$. `staysPositive` holds when $\\forall i \\geq 1,\\, \\sum_{j=1}^{i} v_j > 0$."
     },
     {
       "id": "key-properties",
       "title": "Key Properties",
       "startLine": 113,
       "endLine": 130,
-      "summary": "Properties of counted sequences and their cardinalities."
+      "summary": "Properties of counted sequences and their cardinalities.",
+      "mathContext": "Cardinality: $|\\text{countedSequence}\\, p\\, q| = \\binom{p+q}{p}$. The good paths (where A leads throughout) number $\\binom{p+q}{p} - \\binom{p+q}{q}$. This uses the algebraic identity $\\frac{\\binom{p+q}{p} - \\binom{p+q}{q}}{\\binom{p+q}{p}} = \\frac{p-q}{p+q}$ for $p > q$."
     },
     {
       "id": "main-theorem",
       "title": "The Ballot Theorem",
       "startLine": 132,
       "endLine": 152,
-      "summary": "The main result: probability of A leading throughout equals (p-q)/(p+q)."
+      "summary": "The main result: probability of A leading throughout equals (p-q)/(p+q).",
+      "mathContext": "$\\text{condCount}(\\text{countedSequence}\\, p\\, q,\\, \\text{staysPositive}) = \\frac{p-q}{p+q}$ for $p > q$. The conditional probability is computed as the ratio $\\frac{|\\{s \\in \\text{countedSequence}\\, p\\, q \\mid \\text{staysPositive}(s)\\}|}{|\\text{countedSequence}\\, p\\, q|}$."
     },
     {
       "id": "edge-cases",
       "title": "Edge Cases",
       "startLine": 154,
       "endLine": 166,
-      "summary": "Special cases: unanimous vote and tied election."
+      "summary": "Special cases: unanimous vote and tied election.",
+      "mathContext": "Unanimous ($q = 0$): $\\frac{p-0}{p+0} = 1$. Tied ($p = q$): $\\frac{p-p}{2p} = 0$. These verify the formula at its extremes: $P \\in [0, 1]$ for $0 \\leq q \\leq p$. Numerical examples: $(2,1) \\to 1/3$, $(3,1) \\to 1/2$, $(4,2) \\to 1/3$, $(5,2) \\to 3/7$."
     },
     {
       "id": "reflection-principle",
       "title": "The Reflection Principle",
       "startLine": 216,
       "endLine": 249,
-      "summary": "Detailed explanation of the bijective proof technique."
+      "summary": "Detailed explanation of the bijective proof technique.",
+      "mathContext": "André's reflection bijection: for any 'bad' path (first touching $y=0$ at step $k$), reflect all votes before step $k$ ($+1 \\leftrightarrow -1$). This maps bad paths ending at $(p+q, p-q)$ bijectively to ALL paths ending at $(p+q, q-p)$. Count: $\\binom{p+q}{q}$ bad paths, so good paths $= \\binom{p+q}{p} - \\binom{p+q}{q}$."
     }
   ],
   "conclusion": {
@@ -95,5 +100,22 @@
       "Continuous-time versions of the ballot problem",
       "Higher-dimensional lattice path problems"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "fair-games-theorem",
+      "relationship": "related",
+      "description": "Both use conditional probability over finite sample spaces; the ballot problem's staysPositive predicate connects to fair game stopping conditions"
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "uses",
+      "description": "The ballot formula relies on binomial coefficients C(p+q,p) and C(p+q,q) for counting lattice paths"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "co-listed",
+      "description": "Both appear in Wiedijk's 100 Theorems list; infinitude of primes is #11, ballot problem is #30"
+    }
+  ]
 }

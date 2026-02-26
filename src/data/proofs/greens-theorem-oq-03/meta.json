@@ -113,7 +113,8 @@
   "conclusion": {
     "summary": "OQ-03 is answered YES: the abstract `GreenRegion where dummy : Unit` is replaced by `TypeIRegion`, a concrete structure with 4 real-valued fields and 2 proof obligations. The area formula ∫_a^b (g-f) dx is fully proved (0 sorries), Green's theorem is stated as a meaningful non-trivial axiom with the correct curved-boundary formula.",
     "significance": "Demonstrates that Lean 4's type system can model the standard Apostol/Rudin definition of simply-connected regions, enabling future work on the full Green's theorem proof via FTC + chain rule for parametric boundaries.",
-    "futureWork": [
+    "implications": "Enables formalization of vector calculus on curved-boundary domains. The TypeIRegion structure provides the geometric foundation for proving area formulas, double integrals, and eventually the full divergence theorem in Lean 4.",
+    "openQuestions": [
       "Prove greens_theorem_typeI: apply FTC to inner integral ∫_{f(x)}^{g(x)} ∂P/∂y dy, then FTC + Fubini to outer",
       "Define Type II regions (horizontally simple) and prove Green's theorem for them",
       "Decomposition theorem: any simply-connected region = union of TypeI and TypeII regions",
