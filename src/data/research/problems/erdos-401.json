@@ -1,104 +1,57 @@
 {
   "slug": "erdos-401",
   "title": "Erdős #401: Factorial Divisibility with Prime Products",
-  "phase": "COMPLETE",
-  "status": "completed",
-  "tier": "A",
-  "path": "full",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
   "problemStatement": {
-    "formal": "∃ f : ℕ → ℝ, Tendsto f atTop atTop ∧ ∀ r, ∃ᶠ n in atTop, ∃ a₁ a₂, a₁! * a₂! ∣ n! * primorialPow(r,n) ∧ a₁ + a₂ > n + f(r) * log(n)",
-    "plain": "Does there exist f(r) → ∞ such that for infinitely many n, there exist a₁, a₂ with a₁ + a₂ > n + f(r)·log(n) where a₁!·a₂! | n!·2ⁿ·3ⁿ·...·pᵣⁿ? Answer: YES (Barreto-Leeham 2026). The 'for all large n' version is FALSE (Sothanaphan).",
-    "whyMatters": [
-      "Extends Erdős-Graham factorial divisibility theory",
-      "Shows prime power factors allow exceeding classical O(log n) bounds",
-      "Complete resolution: YES for infinitely many n, NO for all large n"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Erdős #401: Factorial Divisibility with Prime Products.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "nthPrime properties: primality, monotonicity, positivity",
-      "Primorial properties: recurrence, positivity, monotonicity",
-      "FactorialDivides: symmetry, monotonicity in r, zero cases",
-      "unbounded_excess: proved from axiomatized conjecture",
-      "erdos_401_complete: conjunction of YES and NOT-strong",
-      "padic_valuation_factorial_bound: from Legendre's formula axiom"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Complete formalization achieved"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-13T08:00:00Z",
-    "iteration": 2,
-    "focus": "Fixed merge conflict in unbounded_excess proof (used Real.log_natCast_nonneg). Builds in Docker.",
+    "phase": "NEW",
+    "since": "2026-01-23T08:04:56.544Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - complete. Could submit to Aristotle for axiom verification.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed merge conflict in Erdos401Problem.lean. File has 4 axioms (erdos_graham_baseline, barreto_leeham_401, sothanaphan_counterexample, legendre_formula) and 18 proved theorems. Builds successfully in Docker.",
-    "builtItems": [
-      "Erdos401Problem.lean:62-66 - nthPrime and primorial definitions",
-      "Erdos401Problem.lean:139 - FactorialDivides predicate",
-      "Erdos401Problem.lean:197-201 - Erdos401Conjecture formal statement",
-      "Erdos401Problem.lean:231-244 - unbounded_excess (proved, merge conflict fixed)",
-      "Erdos401Problem.lean:256-258 - erdos_401_complete theorem",
-      "Erdos401Problem.lean:275-282 - padic_valuation_factorial_bound"
-    ],
-    "insights": [
-      "Real.log_natCast_nonneg is available in Docker Mathlib v4.26.0 and simplifies proofs involving natural number logs",
-      "Merge conflict arose between by_cases approach and direct lemma approach - the direct lemma is cleaner",
-      "The file uses 4 axioms for deep results (Erdős-Graham bound, Barreto-Leeham construction, Sothanaphan counterexample, Legendre formula)",
-      "Problem has complete resolution: YES for ∃ᶠ n, NO for ∀ large n"
-    ],
-    "mathlibGaps": [
-      "Legendre's formula not directly available as a theorem (axiomatized here)",
-      "Erdős-Graham factorial divisibility bounds not in Mathlib"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Axiom-based formalization with proved consequences",
-      "status": "complete",
-      "description": "Axiomatize deep results (Erdős-Graham, Barreto-Leeham, Sothanaphan, Legendre), prove all structural and computational consequences"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "erdos",
     "proved",
     "number-theory",
     "factorials",
     "divisibility",
-    "primes",
-    "formalized",
-    "0-sorry",
-    "builds-in-docker"
+    "primes"
   ],
-  "relatedProofs": [
-    "Erdos401Problem.lean"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Erdős, Graham (1980) - Old and New Problems in Combinatorial Number Theory, p.78",
-      "Barreto, Leeham (2026) - AI-assisted proof",
-      "Sothanaphan - Counterexample for strong version"
-    ],
-    "urls": [
-      "https://erdosproblems.com/401"
-    ],
-    "mathlib": [
-      "Mathlib.Data.Nat.Factorial.Basic",
-      "Mathlib.Data.Nat.Prime.Nth",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-23T08:04:56.544Z",
-  "lastUpdate": "2026-02-13T08:00:00Z",
+  "lastUpdate": "2026-01-23T08:04:56.544Z",
   "significance": 6,
   "tractability": 7
 }

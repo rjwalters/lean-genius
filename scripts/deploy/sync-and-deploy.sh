@@ -570,8 +570,25 @@ build_website() {
 deploy_website() {
     print_header "Deploying to Cloudflare"
 
+    # Load .env to get CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN
+    # These override wrangler's OAuth login, ensuring deploys always go
+    # to the correct account regardless of who is logged in.
+    if [[ -f "$REPO_ROOT/.env" ]]; then
+        set -a
+        source "$REPO_ROOT/.env"
+        set +a
+    fi
+
+    # Verify we have the account pinned
+    if [[ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]]; then
+        print_error "CLOUDFLARE_ACCOUNT_ID not set. Add it to .env to prevent wrong-account deploys."
+        print_info "Expected: 251e6e8626d921603fdc3f0d75576bc6 (Personal Account)"
+        return 1
+    fi
+
     if $DRY_RUN; then
         echo "  Would run: wrangler pages deploy dist (with ASCII-safe commit message)"
+        echo "  Account: $CLOUDFLARE_ACCOUNT_ID"
         return 0
     fi
 

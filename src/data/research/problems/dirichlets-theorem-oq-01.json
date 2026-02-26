@@ -2,7 +2,7 @@
   "slug": "dirichlets-theorem-oq-01",
   "title": "Siegel zeros: Can L(1, chi) be very close to 0 for real characters",
   "phase": "NEW",
-  "status": "surveyed",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
+    "phase": "NEW",
     "since": "2026-02-21T19:21:07.134Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,36 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: DirichletsTheoremOQ01.lean has 21 theorems, 3 axioms, 0 sorries. 8 gallery annotations added.",
-    "insights": [
-      "DirichletsTheoremOQ01.lean: 475 lines, 21 theorems, 3 axioms, 0 sorries",
-      "Main theorem L_one_ne_zero wraps Mathlib's LFunction_apply_one_ne_zero (one line)",
-      "MVT proof siegel_zero_implies_small_L_one uses norm_image_sub_le_of_norm_deriv_le_segment' + HasDerivAt.comp_ofReal",
-      "Three deep axioms: siegel_theorem, grh_implies_no_siegel_zeros, landau_page_theorem (not in Mathlib)",
-      "GRH eliminates Siegel zeros: \u03b2 in (1/2,1) by location argument, GRH gives no zeros there",
-      "grh_implies_no_siegel_zeros_large_conductor: N > exp(2c) \u27f9 GRH eliminates Siegel zeros for \u03c7 mod N",
-      "at_most_one_exceptional_conductor: Landau-Page applied directly (wrapper theorem)",
-      "Gallery annotations: 8 annotations cover all main sections"
-    ],
-    "builtItems": [
-      "IsSiegelZero, HasSiegelZero, SiegelZeroConjecture definitions in DirichletsTheoremOQ01.lean",
-      "siegel_zero_implies_small_L_one: MVT bound on L(1,\u03c7)",
-      "no_siegel_zero_gives_lower_bound: positive norm from nonvanishing",
-      "grh_eliminates_siegel_zeros: GRH + location argument",
-      "grh_implies_no_siegel_zeros_large_conductor: quantified version",
-      "at_most_one_exceptional_conductor: Landau-Page wrapper",
-      "has_siegel_zero_mono, not_has_siegel_zero_of_smaller: monotonicity",
-      "8 annotations in src/data/proofs/dirichlets-theorem-oq-01/annotations.json"
-    ],
-    "mathlibGaps": [
-      "Siegel theorem 1935: C(\u03b5) ineffective lower bound not in Mathlib",
-      "Landau-Page theorem: at-most-one exceptional character not in Mathlib",
-      "Full GRH formalization: only conditional axiom here"
-    ],
-    "nextSteps": [
-      "Gallery is complete with 8 annotations - documented for reference",
-      "Future: when Mathlib gets Siegel theorem or Landau-Page, replace axioms with proofs"
-    ]
+    "progressSummary": "SURVEYED - 20 proved theorems, 3 axioms for deep analytic NT results, 0 sorries.",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# dirichlets-theorem-oq-01: Siegel Zeros / L(1,χ) Lower Bounds\n\n## Problem Summary\n\n**Open Question**: Do Siegel zeros exist? Equivalently, can L(1,χ) be exponentially small (e.g., like exp(-c·√(log q))) for real primitive Dirichlet characters χ of large conductor q?\n\n**Status**: SURVEYED - 20 proved theorems, 3 axioms for deep analytic NT results, 0 sorries.\n\n**Key results**:\n- L(1,χ) ≠ 0: proved via Mathlib's `LFunction_apply_one_ne_zero`\n- Siegel's bound L(1,χ) > C(ε)/q^ε: axiomatized (not in Mathlib)\n- GRH → no Siegel zeros: proved conditional on GRH\n- MVT argument bounding L(1,χ) in terms of Siegel zeros: proved\n\n## Session 2026-02-25 (Session 1) - Initial Formalization\n\n**Mode**: FRESH (problem had EMPTY knowledge)\n**Outcome**: surveyed/progress\n\n### What I Did\n- Created full formalization of Siegel zero framework\n- Proved 20 theorems about structural properties of Siegel zeros\n- Fixed `siegel_zero_in_upper_half` proof (`div_lt_iff` not in Lean 4.26; use `div_lt_one`)\n- Added 9 new structural results in Part VIII\n- Created PR #3245\n\n### Key Findings\n- `div_lt_iff` is not available in Lean 4.26; use `div_lt_one` instead for division inequalities\n- MVT approach works well: if β is a zero and β < 1, then |L(1,χ)| ≤ (1-β)·M\n- GRH eliminates Siegel zeros in (1/2, 1) by zero-free region hypothesis\n- Siegel theorem and Landau-Page theorem require deep analytic NT infrastructure not in Mathlib\n- Docker build fails with linter reverting files; worktree approach handles this correctly\n\n### Files Modified\n- `proofs/Proofs/DirichletsTheoremOQ01.lean` (381→475 lines, 20 theorems, 0 sorries)\n\n### Next Steps\n- Submit to Aristotle companion for routine supporting lemmas\n- Extend with zero-spacing results or Siegel-Walfisz theorem\n- The open question (whether Siegel zeros exist) is a major open problem in analytic NT\n"
   },
   "approaches": [],
   "tags": [

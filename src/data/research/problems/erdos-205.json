@@ -1,72 +1,38 @@
 {
   "slug": "erdos-205",
   "title": "Erdős #205: Powers of 2 plus numbers with few prime factors",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "fast",
-  "leanFile": "proofs/Proofs/Erdos205Problem.lean",
   "problemStatement": {
-    "formal": "Is it true that all sufficiently large n can be written as 2^k + m where Ω(m) < log log m? (Ω counts prime factors with multiplicity.) Answer: NO.",
-    "plain": "Erdős asked whether every large integer n can be written as 2^k + m where m has fewer than log log m prime factors (counted with multiplicity). This was disproved: there are infinitely many n where every remainder n - 2^k has at least c√(log n/log log n) prime factors.",
-    "whyMatters": [
-      "Tests whether almost-prime representations are universal",
-      "Connected to Romanoff's theorem on 2^k + p representations",
-      "Uses covering systems, a key Erdős technique",
-      "Disproved by Barreto-Leeham (2026), quantified by Tao-Alexeev"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Erdős #205: Powers of 2 plus numbers with few prime factors.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Romanoff (1934): positive density of integers are 2^k + p for prime p",
-      "Erdős (1950): positive density of odd integers cannot be 2^k + p (covering systems)",
-      "Barreto-Leeham (2026): infinitely many counterexamples to the conjecture",
-      "Tao-Alexeev (2026): Ω(n - 2^k) ≥ c√(log n/log log n) for counterexamples"
-    ],
-    "open": [
-      "Do arbitrarily large odd counterexamples exist?"
-    ],
-    "goal": "Formalize the disproof structure and supporting results in Lean"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-14T12:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-01-23T08:04:56.542Z",
     "iteration": 1,
-    "focus": "Fixed all Docker build errors, 0 sorries",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - file compiles cleanly",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed 8 Docker build errors in Erdos205Problem.lean. File now compiles with 0 sorries, 6 axioms (deep analytic/number-theoretic results). Covers bigOmega properties, counterexample-based disproof, covering systems, de Polignac numbers, concrete Ω computations, and axiomatized analytic bounds.",
-    "builtItems": [
-      "bigOmega definition and properties (Ω(1)=0, Ω(p)=1, Ω(p^k)=k, multiplicativity)",
-      "bigOmega_prime_pow: proved by induction using perm_primeFactorsList_mul (API fix)",
-      "bigOmega_mul: fixed using rw [h.length_eq, List.length_append] (API fix)",
-      "remainder_achieves_min: fixed log bound via by_contra + lt_pow_succ_log_self (API fix)",
-      "loglog_mono_nat: log log monotonicity for m ≥ 16",
-      "erdos_205_disproved: ¬Erdos205Conjecture from axiomatized counterexample",
-      "12 concrete Ω computations via native_decide",
-      "Covering system verification: orders of 2 mod {3,5,7,13,17,241}",
-      "De Polignac numbers: 127 and 149 verified",
-      "erdosCoveringModulus corrected from 11184810 to 5592405"
-    ],
-    "insights": [
-      "Nat.primeFactorsList_prime_pow does NOT exist in Docker Mathlib v4.26.0",
-      "Use induction + perm_primeFactorsList_mul + primeFactorsList_prime instead",
-      "Nat.log_le_of_le_pow does NOT exist - use by_contra + Nat.lt_pow_succ_log_self",
-      "Perm.length_eq gives length of perm, need List.length_append for the sum",
-      "omega cannot handle 2^k < n directly for n > 1; use Nat.one_le_two_pow + linarith",
-      "3 * 5 * 7 * 13 * 17 * 241 = 5592405 (not 11184810 as originally claimed)"
-    ],
-    "mathlibGaps": [
-      "Nat.primeFactorsList_prime_pow missing from Mathlib v4.26.0",
-      "Nat.log_le_of_le_pow missing from Mathlib v4.26.0"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
     "nextSteps": []
   },
   "approaches": [],
@@ -80,19 +46,12 @@
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [
-      "Romanoff (1934): Über einige Sätze der additiven Zahlentheorie",
-      "Erdős (1950): On integers of the form 2^k + p",
-      "Barreto, Leeham (2026): Counterexample to Erdős #205",
-      "Tao, Alexeev (2026): Quantification of the counterexample"
-    ],
-    "urls": [
-      "https://www.erdosproblems.com/205"
-    ],
+    "papers": [],
+    "urls": [],
     "mathlib": []
   },
   "started": "2026-01-23T08:04:56.542Z",
-  "lastUpdate": "2026-02-14T12:00:00.000Z",
+  "lastUpdate": "2026-01-23T08:04:56.542Z",
   "significance": 7,
   "tractability": 8
 }

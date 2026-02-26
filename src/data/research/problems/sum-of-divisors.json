@@ -30,9 +30,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "FIXED BUILD: Updated SumOfDivisors.lean for current Mathlib API (sigma_isMultiplicative→isMultiplicative_sigma, pow_left_injective signature change, sigma_apply_prime_pow usage). ~85 declarations, 0 sorries, 0 axioms.",
-    "builtItems": ["IsDeficient/IsPerfect/IsAbundant classification with exhaustive/exclusive proofs", "sigma_prime general theorem and sigma_prime_pow prime power formula", "Multiplicativity: sigma_mul_coprime via isMultiplicative_sigma", "Amicable pairs (220,284) and (1184,1210) verified", "12 is smallest abundant number (minimality proof)", "Abundancy index and perfect_iff_abundancy_two"],
-    "insights": ["sigma_isMultiplicative was renamed to isMultiplicative_sigma in current Mathlib", "Nat.pow_left_injective now takes ≠0 instead of ≥2, and injects on exponent not base", "sigma_apply_prime_pow directly gives σ_k(p^i) formula without manual divisors_prime_pow"],
+    "progressSummary": "Open for 2000+ years!",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [
       "`Nat.sigma 1 n` = σ(n) = sum of divisors of n",
       "`Nat.sigma k n` = σ_k(n) = sum of k-th powers of divisors"

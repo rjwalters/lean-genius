@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Converted 6 axioms to proved theorems in PvsNP.lean. SAT_in_NP, ThreeSAT_in_NP, SAT_reduces_to_3SAT, CLIQUE/SUBSET_SUM/HAMPATH_NPComplete all proved. Axiom count: 10 to 4. All 940+ lines compile with 0 sorries.",
+    "progressSummary": "",
     "builtItems": [
       {
         "name": "P",
@@ -85,31 +85,6 @@
         "name": "algebrization_barrier",
         "description": "Algebraic techniques also fail",
         "proven": true
-      },
-      {
-        "name": "bitsToNat_natToBits_theorem",
-        "description": "Round-trip: bitsToNat (natToBits n) = n (converted from axiom)",
-        "proven": true
-      },
-      {
-        "name": "natToBits_injective_theorem",
-        "description": "Encoding injectivity (converted from axiom via round-trip)",
-        "proven": true
-      },
-      {
-        "name": "encodingLength_log_approx_theorem",
-        "description": "Encoding length <= log2(n)+1 (converted from axiom)",
-        "proven": true
-      },
-      {
-        "name": "always_false_inNP",
-        "description": "Helper: any fun _ => false problem is trivially in NP",
-        "proven": true
-      },
-      {
-        "name": "eq_SAT_NPHard",
-        "description": "Helper: any problem equal to SAT is NP-hard via Cook-Levin",
-        "proven": true
       }
     ],
     "insights": [
@@ -123,14 +98,7 @@
       "complexity_containments",
       "relativization_barrier",
       "natural_proofs_barrier",
-      "algebrization_barrier",
-      "Proved bitsToNat_natToBits round-trip via well-founded recursion matching natToBits structure",
-      "Proved natToBits_injective as corollary of round-trip property",
-      "Proved encodingLength_log_approx using Nat.log2 recursive identity for n >= 2",
-      "Converted SAT_in_NP to theorem: trivial verifier for always-false placeholder",
-      "Converted ThreeSAT_in_NP similarly",
-      "Proved SAT_reduces_to_3SAT via identity reduction (both are fun _ => false)",
-      "Proved CLIQUE/SUBSET_SUM/HAMPATH_NPComplete via helper lemmas + cook_levin_axiom"
+      "algebrization_barrier"
     ],
     "mathlibGaps": [
       "Turing machines",

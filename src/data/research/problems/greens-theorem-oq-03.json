@@ -1,128 +1,57 @@
 {
   "slug": "greens-theorem-oq-03",
-  "title": "Green's Theorem for Concrete Simply-Connected Regions (TypeI)",
-  "phase": "COMPLETE",
+  "title": "Replace GreenRegion placeholder with concrete simply-connected region",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{Replace } \\texttt{GreenRegion where dummy : Unit} \\text{ with a concrete TypeIRegion structure and state a non-trivial Green's theorem}",
-    "plain": "The base GreensTheorem.lean has only a dummy placeholder with no mathematical content. Can we define a concrete simply-connected region and state a meaningful Green's theorem for it?",
-    "whyMatters": [
-      "Demonstrates that Lean 4 can formalize the standard Apostol definition of vertically simple regions",
-      "Connects abstract placeholders to genuine geometric structures with proof obligations",
-      "Enables future work on full Green's theorem via FTC + chain rule for variable integration limits"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "TypeIRegion structure: 4 real-valued fields + 2 proof obligations (no dummy : Unit)",
-      "typeI_mem_iff: explicit set membership characterization",
-      "typeI_lower_mem / typeI_upper_mem: boundary curves lie in the region",
-      "typeI_nonempty: every TypeI region contains (a, f(a))",
-      "rectToTypeI: rectangle [a,b]×[c,d] as a TypeI region",
-      "rectTypeI_set_eq: rectangle TypeI set = Icc a b ×ˢ Icc c d",
-      "TypeIRegion.area = ∫_a^b (g(x)-f(x)) dx (concrete intervalIntegral)",
-      "typeI_area_nonneg: area ≥ 0 since g(x) ≥ f(x)",
-      "typeI_rect_area: area of rectangle = (b-a)*(d-c)",
-      "typeI_area_is_iterated_one: Area = iteratedIntegral(const 1)",
-      "typeI_rect_iterated_one: rectangle iterated integral of 1 = (b-a)*(d-c)"
-    ],
-    "open": [
-      "Full proof of greens_theorem_typeI (currently axiom — requires FTC + chain rule for variable limits)"
-    ],
-    "goal": "Prove greens_theorem_typeI using FTC applied to inner integral + Fubini + boundary parametrization"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-26T00:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-02-26T05:12:41.988Z",
     "iteration": 1,
-    "focus": "13 theorems proved, 1 axiom (greens_theorem_typeI), 0 sorries",
-    "blockers": [
-      "greens_theorem_typeI full proof: requires FTC for variable-limit integrals (∫_{f(x)}^{g(x)}), chain rule for boundary curves, Fubini for the outer integral (~200 lines)"
-    ],
-    "nextAction": "Prove greens_theorem_typeI: apply HasDerivAt chain rule to boundary terms, use integral_eq_sub_of_hasDerivAt for inner FTC",
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: TypeIRegion structure replaces dummy placeholder with 4 real fields + 2 proof obligations. Area formula, iterated integral, rectangle special cases all proved (13 theorems, 0 sorries). Green's theorem axiomatized with concrete non-trivial statement using deriv f and deriv g for boundary terms.",
-    "builtItems": [
-      "TypeIRegion: structure with fields a, b, f, g, hab, hfg replacing GreenRegion dummy : Unit",
-      "TypeIRegion.toSet: set of points {(x,y) | a≤x≤b, f(x)≤y≤g(x)}",
-      "typeI_mem_iff: (x,y) ∈ R.toSet ↔ a≤x≤b ∧ f(x)≤y≤g(x)",
-      "typeI_lower_mem, typeI_upper_mem: boundary curves in region",
-      "typeI_nonempty: R.toSet.Nonempty",
-      "typeI_curve_le: f(x) ≤ g(x) on base interval",
-      "rectToTypeI: rectangle as TypeI region with constant f, g",
-      "rectTypeI_set_eq: rectangle set = Icc a b ×ˢ Icc c d",
-      "unitSquareTypeI, unitSquareTypeI_contains_center",
-      "TypeIRegion.area = ∫_a^b (g x - f x)",
-      "typeI_area_nonneg, typeI_rect_area, unitSquareTypeI_area, typeI_const_height_area",
-      "TypeIRegion.iteratedIntegral F = ∫ x, ∫ y in f(x)..g(x), F(x,y)",
-      "typeI_area_is_iterated_one, typeI_rect_iterated_one",
-      "greens_theorem_typeI axiom with concrete boundary formula"
-    ],
-    "insights": [
-      "ContinuousOn MUST NOT be in TypeIRegion struct fields — causes typeclass resolution loop in Lean 4",
-      "rw [integral_const, smul_eq_mul] closes (b-a)*(d-c) = (b-a)*(d-c) via rfl — no ring needed",
-      "typeI_area_nonneg: linarith [R.hfg x hx] works directly — hx is already Set.Icc type, no uIcc conversion",
-      "unitSquareTypeI_area: use unfold + rw [typeI_rect_area] + norm_num (not linarith — nonlinear arithmetic)",
-      "Green's theorem boundary formula: Q terms involve deriv R.g and deriv R.f (chain rule for parametric curves)",
-      "Iterated integral order: TypeI is outer-x inner-y; OQ01 rectDoubleIntegral is outer-y inner-x — connected by Fubini"
-    ],
-    "mathlibGaps": [
-      "FTC for variable integration limits: integral_eq_sub_of_hasDerivAt composed with chain rule for f(x) boundary",
-      "Fubini for intervalIntegral: interchange of integration order requires product measure measurability"
-    ],
-    "nextSteps": [
-      "Prove greens_theorem_typeI Part 1: ∬ ∂P/∂y dA = ∫_a^b [P(x,g(x)) - P(x,f(x))] dx via inner FTC",
-      "Prove greens_theorem_typeI Part 2: ∬ ∂Q/∂x dA = ∫ [Q(b,y)-Q(a,y)] dy via outer FTC + Fubini",
-      "Connect boundary decomposition: lower/upper curves + vertical sides"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "TypeI (vertically simple) regions",
-      "description": "D = {(x,y) | a≤x≤b, f(x)≤y≤g(x)}, standard approach from Apostol §17.4",
-      "status": "complete",
-      "sorries": 0,
-      "notes": "13 proved theorems, 1 axiom (greens_theorem_typeI). Area formula fully proved via intervalIntegral."
-    }
-  ],
+  "approaches": [],
   "tags": [
     "analysis",
-    "multivariable-calculus",
+    "vector-calculus",
     "integration",
-    "green-theorem",
-    "simply-connected",
-    "type-I-region",
-    "area-formula",
-    "extension"
+    "stokes",
+    "formalization",
+    "wiedijk-100"
   ],
-  "relatedProofs": [
-    "GreensTheoremOQ03.lean",
-    "GreensTheoremOQ01.lean"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Apostol 'Mathematical Analysis' §17.4 (Green's theorem for Type I regions)",
-      "Rudin 'Principles of Mathematical Analysis' Chapter 10"
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "intervalIntegral.integral_nonneg",
-      "intervalIntegral.integral_const",
-      "smul_eq_mul",
-      "Set.left_mem_Icc",
-      "HasDerivAt"
-    ]
+    "mathlib": []
   },
-  "started": "2026-02-26T00:00:00.000Z",
-  "lastUpdate": "2026-02-26T00:00:00.000Z",
+  "started": "2026-02-26T17:08:50.306Z",
+  "lastUpdate": "2026-02-26T17:08:50.306Z",
   "significance": 7,
-  "tractability": 7
+  "tractability": 6
 }
