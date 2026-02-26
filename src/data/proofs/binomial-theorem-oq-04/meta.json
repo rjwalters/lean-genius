@@ -59,15 +59,16 @@
     "dateAdded": "02/26/26"
   },
   "overview": {
-    "historicalContext": "Vandermonde's identity was published by Alexandre-Théophile Vandermonde in 1772, though it was known to earlier mathematicians. It is one of the most fundamental identities in combinatorics, appearing in probability theory (hypergeometric distribution), generating function theory, and lattice path counting.\n\nThe identity has two natural proofs:\n1. **Combinatorial**: Count r-element subsets of {1,...,m+n} by how many come from {1,...,m}\n2. **Algebraic**: Compare coefficients of x^r in (1+x)^m · (1+x)^n = (1+x)^(m+n)",
+    "historicalContext": "Vandermonde's identity was published by Alexandre-Théophile Vandermonde in his 1772 memoir \"Mémoire sur des irrationnelles de différents ordres avec une application au cercle,\" presented to the Académie Royale des Sciences in Paris. However, the identity was known earlier — Zhu Shijie stated a version in his 1303 text *Siyuan Yujian* (Jade Mirror of the Four Unknowns), and the combinatorial interpretation was implicit in the work of Blaise Pascal (1654) and Isaac Newton.\n\nVandermonde's contribution was to systematically study determinants and combinatorial identities together. The identity is the cornerstone of combinatorial convolution theory: it underpins the hypergeometric distribution in probability (where the summand $\\binom{m}{k}\\binom{n}{r-k}/\\binom{m+n}{r}$ gives the PMF), the Cauchy product of generating functions, and lattice path counting via the Lindström–Gessel–Viennot lemma.\n\nThe special case $\\binom{2n}{n} = \\sum \\binom{n}{k}^2$ connects to the central binomial coefficient, which governs the asymptotics of random walks ($\\binom{2n}{n} \\sim 4^n / \\sqrt{\\pi n}$) and appears in the Catalan number formula $C_n = \\binom{2n}{n}/(n+1)$.",
     "problemStatement": "**Vandermonde's Identity**: For any non-negative integers m, n, r:\n$$\\binom{m+n}{r} = \\sum_{k=0}^{r} \\binom{m}{k}\\binom{n}{r-k}$$\n\n**Special case — Sum of Squares**: Setting m = n = r:\n$$\\binom{2n}{n} = \\sum_{k=0}^{n} \\binom{n}{k}^2$$\n\n**OQ-04 question**: Can this be formalized in Lean 4 using Mathlib's combinatorics infrastructure? And what are the key corollaries?",
-    "proofStrategy": "**Main Identity**: Use `Nat.add_choose_eq` from Mathlib which gives the antidiagonal form of C(m+n,r), then convert to range sum form via `Finset.Nat.sum_antidiagonal_eq_sum_range_succ`.\n\n**Sum-of-Squares Corollary**:\n1. Apply `vandermonde_identity n n n` to get C(2n,n) = Σ C(n,k)·C(n,n-k)\n2. Use `Nat.choose_symm` to rewrite C(n,n-k) = C(n,k)\n3. Get C(2n,n) = Σ C(n,k)²\n\n**Symmetry**: Both sums equal C(m+n,r) = C(n+m,r), so they must be equal by transitivity.\n\n**Monotonicity**: Use `Nat.choose_le_choose` with `n ≤ m+n`.",
+    "proofStrategy": "**Main Identity**: Use `Nat.add_choose_eq` from Mathlib which gives the antidiagonal form of $\\binom{m+n}{r}$, then convert to range sum form via `Finset.Nat.sum_antidiagonal_eq_sum_range_succ`. This yields a remarkably concise 2-line proof.\n\n**Sum-of-Squares Corollary**:\n1. Apply `vandermonde_identity n n n` to get $\\binom{2n}{n} = \\sum \\binom{n}{k} \\cdot \\binom{n}{n-k}$\n2. Use `Nat.choose_symm` to rewrite $\\binom{n}{n-k} = \\binom{n}{k}$\n3. Conclude $\\binom{2n}{n} = \\sum \\binom{n}{k}^2$\n\n**Symmetry**: Both sums equal $\\binom{m+n}{r} = \\binom{n+m}{r}$, so they must be equal by transitivity and `add_comm`.\n\n**Monotonicity**: Directly from `Nat.choose_le_choose` using $n \\le m + n$.",
     "keyInsights": [
-      "Mathlib's `Nat.add_choose_eq` directly provides the antidiagonal form; only a sum reformulation is needed",
-      "The sum-of-squares C(2n,n) = Σ C(n,k)² is the most beautiful corollary: set m=n=r and apply symmetry",
-      "Nat.choose_symm h : C(n, n-k) = C(n, k) is the key lemma for the sum-of-squares proof",
-      "Symmetry of the Vandermonde sum follows cheaply from C(m+n,r) = C(n+m,r)",
-      "The identity is used in the proof of the hypergeometric distribution and the Cauchy product formula"
+      "Mathlib's `Nat.add_choose_eq` directly provides the antidiagonal form of Vandermonde, reducing the proof to a single sum reformulation — a 2-line proof of a fundamental identity",
+      "The sum-of-squares corollary $\\binom{2n}{n} = \\sum \\binom{n}{k}^2$ is the most elegant specialization: set $m = n = r$ and apply `Nat.choose_symm` to convert $\\binom{n}{n-k}$ to $\\binom{n}{k}$",
+      "Symmetry of the Vandermonde sum is proved indirectly through the closed form $\\binom{m+n}{r} = \\binom{n+m}{r}$, avoiding a delicate reindexing argument that would be harder to formalize",
+      "Pascal's rule $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ is the $m = 1$ case of Vandermonde, revealing it as a strict generalization of the most basic recurrence for binomial coefficients",
+      "The summand bound $\\binom{m}{k}\\binom{n}{r-k} \\le \\binom{m+n}{r}$ via `Finset.single_le_sum` has direct probabilistic significance: it bounds each term of the hypergeometric PMF",
+      "The proof leverages Lean's definitional equality for natural number subtraction: when $k > r$, $\\binom{n}{r-k} = \\binom{n}{0} = 1$ since $r - k = 0$ in $\\mathbb{N}$, which means the summation range naturally handles out-of-range terms"
     ]
   },
   "sections": [
@@ -76,65 +77,73 @@
       "title": "Problem Statement and Overview",
       "startLine": 1,
       "endLine": 36,
-      "summary": "Header explaining Vandermonde's identity, its combinatorial/algebraic proofs, and the sum-of-squares corollary. Tags: combinatorics, binomial-coefficients, vandermonde."
+      "summary": "Module documentation explaining Vandermonde's identity, its combinatorial and algebraic proofs, the sum-of-squares corollary, and Mathlib imports for Nat.choose infrastructure."
     },
     {
       "id": "main-identity",
       "title": "Part I: The Vandermonde Identity",
       "startLine": 37,
-      "endLine": 65,
-      "summary": "vandermonde_identity (m n r): C(m+n,r) = Σ_{k=0}^{r} C(m,k)*C(n,r-k). Proof via Nat.add_choose_eq + sum_antidiagonal_eq_sum_range_succ. Concrete native_decide verifications: C(8,4)=70 via 5+3 split, C(10,3)=120 via 6+4 split."
+      "endLine": 57,
+      "summary": "Core theorem vandermonde_identity: C(m+n,r) = Σ_{k=0}^{r} C(m,k)*C(n,r-k), proved in two lines via Nat.add_choose_eq and sum_antidiagonal_eq_sum_range_succ."
+    },
+    {
+      "id": "verifications",
+      "title": "Part II: Concrete Verifications",
+      "startLine": 58,
+      "endLine": 73,
+      "summary": "Three native_decide examples verifying Vandermonde numerically: C(8,4)=70 via 5+3 split, C(10,3)=120 via 6+4 split, and C(8,4)=70=Σ C(4,k)² for sum-of-squares."
     },
     {
       "id": "special-cases",
       "title": "Part III: Special Cases",
       "startLine": 75,
-      "endLine": 105,
-      "summary": "vandermonde_r_zero: C(m+n,0)=1. vandermonde_n_zero: degenerate n=0 case. vandermonde_r_full: full selection sum=1. vandermonde_r_one: C(m+n,1)=m+n."
+      "endLine": 101,
+      "summary": "Boundary cases: vandermonde_r_zero (C(m+n,0)=1), vandermonde_n_zero (n=0 degenerate case), vandermonde_r_full (full selection sum=1), vandermonde_r_one (C(m+n,1)=m+n)."
     },
     {
       "id": "symmetry",
       "title": "Part IV: Symmetry",
-      "startLine": 106,
-      "endLine": 125,
-      "summary": "vandermonde_symmetric: Σ C(m,k)*C(n,r-k) = Σ C(n,k)*C(m,r-k). Proof: both equal C(m+n,r)=C(n+m,r). Uses add_comm transitivity."
+      "startLine": 102,
+      "endLine": 116,
+      "summary": "vandermonde_symmetric: Σ C(m,k)*C(n,r-k) = Σ C(n,k)*C(m,r-k), proved via both sides equalling C(m+n,r)=C(n+m,r) by add_comm."
     },
     {
       "id": "sum-of-squares",
       "title": "Part V: Sum-of-Squares Corollary",
-      "startLine": 126,
-      "endLine": 155,
-      "summary": "vandermonde_sum_squares: C(2n,n) = Σ_{k=0}^{n} C(n,k)². Proof: Vandermonde with m=n=r, then C(n,n-k) = C(n,k) by Nat.choose_symm. Verified: C(8,4)=70=Σ C(4,k)²."
+      "startLine": 117,
+      "endLine": 139,
+      "summary": "vandermonde_sum_squares: C(2n,n) = Σ_{k=0}^{n} C(n,k)², the central result connecting the central binomial coefficient to Pascal's triangle row sums of squares. Uses Nat.choose_symm."
     },
     {
       "id": "monotonicity",
-      "title": "Part VI: Monotonicity",
-      "startLine": 143,
-      "endLine": 165,
-      "summary": "vandermonde_mono: C(n,r) ≤ C(m+n,r) via Nat.choose_le_choose. vandermonde_summand_le: each summand C(m,k)*C(n,r-k) ≤ C(m+n,r) via Finset.single_le_sum."
+      "title": "Part VI: Monotonicity and Summand Bounds",
+      "startLine": 141,
+      "endLine": 158,
+      "summary": "vandermonde_mono: C(n,r) ≤ C(m+n,r) via choose_le_choose. vandermonde_summand_le: each summand C(m,k)*C(n,r-k) ≤ C(m+n,r) via Finset.single_le_sum."
     },
     {
       "id": "pascal",
       "title": "Part VII: Pascal's Rule Connection",
-      "startLine": 166,
-      "endLine": 178,
-      "summary": "vandermonde_pascal: Pascal's rule C(n+1,k+1)=C(n,k)+C(n,k+1) is the m=1 case of Vandermonde (proved via Nat.choose_succ_succ from Mathlib)."
+      "startLine": 160,
+      "endLine": 174,
+      "summary": "vandermonde_pascal: Pascal's rule C(n+1,k+1) = C(n,k) + C(n,k+1) is the m=1 case of Vandermonde, proved via Nat.choose_succ_succ."
     },
     {
       "id": "summary",
       "title": "Part VIII: Summary",
-      "startLine": 179,
-      "endLine": 194,
-      "summary": "vandermonde_key_results: conjunction of the four main results — identity, symmetry, sum-of-squares, monotonicity."
+      "startLine": 176,
+      "endLine": 195,
+      "summary": "vandermonde_key_results: conjunction packaging the four main results — identity, symmetry, sum-of-squares, monotonicity — all proved with 0 sorries and 0 axioms."
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves Vandermonde's identity C(m+n,r) = Σ C(m,k)*C(n,r-k) with 0 sorries and 0 axioms, using Mathlib's `Nat.add_choose_eq` and antidiagonal-to-range conversion. Key corollaries include the sum-of-squares C(2n,n) = Σ C(n,k)², symmetry in m and n, and monotonicity.",
-    "implications": "**What this establishes**:\n\n**Vandermonde's Identity**: The fundamental combinatorial convolution, formally verified. Each r-element subset of {1,...,m+n} splits uniquely by how many elements come from the first m.\n\n**Sum of Squares**: C(2n,n) = Σ C(n,k)² — a beautiful identity connecting the central binomial coefficient to the sum of squares of binomial coefficients. Used in lattice path counting and probability theory.\n\n**Mathlib Integration**: The proof demonstrates clean use of Mathlib's `Nat.add_choose_eq` (antidiagonal form) and `Nat.choose_symm` (symmetry), showing how combinatorial identities fit naturally into the Lean 4 ecosystem.",
+    "summary": "This formalization proves Vandermonde's identity $\\binom{m+n}{r} = \\sum_{k=0}^r \\binom{m}{k}\\binom{n}{r-k}$ with 0 sorries and 0 axioms, building cleanly on Mathlib's `Nat.add_choose_eq` and antidiagonal API. The development includes the sum-of-squares corollary $\\binom{2n}{n} = \\sum \\binom{n}{k}^2$, symmetry of the convolution, monotonicity, summand bounds, and the observation that Pascal's rule is the $m=1$ special case.",
+    "implications": "**Combinatorial foundations**: Vandermonde's identity is the discrete analogue of the convolution theorem for generating functions. Its formalization in Lean 4 demonstrates that Mathlib's combinatorics library is mature enough to support non-trivial binomial coefficient identities with minimal proof effort.\n\n**Probability theory**: The summand $\\binom{m}{k}\\binom{n}{r-k}/\\binom{m+n}{r}$ is precisely the PMF of the hypergeometric distribution — the probability of drawing exactly $k$ successes in $r$ draws without replacement from a population of $m$ successes and $n$ failures. The monotonicity and summand bounds proved here are directly applicable.\n\n**Asymptotic analysis**: The sum-of-squares identity $\\binom{2n}{n} = \\sum \\binom{n}{k}^2$ is a key ingredient in proving the asymptotic $\\binom{2n}{n} \\sim 4^n/\\sqrt{\\pi n}$ (via Stirling's approximation) and connects to the return probability of symmetric random walks on $\\mathbb{Z}$.\n\n**Related gallery entries**: See [binomial-theorem](/proofs/binomial-theorem) for the base binomial theorem, [binomial-theorem-oq-01](/proofs/binomial-theorem-oq-01) and [binomial-theorem-oq-02](/proofs/binomial-theorem-oq-02) for related investigations, and [combinations-formula](/proofs/combinations-formula) for the fundamental counting formula.",
     "openQuestions": [
-      "Can Vandermonde's identity be proved combinatorially (bijection proof) in Lean 4?",
-      "Can the algebraic proof (coefficients of (1+x)^m * (1+x)^n) be formalized using the binomial theorem?",
-      "Vandermonde generalizes to Gaussian binomial coefficients (q-analog) — can this be formalized?"
+      "Can Vandermonde's identity be proved combinatorially (via an explicit bijection on Finsets) in Lean 4, rather than through the algebraic `Nat.add_choose_eq` route?",
+      "Can the algebraic proof — comparing coefficients of $x^r$ in $(1+x)^m \\cdot (1+x)^n = (1+x)^{m+n}$ — be formalized using Mathlib's polynomial ring infrastructure?",
+      "The $q$-Vandermonde identity $\\binom{m+n}{r}_q = \\sum_{k} q^{k(n-r+k)} \\binom{m}{k}_q \\binom{n}{r-k}_q$ generalizes to Gaussian binomial coefficients. Can this be formalized using Mathlib's $q$-analogs?",
+      "Can the Lindström–Gessel–Viennot lemma (which uses Vandermonde-type identities for lattice path counting) be formalized, extending this work to determinantal identities?"
     ]
   }
 }
