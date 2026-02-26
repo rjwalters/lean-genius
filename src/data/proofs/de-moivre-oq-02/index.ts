@@ -1,0 +1,36 @@
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
+import metaJson from './meta.json'
+import annotationsJson from './annotations.json'
+import sourceRaw from '../../../../proofs/Proofs/DeMoivreOQ02.lean?raw'
+
+const meta = metaJson as unknown as {
+  id: string
+  title: string
+  slug: string
+  description: string
+  meta: ProofMeta
+  sections: ProofSection[]
+  overview?: ProofOverview
+  conclusion?: ProofConclusion
+}
+
+export const deMoivreOQ02Proof: Proof = {
+  id: meta.id,
+  title: meta.title,
+  slug: meta.slug,
+  description: meta.description,
+  meta: meta.meta,
+  sections: meta.sections,
+  source: sourceRaw,
+  overview: meta.overview,
+  conclusion: meta.conclusion,
+}
+
+export const deMoivreOQ02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+
+export const deMoivreOQ02Data: ProofData = {
+  proof: deMoivreOQ02Proof,
+  annotations: deMoivreOQ02Annotations,
+}
+
+export default deMoivreOQ02Data

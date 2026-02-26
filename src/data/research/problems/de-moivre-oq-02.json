@@ -1,49 +1,86 @@
 {
   "slug": "de-moivre-oq-02",
   "title": "Chebyshev Polynomials via De Moivre's Theorem",
-  "phase": "NEW",
-  "status": "active",
-  "tier": "C",
+  "phase": "COMPLETE",
+  "status": "completed",
+  "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "∀ m n : ℤ, ∀ θ : ℝ, (T ℝ m).eval ((T ℝ n).eval (cos θ)) = (T ℝ (m * n)).eval (cos θ)",
+    "plain": "Prove deeper Chebyshev polynomial properties via De Moivre: composition T_m(T_n(x))=T_{mn}(x), product-to-sum 2T_m(x)T_n(x)=T_{m+n}(x)+T_{m-n}(x), parity T_n(-x)=(-1)^n T_n(x), special values, and roots.",
+    "whyMatters": ["Chebyshev composition reveals monoid structure fundamental to dynamical systems", "Product-to-sum enables efficient spectral methods in numerical analysis", "Roots are optimal interpolation nodes (Chebyshev nodes)"]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "T_m(T_n(cos θ)) = T_{mn}(cos θ) - composition identity",
+      "Composition is commutative and associative",
+      "2·T_m(x)·T_n(x) = T_{m+n}(x) + T_{m-n}(x) - product-to-sum",
+      "2·T_n²(x) = T_{2n}(x) + 1 - squaring identity",
+      "T_n(-x) = (-1)^n · T_n(x) - parity",
+      "T_{2n}(-x) = T_{2n}(x) - even parity",
+      "T_{2n+1}(-x) = -T_{2n+1}(x) - odd parity",
+      "T_n(1) = 1, T_n(-1) = (-1)^n, T_n(0) = cos(nπ/2)",
+      "T_n(cos((2k+1)π/(2n))) = 0 - roots"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Complete formalization of Chebyshev algebraic properties via De Moivre"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-02-25T20:57:47-08:00",
+    "phase": "COMPLETE",
+    "since": "2026-02-26T23:42:00Z",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "All 15 theorems proved, 0 sorries, 0 axioms. Build verified.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None - complete",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 15 theorems, 0 sorries, 0 axioms. Full Chebyshev algebraic structure formalized.",
+    "builtItems": [
+      "chebyshev_composition: T_m(T_n(cos θ)) = T_{mn}(cos θ)",
+      "chebyshev_composition_comm: composition is commutative",
+      "chebyshev_comp_one: T_1 is composition identity",
+      "chebyshev_comp_assoc: composition is associative",
+      "T_two_comp: T_2(T_n) = T_{2n}",
+      "T_self_comp: T_n(T_n) = T_{n²}",
+      "chebyshev_product_to_sum: 2T_m·T_n = T_{m+n}+T_{m-n}",
+      "chebyshev_square: 2T_n² = T_{2n}+1",
+      "chebyshev_parity: T_n(-x)=(-1)^n·T_n(x)",
+      "chebyshev_even_parity: T_{2n} even",
+      "chebyshev_odd_parity: T_{2n+1} odd",
+      "chebyshev_at_one: T_n(1)=1",
+      "chebyshev_at_neg_one: T_n(-1)=(-1)^n",
+      "chebyshev_at_zero: T_n(0)=cos(nπ/2)",
+      "chebyshev_root: T_n vanishes at Chebyshev nodes"
+    ],
+    "insights": [
+      "Every theorem reduces to T_real_cos + trig identity + algebra - the power of one bridge identity",
+      "zpow_add₀ needed for ℝ (not zpow_add) since ℝ is GroupWithZero not Group under multiplication",
+      "conv_lhs prevents unwanted rewrites when rewriting (-1) as cos(π)",
+      "ring_nf needed instead of ring for integer cast arithmetic (congr 1 leaves cast goals)",
+      "field_simp handles rational simplification n·(a/(2n)) = a/2 after establishing n ≠ 0"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: de-moivre-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": []
   },
-  "approaches": [],
-  "tags": [],
-  "relatedProofs": [],
+  "approaches": [
+    {
+      "name": "Direct trigonometric reduction via T_real_cos",
+      "status": "succeeded",
+      "description": "Convert all Chebyshev evaluations to cosine via T_real_cos, then use standard trig identities"
+    }
+  ],
+  "tags": ["chebyshev-polynomials", "de-moivre", "trigonometry", "composition", "product-to-sum", "parity"],
+  "relatedProofs": ["de-moivre", "de-moivre-oq-01"],
   "references": {
     "papers": [],
-    "urls": [],
-    "mathlib": []
+    "urls": ["https://en.wikipedia.org/wiki/Chebyshev_polynomials"],
+    "mathlib": ["Polynomial.Chebyshev.T_real_cos", "Real.cos_add", "Real.cos_sub", "Real.cos_int_mul_pi_sub", "Real.cos_pi_sub"]
   },
   "started": "2026-02-26T17:08:50.306Z",
-  "lastUpdate": "2026-02-26T17:08:50.306Z"
+  "lastUpdate": "2026-02-26T23:42:00Z"
 }
