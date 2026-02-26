@@ -46,10 +46,10 @@
     "problemStatement": "**Generalized Ballot Theorem**: In an election where candidate A receives $a$ votes and candidate B receives $b$ votes, with $a > kb$ for a positive integer $k$, the probability that A always has more than $k$ times as many votes as B throughout the counting is:\n\n$$P = \\frac{a - kb}{a + b}$$\n\nWhen $k = 1$, this reduces to the classical formula $P = (p-q)/(p+q)$.",
     "proofStrategy": "**Lattice Path Model + Cycle Lemma**:\n\n1. Model vote counting as a lattice path: each A-vote is a +1 step, each B-vote is a $-k$ step\n2. The condition 'A has > k times B's votes' equals the path staying strictly above the x-axis\n3. Use the Dvoretzky-Motzkin Cycle Lemma: for a sequence with positive sum $S$ and length $n$, exactly $S$ of the $n$ cyclic rotations have all positive prefix sums\n4. Apply to ballot sequences: $S = a - kb$, $n = a + b$, giving the fraction of good orderings",
     "keyInsights": [
-      "The cycle lemma unifies the classical ballot problem and its generalizations",
-      "Cyclic rotation preserves the multiset of values, so all rotations are valid ballot sequences",
-      "The prefix sum of a rotation relates to the original via a clean formula with wrapping correction",
-      "The permutation characterization enables finiteness proofs via Mathlib's List.finite_permutations"
+      "The Dvoretzky-Motzkin cycle lemma unifies all ballot-type results: exactly $S$ of $n$ cyclic rotations have all positive prefix sums",
+      "Cyclic rotation preserves the multiset of values, so all rotations of a ballot sequence remain in $\\text{kCountedSequence}(a, b, k)$",
+      "The prefix sum of rotation $i$ at position $j$ satisfies $\\sigma_{\\text{rot}}(j) = \\sigma(i+j) - \\sigma(i)$ (non-wrapping) or $\\sigma(i+j-n) + S - \\sigma(i)$ (wrapping)",
+      "The permutation characterization $l \\sim \\text{replicate}(a, 1) \\mathbin{++} \\text{replicate}(b, -k)$ enables finiteness via Mathlib's `List.finite_permutations`"
     ]
   },
   "sections": [
@@ -58,63 +58,72 @@
       "title": "Generalized Ballot Sequences",
       "startLine": 52,
       "endLine": 71,
-      "summary": "Definitions of kCountedSequence (lists with a +1s and b -k values) and kStaysPositive (all prefix sums positive)."
+      "summary": "Definitions of kCountedSequence (lists with a +1s and b -k values) and kStaysPositive (all prefix sums positive).",
+      "mathContext": "$\\text{kCountedSequence}(a,b,k) = \\{l \\mid \\text{count}(1) = a,\\; \\text{count}(-k) = b\\}$"
     },
     {
       "id": "algebraic-lemmas",
       "title": "Core Algebraic Lemmas",
       "startLine": 73,
       "endLine": 122,
-      "summary": "Sum and length identities for binary-valued lists: sum = count(1) - k*count(-k), length = count(1) + count(-k)."
+      "summary": "Sum and length identities for binary-valued lists: sum = count(1) - k*count(-k), length = count(1) + count(-k).",
+      "mathContext": "$\\sum l = \\text{count}(1) - k \\cdot \\text{count}(-k)$ and $|l| = \\text{count}(1) + \\text{count}(-k)$"
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 124,
       "endLine": 177,
-      "summary": "Sum, length, permutation characterization, finiteness, and nonemptiness of kCountedSequence."
+      "summary": "Sum, length, permutation characterization, finiteness, and nonemptiness of kCountedSequence.",
+      "mathContext": "$l \\in \\text{kCountedSequence} \\iff l \\sim \\text{replicate}(a,1) \\mathbin{++} \\text{replicate}(b,-k)$"
     },
     {
       "id": "classical-connection",
       "title": "Connection to Classical Ballot Problem",
       "startLine": 184,
       "endLine": 213,
-      "summary": "When k=1, kCountedSequence equals Mathlib's countedSequence, connecting to the classical result."
+      "summary": "When k=1, kCountedSequence equals Mathlib's countedSequence, connecting to the classical result.",
+      "mathContext": "$\\text{kCountedSequence}(a, b, 1) = \\text{Ballot.countedSequence}(a, b)$ via `simpa`"
     },
     {
       "id": "ballot-theorem",
       "title": "The Generalized Ballot Theorem",
       "startLine": 215,
       "endLine": 257,
-      "summary": "Statement of the counting theorem and probability formula, with verified special cases."
+      "summary": "Statement of the counting theorem and probability formula, with verified special cases.",
+      "mathContext": "$P(\\text{A leads throughout}) = \\frac{a - kb}{a + b}$ for $a > kb$"
     },
     {
       "id": "cyclic-rotations",
       "title": "Cyclic Rotation Infrastructure",
       "startLine": 259,
       "endLine": 340,
-      "summary": "Definition and properties of cyclic rotations: sum/length preservation, membership, composition."
+      "summary": "Definition and properties of cyclic rotations: sum/length preservation, membership, composition.",
+      "mathContext": "$\\text{rotate}(l, i) = \\text{drop}\\,i\\,l \\mathbin{++} \\text{take}\\,i\\,l$; $\\sum \\text{rotate}(l,i) = \\sum l$"
     },
     {
       "id": "prefix-sums",
       "title": "Prefix Sum Relations",
       "startLine": 348,
       "endLine": 412,
-      "summary": "Key structural lemma relating prefix sums of cyclic rotations to prefix sums of the original sequence."
+      "summary": "Key structural lemma relating prefix sums of cyclic rotations to prefix sums of the original sequence.",
+      "mathContext": "$\\sigma_{\\text{rot}(i)}(j) = \\sigma(i+j) - \\sigma(i)$ or $\\sigma(i+j-n) + S - \\sigma(i)$ when wrapping"
     },
     {
       "id": "cycle-lemma",
       "title": "The Cycle Lemma",
       "startLine": 414,
       "endLine": 443,
-      "summary": "Statement of the Dvoretzky-Motzkin cycle lemma (1947): for positive-sum sequences, exactly S of n rotations have all positive prefix sums."
+      "summary": "Statement of the Dvoretzky-Motzkin cycle lemma (1947): for positive-sum sequences, exactly S of n rotations have all positive prefix sums.",
+      "mathContext": "$|\\{i < n \\mid \\forall j \\leq n,\\; \\sigma_{\\text{rot}(i)}(j) > 0\\}| = S$ where $S = \\sum l > 0$"
     },
     {
       "id": "lattice-paths",
       "title": "Lattice Path Interpretation",
       "startLine": 445,
       "endLine": 475,
-      "summary": "Physical interpretation of ballot sequences as lattice paths with height tracking."
+      "summary": "Physical interpretation of ballot sequences as lattice paths with height tracking.",
+      "mathContext": "Lattice path: A-vote = $(1, 1)$ step, B-vote = $(1, -k)$ step; path stays above $x$-axis iff all prefix sums positive"
     }
   ],
   "conclusion": {
