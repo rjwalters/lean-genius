@@ -144,56 +144,64 @@
       "title": "Header and Documentation",
       "startLine": 1,
       "endLine": 44,
-      "summary": "Module docstring explaining the theorem, approach, Mathlib dependencies, and historical context. Imports `Mathlib.Data.Rat.Denumerable`, `Mathlib.Logic.Denumerable`, `Mathlib.Logic.Equiv.Basic`, `Mathlib.SetTheory.Cardinal.Basic`, `Mathlib.Tactic`."
+      "summary": "Module docstring explaining the theorem, approach, Mathlib dependencies, and historical context. Imports `Mathlib.Data.Rat.Denumerable`, `Mathlib.Logic.Denumerable`, `Mathlib.Logic.Equiv.Basic`, `Mathlib.SetTheory.Cardinal.Basic`, `Mathlib.Tactic`.",
+      "mathContext": "Imports provide $\\text{Denumerable}\\;\\mathbb{Q}$, $\\text{Equiv}$ infrastructure, and $\\text{Cardinal}$ arithmetic for $\\aleph_0$."
     },
     {
       "id": "main-result",
       "title": "The Main Result: ℚ is Denumerable",
       "startLine": 46,
       "endLine": 63,
-      "summary": "Confirms `Denumerable ℚ` via `inferInstance` and defines `natEquivRat : ℕ ≃ ℚ := (Denumerable.eqv ℚ).symm` — the explicit bijection used throughout the file."
+      "summary": "Confirms `Denumerable ℚ` via `inferInstance` and defines `natEquivRat : ℕ ≃ ℚ := (Denumerable.eqv ℚ).symm` — the explicit bijection used throughout the file.",
+      "mathContext": "$\\text{Denumerable}\\;\\mathbb{Q}$ via $\\text{inferInstance}$. $\\text{natEquivRat} := (\\text{Denumerable.eqv}\\;\\mathbb{Q})^{-1} : \\mathbb{N} \\simeq \\mathbb{Q}$."
     },
     {
       "id": "alternative-formulations",
       "title": "Alternative Formulations",
       "startLine": 65,
       "endLine": 92,
-      "summary": "Four equivalent statements: `rationals_denumerable` ($\\exists$ bijection), `rationals_countable` (`Countable ℚ`), `exists_surjection_nat_to_rat` (surjection), `exists_injection_rat_to_nat` (injection). All extracted from the single `Denumerable` instance."
+      "summary": "Four equivalent statements: `rationals_denumerable` ($\\exists$ bijection), `rationals_countable` (`Countable ℚ`), `exists_surjection_nat_to_rat` (surjection), `exists_injection_rat_to_nat` (injection). All extracted from the single `Denumerable` instance.",
+      "mathContext": "$\\exists f : \\mathbb{N} \\simeq \\mathbb{Q}$, $\\text{Countable}\\;\\mathbb{Q}$, $\\exists g : \\mathbb{N} \\twoheadrightarrow \\mathbb{Q}$, $\\exists h : \\mathbb{Q} \\hookrightarrow \\mathbb{N}$. All from one $\\text{Denumerable}$ instance."
     },
     {
       "id": "encoding",
       "title": "The Encoding Explained",
       "startLine": 94,
       "endLine": 119,
-      "summary": "Documents the Cantor pairing function encoding. Defines `encodeRatToNat` and `decodeNatToRat` as wrappers, proves both round-trip identities `decode_encode` and `encode_decode` by `simp`."
+      "summary": "Documents the Cantor pairing function encoding. Defines `encodeRatToNat` and `decodeNatToRat` as wrappers, proves both round-trip identities `decode_encode` and `encode_decode` by `simp`.",
+      "mathContext": "$\\text{encode} : \\mathbb{Q} \\to \\mathbb{N}$ and $\\text{decode} : \\mathbb{N} \\to \\mathbb{Q}$ with $\\text{decode} \\circ \\text{encode} = \\text{id}_\\mathbb{Q}$ and $\\text{encode} \\circ \\text{decode} = \\text{id}_\\mathbb{N}$."
     },
     {
       "id": "comparison",
       "title": "Comparison with the Reals",
       "startLine": 121,
       "endLine": 132,
-      "summary": "Contrasts $|\\mathbb{Q}| = \\aleph_0$ with $|\\mathbb{R}| = 2^{\\aleph_0}$. Proves `rationals_infinite : Infinite ℚ` via `inferInstance`. Notes $\\mathbb{Q}$ has Lebesgue measure zero despite density."
+      "summary": "Contrasts $|\\mathbb{Q}| = \\aleph_0$ with $|\\mathbb{R}| = 2^{\\aleph_0}$. Proves `rationals_infinite : Infinite ℚ` via `inferInstance`. Notes $\\mathbb{Q}$ has Lebesgue measure zero despite density.",
+      "mathContext": "$|\\mathbb{Q}| = \\aleph_0 < 2^{\\aleph_0} = |\\mathbb{R}|$. $\\mathbb{Q}$ dense in $\\mathbb{R}$ yet $\\mu(\\mathbb{Q}) = 0$. $\\text{Infinite}\\;\\mathbb{Q}$ via $\\text{inferInstance}$."
     },
     {
       "id": "visualization",
       "title": "Cantor's Diagonal Enumeration",
       "startLine": 134,
       "endLine": 158,
-      "summary": "ASCII visualization of the classical anti-diagonal traversal enumerating all positive rationals along diagonals $p + q = \\text{const}$. Shows how non-reduced fractions are skipped and negatives are interleaved."
+      "summary": "ASCII visualization of the classical anti-diagonal traversal enumerating all positive rationals along diagonals $p + q = \\text{const}$. Shows how non-reduced fractions are skipped and negatives are interleaved.",
+      "mathContext": "Anti-diagonal traversal: enumerate $(p, q)$ along $p + q = 2, 3, 4, \\ldots$, skip $\\gcd(p,q) > 1$. Equivalent to Cantor pairing $\\pi(a,b) = \\frac{(a+b)(a+b+1)}{2} + b$."
     },
     {
       "id": "cardinality",
       "title": "Connection to Cardinal Arithmetic",
       "startLine": 160,
       "endLine": 173,
-      "summary": "Proves `card_rat_eq_aleph0 : Cardinal.mk ℚ = \\aleph_0` via `Cardinal.mk_denumerable`, and `card_rat_eq_card_nat` by rewriting both sides. Bridges type-theoretic and set-theoretic perspectives."
+      "summary": "Proves `card_rat_eq_aleph0 : Cardinal.mk ℚ = \\aleph_0` via `Cardinal.mk_denumerable`, and `card_rat_eq_card_nat` by rewriting both sides. Bridges type-theoretic and set-theoretic perspectives.",
+      "mathContext": "$\\text{Cardinal.mk}\\;\\mathbb{Q} = \\aleph_0$ via $\\text{Cardinal.mk\\_denumerable}$. $\\text{Cardinal.mk}\\;\\mathbb{Q} = \\text{Cardinal.mk}\\;\\mathbb{N}$ by rewriting both to $\\aleph_0$."
     },
     {
       "id": "philosophical",
       "title": "Philosophical Significance",
       "startLine": 175,
       "endLine": 191,
-      "summary": "Four philosophical implications: infinity comes in sizes, density $\\neq$ cardinality, countability is robust, the reals are special. Exports key results via `#check`."
+      "summary": "Four philosophical implications: infinity comes in sizes, density $\\neq$ cardinality, countability is robust, the reals are special. Exports key results via `#check`.",
+      "mathContext": "Key implications: $\\aleph_0 < 2^{\\aleph_0}$ (infinity has sizes), $\\mathbb{Q}$ dense in $\\mathbb{R}$ yet $|\\mathbb{Q}| < |\\mathbb{R}|$ (density $\\neq$ cardinality), $\\bigcup_{i \\in \\mathbb{N}} A_i$ countable if each $A_i$ countable."
     }
   ],
   "conclusion": {
