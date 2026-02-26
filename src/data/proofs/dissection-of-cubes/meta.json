@@ -90,6 +90,13 @@
       "summary": "No dissection can have all different sizes."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "dissection-of-cubes-oq-01",
+      "relationship": "extends",
+      "description": "OQ01 formalizes collision pairs and minimum collision lower bounds, advancing the proof of the main theorem"
+    }
+  ],
   "conclusion": {
     "summary": "Littlewood's proof elegantly shows that cube dissection into different-sized cubes is impossible through infinite descent. The smallest cube on any 'floor' creates a new floor above it with even smaller cubes, leading to infinitely many cubes.",
     "implications": "**Contrast with 2D:**\n\nThe surprising fact is that squaring the square IS possible! The first solution was found in 1940 and had 69 squares. The smallest 'simple' squared square has 21 squares.\n\n**Why the difference?**\n\nIn 2D, squares near the edge don't need to be completely surrounded, allowing complex interlocking patterns that prevent infinite descent.\n\n**Generalizations:**\n\n- No rectangular box can be cubed with all different sizes\n- The same impossibility holds in all dimensions >= 3",
