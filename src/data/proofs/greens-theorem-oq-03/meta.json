@@ -62,35 +62,40 @@
       "title": "TypeI Region Structure",
       "startLine": 45,
       "endLine": 90,
-      "description": "Definition of vertically simple regions and their basic set-theoretic properties"
+      "summary": "Definition of vertically simple regions and their basic set-theoretic properties.",
+      "mathContext": "$D = \\{(x,y) \\mid a \\leq x \\leq b, f(x) \\leq y \\leq g(x)\\}$. Fields: $a < b$, $f \\leq g$ on $[a,b]$. Membership iff, boundary inclusion, nonemptiness via $(a, f(a))$."
     },
     {
       "id": "sec-rectangles",
       "title": "Rectangles as TypeI Regions",
       "startLine": 91,
       "endLine": 121,
-      "description": "Rectangles as special TypeI regions with constant boundary curves"
+      "summary": "Rectangles as special TypeI regions with constant boundary curves.",
+      "mathContext": "$f \\equiv c$, $g \\equiv d$: $D = [a,b] \\times [c,d]$. Set equality: $\\text{toSet} = \\text{Icc}\\,a\\,b \\times^s \\text{Icc}\\,c\\,d$."
     },
     {
       "id": "sec-area",
       "title": "Area Formula",
       "startLine": 123,
       "endLine": 157,
-      "description": "Concrete area formula via intervalIntegral, with rectangle and constant-height cases"
+      "summary": "Concrete area formula via intervalIntegral, with rectangle and constant-height cases.",
+      "mathContext": "$\\text{Area}(D) = \\int_a^b (g(x) - f(x))\\,dx \\geq 0$. Rectangle: $\\text{Area} = (b-a)(d-c)$ via $\\text{integral\\_const} + \\text{smul\\_eq\\_mul}$."
     },
     {
       "id": "sec-iterated-integral",
       "title": "Iterated Integral",
       "startLine": 158,
       "endLine": 180,
-      "description": "Double integral as iterated integral, connection between area and iterated integral of 1"
+      "summary": "Double integral as iterated integral, connection between area and iterated integral of 1.",
+      "mathContext": "$\\iint_D F\\,dA = \\int_a^b \\int_{f(x)}^{g(x)} F(x,y)\\,dy\\,dx$. Area $= \\iint_D 1\\,dA$."
     },
     {
       "id": "sec-greens-theorem",
       "title": "Green's Theorem for TypeI Regions",
       "startLine": 181,
       "endLine": 210,
-      "description": "Axiom stating Green's theorem with concrete boundary decomposition via deriv f, deriv g"
+      "summary": "Axiom stating Green's theorem with concrete boundary decomposition via deriv f, deriv g.",
+      "mathContext": "$\\iint_D (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA = \\oint_{\\partial D} P\\,dx + Q\\,dy$. Boundary uses $f'(x)$ and $g'(x)$ from chain rule parametrization."
     }
   ],
   "overview": {
@@ -120,6 +125,16 @@
       "targetId": "greens-theorem-oq-01",
       "relationship": "extends",
       "description": "OQ01 proves Green's theorem for rectangles; OQ03 generalizes to curved-boundary TypeI regions"
+    },
+    {
+      "targetId": "greens-theorem",
+      "relationship": "extends",
+      "description": "Base Green's theorem file with abstract GreenRegion placeholder; OQ03 provides a concrete replacement"
+    },
+    {
+      "targetId": "herons-formula",
+      "relationship": "related",
+      "description": "Heron's formula computes triangle area from side lengths; Green's theorem gives area via line integrals around the boundary"
     }
   ]
 }
