@@ -22,14 +22,15 @@
     "erdosProblemStatus": "disproved"
   },
   "overview": {
-    "historicalContext": "Erdős, Sós, and Sárközy studied the extremal function F_k(N) for square-free products. They established F_2(N) ~ 6N/π², F_3(N) ~ N, and F_4(N) = o(N). Erdős conjectured F_{2k+1}(N) ~ N for all k. Tao (2024) disproved this for k ≥ 4.",
+    "historicalContext": "Erdős, Sós, and Sárközy studied the extremal function F_k(N), the maximum size of A ⊆ {1,...,N} with no k-element product of distinct elements forming a perfect square. They established F_2(N) ~ 6N/π² (exactly the squarefree integers, by Gegenbauer 1885), F_3(N) ~ N (full density), and F_4(N) = o(N) (density tending to zero). These results revealed a striking parity phenomenon: odd k appeared to allow near-full density while even k forced density to zero. Erdős conjectured this even/odd dichotomy persisted for all k, predicting F_{2k+1}(N) = (1−o(1))N for every k ≥ 1. The conjecture stood for decades until Tao's 2024 disproof: using the polynomial method and character sum estimates over finite fields, he showed F_k(N) ≤ (1−c_k)N for all k ≥ 4, definitively disproving the odd-k conjecture for k ≥ 5. The boundary between k = 3 (full density) and k = 4 (sub-full density) remains the central mystery.",
     "problemStatement": "Is F_{2k+1}(N) = (1 - o(1))N for all k ≥ 1? Specifically, is F_5(N) = (1 - o(1))N?",
     "proofStrategy": "The formalization defines IsSquare, k-square-free sets, and F_k(N) via powerset filtration. Known asymptotics for k = 2, 3, 4 are axiomatised. The conjecture and Tao's disproof are both captured.",
     "keyInsights": [
       "F_2(N) ~ 6N/π² (squarefree density), F_3(N) ~ N (full density)",
       "F_4(N) = o(N) (Erdős), showing even-index products force density zero",
       "Tao (2024) proved F_k(N) ≤ (1-c_k)N for all k ≥ 4, disproving the conjecture",
-      "The transition from full density to sub-full density happens between k=3 and k=4"
+      "The transition from full density to sub-full density happens between k=3 and k=4",
+      "The squarefree-part map embeds {1,...,N} into (ℤ/2ℤ)^r, reducing k-square-free sets to zero-sum-free subsets of an abelian group"
     ]
   },
   "sections": [
