@@ -7,70 +7,77 @@
     "title": "Generalized Ballot Sequences",
     "content": "**kCountedSequence** defines the set of vote sequences for the k-fold ballot problem:\n- Exactly `a` votes for candidate A (value +1)\n- Exactly `b` votes for candidate B (value $-k$)\n- All elements are either 1 or $-k$\n\nWhen $k = 1$, this is exactly Mathlib's `countedSequence`.",
     "mathContext": "\\{l \\mid l.\\text{count}(1) = a \\wedge l.\\text{count}(-k) = b \\wedge \\forall x \\in l, x = 1 \\vee x = -k\\}",
-    "significance": "critical",
-    "relatedConcepts": ["ballot problem", "lattice paths", "binary sequences"]
+    "significance": "key",
+    "relatedConcepts": ["ballot problem", "lattice paths", "binary sequences"],
+    "prerequisites": ["List.count", "integer arithmetic"]
   },
   {
     "id": "ann-sum-identity",
     "proofId": "ballot-problem-oq-01",
     "range": {"startLine": 84, "endLine": 101},
-    "type": "theorem",
+    "type": "technique",
     "title": "Sum Identity for Binary Lists",
     "content": "For any list with only 1 and $-k$ values, the sum equals count(1) - k * count(-k). This is the core algebraic identity connecting list sums to element counts.\n\nProved by induction on the list, using `List.count_cons` to track how counts change.",
-    "mathContext": "\\sum l = |\\{i : l_i = 1\\}| - k \\cdot |\\{i : l_i = -k\\}|",
+    "mathContext": "$\\sum l = |\\{i : l_i = 1\\}| - k \\cdot |\\{i : l_i = -k\\}|$",
     "significance": "key",
-    "relatedConcepts": ["list induction", "count_cons"]
+    "relatedConcepts": ["list induction", "count_cons", "integer sum"],
+    "prerequisites": ["List.sum", "List.count_cons", "list induction"]
   },
   {
     "id": "ann-permutation",
     "proofId": "ballot-problem-oq-01",
     "range": {"startLine": 143, "endLine": 155},
-    "type": "theorem",
+    "type": "technique",
     "title": "Permutation Characterization",
     "content": "Every element of kCountedSequence is a permutation of the canonical witness `replicate a 1 ++ replicate b (-k)`. This is proved using `List.perm_iff_count` - two lists are permutations iff they have the same count for every element.\n\nThis characterization immediately gives finiteness: the set of permutations of a finite list is finite.",
     "significance": "key",
-    "relatedConcepts": ["permutations", "List.perm_iff_count", "finiteness"]
+    "relatedConcepts": ["permutations", "List.perm_iff_count", "finiteness"],
+    "prerequisites": ["List.perm_iff_count", "List.replicate", "ann-generalized-def"]
   },
   {
     "id": "ann-classical-connection",
     "proofId": "ballot-problem-oq-01",
     "range": {"startLine": 200, "endLine": 213},
-    "type": "theorem",
+    "type": "insight",
     "title": "Classical Reduction (k = 1)",
     "content": "When $k = 1$, our generalized definition exactly matches Mathlib's `Ballot.countedSequence`. The proof is remarkably clean: just `simpa` to convert $-(1 : \\mathbb{Z})$ to $-1$.\n\nThis validates our generalization against the established formalization.",
-    "significance": "major",
-    "relatedConcepts": ["Ballot.countedSequence", "Wiedijk #30"]
+    "significance": "supporting",
+    "relatedConcepts": ["Ballot.countedSequence", "Wiedijk #30", "specialization"],
+    "prerequisites": ["ann-generalized-def", "Archive.Wiedijk100Theorems.BallotProblem"]
   },
   {
     "id": "ann-rotation-membership",
     "proofId": "ballot-problem-oq-01",
     "range": {"startLine": 307, "endLine": 315},
-    "type": "theorem",
+    "type": "technique",
     "title": "Rotation Preserves Ballot Sequences",
     "content": "Cyclic rotation of a ballot sequence produces another ballot sequence. The key insight: rotation = `drop i ++ take i`, and counts are additive over append. Using `congr_arg` on the identity `take i l ++ drop i l = l`, we get that drop-then-take and take-then-drop have the same combined counts.",
     "significance": "key",
-    "relatedConcepts": ["cyclic rotation", "List.count_append", "take_append_drop"]
+    "relatedConcepts": ["cyclic rotation", "List.count_append", "take_append_drop"],
+    "prerequisites": ["List.take_append_drop", "List.count_append"]
   },
   {
     "id": "ann-prefix-sum",
     "proofId": "ballot-problem-oq-01",
     "range": {"startLine": 379, "endLine": 412},
-    "type": "theorem",
+    "type": "technique",
     "title": "Prefix Sum Relation for Rotations",
     "content": "The key structural lemma for the cycle lemma. For rotation starting at position $i$, the prefix sum at position $j$ is:\n\n- **Non-wrapping** ($i + j \\leq n$): $\\text{prefixSum}(i+j) - \\text{prefixSum}(i)$\n- **Wrapping** ($i + j > n$): $\\text{prefixSum}(i+j-n) + S - \\text{prefixSum}(i)$\n\nwhere $S$ is the total sum. This uses helper lemmas `sum_drop_eq` and `take_drop_sum`.",
-    "mathContext": "\\sigma_{\\text{rot}}(j) = \\begin{cases} \\sigma(i+j) - \\sigma(i) & i+j \\leq n \\\\ \\sigma(i+j-n) + S - \\sigma(i) & i+j > n \\end{cases}",
-    "significance": "critical",
-    "relatedConcepts": ["cycle lemma", "prefix sums", "cyclic rotation"]
+    "mathContext": "$\\sigma_{\\text{rot}}(j) = \\begin{cases} \\sigma(i+j) - \\sigma(i) & i+j \\leq n \\\\ \\sigma(i+j-n) + S - \\sigma(i) & i+j > n \\end{cases}$",
+    "significance": "key",
+    "relatedConcepts": ["cycle lemma", "prefix sums", "cyclic rotation"],
+    "prerequisites": ["ann-rotation-membership", "sum_drop_eq", "take_drop_sum"]
   },
   {
     "id": "ann-cycle-lemma",
     "proofId": "ballot-problem-oq-01",
     "range": {"startLine": 432, "endLine": 443},
-    "type": "theorem",
+    "type": "concept",
     "title": "The Cycle Lemma (Dvoretzky-Motzkin)",
     "content": "**Statement**: For a sequence of integers with positive sum $S$ and length $n$, exactly $S$ of the $n$ cyclic rotations have all positive prefix sums.\n\n**Proof Strategy** (not yet formalized): Use the rightmost minimum argument. Among the $2n$ prefix sums of the doubled sequence, each window of $n$ has exactly $S$ positions where a new running minimum is achieved. These correspond to good starting positions.\n\nThis is the fundamental counting tool for the generalized ballot problem.",
-    "mathContext": "|\\{i : 0 \\leq i < n, \\text{rotation } i \\text{ has all positive prefix sums}\\}| = S",
-    "significance": "critical",
-    "relatedConcepts": ["Dvoretzky-Motzkin", "cyclic permutations", "lattice paths"]
+    "mathContext": "$|\\{i : 0 \\leq i < n, \\text{rotation } i \\text{ has all positive prefix sums}\\}| = S$",
+    "significance": "key",
+    "relatedConcepts": ["Dvoretzky-Motzkin", "cyclic permutations", "lattice paths"],
+    "prerequisites": ["ann-prefix-sum", "positive sum condition", "Finset.card"]
   }
 ]
