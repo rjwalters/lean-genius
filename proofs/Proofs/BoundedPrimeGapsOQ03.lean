@@ -215,6 +215,43 @@ theorem optimal_prime_gap_via_50_tuple :
     omega
 
 /-
+## Part VII: Synthesis — Optimality and Prime Gap Bounds
+
+Connecting Engelsma's combinatorial result (OQ-03) with the analytic
+prime gap theorem (Polymath 8b): 246 is simultaneously achievable
+(infinitely many prime pairs with gap ≤ 246) and sieve-optimal
+(no 50-tuple sieve can do better).
+-/
+
+/-- The Maynard-Tao 50-tuple sieve achieves prime gaps ≤ 246 infinitely often.
+    This restates the Polymath 8b axiom from BoundedPrimeGaps for convenience. -/
+theorem polymath_achieves_246 : ∃ N : ℕ, ∀ n ≥ N, BoundedPrimeGaps.primeGap n ≤ 246 :=
+  BoundedPrimeGaps.polymath_bounded_gaps_246
+
+/-- For any D < 246, no admissible 50-tuple achieves diameter D.
+    This shows 246 is the minimum achievable prime gap bound via the 50-tuple sieve. -/
+theorem no_smaller_50_tuple_diameter (D : ℕ) (hD : D < 246) :
+    ∀ H : Finset ℕ, IsAdmissible H → H.card ≥ 50 →
+    ∀ hne : H.Nonempty, H.max' hne - H.min' hne ≠ D := by
+  intro H hadm hcard hne heq
+  have hlb := engelsma_lower_bound H hadm hcard hne
+  omega
+
+/-- **The Polymath bound of 246 is tight**: it is simultaneously achievable
+    (infinitely many prime gaps ≤ 246 via the Polymath sieve) and sieve-optimal
+    (no admissible 50-tuple can achieve a prime gap bound < 246).
+    This is the master theorem connecting the analytic and combinatorial sides. -/
+theorem polymath_246_is_tight :
+    (∃ N : ℕ, ∀ n ≥ N, BoundedPrimeGaps.primeGap n ≤ 246) ∧
+    (∃ H : Finset ℕ, ∃ hne : H.Nonempty,
+      IsAdmissible H ∧ H.card = 50 ∧ H.max' hne - H.min' hne = 246) ∧
+    (∀ H : Finset ℕ, IsAdmissible H → H.card ≥ 50 →
+      ∀ hne : H.Nonempty, H.max' hne - H.min' hne ≥ 246) :=
+  ⟨BoundedPrimeGaps.polymath_bounded_gaps_246,
+   admissible_50_tuple_diam_achieved,
+   fun H hadm hcard hne => engelsma_lower_bound H hadm hcard hne⟩
+
+/-
 ## Summary
 
 Key results proved in this file:
@@ -229,6 +266,9 @@ Key results proved in this file:
 9. `no_admissible_50_tuple_diam_le_245` — diameter 245 impossible
 10. `tight_246_via_admissibility` — diameter < 246 ↔ not admissible
 11. `optimal_prime_gap_via_50_tuple` — 246 is exactly achievable and optimal
+12. `polymath_achieves_246` — restates Polymath 8b axiom
+13. `no_smaller_50_tuple_diameter` — no 50-tuple achieves diameter < 246
+14. `polymath_246_is_tight` — master theorem: 246 is achievable and sieve-optimal
 
 Mathematical significance: The Polymath bound of 246 is the best possible
 result from the 50-tuple Maynard-Tao sieve. Improving the unconditional

@@ -2,7 +2,7 @@ import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOvervi
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 import tacticStatesJson from './tacticStates.json'
-import sourceRaw from '../../../../proofs/Proofs/CramersRuleOQ02.lean?raw'
+import sourceRaw from '../../../../proofs/Proofs/BinomialTheoremOQ04.lean?raw'
 
 const meta = metaJson as unknown as {
   id: string
@@ -15,7 +15,7 @@ const meta = metaJson as unknown as {
   conclusion?: ProofConclusion
 }
 
-export const cramersRuleOQ02Proof: Proof = {
+export const binomialTheoremOQ04Proof: Proof = {
   id: meta.id,
   title: meta.title,
   slug: meta.slug,
@@ -27,13 +27,11 @@ export const cramersRuleOQ02Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const cramersRuleOQ02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
-export const cramersRuleOQ02TacticStates: TacticState[] = tacticStatesJson as TacticState[]
+export const binomialTheoremOQ04Annotations: Annotation[] = annotationsJson as Annotation[]
+export const binomialTheoremOQ04TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
-export const cramersRuleOQ02Data: ProofData = {
-  proof: cramersRuleOQ02Proof,
-  annotations: cramersRuleOQ02Annotations,
-  tacticStates: cramersRuleOQ02TacticStates,
+export const binomialTheoremOQ04Data: ProofData = {
+  proof: binomialTheoremOQ04Proof,
+  annotations: binomialTheoremOQ04Annotations,
+  tacticStates: binomialTheoremOQ04TacticStates,
 }
-
-export default cramersRuleOQ02Data
