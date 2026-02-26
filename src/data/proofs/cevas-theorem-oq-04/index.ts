@@ -26,7 +26,7 @@ export const cevasTheoremOQ04Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const cevasTheoremOQ04Annotations: Annotation[] = annotationsJson as Annotation[]
+export const cevasTheoremOQ04Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const cevasTheoremOQ04Data: ProofData = {
   proof: cevasTheoremOQ04Proof,
