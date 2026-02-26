@@ -52,12 +52,12 @@
     "problemStatement": "**Open Question (cantors-theorem-oq-02)**: How does Cantor's theorem relate to type-theoretic universes and Girard's paradox? Is there a unified framework for Cantor, Russell, and Gödel?\n\n**Answer**: YES. Lawvere's Fixed-Point Theorem provides the unified categorical framework.\n\n**Lawvere's theorem**: If f : α → (α → β) is surjective, then every g : β → β has a fixed point b with g b = b.\n\n**Corollary**: If g : β → β has NO fixed point, then no f : α → (α → β) can be surjective. This is the abstract form of all classical impossibility results.\n\n**For type universes**: The Lean 4 hierarchy (Type u : Type (u+1)) prevents Girard's paradox by blocking self-reference. A 'Type : Type' universe would give a surjection Type → (Type → Type), forcing every endofunction on Type to have a fixed point — including ¬, which is impossible.",
     "proofStrategy": "We formalize the Lawvere framework in six parts:\n\n**Part I: Russell's Paradox** — Show negation has no fixed point (neg_no_fixed_point). This is the seed from which all diagonal arguments grow.\n\n**Part II: Lawvere's Fixed-Point Theorem** — The diagonal construction: q x = g(f x x). If f is surjective, q = f a for some a, so g(f a a) = q a = f a a. No abstract machinery needed — pure lambda calculus.\n\n**Part III: Cantor from Lawvere** — Instantiate Lawvere with β = Prop, g = ¬. Since ¬ has no fixed point, no f : α → (α → Prop) is surjective.\n\n**Part IV: Gödel Diagonalization** — The predicate D n = ¬(f n n) is never in range(f). Same proof, specialized to ℕ-indexed predicates.\n\n**Part V: Direct Diagonal** — Classical Cantor construction: D = {x | x ∉ f x}. Shown as a corollary of the Lawvere framework.\n\n**Part VI: Type-Universe Commentary** — How Lean 4's universe hierarchy prevents Girard's paradox by blocking the Lawvere hypothesis.",
     "keyInsights": [
-      "All diagonal arguments are instances of Lawvere's theorem: surjection f + fixed-point-free g → contradiction",
-      "The 'magic' of diagonalization: q x = g(f x x) is the canonical diagonal map in any cartesian closed category",
-      "Negation on Prop (¬) having no fixed point is the mathematical engine behind ALL the classical paradoxes",
-      "Girard's paradox: 'Type : Type' would force every g : Prop → Prop to have a fixed point, but ¬ has none",
-      "Lean 4's universe hierarchy is not just syntax — it encodes the mathematical content that prevents self-reference",
-      "Lean 4 gotcha: '! (f n n) = f n n' in a type annotation parses '!' as Prop negation, not Bool.not — use 'have h := congr_fun' without explicit annotation"
+      "All diagonal arguments are instances of Lawvere's theorem: surjection f + fixed-point-free g → contradiction — this was Lawvere's 1969 breakthrough in 'Diagonal Arguments and Cartesian Closed Categories'",
+      "The 'magic' of diagonalization is the single formula q x = g(f x x): this is the canonical diagonal map in any cartesian closed category, and every impossibility theorem in foundations reduces to it",
+      "Negation on Prop (¬) having no fixed point is the mathematical engine behind ALL the classical paradoxes — Cantor, Russell, Gödel, and Tarski all reduce to the impossibility of p ↔ ¬p",
+      "Girard's paradox: 'Type : Type' would force every g : Prop → Prop to have a fixed point, but ¬ has none — Lean 4's universe hierarchy (Type u : Type (u+1)) is the mathematical fix, paralleling the cumulative hierarchy in ZFC",
+      "The Lawvere framework works constructively: no excluded middle or choice is needed, only surjectivity and function application — making it valid in intuitionistic, classical, and realizability settings alike",
+      "The Bool diagonal (cantor_diagonal_bool) shows the argument works even with finite codomains: two-element types suffice because Bool.not is fixed-point-free, connecting to the undecidability of the halting problem"
     ]
   },
   "sections": [
@@ -66,49 +66,88 @@
       "title": "Problem Statement and Overview",
       "startLine": 1,
       "endLine": 45,
-      "summary": "Header comment explaining Lawvere's Fixed-Point Theorem and how it unifies Cantor, Russell, Gödel, and Girard. Imports: Mathlib.Logic.Function.Basic, Mathlib.Data.Set.Function, Mathlib.Tactic."
+      "summary": "Header comment explaining Lawvere's Fixed-Point Theorem and how it unifies Cantor, Russell, Gödel, and Girard. Imports: Mathlib.Logic.Function.Basic, Mathlib.Data.Set.Function, Mathlib.Tactic.",
+      "mathContext": "Framing the open question: can Cantor, Russell, Gödel, and Girard be unified? The answer is Lawvere's theorem: surjective $f : \\alpha \\to (\\alpha \\to \\beta)$ forces every $g : \\beta \\to \\beta$ to have a fixed point."
     },
     {
       "id": "russell-paradox",
       "title": "Part I: Russell's Paradox — Negation Has No Fixed Point",
       "startLine": 46,
       "endLine": 72,
-      "summary": "neg_no_fixed_point: ¬∃ p : Prop, p ↔ ¬p — negation has no fixed point. russell_no_self_membership_set: ¬∃ R : Set Prop, ∀ p, p ∈ R ↔ p ∉ R — the Russell set doesn't exist."
+      "summary": "neg_no_fixed_point: ¬∃ p : Prop, p ↔ ¬p — negation has no fixed point. russell_no_self_membership_set: ¬∃ R : Set Prop, ∀ p, p ∈ R ↔ p ∉ R — the Russell set doesn't exist.",
+      "mathContext": "$\\neg\\exists\\, p : \\text{Prop},\\; p \\leftrightarrow \\neg p$ and $\\neg\\exists\\, R \\subseteq \\text{Prop},\\; \\forall p,\\; p \\in R \\leftrightarrow p \\notin R$."
     },
     {
       "id": "lawvere-theorem",
       "title": "Part II: Lawvere's Fixed-Point Theorem",
       "startLine": 73,
       "endLine": 117,
-      "summary": "lawvere_fixed_point: surjective f : α → (α → β) forces every g : β → β to have a fixed point. Proof via diagonal q x = g(f x x): if f a = q then g(f a a) = q a = f a a. lawvere_contrapositive: fixed-point-free g implies no surjection exists."
+      "summary": "lawvere_fixed_point: surjective f : α → (α → β) forces every g : β → β to have a fixed point. Proof via diagonal q x = g(f x x): if f a = q then g(f a a) = q a = f a a. lawvere_contrapositive: fixed-point-free g implies no surjection exists.",
+      "mathContext": "$\\text{Surjective}(f) \\implies \\forall g : \\beta \\to \\beta,\\; \\exists b,\\; g(b) = b$. Contrapositive: $(\\forall b,\\; g(b) \\neq b) \\implies \\neg\\text{Surjective}(f)$."
     },
     {
       "id": "cantor-from-lawvere",
       "title": "Part III: Cantor's Theorem Derived from Lawvere",
       "startLine": 118,
       "endLine": 148,
-      "summary": "cantor_from_lawvere: no f : α → (α → Prop) is surjective — instantiate Lawvere with g = ¬ (which has no fixed points). cantor_no_surjection_sets: no f : α → Set α is surjective. cantor_power_type_strictly_larger: ¬∃ f : α → (α → Prop), Surjective f."
+      "summary": "cantor_from_lawvere: no f : α → (α → Prop) is surjective — instantiate Lawvere with g = ¬ (which has no fixed points). cantor_no_surjection_sets: no f : α → Set α is surjective. cantor_power_type_strictly_larger: ¬∃ f : α → (α → Prop), Surjective f.",
+      "mathContext": "$\\forall \\alpha,\\; \\nexists f : \\alpha \\to \\mathcal{P}(\\alpha)$ surjective. Equivalent to $|\\alpha| < |2^\\alpha|$ (Cantor's theorem)."
     },
     {
       "id": "godel-diagonalization",
       "title": "Part IV: Gödel Diagonalization",
       "startLine": 149,
       "endLine": 185,
-      "summary": "godel_diagonalization: for any f : ℕ → (ℕ → Prop), the predicate D n = ¬(f n n) is not in range(f). cantor_diagonal_bool: no enumeration ℕ → (ℕ → Bool) is surjective — Bool version using cases on Bool values. tarski_undefinability: no enumeration exhausts all predicates on ℕ."
+      "summary": "godel_diagonalization: for any f : ℕ → (ℕ → Prop), the predicate D n = ¬(f n n) is not in range(f). cantor_diagonal_bool: no enumeration ℕ → (ℕ → Bool) is surjective — Bool version using cases on Bool values. tarski_undefinability: no enumeration exhausts all predicates on ℕ.",
+      "mathContext": "$\\forall f : \\mathbb{N} \\to (\\mathbb{N} \\to \\text{Prop}),\\; \\exists D,\\; \\forall n,\\; D \\neq f(n)$ where $D(n) = \\neg f(n)(n)$."
     },
     {
       "id": "direct-diagonal",
       "title": "Part V: Cantor's Theorem via Direct Diagonal Construction",
       "startLine": 186,
       "endLine": 218,
-      "summary": "cantor_diagonal_witness: the anti-diagonal set D = {x | x ∉ f x} is never in range(f). cantor_diagonal_not_surjective: f : α → Set α fails surjectivity, witnessed explicitly by D."
+      "summary": "cantor_diagonal_witness: the anti-diagonal set D = {x | x ∉ f x} is never in range(f). cantor_diagonal_not_surjective: f : α → Set α fails surjectivity, witnessed explicitly by D.",
+      "mathContext": "Given $f : \\alpha \\to \\mathcal{P}(\\alpha)$, the set $D = \\{x \\mid x \\notin f(x)\\}$ satisfies $\\forall a,\\; f(a) \\neq D$."
     },
     {
       "id": "type-universe",
       "title": "Part VI: Type-Theoretic Universe Hierarchy and Girard's Paradox",
       "startLine": 219,
-      "endLine": 290,
-      "summary": "lawvere_no_self_surjection: no α → (α → α) surjection when g has no fixed points. diagonal_argument_schema: the abstract template unifying all diagonal arguments. lawvere_cantor_unity: summary theorem bundling Cantor (no surjection α → (α → Prop)), Russell (¬ has no fixed point), and Gödel (diagonal predicate always escapes enumeration)."
+      "endLine": 281,
+      "summary": "lawvere_no_self_surjection: no α → (α → α) surjection when g has no fixed points. diagonal_argument_schema: the abstract template unifying all diagonal arguments. lawvere_cantor_unity: summary theorem bundling Cantor (no surjection α → (α → Prop)), Russell (¬ has no fixed point), and Gödel (diagonal predicate always escapes enumeration).",
+      "mathContext": "The unity theorem: $(\\forall \\alpha\\, f,\\; \\neg\\text{Surj}(f : \\alpha \\to (\\alpha \\to \\text{Prop}))) \\wedge (\\neg\\exists p,\\; p \\leftrightarrow \\neg p) \\wedge (\\forall f,\\; \\exists D,\\; \\forall n,\\; D \\neq f(n))$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "cantors-theorem",
+      "relationship": "parent",
+      "description": "The base Cantor's theorem proof; this entry derives it as a corollary of Lawvere's fixed-point theorem"
+    },
+    {
+      "id": "cantors-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01 explores cardinality aspects of Cantor's theorem; OQ-02 explores the categorical unification via Lawvere"
+    },
+    {
+      "id": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "The direct diagonalization proof for uncountability of the reals; Part V of this entry reproduces the diagonal witness construction"
+    },
+    {
+      "id": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Gödel's incompleteness theorem; Part IV of this entry shows the core diagonal mechanism underlying it"
+    },
+    {
+      "id": "brouwer-fixed-point",
+      "relationship": "contrast",
+      "description": "Brouwer's fixed-point theorem guarantees fixed points for continuous maps on compact convex sets — a topological analog, whereas Lawvere's theorem forces fixed points from surjectivity"
+    },
+    {
+      "id": "schauder-fixed-point",
+      "relationship": "contrast",
+      "description": "Schauder's fixed-point theorem extends Brouwer to infinite dimensions; both contrast with Lawvere's algebraic/categorical fixed-point result"
     }
   ],
   "conclusion": {
