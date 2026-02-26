@@ -567,6 +567,48 @@ build_website() {
 # ============================================================================
 # Step 4: Deploy
 # ============================================================================
+
+# Prune old Cloudflare Pages deployments, keeping only the latest DEPLOY_KEEP (default 10).
+# Runs after each successful deploy to prevent unbounded deployment accumulation.
+prune_old_deployments() {
+    local keep="${DEPLOY_KEEP:-10}"
+    local project="lean-genius"
+
+    if [[ -z "${CLOUDFLARE_API_TOKEN:-}" || -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]]; then
+        print_warning "Skipping deployment pruning (no API token)"
+        return 0
+    fi
+
+    local api="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/pages/projects/${project}/deployments"
+    local total
+    total=$(curl -sf -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "${api}?per_page=1" | jq '.result_info.total_count // 0')
+
+    if [[ "$total" -le "$keep" ]]; then
+        print_info "Deployments: $total (within limit of $keep)"
+        return 0
+    fi
+
+    print_info "Pruning deployments: $total total, keeping latest $keep..."
+    local pruned=0
+
+    # Fetch page 1 (newest first), delete everything after the first $keep entries.
+    # Repeat until nothing left to delete (deletions shift items forward).
+    while true; do
+        local ids
+        ids=$(curl -sf -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            "${api}?per_page=25&page=1" | jq -r ".result[$keep:][].id // empty" 2>/dev/null)
+
+        [[ -z "$ids" ]] && break
+
+        for id in $ids; do
+            curl -sf -X DELETE -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+                "${api}/${id}?force=true" > /dev/null 2>&1 && ((pruned++)) || true
+        done
+    done
+
+    print_success "Pruned $pruned old deployment(s)"
+}
+
 deploy_website() {
     print_header "Deploying to Cloudflare"
 
@@ -601,6 +643,9 @@ deploy_website() {
     print_info "Running wrangler pages deploy (commit: $commit_hash)..."
     if wrangler pages deploy dist --project-name=lean-genius --commit-dirty=true --commit-hash="$commit_hash" --commit-message="$safe_commit_msg" 2>&1 | tail -10; then
         print_success "Deployment completed"
+
+        # Prune old deployments, keeping only the latest N
+        prune_old_deployments
 
         # Create completion signal for daemon stats tracking
         local completions_dir="$REPO_ROOT/.loom/signals/completions"
