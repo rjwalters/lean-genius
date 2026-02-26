@@ -92,11 +92,11 @@
     "problemStatement": "**Problem**: Let $n_1 < n_2 < \\cdots$ be a lacunary sequence of integers and $f \\in L^2([0,1])$. Estimate the growth of, for almost all $\\alpha$:\n$$\\sum_{1 \\leq k \\leq N} f(\\{\\alpha n_k\\})$$\n\nIs it true that for almost all $\\alpha$:\n$$\\sum_{1 \\leq k \\leq N} f(\\{\\alpha n_k\\}) = o(N\\sqrt{\\log\\log N})?$$\n\n**Known Bounds**:\n- Lower: $\\limsup \\geq N(\\log\\log N)^{1/2-\\epsilon}$ for some examples\n- Upper: Always $o(N(\\log N)^{1/2+\\epsilon})$\n\n**Status**: OPEN",
     "proofStrategy": "The formalization defines lacunary sequences via IsLacunary (n_{k+1} ≥ q·n_k for q > 1) and lacunarySum as ∑_{k∈Finset.range N} f(frac(α·n_k)). The main conjecture ErdosConjecture uses measure-theoretic ∀ᵐ α for 'almost all'. Lower and upper bounds are axiomatized from Erdős's 1949 and 1964 papers: erdos_lower_bound_1949 (existential, with limsup = ⊤) and erdos_upper_bound (universal). The structural results bound_gap_lower_exists and bound_gap_upper_universal are combined into erdos_995_statement. Examples verify 2^k and 3^k are lacunary (fully proved), and the Fibonacci sequence is defined. The single sorry is in exponent_gap (log log N < log N for N ≥ 3).",
     "keyInsights": [
-      "**Law of the Iterated Logarithm scale**: The conjecture o(N√(log log N)) is exactly the LIL prediction for sums of independent random variables with variance N. Kac's CLT (1946) for lacunary trigonometric series motivates this — if lacunary sums satisfy CLT, they should also satisfy LIL.",
-      "**Quasi-independence from exponential gaps**: The lacunarity condition n_{k+1}/n_k ≥ q > 1 forces exponential spacing, which makes cos(2π n_k α) nearly orthogonal in L²([0,1]). This quasi-independence is the core mechanism behind all results: CLT, SLLN, and the growth bounds.",
-      "**The enormous gap**: At N = 10^{10^{10}}, (log N)^{1/2} ≈ 151,000 while (log log N)^{1/2} ≈ 4.9 — a factor of 30,000 gap. Closing this is one of the most fundamental open problems in metric number theory.",
-      "**Existential vs universal asymmetry**: The lower bound is existential (∃ specific f, n reaching the bound) while the upper bound is universal (∀ f, n satisfy the bound). The true growth rate could depend on the specific lacunary sequence and function.",
-      "**Weyl sum maximal inequalities**: The upper bound proof reduces to controlling max_{N≤M} |∑_{k≤N} e(α n_k)|. Improving this maximal inequality from (log M)^{1/2+ε} to (log log M)^{1/2+ε} would resolve the conjecture."
+      "**LIL scale**: The conjecture $S_N = o(N\\sqrt{\\log\\log N})$ matches the Law of the Iterated Logarithm for i.i.d. variables with variance $\\sim N$. Kac's CLT (1946): $\\sum \\cos(2\\pi n_k \\alpha)/\\sqrt{N} \\to \\mathcal{N}(0, 1/2)$ motivates expecting LIL-scale behavior",
+      "**Quasi-independence from exponential gaps**: $n_{k+1}/n_k \\geq q > 1$ forces $\\cos(2\\pi n_k \\alpha)$ to be nearly orthogonal in $L^2([0,1])$: $\\int_0^1 \\cos(2\\pi n_j \\alpha)\\cos(2\\pi n_k \\alpha)\\,d\\alpha \\approx 0$ for $j \\neq k$",
+      "**The enormous gap**: At $N = 10^{10^{10}}$: $(\\log N)^{1/2} \\approx 151{,}000$ vs $(\\log\\log N)^{1/2} \\approx 4.9$ — a factor of $30{,}000$. This 75-year gap is one of the most fundamental open problems in metric number theory",
+      "**Existential vs universal asymmetry**: Lower bound is $\\exists f, \\{n_k\\}$ (existential), upper is $\\forall f, \\{n_k\\}$ (universal). The true growth rate could depend on the specific lacunary sequence and function",
+      "**Weyl sum maximal inequality**: The upper bound reduces to $\\max_{N \\leq M} |\\sum_{k \\leq N} e(\\alpha n_k)|$. Improving from $(\\log M)^{1/2+\\varepsilon}$ to $(\\log\\log M)^{1/2+\\varepsilon}$ would resolve the conjecture"
     ]
   },
   "sections": [
@@ -105,63 +105,72 @@
       "title": "Basic Definitions",
       "summary": "frac (fractional part), IsLacunary (gap condition with ratio q > 1), IsLacunarySeq (existential), lacunarySum (∑f({αn_k}))",
       "startLine": 36,
-      "endLine": 54
+      "endLine": 54,
+      "mathContext": "$\\{x\\} = x - \\lfloor x \\rfloor$. Lacunary: $n_{k+1}/n_k \\geq q > 1$. Sum: $S_N(\\alpha) = \\sum_{k \\leq N} f(\\{\\alpha n_k\\})$."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
       "summary": "ErdosConjecture (a.e. α: sum is o(N√(log log N))), ErdosQuestion (universal over all lacunary sequences and L² functions)",
       "startLine": 55,
-      "endLine": 72
+      "endLine": 72,
+      "mathContext": "**Conjecture**: $S_N(\\alpha) = o(N\\sqrt{\\log\\log N})$ for a.e. $\\alpha$ (the LIL scale)."
     },
     {
       "id": "lower-bounds",
       "title": "Known Lower Bounds",
       "summary": "erdos_lower_bound_1949 (∃ f, n: limsup reaches N(log log N)^{1/2-ε}), LowerBoundGrowth (formalized growth condition)",
       "startLine": 73,
-      "endLine": 94
+      "endLine": 94,
+      "mathContext": "$\\exists f, \\{n_k\\}: \\limsup |S_N|/(N(\\log\\log N)^{1/2-\\varepsilon}) = \\infty$ a.e."
     },
     {
       "id": "upper-bounds",
       "title": "Known Upper Bounds",
       "summary": "erdos_upper_bound (∀ lacunary n: sum is o(N(log N)^{1/2+ε})), UpperBoundGrowth (formalized via limsup ≤ 1)",
       "startLine": 95,
-      "endLine": 117
+      "endLine": 117,
+      "mathContext": "$\\forall \\{n_k\\}$ lacunary, $\\forall f \\in L^2$: $S_N = o(N(\\log N)^{1/2+\\varepsilon})$ a.e."
     },
     {
       "id": "the-gap",
       "title": "The Gap",
       "summary": "bound_gap_lower_exists, bound_gap_upper_universal (axioms packaging the bounds), exponent_gap (log log N < log N, sorry)",
       "startLine": 118,
-      "endLine": 138
+      "endLine": 138,
+      "mathContext": "$(\\log\\log N)^{1/2} \\ll (\\log N)^{1/2}$. At $N = 10^{10^{10}}$: ratio $\\approx 30{,}000$."
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "geometricSeq 2^k (proved lacunary), powersOf3 3^k (proved lacunary), fib (eventually lacunary, ratio → φ)",
       "startLine": 140,
-      "endLine": 172
+      "endLine": 172,
+      "mathContext": "$2^k$ ($q = 2$), $3^k$ ($q = 3$), $F_k$ ($q \\to \\varphi \\approx 1.618$). Proved via constructor + norm_num."
     },
     {
       "id": "slln-connection",
       "title": "Connection to Strong Law of Large Numbers",
       "summary": "slln_connection (axiom: lacunary sums bounded by C√N, the zeroth-order estimate from variance ~ N)",
       "startLine": 174,
-      "endLine": 184
+      "endLine": 184,
+      "mathContext": "$\\text{Var}(S_N) \\sim cN \\Rightarrow |S_N| \\leq C\\sqrt{N}$ a.e. (zeroth-order estimate from Chebyshev)."
     },
     {
       "id": "erdos-opinion",
       "title": "Erdős's Opinion",
       "summary": "ErdosRefinedConjecture (upper bound improvable to (log log N)^{1/2+ε}, matching lower bound)",
       "startLine": 186,
-      "endLine": 198
+      "endLine": 198,
+      "mathContext": "Erdős (1964): upper bound should be $o(N(\\log\\log N)^{1/2+\\varepsilon})$, matching the lower bound."
     },
     {
       "id": "main-results",
       "title": "Main Results",
       "summary": "erdos_995_statement (proved: ⟨lower_exists, upper_universal⟩), erdos_995_summary (= erdos_995_statement)",
       "startLine": 200,
-      "endLine": 228
+      "endLine": 228,
+      "mathContext": "`erdos_995_statement = ⟨bound_gap_lower_exists, bound_gap_upper_universal⟩`. Gap OPEN."
     }
   ],
   "conclusion": {
