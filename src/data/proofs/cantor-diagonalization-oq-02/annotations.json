@@ -1,0 +1,58 @@
+[
+  {
+    "id": "annotation-omega1-def",
+    "line": 61,
+    "type": "insight",
+    "title": "ω₁ as Initial Ordinal of ℵ₁",
+    "body": "We define ω₁ = (Cardinal.aleph 1).ord — the initial ordinal of the first uncountable cardinal. This is the canonical first uncountable ordinal: the smallest ordinal α such that α.card = ℵ₁. The `ord` function maps a cardinal c to the smallest ordinal of cardinality c.",
+    "tags": ["definition", "ordinal", "cardinal", "initial-ordinal"]
+  },
+  {
+    "id": "annotation-card-ord",
+    "line": 66,
+    "type": "technique",
+    "title": "Cardinal.card_ord Closes omega1_card",
+    "body": "The theorem `omega1_card : omega1.card = aleph 1` is a one-liner: `Cardinal.card_ord _`. This lemma states that for any cardinal c, the initial ordinal c.ord has cardinality c. It's the fundamental identity linking cardinals and ordinals via the `ord` function.",
+    "tags": ["api", "cardinal-ordinal-duality", "one-liner"]
+  },
+  {
+    "id": "annotation-aleph-succ",
+    "line": 75,
+    "type": "technique",
+    "title": "Deriving aleph 1 = Order.succ ℵ₀ via aleph_succ",
+    "body": "The key identity `aleph 1 = Order.succ ℵ₀` requires a small rewriting chain. First, `(1 : Ordinal) = Order.succ 0` (by simp). Then `Cardinal.aleph_succ` gives `aleph(succ α) = Order.succ(aleph α)`. Finally, `Cardinal.aleph_zero : aleph 0 = ℵ₀` converts to the final form. The `rwa` handles the substitution.",
+    "tags": ["aleph", "successor", "rewriting", "cardinal-arithmetic"]
+  },
+  {
+    "id": "annotation-lt-aleph1-iff",
+    "line": 82,
+    "type": "insight",
+    "title": "κ < ℵ₁ ↔ κ ≤ ℵ₀: Characterizing ℵ₁",
+    "body": "This is the fundamental characterization of ℵ₁ as the MINIMUM uncountable cardinal. Since aleph 1 = Order.succ ℵ₀, we use `Order.lt_succ_iff : a < Order.succ b ↔ a ≤ b` directly. This characterization drives most results about ℵ₁: uncountability, minimality, and the gap property all follow.",
+    "tags": ["characterization", "aleph-1", "successor-order", "minimum-uncountable"]
+  },
+  {
+    "id": "annotation-diagonal-core",
+    "line": 168,
+    "type": "technique",
+    "title": "sSup Instead of iSup for Ordinals",
+    "body": "Ordinal.{0} has `ConditionallyCompleteLinearOrder` but NOT `CompleteLattice` (since the sup of all ordinals would be a proper class). Therefore `iSup` (which requires `CompleteLattice`) is unavailable. Instead, we use `sSup (Set.range f)` with `BddAbove` hypothesis. The bound is `omega1` since all f(n) < omega1.",
+    "tags": ["sSup", "conditional-complete", "ordinal-arithmetic", "workaround"]
+  },
+  {
+    "id": "annotation-clipping",
+    "line": 205,
+    "type": "technique",
+    "title": "Clipping f to Countable Values",
+    "body": "The surjection proof doesn't assume f : ℕ → Ordinal maps only to countable ordinals — f could map some n to ω₂. We handle this by 'clipping': define g n = if f n < omega1 then f n else 0. Now (1) all g(n) < omega1, and (2) g still surjects onto countable ordinals (if f(n) = α < omega1, then f(n) < omega1, so g(n) = f(n) = α). Apply diagonal to g.",
+    "tags": ["clipping", "surjection", "proof-technique", "ordinal"]
+  },
+  {
+    "id": "annotation-le-csSup",
+    "line": 185,
+    "type": "api",
+    "title": "le_csSup: Members ≤ Conditional Supremum",
+    "body": "The lemma `le_csSup (hbdd : BddAbove s) (hmem : x ∈ s) : x ≤ sSup s` gives f(n) ≤ sSup(range f). Here `BddAbove (Set.range f)` is witnessed by `omega1` (since all f(n) < omega1 ≤ omega1), and `Set.mem_range_self n : f n ∈ Set.range f` gives membership.",
+    "tags": ["le-csSup", "bounded-above", "supremum", "api"]
+  }
+]
