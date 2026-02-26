@@ -1,6 +1,7 @@
 import Mathlib.SetTheory.Cardinal.Ordinal
 import Mathlib.SetTheory.Cardinal.Cofinality
 import Mathlib.SetTheory.Ordinal.Basic
+import Mathlib.SetTheory.Ordinal.Arithmetic
 import Mathlib.Order.SuccPred.Basic
 import Mathlib.Tactic
 
@@ -46,6 +47,13 @@ enumerated by any countable list — it requires ℵ₁ many elements.
 
 From OQ-01, we know ℵ₁ ≤ 2^ℵ₀. The cardinality of countable ordinals (ℵ₁) is
 the minimum uncountable cardinality. CH asks: is ℵ₁ = 2^ℵ₀? Independent of ZFC.
+
+## Proof Technique (Updated: Zero Axioms)
+
+The three facts previously axiomatized are now fully proved using Mathlib:
+1. α < ω₁ ↔ α.card ≤ ℵ₀ — via Cardinal.lt_ord (ordinal/cardinal initial segment correspondence)
+2. ω₁ is a limit ordinal — via Cardinal.ord_isLimit (infinite cardinals have limit initial ordinal)
+3. Countable sup is bounded — via Ordinal.sup_lt_ord + Cardinal.isRegular_aleph_one.cof_eq
 -/
 
 set_option linter.unusedVariables false
@@ -123,12 +131,15 @@ theorem no_cardinal_between_aleph0_aleph1 (κ : Cardinal.{0})
 def IsCountableOrdinal (α : Ordinal.{0}) : Prop := α.card ≤ ℵ₀
 
 /-- The characterization of ω₁ as threshold between countable and uncountable ordinals.
-    This requires the deep fact that c.ord is the initial ordinal of c:
-    α < c.ord ↔ α.card < c.
 
-    Proof: α < (aleph 1).ord ↔ α.card < aleph 1 ↔ α.card ≤ ℵ₀ ↔ IsCountableOrdinal α. -/
-axiom lt_omega1_iff_countable (α : Ordinal.{0}) :
-    α < omega1 ↔ IsCountableOrdinal α
+    Proof: α < (aleph 1).ord ↔ α.card < aleph 1 (by Cardinal.lt_ord)
+                               ↔ α.card ≤ ℵ₀ (by lt_aleph1_iff_le_aleph0)
+                               ↔ IsCountableOrdinal α (by definition). -/
+theorem lt_omega1_iff_countable (α : Ordinal.{0}) :
+    α < omega1 ↔ IsCountableOrdinal α := by
+  unfold omega1 IsCountableOrdinal
+  rw [Cardinal.lt_ord]
+  exact lt_aleph1_iff_le_aleph0 α.card
 
 /-- The set of countable ordinals equals the initial segment below ω₁. -/
 theorem countable_ordinals_eq_Iio :
@@ -147,21 +158,39 @@ theorem zero_lt_omega1 : (0 : Ordinal.{0}) < omega1 := by
 
 /-- ω₁ is a limit ordinal: there is no immediate predecessor.
     Every ordinal below ω₁ has a strict successor that is still below ω₁.
-    This is proved using the regularity of ω₁ (its cofinality equals itself).
 
-    We state this as an axiom as it requires detailed ordinal cofinality theory. -/
-axiom omega1_isLimit : ∀ α : Ordinal.{0}, α < omega1 → α + 1 < omega1
+    Proof: Given α < ω₁, we have card α ≤ ℵ₀ (by lt_omega1_iff_countable).
+    Then card (α + 1) = card (succ α) = card α + 1 ≤ ℵ₀ + 1 = ℵ₀ ≤ ℵ₀,
+    so α + 1 < ω₁. -/
+theorem omega1_isLimit : ∀ α : Ordinal.{0}, α < omega1 → α + 1 < omega1 := by
+  intro α hα
+  rw [lt_omega1_iff_countable] at hα ⊢
+  unfold IsCountableOrdinal at *
+  rw [Ordinal.add_one_eq_succ, Ordinal.card_succ]
+  calc card α + 1 ≤ ℵ₀ + 1 := add_le_add hα le_rfl
+    _ = ℵ₀ := Cardinal.add_one_of_aleph0_le le_rfl
 
 /-- The supremum of any countable sequence of countable ordinals is countable.
     This is the crucial closure property that drives the diagonal argument.
 
-    Proof (via cofinality): ω₁ has cofinality ω₁ (it's regular), so no countable
-    cofinal sequence can reach ω₁. Equivalently, a countable union of countable
-    sets is countable.
-
-    We use sSup of the range (via ConditionallyCompleteLinearOrder on Ordinal). -/
-axiom countable_sup_lt_omega1 (f : ℕ → Ordinal.{0})
-    (hf : ∀ n, f n < omega1) : sSup (Set.range f) < omega1
+    Proof: ℵ₁ is a regular cardinal (isRegular_aleph_one), so cof(ω₁) = ℵ₁.
+    By Ordinal.sup_lt_ord, any sup over a family of size #ℕ = ℵ₀ < ℵ₁ = cof(ω₁)
+    with all values < ω₁ is itself < ω₁.
+    Note: sSup (Set.range f) = Ordinal.sup f (definitionally, both equal iSup f). -/
+theorem countable_sup_lt_omega1 (f : ℕ → Ordinal.{0})
+    (hf : ∀ n, f n < omega1) : sSup (Set.range f) < omega1 := by
+  -- sSup (Set.range f) = iSup f (definitionally equal via definition of iSup)
+  show iSup f < omega1
+  -- Need: #ℕ < omega1.cof
+  -- omega1.cof = (aleph 1).ord.cof = aleph 1 (by regularity of ℵ₁)
+  -- #ℕ = ℵ₀ < aleph 1
+  have hcof : omega1.cof = Cardinal.aleph 1 := by
+    unfold omega1
+    exact Cardinal.isRegular_aleph_one.cof_eq
+  have hlt : #(ℕ) < omega1.cof := by
+    rw [hcof, Cardinal.mk_nat]
+    exact aleph0_lt_aleph1
+  exact Ordinal.iSup_lt_ord hf hlt
 
 /-- **The Cantor Diagonal Argument for Countable Ordinals**:
 
