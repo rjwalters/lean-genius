@@ -63,7 +63,9 @@
     "type": "definition",
     "title": "Convexity in ℂ",
     "content": "A set S ⊆ ℂ is **convex** if for any two points z, w ∈ S, the entire line segment from z to w lies in S:\n\n∀ t ∈ [0,1], (1-t)z + tw ∈ S\n\nThis is the standard definition, viewing ℂ as ℝ².",
-    "significance": "critical"
+    "mathContext": "Viewing ℂ ≅ ℝ², convexity of S means S contains all convex combinations (1−t)z + tw for t ∈ [0,1]. Equivalently, S is the intersection of (possibly infinitely many) closed half-planes, a characterisation used in the Hahn-Banach separation theorem.",
+    "significance": "critical",
+    "relatedConcepts": ["Convex sets", "Convex hull", "Hahn-Banach theorem"]
   },
   {
     "id": "ann-e1047-grunsky",
@@ -82,7 +84,8 @@
     "type": "theorem",
     "title": "Grunsky Conjecture is FALSE",
     "content": "The Grunsky conjecture is **disproved**.\n\nCounterexamples show that lemniscate components can be non-convex, even for small c. The interaction between multiple roots can create 'pinching' effects.",
-    "significance": "critical"
+    "significance": "critical",
+    "relatedConcepts": ["Disproved conjecture", "Counterexample", "Potential theory"]
   },
   {
     "id": "ann-e1047-pommerenke-poly",
