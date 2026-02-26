@@ -52,42 +52,70 @@
       "title": "Imports and Mathematical Framework",
       "startLine": 1,
       "endLine": 52,
-      "summary": "Import statements and module documentation establishing the mathematical context."
+      "summary": "Import statements and module documentation establishing the mathematical context.",
+      "mathContext": "Imports from Mathlib's FLT modules, elliptic curve definitions, and integer ring theory."
     },
     {
       "id": "statement",
       "title": "The Theorem Statement",
       "startLine": 54,
       "endLine": 68,
-      "summary": "Fermat's Last Theorem stated precisely: no positive integer solutions to a^n + b^n = c^n for n > 2."
+      "summary": "Fermat's Last Theorem stated precisely: no positive integer solutions to a^n + b^n = c^n for n > 2.",
+      "mathContext": "$\\forall n > 2,\\; \\nexists a, b, c \\in \\mathbb{Z}_{>0},\\; a^n + b^n = c^n$. Equivalently: $\\forall a, b, c \\in \\mathbb{Z} \\setminus \\{0\\},\\; a^n + b^n \\neq c^n$."
     },
     {
       "id": "frey-curve",
       "title": "The Frey Curve Construction",
       "startLine": 70,
       "endLine": 92,
-      "summary": "How a hypothetical counterexample gives rise to an elliptic curve with special properties."
+      "summary": "How a hypothetical counterexample gives rise to an elliptic curve with special properties.",
+      "mathContext": "Given $a^p + b^p = c^p$, construct $E : y^2 = x(x - a^p)(x + b^p)$. This curve is semistable with discriminant $\\Delta = 16(abc)^{2p}$."
     },
     {
       "id": "modularity",
       "title": "The Modularity Theorem",
       "startLine": 94,
       "endLine": 109,
-      "summary": "Every semi-stable elliptic curve over Q is modular - the key to Wiles' approach."
+      "summary": "Every semi-stable elliptic curve over Q is modular - the key to Wiles' approach.",
+      "mathContext": "Wiles (1995): if $E/\\mathbb{Q}$ is semistable, then $\\exists f \\in S_2(\\Gamma_0(N))$ with $L(E, s) = L(f, s)$. This is part of the Taniyama-Shimura-Weil conjecture."
     },
     {
       "id": "ribet",
       "title": "Ribet's Theorem and the Contradiction",
       "startLine": 111,
       "endLine": 139,
-      "summary": "Why Frey curves cannot be modular, completing the proof by contradiction."
+      "summary": "Why Frey curves cannot be modular, completing the proof by contradiction.",
+      "mathContext": "Ribet (1986): if the Frey curve is modular, level-lowering gives a cusp form of level 2. But $\\dim S_2(\\Gamma_0(2)) = 0$, contradiction."
     },
     {
       "id": "special-cases",
       "title": "Classical Special Cases",
       "startLine": 141,
       "endLine": 207,
-      "summary": "Elementary proofs of Fermat's Last Theorem for n = 3, n = 4, and the full theorem."
+      "summary": "Elementary proofs of Fermat's Last Theorem for n = 3, n = 4, and reduction to prime exponents.",
+      "mathContext": "$n = 4$: Fermat's infinite descent on $x^4 + y^4 = z^2$. $n = 3$: Euler's proof using $\\mathbb{Z}[\\omega]$. Reduction: $n \\mid m \\implies \\text{FLT}(n) \\implies \\text{FLT}(m)$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "sophie-germain",
+      "relationship": "related",
+      "description": "Sophie Germain primes are named for their connection to FLT: she proved the first case holds for Sophie Germain prime exponents"
+    },
+    {
+      "id": "infinitude-primes",
+      "relationship": "related",
+      "description": "The reduction to prime exponents relies on the structure of primes; FLT for n=4 and odd primes covers all n ≥ 3"
+    },
+    {
+      "id": "chinese-remainder-non-coprime",
+      "relationship": "related",
+      "description": "Modular arithmetic techniques used in Kummer's proof for regular primes and in the reduction arguments"
+    },
+    {
+      "id": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions provides context for the distribution of primes relevant to FLT"
     }
   ],
   "conclusion": {
