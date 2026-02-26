@@ -1,60 +1,104 @@
 {
   "slug": "e-transcendental-oq-01",
   "title": "Is e + pi transcendental",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "Transcendental ℚ (Real.exp 1 + Real.pi)",
+    "plain": "Is e + π transcendental? Famous open problem in number theory since 1882.",
+    "whyMatters": [
+      "Open for 140+ years despite e and π individually transcendental",
+      "Would follow from Schanuel's conjecture (algebraic independence)",
+      "Connected to fundamental questions about algebraic independence of constants"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "e is transcendental (Hermite 1873) - axiomatized",
+      "π is transcendental (Lindemann 1882) - axiomatized",
+      "At least one of e+π, e·π is transcendental - PROVED via Vieta",
+      "If e·π algebraic → e+π transcendental - PROVED",
+      "If e+π algebraic → e·π transcendental - PROVED",
+      "π + e^π is transcendental - PROVED via Nesterenko",
+      "e^π is transcendental - PROVED via Nesterenko",
+      "Γ(1/4) is transcendental - PROVED via Nesterenko",
+      "Algebraic independence → e+π transcendental - PROVED conditionally",
+      "Algebraic independence → e·π transcendental - PROVED conditionally",
+      "Algebraic independence → e+π irrational - PROVED conditionally",
+      "algebraic_root_of_algebraic_quadratic - PROVED (integral extension transitivity)"
+    ],
+    "open": [
+      "e + π is transcendental (main conjecture - OPEN)",
+      "e · π is transcendental (OPEN)",
+      "e + π is irrational (OPEN, even weaker statement unknown)"
+    ],
+    "goal": "Formalize everything provable about e+π transcendence; document open status"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-02-21T19:21:07.134Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "COMPLETE",
+    "since": "2026-02-26T23:50:00Z",
+    "iteration": 2,
+    "focus": "All provable results formalized. 3 remaining sorries are genuinely OPEN problems.",
+    "blockers": ["Main conjecture is OPEN - no proof exists"],
+    "nextAction": "None - complete formalization of known results",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
+    "progressSummary": "COMPLETE: 27 theorems (2 files), 3 OPEN sorries, 3 axioms. All provable results formalized.",
+    "builtItems": [
+      "algebraic_root_of_algebraic_quadratic: Root of algebraic-coefficient quadratic is algebraic (integral extension)",
+      "e_plus_pi_or_e_times_pi_transcendental: At least one of e+π, e·π is transcendental",
+      "pi_plus_exp_pi_transcendental: π + e^π transcendental (via Nesterenko + MvPolynomial lift)",
+      "e_plus_pi_transcendental_from_independence: Conditional on alg independence",
+      "exp_pi_transcendental: e^π is transcendental (ETranscendentalOQ01OQ01)",
+      "gamma_quarter_transcendental: Γ(1/4) is transcendental",
+      "pi_times_exp_pi_transcendental: π·e^π is transcendental",
+      "e_plus_pi_transcendental_via_schanuel: Conditional on Schanuel"
+    ],
+    "insights": [
+      "Polynomial lifting technique: lift f(e+π)=0 to P(X₀,X₁)=f(X₀+X₁) ∈ MvPolynomial",
+      "P ≠ 0 proven by specialization: X₀↦T, X₁↦0 recovers f",
+      "isIntegral_trans is key for algebraic_root_of_algebraic_quadratic",
+      "Nesterenko gives π,e^π,Γ(1/4) algebraically independent - many consequences follow",
+      "Schanuel's conjecture would resolve everything but is itself unproven"
+    ],
+    "mathlibGaps": [
+      "e_transcendental and pi_transcendental not yet in Mathlib (axiomatized)",
+      "Nesterenko's theorem not in Mathlib (axiomatized)"
+    ],
     "nextSteps": []
   },
-  "approaches": [],
-  "tags": [
-    "seeker-selected",
-    "extension",
-    "challenging",
-    "number-theory",
-    "transcendental",
-    "e",
-    "analysis",
-    "wiedijk-100",
-    "classic"
+  "approaches": [
+    {
+      "name": "Vieta symmetric polynomial + integral extension transitivity",
+      "status": "succeeded",
+      "description": "Prove at least one of e+π, e·π transcendental via monic quadratic and integral closure"
+    },
+    {
+      "name": "Nesterenko algebraic independence consequences",
+      "status": "succeeded",
+      "description": "Derive π+e^π, e^π, Γ(1/4) transcendental from Nesterenko via MvPolynomial lift"
+    }
   ],
-  "relatedProofs": [],
+  "tags": ["number-theory", "transcendental", "open-problem", "nesterenko", "schanuel", "algebraic-independence"],
+  "relatedProofs": ["e-transcendental", "pi-transcendental"],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Nesterenko (1996): Modular functions and transcendence questions",
+      "Hermite (1873): Sur la fonction exponentielle",
+      "Lindemann (1882): Über die Zahl π"
+    ],
+    "urls": ["https://en.wikipedia.org/wiki/Schanuel%27s_conjecture"],
+    "mathlib": ["isAlgebraic_iff_isIntegral", "isIntegral_trans", "Algebra.adjoin_le_iff", "MvPolynomial.aeval_X"]
   },
   "started": "2026-02-21T19:21:07.134Z",
-  "lastUpdate": "2026-02-21T19:21:07.134Z",
+  "lastUpdate": "2026-02-26T23:50:00Z",
   "significance": 6,
   "tractability": 6
 }
