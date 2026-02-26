@@ -1,102 +1,41 @@
 {
   "slug": "e-transcendental-oq-01",
-  "title": "Is e + π Transcendental? (OQ-01)",
-  "phase": "COMPLETE",
+  "title": "Is e + pi transcendental",
+  "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{Is } e + \\pi \\text{ transcendental over } \\mathbb{Q}?",
-    "plain": "Is the number e + π = 5.8598... transcendental? Despite both e (Hermite, 1873) and π (Lindemann, 1882) being individually transcendental, the transcendence of their sum remains one of the most tantalizing open problems in mathematics. We extend the formalization with new proved results: e^π transcendental (from Nesterenko), Γ(1/4) transcendental, and the full Schanuel-conditional proof of e+π transcendental.",
-    "whyMatters": [
-      "e^π is transcendental (proved here from Nesterenko — a classical 1929 result formalized)",
-      "The Schanuel-conditional proof chain is now complete: Schanuel → algebraic independence → e+π transcendental",
-      "Nesterenko's theorem gives 5 transcendence results: π, e^π, Γ(1/4), π·e^π, π+e^π all transcendental"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "e+π or e·π is transcendental (proved via Vieta + Hermite, in ETranscendentalOQ01.lean)",
-      "π + e^π is transcendental (Nesterenko 1996, formalized in ETranscendentalOQ01.lean)",
-      "e^π is transcendental — proved here via Nesterenko (exp_pi_transcendental, 0 sorries)",
-      "π is transcendental from Nesterenko — alternative to Lindemann (pi_transcendental_from_nesterenko)",
-      "Γ(1/4) is transcendental (gamma_quarter_transcendental, 0 sorries)",
-      "π · e^π is transcendental (pi_times_exp_pi_transcendental, 0 sorries)",
-      "e + π transcendental conditionally on Schanuel (e_plus_pi_transcendental_via_schanuel)",
-      "Root of quadratic with algebraic coefficients is algebraic (algebraic_root_of_algebraic_quadratic, proved via integral extension)"
-    ],
-    "open": [
-      "Is e + π transcendental? (OQ-01 — unknown as of 2026)",
-      "Is e · π transcendental? (unknown)",
-      "Are e and π algebraically independent? (implied by Schanuel, unproved)",
-      "Is e + π irrational? (open even at the weaker irrationality level!)",
-      "Is e^e transcendental?"
-    ],
-    "goal": "Extend formalization with new transcendence results from Nesterenko's theorem and provide Schanuel-conditional proof of OQ-01"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-25T04:15:00.000Z",
-    "iteration": 2,
-    "focus": "Created ETranscendentalOQ01OQ01.lean with 7+ new proved theorems (0 sorries, 1 axiom for Schanuel)",
+    "phase": "NEW",
+    "since": "2026-02-21T19:21:07.134Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Consider extending with Gelfond-Schneider axiom for an alternative proof of e^π transcendental",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Created ETranscendentalOQ01OQ01.lean with 7+ new proved theorems (0 sorries). Key result: e^π is transcendental, proved formally for first time in this codebase via Nesterenko's axiom.",
-    "builtItems": [
-      "pi_transcendental_from_nesterenko: π transcendental from Nesterenko (not Lindemann)",
-      "exp_pi_transcendental: e^π is transcendental (from Nesterenko) — KEY NEW RESULT",
-      "gamma_quarter_transcendental: Γ(1/4) is transcendental (from Nesterenko)",
-      "pi_times_exp_pi_transcendental: π·e^π is transcendental (from Nesterenko)",
-      "exp_pi_irrational: e^π is irrational (from transcendence)",
-      "schanuel_for_e_pi: Schanuel consequence stated as named axiom",
-      "e_plus_pi_transcendental_via_schanuel: e+π transcendental under Schanuel (0 sorries)",
-      "e_times_pi_transcendental_via_schanuel: e·π transcendental under Schanuel",
-      "e_plus_pi_irrational_via_schanuel: e+π irrational under Schanuel",
-      "nesterenko_gives_five_transcendence_results: summary theorem (5 results from Nesterenko)"
-    ],
-    "insights": [
-      "Key pattern: f(exp(π)) = 0 → P(X₀,X₁,X₂) = f(X₁) → P ≠ 0 (specialize) → P(π,e^π,Γ)=0 contradicts Nesterenko",
-      "The polynomial-lifting technique works for ANY function of (π, e^π, Γ(1/4)): lift f(g(X)) to MvPoly",
-      "Schanuel's Conjecture provides the 'bridge' from what Nesterenko gives to what we need for e+π",
-      "Nesterenko covers e^π (index 1 variable) but NOT e alone (which would need {1, iπ, e, -1} independence)",
-      "Gamma function at 1/4: gammaQuarter = Re(Complex.Gamma (1/4 : ℂ)) is transcendental from Nesterenko",
-      "simp [MvPolynomial.aeval_X, Matrix.cons_val_zero, Matrix.cons_val_one] handles indices 0 and 1",
-      "simp [MvPolynomial.aeval_X] alone handles index 2 (definitional equality works)",
-      "Matrix.head_cons is NOT needed for index 1 in Lean 4.26.0 (unused simp arg)"
-    ],
-    "mathlibGaps": [
-      "Lindemann-Weierstrass theorem not in Mathlib (e and π transcendence are axioms)",
-      "Gelfond-Schneider theorem not in Mathlib (e^π transcendental proved via Nesterenko instead)",
-      "Schanuel's Conjecture is open math, not a Mathlib gap"
-    ],
-    "nextSteps": [
-      "Add Gelfond-Schneider as axiom for an alternative (simpler) proof of e^π transcendental",
-      "Add Baker's theorem consequences (e.g., linear independence of logarithms)",
-      "Consider formalizing that e^e is transcendental (needs e to be algebraically independent from itself...)"
-    ],
-    "markdown": "# Knowledge Base: e-transcendental-oq-01\n\n## Problem\nIs e + π transcendental? (OQ-01 — open as of 2026)\n\n## Proof Files\n- `proofs/Proofs/ETranscendentalOQ01.lean` — main file: Vieta, algebraic closure, Nesterenko axiom\n- `proofs/Proofs/ETranscendentalOQ01OQ01.lean` — extension: 7+ new theorems from Nesterenko\n\n## Key New Results (ETranscendentalOQ01OQ01.lean)\n- `exp_pi_transcendental`: e^π is transcendental (FIRST formal proof in codebase)\n- `gamma_quarter_transcendental`: Γ(1/4) transcendental\n- `pi_times_exp_pi_transcendental`: π·e^π transcendental\n- `e_plus_pi_transcendental_via_schanuel`: Schanuel → e+π transcendental\n\n## Proof Technique\nPolynomial-lifting: f(expr) = 0 → P(X₀,X₁,X₂) = f(X_i) → P ≠ 0 by specialization → Nesterenko contradiction\n\n## Key Simp Lemmas\n- `MvPolynomial.aeval_X`: `aeval v (X i) = v i`\n- `Matrix.cons_val_zero`: `![a,b,c] 0 = a`\n- `Matrix.cons_val_one`: `![a,b,c] 1 = b`\n- Index 2: `simp [MvPolynomial.aeval_X]` alone (definitional equality)"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Nesterenko polynomial-lifting",
-      "status": "COMPLETE",
-      "description": "Lift univariate polynomials to trivariate via f(X_i) pattern, exploit Nesterenko independence",
-      "outcome": "Success: pi_transcendental_from_nesterenko, exp_pi_transcendental, gamma_quarter_transcendental, pi_times_exp_pi_transcendental all proved (0 sorries)"
-    },
-    {
-      "name": "Schanuel-conditional chain",
-      "status": "COMPLETE",
-      "description": "Axiomize Schanuel consequence for e and π, chain to existing independence theorems",
-      "outcome": "Success: e+π, e·π transcendental and e+π irrational all proved under schanuel_for_e_pi axiom"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "extension",
@@ -106,29 +45,16 @@
     "e",
     "analysis",
     "wiedijk-100",
-    "classic",
-    "nesterenko",
-    "schanuel"
+    "classic"
   ],
-  "relatedProofs": [
-    "e-transcendental",
-    "pi-transcendental"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Nesterenko (1996): Modular functions and transcendence questions",
-      "Hermite (1873): Sur la fonction exponentielle",
-      "Lindemann (1882): Über die Zahl π"
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.RingTheory.Algebraic.Basic",
-      "Mathlib.RingTheory.MvPolynomial.Basic",
-      "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
-    ]
+    "mathlib": []
   },
   "started": "2026-02-21T19:21:07.134Z",
-  "lastUpdate": "2026-02-25T04:15:00.000Z",
+  "lastUpdate": "2026-02-21T19:21:07.134Z",
   "significance": 6,
   "tractability": 6
 }

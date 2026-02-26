@@ -1,8 +1,8 @@
 {
   "slug": "buffons-needle-oq-01-oq-01",
   "title": "[Problem Title]",
-  "phase": "BREAKTHROUGH",
-  "status": "graduated",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,35 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Full Buffon-Barbier smooth curve theorem proved. angular_average key theorem. 0 sorries.",
-    "builtItems": [
-      "integral_sin_zero_pi: \u222b_0^\u03c0 sin \u03b8 = 2 (BuffonsNeedleOQ01OQ01.lean:62)",
-      "integral_abs_sin_zero_pi: \u222b_0^\u03c0 |sin \u03b8| = 2 (BuffonsNeedleOQ01OQ01.lean:75)",
-      "integral_abs_sin_shift: \u222b_0^\u03c0 |sin(\u03b8+c)| = 2 (BuffonsNeedleOQ01OQ01.lean:104)",
-      "angular_average: \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| = 2\u221a(a\u00b2+b\u00b2) (BuffonsNeedleOQ01OQ01.lean:157)",
-      "concreteSmoothExpectedCrossings: def of expected crossings integral (line:252)",
-      "planarArcLength: def of arc length integral (line:257)",
-      "buffon_smooth_concrete: main theorem with Fubini hypothesis (line:284)",
-      "hFubini_from_angular_average: bridges angular_average to Fubini hypothesis (line:333)",
-      "buffon_smooth_full: complete theorem statement (line:377)"
-    ],
-    "insights": [
-      "angular_average: \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| d\u03b8 = 2\u221a(a\u00b2+b\u00b2) \u2014 proved via Complex.arg (handles all quadrants)",
-      "Key identity: a sin \u03b8 + b cos \u03b8 = r sin(\u03b8 + \u03c6) where r=\u221a(a\u00b2+b\u00b2), \u03c6=arg(a+bi) \u2014 from Complex.cos_arg + Complex.sin_arg",
-      "linear_combination closes the rotation identity after rw [sin_add]",
-      "integral_abs_sin_shift: \u222b_0^\u03c0 |sin(\u03b8+c)| = 2 for any c \u2014 proved by substitution",
-      "hFubini as explicit hypothesis avoids needing to formalize full Fubini for this context",
-      "concreteSmoothExpectedCrossings = (1/\u03c0d) * \u222b_a^b \u222b_0^\u03c0 |\u03b3'(t).1 sin \u03b8 + \u03b3'(t).2 cos \u03b8| d\u03b8 dt"
-    ],
-    "mathlibGaps": [
-      "Banach indicatrix/co-area formula not in Mathlib (needed for full measure-theoretic proof)",
-      "Fubini for this specific double integral taken as hypothesis"
-    ],
-    "nextSteps": [
-      "Add annotations to gallery entry (currently 0 annotations)",
-      "Consider formalizing Banach indicatrix theorem from first principles"
-    ],
-    "markdown": "# Knowledge Base: buffons-needle-oq-01-oq-01\n\n**Status**: COMPLETE\n**Problem**: Can the smooth curve axiom in BuffonsNoodle.lean be proved from Mathlib's arc length theory?\n**Answer**: YES\n\n---\n\n## Session 2026-02-25 (Session 1) - COMPLETE: Angular Average Proof\n\n**Mode**: FRESH\n**Outcome**: completed\n\n### What I Did\n\n1. Read existing `BuffonsNeedleOQ01OQ01.lean` (previously created, untracked)\n2. Fixed build error: `rw [\u2190 h1, \u2190 h2]; ring` was rewriting inside integral integrands incorrectly\n   - Fix: replaced with `linear_combination -h1 - h2 + hshift + hpi + hsym`\n3. Verified build: 0 errors (only unused variable warnings)\n4. Created gallery entry: `src/data/proofs/buffons-needle-oq-01-oq-01/`\n5. Updated problem knowledge JSON to COMPLETE\n\n### Key Findings\n\n- **Angular average identity**: \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| d\u03b8 = 2\u221a(a\u00b2+b\u00b2) is the heart of the proof\n- **Complex.arg technique**: Using \u03c6 = arg(a+bi) gives a uniform proof for all (a,b) \u2260 (0,0)\n- **linear_combination required**: `linarith` fails for equality goals over opaque integral terms\n- **Fubini hypothesis**: The main theorem takes explicit `hFubini` hypothesis, proved by `angular_average`\n- **0 genuine sorries**: File compiles cleanly with 0 sorries\n\n### Theorems Proved (all 0 sorries)\n\n1. `integral_sin_zero_pi`: \u222b_0^\u03c0 sin \u03b8 d\u03b8 = 2\n2. `integral_abs_sin_zero_pi`: \u222b_0^\u03c0 |sin \u03b8| d\u03b8 = 2\n3. `integral_abs_sin_shift`: \u222b_0^\u03c0 |sin(\u03b8+c)| d\u03b8 = 2 for any c\n4. `angular_average`: \u222b_0^\u03c0 |a sin \u03b8 + b cos \u03b8| d\u03b8 = 2\u221a(a\u00b2+b\u00b2) (uses Complex.arg)\n5. `buffon_smooth_concrete`: E[crossings] = 2L/(\u03c0d) given Fubini\n6. `hFubini_from_angular_average`: proves Fubini hypothesis from `angular_average`\n7. `buffon_smooth_full`: complete Buffon-Barbier theorem\n\n### Files Modified\n\n- `proofs/Proofs/BuffonsNeedleOQ01OQ01.lean` (390 lines, 0 sorries)\n- `src/data/proofs/buffons-needle-oq-01-oq-01/` (gallery entry created)\n- `src/data/research/problems/buffons-needle-oq-01-oq-01.json` (marked COMPLETE)\n\n### Next Steps (for future sessions)\n\n- Integrate with BuffonsNoodle.lean by removing axioms and using concreteSmoothExpectedCrossings\n- Prove integrability hypothesis (hInnerInt) from smoothness of \u03b3 using HasDerivAt\n"
+    "progressSummary": "COMPLETE",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: buffons-needle-oq-01-oq-01\n\n**Status**: COMPLETE\n**Problem**: Can the smooth curve axiom in BuffonsNoodle.lean be proved from Mathlib's arc length theory?\n**Answer**: YES\n\n---\n\n## Session 2026-02-25 (Session 1) - COMPLETE: Angular Average Proof\n\n**Mode**: FRESH\n**Outcome**: completed\n\n### What I Did\n\n1. Read existing `BuffonsNeedleOQ01OQ01.lean` (previously created, untracked)\n2. Fixed build error: `rw [← h1, ← h2]; ring` was rewriting inside integral integrands incorrectly\n   - Fix: replaced with `linear_combination -h1 - h2 + hshift + hpi + hsym`\n3. Verified build: 0 errors (only unused variable warnings)\n4. Created gallery entry: `src/data/proofs/buffons-needle-oq-01-oq-01/`\n5. Updated problem knowledge JSON to COMPLETE\n\n### Key Findings\n\n- **Angular average identity**: ∫_0^π |a sin θ + b cos θ| dθ = 2√(a²+b²) is the heart of the proof\n- **Complex.arg technique**: Using φ = arg(a+bi) gives a uniform proof for all (a,b) ≠ (0,0)\n- **linear_combination required**: `linarith` fails for equality goals over opaque integral terms\n- **Fubini hypothesis**: The main theorem takes explicit `hFubini` hypothesis, proved by `angular_average`\n- **0 genuine sorries**: File compiles cleanly with 0 sorries\n\n### Theorems Proved (all 0 sorries)\n\n1. `integral_sin_zero_pi`: ∫_0^π sin θ dθ = 2\n2. `integral_abs_sin_zero_pi`: ∫_0^π |sin θ| dθ = 2\n3. `integral_abs_sin_shift`: ∫_0^π |sin(θ+c)| dθ = 2 for any c\n4. `angular_average`: ∫_0^π |a sin θ + b cos θ| dθ = 2√(a²+b²) (uses Complex.arg)\n5. `buffon_smooth_concrete`: E[crossings] = 2L/(πd) given Fubini\n6. `hFubini_from_angular_average`: proves Fubini hypothesis from `angular_average`\n7. `buffon_smooth_full`: complete Buffon-Barbier theorem\n\n### Files Modified\n\n- `proofs/Proofs/BuffonsNeedleOQ01OQ01.lean` (390 lines, 0 sorries)\n- `src/data/proofs/buffons-needle-oq-01-oq-01/` (gallery entry created)\n- `src/data/research/problems/buffons-needle-oq-01-oq-01.json` (marked COMPLETE)\n\n### Next Steps (for future sessions)\n\n- Integrate with BuffonsNoodle.lean by removing axioms and using concreteSmoothExpectedCrossings\n- Prove integrability hypothesis (hInnerInt) from smoothness of γ using HasDerivAt\n"
   },
   "approaches": [],
   "tags": [
@@ -71,8 +48,8 @@
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-02-25T18:34:57.919Z",
-  "lastUpdate": "2026-02-25T20:19:16.000Z",
+  "started": "2026-02-25T19:36:59.225Z",
+  "lastUpdate": "2026-02-25T19:36:59.225Z",
   "significance": 7,
   "tractability": 6
 }

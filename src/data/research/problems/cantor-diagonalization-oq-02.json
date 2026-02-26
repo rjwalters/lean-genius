@@ -1,91 +1,55 @@
 {
   "slug": "cantor-diagonalization-oq-02",
   "title": "Cardinality of the Set of All Countable Ordinals",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{The set } \\{\\alpha : \\text{Ordinal} \\mid \\alpha.\\text{card} \\leq \\aleph_0\\} \\text{ has cardinality } \\aleph_1",
-    "plain": "The set of all countable ordinals has cardinality ℵ₁, and a diagonal argument shows it cannot be enumerated by any countable sequence.",
-    "whyMatters": [
-      "Establishes ω₁ as the canonical representative of cardinality ℵ₁",
-      "Provides the ordinal version of Cantor's diagonal argument",
-      "Connects to the Continuum Hypothesis: ℵ₁ ≤ 2^ℵ₀"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "lt_omega1_iff_countable: α < ω₁ ↔ α.card ≤ ℵ₀ (via Cardinal.lt_ord)",
-      "omega1_isLimit: ω₁ is a limit ordinal (via Ordinal.card_succ + add_one_of_aleph0_le)",
-      "countable_sup_lt_omega1: iSup of countable sequence of countable ordinals is countable (via Ordinal.iSup_lt_ord + isRegular_aleph_one)",
-      "cantor_diagonal_countable_ordinals: for any f : ℕ → Ordinal with all f(n) < ω₁, ∃ β < ω₁ exceeding all f(n)",
-      "no_surjection_onto_countable_ordinals: no f : ℕ → Ordinal surjects onto all countable ordinals"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "COMPLETE: 0 axioms, 0 sorries, fully proved from Mathlib"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-26T00:00:00.000Z",
-    "iteration": 2,
-    "focus": "Complete - all axioms eliminated, fully proved.",
+    "phase": "NEW",
+    "since": "2026-02-25T14:11:52.127Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - proof complete.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Eliminated all 3 axioms from the previous axiom-based formalization. Key Mathlib bridges found: Cardinal.lt_ord for ordinal/cardinal threshold, Ordinal.iSup_lt_ord + isRegular_aleph_one for regularity argument, Ordinal.card_succ + add_one_of_aleph0_le for limit ordinal property.",
-    "builtItems": [
-      "lt_omega1_iff_countable proved via Cardinal.lt_ord in CantorDiagonalizationOQ02.lean:137",
-      "omega1_isLimit proved via Ordinal.card_succ in CantorDiagonalizationOQ02.lean:164",
-      "countable_sup_lt_omega1 proved via Ordinal.iSup_lt_ord in CantorDiagonalizationOQ02.lean:179"
-    ],
-    "insights": [
-      "Cardinal.lt_ord: o < c.ord ↔ o.card < c — the fundamental ordinal/cardinal correspondence eliminates the main characterization axiom in one step",
-      "Ordinal.iSup_lt_ord: iSup f < c when all values < c and #ι < c.cof — requires show iSup f < omega1 to convert from sSup (Set.range f) form",
-      "Ordinal.card_succ + add_one_of_aleph0_le: card(α+1) = card α + 1 ≤ ℵ₀ + 1 = ℵ₀ — proves ω₁ is a limit ordinal via cardinality argument",
-      "add_le_add hα le_rfl (not add_le_add_right hα 1) — correct form for cardinal addition on right",
-      "import Mathlib.SetTheory.Ordinal.Arithmetic needed for Ordinal.iSup_lt_ord to be accessible"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [
-    {
-      "id": "axiom-elimination",
-      "description": "Eliminate all 3 axioms using Mathlib's Cardinal.lt_ord, Ordinal.iSup_lt_ord, and Ordinal.card_succ",
-      "status": "success",
-      "result": "0 axioms, 0 sorries, fully proved"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "set-theory",
     "cardinal-arithmetic",
     "ordinals"
   ],
-  "relatedProofs": [
-    "cantor-diagonalization-oq-01",
-    "cantor-diagonalization"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Cardinal.lt_ord",
-      "Ordinal.iSup_lt_ord",
-      "Cardinal.isRegular_aleph_one",
-      "Ordinal.card_succ",
-      "Cardinal.add_one_of_aleph0_le"
-    ]
+    "mathlib": []
   },
   "started": "2026-02-25T19:36:59.225Z",
-  "lastUpdate": "2026-02-26T00:00:00.000Z",
+  "lastUpdate": "2026-02-25T19:36:59.225Z",
   "significance": 7,
   "tractability": 6
 }

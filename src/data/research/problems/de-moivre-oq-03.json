@@ -1,13 +1,13 @@
 {
-  "slug": "erdos-871",
-  "title": "Erdős #871: Partitioning Additive Bases of Order 2",
+  "slug": "de-moivre-oq-03",
+  "title": "Extend De Moivre to fractional exponents z^(p/q)",
   "phase": "NEW",
   "status": "active",
   "tier": "A",
-  "path": "fast",
+  "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Erdős #871: Partitioning Additive Bases of Order 2.",
+    "plain": "AVAILABLE.",
     "whyMatters": []
   },
   "knownResults": {
@@ -17,7 +17,7 @@
   },
   "currentState": {
     "phase": "NEW",
-    "since": "2026-01-23T08:04:56.547Z",
+    "since": "2026-02-26T05:12:41.987Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
@@ -37,12 +37,11 @@
   },
   "approaches": [],
   "tags": [
-    "erdos",
-    "disproved",
-    "additive-combinatorics",
-    "additive-bases",
-    "partitions",
-    "representation-function"
+    "complex-analysis",
+    "trigonometry",
+    "fractional-powers",
+    "intermediate",
+    "wiedijk"
   ],
   "relatedProofs": [],
   "references": {
@@ -50,8 +49,8 @@
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-01-23T08:04:56.547Z",
-  "lastUpdate": "2026-01-23T08:04:56.547Z",
+  "started": "2026-02-26T17:08:50.306Z",
+  "lastUpdate": "2026-02-26T17:08:50.306Z",
   "significance": 7,
-  "tractability": 7
+  "tractability": 5
 }

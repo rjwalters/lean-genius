@@ -1,132 +1,57 @@
 {
   "slug": "area-of-circle-oq-01-oq-03",
   "title": "Isoperimetric inequality: C^2 >= 4*pi*A with equality only for circles",
-  "phase": "SURVEYED",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∀ (γ : SmoothClosedCurve), 4 * π * γ.area ≤ γ.circumference ^ 2 ∧ (equality ↔ γ is a circle)",
-    "plain": "Among all smooth closed plane curves with given circumference C, the circle encloses the maximum area A. Equivalently: C² ≥ 4πA, with equality iff the curve is a circle.",
-    "whyMatters": [
-      "Fundamental result in classical geometry and calculus of variations",
-      "Connects Fourier analysis (Wirtinger's inequality) to geometry",
-      "Model problem for variational methods and geometric measure theory"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "C² = 4πA for circles (exact equality)",
-      "C² > 4πA for squares (π < 4)",
-      "4πA/C² = π/(n·tan(π/n)) for regular n-gons",
-      "The isoperimetric ratio is scale-invariant",
-      "Circle circumference is derivative of area w.r.t. radius"
-    ],
-    "open": [
-      "Full proof of isoperimetric_inequality_smooth from Wirtinger (sorry)"
-    ],
-    "goal": "Prove C² ≥ 4πA for all smooth closed curves using Wirtinger's inequality and Fourier analysis"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
-    "since": "2026-02-24T21:20:00.000Z",
+    "phase": "NEW",
+    "since": "2026-02-24T17:52:20.366Z",
     "iteration": 1,
-    "focus": "19 theorems proved; 2 axioms (wirtinger, equality_implies_circle); 1 sorry",
-    "blockers": [
-      "isoperimetric_inequality_smooth requires integral Cauchy-Schwarz + AM-GM assembly (~100 lines)"
-    ],
-    "nextAction": "Prove isoperimetric_inequality_smooth: apply wirtinger_inequality + integral Cauchy-Schwarz + isoperimetric_from_wirtinger_bounds",
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "19 theorems proved, 2 axioms (wirtinger_inequality, equality_implies_circle), 1 sorry. Added 2D Cauchy-Schwarz (cross_product_sq_le) and arithmetic kernel (isoperimetric_from_wirtinger_bounds). Proved ngon_limit_tendsto_circle using Real.hasDerivAt_tan + hasDerivAt_iff_tendsto_slope + filter composition.",
-    "builtItems": [
-      "circle_isoperimetric_equality: C² = 4πA for circles (proved)",
-      "square_isoperimetric_strict: C² > 4πA for squares (proved from π < 4)",
-      "regular_ngon_isoperimetric_ratio: ratio = π/(n·tan(π/n)) for n-gons (proved)",
-      "circumference_is_deriv_of_area: C = dA/dr (proved)",
-      "isoperimetric_area_bound: 4πA ≤ C² ⟹ A ≤ C²/(4π) (new, proved by rw+linarith)",
-      "minimum_circumference_for_area: 4πA ≤ C² ⟹ 2√(πA) ≤ C (new, proved via sqrt monotonicity)",
-      "isoperimetric_ratio_scale_invariant: ratio invariant under scaling (new, proved by field_simp+ring)",
-      "circle_maximizes_area: same-circumference curve has area ≤ circleArea r (new, proved)",
-      "non_circle_area_lt_circle: strict inequality version (new, proved)",
-      "cross_product_sq_le: 2D Cauchy-Schwarz |xv-yu|² ≤ (x²+y²)(u²+v²) proved by nlinarith",
-      "isoperimetric_from_wirtinger_bounds: arithmetic kernel of Hurwitz proof (fully proved)",
-      "ngon_limit_tendsto_circle: π/(n·tan(π/n)) → 1 proved via hasDerivAt_tan + tendsto_slope"
-    ],
-    "insights": [
-      "Wirtinger's inequality ∫f² ≤ ∫(f')² is the key ingredient; Mathlib has Fourier infrastructure but the assembly is non-trivial (~300 lines)",
-      "Mathlib has: fourierBasis, tsum_sq_fourierCoeff (Parseval), hasSum_fourier_series_L2",
-      "isoperimetric_inequality_smooth sorry: reducible to wirtinger_inequality via Cauchy-Schwarz + AM-GM for integrals",
-      "ngon_limit_tendsto_circle sorry: use Real.hasDerivAt_tan at 0 (with cos 0 ≠ 0) + tendsto_slope_zero, then compose with n↦π/n filter",
-      "circle_isoperimetric_equality is the pivot: rw [hC, circle_isoperimetric_equality r] eliminates circular reference in corollaries",
-      "sqrt monotonicity approach for minimum_circumference_for_area: rewrite 2√(πA) = √(4πA) and C = √(C²), then Real.sqrt_le_sqrt",
-      "Scale invariance proof: field_simp + ring handles λ² cancellations cleanly",
-      "mul_le_mul_left and mul_lt_mul_left with h4pi : 0 < 4 * π for dividing both sides"
-    ],
-    "mathlibGaps": [
-      "Integral Cauchy-Schwarz for MeasureTheory.intervalIntegral not readily assembled",
-      "Wirtinger's inequality not in Mathlib as a standalone theorem",
-      "Filter composition ℕ → nhdsWithin 0 for tan(x)/x → 1 requires careful elaboration"
-    ],
-    "nextSteps": [
-      "Prove ngon_limit_tendsto_circle: import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv, use Real.hasDerivAt_tan.tendsto_slope_zero, compose with tendsto_const_nhds for π/n → 0",
-      "Prove wirtinger_inequality: use fourierBasis, integrate term by term, apply Parseval",
-      "Prove isoperimetric_inequality_smooth from wirtinger_inequality via Cauchy-Schwarz"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Wirtinger-Fourier",
-      "description": "Prove wirtinger_inequality using Fourier series (Parseval), then derive isoperimetric_inequality_smooth via Cauchy-Schwarz and AM-GM",
-      "status": "axiomatized",
-      "sorries": 1,
-      "notes": "The Fourier infrastructure exists in Mathlib; assembly requires ~300 lines"
-    },
-    {
-      "name": "n-gon limit",
-      "description": "Show regular n-gon isoperimetric ratio → 1 via tan(x)/x → 1 as x → 0",
-      "status": "sorry",
-      "sorries": 1,
-      "notes": "HasDerivAt Real.tan at 0 gives slope → 1; compose with n↦π/n filter"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "analysis",
     "geometry",
     "calculus",
     "differentiation",
     "extension",
-    "seeker-selected",
-    "isoperimetric",
-    "fourier",
-    "wirtinger"
+    "seeker-selected"
   ],
-  "relatedProofs": [
-    "IsoperimetricTheorem.lean",
-    "AreaOfCircleOQ01OQ03.lean"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Hurwitz (1902): isoperimetric inequality via Fourier series",
-      "Osserman (1978): The isoperimetric inequality, Bull. AMS"
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "Real.hasDerivAt_tan",
-      "HasDerivAt.tendsto_slope_zero",
-      "Real.sqrt_le_sqrt",
-      "Real.pi_pos",
-      "fourierBasis",
-      "tsum_sq_fourierCoeff"
-    ]
+    "mathlib": []
   },
-  "started": "2026-02-24T21:02:04.785Z",
-  "lastUpdate": "2026-02-24T21:22:00.000Z",
+  "started": "2026-02-25T19:36:59.224Z",
+  "lastUpdate": "2026-02-25T19:36:59.224Z",
   "significance": 8,
   "tractability": 5
 }

@@ -1,8 +1,8 @@
 {
   "slug": "amgm-inequality-oq-03-oq-02",
-  "title": "Power Mean Limit: lim_{r\u21920} M_r = GM (Geometric Mean as a Limit)",
-  "phase": "BREAKTHROUGH",
-  "status": "graduated",
+  "title": "Power Mean Limit: lim_{r→0} M_r = GM (Geometric Mean as a Limit)",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,35 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 10 theorems proved, 0 sorries. Main theorem tendsto_powerMean_zero fully proved.",
-    "builtItems": [
-      "sum_weighted_rpow_pos: positivity of weighted sum when weights sum to 1 (PowerMeanLimitOQ.lean:54)",
-      "hasDerivAt_sum_weighted_rpow_zero: d/dr[sum w_i z_i^r]|_0 = sum w_i log(z_i) (PowerMeanLimitOQ.lean:83)",
-      "log_sum_weighted_rpow_zero: log(sum w_i z_i^0) = 0 when sum w_i = 1 (PowerMeanLimitOQ.lean:106)",
-      "hasDerivAt_log_sum_weighted_rpow: chain rule derivation for log(sum w_i z_i^r) (PowerMeanLimitOQ.lean:121)",
-      "tendsto_log_sum_div_rpow: (log sum w_i z_i^r)/r -> sum w_i log(z_i) (PowerMeanLimitOQ.lean:151)",
-      "geomMean_eq_exp_sum_log: GM = exp(sum w_i log z_i) (PowerMeanLimitOQ.lean:181)",
-      "powerMean_one_eq_arithMean: M_1 = AM (PowerMeanLimitOQ.lean:194)",
-      "powerMean_eq_exp_log: M_r = exp((1/r) * log(sum w_i z_i^r)) (PowerMeanLimitOQ.lean:207)",
-      "tendsto_powerMean_zero: MAIN THEOREM lim_{r->0} M_r = GM (PowerMeanLimitOQ.lean:231)",
-      "powerMean_neg1_le_geomMean_le_arithMean: HM <= GM <= AM (PowerMeanLimitOQ.lean:267)"
-    ],
-    "insights": [
-      "KEY API: hasDerivAt_iff_tendsto_slope connects HasDerivAt to slope limit f(r)/r -> f'(0) when f(0) = 0",
-      "Real.hasStrictDerivAt_const_rpow gives HasDerivAt (fun r => x^r) at any r for fixed x > 0",
-      "Chain rule via Real.hasDerivAt_log.comp gives HasDerivAt for log(sum(w_i * z_i^r))",
-      "rpow_def_of_pos rewrites both M_r and target to exp form, letting congr' close the main theorem",
-      "geomMean_eq_exp_sum_log: GM = exp(sum w_i log z_i) via log_prod + log_rpow (no exp_sum needed)",
-      "HM <= GM proved by AM-GM on inverses: GM(z^-1) = GM(z)^-1 and AM(z^-1) = 1/HM"
-    ],
-    "mathlibGaps": [
-      "No significant gaps - all needed infrastructure available in Mathlib",
-      "hasDerivAt_iff_tendsto_slope was the key missing connection (but it exists in Mathlib.Analysis.Calculus.Deriv.Slope)"
-    ],
-    "nextSteps": [
-      "Contribute tendsto_powerMean_zero to Mathlib (fills explicit TODO in MeanInequalitiesPow)",
-      "Combine with AmgmInequalityOQ03.lean for full M_r <= M_s proof for all r <= s"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
   "approaches": [],
   "tags": [
@@ -73,8 +49,8 @@
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-02-25T18:34:57.918Z",
-  "lastUpdate": "2026-02-25T20:15:21.000Z",
+  "started": "2026-02-25T19:36:59.224Z",
+  "lastUpdate": "2026-02-25T19:36:59.224Z",
   "significance": 6,
   "tractability": 6
 }

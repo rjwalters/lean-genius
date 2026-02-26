@@ -1,9 +1,9 @@
 {
-  "slug": "cramers-rule-oq-01",
-  "title": "Can the formalization include the Cayley-Hamilton theorem as a corollary of t...",
+  "slug": "ballot-problem-oq-03",
+  "title": "Higher-dimensional lattice path problems via reflection",
   "phase": "NEW",
   "status": "active",
-  "tier": "B",
+  "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
@@ -17,7 +17,7 @@
   },
   "currentState": {
     "phase": "NEW",
-    "since": "2026-02-21T19:21:07.133Z",
+    "since": "2026-02-26T05:12:41.985Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
@@ -37,13 +37,11 @@
   },
   "approaches": [],
   "tags": [
-    "seeker-selected",
-    "extension",
-    "challenging",
-    "linear-algebra",
-    "matrices",
-    "classic",
-    "intermediate"
+    "probability",
+    "combinatorics",
+    "lattice-paths",
+    "reflection-principle",
+    "wiedijk-100"
   ],
   "relatedProofs": [],
   "references": {
@@ -51,8 +49,8 @@
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-02-21T19:21:07.133Z",
-  "lastUpdate": "2026-02-21T19:21:07.133Z",
-  "significance": 6,
+  "started": "2026-02-26T17:08:50.304Z",
+  "lastUpdate": "2026-02-26T17:08:50.304Z",
+  "significance": 7,
   "tractability": 6
 }

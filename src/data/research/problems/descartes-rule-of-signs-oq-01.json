@@ -1,89 +1,41 @@
 {
   "slug": "descartes-rule-of-signs-oq-01",
   "title": "Full Formalization of Descartes Rule of Signs using Mathlib Analysis",
-  "phase": "IN_PROGRESS",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "For p : ℝ[X] with p ≠ 0: (1) p.roots.countP (0 < ·) ≤ p.signVariations [proved], (2) ∃ k : ℕ, p.roots.countP (0 < ·) + 2*k = p.signVariations [axiom, not in Mathlib]",
-    "plain": "Descartes' Rule of Signs: the number of positive real roots of a polynomial (counting multiplicity) is at most the number of sign changes in its coefficient sequence, with the same parity. The upper bound is in Mathlib; the parity result is not.",
-    "whyMatters": [
-      "Item #30 on Wiedijk's list of 100 theorems for formal mathematics",
-      "The parity result is the deeper half of the theorem — not yet in Mathlib"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "descartes_upper_bound: p.roots.countP (0 < ·) ≤ p.signVariations (from Mathlib)",
-      "signVariations_zero_poly, signVariations_monomial': base cases",
-      "signVariations_increase_by_pos_root: positive-root insertion increases sv",
-      "nonneg_coeffs_have_zero_variations: nonneg coefficients → sv = 0",
-      "signVariations_X_sub_C: sv(X - C c) = 1 for c > 0",
-      "descartes_tight_X_sub_C: tight Descartes bound for linear X - Cc",
-      "descartes_negative_roots: negative root bound via negSubst",
-      "signVariations_X_add_C_nonneg: sv(X + Cr) = 0 for r ≥ 0",
-      "signVariations_X_sub_C_nonpos: sv(X - Cr) = 0 for r ≤ 0",
-      "descartes_parity_X_sub_C_pos: parity confirmed for positive-root linear factor",
-      "descartes_parity_X_add_C_pos: parity confirmed for negative-root linear factor",
-      "descartes_parity_constant: parity confirmed for constants",
-      "descartes_parity_monomial: parity confirmed for monomials",
-      "descartes_parity_when_tight: parity trivially holds when sv = countP",
-      "descartes_parity_mod2: parity ↔ same residue mod 2"
-    ],
-    "open": [
-      "descartes_parity (axiom): ∃ k, countP + 2k = signVariations — the full parity result"
-    ],
-    "goal": "Prove the parity result: eliminate the axiom descartes_parity"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "IN_PROGRESS",
-    "since": "2026-02-25T10:20:45.272Z",
-    "iteration": 2,
-    "focus": "Added 8 parity infrastructure theorems. Full parity proof needs 2 stages: (1) alternating-sequence combinatorial parity and (2) IVT-based root parity.",
-    "blockers": [
-      "Parity result requires ~200 lines: alternating sequence lemma + IVT root count parity"
-    ],
-    "nextAction": "Prove the combinatorial alternating sequence parity lemma (Stage 1)",
+    "phase": "NEW",
+    "since": "2026-02-24T12:34:25.514Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "DescartesRuleOfSignsOQ01.lean has 0 sorries, 1 axiom (descartes_parity), 27 theorems total. The upper bound is fully proved via Mathlib. Added 8 new parity infrastructure theorems in session 2. The parity result requires two non-trivial stages.",
-    "builtItems": [
-      "proofs/Proofs/DescartesRuleOfSignsOQ01.lean: 27 theorems, 0 sorries, 1 axiom",
-      "Part VIII: signVariations_X_add_C_nonneg, signVariations_X_sub_C_nonpos, and 6 parity base cases"
-    ],
-    "insights": [
-      "Mathlib has roots_countP_pos_le_signVariations but NOT the parity result",
-      "signVariations is defined via coeffList → SignType.sign → filter nonzero → destutter → length-1",
-      "nonneg_coeffs_have_zero_variations proves sv=0 from ∀ i, 0 ≤ p.coeff i",
-      "zero_sv_no_positive_roots: if sv=0 then countP=0 (no explicit p≠0 needed via omega from bound)",
-      "simp only with coeff_X/coeff_C leaves if-expressions unresolved; use full simp for | 0 => case in match statements",
-      "Parity Stage 1: alternating sequence parity — (destutter l).length % 2 = (head ≠ last) as proposition",
-      "Parity Stage 2: IVT root parity — sign(p(0)) vs sign(leadingCoeff) determines parity of positive roots",
-      "negSubst (p ↦ p(-x)) converts negative roots to positive roots, enabling descartes_negative_roots"
-    ],
-    "mathlibGaps": [
-      "descartes_parity: ∃ k, countP(0<·, p.roots) + 2k = p.signVariations — ~200 lines needed"
-    ],
-    "nextSteps": [
-      "Stage 1: Prove (l.destutter (·≠·)).length % 2 = if l.getLast! = l.head! then 0 else 1 for alternating sign lists",
-      "Stage 2: Prove countP(0<·, p.roots) % 2 = if sign(p.coeff 0) = sign(p.leadingCoeff) then 0 else 1 via IVT",
-      "Combine Stage 1 + Stage 2 to close descartes_parity axiom"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "id": "mathlib-native",
-      "description": "Use Mathlib's Polynomial.signVariations API directly",
-      "status": "active",
-      "outcome": "Upper bound proved with 0 sorries. Parity remains as axiom."
-    }
-  ],
+  "approaches": [],
   "tags": [
     "polynomials",
     "algebra",
@@ -96,16 +48,10 @@
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Polynomial.roots_countP_pos_le_signVariations",
-      "Polynomial.signVariations",
-      "Polynomial.signVariations_le_eraseLead_succ",
-      "Polynomial.signVariations_neg",
-      "Polynomial.signVariations_C_mul"
-    ]
+    "mathlib": []
   },
-  "started": "2026-02-25T10:20:45.272Z",
-  "lastUpdate": "2026-02-25T12:00:00.000Z",
+  "started": "2026-02-25T19:36:59.226Z",
+  "lastUpdate": "2026-02-25T19:36:59.226Z",
   "significance": 7,
   "tractability": 5
 }
