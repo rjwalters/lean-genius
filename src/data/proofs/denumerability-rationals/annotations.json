@@ -2,73 +2,73 @@
   {
     "id": "denumerable-instance",
     "proofId": "denumerability-rationals",
-    "range": {
-      "startLine": 59,
-      "endLine": 63
-    },
+    "range": {"startLine": 59, "endLine": 63},
     "type": "concept",
     "title": "Mathlib's Denumerable Instance",
-    "content": "The `Denumerable ℚ` instance is provided by Mathlib. This typeclass asserts that ℚ is in bijection with ℕ, with explicit encoding/decoding functions.",
-    "significance": "key"
+    "content": "The Denumerable Q instance is provided by Mathlib. This typeclass asserts that Q is in bijection with N, with explicit encoding/decoding functions. Internally, Mathlib represents each rational p/q in lowest terms and encodes the pair (p, q) via the Cantor pairing function.",
+    "mathContext": "**Denumerable typeclass**: asserts a computable bijection $\\alpha \\simeq \\mathbb{N}$. **Hierarchy**: `Denumerable -> Encodable -> Countable`. **Cantor pairing**: $\\pi(a,b) = \\frac{(a+b)(a+b+1)}{2} + b$, a bijection $\\mathbb{N}^2 \\simeq \\mathbb{N}$.",
+    "significance": "key",
+    "relatedConcepts": ["Denumerable typeclass", "Encodable", "Countable", "Cantor pairing function"],
+    "prerequisites": ["Denumerable Q", "inferInstance", "Mathlib.Logic.Denumerable"]
   },
   {
     "id": "equiv-definition",
     "proofId": "denumerability-rationals",
-    "range": {
-      "startLine": 59,
-      "endLine": 63
-    },
+    "range": {"startLine": 59, "endLine": 63},
     "type": "definition",
-    "title": "The Explicit Bijection",
-    "content": "`Denumerable.eqv` gives an equivalence `ℚ ≃ ℕ`. We use `.symm` to get `ℕ ≃ ℚ`, which lets us enumerate rationals by natural numbers.",
-    "significance": "key"
+    "title": "The Explicit Bijection natEquivRat",
+    "content": "natEquivRat : N ≃ Q is defined as (Denumerable.eqv Q).symm. The .symm reverses direction: Denumerable.eqv Q gives Q ≃ N (encoding), while .symm gives N ≃ Q (decoding). The ≃ type carries both a forward function and an inverse with proof they are mutual inverses.",
+    "mathContext": "**natEquivRat**: $\\mathbb{N} \\simeq \\mathbb{Q}$ defined as $(\\text{Denumerable.eqv}\\,\\mathbb{Q})^{-1}$. **Equiv structure**: `{toFun : N -> Q, invFun : Q -> N, left_inv, right_inv}`. This is a constructive (computable) bijection, not merely an existence proof.",
+    "significance": "key",
+    "relatedConcepts": ["Equiv", "Denumerable.eqv", "Function.Bijective", "natEquivRat"],
+    "prerequisites": ["Equiv", "Denumerable.eqv", "Equiv.symm"]
   },
   {
     "id": "main-theorem",
     "proofId": "denumerability-rationals",
-    "range": {
-      "startLine": 67,
-      "endLine": 72
-    },
+    "range": {"startLine": 67, "endLine": 72},
     "type": "theorem",
     "title": "Cantor's Classical Statement",
-    "content": "This is the classical formulation: there exists a bijection f : ℕ ≃ ℚ. The proof extracts the bijection from Mathlib's Denumerable instance.",
-    "significance": "critical"
+    "content": "This is the classical formulation: there exists a bijection f : N ≃ Q. Despite Q being dense in R (between any two rationals lies another), Q has the same cardinality as N, the smallest infinite cardinal aleph-0.",
+    "mathContext": "**rationals_denumerable**: $\\exists f : \\mathbb{N} \\simeq \\mathbb{Q},\\, \\text{Bijective}\\, f$. **Proof**: `use (Denumerable.eqv Q).symm; exact (Denumerable.eqv Q).symm.bijective`. **Corollary**: $|\\mathbb{Q}| = |\\mathbb{N}| = \\aleph_0$. Density and cardinality are independent concepts.",
+    "significance": "key",
+    "relatedConcepts": ["rationals_denumerable", "Function.Bijective", "Equiv.bijective", "aleph-null", "Cantor 1874"],
+    "prerequisites": ["Denumerable.eqv", "Equiv.bijective", "Function.Bijective"]
   },
   {
     "id": "countable-corollary",
     "proofId": "denumerability-rationals",
-    "range": {
-      "startLine": 74,
-      "endLine": 78
-    },
-    "type": "lemma",
-    "title": "Countability Follows",
-    "content": "Every denumerable type is countable. The converse is false: finite types are countable but not denumerable.",
-    "significance": "supporting"
+    "range": {"startLine": 74, "endLine": 92},
+    "type": "concept",
+    "title": "Countability and Alternative Formulations",
+    "content": "Every denumerable type is countable. The converse is false: finite types are countable but not denumerable. This section provides four equivalent formulations: rationals_countable (Countable Q), exists_surjection_nat_to_rat, exists_injection_rat_to_nat, and rationals_infinite (Infinite Q). All follow from the single Denumerable instance via automatic typeclass coercions.",
+    "mathContext": "**Countable vs Denumerable**: `Countable alpha` means $|\\alpha| \\leq \\aleph_0$ (finite or countably infinite); `Denumerable alpha` means $|\\alpha| = \\aleph_0$ exactly. **Lean hierarchy**: `Denumerable -> Encodable -> Countable`. Surjection $\\mathbb{N} \\twoheadrightarrow \\mathbb{Q}$ (toFun), injection $\\mathbb{Q} \\hookrightarrow \\mathbb{N}$ (invFun).",
+    "significance": "supporting",
+    "relatedConcepts": ["Countable", "Infinite", "rationals_countable", "exists_surjection_nat_to_rat", "exists_injection_rat_to_nat"],
+    "prerequisites": ["Countable", "Infinite", "Denumerable", "inferInstance"]
   },
   {
     "id": "round-trip",
     "proofId": "denumerability-rationals",
-    "range": {
-      "startLine": 113,
-      "endLine": 115
-    },
+    "range": {"startLine": 113, "endLine": 115},
     "type": "insight",
-    "title": "Round-Trip Properties",
-    "content": "The encode and decode functions are mutual inverses. These proofs verify that no information is lost in the encoding.",
-    "significance": "key"
+    "title": "Round-Trip Properties: Constructive Witness of Bijectivity",
+    "content": "decode_encode proves decodeNatToRat(encodeRatToNat q) = q for all q : Q; encode_decode proves encodeRatToNat(decodeNatToRat n) = n for all n : N. Both are discharged by simp, applying Equiv.symm_apply_apply / Equiv.apply_symm_apply. These round-trip proofs certify the bijection is computable, not merely existential.",
+    "mathContext": "**decode_encode**: $\\forall q : \\mathbb{Q},\\, \\text{decode}(\\text{encode}\\,q) = q$. Proof: `simp` applies `Equiv.symm_apply_apply`. **encode_decode**: $\\forall n : \\mathbb{N},\\, \\text{encode}(\\text{decode}\\,n) = n$. Proof: `simp` applies `Equiv.apply_symm_apply`. These prove $f^{-1} \\circ f = \\text{id}$ and $f \\circ f^{-1} = \\text{id}$ explicitly.",
+    "significance": "technical",
+    "relatedConcepts": ["Equiv.symm_apply_apply", "Equiv.apply_symm_apply", "encodeRatToNat", "decodeNatToRat"],
+    "prerequisites": ["Equiv.symm", "simp", "Denumerable.eqv"]
   },
   {
     "id": "cardinality",
     "proofId": "denumerability-rationals",
-    "range": {
-      "startLine": 165,
-      "endLine": 169
-    },
+    "range": {"startLine": 165, "endLine": 169},
     "type": "theorem",
-    "title": "Cardinal Equality",
-    "content": "In cardinal arithmetic, |ℚ| = ℵ₀. This connects the type-theoretic notion (Denumerable) to the set-theoretic notion (cardinality).",
-    "significance": "key"
+    "title": "Cardinal Equality: |Q| = aleph-0",
+    "content": "card_rat_eq_aleph0 proves Cardinal.mk Q = Cardinal.aleph0 via Cardinal.mk_denumerable. card_rat_eq_card_nat proves |Q| = |N| by rewriting both sides to aleph-0. This connects the type-theoretic Denumerable typeclass to set-theoretic cardinality, bridging two foundational frameworks.",
+    "mathContext": "**card_rat_eq_aleph0**: `Cardinal.mk Q = Cardinal.aleph0` via `Cardinal.mk_denumerable Q`. **card_rat_eq_card_nat**: $|\\mathbb{Q}| = |\\mathbb{N}|$ by rewriting both to $\\aleph_0$. **Cardinal hierarchy**: $\\aleph_0 = |\\mathbb{N}| = |\\mathbb{Z}| = |\\mathbb{Q}|$. The continuum $2^{\\aleph_0} = |\\mathbb{R}|$ satisfies $2^{\\aleph_0} \\geq \\aleph_1$ (Continuum Hypothesis independent of ZFC).",
+    "significance": "key",
+    "relatedConcepts": ["Cardinal.mk", "Cardinal.aleph0", "Cardinal.mk_denumerable", "aleph-null", "card_rat_eq_aleph0"],
+    "prerequisites": ["Cardinal", "Cardinal.mk_denumerable", "Cardinal.aleph0"]
   }
 ]
