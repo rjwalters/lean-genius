@@ -12,6 +12,7 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Topology.Order.Basic
 import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Data.Real.Basic
@@ -2472,6 +2473,195 @@ Note: Uniqueness requires Sobolev space framework (Lions-Prodi theorem). -/
 theorem navier_stokes_2d_solved :
     ∀ sol : GlobalNSSolution2D, ∀ t > 0, ∃ bound > 0, sol.E t ≤ bound :=
   fun sol t ht => global_enstrophy_existence_bound sol t ht
+
+
+/-- **PROVED: Uniform Exponential Decay (2D with Poincaré)**
+    For any 0 ≤ s ≤ t, the enstrophy satisfies:
+      E(t) ≤ E(s) · exp(-2νμ₁(t - s))
+
+    This is the "restart" version of exponential decay: the exponential bound
+    holds between ANY two times s ≤ t, not just from t = 0.
+
+    Proof: The integrating factor g(u) = E(u) · exp(2νμ₁ · u) is antitone on
+    any interval [s, T] (same argument as for t = 0 case). Therefore
+    g(t) ≤ g(s), giving E(t) · exp(c·t) ≤ E(s) · exp(c·s),
+    hence E(t) ≤ E(s) · exp(-c·(t-s)). -/
+theorem enstrophy_uniform_decay (sol : GlobalNSSolution2DPoincare)
+    (s t : ℝ) (hs : 0 ≤ s) (hst : s ≤ t) :
+    sol.E t ≤ sol.E s * Real.exp (-2 * sol.ν * sol.mu₁ * (t - s)) := by
+  by_cases heq : s = t
+  · simp [heq, Real.exp_zero]
+  have hlt : s < t := lt_of_le_of_ne hst heq
+  set c := 2 * sol.ν * sol.mu₁ with hc_eq
+  have hc_pos : 0 < c := mul_pos (mul_pos (by norm_num) sol.ν_pos) sol.mu₁_pos
+  set T := t + 1 with hT_def
+  have hT_gt_s : s < T := lt_trans hlt (by linarith)
+  -- (1) g(u) = E(u) · exp(c · u) is continuous on [s, T]
+  have hg_cont : ContinuousOn (fun u => sol.E u * Real.exp (c * u)) (Icc s T) := by
+    apply ContinuousOn.mul
+    · exact sol.E_cont.mono (fun x hx => le_trans hs hx.1)
+    · exact (Real.continuous_exp.comp (continuous_const.mul continuous_id)).continuousOn
+  -- (2) g is differentiable on (s, T)
+  have hg_diff : DifferentiableOn ℝ (fun u => sol.E u * Real.exp (c * u))
+      (interior (Icc s T)) := by
+    rw [interior_Icc]
+    intro u ⟨hsu, _⟩
+    have hu_pos : 0 < u := lt_of_le_of_lt hs hsu
+    have hlin : HasDerivAt (fun x => c * x) c u := by
+      have h := (hasDerivAt_id u).const_smul (𝕜 := ℝ) c
+      simp [smul_eq_mul] at h; exact h
+    exact ((sol.enstrophy_ode u hu_pos).mul hlin.exp).differentiableAt.differentiableWithinAt
+  -- (3) g'(u) ≤ 0 on (s, T)
+  have hg'_nonpos : ∀ u ∈ interior (Icc s T),
+      deriv (fun u => sol.E u * Real.exp (c * u)) u ≤ 0 := by
+    rw [interior_Icc]
+    intro u ⟨hsu, _⟩
+    have hu_pos : 0 < u := lt_of_le_of_lt hs hsu
+    have hlin : HasDerivAt (fun x => c * x) c u := by
+      have h := (hasDerivAt_id u).const_smul (𝕜 := ℝ) c
+      simp [smul_eq_mul] at h; exact h
+    have hexp : HasDerivAt (fun x => Real.exp (c * x)) (Real.exp (c * u) * c) u := hlin.exp
+    have hg_has : HasDerivAt (fun x => sol.E x * Real.exp (c * x))
+        ((-2 * sol.ν * sol.P u) * Real.exp (c * u) +
+          sol.E u * (Real.exp (c * u) * c)) u :=
+      (sol.enstrophy_ode u hu_pos).mul hexp
+    rw [hg_has.deriv]
+    have hpoincare := sol.poincare u (le_of_lt hu_pos)
+    have hexp_nonneg := Real.exp_nonneg (c * u)
+    have hrearrange : (-2 * sol.ν * sol.P u) * Real.exp (c * u) +
+        sol.E u * (Real.exp (c * u) * c) =
+        (-2 * sol.ν * sol.P u + sol.E u * c) * Real.exp (c * u) := by ring
+    rw [hrearrange]
+    apply mul_nonpos_of_nonpos_of_nonneg _ hexp_nonneg
+    nlinarith [sol.ν_pos, sol.mu₁_pos]
+  -- (4) g is antitone on [s, T]
+  have hg_antitone : AntitoneOn (fun u => sol.E u * Real.exp (c * u)) (Icc s T) :=
+    antitoneOn_of_deriv_nonpos (convex_Icc s T) hg_cont hg_diff hg'_nonpos
+  -- (5) Apply antitone: g(t) ≤ g(s)
+  have hs_mem : s ∈ Icc s T := ⟨le_refl s, le_of_lt hT_gt_s⟩
+  have ht_mem : t ∈ Icc s T := ⟨hst, by linarith⟩
+  have hgt_le : sol.E t * Real.exp (c * t) ≤ sol.E s * Real.exp (c * s) :=
+    hg_antitone hs_mem ht_mem hst
+  -- (6) Conclude: E(t) ≤ E(s) · exp(-c(t-s))
+  calc sol.E t
+      = sol.E t * (Real.exp (c * t) * Real.exp (-(c * t))) := by
+          rw [← Real.exp_add, add_neg_cancel, Real.exp_zero, mul_one]
+      _ = sol.E t * Real.exp (c * t) * Real.exp (-(c * t)) := by ring
+      _ ≤ sol.E s * Real.exp (c * s) * Real.exp (-(c * t)) :=
+          mul_le_mul_of_nonneg_right hgt_le (Real.exp_nonneg _)
+      _ = sol.E s * (Real.exp (c * s) * Real.exp (-(c * t))) := by ring
+      _ = sol.E s * Real.exp (c * s + (-(c * t))) := by rw [← Real.exp_add]
+      _ = sol.E s * Real.exp (-2 * sol.ν * sol.mu₁ * (t - s)) := by
+          congr 2; rw [hc_eq]; ring
+
+
+/-- **PROVED: Enstrophy Ratio Bound**
+    The ratio E(t)/E(s) is bounded by the exponential decay factor
+    exp(-2νμ₁(t-s)) for any 0 < s ≤ t, when E(s) > 0.
+    This gives a multiplicative bound on enstrophy decay. -/
+theorem enstrophy_ratio_bound (sol : GlobalNSSolution2DPoincare)
+    (s t : ℝ) (hs : 0 < s) (hst : s ≤ t) (hEs : 0 < sol.E s) :
+    sol.E t / sol.E s ≤ Real.exp (-2 * sol.ν * sol.mu₁ * (t - s)) := by
+  have hbound := enstrophy_uniform_decay sol s t (le_of_lt hs) hst
+  have hexp_nn := Real.exp_nonneg (-2 * sol.ν * sol.mu₁ * (t - s))
+  -- div_le_of_le_mul₀ : 0 ≤ a → 0 ≤ b → c ≤ b * a → c / a ≤ b
+  have key : sol.E t ≤ Real.exp (-2 * sol.ν * sol.mu₁ * (t - s)) * sol.E s :=
+    calc sol.E t ≤ sol.E s * Real.exp (-2 * sol.ν * sol.mu₁ * (t - s)) := hbound
+      _ = Real.exp (-2 * sol.ν * sol.mu₁ * (t - s)) * sol.E s := by ring
+  exact div_le_of_le_mul₀ hEs.le hexp_nn key
+
+
+/-- **PROVED: Chained Exponential Decay**
+    For a 2D NS solution with Poincaré, and any 0 ≤ r ≤ s ≤ t:
+      E(t) ≤ E(r) · exp(-2νμ₁(t-r))
+    The overall decay from r to t is the same as applying the
+    intermediate decays r→s and s→t in sequence. -/
+theorem enstrophy_monotone_comparison (sol : GlobalNSSolution2DPoincare)
+    (r s t : ℝ) (hr : 0 ≤ r) (hrs : r ≤ s) (hst : s ≤ t) :
+    sol.E t ≤ sol.E r * Real.exp (-2 * sol.ν * sol.mu₁ * (t - r)) := by
+  have h1 := enstrophy_uniform_decay sol r s hr hrs
+  have h2 := enstrophy_uniform_decay sol s t (le_trans hr hrs) hst
+  have hexp_nn : 0 ≤ Real.exp (-2 * sol.ν * sol.mu₁ * (t - s)) := Real.exp_nonneg _
+  have key : sol.E r * Real.exp (-2 * sol.ν * sol.mu₁ * (s - r)) *
+      Real.exp (-2 * sol.ν * sol.mu₁ * (t - s)) =
+      sol.E r * Real.exp (-2 * sol.ν * sol.mu₁ * (t - r)) := by
+    rw [show sol.E r * Real.exp (-2 * sol.ν * sol.mu₁ * (s - r)) *
+        Real.exp (-2 * sol.ν * sol.mu₁ * (t - s)) =
+        sol.E r * (Real.exp (-2 * sol.ν * sol.mu₁ * (s - r)) *
+          Real.exp (-2 * sol.ν * sol.mu₁ * (t - s))) from by ring]
+    rw [← Real.exp_add]; congr 2; ring
+  calc sol.E t
+      ≤ sol.E s * Real.exp (-2 * sol.ν * sol.mu₁ * (t - s)) := h2
+    _ ≤ sol.E r * Real.exp (-2 * sol.ν * sol.mu₁ * (s - r)) *
+          Real.exp (-2 * sol.ν * sol.mu₁ * (t - s)) :=
+          mul_le_mul_of_nonneg_right h1 hexp_nn
+    _ = sol.E r * Real.exp (-2 * sol.ν * sol.mu₁ * (t - r)) := key
+
+
+/-- Extended 2D NS solution with continuous palinstrophy.
+    The palinstrophy P(t) = ∫|∇ω|² is continuous in t for regular solutions.
+    This additional regularity allows integrating the enstrophy ODE via FTC. -/
+structure GlobalNSSolution2DRegular extends GlobalNSSolution2D where
+  /-- P is continuous on [0, ∞) -/
+  P_cont : ContinuousOn P (Ici 0)
+
+
+/-- **PROVED: Integrated Enstrophy ODE (Fundamental Theorem of Calculus)**
+    The enstrophy identity E'(t) = -2νP(t) can be integrated to give:
+      ∫₀ᵀ (-2νP(t)) dt = E(T) - E(0)
+
+    This is the FTC applied to the enstrophy ODE. With P continuous,
+    the integral is well-defined and we get the exact relationship. -/
+theorem enstrophy_integral_identity (sol : GlobalNSSolution2DRegular)
+    (T : ℝ) (hT : T > 0) :
+    ∫ t in (0:ℝ)..T, -2 * sol.ν * sol.P t = sol.E T - sol.E 0 := by
+  apply intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le (le_of_lt hT)
+  · -- ContinuousOn E on Icc 0 T
+    exact sol.E_cont.mono (fun x hx => hx.1)
+  · -- HasDerivAt E (-2νP t) for t ∈ Ioo 0 T
+    intro t ht
+    exact sol.enstrophy_ode t ht.1
+  · -- IntervalIntegrable (-2νP) on [0, T]
+    apply ContinuousOn.intervalIntegrable
+    simp only [Set.uIcc_of_le (le_of_lt hT)]
+    exact continuousOn_const.mul (sol.P_cont.mono (fun x hx => hx.1))
+
+
+/-- **PROVED: Enstrophy Dissipation Formula**
+    The total enstrophy dissipated over [0, T] equals the integrated dissipation rate:
+      E(0) - E(T) = ∫₀ᵀ (2ν · P(t)) dt
+
+    Physical interpretation: the decrease in enstrophy equals the time-integral
+    of twice viscosity times palinstrophy. This is the exact accounting of
+    enstrophy lost to viscous dissipation.
+
+    Proof: Negate the FTC identity ∫₀ᵀ (-2νP) dt = E(T) - E(0). -/
+theorem enstrophy_dissipation_formula (sol : GlobalNSSolution2DRegular)
+    (T : ℝ) (hT : T > 0) :
+    sol.E 0 - sol.E T = ∫ t in (0:ℝ)..T, 2 * sol.ν * sol.P t := by
+  have hFTC := enstrophy_integral_identity sol T hT
+  -- hFTC: ∫ (-2νP) = E T - E 0
+  -- Negate: -(∫ (-2νP)) = E 0 - E T
+  -- And -(∫ (-2νP)) = ∫ (2νP) by integral_neg
+  have hneg : -(∫ t in (0:ℝ)..T, -2 * sol.ν * sol.P t) =
+      ∫ t in (0:ℝ)..T, 2 * sol.ν * sol.P t := by
+    rw [← intervalIntegral.integral_neg]
+    congr 1; ext t; ring
+  linarith [hneg]
+
+
+/-- **PROVED: Total Viscous Dissipation Bound**
+    The total viscous dissipation over [0, T] is bounded by initial enstrophy:
+      ∫₀ᵀ (2ν · P(t)) dt ≤ E(0)
+
+    This follows from E(T) ≥ 0 and the dissipation formula.
+    Physical meaning: you can never dissipate more enstrophy than you started with. -/
+theorem total_dissipation_bound (sol : GlobalNSSolution2DRegular)
+    (T : ℝ) (hT : T > 0) :
+    ∫ t in (0:ℝ)..T, 2 * sol.ν * sol.P t ≤ sol.E 0 := by
+  have hdiss := enstrophy_dissipation_formula sol T hT
+  have hET_nn : 0 ≤ sol.E T := sol.E_nonneg T (le_of_lt hT)
+  linarith
 
 
 end TwoDimensionalGlobal
