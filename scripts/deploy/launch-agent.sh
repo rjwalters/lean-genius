@@ -85,6 +85,12 @@ create_worktree() {
 
             git stash pop 2>/dev/null || true
         )
+
+        # Refresh .env for Cloudflare account pinning (gitignored, not in worktree)
+        if [[ -f "$REPO_ROOT/.env" ]]; then
+            cp "$REPO_ROOT/.env" "$WORKTREE_PATH/.env"
+        fi
+
         return 0
     fi
 
@@ -105,6 +111,14 @@ create_worktree() {
         rm -rf "$WORKTREE_PATH/proofs/.lake" 2>/dev/null || true
         ln -s "$REPO_ROOT/proofs/.lake" "$WORKTREE_PATH/proofs/.lake"
         print_info "Linked .lake for fast Lean builds"
+    fi
+
+    # Copy .env for Cloudflare account pinning (gitignored, won't be in worktree)
+    if [[ -f "$REPO_ROOT/.env" ]]; then
+        cp "$REPO_ROOT/.env" "$WORKTREE_PATH/.env"
+        print_info "Copied .env for Cloudflare account pinning"
+    else
+        print_warning "No .env found - deploys will fail without CLOUDFLARE_ACCOUNT_ID"
     fi
 
     # Install node dependencies in worktree
