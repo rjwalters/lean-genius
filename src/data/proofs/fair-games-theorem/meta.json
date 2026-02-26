@@ -52,35 +52,57 @@
       "title": "Introduction: The Fair Games Paradox",
       "startLine": 8,
       "endLine": 84,
-      "summary": "Overview: in a fair game, no betting strategy changes expected value. Explains why 'quit while ahead' is a fallacy and why casinos profit even from near-fair games."
+      "summary": "Overview: in a fair game, no betting strategy changes expected value. Explains why 'quit while ahead' is a fallacy and why casinos profit even from near-fair games.",
+      "mathContext": "Optional Stopping: $E[X_\\tau] = E[X_0]$ for bounded $\\tau$. A martingale has $E[X_{n+1} \\mid \\mathcal{F}_n] = X_n$."
     },
     {
       "id": "martingale-definition",
       "title": "Martingale Framework",
       "startLine": 88,
       "endLine": 161,
-      "summary": "Formal definitions of martingales (fair games), stopping times, and bounded strategies. isFairGame uses Mathlib's Martingale typeclass."
+      "summary": "Formal definitions of martingales (fair games), stopping times, and bounded strategies. isFairGame uses Mathlib's Martingale typeclass.",
+      "mathContext": "$\\text{Martingale}(f, \\mathcal{F}, \\mu)$: $E[f_{n+1} \\mid \\mathcal{F}_n] = f_n$ a.s. $\\text{IsStoppingTime}(\\mathcal{F}, \\tau)$: $\\{\\tau \\leq n\\} \\in \\mathcal{F}_n$. Bounded: $\\exists N, \\forall \\omega, \\tau(\\omega) \\leq N$."
     },
     {
       "id": "main-theorem",
       "title": "The Optional Stopping Theorem",
       "startLine": 163,
       "endLine": 266,
-      "summary": "E[f_τ] = E[f_π] for bounded stopping times τ ≤ π. Proved via sub- and supermartingale sandwich. Wiedijk #62."
+      "summary": "E[f_τ] = E[f_π] for bounded stopping times τ ≤ π. Proved via sub- and supermartingale sandwich. Wiedijk #62.",
+      "mathContext": "$\\int f_{\\tau} \\, d\\mu = \\int f_{\\pi} \\, d\\mu$ for $\\tau \\leq \\pi \\leq N$. Proof: submartingale gives $\\leq$, supermartingale gives $\\geq$, then $\\text{le\\_antisymm}$."
     },
     {
       "id": "applications",
       "title": "Applications: Betting Systems and Finance",
       "startLine": 350,
       "endLine": 427,
-      "summary": "Gambler's ruin probability, failure of martingale/Fibonacci betting systems, financial mathematics connections (Black-Scholes, Doob's inequality)."
+      "summary": "Gambler's ruin probability, failure of martingale/Fibonacci betting systems, financial mathematics connections (Black-Scholes, Doob's inequality).",
+      "mathContext": "Gambler's ruin: $P(\\text{success}) = W_0/(W_0 + a)$. Doob's inequality: $P(\\max_{n \\leq N} f_n \\geq \\lambda) \\leq E[f_N]/\\lambda$."
     },
     {
       "id": "historical",
       "title": "Historical Context",
       "startLine": 429,
       "endLine": 450,
-      "summary": "Timeline from Bachelier (1906) through Lévy (1934), Ville (1939), Doob (1953). Explains the name 'martingale' and Wiedijk's characterization."
+      "summary": "Timeline from Bachelier (1906) through Lévy (1934), Ville (1939), Doob (1953). Explains the name 'martingale' and Wiedijk's characterization.",
+      "mathContext": "Doob (1953): $E[X_\\tau] = E[X_0]$ for bounded $\\tau$. Ville (1939) coined 'martingale'. Bachelier (1900) applied to finance."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem",
+      "relationship": "related",
+      "description": "The ballot problem studies first-passage times of random walks, which are stopping times for the martingale of cumulative votes"
+    },
+    {
+      "targetId": "law-of-large-numbers",
+      "relationship": "related",
+      "description": "LLN shows averages converge to the mean; the fair games theorem shows stopping times cannot exploit deviations from the mean"
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "related",
+      "description": "Both are 'inevitability' results: infinitely many primes exist (Euclid) and ruin is certain in a fair game (Doob) despite infinite expected time"
     }
   ],
   "conclusion": {
