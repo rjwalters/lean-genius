@@ -52,11 +52,23 @@
     "proofId": "area-of-circle-oq-01-oq-03",
     "range": { "startLine": 226, "endLine": 280 },
     "type": "insight",
-    "title": "Two Sorries: Limit and Full Assembly",
-    "content": "The file has two sorries. (1) ngon_limit_tendsto_circle: the limit lim_{n→∞} π/(n·tan(π/n)) = 1 requires lim_{x→0} tan(x)/x = 1, which follows from L'Hôpital or the derivative of tan at 0. This should be provable in ~10 lines using Real.tendsto_sin_div_self and Real.cos_tendsto. (2) isoperimetric_inequality_smooth: this is the main theorem, which reduces to wirtinger_inequality but requires setting up integral Cauchy-Schwarz and AM-GM for the assembled bound. Once Wirtinger is proved (via Fourier analysis), this reduces to ~100 lines of standard analysis.",
-    "mathContext": "**Sorry 1** (ngon limit): $\\lim_{n\\to\\infty} \\frac{\\pi}{n\\tan(\\pi/n)} = 1$. Proof: $\\frac{\\tan x}{x} \\to 1$ as $x\\to 0$. In Mathlib: `Real.tendsto_tan_div_self` or derive from `Real.tendsto_sin_div` and `Real.tendsto_cos`. **Sorry 2** (isoperimetric for smooth curves): given Wirtinger, prove $4\\pi A \\leq L^2$ via: $A = \\frac{1}{2}|\\int (xy' - yx')| \\leq \\frac{1}{2}(\\|x\\|\\|y'\\| + \\|y\\|\\|x'\\|) \\leq \\frac{1}{2}(\\|x'\\|\\|y'\\| + \\|y'\\|\\|x'\\|) = \\|x'\\|\\|y'\\| \\leq \\frac{\\|x'\\|^2 + \\|y'\\|^2}{2} = \\frac{L^2}{4\\pi}$.",
+    "title": "Remaining Sorry: Full Assembly from Wirtinger",
+    "content": "The file has one remaining sorry: isoperimetric_inequality_smooth. This is the main theorem for general smooth curves, which reduces to wirtinger_inequality but requires setting up integral Cauchy-Schwarz and AM-GM for the assembled bound. Once Wirtinger is proved (via Fourier analysis), this reduces to ~100 lines of standard analysis. The arithmetic kernel (isoperimetric_from_wirtinger_bounds) is fully proved — once integral Cauchy-Schwarz is in place, the remaining sorry closes. Previously there was a second sorry for ngon_limit_tendsto_circle, but this has been proved using HasDerivAt + hasDerivAt_iff_tendsto_slope.",
+    "mathContext": "**Remaining sorry** (isoperimetric for smooth curves): given Wirtinger, prove $4\\pi A \\leq L^2$. The proof uses constant-speed parametrization: $\\int(x'^2+y'^2) = 2\\pi c^2$ exactly; Wirtinger gives $\\int(x^2+y^2) \\leq 2\\pi c^2$; integral C-S gives $S^2 \\leq 2\\pi \\cdot Sxy$; Green's + 2D C-S gives $2A \\leq c\\cdot S$; arithmetic kernel closes. **Proved ngon limit**: $\\lim_{n\\to\\infty} \\frac{\\pi}{n\\tan(\\pi/n)} = 1$ via `Real.hasDerivAt_tan` at 0 and `hasDerivAt_iff_tendsto_slope` — gives tan(h)/h → 1, compose with π/n → 0.",
     "significance": "technical",
-    "relatedConcepts": ["isoperimetric_inequality_smooth", "ngon_limit_tendsto_circle", "wirtinger_inequality", "Cauchy-Schwarz"],
-    "prerequisites": ["tendsto_tan_div_self", "MeasureTheory.inner_mul_le_norm_mul_norm", "intervalIntegral Cauchy-Schwarz"]
+    "relatedConcepts": ["isoperimetric_inequality_smooth", "isoperimetric_from_wirtinger_bounds", "wirtinger_inequality", "Cauchy-Schwarz"],
+    "prerequisites": ["MeasureTheory.inner_mul_le_norm_mul_norm", "intervalIntegral Cauchy-Schwarz", "wirtinger_inequality"]
+  },
+  {
+    "id": "ann-iso-oq03-06-arithmetic-kernel",
+    "proofId": "area-of-circle-oq-01-oq-03",
+    "range": { "startLine": 522, "endLine": 597 },
+    "type": "proof",
+    "title": "Arithmetic Kernel and 2D Cauchy-Schwarz: Fully Proved",
+    "content": "Part VIII proves two key algebraic/arithmetic ingredients of the Hurwitz isoperimetric proof. First, cross_product_sq_le establishes the 2D Cauchy-Schwarz inequality |xv-yu|² ≤ (x²+y²)(u²+v²) by a one-line nlinarith proof: the squared area of a parallelogram is at most the product of squared norms. Second, isoperimetric_from_wirtinger_bounds is the arithmetic kernel: given the Wirtinger bounds (Sxy ≤ 2πc², S² ≤ 2πSxy, 2A ≤ cS), it proves 4πA ≤ L² via a fully explicit calculation chain. Together, these theorems reduce the remaining sorry to just: (a) proving the integral form of the bounds holds for the actual curve (Wirtinger + integral Cauchy-Schwarz), and (b) Green's theorem for area.",
+    "mathContext": "**2D Cauchy-Schwarz**: $(xv-yu)^2 \\leq (x^2+y^2)(u^2+v^2)$. Proof: expand $(xu+yv)^2 \\geq 0$ and apply nlinarith. **Arithmetic kernel**: chain $S^2 \\leq 2\\pi Sxy \\leq 2\\pi(2\\pi c^2) = (2\\pi c)^2$, so $S \\leq 2\\pi c$. Then $2A \\leq cS \\leq 2\\pi c^2$, so $A \\leq \\pi c^2$, giving $4\\pi A \\leq 4\\pi^2 c^2 = (2\\pi c)^2 = L^2$. **Key insight**: the proof uses constant-speed $c$ (not arc-length but a fixed speed), so $\\int(x'^2+y'^2) = 2\\pi c^2$ EXACTLY — this is why we need constant-speed parametrization, not arbitrary speed.",
+    "significance": "key",
+    "relatedConcepts": ["cross_product_sq_le", "isoperimetric_from_wirtinger_bounds", "Cauchy-Schwarz", "Wirtinger inequality"],
+    "prerequisites": ["nlinarith", "Real.sqrt_le_sqrt", "mul_le_mul_of_nonneg_left"]
   }
 ]

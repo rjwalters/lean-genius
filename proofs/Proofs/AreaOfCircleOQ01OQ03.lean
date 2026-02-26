@@ -25,7 +25,7 @@
   - Parseval's identity: available (tsum_sq_fourierCoeff)
   - The assembled Wirtinger proof would be ~200-300 lines
 
-  What This File Proves (17 theorems, 2 axioms, 1 sorry):
+  What This File Proves (19 theorems, 2 axioms, 1 sorry):
   1. Equality for circles: C² = 4πA  (ring computation)
   2. Strict inequality for squares: C² > 4πA  (π < 4)
   3. The isoperimetric ratio: A/(C²/4π) and its circle value
@@ -89,7 +89,7 @@ theorem circle_isoperimetric_ratio (r : ℝ) (hr : 0 < r) :
     have hpi : π ≠ 0 := pi_ne_zero
     have hr' : r ≠ 0 := ne_of_gt hr
     positivity
-  field_simp
+  exact div_self h
 
 /-- Circumference is positive for positive radius. -/
 theorem circleCirc_pos (r : ℝ) (hr : 0 < r) : 0 < circleCirc r := by
@@ -130,21 +130,20 @@ theorem square_isoperimetric_strict (s : ℝ) (hs : 0 < s) :
     4 * π * squareArea s < squareCirc s ^ 2 := by
   unfold squareCirc squareArea
   have hs2 : 0 < s ^ 2 := sq_pos_of_pos hs
-  nlinarith [Real.pi_lt_four, hs2]
+  nlinarith [show π < 4 from by linarith [Real.pi_lt_3141593], hs2]
 
 /-- The isoperimetric ratio for a square is 4π/16 = π/4 < 1. -/
 theorem square_isoperimetric_ratio (s : ℝ) (hs : 0 < s) :
     4 * π * squareArea s / squareCirc s ^ 2 = π / 4 := by
   unfold squareCirc squareArea
   have hs' : s ≠ 0 := ne_of_gt hs
-  field_simp
-  ring
+  field_simp [hs']
 
 /-- The square ratio is less than 1, confirming it's suboptimal. -/
 theorem square_ratio_lt_one (s : ℝ) (hs : 0 < s) :
     4 * π * squareArea s / squareCirc s ^ 2 < 1 := by
   rw [square_isoperimetric_ratio s hs]
-  have hpi_lt : π < 4 := Real.pi_lt_four
+  have hpi_lt : π < 4 := by linarith [Real.pi_lt_3141593]
   linarith
 
 /-
@@ -172,12 +171,11 @@ theorem regular_ngon_isoperimetric_ratio (n : ℕ) (R : ℝ) (hn : 2 < n) (hR : 
     apply Real.sin_pos_of_pos_of_lt_pi
     · positivity
     · apply div_lt_self pi_pos
-      exact_mod_cast Nat.lt_of_lt_pred hn
-  have hn' : (n : ℝ) ≠ 0 := by exact_mod_cast Nat.pos_of_ne_zero (by omega)
+      exact_mod_cast (by omega : 1 < n)
+  have hn' : (n : ℝ) ≠ 0 := by exact_mod_cast (by omega : n ≠ 0)
   have hR' : R ≠ 0 := ne_of_gt hR
   unfold Real.tan
-  rw [div_div]
-  field_simp
+  field_simp [hsin, hn', hR']
   ring
 
 /-- As n → ∞, the regular n-gon approaches the circle (ratio → 1).
@@ -203,11 +201,11 @@ theorem ngon_limit_tendsto_circle :
   -- Step 2: π/n → 0 via atTop, staying ≠ 0 for n ≥ 1
   have hpi_nhds : Filter.Tendsto (fun n : ℕ => (π : ℝ) / n)
       Filter.atTop (nhdsWithin 0 {(0 : ℝ)}ᶜ) := by
-    apply Filter.tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within
-    · exact tendsto_const_div_atTop_nhds_zero_nat π
-    · filter_upwards [Filter.eventually_ge_atTop 1] with n hn
-      exact Set.mem_compl_singleton_iff.mpr
-        (div_ne_zero Real.pi_ne_zero (Nat.cast_ne_zero.mpr (by omega)))
+    rw [Filter.tendsto_nhdsWithin_iff]
+    refine ⟨tendsto_const_div_atTop_nhds_zero_nat π, ?_⟩
+    filter_upwards [Filter.eventually_ge_atTop 1] with n hn
+    exact Set.mem_compl_singleton_iff.mpr
+      (div_ne_zero Real.pi_ne_zero (Nat.cast_ne_zero.mpr (by omega)))
   -- Step 3: tan(π/n)/(π/n) → 1 by composition
   have h_comp : Filter.Tendsto (fun n : ℕ => Real.tan (π / n) / (π / n))
       Filter.atTop (nhds 1) :=
@@ -227,11 +225,9 @@ theorem ngon_limit_tendsto_circle :
   have hpn_pos : (0 : ℝ) < π / n := by positivity
   have hpn_lt : π / (n : ℝ) < π / 2 := by
     have h2n : (2 : ℝ) < n := by linarith
-    have hpi := Real.pi_pos
     have hn_pos : (0 : ℝ) < n := by linarith
-    -- π/2 - π/n = π*(n-2)/(2n) > 0 since n > 2 and π > 0
-    have key : π / 2 - π / n = π * (n - 2) / (2 * n) := by field_simp; ring
-    linarith [div_pos (by nlinarith : 0 < π * (n - 2)) (by positivity : 0 < 2 * n)]
+    rw [div_lt_div_iff hn_pos (by norm_num : (0 : ℝ) < 2)]
+    nlinarith [Real.pi_pos]
   have hcos_pos : 0 < Real.cos (π / n) :=
     Real.cos_pos_of_mem_Ioo
       ⟨by linarith [hpn_pos, div_pos Real.pi_pos (by norm_num : (0 : ℝ) < 2)], hpn_lt⟩
@@ -317,7 +313,6 @@ theorem circleGamma_circumference (r : ℝ) (hr : 0 < r) :
     rw [h1, Real.sqrt_sq hr.le]
   simp_rw [hsimp]
   rw [intervalIntegral.integral_const, smul_eq_mul, sub_zero]
-  ring
 
 /-- The area of circleGamma equals circleArea r (i.e., πr²).
     Proof: The Green's theorem integrand xy' - yx' = r²·(cos²t + sin²t) = r²,
@@ -421,7 +416,7 @@ theorem isoperimetric_area_bound (C A : ℝ)
   have h4pi : 0 < 4 * π := by linarith [Real.pi_pos]
   rw [← sub_nonneg]
   have hkey : C ^ 2 / (4 * π) - A = (C ^ 2 - 4 * π * A) / (4 * π) := by
-    field_simp; ring
+    field_simp
   rw [hkey]
   exact div_nonneg (by linarith) h4pi.le
 
@@ -446,7 +441,6 @@ theorem minimum_circumference_for_area (C A : ℝ) (hC : 0 < C) (hA : 0 < A)
 theorem isoperimetric_ratio_scale_invariant (C A s : ℝ) (hC : C ≠ 0) (hs : s ≠ 0) :
     4 * π * (s ^ 2 * A) / (s * C) ^ 2 = 4 * π * A / C ^ 2 := by
   field_simp [hs, hC]
-  ring
 
 /-- The circle achieves the maximum area for given circumference.
     Among all smooth closed curves with circumference C = 2πr, the circle of radius r
@@ -492,6 +486,8 @@ theorem non_circle_area_lt_circle (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve
 15. `isoperimetric_ratio_scale_invariant` — ratio 4πA/C² invariant under scaling [ring]
 16. `circle_maximizes_area` — if C = 2πr and 4πA ≤ C², then A ≤ πr²
 17. `non_circle_area_lt_circle` — strict: 4πA < C² ⟹ A < circleArea r
+18. `cross_product_sq_le` — 2D CS: |xv-yu|² ≤ (x²+y²)(u²+v²) [algebraic, nlinarith]
+19. `isoperimetric_from_wirtinger_bounds` — arithmetic kernel: from Wirtinger bounds to 4πA ≤ L²
 
 ### Axioms (2):
 1. `wirtinger_inequality` — ∫f² ≤ ∫(f')² for periodic mean-zero f
@@ -499,12 +495,17 @@ theorem non_circle_area_lt_circle (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve
 2. `equality_implies_circle` — equality iff circle
    (Proof: equality in Wirtinger iff f = a cos + b sin)
 
-### 1 Sorry (reduced from 2):
+### 1 Sorry:
 1. `isoperimetric_inequality_smooth` — reducible to wirtinger_inequality
-   (needs integral Cauchy-Schwarz + AM-GM assembly, ~100 lines)
-   Proof sketch: shift to zero mean; Cauchy-Schwarz + Wirtinger give
-   2A ≤ 2√(∫x'²)√(∫y'²); AM-GM gives A ≤ (∫x'²+∫y'²)/2;
-   arc-length C-S gives L² ≥ 2π(∫x'²+∫y'²); combining: 4πA ≤ L²
+   (needs integral Cauchy-Schwarz assembly, ~100 lines)
+   Correct proof (for constant-speed curves): shift x, y to zero mean;
+   constant speed c gives ∫(x'²+y'²) = 2πc² EXACTLY (equality, not ineq);
+   Wirtinger gives ∫(x²+y²) ≤ 2πc²; integral C-S gives ∫√(x²+y²) ≤ 2πc;
+   Green's + 2D C-S gives 2A ≤ c·∫√(x²+y²) ≤ 2πc²; so 4πA ≤ L².
+   NOTE: The naive variable-speed route (arc-length CS L² ≤ 2π∫(x'²+y'²))
+   gives an upper bound on L², not a lower bound — wrong direction! Always
+   use constant-speed parametrization (reparametrize by arc length).
+   See isoperimetric_from_wirtinger_bounds for the arithmetic kernel.
 
 ### Proof of ngon_limit_tendsto_circle:
 - `Real.hasDerivAt_tan (cos 0 ≠ 0) : HasDerivAt tan (1/cos²0) 0 = HasDerivAt tan 1 0`
@@ -518,6 +519,77 @@ which in turn follows from Fourier analysis. Mathlib has the Fourier infrastruct
 (fourierBasis, tsum_sq_fourierCoeff, fourierCoeffOn_of_hasDerivAt) needed to prove
 Wirtinger, making this a tractable ~300-line formalization once assembled.
 -/
+
+/-
+## Part VIII: Arithmetic Foundations for the Isoperimetric Proof
+
+Two key ingredients for the Hurwitz 1901 proof:
+1. The 2D Cauchy-Schwarz inequality (purely algebraic)
+2. The arithmetic kernel that assembles Wirtinger bounds into 4πA ≤ L²
+
+These are fully proved here, reducing the isoperimetric inequality to:
+- The wirtinger_inequality axiom (Fourier proof, ~200 lines)
+- Integral Cauchy-Schwarz (standard Mathlib, ~20 lines once assembled)
+- Green's formula with 2D C-S (combining cross_product_sq_le, ~30 lines)
+-/
+
+/-- **2D Cauchy-Schwarz** (algebraic): |x·v - y·u|² ≤ (x²+y²)(u²+v²).
+    Equivalently, the squared area of the parallelogram spanned by (x,y) and (u,v)
+    is at most the product of their squared norms (squared magnitudes).
+    Proof: expand the trivially non-negative (x·u + y·v)².
+    Used in the isoperimetric proof: |xy'-yx'| ≤ √(x²+y²) · |γ'|. -/
+theorem cross_product_sq_le (x y u v : ℝ) :
+    (x * v - y * u) ^ 2 ≤ (x ^ 2 + y ^ 2) * (u ^ 2 + v ^ 2) := by
+  nlinarith [sq_nonneg (x * u + y * v)]
+
+/-- **Arithmetic kernel**: Assembles Wirtinger bounds into the isoperimetric inequality 4πA ≤ L².
+
+This is the final step of Hurwitz's 1901 proof, after the analytical ingredients are assembled.
+The argument is purely arithmetic — no integrals or measures appear.
+
+**Inputs** (the assembled analysis for a constant-speed zero-mean curve):
+- `L = 2πc`      : circumference from constant-speed c parametrization
+- `S ≥ 0`        : S = ∫₀²π √(x²+y²) dt
+- `Sxy ≥ 0`      : Sxy = ∫₀²π (x²+y²) dt
+- `2A ≤ c·S`     : from Green's theorem: 2A = |∫(xy'-yx')| ≤ ∫|xy'-yx'| ≤ c·∫√(x²+y²)
+                   (using 2D Cauchy-Schwarz: |xy'-yx'| ≤ √(x²+y²)·|(x',y')| = c·√(x²+y²))
+- `S² ≤ 2π·Sxy`  : integral Cauchy-Schwarz: (∫₀²π f)² ≤ (∫₀²π 1)·(∫₀²π f²) with f=√(x²+y²)
+- `Sxy ≤ 2πc²`   : from Wirtinger: ∫(x²+y²) ≤ ∫(x'²+y'²) = ∫c² = 2πc²
+                   (constant speed gives ∫(x'²+y'²) = 2πc² EXACTLY, not just a bound!)
+
+**Proof chain**: S² ≤ 2π·Sxy ≤ 2π·2πc² = (2πc)² → S ≤ 2πc
+  → 2A ≤ c·S ≤ 2πc² → A ≤ πc² → 4πA ≤ 4π²c² = (2πc)² = L² ✓ -/
+theorem isoperimetric_from_wirtinger_bounds
+    (A L c S Sxy : ℝ)
+    (hc : 0 < c)
+    (hcirc : L = 2 * π * c)
+    (hS_nn : 0 ≤ S)
+    (harea : 2 * A ≤ c * S)
+    (hCS : S ^ 2 ≤ 2 * π * Sxy)
+    (hWirt : Sxy ≤ 2 * π * c ^ 2) :
+    4 * π * A ≤ L ^ 2 := by
+  have hpi : (0 : ℝ) < π := Real.pi_pos
+  have h2pic_pos : (0 : ℝ) < 2 * π * c := by positivity
+  -- Step 1: S² ≤ (2πc)²  (chain the Wirtinger bounds)
+  have hS2 : S ^ 2 ≤ (2 * π * c) ^ 2 :=
+    calc S ^ 2 ≤ 2 * π * Sxy := hCS
+         _ ≤ 2 * π * (2 * π * c ^ 2) := by
+             apply mul_le_mul_of_nonneg_left hWirt; linarith
+         _ = (2 * π * c) ^ 2 := by ring
+  -- Step 2: S ≤ 2πc  (from S ≥ 0, S² ≤ (2πc)², 2πc ≥ 0 — via sqrt monotonicity)
+  have hS_bound : S ≤ 2 * π * c := by
+    have h := Real.sqrt_le_sqrt hS2
+    rwa [Real.sqrt_sq hS_nn, Real.sqrt_sq h2pic_pos.le] at h
+  -- Step 3: 2A ≤ 2πc² and then 4πA ≤ L²
+  have h1 : c * S ≤ 2 * π * c ^ 2 :=
+    calc c * S ≤ c * (2 * π * c) := mul_le_mul_of_nonneg_left hS_bound (le_of_lt hc)
+         _ = 2 * π * c ^ 2 := by ring
+  have hA : A ≤ π * c ^ 2 := by linarith
+  have h2 : 4 * π * A ≤ (2 * π * c) ^ 2 :=
+    calc 4 * π * A ≤ 4 * π * (π * c ^ 2) :=
+              mul_le_mul_of_nonneg_left hA (by linarith)
+         _ = (2 * π * c) ^ 2 := by ring
+  rw [hcirc]; exact h2
 
 end IsoperimetricOQ
 

@@ -20,7 +20,7 @@
       "isoperimetric"
     ],
     "badge": "open",
-    "sorries": 2,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Real.pi_lt_four",
@@ -44,7 +44,9 @@
       "Regular n-gon isoperimetric ratio: 4πA/C² = π/(n·tan(π/n))",
       "Connection to OQ01: C = dA/dr links to the circumference-as-derivative result",
       "Proof architecture: Wirtinger's inequality implies isoperimetric via Cauchy-Schwarz + AM-GM",
-      "SmoothClosedCurve structure for parametric curves in ℝ²"
+      "SmoothClosedCurve structure for parametric curves in ℝ²",
+      "2D Cauchy-Schwarz (algebraic): |xv-yu|² ≤ (x²+y²)(u²+v²) proved via nlinarith",
+      "Arithmetic kernel of Hurwitz proof: from Wirtinger bounds (Sxy≤2πc², S²≤2πSxy, 2A≤cS) to 4πA≤L² — all inequalities fully proved"
     ],
     "dateAdded": "02/24/26"
   },
