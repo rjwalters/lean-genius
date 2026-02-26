@@ -1,0 +1,106 @@
+{
+  "slug": "cramers-rule-oq-02",
+  "title": "Complexity Analysis: Cramer's Rule vs Gaussian Elimination",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "∀ n ≥ 4, gaussMuls n < cramersRuleMuls n, and ∀ K, ∃ N, ∀ n ≥ N, K * gaussMuls n < cramersRuleMuls n",
+    "plain": "Gaussian elimination (O(n³) multiplications) is strictly more efficient than Cramer's rule ((n+1)·n·n! multiplications), with the gap growing super-polynomially.",
+    "whyMatters": [
+      "Explains why Cramer's rule is impractical for large systems despite being theoretically elegant",
+      "The factorial growth n! vs polynomial n³ gap is a canonical example of exponential vs polynomial complexity",
+      "The formal proof chain (factorial_gt_sq → gauss_beats_cramer → cramer_asymptotically_worse) is an instructive exercise in asymptotic analysis in Lean"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "factorial_gt_sq: n² < n! for all n ≥ 4 (by induction, nlinarith)",
+      "gauss_beats_cramer: gaussMuls n < cramersRuleMuls n for n ≥ 4",
+      "cramer_asymptotically_worse: ∀ K, ∃ N, ∀ n ≥ N, K * gaussMuls n < cramersRuleMuls n",
+      "complexity_threshold: Gaussian beats Cramer for all n ≥ 1 (small cases by native_decide)",
+      "cramer_vs_gauss_summary: master summary theorem combining all results",
+      "Concrete speedup ratios: 7× at n=4, 28× at n=5, 140× at n=6"
+    ],
+    "open": [],
+    "goal": "Proved: Full complexity comparison with asymptotic superiority, 0 sorries, 0 axioms."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-02-26T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Complete. 22 declarations (defs + lemmas + theorems), 0 sorries, 0 axioms.",
+    "blockers": [],
+    "nextAction": "No further action needed.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: CramersRuleOQ02.lean proves Gaussian elimination is asymptotically superior to Cramer's rule. Key lemma chain: factorial_gt_sq (n² < n! for n ≥ 4, by strong induction with nlinarith) → gauss_beats_cramer (for n ≥ 4) → cramer_asymptotically_worse (for any K, eventually K-times faster). Gallery entry complete with meta.json, annotations.json, index.ts, tacticStates.json.",
+    "builtItems": [
+      "CramersRuleOQ02.lean: 22 declarations (3 defs + lemmas + theorems), 0 sorries, 0 axioms",
+      "factorial_gt_sq: n² < n! for n ≥ 4 (induction + nlinarith [Nat.factorial_pos m])",
+      "gauss_beats_cramer: n³ < (n+1)·n·n! for n ≥ 4 (2-step via factorial_gt_sq + nlinarith)",
+      "cramer_asymptotically_worse: ∀ K, ∃ N (= max 4 K), ∀ n ≥ N, K·n³ < (n+1)·n·n!",
+      "Gallery entry: meta.json (7 sections), annotations.json (4 annotations), index.ts, tacticStates.json"
+    ],
+    "insights": [
+      "nlinarith [Nat.factorial_pos n] is sufficient to close n³ = n·n² < n·n! ≤ (n+1)·n·n! once factorial_gt_sq is in context",
+      "Strong induction in Lean: use `rcases Nat.lt_or_eq_of_le hn with h | h` to split inductive/base case",
+      "The threshold N = max 4 K works: guarantees both n ≥ 4 (for factorial bound) and K ≤ n (for K·n² ≤ n·n²)",
+      "At n=6: cramersRuleMuls 6 = 30240 = 140 × gaussMuls 6 exactly (ratio is exactly 140); cramer_much_worse_at_6 uses 139 to stay strict",
+      "native_decide handles all concrete comparisons (cramer_vs_gauss_small, complexity_threshold base cases) instantly"
+    ],
+    "mathlibGaps": [
+      "No general factorial-vs-polynomial comparison theorem in Mathlib — had to prove factorial_gt_sq from scratch",
+      "No formal Big-O or algorithmic complexity framework in Mathlib — complexity comparison via concrete inequality"
+    ],
+    "nextSteps": [
+      "COMPLETED — no essential next steps",
+      "Optional: extend to LU decomposition (O(n³/3) with smaller constant than n³)",
+      "Optional: prove analogous result for computing the inverse via adjugate"
+    ]
+  },
+  "approaches": [
+    {
+      "id": "approach-1",
+      "name": "Factorial growth via strong induction",
+      "status": "completed",
+      "description": "Prove n² < n! by strong induction with nlinarith, then derive complexity comparison as a chain of inequalities.",
+      "outcome": "Success: 22 declarations, 0 sorries, 0 axioms"
+    }
+  ],
+  "tags": [
+    "algorithms",
+    "computational-complexity",
+    "linear-algebra",
+    "factorial-growth",
+    "gaussian-elimination",
+    "combinatorics",
+    "beginner",
+    "classic"
+  ],
+  "relatedProofs": [
+    "cramers-rule",
+    "cramers-rule-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Cramer%27s_rule#Efficiency"
+    ],
+    "mathlib": [
+      "Nat.factorial_pos",
+      "Nat.factorial_succ",
+      "Nat.lt_or_eq_of_le"
+    ]
+  },
+  "started": "2026-02-26T20:40:00.000Z",
+  "lastUpdate": "2026-02-26T21:00:00.000Z",
+  "significance": 5,
+  "tractability": 9
+}

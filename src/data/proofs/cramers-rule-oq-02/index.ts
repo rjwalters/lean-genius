@@ -1,6 +1,7 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, TacticState } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
+import tacticStatesJson from './tacticStates.json'
 import sourceRaw from '../../../../proofs/Proofs/CramersRuleOQ02.lean?raw'
 
 const meta = metaJson as unknown as {
@@ -27,10 +28,12 @@ export const cramersRuleOQ02Proof: Proof = {
 }
 
 export const cramersRuleOQ02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const cramersRuleOQ02TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const cramersRuleOQ02Data: ProofData = {
   proof: cramersRuleOQ02Proof,
   annotations: cramersRuleOQ02Annotations,
+  tacticStates: cramersRuleOQ02TacticStates,
 }
 
 export default cramersRuleOQ02Data
