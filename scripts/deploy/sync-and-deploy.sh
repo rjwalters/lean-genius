@@ -571,12 +571,18 @@ deploy_website() {
     print_header "Deploying to Cloudflare"
 
     if $DRY_RUN; then
-        echo "  Would run: pnpm run deploy"
+        echo "  Would run: wrangler pages deploy dist (with ASCII-safe commit message)"
         return 0
     fi
 
-    print_info "Running pnpm run deploy..."
-    if pnpm run deploy 2>&1 | tail -10; then
+    # Use ASCII-safe commit message to avoid Cloudflare API rejecting Unicode math symbols
+    local commit_hash
+    commit_hash=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+    local safe_commit_msg
+    safe_commit_msg=$(git log -1 --format="%s" 2>/dev/null | LC_ALL=C tr -cd '[:print:]' | cut -c1-100 || echo "deploy $commit_hash")
+
+    print_info "Running wrangler pages deploy (commit: $commit_hash)..."
+    if wrangler pages deploy dist --project-name=lean-genius --commit-dirty=true --commit-hash="$commit_hash" --commit-message="$safe_commit_msg" 2>&1 | tail -10; then
         print_success "Deployment completed"
 
         # Create completion signal for daemon stats tracking
