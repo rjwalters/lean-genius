@@ -1,8 +1,8 @@
 {
   "slug": "buffons-needle-oq-01",
   "title": "Generalizations to curved needles",
-  "phase": "NEW",
-  "status": "surveyed",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
+    "phase": "COMPLETE",
     "since": "2026-02-21T19:21:07.131Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Proved smooth Buffon-Barbier theorem for C¹ curves with 0 sorries, 0 axioms",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,15 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Gallery complete. Polygonal case proved, smooth case axiomatized. 0 sorries.",
+    "progressSummary": "COMPLETE: BuffonsNeedleOQ01.lean proves smooth Buffon-Barbier for C¹ curves. 0 sorries, 0 axioms.",
     "insights": [
       "BuffonsNoodle.lean has 19 theorems, 2 axioms, 0 sorries, ~430 lines",
-      "Polygonal case FULLY PROVED: buffon_noodle_polygon via Finset.mul_sum (factor out 2/(\u03c0d))",
+      "Polygonal case FULLY PROVED: buffon_noodle_polygon via Finset.mul_sum (factor out 2/(πd))",
       "Shape independence proved: two polygons with same total length have identical expected crossings",
-      "Smooth case (C\u00b9 curves) axiomatized: smoothExpectedCrossings + buffon_noodle_smooth_eq",
+      "Smooth case (C¹ curves) axiomatized: smoothExpectedCrossings + buffon_noodle_smooth_eq",
       "Smooth case needs kinematic measures on line space - not in Mathlib",
       "Approximation limit theorem proved (convergence via ContinuousAt.tendsto)",
-      "Concrete applications proved: circle 4r/d, square 8s/(\u03c0d), regular n-gon 2ns/(\u03c0d)"
+      "Concrete applications proved: circle 4r/d, square 8s/(πd), regular n-gon 2ns/(πd)",
+      "KEY INSIGHT: ContDiff ℝ 1 γ → Continuous (deriv f) via ContDiff.continuous_fderiv + clm_apply",
+      "angular_average identity reduces inner integral to 2√(dx²+dy²) — a continuous function",
+      "Continuous functions are IntervalIntegrable — closes the final gap from OQ01OQ01",
+      "All hypotheses of buffon_smooth_full derived from ContDiff ℝ 1 γ alone"
     ],
     "builtItems": [
       "PolygonalNoodle structure with n segments and totalLength in BuffonsNoodle.lean",
@@ -49,15 +53,18 @@
       "smooth_shape_independence: proved from axiom",
       "buffon_noodle_approx_limit: convergence theorem",
       "circle_expected_crossings, square_expected_crossings, regular_polygon_crossings",
-      "Gallery: 9 annotations, meta.json sorries=0, listing fixed 1\u21920"
+      "Gallery: 9 annotations, meta.json sorries=0, listing fixed 1→0",
+      "BuffonsNeedleOQ01.lean: 11 theorems, 0 sorries, 0 axioms",
+      "contDiff_one_continuous_deriv: C¹ implies Continuous (deriv f) for any Banach-valued f",
+      "buffon_smooth_of_contDiff: complete Buffon-Barbier for C¹ curves",
+      "smooth_shape_independence, straight_line_crossings, crossings_tendsto_zero: corollaries proved"
     ],
     "mathlibGaps": [
-      "Kinematic measures on the space of lines in \u211d\u00b2 needed for full smooth case",
-      "Formal connection between arc length approximation and crossing count continuity"
+      "Kinematic measures on lines (for full Cauchy-Crofton — not needed for this proof)"
     ],
     "nextSteps": [
-      "Gallery is complete with 9 annotations - documented for reference",
-      "Future: when Mathlib gets kinematic measures, smooth axiom can be replaced with proof"
+      "COMPLETE — gallery updated, PR created",
+      "Future: prove Cauchy-Crofton formula for arbitrary line measures"
     ]
   },
   "approaches": [],
