@@ -1,0 +1,75 @@
+{
+  "slug": "bezout-identity-oq-04",
+  "title": "Extend Diophantine criterion to characterize GCD structure",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-26T05:12:41.986Z",
+    "iteration": 1,
+    "focus": "All 8 theorems proved, zero sorries, gallery entry complete",
+    "blockers": [],
+    "nextAction": "Deploy to gallery",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Full proof of GCD structure. 8 theorems proved: gcd_divides_linear_combination, coprime_linear_null_space, diophantine_complete_parameterization, bezout_three, diophantine_three_solvable, gcd_eq_min_pos_linear_comb, gcd_achievable, gcd_complete_characterization. Zero sorries. Gallery entry created with meta.json, index.ts, and annotations.json.",
+    "builtItems": [
+      "gcd_divides_linear_combination: (Int.gcd a b : ℤ) ∣ a*x + b*y",
+      "coprime_linear_null_space: gcd=1 → (ax+by=0 ↔ ∃t, x=bt ∧ y=-at)",
+      "diophantine_complete_parameterization: all solutions ax+by=c are (x0+(b/d)t, y0-(a/d)t)",
+      "bezout_three: ∃x,y,z: ax+by+cz=gcd(gcd(a,b),c)",
+      "diophantine_three_solvable: ax+by+cz=k solvable ↔ gcd(gcd(a,b),c) | k",
+      "gcd_eq_min_pos_linear_comb: gcd(a,b) is minimum positive linear combination",
+      "gcd_achievable: gcd(a,b) is itself a linear combination",
+      "gcd_complete_characterization: d=gcd ↔ achievable AND divides all"
+    ],
+    "insights": [
+      "The null space coprime_linear_null_space is the key: all solution sets are translates of the null space {(bt,-at)} when gcd=1",
+      "gcd(a/d, b/d) = 1 proved via ideal: gcd divides the Bezout combination = 1, then Nat.dvd_one",
+      "Backward direction uses linear_combination h0 + key*t where key: a*(b/d) = b*(a/d) (both equal a*b/d)",
+      "Three-variable Bezout by applying two-variable Bezout twice: get d=ax0+by0, then g=d*u+c*v",
+      "GCD ideal characterization uses double divisibility: d=gcd iff (d achievable) AND (d divides all)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Deploy to gallery",
+      "Consider extension to matrix linear Diophantine equations via Smith Normal Form"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "number-theory",
+    "algorithms",
+    "diophantine",
+    "gcd",
+    "classic",
+    "beginner"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-26T07:48:03.277Z",
+  "lastUpdate": "2026-02-26T07:50:00.000Z",
+  "significance": 6,
+  "tractability": 5
+}
