@@ -7,7 +7,7 @@
     "author": "L'Hopital, Bernoulli (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/L%27H%C3%B4pital%27s_rule",
     "date": "1696",
-    "status": "verified",
+    "status": "complete",
     "tags": [
       "calculus",
       "limits",
@@ -45,15 +45,15 @@
     "wiedijkNumber": 64
   },
   "overview": {
-    "historicalContext": "L'Hopital's Rule has a fascinating origin story:\n\n- **Johann Bernoulli (1694)**: Actually discovered the rule and taught it to L'Hopital\n- **Guillaume de L'Hopital (1696)**: Published it in the first calculus textbook ever written\n- **The arrangement**: L'Hopital paid Bernoulli a salary in exchange for mathematical discoveries\n- **Priority dispute**: Bernoulli claimed credit only after L'Hopital's death in 1704\n\nDespite the controversy, the rule bears L'Hopital's name to this day.",
+    "historicalContext": "Johann Bernoulli discovered this rule around 1694 as part of his work on infinitesimal calculus, and communicated it privately to Guillaume de l'Hôpital, a French marquis and amateur mathematician. L'Hôpital paid Bernoulli an annual retainer of 300 livres for exclusive rights to Bernoulli's results, and published the rule in his 1696 textbook *Analyse des Infiniment Petits pour l'Intelligence des Lignes Courbes* — the first calculus textbook ever printed. After l'Hôpital's death in 1704, Bernoulli publicly claimed credit, sparking one of mathematics' most famous priority disputes. The rule became central to 18th-century analysis: Euler extended it systematically in his *Introductio in analysin infinitorum* (1748), and Cauchy later placed it on rigorous foundations using his generalized Mean Value Theorem. Today the result is a standard tool in real analysis and appears as entry #64 on Wiedijk's list of 100 greatest theorems. Mathlib formalizes several variants covering right limits, left limits, and limits at infinity.",
     "problemStatement": "**L'Hopital's Rule**:\n\nIf $f$ and $g$ are differentiable near $a$, and:\n1. Both $\\lim_{x \\to a} f(x) = 0$ and $\\lim_{x \\to a} g(x) = 0$ (the 0/0 form), or\n2. Both limits are $\\pm\\infty$ (the $\\infty/\\infty$ form)\n\nAnd if $\\lim_{x \\to a} \\frac{f'(x)}{g'(x)} = L$ exists, then:\n\n$$\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\lim_{x \\to a} \\frac{f'(x)}{g'(x)} = L$$",
     "proofStrategy": "The proof relies on the **Cauchy Mean Value Theorem**:\n\n1. **Cauchy MVT**: For differentiable $f, g$ on $(a, b)$:\n   $$\\frac{f(b) - f(a)}{g(b) - g(a)} = \\frac{f'(c)}{g'(c)}$$\n   for some $c \\in (a, b)$.\n\n2. **Apply to our setting**: For $x$ near $a$:\n   $$\\frac{f(x) - f(a)}{g(x) - g(a)} = \\frac{f(x) - 0}{g(x) - 0} = \\frac{f(x)}{g(x)}$$\n   equals $\\frac{f'(c_x)}{g'(c_x)}$ for some $c_x$ between $a$ and $x$.\n\n3. **Take the limit**: As $x \\to a$, we have $c_x \\to a$, so\n   $$\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\lim_{c \\to a} \\frac{f'(c)}{g'(c)}$$",
     "keyInsights": [
-      "The rule transforms a difficult limit into a (hopefully) easier one",
-      "Can be applied repeatedly if the result is still indeterminate",
-      "Works for limits at infinity, not just at finite points",
-      "The underlying mechanism is Cauchy's Mean Value Theorem",
-      "Does NOT work if the derivative limit doesn't exist (but original might)"
+      "The rule transforms $\\lim \\frac{f}{g}$ into $\\lim \\frac{f'}{g'}$, replacing a difficult limit with a (hopefully) easier one",
+      "Can be applied repeatedly: if $\\frac{f'}{g'}$ is still $\\frac{0}{0}$, differentiate again to get $\\frac{f''}{g''}$",
+      "Works for limits at $\\pm\\infty$ via `Tendsto f atTop (𝓝 0)`, not just at finite points",
+      "The underlying mechanism is Cauchy's Mean Value Theorem: $\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$",
+      "The rule does NOT apply when $\\lim f'/g'$ fails to exist — even if $\\lim f/g$ exists (e.g., $f(x) = x + \\sin x$, $g(x) = x$)"
     ]
   },
   "sections": [
@@ -62,28 +62,32 @@
       "title": "Introduction",
       "startLine": 1,
       "endLine": 49,
-      "summary": "Overview of L'Hopital's Rule, historical context, and the Bernoulli connection."
+      "summary": "Overview of L'Hopital's Rule, historical context, and the Bernoulli connection.",
+      "mathContext": "Module header with `open Set Filter Topology` for filter-based limit formulation"
     },
     {
       "id": "zero-form",
       "title": "The 0/0 Form",
       "startLine": 51,
       "endLine": 103,
-      "summary": "L'Hopital's rule for right limits, left limits, and limits at infinity."
+      "summary": "L'Hopital's rule for right limits, left limits, and limits at infinity.",
+      "mathContext": "Four variants: $\\lim_{x \\to a^+}$, $\\lim_{x \\to b^-}$, $\\lim_{x \\to +\\infty}$, $\\lim_{x \\to -\\infty}$ all for the $0/0$ form"
     },
     {
       "id": "why-it-works",
       "title": "Why It Works",
       "startLine": 119,
       "endLine": 132,
-      "summary": "Explanation via the Mean Value Theorem."
+      "summary": "Explanation via the Mean Value Theorem.",
+      "mathContext": "Cauchy MVT gives $\\frac{f(x)}{g(x)} = \\frac{f'(c_x)}{g'(c_x)}$ with $c_x \\to a$ as $x \\to a$"
     },
     {
       "id": "applications",
       "title": "Applications",
       "startLine": 134,
       "endLine": 146,
-      "summary": "Common use cases including sin(x)/x and exponential limits."
+      "summary": "Common use cases including sin(x)/x and exponential limits.",
+      "mathContext": "$\\lim_{x \\to 0} \\frac{\\sin x}{x} = 1$, $\\lim_{x \\to 0} \\frac{e^x - 1}{x} = 1$, $\\lim_{x \\to 0^+} x \\ln x = 0$"
     }
   ],
   "conclusion": {
