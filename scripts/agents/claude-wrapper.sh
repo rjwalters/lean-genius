@@ -115,6 +115,21 @@ check_stop_signal() {
     return 1
 }
 
+# Check for wake signal (early wakeup from backoff sleep)
+check_wake_signal() {
+    if [[ -f "$SIGNALS_DIR/wake-all" ]]; then
+        rm -f "$SIGNALS_DIR/wake-all" 2>/dev/null || true
+        log_info "Wake-all signal received. Resuming early."
+        return 0
+    fi
+    if [[ -n "${ENHANCER_ID:-}" ]] && [[ -f "$SIGNALS_DIR/wake-$ENHANCER_ID" ]]; then
+        rm -f "$SIGNALS_DIR/wake-$ENHANCER_ID" 2>/dev/null || true
+        log_info "Wake signal for $ENHANCER_ID received. Resuming early."
+        return 0
+    fi
+    return 1
+}
+
 # Pre-flight usage check
 check_usage_limits() {
     if [[ -x "$REPO_ROOT/.loom/scripts/check-usage.sh" ]]; then
@@ -401,13 +416,29 @@ run_daemon() {
             log_warn "Daemon cycle $cycle: error that would be fatal in normal mode (exit code: $exit_code)"
             log_warn "Daemon mode: retrying anyway after ${MAX_BACKOFF}s"
 
-            # Check stop signal before waiting
+            # Check stop/wake signals before waiting
             if check_stop_signal; then
                 log_info "Daemon exiting due to stop signal"
                 exit 0
             fi
+            if check_wake_signal; then
+                cycle=$((cycle + 1))
+                continue
+            fi
 
-            sleep $MAX_BACKOFF
+            # Sleep in increments so wake/stop signals are checked every 30s
+            local slept=0
+            while [[ $slept -lt $MAX_BACKOFF ]]; do
+                sleep 30
+                ((slept+=30))
+                if check_stop_signal; then
+                    log_info "Daemon exiting due to stop signal"
+                    exit 0
+                fi
+                if check_wake_signal; then
+                    break
+                fi
+            done
             cycle=$((cycle + 1))
         fi
     done

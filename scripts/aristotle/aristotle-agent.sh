@@ -77,6 +77,16 @@ check_stop_signal() {
     return 1
 }
 
+# Check for wake signal (early wakeup from sleep)
+check_wake_signal() {
+    if [[ -f "$SIGNALS_DIR/wake-aristotle" ]] || [[ -f "$SIGNALS_DIR/wake-all" ]]; then
+        rm -f "$SIGNALS_DIR/wake-aristotle" "$SIGNALS_DIR/wake-all" 2>/dev/null || true
+        echo -e "${GREEN}Wake signal received. Starting cycle early.${NC}"
+        return 0
+    fi
+    return 1
+}
+
 # Show status
 show_status() {
     echo -e "${CYAN}=== Aristotle Agent Status ===${NC}"
@@ -240,8 +250,9 @@ run_cycle() {
     echo ""
 
     # Step 4: Submit new files to maintain target
+    # Run from PROJECT_ROOT so relative file paths (proofs/Proofs/*.lean) resolve correctly
     echo -e "${CYAN}[4/4] Submitting new files...${NC}"
-    "$SCRIPT_DIR/submit-batch.sh" --target "$TARGET_ACTIVE" 2>/dev/null || true
+    (cd "$PROJECT_ROOT" && "$SCRIPT_DIR/submit-batch.sh" --target "$TARGET_ACTIVE" 2>/dev/null) || true
     echo ""
 
     # Summary
@@ -298,7 +309,7 @@ main() {
             echo -e "${YELLOW}Sleeping for ${INTERVAL_MINUTES} minutes...${NC}"
             echo "(Next cycle at $(date -v+${INTERVAL_MINUTES}M '+%H:%M:%S' 2>/dev/null || date -d "+${INTERVAL_MINUTES} minutes" '+%H:%M:%S'))"
 
-            # Sleep in small increments to check stop signal
+            # Sleep in small increments to check stop/wake signals
             local sleep_seconds=$((INTERVAL_MINUTES * 60))
             local slept=0
             while [[ $slept -lt $sleep_seconds ]]; do
@@ -306,6 +317,9 @@ main() {
                 ((slept+=30))
                 if check_stop_signal; then
                     exit 0
+                fi
+                if check_wake_signal; then
+                    break
                 fi
             done
         done

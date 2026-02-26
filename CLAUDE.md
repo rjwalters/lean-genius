@@ -95,6 +95,7 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 | `/lean scale <type> <N>` | Scale pool to N agents |
 | `/lean stop` | Graceful shutdown of all agents (creates signal files) |
 | `/lean stop --force` | Force stop all agents (kills tmux sessions immediately) |
+| `/lean wake <type>` | Wake a sleeping agent early to start its next cycle now |
 | `/lean health` | Show agent process health and detect stuck agents |
 | `/lean daemon [options]` | Run continuous monitoring daemon (respawns completed/stuck agents) |
 
@@ -123,6 +124,9 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 ./scripts/lean/launch.sh spawn researcher
 ./scripts/lean/launch.sh spawn seeker
 ./scripts/lean/launch.sh scale researcher 4
+./scripts/lean/launch.sh wake aristotle       # Wake aristotle early
+./scripts/lean/launch.sh wake researcher      # Wake all researchers early
+./scripts/lean/launch.sh wake all             # Wake all sleeping agents
 
 # Continuous daemon (monitors and respawns agents)
 ./scripts/lean/launch.sh daemon                             # Default 60s interval
