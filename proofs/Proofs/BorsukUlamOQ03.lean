@@ -321,4 +321,204 @@ theorem no_equivariant_map_sphere (n : ℕ) (hn : 1 ≤ n)
     nD: Requires algebraic topology (axiomized) -/
 theorem bu_constructive_summary : True := trivial
 
+/-
+## Section IX: The Interval Version Has a Trivial Witness
+
+The statement ∃ x ∈ [-1,1], f(x) = f(-x) is satisfied by x = 0 for ANY function f,
+since -0 = 0 (0 is its own antipodal). The genuinely non-trivial BU result is
+the circle version (Section III), where no point is its own antipodal.
+-/
+
+/-- **Trivial witness for interval BU**: x = 0 always satisfies f(0) = f(-0).
+
+    This works because `neg_zero : -(0:ℝ) = 0`.
+    Observation: The interval [-1,1] contains the self-antipodal point 0, making
+    the interval statement weaker than the circle statement. -/
+theorem borsuk_ulam_interval_zero_witness (f : ℝ → ℝ) :
+    ∃ x : ℝ, x ∈ Icc (-1:ℝ) 1 ∧ f x = f (-x) :=
+  ⟨0, by norm_num, by rw [neg_zero]⟩
+
+/-- On the parametric circle, no point in (0, π) is its own antipodal.
+
+    For θ ∈ (0, π), the point (cos θ, sin θ) ≠ (-cos θ, -sin θ) because that
+    would require cos θ = 0 AND sin θ = 0, contradicting sin²θ + cos²θ = 1.
+    This shows the circle BU (Section III) is genuinely non-trivial. -/
+theorem circle_no_self_antipodal (θ : ℝ) (hθ1 : 0 < θ) (hθ2 : θ < Real.pi) :
+    (Real.cos θ, Real.sin θ) ≠ (-Real.cos θ, -Real.sin θ) := by
+  intro h
+  have hcos : Real.cos θ = -Real.cos θ := congr_arg Prod.fst h
+  have hsin : Real.sin θ = -Real.sin θ := congr_arg Prod.snd h
+  have hcos0 : Real.cos θ = 0 := by linarith
+  have hsin0 : Real.sin θ = 0 := by linarith
+  have hunit := Real.cos_sq_add_sin_sq θ
+  rw [hcos0, hsin0] at hunit
+  norm_num at hunit
+
+/-
+## Section X: Structural Properties of the Coincidence Set
+-/
+
+/-- For a strictly monotone function, x = 0 is the **only** antipodal pair.
+
+    If f is strictly monotone, then f(x) = f(-x) forces x = -x, i.e., x = 0.
+    - If x < 0: then x < -x, so f(x) < f(-x), contradicting equality.
+    - If x > 0: then -x < x, so f(-x) < f(x), contradicting equality. -/
+theorem bu_strictly_mono_unique_at_zero (f : ℝ → ℝ) (hmono : StrictMono f)
+    (x : ℝ) (h : f x = f (-x)) : x = 0 := by
+  rcases lt_trichotomy x 0 with hlt | rfl | hgt
+  · exact absurd h (ne_of_lt (hmono (by linarith : x < -x)))
+  · rfl
+  · exact absurd h.symm (ne_of_lt (hmono (by linarith : -x < x)))
+
+/-- The coincidence set {x ∈ [-1,1] | f(x) = f(-x)} is compact.
+
+    It is a closed subset (proved earlier) of the compact set [-1, 1]. -/
+theorem bu_antipodal_set_compact (f : ℝ → ℝ) (hf : Continuous f) :
+    IsCompact {x ∈ Icc (-1:ℝ) 1 | f x = f (-x)} := by
+  have heq : {x ∈ Icc (-1:ℝ) 1 | f x = f (-x)} =
+      Icc (-1:ℝ) 1 ∩ {x : ℝ | f x = f (-x)} := by
+    ext x; simp [and_comm]
+  rw [heq]
+  exact isCompact_Icc.inter_right (antipodal_set_closed f hf)
+
+/-- Antipodal pairs are symmetric: if x₀ is an antipodal pair, so is -x₀. -/
+theorem antipodal_neg_is_pair (f : ℝ → ℝ) (x : ℝ) (h : f x = f (-x)) :
+    f (-x) = f (- -x) := by
+  rw [neg_neg]; exact h.symm
+
+/-
+## Section XI: 1D Brouwer Fixed-Point Theorem (Independent of BU)
+
+Every continuous map f: [-1,1] → [-1,1] has a fixed point.
+This is proved directly via IVT, independently of Borsuk-Ulam,
+and demonstrates a parallel constructive argument.
+-/
+
+/-- **1D Brouwer Fixed-Point Theorem**
+
+    Every continuous function mapping [-1, 1] into itself has a fixed point.
+
+    **Proof**: Define g(x) = f(x) - x. Then:
+    - g(-1) = f(-1) + 1 ≥ 0, since f(-1) ∈ [-1, 1] implies f(-1) ≥ -1
+    - g(1) = f(1) - 1 ≤ 0, since f(1) ∈ [-1, 1] implies f(1) ≤ 1
+    - By IVT on g, there exists x₀ with g(x₀) = 0, i.e., f(x₀) = x₀. -/
+theorem brouwer_fixed_point_1d (f : ℝ → ℝ) (hf : Continuous f)
+    (hmap : ∀ x ∈ Icc (-1:ℝ) 1, f x ∈ Icc (-1:ℝ) 1) :
+    ∃ x : ℝ, x ∈ Icc (-1:ℝ) 1 ∧ f x = x := by
+  set g := fun x : ℝ => f x - x with hg_def
+  have hg_cont : ContinuousOn g (Icc (-1:ℝ) 1) :=
+    hf.continuousOn.sub continuousOn_id
+  have hg_neg1 : 0 ≤ g (-1:ℝ) := by
+    simp only [hg_def]
+    have := (hmap (-1:ℝ) (by norm_num)).1
+    linarith
+  have hg_1 : g 1 ≤ 0 := by
+    simp only [hg_def]
+    have := (hmap 1 (by norm_num)).2
+    linarith
+  obtain ⟨x, hx_mem, hx_zero⟩ :=
+    intermediate_value_Icc' (by norm_num : (-1:ℝ) ≤ 1) hg_cont ⟨hg_1, hg_neg1⟩
+  simp only [hg_def] at hx_zero
+  exact ⟨x, hx_mem, by linarith⟩
+
+/-
+## Section XII: Generalization to Symmetric Intervals
+-/
+
+/-- **BU on any symmetric interval [-a, a]** for a > 0.
+
+    The same IVT argument works for any symmetric interval. -/
+theorem borsuk_ulam_symmetric_interval (a : ℝ) (ha : 0 < a)
+    (f : ℝ → ℝ) (hf : Continuous f) :
+    ∃ x : ℝ, x ∈ Icc (-a) a ∧ f x = f (-x) := by
+  set g := fun x : ℝ => f x - f (-x) with hg_def
+  have hg_cont : ContinuousOn g (Icc (-a) a) :=
+    (hf.sub (hf.comp continuous_neg)).continuousOn
+  have hantiperiodic : g (-a) = -(g a) := by
+    simp only [hg_def, neg_neg]; ring
+  rcases le_or_gt (g (-a)) 0 with hn | hn
+  · have h_pos : 0 ≤ g a := by linarith [hantiperiodic]
+    obtain ⟨x, hx_mem, hx_zero⟩ :=
+      intermediate_value_Icc (by linarith : (-a) ≤ a) hg_cont ⟨hn, h_pos⟩
+    simp only [hg_def] at hx_zero
+    exact ⟨x, hx_mem, by linarith⟩
+  · have h0_pos : 0 ≤ g (-a) := le_of_lt hn
+    have h_neg : g a ≤ 0 := by linarith [hantiperiodic]
+    obtain ⟨x, hx_mem, hx_zero⟩ :=
+      intermediate_value_Icc' (by linarith : (-a) ≤ a) hg_cont ⟨h_neg, h0_pos⟩
+    simp only [hg_def] at hx_zero
+    exact ⟨x, hx_mem, by linarith⟩
+
+/-
+## Section XIII: Tucker's 1D Lemma (Combinatorial Borsuk-Ulam)
+
+Tucker's lemma is the discrete/combinatorial analog of Borsuk-Ulam.
+In 1D: any sequence with different-valued endpoints must have an adjacent
+pair with different values. This is the combinatorial foundation for
+constructive BU proofs.
+-/
+
+/-- **Tucker's 1D Lemma**: Any Boolean sequence on Fin(n+2) with different
+    endpoint values must have an adjacent pair with different values.
+
+    This is the discrete/combinatorial Borsuk-Ulam: a labeling of vertices
+    that "changes sign" between endpoints must have a sign-change edge.
+
+    **Proof**: By contradiction. If all adjacent pairs were equal, then by
+    Fin.induction the sequence would be constant, contradicting the endpoints
+    having different values. -/
+theorem tucker_1d_sign_change (n : ℕ) (s : Fin (n + 2) → Bool)
+    (hendpts : s 0 ≠ s (Fin.last (n + 1))) :
+    ∃ i : Fin (n + 1), s i.castSucc ≠ s i.succ := by
+  by_contra h
+  push_neg at h
+  -- If all adjacent pairs are equal, s is constant
+  have hconst : ∀ i : Fin (n + 2), s i = s 0 :=
+    Fin.induction rfl (fun i ih => (h i).symm.trans ih)
+  exact hendpts (hconst (Fin.last (n + 1))).symm
+
+/-- **Tucker's 1D lemma is equivalent to: all-equal implies constant**.
+
+    The Tucker property (different endpoints ⟹ adjacent change) is logically
+    equivalent to its contrapositive (all-equal adjacency ⟹ constant function).
+    This gives a clean reformulation of the discrete BU. -/
+theorem tucker_1d_iff_constant (n : ℕ) :
+    (∀ (s : Fin (n + 2) → Bool), s 0 ≠ s (Fin.last (n + 1)) →
+      ∃ i : Fin (n + 1), s i.castSucc ≠ s i.succ) ↔
+    (∀ (s : Fin (n + 2) → Bool),
+      (∀ i : Fin (n + 1), s i.castSucc = s i.succ) →
+      s 0 = s (Fin.last (n + 1))) := by
+  constructor
+  · intro htuck s hconst
+    by_contra hdiff
+    exact absurd (htuck s hdiff) (by push_neg; exact hconst)
+  · intro hconst s hendpts
+    by_contra hno
+    push_neg at hno
+    exact hendpts (hconst s hno)
+
+/-- **Tucker 1D holds for every n**: combining the above equivalence with
+    the proof of tucker_1d_sign_change. -/
+theorem tucker_1d_holds (n : ℕ) :
+    ∀ (s : Fin (n + 2) → Bool),
+      (∀ i : Fin (n + 1), s i.castSucc = s i.succ) →
+      s 0 = s (Fin.last (n + 1)) := by
+  rw [← tucker_1d_iff_constant]
+  exact tucker_1d_sign_change n
+
+/-
+## Updated Summary
+-/
+
+/-- Extended constructive status summary:
+
+    Sections I-V: 1D BU proved constructively via IVT
+    Section IX: Interval BU is trivially true (x=0 witness)
+    Section X: Structural results on coincidence sets
+    Section XI: 1D Brouwer FP (independent constructive result)
+    Section XII: BU on any symmetric interval
+    Section XIII: Tucker's 1D lemma (combinatorial/discrete BU)
+    Sections VI-VII: Higher-D BU axiomized (needs algebraic topology) -/
+theorem bu_extended_summary : True := trivial
+
 end BorsukUlamOQ03
