@@ -48,6 +48,8 @@
       "engelsma_lower_bound: axiom encoding Engelsma's 2013 exhaustive computer search result",
       "admissible_50_tuple_min_diam: 246 is both achievable and optimal — the main theorem",
       "optimal_prime_gap_via_50_tuple: complete characterization — ∃ admissible 50-tuple of diam 246, ¬∃ admissible 50-tuple of diam < 246",
+      "polymath_246_is_tight: master synthesis theorem — 246 is achievable (infinitely many prime gaps ≤ 246 via Polymath) AND sieve-optimal (minimum diameter for admissible 50-tuples)",
+      "no_smaller_50_tuple_diameter: ∀ D < 246, no admissible 50-tuple has diameter D — the impossibility result for all sub-246 diameters",
       "API fix: Mathlib 4.26.0 changed Finset.min'_le and Finset.le_max' — nonemptiness argument removed, signature now (s b hb)"
     ],
     "dateAdded": "02/25/26"
@@ -114,6 +116,13 @@
       "startLine": 176,
       "endLine": 216,
       "summary": "no_admissible_50_tuple_diam_le_245: diam≤245 implies not admissible. tight_246_via_admissibility: diam<246 iff not admissible. polymath_strictly_improves_zhang: 246 < 70M. optimal_prime_gap_via_50_tuple: the complete characterization theorem."
+    },
+    {
+      "id": "synthesis",
+      "title": "Part VII: Synthesis — Optimality and Prime Gap Bounds",
+      "startLine": 217,
+      "endLine": 275,
+      "summary": "polymath_achieves_246: restates Polymath axiom (primeGap n ≤ 246 eventually). no_smaller_50_tuple_diameter: ∀ D < 246, no 50-tuple achieves diameter D. polymath_246_is_tight: master theorem — 246 is both achievable (infinitely many prime gaps ≤ 246) and sieve-optimal (minimum diameter for admissible 50-tuples is exactly 246)."
     }
   ],
   "conclusion": {
