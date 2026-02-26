@@ -1,0 +1,58 @@
+[
+  {
+    "id": "mass-point-structure",
+    "lineStart": 41,
+    "lineEnd": 48,
+    "type": "definition",
+    "content": "**MassPoint**: A triple of positive real masses (mA, mB, mC) assigned to triangle vertices. The positivity constraints ensure all derived ratios are well-defined and in (0,1)."
+  },
+  {
+    "id": "cevian-ratios",
+    "lineStart": 53,
+    "lineEnd": 61,
+    "type": "definition",
+    "content": "**Cevian ratio functions**: rD = mC/(mB+mC) gives D's position on BC, rE = mA/(mC+mA) gives E's on CA, rF = mB/(mA+mB) gives F's on AB. Each ratio represents the lever arm balance: point D balances masses mB at B and mC at C."
+  },
+  {
+    "id": "complement-lemmas",
+    "lineStart": 84,
+    "lineEnd": 101,
+    "type": "technique",
+    "content": "**Complement lemmas**: 1 - rD = mB/(mB+mC), 1 - rE = mC/(mC+mA), 1 - rF = mA/(mA+mB). These express the 'other side' of each ratio. Proved by field_simp + ring after unfolding the ratio definition."
+  },
+  {
+    "id": "ceva-identity-proof",
+    "lineStart": 107,
+    "lineEnd": 114,
+    "type": "proof-technique",
+    "content": "**The algebraic miracle**: After substituting all ratios, both rD·rE·rF and (1-rD)·(1-rE)·(1-rF) become mA·mB·mC / ((mB+mC)(mC+mA)(mA+mB)). The numerators mC·mA·mB and mB·mC·mA are equal by commutativity. Lean's field_simp clears all denominators and verifies the polynomial identity."
+  },
+  {
+    "id": "constructive-converse",
+    "lineStart": 120,
+    "lineEnd": 155,
+    "type": "proof-technique",
+    "content": "**Constructive mass assignment**: Given Ceva condition d·e·f = (1-d)·(1-e)·(1-f), set mA=1, mC=(1-e)/e, mB=(1-e)(1-d)/(ed). Verification: rD=d and rE=e follow by ring arithmetic; rF=f requires the Ceva condition via nlinarith."
+  },
+  {
+    "id": "biconditional",
+    "lineStart": 162,
+    "lineEnd": 173,
+    "type": "result",
+    "content": "**Mass Point Ceva Theorem**: d·e·f = (1-d)·(1-e)·(1-f) ↔ ∃ mp, rD mp = d ∧ rE mp = e ∧ rF mp = f. Forward: constructive mass assignment. Backward: apply ceva_identity to any witness."
+  },
+  {
+    "id": "ratio-balance",
+    "lineStart": 177,
+    "lineEnd": 199,
+    "type": "result",
+    "content": "**Lever arm balance**: BD/DC = rD/(1-rD) = mC/mB. This is the physical interpretation: for D to be the center of mass of mB at B and mC at C, we need mB·BD = mC·DC. The three ratio balances telescope: (mC/mB)·(mA/mC)·(mB/mA) = 1."
+  },
+  {
+    "id": "centroid-example",
+    "lineStart": 212,
+    "lineEnd": 219,
+    "type": "example",
+    "content": "**Centroid verification**: Equal masses mA=mB=mC=1 give rD=rE=rF=1/2, confirming that the centroid (intersection of medians) corresponds to equal mass distribution. The Ceva condition (1/2)³ = (1/2)³ is trivially satisfied."
+  }
+]

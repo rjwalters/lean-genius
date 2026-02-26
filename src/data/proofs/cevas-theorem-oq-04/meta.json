@@ -1,0 +1,117 @@
+{
+  "id": "cevas-theorem-oq-04",
+  "title": "Ceva's Theorem via Mass Point Geometry",
+  "slug": "cevas-theorem-oq-04",
+  "description": "Mass point geometry provides a constructive algebraic certificate for concurrent cevians: assign positive masses mA, mB, mC to vertices, and the induced ratios automatically satisfy d·e·f = (1-d)·(1-e)·(1-f). The converse is constructive: any Ceva configuration admits an explicit mass assignment.",
+  "meta": {
+    "author": "Classical (mass point technique, formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Mass_point_geometry",
+    "date": "1678",
+    "status": "open-question",
+    "proofRepoPath": "Proofs/CevasTheoremOQ04.lean",
+    "tags": [
+      "geometry",
+      "triangle",
+      "concurrency",
+      "mass-point",
+      "constructive",
+      "algebraic"
+    ],
+    "badge": "open",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "div_pos",
+        "description": "Positivity of quotient of positive reals",
+        "module": "Mathlib.Order.Bounds.Basic"
+      },
+      {
+        "theorem": "field_simp",
+        "description": "Tactic for clearing fraction denominators in field expressions",
+        "module": "Mathlib.Tactic.FieldSimp"
+      },
+      {
+        "theorem": "nlinarith",
+        "description": "Nonlinear arithmetic for the Ceva condition derivation",
+        "module": "Mathlib.Tactic.Linarith"
+      }
+    ],
+    "originalContributions": [
+      "MassPoint structure with positivity constraints",
+      "Explicit ratio functions rD, rE, rF from mass assignments",
+      "ceva_identity: rD·rE·rF = (1-rD)·(1-rE)·(1-rF) for any masses",
+      "masses_from_ceva: constructive mass assignment from Ceva condition",
+      "mass_point_iff: biconditional characterization",
+      "ratio_balance: BD/DC = mC/mB lever arm interpretation",
+      "ceva_ratio_product_one: product of lever ratios = 1",
+      "centroid_example: equal masses give d = e = f = 1/2"
+    ],
+    "dateAdded": "02/26/26"
+  },
+  "overview": {
+    "historicalContext": "Mass point geometry assigns positive real 'masses' to vertices of a triangle. The technique originates from physics (center of mass / lever balance) and is widely taught in mathematical olympiad preparation as an elementary method for solving concurrence and ratio problems without coordinates.\n\nThe connection to Ceva's theorem is that any mass assignment automatically produces cevian ratios satisfying the Ceva condition, and conversely, any set of ratios satisfying the Ceva condition can be realized by an explicit mass assignment. This makes mass points a 'constructive certificate' for concurrence.",
+    "problemStatement": "**Open Question (from cevas-theorem)**: Can mass point geometry provide an alternative formalization approach to Ceva's theorem?\n\n**Answer: YES.** We formalize the complete mass point geometry approach:\n\n1. **Forward**: Any mass assignment (mA, mB, mC > 0) induces ratios d = mC/(mB+mC), e = mA/(mC+mA), f = mB/(mA+mB) satisfying d·e·f = (1-d)·(1-e)·(1-f).\n\n2. **Converse**: Given d, e, f ∈ (0,1) with d·e·f = (1-d)·(1-e)·(1-f), set mA = 1, mC = (1-e)/e, mB = (1-e)(1-d)/(ed) to recover a mass assignment.\n\n3. **Ratio product = 1**: The lever arm ratios satisfy (mC/mB)·(mA/mC)·(mB/mA) = 1 (telescoping cancellation).",
+    "proofStrategy": "**Algebraic Approach**:\n\nThe key algebraic miracle is that for ANY mass assignment:\n- rD·rE·rF = mC·mA·mB / ((mB+mC)(mC+mA)(mA+mB))\n- (1-rD)·(1-rE)·(1-rF) = mB·mC·mA / ((mB+mC)(mC+mA)(mA+mB))\n\nBoth numerators are mA·mB·mC (just reordered), so the products are equal.\n\nThe converse construction mA=1, mC=(1-e)/e, mB=(1-e)(1-d)/(ed) is verified by direct computation (field_simp + ring for rD and rE, nlinarith using the Ceva condition for rF).\n\nThe lever arm balance BD/DC = mC/mB follows from simplifying (mC/(mB+mC)) / (mB/(mB+mC)) = mC/mB by cancelling the common denominator.\n\nAll proofs use only basic real arithmetic (field_simp, ring, nlinarith) — no geometry infrastructure needed.",
+    "keyInsights": [
+      "Mass points are a constructive algebraic certificate: both directions of the Ceva biconditional are explicitly computable",
+      "The 'algebraic miracle' that rD·rE·rF = (1-rD)·(1-rE)·(1-rF) is just commutativity of multiplication: mC·mA·mB = mB·mC·mA",
+      "The converse construction is explicit: mA=1, mC=(1-e)/e, mB=(1-e)(1-d)/(ed)",
+      "The ratio product (mC/mB)·(mA/mC)·(mB/mA) = 1 is a telescoping cancellation",
+      "Equal masses (mA=mB=mC) give the centroid (d=e=f=1/2), confirming the medians case"
+    ]
+  },
+  "sections": [
+    {
+      "id": "mass-point-structure",
+      "title": "Mass Point Structure",
+      "startLine": 38,
+      "endLine": 62,
+      "summary": "MassPoint structure with positive masses mA, mB, mC. Derived positivity lemmas for sums. Cevian ratio functions rD, rE, rF."
+    },
+    {
+      "id": "positivity-bounds",
+      "title": "Positivity and Bounds",
+      "startLine": 64,
+      "endLine": 101,
+      "summary": "rD, rE, rF are in (0,1). Complement lemmas: 1-rD = mB/(mB+mC), etc."
+    },
+    {
+      "id": "ceva-identity",
+      "title": "Main Ceva Identity",
+      "startLine": 103,
+      "endLine": 115,
+      "summary": "ceva_identity: rD·rE·rF = (1-rD)·(1-rE)·(1-rF) for any mass assignment."
+    },
+    {
+      "id": "converse-construction",
+      "title": "Constructive Converse",
+      "startLine": 117,
+      "endLine": 156,
+      "summary": "masses_from_ceva: explicit mass assignment from Ceva condition. Verified by field_simp + ring (rD, rE) and nlinarith (rF)."
+    },
+    {
+      "id": "biconditional",
+      "title": "Biconditional and Ratio Balance",
+      "startLine": 158,
+      "endLine": 210,
+      "summary": "mass_point_iff: Ceva condition ↔ mass assignment exists. ratio_balance: BD/DC = mC/mB. ceva_ratio_product_one: product = 1."
+    },
+    {
+      "id": "examples-summary",
+      "title": "Examples and Summary",
+      "startLine": 212,
+      "endLine": 245,
+      "summary": "Centroid example (equal masses). Summary theorem combining all three main results."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a complete mass point geometry proof of Ceva's theorem with 0 sorries and 0 axioms. The biconditional — Ceva condition iff mass assignment exists — is proved constructively in both directions. The key algebraic miracle (both products equal mA·mB·mC over the same denominator) is verified by field_simp. The lever arm balance and ratio product theorems provide the physical interpretation.",
+    "implications": "Mass point geometry is a genuinely different proof technique from the signed-ratio approach in the base cevas-theorem formalization. It provides:\n\n1. **Constructive certificates**: Given a Ceva configuration, you can compute explicit masses\n2. **Physical intuition**: The lever arm balance BD/DC = mC/mB connects to center of mass\n3. **Simplicity**: Only basic real arithmetic needed (no affine geometry or coordinates)\n4. **Completeness**: Both directions proved, answering the open question from cevas-theorem",
+    "openQuestions": [
+      "Can mass points be generalized to higher-dimensional simplices?",
+      "Connection to barycentric coordinates: mass point assignments ARE barycentric coordinates",
+      "Can the mass point approach be extended to non-Euclidean Ceva (using sin/sinh ratios)?",
+      "Weighted mass points for angle bisectors: masses proportional to opposite side lengths"
+    ]
+  }
+}
