@@ -1,148 +1,127 @@
 {
   "id": "buffons-needle-oq-01",
-  "title": "Buffon's Noodle: Curved Needle Generalization",
+  "title": "Buffon-Barbier for C¹ Curves: Smooth Noodle Theorem (Complete)",
   "slug": "buffons-needle-oq-01",
-  "description": "Buffon's Noodle Theorem: any curve of length L dropped randomly on a floor with parallel lines (spacing d) has expected crossings 2L/(πd) — the same formula as a straight needle! The key insight is linearity of expectation: the shape of the noodle does not matter, only its total arc length.",
+  "description": "Proves the Buffon-Barbier theorem for C¹ smooth planar curves: any curve γ : ℝ → ℝ × ℝ of arc length L dropped on a parallel line grid (spacing d) has expected crossings 2L/(πd). This file fills the gap from BuffonsNeedleOQ01OQ01.lean by proving that C¹ smoothness automatically gives the required integrability, requiring no additional hypotheses beyond `ContDiff ℝ 1 γ`.",
   "meta": {
-    "author": "Barbier (1860), extending Buffon (1777)",
+    "author": "Barbier (1860); Lean formalization 2026",
     "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle",
     "date": "1860",
-    "status": "open-question",
-    "proofRepoPath": "Proofs/BuffonsNoodle.lean",
+    "status": "proven",
+    "proofRepoPath": "Proofs/BuffonsNeedleOQ01.lean",
     "tags": [
       "probability",
       "geometric-probability",
       "integration",
-      "linearity-of-expectation",
+      "arc-length",
+      "smooth-curves",
+      "c1-smoothness",
+      "cont-diff",
       "integral-geometry",
       "cauchy-crofton",
-      "extension",
-      "challenging"
+      "extension"
     ],
-    "badge": "open",
+    "badge": "proven",
     "sorries": 0,
     "mathlibDependencies": [
       {
-        "theorem": "Finset.mul_sum",
-        "description": "Distributes constant multiplication over finite sums",
-        "module": "Mathlib.Algebra.BigOperators.Ring.Finset"
+        "theorem": "ContDiff.continuous_fderiv",
+        "description": "C¹ smoothness implies continuous Fréchet derivative",
+        "module": "Mathlib.Analysis.Calculus.ContDiff.Basic"
       },
       {
-        "theorem": "Real.pi_pos",
-        "description": "π > 0",
-        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+        "theorem": "Continuous.clm_apply",
+        "description": "Continuous function composed with continuous linear map evaluation is continuous",
+        "module": "Mathlib.Topology.Algebra.Module.Basic"
       },
       {
-        "theorem": "Fin.sum_univ_four",
-        "description": "Sum over Fin 4 splits into four terms",
-        "module": "Mathlib.Data.Fin.Tuple.Basic"
-      },
-      {
-        "theorem": "MeasureTheory.intervalIntegral.integral_nonneg",
-        "description": "Integral of nonneg function is nonneg, used for arc length nonnegativity",
+        "theorem": "Continuous.intervalIntegrable",
+        "description": "Continuous functions on bounded intervals are integrable",
         "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
       },
       {
-        "theorem": "ContinuousAt.tendsto",
-        "description": "Continuity implies convergence, used in approximation limit theorem",
-        "module": "Mathlib.Topology.Basic"
+        "theorem": "Real.continuous_sqrt",
+        "description": "Square root is continuous on nonneg reals",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Filter.Tendsto.div_atTop",
+        "description": "Constant divided by function tending to infinity tends to 0",
+        "module": "Mathlib.Order.Filter.Basic"
       }
     ],
     "originalContributions": [
-      "Definition of PolygonalNoodle structure with segment lengths",
-      "Proof of Buffon's Noodle Theorem for polygons: E[crossings] = 2L/(πd)",
-      "Shape independence theorem: same total length → same expected crossings",
-      "needle_equals_noodle: single needle has same expectation as any equal-length polygon",
-      "Scaling theorem: expected crossings scale linearly with segment lengths",
-      "Concrete applications: circle (4r/d), square (8s/(πd)), regular n-gon (2ns/(πd))",
-      "planarCurveArcLength: formal arc length of C¹ planar curve via interval integral",
-      "smoothExpectedCrossings: noncomputable axiom + buffon_noodle_smooth_eq axiom",
-      "smooth_shape_independence: smooth curves with same arc length have same crossings (proved from axiom)",
-      "buffon_noodle_approx_limit: convergence theorem (proved via ContinuousAt.tendsto)",
-      "buffon_noodle_lipschitz: Lipschitz bound on expected crossings in arc length (proved)"
+      "contDiff_one_continuous_deriv: C¹ implies Continuous (deriv f) for any Banach-space-valued f",
+      "deriv_fst_continuous, deriv_snd_continuous: component derivative continuity for C¹ curves",
+      "inner_integral_eq: angular average applies pointwise, giving 2√(dx²+dy²)",
+      "inner_integral_continuous: the inner integral is a continuous function of t",
+      "inner_integral_integrable: IntervalIntegrable follows from C¹ alone (no extra hypotheses)",
+      "buffon_smooth_of_contDiff: complete Buffon-Barbier for C¹ curves with ONLY ContDiff ℝ 1 γ",
+      "smooth_shape_independence: two C¹ curves with same arc length have same expected crossings",
+      "straight_line_arclength: horizontal needle arc length = b - a",
+      "straight_line_crossings: consistency with classical Buffon needle (Wiedijk #99)",
+      "smooth_crossings_mono: longer curves have more expected crossings",
+      "crossings_tendsto_zero: E[crossings] → 0 as line spacing d → ∞"
     ],
-    "dateAdded": "02/23/26"
+    "dateAdded": "02/25/26"
   },
   "overview": {
-    "historicalContext": "In 1777, Georges-Louis Leclerc, Comte de Buffon, posed his famous needle problem: what is the probability that a needle of length L dropped on a floor with parallel lines (spacing d) crosses a line? The answer, 2L/(πd), connects probability to π in a surprising way.\n\nIn 1860, Joseph-Émile Barbier generalized this to curved 'needles' — any rectifiable curve. The key insight was that the expected number of crossings depends ONLY on the total arc length, not on the shape. A coiled spring of length L has the same expected crossings as a straight needle of length L. This is Buffon's Noodle Theorem.\n\nThe generalization to smooth curves uses a beautiful argument based on linearity of expectation: approximate the curve by polygonal segments, apply the needle formula to each segment, sum up. The result depends only on total length because the needle formula is linear in length.",
-    "problemStatement": "**Theorem (Buffon-Barbier, 1860)**: For any polygonal path with segments of lengths L₁,...,Lₙ ≥ 0, when dropped randomly on a floor with parallel lines spaced distance d apart, the expected number of line crossings is:\n\n$$E[\\text{crossings}] = \\frac{2(L_1 + \\cdots + L_n)}{\\pi d} = \\frac{2L}{\\pi d}$$\n\nwhere L = L₁ + ... + Lₙ is the total length. This formula depends only on L, not on the shape.\n\n**Open Question (smooth case)**: Does this extend to smooth rectifiable curves? Yes, mathematically (Buffon-Barbier), but the formal Lean proof requires arc length theory for smooth curves, which is not yet fully formalized.",
-    "proofStrategy": "**Key Idea**: Linearity of expectation.\n\n**Polygonal Case** (fully proved):\n1. Define `segmentCrossingProb ℓ d = 2ℓ/(πd)` (from Buffon's Needle)\n2. For a PolygonalNoodle with n segments of lengths L₁,...,Lₙ, define `expectedCrossings = ∑ᵢ segmentCrossingProb Lᵢ d`\n3. **Proof**: Factor out 2/(πd) from the sum:\n   ```\n   ∑ᵢ 2Lᵢ/(πd) = (2/(πd)) × ∑ᵢ Lᵢ = 2L/(πd)\n   ```\n   This uses `Finset.mul_sum` to pull the constant factor out.\n\n**Shape Independence**: Immediate corollary — if N₁.totalLength = N₂.totalLength then N₁.expectedCrossings = N₂.expectedCrossings.\n\n**Smooth Curve Extension** (open in Lean): The polygonal approximation argument shows the formula is preserved under limits in arc length. Requires Mathlib's arc length theory.",
+    "historicalContext": "In 1860, Joseph-Émile Barbier proved that Buffon's needle formula generalizes to arbitrary rectifiable curves: any curve of length L dropped on a parallel line grid (spacing d) has expected crossings 2L/(πd), regardless of shape. This is Buffon's Noodle Theorem.\n\nThe formal Lean proof of this theorem for smooth curves requires bridging C¹ analysis (derivative continuity) with integration theory (interval integrability) and the geometric formula (angular average identity). This file provides the complete formal proof for C¹ curves — the most natural smoothness class for curves in geometric probability.",
+    "problemStatement": "**Theorem (Buffon-Barbier, complete for C¹ curves)**: For any C¹ planar curve γ : ℝ → ℝ × ℝ on [a, b] with line spacing d > 0:\n\n$$E[\\text{crossings}] = \\frac{2 \\cdot \\text{arcLength}(\\gamma, a, b)}{\\pi d}$$\n\nThis depends only on total arc length, not on shape. The proof uses ONLY `ContDiff ℝ 1 γ` — no explicit integrability or measurability conditions needed.\n\n**Resolution of the open question**: The previous formalization axiomatized the smooth case. This file eliminates all axioms by proving that C¹ smoothness implies the required integrability.",
+    "proofStrategy": "**The Gap Being Filled**: `BuffonsNeedleOQ01OQ01.lean` proved `buffon_smooth_full` requiring an explicit `hInnerInt : IntervalIntegrable (inner integral) vol a b` hypothesis. This file proves that hypothesis is automatic from `ContDiff ℝ 1 γ`.\n\n**Proof Chain for the Missing Piece**:\n\n1. **C¹ → Continuous derivative**: `ContDiff ℝ 1 γ` → `Continuous (fderiv ℝ γ)` via `ContDiff.continuous_fderiv`. Since `deriv f t = fderiv ℝ f t 1`, evaluation at 1 is continuous by `Continuous.clm_apply`, giving `Continuous (deriv f)` for any C¹ function f : ℝ → F.\n\n2. **Angular average simplification**: The `angular_average` identity from OQ01OQ01 says:\n   ```\n   ∫_0^π |dx·sin θ + dy·cos θ| dθ = 2√(dx² + dy²)\n   ```\n   Applied pointwise, the inner integral function equals `fun t => 2 * √(dx(t)² + dy(t)²)`.\n\n3. **Continuity → Integrability**: The function `fun t => 2 * √(dx(t)² + dy(t)²)` is continuous (composition of continuous functions). Continuous functions are interval integrable.\n\n4. **Apply buffon_smooth_full**: With all hypotheses derived from ContDiff, the main theorem follows directly.",
     "keyInsights": [
-      "The crossing probability formula 2ℓ/(πd) is LINEAR in ℓ — this is the entire reason the noodle generalization works",
-      "Linearity of expectation: E[sum of crossings] = sum of E[crossings], even for correlated events",
-      "The shape of the noodle is irrelevant — only the total arc length determines the expected crossings",
-      "The proof is purely algebraic once we accept the needle formula: just factor out 2/(πd) from a finite sum",
-      "The Cauchy-Crofton formula generalizes this to arbitrary measures on the space of lines",
-      "Applications: stereology uses this principle to estimate fiber lengths from cross-sections"
+      "The entire proof chain reduces to one key lemma: ContDiff ℝ 1 f → Continuous (deriv f)",
+      "The angular_average identity is the mathematical heart: it reduces the inner integral to a simple continuous function",
+      "Continuity of the integrand is the bridge from C¹ smoothness to Fubini integrability",
+      "Shape independence is an immediate corollary of the formula being linear in arc length",
+      "The crossings → 0 limit as d → ∞ is purely analytic: constant/d → 0"
     ]
   },
   "sections": [
     {
       "id": "header",
-      "title": "Problem Statement and History",
+      "title": "Proof Strategy and Connection to Prior Work",
       "startLine": 1,
-      "endLine": 56,
-      "summary": "Historical context: Buffon (1777) for needles, Barbier (1860) for curved needles. Statement of the noodle theorem and the Cauchy-Crofton connection."
+      "endLine": 43,
+      "summary": "Documents the gap being filled: ContDiff ℝ 1 γ → IntervalIntegrable. Explains the proof chain and connection to BuffonsNeedle.lean, BuffonsNoodle.lean, and BuffonsNeedleOQ01OQ01.lean."
     },
     {
-      "id": "crossing-prob",
-      "title": "Crossing Probability for Single Segments",
-      "startLine": 60,
-      "endLine": 93,
-      "summary": "segmentCrossingProb ℓ d = 2ℓ/(πd), with linearity, zero, and nonnegativity properties."
+      "id": "part-i-deriv-continuity",
+      "title": "Part I: Derivative Continuity from C¹ Smoothness",
+      "startLine": 44,
+      "endLine": 82,
+      "summary": "contDiff_one_continuous_deriv (key helper), deriv_fst_continuous, deriv_snd_continuous: C¹ implies continuous scalar derivative via ContDiff.continuous_fderiv + clm_apply."
     },
     {
-      "id": "polygonal-noodle",
-      "title": "Polygonal Noodle Structure",
-      "startLine": 96,
-      "endLine": 133,
-      "summary": "PolygonalNoodle structure with n segments, totalLength, and expectedCrossings definitions."
+      "id": "part-ii-integrability",
+      "title": "Part II: Inner Integral is Integrable for C¹ Curves",
+      "startLine": 83,
+      "endLine": 122,
+      "summary": "inner_integral_eq (angular_average applied pointwise), inner_integral_continuous (2√(dx²+dy²) is continuous), inner_integral_integrable (continuous → interval integrable)."
     },
     {
-      "id": "main-theorem",
-      "title": "The Noodle Theorem (Polygonal Case)",
-      "startLine": 135,
-      "endLine": 165,
-      "summary": "buffon_noodle_polygon: E[crossings] = 2L/(πd). Proved by factoring out 2/(πd) using Finset.mul_sum."
+      "id": "part-iii-main-theorem",
+      "title": "Part III: The Complete Buffon-Barbier Theorem",
+      "startLine": 123,
+      "endLine": 155,
+      "summary": "buffon_smooth_of_contDiff: E[crossings] = 2·arcLength/(π·d) requiring only ContDiff ℝ 1 γ. All hypotheses derived automatically."
     },
     {
-      "id": "shape-independence",
-      "title": "Shape Independence",
-      "startLine": 166,
-      "endLine": 190,
-      "summary": "Two noodles with the same total length have identical expected crossings. needle_equals_noodle: single needle = any equal-length polygon."
-    },
-    {
-      "id": "scaling",
-      "title": "Scaling Theorem",
-      "startLine": 191,
-      "endLine": 215,
-      "summary": "Expected crossings scale linearly with segment lengths: scaling by c multiplies crossings by c."
-    },
-    {
-      "id": "smooth-generalization",
-      "title": "Smooth Curve Generalization (Open)",
-      "startLine": 216,
-      "endLine": 257,
-      "summary": "buffon_noodle_smooth axiom: the smooth curve version. Documents what's needed: arc length theory, polygonal approximation, continuity of crossing functional."
-    },
-    {
-      "id": "examples",
-      "title": "Numerical Examples",
-      "startLine": 270,
-      "endLine": 305,
-      "summary": "circle_expected_crossings (4r/d), square_expected_crossings (8s/(πd)), regular_polygon_crossings (2ns/(πd))."
+      "id": "part-iv-corollaries",
+      "title": "Part IV: Shape Independence and Corollaries",
+      "startLine": 156,
+      "endLine": 249,
+      "summary": "smooth_shape_independence, straight_line_arclength, straight_line_crossings (consistency with Wiedijk #99), smooth_crossings_mono, crossings_tendsto_zero (limit as d → ∞)."
     }
   ],
   "conclusion": {
-    "summary": "Buffon's Noodle Theorem is one of the most elegant results in geometric probability: the expected number of crossings with a parallel line grid depends only on total arc length, not shape. We formally prove this for polygonal noodles using `Finset.mul_sum` to factor out the constant 2/(πd). The smooth curve generalization requires arc length theory not yet fully available in Lean/Mathlib.",
-    "implications": "**Mathematical Significance**:\n\n**1. Linearity of Expectation in Geometry**\nThe noodle theorem is a beautiful application of linearity of expectation to geometric probability. It demonstrates that seemingly complex geometric properties (which crossings occur) are governed by simple linear summation.\n\n**2. Foundation for Stereology**\nIn microscopy and materials science, stereology uses the noodle theorem to estimate fiber lengths from 2D cross-sections: measure crossings with random lines to estimate total fiber length.\n\n**3. Cauchy-Crofton Formula**\nThe noodle theorem is a special case of the Cauchy-Crofton formula:\n   ∫∫ n(C, l) dρ dθ = 2 · length(C)\nwhere the integral is over all lines l in the plane. This deep result in integral geometry generalizes to arbitrary measures on lines and curves.\n\n**4. Formalization Gap**\nThe smooth curve case requires `Mathlib.Analysis.Calculus.ArcLength` to be more fully developed. This is an active area in Mathlib where contributions would enable many more geometric probability results.",
+    "summary": "The Buffon-Barbier theorem for C¹ curves is now fully proved with 0 sorries and 0 axioms. The proof reduces to one key insight: C¹ smoothness implies continuous derivative, which via the angular average identity gives a continuous inner integral, which is therefore integrable. The main result `buffon_smooth_of_contDiff` requires only `ContDiff ℝ 1 γ` — the minimal smoothness needed for the formula to make sense.",
+    "implications": "**Mathematical Significance**:\n\n**1. Complete Formalization of Buffon-Barbier**\nThe smooth curve Buffon-Barbier theorem is now completely formalized in Lean 4. The proof chain from C¹ smoothness through derivative continuity, angular average, and integrability to the final formula is all verified.\n\n**2. Key Lemma for Geometric Probability**\n`contDiff_one_continuous_deriv` (C¹ → Continuous deriv) is a useful building block for other geometric probability results involving smooth curves.\n\n**3. Shape Independence Formalized**\n`smooth_shape_independence` gives a purely formal proof that the shape of a C¹ curve is irrelevant — only total arc length determines expected crossings. This is the geometric heart of the Cauchy-Crofton formula.\n\n**4. Consistency with Classical Result**\n`straight_line_crossings` verifies that the smooth formula reduces to the original Buffon's Needle formula (Wiedijk's 100 Theorems #99) for the simplest case.",
     "openQuestions": [
-      "Formally prove the smooth curve case using Mathlib's arc length theory for C¹ curves",
-      "Formalize the full Cauchy-Crofton formula in integral geometry",
-      "Higher-dimensional versions: expected crossings with hyperplane arrangements in ℝⁿ",
-      "Connection to Buffon's coin (circular needle) and generalizations to 2D objects",
-      "Stochastic geometry: distribution of crossings, not just expectation"
+      "Full Cauchy-Crofton formula for arbitrary measures on lines in ℝ²",
+      "Higher-dimensional versions: hyperplane arrangements in ℝⁿ",
+      "Extension to Lipschitz curves (weaker than C¹)",
+      "Connection to Buffon's coin (2D object) and generalizations"
     ]
   }
 }
