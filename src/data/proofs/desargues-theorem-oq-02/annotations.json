@@ -1,0 +1,44 @@
+[
+  {
+    "lineNumber": 51,
+    "content": "The MLine inductive type captures the three kinds of Moulton lines. A bent line with parameter (m, b) where m < 0 uses slope m for x ≤ 0 and slope 2m for x > 0, creating a 'bend' at the y-axis.",
+    "type": "definition",
+    "tags": ["moulton-plane", "incidence-geometry"]
+  },
+  {
+    "lineNumber": 57,
+    "content": "The disjunctive definition ensures that for bent lines, a point must satisfy exactly one branch depending on its x-coordinate. This piecewise structure is what breaks Desargues's theorem.",
+    "type": "insight",
+    "tags": ["moulton-plane", "incidence"]
+  },
+  {
+    "lineNumber": 109,
+    "content": "All six side lines are explicitly classified: AB (horizontal), B'C' and C'A' have positive/zero slope (standard), while A'B' (slope -2/7), BC (slope -2), and CA (slope -1/2) have negative slope (bent). Only CA's bending affects the counterexample.",
+    "type": "observation",
+    "tags": ["side-lines", "slope-analysis"]
+  },
+  {
+    "lineNumber": 153,
+    "content": "The critical computation: line CA has Moulton slope -1/2, so for x > 0 the effective slope is 2×(-1/2) = -1. The intersection with C'A' (slope 1/10) at x = 6/11 gives y = 38/11 instead of the Euclidean value 7/2.",
+    "type": "key-computation",
+    "tags": ["moulton-bending", "intersection-shift"]
+  },
+  {
+    "lineNumber": 210,
+    "content": "The non-collinearity proof works by contradiction: assume some MLine l passes through all three points, then case-split on l's constructor. For standard and bent lines, linear algebra (linarith) derives a contradiction from the overdetermined system. For vertical lines, the x-coordinates disagree.",
+    "type": "proof-strategy",
+    "tags": ["non-collinearity", "case-analysis"]
+  },
+  {
+    "lineNumber": 263,
+    "content": "The main theorem assembles 13 conjuncts: 9 perspectivity incidences, 6 side-intersection incidences (grouped as 3 pairs), and the non-collinearity negation. This is the complete formal statement that Desargues fails in the Moulton plane.",
+    "type": "theorem-summary",
+    "tags": ["main-theorem", "desargues-failure"]
+  },
+  {
+    "lineNumber": 325,
+    "content": "The gap of 3/88 is the exact arithmetic discrepancy: the Moulton line through α and γ (bent, slope -1/8) evaluates to 307/88 at x = 6/11, while β has y = 38/11 = 304/88. This tiny gap (≈ 0.034) is enough to break Desargues.",
+    "type": "computation",
+    "tags": ["gap", "arithmetic-verification"]
+  }
+]
