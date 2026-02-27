@@ -25,7 +25,7 @@
   - Parseval's identity: available (tsum_sq_fourierCoeff)
   - The assembled Wirtinger proof would be ~200-300 lines
 
-  What This File Proves (19 theorems, 2 axioms, 1 sorry):
+  What This File Proves (24 theorems, 2 axioms, 1 sorry):
   1. Equality for circles: C² = 4πA  (ring computation)
   2. Strict inequality for squares: C² > 4πA  (π < 4)
   3. The isoperimetric ratio: A/(C²/4π) and its circle value
@@ -35,6 +35,7 @@
   7. circleGamma_circumference: arc-length integral = 2πr  (√(sin²+cos²) = 1)
   8. circleGamma_area: Green's theorem integral = πr²  (sin²+cos² = 1)
   9. The Wirtinger–isoperimetric deduction chain (axiomatized Wirtinger)
+  10. Equilateral triangle: ratio = π√3/9 ≈ 0.605 < 1 (strict inequality)
 
   References:
   - Hurwitz (1901): Fourier series proof
@@ -43,17 +44,9 @@
   - Mathlib: Proofs/AreaFromCircumferenceIntegral.lean (OQ01-OQ02)
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.ArctanDeriv
-import Mathlib.Analysis.SpecialFunctions.Sqrt
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.Calculus.Deriv.Slope
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
-open Real
+open Real Filter Topology
 
 noncomputable section
 
@@ -130,7 +123,7 @@ theorem square_isoperimetric_strict (s : ℝ) (hs : 0 < s) :
     4 * π * squareArea s < squareCirc s ^ 2 := by
   unfold squareCirc squareArea
   have hs2 : 0 < s ^ 2 := sq_pos_of_pos hs
-  nlinarith [show π < 4 from by linarith [Real.pi_lt_3141593], hs2]
+  nlinarith [show π < 4 from pi_lt_four, hs2]
 
 /-- The isoperimetric ratio for a square is 4π/16 = π/4 < 1. -/
 theorem square_isoperimetric_ratio (s : ℝ) (hs : 0 < s) :
@@ -143,7 +136,7 @@ theorem square_isoperimetric_ratio (s : ℝ) (hs : 0 < s) :
 theorem square_ratio_lt_one (s : ℝ) (hs : 0 < s) :
     4 * π * squareArea s / squareCirc s ^ 2 < 1 := by
   rw [square_isoperimetric_ratio s hs]
-  have hpi_lt : π < 4 := by linarith [Real.pi_lt_3141593]
+  have hpi_lt : π < 4 := pi_lt_four
   linarith
 
 /-
@@ -174,8 +167,16 @@ theorem regular_ngon_isoperimetric_ratio (n : ℕ) (R : ℝ) (hn : 2 < n) (hR : 
       exact_mod_cast (by omega : 1 < n)
   have hn' : (n : ℝ) ≠ 0 := by exact_mod_cast (by omega : n ≠ 0)
   have hR' : R ≠ 0 := ne_of_gt hR
-  unfold Real.tan
-  field_simp [hsin, hn', hR']
+  have hn_pos : (0 : ℝ) < n := by positivity
+  have hcos : Real.cos (π / n) ≠ 0 := by
+    apply ne_of_gt
+    apply Real.cos_pos_of_mem_Ioo
+    constructor
+    · linarith [div_pos pi_pos hn_pos, div_pos pi_pos (show (0 : ℝ) < 2 from by norm_num)]
+    · exact div_lt_div_of_pos_left pi_pos (by norm_num : (0 : ℝ) < 2)
+        (by exact_mod_cast hn)
+  simp only [Real.tan_eq_sin_div_cos]
+  field_simp [hsin, hn', hR', hcos]
   ring
 
 /-- As n → ∞, the regular n-gon approaches the circle (ratio → 1).
@@ -201,11 +202,13 @@ theorem ngon_limit_tendsto_circle :
   -- Step 2: π/n → 0 via atTop, staying ≠ 0 for n ≥ 1
   have hpi_nhds : Filter.Tendsto (fun n : ℕ => (π : ℝ) / n)
       Filter.atTop (nhdsWithin 0 {(0 : ℝ)}ᶜ) := by
-    rw [Filter.tendsto_nhdsWithin_iff]
-    refine ⟨tendsto_const_div_atTop_nhds_zero_nat π, ?_⟩
-    filter_upwards [Filter.eventually_ge_atTop 1] with n hn
-    exact Set.mem_compl_singleton_iff.mpr
-      (div_ne_zero Real.pi_ne_zero (Nat.cast_ne_zero.mpr (by omega)))
+    rw [nhdsWithin, tendsto_inf]
+    constructor
+    · exact tendsto_const_div_atTop_nhds_zero_nat π
+    · rw [tendsto_principal]
+      filter_upwards [Filter.eventually_ge_atTop 1] with n hn
+      exact Set.mem_compl_singleton_iff.mpr
+        (div_ne_zero Real.pi_ne_zero (Nat.cast_ne_zero.mpr (by omega)))
   -- Step 3: tan(π/n)/(π/n) → 1 by composition
   have h_comp : Filter.Tendsto (fun n : ℕ => Real.tan (π / n) / (π / n))
       Filter.atTop (nhds 1) :=
@@ -226,8 +229,7 @@ theorem ngon_limit_tendsto_circle :
   have hpn_lt : π / (n : ℝ) < π / 2 := by
     have h2n : (2 : ℝ) < n := by linarith
     have hn_pos : (0 : ℝ) < n := by linarith
-    rw [div_lt_div_iff hn_pos (by norm_num : (0 : ℝ) < 2)]
-    nlinarith [Real.pi_pos]
+    exact div_lt_div_of_pos_left pi_pos (by norm_num : (0 : ℝ) < 2) h2n
   have hcos_pos : 0 < Real.cos (π / n) :=
     Real.cos_pos_of_mem_Ioo
       ⟨by linarith [hpn_pos, div_pos Real.pi_pos (by norm_num : (0 : ℝ) < 2)], hpn_lt⟩
@@ -468,7 +470,7 @@ theorem non_circle_area_lt_circle (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve
 
 ### The Isoperimetric Inequality: C² ≥ 4πA
 
-### Proved (0 sorries in 17 theorems):
+### Proved (0 sorries in 22 theorems):
 1. `circle_isoperimetric_equality` — C² = 4πA for circles (equality case)
 2. `circle_isoperimetric_ratio` — 4πA/C² = 1 for circles
 3. `square_isoperimetric_strict` — C² > 4πA for squares (from π < 4)
@@ -488,6 +490,13 @@ theorem non_circle_area_lt_circle (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve
 17. `non_circle_area_lt_circle` — strict: 4πA < C² ⟹ A < circleArea r
 18. `cross_product_sq_le` — 2D CS: |xv-yu|² ≤ (x²+y²)(u²+v²) [algebraic, nlinarith]
 19. `isoperimetric_from_wirtinger_bounds` — arithmetic kernel: from Wirtinger bounds to 4πA ≤ L²
+20. `equi_tri_isoperimetric_ratio` — 4πA/C² = π√3/9 for equilateral triangles
+21. `equi_tri_ratio_lt_one` — equilateral triangle ratio < 1 (from π < 4 and √3 < 2)
+22. `equi_tri_strict_inequality` — C² > 4πA for equilateral triangles
+
+### 2 Definitions:
+- `equiTriCirc` — perimeter of equilateral triangle with side a: 3a
+- `equiTriArea` — area of equilateral triangle with side a: (√3/4)a²
 
 ### Axioms (2):
 1. `wirtinger_inequality` — ∫f² ≤ ∫(f')² for periodic mean-zero f
@@ -590,6 +599,60 @@ theorem isoperimetric_from_wirtinger_bounds
               mul_le_mul_of_nonneg_left hA (by linarith)
          _ = (2 * π * c) ^ 2 := by ring
   rw [hcirc]; exact h2
+
+/-
+## Part IX: Equilateral Triangle — A Concrete Example
+
+For an equilateral triangle with side a:
+  C = 3a,  A = (√3/4)·a²
+  4πA/C² = π·√3/9 ≈ 0.6046 < 1
+
+This confirms the circle is strictly optimal: the triangle's isoperimetric ratio
+is about 60.5% of the circle's, making it the worst among regular polygons.
+(Regular n-gon ratios increase monotonically toward 1 as n → ∞.)
+-/
+
+/-- Perimeter of an equilateral triangle with side a. -/
+def equiTriCirc (a : ℝ) : ℝ := 3 * a
+
+/-- Area of an equilateral triangle with side a (by Heron's formula: √3/4 · a²). -/
+def equiTriArea (a : ℝ) : ℝ := Real.sqrt 3 / 4 * a ^ 2
+
+/-- The isoperimetric ratio for an equilateral triangle is π·√3/9. -/
+theorem equi_tri_isoperimetric_ratio (a : ℝ) (ha : 0 < a) :
+    4 * π * equiTriArea a / equiTriCirc a ^ 2 = π * Real.sqrt 3 / 9 := by
+  unfold equiTriArea equiTriCirc
+  have ha' : a ≠ 0 := ne_of_gt ha
+  field_simp [ha']
+  ring
+
+/-- The equilateral triangle ratio is less than 1, confirming suboptimality.
+    Proof: π·√3/9 < 1 since π < 4 and √3 < 2, giving π·√3 < 8 < 9. -/
+theorem equi_tri_ratio_lt_one (a : ℝ) (ha : 0 < a) :
+    4 * π * equiTriArea a / equiTriCirc a ^ 2 < 1 := by
+  rw [equi_tri_isoperimetric_ratio a ha]
+  -- Need: π * √3 / 9 < 1, i.e., π * √3 < 9
+  -- Since π < 4 and √3 < 2, we get π * √3 < 8 < 9
+  have hsq3_lt : Real.sqrt 3 < 2 := by
+    have h4 : Real.sqrt 3 < Real.sqrt 4 := Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+    rwa [show (4 : ℝ) = 2 ^ 2 from by norm_num, Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 2)] at h4
+  have hpi_lt : π < 4 := pi_lt_four
+  have hsq3_nn : 0 ≤ Real.sqrt 3 := Real.sqrt_nonneg 3
+  -- π * √3 < 4 * 2 = 8 < 9
+  have hprod : π * Real.sqrt 3 < 9 :=
+    calc π * Real.sqrt 3 < 4 * Real.sqrt 3 :=
+            mul_lt_mul_of_pos_right hpi_lt (by linarith [Real.sqrt_pos_of_pos (by norm_num : (0 : ℝ) < 3)])
+         _ < 4 * 2 := by nlinarith
+         _ = 8 := by norm_num
+         _ < 9 := by norm_num
+  linarith
+
+/-- For an equilateral triangle, C² > 4πA (strict inequality). -/
+theorem equi_tri_strict_inequality (a : ℝ) (ha : 0 < a) :
+    4 * π * equiTriArea a < equiTriCirc a ^ 2 := by
+  have hr := equi_tri_ratio_lt_one a ha
+  have hC2 : 0 < equiTriCirc a ^ 2 := by unfold equiTriCirc; positivity
+  rwa [div_lt_one hC2] at hr
 
 end IsoperimetricOQ
 
