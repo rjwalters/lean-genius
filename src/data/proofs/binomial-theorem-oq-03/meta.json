@@ -1,0 +1,108 @@
+{
+  "id": "binomial-theorem-oq-03",
+  "title": "Binomial Distribution from the Binomial Theorem",
+  "slug": "binomial-theorem-oq-03",
+  "description": "Can we derive the binomial distribution and its key properties directly from the binomial theorem? YES. The identity (p + (1-p))^n = 1 gives normalization, and algebraic manipulation yields mean = np. This formalization derives normalization, mean, symmetry, fair coin formula, Bernoulli cases, and the probability generating function — all from the binomial theorem.",
+  "meta": {
+    "author": "Jacob Bernoulli (1713); algebraic derivation formalized here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Binomial_distribution",
+    "date": "1713",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ03.lean",
+    "tags": [
+      "probability",
+      "binomial-distribution",
+      "combinatorics",
+      "normalization",
+      "moments",
+      "generating-functions",
+      "research"
+    ],
+    "badge": "research",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficients and their identities",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.sum_range_choose",
+        "description": "Sum of binomial coefficients equals 2^n",
+        "module": "Mathlib.Data.Nat.Choose.Sum"
+      }
+    ],
+    "originalContributions": [
+      "binomPMF: P(X=k) = C(n,k) p^k (1-p)^(n-k) as a Lean definition",
+      "binomPMF_sum_eq_one: normalization from (p + (1-p))^n = 1",
+      "binomial_mean: E[X] = np via the absorption identity (k+1)C(n+1,k+1) = (n+1)C(n,k)",
+      "binomPMF_symm: symmetry P(k;n,p) = P(n-k;n,1-p)",
+      "binomial_pgf: probability generating function E[t^X] = (pt + 1-p)^n",
+      "Special cases: fair coin C(n,k)/2^n, Bernoulli, certain/impossible events"
+    ],
+    "dateAdded": "02/26/26"
+  },
+  "overview": {
+    "historicalContext": "The binomial distribution — the probability of k successes in n independent Bernoulli trials — is one of the most fundamental objects in probability theory. Jacob Bernoulli established its properties in Ars Conjectandi (1713). The connection to the algebraic binomial theorem is immediate: setting x = p, y = 1-p in (x+y)^n = 1 gives normalization, and differentiating the PGF gives moments.",
+    "problemStatement": "**Open Question (OQ-03):** Can we derive the binomial distribution's key properties (normalization, mean, PGF) directly from the algebraic binomial theorem?\n\n**Answer:** YES. Every property follows from algebraic manipulation of (p + q)^n = Σ C(n,k) p^k q^(n-k):\n- **Normalization:** Set q = 1-p to get 1 = Σ PMF(k)\n- **Mean:** Use the absorption identity to factor np from Σ k·PMF(k)\n- **PGF:** Replace p by pt to get E[t^X] = (pt + 1-p)^n",
+    "proofStrategy": "The proof proceeds algebraically:\n\n1. **Binomial expansion:** (p+q)^n = Σ C(n,k) p^k q^(n-k) proved by rewriting Mathlib's add_pow\n2. **Normalization:** Substitute q = 1-p; the sum telescopes to 1^n = 1\n3. **Mean via absorption:** The identity (k+1)C(n+1,k+1) = (n+1)C(n,k) lets us factor out np from the sum; the remaining sum is 1 by normalization of degree n-1\n4. **PGF:** Replace p by pt in the binomial expansion",
+    "keyInsights": [
+      "The binomial theorem IS normalization — they are literally the same identity with q = 1-p",
+      "The absorption identity converts a weighted sum Σ k·PMF(k) into np times an unweighted sum",
+      "The PGF encodes all moments compactly; E[t^X] = (pt + 1-p)^n unifies normalization and mean",
+      "Working over ℝ (not Finset probability) keeps the algebra clean and avoids measure theory"
+    ]
+  },
+  "sections": [
+    {
+      "id": "pmf",
+      "title": "The Binomial Distribution PMF",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Definition of binomPMF and basic properties: P(0), P(n), non-negativity."
+    },
+    {
+      "id": "normalization",
+      "title": "Normalization from the Binomial Theorem",
+      "startLine": 46,
+      "endLine": 64,
+      "summary": "The PMF sums to 1, proved by (p + (1-p))^n = 1."
+    },
+    {
+      "id": "symmetry",
+      "title": "Symmetry",
+      "startLine": 66,
+      "endLine": 73,
+      "summary": "P(k;n,p) = P(n-k;n,1-p) via choose symmetry."
+    },
+    {
+      "id": "mean",
+      "title": "Mean via Absorption Identity",
+      "startLine": 75,
+      "endLine": 127,
+      "summary": "E[X] = np proved using the absorption identity (k+1)C(n+1,k+1) = (n+1)C(n,k)."
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases",
+      "startLine": 129,
+      "endLine": 161,
+      "summary": "Fair coin, Bernoulli, certain event, impossible event."
+    },
+    {
+      "id": "pgf",
+      "title": "Probability Generating Function",
+      "startLine": 163,
+      "endLine": 207,
+      "summary": "PGF E[t^X] = (pt+1-p)^n, its value at t=1, and derivative interpretation."
+    }
+  ],
+  "conclusion": {
+    "summary": "All key properties of the binomial distribution — normalization, mean, symmetry, generating function, and special cases — are derived purely from the algebraic binomial theorem without any measure theory or probability axioms. The proof demonstrates that the binomial distribution is fundamentally an algebraic object.",
+    "implications": "This formalization shows that discrete probability distributions can be studied entirely within algebra, without measure-theoretic foundations. The PGF framework extends naturally to other distributions (Poisson as a limit, negative binomial via generating function composition).",
+    "openQuestions": [
+      "Can the variance np(1-p) be derived from the second derivative of the PGF?",
+      "Can we formalize the Poisson limit theorem: Bin(n, λ/n) → Poi(λ) as n → ∞?"
+    ]
+  }
+}

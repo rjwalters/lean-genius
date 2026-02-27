@@ -1,56 +1,90 @@
 {
   "slug": "binomial-theorem-oq-03",
-  "title": "Derive binomial distribution from binomial theorem",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Binomial Distribution from the Binomial Theorem",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "\\sum_{k=0}^{n} \\binom{n}{k} p^k (1-p)^{n-k} = 1 \\text{ and } \\sum_{k=0}^{n} k \\binom{n}{k} p^k (1-p)^{n-k} = np",
+    "plain": "Derive the binomial distribution's normalization and mean directly from the algebraic binomial theorem.",
+    "whyMatters": [
+      "Shows probability distributions are fundamentally algebraic objects",
+      "Demonstrates the PGF framework for moment computation"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Normalization: sum of PMF = 1 from (p+(1-p))^n = 1",
+      "Mean E[X] = np via absorption identity",
+      "Symmetry P(k;n,p) = P(n-k;n,1-p)",
+      "PGF E[t^X] = (pt + 1-p)^n",
+      "Special cases: fair coin, Bernoulli, certain/impossible events"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Derive binomial distribution properties from the binomial theorem"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-02-26T05:12:41.986Z",
+    "phase": "COMPLETED",
+    "since": "2026-02-27T05:30:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Complete formalization achieved",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - completed",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: 20 theorems, 0 axioms, 0 sorries, 208 lines",
+    "builtItems": [
+      "binomPMF definition over R in BinomialTheoremOQ03.lean",
+      "binomPMF_sum_eq_one: normalization",
+      "binomial_mean: E[X] = np via absorption identity",
+      "binomial_pgf: PGF E[t^X] = (pt + 1-p)^n",
+      "Gallery integration in src/data/proofs/binomial-theorem-oq-03/"
+    ],
+    "insights": [
+      "The binomial theorem IS normalization - same identity with q = 1-p",
+      "Absorption identity (k+1)C(n+1,k+1) = (n+1)C(n,k) is the key for mean computation",
+      "nlinarith with mul_comm hints closes the absorption-based term rewriting"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [],
-  "tags": [
-    "algebra",
-    "combinatorics",
-    "probability",
-    "classic",
-    "beginner"
+  "approaches": [
+    {
+      "name": "Algebraic derivation from binomial expansion",
+      "status": "succeeded",
+      "description": "All properties derived from (p+q)^n = sum C(n,k) p^k q^(n-k)"
+    }
   ],
-  "relatedProofs": [],
+  "tags": [
+    "probability",
+    "binomial-distribution",
+    "combinatorics",
+    "normalization",
+    "moments"
+  ],
+  "relatedProofs": [
+    "binomial-theorem",
+    "binomial-theorem-oq-01",
+    "binomial-theorem-oq-02"
+  ],
   "references": {
     "papers": [],
-    "urls": [],
-    "mathlib": []
+    "urls": [
+      "https://en.wikipedia.org/wiki/Binomial_distribution"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Choose.Sum"
+    ]
   },
   "started": "2026-02-26T17:08:50.305Z",
-  "lastUpdate": "2026-02-26T17:08:50.305Z",
+  "lastUpdate": "2026-02-27T05:30:00.000Z",
   "significance": 6,
-  "tractability": 6
+  "tractability": 9
 }
