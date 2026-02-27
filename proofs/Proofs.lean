@@ -20,6 +20,7 @@ import Proofs.BallotProblem
 import Proofs.BallotProblemOQ01
 import Proofs.BallotProblemOQ01OQ01
 import Proofs.BallotProblemOQ02
+import Proofs.BallotProblemOQ03
 import Proofs.BaselProblem
 import Proofs.BertrandsPostulate
 import Proofs.BertrandsPostulateOQ03

@@ -1,0 +1,88 @@
+{
+  "theorems": [
+    {
+      "name": "northBeforeEast_mono",
+      "line": 129,
+      "description": "northBeforeEast is monotone: North steps accumulated before a later East step is at least as many as before an earlier East step.",
+      "difficulty": "medium",
+      "tags": ["monotonicity", "recursion"]
+    },
+    {
+      "name": "northBeforeEast_le_northSteps",
+      "line": 176,
+      "description": "northBeforeEast l k counts a prefix of North steps, bounded by total northSteps.",
+      "difficulty": "medium",
+      "tags": ["bound", "recursion"]
+    },
+    {
+      "name": "colEntry_le_northSteps",
+      "line": 193,
+      "description": "At column m, the entry y-offset is bounded by total North steps.",
+      "difficulty": "easy",
+      "tags": ["bound"]
+    },
+    {
+      "name": "nonIntersecting_entry_order",
+      "line": 222,
+      "description": "KEY LEMMA: Non-intersecting + P₁ enters column k below P₂ implies P₁ enters column k+1 below P₂. Proof: if P₁ exits above P₂'s entry, a shared y-value exists in both column ranges.",
+      "difficulty": "hard",
+      "tags": ["key-lemma", "non-intersecting", "column-order"]
+    },
+    {
+      "name": "crossing_lemma",
+      "line": 249,
+      "description": "THE 2D CROSSING LEMMA: If y₁ < y₂ (P₁ starts lower) but y₂+n₂ < y₁+n₁ (P₁ ends higher), the paths cannot be non-intersecting. Proved by induction on columns using nonIntersecting_entry_order.",
+      "difficulty": "hard",
+      "tags": ["main-theorem", "crossing", "reflection-principle"]
+    },
+    {
+      "name": "path_count_eq_choose",
+      "line": 343,
+      "description": "PROVED: The number of lattice paths with m East and n North steps equals C(m+n, m). Proved by induction using pathSplitEquiv bijection and Pascal's identity.",
+      "difficulty": "hard",
+      "tags": ["main-theorem", "counting", "binomial"]
+    },
+    {
+      "name": "lgv_lemma_2x2",
+      "line": 420,
+      "description": "OPEN (sorry): The 2×2 LGV Lemma. NI pair count = lgvDet. Proof strategy: Lindström involution swaps tails of intersecting pairs at first meeting column, creating a bijection with crossing pairs. Crossing Lemma ensures all crossing pairs are intersecting.",
+      "difficulty": "very-hard",
+      "tags": ["open", "lgv", "involution"]
+    },
+    {
+      "name": "vandermonde",
+      "line": 432,
+      "description": "PROVED: Vandermonde's Identity C(m+n, r) = Σ C(m,k)*C(n,r-k) via Mathlib's add_choose_eq.",
+      "difficulty": "easy",
+      "tags": ["vandermonde", "binomial-identity"]
+    },
+    {
+      "name": "catalan_formula",
+      "line": 456,
+      "description": "PROVED: Catalan formula Cn(n)*(n+1) = C(2n,n) via absorption identity argument.",
+      "difficulty": "hard",
+      "tags": ["catalan", "absorption-identity"]
+    },
+    {
+      "name": "ballot_formula",
+      "line": 507,
+      "description": "PROVED: ballotSeqCount p q * (p+q) = (p-q) * C(p+q,p) for q < p. Proved via absorption identity and Pascal's rule.",
+      "difficulty": "hard",
+      "tags": ["ballot", "reflection-principle", "absorption-identity"]
+    },
+    {
+      "name": "ballot_via_path_count",
+      "line": 559,
+      "description": "PROVED: ballot count = |pathType q (p-1)| - |pathType (q-1) p|. This is the 1D reflection principle: bad ballot sequences biject with shifted paths.",
+      "difficulty": "medium",
+      "tags": ["ballot", "path-count", "reflection-principle"]
+    },
+    {
+      "name": "splitAfterEast_append",
+      "line": 585,
+      "description": "PROVED: Splitting a path and rejoining gives back the original path.",
+      "difficulty": "easy",
+      "tags": ["path-split", "infrastructure"]
+    }
+  ]
+}
