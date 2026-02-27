@@ -247,6 +247,12 @@ export function validateLineAnnotations(
   leanSourcePath: string
 ): { valid: number; misaligned: { id: string; reason: string }[] } {
   const annotationsJson = JSON.parse(fs.readFileSync(annotationsPath, 'utf-8'));
+
+  // Skip non-array annotations (e.g. researcher-created {theorems:[...]} format)
+  if (!Array.isArray(annotationsJson)) {
+    return { valid: 0, misaligned: [] };
+  }
+
   const leanSource = fs.readFileSync(leanSourcePath, 'utf-8');
   const parsed = parseLeanFile(leanSource, leanSourcePath);
 

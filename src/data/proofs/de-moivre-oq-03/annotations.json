@@ -1,0 +1,96 @@
+[
+  {
+    "id": "ann-demoivre-oq03-01-overview",
+    "proofId": "de-moivre-oq-03",
+    "range": { "startLine": 3, "endLine": 31 },
+    "type": "context",
+    "title": "Problem Overview: Fractional De Moivre",
+    "content": "De Moivre's theorem for integer exponents is $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$. This file extends the result to fractional exponents $p/q$, where the key complication is multi-valuedness: $z^{p/q}$ has $q$ distinct values.",
+    "mathContext": "$$\\zeta_k = \\exp\\left(\\frac{i(p\\theta + 2\\pi k)}{q}\\right), \\quad k = 0, 1, \\ldots, q-1$$",
+    "significance": "key",
+    "relatedConcepts": ["De Moivre's theorem", "complex exponential", "multi-valued functions"],
+    "prerequisites": ["complex numbers", "Euler's formula"]
+  },
+  {
+    "id": "ann-demoivre-oq03-02-qthroot",
+    "proofId": "de-moivre-oq-03",
+    "range": { "startLine": 37, "endLine": 39 },
+    "type": "definition",
+    "title": "q-th Root Definition",
+    "content": "The $k$-th candidate $q$-th root of $e^{ip\\theta}$ is defined as $\\zeta_k = \\exp(i(p\\theta + 2\\pi k)/q)$. This gives $q$ candidates indexed by $k = 0, 1, \\ldots, q-1$.",
+    "significance": "key",
+    "relatedConcepts": ["root extraction", "complex exponential"]
+  },
+  {
+    "id": "ann-demoivre-oq03-03-rootverify",
+    "proofId": "de-moivre-oq-03",
+    "range": { "startLine": 43, "endLine": 69 },
+    "type": "theorem",
+    "title": "Root Verification: ζ_k^q = z^p",
+    "content": "Each candidate root satisfies $\\zeta_k^q = (e^{i\\theta})^p$. The proof uses $\\exp(n \\cdot z) = (\\exp z)^n$, cancels the $q$ denominator, and applies $e^{2\\pi i k} = 1$.",
+    "mathContext": "$$\\zeta_k^q = \\exp\\left(\\frac{iq(p\\theta + 2\\pi k)}{q}\\right) = \\exp(ip\\theta) \\cdot \\underbrace{\\exp(2\\pi i k)}_{=1}$$",
+    "significance": "key",
+    "relatedConcepts": ["exp periodicity", "root verification"]
+  },
+  {
+    "id": "ann-demoivre-oq03-04-unity",
+    "proofId": "de-moivre-oq-03",
+    "range": { "startLine": 74, "endLine": 96 },
+    "type": "theorem",
+    "title": "Root Factorization via Roots of Unity",
+    "content": "Every $q$-th root factors as $\\zeta_k = \\zeta_0 \\cdot \\omega_k$ where $\\omega_k = e^{2\\pi i k/q}$ is a $q$-th root of unity. This separates the principal root from the combinatorial structure.",
+    "mathContext": "$$\\omega_k^q = \\left(e^{2\\pi i k/q}\\right)^q = e^{2\\pi i k} = 1$$",
+    "significance": "key",
+    "relatedConcepts": ["roots of unity", "cyclic groups"]
+  },
+  {
+    "id": "ann-demoivre-oq03-05-distinct",
+    "proofId": "de-moivre-oq-03",
+    "range": { "startLine": 100, "endLine": 147 },
+    "type": "theorem",
+    "title": "Root Distinctness",
+    "content": "Two roots with different indices $j \\neq k$ in $[0, q)$ are distinct. The proof uses `exp_eq_exp_iff_exists_int`: if $\\zeta_j = \\zeta_k$ then the exponents differ by $2\\pi m$, giving $j - k = mq$. Since $|j-k| < q$, we get $m = 0$, contradicting $j \\neq k$.",
+    "significance": "key",
+    "relatedConcepts": ["exponential periodicity", "modular arithmetic"]
+  },
+  {
+    "id": "ann-demoivre-oq03-06-principal",
+    "proofId": "de-moivre-oq-03",
+    "range": { "startLine": 151, "endLine": 183 },
+    "type": "theorem",
+    "title": "Principal Value via cpow",
+    "content": "For $\\theta$ in the principal range $(-\\pi, \\pi]$, Mathlib's `cpow` gives $e^{i\\theta \\cdot p/q} = \\exp(ip\\theta/q)$, which equals the $k=0$ root $\\zeta_0$. This uses `cpow_def_of_ne_zero` and `log_exp`.",
+    "significance": "key",
+    "relatedConcepts": ["principal branch", "complex logarithm", "cpow"]
+  },
+  {
+    "id": "ann-demoivre-oq03-07-consistency",
+    "proofId": "de-moivre-oq-03",
+    "range": { "startLine": 187, "endLine": 200 },
+    "type": "theorem",
+    "title": "Consistency with Integer De Moivre",
+    "content": "When $q = 1$, the fractional formula reduces to integer De Moivre via `div_one` and `cpow_intCast`. Also, $(z^{p/q})^q = z^p$, confirming the principal value is a genuine root.",
+    "significance": "supporting",
+    "relatedConcepts": ["integer exponents", "cpow_intCast"]
+  },
+  {
+    "id": "ann-demoivre-oq03-08-sqrt",
+    "proofId": "de-moivre-oq-03",
+    "range": { "startLine": 204, "endLine": 224 },
+    "type": "theorem",
+    "title": "Square Root Special Case",
+    "content": "The two square roots of $e^{i\\theta}$ are $\\zeta_0 = e^{i\\theta/2}$ and $\\zeta_1 = -\\zeta_0$. The negation follows from $\\exp(i(\\theta+2\\pi)/2) = \\exp(i\\theta/2) \\cdot \\exp(i\\pi) = -\\zeta_0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["square roots", "exp(iπ) = -1"]
+  },
+  {
+    "id": "ann-demoivre-oq03-09-summary",
+    "proofId": "de-moivre-oq-03",
+    "range": { "startLine": 259, "endLine": 274 },
+    "type": "theorem",
+    "title": "Summary Theorem",
+    "content": "Combined statement packaging all main results: root verification, factorization via unity, principal value identification, and consistency.",
+    "significance": "key",
+    "relatedConcepts": ["summary", "main results"]
+  }
+]
