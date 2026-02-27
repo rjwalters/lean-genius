@@ -43,14 +43,14 @@
     "dateAdded": "02/24/26"
   },
   "overview": {
-    "historicalContext": "The classical (discrete) ballot problem was solved by Bertrand (1887): if A gets p votes and B gets q votes (p > q), the probability A leads throughout counting is (p-q)/(p+q). The continuous-time version, developed by Lévy (1939) and Bachelier (1900), replaces random walk paths with Brownian motion.",
+    "historicalContext": "The classical ballot problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus*: if candidate A receives $p$ votes and B receives $q$ votes with $p > q$, the probability A leads throughout counting is $(p-q)/(p+q)$. Désiré André gave the first proof using the reflection principle for lattice paths. The continuous-time version emerged from Louis Bachelier's 1900 thesis on stock price fluctuations — the first mathematical treatment of Brownian motion, predating Einstein's 1905 paper. Paul Lévy (1939) rigorously developed the reflection principle for Brownian motion, proving $P(\\max_{s \\leq T} W_s \\geq a) = 2P(W_T \\geq a)$, and discovered the arcsine law for the fraction of time BM spends positive. Monroe Donsker's 1951 invariance principle (functional CLT) formally connected discrete and continuous ballot theorems: the rescaled random walk converges in distribution to Brownian motion, making the discrete formula $(p-q)/(p+q)$ a finite approximation of the continuous reflection principle.",
     "problemStatement": "**Continuous Ballot Problem**: For standard Brownian motion W on [0,T]:\n\n1. **Reflection Principle** (Lévy 1939): P(max_{s≤T} W_s ≥ a) = 2·P(W_T ≥ a)\n2. **First Passage CDF**: P(τ_a ≤ T) = 2·P(W_T ≥ a) = 2(1 - Φ(a/√T))\n3. **Arcsine Law**: The fraction of [0,T] where W > 0 has the arcsine distribution\n\nThese give the complete probabilistic description of Brownian motion relative to a level.",
     "proofStrategy": "**Axiomatic Approach**: Since Mathlib 4.26.0 lacks full Brownian motion formalization, we axiomatize the key properties:\n\n1. Define BrownianMotion structure with measurability, Gaussian marginals, and symmetry\n2. Prove symmetry theorems from the structure axioms\n3. Take the reflection principle as an axiom (requires strong Markov property)\n4. Derive the first passage CDF from the reflection principle\n5. Axiomatize the Arcsine Law (requires deep analysis)\n6. Connect to the classical discrete ballot theorem via explicit arithmetic",
     "keyInsights": [
-      "The reflection principle is the continuous analog of the Lindström-Gessel-Viennot lemma for lattice paths",
-      "sInf of {t | W_t ≥ a} defines the first passage time, with measurability from path continuity",
-      "The arcsine distribution (NOT uniform) shows BM spends most time entirely positive or negative",
-      "Donsker's invariance principle (functional CLT) connects discrete and continuous ballot theorems"
+      "The reflection principle $P(\\max_{s \\leq T} W_s \\geq a) = 2P(W_T \\geq a)$ is the continuous analog of André's lattice path reflection",
+      "First passage time $\\tau_a = \\inf\\{t \\geq 0 : W_t \\geq a\\}$ is defined via `sInf`, with measurability from path continuity",
+      "Lévy's arcsine distribution $P(L_T/T \\leq r) = (2/\\pi)\\arcsin(\\sqrt{r})$ shows BM spends most time entirely positive or entirely negative",
+      "Donsker's invariance principle $S_{\\lfloor nt \\rfloor}/\\sqrt{n} \\Rightarrow W_t$ connects the discrete formula $(p-q)/(p+q)$ to the continuous reflection principle"
     ]
   },
   "sections": [
@@ -59,49 +59,56 @@
       "title": "Brownian Motion Structure",
       "startLine": 75,
       "endLine": 91,
-      "summary": "BrownianMotion structure with process W : ℝ → Ω → ℝ, measurability, zero start, Gaussian marginals, symmetry, and positive probability field."
+      "summary": "BrownianMotion structure with process W : ℝ → Ω → ℝ, measurability, zero start, Gaussian marginals, symmetry, and positive probability field.",
+      "mathContext": "$W : \\mathbb{R} \\to \\Omega \\to \\mathbb{R}$ with $W_t \\sim N(0,t)$, $W_0 = 0$, and continuous paths"
     },
     {
       "id": "symmetry",
       "title": "Symmetry Properties",
       "startLine": 93,
       "endLine": 128,
-      "summary": "P(W_t > 0) = P(W_t < 0) proved from the symmetry field. Both positive and negative outcomes have positive probability for t > 0."
+      "summary": "P(W_t > 0) = P(W_t < 0) proved from the symmetry field. Both positive and negative outcomes have positive probability for t > 0.",
+      "mathContext": "$P(W_t > 0) = P(W_t < 0) > 0$ for $t > 0$, from the `symmetric` field of `BrownianMotion`"
     },
     {
       "id": "reflection-principle",
       "title": "The Reflection Principle",
       "startLine": 130,
       "endLine": 165,
-      "summary": "maxEvent definition and reflection_principle axiom: P(max W ≥ a in [0,T]) = 2·P(W_T ≥ a). Deep result requiring strong Markov property."
+      "summary": "maxEvent definition and reflection_principle axiom: P(max W ≥ a in [0,T]) = 2·P(W_T ≥ a). Deep result requiring strong Markov property.",
+      "mathContext": "$P(\\max_{s \\leq T} W_s \\geq a) = 2 \\cdot P(W_T \\geq a)$ (axiom, requires strong Markov property)"
     },
     {
       "id": "first-passage",
       "title": "First Passage Time Distribution",
       "startLine": 167,
       "endLine": 250,
-      "summary": "firstPassageTime as sInf, first_passage_cdf (P(τ_a ≤ T) = 2P(W_T ≥ a)), monotonicity, and positivity of passage probability."
+      "summary": "firstPassageTime as sInf, first_passage_cdf (P(τ_a ≤ T) = 2P(W_T ≥ a)), monotonicity, and positivity of passage probability.",
+      "mathContext": "$\\tau_a = \\inf\\{t : W_t \\geq a\\}$; $P(\\tau_a \\leq T) = 2P(W_T \\geq a) = 2(1 - \\Phi(a/\\sqrt{T}))$"
     },
     {
       "id": "arcsine-law",
       "title": "Lévy's Arcsine Law",
       "startLine": 252,
       "endLine": 260,
-      "summary": "positiveTime definition and levy_arcsine_law axiom: fraction of positive time has distribution (2/π)·arcsin(√r)."
+      "summary": "positiveTime definition and levy_arcsine_law axiom: fraction of positive time has distribution (2/π)·arcsin(√r).",
+      "mathContext": "$P(L_T / T \\leq r) = (2/\\pi) \\arcsin(\\sqrt{r})$ where $L_T = \\text{Leb}\\{s \\leq T : W_s > 0\\}$"
     },
     {
       "id": "main-theorem",
       "title": "Main Continuous Ballot Theorem",
       "startLine": 283,
       "endLine": 315,
-      "summary": "continuous_ballot_theorem combining reflection principle, first passage CDF, and positive probability in one package."
+      "summary": "continuous_ballot_theorem combining reflection principle, first passage CDF, and positive probability in one package.",
+      "mathContext": "Main theorem: conjunction of reflection principle, $\\{\\tau_a \\leq T\\} = \\text{maxEvent}$, and $P(\\tau_a \\leq T) > 0$"
     },
     {
       "id": "discrete-connection",
       "title": "Connection to Discrete Ballot",
       "startLine": 327,
       "endLine": 385,
-      "summary": "discrete_ballot_probability: the value (p-q)/(p+q) is a valid probability in [0,1], connecting discrete and continuous formulations."
+      "summary": "discrete_ballot_probability: the value (p-q)/(p+q) is a valid probability in [0,1], connecting discrete and continuous formulations.",
+      "mathContext": "$P(\\text{A leads throughout}) = (p-q)/(p+q) \\in [0, 1]$ for $p > q$ (Bertrand 1887)"
     }
   ],
   "conclusion": {

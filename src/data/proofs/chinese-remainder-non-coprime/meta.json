@@ -6,7 +6,7 @@
   "meta": {
     "author": "Euler (generalization, formalized in Lean 4)",
     "date": "18th century",
-    "status": "verified",
+    "status": "complete",
     "proofRepoPath": "Proofs/ChineseRemainderNonCoprime.lean",
     "tags": [
       "number-theory",
@@ -53,10 +53,10 @@
     "problemStatement": "**Generalized CRT**: Given integers a, b and positive moduli m, n (not necessarily coprime):\n\nThe system x = a (mod m), x = b (mod n) has a solution if and only if gcd(m,n) | (a - b).\n\nWhen a solution exists, it is unique modulo lcm(m,n).\n\n**Key Insight**: The classical CRT is the special case where gcd(m,n) = 1, so the divisibility condition is automatically satisfied and lcm(m,n) = m*n.",
     "proofStrategy": "**Necessity**: If x is a solution, then m | (x-a) and n | (x-b). Since gcd(m,n) divides both m and n, it divides both (x-a) and (x-b), hence their difference (a-b).\n\n**Sufficiency**: Write g = gcd(m,n), m = g*m', n = g*n' where gcd(m',n') = 1. By Bezout, m'*s + n'*t = 1. If a - b = g*k, then x = a + m*(-k*s) satisfies both congruences. The algebraic verification uses the Bezout relation to show n divides (x-b).\n\n**Uniqueness**: Two solutions satisfy x1 = x2 (mod m) and x1 = x2 (mod n), so lcm(m,n) | (x1-x2).",
     "keyInsights": [
-      "The gcd divisibility condition gcd(m,n) | (a-b) is both necessary and sufficient",
-      "Uniqueness is modulo lcm(m,n), not m*n (tighter when gcd > 1)",
-      "The construction reduces to the coprime case by dividing out the gcd",
-      "This provides a complete characterization of solvability for simultaneous congruences"
+      "The solvability criterion $\\gcd(m,n) \\mid (a-b)$ is both necessary and sufficient for the system $x \\equiv a \\pmod{m},\\; x \\equiv b \\pmod{n}$",
+      "Uniqueness is modulo $\\text{lcm}(m,n) = mn/\\gcd(m,n)$, strictly tighter than $mn$ when $\\gcd(m,n) > 1$",
+      "The construction reduces to the coprime case: set $m' = m/g$, $n' = n/g$ with $\\gcd(m',n') = 1$, then apply Bézout",
+      "The complete iff characterization $\\exists x \\iff \\gcd(m,n) \\mid (a-b)$ gives a decidable criterion for solvability"
     ]
   },
   "sections": [
@@ -65,42 +65,48 @@
       "title": "LCM-Based Congruence Combining",
       "startLine": 32,
       "endLine": 72,
-      "summary": "If x = y (mod m) and x = y (mod n), then x = y (mod lcm(m,n)). Full iff characterization."
+      "summary": "If x = y (mod m) and x = y (mod n), then x = y (mod lcm(m,n)). Full iff characterization.",
+      "mathContext": "$a \\equiv b \\pmod{m} \\wedge a \\equiv b \\pmod{n} \\iff a \\equiv b \\pmod{\\text{lcm}(m,n)}$"
     },
     {
       "id": "solvability",
       "title": "Solvability Condition",
       "startLine": 74,
       "endLine": 153,
-      "summary": "The system is solvable iff gcd(m,n) | (a-b). Necessity by divisibility chain, sufficiency by Bezout construction."
+      "summary": "The system is solvable iff gcd(m,n) | (a-b). Necessity by divisibility chain, sufficiency by Bezout construction.",
+      "mathContext": "$\\exists x \\iff \\gcd(m,n) \\mid (a-b)$; sufficiency via $x = a + m(-ks)$ with Bézout on $m/g$, $n/g$"
     },
     {
       "id": "uniqueness",
       "title": "Uniqueness Modulo LCM",
       "startLine": 155,
       "endLine": 168,
-      "summary": "Two solutions agree modulo lcm(m,n), using the LCM combining lemma."
+      "summary": "Two solutions agree modulo lcm(m,n), using the LCM combining lemma.",
+      "mathContext": "$x_1, x_2$ both solutions $\\implies x_1 \\equiv x_2 \\pmod{\\text{lcm}(m,n)}$"
     },
     {
       "id": "classical-recovery",
       "title": "Classical CRT as Special Case",
       "startLine": 170,
       "endLine": 196,
-      "summary": "When gcd(m,n) = 1, solvability is automatic and lcm = m*n, recovering the classical theorem."
+      "summary": "When gcd(m,n) = 1, solvability is automatic and lcm = m*n, recovering the classical theorem.",
+      "mathContext": "$\\gcd(m,n) = 1 \\implies 1 \\mid (a-b)$ always and $\\text{lcm}(m,n) = mn$"
     },
     {
       "id": "three-moduli",
       "title": "Extension to Three Moduli",
       "startLine": 198,
       "endLine": 231,
-      "summary": "Pairwise gcd conditions are necessary, with uniqueness via iterated LCM."
+      "summary": "Pairwise gcd conditions are necessary, with uniqueness via iterated LCM.",
+      "mathContext": "Pairwise condition: $\\gcd(m_i, m_j) \\mid (a_i - a_j)$ for all $i \\neq j$; uniqueness mod $\\text{lcm}(m_1, m_2, m_3)$"
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 240,
       "endLine": 279,
-      "summary": "Verified examples including solvable, unsolvable, and coprime cases."
+      "summary": "Verified examples including solvable, unsolvable, and coprime cases.",
+      "mathContext": "Key example: $x \\equiv 1 \\pmod{6},\\; x \\equiv 2 \\pmod{4}$ is unsolvable since $\\gcd(6,4) = 2 \\nmid -1$"
     }
   ],
   "conclusion": {

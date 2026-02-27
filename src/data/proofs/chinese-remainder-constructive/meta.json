@@ -6,7 +6,7 @@
   "meta": {
     "author": "Sun Zi (formalized in Lean 4)",
     "date": "3rd-5th century CE",
-    "status": "verified",
+    "status": "complete",
     "proofRepoPath": "Proofs/ChineseRemainderConstructive.lean",
     "tags": [
       "number-theory",
@@ -41,10 +41,10 @@
     "problemStatement": "**Chinese Remainder Theorem**: Given pairwise coprime moduli m1, m2, ..., mk and any integers a1, a2, ..., ak, there exists a unique x (mod m1*m2*...*mk) such that:\n\nx = a1 (mod m1)\nx = a2 (mod m2)\n...\nx = ak (mod mk)\n\n**Constructive Formula**: For two moduli m, n with gcd(m,n) = 1, find u, v with mu + nv = 1 (Bezout). Then:\nx = a*n*v + b*m*u\nsatisfies x = a (mod m) and x = b (mod n).",
     "proofStrategy": "The proof uses Mathlib's `Nat.chineseRemainder` for the core result.\n\n**Existence**: Bezout's identity gives coefficients u, v with mu + nv = 1. The solution x = a*n*v + b*m*u works because:\n- x = a*n*v + b*m*u = a*(1-mu) + b*m*u = a + m*(bu-au) = a (mod m)\n- Similarly x = b (mod n)\n\n**Uniqueness**: If x1 = x2 = a (mod m) and x1 = x2 = b (mod n), then m | (x1-x2) and n | (x1-x2). Since gcd(m,n)=1, we have m*n | (x1-x2).",
     "keyInsights": [
-      "CRT converts 'big' problems mod M to 'small' problems mod prime factors",
-      "The solution is constructive: Bezout coefficients give explicit formulas",
-      "Uniqueness modulo the product is crucial for applications",
-      "CRT is the theoretical basis for Residue Number Systems"
+      "CRT converts a congruence mod $M = m_1 \\cdots m_k$ into $k$ independent congruences mod each $m_i$",
+      "The solution is constructive: Bézout coefficients $mu + nv = 1$ give the explicit formula $x = a \\cdot nv + b \\cdot mu$",
+      "Uniqueness modulo $m_1 m_2 \\cdots m_k$ follows from coprime divisibility: $m \\mid d$ and $n \\mid d$ with $\\gcd(m,n)=1$ implies $mn \\mid d$",
+      "CRT gives the ring isomorphism $\\mathbb{Z}/mn\\mathbb{Z} \\cong \\mathbb{Z}/m\\mathbb{Z} \\times \\mathbb{Z}/n\\mathbb{Z}$, the theoretical basis for Residue Number Systems"
     ]
   },
   "sections": [
@@ -53,35 +53,40 @@
       "title": "Core CRT for Two Moduli",
       "startLine": 44,
       "endLine": 68,
-      "summary": "Existence, uniqueness, and bounded solution for x = a (mod m), x = b (mod n)."
+      "summary": "Existence, uniqueness, and bounded solution for x = a (mod m), x = b (mod n).",
+      "mathContext": "$\\exists x < mn,\\; x \\equiv a \\pmod{m} \\wedge x \\equiv b \\pmod{n}$ (unique) when $\\gcd(m,n)=1$"
     },
     {
       "id": "constructive",
       "title": "Constructive Algorithm",
       "startLine": 70,
       "endLine": 103,
-      "summary": "Bezout coefficients and the explicit solution formula."
+      "summary": "Bezout coefficients and the explicit solution formula.",
+      "mathContext": "$mu + nv = 1$ via `Nat.gcdA`/`Nat.gcdB`; solution $x = a \\cdot nv + b \\cdot mu$"
     },
     {
       "id": "examples",
       "title": "Concrete Examples",
       "startLine": 105,
       "endLine": 162,
-      "summary": "The Sunzi problem (23 mod 105) and other verified examples."
+      "summary": "The Sunzi problem (23 mod 105) and other verified examples.",
+      "mathContext": "$23 \\equiv 2 \\pmod{3},\\; 23 \\equiv 3 \\pmod{5},\\; 23 \\equiv 2 \\pmod{7}$; verified by `decide`"
     },
     {
       "id": "three-moduli",
       "title": "Extension to Three Moduli",
       "startLine": 164,
       "endLine": 202,
-      "summary": "CRT for three pairwise coprime moduli by iteration."
+      "summary": "CRT for three pairwise coprime moduli by iteration.",
+      "mathContext": "Solve mod $m_1 m_2$ first, then combine with $m_3$; uses `Nat.Coprime.mul_right` for coprimality of products"
     },
     {
       "id": "applications",
       "title": "Applications",
       "startLine": 204,
       "endLine": 238,
-      "summary": "RNS representation and uniqueness theorem."
+      "summary": "RNS representation and uniqueness theorem.",
+      "mathContext": "Bijection $\\{0, \\ldots, M-1\\} \\simeq \\prod_i \\mathbb{Z}/m_i\\mathbb{Z}$ via residue map; parallel arithmetic on components"
     }
   ],
   "conclusion": {
