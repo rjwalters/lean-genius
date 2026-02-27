@@ -1,0 +1,26 @@
+[
+  {
+    "lineNumber": 29,
+    "content": "The binomial PMF is defined as a real-valued function, not a measure-theoretic probability. This algebraic approach avoids the complexity of σ-algebras while still proving all the key identities.",
+    "type": "definition",
+    "tags": ["probability", "binomial-distribution"]
+  },
+  {
+    "lineNumber": 54,
+    "content": "Normalization is a one-line consequence of the binomial theorem: substitute q = 1-p, use add_sub_cancel to get 1^n = 1. This is the heart of the OQ-03 answer.",
+    "type": "key-step",
+    "tags": ["normalization", "binomial-theorem"]
+  },
+  {
+    "lineNumber": 78,
+    "content": "The absorption identity (k+1)C(n+1,k+1) = (n+1)C(n,k) is the key algebraic tool for computing the mean. It converts each term k·PMF(k) into (n+1)·p times a degree-(n-1) binomial term.",
+    "type": "technique",
+    "tags": ["absorption-identity", "mean"]
+  },
+  {
+    "lineNumber": 182,
+    "content": "The PGF E[t^X] = (pt + 1-p)^n follows directly from replacing p by pt in the binomial expansion. Setting t=1 recovers normalization; differentiating at t=1 gives the mean.",
+    "type": "insight",
+    "tags": ["generating-function", "pgf"]
+  }
+]

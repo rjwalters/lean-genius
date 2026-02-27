@@ -1,55 +1,96 @@
 {
   "slug": "desargues-theorem-oq-02",
-  "title": "[Problem Title]",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Non-Desarguesian Planes: The Moulton Plane Counterexample",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\exists\\text{ incidence plane } \\Pi, \\exists\\text{ triangles } ABC, A'B'C' \\in \\Pi : \\text{perspective}(O) \\land \\neg\\text{collinear}(P,Q,R)",
+    "plain": "Construct a concrete non-Desarguesian plane (the Moulton plane) in Lean and exhibit a counterexample to Desargues's theorem.",
+    "whyMatters": [
+      "Demonstrates Desargues is a property of incidence structure, not just point sets",
+      "Connects to coordinatizability: Desarguesian iff coordinatizable by division ring",
+      "Complements OQ-01 which proved Desargues over all CommRings"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Moulton plane definitions (MLine, onLine) over Q",
+      "Perspectivity from point O for concrete triangle pair",
+      "Three Moulton intersection points computed and verified",
+      "Non-collinearity by exhaustive case analysis over MLine constructors",
+      "Both triangles non-degenerate",
+      "Euclidean vs Moulton comparison (gap = 3/88)"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Formalize the Moulton plane and prove Desargues fails"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-02-25T12:27:47-08:00",
+    "phase": "COMPLETED",
+    "since": "2026-02-27T05:00:00Z",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Complete formalization achieved",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None - completed",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: 35 theorems, 0 axioms, 0 sorries, 332 lines",
+    "builtItems": [
+      "MLine inductive type (standard/bent/vertical) in DesarguesTheoremOQ02.lean",
+      "onLine incidence relation with piecewise slope doubling",
+      "bent_left/bent_right helper theorems for incidence proofs",
+      "Concrete counterexample: O=(-4,12), ABC, A'B'C' all at x<=0",
+      "35 verified theorems including desargues_fails_in_moulton",
+      "Gallery integration in src/data/proofs/desargues-theorem-oq-02/"
+    ],
+    "insights": [
+      "Moulton lines over Q give exact arithmetic - norm_num closes all goals",
+      "Key: only ONE side line (CA, slope -1/2) needs to cross y-axis with negative slope",
+      "All vertices at x <= 0 ensures perspectivity lines are unaffected by bending",
+      "Disjunctive onLine definition works better than if-then-else for case analysis",
+      "change tactic essential for exposing concrete Q values before linarith",
+      "Gap of 3/88 between bent-line value and beta's y-coordinate is the obstruction"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: desargues-theorem-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": []
   },
-  "approaches": [],
-  "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+  "approaches": [
+    {
+      "name": "Moulton plane over Q with explicit counterexample",
+      "status": "succeeded",
+      "description": "Defined MLine inductive type, computed concrete triangle pair, proved non-collinearity by exhaustive case analysis"
+    }
   ],
-  "relatedProofs": [],
+  "tags": [
+    "projective-geometry",
+    "non-desarguesian",
+    "moulton-plane",
+    "counterexample",
+    "incidence-geometry"
+  ],
+  "relatedProofs": [
+    "desargues-theorem",
+    "desargues-theorem-oq-01"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Moulton, F.R. (1902). A Simple Non-Desarguesian Plane Geometry"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Moulton_plane"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Rat.Defs"
+    ]
   },
   "started": "2026-02-26T17:08:50.306Z",
-  "lastUpdate": "2026-02-26T17:08:50.306Z",
-  "significance": 7,
-  "tractability": 6
+  "lastUpdate": "2026-02-27T05:00:00.000Z",
+  "significance": 8,
+  "tractability": 8
 }
