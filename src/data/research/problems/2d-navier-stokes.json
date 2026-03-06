@@ -1,0 +1,73 @@
+{
+  "slug": "2d-navier-stokes",
+  "title": "2D Navier-Stokes Regularity",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For 2D incompressible Navier-Stokes: W(t) ≤ W(0)·exp(C·E(0)·t), uniqueness when W(0)=0, and continuous dependence on initial data",
+    "plain": "Formalize 2D Navier-Stokes regularity including Gronwall stability, uniqueness, and well-posedness.",
+    "whyMatters": [
+      "2D case is fully solved unlike the 3D Millennium Problem",
+      "Foundation for understanding why 3D uniqueness fails"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Gronwall stability bound W(t) ≤ W(0)·exp(C·E(0)·t)",
+      "Uniqueness: W(0) = 0 implies W(t) = 0",
+      "Continuous dependence on initial data",
+      "Hadamard well-posedness established"
+    ],
+    "open": [],
+    "goal": "Already complete - covered by navier-stokes-oq-02"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-06T08:18:00.000Z",
+    "iteration": 1,
+    "focus": "Problem already solved as navier-stokes-oq-02. Created research tracking entry.",
+    "blockers": [],
+    "nextAction": "None - already complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ALREADY COMPLETE: The 2D Navier-Stokes regularity problem is fully covered by navier-stokes-oq-02 in NavierStokes.lean (lines 2710-2893). It has 0 sorries and 0 axioms, proving Gronwall stability, uniqueness, continuous dependence, and Hadamard well-posedness.",
+    "builtItems": [],
+    "insights": [
+      "Problem was already fully solved as navier-stokes-oq-02",
+      "The key is that 2D enstrophy is bounded (E(t) ≤ E(0)), unlike 3D",
+      "NSSolutionPair2D structure abstracts PDE details into structural hypotheses"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "pde",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "navier-stokes",
+    "navier-stokes-oq-01",
+    "navier-stokes-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "Ladyzhenskaya (1969), The Mathematical Theory of Viscous Incompressible Flow"
+    ],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-06T08:16:00.000Z",
+  "lastUpdate": "2026-03-06T08:18:00.000Z",
+  "significance": 8,
+  "tractability": 1
+}

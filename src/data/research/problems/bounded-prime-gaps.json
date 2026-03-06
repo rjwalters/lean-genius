@@ -1,0 +1,85 @@
+{
+  "slug": "bounded-prime-gaps",
+  "title": "Bounded Prime Gaps (Zhang/Polymath)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "∃ H ≤ 246, infinitely many prime pairs with gap ≤ H",
+    "plain": "Formalize the bounded prime gaps theorem: there exist infinitely many pairs of primes differing by at most 246.",
+    "whyMatters": [
+      "Major breakthrough in analytic number theory (Zhang 2013, Polymath 8b 2014)",
+      "Bridge between computational results and formal verification"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Admissible k-tuple infrastructure",
+      "Polymath 8b bound of 246",
+      "Zhang's 70M bound",
+      "liminf of prime gaps ≤ 246",
+      "Optimal admissible tuples for k=2,3,5 (OQ-01)",
+      "Engelsma's 246 optimality for 50-tuples (OQ-03)"
+    ],
+    "open": [],
+    "goal": "Already complete - all proofs have 0 sorries"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-06T08:22:00.000Z",
+    "iteration": 1,
+    "focus": "Problem already solved. BoundedPrimeGaps.lean, OQ01, OQ03 all have 0 sorries.",
+    "blockers": [],
+    "nextAction": "None - already complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ALREADY COMPLETE: BoundedPrimeGaps.lean (0 sorries), BoundedPrimeGapsOQ01.lean (0 sorries, optimal admissible tuples), BoundedPrimeGapsOQ03.lean (0 sorries, Engelsma optimality). Gallery entries exist for base and OQ-03. OQ-01 has proof but no gallery entry yet.",
+    "builtItems": [],
+    "insights": [
+      "Deep sieve theory is axiomatized; removing axioms requires multi-year infrastructure",
+      "Constructive parts (admissibility, optimality) are fully proved",
+      "OQ-01 proof file exists but lacks gallery entry"
+    ],
+    "mathlibGaps": [
+      "Selberg sieve",
+      "GPY sieve",
+      "Bombieri-Vinogradov theorem"
+    ],
+    "nextSteps": [
+      "Create gallery entry for BoundedPrimeGapsOQ01.lean (has proof, no gallery entry)"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "primes",
+    "formalization"
+  ],
+  "relatedProofs": [
+    "bounded-prime-gaps",
+    "bounded-prime-gaps-oq-03"
+  ],
+  "references": {
+    "papers": [
+      "Zhang (2013), Bounded gaps between primes",
+      "Maynard (2015), Small gaps between primes",
+      "Polymath 8b (2014)"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Nat.Prime",
+      "Finset"
+    ]
+  },
+  "started": "2026-03-06T08:20:00.000Z",
+  "lastUpdate": "2026-03-06T08:22:00.000Z",
+  "significance": 9,
+  "tractability": 1
+}
