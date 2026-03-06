@@ -3,6 +3,9 @@ import Mathlib.Algebra.Polynomial.Roots
 import Mathlib.Algebra.Polynomial.Div
 import Mathlib.Algebra.Polynomial.Eval.Defs
 import Mathlib.Tactic
+import Mathlib.Topology.Order.IntermediateValue
+
+set_option maxHeartbeats 400000
 
 /-
 # Descartes' Rule of Signs — Full Mathlib Formalization (OQ-01)
@@ -425,11 +428,15 @@ is that the main upper bound is proved directly from Mathlib with 0 axioms.
 14. `zero_sv_no_positive_roots` — Zero-sv consequence
 15. `descartes_negative_roots` — Negative root bound (0 sorries, via rootMultiplicity algebra)
 
-**With 1 axiom (parity not in Mathlib)**:
-16. `descartes_parity` — Parity axiom
+**With 1 axiom** (legacy — now proved by `descartes_parity_proved` in Part IX):
+16. `descartes_parity` — Parity axiom (PROVED: see `descartes_parity_proved`)
 17. `descartes_rule_combined` — Combined form
 18. `one_sign_variation_one_positive_root` — 1 sv → 1 positive root
 19. `positive_root_count_from_sv` — Root count from sv via parity
+
+**NOTE**: The axiom `descartes_parity` is now fully proved by `descartes_parity_proved`
+in Part IX. A future refactor should replace the axiom with the proved theorem and
+restructure the file so `descartes_parity_proved` appears before Parts VI-VII.
 
 **Key technique for negative roots (replacing old sorry)**:
 The proof uses three private helper lemmas:
@@ -448,8 +455,13 @@ Combined with Multiset.countP_map and Multiset.filter_le_filter for the count ar
 26. `descartes_parity_when_tight` — Parity when sv = countP (trivially)
 27. `descartes_parity_mod2` — Parity reformulated as modular equality
 
-**Mathlib gaps that would complete the picture**:
-- The parity result: ~200 lines (see Part VIII for proof strategy outline)
+**New in Part IX** (parity proof — 0 sorries):
+28. `sv_parity_sign_eq` — Combinatorial parity of sign variations (Stage A)
+29. `no_pos_roots_sign_eq` — IVT-based root sign agreement (Stage B)
+30. `signVariations_X_mul_eq` — Multiplying by X preserves sign variations
+31. `parity_equiv_nonzero_const` — Parity equivalence for nonzero constant term
+32. `descartes_parity_nonzero_const` — Parity for nonzero constant term
+33. `descartes_parity_proved` — **Full parity proof** (factoring out X^m)
 -/
 
 /-
@@ -618,34 +630,300 @@ private lemma signType_neg_pos_mul_ne (r : ℝ) (a : ℝ) (hr : 0 < r) (ha : a �
     rw [SignType.sign_pos ha, SignType.sign_neg hprod]
     decide
 
+/-- eraseLead preserves the degree-0 coefficient for polynomials of degree ≥ 1. -/
+private lemma eraseLead_coeff_zero' (p : ℝ[X]) (hd : 0 < p.natDegree) :
+    p.eraseLead.coeff 0 = p.coeff 0 :=
+  eraseLead_coeff_of_ne (by omega)
+
+/-- eraseLead of a polynomial with nonzero constant term and degree ≥ 1 is nonzero. -/
+private lemma eraseLead_ne_zero_of_coeff_zero_ne' (p : ℝ[X]) (hc0 : p.coeff 0 ≠ 0)
+    (hd : 0 < p.natDegree) : p.eraseLead ≠ 0 := by
+  intro h
+  have : p.eraseLead.coeff 0 = 0 := by simp [h]
+  rw [eraseLead_coeff_zero' p hd] at this
+  exact hc0 this
+
+/-- The sign of a nonzero real number is nonzero. -/
+private lemma sign_ne_zero_of_ne_zero' {a : ℝ} (ha : a ≠ 0) : SignType.sign a ≠ 0 := by
+  rcases lt_or_gt_of_ne ha with h | h
+  · simp [sign_neg h]
+  · simp [sign_pos h]
+
 /-- **Stage A** (Combinatorial — key for parity proof):
     The parity of signVariations is determined by whether the signs of the constant
     term and leading coefficient agree.
 
-    Proof sketch: sv(p) = (destutter of filtered sign list).length - 1.
-    For an alternating list over {neg, pos}: (length-1) % 2 = 0 iff first = last.
-    When p.coeff 0 ≠ 0: first = sign(p.coeff 0), last = sign(p.leadingCoeff). -/
+    Proved by strong induction on support.card using the eraseLead recursive formula. -/
 private lemma sv_parity_sign_eq (p : ℝ[X]) (hp : p ≠ 0) (hc0 : p.coeff 0 ≠ 0) :
     p.signVariations % 2 =
       if SignType.sign (p.coeff 0) = SignType.sign p.leadingCoeff then 0 else 1 := by
-  sorry
+  -- Strong induction on support.card
+  suffices ∀ (n : ℕ) (q : ℝ[X]), q.support.card ≤ n → q ≠ 0 → q.coeff 0 ≠ 0 →
+      q.signVariations % 2 =
+        if SignType.sign (q.coeff 0) = SignType.sign q.leadingCoeff then 0 else 1 by
+    exact this p.support.card p le_rfl hp hc0
+  intro n
+  induction n with
+  | zero =>
+    intro q hqn hq _
+    exfalso; apply hq
+    rwa [Finset.card_eq_zero, Polynomial.support_eq_empty] at hqn
+  | succ n ih =>
+    intro q hqn hq hqc0
+    rcases Nat.eq_zero_or_pos q.natDegree with hd0 | hd_pos
+    · -- Degree 0: constant polynomial
+      have : q.coeff 0 = q.leadingCoeff := by rw [Polynomial.leadingCoeff, hd0]
+      have hsv : q.signVariations = 0 := by
+        rw [eq_C_of_natDegree_eq_zero hd0]; exact signVariations_monomial 0 _
+      simp [hsv, this]
+    · -- Degree ≥ 1: recursive formula via eraseLead
+      have hel_ne : q.eraseLead ≠ 0 := eraseLead_ne_zero_of_coeff_zero_ne' q hqc0 hd_pos
+      have hel_c0 : q.eraseLead.coeff 0 ≠ 0 := by
+        rwa [eraseLead_coeff_zero' q hd_pos]
+      have hel_card_lt : q.eraseLead.support.card < q.support.card :=
+        eraseLead_support_card_lt hq
+      -- IH for eraseLead
+      have hih := ih q.eraseLead (by omega) hel_ne hel_c0
+      -- Recursive formula
+      rw [signVariations_eq_eraseLead_add_ite (P := q)]
+      simp only [hel_ne, and_true]
+      -- Abbreviations for signs
+      set a := SignType.sign (q.coeff 0)
+      set b := SignType.sign q.eraseLead.leadingCoeff
+      set c := SignType.sign q.leadingCoeff
+      -- IH gives: sv(eraseLead q) % 2 = if a = b then 0 else 1
+      rw [eraseLead_coeff_zero' q hd_pos] at hih
+      -- Case analysis: a, b, c ∈ {neg, zero, pos} (but all are nonzero)
+      have ha : a ≠ 0 := sign_ne_zero_of_ne_zero' hqc0
+      have hb : b ≠ 0 := sign_ne_zero_of_ne_zero' (leadingCoeff_ne_zero.mpr hel_ne)
+      have hc : c ≠ 0 := sign_ne_zero_of_ne_zero' (leadingCoeff_ne_zero.mpr hq)
+      -- Exhaust all cases for SignType values
+      cases a <;> cases b <;> cases c <;> simp_all
+
+/-- Helper: sum of lower-order terms is bounded by R^(d-1) times the sum of |coefficients|. -/
+private lemma lower_bound' (p : ℝ[X]) (R : ℝ) (hR : 1 ≤ R)
+    (hd : 0 < p.natDegree) :
+    |∑ i ∈ Finset.range p.natDegree, p.coeff i * R ^ i| ≤
+      R ^ (p.natDegree - 1) *
+        (Finset.range p.natDegree).sum (fun i => |p.coeff i|) := by
+  calc |∑ i ∈ Finset.range p.natDegree, p.coeff i * R ^ i|
+    ≤ ∑ i ∈ Finset.range p.natDegree, |p.coeff i * R ^ i| :=
+      Finset.abs_sum_le_sum_abs _ _
+    _ = ∑ i ∈ Finset.range p.natDegree, (|p.coeff i| * R ^ i) := by
+        congr 1; ext i
+        rw [abs_mul, abs_of_nonneg (pow_nonneg (le_trans zero_le_one hR) i)]
+    _ ≤ ∑ i ∈ Finset.range p.natDegree, (|p.coeff i| * R ^ (p.natDegree - 1)) := by
+        apply Finset.sum_le_sum; intro i hi
+        apply mul_le_mul_of_nonneg_left _ (abs_nonneg _)
+        apply pow_le_pow_right hR
+        exact Nat.lt_iff_le_pred hd |>.mp (Finset.mem_range.mp hi)
+    _ = R ^ (p.natDegree - 1) *
+          (Finset.range p.natDegree).sum (fun i => |p.coeff i|) := by
+        rw [← Finset.sum_mul]; ring
+
+/-- For nonzero p, there exists R > 0 where p(R) has the same sign as leadingCoeff. -/
+private theorem exists_eval_same_sign' (p : ℝ[X]) (hp : p ≠ 0) :
+    ∃ R : ℝ, 0 < R ∧ 0 < p.eval R * p.leadingCoeff := by
+  rcases Nat.eq_zero_or_pos p.natDegree with hd0 | hd_pos
+  · -- Degree 0: constant
+    use 1, one_pos
+    rw [eq_C_of_natDegree_eq_zero hd0, eval_C]
+    exact mul_self_pos.mpr (leadingCoeff_ne_zero.mpr hp)
+  · -- Degree ≥ 1
+    set d := p.natDegree
+    set c := p.leadingCoeff
+    have hc_ne : c ≠ 0 := leadingCoeff_ne_zero.mpr hp
+    have hc_pos : 0 < |c| := abs_pos.mpr hc_ne
+    set S := (Finset.range d).sum (fun i => |p.coeff i|)
+    have hS_nn : 0 ≤ S := Finset.sum_nonneg (fun i _ => abs_nonneg _)
+    -- Choose R so that |c| * R > S
+    set R := max 2 (S / |c| + 2) with hR_def
+    have hR_pos : (0 : ℝ) < R := lt_of_lt_of_le (by norm_num) (le_max_left _ _)
+    have hR_ge_1 : (1 : ℝ) ≤ R := by linarith
+    -- Key dominance: |c| * R > S
+    have hdom : S < |c| * R := by
+      calc S = |c| * (S / |c|) := by field_simp
+        _ < |c| * (S / |c| + 2) := by nlinarith
+        _ ≤ |c| * R := mul_le_mul_of_nonneg_left (le_max_right _ _) hc_pos.le
+    -- Bound lower-order terms
+    have hbound := lower_bound' p R hR_ge_1 hd_pos
+    -- Leading term dominates
+    have hR_d_split : R ^ d = R * R ^ (d - 1) := by
+      rw [← pow_succ]; congr 1; omega
+    have hlead : R ^ (d - 1) * S < |c| * R ^ d := by
+      rw [hR_d_split]
+      nlinarith [pow_pos hR_pos (d - 1)]
+    -- Decompose p.eval R
+    have heval : p.eval R = p.coeff d * R ^ d +
+        ∑ i ∈ Finset.range d, p.coeff i * R ^ i := by
+      rw [Polynomial.eval_eq_sum_range, Finset.sum_range_succ]
+      ring
+    have hc_eq : p.coeff d = c := by simp [c, Polynomial.leadingCoeff]
+    rw [hc_eq] at heval
+    set L := ∑ i ∈ Finset.range d, p.coeff i * R ^ i
+    -- |L| < |c| * R^d
+    have hL_bound : |L| < |c| * R ^ d := by
+      calc |L| ≤ R ^ (d - 1) * S := hbound
+        _ < |c| * R ^ d := hlead
+    -- (c * R^d + L) * c > 0
+    have hLc_bound : |L * c| < c ^ 2 * R ^ d := by
+      rw [abs_mul]
+      have : |L| * |c| < |c| * R ^ d * |c| := by nlinarith
+      calc |L| * |c| < |c| * R ^ d * |c| := this
+        _ = c ^ 2 * R ^ d := by rw [← sq_abs]; ring
+    have h_csq : 0 < c ^ 2 * R ^ d := by positivity
+    have h_lc_lower : -(c ^ 2 * R ^ d) < L * c := neg_lt_of_abs_lt hLc_bound
+    use R, hR_pos
+    rw [heval]
+    have : (c * R ^ d + L) * c = c ^ 2 * R ^ d + L * c := by ring
+    linarith
 
 /-- **Stage B** (IVT — key for parity proof):
     If p has no positive real roots, then sign(p.coeff 0) = sign(p.leadingCoeff).
 
-    Proof sketch: p is continuous, p(0) ≠ 0, and p → sign(leadingCoeff) * ∞ as x → +∞.
-    If sign(p.coeff 0) ≠ sign(p.leadingCoeff), the IVT gives a root in (0,∞). -/
+    Proved using IVT: if signs differ, p is continuous with p(0) and p(+∞) having
+    opposite signs, forcing a root in (0, ∞). -/
 private lemma no_pos_roots_sign_eq (p : ℝ[X]) (hp : p ≠ 0) (hc0 : p.coeff 0 ≠ 0)
     (hnr : p.roots.countP (0 < ·) = 0) :
     SignType.sign (p.coeff 0) = SignType.sign p.leadingCoeff := by
-  sorry
+  by_contra h_ne
+  -- Get R > 0 where p.eval R has the same sign as leadingCoeff
+  obtain ⟨R, hR_pos, hR_sign⟩ := exists_eval_same_sign' p hp
+  -- p.eval 0 = p.coeff 0
+  have heval0 : p.eval 0 = p.coeff 0 := eval_zero p
+  -- p.eval 0 * p.leadingCoeff < 0 (signs differ)
+  have hlc : p.leadingCoeff ≠ 0 := leadingCoeff_ne_zero.mpr hp
+  have h_neg : p.eval 0 * p.leadingCoeff < 0 := by
+    rw [heval0]
+    rcases lt_or_gt_of_ne hc0 with hc0_neg | hc0_pos <;>
+    rcases lt_or_gt_of_ne hlc with hlc_neg | hlc_pos
+    · exfalso; apply h_ne; simp [sign_neg hc0_neg, sign_neg hlc_neg]
+    · exact mul_neg_of_neg_of_pos hc0_neg hlc_pos
+    · exact mul_neg_of_pos_of_neg hc0_pos hlc_neg
+    · exfalso; apply h_ne; simp [sign_pos hc0_pos, sign_pos hlc_pos]
+  -- p.eval 0 and p.eval R have opposite signs → IVT gives a root
+  rcases lt_or_gt_of_ne (show p.eval 0 ≠ 0 by rwa [heval0]) with heval0_neg | heval0_pos
+  · -- p.eval 0 < 0, so p.eval R > 0
+    have hR_pos' : 0 < p.eval R := by nlinarith
+    have hcont : ContinuousOn (fun x => p.eval x) (Set.Icc 0 R) :=
+      p.continuous.continuousOn
+    have h0_mem : (0 : ℝ) ∈ Set.Icc (p.eval 0) (p.eval R) := by
+      constructor <;> linarith
+    obtain ⟨r, ⟨hr_lo, hr_hi⟩, hr_root⟩ :=
+      intermediate_value_Icc hR_pos.le hcont h0_mem
+    have hr_pos : 0 < r := by
+      rcases eq_or_lt_of_le hr_lo with rfl | h
+      · linarith [hr_root ▸ heval0_neg]
+      · exact h
+    have hr_mem : r ∈ p.roots := (mem_roots hp).mpr hr_root
+    have : 0 < p.roots.countP (0 < ·) :=
+      Multiset.countP_pos.mpr ⟨r, hr_mem, hr_pos⟩
+    omega
+  · -- p.eval 0 > 0, so p.eval R < 0
+    have hR_neg : p.eval R < 0 := by nlinarith
+    -- Use -p: continuous, opposite signs, same roots
+    have hcont : ContinuousOn (fun x => -(p.eval x)) (Set.Icc 0 R) :=
+      p.continuous.continuousOn.neg
+    have h0_mem : (0 : ℝ) ∈ Set.Icc (-(p.eval 0)) (-(p.eval R)) := by
+      constructor <;> linarith
+    obtain ⟨r, ⟨hr_lo, hr_hi⟩, hr_root⟩ :=
+      intermediate_value_Icc hR_pos.le hcont h0_mem
+    have hr_pos : 0 < r := by
+      rcases eq_or_lt_of_le hr_lo with rfl | h
+      · simp at hr_root; linarith
+      · exact h
+    have hr_is_root : p.IsRoot r := by rw [IsRoot]; linarith
+    have hr_mem : r ∈ p.roots := (mem_roots hp).mpr hr_is_root
+    have : 0 < p.roots.countP (0 < ·) :=
+      Multiset.countP_pos.mpr ⟨r, hr_mem, hr_pos⟩
+    omega
 
 /-- The signVariations of (X * p) equals the signVariations of p.
     Multiplying by X shifts all coefficients up by 1, prepending a 0 constant term.
-    Since zeros are filtered from the sign sequence, sv is unchanged. -/
+    Since zeros are filtered from the sign sequence, sv is unchanged.
+
+    Proof: by induction on p.support.card using the eraseLead recursive formula.
+    Key insight: eraseLead(X * p) = X * eraseLead(p) and leadingCoeff(X * p) = leadingCoeff(p). -/
 private lemma signVariations_X_mul_eq (p : ℝ[X]) :
     (Polynomial.X * p).signVariations = p.signVariations := by
-  sorry
+  rcases eq_or_ne p 0 with rfl | hp
+  · simp
+  · -- Induction on support.card
+    suffices ∀ (n : ℕ) (q : ℝ[X]), q.support.card ≤ n → q ≠ 0 →
+        (X * q).signVariations = q.signVariations by
+      exact this p.support.card p le_rfl hp
+    intro n
+    induction n with
+    | zero =>
+      intro q hq_card hq
+      exfalso; apply hq
+      rwa [Finset.card_eq_zero, Polynomial.support_eq_empty] at hq_card
+    | succ n ih =>
+      intro q hq_card hq
+      -- Base: q is a monomial (support.card = 1)
+      rcases Nat.eq_zero_or_pos q.natDegree with hd0 | hd_pos
+      · -- Degree 0: q = C a, X * q = C a * X = monomial 1 a
+        have hq_const : q = C q.leadingCoeff := eq_C_of_natDegree_eq_zero hd0
+        rw [hq_const, show X * C q.leadingCoeff = monomial 1 q.leadingCoeff from by
+          ext n; simp [Polynomial.coeff_monomial, Polynomial.coeff_X_mul, Polynomial.coeff_C,
+            Nat.sub_eq_zero_iff_le]; rcases n with _ | _ <;> simp]
+        rw [signVariations_monomial]
+        rw [hq_const]; exact signVariations_monomial 0 _
+      · -- Degree ≥ 1: use recursive formula via eraseLead
+        have hXq : X * q ≠ 0 := mul_ne_zero X_ne_zero hq
+        -- leadingCoeff(X * q) = leadingCoeff(q)
+        have hlc : (X * q).leadingCoeff = q.leadingCoeff := by
+          rw [leadingCoeff_mul, leadingCoeff_X, one_mul]
+        -- eraseLead(X * q) = X * eraseLead(q)
+        have hel_eq : (X * q).eraseLead = X * q.eraseLead := by
+          ext n
+          rcases eq_or_ne n (X * q).natDegree with rfl | hn
+          · -- n = natDegree(X * q): both sides are 0
+            rw [eraseLead_coeff_natDegree]
+            have hnd : (X * q).natDegree = q.natDegree + 1 := by
+              rw [natDegree_mul X_ne_zero hq, natDegree_X]
+            rw [hnd]
+            -- (X * eraseLead q).coeff (natDegree q + 1) = (eraseLead q).coeff (natDegree q)
+            rw [coeff_X_mul]
+            -- eraseLead q has degree < natDegree q, so coeff at natDegree q is 0
+            exact Polynomial.coeff_eq_zero_of_natDegree_lt (eraseLead_natDegree_lt hq)
+          · -- n ≠ natDegree(X * q): eraseLead preserves
+            rw [eraseLead_coeff_of_ne hn]
+            rcases n with _ | n
+            · -- n = 0: (X * q).coeff 0 = 0, (X * eraseLead q).coeff 0 = 0
+              simp [coeff_X_mul_zero]
+            · -- n = m + 1: both shift by 1
+              simp only [coeff_X_mul]
+              rw [eraseLead_coeff_of_ne]
+              intro hn'
+              apply hn
+              rw [natDegree_mul X_ne_zero hq, natDegree_X]
+              omega
+        -- eraseLead(q) is nonzero when degree ≥ 1 (has lower-degree terms)
+        -- This isn't necessarily true... eraseLead q could be 0 if q is a monomial
+        -- But we handled degree 0 above, so q has degree ≥ 1
+        -- For q with exactly 1 support element (monomial), support.card = 1 but natDegree could be > 0
+        -- In that case, eraseLead q = 0
+        -- Recursive formula: sv(X * q) = sv(eraseLead(X * q)) + ite(...)
+        rw [signVariations_eq_eraseLead_add_ite (P := X * q)]
+        rw [signVariations_eq_eraseLead_add_ite (P := q)]
+        rw [hel_eq, hlc]
+        -- Need: eraseLead(X * q) ≠ 0 ↔ eraseLead(q) ≠ 0
+        rcases eq_or_ne q.eraseLead 0 with hel0 | hel_ne
+        · -- eraseLead q = 0: q is a monomial of degree ≥ 1
+          simp [hel0]
+        · -- eraseLead q ≠ 0
+          have hXel : X * q.eraseLead ≠ 0 := mul_ne_zero X_ne_zero hel_ne
+          simp only [hXel, hel_ne, not_false_eq_true, and_true]
+          -- leadingCoeff(X * eraseLead q) = leadingCoeff(eraseLead q)
+          have hlc_el : (X * q.eraseLead).leadingCoeff = q.eraseLead.leadingCoeff := by
+            rw [leadingCoeff_mul, leadingCoeff_X, one_mul]
+          rw [hlc_el]
+          -- Apply IH: sv(X * eraseLead q) = sv(eraseLead q)
+          have hel_card : q.eraseLead.support.card < q.support.card :=
+            eraseLead_support_card_lt hq
+          congr 1
+          exact ih q.eraseLead (by omega) hel_ne
 
 /-- **Parity equivalence** (core): For p ≠ 0 with p.coeff 0 ≠ 0,
     countP(0<·) ≡ signVariations [mod 2].
@@ -757,22 +1035,20 @@ private theorem descartes_parity_nonzero_const (p : ℝ[X]) (hp : p ≠ 0) (hc0 
 
 /-- **Descartes Parity** (full proof):
     For any p ≠ 0, ∃ k, p.roots.countP (0 < ·) + 2 * k = p.signVariations.
-    The zero-constant-term case reduces to the nonzero case by factoring out X. -/
+    The zero-constant-term case reduces to the nonzero case by factoring out X^m
+    using the rootMultiplicity at 0. -/
 theorem descartes_parity_proved (p : ℝ[X]) (hp : p ≠ 0) :
     ∃ k : ℕ, p.roots.countP (0 < ·) + 2 * k = p.signVariations := by
-  -- Reduce to the nonzero-constant-term case by induction on the X-adic valuation
-  suffices ∀ (m : ℕ) (q : ℝ[X]), q ≠ 0 → q.coeff 0 ≠ 0 →
-      (Polynomial.X ^ m * q).roots.countP (0 < ·) + 2 * 0 =
-        (Polynomial.X ^ m * q).signVariations → True from trivial
-  -- The actual reduction:
-  -- p = X^m * q where q.coeff 0 ≠ 0, and sv(X^m * q) = sv(q), countP(X^m * q) = countP(q)
-  -- This follows by applying signVariations_X_mul_eq m times
-  -- Use the Xval (natTrailingDegree) of p
-  have hctr : ∃ (m : ℕ) (q : ℝ[X]), p = Polynomial.X ^ m * q ∧ q ≠ 0 ∧ q.coeff 0 ≠ 0 := by
-    exact ⟨p.natTrailingDegree, p /ₘ Polynomial.X ^ p.natTrailingDegree,
-          (Polynomial.X_pow_dvd_iff.mpr (Nat.le_refl _) |>.symm ▸ rfl),
-          sorry, sorry⟩
-  obtain ⟨m, q, hpq, hq, hqc0⟩ := hctr
+  -- Factor p = (X - C 0)^m * q where ¬(X ∣ q), i.e., X^m * q with q.coeff 0 ≠ 0
+  set m := p.rootMultiplicity 0
+  obtain ⟨q, hpq, hndvd⟩ := Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd p hp (0 : ℝ)
+  simp only [map_zero, sub_zero] at hpq
+  -- q ≠ 0 (since p = X^m * q and p ≠ 0)
+  have hq : q ≠ 0 := right_ne_zero_of_mul (hpq ▸ hp)
+  -- q.coeff 0 ≠ 0 (since ¬(X ∣ q) and X ∣ q ↔ q.coeff 0 = 0)
+  have hqc0 : q.coeff 0 ≠ 0 := by
+    simp only [map_zero, sub_zero] at hndvd
+    rwa [Polynomial.X_dvd_iff] at hndvd
   obtain ⟨k, hk⟩ := descartes_parity_nonzero_const q hq hqc0
   -- sv(p) = sv(X^m * q) = sv(q)
   have hsv : p.signVariations = q.signVariations := by
