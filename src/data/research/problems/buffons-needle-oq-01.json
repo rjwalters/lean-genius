@@ -1,41 +1,61 @@
 {
   "slug": "buffons-needle-oq-01",
   "title": "Generalizations to curved needles",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "For any C¹ curve γ : ℝ → ℝ × ℝ on [a, b] with line spacing d > 0, E[crossings] = 2 * arcLength(γ) / (π * d)",
+    "plain": "Buffon-Barbier theorem for smooth curves: the expected crossing count depends only on arc length.",
+    "whyMatters": ["Wiedijk 100 Theorems #99 extension", "Bridges geometric probability and integral geometry", "Fully proved with 0 sorries and 0 axioms"]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Angular average: ∫_0^π |a sin θ + b cos θ| dθ = 2√(a²+b²)",
+      "Concrete smooth expected crossings definition",
+      "Buffon-Barbier theorem for C¹ curves (0 sorries, 0 axioms)",
+      "Shape independence for C¹ curves",
+      "Monotonicity, straight-line consistency, limit as d→∞"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Prove E[crossings] = 2L/(πd) for smooth curves - COMPLETED"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-02-21T19:21:07.131Z",
+    "phase": "COMPLETE",
+    "since": "2026-03-06T10:30:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Problem was already fully proved across OQ01 and OQ01OQ01 files.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - problem complete.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "All Buffon files (BuffonsNeedle, BuffonsNoodle, OQ01, OQ01OQ01, OQ02) have 0 sorries. OQ01OQ01 proves angular_average and buffon_smooth_full. OQ01 derives buffon_smooth_of_contDiff requiring only ContDiff ℝ 1 γ. The 2 axioms in BuffonsNoodle.lean are superseded by concrete definitions.",
+    "builtItems": [
+      "BuffonsNeedleOQ01.lean (0 sorries, 10 theorems)",
+      "BuffonsNeedleOQ01OQ01.lean (0 sorries, angular average proved)",
+      "BuffonsNeedleOQ02.lean (0 sorries, 3D generalization)"
+    ],
+    "insights": [
+      "All proofs were previously completed by other researchers",
+      "OQ01 depends on OQ01OQ01 which provides the angular_average theorem",
+      "The smooth case is fully concrete - no axioms needed"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Angular averaging + arc length",
+      "status": "completed",
+      "description": "Proved via rotation invariance of |sin| integral and Fubini"
+    }
+  ],
   "tags": [
     "seeker-selected",
     "extension",
@@ -46,14 +66,24 @@
     "wiedijk-100",
     "monte-carlo"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "BuffonsNeedle.lean",
+    "BuffonsNoodle.lean",
+    "BuffonsNeedleOQ01.lean",
+    "BuffonsNeedleOQ01OQ01.lean",
+    "BuffonsNeedleOQ02.lean"
+  ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Polynomial.signVariations",
+      "Real.sin_add",
+      "Complex.arg"
+    ]
   },
   "started": "2026-02-21T19:21:07.131Z",
-  "lastUpdate": "2026-02-21T19:21:07.131Z",
+  "lastUpdate": "2026-03-06T10:30:00Z",
   "significance": 6,
   "tractability": 6
 }

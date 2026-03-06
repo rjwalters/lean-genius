@@ -35,7 +35,7 @@ The key theorems formalized:
 
 ## Axiom Reduction
 Previous version: 8 axioms, 3 proved theorems
-Current version: 6 axioms, 6 proved theorems (1 sorry in Schauder proof)
+Current version: 6 axioms, 6 proved theorems (0 sorries)
 
 Axioms retained (foundational, require algebraic topology or deep analysis):
 - `schauder_projection_lemma` - finite-dimensional approximation via partition of unity
@@ -46,8 +46,7 @@ Axioms retained (foundational, require algebraic topology or deep analysis):
 - `infinite_dim_counterexample` - compactness is necessary
 
 Axioms converted to theorems:
-- `schauder_fixed_point_normed` - NOW PROVED from projection lemma + Brouwer
-  (1 sorry: closedness of convex hull of finite set in finite-dim subspace)
+- `schauder_fixed_point_normed` - NOW PROVED from projection lemma + Brouwer (0 sorries)
 - `schauder_compact_operator` - NOW PROVED from Schauder + Mazur (no sorry)
 - `tychonoff_fixed_point` - NOW PROVED from Schauder (no sorry)
 
@@ -296,7 +295,7 @@ theorem schauder_fixed_point_normed
     -- hence closed in V, hence closed in E.
     -- For the formal proof, we use that hull ⊆ V, V is closed, and within V
     -- the hull is compact (hence closed).
-    sorry -- closedness of convex hull of finite set in finite-dim subspace
+    exact (Set.finite_range pts).isClosed_convexHull
   -- hull is nonempty (it contains the points, which are in K)
   have hull_ne : hull.Nonempty := by
     rcases hne with ⟨x, hx⟩
