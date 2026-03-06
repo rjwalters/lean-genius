@@ -25,7 +25,7 @@
   - Parseval's identity: available (tsum_sq_fourierCoeff)
   - The assembled Wirtinger proof would be ~200-300 lines
 
-  What This File Proves (24 theorems, 3 axioms, 0 sorries):
+  What This File Proves (26 theorems, 2 axioms, 6 sorry-lemmas):
   1. Equality for circles: C² = 4πA  (ring computation)
   2. Strict inequality for squares: C² > 4πA  (π < 4)
   3. The isoperimetric ratio: A/(C²/4π) and its circle value
@@ -357,16 +357,13 @@ axiom wirtinger_inequality (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
     ∫ t in (0 : ℝ)..(2 * π), deriv f t ^ 2
 
 /-
-## Part V-A: Arithmetic Foundations for the Isoperimetric Proof
+## Part IV-B: Arithmetic Foundations for the Isoperimetric Proof
 
 Two key ingredients for the Hurwitz 1901 proof:
 1. The 2D Cauchy-Schwarz inequality (purely algebraic)
 2. The arithmetic kernel that assembles Wirtinger bounds into 4πA ≤ L²
 
-These are fully proved here, reducing the isoperimetric inequality to:
-- The wirtinger_inequality axiom (Fourier proof, ~200 lines)
-- Integral Cauchy-Schwarz (standard Mathlib, ~20 lines once assembled)
-- Green's formula with 2D C-S (combining cross_product_sq_le, ~30 lines)
+These are placed before the main theorem because it reduces to these.
 -/
 
 /-- **2D Cauchy-Schwarz** (algebraic): |x·v - y·u|² ≤ (x²+y²)(u²+v²).
@@ -387,11 +384,9 @@ The argument is purely arithmetic — no integrals or measures appear.
 - `L = 2πc`      : circumference from constant-speed c parametrization
 - `S ≥ 0`        : S = ∫₀²π √(x²+y²) dt
 - `Sxy ≥ 0`      : Sxy = ∫₀²π (x²+y²) dt
-- `2A ≤ c·S`     : from Green's theorem: 2A = |∫(xy'-yx')| ≤ ∫|xy'-yx'| ≤ c·∫√(x²+y²)
-                   (using 2D Cauchy-Schwarz: |xy'-yx'| ≤ √(x²+y²)·|(x',y')| = c·√(x²+y²))
-- `S² ≤ 2π·Sxy`  : integral Cauchy-Schwarz: (∫₀²π f)² ≤ (∫₀²π 1)·(∫₀²π f²) with f=√(x²+y²)
-- `Sxy ≤ 2πc²`   : from Wirtinger: ∫(x²+y²) ≤ ∫(x'²+y'²) = ∫c² = 2πc²
-                   (constant speed gives ∫(x'²+y'²) = 2πc² EXACTLY, not just a bound!)
+- `2A ≤ c·S`     : from Green's theorem + 2D Cauchy-Schwarz + constant speed
+- `S² ≤ 2π·Sxy`  : integral Cauchy-Schwarz with f=√(x²+y²)
+- `Sxy ≤ 2πc²`   : from Wirtinger + constant speed
 
 **Proof chain**: S² ≤ 2π·Sxy ≤ 2π·2πc² = (2πc)² → S ≤ 2πc
   → 2A ≤ c·S ≤ 2πc² → A ≤ πc² → 4πA ≤ 4π²c² = (2πc)² = L² ✓ -/
@@ -428,51 +423,146 @@ theorem isoperimetric_from_wirtinger_bounds
   rw [hcirc]; exact h2
 
 /-
-## Part V-B: The Isoperimetric Inequality for Smooth Curves
+## Part V: The Isoperimetric Inequality for Smooth Curves
 
-Using Wirtinger's inequality, we prove the general isoperimetric inequality.
-The proof proceeds via constant-speed reparametrization:
-1. Reparametrize gamma at constant speed c = L/(2pi)
-2. Center x, y to zero mean (translation doesn't change area or circumference)
-3. Apply Wirtinger: integral(x^2+y^2) <= integral(x'^2+y'^2) = 2*pi*c^2
-4. Apply integral Cauchy-Schwarz: (integral sqrt(x^2+y^2))^2 <= 2*pi * integral(x^2+y^2)
-5. Apply Green's theorem + 2D C-S: 2A <= c * integral sqrt(x^2+y^2)
-6. Feed into isoperimetric_from_wirtinger_bounds (proved above)
+Using Wirtinger's inequality, we state the general isoperimetric inequality.
+The proof sketch (from the axiom) uses:
+  - Wirtinger on x̃ - x̄ and ỹ - ȳ (centered versions)
+  - Cauchy-Schwarz: A ≤ (1/2)√(∫x²·∫y'²) + (1/2)√(∫y²·∫x'²)
+  - Wirtinger: ∫x² ≤ ∫x'² (when mean zero) and ∫y² ≤ ∫y'²
+  - AM-GM: √(∫x'²·∫y'²) ≤ (∫x'² + ∫y'²)/2
+  - Combined with unit speed: ∫x'² + ∫y'² = L²/(2π)
+  Result: 4πA ≤ L²
 -/
 
-/-- **Analytical Assembly**: From Wirtinger's inequality and a smooth closed curve,
-    produce the analytical inputs for the arithmetic kernel.
+/-
+### Decomposition of the Isoperimetric Proof
 
-    This axiom encapsulates the analytical steps: constant-speed reparametrization,
-    centering to zero mean, integral Cauchy-Schwarz, and Green's theorem with 2D C-S.
-    Each step is standard but assembling them requires ~100 lines of integral manipulation. -/
-axiom analytical_assembly (γ : SmoothClosedCurve)
-    (hWirtinger : ∀ f : ℝ → ℝ, ContDiff ℝ 1 f → (∀ t, f (t + 2 * π) = f t) →
-      ∫ t in (0 : ℝ)..(2 * π), f t = 0 →
-      ∫ t in (0 : ℝ)..(2 * π), f t ^ 2 ≤ ∫ t in (0 : ℝ)..(2 * π), deriv f t ^ 2) :
-    ∃ (c S Sxy : ℝ),
-      0 < c ∧
-      γ.circumference = 2 * π * c ∧
-      0 ≤ S ∧
-      2 * γ.area ≤ c * S ∧
-      S ^ 2 ≤ 2 * π * Sxy ∧
-      Sxy ≤ 2 * π * c ^ 2
+The proof of isoperimetric_inequality_smooth decomposes into:
+1. **Reparametrization**: get a constant-speed zero-mean curve with same L, A
+2. **Wirtinger bound**: ∫(x²+y²) ≤ 2πc² (from wirtinger_inequality axiom)
+3. **Integral Cauchy-Schwarz**: (∫√(x²+y²))² ≤ 2π·∫(x²+y²)
+4. **Area bound**: 2A ≤ c·∫√(x²+y²) (from cross_product_sq_le + constant speed)
+5. **Arithmetic kernel**: isoperimetric_from_wirtinger_bounds (already proved)
+
+Each analytical step is stated as a lemma. The main theorem follows from composing
+them. This replaces the single opaque sorry with specific, well-scoped lemmas.
+-/
+
+/-- **Reparametrization lemma**: Every smooth closed curve with positive circumference
+    admits a reparametrization (by arc length) and translation (by mean) that:
+    - preserves circumference and area (geometric invariants)
+    - has constant speed c = L/(2π) (arc-length parametrization)
+    - has zero-mean x and y (translation by mean values)
+
+    Proof sketch: Let s = ∫₀ᵗ |γ'(u)| du be the arc-length function.
+    Set γ̃(t) = γ(s⁻¹(Lt/(2π))) for the constant-speed reparametrization.
+    Then shift: x̃ = x - x̄, ỹ = y - ȳ. Both operations preserve L and A
+    (geometric invariance of arc length and Green's formula). -/
+lemma exists_nice_reparam (γ : SmoothClosedCurve) (hL : 0 < γ.circumference) :
+    ∃ γ' : SmoothClosedCurve,
+      γ'.circumference = γ.circumference ∧
+      γ'.area = γ.area ∧
+      (∀ t, deriv γ'.x t ^ 2 + deriv γ'.y t ^ 2 =
+        (γ.circumference / (2 * π)) ^ 2) ∧
+      (∫ t in (0 : ℝ)..(2 * π), γ'.x t = 0) ∧
+      (∫ t in (0 : ℝ)..(2 * π), γ'.y t = 0) := by
+  sorry -- arc-length reparametrization + mean subtraction
+
+/-- **Wirtinger bound on sum of squares**: For a zero-mean, constant-speed curve,
+    ∫₀²π (x² + y²) ≤ 2πc².
+
+    Proof: Apply wirtinger_inequality separately to x and y:
+      ∫x² ≤ ∫(x')² and ∫y² ≤ ∫(y')²
+    Add: ∫(x²+y²) ≤ ∫(x'²+y'²)
+    By constant speed: x'(t)²+y'(t)² = c² for all t, so ∫(x'²+y'²) = 2πc². -/
+lemma wirtinger_sum_sq_bound (γ : SmoothClosedCurve) (c : ℝ) (hc : 0 < c)
+    (hspeed : ∀ t, deriv γ.x t ^ 2 + deriv γ.y t ^ 2 = c ^ 2)
+    (hzx : ∫ t in (0 : ℝ)..(2 * π), γ.x t = 0)
+    (hzy : ∫ t in (0 : ℝ)..(2 * π), γ.y t = 0) :
+    ∫ t in (0 : ℝ)..(2 * π), (γ.x t ^ 2 + γ.y t ^ 2) ≤ 2 * π * c ^ 2 := by
+  -- Apply Wirtinger to x and y
+  have wx := wirtinger_inequality γ.x γ.smooth_x γ.periodic_x hzx
+  have wy := wirtinger_inequality γ.y γ.smooth_y γ.periodic_y hzy
+  -- The RHS equals ∫(x'²+y'²) = ∫c² = 2πc²
+  -- Need: ∫(x²+y²) ≤ ∫(x'²+y'²) [from wx, wy + integral linearity]
+  -- And:  ∫(x'²+y'²) = 2πc² [from hspeed + integral_const]
+  sorry -- integral linearity + constant speed computation
+
+/-- **Integral Cauchy-Schwarz on [0, 2π]**: For a non-negative function f,
+    (∫₀²π f)² ≤ 2π · ∫₀²π f².
+
+    Proof: Apply Cauchy-Schwarz with g = 1:
+    (∫fg)² ≤ (∫f²)(∫g²) = (∫f²)(∫1²) = (∫f²)·2π. -/
+lemma integral_cauchy_schwarz_interval (f : ℝ → ℝ)
+    (hf_int : IntervalIntegrable f MeasureTheory.MeasureSpace.volume 0 (2 * π))
+    (hf2_int : IntervalIntegrable (fun t => f t ^ 2) MeasureTheory.MeasureSpace.volume 0 (2 * π)) :
+    (∫ t in (0 : ℝ)..(2 * π), f t) ^ 2 ≤
+    2 * π * ∫ t in (0 : ℝ)..(2 * π), f t ^ 2 := by
+  sorry -- standard integral Cauchy-Schwarz (set g = 1 in ∫fg ≤ √(∫f²·∫g²))
+
+/-- **Area bound from 2D Cauchy-Schwarz + constant speed**:
+    For a constant-speed-c curve, 2·area ≤ c · ∫₀²π √(x²+y²).
+
+    Proof chain:
+    - 2A = |∫₀²π (xy'-yx')| ≤ ∫₀²π |xy'-yx'|  [triangle inequality for integrals]
+    - |xy'-yx'| ≤ √(x²+y²)·√(x'²+y'²)          [2D C-S: cross_product_sq_le]
+    - √(x'²+y'²) = c                             [constant speed]
+    - Integrating: ∫|xy'-yx'| ≤ c·∫√(x²+y²)      [integral monotonicity] -/
+lemma area_bound_const_speed (γ : SmoothClosedCurve) (c : ℝ) (hc : 0 < c)
+    (hspeed : ∀ t, deriv γ.x t ^ 2 + deriv γ.y t ^ 2 = c ^ 2) :
+    2 * γ.area ≤
+    c * ∫ t in (0 : ℝ)..(2 * π), Real.sqrt (γ.x t ^ 2 + γ.y t ^ 2) := by
+  sorry -- uses cross_product_sq_le + norm_integral_le + integral_mono
+
+/-- ∫₀²π √(x(t)²+y(t)²) dt ≥ 0 since the integrand is everywhere non-negative. -/
+lemma integral_sqrt_sum_sq_nonneg (γ : SmoothClosedCurve) :
+    0 ≤ ∫ t in (0 : ℝ)..(2 * π), Real.sqrt (γ.x t ^ 2 + γ.y t ^ 2) := by
+  apply intervalIntegral.integral_nonneg (by linarith [pi_pos])
+  intro t _
+  exact Real.sqrt_nonneg _
 
 /-- **The General Isoperimetric Inequality for Smooth Curves** (from Wirtinger).
 
-    Proof chain: analytical_assembly produces the inputs (c, S, Sxy) satisfying
-    the hypotheses of isoperimetric_from_wirtinger_bounds, which then yields 4piA <= L^2.
-
-    The axioms used are:
-    - wirtinger_inequality (Fourier series proof, ~200 lines)
-    - analytical_assembly (constant-speed reparametrization + integral estimates, ~100 lines)
-    Both are standard results from real analysis. -/
+    Proved by reduction to 4 analytical lemmas + the arithmetic kernel.
+    The analytical lemmas handle the smooth curve → arithmetic kernel interface.
+    The arithmetic kernel (isoperimetric_from_wirtinger_bounds) is fully proved. -/
 theorem isoperimetric_inequality_smooth (γ : SmoothClosedCurve) :
     4 * π * γ.area ≤ γ.circumference ^ 2 := by
-  obtain ⟨c, S, Sxy, hc, hcirc, hS_nn, harea, hCS, hWirt⟩ :=
-    analytical_assembly γ (fun f hf hp hm => wirtinger_inequality f hf hp hm)
-  exact isoperimetric_from_wirtinger_bounds γ.area γ.circumference c S Sxy
-    hc hcirc hS_nn harea hCS hWirt
+  -- Handle degenerate case: circumference = 0
+  by_cases hL : γ.circumference ≤ 0
+  · -- circumference is integral of non-negative function, so ≥ 0
+    -- if circumference ≤ 0, then circumference = 0, so RHS = 0
+    -- LHS = 4π · area ≥ 0, but area ≤ 0 can't happen with |·|
+    -- actually area = (1/2)|∫...| ≥ 0 always, so we need 4π·area ≤ 0
+    -- this requires area = 0, which happens when circumference = 0
+    sorry -- degenerate case: zero-circumference curve has zero area
+  push_neg at hL
+  -- Step 1: Get nice reparametrization (constant speed + zero mean)
+  obtain ⟨γ', hL_eq, hA_eq, hspeed, hzx, hzy⟩ := exists_nice_reparam γ hL
+  -- Step 2: Set c = L/(2π) > 0
+  set c := γ.circumference / (2 * π) with hc_def
+  have hc_pos : 0 < c := div_pos hL (by positivity)
+  -- Step 3: Define S = ∫√(x²+y²) and Sxy = ∫(x²+y²) for γ'
+  set S := ∫ t in (0 : ℝ)..(2 * π), Real.sqrt (γ'.x t ^ 2 + γ'.y t ^ 2)
+  set Sxy := ∫ t in (0 : ℝ)..(2 * π), (γ'.x t ^ 2 + γ'.y t ^ 2)
+  -- Step 4: Verify all hypotheses of the arithmetic kernel
+  have hcirc : γ.circumference = 2 * π * c := by
+    rw [hc_def]; field_simp
+  have hS_nn : 0 ≤ S := integral_sqrt_sum_sq_nonneg γ'
+  have harea : 2 * γ.area ≤ c * S := by
+    rw [← hA_eq]; exact area_bound_const_speed γ' c hc_pos hspeed
+  have hCS : S ^ 2 ≤ 2 * π * Sxy := by
+    -- S = ∫f where f = √(x²+y²) ≥ 0
+    -- S² ≤ 2π·∫f² = 2π·∫(x²+y²) = 2π·Sxy
+    -- by integral C-S (g = 1) and (√a)² = a for a ≥ 0
+    sorry -- integral_cauchy_schwarz_interval + Real.sq_sqrt (by positivity)
+           -- the integrability conditions follow from continuity of C¹ functions
+  have hWirt : Sxy ≤ 2 * π * c ^ 2 :=
+    wirtinger_sum_sq_bound γ' c hc_pos hspeed hzx hzy
+  -- Step 5: Apply the arithmetic kernel
+  exact isoperimetric_from_wirtinger_bounds
+    γ.area γ.circumference c S Sxy hc_pos hcirc hS_nn harea hCS hWirt
 
 /-
 ## Part VI: Equality Characterization
@@ -563,7 +653,7 @@ theorem non_circle_area_lt_circle (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve
 
 ### The Isoperimetric Inequality: C² ≥ 4πA
 
-### Proved (0 sorries in 24 theorems):
+### Proved (0 sorries in 22 theorems):
 1. `circle_isoperimetric_equality` — C² = 4πA for circles (equality case)
 2. `circle_isoperimetric_ratio` — 4πA/C² = 1 for circles
 3. `square_isoperimetric_strict` — C² > 4πA for squares (from π < 4)
@@ -583,23 +673,39 @@ theorem non_circle_area_lt_circle (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve
 17. `non_circle_area_lt_circle` — strict: 4πA < C² ⟹ A < circleArea r
 18. `cross_product_sq_le` — 2D CS: |xv-yu|² ≤ (x²+y²)(u²+v²) [algebraic, nlinarith]
 19. `isoperimetric_from_wirtinger_bounds` — arithmetic kernel: from Wirtinger bounds to 4πA ≤ L²
-20. `isoperimetric_inequality_smooth` — 4πA ≤ C² for all smooth closed curves
-21. `equi_tri_isoperimetric_ratio` — 4πA/C² = π√3/9 for equilateral triangles
-22. `equi_tri_ratio_lt_one` — equilateral triangle ratio < 1 (from π < 4 and √3 < 2)
-23. `equi_tri_strict_inequality` — C² > 4πA for equilateral triangles
-24. `circle_satisfies_isoperimetric` — circles satisfy C² = 4πA
+20. `equi_tri_isoperimetric_ratio` — 4πA/C² = π√3/9 for equilateral triangles
+21. `equi_tri_ratio_lt_one` — equilateral triangle ratio < 1 (from π < 4 and √3 < 2)
+22. `equi_tri_strict_inequality` — C² > 4πA for equilateral triangles
 
 ### 2 Definitions:
 - `equiTriCirc` — perimeter of equilateral triangle with side a: 3a
 - `equiTriArea` — area of equilateral triangle with side a: (√3/4)a²
 
-### Axioms (3):
+### Axioms (2):
 1. `wirtinger_inequality` — ∫f² ≤ ∫(f')² for periodic mean-zero f
    (Proof: Fourier series + Parseval; Mathlib has all ingredients)
-2. `analytical_assembly` — constant-speed reparametrization + integral estimates
-   (Produces inputs for isoperimetric_from_wirtinger_bounds from Wirtinger)
-3. `equality_implies_circle` — equality iff circle
+2. `equality_implies_circle` — equality iff circle
    (Proof: equality in Wirtinger iff f = a cos + b sin)
+
+### Proof Structure for isoperimetric_inequality_smooth:
+The main theorem is NOW PROVED modulo 4 analysis lemmas + 1 degenerate case:
+
+**Proved** (structural reduction to arithmetic kernel):
+23. `integral_sqrt_sum_sq_nonneg` — ∫√(x²+y²) ≥ 0 [FULLY PROVED]
+24. `isoperimetric_inequality_smooth` — 4πA ≤ L² for smooth curves
+    [PROVED from analysis lemmas + arithmetic kernel]
+
+**Analysis lemmas (sorry'd, each independently provable)**:
+- `exists_nice_reparam` — arc-length reparametrization + mean shift
+   (differential geometry infrastructure, ~200 lines)
+- `wirtinger_sum_sq_bound` — ∫(x²+y²) ≤ 2πc² for zero-mean constant-speed
+   (uses wirtinger_inequality axiom + integral linearity)
+- `integral_cauchy_schwarz_interval` — (∫f)² ≤ 2π·∫f² on [0,2π]
+   (standard L² Cauchy-Schwarz, ~30 lines from Mathlib)
+- `area_bound_const_speed` — 2A ≤ c·∫√(x²+y²) for constant-speed curves
+   (uses cross_product_sq_le + integral monotonicity)
+- Degenerate case: zero-circumference ⟹ zero area
+- 2 integrability conditions (continuous functions on compact intervals)
 
 ### Proof of ngon_limit_tendsto_circle:
 - `Real.hasDerivAt_tan (cos 0 ≠ 0) : HasDerivAt tan (1/cos²0) 0 = HasDerivAt tan 1 0`
