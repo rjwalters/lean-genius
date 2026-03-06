@@ -1,0 +1,113 @@
+{
+  "slug": "fourier-series-oq-03",
+  "title": "Dirichlet Conditions for Fourier Pointwise Convergence",
+  "phase": "BUILD",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "f \\in BV[-\\pi, \\pi] \\implies S_N f(x) \\to \\frac{f(x^+) + f(x^-)}{2} \\text{ as } N \\to \\infty",
+    "plain": "If a periodic function has bounded variation (its total oscillation is finite), then its Fourier series converges at every point to the average of the left and right limits. Formalize this using Mathlib's piecewise-smooth framework.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "Fourier partial sum defined: fourierPartialSum f N x = Σ_{n=-N}^{N} ĉ_n e_n(x)",
+      "Dirichlet kernel defined: dirichletKernel N t = Σ_{n=-N}^{N} e_n(t)",
+      "Dirichlet kernel continuity proved",
+      "Dirichlet kernel cardinality: 2N+1 terms",
+      "D_0(t) = 1 proved",
+      "BV on circle defined via Mathlib BoundedVariationOn",
+      "Left/right limits defined via nhdsWithin + limUnder",
+      "Main theorem stated with correct types (builds successfully)"
+    ],
+    "open": [
+      "Main theorem proof (sorry): dirichlet_pointwise_convergence",
+      "Continuity point corollary (sorry): dirichlet_at_continuity_point",
+      "D_N(0) = 2N+1 (sorry): minor coercion issue",
+      "D_N conjugate symmetry (sorry): sum reindexing needed"
+    ],
+    "goal": "Eliminate the 4 sorries (2 routine, 2 deep) and reduce 7 axioms"
+  },
+  "currentState": {
+    "phase": "BUILD",
+    "since": "2026-03-06T20:26:18Z",
+    "iteration": 1,
+    "focus": "Infrastructure built. Main theorem formalized with correct types. Deep proof steps axiomatized.",
+    "blockers": [],
+    "nextAction": "Prove dirichlet_at_zero and dirichlet_neg (routine). Consider Aristotle companion file for routine lemmas.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Created FourierSeriesOQ03.lean (~360 lines). Defined fourierPartialSum, dirichletKernel, HasBoundedVariationCircle, leftLimit, rightLimit. Stated and built main theorem dirichlet_pointwise_convergence with correct types. File builds successfully. 5 lemmas proved, 4 sorries, 7 axioms remain.",
+    "builtItems": [
+      "proofs/Proofs/FourierSeriesOQ03.lean: fourierPartialSum definition",
+      "proofs/Proofs/FourierSeriesOQ03.lean: dirichletKernel definition",
+      "proofs/Proofs/FourierSeriesOQ03.lean: HasBoundedVariationCircle (BV on circle via Mathlib)",
+      "proofs/Proofs/FourierSeriesOQ03.lean: rightLimit and leftLimit definitions",
+      "proofs/Proofs/FourierSeriesOQ03.lean: dirichlet_pointwise_convergence (main theorem)",
+      "proofs/Proofs/FourierSeriesOQ03.lean: dirichlet_at_continuity_point (corollary)",
+      "proofs/Proofs/FourierSeriesOQ03.lean: dirichlet_continuous_BV (corollary)"
+    ],
+    "insights": [
+      "Mathlib has BoundedVariationOn (not Has prefix) in Mathlib.Analysis.BoundedVariation",
+      "The import is Mathlib.Analysis.BoundedVariation, defs are eVariationOn, BoundedVariationOn, LocallyBoundedVariationOn",
+      "Dirichlet kernel is best defined as a sum over Finset.Icc (-N : ℤ) (N : ℤ) rather than via sin formula",
+      "BV on circle lifts naturally: compose f with the coercion ℝ → AddCircle T",
+      "One-sided limits work via limUnder + nhdsWithin + Set.Ioi/Iio",
+      "fourier_zero is an equation (fourier 0 t = 1), not a function - use simp or exact ... .symm",
+      "The deep steps are: (1) convolution representation, (2) Dirichlet kernel normalization, (3) Riemann-Lebesgue for BV",
+      "Answer to OQ-03: YES, Dirichlet conditions ARE formalizable with current Mathlib (BV + Fourier + filters)"
+    ],
+    "mathlibGaps": [
+      "No Dirichlet kernel in Mathlib",
+      "No Fourier partial sum explicit definition in Mathlib (hasSum exists but not finite partial sums)",
+      "No Riemann-Lebesgue lemma for BV functions",
+      "No convolution representation for Fourier partial sums"
+    ],
+    "nextSteps": [
+      "Prove dirichletKernel_at_zero (routine: Int.toNat coercion issue)",
+      "Prove dirichletKernel_neg (routine: sum reindexing over symmetric interval)",
+      "Create Aristotle companion file for routine lemmas",
+      "Attempt to prove convolution representation (sum-integral interchange)",
+      "Attempt Riemann-Lebesgue via integration by parts for BV"
+    ],
+    "markdown": "# Knowledge Base: fourier-series-oq-03\n\n## Answer to OQ-03\n\n**YES** - the Dirichlet conditions for pointwise convergence CAN be formalized with Mathlib's current infrastructure.\n\nKey ingredients available in Mathlib:\n- `BoundedVariationOn` in `Mathlib.Analysis.BoundedVariation`\n- `fourierCoeff`, `fourier n` in `Mathlib.Analysis.Fourier.AddCircle`\n- `nhdsWithin`, `Filter.atLeft/atRight` for one-sided limits\n- `Tendsto`, `HasSum`, `Summable` for convergence\n\nKey ingredients that must be built:\n- Fourier partial sum (finite sum definition)\n- Dirichlet kernel (sum of Fourier monomials)\n- BV on circle (lifting from interval to AddCircle)\n- Riemann-Lebesgue lemma for BV functions\n- Convolution representation: S_N f = f * D_N\n\n## Infrastructure Built\n\n- `fourierPartialSum`: Σ_{-N}^{N} ĉ_n e_n(x)\n- `dirichletKernel`: Σ_{-N}^{N} e_n(t)\n- `HasBoundedVariationCircle`: BV on AddCircle via lift\n- `rightLimit`, `leftLimit`: one-sided limits via limUnder\n\n## Status: 5 proved, 4 sorry, 7 axioms\n"
+  },
+  "approaches": [
+    {
+      "name": "BV + Dirichlet kernel + Riemann-Lebesgue",
+      "description": "Define BV on circle via Mathlib BoundedVariationOn, define Dirichlet kernel as sum of exponentials, prove pointwise convergence via convolution representation and Riemann-Lebesgue for BV functions",
+      "status": "in-progress",
+      "outcome": "Infrastructure built, main theorem stated with correct types, axioms for deep steps"
+    }
+  ],
+  "tags": [
+    "analysis",
+    "harmonic-analysis",
+    "fourier-series",
+    "convergence",
+    "bounded-variation"
+  ],
+  "relatedProofs": [
+    "fourier-series"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/BoundedVariation.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/Fourier/AddCircle.html"
+    ],
+    "mathlib": [
+      "Mathlib.Analysis.BoundedVariation",
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "Mathlib.Analysis.Fourier.FourierTransform"
+    ]
+  },
+  "started": "2026-03-06T20:41:07.131Z",
+  "lastUpdate": "2026-03-06T20:26:18Z"
+}
