@@ -1,7 +1,7 @@
 {
   "slug": "picks-theorem-oq-03",
   "title": "Ehrhart polynomials for 3D lattice polytopes generalizing Pick's formula",
-  "phase": "COMPLETE",
+  "phase": "COMPLETED",
   "status": "completed",
   "tier": "A",
   "path": "full",
@@ -16,23 +16,27 @@
   },
   "knownResults": {
     "proven": [
-      "Ehrhart theorem statement (axiomatized)",
-      "Constant term = 1",
-      "Ehrhart-Macdonald reciprocity in 3D",
-      "Unit cube verification (n+1)³",
-      "Connection to Pick formula in 2D",
-      "Reeve tetrahedra as motivation"
+      "Ehrhart polynomial axiomatized with degree, coefficients, evaluation",
+      "Pick's formula as 2D Ehrhart special case (picks_from_ehrhart)",
+      "Ehrhart 2D coefficient structure (ehrhart_2d_coefficients)",
+      "Unit d-simplex examples (volume 1/d!, lattice points)",
+      "Unit d-cube examples (lattice point counts)",
+      "Reeve tetrahedra counterexample (picks_impossible_3d)",
+      "Ehrhart-Macdonald reciprocity (axiomatized)",
+      "Reciprocity recovers Pick's interior count in 2D",
+      "h*-vector structure for 2D (nonnegativity, sum = d!·volume)",
+      "Ehrhart nonneg, 1D segment, 2D at dilation 2"
     ],
     "open": [],
-    "goal": "Formalize Ehrhart polynomials as the correct higher-dimensional generalization of Pick theorem"
+    "goal": "Formalize Ehrhart polynomials as the correct higher-dimensional generalization of Pick theorem - COMPLETED"
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-06T11:43:14.358Z",
+    "phase": "COMPLETED",
+    "since": "2026-03-06T19:00:00.000Z",
     "iteration": 1,
-    "focus": "Full formalization completed",
+    "focus": "Full formalization completed with 19 proved theorems, 0 sorries",
     "blockers": [],
-    "nextAction": "None - completed",
+    "nextAction": "None - problem complete.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -40,43 +44,44 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full Ehrhart polynomial formalization in Lean 4. 520+ lines covering theorem statement, coefficient interpretations, Ehrhart-Macdonald reciprocity, unit cube and unit tetrahedron examples, connection to Pick theorem in 2D, and 3D coefficient structure. All proofs compile cleanly with 0 sorry. Answers OQ-03 from Pick theorem gallery.",
+    "progressSummary": "COMPLETE: 19 proved theorems, 11 axioms, 0 sorries in PicksTheoremOQ03.lean. Axioms encode Ehrhart theorem (polynomiality, degree, coefficients, evaluation), Ehrhart-Macdonald reciprocity, and interior counting function. Proved theorems include Pick's formula recovery from Ehrhart, Reeve tetrahedra counterexample showing Pick's impossibility in 3D, h*-vector structure, and concrete examples (unit simplex, unit cube).",
     "builtItems": [
-      "proofs/Proofs/EhrhartPolynomials.lean - complete formalization (520+ lines)",
-      "LatticePolytope structure for arbitrary dimension d",
-      "ehrhartPoly definition via Ehrhart theorem axiom",
-      "ehrhartPoly_degree and ehrhart_constant_term theorems",
-      "picks_from_ehrhart connecting to Pick formula",
-      "ehrhart3D and ehrhart3D_interior for 3D specialization",
-      "ehrhart3D_reciprocity for Ehrhart-Macdonald in 3D",
-      "Unit cube verification: (n+1)³ = n³ + 3n² + 3n + 1",
-      "Unit tetrahedron counting function"
+      "proofs/Proofs/PicksTheoremOQ03.lean - 470+ lines",
+      "EhrhartData structure (dim, volume, boundary/interior/total points)",
+      "ehrhart_poly, ehrhart_degree, ehrhart_leading_coeff, ehrhart_constant_term axioms",
+      "picks_from_ehrhart: Pick's formula as 2D Ehrhart special case",
+      "ehrhart_2d_coefficients: coefficient structure in 2D",
+      "unit_simplex, unit_cube: parametric polytope definitions",
+      "unit_2simplex_volume, unit_3simplex_volume: volume computations",
+      "reeve_tetrahedron: parametric family with same lattice data but different volumes",
+      "picks_impossible_3d: proved no Pick-like formula in 3D",
+      "reeve_different_volumes: volumes differ for r=1 vs r=2",
+      "ehrhart_macdonald_reciprocity: interior-boundary duality (axiom)",
+      "reciprocity_recovers_picks_2d: reciprocity gives interior count in 2D",
+      "hstar_2d: h*-vector definition and sum theorem",
+      "ehrhart_nonneg, ehrhart_1d_segment, ehrhart_2d_at_2: additional results"
     ],
     "insights": [
-      "Ehrhart polynomial has degree d with constant term 1",
-      "Leading coefficient equals normalized volume",
-      "Ehrhart-Macdonald reciprocity: L°(n) = (-1)^d L(-n) relates interior to boundary counts",
-      "In 2D, Ehrhart at n=1 recovers Pick formula: A = i + b/2 - 1",
-      "In 3D, L(n) = Vn³ + (S/2)n² + c₁n + 1 with 3 free parameters vs 2D with 2",
-      "Reeve tetrahedra show same boundary/interior counts but different volumes, explaining why Pick fails in 3D",
-      "Unit cube interior check: L°(2) = 1 (correct: only (1,1,1) is interior)"
+      "gcongr handles (d-1)^d ≤ (d+1)^d monotonicity goals in Lean 4",
+      "Nat.factorial needs explicit unfolding via simp [Nat.factorial] for concrete values",
+      "Unit cube total_eq proof: split d≤1 (subst; norm_num) vs d≥2 (gcongr+omega)",
+      "import Mathlib (catch-all) works when specific Mathlib.Data.Polynomial.Basic paths are reorganized",
+      "Reeve tetrahedra: T_r has vertices (0,0,0),(1,0,0),(0,1,0),(1,1,r) — same i=0, b=4 but vol=r/6",
+      "Ehrhart-Macdonald reciprocity: L°_P(n) = (-1)^d L_P(-n) relates interior to boundary counts"
     ],
     "mathlibGaps": [
       "No Ehrhart polynomial formalization in Mathlib",
       "No lattice polytope counting infrastructure",
       "Convex geometry in Mathlib is continuous (measure-theoretic), not discrete"
     ],
-    "nextSteps": [
-      "Gallery integration for EhrhartPolynomials proof",
-      "Cross-reference with existing Pick theorem gallery entry",
-      "Consider Aristotle companion file for routine lemmas"
-    ]
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: picks-theorem-oq-03\n\n**Status**: COMPLETE\n**Problem**: Ehrhart polynomials generalizing Pick's theorem to higher dimensions\n\n## Session 2026-03-06 - COMPLETE\n\n### What I Did\n1. Created PicksTheoremOQ03.lean from scratch\n2. Defined EhrhartData structure for lattice polytopes\n3. Axiomatized Ehrhart polynomial (8 axioms for core theory)\n4. Proved Pick's formula as 2D Ehrhart special case\n5. Built unit simplex and unit cube examples with verified properties\n6. Proved Reeve tetrahedra counterexample (picks_impossible_3d)\n7. Added Ehrhart-Macdonald reciprocity and h*-vector structure\n8. Docker build verified: 19 theorems, 11 axioms, 0 sorries\n\n### Key Findings\n- Nat.factorial requires explicit unfolding: simp [Nat.factorial]\n- gcongr tactic handles base-monotonicity for powers\n- pow_le_pow_left not found in Mathlib 4.26 — use gcongr instead\n- Specific Mathlib import paths (Mathlib.Data.Polynomial.Basic) reorganized — use import Mathlib\n"
   },
   "approaches": [
     {
-      "name": "Axiomatized Ehrhart + concrete examples",
+      "name": "Axiomatized Ehrhart + concrete examples + counterexample",
       "status": "completed",
-      "description": "Axiomatize Ehrhart theorem, prove coefficient interpretations, verify on examples"
+      "description": "Axiomatize Ehrhart theorem, prove coefficient interpretations, verify on simplex/cube examples, prove Reeve tetrahedra counterexample"
     }
   ],
   "tags": [
@@ -84,7 +89,10 @@
     "geometry",
     "generalization"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "PicksTheorem.lean",
+    "PicksTheoremOQ03.lean"
+  ],
   "references": {
     "papers": [
       "Ehrhart (1962) Sur les polyèdres rationnels",
@@ -92,14 +100,11 @@
       "Barvinok (2008) Integer Points in Polyhedra"
     ],
     "urls": [],
-    "mathlib": [
-      "Mathlib.Algebra.Polynomial.Basic",
-      "Mathlib.Algebra.Polynomial.Eval.Defs",
-      "Mathlib.Algebra.Polynomial.Degree.Definitions"
-    ]
+    "mathlib": []
   },
   "started": "2026-03-06T15:28:32.741Z",
-  "lastUpdate": "2026-03-06T15:29:38Z",
+  "lastUpdate": "2026-03-06T19:00:00.000Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "completed": "2026-03-06T19:00:00.000Z"
 }
