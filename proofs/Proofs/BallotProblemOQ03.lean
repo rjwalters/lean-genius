@@ -410,6 +410,145 @@ def lgvDet (m a₁ b₁ a₂ b₂ : ℕ) : ℤ :=
   (Nat.choose (m + (b₁ - a₁)) m : ℤ) * Nat.choose (m + (b₂ - a₂)) m -
   (Nat.choose (m + (b₁ - a₂)) m : ℤ) * Nat.choose (m + (b₂ - a₁)) m
 
+-- Helper lemmas needed for the LGV proof (defined before lgv_lemma_2x2)
+
+/-- LGV det = 0 when a₁ = a₂ -/
+private lemma lgvDet_same_start' (m b₁ b₂ a : ℕ) :
+    lgvDet m a b₁ a b₂ = 0 := by
+  unfold lgvDet; ring
+
+/-- LGV det = 0 when b₁ = b₂ -/
+private lemma lgvDet_same_end' (m a₁ a₂ b : ℕ) :
+    lgvDet m a₁ b a₂ b = 0 := by
+  unfold lgvDet; ring
+
+/-- When paths start at same y, niPairCount = 0 -/
+private lemma lgv_same_start' (m n₁ n₂ y : ℕ) :
+    niPairCount m n₁ n₂ y y = 0 := by
+  unfold niPairCount
+  rw [Fintype.card_eq_zero_iff]
+  constructor
+  intro ⟨⟨⟨l₁, _⟩, ⟨l₂, _⟩⟩, hni⟩
+  cases m with
+  | zero =>
+    exact hni.2 y
+      ⟨⟨by simp [colEntry], Nat.le_add_right y _⟩,
+       ⟨by simp [colEntry], Nat.le_add_right y _⟩⟩
+  | succ m =>
+    exact hni.1 0 (Nat.zero_lt_succ m) y
+      ⟨⟨by simp [colEntry], Nat.le_add_right y _⟩,
+       ⟨by simp [colEntry], Nat.le_add_right y _⟩⟩
+
+/-- When paths end at same height, niPairCount = 0 -/
+private lemma lgv_same_end' (m n₁ n₂ y₁ y₂ : ℕ) (h : y₁ + n₁ = y₂ + n₂) :
+    niPairCount m n₁ n₂ y₁ y₂ = 0 := by
+  unfold niPairCount
+  rw [Fintype.card_eq_zero_iff]
+  constructor
+  intro ⟨⟨⟨l₁, hl₁_len, hl₁_east⟩, ⟨l₂, hl₂_len, hl₂_east⟩⟩, hni⟩
+  have hns₁ : northSteps l₁ = n₁ := by
+    have := eastSteps_add_northSteps l₁; simp only [eastSteps] at this; omega
+  have hns₂ : northSteps l₂ = n₂ := by
+    have := eastSteps_add_northSteps l₂; simp only [eastSteps] at this; omega
+  have h_in₁ : y₁ + n₁ ∈ finalRange l₁ y₁ m := by
+    refine ⟨?_, by rw [hns₁]⟩
+    exact Nat.add_le_add_left (colEntry_le_northSteps l₁ m hl₁_east) y₁ |>.trans
+      (by rw [hns₁])
+  have h_in₂ : y₂ + n₂ ∈ finalRange l₂ y₂ m := by
+    refine ⟨?_, by rw [hns₂]⟩
+    exact Nat.add_le_add_left (colEntry_le_northSteps l₂ m hl₂_east) y₂ |>.trans
+      (by rw [hns₂])
+  rw [h] at h_in₁
+  exact hni.2 (y₂ + n₂) ⟨h_in₁, h_in₂⟩
+
+/-- Complement counting: NI pairs + intersecting pairs = all pairs -/
+private theorem ni_complement_count' (m n₁ n₂ y₁ y₂ : ℕ) :
+    niPairCount m n₁ n₂ y₁ y₂ +
+    Fintype.card {p : pathType m n₁ × pathType m n₂ //
+      ¬NonIntersecting p.1.val p.2.val m y₁ y₂} =
+    Fintype.card (pathType m n₁ × pathType m n₂) := by
+  unfold niPairCount
+  rw [← Fintype.card_sum]
+  exact Fintype.card_congr (Equiv.sumCompl
+    (fun p : pathType m n₁ × pathType m n₂ =>
+      NonIntersecting p.1.val p.2.val m y₁ y₂))
+
+/-- Total identity pairs = C(m+n₁, m) * C(m+n₂, m) -/
+private theorem total_identity_count' (m n₁ n₂ : ℕ) :
+    Fintype.card (pathType m n₁ × pathType m n₂) =
+    Nat.choose (m + n₁) m * Nat.choose (m + n₂) m := by
+  rw [Fintype.card_prod, path_count_eq_choose, path_count_eq_choose]
+
+/-- **Lindström Involution**: intersecting identity pairs biject with all crossing pairs.
+    This is the key bijection for the LGV lemma proof. See Part XIII for the
+    full proof sketch and infrastructure.
+    The involution swaps path suffixes at the first shared lattice point. -/
+private theorem lindstrom_involution_card' (m n₁ n₂ n₁' n₂' a₁ a₂ : ℕ)
+    (h_strict_a : a₁ < a₂)
+    (h_n₁' : n₁' = n₂ + a₂ - a₁) (h_n₂' : n₂' = n₁ + a₁ - a₂)
+    (h_n_sum : n₁ + n₂ = n₁' + n₂') :
+    Fintype.card {p : pathType m n₁ × pathType m n₂ //
+      ¬NonIntersecting p.1.val p.2.val m a₁ a₂} =
+    Fintype.card (pathType m n₁' × pathType m n₂') := by
+  sorry  -- Lindström involution bijection (see Part XIII for proof sketch)
+
+/-- **The 2×2 LGV Lemma**: Non-intersecting path pairs count = lgvDet.
+    Requires the ordering a₁ ≤ a₂ ≤ b₁ ≤ b₂ so that all four path types
+    (identity: Aᵢ→Bᵢ, crossing: Aᵢ→Bⱼ) are well-defined.
+
+    **Note**: The hypothesis `ha₂₁ : a₂ ≤ b₁` is essential — without it,
+    the natural subtraction `b₁ - a₂` wraps to 0 giving incorrect counts.
+    (E.g., m=0, a₁=0, b₁=1, a₂=2, b₂=3: lgvDet=0 but niPairCount=1.) -/
+theorem lgv_lemma_2x2 (m a₁ b₁ a₂ b₂ : ℕ)
+    (ha : a₁ ≤ a₂) (hb : b₁ ≤ b₂)
+    (ha₁ : a₁ ≤ b₁) (ha₂ : a₂ ≤ b₂)
+    (ha₂₁ : a₂ ≤ b₁) :
+    (niPairCount m (b₁ - a₁) (b₂ - a₂) a₁ a₂ : ℤ) = lgvDet m a₁ b₁ a₂ b₂ := by
+  -- Case 1: a₁ = a₂ (same starting height) — both sides vanish
+  by_cases h_a : a₁ = a₂
+  · subst h_a
+    rw [lgvDet_same_start', lgv_same_start']; simp
+  -- Case 2: b₁ = b₂ (same ending height) — both sides vanish
+  · by_cases h_b : b₁ = b₂
+    · subst h_b
+      rw [lgvDet_same_end']
+      have h_eq : a₁ + (b₁ - a₁) = a₂ + (b₁ - a₂) := by omega
+      rw [lgv_same_end' m (b₁ - a₁) (b₁ - a₂) a₁ a₂ h_eq]; simp
+    -- Case 3: a₁ < a₂ ≤ b₁ < b₂ (strict ordering at sources and targets)
+    -- Proof by complement counting + Lindström involution:
+    --   |NI| = |total identity| - |intersecting identity|
+    --        = |total identity| - |total crossing|   [Lindström]
+    --        = lgvDet                                [arithmetic]
+    · have h_strict_a : a₁ < a₂ := lt_of_le_of_ne ha h_a
+      have h_strict_b : b₁ < b₂ := lt_of_le_of_ne hb h_b
+      -- Set up the path type parameters
+      set n₁ := b₁ - a₁ with hn₁_def
+      set n₂ := b₂ - a₂ with hn₂_def
+      set n₁' := b₂ - a₁ with hn₁'_def  -- crossing: A₁ → B₂
+      set n₂' := b₁ - a₂ with hn₂'_def  -- crossing: A₂ → B₁
+      -- Complement counting: NI + intersecting = total
+      have h_compl := ni_complement_count' m n₁ n₂ a₁ a₂
+      -- Total identity pairs = C(m+n₁,m) * C(m+n₂,m)
+      have h_total := total_identity_count' m n₁ n₂
+      -- Total crossing pairs = C(m+n₁',m) * C(m+n₂',m)
+      have h_crossing := total_identity_count' m n₁' n₂'
+      -- Lindström: |intersecting identity| = |crossing|
+      have h_n₁'_eq : n₁' = n₂ + a₂ - a₁ := by omega
+      have h_n₂'_eq : n₂' = n₁ + a₁ - a₂ := by omega
+      have h_n_sum : n₁ + n₂ = n₁' + n₂' := by omega
+      have h_bij := lindstrom_involution_card' m n₁ n₂ n₁' n₂' a₁ a₂
+        h_strict_a h_n₁'_eq h_n₂'_eq h_n_sum
+      -- Assemble: NI = total - crossing = lgvDet
+      rw [h_total, h_bij, h_crossing] at h_compl
+      -- h_compl: niPairCount + C(m+n₁',m)*C(m+n₂',m) = C(m+n₁,m)*C(m+n₂,m)
+      -- lgvDet expands to C(m+n₁,m)*C(m+n₂,m) - C(m+n₂',m)*C(m+n₁',m)
+      -- (note: n₂' = b₁-a₂, n₁' = b₂-a₁ matches lgvDet's subtracted product order)
+      change niPairCount m n₁ n₂ a₁ a₂ =
+        Nat.choose (m + n₁) m * Nat.choose (m + n₂) m -
+        Nat.choose (m + n₂') m * Nat.choose (m + n₁') m
+      rw [Nat.mul_comm (Nat.choose (m + n₂') m) (Nat.choose (m + n₁') m)]
+      omega
+
 /-! ## Part VII: Vandermonde's Identity -/
 
 /-- Vandermonde's identity: C(m+n, r) = Σ_{k=0}^{r} C(m,k) * C(n, r-k).
@@ -931,5 +1070,70 @@ example : lgvDet 4 0 4 1 5 = 490 := by native_decide
 -- The Crossing Lemma prevents crossing pairs from being non-intersecting:
 -- When paths start in opposite vertical order vs endpoints (y₁ < y₂ but ends > ends),
 -- they MUST share a lattice point. This is why the "crossing" term in LGV vanishes.
+
+/-! ## Part XIII: Complement Counting and Lindström Involution -/
+
+-- The proof of the 2×2 LGV Lemma (Case 3: strict ordering a₁ < a₂ ≤ b₁ < b₂)
+-- reduces to a cardinality equation via complement counting:
+--
+--   |NI identity| = |all identity| - |intersecting identity|
+--                 = |all identity| - |all crossing|    (Lindström bijection)
+--                 = lgvDet                             (path counting + arithmetic)
+--
+-- The Lindström bijection is the key: it maps intersecting identity pairs to
+-- crossing pairs by swapping path suffixes at the first shared lattice point.
+
+/-- Complement counting: NI pairs + intersecting pairs = all pairs.
+    Uses the canonical equivalence {x // p x} ⊕ {x // ¬p x} ≃ α. -/
+theorem ni_complement_count (m n₁ n₂ y₁ y₂ : ℕ) :
+    niPairCount m n₁ n₂ y₁ y₂ +
+    Fintype.card {p : pathType m n₁ × pathType m n₂ //
+      ¬NonIntersecting p.1.val p.2.val m y₁ y₂} =
+    Fintype.card (pathType m n₁ × pathType m n₂) := by
+  unfold niPairCount
+  rw [← Fintype.card_sum]
+  exact Fintype.card_congr (Equiv.sumCompl
+    (fun p : pathType m n₁ × pathType m n₂ =>
+      NonIntersecting p.1.val p.2.val m y₁ y₂))
+
+/-- Total identity pairs = C(m+n₁, m) * C(m+n₂, m) -/
+theorem total_identity_count (m n₁ n₂ : ℕ) :
+    Fintype.card (pathType m n₁ × pathType m n₂) =
+    Nat.choose (m + n₁) m * Nat.choose (m + n₂) m := by
+  rw [Fintype.card_prod, path_count_eq_choose, path_count_eq_choose]
+
+/-- **Lindström Involution Lemma** (sorry): The number of intersecting identity path pairs
+    equals the total number of crossing path pairs.
+
+    **Proof sketch** (to be formalized):
+    For an intersecting pair (P₁: A₁→B₁, P₂: A₂→B₂), define the **first shared lattice
+    point** (x₀, y₀) as the lexicographically minimal point visited by both paths.
+    Split each path at the step where it reaches (x₀, y₀), then swap suffixes:
+    - P₁' = P₁[0..j₁) ++ P₂[j₂..) : path from A₁ to B₂ (crossing pair)
+    - P₂' = P₂[0..j₂) ++ P₁[j₁..) : path from A₂ to B₁ (crossing pair)
+
+    This is an involution because:
+    1. The prefixes (before the meeting point) are preserved by swapping
+    2. So the first shared lattice point of (P₁', P₂') is the same as (P₁, P₂)
+    3. Swapping twice returns the original pair
+
+    By the **Crossing Lemma** (proved above), ALL crossing pairs are intersecting
+    when a₁ < a₂ and b₁ < b₂ (the sources and targets are in strict order).
+    Therefore the involution is a bijection:
+      {intersecting identity pairs} ≃ {all crossing pairs}
+
+    Key verification: the swap preserves East step counts (both swapped paths
+    have exactly m East steps) and the North step counts give:
+    - northSteps(P₁') = (y₀ - a₁) + (n₂ - (y₀ - a₂)) = n₂ + a₂ - a₁ = b₂ - a₁ ✓
+    - northSteps(P₂') = (y₀ - a₂) + (n₁ - (y₀ - a₁)) = n₁ + a₁ - a₂ = b₁ - a₂ ✓ -/
+theorem lindstrom_involution_card (m n₁ n₂ n₁' n₂' a₁ a₂ : ℕ)
+    (hn₁ : n₁ = n₁)  -- placeholder
+    (h_strict_a : a₁ < a₂)
+    (h_n₁' : n₁' = n₂ + a₂ - a₁) (h_n₂' : n₂' = n₁ + a₁ - a₂)
+    (h_n_sum : n₁ + n₂ = n₁' + n₂') :
+    Fintype.card {p : pathType m n₁ × pathType m n₂ //
+      ¬NonIntersecting p.1.val p.2.val m a₁ a₂} =
+    Fintype.card (pathType m n₁' × pathType m n₂') := by
+  sorry  -- Lindström involution bijection (see proof sketch above)
 
 end LatticePathLGV

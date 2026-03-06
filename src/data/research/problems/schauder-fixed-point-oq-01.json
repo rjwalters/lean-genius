@@ -1,55 +1,94 @@
 {
   "slug": "schauder-fixed-point-oq-01",
   "title": "Schauder Projection Lemma from First Principles",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "theorem schauder_projection_lemma {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {K : Set E} (hK : IsCompact K) (hne : K.Nonempty) (ε : ℝ) (hε : 0 < ε) : ∃ (n : ℕ) (pts : Fin n → E) (π : E → E), (∀ i, pts i ∈ K) ∧ ContinuousOn π K ∧ (∀ x ∈ K, π x ∈ convexHull ℝ (range pts)) ∧ (∀ x ∈ K, ‖π x - x‖ < ε)",
+    "plain": "Given a compact set K in a normed space and ε > 0, there exist finitely many points in K and a continuous map π such that π maps K into the convex hull and approximates the identity within ε.",
+    "whyMatters": [
+      "Key technical lemma for the Schauder Fixed Point Theorem",
+      "Bridges finite-dimensional Brouwer to infinite-dimensional Schauder",
+      "Eliminates one axiom from SchauderFixedPoint.lean (6 to 5 axioms)"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Full proof of Schauder projection lemma (SchauderFixedPointOQ01.lean)",
+      "Bump function infrastructure: continuity, positivity, support",
+      "Convex hull membership of projection",
+      "Epsilon-approximation bound",
+      "Compactness of convex hull of finite sets",
+      "Integration: axiom replaced with theorem in SchauderFixedPoint.lean"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Prove the Schauder Projection Lemma without axioms"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-02-27T08:30:01.798Z",
+    "phase": "COMPLETE",
+    "since": "2026-03-06T15:20:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Integration of OQ01 proof into SchauderFixedPoint.lean",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - problem is complete.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
+    "progressSummary": "COMPLETE: Schauder Projection Lemma fully proved in SchauderFixedPointOQ01.lean. Integrated into SchauderFixedPoint.lean, replacing axiom. Axiom count reduced from 6 to 5.",
+    "builtItems": [
+      "SchauderFixedPointOQ01.lean: Complete proof via bump functions",
+      "SchauderFixedPoint.lean: Replaced axiom with theorem from OQ01",
+      "SchauderFixedPoint.lean: Updated ContinuousOn usage"
+    ],
+    "insights": [
+      "Projection is ContinuousOn K, not globally Continuous (bump sum can be zero outside K)",
+      "Schauder FPT proof only needs ContinuousOn, so weaker statement suffices",
+      "Mazur's theorem not in Mathlib4 - remains as axiom",
+      "Key technique: partition of unity via bump functions"
+    ],
+    "mathlibGaps": [
+      "Mazur's theorem not in Mathlib4",
+      "Brouwer FPT for compact convex subsets needs algebraic topology"
+    ],
     "nextSteps": []
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Partition of unity via bump functions",
+      "status": "succeeded",
+      "description": "Cover K by epsilon-balls, define bump functions, construct weighted average projection."
+    }
+  ],
   "tags": [
     "seeker-selected",
     "topology",
     "fixed-point-theory",
-    "functional-analysis"
+    "functional-analysis",
+    "completed"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "SchauderFixedPointOQ01",
+    "SchauderFixedPoint",
+    "BrouwerFixedPoint"
+  ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Schauder, J. (1930). Der Fixpunktsatz in Funktionalräumen."
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Analysis.Convex.Topology",
+      "Mathlib.Topology.Compactness.Compact"
+    ]
   },
   "started": "2026-03-06T06:42:42.097Z",
-  "lastUpdate": "2026-03-06T06:42:42.097Z",
+  "lastUpdate": "2026-03-06T15:20:00.000Z",
   "significance": 7,
   "tractability": 5
 }
