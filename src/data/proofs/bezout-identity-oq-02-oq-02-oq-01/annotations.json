@@ -1,0 +1,47 @@
+[
+  {
+    "id": "extgcd-definition",
+    "lineStart": 30,
+    "lineEnd": 35,
+    "type": "definition",
+    "title": "Extended Euclidean Algorithm",
+    "content": "Recursive definition of extGcd returning (x, y, g) where a*x + b*y = g = gcd(a,b). Base case: extGcd(a,0) = (1,0,a). Recursive case uses the identity: if (b+1)*x' + (a%(b+1))*y' = g, then a*y' + (b+1)*(x' - ⌊a/(b+1)⌋*y') = g. Termination via Nat.mod_lt.",
+    "importance": "high"
+  },
+  {
+    "id": "extgcd-bezout",
+    "lineStart": 58,
+    "lineEnd": 75,
+    "type": "theorem",
+    "title": "Bézout Identity Correctness",
+    "content": "Proves a*x + b*y = gcd(a,b) for the coefficients returned by extGcd. Uses strong induction on b. The key step reconstructs a = ⌊a/(b+1)⌋*(b+1) + a%(b+1) via Nat.div_add_mod, then closes by linear_combination.",
+    "importance": "high"
+  },
+  {
+    "id": "quotient-formula",
+    "lineStart": 92,
+    "lineEnd": 101,
+    "type": "theorem",
+    "title": "Core Quotient Formula",
+    "content": "The heart of the construction: a*(u*c + v*k) = c in ANY CommRing, given u*a + v*b = 1 and b*c = a*k. Proved by calc: expand by ring → substitute a*k = b*c → factor as (u*a + v*b)*c → apply Bézout → simplify 1*c = c.",
+    "importance": "high"
+  },
+  {
+    "id": "constructive-div",
+    "lineStart": 115,
+    "lineEnd": 138,
+    "type": "definition",
+    "title": "Constructive Quotient Extraction",
+    "content": "constructive_div assembles the pieces: extract Bézout coefficients (x,y) from extGcd, extract divisibility witness k from hdvd.choose, return x*c + y*k. Correctness proved by converting extGcd_correct to match quotient_formula's hypothesis form.",
+    "importance": "high"
+  },
+  {
+    "id": "abstract-connection",
+    "lineStart": 190,
+    "lineEnd": 198,
+    "type": "theorem",
+    "title": "Agreement with Mathlib",
+    "content": "abstract_euclids_lemma shows our constructive approach agrees with Mathlib's IsCoprime.dvd_of_dvd_mul_left. Both produce the same divisibility result — ours additionally provides an explicit quotient witness.",
+    "importance": "medium"
+  }
+]
