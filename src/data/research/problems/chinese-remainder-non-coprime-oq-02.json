@@ -1,0 +1,73 @@
+{
+  "slug": "chinese-remainder-non-coprime-oq-02",
+  "title": "Non-coprime CRT extension to polynomial rings and PIDs",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-06T11:43:14.356Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 19 proved theorems, 0 sorries, 0 axioms. Full CRT for EuclideanDomains + polynomial rings + ideal bridge.",
+    "builtItems": [
+      "ed_crt_necessary: CRT necessity for EuclideanDomains (ChineseRemainderNonCoprimeOQ02.lean)",
+      "ed_crt_sufficient: CRT sufficiency via Bezout coefficients (ChineseRemainderNonCoprimeOQ02.lean)",
+      "ed_crt_iff: Full iff characterization (ChineseRemainderNonCoprimeOQ02.lean)",
+      "ed_crt_unique: Uniqueness mod lcm (ChineseRemainderNonCoprimeOQ02.lean)",
+      "linear_factors_coprime: (X-a) and (X-b) coprime when a≠b (ChineseRemainderNonCoprimeOQ02.lean)",
+      "polynomial_crt_two_points: 2-point Lagrange interpolation (ChineseRemainderNonCoprimeOQ02.lean)",
+      "poly_crt_extend: Inductive CRT step for polynomials (ChineseRemainderNonCoprimeOQ02.lean)",
+      "isCoprime_iff_span_sup_eq_top: Element ↔ ideal coprimality (ChineseRemainderNonCoprimeOQ02.lean)",
+      "euclid_lemma_from_coprimality: Euclid lemma via IsCoprime.dvd_of_dvd_mul_left (ChineseRemainderNonCoprimeOQ02.lean)"
+    ],
+    "insights": [
+      "Non-coprime CRT generalizes cleanly from Z to any EuclideanDomain via extended GCD",
+      "IsCoprime a b ↔ Ideal.span {a} ⊔ Ideal.span {b} = ⊤ bridges element and ideal levels",
+      "Polynomial CRT over fields gives Lagrange interpolation as special case",
+      "Inductive CRT: adjust p₀ by m·c to hit new target while preserving existing congruences",
+      "dvd_mul_left provides ideal membership for principal ideal coprimality proofs"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Consider n-point polynomial interpolation via iterated CRT",
+      "Explore connection to UFD/PID structure theorems"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "algebra",
+    "generalization"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-06T15:46:53.461Z",
+  "lastUpdate": "2026-03-06T15:58:04.000Z",
+  "significance": 7,
+  "tractability": 5
+}

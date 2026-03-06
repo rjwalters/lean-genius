@@ -33,8 +33,8 @@
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-02-26T23:55:00Z",
-    "iteration": 2,
-    "focus": "24 theorems, 0 sorries, 1 axiom (general BU for n≥2). Gallery entry created.",
+    "iteration": 3,
+    "focus": "24 theorems, 0 sorries, 1 axiom. Added Tucker signed, LS covering, parity lemmas. PR #3347.",
     "blockers": [],
     "nextAction": "None - complete",
     "attemptCounts": {
@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 24 theorems, 0 sorries, 1 axiom. Full 1D constructive BU + Tucker + Brouwer FP.",
+    "progressSummary": "COMPLETE: 24 proved theorems, 0 sorries, 1 axiom. Extended with Tucker signed, LS covering, parity.",
     "builtItems": [
       "borsuk_ulam_interval: 1D BU on [-1,1] via IVT",
       "borsuk_ulam_circle_param: circle BU via trig parametrization",
@@ -55,14 +55,29 @@
       "borsuk_ulam_symmetric_interval: BU on [-a,a]",
       "bu_antipodal_set_compact: coincidence set is compact",
       "bu_strictly_mono_unique_at_zero: uniqueness for monotone f",
-      "circle_no_self_antipodal: circle BU genuinely non-trivial"
+      "circle_no_self_antipodal: circle BU genuinely non-trivial",
+      "tucker_1d_signed: Tucker signed lemma (integer labels, complementary boundary)",
+      "lusternik_schnirelman_1d: LS 1D covering theorem (two closed sets → antipodal pair)",
+      "lusternik_schnirelman_symmetric: LS for symmetric interval [-a,a]",
+      "ham_sandwich_1d: 1D Ham-Sandwich via BU",
+      "bu_odd_polynomial_zero: BU for odd polynomials",
+      "approx_antipodal_exists: approximate antipodal pairs for any ε>0",
+      "approx_antipodal_symmetric: approximate antipodal on [-a,a]",
+      "tucker_bool_implies_signed: Boolean→Signed Tucker reduction",
+      "neg_one_pow_ne_zero: powers of -1 nonzero",
+      "neg_one_pow_odd: (-1)^(2k+1) = -1",
+      "neg_one_pow_even: (-1)^(2k) = 1"
     ],
     "insights": [
       "f(--x) is a SYNTAX BUG in Lean 4: -- starts a line comment",
       "fun_prop handles complex continuity goals (trig composition)",
       "IVT API: intermediate_value_Icc hab hg_cont ⟨ha, hb⟩",
       "Interval BU is trivial (x=0 witness); circle BU is genuine",
-      "Tucker lemma = discrete BU; proved via Fin.induction + push_neg"
+      "Tucker lemma = discrete BU; proved via Fin.induction + push_neg",
+      "Bool.decide_eq_decide does not exist in Lean 4.26; use by_cases + decide_eq_true_eq/decide_eq_false_iff_not",
+      "Ne.lt_or_lt deprecated in Lean 4.26; use Ne.lt_or_gt instead",
+      "Polynomial.continuous_eval not available; use p.toContinuousMap.continuous",
+      "cases h : S i.succ cleanly splits Bool into true/false branches for sign analysis"
     ],
     "mathlibGaps": [
       "No Brouwer degree theory in Mathlib (needed for n≥2 BU)"
@@ -76,18 +91,35 @@
       "description": "Define g(x)=f(x)-f(-x), observe g(-a)=-g(a), apply IVT"
     }
   ],
-  "tags": ["topology", "constructive-math", "borsuk-ulam", "ivt", "tucker-lemma", "brouwer-fixed-point"],
-  "relatedProofs": ["borsuk-ulam", "brouwer-fixed-point-oq-01"],
+  "tags": [
+    "topology",
+    "constructive-math",
+    "borsuk-ulam",
+    "ivt",
+    "tucker-lemma",
+    "brouwer-fixed-point"
+  ],
+  "relatedProofs": [
+    "borsuk-ulam",
+    "brouwer-fixed-point-oq-01"
+  ],
   "references": {
     "papers": [
       "Borsuk (1933): Drei Sätze über die n-dimensionale euklidische Sphäre",
       "Tucker (1946): Some topological properties of disk and sphere"
     ],
-    "urls": ["https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem"],
-    "mathlib": ["intermediate_value_Icc", "intermediate_value_Icc'", "isCompact_Icc", "Fin.induction"]
+    "urls": [
+      "https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem"
+    ],
+    "mathlib": [
+      "intermediate_value_Icc",
+      "intermediate_value_Icc'",
+      "isCompact_Icc",
+      "Fin.induction"
+    ]
   },
   "started": "2026-02-25T19:36:59.225Z",
-  "lastUpdate": "2026-02-26T23:55:00Z",
+  "lastUpdate": "2026-03-06T11:30:00Z",
   "significance": 7,
   "tractability": 6
 }
