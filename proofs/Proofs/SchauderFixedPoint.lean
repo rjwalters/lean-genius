@@ -14,6 +14,7 @@ import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Topology.MetricSpace.Lipschitz
 import Mathlib.Topology.MetricSpace.Contracting
 import Mathlib.Topology.UniformSpace.Completion
+import Proofs.SchauderFixedPointOQ01
 
 /-
 # Fixed Point Theorems: Generalizations to Infinite Dimensions
@@ -35,10 +36,15 @@ The key theorems formalized:
 
 ## Axiom Reduction
 Previous version: 8 axioms, 3 proved theorems
-Current version: 6 axioms, 6 proved theorems (0 sorries)
+Current version: 5 axioms, 7 proved theorems (0 sorries)
+
+Axioms converted to theorems:
+- `schauder_fixed_point_normed` - PROVED from projection lemma + Brouwer
+- `schauder_compact_operator` - PROVED from Schauder + Mazur
+- `tychonoff_fixed_point` - PROVED from Schauder
+- `schauder_projection_lemma` - NOW PROVED in SchauderFixedPointOQ01.lean
 
 Axioms retained (foundational, require algebraic topology or deep analysis):
-- `schauder_projection_lemma` - finite-dimensional approximation via partition of unity
 - `brouwer_compact_convex` - Brouwer FPT in finite dimensions (needs homology)
 - `brouwer_finite_dim_subset` - Brouwer for compact convex sets in finite-dim subspaces
 - `mazur_compact_convex_hull` - closed convex hull of compact set is compact (Mazur)
@@ -88,15 +94,17 @@ def HasFixedPtIn {α : Type*} (f : α → α) (S : Set α) : Prop :=
     B(x₁,ε), ..., B(xₙ,ε). Define πε using a partition of unity:
       πε(x) = Σᵢ φᵢ(x) · xᵢ / Σᵢ φᵢ(x)
     where φᵢ(x) = max(0, ε - ‖x - xᵢ‖).
-    Then πε is continuous, maps into conv{x₁,...,xₙ}, and ‖πε(x) - x‖ < ε. -/
-axiom schauder_projection_lemma
+    **Proved** in `SchauderFixedPointOQ01.lean` from first principles via
+    partition of unity with bump functions φᵢ(x) = max(0, ε - ‖x - xᵢ‖). -/
+theorem schauder_projection_lemma
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {K : Set E} (hK : IsCompact K) (hne : K.Nonempty) (ε : ℝ) (hε : 0 < ε) :
     ∃ (n : ℕ) (pts : Fin n → E) (π : E → E),
       (∀ i, pts i ∈ K) ∧
-      Continuous π ∧
+      ContinuousOn π K ∧
       (∀ x ∈ K, π x ∈ convexHull ℝ (range pts)) ∧
-      (∀ x ∈ K, ‖π x - x‖ < ε)
+      (∀ x ∈ K, ‖π x - x‖ < ε) :=
+  SchauderProjection.schauder_projection_lemma hK hne ε hε
 
 /-- Brouwer Fixed Point Theorem for convex compact sets in finite dimensions.
     Every continuous self-map of a nonempty compact convex subset of ℝⁿ
@@ -309,7 +317,7 @@ theorem schauder_fixed_point_normed
   have hull_conv : Convex ℝ hull := convex_convexHull ℝ (range pts)
   -- g = π ∘ f is continuous on hull
   have hg_cont : ContinuousOn (π ∘ f) hull :=
-    hπ_cont.continuousOn.comp (hf.mono hull_sub_K) (fun x hx => hmaps (hull_sub_K hx))
+    hπ_cont.comp (hf.mono hull_sub_K) (fun x hx => hmaps (hull_sub_K hx))
   -- Apply Brouwer (finite-dimensional version) to g on hull
   obtain ⟨x₀, hx₀_hull, hx₀_fp⟩ := brouwer_finite_dim_subset
     hull_compact hull_ne hull_conv hg_cont hg_maps hV_fd hull_sub_V
