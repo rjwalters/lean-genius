@@ -1,0 +1,39 @@
+[
+  {
+    "lineStart": 43,
+    "lineEnd": 50,
+    "type": "insight",
+    "content": "**Countable Sets Have Measure Zero**:\n\nThe rationals ℚ, despite being dense in ℝ (between any two reals lies a rational), have Lebesgue measure zero. This is because ℚ is countable: we can list all rationals as $q_1, q_2, \\ldots$ and cover each $q_n$ with an interval of length $\\varepsilon/2^n$. The total covering has measure $\\leq \\varepsilon$, and since $\\varepsilon$ is arbitrary, the measure is 0.\n\nMathlib packages this as `Set.Countable.measure_zero`, which applies to any countable set under any atomless measure.",
+    "relatedConcepts": ["countable sets", "measure zero", "Lebesgue measure", "dense sets"]
+  },
+  {
+    "lineStart": 62,
+    "lineEnd": 77,
+    "type": "definition",
+    "content": "**The Dirichlet Function**:\n\nDefined as $\\mathbf{1}_{\\mathbb{Q}}(x)$, the indicator (characteristic) function of the rationals:\n$$f(x) = \\begin{cases} 1 & \\text{if } x \\in \\mathbb{Q} \\\\ 0 & \\text{if } x \\notin \\mathbb{Q} \\end{cases}$$\n\nThis function is the canonical example of a bounded function that is not Riemann integrable. Since both ℚ and ℝ\\ℚ are dense in ℝ, every interval contains both rationals and irrationals, so the upper Darboux sum is always 1 and the lower sum always 0.",
+    "relatedConcepts": ["indicator function", "Dirichlet function", "Riemann integrability", "dense sets"],
+    "mathContext": "Dirichlet function $\\mathbf{1}_{\\mathbb{Q}}$: the simplest example of a non-Riemann-integrable function"
+  },
+  {
+    "lineStart": 86,
+    "lineEnd": 90,
+    "type": "technique",
+    "content": "**The ae Filter and compl_mem_ae_iff**:\n\nThe almost everywhere (ae) filter captures properties that hold outside a measure-zero set. The key lemma `compl_mem_ae_iff` states:\n$$S^c \\in \\text{ae}(\\mu) \\iff \\mu(S) = 0$$\n\nSo from `volume(ℚ) = 0` we get `ℚᶜ ∈ ae(volume)`, meaning 'for almost every x, x ∉ ℚ'. Combined with `filter_upwards`, this gives us: for a.e. x, the indicator $\\mathbf{1}_{\\mathbb{Q}}(x) = 0$.",
+    "relatedConcepts": ["ae filter", "compl_mem_ae_iff", "filter_upwards", "measure zero"],
+    "mathContext": "compl_mem_ae_iff bridges measure zero and almost everywhere"
+  },
+  {
+    "lineStart": 113,
+    "lineEnd": 117,
+    "type": "keyStep",
+    "content": "**The Main Proof: integral_eq_zero_of_ae**:\n\nThe entire proof chain is remarkably short:\n1. `rationals_measure_zero`: $\\mu(\\mathbb{Q}) = 0$\n2. `compl_mem_ae_iff.mpr`: $\\mathbb{Q}^c \\in \\text{ae}(\\mu)$\n3. `filter_upwards`: for a.e. $x$, $\\mathbf{1}_{\\mathbb{Q}}(x) = 0$\n4. `ae_restrict_of_ae`: same holds for $\\mu|_{[0,1]}$\n5. `integral_eq_zero_of_ae`: therefore $\\int_{[0,1]} \\mathbf{1}_{\\mathbb{Q}} = 0$\n\nThis resolves the axiom `dirichlet_integral_zero` from the parent Lebesgue Measure proof.",
+    "relatedConcepts": ["integral_eq_zero_of_ae", "ae_restrict_of_ae", "axiom elimination"]
+  },
+  {
+    "lineStart": 148,
+    "lineEnd": 195,
+    "type": "insight",
+    "content": "**Nowhere Continuous via Measure Theory**:\n\nThe Dirichlet function is discontinuous at every point. The proof uses a measure-theoretic argument:\n\n- **At rationals**: If $x \\in \\mathbb{Q}$, then $f(x) = 1$. Any ball $B(x, \\delta)$ has positive measure ($2\\delta > 0$), but $\\mathbb{Q}$ has measure zero, so $B(x,\\delta) \\not\\subseteq \\mathbb{Q}$. Thus there exists an irrational $y$ near $x$ with $f(y) = 0$, giving $|f(x) - f(y)| = 1$.\n\n- **At irrationals**: If $x \\notin \\mathbb{Q}$, then $f(x) = 0$. By density of $\\mathbb{Q}$ (via `exists_rat_near`), every ball contains a rational $y$ with $f(y) = 1$, giving $|f(x) - f(y)| = 1$.\n\nBy Lebesgue's criterion, a bounded function is Riemann integrable iff its discontinuity set has measure zero. Since the Dirichlet function is discontinuous everywhere, it is not Riemann integrable.",
+    "relatedConcepts": ["continuity", "density of rationals", "Lebesgue criterion", "Riemann integrability"]
+  }
+]
