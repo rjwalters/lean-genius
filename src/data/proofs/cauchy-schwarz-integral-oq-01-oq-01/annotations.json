@@ -1,0 +1,47 @@
+[
+  {
+    "id": "holder-lintegral",
+    "lineStart": 42,
+    "lineEnd": 49,
+    "type": "theorem",
+    "title": "Hölder's Inequality (Lintegral Form)",
+    "content": "Wraps Mathlib's ENNReal.lintegral_mul_le_Lp_mul_Lq: ∫⁻ f·g dμ ≤ (∫⁻ f^p dμ)^{1/p} · (∫⁻ g^q dμ)^{1/q} for conjugate exponents p, q.",
+    "importance": "high"
+  },
+  {
+    "id": "cs-lintegral",
+    "lineStart": 51,
+    "lineEnd": 61,
+    "type": "theorem",
+    "title": "Cauchy-Schwarz at Lintegral Level",
+    "content": "Specializes Hölder to p=q=2 using HolderConjugate 2 2 (with 3-field constructor). The p=q=2 case gives ∫⁻ f·g dμ ≤ (∫⁻ f² dμ)^{1/2} · (∫⁻ g² dμ)^{1/2}.",
+    "importance": "high"
+  },
+  {
+    "id": "elpnorm-minkowski",
+    "lineStart": 72,
+    "lineEnd": 81,
+    "type": "theorem",
+    "title": "Minkowski in eLpNorm Form",
+    "content": "Triangle inequality using the eLpNorm API (renamed from snorm in 4.26+): eLpNorm (f+g) p μ ≤ eLpNorm f p μ + eLpNorm g p μ. Internally uses Hölder.",
+    "importance": "high"
+  },
+  {
+    "id": "l2-cs",
+    "lineStart": 88,
+    "lineEnd": 99,
+    "type": "theorem",
+    "title": "L² Inner Product Cauchy-Schwarz",
+    "content": "For f, g ∈ L²(μ): |⟨f,g⟩| ≤ ‖f‖·‖g‖. Uses Mathlib's abs_real_inner_le_norm. Both sided and one-sided versions provided.",
+    "importance": "high"
+  },
+  {
+    "id": "minkowski-from-cs",
+    "lineStart": 108,
+    "lineEnd": 117,
+    "type": "theorem",
+    "title": "Minkowski L² from Cauchy-Schwarz",
+    "content": "Classical derivation: ‖f+g‖² = ‖f‖² + 2⟨f,g⟩ + ‖g‖² ≤ (‖f‖+‖g‖)² via CS bound on inner product. Uses norm_add_sq_real + nlinarith + sqrt monotonicity.",
+    "importance": "medium"
+  }
+]
