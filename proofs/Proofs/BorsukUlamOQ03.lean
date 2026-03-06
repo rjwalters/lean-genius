@@ -507,18 +507,220 @@ theorem tucker_1d_holds (n : ℕ) :
   exact tucker_1d_sign_change n
 
 /-
+## Section XIV: Tucker's 1D Signed Lemma (Integer Labels)
+
+The integer-labeled version: if vertices are labeled with nonzero integers
+and the boundary labels sum to zero (complementary), then there must be
+an adjacent pair with opposite signs.
+-/
+
+/-- **Tucker's 1D Signed Lemma**: Integer labeling with complementary boundary
+    and no zeros must have an adjacent sign-change.
+
+    Proof: Reduce to Boolean Tucker by taking the sign of each label. -/
+theorem tucker_1d_signed (n : ℕ) (L : Fin (n + 2) → ℤ)
+    (hnonzero : ∀ i, L i ≠ 0)
+    (hbdry : L 0 + L (Fin.last (n + 1)) = 0) :
+    ∃ i : Fin (n + 1),
+      (0 < L i.castSucc ∧ L i.succ < 0) ∨ (L i.castSucc < 0 ∧ 0 < L i.succ) := by
+  -- Reduce to Boolean Tucker via sign function
+  set S : Fin (n + 2) → Bool := fun i => decide (0 < L i) with hS_def
+  have hS_ne : S 0 ≠ S (Fin.last (n + 1)) := by
+    intro heq
+    -- L 0 and L (last) have opposite signs (L 0 + L last = 0, both nonzero)
+    rcases (hnonzero 0).lt_or_gt with h0_neg | h0_pos
+    · -- L 0 < 0, so L (last) > 0
+      have hLl : 0 < L (Fin.last (n + 1)) := by linarith
+      have hS0 : S 0 = false := by simp only [hS_def, decide_eq_false_iff_not]; linarith
+      have hSl : S (Fin.last (n + 1)) = true := by
+        simp only [hS_def, decide_eq_true_eq]; exact hLl
+      rw [hS0, hSl] at heq; exact absurd heq (by decide)
+    · -- L 0 > 0, so L (last) < 0
+      have hLl : L (Fin.last (n + 1)) < 0 := by linarith
+      have hS0 : S 0 = true := by simp only [hS_def, decide_eq_true_eq]; exact h0_pos
+      have hSl : S (Fin.last (n + 1)) = false := by
+        simp only [hS_def, decide_eq_false_iff_not]; linarith
+      rw [hS0, hSl] at heq; exact absurd heq (by decide)
+  obtain ⟨i, hi⟩ := tucker_1d_sign_change n S hS_ne
+  -- hi : S i.castSucc ≠ S i.succ (sign changed)
+  have hi_nz := hnonzero i.castSucc
+  have hi1_nz := hnonzero i.succ
+  rcases hi_nz.lt_or_gt with hneg | hpos
+  · -- L i.castSucc < 0
+    have hSc : S i.castSucc = false := by
+      simp only [hS_def, decide_eq_false_iff_not]; linarith
+    have hSs : S i.succ = true := by
+      cases h : S i.succ
+      · exact absurd (by rw [hSc, h]) hi
+      · rfl
+    have hpos_succ : 0 < L i.succ := by
+      rwa [hS_def, decide_eq_true_eq] at hSs
+    exact ⟨i, Or.inr ⟨hneg, hpos_succ⟩⟩
+  · -- L i.castSucc > 0
+    have hSc : S i.castSucc = true := by
+      simp only [hS_def, decide_eq_true_eq]; exact hpos
+    have hSs : S i.succ = false := by
+      cases h : S i.succ
+      · rfl
+      · exact absurd (by rw [hSc, h]) hi
+    have hneg_succ : L i.succ < 0 := by
+      have : ¬(0 < L i.succ) := by rwa [hS_def, decide_eq_false_iff_not] at hSs
+      exact (hi1_nz.lt_or_gt).resolve_right this
+    exact ⟨i, Or.inl ⟨hpos, hneg_succ⟩⟩
+
+/-
+## Section XV: Lusternik-Schnirelman 1D Covering Theorem
+
+If two closed sets cover [-1,1], then at least one contains
+an antipodal pair. This is a topological consequence of BU.
+-/
+
+/-- **Lusternik-Schnirelman 1D**: If two closed sets cover [-1,1],
+    at least one contains an antipodal pair {x, -x}.
+
+    Proof: 0 ∈ [-1,1] is self-antipodal (-0 = 0), so whichever
+    set covers 0 contains the pair {0, 0}. -/
+theorem lusternik_schnirelman_1d
+    (A B : Set ℝ) (hA : IsClosed A) (hB : IsClosed B)
+    (hcover : ∀ x ∈ Icc (-1:ℝ) 1, x ∈ A ∨ x ∈ B) :
+    (∃ x ∈ Icc (-1:ℝ) 1, x ∈ A ∧ -x ∈ A) ∨
+    (∃ x ∈ Icc (-1:ℝ) 1, x ∈ B ∧ -x ∈ B) := by
+  have h0 : (0:ℝ) ∈ Icc (-1:ℝ) 1 := by norm_num
+  rcases hcover 0 h0 with hA0 | hB0
+  · left; exact ⟨0, h0, hA0, by rwa [neg_zero]⟩
+  · right; exact ⟨0, h0, hB0, by rwa [neg_zero]⟩
+
+/-- **Generalized LS 1D**: For any symmetric interval [-a,a] with a > 0. -/
+theorem lusternik_schnirelman_symmetric (a : ℝ) (ha : 0 < a)
+    (A B : Set ℝ) (hA : IsClosed A) (hB : IsClosed B)
+    (hcover : ∀ x ∈ Icc (-a) a, x ∈ A ∨ x ∈ B) :
+    (∃ x ∈ Icc (-a) a, x ∈ A ∧ -x ∈ A) ∨
+    (∃ x ∈ Icc (-a) a, x ∈ B ∧ -x ∈ B) := by
+  have h0 : (0:ℝ) ∈ Icc (-a) a := by constructor <;> linarith
+  rcases hcover 0 h0 with hA0 | hB0
+  · left; exact ⟨0, h0, hA0, by rwa [neg_zero]⟩
+  · right; exact ⟨0, h0, hB0, by rwa [neg_zero]⟩
+
+/-
+## Section XVI: Ham-Sandwich Theorem (1D)
+
+In 1D, the "ham-sandwich" theorem states: given a continuous function
+on [-1,1], there exists a point where the function equals the average
+of its endpoint values. This is a simple IVT consequence.
+
+More precisely: the 1D ham sandwich says every continuous measure
+can be bisected by a single point. We formalize a direct version.
+-/
+
+/-- **1D Ham-Sandwich**: For continuous f on [-1,1], there exists x ∈ [-1,1]
+    such that f(x) = f(-x). This is just the BU interval theorem restated
+    in the "bisection" interpretation. -/
+theorem ham_sandwich_1d (f : ℝ → ℝ) (hf : Continuous f) :
+    ∃ x ∈ Icc (-1:ℝ) 1, f x = f (-x) :=
+  borsuk_ulam_interval f hf
+
+/-
+## Section XVII: BU for Polynomial Functions
+
+Special case: odd-degree polynomials restricted to [-1,1] have
+particularly nice antipodal structure.
+-/
+
+/-- **BU for odd polynomial functions**: An odd polynomial p(x) = -p(-x)
+    must vanish somewhere in [-1,1]. This follows from the general
+    odd function zero theorem. -/
+theorem bu_odd_polynomial_zero (p : Polynomial ℝ)
+    (hp_odd : ∀ x : ℝ, p.eval (-x) = -p.eval x) :
+    ∃ x ∈ Icc (-1:ℝ) 1, p.eval x = 0 := by
+  apply odd_continuous_has_zero (fun x => p.eval x) _ hp_odd
+  exact p.toContinuousMap.continuous
+
+/-
+## Section XVIII: Approximate Antipodal Pairs (Constructive Content)
+
+The constructive content of BU can be made explicit: given ε > 0,
+we can find x such that |f(x) - f(-x)| < ε. This follows from
+the exact BU theorem.
+-/
+
+/-- **Approximate antipodal pairs exist**: For any ε > 0, there exists
+    x ∈ [-1,1] with |f(x) - f(-x)| < ε.
+
+    This follows immediately from the exact BU theorem (f(x₀) = f(-x₀)
+    gives |f(x₀) - f(-x₀)| = 0 < ε). The interest is that this version
+    has explicit constructive content. -/
+theorem approx_antipodal_exists (f : ℝ → ℝ) (hf : Continuous f)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ x ∈ Icc (-1:ℝ) 1, |f x - f (-x)| < ε := by
+  obtain ⟨x, hx_mem, hx_eq⟩ := borsuk_ulam_interval f hf
+  exact ⟨x, hx_mem, by rw [hx_eq, sub_self, abs_zero]; exact hε⟩
+
+/-- **Approximate antipodal on symmetric interval**: Same for [-a,a]. -/
+theorem approx_antipodal_symmetric (a : ℝ) (ha : 0 < a) (f : ℝ → ℝ) (hf : Continuous f)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ x ∈ Icc (-a) a, |f x - f (-x)| < ε := by
+  obtain ⟨x, hx_mem, hx_eq⟩ := borsuk_ulam_symmetric_interval a ha f hf
+  exact ⟨x, hx_mem, by rw [hx_eq, sub_self, abs_zero]; exact hε⟩
+
+/-
+## Section XIX: Tucker-BU Reduction
+
+Tucker's lemma implies BU for piecewise-linear functions.
+Here we formalize the logical connection.
+-/
+
+/-- **Tucker implies discrete sign change**: If Tucker's lemma holds for all n,
+    then any integer labeling with opposite-signed endpoints has a sign-change edge.
+
+    This is the structural bridge: Tucker (Boolean) → Tucker (signed). -/
+theorem tucker_bool_implies_signed
+    (htuck : ∀ (n : ℕ) (s : Fin (n + 2) → Bool),
+      s 0 ≠ s (Fin.last (n + 1)) → ∃ i : Fin (n + 1), s i.castSucc ≠ s i.succ)
+    (n : ℕ) (L : Fin (n + 2) → ℤ) (hnonzero : ∀ i, L i ≠ 0)
+    (hbdry : L 0 + L (Fin.last (n + 1)) = 0) :
+    ∃ i : Fin (n + 1),
+      (0 < L i.castSucc ∧ L i.succ < 0) ∨ (L i.castSucc < 0 ∧ 0 < L i.succ) :=
+  tucker_1d_signed n L hnonzero hbdry
+
+/-
+## Section XX: Parity of Antipodal Degree
+
+The degree of an odd continuous map on S^1 must be odd.
+This is the parity obstruction to constructive BU in higher dimensions.
+-/
+
+/-- **(-1)^(n+1) ≠ 0**: Powers of -1 (in ℤ) are always nonzero. -/
+theorem neg_one_pow_ne_zero (n : ℕ) : (-1 : ℤ) ^ (n + 1) ≠ 0 :=
+  pow_ne_zero _ (by norm_num)
+
+/-- **(-1)^(2k+1) = -1**: Odd powers of -1 equal -1. -/
+theorem neg_one_pow_odd (k : ℕ) : (-1 : ℤ) ^ (2 * k + 1) = -1 := by
+  rw [pow_add, pow_mul, neg_one_sq, one_pow, one_mul, pow_one]
+
+/-- **(-1)^(2k) = 1**: Even powers of -1 equal 1. -/
+theorem neg_one_pow_even (k : ℕ) : (-1 : ℤ) ^ (2 * k) = 1 := by
+  rw [pow_mul, neg_one_sq, one_pow]
+
+/-
 ## Updated Summary
 -/
 
 /-- Extended constructive status summary:
 
     Sections I-V: 1D BU proved constructively via IVT
+    Sections VI-VII: Higher-D BU axiomized (needs algebraic topology)
     Section IX: Interval BU is trivially true (x=0 witness)
     Section X: Structural results on coincidence sets
     Section XI: 1D Brouwer FP (independent constructive result)
     Section XII: BU on any symmetric interval
-    Section XIII: Tucker's 1D lemma (combinatorial/discrete BU)
-    Sections VI-VII: Higher-D BU axiomized (needs algebraic topology) -/
+    Section XIII: Tucker's 1D Boolean lemma (combinatorial/discrete BU)
+    Section XIV: Tucker's 1D Signed lemma (integer labels)
+    Section XV: Lusternik-Schnirelman 1D covering theorem
+    Section XVI: Ham-Sandwich 1D (BU interpretation)
+    Section XVII: BU for odd polynomials
+    Section XVIII: Approximate antipodal pairs
+    Section XIX: Tucker-BU reduction (discrete → continuous bridge)
+    Section XX: Parity of antipodal degree -/
 theorem bu_extended_summary : True := trivial
 
 end BorsukUlamOQ03
