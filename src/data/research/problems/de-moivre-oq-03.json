@@ -1,8 +1,8 @@
 {
   "slug": "de-moivre-oq-03",
   "title": "Extend De Moivre to fractional exponents z^(p/q)",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-02-26T05:12:41.987Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,9 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 17 proved theorems, 0 sorries, 0 axioms. Fractional De Moivre + root extraction.",
+    "builtItems": [
+      "qthRoot definition and pow verification (qthRoot_pow_eq)",
+      "root_distinctness: all q roots are distinct",
+      "fractional_de_moivre_principal: principal value formula",
+      "17 total theorems, 0 sorries, 0 axioms"
+    ],
+    "insights": [
+      "Root enumeration: q-th roots of (e^{iθ})^p are exp(i(pθ+2πk)/q) for k=0..q-1",
+      "Principal value cpow(e^{iθ}, p/q) = exp(ipθ/q) via Complex.cpow_ofReal_re",
+      "Root distinctness from exp injectivity modulo 2πi",
+      "Complex.exp_nat_mul + exp_int_mul chain for power verification"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -50,7 +60,7 @@
     "mathlib": []
   },
   "started": "2026-02-26T17:08:50.306Z",
-  "lastUpdate": "2026-02-26T17:08:50.306Z",
+  "lastUpdate": "2026-03-06T16:04:04.000Z",
   "significance": 7,
   "tractability": 5
 }
