@@ -25,12 +25,12 @@
     "goal": "Derive binomial distribution properties from the binomial theorem"
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "COMPLETE",
     "since": "2026-02-27T05:30:00Z",
-    "iteration": 1,
-    "focus": "Complete formalization achieved",
+    "iteration": 2,
+    "focus": "Added variance (second factorial moment + variance theorem), fixed mean proof regression",
     "blockers": [],
-    "nextAction": "None - completed",
+    "nextAction": "None - problem fully resolved",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -38,18 +38,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 20 theorems, 0 axioms, 0 sorries, 208 lines",
+    "progressSummary": "COMPLETE: All theorems proved (0 sorries). Normalization, mean, variance, symmetry, PGF, fair coin, special cases.",
     "builtItems": [
       "binomPMF definition over R in BinomialTheoremOQ03.lean",
       "binomPMF_sum_eq_one: normalization",
       "binomial_mean: E[X] = np via absorption identity",
       "binomial_pgf: PGF E[t^X] = (pt + 1-p)^n",
-      "Gallery integration in src/data/proofs/binomial-theorem-oq-03/"
+      "Gallery integration in src/data/proofs/binomial-theorem-oq-03/",
+      "double_absorption in BinomialTheoremOQ03.lean",
+      "binomial_second_factorial_moment in BinomialTheoremOQ03.lean",
+      "binomial_variance in BinomialTheoremOQ03.lean",
+      "Fixed binomial_mean nlinarith regression with calc approach"
     ],
     "insights": [
       "The binomial theorem IS normalization - same identity with q = 1-p",
       "Absorption identity (k+1)C(n+1,k+1) = (n+1)C(n,k) is the key for mean computation",
-      "nlinarith with mul_comm hints closes the absorption-based term rewriting"
+      "nlinarith with mul_comm hints closes the absorption-based term rewriting",
+      "double_absorption: (k+2)(k+1)C(n+2,k+2) = (n+2)(n+1)C(n,k) follows from two absorption applications",
+      "Variance via second factorial moment: Var(X) = E[X(X-1)] + E[X] - (E[X])^2 = n(n-1)p^2 + np - n^2p^2 = np(1-p)",
+      "calc approach needed for coefficient equality proofs - nlinarith/linear_combination fail on nonlinear cast expressions",
+      "Finset index manipulation: decompose n=m+2 BEFORE sum_range_succ to ensure range matches pattern"
     ],
     "mathlibGaps": [],
     "nextSteps": []
