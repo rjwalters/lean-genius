@@ -17,9 +17,9 @@
   },
   "currentState": {
     "phase": "NEW",
-    "since": "2026-01-01T21:55:27.887Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "since": "2026-03-06T00:00:00Z",
+    "iteration": 2,
+    "focus": "Concrete SU(2) formulas and algebraic structure",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,9 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: 1657 lines, 108 defs/theorems, 0 sorries. Covers classical YM, lattice gauge theory, 2D YM (Migdal formula), transfer matrix, Polyakov loop, SU(2) rep theory, center symmetry group structure, heat kernel expansion, Casimir scaling. Infrastructure comprehensive for 2D theory.",
+    "builtItems": [
+      "su2MigdalFundamental: concrete MigdalFormula instance for SU(2) fund rep",
+      "su2MigdalAdjoint: concrete MigdalFormula instance for SU(2) adj rep",
+      "su2_casimir_scaling_ratio: σ_adj/σ_fund = 16/9 (Casimir scaling)",
+      "heatKernelTerm: d²·exp(-C₂·g²·A) with positivity, decay, zero-area proofs",
+      "su2HeatKernelTruncated: partition function for j≤1 with bounds",
+      "centerMul, centerInv: center group operations with associativity, commutativity",
+      "casimir_scaling_general: universal Casimir scaling law for string tensions"
+    ],
+    "insights": [
+      "Casimir scaling exact in 2D: σ_adj/σ_fund = 16/9 for SU(2)",
+      "Heat kernel Z = Σ d² exp(-C₂·g²·A) shows mass gap mechanism: non-trivial reps decay exponentially",
+      "Truncated Z(0) = 14 (sum of 1²+2²+3²) for j≤1; Z(A) ≥ 1 always (trivial rep dominance at large A)",
+      "Center elements form abelian group: centerMul is associative, commutative, with inverse"
+    ],
     "mathlibGaps": [
       "Principal bundles",
       "Connections",
@@ -39,7 +52,13 @@
       "QFT axioms",
       "Path integrals"
     ],
-    "nextSteps": [],
+    "nextSteps": [
+      "SU(3) Z_3 center with complex cube roots of unity (needs Complex center elements)",
+      "Higher spin heat kernel terms (j=3/2: d=4, C₂=15/4; j=2: d=5, C₂=6)",
+      "Wilson loop correlators: ⟨W(C₁)W(C₂)⟩ factorization in 2D",
+      "Continuum limit: lattice → continuous for 2D YM (exactly solvable case)",
+      "Creutz ratio: W(R,T) → exp(-σRT) for confining theory"
+    ],
     "markdown": "# Knowledge Base: Yang-Mills Existence and Mass Gap\n\n## The Problem\n\nThe Yang-Mills problem asks for a rigorous mathematical foundation for quantum field theory - specifically, proving that the strong nuclear force has a \"mass gap.\"\n\n### Core Statement\n\n> Prove that for any compact simple gauge group G, a non-trivial quantum Yang-Mills theory exists on R⁴ and has a mass gap Δ > 0.\n\nThe mass gap means the lightest particle in the theory has positive mass - there are no massless particles besides the vacuum.\n\n### Why It Matters\n\n1. **Physics Foundation**: Explains why nuclear force is short-range\n2. **Quantum Field Theory**: Would put QFT on rigorous mathematical footing\n3. **Standard Model**: Yang-Mills is the framework for particle physics\n4. **Confinement**: Related to why quarks are never seen in isolation\n\n## Historical Context\n\n| Year | Physicist/Mathematician | Contribution |\n|------|------------------------|--------------|\n| 1954 | Yang, Mills | Introduced non-abelian gauge theories |\n| 1960s | Glashow, Weinberg, Salam | Electroweak unification |\n| 1973 | Gross, Wilczek, Politzer | Asymptotic freedom in QCD |\n| 1974 | Wilson | Lattice gauge theory formulation |\n| 2000 | Clay Institute | Named as Millennium Problem |\n\nThe theory works phenomenally well for physics - the issue is mathematical rigor.\n\n## What This Means\n\n### Yang-Mills Theory (Classical)\n\nThe classical Yang-Mills equations are:\n- D*F = 0 (Yang-Mills equation)\n- DF = 0 (Bianchi identity)\n\nwhere F is the curvature of a connection A on a principal G-bundle, and D is the covariant derivative.\n\n### Quantum Yang-Mills\n\nQuantizing this theory means:\n1. Defining a probability measure on field configurations\n2. Making sense of path integrals\n3. Proving existence in the continuum limit\n4. Showing the mass gap property\n\n### The Mass Gap\n\nIf the theory exists, the Hamiltonian H has:\n- Ground state energy E₀ = 0 (vacuum)\n- First excited state energy E₁ > 0\n- Mass gap Δ = E₁ - E₀ > 0\n\nThis explains why nuclear force is short-range (unlike electromagnetism).\n\n## What We Could Build\n\n### In Mathlib Now\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Lie groups | ✅ | Well-developed |\n| Principal bundles | ⚠️ Partial | Building |\n| Connections | ⚠️ Partial | Some foundations |\n| Curvature | ⚠️ Partial | Riemannian case |\n| QFT axioms | ❌ | Not available |\n| Path integrals | ❌ | Not available |\n\n### Tractable Partial Work\n\n1. **Classical Yang-Mills**\n   - Define connections on principal bundles\n   - State classical Yang-Mills equations\n   - Prove basic gauge-theoretic facts\n\n2. **2D Yang-Mills** (Exactly Solvable)\n   - In 2D, the theory is exactly solvable\n   - Migdal's formula gives explicit answers\n   - Much simpler than 4D\n\n3. **Lattice Gauge Theory**\n   - Wilson's discrete approximation\n   - Well-defined mathematically\n   - Convergence to continuum is the hard part\n\n4. **Gauge Group Theory**\n   - SU(2), SU(3) structures\n   - Representation theory\n   - Lie algebra aspects\n\n## The Mathematical Challenges\n\n### Primary Blocker: Rigorous QFT\n\nConstructive QFT is one of mathematics' hardest problems:\n\n1. **Functional integrals** - \"∫ e^{-S[φ]} Dφ\" isn't defined rigorously\n2. **Renormalization** - Removing infinities consistently\n3. **Continuum limit** - Lattice → continuous space\n4. **Non-perturbative effects** - Can't just Taylor expand\n\n### What Constructive QFT Has Achieved\n\n| Theory | Dimension | Status |\n|--------|-----------|--------|\n| φ⁴ | 2D | Constructed |\n| φ⁴ | 3D | Constructed |\n| φ⁴ | 4D | Not constructed |\n| Pure Yang-Mills | 2D | Constructed |\n| Pure Yang-Mills | 4D | Not constructed |\n\nThe 4D case is qualitatively harder.\n\n## Why This Is So Hard\n\n1. **Non-abelian** - Unlike electromagnetism, gluons interact with each other\n2. **4 dimensions** - Critical dimension where UV divergences are marginal\n3. **Asymptotic freedom** - Easy at high energy, hard at low energy\n4. **Confinement** - Non-perturbative phenomenon\n\nEven defining what \"quantum Yang-Mills\" means requires substantial work.\n\n## Related Physics\n\nThe mass gap is connected to:\n- **Quark confinement** - Why we never see free quarks\n- **Glueballs** - Bound states of gluons (predicted but hard to detect)\n- **Asymptotic freedom** - Interaction weakens at high energy\n\n## Key References\n\n- Yang, C.N., Mills, R. (1954). \"Conservation of Isotopic Spin and Isotopic Gauge Invariance\"\n- Wilson, K. (1974). \"Confinement of Quarks\"\n- Jaffe, A., Witten, E. (2000). \"Quantum Yang-Mills Theory\" (Clay Problem Statement)\n- Glimm, J., Jaffe, A. (1987). \"Quantum Physics: A Functional Integral Point of View\"\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Current Status**: BLOCKED - Requires QFT framework not in Mathlib\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Lie groups | Yes | 2026-01-01 |\n| Connections | Partial | 2026-01-01 |\n| QFT axioms | No | 2026-01-01 |\n| Path integrals | No | 2026-01-01 |\n\n**Path Forward**:\n1. Classical Yang-Mills on principal bundles\n2. 2D Yang-Mills (exactly solvable case)\n3. Lattice gauge theory foundations\n4. Long-term: constructive QFT\n\n**Reality Check**: This is arguably the hardest Millennium Problem mathematically. Even stating it precisely requires substantial infrastructure.\n\n**Next Scout**: Long-term project - QFT formalization is a major undertaking\n\n---\n\n## Session 2026-02-21 (Session 1) - SU(2) Representation Theory and Center Symmetry\n\n**Mode**: REVISIT (pool status correction + fresh work on in-progress problem)\n**Outcome**: progress\n\n### What I Did\n- Fixed pool status inconsistencies (2d-navier-stokes, navier-stokes-existence, bounded-prime-gaps marked as skipped but were completed)\n- Claimed yang-mills-mass-gap for fresh iteration\n- Added Part XVIII: SU(2) Representation Theory (Casimir values)\n- Added Part XIX: Center Symmetry Z_N\n- Fixed 3 pre-existing build errors (migdal_area_law, correlation_decay_rate, partition_dominated_by_ground_state)\n- All new theorems proved with 0 sorries\n\n### Key Findings\n- SU(2) spin-j Casimir: C₂(j) = j(j+1); for j=1/2 gives 3/4, j=1 gives 2\n- SU(2) string tension from Migdal formula: σ = g²·(3/4)/(2·2) = 3g²/16\n- Z_2 center classification: ω²=1 and |ω|=1 gives ω ∈ {1, -1} via polynomial factoring\n- Confinement ↔ center symmetry unbroken: confined phase has ω·P = 0 = P for all P\n- Deconfinement → center symmetry broken: ∃P with -P ≠ P when P ≠ 0\n\n### Files Modified\n- `proofs/Proofs/YangMillsMassGap.lean`: 1133 → 1365 lines (+232), 0 sorries, fixed 3 build errors\n- `src/data/research/problems/yang-mills-mass-gap.json`: Updated knowledge fields\n- `research/problems/yang-mills-mass-gap/knowledge.md`: This session log\n\n### Next Steps\n- Add SU(2) heat kernel expansion: Z = Σ (2j+1)² exp(-j(j+1)·A/β)\n- Instantiate MigdalFormula with concrete SU(2) values\n- Add center symmetry group structure (CenterElement forms a group under multiplication)\n- Explore SU(3) Z_3 center with complex cube roots of unity\n"
   },
   "approaches": [],
@@ -56,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-01-01T21:55:27.887Z",
+  "lastUpdate": "2026-03-06T00:00:00Z",
   "significance": 10,
   "tractability": 1
 }
