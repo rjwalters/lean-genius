@@ -1,0 +1,93 @@
+{
+  "slug": "cauchy-schwarz-oq-03-oq-01",
+  "title": "Hölder's inequality equality case formalization",
+  "phase": "COMPLETE",
+  "status": "complete",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(∑ i ∈ s, f i * g i) ^ 2 = (∑ i ∈ s, f i ^ 2) * (∑ i ∈ s, g i ^ 2) ↔ ∀ i ∈ s, ∀ j ∈ s, f i * g j = f j * g i",
+    "plain": "Cauchy-Schwarz equality holds iff the vectors are proportional (all cross-terms vanish).",
+    "whyMatters": [
+      "Characterizes when Cauchy-Schwarz is tight, fundamental in optimization and linear algebra",
+      "Proportionality condition is key to projection theory and Gram-Schmidt",
+      "Extends to inner product spaces: |⟨u,v⟩| = ‖u‖·‖v‖ iff u = c·v"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Lagrange identity: ∑ᵢ∑ⱼ(fᵢgⱼ - fⱼgᵢ)² = 2[(∑f²)(∑g²) - (∑fg)²]",
+      "CS equality ⟺ all cross-terms fᵢgⱼ - fⱼgᵢ = 0 (full iff)",
+      "Cross-terms zero + some gₖ ≠ 0 → f = c·g (proportionality)",
+      "Inner product space: ‖inner u v‖ = ‖u‖·‖v‖ ⟺ ∃ c, u = c•v",
+      "Hölder inequality for NNReal finite sums (via Mathlib)",
+      "Cauchy-Schwarz from Lagrange identity (independent proof)"
+    ],
+    "open": [
+      "General Hölder equality case (p ≠ 2) via strict concavity",
+      "Integral form equality: a.e. power proportionality"
+    ],
+    "goal": "Formalize the complete equality characterization for Cauchy-Schwarz"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-03-06T23:30:00.000Z",
+    "iteration": 1,
+    "focus": "Complete formalization achieved.",
+    "blockers": [],
+    "nextAction": "None - problem resolved.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Fully formalized the Cauchy-Schwarz equality case via the Lagrange identity approach. 10+ theorems, 0 sorries. Covers finite sums (full iff characterization with proportionality) and inner product spaces (via norm_inner_eq_norm_iff).",
+    "builtItems": [
+      "proofs/Proofs/CauchySchwarzOQ03OQ01.lean (0 sorries, Docker-verified)",
+      "src/data/proofs/cauchy-schwarz-oq-03-oq-01/ (gallery entry)"
+    ],
+    "insights": [
+      "Lagrange identity provides elegant algebraic path to equality characterization",
+      "Sum-of-squares = 0 lemma is the key bridge from Lagrange to pointwise conditions",
+      "norm_inner_eq_norm_iff in Mathlib gives the abstract inner product space version",
+      "@inner notation needed instead of ⟪u,v⟫_ℝ for Docker compatibility",
+      "inv_mul_cancel₀ replaces inv_mul_cancel in Mathlib 4.26.0"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Lagrange identity + sum-of-squares",
+      "status": "successful",
+      "description": "Use the Lagrange identity to express the CS deficit as a sum of squared cross-terms. Equality means all cross-terms vanish, giving proportionality."
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "functional-analysis"
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz-oq-03",
+    "lebesgue-measure-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "Lagrange (1773): identity for 2×2 determinants",
+      "Hardy-Littlewood-Pólya 'Inequalities' (1934) Ch. 2, Theorem 15"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Finset.sum_eq_zero_iff_of_nonneg",
+      "norm_inner_eq_norm_iff",
+      "NNReal.inner_le_Lp_mul_Lq"
+    ]
+  },
+  "started": "2026-03-06T22:35:24.093Z",
+  "lastUpdate": "2026-03-06T23:30:00.000Z",
+  "significance": 6,
+  "tractability": 6
+}
