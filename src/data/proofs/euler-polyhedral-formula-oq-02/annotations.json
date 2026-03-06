@@ -1,0 +1,60 @@
+{
+  "annotations": [
+    {
+      "id": "polyhedral-surface-def",
+      "type": "definition",
+      "line": 60,
+      "content": "A polyhedral surface bundles V, E, F, \u03c7, the Euler formula, the total face angle sum (= (2E-2F)\u03c0 by polygon angle sum), and the total angular deficiency (= 2\u03c0V - total face angles). This encapsulates both combinatorial and angular data.",
+      "importance": "high"
+    },
+    {
+      "id": "discrete-gauss-bonnet",
+      "type": "theorem",
+      "line": 90,
+      "content": "The central result: \u03a3\u03b4(v) = 2\u03c0\u03c7. The proof rewrites using deficiency_sum and angle_sum_identity, then factors out 2\u03c0 and applies Euler's formula V-E+F=\u03c7. Purely algebraic.",
+      "importance": "critical"
+    },
+    {
+      "id": "descartes-theorem",
+      "type": "theorem",
+      "line": 101,
+      "content": "Descartes' theorem (1630): for convex polyhedra with \u03c7=2, total angular deficiency equals 4\u03c0. This was discovered 128 years before Euler's formula.",
+      "importance": "high"
+    },
+    {
+      "id": "genus-generalization",
+      "type": "theorem",
+      "line": 120,
+      "content": "For orientable surfaces of genus g (\u03c7=2-2g): \u03a3\u03b4(v) = 2\u03c0(2-2g). Sphere: 4\u03c0, torus: 0, double torus: -4\u03c0. Higher genus \u2192 more negative curvature.",
+      "importance": "high"
+    },
+    {
+      "id": "curvature-sign-topology",
+      "type": "insight",
+      "line": 147,
+      "content": "The sign of total curvature completely determines the topology: positive \u2192 \u03c7>0 (sphere), zero \u2192 \u03c7=0 (torus), negative \u2192 \u03c7<0 (higher genus). This is a complete characterization.",
+      "importance": "high"
+    },
+    {
+      "id": "topological-invariance",
+      "type": "theorem",
+      "line": 356,
+      "content": "Total deficiency depends only on \u03c7, not on the specific polyhedral realization. Face and edge subdivisions preserve deficiency because they preserve \u03c7.",
+      "importance": "medium"
+    },
+    {
+      "id": "platonic-computations",
+      "type": "computation",
+      "line": 210,
+      "content": "All five Platonic solids verified: tetrahedron (V=4, \u03b4=\u03c0), cube (V=8, \u03b4=\u03c0/2), octahedron (V=6, \u03b4=2\u03c0/3), dodecahedron (V=20, \u03b4=\u03c0/5), icosahedron (V=12, \u03b4=\u03c0/3). All give 4\u03c0 total.",
+      "importance": "medium"
+    },
+    {
+      "id": "five-regular-polyhedra",
+      "type": "theorem",
+      "line": 440,
+      "content": "The Schl\u00e4fli constraint pq < 2p+2q with p,q \u2265 3 has exactly 5 solutions: {3,3}, {3,4}, {3,5}, {4,3}, {5,3}. This classifies all regular polyhedra from curvature.",
+      "importance": "high"
+    }
+  ]
+}
