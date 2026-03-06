@@ -1,0 +1,95 @@
+{
+  "slug": "derangements-oq-02-oq-01",
+  "title": "Partial Derangements for Arbitrary Finite Types",
+  "phase": "COMPLETE",
+  "status": "completed",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\forall \\alpha : \\text{Type}^* [\\text{Fintype } \\alpha],\\; S(\\alpha, k) = \\binom{|\\alpha|}{k} \\cdot D(|\\alpha| - k)",
+    "plain": "The number of permutations of any finite set that fix exactly k elements equals (ways to choose k fixed elements) × (derangements of the rest). Prove this for arbitrary `Fintype α`, not just `Fin n`.",
+    "whyMatters": [
+      "Generalizes the Fin n result to arbitrary finite types",
+      "Demonstrates permutation conjugation preserves fixed-point structure",
+      "Provides corollaries for arbitrary Fintype (no n-1 fixed points, identity uniqueness)"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Fixed-point count preserved by permCongr (subtype equiv)",
+      "k-fixed permutation filters biject via permCongr",
+      "S(α, k) = C(|α|, k) · D(|α| - k) for arbitrary Fintype α",
+      "No permutation of 2+-element type has |α|-1 fixed points",
+      "Identity is the only all-fixed permutation",
+      "Sum of S(α, k) over all k equals |α|!"
+    ],
+    "open": [],
+    "goal": "Generalize partial derangement formula to arbitrary Fintype"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-03-06T21:30:00Z",
+    "iteration": 1,
+    "focus": "6 proved theorems, 0 sorries, 0 axioms. Full generalization via Fintype.equivFin.",
+    "blockers": [],
+    "nextAction": "None - complete",
+    "attemptCounts": {
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 3
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 6 proved theorems, 0 sorries, 0 axioms. Generalized S(n,k)=C(n,k)·D(n-k) from Fin n to arbitrary Fintype α via Fintype.equivFin + permCongr conjugation.",
+    "builtItems": [
+      "fixedPoint_count_permCongr: permCongr preserves fixed-point count (Fintype.card_congr on subtypes)",
+      "card_kfixed_permCongr: k-fixed permutation sets biject via permCongr",
+      "card_perms_with_kfixed_fintype: S(α,k) = C(|α|,k)·D(|α|-k) for arbitrary Fintype α",
+      "permsWithCardMinus1Fixed_eq_zero: no permutation has |α|-1 fixed points (|α|≥2)",
+      "permsWithAllFixed_eq_one: identity is uniquely all-fixed",
+      "sum_kfixed_eq_factorial: Σ_k S(α,k) = |α|!"
+    ],
+    "insights": [
+      "Fintype.equivFin α : α ≃ Fin (Fintype.card α) transports results from Fin n",
+      "Equiv.permCongr e conjugates permutations: τ = e ∘ σ ∘ e⁻¹",
+      "Fintype.card_subtype : Fintype.card {x // p x} = (univ.filter p).card — simp rewrites ALL occurrences including inner ones",
+      "Use ▸ (subst) for transport: h : A = B gives h ▸ proof_of_Pa : P b",
+      "Finset.card_nbij has universe constraint issues across types — Fintype.card_congr on subtypes avoids this"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [
+    {
+      "name": "Fintype.equivFin + permCongr",
+      "status": "succeeded",
+      "description": "Transport from Fin n case via Fintype.equivFin, using permCongr to conjugate permutations and preserve fixed-point counts"
+    }
+  ],
+  "tags": [
+    "combinatorics",
+    "permutations",
+    "derangements",
+    "fintype",
+    "generalization"
+  ],
+  "relatedProofs": [
+    "derangements",
+    "derangements-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Fintype.equivFin",
+      "Equiv.permCongr",
+      "Fintype.card_congr",
+      "Fintype.card_subtype",
+      "numDerangements"
+    ]
+  },
+  "started": "2026-03-06T20:41:07.130Z",
+  "lastUpdate": "2026-03-06T21:30:00Z",
+  "significance": 5,
+  "tractability": 7
+}
