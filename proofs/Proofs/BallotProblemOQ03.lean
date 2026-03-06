@@ -394,11 +394,14 @@ theorem path_count_eq_choose (m n : ℕ) :
 
 /-! ## Part VI: Non-Intersecting Pair Count and LGV -/
 
-/-- Non-intersecting path pairs as a subtype of all path pairs.
-    Uses Classical.decPred since NonIntersecting is not computably decidable. -/
+/-- Classical decidability for non-intersecting path pairs.
+    Extracted as a named instance to avoid Fintype instance diamonds. -/
+noncomputable instance niDecidable (m n₁ n₂ y₁ y₂ : ℕ) :
+    DecidablePred (fun p : pathType m n₁ × pathType m n₂ =>
+      NonIntersecting p.1.val p.2.val m y₁ y₂) := Classical.decPred _
+
+/-- Non-intersecting path pairs as a subtype of all path pairs. -/
 noncomputable def niPairCount (m n₁ n₂ y₁ y₂ : ℕ) : ℕ :=
-  haveI : DecidablePred (fun p : pathType m n₁ × pathType m n₂ =>
-    NonIntersecting p.1.val p.2.val m y₁ y₂) := Classical.decPred _
   Fintype.card {p : pathType m n₁ × pathType m n₂ //
     NonIntersecting p.1.val p.2.val m y₁ y₂}
 
@@ -641,16 +644,40 @@ theorem splitAfterEast_fst_eastSteps (l : LPath) (k : ℕ) (hk : k ≤ eastSteps
             eastSteps (splitAfterEast xs (k + 1)).1 := by simp [h1, eastSteps, List.countP_cons]
         linarith [ih (k + 1) hk']
 
-/-- **Key Lemma**: splitAfterEast on a concatenated list returns the components when the
-    prefix has exactly k East steps. This is the fundamental property enabling the
-    Lindström involution proof of the LGV lemma.
-
-    Note: This requires l₁ to be an actual split prefix (no trailing North steps beyond
-    the k-th East step). The statement is used correctly in swapTails_involutive where
-    l₁ comes from splitAfterEast output. -/
-theorem splitAfterEast_append_fst (l₁ l₂ : LPath) (k : ℕ) (hk : eastSteps l₁ = k) :
-    splitAfterEast (l₁ ++ l₂) k = (l₁, l₂) := by
-  sorry -- Infrastructure for lgv_lemma_2x2; requires restricting to split-prefix l₁
+/-- **Key Lemma**: Re-splitting a split prefix concatenated with new suffix recovers both parts.
+    This is the fundamental property enabling the Lindström involution proof of the LGV lemma.
+    The prefix must come from splitAfterEast (a "split prefix") — general lists with the same
+    East count may have trailing North steps that would be absorbed differently. -/
+theorem splitAfterEast_split_append (l rest : LPath) (k : ℕ) (hk : k ≤ eastSteps l) :
+    splitAfterEast ((splitAfterEast l k).1 ++ rest) k = ((splitAfterEast l k).1, rest) := by
+  induction l generalizing k with
+  | nil =>
+    have : k = 0 := by simp only [eastSteps, List.countP_nil] at hk; omega
+    subst this
+    simp [splitAfterEast]
+  | cons x xs ih =>
+    cases k with
+    | zero => simp [splitAfterEast]
+    | succ k =>
+      cases x with
+      | false =>
+        have hk' : k ≤ eastSteps xs := by
+          have : eastSteps (false :: xs) = eastSteps xs + 1 := by
+            simp [eastSteps, List.countP_cons]
+          omega
+        show (false :: (splitAfterEast ((splitAfterEast xs k).1 ++ rest) k).1,
+              (splitAfterEast ((splitAfterEast xs k).1 ++ rest) k).2) =
+             (false :: (splitAfterEast xs k).1, rest)
+        rw [ih k hk']
+      | true =>
+        have hk' : k + 1 ≤ eastSteps xs := by
+          have : eastSteps (true :: xs) = eastSteps xs := by
+            simp [eastSteps, List.countP_cons]
+          omega
+        show (true :: (splitAfterEast ((splitAfterEast xs (k + 1)).1 ++ rest) (k + 1)).1,
+              (splitAfterEast ((splitAfterEast xs (k + 1)).1 ++ rest) (k + 1)).2) =
+             (true :: (splitAfterEast xs (k + 1)).1, rest)
+        rw [ih (k + 1) hk']
 
 /-- northSteps is preserved by splitAfterEast: prefix + suffix North steps = total -/
 theorem northSteps_splitAfterEast_sum (l : LPath) (k : ℕ) :
@@ -715,13 +742,9 @@ theorem swapTails_involutive (l₁ l₂ : LPath) (k m : ℕ)
   -- Convert countP hypotheses to eastSteps form
   have heast₁ : k ≤ eastSteps l₁ := by simp only [eastSteps]; linarith
   have heast₂ : k ≤ eastSteps l₂ := by simp only [eastSteps]; linarith
-  have hepre₁ : eastSteps (splitAfterEast l₁ k).1 = k :=
-    splitAfterEast_fst_eastSteps l₁ k heast₁
-  have hepre₂ : eastSteps (splitAfterEast l₂ k).1 = k :=
-    splitAfterEast_fst_eastSteps l₂ k heast₂
   -- splitAfterEast (pre₁ ++ suf₂) k = (pre₁, suf₂) and similarly for (pre₂ ++ suf₁)
-  have h1 := splitAfterEast_append_fst (splitAfterEast l₁ k).1 (splitAfterEast l₂ k).2 k hepre₁
-  have h2 := splitAfterEast_append_fst (splitAfterEast l₂ k).1 (splitAfterEast l₁ k).2 k hepre₂
+  have h1 := splitAfterEast_split_append l₁ (splitAfterEast l₂ k).2 k heast₁
+  have h2 := splitAfterEast_split_append l₂ (splitAfterEast l₁ k).2 k heast₂
   -- (swapTails l₁ l₂ k).1/.2 are the appended components by definition
   have hfst : (swapTails l₁ l₂ k).1 =
       (splitAfterEast l₁ k).1 ++ (splitAfterEast l₂ k).2 := rfl
@@ -756,8 +779,21 @@ theorem northSteps_swapTails_fst (l₁ l₂ : LPath) (k : ℕ) (m : ℕ)
     - If m > 0: y ∈ colYRange l y 0 at column x=0 (since colEntry l 0 = 0) -/
 lemma lgv_same_start (m n₁ n₂ y : ℕ) :
     niPairCount m n₁ n₂ y y = 0 := by
-  sorry -- Fintype instance diamond: niPairCount's internal DecidablePred ≠ external one
-  -- Proof sketch: y ∈ colYRange l y 0 for any l (colEntry l 0 = 0), so no pair is NI
+  -- When paths start at same y, the start point y is in both column-0 ranges
+  -- (or both final ranges when m=0), so no pair is non-intersecting.
+  unfold niPairCount
+  rw [Fintype.card_eq_zero_iff]
+  constructor
+  intro ⟨⟨⟨l₁, _⟩, ⟨l₂, _⟩⟩, hni⟩
+  cases m with
+  | zero =>
+    exact hni.2 y
+      ⟨⟨by simp [colEntry], Nat.le_add_right y _⟩,
+       ⟨by simp [colEntry], Nat.le_add_right y _⟩⟩
+  | succ m =>
+    exact hni.1 0 (Nat.zero_lt_succ m) y
+      ⟨⟨by simp [colEntry], Nat.le_add_right y _⟩,
+       ⟨by simp [colEntry], Nat.le_add_right y _⟩⟩
 
 /-- **Key LGV Counting Lemma**: LGV det = 0 when a₁ = a₂ -/
 lemma lgvDet_same_start (m b₁ b₂ a : ℕ) :
