@@ -722,7 +722,6 @@ SUMMARY OF VERIFIED RESULTS
 - Thurston geometrization
 - Perelman W-entropy monotonicity
 - Hamilton's positive Ricci theorem
-- Simply connected transfer across homeomorphisms
 - S³ simply connected (needs Seifert-van Kampen)
 - S^n simply connected for n ≥ 2 (needs Seifert-van Kampen)
 - Connected sum operation and properties
