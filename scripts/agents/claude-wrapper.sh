@@ -35,7 +35,7 @@ unset CLAUDECODE 2>/dev/null || true
 # Configuration
 MAX_RETRIES="${MAX_RETRIES:-5}"
 INITIAL_BACKOFF=60       # 1 minute
-MAX_BACKOFF=1800         # 30 minutes
+MAX_BACKOFF=300          # 5 minutes
 CLAUDE_TIMEOUT="${CLAUDE_TIMEOUT:-3600}"  # 1 hour default; configurable per agent
 REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
@@ -375,18 +375,24 @@ run_daemon() {
         write_cycle_separator "$cycle"
 
         # Run Claude
-        if run_claude_once; then
-            log_success "Daemon cycle $cycle: Claude completed successfully"
-            # Reset backoff on success
+        run_claude_once
+        local exit_code=$?
+
+        # Timeout (124) means the agent ran for the full CLAUDE_TIMEOUT duration.
+        # That's a productive cycle, not an error — treat it like success.
+        if [[ $exit_code -eq 0 || $exit_code -eq 124 ]]; then
+            if [[ $exit_code -eq 124 ]]; then
+                log_info "Daemon cycle $cycle: completed (hit ${CLAUDE_TIMEOUT}s timeout)"
+            else
+                log_success "Daemon cycle $cycle: Claude completed successfully"
+            fi
+            # Reset backoff on normal completion
             backoff=$INITIAL_BACKOFF
             consecutive_failures=0
             cycle=$((cycle + 1))
-            # In daemon mode, we restart after successful completion
-            # This handles agents that are meant to run periodically
             continue
         fi
 
-        local exit_code=$?
         consecutive_failures=$((consecutive_failures + 1))
 
         # Check if this is a recoverable error (in daemon mode, most errors are recoverable)
