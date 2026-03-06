@@ -9,6 +9,7 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.Analysis.Normed.Module.Connected
 import Mathlib.Geometry.Manifold.ContMDiff.Basic
+import Mathlib.Geometry.Manifold.Instances.Sphere
 import Mathlib.MeasureTheory.Measure.Haar.Basic
 import Mathlib.AlgebraicTopology.FundamentalGroupoid.FundamentalGroup
 import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
@@ -53,6 +54,7 @@ geometric measure theory). Instead, it provides:
 | S^3 compactness | PROVED (from Mathlib) |
 | S^3 connectedness | PROVED (from Mathlib isConnected_sphere) |
 | S^3 path-connectedness | PROVED (from Mathlib isPathConnected_sphere) |
+| S^3 locally Euclidean | PROVED (stereographic projection) |
 | n-sphere properties | PROVED (connected, path-connected, compact, nonempty) |
 | Simply connected (Mathlib) | USED (SimplyConnectedSpace from Mathlib) |
 | SimplyConnectedSpace bridge | PROVED (equivalence with loops-contractible) |
@@ -99,7 +101,7 @@ This file uses Mathlib's proper algebraic topology infrastructure:
 - Morgan-Tian Exposition: arxiv.org/abs/math/0607607
 -/
 
-set_option maxHeartbeats 400000
+set_option maxHeartbeats 800000
 
 noncomputable section
 
@@ -484,10 +486,71 @@ instance sphere3_connected_inst : ConnectedSpace (↥Sphere3) := by
 instance sphere3_nonempty_inst : Nonempty (↥Sphere3) :=
   sphere3_nonempty.to_subtype
 
-/-- S³ is locally Euclidean (axiom - requires manifold theory beyond current Mathlib scope
-    for subsets of R^n; stereographic projection charts would prove this). -/
-axiom sphere3_locally_euclidean : ∀ x : ↥Sphere3, ∃ U : Set ↥Sphere3, IsOpen U ∧ x ∈ U ∧
-    ∃ (_e : U ≃ₜ EuclideanSpace ℝ (Fin 3)), True
+/-- The orthogonal complement of a unit vector in R^4 is homeomorphic to R^3.
+    Used to compose with stereographic projection to get charts to R^3. -/
+private def orthCompHomeomorph (v : EuclideanSpace ℝ (Fin 4)) (hv : ‖v‖ = 1) :
+    ↥(Submodule.span ℝ {v})ᗮ ≃ₜ EuclideanSpace ℝ (Fin 3) := by
+  have hne : v ≠ 0 := by intro h; rw [h, norm_zero] at hv; exact one_ne_zero hv.symm
+  have hdim : Module.finrank ℝ ↥(Submodule.span ℝ {v})ᗮ = 3 := by
+    have h1 : Module.finrank ℝ (EuclideanSpace ℝ (Fin 4)) = 4 := finrank_euclideanSpace_fin
+    have h2 : Module.finrank ℝ (Submodule.span ℝ ({v} : Set (EuclideanSpace ℝ (Fin 4)))) = 1 := by
+      rw [finrank_span_singleton hne]
+    have h3 := Submodule.finrank_add_finrank_orthogonal
+      (Submodule.span ℝ ({v} : Set (EuclideanSpace ℝ (Fin 4))))
+    omega
+  let b := stdOrthonormalBasis ℝ ↥(Submodule.span ℝ {v})ᗮ
+  have hcard : Fintype.card (Fin (Module.finrank ℝ ↥(Submodule.span ℝ {v})ᗮ)) = 3 := by
+    simp [hdim]
+  let b3 := b.reindex (Fintype.equivFinOfCardEq hcard)
+  exact b3.repr.toHomeomorph
+
+/-- Compose stereographic projection with orthCompHomeomorph to get chart to R^3. -/
+private def sphereChartToR3 (v : EuclideanSpace ℝ (Fin 4)) (hv : ‖v‖ = 1) :
+    OpenPartialHomeomorph ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) 1)
+      (EuclideanSpace ℝ (Fin 3)) :=
+  (stereographic hv).transHomeomorph (orthCompHomeomorph v hv)
+
+/-- On the unit sphere in R^4, x ≠ -x (since ‖x‖ = 1 ≠ 0). -/
+private lemma sphere_ne_neg (x : ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) 1)) :
+    x ≠ ⟨-(x : EuclideanSpace ℝ (Fin 4)),
+      mem_sphere_zero_iff_norm.mpr (by rw [norm_neg]; exact mem_sphere_zero_iff_norm.mp x.2)⟩ := by
+  intro h
+  have heq : (x : EuclideanSpace ℝ (Fin 4)) = -(x : EuclideanSpace ℝ (Fin 4)) :=
+    congr_arg Subtype.val h
+  have hx_norm : ‖(x : EuclideanSpace ℝ (Fin 4))‖ = 1 :=
+    mem_sphere_zero_iff_norm.mp x.2
+  have h2 : (x : EuclideanSpace ℝ (Fin 4)) + (x : EuclideanSpace ℝ (Fin 4)) = 0 := by
+    nth_rw 1 [heq]; exact neg_add_cancel _
+  have h3 : (2 : ℝ) • (x : EuclideanSpace ℝ (Fin 4)) = 0 := by
+    rw [two_smul]; exact h2
+  have h4 : (x : EuclideanSpace ℝ (Fin 4)) = 0 := by
+    have : (2 : ℝ) ≠ 0 := by norm_num
+    exact (smul_eq_zero.mp h3).resolve_left this
+  rw [h4] at hx_norm
+  simp at hx_norm
+
+/-- S³ is locally Euclidean. Proved via stereographic projection: for each point x ∈ S³,
+    we use the stereographic chart from the antipodal point -x, composed with an
+    orthonormal basis for the orthogonal complement, to get a homeomorphism from a
+    neighborhood of x onto R³. -/
+theorem sphere3_locally_euclidean : ∀ x : ↥Sphere3, ∃ U : Set ↥Sphere3, IsOpen U ∧ x ∈ U ∧
+    ∃ (_e : U ≃ₜ EuclideanSpace ℝ (Fin 3)), True := by
+  intro x
+  have hneg : ‖-(x : EuclideanSpace ℝ (Fin 4))‖ = 1 := by
+    rw [norm_neg]; exact mem_sphere_zero_iff_norm.mp x.2
+  let chart := sphereChartToR3 (-(x : EuclideanSpace ℝ (Fin 4))) hneg
+  use chart.source, chart.open_source
+  constructor
+  · simp only [chart, sphereChartToR3, OpenPartialHomeomorph.transHomeomorph_source]
+    rw [stereographic_source]
+    simp only [Set.mem_compl_iff, Set.mem_singleton_iff]
+    exact sphere_ne_neg x
+  · have htarget : chart.target = Set.univ := by
+      simp only [chart, sphereChartToR3, OpenPartialHomeomorph.transHomeomorph_target]
+      rw [stereographic_target]
+      simp
+    refine ⟨chart.toHomeomorphSourceTarget.trans ?_, trivial⟩
+    exact Homeomorph.setCongr htarget |>.trans (Homeomorph.Set.univ _)
 
 /- ===============================================================================
 PART XVII: SIMPLE CONNECTIVITY OF SPHERES
@@ -634,7 +697,7 @@ SUMMARY OF VERIFIED RESULTS
 ## Results Status After Research Iteration
 
 ### PROVED (no axioms needed):
-- S³ nonemptiness, compactness, connectedness, path-connectedness
+- S³ nonemptiness, compactness, connectedness, path-connectedness, locally Euclidean
 - S^n properties for all n ≥ 1 (connected, path-connected, compact, nonempty)
 - Normalization map sends nonzero vectors to the sphere
 - Normalization fixes sphere points
@@ -653,12 +716,12 @@ SUMMARY OF VERIFIED RESULTS
 - Thurston geometrization
 - Perelman W-entropy monotonicity
 - Hamilton's positive Ricci theorem
+- Simply connected transfer across homeomorphisms
 - S³ simply connected (needs Seifert-van Kampen)
 - S^n simply connected for n ≥ 2 (needs Seifert-van Kampen)
 - Connected sum operation and properties
 - Kneser's prime decomposition
 - S³ primality (factor extraction)
-- Locally Euclidean property for S³
 - Simply connected ⟹ all pieces spherical
 
 ### INFRASTRUCTURE BUILT:
@@ -666,6 +729,7 @@ SUMMARY OF VERIFIED RESULTS
 - IsPrime3Manifold predicate
 - Sphere typeclass instances
 - Normalization retraction
+- Stereographic projection charts (orthCompHomeomorph, sphereChartToR3)
 -/
 
 #check PoincareConjectureStatement
