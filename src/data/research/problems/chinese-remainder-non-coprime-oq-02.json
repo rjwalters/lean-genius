@@ -29,17 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 19 proved theorems, 0 sorries, 0 axioms. Full CRT for EuclideanDomains + polynomial rings + ideal bridge.",
+    "progressSummary": "COMPLETE: 17 proved theorems, 0 sorries, 0 axioms. Full CRT for EuclideanDomains + polynomial rings.",
     "builtItems": [
-      "ed_crt_necessary: CRT necessity for EuclideanDomains (ChineseRemainderNonCoprimeOQ02.lean)",
-      "ed_crt_sufficient: CRT sufficiency via Bezout coefficients (ChineseRemainderNonCoprimeOQ02.lean)",
-      "ed_crt_iff: Full iff characterization (ChineseRemainderNonCoprimeOQ02.lean)",
+      "ed_crt_necessary/sufficient/iff: Full CRT characterization for EuclideanDomains (ChineseRemainderNonCoprimeOQ02.lean)",
       "ed_crt_unique: Uniqueness mod lcm (ChineseRemainderNonCoprimeOQ02.lean)",
+      "ed_crt_coprime/three_necessary/weaken/combine_same: CRT extensions (ChineseRemainderNonCoprimeOQ02.lean)",
       "linear_factors_coprime: (X-a) and (X-b) coprime when a≠b (ChineseRemainderNonCoprimeOQ02.lean)",
-      "polynomial_crt_two_points: 2-point Lagrange interpolation (ChineseRemainderNonCoprimeOQ02.lean)",
+      "polynomial_crt_two_points/same_point/uniqueness_mod: Polynomial interpolation (ChineseRemainderNonCoprimeOQ02.lean)",
       "poly_crt_extend: Inductive CRT step for polynomials (ChineseRemainderNonCoprimeOQ02.lean)",
-      "isCoprime_iff_span_sup_eq_top: Element ↔ ideal coprimality (ChineseRemainderNonCoprimeOQ02.lean)",
-      "euclid_lemma_from_coprimality: Euclid lemma via IsCoprime.dvd_of_dvd_mul_left (ChineseRemainderNonCoprimeOQ02.lean)"
+      "int_crt_from_ed/int_crt_unique_from_ed: Integer instantiation (ChineseRemainderNonCoprimeOQ02.lean)"
     ],
     "insights": [
       "Non-coprime CRT generalizes cleanly from Z to any EuclideanDomain via extended GCD",
