@@ -17,7 +17,7 @@
       "research"
     ],
     "badge": "open",
-    "sorries": 3,
+    "sorries": 1,
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose_succ_succ'",
@@ -45,7 +45,10 @@
       "ballot_via_path_count: ballot count = path count difference (1D reflection)",
       "vandermonde: C(m+n, r) = Σ C(m,k) * C(n, r-k) from Mathlib directly",
       "splitAfterEast: path splitting function with northSteps = northBeforeEast",
-      "swapTails: Lindström involution core operation for LGV proof"
+      "swapTails: Lindström involution core operation for LGV proof",
+      "lgv_crossing_zero: all crossing path pairs are intersecting (via crossing_lemma)",
+      "lgv_zero_east_overlap: niPairCount=0 when m=0 and y-ranges overlap",
+      "lgv_lemma_2x2 m=0 case: both lgvDet and niPairCount equal 0"
     ],
     "dateAdded": "2026-02-26",
     "mathlib_version": "4.26.0"

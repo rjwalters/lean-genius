@@ -410,48 +410,6 @@ def lgvDet (m a₁ b₁ a₂ b₂ : ℕ) : ℤ :=
   (Nat.choose (m + (b₁ - a₁)) m : ℤ) * Nat.choose (m + (b₂ - a₂)) m -
   (Nat.choose (m + (b₁ - a₂)) m : ℤ) * Nat.choose (m + (b₂ - a₁)) m
 
-/-- **The 2×2 LGV Lemma**: Non-intersecting path pairs count = lgvDet.
-
-    The proof uses the Lindström sign-reversing involution:
-    1. Enumerate ALL pairs: identity pairs (P₁:A₁→B₁, P₂:A₂→B₂) and
-       crossing pairs (P₁:A₁→B₂, P₂:A₂→B₁)
-    2. For any INTERSECTING pair, swap tails at first intersection point
-       → this creates a bijection between intersecting identity ↔ all crossing pairs
-    3. The Crossing Lemma guarantees ALL crossing pairs are intersecting
-       (when a₁ < a₂ and b₂ < b₁ for crossing pairs, they must intersect)
-    4. Therefore: det = |NI identity| - |NI crossing| = |NI identity| - 0 = |NI identity| -/
-/-- **The 2×2 LGV Lemma**: Non-intersecting path pairs count = lgvDet.
-    Requires the ordering a₁ ≤ a₂ ≤ b₁ ≤ b₂ so that all four path types
-    (identity: Aᵢ→Bᵢ, crossing: Aᵢ→Bⱼ) are well-defined.
-
-    **Note**: The hypothesis `ha₂₁ : a₂ ≤ b₁` is essential — without it,
-    the natural subtraction `b₁ - a₂` wraps to 0 giving incorrect counts.
-    (E.g., m=0, a₁=0, b₁=1, a₂=2, b₂=3: lgvDet=0 but niPairCount=1.) -/
-theorem lgv_lemma_2x2 (m a₁ b₁ a₂ b₂ : ℕ)
-    (ha : a₁ ≤ a₂) (hb : b₁ ≤ b₂)
-    (ha₁ : a₁ ≤ b₁) (ha₂ : a₂ ≤ b₂)
-    (ha₂₁ : a₂ ≤ b₁) :
-    (niPairCount m (b₁ - a₁) (b₂ - a₂) a₁ a₂ : ℤ) = lgvDet m a₁ b₁ a₂ b₂ := by
-  -- Case 1: a₁ = a₂ (same starting height) — both sides vanish
-  by_cases h_a : a₁ = a₂
-  · subst h_a
-    rw [lgvDet_same_start, lgv_same_start]; simp
-  -- Case 2: b₁ = b₂ (same ending height) — both sides vanish
-  · by_cases h_b : b₁ = b₂
-    · subst h_b
-      rw [lgvDet_same_end]
-      have h_eq : a₁ + (b₁ - a₁) = a₂ + (b₁ - a₂) := by omega
-      rw [lgv_same_end m (b₁ - a₁) (b₁ - a₂) a₁ a₂ h_eq]; simp
-    -- Case 3: a₁ < a₂ ≤ b₁ < b₂ (strict ordering at sources and targets)
-    -- This is the main case requiring the Lindström involution.
-    -- Infrastructure is built: swapTails, swapTails_involutive, crossing_lemma.
-    -- The proof needs: for intersecting identity pairs (P₁:A₁→B₁, P₂:A₂→B₂),
-    -- find the first shared lattice point, swap tails there to get crossing pair
-    -- (P₁:A₁→B₂, P₂:A₂→B₁). This bijection shows:
-    --   |intersecting identity| = |all crossing| = e(A₁,B₂)·e(A₂,B₁)
-    -- Therefore: |NI identity| = e(A₁,B₁)·e(A₂,B₂) - e(A₁,B₂)·e(A₂,B₁) = lgvDet.
-    · sorry
-
 /-! ## Part VII: Vandermonde's Identity -/
 
 /-- Vandermonde's identity: C(m+n, r) = Σ_{k=0}^{r} C(m,k) * C(n, r-k).
@@ -859,7 +817,100 @@ lemma lgv_same_end (m n₁ n₂ y₁ y₂ : ℕ) (h : y₁ + n₁ = y₂ + n₂)
   rw [h] at h_in₁
   exact hni.2 (y₂ + n₂) ⟨h_in₁, h_in₂⟩
 
-/-! ## Part XII: Verified LGV Examples -/
+/-- **Key LGV Counting Lemma**: All crossing pairs are intersecting.
+    Crossing pairs have y₁ < y₂ (sources ordered) but y₁+n₁ > y₂+n₂ (endpoints reversed).
+    The Crossing Lemma guarantees they must share a lattice point, so niPairCount = 0.
+    This is the key step in the LGV proof: the "crossing" determinant term vanishes entirely. -/
+lemma lgv_crossing_zero (m n₁ n₂ a₁ a₂ : ℕ)
+    (ha : a₁ < a₂) (hend : a₂ + n₂ < a₁ + n₁) :
+    niPairCount m n₁ n₂ a₁ a₂ = 0 := by
+  unfold niPairCount
+  rw [Fintype.card_eq_zero_iff]
+  constructor
+  intro ⟨⟨⟨l₁, hl₁_len, hl₁_east⟩, ⟨l₂, hl₂_len, hl₂_east⟩⟩, hni⟩
+  have hns₁ : l₁.countP (· = true) = n₁ := by
+    have := eastSteps_add_northSteps l₁
+    simp only [eastSteps, northSteps] at this; omega
+  have hns₂ : l₂.countP (· = true) = n₂ := by
+    have := eastSteps_add_northSteps l₂
+    simp only [eastSteps, northSteps] at this; omega
+  exact crossing_lemma m n₁ n₂ a₁ a₂ hl₁_east hns₁ hl₂_east hns₂ ha hend hni
+
+/-- **Key LGV Counting Lemma**: m=0 overlap case.
+    When m=0 (no East steps), the only paths are all-North. Both final ranges
+    are [yᵢ, yᵢ+nᵢ]. If these overlap, every pair shares a lattice point. -/
+lemma lgv_zero_east_overlap (n₁ n₂ y₁ y₂ : ℕ)
+    (h_overlap : y₁ ≤ y₂) (h_in : y₂ ≤ y₁ + n₁) :
+    niPairCount 0 n₁ n₂ y₁ y₂ = 0 := by
+  unfold niPairCount
+  rw [Fintype.card_eq_zero_iff]
+  constructor
+  intro ⟨⟨⟨l₁, hl₁_len, hl₁_east⟩, ⟨l₂, hl₂_len, hl₂_east⟩⟩, hni⟩
+  have hns₁ : northSteps l₁ = n₁ := by
+    have := eastSteps_add_northSteps l₁; simp only [eastSteps] at this; omega
+  have hns₂ : northSteps l₂ = n₂ := by
+    have := eastSteps_add_northSteps l₂; simp only [eastSteps] at this; omega
+  -- The point y₂ is in both final ranges
+  apply hni.2 y₂
+  refine ⟨⟨?_, ?_⟩, ⟨?_, ?_⟩⟩
+  · rw [colEntry_zero, Nat.add_zero]; exact h_overlap
+  · rw [hns₁]; exact h_in
+  · rw [colEntry_zero, Nat.add_zero]
+  · exact Nat.le_add_right y₂ _
+
+/-! ## Part XII: The 2×2 LGV Lemma -/
+
+/-- **The 2×2 LGV Lemma**: Non-intersecting path pairs count = lgvDet.
+    Requires the ordering a₁ ≤ a₂ ≤ b₁ ≤ b₂ so that all four path types
+    (identity: Aᵢ→Bᵢ, crossing: Aᵢ→Bⱼ) are well-defined.
+
+    The proof uses the Lindström sign-reversing involution:
+    1. Enumerate ALL pairs: identity pairs (P₁:A₁→B₁, P₂:A₂→B₂) and
+       crossing pairs (P₁:A₁→B₂, P₂:A₂→B₁)
+    2. For any INTERSECTING pair, swap tails at first intersection point
+       → this creates a bijection between intersecting identity ↔ all crossing pairs
+    3. The Crossing Lemma guarantees ALL crossing pairs are intersecting
+       (when a₁ < a₂ and b₂ < b₁ for crossing pairs, they must intersect)
+    4. Therefore: det = |NI identity| - |NI crossing| = |NI identity| - 0 = |NI identity|
+
+    **Note**: The hypothesis `ha₂₁ : a₂ ≤ b₁` is essential — without it,
+    the natural subtraction `b₁ - a₂` wraps to 0 giving incorrect counts.
+    (E.g., m=0, a₁=0, b₁=1, a₂=2, b₂=3: lgvDet=0 but niPairCount=1.) -/
+theorem lgv_lemma_2x2 (m a₁ b₁ a₂ b₂ : ℕ)
+    (ha : a₁ ≤ a₂) (hb : b₁ ≤ b₂)
+    (ha₁ : a₁ ≤ b₁) (ha₂ : a₂ ≤ b₂)
+    (ha₂₁ : a₂ ≤ b₁) :
+    (niPairCount m (b₁ - a₁) (b₂ - a₂) a₁ a₂ : ℤ) = lgvDet m a₁ b₁ a₂ b₂ := by
+  -- Case 1: a₁ = a₂ (same starting height) — both sides vanish
+  by_cases h_a : a₁ = a₂
+  · subst h_a
+    rw [lgvDet_same_start, lgv_same_start]; simp
+  -- Case 2: b₁ = b₂ (same ending height) — both sides vanish
+  · by_cases h_b : b₁ = b₂
+    · subst h_b
+      rw [lgvDet_same_end]
+      have h_eq : a₁ + (b₁ - a₁) = a₂ + (b₁ - a₂) := by omega
+      rw [lgv_same_end m (b₁ - a₁) (b₁ - a₂) a₁ a₂ h_eq]; simp
+    -- Case 3: a₁ < a₂ ≤ b₁ < b₂ (strict ordering at sources and targets)
+    · have ha_lt : a₁ < a₂ := lt_of_le_of_ne ha h_a
+      have hb_lt : b₁ < b₂ := lt_of_le_of_ne hb h_b
+      cases m with
+      | zero =>
+        -- m = 0: both sides are 0
+        -- lgvDet: C(b₁-a₁, 0)*C(b₂-a₂, 0) - C(b₁-a₂, 0)*C(b₂-a₁, 0) = 1-1 = 0
+        simp only [lgvDet, Nat.zero_add, Nat.choose_zero_right, Nat.cast_one, mul_one, sub_self]
+        -- niPairCount: final ranges [a₁,b₁] and [a₂,b₂] overlap at a₂ (since a₂ ≤ b₁)
+        have h_in : a₂ ≤ a₁ + (b₁ - a₁) := by omega
+        rw [lgv_zero_east_overlap (b₁ - a₁) (b₂ - a₂) a₁ a₂ ha h_in]; simp
+      | succ m =>
+        -- m ≥ 1: Lindström involution needed.
+        -- Key fact: all crossing pairs are intersecting (by lgv_crossing_zero).
+        -- Remaining: construct bijection intersecting identity ↔ all crossing.
+        -- Requires: splitAtVertex (finer than splitAfterEast) to cut at shared
+        -- lattice point (k, z) within a column, not just at column boundaries.
+        sorry
+
+/-! ## Part XIII: Verified LGV Examples -/
 
 -- LGV det for (m=1, a₁=0, b₁=1, a₂=1, b₂=2):
 -- C(2,1)*C(2,1) - C(3,1)*C(1,1) = 4 - 3 = 1
