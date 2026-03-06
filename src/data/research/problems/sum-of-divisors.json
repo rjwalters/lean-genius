@@ -1,8 +1,8 @@
 {
   "slug": "sum-of-divisors",
   "title": "Sum of Divisors Properties",
-  "phase": "BREAKTHROUGH",
-  "status": "blocked",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -30,8 +30,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Open for 2000+ years!",
-    "builtItems": [],
+    "progressSummary": "COMPLETE: 81 theorems, 0 sorries, 0 axioms in SumOfDivisors.lean + PerfectNumbers.lean coverage.",
+    "builtItems": [
+      "81 theorems in SumOfDivisors.lean",
+      "σ function properties, multiplicativity, prime power formulas",
+      "Perfect number characterization (covered in PerfectNumbers.lean)"
+    ],
     "insights": [],
     "mathlibGaps": [
       "`Nat.sigma 1 n` = σ(n) = sum of divisors of n",
@@ -53,7 +57,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T05:32:39.478Z",
-  "lastUpdate": "2026-02-11T07:03:36.102Z",
+  "lastUpdate": "2026-03-06T16:09:54.000Z",
   "completed": "2026-02-11T05:41:00.789Z",
   "significance": 5,
   "tractability": 9
