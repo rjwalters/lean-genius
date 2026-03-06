@@ -1,41 +1,73 @@
 {
   "slug": "amgm-inequality-oq-03-oq-02",
   "title": "Power Mean Limit: lim_{r→0} M_r = GM (Geometric Mean as a Limit)",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "Filter.Tendsto (fun r => (∑ i ∈ s, w i * z i ^ r) ^ (1 / r)) (nhdsWithin 0 ({0}ᶜ)) (nhds (∏ i ∈ s, z i ^ w i))",
+    "plain": "The weighted power mean M_r(z,w) = (∑ wᵢ zᵢ^r)^(1/r) converges to the geometric mean GM(z,w) = ∏ zᵢ^wᵢ as r → 0.",
+    "whyMatters": [
+      "Completes the power mean chain HM ≤ GM ≤ AM by defining GM as M_0 = lim M_r",
+      "Fundamental result connecting the continuous family of power means"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "tendsto_powerMean_zero: M_r → GM as r → 0",
+      "powerMean_neg1_le_geomMean_le_arithMean: HM ≤ GM ≤ AM",
+      "hasDerivAt_sum_weighted_rpow_zero: d/dr[∑ wᵢ zᵢ^r]|₀ = ∑ wᵢ log zᵢ",
+      "tendsto_log_sum_div_rpow: log(∑ wᵢ zᵢ^r)/r → ∑ wᵢ log zᵢ",
+      "geomMean_eq_exp_sum_log: GM = exp(∑ wᵢ log zᵢ)"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Prove lim_{r→0} M_r = GM — COMPLETED"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-02-24T12:34:25.509Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "COMPLETE",
+    "since": "2026-03-05T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "All theorems proved, 0 sorries, verified build.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - problem fully solved.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: 10 theorems, 0 sorries, 0 axioms. Power mean limit and HM≤GM≤AM chain fully proved.",
+    "builtItems": [
+      "sum_weighted_rpow_pos in PowerMeanLimitOQ.lean:54",
+      "hasDerivAt_sum_weighted_rpow_zero in PowerMeanLimitOQ.lean:83",
+      "log_sum_weighted_rpow_zero in PowerMeanLimitOQ.lean:110",
+      "hasDerivAt_log_sum_weighted_rpow in PowerMeanLimitOQ.lean:125",
+      "tendsto_log_sum_div_rpow in PowerMeanLimitOQ.lean:155",
+      "geomMean_eq_exp_sum_log in PowerMeanLimitOQ.lean:183",
+      "powerMean_one_eq_arithMean in PowerMeanLimitOQ.lean:197",
+      "powerMean_eq_exp_log in PowerMeanLimitOQ.lean:209",
+      "tendsto_powerMean_zero in PowerMeanLimitOQ.lean:233",
+      "powerMean_neg1_le_geomMean_le_arithMean in PowerMeanLimitOQ.lean:262"
+    ],
+    "insights": [
+      "HasDerivAt.const_mul in Lean 4.26 produces correct multiplication order directly",
+      "HasDerivAt.sum returns sum-of-functions form; use Finset.sum_apply to convert to function-of-sum",
+      "Filter.tendsto_congr (iff) is more flexible than Filter.Tendsto.congr for rewriting under Tendsto",
+      "slope uses vsub_eq_sub for subtraction in current Mathlib (not vsub_zero)"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "exp/log derivative approach",
+      "description": "Write M_r = exp(f(r)/r) where f(r) = log(∑ wᵢ zᵢ^r). Since f(0) = 0 and f'(0) = ∑ wᵢ log zᵢ, the ratio f(r)/r → f'(0) by definition of derivative. Then M_r → exp(f'(0)) = GM.",
+      "status": "succeeded",
+      "outcome": "All 10 theorems proved with 0 sorries"
+    }
+  ],
   "tags": [
     "analysis",
     "inequalities",
@@ -43,14 +75,25 @@
     "limits",
     "seeker-selected"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "AmgmInequalityOQ02.lean",
+    "AmgmInequalityOQ03.lean"
+  ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Hardy, Littlewood, Pólya - Inequalities (1934), §2.9"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Real.hasStrictDerivAt_const_rpow",
+      "Real.geom_mean_le_arith_mean_weighted",
+      "hasDerivAt_iff_tendsto_slope",
+      "HasDerivAt.sum",
+      "Finset.sum_apply"
+    ]
   },
   "started": "2026-02-25T19:36:59.224Z",
-  "lastUpdate": "2026-02-25T19:36:59.224Z",
+  "lastUpdate": "2026-03-05T00:00:00.000Z",
   "significance": 6,
   "tractability": 6
 }
