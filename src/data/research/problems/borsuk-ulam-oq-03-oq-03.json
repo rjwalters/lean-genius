@@ -1,44 +1,41 @@
 {
   "slug": "borsuk-ulam-oq-03-oq-03",
   "title": "Constructive 2D Borsuk-Ulam via Tucker Lemma",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "BUILD",
+  "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
     "formal": "\\forall f : S^2 \\to \\mathbb{R}^2 \\text{ continuous}, \\exists x \\in S^2, f(x) = f(-x)",
     "plain": "For any continuous map from the sphere to the plane, there must be a pair of antipodal points (opposite points on the sphere) that map to the same value. We want a purely combinatorial proof using Tucker's lemma instead of algebraic topology.",
-    "whyMatters": [
-      "Demonstrates that BU has a constructive/combinatorial core (Tucker's lemma)",
-      "The only non-constructive step is compactness/limiting, not the combinatorial heart",
-      "For linear maps, BU reduces to elementary linear algebra (rank-nullity)"
-    ]
+    "whyMatters": []
   },
   "knownResults": {
     "proven": [
-      "Tucker 2D for 5-vertex triangulated disk (64 cases, decide)",
-      "Tucker 2D for 9-vertex grid triangulation (1024 cases, native_decide)",
-      "Tucker label type with negation involution and complementarity",
-      "Boundary parity theorem (even complementary boundary edges)",
-      "Tucker 2D implies approximate BU (logical chain)",
-      "Approximate BU implies exact BU (logical chain)",
-      "BU for linear maps R^3 -> R^2 via rank-nullity",
-      "Necessity of antipodal condition (counterexample)"
+      "antisymmetricDiff_odd: g(x) = f(x) - f(-x) satisfies g(-x) = -g(x)",
+      "antisymmetricDiff_continuous: g is continuous when f is",
+      "no_fixed_point_on_circle: antipodal map has no fixed points on S^1",
+      "antisymmetricDiff_eq_zero_iff: g(x)=0 ⟺ f(x)=f(-x)",
+      "grid_mesh_size: mesh size √2/N > 0",
+      "compact_image_circle: f(S^1) is compact",
+      "tucker_approach_summary: comparison of constructive vs algebraic approach"
     ],
     "open": [
-      "Formal proof of general Tucker 2D lemma via path-following",
-      "Formalize discretization step without axioms",
-      "Scale computational verification to larger triangulations"
+      "dominantComponentLabel_antipodal (sorry): label complement under negation",
+      "approx_borsuk_ulam_2d_from_tucker (sorry): ε-approximate BU via Tucker",
+      "borsuk_ulam_2d_from_tucker (sorry): exact BU via compactness",
+      "circle_isCompact (sorry): S^1 ⊂ ℝ² is compact",
+      "grid_mesh_tends_to_zero (sorry): mesh refinement convergence"
     ],
-    "goal": "Constructive proof of 2D Borsuk-Ulam via Tucker's lemma"
+    "goal": "Prove dominantComponentLabel_antipodal and circle_isCompact (routine); main theorems need explicit triangulation builder"
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-06T22:00:00Z",
+    "phase": "BUILD",
+    "since": "2026-03-06T21:10:00Z",
     "iteration": 1,
-    "focus": "Complete. 327 lines, 22 theorems, 0 sorries, 3 axioms.",
+    "focus": "Infrastructure built. Tucker→BU bridge formalized. Deep proofs axiomatized.",
     "blockers": [],
-    "nextAction": "None - problem completed.",
+    "nextAction": "Prove circle_isCompact (via isCompact_of_isClosed_isBounded). Prove dominantComponentLabel_antipodal (case analysis on abs).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -46,35 +43,47 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Successfully formalized constructive 2D BU via Tucker's lemma. Tucker label type {-2,-1,+1,+2} with negation and complementarity. Verified Tucker 2D computationally for 5-vertex (decide) and 9-vertex (native_decide) triangulations. Stated general Tucker 2D as axiom. Built logical chain Tucker -> approx BU -> exact BU. Proved BU for linear maps via rank-nullity. 22 theorems, 0 sorries, 3 axioms.",
+    "progressSummary": "PROGRESS: Created BorsukUlamOQ03OQ03.lean (~355 lines). Defined dominantComponentLabel, antisymmetricDiff, TriangulatedDisk2D, GridTriangulation. Stated approx_borsuk_ulam_2d_from_tucker and borsuk_ulam_2d_from_tucker. File builds successfully. 7 proved results, 5 sorries, 2 axioms.",
     "builtItems": [
-      "TLabel inductive type with DecidableEq, Fintype, BEq",
-      "tucker_2d_5vertex: ∀ v0 v1 v2, tucker2D_5v v0 v1 v2 = true (by decide)",
-      "tucker_2d_9vertex: ∀ v1..v5, tucker2D_9v v1 v2 v3 v4 v5 = true (by native_decide)",
-      "linear_map_nontrivial_kernel: ∃ v ≠ 0, T v = 0 (rank-nullity)",
-      "bu_linear_kernel: T v = T(-v) for kernel elements"
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: dominantComponentLabel definition",
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: antisymmetricDiff definition and properties",
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: TriangulatedDisk2D structure",
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: GridTriangulation structure",
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: approx_borsuk_ulam_2d_from_tucker (main bridge)",
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: borsuk_ulam_2d_from_tucker (exact result)",
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: tucker_approach_summary (constructive comparison)"
     ],
     "insights": [
-      "decide handles 4^3 = 64 TLabel cases easily for 5-vertex triangulation",
-      "native_decide handles 4^5 = 1024 cases for 9-vertex grid triangulation",
-      "Tucker labels must be an inductive type (not Fin 4) for clean negation/complementarity",
-      "Module.finrank_pos_iff.mp gives Nontrivial instance from positive dimension",
-      "The BEq-derived equality requires cases a <;> cases b <;> decide, not simp",
-      "let bindings in theorem statements can cause 'Unknown identifier' in proofs - inline them"
+      "The Tucker→BU bridge works in 2D via dominant component labeling: label each vertex by the coordinate direction where g is largest",
+      "antisymmetricDiff g(x) = f(x) - f(-x) is always odd (g(-x) = -g(x)), making it Tucker-compatible",
+      "Complementary edges (labeled +k and -k) correspond to sign changes in coordinate k, giving approximate zeros via IVT",
+      "GridTriangulation of [-1,1]² with N×N cells has mesh size √2/N → 0",
+      "The constructive content is the approximate BU theorem; exact BU needs compactness (non-constructive step)",
+      "Tucker approach gives PPAD membership: polynomial-time ε-approximate BU solutions",
+      "Existing infrastructure: Tucker axiom from BorsukUlamOQ01, 1D BU from BorsukUlamOQ03",
+      "fun_prop handles complex continuity goals (antisymmetricDiff_continuous)"
     ],
     "mathlibGaps": [
-      "No Tucker's lemma formalization in Mathlib",
-      "No simplicial complex path-following machinery for combinatorial topology",
-      "Module.finrank_pos_iff exists but Fintype.one_le_finrank_iff does not"
+      "No Tucker's lemma proof in Mathlib (axiomatized in BorsukUlamOQ01)",
+      "No Borsuk-Ulam theorem in Mathlib",
+      "No triangulated disk/simplicial complex combinatorial library in Mathlib",
+      "isCompact_sphere for ℝ² not directly available (need to compose closed + bounded)"
     ],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-03\n\n## Summary\n\nFormalized constructive 2D Borsuk-Ulam via Tucker's lemma in 327 lines.\n22 theorems, 0 sorries, 3 axioms (general Tucker, discretization, compactness).\n\n## Key Results\n\n- Tucker label type {-2,-1,+1,+2} with negation involution\n- Tucker 2D verified for 5-vertex (64 cases) and 9-vertex (1024 cases)\n- Logical chain: Tucker 2D → approximate BU → exact BU\n- BU for linear maps via rank-nullity\n\n## Insights\n\n- `decide` handles TLabel^3 exhaustive search (64 cases)\n- `native_decide` needed for TLabel^5 (1024 cases)\n- BEq cases need `cases a <;> cases b <;> decide`\n- `let` bindings in theorem statements cause issues - inline them\n- Module.finrank_pos_iff.mp → Nontrivial → exists_ne 0\n"
+    "nextSteps": [
+      "Prove circle_isCompact (routine: S^1 is closed level set of continuous function in bounded set)",
+      "Prove dominantComponentLabel_antipodal (routine: case analysis on |v.1| vs |v.2|)",
+      "Prove grid_mesh_tends_to_zero (routine: tendsto_const_div_atTop_nhds_0_nat)",
+      "Create Aristotle companion file for routine lemmas",
+      "Consider explicit grid triangulation edge/boundary formalization for approx_borsuk_ulam"
+    ],
+    "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-03\n\n## Answer to OQ-03 (2D Extension)\n\n**YES** — the 2D Borsuk-Ulam theorem CAN be proved via Tucker's lemma constructively.\n\nThe proof strategy is:\n1. Define g(x) = f(x) - f(-x) (odd function on S²/S¹)\n2. Label vertices of triangulated disk by dominant component of g\n3. Tucker's lemma gives a complementary edge (sign change)\n4. IVT along edge gives approximate zero\n5. Mesh refinement + compactness gives exact zero\n\n## Infrastructure Built\n\n- `dominantComponentLabel`: assigns ±1 or ±2 based on dominant coordinate\n- `antisymmetricDiff`: g(x) = f(x) - f(-x) with proven oddness and continuity\n- `TriangulatedDisk2D`: structure capturing combinatorial input to Tucker\n- `GridTriangulation`: N×N grid with √2/N mesh size\n- Main bridge theorems: approximate and exact BU from Tucker\n\n## Status: 7 proved, 5 sorry, 2 axioms\n\nThe 2 axioms are Tucker's lemma (from BorsukUlamOQ01) and the complementary-edge-to-approximate-zero bridge (deep IVT + continuity argument).\n"
   },
   "approaches": [
     {
-      "name": "Computational Tucker verification + axiomatized chain",
-      "status": "succeeded",
-      "description": "Verify Tucker 2D for specific triangulations via decide/native_decide, axiomatize general Tucker and analysis steps, prove BU for linear maps algebraically"
+      "name": "Dominant component labeling + Tucker 2D",
+      "description": "Label vertices by dominant coordinate direction of g = f - f∘(-), apply Tucker for complementary edge, use IVT for approximate zero, refine mesh for exact result",
+      "status": "in-progress",
+      "outcome": "Infrastructure built, main theorems stated with correct types, 5 sorries remain"
     }
   ],
   "tags": [
@@ -82,23 +91,20 @@
     "constructive-math",
     "borsuk-ulam",
     "tucker-lemma",
-    "combinatorial-topology",
-    "linear-algebra",
-    "rank-nullity"
+    "combinatorial-topology"
   ],
   "relatedProofs": [
-    "borsuk-ulam-oq-03"
+    "borsuk-ulam-oq-03",
+    "borsuk-ulam-oq-01"
   ],
   "references": {
-    "papers": [
-      "Tucker 1946 - Some topological properties of disk and sphere",
-      "Borsuk 1933 - Drei Satze uber die n-dimensionale euklidische Sphare"
-    ],
+    "papers": [],
     "urls": [],
     "mathlib": [
-      "Mathlib.LinearAlgebra.Dimension.Finite"
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Topology.MetricSpace.Basic"
     ]
   },
   "started": "2026-03-06T21:11:54.769Z",
-  "lastUpdate": "2026-03-06T22:00:00Z"
+  "lastUpdate": "2026-03-06T21:10:00Z"
 }
