@@ -1,85 +1,54 @@
 {
   "slug": "bounded-prime-gaps",
-  "title": "Bounded Prime Gaps (Zhang/Polymath)",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "title": "Bounded Prime Gaps (Zhang-Maynard-Tao)",
+  "phase": "SURVEYED",
+  "status": "surveyed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∃ H ≤ 246, infinitely many prime pairs with gap ≤ H",
-    "plain": "Formalize the bounded prime gaps theorem: there exist infinitely many pairs of primes differing by at most 246.",
-    "whyMatters": [
-      "Major breakthrough in analytic number theory (Zhang 2013, Polymath 8b 2014)",
-      "Bridge between computational results and formal verification"
-    ]
+    "formal": "∃ H, ∀ᶠ n in Filter.atTop, ∃ p ∈ Finset.range n, p.Prime ∧ (p + H).Prime",
+    "plain": "There exist infinitely many pairs of primes that differ by at most H for some finite H.",
+    "whyMatters": ["Major breakthrough in analytic number theory (Zhang 2013, Maynard-Tao 2013)"]
   },
   "knownResults": {
-    "proven": [
-      "Admissible k-tuple infrastructure",
-      "Polymath 8b bound of 246",
-      "Zhang's 70M bound",
-      "liminf of prime gaps ≤ 246",
-      "Optimal admissible tuples for k=2,3,5 (OQ-01)",
-      "Engelsma's 246 optimality for 50-tuples (OQ-03)"
-    ],
-    "open": [],
-    "goal": "Already complete - all proofs have 0 sorries"
+    "proven": ["Zhang H≤70000000", "Maynard-Tao H≤246 (Polymath8b)"],
+    "open": ["Twin prime conjecture (H=2)"],
+    "goal": "Formalize available structural results"
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-06T08:22:00.000Z",
+    "phase": "SURVEYED",
+    "since": "2026-03-06T17:34:00Z",
     "iteration": 1,
-    "focus": "Problem already solved. BoundedPrimeGaps.lean, OQ01, OQ03 all have 0 sorries.",
-    "blockers": [],
-    "nextAction": "None - already complete.",
-    "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
-    }
+    "focus": "126 defs+theorems, 0 sorries, 4 axioms (sieve theory). PR #3201.",
+    "blockers": ["Sieve theory not in Mathlib"],
+    "nextAction": "None - surveyed, axioms capture deep sieve results",
+    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
   },
   "knowledge": {
-    "progressSummary": "ALREADY COMPLETE: BoundedPrimeGaps.lean (0 sorries), BoundedPrimeGapsOQ01.lean (0 sorries, optimal admissible tuples), BoundedPrimeGapsOQ03.lean (0 sorries, Engelsma optimality). Gallery entries exist for base and OQ-03. OQ-01 has proof but no gallery entry yet.",
-    "builtItems": [],
+    "progressSummary": "SURVEYED: 126 defs+theorems, 0 sorries, 4 axioms (deep sieve theory). PR #3201.",
+    "builtItems": [
+      "126 defs+theorems in BoundedPrimeGaps.lean",
+      "twin_primes_implies_dickson: TwinPC → DicksonConj {0,2}",
+      "PolignacConjecture definition",
+      "GPY axiom capturing key sieve bound",
+      "Comprehensive nthPrime infrastructure"
+    ],
     "insights": [
-      "Deep sieve theory is axiomatized; removing axioms requires multi-year infrastructure",
-      "Constructive parts (admissibility, optimality) are fully proved",
-      "OQ-01 proof file exists but lacks gallery entry"
+      "Sieve theory (Selberg/Bombieri-Vinogradov) not in Mathlib - key axioms",
+      "twin_primes_implies_dickson bridges Twin PC to Dickson Conjecture {0,2}",
+      "Nat.nth Nat.Prime n gives nth prime (0-indexed) from Mathlib",
+      "GPY sieve axiom captures Goldston-Pintz-Yildirim theorem",
+      "Finset membership via simp [mem_insert, mem_singleton] + rcases"
     ],
-    "mathlibGaps": [
-      "Selberg sieve",
-      "GPY sieve",
-      "Bombieri-Vinogradov theorem"
-    ],
-    "nextSteps": [
-      "Create gallery entry for BoundedPrimeGapsOQ01.lean (has proof, no gallery entry)"
-    ]
+    "mathlibGaps": ["No sieve theory (Selberg, Bombieri-Vinogradov) in Mathlib"],
+    "nextSteps": []
   },
   "approaches": [],
-  "tags": [
-    "seeker-selected",
-    "number-theory",
-    "primes",
-    "formalization"
-  ],
-  "relatedProofs": [
-    "bounded-prime-gaps",
-    "bounded-prime-gaps-oq-03"
-  ],
-  "references": {
-    "papers": [
-      "Zhang (2013), Bounded gaps between primes",
-      "Maynard (2015), Small gaps between primes",
-      "Polymath 8b (2014)"
-    ],
-    "urls": [],
-    "mathlib": [
-      "Nat.Prime",
-      "Finset"
-    ]
-  },
-  "started": "2026-03-06T08:20:00.000Z",
-  "lastUpdate": "2026-03-06T08:22:00.000Z",
+  "tags": ["number-theory", "analytic-number-theory", "prime-gaps"],
+  "relatedProofs": [],
+  "references": { "papers": [], "urls": [], "mathlib": [] },
+  "started": "2026-02-24T00:00:00.000Z",
+  "lastUpdate": "2026-03-06T17:34:00.000Z",
   "significance": 9,
-  "tractability": 1
+  "tractability": 3
 }

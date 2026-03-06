@@ -2,6 +2,7 @@ import Mathlib.Topology.Basic
 import Mathlib.Topology.Compactness.Compact
 import Mathlib.Topology.Connected.PathConnected
 import Mathlib.Topology.Homotopy.Basic
+import Mathlib.Topology.Homotopy.Equiv
 import Mathlib.Topology.Homotopy.Path
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Topology.Order.Basic
@@ -588,12 +589,16 @@ PART XVIII: TOPOLOGICAL CHARACTERIZATION OF 3-MANIFOLDS
 
 /-- Simple connectivity transfers across homeomorphisms.
     If f : X ≃ₜ Y and Y is simply connected, then X is simply connected.
-    Proof sketch: a homeomorphism induces an isomorphism on fundamental groups,
-    so π₁(X) ≅ π₁(Y) = 1 implies π₁(X) = 1.
-    This requires Mathlib to have the induced map on fundamental groupoids; currently
-    `FundamentalGroupoid.instFunctor` handles this partially. -/
-axiom simply_connected_of_homeomorphic (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y]
-    [SimplyConnectedSpace Y] (h : AreHomeomorphic X Y) : SimplyConnectedSpace X
+    Proof: A homeomorphism induces a homotopy equivalence, which gives an equivalence
+    of fundamental groupoids via `FundamentalGroupoidFunctor.equivOfHomotopyEquiv`.
+    Composing with the equivalence `FundamentalGroupoid Y ≌ Discrete Unit` from
+    simple connectivity of Y yields `FundamentalGroupoid X ≌ Discrete Unit`. -/
+theorem simply_connected_of_homeomorphic (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y]
+    [hsc : SimplyConnectedSpace Y] (h : AreHomeomorphic X Y) : SimplyConnectedSpace X where
+  equiv_unit := by
+    obtain ⟨f⟩ := h
+    obtain ⟨ey⟩ := hsc.equiv_unit
+    exact ⟨(FundamentalGroupoidFunctor.equivOfHomotopyEquiv f.toHomotopyEquiv).trans ey⟩
 
 /-- A closed 3-manifold is either the 3-sphere or has nontrivial fundamental group.
     This is a more explicit version of the dichotomy theorem: simple connectivity
@@ -709,6 +714,7 @@ SUMMARY OF VERIFIED RESULTS
 - Equivalence: SC 3-manifold ↔ homeomorphic to S³
 - Generalized Poincaré for all dimensions ≥ 2 (from axioms)
 - CompactSpace, ConnectedSpace instances for ↥Sphere3
+- Simply connected transfer across homeomorphisms (via HomotopyEquiv)
 
 ### AXIOMATIZED (justified but not proved in Lean):
 - Perelman's surgery procedure
@@ -716,7 +722,6 @@ SUMMARY OF VERIFIED RESULTS
 - Thurston geometrization
 - Perelman W-entropy monotonicity
 - Hamilton's positive Ricci theorem
-- Simply connected transfer across homeomorphisms
 - S³ simply connected (needs Seifert-van Kampen)
 - S^n simply connected for n ≥ 2 (needs Seifert-van Kampen)
 - Connected sum operation and properties
