@@ -117,16 +117,31 @@ theorem dirichletKernel_zero (t : AddCircle T) :
 /-- The Dirichlet kernel at the origin: D_N(0) = 2N + 1.
     Each Fourier monomial evaluates to 1 at the origin, so the sum has 2N+1 terms.
     Proof: Each `fourier n 0 = 1`, so D_N(0) = card(Icc (-N) N) · 1 = 2N+1. -/
+theorem fourier_at_zero (n : ℤ) : fourier n (0 : AddCircle T) = 1 := by
+  simp [fourier_apply, smul_zero, AddCircle.toCircle_zero]
+
 theorem dirichletKernel_at_zero (N : ℕ) :
     dirichletKernel (T := T) N 0 = (2 * (N : ℤ) + 1 : ℤ) := by
-  sorry
+  simp only [dirichletKernel, fourier_at_zero]
+  rw [Finset.sum_const, dirichletKernel_card]
+  simp [nsmul_eq_mul]
 
 /-- The Dirichlet kernel is conjugate-symmetric: D_N(-t) = conj(D_N(t)).
     This follows from the pairing of e_n and e_{-n} terms.
     Proof: conj(e_n(t)) = e_{-n}(t), and the sum over Icc(-N, N) is symmetric. -/
+-- fourier n applied to (-t) equals fourier (-n) applied to t
+theorem fourier_apply_neg (n : ℤ) (t : AddCircle T) :
+    fourier n (-t) = fourier (-n) t := by
+  simp [fourier_apply, smul_neg, neg_smul]
+
+-- fourier n applied to (-t) equals conj(fourier n t)
+theorem fourier_eval_neg (n : ℤ) (t : AddCircle T) :
+    fourier n (-t) = starRingEnd ℂ (fourier n t) := by
+  rw [fourier_apply_neg, fourier_neg]
+
 theorem dirichletKernel_neg (N : ℕ) (t : AddCircle T) :
     dirichletKernel N (-t) = starRingEnd ℂ (dirichletKernel N t) := by
-  sorry
+  simp only [dirichletKernel, fourier_eval_neg, map_sum]
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -282,6 +297,28 @@ PART VIII: CONSEQUENCES AND SPECIAL CASES
 
     If f is continuous at x₀, then f(x₀⁺) = f(x₀⁻) = f(x₀), so
     the average (f(x₀⁺) + f(x₀⁻))/2 = f(x₀). -/
+-- Helper: at a continuity point, the right limit equals the function value
+theorem rightLimit_eq_of_continuousAt
+    (f : AddCircle T → ℂ) (x₀ : ℝ)
+    (hcont : ContinuousAt (f ∘ (↑· : ℝ → AddCircle T)) x₀) :
+    rightLimit f x₀ = (f ∘ (↑· : ℝ → AddCircle T)) x₀ := by
+  unfold rightLimit
+  have htends : Tendsto (f ∘ (↑· : ℝ → AddCircle T))
+      (nhdsWithin x₀ (Set.Ioi x₀)) (𝓝 ((f ∘ (↑· : ℝ → AddCircle T)) x₀)) :=
+    hcont.tendsto.mono_left nhdsWithin_le_nhds
+  exact htends.limUnder_eq
+
+-- Helper: at a continuity point, the left limit equals the function value
+theorem leftLimit_eq_of_continuousAt
+    (f : AddCircle T → ℂ) (x₀ : ℝ)
+    (hcont : ContinuousAt (f ∘ (↑· : ℝ → AddCircle T)) x₀) :
+    leftLimit f x₀ = (f ∘ (↑· : ℝ → AddCircle T)) x₀ := by
+  unfold leftLimit
+  have htends : Tendsto (f ∘ (↑· : ℝ → AddCircle T))
+      (nhdsWithin x₀ (Set.Iio x₀)) (𝓝 ((f ∘ (↑· : ℝ → AddCircle T)) x₀)) :=
+    hcont.tendsto.mono_left nhdsWithin_le_nhds
+  exact htends.limUnder_eq
+
 theorem dirichlet_at_continuity_point
     (f : AddCircle T → ℂ)
     (hf_bv : HasBoundedVariationCircle f)
@@ -290,9 +327,13 @@ theorem dirichlet_at_continuity_point
     (hcont : ContinuousAt (f ∘ (↑· : ℝ → AddCircle T)) x₀) :
     Tendsto (fun N : ℕ => fourierPartialSum f N (↑x₀ : AddCircle T))
       atTop (𝓝 (f (↑x₀ : AddCircle T))) := by
-  -- At a continuity point, rightLimit = leftLimit = f(x₀)
-  -- so the midpoint = f(x₀)
-  sorry
+  have hmain := dirichlet_pointwise_convergence f hf_bv hf_int x₀
+  rw [rightLimit_eq_of_continuousAt f x₀ hcont,
+      leftLimit_eq_of_continuousAt f x₀ hcont] at hmain
+  simp only [Function.comp_apply] at hmain
+  have : (f (↑x₀ : AddCircle T) + f (↑x₀ : AddCircle T)) / 2 = f (↑x₀ : AddCircle T) := by
+    field_simp; ring
+  rwa [this] at hmain
 
 /-- For continuous BV functions, the Fourier series converges pointwise everywhere.
     This is the "nice" case where no midpoint averaging is needed. -/
