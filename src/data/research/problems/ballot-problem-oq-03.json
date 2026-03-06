@@ -6,32 +6,41 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "The 2×2 LGV Lemma: for lattice paths with sources a₁ ≤ a₂ ≤ b₁ ≤ b₂, the number of non-intersecting path pairs equals det[e(Aᵢ,Bⱼ)].",
+    "plain": "Prove the Lindström-Gessel-Viennot lemma for 2×2 lattice path determinants via the Lindström sign-reversing involution.",
+    "whyMatters": [
+      "LGV is fundamental to combinatorics (Catalan, ballot, Young tableaux)",
+      "The 2D crossing lemma is a higher-dimensional reflection principle",
+      "Connects lattice path enumeration to determinantal identities"
+    ]
   },
   "knownResults": {
     "proven": [
-      "splitAfterEast_split_append: re-splitting a split prefix concatenated with new suffix recovers both parts",
-      "lgv_same_start: niPairCount = 0 when paths start at same y-coordinate (Fintype instance diamond resolved)",
-      "splitAfterEast_fst_eastSteps: prefix East count equals k",
-      "swapTails_involutive: double swap restores original paths",
-      "pathCount_eq_choose: |pathType m n| = C(m+n, m)"
+      "Crossing Lemma (2D reflection principle)",
+      "Path count formula: |pathType m n| = C(m+n, m)",
+      "Ballot formula: ballotSeqCount p q * (p+q) = (p-q) * C(p+q, p)",
+      "Catalan formula: Cn(n) * (n+1) = C(2n, n)",
+      "Vandermonde identity (via combinatorial argument)",
+      "niPairCount = 0 when a₁ = a₂ (lgv_same_start)",
+      "niPairCount = 0 when b₁ = b₂ (lgv_same_end)",
+      "swapTails involution infrastructure",
+      "LGV lemma edge cases (a₁=a₂, b₁=b₂)"
     ],
     "open": [
-      "lgv_lemma_2x2: Lindström sign-reversing involution (main LGV theorem)"
+      "LGV 2×2 Lindström involution (main case: a₁ < a₂ < b₁ < b₂)"
     ],
-    "goal": "Prove the 2x2 LGV lemma via Lindström involution"
+    "goal": "Complete the Lindström involution proof for the 2×2 LGV lemma"
   },
   "currentState": {
     "phase": "PROVING",
-    "since": "2026-03-06T00:00:00.000Z",
+    "since": "2026-03-06T11:13:00.000Z",
     "iteration": 2,
-    "focus": "Resolved 2 of 3 sorries; remaining sorry is the main LGV involution argument.",
+    "focus": "Lindström involution for lgv_lemma_2x2",
     "blockers": [
-      "lgv_lemma_2x2 requires constructing the Lindström sign-reversing involution explicitly"
+      "Need first-intersection-point definition and properties",
+      "Need to show tail swap at intersection maps identity pairs to crossing pairs"
     ],
-    "nextAction": "Prove lgv_lemma_2x2 via explicit involution construction.",
+    "nextAction": "Implement the Lindström involution bijection for the main case.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -39,26 +48,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Reduced from 3 sorries to 1. Fixed splitAfterEast_append_fst (was mathematically false for general lists; replaced with splitAfterEast_split_append for split prefixes). Proved lgv_same_start by extracting DecidablePred as named instance to avoid Fintype diamond.",
+    "progressSummary": "File has 0 axioms, 1 sorry. Fixed bug in lgv_lemma_2x2 (missing a₂ ≤ b₁ hypothesis). Added lgv_same_end lemma. Structured proof with edge cases proved. Extensive involution infrastructure (swapTails, involutive, northSteps_swapTails) already in place.",
     "builtItems": [
-      "BallotProblemOQ03.lean: 810+ lines, 1 sorry remaining (lgv_lemma_2x2)"
+      "BallotProblemOQ03.lean: 0 axioms, 1 sorry (LGV involution)",
+      "lgv_same_end: niPairCount = 0 when endpoints match",
+      "Fixed lgv_lemma_2x2: added missing hypothesis a₂ ≤ b₁",
+      "Edge cases proved: a₁ = a₂ and b₁ = b₂"
     ],
     "insights": [
-      "splitAfterEast absorbs trailing North steps past k-th East into prefix — original splitAfterEast_append_fst was FALSE for general lists",
-      "Fintype instance diamond: niPairCount's haveI creates let-bound DecidablePred not in typeclass context. Fix: extract as named noncomputable instance",
-      "colEntry l 0 = 0 by definition, so y is always in colYRange l y 0 — proves any pair starting at same y intersects"
+      "Natural number subtraction bug: b₁-a₂ wraps to 0 when b₁ < a₂, giving wrong path count. Need a₂ ≤ b₁ hypothesis.",
+      "The Lindström involution requires defining 'first shared lattice point' — the smallest column k where both paths visit the same integer y-value.",
+      "swapTails infrastructure is complete and involutive (swapTails_involutive proved)",
+      "northSteps_swapTails_fst computes the North steps after tail swap, confirming identity→crossing mapping",
+      "At intersection column k: y₁ + colEntry(l₁, k) = y₂ + colEntry(l₂, k) ensures tail swap produces crossing pair"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove lgv_lemma_2x2 (Lindström involution): construct explicit involution on intersecting pairs",
-      "Submit to Aristotle for routine lemma search"
+      "Define firstIntersection: smallest k where colYRange l₁ y₁ k ∩ colYRange l₂ y₂ k ≠ ∅",
+      "Prove swap at firstIntersection maps identity intersecting → crossing",
+      "Prove bijection: intersecting identity pairs ↔ all crossing pairs",
+      "Conclude: niPairCount = total identity - all crossing = lgvDet"
     ]
   },
   "approaches": [
     {
-      "name": "Split prefix correction + Fintype diamond fix",
-      "status": "succeeded",
-      "description": "Replaced false splitAfterEast_append_fst with correct splitAfterEast_split_append for split prefixes; extracted DecidablePred instance to fix Fintype diamond in lgv_same_start"
+      "name": "Lindström sign-reversing involution",
+      "status": "in-progress",
+      "description": "Standard bijective proof: swap tails at first intersection to pair up intersecting identity pairs with crossing pairs. Infrastructure (swapTails, involutive, crossing lemma) is complete."
     }
   ],
   "tags": [
@@ -68,14 +84,22 @@
     "reflection-principle",
     "wiedijk-100"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "BallotProblem.lean",
+    "BallotProblemOQ01.lean",
+    "BallotProblemOQ01OQ01.lean",
+    "BallotProblemOQ02.lean"
+  ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Lindström 1973: On the Vector Representations of Induced Matroids",
+      "Gessel-Viennot 1985: Binomial Determinants, Paths, and Hook Length Formulae"
+    ],
     "urls": [],
     "mathlib": []
   },
   "started": "2026-02-26T17:08:50.304Z",
-  "lastUpdate": "2026-03-06T00:00:00.000Z",
+  "lastUpdate": "2026-03-06T11:30:00.000Z",
   "significance": 7,
   "tractability": 6
 }

@@ -420,11 +420,37 @@ def lgvDet (m a₁ b₁ a₂ b₂ : ℕ) : ℤ :=
     3. The Crossing Lemma guarantees ALL crossing pairs are intersecting
        (when a₁ < a₂ and b₂ < b₁ for crossing pairs, they must intersect)
     4. Therefore: det = |NI identity| - |NI crossing| = |NI identity| - 0 = |NI identity| -/
+/-- **The 2×2 LGV Lemma**: Non-intersecting path pairs count = lgvDet.
+    Requires the ordering a₁ ≤ a₂ ≤ b₁ ≤ b₂ so that all four path types
+    (identity: Aᵢ→Bᵢ, crossing: Aᵢ→Bⱼ) are well-defined.
+
+    **Note**: The hypothesis `ha₂₁ : a₂ ≤ b₁` is essential — without it,
+    the natural subtraction `b₁ - a₂` wraps to 0 giving incorrect counts.
+    (E.g., m=0, a₁=0, b₁=1, a₂=2, b₂=3: lgvDet=0 but niPairCount=1.) -/
 theorem lgv_lemma_2x2 (m a₁ b₁ a₂ b₂ : ℕ)
     (ha : a₁ ≤ a₂) (hb : b₁ ≤ b₂)
-    (ha₁ : a₁ ≤ b₁) (ha₂ : a₂ ≤ b₂) :
+    (ha₁ : a₁ ≤ b₁) (ha₂ : a₂ ≤ b₂)
+    (ha₂₁ : a₂ ≤ b₁) :
     (niPairCount m (b₁ - a₁) (b₂ - a₂) a₁ a₂ : ℤ) = lgvDet m a₁ b₁ a₂ b₂ := by
-  sorry  -- Lindström involution: the key bijection argument
+  -- Case 1: a₁ = a₂ (same starting height) — both sides vanish
+  by_cases h_a : a₁ = a₂
+  · subst h_a
+    rw [lgvDet_same_start, lgv_same_start]; simp
+  -- Case 2: b₁ = b₂ (same ending height) — both sides vanish
+  · by_cases h_b : b₁ = b₂
+    · subst h_b
+      rw [lgvDet_same_end]
+      have h_eq : a₁ + (b₁ - a₁) = a₂ + (b₁ - a₂) := by omega
+      rw [lgv_same_end m (b₁ - a₁) (b₁ - a₂) a₁ a₂ h_eq]; simp
+    -- Case 3: a₁ < a₂ ≤ b₁ < b₂ (strict ordering at sources and targets)
+    -- This is the main case requiring the Lindström involution.
+    -- Infrastructure is built: swapTails, swapTails_involutive, crossing_lemma.
+    -- The proof needs: for intersecting identity pairs (P₁:A₁→B₁, P₂:A₂→B₂),
+    -- find the first shared lattice point, swap tails there to get crossing pair
+    -- (P₁:A₁→B₂, P₂:A₂→B₁). This bijection shows:
+    --   |intersecting identity| = |all crossing| = e(A₁,B₂)·e(A₂,B₁)
+    -- Therefore: |NI identity| = e(A₁,B₁)·e(A₂,B₂) - e(A₁,B₂)·e(A₂,B₁) = lgvDet.
+    · sorry
 
 /-! ## Part VII: Vandermonde's Identity -/
 
@@ -804,6 +830,34 @@ lemma lgvDet_same_start (m b₁ b₂ a : ℕ) :
 lemma lgvDet_same_end (m a₁ a₂ b : ℕ) :
     lgvDet m a₁ b a₂ b = 0 := by
   unfold lgvDet; ring
+
+/-- **Key LGV Counting Lemma**: Degenerate case b₁ = b₂.
+    When paths end at the same height, both final ranges include the common
+    endpoint y₁ + n₁ = y₂ + n₂, so every pair shares that lattice point. -/
+lemma lgv_same_end (m n₁ n₂ y₁ y₂ : ℕ) (h : y₁ + n₁ = y₂ + n₂) :
+    niPairCount m n₁ n₂ y₁ y₂ = 0 := by
+  unfold niPairCount
+  rw [Fintype.card_eq_zero_iff]
+  constructor
+  intro ⟨⟨⟨l₁, hl₁_len, hl₁_east⟩, ⟨l₂, hl₂_len, hl₂_east⟩⟩, hni⟩
+  -- northSteps lᵢ = nᵢ: from length = m + nᵢ and eastSteps = m
+  have hns₁ : northSteps l₁ = n₁ := by
+    have := eastSteps_add_northSteps l₁
+    simp only [eastSteps] at this; omega
+  have hns₂ : northSteps l₂ = n₂ := by
+    have := eastSteps_add_northSteps l₂
+    simp only [eastSteps] at this; omega
+  -- The common endpoint y₁ + n₁ = y₂ + n₂ is in both final ranges
+  have h_in₁ : y₁ + n₁ ∈ finalRange l₁ y₁ m := by
+    refine ⟨?_, by rw [hns₁]⟩
+    exact Nat.add_le_add_left (colEntry_le_northSteps l₁ m hl₁_east) y₁ |>.trans
+      (by rw [hns₁])
+  have h_in₂ : y₂ + n₂ ∈ finalRange l₂ y₂ m := by
+    refine ⟨?_, by rw [hns₂]⟩
+    exact Nat.add_le_add_left (colEntry_le_northSteps l₂ m hl₂_east) y₂ |>.trans
+      (by rw [hns₂])
+  rw [h] at h_in₁
+  exact hni.2 (y₂ + n₂) ⟨h_in₁, h_in₂⟩
 
 /-! ## Part XII: Verified LGV Examples -/
 
