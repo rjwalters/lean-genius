@@ -1,0 +1,94 @@
+{
+  "slug": "mean-value-theorem-oq-03",
+  "title": "Vector-valued MVT generalization (mean value inequality)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall f : \\mathbb{R} \\to E,\\; \\|f'\\| \\leq C \\Rightarrow \\|f(b) - f(a)\\| \\leq C \\cdot |b-a|",
+    "plain": "The classical Mean Value Theorem equality f'(c) = slope does NOT generalize to vector-valued functions. Instead, we have the Mean Value Inequality: if the derivative norm is bounded by C, then the displacement is bounded by C times the interval length.",
+    "whyMatters": [
+      "Foundation for nonlinear analysis in Banach spaces",
+      "Key tool for ODE uniqueness (Picard-Lindelof)",
+      "Correct generalization of MVT to infinite dimensions"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Mean value inequality for R -> E (from Mathlib)",
+      "Scalar MVT as special case",
+      "Circular motion counterexample",
+      "Lipschitz from derivative bound (from Mathlib)",
+      "General Banach space MVT (from Mathlib)",
+      "Zero Frechet derivative implies constant"
+    ],
+    "open": [],
+    "goal": "Formalize vector-valued MVT - COMPLETED"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-06T18:30:00.000Z",
+    "iteration": 1,
+    "focus": "Eliminated both axioms, proved all from Mathlib.",
+    "blockers": [],
+    "nextAction": "None - problem complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 15 proved theorems, 0 sorries, 0 axioms. Eliminated 2 axioms (deriv_bound_implies_lipschitz, banach_mean_value_inequality) by connecting to Mathlib's Convex.lipschitzOnWith_of_nnnorm_fderivWithin_le and Convex.norm_image_sub_le_of_norm_fderivWithin_le.",
+    "builtItems": [
+      "15 theorems in MeanValueTheoremOQ03.lean",
+      "mean_value_inequality: vector MVT from Mathlib",
+      "classical_mvt_gives_equality: scalar MVT with equality",
+      "circular_counterexample: why MVT equality fails for vectors",
+      "deriv_bound_implies_lipschitz: derivative bound -> Lipschitz (proved from Mathlib)",
+      "constant_of_deriv_zero_vector: zero derivative -> constant (vector case)",
+      "banach_mean_value_inequality: general Banach space MVT (proved from Mathlib)",
+      "banach_mvt_differentiableAt: DifferentiableAt version",
+      "banach_mvt_hasFDerivWithinAt: HasFDerivWithinAt version",
+      "banach_constant_of_fderiv_zero: zero Frechet derivative -> constant",
+      "lipschitz_of_nnnorm_fderiv_le: pointwise Lipschitz version"
+    ],
+    "insights": [
+      "Convex.lipschitzOnWith_of_nnnorm_fderivWithin_le proves derivative bound -> Lipschitz directly",
+      "Convex.norm_image_sub_le_of_norm_fderivWithin_le proves Banach space MVT directly",
+      "For DifferentiableOn, use fderivWithin (not fderiv) - fderiv is 0 by convention when not differentiable at the point",
+      "zero_mul rewrite cleans up 0 * ||b-a|| in constant-of-zero-derivative proof",
+      "sub_eq_zero.mp (norm_eq_zero.mp (le_antisymm hmvt (norm_nonneg _))) is the pattern for norm-zero -> equality"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: mean-value-theorem-oq-03\n\n**Status**: COMPLETE\n**Problem**: Vector-valued MVT generalization\n\n## Session 2026-03-06 - COMPLETE\n\n### What I Did\n1. Found existing MeanValueTheoremOQ03.lean with 2 axioms\n2. Searched Mathlib for exact API matches\n3. Replaced axiom deriv_bound_implies_lipschitz with Convex.lipschitzOnWith_of_nnnorm_fderivWithin_le\n4. Replaced axiom banach_mean_value_inequality with Convex.norm_image_sub_le_of_norm_fderivWithin_le\n5. Added 4 new theorems: banach_mvt_differentiableAt, banach_mvt_hasFDerivWithinAt, banach_constant_of_fderiv_zero, lipschitz_of_nnnorm_fderiv_le\n6. Docker build verified: 0 errors\n\n### Key Findings\n- For DifferentiableOn, must use fderivWithin (not fderiv)\n- NNReal (nnnorm) version needed for LipschitzOnWith\n- Convex.norm_image_sub_le_of_norm_fderivWithin_le arg order: hf hC hs ha hb\n- linarith doesn't work in general normed spaces - use norm_eq_zero/sub_eq_zero pattern\n"
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "generalization"
+  ],
+  "relatedProofs": [
+    "MeanValueTheorem.lean",
+    "MeanValueTheoremOQ03.lean"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Convex.lipschitzOnWith_of_nnnorm_fderivWithin_le",
+      "Convex.norm_image_sub_le_of_norm_fderivWithin_le",
+      "Convex.norm_image_sub_le_of_norm_fderiv_le",
+      "Convex.norm_image_sub_le_of_norm_hasFDerivWithin_le",
+      "Convex.lipschitzOnWith_of_nnnorm_fderiv_le"
+    ]
+  },
+  "started": "2026-03-06T18:00:58.198Z",
+  "lastUpdate": "2026-03-06T18:30:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "completed": "2026-03-06T18:30:00.000Z"
+}
