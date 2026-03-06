@@ -1,0 +1,149 @@
+{
+  "id": "euler-polyhedral-formula-oq-02-oq-01",
+  "title": "Smooth Gauss-Bonnet Theorem",
+  "slug": "euler-polyhedral-formula-oq-02-oq-01",
+  "description": "Formalizes the smooth Gauss-Bonnet theorem ∫_M K dA = 2πχ(M) and its consequences for compact Riemannian surfaces. The core theorem is axiomatized (Mathlib lacks Riemannian geometry infrastructure), with 20+ consequence theorems fully proved: genus determination from curvature sign, curvature-topology constraints, average curvature formulas, and connections to the discrete case.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gauss%E2%80%93Bonnet_theorem",
+    "date": "2026",
+    "status": "complete",
+    "proofRepoPath": "Proofs/EulerPolyhedralOQ02OQ01.lean",
+    "tags": [
+      "gauss-bonnet",
+      "riemannian-geometry",
+      "differential-geometry",
+      "euler-characteristic",
+      "curvature",
+      "topology",
+      "genus",
+      "extension",
+      "research"
+    ],
+    "badge": "open",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.pi_pos",
+        "description": "π > 0, used throughout for curvature sign arguments.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Axiomatic CompactRiemannianSurface structure encoding Gauss-Bonnet",
+      "Genus determination from curvature sign (positive → sphere, zero → torus, negative → genus ≥ 2)",
+      "Total curvature as topological invariant (metric-independent)",
+      "Average curvature formula and unit sphere verification",
+      "Area bound for positively curved surfaces (Bonnet-type)",
+      "Connection to discrete Gauss-Bonnet (same 2πχ formula)",
+      "Chern-Gauss-Bonnet generalization to 2n-manifolds (axiomatic)",
+      "Concrete examples: standard sphere, flat torus, hyperbolic genus 2"
+    ],
+    "references": [
+      {
+        "authors": "Carl Friedrich Gauss",
+        "title": "Disquisitiones generales circa superficies curvas",
+        "year": "1827",
+        "venue": "Commentationes Societatis Regiae Scientiarum Gottingensis",
+        "note": "Established Gaussian curvature and the Theorema Egregium"
+      },
+      {
+        "authors": "Pierre Ossian Bonnet",
+        "title": "Mémoire sur la théorie générale des surfaces",
+        "year": "1848",
+        "venue": "Journal de l'École Polytechnique",
+        "note": "Proved the Gauss-Bonnet theorem for geodesic triangles"
+      },
+      {
+        "authors": "Shiing-Shen Chern",
+        "title": "A simple intrinsic proof of the Gauss-Bonnet formula for closed Riemannian manifolds",
+        "year": "1944",
+        "venue": "Annals of Mathematics",
+        "note": "Generalized to higher dimensions via the Pfaffian"
+      },
+      {
+        "authors": "Manfredo do Carmo",
+        "title": "Differential Geometry of Curves and Surfaces",
+        "year": "1976",
+        "venue": "Prentice-Hall",
+        "note": "Chapter 4: The Gauss-Bonnet theorem and applications"
+      }
+    ],
+    "historicalContext": "The Gauss-Bonnet theorem is one of the deepest results connecting geometry and topology. Gauss (1827) discovered that Gaussian curvature is intrinsic (Theorema Egregium). Bonnet (1848) proved ∫K dA = 2πχ for closed surfaces. Chern (1944) generalized to 2n-manifolds using the Pfaffian of the curvature form. The theorem bridges local geometry (curvature) and global topology (Euler characteristic), and is a precursor to the Atiyah-Singer index theorem."
+  },
+  "sections": [
+    {
+      "id": "riemannian-surface",
+      "title": "Compact Riemannian Surface",
+      "summary": "Axiomatic definition of a compact orientable Riemannian surface with Euler characteristic, total curvature, area, and the Gauss-Bonnet axiom.",
+      "startLine": 35,
+      "endLine": 58
+    },
+    {
+      "id": "genus-topology",
+      "title": "Genus and Topology",
+      "summary": "Orientable closed surfaces with genus g have χ = 2-2g. Total curvature determines genus uniquely.",
+      "startLine": 60,
+      "endLine": 88
+    },
+    {
+      "id": "gauss-bonnet-consequences",
+      "title": "Gauss-Bonnet Consequences",
+      "summary": "The core theorem ∫K dA = 2πχ and its immediate consequences: topological invariance and metric independence.",
+      "startLine": 90,
+      "endLine": 115
+    },
+    {
+      "id": "curvature-sign",
+      "title": "Curvature Sign and Topology",
+      "summary": "Positive total curvature → positive χ, negative → negative χ, zero → zero χ. These are the fundamental topology constraints.",
+      "startLine": 117,
+      "endLine": 147
+    },
+    {
+      "id": "special-surfaces",
+      "title": "Special Surfaces",
+      "summary": "Sphere (4π), torus (0), double torus (-4π), and general genus g formula 4π(1-g).",
+      "startLine": 149,
+      "endLine": 185
+    },
+    {
+      "id": "genus-determination",
+      "title": "Curvature Determines Genus",
+      "summary": "K > 0 everywhere → sphere (genus 0), K = 0 → torus (genus 1), K < 0 → genus ≥ 2.",
+      "startLine": 187,
+      "endLine": 232
+    },
+    {
+      "id": "average-curvature",
+      "title": "Average Curvature",
+      "summary": "K_avg = 2πχ/Area. Unit sphere has K_avg = 1, torus has 0. Area bound for positive curvature.",
+      "startLine": 234,
+      "endLine": 295
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "summary": "Standard sphere (area 4π, K=1), flat torus (area a·b, K=0), hyperbolic genus 2 (area 4π, K=-1).",
+      "startLine": 385,
+      "endLine": 430
+    }
+  ],
+  "overview": {
+    "summary": "The smooth Gauss-Bonnet theorem ∫_M K dA = 2πχ(M) is one of the most profound results in differential geometry, connecting local curvature to global topology. This formalization axiomatizes the core theorem (since Mathlib lacks Riemannian geometry) and proves 20+ consequence theorems about genus determination, curvature constraints, and the connection to the discrete Gauss-Bonnet.",
+    "keyIdea": "The total Gaussian curvature of a closed surface is a topological invariant: it equals 2πχ regardless of the metric. This single equation determines the genus from curvature sign and constrains which geometries a surface can support.",
+    "prerequisites": [
+      "Gaussian curvature of surfaces",
+      "Euler characteristic χ = 2 - 2g",
+      "Compact Riemannian manifolds",
+      "Discrete Gauss-Bonnet (parent proof)"
+    ]
+  },
+  "conclusion": {
+    "summary": "We formalize the smooth Gauss-Bonnet theorem and its rich consequences. The core theorem is axiomatized due to Mathlib infrastructure gaps, but all consequences—genus determination, curvature-topology constraints, average curvature formulas, and connections to the discrete case—are fully proved with 0 sorries. The formalization captures the essential mathematical content: curvature determines topology.",
+    "openQuestions": [
+      "Can the full smooth Gauss-Bonnet be proved from first principles once Mathlib adds Riemannian metrics?",
+      "Can the Chern-Gauss-Bonnet theorem for 4-manifolds be formalized with Pfaffians?"
+    ]
+  }
+}
