@@ -1,0 +1,164 @@
+{
+  "id": "picks-theorem-oq-03",
+  "title": "Ehrhart Polynomials for Lattice Polytopes",
+  "slug": "picks-theorem-oq-03",
+  "description": "Ehrhart polynomials generalize Pick's formula to higher dimensions: for a d-dimensional lattice polytope P, the lattice point count of nP is a polynomial of degree d in n. Verified on cubes, simplices, and octahedra with Ehrhart-Macdonald reciprocity.",
+  "meta": {
+    "author": "Eugène Ehrhart (1962)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ehrhart_polynomial",
+    "date": "1962",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/EhrhartPolynomialOQ03.lean",
+    "tags": [
+      "geometry",
+      "combinatorics",
+      "lattice",
+      "polytopes",
+      "ehrhart",
+      "generalization",
+      "open-question"
+    ],
+    "badge": "open",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+        "description": "Finset sums for h*-vector computations",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Mathlib.Data.Rat.Cast.Lemmas",
+        "description": "Rational number cast lemmas for volume and area computations",
+        "module": "Mathlib.Data.Rat.Cast.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "LatticePolytope structure with dimension, volume, and lattice point data",
+      "Ehrhart's theorem statement: lattice point count is polynomial in dilation factor",
+      "Ehrhart-Macdonald reciprocity axiom relating interior and boundary counts",
+      "Concrete Ehrhart polynomial verifications for unit cube, standard simplex, and octahedron",
+      "Pick's theorem derived as the d=2 specialization of Ehrhart theory",
+      "Reeve tetrahedra analysis showing why Pick fails in 3D via Ehrhart coefficients",
+      "h*-vector framework with Stanley nonnegativity theorem",
+      "Cube and simplex reciprocity verified algebraically",
+      "Complete dimensional hierarchy from d=0 to d=3"
+    ],
+    "dateAdded": "03/06/26",
+    "leanFile": {
+      "lineCount": 721,
+      "structures": 2,
+      "axioms": 3,
+      "theorems": 34,
+      "definitions": 20,
+      "instances": 0
+    }
+  },
+  "overview": {
+    "historicalContext": "Eugène Ehrhart (1906-2000) was a French mathematician who published his landmark theorem in 1962, showing that for any d-dimensional lattice polytope P and positive integer n, the number of lattice points in the dilated polytope nP is a polynomial of degree d in n. This polynomial, now called the Ehrhart polynomial, encodes deep geometric and combinatorial information about the polytope.\n\nEhrhart's theorem provides the correct higher-dimensional generalization of Pick's theorem (1899). While Pick's formula A = i + b/2 - 1 works beautifully in 2D, the Reeve tetrahedra show it cannot extend to 3D. Ehrhart theory explains why: in 2D the polynomial has 3 coefficients determined by 2 independent counts (i and b), but in 3D the polynomial has 4 coefficients while i and b provide only 2 equations.\n\nThe theory was further enriched by Macdonald's reciprocity theorem (1971), connecting interior and boundary counts through sign changes in the polynomial, and Stanley's nonnegativity theorem (1980) for h*-vectors.",
+    "problemStatement": "**Ehrhart's Theorem**: For a d-dimensional lattice polytope P and positive integer n, the number of lattice points in nP is given by a polynomial L(P, n) of degree d, with leading coefficient equal to the volume of P and constant term equal to 1.\n\n**Ehrhart-Macdonald Reciprocity**: The interior lattice point count satisfies L*(P, n) = (-1)^d · L(P, -n).\n\n**Open Question**: Formalize the full proof of Ehrhart's theorem from first principles, including the combinatorial topology needed for the inductive argument.",
+    "proofStrategy": "We axiomatize lattice polytopes with their Ehrhart counting data and state Ehrhart's theorem and Macdonald reciprocity as axioms. The formalization then verifies the theory through extensive concrete examples: the unit cube L(t) = (t+1)³, the standard simplex L(t) = C(t+3,3), and the regular octahedron. We derive Pick's theorem as the d=2 specialization of Ehrhart theory, proving that the 2D Ehrhart polynomial L(t) = At² + (b/2)t + 1 yields A = i + b/2 - 1 when evaluated at t=1. The h*-vector framework provides an alternative encoding of Ehrhart data with Stanley's nonnegativity guaranteed by construction.",
+    "keyInsights": [
+      "**Pick's theorem is Ehrhart in 2D**: The 2D Ehrhart polynomial L(t) = At² + (b/2)t + 1 evaluated at t=1 gives i+b = A + b/2 + 1, which rearranges to Pick's formula A = i + b/2 - 1",
+      "**Why Pick fails in 3D**: The Reeve tetrahedra have identical i=0 and b=4 but different volumes r/6, showing that 2 lattice counts cannot determine 4 polynomial coefficients",
+      "**Ehrhart-Macdonald reciprocity**: For the unit cube, L*(t) = (t-1)³ = (-1)³·L(-t), beautifully connecting interior counts to the original polynomial via sign changes",
+      "**h*-vectors encode volume**: The sum of h*-vector entries equals the normalized volume (d! · Vol), providing a combinatorial decomposition of volume",
+      "**Stanley nonnegativity**: All h*-vector entries are non-negative (proved by Stanley using commutative algebra), constraining which polynomials can be Ehrhart polynomials"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lattice-polytopes",
+      "title": "Lattice Polytopes",
+      "startLine": 39,
+      "endLine": 80,
+      "summary": "Defines `LatticePolytope` structure with dimension, normalized/Euclidean volume, interior/boundary/total point counts, and consistency axioms."
+    },
+    {
+      "id": "ehrhart-theorem",
+      "title": "Ehrhart's Theorem",
+      "startLine": 82,
+      "endLine": 131,
+      "summary": "States Ehrhart's theorem: the lattice point count of nP agrees with a function L satisfying L(0) = 1 and L(n) = |nP ∩ ℤ^d| for positive n."
+    },
+    {
+      "id": "reciprocity",
+      "title": "Ehrhart-Macdonald Reciprocity",
+      "startLine": 133,
+      "endLine": 155,
+      "summary": "States Ehrhart-Macdonald reciprocity: L*(t) = (-1)^d · L(-t), connecting interior point counts to the Ehrhart polynomial via sign changes."
+    },
+    {
+      "id": "unit-cube",
+      "title": "Unit Cube Example",
+      "startLine": 157,
+      "endLine": 203,
+      "summary": "Defines unitCube3 and verifies L(t) = (t+1)³ at t = 0,1,2,3. Shows expanded form t³ + 3t² + 3t + 1."
+    },
+    {
+      "id": "simplex",
+      "title": "Standard Simplex Example",
+      "startLine": 205,
+      "endLine": 254,
+      "summary": "Defines standardSimplex3 with volume 1/6 and verifies L(t) = (t+1)(t+2)(t+3)/6 at t = 0,1,2,3."
+    },
+    {
+      "id": "picks-specialization",
+      "title": "Pick's Theorem as Ehrhart Specialization",
+      "startLine": 256,
+      "endLine": 345,
+      "summary": "Shows the 2D Ehrhart polynomial L(t) = At² + (b/2)t + 1 yields Pick's formula A = i + b/2 - 1 when evaluated at t=1."
+    },
+    {
+      "id": "reeve-tetrahedra",
+      "title": "Reeve Tetrahedra via Ehrhart Theory",
+      "startLine": 347,
+      "endLine": 426,
+      "summary": "Defines Reeve tetrahedra T_r with same i,b but different volumes. Shows L(T₁,t) ≠ L(T₂,t) despite L(T₁,1) = L(T₂,1)."
+    },
+    {
+      "id": "reciprocity-examples",
+      "title": "Reciprocity Examples",
+      "startLine": 428,
+      "endLine": 500,
+      "summary": "Verifies Ehrhart-Macdonald reciprocity for the unit cube (L*(t) = (t-1)³) and standard simplex, with concrete interior point counts."
+    },
+    {
+      "id": "octahedron",
+      "title": "Cross-Polytope (Octahedron)",
+      "startLine": 502,
+      "endLine": 542,
+      "summary": "Defines the 3D cross-polytope with volume 4/3 and verifies Ehrhart polynomial at several points."
+    },
+    {
+      "id": "hstar-vectors",
+      "title": "h*-Vectors and Stanley Nonnegativity",
+      "startLine": 544,
+      "endLine": 620,
+      "summary": "Defines HStarVector framework, proves Stanley nonnegativity. Verifies h*-vectors for cube (1,4,1,0), simplex (1,0,0,0), and octahedron (1,3,3,1)."
+    },
+    {
+      "id": "dimensional-hierarchy",
+      "title": "Dimensional Hierarchy",
+      "startLine": 622,
+      "endLine": 721,
+      "summary": "Shows the progression from d=0 (point) through d=1 (segment), d=2 (Pick's theorem), to d=3 (Ehrhart). Derives Pick's formula from the 2D case."
+    }
+  ],
+  "conclusion": {
+    "summary": "Ehrhart theory is formalized with an axiomatized LatticePolytope structure, concrete polynomial verifications for cubes, simplices, and octahedra, and a derivation of Pick's theorem as the d=2 specialization. The h*-vector framework provides an alternative combinatorial encoding with Stanley's nonnegativity theorem.",
+    "implications": "This formalization provides the natural framework for higher-dimensional discrete geometry in Lean. The Ehrhart-Macdonald reciprocity and h*-vector theory open paths toward formalizing deeper results in enumerative combinatorics and toric geometry.",
+    "openQuestions": [
+      "Can Ehrhart's theorem be proved from first principles using triangulation and inclusion-exclusion?",
+      "Can the h*-vector be computed directly from the face lattice of the polytope?",
+      "Can Ehrhart theory be extended to rational polytopes (Ehrhart quasipolynomials)?",
+      "Can the connection to toric varieties and generating functions be formalized?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetProofId": "picks-theorem",
+      "relationship": "Pick's theorem is the d=2 specialization of Ehrhart's theorem. This file derives Pick's formula from the 2D Ehrhart polynomial and explains why it fails in 3D.",
+      "sharedConcepts": ["lattice-points", "area", "volume", "discrete-geometry"]
+    }
+  ]
+}
