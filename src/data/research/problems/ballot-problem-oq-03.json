@@ -1,7 +1,7 @@
 {
   "slug": "ballot-problem-oq-03",
   "title": "Higher-dimensional lattice path problems via reflection",
-  "phase": "NEW",
+  "phase": "PROVING",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -11,31 +11,56 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "splitAfterEast_split_append: re-splitting a split prefix concatenated with new suffix recovers both parts",
+      "lgv_same_start: niPairCount = 0 when paths start at same y-coordinate (Fintype instance diamond resolved)",
+      "splitAfterEast_fst_eastSteps: prefix East count equals k",
+      "swapTails_involutive: double swap restores original paths",
+      "pathCount_eq_choose: |pathType m n| = C(m+n, m)"
+    ],
+    "open": [
+      "lgv_lemma_2x2: Lindström sign-reversing involution (main LGV theorem)"
+    ],
+    "goal": "Prove the 2x2 LGV lemma via Lindström involution"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-02-26T05:12:41.985Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "PROVING",
+    "since": "2026-03-06T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Resolved 2 of 3 sorries; remaining sorry is the main LGV involution argument.",
+    "blockers": [
+      "lgv_lemma_2x2 requires constructing the Lindström sign-reversing involution explicitly"
+    ],
+    "nextAction": "Prove lgv_lemma_2x2 via explicit involution construction.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Reduced from 3 sorries to 1. Fixed splitAfterEast_append_fst (was mathematically false for general lists; replaced with splitAfterEast_split_append for split prefixes). Proved lgv_same_start by extracting DecidablePred as named instance to avoid Fintype diamond.",
+    "builtItems": [
+      "BallotProblemOQ03.lean: 810+ lines, 1 sorry remaining (lgv_lemma_2x2)"
+    ],
+    "insights": [
+      "splitAfterEast absorbs trailing North steps past k-th East into prefix — original splitAfterEast_append_fst was FALSE for general lists",
+      "Fintype instance diamond: niPairCount's haveI creates let-bound DecidablePred not in typeclass context. Fix: extract as named noncomputable instance",
+      "colEntry l 0 = 0 by definition, so y is always in colYRange l y 0 — proves any pair starting at same y intersects"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove lgv_lemma_2x2 (Lindström involution): construct explicit involution on intersecting pairs",
+      "Submit to Aristotle for routine lemma search"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Split prefix correction + Fintype diamond fix",
+      "status": "succeeded",
+      "description": "Replaced false splitAfterEast_append_fst with correct splitAfterEast_split_append for split prefixes; extracted DecidablePred instance to fix Fintype diamond in lgv_same_start"
+    }
+  ],
   "tags": [
     "probability",
     "combinatorics",
@@ -50,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-02-26T17:08:50.304Z",
-  "lastUpdate": "2026-02-26T17:08:50.304Z",
+  "lastUpdate": "2026-03-06T00:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
