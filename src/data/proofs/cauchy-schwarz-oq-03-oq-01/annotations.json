@@ -1,0 +1,37 @@
+[
+  {
+    "lineStart": 39,
+    "lineEnd": 57,
+    "type": "keyStep",
+    "content": "**Lagrange Identity**:\n\nThe fundamental algebraic identity:\n$$\\sum_i \\sum_j (f_i g_j - f_j g_i)^2 = 2\\left[(\\sum f_i^2)(\\sum g_i^2) - (\\sum f_i g_i)^2\\right]$$\n\nThe left side is manifestly non-negative (sum of squares), so the right side is too, immediately giving Cauchy-Schwarz. More importantly, equality holds iff every cross-term $f_i g_j - f_j g_i$ vanishes.\n\nThe proof expands $(f_i g_j - f_j g_i)^2$ and uses Finset sum manipulation to collect terms into the three products $\\sum f^2 \\cdot \\sum g^2$, $\\sum g^2 \\cdot \\sum f^2$, and $2(\\sum fg)^2$.",
+    "relatedConcepts": ["Lagrange identity", "Cauchy-Schwarz deficit", "sum of squares"]
+  },
+  {
+    "lineStart": 59,
+    "lineEnd": 81,
+    "type": "technique",
+    "content": "**Sum of Squares = 0 Characterization**:\n\nA non-negative sum equals zero iff each term is zero. For squares: $\\sum h_i^2 = 0 \\iff \\forall i,\\, h_i = 0$.\n\nThis uses `Finset.sum_eq_zero_iff_of_nonneg` from Mathlib. The double-sum version reduces to the single-sum version by first extracting the outer sum term, then the inner.",
+    "relatedConcepts": ["non-negative sum", "sum of squares", "characterization of equality"]
+  },
+  {
+    "lineStart": 87,
+    "lineEnd": 102,
+    "type": "keyStep",
+    "content": "**Cauchy-Schwarz Equality ⟺ Cross-Terms Vanish**:\n\n$$(\\sum f_i g_i)^2 = (\\sum f_i^2)(\\sum g_i^2) \\iff \\forall i,j \\in s,\\, f_i g_j = f_j g_i$$\n\nThe forward direction: equality means the Lagrange RHS = 0, so the LHS (sum of squares) = 0, so each $f_i g_j - f_j g_i = 0$.\n\nThe reverse direction: all cross-terms vanish means the double sum = 0, so by Lagrange, the CS deficit = 0.",
+    "relatedConcepts": ["Cauchy-Schwarz equality", "proportionality", "cross-term condition"]
+  },
+  {
+    "lineStart": 115,
+    "lineEnd": 133,
+    "type": "insight",
+    "content": "**Proportionality from Cross-Terms**:\n\nThe condition $f_i g_j = f_j g_i$ for all $i, j$ means all $2 \\times 2$ minors of the matrix $(f | g)$ vanish, i.e., $f$ and $g$ have rank $\\leq 1$.\n\nIf some $g_k \\neq 0$, then $f_i = (f_k / g_k) \\cdot g_i$ for all $i$: divide $f_i g_k = f_k g_i$ by $g_k$.\n\nThis is the classical proportionality condition: $f = c \\cdot g$ where $c = f_k / g_k$.",
+    "relatedConcepts": ["proportionality", "linear dependence", "rank-1 condition"]
+  },
+  {
+    "lineStart": 143,
+    "lineEnd": 154,
+    "type": "keyStep",
+    "content": "**Inner Product Space Equality**:\n\n$$\\|\\langle u, v \\rangle\\| = \\|u\\| \\cdot \\|v\\| \\iff \\exists c \\in \\mathbb{R},\\, u = c \\cdot v$$\n\nThis is the abstract version of the finite-sum result. Uses Mathlib's `norm_inner_eq_norm_iff`, which gives $\\exists r \\neq 0,\\, r \\cdot u = v$. We invert to get $u = r^{-1} \\cdot v$.\n\nThe reverse direction expands $\\langle c \\cdot v, v \\rangle = c \\cdot \\|v\\|^2$ and uses the norm-smul identity.",
+    "relatedConcepts": ["inner product space", "Cauchy-Schwarz equality", "scalar multiple", "norm_inner_eq_norm_iff"]
+  }
+]
