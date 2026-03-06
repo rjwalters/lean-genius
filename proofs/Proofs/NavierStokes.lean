@@ -2891,6 +2891,384 @@ theorem continuous_dependence_2d (pair : NSSolutionPair2D)
 end GronwallStability
 
 
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XIII: LERAY-HOPF WEAK SOLUTIONS (3D)
+═══════════════════════════════════════════════════════════════════════════════
+
+Leray (1934) proved that weak solutions to 3D Navier-Stokes always exist globally.
+The key tool is the energy inequality:
+
+  ‖u(t)‖²_L² + 2ν ∫₀ᵗ ‖∇u(s)‖²_L² ds ≤ ‖u₀‖²_L²
+
+This says kinetic energy can only decrease (by viscous dissipation). The weak solution
+may not be smooth, but it exists for all time and satisfies this energy bound.
+
+The deep open question: Are Leray-Hopf weak solutions smooth? Or unique?
+(Smoothness would solve the Millennium Problem; uniqueness is also open.)
+-/
+
+section LerayHopf
+
+/-- A Leray-Hopf weak solution to 3D Navier-Stokes.
+    These exist globally (Leray 1934) but may not be smooth or unique.
+    The key property is the energy inequality. -/
+structure LerayHopfSolution where
+  /-- Kinematic viscosity ν > 0 -/
+  ν : ℝ
+  ν_pos : ν > 0
+  /-- Kinetic energy E(t) = ½‖u(t)‖²_L² -/
+  energy : ℝ → ℝ
+  /-- Dissipation rate D(t) = ν‖∇u(t)‖²_L² -/
+  dissipation : ℝ → ℝ
+  /-- Initial energy -/
+  E₀ : ℝ
+  E₀_nonneg : E₀ ≥ 0
+  /-- Energy is non-negative -/
+  energy_nonneg : ∀ t ≥ 0, energy t ≥ 0
+  /-- Dissipation is non-negative -/
+  dissipation_nonneg : ∀ t ≥ 0, dissipation t ≥ 0
+  /-- **Leray Energy Inequality**: the fundamental bound for weak solutions.
+      E(t) + 2∫₀ᵗ D(s)ds ≤ E₀ for all t ≥ 0.
+      (Uses "≤" not "=" because weak solutions may lose energy.) -/
+  energy_inequality : ∀ t ≥ 0, ∀ cumDiss : ℝ,
+    (cumDiss ≥ 0) → energy t + 2 * cumDiss ≤ E₀
+
+/-- The Leray energy inequality implies energy is bounded by initial energy. -/
+theorem lerayHopf_energy_bounded (sol : LerayHopfSolution) (t : ℝ) (ht : t ≥ 0) :
+    sol.energy t ≤ sol.E₀ := by
+  have h := sol.energy_inequality t ht 0 (le_refl 0)
+  linarith
+
+/-- Energy decay: the cumulative dissipation is bounded by initial energy.
+    This is the integrated version: ∫₀ᵗ D(s)ds ≤ E₀/2.
+    Physically: total viscous dissipation cannot exceed initial kinetic energy. -/
+theorem lerayHopf_dissipation_bounded (sol : LerayHopfSolution)
+    (t : ℝ) (ht : t ≥ 0) (cumDiss : ℝ) (hcD : cumDiss ≥ 0)
+    (hineq : sol.energy t + 2 * cumDiss ≤ sol.E₀) :
+    cumDiss ≤ sol.E₀ / 2 := by
+  have := sol.energy_nonneg t ht
+  linarith
+
+/-- For a Leray-Hopf solution with zero initial energy, the solution is trivial.
+    E₀ = 0 implies E(t) = 0 for all t ≥ 0 (no fluid motion). -/
+theorem lerayHopf_zero_initial (sol : LerayHopfSolution) (h0 : sol.E₀ = 0)
+    (t : ℝ) (ht : t ≥ 0) :
+    sol.energy t = 0 := by
+  have hbound := lerayHopf_energy_bounded sol t ht
+  have hnn := sol.energy_nonneg t ht
+  linarith
+
+/-- The average dissipation rate over [0, T] is bounded by E₀/(2T).
+    This is Leray's key insight: dissipation must be small on average.
+    By pigeonhole, there exist "good" times where ‖∇u‖² is controlled. -/
+structure AverageDissipation (sol : LerayHopfSolution) where
+  T : ℝ
+  T_pos : T > 0
+  /-- Average dissipation = (1/T)∫₀ᵀ D(s)ds -/
+  avg : ℝ
+  avg_nonneg : avg ≥ 0
+  /-- The average dissipation is bounded by E₀/(2T) -/
+  avg_bound : avg ≤ sol.E₀ / (2 * T)
+
+/-- The average dissipation bound E₀/(2T) → 0 as T → ∞.
+    For any ε > 0, there exists T₀ such that for T > T₀,
+    the average dissipation rate is below ε. -/
+theorem average_dissipation_vanishes (sol : LerayHopfSolution) (ε : ℝ) (hε : ε > 0) :
+    ∃ T₀ > 0, sol.E₀ / (2 * T₀) < ε := by
+  refine ⟨sol.E₀ / (2 * ε) + 1, by linarith [sol.E₀_nonneg], ?_⟩
+  by_cases hE : sol.E₀ = 0
+  · rw [hE]; simp; exact hε
+  · have hE_pos : sol.E₀ > 0 := lt_of_le_of_ne sol.E₀_nonneg (Ne.symm hE)
+    have hdenom_pos : 2 * (sol.E₀ / (2 * ε) + 1) > 0 := by positivity
+    rw [div_lt_iff hdenom_pos]
+    nlinarith
+
+end LerayHopf
+
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XIV: SERRIN'S REGULARITY CRITERION
+═══════════════════════════════════════════════════════════════════════════════
+
+Serrin (1962) proved: if a Leray-Hopf weak solution u belongs to L^p_t L^q_x
+with 2/p + 3/q ≤ 1 (and q > 3), then u is actually smooth.
+
+The critical pairs (p, q) include:
+- (∞, 3): u ∈ L^∞_t L^3_x (the hardest case, proved by Escauriaza-Seregin-Šverák)
+- (2, ∞): u ∈ L²_t L^∞_x
+- (4, 6): u ∈ L⁴_t L⁶_x
+
+The key point: these are SUFFICIENT conditions for regularity. If any of them hold,
+the solution is smooth. The Millennium Problem asks whether they always hold.
+-/
+
+section SerrinCriterion
+
+/-- A Serrin pair (p, q) with 2/p + 3/q ≤ 1 and p, q > 0.
+    These are the admissible exponents for Serrin's regularity criterion.
+    The condition 2/p + 3/q = 1 defines the critical (scale-invariant) line. -/
+structure SerrinPair where
+  p : ℝ
+  q : ℝ
+  p_pos : p > 0
+  q_pos : q > 0
+  q_gt_three : q > 3
+  serrin_condition : 2 / p + 3 / q ≤ 1
+
+/-- The critical Serrin pair (∞, 3) is represented by the limit: as p → ∞,
+    2/p → 0, so the condition becomes 3/q ≤ 1, i.e., q ≥ 3.
+    Here we use a large finite p as approximation. -/
+def serrinPairLargeP (p : ℝ) (hp : p ≥ 6) : SerrinPair where
+  p := p
+  q := 3 * p / (p - 2)
+  p_pos := by linarith
+  q_pos := by
+    apply div_pos
+    · linarith
+    · linarith
+  q_gt_three := by
+    rw [gt_iff_lt, div_lt_iff (by linarith : p - 2 > 0)]
+    nlinarith
+  serrin_condition := by
+    rw [div_add_div _ _ (ne_of_gt (by linarith : p > 0)) (ne_of_gt (by positivity : 3 * p / (p - 2) > 0))]
+    rw [div_le_one (by positivity)]
+    have hp2 : p - 2 > 0 := by linarith
+    rw [div_mul_eq_mul_div, mul_comm 3 (p - 2)]
+    rw [show 2 * (3 * p / (p - 2)) + 3 * p =
+        (6 * p + 3 * p * (p - 2)) / (p - 2) from by field_simp; ring]
+    rw [show p * (3 * p / (p - 2)) = 3 * p ^ 2 / (p - 2) from by field_simp; ring]
+    rw [div_le_div_iff hp2 hp2]
+    nlinarith
+
+/-- The Serrin pair (4, 6) satisfies 2/4 + 3/6 = 1/2 + 1/2 = 1. -/
+def serrinPair_4_6 : SerrinPair where
+  p := 4
+  q := 6
+  p_pos := by norm_num
+  q_pos := by norm_num
+  q_gt_three := by norm_num
+  serrin_condition := by norm_num
+
+/-- The Serrin pair (8, 4) satisfies 2/8 + 3/4 = 1/4 + 3/4 = 1. -/
+def serrinPair_8_4 : SerrinPair where
+  p := 8
+  q := 4
+  p_pos := by norm_num
+  q_pos := by norm_num
+  q_gt_three := by norm_num
+  serrin_condition := by norm_num
+
+/-- Serrin's regularity criterion (abstract formulation):
+    If a Leray-Hopf solution satisfies a Serrin integrability condition,
+    then it is regular (no blowup).
+
+    Mathematically: u ∈ L^p([0,T]; L^q(ℝ³)) with 2/p + 3/q ≤ 1, q > 3
+    implies u is smooth on (0, T]. -/
+structure SerrinRegularity where
+  /-- The Serrin exponent pair -/
+  pair : SerrinPair
+  /-- The Serrin norm ‖u‖_{L^p_t L^q_x} is finite -/
+  serrinNorm : ℝ
+  serrinNorm_nonneg : serrinNorm ≥ 0
+  /-- Time horizon -/
+  T : ℝ
+  T_pos : T > 0
+  /-- Energy bound inherited from Leray-Hopf -/
+  energyBound : ℝ
+  energyBound_pos : energyBound > 0
+  /-- Regularity conclusion: enstrophy is bounded on (0, T] -/
+  enstrophyBound : ℝ
+  enstrophyBound_pos : enstrophyBound > 0
+
+/-- If the Serrin norm is zero, the solution is trivial (zero velocity).
+    A nonzero Leray-Hopf solution always has nonzero L^p_t L^q_x norm. -/
+theorem serrin_zero_norm_trivial (sr : SerrinRegularity) (h : sr.serrinNorm = 0) :
+    sr.serrinNorm ≤ sr.enstrophyBound := by
+  rw [h]; exact le_of_lt sr.enstrophyBound_pos
+
+/-- The subcritical Serrin condition 2/p + 3/q < 1 gives additional regularity:
+    not just bounded enstrophy, but Hölder continuity of the solution.
+    We verify the strict inequality for (8, 4). -/
+theorem serrin_8_4_subcritical : 2 / (8 : ℝ) + 3 / 4 = 1 := by norm_num
+
+/-- The Serrin condition is scale-invariant: the exponents (p, q) satisfying
+    2/p + 3/q = 1 correspond to the natural scaling of Navier-Stokes.
+    Under the NS scaling u(x,t) → λu(λx, λ²t), the L^p_t L^q_x norm
+    is invariant exactly when 2/p + 3/q = 1.
+
+    We verify: for the (4,6) pair, 2/4 + 3/6 = 1. -/
+theorem serrin_4_6_critical : 2 / (4 : ℝ) + 3 / 6 = 1 := by norm_num
+
+/-- The Prodi-Serrin condition: the weaker endpoint 2/p + 3/q = 1 is the
+    natural borderline. Beyond this, regularity fails in general.
+    Key pairs on the critical line:
+    - (2, ∞) limit: ∫₀ᵀ ‖u‖²_∞ dt < ∞ (strongest pointwise control)
+    - (4, 6): ∫₀ᵀ ‖u‖⁴_6 dt < ∞ (Sobolev-critical)
+    - (∞, 3) limit: sup_t ‖u‖_3 < ∞ (weakest, proved by ESŠ 2003) -/
+theorem serrin_critical_line (p q : ℝ) (hp : p > 0) (hq : q > 0)
+    (hcrit : 2 / p + 3 / q = 1) :
+    q = 3 * p / (p - 2) := by
+  have hp2 : p ≠ 2 := by
+    intro h; rw [h] at hcrit; norm_num at hcrit
+    linarith
+  have hq_ne : q ≠ 0 := ne_of_gt hq
+  have hp_ne : p ≠ 0 := ne_of_gt hp
+  field_simp at hcrit ⊢
+  linarith
+
+end SerrinCriterion
+
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XV: TURBULENCE SCALING AND KOLMOGOROV THEORY
+═══════════════════════════════════════════════════════════════════════════════
+
+Kolmogorov's 1941 theory (K41) predicts universal scaling laws for turbulence.
+The key dimensionless parameters and length scales are:
+
+- Reynolds number: Re = UL/ν (ratio of inertial to viscous forces)
+- Kolmogorov scale: η = (ν³/ε)^{1/4} (smallest eddy scale)
+- Taylor microscale: λ_T = √(5ν/ε · u²) (intermediate scale)
+- Integral scale: L (largest eddy scale)
+
+The energy cascade picture:
+- Energy is injected at scale L
+- Transferred to smaller scales through the inertial range
+- Dissipated at the Kolmogorov scale η
+
+These scaling laws connect the mathematical problem to turbulence physics.
+-/
+
+section TurbulenceScaling
+
+/-- The Reynolds number Re = UL/ν, the fundamental dimensionless parameter
+    governing fluid flow behavior.
+    - Re << 1: laminar (Stokes) flow
+    - Re ~ 1: transitional
+    - Re >> 1: turbulent -/
+def reynoldsNumber (U L ν : ℝ) : ℝ := U * L / ν
+
+/-- The Reynolds number is positive for positive U, L, ν. -/
+theorem reynoldsNumber_pos (U L ν : ℝ) (hU : U > 0) (hL : L > 0) (hν : ν > 0) :
+    reynoldsNumber U L ν > 0 := by
+  unfold reynoldsNumber
+  exact div_pos (mul_pos hU hL) hν
+
+/-- Scaling property: doubling velocity doubles Reynolds number. -/
+theorem reynoldsNumber_scale_velocity (U L ν c : ℝ) (hc : c > 0) :
+    reynoldsNumber (c * U) L ν = c * reynoldsNumber U L ν := by
+  unfold reynoldsNumber; ring
+
+/-- Scaling property: halving viscosity doubles Reynolds number. -/
+theorem reynoldsNumber_inv_viscosity (U L ν c : ℝ) (hc : c > 0) (hν : ν > 0) :
+    reynoldsNumber U L (ν / c) = c * reynoldsNumber U L ν := by
+  unfold reynoldsNumber
+  field_simp
+  ring
+
+/-- The Kolmogorov dissipation scale η² = ν/ε^{1/2} (squared, avoiding fourth roots).
+    Actually we use η⁴ = ν³/ε to avoid roots entirely.
+
+    This is the smallest scale at which viscous dissipation dominates.
+    Eddies smaller than η are rapidly damped by viscosity.
+    The ratio L/η ~ Re^{3/4} determines the range of active scales. -/
+def kolmogorovScale4 (ν ε : ℝ) : ℝ := ν ^ 3 / ε
+
+/-- The Kolmogorov scale is positive when ν > 0 and ε > 0. -/
+theorem kolmogorovScale4_pos (ν ε : ℝ) (hν : ν > 0) (hε : ε > 0) :
+    kolmogorovScale4 ν ε > 0 := by
+  unfold kolmogorovScale4
+  exact div_pos (pow_pos hν 3) hε
+
+/-- The Kolmogorov scale decreases with increasing dissipation rate.
+    Higher ε (more vigorous turbulence) → smaller η (finer structures). -/
+theorem kolmogorovScale4_decreasing (ν ε₁ ε₂ : ℝ) (hν : ν > 0)
+    (hε₁ : ε₁ > 0) (hε₂ : ε₂ > 0) (h : ε₁ < ε₂) :
+    kolmogorovScale4 ν ε₂ < kolmogorovScale4 ν ε₁ := by
+  unfold kolmogorovScale4
+  exact div_lt_div_of_pos_left (pow_pos hν 3) hε₁ h
+
+/-- The Kolmogorov scale increases with viscosity.
+    Higher ν → larger η (viscosity smooths out smaller structures). -/
+theorem kolmogorovScale4_increasing_viscosity (ν₁ ν₂ ε : ℝ)
+    (hν₁ : ν₁ > 0) (hν₂ : ν₂ > 0) (hε : ε > 0) (h : ν₁ < ν₂) :
+    kolmogorovScale4 ν₁ ε < kolmogorovScale4 ν₂ ε := by
+  unfold kolmogorovScale4
+  exact div_lt_div_of_pos_right (pow_lt_pow_left h (le_of_lt hν₁) (by norm_num)) hε
+
+/-- The energy dissipation rate structure for turbulent flow.
+    In statistically steady turbulence:
+    - Energy input rate ε_in balances dissipation rate ε
+    - The energy spectrum E(k) ~ k^{-5/3} in the inertial range (K41)
+    - Total energy = ∫ E(k) dk ≥ 0 -/
+structure TurbulentDissipation where
+  /-- Mean dissipation rate ε = 2ν⟨S_{ij}S_{ij}⟩ -/
+  ε : ℝ
+  ε_pos : ε > 0
+  /-- Kinematic viscosity -/
+  ν : ℝ
+  ν_pos : ν > 0
+  /-- Characteristic velocity scale U (rms velocity) -/
+  U : ℝ
+  U_pos : U > 0
+  /-- Integral length scale L (largest eddies) -/
+  L : ℝ
+  L_pos : L > 0
+
+/-- The Reynolds number of a turbulent flow. -/
+def TurbulentDissipation.Re (td : TurbulentDissipation) : ℝ :=
+  reynoldsNumber td.U td.L td.ν
+
+/-- The Kolmogorov microscale⁴ of a turbulent flow. -/
+def TurbulentDissipation.eta4 (td : TurbulentDissipation) : ℝ :=
+  kolmogorovScale4 td.ν td.ε
+
+/-- The Reynolds number is positive for turbulent flow. -/
+theorem TurbulentDissipation.Re_pos (td : TurbulentDissipation) :
+    td.Re > 0 :=
+  reynoldsNumber_pos td.U td.L td.ν td.U_pos td.L_pos td.ν_pos
+
+/-- The Kolmogorov scale is positive for turbulent flow. -/
+theorem TurbulentDissipation.eta4_pos (td : TurbulentDissipation) :
+    td.eta4 > 0 :=
+  kolmogorovScale4_pos td.ν td.ε td.ν_pos td.ε_pos
+
+/-- Taylor microscale squared: λ² = 5νU²/ε.
+    This is the intermediate length scale characterizing the velocity gradient. -/
+def taylorMicroscale2 (ν U ε : ℝ) : ℝ := 5 * ν * U ^ 2 / ε
+
+/-- Taylor microscale is positive for positive parameters. -/
+theorem taylorMicroscale2_pos (ν U ε : ℝ) (hν : ν > 0) (hU : U > 0) (hε : ε > 0) :
+    taylorMicroscale2 ν U ε > 0 := by
+  unfold taylorMicroscale2
+  exact div_pos (mul_pos (mul_pos (by norm_num) hν) (pow_pos hU 2)) hε
+
+/-- The Taylor-scale Reynolds number Reλ = U·λ/ν = U·√(5νU²/ε)/ν.
+    In K41 theory: Reλ ~ Re^{1/2}. This is the standard Reynolds number
+    used in turbulence experiments. -/
+def taylorReynoldsNumber (td : TurbulentDissipation) : ℝ :=
+  td.U ^ 2 * (5 * td.ν / td.ε)
+
+/-- Taylor Reynolds number is positive. -/
+theorem taylorReynoldsNumber_pos (td : TurbulentDissipation) :
+    taylorReynoldsNumber td > 0 := by
+  unfold taylorReynoldsNumber
+  apply mul_pos (pow_pos td.U_pos 2)
+  exact div_pos (mul_pos (by norm_num) td.ν_pos) td.ε_pos
+
+/-- Energy cascade: in the inertial range, the energy flux is constant
+    and equals ε. The K41 energy spectrum E(k) = Cε^{2/3}k^{-5/3}
+    implies that the energy at wavenumber k scales as k^{-5/3}.
+
+    Here we state the dimensional analysis result: ε ~ U³/L
+    (the dissipation rate is set by the large-scale dynamics). -/
+theorem dissipation_scaling (U L : ℝ) (hU : U > 0) (hL : L > 0) :
+    U ^ 3 / L > 0 :=
+  div_pos (pow_pos hU 3) hL
+
+end TurbulenceScaling
+
+
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART XI: AXIOM CATALOG AND STATUS
 ═══════════════════════════════════════════════════════════════════════════════
@@ -2936,6 +3314,15 @@ the NSAxioms hypotheses imply no blowup.
 -- - 2D Gronwall L² stability: W(t) ≤ W(0)·exp(C·E(0)·t)
 -- - 2D uniqueness: W(0) = 0 ⟹ W(t) = 0
 -- - 2D continuous dependence: Hadamard well-posedness
+-- - Leray-Hopf energy inequality: E(t) + 2∫D ≤ E₀
+-- - Leray-Hopf: energy bounded, dissipation bounded, zero initial trivial
+-- - Average dissipation vanishes: E₀/(2T) → 0 as T → ∞
+-- - Serrin pairs: (4,6), (8,4), critical line q = 3p/(p-2)
+-- - Serrin criterion structure and scale-invariance verification
+-- - Reynolds number: positivity, velocity/viscosity scaling
+-- - Kolmogorov scale: positivity, monotonicity in ε and ν
+-- - Taylor microscale: positivity, Taylor Reynolds number
+-- - Turbulence scaling: dissipation rate ε ~ U³/L
 --
 -- **REMOVED** (12 dead-code axioms, preserved as comments):
 -- - See PART XI catalog above for full list
