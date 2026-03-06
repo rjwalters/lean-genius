@@ -152,9 +152,11 @@ noncomputable example (f : ℝ → ℝ) : ℝ := ∫ x, f x ∂volume
 /-- Integral of a constant function over a set. -/
 theorem integral_const_on_Icc (a b c : ℝ) (hab : a ≤ b) :
     ∫ x in Icc a b, c = c * (b - a) := by
-  rw [setIntegral_const, Real.volume_Icc]
-  rw [ENNReal.toReal_ofReal (sub_nonneg.mpr hab)]
-  rw [smul_eq_mul, mul_comm]
+  rw [integral_const]
+  have : (volume.restrict (Icc a b)).real univ = b - a := by
+    simp [Measure.real, Measure.restrict_apply_univ, Real.volume_Icc,
+        ENNReal.toReal_ofReal (sub_nonneg.mpr hab)]
+  rw [this, smul_eq_mul, mul_comm]
 
 /-- Linearity of integration: ∫(f + g) = ∫f + ∫g -/
 theorem integral_add_of_integrable {f g : ℝ → ℝ}
@@ -279,8 +281,9 @@ theorem fubini {f : ℝ × ℝ → ℝ}
   -- and the fact that swapping coordinates preserves integrability
   have h2 : ∫ y, ∫ x, f (x, y) ∂volume ∂volume = ∫ p, f p ∂(volume.prod volume) := by
     -- The swap of variables gives us the same product integral
-    have hf_swap : Integrable (f ∘ Prod.swap) (volume.prod volume) :=
-      hf.comp_measurable measurable_swap
+    have hf_swap : Integrable (f ∘ Prod.swap) (volume.prod volume) := by
+      apply Integrable.comp_measurable _ measurable_swap
+      rwa [Measure.prod_swap]
     rw [← integral_prod_swap f]
     exact (integral_prod _ hf_swap).symm
   rw [h1, h2]
@@ -321,6 +324,15 @@ theorem cantor_set_measure_zero :
   -- It's constructed by removing middle thirds, total length removed = 1
   trivial
 
+/-- The integral of the indicator function of a null set is zero.
+    This generalizes the Dirichlet function result to any measure-zero set. -/
+theorem integral_indicator_null_set {s : Set ℝ} (hs : volume s = 0) (f : ℝ → ℝ) :
+    ∫ x, Set.indicator s f x ∂volume = 0 := by
+  apply integral_eq_zero_of_ae
+  have h_ae : ∀ᵐ x ∂volume, x ∉ s := by
+    rw [ae_iff]; simpa using hs
+  exact h_ae.mono fun x hx => Set.indicator_of_notMem hx _
+
 end Completeness
 
 /-!
@@ -351,21 +363,22 @@ theorem bounded_measurable_integrable_on_Icc {f : ℝ → ℝ} {a b : ℝ}
     integrals when they are supported on null sets.
 
     The key insight is that ℚ has measure zero in ℝ, so the indicator
-    function of ℚ is zero almost everywhere, hence its integral is zero. -/
-/-- **Axiom:** The Dirichlet function integral over [0,1] is zero.
+    function of ℚ is zero almost everywhere, hence its integral is zero.
 
-    This follows from:
-    1. ℚ is countable, hence has Lebesgue measure zero in ℝ
-    2. The indicator of ℚ is zero almost everywhere (on the irrationals)
-    3. The integral of an a.e. zero function is zero
-
-    Full verification requires the Mathlib API for `integral_eq_zero_of_ae`. -/
-axiom dirichlet_integral_zero :
-    ∫ x in Icc (0:ℝ) 1, Set.indicator (Set.range (Rat.cast : ℚ → ℝ)) (fun _ => (1:ℝ)) x ∂volume = 0
-
+    **Proof strategy:**
+    1. ℚ is countable → `range Rat.cast` has Lebesgue measure zero (`rationals_measure_zero`)
+    2. Almost every real is irrational → the indicator of ℚ is a.e. zero
+    3. `integral_eq_zero_of_ae` concludes the integral is zero -/
 theorem dirichlet_function_integral :
-    ∫ x in Icc (0:ℝ) 1, Set.indicator (Set.range (Rat.cast : ℚ → ℝ)) (fun _ => (1:ℝ)) x ∂volume = 0 :=
-  dirichlet_integral_zero
+    ∫ x in Icc (0:ℝ) 1, Set.indicator (Set.range (Rat.cast : ℚ → ℝ))
+      (fun _ => (1:ℝ)) x ∂volume = 0 := by
+  apply integral_eq_zero_of_ae
+  -- Almost every real is irrational (ℚ has measure zero)
+  have h_ae : ∀ᵐ x ∂volume, x ∉ Set.range (Rat.cast : ℚ → ℝ) := by
+    rw [ae_iff]
+    simpa using rationals_measure_zero
+  -- Restrict to [0,1] and conclude: indicator of ℚ is zero at irrational points
+  exact (ae_restrict_of_ae h_ae).mono fun x hx => Set.indicator_of_notMem hx _
 
 end RiemannComparison
 

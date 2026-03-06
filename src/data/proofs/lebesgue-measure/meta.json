@@ -18,7 +18,7 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -121,14 +121,14 @@
       "title": "Completeness and Null Sets",
       "startLine": 296,
       "endLine": 324,
-      "summary": "Shows that countable sets have measure zero and applies this to prove $\\mu(\\mathbb{Q}) = 0$. Notes the Cantor set as a famous example of an uncountable null set."
+      "summary": "Shows that countable sets have measure zero and applies this to prove $\\mu(\\mathbb{Q}) = 0$. Proves that the integral of the indicator function of any null set is zero (`integral_indicator_null_set`). Notes the Cantor set as a famous example of an uncountable null set."
     },
     {
       "id": "riemann-comparison",
       "title": "Comparison with Riemann Integration",
       "startLine": 326,
       "endLine": 370,
-      "summary": "Proves that bounded measurable functions on $[a,b]$ are Lebesgue integrable. Axiomatizes the Dirichlet function integral $\\int_{[0,1]} \\mathbf{1}_{\\mathbb{Q}} = 0$ as a demonstration that Lebesgue integration handles functions that are not Riemann integrable."
+      "summary": "Proves that bounded measurable functions on $[a,b]$ are Lebesgue integrable. Proves that the Dirichlet function integral $\\int_{[0,1]} \\mathbf{1}_{\\mathbb{Q}} = 0$ using the fact that $\\mathbb{Q}$ has measure zero and `integral_eq_zero_of_ae`, demonstrating that Lebesgue integration handles functions that are not Riemann integrable."
     },
     {
       "id": "applications",
@@ -142,7 +142,7 @@
     "summary": "This formalization demonstrates the core infrastructure of Lebesgue measure theory as built in Mathlib: the measure itself (via Haar measure on $\\mathbb{R}$), its key properties (translation invariance, interval measure, null sets), and the three great convergence theorems (monotone, dominated, Fubini). The proofs leverage Mathlib's deep measure theory library, showing how formal mathematics can present these foundational results with full rigor.",
     "implications": "Lebesgue measure and integration underpin virtually all of modern analysis: probability theory rests on measure spaces (Kolmogorov's axioms), functional analysis uses $L^p$ spaces built from the Lebesgue integral, Fourier analysis requires $L^2$ completeness, and PDE theory relies on Sobolev spaces defined via weak derivatives and Lebesgue integrability. The dominated convergence theorem alone is invoked thousands of times across mathematical research, making it arguably the single most useful theorem in analysis.",
     "openQuestions": [
-      "Can the Dirichlet function integral axiom be replaced by a full proof using Mathlib's `integral_eq_zero_of_ae` and the countability of $\\mathbb{Q}$?",
+      "RESOLVED: The Dirichlet function integral axiom has been replaced by a full proof using Mathlib's `integral_eq_zero_of_ae`, `ae_restrict_of_ae`, and the countability of $\\mathbb{Q}$.",
       "Can Holder's inequality be formally stated and proved rather than axiomatized as `True`?",
       "How does Lebesgue measure generalize to infinite-dimensional spaces, where no translation-invariant $\\sigma$-finite measure exists (a result relevant to path integrals in quantum mechanics)?",
       "What is the measure-theoretic relationship between the Cantor set (uncountable, measure zero) and sets of positive measure but empty interior?"
