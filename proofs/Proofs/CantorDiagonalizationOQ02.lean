@@ -190,7 +190,7 @@ theorem countable_sup_lt_omega1 (f : ℕ → Ordinal.{0})
   have hlt : #(ℕ) < omega1.cof := by
     rw [hcof, Cardinal.mk_nat]
     exact aleph0_lt_aleph1
-  exact Ordinal.iSup_lt_ord hf hlt
+  exact Ordinal.iSup_lt_ord hlt hf
 
 /-- **The Cantor Diagonal Argument for Countable Ordinals**:
 
