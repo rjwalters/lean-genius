@@ -24,7 +24,10 @@
       "niPairCount = 0 when a₁ = a₂ (lgv_same_start)",
       "niPairCount = 0 when b₁ = b₂ (lgv_same_end)",
       "swapTails involution infrastructure",
-      "LGV lemma edge cases (a₁=a₂, b₁=b₂)"
+      "LGV lemma edge cases (a₁=a₂, b₁=b₂)",
+      "lgv_crossing_zero: all crossing pairs intersect (via crossing_lemma)",
+      "lgv_zero_east_overlap: niPairCount=0 for m=0 with overlapping ranges",
+      "lgv_lemma_2x2 m=0 case proved"
     ],
     "open": [
       "LGV 2×2 Lindström involution (main case: a₁ < a₂ < b₁ < b₂)"
@@ -34,40 +37,46 @@
   "currentState": {
     "phase": "PROVING",
     "since": "2026-03-06T11:13:00.000Z",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Lindström involution for lgv_lemma_2x2",
     "blockers": [
-      "Need first-intersection-point definition and properties",
-      "Need to show tail swap at intersection maps identity pairs to crossing pairs"
+      "Need splitAtVertex function for splitting paths at arbitrary lattice points",
+      "Need firstIntersection definition and well-foundedness proof"
     ],
     "nextAction": "Implement the Lindström involution bijection for the main case.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "File has 0 axioms, 1 sorry. Fixed bug in lgv_lemma_2x2 (missing a₂ ≤ b₁ hypothesis). Added lgv_same_end lemma. Structured proof with edge cases proved. Extensive involution infrastructure (swapTails, involutive, northSteps_swapTails) already in place.",
+    "progressSummary": "File has 0 axioms, 1 sorry. Proved lgv_crossing_zero (all crossing pairs intersect), lgv_zero_east_overlap (m=0 overlap forces intersection), m=0 case of lgv_lemma_2x2. Extensive involution infrastructure in place. Only Lindström involution for m≥1 case remains.",
     "builtItems": [
       "BallotProblemOQ03.lean: 0 axioms, 1 sorry (LGV involution)",
       "lgv_same_end: niPairCount = 0 when endpoints match",
       "Fixed lgv_lemma_2x2: added missing hypothesis a₂ ≤ b₁",
-      "Edge cases proved: a₁ = a₂ and b₁ = b₂"
+      "Edge cases proved: a₁ = a₂ and b₁ = b₂",
+      "lgv_crossing_zero: all crossing pairs are intersecting (uses crossing_lemma)",
+      "lgv_zero_east_overlap: niPairCount=0 when m=0 and y-ranges overlap",
+      "lgv_lemma_2x2 m=0 case: both lgvDet and niPairCount equal 0"
     ],
     "insights": [
       "Natural number subtraction bug: b₁-a₂ wraps to 0 when b₁ < a₂, giving wrong path count. Need a₂ ≤ b₁ hypothesis.",
       "The Lindström involution requires defining 'first shared lattice point' — the smallest column k where both paths visit the same integer y-value.",
       "swapTails infrastructure is complete and involutive (swapTails_involutive proved)",
       "northSteps_swapTails_fst computes the North steps after tail swap, confirming identity→crossing mapping",
-      "At intersection column k: y₁ + colEntry(l₁, k) = y₂ + colEntry(l₂, k) ensures tail swap produces crossing pair"
+      "At intersection column k: y₁ + colEntry(l₁, k) = y₂ + colEntry(l₂, k) ensures tail swap produces crossing pair",
+      "m=0 case: when m=0, all paths are pure North sequences with no East steps. If y-ranges overlap at column 0, paths share a point. lgvDet is also 0 by Nat subtraction cancellation.",
+      "lgv_crossing_zero reduces the involution problem: crossing pairs (A₁→B₂, A₂→B₁) are ALL intersecting when a₁<a₂ and b₁<b₂, so the involution only needs to biject intersecting identity pairs ↔ crossing pairs.",
+      "splitAtVertex (finer than splitAfterEast) is needed for the involution: must split at a shared lattice point within a column, not just at column boundaries."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Define firstIntersection: smallest k where colYRange l₁ y₁ k ∩ colYRange l₂ y₂ k ≠ ∅",
-      "Prove swap at firstIntersection maps identity intersecting → crossing",
-      "Prove bijection: intersecting identity pairs ↔ all crossing pairs",
-      "Conclude: niPairCount = total identity - all crossing = lgvDet"
+      "Define splitAtVertex: split a path at an arbitrary lattice point (column k, y-value y)",
+      "Define firstIntersection: smallest (k, y) where both paths visit the same point",
+      "Prove swapTails at firstIntersection gives a bijection: intersecting identity ↔ all crossing",
+      "Conclude lgv_lemma_2x2 for m≥1 case"
     ]
   },
   "approaches": [
@@ -99,7 +108,7 @@
     "mathlib": []
   },
   "started": "2026-02-26T17:08:50.304Z",
-  "lastUpdate": "2026-03-06T11:30:00.000Z",
+  "lastUpdate": "2026-03-06T12:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
