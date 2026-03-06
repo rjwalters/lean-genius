@@ -156,14 +156,19 @@ A key consequence of the mean value inequality: if ‖f'(x)‖ ≤ L for
 all x, then f is L-Lipschitz: ‖f(x) - f(y)‖ ≤ L · ‖x - y‖.
 -/
 
-/-- **Derivative Bound Implies Lipschitz**: If f has derivative bounded by L
-    on a convex set, then f is L-Lipschitz on that set. -/
-axiom deriv_bound_implies_lipschitz {f : ℝ → E} {s : Set ℝ}
-    {L : ℝ} (hL : 0 ≤ L)
+/-- **Derivative Bound Implies Lipschitz**: If f has Fréchet derivative bounded
+    by L on a convex set, then f is L-Lipschitz on that set.
+
+    For f : ℝ → E, the Fréchet derivative fderivWithin at x is a continuous
+    linear map ℝ →L[ℝ] E whose operator norm equals ‖derivWithin f s x‖.
+    Uses Mathlib's Convex.lipschitzOnWith_of_nnnorm_fderivWithin_le. -/
+theorem deriv_bound_implies_lipschitz {f : ℝ → E} {s : Set ℝ}
+    {L : NNReal}
     (hs : Convex ℝ s)
     (hf : DifferentiableOn ℝ f s)
-    (hbound : ∀ x ∈ s, ‖deriv f x‖ ≤ L) :
-    LipschitzOnWith ⟨L, hL⟩ f s
+    (hbound : ∀ x ∈ s, ‖fderivWithin ℝ f s x‖₊ ≤ L) :
+    LipschitzOnWith L f s :=
+  Convex.lipschitzOnWith_of_nnnorm_fderivWithin_le hf hbound hs
 
 /-- Zero derivative implies constant function (vector-valued version).
     This is a consequence of the mean value inequality with C = 0. -/
@@ -254,13 +259,18 @@ variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
 
 /-- **General Mean Value Inequality (Banach spaces)**:
     For f : E → F differentiable on a convex set with ‖Df‖ ≤ C,
-    we have ‖f(b) - f(a)‖ ≤ C · ‖b - a‖. -/
-axiom banach_mean_value_inequality (f : E → F) {s : Set E}
+    we have ‖f(b) - f(a)‖ ≤ C · ‖b - a‖.
+
+    Uses the Fréchet derivative within the set (fderivWithin), which is the
+    correct notion when f is only known to be differentiable on s.
+    Uses Mathlib's Convex.norm_image_sub_le_of_norm_fderivWithin_le. -/
+theorem banach_mean_value_inequality (f : E → F) {s : Set E}
     (hs : Convex ℝ s) {C : ℝ}
     (hf : DifferentiableOn ℝ f s)
-    (hC : ∀ x ∈ s, ‖fderiv ℝ f x‖ ≤ C)
+    (hC : ∀ x ∈ s, ‖fderivWithin ℝ f s x‖ ≤ C)
     {a b : E} (ha : a ∈ s) (hb : b ∈ s) :
-    ‖f b - f a‖ ≤ C * ‖b - a‖
+    ‖f b - f a‖ ≤ C * ‖b - a‖ :=
+  Convex.norm_image_sub_le_of_norm_fderivWithin_le hf hC hs ha hb
 
 -- ============================================================
 -- PART 8: Uniqueness of ODEs
@@ -332,20 +342,85 @@ example : True := trivial  -- placeholder for the general principle
 2. **Scalar as Special Case**: When E = ℝ, reduces to |f(x)-f(a)| ≤ C·(x-a)
 3. **Classical MVT**: Strictly stronger for ℝ→ℝ (gives equality)
 4. **Counterexample**: Circular motion shows equality fails for vectors
-5. **Lipschitz**: Derivative bound → Lipschitz (axiomatized)
+5. **Lipschitz**: Derivative bound → Lipschitz (proved from Mathlib)
 6. **Zero Derivative**: f' = 0 → f constant (proved for vectors)
 7. **Contraction Bounds**: MVT inequality as contraction tool
 8. **Displacement Bound**: ‖f(T) - f(0)‖ ≤ C·T
-9. **Banach Spaces**: General f : E → F mean value inequality (axiomatized)
+9. **Banach Spaces**: General f : E → F mean value inequality (proved from Mathlib)
 10. **ODE Connection**: Foundation for Picard-Lindelöf uniqueness
 
 This answers Open Question #3 from the MVT gallery:
 "Vector-valued MVT generalization (mean value inequality)"
 -/
 
+-- ============================================================
+-- PART 10: Additional Banach Space Results
+-- ============================================================
+
+/-
+### Banach Space MVT with DifferentiableAt
+
+When f is differentiable at each point of a convex set (not just
+differentiable on/within the set), we can use `fderiv` directly.
+-/
+
+/-- **Banach MVT with pointwise differentiability**:
+    For f : E → F differentiable at each point of a convex set,
+    with ‖fderiv ℝ f x‖ ≤ C, we have ‖f(b) - f(a)‖ ≤ C · ‖b - a‖.
+
+    This version uses `DifferentiableAt` (stronger hypothesis than
+    `DifferentiableOn`) but gets to use `fderiv` instead of `fderivWithin`.
+    Uses Mathlib's Convex.norm_image_sub_le_of_norm_fderiv_le. -/
+theorem banach_mvt_differentiableAt (f : E → F) {s : Set E}
+    (hs : Convex ℝ s) {C : ℝ}
+    (hf : ∀ x ∈ s, DifferentiableAt ℝ f x)
+    (hC : ∀ x ∈ s, ‖fderiv ℝ f x‖ ≤ C)
+    {a b : E} (ha : a ∈ s) (hb : b ∈ s) :
+    ‖f b - f a‖ ≤ C * ‖b - a‖ :=
+  Convex.norm_image_sub_le_of_norm_fderiv_le hf hC hs ha hb
+
+/-- **Banach MVT with explicit derivative function**:
+    Version using HasFDerivWithinAt with an explicit derivative function f'.
+    Uses Mathlib's Convex.norm_image_sub_le_of_norm_hasFDerivWithin_le. -/
+theorem banach_mvt_hasFDerivWithinAt {f : E → F} {f' : E → E →L[ℝ] F}
+    {s : Set E} (hs : Convex ℝ s) {C : ℝ}
+    (hf : ∀ x ∈ s, HasFDerivWithinAt f (f' x) s x)
+    (hC : ∀ x ∈ s, ‖f' x‖ ≤ C)
+    {a b : E} (ha : a ∈ s) (hb : b ∈ s) :
+    ‖f b - f a‖ ≤ C * ‖b - a‖ :=
+  Convex.norm_image_sub_le_of_norm_hasFDerivWithin_le hf hC hs ha hb
+
+/-- **Zero Fréchet derivative implies constant on convex set**:
+    The vector-valued generalization: if Df = 0 on a convex set, f is constant.
+    This is the Banach space version of constant_of_deriv_zero_vector. -/
+theorem banach_constant_of_fderiv_zero {f : E → F} {s : Set E}
+    (hs : Convex ℝ s)
+    (hf : DifferentiableOn ℝ f s)
+    (h0 : ∀ x ∈ s, fderivWithin ℝ f s x = 0)
+    {a b : E} (ha : a ∈ s) (hb : b ∈ s) :
+    f b = f a := by
+  have hbound : ∀ x ∈ s, ‖fderivWithin ℝ f s x‖ ≤ 0 := by
+    intro x hx; rw [h0 x hx]; simp
+  have hmvt := banach_mean_value_inequality f hs hf hbound ha hb
+  rw [zero_mul] at hmvt
+  exact sub_eq_zero.mp (norm_eq_zero.mp (le_antisymm hmvt (norm_nonneg _)))
+
+/-- **Lipschitz with pointwise DifferentiableAt version**:
+    Uses Mathlib's Convex.lipschitzOnWith_of_nnnorm_fderiv_le. -/
+theorem lipschitz_of_nnnorm_fderiv_le {f : E → F} {s : Set E}
+    {L : NNReal}
+    (hs : Convex ℝ s)
+    (hf : ∀ x ∈ s, DifferentiableAt ℝ f x)
+    (hbound : ∀ x ∈ s, ‖fderiv ℝ f x‖₊ ≤ L) :
+    LipschitzOnWith L f s :=
+  Convex.lipschitzOnWith_of_nnnorm_fderiv_le hf hbound hs
+
 #check @mean_value_inequality
 #check @classical_mvt_gives_equality
 #check @constant_of_deriv_zero_vector
 #check @displacement_bound
+#check @banach_mean_value_inequality
+#check @banach_mvt_differentiableAt
+#check @banach_constant_of_fderiv_zero
 
 end MeanValueTheoremOQ03
