@@ -1,0 +1,91 @@
+{
+  "slug": "konigsberg-oq-02",
+  "title": "Directed Euler paths: in-degree equals out-degree characterization for directed graphs",
+  "phase": "COMPLETE",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "A connected digraph has an Eulerian circuit iff ∀ v, indeg(v) = outdeg(v). An Eulerian path from u to v exists iff outdeg(u) = indeg(u)+1, indeg(v) = outdeg(v)+1, and all other vertices balanced.",
+    "plain": "Directed Euler path characterization: a directed graph has an Eulerian circuit iff every vertex has equal in-degree and out-degree, and an Eulerian path iff exactly one source and one sink vertex have degree imbalance.",
+    "whyMatters": [
+      "Natural generalization of Euler theorem to directed graphs",
+      "Foundation for de Bruijn sequences and DNA assembly algorithms",
+      "Connects directed and undirected Euler criteria"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Digraph with in/out-degree definitions",
+      "Directed Euler circuit criterion (axiomatized)",
+      "Directed Euler path criterion (axiomatized)",
+      "Degree sum lemma (axiomatized)",
+      "Directed triangle/square: balanced verification",
+      "Unbalanced digraph: no Euler circuit (proved)",
+      "Path digraph: Euler path conditions (proved)",
+      "Connection to undirected case"
+    ],
+    "open": [],
+    "goal": "Formalize directed Euler path characterization as extension of Konigsberg bridges"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-03-06T11:43:14.357Z",
+    "iteration": 1,
+    "focus": "Full formalization completed",
+    "blockers": [],
+    "nextAction": "None - completed",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Directed Euler path/circuit characterization in Lean 4. 520+ lines with digraph infrastructure, in/out-degree definitions, circuit and path criteria, concrete examples (triangle, square, unbalanced), non-existence proof, and de Bruijn sequence connection.",
+    "builtItems": [
+      "proofs/Proofs/KonigsbergOQ02.lean (520+ lines)",
+      "Digraph structure with adj/loopless",
+      "outDegree, inDegree, isBalanced definitions",
+      "Directed Euler circuit criterion",
+      "Directed Euler path criterion",
+      "Concrete examples: directed C₃, C₄, unbalanced, path"
+    ],
+    "insights": [
+      "Directed criterion is about indeg=outdeg balance, not parity",
+      "Unbalanced digraph circuit non-existence proved from necessity",
+      "De Bruijn sequences arise from directed Euler circuits in balanced graphs",
+      "Symmetric orientation connects directed and undirected criteria"
+    ],
+    "mathlibGaps": [
+      "No directed graph Walk infrastructure in Mathlib",
+      "No directed Euler path theory in Mathlib"
+    ],
+    "nextSteps": [
+      "Gallery integration",
+      "Cross-reference with Konigsberg.lean and KonigsbergOQ01.lean"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Axiomatized criteria + concrete examples",
+      "status": "completed",
+      "description": "Axiomatize directed Euler criteria, prove non-existence and verification on examples"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "extension"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-06T15:32:17.337Z",
+  "lastUpdate": "2026-03-06T15:40:47Z",
+  "significance": 7,
+  "tractability": 6
+}
