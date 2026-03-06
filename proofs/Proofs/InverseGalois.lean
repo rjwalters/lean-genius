@@ -7,6 +7,8 @@ import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.SpecificGroups.Alternating
 import Mathlib.FieldTheory.AbelRuffini
 import Mathlib.Algebra.Group.Equiv.Basic
+import Mathlib.RingTheory.Polynomial.Eisenstein.Criterion
+import Mathlib.RingTheory.Polynomial.GaussLemma
 
 /-
 # The Inverse Galois Problem
@@ -360,11 +362,68 @@ the Galois group of some specific polynomial over ℚ.
 This is complementary: IGP asks for EXISTENCE of a Galois extension with group G;
 Abel-Ruffini asks about STRUCTURE of the Galois group when polynomial is solvable.
 -/
+/-
+  **Proof that X⁵ - 2 is irreducible over ℚ**
+
+  We use Eisenstein's criterion at p = 2:
+  - All non-leading coefficients (just the constant -2) are divisible by 2
+  - The constant term -2 is NOT divisible by 4 = 2²
+  - The leading coefficient 1 is not divisible by 2
+  - The polynomial is monic, hence primitive
+
+  By Eisenstein, X⁵ - 2 is irreducible over ℤ.
+  By Gauss's lemma (primitive + ℤ-irreducible ⟹ ℚ-irreducible), it is irreducible over ℚ.
+
+  Note: The previous version used x⁵ - 5x + 12 (whose Galois group is A₅), but
+  the theorem statement only requires the existence of ANY irreducible quintic.
+  X⁵ - 2 is simpler to formalize and equally demonstrates the connection to
+  Abel-Ruffini (its Galois group is the Frobenius group F₂₀ ≅ ℤ/5ℤ ⋊ (ℤ/5ℤ)ˣ).
+-/
+
+/-- X⁵ - 2 is irreducible over ℤ by Eisenstein's criterion at p = 2. -/
+private theorem x5_sub_2_irreducible_int :
+    Irreducible (X ^ 5 - C (2 : ℤ) : Polynomial ℤ) := by
+  apply Polynomial.irreducible_of_eisenstein_criterion (P := Ideal.span {2})
+  · -- (2) is a prime ideal in ℤ
+    rw [Ideal.span_singleton_prime (show (2 : ℤ) ≠ 0 by norm_num)]
+    exact Int.prime_iff_natAbs_prime.mpr (by norm_num)
+  · -- leadingCoeff ∉ (2): leading coefficient is 1
+    rw [show (X ^ 5 - C (2 : ℤ) : Polynomial ℤ).leadingCoeff = 1 from by
+      simp [Polynomial.leadingCoeff_X_pow_sub_C (by norm_num : (5 : ℕ) ≠ 0)]]
+    simp [Ideal.mem_span_singleton]
+  · -- ∀ n < degree, coeff n ∈ (2)
+    intro n hn
+    simp only [Ideal.mem_span_singleton]
+    have hd : (X ^ 5 - C (2 : ℤ) : Polynomial ℤ).degree = 5 := by
+      exact Polynomial.degree_X_pow_sub_C (by norm_num : (5 : ℕ) ≠ 0) (2 : ℤ)
+    rw [hd] at hn
+    have hn' : n ≤ 4 := by
+      exact_mod_cast Nat.lt_of_lt_pred (show n < 5 from WithBot.coe_lt_coe.mp hn)
+      <;> omega
+    interval_cases n <;>
+      simp [Polynomial.coeff_sub, Polynomial.coeff_one, Polynomial.coeff_X_pow,
+            Polynomial.coeff_C]
+  · -- 0 < degree
+    exact Polynomial.degree_X_pow_sub_C (by norm_num : (5 : ℕ) ≠ 0) (2 : ℤ) ▸
+      (by norm_num : (0 : WithBot ℕ) < 5)
+  · -- coeff 0 ∉ (2)²
+    rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton]
+    simp [Polynomial.coeff_sub, Polynomial.coeff_one, Polynomial.coeff_X_pow,
+          Polynomial.coeff_C]
+    norm_num
+  · -- isPrimitive: X⁵ - 2 is monic, hence primitive
+    exact (Polynomial.monic_X_pow_sub_C (2 : ℤ) (by norm_num : (5 : ℕ) ≠ 0)).isPrimitive
+
 theorem connection_to_abel_ruffini :
     ∃ (p : Polynomial ℚ), Irreducible p ∧ p.natDegree = 5 := by
-  exact ⟨Polynomial.X ^ 5 - Polynomial.C 5 * Polynomial.X + Polynomial.C 12,
-         by sorry, -- x⁵ - 5x + 12 is irreducible over ℚ
-         by sorry⟩ -- natDegree = 5
+  refine ⟨X ^ 5 - C (2 : ℚ), ?_, by compute_degree!⟩
+  -- Transfer irreducibility from ℤ to ℚ via Gauss's lemma
+  have hprim : (X ^ 5 - C (2 : ℤ) : Polynomial ℤ).IsPrimitive :=
+    (Polynomial.monic_X_pow_sub_C (2 : ℤ) (by norm_num : (5 : ℕ) ≠ 0)).isPrimitive
+  rw [show (X ^ 5 - C (2 : ℚ) : Polynomial ℚ) =
+    Polynomial.map (Int.castRingHom ℚ) (X ^ 5 - C (2 : ℤ)) from by
+    simp [Polynomial.map_sub, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_C]]
+  exact hprim.Int.irreducible_iff_irreducible_map_cast.mp x5_sub_2_irreducible_int
 
 /--
 The distinction between solvable and non-solvable extensions:
@@ -399,6 +458,8 @@ theorem solvable_iff_solvable_galois_group
 8. **Abelian groups are realizable** (axiom: Kronecker-Weber + structure theorem)
 9. **Solvable groups are realizable** (axiom: Shafarevich 1954)
 10. **Symmetric groups are realizable** (sorry: Hilbert irreducibility, not in Mathlib)
+11. **X⁵ - 2 is irreducible over ℤ** (proven via Eisenstein criterion at p = 2)
+12. **∃ irreducible quintic over ℚ** (proven via Gauss's lemma transfer from ℤ to ℚ)
 
 ### What Remains Open:
 - The general Inverse Galois Problem for arbitrary finite groups over ℚ
@@ -410,8 +471,8 @@ theorem solvable_iff_solvable_galois_group
 2. Formalize the Kronecker-Weber theorem (would eliminate `abelian_realizable` axiom)
 3. Formalize at least one case of A₅ realization
 
-**Theorem Count**: 12 proven theorems/lemmas, 2 axioms (for deep classical results)
-**Sorries**: 3 (open problems or very hard classical theorems)
+**Theorem Count**: 14 proven theorems/lemmas, 2 axioms (for deep classical results)
+**Sorries**: 2 (1 open problem + 1 theorem needing Hilbert irreducibility)
 -/
 
 end InverseGaloisProblem
