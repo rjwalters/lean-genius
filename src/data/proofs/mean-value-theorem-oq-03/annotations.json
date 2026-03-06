@@ -1,0 +1,46 @@
+{
+  "sections": [
+    {
+      "id": "mean-value-inequality",
+      "title": "Mean Value Inequality",
+      "startLine": 78,
+      "endLine": 83,
+      "summary": "Core theorem wrapping Mathlib's norm_image_sub_le_of_norm_deriv_le_segment': for f : ℝ → E with ‖f'(x)‖ ≤ C on [a,b], we get ‖f(x) - f(a)‖ ≤ C·(x-a)."
+    },
+    {
+      "id": "scalar-special-case",
+      "title": "Scalar MVT as Special Case",
+      "startLine": 100,
+      "endLine": 115,
+      "summary": "Shows the scalar MVT is a special case of the vector inequality (when E = ℝ), and proves the classical equality version is strictly stronger using exists_deriv_eq_slope."
+    },
+    {
+      "id": "counterexample",
+      "title": "Circular Motion Counterexample",
+      "startLine": 134,
+      "endLine": 146,
+      "summary": "Proves cos(2π) = 1 and sin²(t) + cos²(t) = 1, establishing the circular motion counterexample: f(t) = (cos t, sin t) has ‖f'‖ = 1 but f(2π) = f(0)."
+    },
+    {
+      "id": "lipschitz-consequences",
+      "title": "Lipschitz Consequences",
+      "startLine": 159,
+      "endLine": 181,
+      "summary": "Axiomatizes derivative-bound-implies-Lipschitz and proves zero derivative implies constant for vector-valued functions using the MVT inequality with C = 0."
+    },
+    {
+      "id": "contraction-bounds",
+      "title": "Contraction-Type Bounds",
+      "startLine": 200,
+      "endLine": 205,
+      "summary": "Contraction bound from derivative bounds: direct application of the mean value inequality showing how it underpins contraction mapping arguments."
+    },
+    {
+      "id": "ode-application",
+      "title": "ODE Uniqueness Application",
+      "startLine": 284,
+      "endLine": 299,
+      "summary": "Proves difference bound for ODEs: if f and g start at the same point and their derivatives differ by at most q, then ‖(f-g)(x)‖ ≤ q·(x-a). Uses MVT on f-g directly."
+    }
+  ]
+}
