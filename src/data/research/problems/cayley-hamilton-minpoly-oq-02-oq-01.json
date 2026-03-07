@@ -1,0 +1,86 @@
+{
+  "slug": "cayley-hamilton-minpoly-oq-02-oq-01",
+  "title": "Minimal Polynomial Generalization to K-Algebras",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Can the minimal polynomial theory be generalized from matrices to abstract K-algebras? If two elements of an algebra are related by an isomorphism, they should have the same minimal polynomial.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "minpoly K (φ x) = minpoly K x for any AlgEquiv φ (from Mathlib)",
+      "minpoly K (φ x) = minpoly K x for any injective AlgHom φ (from Mathlib)",
+      "Conjugation by invertible matrix defines an AlgEquiv on Mat(n,K)",
+      "Matrix similarity preserves minpoly (derived from abstract theory)",
+      "Subalgebra inclusion preserves minpoly"
+    ],
+    "open": [],
+    "goal": "Complete formalization of minpoly as K-algebra invariant"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-03-07T19:00:00Z",
+    "iteration": 1,
+    "focus": "Complete proof: 0 sorries, 8 theorems",
+    "blockers": [],
+    "nextAction": "None - problem fully resolved",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved minimal polynomial is invariant under K-algebra isomorphisms and injective homomorphisms. Built conjugation AlgEquiv for matrices, derived similarity result as corollary. 0 sorries, 8 theorems.",
+    "builtItems": [
+      "conjAlgEquiv: conjugation A ↦ P⁻¹AP as K-algebra automorphism (AlgEquiv)",
+      "minpoly_similar_via_abstract: matrix similarity preserves minpoly via abstract theory",
+      "minpoly_conj_inv_via_abstract: inverse conjugation preserves minpoly",
+      "minpoly_algAut_invariant: any algebra automorphism preserves minpoly",
+      "minpoly_subalgebra_eq: subalgebra inclusion preserves minpoly",
+      "minpoly_similar_under_algHom: similar matrices indistinguishable under injective AlgHom",
+      "conjAlgEquiv_symm: symmetry of conjugation AlgEquiv",
+      "conjAlgEquiv_trans: composition of conjugations = conjugation by product"
+    ],
+    "insights": [
+      "Mathlib already has minpoly.algEquiv_eq and minpoly.algHom_eq - the abstract result exists",
+      "Matrix similarity is a special case of K-algebra isomorphism via conjugation AlgEquiv",
+      "The OQ-02 proof (from scratch using minpoly.unique) becomes a one-line corollary with abstract theory",
+      "Subalgebra inclusions preserve minpoly: useful for representation theory",
+      "The map P ↦ conjAlgEquiv P is a group homomorphism from units to automorphism group"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Skolem-Noether theorem: every automorphism of Mat(n,K) is inner",
+      "Converse: same minpoly + charpoly implies similarity over algebraically closed fields",
+      "Connect to rational canonical form theory"
+    ],
+    "markdown": "# Knowledge Base: cayley-hamilton-minpoly-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "approaches": [],
+  "tags": [
+    "linear-algebra",
+    "abstract-algebra",
+    "minimal-polynomial",
+    "k-algebras"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "minpoly.algEquiv_eq",
+      "minpoly.algHom_eq",
+      "Polynomial.aeval_algHom_apply",
+      "AlgEquiv.ofAlgHom"
+    ]
+  },
+  "started": "2026-03-07T18:02:01.176Z",
+  "lastUpdate": "2026-03-07T19:00:00Z",
+  "significance": 6,
+  "tractability": 5
+}
