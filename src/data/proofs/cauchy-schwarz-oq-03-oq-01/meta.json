@@ -1,0 +1,122 @@
+{
+  "id": "cauchy-schwarz-oq-03-oq-01",
+  "title": "Cauchy-Schwarz Equality Characterization",
+  "slug": "cauchy-schwarz-oq-03-oq-01",
+  "description": "Formalizes when equality holds in the Cauchy-Schwarz (and Hölder) inequality: equality in (∑ fᵢgᵢ)² = (∑ fᵢ²)(∑ gᵢ²) iff f and g are proportional. Proved via the Lagrange identity, with extensions to inner product spaces.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality#Equality_condition",
+    "date": "2026",
+    "status": "complete",
+    "proofRepoPath": "Proofs/CauchySchwarzOQ03OQ01.lean",
+    "tags": [
+      "cauchy-schwarz",
+      "holder-inequality",
+      "lagrange-identity",
+      "equality-case",
+      "inner-product-space",
+      "proportionality",
+      "functional-analysis",
+      "extension",
+      "research"
+    ],
+    "badge": "open",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_eq_zero_iff_of_nonneg",
+        "description": "A sum of non-negative terms equals zero iff each term is zero.",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      },
+      {
+        "theorem": "norm_inner_eq_norm_iff",
+        "description": "‖inner u v‖ = ‖u‖·‖v‖ iff u and v are related by a nonzero scalar multiple.",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "NNReal.inner_le_Lp_mul_Lq",
+        "description": "Hölder's inequality for NNReal finite sums.",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      }
+    ],
+    "originalContributions": [
+      "Lagrange identity: ∑ᵢ∑ⱼ(fᵢgⱼ - fⱼgᵢ)² = 2·[(∑f²)(∑g²) - (∑fg)²]",
+      "Sum-of-squares-equals-zero characterization (single and double sum)",
+      "Full iff characterization: CS equality ⟺ all cross-terms vanish",
+      "Proportionality extraction from cross-term condition",
+      "Inner product space equality via Mathlib's norm_inner_eq_norm_iff",
+      "Cauchy-Schwarz inequality from Lagrange identity (independent proof)"
+    ],
+    "references": [
+      {
+        "authors": "Joseph-Louis Lagrange",
+        "title": "Identity for 2×2 determinants",
+        "year": "1773",
+        "venue": "Recherches d'arithmétique",
+        "note": "The Lagrange identity relating cross-terms to the Cauchy-Schwarz deficit"
+      },
+      {
+        "authors": "G. H. Hardy, J. E. Littlewood, G. Pólya",
+        "title": "Inequalities",
+        "year": "1934",
+        "venue": "Cambridge University Press",
+        "note": "Chapter 2, Theorem 15: equality conditions for Hölder and Cauchy-Schwarz"
+      }
+    ],
+    "historicalContext": "The equality condition for Cauchy-Schwarz has been known since Cauchy (1821): equality holds iff the vectors are proportional. Lagrange's identity (1773) provides an elegant proof by expressing the CS deficit as a sum of squared cross-terms. For inner product spaces, the equality case is fundamental to projection theory and the Gram-Schmidt process."
+  },
+  "sections": [
+    {
+      "id": "lagrange-identity",
+      "title": "Lagrange Identity",
+      "summary": "Proves the Lagrange identity: the double sum of squared cross-terms (fᵢgⱼ - fⱼgᵢ)² equals twice the Cauchy-Schwarz deficit.",
+      "startLine": 26,
+      "endLine": 57
+    },
+    {
+      "id": "sum-sq-zero",
+      "title": "Sum of Squares Zero Characterization",
+      "summary": "A sum of squares is zero iff each term is zero. Extended to double sums.",
+      "startLine": 59,
+      "endLine": 81
+    },
+    {
+      "id": "cs-equality-iff",
+      "title": "Cauchy-Schwarz Equality Characterization",
+      "summary": "Full iff: equality in CS holds iff all cross-terms fᵢgⱼ - fⱼgᵢ vanish, giving proportionality.",
+      "startLine": 83,
+      "endLine": 133
+    },
+    {
+      "id": "inner-product-equality",
+      "title": "Inner Product Space Equality",
+      "summary": "Abstract characterization: ‖inner u v‖ = ‖u‖·‖v‖ iff u = c•v, using Mathlib's norm_inner_eq_norm_iff.",
+      "startLine": 135,
+      "endLine": 161
+    },
+    {
+      "id": "holder-cs-finite",
+      "title": "Hölder and Cauchy-Schwarz for Finite Sums",
+      "summary": "Hölder's inequality for NNReal sums and Cauchy-Schwarz as an independent consequence of the Lagrange identity.",
+      "startLine": 163,
+      "endLine": 214
+    }
+  ],
+  "overview": {
+    "summary": "Characterizes when equality holds in Cauchy-Schwarz: (∑fᵢgᵢ)² = (∑fᵢ²)(∑gᵢ²) iff f and g are proportional (fᵢgⱼ = fⱼgᵢ for all i,j). The proof uses the Lagrange identity to express the CS deficit as a sum of squared cross-terms, reducing equality to the vanishing of all cross-terms.",
+    "keyIdea": "The Lagrange identity ∑ᵢ∑ⱼ(fᵢgⱼ-fⱼgᵢ)² = 2[(∑f²)(∑g²)-(∑fg)²] connects the CS deficit to cross-term structure. Since each (fᵢgⱼ-fⱼgᵢ)² ≥ 0, the sum vanishes iff every term vanishes, giving the proportionality condition.",
+    "prerequisites": [
+      "Finset sums and big operators",
+      "Non-negative sum-of-squares arguments",
+      "Inner product spaces",
+      "Cauchy-Schwarz inequality"
+    ]
+  },
+  "conclusion": {
+    "summary": "We formalize the complete equality characterization for Cauchy-Schwarz in both finite-sum and inner product space settings. The Lagrange identity provides an elegant algebraic path to the proportionality condition, and Mathlib's norm_inner_eq_norm_iff gives the abstract version. All 10+ theorems are proved with zero sorries.",
+    "openQuestions": [
+      "Can the equality case for general Hölder (p ≠ 2) be formalized using strict concavity of log?",
+      "Can the a.e. power proportionality condition for integral Hölder equality be formalized?"
+    ]
+  }
+}
