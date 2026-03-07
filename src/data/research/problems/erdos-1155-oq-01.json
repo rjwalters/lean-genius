@@ -25,9 +25,7 @@
     ],
     "open": [
       "Full Erdős conjecture: explicit constants c₁, c₂ in Θ(n^{3/2})",
-      "Whether f(n)/n^{3/2} converges (limit_implies_conjecture shows sufficiency)",
-      "conjecture_implies_bfl_upper/lower: needs n^ε→∞ in atTop filter",
-      "bfl_ratio_characterization: needs rpow division manipulation"
+      "Whether f(n)/n^{3/2} converges (limit_implies_conjecture shows sufficiency)"
     ],
     "goal": "Prove exact Θ(n^{3/2}) asymptotics or characterize what's needed"
   },
@@ -35,15 +33,15 @@
     "phase": "ACT",
     "since": "2026-03-06T23:45:00Z",
     "iteration": 1,
-    "focus": "Gap analysis: formalized what separates BFL from full conjecture",
+    "focus": "All sorries resolved. Complete formalization of BFL gap analysis.",
     "blockers": [],
-    "nextAction": "Prove remaining sorries (filter-based real analysis)",
+    "nextAction": "None - complete.",
     "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
   },
   "knowledge": {
-    "progressSummary": "Erdos1155OQ01.lean Docker-verified with 3 sorries (down from 10). Proved 7 theorems: triangleFree_iff_cliqueFree3 (both directions), conjecture_iff_both_bounds (c≤C), bfl_lower_tight (rpow comparison), limit_implies_conjecture (Tendsto→conjecture via Icc_mem_nhds), limsup_liminf_implies_conjecture (both parts via div_le_iff). Remaining 3 sorries need rpow growth bounds (n^ε→∞).",
+    "progressSummary": "Erdos1155OQ01.lean Docker-verified with 0 sorries (all 10 proved). Key proofs: triangleFree_iff_cliqueFree3, conjecture_iff_both_bounds, bfl_lower_tight, conjecture_implies_bfl_upper/lower (rpow growth via Nat.ceil+rpow_mul), bfl_ratio_characterization (rpow_add), limit_implies_conjecture (Icc_mem_nhds), limsup_liminf_implies_conjecture (div_le_iff₀).",
     "builtItems": [
-      "proofs/Proofs/Erdos1155OQ01.lean (3 sorries, Docker-verified)"
+      "proofs/Proofs/Erdos1155OQ01.lean (0 sorries, Docker-verified)"
     ],
     "insights": [
       "The gap between BFL and the full conjecture is exactly: n^{-ε} vs constant in the ratio f(n)/n^{3/2}",
@@ -53,13 +51,9 @@
       "Fin n literals need explicit ⟨k, by omega⟩ construction when n is variable",
       "SimpleGraph.top_adj works with simp for adjacency in complete graphs"
     ],
-    "mathlibGaps": [
-      "Real power function estimates: c ≤ n^ε eventually for ε>0 (needed for conjecture_implies_bfl)"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Prove conjecture_implies_bfl_upper/lower (need Tendsto rpow atTop atTop)",
-      "Prove bfl_ratio_characterization (rpow division by n^{3/2})",
-      "Submit to Aristotle for remaining 3 sorries"
+      "None - all theorems proved. Open conjecture remains stated."
     ]
   },
   "approaches": [
