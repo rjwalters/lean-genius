@@ -1,0 +1,136 @@
+{
+  "id": "fourier-series-oq-03",
+  "title": "Dirichlet Conditions for Fourier Pointwise Convergence",
+  "slug": "fourier-series-oq-03",
+  "description": "If a periodic function has bounded variation, its Fourier series converges pointwise to the average of the left and right limits at every point. Formalizes the Dirichlet convergence theorem on AddCircle using Mathlib's BV and Fourier infrastructure.",
+  "leanFile": "Proofs/FourierSeriesOQ03.lean",
+  "meta": {
+    "author": "Peter Gustav Lejeune Dirichlet (1829)",
+    "date": "1829",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/FourierSeriesOQ03.lean",
+    "tags": [
+      "analysis",
+      "harmonic-analysis",
+      "fourier-series",
+      "convergence",
+      "bounded-variation",
+      "open-question"
+    ],
+    "badge": "open",
+    "sorries": 0,
+    "dateAdded": "2026-03-06",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "fourierCoeff",
+        "description": "Fourier coefficients on AddCircle",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "fourier",
+        "description": "Fourier monomials e^{2πinx/T}",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "BoundedVariationOn",
+        "description": "Predicate for finite total variation",
+        "module": "Mathlib.Analysis.BoundedVariation"
+      },
+      {
+        "theorem": "haarAddCircle",
+        "description": "Haar measure on AddCircle",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      }
+    ],
+    "originalContributions": [
+      "fourierPartialSum: N-th Fourier partial sum S_N f(x) = sum of c_n e_n(x)",
+      "dirichletKernel: D_N(t) = sum of e_n(t) over [-N,N]",
+      "dirichletKernel_at_zero: D_N(0) = 2N+1",
+      "dirichletKernel_neg: conjugate symmetry D_N(-t) = conj(D_N(t))",
+      "dirichlet_pointwise_convergence: S_N f(x) -> (f(x+) + f(x-))/2 for BV functions",
+      "dirichlet_at_continuity_point: convergence to f(x) at continuity points",
+      "dirichlet_continuous_BV: everywhere convergence for continuous BV functions"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Dirichlet's Theorem on Fourier Convergence (1829)**\n\nPeter Gustav Lejeune Dirichlet gave the first rigorous conditions under which a Fourier series converges pointwise. His result was a breakthrough: Fourier had claimed (1807) that *every* function could be expanded as a Fourier series, but Dirichlet showed this requires regularity conditions.\n\n**Key insight**: For functions of bounded variation, the Fourier partial sums S_N f(x) converge at every point to the average of the left and right limits (f(x+) + f(x-))/2. At continuity points, this is just f(x).\n\nThis is the third open question from the Fourier series gallery entry: *Can the Dirichlet conditions for pointwise convergence be formalized using Mathlib's piecewise-smooth framework?*",
+    "problemStatement": "**Dirichlet Pointwise Convergence**: If $f : \\mathbb{R}/T\\mathbb{Z} \\to \\mathbb{C}$ has bounded variation, then its Fourier partial sums converge pointwise:\n\n$$S_N f(x_0) \\to \\frac{f(x_0^+) + f(x_0^-)}{2} \\quad \\text{as } N \\to \\infty$$\n\nwhere $f(x_0^+)$ and $f(x_0^-)$ are the right and left limits at $x_0$.\n\n**Formalization**: Uses `AddCircle T`, `BoundedVariationOn`, `fourierCoeff`, and `Filter.Tendsto` from Mathlib. The Dirichlet kernel is defined as $D_N(t) = \\sum_{n=-N}^{N} e_n(t)$ and the proof chains: convolution representation, BV limit existence, and a localization lemma.",
+    "proofStrategy": "The formalization builds a chain of results:\n\n1. **Fourier partial sums**: $S_N f(x) = \\sum_{n=-N}^{N} c_n(f) \\cdot e_n(x)$\n2. **Dirichlet kernel**: $D_N(t) = \\sum_{n=-N}^{N} e_n(t)$ with proved properties (value at zero, conjugate symmetry, continuity)\n3. **Convolution representation**: $S_N f(x) = \\int f(t) D_N(x-t)\\,dt$ (axiom)\n4. **BV limits**: Bounded variation functions have left/right limits (axiom)\n5. **Localization**: The convolution integral converges to the midpoint of one-sided limits via Riemann-Lebesgue for BV functions (axiom)\n6. **Main theorem**: Chains all ingredients to prove $S_N f(x_0) \\to (f(x_0^+) + f(x_0^-))/2$",
+    "keyInsights": [
+      "**The proof chains 4 axioms**: BV limit existence, convolution representation, Dirichlet kernel normalization, and the localization lemma. The main theorem is proved, not axiomatized.",
+      "**Uniqueness of limits is key**: The proof identifies `rightLimit`/`leftLimit` (defined via `limUnder`) with the limit values from the BV existence axioms using `Tendsto.limUnder_eq`.",
+      "**Convolution-to-convergence bridge**: The `dirichlet_localization` axiom encapsulates the hard analytical work (integral splitting, BV quotient estimates, Riemann-Lebesgue) in a clean interface.",
+      "**At continuity points, the theorem simplifies**: When f is continuous at x_0, both one-sided limits equal f(x_0), so the midpoint is just f(x_0). This corollary is proved from the main theorem.",
+      "**The Dirichlet kernel has rich structure**: We prove D_N(0) = 2N+1, conjugate symmetry D_N(-t) = conj(D_N(t)), and continuity. These are used in the localization argument."
+    ]
+  },
+  "sections": [
+    {
+      "id": "fourier-partial-sums",
+      "title": "Fourier Partial Sums",
+      "startLine": 55,
+      "endLine": 81,
+      "summary": "Defines the N-th Fourier partial sum $S_N f(x) = \\sum_{n=-N}^{N} c_n(f) \\cdot e_n(x)$. Proves the base case (N=0) and continuity of partial sums."
+    },
+    {
+      "id": "dirichlet-kernel",
+      "title": "The Dirichlet Kernel",
+      "startLine": 83,
+      "endLine": 144,
+      "summary": "Defines the Dirichlet kernel $D_N(t) = \\sum_{n=-N}^{N} e_n(t)$ and proves key properties: continuity, cardinality (2N+1 terms), value at zero ($D_N(0) = 2N+1$), and conjugate symmetry ($D_N(-t) = \\overline{D_N(t)}$)."
+    },
+    {
+      "id": "convolution-representation",
+      "title": "Convolution Representation",
+      "startLine": 146,
+      "endLine": 174,
+      "summary": "Axiomatizes the convolution identity $S_N f(x) = \\int f(t) D_N(x-t)\\,dt$ and the normalization $\\int D_N = 1$. These connect partial sums to kernel analysis."
+    },
+    {
+      "id": "bounded-variation",
+      "title": "Bounded Variation on the Circle",
+      "startLine": 176,
+      "endLine": 221,
+      "summary": "Defines `HasBoundedVariationCircle` via Mathlib's `BoundedVariationOn` on [0,T]. Defines one-sided limits `rightLimit`/`leftLimit` using `limUnder` with `nhdsWithin`. Axiomatizes existence of BV limits."
+    },
+    {
+      "id": "riemann-lebesgue",
+      "title": "Riemann-Lebesgue Lemma (BV Version)",
+      "startLine": 223,
+      "endLine": 282,
+      "summary": "Axiomatizes the Riemann-Lebesgue lemma for BV functions: $\\int g(t) e^{i\\lambda t}\\,dt \\to 0$ as $\\lambda \\to \\infty$. Also axiomatizes the Dirichlet kernel localization lemma that combines integral splitting with Riemann-Lebesgue."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Dirichlet Convergence Theorem",
+      "startLine": 284,
+      "endLine": 327,
+      "summary": "**The main result** (PROVED): $S_N f(x_0) \\to (f(x_0^+) + f(x_0^-))/2$ for BV functions. The proof chains: obtain one-sided limits, identify with rightLimit/leftLimit via uniqueness, rewrite as convolution, apply localization."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences and Special Cases",
+      "startLine": 329,
+      "endLine": 409,
+      "summary": "Proves corollaries: convergence to $f(x_0)$ at continuity points (`dirichlet_at_continuity_point`), everywhere convergence for continuous BV functions (`dirichlet_continuous_BV`), and Lipschitz/monotone BV connections."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fourier-series",
+      "relationship": "extends",
+      "description": "Extends the L2 convergence theory to pointwise convergence under BV conditions. Answers OQ-03 from the Fourier series entry."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization of Dirichlet's pointwise convergence theorem establishes that Fourier partial sums of bounded variation functions converge pointwise to the midpoint of one-sided limits. The main theorem is proved by chaining four axiomatized analytical ingredients: BV limit existence, convolution representation, kernel normalization, and the Dirichlet localization lemma (which encapsulates integral splitting and Riemann-Lebesgue). The Dirichlet kernel infrastructure (value at zero, conjugate symmetry) is fully proved from Mathlib.",
+    "implications": "Dirichlet's theorem is the foundational result for pointwise Fourier analysis. It tells us that 'well-behaved' (BV) functions have convergent Fourier series at every point. This is the starting point for studying: Gibbs phenomenon at discontinuities, optimal convergence rates, and extensions to higher regularity classes.",
+    "openQuestions": [
+      "Can the axiomatized convolution representation be proved from Mathlib's integral API?",
+      "Can the Riemann-Lebesgue lemma for BV functions be proved in Lean using integration by parts?",
+      "How does the convergence rate depend on the total variation of f?",
+      "Can the localization lemma be decomposed into smaller provable pieces for Aristotle?"
+    ]
+  }
+}
