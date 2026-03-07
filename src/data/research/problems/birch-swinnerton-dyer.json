@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 410+ defs/theorems, 1 sorry (agmStep AM-GM), 4703 lines + 160 Aristotle. Complete survey: 42 parts + companion.",
+    "progressSummary": "PROGRESS: 410+ defs/theorems, 0 sorry in agmStep (AM-GM proved), 1 sorry in root_number_parity (deep axiom). Fixed ParityConjecture name collision. 4703 lines + 160 Aristotle. Complete survey: 42 parts + companion.",
     "builtItems": [
       "SelmerGroup: structure for n-Selmer groups with finiteness",
       "CanonicalHeight: Néron-Tate height with nonnegativity and quadratic property",
@@ -252,7 +252,9 @@
       "Part XXXIX: Langlands (LanglandsCorrespondenceGL2, GaloisRepresentation, SerreModularity, GeneralizedBSD, SymmetricPowerL, sym1L-sym2L)",
       "Part XL: Higher rank BSD (RankBarrier, NekovarHeightPairing, DiagonalCycle, DarmonRotger, HigherIwasawa, RankRecord with examples)",
       "Part XLI: Goldfeld conjecture (GoldfeldConjecture, goldfeld_avg_rank proved, BhargavaShankar, PositiveRank0Proportion, PositiveRank1Proportion)",
-      "Part XLII: Computational BSD (BSDVerificationData with 11a1/37a1/389a1/5077a1, ParityConjecture, bsd_grand_summary)"
+      "Part XLII: Computational BSD (BSDVerificationData with 11a1/37a1/389a1/5077a1, ParityConjecture, bsd_grand_summary)",
+      "agmStep AM-GM proof: (a+b)/2 ≥ √(ab) via (√a - √b)² ≥ 0, no sorry",
+      "Fixed ParityConjecture name collision (renamed struct to ParityConjectureData)"
     ],
     "insights": [
       "Selmer groups bound rank: rank(E) ≤ dim Sel_n - dim Ш[n]",
@@ -311,7 +313,8 @@
       "Positive proportion rank 0 (>= 16.50%) and rank 1 (>= 20.68%) proved unconditionally",
       "Parity conjecture proved unconditionally for all E/Q (Dokchitser-Dokchitser 2010)",
       "BSD verified computationally for all curves with conductor <= 500000, no counterexample",
-      "5077a1 is smallest conductor curve of rank 3"
+      "5077a1 is smallest conductor curve of rank 3",
+      "AM-GM for AGMStep proved via (√a-√b)² ≥ 0 + sq_sqrt + sqrt_mul pattern (matches AMGMInequality.lean)"
     ],
     "mathlibGaps": [
       "Torsion subgroup",

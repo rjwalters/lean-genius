@@ -3821,8 +3821,14 @@ def agmStep (s : AGMStep) : AGMStep where
   ha := by positivity
   hb := Real.sqrt_pos_of_pos (by positivity)
   hab := by
-    have h := Real.add_pow_le_pow_mul_pow_of_sq_le_sq 2 ![s.b, s.a] ![1/2, 1/2]
-    sorry  -- AM ≥ GM: (a+b)/2 ≥ √(ab)
+    -- AM ≥ GM: (a+b)/2 ≥ √(ab) via (√a - √b)² ≥ 0
+    have h_sq : 0 ≤ (Real.sqrt s.a - Real.sqrt s.b) ^ 2 := sq_nonneg _
+    have h_exp : (Real.sqrt s.a - Real.sqrt s.b) ^ 2 =
+        Real.sqrt s.a ^ 2 - 2 * Real.sqrt s.a * Real.sqrt s.b + Real.sqrt s.b ^ 2 := by ring
+    rw [h_exp, Real.sq_sqrt s.ha.le, Real.sq_sqrt s.hb.le] at h_sq
+    have h_mul : Real.sqrt s.a * Real.sqrt s.b = Real.sqrt (s.a * s.b) :=
+      (Real.sqrt_mul s.ha.le s.b).symm
+    linarith
 
 /-- The AGM converges quadratically: after n steps, the relative error
     is approximately 2^{-2^n}. This gives ~30 digits after 5 iterations.
@@ -4662,7 +4668,7 @@ theorem computational_bsd_status :
     - T. and V. Dokchitser (2010): unconditionally for E/Q
 
     This is the only part of BSD proved in complete generality! -/
-structure ParityConjecture where
+structure ParityConjectureData where
   /-- Algebraic rank -/
   r_alg : ℕ
   /-- Analytic rank -/
@@ -4673,7 +4679,7 @@ structure ParityConjecture where
   parity_holds : r_alg % 2 = r_an % 2
 
 /-- For root number -1: both ranks must be odd. -/
-theorem parity_odd (pc : ParityConjecture) (hminus : pc.root_number = -1) :
+theorem parity_odd (pc : ParityConjectureData) (_hminus : pc.root_number = -1) :
     pc.r_alg % 2 = pc.r_an % 2 := pc.parity_holds
 
 /-- Grand summary of BSD status.
