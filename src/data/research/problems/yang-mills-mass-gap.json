@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 470+ defs/theorems, 0 sorries, 6255 lines. Complete survey from classical YM through constructive QFT. File covers 56 parts.",
+    "progressSummary": "PROGRESS: 470+ defs/theorems + 35 Aristotle targets, 0 sorries in main file, 6255+162 lines. Comprehensive survey with Aristotle companion. 56 parts + companion.",
     "builtItems": [
       "su2MigdalFundamental: concrete MigdalFormula instance for SU(2) fund rep",
       "su2MigdalAdjoint: concrete MigdalFormula instance for SU(2) adj rep",
@@ -65,7 +65,8 @@
       "Part LIII: Functional RG (WetterinckEquation, DynamicalMassGeneration, RGFixedPoint, GluonPropagatorIR decoupling/scaling)",
       "Part LIV: Kogut-Susskind lattice (KogutSusskindHamiltonian, StrongCouplingVacuum, StrongCouplingStringTension, GaussLawConstraint)",
       "Part LV: Topological aspects (InstantonModuliSpace, BPSTInstanton, TopologicalSusceptibility, DonaldsonInvariant, SeibergWittenInvariant, ThetaDependence)",
-      "Part LVI: Grand summary (mass_gap_equivalences, dimensional_summary, what_a_proof_needs)"
+      "Part LVI: Grand summary (mass_gap_equivalences, dimensional_summary, what_a_proof_needs)",
+      "YangMillsMassGapAristotle.lean: 35 provable lemmas for automated proof search (Casimir, beta function, string tension, lattice, instanton, large-N, real analysis)"
     ],
     "insights": [
       "Casimir scaling exact in 2D: σ_adj/σ_fund = 16/9 for SU(2)",
