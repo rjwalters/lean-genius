@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Built complete framework: SlowlyVarying, RegularlyVarying, TailBalance, InDomainOfAttraction definitions. Proved 4 theorems. Axiomatized 8 deep results including Gnedenko-Kolmogorov forward/converse/Gaussian, Potter's bound, Karamata integral, stable self-similarity, and rpow preservation lemmas.",
+    "progressSummary": "40 defs/theorems, 0 sorries, 667 lines. Extended with SV division, asymptotic equivalence, powers; RV reciprocal and quotient index arithmetic.",
     "builtItems": [
       "SlowlyVarying definition with ratio convergence",
       "RegularlyVarying definition with power-law ratio limit",
@@ -52,7 +52,9 @@
       "slowlyVarying_const theorem",
       "slowlyVarying_mul theorem",
       "slowlyVarying_iff_regularlyVarying_zero theorem",
-      "classical_clt_is_gaussian_attraction theorem"
+      "classical_clt_is_gaussian_attraction theorem",
+      "slowlyVarying_div, slowlyVarying_of_asymp_equiv, slowlyVarying_pow in CLT file",
+      "regularlyVarying_inv_index, regularlyVarying_div_index in CLT file"
     ],
     "insights": [
       "rpow_ne_zero API varies between Mathlib versions - axiomatize for portability",
@@ -60,7 +62,12 @@
       "Docker Mathlib's ContinuousAt.rpow_const has different signature than local",
       "Use field_simp for division cancellation in slowly varying proofs",
       "Double docstrings (two /-- blocks in a row) cause syntax errors",
-      "Unicode subscripts (₊, ₋, ²) are not valid in Lean identifiers"
+      "Unicode subscripts (₊, ₋, ²) are not valid in Lean identifiers",
+      "Quotient of slowly varying functions is slowly varying (slowlyVarying_div)",
+      "Asymptotic equivalence (L₁/L₂→1) preserves slow variation",
+      "Integer powers of SV functions are SV (slowlyVarying_pow)",
+      "Reciprocal of RV function negates index (regularlyVarying_inv_index)",
+      "Quotient of RV functions subtracts indices (regularlyVarying_div_index)"
     ],
     "mathlibGaps": [
       "No slowly varying function theory in Mathlib",
