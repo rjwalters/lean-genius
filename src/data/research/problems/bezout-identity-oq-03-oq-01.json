@@ -1,0 +1,88 @@
+{
+  "slug": "bezout-identity-oq-03-oq-01",
+  "title": "CRT Ring Isomorphism Z/mnZ = Z/mZ x Z/nZ",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Can the Chinese Remainder Theorem ring isomorphism be formalized in Lean 4 building on `crt_via_bezout`? This is the algebraic formulation: the map sending x mod mn to (x mod m, x mod n) is a ring isomorphism when gcd(m,n) = 1.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "CRT ring isomorphism \u2124/mn\u2124 \u2245 \u2124/m\u2124 \u00d7 \u2124/n\u2124 (26 theorems)",
+      "Orthogonal idempotent decomposition (e\u2081+e\u2082=1, e\u2081e\u2082=0)",
+      "Bezout CRT solution formula with modular correctness proof",
+      "Euler totient multiplicativity",
+      "Simultaneous congruence existence and uniqueness",
+      "Unit group characterization via CRT"
+    ],
+    "open": [],
+    "goal": "Formalize CRT ring isomorphism building on Bezout - COMPLETED"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-07T06:01:26Z",
+    "iteration": 2,
+    "focus": "CRT ring isomorphism via Mathlib ZMod.chineseRemainder",
+    "blockers": [],
+    "nextAction": "None - problem complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 26 proved theorems, 0 sorries, 0 axioms in BezoutIdentityOQ03OQ01.lean. Wraps Mathlib ZMod.chineseRemainder with explicit properties: ring iso, inverse, idempotents, Bezout connection, cardinality, simultaneous congruences, powers, units.",
+    "builtItems": [
+      "proofs/Proofs/BezoutIdentityOQ03OQ01.lean - 315 lines",
+      "crtRingIso: ZMod (m*n) \u2243+* ZMod m \u00d7 ZMod n via ZMod.chineseRemainder",
+      "crt_is_ring_hom, crt_preserves_mul, crt_maps_one/zero: ring hom properties",
+      "crt_bijective, crt_injective, crt_surjective: bijection properties",
+      "crtInverse: inverse map via RingEquiv.symm",
+      "crt_roundtrip, crt_roundtrip_pair: round-trip identities",
+      "idem1, idem2: orthogonal idempotents via \u03c6\u207b\u00b9(1,0) and \u03c6\u207b\u00b9(0,1)",
+      "idem_sum_one, idem_prod_zero, idem1_sq, idem2_sq: idempotent properties",
+      "bezout_crt_solution: explicit CRT formula x = a*n*v + b*m*u satisfies x\u2261a(mod m), x\u2261b(mod n)",
+      "bezout_exists_for_coprime: Bezout coefficients exist via Int.gcdA/gcdB",
+      "crt_card_eq: |Z/mnZ| = |Z/mZ| * |Z/nZ|",
+      "euler_totient_multiplicative: \u03c6(mn) = \u03c6(m)\u03c6(n) for coprime m,n",
+      "crt_exists_solution, crt_unique_solution: simultaneous congruences",
+      "crt_preserves_pow: \u03c6(x^k) = \u03c6(x)^k",
+      "crt_unit_iff: IsUnit x \u2194 IsUnit \u03c6(x).1 \u2227 IsUnit \u03c6(x).2"
+    ],
+    "insights": [
+      "ZMod.chineseRemainder already provides the full ring isomorphism in Mathlib",
+      "RingEquiv.symm gives the inverse map for free",
+      "Idempotents e\u2081=\u03c6\u207b\u00b9(1,0), e\u2082=\u03c6\u207b\u00b9(0,1) satisfy all orthogonal idempotent axioms",
+      "linear_combination tactic elegantly proves CRT solution formulas from Bezout identity",
+      "Int.add_mul_emod_self_left handles (a + m*k) % m = a % m",
+      "Nat.Coprime.symm exists but Nat.Coprime.comm does not in Mathlib 4",
+      "IsUnit maps through ring homs: hx.map (RingHom.fst _ _) for product projections",
+      "norm_cast needed to convert \u2191(1:\u2115) to (1:\u2124) in Int.gcd_eq_gcd_ab usage"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: bezout-identity-oq-03-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "approaches": [],
+  "tags": [
+    "number-theory",
+    "algebra",
+    "crt",
+    "ring-theory",
+    "bezout"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-07T05:48:28.935Z",
+  "lastUpdate": "2026-03-07T06:01:26Z",
+  "completed": "2026-03-07T06:01:26Z"
+}
