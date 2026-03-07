@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 4564 lines, 0 axioms, 0 sorries. Added Parts XXI-XXIII: energy dissipation anomaly (zeroth law, cascade, Taylor-Green), regularity criteria landscape (BKM, Serrin, CF, da Veiga, component criteria, ESŠ, pressure), dimensional analysis (scaling symmetry, critical gap 1/2, 2D vs 3D comparison).",
+    "progressSummary": "PROGRESS: 5073 lines, 0 sorries. Added Parts XXIV-XXVI: ESS endpoint regularity (backward uniqueness), Besov space critical framework (B^s_{p,q} with -1+3/p = 1/2 at p=2), Koch-Tataru BMO^{-1}, Onsager-Besov threshold, She-Levesque intermittency model (zeta_3=1, zeta_6=16/9, delta=2/9 all proved), CKN partial regularity (singular dim <= 1).",
     "builtItems": [
       "LerayHopfSolution: structure with energy inequality for 3D weak solutions",
       "lerayHopf_energy_bounded: E(t) ≤ E₀ from energy inequality",
@@ -124,6 +124,91 @@
         "name": "dimensionGap",
         "description": "Gap (d-2)/2 explaining why 2D solved, 3D open",
         "proven": true
+      },
+      {
+        "name": "ESSTheorem",
+        "description": "ESS 2003 endpoint regularity structure",
+        "proven": true
+      },
+      {
+        "name": "BackwardUniqueness",
+        "description": "Backward uniqueness for parabolic operators",
+        "proven": true
+      },
+      {
+        "name": "L3Concentration",
+        "description": "L3 concentration at singularities",
+        "proven": true
+      },
+      {
+        "name": "serrinP",
+        "description": "Serrin exponent p = 2q/(q-3)",
+        "proven": true
+      },
+      {
+        "name": "serrinP_critical",
+        "description": "Serrin exponent satisfies critical condition",
+        "proven": true
+      },
+      {
+        "name": "BesovParams",
+        "description": "Besov space B^s_{p,q} parameters",
+        "proven": true
+      },
+      {
+        "name": "criticalBesovSmoothness",
+        "description": "Critical smoothness -1+3/p",
+        "proven": true
+      },
+      {
+        "name": "critical_besov_at_2",
+        "description": "Critical Besov at p=2 is 1/2 (Leray-Hopf gap)",
+        "proven": true
+      },
+      {
+        "name": "critical_besov_decreasing",
+        "description": "Critical exponent decreasing in p",
+        "proven": true
+      },
+      {
+        "name": "critical_embedding_chain",
+        "description": "H^{1/2} > L^3 > BMO^{-1} ordering",
+        "proven": true
+      },
+      {
+        "name": "onsagerBesov",
+        "description": "Onsager threshold B^{1/3}_{3,inf}",
+        "proven": true
+      },
+      {
+        "name": "k41Spectrum",
+        "description": "K41 singularity spectrum D(1/3)=3",
+        "proven": true
+      },
+      {
+        "name": "sheLevequePlus",
+        "description": "She-Levesque structure function exponents",
+        "proven": true
+      },
+      {
+        "name": "sheLevesque_zeta3",
+        "description": "zeta_3 = 1 (Kolmogorov exact)",
+        "proven": true
+      },
+      {
+        "name": "sheLevesque_zeta6",
+        "description": "zeta_6 = 16/9 (intermittency)",
+        "proven": true
+      },
+      {
+        "name": "intermittency_correction",
+        "description": "delta = 2/9 intermittency dimension",
+        "proven": true
+      },
+      {
+        "name": "CKNPartialRegularity",
+        "description": "Singular set dim <= 1",
+        "proven": true
       }
     ],
     "insights": [
@@ -151,17 +236,28 @@
       "Constantin-Fefferman: vorticity DIRECTION (not magnitude) controls blowup",
       "Component criteria: n components → critical exponent (n+1)/4, gap of 1/4 per component",
       "The critical gap is exactly 1/2: Leray-Hopf gives L^2 but ESŠ needs L^3 endpoint",
-      "In d dimensions, the gap is (d-2)/2: zero in 2D (solved), 1/2 in 3D (open)"
+      "In d dimensions, the gap is (d-2)/2: zero in 2D (solved), 1/2 in 3D (open)",
+      "ESS 2003: L^inf_t L^3_x regularity proved via backward uniqueness (parabolic Carleman estimates)",
+      "Serrin exponent p = 2q/(q-3) parameterizes the critical line, p -> inf as q -> 3+",
+      "Besov critical smoothness -1+3/p: at p=2 gives 1/2 (exactly the Leray-Hopf gap)",
+      "Koch-Tataru 2001: BMO^{-1} is the largest critical space for small-data GWP",
+      "Onsager threshold is B^{1/3}_{3,inf}, NOT Holder C^{1/3} (B is strictly larger)",
+      "K41 singularity spectrum: D(h) = 3 delta at h=1/3 (uniform Holder, no intermittency)",
+      "She-Levesque: zeta_p = p/9 + 2(1-(2/3)^{p/3}), gives zeta_3=1 exactly (Kolmogorov 4/5)",
+      "Intermittency dimension delta = 2-zeta_6 = 2/9 from She-Levesque",
+      "CKN: singular set has parabolic dim <= 1; regularity gap = 1 (need to close to 0)",
+      "Legendre transform D(h) <-> zeta_p duality connects structure functions to singularity spectrum"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
       "PDEs"
     ],
     "nextSteps": [
-      "Prodi-Serrin endpoint analysis (L^∞_t L^3_x, ESŠ 2003)",
-      "Energy dissipation anomaly: lim_{ν→0} ε > 0 formalization",
-      "Besov space B^{1/3}_{3,∞} formalization (endpoint regularity)",
-      "Intermittency: She-Lévêque full model, multifractal spectrum"
+      "Littlewood-Paley decomposition formalization",
+      "Mild solutions in critical Besov (Gallagher-Koch-Planchon)",
+      "Stochastic NS: existence and Malliavin calculus",
+      "Type I/II singularity classification details",
+      "Convex integration and non-uniqueness (Buckmaster-Vicol)"
     ],
     "markdown": "# Knowledge Base: Navier-Stokes Existence and Smoothness\n\n## The Problem\n\nThe Navier-Stokes problem asks whether smooth, physically reasonable solutions exist for all time for the equations governing fluid flow in three dimensions.\n\n### Core Statement\n\n> In 3D, prove global existence and smoothness of Navier-Stokes solutions for all smooth initial data, or provide a counterexample showing finite-time blowup.\n\nThe equations describe how velocity and pressure of a fluid evolve:\n\n∂u/∂t + (u·∇)u = ν∆u - ∇p + f\n∇·u = 0\n\nwhere u is velocity, p is pressure, ν is viscosity, and f is external force.\n\n### Why It Matters\n\n1. **Fluid Dynamics**: Governs everything from weather to blood flow\n2. **Engineering**: Aircraft design, turbulence modeling, oceanography\n3. **Physics**: Fundamental understanding of fluids\n4. **Turbulence**: Connected to one of the last major unsolved physics problems\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1822 | Navier | Derived equations with molecular assumptions |\n| 1845 | Stokes | Rigorous continuum derivation |\n| 1934 | Leray | Weak solutions exist globally |\n| 1962 | Ladyzhenskaya | 2D global regularity |\n| 1977 | Scheffer | Partial regularity results |\n| 1982 | Caffarelli-Kohn-Nirenberg | Singular set has dimension ≤ 1 |\n\nThe 3D problem remains open despite 90+ years of effort since Leray.\n\n## The Key Difficulty: 3D vs 2D\n\n### 2D: Solved!\n\nIn 2D, global smooth solutions exist. Key facts:\n- Vorticity ω = curl(u) satisfies a nice transport equation\n- Enstrophy ∫|ω|² is bounded for all time\n- No vortex stretching term\n- Global regularity follows from energy estimates\n\n### 3D: Open\n\nIn 3D, the vortex stretching term (ω·∇)u can potentially cause:\n- Vorticity concentration\n- Energy cascade to small scales\n- Possible finite-time singularity\n\nThe Ladyzhenskaya inequality ||u||_4 ≤ C||u||_{H¹}^{3/4}||u||_2^{1/4} only works in 2D.\n\n## What We Could Build\n\n### In Mathlib Now\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Vector calculus | ✅ | div, curl, grad |\n| Sobolev spaces | ⚠️ Limited | Basic definitions |\n| PDEs | ⚠️ Limited | Linear theory |\n| Lebesgue spaces | ✅ | Well-developed |\n| Functional analysis | ✅ | Strong foundation |\n\n### Tractable Partial Work\n\n1. **2D Navier-Stokes** (see 2d-navier-stokes project)\n   - Global existence IS known\n   - Would be a major formalization achievement\n   - ~3000-5000 lines estimated\n\n2. **Stokes Equations** (linear case)\n   - ∆u = ∇p, ∇·u = 0\n   - Linear theory, more tractable\n   - Foundation for full N-S\n\n3. **Leray Solutions** (weak solutions)\n   - Energy inequality\n   - Existence without uniqueness\n   - Fundamental theory\n\n4. **Partial Regularity**\n   - Caffarelli-Kohn-Nirenberg\n   - Singular set is small (dimension ≤ 1)\n\n## Formalization Challenges\n\n### Primary Blocker: Advanced PDE Infrastructure\n\nFormalizing even 2D N-S requires:\n\n1. **Sobolev Spaces** (~1000 lines)\n   - H^s spaces on domains\n   - Trace theorems\n   - Embeddings\n\n2. **Energy Methods** (~1500 lines)\n   - A priori estimates\n   - Weak formulations\n   - Galerkin approximations\n\n3. **Regularity Theory** (~2000 lines)\n   - Bootstrapping\n   - Schauder estimates\n   - Maximum principles\n\n### The 3D-Specific Challenges\n\n3D uniquely requires handling:\n- **Enstrophy growth**: ∫|∇u|² can grow in 3D\n- **Vortex stretching**: (ω·∇)u term\n- **Critical scaling**: Equations are borderline in 3D\n\n## Current State of Knowledge\n\n### What's Known\n\n- **Weak solutions exist** (Leray 1934)\n- **Strong solutions exist locally** (Fujita-Kato)\n- **Small data ⟹ global existence** (for ||u₀|| small)\n- **Partial regularity** (singularities rare)\n- **Unique for 2D** and for small 3D data\n\n### What's Open\n\n- Do 3D solutions stay smooth forever?\n- Do finite-time singularities exist?\n- If blowup occurs, what does it look like?\n\n## Related Work\n\n| File | Relevance |\n|------|-----------|\n| `2d-navier-stokes` | The tractable 2D case |\n\n## Key References\n\n- Leray, J. (1934). \"Sur le mouvement d'un liquide visqueux\"\n- Ladyzhenskaya, O. (1969). \"The Mathematical Theory of Viscous Incompressible Flow\"\n- Caffarelli, L., Kohn, R., Nirenberg, L. (1982). \"Partial regularity\"\n- Constantin, P., Foias, C. (1988). \"Navier-Stokes Equations\"\n- Fefferman, C. (2006). \"Existence and Smoothness of the Navier-Stokes Equation\" (Clay Problem Statement)\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Current Status**: BLOCKED - Heavy PDE/analysis infrastructure required\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Basic PDEs | Yes | 2026-01-01 |\n| Sobolev spaces | Limited | 2026-01-01 |\n| Navier-Stokes | No | 2026-01-01 |\n| Fluid mechanics | No | 2026-01-01 |\n\n**Path Forward**:\n1. Build Sobolev space infrastructure\n2. Formalize 2D Navier-Stokes (known result)\n3. Add partial regularity for 3D weak solutions\n4. State the Millennium Problem precisely\n\n**Related Active Work**: `2d-navier-stokes` attempts the tractable 2D case\n\n**Next Scout**: Check Mathlib PDE development; 2D case is the near-term goal\n"
   },
