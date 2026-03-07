@@ -422,7 +422,204 @@ axiom monotone_hasBV {f : ℝ → ℂ} {a b : ℝ} (hab : a ≤ b)
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
-PART XI: VERIFICATION
+PART XI: FEJÉR KERNEL AND CESÀRO SUMMABILITY
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-
+The Fejér kernel is the Cesàro mean of the Dirichlet kernels:
+  F_N(t) = (1/N) Σ_{k=0}^{N-1} D_k(t)
+
+Unlike the Dirichlet kernel, the Fejér kernel is:
+  1. Non-negative: F_N(t) ≥ 0
+  2. An approximate identity: satisfies all three conditions
+  3. Yields uniform convergence for continuous functions
+
+Fejér's theorem: If f is continuous and periodic, then
+  σ_N f → f uniformly,
+where σ_N f = (1/N) Σ_{k=0}^{N-1} S_k f is the N-th Cesàro mean.
+
+This is strictly stronger than Dirichlet's theorem in terms of convergence class
+(any continuous function, not just BV), but gives only Cesàro convergence.
+-/
+
+/-- The Fejér kernel: the arithmetic mean of the first N Dirichlet kernels.
+    F_N(t) = (1/N) Σ_{k=0}^{N-1} D_k(t) -/
+def fejerKernel (N : ℕ) (t : AddCircle T) : ℂ :=
+  if N = 0 then 0
+  else (1 / (N : ℂ)) • ∑ k ∈ range N, dirichletKernel k t
+
+/-- The Cesàro mean of the Fourier partial sums.
+    σ_N f(x) = (1/N) Σ_{k=0}^{N-1} S_k f(x) -/
+def cesaroMean (f : AddCircle T → ℂ) (N : ℕ) (x : AddCircle T) : ℂ :=
+  if N = 0 then 0
+  else (1 / (N : ℂ)) • ∑ k ∈ range N, fourierPartialSum f k x
+
+/-- The Fejér kernel is continuous (as a finite sum of Dirichlet kernels). -/
+theorem fejerKernel_continuous (N : ℕ) :
+    Continuous (fejerKernel (T := T) N) := by
+  unfold fejerKernel
+  split
+  · exact continuous_const
+  · apply Continuous.smul continuous_const
+    exact continuous_finset_sum _ (fun k _ => dirichletKernel_continuous k)
+
+/-- The Cesàro mean is continuous for each N. -/
+theorem cesaroMean_continuous (f : AddCircle T → ℂ) (N : ℕ) :
+    Continuous (cesaroMean f N) := by
+  unfold cesaroMean
+  split
+  · exact continuous_const
+  · apply Continuous.smul continuous_const
+    exact continuous_finset_sum _ (fun k _ => fourierPartialSum_continuous f k)
+
+/-- The 1st Fejér kernel equals the 0th Dirichlet kernel (= 1).
+    F_1 = D_0 = 1 since the sum has only one term k=0. -/
+theorem fejerKernel_one (t : AddCircle T) :
+    fejerKernel (T := T) 1 t = 1 := by
+  simp [fejerKernel, dirichletKernel_zero]
+
+/-- The Fejér kernel at the origin: F_N(0) = 2N - 1 (approximate).
+    More precisely: F_N(0) = (1/N) Σ_{k=0}^{N-1} (2k+1). -/
+theorem fejerKernel_at_zero_value (N : ℕ) (hN : 0 < N) :
+    fejerKernel (T := T) N 0 = (N : ℂ) := by
+  simp only [fejerKernel, Nat.pos_iff_ne_zero.mp hN, ↓reduceIte]
+  rw [Finset.sum_comm]
+  simp only [dirichletKernel, fourier_at_zero, Finset.sum_const, nsmul_eq_mul, mul_one]
+  rw [show ∀ k ∈ range N, (Icc (-(k : ℤ)) (k : ℤ)).card = 2 * k + 1 from
+    fun k _ => dirichletKernel_card k]
+  sorry -- Arithmetic sum: Σ_{k=0}^{N-1} (2k+1) = N²
+
+/-- The Cesàro mean can be expressed as a convolution with the Fejér kernel.
+    σ_N f(x) = ∫ f(t) · F_N(x - t) dt
+    This is the key structural identity for Fejér theory. -/
+axiom cesaroMean_eq_convolution
+    (f : AddCircle T → ℂ) (N : ℕ) (hN : 0 < N)
+    (x : AddCircle T) (hf : Integrable f haarAddCircle) :
+    cesaroMean f N x =
+      ∫ t : AddCircle T, f t * fejerKernel N (x - t) ∂haarAddCircle
+
+/-- **Fejér's Theorem**: For continuous periodic f, the Cesàro means
+    converge uniformly to f.
+
+    This is stronger than Dirichlet's theorem because:
+    1. It applies to ALL continuous functions (not just BV)
+    2. Convergence is uniform (not just pointwise)
+
+    But it gives Cesàro convergence, not ordinary convergence.
+
+    Axiomatized: the proof uses the approximate identity properties of F_N
+    (non-negativity, normalization, concentration). -/
+axiom fejer_theorem
+    (f : AddCircle T → ℂ)
+    (hf_cont : Continuous f) (hf_int : Integrable f haarAddCircle) :
+    Tendsto (fun N : ℕ => ‖cesaroMean f N - f‖)
+      atTop (𝓝 0)
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART XII: BESSEL'S INEQUALITY AND PARSEVAL'S THEOREM
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-
+Bessel's inequality and Parseval's theorem relate the L² norm of a function
+to its Fourier coefficients:
+
+  Bessel:   Σ_{|n|≤N} |ĉ_n|² ≤ ‖f‖²₂    (for all N)
+  Parseval: Σ_{n∈ℤ}   |ĉ_n|² = ‖f‖²₂    (in the limit)
+
+Parseval's theorem is an isometry between L²(AddCircle T) and ℓ²(ℤ).
+It's equivalent to saying the Fourier monomials {e_n} form a complete
+orthonormal system in L².
+-/
+
+/-- The L² norm squared of f on the circle. -/
+def l2NormSq (f : AddCircle T → ℂ) : ℝ :=
+  (∫ t : AddCircle T, ‖f t‖^2 ∂haarAddCircle).toReal
+
+/-- The sum of squared Fourier coefficients up to order N.
+    Σ_{n=-N}^{N} |ĉ_n(f)|² -/
+def fourierCoeffSumSq (f : AddCircle T → ℂ) (N : ℕ) : ℝ :=
+  ∑ n ∈ Icc (-(N : ℤ)) (N : ℤ), ‖fourierCoeff f n‖^2
+
+/-- The partial sum of squared coefficients is non-negative. -/
+theorem fourierCoeffSumSq_nonneg (f : AddCircle T → ℂ) (N : ℕ) :
+    0 ≤ fourierCoeffSumSq f N := by
+  apply Finset.sum_nonneg
+  intro n _
+  exact sq_nonneg _
+
+/-- The partial sum of squared coefficients is monotone in N. -/
+theorem fourierCoeffSumSq_mono (f : AddCircle T → ℂ) (M N : ℕ) (hMN : M ≤ N) :
+    fourierCoeffSumSq f M ≤ fourierCoeffSumSq f N := by
+  apply Finset.sum_le_sum_of_subset
+  intro n hn
+  rw [Finset.mem_Icc] at hn ⊢
+  constructor <;> omega
+
+/-- **Bessel's Inequality**: The sum of squared Fourier coefficients is bounded
+    by the L² norm of f.
+
+    Σ_{|n|≤N} |ĉ_n(f)|² ≤ ‖f‖²₂ for all N.
+
+    Proof sketch: ‖f - S_N f‖² ≥ 0 expands to ‖f‖² - Σ|ĉ_n|² ≥ 0.
+
+    Axiomatized: requires inner product computation on L²(AddCircle T)
+    with orthogonality of Fourier monomials. -/
+axiom bessel_inequality
+    (f : AddCircle T → ℂ) (hf : Integrable f haarAddCircle)
+    (hf2 : Integrable (fun x => ‖f x‖^2) haarAddCircle) (N : ℕ) :
+    fourierCoeffSumSq f N ≤ l2NormSq f
+
+/-- **Parseval's Theorem**: The sum of squared Fourier coefficients equals
+    the L² norm of f.
+
+    Σ_{n∈ℤ} |ĉ_n(f)|² = ‖f‖²₂
+
+    This is equivalent to completeness of the Fourier system in L².
+    Combined with Fejér's theorem, it shows:
+    - Continuous functions are dense in L²
+    - Trigonometric polynomials are dense in L²
+
+    Axiomatized: requires completeness of the Fourier system. -/
+axiom parseval_theorem
+    (f : AddCircle T → ℂ) (hf : Integrable f haarAddCircle)
+    (hf2 : Integrable (fun x => ‖f x‖^2) haarAddCircle) :
+    Tendsto (fourierCoeffSumSq f) atTop (𝓝 (l2NormSq f))
+
+/-- Parseval's theorem implies the Fourier coefficients tend to zero.
+    This is a corollary: if the sum Σ|ĉ_n|² converges, then |ĉ_n| → 0.
+    This is the Riemann-Lebesgue lemma in the L² setting. -/
+theorem fourierCoeff_tendsto_zero
+    (f : AddCircle T → ℂ) (hf : Integrable f haarAddCircle)
+    (hf2 : Integrable (fun x => ‖f x‖^2) haarAddCircle) :
+    Tendsto (fun n : ℤ => ‖fourierCoeff f n‖) atBot (𝓝 0) := by
+  -- If Σ|ĉ_n|² converges, then the terms → 0
+  -- The norm → 0 follows from the squared norm → 0
+  -- This is a general property of convergent series
+  sorry -- Requires extracting from Parseval convergence that individual terms → 0
+
+/-- Uniqueness theorem: if all Fourier coefficients of f are zero, then f = 0 a.e.
+    This follows from Parseval: ‖f‖² = Σ|ĉ_n|² = 0 implies f = 0 in L².
+
+    This is the fundamental uniqueness result of Fourier analysis. -/
+theorem fourier_uniqueness
+    (f : AddCircle T → ℂ) (hf : Integrable f haarAddCircle)
+    (hf2 : Integrable (fun x => ‖f x‖^2) haarAddCircle)
+    (hzero : ∀ n : ℤ, fourierCoeff f n = 0) :
+    l2NormSq f = 0 := by
+  -- All coefficients zero → sum = 0 → ‖f‖² = 0 (by Parseval)
+  have h1 : ∀ N, fourierCoeffSumSq f N = 0 := by
+    intro N; simp [fourierCoeffSumSq, hzero]
+  -- fourierCoeffSumSq f = const 0 → limit = 0
+  have h2 : Tendsto (fourierCoeffSumSq f) atTop (𝓝 0) := by
+    convert tendsto_const_nhds using 1
+    ext N; exact h1 N
+  -- By Parseval, limit = l2NormSq f, so l2NormSq f = 0
+  exact tendsto_nhds_unique h2 (parseval_theorem f hf hf2)
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART XIII: VERIFICATION
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 -- Verify all main definitions and theorems type-check
@@ -438,5 +635,19 @@ PART XI: VERIFICATION
 #check @dirichlet_pointwise_convergence
 #check @dirichlet_at_continuity_point
 #check @dirichlet_continuous_BV
+-- Fejér kernel and Cesàro summability
+#check @fejerKernel
+#check @fejerKernel_continuous
+#check @cesaroMean
+#check @cesaroMean_continuous
+#check @fejerKernel_one
+-- Bessel and Parseval
+#check @l2NormSq
+#check @fourierCoeffSumSq
+#check @fourierCoeffSumSq_nonneg
+#check @fourierCoeffSumSq_mono
+#check @bessel_inequality
+#check @parseval_theorem
+#check @fourier_uniqueness
 
 end FourierDirichlet

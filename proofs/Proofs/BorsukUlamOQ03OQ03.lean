@@ -255,11 +255,10 @@ theorem borsuk_ulam_2d_from_tucker
     (f : ℝ × ℝ → ℝ × ℝ) (hf : Continuous f) :
     ∃ x : ℝ × ℝ, x.1 ^ 2 + x.2 ^ 2 = 1 ∧
       f x = f (Prod.map Neg.neg Neg.neg x) := by
-  -- Standard compactness argument:
-  -- 1. For each n, get ε_n-approximate solution x_n on S¹ with ε_n = 1/n
-  -- 2. S¹ is compact, so (x_n) has convergent subsequence → x*
-  -- 3. f continuous ⟹ f(x*) = f(-x*)
-  sorry
+  -- Reduce to: approx solutions for all ε → exact solution
+  apply approx_to_exact f hf
+  intro ε hε
+  exact approx_borsuk_ulam_2d_from_tucker f hf ε hε
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -440,7 +439,14 @@ theorem approx_combine (f : ℝ × ℝ → ℝ × ℝ) (x₁ x₂ : ℝ × ℝ)
 theorem approx_pair_small_diff (f : ℝ × ℝ → ℝ × ℝ)
     (x : ℝ × ℝ) (ε : ℝ) (h : IsApproxAntipodalPair f x ε) :
     dist (antisymmetricDiff f x) (0, 0) < 2 * ε := by
-  sorry -- requires relating antisymmetricDiff to dist(f(x), f(-x))
+  have hε : 0 < ε := lt_of_le_of_lt dist_nonneg h.2
+  -- antisymmetricDiff f x = f x - f(-x) as ℝ × ℝ subtraction
+  have heq : dist (antisymmetricDiff f x) (0, 0) =
+      dist (f x) (f (Prod.map Neg.neg Neg.neg x)) := by
+    have h1 : antisymmetricDiff f x = f x - f (Prod.map Neg.neg Neg.neg x) := by ext <;> rfl
+    have h2 : (0, 0) = (0 : ℝ × ℝ) := rfl
+    rw [h1, h2, dist_zero_right, ← dist_eq_norm]
+  linarith [h.2]
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -498,9 +504,17 @@ theorem approx_to_exact (f : ℝ × ℝ → ℝ × ℝ) (hf : Continuous f)
     (happrox : ∀ ε > 0, ∃ x, IsApproxAntipodalPair f x ε) :
     ∃ x : ℝ × ℝ, x.1 ^ 2 + x.2 ^ 2 = 1 ∧
       f x = f (Prod.map Neg.neg Neg.neg x) := by
-  -- Sequence x_n on S¹ with dist(f(x_n), f(-x_n)) < 1/n
-  -- S¹ compact → subsequence converges → limit is exact solution
-  sorry
+  -- Minimize d(x) = dist(f(x), f(-x)) on compact S¹; minimum is 0
+  have hd : Continuous (fun x : ℝ × ℝ => dist (f x) (f (Prod.map Neg.neg Neg.neg x))) :=
+    Continuous.dist hf (hf.comp antipodal_continuous)
+  obtain ⟨x₀, hx₀S, hx₀min⟩ :=
+    circle_isCompact.exists_isMinOn ⟨(1, 0), by norm_num⟩ hd.continuousOn
+  refine ⟨x₀, hx₀S, dist_eq_zero.mp (le_antisymm ?_ dist_nonneg)⟩
+  -- Show: dist(f(x₀), f(-x₀)) ≤ 0
+  by_contra hgt
+  push_neg at hgt
+  obtain ⟨x₁, hx₁on, hx₁lt⟩ := happrox _ hgt
+  exact absurd hx₁lt (not_lt.mpr (hx₀min hx₁on))
 
 /-- **Open question status**: The Tucker → BU bridge requires
     explicit triangulation construction, which is the combinatorial core.
