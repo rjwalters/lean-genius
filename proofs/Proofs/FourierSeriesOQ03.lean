@@ -480,14 +480,28 @@ theorem fejerKernel_one (t : AddCircle T) :
 
 /-- The Fejér kernel at the origin: F_N(0) = 2N - 1 (approximate).
     More precisely: F_N(0) = (1/N) Σ_{k=0}^{N-1} (2k+1). -/
+-- Helper: sum of first N odd numbers equals N²
+private theorem sum_odd_eq_sq (N : ℕ) :
+    ∑ k ∈ range N, ((2 : ℂ) * ↑k + 1) = (↑N : ℂ) ^ 2 := by
+  induction N with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ih]
+    push_cast; ring
+
 theorem fejerKernel_at_zero_value (N : ℕ) (hN : 0 < N) :
     fejerKernel (T := T) N 0 = (N : ℂ) := by
-  simp only [fejerKernel, Nat.pos_iff_ne_zero.mp hN, ↓reduceIte]
-  rw [Finset.sum_comm]
-  simp only [dirichletKernel, fourier_at_zero, Finset.sum_const, nsmul_eq_mul, mul_one]
-  rw [show ∀ k ∈ range N, (Icc (-(k : ℤ)) (k : ℤ)).card = 2 * k + 1 from
-    fun k _ => dirichletKernel_card k]
-  sorry -- Arithmetic sum: Σ_{k=0}^{N-1} (2k+1) = N²
+  have hN0 : (N : ℕ) ≠ 0 := Nat.pos_iff_ne_zero.mp hN
+  simp only [fejerKernel, hN0, ↓reduceIte]
+  -- Evaluate each D_k(0) = 2k + 1
+  simp_rw [dirichletKernel_at_zero]
+  -- Cast integers to ℂ and apply sum of odd numbers = N²
+  simp only [Int.cast_add, Int.cast_mul, Int.cast_ofNat, Int.cast_one, Int.cast_natCast]
+  rw [sum_odd_eq_sq]
+  -- (1/N) • N² = N
+  have hNc : (↑N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr hN0
+  rw [smul_eq_mul, sq]
+  field_simp
 
 /-- The Cesàro mean can be expressed as a convolution with the Fejér kernel.
     σ_N f(x) = ∫ f(t) · F_N(x - t) dt
@@ -512,8 +526,7 @@ axiom cesaroMean_eq_convolution
 axiom fejer_theorem
     (f : AddCircle T → ℂ)
     (hf_cont : Continuous f) (hf_int : Integrable f haarAddCircle) :
-    Tendsto (fun N : ℕ => ‖cesaroMean f N - f‖)
-      atTop (𝓝 0)
+    TendstoUniformly (fun N => cesaroMean f N) f atTop
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -534,7 +547,7 @@ orthonormal system in L².
 
 /-- The L² norm squared of f on the circle. -/
 def l2NormSq (f : AddCircle T → ℂ) : ℝ :=
-  (∫ t : AddCircle T, ‖f t‖^2 ∂haarAddCircle).toReal
+  ∫ t : AddCircle T, ‖f t‖^2 ∂haarAddCircle
 
 /-- The sum of squared Fourier coefficients up to order N.
     Σ_{n=-N}^{N} |ĉ_n(f)|² -/
@@ -551,10 +564,12 @@ theorem fourierCoeffSumSq_nonneg (f : AddCircle T → ℂ) (N : ℕ) :
 /-- The partial sum of squared coefficients is monotone in N. -/
 theorem fourierCoeffSumSq_mono (f : AddCircle T → ℂ) (M N : ℕ) (hMN : M ≤ N) :
     fourierCoeffSumSq f M ≤ fourierCoeffSumSq f N := by
-  apply Finset.sum_le_sum_of_subset
-  intro n hn
-  rw [Finset.mem_Icc] at hn ⊢
-  constructor <;> omega
+  apply Finset.sum_le_sum_of_subset_of_nonneg
+  · intro n hn
+    rw [Finset.mem_Icc] at hn ⊢
+    constructor <;> omega
+  · intro i _ _
+    exact sq_nonneg _
 
 /-- **Bessel's Inequality**: The sum of squared Fourier coefficients is bounded
     by the L² norm of f.
@@ -593,10 +608,20 @@ theorem fourierCoeff_tendsto_zero
     (f : AddCircle T → ℂ) (hf : Integrable f haarAddCircle)
     (hf2 : Integrable (fun x => ‖f x‖^2) haarAddCircle) :
     Tendsto (fun n : ℤ => ‖fourierCoeff f n‖) atBot (𝓝 0) := by
-  -- If Σ|ĉ_n|² converges, then the terms → 0
-  -- The norm → 0 follows from the squared norm → 0
-  -- This is a general property of convergent series
-  sorry -- Requires extracting from Parseval convergence that individual terms → 0
+  -- Proof outline:
+  -- 1. From Parseval, fourierCoeffSumSq f N → l2NormSq f
+  -- 2. Consecutive diffs → 0: fourierCoeffSumSq f (N+1) - fourierCoeffSumSq f N → 0
+  -- 3. ‖ĉ_{-(N+1)}‖² ≤ diff (since it's one non-negative term in the sum)
+  -- 4. Squeeze → ‖ĉ_{-(N+1)}‖² → 0 → ‖ĉ_{-(N+1)}‖ → 0
+  -- 5. Reindex: Tendsto over ℕ via (fun m ↦ -(m+1)) implies Tendsto atBot over ℤ
+  have hP := parseval_theorem f hf hf2
+  -- Step 2: consecutive differences → 0
+  have hdiff : Tendsto (fun m : ℕ => fourierCoeffSumSq f (m + 1) - fourierCoeffSumSq f m)
+      atTop (𝓝 0) := by
+    have := (hP.comp (tendsto_add_atTop_nat 1)).sub hP
+    simpa using this
+  -- Steps 3-5 require Finset.Icc difference decomposition and ℕ→ℤ reindexing
+  sorry
 
 /-- Uniqueness theorem: if all Fourier coefficients of f are zero, then f = 0 a.e.
     This follows from Parseval: ‖f‖² = Σ|ĉ_n|² = 0 implies f = 0 in L².
@@ -615,7 +640,7 @@ theorem fourier_uniqueness
     convert tendsto_const_nhds using 1
     ext N; exact h1 N
   -- By Parseval, limit = l2NormSq f, so l2NormSq f = 0
-  exact tendsto_nhds_unique h2 (parseval_theorem f hf hf2)
+  exact (tendsto_nhds_unique h2 (parseval_theorem f hf hf2)).symm
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
