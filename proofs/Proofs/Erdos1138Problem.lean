@@ -21,10 +21,9 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.AtTopBot
 import Mathlib.Tactic
 
-open Finset Set Filter
+open Finset Set
 
 namespace Erdos1138
 
@@ -61,7 +60,7 @@ theorem primeCounting_mono {a b : ℕ} (h : a ≤ b) :
 
 /-- π(0) = 0 (no primes at or below 0). -/
 theorem primeCounting_zero : primeCounting 0 = 0 := by
-  simp [primeCounting, Nat.not_prime_zero, Finset.filter_singleton, Finset.range]
+  simp [primeCounting]
   decide
 
 /-- π(1) = 0 (1 is not prime). -/
@@ -77,15 +76,20 @@ theorem primeCounting_two : primeCounting 2 = 1 := by
 /-- π(n) ≤ n + 1 (trivial upper bound). -/
 theorem primeCounting_le (n : ℕ) : primeCounting n ≤ n + 1 := by
   unfold primeCounting
-  exact Finset.card_filter_le _ _
+  calc ((Finset.range (n + 1)).filter Nat.Prime).card
+      ≤ (Finset.range (n + 1)).card := Finset.card_filter_le _ _
+    _ = n + 1 := Finset.card_range _
 
 /-- The maximal prime gap below x is at most x (trivial bound). -/
 theorem maxPrimeGap_le (x : ℕ) : maxPrimeGap x ≤ x := by
-  unfold maxPrimeGap
-  by_cases h : {d | ∃ p q : ℕ, Nat.Prime p ∧ Nat.Prime q ∧ p < q ∧ q ≤ x ∧
-    (∀ r, Nat.Prime r → p < r → q ≤ r) ∧ d = q - p} = ∅
-  · simp [h, Nat.sSup_empty]
-  · sorry -- needs BddAbove proof + sSup ≤ bound argument
+  show sSup {d | ∃ p q : ℕ, Nat.Prime p ∧ Nat.Prime q ∧ p < q ∧ q ≤ x ∧
+    (∀ r, Nat.Prime r → p < r → q ≤ r) ∧ d = q - p} ≤ x
+  rcases Set.eq_empty_or_nonempty {d | ∃ p q : ℕ, Nat.Prime p ∧ Nat.Prime q ∧ p < q ∧ q ≤ x ∧
+    (∀ r, Nat.Prime r → p < r → q ≤ r) ∧ d = q - p} with h | hne
+  · rw [h, csSup_empty]; exact bot_le
+  · apply csSup_le hne
+    rintro d ⟨p, q, -, -, -, hqx, -, rfl⟩
+    exact le_trans (Nat.sub_le q p) hqx
 
 /- ## Part IV: The Erdős Conjecture -/
 
