@@ -1,0 +1,20 @@
+[
+  {
+    "id": "monoid-summary",
+    "line": 255,
+    "type": "theorem",
+    "content": "Summary theorem proving all four monoid axioms: associativity, left identity, right identity, and commutativity of probability measure convolution."
+  },
+  {
+    "id": "conv-pow-add",
+    "line": 105,
+    "type": "theorem",
+    "content": "The convolution power distributes over addition: μ^{*(m+n)} = μ^{*m} * μ^{*n}. Proved by induction on n using associativity."
+  },
+  {
+    "id": "clt-doa",
+    "line": 229,
+    "type": "theorem",
+    "content": "The CLT stated categorically: every distribution with finite positive variance is in the domain of attraction of the Gaussian."
+  }
+]
