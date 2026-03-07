@@ -29,24 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries, 1 axiom (lindstrom_involution). PR #3364 eliminates all 4 prior sorries.",
+    "progressSummary": "PROGRESS: Extended with entry gap analysis (Part XVII). Proved entryGap framework (NI preserves positive gap at all columns), swapTails East step preservation, suffix North step decomposition. Still 0 sorries, 1 axiom (lindstrom_involution).",
     "builtItems": [
       "37+ theorems in BallotProblemOQ03.lean",
       "Higher-dimensional lattice paths via reflection principle",
       "2x2 LGV Lemma proved via complement counting + Lindström axiom",
       "Crossing Lemma fully proved",
       "Involution infrastructure: splitAfterEast, swapTails, involutivity",
-      "Catalan numbers, ballot formula, Vandermonde identity"
+      "Catalan numbers, ballot formula, Vandermonde identity",
+      "entryGap def, entryGap_zero, entryGap_pos_succ, entryGap_pos_all (gap analysis)",
+      "crossing_col_entry_ge, crossing_col_prev_lt (gap ↔ inequality conversion)",
+      "eastSteps_swapTails_fst/snd (swapTails preserves East step count)",
+      "length_swapTails_fst/snd, northSteps_splitAfterEast_snd (structural preservation)"
     ],
     "insights": [
       "Lindström involution requires firstIntersectionColumn construction",
       "The involution is a classical result but the Equiv construction is complex",
-      "Axiomatizing the bijection is appropriate: infrastructure is built, gap is explicit"
+      "Axiomatizing the bijection is appropriate: infrastructure is built, gap is explicit",
+      "Entry gap analysis: NI implies positive gap everywhere, but positive gap does NOT imply NI",
+      "Key subtlety: positive entry gap at boundaries doesn't give disjoint column ranges (intervals vs points)",
+      "The Lindström involution swaps at the lexicographically first shared LATTICE POINT, not column boundary",
+      "swapTails preserves East step count: pre₁(k East) ++ suf₂(m-k East) = m East steps"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Construct firstIntersectionColumn to fill the axiom",
-      "Build the explicit Equiv using existing swap infrastructure"
+      "Define lattice point membership on paths (finer than column-entry boundaries)",
+      "Prove shared lattice point exists for ¬NonIntersecting paths (from column range overlap)",
+      "Construct firstSharedLatticePoint using Nat.find on decidable predicate",
+      "Build the explicit Equiv using swapTails at the first shared point"
     ]
   },
   "approaches": [],

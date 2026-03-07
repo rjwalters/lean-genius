@@ -55,7 +55,12 @@
       "lgvDet_swap_sources/targets: antisymmetry of LGV determinant",
       "lgvDet_nonneg: non-negativity under proper ordering (via LGV lemma)",
       "catalan_eq_ballot: Cn(n) = ballotSeqCount(n+1, n) (Catalan-Ballot unification)",
-      "catalan_ballot_division: ballotSeqCount(n+1,n)*(n+1) = C(2n,n)"
+      "catalan_ballot_division: ballotSeqCount(n+1,n)*(n+1) = C(2n,n)",
+      "entryGap: gap between path entry y-coordinates at column boundaries",
+      "entryGap_pos_succ: NI + positive gap at k → positive gap at k+1",
+      "entryGap_pos_all: NI + y₁ < y₂ → gap positive at all columns ≤ m",
+      "eastSteps_swapTails_fst/snd: swapTails preserves East step count = m",
+      "northSteps_splitAfterEast_snd: suffix North steps = total - colEntry"
     ],
     "dateAdded": "2026-02-26",
     "mathlib_version": "4.26.0"
@@ -73,7 +78,9 @@
       "pathFlip (l.map (!·)) transposes the grid: m East + n North ↔ n East + m North, giving C(m+n,m) = C(m+n,n) combinatorially",
       "lgvDet is antisymmetric in both sources and targets: swapping negates, double swap recovers original",
       "lgvDet_nonneg follows from lgv_lemma_2x2 since niPairCount is a natural number cast to ℤ",
-      "Catalan and ballot are the same: Cn(n) = ballotSeqCount(n+1,n) = C(2n,n) - C(2n,n+1)"
+      "Catalan and ballot are the same: Cn(n) = ballotSeqCount(n+1,n) = C(2n,n) - C(2n,n+1)",
+      "Entry gap framework: entryGap(k) = (y₂+entry₂(k)) - (y₁+entry₁(k)) captures crossing analysis; NI preserves gap positivity, but positive gap does NOT imply NI (ranges are intervals, not points)",
+      "swapTails preserves East step count: pre₁ has k East steps + suf₂ has (m-k) East steps = m total"
     ]
   },
   "sections": [
@@ -167,6 +174,13 @@
       "startLine": 1190,
       "endLine": 1215,
       "summary": "FULLY PROVED: Cn(n) = ballotSeqCount(n+1,n) unifying the two reflection-based formulas. catalan_ballot_division: ballotSeqCount(n+1,n)*(n+1) = C(2n,n)."
+    },
+    {
+      "id": "entry-gap-analysis",
+      "title": "Entry Gap Analysis and swapTails Properties",
+      "startLine": 1215,
+      "endLine": 1370,
+      "summary": "FULLY PROVED: Entry gap framework (NI preserves positive gap, gap positive at all columns under NI + y₁<y₂). swapTails East step count preservation. Suffix North step count decomposition."
     }
   ],
   "conclusion": {
