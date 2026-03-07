@@ -11242,4 +11242,209 @@ theorem space_complexity_landscape :
 #check L_eq_NL_implies_det_equals_nondet_space
 #check space_complexity_landscape
 
+-- ============================================================
+-- PART 42: Model Adequacy Analysis
+-- ============================================================
+
+/-
+### Part 42: Model Adequacy - Abstract vs Concrete Computational Models
+
+**Key Finding**: The abstract oracle TM model (`OracleProgram`) used throughout
+this formalization is *trivially universal*: every decision problem is in P
+under this model. This is because `OracleProgram.compute` is an unrestricted
+Lean function, not a computable function.
+
+**Consequence**: Axioms asserting class separations (`P_ne_EXP`,
+`exists_oracle_P_neq_NP`, `time_hierarchy_theorem`, etc.) are inconsistent
+with the abstract model definitions. The formalization's value lies in its
+comprehensive survey of complexity-theoretic concepts and their relationships,
+not as a consistent axiomatic system.
+
+**Resolution**: The Mathlib-based definitions (`MathLibP`, `MathLibNP` from
+Part 29) use actual `TM2ComputableInPolyTime` with finite-state machines and
+avoid this issue. These should be treated as the ground-truth complexity class
+definitions.
+
+#### The Problem
+
+In our abstract model, `OracleProgram` has a field:
+  `compute : Oracle → Nat → Bool × Nat`
+
+This is an ARBITRARY Lean function — it can encode ANY decision procedure
+(including non-computable ones like the halting problem) and report ANY step
+count (including 0). For any `problem : Nat → Bool`, we can construct a
+"program" that solves it in 0 steps by simply embedding the problem as the
+compute function.
+
+This collapses every complexity class to `Set.univ`.
+-/
+
+-- ### Demonstration of Model Triviality
+
+/-- A "trivial solver" that embeds any decision function as a zero-step program.
+    This construction is possible because `OracleProgram.compute` accepts any
+    Lean function, with no computability restriction. -/
+def trivialSolver (problem : Nat → Bool) : OracleProgram :=
+  ⟨0, fun _ n => (problem n, 0)⟩
+
+/-- The trivial solver correctly decides any problem on all inputs. -/
+theorem trivialSolver_solves (problem : Nat → Bool) :
+    solvesRelative (trivialSolver problem) emptyOracle problem :=
+  fun _ => rfl
+
+/-- The trivial solver runs in zero steps, which is ≤ any polynomial bound. -/
+theorem trivialSolver_poly (problem : Nat → Bool) (poly : Polynomial) :
+    runsInPolyTime (trivialSolver problem) emptyOracle poly :=
+  fun _ => Nat.zero_le _
+
+/-- **CRITICAL**: The abstract P class contains EVERY decision problem.
+    Provable from the definitions alone — no axioms needed.
+
+    **Proof**: For any `problem : Nat → Bool`, the `OracleProgram`
+    `⟨0, fun _ n => (problem n, 0)⟩` solves it in 0 steps.
+    Since `OracleProgram.compute` is an unrestricted Lean function,
+    this "program" is well-formed regardless of the problem's computability. -/
+theorem abstract_P_is_univ : P_unrelativized = Set.univ := by
+  apply Set.eq_univ_iff_forall.mpr
+  intro problem
+  exact ⟨trivialSolver problem, ⟨0, 0⟩,
+         trivialSolver_solves problem, trivialSolver_poly problem _⟩
+
+/-- Similarly, every DTIME class contains all problems. -/
+theorem abstract_DTIME_is_univ (f : Nat → Nat) : DTIME f = Set.univ := by
+  apply Set.eq_univ_iff_forall.mpr
+  intro problem
+  exact ⟨trivialSolver problem, trivialSolver_solves problem, fun _ => Nat.zero_le _⟩
+
+/-- EXP is trivially universal in the abstract model. -/
+theorem abstract_EXP_is_univ : EXP = Set.univ := by
+  apply Set.eq_univ_iff_forall.mpr
+  intro problem
+  refine ⟨⟨0, 1⟩, ?_⟩
+  exact ⟨trivialSolver problem, trivialSolver_solves problem, fun _ => Nat.zero_le _⟩
+
+/-- NP is trivially universal (the "verifier" ignores the certificate
+    and directly embeds the answer). -/
+theorem abstract_NP_is_univ : NP_unrelativized = Set.univ := by
+  apply Set.eq_univ_iff_forall.mpr
+  intro problem
+  let v : OracleVerifier := ⟨0, fun _ n _ => (problem n, 0)⟩
+  refine ⟨v, ⟨0, 0⟩, ?_, ?_, ?_⟩
+  · -- Completeness: use certificate 0
+    intro n hn; exact ⟨0, hn⟩
+  · -- Soundness: verifier returns problem's answer regardless
+    intro n hn _; exact hn
+  · -- Efficiency: 0 steps
+    intro _ _; exact Nat.zero_le _
+
+/-- P = NP = EXP = Set.univ in the abstract model. -/
+theorem abstract_P_eq_NP : P_unrelativized = NP_unrelativized := by
+  rw [abstract_P_is_univ, abstract_NP_is_univ]
+
+/-- P = EXP in the abstract model. -/
+theorem abstract_P_eq_EXP : P_unrelativized = EXP := by
+  rw [abstract_P_is_univ, abstract_EXP_is_univ]
+
+/-- The triviality extends to relativized classes: P^A = Set.univ for any oracle A.
+    The oracle is irrelevant because the trivial solver never queries it. -/
+theorem relativized_P_is_univ (A : Oracle) : P_relative A = Set.univ := by
+  apply Set.eq_univ_iff_forall.mpr
+  intro problem
+  exact ⟨⟨0, fun _ n => (problem n, 0)⟩, ⟨0, 0⟩, fun _ => rfl, fun _ => Nat.zero_le _⟩
+
+/-- Relativized NP is also universal. -/
+theorem relativized_NP_is_univ (A : Oracle) : NP_relative A = Set.univ := by
+  apply Set.eq_univ_iff_forall.mpr
+  intro problem
+  let v : OracleVerifier := ⟨0, fun _ n _ => (problem n, 0)⟩
+  refine ⟨v, ⟨0, 0⟩, ?_, ?_, ?_⟩
+  · intro n hn; exact ⟨0, hn⟩
+  · intro n hn _; exact hn
+  · intro _ _; exact Nat.zero_le _
+
+/-- P^A = NP^A for every oracle A (both are Set.univ).
+    This directly contradicts `exists_oracle_P_neq_NP`. -/
+theorem relativized_P_eq_NP (A : Oracle) : P_relative A = NP_relative A := by
+  rw [relativized_P_is_univ A, relativized_NP_is_univ A]
+
+/-
+### Implications for the Axiom System
+
+The following axioms are INCONSISTENT with the abstract definitions above:
+
+1. **`P_ne_EXP`**: States `P_unrelativized ≠ EXP`.
+   Contradicted by `abstract_P_eq_EXP`.
+
+2. **`exists_oracle_P_neq_NP`**: States `∃ B, P_relative B ≠ NP_relative B`.
+   Contradicted by `relativized_P_eq_NP`.
+
+3. **`time_hierarchy_theorem`**: States `DTIME f ⊂ DTIME g` for suitable f, g.
+   Both sides are `Set.univ` by `abstract_DTIME_is_univ`, so no strict subset.
+
+4. **`church_turing_P`**: States `P_unrelativized = MathLibP`.
+   Would force `MathLibP = Set.univ`, but Mathlib's TM2 model has
+   only countably many programs.
+
+5. **`karp_lipton`**, **`toda_theorem`**, and other collapse results
+   become trivially true (everything equals everything).
+
+**Root cause**: The abstract model conflates "Lean function" (arbitrary,
+possibly non-computable) with "TM-computable function". The axioms capture
+the INTENDED complexity-theoretic meaning under the implicit assumption
+that programs are computable — but this restriction is not enforced by
+the Lean type system.
+
+### Resolution
+
+**The Mathlib-based definitions should be the ground truth.**
+
+`MathLibP` and `MathLibNP` (Part 29) use `Turing.TM2ComputableInPolyTime`,
+which requires constructing an actual finite-state TM2 machine with explicit
+transitions and a polynomial step-count bound. This prevents embedding
+arbitrary functions as "programs".
+
+The barrier theorems (Parts 3-7) remain meaningful when interpreted
+relative to `MathLibP`/`MathLibNP` via the bridge theorems in Part 29.
+-/
+
+-- ### The Mathlib Model is Non-Trivial
+
+/-- **Axiom**: Not every decision problem is in Mathlib's P.
+
+    This holds because TM2 machines have finite descriptions (countably many),
+    while `Nat → Bool` has uncountably many members. A counting argument
+    shows most functions are not TM-computable, let alone in polynomial time.
+
+    Unlike the abstract model, `MathLibP` genuinely requires constructing
+    a finite-state TM2 machine — a structural obligation that cannot be
+    satisfied by arbitrary Lean functions. -/
+axiom mathlib_P_nontrivial : MathLibP ≠ Set.univ
+
+/-- Summary: the abstract model is trivial, the Mathlib model is not. -/
+theorem model_adequacy_summary :
+    -- The abstract model collapses all classes to Set.univ
+    P_unrelativized = Set.univ ∧
+    NP_unrelativized = Set.univ ∧
+    EXP = Set.univ ∧
+    -- But the Mathlib model properly distinguishes them
+    MathLibP ≠ Set.univ :=
+  ⟨abstract_P_is_univ, abstract_NP_is_univ, abstract_EXP_is_univ,
+   mathlib_P_nontrivial⟩
+
+-- Part 42 exports (Model Adequacy Analysis)
+#check trivialSolver
+#check trivialSolver_solves
+#check trivialSolver_poly
+#check abstract_P_is_univ
+#check abstract_DTIME_is_univ
+#check abstract_EXP_is_univ
+#check abstract_NP_is_univ
+#check abstract_P_eq_NP
+#check abstract_P_eq_EXP
+#check relativized_P_is_univ
+#check relativized_NP_is_univ
+#check relativized_P_eq_NP
+#check mathlib_P_nontrivial
+#check model_adequacy_summary
+
 end PNPBarriers
