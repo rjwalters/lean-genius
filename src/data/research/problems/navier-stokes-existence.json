@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-03-06T00:00:00Z",
-    "iteration": 4,
-    "focus": "BKM criterion, weak-strong uniqueness, K41 spectrum, Ladyzhenskaya inequality",
+    "iteration": 5,
+    "focus": "Energy dissipation anomaly, regularity criteria hierarchy, dimensional analysis",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3998 lines, 0 axioms, 0 sorries. Added Onsager conjecture infrastructure (Part XX): Hölder regularity structures, conservation/dissipation threshold, commutator exponent analysis, K41-Onsager connection, structure functions, She-Lévêque intermittency, Serrin-Onsager endpoint.",
+    "progressSummary": "PROGRESS: 4564 lines, 0 axioms, 0 sorries. Added Parts XXI-XXIII: energy dissipation anomaly (zeroth law, cascade, Taylor-Green), regularity criteria landscape (BKM, Serrin, CF, da Veiga, component criteria, ESŠ, pressure), dimensional analysis (scaling symmetry, critical gap 1/2, 2D vs 3D comparison).",
     "builtItems": [
       "LerayHopfSolution: structure with energy inequality for 3D weak solutions",
       "lerayHopf_energy_bounded: E(t) ≤ E₀ from energy inequality",
@@ -84,6 +84,46 @@
         "name": "she_leveque_p3",
         "description": "She-Lévêque ζ_3 = 1 verification",
         "proven": true
+      },
+      {
+        "name": "ViscousSolutionFamily",
+        "description": "Structure for ν-parameterized solution family with dissipation",
+        "proven": true
+      },
+      {
+        "name": "ZerothLaw",
+        "description": "Structure for positive limiting dissipation rate",
+        "proven": true
+      },
+      {
+        "name": "EnergyCascade",
+        "description": "Structure for constant energy flux through inertial range",
+        "proven": true
+      },
+      {
+        "name": "TaylorGreenVortex",
+        "description": "Structure for canonical turbulence test case",
+        "proven": true
+      },
+      {
+        "name": "ConstantinFeffermanCriterion",
+        "description": "Vorticity direction criterion for regularity",
+        "proven": true
+      },
+      {
+        "name": "RegularityCriterionLevel",
+        "description": "Hierarchy of 8 regularity criteria",
+        "proven": true
+      },
+      {
+        "name": "scalingDimension",
+        "description": "Sub/super/critical classification of mixed norms",
+        "proven": true
+      },
+      {
+        "name": "dimensionGap",
+        "description": "Gap (d-2)/2 explaining why 2D solved, 3D open",
+        "proven": true
       }
     ],
     "insights": [
@@ -102,7 +142,16 @@
       "K41 energy spectrum E(k) ~ k^{-5/3} corresponds to Hölder-1/3 via 2α+1 = 5/3",
       "Commutator exponent 3α-1 is the key: positive → conservation, zero → borderline, negative → dissipation",
       "Serrin endpoint (p=3) via 2/3 + 3/q = 1 gives q=9, connecting Serrin regularity to Onsager",
-      "She-Lévêque intermittency: ζ_p = p/9 + 2(1-(2/3)^{p/3}), verified ζ_3 = 1 exactly"
+      "She-Lévêque intermittency: ζ_p = p/9 + 2(1-(2/3)^{p/3}), verified ζ_3 = 1 exactly",
+      "Zeroth law (Kolmogorov 1941): lim_{ν→0} ε > 0, dissipation is mechanism-independent",
+      "Inertial estimate ε ~ U³/L: velocity scaling is cubic (fundamental nonlinearity)",
+      "Scale separation L/η ~ Re^{3/4}, degrees of freedom ~ Re^{9/4} (Landau-Lifshitz)",
+      "Energy cascade: constant flux Π(k) = ε through inertial range implies k^{-5/3}",
+      "Anomaly-Onsager-K41 triangle: α=1/3, E(k)~k^{-5/3}, commutator 3α-1=0 all connected",
+      "Constantin-Fefferman: vorticity DIRECTION (not magnitude) controls blowup",
+      "Component criteria: n components → critical exponent (n+1)/4, gap of 1/4 per component",
+      "The critical gap is exactly 1/2: Leray-Hopf gives L^2 but ESŠ needs L^3 endpoint",
+      "In d dimensions, the gap is (d-2)/2: zero in 2D (solved), 1/2 in 3D (open)"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
@@ -130,7 +179,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-06T22:00:00Z",
+  "lastUpdate": "2026-03-07T20:00:00Z",
   "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1
