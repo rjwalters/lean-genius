@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3986 lines, 0 sorries. Comprehensive formalization covering: BSD weak+strong, known cases (rank 0,1), Gross-Zagier, congruent numbers (Koblitz proved), Selmer groups, heights, local factors, Mazur torsion, root numbers (proved), Kodaira types, BSD constants (3 curves verified), Goldfeld, Bhargava-Shankar, Kolyvagin Euler system, Cassels-Tate (Sha square proved), Iwasawa MC (Kato+SU), p-adic BSD, Tunnell theorem (5 examples), modular symbols, Bloch-Kato generalization, Euler systems (Kolyvagin/Kato/Rubin), explicit AGM periods and full BSD verification.",
+    "progressSummary": "PROGRESS: 380+ defs/theorems, 1 sorry (agmStep AM-GM), 4443 lines. Added modularity, Langlands, higher rank BSD. File covers 40 parts.",
     "builtItems": [
       "SelmerGroup: structure for n-Selmer groups with finiteness",
       "CanonicalHeight: Néron-Tate height with nonnegativity and quadratic property",
@@ -247,7 +247,10 @@
         "name": "curve37a_full_verification",
         "description": "Full BSD check for 37a",
         "proven": true
-      }
+      },
+      "Part XXXVIII: Modularity (WeightTwoNewform, ModularityTheorem, FunctionalEquation, ModularParametrization, RibetLevelLowering)",
+      "Part XXXIX: Langlands (LanglandsCorrespondenceGL2, GaloisRepresentation, SerreModularity, GeneralizedBSD, SymmetricPowerL, sym1L-sym2L)",
+      "Part XL: Higher rank BSD (RankBarrier, NekovarHeightPairing, DiagonalCycle, DarmonRotger, HigherIwasawa, RankRecord with examples)"
     ],
     "insights": [
       "Selmer groups bound rank: rank(E) ≤ dim Sel_n - dim Ш[n]",
@@ -290,7 +293,17 @@
       "Rank 2 barrier: no Euler system construction known for higher rank situations",
       "AGM algorithm gives period to N digits in O(log N) iterations (quadratic convergence)",
       "Full BSD verification: compute rank (descent), period (AGM), L-value (modsym), check formula",
-      "Fontaine-Perrin-Riou: cohomological formulation of BK via determinant of perfect complex"
+      "Fontaine-Perrin-Riou: cohomological formulation of BK via determinant of perfect complex",
+      "Modularity gives analytic continuation of L(E,s): without it, cannot even state BSD at s=1",
+      "Root number epsilon = (-1)^r_an: parity constraint on analytic rank",
+      "Ribet level lowering: modularity + no level-2 forms → FLT (proved formally trivial for genus check)",
+      "Serre modularity (Khare-Wintenberger 2009): all odd irreducible mod-p Galois reps are modular",
+      "BSD is special case of Bloch-Kato: ord L(M,s) = dim Selmer for motives",
+      "Sym^n L-functions automorphic: n=1 (Wiles), n=2 (Gelbart-Jacquet), n=3,4 (Kim-Shahidi), n>=5 open",
+      "Rank barrier: Euler systems inherently rank-1, cannot prove rank >= 2 BSD",
+      "Diagonal cycles (GKS): higher-dim analogue of Heegner points for rank 2",
+      "BSD verified with formula only for rank 0 and 1; rank 2+ only rank part verified",
+      "Higher Iwasawa: multi-variable p-adic L-functions needed, main conjecture open for rank >= 2"
     ],
     "mathlibGaps": [
       "Torsion subgroup",
@@ -298,11 +311,11 @@
       "L-functions"
     ],
     "nextSteps": [
-      "Higher Heegner cycles for rank >= 2",
-      "Nekovar height pairings and motivic cohomology",
-      "Wiles modularity proof structure (summary)",
-      "Explicit BSD for rank-3 curves",
-      "Connection to Langlands program and automorphic forms"
+      "Derived Hecke algebra (Venkatesh) for higher rank",
+      "Gross-Stark conjecture and p-adic Artin formalism",
+      "Faltings-Mordell and effective methods",
+      "Arithmetic of abelian varieties (Mumford-Tate groups)",
+      "Computational BSD verification for specific rank-2 curves"
     ],
     "markdown": "# Knowledge Base: Birch and Swinnerton-Dyer Conjecture\n\n## The Problem\n\nThe Birch and Swinnerton-Dyer (BSD) Conjecture connects the algebraic structure of elliptic curves to the analytic properties of their L-functions. It's one of the deepest unsolved problems in number theory.\n\n### Core Statement\n\n> For an elliptic curve E over Q, the rank of the Mordell-Weil group E(Q) equals the order of vanishing of L(E, s) at s = 1.\n\nIn symbols: rank(E(Q)) = ord_{s=1} L(E, s)\n\n### Why It Matters\n\n1. **Rational Points**: Predicts exactly how many independent rational points exist on an elliptic curve\n2. **Computational**: Verified for millions of curves, provides practical predictions\n3. **L-functions**: Central example of the Langlands philosophy\n4. **Cryptography**: Elliptic curve cryptography relies on these structures\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1901 | Poincaré | Asked about rational points on curves |\n| 1922 | Mordell | Proved E(Q) is finitely generated |\n| 1965 | Birch, Swinnerton-Dyer | Formulated the conjecture via computer experiments |\n| 1977 | Coates-Wiles | Proved BSD for CM curves with L(E,1) ≠ 0 |\n| 1995 | Wiles | Proved modularity (key for BSD progress) |\n| 2001 | Taylor et al. | More cases of BSD |\n\nThe conjecture emerged from early computer calculations at Cambridge in the 1960s.\n\n## What This Means\n\n### The Algebraic Side: E(Q)\n\nAn elliptic curve E over Q is a smooth cubic curve like y² = x³ + ax + b. The rational points E(Q) form a finitely generated abelian group:\n\nE(Q) ≅ Z^r × (torsion)\n\nThe **rank** r tells us how many independent rational points of infinite order exist.\n\n### The Analytic Side: L(E, s)\n\nThe L-function L(E, s) encodes information about how E reduces modulo primes. It's defined by an Euler product for Re(s) > 3/2 and has analytic continuation to all of C.\n\n### The Connection\n\nBSD says these completely different objects encode the same information:\n- rank(E(Q)) = 0 ⟺ L(E, 1) ≠ 0\n- rank(E(Q)) = 1 ⟺ L(E, 1) = 0, L'(E, 1) ≠ 0\n- And so on...\n\n## What We Could Build\n\n### In Mathlib Now\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Elliptic curves | ✅ | Well-developed |\n| Group structure | ✅ | E(K) is a group |\n| Torsion subgroup | ⚠️ Partial | Some results |\n| Mordell-Weil | ⚠️ Partial | Finite generation |\n| L-functions | ❌ | Not available |\n\n### Tractable Partial Work\n\n1. **Basic Properties of E(Q)**\n   - Torsion subgroup computations\n   - Group law implementations\n\n2. **Weak BSD Statement**\n   - Axiomatize L(E, 1) = 0 ⟺ rank > 0\n   - Prove consequences assuming BSD\n\n3. **Specific Curve Verification**\n   - For E: y² = x³ - x, verify rank = 0 and L(E,1) ≠ 0\n   - For E: y² = x³ - 4x, verify rank = 1\n\n4. **Modularity Connection**\n   - State that E is modular (Wiles et al.)\n   - Connect modular forms to L-functions\n\n## Formalization Challenges\n\n### Primary Blocker: L-functions\n\nDefining L(E, s) requires:\n1. **Reduction types** - Good, multiplicative, additive reduction mod p\n2. **a_p coefficients** - #E(F_p) = p + 1 - a_p\n3. **Euler product** - L(E, s) = ∏_p (1 - a_p p^{-s} + p^{1-2s})^{-1}\n4. **Analytic continuation** - Extending past Re(s) = 3/2\n\n### Secondary Blocker: Full Mordell-Weil\n\nComputing ranks requires:\n- Height pairings\n- Descent methods\n- Tate-Shafarevich group analysis\n\n## The Full BSD Formula\n\nThe complete conjecture predicts not just the rank, but also:\n\nL^(r)(E, 1) / r! = (Ω · Reg · ∏ c_p · |Sha|) / |E(Q)_tors|²\n\nWhere:\n- Ω = real period\n- Reg = regulator (determinant of height pairing)\n- c_p = Tamagawa numbers\n- Sha = Tate-Shafarevich group\n- E(Q)_tors = torsion subgroup\n\n## Key References\n\n- Birch, B., Swinnerton-Dyer, H.P.F. (1965). \"Notes on elliptic curves II\"\n- Silverman, J. (1986). \"The Arithmetic of Elliptic Curves\"\n- Wiles, A. (1995). \"Modular elliptic curves and Fermat's Last Theorem\"\n- Gross, B., Zagier, D. (1986). \"Heegner points and derivatives of L-series\"\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Current Status**: BLOCKED - Requires L-functions for elliptic curves\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Elliptic curves | Yes | 2026-01-01 |\n| Mordell-Weil | Partial | 2026-01-01 |\n| E-L-functions | No | 2026-01-01 |\n| Modularity | No | 2026-01-01 |\n\n**Path Forward**:\n1. State BSD as an axiom with well-defined terms\n2. Prove consequences of BSD for specific curves\n3. Build verification framework for computational checks\n\n**Next Scout**: Track Mathlib elliptic curve and L-function development\n"
   },
