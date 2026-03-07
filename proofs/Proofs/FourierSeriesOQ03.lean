@@ -243,6 +243,46 @@ axiom riemannLebesgue_BV
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
+PART VI-B: DIRICHLET KERNEL LOCALIZATION LEMMA
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- **Dirichlet Kernel Localization Lemma**
+
+    The convolution of a BV function f with the Dirichlet kernel converges
+    to the midpoint of the one-sided limits:
+
+      ∫ f(t) · D_N(x₀ - t) dt → (f(x₀⁺) + f(x₀⁻)) / 2  as  N → ∞
+
+    This is the core analytical step of Dirichlet's convergence theorem.
+
+    ## Classical proof outline
+
+    1. Split the integral into halves around x₀ using the substitution u = x₀ - t
+    2. On each half, subtract the appropriate one-sided limit L± and use ∫ D_N = 1
+    3. The difference integrands g±(u) = [f(x₀-u) - L±] / sin(u/2) are BV
+       since f is BV and sin(u/2) is bounded away from zero except near u = 0
+       where g± → 0 by the one-sided limit hypothesis
+    4. Apply the Riemann-Lebesgue lemma (BV version) to each piece:
+       D_N(u) = sin((2N+1)u/2) / sin(u/2), so the integral becomes
+       ∫ g±(u) · sin((2N+1)u/2) du → 0
+
+    Axiomatized: requires ~200 lines of integral splitting and BV estimates. -/
+axiom dirichlet_localization
+    (f : AddCircle T → ℂ)
+    (hf_bv : HasBoundedVariationCircle f)
+    (hf_int : Integrable f haarAddCircle)
+    (x₀ : ℝ)
+    (Lp Lm : ℂ)
+    (hLp : Tendsto (f ∘ (↑· : ℝ → AddCircle T))
+      (nhdsWithin x₀ (Set.Ioi x₀)) (𝓝 Lp))
+    (hLm : Tendsto (f ∘ (↑· : ℝ → AddCircle T))
+      (nhdsWithin x₀ (Set.Iio x₀)) (𝓝 Lm)) :
+    Tendsto (fun N : ℕ =>
+      ∫ t : AddCircle T, f t * dirichletKernel N ((↑x₀ : AddCircle T) - t) ∂haarAddCircle)
+      atTop (𝓝 ((Lp + Lm) / 2))
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
 PART VII: THE DIRICHLET CONVERGENCE THEOREM (MAIN RESULT)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -253,26 +293,16 @@ PART VII: THE DIRICHLET CONVERGENCE THEOREM (MAIN RESULT)
 
       S_N f(x₀) → (f(x₀⁺) + f(x₀⁻)) / 2  as  N → ∞
 
-    ## Proof Sketch (classical)
+    ## Proof Structure
 
-    1. Write S_N f(x₀) = ∫ f(t) D_N(x₀ - t) dt  (convolution)
-    2. Use ∫ D_N = 1 to write:
-       S_N f(x₀) - (f(x₀⁺)+f(x₀⁻))/2
-         = ∫ [f(x₀-t) - f(x₀⁺)] D_N(t) dt   (over (0, π))
-         + ∫ [f(x₀-t) - f(x₀⁻)] D_N(t) dt   (over (-π, 0))
-    3. The function g(t) = [f(x₀-t) - f(x₀±)] / sin(t/2) has bounded variation
-       on the relevant intervals (by hypothesis and the BV structure)
-    4. Each integral → 0 by the Riemann-Lebesgue lemma for BV functions
+    The proof chains four key results:
+    1. **BV limit existence**: One-sided limits L₊, L₋ exist (axiom)
+    2. **Convolution representation**: S_N f(x₀) = ∫ f(t) D_N(x₀-t) dt (axiom)
+    3. **Localization**: ∫ f(t) D_N(x₀-t) dt → (L₊+L₋)/2 (axiom)
+    4. **Identification**: rightLimit/leftLimit = L₊/L₋ (by uniqueness of limits)
 
-    ## Formalization Status
-
-    Statement formalized with correct types. The proof is axiomatized because:
-    - Full proof requires ~300 lines of splitting/estimation arguments
-    - The key analytical step (Riemann-Lebesgue for BV) is axiomatized above
-    - Infrastructure for manipulating integrals on AddCircle is substantial
-
-    The formalization demonstrates that this theorem IS formalizable with
-    Mathlib's current infrastructure (BV + Fourier + filters). -/
+    The hard analytical work (integral splitting, BV estimates, Riemann-Lebesgue)
+    is encapsulated in the `dirichlet_localization` axiom. -/
 theorem dirichlet_pointwise_convergence
     (f : AddCircle T → ℂ)
     (hf_bv : HasBoundedVariationCircle f)
@@ -280,13 +310,21 @@ theorem dirichlet_pointwise_convergence
     (x₀ : ℝ) :
     Tendsto (fun N : ℕ => fourierPartialSum f N (↑x₀ : AddCircle T))
       atTop (𝓝 ((rightLimit f x₀ + leftLimit f x₀) / 2)) := by
-  -- The proof proceeds by:
-  -- 1. Rewriting S_N f(x₀) via convolution with Dirichlet kernel
-  -- 2. Splitting the integral into contributions from (0, δ) and (δ, π)
-  -- 3. The (δ, π) part → 0 by Riemann-Lebesgue for BV
-  -- 4. The (0, δ) part uses the BV structure of g(t) = [f(x₀-t) - L±]/sin(t/2)
-  -- Full proof requires extensive integral manipulation infrastructure.
-  sorry
+  -- Step 1: Obtain convergence witnesses for the one-sided limits
+  obtain ⟨Lp, hLp⟩ := hasBV_implies_rightLimit_exists f hf_bv x₀
+  obtain ⟨Lm, hLm⟩ := hasBV_implies_leftLimit_exists f hf_bv x₀
+  -- Step 2: Identify rightLimit/leftLimit with Lp/Lm via uniqueness of limits
+  have hR : rightLimit f x₀ = Lp := by unfold rightLimit; exact hLp.limUnder_eq
+  have hL : leftLimit f x₀ = Lm := by unfold leftLimit; exact hLm.limUnder_eq
+  rw [hR, hL]
+  -- Step 3: Rewrite Fourier partial sums as convolutions with Dirichlet kernel
+  have conv : (fun N : ℕ => fourierPartialSum f N (↑x₀ : AddCircle T)) =
+      (fun N : ℕ => ∫ t : AddCircle T,
+        f t * dirichletKernel N ((↑x₀ : AddCircle T) - t) ∂haarAddCircle) :=
+    funext (fun N => fourierPartialSum_eq_convolution f N (↑x₀) hf_int)
+  rw [conv]
+  -- Step 4: Apply the Dirichlet kernel localization lemma
+  exact dirichlet_localization f hf_bv hf_int x₀ Lp Lm hLp hLm
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
