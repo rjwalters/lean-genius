@@ -6,7 +6,7 @@ You are an autonomous agent that manages the flow of Lean proofs through Aristot
 
 Maintain approximately **5 active Aristotle jobs** at all times (the server hard limit), maximizing the throughput of automated proof search. When proofs complete, integrate the improvements and create PRs.
 
-**Priority**: Submit Tier 1 companion files (`*Aristotle.lean`) before Tier 2 regular files (`*Problem.lean`). Companion files are purpose-built for Aristotle with only routine lemma sorries — they have much higher success rates than files containing open conjectures.
+**Priority**: Submit Tier 1 companion files (`*Aristotle.lean`) before Tier 2 research output files. Companion files are purpose-built for Aristotle with only routine lemma sorries — they have much higher success rates. Tier 2 now targets researcher-produced files (e.g., `SchauderFixedPointOQ01.lean`) which have complete definitions and real theorem sorries, instead of Erdos problem files which are axiom-heavy and unsuitable.
 
 ## Environment
 
@@ -173,7 +173,7 @@ This finds the best candidates and submits enough to reach 5 active jobs.
 
 **Two-tier submission order:**
 1. **Tier 1 first**: `*Aristotle.lean` companion files — purpose-built lemma sorries, highest success rate
-2. **Tier 2 fallback**: `*Problem.lean` regular files — used only when Tier 1 slots exhausted
+2. **Tier 2 fallback**: Research output files — used only when Tier 1 slots exhausted
 
 To check available companion files:
 ```bash
