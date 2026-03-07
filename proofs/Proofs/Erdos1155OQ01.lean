@@ -42,13 +42,27 @@ theorem triangleFree_iff_cliqueFree3 {V : Type*} [Fintype V] [DecidableEq V]
   constructor
   · -- IsTriangleFree → CliqueFree 3
     intro htf s hs
-    -- A 3-clique s gives three distinct pairwise-adjacent vertices
-    -- which contradicts triangle-freeness
-    sorry
+    obtain ⟨hclique, hcard⟩ := hs
+    rw [Finset.card_eq_three] at hcard
+    obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := hcard
+    have mem_a : a ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
+    have mem_b : b ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
+    have mem_c : c ∈ (↑({a, b, c} : Finset V) : Set V) := by simp
+    exact htf a b c ⟨hab, hbc, hac,
+      hclique mem_a mem_b hab,
+      hclique mem_b mem_c hbc,
+      hclique mem_a mem_c hac⟩
   · -- CliqueFree 3 → IsTriangleFree
     intro hcf a b c ⟨hab, hbc, hac, hadj_ab, hadj_bc, hadj_ac⟩
-    -- {a, b, c} is a 3-clique, contradicting CliqueFree 3
-    sorry
+    apply hcf {a, b, c}
+    refine ⟨?_, by rw [Finset.card_eq_three]; exact ⟨a, b, c, hab, hac, hbc, rfl⟩⟩
+    intro x hx y hy hxy
+    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+               Set.mem_singleton_iff] at hx hy
+    rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl <;>
+      first | exact absurd rfl hxy | exact hadj_ab | exact hadj_ac |
+              exact hadj_bc | exact G.symm hadj_ab | exact G.symm hadj_ac |
+              exact G.symm hadj_bc
 
 /-- The complete graph on n ≥ 3 vertices contains a triangle. -/
 theorem complete_has_triangles' {n : ℕ} (hn : 3 ≤ n) :
@@ -153,13 +167,19 @@ theorem conjecture_iff_both_bounds :
     exact ⟨⟨c₂, lt_of_lt_of_le hc₁ hc₁c₂, h.mono fun n hn => hn.2⟩,
            ⟨c₁, hc₁, h.mono fun n hn => hn.1⟩⟩
   · intro ⟨⟨C, hC, hup⟩, ⟨c, hc, hlo⟩⟩
-    exact ⟨c, C, hc, by
-      by_contra h
-      push_neg at h
-      -- If c > C, then we have c·n^{3/2} ≤ f(n) ≤ C·n^{3/2} eventually
-      -- but c > C means c·n^{3/2} > C·n^{3/2} for large n, contradiction
-      sorry,
-      hlo.and hup⟩
+    refine ⟨c, C, hc, ?_, hlo.and hup⟩
+    by_contra hlt
+    push_neg at hlt
+    -- c > C, but eventually c·n^{3/2} ≤ f(n) ≤ C·n^{3/2}
+    have hboth := hlo.and hup
+    -- Pick n ≥ 1 so n^{3/2} > 0
+    have hone : ∀ᶠ (n : ℕ) in atTop, (1 : ℕ) ≤ n :=
+      Filter.eventually_atTop.mpr ⟨1, fun n hn => hn⟩
+    have := (hboth.and hone).exists
+    obtain ⟨n, ⟨hlon, hupn⟩, hn1⟩ := this
+    have hn_pos : (0 : ℝ) < (n : ℝ) ^ ((3 : ℝ) / 2) := by
+      apply Real.rpow_pos_of_pos; exact_mod_cast (show 0 < n by omega)
+    linarith [le_trans hlon hupn, mul_lt_mul_of_pos_right hlt hn_pos]
 
 -- ============================================================================
 -- § 4. Exponent gap characterization
@@ -188,8 +208,12 @@ theorem bfl_lower_tight :
   intro β hβ hcontra
   have hε : (0 : ℝ) < 3/2 - β := by linarith
   have hlo := bfl_lower_bound ((3/2 - β) / 2) (by linarith)
-  -- Eventually n^{3/2 - ε} ≤ f(n) ≤ n^β where 3/2 - ε > β, contradiction
-  sorry
+  obtain ⟨n, ⟨hlon, hupn⟩, hn2⟩ :=
+    ((hlo.and hcontra).and (Filter.eventually_atTop.mpr ⟨2, fun n hn => hn⟩)).exists
+  have hle : (n : ℝ) ^ ((3:ℝ)/2 - (3/2 - β) / 2) ≤ (n : ℝ) ^ β := le_trans hlon hupn
+  have : (n : ℝ) ^ β < (n : ℝ) ^ ((3:ℝ)/2 - (3/2 - β) / 2) :=
+    Real.rpow_lt_rpow_of_exponent_lt (by exact_mod_cast (show 1 < n by omega)) (by linarith)
+  linarith
 
 -- ============================================================================
 -- § 5. Monotonicity and basic structural results
@@ -239,9 +263,18 @@ theorem limit_implies_conjecture :
         atTop (nhds L)) →
     erdos_1155_conjecture := by
   intro ⟨L, hL, htends⟩
-  -- If f(n)/n^{3/2} → L, then for ε = L/2, eventually L/2 ≤ f(n)/n^{3/2} ≤ 3L/2
-  -- So (L/2)·n^{3/2} ≤ f(n) ≤ (3L/2)·n^{3/2}
-  sorry
+  refine ⟨L / 2, 3 * L / 2, by linarith, by linarith, ?_⟩
+  have hIcc : Set.Icc (L / 2) (3 * L / 2) ∈ nhds L :=
+    Icc_mem_nhds (by linarith) (by linarith)
+  have hev := htends.eventually hIcc
+  have hge1 : ∀ᶠ (n : ℕ) in atTop, 1 ≤ n :=
+    Filter.eventually_atTop.mpr ⟨1, fun n hn => hn⟩
+  apply (hev.and hge1).mono
+  intro n ⟨hmem, hn1⟩
+  have hn_pos : (0 : ℝ) < (n : ℝ) ^ ((3:ℝ)/2) := by
+    apply Real.rpow_pos_of_pos
+    exact_mod_cast (show 0 < n by omega)
+  exact ⟨(le_div_iff₀ hn_pos).mp hmem.1, (div_le_iff₀ hn_pos).mp hmem.2⟩
 
 /-- Even a limsup/liminf condition suffices: if both are finite and positive. -/
 def limsup_liminf_condition : Prop :=
@@ -254,12 +287,20 @@ theorem limsup_liminf_implies_conjecture :
     limsup_liminf_condition → erdos_1155_conjecture := by
   intro ⟨⟨C, hC, hup⟩, ⟨c, hc, hlo⟩⟩
   refine ⟨c, C, hc, ?_, ?_⟩
-  · -- Need c ≤ C; this follows from the fact that eventually
-    -- c ≤ f(n)/n^{3/2} ≤ C, so c ≤ C
-    sorry
+  · -- c ≤ C from eventually c ≤ f/n^{3/2} ≤ C
+    by_contra hlt
+    push_neg at hlt
+    obtain ⟨n, hcn, hCn⟩ := (hlo.and hup).exists
+    linarith
   · -- Eventually c·n^{3/2} ≤ f(n) ≤ C·n^{3/2}
-    -- follows from dividing the ratio bounds by n^{3/2}
-    sorry
+    have hge1 : ∀ᶠ (n : ℕ) in atTop, 1 ≤ n :=
+      Filter.eventually_atTop.mpr ⟨1, fun n hn => hn⟩
+    apply ((hlo.and hup).and hge1).mono
+    intro n ⟨⟨hcn, hCn⟩, hn1⟩
+    have hn_pos : (0 : ℝ) < (n : ℝ) ^ ((3:ℝ)/2) := by
+      apply Real.rpow_pos_of_pos
+      exact_mod_cast (show 0 < n by omega)
+    exact ⟨(le_div_iff₀ hn_pos).mp hcn, (div_le_iff₀ hn_pos).mp hCn⟩
 
 #check @bfl_sandwich
 #check @conjecture_iff_both_bounds

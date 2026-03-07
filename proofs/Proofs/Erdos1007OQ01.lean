@@ -162,9 +162,16 @@ def complete_graph_optimal_conjecture : Prop :=
 theorem upper_bound_quadratic (d : ℕ) (hd : 1 ≤ d) :
     (minEdgesForDim d : ℝ) ≤ ((d + 1 : ℝ) * d) / 2 := by
   have hub := minEdges_upper_bound d (by omega)
-  -- minEdgesForDim d ≤ Nat.choose (d+1) 2 ≤ (d+1)*d/2
-  -- Cast inequality to ℝ and use that Nat.choose (d+1) 2 = (d+1)*d/2
-  sorry
+  have hle : (minEdgesForDim d : ℝ) ≤ (Nat.choose (d + 1) 2 : ℝ) := Nat.cast_le.mpr hub
+  suffices h : (Nat.choose (d + 1) 2 : ℝ) = ((d + 1 : ℝ) * d) / 2 by linarith
+  rw [Nat.choose_two_right]
+  simp only [Nat.add_sub_cancel]
+  have hdvd : 2 ∣ (d + 1) * d := by
+    rcases Nat.even_or_odd d with ⟨k, hk⟩ | ⟨k, hk⟩ <;> subst hk
+    · exact ⟨(2 * k + 1) * k, by ring⟩
+    · exact ⟨(k + 1) * (2 * k + 1), by ring⟩
+  rw [Nat.cast_div hdvd (by norm_num : (2 : ℝ) ≠ 0)]
+  push_cast; ring
 
 /-- The lower bound d gives at least linear growth. -/
 theorem lower_bound_linear (d : ℕ) (hd : 1 ≤ d) :

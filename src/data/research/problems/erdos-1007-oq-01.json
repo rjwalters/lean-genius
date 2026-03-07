@@ -20,7 +20,8 @@
       "dim4_beats_complete: minEdges(4) < C(5,2)",
       "dim5_matches_complete: minEdges(5) = C(6,2)",
       "values_are_nondecreasing_small: monotonicity for d=1..5",
-      "lower_bound_linear: d ≤ minEdges(d)"
+      "lower_bound_linear: d ≤ minEdges(d)",
+      "upper_bound_quadratic: minEdges(d) ≤ (d+1)*d/2"
     ],
     "open": [
       "Is minEdges monotone in general?",
@@ -30,34 +31,33 @@
     "goal": "Determine the asymptotic behavior of minEdges(d)"
   },
   "currentState": {
-    "phase": "FORMALIZED",
-    "since": "2026-03-07T00:36:31.363Z",
-    "iteration": 1,
-    "focus": "Formalization of known values and structural results.",
+    "phase": "COMPLETE",
+    "since": "2026-03-07T02:38:00.000Z",
+    "iteration": 2,
+    "focus": "All sorries resolved. upper_bound_quadratic proved via Nat.choose_two_right + cast.",
     "blockers": [],
-    "nextAction": "Investigate higher-dimensional cases and the quadratic growth conjecture.",
+    "nextAction": "None - all theorems proved. Open conjectures remain stated.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "Created comprehensive Lean formalization with 1 sorry. All structural theorems proved (small_dim_complete, dim4_beats_complete, dim5_matches_complete). Three open conjectures stated formally.",
+    "progressSummary": "Comprehensive Lean formalization with 0 sorries. All structural theorems proved including upper_bound_quadratic. Three open conjectures stated formally.",
     "builtItems": [
-      "proofs/Proofs/Erdos1007OQ01.lean",
+      "proofs/Proofs/Erdos1007OQ01.lean (0 sorries, Docker-verified)",
       "src/data/proofs/erdos-1007-oq-01/"
     ],
     "insights": [
       "native_decide handles Nat.choose evaluation for concrete values",
       "Nat→ℝ cast issues with division require careful handling",
-      "The d=4 exception makes the general pattern non-trivial"
+      "The d=4 exception makes the general pattern non-trivial",
+      "Nat.choose_two_right + Nat.cast_div pattern resolves choose-to-real casting",
+      "Even/odd case split on d proves 2 | (d+1)*d for Nat.cast_div"
     ],
-    "mathlibGaps": [
-      "Nat.choose cast to ℝ with division equality"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Prove upper_bound_quadratic with proper cast handling",
       "Investigate minEdges values for d ≥ 6"
     ]
   },
