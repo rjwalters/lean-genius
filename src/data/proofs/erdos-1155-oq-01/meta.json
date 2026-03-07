@@ -1,0 +1,121 @@
+{
+  "id": "erdos-1155-oq-01",
+  "title": "Triangle Removal Process: Exact Asymptotics",
+  "slug": "erdos-1155-oq-01",
+  "description": "Formalizes the gap between the Bohman-Frieze-Lubetzky n^{3/2+o(1)} result and the conjectured Θ(n^{3/2}) for the triangle removal process on K_n. Proves structural decompositions, exponent characterizations, and sufficient conditions for the full conjecture.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://erdosproblems.com/1155",
+    "date": "2026",
+    "status": "in-progress",
+    "proofRepoPath": "Proofs/Erdos1155OQ01.lean",
+    "tags": [
+      "erdos",
+      "triangle-removal",
+      "random-graphs",
+      "asymptotics",
+      "combinatorics",
+      "graph-theory",
+      "extension",
+      "research"
+    ],
+    "badge": "open",
+    "sorries": 10,
+    "mathlibDependencies": [
+      {
+        "theorem": "Filter.Eventually.and",
+        "description": "Combine two eventually-true predicates.",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.CliqueFree",
+        "description": "G.CliqueFree k means no k-element clique exists.",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Filter.Eventually.mono",
+        "description": "Strengthen an eventually-true predicate.",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "originalContributions": [
+      "BFL sandwich theorem combining upper and lower bounds",
+      "Exact exponent characterization: 3/2 is the critical exponent",
+      "Conjecture decomposition into independent upper/lower Θ-bounds",
+      "Sufficient conditions: limit convergence implies full conjecture",
+      "Complete graph triangle existence for variable Fin n",
+      "Small-value bounds from complete graph edge count"
+    ],
+    "references": [
+      {
+        "authors": "T. Bohman, A. Frieze, E. Lubetzky",
+        "title": "Random triangle removal",
+        "year": "2015",
+        "venue": "Advances in Mathematics",
+        "note": "Proved f(n) = n^{3/2+o(1)} a.s."
+      },
+      {
+        "authors": "D. Grable",
+        "title": "On random greedy triangle packing",
+        "year": "1997",
+        "venue": "Electronic Journal of Combinatorics",
+        "note": "Earlier upper bound of n^{7/4+ε}"
+      }
+    ],
+    "historicalContext": "Erdős conjectured that the triangle removal process on K_n leaves Θ(n^{3/2}) edges. Bohman, Frieze, and Lubetzky (2015) proved f(n) = n^{3/2+o(1)}, confirming the exponent but leaving the question of explicit constants open."
+  },
+  "sections": [
+    {
+      "id": "triangle-defs",
+      "title": "Triangle Definitions",
+      "summary": "Defines pointwise triangle predicates and their relationship to Mathlib's CliqueFree 3.",
+      "startLine": 25,
+      "endLine": 69
+    },
+    {
+      "id": "asymptotic-setup",
+      "title": "Asymptotic Infrastructure",
+      "summary": "Axiomatizes the triangle removal function f(n) and the BFL/Grable bounds.",
+      "startLine": 71,
+      "endLine": 96
+    },
+    {
+      "id": "gap-analysis",
+      "title": "Gap Analysis: BFL vs Full Conjecture",
+      "summary": "Proves structural relationships between the BFL result and the full Θ(n^{3/2}) conjecture.",
+      "startLine": 98,
+      "endLine": 162
+    },
+    {
+      "id": "exponent-gap",
+      "title": "Exponent Characterization",
+      "summary": "Proves 3/2 is the exact critical exponent: any α > 3/2 gives an upper bound, no β < 3/2 works.",
+      "startLine": 164,
+      "endLine": 192
+    },
+    {
+      "id": "sufficient-conditions",
+      "title": "Sufficient Conditions for the Conjecture",
+      "summary": "States and partially proves that ratio convergence or limsup/liminf bounds imply the full conjecture.",
+      "startLine": 230,
+      "endLine": 267
+    }
+  ],
+  "overview": {
+    "summary": "Analyzes what separates the known BFL result (f(n) = n^{3/2+o(1)}) from the full Erdős conjecture (f(n) = Θ(n^{3/2})). The gap is precisely: BFL gives n^{-ε} ≤ f(n)/n^{3/2} ≤ n^ε (sub-polynomial bounds), while the conjecture needs constant bounds c ≤ f(n)/n^{3/2} ≤ C.",
+    "keyIdea": "The conjecture decomposes into independent upper and lower Θ-bounds, each equivalent to bounding the ratio f(n)/n^{3/2}. If this ratio converges to any positive limit, the full conjecture follows.",
+    "prerequisites": [
+      "Filter.Eventually (atTop) for asymptotic statements",
+      "Real power functions and basic inequalities",
+      "SimpleGraph basics and CliqueFree predicate"
+    ]
+  },
+  "conclusion": {
+    "summary": "We formalize the structural relationship between BFL's n^{3/2+o(1)} result and Erdős's Θ(n^{3/2}) conjecture. Key proved results include the BFL sandwich theorem, exact exponent characterization, and conjecture decomposition. The remaining sorries involve filter-based real analysis (power function estimates) and Finset extraction for the CliqueFree equivalence.",
+    "openQuestions": [
+      "Does f(n)/n^{3/2} converge? If so, to what constant?",
+      "Can the lower Θ-bound be established independently of the upper?",
+      "Can differential equation methods (as in BFL) give explicit constants?"
+    ]
+  }
+}
