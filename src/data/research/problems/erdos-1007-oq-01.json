@@ -32,9 +32,9 @@
   },
   "currentState": {
     "phase": "COMPLETE",
-    "since": "2026-03-07T02:38:00.000Z",
+    "since": "2026-03-07T18:30:00Z",
     "iteration": 2,
-    "focus": "All sorries resolved. upper_bound_quadratic proved via Nat.choose_two_right + cast.",
+    "focus": "Completed: simplex embedding, conditional monotonicity, deficiency analysis",
     "blockers": [],
     "nextAction": "None - all theorems proved. Open conjectures remain stated.",
     "attemptCounts": {
@@ -44,21 +44,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Comprehensive Lean formalization with 0 sorries. All structural theorems proved including upper_bound_quadratic. Three open conjectures stated formally.",
+    "progressSummary": "COMPLETE: Extended formalization with constructive simplex embedding, conditional monotonicity proof, deficiency analysis, growth rate characterization. All theorems fully proved (0 sorries).",
     "builtItems": [
-      "proofs/Proofs/Erdos1007OQ01.lean (0 sorries, Docker-verified)",
-      "src/data/proofs/erdos-1007-oq-01/"
+      "simplexEmbed: constructive unit-distance embedding of K_n in ℝⁿ",
+      "simplexEmbed_sq_diff: per-coordinate squared distance computation",
+      "simplexEmbed_dist_sq: total squared distance = 1",
+      "complete_graph_unit_embedding: K_n embeds in ℝⁿ for n≥2",
+      "complete_graph_dim_le: graphDim(K_n) ≤ n proved constructively",
+      "optimal_implies_monotone: optimality conjecture → monotonicity",
+      "deficiency function with all known values computed",
+      "optimal_iff_zero_deficiency: equivalence theorem",
+      "unique_anomaly_small: d=4 is the only anomaly for d≤5",
+      "optimal_diff: under optimality, Δ(d) = d+1",
+      "Growth rate analysis: ratios and differences for d=1..5"
     ],
     "insights": [
-      "native_decide handles Nat.choose evaluation for concrete values",
-      "Nat→ℝ cast issues with division require careful handling",
-      "The d=4 exception makes the general pattern non-trivial",
-      "Nat.choose_two_right + Nat.cast_div pattern resolves choose-to-real casting",
-      "Even/odd case split on d proves 2 | (d+1)*d for Nat.cast_div"
+      "The simplex embedding v_i = (1/√2)e_i places K_n in ℝⁿ with unit distances",
+      "The deficiency δ(d) = C(d+1,2) - minEdges(d) cleanly captures the d=4 anomaly",
+      "Complete graph optimality conjecture is equivalent to δ(d) = 0 for d ≠ 4",
+      "The optimality conjecture implies monotonicity via C(d+1,2) monotonicity + d=4 case handling",
+      "Under optimality, successive differences Δ(d) = d+1, which is the binomial increment",
+      "d=4 is formally verified as the unique anomaly for d ≤ 5"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Investigate minEdges values for d ≥ 6"
+      "Prove simplex embedding in ℝⁿ⁻¹ (requires affine hyperplane projection)",
+      "Investigate K_{m,n} dimension for bipartite graph analysis",
+      "Search for d=6 results in the literature",
+      "Explore whether d=4 anomaly can be explained via algebraic constraints"
     ]
   },
   "approaches": [
