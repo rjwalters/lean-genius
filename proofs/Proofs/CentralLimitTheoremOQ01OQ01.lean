@@ -398,6 +398,80 @@ theorem slowlyVarying_ratio_limit {L : ℝ → ℝ} (hL : SlowlyVarying L)
     Tendsto (fun x => L (c * x) / L x) atTop (𝓝 1) :=
   hL.2 c hc
 
+/-- The quotient of two slowly varying functions is slowly varying.
+    Proof: (L₁(cx)/L₂(cx)) / (L₁(x)/L₂(x)) = (L₁(cx)/L₁(x)) · (L₂(x)/L₂(cx)) → 1·1 = 1. -/
+theorem slowlyVarying_div {L₁ L₂ : ℝ → ℝ}
+    (h₁ : SlowlyVarying L₁) (h₂ : SlowlyVarying L₂) :
+    SlowlyVarying (fun x => L₁ x / L₂ x) := by
+  constructor
+  · intro x hx; exact div_ne_zero (h₁.1 x hx) (h₂.1 x hx)
+  · intro c hc
+    have key : (fun x => L₁ (c * x) / L₂ (c * x) / (L₁ x / L₂ x)) =
+        (fun x => (L₁ (c * x) / L₁ x) * (L₂ x / L₂ (c * x))) := by
+      ext x; field_simp
+    rw [key]
+    have h2inv := (h₂.2 c hc).inv₀ one_ne_zero
+    simp only [inv_one] at h2inv
+    have h2conv : Tendsto (fun x => L₂ x / L₂ (c * x)) atTop (𝓝 1) := by
+      convert h2inv using 1; ext x; exact (inv_div _ _).symm
+    have := (h₁.2 c hc).mul h2conv
+    rwa [mul_one] at this
+
+/-- Asymptotic equivalence preserves slow variation.
+    If L₁/L₂ → 1 (asymptotically equivalent) and L₁ is slowly varying,
+    then L₂ is slowly varying (assuming L₂ is eventually nonzero). -/
+theorem slowlyVarying_of_asymp_equiv {L₁ L₂ : ℝ → ℝ}
+    (h₁ : SlowlyVarying L₁)
+    (h₂_ne : ∀ x, 0 < x → L₂ x ≠ 0)
+    (hequiv : Tendsto (fun x => L₁ x / L₂ x) atTop (𝓝 1)) :
+    SlowlyVarying L₂ := by
+  constructor
+  · exact h₂_ne
+  · intro c hc
+    -- L₂(cx)/L₂(x) = (L₁(cx)/L₂(cx))⁻¹ · (L₁(cx)/L₁(x)) · (L₁(x)/L₂(x))
+    -- Rewrite L₂(cx)/L₂(x) using L₁
+    have key : ∀ᶠ x in atTop, L₂ (c * x) / L₂ x =
+        (L₁ (c * x) / L₁ x) * (L₁ x / L₂ x) * (L₂ (c * x) / L₁ (c * x))⁻¹ := by
+      filter_upwards [Filter.eventually_ge_atTop 1] with x hx
+      have h1ne : L₁ x ≠ 0 := h₁.1 x (by linarith)
+      have h2ne : L₂ x ≠ 0 := h₂_ne x (by linarith)
+      have h1cne : L₁ (c * x) ≠ 0 := h₁.1 (c * x) (mul_pos hc (by linarith))
+      have h2cne : L₂ (c * x) ≠ 0 := h₂_ne (c * x) (mul_pos hc (by linarith))
+      field_simp
+    -- Each factor converges to 1
+    have fac1 := h₁.2 c hc -- L₁(cx)/L₁(x) → 1
+    have fac2 := hequiv     -- L₁(x)/L₂(x) → 1
+    have hequiv_c : Tendsto (fun x => L₁ (c * x) / L₂ (c * x)) atTop (𝓝 1) := by
+      have : Tendsto (fun x => c * x) atTop atTop :=
+        Filter.tendsto_atTop_atTop_of_monotone (fun _ _ h => mul_le_mul_of_nonneg_left h (le_of_lt hc))
+          (fun b => ⟨b / c, by rw [mul_div_cancel₀ b (ne_of_gt hc)]⟩)
+      exact hequiv.comp this
+    have fac3 : Tendsto (fun x => (L₂ (c * x) / L₁ (c * x))⁻¹) atTop (𝓝 1) := by
+      have : Tendsto (fun x => L₂ (c * x) / L₁ (c * x)) atTop (𝓝 1) := by
+        convert hequiv_c.inv₀ one_ne_zero using 1
+        ext x; rw [inv_one]; exact (inv_div _ _).symm
+      exact this.inv₀ one_ne_zero |>.congr (fun x => by rw [inv_inv])
+    rw [Filter.tendsto_congr' key]
+    have := (fac1.mul fac2).mul fac3
+    simp only [mul_one] at this
+    exact this
+
+/-- Slowly varying functions satisfy the scaling property for integer powers:
+    if L is slowly varying, then L^n is slowly varying for any positive nat. -/
+theorem slowlyVarying_pow {L : ℝ → ℝ} (hL : SlowlyVarying L) (n : ℕ) (hn : 0 < n) :
+    SlowlyVarying (fun x => L x ^ n) := by
+  constructor
+  · intro x hx; exact pow_ne_zero n (hL.1 x hx)
+  · intro c hc
+    have key : (fun x => L (c * x) ^ n / L x ^ n) =
+        (fun x => (L (c * x) / L x) ^ n) := by
+      ext x; rw [div_pow]
+    rw [key]
+    have h1 := hL.2 c hc
+    have : Tendsto (fun x => (L (c * x) / L x) ^ n) atTop (𝓝 (1 ^ n)) :=
+      h1.pow n
+    rwa [one_pow] at this
+
 -- ============================================================================
 -- Part X: Properties of Regularly Varying Functions
 -- ============================================================================
@@ -426,6 +500,34 @@ theorem regularlyVarying_mul_index {f g : ℝ → ℝ} {α β : ℝ}
 theorem regularlyVarying_zero_iff_slowlyVarying {f : ℝ → ℝ} :
     RegularlyVarying f 0 ↔ SlowlyVarying f :=
   slowlyVarying_iff_regularlyVarying_zero.symm
+
+/-- The reciprocal of a regularly varying function with index α
+    is regularly varying with index -α.
+    Proof: (1/f(cx)) / (1/f(x)) = f(x)/f(cx) = (f(cx)/f(x))⁻¹ → c^(-α). -/
+theorem regularlyVarying_inv_index {f : ℝ → ℝ} {α : ℝ}
+    (hf : RegularlyVarying f α) :
+    RegularlyVarying (fun x => (f x)⁻¹) (-α) := by
+  constructor
+  · intro x hx; exact inv_ne_zero (hf.1 x hx)
+  · intro c hc
+    have key : (fun x => (f (c * x))⁻¹ / (f x)⁻¹) =
+        (fun x => f x / f (c * x)) := by
+      ext x; rw [inv_div_inv]
+    rw [key]
+    have h1 := (hf.2 c hc).inv₀ (ne_of_gt (rpow_pos_of_pos hc α))
+    rw [rpow_neg (le_of_lt hc)] at h1
+    convert h1 using 1
+    ext x; exact (inv_div _ _).symm
+
+/-- The quotient of regularly varying functions has indices that subtract.
+    If f ~ x^α and g ~ x^β, then f/g ~ x^{α-β}. -/
+theorem regularlyVarying_div_index {f g : ℝ → ℝ} {α β : ℝ}
+    (hf : RegularlyVarying f α) (hg : RegularlyVarying g β) :
+    RegularlyVarying (fun x => f x / g x) (α - β) := by
+  have := regularlyVarying_mul_index hf (regularlyVarying_inv_index hg)
+  simp only [sub_eq_add_neg] at this ⊢
+  convert this using 1
+  ext x; rfl
 
 -- ============================================================================
 -- Part XI: Stable Characteristic Function Properties
@@ -521,13 +623,16 @@ theorem tail_balance_alpha_range (tb : TailBalance) :
 -- ============================================================================
 
 /-- Summary of the Gnedenko-Kolmogorov formalization:
-    - Slowly varying functions: definition, closure under multiplication and reciprocal
-    - Regularly varying functions: definition, connection to slowly varying
-    - Tail balance: structure, ratio properties, symmetry
-    - Domain of attraction: definition via characteristic functions
-    - Main theorem: forward direction (axiom), converse (axiom), Gaussian case (axiom)
-    - Key tools: Potter bound (axiom), Karamata integral theorem (axiom)
-    - Stable characteristic function: properties at 0, boundedness, continuity, evenness -/
+
+    **Slowly varying functions** (8 theorems):
+    - Definition, constant, multiplication, rpow, division, reciprocal, power, asymptotic equivalence
+    **Regularly varying functions** (5 theorems):
+    - Definition, power function, product (index addition), reciprocal (index negation), quotient (index subtraction)
+    **Tail balance**: structure, ratio properties, symmetry, alpha range
+    **Domain of attraction**: definition via characteristic functions
+    **Main theorem**: forward direction (axiom), converse (axiom), Gaussian case (axiom)
+    **Key tools**: Potter bound (axiom), Karamata integral theorem (axiom)
+    **Stable characteristic function**: at 0, boundedness, continuity, evenness, self-similarity -/
 theorem formalization_summary : True := trivial
 
 -- ============================================================================
@@ -540,7 +645,11 @@ theorem formalization_summary : True := trivial
 #check @InDomainOfAttraction
 #check @slowlyVarying_const
 #check @slowlyVarying_mul
+#check @slowlyVarying_rpow
 #check @slowlyVarying_inv
+#check @slowlyVarying_div
+#check @slowlyVarying_of_asymp_equiv
+#check @slowlyVarying_pow
 #check @gnedenko_kolmogorov_forward
 #check @gnedenko_kolmogorov_converse
 #check @stable_self_similarity
@@ -550,5 +659,9 @@ theorem formalization_summary : True := trivial
 #check @stableCharFun_even
 #check @tail_balance_ratios_sum_one
 #check @domain_of_attraction_normalizing_diverges
+#check @regularlyVarying_rpow
+#check @regularlyVarying_mul_index
+#check @regularlyVarying_inv_index
+#check @regularlyVarying_div_index
 
 end DomainOfAttraction
