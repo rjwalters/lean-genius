@@ -21,10 +21,10 @@
     "goal": "Eliminate remaining 2 sorries (counting lemmas) and prove path necessity"
   },
   "currentState": {
-    "phase": "PROGRESS",
+    "phase": "COMPLETE",
     "since": "2026-03-06T18:30:00.000Z",
     "iteration": 2,
-    "focus": "Proving circuit necessity direction via source/target permutation argument.",
+    "focus": "All theorem sorries proved and verified via Docker build",
     "blockers": [],
     "nextAction": "Fill in eulerian_source_count and eulerian_target_count (list/finset counting). Consider proving path necessity.",
     "attemptCounts": {
@@ -34,23 +34,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axioms from 6→4. Proved circuit necessity via permutation argument. Walk definition strengthened with Chain' consecutive property. 2 routine counting sorries remain.",
+    "progressSummary": "COMPLETE: All theorem sorries proved. Directed Euler circuit necessity proved via source/target permutation. Directed Euler path necessity proved via path counting. Only algorithmic sufficiency axioms remain (Hierholzer).",
     "builtItems": [
-      "Digraph structure with in/out-degree definitions",
-      "Walk structure with Chain' consecutive property and ends_at",
-      "chain_tail_fst_eq_dropLast_snd: chain walk list lemma",
-      "circuit_fst_perm_snd: source/target permutation for circuit walks",
-      "directed_euler_circuit_necessary: converted axiom→theorem",
-      "symmetric_digraph_balanced: new theorem for symmetric digraphs",
-      "De Bruijn arc count formula (substantive, replaces rfl placeholders)",
-      "Degree sum lemma proofs (partition bijection)"
+      "Proved eulerian_source_count via filter-map bijection",
+      "Proved eulerian_target_count via filter-map bijection",
+      "Proved directed_euler_circuit_necessary via permutation argument",
+      "Proved directed_euler_path_necessary via counting argument",
+      "Added path_fst_snd_eq helper lemma",
+      "Improved degree sum proofs with fiberwise decomposition"
     ],
     "insights": [
-      "Directed Euler circuit ↔ connected + in-degree = out-degree at all vertices",
-      "Circuit necessity proof: chain connectivity makes arc source/target lists permutations",
-      "Key insight: fst_list = v₀ :: M, snd_list = M ++ [v₀] are permutations by List.perm_append_comm",
-      "Walk definition needs Chain' for consecutive + ends_at for proper formalization",
-      "Counting lemmas (source_count = outDegree) are routine Nodup list/Finset bijection"
+      "In Docker Mathlib v4.26.0, Finset.card_nbij uses Set coercion for membership - use Finset.card_map with explicit Finset.ext instead",
+      "List.Chain has been deprecated to List.IsChain in newer Mathlib",
+      "count_map_filter helper needs same universe for both type params to avoid commitConst errors",
+      "circuit_fst_perm_snd: permutation of source/target lists follows from chain connectivity + circularity",
+      "path_fst_snd_eq: [start] ++ map snd = map fst ++ [end] is the path analogue giving degree conditions"
     ],
     "mathlibGaps": [
       "No directed Euler path formalization in Mathlib"
