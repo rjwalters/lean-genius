@@ -298,4 +298,206 @@ theorem crt_oq02_summary {R : Type*} [CommRing R] [IsDomain R]
   · intro x₁ x₂ h1m h1n h2m h2n
     exact coprime_crt_unique_ideal hcop h1m h1n h2m h2n
 
+/-
+## Part VI: PID Characterization — IsPrincipalIdealRing Bridge
+-/
+
+section PIDbridge
+
+variable {R : Type*} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R]
+
+/-- In a PID, every ideal is principal: ∃ a, I = Ideal.span {a}.
+    This is the structural property that makes CRT work in PIDs. -/
+theorem pid_ideal_principal (I : Ideal R) :
+    ∃ a : R, I = Ideal.span {a} :=
+  ⟨Submodule.IsPrincipal.generator I,
+   (Submodule.IsPrincipal.span_singleton_generator I).symm⟩
+
+/-- Two coprime elements in a PID satisfy Bézout's identity. -/
+theorem pid_bezout {a b : R} (hcop : IsCoprime a b) :
+    ∃ s t : R, s * a + t * b = 1 := by
+  obtain ⟨s, t, hst⟩ := hcop
+  exact ⟨s, t, hst⟩
+
+/-- CRT solvability in PIDs: coprime implies solvable (always). -/
+theorem pid_crt_coprime_solvable {m n a b : R} (hcop : IsCoprime m n) :
+    ∃ x : R, m ∣ (x - a) ∧ n ∣ (x - b) := by
+  obtain ⟨s, t, hst⟩ := hcop
+  refine ⟨a * (t * n) + b * (s * m), ?_, ?_⟩
+  · refine ⟨s * (b - a), ?_⟩
+    have key : t * n = 1 - s * m := by linear_combination hst
+    linear_combination a * key
+  · refine ⟨t * (a - b), ?_⟩
+    have key : s * m = 1 - t * n := by linear_combination hst
+    linear_combination b * key
+
+/-- CRT uniqueness in PIDs: coprime → solutions unique mod m*n. -/
+theorem pid_crt_coprime_unique {m n a b x₁ x₂ : R}
+    (hcop : IsCoprime m n)
+    (h1 : m ∣ (x₁ - a) ∧ n ∣ (x₁ - b))
+    (h2 : m ∣ (x₂ - a) ∧ n ∣ (x₂ - b)) :
+    m * n ∣ (x₁ - x₂) :=
+  coprime_crt_unique_ideal hcop h1.1 h1.2 h2.1 h2.2
+
+end PIDbridge
+
+/-
+## Part VII: Polynomial Degree Bounds for CRT Interpolation
+-/
+
+section DegBounds
+
+variable {k : Type*} [Field k]
+
+/-- The interpolating polynomial for 2 points can be chosen with degree ≤ 1.
+    This is the Lagrange interpolation bound. -/
+theorem polynomial_crt_two_degree_bound {a b c d : k} (hab : a ≠ b) :
+    ∃ p : k[X], p.eval a = c ∧ p.eval b = d ∧ p.natDegree ≤ 1 := by
+  have hab' : a - b ≠ 0 := sub_ne_zero.mpr hab
+  have hba' : b - a ≠ 0 := sub_ne_zero.mpr (Ne.symm hab)
+  -- Construct the linear interpolating polynomial explicitly
+  refine ⟨C ((c * b - d * a) * (b - a)⁻¹) + C ((d - c) * (b - a)⁻¹) * X, ?_, ?_, ?_⟩
+  · simp [eval_add, eval_mul, eval_C, eval_X]
+    field_simp
+    ring
+  · simp [eval_add, eval_mul, eval_C, eval_X]
+    field_simp
+    ring
+  · apply le_trans (Polynomial.natDegree_add_le _ _)
+    apply max_le
+    · rw [Polynomial.natDegree_C]; exact Nat.zero_le _
+    · exact le_trans Polynomial.natDegree_mul_le
+        (by rw [Polynomial.natDegree_C, Polynomial.natDegree_X])
+
+/-- Constant interpolation: single-point CRT yields degree 0 polynomials. -/
+theorem polynomial_crt_one_degree_bound (a b : k) :
+    ∃ p : k[X], p.eval a = b ∧ p.natDegree = 0 :=
+  ⟨C b, by simp, Polynomial.natDegree_C b⟩
+
+end DegBounds
+
+/-
+## Part VIII: Coprime Transitivity and Chain Properties
+-/
+
+section CoprimeChain
+
+variable {R : Type*} [CommRing R]
+
+/-- If a is coprime to both b and c, then a is coprime to b*c.
+    This enables building coprime chains for multi-moduli CRT. -/
+theorem coprime_mul_of_coprime {a b c : R}
+    (hab : IsCoprime a b) (hac : IsCoprime a c) :
+    IsCoprime a (b * c) := hab.mul_right hac
+
+/-- Coprimality is symmetric. -/
+theorem coprime_symm {a b : R} (h : IsCoprime a b) : IsCoprime b a :=
+  h.symm
+
+/-- Self-coprimality implies unit. -/
+theorem coprime_self_iff_unit (a : R) : IsCoprime a a ↔ IsUnit a := by
+  constructor
+  · exact fun h => h.isUnit_of_dvd' (dvd_refl a) (dvd_refl a)
+  · intro ⟨u, hu⟩
+    refine ⟨↑u⁻¹, 0, ?_⟩
+    rw [zero_mul, add_zero, ← hu]
+    exact_mod_cast u.inv_mul
+
+/-- Coprime and divides implies coprime to divisor. -/
+theorem coprime_of_dvd_right {a b c : R}
+    (h : IsCoprime a b) (hbc : c ∣ b) : IsCoprime a c := by
+  obtain ⟨s, t, hst⟩ := h
+  obtain ⟨q, hq⟩ := hbc
+  exact ⟨s, t * q, by rw [hq] at hst; linear_combination hst⟩
+
+end CoprimeChain
+
+/-
+## Part IX: Structural Results for Non-Coprime CRT
+-/
+
+section StructuralResults
+
+variable {R : Type*} [EuclideanDomain R] [DecidableEq R]
+
+/-- The non-coprime CRT subsumes the coprime CRT:
+    when gcd(m,n) is a unit, the divisibility condition is trivially satisfied. -/
+theorem coprime_implies_crt_solvable {m n a b : R}
+    (hcop : IsUnit (EuclideanDomain.gcd m n)) :
+    ∃ x : R, m ∣ (x - a) ∧ n ∣ (x - b) :=
+  ed_crt_coprime hcop
+
+/-- Contrapositive of necessity: if gcd(m,n) ∤ (a-b), NO solution exists. -/
+theorem ed_crt_impossible {m n a b : R}
+    (h : ¬ EuclideanDomain.gcd m n ∣ (a - b)) :
+    ¬ ∃ x : R, m ∣ (x - a) ∧ n ∣ (x - b) :=
+  fun hsol => h (ed_crt_necessary hsol)
+
+/-- Reflexivity: x ≡ a mod m always has the trivial solution x = a. -/
+theorem ed_crt_refl (m a : R) : m ∣ (a - a) := by rw [sub_self]; exact dvd_zero m
+
+/-- Transitivity: if m | (x - a) and m | (a - b), then m | (x - b). -/
+theorem ed_crt_trans {m x a b : R} (h1 : m ∣ (x - a)) (h2 : m ∣ (a - b)) :
+    m ∣ (x - b) := by
+  have := dvd_add h1 h2
+  rwa [show (x - a) + (a - b) = x - b from by ring] at this
+
+end StructuralResults
+
+/-
+## Part X: Coprime Multi-Moduli CRT
+-/
+
+section MultiModuliCoprime
+
+variable {R : Type*} [CommRing R]
+
+/-- Coprime CRT for three pairwise coprime moduli. Uses the CRT basis element
+    construction: for pairwise coprime m₁, m₂, m₃:
+      e₁ = t₁·(m₂·m₃), where s₁·m₁ + t₁·(m₂·m₃) = 1
+    Then x = a₁·e₁ + a₂·e₂ + a₃·e₃ solves the system. -/
+theorem coprime_crt_three {m₁ m₂ m₃ a₁ a₂ a₃ : R}
+    (h12 : IsCoprime m₁ m₂) (h13 : IsCoprime m₁ m₃) (h23 : IsCoprime m₂ m₃) :
+    ∃ x : R, m₁ ∣ (x - a₁) ∧ m₂ ∣ (x - a₂) ∧ m₃ ∣ (x - a₃) := by
+  have h1_23 : IsCoprime m₁ (m₂ * m₃) := h12.mul_right h13
+  have h2_13 : IsCoprime m₂ (m₁ * m₃) := h12.symm.mul_right h23
+  have h3_12 : IsCoprime m₃ (m₁ * m₂) := h13.symm.mul_right h23.symm
+  obtain ⟨s₁, t₁, ht₁⟩ := h1_23
+  obtain ⟨s₂, t₂, ht₂⟩ := h2_13
+  obtain ⟨s₃, t₃, ht₃⟩ := h3_12
+  refine ⟨a₁ * (t₁ * (m₂ * m₃)) + a₂ * (t₂ * (m₁ * m₃)) + a₃ * (t₃ * (m₁ * m₂)),
+    ?_, ?_, ?_⟩
+  · -- m₁ | (x - a₁): t₁·m₂·m₃ ≡ 1 mod m₁, so x ≡ a₁·1 + a₂·0 + a₃·0 = a₁ mod m₁
+    refine ⟨a₂ * (t₂ * m₃) + a₃ * (t₃ * m₂) - a₁ * s₁, ?_⟩
+    have : t₁ * (m₂ * m₃) = 1 - s₁ * m₁ := by linear_combination ht₁
+    linear_combination a₁ * this
+  · -- m₂ | (x - a₂): similarly
+    refine ⟨a₁ * (t₁ * m₃) + a₃ * (t₃ * m₁) - a₂ * s₂, ?_⟩
+    have : t₂ * (m₁ * m₃) = 1 - s₂ * m₂ := by linear_combination ht₂
+    linear_combination a₂ * this
+  · -- m₃ | (x - a₃): similarly
+    refine ⟨a₁ * (t₁ * m₂) + a₂ * (t₂ * m₁) - a₃ * s₃, ?_⟩
+    have : t₃ * (m₁ * m₂) = 1 - s₃ * m₃ := by linear_combination ht₃
+    linear_combination a₃ * this
+
+/-- Uniqueness for three coprime moduli: solutions agree mod m₁*m₂*m₃. -/
+theorem coprime_crt_three_unique {m₁ m₂ m₃ a₁ a₂ a₃ x₁ x₂ : R}
+    (h12 : IsCoprime m₁ m₂) (h13 : IsCoprime m₁ m₃) (h23 : IsCoprime m₂ m₃)
+    (hx₁ : m₁ ∣ (x₁ - a₁) ∧ m₂ ∣ (x₁ - a₂) ∧ m₃ ∣ (x₁ - a₃))
+    (hx₂ : m₁ ∣ (x₂ - a₁) ∧ m₂ ∣ (x₂ - a₂) ∧ m₃ ∣ (x₂ - a₃)) :
+    m₁ * m₂ * m₃ ∣ (x₁ - x₂) := by
+  have h1 : m₁ ∣ (x₁ - x₂) := by
+    have := dvd_sub hx₁.1 hx₂.1
+    rwa [show (x₁ - a₁) - (x₂ - a₁) = x₁ - x₂ from by ring] at this
+  have h2 : m₂ ∣ (x₁ - x₂) := by
+    have := dvd_sub hx₁.2.1 hx₂.2.1
+    rwa [show (x₁ - a₂) - (x₂ - a₂) = x₁ - x₂ from by ring] at this
+  have h3 : m₃ ∣ (x₁ - x₂) := by
+    have := dvd_sub hx₁.2.2 hx₂.2.2
+    rwa [show (x₁ - a₃) - (x₂ - a₃) = x₁ - x₂ from by ring] at this
+  have h12' : m₁ * m₂ ∣ (x₁ - x₂) := h12.mul_dvd h1 h2
+  exact (h13.symm.mul_right h23.symm).symm.mul_dvd h12' h3
+
+end MultiModuliCoprime
+
 end ChineseRemainderNonCoprimeOQ02
