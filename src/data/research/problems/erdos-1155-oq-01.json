@@ -26,8 +26,8 @@
     "open": [
       "Full Erdős conjecture: explicit constants c₁, c₂ in Θ(n^{3/2})",
       "Whether f(n)/n^{3/2} converges (limit_implies_conjecture shows sufficiency)",
-      "BFL lower tight: no exponent below 3/2 works (stated, proof needs real analysis)",
-      "triangleFree_iff_cliqueFree3: both directions stated but need Finset extraction"
+      "conjecture_implies_bfl_upper/lower: needs n^ε→∞ in atTop filter",
+      "bfl_ratio_characterization: needs rpow division manipulation"
     ],
     "goal": "Prove exact Θ(n^{3/2}) asymptotics or characterize what's needed"
   },
@@ -41,9 +41,9 @@
     "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
   },
   "knowledge": {
-    "progressSummary": "Created Erdos1155OQ01.lean (Docker-verified, 10 sorries). Key contributions: (1) proved complete_has_triangles' for Fin n, (2) proved bfl_sandwich combining BFL upper+lower, (3) proved bfl_exponent_is_three_halves showing 3/2 is the exact critical exponent, (4) proved conjecture_iff_both_bounds decomposing Θ into one-sided bounds, (5) stated limit_implies_conjecture and limsup_liminf_implies_conjecture showing sufficient conditions.",
+    "progressSummary": "Erdos1155OQ01.lean Docker-verified with 3 sorries (down from 10). Proved 7 theorems: triangleFree_iff_cliqueFree3 (both directions), conjecture_iff_both_bounds (c≤C), bfl_lower_tight (rpow comparison), limit_implies_conjecture (Tendsto→conjecture via Icc_mem_nhds), limsup_liminf_implies_conjecture (both parts via div_le_iff). Remaining 3 sorries need rpow growth bounds (n^ε→∞).",
     "builtItems": [
-      "proofs/Proofs/Erdos1155OQ01.lean (10 sorries, Docker-verified)"
+      "proofs/Proofs/Erdos1155OQ01.lean (3 sorries, Docker-verified)"
     ],
     "insights": [
       "The gap between BFL and the full conjecture is exactly: n^{-ε} vs constant in the ratio f(n)/n^{3/2}",
@@ -54,14 +54,12 @@
       "SimpleGraph.top_adj works with simp for adjacency in complete graphs"
     ],
     "mathlibGaps": [
-      "Connecting IsNClique/CliqueFree to pointwise triangle predicates requires Finset.card_eq_three extraction",
-      "Real power function estimates: c ≤ n^ε eventually (needed for conjecture_implies_bfl)"
+      "Real power function estimates: c ≤ n^ε eventually for ε>0 (needed for conjecture_implies_bfl)"
     ],
     "nextSteps": [
-      "Prove triangleFree_iff_cliqueFree3 (finset extraction from card_eq_three)",
-      "Prove conjecture_implies_bfl_upper/lower using real power growth",
-      "Prove bfl_lower_tight using filter contradiction",
-      "Submit to Aristotle for routine sorry resolution"
+      "Prove conjecture_implies_bfl_upper/lower (need Tendsto rpow atTop atTop)",
+      "Prove bfl_ratio_characterization (rpow division by n^{3/2})",
+      "Submit to Aristotle for remaining 3 sorries"
     ]
   },
   "approaches": [
