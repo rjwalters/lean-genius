@@ -84,10 +84,25 @@ theorem slowlyVarying_mul {L₁ L₂ : ℝ → ℝ}
     rwa [mul_one] at this
 
 /-- If L is slowly varying and p ≠ 0, then |L|^p is slowly varying.
-    Axiomatized: the proof requires rpow continuity composition lemmas
-    whose API varies across Mathlib versions. -/
-axiom slowlyVarying_rpow {L : ℝ → ℝ} (hL : SlowlyVarying L) {p : ℝ} (hp : p ≠ 0) :
-    SlowlyVarying (fun x => |L x| ^ p)
+    Proof: |L(cx)|^p / |L(x)|^p = (|L(cx)/L(x)|)^p → 1^p = 1. -/
+theorem slowlyVarying_rpow {L : ℝ → ℝ} (hL : SlowlyVarying L) {p : ℝ} (_hp : p ≠ 0) :
+    SlowlyVarying (fun x => |L x| ^ p) := by
+  constructor
+  · intro x hx
+    exact ne_of_gt (rpow_pos_of_pos (abs_pos.mpr (hL.1 x hx)) p)
+  · intro c hc
+    have key : (fun x => |L (c * x)| ^ p / |L x| ^ p) =
+        (fun x => (|L (c * x)| / |L x|) ^ p) := by
+      ext x; rw [div_rpow (abs_nonneg _) (abs_nonneg _)]
+    rw [key]
+    have h1 : Tendsto (fun x => L (c * x) / L x) atTop (𝓝 1) := hL.2 c hc
+    have h2 : Tendsto (fun x => |L (c * x) / L x|) atTop (𝓝 1) := by
+      have := h1.norm; rwa [norm_eq_abs, abs_one] at this
+    have h3 : Tendsto (fun x => (|L (c * x) / L x|) ^ p) atTop (𝓝 (1 ^ p)) :=
+      h2.rpow tendsto_const_nhds (Or.inl one_ne_zero)
+    rw [one_rpow] at h3
+    convert h3 using 1
+    ext x; rw [abs_div]
 
 -- ============================================================================
 -- Part II: Regularly Varying Functions
@@ -113,10 +128,20 @@ theorem slowlyVarying_iff_regularlyVarying_zero {L : ℝ → ℝ} :
   simp only [SlowlyVarying, RegularlyVarying, rpow_zero]
 
 /-- The power function x^α is regularly varying with index α.
-    Axiomatized: requires rpow division/cancellation lemmas whose API
-    varies across Mathlib versions. -/
-axiom regularlyVarying_rpow (α : ℝ) :
-    RegularlyVarying (fun x => |x| ^ α) α
+    Proof: |cx|^α / |x|^α = |c|^α · |x|^α / |x|^α → |c|^α = c^α (since c > 0). -/
+theorem regularlyVarying_rpow (α : ℝ) :
+    RegularlyVarying (fun x => |x| ^ α) α := by
+  constructor
+  · intro x hx
+    exact ne_of_gt (rpow_pos_of_pos (abs_pos.mpr (ne_of_gt hx)) α)
+  · intro c hc
+    suffices h : ∀ᶠ x in atTop, |c * x| ^ α / |x| ^ α = c ^ α by
+      exact (tendsto_congr' h).mpr tendsto_const_nhds
+    filter_upwards [Filter.eventually_ge_atTop 1] with x hx
+    rw [abs_mul, mul_rpow (abs_nonneg c) (abs_nonneg x), abs_of_pos hc]
+    rw [mul_div_assoc]
+    have hxpos : (0 : ℝ) < |x| := abs_pos.mpr (by linarith)
+    rw [div_self (ne_of_gt (rpow_pos_of_pos hxpos α)), mul_one]
 
 -- ============================================================================
 -- Part III: Tail Balance Condition
@@ -298,12 +323,32 @@ axiom karamata_integral (L : ℝ → ℝ) (hL : SlowlyVarying L)
 -- ============================================================================
 
 /-- Stability property: the α-stable characteristic function is closed under
-    normalized convolution. (Proved in CentralLimitTheoremOQ01.lean.)
+    normalized convolution.
     exp(-|t/n^{1/α}|^α)^n = exp(-|t|^α) follows from |t/a|^α = |t|^α/a^α
     and (exp(x))^n = exp(nx), with n/(n^{1/α})^α = n/n = 1. -/
-axiom stable_self_similarity (α : ℝ) (hα : 0 < α) (hα_le : α ≤ 2)
+theorem stable_self_similarity (α : ℝ) (hα : 0 < α) (_hα_le : α ≤ 2)
     (n : ℕ) (hn : 0 < n) (t : ℝ) :
-    (stableCharFun α (t / (n : ℝ) ^ (1 / α))) ^ n = stableCharFun α t
+    (stableCharFun α (t / (n : ℝ) ^ (1 / α))) ^ n = stableCharFun α t := by
+  simp only [stableCharFun]
+  rw [← Complex.exp_nat_mul]
+  congr 1
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+  have hn_ne : (n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  -- |t / n^{1/α}|^α = |t|^α / n
+  have h1 : |t / (n : ℝ) ^ (1 / α)| ^ α = |t| ^ α / n := by
+    rw [abs_div]
+    have hn1a_pos : (0 : ℝ) < (n : ℝ) ^ (1 / α) := rpow_pos_of_pos hn_pos _
+    rw [abs_of_pos hn1a_pos]
+    rw [div_rpow (abs_nonneg t) (le_of_lt hn1a_pos)]
+    rw [← rpow_natCast (le_of_lt hn_pos)]
+    rw [← rpow_mul (le_of_lt hn_pos)]
+    rw [div_mul_cancel₀ 1 (ne_of_gt hα)]
+    rw [rpow_one]
+  -- ↑n * ↑(-(|t|^α / n)) = ↑(-(|t|^α))
+  simp only [Complex.ofReal_neg, Complex.ofReal_natCast]
+  rw [h1]
+  simp only [Complex.ofReal_div, Complex.ofReal_natCast]
+  rw [mul_neg, mul_div_cancel₀ _ (by exact_mod_cast hn_ne : (↑n : ℂ) ≠ 0)]
 
 -- ============================================================================
 -- Part VIII: Connection to Classical CLT
@@ -323,10 +368,21 @@ theorem classical_clt_is_gaussian_attraction :
 -- ============================================================================
 
 /-- The reciprocal of a slowly varying function is slowly varying.
-    Axiomatized: the proof requires filter manipulation showing
-    L(cx)⁻¹/L(x)⁻¹ = L(x)/L(cx) → 1 from L(cx)/L(x) → 1. -/
-axiom slowlyVarying_inv {L : ℝ → ℝ} (hL : SlowlyVarying L) :
-    SlowlyVarying (fun x => (L x)⁻¹)
+    Proof: L(cx)⁻¹/L(x)⁻¹ = L(x)/L(cx) = (L(cx)/L(x))⁻¹ → 1⁻¹ = 1. -/
+theorem slowlyVarying_inv {L : ℝ → ℝ} (hL : SlowlyVarying L) :
+    SlowlyVarying (fun x => (L x)⁻¹) := by
+  constructor
+  · intro x hx; exact inv_ne_zero (hL.1 x hx)
+  · intro c hc
+    have key : (fun x => (L (c * x))⁻¹ / (L x)⁻¹) =
+        (fun x => L x / L (c * x)) := by
+      ext x; rw [inv_div_inv]
+    rw [key]
+    have h1 : Tendsto (fun x => L (c * x) / L x) atTop (𝓝 1) := hL.2 c hc
+    have h2 := h1.inv₀ one_ne_zero
+    simp only [inv_one] at h2
+    convert h2 using 1
+    ext x; exact (inv_div _ _).symm
 
 /-- Slowly varying functions are eventually bounded away from zero:
     for large enough x, |L(x)| ≥ some positive constant.
@@ -353,12 +409,18 @@ theorem regularlyVarying_ne_zero {f : ℝ → ℝ} {α : ℝ} (hf : RegularlyVar
 
 /-- The product of regularly varying functions has indices that add.
     If f ~ x^α and g ~ x^β, then f·g ~ x^{α+β}.
-    Axiomatized: the proof requires showing
-    (f(cx)·g(cx))/(f(x)·g(x)) = (f(cx)/f(x))·(g(cx)/g(x)) → c^α · c^β = c^{α+β},
-    which needs rpow_add lemma compatibility. -/
-axiom regularlyVarying_mul_index {f g : ℝ → ℝ} {α β : ℝ}
+    Proof: (f(cx)g(cx))/(f(x)g(x)) = (f(cx)/f(x))·(g(cx)/g(x)) → c^α · c^β = c^{α+β}. -/
+theorem regularlyVarying_mul_index {f g : ℝ → ℝ} {α β : ℝ}
     (hf : RegularlyVarying f α) (hg : RegularlyVarying g β) :
-    RegularlyVarying (fun x => f x * g x) (α + β)
+    RegularlyVarying (fun x => f x * g x) (α + β) := by
+  constructor
+  · intro x hx; exact mul_ne_zero (hf.1 x hx) (hg.1 x hx)
+  · intro c hc
+    have key : (fun x => f (c * x) * g (c * x) / (f x * g x)) =
+        (fun x => (f (c * x) / f x) * (g (c * x) / g x)) := by
+      ext x; field_simp
+    rw [key, ← rpow_add hc]
+    exact (hf.2 c hc).mul (hg.2 c hc)
 
 /-- Regularly varying with index 0 is exactly slowly varying. -/
 theorem regularlyVarying_zero_iff_slowlyVarying {f : ℝ → ℝ} :
@@ -376,16 +438,25 @@ theorem stableCharFun_zero (α : ℝ) (hα : 0 < α) :
         Complex.exp_zero]
 
 /-- The stable characteristic function is bounded by 1: |φ(t)| ≤ 1.
-    Since stableCharFun α t = exp(-(|t|^α)), with |t|^α ≥ 0, the exponent is ≤ 0,
-    so ‖exp(-(|t|^α))‖ = exp(-(|t|^α)) ≤ 1.
-    Axiomatized: the proof requires exp norm API names that vary across Mathlib versions. -/
-axiom stableCharFun_norm_le (α : ℝ) (hα : 0 < α) (hα_le : α ≤ 2) (t : ℝ) :
-    ‖stableCharFun α t‖ ≤ 1
+    Since stableCharFun α t = exp(-(|t|^α)) (real exponential cast to ℂ),
+    with |t|^α ≥ 0, the exponent is ≤ 0, so exp(-(|t|^α)) ≤ exp(0) = 1. -/
+theorem stableCharFun_norm_le (α : ℝ) (_hα : 0 < α) (_hα_le : α ≤ 2) (t : ℝ) :
+    ‖stableCharFun α t‖ ≤ 1 := by
+  unfold stableCharFun
+  rw [Complex.norm_exp]
+  simp only [Complex.ofReal_re]
+  exact Real.exp_le_one_iff.mpr (neg_nonpos_of_nonneg (rpow_nonneg (abs_nonneg t) α))
 
 /-- The stable characteristic function is continuous.
-    Axiomatized: fun_prop requires 0 ≤ α for rpow continuity. -/
-axiom stableCharFun_continuous (α : ℝ) :
-    Continuous (stableCharFun α)
+    Composition of continuous functions: abs, rpow_const (with nonneg base), neg, ofReal, exp. -/
+theorem stableCharFun_continuous (α : ℝ) :
+    Continuous (stableCharFun α) := by
+  unfold stableCharFun
+  apply Complex.continuous_exp.comp
+  apply Complex.continuous_ofReal.comp
+  apply Continuous.neg
+  apply Continuous.rpow_const continuous_abs
+  intro x; left; exact abs_nonneg x
 
 /-- The stable characteristic function is even when α > 0: φ(-t) = φ(t).
     This follows from |−t|^α = |t|^α. -/
