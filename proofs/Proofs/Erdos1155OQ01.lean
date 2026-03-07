@@ -129,11 +129,30 @@ theorem conjecture_implies_bfl_upper :
     ∀ ε : ℝ, 0 < ε →
       ∀ᶠ (n : ℕ) in atTop,
         triangleRemovalEdges n ≤ (n : ℝ) ^ ((3 : ℝ) / 2 + ε) := by
-  intro ⟨c₁, c₂, _, _, hconj⟩ ε hε
-  -- For large n, c₂ · n^{3/2} ≤ n^{3/2+ε} since n^ε → ∞
-  -- We need: c₂ · n^{3/2} ≤ n^{3/2+ε}, i.e., c₂ ≤ n^ε
-  -- This holds eventually since n^ε → ∞ and c₂ is a constant
-  sorry
+  intro ⟨c₁, c₂, hc₁, hc₁c₂, hconj⟩ ε hε
+  have hc₂_pos : 0 < c₂ := lt_of_lt_of_le hc₁ hc₁c₂
+  -- Key: for large n, c₂ ≤ n^ε (since n^ε → ∞)
+  have hkey : ∀ᶠ (n : ℕ) in atTop, c₂ ≤ (n : ℝ) ^ ε := by
+    rw [Filter.eventually_atTop]
+    refine ⟨⌈c₂ ^ (1/ε)⌉₊ + 1, fun n hn => ?_⟩
+    have h1 : c₂ = (c₂ ^ (1/ε)) ^ ε := by
+      rw [← Real.rpow_mul (le_of_lt hc₂_pos), one_div_mul_cancel (ne_of_gt hε),
+          Real.rpow_one]
+    rw [h1]
+    exact Real.rpow_le_rpow (Real.rpow_nonneg (le_of_lt hc₂_pos) _)
+      (le_trans (Nat.le_ceil _) (by exact_mod_cast (show ⌈c₂ ^ (1/ε)⌉₊ ≤ n by omega)))
+      (le_of_lt hε)
+  have hge1 : ∀ᶠ (n : ℕ) in atTop, 1 ≤ n :=
+    Filter.eventually_atTop.mpr ⟨1, fun n hn => hn⟩
+  apply (((hconj.mono fun n hn => hn.2).and hkey).and hge1).mono
+  intro n ⟨⟨hfn, hcn⟩, hn1⟩
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (show 0 < n by omega)
+  calc triangleRemovalEdges n
+      ≤ c₂ * (n : ℝ) ^ ((3:ℝ)/2) := hfn
+    _ ≤ (n : ℝ) ^ ε * (n : ℝ) ^ ((3:ℝ)/2) :=
+        mul_le_mul_of_nonneg_right hcn (Real.rpow_nonneg (le_of_lt hn_pos) _)
+    _ = (n : ℝ) ^ ((3:ℝ)/2 + ε) := by
+        rw [← Real.rpow_add hn_pos]; congr 1; ring
 
 /-- The conjecture implies the BFL lower bound (conjecture is strictly stronger). -/
 theorem conjecture_implies_bfl_lower :
@@ -142,8 +161,33 @@ theorem conjecture_implies_bfl_lower :
       ∀ᶠ (n : ℕ) in atTop,
         (n : ℝ) ^ ((3 : ℝ) / 2 - ε) ≤ triangleRemovalEdges n := by
   intro ⟨c₁, c₂, hc₁, _, hconj⟩ ε hε
-  -- For large n, n^{3/2-ε} ≤ c₁ · n^{3/2} since c₁ · n^ε ≥ 1 eventually
-  sorry
+  -- Need: n^{3/2-ε} ≤ c₁ * n^{3/2}, i.e., (n^ε)⁻¹ ≤ c₁
+  have hc₁_inv_pos : 0 < c₁⁻¹ := inv_pos.mpr hc₁
+  have hkey : ∀ᶠ (n : ℕ) in atTop, c₁⁻¹ ≤ (n : ℝ) ^ ε := by
+    rw [Filter.eventually_atTop]
+    refine ⟨⌈c₁⁻¹ ^ (1/ε)⌉₊ + 1, fun n hn => ?_⟩
+    have h1 : c₁⁻¹ = (c₁⁻¹ ^ (1/ε)) ^ ε := by
+      rw [← Real.rpow_mul (le_of_lt hc₁_inv_pos), one_div_mul_cancel (ne_of_gt hε),
+          Real.rpow_one]
+    rw [h1]
+    exact Real.rpow_le_rpow (Real.rpow_nonneg (le_of_lt hc₁_inv_pos) _)
+      (le_trans (Nat.le_ceil _) (by exact_mod_cast (show ⌈c₁⁻¹ ^ (1/ε)⌉₊ ≤ n by omega)))
+      (le_of_lt hε)
+  have hge1 : ∀ᶠ (n : ℕ) in atTop, 1 ≤ n :=
+    Filter.eventually_atTop.mpr ⟨1, fun n hn => hn⟩
+  apply (((hconj.mono fun n hn => hn.1).and hkey).and hge1).mono
+  intro n ⟨⟨hfn, hcn⟩, hn1⟩
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (show 0 < n by omega)
+  calc (n : ℝ) ^ ((3:ℝ)/2 - ε)
+      = (n : ℝ) ^ ((-ε) + (3:ℝ)/2) := by congr 1; ring
+    _ = (n : ℝ) ^ (-ε) * (n : ℝ) ^ ((3:ℝ)/2) := Real.rpow_add hn_pos (-ε) ((3:ℝ)/2)
+    _ ≤ c₁ * (n : ℝ) ^ ((3:ℝ)/2) := by
+        apply mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg (le_of_lt hn_pos) _)
+        rw [Real.rpow_neg (le_of_lt hn_pos), ← one_div]
+        rw [div_le_iff₀ (Real.rpow_pos_of_pos hn_pos ε)]
+        calc (1 : ℝ) = c₁ * c₁⁻¹ := (mul_inv_cancel₀ (ne_of_gt hc₁)).symm
+          _ ≤ c₁ * (n : ℝ) ^ ε := mul_le_mul_of_nonneg_left hcn (le_of_lt hc₁)
+    _ ≤ triangleRemovalEdges n := hfn
 
 /-- A weaker form of the conjecture: there exists C such that
     f(n) ≤ C · n^{3/2} eventually. This is the upper Θ-bound. -/
@@ -247,9 +291,24 @@ theorem bfl_ratio_characterization :
         (n : ℝ) ^ (-ε) ≤ triangleRemovalEdges n / (n : ℝ) ^ ((3:ℝ)/2) ∧
         triangleRemovalEdges n / (n : ℝ) ^ ((3:ℝ)/2) ≤ (n : ℝ) ^ ε := by
   intro ε hε
-  -- This follows from BFL sandwich after dividing by n^{3/2}
-  -- n^{3/2-ε} / n^{3/2} = n^{-ε} and n^{3/2+ε} / n^{3/2} = n^ε
-  sorry
+  have hsand := bfl_sandwich ε hε
+  have hge1 : ∀ᶠ (n : ℕ) in atTop, 1 ≤ n :=
+    Filter.eventually_atTop.mpr ⟨1, fun n hn => hn⟩
+  apply (hsand.and hge1).mono
+  intro n ⟨⟨hlo, hup⟩, hn1⟩
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (show 0 < n by omega)
+  have hn32_pos : (0 : ℝ) < (n : ℝ) ^ ((3:ℝ)/2) := Real.rpow_pos_of_pos hn_pos _
+  constructor
+  · rw [le_div_iff₀ hn32_pos]
+    calc (n : ℝ) ^ (-ε) * (n : ℝ) ^ ((3:ℝ)/2)
+        = (n : ℝ) ^ (-ε + (3:ℝ)/2) := (Real.rpow_add hn_pos (-ε) ((3:ℝ)/2)).symm
+      _ = (n : ℝ) ^ ((3:ℝ)/2 - ε) := by congr 1; ring
+      _ ≤ triangleRemovalEdges n := hlo
+  · rw [div_le_iff₀ hn32_pos]
+    calc triangleRemovalEdges n
+        ≤ (n : ℝ) ^ ((3:ℝ)/2 + ε) := hup
+      _ = (n : ℝ) ^ (ε + (3:ℝ)/2) := by congr 1; ring
+      _ = (n : ℝ) ^ ε * (n : ℝ) ^ ((3:ℝ)/2) := Real.rpow_add hn_pos ε ((3:ℝ)/2)
 
 -- ============================================================================
 -- § 6. What would resolve the conjecture
