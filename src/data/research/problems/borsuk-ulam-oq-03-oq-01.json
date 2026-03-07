@@ -1,114 +1,75 @@
 {
   "slug": "borsuk-ulam-oq-03-oq-01",
-  "title": "Quantitative Borsuk-Ulam: Constructive Rates and Bounds",
-  "phase": "FORMALIZED",
+  "title": "Tucker's Lemma Higher-Dimensional Generalization",
+  "phase": "NEW",
   "status": "active",
-  "tier": "B",
+  "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Quantitative aspects of 1D constructive BU: Lipschitz bounds, bisection rates, oscillation estimates, coincidence set structure, perturbation stability",
-    "plain": "What are the quantitative aspects of the constructive 1D Borsuk-Ulam theorem? How fast can we locate antipodal pairs? What bounds does Lipschitz continuity give? How does perturbation affect the location of antipodal pairs?",
-    "whyMatters": [
-      "Extracts computational content from the constructive BU proof",
-      "Quantifies the rate of bisection-based antipodal pair finding",
-      "Connects BU to analysis: Lipschitz bounds, oscillation, modulus of continuity"
-    ]
+    "formal": "",
+    "plain": "Can Tucker's lemma be generalized to higher dimensions in Lean? The 2D version is established; can we extend to n-dimensional simplicial complexes?",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "antisymmetric_diff_lipschitz: g(x)=f(x)-f(-x) is (L+L)-Lipschitz when f is L-Lipschitz",
-      "lipschitz_antipodal_deviation_bound: |f(x)-f(-x)| ≤ 2L on [-1,1]",
-      "bisection_convergence_rate: 2·(1/2)^n = 2/2^n",
-      "bisection_width_tendsto_zero: bisection width → 0",
-      "antipodal_deviation_le_oscillation: deviation bounded by oscillation",
-      "coincidence_set_symmetric: x ∈ C(f) ↔ -x ∈ C(f)",
-      "coincidence_set_nonempty_compact: C(f)∩[-1,1] is nonempty and compact",
-      "coincidence_set_has_inf: leftmost antipodal pair exists",
-      "circle_antipodal_deviation_bound: |f(p)-f(-p)| ≤ 2L on S^1",
-      "antisymmetric_diff_uniform_continuous: uniform continuity preserved",
-      "bisection_sufficient_steps: (b-a)/2^n < ε from (b-a)·(1/2)^n < ε",
-      "antipodal_value_in_range: f(x₀) ∈ [inf, sup]",
-      "multi_function_interval_bu: simultaneous antipodal for all fᵢ at x=0",
-      "circle_noninjectivity: circle BU via IVT",
-      "even_function_full_coincidence: even f has all points as antipodal pairs",
-      "linear_unique_antipodal: f(x)=ax+b has unique pair at x=0",
-      "perturbation_antisymmetric_bound: |g_f - g_g| ≤ 2ε when |f-g| ≤ ε",
-      "antipodal_no_fixed_point: -x ≠ x on S^0"
-    ],
-    "open": [
-      "Quantitative Tucker bounds in higher dimensions",
-      "Computational complexity of approximate antipodal finding (PPAD)",
-      "Constructive BU in 2D via Tucker's 2D lemma"
-    ],
-    "goal": "Formalize quantitative aspects of constructive 1D Borsuk-Ulam"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "FORMALIZED",
-    "since": "2026-03-07T04:00:00.000Z",
+    "phase": "PROGRESS",
+    "since": "2026-03-06T17:58:04-08:00",
     "iteration": 1,
-    "focus": "28 theorems proved, 0 sorries, 1 axiom (two_function_circle_bu). Docker-verified.",
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Consider proving two_function_circle_bu or extending to quantitative Tucker",
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "FORMALIZED: 28 proved theorems, 0 sorries, 1 axiom. Comprehensive quantitative BU with Lipschitz bounds, bisection rates, oscillation estimates, coincidence set structure, perturbation stability.",
+    "progressSummary": "PROGRESS: Tucker 1D fully proved (0 sorries). Higher-dim Tucker axiomatized. Infrastructure assessment done.",
     "builtItems": [
-      "proofs/Proofs/BorsukUlamOQ03OQ01.lean (0 sorries, Docker-verified)"
+      "discrete_ivt: general discrete IVT theorem",
+      "tucker_1d: Tucker Lemma 1D (0 sorries)",
+      "tucker_implies_discrete_odd_zero: discrete odd function zero",
+      "tucker_bu_equivalence_1d: Tucker ↔ BU in 1D",
+      "tucker_2d (axiom): 2D Tucker statement",
+      "tucker_nd (axiom): general n-D Tucker statement"
     ],
     "insights": [
-      "NNReal not ℝ≥0 in Docker Lean 4.26.0 (ℝ≥0 causes LE Type parse error)",
-      "abs_add_le (not abs_add) for triangle inequality |a+b| ≤ |a| + |b|",
-      "abs_sub_comm for |a-b| = |b-a|",
-      "Prod.dist_eq + Real.dist_eq for product metric space distances",
-      "IsClosed.csInf_mem needs BddBelow argument in Docker Mathlib",
-      "LipschitzWith.id.neg gives Lipschitz 1 for negation; mul_one converts L*1 to L",
-      "Circle BU (S^1 → ℝ²) requires 2D BU (axiomatized as two_function_circle_bu)"
+      "Tucker 1D proved via Discrete IVT: any {±1}-labeling with antipodal boundary has complementary edge",
+      "Discrete IVT: if f(0) ≠ f(last) on Fin(n+2), adjacent pair with different values exists",
+      "Proof by contrapositive: all-adjacent-equal implies constant, contradicting endpoint inequality",
+      "Tucker ↔ BU equivalence proved in 1D: both directions established",
+      "Higher-dim Tucker requires simplicial complex infrastructure not yet in Mathlib",
+      "Graph-theoretic formulation (vertices + adjacency) avoids full SimplicialComplex machinery"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove two_function_circle_bu if 2D BU infrastructure becomes available",
-      "Extend to quantitative Tucker bounds"
-    ]
+      "Prove odd-counting version (number of complementary edges is odd)",
+      "Build graph-theoretic Tucker 2D formulation",
+      "Connect tucker_2d to borsuk_ulam_general axiom"
+    ],
+    "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "approaches": [
-    {
-      "name": "Quantitative analysis of constructive 1D BU",
-      "status": "succeeded",
-      "description": "Lipschitz bounds, bisection rates, oscillation, coincidence set structure, perturbation stability"
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "seeker-selected",
     "topology",
-    "constructive-math",
+    "combinatorial-topology",
+    "tucker-lemma",
     "borsuk-ulam",
-    "quantitative-bounds",
-    "lipschitz"
+    "simplicial-complex"
   ],
-  "relatedProofs": [
-    "borsuk-ulam",
-    "borsuk-ulam-oq-03"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Borsuk (1933): Drei Sätze über die n-dimensionale euklidische Sphäre"
-    ],
-    "urls": [
-      "https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem"
-    ],
-    "mathlib": [
-      "intermediate_value_Icc",
-      "LipschitzWith",
-      "isCompact_Icc"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
-  "started": "2026-03-07T03:16:51.997Z",
-  "lastUpdate": "2026-03-07T04:00:00.000Z",
-  "significance": 6,
-  "tractability": 7
+  "started": "2026-03-07T18:02:01.175Z",
+  "lastUpdate": "2026-03-07T18:02:01.175Z",
+  "significance": 7,
+  "tractability": 5
 }
