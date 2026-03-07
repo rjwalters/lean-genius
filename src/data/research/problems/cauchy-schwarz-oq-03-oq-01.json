@@ -1,93 +1,71 @@
 {
   "slug": "cauchy-schwarz-oq-03-oq-01",
   "title": "Hölder's inequality equality case formalization",
-  "phase": "COMPLETE",
-  "status": "complete",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "(∑ i ∈ s, f i * g i) ^ 2 = (∑ i ∈ s, f i ^ 2) * (∑ i ∈ s, g i ^ 2) ↔ ∀ i ∈ s, ∀ j ∈ s, f i * g j = f j * g i",
-    "plain": "Cauchy-Schwarz equality holds iff the vectors are proportional (all cross-terms vanish).",
-    "whyMatters": [
-      "Characterizes when Cauchy-Schwarz is tight, fundamental in optimization and linear algebra",
-      "Proportionality condition is key to projection theory and Gram-Schmidt",
-      "Extends to inner product spaces: |⟨u,v⟩| = ‖u‖·‖v‖ iff u = c·v"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Lagrange identity: ∑ᵢ∑ⱼ(fᵢgⱼ - fⱼgᵢ)² = 2[(∑f²)(∑g²) - (∑fg)²]",
-      "CS equality ⟺ all cross-terms fᵢgⱼ - fⱼgᵢ = 0 (full iff)",
-      "Cross-terms zero + some gₖ ≠ 0 → f = c·g (proportionality)",
-      "Inner product space: ‖inner u v‖ = ‖u‖·‖v‖ ⟺ ∃ c, u = c•v",
-      "Hölder inequality for NNReal finite sums (via Mathlib)",
-      "Cauchy-Schwarz from Lagrange identity (independent proof)"
-    ],
-    "open": [
-      "General Hölder equality case (p ≠ 2) via strict concavity",
-      "Integral form equality: a.e. power proportionality"
-    ],
-    "goal": "Formalize the complete equality characterization for Cauchy-Schwarz"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-06T23:30:00.000Z",
+    "phase": "IN_PROGRESS",
+    "since": "2026-03-06T22:03:59.699Z",
     "iteration": 1,
-    "focus": "Complete formalization achieved.",
+    "focus": "General Hölder equality characterization via Young deficit reduction",
     "blockers": [],
-    "nextAction": "None - problem resolved.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Fully formalized the Cauchy-Schwarz equality case via the Lagrange identity approach. 10+ theorems, 0 sorries. Covers finite sums (full iff characterization with proportionality) and inner product spaces (via norm_inner_eq_norm_iff).",
+    "progressSummary": "PROGRESS: Extended CS equality characterization to general Hölder. Proved conjugate exponent identities, Young deficit framework, normalized Hölder equality theorem (∑fᵢgᵢ=1 with norms=1 implies fᵢ^p=gᵢ^q), and power-to-linear proportionality reduction. Young equality case axiomatized (strict convexity).",
     "builtItems": [
-      "proofs/Proofs/CauchySchwarzOQ03OQ01.lean (0 sorries, Docker-verified)",
-      "src/data/proofs/cauchy-schwarz-oq-03-oq-01/ (gallery entry)"
+      "conj_eq_div, conj_sub_one_mul, conj_q_div_p_add_one, conj_one_lt_q, conj_add_eq_mul (conjugate identities)",
+      "youngDeficit def + axioms (youngDeficit_nonneg, youngDeficit_eq_zero_iff)",
+      "sum_youngDeficit, sum_youngDeficit_eq_zero_iff (structural reduction theorems)",
+      "holder_eq_normalized_implies_power_prop (key theorem, fully proved)",
+      "holder_eq_implies_power_prop (general case, 1 sorry on normalization)",
+      "power_prop_sq_implies_prop (p=q=2 specialization, fully proved)"
     ],
     "insights": [
-      "Lagrange identity provides elegant algebraic path to equality characterization",
-      "Sum-of-squares = 0 lemma is the key bridge from Lagrange to pointwise conditions",
-      "norm_inner_eq_norm_iff in Mathlib gives the abstract inner product space version",
-      "@inner notation needed instead of ⟪u,v⟫_ℝ for Docker compatibility",
-      "inv_mul_cancel₀ replaces inv_mul_cancel in Mathlib 4.26.0"
+      "Same sum-of-nonneg=0 technique works for both CS (squared cross-terms) and Hölder (Young deficits)",
+      "Young deficit = a^p/p + b^q/q - ab is the right abstraction for Hölder equality analysis",
+      "Normalized case (∑f^p=∑g^q=1, ∑fg=1) reduces to showing ∑ Young deficits = 1/p+1/q-1 = 0",
+      "Young equality reverse direction (deficit=0 → a^p=b^q) requires strict convexity, axiomatized",
+      "For p=q=2, power proportionality f^2=c·g^2 reduces to proportionality via nlinarith on (f-√c·g)²"
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove Young equality reverse: use StrictConvexOn for rpow or direct derivative argument",
+      "Complete the normalization step in holder_eq_implies_power_prop (divide f,g by Lp norms)",
+      "Extend to integral Hölder equality (a.e. power proportionality)"
+    ]
   },
-  "approaches": [
-    {
-      "name": "Lagrange identity + sum-of-squares",
-      "status": "successful",
-      "description": "Use the Lagrange identity to express the CS deficit as a sum of squared cross-terms. Equality means all cross-terms vanish, giving proportionality."
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "analysis",
     "functional-analysis"
   ],
-  "relatedProofs": [
-    "cauchy-schwarz-oq-03",
-    "lebesgue-measure-oq-02"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Lagrange (1773): identity for 2×2 determinants",
-      "Hardy-Littlewood-Pólya 'Inequalities' (1934) Ch. 2, Theorem 15"
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "Finset.sum_eq_zero_iff_of_nonneg",
-      "norm_inner_eq_norm_iff",
-      "NNReal.inner_le_Lp_mul_Lq"
-    ]
+    "mathlib": []
   },
-  "started": "2026-03-06T22:35:24.093Z",
-  "lastUpdate": "2026-03-06T23:30:00.000Z",
+  "started": "2026-03-07T18:02:01.175Z",
+  "lastUpdate": "2026-03-07T18:02:01.175Z",
   "significance": 6,
   "tractability": 6
 }
