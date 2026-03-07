@@ -761,12 +761,141 @@ axiom slowlyVarying_power_bound (L : ℝ → ℝ) (hL : SlowlyVarying L)
       C⁻¹ * x ^ (-ε) ≤ |L x| ∧ |L x| ≤ C * x ^ ε
 
 -- ============================================================================
--- Part XVII: Summary and Open Directions
+-- Part XVII: Concrete Tail Distribution Examples
+-- ============================================================================
+
+/-
+### Pareto Distribution (Power-Law Tails)
+
+The Pareto distribution with shape parameter α has tail P(X > x) = x^{-α}
+for x ≥ 1. It is in the domain of attraction of the α-stable law.
+
+The slowly varying function is L(x) = 1 (constant), and the right tail
+weight is p = 1, left tail weight q = 0 (one-sided).
+-/
+
+/-- Pareto tail P(X > x) = x^{-α} for x ≥ 1.
+    The inverse x^{-1} raised to power α gives x^{-α}. -/
+def paretoTail (α : ℝ) (x : ℝ) : ℝ := if x < 1 then 1 else x ^ (-α)
+
+/-- The Pareto tail at x = 1 equals 1. -/
+theorem paretoTail_at_one (α : ℝ) : paretoTail α 1 = 1 := by
+  simp [paretoTail, one_rpow]
+
+/-- The Pareto tail is positive for x ≥ 1 and α > 0. -/
+theorem paretoTail_pos (α : ℝ) (hα : 0 < α) (x : ℝ) (hx : 1 ≤ x) :
+    0 < paretoTail α x := by
+  simp only [paretoTail, not_lt.mpr hx, ↓reduceIte]
+  exact rpow_pos_of_pos (by linarith) _
+
+/-- The Pareto tail is a regularly varying function with index -α.
+    For the Pareto distribution, L(x) = 1 (constant) is the slowly varying part.
+    P(X > cx) / P(X > x) = (cx)^{-α} / x^{-α} = c^{-α}. -/
+theorem paretoTail_regularlyVarying (α : ℝ) (hα : 0 < α) :
+    RegularlyVarying (fun x => x ^ (-α)) (-α) := by
+  constructor
+  · intro x hx
+    exact ne_of_gt (rpow_pos_of_pos hx _)
+  · intro c hc
+    suffices h : ∀ᶠ x in atTop, (c * x) ^ (-α) / x ^ (-α) = c ^ (-α) by
+      exact (tendsto_congr' h).mpr tendsto_const_nhds
+    filter_upwards [Filter.eventually_ge_atTop 1] with x hx
+    have hx_pos : (0 : ℝ) < x := by linarith
+    rw [mul_rpow (le_of_lt hc) (le_of_lt hx_pos)]
+    rw [mul_div_assoc, div_self (ne_of_gt (rpow_pos_of_pos hx_pos _)), mul_one]
+
+/-- The Pareto tail has slowly varying part L = 1 (constant).
+    This is the simplest case: pure power-law decay with no correction. -/
+theorem paretoTail_sv_part (α : ℝ) (hα : 0 < α) :
+    SlowlyVarying (fun _ => (1 : ℝ)) :=
+  slowlyVarying_const one_pos
+
+/-- The Pareto tail x^{-α} = (x⁻¹)^α: these two representations are equal
+    for positive x. This connects the Pareto tail to the TailBalance framework
+    which uses x⁻¹ ^ α as the base form. -/
+theorem paretoTail_eq_inv_rpow (α : ℝ) (x : ℝ) (hx : 0 < x) :
+    x ^ (-α) = x⁻¹ ^ α := by
+  rw [rpow_neg (le_of_lt hx), inv_rpow (le_of_lt hx)]
+
+/-- The Pareto decomposition: x^{-α} = x^{-α} · 1, showing the slowly varying
+    part is the constant function 1. This is the simplest RV(-α) decomposition. -/
+theorem paretoTail_decomposition (α : ℝ) (x : ℝ) (hx : 0 < x) :
+    x ^ (-α) = x ^ (-α) * (1 : ℝ) := (mul_one _).symm
+
+-- ============================================================================
+-- Part XVII-C: Normalization Sequences
+-- ============================================================================
+
+/-
+### Normalization for α-stable laws
+
+The normalization sequence for the domain of attraction is:
+  aₙ = n^{1/α} · L*(n)
+where L* is a slowly varying function determined by the tail L.
+
+For Pareto tails (L = constant), L* is also constant, giving aₙ = c · n^{1/α}.
+For the Gaussian case (α = 2), the normalization is aₙ = σ√n = σ · n^{1/2}.
+-/
+
+/-- Power-law normalization: aₙ = n^{1/α} is the standard normalization sequence
+    for the domain of attraction of an α-stable law with constant L.
+    This sequence diverges to +∞ when α > 0. -/
+theorem powerlaw_normalization_diverges (α : ℝ) (hα : 0 < α) :
+    Tendsto (fun n : ℕ => (n : ℝ) ^ (1 / α)) atTop atTop := by
+  rw [Filter.tendsto_atTop_atTop]
+  intro b
+  by_cases hb : b ≤ 0
+  · exact ⟨1, fun n hn => le_trans hb (rpow_nonneg (Nat.cast_nonneg n) _)⟩
+  · push_neg at hb
+    have hb_nn : (0 : ℝ) ≤ b := le_of_lt hb
+    -- Need n ≥ b^α, then n^{1/α} ≥ (b^α)^{1/α} = b
+    refine ⟨Nat.ceil (b ^ α) + 1, fun n hn => ?_⟩
+    have hn_pos : (0 : ℝ) < n := by
+      have : (Nat.ceil (b ^ α) + 1 : ℕ) ≤ n := hn
+      exact Nat.cast_pos.mpr (by omega)
+    have h_exp : α * (1 / α) = 1 := mul_one_div_cancel (ne_of_gt hα)
+    calc b = b ^ (1 : ℝ) := (rpow_one b).symm
+      _ = b ^ (α * (1 / α)) := by rw [h_exp]
+      _ = (b ^ α) ^ (1 / α) := rpow_mul hb_nn α (1 / α)
+      _ ≤ (n : ℝ) ^ (1 / α) := by
+          apply rpow_le_rpow (rpow_nonneg hb_nn α) _ (by positivity)
+          calc b ^ α ≤ ↑(Nat.ceil (b ^ α)) := Nat.le_ceil _
+            _ ≤ ↑(Nat.ceil (b ^ α) + 1) := by exact_mod_cast Nat.le_succ _
+            _ ≤ (n : ℝ) := by exact_mod_cast hn
+
+/-- The Gaussian normalization (α = 2): aₙ = √n diverges.
+    √n = n^{1/2} is the special case of power-law normalization with α = 2. -/
+theorem gaussian_normalization_diverges :
+    Tendsto (fun n : ℕ => (n : ℝ) ^ (1 / 2 : ℝ)) atTop atTop :=
+  powerlaw_normalization_diverges 2 (by norm_num)
+
+/-- The Cauchy normalization (α = 1): aₙ = n diverges.
+    n = n^{1/1} is the special case with α = 1. -/
+theorem cauchy_normalization_diverges :
+    Tendsto (fun n : ℕ => (n : ℝ) ^ (1 / 1 : ℝ)) atTop atTop :=
+  powerlaw_normalization_diverges 1 (by norm_num)
+
+/-- For the Cauchy distribution (α = 1), the normalization n^1 = n. -/
+theorem cauchy_normalization_eq (n : ℕ) (hn : 0 < n) :
+    (n : ℝ) ^ (1 / 1 : ℝ) = n := by
+  rw [div_one, rpow_one]
+
+/-- Stability index determines growth rate of normalization:
+    larger α gives slower normalization growth (n^{1/α} grows slower).
+    Formally: if 0 < α < β, then n^{1/β} ≤ n^{1/α} for n ≥ 1. -/
+theorem normalization_monotone (α β : ℝ) (hα : 0 < α) (hβ : 0 < β) (hαβ : α < β)
+    (n : ℕ) (hn : 1 ≤ n) :
+    (n : ℝ) ^ (1 / β) ≤ (n : ℝ) ^ (1 / α) := by
+  apply rpow_le_rpow_of_exponent_le (by exact_mod_cast hn)
+  exact one_div_le_one_div_of_le hα (le_of_lt hαβ)
+
+-- ============================================================================
+-- Part XVIII: Summary and Open Directions
 -- ============================================================================
 
 /-- Summary of the Gnedenko-Kolmogorov formalization:
 
-    **Slowly varying functions** (9 theorems + 1 axiom):
+    **Slowly varying functions** (9 theorems + 2 axioms):
     - Definition, constant, multiplication, rpow, division, reciprocal,
       power, asymptotic equivalence, composition with rpow
     - Uniform convergence theorem (axiom), power bound (axiom)
@@ -779,11 +908,13 @@ axiom slowlyVarying_power_bound (L : ℝ → ℝ) (hL : SlowlyVarying L)
     **Domain of attraction**: definition via characteristic functions
     **Main theorem**: forward direction (axiom), converse (axiom), Gaussian case (axiom)
     **Key tools**: Potter bound (axiom), Karamata integral theorem (axiom)
-    **Stable characteristic function**: at 0, boundedness, continuity, evenness, self-similarity -/
+    **Stable characteristic function**: at 0, boundedness, continuity, evenness, self-similarity
+    **Concrete examples**: Pareto tail (RV(-α)), symmetric/one-sided tail balance,
+      normalization sequences n^{1/α}, monotonicity in α -/
 theorem formalization_summary : True := trivial
 
 -- ============================================================================
--- Part XVIII: Verification
+-- Part XIX: Verification
 -- ============================================================================
 
 #check @SlowlyVarying
@@ -814,5 +945,17 @@ theorem formalization_summary : True := trivial
 #check @regularlyVarying_mul_index
 #check @regularlyVarying_inv_index
 #check @regularlyVarying_div_index
+-- New: concrete examples
+#check @paretoTail
+#check @paretoTail_at_one
+#check @paretoTail_pos
+#check @paretoTail_regularlyVarying
+#check @paretoTail_eq_inv_rpow
+#check @paretoTail_decomposition
+#check @powerlaw_normalization_diverges
+#check @gaussian_normalization_diverges
+#check @cauchy_normalization_diverges
+#check @cauchy_normalization_eq
+#check @normalization_monotone
 
 end DomainOfAttraction
