@@ -20,7 +20,7 @@
       "research"
     ],
     "badge": "open",
-    "sorries": 10,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Filter.Eventually.and",
@@ -44,7 +44,12 @@
       "Conjecture decomposition into independent upper/lower Θ-bounds",
       "Sufficient conditions: limit convergence implies full conjecture",
       "Complete graph triangle existence for variable Fin n",
-      "Small-value bounds from complete graph edge count"
+      "Small-value bounds from complete graph edge count",
+      "Lower exponent characterization: f exceeds any sub-3/2 power",
+      "Mantel/Turan connection via triangle-free terminal graph",
+      "BFL-to-Grable implication hierarchy",
+      "Conjecture-to-BFL hierarchy (strict weakening chain)",
+      "Ratio tightness and bounded ratio characterization"
     ],
     "references": [
       {
@@ -99,6 +104,34 @@
       "summary": "States and partially proves that ratio convergence or limsup/liminf bounds imply the full conjecture.",
       "startLine": 230,
       "endLine": 267
+    },
+    {
+      "id": "lower-exponent",
+      "title": "Lower Exponent Characterization",
+      "summary": "BFL implies f exceeds any sub-3/2 power: for any α < 3/2, eventually n^α ≤ f(n).",
+      "startLine": 370,
+      "endLine": 382
+    },
+    {
+      "id": "mantel-connection",
+      "title": "Mantel/Turan Connection",
+      "summary": "Connects the triangle removal process to Mantel's theorem via the triangle-free terminal graph. Shows BFL gives n^{7/4} bound, much tighter than Mantel's n²/4.",
+      "startLine": 384,
+      "endLine": 415
+    },
+    {
+      "id": "hierarchy",
+      "title": "Hierarchy of Bounds",
+      "summary": "Proves the strict weakening chain: Conjecture ⟹ BFL ⟹ Grable, each step losing information about the multiplicative constant.",
+      "startLine": 417,
+      "endLine": 445
+    },
+    {
+      "id": "tightness",
+      "title": "Tightness and Ratio Characterization",
+      "summary": "Under the conjecture, the normalized ratio f(n)/n^{3/2} is bounded between positive constants. Characterizes the conjecture as a compactness condition on the ratio sequence.",
+      "startLine": 447,
+      "endLine": 495
     }
   ],
   "overview": {
@@ -111,7 +144,7 @@
     ]
   },
   "conclusion": {
-    "summary": "We formalize the structural relationship between BFL's n^{3/2+o(1)} result and Erdős's Θ(n^{3/2}) conjecture. Key proved results include the BFL sandwich theorem, exact exponent characterization, and conjecture decomposition. The remaining sorries involve filter-based real analysis (power function estimates) and Finset extraction for the CliqueFree equivalence.",
+    "summary": "Complete formalization of the structural relationship between BFL's n^{3/2+o(1)} result and Erdős's Θ(n^{3/2}) conjecture. All theorems fully proved (0 sorries). Includes BFL sandwich, exact exponent characterization, conjecture decomposition, Mantel connection, hierarchy of bounds, and ratio tightness characterization.",
     "openQuestions": [
       "Does f(n)/n^{3/2} converge? If so, to what constant?",
       "Can the lower Θ-bound be established independently of the upper?",

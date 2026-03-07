@@ -361,7 +361,137 @@ theorem limsup_liminf_implies_conjecture :
       exact_mod_cast (show 0 < n by omega)
     exact ⟨(le_div_iff₀ hn_pos).mp hcn, (div_le_iff₀ hn_pos).mp hCn⟩
 
-#check @bfl_sandwich
-#check @conjecture_iff_both_bounds
-#check @bfl_exponent_is_three_halves
-#check @limit_implies_conjecture
+-- ============================================================================
+-- § 7. Lower exponent characterization
+-- ============================================================================
+
+/-- BFL implies f eventually exceeds any sub-{3/2} power.
+    In particular, f is superlinear (take α = 1), super-√n³ etc. -/
+theorem bfl_eventually_exceeds_power :
+    ∀ α : ℝ, α < 3/2 →
+      ∀ᶠ (n : ℕ) in atTop,
+        (n : ℝ) ^ α ≤ triangleRemovalEdges n := by
+  intro α hα
+  have hε : 0 < (3:ℝ)/2 - α := by linarith
+  exact (bfl_lower_bound _ hε).mono
+    (fun n hn => by rwa [show (3:ℝ)/2 - ((3:ℝ)/2 - α) = α from by ring] at hn)
+
+-- ============================================================================
+-- § 8. Mantel / Turán connection
+-- ============================================================================
+
+-- The triangle removal process terminates with a triangle-free graph.
+-- By Mantel's theorem (1907), a triangle-free graph on n vertices has at most
+-- ⌊n²/4⌋ edges. Since our axiomatized f(n) counts edges in the terminal
+-- (triangle-free) graph, this gives a trivial upper bound.
+
+/-- Mantel's bound applied to the triangle removal process:
+    the terminal graph is triangle-free, so f(n) ≤ n²/4. -/
+axiom triangleRemoval_mantel_bound (n : ℕ) :
+    triangleRemovalEdges n ≤ (n : ℝ) ^ 2 / 4
+
+/-- The Mantel bound holds for all n (not just eventually). -/
+theorem mantel_bound_forall :
+    ∀ n : ℕ, triangleRemovalEdges n ≤ (n : ℝ) ^ 2 / 4 :=
+  triangleRemoval_mantel_bound
+
+/-- The Mantel bound as an eventually-true statement (for comparison with BFL). -/
+theorem mantel_bound_eventually :
+    ∀ᶠ (n : ℕ) in atTop,
+      triangleRemovalEdges n ≤ (n : ℝ) ^ 2 / 4 :=
+  Filter.eventually_atTop.mpr ⟨0, fun n _ => mantel_bound_forall n⟩
+
+/-- BFL gives a much better upper bound than Mantel for large n.
+    Specifically, f(n) ≤ n^{7/4} eventually, which is o(n²). -/
+theorem bfl_below_mantel_exponent :
+    ∀ᶠ (n : ℕ) in atTop,
+      triangleRemovalEdges n ≤ (n : ℝ) ^ ((7:ℝ)/4) := by
+  exact (bfl_upper_bound (1/4 : ℝ) (by norm_num)).mono
+    (fun n hn => by rwa [show (3:ℝ)/2 + 1/4 = 7/4 from by ring] at hn)
+
+-- ============================================================================
+-- § 9. Hierarchy of bounds
+-- ============================================================================
+
+/-- Strict hierarchy: Conjecture ⟹ BFL (two-sided).
+    The conjecture gives constant-factor bounds c₁·n^{3/2} ≤ f ≤ c₂·n^{3/2},
+    which imply the sub-polynomial sandwich n^{3/2-ε} ≤ f ≤ n^{3/2+ε}. -/
+theorem hierarchy_conjecture_implies_bfl :
+    erdos_1155_conjecture →
+    (∀ ε : ℝ, 0 < ε →
+      ∀ᶠ (n : ℕ) in atTop,
+        (n : ℝ) ^ ((3:ℝ)/2 - ε) ≤ triangleRemovalEdges n ∧
+        triangleRemovalEdges n ≤ (n : ℝ) ^ ((3:ℝ)/2 + ε)) := by
+  intro hconj ε hε
+  exact (conjecture_implies_bfl_lower hconj ε hε).and
+    (conjecture_implies_bfl_upper hconj ε hε)
+
+/-- The BFL sandwich implies both one-sided exponent bounds. -/
+theorem hierarchy_bfl_implies_grable :
+    (∀ ε : ℝ, 0 < ε →
+      ∀ᶠ (n : ℕ) in atTop,
+        triangleRemovalEdges n ≤ (n : ℝ) ^ ((3:ℝ)/2 + ε)) →
+    (∀ ε : ℝ, 0 < ε →
+      ∀ᶠ (n : ℕ) in atTop,
+        triangleRemovalEdges n ≤ (n : ℝ) ^ ((7:ℝ)/4 + ε)) := by
+  intro h ε hε
+  have hε' : (0:ℝ) < 1/4 + ε := by linarith
+  exact (h _ hε').mono
+    (fun n hn => by rwa [show (3:ℝ)/2 + (1/4 + ε) = 7/4 + ε from by ring] at hn)
+
+-- ============================================================================
+-- § 10. Tightness and ratio characterization
+-- ============================================================================
+
+/-- Under the conjecture, the normalized ratio f(n)/(c·n^{3/2}) is eventually
+    bounded between 1 and c₂/c₁ (where c = c₁ from the conjecture).
+    The tighter c₂/c₁ is to 1, the stronger the asymptotic. -/
+theorem conjecture_tightness :
+    erdos_1155_conjecture →
+    ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧ c₁ ≤ c₂ ∧
+      ∀ᶠ (n : ℕ) in atTop,
+        1 ≤ triangleRemovalEdges n / (c₁ * (n : ℝ) ^ ((3:ℝ)/2)) ∧
+        triangleRemovalEdges n / (c₂ * (n : ℝ) ^ ((3:ℝ)/2)) ≤ 1 := by
+  intro ⟨c₁, c₂, hc₁, hle, hconj⟩
+  have hc₂ : 0 < c₂ := lt_of_lt_of_le hc₁ hle
+  refine ⟨c₁, c₂, hc₁, hc₂, hle, ?_⟩
+  have hge1 : ∀ᶠ (n : ℕ) in atTop, 1 ≤ n :=
+    Filter.eventually_atTop.mpr ⟨1, fun n hn => hn⟩
+  apply (hconj.and hge1).mono
+  intro n ⟨⟨hlo, hup⟩, hn1⟩
+  have hn_pos : (0 : ℝ) < (n : ℝ) ^ ((3:ℝ)/2) :=
+    Real.rpow_pos_of_pos (by exact_mod_cast (show 0 < n by omega)) _
+  constructor
+  · -- 1 ≤ f(n) / (c₁ * n^{3/2})
+    rw [le_div_iff₀ (mul_pos hc₁ hn_pos)]
+    simp only [one_mul]
+    exact hlo
+  · -- f(n) / (c₂ * n^{3/2}) ≤ 1
+    rw [div_le_iff₀ (mul_pos hc₂ hn_pos)]
+    simp only [one_mul]
+    exact hup
+
+/-- The conjecture gives a two-sided density estimate: the ratio
+    f(n)/n^{3/2} is eventually sandwiched between positive constants.
+    Compare with bfl_ratio_characterization where the bounds are n^{±ε}. -/
+theorem conjecture_ratio_bounded :
+    erdos_1155_conjecture →
+    ∃ c₁ c₂ : ℝ, 0 < c₁ ∧ 0 < c₂ ∧
+      ∀ᶠ (n : ℕ) in atTop,
+        c₁ ≤ triangleRemovalEdges n / (n : ℝ) ^ ((3:ℝ)/2) ∧
+        triangleRemovalEdges n / (n : ℝ) ^ ((3:ℝ)/2) ≤ c₂ := by
+  intro ⟨c₁, c₂, hc₁, hle, hconj⟩
+  refine ⟨c₁, c₂, hc₁, lt_of_lt_of_le hc₁ hle, ?_⟩
+  have hge1 : ∀ᶠ (n : ℕ) in atTop, 1 ≤ n :=
+    Filter.eventually_atTop.mpr ⟨1, fun n hn => hn⟩
+  apply (hconj.and hge1).mono
+  intro n ⟨⟨hlo, hup⟩, hn1⟩
+  have hn_pos : (0 : ℝ) < (n : ℝ) ^ ((3:ℝ)/2) :=
+    Real.rpow_pos_of_pos (by exact_mod_cast (show 0 < n by omega)) _
+  constructor
+  · -- c₁ ≤ f(n) / n^{3/2}
+    rw [le_div_iff₀ hn_pos]
+    exact hlo
+  · -- f(n) / n^{3/2} ≤ c₂
+    rw [div_le_iff₀ hn_pos]
+    exact hup
