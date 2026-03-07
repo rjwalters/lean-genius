@@ -11431,7 +11431,86 @@ theorem model_adequacy_summary :
   ⟨abstract_P_is_univ, abstract_NP_is_univ, abstract_EXP_is_univ,
    mathlib_P_nontrivial⟩
 
--- Part 42 exports (Model Adequacy Analysis)
+/-
+═══════════════════════════════════════════════════════════════════════════════
+Part 43: FORMAL INCONSISTENCY PROOFS
+═══════════════════════════════════════════════════════════════════════════════
+
+Each axiom below was declared under the implicit assumption that
+`OracleProgram.compute` represents a computable function. Since the abstract
+model allows arbitrary Lean functions, certain axioms are provably `False`.
+
+We formally derive `False` from each inconsistent axiom, serving as:
+1. Documentation of exactly which axioms are unsound
+2. Proof that the abstract model CANNOT be extended to a consistent system
+3. Guide for future refactoring toward MathLibP-based definitions
+-/
+
+/-- P ≠ EXP is false in the abstract model: both equal Set.univ. -/
+theorem inconsistency_P_ne_EXP : False :=
+  P_ne_EXP abstract_P_eq_EXP
+
+/-- ∃ B, P^B ≠ NP^B is false: P^A = NP^A = Set.univ for all A. -/
+theorem inconsistency_Baker_Gill_Solovay : False := by
+  obtain ⟨B, hB⟩ := exists_oracle_P_neq_NP
+  exact hB (relativized_P_eq_NP B)
+
+/-- Time hierarchy theorem is false: DTIME f = DTIME g = Set.univ for all f, g.
+    Pick f(n) = 0, g(n) = 1, then f · (log f + 1) = 0 < 1 = g. -/
+theorem inconsistency_time_hierarchy : False := by
+  have h := time_hierarchy_theorem (fun _ => 0) (fun _ => 1) (by
+    intro _
+    simp)
+  -- h : DTIME (fun _ => 0) ⊂ DTIME (fun _ => 1)
+  -- But both are Set.univ, so ⊂ is impossible
+  have h1 := abstract_DTIME_is_univ (fun _ => 0)
+  have h2 := abstract_DTIME_is_univ (fun _ => 1)
+  rw [h1, h2] at h
+  exact h.2 (Set.Subset.refl _)
+
+/-- Church-Turing bridge is inconsistent: P = Set.univ but MathLibP ≠ Set.univ. -/
+theorem inconsistency_church_turing : False := by
+  have h := church_turing_P
+  rw [abstract_P_is_univ] at h
+  -- h : Set.univ = MathLibP
+  exact mathlib_P_nontrivial h.symm
+
+/-- Master inconsistency: the axiom system is contradictory.
+    This is the definitive statement: the abstract model cannot
+    consistently combine ANY of these axioms with its definitions. -/
+theorem abstract_model_inconsistent : False :=
+  inconsistency_P_ne_EXP
+
+/-
+Classification of axioms by consistency with the abstract model.
+
+INCONSISTENT (proved False above):
+- P_ne_EXP                → inconsistency_P_ne_EXP
+- exists_oracle_P_neq_NP  → inconsistency_Baker_Gill_Solovay
+- time_hierarchy_theorem   → inconsistency_time_hierarchy
+- church_turing_P          → inconsistency_church_turing
+
+TRIVIALLY TRUE (vacuous in abstract model):
+- P_subset_NP (both sides are Set.univ)
+- karp_lipton (premise becomes vacuous)
+- toda_theorem (trivially true)
+- IP_eq_PSPACE (both sides collapse)
+
+INDEPENDENT (about MathLibP, not affected):
+- mathlib_P_nontrivial (about the concrete TM2 model)
+-/
+
+/-- The Church-Turing bridge forces MathLibP = Set.univ. -/
+theorem church_turing_forces_mathlib_univ :
+    MathLibP = Set.univ := by
+  rw [← church_turing_P]
+  exact abstract_P_is_univ
+
+/-- Combined: church_turing_P ∧ mathlib_P_nontrivial is directly contradictory. -/
+theorem church_turing_vs_nontrivial : False :=
+  mathlib_P_nontrivial church_turing_forces_mathlib_univ
+
+-- Part 42-43 exports (Model Adequacy + Inconsistency Analysis)
 #check trivialSolver
 #check trivialSolver_solves
 #check trivialSolver_poly
@@ -11446,5 +11525,12 @@ theorem model_adequacy_summary :
 #check relativized_P_eq_NP
 #check mathlib_P_nontrivial
 #check model_adequacy_summary
+#check inconsistency_P_ne_EXP
+#check inconsistency_Baker_Gill_Solovay
+#check inconsistency_time_hierarchy
+#check inconsistency_church_turing
+#check abstract_model_inconsistent
+#check church_turing_forces_mathlib_univ
+#check church_turing_vs_nontrivial
 
 end PNPBarriers
