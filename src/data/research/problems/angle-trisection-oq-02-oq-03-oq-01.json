@@ -1,0 +1,66 @@
+{
+  "slug": "angle-trisection-oq-02-oq-03-oq-01",
+  "title": "Gauss-Wantzel Theorem from Mathlib Cyclotomic Fields",
+  "phase": "BUILD",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "IsConstructibleNgon n ↔ TotientIsPow2 n, proved from decomposed axioms about cyclotomic fields",
+    "plain": "Prove the Gauss-Wantzel theorem (n-gon constructibility ↔ φ(n) is a power of 2) by decomposing it into smaller axioms that are closer to Mathlib's cyclotomic field infrastructure.",
+    "whyMatters": [
+      "Connects existing constructibility formalization to Mathlib cyclotomic theory",
+      "Reduces monolithic axiom to 2 primitive axioms + proved arithmetic bridge",
+      "Creates a clear roadmap for a full formal proof from Mathlib"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "IsConstructibleNgon defined in terms of constructible cos(2π/n)",
+      "Wantzel-Galois characterization: constructible ↔ 2-group Galois group (axiom in OQ02)",
+      "Fermat number infrastructure: F_k, primality proofs for F_0..F_4",
+      "Non-constructibility of specific n-gons via Fermat number decomposition",
+      "gauss_wantzel_theorem' proved as theorem from 2 decomposed axioms"
+    ],
+    "open": [
+      "Proving cos(2π/n) is algebraic from Mathlib cyclotomic theory",
+      "Proving |Gal(minpoly(cos(2π/n)))| = φ(n)/2 from maximal real subfield theory",
+      "Maximal real subfield ℚ(ζₙ⁺) = ℚ(cos(2π/n)) formalization"
+    ],
+    "goal": "Bridge the gap between the axiom and Mathlib cyclotomic infrastructure"
+  },
+  "currentState": {
+    "leanFile": "proofs/Proofs/AngleTrisectionOQ02OQ03.lean",
+    "sorryCount": 0,
+    "axiomCount": 3,
+    "theoremCount": 40,
+    "builtItems": [
+      "cos_2pi_div_n_isIntegral: axiom that cos(2π/n) is integral over ℚ",
+      "cos_minpoly_gal_card: axiom that |Gal(minpoly(cos(2π/n)))| = φ(n)/2",
+      "totient_div2_pow2_iff: PROVED arithmetic bridge (φ(n)/2 = 2^k ↔ TotientIsPow2 n)",
+      "gauss_wantzel_theorem': PROVED from decomposed axioms (was axiom, now theorem)"
+    ],
+    "insights": [
+      "Mathlib has IsCyclotomicExtension.finrank giving [ℚ(ζₙ):ℚ] = φ(n)",
+      "Mathlib has IsCyclotomicExtension.autEquivPow giving Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)*",
+      "Missing in Mathlib: maximal real subfield ℚ(ζₙ⁺) formalization",
+      "Missing in Mathlib: connecting Real.cos to Complex.exp for algebraicity",
+      "The 2 remaining axioms are ~300 lines of work to prove from Mathlib",
+      "Nat.totient_even is available in Mathlib for the arithmetic bridge",
+      "IsPGroup.iff_card provides the equivalence between p-group and card = p^k"
+    ],
+    "mathlibGaps": [
+      "ℚ(cos(2π/n)) as an intermediate field of ℚ(ζₙ)/ℚ",
+      "[ℚ(cos(2π/n)):ℚ] = φ(n)/2 from complex conjugation index-2 subgroup",
+      "Real.cos ↔ Complex.exp algebraicity bridge"
+    ],
+    "nextSteps": [
+      "Prove cos_2pi_div_n_isIntegral via cyclotomic polynomial roots",
+      "Prove cos_minpoly_gal_card via maximal real subfield degree",
+      "Create Aristotle companion file for routine supporting lemmas"
+    ]
+  },
+  "knowledgeScore": 72,
+  "researchNotes": "The axiom decomposition was the key insight: instead of one monolithic gauss_wantzel_theorem axiom, we now have 2 more primitive axioms that are each individually closer to Mathlib's existing infrastructure. The arithmetic bridge (totient_div2_pow2_iff) connecting φ(n)/2 = 2^k to TotientIsPow2 was proved fully. This creates a clear path: each remaining axiom corresponds to a specific gap in Mathlib's cyclotomic field formalization.",
+  "lastUpdated": "2026-03-07"
+}

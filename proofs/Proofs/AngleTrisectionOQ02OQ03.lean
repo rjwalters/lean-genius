@@ -514,6 +514,115 @@ theorem f5_not_fermat_prime : ¬ IsFermatPrime 4294967297 :=
   fun ⟨hprime, _⟩ => f5_not_prime hprime
 
 /-!
+## Section XIV: Axiom Decomposition — Toward a Full Proof
+
+The single axiom `gauss_wantzel_theorem` can be decomposed into more primitive
+facts that are closer to what Mathlib can provide.
+
+**Proof roadmap:**
+1. cos(2π/n) is algebraic over ℚ (from cyclotomic theory)
+2. The Galois group of the minimal polynomial of cos(2π/n) has order φ(n)/2
+   (from: Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)*, maximal real subfield index 2)
+3. By the Wantzel-Galois characterization (OQ02):
+   cos(2π/n) constructible ↔ that Galois group is a 2-group
+4. 2-group of order φ(n)/2 ↔ φ(n)/2 = 2^k ↔ φ(n) = 2^(k+1) ↔ TotientIsPow2
+
+**Mathlib availability:**
+- [ℚ(ζₙ):ℚ] = φ(n): ✅ IsCyclotomicExtension.finrank
+- Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)*: ✅ IsCyclotomicExtension.autEquivPow
+- Maximal real subfield ℚ(ζₙ⁺) = ℚ(cos(2π/n)): ❌ Not yet in Mathlib
+- [ℚ(ζₙ⁺):ℚ] = φ(n)/2: ❌ Not yet in Mathlib
+-/
+
+/-- cos(2π/n) is algebraic over ℚ for n ≥ 1.
+    Proof sketch: ζₙ = e^{2πi/n} is a root of xⁿ - 1 = 0 (algebraic).
+    cos(2π/n) = (ζₙ + ζₙ⁻¹)/2 is algebraic (sum of algebraic numbers).
+    This is provable from Mathlib, but the exact formalization path goes through
+    complex analysis and would need connecting Real.cos to Complex.exp. -/
+axiom cos_2pi_div_n_isIntegral (n : ℕ) (hn : 1 ≤ n) :
+    IsIntegral ℚ (Real.cos (2 * Real.pi / ↑n))
+
+/-- The Galois group of the minimal polynomial of cos(2π/n) over ℚ has
+    order φ(n)/2 for n ≥ 3.
+
+    Proof sketch:
+    - ℚ(ζₙ) has degree φ(n) over ℚ [IsCyclotomicExtension.finrank]
+    - Complex conjugation τ: ζₙ ↦ ζₙ⁻¹ generates a subgroup of order 2
+    - The fixed field ℚ(ζₙ)^τ = ℚ(cos(2π/n)) has degree φ(n)/2
+    - ℚ(cos(2π/n))/ℚ is a Galois extension (fixed field of normal subgroup)
+    - So |Gal(minpoly(cos(2π/n)))| = [ℚ(cos(2π/n)):ℚ] = φ(n)/2
+
+    This is the key bridge between cyclotomic theory and constructibility. -/
+axiom cos_minpoly_gal_card (n : ℕ) (hn : 3 ≤ n) :
+    Fintype.card (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).Gal = Nat.totient n / 2
+
+/-- Arithmetic bridge: φ(n)/2 is a power of 2 iff φ(n) is a power of 2 (for n ≥ 3).
+
+    For n ≥ 3, φ(n) is even (since n has at least one odd prime factor, or n ≥ 3 is
+    a power of 2 with φ(2^k) = 2^(k-1) for k ≥ 2).
+
+    Direction →: φ(n) = 2^k with k ≥ 1 ⟹ φ(n)/2 = 2^(k-1)
+    Direction ←: φ(n)/2 = 2^k ⟹ φ(n) = 2 · 2^k = 2^(k+1) -/
+theorem totient_div2_pow2_iff {n : ℕ} (hn : 3 ≤ n) :
+    (∃ k : ℕ, Nat.totient n / 2 = 2 ^ k) ↔ TotientIsPow2 n := by
+  unfold TotientIsPow2
+  constructor
+  · -- (→): φ(n)/2 = 2^k ⟹ φ(n) = 2^(k+1)
+    rintro ⟨k, hk⟩
+    -- φ(n) ≥ 2 for n ≥ 3 and φ(n) is even
+    have heven : 2 ∣ Nat.totient n := Nat.totient_even (by omega)
+    have hge : 2 ≤ Nat.totient n := Nat.totient_pos n |>.trans_le (by
+      rcases heven with ⟨m, hm⟩
+      omega)
+    exact ⟨k + 1, by
+      rcases heven with ⟨m, hm⟩
+      rw [hm, Nat.mul_div_cancel_left _ (by omega)] at hk
+      rw [hm, hk, pow_succ]⟩
+  · -- (←): φ(n) = 2^k ⟹ φ(n)/2 = 2^(k-1)
+    rintro ⟨k, hk⟩
+    have hk1 : 1 ≤ k := by
+      by_contra h
+      push_neg at h
+      interval_cases k
+      simp at hk
+      have := Nat.totient_pos n
+      omega
+    exact ⟨k - 1, by rw [hk, Nat.pow_div hk1 (by omega)]⟩
+
+/-- **Gauss-Wantzel Theorem (Proved from decomposed axioms)**:
+    A regular n-gon is constructible ↔ φ(n) is a power of 2.
+
+    This is now a THEOREM, not an axiom! It follows from:
+    1. cos_2pi_div_n_isIntegral (cos(2π/n) is algebraic)
+    2. cos_minpoly_gal_card (|Gal| = φ(n)/2)
+    3. wantzel_galois_characterization (constructible ↔ 2-group, from OQ02)
+    4. totient_div2_pow2_iff (arithmetic bridge, proved above) -/
+theorem gauss_wantzel_theorem' (n : ℕ) (hn : 3 ≤ n) :
+    IsConstructibleNgon n ↔ TotientIsPow2 n := by
+  -- Step 1: IsConstructibleNgon n ↔ IsConstructibleFromQ (cos(2π/n))
+  -- (by definition, these are literally the same Prop)
+  show (∃ (K : IntermediateField ℚ ℝ),
+    FiniteDimensional ℚ K ∧
+    (∃ k : ℕ, Module.finrank ℚ K = 2 ^ k) ∧
+    Real.cos (2 * Real.pi / n) ∈ K) ↔ _
+  -- Step 2: Apply Wantzel-Galois characterization
+  have hint := cos_2pi_div_n_isIntegral n (by omega)
+  rw [show (∃ (K : IntermediateField ℚ ℝ), FiniteDimensional ℚ K ∧
+    (∃ k, Module.finrank ℚ K = 2 ^ k) ∧ Real.cos (2 * Real.pi / ↑n) ∈ K) =
+    AngleTrisectionOQ02.IsConstructibleFromQ (Real.cos (2 * Real.pi / ↑n)) from rfl,
+    AngleTrisectionOQ02.wantzel_galois_characterization _ hint]
+  -- Step 3: IsPGroup 2 Gal ↔ ∃ k, card Gal = 2^k
+  rw [IsPGroup.iff_card]
+  -- Step 4: card Gal = φ(n)/2 (by cos_minpoly_gal_card)
+  constructor
+  · rintro ⟨k, hk⟩
+    rw [Nat.card_eq_fintype_card, cos_minpoly_gal_card n hn] at hk
+    exact (totient_div2_pow2_iff hn).mp ⟨k, hk⟩
+  · intro htot
+    obtain ⟨k, hk⟩ := (totient_div2_pow2_iff hn).mpr htot
+    exact ⟨k, by rw [Nat.card_eq_fintype_card, cos_minpoly_gal_card n hn]; exact hk⟩
+
+/-!
 ## Summary
 
 ### Proved (0 sorries):
