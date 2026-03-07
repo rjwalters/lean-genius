@@ -182,8 +182,14 @@ theorem primesInInterval_self (a : ℕ) : primesInInterval a a = 0 := by
 /-- Primes in (a,a+1] is at most 1. -/
 theorem primesInInterval_succ_le (a : ℕ) : primesInInterval a (a + 1) ≤ 1 := by
   unfold primesInInterval primeCounting
-  -- The difference counts primes in {a+1} which is at most 1
-  sorry -- Requires careful Finset arithmetic; target for Aristotle
+  -- range(a+2) = insert (a+1) (range(a+1)), filter splits on Prime(a+1)
+  rw [Finset.range_add_one, Finset.filter_insert]
+  split_ifs
+  · -- a+1 is prime: card(insert (a+1) S) - card(S) ≤ 1
+    have := Finset.card_insert_le (a + 1) ((Finset.range (a + 1)).filter Nat.Prime)
+    omega
+  · -- a+1 is not prime: card(S) - card(S) = 0 ≤ 1
+    omega
 
 /- ## Part IV: The Erdős Conjecture -/
 
