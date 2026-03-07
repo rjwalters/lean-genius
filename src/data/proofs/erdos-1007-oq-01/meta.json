@@ -1,0 +1,123 @@
+{
+  "id": "erdos-1007-oq-01",
+  "title": "Minimum Edges for Graph Dimension d",
+  "slug": "erdos-1007-oq-01",
+  "description": "Studies the function minEdges(d) giving the minimum number of edges in a graph of dimension exactly d. Formalizes known values (d=1..5), proves structural results for small dimensions, and states open conjectures about monotonicity, quadratic growth, and complete graph optimality.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://erdosproblems.com/1007",
+    "date": "2026",
+    "status": "in-progress",
+    "proofRepoPath": "Proofs/Erdos1007OQ01.lean",
+    "tags": [
+      "erdos",
+      "graph-dimension",
+      "unit-distance",
+      "combinatorics",
+      "graph-theory",
+      "extension",
+      "research"
+    ],
+    "badge": "open",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficient C(n,k).",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_two_right",
+        "description": "C(n,2) = n*(n-1)/2.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Axiomatization of the minEdges(d) function for graph dimension",
+      "Known values for d=1..5 including the d=4 surprise (K_{3,3} beats K₅)",
+      "Small-dimension completeness: for d≤3, K_{d+1} is optimal",
+      "Proof that d=4 is the first deviation from the complete graph pattern",
+      "Verification that d=5 returns to the complete graph pattern",
+      "Monotonicity, quadratic growth, and complete graph optimality conjectures",
+      "Linear lower bound from rigidity and quadratic upper bound from complete graphs"
+    ],
+    "references": [
+      {
+        "authors": "J. House",
+        "title": "Graphs of dimension 4",
+        "year": "2013",
+        "venue": "Preprint",
+        "note": "Proved minEdges(4) = 9 via K_{3,3}"
+      },
+      {
+        "authors": "J. Chaffee, M. Noble",
+        "title": "The dimension of the unit distance graph",
+        "year": "2016",
+        "venue": "Preprint",
+        "note": "Proved minEdges(5) = 15"
+      }
+    ],
+    "historicalContext": "Erdős asked about the dimension of graphs as unit-distance graphs in Euclidean space. The minimum number of edges needed for a given dimension reveals surprising structure: K_{3,3} achieves dimension 4 with fewer edges than K₅."
+  },
+  "sections": [
+    {
+      "id": "graph-dimension",
+      "title": "Graph Dimension",
+      "summary": "Defines unit distance embeddings and the graph dimension function.",
+      "startLine": 33,
+      "endLine": 52
+    },
+    {
+      "id": "min-edge-function",
+      "title": "Minimum Edge Function",
+      "summary": "Axiomatizes minEdges(d) as the minimum edge count among graphs of dimension d.",
+      "startLine": 54,
+      "endLine": 73
+    },
+    {
+      "id": "known-values",
+      "title": "Known Values",
+      "summary": "Records minEdges for d=1..5: 1, 3, 6, 9, 15.",
+      "startLine": 75,
+      "endLine": 92
+    },
+    {
+      "id": "structural-results",
+      "title": "Structural Results",
+      "summary": "Proves K_{d+1} optimality for d≤3, the d=4 surprise, and d=5 matching.",
+      "startLine": 94,
+      "endLine": 113
+    },
+    {
+      "id": "general-bounds",
+      "title": "General Bounds",
+      "summary": "Linear lower bound d ≤ minEdges(d) and quadratic upper bound minEdges(d) ≤ C(d+1,2).",
+      "startLine": 115,
+      "endLine": 136
+    },
+    {
+      "id": "conjectures",
+      "title": "Open Questions and Conjectures",
+      "summary": "States monotonicity, quadratic growth Θ(d²), and complete graph optimality conjectures.",
+      "startLine": 138,
+      "endLine": 178
+    }
+  ],
+  "overview": {
+    "summary": "Investigates the minimum number of edges needed for a graph to have unit-distance dimension exactly d. For small d, complete graphs K_{d+1} are optimal, but K_{3,3} achieves dimension 4 with 9 edges (vs 10 for K₅), making d=4 the only known exception.",
+    "keyIdea": "The function minEdges(d) captures the trade-off between edge count and geometric dimension. The d=4 case shows that bipartite graphs can sometimes achieve high dimension more efficiently than complete graphs.",
+    "prerequisites": [
+      "Binomial coefficients Nat.choose",
+      "Basic real number arithmetic and casting",
+      "Unit distance graph embeddings"
+    ]
+  },
+  "conclusion": {
+    "summary": "We formalize the minEdges function for graph dimension, recording five known values and proving structural results about the small-dimension pattern. The d=4 case (K_{3,3} beats K₅) is formally verified as a strict inequality. Key open questions about general growth remain as conjectures.",
+    "openQuestions": [
+      "Is minEdges monotone in d?",
+      "Does minEdges(d) = Θ(d²)?",
+      "Is K_{d+1} optimal for all d ≠ 4?"
+    ]
+  }
+}

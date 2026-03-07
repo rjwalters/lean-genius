@@ -1,0 +1,97 @@
+{
+  "slug": "erdos-1007-oq-01",
+  "title": "Minimum edges for graph dimension d in general",
+  "phase": "FORMALIZED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "What is minEdges(d), the minimum number of edges in a graph of dimension exactly d?",
+    "plain": "Study the function minEdges(d) giving the minimum number of edges needed for a graph to have unit-distance dimension exactly d. Known: minEdges(d) = C(d+1,2) for d ≤ 3 and d = 5, but minEdges(4) = 9 < C(5,2) = 10.",
+    "whyMatters": [
+      "Connects combinatorial graph theory to Euclidean geometry",
+      "The d=4 exception reveals unexpected structure in unit-distance graphs",
+      "Understanding minEdges(d) characterizes the edge-dimension trade-off"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "small_dim_complete: For d ≤ 3, minEdges(d) = C(d+1,2)",
+      "dim4_beats_complete: minEdges(4) < C(5,2)",
+      "dim5_matches_complete: minEdges(5) = C(6,2)",
+      "values_are_nondecreasing_small: monotonicity for d=1..5",
+      "lower_bound_linear: d ≤ minEdges(d)"
+    ],
+    "open": [
+      "Is minEdges monotone in general?",
+      "Does minEdges(d) = Θ(d²)?",
+      "Is K_{d+1} optimal for all d ≠ 4?"
+    ],
+    "goal": "Determine the asymptotic behavior of minEdges(d)"
+  },
+  "currentState": {
+    "phase": "FORMALIZED",
+    "since": "2026-03-07T00:36:31.363Z",
+    "iteration": 1,
+    "focus": "Formalization of known values and structural results.",
+    "blockers": [],
+    "nextAction": "Investigate higher-dimensional cases and the quadratic growth conjecture.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Created comprehensive Lean formalization with 1 sorry. All structural theorems proved (small_dim_complete, dim4_beats_complete, dim5_matches_complete). Three open conjectures stated formally.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1007OQ01.lean",
+      "src/data/proofs/erdos-1007-oq-01/"
+    ],
+    "insights": [
+      "native_decide handles Nat.choose evaluation for concrete values",
+      "Nat→ℝ cast issues with division require careful handling",
+      "The d=4 exception makes the general pattern non-trivial"
+    ],
+    "mathlibGaps": [
+      "Nat.choose cast to ℝ with division equality"
+    ],
+    "nextSteps": [
+      "Prove upper_bound_quadratic with proper cast handling",
+      "Investigate minEdges values for d ≥ 6"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Axiom-based formalization with interval_cases",
+      "status": "succeeded",
+      "description": "Axiomatize known values and use interval_cases + native_decide for small cases"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "combinatorics",
+    "unit-distance",
+    "graph-dimension"
+  ],
+  "relatedProofs": [
+    "erdos-1007"
+  ],
+  "references": {
+    "papers": [
+      "House 2013 (dimension 4)",
+      "Chaffee-Noble 2016 (dimension 5)"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1007"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Choose.Basic"
+    ]
+  },
+  "started": "2026-03-07T00:36:31.363Z",
+  "lastUpdate": "2026-03-07T01:30:00.000Z",
+  "significance": 6,
+  "tractability": 6
+}

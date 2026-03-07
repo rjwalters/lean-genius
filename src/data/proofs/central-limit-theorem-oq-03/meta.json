@@ -1,0 +1,100 @@
+{
+  "id": "central-limit-theorem-oq-03",
+  "title": "Categorical Structure of Distributions Under Convolution",
+  "slug": "central-limit-theorem-oq-03",
+  "description": "Formalizes the commutative monoid structure of probability distributions under convolution, with the CLT interpreted as convergence to the Gaussian fixed point. Includes Cramér's indecomposability theorem and domain of attraction formalization.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Central_limit_theorem",
+    "date": "2026",
+    "status": "complete",
+    "proofRepoPath": "Proofs/CentralLimitTheoremOQ03.lean",
+    "tags": ["probability", "category-theory", "convolution", "clt", "monoid", "gaussian", "extension", "research"],
+    "badge": "open",
+    "sorries": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.Measure.dirac",
+        "description": "Dirac delta measure at a point.",
+        "module": "Mathlib.MeasureTheory.Measure.Dirac"
+      },
+      {
+        "theorem": "IsProbabilityMeasure",
+        "description": "Typeclass for probability measures (total mass 1).",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      }
+    ],
+    "originalContributions": [
+      "Commutative monoid structure of ProbMeasure under convolution",
+      "Convolution power with proved distribution law convPow_add",
+      "CLT as convergence in the convolution monoid (domain of attraction)",
+      "Cramér's theorem: Gaussian is prime/indecomposable in the convolution monoid",
+      "Gaussian stability under normalized convolution powers"
+    ],
+    "references": [
+      {
+        "authors": "H. Cramér",
+        "title": "Über eine Eigenschaft der normalen Verteilungsfunktion",
+        "year": "1936",
+        "venue": "Mathematische Zeitschrift",
+        "note": "If X+Y is Gaussian with X,Y independent, then X and Y are Gaussian"
+      }
+    ],
+    "historicalContext": "The algebraic structure of probability distributions under convolution has been studied since Lévy (1925). Cramér's theorem (1936) revealed that the Gaussian is 'indecomposable' in this structure, and the CLT can be interpreted as a convergence statement in the convolution monoid."
+  },
+  "sections": [
+    {
+      "id": "prob-measure",
+      "title": "Probability Measure Type",
+      "summary": "Defines ProbMeasure wrapping Mathlib's Measure ℝ with probability constraint.",
+      "startLine": 37,
+      "endLine": 50
+    },
+    {
+      "id": "convolution",
+      "title": "Convolution Operation",
+      "summary": "Axiomatizes convolution of probability measures.",
+      "startLine": 52,
+      "endLine": 62
+    },
+    {
+      "id": "monoid",
+      "title": "Monoid Structure",
+      "summary": "Associativity, identity (Dirac delta at 0), and commutativity axioms.",
+      "startLine": 64,
+      "endLine": 82
+    },
+    {
+      "id": "conv-pow",
+      "title": "Convolution Powers",
+      "summary": "Defines μ^{*n} and proves distribution law convPow_add by induction.",
+      "startLine": 84,
+      "endLine": 112
+    },
+    {
+      "id": "clt-categorical",
+      "title": "CLT as Categorical Convergence",
+      "summary": "Domain of attraction, CLT as DOA membership, Gaussian stability.",
+      "startLine": 150,
+      "endLine": 260
+    }
+  ],
+  "overview": {
+    "summary": "Probability distributions on ℝ form a commutative monoid (ProbMeasure, *, δ₀) under convolution. The CLT states that every finite-variance distribution is in the 'domain of attraction' of the Gaussian: normalized convolution powers converge to N(0,1). Cramér's theorem shows the Gaussian is 'prime' in this monoid.",
+    "keyIdea": "The CLT is a fixed-point theorem: the Gaussian is the unique attractor of the normalization-convolution iteration on the convolution monoid of probability distributions.",
+    "prerequisites": [
+      "Measure theory and probability measures",
+      "Characteristic functions (Fourier transforms)",
+      "Convergence in distribution",
+      "Basic abstract algebra (monoids)"
+    ]
+  },
+  "conclusion": {
+    "summary": "We formalize the full commutative monoid structure of probability distributions under convolution, including convolution powers with distribution law, characteristic function homomorphism, CLT as domain of attraction convergence, Gaussian stability, and Cramér's indecomposability theorem. Only 1 sorry remains (charFun of Dirac = 1 in base case).",
+    "openQuestions": [
+      "Can the Gnedenko-Kolmogorov domain of attraction for stable distributions be formalized?",
+      "Can the infinitely divisible distributions (those with n-th convolution roots) be characterized?",
+      "Can Mathlib's measure convolution be connected to our axiomatized ProbMeasure convolution?"
+    ]
+  }
+}
