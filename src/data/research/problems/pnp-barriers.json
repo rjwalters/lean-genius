@@ -18,9 +18,9 @@
   "currentState": {
     "phase": "ACT",
     "since": "2025-12-31",
-    "iteration": 3,
-    "focus": "Extending complexity class formalization with PSPACE, EXP, and NP-completeness framework.",
-    "activeApproach": "Abstract complexity class definitions with barrier theorems.",
+    "iteration": 4,
+    "focus": "Formal inconsistency proofs: P_ne_EXP, Baker-Gill-Solovay, time hierarchy, Church-Turing bridge all proved False from abstract model.",
+    "activeApproach": "Model adequacy analysis with formal inconsistency witnesses.",
     "blockers": [],
     "nextAction": "Add coNP, PSPACE-completeness, and explore removing sorries.",
     "attemptCounts": {
@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "CRITICAL FINDING: Proved abstract model is trivially universal (P=NP=EXP=Set.univ). Added Part 42 documenting inconsistency. MathLib model is the correct foundation.",
+    "progressSummary": "11536 lines, 0 sorries. Part 43: FORMAL INCONSISTENCY PROOFS - derived False from P_ne_EXP, exists_oracle_P_neq_NP, time_hierarchy_theorem, church_turing_P. Also proved church_turing_forces_mathlib_univ and church_turing_vs_nontrivial. Abstract model axiom system is formally contradictory.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -111,6 +111,36 @@
         "name": "mathlib_P_nontrivial",
         "description": "MathLibP ≠ Set.univ (axiom, countability argument)",
         "proven": false
+      },
+      {
+        "name": "inconsistency_P_ne_EXP",
+        "description": "False from P_ne_EXP (both = Set.univ)",
+        "proven": true
+      },
+      {
+        "name": "inconsistency_Baker_Gill_Solovay",
+        "description": "False from exists_oracle_P_neq_NP (all relativized classes = Set.univ)",
+        "proven": true
+      },
+      {
+        "name": "inconsistency_time_hierarchy",
+        "description": "False from time_hierarchy_theorem (all DTIME = Set.univ)",
+        "proven": true
+      },
+      {
+        "name": "inconsistency_church_turing",
+        "description": "False from church_turing_P (P=Set.univ but MathLibP≠Set.univ)",
+        "proven": true
+      },
+      {
+        "name": "church_turing_forces_mathlib_univ",
+        "description": "church_turing_P implies MathLibP = Set.univ (contradicts nontriviality)",
+        "proven": true
+      },
+      {
+        "name": "church_turing_vs_nontrivial",
+        "description": "church_turing_P + mathlib_P_nontrivial → False (direct pair contradiction)",
+        "proven": true
       }
     ],
     "insights": [
@@ -126,7 +156,11 @@
       "All separation axioms (P_ne_EXP, exists_oracle_P_neq_NP, time_hierarchy_theorem) are inconsistent with abstract model definitions",
       "The Church-Turing bridge axiom (church_turing_P) would force MathLibP = Set.univ, contradicting the concrete TM2 model",
       "MathLibP/MathLibNP (Part 29) are the ground-truth definitions since TM2ComputableInPolyTime requires actual finite-state machine construction",
-      "Relativized classes are also trivial: P^A = NP^A = Set.univ for any oracle A, directly contradicting Baker-Gill-Solovay"
+      "Relativized classes are also trivial: P^A = NP^A = Set.univ for any oracle A, directly contradicting Baker-Gill-Solovay",
+      "Four axioms each individually derive False: P_ne_EXP, exists_oracle_P_neq_NP, time_hierarchy_theorem, church_turing_P",
+      "Time hierarchy inconsistency uses f=0, g=1: trivially 0·(log0+1) < 1 but DTIME(0) = DTIME(1) = Set.univ",
+      "Church-Turing bridge creates a two-axiom contradiction: forces MathLibP = Set.univ, but mathlib_P_nontrivial says ≠ Set.univ",
+      "The abstract model axiom system is not just locally wrong but globally contradictory: False is provable unconditionally"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
