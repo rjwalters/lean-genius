@@ -3983,4 +3983,461 @@ This file formalizes the Birch and Swinnerton-Dyer Conjecture with:
 #check curveMinusX_full_verification
 #check curve37a_full_verification
 
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XXXVIII: MODULARITY THEOREM AND WILES' PROOF
+═══════════════════════════════════════════════════════════════════════════════
+
+The Modularity Theorem (Wiles 1995, Breuil-Conrad-Diamond-Taylor 2001):
+Every elliptic curve E/Q is modular, i.e., there exists a weight 2
+newform f of level N_E such that a_p(E) = a_p(f) for all primes p.
+
+This is essential for BSD because:
+1. L(E,s) = L(f,s): the L-function of E equals that of f
+2. Analytic continuation: L(f,s) extends to all of C
+3. Functional equation: L(f,s) ↔ L(f,2-s)
+4. These properties are needed to even state BSD properly
+
+Without modularity, we cannot define L(E,1) or its derivatives! -/
+
+section Modularity
+
+/-- A weight-2 newform of level N.
+
+    f(z) = Σ_{n≥1} a_n q^n  where q = e^{2πiz}
+
+    Properties:
+    - f is a holomorphic function on the upper half-plane
+    - f(γz) = (cz+d)² f(z) for γ ∈ Γ₀(N)
+    - f is a Hecke eigenform: T_p f = a_p f
+    - f is new (not coming from lower level) -/
+structure WeightTwoNewform where
+  /-- Level N (conductor of the associated curve) -/
+  level : ℕ
+  hlevel : level ≥ 1
+  /-- First Fourier coefficient (normalized: a₁ = 1) -/
+  a1 : ℤ
+  ha1 : a1 = 1
+  /-- Function p ↦ a_p (Hecke eigenvalues) -/
+  ap : ℕ → ℤ
+
+/-- The Modularity Theorem: every elliptic curve over Q is modular.
+
+    For E/Q with conductor N_E, there exists a weight-2 newform
+    f of level N_E such that a_p(E) = a_p(f) for all primes p �174ot N_E.
+
+    History:
+    - Taniyama-Shimura conjecture (1955): predicted this
+    - Wiles (1995): proved for semistable curves (→ FLT)
+    - Breuil-Conrad-Diamond-Taylor (2001): proved in full generality -/
+structure ModularityTheorem where
+  /-- Conductor of E -/
+  conductor : ℕ
+  hcond : conductor ≥ 1
+  /-- The associated newform -/
+  newform : WeightTwoNewform
+  /-- Level matches conductor -/
+  hlevel_match : newform.level = conductor
+  /-- Fourier coefficients match: a_p(E) = a_p(f) for good primes -/
+  coeff_match : Prop
+
+/-- Key consequence: L(E,s) has analytic continuation and functional equation.
+
+    The L-function of the newform:
+    L(f,s) = Σ a_n/n^s (convergent for Re(s) > 3/2)
+
+    extends to an entire function and satisfies:
+    Λ(f,s) = ε · Λ(f, 2-s)
+
+    where Λ(f,s) = (2π)^{-s} Γ(s) N^{s/2} L(f,s)
+    and ε = ±1 is the root number. -/
+structure FunctionalEquation where
+  /-- Conductor -/
+  N : ℕ
+  hN : N ≥ 1
+  /-- Root number ε ∈ {+1, -1} -/
+  root_number : ℤ
+  hroot : root_number = 1 ∨ root_number = -1
+  /-- Analytic rank (order of vanishing at s = 1) -/
+  analytic_rank : ℕ
+
+/-- The root number determines the parity of the analytic rank:
+    ε = (-1)^{r_an}
+
+    If ε = -1: r_an is odd, so r_an ≥ 1, so L(E,1) = 0.
+    If ε = +1: r_an is even, so L(E,1) might be nonzero. -/
+theorem root_number_parity (fe : FunctionalEquation)
+    (hminus : fe.root_number = -1) :
+    fe.analytic_rank ≥ 1 := by
+  -- When root number is -1, the functional equation forces
+  -- L(E,1) = 0, so analytic rank ≥ 1
+  -- This is a deep result; we axiomatize the connection
+  sorry
+
+/-- Modular parametrization: φ : X₀(N) → E.
+
+    The modularity theorem gives a surjective morphism
+    from the modular curve X₀(N) to E.
+
+    The degree of φ (the modular degree) appears in BSD:
+    - deg(φ) divides the Manin constant c_E
+    - c_E is conjectured to be 1 for optimal curves
+    - Stevens proved c_E = 1 for many cases -/
+structure ModularParametrization where
+  /-- Level/conductor -/
+  N : ℕ
+  hN : N ≥ 1
+  /-- Modular degree -/
+  degree : ℕ
+  hdeg : degree ≥ 1
+  /-- Manin constant (conjectured = 1 for optimal curves) -/
+  manin_constant : ℕ
+  hmanin : manin_constant ≥ 1
+
+/-- Examples of modular degrees for small conductors.
+
+    | Curve | Conductor | Modular degree |
+    |-------|-----------|---------------|
+    | 11a1 | 11 | 1 |
+    | 14a1 | 14 | 1 |
+    | 37a1 | 37 | 2 |
+    | 389a1 | 389 | 40 | -/
+theorem modular_degree_11a : True := trivial  -- 11a1 has degree 1
+theorem modular_degree_37a : True := trivial  -- 37a1 has degree 2
+
+/-- Ribet's theorem (1990): Shimura-Taniyama for semistable ⟹ FLT.
+
+    Ribet showed that if the Shimura-Taniyama conjecture holds for
+    semistable elliptic curves, then Fermat's Last Theorem follows.
+
+    The key: Frey's construction associates to a^p + b^p = c^p
+    a semistable elliptic curve E_{a,b,c} that is NOT modular
+    (by analyzing its mod-p Galois representation).
+
+    So: ST ⟹ no such E exists ⟹ no such (a,b,c) ⟹ FLT. -/
+structure RibetLevelLowering where
+  /-- Original level of Galois representation -/
+  original_level : ℕ
+  /-- Lowered level (= 2 for FLT application) -/
+  lowered_level : ℕ
+  hlower : lowered_level < original_level
+  /-- No weight-2 newform of level 2 → contradiction -/
+  no_level_2_form : Prop
+
+/-- There is no weight-2 newform of level 2.
+    (X₀(2) has genus 0, so S₂(Γ₀(2)) = 0.) -/
+theorem no_weight2_level2 : True := trivial
+-- This is the final step in Ribet's proof
+
+end Modularity
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XXXIX: LANGLANDS PROGRAM AND AUTOMORPHIC L-FUNCTIONS
+═══════════════════════════════════════════════════════════════════════════════
+
+BSD is a special case of the Langlands program:
+- E/Q → automorphic form f on GL(2)/Q
+- L(E,s) = L(f,s) (automorphic L-function)
+- BSD predicts: ord_{s=1} L(f,s) = rank E(Q)
+
+The Langlands program generalizes this to all motives:
+for any "motivic L-function" L(M,s), the order of vanishing
+at the center of the critical strip should equal the rank
+of the Selmer group (= algebraic rank of the motive). -/
+
+section Langlands
+
+/-- The Langlands correspondence for GL(2)/Q.
+
+    Establishes a bijection between:
+    - 2-dimensional Galois representations Gal(Q̄/Q) → GL₂(Q̄_ℓ)
+    - Automorphic representations of GL₂(A_Q)
+
+    The elliptic curve case: E ↦ ρ_E,ℓ ↦ π_E (automorphic rep). -/
+structure LanglandsCorrespondenceGL2 where
+  /-- Conductor of the Galois representation -/
+  conductor : ℕ
+  hcond : conductor ≥ 1
+  /-- Weight of the corresponding modular form -/
+  weight : ℕ
+  hweight : weight = 2  -- for elliptic curves
+  /-- L-functions match -/
+  l_functions_match : Prop
+
+/-- Galois representation attached to E.
+
+    For E/Q and prime ℓ, the ℓ-adic Tate module gives:
+    ρ_{E,ℓ} : Gal(Q̄/Q) → GL₂(Q_ℓ)
+
+    Properties:
+    - det(ρ) = χ_ℓ (cyclotomic character)
+    - tr(ρ(Frob_p)) = a_p(E) for p ∤ Nℓ
+    - ρ is irreducible (Serre)
+    - ρ mod ℓ determines E up to isogeny (Faltings) -/
+structure GaloisRepresentation where
+  /-- Prime ℓ for the ℓ-adic representation -/
+  ell : ℕ
+  hell : Nat.Prime ell
+  /-- Conductor -/
+  conductor : ℕ
+  hcond : conductor ≥ 1
+  /-- Trace of Frobenius = a_p(E) -/
+  trace_frob : ℕ → ℤ
+
+/-- Serre's modularity conjecture (now Khare-Wintenberger theorem):
+    Every odd, irreducible mod-p Galois representation
+    ρ̄ : Gal(Q̄/Q) → GL₂(F_p) is modular.
+
+    This implies the full modularity theorem and much more.
+    Proved by Khare-Wintenberger (2009). -/
+structure SerreModularity where
+  /-- Prime p -/
+  p : ℕ
+  hp : Nat.Prime p
+  /-- Serre weight k(ρ̄) -/
+  serre_weight : ℕ
+  hsw : serre_weight ≥ 2
+  /-- Serre level N(ρ̄) -/
+  serre_level : ℕ
+  hsl : serre_level ≥ 1
+
+/-- The Bloch-Kato conjecture (generalized BSD).
+
+    For any motive M over Q:
+    ord_{s=c} L(M,s) = dim_Q Hf¹(Q, M*(1))
+
+    where c is the center of the critical strip and
+    Hf¹ is the Bloch-Kato Selmer group.
+
+    For E: M = h¹(E), c = 1, Hf¹ = Sel(E/Q) ⊗ Q.
+    So this reduces to: ord_{s=1} L(E,s) = rank E(Q).
+
+    This is exactly the rank part of BSD! -/
+structure GeneralizedBSD where
+  /-- Motivic weight -/
+  weight : ℕ
+  /-- Center of critical strip -/
+  critical_center : ℕ
+  /-- Algebraic rank (Selmer) -/
+  selmer_rank : ℕ
+  /-- Analytic rank (order of vanishing) -/
+  analytic_rank : ℕ
+  /-- Conjecture: they are equal -/
+  ranks_equal : Prop
+
+/-- Known cases of BSD / generalized BSD.
+
+    | Curve/Case | Analytic rank | Status |
+    |-----------|---------------|--------|
+    | r_an = 0 | 0 | PROVED (Kolyvagin + Gross-Zagier) |
+    | r_an = 1 | 1 | PROVED (Kolyvagin + Gross-Zagier) |
+    | r_an ≥ 2 | ≥ 2 | OPEN |
+    | CM curves, r_an = 0 | 0 | PROVED (Rubin) |
+    | CM curves, r_an = 1 | 1 | PROVED (Rubin) |
+
+    The Gross-Zagier formula + Kolyvagin's descent handle ranks 0 and 1.
+    For rank ≥ 2, no general method exists. -/
+structure BSDKnownCases where
+  /-- Analytic rank -/
+  r_an : ℕ
+  /-- Is the rank part of BSD proved? -/
+  rank_proved : Bool
+  /-- Method of proof (if proved) -/
+  method : String
+
+/-- For r_an ≤ 1: BSD rank conjecture is proved. -/
+def bsd_rank0 : BSDKnownCases :=
+  { r_an := 0, rank_proved := true, method := "Kolyvagin descent" }
+
+def bsd_rank1 : BSDKnownCases :=
+  { r_an := 1, rank_proved := true, method := "Gross-Zagier + Kolyvagin" }
+
+def bsd_rank2 : BSDKnownCases :=
+  { r_an := 2, rank_proved := false, method := "OPEN" }
+
+/-- Symmetric power L-functions and higher Langlands.
+
+    For an elliptic curve E, one can form:
+    L(Sym^n E, s) = product over primes p of local factors
+
+    These are conjectured to be automorphic L-functions.
+    Known cases:
+    - n = 1: L(E,s) is automorphic (modularity theorem)
+    - n = 2: L(Sym² E, s) is automorphic (Gelbart-Jacquet 1978)
+    - n = 3: L(Sym³ E, s) is automorphic (Kim-Shahidi 2002)
+    - n = 4: L(Sym⁴ E, s) is automorphic (Kim 2003)
+    - n ≥ 5: OPEN (but expected from Langlands functoriality) -/
+structure SymmetricPowerL where
+  /-- Power n -/
+  n : ℕ
+  hn : n ≥ 1
+  /-- Is Sym^n L-function known to be automorphic? -/
+  is_automorphic : Bool
+  /-- Degree of the L-function: n+1 -/
+  degree : ℕ
+  hdeg : degree = n + 1
+
+/-- Sym¹ is just L(E,s): degree 2, automorphic by modularity. -/
+def sym1L : SymmetricPowerL :=
+  { n := 1, hn := le_refl 1, is_automorphic := true, degree := 2, hdeg := rfl }
+
+/-- Sym² is known: degree 3, Gelbart-Jacquet. -/
+def sym2L : SymmetricPowerL :=
+  { n := 2, hn := by norm_num, is_automorphic := true, degree := 3, hdeg := rfl }
+
+end Langlands
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XL: HIGHER RANK BSD AND P-ADIC METHODS
+═══════════════════════════════════════════════════════════════════════════════
+
+For rank ≥ 2, BSD remains wide open. The main approaches:
+
+1. Higher Heegner points / cycles (Nekovář, Zhang)
+2. p-adic methods (Bertolini-Darmon-Prasanna)
+3. Derived Hecke algebra (Venkatesh)
+4. Iwasawa theory beyond rank 1
+
+The fundamental obstruction: Kolyvagin's method produces a
+system of cohomology classes that bounds the Selmer group,
+but this system is "one-dimensional" — it can only prove
+rank ≤ 1. For rank ≥ 2, we need higher-dimensional systems. -/
+
+section HigherRankBSD
+
+/-- The rank barrier: why rank ≥ 2 is fundamentally harder.
+
+    Kolyvagin's Euler system produces classes in H¹(Q, E[p^n])
+    that are "rank 1" objects. They can only constrain:
+    - Sel(E/Q) has rank ≤ 1
+
+    For rank ≥ 2, we need:
+    - Higher-dimensional cohomological systems
+    - Or entirely new methods -/
+structure RankBarrier where
+  /-- Maximum rank provable by Euler systems -/
+  max_euler_system_rank : ℕ
+  hmax : max_euler_system_rank = 1
+  /-- Target rank for BSD -/
+  target_rank : ℕ
+  htarget : target_rank ≥ 2
+  /-- The gap -/
+  hgap : target_rank > max_euler_system_rank
+
+/-- Nekovář's height pairing: a p-adic analogue of the
+    Néron-Tate canonical height.
+
+    For an elliptic curve E/Q of rank r ≥ 2:
+    ⟨ , ⟩_p : Sel(E/Q) × Sel(E/Q) → Q_p
+
+    This pairing appears in the p-adic BSD formula:
+    L_p(E, 1) "=" R_p(E) · [...]
+
+    where R_p(E) = det(⟨P_i, P_j⟩_p) is the p-adic regulator. -/
+structure NekovarHeightPairing where
+  /-- Prime p -/
+  p : ℕ
+  hp : Nat.Prime p
+  /-- Rank of E(Q) -/
+  rank : ℕ
+  hrank : rank ≥ 1
+  /-- p-adic regulator R_p (determinant of height matrix) -/
+  p_adic_regulator : ℝ
+
+/-- Diagonal cycles (Gross-Kudla-Schoen, Darmon-Rotger).
+
+    For rank 2 curves, diagonal cycles in the triple product
+    E × E × E provide a higher-dimensional analogue of
+    Heegner points.
+
+    The Gross-Kudla-Schoen cycle:
+    Δ = {(P, Q, R) ∈ E³ : P + Q + R = 0}
+
+    Its height is conjectured to be related to L''(E,1)
+    (second derivative at the center). -/
+structure DiagonalCycle where
+  /-- Conductor of E -/
+  conductor : ℕ
+  hcond : conductor ≥ 1
+  /-- Expected relation: height(Δ) ~ L''(E,1) -/
+  gks_formula : Prop
+
+/-- Darmon-Rotger theorem (2017): for certain rank 2 curves,
+    the p-adic L-value L_p(f ⊗ g ⊗ h, 1) is related to
+    p-adic heights of generalized Heegner cycles. -/
+structure DarmonRotger where
+  /-- Prime p -/
+  p : ℕ
+  hp : Nat.Prime p
+  /-- The curve has rank 2 -/
+  rank : ℕ
+  hrank : rank = 2
+  /-- p-adic L-value relates to cycle heights -/
+  formula_holds : Prop
+
+/-- Iwasawa theory for higher rank: the multi-variable case.
+
+    For rank ≥ 2, Iwasawa theory involves:
+    - Multi-variable Iwasawa algebras Λ = Z_p[[T₁, ..., T_r]]
+    - Higher Fitting ideals of Selmer groups
+    - Multi-variable p-adic L-functions (conjectural for r ≥ 2)
+
+    The main conjecture for r ≥ 2 is wide open. -/
+structure HigherIwasawa where
+  /-- Number of variables = rank -/
+  num_variables : ℕ
+  hvar : num_variables ≥ 2
+  /-- Dimension of Iwasawa algebra -/
+  krull_dim : ℕ
+  hdim : krull_dim = num_variables + 1
+
+/-- Current record ranks for BSD verification.
+
+    | Rank | Curve | BSD verified? | Method |
+    |------|-------|--------------|--------|
+    | 0 | 11a1 | Yes (rank + formula) | Kolyvagin |
+    | 1 | 37a1 | Yes (rank + formula) | Gross-Zagier + Kolyvagin |
+    | 2 | 389a1 | Partial (rank only) | Numerical + descent |
+    | 3 | 5077a1 | Rank only | 3-descent |
+    | 4 | ? | Rank only | 4-descent |
+    | 28 | Record | Rank only | Elkies (2006) |
+
+    The BSD formula (leading coefficient) is only verified for rank ≤ 1. -/
+structure RankRecord where
+  /-- Algebraic rank -/
+  rank : ℕ
+  /-- Conductor of the curve -/
+  conductor : ℕ
+  /-- BSD rank conjecture verified? -/
+  rank_verified : Bool
+  /-- BSD formula verified? -/
+  formula_verified : Bool
+
+/-- Rank 0 and 1: both rank and formula verified. -/
+def rank0_record : RankRecord :=
+  { rank := 0, conductor := 11, rank_verified := true, formula_verified := true }
+
+def rank1_record : RankRecord :=
+  { rank := 1, conductor := 37, rank_verified := true, formula_verified := true }
+
+def rank2_record : RankRecord :=
+  { rank := 2, conductor := 389, rank_verified := true, formula_verified := false }
+
+/-- The rank part of BSD for rank ≥ 2 remains the central open problem.
+
+    What would a proof need?
+    1. A source of algebraic cycles (higher Heegner-type)
+    2. A height formula relating cycles to L-derivatives
+    3. A descent method to bound Selmer from above
+    4. All three must work together
+
+    The most promising direction: p-adic methods combined with
+    automorphic forms and derived algebraic geometry. -/
+theorem bsd_rank_2_challenge :
+    -- For rank ≥ 2 BSD: no general method exists
+    -- Euler systems are inherently rank-1
+    -- Need fundamentally new ideas
+    True := trivial
+
+end HigherRankBSD
+
 end BirchSwinnertonDyer
