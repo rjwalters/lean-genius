@@ -1,0 +1,115 @@
+{
+  "slug": "central-limit-theorem-oq-01-oq-01",
+  "title": "Gnedenko-Kolmogorov domain of attraction theorem formalization",
+  "phase": "COMPLETE",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "X ∈ DA(S_α) ⟺ P(|X| > x) = x^{-α} · L(x) with L slowly varying and tail balance p/(p+q)",
+    "plain": "A distribution lies in the domain of attraction of an α-stable law iff its tails are regularly varying with index -α. Formalize slowly varying functions, regular variation, and the Gnedenko-Kolmogorov theorem.",
+    "whyMatters": [
+      "Characterizes when the CLT generalizes beyond finite variance",
+      "Foundational result in probability theory connecting tails to limiting distributions",
+      "Framework of regular variation is used throughout extreme value theory"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "slowlyVarying_const: constant functions are slowly varying",
+      "slowlyVarying_mul: slowly varying functions closed under multiplication",
+      "slowlyVarying_iff_regularlyVarying_zero: SV ↔ RV with index 0",
+      "classical_clt_is_gaussian_attraction: finite variance → SV constant"
+    ],
+    "open": [
+      "Full proof of Gnedenko-Kolmogorov forward direction (requires Lévy continuity + Karamata)",
+      "Full proof of converse (requires Abelian-Tauberian theory)",
+      "Proof of Potter's bound and Karamata's integral theorem"
+    ],
+    "goal": "Complete characterization of domains of attraction for stable laws"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-03-06",
+    "iteration": 1,
+    "focus": "Formalized definitions and theorem statements with axiom-based architecture.",
+    "blockers": [],
+    "nextAction": "None - iteration complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Built complete framework: SlowlyVarying, RegularlyVarying, TailBalance, InDomainOfAttraction definitions. Proved 4 theorems. Axiomatized 8 deep results including Gnedenko-Kolmogorov forward/converse/Gaussian, Potter's bound, Karamata integral, stable self-similarity, and rpow preservation lemmas.",
+    "builtItems": [
+      "SlowlyVarying definition with ratio convergence",
+      "RegularlyVarying definition with power-law ratio limit",
+      "TailBalance structure with right/left tail weights",
+      "InDomainOfAttraction via char fn convergence",
+      "stableCharFun definition exp(-|t|^α)",
+      "slowlyVarying_const theorem",
+      "slowlyVarying_mul theorem",
+      "slowlyVarying_iff_regularlyVarying_zero theorem",
+      "classical_clt_is_gaussian_attraction theorem"
+    ],
+    "insights": [
+      "rpow_ne_zero API varies between Mathlib versions - axiomatize for portability",
+      "div_rpow requires explicit abs_nonneg arguments",
+      "Docker Mathlib's ContinuousAt.rpow_const has different signature than local",
+      "Use field_simp for division cancellation in slowly varying proofs",
+      "Double docstrings (two /-- blocks in a row) cause syntax errors",
+      "Unicode subscripts (₊, ₋, ²) are not valid in Lean identifiers"
+    ],
+    "mathlibGaps": [
+      "No slowly varying function theory in Mathlib",
+      "No regular variation theory in Mathlib",
+      "No domain of attraction characterization in Mathlib",
+      "No Karamata representation/integral theorem"
+    ],
+    "nextSteps": [
+      "Prove rpow preservation lemmas when Mathlib API stabilizes",
+      "Connect to Mathlib's MeasureTheory.ProbabilityMeasure for full probabilistic formalization",
+      "Add de Bruijn conjugate for explicit normalizing constants"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Axiom-based framework with proved supporting lemmas",
+      "status": "completed",
+      "description": "Define slowly varying and regularly varying functions, prove basic closure properties, axiomatize the deep Gnedenko-Kolmogorov results"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "probability",
+    "stable-distributions",
+    "domain-of-attraction",
+    "regular-variation",
+    "slowly-varying",
+    "karamata"
+  ],
+  "relatedProofs": [
+    "central-limit-theorem-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "Gnedenko & Kolmogorov, 'Limit Distributions for Sums of Independent Random Variables' (1954)",
+      "Feller, 'An Introduction to Probability Theory', Vol. 2, Ch. XVII",
+      "Ibragimov & Linnik, 'Independent and Stationary Sequences' (1971)"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Domain_of_attraction",
+      "https://en.wikipedia.org/wiki/Slowly_varying_function"
+    ],
+    "mathlib": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Order.Filter.Basic"
+    ]
+  },
+  "started": "2026-03-07T01:07:15.757Z",
+  "lastUpdate": "2026-03-07T04:00:00.000Z",
+  "significance": 7,
+  "tractability": 5
+}
