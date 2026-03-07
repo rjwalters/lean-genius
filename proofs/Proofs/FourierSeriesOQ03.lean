@@ -604,24 +604,100 @@ axiom parseval_theorem
 /-- Parseval's theorem implies the Fourier coefficients tend to zero.
     This is a corollary: if the sum Σ|ĉ_n|² converges, then |ĉ_n| → 0.
     This is the Riemann-Lebesgue lemma in the L² setting. -/
+-- Helper: if consecutive partial sums differences → 0 and individual squared terms ≤ difference,
+-- then individual terms → 0 (via squeeze + sqrt argument)
+private theorem fourierCoeff_norm_le_of_diff {f : AddCircle T → ℂ} {N : ℕ} (hN : 0 < N)
+    (n : ℤ) (hn_mem : n ∈ Icc (-(↑N : ℤ)) (↑N))
+    (hn_nmem : n ∉ Icc (-(↑(N - 1) : ℤ)) (↑(N - 1))) :
+    ‖fourierCoeff f n‖ ^ 2 ≤
+      fourierCoeffSumSq f N - fourierCoeffSumSq f (N - 1) := by
+  unfold fourierCoeffSumSq
+  have hsub : Icc (-(↑(N - 1) : ℤ)) (↑(N - 1)) ⊆ Icc (-(↑N : ℤ)) (↑N) := by
+    intro k hk; rw [Finset.mem_Icc] at hk ⊢; constructor <;> omega
+  -- insert n into small set: {n} ∪ small ⊆ big
+  have h_insert : insert n (Icc (-(↑(N - 1) : ℤ)) (↑(N - 1))) ⊆ Icc (-(↑N : ℤ)) (↑N) := by
+    intro k hk; rw [Finset.mem_insert] at hk
+    rcases hk with rfl | hk
+    · exact hn_mem
+    · exact hsub hk
+  -- ∑ ({n} ∪ small) ≤ ∑ big (all terms nonneg)
+  have h_sum_le := Finset.sum_le_sum_of_subset_of_nonneg h_insert
+    (fun i _ _ => sq_nonneg _)
+  -- ∑ ({n} ∪ small) = ‖ĉ_n‖² + ∑ small (since n ∉ small)
+  rw [Finset.sum_insert hn_nmem] at h_sum_le
+  -- So ‖ĉ_n‖² + ∑ small ≤ ∑ big, hence ‖ĉ_n‖² ≤ ∑ big - ∑ small
+  linarith
+
 theorem fourierCoeff_tendsto_zero
     (f : AddCircle T → ℂ) (hf : Integrable f haarAddCircle)
     (hf2 : Integrable (fun x => ‖f x‖^2) haarAddCircle) :
     Tendsto (fun n : ℤ => ‖fourierCoeff f n‖) atBot (𝓝 0) := by
-  -- Proof outline:
-  -- 1. From Parseval, fourierCoeffSumSq f N → l2NormSq f
-  -- 2. Consecutive diffs → 0: fourierCoeffSumSq f (N+1) - fourierCoeffSumSq f N → 0
-  -- 3. ‖ĉ_{-(N+1)}‖² ≤ diff (since it's one non-negative term in the sum)
-  -- 4. Squeeze → ‖ĉ_{-(N+1)}‖² → 0 → ‖ĉ_{-(N+1)}‖ → 0
-  -- 5. Reindex: Tendsto over ℕ via (fun m ↦ -(m+1)) implies Tendsto atBot over ℤ
   have hP := parseval_theorem f hf hf2
-  -- Step 2: consecutive differences → 0
+  -- Consecutive differences → 0
   have hdiff : Tendsto (fun m : ℕ => fourierCoeffSumSq f (m + 1) - fourierCoeffSumSq f m)
       atTop (𝓝 0) := by
-    have := (hP.comp (tendsto_add_atTop_nat 1)).sub hP
-    simpa using this
-  -- Steps 3-5 require Finset.Icc difference decomposition and ℕ→ℤ reindexing
-  sorry
+    have h := (hP.comp (tendsto_add_atTop_nat 1)).sub hP
+    simp only [Function.comp_def, sub_self] at h; exact h
+  -- Reduce to showing: ∀ ε > 0, eventually ‖ĉ_n‖ < ε as n → -∞
+  rw [Metric.tendsto_nhds]
+  intro ε hε
+  -- Get M such that differences < ε²
+  have hdiff_eps : ∀ᶠ m in atTop,
+      dist (fourierCoeffSumSq f (m + 1) - fourierCoeffSumSq f m) 0 < ε ^ 2 :=
+    Metric.tendsto_nhds.mp hdiff (ε ^ 2) (by positivity)
+  obtain ⟨M, hM⟩ := Filter.eventually_atTop.mp hdiff_eps
+  -- For n ≤ -(M+2), ‖ĉ_n‖ < ε
+  apply Filter.eventually_atBot.mpr
+  refine ⟨-(↑M + 2 : ℤ), fun n hn => ?_⟩
+  rw [Real.dist_eq, sub_zero, abs_of_nonneg (norm_nonneg _)]
+  -- n ≤ -(M+2), so n.natAbs ≥ M+2 and n.natAbs - 1 ≥ M+1 ≥ M
+  have hn_neg : n < 0 := by omega
+  have habs : (n.natAbs : ℤ) = -n := by omega
+  have habs_pos : 0 < n.natAbs := by omega
+  have hm_ge : M ≤ n.natAbs - 1 := by omega
+  -- Get difference bound
+  have hdiff_bound := hM (n.natAbs - 1) hm_ge
+  rw [Real.dist_eq, sub_zero] at hdiff_bound
+  have hnat_eq : n.natAbs - 1 + 1 = n.natAbs := Nat.succ_pred_eq_of_pos habs_pos
+  rw [hnat_eq] at hdiff_bound
+  have hdiff_nn : 0 ≤ fourierCoeffSumSq f n.natAbs - fourierCoeffSumSq f (n.natAbs - 1) :=
+    sub_nonneg.mpr (fourierCoeffSumSq_mono f _ _ (Nat.pred_le _))
+  rw [abs_of_nonneg hdiff_nn] at hdiff_bound
+  -- ‖ĉ_n‖² ≤ difference < ε²
+  have hn_in : n ∈ Icc (-(↑n.natAbs : ℤ)) (↑n.natAbs) := by
+    rw [Finset.mem_Icc]; constructor <;> omega
+  have hn_notin : n ∉ Icc (-(↑(n.natAbs - 1) : ℤ)) (↑(n.natAbs - 1)) := by
+    rw [Finset.mem_Icc]; intro ⟨h1, h2⟩; omega
+  -- Inline: ‖ĉ_n‖² ≤ fourierCoeffSumSq f |n| - fourierCoeffSumSq f (|n|-1)
+  have hbound : ‖fourierCoeff f n‖ ^ 2 ≤
+      fourierCoeffSumSq f n.natAbs - fourierCoeffSumSq f (n.natAbs - 1) := by
+    unfold fourierCoeffSumSq
+    have hsub : Icc (-(↑(n.natAbs - 1) : ℤ)) (↑(n.natAbs - 1)) ⊆
+        Icc (-(↑n.natAbs : ℤ)) (↑n.natAbs) := by
+      intro k hk; rw [Finset.mem_Icc] at hk ⊢; constructor <;> omega
+    have h_ins : insert n (Icc (-(↑(n.natAbs - 1) : ℤ)) (↑(n.natAbs - 1))) ⊆
+        Icc (-(↑n.natAbs : ℤ)) (↑n.natAbs) := by
+      intro k hk; rw [Finset.mem_insert] at hk
+      rcases hk with rfl | hk
+      · exact hn_in
+      · exact hsub hk
+    have h_le : ∑ k ∈ insert n (Icc (-(↑(n.natAbs - 1) : ℤ)) (↑(n.natAbs - 1))),
+        ‖fourierCoeff f k‖ ^ 2 ≤
+        ∑ k ∈ Icc (-(↑n.natAbs : ℤ)) (↑n.natAbs), ‖fourierCoeff f k‖ ^ 2 :=
+      Finset.sum_le_sum_of_subset_of_nonneg h_ins (fun i _ _ => sq_nonneg (‖fourierCoeff f i‖))
+    rw [Finset.sum_insert hn_notin] at h_le
+    linarith
+  -- Combine: ‖ĉ_n‖² < ε²
+  have hsq : ‖fourierCoeff f n‖ ^ 2 < ε ^ 2 := lt_of_le_of_lt hbound hdiff_bound
+  -- ‖ĉ_n‖² < ε² with ‖ĉ_n‖ ≥ 0 and ε > 0 implies ‖ĉ_n‖ < ε
+  by_contra hge
+  push_neg at hge
+  have hmul := mul_le_mul hge hge hε.le (norm_nonneg _)
+  have : ε ^ 2 ≤ ‖fourierCoeff f n‖ ^ 2 := by
+    calc ε ^ 2 = ε * ε := by ring
+      _ ≤ ‖fourierCoeff f n‖ * ‖fourierCoeff f n‖ := hmul
+      _ = ‖fourierCoeff f n‖ ^ 2 := by ring
+  linarith
 
 /-- Uniqueness theorem: if all Fourier coefficients of f are zero, then f = 0 a.e.
     This follows from Parseval: ‖f‖² = Σ|ĉ_n|² = 0 implies f = 0 in L².
