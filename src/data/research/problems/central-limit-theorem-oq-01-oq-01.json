@@ -19,7 +19,11 @@
       "slowlyVarying_const: constant functions are slowly varying",
       "slowlyVarying_mul: slowly varying functions closed under multiplication",
       "slowlyVarying_iff_regularlyVarying_zero: SV ↔ RV with index 0",
-      "classical_clt_is_gaussian_attraction: finite variance → SV constant"
+      "classical_clt_is_gaussian_attraction: finite variance → SV constant",
+      "regularlyVarying_decomposition: RV(α) → f(x)/|x|^α is SV (representation theorem)",
+      "regularlyVarying_of_decomposition: SV L → |x|^α·L(x) is RV(α) (synthesis)",
+      "slowlyVarying_comp_rpow: L ∈ SV → L(|x|^β) ∈ SV for β > 0",
+      "regularlyVarying_comp_rpow: f ∈ RV(α) → f(|x|^β) ∈ RV(αβ)"
     ],
     "open": [
       "Full proof of Gnedenko-Kolmogorov forward direction (requires Lévy continuity + Karamata)",
@@ -31,18 +35,18 @@
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-03-06",
-    "iteration": 1,
-    "focus": "Formalized definitions and theorem statements with axiom-based architecture.",
+    "iteration": 2,
+    "focus": "Extended with representation theorem, composition properties, and Mathlib API fixes.",
     "blockers": [],
     "nextAction": "None - iteration complete.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "40 defs/theorems, 0 sorries, 667 lines. Extended with SV division, asymptotic equivalence, powers; RV reciprocal and quotient index arithmetic.",
+    "progressSummary": "~48 defs/theorems, 0 sorries, 818 lines, 7 axioms. Extended with representation theorem (RV decomposition/synthesis), composition properties (SV comp rpow, RV comp rpow), uniform convergence axiom, Potter's power bound axiom. Fixed 6 Mathlib API compatibility issues.",
     "builtItems": [
       "SlowlyVarying definition with ratio convergence",
       "RegularlyVarying definition with power-law ratio limit",
@@ -53,16 +57,23 @@
       "slowlyVarying_mul theorem",
       "slowlyVarying_iff_regularlyVarying_zero theorem",
       "classical_clt_is_gaussian_attraction theorem",
-      "slowlyVarying_div, slowlyVarying_of_asymp_equiv, slowlyVarying_pow in CLT file",
-      "regularlyVarying_inv_index, regularlyVarying_div_index in CLT file"
+      "slowlyVarying_div, slowlyVarying_of_asymp_equiv, slowlyVarying_pow",
+      "regularlyVarying_inv_index, regularlyVarying_div_index, regularlyVarying_mul_index",
+      "regularlyVarying_decomposition: RV(α) → quotient is SV",
+      "regularlyVarying_of_decomposition: SV → power·SV is RV",
+      "slowlyVarying_comp_rpow: SV composition with |x|^β",
+      "regularlyVarying_comp_rpow: RV composition with index multiplication",
+      "slowlyVarying_uniform_convergence axiom",
+      "slowlyVarying_power_bound axiom (Potter's bound)"
     ],
     "insights": [
-      "rpow_ne_zero API varies between Mathlib versions - axiomatize for portability",
+      "rpow_add takes 0 < x in Docker Mathlib (not x ≠ 0)",
+      "rpow_neg direction: x^(-y) = (x^y)⁻¹, use ← for reverse",
+      "field_simp fully solves division equalities without ⁻¹ terms (no ring needed)",
+      "Tendsto.congr + inv_div pattern for inverting ratio tendsto results",
+      "rpow_natCast no longer takes nonnegativity arg - use congr + rpow_mul instead",
       "div_rpow requires explicit abs_nonneg arguments",
-      "Docker Mathlib's ContinuousAt.rpow_const has different signature than local",
       "Use field_simp for division cancellation in slowly varying proofs",
-      "Double docstrings (two /-- blocks in a row) cause syntax errors",
-      "Unicode subscripts (₊, ₋, ²) are not valid in Lean identifiers",
       "Quotient of slowly varying functions is slowly varying (slowlyVarying_div)",
       "Asymptotic equivalence (L₁/L₂→1) preserves slow variation",
       "Integer powers of SV functions are SV (slowlyVarying_pow)",
@@ -76,7 +87,7 @@
       "No Karamata representation/integral theorem"
     ],
     "nextSteps": [
-      "Prove rpow preservation lemmas when Mathlib API stabilizes",
+      "Prove Karamata representation when Mathlib analysis infrastructure grows",
       "Connect to Mathlib's MeasureTheory.ProbabilityMeasure for full probabilistic formalization",
       "Add de Bruijn conjugate for explicit normalizing constants"
     ]
@@ -85,7 +96,7 @@
     {
       "name": "Axiom-based framework with proved supporting lemmas",
       "status": "completed",
-      "description": "Define slowly varying and regularly varying functions, prove basic closure properties, axiomatize the deep Gnedenko-Kolmogorov results"
+      "description": "Define slowly varying and regularly varying functions, prove basic closure properties, axiomatize the deep Gnedenko-Kolmogorov results. Extended with representation theorem and composition."
     }
   ],
   "tags": [
@@ -116,7 +127,7 @@
     ]
   },
   "started": "2026-03-07T01:07:15.757Z",
-  "lastUpdate": "2026-03-07T04:00:00.000Z",
+  "lastUpdate": "2026-03-08T06:00:00.000Z",
   "significance": 7,
   "tractability": 5
 }
