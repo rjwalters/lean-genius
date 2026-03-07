@@ -339,11 +339,9 @@ theorem stable_self_similarity (α : ℝ) (hα : 0 < α) (_hα_le : α ≤ 2)
     rw [abs_div]
     have hn1a_pos : (0 : ℝ) < (n : ℝ) ^ (1 / α) := rpow_pos_of_pos hn_pos _
     rw [abs_of_pos hn1a_pos]
-    rw [div_rpow (abs_nonneg t) (le_of_lt hn1a_pos)]
-    rw [← rpow_natCast (le_of_lt hn_pos)]
-    rw [← rpow_mul (le_of_lt hn_pos)]
-    rw [div_mul_cancel₀ 1 (ne_of_gt hα)]
-    rw [rpow_one]
+    rw [div_rpow (abs_nonneg t) hn1a_pos.le]
+    congr 1
+    rw [← rpow_mul hn_pos.le, one_div, inv_mul_cancel₀ hα.ne', rpow_one]
   -- ↑n * ↑(-(|t|^α / n)) = ↑(-(|t|^α))
   simp only [Complex.ofReal_neg, Complex.ofReal_natCast]
   rw [h1]
@@ -431,7 +429,7 @@ theorem slowlyVarying_of_asymp_equiv {L₁ L₂ : ℝ → ℝ}
     -- L₂(cx)/L₂(x) = (L₁(cx)/L₂(cx))⁻¹ · (L₁(cx)/L₁(x)) · (L₁(x)/L₂(x))
     -- Rewrite L₂(cx)/L₂(x) using L₁
     have key : ∀ᶠ x in atTop, L₂ (c * x) / L₂ x =
-        (L₁ (c * x) / L₁ x) * (L₁ x / L₂ x) * (L₂ (c * x) / L₁ (c * x))⁻¹ := by
+        (L₁ (c * x) / L₁ x) * (L₁ x / L₂ x) * (L₂ (c * x) / L₁ (c * x)) := by
       filter_upwards [Filter.eventually_ge_atTop 1] with x hx
       have h1ne : L₁ x ≠ 0 := h₁.1 x (by linarith)
       have h2ne : L₂ x ≠ 0 := h₂_ne x (by linarith)
@@ -446,11 +444,10 @@ theorem slowlyVarying_of_asymp_equiv {L₁ L₂ : ℝ → ℝ}
         Filter.tendsto_atTop_atTop_of_monotone (fun _ _ h => mul_le_mul_of_nonneg_left h (le_of_lt hc))
           (fun b => ⟨b / c, by rw [mul_div_cancel₀ b (ne_of_gt hc)]⟩)
       exact hequiv.comp this
-    have fac3 : Tendsto (fun x => (L₂ (c * x) / L₁ (c * x))⁻¹) atTop (𝓝 1) := by
-      have : Tendsto (fun x => L₂ (c * x) / L₁ (c * x)) atTop (𝓝 1) := by
-        convert hequiv_c.inv₀ one_ne_zero using 1
-        ext x; rw [inv_one]; exact (inv_div _ _).symm
-      exact this.inv₀ one_ne_zero |>.congr (fun x => by rw [inv_inv])
+    have fac3 : Tendsto (fun x => L₂ (c * x) / L₁ (c * x)) atTop (𝓝 1) := by
+      have h_inv := hequiv_c.inv₀ one_ne_zero
+      simp only [inv_one] at h_inv
+      exact h_inv.congr (fun x => inv_div (L₁ (c * x)) (L₂ (c * x)))
     rw [Filter.tendsto_congr' key]
     have := (fac1.mul fac2).mul fac3
     simp only [mul_one] at this
@@ -493,7 +490,7 @@ theorem regularlyVarying_mul_index {f g : ℝ → ℝ} {α β : ℝ}
     have key : (fun x => f (c * x) * g (c * x) / (f x * g x)) =
         (fun x => (f (c * x) / f x) * (g (c * x) / g x)) := by
       ext x; field_simp
-    rw [key, ← rpow_add hc]
+    rw [key, rpow_add hc]
     exact (hf.2 c hc).mul (hg.2 c hc)
 
 /-- Regularly varying with index 0 is exactly slowly varying. -/
@@ -515,9 +512,8 @@ theorem regularlyVarying_inv_index {f : ℝ → ℝ} {α : ℝ}
       ext x; rw [inv_div_inv]
     rw [key]
     have h1 := (hf.2 c hc).inv₀ (ne_of_gt (rpow_pos_of_pos hc α))
-    rw [rpow_neg (le_of_lt hc)] at h1
-    convert h1 using 1
-    ext x; exact (inv_div _ _).symm
+    rw [← rpow_neg hc.le] at h1
+    exact h1.congr (fun x => inv_div (f (c * x)) (f x))
 
 /-- The quotient of regularly varying functions has indices that subtract.
     If f ~ x^α and g ~ x^β, then f/g ~ x^{α-β}. -/
@@ -527,7 +523,6 @@ theorem regularlyVarying_div_index {f g : ℝ → ℝ} {α β : ℝ}
   have := regularlyVarying_mul_index hf (regularlyVarying_inv_index hg)
   simp only [sub_eq_add_neg] at this ⊢
   convert this using 1
-  ext x; rfl
 
 -- ============================================================================
 -- Part XI: Stable Characteristic Function Properties
@@ -549,16 +544,17 @@ theorem stableCharFun_norm_le (α : ℝ) (_hα : 0 < α) (_hα_le : α ≤ 2) (t
   simp only [Complex.ofReal_re]
   exact Real.exp_le_one_iff.mpr (neg_nonpos_of_nonneg (rpow_nonneg (abs_nonneg t) α))
 
-/-- The stable characteristic function is continuous.
-    Composition of continuous functions: abs, rpow_const (with nonneg base), neg, ofReal, exp. -/
-theorem stableCharFun_continuous (α : ℝ) :
+/-- The stable characteristic function is continuous (for α ≥ 0).
+    Composition of continuous functions: abs, rpow_const (with nonneg base), neg, ofReal, exp.
+    Note: requires α ≥ 0 since |t|^α is discontinuous at t = 0 for negative α. -/
+theorem stableCharFun_continuous (α : ℝ) (hα : 0 ≤ α) :
     Continuous (stableCharFun α) := by
   unfold stableCharFun
   apply Complex.continuous_exp.comp
   apply Complex.continuous_ofReal.comp
   apply Continuous.neg
   apply Continuous.rpow_const continuous_abs
-  intro x; left; exact abs_nonneg x
+  intro x; right; exact hα
 
 /-- The stable characteristic function is even when α > 0: φ(-t) = φ(t).
     This follows from |−t|^α = |t|^α. -/
@@ -619,15 +615,166 @@ theorem tail_balance_alpha_range (tb : TailBalance) :
     0 < tb.α ∧ tb.α ≤ 2 := ⟨tb.hα_pos, tb.hα_le⟩
 
 -- ============================================================================
--- Part XIV: Summary and Open Directions
+-- Part XIV: Representation Theorem for Regular Variation
+-- ============================================================================
+
+/-
+The Representation Theorem is the fundamental structural result connecting
+regularly varying functions to slowly varying functions:
+
+  f is RV(α) ⟺ f(x) = |x|^α · L(x) for some slowly varying L.
+
+This decomposition separates the "pure power" behavior from the
+"slowly varying correction". It's the reason slowly varying functions
+appear throughout extreme value theory and domain of attraction theory.
+-/
+
+/-- The representation theorem (decomposition): Every regularly varying function
+    with index α can be decomposed as f(x) = |x|^α · L(x) where L = f(x)/|x|^α
+    is slowly varying. This follows from RV(α)/RV(α) = RV(0) = SV. -/
+theorem regularlyVarying_decomposition {f : ℝ → ℝ} {α : ℝ}
+    (hf : RegularlyVarying f α) :
+    SlowlyVarying (fun x => f x / |x| ^ α) := by
+  rw [← regularlyVarying_zero_iff_slowlyVarying]
+  have h := regularlyVarying_div_index hf (regularlyVarying_rpow α)
+  rwa [sub_self] at h
+
+/-- The representation theorem (synthesis): If L is slowly varying, then
+    x ↦ |x|^α · L(x) is regularly varying with index α.
+    This follows from RV(α) · RV(0) = RV(α + 0) = RV(α). -/
+theorem regularlyVarying_of_decomposition {α : ℝ} {L : ℝ → ℝ}
+    (hL : SlowlyVarying L) :
+    RegularlyVarying (fun x => |x| ^ α * L x) α := by
+  have h := regularlyVarying_mul_index (regularlyVarying_rpow α)
+    (regularlyVarying_zero_iff_slowlyVarying.mpr hL)
+  rwa [add_zero] at h
+
+-- ============================================================================
+-- Part XV: Composition Properties
+-- ============================================================================
+
+/-
+Composition of regularly/slowly varying functions with power functions
+preserves the variation property, with index multiplication.
+
+Key results:
+- L(|x|^β) is SV when L is SV and β > 0
+- f(|x|^β) is RV(αβ) when f is RV(α) and β > 0
+
+These composition rules are essential for transforming between different
+parameterizations (e.g., working with x² instead of x).
+-/
+
+/-- Helper: |x|^β tends to infinity when β > 0. -/
+private lemma tendsto_abs_rpow_atTop {β : ℝ} (hβ : 0 < β) :
+    Tendsto (fun x : ℝ => |x| ^ β) atTop atTop := by
+  rw [Filter.tendsto_atTop_atTop]
+  intro b
+  by_cases hb : b ≤ 0
+  · exact ⟨1, fun x hx => le_trans hb (rpow_nonneg (abs_nonneg x) β)⟩
+  · push_neg at hb
+    refine ⟨b ^ β⁻¹, fun x hx => ?_⟩
+    have hb_nn : (0 : ℝ) ≤ b := le_of_lt hb
+    have hb1β_pos : 0 < b ^ β⁻¹ := rpow_pos_of_pos hb β⁻¹
+    have hx_pos : 0 < x := lt_of_lt_of_le hb1β_pos hx
+    rw [abs_of_pos hx_pos]
+    calc b = b ^ (1 : ℝ) := (rpow_one b).symm
+      _ = b ^ (β⁻¹ * β) := by congr 1; exact (inv_mul_cancel₀ (ne_of_gt hβ)).symm
+      _ = (b ^ β⁻¹) ^ β := rpow_mul hb_nn β⁻¹ β
+      _ ≤ x ^ β := rpow_le_rpow (le_of_lt hb1β_pos) hx (le_of_lt hβ)
+
+/-- Composition of a slowly varying function with |·|^β (β > 0) is slowly varying.
+    Proof: L(|cx|^β)/L(|x|^β) = L(c^β · |x|^β)/L(|x|^β) → 1
+    since c^β > 0 and |x|^β → ∞. -/
+theorem slowlyVarying_comp_rpow {L : ℝ → ℝ} (hL : SlowlyVarying L)
+    {β : ℝ} (hβ : 0 < β) :
+    SlowlyVarying (fun x => L (|x| ^ β)) := by
+  constructor
+  · intro x hx
+    exact hL.1 _ (rpow_pos_of_pos (abs_pos.mpr (ne_of_gt hx)) β)
+  · intro c hc
+    have hcβ : 0 < c ^ β := rpow_pos_of_pos hc β
+    -- Rewrite: |cx|^β = c^β · |x|^β
+    have eq : (fun x => L (|c * x| ^ β) / L (|x| ^ β)) =ᶠ[atTop]
+        (fun x => L (c ^ β * |x| ^ β) / L (|x| ^ β)) := by
+      filter_upwards [Filter.eventually_ge_atTop 0] with x hx
+      rw [abs_mul, abs_of_pos hc, mul_rpow (le_of_lt hc) (abs_nonneg x)]
+    rw [Filter.tendsto_congr' eq]
+    -- Compose: L(c^β · y)/L(y) → 1 as y → ∞, and |x|^β → ∞
+    exact (hL.2 (c ^ β) hcβ).comp (tendsto_abs_rpow_atTop hβ)
+
+/-- Composition of a regularly varying function with |·|^β (β > 0) gives
+    index multiplication: f ∈ RV(α), β > 0 ⟹ f(|·|^β) ∈ RV(αβ).
+    Proof: f(|cx|^β)/f(|x|^β) = f(c^β · |x|^β)/f(|x|^β) → (c^β)^α = c^{αβ}. -/
+theorem regularlyVarying_comp_rpow {f : ℝ → ℝ} {α : ℝ}
+    (hf : RegularlyVarying f α) {β : ℝ} (hβ : 0 < β) :
+    RegularlyVarying (fun x => f (|x| ^ β)) (α * β) := by
+  constructor
+  · intro x hx
+    exact hf.1 _ (rpow_pos_of_pos (abs_pos.mpr (ne_of_gt hx)) β)
+  · intro c hc
+    have hcβ : 0 < c ^ β := rpow_pos_of_pos hc β
+    have eq : (fun x => f (|c * x| ^ β) / f (|x| ^ β)) =ᶠ[atTop]
+        (fun x => f (c ^ β * |x| ^ β) / f (|x| ^ β)) := by
+      filter_upwards [Filter.eventually_ge_atTop 0] with x hx
+      rw [abs_mul, abs_of_pos hc, mul_rpow (le_of_lt hc) (abs_nonneg x)]
+    rw [Filter.tendsto_congr' eq]
+    -- f(c^β · y)/f(y) → (c^β)^α as y → ∞
+    have h_rv : Tendsto (fun y => f (c ^ β * y) / f y) atTop (𝓝 ((c ^ β) ^ α)) :=
+      hf.2 (c ^ β) hcβ
+    -- (c^β)^α = c^{αβ}
+    have h_eq : (c ^ β) ^ α = c ^ (α * β) := by
+      rw [← rpow_mul (le_of_lt hc), mul_comm β α]
+    rw [h_eq] at h_rv
+    exact h_rv.comp (tendsto_abs_rpow_atTop hβ)
+
+-- ============================================================================
+-- Part XVI: Uniform Convergence and Structural Theorems
+-- ============================================================================
+
+/-
+The Uniform Convergence Theorem is the deepest structural result about
+slowly varying functions. It says the convergence L(cx)/L(x) → 1 is
+uniform on compact subsets of (0,∞). This implies Potter's bound and
+is the key to most analytical results about regular variation.
+-/
+
+/-- **Uniform Convergence Theorem** (Karamata, 1930):
+    The convergence L(cx)/L(x) → 1 is uniform in c on every compact
+    interval [a, b] ⊂ (0, ∞).
+
+    This is a deep result whose proof uses the Baire category theorem
+    (or measurability arguments). It implies Potter's bound and is
+    fundamental to all analytical applications of regular variation.
+
+    Axiomatized: requires Baire category theorem or measurability. -/
+axiom slowlyVarying_uniform_convergence (L : ℝ → ℝ) (hL : SlowlyVarying L)
+    (a b : ℝ) (ha : 0 < a) (hab : a ≤ b) (ε : ℝ) (hε : 0 < ε) :
+    ∀ᶠ x in atTop, ∀ c : ℝ, a ≤ c → c ≤ b → |L (c * x) / L x - 1| < ε
+
+/-- Consequence of uniform convergence: for any ε > 0, slowly varying
+    functions grow/decay slower than any power. That is, x^{-ε} ≤ L(x)/L(x₀) ≤ x^ε
+    eventually. This makes precise the idea that SV functions are "almost constant". -/
+axiom slowlyVarying_power_bound (L : ℝ → ℝ) (hL : SlowlyVarying L)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ C : ℝ, 0 < C ∧ ∀ᶠ x in atTop,
+      C⁻¹ * x ^ (-ε) ≤ |L x| ∧ |L x| ≤ C * x ^ ε
+
+-- ============================================================================
+-- Part XVII: Summary and Open Directions
 -- ============================================================================
 
 /-- Summary of the Gnedenko-Kolmogorov formalization:
 
-    **Slowly varying functions** (8 theorems):
-    - Definition, constant, multiplication, rpow, division, reciprocal, power, asymptotic equivalence
-    **Regularly varying functions** (5 theorems):
-    - Definition, power function, product (index addition), reciprocal (index negation), quotient (index subtraction)
+    **Slowly varying functions** (9 theorems + 1 axiom):
+    - Definition, constant, multiplication, rpow, division, reciprocal,
+      power, asymptotic equivalence, composition with rpow
+    - Uniform convergence theorem (axiom), power bound (axiom)
+    **Regularly varying functions** (8 theorems):
+    - Definition, power function, product (index addition), reciprocal (index negation),
+      quotient (index subtraction), decomposition (RV → SV), synthesis (SV → RV),
+      composition with rpow (index multiplication)
+    **Representation theorem**: f ∈ RV(α) ⟺ f(x) = |x|^α · L(x) with L ∈ SV
     **Tail balance**: structure, ratio properties, symmetry, alpha range
     **Domain of attraction**: definition via characteristic functions
     **Main theorem**: forward direction (axiom), converse (axiom), Gaussian case (axiom)
@@ -636,7 +783,7 @@ theorem tail_balance_alpha_range (tb : TailBalance) :
 theorem formalization_summary : True := trivial
 
 -- ============================================================================
--- Part XV: Verification
+-- Part XVIII: Verification
 -- ============================================================================
 
 #check @SlowlyVarying
@@ -650,6 +797,10 @@ theorem formalization_summary : True := trivial
 #check @slowlyVarying_div
 #check @slowlyVarying_of_asymp_equiv
 #check @slowlyVarying_pow
+#check @slowlyVarying_comp_rpow
+#check @regularlyVarying_decomposition
+#check @regularlyVarying_of_decomposition
+#check @regularlyVarying_comp_rpow
 #check @gnedenko_kolmogorov_forward
 #check @gnedenko_kolmogorov_converse
 #check @stable_self_similarity
