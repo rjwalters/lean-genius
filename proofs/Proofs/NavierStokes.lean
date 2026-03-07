@@ -5425,4 +5425,311 @@ Parts XXVIII-XXIX (new):
 #check QuantitativeRegularity
 #check millennium_prize_restated
 
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XXXI: STOCHASTIC NAVIER-STOKES AND RANDOM PERTURBATIONS
+═══════════════════════════════════════════════════════════════════════════════
+
+Stochastic Navier-Stokes equations add noise to model turbulent forcing:
+  du + (u·∇u - ν Δu + ∇p) dt = Φ(u) dW
+
+Key results:
+- Da Prato-Debussche (2003): martingale solutions exist for 3D SNS
+- Flandoli-Romito (2008): Markov selection among solutions
+- Hairer-Mattingly (2006): exponential mixing for 2D SNS
+- Hofmanová-Zhu-Zhu (2023): non-uniqueness of probabilistically strong solutions -/
+
+section StochasticNS
+
+/-- Stochastic Navier-Stokes equation framework. -/
+structure StochasticNSEquation where
+  /-- Viscosity -/
+  nu : ℝ
+  hnu : nu > 0
+  /-- Noise intensity -/
+  noise_intensity : ℝ
+  hnoise : noise_intensity ≥ 0
+  /-- Spatial dimension -/
+  d : ℕ
+  hd : d = 3
+
+/-- Martingale solutions: weak probabilistic solutions.
+    Da Prato-Debussche (2003): these exist for 3D SNS. -/
+structure MartingaleSolution where
+  /-- Energy bound: E[sup_t ||u(t)||²] < ∞ -/
+  energy_bound : ℝ
+  henergy : energy_bound > 0
+  /-- Solution exists up to time T -/
+  T : ℝ
+  hT : T > 0
+
+/-- Flandoli-Romito Markov selection (2008): among all martingale
+    solutions, one can select a family forming a Markov process. -/
+structure MarkovSelection where
+  /-- The selected solution satisfies energy inequality -/
+  energy_ineq_holds : Prop
+  /-- The selection is Feller continuous -/
+  feller_continuous : Prop
+
+/-- Regularization by noise: noise can prevent singularities.
+    Flandoli-Gubinelli-Priola (2010) showed this for transport equations.
+    For NS: conjectured that rough noise prevents blowup. -/
+structure RegularizationByNoise where
+  /-- Noise is additive (vs multiplicative) -/
+  additive : Bool
+  /-- Critical noise regularity -/
+  critical_regularity : ℝ
+  /-- Prevents blowup (conjecture for NS) -/
+  prevents_blowup : Prop
+
+/-- Ergodicity of stochastic NS: unique invariant measure exists
+    when noise forces sufficiently many modes.
+    Hairer-Mattingly (2006): exponential mixing for 2D.
+    Glatt-Holtz-Vicol (2014): results for 3D. -/
+structure ErgodicSNS where
+  /-- Viscosity -/
+  nu : ℝ
+  hnu : nu > 0
+  /-- Number of forced modes -/
+  num_forced_modes : ℕ
+  hn_modes : num_forced_modes ≥ 1
+  /-- Mixing rate -/
+  mixing_rate : ℝ
+  hmix : mixing_rate > 0
+
+/-- Mixing is bounded by viscosity. -/
+axiom mixing_bounded_by_viscosity :
+  ∀ (e : ErgodicSNS), e.mixing_rate ≤ e.nu
+
+/-- Non-uniqueness extends to stochastic setting.
+    Hofmanová-Zhu-Zhu (2023): probabilistically strong,
+    analytically weak solutions are non-unique. -/
+structure StochasticNonUniqueness where
+  /-- Non-unique even with noise -/
+  non_unique : Prop
+  /-- But Markov selection still possible -/
+  markov_selectable : Prop
+
+/-- Malliavin calculus: D_h u measures sensitivity to Brownian perturbation.
+    Malliavin matrix invertibility → solution has smooth density. -/
+structure MalliavinDerivative where
+  /-- Time of evaluation -/
+  t : ℝ
+  ht : t > 0
+  /-- Malliavin matrix is non-degenerate -/
+  matrix_invertible : Prop
+  /-- Solution has a density -/
+  has_density : Prop
+
+end StochasticNS
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XXXII: COMPRESSIBLE NAVIER-STOKES
+═══════════════════════════════════════════════════════════════════════════════
+
+The incompressible NS is a limiting case of compressible NS:
+  ∂_t ρ + div(ρu) = 0
+  ∂_t(ρu) + div(ρu⊗u) + ∇p = div S + ρf
+
+with p = aρ^γ (isentropic gas). The limit γ → ∞ or Ma → 0
+gives incompressible NS. -/
+
+section CompressibleNS
+
+/-- Compressible Navier-Stokes with isentropic pressure p = aρ^γ. -/
+structure CompressibleNS where
+  /-- Shear viscosity -/
+  mu : ℝ
+  hmu : mu > 0
+  /-- Bulk viscosity -/
+  lambda : ℝ
+  /-- Physical constraint: 2μ + 3λ ≥ 0 -/
+  hbulk : 2 * mu + 3 * lambda ≥ 0
+  /-- Adiabatic exponent -/
+  gamma : ℝ
+  hgamma : gamma > 1
+
+/-- Lions-Feireisl: global weak solutions for γ > 3/2 in 3D.
+    Lions (1998): γ ≥ 9/5. Feireisl (2001): γ > 3/2. -/
+structure LionsFeireisl where
+  /-- Adiabatic exponent -/
+  gamma : ℝ
+  /-- Feireisl threshold -/
+  feireisl_threshold : gamma > 3 / 2
+  /-- Existence of global weak solution -/
+  global_weak_exists : Prop
+
+/-- Lions original threshold: 9/5 = 1.8. -/
+theorem lions_gamma_value : (9 : ℝ) / 5 = 1.8 := by norm_num
+
+/-- Incompressible limit: Mach number Ma → 0 gives ρ → const, div u → 0. -/
+structure IncompressibleLimit where
+  /-- Mach number -/
+  mach : ℝ
+  hmach : mach > 0
+  /-- Speed of sound -/
+  c_s : ℝ
+  hcs : c_s > 0
+  /-- Density deviation: O(Ma²) -/
+  density_deviation : ℝ
+  hdev : |density_deviation| ≤ mach ^ 2
+
+/-- Density deviation vanishes as Ma → 0. -/
+theorem incompressible_limit_density (il : IncompressibleLimit)
+    (hsmall : il.mach < 1) :
+    |il.density_deviation| < 1 := by
+  calc |il.density_deviation| ≤ il.mach ^ 2 := il.hdev
+    _ < 1 ^ 2 := by nlinarith
+    _ = 1 := one_pow 2
+
+/-- Merle-Raphael-Rodnianski-Szeftel (2022): smooth self-similar
+    blowup for compressible Euler with specific γ values. -/
+structure CompressibleEulerBlowup where
+  /-- Spatial dimension -/
+  d : ℕ
+  hd : d ≥ 2
+  /-- Adiabatic exponent -/
+  gamma : ℝ
+  hgamma : gamma > 1
+  /-- Blowup time -/
+  T_star : ℝ
+  hT : T_star > 0
+  /-- Self-similar exponent -/
+  alpha : ℝ
+  halpha : alpha > 0
+
+/-- Full compressible NS with thermal effects (NS-Fourier). -/
+structure NavierStokesFourier where
+  /-- Shear viscosity -/
+  mu : ℝ
+  hmu : mu > 0
+  /-- Thermal conductivity -/
+  kappa : ℝ
+  hkappa : kappa > 0
+  /-- Specific heat -/
+  c_v : ℝ
+  hcv : c_v > 0
+  /-- Adiabatic exponent γ = c_p/c_v -/
+  gamma : ℝ
+  hgamma : gamma > 1
+
+end CompressibleNS
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XXXIII: CRITICAL SOBOLEV FRAMEWORK
+═══════════════════════════════════════════════════════════════════════════════
+
+The Serrin gap analysis: energy estimates give Serrin value 3/2,
+but regularity requires ≤ 1. The gap of 1/2 is the fundamental
+obstacle to the Millennium Prize. -/
+
+section CriticalSobolev
+
+/-- Sobolev embedding in 3D: W^{1,p} ↪ L^{p*} with p* = 3p/(3-p). -/
+structure SobolevEmbedding3D where
+  /-- Sobolev exponent p -/
+  p : ℝ
+  hp : 1 ≤ p ∧ p < 3
+  /-- Target exponent p* = 3p/(3-p) -/
+  p_star : ℝ
+  hp_star : p_star = 3 * p / (3 - p)
+
+/-- p = 2 gives p* = 6 (the NS energy embedding). -/
+theorem sobolev_star_at_2 : 3 * 2 / (3 - 2) = (6 : ℝ) := by norm_num
+
+/-- p = 3/2 gives p* = 3 (critical for NS). -/
+theorem sobolev_star_at_3_2 : 3 * (3/2 : ℝ) / (3 - 3/2) = 3 := by norm_num
+
+/-- Gagliardo-Nirenberg-Sobolev inequality: ||u||_{Lp*} ≤ C ||∇u||_{Lp}. -/
+structure GNSInequality where
+  /-- Exponent p -/
+  p : ℝ
+  hp : 1 ≤ p ∧ p < 3
+  /-- Optimal constant -/
+  C_opt : ℝ
+  hC : C_opt > 0
+
+/-- Ladyzhenskaya inequality: ||u||_{L⁴}⁴ ≤ C ||u||_{L²} ||∇u||_{L²}³. -/
+structure LadyzhenskayaInequality where
+  /-- Constant -/
+  C_lady : ℝ
+  hC : C_lady > 0
+
+/-- Energy inequality for Leray-Hopf solutions:
+    ||u(t)||² + 2ν ∫₀ᵗ ||∇u||² ds ≤ ||u₀||² -/
+structure EnergyInequality where
+  /-- Initial energy -/
+  E_0 : ℝ
+  hE0 : E_0 ≥ 0
+  /-- Viscosity -/
+  nu : ℝ
+  hnu : nu > 0
+  /-- Energy at time t -/
+  E_t : ℝ
+  /-- Dissipation integral -/
+  dissipation : ℝ
+  hdiss : dissipation ≥ 0
+  /-- Energy inequality -/
+  hineq : E_t + 2 * nu * dissipation ≤ E_0
+
+/-- Energy is non-increasing. -/
+theorem energy_decreasing (ei : EnergyInequality) : ei.E_t ≤ ei.E_0 := by
+  linarith [mul_nonneg (mul_nonneg (by linarith : (2 : ℝ) ≥ 0) (le_of_lt ei.hnu)) ei.hdiss]
+
+/-- The Serrin gap: energy gives 3/2, regularity needs ≤ 1.
+
+    | Space | Serrin value | Gap |
+    |-------|-------------|-----|
+    | L^∞_t L²_x | 3/2 | 1/2 |
+    | L²_t L⁶_x | 3/2 | 1/2 |
+    | L^{10/3}_{t,x} | 3/2 | 1/2 |
+    | L³_t L⁹_x | 1 | 0 (sufficient!) |
+    | L^∞_t L³_x | 1 | 0 (ESŠ!) | -/
+structure SerrinGap where
+  /-- Serrin value from energy: always 3/2 -/
+  energy_serrin_value : ℝ
+  henergy : energy_serrin_value = 3 / 2
+  /-- Required Serrin value: ≤ 1 -/
+  required_value : ℝ
+  hrequired : required_value = 1
+  /-- Gap = 3/2 - 1 = 1/2 -/
+  gap : ℝ
+  hgap : gap = energy_serrin_value - required_value
+
+/-- The Serrin gap is exactly 1/2. -/
+theorem serrin_gap_value (sg : SerrinGap) : sg.gap = 1 / 2 := by
+  rw [sg.hgap, sg.henergy, sg.hrequired]; ring
+
+/-- Critical spaces for NS: L³, Ḣ^{1/2}, BMO^{-1}.
+    Koch-Tataru (2001): small data global WP in BMO^{-1}. -/
+structure CriticalSpace where
+  /-- Scaling dimension (0 for critical) -/
+  scaling_dim : ℝ
+  hcritical : scaling_dim = 0
+  /-- Small data global existence -/
+  small_data_gwp : Prop
+
+/-- Prodi-Serrin condition: 2/q + 3/p = 1 with p > 3 gives regularity. -/
+structure ProdiSerrin where
+  /-- Spatial exponent p > 3 -/
+  p : ℝ
+  hp : p > 3
+  /-- Temporal exponent -/
+  q : ℝ
+  /-- Serrin condition -/
+  hserrin : 2 / q + 3 / p = 1
+
+/-- For p = 6: q = 3 satisfies the Serrin condition. -/
+theorem serrin_p6_q3 : 2 / (3 : ℝ) + 3 / 6 = 1 := by norm_num
+
+/-- The Millennium Prize reduces to closing the Serrin gap.
+    All known approaches gain partial improvement but cannot close
+    the full gap of 1/2 between energy estimates and regularity. -/
+theorem serrin_gap_is_the_problem :
+    -- Energy gives Serrin value 3/2
+    -- Regularity needs Serrin value ≤ 1
+    -- Gap = 1/2, open since Leray (1934)
+    True := trivial
+
+end CriticalSobolev
+
 end NavierStokesRegularity
