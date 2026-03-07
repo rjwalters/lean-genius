@@ -213,4 +213,223 @@ example : (1*2 + 2*4 + 3*6 : ℝ)^2 = (1^2 + 2^2 + 3^2) * (2^2 + 4^2 + 6^2) := b
 example : (1*0 + 0*1 : ℝ)^2 < (1^2 + 0^2) * (0^2 + 1^2) := by
   norm_num
 
+-- ============================================================================
+-- Part V: General Hölder Equality — Conjugate Exponent Identities
+-- ============================================================================
+
+/-
+For conjugate exponents p, q with 1 < p and 1/p + 1/q = 1:
+  - q = p/(p-1)
+  - (p-1)(q-1) = 1
+  - q/p + 1 = q (key for the power proportionality proof)
+  - p + q = pq
+These identities are used throughout the Hölder equality analysis.
+-/
+
+/-- For Hölder conjugates, q = p/(p-1). -/
+theorem conj_eq_div {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1) :
+    q = p / (p - 1) := by
+  have hp_pos : (0 : ℝ) < p := lt_trans one_pos hp
+  have hp_ne : p ≠ 0 := ne_of_gt hp_pos
+  have hp1 : (0 : ℝ) < p - 1 := by linarith
+  have hq_pos : (0 : ℝ) < q := by
+    by_contra h
+    push_neg at h
+    have hq_le : q ≤ 0 := h
+    have : 1 / q ≤ 0 := div_nonpos_iff.mpr (Or.inl ⟨le_of_lt one_pos, hq_le⟩)
+    have : 1 / p < 1 := by rw [div_lt_one hp_pos]; exact hp
+    linarith
+  have hq_ne : q ≠ 0 := ne_of_gt hq_pos
+  field_simp at hinv ⊢; nlinarith
+
+/-- For Hölder conjugates, (p-1)(q-1) = 1. -/
+theorem conj_sub_one_mul {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1) :
+    (p - 1) * (q - 1) = 1 := by
+  have hp_ne : p ≠ 0 := ne_of_gt (lt_trans one_pos hp)
+  have hq_ne : q ≠ 0 := by
+    intro heq; rw [heq, div_zero, add_zero] at hinv
+    have : 1 / p < 1 := by rw [div_lt_one (by linarith : (0:ℝ) < p)]; exact hp
+    linarith
+  have := hinv
+  field_simp at this
+  nlinarith
+
+/-- For Hölder conjugates, q/p + 1 = q. -/
+theorem conj_q_div_p_add_one {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1) :
+    q / p + 1 = q := by
+  have hp_ne : p ≠ 0 := ne_of_gt (lt_trans one_pos hp)
+  field_simp; linarith [conj_sub_one_mul hp hinv]
+
+/-- For Hölder conjugates, 1 < q. -/
+theorem conj_one_lt_q {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1) :
+    1 < q := by
+  have hq := conj_eq_div hp hinv
+  rw [hq]
+  have hp1 : (0 : ℝ) < p - 1 := by linarith
+  rw [one_lt_div hp1]
+  linarith
+
+/-- For Hölder conjugates, p + q = p * q. -/
+theorem conj_add_eq_mul {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1) :
+    p + q = p * q := by
+  have hp_ne : p ≠ 0 := ne_of_gt (lt_trans one_pos hp)
+  have hq_ne : q ≠ 0 := ne_of_gt (lt_trans one_pos (conj_one_lt_q hp hinv))
+  field_simp at hinv; linarith
+
+-- ============================================================================
+-- Part VI: Young's Equality Case
+-- ============================================================================
+
+/-
+Young's inequality: a·b ≤ a^p/p + b^q/q for a, b ≥ 0, p, q conjugate.
+
+Equality holds iff a^p = b^q (power proportionality).
+
+Forward direction (a^p = b^q → equality): algebraic.
+  If a^p = b^q = c, then RHS = c/p + c/q = c·(1/p + 1/q) = c.
+  LHS = a·b = c^{1/p}·c^{1/q} = c^{1/p+1/q} = c.
+
+Reverse direction (equality → a^p = b^q): uses strict convexity.
+  The function h(t) = t^p/p - t + 1/q is strictly convex for p > 1,
+  has unique minimum at t = 1 with h(1) = 0. So h(t) ≥ 0 with
+  equality iff t = 1. Setting t = a·b^{1-q} gives a^p = b^q.
+-/
+
+/-- Young's inequality deficit: the quantity a^p/p + b^q/q - a·b ≥ 0.
+    A sum of these deficits being zero implies each deficit is zero. -/
+noncomputable def youngDeficit (p q a b : ℝ) : ℝ := a ^ p / p + b ^ q / q - a * b
+
+/-- The Young deficit is non-negative (restates Young's inequality). -/
+axiom youngDeficit_nonneg {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1)
+    {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
+    0 ≤ youngDeficit p q a b
+
+/-- **Young's equality characterization**: For a, b ≥ 0 and conjugate p, q,
+    the Young deficit is zero iff a^p = b^q.
+    This is the key analytic fact (strict convexity of t^p). -/
+axiom youngDeficit_eq_zero_iff {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1)
+    {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
+    youngDeficit p q a b = 0 ↔ a ^ p = b ^ q
+
+-- ============================================================================
+-- Part VII: General Hölder Equality Characterization
+-- ============================================================================
+
+/-
+The main structural theorem: Hölder equality reduces to pointwise Young equality.
+
+Given f, g ≥ 0 and conjugate p, q, if we normalize to ‖f‖_p = ‖g‖_q = 1:
+  ∑ fᵢgᵢ ≤ ∑ (fᵢ^p/p + gᵢ^q/q) = (∑fᵢ^p)/p + (∑gᵢ^q)/q = 1/p + 1/q = 1.
+
+Equality ∑ fᵢgᵢ = 1 iff the sum of Young deficits is zero,
+iff each Young deficit is zero (sum of nonneg = 0),
+iff fᵢ^p = gᵢ^q for all i (by Young's equality case).
+
+This generalizes the Cauchy-Schwarz proof technique:
+  CS: sum of squared cross-terms = 0 → all cross-terms vanish
+  Hölder: sum of Young deficits = 0 → all deficits vanish
+-/
+
+/-- Sum of Young deficits equals the total Hölder deficit:
+    ∑(fᵢ^p/p + gᵢ^q/q - fᵢgᵢ) = (∑fᵢ^p)/p + (∑gᵢ^q)/q - ∑fᵢgᵢ. -/
+theorem sum_youngDeficit {ι : Type*} (s : Finset ι) (f g : ι → ℝ) (p q : ℝ) :
+    ∑ i ∈ s, youngDeficit p q (f i) (g i) =
+      (∑ i ∈ s, f i ^ p) / p + (∑ i ∈ s, g i ^ q) / q -
+      ∑ i ∈ s, f i * g i := by
+  simp only [youngDeficit, Finset.sum_sub_distrib, Finset.sum_add_distrib,
+    Finset.sum_div]
+
+/-- **Sum of non-negative Young deficits equals zero iff each is zero.**
+    This is the same "sum of nonneg = 0" technique used in the CS proof. -/
+theorem sum_youngDeficit_eq_zero_iff {ι : Type*} (s : Finset ι) (f g : ι → ℝ)
+    {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1)
+    (hf : ∀ i ∈ s, 0 ≤ f i) (hg : ∀ i ∈ s, 0 ≤ g i) :
+    ∑ i ∈ s, youngDeficit p q (f i) (g i) = 0 ↔
+    ∀ i ∈ s, youngDeficit p q (f i) (g i) = 0 := by
+  constructor
+  · intro hsum i hi
+    have hnn : ∀ j ∈ s, 0 ≤ youngDeficit p q (f j) (g j) :=
+      fun j hj => youngDeficit_nonneg hp hinv (hf j hj) (hg j hj)
+    exact (Finset.sum_eq_zero_iff_of_nonneg hnn).mp hsum i hi
+  · intro hall
+    exact Finset.sum_eq_zero fun i hi => hall i hi
+
+/-- **Hölder equality implies pointwise power proportionality (normalized case).**
+    If ∑fᵢ^p = 1, ∑gᵢ^q = 1, and ∑fᵢgᵢ = 1, then fᵢ^p = gᵢ^q for all i.
+
+    Proof: ∑ Young deficits = 1/p + 1/q - 1 = 0, so each deficit = 0,
+    so by Young's equality case, fᵢ^p = gᵢ^q. -/
+theorem holder_eq_normalized_implies_power_prop {ι : Type*} (s : Finset ι) (f g : ι → ℝ)
+    {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1)
+    (hf : ∀ i ∈ s, 0 ≤ f i) (hg : ∀ i ∈ s, 0 ≤ g i)
+    (hnorm_f : (∑ i ∈ s, f i ^ p) = 1) (hnorm_g : (∑ i ∈ s, g i ^ q) = 1)
+    (heq : ∑ i ∈ s, f i * g i = 1) :
+    ∀ i ∈ s, f i ^ p = g i ^ q := by
+  -- The sum of Young deficits = 1/p + 1/q - 1 = 0
+  have hsum : ∑ i ∈ s, youngDeficit p q (f i) (g i) = 0 := by
+    rw [sum_youngDeficit, hnorm_f, hnorm_g, heq]
+    have hp_pos : (0 : ℝ) < p := lt_trans one_pos hp
+    have hq_pos : (0 : ℝ) < q := lt_trans one_pos (conj_one_lt_q hp hinv)
+    have hp_ne : p ≠ 0 := ne_of_gt hp_pos
+    have hq_ne : q ≠ 0 := ne_of_gt hq_pos
+    rw [div_add_div _ _ hp_ne hq_ne]
+    have hpq : p + q = p * q := conj_add_eq_mul hp hinv
+    have : (1 * q + p * 1) / (p * q) - 1 = 0 := by
+      rw [show 1 * q + p * 1 = p + q by ring, hpq, div_self (by positivity : p * q ≠ 0),
+        sub_self]
+    linarith
+  -- Each deficit is 0 (sum of nonneg = 0)
+  have hall := (sum_youngDeficit_eq_zero_iff s f g hp hinv hf hg).mp hsum
+  -- Each deficit = 0 iff f_i^p = g_i^q
+  intro i hi
+  exact (youngDeficit_eq_zero_iff hp hinv (hf i hi) (hg i hi)).mp (hall i hi)
+
+/-- **Hölder equality implies pointwise power proportionality (general case).**
+    If equality holds in Hölder's inequality, then there exists c ≥ 0 such that
+    fᵢ^p = c · gᵢ^q for all i.
+
+    This reduces the general case to the normalized case by dividing
+    f by the p-norm and g by the q-norm. -/
+theorem holder_eq_implies_power_prop {ι : Type*} (s : Finset ι) (f g : ι → ℝ)
+    {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1)
+    (hf : ∀ i ∈ s, 0 ≤ f i) (hg : ∀ i ∈ s, 0 ≤ g i)
+    (hFp : 0 < ∑ i ∈ s, f i ^ p) (hGq : 0 < ∑ i ∈ s, g i ^ q)
+    (heq : ∑ i ∈ s, f i * g i =
+      (∑ i ∈ s, f i ^ p) ^ (1 / p) * (∑ i ∈ s, g i ^ q) ^ (1 / q)) :
+    ∃ c : ℝ, 0 ≤ c ∧ ∀ i ∈ s, f i ^ p = c * g i ^ q := by
+  -- The proportionality constant c = (∑f^p)/(∑g^q)
+  use (∑ i ∈ s, f i ^ p) / (∑ i ∈ s, g i ^ q)
+  constructor
+  · exact div_nonneg (le_of_lt hFp) (le_of_lt hGq)
+  · -- Reduce to normalized case: f/‖f‖_p and g/‖g‖_q
+    -- After normalization, f_i^p = g_i^q for all i
+    -- Unscaling: f_i^p/(∑f^p) = g_i^q/(∑g^q), i.e., f_i^p = (∑f^p/∑g^q) * g_i^q
+    sorry
+
+-- ============================================================================
+-- Part VIII: Specialization — Recovering Cauchy-Schwarz from Hölder
+-- ============================================================================
+
+/-
+When p = q = 2, the power proportionality condition fᵢ² = λ · gᵢ²
+simplifies to fᵢ = ±√λ · gᵢ. With non-negative f, g, this is just
+proportionality fᵢ = c · gᵢ, recovering our Part I result.
+-/
+
+/-- Cauchy-Schwarz as a special case of Hölder (p = q = 2):
+    power proportionality fᵢ² = λ · gᵢ² implies proportionality. -/
+theorem power_prop_sq_implies_prop {ι : Type*} (s : Finset ι) (f g : ι → ℝ)
+    (hf : ∀ i ∈ s, 0 ≤ f i) (hg : ∀ i ∈ s, 0 ≤ g i)
+    {c : ℝ} (hc : 0 ≤ c) (hprop : ∀ i ∈ s, f i ^ 2 = c * g i ^ 2) :
+    ∀ i ∈ s, f i = Real.sqrt c * g i := by
+  intro i hi
+  have h := hprop i hi
+  have hfi := hf i hi
+  have hgi := hg i hi
+  have hsq_c : Real.sqrt c * Real.sqrt c = c := Real.mul_self_sqrt hc
+  -- f_i^2 = c * g_i^2, so (f_i - √c · g_i)^2 = f_i^2 - 2·f_i·√c·g_i + c·g_i^2 = 0
+  -- Since both f_i ≥ 0 and √c · g_i ≥ 0, this means f_i = √c · g_i
+  have hcnn : 0 ≤ Real.sqrt c * g i := mul_nonneg (Real.sqrt_nonneg _) hgi
+  nlinarith [sq_nonneg (f i - Real.sqrt c * g i), h, hsq_c]
+
 end CauchySchwarzOQ03OQ01
