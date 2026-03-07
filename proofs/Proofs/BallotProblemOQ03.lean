@@ -1080,4 +1080,134 @@ theorem lindstrom_involution_card (m n₁ n₂ n₁' n₂' a₁ a₂ : ℕ)
     Fintype.card (pathType m n₁' × pathType m n₂') :=
   lindstrom_involution m n₁ n₂ n₁' n₂' a₁ a₂ h_strict_a h_n₁' h_n₂' h_n_sum
 
+/-! ## Part XIV: Path Transposition (East ↔ North Flip) -/
+
+/-- Flip a lattice path: swap East (false) ↔ North (true).
+    This transposes the grid, mapping paths with m East + n North steps
+    to paths with n East + m North steps. -/
+def pathFlip (l : LPath) : LPath := l.map (!·)
+
+theorem pathFlip_length (l : LPath) : (pathFlip l).length = l.length := by
+  simp [pathFlip]
+
+/-- Flipping twice is the identity -/
+theorem pathFlip_involutive (l : LPath) : pathFlip (pathFlip l) = l := by
+  unfold pathFlip
+  rw [List.map_map,
+      show (fun x : Bool => !x) ∘ (fun x : Bool => !x) = id from by ext b; simp,
+      List.map_id]
+
+/-- East steps of the flipped path = North steps of the original -/
+theorem pathFlip_eastSteps (l : LPath) : eastSteps (pathFlip l) = northSteps l := by
+  induction l with
+  | nil => rfl
+  | cons x xs ih =>
+    cases x with
+    | false =>
+      have h1 : pathFlip (false :: xs) = true :: pathFlip xs := rfl
+      rw [h1]
+      have h2 : eastSteps (true :: pathFlip xs) = eastSteps (pathFlip xs) := by
+        simp [eastSteps]
+      rw [h2, northSteps_cons_false, ih]
+    | true =>
+      have h1 : pathFlip (true :: xs) = false :: pathFlip xs := rfl
+      rw [h1]
+      have h2 : eastSteps (false :: pathFlip xs) = eastSteps (pathFlip xs) + 1 := by
+        simp [eastSteps]
+      rw [h2, northSteps_cons_true, ih]; omega
+
+/-- North steps of the flipped path = East steps of the original -/
+theorem pathFlip_northSteps (l : LPath) : northSteps (pathFlip l) = eastSteps l := by
+  have h := eastSteps_add_northSteps (pathFlip l)
+  rw [pathFlip_length, pathFlip_eastSteps] at h
+  have h2 := eastSteps_add_northSteps l
+  omega
+
+/-- Path transposition: flipping East↔North gives a bijection pathType m n ≃ pathType n m.
+    This is the combinatorial proof that C(m+n, m) = C(m+n, n). -/
+def pathFlipEquiv (m n : ℕ) : pathType m n ≃ pathType n m where
+  toFun := fun ⟨l, hlen, heast⟩ =>
+    ⟨pathFlip l,
+     by rw [pathFlip_length, Nat.add_comm]; exact hlen,
+     by have h := pathFlip_eastSteps l
+        unfold eastSteps northSteps at h
+        have h_sum := eastSteps_add_northSteps l
+        unfold eastSteps northSteps at h_sum; omega⟩
+  invFun := fun ⟨l, hlen, heast⟩ =>
+    ⟨pathFlip l,
+     by rw [pathFlip_length, Nat.add_comm]; exact hlen,
+     by have h := pathFlip_eastSteps l
+        unfold eastSteps northSteps at h
+        have h_sum := eastSteps_add_northSteps l
+        unfold eastSteps northSteps at h_sum; omega⟩
+  left_inv := fun ⟨l, _, _⟩ => Subtype.ext (pathFlip_involutive l)
+  right_inv := fun ⟨l, _, _⟩ => Subtype.ext (pathFlip_involutive l)
+
+/-- **Binomial Coefficient Symmetry via Paths**: C(m+n, m) = C(m+n, n).
+    The path flip bijection gives a purely combinatorial proof: paths with m East + n North
+    steps biject with paths with n East + m North steps by swapping step types. -/
+theorem choose_symm_via_paths (m n : ℕ) :
+    Nat.choose (m + n) m = Nat.choose (m + n) n := by
+  have h1 := path_count_eq_choose m n
+  have h2 := path_count_eq_choose n m
+  rw [show n + m = m + n from Nat.add_comm n m] at h2
+  have h3 : Fintype.card (pathType m n) = Fintype.card (pathType n m) :=
+    Fintype.card_congr (pathFlipEquiv m n)
+  linarith
+
+/-! ## Part XV: LGV Determinant Algebra -/
+
+/-- **Antisymmetry in Sources**: Swapping the source y-coordinates negates the LGV determinant. -/
+theorem lgvDet_swap_sources (m a₁ b₁ a₂ b₂ : ℕ) :
+    lgvDet m a₂ b₁ a₁ b₂ = -lgvDet m a₁ b₁ a₂ b₂ := by
+  unfold lgvDet; ring
+
+/-- **Antisymmetry in Targets**: Swapping the target y-coordinates negates the LGV determinant. -/
+theorem lgvDet_swap_targets (m a₁ b₁ a₂ b₂ : ℕ) :
+    lgvDet m a₁ b₂ a₂ b₁ = -lgvDet m a₁ b₁ a₂ b₂ := by
+  unfold lgvDet; ring
+
+/-- **Non-negativity**: Under proper ordering (a₁ ≤ a₂ ≤ b₁ ≤ b₂), the LGV determinant
+    is non-negative. This follows because lgvDet equals niPairCount (a natural number)
+    by the 2×2 LGV lemma. -/
+theorem lgvDet_nonneg (m a₁ b₁ a₂ b₂ : ℕ)
+    (ha : a₁ ≤ a₂) (hb : b₁ ≤ b₂) (ha₁ : a₁ ≤ b₁) (ha₂ : a₂ ≤ b₂) (ha₂₁ : a₂ ≤ b₁) :
+    0 ≤ lgvDet m a₁ b₁ a₂ b₂ := by
+  rw [← lgv_lemma_2x2 m a₁ b₁ a₂ b₂ ha hb ha₁ ha₂ ha₂₁]
+  exact Int.natCast_nonneg _
+
+/-- **Double swap vanishes**: Swapping both sources and targets recovers the original. -/
+theorem lgvDet_swap_both (m a₁ b₁ a₂ b₂ : ℕ) :
+    lgvDet m a₂ b₂ a₁ b₁ = lgvDet m a₁ b₁ a₂ b₂ := by
+  unfold lgvDet; ring
+
+/-! ## Part XVI: Catalan-Ballot Unification -/
+
+/-- **Catalan = Ballot**: The n-th Catalan number equals the ballot count for (n+1) vs n votes.
+    Both count lattice paths that stay strictly above the diagonal, via two equivalent
+    formulations of the reflection principle:
+    - Cn n = C(2n,n) - C(2n,n+1) [Catalan via difference]
+    - ballotSeqCount (n+1) n = C(2n, n) - C(2n, n+1) [ballot via reflection] -/
+theorem catalan_eq_ballot (n : ℕ) : Cn n = ballotSeqCount (n + 1) n := by
+  simp only [Cn, ballotSeqCount,
+    show n + 1 + n - 1 = 2 * n from by omega,
+    show n + 1 - 1 = n from by omega]
+
+-- Verified for small values
+example : Cn 0 = ballotSeqCount 1 0 := by native_decide
+example : Cn 1 = ballotSeqCount 2 1 := by native_decide
+example : Cn 2 = ballotSeqCount 3 2 := by native_decide
+example : Cn 3 = ballotSeqCount 4 3 := by native_decide
+example : Cn 4 = ballotSeqCount 5 4 := by native_decide
+
+/-- **Catalan via (n+1)**: Cn(n) = C(2n,n) / (n+1), combined with ballot theorem.
+    If q < p and both ≥ 1, then ballotSeqCount p q * (p+q) = (p-q) * C(p+q,p).
+    Setting p = n+1, q = n gives Cn(n) * (2n+1) = 1 * C(2n+1, n+1).
+    Here we just show the implication: catalan_formula + catalan_eq_ballot together give
+    the ballot formula for (n+1, n). -/
+theorem catalan_ballot_division (n : ℕ) :
+    ballotSeqCount (n + 1) n * (n + 1) = Nat.choose (2 * n) n := by
+  rw [← catalan_eq_ballot]
+  exact catalan_formula n
+
 end LatticePathLGV
