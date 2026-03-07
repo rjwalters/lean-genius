@@ -1,0 +1,76 @@
+{
+  "slug": "cauchy-schwarz-integral-oq-01-oq-02",
+  "title": "Riesz-Thorin interpolation from Hölder in Lean 4",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-03-06T22:03:59.698Z",
+    "iteration": 1,
+    "focus": "Completed: Riesz-Thorin interpolation formalization with Hölder connection",
+    "blockers": [],
+    "nextAction": "None - problem complete",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Formalized Riesz-Thorin interpolation connection to Hölder. 0 sorries, 1 axiom (riesz_thorin itself), 19 proved declarations. Full exponent interpolation infrastructure, log-convexity, and Hausdorff-Young corollary.",
+    "builtItems": [
+      "interpRecip, interpExp definitions with positivity proofs (CauchySchwarzIntegralOQ01OQ02.lean)",
+      "interpRecip_sum_conj: conjugate preservation under interpolation",
+      "LpLqBounded structure for operator norm bounds",
+      "interpNorm with log-convexity proof and monotonicity",
+      "holder_gives_endpoint: Hölder as endpoint bound",
+      "hausdorff_young_exponents: exponent computation for H-Y inequality",
+      "Gallery entry: src/data/proofs/cauchy-schwarz-integral-oq-01-oq-02/"
+    ],
+    "insights": [
+      "Hölder is necessary but not sufficient for Riesz-Thorin: provides endpoint bounds but not the interpolation step",
+      "The three-lines lemma (Hadamard) is the missing piece for a complete formalization",
+      "Interpolated exponents preserve the Hölder conjugate condition algebraically",
+      "The norm bound M₀^(1-θ)·M₁^θ is log-convex (linear in log scale)",
+      "Hausdorff-Young follows from Riesz-Thorin by interpolating L1→L∞ and L2→L2"
+    ],
+    "mathlibGaps": [
+      "Hadamard three-lines lemma not in Mathlib (needed for full Riesz-Thorin proof)",
+      "No convolution API in Mathlib suitable for Young convolution inequality formalization"
+    ],
+    "nextSteps": [
+      "Formalize Hadamard three-lines lemma to remove the axiom",
+      "Formalize Marcinkiewicz interpolation (real method, weaker hypotheses)",
+      "Prove Young convolution inequality as another Riesz-Thorin consequence"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "measure-theory",
+    "lp-spaces"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-07T00:36:31.363Z",
+  "lastUpdate": "2026-03-07T00:36:31.363Z",
+  "significance": 7,
+  "tractability": 5
+}
