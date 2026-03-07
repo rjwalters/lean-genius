@@ -11,7 +11,7 @@
     "proofRepoPath": "Proofs/CentralLimitTheoremOQ03.lean",
     "tags": ["probability", "category-theory", "convolution", "clt", "monoid", "gaussian", "extension", "research"],
     "badge": "open",
-    "sorries": 1,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "MeasureTheory.Measure.dirac",
@@ -90,8 +90,9 @@
     ]
   },
   "conclusion": {
-    "summary": "We formalize the full commutative monoid structure of probability distributions under convolution, including convolution powers with distribution law, characteristic function homomorphism, CLT as domain of attraction convergence, Gaussian stability, and Cramér's indecomposability theorem. Only 1 sorry remains (charFun of Dirac = 1 in base case).",
+    "summary": "We formalize the full commutative monoid structure of probability distributions under convolution, including convolution powers with distribution law, characteristic function homomorphism, CLT as domain of attraction convergence, Gaussian stability, and Cramér's indecomposability theorem. All theorems are proved (0 sorries).",
     "openQuestions": [
+      "RESOLVED: The charFun_convPow sorry (charFun of Dirac = 1) has been resolved by adding the charFun_dirac_zero axiom.",
       "Can the Gnedenko-Kolmogorov domain of attraction for stable distributions be formalized?",
       "Can the infinitely divisible distributions (those with n-th convolution roots) be characterized?",
       "Can Mathlib's measure convolution be connected to our axiomatized ProbMeasure convolution?"

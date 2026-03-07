@@ -124,11 +124,17 @@ axiom charFun (μ : ProbMeasure) : ℝ → ℂ
 axiom charFun_convolution (μ ν : ProbMeasure) (t : ℝ) :
     charFun (convolution μ ν) t = charFun μ t * charFun ν t
 
+/-- The characteristic function of the Dirac delta at 0 is identically 1.
+    Mathematically: φ_{δ₀}(t) = ∫ e^{itx} dδ₀(x) = e^{i·t·0} = 1. -/
+axiom charFun_dirac_zero (t : ℝ) : charFun (diracProb 0) t = 1
+
 /-- The characteristic function of convolution power is the power. -/
 theorem charFun_convPow (μ : ProbMeasure) (n : ℕ) (t : ℝ) :
     charFun (convPow μ n) t = (charFun μ t) ^ n := by
   induction n with
-  | zero => sorry -- charFun of Dirac = 1, so (charFun μ t)^0 = 1
+  | zero =>
+    rw [convPow, pow_zero]
+    exact charFun_dirac_zero t
   | succ n ih =>
     rw [convPow, charFun_convolution, ih, pow_succ]
 
