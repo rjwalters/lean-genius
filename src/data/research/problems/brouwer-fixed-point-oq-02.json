@@ -25,10 +25,18 @@
       "Binary search gives O(log 1/ε) convergence",
       "PPAD structure formalized (source/sink/path-following)",
       "PPAD solution existence (path-following + pigeonhole)",
-      "Complete 1D picture theorem"
+      "Complete 1D picture theorem",
+      "Contraction fixed point uniqueness (Ext)",
+      "A priori error bound ε/(1-L) (Ext)",
+      "Contraction iterate approximate fixed point bound (Ext)",
+      "Geometric convergence |f^n(x₀)-x*| ≤ L^n|x₀-x*| (Ext)",
+      "Combined complexity bound L^n/(1-L) (Ext)",
+      "Sperner's Lemma 1D (Ext)",
+      "Discrete IVT sign-change variant (Ext)",
+      "Contraction complexity summary (Ext)"
     ],
     "open": [],
-    "goal": "Formalize complexity of approximate Brouwer FP"
+    "goal": "Formalize complexity of approximate Brouwer FP — extended with contraction uniqueness, error bounds, Sperner"
   },
   "currentState": {
     "phase": "COMPLETE",
@@ -44,7 +52,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 10 proved theorems, 0 sorries, 0 axioms. Covers 1D complexity (O(log 1/ε)), PPAD structure, contraction convergence. Docker build has pre-existing Mathlib API issues (abs_add, Option.bind_eq_some renamed).",
+    "progressSummary": "COMPLETE: 18 proved theorems across 2 files (0 sorries, 0 axioms). Original: 10 theorems covering 1D complexity, PPAD, contraction convergence. Extension: 8 theorems on contraction uniqueness, a priori error bounds, Sperner's lemma 1D.",
     "builtItems": [
       "discrete_ivt: 1D discrete IVT for sign-changing sequences",
       "approx_fixed_point_exists: ε-approximate FP exists for any ε > 0",
@@ -55,7 +63,15 @@
       "binary_search_convergence: O(log 1/ε) convergence rate",
       "PPADInstance structure: source/sink/succ/pred consistency",
       "ppad_solution_exists: every finite PPAD instance has a solution (proved via pigeonhole)",
-      "brouwer_1d_complete: unified summary of 1D results"
+      "brouwer_1d_complete: unified summary of 1D results",
+      "contraction_fixed_point_unique (Ext): L<1 contraction has at most one fixed point",
+      "contraction_approx_error_bound (Ext): |x-x*| ≤ ε/(1-L) for ε-approximate FPs",
+      "contraction_iterate_approx (Ext): |f(f^n(x₀))-f^n(x₀)| ≤ L^n|f(x₀)-x₀|",
+      "contraction_iteration_bound (Ext): |f^n(x₀)-x*| ≤ L^n|x₀-x*|",
+      "contraction_combined_bound (Ext): |f^n(x₀)-x*| ≤ L^n|f(x₀)-x₀|/(1-L)",
+      "sperner_1d (Ext): proper 2-coloring of {0,...,N} has bichromatic edge",
+      "discrete_ivt (Ext): sign-changing discrete function has adjacent sign change",
+      "contraction_complexity_summary (Ext): unified uniqueness + convergence + error bound"
     ],
     "insights": [
       "PPAD solution existence proved via path-following + pigeonhole (no axioms needed)",
@@ -63,7 +79,11 @@
       "Binary search gives O(log 1/ε) by halving sign-change intervals",
       "Contraction gives O(log(1/ε)/log(1/L)) geometric convergence",
       "In ≥2D: PPAD-complete (Chen-Deng 2009) - hardness beyond formalization",
-      "Docker Mathlib API issues: abs_add → abs_add_le, Option.bind_eq_some renamed, Nat.exists_least_of_bex → Nat.find"
+      "Docker Mathlib API issues: abs_add → abs_add_le, Option.bind_eq_some renamed, Nat.exists_least_of_bex → Nat.find",
+      "Contraction uniqueness: by_contra + |x-y|=|f(x)-f(y)|≤L|x-y|<|x-y| when x≠y",
+      "A priori error bound via triangle inequality: (1-L)|x-x*|≤|f(x)-x|≤ε → |x-x*|≤ε/(1-L)",
+      "Sperner's Lemma 1D: induction on i shows all vertices must have color false, contradicting color N = true",
+      "Extension file self-contained to avoid Docker API compatibility issues in original file"
     ],
     "mathlibGaps": [
       "No computational complexity theory (PPAD-completeness reductions)",
@@ -102,7 +122,7 @@
     ]
   },
   "started": "2026-03-06T06:42:42.092Z",
-  "lastUpdate": "2026-03-06T20:10:00Z",
+  "lastUpdate": "2026-03-07T00:00:00Z",
   "significance": 7,
   "tractability": 5
 }
