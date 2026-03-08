@@ -500,4 +500,206 @@ theorem coprime_crt_three_unique {m₁ m₂ m₃ a₁ a₂ a₃ x₁ x₂ : R}
 
 end MultiModuliCoprime
 
+/-
+## Part XI: Ideal-Theoretic CRT (General Commutative Rings)
+
+The most general formulation of the CRT, working for arbitrary ideals
+in any commutative ring R.  No coprimality, no Euclidean structure needed.
+
+  Solvability:  ∃ x, (x - a) ∈ I ∧ (x - b) ∈ J  ↔  (a - b) ∈ I ⊔ J
+  Uniqueness:   solutions agree modulo I ⊓ J
+
+This subsumes all previous results:
+- Element CRT: take I = Ideal.span {m}, J = Ideal.span {n}
+- Coprime case: I ⊔ J = ⊤ makes solvability automatic
+- Non-coprime case: solvability depends on whether a - b ∈ I + J
+- Uniqueness: I ⊓ J generalizes lcm for principal ideals
+-/
+
+section IdealCRT
+
+variable {R : Type*} [CommRing R]
+
+/-- Ideal CRT necessity: if x solves both congruences, then a - b ∈ I + J.
+    Proof: a - b = -(x - a) + (x - b), with the first term in I and second in J. -/
+theorem ideal_crt_necessary {I J : Ideal R} {a b : R}
+    (h : ∃ x : R, (x - a) ∈ I ∧ (x - b) ∈ J) :
+    (a - b) ∈ I ⊔ J := by
+  obtain ⟨x, hI, hJ⟩ := h
+  rw [Submodule.mem_sup]
+  exact ⟨-(x - a), I.neg_mem hI, x - b, hJ, by ring⟩
+
+/-- Ideal CRT sufficiency: if a - b ∈ I + J, construct a solution.
+    Write a - b = i + j, then x = a - i works. -/
+theorem ideal_crt_sufficient {I J : Ideal R} {a b : R}
+    (h : (a - b) ∈ I ⊔ J) :
+    ∃ x : R, (x - a) ∈ I ∧ (x - b) ∈ J := by
+  rw [Submodule.mem_sup] at h
+  obtain ⟨i, hi, j, hj, hij⟩ := h
+  refine ⟨a - i, ?_, ?_⟩
+  · show -i ∈ I
+    exact I.neg_mem hi
+  · show a - i - b ∈ J
+    have : a - i - b = j := by linarith
+    rw [this]
+    exact hj
+
+/-- Ideal CRT iff: system solvable ↔ a - b ∈ I ⊔ J.
+    This is the fully general non-coprime CRT for arbitrary ideals. -/
+theorem ideal_crt_iff {I J : Ideal R} {a b : R} :
+    (∃ x : R, (x - a) ∈ I ∧ (x - b) ∈ J) ↔ (a - b) ∈ I ⊔ J :=
+  ⟨ideal_crt_necessary, ideal_crt_sufficient⟩
+
+/-- Ideal CRT uniqueness: any two solutions agree modulo I ∩ J. -/
+theorem ideal_crt_unique {I J : Ideal R} {a b x₁ x₂ : R}
+    (h₁ : (x₁ - a) ∈ I ∧ (x₁ - b) ∈ J)
+    (h₂ : (x₂ - a) ∈ I ∧ (x₂ - b) ∈ J) :
+    (x₁ - x₂) ∈ I ⊓ J := by
+  rw [Submodule.mem_inf]
+  constructor
+  · have := I.sub_mem h₁.1 h₂.1
+    rwa [show (x₁ - a) - (x₂ - a) = x₁ - x₂ from by ring] at this
+  · have := J.sub_mem h₁.2 h₂.2
+    rwa [show (x₁ - b) - (x₂ - b) = x₁ - x₂ from by ring] at this
+
+/-- Coprime ideal CRT: when I + J = R, the system is always solvable.
+    This recovers the classical CRT as a special case. -/
+theorem ideal_crt_coprime {I J : Ideal R} {a b : R}
+    (hcop : I ⊔ J = ⊤) :
+    ∃ x : R, (x - a) ∈ I ∧ (x - b) ∈ J :=
+  ideal_crt_sufficient (hcop ▸ Submodule.mem_top)
+
+/-- Ideal CRT for three ideals: necessity of pairwise conditions. -/
+theorem ideal_crt_three_necessary {I J K : Ideal R} {a b c : R}
+    (h : ∃ x : R, (x - a) ∈ I ∧ (x - b) ∈ J ∧ (x - c) ∈ K) :
+    (a - b) ∈ I ⊔ J ∧ (a - c) ∈ I ⊔ K ∧ (b - c) ∈ J ⊔ K := by
+  obtain ⟨x, hI, hJ, hK⟩ := h
+  exact ⟨ideal_crt_necessary ⟨x, hI, hJ⟩,
+         ideal_crt_necessary ⟨x, hI, hK⟩,
+         ideal_crt_necessary ⟨x, hJ, hK⟩⟩
+
+/-- Ideal CRT uniqueness for three ideals: solutions agree mod I ∩ J ∩ K. -/
+theorem ideal_crt_three_unique {I J K : Ideal R} {a b c x₁ x₂ : R}
+    (h₁ : (x₁ - a) ∈ I ∧ (x₁ - b) ∈ J ∧ (x₁ - c) ∈ K)
+    (h₂ : (x₂ - a) ∈ I ∧ (x₂ - b) ∈ J ∧ (x₂ - c) ∈ K) :
+    (x₁ - x₂) ∈ I ⊓ J ⊓ K := by
+  rw [Submodule.mem_inf]
+  refine ⟨?_, ?_⟩
+  · exact (ideal_crt_unique ⟨h₁.1, h₁.2.1⟩ ⟨h₂.1, h₂.2.1⟩).1
+  · have := K.sub_mem h₁.2.2 h₂.2.2
+    rwa [show (x₁ - c) - (x₂ - c) = x₁ - x₂ from by ring] at this
+
+end IdealCRT
+
+/-
+## Part XII: Connecting Ideal CRT to Element CRT
+
+Show that the ideal-theoretic CRT applied to principal ideals
+recovers the element-level CRT from Parts I and IV.
+-/
+
+section IdealElementBridge
+
+variable {R : Type*} [CommRing R]
+
+/-- Principal ideal membership: x ∈ Ideal.span {m} ↔ m ∣ x. -/
+theorem mem_span_singleton_iff_dvd (m x : R) :
+    x ∈ Ideal.span {m} ↔ m ∣ x :=
+  Ideal.mem_span_singleton.trans ⟨fun ⟨c, hc⟩ => ⟨c, hc.symm⟩,
+                                  fun ⟨c, hc⟩ => ⟨c, hc.symm⟩⟩
+
+/-- Element CRT from ideal CRT: solvability via principal ideals.
+    The element-level CRT (Part I for EDs) is a special case of the ideal CRT
+    applied to Ideal.span {m} and Ideal.span {n}. -/
+theorem element_crt_from_ideal {m n a b : R}
+    (h : (a - b) ∈ Ideal.span ({m} : Set R) ⊔ Ideal.span {n}) :
+    ∃ x : R, m ∣ (x - a) ∧ n ∣ (x - b) := by
+  obtain ⟨x, hI, hJ⟩ := ideal_crt_sufficient h
+  exact ⟨x, (mem_span_singleton_iff_dvd m _).mp hI,
+            (mem_span_singleton_iff_dvd n _).mp hJ⟩
+
+/-- Coprime elements yield coprime principal ideals.
+    This bridges IsCoprime (element) with I ⊔ J = ⊤ (ideal). -/
+theorem span_sup_top_of_isCoprime {m n : R} (h : IsCoprime m n) :
+    Ideal.span ({m} : Set R) ⊔ Ideal.span {n} = ⊤ :=
+  (isCoprime_iff_span_sup_eq_top m n).mp h
+
+/-- Element CRT uniqueness from ideal CRT: solutions agree mod elements
+    whose span is I ∩ J.  For principal ideals, I ∩ J = Ideal.span {lcm(m,n)}
+    in a GCD domain. -/
+theorem element_crt_unique_from_ideal {m n a b x₁ x₂ : R}
+    (h₁ : m ∣ (x₁ - a) ∧ n ∣ (x₁ - b))
+    (h₂ : m ∣ (x₂ - a) ∧ n ∣ (x₂ - b)) :
+    (x₁ - x₂) ∈ Ideal.span ({m} : Set R) ⊓ Ideal.span {n} := by
+  apply ideal_crt_unique
+  · exact ⟨(mem_span_singleton_iff_dvd m _).mpr h₁.1,
+           (mem_span_singleton_iff_dvd n _).mpr h₁.2⟩
+  · exact ⟨(mem_span_singleton_iff_dvd m _).mpr h₂.1,
+           (mem_span_singleton_iff_dvd n _).mpr h₂.2⟩
+
+/-- The ideal-theoretic coprime CRT instantiated for elements:
+    if IsCoprime m n, the element-level system is always solvable. -/
+theorem element_coprime_crt_from_ideal {m n a b : R}
+    (hcop : IsCoprime m n) :
+    ∃ x : R, m ∣ (x - a) ∧ n ∣ (x - b) :=
+  element_crt_from_ideal (span_sup_top_of_isCoprime hcop ▸ Submodule.mem_top)
+
+end IdealElementBridge
+
+/-
+## Part XIII: Non-Coprime CRT for PIDs via Ideal Theory
+
+In a PID, every ideal is principal.  The ideal CRT then gives:
+- Solvability: a - b ∈ ⟨m⟩ + ⟨n⟩ = ⟨gcd(m,n)⟩ ↔ gcd(m,n) ∣ (a - b)
+- Uniqueness: mod ⟨m⟩ ∩ ⟨n⟩ = ⟨lcm(m,n)⟩
+
+This closes the gap: the PID bridge (Part VI) only handled coprime.
+Now we have non-coprime CRT for PIDs too.
+-/
+
+section NonCoprimePID
+
+variable {R : Type*} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R]
+
+/-- In a PID, the sum of two principal ideals is principal (generated by gcd).
+    This is the key structural fact enabling non-coprime CRT in PIDs. -/
+theorem pid_span_sup_principal (m n : R) :
+    ∃ g : R, Ideal.span ({m} : Set R) ⊔ Ideal.span {n} = Ideal.span {g} := by
+  exact pid_ideal_principal _
+
+/-- Non-coprime CRT for PIDs: solvability in terms of ideal membership.
+    The system x ≡ a mod m, x ≡ b mod n is solvable iff
+    a - b lies in the ideal generated by m and n (= ⟨gcd(m,n)⟩ in a PID). -/
+theorem pid_noncoprime_crt_iff {m n a b : R} :
+    (∃ x : R, m ∣ (x - a) ∧ n ∣ (x - b)) ↔
+    (a - b) ∈ Ideal.span ({m} : Set R) ⊔ Ideal.span {n} := by
+  constructor
+  · intro ⟨x, hm, hn⟩
+    exact ideal_crt_necessary ⟨x,
+      (mem_span_singleton_iff_dvd m _).mpr hm,
+      (mem_span_singleton_iff_dvd n _).mpr hn⟩
+  · exact element_crt_from_ideal
+
+/-- Non-coprime PID CRT uniqueness: solutions agree mod I ∩ J.
+    In a PID, I ∩ J = ⟨lcm(m,n)⟩ for principal ideals. -/
+theorem pid_noncoprime_crt_unique {m n a b x₁ x₂ : R}
+    (h₁ : m ∣ (x₁ - a) ∧ n ∣ (x₁ - b))
+    (h₂ : m ∣ (x₂ - a) ∧ n ∣ (x₂ - b)) :
+    (x₁ - x₂) ∈ Ideal.span ({m} : Set R) ⊓ Ideal.span {n} :=
+  element_crt_unique_from_ideal h₁ h₂
+
+/-- A PID is an integral domain where every ideal is principal — hence
+    the full CRT (coprime and non-coprime) applies to all PIDs:
+    ℤ, k[X], ℤ[i], etc.  This summary combines existence and uniqueness. -/
+theorem pid_noncoprime_crt_full {m n a b : R}
+    (h : (a - b) ∈ Ideal.span ({m} : Set R) ⊔ Ideal.span {n}) :
+    (∃ x : R, m ∣ (x - a) ∧ n ∣ (x - b)) ∧
+    (∀ x₁ x₂, m ∣ (x₁ - a) → n ∣ (x₁ - b) →
+                m ∣ (x₂ - a) → n ∣ (x₂ - b) →
+                (x₁ - x₂) ∈ Ideal.span ({m} : Set R) ⊓ Ideal.span {n}) :=
+  ⟨element_crt_from_ideal h,
+   fun _ _ h1m h1n h2m h2n => element_crt_unique_from_ideal ⟨h1m, h1n⟩ ⟨h2m, h2n⟩⟩
+
+end NonCoprimePID
+
 end ChineseRemainderNonCoprimeOQ02
