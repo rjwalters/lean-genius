@@ -48,6 +48,8 @@ This is the y-offset when entering column k. Key properties:
 - [x] Vandermonde identity
 - [x] Verified examples via native_decide
 - [x] Involution infrastructure (splitAfterEast, swapTails, involutivity)
+- [x] Entry gap analysis (entryGap framework, NI preserves gap positivity)
+- [x] swapTails East step and length preservation theorems
 - [ ] Lindström involution (axiomatized — needs firstIntersectionColumn construction)
 
 ## References
@@ -1209,5 +1211,143 @@ theorem catalan_ballot_division (n : ℕ) :
     ballotSeqCount (n + 1) n * (n + 1) = Nat.choose (2 * n) n := by
   rw [← catalan_eq_ballot]
   exact catalan_formula n
+
+/-! ## Part XVII: Entry Gap Analysis and swapTails Properties
+
+This section develops the entry gap framework and proves key properties of swapTails
+that are needed for the Lindström involution.
+
+**Entry gap**: Define gap(k) = (y₂ + colEntry l₂ k) - (y₁ + colEntry l₁ k).
+When y₁ < y₂, gap(0) > 0. Non-intersection preserves gap positivity (via
+nonIntersecting_entry_order). This is used in the crossing lemma.
+
+**swapTails properties**: We prove that swapTails preserves East step counts and
+total path lengths — essential for showing swapped paths are valid pathType elements.
+
+**Toward eliminating the Lindström axiom**: The full bijection requires finding the
+first shared lattice point between intersecting paths. This requires a finer analysis
+than column-entry boundaries alone:
+- NonIntersecting uses column Y-ranges (intervals), not just boundary points
+- ¬NonIntersecting gives overlap in some column's Y-range
+- The Lindström involution swaps at the lexicographically first shared lattice point
+- This point may be in the interior of a column, not just at a boundary
+See the axiom documentation for the remaining construction needed.
+-/
+
+/-- The "gap" between path entry y-coordinates at column k.
+    Positive means P₁ is below P₂, zero or negative means they've met/crossed.
+    Defined on ℤ to handle the subtraction cleanly. -/
+def entryGap (l₁ l₂ : LPath) (y₁ y₂ : ℕ) (k : ℕ) : ℤ :=
+  (y₂ + colEntry l₂ k : ℤ) - (y₁ + colEntry l₁ k : ℤ)
+
+/-- At column 0, the gap is y₂ - y₁ -/
+theorem entryGap_zero (l₁ l₂ : LPath) (y₁ y₂ : ℕ) :
+    entryGap l₁ l₂ y₁ y₂ 0 = (y₂ : ℤ) - y₁ := by
+  simp [entryGap, colEntry_zero]
+
+/-- If paths are non-intersecting and the gap is positive at column k,
+    the gap stays positive at column k+1 (rephrasing of nonIntersecting_entry_order). -/
+theorem entryGap_pos_succ {l₁ l₂ : LPath} {m y₁ y₂ : ℕ}
+    (hni : NonIntersecting l₁ l₂ m y₁ y₂)
+    (hk : k < m)
+    (hpos : 0 < entryGap l₁ l₂ y₁ y₂ k) :
+    0 < entryGap l₁ l₂ y₁ y₂ (k + 1) := by
+  simp only [entryGap] at hpos ⊢
+  have h_entry : y₁ + colEntry l₁ k < y₂ + colEntry l₂ k := by omega
+  have h_next := nonIntersecting_entry_order hni hk h_entry
+  omega
+
+/-- **Key lemma**: If paths are non-intersecting and y₁ < y₂,
+    the gap is positive at ALL columns k ≤ m.
+    (Proved by induction using entryGap_pos_succ.) -/
+theorem entryGap_pos_all {l₁ l₂ : LPath} {m y₁ y₂ : ℕ}
+    (hni : NonIntersecting l₁ l₂ m y₁ y₂)
+    (hstart : y₁ < y₂) :
+    ∀ k ≤ m, 0 < entryGap l₁ l₂ y₁ y₂ k := by
+  intro k hkm
+  induction k with
+  | zero => rw [entryGap_zero]; omega
+  | succ k ih =>
+    apply entryGap_pos_succ hni (by omega : k < m)
+    exact ih (by omega)
+
+/-- Gap non-positive means P₁'s entry y is at or above P₂'s entry y -/
+theorem crossing_col_entry_ge {l₁ l₂ : LPath} {y₁ y₂ k : ℕ}
+    (hgap : entryGap l₁ l₂ y₁ y₂ k ≤ 0) :
+    y₂ + colEntry l₂ k ≤ y₁ + colEntry l₁ k := by
+  simp only [entryGap] at hgap; omega
+
+/-- Gap positive means P₁'s entry y is strictly below P₂'s entry y -/
+theorem crossing_col_prev_lt {l₁ l₂ : LPath} {y₁ y₂ k : ℕ}
+    (hgap : 0 < entryGap l₁ l₂ y₁ y₂ k) :
+    y₁ + colEntry l₁ k < y₂ + colEntry l₂ k := by
+  simp only [entryGap] at hgap; omega
+
+/-! ### swapTails East Step and Length Preservation -/
+
+/-- **swapTails preserves East step count** for the first resulting path.
+    Since pre₁ has k East steps and suf₂ has (m-k) East steps, their concatenation has m. -/
+theorem eastSteps_swapTails_fst (l₁ l₂ : LPath) (k m : ℕ)
+    (hk₁ : l₁.countP (· = false) = m)
+    (hk₂ : l₂.countP (· = false) = m)
+    (hkm : k ≤ m) :
+    eastSteps (swapTails l₁ l₂ k).1 = m := by
+  have heast₁ : k ≤ eastSteps l₁ := by simp only [eastSteps]; omega
+  have heast₂ : k ≤ eastSteps l₂ := by simp only [eastSteps]; omega
+  have hval : (swapTails l₁ l₂ k).1 =
+      (splitAfterEast l₁ k).1 ++ (splitAfterEast l₂ k).2 := rfl
+  rw [hval, show eastSteps ((splitAfterEast l₁ k).1 ++ (splitAfterEast l₂ k).2) =
+    eastSteps (splitAfterEast l₁ k).1 + eastSteps (splitAfterEast l₂ k).2 from by
+    simp [eastSteps, List.countP_append]]
+  have h_fst₁ := splitAfterEast_fst_eastSteps l₁ k heast₁
+  have h_sum₂ : eastSteps (splitAfterEast l₂ k).1 + eastSteps (splitAfterEast l₂ k).2 =
+      eastSteps l₂ := by
+    have h := splitAfterEast_append l₂ k
+    conv_rhs => rw [← h]
+    simp [eastSteps, List.countP_append]
+  have h_fst₂ := splitAfterEast_fst_eastSteps l₂ k heast₂
+  simp only [eastSteps] at h_fst₁ h_fst₂ h_sum₂ hk₂ ⊢; omega
+
+/-- **swapTails preserves East step count** for the second resulting path. -/
+theorem eastSteps_swapTails_snd (l₁ l₂ : LPath) (k m : ℕ)
+    (hk₁ : l₁.countP (· = false) = m)
+    (hk₂ : l₂.countP (· = false) = m)
+    (hkm : k ≤ m) :
+    eastSteps (swapTails l₁ l₂ k).2 = m := by
+  have heast₁ : k ≤ eastSteps l₁ := by simp only [eastSteps]; omega
+  have heast₂ : k ≤ eastSteps l₂ := by simp only [eastSteps]; omega
+  have hval : (swapTails l₁ l₂ k).2 =
+      (splitAfterEast l₂ k).1 ++ (splitAfterEast l₁ k).2 := rfl
+  rw [hval, show eastSteps ((splitAfterEast l₂ k).1 ++ (splitAfterEast l₁ k).2) =
+    eastSteps (splitAfterEast l₂ k).1 + eastSteps (splitAfterEast l₁ k).2 from by
+    simp [eastSteps, List.countP_append]]
+  have h_fst₂ := splitAfterEast_fst_eastSteps l₂ k heast₂
+  have h_sum₁ : eastSteps (splitAfterEast l₁ k).1 + eastSteps (splitAfterEast l₁ k).2 =
+      eastSteps l₁ := by
+    have h := splitAfterEast_append l₁ k
+    conv_rhs => rw [← h]
+    simp [eastSteps, List.countP_append]
+  have h_fst₁ := splitAfterEast_fst_eastSteps l₁ k heast₁
+  simp only [eastSteps] at h_fst₁ h_fst₂ h_sum₁ hk₁ ⊢; omega
+
+/-- **swapTails length preservation** for the first path -/
+theorem length_swapTails_fst (l₁ l₂ : LPath) (k : ℕ) :
+    (swapTails l₁ l₂ k).1.length =
+    (splitAfterEast l₁ k).1.length + (splitAfterEast l₂ k).2.length := by
+  simp [swapTails, List.length_append]
+
+/-- **swapTails length preservation** for the second path -/
+theorem length_swapTails_snd (l₁ l₂ : LPath) (k : ℕ) :
+    (swapTails l₁ l₂ k).2.length =
+    (splitAfterEast l₂ k).1.length + (splitAfterEast l₁ k).2.length := by
+  simp [swapTails, List.length_append]
+
+/-- **North steps of suffix**: northSteps of the suffix after k East steps equals
+    total northSteps minus the prefix northSteps (which equals colEntry l k). -/
+theorem northSteps_splitAfterEast_snd (l : LPath) (k : ℕ) :
+    northSteps (splitAfterEast l k).2 = northSteps l - colEntry l k := by
+  have h_sum := northSteps_splitAfterEast_sum l k
+  have h_fst := northSteps_splitAfterEast_fst l k
+  omega
 
 end LatticePathLGV
