@@ -25,10 +25,21 @@
       "Ehrhart-Macdonald reciprocity (axiomatized)",
       "Reciprocity recovers Pick's interior count in 2D",
       "h*-vector structure for 2D (nonnegativity, sum = d!·volume)",
-      "Ehrhart nonneg, 1D segment, 2D at dilation 2"
+      "Ehrhart nonneg, 1D segment, 2D at dilation 2",
+      "h*-vector palindromy for octahedron (Ext)",
+      "Cube and simplex h*-vectors not palindromic (Ext)",
+      "Ehrhart-Macdonald reciprocity: L*(t) = -L(-t) verified on cube, simplex (Ext)",
+      "Quadratic and cubic polynomial interpolation uniqueness (Ext)",
+      "Pascal recurrence for simplex Ehrhart (Ext)",
+      "Simplex column sum identity (Ext)",
+      "Cube and simplex dilation monotonicity (Ext)",
+      "Cube Ehrhart = binomial coefficients (Ext)",
+      "h*-sum = d! · Vol(P) verified on 3 examples (Ext)",
+      "Volume recovery from h*-sum (Ext)",
+      "Reciprocity Euler characteristic relation (Ext)"
     ],
     "open": [],
-    "goal": "Formalize Ehrhart polynomials as the correct higher-dimensional generalization of Pick theorem - COMPLETED"
+    "goal": "Formalize Ehrhart polynomials as the correct higher-dimensional generalization of Pick theorem - COMPLETED + Extension"
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -103,7 +114,7 @@
     "mathlib": []
   },
   "started": "2026-03-06T15:28:32.741Z",
-  "lastUpdate": "2026-03-06T19:00:00.000Z",
+  "lastUpdate": "2026-03-07T00:00:00Z",
   "significance": 7,
   "tractability": 5,
   "completed": "2026-03-06T19:00:00.000Z"
