@@ -75,14 +75,29 @@ axiom somani_identity (a : ℕ) (ha : a ≥ 2) :
 axiom somani_disjoint (a : ℕ) (ha : a ≥ 2) : Disjoint (somaniLHS a) (somaniRHS a)
 
 /-- Each (somaniLHS a, somaniRHS a) for a ≥ 2 is a valid solution -/
+private lemma somani_prod_lhs (a : ℕ) (ha : a ≥ 2) :
+    ∏ m ∈ somaniLHS a, C m = C a * C (2*a + 2) * C (somaniC a) := by
+  unfold somaniLHS
+  have h1 : a ∉ ({2 * a + 2, somaniC a} : Finset ℕ) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton, somaniC]; omega
+  have h2 : (2 * a + 2) ∉ ({somaniC a} : Finset ℕ) := by
+    simp only [Finset.mem_singleton, somaniC]; omega
+  rw [Finset.prod_insert h1, Finset.prod_insert h2, Finset.prod_singleton]
+
+private lemma somani_prod_rhs (a : ℕ) (ha : a ≥ 2) :
+    ∏ n ∈ somaniRHS a, C n = C (a + 1) * C (2*a) * C (somaniC a + 1) := by
+  unfold somaniRHS
+  have h1 : a + 1 ∉ ({2 * a, somaniC a + 1} : Finset ℕ) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton, somaniC]; omega
+  have h2 : 2 * a ∉ ({somaniC a + 1} : Finset ℕ) := by
+    simp only [Finset.mem_singleton, somaniC]; omega
+  rw [Finset.prod_insert h1, Finset.prod_insert h2, Finset.prod_singleton]
+
 theorem somani_is_solution (a : ℕ) (ha : a ≥ 2) :
     (somaniLHS a, somaniRHS a) ∈ CentralBinomSolutions := by
-  constructor
-  · exact somani_disjoint a ha
-  · -- The equality follows from somani_identity after expanding the products
-    simp only [somaniLHS, somaniRHS]
-    -- Full proof would unfold the Finset products and apply somani_identity
-    sorry
+  refine ⟨somani_disjoint a ha, ?_⟩
+  rw [somani_prod_lhs a ha, somani_prod_rhs a ha]
+  exact somani_identity a ha
 
 /- ## Basic Properties -/
 
