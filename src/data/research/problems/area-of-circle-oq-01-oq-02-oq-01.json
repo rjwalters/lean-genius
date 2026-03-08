@@ -1,0 +1,58 @@
+{
+  "slug": "area-of-circle-oq-01-oq-02-oq-01",
+  "title": "N-Dimensional Volume Formula V_n(r) = ∫ S_n(ρ) dρ",
+  "phase": "COMPLETE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "∫₀ʳ S_n(ρ) dρ = V_n(r) where V_n(r) = ω_n · r^n, S_n(r) = n · ω_n · r^(n-1)",
+    "plain": "The n-dimensional ball volume equals the integral of surface area from 0 to r, generalizing A(r) = ∫₀ʳ C(ρ) dρ from 2D to all dimensions.",
+    "whyMatters": [
+      "Generalizes Archimedes' 'sum of rings' argument to arbitrary dimension",
+      "Demonstrates the volume-surface duality V'_n = S_n via FTC",
+      "Connects the existing 2D formalization to n-dimensional ball volumes"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "V_n(r) = ∫₀ʳ S_n(ρ) dρ for all n ≥ 1 (FTC Part 2)",
+      "d/dr[V_n(r)] = S_n(r) for all n ≥ 1 (power rule)",
+      "Shell formula: ∫_{r₁}^{r₂} S_n = V_n(r₂) - V_n(r₁)",
+      "S₂(r) = 2πr, S₃(r) = 4πr² (explicit formulas)",
+      "V₂(r) = πr², V₃(r) = (4π/3)r³ (matches known values)",
+      "Surface-to-volume ratio S_n/V_n = n/r"
+    ],
+    "open": [],
+    "goal": "Prove V_n(r) = ∫₀ʳ S_n(ρ) dρ fully from Mathlib (DONE)"
+  },
+  "currentState": {
+    "leanFile": "proofs/Proofs/AreaOfCircleOQ01OQ02OQ01.lean",
+    "sorryCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 22,
+    "builtItems": [
+      "unitBallVolume: π^(n/2)/Γ(n/2+1) with special case proofs for n=0,1,2,3",
+      "nBallVol: V_n(r) = ω_n · r^n",
+      "nSphereArea: S_n(r) = n · ω_n · r^(n-1)",
+      "hasDerivAt_nBallVol: d/dr[V_n] = S_n (PROVED)",
+      "volume_from_surface_integral: V_n = ∫₀ʳ S_n (MAIN THEOREM, PROVED)",
+      "deriv_volume_integral: d/dr[∫₀ʳ S_n] = S_n (FTC Part 1, PROVED)",
+      "shell_volume: ∫_{r₁}^{r₂} S_n = V_n(r₂) - V_n(r₁) (PROVED)",
+      "nSphereArea_two_explicit: S₂(r) = 2πr (PROVED)",
+      "nSphereArea_three_explicit: S₃(r) = 4πr² (PROVED)",
+      "surface_to_volume_ratio: S_n/V_n = n/r (PROVED)"
+    ],
+    "insights": [
+      "V_n(r) = ω_n · r^n is a monomial, making FTC completely routine",
+      "The key is HasDerivAt for power functions (hasDerivAt_pow from Mathlib)",
+      "integral_eq_sub_of_hasDerivAt provides FTC Part 2 directly",
+      "0 sorries, 0 axioms — fully proved from Mathlib"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "knowledgeScore": 95,
+  "researchNotes": "Fully proved from Mathlib with 0 sorries and 0 axioms. The n-dimensional volume-surface duality is a direct generalization of the 2D circumference-area relationship, and the proof follows the same FTC approach as AreaFromCircumferenceIntegral.lean.",
+  "lastUpdated": "2026-03-07"
+}

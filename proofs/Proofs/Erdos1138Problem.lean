@@ -91,6 +91,106 @@ theorem maxPrimeGap_le (x : ℕ) : maxPrimeGap x ≤ x := by
     rintro d ⟨p, q, -, -, -, hqx, -, rfl⟩
     exact le_trans (Nat.sub_le q p) hqx
 
+/- ## Part III.5: Prime Gap Set Properties
+
+   These lemmas establish BddAbove and Nonempty for the prime gap set,
+   which are prerequisites for sSup to behave correctly. -/
+
+/-- The set of prime gaps below x is bounded above by x.
+    This ensures sSup (used in maxPrimeGap) is well-defined. -/
+theorem primeGapBelow_bddAbove (x : ℕ) : BddAbove (primeGapBelow x) := by
+  use x
+  intro d hd
+  obtain ⟨p, q, -, -, -, hqx, -, rfl⟩ := hd
+  exact le_trans (Nat.sub_le q p) hqx
+
+/-- Each element of the prime gap set is at most x. -/
+theorem primeGap_mem_le {x d : ℕ} (hd : d ∈ primeGapBelow x) : d ≤ x := by
+  obtain ⟨p, q, -, -, -, hqx, -, rfl⟩ := hd
+  exact le_trans (Nat.sub_le q p) hqx
+
+/-- The gap 3-2=1 is in primeGapBelow x for x ≥ 3. -/
+theorem one_mem_primeGapBelow {x : ℕ} (hx : 3 ≤ x) :
+    1 ∈ primeGapBelow x :=
+  ⟨2, 3, by decide, by decide, by omega, hx, fun r _ h2r => by omega, by omega⟩
+
+/-- For x ≥ 3, the set of prime gaps below x is nonempty.
+    Witnessed by the gap 3 - 2 = 1 (the consecutive primes 2, 3). -/
+theorem primeGapBelow_nonempty {x : ℕ} (hx : 3 ≤ x) :
+    Set.Nonempty (primeGapBelow x) :=
+  ⟨1, one_mem_primeGapBelow hx⟩
+
+/-- maxPrimeGap equals sSup of primeGapBelow (definitional). -/
+theorem maxPrimeGap_eq_sSup (x : ℕ) : maxPrimeGap x = sSup (primeGapBelow x) := rfl
+
+/-- For x ≥ 3, the maximal prime gap is at least 1. -/
+theorem maxPrimeGap_pos {x : ℕ} (hx : 3 ≤ x) : 1 ≤ maxPrimeGap x := by
+  show 1 ≤ sSup (primeGapBelow x)
+  exact le_csSup (primeGapBelow_bddAbove x) (one_mem_primeGapBelow hx)
+
+/- ## Part III.6: Computable Prime Infrastructure -/
+
+/-- Finset of primes up to n: {p ∈ [0,n] : p is prime}. -/
+def primesUpTo (n : ℕ) : Finset ℕ :=
+  (Finset.range (n + 1)).filter Nat.Prime
+
+/-- primeCounting n equals the cardinality of primesUpTo n. -/
+theorem primeCounting_eq_primesUpTo (n : ℕ) :
+    primeCounting n = (primesUpTo n).card := rfl
+
+/-- 2 is in primesUpTo n for n ≥ 2. -/
+theorem two_mem_primesUpTo {n : ℕ} (hn : 2 ≤ n) :
+    2 ∈ primesUpTo n := by
+  simp only [primesUpTo, Finset.mem_filter, Finset.mem_range]
+  exact ⟨by omega, by decide⟩
+
+/-- 3 is in primesUpTo n for n ≥ 3. -/
+theorem three_mem_primesUpTo {n : ℕ} (hn : 3 ≤ n) :
+    3 ∈ primesUpTo n := by
+  simp only [primesUpTo, Finset.mem_filter, Finset.mem_range]
+  exact ⟨by omega, by decide⟩
+
+/-- For n ≥ 2, π(n) ≥ 1 (since 2 is prime). -/
+theorem primeCounting_pos {n : ℕ} (hn : 2 ≤ n) : 1 ≤ primeCounting n := by
+  rw [primeCounting_eq_primesUpTo]
+  exact Finset.one_le_card.mpr ⟨2, two_mem_primesUpTo hn⟩
+
+/-- For n ≥ 3, π(n) ≥ 2 (since 2 and 3 are prime). -/
+theorem primeCounting_ge_two {n : ℕ} (hn : 3 ≤ n) : 2 ≤ primeCounting n := by
+  rw [primeCounting_eq_primesUpTo]
+  have h2 := two_mem_primesUpTo (show 2 ≤ n by omega)
+  have h3 := three_mem_primesUpTo hn
+  have hsub : ({2, 3} : Finset ℕ) ⊆ primesUpTo n := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl <;> assumption
+  calc 2 = ({2, 3} : Finset ℕ).card := by decide
+    _ ≤ (primesUpTo n).card := Finset.card_le_card hsub
+
+/- ## Part III.7: Interval Counting Properties -/
+
+/-- Primes in interval is monotone in the right endpoint. -/
+theorem primesInInterval_mono_right {a b c : ℕ} (hbc : b ≤ c) :
+    primesInInterval a b ≤ primesInInterval a c := by
+  unfold primesInInterval
+  exact Nat.sub_le_sub_right (primeCounting_mono hbc) (primeCounting a)
+
+/-- Primes in a trivial interval is zero. -/
+theorem primesInInterval_self (a : ℕ) : primesInInterval a a = 0 := by
+  simp [primesInInterval]
+
+/-- Primes in (a,a+1] is at most 1. -/
+theorem primesInInterval_succ_le (a : ℕ) : primesInInterval a (a + 1) ≤ 1 := by
+  unfold primesInInterval primeCounting
+  -- range(a+2) = insert (a+1) (range(a+1)), filter splits on Prime(a+1)
+  rw [Finset.range_add_one, Finset.filter_insert]
+  split_ifs
+  · -- a+1 is prime: card(insert (a+1) S) - card(S) ≤ 1
+    have := Finset.card_insert_le (a + 1) ((Finset.range (a + 1)).filter Nat.Prime)
+    omega
+  · -- a+1 is not prime: card(S) - card(S) = 0 ≤ 1
+    omega
+
 /- ## Part IV: The Erdős Conjecture -/
 
 /-- **Erdős Problem 1138**: Primes in short intervals near maximal gaps.

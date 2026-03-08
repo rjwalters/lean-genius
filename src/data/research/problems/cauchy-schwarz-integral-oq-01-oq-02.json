@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Formalized Riesz-Thorin interpolation connection to Hölder. 0 sorries, 1 axiom (riesz_thorin itself), 19 proved declarations. Full exponent interpolation infrastructure, log-convexity, and Hausdorff-Young corollary.",
+    "progressSummary": "EXTENDED: Added HadamardThreeLines.lean - 23 proved theorems, 1 axiom (MMP for strip), 0 sorries. Refined axiom from Riesz-Thorin to maximum modulus principle. Three-lines lemma proved from MMP.",
     "builtItems": [
       "interpRecip, interpExp definitions with positivity proofs (CauchySchwarzIntegralOQ01OQ02.lean)",
       "interpRecip_sum_conj: conjugate preservation under interpolation",
@@ -37,23 +37,37 @@
       "interpNorm with log-convexity proof and monotonicity",
       "holder_gives_endpoint: Hölder as endpoint bound",
       "hausdorff_young_exponents: exponent computation for H-Y inequality",
-      "Gallery entry: src/data/proofs/cauchy-schwarz-integral-oq-01-oq-02/"
+      "Gallery entry: src/data/proofs/cauchy-schwarz-integral-oq-01-oq-02/",
+      "closedStrip/openStrip/vertLine: Strip region definitions (HadamardThreeLines.lean)",
+      "StripBounded: Bounded analytic function structure (HadamardThreeLines.lean)",
+      "auxFn: Auxiliary function g(z)=f(z)exp(α(1-z)+βz) (HadamardThreeLines.lean)",
+      "norm_auxFn/norm_auxFn_left/right: Modulus computation (HadamardThreeLines.lean)",
+      "auxFn_le_one_left/right: Boundary bound proofs (HadamardThreeLines.lean)",
+      "maximum_modulus_strip: MMP axiom for strip (HadamardThreeLines.lean)",
+      "three_lines: Hadamard three-lines lemma proved from MMP (HadamardThreeLines.lean)",
+      "three_lines_pointwise: Pointwise version (HadamardThreeLines.lean)",
+      "threeLinesBound_*: Bound properties - log, mono, pos, nonneg, affine (HadamardThreeLines.lean)"
     ],
     "insights": [
       "Hölder is necessary but not sufficient for Riesz-Thorin: provides endpoint bounds but not the interpolation step",
       "The three-lines lemma (Hadamard) is the missing piece for a complete formalization",
       "Interpolated exponents preserve the Hölder conjugate condition algebraically",
       "The norm bound M₀^(1-θ)·M₁^θ is log-convex (linear in log scale)",
-      "Hausdorff-Young follows from Riesz-Thorin by interpolating L1→L∞ and L2→L2"
+      "Hausdorff-Young follows from Riesz-Thorin by interpolating L1→L∞ and L2→L2",
+      "Three-lines lemma reduces to MMP via auxiliary function exp(-logM₀(1-z)-logM₁z)",
+      "Axiom refinement: Riesz-Thorin → MMP (more elementary, cleaner dependency chain)",
+      "norm_mul and Complex.norm_exp are the key Mathlib lemmas for modulus computation",
+      "inv_mul_cancel_left₀ handles the algebraic extraction step cleanly"
     ],
     "mathlibGaps": [
       "Hadamard three-lines lemma not in Mathlib (needed for full Riesz-Thorin proof)",
       "No convolution API in Mathlib suitable for Young convolution inequality formalization"
     ],
     "nextSteps": [
-      "Formalize Hadamard three-lines lemma to remove the axiom",
-      "Formalize Marcinkiewicz interpolation (real method, weaker hypotheses)",
-      "Prove Young convolution inequality as another Riesz-Thorin consequence"
+      "Prove MMP for strip from Cauchy integral formula (if added to Mathlib)",
+      "Connect HadamardThreeLines to CauchySchwarzIntegralOQ01OQ02 to replace riesz_thorin axiom",
+      "Add Young convolution inequality as Riesz-Thorin application",
+      "Formalize Marcinkiewicz interpolation (real method)"
     ]
   },
   "approaches": [],
@@ -70,7 +84,8 @@
     "mathlib": []
   },
   "started": "2026-03-07T00:36:31.363Z",
-  "lastUpdate": "2026-03-07T00:36:31.363Z",
+  "lastUpdate": "2026-03-07",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "knowledgeScore": 95
 }

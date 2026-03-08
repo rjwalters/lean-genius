@@ -38,11 +38,86 @@ theorem elemSymmA_one {n : ℕ} (x : Fin n → ℝ) : elemSymmA 1 x = ∑ i, x i
 
 /-- Recurrence: eₖ₊₁(x₀,...,xₙ) = eₖ₊₁(x₀,...,xₙ₋₁) + xₙ · eₖ(x₀,...,xₙ₋₁)
     This is the fundamental recurrence for elementary symmetric polynomials. -/
+private def csEmbA (n : ℕ) : Fin n ↪ Fin (n + 1) :=
+  ⟨Fin.castSucc, fun _ _ h => Fin.castSucc_inj.mp h⟩
+
+@[simp] private lemma csEmbA_apply (n : ℕ) (i : Fin n) : csEmbA n i = Fin.castSucc i := rfl
+
+private lemma fin_univ_insert_lastA (n : ℕ) :
+    (univ : Finset (Fin (n + 1))) = insert (Fin.last n) (univ.map (csEmbA n)) := by
+  ext i
+  simp only [mem_univ, mem_insert, mem_map, true_and, csEmbA_apply]
+  constructor
+  · intro _; exact Fin.lastCases (Or.inl rfl) (fun j => Or.inr ⟨j, rfl⟩) i
+  · intro _; trivial
+
+private lemma fin_last_not_mem_mapA (n : ℕ) :
+    Fin.last n ∉ (univ : Finset (Fin n)).map (csEmbA n) := by
+  simp only [mem_map, mem_univ, true_and, csEmbA_apply, not_exists]
+  intro i; exact (Fin.castSucc_lt_last i).ne
+
+private lemma mapEmbA_eq {n : ℕ} (s : Finset (Fin n)) :
+    (Finset.mapEmbedding (csEmbA n)).toEmbedding s = s.map (csEmbA n) := rfl
+
+private lemma prod_map_csEmbA {n : ℕ} (s : Finset (Fin n)) (x : Fin (n + 1) → ℝ) :
+    ∏ i ∈ s.map (csEmbA n), x i = ∏ j ∈ s, x (Fin.castSucc j) := by
+  rw [Finset.prod_map]; simp only [csEmbA_apply]
+
 theorem elemSymmA_succ_castSucc {n : ℕ} (k : ℕ) (x : Fin (n + 1) → ℝ) :
     elemSymmA (k + 1) x =
     elemSymmA (k + 1) (x ∘ Fin.castSucc) +
     x (Fin.last n) * elemSymmA k (x ∘ Fin.castSucc) := by
-  sorry -- follows from Finset.powersetCard_succ_insert applied to Fin.last n ∉ image Fin.castSucc
+  simp only [elemSymmA]
+  rw [fin_univ_insert_lastA, Finset.powersetCard_succ_insert (fin_last_not_mem_mapA n)]
+  have pc_disjA : Disjoint
+      (powersetCard (k + 1) ((univ : Finset (Fin n)).map (csEmbA n)))
+      ((powersetCard k ((univ : Finset (Fin n)).map (csEmbA n))).image
+        (insert (Fin.last n))) := by
+    apply Finset.disjoint_left.mpr
+    intro t ht1 ht2
+    simp only [mem_image, Finset.mem_powersetCard] at ht1 ht2
+    obtain ⟨s, hs, rfl⟩ := ht2
+    obtain ⟨ht1_sub, _⟩ := ht1
+    have hmem := ht1_sub (Finset.mem_insert_self (Fin.last n) _)
+    simp only [mem_map, mem_univ, true_and, csEmbA_apply] at hmem
+    obtain ⟨i, hi⟩ := hmem
+    exact (Fin.castSucc_lt_last i).ne hi
+  rw [Finset.sum_union pc_disjA]
+  congr 1
+  · rw [Finset.powersetCard_map, Finset.sum_map]
+    congr 1; ext s
+    simp only [mapEmbA_eq]
+    rw [prod_map_csEmbA]
+    simp only [Function.comp_apply]
+  · have insert_injA : Set.InjOn (insert (Fin.last n))
+        (powersetCard k ((univ : Finset (Fin n)).map (csEmbA n))).toSet := by
+      intro s hs t ht hst
+      rw [Finset.mem_coe] at hs ht
+      rw [Finset.mem_powersetCard] at hs ht
+      have hs' : Fin.last n ∉ s := by
+        intro hmem
+        have h := hs.1 hmem
+        simp only [mem_map, mem_univ, true_and, csEmbA_apply] at h
+        obtain ⟨i, hi⟩ := h
+        exact (Fin.castSucc_lt_last i).ne hi
+      have ht' : Fin.last n ∉ t := by
+        intro hmem
+        have h := ht.1 hmem
+        simp only [mem_map, mem_univ, true_and, csEmbA_apply] at h
+        obtain ⟨i, hi⟩ := h
+        exact (Fin.castSucc_lt_last i).ne hi
+      rw [show s = (insert (Fin.last n) s).erase (Fin.last n) from
+          (Finset.erase_insert hs').symm, hst, Finset.erase_insert ht']
+    rw [Finset.sum_image insert_injA, Finset.powersetCard_map, Finset.sum_map]
+    have h_prod : ∀ s ∈ (powersetCard k (univ : Finset (Fin n))),
+        ∏ i ∈ insert (Fin.last n) ((Finset.mapEmbedding (csEmbA n)).toEmbedding s), x i =
+        x (Fin.last n) * ∏ j ∈ s, (x ∘ Fin.castSucc) j := by
+      intro s _
+      rw [mapEmbA_eq, Finset.prod_insert]
+      · simp only [Function.comp_apply]; rw [prod_map_csEmbA]
+      · simp only [mem_map, csEmbA_apply, not_exists, not_and]
+        intro j _; exact (Fin.castSucc_lt_last j).ne
+    rw [Finset.sum_congr rfl h_prod, ← Finset.mul_sum]
 
 /-- elemSymm 2 of n+1 variables decomposes as:
     e₂(x₀,...,xₙ) = e₂(x₀,...,xₙ₋₁) + xₙ · (∑ᵢ xᵢ) -/
