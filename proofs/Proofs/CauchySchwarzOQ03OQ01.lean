@@ -399,12 +399,57 @@ theorem holder_eq_implies_power_prop {ι : Type*} (s : Finset ι) (f g : ι → 
     ∃ c : ℝ, 0 ≤ c ∧ ∀ i ∈ s, f i ^ p = c * g i ^ q := by
   -- The proportionality constant c = (∑f^p)/(∑g^q)
   use (∑ i ∈ s, f i ^ p) / (∑ i ∈ s, g i ^ q)
-  constructor
-  · exact div_nonneg (le_of_lt hFp) (le_of_lt hGq)
-  · -- Reduce to normalized case: f/‖f‖_p and g/‖g‖_q
-    -- After normalization, f_i^p = g_i^q for all i
-    -- Unscaling: f_i^p/(∑f^p) = g_i^q/(∑g^q), i.e., f_i^p = (∑f^p/∑g^q) * g_i^q
-    sorry
+  refine ⟨div_nonneg (le_of_lt hFp) (le_of_lt hGq), ?_⟩
+  -- Setup: normalization constants
+  have hp_pos : (0 : ℝ) < p := by linarith
+  have hq_pos : (0 : ℝ) < q := lt_trans one_pos (conj_one_lt_q hp hinv)
+  have hp_ne : p ≠ 0 := ne_of_gt hp_pos
+  have hq_ne : q ≠ 0 := ne_of_gt hq_pos
+  set Fp := ∑ j ∈ s, f j ^ p with hFp_def
+  set Gq := ∑ j ∈ s, g j ^ q with hGq_def
+  set a := Fp ^ (1 / p) with ha_def
+  set b := Gq ^ (1 / q) with hb_def
+  have ha_pos : 0 < a := rpow_pos_of_pos hFp _
+  have hb_pos : 0 < b := rpow_pos_of_pos hGq _
+  have ha_ne : a ≠ 0 := ne_of_gt ha_pos
+  have hb_ne : b ≠ 0 := ne_of_gt hb_pos
+  -- Key cancellation: a^p = Fp and b^q = Gq
+  have hap : a ^ p = Fp := by
+    rw [ha_def, ← rpow_mul (le_of_lt hFp)]
+    simp only [one_div, inv_mul_cancel₀ hp_ne, Real.rpow_one]
+  have hbq : b ^ q = Gq := by
+    rw [hb_def, ← rpow_mul (le_of_lt hGq)]
+    simp only [one_div, inv_mul_cancel₀ hq_ne, Real.rpow_one]
+  -- Normalization conditions
+  have hnf : ∑ j ∈ s, (f j / a) ^ p = 1 := by
+    have h : ∀ j ∈ s, (f j / a) ^ p = f j ^ p / a ^ p :=
+      fun j hj => Real.div_rpow (hf j hj) (le_of_lt ha_pos) p
+    rw [Finset.sum_congr rfl h, ← Finset.sum_div, hap, div_self (ne_of_gt hFp)]
+  have hng : ∑ j ∈ s, (g j / b) ^ q = 1 := by
+    have h : ∀ j ∈ s, (g j / b) ^ q = g j ^ q / b ^ q :=
+      fun j hj => Real.div_rpow (hg j hj) (le_of_lt hb_pos) q
+    rw [Finset.sum_congr rfl h, ← Finset.sum_div, hbq, div_self (ne_of_gt hGq)]
+  have heq' : ∑ j ∈ s, (f j / a * (g j / b)) = 1 := by
+    have h : ∀ j ∈ s, f j / a * (g j / b) = f j * g j / (a * b) :=
+      fun _ _ => by ring
+    rw [Finset.sum_congr rfl h, ← Finset.sum_div, heq,
+      div_self (mul_ne_zero ha_ne hb_ne)]
+  -- Apply normalized theorem
+  intro i hi
+  have key := holder_eq_normalized_implies_power_prop s
+    (fun j => f j / a) (fun j => g j / b) hp hinv
+    (fun j hj => div_nonneg (hf j hj) (le_of_lt ha_pos))
+    (fun j hj => div_nonneg (hg j hj) (le_of_lt hb_pos))
+    hnf hng heq' i hi
+  -- key: (f i / a)^p = (g i / b)^q
+  -- Unscale: f i^p / Fp = g i^q / Gq → f i^p = (Fp/Gq) · g i^q
+  rw [Real.div_rpow (hf i hi) (le_of_lt ha_pos) p, hap,
+    Real.div_rpow (hg i hi) (le_of_lt hb_pos) q, hbq] at key
+  -- key: f i ^ p / Fp = g i ^ q / Gq
+  rw [div_eq_div_iff (ne_of_gt hFp) (ne_of_gt hGq)] at key
+  -- key: f i ^ p * Gq = g i ^ q * Fp
+  field_simp
+  linarith
 
 -- ============================================================================
 -- Part VIII: Specialization — Recovering Cauchy-Schwarz from Hölder
