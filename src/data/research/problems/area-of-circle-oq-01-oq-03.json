@@ -38,17 +38,20 @@
     "attemptCounts": { "total": 2, "currentApproach": 2, "approachesTried": 1 }
   },
   "knowledge": {
-    "progressSummary": "24 theorems proved (0 sorries), 3 axioms. The sorry in isoperimetric_inequality_smooth was eliminated by adding analytical_assembly axiom (constant-speed reparametrization + integral estimates) and proving the main theorem from it via the arithmetic kernel. Also fixed a pre-existing build error in regular_ngon_isoperimetric_ratio where let-binding shadowing caused field_simp/ring to fail.",
+    "progressSummary": "27+ theorems proved (2 sorries, 2 axioms). Proved 4 of 6 sorry-lemmas: wirtinger_sum_sq_bound (Wirtinger axiom + integral linearity), integral_cauchy_schwarz_interval (discriminant method), area_bound_const_speed (2D CS + abs_le + integral monotonicity), and inline CS in main theorem. Remaining sorries: exists_nice_reparam (arc-length reparametrization) and degenerate case (zero circumference implies zero area).",
     "builtItems": [
-      "AreaOfCircleOQ01OQ03.lean (24 theorems, 0 sorries, 3 axioms)"
+      "AreaOfCircleOQ01OQ03.lean (27+ theorems, 2 sorries, 2 axioms)"
     ],
     "insights": [
       "The Hurwitz 1901 proof requires constant-speed (arc-length) parametrization",
       "Variable-speed approach fails: integral CS gives L² ≤ 2πE (wrong direction)",
       "Constant-speed makes E = L²/(2π) EXACTLY (equality not inequality)",
-      "The analytical assembly step (reparametrization + integral estimates) is cleanly axiomatizable",
       "The arithmetic kernel (isoperimetric_from_wirtinger_bounds) is pure algebra: S² ≤ (2πc)² → S ≤ 2πc → 2A ≤ 2πc² → 4πA ≤ L²",
-      "Let-binding shadowing in Lean theorems can break field_simp/ring: use 'intro' to name let-bindings explicitly, then 'show' to restate the goal with explicit terms",
+      "Integral Cauchy-Schwarz via discriminant: ∀α, ∫(αf-1)²≥0 → non-negative quadratic in α → discriminant ≤ 0",
+      "For J=0 case in discriminant: pick α=(π+1)/I to get 2(π+1)≤2π contradiction",
+      "For J>0 case: evaluate at α=I/J, multiply by J, use field_simp+ring to simplify algebra",
+      "area_bound via abs_le split: |∫f|≤∫g by showing both ∫f≤∫g and ∫(-g)≤∫f via integral_mono_on",
+      "contDiff_succ_iff_deriv (n := 0) returns nested And: need .2.2.continuous for derivative continuity",
       "Mathlib has Fourier tools to prove Wirtinger but lacks arc-length reparametrization"
     ],
     "mathlibGaps": [

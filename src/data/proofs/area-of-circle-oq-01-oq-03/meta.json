@@ -21,7 +21,7 @@
       "isoperimetric"
     ],
     "badge": "open",
-    "sorries": 1,
+    "sorries": 2,
     "mathlibDependencies": [
       {
         "theorem": "Real.pi_lt_four",
@@ -47,7 +47,10 @@
       "Proof architecture: Wirtinger's inequality implies isoperimetric via Cauchy-Schwarz + AM-GM",
       "SmoothClosedCurve structure for parametric curves in ℝ²",
       "2D Cauchy-Schwarz (algebraic): |xv-yu|² ≤ (x²+y²)(u²+v²) proved via nlinarith",
-      "Arithmetic kernel of Hurwitz proof: from Wirtinger bounds (Sxy≤2πc², S²≤2πSxy, 2A≤cS) to 4πA≤L² — all inequalities fully proved"
+      "Arithmetic kernel of Hurwitz proof: from Wirtinger bounds (Sxy≤2πc², S²≤2πSxy, 2A≤cS) to 4πA≤L² — all inequalities fully proved",
+      "Integral Cauchy-Schwarz on [0,2π]: (∫f)² ≤ 2π·∫f² via discriminant method",
+      "Wirtinger sum-of-squares bound: ∫(x²+y²) ≤ 2πc² from Wirtinger axiom + integral linearity",
+      "Area bound: 2A ≤ c·∫√(x²+y²) via 2D Cauchy-Schwarz + abs_le + integral monotonicity"
     ],
     "dateAdded": "02/24/26"
   },
