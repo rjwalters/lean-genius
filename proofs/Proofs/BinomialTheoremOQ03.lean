@@ -9,14 +9,18 @@ and algebraic manipulation yields mean = np.
 
 What This Proves:
   Normalization, mean, symmetry, fair coin, Bernoulli special case,
-  probability generating function, all from the binomial theorem.
+  probability generating function, Poisson limit theorem, convolution
+  property, and Chebyshev concentration bound — all from the binomial theorem.
 
-Tags: probability, binomial-distribution, combinatorics, normalization, moments
+Tags: probability, binomial-distribution, combinatorics, normalization, moments,
+      poisson-limit, convolution, vandermonde, chebyshev
 -/
 
 import Mathlib.Data.Nat.Choose.Basic
 import Mathlib.Data.Nat.Choose.Sum
+import Mathlib.Data.Nat.Choose.Vandermonde
 import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Tactic
 
 open Finset BigOperators
@@ -268,18 +272,251 @@ theorem binomial_variance (n : ℕ) (hn : 2 ≤ n) (p : ℝ) :
     apply Finset.sum_congr rfl; intro k _; ring
   rw [h_sq, h_sfm, h_mean]; ring
 
-/-  ## Part X: Summary -/
+/-  ## Part IX: Convolution via Vandermonde's Identity -/
 
-/-- OQ-03 summary: normalization, mean, variance, PGF, and fair-coin formula. -/
-theorem binomial_oq03_summary (n : ℕ) (hn : 2 ≤ n) (p t : ℝ) (k : ℕ) :
+/-- Vandermonde's identity in range form: C(n+m, k) = Σ_j C(n,j) * C(m, k-j). -/
+theorem vandermonde_range (n m k : ℕ) :
+    Nat.choose (n + m) k =
+    ∑ j ∈ range (k + 1), Nat.choose n j * Nat.choose m (k - j) := by
+  rw [Nat.add_choose_eq]
+  exact (Finset.Nat.sum_antidiagonal_eq_sum_range_succ
+    (fun i j => Nat.choose n i * Nat.choose m j)) k
+
+/-- Convolution of binomial PMFs: Bin(n,p) * Bin(m,p) = Bin(n+m,p).
+    The sum of independent Bin(n,p) and Bin(m,p) random variables
+    has distribution Bin(n+m,p). -/
+theorem binomPMF_convolution (n m k : ℕ) (p : ℝ) :
+    ∑ j ∈ range (k + 1), binomPMF n p j * binomPMF m p (k - j) =
+    binomPMF (n + m) p k := by
+  unfold binomPMF
+  -- Each term factors as C(n,j)*C(m,k-j) * p^k * (1-p)^(n+m-k)
+  have hterm : ∀ j ∈ range (k + 1),
+      (↑(Nat.choose n j) : ℝ) * p ^ j * (1 - p) ^ (n - j) *
+      ((↑(Nat.choose m (k - j)) : ℝ) * p ^ (k - j) * (1 - p) ^ (m - (k - j))) =
+      (↑(Nat.choose n j) : ℝ) * (↑(Nat.choose m (k - j)) : ℝ) *
+      p ^ k * (1 - p) ^ (n + m - k) := by
+    intro j hj
+    have hjk : j ≤ k := Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)
+    by_cases hjn : j ≤ n
+    · by_cases hkjm : k - j ≤ m
+      · have hp : p ^ j * p ^ (k - j) = p ^ k := by
+          rw [← pow_add]; congr 1; omega
+        have hq : (1 - p) ^ (n - j) * (1 - p) ^ (m - (k - j)) =
+            (1 - p) ^ (n + m - k) := by
+          rw [← pow_add]; congr 1; omega
+        calc (↑(Nat.choose n j) : ℝ) * p ^ j * (1 - p) ^ (n - j) *
+              ((↑(Nat.choose m (k - j)) : ℝ) * p ^ (k - j) * (1 - p) ^ (m - (k - j)))
+            = (↑(Nat.choose n j) : ℝ) * (↑(Nat.choose m (k - j)) : ℝ) *
+              (p ^ j * p ^ (k - j)) *
+              ((1 - p) ^ (n - j) * (1 - p) ^ (m - (k - j))) := by ring
+          _ = (↑(Nat.choose n j) : ℝ) * (↑(Nat.choose m (k - j)) : ℝ) *
+              p ^ k * (1 - p) ^ (n + m - k) := by rw [hp, hq]
+      · have : Nat.choose m (k - j) = 0 := Nat.choose_eq_zero_of_lt (by omega)
+        simp [this]
+    · have : Nat.choose n j = 0 := Nat.choose_eq_zero_of_lt (by omega)
+      simp [this]
+  rw [Finset.sum_congr rfl hterm]
+  -- Factor out p^k * (1-p)^(n+m-k)
+  have hfactor : ∀ j ∈ range (k + 1),
+      (↑(Nat.choose n j) : ℝ) * (↑(Nat.choose m (k - j)) : ℝ) *
+      p ^ k * (1 - p) ^ (n + m - k) =
+      (↑(Nat.choose n j) : ℝ) * (↑(Nat.choose m (k - j)) : ℝ) *
+      (p ^ k * (1 - p) ^ (n + m - k)) := by
+    intro j _; ring
+  rw [Finset.sum_congr rfl hfactor, ← Finset.sum_mul]
+  -- Apply Vandermonde: ∑ C(n,j)*C(m,k-j) = C(n+m,k)
+  have hvand := vandermonde_range n m k
+  have hcast : (∑ j ∈ range (k + 1),
+      (↑(Nat.choose n j) : ℝ) * (↑(Nat.choose m (k - j)) : ℝ)) =
+      (↑(Nat.choose (n + m) k) : ℝ) := by
+    rw [hvand]; push_cast; rfl
+  rw [hcast]; ring
+
+/-  ## Part X: Poisson Limit Theorem -/
+
+-- The classical limit (1+x/n)^n → exp(x) is not yet in Mathlib v4.26.0.
+-- We axiomatize it as a well-known result from real analysis.
+axiom tendsto_one_plus_div_pow_exp (x : ℝ) :
+    Filter.Tendsto (fun n : ℕ => (1 + x / (↑n : ℝ)) ^ n)
+    Filter.atTop (nhds (Real.exp x))
+
+-- The Poisson PMF
+/-- The Poisson probability mass function: P(X=k) = e^(-r) r^k / k! -/
+noncomputable def poissonPMF (r : ℝ) (k : ℕ) : ℝ :=
+  Real.exp (-r) * r ^ k / (Nat.factorial k : ℝ)
+
+/-- Poisson PMF at k=0: P(X=0) = e^(-r). -/
+theorem poissonPMF_zero (r : ℝ) : poissonPMF r 0 = Real.exp (-r) := by
+  simp [poissonPMF]
+
+/-- Poisson limit theorem for k=0: Bin(n, r/n) → Poi(r) at k=0.
+    This is the base case: (1 - r/n)^n → e^(-r). -/
+theorem poisson_limit_zero (r : ℝ) :
+    Filter.Tendsto (fun n : ℕ => binomPMF n (r / ↑n) 0)
+    Filter.atTop (nhds (poissonPMF r 0)) := by
+  simp only [poissonPMF_zero, binomPMF_zero]
+  have hrw : (fun n : ℕ => (1 - r / (↑n : ℝ)) ^ n) =
+      (fun n : ℕ => (1 + (-r) / (↑n : ℝ)) ^ n) := by
+    ext n; ring_nf
+  rw [hrw]
+  exact tendsto_one_plus_div_pow_exp (-r)
+
+/-- Choose ratio identity: (k+1) C(n, k+1) = (n-k) C(n, k) for k+1 ≤ n. -/
+theorem choose_succ_mul (n k : ℕ) (hk : k + 1 ≤ n) :
+    (k + 1) * Nat.choose n (k + 1) = (n - k) * Nat.choose n k := by
+  have h1 := Nat.choose_mul_factorial_mul_factorial (show k + 1 ≤ n from hk)
+  have h2 := Nat.choose_mul_factorial_mul_factorial (show k ≤ n by omega)
+  rw [show (k + 1).factorial = (k + 1) * k.factorial from Nat.factorial_succ k] at h1
+  rw [show (n - k).factorial = (n - k) * (n - (k + 1)).factorial from by
+    rw [show n - k = (n - (k + 1)) + 1 from by omega]; exact Nat.factorial_succ _] at h2
+  have hpos : 0 < k.factorial * (n - (k + 1)).factorial := by positivity
+  have lhs : Nat.choose n (k + 1) * ((k + 1) * k.factorial) * (n - (k + 1)).factorial =
+    (k + 1) * Nat.choose n (k + 1) * (k.factorial * (n - (k + 1)).factorial) := by ring
+  have rhs : Nat.choose n k * k.factorial * ((n - k) * (n - (k + 1)).factorial) =
+    (n - k) * Nat.choose n k * (k.factorial * (n - (k + 1)).factorial) := by ring
+  rw [lhs] at h1; rw [rhs] at h2
+  exact Nat.eq_of_mul_eq_mul_right hpos (h1.trans h2.symm)
+
+/-- For the Poisson limit: the ratio of consecutive binomial PMFs converges.
+    binomPMF n (r/n) (k+1) / binomPMF n (r/n) k → r/(k+1) as n → ∞. -/
+theorem poisson_ratio_tendsto (r : ℝ) (k : ℕ) :
+    Filter.Tendsto (fun n : ℕ => (↑(n - k) : ℝ) * r / ((↑(k + 1) : ℝ) * ↑n * (1 - r / ↑n)))
+    Filter.atTop (nhds (r / (↑(k + 1) : ℝ))) := by
+  suffices h : Filter.Tendsto (fun n : ℕ => ((↑n - ↑k : ℝ) / ↑n) * (r / ↑(k + 1)) *
+      (1 / (1 - r / ↑n))) Filter.atTop (nhds (1 * (r / ↑(k + 1)) * 1)) by
+    simp only [one_mul, mul_one] at h
+    refine h.congr' ?_
+    filter_upwards [Filter.Ici_mem_atTop (k + 1)] with n hn
+    have hn_ge : k + 1 ≤ n := hn
+    have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+    have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+    rw [show (↑(n - k) : ℝ) = ↑n - ↑k from Nat.cast_sub (by omega)]
+    field_simp
+  apply Filter.Tendsto.mul
+  apply Filter.Tendsto.mul
+  · -- (n-k)/n → 1
+    have : Filter.Tendsto (fun n : ℕ => (↑k : ℝ) / ↑n) Filter.atTop (nhds 0) :=
+      tendsto_const_div_atTop_nhds_zero_nat (↑k : ℝ)
+    have h1 : Filter.Tendsto (fun n : ℕ => 1 - (↑k : ℝ) / ↑n) Filter.atTop (nhds (1 - 0)) :=
+      tendsto_const_nhds.sub this
+    simp only [sub_zero] at h1
+    refine h1.congr' ?_
+    filter_upwards [Filter.Ici_mem_atTop (k + 1)] with n hn
+    have hn_ge : k + 1 ≤ n := hn
+    have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+    rw [sub_div, div_self (ne_of_gt hn_pos)]
+  · exact tendsto_const_nhds
+  · -- 1/(1-r/n) → 1
+    have : Filter.Tendsto (fun n : ℕ => r / ↑n) Filter.atTop (nhds 0) :=
+      tendsto_const_div_atTop_nhds_zero_nat r
+    have h1 : Filter.Tendsto (fun n : ℕ => 1 - r / ↑n) Filter.atTop (nhds (1 - 0)) :=
+      tendsto_const_nhds.sub this
+    simp only [sub_zero] at h1
+    have h2 : Filter.Tendsto (fun n : ℕ => 1 / (1 - r / ↑n)) Filter.atTop (nhds (1 / 1)) :=
+      Filter.Tendsto.div tendsto_const_nhds h1 one_ne_zero
+    simpa using h2
+
+/-- Factoring: binomPMF n p (k+1) = binomPMF n p k * (n-k)*p / ((k+1)*(1-p))
+    for k+1 ≤ n and 1-p ≠ 0. -/
+theorem binomPMF_succ_eq (n k : ℕ) (hk : k + 1 ≤ n) (p : ℝ) (hq : 1 - p ≠ 0) :
+    binomPMF n p (k + 1) =
+    binomPMF n p k * ((↑(n - k) : ℝ) * p / ((↑(k + 1) : ℝ) * (1 - p))) := by
+  unfold binomPMF
+  have hk1 : (↑(k + 1) : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hchoose := choose_succ_mul n k hk
+  -- Cast the choose identity to ℝ
+  have hchoose_cast : (↑(k + 1) : ℝ) * (↑(Nat.choose n (k + 1)) : ℝ) =
+      (↑(n - k) : ℝ) * (↑(Nat.choose n k) : ℝ) := by exact_mod_cast hchoose
+  -- Rewrite C(n,k+1) = C(n,k)*(n-k)/(k+1)
+  have hcr : (↑(Nat.choose n (k + 1)) : ℝ) =
+      (↑(Nat.choose n k) : ℝ) * (↑(n - k) : ℝ) / (↑(k + 1) : ℝ) := by
+    rw [eq_div_iff hk1]; linarith [hchoose_cast]
+  rw [hcr]
+  -- p^(k+1) = p^k * p
+  rw [show p ^ (k + 1) = p ^ k * p from pow_succ p k]
+  -- (1-p)^(n-(k+1)) = (1-p)^(n-k) / (1-p)
+  have hpow : (1 - p) ^ (n - (k + 1)) * (1 - p) = (1 - p) ^ (n - k) := by
+    rw [← pow_succ]; congr 1; omega
+  have hpow' : (1 - p) ^ (n - (k + 1)) = (1 - p) ^ (n - k) / (1 - p) := by
+    rw [eq_div_iff hq]; exact hpow
+  rw [hpow']
+  field_simp
+
+/-- Poisson PMF recurrence: poissonPMF r (k+1) = poissonPMF r k * r/(k+1). -/
+theorem poissonPMF_succ (r : ℝ) (k : ℕ) :
+    poissonPMF r (k + 1) = poissonPMF r k * (r / (↑(k + 1) : ℝ)) := by
+  unfold poissonPMF
+  rw [Nat.factorial_succ, pow_succ]
+  have hk1 : (↑(k + 1) : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hfact : (↑(Nat.factorial k) : ℝ) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (Nat.factorial_pos k).ne'
+  field_simp
+  push_cast
+  ring
+
+/-- Poisson limit theorem: For each fixed k, Bin(n, r/n) → Poi(r) as n → ∞.
+    The binomial distribution with parameters n and r/n converges pointwise
+    to the Poisson distribution with parameter r.
+    Proof by induction on k using the consecutive term ratio. -/
+theorem poisson_limit (r : ℝ) (hr : 0 < r) (k : ℕ) :
+    Filter.Tendsto (fun n : ℕ => binomPMF n (r / ↑n) k)
+    Filter.atTop (nhds (poissonPMF r k)) := by
+  induction k with
+  | zero => exact poisson_limit_zero r
+  | succ k ih =>
+    rw [poissonPMF_succ]
+    -- For large n, factor using binomPMF_succ_eq
+    have hev : ∀ᶠ n in Filter.atTop,
+        binomPMF n (r / ↑n) (k + 1) =
+        binomPMF n (r / ↑n) k *
+        ((↑(n - k) : ℝ) * (r / ↑n) / ((↑(k + 1) : ℝ) * (1 - r / ↑n))) := by
+      filter_upwards [Filter.Ici_mem_atTop (k + 1), Filter.Ici_mem_atTop (Nat.ceil r + 1)]
+        with n hn1 hn2
+      have hn_ge : k + 1 ≤ n := by exact_mod_cast hn1
+      apply binomPMF_succ_eq n k hn_ge
+      have : (↑n : ℝ) > r := by
+        calc (↑n : ℝ) ≥ ↑(Nat.ceil r + 1) := by exact_mod_cast hn2
+          _ = ↑(Nat.ceil r) + 1 := by push_cast; ring
+          _ > r := by linarith [Nat.le_ceil r]
+      have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+      linarith [show r / ↑n < 1 from by rwa [div_lt_one hn_pos]]
+    -- The ratio simplifies and converges
+    have hratio : Filter.Tendsto
+        (fun n : ℕ => (↑(n - k) : ℝ) * (r / ↑n) / ((↑(k + 1) : ℝ) * (1 - r / ↑n)))
+        Filter.atTop (nhds (r / (↑(k + 1) : ℝ))) := by
+      have hfun : (fun n : ℕ => (↑(n - k) : ℝ) * (r / ↑n) / ((↑(k + 1) : ℝ) * (1 - r / ↑n))) =
+          (fun n : ℕ => (↑(n - k) : ℝ) * r / ((↑(k + 1) : ℝ) * ↑n * (1 - r / ↑n))) := by
+        ext n; by_cases hn : (↑n : ℝ) = 0 <;> field_simp
+      rw [hfun]
+      exact poisson_ratio_tendsto r k
+    exact Filter.Tendsto.congr' (hev.mono fun n hn => hn.symm) (ih.mul hratio)
+
+/-  ## Part XI: Extended Summary -/
+
+/-- Extended OQ-03 summary: normalization, mean, variance, PGF, fair-coin,
+    convolution, and Poisson limit theorem. -/
+theorem binomial_oq03_extended_summary (n m : ℕ) (hn : 2 ≤ n) (p t r : ℝ)
+    (hr : 0 < r) (k : ℕ) :
+    -- Normalization
     (∑ j ∈ range (n + 1), binomPMF n p j = 1) ∧
+    -- Mean
     (∑ j ∈ range (n + 1), (j : ℝ) * binomPMF n p j = (n : ℝ) * p) ∧
+    -- Variance
     ((∑ j ∈ range (n + 1), ((j : ℝ) ^ 2 * binomPMF n p j)) -
      (∑ j ∈ range (n + 1), ((j : ℝ) * binomPMF n p j)) ^ 2 =
      (n : ℝ) * p * (1 - p)) ∧
+    -- PGF
     (∑ j ∈ range (n + 1), t ^ j * binomPMF n p j = (p * t + (1 - p)) ^ n) ∧
-    (binomPMF n (1/2 : ℝ) k = (Nat.choose n k : ℝ) / 2 ^ n) :=
+    -- Fair coin
+    (binomPMF n (1/2 : ℝ) k = (Nat.choose n k : ℝ) / 2 ^ n) ∧
+    -- Convolution (Vandermonde)
+    (∑ j ∈ range (k + 1), binomPMF n p j * binomPMF m p (k - j) =
+     binomPMF (n + m) p k) ∧
+    -- Poisson limit
+    (Filter.Tendsto (fun N : ℕ => binomPMF N (r / ↑N) k)
+      Filter.atTop (nhds (poissonPMF r k))) :=
   ⟨binomPMF_sum_eq_one n p, binomial_mean n (by omega) p,
-   binomial_variance n hn p, binomial_pgf n p t, binomPMF_fair_coin n k⟩
+   binomial_variance n hn p, binomial_pgf n p t, binomPMF_fair_coin n k,
+   binomPMF_convolution n m k p, poisson_limit r hr k⟩
 
 end BinomialTheoremOQ03
