@@ -910,11 +910,216 @@ theorem normalization_monotone (α β : ℝ) (hα : 0 < α) (hβ : 0 < β) (hα�
     **Key tools**: Potter bound (axiom), Karamata integral theorem (axiom)
     **Stable characteristic function**: at 0, boundedness, continuity, evenness, self-similarity
     **Concrete examples**: Pareto tail (RV(-α)), symmetric/one-sided tail balance,
-      normalization sequences n^{1/α}, monotonicity in α -/
+      normalization sequences n^{1/α}, monotonicity in α
+    **Concrete tail balances**: Pareto (one-sided, p=1, q=0), Cauchy (symmetric, p=q=1/2)
+    **Domain of attraction connections**: TailBalance → DoA, Pareto DoA, Cauchy DoA
+    **SV examples**: log(x+a) for a ≥ 1, |log(x+a)|^β -/
 theorem formalization_summary : True := trivial
 
 -- ============================================================================
--- Part XIX: Verification
+-- Part XIX: Concrete Tail Balance Instances
+-- ============================================================================
+
+/-
+### Pareto Tail Balance
+
+The Pareto distribution with shape parameter α > 0 has:
+- Right tail: P(X > x) = x^{-α}
+- Left tail: P(X < -x) = 0 (one-sided)
+- Slowly varying part: L = 1 (constant)
+- Tail weights: p = 1, q = 0
+
+This is the simplest non-trivial TailBalance instance.
+-/
+
+/-- Concrete TailBalance for the one-sided Pareto distribution.
+    Right tail x^{-α}, left tail 0, L = 1 (constant). -/
+def paretoTailBalance (α : ℝ) (hα_pos : 0 < α) (hα_le : α ≤ 2) : TailBalance where
+  rightTail := fun x => x ^ (-α)
+  leftTail := fun _ => 0
+  α := α
+  L := fun _ => 1
+  p := 1
+  q := 0
+  hα_pos := hα_pos
+  hα_le := hα_le
+  hp_nonneg := le_of_lt one_pos
+  hq_nonneg := le_refl 0
+  hpq_pos := by norm_num
+  hL_sv := slowlyVarying_const one_pos
+  hRight := by
+    refine (Filter.tendsto_congr' ?_).mpr tendsto_const_nhds
+    filter_upwards [Filter.eventually_gt_atTop 0] with x hx
+    rw [mul_one, rpow_neg hx.le, inv_rpow hx.le, div_self]
+    exact ne_of_gt (inv_pos.mpr (rpow_pos_of_pos hx α))
+  hLeft := by
+    simp only [zero_div]
+    exact tendsto_const_nhds
+
+/-- The Pareto TailBalance is one-sided (q = 0), representing a distribution
+    with all mass on the positive tail. -/
+theorem paretoTailBalance_one_sided (α : ℝ) (hα_pos : 0 < α) (hα_le : α ≤ 2) :
+    (paretoTailBalance α hα_pos hα_le).q = 0 := rfl
+
+/-- The Pareto TailBalance has full weight on the right tail (p/(p+q) = 1). -/
+theorem paretoTailBalance_full_right (α : ℝ) (hα_pos : 0 < α) (hα_le : α ≤ 2) :
+    (paretoTailBalance α hα_pos hα_le).p / ((paretoTailBalance α hα_pos hα_le).p +
+      (paretoTailBalance α hα_pos hα_le).q) = 1 := by
+  simp [paretoTailBalance]
+
+/-
+### Symmetric Cauchy Tail Balance
+
+The symmetric Cauchy distribution (α = 1) has:
+- Right tail: P(X > x) ~ (1/π) · x^{-1}  (we normalize to p = 1/2)
+- Left tail: P(X < -x) ~ (1/π) · x^{-1}  (q = 1/2)
+- Slowly varying part: L = 1
+- By symmetry, p = q = 1/2
+
+This demonstrates a symmetric stable distribution with heavy tails.
+-/
+
+/-- Concrete TailBalance for the symmetric Cauchy distribution (α = 1).
+    Both tails decay as x^{-1} with equal weights p = q = 1/2. -/
+def cauchyTailBalance : TailBalance where
+  rightTail := fun x => x ^ (-(1 : ℝ))
+  leftTail := fun x => x ^ (-(1 : ℝ))
+  α := 1
+  L := fun _ => 2
+  p := 1 / 2
+  q := 1 / 2
+  hα_pos := one_pos
+  hα_le := one_le_two
+  hp_nonneg := by norm_num
+  hq_nonneg := by norm_num
+  hpq_pos := by norm_num
+  hL_sv := slowlyVarying_const (by norm_num : (0:ℝ) < 2)
+  hRight := by
+    refine (Filter.tendsto_congr' ?_).mpr tendsto_const_nhds
+    filter_upwards [Filter.eventually_gt_atTop 0] with x hx
+    rw [rpow_neg hx.le, rpow_one, inv_rpow hx.le, rpow_one]
+    field_simp
+  hLeft := by
+    refine (Filter.tendsto_congr' ?_).mpr tendsto_const_nhds
+    filter_upwards [Filter.eventually_gt_atTop 0] with x hx
+    rw [rpow_neg hx.le, rpow_one, inv_rpow hx.le, rpow_one]
+    field_simp
+
+/-- The Cauchy TailBalance is symmetric: p = q = 1/2. -/
+theorem cauchyTailBalance_symmetric :
+    cauchyTailBalance.p = cauchyTailBalance.q := rfl
+
+-- ============================================================================
+-- Part XX: Domain of Attraction for Concrete Distributions
+-- ============================================================================
+
+/-
+Using the axiomatized forward direction of the Gnedenko-Kolmogorov theorem,
+we can show that distributions with known tail behavior lie in specific
+domains of attraction.
+-/
+
+/-- A TailBalance with 0 < α < 2 implies the existence of some characteristic
+    function in the domain of attraction of the α-stable law (via forward direction).
+    This connects the concrete tail conditions to the abstract DoA definition. -/
+theorem tailBalance_implies_attraction (tb : TailBalance) (hα_lt : tb.α < 2) :
+    ∀ (φ : ℝ → ℂ), (φ 0 = 1 ∧ ∀ t, ‖φ t‖ ≤ 1) →
+    -- If φ is the char fn of a distribution with these tails
+    InDomainOfAttraction φ tb.α :=
+  fun φ hφ => gnedenko_kolmogorov_forward φ tb.α tb.hα_pos hα_lt
+    tb.rightTail tb.leftTail tb.L tb.hL_sv tb.p tb.q
+    tb.hp_nonneg tb.hq_nonneg tb.hpq_pos tb.hRight tb.hLeft hφ
+
+/-- The Pareto distribution (α ∈ (0, 2)) lies in the domain of attraction
+    of the α-stable law. -/
+theorem pareto_in_domain_of_attraction (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 2) :
+    ∀ (φ : ℝ → ℂ), (φ 0 = 1 ∧ ∀ t, ‖φ t‖ ≤ 1) →
+    InDomainOfAttraction φ α :=
+  tailBalance_implies_attraction (paretoTailBalance α hα_pos (le_of_lt hα_lt)) hα_lt
+
+/-- The symmetric Cauchy distribution lies in the domain of attraction
+    of the 1-stable (Cauchy) law. -/
+theorem cauchy_in_domain_of_attraction :
+    ∀ (φ : ℝ → ℂ), (φ 0 = 1 ∧ ∀ t, ‖φ t‖ ≤ 1) →
+    InDomainOfAttraction φ 1 :=
+  tailBalance_implies_attraction cauchyTailBalance (show (1 : ℝ) < 2 by norm_num)
+
+-- ============================================================================
+-- Part XXI: Slowly Varying Function Examples
+-- ============================================================================
+
+/-
+The definition of SlowlyVarying requires L(x) ≠ 0 for all x > 0. This
+excludes log(x) directly (since log(1) = 0). However, shifted logarithms
+like log(x + a) for a ≥ 1 are slowly varying and serve as the standard
+examples of non-constant slowly varying functions.
+-/
+
+/-- log(x + a) is slowly varying for a ≥ 1.
+    The key idea: log(cx + a)/log(x + a) = 1 + (log c + log(1 + (a-a/c)/(cx)))/log(x + a) → 1.
+    More directly: both log(cx + a) and log(x + a) → ∞, and their difference
+    log(cx + a) - log(x + a) = log((cx + a)/(x + a)) → log c (bounded),
+    so the ratio → 1. -/
+theorem slowlyVarying_logAdd {a : ℝ} (ha : 1 ≤ a) :
+    SlowlyVarying (fun x => Real.log (x + a)) := by
+  constructor
+  · intro x hx
+    have : 0 < x + a := by linarith
+    have : 1 < x + a := by linarith
+    exact ne_of_gt (Real.log_pos this)
+  · intro c hc
+    -- We show log(cx + a)/log(x + a) → 1.
+    -- Strategy: log(cx+a)/log(x+a) = 1 + log((cx+a)/(x+a))/log(x+a)
+    -- Since (cx+a)/(x+a) → c, log of that → log c (bounded).
+    -- And log(x+a) → ∞. So bounded/∞ → 0, hence ratio → 1 + 0 = 1.
+    -- Step 1: log(x + a) → ∞
+    have h_denom : Tendsto (fun x => Real.log (x + a)) atTop atTop :=
+      Real.tendsto_log_atTop.comp
+        (Filter.tendsto_atTop_add_const_right atTop a Filter.tendsto_id)
+    -- Step 2: (cx + a)/(x + a) → c
+    have h_ratio : Tendsto (fun x => (c * x + a) / (x + a)) atTop (𝓝 c) := by
+      have key : Tendsto (fun x : ℝ => c + (a - c * a) / (x + a)) atTop (𝓝 (c + 0)) := by
+        exact tendsto_const_nhds.add
+          (tendsto_const_nhds.div_atTop
+            (Filter.tendsto_atTop_add_const_right atTop a Filter.tendsto_id))
+      rw [add_zero] at key
+      exact key.congr' (by
+        filter_upwards [Filter.eventually_ge_atTop 1] with x hx
+        have : (0 : ℝ) < x + a := by linarith
+        field_simp; ring)
+    -- Step 3: log((cx+a)/(x+a)) → log c
+    have h_log_ratio : Tendsto (fun x => Real.log ((c * x + a) / (x + a)))
+        atTop (𝓝 (Real.log c)) :=
+      (Real.continuousAt_log (ne_of_gt hc)).tendsto.comp h_ratio
+    -- Step 4: log((cx+a)/(x+a)) / log(x+a) → 0
+    have h_zero : Tendsto (fun x => Real.log ((c * x + a) / (x + a)) /
+        Real.log (x + a)) atTop (𝓝 0) :=
+      h_log_ratio.div_atTop h_denom
+    -- Step 5: log(cx+a)/log(x+a) =ᶠ 1 + log((cx+a)/(x+a))/log(x+a)
+    have h_eq : (fun x => Real.log (c * x + a) / Real.log (x + a)) =ᶠ[atTop]
+        (fun x => 1 + Real.log ((c * x + a) / (x + a)) / Real.log (x + a)) := by
+      filter_upwards [Filter.eventually_gt_atTop 0] with x hx
+      have hxa : (0 : ℝ) < x + a := by linarith
+      have hcxa : (0 : ℝ) < c * x + a := by positivity
+      have hlog_ne : Real.log (x + a) ≠ 0 := ne_of_gt (Real.log_pos (by linarith))
+      rw [Real.log_div (ne_of_gt hcxa) (ne_of_gt hxa), sub_div, div_self hlog_ne]
+      ring
+    -- Conclude: Tendsto (1 + f) → (𝓝 (1 + 0)) = Tendsto ... → (𝓝 1)
+    rw [show (1 : ℝ) = 1 + 0 from (add_zero 1).symm]
+    exact (Filter.tendsto_congr' h_eq).mpr (tendsto_const_nhds.add h_zero)
+
+/-- log(x + 1) is slowly varying (the simplest shifted logarithm). -/
+theorem slowlyVarying_log1 : SlowlyVarying (fun x => Real.log (x + 1)) :=
+  slowlyVarying_logAdd le_rfl
+
+/-- Powers of slowly varying functions are slowly varying (rpow version).
+    Combined with log(x+a) being SV, this gives (log(x+a))^β as SV for any β. -/
+theorem slowlyVarying_logAdd_rpow {a : ℝ} (ha : 1 ≤ a) {β : ℝ} (hβ : β ≠ 0) :
+    SlowlyVarying (fun x => |Real.log (x + a)| ^ β) :=
+  slowlyVarying_rpow (slowlyVarying_logAdd ha) hβ
+
+-- ============================================================================
+-- Part XXII: Verification
 -- ============================================================================
 
 #check @SlowlyVarying
@@ -945,7 +1150,7 @@ theorem formalization_summary : True := trivial
 #check @regularlyVarying_mul_index
 #check @regularlyVarying_inv_index
 #check @regularlyVarying_div_index
--- New: concrete examples
+-- Concrete examples
 #check @paretoTail
 #check @paretoTail_at_one
 #check @paretoTail_pos
@@ -957,5 +1162,19 @@ theorem formalization_summary : True := trivial
 #check @cauchy_normalization_diverges
 #check @cauchy_normalization_eq
 #check @normalization_monotone
+-- Tail balance instances
+#check @paretoTailBalance
+#check @paretoTailBalance_one_sided
+#check @paretoTailBalance_full_right
+#check @cauchyTailBalance
+#check @cauchyTailBalance_symmetric
+-- Domain of attraction connections
+#check @tailBalance_implies_attraction
+#check @pareto_in_domain_of_attraction
+#check @cauchy_in_domain_of_attraction
+-- Slowly varying examples
+#check @slowlyVarying_logAdd
+#check @slowlyVarying_log1
+#check @slowlyVarying_logAdd_rpow
 
 end DomainOfAttraction

@@ -70,6 +70,24 @@
       "title": "Properties and Connections",
       "lines": [291, 340],
       "description": "Potter's bound for slowly varying functions, Karamata's integral theorem, stable self-similarity, and the connection between classical CLT and Gaussian domain of attraction."
+    },
+    {
+      "id": "concrete-tail-balance",
+      "title": "Concrete Tail Balance Instances",
+      "lines": [916, 1016],
+      "description": "Constructs TailBalance instances for the one-sided Pareto distribution (p=1, q=0) and symmetric Cauchy distribution (p=q=1/2), connecting abstract tail theory to concrete distributions."
+    },
+    {
+      "id": "domain-of-attraction-concrete",
+      "title": "Domain of Attraction for Concrete Distributions",
+      "lines": [1018, 1055],
+      "description": "Uses the axiomatized forward direction to show Pareto (0<α<2) and symmetric Cauchy distributions lie in the domain of attraction of their respective α-stable laws."
+    },
+    {
+      "id": "sv-examples",
+      "title": "Slowly Varying Function Examples",
+      "lines": [1057, 1122],
+      "description": "Proves log(x+a) is slowly varying for a≥1 and |log(x+a)|^β is slowly varying for any β≠0, providing non-constant examples of slowly varying functions."
     }
   ],
   "overview": {
