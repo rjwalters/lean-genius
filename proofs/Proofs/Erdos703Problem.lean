@@ -109,7 +109,16 @@ theorem large_sets_avoid_1 (n : ℕ) (A B : Finset ℕ)
     (hA : A ⊆ Finset.range n) (hB : B ⊆ Finset.range n)
     (hAsize : A.card > (n + 1) / 2) (hBsize : B.card > (n + 1) / 2) :
     (A ∩ B).card ≠ 1 := by
-  sorry
+  intro h
+  -- By inclusion-exclusion: |A ∪ B| + |A ∩ B| = |A| + |B|
+  have hie := Finset.card_union_add_card_inter A B
+  -- |A ∪ B| ≤ n since A, B ⊆ range n
+  have hunion : (A ∪ B).card ≤ n := by
+    calc (A ∪ B).card ≤ (Finset.range n).card :=
+          Finset.card_le_card (Finset.union_subset hA hB)
+      _ = n := Finset.card_range n
+  -- |A| + |B| = |A ∪ B| + 1 ≤ n + 1, but |A| + |B| > n + 1. Contradiction.
+  omega
 
 /-
 ## Part IV: Frankl-Füredi Optimal Families

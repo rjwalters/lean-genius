@@ -197,7 +197,11 @@ theorem S_upper_bound (n : ℕ) (π : Perm n) :
 theorem consecutiveSum_pos (n : ℕ) (hn : n ≥ 1) (π : Perm n)
     (u v : Fin n) (huv : u ≤ v) :
     consecutiveSum n π u v ≥ 1 := by
-  sorry
+  simp only [consecutiveSum, if_pos huv]
+  have hne : (Finset.Icc u v).Nonempty := ⟨u, Finset.mem_Icc.mpr ⟨le_refl u, huv⟩⟩
+  have := Finset.sum_pos (fun i (_ : i ∈ Finset.Icc u v) =>
+    show 0 < (π i).val + 1 from Nat.succ_pos _) hne
+  omega
 
 /-
 ## Summary

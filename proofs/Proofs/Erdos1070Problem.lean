@@ -195,7 +195,29 @@ theorem f_from_chromatic : ∀ n : ℕ, (f n : ℝ) ≥ n / 7 := by
   intro n
   have h1 : (f n : ℝ) ≥ n / chromaticNumberPlane := independence_chromatic_relation n
   have h2 : chromaticNumberPlane ≤ 7 := chromatic_upper_bound
-  sorry -- Follows from h1 and h2
+  have h3 := de_grey_lower_bound  -- chromaticNumberPlane ≥ 5
+  have hχ_pos : (0 : ℝ) < (chromaticNumberPlane : ℝ) := by
+    exact_mod_cast (show 0 < chromaticNumberPlane by omega)
+  have hle : (↑chromaticNumberPlane : ℝ) ≤ 7 := by exact_mod_cast h2
+  have hfn_nonneg : (0 : ℝ) ≤ ↑(f n) := Nat.cast_nonneg
+  have hχ_ne : (↑chromaticNumberPlane : ℝ) ≠ 0 := ne_of_gt hχ_pos
+  -- Clear fraction in h1: n/χ ≤ f(n) → n ≤ f(n) * χ
+  have h1' : (↑n : ℝ) ≤ ↑(f n) * ↑chromaticNumberPlane := by
+    have h := (ge_iff_le.mp h1)
+    have := mul_le_mul_of_nonneg_right h (le_of_lt hχ_pos)
+    rwa [div_mul_cancel₀ _ hχ_ne] at this
+  -- n ≤ f(n) * 7 by transitivity
+  have hn7 : (↑n : ℝ) ≤ ↑(f n) * 7 := by
+    calc (↑n : ℝ) ≤ ↑(f n) * ↑chromaticNumberPlane := h1'
+      _ ≤ ↑(f n) * 7 := mul_le_mul_of_nonneg_left hle hfn_nonneg
+  -- Prove n/7 ≤ f(n) by multiplying hn7 by 7⁻¹
+  show (f n : ℝ) ≥ ↑n / 7
+  rw [ge_iff_le]
+  have h7inv : (0 : ℝ) ≤ (7 : ℝ)⁻¹ := by positivity
+  have key := mul_le_mul_of_nonneg_right hn7 h7inv
+  have eq1 : (↑(f n) : ℝ) * 7 * (7 : ℝ)⁻¹ = ↑(f n) := by ring
+  have eq2 : (↑n : ℝ) / 7 = ↑n * (7 : ℝ)⁻¹ := by ring
+  linarith
 
 /- ## Summary
 
