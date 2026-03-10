@@ -44,10 +44,15 @@ noncomputable def summand (n : ℕ) : ℝ :=
 /-- Each summand is positive. -/
 theorem summand_pos (n : ℕ) : summand n > 0 := by
   unfold summand
-  apply div_pos one_pos
-  simp only [sub_pos, Nat.cast_one]
-  have h : (n + 2).factorial ≥ 2 := Nat.factorial_pos (n + 2) |>.trans_le' (by omega)
-  linarith [Nat.cast_pos.mpr (Nat.factorial_pos (n + 2))]
+  have hden : (0 : ℝ) < ((n + 2).factorial : ℝ) - 1 := by
+    have h : (n + 2).factorial ≥ 2 := by
+      have : (n + 2) ∣ (n + 2).factorial :=
+        ⟨(n + 1).factorial, (Nat.factorial_succ (n + 1)).symm⟩
+      have := Nat.le_of_dvd (Nat.factorial_pos (n + 2)) this
+      omega
+    have : ((n + 2).factorial : ℝ) ≥ 2 := by exact_mod_cast h
+    linarith
+  exact div_pos one_pos hden
 
 /-
 # Part 2: Convergence
@@ -57,12 +62,32 @@ The sum converges absolutely.
 
 /-- The factorial grows fast, so 1/(n!-1) → 0. -/
 theorem summand_tendsto_zero : Filter.Tendsto summand Filter.atTop (nhds 0) := by
-  sorry
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  obtain ⟨N, hN⟩ := exists_nat_gt (1 / ε)
+  use N
+  intro n hn
+  rw [Real.dist_eq, sub_zero, abs_of_pos (summand_pos n)]
+  have hfact : ((n + 2).factorial : ℝ) ≥ n + 2 := by
+    exact_mod_cast Nat.le_of_dvd (Nat.factorial_pos (n + 2))
+      ⟨(n + 1).factorial, Nat.factorial_succ (n + 1)⟩
+  have hden : ((n + 2).factorial : ℝ) - 1 ≥ n + 1 := by linarith
+  calc summand n = 1 / (((n + 2).factorial : ℝ) - 1) := rfl
+    _ ≤ 1 / (↑n + 1) := by
+        exact one_div_le_one_div_of_le (by positivity) hden
+    _ < ε := by
+        have hpos : (0 : ℝ) < ↑n + 1 := by positivity
+        rw [div_lt_iff₀ hpos]
+        have h3 : (↑N : ℝ) ≤ ↑n := Nat.cast_le.mpr hn
+        have h4 : 1 / ε < ↑n + 1 := by linarith
+        have h5 := mul_lt_mul_of_pos_left h4 hε
+        rw [mul_div_cancel₀ _ hε.ne'] at h5
+        linarith
 
 /-- The sum Σ 1/(n!-1) converges. -/
 axiom factorialSum_summable : Summable summand
 
-/-- The sum is finite and positive. -/
+/-- The sum is finite and positive (follows from positivity of each summand). -/
 theorem factorialSum_pos : factorialSum > 0 := by
   sorry
 
@@ -78,8 +103,32 @@ theorem factorialSum_pos : factorialSum > 0 := by
 For |x| < 1: 1/(1-x) = Σ_{k=0}^∞ x^k, so 1/(n!-1) = (1/n!) · 1/(1-1/n!) = Σ_{k≥1} (1/n!)^k.
 -/
 theorem inv_factorial_minus_one_eq_geom (n : ℕ) (hn : n ≥ 2) :
-    (1 : ℝ) / (n.factorial - 1) = ∑' k : ℕ, (1 / n.factorial) ^ (k + 1) := by
-  sorry
+    (1 : ℝ) / (n.factorial - 1) = ∑' k : ℕ, ((1 : ℝ) / n.factorial) ^ (k + 1) := by
+  have hfact_pos : (0 : ℝ) < n.factorial := Nat.cast_pos.mpr (Nat.factorial_pos n)
+  have hfact_ge2 : (n.factorial : ℝ) ≥ 2 := by
+    have hdvd : n ∣ n.factorial := by
+      cases n with
+      | zero => omega
+      | succ m => exact ⟨m.factorial, (Nat.factorial_succ m).symm⟩
+    have hle : n ≤ n.factorial := Nat.le_of_dvd (Nat.factorial_pos n) hdvd
+    exact_mod_cast le_trans hn hle
+  have hr_nonneg : (0 : ℝ) ≤ 1 / n.factorial := div_nonneg one_pos.le hfact_pos.le
+  have hr_lt1 : (1 : ℝ) / n.factorial < 1 := by
+    rw [div_lt_one hfact_pos]; linarith
+  -- Rewrite ∑ r^{k+1} = r * ∑ r^k
+  have hshift : ∑' k, (1 / (n.factorial : ℝ)) ^ (k + 1) =
+      (1 / (n.factorial : ℝ)) * ∑' k, (1 / (n.factorial : ℝ)) ^ k := by
+    have : ∀ k, (1 / (n.factorial : ℝ)) ^ (k + 1) =
+        (1 / (n.factorial : ℝ)) * (1 / (n.factorial : ℝ)) ^ k := by
+      intro k; ring
+    simp_rw [this, tsum_mul_left]
+  rw [hshift, tsum_geometric_of_lt_one hr_nonneg hr_lt1]
+  -- Goal: (1/n!) * (1 / (1 - 1/n!)) = 1/(n!-1)
+  have hne : (n.factorial : ℝ) - 1 ≠ 0 := by linarith
+  have hne2 : (1 : ℝ) - 1 / (n.factorial : ℝ) ≠ 0 := by
+    rw [sub_ne_zero]; intro h
+    linarith
+  field_simp
 
 /--
 **Weisenberg's Double Sum Identity**
@@ -137,14 +186,13 @@ theorem problem_68_is_special_case :
   ext n
   simp only [Int.cast_neg, Int.cast_one]
   have h : ((n + 2).factorial : ℤ) + (-1) ≠ 0 := by
-    simp only [add_neg_eq_sub]
     have hf : (n + 2).factorial ≥ 2 := by
-      have := Nat.factorial_pos (n + 2)
+      have hdvd : (n + 2) ∣ (n + 2).factorial :=
+        ⟨(n + 1).factorial, (Nat.factorial_succ (n + 1)).symm⟩
+      have := Nat.le_of_dvd (Nat.factorial_pos (n + 2)) hdvd
       omega
     omega
-  simp only [h, ↓reduceIte, Int.cast_neg, Int.cast_one]
-  congr 1
-  ring
+  rw [if_pos h]; ring
 
 /-
 # Part 6: Small Value Computations
@@ -155,7 +203,7 @@ Numerical approximations.
 /-- 2! - 1 = 1, so the first term is 1. -/
 theorem first_term : summand 0 = 1 := by
   unfold summand
-  simp [factorial]
+  norm_num [Nat.factorial]
 
 /-- 3! - 1 = 5, so the second term is 1/5 = 0.2. -/
 theorem second_term : summand 1 = 1 / 5 := by
@@ -182,7 +230,7 @@ axiom partial_sum_approx :
 Understanding the difficulty of the irrationality proof.
 -/
 
-/--
+/-
 **Difficulty Analysis**
 
 Proving irrationality of infinite series is notoriously difficult:
@@ -230,13 +278,13 @@ Known transcendental numbers involving factorials:
 - Liouville numbers like Σ 1/10^(n!)
 -/
 theorem transcendence_implies_irrationality {x : ℝ} :
-    Transcendental ℝ x → Irrational x := by
+    Transcendental ℚ x → Irrational x := by
   intro h
   exact h.irrational
 
 /-- If Erdős's transcendence conjecture holds for t = -1, then Problem 68 follows. -/
 theorem transcendence_implies_68 :
-    Transcendental ℝ factorialSum → ErdosConjecture68 := by
+    Transcendental ℚ factorialSum → ErdosConjecture68 := by
   intro h
   exact h.irrational
 
