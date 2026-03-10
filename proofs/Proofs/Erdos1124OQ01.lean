@@ -95,21 +95,84 @@ theorem equidecomposable_refl (S : Set Point) :
           by ext x; simp [Set.mem_iUnion]⟩
   · intro _; exact ⟨0, by ext x; simp [translateBy]⟩
 
-/-- If A is N-piece equidecomposable with B, then B is N-piece
-    equidecomposable with A.
+/-- Inverse translation recovers the original set. -/
+theorem translateBy_inv_image (v : Point) (S : Set Point) :
+    translateBy (-v) '' (translateBy v '' S) = S := by
+  ext x
+  simp only [Set.mem_image, translateBy]
+  constructor
+  · rintro ⟨y, ⟨z, hz, rfl⟩, rfl⟩; simpa using hz
+  · intro hx; exact ⟨x + v, ⟨x, hx, rfl⟩, by simp⟩
 
-    Axiomatized: swaps pieces and negates translation vectors. -/
-axiom equidecomposable_symm {A B : Set Point} {n : ℕ}
+/-- If A is N-piece equidecomposable with B, then B is N-piece
+    equidecomposable with A. -/
+theorem equidecomposable_symm {A B : Set Point} {n : ℕ}
     (h : TranslationEquidecomposableN A B n) :
-    TranslationEquidecomposableN B A n
+    TranslationEquidecomposableN B A n := by
+  obtain ⟨pA, pB, hA, hB, hTC⟩ := h
+  refine ⟨pB, pA, hB, hA, fun i => ?_⟩
+  obtain ⟨v, hv⟩ := hTC i
+  exact ⟨-v, by rw [hv, translateBy_inv_image]⟩
 
 /-- Monotonicity: if A and B are N-piece equidecomposable, they are also
-    (N+1)-piece equidecomposable (adding an empty piece).
-
-    Axiomatized: requires Fin.cons manipulation with iUnion. -/
-axiom equidecomposable_mono {A B : Set Point} {n : ℕ}
+    (N+1)-piece equidecomposable (adding an empty piece). -/
+theorem equidecomposable_mono {A B : Set Point} {n : ℕ}
     (h : TranslationEquidecomposableN A B n) :
-    TranslationEquidecomposableN A B (n + 1)
+    TranslationEquidecomposableN A B (n + 1) := by
+  obtain ⟨pA, pB, ⟨hdA, huA⟩, ⟨hdB, huB⟩, hTC⟩ := h
+  -- Extend by appending empty set
+  let pA' : Fin (n + 1) → Set Point := fun i =>
+    if h : i.val < n then pA ⟨i.val, h⟩ else ∅
+  let pB' : Fin (n + 1) → Set Point := fun i =>
+    if h : i.val < n then pB ⟨i.val, h⟩ else ∅
+  refine ⟨pA', pB', ⟨?_, ?_⟩, ⟨?_, ?_⟩, fun i => ?_⟩
+  · -- Pairwise disjoint for A'
+    intro i j hij
+    simp only [pA']
+    split_ifs with hi hj hj hi
+    · exact hdA ⟨i, hi⟩ ⟨j, hj⟩ (by intro heq; apply hij; exact Fin.ext (Fin.mk.inj heq))
+    · exact disjoint_empty _
+    · exact (disjoint_empty _).symm
+    · exact disjoint_empty _
+  · -- Union of A' = A
+    ext x; constructor
+    · intro hx
+      simp only [Set.mem_iUnion] at hx
+      obtain ⟨i, hi⟩ := hx
+      by_cases h : i.val < n
+      · have : x ∈ pA ⟨i.val, h⟩ := by simp only [pA', h, dite_true] at hi; exact hi
+        rw [← huA]; exact Set.mem_iUnion.mpr ⟨⟨i.val, h⟩, this⟩
+      · exfalso; simp only [pA', h, dite_false, Set.mem_empty_iff_false] at hi
+    · intro hx
+      rw [← huA] at hx; obtain ⟨⟨j, hj⟩, hjx⟩ := Set.mem_iUnion.mp hx
+      exact Set.mem_iUnion.mpr ⟨⟨j, Nat.lt_succ_of_lt hj⟩,
+        by simp only [pA', show j < n from hj, dite_true]; exact hjx⟩
+  · -- Pairwise disjoint for B'
+    intro i j hij
+    simp only [pB']
+    split_ifs with hi hj hj hi
+    · exact hdB ⟨i, hi⟩ ⟨j, hj⟩ (by intro heq; apply hij; exact Fin.ext (Fin.mk.inj heq))
+    · exact disjoint_empty _
+    · exact (disjoint_empty _).symm
+    · exact disjoint_empty _
+  · -- Union of B' = B
+    ext x; constructor
+    · intro hx
+      simp only [Set.mem_iUnion] at hx
+      obtain ⟨i, hi⟩ := hx
+      by_cases h : i.val < n
+      · have : x ∈ pB ⟨i.val, h⟩ := by simp only [pB', h, dite_true] at hi; exact hi
+        rw [← huB]; exact Set.mem_iUnion.mpr ⟨⟨i.val, h⟩, this⟩
+      · exfalso; simp only [pB', h, dite_false, Set.mem_empty_iff_false] at hi
+    · intro hx
+      rw [← huB] at hx; obtain ⟨⟨j, hj⟩, hjx⟩ := Set.mem_iUnion.mp hx
+      exact Set.mem_iUnion.mpr ⟨⟨j, Nat.lt_succ_of_lt hj⟩,
+        by simp only [pB', show j < n from hj, dite_true]; exact hjx⟩
+  · -- Translation congruence
+    simp only [pA', pB']
+    by_cases hi : i.val < n
+    · simp [hi]; exact hTC ⟨i, hi⟩
+    · simp [hi]; exact ⟨0, by simp [translateBy]⟩
 
 -- ============================================================================
 -- Part IV: The Minimum Piece Count
@@ -226,13 +289,16 @@ axiom piece_count_lower_bound (r s : ℝ) (hr : r > 0) (hs : s > 0)
 -- ============================================================================
 
 /-- If the minimum piece count is N, then for any M ≥ N, the circle
-    and square are M-piece equidecomposable.
-
-    Axiomatized: follows from minPieceCount_achieves + iterated
-    equidecomposable_mono, but the induction is tedious. -/
-axiom exists_decomposition_above_min (r s : ℝ) (hr : r > 0) (hs : s > 0)
+    and square are M-piece equidecomposable. -/
+theorem exists_decomposition_above_min (r s : ℝ) (hr : r > 0) (hs : s > 0)
     (hA : SameArea r s) (m : ℕ) (hm : minPieceCount r s ≤ m) :
-    TranslationEquidecomposableN (disk r) (square s) m
+    TranslationEquidecomposableN (disk r) (square s) m := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hm
+  clear hm
+  have base := minPieceCount_achieves r s hr hs hA
+  induction k with
+  | zero => simpa using base
+  | succ k ih => exact equidecomposable_mono ih
 
 /-- Equidecomposability is preserved under scaling: if disk(r) and
     square(s) are N-piece equidecomposable, then disk(cr) and
