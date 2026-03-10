@@ -55,8 +55,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 19 proved theorems, 11 axioms, 0 sorries in PicksTheoremOQ03.lean. Axioms encode Ehrhart theorem (polynomiality, degree, coefficients, evaluation), Ehrhart-Macdonald reciprocity, and interior counting function. Proved theorems include Pick's formula recovery from Ehrhart, Reeve tetrahedra counterexample showing Pick's impossibility in 3D, h*-vector structure, and concrete examples (unit simplex, unit cube).",
+    "progressSummary": "COMPLETE+EXT: 19+40 proved theorems across 3 files, 0 sorries. PicksTheoremOQ03Product.lean adds product formulas L(PxQ,n)=L(P,n)*L(Q,n) for all dimensions, reciprocity-product compatibility, quasipolynomial structure for rational polytopes, zonotope Ehrhart theory, rectangle Ehrhart with algebraic Pick verification, and Eulerian number connection to h*-vectors.",
     "builtItems": [
+      "proofs/Proofs/PicksTheoremOQ03Product.lean - 602 lines, 0 sorries, 0 axioms (product formulas, quasipolynomials, zonotopes, rectangles, Eulerian numbers)",
       "proofs/Proofs/PicksTheoremOQ03.lean - 470+ lines",
       "EhrhartData structure (dim, volume, boundary/interior/total points)",
       "ehrhart_poly, ehrhart_degree, ehrhart_leading_coeff, ehrhart_constant_term axioms",
@@ -102,7 +103,9 @@
   ],
   "relatedProofs": [
     "PicksTheorem.lean",
-    "PicksTheoremOQ03.lean"
+    "PicksTheoremOQ03.lean",
+    "PicksTheoremOQ03Product.lean",
+    "PicksTheoremOQ03Ext.lean"
   ],
   "references": {
     "papers": [
