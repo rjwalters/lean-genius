@@ -41,11 +41,13 @@ theorem tau_one : τ 1 = 1 := by
 
 /-- τ(p) = 2 for prime p. -/
 theorem tau_prime (p : ℕ) (hp : p.Prime) : τ p = 2 := by
-  sorry
+  unfold tau
+  rw [hp.divisors, Finset.card_insert_of_not_mem (by simp [hp.one_lt.ne]),
+      Finset.card_singleton]
 
 /-- τ(p^k) = k + 1 for prime p. -/
 theorem tau_prime_pow (p k : ℕ) (hp : p.Prime) : τ (p ^ k) = k + 1 := by
-  sorry
+  simp [tau, Nat.divisors_prime_pow hp]
 
 /-- τ is multiplicative: τ(mn) = τ(m)τ(n) for coprime m, n. -/
 theorem tau_multiplicative (m n : ℕ) (hmn : m.Coprime n) :
@@ -54,11 +56,13 @@ theorem tau_multiplicative (m n : ℕ) (hmn : m.Coprime n) :
 
 /-- τ(n) ≥ 1 for n ≥ 1. -/
 theorem tau_pos (n : ℕ) (hn : n ≥ 1) : τ n ≥ 1 := by
-  sorry
+  simp only [tau, ge_iff_le]
+  exact Finset.card_pos.mpr ⟨1, Nat.one_mem_divisors.mpr (Nat.pos_iff_ne_zero.mp hn)⟩
 
 /-- τ(n) ≤ n for all n. -/
 theorem tau_le (n : ℕ) : τ n ≤ n := by
-  sorry
+  simp only [tau]
+  exact Nat.card_divisors_le_self n
 
 /-
 ## Part II: The Series
@@ -76,12 +80,12 @@ noncomputable def D (t : ℝ) : ℝ :=
 
 /-- The series converges for t > 1. -/
 theorem S_summable (t : ℝ) (ht : t > 1) :
-    Summable (fun n : ℕ => if n = 0 then 0 else 1 / (t ^ n - 1)) := by
+    Summable (fun n : ℕ => if n = 0 then (0 : ℝ) else 1 / (t ^ n - 1)) := by
   sorry
 
 /-- The divisor series converges for t > 1. -/
 theorem D_summable (t : ℝ) (ht : t > 1) :
-    Summable (fun n : ℕ => if n = 0 then 0 else (τ n : ℝ) / t ^ n) := by
+    Summable (fun n : ℕ => if n = 0 then (0 : ℝ) else (τ n : ℝ) / t ^ n) := by
   sorry
 
 /-
@@ -102,13 +106,13 @@ theorem S_eq_D (t : ℝ) (ht : t > 1) : S t = D t := by
 
 /-- The double sum interpretation. -/
 theorem double_sum_identity (t : ℝ) (ht : t > 1) :
-    ∑' (d : ℕ) (m : ℕ), if d = 0 ∨ m = 0 then 0 else 1 / t ^ (d * m) =
-    ∑' n : ℕ, if n = 0 then 0 else (τ n : ℝ) / t ^ n := by
+    (∑' d : ℕ, ∑' m : ℕ, if d = 0 ∨ m = 0 then (0 : ℝ) else 1 / t ^ (d * m)) =
+    ∑' n : ℕ, if n = 0 then (0 : ℝ) else (τ n : ℝ) / t ^ n := by
   sorry
 
 /-- Geometric series for each d: ∑_{m≥1} 1/t^{dm} = 1/(t^d - 1). -/
 theorem geometric_divisor (t : ℝ) (d : ℕ) (ht : t > 1) (hd : d ≥ 1) :
-    ∑' m : ℕ, if m = 0 then 0 else 1 / t ^ (d * m) = 1 / (t ^ d - 1) := by
+    (∑' m : ℕ, if m = 0 then (0 : ℝ) else 1 / t ^ (d * m)) = 1 / (t ^ d - 1) := by
   sorry
 
 /-
@@ -130,7 +134,8 @@ theorem S_at_2_irrational : Irrational S_at_2 :=
 
 /-- S(2) starts with 1 + 1/3 + 1/7 + 1/15 + ... -/
 theorem S_at_2_first_terms :
-    S_at_2 = 1 + 1/3 + 1/7 + 1/15 + ∑' n : ℕ, if n ≤ 4 then 0 else 1 / (2^n - 1) := by
+    S_at_2 = 1 + 1/3 + 1/7 + 1/15 +
+    ∑' n : ℕ, if n ≤ 4 then (0 : ℝ) else 1 / ((2 : ℝ)^n - 1) := by
   sorry
 
 /-
@@ -203,8 +208,8 @@ The series is a Lambert series.
 -/
 
 /-- A Lambert series is ∑ a_n q^n/(1 - q^n). -/
-def isLambertSeries (f : ℕ → ℝ) (q : ℝ) : ℝ :=
-  ∑' n : ℕ, if n = 0 then 0 else f n * q^n / (1 - q^n)
+noncomputable def isLambertSeries (f : ℕ → ℝ) (q : ℝ) : ℝ :=
+  ∑' n : ℕ, if n = 0 then (0 : ℝ) else f n * q^n / (1 - q^n)
 
 /-- S(t) = Lambert series with a_n = 1 and q = 1/t. -/
 theorem S_as_lambert (t : ℝ) (ht : t > 1) :
