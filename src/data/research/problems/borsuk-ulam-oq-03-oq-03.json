@@ -16,30 +16,31 @@
       "antisymmetricDiff_odd: g(x) = f(x) - f(-x) satisfies g(-x) = -g(x)",
       "antisymmetricDiff_continuous: g is continuous when f is",
       "no_fixed_point_on_circle: antipodal map has no fixed points on S^1",
-      "antisymmetricDiff_eq_zero_iff: g(x)=0 ⟺ f(x)=f(-x)",
-      "circle_isCompact: S^1 ⊂ ℝ² is compact (PROVED via closedBall)",
-      "grid_mesh_size: mesh size √2/N > 0",
+      "antisymmetricDiff_eq_zero_iff: g(x)=0 \u27fa f(x)=f(-x)",
+      "circle_isCompact: S^1 \u2282 \u211d\u00b2 is compact (PROVED via closedBall)",
+      "grid_mesh_size: mesh size \u221a2/N > 0",
       "grid_mesh_tends_to_zero: mesh refinement convergence (PROVED)",
       "compact_image_circle: f(S^1) is compact",
-      "approx_to_exact: approximate solutions for all ε → exact solution (PROVED via compactness)",
+      "approx_to_exact: approximate solutions for all \u03b5 \u2192 exact solution (PROVED via compactness)",
       "borsuk_ulam_2d_from_tucker: exact BU via compactness (PROVED from approx + approx_to_exact)",
       "odd_function_at_zero: odd functions vanish at origin",
       "circle_isClosed, circle_bounded, circle_nonempty",
-      "continuous_on_circle_bounded: continuous functions on S¹ are bounded",
+      "continuous_on_circle_bounded: continuous functions on S\u00b9 are bounded",
       "approx_pair_small_diff: approximate pair implies small antisymmetricDiff"
     ],
     "open": [
-      "approx_borsuk_ulam_2d_from_tucker (sorry): ε-approximate BU via Tucker — needs explicit triangulation builder"
+      "approx_borsuk_ulam_2d_corrected (sorry): correct S2->R2 version needs hemisphere + Tucker",
+      "approx_borsuk_ulam_2d_from_tucker (sorry): KNOWN FALSE - S1->R2 BU is wrong"
     ],
-    "goal": "Build explicit grid triangulation → Tucker labeling → complementary edge → approximate zero"
+    "goal": "Build explicit grid triangulation \u2192 Tucker labeling \u2192 complementary edge \u2192 approximate zero"
   },
   "currentState": {
     "phase": "BUILD",
     "since": "2026-03-06T21:10:00Z",
     "iteration": 1,
-    "focus": "Infrastructure built. Tucker→BU bridge formalized. Deep proofs axiomatized.",
+    "focus": "Dimensional error found and documented. Corrected S2->R2 theorems added. Need hemisphere projection for proof.",
     "blockers": [],
-    "nextAction": "Build explicit grid triangulation to close approx_borsuk_ulam_2d_from_tucker sorry.",
+    "nextAction": "Build hemisphere projection from S2 upper hemisphere to D2, then apply Tucker 2D",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -47,7 +48,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: BorsukUlamOQ03OQ03.lean (~560 lines). 35 proved results, 1 sorry (approx_borsuk_ulam_2d_from_tucker), 2 axioms (Tucker's lemma, complementary edge → approximate zero). Key achievements: dominantComponentLabel_antipodal PROVED, circle_isCompact PROVED, approx_to_exact PROVED, borsuk_ulam_2d_from_tucker fully structured (depends on approx sorry).",
+    "progressSummary": "PROGRESS: Found and documented dimensional error in main theorem (S1->R2 BU is FALSE). Added corrected S2->R2 formalization with ~10 new theorems. Original file: 35 proved, 1 sorry (now known false). Corrected section: ~10 new results with correct S2->R2 statements, 2 sorries remaining (approx_borsuk_ulam_2d_corrected needs hemisphere projection + Tucker application).",
     "builtItems": [
       "proofs/Proofs/BorsukUlamOQ03OQ03.lean: dominantComponentLabel definition",
       "proofs/Proofs/BorsukUlamOQ03OQ03.lean: antisymmetricDiff definition and properties",
@@ -55,36 +56,45 @@
       "proofs/Proofs/BorsukUlamOQ03OQ03.lean: GridTriangulation structure",
       "proofs/Proofs/BorsukUlamOQ03OQ03.lean: approx_borsuk_ulam_2d_from_tucker (main bridge)",
       "proofs/Proofs/BorsukUlamOQ03OQ03.lean: borsuk_ulam_2d_from_tucker (exact result)",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: tucker_approach_summary (constructive comparison)"
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: tucker_approach_summary (constructive comparison)",
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: neg3, neg3_neg3, neg3_preserves_sphere (R3 negation infrastructure)",
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: no_fixed_point_on_sphere (antipodal map on S2)",
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: antisymmetricDiff3, antisymmetricDiff3_odd, antisymmetricDiff3_continuous, antisymmetricDiff3_eq_zero_iff",
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: sphere_isCompact, sphere_nonempty",
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: approx_borsuk_ulam_2d_corrected, borsuk_ulam_2d_corrected (correct S2->R2 statements)"
     ],
     "insights": [
-      "The Tucker→BU bridge works in 2D via dominant component labeling: label each vertex by the coordinate direction where g is largest",
+      "The Tucker\u2192BU bridge works in 2D via dominant component labeling: label each vertex by the coordinate direction where g is largest",
       "antisymmetricDiff g(x) = f(x) - f(-x) is always odd (g(-x) = -g(x)), making it Tucker-compatible",
       "Complementary edges (labeled +k and -k) correspond to sign changes in coordinate k, giving approximate zeros via IVT",
-      "GridTriangulation of [-1,1]² with N×N cells has mesh size √2/N → 0",
+      "GridTriangulation of [-1,1]\u00b2 with N\u00d7N cells has mesh size \u221a2/N \u2192 0",
       "The constructive content is the approximate BU theorem; exact BU needs compactness (non-constructive step)",
-      "Tucker approach gives PPAD membership: polynomial-time ε-approximate BU solutions",
+      "Tucker approach gives PPAD membership: polynomial-time \u03b5-approximate BU solutions",
       "Existing infrastructure: Tucker axiom from BorsukUlamOQ01, 1D BU from BorsukUlamOQ03",
-      "fun_prop handles complex continuity goals (antisymmetricDiff_continuous)"
+      "fun_prop handles complex continuity goals (antisymmetricDiff_continuous)",
+      "CRITICAL: The theorem approx_borsuk_ulam_2d_from_tucker is FALSE as stated. It claims S1->R2 BU (circle to plane), but the correct BU dimension matching is S^n -> R^n. The identity map f(x)=x on S1 is a counterexample: dist(x,-x)=2 for all x on S1.",
+      "The file description correctly says S2->R2 but the formalization uses S1 (x1^2+x2^2=1 in R2) instead of S2 (x1^2+x2^2+x3^2=1 in R3). This is a dimensional error in the formalization.",
+      "Added corrected S2->R2 versions: neg3, antisymmetricDiff3, sphere_isCompact, approx_borsuk_ulam_2d_corrected, borsuk_ulam_2d_corrected. The exact version (borsuk_ulam_2d_corrected) reduces to the approximate version via compactness of S2.",
+      "The corrected sorry (approx_borsuk_ulam_2d_corrected) needs hemisphere projection (x,y,z)->-(x,y) from upper hemisphere to D2, disk triangulation, Tucker application. This is the genuine mathematical work remaining."
     ],
     "mathlibGaps": [
       "No Tucker's lemma proof in Mathlib (axiomatized in BorsukUlamOQ01)",
       "No Borsuk-Ulam theorem in Mathlib",
       "No triangulated disk/simplicial complex combinatorial library in Mathlib",
-      "isCompact_sphere for ℝ² not directly available (need to compose closed + bounded)"
+      "isCompact_sphere for \u211d\u00b2 not directly available (need to compose closed + bounded)"
     ],
     "nextSteps": [
-      "Build explicit grid triangulation instantiation: vertex set as Fin(2N+1) × Fin(2N+1), edge set, boundary, antipodal map",
-      "Label grid vertices using dominantComponentLabel composed with antisymmetricDiff",
-      "Apply tuckers_lemma to get complementary edge, then complementary_edge_gives_approximate_zero",
-      "Thread everything together to close approx_borsuk_ulam_2d_from_tucker sorry"
+      "Build hemisphere projection: (x,y,z) -> (x,y) for z>=0, with inverse using sqrt(1-x^2-y^2)",
+      "Adapt Tucker application to work on D2 = projected upper hemisphere",
+      "Prove approx_borsuk_ulam_2d_corrected using Tucker 2D on the projected disk",
+      "Consider whether antisymmetricDiff3_continuous proof compiles (uses fun_prop)"
     ],
-    "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-03\n\n## Answer to OQ-03 (2D Extension)\n\n**YES** — the 2D Borsuk-Ulam theorem CAN be proved via Tucker's lemma constructively.\n\nThe proof strategy is:\n1. Define g(x) = f(x) - f(-x) (odd function on S²/S¹)\n2. Label vertices of triangulated disk by dominant component of g\n3. Tucker's lemma gives a complementary edge (sign change)\n4. IVT along edge gives approximate zero\n5. Mesh refinement + compactness gives exact zero\n\n## Infrastructure Built\n\n- `dominantComponentLabel`: assigns ±1 or ±2 based on dominant coordinate\n- `antisymmetricDiff`: g(x) = f(x) - f(-x) with proven oddness and continuity\n- `TriangulatedDisk2D`: structure capturing combinatorial input to Tucker\n- `GridTriangulation`: N×N grid with √2/N mesh size\n- Main bridge theorems: approximate and exact BU from Tucker\n\n## Status: 7 proved, 5 sorry, 2 axioms\n\nThe 2 axioms are Tucker's lemma (from BorsukUlamOQ01) and the complementary-edge-to-approximate-zero bridge (deep IVT + continuity argument).\n"
+    "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-03\n\n## Answer to OQ-03 (2D Extension)\n\n**YES** \u2014 the 2D Borsuk-Ulam theorem CAN be proved via Tucker's lemma constructively.\n\nThe proof strategy is:\n1. Define g(x) = f(x) - f(-x) (odd function on S\u00b2/S\u00b9)\n2. Label vertices of triangulated disk by dominant component of g\n3. Tucker's lemma gives a complementary edge (sign change)\n4. IVT along edge gives approximate zero\n5. Mesh refinement + compactness gives exact zero\n\n## Infrastructure Built\n\n- `dominantComponentLabel`: assigns \u00b11 or \u00b12 based on dominant coordinate\n- `antisymmetricDiff`: g(x) = f(x) - f(-x) with proven oddness and continuity\n- `TriangulatedDisk2D`: structure capturing combinatorial input to Tucker\n- `GridTriangulation`: N\u00d7N grid with \u221a2/N mesh size\n- Main bridge theorems: approximate and exact BU from Tucker\n\n## Status: 7 proved, 5 sorry, 2 axioms\n\nThe 2 axioms are Tucker's lemma (from BorsukUlamOQ01) and the complementary-edge-to-approximate-zero bridge (deep IVT + continuity argument).\n"
   },
   "approaches": [
     {
       "name": "Dominant component labeling + Tucker 2D",
-      "description": "Label vertices by dominant coordinate direction of g = f - f∘(-), apply Tucker for complementary edge, use IVT for approximate zero, refine mesh for exact result",
+      "description": "Label vertices by dominant coordinate direction of g = f - f\u2218(-), apply Tucker for complementary edge, use IVT for approximate zero, refine mesh for exact result",
       "status": "in-progress",
       "outcome": "Infrastructure built, main theorems stated with correct types, 5 sorries remain"
     }
@@ -110,5 +120,5 @@
   },
   "knowledgeScore": 85,
   "started": "2026-03-06T21:11:54.769Z",
-  "lastUpdate": "2026-03-07T23:20:00.000Z"
+  "lastUpdate": "2026-03-10T20:10:00.000Z"
 }

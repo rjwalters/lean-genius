@@ -211,31 +211,29 @@ axiom complementary_edge_gives_approximate_zero
 PART VI: THE MAIN BRIDGE: TUCKER → 2D BORSUK-ULAM
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Approximate 2D Borsuk-Ulam from Tucker's Lemma**
+/-- **DIMENSIONAL ERROR**: The original statement below uses S¹ → ℝ² which is FALSE.
+    Counterexample: f(x) = x (identity). Then dist(x, -x) = 2 for all x ∈ S¹.
 
-    For any continuous f : ℝ² → ℝ² and any ε > 0, there exists a point
-    on the unit circle S¹ ⊂ ℝ² where |f(x) - f(-x)| < ε.
+    The correct 2D Borsuk-Ulam theorem is f : S² → ℝ² (sphere in ℝ³, not circle in ℝ²).
+    BU dimension matching: S^n → ℝ^n.
+    - n=1: S¹ → ℝ (true, by IVT) ← proved in BorsukUlamOQ03.lean
+    - n=2: S² → ℝ² (true) ← what this file SHOULD formalize
 
-    Proof strategy:
-    1. Form g(x) = f(x) - f(-x) (odd function)
-    2. Triangulate the unit disk with mesh size δ ≪ ε
-    3. Label vertices by dominant component of g
-    4. Tucker's lemma gives complementary edge
-    5. Along this edge, g changes sign → g ≈ 0 nearby
+    The proof infrastructure (dominantComponentLabel, Tucker's lemma, odd functions,
+    compactness arguments) is correct for the codomain ℝ², but the domain must be
+    S² ⊂ ℝ³, not S¹ ⊂ ℝ².
 
-    This is the constructive content: given δ, we can computably find
-    an approximate antipodal pair. -/
+    To fix: change domain to ℝ × ℝ × ℝ with constraint x₁²+x₂²+x₃²=1,
+    use hemisphere projection (x,y,z) ↦ (x,y) for z≥0 to reduce S² → D²,
+    then apply Tucker 2D on D². See approx_borsuk_ulam_2d_corrected below. -/
 theorem approx_borsuk_ulam_2d_from_tucker
     (f : ℝ × ℝ → ℝ × ℝ) (hf : Continuous f)
     (ε : ℝ) (hε : 0 < ε) :
     ∃ x : ℝ × ℝ, x.1 ^ 2 + x.2 ^ 2 = 1 ∧
       dist (f x) (f (Prod.map Neg.neg Neg.neg x)) < ε := by
-  -- The proof requires:
-  -- 1. Construct a triangulation with mesh size δ = ε / (2C) where C = sup ‖g‖
-  -- 2. Label vertices via dominantComponentLabel
-  -- 3. Apply Tucker's lemma to get complementary edge
-  -- 4. Use continuity to find approximate zero
-  -- Full construction needs explicit triangulation builder
+  -- FALSE as stated: S¹ → ℝ² BU does not hold.
+  -- Counterexample: f = id gives dist(x, -x) = 2 for all x on S¹.
+  -- See approx_borsuk_ulam_2d_corrected for the correct S² → ℝ² version.
   sorry
 
 /-
@@ -243,14 +241,8 @@ theorem approx_borsuk_ulam_2d_from_tucker
 PART VII: EXACT 2D BORSUK-ULAM (LIMITING ARGUMENT)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Exact 2D Borsuk-Ulam from Tucker's Lemma (via compactness)**
-
-    By taking a sequence of triangulations with mesh size → 0, the
-    approximate antipodal pairs form a sequence on S¹ (compact).
-    By Bolzano-Weierstrass, a subsequence converges, and the limit
-    point satisfies f(x) = f(-x) exactly by continuity.
-
-    This is the full constructive proof of 2D BU via Tucker. -/
+/-- **DIMENSIONAL ERROR**: Same issue as approx_borsuk_ulam_2d_from_tucker.
+    S¹ → ℝ² BU is false. See borsuk_ulam_2d_corrected for the corrected S² → ℝ² version. -/
 theorem borsuk_ulam_2d_from_tucker
     (f : ℝ × ℝ → ℝ × ℝ) (hf : Continuous f) :
     ∃ x : ℝ × ℝ, x.1 ^ 2 + x.2 ^ 2 = 1 ∧
@@ -556,5 +548,144 @@ PART XV: VERIFICATION
 #check @circle_bounded
 #check @continuous_on_circle_bounded
 #check @approx_to_exact
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART XVI: CORRECTED 2D BORSUK-ULAM (S² → ℝ²)
+
+The correct statement uses S² ⊂ ℝ³ as the domain, not S¹ ⊂ ℝ².
+BU dimension matching: f : S^n → ℝ^n requires domain dimension = codomain dimension.
+For the 2D case: f : S² → ℝ² where S² = {(x,y,z) ∈ ℝ³ : x²+y²+z²=1}.
+
+The proof strategy via Tucker is:
+1. Given continuous f : ℝ³ → ℝ², define g(x) = f(x) - f(-x)
+2. g is odd (g(-x) = -g(x)) and continuous
+3. Project the upper hemisphere H⁺ = {(x,y,z) ∈ S² : z ≥ 0} to D² via (x,y,z) → (x,y)
+4. Define g̃(u,v) = g(u, v, √(1-u²-v²)) on D²
+5. On ∂D² (where z=0), the lifted point is on the equator, and g̃(-u,-v) = -g̃(u,v)
+6. Label vertices by dominantComponentLabel(g̃(v))
+7. Tucker 2D gives complementary edge → approximate zero of g̃ → approximate BU
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- Negation in ℝ³ (as ℝ × ℝ × ℝ). -/
+abbrev neg3 : ℝ × ℝ × ℝ → ℝ × ℝ × ℝ := fun x => (-x.1, -x.2.1, -x.2.2)
+
+/-- Negation in ℝ³ is an involution. -/
+theorem neg3_neg3 (x : ℝ × ℝ × ℝ) : neg3 (neg3 x) = x := by
+  simp [neg3]
+
+/-- Negation preserves the sphere S². -/
+theorem neg3_preserves_sphere (x : ℝ × ℝ × ℝ)
+    (hx : x.1 ^ 2 + x.2.1 ^ 2 + x.2.2 ^ 2 = 1) :
+    (neg3 x).1 ^ 2 + (neg3 x).2.1 ^ 2 + (neg3 x).2.2 ^ 2 = 1 := by
+  simp only [neg3]; ring_nf; linarith
+
+/-- On S², the antipodal map has no fixed points. -/
+theorem no_fixed_point_on_sphere (x : ℝ × ℝ × ℝ)
+    (hx : x.1 ^ 2 + x.2.1 ^ 2 + x.2.2 ^ 2 = 1) :
+    neg3 x ≠ x := by
+  intro h
+  have h1 : -x.1 = x.1 := congr_arg Prod.fst h
+  have h2 : -x.2.1 = x.2.1 := congr_arg (Prod.fst ∘ Prod.snd) h
+  have h3 : -x.2.2 = x.2.2 := congr_arg (Prod.snd ∘ Prod.snd) h
+  have hx1 : x.1 = 0 := by linarith
+  have hx2 : x.2.1 = 0 := by linarith
+  have hx3 : x.2.2 = 0 := by linarith
+  rw [hx1, hx2, hx3] at hx; norm_num at hx
+
+/-- Negation in ℝ³ is continuous. -/
+theorem neg3_continuous : Continuous neg3 := by
+  simp only [neg3]; fun_prop
+
+/-- The antisymmetric difference for f : ℝ³ → ℝ². -/
+def antisymmetricDiff3 (f : ℝ × ℝ × ℝ → ℝ × ℝ) : ℝ × ℝ × ℝ → ℝ × ℝ :=
+  fun x => ((f x).1 - (f (neg3 x)).1, (f x).2 - (f (neg3 x)).2)
+
+/-- antisymmetricDiff3 is odd: g(-x) = -g(x). -/
+theorem antisymmetricDiff3_odd (f : ℝ × ℝ × ℝ → ℝ × ℝ) (x : ℝ × ℝ × ℝ) :
+    antisymmetricDiff3 f (neg3 x) =
+      Prod.map Neg.neg Neg.neg (antisymmetricDiff3 f x) := by
+  simp only [antisymmetricDiff3, neg3, neg3_neg3, Prod.map]
+  ext <;> simp <;> ring
+
+/-- antisymmetricDiff3 is continuous when f is. -/
+theorem antisymmetricDiff3_continuous (f : ℝ × ℝ × ℝ → ℝ × ℝ) (hf : Continuous f) :
+    Continuous (antisymmetricDiff3 f) := by
+  unfold antisymmetricDiff3 neg3
+  fun_prop
+
+/-- antisymmetricDiff3 zero iff f(x) = f(-x). -/
+theorem antisymmetricDiff3_eq_zero_iff (f : ℝ × ℝ × ℝ → ℝ × ℝ) (x : ℝ × ℝ × ℝ) :
+    antisymmetricDiff3 f x = (0, 0) ↔ f x = f (neg3 x) := by
+  simp only [antisymmetricDiff3, Prod.mk.injEq]
+  constructor
+  · rintro ⟨h1, h2⟩; exact Prod.ext (by linarith) (by linarith)
+  · intro h; exact ⟨by have := congr_arg Prod.fst h; simp at this; linarith,
+                     by have := congr_arg Prod.snd h; simp at this; linarith⟩
+
+/-- S² is compact. -/
+theorem sphere_isCompact :
+    IsCompact {x : ℝ × ℝ × ℝ | x.1 ^ 2 + x.2.1 ^ 2 + x.2.2 ^ 2 = 1} := by
+  apply (isCompact_closedBall (0 : ℝ × ℝ × ℝ) 1).of_isClosed_subset
+  · exact isClosed_eq (by fun_prop) continuous_const
+  · intro ⟨x, y, z⟩ hxyz
+    simp only [Set.mem_setOf_eq] at hxyz
+    simp only [Metric.mem_closedBall, dist_zero_right]
+    rw [Prod.norm_def, Prod.norm_def]
+    apply max_le
+    · rw [Real.norm_eq_abs]; nlinarith [sq_nonneg x, sq_abs x, sq_nonneg y, sq_nonneg z]
+    · apply max_le <;> rw [Real.norm_eq_abs] <;>
+        nlinarith [sq_nonneg x, sq_nonneg y, sq_nonneg z, sq_abs y, sq_abs z]
+
+/-- S² is nonempty. -/
+theorem sphere_nonempty :
+    Set.Nonempty {x : ℝ × ℝ × ℝ | x.1 ^ 2 + x.2.1 ^ 2 + x.2.2 ^ 2 = 1} :=
+  ⟨(1, 0, 0), by norm_num⟩
+
+/-- **Corrected approximate 2D Borsuk-Ulam from Tucker's Lemma**
+
+    For any continuous f : ℝ³ → ℝ² and any ε > 0, there exists a point
+    on S² where |f(x) - f(-x)| < ε.
+
+    This is the correct statement using S² ⊂ ℝ³ (not S¹ ⊂ ℝ²). -/
+theorem approx_borsuk_ulam_2d_corrected
+    (f : ℝ × ℝ × ℝ → ℝ × ℝ) (hf : Continuous f)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ x : ℝ × ℝ × ℝ, x.1 ^ 2 + x.2.1 ^ 2 + x.2.2 ^ 2 = 1 ∧
+      dist (f x) (f (neg3 x)) < ε := by
+  -- Strategy: minimize dist(f(x), f(-x)) on compact S²; minimum is ≤ ε for all ε
+  -- by Tucker's lemma + complementary edge argument on the projected disk.
+  -- Full proof requires: hemisphere projection, disk triangulation, Tucker application.
+  sorry
+
+/-- **Corrected exact 2D Borsuk-Ulam from Tucker's Lemma**
+
+    By taking triangulations with mesh size → 0, the approximate solutions
+    converge (by compactness of S²) to an exact solution. -/
+theorem borsuk_ulam_2d_corrected
+    (f : ℝ × ℝ × ℝ → ℝ × ℝ) (hf : Continuous f) :
+    ∃ x : ℝ × ℝ × ℝ, x.1 ^ 2 + x.2.1 ^ 2 + x.2.2 ^ 2 = 1 ∧
+      f x = f (neg3 x) := by
+  -- Minimize d(x) = dist(f(x), f(-x)) on compact S²
+  have hd : Continuous (fun x : ℝ × ℝ × ℝ => dist (f x) (f (neg3 x))) :=
+    Continuous.dist hf (hf.comp neg3_continuous)
+  obtain ⟨x₀, hx₀S, hx₀min⟩ :=
+    sphere_isCompact.exists_isMinOn sphere_nonempty hd.continuousOn
+  refine ⟨x₀, hx₀S, dist_eq_zero.mp (le_antisymm ?_ dist_nonneg)⟩
+  by_contra hgt
+  push_neg at hgt
+  obtain ⟨x₁, hx₁on, hx₁lt⟩ := approx_borsuk_ulam_2d_corrected f hf _ hgt
+  exact absurd hx₁lt (not_lt.mpr (hx₀min hx₁on))
+
+-- Type-check corrected results
+#check @neg3
+#check @neg3_preserves_sphere
+#check @no_fixed_point_on_sphere
+#check @antisymmetricDiff3
+#check @antisymmetricDiff3_odd
+#check @antisymmetricDiff3_eq_zero_iff
+#check @sphere_isCompact
+#check @approx_borsuk_ulam_2d_corrected
+#check @borsuk_ulam_2d_corrected
 
 end BorsukUlamTucker2D
