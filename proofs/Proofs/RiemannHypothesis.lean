@@ -738,22 +738,52 @@ non-trivial zeros come in quadruples: {ρ, conj(ρ), 1-ρ, 1-conj(ρ)}.
 Under RH, all four coincide on the critical line.
 -/
 
-/-- **Axiom: Conjugation symmetry of the Riemann zeta function**
+/-- For n : ℕ, the argument of (n : ℂ) is not π (since n ≥ 0 and arg(x) = 0 for x ≥ 0). -/
+private lemma natCast_arg_ne_pi (n : ℕ) : (n : ℂ).arg ≠ π := by
+  rw [natCast_arg]
+  exact ne_of_lt Real.pi_pos
+
+/-- For n : ℕ, conj((n : ℂ)^s) = (n : ℂ)^(conj s).
+Natural numbers are self-conjugate and have arg = 0 ≠ π. -/
+private lemma conj_natCast_cpow (n : ℕ) (s : ℂ) :
+    starRingEnd ℂ ((n : ℂ) ^ s) = (n : ℂ) ^ (starRingEnd ℂ s) := by
+  have h := cpow_conj (n : ℂ) s (natCast_arg_ne_pi n)
+  rw [conj_natCast] at h
+  exact h.symm
+
+/-- **Conjugation symmetry of ζ(s) for Re(s) > 1** (PROVEN)
+
+ζ(conj(s)) = conj(ζ(s)) when Re(s) > 1.
+
+**Proof**: In this region, ζ(s) = Σ 1/n^s converges absolutely. Conjugating
+term-by-term using:
+1. `conj_tsum`: conjugation commutes with convergent infinite sums
+2. `conj_natCast`: natural numbers are self-conjugate (conj(n) = n)
+3. `cpow_conj`: for non-negative real x with arg ≠ π, conj(x^s) = x^(conj s)
+
+This gives conj(Σ 1/n^s) = Σ 1/n^(conj s) = ζ(conj s). -/
+theorem zeta_conj_of_one_lt_re {s : ℂ} (hs : 1 < s.re) :
+    riemannZeta (starRingEnd ℂ s) = starRingEnd ℂ (riemannZeta s) := by
+  have hs' : 1 < (starRingEnd ℂ s).re := by rwa [Complex.conj_re]
+  rw [zeta_eq_tsum_one_div_nat_cpow hs, zeta_eq_tsum_one_div_nat_cpow hs',
+      Complex.conj_tsum]
+  congr 1
+  ext n
+  simp only [map_div₀, map_one, conj_natCast_cpow]
+
+/-- **Axiom: Conjugation symmetry of the Riemann zeta function (full)**
 
 ζ(conj(s)) = conj(ζ(s)) for all s ∈ ℂ.
 
-This follows from the fact that the Dirichlet series ζ(s) = Σ n^(-s) has real
-coefficients (all equal to 1), so conj(n^(-s)) = n^(-conj(s)). For Re(s) > 1 this
-is immediate from term-by-term conjugation of the absolutely convergent series.
-The identity extends to all s by the identity theorem for holomorphic functions.
-
-**Status**: Not yet in Mathlib but mathematically straightforward. The completed zeta
-function is defined via the Hurwitz zeta function and Gamma function, both of which
-satisfy analogous conjugation identities.
+**Partially proved**: `zeta_conj_of_one_lt_re` proves this for Re(s) > 1 via the
+Dirichlet series. The full result extends to all s by the identity theorem for
+holomorphic functions: both sides are meromorphic on ℂ \ {1} and agree on the
+half-plane Re(s) > 1. Formalizing the identity theorem argument requires showing
+that conj ∘ ζ ∘ conj is holomorphic (as a composition of antiholomorphic maps),
+which is not yet straightforward in Mathlib.
 
 **References**:
-- This is a standard property; see e.g. Titchmarsh, "The Theory of the Riemann
-  Zeta-function", Chapter 2. -/
+- Titchmarsh, "The Theory of the Riemann Zeta-function", Chapter 2. -/
 axiom zeta_conj (s : ℂ) :
     riemannZeta (starRingEnd ℂ s) = starRingEnd ℂ (riemannZeta s)
 

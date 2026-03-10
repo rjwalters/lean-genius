@@ -22,11 +22,7 @@
   Tags: binomial-coefficients, squarefree, prime-powers, number-theory
 -/
 
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Squarefree
-import Mathlib.NumberTheory.Padics.PadicVal
-import Mathlib.Data.Real.Basic
+import Mathlib
 
 namespace Erdos175
 
@@ -47,7 +43,7 @@ def IsSquarefree (m : ℕ) : Prop :=
 
 /-- The maximum prime power exponent dividing C(2n, n) -/
 noncomputable def maxPrimePowerExp (n : ℕ) : ℕ :=
-  Nat.find ⟨1, fun _ _ => rfl⟩
+  Nat.find (⟨1, trivial⟩ : ∃ _ : ℕ, True)
 
 /-
 ## Part 2: Divisibility by 4
@@ -59,7 +55,7 @@ noncomputable def maxPrimePowerExp (n : ℕ) : ℕ :=
 axiom kummer_theorem (p m n : ℕ) (hp : Nat.Prime p) :
     padicValNat p (Nat.choose (m + n) m) =
     -- number of carries in base-p addition of m and n
-    Classical.choose (⟨0, fun _ => rfl⟩ : ∃ k : ℕ, True)
+    Classical.choose (⟨0, trivial⟩ : ∃ k : ℕ, True)
 
 /-- For C(2n, n), v_2 = number of 1s in binary expansion of n -/
 axiom v2_central_binom (n : ℕ) :
@@ -101,7 +97,7 @@ f(n) = max{k : p^k | C(2n,n) for some prime p}.
 /-- Maximum prime power exponent dividing a number -/
 noncomputable def f (n : ℕ) : ℕ :=
   -- max over primes p of v_p(C(2n, n))
-  Nat.find ⟨1, fun _ _ => rfl⟩
+  Nat.find (⟨1, trivial⟩ : ∃ _ : ℕ, True)
 
 /-- f(n) → ∞ as n → ∞ (Sander 1992) -/
 axiom sander_1992_f_unbounded :
@@ -140,7 +136,8 @@ axiom power_of_two_odd_prime_square (k : ℕ) (hk : k ≥ 3) :
 /-- The key cases: n = 8, 16, 32, ... -/
 example : ¬IsSquarefree (centralBinom 8) := by
   -- C(16, 8) = 12870 = 2 × 3² × 5 × 11 × 13
-  sorry
+  intro h
+  exact h 3 (by norm_num) (by native_decide)
 
 /-
 ## Part 6: Related Results
