@@ -29,13 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended CS equality characterization to general Hölder. Proved conjugate exponent identities, Young deficit framework, normalized Hölder equality theorem (∑fᵢgᵢ=1 with norms=1 implies fᵢ^p=gᵢ^q), and power-to-linear proportionality reduction. Young equality case axiomatized (strict convexity).",
+    "progressSummary": "PROGRESS: Proved general Hölder equality case (holder_eq_implies_power_prop). All theorem sorries eliminated except 2 axioms (Young deficit strict convexity). Full pipeline: conjugate identities → Young deficit → normalized equality → general equality via Lp/Lq normalization → p=q=2 specialization.",
     "builtItems": [
       "conj_eq_div, conj_sub_one_mul, conj_q_div_p_add_one, conj_one_lt_q, conj_add_eq_mul (conjugate identities)",
       "youngDeficit def + axioms (youngDeficit_nonneg, youngDeficit_eq_zero_iff)",
       "sum_youngDeficit, sum_youngDeficit_eq_zero_iff (structural reduction theorems)",
       "holder_eq_normalized_implies_power_prop (key theorem, fully proved)",
-      "holder_eq_implies_power_prop (general case, 1 sorry on normalization)",
+      "holder_eq_implies_power_prop (general case, FULLY PROVED via normalization)",
       "power_prop_sq_implies_prop (p=q=2 specialization, fully proved)"
     ],
     "insights": [
@@ -43,12 +43,13 @@
       "Young deficit = a^p/p + b^q/q - ab is the right abstraction for Hölder equality analysis",
       "Normalized case (∑f^p=∑g^q=1, ∑fg=1) reduces to showing ∑ Young deficits = 1/p+1/q-1 = 0",
       "Young equality reverse direction (deficit=0 → a^p=b^q) requires strict convexity, axiomatized",
-      "For p=q=2, power proportionality f^2=c·g^2 reduces to proportionality via nlinarith on (f-√c·g)²"
+      "For p=q=2, power proportionality f^2=c·g^2 reduces to proportionality via nlinarith on (f-√c·g)²",
+      "Normalization by Lp/Lq norms: set a=Fp^{1/p}, b=Gq^{1/q}, then (f/a)^p sums to 1 via rpow_mul + inv_mul_cancel₀",
+      "Real.div_rpow needs explicit exponent arg; ← Finset.sum_div factors out denominators from sums"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove Young equality reverse: use StrictConvexOn for rpow or direct derivative argument",
-      "Complete the normalization step in holder_eq_implies_power_prop (divide f,g by Lp norms)",
+      "Prove Young equality reverse: use StrictConvexOn for rpow or direct derivative argument (replaces 2 axioms)",
       "Extend to integral Hölder equality (a.e. power proportionality)"
     ]
   },
@@ -65,7 +66,7 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.175Z",
-  "lastUpdate": "2026-03-07T18:02:01.175Z",
+  "lastUpdate": "2026-03-10T00:00:00.000Z",
   "significance": 6,
   "tractability": 6
 }
