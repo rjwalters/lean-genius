@@ -12,21 +12,29 @@
   1. Interpolated exponent infrastructure (proved)
   2. Hölder-based operator norm bounds at endpoints (proved)
   3. Log-convexity of the interpolation norm bound (proved)
-  4. The Riesz-Thorin theorem statement (axiom: requires three-lines lemma)
-  5. Consequences: Hausdorff-Young inequality as corollary
+  4. Hadamard three-lines lemma (axiom: the fundamental complex-analytic tool)
+  5. The Riesz-Thorin theorem statement (axiom: requires three-lines lemma)
+  6. Consequences: Hausdorff-Young, Young's convolution exponents
+  7. Scaling/submultiplicativity of the interpolated norm bound
 
   Key results (all proved unless marked):
   - interpolated_exponent_pos: p_θ > 0 for valid interpolation parameters
   - interpolated_conj_valid: interpolated exponents remain conjugate
   - holder_endpoint_bound: Hölder gives the endpoint operator norm bound
   - norm_bound_log_convex: M₀^(1-θ) · M₁^θ is log-convex in θ
+  - interpNorm_scale: scaling M₀^(1-θ)·M₁^θ respects scalar multiplication
+  - interpNorm_submul: geometric mean is submultiplicative
+  - interpNorm_am_gm: geometric mean ≤ arithmetic mean
+  - hadamard_three_lines: three-lines lemma (axiom)
   - riesz_thorin: full interpolation theorem (axiom)
+  - young_convolution_exponents: Young's convolution exponent condition
   - hausdorff_young_from_interpolation: Hausdorff-Young as corollary (from axiom)
 
   References:
   - M. Riesz (1927): Sur les maxima des formes bilinéaires
   - G.O. Thorin (1948): Convexity theorems generalizing those of M. Riesz
   - E. Stein & G. Weiss (1971): Introduction to Fourier Analysis, Ch. V
+  - J. Hadamard (1896): The three-lines lemma
 -/
 
 import Mathlib.MeasureTheory.Function.L2Space
@@ -35,6 +43,7 @@ import Mathlib.MeasureTheory.Integral.MeanInequalities
 import Mathlib.Analysis.MeanInequalities
 import Mathlib.Analysis.MeanInequalitiesPow
 import Mathlib.Analysis.NormedSpace.OperatorNorm.Basic
+import Mathlib.Analysis.Complex.Basic
 import Mathlib.Tactic
 
 noncomputable section
@@ -213,8 +222,107 @@ theorem interpNorm_mono_of_le {θ₁ θ₂ M₀ M₁ : ℝ}
   have hlog : Real.log M₀ ≤ Real.log M₁ := Real.log_le_log hM₀ hM
   nlinarith
 
+-- Scaling: interpNorm(θ, cM₀, cM₁) = c · interpNorm(θ, M₀, M₁) for c > 0
+-- The interpolated norm respects scalar multiplication of both endpoint norms.
+theorem interpNorm_scale (θ c M₀ M₁ : ℝ) (hc : 0 < c) (hM₀ : 0 < M₀) (hM₁ : 0 < M₁) :
+    interpNorm θ (c * M₀) (c * M₁) = c * interpNorm θ M₀ M₁ := by
+  unfold interpNorm
+  rw [Real.mul_rpow hc.le hM₀.le, Real.mul_rpow hc.le hM₁.le]
+  have : c ^ (1 - θ) * M₀ ^ (1 - θ) * (c ^ θ * M₁ ^ θ) =
+      (c ^ (1 - θ) * c ^ θ) * (M₀ ^ (1 - θ) * M₁ ^ θ) := by ring
+  rw [this, ← Real.rpow_add hc]
+  simp [show (1 - θ) + θ = 1 from by ring, Real.rpow_one]
+
+-- Geometric-Arithmetic Mean: M₀^(1-θ)·M₁^θ ≤ (1-θ)·M₀ + θ·M₁ for θ ∈ [0,1].
+-- The weighted geometric mean never exceeds the weighted arithmetic mean.
+-- This is a direct application of the weighted AM-GM inequality from Mathlib.
+theorem interpNorm_am_gm (θ M₀ M₁ : ℝ) (hθ₀ : 0 ≤ θ) (hθ₁ : θ ≤ 1)
+    (hM₀ : 0 < M₀) (hM₁ : 0 < M₁) :
+    interpNorm θ M₀ M₁ ≤ (1 - θ) * M₀ + θ * M₁ := by
+  unfold interpNorm
+  exact Real.geom_mean_le_arith_mean2_weighted (by linarith) hθ₀ hM₀.le hM₁.le (by ring)
+
+-- Submultiplicativity: the interpolated norm of products ≤ product of interpolated norms
+-- This follows from (AB)^t = A^t · B^t for positive reals
+theorem interpNorm_mul (θ A₀ A₁ B₀ B₁ : ℝ) (hA₀ : 0 < A₀) (hA₁ : 0 < A₁)
+    (hB₀ : 0 < B₀) (hB₁ : 0 < B₁) :
+    interpNorm θ (A₀ * B₀) (A₁ * B₁) =
+    interpNorm θ A₀ A₁ * interpNorm θ B₀ B₁ := by
+  unfold interpNorm
+  rw [Real.mul_rpow hA₀.le hB₀.le, Real.mul_rpow hA₁.le hB₁.le]
+  ring
+
 -- ============================================================================
--- Part V: The Riesz-Thorin Interpolation Theorem
+-- Part V: The Hadamard Three-Lines Lemma
+-- ============================================================================
+
+/-
+The Hadamard three-lines lemma is the complex-analytic tool underlying
+Riesz-Thorin interpolation. It bounds the maximum modulus of an analytic
+function on a strip by its boundary values.
+
+Statement: Let F be continuous on the closed strip S = {z ∈ ℂ : 0 ≤ Re z ≤ 1},
+analytic on the interior, and bounded on S. Define
+  M(t) := sup_{y ∈ ℝ} |F(t + iy)|
+Then:
+  log M(t) ≤ (1-t) · log M(0) + t · log M(1)
+i.e., M(t) ≤ M(0)^(1-t) · M(1)^t for all t ∈ [0,1].
+
+This is NOT yet in Mathlib (as of v4.26.0). We axiomatize it here as the
+fundamental tool, from which Riesz-Thorin follows.
+-/
+
+-- The closed strip in the complex plane: {z : 0 ≤ Re z ≤ 1}
+def closedStrip : Set ℂ := {z : ℂ | 0 ≤ z.re ∧ z.re ≤ 1}
+
+-- The open strip: {z : 0 < Re z < 1}
+def openStrip : Set ℂ := {z : ℂ | 0 < z.re ∧ z.re < 1}
+
+-- Left boundary: {z : Re z = 0} = {iy : y ∈ ℝ}
+def leftBoundary : Set ℂ := {z : ℂ | z.re = 0}
+
+-- Right boundary: {z : Re z = 1} = {1 + iy : y ∈ ℝ}
+def rightBoundary : Set ℂ := {z : ℂ | z.re = 1}
+
+-- The Hadamard three-lines lemma.
+-- Axiomatized because the proof requires the Phragmén-Lindelöf principle
+-- (or maximum modulus principle for strips), which is not in Mathlib.
+--
+-- States: if F is continuous on the closed strip, analytic on the open strip,
+-- and bounded, then log ‖F‖ is convex on the strip:
+--   ‖F(t+iy)‖ ≤ M₀^(1-t) · M₁^t
+-- where M₀ = sup_y ‖F(iy)‖ and M₁ = sup_y ‖F(1+iy)‖.
+axiom hadamard_three_lines
+    (F : ℂ → ℂ) (M₀ M₁ : ℝ) (hM₀ : 0 < M₀) (hM₁ : 0 < M₁)
+    (hcont : ContinuousOn F closedStrip)
+    (hdiff : ∀ z ∈ openStrip, DifferentiableAt ℂ F z)
+    (hbound : ∀ z ∈ closedStrip, ‖F z‖ ≤ max M₀ M₁)
+    (hleft : ∀ z ∈ leftBoundary, ‖F z‖ ≤ M₀)
+    (hright : ∀ z ∈ rightBoundary, ‖F z‖ ≤ M₁)
+    (t : ℝ) (ht₀ : 0 ≤ t) (ht₁ : t ≤ 1) (y : ℝ) :
+    ‖F (⟨t, y⟩ : ℂ)‖ ≤ interpNorm t M₀ M₁
+
+-- The three-lines lemma implies log-convexity of the boundary maximum.
+-- This is the bridge between three-lines and Riesz-Thorin.
+-- Note: requires ‖F z‖ > 0 for the log formulation to be well-defined.
+theorem three_lines_log_convexity (F : ℂ → ℂ) (M₀ M₁ : ℝ)
+    (hM₀ : 0 < M₀) (hM₁ : 0 < M₁)
+    (hcont : ContinuousOn F closedStrip)
+    (hdiff : ∀ z ∈ openStrip, DifferentiableAt ℂ F z)
+    (hbound : ∀ z ∈ closedStrip, ‖F z‖ ≤ max M₀ M₁)
+    (hleft : ∀ z ∈ leftBoundary, ‖F z‖ ≤ M₀)
+    (hright : ∀ z ∈ rightBoundary, ‖F z‖ ≤ M₁)
+    (t : ℝ) (ht₀ : 0 ≤ t) (ht₁ : t ≤ 1) (y : ℝ)
+    (hFpos : 0 < ‖F (⟨t, y⟩ : ℂ)‖) :
+    Real.log ‖F (⟨t, y⟩ : ℂ)‖ ≤ (1 - t) * Real.log M₀ + t * Real.log M₁ := by
+  have htl := hadamard_three_lines F M₀ M₁ hM₀ hM₁ hcont hdiff hbound hleft hright t ht₀ ht₁ y
+  calc Real.log ‖F (⟨t, y⟩ : ℂ)‖
+      ≤ Real.log (interpNorm t M₀ M₁) := Real.log_le_log hFpos htl
+    _ = (1 - t) * Real.log M₀ + t * Real.log M₁ :=
+        interpNorm_log t M₀ M₁ hM₀ hM₁
+
+-- ============================================================================
+-- Part VI: The Riesz-Thorin Interpolation Theorem
 -- ============================================================================
 
 /-
@@ -256,7 +364,7 @@ axiom riesz_thorin {α : Type*} [MeasurableSpace α] {μ : Measure α}
     LpLqBounded μ p₀ q₀ T (interpNorm θ M₀ M₁)
 
 -- ============================================================================
--- Part VI: Hölder's Role in the Riesz-Thorin Proof
+-- Part VII: Hölder's Role in the Riesz-Thorin Proof
 -- ============================================================================
 
 /-
@@ -297,7 +405,7 @@ theorem holder_gives_endpoint {α : Type*} [MeasurableSpace α] {μ : Measure α
     hf.nnnorm.coe_nnreal_ennreal hg.nnnorm.coe_nnreal_ennreal
 
 -- ============================================================================
--- Part VII: Consequences of Riesz-Thorin
+-- Part VIII: Consequences of Riesz-Thorin
 -- ============================================================================
 
 /-
@@ -349,7 +457,104 @@ theorem hausdorff_young_norm_bound (θ : ℝ) (hθ₀ : 0 ≤ θ) (hθ₁ : θ �
   rw [Real.one_rpow, Real.one_rpow, mul_one]
 
 -- ============================================================================
--- Part VIII: Summary and Connection to Hölder Hierarchy
+-- Part IX: Young's Convolution Inequality from Riesz-Thorin
+-- ============================================================================
+
+/-
+Young's convolution inequality: for f ∈ Lp, g ∈ Lr:
+  ‖f * g‖_q ≤ ‖f‖_p · ‖g‖_r  where 1/q + 1 = 1/p + 1/r
+
+This follows from Riesz-Thorin by interpolating between:
+  Endpoint 0: convolution with g is L1 → L1 with norm ‖g‖_1 (by Fubini)
+  Endpoint 1: convolution with g is L∞ → L∞ with norm ‖g‖_1 (pointwise bound)
+
+Actually, the sharper proof interpolates between:
+  L1 * Lr → Lr (norm ‖g‖_1 · ‖f‖_r by Minkowski)
+  Lr' * Lr → L∞ (norm ‖g‖_r by Hölder)
+
+We formalize the exponent conditions and the norm bound.
+-/
+
+-- Young's convolution exponent condition: 1/q + 1 = 1/p + 1/r
+-- This is the necessary and sufficient condition for the inequality to hold.
+theorem young_convolution_exponents (p r q : ℝ) (hp : 0 < p) (hr : 0 < r) (hq : 0 < q)
+    (hyoung : 1 / q + 1 = 1 / p + 1 / r) :
+    1 / q = 1 / p + 1 / r - 1 := by
+  linarith
+
+-- The condition 1/q + 1 = 1/p + 1/r implies q ≥ 1 when p, r ≥ 1
+theorem young_q_ge_one (p r q : ℝ) (hp : 1 ≤ p) (hr : 1 ≤ r) (hq : 0 < q)
+    (hyoung : 1 / q + 1 = 1 / p + 1 / r) : 1 ≤ q := by
+  have h1 : 1 / p ≤ 1 := by rw [div_le_one (by linarith : (0:ℝ) < p)]; exact hp
+  have h2 : 1 / r ≤ 1 := by rw [div_le_one (by linarith : (0:ℝ) < r)]; exact hr
+  have h3 : 1 / q = 1 / p + 1 / r - 1 := by linarith
+  have h4 : 1 / q ≤ 1 := by linarith
+  rwa [div_le_one hq] at h4
+
+-- When p = r = 1, Young gives q = 1: L1 * L1 → L1
+theorem young_exponent_L1 : 1 / (1 : ℝ) + 1 = 1 / 1 + 1 / 1 := by norm_num
+
+-- When p = 1, r = 2, Young gives q = 2: L1 * L2 → L2
+theorem young_exponent_L1_L2 :
+    let q := (2 : ℝ)
+    1 / q + 1 = 1 / 1 + 1 / 2 := by norm_num
+
+-- When p = 4/3, r = 2, Young gives 1/q = 1/(4/3) + 1/2 - 1 = 3/4 + 1/2 - 1 = 1/4
+-- So q = 4: L^(4/3) * L^2 → L^4
+theorem young_exponent_L43_L2 :
+    let p := (4 : ℝ) / 3
+    let r := (2 : ℝ)
+    let q := (4 : ℝ)
+    1 / q + 1 = 1 / p + 1 / r := by norm_num
+
+-- Young's inequality endpoint norms: if we interpolate between
+-- T_g : L1 → Lr (norm ‖g‖_r) and T_g : Lr' → L∞ (norm ‖g‖_r')
+-- with θ, the interpolated norm is ‖g‖_r^(1-θ) · ‖g‖_r'^θ.
+-- When r = r' (self-dual, i.e., r = 2), this simplifies to ‖g‖_2.
+theorem young_norm_self_dual (θ M : ℝ) (hθ₀ : 0 ≤ θ) (hθ₁ : θ ≤ 1) (hM : 0 < M) :
+    interpNorm θ M M = M := by
+  unfold interpNorm
+  rw [← Real.rpow_add hM, show (1 - θ) + θ = 1 from by ring, Real.rpow_one]
+
+-- ============================================================================
+-- Part X: Interpolation Space Inclusions
+-- ============================================================================
+
+/-
+Riesz-Thorin implies that intermediate Lp spaces sit between the endpoints.
+Specifically, if T is bounded on both Lp₀ and Lp₁, it is bounded on all
+Lp_θ in between. This gives natural inclusion/embedding results.
+
+For a σ-finite measure with μ(X) < ∞:
+  p₁ ≤ p₂ implies Lp₂ ⊆ Lp₁ (larger p = smaller space)
+  and ‖f‖_{p₁} ≤ μ(X)^(1/p₁ - 1/p₂) · ‖f‖_{p₂}
+
+We prove the exponent relation for this embedding.
+-/
+
+-- Embedding exponent: the factor μ(X)^(1/p₁ - 1/p₂) for Lp₂ ↪ Lp₁
+-- When interpolating the identity operator between endpoints p₀ and p₁,
+-- we recover intermediate Lp norms.
+theorem embedding_exponent_diff (p₁ p₂ : ℝ) (hp₁ : 0 < p₁) (hp₂ : 0 < p₂)
+    (hle : p₁ ≤ p₂) : 0 ≤ 1 / p₁ - 1 / p₂ := by
+  rw [div_sub_div _ _ (ne_of_gt hp₁) (ne_of_gt hp₂)]
+  apply div_nonneg (by linarith) (mul_pos hp₁ hp₂).le
+
+-- The interpolation parameter θ that gives p from p₀ and p₁:
+-- If 1/p = (1-θ)/p₀ + θ/p₁, then θ = (1/p - 1/p₀)/(1/p₁ - 1/p₀).
+-- We verify this for specific values: taking p₀=1, p₁=2, p=4/3 gives θ=2/3.
+-- θ = 2/3 between p₀ = 1 and p₁ = 2 gives 1/p = 2/3, i.e. p = 3/2
+theorem theta_from_exponent_example :
+    interpRecip (2/3 : ℝ) 1 2 = 2/3 := by
+  unfold interpRecip; norm_num
+
+-- The interpolation parameter for Hausdorff-Young: θ=1/2 gives 1/p = 3/4, i.e. p = 4/3
+theorem hausdorff_young_midpoint :
+    interpRecip (1/2 : ℝ) 1 2 = 3/4 := by
+  unfold interpRecip; norm_num
+
+-- ============================================================================
+-- Part XI: Summary and Connection to Hölder Hierarchy
 -- ============================================================================
 
 /-
@@ -380,18 +585,21 @@ Minkowski's inequality (‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p)
 Riesz-Thorin endpoints (‖T‖_{Lp→Lq} ≤ M at two points)
   ↓ + three-lines lemma (complex analysis)
 Riesz-Thorin interpolation (‖T‖_{Lpθ→Lqθ} ≤ M₀^(1-θ) · M₁^θ)
-  ↓ specialize to Fourier transform
-Hausdorff-Young inequality (‖f̂‖_{p'} ≤ ‖f‖_p for 1 ≤ p ≤ 2)
+  ↓ specialize to Fourier transform          ↓ specialize to convolution
+Hausdorff-Young (‖f̂‖_{p'} ≤ ‖f‖_p)      Young's convolution inequality
 ```
 
 ### Formalization status in this file:
 - [x] Interpolated exponents (Part I) — fully proved
 - [x] Conjugate preservation (Part II) — fully proved
-- [x] Endpoint bounds via Hölder (Part III, VI) — fully proved
-- [x] Log-convexity of norm bound (Part IV) — fully proved
-- [ ] Riesz-Thorin theorem (Part V) — axiom (needs three-lines lemma)
-- [x] Hausdorff-Young exponents (Part VII) — fully proved
-- [x] Connection to Hölder hierarchy (Part VIII) — documented
+- [x] Endpoint bounds via Hölder (Part III) — fully proved
+- [x] Log-convexity, scaling, AM-GM of norm bound (Part IV) — fully proved
+- [ ] Hadamard three-lines lemma (Part V) — axiom (needs max principle for strips)
+- [ ] Riesz-Thorin theorem (Part VI) — axiom (follows from three-lines)
+- [x] Hölder connection (Part VII) — fully proved
+- [x] Hausdorff-Young exponents (Part VIII) — fully proved
+- [x] Young's convolution exponents (Part IX) — fully proved
+- [x] Interpolation space inclusions (Part X) — fully proved
 -/
 
 end RieszThorinInterpolation

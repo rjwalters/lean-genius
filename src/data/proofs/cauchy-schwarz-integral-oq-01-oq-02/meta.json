@@ -12,7 +12,7 @@
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ02.lean",
     "badge": "open",
     "sorries": 0,
-    "axioms": 1,
+    "axioms": 2,
     "mathlibDependencies": [
       {
         "theorem": "ENNReal.lintegral_mul_le_Lp_mul_Lq",
@@ -40,9 +40,15 @@
       "Conjugate preservation under interpolation (interpRecip_sum_conj)",
       "Interpolated norm bound M₀^(1-θ)·M₁^θ with log-convexity proof",
       "Monotonicity of interpolated norm (interpNorm_mono_of_le)",
+      "Scaling and submultiplicativity of interpolated norm (interpNorm_scale, interpNorm_mul)",
+      "Weighted AM-GM for interpolated norm (interpNorm_am_gm)",
+      "Hadamard three-lines lemma statement with strip geometry (closedStrip, openStrip)",
+      "Three-lines → log-convexity bridge theorem",
       "LpLqBounded structure for operator norm bounds",
       "Hölder as endpoint bound for Riesz-Thorin (holder_gives_endpoint)",
       "Hausdorff-Young exponent computation and norm bound",
+      "Young's convolution inequality exponent conditions and concrete examples",
+      "Interpolation space embedding exponent difference",
       "Formal statement of Riesz-Thorin theorem (axiom: requires three-lines lemma)",
       "Complete documentation of Hölder → Riesz-Thorin proof hierarchy"
     ],
@@ -87,51 +93,52 @@
     {
       "id": "interpolation-params",
       "title": "Interpolation Parameter Infrastructure",
-      "summary": "Defines interpRecip (θ p₀ p₁) = (1-θ)/p₀ + θ/p₁ and interpExp (θ p₀ p₁) = ((1-θ)/p₀ + θ/p₁)⁻¹. Proves endpoint recovery (θ=0 gives p₀, θ=1 gives p₁), positivity, and diagonal case (p₀=p₁=p gives p).",
-      "startLine": 48,
-      "endLine": 97
+      "summary": "Defines interpRecip and interpExp. Proves endpoint recovery (θ=0 gives p₀, θ=1 gives p₁), positivity, and diagonal case."
     },
     {
       "id": "conjugate-preservation",
       "title": "Conjugate Exponent Preservation",
-      "summary": "Proves interpRecip_sum_conj: if 1/p₀+1/q₀=1 and 1/p₁+1/q₁=1, then the interpolated reciprocals sum to 1. This ensures Hölder conjugacy is preserved under Riesz-Thorin interpolation.",
-      "startLine": 98,
-      "endLine": 122
+      "summary": "Proves interpolated reciprocals sum to 1 when endpoints are Hölder conjugate."
     },
     {
       "id": "endpoint-bounds",
       "title": "Hölder-Based Endpoint Bounds",
-      "summary": "Defines LpLqBounded structure for operator norm bounds. Proves the identity operator is bounded Lp→Lp with norm 1. Shows Hölder gives endpoint bounds ∫‖fg‖₊ ≤ (∫‖f‖₊^p)^{1/p}·(∫‖g‖₊^q)^{1/q}.",
-      "startLine": 123,
-      "endLine": 175
+      "summary": "Defines LpLqBounded structure. Proves identity operator bound and Hölder endpoint bound."
     },
     {
       "id": "log-convexity",
-      "title": "Log-Convexity of Norm Bound",
-      "summary": "Defines interpNorm (θ M₀ M₁) = M₀^(1-θ)·M₁^θ. Proves nonnegativity, endpoint recovery, log-convexity (log(interpNorm) is affine in θ), and monotonicity when M₀ ≤ M₁.",
-      "startLine": 176,
-      "endLine": 230
+      "title": "Log-Convexity and Properties of Norm Bound",
+      "summary": "Defines interpNorm = M₀^(1-θ)·M₁^θ. Proves log-convexity, monotonicity, scaling, AM-GM, and submultiplicativity."
+    },
+    {
+      "id": "three-lines",
+      "title": "Hadamard Three-Lines Lemma",
+      "summary": "Axiomatizes the three-lines lemma with strip geometry. Derives log-convexity as a consequence."
     },
     {
       "id": "riesz-thorin",
       "title": "Riesz-Thorin Theorem Statement",
-      "summary": "States the Riesz-Thorin interpolation theorem as an axiom. The full proof requires the Hadamard three-lines lemma for analytic functions on the strip {z ∈ ℂ : 0 ≤ Re z ≤ 1}.",
-      "startLine": 231,
-      "endLine": 280
+      "summary": "States the Riesz-Thorin interpolation theorem as an axiom."
     },
     {
       "id": "holder-connection",
       "title": "Hölder's Role in the Proof",
-      "summary": "Documents how Hölder provides endpoint estimates, Lp space structure, and duality — all ingredients for Riesz-Thorin. Proves holder_gives_endpoint showing Hölder gives the ∫‖fg‖₊ bound.",
-      "startLine": 281,
-      "endLine": 310
+      "summary": "Proves Hölder gives endpoint bounds. Documents how Hölder + three-lines → Riesz-Thorin."
     },
     {
-      "id": "consequences",
+      "id": "hausdorff-young",
       "title": "Consequences: Hausdorff-Young",
-      "summary": "Shows the Hausdorff-Young inequality as a consequence of Riesz-Thorin. Proves the exponent computation (p_θ = 2/(2-θ), q_θ = 2/θ satisfy 1/p_θ+1/q_θ=1) and the trivial norm bound (interpNorm θ 1 1 = 1).",
-      "startLine": 311,
-      "endLine": 360
+      "summary": "Proves Hausdorff-Young exponent computation and trivial norm bound."
+    },
+    {
+      "id": "young-convolution",
+      "title": "Young's Convolution Inequality",
+      "summary": "Proves Young's exponent condition 1/q+1=1/p+1/r, q≥1 bound, and concrete examples (L1*L1, L1*L2, L^(4/3)*L2)."
+    },
+    {
+      "id": "interpolation-spaces",
+      "title": "Interpolation Space Inclusions",
+      "summary": "Proves embedding exponent difference and concrete interpolation parameter examples."
     }
   ],
   "conclusion": {
