@@ -299,17 +299,150 @@ Reverse direction (equality → a^p = b^q): uses strict convexity.
     A sum of these deficits being zero implies each deficit is zero. -/
 noncomputable def youngDeficit (p q a b : ℝ) : ℝ := a ^ p / p + b ^ q / q - a * b
 
-/-- The Young deficit is non-negative (restates Young's inequality). -/
-axiom youngDeficit_nonneg {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1)
+/-- The Young deficit is non-negative (restates Young's inequality).
+    Follows from convexity of exp: a·b = exp(log a + log b) ≤ a^p/p + b^q/q. -/
+theorem youngDeficit_nonneg {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1)
     {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
-    0 ≤ youngDeficit p q a b
+    0 ≤ youngDeficit p q a b := by
+  unfold youngDeficit
+  have hp_pos : (0 : ℝ) < p := by linarith
+  have hq : 1 < q := conj_one_lt_q hp hinv
+  have hq_pos : (0 : ℝ) < q := by linarith
+  by_cases ha0 : a = 0
+  · rw [ha0, Real.zero_rpow hp_pos.ne', zero_div, zero_add, zero_mul, sub_zero]
+    exact div_nonneg (Real.rpow_nonneg hb q) hq_pos.le
+  by_cases hb0 : b = 0
+  · rw [hb0, Real.zero_rpow hq_pos.ne', zero_div, add_zero, mul_zero, sub_zero]
+    exact div_nonneg (Real.rpow_nonneg ha p) hp_pos.le
+  -- Both a, b > 0: use convexity of exp
+  have ha_pos : 0 < a := lt_of_le_of_ne ha (Ne.symm ha0)
+  have hb_pos : 0 < b := lt_of_le_of_ne hb (Ne.symm hb0)
+  set x := Real.log a * p with hx_def
+  set y := Real.log b * q with hy_def
+  have hconv := convexOn_exp.2 (Set.mem_univ x) (Set.mem_univ y)
+    (show (0 : ℝ) ≤ 1/p by positivity) (show (0 : ℝ) ≤ 1/q by positivity) hinv
+  simp only [smul_eq_mul] at hconv
+  have hmix : 1/p * x + 1/q * y = Real.log a + Real.log b := by
+    simp only [hx_def, hy_def]; field_simp
+  rw [hmix, Real.exp_add, Real.exp_log ha_pos, Real.exp_log hb_pos] at hconv
+  have hex : Real.exp x = a ^ p := by
+    rw [hx_def]; exact (Real.rpow_def_of_pos ha_pos p).symm
+  have hey : Real.exp y = b ^ q := by
+    rw [hy_def]; exact (Real.rpow_def_of_pos hb_pos q).symm
+  rw [hex, hey] at hconv
+  -- hconv: a * b ≤ 1/p * a^p + 1/q * b^q
+  -- Goal: 0 ≤ a^p/p + b^q/q - a*b
+  have h1 : 1 / p * a ^ p = a ^ p / p := by ring
+  have h2 : 1 / q * b ^ q = b ^ q / q := by ring
+  linarith
+
+/-- Forward direction of Young equality: a^p = b^q → deficit = 0. -/
+private theorem youngDeficit_eq_zero_of_eq {p q : ℝ} (hp : 1 < p)
+    (hinv : 1 / p + 1 / q = 1) {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b)
+    (heq : a ^ p = b ^ q) : youngDeficit p q a b = 0 := by
+  unfold youngDeficit
+  have hp_pos : (0 : ℝ) < p := by linarith
+  have hq_pos : (0 : ℝ) < q := lt_trans one_pos (conj_one_lt_q hp hinv)
+  by_cases ha0 : a = 0
+  · have hap : a ^ p = 0 := by rw [ha0]; exact Real.zero_rpow hp_pos.ne'
+    have hbq : b ^ q = 0 := heq ▸ hap
+    have hb0 : b = 0 := by
+      by_contra hb_ne
+      exact absurd hbq (Real.rpow_pos_of_pos (lt_of_le_of_ne hb (Ne.symm hb_ne)) q).ne'
+    simp [ha0, hb0, Real.zero_rpow hp_pos.ne', Real.zero_rpow hq_pos.ne']
+  by_cases hb0 : b = 0
+  · have hbq : b ^ q = 0 := by rw [hb0]; exact Real.zero_rpow hq_pos.ne'
+    exact absurd (heq ▸ hbq : a ^ p = 0)
+      (Real.rpow_pos_of_pos (lt_of_le_of_ne ha (Ne.symm ha0)) p).ne'
+  -- Both a > 0 and b > 0: use exp/log to compute deficit = 0
+  have ha_pos : 0 < a := lt_of_le_of_ne ha (Ne.symm ha0)
+  have hb_pos : 0 < b := lt_of_le_of_ne hb (Ne.symm hb0)
+  -- a^p = b^q implies p·log(a) = q·log(b)
+  have hlog : p * Real.log a = q * Real.log b := by
+    have := congr_arg Real.log heq
+    rwa [Real.log_rpow ha_pos, Real.log_rpow hb_pos] at this
+  -- Rewrite each piece via exp/log
+  have ha_rpow : a ^ p = Real.exp (Real.log a * p) := Real.rpow_def_of_pos ha_pos p
+  have hb_rpow : b ^ q = Real.exp (Real.log b * q) := Real.rpow_def_of_pos hb_pos q
+  have hab : a * b = Real.exp (Real.log a + Real.log b) := by
+    rw [Real.exp_add, Real.exp_log ha_pos, Real.exp_log hb_pos]
+  rw [ha_rpow, hb_rpow, hab]
+  -- Set t = log a * p = log b * q. Then all three exp terms become exp(t).
+  set t := Real.log a * p with ht_def
+  have ht2 : Real.log b * q = t := by linarith [mul_comm p (Real.log a)]
+  rw [ht2]
+  -- log a + log b = t/p + t/q = t·(1/p + 1/q) = t
+  have hmix : Real.log a + Real.log b = t := by
+    have hpq := conj_add_eq_mul hp hinv
+    have h1 : q * Real.log b = p * Real.log a := by linarith [mul_comm p (Real.log a)]
+    have h2 : (p + q) * Real.log a = p * q * Real.log a := by rw [hpq]
+    have h3 : q * (Real.log a + Real.log b) = q * t := by nlinarith
+    exact mul_left_cancel₀ hq_pos.ne' h3
+  rw [hmix]
+  -- Goal: exp(t)/p + exp(t)/q - exp(t) = 0
+  have : Real.exp t / p + Real.exp t / q = Real.exp t := by
+    have hpq := conj_add_eq_mul hp hinv
+    field_simp
+    nlinarith
+  linarith
+
+/-- Reverse direction: deficit = 0 → a^p = b^q via strict convexity of exp. -/
+private theorem eq_of_youngDeficit_eq_zero {p q : ℝ} (hp : 1 < p)
+    (hinv : 1 / p + 1 / q = 1) {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b)
+    (hdef : youngDeficit p q a b = 0) : a ^ p = b ^ q := by
+  unfold youngDeficit at hdef
+  have hp_pos : (0 : ℝ) < p := by linarith
+  have hq : 1 < q := conj_one_lt_q hp hinv
+  have hq_pos : (0 : ℝ) < q := by linarith
+  -- Zero cases
+  by_cases ha0 : a = 0
+  · rw [ha0, Real.zero_rpow hp_pos.ne'] at hdef ⊢
+    simp only [zero_div, zero_add, zero_mul, sub_zero] at hdef
+    exact (div_eq_zero_iff.mp hdef).elim Eq.symm (fun h => absurd h hq_pos.ne')
+  by_cases hb0 : b = 0
+  · rw [hb0, Real.zero_rpow hq_pos.ne'] at hdef ⊢
+    simp only [zero_div, add_zero, mul_zero, sub_zero] at hdef
+    exact (div_eq_zero_iff.mp hdef).elim id (fun h => absurd h hp_pos.ne')
+  -- Both a, b > 0
+  have ha_pos : 0 < a := lt_of_le_of_ne ha (Ne.symm ha0)
+  have hb_pos : 0 < b := lt_of_le_of_ne hb (Ne.symm hb0)
+  -- Proof by contradiction using strict convexity of exp.
+  -- Set x = p·log(a), y = q·log(b). Then exp(x) = a^p, exp(y) = b^q.
+  -- (1/p)·exp(x) + (1/q)·exp(y) = a^p/p + b^q/q
+  -- exp((1/p)·x + (1/q)·y) = exp(log a + log b) = a·b
+  -- Strict convexity: LHS > RHS unless x = y, i.e., a^p = b^q.
+  by_contra h_ne
+  -- Use x = log a * p, y = log b * q (matching rpow_def_of_pos output)
+  set x := Real.log a * p with hx_def
+  set y := Real.log b * q with hy_def
+  have hex : a ^ p = Real.exp x := Real.rpow_def_of_pos ha_pos p
+  have hey : b ^ q = Real.exp y := Real.rpow_def_of_pos hb_pos q
+  -- x ≠ y (since a^p ≠ b^q and exp is injective)
+  have hxy : x ≠ y := by
+    intro heq; apply h_ne; rw [hex, hey, heq]
+  -- Strict convexity of exp: exp(t·x + (1-t)·y) < t·exp(x) + (1-t)·exp(y) when x ≠ y
+  have hsc := strictConvexOn_exp.2 (Set.mem_univ x) (Set.mem_univ y) hxy
+    (show (0 : ℝ) < 1 / p by positivity) (show (0 : ℝ) < 1 / q by positivity) hinv
+  simp only [smul_eq_mul] at hsc
+  -- Simplify LHS of hsc: 1/p * (log a * p) + 1/q * (log b * q) = log a + log b
+  have hmix : 1 / p * x + 1 / q * y = Real.log a + Real.log b := by
+    simp only [hx_def, hy_def]; field_simp
+  rw [hmix, Real.exp_add, Real.exp_log ha_pos, Real.exp_log hb_pos] at hsc
+  -- Simplify RHS: replace exp x, exp y with a^p, b^q
+  rw [← hex, ← hey] at hsc
+  -- hsc : a * b < 1/p * a^p + 1/q * b^q
+  -- But hdef says a^p/p + b^q/q = a*b. Contradiction.
+  have h1 : 1 / p * a ^ p = a ^ p / p := by ring
+  have h2 : 1 / q * b ^ q = b ^ q / q := by ring
+  linarith
 
 /-- **Young's equality characterization**: For a, b ≥ 0 and conjugate p, q,
     the Young deficit is zero iff a^p = b^q.
     This is the key analytic fact (strict convexity of t^p). -/
-axiom youngDeficit_eq_zero_iff {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1)
+theorem youngDeficit_eq_zero_iff {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1)
     {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
-    youngDeficit p q a b = 0 ↔ a ^ p = b ^ q
+    youngDeficit p q a b = 0 ↔ a ^ p = b ^ q :=
+  ⟨eq_of_youngDeficit_eq_zero hp hinv ha hb, youngDeficit_eq_zero_of_eq hp hinv ha hb⟩
 
 -- ============================================================================
 -- Part VII: General Hölder Equality Characterization
