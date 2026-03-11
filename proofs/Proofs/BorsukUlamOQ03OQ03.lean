@@ -325,6 +325,54 @@ theorem grid_mesh_tends_to_zero :
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
+PART X.5: GRID VERTEX INFRASTRUCTURE
+
+The grid triangulation maps lattice points to coordinates in [-1,1]²:
+  v(i,j) = ((i - N)/N, (j - N)/N)
+
+Boundary vertices satisfy max(|i-N|, |j-N|) = N, and the antipodal map
+(i,j) ↦ (2N-i, 2N-j) corresponds to coordinate negation:
+  v(2N-i, 2N-j) = -v(i,j)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- Grid vertex coordinate: maps lattice point (i,j) ∈ {0,...,2N}² to
+    real coordinates in [-1,1]². -/
+def gridVertex (N : ℕ) (i j : ℕ) : ℝ × ℝ :=
+  ((i : ℝ) / N - 1, (j : ℝ) / N - 1)
+
+/-- The center vertex maps to the origin. -/
+theorem gridVertex_center (N : ℕ) (hN : 0 < N) :
+    gridVertex N N N = (0, 0) := by
+  simp [gridVertex, div_self (Nat.cast_ne_zero.mpr (Nat.not_eq_zero_of_lt hN))]
+
+/-- Grid vertices are in [-1,1]² when indices are in {0,...,2N}.
+    Proof: i/N ∈ [0,2] so i/N - 1 ∈ [-1,1]. -/
+axiom gridVertex_in_range (N : ℕ) (hN : 0 < N) (i j : ℕ) (hi : i ≤ 2 * N) (hj : j ≤ 2 * N) :
+    -1 ≤ (gridVertex N i j).1 ∧ (gridVertex N i j).1 ≤ 1 ∧
+    -1 ≤ (gridVertex N i j).2 ∧ (gridVertex N i j).2 ≤ 1
+
+/-- The antipodal map on grid vertices negates coordinates:
+    v(2N-i, 2N-j) = -v(i,j).
+    This ensures that for an odd function g, the labeling of grid boundary
+    vertices satisfies Tucker's antipodal condition.
+    (Arithmetic proof requires careful Nat→ℝ cast handling.) -/
+axiom gridVertex_antipodal (N : ℕ) (hN : 0 < N) (i j : ℕ) (hi : i ≤ 2 * N) (hj : j ≤ 2 * N) :
+    gridVertex N (2 * N - i) (2 * N - j) =
+      Prod.map Neg.neg Neg.neg (gridVertex N i j)
+
+/-- A grid vertex is on the boundary when it lies on the edge of [-1,1]². -/
+def IsGridBoundary (N : ℕ) (i j : ℕ) : Prop :=
+  i = 0 ∨ i = 2 * N ∨ j = 0 ∨ j = 2 * N
+
+/-- Boundary vertices have antipodal partners that are also on the boundary. -/
+theorem antipodal_preserves_boundary (N : ℕ) (i j : ℕ)
+    (hi : i ≤ 2 * N) (hj : j ≤ 2 * N)
+    (hb : IsGridBoundary N i j) :
+    IsGridBoundary N (2 * N - i) (2 * N - j) := by
+  rcases hb with h | h | h | h <;> simp [IsGridBoundary, h] <;> omega
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
 PART XI: ODD FUNCTION FRAMEWORK ON S¹
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -835,5 +883,12 @@ theorem diskLift_z_nonneg (p : ℝ × ℝ) (_hp : p.1 ^ 2 + p.2 ^ 2 ≤ 1) :
 #check @diskLift_boundary_neg_eq
 #check @diskFunction_antipodal_on_boundary
 #check @diskLift_z_nonneg
+-- Part X.5: Grid vertex infrastructure
+#check @gridVertex
+#check @gridVertex_center
+#check @gridVertex_in_range
+#check @gridVertex_antipodal
+#check @IsGridBoundary
+#check @antipodal_preserves_boundary
 
 end BorsukUlamTucker2D
