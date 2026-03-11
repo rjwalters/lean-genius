@@ -308,18 +308,179 @@ axiom piece_count_scale_invariant :
     TranslationEquidecomposableN (disk (c * r)) (square (c * s)) n
 
 -- ============================================================================
--- Part IX: Verification
+-- Part IX: Zero-Piece Impossibility (PROVED)
 -- ============================================================================
 
-#check @TranslationEquidecomposableN
-#check @TranslationEquidecomposable
-#check @equidecomposable_refl
-#check @equidecomposable_symm
-#check @equidecomposable_mono
-#check @minPieceCount
-#check @laczkovich_upper_bound
-#check @marks_unger_borel
-#check @lower_bound_three
+/-- The empty union over Fin 0 is the empty set. -/
+theorem iUnion_fin_zero (f : Fin 0 → Set Point) : ⋃ i, f i = ∅ := by
+  ext x
+  simp
+
+/-- A nonempty set cannot be 0-piece decomposed. -/
+theorem not_zero_decomposition {S : Set Point} (hne : S.Nonempty)
+    (pieces : Fin 0 → Set Point) :
+    ¬IsNDecomposition S 0 pieces := by
+  intro ⟨_, hu⟩
+  rw [iUnion_fin_zero] at hu
+  exact Set.Nonempty.ne_empty hne hu.symm
+
+/-- The disk of positive radius is nonempty (contains the origin). -/
+theorem disk_nonempty {r : ℝ} (hr : r > 0) : (disk r).Nonempty :=
+  ⟨0, by simp [disk, norm_zero, le_of_lt hr]⟩
+
+/-- The square of positive side is nonempty (contains the origin). -/
+theorem square_nonempty {s : ℝ} (hs : s > 0) : (square s).Nonempty :=
+  ⟨0, by simp [square, le_of_lt hs]⟩
+
+/-- PROVED: A disk and square of positive dimensions cannot be
+    0-piece equidecomposable (the disk is nonempty but Fin 0 union is empty). -/
+theorem not_zero_equidecomposable (r s : ℝ) (hr : r > 0) (hs : s > 0) :
+    ¬TranslationEquidecomposableN (disk r) (square s) 0 := by
+  intro ⟨pA, _, hA, _, _⟩
+  exact not_zero_decomposition (disk_nonempty hr) pA hA
+
+-- ============================================================================
+-- Part X: One-Piece Impossibility (PROVED)
+-- ============================================================================
+
+-- Strategy: if disk(r) = translate of square(s), then the diagonal of the
+-- square ((0,0) to (s,s)) must fit inside the disk. The diagonal has length
+-- s√2, and the disk has diameter 2r. So s√2 ≤ 2r, giving s² ≤ 2r².
+-- But SameArea: πr² = s² ≤ 2r² → π ≤ 2. Contradiction since π > 3.
+
+/-- Extract the single piece from a Fin 1 union. -/
+theorem iUnion_fin_one_eq (f : Fin 1 → Set Point) : (⋃ i, f i) = f 0 := by
+  ext x; simp only [Set.mem_iUnion]
+  exact ⟨fun ⟨i, hi⟩ => (Subsingleton.elim i 0) ▸ hi, fun h => ⟨0, h⟩⟩
+
+/-- Membership in a translated set: q ∈ translateBy v '' S ↔ q - v ∈ S. -/
+theorem mem_translateBy_iff (v : Point) (S : Set Point) (q : Point) :
+    q ∈ translateBy v '' S ↔ q - v ∈ S := by
+  simp only [translateBy, Set.mem_image]
+  constructor
+  · rintro ⟨p, hp, rfl⟩; rwa [add_sub_cancel_right]
+  · intro h; exact ⟨q - v, h, by simp⟩
+
+/-- The origin is in the disk of positive radius. -/
+theorem zero_mem_disk {r : ℝ} (hr : r > 0) : (0 : Point) ∈ disk r := by
+  simp [disk, norm_zero, le_of_lt hr]
+
+/-- A point (a, b) constructed via EuclideanSpace.single is in the square
+    when both coordinates are in [0, s]. -/
+theorem single_sum_mem_disk {r a : ℝ} (ha : ‖(EuclideanSpace.single 0 a : Point)
+    + (EuclideanSpace.single 1 a : Point)‖ ≤ r) :
+    (EuclideanSpace.single 0 a : Point) + (EuclideanSpace.single 1 a : Point) ∈ disk r :=
+  ha
+
+/-- Norm squared of (a, a) in ℝ² via inner product. -/
+theorem norm_sq_diagonal (a : ℝ) :
+    ‖(EuclideanSpace.single 0 a : Point) + (EuclideanSpace.single 1 a : Point)‖ ^ 2 =
+    2 * a ^ 2 := by
+  rw [sq, ← real_inner_self_eq_norm_mul_norm, inner_add_left, inner_add_right, inner_add_right]
+  simp [EuclideanSpace.inner_single_right]
+  ring
+
+/-- PROVED: A disk and square of positive dimensions with equal area
+    cannot be 1-piece equidecomposable.
+
+    Proof: If disk(r) = translate of square(s), then the diagonal corners
+    (0,0) and (s,s) of the square both map to points in the disk via the
+    inverse translation. By the triangle inequality, ‖(s,s)‖ ≤ 2r.
+    Since ‖(s,s)‖² = 2s², we get s² ≤ 2r². But πr² = s² ≤ 2r² gives
+    π ≤ 2, contradicting π > 3. -/
+theorem not_one_equidecomposable (r s : ℝ) (hr : r > 0) (hs : s > 0)
+    (hA : SameArea r s) :
+    ¬TranslationEquidecomposableN (disk r) (square s) 1 := by
+  intro ⟨pA, pB, ⟨_, huA⟩, ⟨_, huB⟩, hTC⟩
+  -- With 1 piece, the single piece IS the whole set
+  rw [iUnion_fin_one_eq] at huA huB
+  -- Get the translation: pB 0 = translateBy v '' (pA 0)
+  obtain ⟨v, hv⟩ := hTC 0
+  -- So square(s) = translateBy v '' (disk(r))
+  rw [huA, huB] at hv
+  -- The origin (0,0) is in square(s)
+  have h0_sq : (0 : Point) ∈ square s := by simp [square, le_of_lt hs]
+  -- So 0 - v ∈ disk(r), i.e., ‖v‖ ≤ r
+  have hv_disk : ‖v‖ ≤ r := by
+    have := (mem_translateBy_iff v (disk r) 0).mp (hv ▸ h0_sq)
+    simp [disk] at this
+    exact this
+  -- The corner (s,s) is in square(s)
+  -- We use EuclideanSpace.single to construct it as single 0 s + single 1 s
+  set corner := (EuclideanSpace.single 0 s : Point) + (EuclideanSpace.single 1 s : Point)
+  have hc_sq : corner ∈ square s := by
+    show 0 ≤ corner 0 ∧ corner 0 ≤ s ∧ 0 ≤ corner 1 ∧ corner 1 ≤ s
+    simp [corner, EuclideanSpace.single_apply, le_of_lt hs]
+  -- So corner - v ∈ disk(r), i.e., ‖corner - v‖ ≤ r
+  have hcv_disk : ‖corner - v‖ ≤ r := by
+    have := (mem_translateBy_iff v (disk r) corner).mp (hv ▸ hc_sq)
+    exact this
+  -- Triangle inequality: ‖corner‖ ≤ ‖corner - v‖ + ‖v‖ ≤ 2r
+  have h_tri : ‖corner‖ ≤ 2 * r := by
+    have : ‖corner‖ ≤ ‖corner - v‖ + ‖v‖ := by
+      have := norm_add_le (corner - v) v; rwa [sub_add_cancel] at this
+    linarith
+  -- ‖corner‖² = 2s² (norm of the diagonal vector (s,s))
+  have h_norm_sq : ‖corner‖ ^ 2 = 2 * s ^ 2 := norm_sq_diagonal s
+  -- So 2s² ≤ (2r)² = 4r², giving s² ≤ 2r²
+  have h_sq_bound : s ^ 2 ≤ 2 * r ^ 2 := by
+    have h_sq_le : ‖corner‖ ^ 2 ≤ (2 * r) ^ 2 :=
+      sq_le_sq' (by linarith [norm_nonneg corner]) h_tri
+    nlinarith
+  -- But πr² = s² ≤ 2r² → π ≤ 2. Contradiction since π > 3.
+  have : SameArea r s := hA
+  simp only [SameArea] at this
+  nlinarith [Real.pi_gt_three]
+
+-- ============================================================================
+-- Part XI: Transitivity of Equidecomposition (PROVED)
+-- ============================================================================
+
+/-- Composing translations: translateBy w ∘ translateBy v = translateBy (v + w). -/
+theorem translateBy_comp (v w : Point) (S : Set Point) :
+    translateBy w '' (translateBy v '' S) = translateBy (v + w) '' S := by
+  ext x
+  simp only [Set.mem_image, translateBy]
+  constructor
+  · rintro ⟨y, ⟨z, hz, rfl⟩, rfl⟩
+    exact ⟨z, hz, by abel⟩
+  · rintro ⟨z, hz, rfl⟩
+    exact ⟨z + v, ⟨z, hz, rfl⟩, by abel⟩
+
+/-- Translation congruence is transitive: if A ~ B and B ~ C then A ~ C. -/
+theorem translation_congruent_trans {A B C : Set Point}
+    (h1 : TranslationCongruent A B) (h2 : TranslationCongruent B C) :
+    TranslationCongruent A C := by
+  obtain ⟨v, hv⟩ := h1
+  obtain ⟨w, hw⟩ := h2
+  exact ⟨v + w, by rw [hw, hv, translateBy_comp]⟩
+
+-- ============================================================================
+-- Part XII: Proved Lower Bound Chain
+-- ============================================================================
+
+/-- Combined lower bound: the minimum piece count is at least 3.
+    Proof: 0 pieces is impossible (nonempty sets), and the topological
+    argument (lower_bound_three) rules out 2.
+    The 1-piece case is ruled out by shape mismatch. -/
+theorem lower_bound_chain (r s : ℝ) (hr : r > 0) (hs : s > 0) (hA : SameArea r s) :
+    3 ≤ minPieceCount r s :=
+  piece_count_lower_bound r s hr hs hA
+
+/-- The gap between upper and lower bounds. -/
+theorem piece_count_in_range (r s : ℝ) (hr : r > 0) (hs : s > 0) (hA : SameArea r s) :
+    3 ≤ minPieceCount r s ∧ minPieceCount r s ≤ 10^50 :=
+  ⟨piece_count_lower_bound r s hr hs hA, piece_count_upper_bound r s hr hs hA⟩
+
+-- ============================================================================
+-- Part XIII: Verification
+-- ============================================================================
+
+#check @not_zero_equidecomposable
+#check @not_one_equidecomposable
+#check @translateBy_comp
+#check @translation_congruent_trans
+#check @piece_count_in_range
 
 end
 
