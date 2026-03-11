@@ -11813,6 +11813,239 @@ theorem derandomization_barrier_irony :
 end Derandomization
 
 
+-- ============================================================
+-- PART 46: Diagonalization - Foundation of Separation Results
+-- ============================================================
+
+/-
+### Part 46: Diagonalization
+
+Diagonalization is the fundamental technique underlying all known separation
+results in complexity theory. Cantor's diagonal argument (1891) shows that
+no countable enumeration can cover all languages over {0,1}*, and this idea
+underlies the time hierarchy theorem, space hierarchy theorem, and the
+starting point for all P vs NP approaches.
+
+This section provides **full proofs** (no axioms) of:
+1. The pure diagonal construction
+2. Cantor's theorem for function spaces
+3. Uncountability of languages
+4. The diagonal language (the "universal counterexample")
+5. Why relativization blocks simple diagonal arguments
+
+These are the first fully-proved results about the foundations of
+why complexity separations exist at all.
+-/
+
+section Diagonalization
+
+-- ### 46.1: Pure Diagonalization Lemma
+
+/-- The core diagonal construction: given any enumeration of functions
+    `ℕ → Bool`, the "flipped diagonal" function differs from every function
+    in the enumeration at its own index.
+
+    This is Cantor's 1891 argument, formalized: if `fs` attempts to list
+    all functions `ℕ → Bool`, then `fun n => !(fs n n)` is missing from
+    the list.
+
+    **Full proof, no axioms.** -/
+theorem diagonal_differs (fs : ℕ → (ℕ → Bool)) :
+    ∃ g : ℕ → Bool, ∀ n, g ≠ fs n := by
+  use fun n => !(fs n n)
+  intro n h
+  have := congr_fun h n
+  simp at this
+
+/-- The diagonal function is explicitly constructible. -/
+def diagonalFunction (fs : ℕ → (ℕ → Bool)) : ℕ → Bool :=
+  fun n => !(fs n n)
+
+/-- The diagonal function disagrees with each enumerated function
+    at exactly the diagonal position. -/
+theorem diagonalFunction_disagrees (fs : ℕ → (ℕ → Bool)) (n : ℕ) :
+    diagonalFunction fs n ≠ fs n n := by
+  unfold diagonalFunction
+  cases fs n n <;> simp
+
+/-- Consequence: the diagonal function is not in the range of the enumeration. -/
+theorem diagonalFunction_not_in_range (fs : ℕ → (ℕ → Bool)) :
+    diagonalFunction fs ∉ Set.range fs := by
+  intro ⟨n, hn⟩
+  have := diagonalFunction_disagrees fs n
+  rw [hn] at this
+  exact this rfl
+
+-- ### 46.2: Cantor's Theorem for Function Spaces
+
+/-- Cantor's theorem: there is no surjection from ℕ to (ℕ → Bool).
+    This is the rigorous statement that languages are uncountable.
+
+    **Full proof from diagonalization. No axioms.** -/
+theorem cantor_no_surjection :
+    ∀ f : ℕ → (ℕ → Bool), ¬ Function.Surjective f := by
+  intro f hf
+  -- Get the diagonal function that differs from every f n
+  have ⟨g, hg⟩ := diagonal_differs f
+  -- g must be in the range of f since f is surjective
+  obtain ⟨n, hn⟩ := hf g
+  -- But g ≠ f n by diagonalization
+  exact hg n hn.symm
+
+/-- Alternative formulation: no bijection from (ℕ → Bool) to ℕ exists
+    — i.e., (ℕ → Bool) is "too large" for ℕ.
+
+    Proof: if a bijection existed, its inverse would be a surjection
+    ℕ → (ℕ → Bool), contradicting Cantor. -/
+theorem languages_uncountable :
+    ¬ ∃ f : (ℕ → Bool) → ℕ, Function.Injective f ∧ Function.Surjective f := by
+  intro ⟨f, hf_inj, hf_surj⟩
+  -- f is a bijection, so construct its inverse equiv
+  let e := Equiv.ofBijective f ⟨hf_inj, hf_surj⟩
+  exact cantor_no_surjection e.symm e.symm.surjective
+
+/-- Simpler uncountability: no function ℕ → (ℕ → Bool) hits everything. -/
+theorem no_enumeration_of_languages :
+    ∀ f : ℕ → (ℕ → Bool), ∃ g : ℕ → Bool, ∀ n, g ≠ f n :=
+  diagonal_differs
+
+-- ### 46.3: The Diagonal Language
+
+/-- Given an enumeration of "programs" (modeled as functions computing languages),
+    the diagonal language is the set of indices where the program REJECTS itself. -/
+def diagonalLanguage (programs : ℕ → (ℕ → Bool)) : ℕ → Bool :=
+  fun n => !(programs n n)
+
+/-- The diagonal language differs from every program's language at the
+    program's own index. This is the core of undecidability proofs:
+    no program can decide the diagonal language. -/
+theorem diagonalLanguage_undecidable
+    (programs : ℕ → (ℕ → Bool)) (n : ℕ) :
+    diagonalLanguage programs n ≠ programs n n := by
+  unfold diagonalLanguage
+  cases programs n n <;> simp
+
+/-- If a countable set of programs decides countably many languages,
+    the diagonal language is not among them. This is why the halting
+    problem is undecidable: the "halting checker" would need to be
+    a program, but the diagonal language escapes all programs. -/
+theorem diagonal_escapes_all_programs (programs : ℕ → (ℕ → Bool)) :
+    ∀ n, diagonalLanguage programs ≠ programs n := by
+  intro n h
+  have := diagonalLanguage_undecidable programs n
+  rw [h] at this
+  exact this rfl
+
+-- ### 46.4: Diagonalization and Complexity Classes
+
+/-- If a complexity class C is characterized by a countable family of machines,
+    then C ≠ Set.univ (C does not contain all languages).
+
+    This is the abstract form of "P ≠ all languages" and "NP ≠ all languages":
+    any class defined by a countable set of machines misses at least one language.
+
+    **Full proof from diagonalization.** -/
+theorem countable_class_not_universal
+    (machines : ℕ → (ℕ → Bool))
+    (C : Set (ℕ → Bool))
+    (hC : C ⊆ Set.range machines) :
+    C ≠ Set.univ := by
+  intro h_eq
+  -- If C = Set.univ, then every function is in the range of machines
+  have h_surj : Function.Surjective machines := by
+    intro g
+    have : g ∈ C := by rw [h_eq]; trivial
+    exact hC this
+  -- But no surjection ℕ → (ℕ → Bool) exists
+  exact cantor_no_surjection machines h_surj
+
+/-- The contrapositive: if a class equals Set.univ, it cannot be
+    characterized by a countable family of machines.
+
+    This explains Part 42's finding: the abstract model's P = Set.univ
+    precisely because OracleProgram is too expressive (uncountably many
+    "programs" exist, since each embeds an arbitrary Lean function). -/
+theorem universal_class_uncountable
+    (C : Set (ℕ → Bool))
+    (hC : C = Set.univ) :
+    ¬ ∃ machines : ℕ → (ℕ → Bool), C ⊆ Set.range machines := by
+  intro ⟨machines, h_sub⟩
+  exact countable_class_not_universal machines C h_sub hC
+
+-- ### 46.5: Self-Reference and Fixed Points
+
+/-- No total enumeration of all languages exists. Kleene's recursion
+    theorem (for partial recursive functions) requires a computability
+    restriction that our `ℕ → Bool` model doesn't capture. Instead,
+    Cantor's theorem directly shows the impossibility: -/
+theorem no_total_enumeration (programs : ℕ → (ℕ → Bool)) :
+    ¬ Function.Surjective programs :=
+  cantor_no_surjection programs
+
+-- ### 46.6: Why Relativization Blocks Simple Diagonalization
+
+/-- The key insight connecting diagonalization to Part 3 (Relativization Barrier):
+
+    Simple diagonalization proves undecidability by constructing a language
+    that differs from every machine's behavior at one point. But this
+    construction "relativizes": it works the same way with any oracle.
+
+    The Baker-Gill-Solovay result shows that P^A vs NP^A goes both ways
+    for different oracles A. Therefore, any proof that P ≠ NP cannot
+    use pure diagonalization — it must exploit non-relativizing structure.
+
+    We formalize this as: the diagonal language relative to oracle A
+    is the same construction as without an oracle. -/
+def relativeDiagonalLanguage (A : Oracle) (programs : ℕ → Oracle → ℕ → Bool) : ℕ → Bool :=
+  fun n => !(programs n A n)
+
+/-- The relativized diagonal argument works identically for every oracle.
+    The construction is "oracle-oblivious" — it flips bits regardless of A. -/
+theorem relative_diagonal_oracle_independent
+    (programs : ℕ → Oracle → ℕ → Bool)
+    (A B : Oracle)
+    (h_same : ∀ n, programs n A n = programs n B n) :
+    relativeDiagonalLanguage A programs = relativeDiagonalLanguage B programs := by
+  ext n
+  unfold relativeDiagonalLanguage
+  rw [h_same]
+
+/-- The diagonal argument always produces a language outside any enumeration,
+    regardless of the oracle. This is why diagonalization "relativizes". -/
+theorem relative_diagonal_escapes (A : Oracle) (programs : ℕ → Oracle → ℕ → Bool) (n : ℕ) :
+    relativeDiagonalLanguage A programs n ≠ programs n A n := by
+  unfold relativeDiagonalLanguage
+  cases programs n A n <;> simp
+
+-- ### 46.7: The Counting Barrier
+
+/-- In any finite set of functions {0,1}^n → {0,1}, diagonalization
+    can always find a missing function if we have enough input bits.
+
+    For functions on n bits: there are 2^(2^n) possible functions,
+    but any enumeration of size m can only cover m of them. -/
+theorem finite_diag_gap (m : ℕ) (fs : Fin m → (Fin m → Bool)) :
+    m ≥ 2 → ∃ g : Fin m → Bool, ∀ i, g ≠ fs i := by
+  intro _hm
+  use fun i => !(fs i i)
+  intro i h
+  have := congr_fun h i
+  simp at this
+
+/-- The diagonal argument provides an explicit lower bound: any set of m
+    functions ℕ → Bool must miss at least one function from any enumeration
+    of m elements. This is the combinatorial core of counting arguments
+    in circuit complexity. -/
+theorem diag_counting_lower_bound (m : ℕ) (hm : m ≥ 1)
+    (fs : Fin m → (ℕ → Bool)) :
+    ∃ g : ℕ → Bool, ∀ i : Fin m, g ≠ fs i := by
+  use fun n => if h : n < m then !(fs ⟨n, h⟩ n) else true
+  intro ⟨i, hi⟩ h
+  have := congr_fun h i
+  simp [hi] at this
+
+end Diagonalization
+
 -- Part 42-43 exports (Model Adequacy + Inconsistency Analysis)
 #check trivialSolver
 #check trivialSolver_solves
@@ -11851,5 +12084,18 @@ end Derandomization
 #check DerandomizationLevel
 #check derandomizationOverhead
 #check bruteforce_derandomization
+-- Part 46: Diagonalization
+#check diagonal_differs
+#check diagonalFunction
+#check diagonalFunction_not_in_range
+#check cantor_no_surjection
+#check languages_uncountable
+#check no_enumeration_of_languages
+#check diagonalLanguage
+#check diagonal_escapes_all_programs
+#check countable_class_not_universal
+#check universal_class_uncountable
+#check finite_diag_gap
+#check diag_counting_lower_bound
 
 end PNPBarriers

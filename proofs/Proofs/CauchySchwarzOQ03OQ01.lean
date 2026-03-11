@@ -121,16 +121,31 @@ theorem proportional_of_cross_terms_zero {ι : Type*} (s : Finset ι) (f g : ι 
   field_simp at h ⊢
   linarith
 
+/-- **Proportionality implies Cauchy-Schwarz equality** (reverse direction):
+    If f = c · g on s, then (∑fᵢgᵢ)² = (∑fᵢ²)(∑gᵢ²). -/
+theorem cauchy_schwarz_eq_of_proportional {ι : Type*} (s : Finset ι) (f g : ι → ℝ)
+    (c : ℝ) (hprop : ∀ i ∈ s, f i = c * g i) :
+    (∑ i ∈ s, f i * g i) ^ 2 = (∑ i ∈ s, f i ^ 2) * (∑ i ∈ s, g i ^ 2) := by
+  have h1 : ∀ i ∈ s, f i * g i = c * g i ^ 2 :=
+    fun i hi => by rw [hprop i hi]; ring
+  have h2 : ∀ i ∈ s, f i ^ 2 = c ^ 2 * g i ^ 2 :=
+    fun i hi => by rw [hprop i hi]; ring
+  rw [Finset.sum_congr rfl h1, Finset.sum_congr rfl h2, ← Finset.mul_sum, ← Finset.mul_sum]
+  ring
+
 /-- **Full Cauchy-Schwarz Equality Characterization with Proportionality**:
     When g is not identically zero on s, equality holds iff f is a
     scalar multiple of g (proportional). -/
 theorem cauchy_schwarz_eq_iff_proportional {ι : Type*} (s : Finset ι) (f g : ι → ℝ)
     {k : ι} (hk : k ∈ s) (hgk : g k ≠ 0) :
-    (∑ i ∈ s, f i * g i) ^ 2 = (∑ i ∈ s, f i ^ 2) * (∑ i ∈ s, g i ^ 2) →
+    (∑ i ∈ s, f i * g i) ^ 2 = (∑ i ∈ s, f i ^ 2) * (∑ i ∈ s, g i ^ 2) ↔
     ∃ c : ℝ, ∀ i ∈ s, f i = c * g i := by
-  intro heq
-  have hcross := cauchy_schwarz_eq_iff s f g |>.mp heq
-  exact ⟨f k / g k, proportional_of_cross_terms_zero s f g hcross hk hgk⟩
+  constructor
+  · intro heq
+    have hcross := cauchy_schwarz_eq_iff s f g |>.mp heq
+    exact ⟨f k / g k, proportional_of_cross_terms_zero s f g hcross hk hgk⟩
+  · rintro ⟨c, hprop⟩
+    exact cauchy_schwarz_eq_of_proportional s f g c hprop
 
 -- ============================================================================
 -- Part III: Inner Product Space Equality Case
@@ -583,6 +598,30 @@ theorem holder_eq_implies_power_prop {ι : Type*} (s : Finset ι) (f g : ι → 
   -- key: f i ^ p * Gq = g i ^ q * Fp
   field_simp
   linarith
+
+/-- **Power proportionality implies Hölder equality** (reverse direction, normalized).
+    If ∑fᵢ^p = 1, ∑gᵢ^q = 1, and fᵢ^p = gᵢ^q for all i, then ∑fᵢgᵢ = 1.
+    Proof: each Young deficit is zero, so the total deficit is zero. -/
+theorem power_prop_implies_holder_eq_normalized {ι : Type*} (s : Finset ι) (f g : ι → ℝ)
+    {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1)
+    (hf : ∀ i ∈ s, 0 ≤ f i) (hg : ∀ i ∈ s, 0 ≤ g i)
+    (hnorm_f : (∑ i ∈ s, f i ^ p) = 1) (hnorm_g : (∑ i ∈ s, g i ^ q) = 1)
+    (hprop : ∀ i ∈ s, f i ^ p = g i ^ q) :
+    ∑ i ∈ s, f i * g i = 1 := by
+  -- Each Young deficit is zero (since fᵢ^p = gᵢ^q)
+  have hdef : ∀ i ∈ s, youngDeficit p q (f i) (g i) = 0 :=
+    fun i hi => (youngDeficit_eq_zero_iff hp hinv (hf i hi) (hg i hi)).mpr (hprop i hi)
+  -- Sum of deficits is zero
+  have hsum : ∑ i ∈ s, youngDeficit p q (f i) (g i) = 0 :=
+    Finset.sum_eq_zero fun i hi => hdef i hi
+  -- sum_youngDeficit: total deficit = 1/p + 1/q - ∑fg = 0
+  rw [sum_youngDeficit] at hsum
+  rw [hnorm_f, hnorm_g] at hsum
+  have hp_pos : (0 : ℝ) < p := by linarith
+  have hq_pos : (0 : ℝ) < q := lt_trans one_pos (conj_one_lt_q hp hinv)
+  linarith [div_add_div (1 : ℝ) (1 : ℝ) (ne_of_gt hp_pos) (ne_of_gt hq_pos),
+    conj_add_eq_mul hp hinv,
+    div_self (show p * q ≠ 0 by positivity)]
 
 -- ============================================================================
 -- Part VIII: Specialization — Recovering Cauchy-Schwarz from Hölder

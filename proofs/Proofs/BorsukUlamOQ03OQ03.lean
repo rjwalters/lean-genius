@@ -798,4 +798,72 @@ theorem borsuk_ulam_2d_corrected
 #check @approx_borsuk_ulam_2d_corrected
 #check @borsuk_ulam_2d_corrected
 
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART XVII: HEMISPHERE PROJECTION INFRASTRUCTURE
+
+The key bridge from S² to Tucker on D²:
+  1. Project upper hemisphere H⁺ = {(x,y,z) ∈ S² : z ≥ 0} to D² via (x,y,z) ↦ (x,y)
+  2. Lift D² back to H⁺ via (x,y) ↦ (x, y, √(1-x²-y²))
+  3. On ∂D² (equator, z=0), the lift of (-x,-y) equals neg3 of lift of (x,y)
+  4. Therefore, for odd g : S² → ℝ², the composed g̃ on D² is antipodal on ∂D²
+  5. This makes the dominant component labeling Tucker-compatible
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- Lift from disk D² = {(x,y) : x²+y² ≤ 1} to the upper hemisphere of S²:
+    (x,y) ↦ (x, y, √(1 - x² - y²)).
+    This is the key geometric map for reducing 2D Borsuk-Ulam to Tucker on a disk. -/
+def diskLift (p : ℝ × ℝ) : ℝ × ℝ × ℝ :=
+  (p.1, p.2, Real.sqrt (1 - p.1 ^ 2 - p.2 ^ 2))
+
+/-- The disk lift lands on S² when the input is in D². -/
+theorem diskLift_on_sphere (p : ℝ × ℝ) (hp : p.1 ^ 2 + p.2 ^ 2 ≤ 1) :
+    (diskLift p).1 ^ 2 + (diskLift p).2.1 ^ 2 + (diskLift p).2.2 ^ 2 = 1 := by
+  simp only [diskLift]
+  have h : 0 ≤ 1 - p.1 ^ 2 - p.2 ^ 2 := by linarith
+  rw [Real.sq_sqrt h]
+  ring
+
+/-- On the boundary of D² (the equator of S²), the z-coordinate of the lift is 0. -/
+theorem diskLift_boundary_z_zero (p : ℝ × ℝ) (hp : p.1 ^ 2 + p.2 ^ 2 = 1) :
+    (diskLift p).2.2 = 0 := by
+  simp only [diskLift]
+  have : 1 - p.1 ^ 2 - p.2 ^ 2 = 0 := by linarith
+  rw [this, Real.sqrt_zero]
+
+/-- On the boundary of D², lifting the antipodal disk point (-x,-y) gives neg3 of
+    the lifted point. This is the crucial property that makes Tucker's lemma applicable:
+    the disk labeling induced by an odd function on S² is automatically antipodal
+    on ∂D², satisfying Tucker's boundary condition. -/
+theorem diskLift_boundary_neg_eq (p : ℝ × ℝ) (hp : p.1 ^ 2 + p.2 ^ 2 = 1) :
+    diskLift (Prod.map Neg.neg Neg.neg p) = neg3 (diskLift p) := by
+  have h0 : 1 - p.1 ^ 2 - p.2 ^ 2 = 0 := by linarith
+  have h0' : 1 - (-p.1) ^ 2 - (-p.2) ^ 2 = 0 := by nlinarith
+  simp only [diskLift, Prod.map, neg3, h0, h0', Real.sqrt_zero, neg_zero]
+
+/-- For an odd function g : S² → ℝ² (satisfying g(-x) = -g(x)), the composed function
+    g̃ = g ∘ diskLift on D² is antipodal on the boundary of D²: g̃(-p) = -g̃(p).
+    This is what makes the dominant component labeling Tucker-compatible on ∂D². -/
+theorem diskFunction_antipodal_on_boundary
+    (g : ℝ × ℝ × ℝ → ℝ × ℝ)
+    (hodd : ∀ x, g (neg3 x) = Prod.map Neg.neg Neg.neg (g x))
+    (p : ℝ × ℝ) (hp : p.1 ^ 2 + p.2 ^ 2 = 1) :
+    g (diskLift (Prod.map Neg.neg Neg.neg p)) =
+      Prod.map Neg.neg Neg.neg (g (diskLift p)) := by
+  rw [diskLift_boundary_neg_eq p hp, hodd]
+
+/-- The z-coordinate of the disk lift is non-negative (upper hemisphere). -/
+theorem diskLift_z_nonneg (p : ℝ × ℝ) (_hp : p.1 ^ 2 + p.2 ^ 2 ≤ 1) :
+    0 ≤ (diskLift p).2.2 := by
+  simp only [diskLift]
+  exact Real.sqrt_nonneg _
+
+-- Type-check hemisphere projection infrastructure
+#check @diskLift
+#check @diskLift_on_sphere
+#check @diskLift_boundary_z_zero
+#check @diskLift_boundary_neg_eq
+#check @diskFunction_antipodal_on_boundary
+#check @diskLift_z_nonneg
+
 end BorsukUlamTucker2D
