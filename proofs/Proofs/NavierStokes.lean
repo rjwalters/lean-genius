@@ -6033,15 +6033,37 @@ structure ExponentialDecay where
 /-- Exponential decay means energy goes to 0 as t → ∞. -/
 theorem energy_vanishes (ed : ExponentialDecay) (ε : ℝ) (hε : ε > 0) :
     ∃ T : ℝ, T > 0 ∧ ∀ t ≥ T, ed.energy_bound t ≤ ε := by
-  -- At large enough T, E₀ exp(-decay_rate · T) < ε
-  use (Real.log (ed.E_0 / ε) / ed.decay_rate + 1)
+  -- Choose T large enough that E₀ exp(-rate · T) ≤ ε
+  -- Use max to ensure T > 0 regardless of E₀/ε ratio
+  use max 1 (Real.log (ed.E_0 / ε) / ed.decay_rate + 1)
   constructor
-  · positivity
+  · exact lt_of_lt_of_le one_pos (le_max_left _ _)
   · intro t ht
+    -- t ≥ max 1 (...) ≥ 1 > 0, so t ≥ 0
+    have ht_pos : t ≥ 0 := by linarith [le_max_left 1 (Real.log (ed.E_0 / ε) / ed.decay_rate + 1)]
     calc ed.energy_bound t
-        ≤ ed.E_0 * Real.exp (-ed.decay_rate * t) := ed.hbound t (by linarith)
+        ≤ ed.E_0 * Real.exp (-ed.decay_rate * t) := ed.hbound t ht_pos
       _ ≤ ε := by
-        sorry -- detailed exponential decay argument
+        -- t ≥ log(E₀/ε)/rate + 1
+        have ht2 : t ≥ Real.log (ed.E_0 / ε) / ed.decay_rate + 1 :=
+          le_trans (le_max_right _ _) ht
+        -- So rate · t ≥ log(E₀/ε) + rate ≥ log(E₀/ε)
+        have hrt : ed.decay_rate * t ≥ Real.log (ed.E_0 / ε) := by
+          have h1 := mul_le_mul_of_nonneg_left ht2 (le_of_lt ed.hdecay)
+          have h2 : ed.decay_rate * (Real.log (ed.E_0 / ε) / ed.decay_rate + 1) =
+              Real.log (ed.E_0 / ε) + ed.decay_rate := by
+            rw [mul_add, mul_div_cancel₀ _ (ne_of_gt ed.hdecay), mul_one]
+          linarith [ed.hdecay]
+        -- exp(-rate·t) ≤ exp(-log(E₀/ε)) = exp(log(ε/E₀)) = ε/E₀
+        have h1 : Real.exp (-ed.decay_rate * t) ≤ Real.exp (-Real.log (ed.E_0 / ε)) :=
+          Real.exp_le_exp.mpr (by linarith)
+        have h2 : Real.exp (-Real.log (ed.E_0 / ε)) = ε / ed.E_0 := by
+          rw [Real.exp_neg, Real.exp_log (div_pos ed.hE0 hε), inv_div]
+        rw [h2] at h1
+        -- E₀ · (ε/E₀) = ε
+        calc ed.E_0 * Real.exp (-ed.decay_rate * t)
+            ≤ ed.E_0 * (ε / ed.E_0) := by exact mul_le_mul_of_nonneg_left h1 (le_of_lt ed.hE0)
+          _ = ε := mul_div_cancel₀ ε (ne_of_gt ed.hE0)
 
 /-- Summary: bounded domains are "easier" but still unsolved.
 
