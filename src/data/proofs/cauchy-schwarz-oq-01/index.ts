@@ -26,7 +26,7 @@ export const cauchySchwarzOq01Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const cauchySchwarzOq01Annotations: Annotation[] = annotationsJson as Annotation[]
+export const cauchySchwarzOq01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const cauchySchwarzOq01Data: ProofData = {
   proof: cauchySchwarzOq01Proof,

@@ -26,7 +26,7 @@ export const schauderFixedPointProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const schauderFixedPointAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const schauderFixedPointAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const schauderFixedPointData: ProofData = {
   proof: schauderFixedPointProof,

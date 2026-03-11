@@ -27,7 +27,7 @@ export const sqrt2FromAxiomsProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const sqrt2FromAxiomsAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const sqrt2FromAxiomsAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const sqrt2FromAxiomsTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const sqrt2FromAxiomsData: ProofData = {

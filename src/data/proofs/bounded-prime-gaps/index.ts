@@ -27,7 +27,7 @@ export const boundedPrimeGapsProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const boundedPrimeGapsAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const boundedPrimeGapsAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const boundedPrimeGapsTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const boundedPrimeGapsData: ProofData = {

@@ -27,7 +27,7 @@ export const feuerbachsTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const feuerbachsTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const feuerbachsTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const feuerbachsTheoremTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const feuerbachsTheoremData: ProofData = {

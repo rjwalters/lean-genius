@@ -27,7 +27,7 @@ export const hermiteLindemannProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const hermiteLindemannAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const hermiteLindemannAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const hermiteLindemannTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const hermiteLindemannData: ProofData = {

@@ -26,7 +26,7 @@ export const haltingProblemProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const haltingProblemAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const haltingProblemAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const haltingProblemData: ProofData = {
   proof: haltingProblemProof,

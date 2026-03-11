@@ -26,7 +26,7 @@ export const legendrePartialProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const legendrePartialAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const legendrePartialAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const legendrePartialData: ProofData = {
   proof: legendrePartialProof,

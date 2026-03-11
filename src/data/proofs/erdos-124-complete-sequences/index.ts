@@ -26,7 +26,7 @@ export const erdos124CompleteSequencesProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const erdos124CompleteSequencesAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const erdos124CompleteSequencesAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const erdos124CompleteSequencesData: ProofData = {
   proof: erdos124CompleteSequencesProof,

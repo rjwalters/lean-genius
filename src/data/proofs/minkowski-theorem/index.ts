@@ -27,7 +27,7 @@ export const minkowskiTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const minkowskiTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const minkowskiTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const minkowskiTheoremTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const minkowskiTheoremData: ProofData = {

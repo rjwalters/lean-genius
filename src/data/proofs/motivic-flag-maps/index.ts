@@ -26,7 +26,7 @@ export const motivicFlagMapsProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const motivicFlagMapsAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const motivicFlagMapsAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const motivicFlagMapsData: ProofData = {
   proof: motivicFlagMapsProof,

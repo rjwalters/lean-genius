@@ -23,7 +23,7 @@ export const proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const annotations: Annotation[] = annotationsJson as Annotation[]
+export const annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const proofData: ProofData = { proof, annotations }
 

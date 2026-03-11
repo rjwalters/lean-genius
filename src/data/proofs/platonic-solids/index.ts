@@ -27,7 +27,7 @@ export const platonicSolidsProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const platonicSolidsAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const platonicSolidsAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const platonicSolidsTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const platonicSolidsData: ProofData = {

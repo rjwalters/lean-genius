@@ -53,7 +53,7 @@ export const navierStokesProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const navierStokesAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const navierStokesAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 // Build version info if available, attaching content to each version
 const versionInfo: ProofVersionInfo | undefined = meta.currentVersion && meta.versionHistory

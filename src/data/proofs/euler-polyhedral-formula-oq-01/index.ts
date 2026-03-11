@@ -27,7 +27,7 @@ export const eulerPolyhedralFormulaOQ01Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const eulerPolyhedralFormulaOQ01Annotations: Annotation[] = annotationsJson as Annotation[]
+export const eulerPolyhedralFormulaOQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const eulerPolyhedralFormulaOQ01TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const eulerPolyhedralFormulaOQ01Data: ProofData = {

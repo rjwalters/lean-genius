@@ -27,7 +27,7 @@ export const baselProblemOQ01Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const baselProblemOQ01Annotations: Annotation[] = annotationsJson as Annotation[]
+export const baselProblemOQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const baselProblemOQ01TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const baselProblemOQ01Data: ProofData = {

@@ -27,7 +27,7 @@ export const greensTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const greensTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const greensTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const greensTheoremTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const greensTheoremData: ProofData = {

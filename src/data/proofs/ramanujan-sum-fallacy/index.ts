@@ -27,7 +27,7 @@ export const ramanujanSumFallacyProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const ramanujanSumFallacyAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const ramanujanSumFallacyAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const ramanujanSumFallacyTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const ramanujanSumFallacyData: ProofData = {

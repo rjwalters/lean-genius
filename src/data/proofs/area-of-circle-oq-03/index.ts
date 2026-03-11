@@ -26,7 +26,7 @@ export const areaOfCircleOq03Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const areaOfCircleOq03Annotations: Annotation[] = annotationsJson as Annotation[]
+export const areaOfCircleOq03Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const areaOfCircleOq03Data: ProofData = {
   proof: areaOfCircleOq03Proof,

@@ -27,7 +27,7 @@ export const lebesgueMeasureProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const lebesgueMeasureAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const lebesgueMeasureAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const lebesgueMeasureTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const lebesgueMeasureData: ProofData = {

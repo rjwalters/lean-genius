@@ -26,7 +26,7 @@ export const pythagoreanTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const pythagoreanTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const pythagoreanTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const pythagoreanTheoremData: ProofData = {
   proof: pythagoreanTheoremProof,

@@ -27,7 +27,7 @@ export const geometricSeriesOq02Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const geometricSeriesOq02Annotations: Annotation[] = annotationsJson as Annotation[]
+export const geometricSeriesOq02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const geometricSeriesOq02TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const geometricSeriesOq02Data: ProofData = {
