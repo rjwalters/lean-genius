@@ -1,49 +1,94 @@
 {
   "slug": "erdos-1146",
-  "title": "Erdős #1146",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Erdős #1146: Is {2^m · 3^n} an Essential Component?",
+  "phase": "FORMALIZED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "IsEssentialComponent smoothNumbers23 where smoothNumbers23 = {n | ∃ m k : ℕ, n = 2^m * 3^k}",
+    "plain": "Is the set B = {2^m · 3^n : m, n ≥ 0} an essential component? A set A is essential if d_s(A + B) > d_s(B) for every B with 0 < d_s(B) < 1, where d_s is Schnirelmann density.",
+    "whyMatters": [
+      "Boundary case for Ruzsa's essential component characterization",
+      "Simplest set that could potentially be an essential component",
+      "Connects multiplicative structure to additive number theory"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Ruzsa (1987): Essential components need counting ≥ (log N)^{1+c}",
+      "Ruzsa (1987): Lacunary sets (O(log N) growth) are NOT essential",
+      "{2^m · 3^n} has counting ~ C · (log N)², exactly at threshold",
+      "Mann's theorem gives only non-strict d_s(A+B) ≥ d_s(B)"
+    ],
+    "open": [
+      "Whether {2^m · 3^n} is an essential component (THIS problem)",
+      "For which k is the k-smooth number set essential?"
+    ],
+    "goal": "Determine whether {2^m · 3^n} strictly increases Schnirelmann density for all sets with positive density"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T16:41:04.200Z",
+    "phase": "FORMALIZED",
+    "since": "2026-03-11T13:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Complete Lean formalization with gallery entry",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Problem fully formalized. Main conjecture is OPEN.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "FORMALIZED: Complete Lean 4 formalization importing Erdős #37 infrastructure. Proved closure properties, structural results (positivity, unboundedness), Mann's lower bound, and single-prime non-essentiality. 2 axioms (smooth23_not_lacunary, smooth23_schnirelmann_zero), 1 sorry (growth analysis). Main conjecture stated as Erdos1146Conjecture, proved equivalent to RuzsaOpenQuestion from #37.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1146Problem.lean - Full formalization (242 lines)",
+      "src/data/proofs/erdos-1146/ - Gallery entry with meta, annotations, index"
+    ],
+    "insights": [
+      "Problem is equivalent to RuzsaOpenQuestion already stated in Erdős #37",
+      "All infrastructure (Schnirelmann density, essential components, sumsets) already exists in #37",
+      "Mann's theorem gives only non-strict inequality d_s(A+B) ≥ d_s(B) when d_s(A) = 0",
+      "Growth rate (log N)² is exactly at Ruzsa's threshold - neither growth-based nor sparsity-based arguments can resolve this",
+      "For k=1 prime (lacunary), NOT essential. k=2 (this problem) is the simplest open case",
+      "Resolution likely requires understanding residue class distribution of 3-smooth numbers"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdős #1146 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "nextSteps": [
+      "This is an OPEN problem - no further automated progress possible",
+      "The 1 sorry (growth_satisfies_ruzsa_necessary) could be proved with asymptotic analysis"
+    ],
+    "markdown": "# Erdős #1146 - Knowledge Base\n\n## Problem Statement\n\nIs B = {2^m · 3^n : m, n ≥ 0} an essential component?\n\nA set A is essential if d_s(A + B) > d_s(B) for every B with 0 < d_s(B) < 1.\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Formalization Status**: COMPLETE (1 sorry, 2 axioms)\n\n## Key Results\n\n- Ruzsa (1987): Essential components need |A ∩ [1,N]| ≥ (log N)^{1+c}\n- {2^m · 3^n} has counting ~ C · (log N)² - exactly at threshold\n- Mann's theorem gives only d_s(A+B) ≥ d_s(B), not strict\n- Powers of single prime are NOT essential (lacunary)\n\n## Tags\n\n- erdos\n- additive-number-theory\n- schnirelmann-density\n- essential-component\n- smooth-numbers\n\n## Related Problems\n\n- Erdős #37 (parent - lacunary sets not essential)\n- Erdős #35 (Schnirelmann density for additive bases)\n- Erdős #30 (Sidon sets - sparse sets with additive structure)\n\n## References\n\n- Ruzsa (1987, 1999)\n- [Va99, Problem 1.19]\n\n## Sessions\n\n### Session 1 (2026-03-11, researcher-5)\n- Created full Lean formalization (242 lines)\n- Imported Erdős #37 for infrastructure\n- Proved closure, positivity, unboundedness, Mann's lower bound\n- Stated main conjecture, proved equivalence with RuzsaOpenQuestion\n\n---\n\n*Formalized by researcher-5 on 2026-03-11*\n"
   },
-  "approaches": [],
-  "tags": [
-    "erdos"
+  "approaches": [
+    {
+      "name": "Formalization via Erdős #37 infrastructure",
+      "status": "completed",
+      "description": "Import definitions from Erdős #37 (Schnirelmann density, essential components, smooth numbers), add closure properties and structural results, state main conjecture"
+    }
   ],
-  "relatedProofs": [],
+  "tags": [
+    "erdos",
+    "additive-number-theory",
+    "schnirelmann-density",
+    "essential-component",
+    "smooth-numbers"
+  ],
+  "relatedProofs": [
+    "erdos-37",
+    "erdos-35",
+    "erdos-30"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Ruzsa (1987) - Essential components lower bound",
+      "Ruzsa (1999) - Open question about {2^m · 3^n}"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1146",
+      "https://erdosproblems.com/37"
+    ],
     "mathlib": []
   },
   "started": "2026-01-15T16:41:04.200Z",

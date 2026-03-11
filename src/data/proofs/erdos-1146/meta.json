@@ -1,0 +1,149 @@
+{
+  "id": "erdos-1146",
+  "title": "Erdős Problem #1146: Is {2^m · 3^n} an Essential Component?",
+  "slug": "erdos-1146",
+  "description": "Is the set B = {2^m · 3^n : m, n ≥ 0} an essential component? A set is essential if it strictly increases Schnirelmann density when added to any set with positive density. The 3-smooth numbers have counting function ~ C · (log N)², exactly at Ruzsa's threshold.",
+  "meta": {
+    "author": "researcher-5",
+    "sourceUrl": "https://erdosproblems.com/1146",
+    "date": "2026-03-11",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1146Problem.lean",
+    "tags": [
+      "erdos",
+      "additive-number-theory",
+      "schnirelmann-density",
+      "essential-component",
+      "smooth-numbers"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "axioms": 2,
+    "erdosNumber": 1146,
+    "erdosUrl": "https://erdosproblems.com/1146",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-11",
+    "dateUpdated": "2026-03-11",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.ncard",
+        "description": "Cardinality of sets as natural numbers",
+        "module": "Mathlib.Data.Set.Card"
+      },
+      {
+        "theorem": "iInf",
+        "description": "Infimum over indexed family",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      },
+      {
+        "theorem": "Filter.atTop",
+        "description": "Filter for eventual properties",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Real.log",
+        "description": "Natural logarithm",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Proved one_mem_smooth23, two_mem_smooth23, three_mem_smooth23, six_mem_smooth23",
+      "Proved mul_two_mem_smooth23, mul_three_mem_smooth23, mul_mem_smooth23 (closure)",
+      "Proved smooth23_pos (positivity of smooth numbers)",
+      "Proved smooth23_unbounded (smooth numbers are unbounded)",
+      "Proved mann_lower_bound (Mann's theorem gives d_s(A+B) >= d_s(B))",
+      "Proved erdos_1146_eq_ruzsa (equivalence with Ruzsa's open question from #37)",
+      "Proved single_prime_not_essential (powers of single prime are not essential)",
+      "Axiom smooth23_not_lacunary (smooth numbers are not lacunary)",
+      "Axiom smooth23_schnirelmann_zero (Schnirelmann density is 0)",
+      "Definition smoothNumbers (k-smooth generalization)",
+      "Definition Erdos1146Conjecture (main open question)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Ruzsa (1999) asked whether {2^m · 3^n : m, n ≥ 0} is an essential component. This emerged from his work resolving Erdős #37: essential components need counting function growth ≥ (log N)^{1+c}, ruling out lacunary sets (O(log N)). The 3-smooth numbers have growth ~ C(log N)², exactly at the threshold with c = 1. This is \"the simplest set with a chance to be an essential component\" (Ruzsa 1999).",
+    "problemStatement": "**Erdős Problem #1146**: Is $B = \\{2^m \\cdot 3^n : m, n \\geq 0\\}$ an essential component?\n\nA set $A$ is an **essential component** if $d_s(A + B) > d_s(B)$ for every $B \\subset \\mathbb{N}$ with $0 < d_s(B) < 1$, where $d_s$ is Schnirelmann density.\n\nThe set $\\{2^m \\cdot 3^n\\}$ has counting function $\\sim C \\cdot (\\log N)^2 / (2 \\log 2 \\cdot \\log 3)$, which is exactly at Ruzsa's threshold $(\\log N)^{1+c}$ with $c = 1$.",
+    "proofStrategy": "The formalization imports and builds on Erdős #37 infrastructure:\n\n1. **Imports from Erdős #37**: Schnirelmann density, sumsets, essential components, smooth numbers definitions\n2. **Closure Properties**: 3-smooth numbers are closed under multiplication by 2, 3, and each other\n3. **Structural Results**: Smooth numbers are positive, unbounded, and not lacunary\n4. **Mann's Lower Bound**: Mann's theorem gives d_s(A+B) ≥ d_s(B) (non-strict), showing the difficulty — we need strictness\n5. **Generalization**: k-smooth numbers framework; powers of a single prime are NOT essential (from #37)\n6. **Main Conjecture**: Stated as equivalent to Ruzsa's open question",
+    "keyInsights": [
+      "**At Ruzsa's threshold**: {2^m · 3^n} has counting ~ (log N)² = (log N)^{1+1}. Ruzsa's lower bound for essential components is (log N)^{1+c} with c > 0. So smooth-{2,3} numbers barely satisfy the necessary growth condition.",
+      "**Not lacunary**: Unlike powers of a single prime, {2^m · 3^n} has consecutive elements with ratios approaching 1 (e.g., 2^a·3^b and 2^(a-1)·3^(b+1) differ by 3/2). This prevents using the lacunary argument.",
+      "**Mann gives only non-strict inequality**: Mann's theorem with d_s(A) = 0 gives d_s(A+B) ≥ d_s(B), which is the non-strict inequality. The essential component question asks for strict inequality.",
+      "**Generalization to k-smooth**: For k primes, counting ~ (log N)^k. For k = 1 (lacunary), NOT essential. For k ≥ 2, the question is open.",
+      "**Residue class structure matters**: The distribution of 3-smooth numbers across residue classes likely determines whether they boost density. This is related to the Bohr set structure of {log 2, log 3}."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Namespace",
+      "startLine": 29,
+      "endLine": 33,
+      "summary": "Imports Erdős #37 formalization for Schnirelmann density, essential components, and smooth number definitions. Opens the Erdos37 namespace."
+    },
+    {
+      "id": "smooth-properties",
+      "title": "Properties of 3-Smooth Numbers",
+      "startLine": 35,
+      "endLine": 89,
+      "summary": "Proves basic properties: membership (1, 2, 3, 6 are smooth), closure under multiplication by 2 and 3, multiplicative closure, positivity, and unboundedness."
+    },
+    {
+      "id": "non-lacunary",
+      "title": "Non-Lacunary Property",
+      "startLine": 91,
+      "endLine": 108,
+      "summary": "States that {2^m · 3^n} is NOT lacunary (axiom). Consecutive smooth numbers have ratios approaching 1, unlike lacunary sets."
+    },
+    {
+      "id": "growth",
+      "title": "Growth Rate Analysis",
+      "startLine": 110,
+      "endLine": 132,
+      "summary": "States that the (log N)² growth satisfies Ruzsa's necessary condition for essential components with c = 1/2 (sorry - routine analysis)."
+    },
+    {
+      "id": "density",
+      "title": "Schnirelmann Density",
+      "startLine": 134,
+      "endLine": 149,
+      "summary": "Axiom: d_s({2^m · 3^n}) = 0. Smooth numbers become sparse in initial segments."
+    },
+    {
+      "id": "mann-bound",
+      "title": "Sumset Growth via Mann's Theorem",
+      "startLine": 151,
+      "endLine": 174,
+      "summary": "Proves mann_lower_bound: d_s(A + B) ≥ d_s(B) using Mann's theorem with d_s(A) = 0. Shows why the problem is hard — we get only non-strict inequality."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "The Main Open Question",
+      "startLine": 176,
+      "endLine": 210,
+      "summary": "States Erdos1146Conjecture = IsEssentialComponent smoothNumbers23 and proves equivalence with RuzsaOpenQuestion from Erdős #37. Discusses what would resolve the problem."
+    },
+    {
+      "id": "generalization",
+      "title": "Generalization to k-Smooth Numbers",
+      "startLine": 212,
+      "endLine": 242,
+      "summary": "Defines smoothNumbers for arbitrary prime sets and proves single_prime_not_essential: powers of a single prime are not essential (using lacunary → not essential from #37)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős Problem #1146 — whether {2^m · 3^n} is an essential component — building on the infrastructure from Erdős #37. The file proves structural properties of 3-smooth numbers, applies Mann's theorem to show why only non-strict density inequality follows from existing tools, and connects the conjecture to Ruzsa's 1999 open question. The generalization to k-smooth numbers shows that k = 1 (single prime powers) cannot be essential, making k = 2 (this problem) the simplest open case.",
+    "implications": "The essential component question for {2^m · 3^n} is a frontier problem in additive number theory. Its resolution would illuminate the boundary between sets that are 'additively helpful' and those that are not. The (log N)² growth rate sits exactly at Ruzsa's threshold, making this a natural test case for whether growth rate alone determines essentiality or whether arithmetic structure matters.",
+    "openQuestions": [
+      "Is {2^m · 3^n} an essential component? (THIS problem — Erdős #1146)",
+      "For k-smooth numbers {p₁^a₁ · ... · pₖ^aₖ} with counting ~ (log N)^k, for which k is the set essential?",
+      "What is the precise relationship between residue class distribution and essential component property?",
+      "Can the growth_satisfies_ruzsa_necessary sorry be eliminated using Mathlib's asymptotic analysis?"
+    ],
+    "crossReferences": [
+      { "proofId": "erdos-37", "relationship": "Parent problem — Erdős #37 resolves the lacunary case and provides all infrastructure (Schnirelmann density, essential components, sumsets). Problem #1146 is the open question stated at the end of #37." },
+      { "proofId": "erdos-30", "relationship": "Sidon sets (B₂ sets) also concern additive structure of sparse sets. Both ask how sparse a set can be while maintaining a strong additive property." },
+      { "proofId": "erdos-35", "relationship": "Schnirelmann density improvements for additive bases — closely related density concepts and techniques." }
+    ]
+  }
+}
