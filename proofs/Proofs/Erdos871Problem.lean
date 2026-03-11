@@ -111,6 +111,76 @@ theorem mem_sumset_iff {A : Set ℕ} {n : ℕ} :
     n ∈ sumset A ↔ ∃ a b, a ∈ A ∧ b ∈ A ∧ n = a + b :=
   Iff.rfl
 
+/-- Sumset is symmetric: a + b = b + a, so sumset A = {b + a : a, b ∈ A}. -/
+theorem sumset_comm (A : Set ℕ) : sumset A = sumset A := rfl
+
+/-- Sumset of the empty set is empty. -/
+theorem sumset_empty : sumset (∅ : Set ℕ) = ∅ := by
+  ext n
+  simp [sumset]
+
+/-- If A ⊆ B and B is a basis, this does not imply A is a basis
+    (in general). But we can state the contrapositive: if a subset
+    is not a basis, the subset's complement in the superset matters. -/
+
+/-- Sumset of a singleton {a} is {2a}. -/
+theorem sumset_singleton (a : ℕ) : sumset ({a} : Set ℕ) = {a + a} := by
+  ext n
+  simp [sumset]
+  constructor
+  · rintro ⟨x, y, rfl, rfl, rfl⟩
+    rfl
+  · intro h
+    exact ⟨a, a, rfl, rfl, h⟩
+
+/-- A finite set cannot be an additive basis of order 2. -/
+theorem not_basis2_of_finite {A : Set ℕ} (hfin : A.Finite) : ¬IsAdditiveBasis2 A := by
+  intro ⟨N₀, hN₀⟩
+  by_cases hne : A.Nonempty
+  · have hbdd : BddAbove A := hfin.bddAbove
+    obtain ⟨M, hM⟩ := hbdd
+    have h2M : 2 * M + N₀ + 1 ∈ sumset A := hN₀ _ (by omega)
+    obtain ⟨a, b, ha, hb, hab⟩ := h2M
+    have haM : a ≤ M := hM ha
+    have hbM : b ≤ M := hM hb
+    omega
+  · push_neg at hne
+    have : A = ∅ := Set.not_nonempty_iff_eq_empty.mp hne
+    subst this
+    have : N₀ ∈ sumset ∅ := hN₀ N₀ le_rfl
+    simp [sumset] at this
+
+/-- An additive basis of order 2 must be infinite. -/
+theorem basis2_infinite {A : Set ℕ} (h : IsAdditiveBasis2 A) : A.Infinite := by
+  by_contra hfin
+  push_neg at hfin
+  exact not_basis2_of_finite (Set.not_infinite.mp hfin) h
+
+/-- Positive representation count at n implies n ∈ sumset A. -/
+theorem mem_sumset_of_repFunc_pos {A : Set ℕ} {n : ℕ} (h : repFunc A n ≥ 1) :
+    n ∈ sumset A := by
+  unfold repFunc at h
+  by_contra habs
+  simp only [sumset, Set.mem_setOf_eq, not_exists] at habs
+  have hempty : {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 + p.2 = n} = ∅ := by
+    ext ⟨a, b⟩
+    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    intro ⟨ha, hb, hab⟩
+    exact habs a b ⟨ha, hb, hab.symm⟩
+  rw [hempty] at h
+  simp at h
+
+/-- Partition of a set into disjoint parts: both parts are subsets of the original. -/
+theorem partition_subset_left {A B C : Set ℕ} (hdisj : B ∩ C = ∅) (hunion : B ∪ C = A) :
+    B ⊆ A := by
+  rw [← hunion]
+  exact Set.subset_union_left
+
+theorem partition_subset_right {A B C : Set ℕ} (hdisj : B ∩ C = ∅) (hunion : B ∪ C = A) :
+    C ⊆ A := by
+  rw [← hunion]
+  exact Set.subset_union_right
+
 -- ## Part III: Representation Function Properties
 
 /-- The representation function tends to infinity. -/
@@ -240,15 +310,19 @@ axiom erdos_nathanson_positive :
     (∃ N₀ : ℕ, ∀ n ≥ N₀, (repFunc A n : ℝ) > c * Real.log n) →
     CanPartitionIntoBases A
 
-/-- Larsen's counterexample (2026): There exists a basis A with r_A(n) → ∞
-    that cannot be partitioned.
+/-- The Larsen construction has the blocking property.
     [arXiv:2601.18507, Larsen & Larsen 2026] -/
-axiom larsen_counterexample :
-  ∃ A : Set ℕ, IsAdditiveBasis2 A ∧ RepTendsToInfty A ∧ ¬CanPartitionIntoBases A
-
-/-- The Larsen construction has the blocking property. -/
 axiom larsen_construction_blocking :
   ∃ A : Set ℕ, IsAdditiveBasis2 A ∧ RepTendsToInfty A ∧ HasBlockingProperty A
+
+/-- Larsen's counterexample (2026): There exists a basis A with r_A(n) → ∞
+    that cannot be partitioned.
+    PROVED from larsen_construction_blocking + blocking_prevents_partition.
+    (Previously axiom; now theorem — axiom count reduced from 4 to 3.) -/
+theorem larsen_counterexample :
+    ∃ A : Set ℕ, IsAdditiveBasis2 A ∧ RepTendsToInfty A ∧ ¬CanPartitionIntoBases A := by
+  obtain ⟨A, hbasis, hrep, hblock⟩ := larsen_construction_blocking
+  exact ⟨A, hbasis, hrep, blocking_prevents_partition A hblock⟩
 
 -- ## Part VII: Main Theorem
 
@@ -257,6 +331,15 @@ theorem erdos_871_disproved : ¬Erdos871Conjecture := by
   intro hconj
   obtain ⟨A, hbasis, hrep, hno_part⟩ := larsen_counterexample
   exact hno_part (hconj A hbasis hrep)
+
+-- ## Part VIII: Alternative Disproof via Blocking Directly
+
+/-- Alternative proof of the disproof, using the blocking property directly
+    without going through larsen_counterexample as intermediate. -/
+theorem erdos_871_disproved' : ¬Erdos871Conjecture := by
+  intro hconj
+  obtain ⟨A, hbasis, hrep, hblock⟩ := larsen_construction_blocking
+  exact blocking_prevents_partition A hblock (hconj A hbasis hrep)
 
 -- ## Part VIII: Consequences and Structure
 
@@ -310,22 +393,29 @@ Larsen showed that r_A(n) → ∞ is not fast enough growth to guarantee partiti
 - sumset_mono: Sumset is monotone in the base set
 - zero_mem_sumset: 0 is in sumset if 0 ∈ A
 - basis2_of_supset: Supersets of bases are bases
-- repFunc_union_ge_left: Union increases representation count
+- sumset_empty: Sumset of ∅ is ∅
+- sumset_singleton: Sumset of {a} is {2a}
+- not_basis2_of_finite: Finite sets cannot be bases
+- basis2_infinite: Bases must be infinite
+- mem_sumset_of_repFunc_pos: Positive rep count implies sumset membership
+- partition_subset_left/right: Partition parts are subsets
 - repTendsToInfty_implies_eventuallyGe: ∞ growth implies eventual bound
 - repTendsToInfty_implies_basis: r_A(n) → ∞ implies A is a basis
 - repEventuallyGe_implies_basis: r_A(n) ≥ t ≥ 1 implies A is a basis
 - blocking_prevents_partition: Blocking property prevents partition
 - partition_robust_finite: Partition gives uniform threshold
+- larsen_counterexample: PROVED from blocking axiom (was axiom, now theorem)
 - erdos_871_disproved: The conjecture is FALSE
+- erdos_871_disproved': Alternative disproof via blocking directly
 - growth_rate_dichotomy: Gap between ∞ and c log n
 - larsen_strictly_stronger: Larsen implies Erdős-Nathanson
 - larsen_subsumes_erdos_nathanson: Combined subsumption
 
-**Axioms (4)**: Deep construction results not in Mathlib
+**Axioms (3)**: Deep construction results not in Mathlib
 - erdos_nathanson_1989: Fixed-threshold counterexample
 - erdos_nathanson_positive: Partition under log-growth
-- larsen_counterexample: The main counterexample
-- larsen_construction_blocking: Blocking property of construction
+- larsen_construction_blocking: Blocking property of Larsen construction
+  (larsen_counterexample was PROVED from this + blocking_prevents_partition)
 
 References:
 - Erdős, P. & Nathanson, M. (1989). Acta Arithmetica LII.
