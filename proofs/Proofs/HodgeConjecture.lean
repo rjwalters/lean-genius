@@ -824,21 +824,55 @@ theorem algebraic_class_smul (X : ProjectiveVariety) (p : ℕ)
   simp only [HodgeClass.smul, mul_smul, ← Finset.smul_sum]
   exact congr_arg (q • ·) heq
 
-/-- **Axiom: Sum of algebraic classes is algebraic**
+/-- **Theorem: Sum of algebraic classes is algebraic** (PROVED)
 
 If α₁ = Σ aᵢ cl(Zᵢ) and α₂ = Σ bⱼ cl(Wⱼ), then α₁ + α₂ = Σ cₖ cl(Uₖ)
 where the Uₖ range over all Zᵢ and Wⱼ with appropriate coefficients.
 
-**Why an axiom?** The proof requires constructing the union of two Finsets
-of AlgebraicCycles and reindexing the sums, plus showing the resulting
-Hodge class has the right rational class. The Finset union/reindexing
-machinery is technically involved. -/
-axiom algebraic_class_add_axiom (X : ProjectiveVariety) (p : ℕ)
+**Proof strategy**: Take the union c₁ ∪ c₂ of cycle sets and extend each
+coefficient function by zero outside its original domain. Then the sum
+over the union splits into two parts via `Finset.sum_add_distrib`, each
+collapsing back to the original sum via `Finset.sum_subset`. -/
+theorem algebraic_class_add_axiom (X : ProjectiveVariety) (p : ℕ)
     (H : PureHodgeStructure (2 * p)) (α₁ α₂ : HodgeClass H)
     (h₁ : isAlgebraicClass X p H α₁) (h₂ : isAlgebraicClass X p H α₂)
     (αsum : HodgeClass H)
     (hsum : αsum.rationalClass = α₁.rationalClass + α₂.rationalClass) :
-    isAlgebraicClass X p H αsum
+    isAlgebraicClass X p H αsum := by
+  obtain ⟨c₁, f₁, heq₁⟩ := h₁
+  obtain ⟨c₂, f₂, heq₂⟩ := h₂
+  refine ⟨c₁ ∪ c₂,
+    fun Z => (if Z ∈ c₁ then f₁ Z else 0) + (if Z ∈ c₂ then f₂ Z else 0), ?_⟩
+  rw [hsum, heq₁, heq₂]
+  -- Extend each sum from cᵢ to c₁ ∪ c₂ using zero-extended coefficients
+  have extend₁ : ∀ x ∈ c₁ ∪ c₂, x ∉ c₁ →
+      (if x ∈ c₁ then f₁ x else (0 : ℚ)) • cycleClassMap X p H x = 0 :=
+    fun x _ hx => by rw [if_neg hx]; exact zero_smul ℚ _
+  have extend₂ : ∀ x ∈ c₁ ∪ c₂, x ∉ c₂ →
+      (if x ∈ c₂ then f₂ x else (0 : ℚ)) • cycleClassMap X p H x = 0 :=
+    fun x _ hx => by rw [if_neg hx]; exact zero_smul ℚ _
+  have sum₁ := Finset.sum_subset (Finset.subset_union_left (s₂ := c₂)) extend₁
+  have sum₂ := Finset.sum_subset (Finset.subset_union_right (s₁ := c₁)) extend₂
+  -- sum₁ : ∑ c₁, g₁ = ∑ c₁∪c₂, g₁  where g₁ Z = (if Z ∈ c₁ then f₁ Z else 0) • cl Z
+  -- sum₂ : ∑ c₂, g₂ = ∑ c₁∪c₂, g₂  where g₂ Z = (if Z ∈ c₂ then f₂ Z else 0) • cl Z
+  -- Simplify g₁ on c₁: (if Z ∈ c₁ then f₁ Z else 0) = f₁ Z for Z ∈ c₁
+  have simp₁ := Finset.sum_congr rfl
+    (fun (Z : AlgebraicCycle X p) (hZ : Z ∈ c₁) =>
+      show (if Z ∈ c₁ then f₁ Z else (0 : ℚ)) • cycleClassMap X p H Z =
+           f₁ Z • cycleClassMap X p H Z from by rw [if_pos hZ])
+  have simp₂ := Finset.sum_congr rfl
+    (fun (Z : AlgebraicCycle X p) (hZ : Z ∈ c₂) =>
+      show (if Z ∈ c₂ then f₂ Z else (0 : ℚ)) • cycleClassMap X p H Z =
+           f₂ Z • cycleClassMap X p H Z from by rw [if_pos hZ])
+  -- Build equalities: ∑ cᵢ, fᵢ•cl = ∑ c₁∪c₂, gᵢ•cl
+  have step₁ : ∑ Z ∈ c₁, f₁ Z • cycleClassMap X p H Z =
+      ∑ Z ∈ c₁ ∪ c₂, (if Z ∈ c₁ then f₁ Z else 0) • cycleClassMap X p H Z :=
+    simp₁.symm.trans sum₁
+  have step₂ : ∑ Z ∈ c₂, f₂ Z • cycleClassMap X p H Z =
+      ∑ Z ∈ c₁ ∪ c₂, (if Z ∈ c₂ then f₂ Z else 0) • cycleClassMap X p H Z :=
+    simp₂.symm.trans sum₂
+  rw [step₁, step₂, ← Finset.sum_add_distrib]
+  exact Finset.sum_congr rfl (fun Z _ => (add_smul _ _ _).symm)
 
 /-- **Hodge Conjecture reformulation: HC ↔ algebraic classes span**
 
