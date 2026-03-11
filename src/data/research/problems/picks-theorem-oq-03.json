@@ -16,6 +16,9 @@
   },
   "knownResults": {
     "proven": [
+      "EhrhartCubeProven.lean: cube_lattice_count - |n·[0,1]^d ∩ ℤ^d| = (n+1)^d FROM FIRST PRINCIPLES (0 axioms)",
+      "EhrhartCubeProven.lean: cube_interior_count, cube_reciprocity, cube_product_formula, square_picks_general (all proved)",
+      "EhrhartCubeProven.lean: cube_poly_agrees_with_count - polynomial (X+1)^d matches counting function (proved)",
       "Ehrhart polynomial axiomatized with degree, coefficients, evaluation",
       "Pick's formula as 2D Ehrhart special case (picks_from_ehrhart)",
       "Ehrhart 2D coefficient structure (ehrhart_2d_coefficients)",
@@ -55,8 +58,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE+EXT: 19+40 proved theorems across 3 files, 0 sorries, 3 axioms in EhrhartPolynomialOQ03.lean (ehrhart_is_polynomial, ehrhart_macdonald_reciprocity, ehrhart_second_coeff_2D). Fixed meta.json (badge open→axiom, added axioms=3). Simplified imports to import Mathlib. PicksTheoremOQ03Product.lean adds product formulas, quasipolynomials, zonotopes, Eulerian numbers.",
+    "progressSummary": "COMPLETE+EXT+PROVEN: 19+40+20 proved theorems across 4 files. EhrhartCubeProven.lean (NEW): proves unit cube Ehrhart polynomial from FIRST PRINCIPLES using Fintype.card_fun - 0 axioms, 0 sorries, ~297 lines. Proves cube_lattice_count, cube_interior_count, cube_reciprocity_algebraic/nat, cube_poly_agrees_with_count, square_picks_general, cube_product_formula, cube_count_strict_mono. Eliminates need for axioms in the unit cube case. Original 3 axioms remain in EhrhartPolynomialOQ03.lean for the general case.",
     "builtItems": [
+      "proofs/Proofs/EhrhartCubeProven.lean - 297 lines, 0 sorries, 0 axioms (unit cube from first principles via Fintype.card_fun)",
       "proofs/Proofs/PicksTheoremOQ03Product.lean - 602 lines, 0 sorries, 0 axioms (product formulas, quasipolynomials, zonotopes, rectangles, Eulerian numbers)",
       "proofs/Proofs/PicksTheoremOQ03.lean - 470+ lines",
       "EhrhartData structure (dim, volume, boundary/interior/total points)",
@@ -105,7 +109,8 @@
     "PicksTheorem.lean",
     "PicksTheoremOQ03.lean",
     "PicksTheoremOQ03Product.lean",
-    "PicksTheoremOQ03Ext.lean"
+    "PicksTheoremOQ03Ext.lean",
+    "EhrhartCubeProven.lean"
   ],
   "references": {
     "papers": [
@@ -118,7 +123,7 @@
   },
   "knowledgeScore": 85,
   "started": "2026-03-06T15:28:32.741Z",
-  "lastUpdate": "2026-03-11T13:35:00.000Z",
+  "lastUpdate": "2026-03-11T18:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "completed": "2026-03-06T19:00:00.000Z"
