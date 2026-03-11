@@ -1,0 +1,97 @@
+{
+  "id": "erdos-1143",
+  "title": "Erdős Problem #1143: Covering Intervals with Multiples of Primes",
+  "slug": "erdos-1143",
+  "description": "Estimate F_k(p₁,...,pᵤ), the minimum number of integers in any interval of k consecutive integers divisible by at least one of the primes p₁,...,pᵤ.",
+  "meta": {
+    "author": "researcher-5",
+    "sourceUrl": "https://erdosproblems.com/1143",
+    "date": "2026-03-11",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos1143Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "covering",
+      "inclusion-exclusion"
+    ],
+    "badge": "axiom",
+    "sorries": 7,
+    "axioms": 3,
+    "erdosNumber": 1143,
+    "erdosUrl": "https://erdosproblems.com/1143",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-03-11",
+    "dateUpdated": "2026-03-11",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Definition coveredInInterval, coveringFunction, expectedDensity",
+      "Axiom covering_asymptotic (density approximation for large k)",
+      "Axiom erdos_selfridge_exact (exact bound for 2 < α < 3)",
+      "Axiom alpha_gt_3_open (bounds for α > 3)",
+      "Theorems density_two_three, density_two_three_five (concrete examples)",
+      "Connection to Jacobsthal's function (Erdős #970)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős asked about F_k(p₁,...,pᵤ), the minimum number of integers divisible by at least one given prime in any interval of k consecutive integers. Erdős and Selfridge reportedly found the exact formula for 2 < α < 3 (where k = αpᵤ), but the paper has not been located. For α > 3, very little is known.",
+    "problemStatement": "**Erdős Problem #1143** (OPEN): Let $p_1 < \\cdots < p_u$ be primes and $k \\geq 1$. Estimate $F_k(p_1, \\ldots, p_u)$, the minimum number of multiples of at least one $p_i$ in any interval of $k$ consecutive integers.",
+    "proofStrategy": "1. **Definitions**: Covering function, expected density via inclusion-exclusion\n2. **Basic bounds**: Single prime lower/upper, covering ≤ k\n3. **Density properties**: Expected density in (0,1)\n4. **Asymptotic**: F_k ≈ k · expectedDensity for large k\n5. **Known results**: Erdős-Selfridge (2<α<3), α>3 regime\n6. **Examples**: {2,3} density = 2/3, {2,3,5} density = 11/15",
+    "keyInsights": [
+      "**Density approximation**: F_k ≈ k · (1 - ∏(1-1/pᵢ)) for large k, by CRT and density arguments.",
+      "**α = k/pᵤ regimes**: The parameter α measures how many periods of the largest prime fit in the interval. Different techniques needed for different α ranges.",
+      "**Missing paper**: Erdős-Selfridge exact formula for 2 < α < 3 is referenced but the paper has not been located.",
+      "**Jacobsthal dual**: Erdős #970 asks about coprime elements in intervals; #1143 asks about covered elements. They are complements."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 36,
+      "endLine": 55,
+      "summary": "Defines coveredInInterval, coveringFunction (F_k), and expectedDensity."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 57,
+      "endLine": 72,
+      "summary": "Basic bounds: covering ≤ k, single prime gives ⌊k/p⌋."
+    },
+    {
+      "id": "density",
+      "title": "Density Properties",
+      "startLine": 74,
+      "endLine": 97,
+      "summary": "Expected density in (0,1) and asymptotic approximation."
+    },
+    {
+      "id": "alpha-regime",
+      "title": "The α > 2 Regime",
+      "startLine": 99,
+      "endLine": 120,
+      "summary": "Erdős-Selfridge exact bound for 2 < α < 3, and the open α > 3 case."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Examples",
+      "startLine": 122,
+      "endLine": 140,
+      "summary": "Density calculations for {2,3} and {2,3,5}."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures Erdős #1143, an open problem about covering intervals with multiples of primes. The covering function, expected density, and known results are formalized. 7 sorries (routine density/bound calculations), 3 axioms (asymptotic, Erdős-Selfridge, α > 3).",
+    "implications": "Understanding F_k connects to sieve theory, Jacobsthal's function, and the distribution of primes in arithmetic progressions.",
+    "openQuestions": [
+      "Exact formula for F_k when k = αpᵤ with α > 3?",
+      "Can the Erdős-Selfridge paper be located?",
+      "Sharp error terms in the density approximation?"
+    ],
+    "crossReferences": [
+      { "proofId": "erdos-970", "relationship": "Jacobsthal's function — the 'dual' question about coprime elements in intervals." }
+    ]
+  }
+}

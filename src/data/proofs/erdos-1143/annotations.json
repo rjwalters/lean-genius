@@ -1,0 +1,34 @@
+[
+  {
+    "id": "covering-function",
+    "targetLine": 43,
+    "type": "definition",
+    "title": "Covering Function F_k",
+    "content": "F_k(p₁,...,pᵤ) = min over all starting positions a of the count of integers in [a, a+k) divisible by at least one pᵢ. This measures the worst-case covering of an interval by multiples of given primes.",
+    "tags": ["definition", "covering"]
+  },
+  {
+    "id": "expected-density",
+    "targetLine": 50,
+    "type": "definition",
+    "title": "Expected Density via Inclusion-Exclusion",
+    "content": "The expected proportion of integers divisible by at least one pᵢ is 1 - ∏(1 - 1/pᵢ), by the Chinese Remainder Theorem. For {2,3} this gives 2/3; for {2,3,5} it gives 11/15.",
+    "tags": ["inclusion-exclusion", "density"]
+  },
+  {
+    "id": "erdos-selfridge",
+    "targetLine": 104,
+    "type": "axiom",
+    "title": "Erdős-Selfridge Exact Bound (2 < α < 3)",
+    "content": "Erdős and Selfridge reportedly found the exact value of F_k when k = αpᵤ with 2 < α < 3. Unfortunately, the paper has not been located. This axiom records the existence of an exact formula in this regime.",
+    "tags": ["erdos-selfridge", "exact", "missing-paper"]
+  },
+  {
+    "id": "jacobsthal-connection",
+    "targetLine": 147,
+    "type": "context",
+    "title": "Connection to Jacobsthal's Function",
+    "content": "Erdős #970 asks about Jacobsthal's function h(k): the minimal interval length guaranteeing a coprime element. This is the 'complement' of F_k — uncovered = k - covered. The two problems are dual perspectives on prime covering.",
+    "tags": ["jacobsthal", "dual", "erdos-970"]
+  }
+]
