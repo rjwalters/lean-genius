@@ -18,7 +18,7 @@
       "generating-functions",
       "research"
     ],
-    "badge": "research",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -40,7 +40,8 @@
       "binomial_pgf: probability generating function E[t^X] = (pt + 1-p)^n",
       "Special cases: fair coin C(n,k)/2^n, Bernoulli, certain/impossible events"
     ],
-    "dateAdded": "02/26/26"
+    "dateAdded": "02/26/26",
+    "axioms": 1
   },
   "overview": {
     "historicalContext": "The binomial distribution — the probability of k successes in n independent Bernoulli trials — is one of the most fundamental objects in probability theory. Jacob Bernoulli established its properties in Ars Conjectandi (1713). The connection to the algebraic binomial theorem is immediate: setting x = p, y = 1-p in (x+y)^n = 1 gives normalization, and differentiating the PGF gives moments.",

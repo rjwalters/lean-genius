@@ -19,7 +19,7 @@
       "extension",
       "research"
     ],
-    "badge": "open",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -67,7 +67,8 @@
         "note": "Earlier upper bound of n^{7/4+ε}"
       }
     ],
-    "historicalContext": "Erdős conjectured that the triangle removal process on K_n leaves Θ(n^{3/2}) edges. Bohman, Frieze, and Lubetzky (2015) proved f(n) = n^{3/2+o(1)}, confirming the exponent but leaving the question of explicit constants open."
+    "historicalContext": "Erdős conjectured that the triangle removal process on K_n leaves Θ(n^{3/2}) edges. Bohman, Frieze, and Lubetzky (2015) proved f(n) = n^{3/2+o(1)}, confirming the exponent but leaving the question of explicit constants open.",
+    "axioms": 5
   },
   "sections": [
     {

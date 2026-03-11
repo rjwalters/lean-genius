@@ -1,8 +1,4 @@
-import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Topology.MetricSpace.Basic
-import Mathlib.Topology.ContinuousOn
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Constructive 2D Borsuk-Ulam via Tucker's Lemma (borsuk-ulam-oq-03-oq-03)

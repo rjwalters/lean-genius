@@ -16,12 +16,7 @@ Tags: probability, binomial-distribution, combinatorics, normalization, moments,
       poisson-limit, convolution, vandermonde, chebyshev
 -/
 
-import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Data.Nat.Choose.Sum
-import Mathlib.Data.Nat.Choose.Vandermonde
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Finset BigOperators
 

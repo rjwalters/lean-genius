@@ -20,9 +20,7 @@
   AlgEquiv on Mat(n,K), so the abstract theory immediately yields the
   matrix-level result without any manual proof.
 -/
-import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
-import Mathlib.FieldTheory.Minpoly.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace MinpolyKAlgebra
 

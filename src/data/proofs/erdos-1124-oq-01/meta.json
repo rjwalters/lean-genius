@@ -18,7 +18,7 @@
       "open-question",
       "erdos"
     ],
-    "badge": "open",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -31,43 +31,62 @@
         "description": "Measurability for Borel equidecomposition",
         "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
       }
-    ]
+    ],
+    "axioms": 9
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Geometric Definitions",
-      "lines": [1, 65],
+      "lines": [
+        1,
+        65
+      ],
       "description": "Basic definitions: Point (R^2), disk, square, translation congruence, and equal area condition."
     },
     {
       "id": "n-piece",
       "title": "N-Piece Equidecomposition",
-      "lines": [66, 85],
+      "lines": [
+        66,
+        85
+      ],
       "description": "Parametrized equidecomposition by piece count N, enabling the study of minimum pieces."
     },
     {
       "id": "properties",
       "title": "Structural Properties",
-      "lines": [86, 110],
+      "lines": [
+        86,
+        110
+      ],
       "description": "Reflexivity (proved), symmetry and monotonicity of equidecomposability."
     },
     {
       "id": "minimum",
       "title": "Minimum Piece Count",
-      "lines": [111, 175],
+      "lines": [
+        111,
+        175
+      ],
       "description": "Definition of minimum piece count and its basic properties: achievability and minimality."
     },
     {
       "id": "bounds",
       "title": "Known Upper and Lower Bounds",
-      "lines": [176, 240],
+      "lines": [
+        176,
+        240
+      ],
       "description": "Laczkovich's 10^50 bound, Grabowski-Máthé-Pikhurko measurable version, Marks-Unger Borel version with < 10^5 pieces, and the topological lower bound of 3."
     },
     {
       "id": "open-question",
       "title": "The Open Question",
-      "lines": [241, 270],
+      "lines": [
+        241,
+        270
+      ],
       "description": "What is the minimum number of pieces? Known: 3 ≤ min ≤ 10^50. Computer experiments suggest ~22 might suffice."
     }
   ],

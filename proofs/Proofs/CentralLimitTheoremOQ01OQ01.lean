@@ -23,12 +23,7 @@
   - Ibragimov & Linnik, "Independent and Stationary Sequences" (1971)
 -/
 
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Deriv
-import Mathlib.Order.Filter.Basic
-import Mathlib.Topology.Order.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Filter Topology Real
 

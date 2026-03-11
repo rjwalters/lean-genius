@@ -11,14 +11,7 @@ BFL (2015) showed f(n) = n^{3/2+o(1)} a.s., but the conjecture asks for
 c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} with fixed constants c₁, c₂ > 0.
 -/
 
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Clique
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.AtTopBot.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib
 
 open Filter SimpleGraph Finset
 

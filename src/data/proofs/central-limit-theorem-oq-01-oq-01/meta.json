@@ -19,7 +19,7 @@
       "advanced",
       "open-question"
     ],
-    "badge": "open",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -32,61 +32,89 @@
         "description": "Filter-based convergence for asymptotic limits",
         "module": "Mathlib.Order.Filter.Basic"
       }
-    ]
+    ],
+    "axioms": 7
   },
   "sections": [
     {
       "id": "slowly-varying",
       "title": "Slowly Varying Functions",
-      "lines": [1, 100],
+      "lines": [
+        1,
+        100
+      ],
       "description": "Defines slowly varying functions L(x) satisfying L(cx)/L(x) → 1 as x → ∞. Proves closure under multiplication and power operations."
     },
     {
       "id": "regularly-varying",
       "title": "Regular Variation",
-      "lines": [101, 130],
+      "lines": [
+        101,
+        130
+      ],
       "description": "Defines regularly varying functions f(cx)/f(x) → c^α and connects to slowly varying (α=0 case). States that x^α is regularly varying."
     },
     {
       "id": "tail-balance",
       "title": "Tail Balance Condition",
-      "lines": [131, 175],
+      "lines": [
+        131,
+        175
+      ],
       "description": "Formalizes the tail balance structure: right and left tails decay as x^{-α}·L(x) with weights p and q determining the skewness of the stable limit."
     },
     {
       "id": "domain-of-attraction",
       "title": "Domain of Attraction",
-      "lines": [176, 210],
+      "lines": [
+        176,
+        210
+      ],
       "description": "Defines InDomainOfAttraction via characteristic function convergence: φ^n(t/aₙ)·exp(-ibₙt/aₙ) → exp(-|t|^α)."
     },
     {
       "id": "gnedenko-kolmogorov",
       "title": "The Gnedenko-Kolmogorov Theorem",
-      "lines": [211, 290],
+      "lines": [
+        211,
+        290
+      ],
       "description": "States the full theorem: forward direction (tail conditions → domain of attraction), Gaussian case (finite variance → α=2), and converse (domain of attraction → regular tail variation)."
     },
     {
       "id": "properties",
       "title": "Properties and Connections",
-      "lines": [291, 340],
+      "lines": [
+        291,
+        340
+      ],
       "description": "Potter's bound for slowly varying functions, Karamata's integral theorem, stable self-similarity, and the connection between classical CLT and Gaussian domain of attraction."
     },
     {
       "id": "concrete-tail-balance",
       "title": "Concrete Tail Balance Instances",
-      "lines": [916, 1016],
+      "lines": [
+        916,
+        1016
+      ],
       "description": "Constructs TailBalance instances for the one-sided Pareto distribution (p=1, q=0) and symmetric Cauchy distribution (p=q=1/2), connecting abstract tail theory to concrete distributions."
     },
     {
       "id": "domain-of-attraction-concrete",
       "title": "Domain of Attraction for Concrete Distributions",
-      "lines": [1018, 1055],
+      "lines": [
+        1018,
+        1055
+      ],
       "description": "Uses the axiomatized forward direction to show Pareto (0<α<2) and symmetric Cauchy distributions lie in the domain of attraction of their respective α-stable laws."
     },
     {
       "id": "sv-examples",
       "title": "Slowly Varying Function Examples",
-      "lines": [1057, 1122],
+      "lines": [
+        1057,
+        1122
+      ],
       "description": "Proves log(x+a) is slowly varying for a≥1 and |log(x+a)|^β is slowly varying for any β≠0, providing non-constant examples of slowly varying functions."
     }
   ],
