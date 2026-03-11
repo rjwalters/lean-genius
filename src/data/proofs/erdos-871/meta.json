@@ -44,12 +44,16 @@
         "description": "Basic from Mathlib.Algebra.BigOperators"
       }
     ],
+    "axioms": 3,
+    "theorems": 22,
     "originalContributions": [
       "Formal definition of additive basis of order 2",
       "Representation function r_A(n) formalization",
       "Partition predicate for bases",
       "Blocking property preventing partition",
-      "Formal disproof using Larsen's counterexample"
+      "Formal disproof using Larsen's counterexample",
+      "Proved larsen_counterexample from blocking axiom (axiom reduction 4->3)",
+      "Proved bases must be infinite (not_basis2_of_finite, basis2_infinite)"
     ]
   },
   "overview": {

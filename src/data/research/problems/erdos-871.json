@@ -1,13 +1,13 @@
 {
   "slug": "erdos-871",
-  "title": "Erdős #871: Partitioning Additive Bases of Order 2",
+  "title": "Erd\u0151s #871: Partitioning Additive Bases of Order 2",
   "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Erdős #871: Partitioning Additive Bases of Order 2.",
+    "plain": "Erd\u0151s #871: Partitioning Additive Bases of Order 2.",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "DEEP_DIVE",
     "since": "2026-01-23T08:04:56.547Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Axiom reduction and infrastructure theorems",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Reduced axiom count from 4 to 3. Proved larsen_counterexample as theorem from larsen_construction_blocking + blocking_prevents_partition. Added 8 new infrastructure theorems including basis2_infinite, not_basis2_of_finite, sumset_empty/singleton. File now has 22+ proved theorems and only 3 axioms.",
+    "builtItems": [
+      "Proved larsen_counterexample as theorem (was axiom) - reduces axiom count 4->3",
+      "Proved not_basis2_of_finite: finite sets cannot be additive bases",
+      "Proved basis2_infinite: additive bases must be infinite sets",
+      "Proved sumset_empty: sumset of empty set is empty",
+      "Proved sumset_singleton: sumset of {a} is {2a}",
+      "Proved mem_sumset_of_repFunc_pos: positive rep count implies sumset membership",
+      "Proved partition_subset_left/right: partition parts are subsets of original",
+      "Proved erdos_871_disproved': alternative disproof via blocking directly"
+    ],
+    "insights": [
+      "larsen_counterexample is redundant as axiom: follows from larsen_construction_blocking + blocking_prevents_partition",
+      "Finite sets can never be bases: sumset of finite A bounded by 2*max(A), cannot cover all large integers",
+      "The blocking property is the fundamental obstruction - directly prevents partition",
+      "Clean separation: definitions -> representation function -> partition theory -> conjecture/disproof",
+      "Erdos-Nathanson 1989 negative result subsumed by Larsen via larsen_subsumes_erdos_nathanson"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Consider proving erdos_nathanson_1989 from larsen_construction_blocking (further axiom reduction)",
+      "Add Aristotle companion file with routine supporting lemmas",
+      "Explore connection to Erdos-Turan conjecture (r_A(n) unbounded for all bases)"
+    ]
   },
   "approaches": [],
   "tags": [
@@ -51,7 +70,8 @@
     "mathlib": []
   },
   "started": "2026-01-23T08:04:56.547Z",
-  "lastUpdate": "2026-01-23T08:04:56.547Z",
+  "lastUpdate": "2026-03-11T04:16:21Z",
   "significance": 7,
-  "tractability": 7
+  "tractability": 7,
+  "knowledgeScore": 65
 }
