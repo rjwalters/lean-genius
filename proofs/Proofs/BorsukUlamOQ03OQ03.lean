@@ -208,47 +208,19 @@ axiom complementary_edge_gives_approximate_zero
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
-PART VI: THE MAIN BRIDGE: TUCKER → 2D BORSUK-ULAM
+PART VI-VII: CORRECTED 2D BORSUK-ULAM
+
+NOTE: Earlier versions of this file contained theorems
+`approx_borsuk_ulam_2d_from_tucker` and `borsuk_ulam_2d_from_tucker`
+with domain S¹ → ℝ² (circle to plane). This is a DIMENSIONAL ERROR:
+  - BU dimension matching requires S^n → ℝ^n
+  - S¹ → ℝ² BU is FALSE (counterexample: f = id, dist(x,-x) = 2 ∀ x ∈ S¹)
+  - The correct statement is S² → ℝ² (sphere in ℝ³ to plane)
+
+The corrected versions `approx_borsuk_ulam_2d_corrected` and
+`borsuk_ulam_2d_corrected` (Part XVI) use the correct domain S² ⊂ ℝ³
+via hemisphere projection to the disk.
 ═══════════════════════════════════════════════════════════════════════════════ -/
-
-/-- **DIMENSIONAL ERROR**: The original statement below uses S¹ → ℝ² which is FALSE.
-    Counterexample: f(x) = x (identity). Then dist(x, -x) = 2 for all x ∈ S¹.
-
-    The correct 2D Borsuk-Ulam theorem is f : S² → ℝ² (sphere in ℝ³, not circle in ℝ²).
-    BU dimension matching: S^n → ℝ^n.
-    - n=1: S¹ → ℝ (true, by IVT) ← proved in BorsukUlamOQ03.lean
-    - n=2: S² → ℝ² (true) ← what this file SHOULD formalize
-
-    The proof infrastructure (dominantComponentLabel, Tucker's lemma, odd functions,
-    compactness arguments) is correct for the codomain ℝ², but the domain must be
-    S² ⊂ ℝ³, not S¹ ⊂ ℝ².
-
-    To fix: change domain to ℝ × ℝ × ℝ with constraint x₁²+x₂²+x₃²=1,
-    use hemisphere projection (x,y,z) ↦ (x,y) for z≥0 to reduce S² → D²,
-    then apply Tucker 2D on D². See approx_borsuk_ulam_2d_corrected below. -/
-theorem approx_borsuk_ulam_2d_from_tucker
-    (f : ℝ × ℝ → ℝ × ℝ) (hf : Continuous f)
-    (ε : ℝ) (hε : 0 < ε) :
-    ∃ x : ℝ × ℝ, x.1 ^ 2 + x.2 ^ 2 = 1 ∧
-      dist (f x) (f (Prod.map Neg.neg Neg.neg x)) < ε := by
-  -- FALSE as stated: S¹ → ℝ² BU does not hold.
-  -- Counterexample: f = id gives dist(x, -x) = 2 for all x on S¹.
-  -- See approx_borsuk_ulam_2d_corrected for the correct S² → ℝ² version.
-  sorry
-
-/-
-═══════════════════════════════════════════════════════════════════════════════
-PART VII: EXACT 2D BORSUK-ULAM (LIMITING ARGUMENT)
-═══════════════════════════════════════════════════════════════════════════════ -/
-
-/-- **DIMENSIONAL ERROR**: Same issue as approx_borsuk_ulam_2d_from_tucker.
-    S¹ → ℝ² BU is false. See borsuk_ulam_2d_corrected for the corrected S² → ℝ² version. -/
-theorem borsuk_ulam_2d_from_tucker
-    (f : ℝ × ℝ → ℝ × ℝ) (hf : Continuous f) :
-    ∃ x : ℝ × ℝ, x.1 ^ 2 + x.2 ^ 2 = 1 ∧
-      f x = f (Prod.map Neg.neg Neg.neg x) := by
-  -- DIMENSIONAL ERROR: S¹ → ℝ² BU is false. This theorem is unfixable.
-  sorry
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -534,8 +506,6 @@ PART XV: VERIFICATION
 #check @dominantComponentLabel_antipodal
 #check @antisymmetricDiff_odd
 #check @antisymmetricDiff_continuous
-#check @approx_borsuk_ulam_2d_from_tucker
-#check @borsuk_ulam_2d_from_tucker
 #check @no_fixed_point_on_circle
 #check @antisymmetricDiff_eq_zero_iff
 #check @circle_isCompact
