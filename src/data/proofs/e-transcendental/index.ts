@@ -27,7 +27,7 @@ export const eTranscendentalProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const eTranscendentalAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const eTranscendentalAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const eTranscendentalTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const eTranscendentalData: ProofData = {

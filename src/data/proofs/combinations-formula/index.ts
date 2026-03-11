@@ -26,7 +26,7 @@ export const combinationsFormulaProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const combinationsFormulaAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const combinationsFormulaAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const combinationsFormulaData: ProofData = {
   proof: combinationsFormulaProof,

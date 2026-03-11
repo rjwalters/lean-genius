@@ -26,7 +26,7 @@ export const elementaryQuadraticReciprocityOQ01Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const elementaryQuadraticReciprocityOQ01Annotations: Annotation[] = annotationsJson as Annotation[]
+export const elementaryQuadraticReciprocityOQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const elementaryQuadraticReciprocityOQ01Data: ProofData = {
   proof: elementaryQuadraticReciprocityOQ01Proof,

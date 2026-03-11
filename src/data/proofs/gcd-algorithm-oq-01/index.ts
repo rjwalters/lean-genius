@@ -26,7 +26,7 @@ export const gcdAlgorithmOq01Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const gcdAlgorithmOq01Annotations: Annotation[] = annotationsJson as Annotation[]
+export const gcdAlgorithmOq01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const gcdAlgorithmOq01Data: ProofData = {
   proof: gcdAlgorithmOq01Proof,

@@ -26,7 +26,7 @@ export const twinPrimesSpecialProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const twinPrimesSpecialAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const twinPrimesSpecialAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const twinPrimesSpecialData: ProofData = {
   proof: twinPrimesSpecialProof,

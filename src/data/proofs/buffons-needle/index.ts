@@ -27,7 +27,7 @@ export const buffonsNeedleProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const buffonsNeedleAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const buffonsNeedleAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const buffonsNeedleTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const buffonsNeedleData: ProofData = {

@@ -27,7 +27,7 @@ export const centralLimitTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const centralLimitTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const centralLimitTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const centralLimitTheoremTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const centralLimitTheoremData: ProofData = {

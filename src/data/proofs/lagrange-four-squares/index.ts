@@ -27,7 +27,7 @@ export const lagrangeFourSquaresProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const lagrangeFourSquaresAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const lagrangeFourSquaresAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const lagrangeFourSquaresTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const lagrangeFourSquaresData: ProofData = {

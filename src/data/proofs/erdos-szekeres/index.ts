@@ -26,7 +26,7 @@ export const erdosSzekeresProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const erdosSzekeresAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const erdosSzekeresAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const erdosSzekeresData: ProofData = {
   proof: erdosSzekeresProof,

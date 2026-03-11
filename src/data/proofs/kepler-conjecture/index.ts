@@ -27,7 +27,7 @@ export const keplerConjectureProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const keplerConjectureAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const keplerConjectureAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const keplerConjectureTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const keplerConjectureData: ProofData = {

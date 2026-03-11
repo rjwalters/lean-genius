@@ -27,7 +27,7 @@ export const kroneckersJugendtraumProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const kroneckersJugendtraumAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const kroneckersJugendtraumAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const kroneckersJugendtraumTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const kroneckersJugendtraumData: ProofData = {

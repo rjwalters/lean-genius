@@ -27,7 +27,7 @@ export const desarguesTheoremOQ01Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const desarguesTheoremOQ01Annotations: Annotation[] = annotationsJson as Annotation[]
+export const desarguesTheoremOQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const desarguesTheoremOQ01TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const desarguesTheoremOQ01Data: ProofData = {

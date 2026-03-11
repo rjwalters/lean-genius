@@ -27,7 +27,7 @@ export const angleTrisectionProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const angleTrisectionAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const angleTrisectionAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const angleTrisectionTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const angleTrisectionData: ProofData = {

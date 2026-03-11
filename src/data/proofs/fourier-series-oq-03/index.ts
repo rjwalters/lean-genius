@@ -27,7 +27,7 @@ export const fourierSeriesOQ03Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const fourierSeriesOQ03Annotations: Annotation[] = annotationsJson as Annotation[]
+export const fourierSeriesOQ03Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const fourierSeriesOQ03TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const fourierSeriesOQ03Data: ProofData = {

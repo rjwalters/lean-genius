@@ -26,7 +26,7 @@ export const divisibilityByThreeOQ01Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const divisibilityByThreeOQ01Annotations: Annotation[] = annotationsJson as Annotation[]
+export const divisibilityByThreeOQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const divisibilityByThreeOQ01Data: ProofData = {
   proof: divisibilityByThreeOQ01Proof,

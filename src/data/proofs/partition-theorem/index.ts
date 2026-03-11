@@ -27,7 +27,7 @@ export const partitionTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const partitionTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const partitionTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const partitionTheoremTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const partitionTheoremData: ProofData = {

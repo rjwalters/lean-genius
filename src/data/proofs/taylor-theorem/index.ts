@@ -26,7 +26,7 @@ export const taylorTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const taylorTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const taylorTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const taylorTheoremData: ProofData = {
   proof: taylorTheoremProof,

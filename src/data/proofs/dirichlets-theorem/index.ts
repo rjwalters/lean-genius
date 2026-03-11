@@ -26,7 +26,7 @@ export const dirichletsTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const dirichletsTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const dirichletsTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const dirichletsTheoremTacticStates: TacticState[] = []
 
 export const dirichletsTheoremData: ProofData = {

@@ -26,7 +26,7 @@ export const elementaryQuadraticReciprocityProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const elementaryQuadraticReciprocityAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const elementaryQuadraticReciprocityAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const elementaryQuadraticReciprocityData: ProofData = {
   proof: elementaryQuadraticReciprocityProof,

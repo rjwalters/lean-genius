@@ -26,7 +26,7 @@ export const sophieGermainProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const sophieGermainAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const sophieGermainAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const sophieGermainData: ProofData = {
   proof: sophieGermainProof,

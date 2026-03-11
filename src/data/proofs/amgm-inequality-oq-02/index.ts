@@ -26,7 +26,7 @@ export const amgmInequalityOQ02Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const amgmInequalityOQ02Annotations: Annotation[] = annotationsJson as Annotation[]
+export const amgmInequalityOQ02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const amgmInequalityOQ02Data: ProofData = {
   proof: amgmInequalityOQ02Proof,

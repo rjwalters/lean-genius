@@ -27,7 +27,7 @@ export const harmonicDivergenceProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const harmonicDivergenceAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const harmonicDivergenceAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const harmonicDivergenceTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const harmonicDivergenceData: ProofData = {

@@ -26,7 +26,7 @@ export const deMoivreProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const deMoivreAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const deMoivreAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const deMoivreData: ProofData = {
   proof: deMoivreProof,

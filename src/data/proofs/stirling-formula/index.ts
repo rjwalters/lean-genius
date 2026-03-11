@@ -27,7 +27,7 @@ export const stirlingFormulaProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const stirlingFormulaAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const stirlingFormulaAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const stirlingFormulaTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const stirlingFormulaData: ProofData = {

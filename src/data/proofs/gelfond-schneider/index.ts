@@ -27,7 +27,7 @@ export const gelfondSchneiderProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const gelfondSchneiderAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const gelfondSchneiderAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const gelfondSchneiderTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const gelfondSchneiderData: ProofData = {

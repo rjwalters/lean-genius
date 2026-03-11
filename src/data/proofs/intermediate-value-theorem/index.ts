@@ -26,7 +26,7 @@ export const intermediateValueTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const intermediateValueTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const intermediateValueTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const intermediateValueTheoremData: ProofData = {
   proof: intermediateValueTheoremProof,

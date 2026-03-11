@@ -26,7 +26,7 @@ export const riemannHypothesisProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const riemannHypothesisAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const riemannHypothesisAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const riemannHypothesisData: ProofData = {
   proof: riemannHypothesisProof,

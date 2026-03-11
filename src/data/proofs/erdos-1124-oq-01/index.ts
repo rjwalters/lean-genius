@@ -27,7 +27,7 @@ export const erdos1124OQ01Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const erdos1124OQ01Annotations: Annotation[] = annotationsJson as Annotation[]
+export const erdos1124OQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const erdos1124OQ01TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const erdos1124OQ01Data: ProofData = {

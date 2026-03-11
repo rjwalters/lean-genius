@@ -27,7 +27,7 @@ export const morleysTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const morleysTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const morleysTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const morleysTheoremTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const morleysTheoremData: ProofData = {

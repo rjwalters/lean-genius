@@ -26,7 +26,7 @@ export const szemerediTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const szemerediTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const szemerediTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const szemerediTheoremData: ProofData = {
   proof: szemerediTheoremProof,

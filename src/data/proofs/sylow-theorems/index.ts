@@ -27,7 +27,7 @@ export const sylowTheoremsProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const sylowTheoremsAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const sylowTheoremsAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const sylowTheoremsTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const sylowTheoremsData: ProofData = {

@@ -26,7 +26,7 @@ export const wolstenholmeTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const wolstenholmeTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const wolstenholmeTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const wolstenholmeTheoremData: ProofData = {
   proof: wolstenholmeTheoremProof,

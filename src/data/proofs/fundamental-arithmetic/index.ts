@@ -4,5 +4,5 @@ import annotationsJson from './annotations.json'
 import sourceRaw from '../../../../proofs/Proofs/FundamentalArithmetic.lean?raw'
 const meta = metaJson as { id: string; title: string; slug: string; description: string; meta: ProofMeta; sections: ProofSection[]; overview?: ProofOverview; conclusion?: ProofConclusion }
 export const fundamentalArithmeticProof: Proof = { id: meta.id, title: meta.title, slug: meta.slug, description: meta.description, meta: meta.meta, sections: meta.sections, source: sourceRaw, overview: meta.overview, conclusion: meta.conclusion }
-export const fundamentalArithmeticAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const fundamentalArithmeticAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const fundamentalArithmeticData: ProofData = { proof: fundamentalArithmeticProof, annotations: fundamentalArithmeticAnnotations }

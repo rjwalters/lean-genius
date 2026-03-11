@@ -26,7 +26,7 @@ export const hurwitzTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const hurwitzTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const hurwitzTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const hurwitzTheoremData: ProofData = {
   proof: hurwitzTheoremProof,

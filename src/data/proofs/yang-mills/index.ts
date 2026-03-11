@@ -27,7 +27,7 @@ export const yangMillsProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const yangMillsAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const yangMillsAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const yangMillsTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const yangMillsData: ProofData = {

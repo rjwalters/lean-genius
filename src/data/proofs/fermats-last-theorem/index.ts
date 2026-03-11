@@ -27,7 +27,7 @@ export const fermatsLastTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const fermatsLastTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const fermatsLastTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const fermatsLastTheoremTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const fermatsLastTheoremData: ProofData = {

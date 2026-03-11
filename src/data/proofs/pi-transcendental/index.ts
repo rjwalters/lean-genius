@@ -27,7 +27,7 @@ export const piTranscendentalProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const piTranscendentalAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const piTranscendentalAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const piTranscendentalTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const piTranscendentalData: ProofData = {

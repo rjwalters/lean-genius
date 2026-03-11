@@ -27,7 +27,7 @@ export const ramseysTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const ramseysTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const ramseysTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const ramseysTheoremTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const ramseysTheoremData: ProofData = {

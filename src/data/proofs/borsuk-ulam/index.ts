@@ -27,7 +27,7 @@ export const borsukUlamProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const borsukUlamAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const borsukUlamAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const borsukUlamTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const borsukUlamData: ProofData = {

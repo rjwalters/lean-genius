@@ -26,7 +26,7 @@ export const friendshipTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const friendshipTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const friendshipTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const friendshipTheoremData: ProofData = {
   proof: friendshipTheoremProof,

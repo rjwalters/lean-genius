@@ -26,7 +26,7 @@ export const inclusionExclusionProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const inclusionExclusionAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const inclusionExclusionAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const inclusionExclusionData: ProofData = {
   proof: inclusionExclusionProof,

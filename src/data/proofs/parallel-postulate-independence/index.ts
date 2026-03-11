@@ -27,7 +27,7 @@ export const parallelPostulateIndependenceProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const parallelPostulateIndependenceAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const parallelPostulateIndependenceAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const parallelPostulateIndependenceTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const parallelPostulateIndependenceData: ProofData = {
