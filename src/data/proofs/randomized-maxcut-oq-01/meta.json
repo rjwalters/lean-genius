@@ -1,0 +1,144 @@
+{
+  "id": "randomized-maxcut-oq-01",
+  "title": "Goemans-Williamson 0.878-Approximation for MaxCut",
+  "slug": "randomized-maxcut-oq-01",
+  "description": "Formalization of the Goemans-Williamson (1995) semidefinite programming approach to MaxCut, achieving an approximation ratio of α_GW ≈ 0.878 via hyperplane rounding of SDP relaxation.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "open-question",
+    "tags": [
+      "graph-theory",
+      "algorithms",
+      "optimization",
+      "approximation",
+      "sdp"
+    ],
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/GoemansWilliamsonMaxCut.lean",
+    "badge": "open",
+    "sorries": 0,
+    "axioms": 8,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Graph structure with symmetric adjacency relation",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "edgeFinset",
+        "description": "Finite set of graph edges",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Finite"
+      },
+      {
+        "theorem": "Finset.sup_le",
+        "description": "Supremum of finite set bounded by element-wise bound",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Sym2",
+        "description": "Unordered pairs for representing edges",
+        "module": "Mathlib.Data.Sym.Sym2"
+      }
+    ],
+    "originalContributions": [
+      "GW constant definition as conservative rational bound (878/1000)",
+      "Axiomatized SDP relaxation framework for MaxCut",
+      "Main approximation theorem: α_GW · MaxCut ≤ E[GW cut]",
+      "Ratio bound theorem: α_GW ≤ E[cut]/MaxCut",
+      "Comparison with simple 1/2-approximation (strict improvement)"
+    ],
+    "externalReferences": [
+      {
+        "title": "Improved Approximation Algorithms for Maximum Cut and Satisfiability Problems Using Semidefinite Programming",
+        "url": "https://doi.org/10.1145/227683.227684",
+        "type": "paper"
+      },
+      {
+        "title": "Randomized MaxCut 1/2-Approximation (Gallery Entry)",
+        "url": "/proof/randomized-maxcut",
+        "type": "related-proof"
+      }
+    ],
+    "dateAdded": "03/11/26"
+  },
+  "overview": {
+    "historicalContext": "The Goemans-Williamson algorithm (1995) was a landmark result in combinatorial optimization, achieving a 0.878-approximation ratio for the Maximum Cut problem using semidefinite programming (SDP). This substantially improved the simple randomized 1/2-approximation.\n\nThe key insight is to relax the integer programming formulation of MaxCut to a semidefinite program, where each vertex is assigned a unit vector on a high-dimensional sphere instead of a binary ±1 value. The SDP can be solved in polynomial time, and a random hyperplane is used to round the continuous solution back to a discrete cut.\n\nRemarkably, under the Unique Games Conjecture (Khot et al. 2007), α_GW ≈ 0.878 is the best possible approximation ratio achievable in polynomial time, making this algorithm conditionally optimal.",
+    "problemStatement": "Given a graph $G = (V, E)$, the **MaxCut** problem asks to partition $V$ into two sets to maximize edges crossing between them.\n\nThe **SDP relaxation** assigns unit vectors $v_i \\in S^n$ to each vertex and maximizes:\n$$\\text{SDP}_{\\text{OPT}} = \\frac{1}{2} \\sum_{(i,j) \\in E} (1 - v_i \\cdot v_j)$$\n\n**Hyperplane rounding**: Choose random $r \\in S^n$; assign vertex $i$ to side A if $v_i \\cdot r \\geq 0$.\n\nThe probability that edge $(i,j)$ is cut equals $\\frac{\\arccos(v_i \\cdot v_j)}{\\pi}$.\n\nThe key inequality: for all $x \\in [-1,1]$,\n$$\\frac{\\arccos(x)}{\\pi} \\geq \\alpha_{\\text{GW}} \\cdot \\frac{1-x}{2}$$\nwhere $\\alpha_{\\text{GW}} = \\min_{0 < \\theta \\leq \\pi} \\frac{2}{\\pi} \\cdot \\frac{\\theta}{1 - \\cos\\theta} \\approx 0.878$.",
+    "proofStrategy": "The formalization captures the algebraic structure of the GW approximation guarantee:\n\n1. **Cut infrastructure**: Reuse the Cut partition structure from the 1/2-approximation proof\n\n2. **SDP relaxation** (axiomatized): Define SDP_OPT as an axiom satisfying MaxCut ≤ SDP_OPT\n\n3. **GW constant**: Define α_GW = 878/1000 as a conservative rational lower bound\n\n4. **Rounding inequality** (axiomatized): E[|C|] ≥ α_GW · SDP_OPT\n\n5. **Main theorem** (proved): Chain the inequalities:\n$$\\alpha_{\\text{GW}} \\cdot \\text{MaxCut} \\leq \\alpha_{\\text{GW}} \\cdot \\text{SDP}_{\\text{OPT}} \\leq \\mathbb{E}[|C|]$$\n\nThe axioms cleanly separate the SDP infrastructure (which Mathlib lacks) from the algebraic proof chain (which is fully verified).",
+    "keyInsights": [
+      "The SDP relaxation is a natural upper bound on MaxCut: any cut embeds as a feasible SDP solution with v_i = ±e₁.",
+      "The GW constant α_GW ≈ 0.878 is the minimum of θ/(π(1-cos θ)/2) over θ ∈ (0,π], achieved at θ* ≈ 2.331 radians.",
+      "Hyperplane rounding preserves at least α_GW fraction of the SDP value, giving the approximation guarantee.",
+      "The conservative bound 878/1000 < true α_GW ensures all inequalities remain valid.",
+      "Under the Unique Games Conjecture, no polynomial-time algorithm can beat this ratio, making it conditionally optimal."
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup and Imports",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Import Mathlib modules for graphs, real numbers, and finite sets."
+    },
+    {
+      "id": "cut-structure",
+      "title": "Cut Infrastructure",
+      "startLine": 39,
+      "endLine": 78,
+      "summary": "Define GWCut structure and MaxCut value, mirroring the 1/2-approximation proof."
+    },
+    {
+      "id": "gw-constant",
+      "title": "The GW Constant",
+      "startLine": 80,
+      "endLine": 98,
+      "summary": "Define α_GW = 878/1000 and prove key bounds (0 < α_GW < 1, α_GW > 1/2)."
+    },
+    {
+      "id": "sdp-relaxation",
+      "title": "SDP Relaxation",
+      "startLine": 100,
+      "endLine": 125,
+      "summary": "Axiomatize the SDP relaxation value and its relationship to MaxCut."
+    },
+    {
+      "id": "hyperplane-rounding",
+      "title": "Hyperplane Rounding",
+      "startLine": 127,
+      "endLine": 145,
+      "summary": "Axiomatize the expected cut from GW hyperplane rounding."
+    },
+    {
+      "id": "gw-inequality",
+      "title": "The GW Inequality",
+      "startLine": 147,
+      "endLine": 168,
+      "summary": "Axiomatize the core analytical result: E[cut] ≥ α_GW · SDP_OPT."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: 0.878-Approximation",
+      "startLine": 170,
+      "endLine": 195,
+      "summary": "Prove the main result: α_GW · MaxCut ≤ E[GW cut], with ratio bound corollary."
+    },
+    {
+      "id": "bounds",
+      "title": "Structural Bounds",
+      "startLine": 197,
+      "endLine": 225,
+      "summary": "Prove MaxCut ≤ edges and expected cut ≤ edges bounds."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization captures the algebraic backbone of the celebrated Goemans-Williamson MaxCut approximation. The SDP infrastructure is cleanly axiomatized (Mathlib has no SDP support), while the core proof chain—from SDP relaxation through rounding inequality to approximation guarantee—is fully verified.\n\nThe formalization demonstrates how axiomatization can be used productively: by clearly separating the verified algebraic argument from the axiomatized analytical/optimization components, we achieve a rigorous proof of the key result while honestly marking what remains unformalized.",
+    "implications": "**Algorithmic Impact**\n\nThe GW result transformed combinatorial optimization by demonstrating that semidefinite programming relaxations could yield dramatic improvements over simpler approaches (0.878 vs 0.5). This launched an entire research program of SDP-based approximation algorithms.\n\n**Conditional Optimality**\n\nUnder the Unique Games Conjecture (Khot 2002, Khot et al. 2007), no polynomial-time algorithm can achieve an approximation ratio better than α_GW for MaxCut. This means the GW algorithm is essentially the best possible.\n\n**Formalization Frontier**\n\nFull formalization of the SDP components would require:\n- Semidefinite programming theory in Lean/Mathlib\n- Measure theory on the unit sphere (for hyperplane rounding)\n- The arccos inequality via calculus of variations",
+    "openQuestions": [
+      "Can we formalize the SDP relaxation infrastructure in Lean (positive semidefinite cones, duality)?",
+      "Can the arccos inequality arccos(x)/π ≥ α_GW·(1-x)/2 be proved using Lean's calculus library?",
+      "Can we formalize the Unique Games Conjecture hardness result showing α_GW is optimal?",
+      "What about extending to weighted MaxCut or MAX-2SAT via the same SDP approach?"
+    ]
+  }
+}
