@@ -37,14 +37,7 @@
   - J. Hadamard (1896): The three-lines lemma
 -/
 
-import Mathlib.MeasureTheory.Function.L2Space
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
-import Mathlib.MeasureTheory.Integral.MeanInequalities
-import Mathlib.Analysis.MeanInequalities
-import Mathlib.Analysis.MeanInequalitiesPow
-import Mathlib.Analysis.NormedSpace.OperatorNorm.Basic
-import Mathlib.Analysis.Complex.Basic
-import Mathlib.Tactic
+import Mathlib
 
 noncomputable section
 

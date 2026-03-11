@@ -20,11 +20,7 @@
   - Máthé-Noel-Pikhurko (2022): Δ⁰₃ complexity, small boundary
 -/
 
-import Mathlib.Analysis.InnerProductSpace.EuclideanDist
-import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
-import Mathlib.Data.Set.Finite.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos1124OQ01
 

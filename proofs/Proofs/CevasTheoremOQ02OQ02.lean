@@ -1,7 +1,4 @@
-import Mathlib.Data.Real.Basic
-import Mathlib.Tactic
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib
 
 /-
 # Ceva's Theorem for Spherical Polygons (cevas-theorem-oq-02-oq-02)
