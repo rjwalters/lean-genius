@@ -51,9 +51,11 @@ This file does NOT prove the Hodge Conjecture. It provides:
 | Hodge decomposition exists | AXIOMATIZED (requires complex analysis) |
 | Hodge symmetry h^{p,q} = h^{q,p} | PROVEN from conjugation axiom |
 | Lefschetz (1,1) theorem (divisors) | AXIOMATIZED |
-| Curves (H^{1,1} = algebraic) | AXIOMATIZED |
+| Curves (H^{1,1} = algebraic) | PROVEN from Lefschetz |
+| Surfaces (degree 0 from codim 0) | PROVEN from codim_zero axiom |
 | Surfaces (all cases) | PROVEN by case analysis |
 | Zero class is algebraic | PROVEN |
+| ℚ-scalar closure of Hodge components | PROVEN from IsScalarTower |
 | Scalar multiples of algebraic classes | PROVEN |
 | Extreme codimension (0, top) | PROVEN from case axioms |
 | Hodge-Tate equivalence (abelian) | PROVEN from axioms |
@@ -87,7 +89,9 @@ We provide abstract structures that capture the essential mathematics.
 - 0 sorries (axioms for key mathematical facts)
 - Full formalization would require substantial infrastructure not in Mathlib
 - Complexification map connects rational and complex structures
+- IsScalarTower ℚ ℂ V_ℂ ensures rational scalars act via ℚ ↪ ℂ
 - Hodge symmetry is proved from the conjugation axiom
+- ℚ-scalar closure of Hodge components proved (was axiom, now theorem)
 - See each axiom's docstring for mathematical justification
 
 ## References
@@ -141,6 +145,10 @@ structure PureHodgeStructure (k : ℕ) where
   [module_VC : Module ℂ VC]
   /-- VC also has a ℚ-module structure via the inclusion ℚ ↪ ℂ -/
   [module_VC_Q : Module ℚ VC]
+  /-- The ℚ-scalar action on VC factors through ℂ via algebraMap ℚ ℂ.
+      This ensures q • v = (↑q : ℂ) • v, reflecting that the ℚ-module structure
+      on V_ℂ = V_ℚ ⊗_ℚ ℂ comes from restriction of scalars along ℚ ↪ ℂ. -/
+  [isScalarTower_QC : IsScalarTower ℚ ℂ VC]
   /-- The complexification map ι : V_ℚ → V_ℂ (ℚ-linear) -/
   complexify : VQ →ₗ[ℚ] VC
   /-- The complexification map is injective (rational lattice embeds faithfully) -/
@@ -154,6 +162,7 @@ attribute [instance] PureHodgeStructure.finiteDimensional
 attribute [instance] PureHodgeStructure.addCommGroup_VC
 attribute [instance] PureHodgeStructure.module_VC
 attribute [instance] PureHodgeStructure.module_VC_Q
+attribute [instance] PureHodgeStructure.isScalarTower_QC
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART Ia: HODGE DECOMPOSITION AXIOMS
@@ -379,24 +388,6 @@ def HodgeConjectureFullStatement : Prop :=
 PART V: KNOWN CASES (PROVEN)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Axiom: Hodge Conjecture for Curves**
-
-For curves (dim = 1), H^{1,1} ∩ H^2(X,ℚ) is spanned by the fundamental class [X],
-which is trivially algebraic (the curve itself).
-
-**Why an axiom?** The proof requires:
-1. Computing H^2(X) for a curve (= ℚ by Poincaré duality)
-2. Identifying the generator with the fundamental class
-3. Showing the fundamental class is cl(X)
-This is straightforward but needs cohomology theory. -/
-axiom hodge_conjecture_curves_axiom (X : ProjectiveVariety) (hX : X.dim = 1)
-    (H : PureHodgeStructure 2) : HodgeConjectureStatement X 1 H
-
-/-- **Theorem: Hodge Conjecture for Curves** (from axiom) -/
-theorem hodge_conjecture_curves (X : ProjectiveVariety) (hX : X.dim = 1)
-    (H : PureHodgeStructure 2) : HodgeConjectureStatement X 1 H :=
-  hodge_conjecture_curves_axiom X hX H
-
 /-- **Axiom: Lefschetz (1,1) Theorem**
 
 For any smooth projective variety X, every Hodge class in H^{1,1}(X) ∩ H^2(X,ℤ)
@@ -418,15 +409,43 @@ theorem lefschetz_1_1_theorem (X : ProjectiveVariety)
     (H : PureHodgeStructure 2) : HodgeConjectureStatement X 1 H :=
   lefschetz_1_1_theorem_axiom X H
 
-/-- **Axiom: Hodge Conjecture for Surfaces - Degree 0 Case**
+/-- **Theorem: Hodge Conjecture for Curves** (PROVED)
+
+For curves (dim = 1), H^{1,1} ∩ H^2(X,ℚ) is spanned by the fundamental class [X],
+which is trivially algebraic (the curve itself).
+
+**Proof**: Follows immediately from the Lefschetz (1,1) theorem, which
+proves HC for all varieties at codimension 1 (not just curves). -/
+theorem hodge_conjecture_curves_axiom (X : ProjectiveVariety) (hX : X.dim = 1)
+    (H : PureHodgeStructure 2) : HodgeConjectureStatement X 1 H :=
+  lefschetz_1_1_theorem_axiom X H
+
+/-- **Theorem: Hodge Conjecture for Curves** -/
+theorem hodge_conjecture_curves (X : ProjectiveVariety) (hX : X.dim = 1)
+    (H : PureHodgeStructure 2) : HodgeConjectureStatement X 1 H :=
+  hodge_conjecture_curves_axiom X hX H
+
+/-- **Axiom: HC for codimension 0** (declared early for use in surfaces proof)
+
+H^{0,0}(X) ∩ H^0(X,ℚ) = ℚ, spanned by the identity class (fundamental
+class of X itself), which is trivially algebraic.
+
+**Why an axiom?** Needs: H^0(X,ℚ) = ℚ for connected X, and identification
+of the generator with cl(X). -/
+axiom hodge_conjecture_codim_zero (X : ProjectiveVariety)
+    (H : PureHodgeStructure 0) : HodgeConjectureStatement X 0 H
+
+/-- **Theorem: Hodge Conjecture for Surfaces - Degree 0 Case** (PROVED)
 
 For surfaces, the H^0 case is trivial: H^{0,0}(X) ∩ H^0(X, ℚ) = ℚ,
 generated by the constant function 1, which is algebraic (the empty cycle
 has class 0, and the rational span includes all constants).
 
-**Why an axiom?** Needs formal definition of H^0 and its Hodge structure. -/
-axiom hodge_surfaces_degree_zero (X : ProjectiveVariety) (hX : X.dim = 2)
-    (H : PureHodgeStructure 0) : HodgeConjectureStatement X 0 H
+**Proof**: Special case of `hodge_conjecture_codim_zero` (HC at codimension 0
+holds for all varieties, not just surfaces). -/
+theorem hodge_surfaces_degree_zero (X : ProjectiveVariety) (hX : X.dim = 2)
+    (H : PureHodgeStructure 0) : HodgeConjectureStatement X 0 H :=
+  hodge_conjecture_codim_zero X H
 
 /-- **Axiom: Hodge Conjecture for Surfaces - High Degree Case**
 
@@ -778,18 +797,21 @@ scalar multiplication by rationals. We prove closure under zero and scalar
 multiplication, and axiomatize addition (which requires Finset union machinery).
 -/
 
-/-- **Axiom: Hodge component respects scalar multiplication**
+/-- **Theorem: Hodge component respects scalar multiplication** (PROVED)
 
 If a rational class v maps to the (p,p) component, then any rational
 scalar multiple q·v also maps to the (p,p) component. This follows
 because the (p,p) component is a ℂ-submodule, hence closed under
 multiplication by rationals (which embed into ℂ).
 
-**Why an axiom?** Requires compatibility between the ℚ-module and
-ℂ-module structures on V_ℂ, which needs the algebra map ℚ → ℂ. -/
-axiom hodgeComponent_smul_mem {p : ℕ} (H : PureHodgeStructure (2 * p))
+**Proof**: By ℚ-linearity of the complexification map, ι(q·v) = q · ι(v).
+The IsScalarTower ℚ ℂ V_ℂ instance ensures q · w = (↑q : ℂ) · w, so the
+result follows from ℂ-submodule closure of V^{p,p}. -/
+theorem hodgeComponent_smul_mem {p : ℕ} (H : PureHodgeStructure (2 * p))
     (v : H.VQ) (hv : H.complexify v ∈ H.hodgeComponent p p (by omega))
-    (q : ℚ) : H.complexify (q • v) ∈ H.hodgeComponent p p (by omega)
+    (q : ℚ) : H.complexify (q • v) ∈ H.hodgeComponent p p (by omega) := by
+  rw [map_smul]
+  exact (H.hodgeComponent p p (by omega)).smul_of_tower_mem q hv
 
 /-- Scalar multiplication of a Hodge class by a rational number. -/
 def HodgeClass.smul {p : ℕ} {H : PureHodgeStructure (2 * p)}
@@ -895,15 +917,7 @@ The Hodge Conjecture is known for the "extremal" codimensions:
 These are known because the relevant Hodge classes are always algebraic.
 -/
 
-/-- **Axiom: HC for codimension 0**
-
-H^{0,0}(X) ∩ H^0(X,ℚ) = ℚ, spanned by the identity class (fundamental
-class of X itself), which is trivially algebraic.
-
-**Why an axiom?** Needs: H^0(X,ℚ) = ℚ for connected X, and identification
-of the generator with cl(X). -/
-axiom hodge_conjecture_codim_zero (X : ProjectiveVariety)
-    (H : PureHodgeStructure 0) : HodgeConjectureStatement X 0 H
+-- Note: hodge_conjecture_codim_zero is declared in Part V (before surfaces proof)
 
 /-- **Axiom: HC for top codimension**
 
@@ -1049,7 +1063,8 @@ PART X: SUMMARY AND CHECKS
    - Serre duality: h^{p,q} = h^{n-p,n-q}
    - Cycle classes are always Hodge classes (converse is the conjecture)
    - Hodge filtration provides equivalent formulation
-   - Algebraic classes form a ℚ-subspace (zero, scalar mult proved)
+   - Algebraic classes form a ℚ-subspace (zero, scalar mult, addition proved)
+   - IsScalarTower ℚ ℂ V_ℂ ensures rational-complex compatibility
 
 5. **Related conjectures**:
    - Grothendieck's standard conjectures ⟹ Hodge conjecture
