@@ -29,7 +29,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
-open Real
+open Real Filter
 
 namespace GnedenkoKolmogorov
 
@@ -121,10 +121,34 @@ theorem stable_self_attraction (α : ℝ) (hα_pos : 0 < α) (hα_le : α ≤ 2)
   · -- aₙ > 0
     intro n hn
     exact Real.rpow_pos_of_pos (Nat.cast_pos.mpr hn) _
-  · -- aₙ = n^(1/α) → ∞ (requires Filter.Tendsto for rpow composition)
-    sorry
-  · -- [φ(t/aₙ)]^n → φ(t) follows from stability equation
-    sorry
+  · -- aₙ = n^(1/α) → ∞
+    show Tendsto (fun n : ℕ => (n : ℝ) ^ (1 / α)) atTop atTop
+    have h1α : (0 : ℝ) < 1 / α := div_pos one_pos hα_pos
+    rw [Filter.tendsto_atTop_atTop]
+    intro b
+    by_cases hb : b ≤ 0
+    · exact ⟨0, fun n _ => le_trans hb (rpow_nonneg (Nat.cast_nonneg n) _)⟩
+    · push_neg at hb
+      obtain ⟨N, hN⟩ := exists_nat_gt (max 0 (b ^ α))
+      refine ⟨N, fun n hn => ?_⟩
+      have hbα_le_N : b ^ α ≤ (N : ℝ) :=
+        le_of_lt (lt_of_le_of_lt (le_max_right _ _) hN)
+      have hα_ne : α ≠ 0 := ne_of_gt hα_pos
+      calc b = b ^ (1 : ℝ) := (rpow_one b).symm
+           _ = b ^ (α * (1 / α)) := by rw [one_div, mul_inv_cancel₀ hα_ne]
+           _ = (b ^ α) ^ (1 / α) := rpow_mul (le_of_lt hb) α (1 / α)
+           _ ≤ (↑N) ^ (1 / α) :=
+              rpow_le_rpow (rpow_nonneg (le_of_lt hb) _) hbα_le_N (le_of_lt h1α)
+           _ ≤ (↑n) ^ (1 / α) :=
+              rpow_le_rpow (Nat.cast_nonneg N) (Nat.cast_le.mpr hn) (le_of_lt h1α)
+  · -- [φ(t/aₙ)]^n → φ(t) follows from stability equation (eventually constant)
+    intro t
+    have stab := (stableCharFun_isStable α hα_pos hα_le).2.2.2
+    have heq : (fun n => (stableCharFun α (t / standardNormalization α n)) ^ n)
+        =ᶠ[atTop] (fun _ => stableCharFun α t) := by
+      filter_upwards [eventually_ge_atTop 1] with n hn
+      exact stab n hn t
+    exact (Filter.tendsto_congr' heq).mpr tendsto_const_nhds
 
 /-
 ## Part III: Tail Behavior and Regular Variation
