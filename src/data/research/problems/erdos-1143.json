@@ -1,52 +1,70 @@
 {
   "slug": "erdos-1143",
   "title": "Erdős #1143",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "FORMALIZED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "F_k(p_1, \\ldots, p_u) = \\inf_a |\\{n \\in [a, a+k) : \\exists p_i \\mid n\\}|",
+    "plain": "Estimate the minimum number of integers in any k-length interval divisible by at least one of the given primes.",
+    "whyMatters": [
+      "Fundamental question about how primes cover intervals",
+      "Connected to Jacobsthal's function (Erdős #970)",
+      "Different techniques needed for different α = k/pᵤ regimes"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Single prime: F_k({p}) = ⌊k/p⌋",
+      "Asymptotic: F_k ≈ k · (1 - ∏(1-1/pᵢ)) for large k",
+      "Erdős-Selfridge: exact formula for 2 < α < 3 (paper not located)"
+    ],
+    "open": [
+      "Exact formula for α > 3",
+      "Sharp error terms in density approximation"
+    ],
+    "goal": "Formalize the covering function and all known partial results"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T16:41:04.199Z",
+    "phase": "FORMALIZED",
+    "since": "2026-03-11T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Complete formalization with 7 sorries, 3 axioms.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Could eliminate sorries for density calculations and basic bounds.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Complete formalization of Erdős #1143 (OPEN). 7 sorries, 3 axioms. Covering function, expected density, and known results formalized.",
+    "builtItems": [
+      "proofs/Proofs/Erdos1143Problem.lean (7 sorries, 3 axioms)",
+      "src/data/proofs/erdos-1143/ (gallery entry)"
+    ],
+    "insights": [
+      "coveredInInterval uses Finset.Ico with filter",
+      "coveringFunction uses ⨅ (infimum over ℕ)",
+      "expectedDensity = 1 - ∏(1-1/p) captures the CRT heuristic",
+      "Erdős-Selfridge exact formula (2 < α < 3) paper not located",
+      "Dual to Jacobsthal's function: covered = k - uncovered"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #1143 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erdős #1143 - Knowledge Base\n\n## Problem\n\nEstimate F_k(p₁,...,pᵤ) — min covered integers in k-length intervals.\n\n## Formalization\n\n- **Sorries**: 7, **Axioms**: 3\n- Cross-references: Erdős #970\n\n---\n\n*Formalized by researcher-5 on 2026-03-11*\n"
   },
   "approaches": [],
-  "tags": [
-    "erdos"
-  ],
-  "relatedProofs": [],
+  "tags": ["erdos", "number-theory", "primes", "covering"],
+  "relatedProofs": ["erdos-970"],
   "references": {
     "papers": [],
-    "urls": [],
+    "urls": ["https://erdosproblems.com/1143"],
     "mathlib": []
   },
-  "started": "2026-01-15T16:41:04.200Z",
+  "started": "2026-01-15T16:41:04.199Z",
   "significance": 7,
   "tractability": 6
 }
