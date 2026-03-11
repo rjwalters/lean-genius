@@ -339,22 +339,53 @@ def gridVertex (N : ℕ) (i j : ℕ) : ℝ × ℝ :=
 /-- The center vertex maps to the origin. -/
 theorem gridVertex_center (N : ℕ) (hN : 0 < N) :
     gridVertex N N N = (0, 0) := by
-  simp [gridVertex, div_self (Nat.cast_ne_zero.mpr (Nat.not_eq_zero_of_lt hN))]
+  simp only [gridVertex]
+  have hN_ne : (N : ℝ) ≠ 0 := ne_of_gt (Nat.cast_pos.mpr hN)
+  rw [div_self hN_ne]
+  norm_num
 
 /-- Grid vertices are in [-1,1]² when indices are in {0,...,2N}.
     Proof: i/N ∈ [0,2] so i/N - 1 ∈ [-1,1]. -/
-axiom gridVertex_in_range (N : ℕ) (hN : 0 < N) (i j : ℕ) (hi : i ≤ 2 * N) (hj : j ≤ 2 * N) :
+theorem gridVertex_in_range (N : ℕ) (hN : 0 < N) (i j : ℕ) (hi : i ≤ 2 * N) (hj : j ≤ 2 * N) :
     -1 ≤ (gridVertex N i j).1 ∧ (gridVertex N i j).1 ≤ 1 ∧
-    -1 ≤ (gridVertex N i j).2 ∧ (gridVertex N i j).2 ≤ 1
+    -1 ≤ (gridVertex N i j).2 ∧ (gridVertex N i j).2 ≤ 1 := by
+  have hN_pos : (0 : ℝ) < N := Nat.cast_pos.mpr hN
+  have hi_r : (i : ℝ) ≤ 2 * N := by exact_mod_cast hi
+  have hj_r : (j : ℝ) ≤ 2 * N := by exact_mod_cast hj
+  simp only [gridVertex]
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · -- -1 ≤ i/N - 1  ⟺  0 ≤ i/N
+    linarith [div_nonneg (Nat.cast_nonneg i) (le_of_lt hN_pos)]
+  · -- i/N - 1 ≤ 1  ⟺  i/N ≤ 2  ⟺  i ≤ 2N
+    have : (i : ℝ) / N ≤ 2 := by rw [div_le_iff₀ hN_pos]; linarith
+    linarith
+  · -- -1 ≤ j/N - 1  ⟺  0 ≤ j/N
+    linarith [div_nonneg (Nat.cast_nonneg j) (le_of_lt hN_pos)]
+  · -- j/N - 1 ≤ 1  ⟺  j/N ≤ 2  ⟺  j ≤ 2N
+    have : (j : ℝ) / N ≤ 2 := by rw [div_le_iff₀ hN_pos]; linarith
+    linarith
 
 /-- The antipodal map on grid vertices negates coordinates:
     v(2N-i, 2N-j) = -v(i,j).
     This ensures that for an odd function g, the labeling of grid boundary
     vertices satisfies Tucker's antipodal condition.
     (Arithmetic proof requires careful Nat→ℝ cast handling.) -/
-axiom gridVertex_antipodal (N : ℕ) (hN : 0 < N) (i j : ℕ) (hi : i ≤ 2 * N) (hj : j ≤ 2 * N) :
+theorem gridVertex_antipodal (N : ℕ) (hN : 0 < N) (i j : ℕ) (hi : i ≤ 2 * N) (hj : j ≤ 2 * N) :
     gridVertex N (2 * N - i) (2 * N - j) =
-      Prod.map Neg.neg Neg.neg (gridVertex N i j)
+      Prod.map Neg.neg Neg.neg (gridVertex N i j) := by
+  simp only [gridVertex, Prod.map]
+  have hN_ne : (N : ℝ) ≠ 0 := ne_of_gt (Nat.cast_pos.mpr hN)
+  ext
+  · -- First component: (2N-i)/N - 1 = -(i/N - 1) = 1 - i/N
+    show (↑(2 * N - i) : ℝ) / ↑N - 1 = -(↑i / ↑N - 1)
+    rw [Nat.cast_sub hi, Nat.cast_mul]
+    field_simp
+    ring
+  · -- Second component: (2N-j)/N - 1 = -(j/N - 1) = 1 - j/N
+    show (↑(2 * N - j) : ℝ) / ↑N - 1 = -(↑j / ↑N - 1)
+    rw [Nat.cast_sub hj, Nat.cast_mul]
+    field_simp
+    ring
 
 /-- A grid vertex is on the boundary when it lies on the edge of [-1,1]². -/
 def IsGridBoundary (N : ℕ) (i j : ℕ) : Prop :=

@@ -44,18 +44,18 @@
   "currentState": {
     "phase": "BUILD",
     "since": "2026-03-11T11:10:00Z",
-    "iteration": 3,
-    "focus": "Grid vertex infrastructure added (gridVertex, gridVertex_center, antipodal, boundary). Next: connect grid labeling to Tucker's lemma.",
+    "iteration": 4,
+    "focus": "Proved gridVertex_in_range and gridVertex_antipodal axioms, reducing axiom count from 5 to 3.",
     "blockers": [],
-    "nextAction": "Use gridVertex + dominantComponentLabel to construct explicit Tucker labeling on grid. Prove boundary antipodality from gridVertex_antipodal + diskFunction_antipodal_on_boundary. Apply tuckers_lemma. Goal: prove tucker_disk_approx_zero from infrastructure.",
+    "nextAction": "Connect grid labeling to Tucker lemma. Prove tucker_disk_approx_zero from infrastructure.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
+      "total": 4,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Grid vertex infrastructure added (Part X.5). gridVertex maps lattice points to [-1,1]², gridVertex_center proved, antipodal_preserves_boundary proved. Combined with hemisphere projection (Part XVII) and corrected S²→ℝ² versions (Part XVI). File: 924 lines, 2 sorries (both FALSE S¹ versions), ~20 axioms, ~40 proved theorems. Remaining: connect gridVertex + dominantComponentLabel to Tucker labeling.",
+    "progressSummary": "PROGRESS: Proved gridVertex_in_range and gridVertex_antipodal (axiom→theorem). Also fixed gridVertex_center API compatibility. Axiom count: 5→3. Docker build verified.",
     "builtItems": [
       "proofs/Proofs/BorsukUlamOQ03OQ03.lean: dominantComponentLabel definition",
       "proofs/Proofs/BorsukUlamOQ03OQ03.lean: antisymmetricDiff definition and properties",
@@ -75,7 +75,10 @@
       "proofs/Proofs/BorsukUlamOQ03OQ03.lean: gridVertex definition (lattice → [-1,1]² mapping)",
       "proofs/Proofs/BorsukUlamOQ03OQ03.lean: gridVertex_center (PROVED: center vertex = origin)",
       "proofs/Proofs/BorsukUlamOQ03OQ03.lean: gridVertex_in_range, gridVertex_antipodal (axioms: range bounds and antipodal negation)",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: IsGridBoundary predicate + antipodal_preserves_boundary (PROVED)"
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: IsGridBoundary predicate + antipodal_preserves_boundary (PROVED)",
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: gridVertex_in_range PROVED (was axiom)",
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: gridVertex_antipodal PROVED (was axiom)",
+      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: gridVertex_center fixed for Docker Mathlib compatibility"
     ],
     "insights": [
       "The Tucker→BU bridge works in 2D via dominant component labeling: label each vertex by the coordinate direction where g is largest",
@@ -91,7 +94,10 @@
       "This means dominantComponentLabel applied to g∘diskLift satisfies Tucker's antipodal boundary condition",
       "Remaining gap: need to construct TriangulatedDisk2D instance from GridTriangulation N, define labeling, apply Tucker, extract approximate zero. This is the combinatorial core (~100-200 lines).",
       "gridVertex(N,i,j) = (i/N - 1, j/N - 1) maps {0,...,2N}² to [-1,1]². Center is (N,N)→(0,0). Antipodal: (2N-i,2N-j)→-v.",
-      "gridVertex_in_range and gridVertex_antipodal axiomatized due to Nat→ℝ cast arithmetic complexity (would need push_cast + field_simp + ring)"
+      "gridVertex_in_range and gridVertex_antipodal axiomatized due to Nat→ℝ cast arithmetic complexity (would need push_cast + field_simp + ring)",
+      "gridVertex_in_range: proved via div_nonneg + div_le_iff₀ with Nat→ℝ casts",
+      "gridVertex_antipodal: proved via Nat.cast_sub + field_simp + ring",
+      "Nat.not_eq_zero_of_lt unavailable in Docker Mathlib v4.26.0; use ne_of_gt (Nat.cast_pos.mpr hN) instead"
     ],
     "mathlibGaps": [
       "No Tucker's lemma proof in Mathlib (axiomatized in BorsukUlamOQ01)",
@@ -137,5 +143,5 @@
   },
   "knowledgeScore": 90,
   "started": "2026-03-06T21:11:54.769Z",
-  "lastUpdate": "2026-03-11T12:00:00.000Z"
+  "lastUpdate": "2026-03-11T14:45:00.000Z"
 }
