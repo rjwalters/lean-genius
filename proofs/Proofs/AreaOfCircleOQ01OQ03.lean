@@ -25,7 +25,7 @@
   - Parseval's identity: available (tsum_sq_fourierCoeff)
   - The assembled Wirtinger proof would be ~200-300 lines
 
-  What This File Proves (26 theorems, 2 axioms, 2 sorry-lemmas):
+  What This File Proves (26 theorems, 2 axioms, 1 sorry-lemma):
   1. Equality for circles: C² = 4πA  (ring computation)
   2. Strict inequality for squares: C² > 4πA  (π < 4)
   3. The isoperimetric ratio: A/(C²/4π) and its circle value
@@ -653,15 +653,84 @@ theorem isoperimetric_inequality_smooth (γ : SmoothClosedCurve) :
     4 * π * γ.area ≤ γ.circumference ^ 2 := by
   -- Handle degenerate case: circumference = 0
   by_cases hL : γ.circumference ≤ 0
-  · -- circumference is integral of non-negative function, so ≥ 0
-    -- if circumference ≤ 0, then circumference = 0, so RHS = 0
-    -- LHS = 4π · area ≥ 0, but area ≤ 0 can't happen with |·|
-    -- actually area = (1/2)|∫...| ≥ 0 always, so we need 4π·area ≤ 0
-    -- this requires area = 0, which happens when circumference = 0
-    -- circumference = ∫₀²π √(x'²+y'²) ≥ 0, so circumference ≤ 0 ⟹ circumference = 0
-    -- Then circumference = 0 ⟹ x' = y' = 0 everywhere ⟹ xy'-yx' = 0 ⟹ area = 0
-    -- This requires: continuous non-negative function with zero integral is identically zero
-    sorry -- degenerate case: circumference = 0 implies area = 0
+  · -- circumference ≥ 0 (integral of nonneg) + circumference ≤ 0 ⟹ circumference = 0
+    have hcirc_nn : 0 ≤ γ.circumference := by
+      apply intervalIntegral.integral_nonneg (by linarith [pi_pos])
+      intro t _; exact Real.sqrt_nonneg _
+    have hcirc_zero : γ.circumference = 0 := le_antisymm hL hcirc_nn
+    have hrhs : γ.circumference ^ 2 = 0 := by rw [hcirc_zero]; ring
+    rw [hrhs]
+    -- Need: 4π · area ≤ 0. Since area = (1/2)|∫...| ≥ 0, need area = 0.
+    suffices harea0 : γ.area = 0 by rw [harea0]; simp
+    -- area = (1/2)|∫(xy'-yx')|, so suffices ∫(xy'-yx') = 0
+    unfold SmoothClosedCurve.area
+    suffices hint : ∫ t in (0 : ℝ)..(2 * π),
+        γ.x t * deriv γ.y t - γ.y t * deriv γ.x t = 0 by
+      rw [hint, abs_zero, mul_zero]
+    -- Strategy: |xy'-yx'| ≤ √(x²+y²)·√(x'²+y'²) ≤ M·√(x'²+y'²)
+    -- where M = max of √(x²+y²) on [0,2π] (finite by compactness)
+    -- Then |∫(xy'-yx')| ≤ M · circumference = 0
+    have hpi_pos : (0 : ℝ) < 2 * π := by positivity
+    -- Continuity of position magnitude
+    have h_pos_cont : Continuous (fun t => Real.sqrt (γ.x t ^ 2 + γ.y t ^ 2)) :=
+      ((γ.smooth_x.continuous.pow 2).add (γ.smooth_y.continuous.pow 2)).sqrt
+    -- Get upper bound M on [0, 2π] via compactness
+    have hne : (Set.Icc (0 : ℝ) (2 * π)).Nonempty := Set.nonempty_Icc.mpr hpi_pos.le
+    obtain ⟨t₀, _, ht₀_max⟩ := isCompact_Icc.exists_isMaxOn hne h_pos_cont.continuousOn
+    set M := Real.sqrt (γ.x t₀ ^ 2 + γ.y t₀ ^ 2)
+    -- Derivative continuity
+    have hdx_cont : Continuous (deriv γ.x) :=
+      ((contDiff_succ_iff_deriv (n := 0)).mp γ.smooth_x).2.2.continuous
+    have hdy_cont : Continuous (deriv γ.y) :=
+      ((contDiff_succ_iff_deriv (n := 0)).mp γ.smooth_y).2.2.continuous
+    -- Integrability
+    have hf_int : IntervalIntegrable
+        (fun t => γ.x t * deriv γ.y t - γ.y t * deriv γ.x t)
+        MeasureTheory.volume 0 (2 * π) :=
+      ((γ.smooth_x.continuous.mul hdy_cont).sub
+       (γ.smooth_y.continuous.mul hdx_cont)).intervalIntegrable _ _
+    have hg_int : IntervalIntegrable
+        (fun t => M * Real.sqrt (deriv γ.x t ^ 2 + deriv γ.y t ^ 2))
+        MeasureTheory.volume 0 (2 * π) :=
+      (continuous_const.mul ((hdx_cont.pow 2).add (hdy_cont.pow 2)).sqrt).intervalIntegrable _ _
+    -- Pointwise bound on [0,2π]: |xy'-yx'| ≤ M·√(x'²+y'²)
+    have h_pw : ∀ t ∈ Set.Icc (0 : ℝ) (2 * π),
+        |γ.x t * deriv γ.y t - γ.y t * deriv γ.x t| ≤
+        M * Real.sqrt (deriv γ.x t ^ 2 + deriv γ.y t ^ 2) := by
+      intro t ht
+      have hCS := cross_product_sq_le (γ.x t) (γ.y t) (deriv γ.x t) (deriv γ.y t)
+      -- |xy'-yx'| ≤ √(x²+y²)·√(x'²+y'²) ≤ M·√(x'²+y'²)
+      have h1 : |γ.x t * deriv γ.y t - γ.y t * deriv γ.x t| ≤
+          Real.sqrt (γ.x t ^ 2 + γ.y t ^ 2) *
+          Real.sqrt (deriv γ.x t ^ 2 + deriv γ.y t ^ 2) := by
+        rw [← Real.sqrt_sq_eq_abs, ← Real.sqrt_mul (by positivity)]
+        exact Real.sqrt_le_sqrt hCS
+      exact le_trans h1 (mul_le_mul_of_nonneg_right (ht₀_max ht) (Real.sqrt_nonneg _))
+    -- Upper bound: ∫(xy'-yx') ≤ M · circumference
+    have h_up : ∫ t in (0 : ℝ)..(2 * π),
+        (γ.x t * deriv γ.y t - γ.y t * deriv γ.x t) ≤ M * γ.circumference := by
+      calc ∫ t in (0 : ℝ)..(2 * π), (γ.x t * deriv γ.y t - γ.y t * deriv γ.x t)
+          ≤ ∫ t in (0 : ℝ)..(2 * π),
+            M * Real.sqrt (deriv γ.x t ^ 2 + deriv γ.y t ^ 2) :=
+              intervalIntegral.integral_mono_on hpi_pos.le hf_int hg_int
+                (fun t ht => le_trans (le_abs_self _) (h_pw t ht))
+        _ = M * γ.circumference := by
+              rw [intervalIntegral.integral_const_mul]; rfl
+    -- Lower bound: -(M · circumference) ≤ ∫(xy'-yx')
+    have h_low : -(M * γ.circumference) ≤ ∫ t in (0 : ℝ)..(2 * π),
+        (γ.x t * deriv γ.y t - γ.y t * deriv γ.x t) := by
+      calc -(M * γ.circumference)
+          = ∫ t in (0 : ℝ)..(2 * π),
+            -(M * Real.sqrt (deriv γ.x t ^ 2 + deriv γ.y t ^ 2)) := by
+              simp only [SmoothClosedCurve.circumference,
+                ← intervalIntegral.integral_const_mul, ← intervalIntegral.integral_neg]
+        _ ≤ ∫ t in (0 : ℝ)..(2 * π),
+            (γ.x t * deriv γ.y t - γ.y t * deriv γ.x t) :=
+              intervalIntegral.integral_mono_on hpi_pos.le hg_int.neg hf_int
+                (fun t ht => le_trans (neg_le_neg (h_pw t ht)) (neg_abs_le _))
+    -- circumference = 0, so bounds collapse: 0 ≤ ∫ ≤ 0
+    rw [hcirc_zero, mul_zero] at h_up h_low
+    linarith
   push_neg at hL
   -- Step 1: Get nice reparametrization (constant speed + zero mean)
   obtain ⟨γ', hL_eq, hA_eq, hspeed, hzx, hzy⟩ := exists_nice_reparam γ hL
@@ -826,23 +895,23 @@ theorem non_circle_area_lt_circle (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve
    (Proof: equality in Wirtinger iff f = a cos + b sin)
 
 ### Proof Structure for isoperimetric_inequality_smooth:
-The main theorem is NOW PROVED modulo 4 analysis lemmas + 1 degenerate case:
+The main theorem is NOW PROVED modulo analysis lemmas:
 
 **Proved** (structural reduction to arithmetic kernel):
 23. `integral_sqrt_sum_sq_nonneg` — ∫√(x²+y²) ≥ 0 [FULLY PROVED]
 24. `isoperimetric_inequality_smooth` — 4πA ≤ L² for smooth curves
-    [PROVED from analysis lemmas + arithmetic kernel]
+    [PROVED from analysis lemmas + arithmetic kernel + degenerate case]
 
-**Proved analysis lemmas** (reduced from 6 to 2 sorries):
+**Proved analysis lemmas** (reduced from 6 to 1 sorry):
 25. `wirtinger_sum_sq_bound` — ∫(x²+y²) ≤ 2πc² [PROVED: Wirtinger axiom + integral linearity]
 26. `integral_cauchy_schwarz_interval` — (∫f)² ≤ 2π·∫f² [PROVED: discriminant method]
 27. `area_bound_const_speed` — 2A ≤ c·∫√(x²+y²) [PROVED: cross_product_sq_le + abs_le]
+28. Degenerate case (circumference = 0 ⟹ area = 0)
+    [PROVED: sup-factoring bound |∫(xy'-yx')| ≤ M·circumference = 0]
 
-**Remaining sorries** (2):
+**Remaining sorry** (1):
 - `exists_nice_reparam` — arc-length reparametrization + mean shift
    (differential geometry infrastructure, ~200 lines)
-- Degenerate case: zero-circumference ⟹ zero area
-   (requires: continuous non-negative integral = 0 implies function = 0 a.e.)
 
 ### Proof of ngon_limit_tendsto_circle:
 - `Real.hasDerivAt_tan (cos 0 ≠ 0) : HasDerivAt tan (1/cos²0) 0 = HasDerivAt tan 1 0`
