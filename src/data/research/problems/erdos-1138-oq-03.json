@@ -1,0 +1,66 @@
+{
+  "slug": "erdos-1138-oq-03",
+  "title": "Resolve maxPrimeGap_le sorry via BddAbove for prime gaps",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-03-06T22:03:59.699Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Converted 2 axioms to theorems (Bertrand), proved 1 sorry (log growth). Only baker_harman_pintz axiom remains (deep unconditional result).",
+    "builtItems": [
+      "Erdos1138OQ03.lean: prime_gap_le_prev_prime theorem (was axiom)",
+      "Erdos1138OQ03.lean: maxPrimeGap_le_half theorem (was axiom)",
+      "Erdos1138OQ03.lean: cramer_implies_gap_sublinear (was sorry)"
+    ],
+    "insights": [
+      "prime_gap_le_prev_prime is provable from Nat.bertrand (Bertrand postulate in Mathlib)",
+      "maxPrimeGap_le_half follows from prime_gap_le_prev_prime: 2d ≤ d+p = q ≤ x",
+      "cramer_implies_gap_sublinear proved via Real.log_le_rpov_div with δ=1/4 and rpow_mul",
+      "Key rpow identity: (x^(1/4))^2 = x^(1/2) via rpow_mul; x^(1/2)·x^(1/2) = x via rpow_add",
+      "nlinarith + sq_nonneg trick for a^2 ≤ b^2 → a ≤ b (with 0 ≤ a, 0 ≤ b)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "baker_harman_pintz could theoretically be proved but requires deep analytic number theory not in Mathlib"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "combinatorics"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-07T18:02:01.177Z",
+  "lastUpdate": "2026-03-07T18:02:01.177Z",
+  "significance": 6,
+  "tractability": 6
+}
