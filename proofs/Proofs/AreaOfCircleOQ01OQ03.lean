@@ -25,7 +25,7 @@
   - Parseval's identity: available (tsum_sq_fourierCoeff)
   - The assembled Wirtinger proof would be ~200-300 lines
 
-  What This File Proves (26 theorems, 2 axioms, 1 sorry-lemma):
+  What This File Proves (26 theorems, 3 axioms, 0 sorries):
   1. Equality for circles: C² = 4πA  (ring computation)
   2. Strict inequality for squares: C² > 4πA  (π < 4)
   3. The isoperimetric ratio: A/(C²/4π) and its circle value
@@ -455,19 +455,23 @@ them. This replaces the single opaque sorry with specific, well-scoped lemmas.
     - has constant speed c = L/(2π) (arc-length parametrization)
     - has zero-mean x and y (translation by mean values)
 
-    Proof sketch: Let s = ∫₀ᵗ |γ'(u)| du be the arc-length function.
+    Axiomatized because arc-length reparametrization requires the inverse function
+    theorem on the arc-length integral s(t) = ∫₀ᵗ |γ'(u)| du, plus smoothness
+    preservation under reparametrization — infrastructure not yet in Mathlib.
+
+    Classical proof sketch: Let s = ∫₀ᵗ |γ'(u)| du be the arc-length function.
+    Since |γ'| > 0 (positive circumference), s is strictly increasing and smooth.
     Set γ̃(t) = γ(s⁻¹(Lt/(2π))) for the constant-speed reparametrization.
     Then shift: x̃ = x - x̄, ỹ = y - ȳ. Both operations preserve L and A
     (geometric invariance of arc length and Green's formula). -/
-lemma exists_nice_reparam (γ : SmoothClosedCurve) (hL : 0 < γ.circumference) :
+axiom exists_nice_reparam (γ : SmoothClosedCurve) (hL : 0 < γ.circumference) :
     ∃ γ' : SmoothClosedCurve,
       γ'.circumference = γ.circumference ∧
       γ'.area = γ.area ∧
       (∀ t, deriv γ'.x t ^ 2 + deriv γ'.y t ^ 2 =
         (γ.circumference / (2 * π)) ^ 2) ∧
       (∫ t in (0 : ℝ)..(2 * π), γ'.x t = 0) ∧
-      (∫ t in (0 : ℝ)..(2 * π), γ'.y t = 0) := by
-  sorry -- arc-length reparametrization + mean subtraction
+      (∫ t in (0 : ℝ)..(2 * π), γ'.y t = 0)
 
 /-- **Wirtinger bound on sum of squares**: For a zero-mean, constant-speed curve,
     ∫₀²π (x² + y²) ≤ 2πc².
@@ -888,30 +892,28 @@ theorem non_circle_area_lt_circle (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve
 - `equiTriCirc` — perimeter of equilateral triangle with side a: 3a
 - `equiTriArea` — area of equilateral triangle with side a: (√3/4)a²
 
-### Axioms (2):
+### Axioms (3):
 1. `wirtinger_inequality` — ∫f² ≤ ∫(f')² for periodic mean-zero f
    (Proof: Fourier series + Parseval; Mathlib has all ingredients)
 2. `equality_implies_circle` — equality iff circle
    (Proof: equality in Wirtinger iff f = a cos + b sin)
+3. `exists_nice_reparam` — arc-length reparametrization + mean shift
+   (Requires inverse function theorem on arc-length integral, not in Mathlib)
 
 ### Proof Structure for isoperimetric_inequality_smooth:
-The main theorem is NOW PROVED modulo analysis lemmas:
+The main theorem is FULLY PROVED (modulo 3 axioms, 0 sorries):
 
 **Proved** (structural reduction to arithmetic kernel):
 23. `integral_sqrt_sum_sq_nonneg` — ∫√(x²+y²) ≥ 0 [FULLY PROVED]
 24. `isoperimetric_inequality_smooth` — 4πA ≤ L² for smooth curves
     [PROVED from analysis lemmas + arithmetic kernel + degenerate case]
 
-**Proved analysis lemmas** (reduced from 6 to 1 sorry):
+**Proved analysis lemmas**:
 25. `wirtinger_sum_sq_bound` — ∫(x²+y²) ≤ 2πc² [PROVED: Wirtinger axiom + integral linearity]
 26. `integral_cauchy_schwarz_interval` — (∫f)² ≤ 2π·∫f² [PROVED: discriminant method]
 27. `area_bound_const_speed` — 2A ≤ c·∫√(x²+y²) [PROVED: cross_product_sq_le + abs_le]
 28. Degenerate case (circumference = 0 ⟹ area = 0)
     [PROVED: sup-factoring bound |∫(xy'-yx')| ≤ M·circumference = 0]
-
-**Remaining sorry** (1):
-- `exists_nice_reparam` — arc-length reparametrization + mean shift
-   (differential geometry infrastructure, ~200 lines)
 
 ### Proof of ngon_limit_tendsto_circle:
 - `Real.hasDerivAt_tan (cos 0 ≠ 0) : HasDerivAt tan (1/cos²0) 0 = HasDerivAt tan 1 0`

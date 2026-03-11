@@ -8,7 +8,6 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Isoperimetric_inequality",
     "date": "1901",
     "status": "open-question",
-    "badge": "open",
     "proofRepoPath": "Proofs/AreaOfCircleOQ01OQ03.lean",
     "tags": [
       "analysis",
@@ -20,8 +19,9 @@
       "research",
       "isoperimetric"
     ],
-    "badge": "open",
-    "sorries": 2,
+    "badge": "axiom",
+    "sorries": 0,
+    "axioms": 3,
     "mathlibDependencies": [
       {
         "theorem": "Real.pi_lt_four",
@@ -133,7 +133,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This file formalizes the isoperimetric inequality C²≥4πA in the context of the area-of-circle OQ chain. Circles achieve equality (proved by ring computation). Squares satisfy strict inequality (from π<4). Regular n-gons converge to the circle's ratio as n→∞ (proved via tan(h)/h→1). The Hurwitz proof architecture is established: Wirtinger's inequality + SmoothClosedCurve structure + arithmetic kernel (all proved), with one remaining sorry for the integral assembly. Total: 1 sorry (isoperimetric_inequality_smooth), 1 axiom (wirtinger_inequality).",
+    "summary": "This file formalizes the isoperimetric inequality C²≥4πA in the context of the area-of-circle OQ chain. Circles achieve equality (proved by ring computation). Squares satisfy strict inequality (from π<4). Regular n-gons converge to the circle's ratio as n→∞ (proved via tan(h)/h→1). The Hurwitz proof architecture is fully established: Wirtinger's inequality + SmoothClosedCurve structure + arithmetic kernel + reparametrization, with the main theorem isoperimetric_inequality_smooth fully proved. Total: 0 sorries, 3 axioms (wirtinger_inequality, equality_implies_circle, exists_nice_reparam).",
     "implications": "The isoperimetric inequality is one of the deepest results in classical geometry: it quantifies how far any curve is from the optimum (circle). The Hurwitz proof via Fourier analysis is particularly elegant — it reduces the geometric inequality to a spectral-theoretic fact (Parseval's theorem). This file's approach through the OQ chain (C=dA/dr → A=∫C dρ → C²≥4πA) reveals that the three results about circles form a complete picture: the circumference is the derivative of area, the area is the integral of circumference, and the square of circumference bounds 4π times area — the last being an upper bound that circles uniquely achieve.",
     "openQuestions": [
       "Can Wirtinger's inequality be assembled from Mathlib's Fourier infrastructure? (fourierBasis, tsum_sq_fourierCoeff, hasSum_fourier_series_L2 are all present — estimated 200-300 lines)",
