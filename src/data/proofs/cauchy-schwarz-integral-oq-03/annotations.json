@@ -1,0 +1,32 @@
+[
+  {
+    "lineNumber": 20,
+    "content": "**Bridge Theorem**: `L2.inner_def` equates the abstract L2 inner product `⟪f,g⟫_ℂ` with the integral `∫ ⟪f(x), g(x)⟫_ℂ dμ`. This is the key connection enabling transfer of abstract Cauchy-Schwarz to integral form.",
+    "type": "insight"
+  },
+  {
+    "lineNumber": 30,
+    "content": "**Explicit Conjugation**: For complex L2, the inner product involves conjugation: `⟪f,g⟫_ℂ = ∫ conj(f(x)) · g(x) dμ`. This is the standard physics convention (conjugate-linear in the first argument).",
+    "type": "proof-technique"
+  },
+  {
+    "lineNumber": 47,
+    "content": "**Complex Bunyakovsky-Schwarz**: The integral form `‖∫ ⟪f(x),g(x)⟫_ℂ dμ‖ ≤ ‖f‖·‖g‖` follows directly from the bridge theorem and abstract Cauchy-Schwarz. The norm on the left handles the complex-valued integral.",
+    "type": "proof-technique"
+  },
+  {
+    "lineNumber": 69,
+    "content": "**Self-Inner Product**: `⟪f,f⟫_ℂ = ‖f‖²` is always real and non-negative, despite being computed in ℂ. This follows from `inner_self_eq_norm_sq_to_K` and is essential for interpreting L2 norms.",
+    "type": "insight"
+  },
+  {
+    "lineNumber": 117,
+    "content": "**Equality Characterization**: Equality `‖⟪f,g⟫_ℂ‖ = ‖f‖·‖g‖` holds iff `f = c·g` for some `c : ℂ`. Uses `norm_inner_eq_norm_iff` from Mathlib's inner product space theory.",
+    "type": "proof-technique"
+  },
+  {
+    "lineNumber": 135,
+    "content": "**RCLike Unification**: The `RCLike` typeclass (covering both `ℝ` and `ℂ`) allows stating Cauchy-Schwarz once for all scalar fields. This is the most general form in the development.",
+    "type": "insight"
+  }
+]
