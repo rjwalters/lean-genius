@@ -42,11 +42,15 @@
     ],
     "originalContributions": [
       "AvoidsPowerOfTwoSums: predicate for no a+b = 2^k",
-      "lowerDensity: asymptotic density via infimum over Finset counting",
+      "lowerDensity: asymptotic density via Filter.liminf (corrected from inf)",
+      "not_three_dvd_two_pow: 3 does not divide 2^k via coprimality",
       "multiples_of_3_avoid: verified proof that 3N avoids power-of-two sums",
+      "multiples_of_3_set_avoids: set-level avoidance theorem",
+      "avoids_empty, avoids_mono: structural properties of avoidance",
       "MullerSet: binary consecutive-1s construction achieving density 1/2",
-      "muller_construction: axiom for avoidance + density 1/2",
-      "muller_optimality: axiom for density upper bound 1/2",
+      "zero_not_mem_muller, three_mem_muller: MullerSet membership",
+      "muller_beats_trivial, density_gap: comparison theorems",
+      "odd_prime_multiples_avoid: general result for any odd prime",
       "erdos_1136: verified existence theorem (density > 1/3)",
       "erdos_1136_optimal: verified complete characterization (exact optimum 1/2)"
     ],
@@ -57,15 +61,17 @@
     "lineCount": 114,
     "namespace": "Erdos1136",
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Order.Filter.Basic"
+      "Mathlib"
     ],
     "mainTheorems": [
+      "not_three_dvd_two_pow",
       "multiples_of_3_avoid",
+      "multiples_of_3_set_avoids",
+      "odd_prime_multiples_avoid",
       "erdos_1136",
-      "erdos_1136_optimal"
+      "erdos_1136_optimal",
+      "muller_beats_trivial",
+      "density_gap"
     ],
     "mainDefinitions": [
       "AvoidsPowerOfTwoSums",
@@ -73,7 +79,7 @@
       "MullerSet"
     ],
     "axiomCount": 3,
-    "theoremCount": 3
+    "theoremCount": 12
   },
   "crossReferences": [
     {
