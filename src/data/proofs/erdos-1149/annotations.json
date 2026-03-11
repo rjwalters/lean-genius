@@ -1,0 +1,42 @@
+[
+  {
+    "id": "floor-power-coprime-def",
+    "targetLine": 33,
+    "type": "definition",
+    "title": "Floor-Power Coprimality",
+    "content": "The predicate IsFloorPowerCoprime α n holds when gcd(n, ⌊n^α⌋) = 1. This captures when n and its floor-power are coprime, the central object of study in Erdős #1149.",
+    "tags": ["coprimality", "floor-function", "definition"]
+  },
+  {
+    "id": "bergelson-richter-axiom",
+    "targetLine": 63,
+    "type": "axiom",
+    "title": "Bergelson-Richter Theorem (2017)",
+    "content": "The main result: for non-integer α > 0, the density of {n : gcd(n, ⌊n^α⌋) = 1} is 6/π². This deep theorem uses ergodic theory and multiplicative functions along polynomial sequences. Axiomatized because the proof requires machinery far beyond current Mathlib.",
+    "tags": ["ergodic-theory", "axiom", "main-result"]
+  },
+  {
+    "id": "density-bounds",
+    "targetLine": 88,
+    "type": "proof-technique",
+    "title": "Density Bounds via π Estimates",
+    "content": "The density 6/π² is shown to lie in (0,1) using Real.pi_gt_three from Mathlib. Since π > 3, we get π² > 9 > 6, hence 6/π² < 1. Positivity follows from π² > 0.",
+    "tags": ["pi-bounds", "density", "inequality"]
+  },
+  {
+    "id": "integer-case",
+    "targetLine": 103,
+    "type": "proof-technique",
+    "title": "Integer Exponent Exclusion",
+    "content": "When α is a positive integer k, ⌊n^k⌋ = n^k exactly, so gcd(n, n^k) = n for n > 1. The proof uses dvd_pow_self and Nat.Coprime to derive a contradiction. This justifies the non-integer hypothesis.",
+    "tags": ["integer-case", "coprimality", "divisibility"]
+  },
+  {
+    "id": "random-coprime-connection",
+    "targetLine": 126,
+    "type": "context",
+    "title": "Connection to Random Coprimality",
+    "content": "The classical result that the probability two random integers are coprime is 6/π² = 1/ζ(2) = ∏_p(1-1/p²). The Bergelson-Richter theorem shows n and ⌊n^α⌋ exhibit the same coprimality statistics as independent random integers, despite being deterministically related.",
+    "tags": ["zeta-function", "euler-product", "independence"]
+  }
+]

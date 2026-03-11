@@ -17,11 +17,7 @@ Status: OPEN (is the sequence infinite?)
 Reference: https://erdosproblems.com/1141
 -/
 
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.GCD.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Order.LocallyFiniteOrder
-import Mathlib.Tactic
+import Mathlib
 
 -- ## Core Definition
 
@@ -105,6 +101,14 @@ theorem good_implies_pred_prime (n : ℕ) (hn : 2 ≤ n) (hg : IsErdos1141Good n
   apply hg
   · omega
   · exact Nat.Coprime.symm (Nat.coprime_one_left n)
+
+/-- All good values n ≥ 4 are even. Proof: n-1 must be prime, and if n is odd
+    then n-1 is even and ≥ 3, hence composite (only even prime is 2). -/
+theorem good_ge4_even (n : ℕ) (hn : 4 ≤ n) (hg : IsErdos1141Good n) : 2 ∣ n := by
+  by_contra hodd
+  have hpred := good_implies_pred_prime n (by omega) hg
+  have heven : 2 ∣ (n - 1) := by omega
+  rcases hpred.eq_one_or_self_of_dvd 2 heven with h | h <;> omega
 
 -- ## The Open Conjecture
 
