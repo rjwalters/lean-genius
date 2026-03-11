@@ -20,8 +20,8 @@
       "extension",
       "research"
     ],
-    "badge": "open",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_eq_zero_iff_of_nonneg",
@@ -50,7 +50,10 @@
       "Young deficit framework: reduces Hölder equality to pointwise Young equality",
       "Sum of Young deficits = 0 iff each = 0 (generalized sum-of-nonneg technique)",
       "Hölder equality (normalized): ∑fᵢgᵢ = 1 with ∑fᵢ^p = ∑gᵢ^q = 1 implies fᵢ^p = gᵢ^q",
-      "Power proportionality to linear proportionality reduction (p=q=2 specialization)"
+      "Power proportionality to linear proportionality reduction (p=q=2 specialization)",
+      "Reverse direction: proportional → CS equality (substitution proof)",
+      "Full iff for CS proportionality characterization",
+      "Reverse direction: power proportionality → Hölder equality (normalized, via Young deficit)"
     ],
     "references": [
       {
@@ -146,10 +149,8 @@
     ]
   },
   "conclusion": {
-    "summary": "We formalize equality characterizations for both Cauchy-Schwarz and general Hölder inequalities. The CS case is fully proved via Lagrange identity. The Hölder case is reduced to Young's equality (axiomatized), with the normalized case fully proved. The key insight is that both CS and Hölder equality follow from the same 'sum of nonneg = 0' technique.",
+    "summary": "We formalize equality characterizations for both Cauchy-Schwarz and general Hölder inequalities. The CS case is fully proved via Lagrange identity with a complete iff characterization. The Hölder case is fully proved via Young deficit reduction, including both directions (equality ↔ power proportionality). The key insight is that both CS and Hölder equality follow from the same 'sum of nonneg = 0' technique.",
     "openQuestions": [
-      "Can Young's equality case (deficit = 0 iff a^p = b^q) be proved from strict convexity of rpow in Lean?",
-      "Can the general case normalization (dividing by Lp norms) be completed?",
       "Can the a.e. power proportionality condition for integral Hölder equality be formalized?"
     ]
   }
