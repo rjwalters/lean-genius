@@ -1,0 +1,42 @@
+[
+  {
+    "id": "littlewood-def",
+    "targetLine": 40,
+    "type": "definition",
+    "title": "Littlewood Polynomial",
+    "content": "A polynomial with all coefficients in {-1, +1}. Named after J.E. Littlewood who studied their extremal properties on the unit circle. More restrictive than unimodular (|aᵢ|=1).",
+    "tags": ["definition", "polynomials"]
+  },
+  {
+    "id": "erdos-1150-conjecture",
+    "targetLine": 55,
+    "type": "conjecture",
+    "title": "Erdős #1150 Conjecture",
+    "content": "There exists universal c > 0 such that every degree-n Littlewood polynomial has max_{|z|=1}|P(z)| > (1+c)√n for large n. Equivalently, ultraflat Littlewood polynomials do not exist.",
+    "tags": ["conjecture", "main-result"]
+  },
+  {
+    "id": "parseval-bound",
+    "targetLine": 71,
+    "type": "axiom",
+    "title": "Parseval Lower Bound",
+    "content": "From Parseval's identity: ∫|P(e^{iθ})|² dθ/2π = Σ|aᵢ|² = n+1. Since max|P|² ≥ average|P|², we get max|P| ≥ √(n+1). This is sharp in the limit for unimodular coefficients (Kahane) but NOT for ±1.",
+    "tags": ["parseval", "lower-bound"]
+  },
+  {
+    "id": "bbmst-result",
+    "targetLine": 108,
+    "type": "axiom",
+    "title": "BBMST Flat Polynomials (2019)",
+    "content": "Balister-Bollobás-Morris-Sahasrabudhe-Tiba proved flat Littlewood polynomials exist: c₁√n ≤ |P(z)| ≤ c₂√n on |z|=1. This resolved Erdős #228 but does NOT resolve #1150, since flat (bounded ratio) is weaker than ultraflat (ratio → 1).",
+    "tags": ["bbmst", "flat-polynomials", "landmark"]
+  },
+  {
+    "id": "kahane-contrast",
+    "targetLine": 118,
+    "type": "context",
+    "title": "Kahane's Unimodular Ultraflat (1980)",
+    "content": "For general unimodular coefficients (|aᵢ|=1), Kahane proved ultraflat polynomials exist: |P(z)| = (1+o(1))√n uniformly on |z|=1. The restriction to ±1 coefficients makes this dramatically harder. The discreteness of {-1,+1} is the essential obstruction.",
+    "tags": ["kahane", "unimodular", "contrast"]
+  }
+]
