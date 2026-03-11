@@ -63,7 +63,7 @@ namespace LatticePathLGV
 
 open Finset List
 
-/-! ## Part I: Lattice Path Definitions -/
+/- ## Part I: Lattice Path Definitions -/
 
 /-- A lattice path: false = East (+x), true = North (+y) -/
 abbrev LPath := List Bool
@@ -108,7 +108,7 @@ noncomputable instance pathTypeFintype (m n : ℕ) : Fintype (pathType m n) := b
       left_inv  := fun ⟨⟨_, _⟩, _⟩ => rfl,
       right_inv := fun ⟨_, _, _⟩ => rfl }
 
-/-! ## Part II: The northBeforeEast Function -/
+/- ## Part II: The northBeforeEast Function -/
 
 /-- northBeforeEast l k = # North (true) steps in l before the k-th East (false) step.
     This gives the y-offset when entering column k+1, or equivalently the y
@@ -200,7 +200,7 @@ theorem colEntry_le_northSteps (l : LPath) (m : ℕ) (hm : l.countP (· = false)
   | zero => simp [colEntry]
   | succ m => simp only [colEntry]; exact northBeforeEast_le_northSteps l m
 
-/-! ## Part III: Column Ranges and Non-Intersecting -/
+/- ## Part III: Column Ranges and Non-Intersecting -/
 
 /-- The y-range visited at column x (for x < m): [y₀ + colEntry l x, y₀ + colEntry l (x+1)] -/
 def colYRange (l : LPath) (y₀ x : ℕ) : Set ℕ :=
@@ -215,7 +215,7 @@ def NonIntersecting (l₁ l₂ : LPath) (m y₁ y₂ : ℕ) : Prop :=
   (∀ x < m, ∀ y, ¬(y ∈ colYRange l₁ y₁ x ∧ y ∈ colYRange l₂ y₂ x)) ∧
   (∀ y, ¬(y ∈ finalRange l₁ y₁ m ∧ y ∈ finalRange l₂ y₂ m))
 
-/-! ## Part IV: The Crossing Lemma -/
+/- ## Part IV: The Crossing Lemma -/
 
 /-- **KEY LEMMA**: If paths are non-intersecting and P₁ enters column k below P₂
     (y₁ + entry₁(k) < y₂ + entry₂(k)), then P₁ also enters column k+1 below P₂.
@@ -292,7 +292,7 @@ theorem crossing_lemma {l₁ l₂ : LPath} (m n₁ n₂ y₁ y₂ : ℕ)
       exact ⟨le_refl _, Nat.add_le_add_left hn₂_bound y₂⟩
     exact hlast _ ⟨h_in₁, h_in₂⟩
 
-/-! ## Part V: Path Count Formula -/
+/- ## Part V: Path Count Formula -/
 
 /-- Paths with (m+1) east and (n+1) north steps biject with (m) east/(n+1) north ⊕ (m+1) east/n north.
     This implements the inductive splitting: a non-empty path either starts with East or North. -/
@@ -396,7 +396,7 @@ theorem path_count_eq_choose (m n : ℕ) :
           show m + 1 + (n + 1) = m + (n + 1) + 1 from by omega]
       exact (Nat.choose_succ_succ' (m + (n + 1)) m).symm
 
-/-! ## Part VI: Non-Intersecting Pair Count and LGV -/
+/- ## Part VI: Non-Intersecting Pair Count and LGV -/
 
 /-- Classical decidability for non-intersecting path pairs.
     Extracted as a named instance to avoid Fintype instance diamonds. -/
@@ -561,7 +561,7 @@ theorem lgv_lemma_2x2 (m a₁ b₁ a₂ b₂ : ℕ)
       unfold lgvDet; rw [h_ni]
       zify [h_le]; ring
 
-/-! ## Part VII: Vandermonde's Identity -/
+/- ## Part VII: Vandermonde's Identity -/
 
 /-- Vandermonde's identity: C(m+n, r) = Σ_{k=0}^{r} C(m,k) * C(n, r-k).
 
@@ -573,7 +573,7 @@ theorem vandermonde (m n r : ℕ) :
   exact (Finset.Nat.sum_antidiagonal_eq_sum_range_succ
     (fun i j => Nat.choose m i * Nat.choose n j) r)
 
-/-! ## Part VIII: Catalan Numbers -/
+/- ## Part VIII: Catalan Numbers -/
 
 /-- The n-th Catalan number via ballot formula -/
 def Cn (n : ℕ) : ℕ := Nat.choose (2 * n) n - Nat.choose (2 * n) (n + 1)
@@ -625,7 +625,7 @@ theorem catalan_formula (n : ℕ) : Cn n * (n + 1) = Nat.choose (2 * n) n := by
     zify [h_le] at h_abs ⊢
     linear_combination -h_abs
 
-/-! ## Part IX: Ballot Theorem -/
+/- ## Part IX: Ballot Theorem -/
 
 /-- Classical ballot count: sequences of p A-votes and q B-votes where A leads throughout.
     Formula (via reflection principle): C(p+q-1, p-1) - C(p+q-1, p) -/
@@ -688,7 +688,7 @@ theorem ballot_formula (p q : ℕ) (hpq : q < p) (hp : 1 ≤ p) (hq : 1 ≤ q) :
   zify [h_le, hqp] at h_abs ⊢
   linear_combination -2 * h_abs
 
-/-! ## Part X: Ballot Count via Path Difference -/
+/- ## Part X: Ballot Count via Path Difference -/
 
 /-- The ballot count equals the difference of two path counts (1D reflection principle).
     The reflection principle bijects "bad ballot sequences" (where B ever leads) with
@@ -707,7 +707,7 @@ theorem ballot_via_path_count (p q : ℕ) (hp : 1 ≤ p) (hq : 1 ≤ q) (hpq : q
     exact Nat.choose_symm_of_eq_add (by omega)
   rw [h1, h2]
 
-/-! ## Part XI: Involution Infrastructure for LGV -/
+/- ## Part XI: Involution Infrastructure for LGV -/
 
 /-- Split a path after its k-th East step: prefix (containing k East steps) and suffix.
     Uses direct component access (not let-bindings) for cleaner definitional reduction. -/
@@ -1009,12 +1009,12 @@ lemma lgv_zero_east_overlap (n₁ n₂ y₁ y₂ : ℕ)
   · rw [colEntry_zero, Nat.add_zero]
   · exact Nat.le_add_right y₂ _
 
-/-! ## Part XII: The 2×2 LGV Lemma (proved in Part VI via complement counting + axiom) -/
+/- ## Part XII: The 2×2 LGV Lemma (proved in Part VI via complement counting + axiom) -/
 
 -- The main theorem `lgv_lemma_2x2` is defined in Part VI above.
 -- It uses complement counting (ni_complement_count') + the Lindström involution axiom.
 
-/-! ## Part XIII: Verified LGV Examples -/
+/- ## Part XIII: Verified LGV Examples -/
 
 -- LGV det for (m=1, a₁=0, b₁=1, a₂=1, b₂=2):
 -- C(2,1)*C(2,1) - C(3,1)*C(1,1) = 4 - 3 = 1
@@ -1036,7 +1036,7 @@ example : lgvDet 4 0 4 1 5 = 490 := by native_decide
 -- When paths start in opposite vertical order vs endpoints (y₁ < y₂ but ends > ends),
 -- they MUST share a lattice point. This is why the "crossing" term in LGV vanishes.
 
-/-! ## Part XIII: Complement Counting and Lindström Involution -/
+/- ## Part XIII: Complement Counting and Lindström Involution -/
 
 -- The proof of the 2×2 LGV Lemma (Case 3: strict ordering a₁ < a₂ ≤ b₁ < b₂)
 -- reduces to a cardinality equation via complement counting:
@@ -1082,7 +1082,7 @@ theorem lindstrom_involution_card (m n₁ n₂ n₁' n₂' a₁ a₂ : ℕ)
     Fintype.card (pathType m n₁' × pathType m n₂') :=
   lindstrom_involution m n₁ n₂ n₁' n₂' a₁ a₂ h_strict_a h_n₁' h_n₂' h_n_sum
 
-/-! ## Part XIV: Path Transposition (East ↔ North Flip) -/
+/- ## Part XIV: Path Transposition (East ↔ North Flip) -/
 
 /-- Flip a lattice path: swap East (false) ↔ North (true).
     This transposes the grid, mapping paths with m East + n North steps
@@ -1157,7 +1157,7 @@ theorem choose_symm_via_paths (m n : ℕ) :
     Fintype.card_congr (pathFlipEquiv m n)
   linarith
 
-/-! ## Part XV: LGV Determinant Algebra -/
+/- ## Part XV: LGV Determinant Algebra -/
 
 /-- **Antisymmetry in Sources**: Swapping the source y-coordinates negates the LGV determinant. -/
 theorem lgvDet_swap_sources (m a₁ b₁ a₂ b₂ : ℕ) :
@@ -1183,7 +1183,7 @@ theorem lgvDet_swap_both (m a₁ b₁ a₂ b₂ : ℕ) :
     lgvDet m a₂ b₂ a₁ b₁ = lgvDet m a₁ b₁ a₂ b₂ := by
   unfold lgvDet; ring
 
-/-! ## Part XVI: Catalan-Ballot Unification -/
+/- ## Part XVI: Catalan-Ballot Unification -/
 
 /-- **Catalan = Ballot**: The n-th Catalan number equals the ballot count for (n+1) vs n votes.
     Both count lattice paths that stay strictly above the diagonal, via two equivalent
@@ -1212,7 +1212,7 @@ theorem catalan_ballot_division (n : ℕ) :
   rw [← catalan_eq_ballot]
   exact catalan_formula n
 
-/-! ## Part XVII: Entry Gap Analysis and swapTails Properties
+/- ## Part XVII: Entry Gap Analysis and swapTails Properties
 
 This section develops the entry gap framework and proves key properties of swapTails
 that are needed for the Lindström involution.
@@ -1283,7 +1283,7 @@ theorem crossing_col_prev_lt {l₁ l₂ : LPath} {y₁ y₂ k : ℕ}
     y₁ + colEntry l₁ k < y₂ + colEntry l₂ k := by
   simp only [entryGap] at hgap; omega
 
-/-! ### swapTails East Step and Length Preservation -/
+/- ### swapTails East Step and Length Preservation -/
 
 /-- **swapTails preserves East step count** for the first resulting path.
     Since pre₁ has k East steps and suf₂ has (m-k) East steps, their concatenation has m. -/

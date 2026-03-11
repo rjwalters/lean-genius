@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended with entry gap analysis (Part XVII). Proved entryGap framework (NI preserves positive gap at all columns), swapTails East step preservation, suffix North step decomposition. Still 0 sorries, 1 axiom (lindstrom_involution).",
+    "progressSummary": "PROGRESS: Extended with entry gap analysis (Part XVII). Proved entryGap framework (NI preserves positive gap at all columns), swapTails East step preservation, suffix North step decomposition. Fixed meta.json (sorries 1→0, badge open→axiom). Changed /-! to /- for Aristotle compatibility. Still 0 sorries, 1 axiom (lindstrom_involution).",
     "builtItems": [
       "37+ theorems in BallotProblemOQ03.lean",
       "Higher-dimensional lattice paths via reflection principle",
@@ -75,7 +75,7 @@
   },
   "knowledgeScore": 85,
   "started": "2026-02-26T17:08:50.304Z",
-  "lastUpdate": "2026-03-06T16:08:30.000Z",
+  "lastUpdate": "2026-03-11T12:15:00.000Z",
   "significance": 7,
   "tractability": 6
 }
