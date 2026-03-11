@@ -1,41 +1,65 @@
 {
   "slug": "erdos-109",
   "title": "Erdős #109: The Erdős Sumset Conjecture",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "FORMALIZED",
+  "status": "completed",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Erdős #109: The Erdős Sumset Conjecture.",
-    "whyMatters": []
+    "formal": "∀ A : Set ℕ, HasPositiveUpperDensity A → ∃ B C : Set ℕ, B.Infinite ∧ C.Infinite ∧ (B +ₛ C) ⊆ A",
+    "plain": "Any A ⊆ ℕ of positive upper density contains a sumset B + C where both B and C are infinite.",
+    "whyMatters": [
+      "Fundamental connection between density and additive structure",
+      "Resolved a longstanding conjecture of Erdős",
+      "Uses deep techniques from ergodic theory"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Moreira-Richter-Robertson (2019): Proved the conjecture in Annals of Mathematics",
+      "Formalization: 0 sorries, 1 axiom (main theorem), 11+ proved theorems",
+      "Proved: density comparisons, sumset commutativity, even numbers example"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Formalization complete - solved problem"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-23T08:04:56.540Z",
+    "phase": "FORMALIZED",
+    "since": "2026-03-11T14:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Knowledge update for existing complete formalization",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No further work needed - formalization is complete",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: Full Lean 4 formalization with 0 sorries and 1 axiom (main Moreira-Richter-Robertson theorem). Extensive proved results including density comparisons, sumset properties, and worked examples (even numbers). Gallery entry exists with meta and annotations.",
+    "builtItems": [
+      "proofs/Proofs/Erdos109Problem.lean (438 lines, 0 sorries, 1 axiom)",
+      "src/data/proofs/erdos-109/ (gallery entry)"
+    ],
+    "insights": [
+      "Problem is SOLVED by Moreira-Richter-Robertson (2019) in Annals of Mathematics",
+      "Formalization uses upper density via Filter.limsup and lower density via Filter.liminf",
+      "Key proved result: lowerDensity_le_upperDensity (liminf ≤ limsup)",
+      "Demonstrated conjecture on even numbers as worked example (B = C = evens)",
+      "Proved posUpperDensity_infinite as corollary (positive density implies infinite)",
+      "Related to Szemerédi's theorem but gives infinite sumsets rather than APs"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Direct formalization of solved result",
+      "status": "completed",
+      "description": "Axiomatized main theorem, proved surrounding infrastructure and examples"
+    }
+  ],
   "tags": [
     "erdos",
     "solved",
@@ -44,14 +68,26 @@
     "sumsets",
     "ergodic-theory"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-37",
+    "erdos-35"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Moreira, Richter, Robertson (2019): A proof of a sumset conjecture of Erdős. Ann. of Math. (2) 189(2):605-652"
+    ],
+    "urls": [
+      "https://erdosproblems.com/109"
+    ],
+    "mathlib": [
+      "Filter.limsup",
+      "Filter.liminf",
+      "Set.ncard",
+      "Set.Infinite"
+    ]
   },
   "started": "2026-01-23T08:04:56.540Z",
-  "lastUpdate": "2026-01-23T08:04:56.540Z",
+  "lastUpdate": "2026-03-11T14:00:00Z",
   "significance": 8,
   "tractability": 7
 }
