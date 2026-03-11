@@ -2,7 +2,7 @@
   "id": "erdos-1124-oq-01",
   "title": "How Few Pieces to Square a Circle?",
   "slug": "erdos-1124-oq-01",
-  "description": "Laczkovich proved that a circle and square of equal area can be decomposed into ~10^50 translation-congruent pieces. But how few pieces actually suffice? This file formalizes the minimum piece count problem, proves reflexivity of equidecomposability, and states the known bounds: at least 3 (topological obstruction) and at most 10^50 (Laczkovich) or 10^5 (Marks-Unger, with Borel pieces).",
+  "description": "Laczkovich proved that a circle and square of equal area can be decomposed into ~10^50 translation-congruent pieces. But how few pieces actually suffice? This file formalizes the minimum piece count problem, proves 0-piece and 1-piece impossibility (the latter via a diagonal argument and π > 3), proves transitivity of translation congruence, and states the known bounds: at least 3 (topological obstruction) and at most 10^50 (Laczkovich) or 10^5 (Marks-Unger, with Borel pieces).",
   "meta": {
     "author": "Laczkovich (1990), Marks-Unger (2017), formalized in Lean 4",
     "sourceUrl": "https://erdosproblems.com/1124",
@@ -88,13 +88,41 @@
         270
       ],
       "description": "What is the minimum number of pieces? Known: 3 ≤ min ≤ 10^50. Computer experiments suggest ~22 might suffice."
+    },
+    {
+      "id": "zero-piece",
+      "title": "Zero-Piece Impossibility (Proved)",
+      "lines": [
+        310,
+        341
+      ],
+      "description": "Proves that 0-piece equidecomposition is impossible since the disk is nonempty but Fin 0 union is empty."
+    },
+    {
+      "id": "one-piece",
+      "title": "One-Piece Impossibility (Proved)",
+      "lines": [
+        342,
+        433
+      ],
+      "description": "Proves that 1-piece equidecomposition is impossible via a diagonal containment argument: ‖(s,s)‖² = 2s² ≤ 4r² but πr² = s² gives π ≤ 2, contradicting π > 3."
+    },
+    {
+      "id": "transitivity",
+      "title": "Transitivity and Bound Chain (Proved)",
+      "lines": [
+        434,
+        475
+      ],
+      "description": "Proves transitivity of translation congruence and establishes the full bound chain: 3 ≤ minPieceCount ≤ 10^50."
     }
   ],
   "overview": {
     "summary": "Tarski asked in 1925 whether a circle can be cut into finitely many pieces and rearranged into a square. Laczkovich (1990) proved yes, using ~10^50 non-measurable pieces. This file asks: how few pieces are actually needed? We formalize the minimum piece count, prove equidecomposability is reflexive, and state the known bounds from Laczkovich, Grabowski-Máthé-Pikhurko (measurable), and Marks-Unger (Borel, < 10^5 pieces). The gap between the lower bound (3) and upper bound (10^5) remains wide open.",
     "keyIdeas": [
       "N-piece equidecomposition parametrizes the problem by piece count",
-      "Equidecomposability is reflexive (identity translation), symmetric, and monotone",
+      "Equidecomposability is reflexive, symmetric, transitive, and monotone",
+      "0 pieces impossible (nonempty sets), 1 piece impossible (π > 3 contradiction via diagonal norm)",
       "Topological arguments give a lower bound of 3 pieces",
       "Marks-Unger achieved Borel pieces with < 10^5 bound",
       "The exact minimum is unknown (conjectured ~22 from computer experiments)"
