@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "erdos-1007-oq-01-unit-distance-embedding",
+    "proofId": "erdos-1007-oq-01",
+    "range": { "startLine": 41, "endLine": 56 },
+    "type": "definition",
+    "title": "Unit Distance Embedding and Graph Dimension",
+    "content": "The formalization defines a unit distance embedding as a map from vertices to points in \\(\\mathbb{R}^n\\) such that every adjacent pair has Euclidean distance exactly 1. The graph dimension is then the minimum \\(n\\) for which such an embedding exists, computed via Nat.find. This axiomatizes the core geometric concept behind Erdos Problem 1007.",
+    "mathContext": "\\text{dim}(G) = \\min\\{n \\in \\mathbb{N} : G \\hookrightarrow \\mathbb{R}^n \\text{ as unit distances}\\}",
+    "significance": "key",
+    "relatedConcepts": ["unit distance graph", "Euclidean embedding", "graph dimension", "Nat.find"],
+    "prerequisites": ["Euclidean distance", "Real.sqrt", "Fintype"]
+  },
+  {
+    "id": "erdos-1007-oq-01-min-edges-axiomatization",
+    "proofId": "erdos-1007-oq-01",
+    "range": { "startLine": 62, "endLine": 77 },
+    "type": "context",
+    "title": "Axiomatization of minEdges(d)",
+    "content": "The function minEdges(d) is axiomatized rather than computed, since extracting the minimum over all finite graphs of a given dimension requires an unbounded search. The axioms assert that minEdges(d) is a lower bound on edge count for any graph of dimension d, and that this minimum is achieved by some graph. This is a standard approach when the extremal object cannot be constructed algorithmically in Lean.",
+    "mathContext": "\\text{minEdges}(d) = \\min\\{|E(G)| : \\text{dim}(G) = d\\}",
+    "significance": "key",
+    "relatedConcepts": ["extremal graph theory", "axiomatization", "graph dimension"],
+    "prerequisites": ["Fintype", "DecidableRel", "Finset.filter"]
+  },
+  {
+    "id": "erdos-1007-oq-01-known-values",
+    "proofId": "erdos-1007-oq-01",
+    "range": { "startLine": 83, "endLine": 99 },
+    "type": "context",
+    "title": "Known Values of minEdges for d = 0 through 5",
+    "content": "The known values 0, 1, 3, 6, 9, 15 for dimensions 0 through 5 are recorded as axioms. For d <= 3 and d = 5, the optimal graph is the complete graph K_{d+1}. The d = 4 case is exceptional: K_{3,3} achieves dimension 4 with only 9 edges, beating the 10 edges of K_5. These values were established by House (2013) for d = 4 and Chaffee-Noble (2016) for d = 5.",
+    "mathContext": "\\text{minEdges}(0,1,2,3,4,5) = (0, 1, 3, 6, 9, 15)",
+    "significance": "key",
+    "relatedConcepts": ["complete graph", "complete bipartite graph", "K_{3,3}", "graph dimension"],
+    "prerequisites": ["Nat.choose"]
+  },
+  {
+    "id": "erdos-1007-oq-01-dim4-surprise",
+    "proofId": "erdos-1007-oq-01",
+    "range": { "startLine": 114, "endLine": 118 },
+    "type": "insight",
+    "title": "The d = 4 Surprise: K_{3,3} Beats K_5",
+    "content": "This theorem proves that minEdges(4) = 9 < C(5,2) = 10, establishing that the complete bipartite graph K_{3,3} achieves dimension 4 more efficiently than K_5. This is the first dimension where the complete graph is not optimal. The proof reduces to a simple numerical comparison using native_decide after substituting the axiomatized value.",
+    "mathContext": "\\text{minEdges}(4) = 9 < \\binom{5}{2} = 10",
+    "significance": "key",
+    "relatedConcepts": ["complete bipartite graph", "K_{3,3}", "K_5", "extremal graph"],
+    "prerequisites": ["Nat.choose", "native_decide"]
+  },
+  {
+    "id": "erdos-1007-oq-01-upper-bound-quadratic",
+    "proofId": "erdos-1007-oq-01",
+    "range": { "startLine": 169, "endLine": 181 },
+    "type": "technique",
+    "title": "Quadratic Upper Bound via Binomial Coefficients",
+    "content": "The proof that minEdges(d) <= (d+1)d/2 works by casting the natural number inequality to reals. It rewrites C(d+1, 2) using Nat.choose_two_right, then establishes 2 | (d+1)*d by case-splitting on the parity of d. The Nat.cast_div lemma handles the division, and push_cast with ring close the algebraic goal. This is a common Lean pattern for bridging Nat and Real arithmetic.",
+    "mathContext": "\\text{minEdges}(d) \\le \\binom{d+1}{2} = \\frac{(d+1)d}{2}",
+    "significance": "supporting",
+    "relatedConcepts": ["binomial coefficient", "Nat.cast_le", "parity case split", "push_cast"],
+    "prerequisites": ["Nat.choose_two_right", "Nat.even_or_odd", "field_simp"]
+  },
+  {
+    "id": "erdos-1007-oq-01-simplex-embed",
+    "proofId": "erdos-1007-oq-01",
+    "range": { "startLine": 196, "endLine": 251 },
+    "type": "technique",
+    "title": "Simplex Embedding: K_n in R^n via Scaled Basis Vectors",
+    "content": "The constructive proof maps vertex i to (1/sqrt(2)) * e_i in R^n. For distinct vertices i, j, the squared distance sums to (1/sqrt(2))^2 + (-1/sqrt(2))^2 = 1/2 + 1/2 = 1, giving unit distance. The proof extracts the i-th and j-th terms from the Finset.univ sum using Finset.add_sum_erase, shows all other terms vanish, and concludes with ring arithmetic. This is the key geometric construction underlying the upper bound.",
+    "mathContext": "v_i = \\frac{1}{\\sqrt{2}} e_i \\in \\mathbb{R}^n, \\quad \\|v_i - v_j\\|^2 = \\frac{1}{2} + \\frac{1}{2} = 1",
+    "significance": "key",
+    "relatedConcepts": ["regular simplex", "standard basis vectors", "Finset.add_sum_erase", "unit distance embedding"],
+    "prerequisites": ["Real.sqrt", "Real.sq_sqrt", "Finset.sum", "Fin"]
+  },
+  {
+    "id": "erdos-1007-oq-01-inv-sqrt-two-sq",
+    "proofId": "erdos-1007-oq-01",
+    "range": { "startLine": 201, "endLine": 204 },
+    "type": "lemma",
+    "title": "Key Algebraic Identity: (1/sqrt(2))^2 = 1/2",
+    "content": "This private lemma establishes the algebraic identity (1/sqrt(2))^2 = 1/2, needed for the simplex embedding distance computation. The proof first shows sqrt(2) != 0 via Real.sqrt_ne_zero', applies field_simp to clear denominators, then uses Real.sq_sqrt with the nonnegativity precondition 0 <= 2. Despite its simplicity, this identity is the numerical linchpin of the entire simplex construction.",
+    "mathContext": "\\left(\\frac{1}{\\sqrt{2}}\\right)^2 = \\frac{1}{2}",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.sqrt", "Real.sq_sqrt", "field_simp"],
+    "prerequisites": ["Real.sqrt_ne_zero'", "norm_num"]
+  },
+  {
+    "id": "erdos-1007-oq-01-optimal-implies-monotone",
+    "proofId": "erdos-1007-oq-01",
+    "range": { "startLine": 294, "endLine": 326 },
+    "type": "theorem",
+    "title": "Complete Graph Optimality Implies Monotonicity",
+    "content": "This conditional theorem proves that if K_{d+1} is optimal for all d != 4, then minEdges is monotone. The proof performs a case analysis: when neither dimension is 4, the result follows from monotonicity of C(d+1, 2). When one dimension is 4, the known value minEdges(4) = 9 is sandwiched between C(4,2) = 6 and C(6,2) = 15 using explicit bounds. This demonstrates a common pattern in formalized mathematics: reducing a conjecture to verifiable numerical and monotonicity conditions.",
+    "mathContext": "(\\forall d \\neq 4,\\; \\text{minEdges}(d) = \\binom{d+1}{2}) \\Rightarrow (d_1 \\le d_2 \\Rightarrow \\text{minEdges}(d_1) \\le \\text{minEdges}(d_2))",
+    "significance": "key",
+    "relatedConcepts": ["monotonicity", "conditional theorem", "case analysis", "Nat.choose_le_choose"],
+    "prerequisites": ["choose_two_mono", "minEdges_dim4", "native_decide"]
+  },
+  {
+    "id": "erdos-1007-oq-01-deficiency-function",
+    "proofId": "erdos-1007-oq-01",
+    "range": { "startLine": 380, "endLine": 405 },
+    "type": "insight",
+    "title": "Deficiency Function and Equivalence with Optimality",
+    "content": "The deficiency delta(d) = C(d+1,2) - minEdges(d) quantifies how much the optimal graph improves over K_{d+1}. The formalization computes delta(d) = 0 for d = 1,2,3,5 and delta(4) = 1, then proves the key equivalence: the complete graph optimality conjecture holds if and only if delta(d) = 0 for all d != 4. The forward direction is immediate from the conjecture; the reverse uses the upper bound minEdges(d) <= C(d+1,2) to conclude equality from zero deficiency.",
+    "mathContext": "\\delta(d) = \\binom{d+1}{2} - \\text{minEdges}(d), \\quad \\delta(4) = 1, \\quad \\delta(d) = 0 \\text{ for } d \\in \\{1,2,3,5\\}",
+    "significance": "key",
+    "relatedConcepts": ["deficiency", "equivalence", "extremal characterization", "Nat.sub"],
+    "prerequisites": ["minEdges_upper_bound", "Nat.choose_two_right"]
+  },
+  {
+    "id": "erdos-1007-oq-01-unique-anomaly",
+    "proofId": "erdos-1007-oq-01",
+    "range": { "startLine": 407, "endLine": 412 },
+    "type": "insight",
+    "title": "d = 4 is the Unique Anomaly for d <= 5",
+    "content": "The final structural result proves that among dimensions 1 through 5, d = 4 is the only value where the deficiency is nonzero. The proof uses interval_cases to enumerate all five dimensions and applies the computed deficiency values. This formally confirms the exceptional nature of the d = 4 case and motivates the open question of whether d = 4 remains the sole anomaly in all dimensions.",
+    "mathContext": "\\forall d,\\; 1 \\le d \\le 5 \\land \\delta(d) \\neq 0 \\implies d = 4",
+    "significance": "supporting",
+    "relatedConcepts": ["interval_cases", "anomaly classification", "deficiency"],
+    "prerequisites": ["deficiency_dim1", "deficiency_dim2", "deficiency_dim3", "deficiency_dim4", "deficiency_dim5"]
+  }
+]
