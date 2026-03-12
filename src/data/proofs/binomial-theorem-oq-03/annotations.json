@@ -1,7 +1,7 @@
 [
   {
     "lineNumber": 29,
-    "content": "The binomial PMF is defined as a real-valued function, not a measure-theoretic probability. This algebraic approach avoids the complexity of σ-algebras while still proving all the key identities.",
+    "content": "The binomial PMF is defined as a real-valued function, not a measure-theoretic probability. This algebraic approach avoids the complexity of sigma-algebras while still proving all the key identities.",
     "type": "definition",
     "tags": ["probability", "binomial-distribution"]
   },
@@ -13,7 +13,7 @@
   },
   {
     "lineNumber": 78,
-    "content": "The absorption identity (k+1)C(n+1,k+1) = (n+1)C(n,k) is the key algebraic tool for computing the mean. It converts each term k·PMF(k) into (n+1)·p times a degree-(n-1) binomial term.",
+    "content": "The absorption identity (k+1)C(n+1,k+1) = (n+1)C(n,k) is the key algebraic tool for computing the mean. It converts each term k*PMF(k) into (n+1)*p times a degree-(n-1) binomial term.",
     "type": "technique",
     "tags": ["absorption-identity", "mean"]
   },
@@ -22,5 +22,29 @@
     "content": "The PGF E[t^X] = (pt + 1-p)^n follows directly from replacing p by pt in the binomial expansion. Setting t=1 recovers normalization; differentiating at t=1 gives the mean.",
     "type": "insight",
     "tags": ["generating-function", "pgf"]
+  },
+  {
+    "lineNumber": 209,
+    "content": "Double absorption: (k+2)(k+1)C(n+2,k+2) = (n+2)(n+1)C(n,k). Two applications of absorption give the second factorial moment E[X(X-1)] = n(n-1)p^2, from which Var(X) = np(1-p) follows algebraically.",
+    "type": "technique",
+    "tags": ["double-absorption", "variance", "second-moment"]
+  },
+  {
+    "lineNumber": 276,
+    "content": "Vandermonde's identity sum_j C(n,j)*C(m,k-j) = C(n+m,k) translates to the convolution property: the sum of independent Bin(n,p) and Bin(m,p) random variables has distribution Bin(n+m,p).",
+    "type": "key-step",
+    "tags": ["vandermonde", "convolution", "independence"]
+  },
+  {
+    "lineNumber": 398,
+    "content": "The classical limit (1+x/n)^n -> exp(x) is proved from first principles: the derivative of log at 1 gives log(1+h)/h -> 1 as h -> 0, composing with h = x/n gives n*log(1+x/n) -> x, and continuity of exp completes the proof. This result is not in Mathlib v4.26.0.",
+    "type": "key-step",
+    "tags": ["exponential-limit", "compound-interest", "analysis"]
+  },
+  {
+    "lineNumber": 523,
+    "content": "The Poisson limit theorem is proved by induction on k using the ratio of consecutive PMF terms. The base case (k=0) reduces to (1-r/n)^n -> e^(-r), which follows from the (1+x/n)^n limit. The inductive step uses the factoring binomPMF(k+1) = binomPMF(k) * ratio, where the ratio converges to r/(k+1).",
+    "type": "key-step",
+    "tags": ["poisson-limit", "induction", "convergence"]
   }
 ]

@@ -2,7 +2,7 @@
   "id": "binomial-theorem-oq-03",
   "title": "Binomial Distribution from the Binomial Theorem",
   "slug": "binomial-theorem-oq-03",
-  "description": "Can we derive the binomial distribution and its key properties directly from the binomial theorem? YES. The identity (p + (1-p))^n = 1 gives normalization, and algebraic manipulation yields mean = np. This formalization derives normalization, mean, symmetry, fair coin formula, Bernoulli cases, and the probability generating function — all from the binomial theorem.",
+  "description": "Can we derive the binomial distribution and its key properties directly from the binomial theorem? YES. The identity (p + (1-p))^n = 1 gives normalization, algebraic manipulation yields mean = np and variance = np(1-p), Vandermonde's identity gives convolution, and the Poisson limit theorem follows from the derivative of log at 1.",
   "meta": {
     "author": "Jacob Bernoulli (1713); algebraic derivation formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Binomial_distribution",
@@ -16,9 +16,12 @@
       "normalization",
       "moments",
       "generating-functions",
+      "poisson-limit",
+      "convolution",
+      "vandermonde",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -30,35 +33,50 @@
         "theorem": "Nat.sum_range_choose",
         "description": "Sum of binomial coefficients equals 2^n",
         "module": "Mathlib.Data.Nat.Choose.Sum"
+      },
+      {
+        "theorem": "Real.hasDerivAt_log",
+        "description": "Derivative of log function, used for Poisson limit",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Deriv"
+      },
+      {
+        "theorem": "Nat.add_choose_eq",
+        "description": "Vandermonde's identity for binomial coefficients",
+        "module": "Mathlib.Data.Nat.Choose.Vandermonde"
       }
     ],
     "originalContributions": [
       "binomPMF: P(X=k) = C(n,k) p^k (1-p)^(n-k) as a Lean definition",
       "binomPMF_sum_eq_one: normalization from (p + (1-p))^n = 1",
       "binomial_mean: E[X] = np via the absorption identity (k+1)C(n+1,k+1) = (n+1)C(n,k)",
-      "binomPMF_symm: symmetry P(k;n,p) = P(n-k;n,1-p)",
+      "binomial_variance: Var(X) = np(1-p) via double absorption and second factorial moment",
+      "binomPMF_convolution: Bin(n,p)*Bin(m,p) = Bin(n+m,p) via Vandermonde's identity",
+      "tendsto_one_plus_div_pow_exp: classical limit (1+x/n)^n -> exp(x) proved from log derivative",
+      "poisson_limit: Bin(n,r/n) -> Poi(r) pointwise, full inductive proof",
       "binomial_pgf: probability generating function E[t^X] = (pt + 1-p)^n",
       "Special cases: fair coin C(n,k)/2^n, Bernoulli, certain/impossible events"
     ],
     "dateAdded": "02/26/26",
-    "axioms": 1
+    "axioms": 0
   },
   "overview": {
-    "historicalContext": "The binomial distribution — the probability of k successes in n independent Bernoulli trials — is one of the most fundamental objects in probability theory. Jacob Bernoulli established its properties in Ars Conjectandi (1713). The connection to the algebraic binomial theorem is immediate: setting x = p, y = 1-p in (x+y)^n = 1 gives normalization, and differentiating the PGF gives moments.",
-    "problemStatement": "**Open Question (OQ-03):** Can we derive the binomial distribution's key properties (normalization, mean, PGF) directly from the algebraic binomial theorem?\n\n**Answer:** YES. Every property follows from algebraic manipulation of (p + q)^n = Σ C(n,k) p^k q^(n-k):\n- **Normalization:** Set q = 1-p to get 1 = Σ PMF(k)\n- **Mean:** Use the absorption identity to factor np from Σ k·PMF(k)\n- **PGF:** Replace p by pt to get E[t^X] = (pt + 1-p)^n",
-    "proofStrategy": "The proof proceeds algebraically:\n\n1. **Binomial expansion:** (p+q)^n = Σ C(n,k) p^k q^(n-k) proved by rewriting Mathlib's add_pow\n2. **Normalization:** Substitute q = 1-p; the sum telescopes to 1^n = 1\n3. **Mean via absorption:** The identity (k+1)C(n+1,k+1) = (n+1)C(n,k) lets us factor out np from the sum; the remaining sum is 1 by normalization of degree n-1\n4. **PGF:** Replace p by pt in the binomial expansion",
+    "historicalContext": "The binomial distribution -- the probability of k successes in n independent Bernoulli trials -- is one of the most fundamental objects in probability theory. Jacob Bernoulli established its properties in Ars Conjectandi (1713). The connection to the algebraic binomial theorem is immediate: setting x = p, y = 1-p in (x+y)^n = 1 gives normalization, and differentiating the PGF gives moments. The Poisson limit theorem (Siméon Denis Poisson, 1837) shows that rare events follow the Poisson distribution.",
+    "problemStatement": "**Open Question (OQ-03):** Can we derive the binomial distribution's key properties (normalization, mean, variance, PGF, convolution, Poisson limit) directly from the algebraic binomial theorem?\n\n**Answer:** YES. Every property follows from algebraic manipulation of (p + q)^n = sum C(n,k) p^k q^(n-k):\n- **Normalization:** Set q = 1-p to get 1 = sum PMF(k)\n- **Mean:** Use the absorption identity to factor np from sum k*PMF(k)\n- **Variance:** Use double absorption for the second factorial moment\n- **Convolution:** Vandermonde's identity gives Bin(n,p)*Bin(m,p) = Bin(n+m,p)\n- **Poisson limit:** log derivative + continuity of exp gives (1+x/n)^n -> exp(x)",
+    "proofStrategy": "The proof proceeds algebraically through 11 parts:\n\n1. **Binomial expansion:** (p+q)^n = sum C(n,k) p^k q^(n-k) proved by rewriting Mathlib's add_pow\n2. **Normalization:** Substitute q = 1-p; the sum telescopes to 1^n = 1\n3. **Mean via absorption:** (k+1)C(n+1,k+1) = (n+1)C(n,k) factors out np\n4. **Variance via double absorption:** (k+2)(k+1)C(n+2,k+2) = (n+2)(n+1)C(n,k) gives E[X(X-1)] = n(n-1)p^2\n5. **Convolution:** Vandermonde's identity sum C(n,j)C(m,k-j) = C(n+m,k)\n6. **Poisson limit:** log(1+h)/h -> 1 composed with h = x/n -> 0 gives (1+x/n)^n -> e^x, then induction on k",
     "keyInsights": [
-      "The binomial theorem IS normalization — they are literally the same identity with q = 1-p",
-      "The absorption identity converts a weighted sum Σ k·PMF(k) into np times an unweighted sum",
-      "The PGF encodes all moments compactly; E[t^X] = (pt + 1-p)^n unifies normalization and mean",
-      "Working over ℝ (not Finset probability) keeps the algebra clean and avoids measure theory"
+      "The binomial theorem IS normalization -- they are literally the same identity with q = 1-p",
+      "The absorption identity converts a weighted sum sum k*PMF(k) into np times an unweighted sum",
+      "Double absorption gives the second factorial moment, from which variance follows algebraically",
+      "Vandermonde's identity translates to the convolution property of independent binomials",
+      "The Poisson limit follows from the derivative of log at 1: log(1+h)/h -> 1 as h -> 0",
+      "The (1+x/n)^n -> exp(x) limit was proved from first principles (not in Mathlib v4.26.0)"
     ]
   },
   "sections": [
     {
       "id": "pmf",
       "title": "The Binomial Distribution PMF",
-      "startLine": 1,
+      "startLine": 25,
       "endLine": 44,
       "summary": "Definition of binomPMF and basic properties: P(0), P(n), non-negativity."
     },
@@ -91,19 +109,51 @@
       "summary": "Fair coin, Bernoulli, certain event, impossible event."
     },
     {
+      "id": "monotonicity",
+      "title": "Monotonicity",
+      "startLine": 163,
+      "endLine": 171,
+      "summary": "The mean np is monotone in p."
+    },
+    {
       "id": "pgf",
       "title": "Probability Generating Function",
-      "startLine": 163,
+      "startLine": 173,
       "endLine": 207,
       "summary": "PGF E[t^X] = (pt+1-p)^n, its value at t=1, and derivative interpretation."
+    },
+    {
+      "id": "second-factorial-moment",
+      "title": "Double Absorption and Second Factorial Moment",
+      "startLine": 209,
+      "endLine": 268,
+      "summary": "E[X(X-1)] = n(n-1)p^2 via double absorption, then Var(X) = np(1-p)."
+    },
+    {
+      "id": "convolution",
+      "title": "Convolution via Vandermonde's Identity",
+      "startLine": 270,
+      "endLine": 329,
+      "summary": "Bin(n,p) * Bin(m,p) = Bin(n+m,p): sum of independent binomials is binomial."
+    },
+    {
+      "id": "poisson-limit",
+      "title": "Poisson Limit Theorem",
+      "startLine": 331,
+      "endLine": 553,
+      "summary": "Full Poisson limit theorem: Bin(n,r/n) -> Poi(r) pointwise. Includes proof of (1+x/n)^n -> exp(x) from the derivative of log at 1."
+    },
+    {
+      "id": "summary",
+      "title": "Extended Summary",
+      "startLine": 555,
+      "endLine": 582,
+      "summary": "Summary theorem combining all results: normalization, mean, variance, PGF, fair coin, convolution, and Poisson limit."
     }
   ],
   "conclusion": {
-    "summary": "All key properties of the binomial distribution — normalization, mean, symmetry, generating function, and special cases — are derived purely from the algebraic binomial theorem without any measure theory or probability axioms. The proof demonstrates that the binomial distribution is fundamentally an algebraic object.",
-    "implications": "This formalization shows that discrete probability distributions can be studied entirely within algebra, without measure-theoretic foundations. The PGF framework extends naturally to other distributions (Poisson as a limit, negative binomial via generating function composition).",
-    "openQuestions": [
-      "Can the variance np(1-p) be derived from the second derivative of the PGF?",
-      "Can we formalize the Poisson limit theorem: Bin(n, λ/n) → Poi(λ) as n → ∞?"
-    ]
+    "summary": "All key properties of the binomial distribution -- normalization, mean, variance, symmetry, generating function, special cases, convolution, and Poisson limit -- are derived purely from the algebraic binomial theorem. The classical limit (1+x/n)^n -> exp(x) is proved from first principles using the derivative of log. This is a fully verified formalization with 0 sorries and 0 axioms.",
+    "implications": "This formalization demonstrates that discrete probability distributions can be studied entirely within algebra, without measure-theoretic foundations. The Poisson limit theorem connects discrete and continuous probability, and the (1+x/n)^n -> exp(x) limit is a foundational result not currently in Mathlib.",
+    "openQuestions": []
   }
 }
