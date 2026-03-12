@@ -52,6 +52,7 @@ export async function getProofAsync(slug: string): Promise<ProofData | undefined
   try {
     const module = await loader()
     // Try default export first, then named export, then fallback to first *Data export
+    // (fallback handles casing mismatches like OQ vs Oq in export names)
     const exportName = slugToExportName(slug)
     const proofData: ProofData = module.default || module[exportName] ||
       Object.keys(module).filter(k => k.endsWith('Data')).map(k => module[k]).find(v => v?.proof)
