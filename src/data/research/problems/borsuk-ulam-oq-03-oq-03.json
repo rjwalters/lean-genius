@@ -16,25 +16,44 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-06T08:22:48-08:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "phase": "SURVEYED",
+    "since": "2026-03-12T23:55:00.000Z",
+    "iteration": 2,
+    "focus": "Deep survey: 3 axioms (not 5), tucker_disk_approx_zero derivable from other 2 but complex construction",
+    "blockers": [
+      "tuckers_lemma requires path-following in simplicial complexes (hard to formalize)",
+      "tucker_disk_approx_zero derivable from axioms 1+2 but needs grid triangulation construction as Fintype"
+    ],
+    "nextAction": "Attempt to derive tucker_disk_approx_zero from tuckers_lemma + complementary_edge_gives_approximate_zero.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "SURVEYED - File has 1153 lines, 65 theorems, 12 defs, 3 axioms (meta.json was wrong at 5), 0 sorries. Fixed meta.json axiom count. The 3 axioms are: (1) tuckers_lemma - general Tucker, (2) complementary_edge_gives_approximate_zero - IVT approximate zero, (3) tucker_disk_approx_zero - disk version. Axiom 3 is noted as derivable from 1+2 per comment.",
+    "builtItems": [
+      "Fixed meta.json axiom count from 5 to 3"
+    ],
+    "insights": [
+      "Only 3 axioms exist (tuckers_lemma, complementary_edge_gives_approximate_zero, tucker_disk_approx_zero), not 5 as meta.json claimed",
+      "tucker_disk_approx_zero is noted in comments as consequence of the other 2 axioms (Tucker + IVT approximate zero), but proving it requires constructing a grid triangulation as a Fintype with edges, boundary, and antipodal_map",
+      "tuckers_lemma is the most fundamental axiom - requires path-following in simplicial complexes, genuinely hard",
+      "complementary_edge_gives_approximate_zero may have an issue with its bound (δ * sup term seems too aggressive for large-gradient functions), needs verification",
+      "File includes computational verification of Tucker 2D for 5-vertex (64 cases, decide) and 9-vertex (1024 cases, native_decide) triangulations",
+      "BU for linear maps (R³→R²) is proved algebraically via rank-nullity without any axioms"
+    ],
+    "mathlibGaps": [
+      "Simplicial complex infrastructure (triangulations, path-following)",
+      "Tucker's lemma for general triangulations",
+      "IVT on paths in R² (for approximate zero from complementary edge)"
+    ],
+    "nextSteps": [
+      "Derive tucker_disk_approx_zero from tuckers_lemma + complementary_edge_gives_approximate_zero (requires ~150 lines of grid construction)",
+      "Verify complementary_edge_gives_approximate_zero bound is correct (may need fixing)",
+      "If Tucker path-following infrastructure appears in Mathlib, prove tuckers_lemma"
+    ]
   },
   "approaches": [],
   "tags": [
