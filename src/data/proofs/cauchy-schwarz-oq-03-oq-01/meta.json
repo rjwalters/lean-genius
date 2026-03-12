@@ -103,7 +103,7 @@
         "note": "Young's inequality ab ≤ a^p/p + b^q/q for conjugate exponents"
       }
     ],
-    "historicalContext": "The equality condition for Cauchy-Schwarz has been known since Cauchy (1821): equality holds iff the vectors are proportional. Lagrange's identity (1773) provides an elegant proof by expressing the CS deficit as a sum of squared cross-terms. For the general Hölder inequality, the equality case was characterized by Hardy, Littlewood, and Pólya (1934): equality holds iff fᵢ^p and gᵢ^q are proportional, proved via Young's inequality and strict convexity. The measure-theoretic extension requires the a.e. version: f^p =ᵃᵉ c·g^q."
+    "historicalContext": "The Cauchy-Schwarz inequality has a rich multi-national history: Cauchy proved the finite-sum version in 1821, Bunyakovsky extended it to integrals in 1859, and Schwarz independently proved the integral form in 1885. The equality condition — proportionality of the vectors — was recognized by Cauchy himself. Lagrange's identity (1773), originally developed for studying 2×2 determinants, provides an elegant proof by expressing the CS deficit as a sum of squared cross-terms $(f_ig_j - f_jg_i)^2$. For the general Hölder inequality (Hölder 1889, Rogers 1888), the equality case was fully characterized by Hardy, Littlewood, and Pólya in their landmark 1934 monograph 'Inequalities': equality holds iff $f_i^p$ and $g_i^q$ are proportional, proved via Young's inequality (1912) and strict convexity of the exponential. The measure-theoretic extension, needed for $L^p$ space theory, requires the almost-everywhere version: $f^p =_{\\text{a.e.}} c \\cdot g^q$."
   },
   "sections": [
     {
@@ -207,7 +207,8 @@
     ],
     "openQuestions": [
       "Can the strict convexity argument for Young's equality be replaced by a purely algebraic proof?",
-      "Can the integral equality characterization be extended to the endpoint cases p=1 and p=∞?"
+      "Can the integral equality characterization be extended to the endpoint cases p=1 and p=∞?",
+      "Can the same Young deficit technique characterize equality in Minkowski's inequality $\\|f+g\\|_p \\le \\|f\\|_p + \\|g\\|_p$?"
     ]
   }
 }
