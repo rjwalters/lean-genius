@@ -272,14 +272,6 @@ theorem piece_count_upper_bound (r s : ℝ) (hr : r > 0) (hs : s > 0)
     minPieceCount r s ≤ 10^50 :=
   minPieceCount_is_min r s (10^50) (laczkovich_upper_bound r s hr hs hA)
 
-/-- The minimum piece count is at least 3 (topological obstruction).
-    Axiomatized: the proof requires showing that 0, 1, and 2 pieces
-    are impossible, using the topological argument from lower_bound_three
-    and the fact that a disk is not a translate of a square. -/
-axiom piece_count_lower_bound (r s : ℝ) (hr : r > 0) (hs : s > 0)
-    (hA : SameArea r s) :
-    3 ≤ minPieceCount r s
-
 -- ============================================================================
 -- Part VIII: Consequences of Improved Bounds
 -- ============================================================================
@@ -459,10 +451,22 @@ theorem translation_congruent_trans {A B C : Set Point}
 -- Part XII: Proved Lower Bound Chain
 -- ============================================================================
 
-/-- Combined lower bound: the minimum piece count is at least 3.
-    Proof: 0 pieces is impossible (nonempty sets), and the topological
-    argument (lower_bound_three) rules out 2.
-    The 1-piece case is ruled out by shape mismatch. -/
+/-- **PROVED**: The minimum piece count is at least 3.
+    Case analysis: 0 pieces impossible (nonempty), 1 piece impossible
+    (shape mismatch, proved above), 2 pieces impossible (topological). -/
+theorem piece_count_lower_bound (r s : ℝ) (hr : r > 0) (hs : s > 0)
+    (hA : SameArea r s) :
+    3 ≤ minPieceCount r s := by
+  by_contra h
+  push_neg at h
+  have hach := minPieceCount_achieves r s hr hs hA
+  have : minPieceCount r s = 0 ∨ minPieceCount r s = 1 ∨ minPieceCount r s = 2 := by omega
+  rcases this with h0 | h1 | h2
+  · rw [h0] at hach; exact not_zero_equidecomposable r s hr hs hach
+  · rw [h1] at hach; exact not_one_equidecomposable r s hr hs hA hach
+  · rw [h2] at hach; exact lower_bound_three r s hr hs hA hach
+
+/-- Combined lower bound (alias). -/
 theorem lower_bound_chain (r s : ℝ) (hr : r > 0) (hs : s > 0) (hA : SameArea r s) :
     3 ≤ minPieceCount r s :=
   piece_count_lower_bound r s hr hs hA
