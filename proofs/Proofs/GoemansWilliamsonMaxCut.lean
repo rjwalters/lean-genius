@@ -137,8 +137,7 @@ axiom sdp_ge_maxcut (G : SimpleGraph V) [DecidableRel G.Adj] :
 
 axiom gwExpectedCut (G : SimpleGraph V) [DecidableRel G.Adj] : ℝ
 
-axiom gwExpectedCut_nonneg (G : SimpleGraph V) [DecidableRel G.Adj] :
-  0 ≤ gwExpectedCut G
+-- gwExpectedCut_nonneg: moved after gw_rounding_inequality (proved, was axiom)
 
 /-
   ## The GW Inequality
@@ -160,6 +159,13 @@ axiom gwExpectedCut_nonneg (G : SimpleGraph V) [DecidableRel G.Adj] :
 -- achieves its minimum α_GW at θ* ≈ 2.331).
 axiom gw_rounding_inequality (G : SimpleGraph V) [DecidableRel G.Adj] :
   αGW * sdpRelaxation G ≤ gwExpectedCut G
+
+-- Derived from gw_rounding_inequality + sdpRelaxation_nonneg + αGW_pos
+-- (was axiom, now proved: 0 ≤ αGW * sdp ≤ E[cut])
+lemma gwExpectedCut_nonneg (G : SimpleGraph V) [DecidableRel G.Adj] :
+    0 ≤ gwExpectedCut G :=
+  le_trans (mul_nonneg (le_of_lt αGW_pos) (sdpRelaxation_nonneg G))
+    (gw_rounding_inequality G)
 
 /-
   ## Main Theorem: 0.878-Approximation Guarantee
