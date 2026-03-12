@@ -1,90 +1,59 @@
 {
   "slug": "buffons-needle-oq-01",
   "title": "Generalizations to curved needles",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "For any C¹ curve γ on [a,b] with line spacing d > 0: E[crossings] = 2 · arcLength(γ) / (π · d)",
-    "plain": "Buffon-Barbier theorem for smooth curves: the expected number of crossings depends only on total arc length, not on curve shape.",
-    "whyMatters": [
-      "Generalizes Buffon's needle (Wiedijk #99) from straight needles to arbitrary C¹ curves",
-      "Demonstrates shape independence: only arc length determines expected crossings",
-      "Connects geometric probability to smooth curve theory via ContDiff infrastructure"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "buffon_smooth_of_contDiff: E[crossings] = 2·arcLength/(πd) for C¹ curves",
-      "smooth_shape_independence: curves with equal arc length have equal expected crossings",
-      "straight_line_crossings: recovers 2L/(πd) for straight needles",
-      "smooth_crossings_mono: longer curves have more expected crossings",
-      "crossings_tendsto_zero: E[crossings] → 0 as line spacing d → ∞",
-      "inner_integral_integrable: C¹ smoothness implies integrability (key bridging lemma)"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Prove Buffon-Barbier for C¹ curves requiring only ContDiff ℝ 1 γ"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-12T02:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-02-21T19:21:07.131Z",
     "iteration": 1,
-    "focus": "Verified existing formalization builds successfully in Docker.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - problem fully proved with 0 sorries and 0 axioms.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Full proof in BuffonsNeedleOQ01.lean (251 lines, 0 sorries, 0 axioms). Proves Buffon-Barbier for C¹ curves using ContDiff ℝ 1 γ as sole smoothness hypothesis. Depends on BuffonsNeedleOQ01OQ01.lean for angular average and base theorem. Gallery entry exists with tacticStates.",
-    "builtItems": [
-      "proofs/Proofs/BuffonsNeedleOQ01.lean - Complete Buffon-Barbier for C¹ curves (251 lines)",
-      "src/data/proofs/buffons-needle-oq-01/ - Gallery entry (meta.json, index.ts, annotations.json, tacticStates.json)"
-    ],
-    "insights": [
-      "Key bridging lemma: ContDiff ℝ 1 γ → Continuous (deriv f) via ContDiff.continuous_fderiv + clm_apply",
-      "Angular average identity ∫₀^π |a sin θ + b cos θ| dθ = 2√(a²+b²) is the core calculus fact",
-      "Shape independence follows directly: formula depends on arc length integral, not curve geometry",
-      "Pattern: ContDiff → Differentiable → HasDerivAt for extracting derivative components"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "C¹ smoothness → integrability bridge",
-      "status": "completed",
-      "description": "Prove ContDiff ℝ 1 γ implies the inner integral is intervalIntegrable, then apply the conditional Buffon-Barbier theorem from OQ01OQ01"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "extension",
+    "challenging",
     "probability",
     "geometric-probability",
     "integration",
     "wiedijk-100",
     "monte-carlo"
   ],
-  "relatedProofs": [
-    "buffons-needle",
-    "buffons-needle-oq-01-oq-01"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "ContDiff.continuous_fderiv",
-      "ContinuousLinearMap.apply",
-      "intervalIntegral"
-    ]
+    "mathlib": []
   },
   "started": "2026-02-21T19:21:07.131Z",
-  "lastUpdate": "2026-03-12T02:00:00.000Z",
+  "lastUpdate": "2026-02-21T19:21:07.131Z",
   "significance": 6,
   "tractability": 6
 }

@@ -1,88 +1,52 @@
 {
   "slug": "erdos-1144",
-  "title": "Erdős #1144: Partial Sums of Random Multiplicative Functions",
-  "phase": "FORMALIZED",
-  "status": "completed",
+  "title": "Erdős #1144",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∀ f, IsRademacherMultiplicative f → ∀ C > 0, ∀ᶠ N in atTop, C * √N ≤ |∑_{m≤N} f(m)|",
-    "plain": "For a random completely multiplicative function f with f(p) ∈ {-1,1} chosen uniformly for each prime p, does limsup |∑_{m≤N} f(m)| / √N = ∞ hold almost surely?",
-    "whyMatters": [
-      "Fundamental question about fluctuations of multiplicative functions",
-      "Connects number theory with probability theory",
-      "Atherfold (2025) upper bound creates tension with the conjecture"
-    ]
+    "formal": "(LaTeX not available)",
+    "plain": "Problem statement not found",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Atherfold (2025): ∑ f(m) ≪ √N · (log N)^{1+o(1)} almost surely",
-      "Formalization: 1 sorry (routine), 1 axiom (Atherfold), 5+ proved theorems",
-      "Proved: rademacher_values_pm1, rademacher_abs_one, completely_mult_zero, trivial bound, pinch theorem"
-    ],
-    "open": [
-      "Whether limsup |∑ f(m)| / √N = ∞ almost surely (THIS problem)"
-    ],
-    "goal": "Determine the almost-sure growth rate of partial sums"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "FORMALIZED",
-    "since": "2026-03-11T14:10:00Z",
+    "phase": "NEW",
+    "since": "2026-01-15T16:41:04.200Z",
     "iteration": 1,
-    "focus": "Knowledge update for existing formalization",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Problem is OPEN. 1 sorry could be eliminated (atherfold_implies_subpolynomial).",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "FORMALIZED: Full Lean 4 formalization with 1 sorry and 1 axiom. Proved Rademacher multiplicative function properties (values in {-1,1}, |f(n)|=1, f(0)=0). Stated main conjecture in deterministic and probabilistic forms. Proved trivial bound and conjecture-Atherfold pinch theorem.",
-    "builtItems": [
-      "proofs/Proofs/Erdos1144Problem.lean (186 lines, 1 sorry, 1 axiom)",
-      "src/data/proofs/erdos-1144/ (gallery entry)"
-    ],
-    "insights": [
-      "Problem is OPEN - Atherfold (2025) gave upper bound but conjecture remains unresolved",
-      "Atherfold bound (√N · (log N)^{1+o(1)}) creates tension: if true, growth is between √N and √N·polylog",
-      "Constant function f≡1 is a deterministic counterexample (linear growth) - conjecture is probabilistic",
-      "Formalization cleanly separates deterministic properties from probabilistic conjecture",
-      "Aristotle proved rademacher_values_pm1 and partialSum_trivial_bound"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "The 1 sorry (atherfold_implies_subpolynomial) could be proved from atherfold_upper_bound",
-      "Problem is OPEN - main conjecture cannot be resolved"
-    ]
+    "nextSteps": [],
+    "markdown": "# Erdős #1144 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
-  "approaches": [
-    {
-      "name": "Direct formalization with Rademacher functions",
-      "status": "completed",
-      "description": "Defined completely multiplicative and Rademacher functions, stated conjecture, proved supporting lemmas"
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "number-theory",
-    "probability",
-    "multiplicative-functions"
+    "erdos"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [
-      "Atherfold (2025): Upper bound on partial sums of random multiplicative functions",
-      "Va99 §1.11"
-    ],
-    "urls": [
-      "https://erdosproblems.com/1144"
-    ],
+    "papers": [],
+    "urls": [],
     "mathlib": []
   },
   "started": "2026-01-15T16:41:04.200Z",
-  "lastUpdate": "2026-03-11T14:10:00Z",
   "significance": 7,
   "tractability": 6
 }

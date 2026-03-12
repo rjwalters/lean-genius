@@ -1,9 +1,9 @@
 {
-  "slug": "greens-theorem-oq-03",
-  "title": "Replace GreenRegion placeholder with concrete simply-connected region",
+  "slug": "leibniz-pi-oq-01",
+  "title": "Optimal convergence rate for arctangent-based pi series",
   "phase": "NEW",
   "status": "active",
-  "tier": "A",
+  "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
@@ -17,7 +17,7 @@
   },
   "currentState": {
     "phase": "NEW",
-    "since": "2026-02-26T05:12:41.988Z",
+    "since": "2026-03-12T05:32:38.519Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
@@ -37,12 +37,9 @@
   },
   "approaches": [],
   "tags": [
+    "seeker-selected",
     "analysis",
-    "vector-calculus",
-    "integration",
-    "stokes",
-    "formalization",
-    "wiedijk-100"
+    "convergence"
   ],
   "relatedProofs": [],
   "references": {
@@ -50,8 +47,8 @@
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-02-26T17:08:50.306Z",
-  "lastUpdate": "2026-02-26T17:08:50.306Z",
-  "significance": 7,
+  "started": "2026-03-12T05:34:54.574Z",
+  "lastUpdate": "2026-03-12T05:34:54.574Z",
+  "significance": 6,
   "tractability": 6
 }

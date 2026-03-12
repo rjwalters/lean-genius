@@ -1,18 +1,14 @@
 {
   "slug": "erdos-1136",
-  "title": "Erdos #1136: Sum-Free Sets Avoiding Powers of Two",
+  "title": "Erdős #1136",
   "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "exists A : Set N, AvoidsPowerOfTwoSums A and lowerDensity A > 1/3",
-    "plain": "Does there exist A subset of N with lower density > 1/3 such that a + b != 2^k for any a, b in A and k >= 0? YES (Muller 2011, density 1/2 is optimal).",
-    "whyMatters": [
-      "Connects density theory with power-of-two avoidance",
-      "Optimal density 1/2 shows the trivial 1/3 bound can be beaten significantly",
-      "Generalizes to odd primes: multiples of any odd prime avoid power-of-two sums"
-    ]
+    "formal": "(LaTeX not available)",
+    "plain": "Problem statement not found",
+    "whyMatters": []
   },
   "knownResults": {
     "proven": [],
@@ -20,53 +16,29 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "DEEP_DIVE",
-    "since": "2026-03-11T04:24:57Z",
-    "iteration": 2,
-    "focus": "Definition fixes and infrastructure theorems",
+    "phase": "NEW",
+    "since": "2026-01-15T15:52:59.262Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Consider proving density axiom from Mathlib",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed lowerDensity definition (was inf, now liminf). Fixed broken multiples_of_3_avoid proof. Added 7 new proved theorems. File now has 12 proved theorems, 3 axioms, 0 sorries.",
-    "builtItems": [
-      "Fixed lowerDensity: changed from global infimum to Filter.liminf (correct math)",
-      "Fixed multiples_of_3_avoid: was using nonexistent Mathlib function",
-      "Proved not_three_dvd_two_pow via coprimality (Euclid lemma)",
-      "Proved avoids_empty: empty set trivially avoids",
-      "Proved avoids_mono: avoidance monotone under subsets",
-      "Proved multiples_of_3_set_avoids: complete set-level theorem",
-      "Proved zero_not_mem_muller and three_mem_muller",
-      "Proved muller_beats_trivial and density_gap",
-      "Proved odd_prime_multiples_avoid: general result for odd primes"
-    ],
-    "insights": [
-      "Original lowerDensity used inf (global minimum) not liminf (asymptotic) - would give 0 for many sets",
-      "The key to avoiding 2^k sums is coprimality: if gcd(p,2)=1 then p does not divide 2^k",
-      "Every odd prime p gives an avoiding set of density 1/p; p=3 gives best density among primes",
-      "Muller set has binary characterization: numbers with consecutive 1-bits at some position",
-      "Density gap between trivial (1/3) and optimal (1/2) is exactly 1/6"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Consider proving multiples_of_3_density from Mathlib (reduce axiom count)",
-      "Add more MullerSet membership characterizations (binary representation)",
-      "Create Aristotle companion file for routine lemmas"
-    ]
+    "nextSteps": [],
+    "markdown": "# Erdős #1136 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
   "tags": [
-    "erdos",
-    "solved",
-    "additive-combinatorics",
-    "density",
-    "sum-free-sets",
-    "number-theory"
+    "erdos"
   ],
   "relatedProofs": [],
   "references": {
@@ -76,7 +48,5 @@
   },
   "started": "2026-01-15T15:52:59.262Z",
   "significance": 7,
-  "tractability": 6,
-  "knowledgeScore": 60,
-  "lastUpdate": "2026-03-11T04:24:57Z"
+  "tractability": 6
 }

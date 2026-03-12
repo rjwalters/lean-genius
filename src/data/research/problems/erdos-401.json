@@ -29,22 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated legendre_formula axiom by proving it from Mathlib (pow_multiplicity_dvd + sub_one_mul_multiplicity_factorial). Axiom count 4→3, proved theorems 18→19.",
-    "builtItems": [
-      "Proved legendre_formula theorem in Erdos401Problem.lean:260-267"
-    ],
-    "insights": [
-      "legendre_formula axiom eliminated - proved from Mathlib using pow_multiplicity_dvd and sub_one_mul_multiplicity_factorial",
-      "Axiom count reduced from 4 to 3 (remaining: erdos_graham_baseline, barreto_leeham_401, sothanaphan_counterexample)",
-      "Proved theorem count increased from 18 to 19",
-      "File already well-developed: all prime infrastructure, divisibility properties, and consequences fully proved"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Remaining 3 axioms are deep results that should stay as axioms",
-      "Could create Aristotle companion file but all theorem sorries are already resolved",
-      "Consider formalizing Sothanaphan counterexample more explicitly"
-    ]
+    "nextSteps": []
   },
   "approaches": [],
   "tags": [

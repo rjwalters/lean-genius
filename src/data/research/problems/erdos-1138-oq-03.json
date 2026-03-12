@@ -1,93 +1,54 @@
 {
   "slug": "erdos-1138-oq-03",
   "title": "Resolve maxPrimeGap_le sorry via BddAbove for prime gaps",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "Resolve the maxPrimeGap_le sorry and related axioms by establishing BddAbove for prime gap sets and proving bounds from Bertrand's postulate.",
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "primeGap_le_x: every gap d <= x",
-      "primeGapSet_bddAbove: BddAbove established",
-      "maxPrimeGap_le: sSup <= x",
-      "prime_gap_le_prev_prime: gap <= prev prime (Bertrand)",
-      "maxPrimeGap_le_half: gap <= x/2 for x >= 25",
-      "primeGapSet_mono, maxPrimeGap_mono: monotonicity",
-      "cramer_implies_gap_sublinear: C*(log x)^2 = o(x)",
-      "primeGapSet_zero/one/two: empty gap sets"
-    ],
-    "open": [
-      "baker_harman_pintz (axiom): x^0.525 unconditional bound"
-    ],
-    "goal": "All sorries resolved. Gallery entry created."
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-11T12:00:00Z",
-    "iteration": 2,
-    "focus": "Docker build verified. Gallery entry created. 10 theorems, 0 sorries, 1 axiom.",
+    "phase": "NEW",
+    "since": "2026-03-06T22:03:59.699Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - work complete.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: All sorries and axioms resolved (except BHP deep result). Docker build verified. Gallery entry created with 6 annotations. 10 theorems proved: BddAbove foundation, Bertrand bounds, monotonicity, Cramer sublinearity.",
-    "builtItems": [
-      "Erdos1138OQ03.lean: prime_gap_le_prev_prime theorem (was axiom)",
-      "Erdos1138OQ03.lean: maxPrimeGap_le_half theorem (was axiom)",
-      "Erdos1138OQ03.lean: cramer_implies_gap_sublinear (was sorry)",
-      "src/data/proofs/erdos-1138-oq-03/: gallery entry (meta.json, index.ts, annotations.json)"
-    ],
-    "insights": [
-      "prime_gap_le_prev_prime is provable from Nat.bertrand (Bertrand postulate in Mathlib)",
-      "maxPrimeGap_le_half follows from prime_gap_le_prev_prime: 2d <= d+p = q <= x",
-      "cramer_implies_gap_sublinear proved via Real.log_le_rpov_div with delta=1/4 and rpow_mul",
-      "Key rpow identity: (x^(1/4))^2 = x^(1/2) via rpow_mul; x^(1/2)*x^(1/2) = x via rpow_add",
-      "nlinarith + sq_nonneg trick for a^2 <= b^2 -> a <= b (with 0 <= a, 0 <= b)",
-      "BddAbove via gap <= x is the simplest foundation for sSup-based definitions",
-      "csSup_empty (alpha := Nat) = 0 handles empty gap set cases cleanly"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "baker_harman_pintz could theoretically be proved but requires deep analytic number theory not in Mathlib"
-    ]
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "BddAbove + Bertrand + rpow analysis",
-      "description": "Establish BddAbove, prove Bertrand-based bounds, resolve Cramer sublinearity via rpow",
-      "status": "completed",
-      "outcome": "10 theorems, 0 sorries, 1 axiom. Gallery entry created."
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "number-theory",
     "combinatorics"
   ],
-  "relatedProofs": [
-    "erdos-1138"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.NumberTheory.Bertrand",
-      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
-    ]
+    "mathlib": []
   },
-  "knowledgeScore": 80,
   "started": "2026-03-07T18:02:01.177Z",
-  "lastUpdate": "2026-03-11T12:00:00.000Z",
+  "lastUpdate": "2026-03-07T18:02:01.177Z",
   "significance": 6,
   "tractability": 6
 }

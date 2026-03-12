@@ -1,65 +1,42 @@
 {
   "slug": "derangements-oq-02-oq-01",
   "title": "Partial Derangements for Arbitrary Finite Types",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
     "formal": "\\forall \\alpha : \\text{Type}^* [\\text{Fintype } \\alpha],\\; S(\\alpha, k) = \\binom{|\\alpha|}{k} \\cdot D(|\\alpha| - k)",
     "plain": "The number of permutations of any finite set that fix exactly k elements equals (ways to choose k fixed elements) × (derangements of the rest). Prove this for arbitrary `Fintype α`, not just `Fin n`.",
-    "whyMatters": [
-      "Generalizes partial derangement formula to abstract finite types",
-      "Demonstrates Fintype.equivFin transport pattern for combinatorial results"
-    ]
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "card_perms_with_kfixed_fintype: S(α, k) = C(|α|, k) · D(|α| - k) for arbitrary Fintype α",
-      "fixedPoint_count_permCongr: permutation conjugation preserves fixed-point count",
-      "card_kfixed_permCongr: k-fixed filter bijects between Perm α and Perm β",
-      "permsWithCardMinus1Fixed_eq_zero: no perm of 2+-element type has |α|-1 fixed points",
-      "permsWithAllFixed_eq_one: identity is the unique all-fixed permutation",
-      "sum_kfixed_eq_factorial: sum over k of S(α, k) = |α|!"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Generalize S(n, k) = C(n, k) · D(n-k) from Fin n to arbitrary Fintype α"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-12T02:00:00.000Z",
+    "phase": "OBSERVE",
+    "since": "2026-03-06T08:22:49-08:00",
     "iteration": 1,
-    "focus": "Verified existing formalization builds successfully in Docker.",
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "None - problem fully proved with 0 sorries and 0 axioms.",
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Full proof in DerangementsOQ02OQ01.lean (124 lines, 0 sorries, 0 axioms). Generalizes from Fin n by transporting via Fintype.equivFin and showing permCongr preserves fixed-point counts. Gallery entry exists.",
-    "builtItems": [
-      "proofs/Proofs/DerangementsOQ02OQ01.lean - Full generalization proof (124 lines, 0 sorries)",
-      "src/data/proofs/derangements-oq-02-oq-01/ - Gallery entry (meta.json, index.ts, annotations.json)"
-    ],
-    "insights": [
-      "Key transport pattern: reduce Fintype α to Fin n via Fintype.equivFin, then use permCongr to conjugate permutations",
-      "fixedPoint_count_permCongr shows conjugation preserves fixed-point count — the essential lemma for the transport",
-      "The filter bijection card_kfixed_permCongr bridges between the α-indexed and Fin n-indexed worlds",
-      "Depends on DerangementsOQ02 for the Fin n case (PartialDerangements.card_perms_with_kfixed)"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: derangements-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "approaches": [
-    {
-      "name": "Transport via Fintype.equivFin",
-      "status": "completed",
-      "description": "Reduce to Fin n case using Fintype.equivFin and permCongr preservation of fixed-point counts"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "combinatorics",
     "permutations",
@@ -67,20 +44,14 @@
     "fintype",
     "generalization"
   ],
-  "relatedProofs": [
-    "derangements-oq-02"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Fintype.equivFin",
-      "Equiv.permCongr",
-      "numDerangements"
-    ]
+    "mathlib": []
   },
   "started": "2026-03-07T18:02:01.176Z",
-  "lastUpdate": "2026-03-12T02:00:00.000Z",
+  "lastUpdate": "2026-03-07T18:02:01.176Z",
   "significance": 6,
   "tractability": 7
 }

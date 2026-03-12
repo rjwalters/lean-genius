@@ -1,87 +1,52 @@
 {
   "slug": "erdos-1147",
-  "title": "Erdős #1147: Additive Basis from Diophantine Approximation",
-  "phase": "COMPLETE",
+  "title": "Erdős #1147",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{Is } A = \\{n \\geq 1 : \\|\\alpha n^2\\| < 1/\\log(n)\\} \\text{ an additive basis of order 2?}",
-    "plain": "Let α > 0 be irrational. Is the set A = {n ≥ 1 : ‖αn²‖ < 1/log(n)} (where ‖·‖ denotes distance to nearest integer) an additive basis of order 2? Answer: NO (Konieczny [Ko16b]).",
-    "whyMatters": [
-      "Connects Diophantine approximation with additive combinatorics",
-      "Shows that sets defined by approximation quality can be too sparse for additive structure",
-      "Measure-theoretic result: fails for almost every α"
-    ]
+    "formal": "(LaTeX not available)",
+    "plain": "Problem statement not found",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Konieczny [Ko16b] disproved for almost every α",
-      "Generalized: any ε(n) → 0 gives the same failure",
-      "Set is infinite for any irrational α (by Dirichlet's theorem)"
-    ],
-    "open": [
-      "Are there specific α where the set IS a basis?",
-      "Behavior for αn^k with k > 2"
-    ],
-    "goal": "Formalize disproof and infrastructure"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-11T00:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-01-15T16:46:42.682Z",
     "iteration": 1,
-    "focus": "Full formalization completed.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - formalization complete.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full Lean 4 formalization of Erdős #1147. Created Erdos1147Problem.lean with 0 sorries, 4 axioms, 8 proved theorems. Key achievement: erdos_1147_false proved without sorry using √2 counterexample. threshold_lt_one proved using Real.exp_one_lt_d9.",
-    "builtItems": [
-      "proofs/Proofs/Erdos1147Problem.lean - full formalization (238 lines)",
-      "src/data/proofs/erdos-1147/ - gallery metadata (meta.json, annotations.json, index.ts)"
-    ],
-    "insights": [
-      "distToNearestInt = min(fract(x), 1 - fract(x)) fully provable from Mathlib Int.fract API",
-      "erdos_1147_false proved via √2 counterexample (sqrt2_not_basis axiom + irrational_sqrt_two)",
-      "threshold_lt_one (log 3 > 1) proved using Real.exp_one_lt_d9 from Mathlib",
-      "min_cases destructuring requires explicit Int.fract_lt_one hint for linarith",
-      "le_or_lt deprecated in favor of le_or_gt in current Mathlib"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "4 axioms are deep results that should stay as axioms",
-      "Could create Aristotle companion file for the 8 proved theorems (already proved, low priority)"
-    ]
+    "nextSteps": [],
+    "markdown": "# Erdős #1147 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
   "tags": [
-    "erdos",
-    "disproved",
-    "number-theory",
-    "diophantine-approximation",
-    "additive-combinatorics"
+    "erdos"
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [
-      "Konieczny [Ko16b]: Disproof of Erdős #1147"
-    ],
-    "urls": [
-      "https://erdosproblems.com/1147"
-    ],
-    "mathlib": [
-      "Int.fract",
-      "Real.exp_one_lt_d9",
-      "irrational_sqrt_two"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-15T16:46:42.683Z",
-  "lastUpdate": "2026-03-11T00:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }

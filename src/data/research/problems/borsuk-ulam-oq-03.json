@@ -1,133 +1,57 @@
 {
   "slug": "borsuk-ulam-oq-03",
   "title": "Constructive (Intuitionistic) Borsuk-Ulam Theorem",
-  "phase": "COMPLETE",
-  "status": "completed",
-  "tier": "B",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∀ (f : ℝ → ℝ), Continuous f → ∃ x ∈ Icc (-1:ℝ) 1, f x = f (-x)",
-    "plain": "Can the 1D Borsuk-Ulam theorem be proved constructively? Answer: YES via IVT.",
-    "whyMatters": [
-      "Clarifies constructive status of topological fixed-point theorems",
-      "Connects Borsuk-Ulam to Tucker's combinatorial lemma",
-      "Identifies the constructive barrier at dimension 2"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "1D interval BU via IVT on antisymmetric difference",
-      "1D circle BU via trigonometric parametrization",
-      "BU ↔ odd function zero equivalence",
-      "No odd continuous map to {±1} (1D no-retraction)",
-      "Tucker's 1D combinatorial lemma via Fin.induction",
-      "1D Brouwer fixed-point theorem via IVT",
-      "BU on any symmetric interval [-a,a]",
-      "Coincidence set is compact",
-      "Strictly monotone functions have unique antipodal pair at 0",
-      "Circle BU is genuinely non-trivial (no self-antipodal in (0,π))"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Complete 1D constructive BU formalization"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-26T23:55:00Z",
-    "iteration": 4,
-    "focus": "27 theorems, 0 sorries, 5 axioms. Added BU consequence chain (Sections XXI-XXV).",
+    "phase": "NEW",
+    "since": "2026-02-25T14:11:52.126Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - complete",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 27 proved theorems, 0 sorries, 5 axioms. Full BU consequence chain: non-injectivity (proved), no-retraction, Brouwer FP, LS covering, invariance of dimension.",
-    "builtItems": [
-      "borsuk_ulam_interval: 1D BU on [-1,1] via IVT",
-      "borsuk_ulam_circle_param: circle BU via trig parametrization",
-      "bu_iff_odd_zero: BU ↔ odd functions vanish equivalence",
-      "no_odd_map_to_pm_one: 1D no-retraction theorem",
-      "tucker_1d_sign_change: Tucker's combinatorial lemma via Fin.induction",
-      "brouwer_fixed_point_1d: 1D Brouwer FP via IVT",
-      "borsuk_ulam_symmetric_interval: BU on [-a,a]",
-      "bu_antipodal_set_compact: coincidence set is compact",
-      "bu_strictly_mono_unique_at_zero: uniqueness for monotone f",
-      "circle_no_self_antipodal: circle BU genuinely non-trivial",
-      "tucker_1d_signed: Tucker signed lemma (integer labels, complementary boundary)",
-      "lusternik_schnirelman_1d: LS 1D covering theorem (two closed sets → antipodal pair)",
-      "lusternik_schnirelman_symmetric: LS for symmetric interval [-a,a]",
-      "ham_sandwich_1d: 1D Ham-Sandwich via BU",
-      "bu_odd_polynomial_zero: BU for odd polynomials",
-      "approx_antipodal_exists: approximate antipodal pairs for any ε>0",
-      "approx_antipodal_symmetric: approximate antipodal on [-a,a]",
-      "tucker_bool_implies_signed: Boolean→Signed Tucker reduction",
-      "neg_one_pow_ne_zero: powers of -1 nonzero",
-      "neg_one_pow_odd: (-1)^(2k+1) = -1",
-      "neg_one_pow_even: (-1)^(2k) = 1",
-      "nsphere_exists_nonzero: points on S^n have at least one nonzero coordinate",
-      "nsphere_ne_antipodal: x ≠ -x on S^n (proved from sphere condition)",
-      "bu_no_injective_map: BU → no injective S^n → ℝ^n map (proved from axiom)",
-      "no_retraction: no retraction B^(n+1) → S^n (axiomized consequence)",
-      "brouwer_fixed_point: Brouwer FP for arbitrary n (axiomized consequence)",
-      "lusternik_schnirelmann: LS covering for S^n (axiomized consequence)",
-      "invariance_of_dimension: ℝ^n ≇ ℝ^m for n≠m (axiomized consequence)"
-    ],
-    "insights": [
-      "f(--x) is a SYNTAX BUG in Lean 4: -- starts a line comment",
-      "fun_prop handles complex continuity goals (trig composition)",
-      "IVT API: intermediate_value_Icc hab hg_cont ⟨ha, hb⟩",
-      "Interval BU is trivial (x=0 witness); circle BU is genuine",
-      "Tucker lemma = discrete BU; proved via Fin.induction + push_neg",
-      "Bool.decide_eq_decide does not exist in Lean 4.26; use by_cases + decide_eq_true_eq/decide_eq_false_iff_not",
-      "Ne.lt_or_lt deprecated in Lean 4.26; use Ne.lt_or_gt instead",
-      "Polynomial.continuous_eval not available; use p.toContinuousMap.continuous",
-      "cases h : S i.succ cleanly splits Bool into true/false branches for sign analysis"
-    ],
-    "mathlibGaps": [
-      "No Brouwer degree theory in Mathlib (needed for n≥2 BU)"
-    ],
-    "nextSteps": []
+    "progressSummary": "SURVEYED - 13 proved theorems, 1 axiom (general BU for n≥2), 0 sorries.",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# borsuk-ulam-oq-03: Constructive (Intuitionistic) Borsuk-Ulam\n\n## Problem Summary\n\n**Open Question**: Can the 1D Borsuk-Ulam theorem be proved constructively\n(without full classical logic)? What is the constructive status of\nhigher-dimensional Borsuk-Ulam?\n\n**Status**: SURVEYED - 13 proved theorems, 1 axiom (general BU for n≥2), 0 sorries.\n\n**Answer**:\n- 1D: YES, proved via IVT on antisymmetric difference\n- n≥2: Requires algebraic topology (axiomized); no known constructive proof\n\n## Session 2026-02-25 (Session 1) - Initial Formalization\n\n**Mode**: FRESH (problem had EMPTY knowledge)\n**Outcome**: surveyed/progress\n\n### What I Did\n\n- Created `proofs/Proofs/BorsukUlamOQ03.lean` with full 1D formalization\n- Proved 13 theorems covering:\n  - 1D interval BU via IVT\n  - Odd function zero lemma\n  - BU ↔ odd-zero equivalence\n  - S¹ parametric version via IVT on [0,π]\n  - Circle point on unit circle\n  - No odd map to {±1}\n  - 5 structural lemmas\n  - NSphere def + antipodal def\n  - Consequence of general BU axiom\n- Fixed key Lean 4 issue: `f (--x)` is INVALID because `--` starts a line comment;\n  must write `f (-(-x))` or restructure to avoid double negative\n- Fixed `ring` issue: after `simp only [hg_def]`, `ring` fails on `f (-(-x))` atoms;\n  add `neg_neg` to simp first\n- `Continuous.prod_mk` may not be directly accessible as a field; use `fun_prop` instead\n- Created PR #3246\n\n### Key Findings\n\n- `f (--x)` is a SYNTAX BUG: `--` starts a line comment in Lean 4!\n  Workaround: Write `f (-(-x))` or avoid double-negated function args\n- `fun_prop` tactic handles complex continuity goals automatically with `hf : Continuous f`\n- IVT API: `intermediate_value_Icc hab hg_cont ⟨ha, hb⟩` where `ha : f a ≤ 0` and `hb : 0 ≤ f b`\n- `le_or_gt` is the non-deprecated name for case split (not `le_or_lt`)\n- Constructive content: IVT uses Classical.em internally, but Bishop-style IVT holds\n\n### Files Created\n\n- `proofs/Proofs/BorsukUlamOQ03.lean` (324 lines, 13 theorems, 1 axiom, 0 sorries)\n\n### Next Steps\n\n- The higher-dimensional BU (n≥2) could potentially be proved using Tucker's lemma (combinatorial BU)\n- Tucker's lemma is more constructive than degree-theoretic approaches\n- Would require: triangulation, labeling, Tucker path → antipodal pair\n"
   },
-  "approaches": [
-    {
-      "name": "IVT on antisymmetric difference",
-      "status": "succeeded",
-      "description": "Define g(x)=f(x)-f(-x), observe g(-a)=-g(a), apply IVT"
-    }
-  ],
+  "approaches": [],
   "tags": [
+    "seeker-selected",
     "topology",
     "constructive-math",
     "borsuk-ulam",
-    "ivt",
-    "tucker-lemma",
-    "brouwer-fixed-point"
+    "intuitionistic"
   ],
-  "relatedProofs": [
-    "borsuk-ulam",
-    "brouwer-fixed-point-oq-01"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Borsuk (1933): Drei Sätze über die n-dimensionale euklidische Sphäre",
-      "Tucker (1946): Some topological properties of disk and sphere"
-    ],
-    "urls": [
-      "https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem"
-    ],
-    "mathlib": [
-      "intermediate_value_Icc",
-      "intermediate_value_Icc'",
-      "isCompact_Icc",
-      "Fin.induction"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
-  "knowledgeScore": 85,
   "started": "2026-02-25T19:36:59.225Z",
-  "lastUpdate": "2026-03-06T20:02:00Z",
+  "lastUpdate": "2026-02-25T19:36:59.225Z",
   "significance": 7,
   "tractability": 6
 }

@@ -1,61 +1,57 @@
 {
   "slug": "cauchy-schwarz-integral-oq-01-oq-01",
   "title": "Snorm-based Hölder Inequality in Mathlib 4.26+",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "∫⁻ f·g dμ ≤ (∫⁻ f^p dμ)^{1/p} · (∫⁻ g^q dμ)^{1/q} for conjugate exponents p,q",
-    "plain": "Formalize Hölder's inequality using the eLpNorm API (renamed from snorm in Mathlib 4.26+), including the Cauchy-Schwarz specialization at p=q=2.",
-    "whyMatters": [
-      "Fundamental inequality in analysis linking Lp norms",
-      "Bridges the full Young → Hölder → Cauchy-Schwarz → Minkowski hierarchy",
-      "Validates the Mathlib 4.26+ eLpNorm API (snorm renamed)"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Hölder's inequality (lintegral form) via ENNReal.lintegral_mul_le_Lp_mul_Lq",
-      "Cauchy-Schwarz at lintegral level (p=q=2 specialization)",
-      "Minkowski in eLpNorm form via eLpNorm_add_le",
-      "Minkowski at p=2 (CS-derived triangle inequality)",
-      "L² Cauchy-Schwarz via inner product (abs_real_inner_le_norm)",
-      "Minkowski L² from CS via norm-squared identity",
-      "Young's inequality (real: ab ≤ a²/2 + b²/2)",
-      "Young generalized (NNReal: ab ≤ a^p/p + b^q/q)"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Formalize Hölder's inequality in eLpNorm API — COMPLETED (0 sorries, 0 axioms)"
+    "goal": ""
   },
   "currentState": {
-    "leanFile": "proofs/Proofs/CauchySchwarzIntegralOQ01OQ01.lean",
-    "sorryCount": 0,
-    "axiomCount": 0,
-    "theoremCount": 10,
-    "builtItems": [
-      "holder_lintegral: Hölder's inequality (lintegral form)",
-      "cauchy_schwarz_lintegral: CS at p=q=2",
-      "minkowski_eLpNorm: triangle inequality in eLpNorm form",
-      "minkowski_eLpNorm_two: Minkowski at p=2",
-      "l2_cauchy_schwarz: |⟨f,g⟩| ≤ ‖f‖·‖g‖ for L²",
-      "l2_cauchy_schwarz_le: one-sided CS",
-      "minkowski_l2_from_cs: ‖f+g‖ ≤ ‖f‖+‖g‖ from CS",
-      "young_two: ab ≤ a²/2 + b²/2",
-      "young_nnreal: ab ≤ a^p/p + b^q/q (NNReal)",
-      "minkowski_lp_general: norm_add_le for general p"
-    ],
-    "insights": [
-      "Mathlib 4.26+ renamed snorm to eLpNorm — all formulas use eLpNorm API",
-      "Complete hierarchy: Young → Hölder → CS → Minkowski",
-      "ENNReal.lintegral_mul_le_Lp_mul_Lq is the core Hölder lemma",
-      "abs_real_inner_le_norm provides CS for inner product spaces",
-      "NNReal.young_inequality gives Young for NNReal conjugate exponents"
-    ],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "phase": "NEW",
+    "since": "2026-02-27T08:30:01.795Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
   },
-  "knowledgeScore": 95,
-  "researchNotes": "Fully proved (0 sorries, 0 axioms). All results are thin wrappers around existing Mathlib lemmas, confirming the eLpNorm API works correctly. The complete hierarchy Young → Hölder → CS → Minkowski is formalized.",
-  "lastUpdated": "2026-03-07"
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: cauchy-schwarz-integral-oq-01-oq-01\n\n## Status: COMPLETED\n\nFull formalization exists in `proofs/Proofs/CauchySchwarzIntegralOQ01OQ01.lean` (0 sorries).\nGallery data at `src/data/proofs/cauchy-schwarz-integral-oq-01-oq-01/` (status: verified).\n\n## Key Results\n- Hölder inequality at lintegral level via `ENNReal.lintegral_mul_le_Lp_mul_Lq`\n- Cauchy-Schwarz at p=q=2 (lintegral specialization)\n- Minkowski in eLpNorm form via `eLpNorm_add_le`\n- L² Cauchy-Schwarz via `abs_real_inner_le_norm`\n- Minkowski L² from CS (norm-squared identity)\n- Young's inequality (pointwise foundation)\n- Complete hierarchy verified with Mathlib 4.26+ eLpNorm API\n"
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "measure-theory",
+    "lp-spaces",
+    "inequalities"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-06T06:42:42.095Z",
+  "lastUpdate": "2026-03-06T06:42:42.095Z",
+  "significance": 6,
+  "tractability": 6
 }

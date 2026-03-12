@@ -29,23 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated all sorries from GnedenkoKolmogorov.lean by proving stable_self_attraction (normalization diverges, stability gives convergence). File now has 0 sorries, 3 axioms.",
-    "builtItems": [
-      "Proved stable_self_attraction in GnedenkoKolmogorov.lean:118 (eliminated 2 sorries)"
-    ],
-    "insights": [
-      "GnedenkoKolmogorov.lean had 2 sorries in stable_self_attraction: (1) n^(1/α)→∞ and (2) stability equation→convergence",
-      "Sorry 1: proved via tendsto_atTop_atTop, rpow_mul for (b^α)^(1/α)=b, rpow_le_rpow for monotonicity",
-      "Sorry 2: proved by showing sequence is eventually constant via stability equation, using tendsto_congr",
-      "Main file CentralLimitTheoremOQ01OQ01.lean (1175 lines) has 7 axioms but 0 sorries - all deep results requiring Lévy continuity, Karamata, Tauberian theory",
-      "Mathlib lacks: StableDistribution type, domain of attraction, regular variation theory, CLT, Lévy continuity"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Consider proving Potter bound from definition (challenging but possible)",
-      "Slowly varying uniform convergence theorem needs Baire category - deep infrastructure",
-      "Main file axioms require CLT/Lévy continuity - blocked on Mathlib infrastructure"
-    ]
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: central-limit-theorem-oq-01-oq-01\n\nGnedenko-Kolmogorov domain of attraction theorem formalization.\n\n## Session 2026-03-11 (Session 1) - Survey\n\n**Outcome**: surveyed - 76 theorems, 0 sorries, 12 axioms. Comprehensive coverage of slowly varying functions, regular variation, domain of attraction, and GK theorem.\n"
   },
   "approaches": [],
   "tags": [

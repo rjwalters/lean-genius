@@ -1,111 +1,55 @@
 {
   "slug": "erdos-1007-oq-01",
   "title": "Minimum edges for graph dimension d in general",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "What is minEdges(d), the minimum number of edges in a graph of dimension exactly d?",
-    "plain": "Study the function minEdges(d) giving the minimum number of edges needed for a graph to have unit-distance dimension exactly d. Known: minEdges(d) = C(d+1,2) for d ≤ 3 and d = 5, but minEdges(4) = 9 < C(5,2) = 10.",
-    "whyMatters": [
-      "Connects combinatorial graph theory to Euclidean geometry",
-      "The d=4 exception reveals unexpected structure in unit-distance graphs",
-      "Understanding minEdges(d) characterizes the edge-dimension trade-off"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "small_dim_complete: For d ≤ 3, minEdges(d) = C(d+1,2)",
-      "dim4_beats_complete: minEdges(4) < C(5,2)",
-      "dim5_matches_complete: minEdges(5) = C(6,2)",
-      "values_are_nondecreasing_small: monotonicity for d=1..5",
-      "lower_bound_linear: d ≤ minEdges(d)",
-      "upper_bound_quadratic: minEdges(d) ≤ (d+1)*d/2"
-    ],
-    "open": [
-      "Is minEdges monotone in general?",
-      "Does minEdges(d) = Θ(d²)?",
-      "Is K_{d+1} optimal for all d ≠ 4?"
-    ],
-    "goal": "Determine the asymptotic behavior of minEdges(d)"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-07T18:30:00Z",
-    "iteration": 2,
-    "focus": "Completed: simplex embedding, conditional monotonicity, deficiency analysis",
+    "phase": "NEW",
+    "since": "2026-03-06T22:03:59.699Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - all theorems proved. Open conjectures remain stated.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
-      "approachesTried": 2
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Extended formalization with constructive simplex embedding, conditional monotonicity proof, deficiency analysis, growth rate characterization. All theorems fully proved (0 sorries).",
-    "builtItems": [
-      "simplexEmbed: constructive unit-distance embedding of K_n in ℝⁿ",
-      "simplexEmbed_sq_diff: per-coordinate squared distance computation",
-      "simplexEmbed_dist_sq: total squared distance = 1",
-      "complete_graph_unit_embedding: K_n embeds in ℝⁿ for n≥2",
-      "complete_graph_dim_le: graphDim(K_n) ≤ n proved constructively",
-      "optimal_implies_monotone: optimality conjecture → monotonicity",
-      "deficiency function with all known values computed",
-      "optimal_iff_zero_deficiency: equivalence theorem",
-      "unique_anomaly_small: d=4 is the only anomaly for d≤5",
-      "optimal_diff: under optimality, Δ(d) = d+1",
-      "Growth rate analysis: ratios and differences for d=1..5"
-    ],
-    "insights": [
-      "The simplex embedding v_i = (1/√2)e_i places K_n in ℝⁿ with unit distances",
-      "The deficiency δ(d) = C(d+1,2) - minEdges(d) cleanly captures the d=4 anomaly",
-      "Complete graph optimality conjecture is equivalent to δ(d) = 0 for d ≠ 4",
-      "The optimality conjecture implies monotonicity via C(d+1,2) monotonicity + d=4 case handling",
-      "Under optimality, successive differences Δ(d) = d+1, which is the binomial increment",
-      "d=4 is formally verified as the unique anomaly for d ≤ 5"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove simplex embedding in ℝⁿ⁻¹ (requires affine hyperplane projection)",
-      "Investigate K_{m,n} dimension for bipartite graph analysis",
-      "Search for d=6 results in the literature",
-      "Explore whether d=4 anomaly can be explained via algebraic constraints"
-    ]
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-1007-oq-01\n\nMinimum edges for graph dimension d in general.\n\n---\n\n## Session 2026-03-11 (Session 1) - Survey\n\n**Mode**: FRESH\n**Outcome**: surveyed\n\n### Key Findings\n- OQ01 file fully proved: 25+ theorems, 0 sorries, 11 axioms\n- Simplex embedding construction: K_n embeds in ℝⁿ as unit distances (complete proof)\n- Deficiency function δ(d) = C(d+1,2) - minEdges(d) with d=4 as unique anomaly\n- optimal_implies_monotone: complete graph optimality conjecture → monotonicity (proved)\n- Growth rate analysis with verified successive differences\n\n### Assessment\n- All provable theorems already proved\n- Axioms encode known values (House 2013, Chaffee-Noble 2016) and search properties\n- General minEdges(d) is genuinely open\n- To make further progress, would need dim(K_n) = n-1 rigidity argument (non-trivial)\n"
   },
-  "approaches": [
-    {
-      "name": "Axiom-based formalization with interval_cases",
-      "status": "succeeded",
-      "description": "Axiomatize known values and use interval_cases + native_decide for small cases"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "graph-theory",
-    "combinatorics",
-    "unit-distance",
-    "graph-dimension"
+    "geometry"
   ],
-  "relatedProofs": [
-    "erdos-1007"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "House 2013 (dimension 4)",
-      "Chaffee-Noble 2016 (dimension 5)"
-    ],
-    "urls": [
-      "https://erdosproblems.com/1007"
-    ],
-    "mathlib": [
-      "Mathlib.Data.Nat.Choose.Basic"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
-  "knowledgeScore": 90,
-  "started": "2026-03-07T00:36:31.363Z",
-  "lastUpdate": "2026-03-07T01:30:00.000Z",
+  "started": "2026-03-07T18:02:01.176Z",
+  "lastUpdate": "2026-03-07T18:02:01.176Z",
   "significance": 6,
-  "tractability": 6
+  "tractability": 5
 }

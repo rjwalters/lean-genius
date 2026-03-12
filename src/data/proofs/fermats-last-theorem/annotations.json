@@ -11,11 +11,10 @@
     "content": "We import from Mathlib's FLT modules: `FLT.Basic` for the theorem statement, `FLT.Four` for Fermat's descent proof of the n=4 case, and ring theory for integer properties.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Mathlib FLT module",
-      "formal verification",
-      "proof assistants"
-    ],
-    "prerequisites": ["Mathlib library", "Lean 4"]
+      "Mathlib",
+      "Lean 4",
+      "formalization"
+    ]
   },
   {
     "id": "ann-flt-history",
@@ -33,8 +32,7 @@
       "history of mathematics",
       "number theory",
       "elliptic curves"
-    ],
-    "prerequisites": ["basic number theory", "history of mathematics"]
+    ]
   },
   {
     "id": "ann-flt-statement",
@@ -51,9 +49,8 @@
     "relatedConcepts": [
       "Diophantine equations",
       "integer solutions",
-      "Fermat's conjecture (1637)"
-    ],
-    "prerequisites": ["integer exponentiation", "Diophantine equations"]
+      "Fermat"
+    ]
   },
   {
     "id": "ann-flt-frey",
@@ -69,11 +66,10 @@
     "significance": "critical",
     "relatedConcepts": [
       "elliptic curves",
-      "Gerhard Frey (1984)",
+      "Frey",
       "algebraic geometry",
-      "conductor of elliptic curves"
-    ],
-    "prerequisites": ["elliptic curves", "Weierstrass form"]
+      "conductor"
+    ]
   },
   {
     "id": "ann-flt-semistable",
@@ -113,8 +109,7 @@
       "L-functions",
       "Taniyama-Shimura-Weil",
       "Langlands program"
-    ],
-    "prerequisites": ["elliptic curves", "modular forms", "L-functions"]
+    ]
   },
   {
     "id": "ann-flt-ribet",
@@ -174,9 +169,8 @@
     "relatedConcepts": [
       "infinite descent",
       "Pythagorean triples",
-      "Fermat's descent proof"
-    ],
-    "prerequisites": ["infinite descent", "Pythagorean triples"]
+      "Fermat"
+    ]
   },
   {
     "id": "ann-flt-three",
@@ -194,8 +188,7 @@
       "Eisenstein integers",
       "unique factorization",
       "algebraic integers"
-    ],
-    "prerequisites": ["Eisenstein integers", "unique factorization domains"]
+    ]
   },
   {
     "id": "ann-flt-reduction",
@@ -210,11 +203,10 @@
     "mathContext": "This means we only need to prove FLT for n=4 and all odd primes. Since every n ≥ 3 is divisible by 4 or an odd prime, this covers everything.",
     "significance": "supporting",
     "relatedConcepts": [
-      "reduction to prime exponents",
+      "reduction",
       "prime factorization",
       "exponentiation"
-    ],
-    "prerequisites": ["prime factorization", "exponent properties"]
+    ]
   },
   {
     "id": "ann-flt-full",
@@ -235,8 +227,8 @@
       "ann-flt-reduction"
     ],
     "relatedConcepts": [
-      "axiomatization",
-      "full formalization",
+      "axiom",
+      "formalization",
       "Lean FLT project"
     ]
   }

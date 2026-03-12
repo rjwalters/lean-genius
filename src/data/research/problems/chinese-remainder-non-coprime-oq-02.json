@@ -1,73 +1,37 @@
 {
   "slug": "chinese-remainder-non-coprime-oq-02",
   "title": "Non-coprime CRT extension to polynomial rings and PIDs",
-  "phase": "COMPLETE",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∀ (R : CommRing) (I J : Ideal R) (a b : R), (∃ x, (x-a)∈I ∧ (x-b)∈J) ↔ (a-b)∈I⊔J",
-    "plain": "The CRT for general ideals: the system x≡a mod I, x≡b mod J is solvable iff a-b lies in the sum I+J. Solutions are unique mod I∩J.",
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Ideal CRT necessity (general rings)",
-      "Ideal CRT sufficiency (general rings)",
-      "Ideal CRT iff (general rings)",
-      "Ideal CRT uniqueness mod I ∩ J",
-      "Coprime ideal CRT corollary",
-      "Ideal CRT for three ideals (necessity + uniqueness)",
-      "Principal ideal membership ↔ divisibility",
-      "Element CRT from ideal CRT",
-      "Span sup top from IsCoprime",
-      "Element CRT uniqueness from ideals",
-      "PID non-coprime CRT iff",
-      "PID non-coprime CRT uniqueness",
-      "PID non-coprime CRT full (existence + uniqueness)"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Complete: ideal-theoretic CRT fully proved for general commutative rings, with bridges to element-level and PID formulations"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-08T00:15:31Z",
+    "phase": "NEW",
+    "since": "2026-03-06T11:43:14.356Z",
     "iteration": 1,
-    "focus": "Ideal-theoretic CRT generalization",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Complete — 13 new theorems fully proved",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Added 3 new sections (Parts XI-XIII) with 13 fully proved theorems. Part XI: ideal-theoretic CRT for arbitrary ideals in general commutative rings (necessity, sufficiency, iff, uniqueness, coprime corollary, three-ideal versions). Part XII: bridge connecting ideal CRT to element-level CRT via principal ideals. Part XIII: non-coprime PID CRT combining ideal and element perspectives.",
-    "builtItems": [
-      "ideal_crt_necessary: (∃ x, x-a∈I ∧ x-b∈J) → (a-b)∈I⊔J",
-      "ideal_crt_sufficient: (a-b)∈I⊔J → (∃ x, x-a∈I ∧ x-b∈J)",
-      "ideal_crt_iff: full iff characterization",
-      "ideal_crt_unique: solutions agree mod I⊓J",
-      "ideal_crt_coprime: I⊔J=⊤ → always solvable",
-      "ideal_crt_three_necessary: pairwise ideal conditions",
-      "ideal_crt_three_unique: uniqueness mod I⊓J⊓K",
-      "mem_span_singleton_iff_dvd: x∈⟨m⟩ ↔ m∣x",
-      "element_crt_from_ideal: bridge to element CRT",
-      "span_sup_top_of_isCoprime: IsCoprime → I⊔J=⊤",
-      "element_crt_unique_from_ideal: element uniqueness via ideals",
-      "pid_noncoprime_crt_iff: non-coprime CRT for PIDs",
-      "pid_noncoprime_crt_full: existence + uniqueness for PIDs"
-    ],
-    "insights": [
-      "The ideal-theoretic CRT is the most general: ∃x, x-a∈I ∧ x-b∈J ↔ a-b∈I⊔J works for ANY commutative ring",
-      "No coprimality needed: the non-coprime case emerges naturally from I⊔J not being all of R",
-      "Uniqueness is mod I⊓J (intersection), which generalizes lcm for principal ideals",
-      "The element-level CRT for EDs/PIDs is recovered by instantiating with principal ideals",
-      "For PIDs, I⊔J=⟨gcd(m,n)⟩ and I⊓J=⟨lcm(m,n)⟩, recovering the classical formulation",
-      "Proof technique: decompose a-b=i+j via Submodule.mem_sup, set x=a-i, verify both congruences",
-      "The file now has 13 parts covering EDs, polynomials, PIDs, ideals — a comprehensive CRT formalization"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -84,7 +48,7 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.176Z",
-  "lastUpdate": "2026-03-08T00:15:31Z",
+  "lastUpdate": "2026-03-07T18:02:01.176Z",
   "significance": 7,
   "tractability": 5
 }

@@ -1,8 +1,8 @@
 {
   "slug": "ballot-problem-oq-03",
   "title": "Higher-dimensional lattice path problems via reflection",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "NEW",
     "since": "2026-02-26T05:12:41.985Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,35 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended with entry gap analysis (Part XVII). Proved entryGap framework (NI preserves positive gap at all columns), swapTails East step preservation, suffix North step decomposition. Fixed meta.json (sorries 1→0, badge open→axiom). Changed /-! to /- for Aristotle compatibility. Still 0 sorries, 1 axiom (lindstrom_involution).",
-    "builtItems": [
-      "37+ theorems in BallotProblemOQ03.lean",
-      "Higher-dimensional lattice paths via reflection principle",
-      "2x2 LGV Lemma proved via complement counting + Lindström axiom",
-      "Crossing Lemma fully proved",
-      "Involution infrastructure: splitAfterEast, swapTails, involutivity",
-      "Catalan numbers, ballot formula, Vandermonde identity",
-      "entryGap def, entryGap_zero, entryGap_pos_succ, entryGap_pos_all (gap analysis)",
-      "crossing_col_entry_ge, crossing_col_prev_lt (gap ↔ inequality conversion)",
-      "eastSteps_swapTails_fst/snd (swapTails preserves East step count)",
-      "length_swapTails_fst/snd, northSteps_splitAfterEast_snd (structural preservation)"
-    ],
-    "insights": [
-      "Lindström involution requires firstIntersectionColumn construction",
-      "The involution is a classical result but the Equiv construction is complex",
-      "Axiomatizing the bijection is appropriate: infrastructure is built, gap is explicit",
-      "Entry gap analysis: NI implies positive gap everywhere, but positive gap does NOT imply NI",
-      "Key subtlety: positive entry gap at boundaries doesn't give disjoint column ranges (intervals vs points)",
-      "The Lindström involution swaps at the lexicographically first shared LATTICE POINT, not column boundary",
-      "swapTails preserves East step count: pre₁(k East) ++ suf₂(m-k East) = m East steps"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Define lattice point membership on paths (finer than column-entry boundaries)",
-      "Prove shared lattice point exists for ¬NonIntersecting paths (from column range overlap)",
-      "Construct firstSharedLatticePoint using Nat.find on decidable predicate",
-      "Build the explicit Equiv using swapTails at the first shared point"
-    ]
+    "nextSteps": []
   },
   "approaches": [],
   "tags": [
@@ -73,9 +49,8 @@
     "urls": [],
     "mathlib": []
   },
-  "knowledgeScore": 85,
   "started": "2026-02-26T17:08:50.304Z",
-  "lastUpdate": "2026-03-11T12:15:00.000Z",
+  "lastUpdate": "2026-02-26T17:08:50.304Z",
   "significance": 7,
   "tractability": 6
 }
