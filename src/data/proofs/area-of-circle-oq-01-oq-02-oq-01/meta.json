@@ -39,6 +39,16 @@
         "theorem": "Real.Gamma_pos_of_pos",
         "description": "Gamma function is positive for positive arguments",
         "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Gamma_add_one",
+        "description": "Gamma recurrence: Γ(x+1) = x·Γ(x)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Gamma_one_half_eq",
+        "description": "Γ(1/2) = √π (Euler's reflection formula specialization)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
       }
     ],
     "originalContributions": [
@@ -51,9 +61,34 @@
       "Surface-to-volume ratio S_n/V_n = n/r",
       "Explicit formulas: S₂ = 2πr, S₃ = 4πr², V₃ = (4π/3)r³"
     ],
+    "references": [
+      {
+        "authors": "Archimedes",
+        "title": "On the Sphere and Cylinder",
+        "year": "-225",
+        "venue": "Classical geometry",
+        "note": "First proof that the volume of a sphere is (4/3)πr³ and its surface area is 4πr², via the method of exhaustion"
+      },
+      {
+        "authors": "L. Schläfli",
+        "title": "Theorie der vielfachen Kontinuität",
+        "year": "1852",
+        "venue": "Denkschriften der Schweizerischen Naturforschenden Gesellschaft",
+        "note": "First computation of the volume of the n-dimensional ball using the Gamma function"
+      },
+      {
+        "authors": "Keith Ball",
+        "title": "An Elementary Introduction to Modern Convex Geometry",
+        "year": "1997",
+        "venue": "Flavors of Geometry, MSRI Publications",
+        "note": "Modern treatment of high-dimensional volume and the concentration of measure phenomenon"
+      }
+    ],
+    "historicalContext": "The relationship between the volume and surface area of n-dimensional balls is a fundamental result in geometric analysis. In 2D, the area of a circle equals the integral of its circumference: A(r) = ∫₀ʳ 2πρ dρ = πr². This generalizes to all dimensions via V_n(r) = ω_n r^n and the polynomial structure of the volume function. The n-ball volume formula ω_n = π^(n/2)/Γ(n/2+1) was first computed by Schläfli (1852) and exhibits the surprising behavior of vanishing as n → ∞.",
     "dateAdded": "03/11/26"
   },
   "overview": {
+    "summary": "Generalizes the 2D result A(r) = ∫₀ʳ C(ρ) dρ to n dimensions, proving V_n(r) = ∫₀ʳ S_n(ρ) dρ where S_n(ρ) = n·ω_n·ρ^(n-1) is the sphere surface area. The proof exploits the polynomial structure V_n(r) = ω_n·r^n: differentiation gives the surface area (power rule), and the Fundamental Theorem of Calculus recovers the volume as an integral. Rich consequences include shell volumes, scaling laws, and the surface-to-volume ratio n/r.",
     "historicalContext": "The relationship between the volume and surface area of n-dimensional balls is a fundamental result in geometric analysis. In 2D, the area of a circle equals the integral of its circumference: A(r) = ∫₀ʳ 2πρ dρ = πr². This generalizes to all dimensions via V_n(r) = ω_n r^n and the polynomial structure of the volume function.",
     "problemStatement": "**Open Question**: Can the 2D result A(r) = ∫₀ʳ C(ρ) dρ be generalized to n dimensions?\n\n**Answer**: YES. For any n ≥ 1, V_n(r) = ∫₀ʳ S_n(ρ) dρ where S_n(ρ) = n·ω_n·ρ^(n-1) is the (n-1)-sphere surface area. This follows from V_n(r) = ω_n·r^n being a polynomial in r, so differentiation gives d/dr[V_n] = S_n, and FTC Part 2 yields the integral formula.",
     "proofStrategy": "1. **Define** unit ball volume ω_n = π^(n/2)/Γ(n/2+1), volume V_n(r) = ω_n·r^n, surface area S_n(r) = n·ω_n·r^(n-1).\n2. **Verify** ω_n for small n: ω_0=1, ω_1=2, ω_2=π, ω_3=4π/3.\n3. **Differentiate**: d/dr[V_n(r)] = S_n(r) via the power rule (hasDerivAt_pow).\n4. **Integrate**: V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC Part 2, using V_n(0) = 0.\n5. **Generalize**: Shell volumes, scaling laws, surface-to-volume ratio.",
@@ -63,6 +98,13 @@
       "FTC Part 2 converts the derivative relation into the integral formula V_n = ∫S_n",
       "The surface-to-volume ratio S_n/V_n = n/r explains why high-dimensional balls have 'thin shells'",
       "Gamma function values Γ(3/2) = √π/2 and Γ(5/2) = 3√π/4 are key for explicit formulas"
+    ],
+    "keyIdea": "The n-ball volume V_n(r) = ω_n · r^n has polynomial structure, so the volume-surface duality d/dr[V_n] = S_n is an instance of the power rule, and FTC Part 2 immediately yields V_n = ∫S_n.",
+    "prerequisites": [
+      "Fundamental Theorem of Calculus (Parts 1 and 2)",
+      "Gamma function and half-integer evaluation",
+      "Power rule for derivatives (hasDerivAt_pow)",
+      "Interval integration in Mathlib"
     ]
   },
   "sections": [
@@ -71,57 +113,70 @@
       "title": "Volume and Surface Area Functions",
       "startLine": 33,
       "endLine": 49,
-      "summary": "Defines unit ball volume ω_n, n-ball volume V_n(r), and sphere surface area S_n(r)."
+      "summary": "Defines unit ball volume ω_n = π^(n/2)/Γ(n/2+1), n-ball volume V_n(r) = ω_n·r^n, and sphere surface area S_n(r) = n·ω_n·r^(n-1)."
     },
     {
       "id": "unit-ball-properties",
       "title": "Unit Ball Volume Properties",
       "startLine": 51,
       "endLine": 104,
-      "summary": "Proves ω_n ≥ 0 and explicit values ω_0=1, ω_1=2, ω_2=π, ω_3=4π/3."
+      "summary": "Proves ω_n ≥ 0 and explicit values ω_0=1, ω_1=2, ω_2=π, ω_3=4π/3 via Gamma function identities Γ(1/2) = √π, Γ(3/2) = √π/2, Γ(5/2) = 3√π/4."
     },
     {
       "id": "derivative-relation",
       "title": "The Derivative Relation",
       "startLine": 106,
       "endLine": 131,
-      "summary": "d/dr[V_n(r)] = S_n(r) via the power rule, plus continuity of V_n and S_n."
+      "summary": "d/dr[V_n(r)] = S_n(r) via the power rule (hasDerivAt_pow), plus continuity of V_n and S_n. This is the n-dimensional 'onion peeling' principle."
     },
     {
       "id": "integral-formula",
       "title": "The Integral Formula (Main Theorem)",
       "startLine": 133,
       "endLine": 165,
-      "summary": "V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC Part 2, and FTC Part 1 recovery."
+      "summary": "V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC Part 2, using V_n(0) = 0. Also proves FTC Part 1 recovery: d/dr[∫₀ʳ S_n] = S_n(r)."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 167,
       "endLine": 212,
-      "summary": "n=1,2,3 special cases and explicit formulas for S₂, S₃, V₂, V₃."
+      "summary": "n=1,2,3 special cases recovering classical formulas. Explicit formulas S₂=2πr, S₃=4πr², V₂=πr², V₃=(4π/3)r³ confirmed by substituting ω_n values."
     },
     {
       "id": "shell-volumes",
       "title": "Shell/Annulus Generalization",
       "startLine": 213,
       "endLine": 230,
-      "summary": "∫_{r₁}^{r₂} S_n = V_n(r₂) - V_n(r₁) for shells."
+      "summary": "∫_{r₁}^{r₂} S_n = V_n(r₂) - V_n(r₁) for shells. The 3D spherical shell formula is given as a corollary."
     },
     {
       "id": "scaling",
       "title": "Scaling Properties and Surface-to-Volume Ratio",
       "startLine": 232,
       "endLine": 262,
-      "summary": "Scaling laws and S_n/V_n = n/r ratio."
+      "summary": "Scaling laws V_n(cr) = c^n·V_n(r), S_n(cr) = c^(n-1)·S_n(r), and the key ratio S_n/V_n = n/r explaining concentration of measure in high dimensions."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Open Question Chain",
+      "startLine": 264,
+      "endLine": 290,
+      "summary": "Recapitulates all results and traces the open question chain: Wiedijk #9 (A=πr²) → OQ01 (C=dA/dr) → OQ02 (A=∫C) → this file (V_n=∫S_n)."
     }
   ],
   "conclusion": {
     "summary": "This file generalizes the 2D area-circumference integral relation A = ∫C to arbitrary dimensions with zero sorries. The main theorem V_n(r) = ∫₀ʳ S_n(ρ) dρ follows cleanly from the polynomial structure of V_n and the Fundamental Theorem of Calculus. Rich consequences include shell volumes, scaling laws, and the surface-to-volume ratio n/r.",
-    "implications": "1. **Geometric analysis**: The volume-surface duality V_n' = S_n is the foundation of geometric measure theory.\n2. **High-dimensional geometry**: The ratio S_n/V_n = n/r explains concentration of measure in high dimensions.\n3. **Proof chain**: Completes the sequence from Wiedijk #9 (circle area) through circumference-area duality to n-dimensional integration.",
+    "implications": [
+      "The volume-surface duality V_n' = S_n is the foundation of geometric measure theory in n dimensions",
+      "The ratio S_n/V_n = n/r explains concentration of measure in high dimensions — the 'curse of dimensionality'",
+      "Completes the Wiedijk #9 open question chain: circle area → circumference-area duality → n-dimensional integration",
+      "The polynomial structure V_n = ω_n·r^n suggests that similar integral relations hold for other homogeneous geometric quantities"
+    ],
     "openQuestions": [
-      "Can the Gamma function values ω_n be computed for all n via a recursive formula?",
-      "Can the isoperimetric inequality be formalized using these volume/surface area definitions?"
+      "Can the Gamma function values ω_n be computed for all n via a recursive formula ω_{n+2} = (2π/n)·ω_n?",
+      "Can the isoperimetric inequality be formalized using these volume/surface area definitions?",
+      "Can the behavior ω_n → 0 as n → ∞ (the 'thin shell' limit) be formalized?"
     ]
   }
 }
