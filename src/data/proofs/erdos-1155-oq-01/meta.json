@@ -36,6 +36,21 @@
         "theorem": "Filter.Eventually.mono",
         "description": "Strengthen an eventually-true predicate.",
         "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "A function tends to a filter limit; used for ratio convergence arguments.",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Icc_mem_nhds",
+        "description": "A closed interval [a,b] containing x is a neighborhood of x; used in limit_implies_conjecture.",
+        "module": "Mathlib.Topology.Order.Basic"
+      },
+      {
+        "theorem": "Real.rpow_add",
+        "description": "x^(a+b) = x^a · x^b for positive reals; used in exponent splitting for BFL implications.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
       }
     ],
     "originalContributions": [
@@ -65,87 +80,123 @@
         "year": "1997",
         "venue": "Electronic Journal of Combinatorics",
         "note": "Earlier upper bound of n^{7/4+ε}"
+      },
+      {
+        "authors": "P. Erdős",
+        "title": "Problems and results in combinatorial analysis and graph theory",
+        "year": "1981",
+        "venue": "Discrete Mathematics",
+        "note": "Original conjecture that f(n) = Θ(n^{3/2}) for the triangle removal process"
+      },
+      {
+        "authors": "W. Mantel",
+        "title": "Problem 28",
+        "year": "1907",
+        "venue": "Wiskundige Opgaven",
+        "note": "Triangle-free graphs on n vertices have at most ⌊n²/4⌋ edges; provides the naive upper bound on f(n)"
       }
     ],
-    "historicalContext": "Erdős conjectured that the triangle removal process on K_n leaves Θ(n^{3/2}) edges. Bohman, Frieze, and Lubetzky (2015) proved f(n) = n^{3/2+o(1)}, confirming the exponent but leaving the question of explicit constants open.",
+    "historicalContext": "Erdős conjectured (c. 1981) that the triangle removal process on K_n leaves Θ(n^{3/2}) edges. Grable (1997) gave the first rigorous upper bound of n^{7/4+o(1)}. Bohman, Frieze, and Lubetzky (2015) proved the near-optimal f(n) = n^{3/2+o(1)}, confirming the exponent 3/2 but leaving the question of explicit constants open. The gap between n^{±ε} (BFL) and constant bounds (conjecture) remains one of the central open problems in random graph processes.",
     "axioms": 5
   },
   "sections": [
     {
       "id": "triangle-defs",
       "title": "Triangle Definitions",
-      "summary": "Defines pointwise triangle predicates and their relationship to Mathlib's CliqueFree 3.",
+      "summary": "Defines pointwise triangle predicates (IsTriangle', IsTriangleFree) and proves their equivalence with Mathlib's CliqueFree 3. Constructs explicit triangles in K_n for n ≥ 3.",
       "startLine": 25,
-      "endLine": 69
+      "endLine": 76
     },
     {
       "id": "asymptotic-setup",
       "title": "Asymptotic Infrastructure",
-      "summary": "Axiomatizes the triangle removal function f(n) and the BFL/Grable bounds.",
-      "startLine": 71,
-      "endLine": 96
+      "summary": "Axiomatizes the triangle removal function f(n) with basic properties and BFL bounds. States the Erdős conjecture as ∃ c₁, c₂ > 0 with c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} eventually.",
+      "startLine": 78,
+      "endLine": 104
     },
     {
-      "id": "gap-analysis",
-      "title": "Gap Analysis: BFL vs Full Conjecture",
-      "summary": "Proves structural relationships between the BFL result and the full Θ(n^{3/2}) conjecture.",
-      "startLine": 98,
-      "endLine": 162
+      "id": "bfl-sandwich",
+      "title": "BFL Sandwich and Conjecture Implications",
+      "summary": "Combines BFL bounds into a sandwich n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε}. Proves the conjecture strictly implies BFL via constant-to-sub-polynomial reduction.",
+      "startLine": 105,
+      "endLine": 183
     },
     {
-      "id": "exponent-gap",
-      "title": "Exponent Characterization",
-      "summary": "Proves 3/2 is the exact critical exponent: any α > 3/2 gives an upper bound, no β < 3/2 works.",
-      "startLine": 164,
-      "endLine": 192
+      "id": "conjecture-decomposition",
+      "title": "Conjecture Decomposition",
+      "summary": "The full conjecture Θ(n^{3/2}) is equivalent to both one-sided bounds holding independently: O(n^{3/2}) AND Ω(n^{3/2}). Shows c ≤ C by contradiction.",
+      "startLine": 185,
+      "endLine": 219
+    },
+    {
+      "id": "exponent-characterization",
+      "title": "Exponent Characterization and Small Values",
+      "summary": "Proves 3/2 is the exact critical exponent. f(n) = O(n^α) for all α > 3/2 but for no β < 3/2. Includes small-value bounds and ratio reformulation of BFL.",
+      "startLine": 221,
+      "endLine": 305
     },
     {
       "id": "sufficient-conditions",
       "title": "Sufficient Conditions for the Conjecture",
-      "summary": "States and partially proves that ratio convergence or limsup/liminf bounds imply the full conjecture.",
-      "startLine": 230,
-      "endLine": 267
+      "summary": "If f(n)/n^{3/2} → L > 0, the conjecture holds with c₁ = L/2, c₂ = 3L/2. The weaker limsup/liminf boundedness condition also suffices.",
+      "startLine": 306,
+      "endLine": 355
     },
     {
       "id": "lower-exponent",
       "title": "Lower Exponent Characterization",
-      "summary": "BFL implies f exceeds any sub-3/2 power: for any α < 3/2, eventually n^α ≤ f(n).",
-      "startLine": 370,
-      "endLine": 382
+      "summary": "BFL implies f eventually exceeds any sub-3/2 power: for any α < 3/2, eventually n^α ≤ f(n). Includes superlinear and n^{5/4} special cases.",
+      "startLine": 357,
+      "endLine": 370
     },
     {
       "id": "mantel-connection",
-      "title": "Mantel/Turan Connection",
-      "summary": "Connects the triangle removal process to Mantel's theorem via the triangle-free terminal graph. Shows BFL gives n^{7/4} bound, much tighter than Mantel's n²/4.",
-      "startLine": 384,
-      "endLine": 415
+      "title": "Mantel/Turán Connection",
+      "summary": "Connects the triangle removal process to Mantel's theorem: the triangle-free terminal graph has at most n²/4 edges. BFL's n^{7/4} bound is strictly tighter.",
+      "startLine": 372,
+      "endLine": 403
     },
     {
       "id": "hierarchy",
       "title": "Hierarchy of Bounds",
       "summary": "Proves the strict weakening chain: Conjecture ⟹ BFL ⟹ Grable, each step losing information about the multiplicative constant.",
-      "startLine": 417,
+      "startLine": 405,
       "endLine": 445
     },
     {
       "id": "tightness",
       "title": "Tightness and Ratio Characterization",
-      "summary": "Under the conjecture, the normalized ratio f(n)/n^{3/2} is bounded between positive constants. Characterizes the conjecture as a compactness condition on the ratio sequence.",
+      "summary": "Under the conjecture, the normalized ratio f(n)/n^{3/2} is eventually in [c₁, c₂]. Characterizes the conjecture as a compactness condition on the ratio sequence in (0, ∞).",
       "startLine": 447,
-      "endLine": 495
+      "endLine": 491
     }
   ],
   "overview": {
     "summary": "Analyzes what separates the known BFL result (f(n) = n^{3/2+o(1)}) from the full Erdős conjecture (f(n) = Θ(n^{3/2})). The gap is precisely: BFL gives n^{-ε} ≤ f(n)/n^{3/2} ≤ n^ε (sub-polynomial bounds), while the conjecture needs constant bounds c ≤ f(n)/n^{3/2} ≤ C.",
     "keyIdea": "The conjecture decomposes into independent upper and lower Θ-bounds, each equivalent to bounding the ratio f(n)/n^{3/2}. If this ratio converges to any positive limit, the full conjecture follows.",
+    "proofStrategy": "Layered analysis proceeding from foundations to structural results: (1) establish triangle predicates and their Mathlib equivalence; (2) axiomatize f(n) and BFL bounds; (3) prove BFL sandwich and gap analysis showing conjecture ⟹ BFL; (4) decompose the conjecture into independent one-sided bounds; (5) characterize 3/2 as the critical exponent; (6) prove sufficient conditions (limit convergence, limsup/liminf boundedness); (7) establish the hierarchy Conjecture ⟹ BFL ⟹ Grable and ratio tightness.",
+    "keyInsights": [
+      "The gap between BFL and the conjecture is exactly the gap between n^{±ε} and constant bounds on the ratio f(n)/n^{3/2} — a compactness condition",
+      "The conjecture splits cleanly into two independent one-sided bounds (O and Ω), and the non-trivial direction of combining them requires a monotonicity argument to show c ≤ C",
+      "Ratio convergence f(n)/n^{3/2} → L > 0 is strictly stronger than the conjecture (which only needs boundedness, not convergence), but provides explicit constants c₁ = L/2, c₂ = 3L/2",
+      "The hierarchy Conjecture ⟹ BFL ⟹ Grable is strict at each step: each weakening loses information about whether the multiplicative constant is fixed or grows with n",
+      "Mantel's theorem provides the naive bound f(n) ≤ n²/4 from extremal graph theory; BFL's n^{7/4} is much tighter, and the conjecture's n^{3/2} is tighter still"
+    ],
     "prerequisites": [
       "Filter.Eventually (atTop) for asymptotic statements",
       "Real power functions and basic inequalities",
-      "SimpleGraph basics and CliqueFree predicate"
+      "SimpleGraph basics and CliqueFree predicate",
+      "Filter.Tendsto and topological neighborhoods for limit arguments"
     ]
   },
   "conclusion": {
     "summary": "Complete formalization of the structural relationship between BFL's n^{3/2+o(1)} result and Erdős's Θ(n^{3/2}) conjecture. All theorems fully proved (0 sorries). Includes BFL sandwich, exact exponent characterization, conjecture decomposition, Mantel connection, hierarchy of bounds, and ratio tightness characterization.",
+    "implications": [
+      "Any proof of the full conjecture must establish that f(n)/n^{3/2} has a compact limit set in (0, ∞) — a qualitative strengthening of BFL's sub-polynomial bounds",
+      "The O and Ω bounds can be pursued independently; proving either one is progress toward the full conjecture",
+      "The hierarchy Conjecture ⟹ BFL ⟹ Grable provides a roadmap for incremental progress: each strengthening requires tighter control of the multiplicative constants",
+      "Connecting to differential equation methods (as in BFL's proof) may be the most promising route to extracting explicit constants"
+    ],
     "openQuestions": [
       "Does f(n)/n^{3/2} converge? If so, to what constant?",
       "Can the lower Θ-bound be established independently of the upper?",

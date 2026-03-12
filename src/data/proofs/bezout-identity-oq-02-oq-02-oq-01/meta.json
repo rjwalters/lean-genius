@@ -17,7 +17,9 @@
       {"theorem": "IsCoprime", "description": "Coprimality via Bézout coefficients", "module": "Mathlib.RingTheory.Coprime.Basic"},
       {"theorem": "IsCoprime.dvd_of_dvd_mul_left", "description": "Euclid's lemma via IsCoprime", "module": "Mathlib.RingTheory.Coprime.Basic"},
       {"theorem": "mul_left_cancel₀", "description": "Left cancellation in integral domains", "module": "Mathlib.Algebra.GroupWithZero.Basic"},
-      {"theorem": "Nat.mod_lt", "description": "Modular reduction decreases", "module": "Mathlib.Data.Nat.Defs"}
+      {"theorem": "Nat.mod_lt", "description": "Modular reduction decreases", "module": "Mathlib.Data.Nat.Defs"},
+      {"theorem": "Nat.div_add_mod", "description": "Division algorithm: a = (a/b)*b + a%b", "module": "Mathlib.Data.Nat.Defs"},
+      {"theorem": "linear_combination", "description": "Tactic for proving linear equalities from hypotheses", "module": "Mathlib.Tactic.LinearCombination"}
     ],
     "originalContributions": [
       "extGcd: Self-contained extended Euclidean algorithm with full correctness proofs (Bézout identity + GCD)",
@@ -27,9 +29,41 @@
       "constructive_quotient_unique: Quotient uniqueness in integral domains",
       "abstract_euclids_lemma: Shows the construction agrees with Mathlib's IsCoprime.dvd_of_dvd_mul_left"
     ],
+    "references": [
+      {
+        "authors": "Euclid",
+        "title": "Elements, Books VII and X",
+        "year": "-300",
+        "venue": "Classical mathematics",
+        "note": "The Euclidean algorithm for computing GCD and Euclid's lemma (VII.30)"
+      },
+      {
+        "authors": "Étienne Bézout",
+        "title": "Théorie générale des équations algébriques",
+        "year": "1779",
+        "venue": "Paris",
+        "note": "Formalized the identity au + bv = gcd(a,b) that bears his name"
+      },
+      {
+        "authors": "Claude-Gaspard Bachet de Méziriac",
+        "title": "Problèmes plaisants et délectables",
+        "year": "1624",
+        "venue": "Lyon",
+        "note": "First published description of the extended Euclidean algorithm for computing Bézout coefficients"
+      },
+      {
+        "authors": "Donald E. Knuth",
+        "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
+        "year": "1997",
+        "venue": "Addison-Wesley",
+        "note": "Section 4.5.2: Modern treatment of the extended Euclidean algorithm with complexity analysis"
+      }
+    ],
+    "historicalContext": "The Euclidean algorithm (Elements, ~300 BCE) is the oldest nontrivial algorithm still in use. Bachet (1624) extended it to compute Bézout coefficients, and Bézout (1779) formalized the identity au + bv = gcd(a,b). While Euclid's lemma has been known since antiquity, its constructive content — actually computing the quotient from Bézout coefficients — highlights the algorithmic power implicit in the classical proof.",
     "dateAdded": "2026-03-06"
   },
   "overview": {
+    "summary": "Combines the extended Euclidean algorithm with Bézout's identity to construct an explicit divisibility algorithm: given coprime a, b and a proof that a divides b*c, compute the quotient q = c/a. The core formula q = u*c + v*k (where u*a + v*b = 1 and b*c = a*k) works in any commutative ring, and is instantiated over ℕ/ℤ via the extended GCD.",
     "historicalContext": "The **extended Euclidean algorithm** dates to Euclid's *Elements* (~300 BCE) and was refined by Bachet de Méziriac (1624). It computes not only gcd(a,b) but also integers u,v satisfying u*a + v*b = gcd(a,b) — the **Bézout coefficients**.\n\nWhile Euclid's lemma (if a coprime to b divides b*c, then a divides c) is classical, its **constructive content** — actually computing the quotient — is often overlooked. This formalization makes the construction explicit: given Bézout coefficients and a divisibility witness, the quotient is extracted by a simple algebraic formula.\n\nThe key insight is that the proof of Euclid's lemma already contains the algorithm: if u*a + v*b = 1 and b*c = a*k, then c = a*(u*c + v*k). This is not just an existence proof — it's a computable recipe.",
     "problemStatement": "**Open Question (bezout-identity-oq-02-oq-02-oq-01)**: Can the Bézout coefficients from the extended Euclidean algorithm be combined with Euclid's lemma to give a constructive, computable divisibility algorithm — producing explicit quotient witnesses?\n\n**Answer**: YES — the formula q = u*c + v*k (where u*a + v*b = 1 and b*c = a*k) is verified in any CommRing, then instantiated over ℕ/ℤ via the extended Euclidean algorithm.",
     "proofStrategy": "The proof proceeds in three layers:\n\n**Layer 1 — Extended Euclidean Algorithm**: Define `extGcd` recursively with termination via `Nat.mod_lt`. Prove correctness: (a) it returns gcd(a,b) via `extGcd_gcd`, and (b) the Bézout identity a*x + b*y = gcd(a,b) via `extGcd_bezout` using `linear_combination`.\n\n**Layer 2 — Quotient Formula**: In any CommRing, prove `a*(u*c + v*k) = c` from `u*a + v*b = 1` and `b*c = a*k` via a calc chain: expand by ring, substitute a*k = b*c, factor out c, apply Bézout.\n\n**Layer 3 — Assembly**: Combine extGcd (providing u,v) with the quotient formula (providing correctness) to define `constructive_div` and prove `a * constructive_div(...) = c`.",
@@ -39,6 +73,13 @@
       "**Uniqueness comes free**: In an integral domain, the quotient is unique by left cancellation.",
       "**Computational verification**: native_decide confirms the extGcd implementation matches expected values for small inputs.",
       "**Agreement with Mathlib**: The abstract version reduces to Mathlib's IsCoprime.dvd_of_dvd_mul_left, confirming consistency."
+    ],
+    "keyIdea": "The proof of Euclid's lemma already contains the algorithm: if u*a + v*b = 1 and b*c = a*k, then c = a*(u*c + v*k). The Bézout coefficients from the extended GCD provide the explicit quotient formula.",
+    "prerequisites": [
+      "Extended Euclidean algorithm and Bézout's identity",
+      "CommRing axioms (ring, one_mul)",
+      "Integral domain and cancellation law",
+      "IsCoprime type class in Mathlib"
     ]
   },
   "sections": [
@@ -53,7 +94,7 @@
       "id": "module-doc",
       "title": "Module Documentation",
       "startLine": 5,
-      "endLine": 21,
+      "endLine": 23,
       "summary": "Documents the open question origin, the affirmative answer, and the key formula u*c + v*k."
     },
     {
@@ -61,14 +102,14 @@
       "title": "Part I: The Extended Euclidean Algorithm",
       "startLine": 25,
       "endLine": 82,
-      "summary": "Self-contained extGcd implementation with extGcd_gcd (returns gcd), extGcd_bezout (Bézout identity), and extGcd_correct (combined). Uses strong recursion on b with Nat.mod_lt termination."
+      "summary": "Self-contained extGcd implementation with extGcd_gcd (returns gcd via strong induction), extGcd_bezout (Bézout identity via linear_combination), and extGcd_correct (combined). Termination by Nat.mod_lt."
     },
     {
       "id": "quotient-formula",
       "title": "Part II: The Core Quotient Formula",
       "startLine": 84,
       "endLine": 107,
-      "summary": "quotient_formula: a*(u*c + v*k) = c in any CommRing, proved by calc chain. euclids_lemma_constructive: extracts the divisibility witness."
+      "summary": "quotient_formula proves a*(u*c + v*k) = c in any CommRing via calc chain. euclids_lemma_constructive wraps this as a divisibility statement with explicit witness."
     },
     {
       "id": "constructive-algorithm",
@@ -82,7 +123,7 @@
       "title": "Part IV: Computational Verification",
       "startLine": 146,
       "endLine": 168,
-      "summary": "native_decide examples verifying extGcd outputs correct GCD values and Bézout identities for (3,7), (5,7), (17,5), and (252,198)."
+      "summary": "Seven native_decide examples verifying extGcd outputs correct GCD values and Bézout identities for (3,7), (5,7), (17,5), and (252,198)."
     },
     {
       "id": "uniqueness",
@@ -96,12 +137,21 @@
       "title": "Part VI: Connection to Abstract Algebra",
       "startLine": 182,
       "endLine": 200,
-      "summary": "abstract_euclids_lemma via IsCoprime. Confirms agreement with Mathlib's IsCoprime.dvd_of_dvd_mul_left."
+      "summary": "abstract_euclids_lemma via IsCoprime, confirming agreement with Mathlib's IsCoprime.dvd_of_dvd_mul_left. Our version additionally provides the explicit quotient formula."
     }
   ],
   "conclusion": {
     "summary": "The answer is YES: Bézout coefficients from extGcd combine with the quotient formula to give a constructive divisibility algorithm. The explicit quotient q = u*c + v*k is correct in any CommRing, computed over ℕ via the extended Euclidean algorithm, and unique in integral domains. Zero sorries.",
-    "implications": "This completes the bezout-identity open question chain. The constructive algorithm shows that number-theoretic divisibility results can be made fully algorithmic — the proof of Euclid's lemma IS the division algorithm. The ring-axiomatic generality means the same approach works for polynomial rings, Gaussian integers, and any Bézout domain.",
-    "openQuestions": []
+    "implications": [
+      "Completes the bezout-identity open question chain with a fully constructive algorithm",
+      "The ring-axiomatic quotient formula works in polynomial rings, Gaussian integers, and any Bézout domain",
+      "Demonstrates that classical existence proofs in number theory often contain implicit algorithms that can be extracted",
+      "The extended GCD provides modular inverses: when gcd(a,b) = 1, the Bézout coefficient u is the inverse of a mod b"
+    ],
+    "openQuestions": [
+      "Can the noncomputable annotation be removed by making the divisibility witness computable (e.g., via decidable divisibility)?",
+      "Can the algorithm be extended to multivariate Bézout identities in polynomial rings?",
+      "Can the complexity bound O(log min(a,b)) for extGcd be formalized?"
+    ]
   }
 }
