@@ -49,7 +49,7 @@
     "dateAdded": "03/12/26"
   },
   "overview": {
-    "historicalContext": "The computational complexity of finding fixed points has deep roots. Brouwer (1911) proved existence non-constructively. Banach (1922) showed contractions converge geometrically. Sperner (1928) provided the combinatorial backbone. The modern complexity-theoretic picture crystallized with Papadimitriou's PPAD class (1994) and Chen-Deng's proof (2009) that finding Brouwer fixed points is PPAD-complete in dimensions >= 2. In 1D, binary search gives optimal O(log 1/epsilon) complexity.",
+    "historicalContext": "The computational complexity of finding fixed points interweaves topology, analysis, and computational complexity theory across a century of development. L.E.J. Brouwer (1911) proved existence non-constructively using degree theory, sparking foundational debates about constructive mathematics — Brouwer himself later rejected his own proof's methods. Stefan Banach (1922) provided the first constructive algorithm: iterate a contraction and converge geometrically, yielding explicit error bounds. Emanuel Sperner (1928) supplied the combinatorial foundation with his simplex labeling lemma, which Knaster, Kuratowski, and Mazurkiewicz used to give an independent proof of Brouwer's theorem. The complexity-theoretic revolution came with Christos Papadimitriou's introduction of PPAD (1994), identifying a class of total search problems whose totality follows from the 'parity argument on directed graphs.' Xi Chen and Xiaotie Deng (2009) proved that computing approximate Brouwer fixed points is PPAD-complete in dimensions $\\geq 2$, resolving a major open question. In 1D, however, the bisection method achieves optimal $O(\\log(1/\\varepsilon))$ query complexity — a dramatic complexity gap between one and higher dimensions. John Nash's proof (1950) that every finite game has an equilibrium relies on Brouwer's theorem, and the PPAD-completeness of Nash equilibrium computation (Daskalakis-Goldberg-Papadimitriou 2009) is a direct descendant of this line of work.",
     "problemStatement": "OQ-02: What is the computational complexity of finding approximate fixed points?\n\nGiven a continuous function f: [0,1]^n -> [0,1]^n and epsilon > 0, find x such that |f(x) - x| <= epsilon.\n\nIn 1D: O(log 1/epsilon) queries suffice (binary search) and are necessary.\nIn >= 2D: The problem is PPAD-complete (Chen-Deng 2009).",
     "proofStrategy": "The formalization builds the complexity picture from multiple angles:\n\n1. **Existence** (IVT): Continuous [0,1] -> [0,1] functions have fixed points\n2. **Binary search**: Bisection narrows sign-change intervals by 1/2^n, giving O(log 1/epsilon)\n3. **Contraction mapping**: L-Lipschitz maps with L < 1 converge geometrically with explicit error bounds\n4. **PPAD structure**: Defined PPAD instances with source/sink/path structure, proved solutions exist via pigeonhole\n5. **Sperner's lemma**: 1D case connecting combinatorial and analytic perspectives\n6. **Stability**: Fixed points are Lipschitz-continuous in the map (delta/(1-L) perturbation bound)\n7. **Averaged iteration**: Krasnoselskii-Mann damping with Lipschitz constant (1-t(1-L))",
     "keyInsights": [
@@ -62,53 +62,60 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Preamble and Setup",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "Imports Mathlib, opens the `Set` namespace, and establishes the `BrouwerOQ02` namespace. The file addresses OQ-02: What is the computational complexity of finding approximate fixed points? All 7 main theorems are fully proved (0 sorries, 0 axioms)."
+    },
+    {
       "id": "discrete-ivt",
       "title": "1D Discrete IVT",
       "startLine": 29,
       "endLine": 44,
-      "summary": "Sign-changing integer sequence has adjacent sign change - the discrete foundation for binary search."
+      "summary": "Proves the discrete intermediate value theorem: a sign-changing integer sequence $f: \\mathbb{N} \\to \\mathbb{Z}$ with $f(0) \\geq 0$ and $f(N) < 0$ has an adjacent sign change $f(i) \\geq 0, f(i+1) < 0$. This is the combinatorial foundation for the bisection method and a 1D instance of Sperner's lemma."
     },
     {
       "id": "approximate-fixed-points",
       "title": "Approximate Fixed Points",
       "startLine": 46,
       "endLine": 60,
-      "summary": "Epsilon-approximate fixed points exist for continuous self-maps of [0,1], derived from exact fixed point existence via IVT."
+      "summary": "Defines $\\varepsilon$-approximate fixed points ($|f(x) - x| \\leq \\varepsilon$) and proves existence for continuous self-maps of $[0,1]$ via the IVT. The exact fixed point guaranteed by Brouwer's theorem is trivially $\\varepsilon$-approximate for any $\\varepsilon > 0$."
     },
     {
       "id": "convergence",
       "title": "Convergence of Approximations",
       "startLine": 62,
       "endLine": 124,
-      "summary": "Approximate fixed points converge to exact ones: if x_n are 1/n-approximate and converge, the limit is an exact fixed point."
+      "summary": "Proves that $1/n$-approximate fixed points converge to exact ones: if $x_n \\to x^*$ with $|f(x_n) - x_n| \\leq 1/n$, then $f(x^*) = x^*$. The proof uses a triangle inequality argument with $\\varepsilon = |f(x^*) - x^*|/2$, combining metric convergence and the approximation bounds."
     },
     {
       "id": "contraction-convergence",
       "title": "Contraction Mapping Convergence",
       "startLine": 126,
       "endLine": 176,
-      "summary": "Contraction iterates are approximate fixed points with geometric decay, and the iterate sequence is Cauchy."
+      "summary": "Establishes geometric convergence for $L$-contractions: $|f(f^n(x_0)) - f^n(x_0)| \\leq L^n |f(x_0) - x_0|$ (a priori error bound), and proves the iterate sequence is Cauchy using $L^n \\to 0$ from Mathlib's `tendsto_pow_atTop_nhds_zero_of_lt_one`."
     },
     {
       "id": "binary-search",
       "title": "Binary Search",
       "startLine": 178,
       "endLine": 215,
-      "summary": "Binary search narrows sign-change intervals and gives O(log 1/epsilon) convergence to approximate fixed points."
+      "summary": "Formalizes the bisection method: after $n$ steps, the sign-change interval for $g(x) = f(x) - x$ has width $\\leq 1/2^n$, yielding $O(\\log(1/\\varepsilon))$ query complexity. The base case uses $g(0) \\geq 0$ and $g(1) \\leq 0$ from the self-map property; each step evaluates the midpoint."
     },
     {
       "id": "ppad-structure",
       "title": "PPAD Structure",
       "startLine": 217,
       "endLine": 365,
-      "summary": "Complete formalization of PPAD instances with path-following, injectivity via predecessor consistency, and solution existence via pigeonhole principle."
+      "summary": "Complete formalization of PPAD: defines instances with successor/predecessor consistency, proves path injectivity via strong induction on $i + j$, establishes path termination via the pigeonhole principle ($|V|+1$ distinct vertices in a finite set), and concludes with the PPAD principle: every finite PPAD instance has a solution (a sink $v \\neq s$ with $\\text{succ}(v) = \\text{none}$)."
     },
     {
       "id": "summary",
       "title": "Complete 1D Picture",
       "startLine": 367,
       "endLine": 391,
-      "summary": "Summary theorem combining existence, approximate existence, and binary search convergence for the complete 1D complexity picture."
+      "summary": "Bundles the three core 1D results: (1) $\\exists x, f(x) = x$ (Brouwer/IVT), (2) $\\forall \\varepsilon > 0, \\exists x, |f(x)-x| \\leq \\varepsilon$ (approximability), (3) $\\forall n, \\exists x, |f(x)-x| \\leq 2^{-n}$ (efficient computability via bisection). Contrasts with PPAD-completeness in higher dimensions."
     }
   ],
   "conclusion": {
