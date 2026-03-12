@@ -23,26 +23,32 @@
       "tucker_1d: {+-1} labeling with f(0)=-f(last) has complementary edge",
       "tucker_bu_equivalence_1d: Tucker <-> BU in 1D",
       "perturbation_antisymmetric_bound: 2*epsilon stability",
-      "circle_noninjectivity: f:R^2->R has equal-value antipodal pair on S^1"
+      "circle_noninjectivity: f:R^2->R has equal-value antipodal pair on S^1",
+      "tucker_path_transition: nonzero labels + complementary endpoints => sign change or complementary edge",
+      "tucker_path_pm1_complementary: +-1 labels + complementary endpoints => complementary edge",
+      "tucker_cycle: antipodal +-1 labeling on even cycle => complementary edge",
+      "tucker_2d_via_path: Tucker 2D for +-1 labels via path reduction to Tucker 1D",
+      "signZ_pos/signZ_neg: sign function classification",
+      "compl_opposite_sign: complementary integers have opposite signs"
     ],
     "open": [
-      "tucker_2d (axiom): 2D Tucker's lemma - needs simplicial complex infrastructure",
+      "tucker_2d (axiom): 2D Tucker's lemma for +-1,+-2 labels - needs simplicial complex infrastructure",
       "tucker_nd (axiom): n-D Tucker's lemma - needs simplicial complex infrastructure",
-      "two_function_circle_bu (axiom): two-function circle BU - needs 2D BU"
+      "sign_change_count_parity (sorry): odd number of sign changes on complementary path"
     ],
-    "goal": "Tucker 1D proved, 2D/nD axiomized. Gallery entry created."
+    "goal": "Tucker 1D proved, cycle/path extensions proved, 2D +-1 reduced to 1D. General 2D/nD axiomized."
   },
   "currentState": {
     "phase": "COMPLETE",
-    "since": "2026-03-11T11:40:00Z",
-    "iteration": 2,
-    "focus": "Gallery entry created. 28 theorems proved, 3 axioms, 0 sorries. Docker build verified.",
+    "since": "2026-03-11T19:00:00Z",
+    "iteration": 3,
+    "focus": "Extended with Tucker cycle lemma, path transition theorem, and Tucker 2D via path reduction. 35 theorems proved, 2 axioms, 1 sorry.",
     "blockers": [],
-    "nextAction": "None - work complete. Future: prove Tucker 2D when Mathlib adds simplicial complex support.",
+    "nextAction": "None - work complete. Remaining sorry is sign_change_count_parity (parity induction).",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
