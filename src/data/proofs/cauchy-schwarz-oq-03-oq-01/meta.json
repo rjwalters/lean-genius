@@ -53,7 +53,9 @@
       "Power proportionality to linear proportionality reduction (p=q=2 specialization)",
       "Reverse direction: proportional → CS equality (substitution proof)",
       "Full iff for CS proportionality characterization",
-      "Reverse direction: power proportionality → Hölder equality (normalized, via Young deficit)"
+      "Reverse direction: power proportionality → Hölder equality (normalized, via Young deficit)",
+      "Integral Young deficit identity and Hölder equality (normalized, measure-theoretic)",
+      "General integral Hölder equality: normalization reduction to get f^p =ᵃᵉ c·g^q"
     ],
     "references": [
       {
@@ -149,9 +151,7 @@
     ]
   },
   "conclusion": {
-    "summary": "We formalize equality characterizations for both Cauchy-Schwarz and general Hölder inequalities. The CS case is fully proved via Lagrange identity with a complete iff characterization. The Hölder case is fully proved via Young deficit reduction, including both directions (equality ↔ power proportionality). The key insight is that both CS and Hölder equality follow from the same 'sum of nonneg = 0' technique.",
-    "openQuestions": [
-      "Can the a.e. power proportionality condition for integral Hölder equality be formalized?"
-    ]
+    "summary": "We formalize equality characterizations for both Cauchy-Schwarz and general Hölder inequalities, for finite sums, inner product spaces, and measure-theoretic integrals. The CS case is fully proved via Lagrange identity with a complete iff characterization. The Hölder case is fully proved via Young deficit reduction, including both directions (equality ↔ power proportionality). The integral case reduces to the normalized case via Lp-norm scaling. Zero axioms, zero sorries.",
+    "openQuestions": []
   }
 }
