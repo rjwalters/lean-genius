@@ -105,28 +105,26 @@
         "note": "Proved minEdges(5) = 15, showing d=5 returns to the complete graph pattern"
       }
     ],
-    "historicalContext": "The concept of graph dimension was introduced by Erdős, Harary, and Tutte in their seminal 1965 paper in Mathematika: the dimension of a graph $G$ is the minimum $n$ such that $G$ can be embedded in $\\mathbb{R}^n$ with all edges having unit length. This definition connects combinatorial graph theory to metric geometry and the classical theory of distance matrices developed by Schoenberg (1935) and Menger (1931). The function $\\text{minEdges}(d)$ — the minimum number of edges in a graph of dimension exactly $d$ — captures a fundamental trade-off between combinatorial complexity and geometric freedom. For small $d$, the complete graph $K_{d+1}$ is optimal: it embeds as a regular $d$-simplex with edge length 1 in $\\mathbb{R}^d$. Einhorn and Schoenberg (1966) studied two-distance sets in Euclidean space, laying groundwork for understanding which graphs require high dimension. Maehara (1991) established further bounds on embeddability as unit-distance subgraphs. House (2013) discovered the first surprise at $d=4$: the complete bipartite graph $K_{3,3}$ achieves dimension 4 with only 9 edges, beating $K_5$'s 10. Chaffee and Noble (2016) proved $\\text{minEdges}(5) = 15$, restoring the $K_{d+1}$ pattern. Whether $d=4$ is the unique anomaly remains one of the central open questions, connecting to the broader study of rigidity theory and the unit distance problem in combinatorial geometry.",
-    "axioms": 10,
-    "crossReferences": [
+    "relatedProofs": [
       {
-        "proofId": "erdos-1007",
+        "id": "erdos-1007",
         "relationship": "parent",
         "description": "Parent formalization of Erdős Problem #1007; this OQ-01 extends the investigation to the general minEdges(d) function"
       },
       {
-        "proofId": "binomial-theorem",
+        "id": "binomial-theorem",
         "relationship": "uses",
         "description": "Binomial coefficients C(d+1,2) are central to the analysis; the quadratic upper bound and deficiency function both rely on binomial coefficient identities"
       },
       {
-        "proofId": "ramseys-theorem",
+        "id": "ramseys-theorem",
         "relationship": "related",
         "description": "Ramsey theory provides another extremal function (R(s,t)) where exact values are known for small parameters and open for large ones, paralleling the structure of minEdges(d)"
       },
       {
-        "proofId": "erdos-924",
+        "id": "erdos-924",
         "relationship": "related",
-        "description": "The Folkman–Nešetřil–Rödl theorem concerns Ramsey properties of graphs avoiding large cliques; both problems study the interplay between graph structure and extremal constraints, and both feature surprising exceptions to expected patterns"
+        "description": "The Folkman–Nešetřil–Rödl theorem concerns Ramsey properties of graphs avoiding large cliques; both problems study the interplay between graph structure and extremal constraints"
       }
     ]
   },
@@ -181,11 +179,18 @@
       "endLine": 265
     },
     {
+      "id": "irrefl-embedding",
+      "title": "Embedding Existence for Irreflexive Graphs",
+      "startLine": 272,
+      "endLine": 316,
+      "summary": "Constructive proof of `hasUnitEmbedding_exists_irrefl`: every finite irreflexive graph embeds in some $\\mathbb{R}^n$ via the simplex construction. Uses `Fintype.truncEquivFin` to reduce to `Fin |V|`."
+    },
+    {
       "id": "conjecture-relationships",
       "title": "Conjecture Relationships",
       "summary": "Proves $K_{d+1}$ optimality implies monotonicity via 4-way case analysis on $d_1, d_2$ being 4. Building blocks: $\\binom{n}{2}$ monotonicity via `Nat.choose_le_choose` and the inequality $\\binom{d+1}{2} \\ge d$.",
-      "startLine": 270,
-      "endLine": 326
+      "startLine": 318,
+      "endLine": 377
     },
     {
       "id": "growth-rate",
@@ -203,23 +208,16 @@
     }
   ],
   "overview": {
-    "summary": "Comprehensive investigation of the minimum edges function for graph dimension. Extends previous work with a constructive simplex embedding, conditional monotonicity proof, deficiency analysis, and growth rate characterization.",
-    "keyIdea": "The function minEdges(d) captures the trade-off between edge count and geometric dimension. The constructive simplex embedding proves K_n embeds in ℝⁿ with unit distances. The deficiency function δ(d) quantifies how much K_{d+1} differs from optimal, with d=4 as the unique known anomaly.",
+    "historicalContext": "**Graph Dimension and the minEdges Function**\n\nThe concept of graph dimension was introduced by Erdős, Harary, and Tutte in their seminal 1965 paper in Mathematika: the dimension of a graph $G$ is the minimum $n$ such that $G$ can be embedded in $\\mathbb{R}^n$ with all edges having unit length. This definition connects combinatorial graph theory to metric geometry and the classical theory of distance matrices developed by Schoenberg (1935) and Menger (1931).\n\nThe function $\\text{minEdges}(d)$ — the minimum number of edges in a graph of dimension exactly $d$ — captures a fundamental trade-off between combinatorial complexity and geometric freedom. For small $d$, the complete graph $K_{d+1}$ is optimal, embedding as a regular $d$-simplex with unit edges. Einhorn and Schoenberg (1966) studied two-distance sets in Euclidean space, laying groundwork for understanding which graphs require high dimension. Maehara (1991) established further bounds on embeddability.\n\n**The d=4 Anomaly**\n\nHouse (2013) discovered the first surprise: $K_{3,3}$ achieves dimension 4 with only 9 edges, beating $K_5$'s 10. Chaffee and Noble (2016) proved $\\text{minEdges}(5) = 15$, restoring the complete graph pattern. Whether $d=4$ is the unique anomaly remains a central open question, connecting to rigidity theory and the unit distance problem.",
     "problemStatement": "Given a graph G, its dimension dim(G) is the minimum n such that G embeds in ℝⁿ with all edges of unit length. The function minEdges(d) = min{|E(G)| : dim(G) = d} captures the minimum combinatorial complexity needed for geometric dimension d. What is minEdges(d) as a function of d? Is the complete graph K_{d+1} always optimal (except possibly at d=4)?",
-    "proofStrategy": "The formalization proceeds in three layers: (1) **Axiomatization**: minEdges(d) is axiomatized with known values for d ≤ 5 and basic bounds (lower: d, upper: C(d+1,2)). (2) **Construction**: The simplex embedding (1/√2)·eᵢ gives a constructive proof that K_n embeds in ℝⁿ, establishing the upper bound. (3) **Conditional analysis**: The complete graph optimality conjecture is shown to imply monotonicity via case analysis on d=4, and the deficiency function δ(d) provides an equivalent reformulation. Growth rate analysis under the conjecture shows successive differences equal d+1.",
+    "proofStrategy": "The formalization proceeds in three layers: (1) **Axiomatization**: minEdges(d) is axiomatized with known values for d ≤ 5 and basic bounds (lower: d, upper: C(d+1,2)). (2) **Construction**: The simplex embedding (1/√2)·eᵢ gives a constructive proof that K_n embeds in ℝⁿ, establishing the upper bound. Irreflexive embedding existence is proved constructively. (3) **Conditional analysis**: The complete graph optimality conjecture is shown to imply monotonicity via case analysis on d=4, and the deficiency function δ(d) provides an equivalent reformulation.",
     "keyInsights": [
-      "The d=4 anomaly: K_{3,3} achieves dimension 4 with 9 edges, beating K₅'s 10. This is formally verified and shown to be the unique anomaly for d ≤ 5.",
-      "The simplex embedding v_i = (1/√2)e_i is the simplest unit-distance embedding of K_n in ℝⁿ. The factor 1/√2 is forced by the requirement that ‖v_i - v_j‖ = 1, since standard basis vectors have ‖eᵢ - eⱼ‖ = √2.",
-      "The complete graph optimality conjecture implies monotonicity — a non-obvious logical relationship between open problems. The proof reduces to sandwiching minEdges(4) = 9 between neighboring binomial coefficients.",
-      "The deficiency function δ(d) = C(d+1,2) - minEdges(d) cleanly separates the anomalous d=4 case: optimality holds iff δ(d) = 0 for all d ≠ 4.",
-      "Conditional theorems (conjecture → consequence) are a powerful formalization strategy: they establish logical structure among open problems without resolving any.",
-      "The parallel with **Ramsey numbers** is instructive: both $R(s,t)$ and $\\text{minEdges}(d)$ are extremal functions known exactly for small parameters, with general asymptotics established but exact values unknown. In both cases, computational search determines small values while structural arguments give bounds."
-    ],
-    "prerequisites": [
-      "Binomial coefficients Nat.choose",
-      "Basic real number arithmetic and Nat→Real casting",
-      "Unit distance graph embeddings",
-      "Finset sum manipulation and Finset.add_sum_erase"
+      "The **d=4 anomaly**: $K_{3,3}$ achieves dimension 4 with 9 edges, beating $K_5$'s 10. Formally verified as the unique anomaly for $d \\le 5$.",
+      "The **simplex embedding** $v_i = (1/\\sqrt{2})e_i$ is the simplest unit-distance embedding of $K_n$ in $\\mathbb{R}^n$. The factor $1/\\sqrt{2}$ is forced since $\\|e_i - e_j\\| = \\sqrt{2}$.",
+      "The **complete graph optimality conjecture implies monotonicity** — a non-obvious logical relationship between open problems, proved via 4-way case analysis on $d = 4$.",
+      "The **deficiency function** $\\delta(d) = \\binom{d+1}{2} - \\text{minEdges}(d)$ cleanly separates the anomalous case: optimality $\\iff$ $\\delta(d) = 0$ for all $d \\neq 4$.",
+      "**Conditional theorems** (conjecture implies consequence) establish logical structure among open problems without resolving any.",
+      "Parallel with **Ramsey numbers**: both $R(s,t)$ and $\\text{minEdges}(d)$ are extremal functions known exactly for small parameters with general asymptotics established but exact values unknown."
     ]
   },
   "conclusion": {
