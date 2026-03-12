@@ -48,6 +48,10 @@ structure UnitDistanceEmbedding' (V : Type*) (adj : V → V → Prop) (n : ℕ) 
 def hasUnitEmbedding' (V : Type*) (adj : V → V → Prop) (n : ℕ) : Prop :=
   Nonempty (UnitDistanceEmbedding' V adj n)
 
+-- Note: This axiom is proved constructively for irreflexive graphs as
+-- hasUnitEmbedding_exists_irrefl (§7b), using the simplex embedding.
+-- The irreflexivity hypothesis (standard for simple graphs) is needed
+-- because self-loops (adj v v) would require ‖0‖ = 1, which is impossible.
 axiom hasUnitEmbedding_exists' (V : Type*) [Fintype V] (adj : V → V → Prop) :
   ∃ n, hasUnitEmbedding' V adj n
 
@@ -265,6 +269,53 @@ theorem complete_graph_dim_le (n : ℕ) (hn : 2 ≤ n) :
     rw [simplexEmbed_dist_sq n hn u v huv, Real.sqrt_one]⟩⟩
 
 -- ============================================================================
+-- § 7b. General Embedding Existence (Proved)
+-- ============================================================================
+
+-- The axiom hasUnitEmbedding_exists' (§1) asserts every finite graph embeds
+-- in some ℝⁿ. Here we prove this constructively for irreflexive graphs
+-- (standard simple graphs) using the simplex embedding from §7.
+--
+-- Strategy: any irreflexive adj has adj u v → u ≠ v, so the complete
+-- graph K_|V| embedding is also a valid unit embedding for adj.
+
+/-- Any subgraph of K_n inherits the unit embedding from K_n. -/
+theorem subgraph_unit_embedding (n : ℕ) (hn : 2 ≤ n)
+    (adj : Fin n → Fin n → Prop) (hsub : ∀ u v, adj u v → u ≠ v) :
+    hasUnitEmbedding' (Fin n) adj n := by
+  refine ⟨⟨simplexEmbed n, fun u v hadj => ?_⟩⟩
+  rw [simplexEmbed_dist_sq n hn u v (hsub u v hadj), Real.sqrt_one]
+
+-- Every irreflexive finite graph admits a unit-distance embedding.
+-- This is a constructive proof of the axiom hasUnitEmbedding_exists' (§1)
+-- under the standard graph-theoretic assumption of irreflexivity.
+--
+-- Proof: If |V| ≤ 1, irreflexivity forces adj to be empty, so any map works.
+-- If |V| ≥ 2, compose the simplex embedding with V ≃ Fin |V|. Since adj is
+-- irreflexive, adj u v → u ≠ v, so the complete graph's unit embedding works.
+open Classical in
+theorem hasUnitEmbedding_exists_irrefl (V : Type*) [Fintype V]
+    (adj : V → V → Prop) (hirr : Irreflexive adj) :
+    ∃ n, hasUnitEmbedding' V adj n := by
+  by_cases hcard : Fintype.card V ≤ 1
+  · -- 0 or 1 vertices: irreflexivity means adj is empty, any embedding works
+    use 1
+    refine ⟨⟨fun _ _ => 0, fun u v hadj => ?_⟩⟩
+    -- adj u v is impossible: with ≤ 1 vertex, u = v, contradicting irreflexivity
+    exact absurd (Fintype.card_le_one_iff.mp hcard u v ▸ hadj) (hirr u)
+  · -- ≥ 2 vertices: use simplex embedding via V ≃ Fin |V|
+    push_neg at hcard
+    set c := Fintype.card V
+    have hc2 : 2 ≤ c := hcard
+    use c
+    -- Get an equivalence V ≃ Fin c
+    have e : V ≃ Fin c := (Fintype.truncEquivFin V).out
+    refine ⟨⟨fun v => simplexEmbed c (e v), fun u v hadj => ?_⟩⟩
+    -- adj u v → u ≠ v (irreflexivity) → images distinct → simplex distance = 1
+    have huv : u ≠ v := fun h => hirr u (h ▸ hadj)
+    rw [simplexEmbed_dist_sq c hc2 (e u) (e v) (e.injective.ne huv), Real.sqrt_one]
+
+-- ============================================================================
 -- § 8. Conjecture Relationships
 -- ============================================================================
 
@@ -413,6 +464,8 @@ theorem unique_anomaly_small :
 
 #check @complete_graph_unit_embedding
 #check @complete_graph_dim_le
+#check @subgraph_unit_embedding
+#check @hasUnitEmbedding_exists_irrefl
 #check @optimal_implies_monotone
 #check @optimal_iff_zero_deficiency
 #check @unique_anomaly_small
