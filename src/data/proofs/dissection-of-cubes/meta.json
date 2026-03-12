@@ -159,12 +159,7 @@
   ],
   "conclusion": {
     "summary": "Littlewood's proof elegantly shows that cube dissection into different-sized cubes is impossible through infinite descent. The smallest cube on any 'floor' creates a new floor above it with even smaller cubes, leading to infinitely many cubes — contradicting finiteness. The proof is remarkably short: the main theorem is just 3 lines of Lean + omega.",
-    "implications": [
-      "The 2D analog (squaring the square) IS possible — the first solution (1940) had 69 squares, the smallest simple one has 21 squares",
-      "The impossibility extends to all dimensions >= 3 and to rectangular boxes",
-      "The proof pattern (infinite descent via pigeonhole on chain length) appears in Erdős-Szekeres, Ramsey theory, and Dilworth's theorem",
-      "The axiomatized geometric covering step (smaller_cube_above) is the remaining gap — it requires formal 3D tiling theory"
-    ],
+    "implications": "The 2D analog (squaring the square) IS possible — the first solution (1940) had 69 squares, the smallest simple one has 21 squares\nThe impossibility extends to all dimensions >= 3 and to rectangular boxes\nThe proof pattern (infinite descent via pigeonhole on chain length) appears in Erdős-Szekeres, Ramsey theory, and Dilworth's theorem\nThe axiomatized geometric covering step (smaller_cube_above) is the remaining gap — it requires formal 3D tiling theory",
     "openQuestions": [
       "Minimum number of repeated sizes needed in a cube dissection",
       "Generalizations to other 3D shapes (e.g., can a tetrahedron be dissected into tetrahedra of all different sizes?)",

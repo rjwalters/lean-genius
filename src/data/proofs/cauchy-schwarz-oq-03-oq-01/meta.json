@@ -190,12 +190,7 @@
   },
   "conclusion": {
     "summary": "Complete formalization of equality characterizations for Cauchy-Schwarz, general Hölder, and integral Hölder inequalities. CS via Lagrange identity with full iff proportionality. Hölder via Young deficit reduction with both directions. Integral case via normalization and integral_eq_zero_iff_of_nonneg_ae. All 835 lines, zero axioms, zero sorries.",
-    "implications": [
-      "The equality characterization is foundational for projection theory: in inner product spaces, CS equality determines when one vector lies in the span of another",
-      "The Young deficit framework provides a template for characterizing equality in other convexity-based inequalities",
-      "The integral Hölder equality f^p =ᵃᵉ c·g^q characterizes extremizers of the Hölder inequality, relevant to sharp constant problems in functional analysis",
-      "The normalization technique (dividing by Lp norms) is a general strategy for reducing inequality equality cases to the unit-ball case"
-    ],
+    "implications": "The equality characterization is foundational for projection theory: in inner product spaces, CS equality determines when one vector lies in the span of another\nThe Young deficit framework provides a template for characterizing equality in other convexity-based inequalities\nThe integral Hölder equality f^p =ᵃᵉ c·g^q characterizes extremizers of the Hölder inequality, relevant to sharp constant problems in functional analysis\nThe normalization technique (dividing by Lp norms) is a general strategy for reducing inequality equality cases to the unit-ball case",
     "openQuestions": [
       "Can the strict convexity argument for Young's equality be replaced by a purely algebraic proof?",
       "Can the integral equality characterization be extended to the endpoint cases p=1 and p=∞?",

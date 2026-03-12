@@ -204,12 +204,7 @@
   ],
   "conclusion": {
     "summary": "This formalization provides a complete treatment of the Chinese Remainder Theorem, from the abstract existence/uniqueness results to concrete computational examples. The constructive approach using Bezout coefficients gives explicit formulas for solutions. Extensions to three and four moduli demonstrate the iterative nature of the algorithm, while the ring isomorphism section establishes the algebraic structure underlying CRT.",
-    "implications": [
-      "RSA decryption uses CRT to split modular exponentiation into two smaller computations, achieving ~4x speedup",
-      "Residue Number Systems enable parallel arithmetic: add/multiply componentwise in the product ring, reconstruct via CRT",
-      "The ring isomorphism Z/mnZ -> Z/mZ x Z/nZ is the prototype for decomposition theorems in commutative algebra (e.g., structure of Z/nZ for arbitrary n)",
-      "CRT-based polynomial interpolation (Lagrange interpolation is CRT over polynomial rings) is fundamental to error-correcting codes and secret sharing"
-    ],
+    "implications": "RSA decryption uses CRT to split modular exponentiation into two smaller computations, achieving ~4x speedup\nResidue Number Systems enable parallel arithmetic: add/multiply componentwise in the product ring, reconstruct via CRT\nThe ring isomorphism Z/mnZ -> Z/mZ x Z/nZ is the prototype for decomposition theorems in commutative algebra (e.g., structure of Z/nZ for arbitrary n)\nCRT-based polynomial interpolation (Lagrange interpolation is CRT over polynomial rings) is fundamental to error-correcting codes and secret sharing",
     "openQuestions": [
       "What are the best algorithms for computing Bezout coefficients in multi-precision arithmetic?",
       "How does CRT generalize to non-coprime moduli (see chinese-remainder-non-coprime)?",
