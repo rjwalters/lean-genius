@@ -35,7 +35,9 @@
     "title": "completeGraph",
     "content": "The complete graph K_n on n vertices, defined as the top element `⊤` in the SimpleGraph lattice — every pair of distinct vertices is adjacent.",
     "mathContext": "In Mathlib, `SimpleGraph V` forms a complete lattice where `⊤` is the complete graph and `⊥` is the empty graph. The complete graph K_n = R(l,l)-many vertices trivially has the Ramsey property (by Ramsey's theorem), but it contains all K_m for m ≤ n. The point of Folkman graphs is to achieve the Ramsey property without this triviality.",
-    "significance": "supporting"
+    "significance": "supporting",
+    "relatedConcepts": ["SimpleGraph lattice", "top element", "Ramsey threshold", "clique number"],
+    "prerequisites": ["SimpleGraph", "Fin"]
   },
   {
     "id": "ann-e924-clique-size",
@@ -65,6 +67,18 @@
     ]
   },
   {
+    "id": "ann-e924-contains-clique",
+    "proofId": "erdos-924",
+    "range": { "startLine": 66, "endLine": 67 },
+    "type": "definition",
+    "title": "ContainsClique (Semantic Alias)",
+    "content": "**Definition** `ContainsClique G n` is a semantic alias for `IsCliqueOfSize G n`, improving readability when expressing that a color class subgraph contains a copy of $K_l$. Used in `HasMonochromaticClique` to state that some color class contains $K_l$.",
+    "mathContext": "\\text{ContainsClique}(G, n) \\iff \\exists S \\subseteq V(G),\\; |S| = n \\land G[S] \\cong K_n",
+    "significance": "supporting",
+    "relatedConcepts": ["IsCliqueOfSize", "clique number", "subgraph containment"],
+    "prerequisites": ["Finset", "SimpleGraph.IsClique"]
+  },
+  {
     "id": "ann-e924-edge-coloring",
     "proofId": "erdos-924",
     "range": { "startLine": 79, "endLine": 80 },
@@ -72,7 +86,9 @@
     "title": "EdgeColoring",
     "content": "A k-coloring of G's edges: a function `G.edgeSet → Fin k` assigning one of k colors to each edge. The Ramsey property requires that every such coloring produces a monochromatic clique.",
     "mathContext": "The edge coloring is formalized as a function from `G.edgeSet` (the set of edges as `Sym2 V` elements) to `Fin k`. This is the standard Ramsey-theoretic setup: partition the edge set into k classes. Note the difference from *proper* edge coloring (where adjacent edges get different colors) — here there is no constraint on which edges share a color. The Ramsey property is a statement about *all* possible partitions.",
-    "significance": "key"
+    "significance": "key",
+    "relatedConcepts": ["partition regularity", "Sym2", "edge set", "Ramsey coloring"],
+    "prerequisites": ["SimpleGraph.edgeSet", "Fin", "Sym2"]
   },
   {
     "id": "ann-e924-mono-subgraph",
@@ -83,6 +99,18 @@
     "content": "For a coloring χ and color c, the subgraph consisting of all edges colored c. Formally a `SimpleGraph V` where `Adj u v` holds iff `G.Adj u v ∧ χ(edge(u,v)) = c`. The `symm` and `loopless` proofs verify the SimpleGraph axioms.",
     "mathContext": "Each monochromatic subgraph is a *color class* — the induced subgraph on edges of one color. The union of all k color classes gives back G. The Ramsey property asks that at least one color class contains K_l. The symmetry proof uses `Sym2.eq_swap` to handle the unordered edge representation. This is a concrete instance of the partition regularity principle: for any finite partition of edges, at least one part must contain a prescribed structure.",
     "significance": "key"
+  },
+  {
+    "id": "ann-e924-has-mono-clique",
+    "proofId": "erdos-924",
+    "range": { "startLine": 102, "endLine": 104 },
+    "type": "definition",
+    "title": "HasMonochromaticClique: Colored Clique Existence",
+    "content": "**Definition** `HasMonochromaticClique G χ l`: a coloring $\\chi$ of $G$'s edges produces a monochromatic $K_l$ if **some** color class contains a clique of size $l$. The existential quantifier over colors $c : \\text{Fin}\\, k$ is the bridge between edge colorings and the Ramsey property: `HasRamseyProperty G k l` universally quantifies over all colorings $\\chi$, each of which must satisfy `HasMonochromaticClique`.",
+    "mathContext": "\\exists c \\in [k],\\; K_l \\subseteq G_c \\quad \\text{where } G_c = \\{uv \\in E(G) : \\chi(uv) = c\\}",
+    "significance": "key",
+    "relatedConcepts": ["MonochromaticSubgraph", "ContainsClique", "partition regularity", "pigeonhole principle"],
+    "prerequisites": ["EdgeColoring", "MonochromaticSubgraph", "Fin"]
   },
   {
     "id": "ann-e924-ramsey-prop",
