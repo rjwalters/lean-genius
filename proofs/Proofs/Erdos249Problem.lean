@@ -18,7 +18,7 @@
   - The series converges to a well-defined real number
   - No proof of irrationality (or rationality) is known
 
-  This is an OPEN problem. We formalize the statement and some basic properties.
+  This is an OPEN problem. We formalize the statement and prove basic properties.
 
   Tags: number-theory, irrationality, totient, erdos-problem
 -/
@@ -26,6 +26,8 @@
 import Mathlib.Data.Nat.Totient
 import Mathlib.NumberTheory.Real.Irrational
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
+import Mathlib.Topology.Algebra.InfiniteSum.Order
+import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Tactic
 
 namespace Erdos249
@@ -68,28 +70,60 @@ theorem termFn_two : termFn 2 = 1 / 4 := by
   simp [Nat.totient_prime Nat.prime_two]
   ring
 
-/- ## Part III: Convergence
+/- ## Part III: Convergence -/
 
-The series converges absolutely since φ(n)/2^n ≤ n/2^n and ∑ n/2^n converges.
-We axiomatize this since the Mathlib API for comparison tests requires
-careful handling. -/
+/-- Helper: the comparison sequence n * (1/2)^n is summable. -/
+private theorem summable_n_mul_half_pow :
+    Summable (fun n : ℕ => (n : ℝ) * (1 / 2 : ℝ) ^ n) := by
+  have h := summable_pow_mul_geometric_of_norm_lt_one 1
+    (show ‖(1 / 2 : ℝ)‖ < 1 by norm_num)
+  simp only [pow_one] at h
+  exact h
+
+/-- Each term is bounded by the comparison sequence. -/
+private theorem termFn_le_n_mul_half_pow (n : ℕ) :
+    termFn n ≤ (n : ℝ) * (1 / 2 : ℝ) ^ n := by
+  simp only [termFn]
+  calc (Nat.totient n : ℝ) / 2 ^ n
+      ≤ (n : ℝ) / 2 ^ n :=
+        div_le_div_of_nonneg_right (Nat.cast_le.mpr (Nat.totient_le n)) (by positivity)
+    _ = (n : ℝ) * (1 / 2) ^ n := by
+        rw [one_div, inv_pow, div_eq_mul_inv]
 
 /-- The series converges absolutely.
 
-    This follows from comparison with ∑ n/2^n, which converges
-    since the ratio n/2^n → 0 as n → ∞. -/
-axiom totientPowerSum_summable : Summable termFn
+    Proof: φ(n) ≤ n for all n, so φ(n)/2^n ≤ n * (1/2)^n,
+    and ∑ n * (1/2)^n converges. -/
+theorem totientPowerSum_summable : Summable termFn := by
+  exact Summable.of_nonneg_of_le (fun n => termFn_nonneg n)
+    termFn_le_n_mul_half_pow summable_n_mul_half_pow
 
 /-- The sum is positive.
 
     Since φ(1) = 1, we have termFn 1 = 1/2 > 0, and all terms are non-negative,
     so the sum is at least 1/2 > 0. -/
-axiom totientPowerSum_pos : totientPowerSum > 0
+theorem totientPowerSum_pos : totientPowerSum > 0 := by
+  unfold totientPowerSum
+  have h := le_hasSum totientPowerSum_summable.hasSum 1
+    (fun j _ => termFn_nonneg j)
+  linarith [termFn_one]
+
+/-- HasSum for n * (1/2)^n with exact value 2. -/
+private theorem hasSum_n_mul_half_pow :
+    HasSum (fun n : ℕ => (n : ℝ) * (1 / 2 : ℝ) ^ n) 2 := by
+  have h := hasSum_coe_mul_geometric_of_norm_lt_one
+    (show ‖(1 / 2 : ℝ)‖ < 1 by norm_num)
+  convert h using 1
+  norm_num
 
 /-- Upper bound: the sum is at most 2.
 
-    This follows from ∑_{n≥0} φ(n)/2^n ≤ ∑_{n≥0} n/2^n = 2. -/
-axiom totientPowerSum_le_two : totientPowerSum ≤ 2
+    Proof: φ(n)/2^n ≤ n * (1/2)^n for all n (since φ(n) ≤ n), and
+    ∑_{n≥0} n * (1/2)^n = (1/2)/(1-1/2)^2 = 2. -/
+theorem totientPowerSum_le_two : totientPowerSum ≤ 2 := by
+  unfold totientPowerSum
+  exact hasSum_le termFn_le_n_mul_half_pow
+    totientPowerSum_summable.hasSum hasSum_n_mul_half_pow
 
 /- ## Part IV: The Main Conjecture -/
 
@@ -132,10 +166,11 @@ theorem partial_sum_2 : termFn 1 + termFn 2 = 3 / 4 := by
 
 **Problem Status**: OPEN
 
-**What we know**:
-1. The series converges (axiomatized)
-2. The sum is positive and at most 2 (axiomatized)
-3. Numerical value ≈ 1.3240... (OEIS A256936)
+**What we know (all proved from Mathlib)**:
+1. The series converges absolutely (comparison with ∑ n * (1/2)^n)
+2. The sum is positive (at least 1/2, since φ(1)/2 = 1/2)
+3. The sum is at most 2 (since ∑ n * (1/2)^n = 2)
+4. Numerical value ≈ 1.3240... (OEIS A256936)
 
 **What we don't know**:
 - Is this number irrational? (The main question)
@@ -143,14 +178,15 @@ theorem partial_sum_2 : termFn 1 + termFn 2 = 3 / 4 := by
 
 **Formalization provides**:
 - Definition of the sum using tsum
+- Proved convergence, positivity, and upper bound (no axioms!)
 - Term computations for small n
 - Formal statement of the OPEN conjecture
-- Basic axiomatized properties
 -/
 
 #check totientPowerSum
 #check totientPowerSum_summable
 #check totientPowerSum_pos
+#check totientPowerSum_le_two
 #check erdos_249
 
 end Erdos249
