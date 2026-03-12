@@ -62,7 +62,7 @@
   {
     "id": "ann-dissect-06-2d-contrast",
     "proofId": "dissection-of-cubes",
-    "range": { "startLine": 326, "endLine": 329 },
+    "range": { "startLine": 326, "endLine": 362 },
     "type": "insight",
     "title": "squaring_the_square_exists: 2D Contrast, History, and Dimensional Generalization",
     "content": "squaring_the_square_exists: True := trivial — a placeholder noting the 2D analog IS possible, but formal proof omitted. The first 'perfect squared square' was found by Brooks, Smith, Stone, Tutte (1940): 21 squares, side 112, using electrical network theory. The key geometric reason 3D fails but 2D succeeds: in 3D, a small cube on the bottom floor has its 4 vertical sides completely surrounded by other cubes, creating forced descent. In 2D, a small square on the floor can extend to the side wall, escaping the surrounding argument. Historical note: J.E. Littlewood's A Mathematician's Miscellany (1953) included this proof as an example of mathematical elegance — no computation, no algebra, just geometry and infinite descent. The impossibility theorem generalizes to all dimensions ≥ 3 and to rectangular boxes. #check exports at lines 365-366 verify DissectionOfCubes.dissection_of_cubes and DissectionOfCubes.two_cubes_same_size type-check.",
