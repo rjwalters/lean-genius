@@ -1,28 +1,5 @@
 [
   {
-    "id": "ann-995-header",
-    "proofId": "erdos-995",
-    "range": { "startLine": 1, "endLine": 24 },
-    "type": "concept",
-    "title": "Problem Overview",
-    "content": "**Erdős Problem #995** asks for the growth rate of ∑f({α n_k}) for lacunary sequences. The conjecture is o(N √(log log N)). Status: OPEN with a gap between lower and upper bounds.",
-    "mathContext": "This problem sits at the triple intersection of harmonic analysis, probability, and metric number theory. For a lacunary sequence n₁ < n₂ < ⋯ with n_{k+1}/n_k ≥ q > 1, the fractional parts {α n_k} are 'almost independent' random variables on [0,1] — Kac's principle (1946) makes this precise. The sum ∑f({α n_k}) thus behaves like a partial sum of weakly dependent random variables, where the Central Limit Theorem and Law of the Iterated Logarithm provide natural growth benchmarks. The conjecture o(N√(log log N)) is precisely the LIL scale, suggesting lacunary sums have Gaussian-like fluctuations.",
-    "significance": "key",
-    "relatedConcepts": ["lacunary-sequences", "fractional-parts", "equidistribution", "strong-law", "law-of-iterated-logarithm"],
-    "crossReferences": [
-      {
-        "targetProofId": "erdos-996",
-        "relationship": "related",
-        "description": "Companion problem on the Strong Law of Large Numbers for lacunary sums — same setup ∑f({αn_k}) but studies almost sure convergence of ergodic averages"
-      },
-      {
-        "targetProofId": "erdos-992",
-        "relationship": "uses-same-technique",
-        "description": "Discrepancy of sequences mod 1 — the Erdős-Gál theorem gives D(N) ≪ √N·(log log N)^k for lacunary sequences, directly related to fractional part distribution"
-      }
-    ]
-  },
-  {
     "id": "ann-995-frac",
     "proofId": "erdos-995",
     "range": { "startLine": 40, "endLine": 41 },
@@ -35,7 +12,7 @@
   {
     "id": "ann-995-lacunary",
     "proofId": "erdos-995",
-    "range": { "startLine": 43, "endLine": 49 },
+    "range": { "startLine": 44, "endLine": 49 },
     "type": "definition",
     "title": "IsLacunary and IsLacunarySeq",
     "content": "A sequence is lacunary with ratio q if n_{k+1} ≥ q·n_k for all k, where q > 1. This means the sequence grows at least exponentially.",
@@ -45,7 +22,7 @@
   {
     "id": "ann-995-sum",
     "proofId": "erdos-995",
-    "range": { "startLine": 51, "endLine": 53 },
+    "range": { "startLine": 52, "endLine": 53 },
     "type": "definition",
     "title": "lacunarySum",
     "content": "The sum ∑_{k≤N} f({α n_k}): for each k, compute the fractional part of α·n_k, apply f, and sum over k from 1 to N.",
@@ -55,7 +32,7 @@
   {
     "id": "ann-995-conjecture",
     "proofId": "erdos-995",
-    "range": { "startLine": 59, "endLine": 71 },
+    "range": { "startLine": 60, "endLine": 71 },
     "type": "definition",
     "title": "ErdosConjecture and ErdosQuestion",
     "content": "The conjecture: for a.e. α, the sum is o(N √(log log N)). The question asks if this holds for all lacunary sequences and L² functions.",
@@ -65,8 +42,8 @@
   {
     "id": "ann-995-lower",
     "proofId": "erdos-995",
-    "range": { "startLine": 79, "endLine": 88 },
-    "type": "insight",
+    "range": { "startLine": 81, "endLine": 88 },
+    "type": "axiom",
     "title": "Erdős Lower Bound (1949)",
     "content": "Erdős constructed a lacunary sequence and f ∈ L² such that limsup of the sum divided by N(log log N)^{1/2-ε} is infinite for a.e. α.",
     "mathContext": "In 'On the strong law of large numbers' (1949), Erdős constructed specific lacunary sequences where the sum ∑f({α n_k}) exceeds N(log log N)^{1/2-ε} infinitely often for a.e. α. The construction exploits resonances between the lacunary ratios and the Fourier coefficients of f. The limsup = ⊤ formulation (using the extended real line ℝ̄) means the ratio |S_N| / (N(log log N)^{1/2-ε}) is unbounded along a subsequence. This shows the sum must grow at least as fast as N(log log N)^{1/2-ε}, ruling out any bound better than O(N(log log N)^{1/2}).",
@@ -75,8 +52,8 @@
   {
     "id": "ann-995-upper",
     "proofId": "erdos-995",
-    "range": { "startLine": 101, "endLine": 110 },
-    "type": "insight",
+    "range": { "startLine": 103, "endLine": 110 },
+    "type": "axiom",
     "title": "Erdős Upper Bound",
     "content": "For every lacunary sequence and L² function, the sum is o(N(log N)^{1/2+ε}) for a.e. α. This is a universal upper bound.",
     "mathContext": "The upper bound o(N(log N)^{1/2+ε}) is proved using second-moment methods and exponential sum estimates. The key input is that for lacunary {n_k}, the Weyl sums |∑e(α n_k)|² have controlled second moments over α ∈ [0,1]. The proof uses Parseval's identity and the near-orthogonality of exponentials at lacunary frequencies. The (log N)^{1/2+ε} factor arises from the maximal inequality needed to pass from L² bounds to almost sure bounds. This is universal — it holds for ALL lacunary sequences and ALL L² functions, unlike the lower bound which is existential.",
@@ -85,19 +62,29 @@
   {
     "id": "ann-995-gap",
     "proofId": "erdos-995",
-    "range": { "startLine": 125, "endLine": 138 },
-    "type": "concept",
+    "range": { "startLine": 128, "endLine": 132 },
+    "type": "context",
     "title": "The Bounds Gap",
-    "content": "Lower bound has (log log N)^{1/2}, upper has (log N)^{1/2}. Since log log N grows much slower than log N, the gap is enormous.",
-    "mathContext": "The gap between (log log N)^{1/2} and (log N)^{1/2} is qualitatively immense: at N = 10^{10^{10}}, log N ≈ 2.3 × 10^{10} while log log N ≈ 23.8. So (log N)^{1/2} ≈ 151,000 while (log log N)^{1/2} ≈ 4.9 — a factor of 30,000. Closing this gap has resisted 75+ years of effort. The existential lower bound (∃ f, n) vs universal upper bound (∀ f, n) structure means the true answer could depend on the specific lacunary sequence. The axioms bound_gap_lower_exists and bound_gap_upper_universal formalize this asymmetry. The theorem exponent_gap proves log log N < log N for N ≥ 3 (the one sorry in the file).",
+    "content": "Lower bound has (log log N)^{1/2}, upper has (log N)^{1/2}. Since log log N grows much slower than log N, the gap is enormous. The axioms bound_gap_lower_exists and bound_gap_upper_universal formalize the existential/universal asymmetry.",
+    "mathContext": "The gap between (log log N)^{1/2} and (log N)^{1/2} is qualitatively immense: at N = 10^{10^{10}}, log N ≈ 2.3 × 10^{10} while log log N ≈ 23.8. So (log N)^{1/2} ≈ 151,000 while (log log N)^{1/2} ≈ 4.9 — a factor of 30,000. Closing this gap has resisted 75+ years of effort. The existential lower bound (∃ f, n) vs universal upper bound (∀ f, n) structure means the true answer could depend on the specific lacunary sequence.",
     "significance": "key"
+  },
+  {
+    "id": "ann-995-exponent-gap",
+    "proofId": "erdos-995",
+    "range": { "startLine": 135, "endLine": 142 },
+    "type": "theorem",
+    "title": "exponent_gap (Proved)",
+    "content": "For N ≥ 3, log(log N) < log N. This formalizes the quantitative gap between the lower and upper bounds.",
+    "mathContext": "The proof uses log N < N (from Real.log_le_sub_one_of_pos) and monotonicity of log: since log N > 1 for N ≥ 3, we get log(log N) < log(N). While trivial mathematically, it formalizes the key qualitative fact: the lower bound scale (log log N)^{1/2} is strictly smaller than the upper bound scale (log N)^{1/2}, confirming the gap is genuine. Originally proved by Aristotle (automated proof search).",
+    "significance": "supporting"
   },
   {
     "id": "ann-995-geometric",
     "proofId": "erdos-995",
-    "range": { "startLine": 144, "endLine": 153 },
-    "type": "technique",
-    "title": "geometric_is_lacunary",
+    "range": { "startLine": 151, "endLine": 157 },
+    "type": "theorem",
+    "title": "geometric_is_lacunary (Proved)",
     "content": "The geometric sequence 2^k is lacunary with q = 2. Proof: 2^{k+1} = 2·2^k ≥ 2·2^k.",
     "mathContext": "The sequence 2^k is the prototypical lacunary sequence, central to the study of Walsh series and dyadic analysis. For f(x) = cos(2πx), the lacunary sum ∑cos(2π·2^k·α) is a lacunary trigonometric series — Salem and Zygmund (1954) proved the CLT for such sums. The proof uses constructor + norm_num + ring_nf, verifying q = 2 > 1 and 2^{k+1} = 2·2^k as a Lean computation.",
     "significance": "supporting"
@@ -105,9 +92,9 @@
   {
     "id": "ann-995-powers3",
     "proofId": "erdos-995",
-    "range": { "startLine": 155, "endLine": 164 },
-    "type": "technique",
-    "title": "powers3_lacunary",
+    "range": { "startLine": 162, "endLine": 168 },
+    "type": "theorem",
+    "title": "powers3_lacunary (Proved)",
     "content": "Powers of 3 are lacunary with q = 3: 3^{k+1} = 3·3^k.",
     "mathContext": "The sequence 3^k has lacunarity ratio q = 3, stronger than 2^k. For the specific function f(x) = cos(2πx), the sum ∑cos(2π·3^k·α) connects to the Weierstrass function ∑3^{-s·k}cos(2π·3^k·α), whose non-differentiability (for s < 1) reflects the wildness of lacunary trigonometric sums. The problem of determining the Hausdorff dimension of the graph of such functions remains active.",
     "significance": "supporting"
@@ -115,7 +102,7 @@
   {
     "id": "ann-995-fib",
     "proofId": "erdos-995",
-    "range": { "startLine": 166, "endLine": 172 },
+    "range": { "startLine": 171, "endLine": 174 },
     "type": "definition",
     "title": "Fibonacci Sequence",
     "content": "The Fibonacci sequence is eventually lacunary with q ≈ φ = (1+√5)/2 ≈ 1.618, the golden ratio.",
@@ -125,8 +112,8 @@
   {
     "id": "ann-995-slln",
     "proofId": "erdos-995",
-    "range": { "startLine": 180, "endLine": 184 },
-    "type": "insight",
+    "range": { "startLine": 186, "endLine": 188 },
+    "type": "axiom",
     "title": "SLLN Connection",
     "content": "For mean-zero f and lacunary n, the sum has variance ~ N, behaving like a random walk with √N typical fluctuations.",
     "mathContext": "The SLLN connection (Erdős 1949) shows that lacunary sums obey (1/N)∑f({α n_k}) → ∫₀¹ f a.s. — the ergodic average converges. The variance Var(S_N) ~ cN (where c = ‖f‖₂²) gives √N as the typical scale of fluctuations by Chebyshev. The axiom formalizes the C√N bound, which is the 'zeroth-order' estimate. The full problem asks about the precise iterated-logarithm correction beyond √N: is |S_N| ~ √(N log log N) (LIL) or could it be as large as √(N log N)?",
@@ -142,7 +129,7 @@
   {
     "id": "ann-995-refined",
     "proofId": "erdos-995",
-    "range": { "startLine": 192, "endLine": 198 },
+    "range": { "startLine": 198, "endLine": 202 },
     "type": "definition",
     "title": "Erdős's Refined Conjecture",
     "content": "Erdős (1964) conjectured the upper bound can be improved from (log N)^{1/2+ε} to (log log N)^{1/2+ε}, matching the lower bound.",
@@ -150,21 +137,11 @@
     "significance": "key"
   },
   {
-    "id": "ann-995-exponent-gap",
-    "proofId": "erdos-995",
-    "range": { "startLine": 135, "endLine": 138 },
-    "type": "technique",
-    "title": "exponent_gap",
-    "content": "For N ≥ 3, log(log N) < log N. This formalizes the quantitative gap between the lower and upper bounds.",
-    "mathContext": "This is the one 'sorry' in the file — a simple analysis fact that log log N < log N for N ≥ 3 (since log N > 1 for N ≥ 3, and log is monotone increasing, so log(log N) < log(N)). While trivial mathematically, it formalizes the key qualitative fact: the lower bound scale (log log N)^{1/2} is strictly smaller than the upper bound scale (log N)^{1/2}, confirming the gap is genuine.",
-    "significance": "supporting"
-  },
-  {
     "id": "ann-995-statement",
     "proofId": "erdos-995",
-    "range": { "startLine": 204, "endLine": 208 },
-    "type": "technique",
-    "title": "erdos_995_statement",
+    "range": { "startLine": 209, "endLine": 212 },
+    "type": "theorem",
+    "title": "erdos_995_statement (Proved)",
     "content": "Main statement combining: (1) existence of examples reaching the lower bound, (2) universal upper bound for all lacunary sequences.",
     "mathContext": "The main theorem is a conjunction of two axioms: bound_gap_lower_exists ∧ bound_gap_upper_universal. This captures the complete known state of Erdős Problem #995: there exist 'bad' lacunary sequences where the sum grows as fast as N(log log N)^{1/2-ε}, and all lacunary sequences have sums bounded by o(N(log N)^{1/2+ε}). The proof is trivially ⟨bound_gap_lower_exists, bound_gap_upper_universal⟩, packaging the axioms.",
     "significance": "key"
@@ -172,11 +149,11 @@
   {
     "id": "ann-995-summary",
     "proofId": "erdos-995",
-    "range": { "startLine": 210, "endLine": 226 },
-    "type": "technique",
-    "title": "erdos_995_summary",
+    "range": { "startLine": 227, "endLine": 230 },
+    "type": "theorem",
+    "title": "erdos_995_summary (Proved)",
     "content": "Summary: Is sum o(N √(log log N))? Lower bound shows at least (log log N)^{1/2-ε} sometimes. Upper bound gives (log N)^{1/2+ε} always. Gap remains OPEN.",
-    "mathContext": "The summary theorem erdos_995_summary = erdos_995_statement captures the full state of this 75-year-old open problem. The docstring serves as the definitive mathematical summary. The OPEN status means this is one of the remaining unsolved Erdős problems — closing the gap between (log log N)^{1/2} and (log N)^{1/2} would be a major advance in metric number theory, with implications for understanding the fine structure of lacunary trigonometric sums, almost sure invariance principles, and connections to the Riemann zeta function on the critical line.",
+    "mathContext": "The summary theorem erdos_995_summary = erdos_995_statement captures the full state of this 75-year-old open problem. The OPEN status means this is one of the remaining unsolved Erdős problems — closing the gap between (log log N)^{1/2} and (log N)^{1/2} would be a major advance in metric number theory, with implications for understanding the fine structure of lacunary trigonometric sums, almost sure invariance principles, and connections to the Riemann zeta function on the critical line.",
     "significance": "key"
   }
 ]
