@@ -122,6 +122,48 @@
         "targetProofId": "erdos-927",
         "relationship": "related",
         "description": "Studies distinct clique sizes in graphs — complementary perspective on clique structure"
+      },
+      {
+        "targetProofId": "ramseys-theorem",
+        "relationship": "uses",
+        "description": "The classical Ramsey theorem provides the foundation; Folkman graphs achieve Ramsey-type forcing without large cliques"
+      }
+    ],
+    "references": [
+      {
+        "authors": "J. Folkman",
+        "title": "Graphs with monochromatic complete subgraphs in every edge coloring",
+        "year": "1970",
+        "venue": "SIAM J. Appl. Math., 18, 19–24",
+        "note": "Proved k=2 case; published posthumously (Folkman died 1969). Introduced shift graph construction and Folkman graphs."
+      },
+      {
+        "authors": "J. Nešetřil, V. Rödl",
+        "title": "The Ramsey property for graphs with forbidden complete subgraphs",
+        "year": "1976",
+        "venue": "J. Combinatorial Theory Ser. B, 20(3), 243–249",
+        "note": "Proved the general case for all k ≥ 2 using Hales-Jewett theorem and partite constructions."
+      },
+      {
+        "authors": "A. W. Hales, R. I. Jewett",
+        "title": "Regularity and positional games",
+        "year": "1963",
+        "venue": "Trans. Amer. Math. Soc., 106, 222–229",
+        "note": "The Hales-Jewett theorem, a key ingredient in the Nešetřil-Rödl proof."
+      },
+      {
+        "authors": "R. L. Graham",
+        "title": "On edgewise 2-colored graphs with monochromatic triangles and containing no complete hexagon",
+        "year": "1968",
+        "venue": "J. Combinatorial Theory, 4, 300",
+        "note": "Early upper bound for f(3;2)."
+      },
+      {
+        "authors": "A. Lange, S. P. Radziszowski, X. Xu",
+        "title": "Use of MAX-CUT for Ramsey arrowing of triangles",
+        "year": "2014",
+        "venue": "J. Combinatorial Mathematics and Combinatorial Computing, 88, 61–71",
+        "note": "Contributed to establishing f(3;2) = 786."
       }
     ]
   },
@@ -141,63 +183,63 @@
     {
       "id": "graph-basics",
       "title": "Basic Graph Concepts",
-      "summary": "completeGraph via ⊤, IsCliqueOfSize via Finset/IsClique, IsCliqueFree, ContainsClique",
+      "summary": "Defines `completeGraph` as $\\top$ in the `SimpleGraph` lattice, `IsCliqueOfSize` via `Finset`/`IsClique`, `IsCliqueFree` ($\\neg \\text{IsCliqueOfSize}$), and `ContainsClique` (semantic alias).",
       "startLine": 36,
       "endLine": 67
     },
     {
       "id": "edge-colorings",
       "title": "Edge Colorings",
-      "summary": "EdgeColoring as G.edgeSet → Fin k, MonochromaticSubgraph with symm/loopless proofs, HasMonochromaticClique",
+      "summary": "`EdgeColoring` as $G.\\text{edgeSet} \\to \\text{Fin}\\, k$, `MonochromaticSubgraph` with `symm`/`loopless` proofs via `Sym2.eq_swap`, and `HasMonochromaticClique` ($\\exists c,\\; K_l \\subseteq G_c$).",
       "startLine": 69,
       "endLine": 104
     },
     {
       "id": "ramsey-property",
       "title": "The Ramsey Property",
-      "summary": "HasRamseyProperty (∀ colorings, ∃ monochromatic K_l), ErdosHajnalQuestion (∃ K_{l+1}-free with Ramsey property)",
+      "summary": "`HasRamseyProperty`: $\\forall \\chi,\\; \\exists c,\\; K_l \\subseteq G_c$. `ErdosHajnalQuestion`: $\\exists G,\\; \\omega(G) \\le l \\land G \\to (K_l)^k_2$.",
       "startLine": 106,
       "endLine": 125
     },
     {
       "id": "folkman-graphs",
       "title": "Folkman Graphs",
-      "summary": "IsFolkmanGraph = IsCliqueFree ∧ HasRamseyProperty, FolkmanNumber via Nat.find",
+      "summary": "`IsFolkmanGraph` $= \\text{IsCliqueFree}\\, G\\, (l+1) \\land \\text{HasRamseyProperty}\\, G\\, k\\, l$. `FolkmanNumber` $f(l;k)$ defined via `Nat.find` from the existence guarantee.",
       "startLine": 127,
       "endLine": 145
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "summary": "folkman_1970 axiom (k=2), nesetril_rodl_1976 axiom (general k ≥ 2)",
+      "summary": "Axioms: `folkman_1970` ($k=2$, $\\forall l \\ge 3$) and `nesetril_rodl_1976` ($\\forall k \\ge 2, l \\ge 3$). The general theorem completely solves the Erdős-Hajnal question.",
       "startLine": 147,
       "endLine": 165
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "summary": "FolkmanNumber_3_2, graham_upper_bound (≤ 941), folkman_3_2_exact (= 786)",
+      "summary": "`FolkmanNumber_3_2` definition, Graham's upper bound $f(3;2) \\le 941$, and exact value $f(3;2) = 786$ (Lange-Radziszowski-Xu 2014).",
       "startLine": 167,
       "endLine": 196
     },
     {
       "id": "ramsey-connection",
       "title": "Connection to Ramsey Theory",
-      "summary": "RamseyNumber definition, folkman_vs_ramsey comparison",
+      "summary": "`RamseyNumber` $R(l,l)$ definition via `Nat.find`. Comparison: $K_n$ for $n \\ge R(l,l)$ trivially has the Ramsey property but contains all $K_m$; Folkman graphs achieve forcing with $\\omega(G) \\le l$.",
       "startLine": 198,
       "endLine": 220
     },
     {
       "id": "proof-techniques",
       "title": "Proof Techniques",
-      "summary": "Hales-Jewett method, partite construction, shift graphs, GeneralizedFolkmanNumber",
+      "summary": "Three proof techniques: Hales-Jewett ($[m]^n$ cubes), partite construction (controlling $\\omega(G)$), shift graphs (Folkman's original). Also `GeneralizedFolkmanNumber` $f(l_1, \\ldots, l_k; r)$ for asymmetric parameters.",
       "startLine": 222,
       "endLine": 265
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "erdos_924_summary (proved), erdos_924 = nesetril_rodl_1976 (proved), erdos_924_answer (proved)",
+      "summary": "`erdos_924_summary` combines three results in a single conjunction. `erdos_924 := nesetril_rodl_1976` identifies the solution. `erdos_924_answer` unpacks the existential for downstream use.",
       "startLine": 268,
       "endLine": 317
     }
