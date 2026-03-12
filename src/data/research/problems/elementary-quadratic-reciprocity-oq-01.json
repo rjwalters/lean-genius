@@ -21,7 +21,13 @@
       "signMulHom: sign ∘ mulPerm character to {±1} (fully proved)",
       "Multiplicativity of Legendre symbol via permutation sign (proved from axiom)",
       "Square detection via sign = +1 (proved from axiom)",
-      "QR statement, first and second supplements (from Mathlib)"
+      "QR statement, first and second supplements (from Mathlib)",
+      "card_units_prime: |units| = p-1 (fully proved)",
+      "card_units_even: p-1 is even for odd p (fully proved)",
+      "exists_primitive_root: generator of cyclic (ZMod p)ˣ exists (from Mathlib)",
+      "mulPerm_no_fixed_point: ax ≠ x for a ≠ 1 (fully proved)",
+      "mulPermHom_injective: distinct units give distinct permutations (fully proved)",
+      "unique_surj_hom_to_int_units: unique non-trivial quadratic character (fully proved)"
     ],
     "open": [
       "Full proof of Zolotarev's Lemma from cycle decomposition"
@@ -31,8 +37,8 @@
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-03-11T22:00:00.000Z",
-    "iteration": 1,
-    "focus": "Proof complete with 0 sorries, 1 axiom (Zolotarev's Lemma).",
+    "iteration": 2,
+    "focus": "23 proved theorems, 1 axiom, 0 sorries. Character uniqueness reduces axiom to surjectivity claims.",
     "blockers": [],
     "nextAction": "None — proof is complete.",
     "attemptCounts": {
@@ -42,21 +48,36 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Formalized Zolotarev's 1872 permutation-based approach to quadratic reciprocity. The multiplication permutation infrastructure is fully proved. Zolotarev's Lemma itself is axiomatized (requires cycle decomposition analysis). All consequences derived with 0 sorries.",
+    "progressSummary": "23 proved theorems, 1 axiom, 0 sorries. Character uniqueness theorem proved: reduces Zolotarev axiom to two surjectivity claims. PR #3478.",
     "builtItems": [
       "proofs/Proofs/ElementaryQuadraticReciprocityOQ01.lean",
-      "src/data/proofs/elementary-quadratic-reciprocity-oq-01/"
+      "src/data/proofs/elementary-quadratic-reciprocity-oq-01/",
+      "card_units_prime, card_units_even (Part VIII)",
+      "exists_primitive_root, generator_orderOf (Part VIII)",
+      "mulPerm_no_fixed_point, mulPermHom_injective (Part IX)",
+      "hom_to_int_units_eq_of_generator_eq (Part X)",
+      "surj_hom_generator_neg_one, unique_surj_hom_to_int_units (Part X)"
     ],
     "insights": [
       "No direct coercion (ZMod p)ˣ → ℤ exists — need unitToInt helper",
       "Perm.sign is a MonoidHom, composable with mulPermHom via .comp",
       "Int.units_sq proves x² = 1 for ℤˣ elements — key for sign properties",
-      "Units.val_mul converts ↑(a * b) to ↑a * ↑b for ℤˣ coercion"
+      "Units.val_mul converts ↑(a * b) to ↑a * ↑b for ℤˣ coercion",
+      "IsCyclic (ZMod p)ˣ available via isCyclic_of_subgroup_isDomain in Mathlib",
+      "ZMod.card_units_eq_totient + Nat.totient_prime gives card = p-1",
+      "Character uniqueness on cyclic groups: surjective G →* ℤˣ is unique (proved)",
+      "Surjective hom to ℤˣ maps generators to -1 (proved via Int.isUnit_iff)",
+      "Zolotarev axiom reduces to signMulHom surjectivity + Legendre surjectivity"
     ],
     "mathlibGaps": [
-      "Zolotarev's Lemma not in Mathlib — axiomatized"
+      "Zolotarev's Lemma not in Mathlib — axiomatized",
+      "No unique_quadratic_character theorem in Mathlib (proved locally)"
     ],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove signMulHom surjectivity via cycle analysis of mulPerm(generator)",
+      "Construct Legendre character as MonoidHom (ZMod p)ˣ →* ℤˣ",
+      "Combine with unique_surj_hom_to_int_units to eliminate zolotarev_lemma axiom"
+    ]
   },
   "approaches": [
     {
@@ -93,7 +114,7 @@
     ]
   },
   "started": "2026-03-11T21:51:20.687Z",
-  "lastUpdate": "2026-03-11T22:00:00.000Z",
+  "lastUpdate": "2026-03-11T23:30:00.000Z",
   "significance": 7,
   "tractability": 6
 }
