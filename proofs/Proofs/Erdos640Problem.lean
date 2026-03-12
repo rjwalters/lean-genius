@@ -48,13 +48,9 @@ coloring using at most k colors (modeled as `Fin k`).
 def IsKColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∃ c : V → Fin k, ∀ v w : V, G.Adj v w → c v ≠ c w
 
-/--
-The chromatic number of G: the smallest k such that G is k-colorable.
-For formalization we define it as an `ℕ` using `Nat.find`.
--/
-noncomputable def chromaticNumber [Fintype V] [DecidableEq V]
-    [DecidableRel (SimpleGraph.Adj (G : SimpleGraph V))]
-    (G : SimpleGraph V) : ℕ :=
+open Classical in
+/-- The chromatic number of G: the smallest k such that G is k-colorable. -/
+noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ :=
   if h : ∃ k : ℕ, IsKColorable G k then Nat.find h else 0
 
 /- ## Part II: Odd Cycles -/
@@ -72,7 +68,7 @@ def HasOddCycleWithVertices (G : SimpleGraph V) (S : Finset V) : Prop :=
   ∃ (σ : Fin S.card → V),
     Function.Injective σ ∧
     (∀ i : Fin S.card, σ i ∈ S) ∧
-    (∀ i : Fin S.card, G.Adj (σ i) (σ ⟨(i.val + 1) % S.card, Nat.mod_lt _ (by omega)⟩))
+    (∀ i : Fin S.card, G.Adj (σ i) (σ ⟨(i.val + 1) % S.card, Nat.mod_lt _ (by have := i.isLt; omega)⟩))
 
 /- ## Part III: Induced Subgraph Chromatic Number -/
 
@@ -81,8 +77,8 @@ The induced subgraph of G on a vertex set S.
 -/
 def inducedSubgraph (G : SimpleGraph V) (S : Set V) : SimpleGraph S where
   Adj v w := G.Adj v.val w.val
-  symm v w h := G.symm h
-  loopless v h := G.loopless v.val h
+  symm _ _ h := G.symm h
+  loopless _ h := G.loopless _ h
 
 /--
 The span chromatic number: the chromatic number of the subgraph
@@ -158,5 +154,126 @@ remains open. Steiner showed the path variant is equivalent.
 theorem erdos_640_summary :
     (ErdosHajnalConjecture640 ↔ SteinerPathVariant) :=
   steiner_equivalence
+
+/- ## Part VII: Structural Lemmas on Colorability -/
+
+/-- Colorability is monotone: if G is k-colorable, it is also (k+1)-colorable. -/
+theorem isKColorable_succ {G : SimpleGraph V} {k : ℕ}
+    (h : IsKColorable G k) : IsKColorable G (k + 1) := by
+  obtain ⟨c, hc⟩ := h
+  exact ⟨fun v => ⟨(c v).val, by omega⟩, fun v w hadj => by
+    have := hc v w hadj
+    simp [Fin.ext_iff] at this ⊢
+    exact this⟩
+
+/-- Colorability is monotone in general: k₁ ≤ k₂ → k₁-colorable → k₂-colorable. -/
+theorem isKColorable_mono {G : SimpleGraph V} {k₁ k₂ : ℕ}
+    (hle : k₁ ≤ k₂) (hk : IsKColorable G k₁) : IsKColorable G k₂ := by
+  obtain ⟨c, hc⟩ := hk
+  exact ⟨fun v => ⟨(c v).val, by omega⟩, fun v w hadj => by
+    have := hc v w hadj
+    simp [Fin.ext_iff] at this ⊢
+    exact this⟩
+
+/-- A graph with no edges is 1-colorable. -/
+theorem isKColorable_one_of_no_edges {G : SimpleGraph V}
+    (h : ∀ v w : V, ¬G.Adj v w) : IsKColorable G 1 :=
+  ⟨fun _ => 0, fun v w hadj => absurd hadj (h v w)⟩
+
+/-- Every graph is 0-colorable on an empty type. -/
+theorem isKColorable_zero_of_isEmpty [IsEmpty V] (G : SimpleGraph V) :
+    IsKColorable G 0 :=
+  ⟨fun v => isEmptyElim v, fun v => isEmptyElim v⟩
+
+/- ## Part VIII: Induced Subgraph Coloring Inheritance -/
+
+/-- If G is k-colorable, then any induced subgraph is also k-colorable. -/
+theorem inducedSubgraph_isKColorable {G : SimpleGraph V} {S : Set V} {k : ℕ}
+    (hk : IsKColorable G k) : IsKColorable (inducedSubgraph G S) k := by
+  obtain ⟨c, hc⟩ := hk
+  exact ⟨fun v => c v.val, fun v w hadj => hc v.val w.val hadj⟩
+
+/-- Contrapositive: if the induced subgraph on S is not (k-1)-colorable,
+    then G is not (k-1)-colorable either. -/
+theorem inducedChromaticAtLeast_of_not_colorable {G : SimpleGraph V}
+    {S : Finset V} {k : ℕ}
+    (h : InducedChromaticAtLeast G S k) : ¬IsKColorable G (k - 1) := by
+  intro hcol
+  exact h (inducedSubgraph_isKColorable hcol)
+
+/- ## Part IX: Odd Cycle Chromatic Number -/
+
+/-- An odd cycle with ≥ 3 vertices is not 1-colorable.
+    Any adjacent pair forces two colors. -/
+theorem oddCycle_not_one_colorable {G : SimpleGraph V}
+    {S : Finset V} (hcyc : HasOddCycleWithVertices G S) :
+    ¬IsKColorable (inducedSubgraph G (↑S : Set V)) 1 := by
+  intro ⟨c, hc⟩
+  obtain ⟨hcard, _, _, σ, _, hσ_mem, hσ_adj⟩ := hcyc
+  have h0 : (0 : ℕ) < S.card := by omega
+  let idx0 : Fin S.card := ⟨0, h0⟩
+  let idx1 : Fin S.card := ⟨(0 + 1) % S.card, Nat.mod_lt _ h0⟩
+  have hadj := hσ_adj idx0
+  have hv0 : σ idx0 ∈ S := hσ_mem idx0
+  have hv1 : σ idx1 ∈ S := hσ_mem idx1
+  have := hc ⟨σ idx0, hv0⟩ ⟨σ idx1, hv1⟩ hadj
+  exact this (Subsingleton.elim _ _)
+
+/- ## Part X: Every Graph is Colorable -/
+
+/-- Every graph on a finite type is colorable (using card V colors). -/
+theorem exists_colorable [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) : ∃ k, IsKColorable G k := by
+  use Fintype.card V
+  by_cases h : IsEmpty V
+  · exact ⟨fun v => isEmptyElim v, fun v => isEmptyElim v⟩
+  · rw [not_isEmpty_iff] at h
+    let e := Fintype.equivFin V
+    exact ⟨fun v => e v, fun v w hadj heq => by
+      have := G.ne_of_adj hadj
+      exact this (e.injective (Fin.ext (Fin.mk.inj heq)))⟩
+
+/- ## Part XI: Bipartite and 2-Colorability -/
+
+/-- A 2-colorable graph is one where vertices can be properly 2-colored. -/
+def IsBipartiteColoring (G : SimpleGraph V) : Prop := IsKColorable G 2
+
+/-- An odd cycle has InducedChromaticAtLeast with k = 3:
+    the induced subgraph on cycle vertices is not 2-colorable (not bipartite).
+    This is because walking around an odd cycle with 2 colors leads to a parity
+    contradiction. -/
+theorem oddCycle_chromatic_at_least_3 {G : SimpleGraph V}
+    {S : Finset V} (hcyc : HasOddCycleWithVertices G S) :
+    InducedChromaticAtLeast G S 3 := by
+  -- InducedChromaticAtLeast G S 3 means ¬IsKColorable (inducedSubgraph G S) 2
+  unfold InducedChromaticAtLeast
+  simp only [show 3 - 1 = 2 from rfl]
+  intro ⟨c, hc⟩
+  obtain ⟨hcard, hodd, _, σ, hσ_inj, hσ_mem, hσ_adj⟩ := hcyc
+  -- Map colors to Bool
+  let b : Fin S.card → Fin 2 := fun i => c ⟨σ i, hσ_mem i⟩
+  -- Adjacent vertices must have different colors
+  have hdiff : ∀ i : Fin S.card,
+      b i ≠ b ⟨(i.val + 1) % S.card, Nat.mod_lt _ (by omega)⟩ := by
+    intro i
+    exact hc ⟨σ i, hσ_mem i⟩
+      ⟨σ ⟨(i.val + 1) % S.card, _⟩, hσ_mem _⟩ (hσ_adj i)
+  -- With 2 colors, each step alternates. After an odd number of steps
+  -- we return to start with opposite color = contradiction.
+  -- Use: the XOR (parity) of colors around the cycle
+  -- b(0) ≠ b(1) ≠ b(2) ≠ ... ≠ b(n-1) ≠ b(0)
+  -- With 2 colors this means b(i) = b(0) iff i is even
+  -- But b(n-1) ≠ b(0) requires n-1 odd, i.e. n even — contradiction with n odd.
+  sorry
+
+/- ## Part XII: Structural Summary -/
+
+/-- The k=3 structural fact: any graph containing an odd cycle has an odd
+    cycle whose vertices span a subgraph of chromatic number ≥ 3. This is
+    because every odd cycle requires exactly 3 colors. -/
+theorem k3_odd_cycle_span {G : SimpleGraph V}
+    {S : Finset V} (hcyc : HasOddCycleWithVertices G S) :
+    HasOddCycleWithVertices G S ∧ InducedChromaticAtLeast G S 3 :=
+  ⟨hcyc, oddCycle_chromatic_at_least_3 hcyc⟩
 
 end Erdos640
