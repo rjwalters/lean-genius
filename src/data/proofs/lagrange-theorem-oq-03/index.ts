@@ -2,9 +2,9 @@ import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOvervi
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 import tacticStatesJson from './tacticStates.json'
-import sourceRaw from '../../../../proofs/Proofs/Erdos1007OQ01.lean?raw'
+import sourceRaw from '../../../../proofs/Proofs/LagrangeTheoremOQ03.lean?raw'
 
-const meta = metaJson as unknown as {
+const meta = metaJson as {
   id: string
   title: string
   slug: string
@@ -15,7 +15,7 @@ const meta = metaJson as unknown as {
   conclusion?: ProofConclusion
 }
 
-export const erdos1007OQ01Proof: Proof = {
+export const lagrangeTheoremOQ03Proof: Proof = {
   id: meta.id,
   title: meta.title,
   slug: meta.slug,
@@ -27,13 +27,11 @@ export const erdos1007OQ01Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const erdos1007OQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
-export const erdos1007OQ01TacticStates: TacticState[] = tacticStatesJson as TacticState[]
+export const lagrangeTheoremOQ03Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const lagrangeTheoremOQ03TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
-export const erdos1007OQ01Data: ProofData = {
-  proof: erdos1007OQ01Proof,
-  annotations: erdos1007OQ01Annotations,
-  tacticStates: erdos1007OQ01TacticStates,
+export const lagrangeTheoremOQ03Data: ProofData = {
+  proof: lagrangeTheoremOQ03Proof,
+  annotations: lagrangeTheoremOQ03Annotations,
+  tacticStates: lagrangeTheoremOQ03TacticStates,
 }
-
-export default erdos1007OQ01Data
