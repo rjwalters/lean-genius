@@ -191,12 +191,7 @@
   },
   "conclusion": {
     "summary": "Complete formalization of the structural relationship between BFL's n^{3/2+o(1)} result and Erdős's Θ(n^{3/2}) conjecture. All theorems fully proved (0 sorries). Includes BFL sandwich, exact exponent characterization, conjecture decomposition, Mantel connection, hierarchy of bounds, and ratio tightness characterization.",
-    "implications": [
-      "Any proof of the full conjecture must establish that f(n)/n^{3/2} has a compact limit set in (0, ∞) — a qualitative strengthening of BFL's sub-polynomial bounds",
-      "The O and Ω bounds can be pursued independently; proving either one is progress toward the full conjecture",
-      "The hierarchy Conjecture ⟹ BFL ⟹ Grable provides a roadmap for incremental progress: each strengthening requires tighter control of the multiplicative constants",
-      "Connecting to differential equation methods (as in BFL's proof) may be the most promising route to extracting explicit constants"
-    ],
+    "implications": "Any proof of the full conjecture must establish that f(n)/n^{3/2} has a compact limit set in (0, ∞) — a qualitative strengthening of BFL's sub-polynomial bounds The O and Ω bounds can be pursued independently; proving either one is progress toward the full conjecture The hierarchy Conjecture ⟹ BFL ⟹ Grable provides a roadmap for incremental progress: each strengthening requires tighter control of the multiplicative constants Connecting to differential equation methods (as in BFL's proof) may be the most promising route to extracting explicit constants",
     "openQuestions": [
       "Does f(n)/n^{3/2} converge? If so, to what constant?",
       "Can the lower Θ-bound be established independently of the upper?",
