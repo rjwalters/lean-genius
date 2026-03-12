@@ -1,12 +1,12 @@
-import { useState, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useMemo, useCallback } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { listings } from '@/data/proofs'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { Footer } from '@/components/Footer'
 import { ProofBadge, WiedijkBadge, ErdosBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
 import { WIEDIJK_BADGE_INFO, HILBERT_BADGE_INFO, MILLENNIUM_BADGE_INFO, ERDOS_BADGE_INFO } from '@/types/proof'
-import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown, Search, Github, Share2 } from 'lucide-react'
+import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown, Search, Github, Share2, Dices } from 'lucide-react'
 import { useDebouncedUrlState, useUrlState, serializers } from '@/hooks'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
@@ -21,6 +21,12 @@ function parseDateAdded(dateStr?: string): Date {
 
 export function HomePage() {
   const { isAuthenticated } = useAuth()
+  const navigate = useNavigate()
+
+  const goToRandomProof = useCallback(() => {
+    const proof = listings[Math.floor(Math.random() * listings.length)]
+    if (proof) navigate(`/proof/${proof.slug}`)
+  }, [navigate])
 
   // URL-synced state
   const [searchQuery, setSearchQuery] = useDebouncedUrlState('q', '', serializers.string)
@@ -213,6 +219,14 @@ export function HomePage() {
                 className="pl-8 pr-3 py-1.5 text-sm bg-muted/50 border border-border rounded-lg w-full sm:w-48 placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-annotation focus:border-annotation"
               />
             </div>
+            {/* Random Proof */}
+            <button
+              onClick={goToRandomProof}
+              title="Random proof"
+              className="p-1.5 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Dices className="h-4 w-4" />
+            </button>
             {/* Sort Dropdown */}
             <div className="flex items-center gap-1.5">
               <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
