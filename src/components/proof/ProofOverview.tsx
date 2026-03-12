@@ -24,8 +24,10 @@ interface ProofOverviewProps {
 function getVersionStatusConfig(status: VersionHistoryEntry['status']) {
   const config: Record<VersionHistoryEntry['status'], { icon: typeof CheckCircle; className: string; label: string }> = {
     verified: { icon: CheckCircle, className: 'text-green-400', label: 'Verified' },
+    complete: { icon: CheckCircle, className: 'text-green-400', label: 'Complete' },
     pending: { icon: Clock, className: 'text-yellow-400', label: 'Pending' },
     disputed: { icon: AlertCircle, className: 'text-red-400', label: 'Disputed' },
+    'open-question': { icon: Clock, className: 'text-blue-400', label: 'Open Question' },
     conditional: { icon: AlertTriangle, className: 'text-orange-400', label: 'Conditional' },
     axiomatized: { icon: AlertCircle, className: 'text-purple-400', label: 'Axiomatized' },
     revised: { icon: Clock, className: 'text-blue-400', label: 'Revised' },

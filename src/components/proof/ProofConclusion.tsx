@@ -178,11 +178,13 @@ export function ProofConclusion({ proof }: ProofConclusionProps) {
           <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/30 rounded-lg px-4 py-3 mt-4">
             <span
               className={`px-2 py-0.5 rounded text-xs font-medium ${
-                proof.meta.status === 'verified'
+                proof.meta.status === 'verified' || proof.meta.status === 'complete'
                   ? 'bg-green-500/20 text-green-400'
                   : proof.meta.status === 'pending'
                     ? 'bg-yellow-500/20 text-yellow-400'
-                    : 'bg-red-500/20 text-red-400'
+                    : proof.meta.status === 'disputed'
+                      ? 'bg-red-500/20 text-red-400'
+                      : 'bg-blue-500/20 text-blue-400'
               }`}
             >
               {proof.meta.status}
@@ -190,9 +192,11 @@ export function ProofConclusion({ proof }: ProofConclusionProps) {
             <span>
               {proof.meta.status === 'pending'
                 ? 'This proof contains sorry statements or has not yet been verified in Lean.'
-                : proof.meta.status === 'verified'
+                : proof.meta.status === 'verified' || proof.meta.status === 'complete'
                   ? 'This proof compiles in Lean with no sorry statements.'
-                  : 'This proof is disputed and requires further analysis.'}
+                  : proof.meta.status === 'disputed'
+                    ? 'This proof is disputed and requires further analysis.'
+                    : `Status: ${proof.meta.status}`}
             </span>
           </div>
         </div>

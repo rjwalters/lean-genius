@@ -269,7 +269,7 @@ export interface ProofMeta {
   /** Date when proof was added to the site (MM/DD/YY format) */
   dateAdded?: string
   mathlib_version?: string
-  status: 'verified' | 'pending' | 'disputed'
+  status: 'verified' | 'pending' | 'disputed' | 'complete' | 'open-question' | 'axiomatized' | 'conditional'
   tags: string[]
   /** Path to verified Lean source in proofs/ directory (e.g., "Proofs/Sqrt2Irrational.lean") */
   proofRepoPath?: string
@@ -368,7 +368,7 @@ export interface ProofListing {
   title: string
   slug: string
   description: string
-  status: 'verified' | 'pending' | 'disputed'
+  status: 'verified' | 'pending' | 'disputed' | 'complete' | 'open-question' | 'axiomatized' | 'conditional'
   badge?: ProofBadge
   tags: string[]
   dateAdded?: string
@@ -402,7 +402,7 @@ export interface VersionHistoryEntry {
   /** Date of this version (ISO format) */
   date: string
   /** Status of this version */
-  status: 'verified' | 'pending' | 'disputed' | 'conditional' | 'axiomatized' | 'revised'
+  status: 'verified' | 'pending' | 'disputed' | 'complete' | 'open-question' | 'axiomatized' | 'conditional' | 'conditional' | 'axiomatized' | 'revised'
   /** Path to version file (relative to proof data directory) */
   file: string
   /** Brief summary of changes in this version */
