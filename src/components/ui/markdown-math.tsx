@@ -10,6 +10,33 @@ interface MarkdownMathProps {
 }
 
 /**
+ * Rehype plugin: unwrap <p> inside <li> (caused by "loose" markdown lists
+ * with blank lines between items). Prevents list markers from detaching
+ * from paragraph content when using list-inside positioning.
+ */
+function rehypeUnwrapListParagraphs() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (tree: any) => {
+    function walk(node: any) {
+      if (!node.children) return
+      for (const child of node.children) walk(child)
+      if (node.tagName === 'li') {
+        const flat: any[] = []
+        for (const child of node.children) {
+          if (child.type === 'element' && child.tagName === 'p') {
+            flat.push(...child.children)
+          } else {
+            flat.push(child)
+          }
+        }
+        node.children = flat
+      }
+    }
+    walk(tree)
+  }
+}
+
+/**
  * Renders markdown text with LaTeX math support.
  *
  * Supports:
@@ -25,7 +52,7 @@ export function MarkdownMath({ children, className }: MarkdownMathProps) {
     <div className={className}>
       <ReactMarkdown
         remarkPlugins={[remarkMath]}
-        rehypePlugins={[rehypeKatex]}
+        rehypePlugins={[rehypeUnwrapListParagraphs, rehypeKatex]}
         components={{
           // Style paragraphs to match existing design
           p: ({ children }: { children?: ReactNode }) => (
@@ -69,7 +96,7 @@ export function MarkdownMathInline({ children, className }: MarkdownMathProps) {
     <span className={className}>
       <ReactMarkdown
         remarkPlugins={[remarkMath]}
-        rehypePlugins={[rehypeKatex]}
+        rehypePlugins={[rehypeUnwrapListParagraphs, rehypeKatex]}
         components={{
           // Remove paragraph wrapper for inline use
           p: ({ children }: { children?: ReactNode }) => <>{children}</>,
