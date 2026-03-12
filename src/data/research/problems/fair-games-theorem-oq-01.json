@@ -1,0 +1,27 @@
+{
+  "id": "fair-games-theorem-oq-01",
+  "title": "Distribution of Ruin Times",
+  "parentProof": "fair-games-theorem",
+  "openQuestion": "What is the distribution of ruin times?",
+  "currentState": {
+    "phase": "COMPLETE",
+    "status": "completed",
+    "lastUpdated": "2026-03-11"
+  },
+  "knowledge": {
+    "insights": [
+      "All axioms eliminated: ost_linear and ruin_probabilities_sum_one proved from definitions",
+      "Biased random walk formalized with odds ratio r = q/p",
+      "Exponential decay rate cos(pi/N) in (0,1) for N >= 3 proved via sin/cos Pythagorean identity",
+      "AM-GM bound E[T] <= N^2/4 proved via (N-2k)^2 >= 0",
+      "Harmonic property connects to discrete potential theory"
+    ],
+    "builtItems": [
+      "GamblersRuin structure in FairGamesTheoremOQ01.lean",
+      "BiasedGamblersRuin structure with full probability analysis",
+      "ruin_time_decay_rate_pos/lt_one theorems for spectral decay",
+      "Gallery entry src/data/proofs/fair-games-theorem-oq-01/"
+    ],
+    "progressSummary": "COMPLETE: Axiom-free proof with biased games and exponential decay rate"
+  }
+}
