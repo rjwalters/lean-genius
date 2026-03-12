@@ -1,33 +1,5 @@
 [
   {
-    "id": "ann-e924-header",
-    "proofId": "erdos-924",
-    "range": { "startLine": 1, "endLine": 25 },
-    "type": "concept",
-    "title": "Problem Overview",
-    "content": "**Erdős Problem #924: Folkman-Nešetřil-Rödl Theorem.** For k ≥ 2 and l ≥ 3, does there exist a K_{l+1}-free graph G such that every k-coloring of G's edges contains a monochromatic K_l? Answer: YES (Folkman 1970 for k=2, Nešetřil-Rödl 1976 for general k). Such graphs are called *Folkman graphs*, and their minimum vertex count is the *Folkman number* f(l; k).",
-    "mathContext": "This problem explores the boundary between Ramsey theory and extremal graph theory. The classical Ramsey theorem guarantees that K_n (for sufficiently large n) has the property that every k-coloring of its edges contains a monochromatic K_l. But K_n contains all cliques, including K_{l+1}. The Erdős-Hajnal question asks: can we achieve the same Ramsey forcing while *forbidding* K_{l+1}? The affirmative answer shows that Ramsey-type phenomena arise from structural properties of the graph, not merely from having many edges or large cliques.",
-    "significance": "critical",
-    "relatedConcepts": ["ramsey-theory", "folkman-graphs", "graph-coloring", "clique-free-graphs", "hales-jewett"],
-    "crossReferences": [
-      {
-        "targetProofId": "erdos-920",
-        "relationship": "related",
-        "description": "Erdős #920 studies chromatic numbers of K_k-free graphs — the twin problem of high chromatic number in clique-free graphs"
-      },
-      {
-        "targetProofId": "erdos-925",
-        "relationship": "related",
-        "description": "Erdős #925 studies independent sets in non-Ramsey graphs, directly addressing Ramsey-type bounds"
-      },
-      {
-        "targetProofId": "erdos-922",
-        "relationship": "related",
-        "description": "Erdős #922 is another result by Folkman on chromatic number bounds, from the same era"
-      }
-    ]
-  },
-  {
     "id": "ann-e924-complete-graph",
     "proofId": "erdos-924",
     "range": { "startLine": 44, "endLine": 45 },
@@ -92,7 +64,7 @@
     "title": "HasRamseyProperty",
     "content": "G has the k-Ramsey property for K_l if **every** k-coloring of G's edges contains a monochromatic K_l. The universal quantification over all colorings is what makes this a strong structural property of G.",
     "mathContext": "This definition captures the arrow notation from Ramsey theory: G → (K_l)^k_2 means every k-coloring of G's edges yields a monochromatic K_l. The classical Ramsey theorem says K_n → (K_l)^k_2 for sufficiently large n. The Folkman-Nešetřil-Rödl theorem strengthens this: there exists G with ω(G) ≤ l such that G → (K_l)^k_2. The Ramsey property is a *partition property* — it says G is 'partition regular' with respect to K_l in k colors.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e924-erdos-hajnal",
@@ -102,7 +74,7 @@
     "title": "ErdosHajnalQuestion",
     "content": "The core problem: does there exist a K_{l+1}-free graph with the k-Ramsey property for K_l? Formalized as an existential over types V with Fintype and DecidableEq instances, a SimpleGraph G, and the two properties.",
     "mathContext": "The existential quantification `∃ (V : Type) (_ : Fintype V) ...` is necessary because Folkman graphs exist at different sizes for different parameter pairs (l, k). The Lean formalization quantifies over all possible vertex types, not just `Fin n`, to maintain generality. The DecidableRel constraint on G.Adj ensures computability of the adjacency relation, needed for constructing MonochromaticSubgraph. This question was posed by Erdős and Hajnal in the broader context of structural Ramsey theory.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e924-folkman-graph",
@@ -112,7 +84,7 @@
     "title": "IsFolkmanGraph",
     "content": "A Folkman graph for parameters (l, k) is a graph that is K_{l+1}-free AND has the k-Ramsey property for K_l. Named after Jon Folkman (1938-1969), who proved existence for k = 2 shortly before his death.",
     "mathContext": "Jon Folkman proved the k = 2 case and the paper was published posthumously in 1970 (SIAM J. Appl. Math.). Folkman graphs are central objects in structural Ramsey theory. Their study reveals that Ramsey-type phenomena don't require dense substructures — they can emerge from carefully controlled sparse graphs. The definition is the conjunction `IsCliqueFree G (l + 1) ∧ HasRamseyProperty G k l`, capturing both the forbidden subgraph constraint and the Ramsey forcing property.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e924-folkman-number",
@@ -132,7 +104,7 @@
     "title": "Folkman's Theorem (1970)",
     "content": "For k = 2 and any l ≥ 3, Folkman graphs exist: there is a K_{l+1}-free graph G such that every 2-coloring of G's edges contains a monochromatic K_l. Published posthumously in SIAM J. Appl. Math.",
     "mathContext": "Folkman's proof used *shift graphs* (also called Kneser-like graphs). The construction works as follows: take vertices to be all l-element subsets of a large set, with edges determined by an interlacing condition. The shift structure ensures triangle-freeness (or more generally, K_{l+1}-freeness) while the high-dimensional structure forces monochromatic K_l. The construction gives bounds of tower type, far from the now-known values. Folkman's original paper also introduced the concept of *vertex-Folkman numbers*, though these remain less studied.",
-    "significance": "critical",
+    "significance": "key",
     "crossReferences": [
       {
         "targetProofId": "erdos-922",
@@ -149,7 +121,7 @@
     "title": "Nešetřil-Rödl Theorem (1976)",
     "content": "For ANY k ≥ 2 and l ≥ 3, Folkman graphs exist. This completely solves the Erdős-Hajnal question. Published in J. Combinatorial Theory Ser. B (1976).",
     "mathContext": "The Nešetřil-Rödl proof uses the *partite construction* combined with the *Hales-Jewett theorem*. The key idea: (1) Start with a sufficiently high-dimensional combinatorial cube [m]^n, (2) Apply Hales-Jewett to guarantee combinatorial lines in any coloring, (3) Embed K_l into combinatorial lines, (4) Control the clique number via the partite structure. The bounds are of Ackermann/tower type. Later work by Conlon-Gowers and Schacht connected this to hypergraph regularity methods. The theorem is a cornerstone of *structural Ramsey theory* — the study of which structures are Ramsey.",
-    "significance": "critical",
+    "significance": "key",
     "crossReferences": [
       {
         "targetProofId": "erdos-1090",
@@ -167,7 +139,7 @@
     "id": "ann-e924-f32",
     "proofId": "erdos-924",
     "range": { "startLine": 179, "endLine": 196 },
-    "type": "concept",
+    "type": "definition",
     "title": "The Simplest Case: f(3; 2)",
     "content": "f(3; 2) is the minimum vertices for a K_4-free graph where every 2-coloring of edges contains a monochromatic triangle. The exact value is f(3; 2) = 786, determined through decades of incremental improvements.",
     "mathContext": "The history of f(3; 2) bounds: Folkman (1970): f(3;2) exists, bounds astronomical. Graham (1993): f(3;2) ≤ 941 (via an explicit construction with 941 vertices). Frankl-Rödl (1986): improved general bounds using hypergraph regularity. Lu (2007): f(3;2) ≤ 9697. Dudek-Rödl (2008): f(3;2) ≤ 941 by different method. Lange-Radziszowski-Xu (2014): f(3;2) ≤ 786. Exact determination f(3;2) = 786 combines upper bound (explicit graph construction) with lower bound (exhaustive or algebraic elimination). The graph achieving 786 vertices is based on a Cayley graph construction over a carefully chosen group.",
@@ -177,7 +149,7 @@
     "id": "ann-e924-ramsey-compare",
     "proofId": "erdos-924",
     "range": { "startLine": 207, "endLine": 220 },
-    "type": "concept",
+    "type": "definition",
     "title": "Comparison with Classical Ramsey Numbers",
     "content": "Complete graphs K_n trivially have the Ramsey property for n ≥ R(l,l;k). Folkman graphs achieve the same forcing while keeping the clique number at most l — no K_{l+1}. This demonstrates that Ramsey phenomena are not artifacts of density.",
     "mathContext": "The Ramsey number R(3,3) = 6 means K_6 forces a monochromatic triangle in every 2-coloring. But K_6 contains K_4, K_5, and K_6 — far from K_4-free. Folkman graphs achieve the same forcing with ω(G) ≤ 3 (no K_4), at the cost of needing 786 vertices instead of 6. The gap between R(l,l) and f(l;2) reveals the 'price of avoiding large cliques'. For higher k, the Folkman number f(l;k) grows even faster. This comparison motivates the study of *Ramsey multiplicity* — how many copies of the monochromatic structure are forced.",
@@ -194,33 +166,6 @@
     "significance": "key"
   },
   {
-    "id": "ann-e924-hales-jewett",
-    "proofId": "erdos-924",
-    "range": { "startLine": 226, "endLine": 231 },
-    "type": "concept",
-    "title": "Hales-Jewett Method",
-    "content": "The Nešetřil-Rödl proof uses the Hales-Jewett theorem: for any k-coloring of the combinatorial cube [m]^n (for sufficiently large n), there exists a monochromatic combinatorial line.",
-    "mathContext": "The Hales-Jewett theorem (1963) is one of the most powerful tools in Ramsey theory. A *combinatorial line* in [m]^n is a set of m points obtained by fixing some coordinates and letting others vary together. The theorem says HJ(m, k) exists: for n ≥ HJ(m, k), any k-coloring of [m]^n has a monochromatic combinatorial line. Nešetřil and Rödl embed the clique structure into combinatorial lines, using the high dimension to enforce Ramsey properties while the partite structure controls clique sizes. The density version (proved by Furstenberg-Katznelson 1991 and Polymath 2012) strengthens this to positive-density subsets.",
-    "significance": "key",
-    "crossReferences": [
-      {
-        "targetProofId": "erdos-1090",
-        "relationship": "uses-same-technique",
-        "description": "Erdős #1090 on monochromatic collinear points also uses the Hales-Jewett theorem"
-      }
-    ]
-  },
-  {
-    "id": "ann-e924-shift-graphs",
-    "proofId": "erdos-924",
-    "range": { "startLine": 240, "endLine": 245 },
-    "type": "concept",
-    "title": "Shift Graph Construction",
-    "content": "Folkman's original proof used shift graphs — graphs whose vertices are sets and adjacency is determined by containment or interlacing relations. The shift structure simultaneously controls clique sizes and forces monochromatic cliques.",
-    "mathContext": "A *shift graph* G(n, l) has vertices being all l-element subsets {a₁ < ... < a_l} of [n], with two subsets adjacent if they 'interlace': max(A) < min(B) or vice versa (ordered by minimum element). This ensures no K_{l+1} exists (by a pigeonhole argument on minimum elements) while the Ramsey property follows from the Ramsey theorem applied to the underlying ordered structure. The shift graph construction gives explicit Folkman graphs but with far more vertices than the optimal f(l; k). Modern constructions use algebraic methods (Cayley graphs, affine planes) for tighter bounds.",
-    "significance": "key"
-  },
-  {
     "id": "ann-e924-summary",
     "proofId": "erdos-924",
     "range": { "startLine": 289, "endLine": 300 },
@@ -228,7 +173,7 @@
     "title": "erdos_924_summary (Proved)",
     "content": "The summary theorem combines three results: (1) Nešetřil-Rödl: general existence for all k ≥ 2, l ≥ 3, (2) Folkman: the original k = 2 case, (3) specific case f(3; 2) exists. All proved from the axioms.",
     "mathContext": "The proof uses `constructor` to split the conjunction. The first conjunct is `nesetril_rodl_1976` directly. The second is `folkman_1970`. The third applies `nesetril_rodl_1976 2 3` with `norm_num` to discharge k ≥ 2 and l ≥ 3. This structure demonstrates how the general theorem (Nešetřil-Rödl) subsumes both Folkman's special case and the most-studied Folkman number f(3; 2).",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e924-main",
@@ -238,7 +183,7 @@
     "title": "erdos_924 (Proved)",
     "content": "The main theorem: `∀ k l : ℕ, k ≥ 2 → l ≥ 3 → ErdosHajnalQuestion k l`. Defined directly as `nesetril_rodl_1976`, showing the complete solution is precisely the Nešetřil-Rödl theorem.",
     "mathContext": "This one-line proof `erdos_924 = nesetril_rodl_1976` is a clean demonstration that the Erdős-Hajnal question is exactly answered by the Nešetřil-Rödl theorem. The identification `erdos_924 := nesetril_rodl_1976` makes the mathematical point explicit: Problem #924 *is* the Nešetřil-Rödl theorem. The axiomatized proof delegates to the deep combinatorial content of the original 1976 paper.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e924-answer",
@@ -248,6 +193,6 @@
     "title": "erdos_924_answer (Proved)",
     "content": "Unpacks the existential: for any k ≥ 2, l ≥ 3, there exists a finite graph G that is K_{l+1}-free and has the k-Ramsey property for K_l. A direct application of `nesetril_rodl_1976`.",
     "mathContext": "This theorem makes the existential content explicit by unfolding `ErdosHajnalQuestion` into its constituent parts: existence of a type V with Fintype, a SimpleGraph G, and the conjunction `IsCliqueFree G (l+1) ∧ HasRamseyProperty G k l`. The proof is again a direct forwarding to the axiom, serving as a readable 'interface' to the main result for downstream use.",
-    "significance": "critical"
+    "significance": "key"
   }
 ]
