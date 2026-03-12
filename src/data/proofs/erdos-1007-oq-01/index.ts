@@ -1,6 +1,7 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, TacticState } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
+import tacticStatesJson from './tacticStates.json'
 import sourceRaw from '../../../../proofs/Proofs/Erdos1007OQ01.lean?raw'
 
 const meta = metaJson as unknown as {
@@ -27,10 +28,12 @@ export const erdos1007OQ01Proof: Proof = {
 }
 
 export const erdos1007OQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const erdos1007OQ01TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const erdos1007OQ01Data: ProofData = {
   proof: erdos1007OQ01Proof,
   annotations: erdos1007OQ01Annotations,
+  tacticStates: erdos1007OQ01TacticStates,
 }
 
 export default erdos1007OQ01Data
