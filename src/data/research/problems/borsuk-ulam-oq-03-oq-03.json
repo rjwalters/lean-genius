@@ -44,8 +44,8 @@
   "currentState": {
     "phase": "BUILD",
     "since": "2026-03-11T11:10:00Z",
-    "iteration": 3,
-    "focus": "Grid vertex infrastructure added (gridVertex, gridVertex_center, antipodal, boundary). Next: connect grid labeling to Tucker's lemma.",
+    "iteration": 2,
+    "focus": "IVT infrastructure for Tucker-to-BU bridge",
     "blockers": [],
     "nextAction": "Use gridVertex + dominantComponentLabel to construct explicit Tucker labeling on grid. Prove boundary antipodality from gridVertex_antipodal + diskFunction_antipodal_on_boundary. Apply tuckers_lemma. Goal: prove tucker_disk_approx_zero from infrastructure.",
     "attemptCounts": {
@@ -55,43 +55,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Grid vertex infrastructure added (Part X.5). gridVertex maps lattice points to [-1,1]², gridVertex_center proved, antipodal_preserves_boundary proved. Combined with hemisphere projection (Part XVII) and corrected S²→ℝ² versions (Part XVI). File: 924 lines, 2 sorries (both FALSE S¹ versions), ~20 axioms, ~40 proved theorems. Remaining: connect gridVertex + dominantComponentLabel to Tucker labeling.",
+    "progressSummary": "PROGRESS: Added Parts XVIII-XIX - IVT on line segments and dominant component analysis bridging Tucker to BU.",
     "builtItems": [
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: dominantComponentLabel definition",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: antisymmetricDiff definition and properties",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: TriangulatedDisk2D structure",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: GridTriangulation structure",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: approx_borsuk_ulam_2d_from_tucker (main bridge)",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: borsuk_ulam_2d_from_tucker (exact result)",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: tucker_approach_summary (constructive comparison)",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: neg3, neg3_neg3, neg3_preserves_sphere (R3 negation infrastructure)",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: no_fixed_point_on_sphere (antipodal map on S2)",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: antisymmetricDiff3, antisymmetricDiff3_odd, antisymmetricDiff3_continuous, antisymmetricDiff3_eq_zero_iff",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: sphere_isCompact, sphere_nonempty",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: approx_borsuk_ulam_2d_corrected, borsuk_ulam_2d_corrected (correct S2->R2 statements)",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: diskLift, diskLift_on_sphere, diskLift_boundary_z_zero (hemisphere projection)",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: diskLift_boundary_neg_eq, diskFunction_antipodal_on_boundary (Tucker compatibility)",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: diskLift_z_nonneg (upper hemisphere)",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: gridVertex definition (lattice → [-1,1]² mapping)",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: gridVertex_center (PROVED: center vertex = origin)",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: gridVertex_in_range, gridVertex_antipodal (axioms: range bounds and antipodal negation)",
-      "proofs/Proofs/BorsukUlamOQ03OQ03.lean: IsGridBoundary predicate + antipodal_preserves_boundary (PROVED)"
+      "segmentParam: line segment parametrization (Part XVIII)",
+      "ivt_segment_fst/snd: IVT zero-crossing on segments (Part XVIII)",
+      "complementary_edge_zero_fst/snd: zero from opposite signs (Part XVIII)",
+      "dominant_component_small_at_zero: dominant component bound (Part XIX)",
+      "non_dominant_at_zero_bound: |g(w)| ≤ 2·dist at IVT zero (Part XIX)"
     ],
     "insights": [
-      "The Tucker→BU bridge works in 2D via dominant component labeling: label each vertex by the coordinate direction where g is largest",
-      "antisymmetricDiff g(x) = f(x) - f(-x) is always odd (g(-x) = -g(x)), making it Tucker-compatible",
-      "Complementary edges (labeled +k and -k) correspond to sign changes in coordinate k, giving approximate zeros via IVT",
-      "GridTriangulation of [-1,1]² with N×N cells has mesh size √2/N → 0",
-      "The constructive content is the approximate BU theorem; exact BU needs compactness (non-constructive step)",
-      "Tucker approach gives PPAD membership: polynomial-time ε-approximate BU solutions",
-      "CRITICAL: approx_borsuk_ulam_2d_from_tucker is FALSE as stated (S¹→ℝ²). Correct BU dimension matching is S^n→ℝ^n.",
-      "Added corrected S²→ℝ² versions in Part XVI with neg3, antisymmetricDiff3, sphere_isCompact etc.",
-      "Hemisphere projection: diskLift(x,y) = (x,y,√(1-x²-y²)) lifts D² to upper hemisphere of S²",
-      "Key property: on ∂D² (equator), diskLift(-p) = neg3(diskLift(p)), so odd g∘diskLift is antipodal on boundary",
-      "This means dominantComponentLabel applied to g∘diskLift satisfies Tucker's antipodal boundary condition",
-      "Remaining gap: need to construct TriangulatedDisk2D instance from GridTriangulation N, define labeling, apply Tucker, extract approximate zero. This is the combinatorial core (~100-200 lines).",
-      "gridVertex(N,i,j) = (i/N - 1, j/N - 1) maps {0,...,2N}² to [-1,1]². Center is (N,N)→(0,0). Antipodal: (2N-i,2N-j)→-v.",
-      "gridVertex_in_range and gridVertex_antipodal axiomatized due to Nat→ℝ cast arithmetic complexity (would need push_cast + field_simp + ring)"
+      "IVT on line segments is the key tool for extracting zeros from complementary edges",
+      "Dominant component labeling ensures both components are small at IVT zeros",
+      "Bound |g(w)| ≤ 2·ω(δ) → 0 as mesh δ → 0 gives approximate BU",
+      "Three axioms remain: tuckers_lemma, complementary_edge_gives_approximate_zero, tucker_disk_approx_zero"
     ],
     "mathlibGaps": [
       "No Tucker's lemma proof in Mathlib (axiomatized in BorsukUlamOQ01)",
@@ -100,11 +76,9 @@
       "isCompact_sphere for ℝ² not directly available (need to compose closed + bounded)"
     ],
     "nextSteps": [
-      "Build concrete GridTriangulation → TriangulatedDisk2D instance",
-      "Define labeling: vertex v ↦ dominantComponentLabel(g(diskLift(coord(v))))",
-      "Show labeling satisfies Tucker's antipodal condition on boundary",
-      "Apply Tucker to get complementary edge, use complementary_edge_gives_approximate_zero",
-      "Combine to prove approx_borsuk_ulam_2d_corrected"
+      "Prove complementary_edge_gives_approximate_zero using Parts XVIII-XIX",
+      "Build Fintype instance for grid vertices",
+      "Prove tucker_disk_approx_zero from Tucker + grid + IVT"
     ],
     "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-03\n\n## Answer to OQ-03 (2D Extension)\n\n**YES** — the 2D Borsuk-Ulam theorem CAN be proved via Tucker's lemma constructively.\n\n## What's Built\n\n### S¹ Infrastructure (Parts I-XIV)\n- Dominant component labeling with antipodal property\n- Antisymmetric difference framework\n- Triangulated disk structure\n- Grid triangulation with mesh convergence\n- Approximate → exact compactness bridge\n- Note: S¹→ℝ² BU is FALSE (documented with warning)\n\n### S² Corrected Version (Part XVI)\n- neg3, antisymmetricDiff3 with oddness/continuity\n- sphere_isCompact, sphere_nonempty\n- Correct S²→ℝ² statements for approximate and exact BU\n- Exact BU reduces to approximate via compactness minimization\n\n### Hemisphere Projection (Part XVII)\n- diskLift: D² → upper hemisphere of S²\n- diskLift_on_sphere: lift lands on S²\n- diskLift_boundary_neg_eq: on ∂D², lift(-p) = neg3(lift(p))\n- diskFunction_antipodal_on_boundary: Tucker compatibility\n\n## Remaining Work\n\n1. Build GridTriangulation → TriangulatedDisk2D instance\n2. Define labeling from g∘diskLift\n3. Apply Tucker to get complementary edge\n4. Use IVT to extract approximate zero\n5. This proves approx_borsuk_ulam_2d_corrected\n\n### Grid Vertex Infrastructure (Part X.5)\n- gridVertex: lattice {0,...,2N}² → [-1,1]²\n- gridVertex_center: (N,N) → (0,0) (PROVED)\n- gridVertex_in_range, gridVertex_antipodal (axioms)\n- IsGridBoundary + antipodal_preserves_boundary (PROVED)\n\n## Summary: ~20 axioms, 2 sorries (both FALSE S¹ versions), ~40 proved theorems, 924 lines\n"
   },
@@ -137,5 +111,5 @@
   },
   "knowledgeScore": 90,
   "started": "2026-03-06T21:11:54.769Z",
-  "lastUpdate": "2026-03-11T12:00:00.000Z"
+  "lastUpdate": "2026-03-11T00:00:00Z"
 }

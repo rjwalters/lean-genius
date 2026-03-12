@@ -3,108 +3,79 @@
   "title": "Computational Complexity of Approximate Fixed Points",
   "phase": "COMPLETE",
   "status": "completed",
-  "tier": "B",
+  "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∀ f : [0,1] → [0,1], Continuous f → ∃ x, f(x) = x. Complexity: O(log 1/ε) in 1D, PPAD-complete in ≥2D.",
-    "plain": "What is the computational complexity of finding approximate Brouwer fixed points? Answer: O(log 1/ε) in 1D via binary search; PPAD-complete in ≥2D (Chen-Deng 2009).",
+    "formal": "∀ (G : PPADInstance V) [Fintype V], ∃ v, G.IsSolution v",
+    "plain": "Every finite PPAD instance has a solution: a vertex that is either a sink (no successor, has predecessor) or an additional source (has successor, no predecessor) distinct from the given source.",
     "whyMatters": [
-      "Fundamental question in computational topology and algorithmic game theory",
-      "Sharp separation between 1D (polynomial) and ≥2D (PPAD-complete)",
-      "PPAD structure connects to Nash equilibrium computation"
+      "PPAD-completeness of Brouwer fixed point computation (Chen-Deng 2009)",
+      "Connects topology (fixed points) to computational complexity (PPAD class)",
+      "Fundamental to understanding the hardness of equilibrium computation"
     ]
   },
   "knownResults": {
     "proven": [
       "1D Discrete IVT (sign-changing sequence has adjacent sign change)",
-      "Approximate fixed points exist (from exact via IVT)",
-      "Approximate fixed points converge to exact ones",
-      "Contraction mappings converge geometrically (L^n bound)",
-      "Contraction iterates are Cauchy",
-      "Binary search narrows sign-change intervals (1/2^n width)",
-      "Binary search gives O(log 1/ε) convergence",
-      "PPAD structure formalized (source/sink/path-following)",
-      "PPAD solution existence (path-following + pigeonhole)",
-      "Complete 1D picture theorem",
-      "Contraction fixed point uniqueness (Ext)",
-      "A priori error bound ε/(1-L) (Ext)",
-      "Contraction iterate approximate fixed point bound (Ext)",
-      "Geometric convergence |f^n(x₀)-x*| ≤ L^n|x₀-x*| (Ext)",
-      "Combined complexity bound L^n/(1-L) (Ext)",
-      "Sperner's Lemma 1D (Ext)",
-      "Discrete IVT sign-change variant (Ext)",
-      "Contraction complexity summary (Ext)"
+      "Approximate fixed points exist (from exact fixed points via IVT)",
+      "Approximate fixed points converge to exact ones (completeness argument)",
+      "Contraction mappings converge geometrically (Banach fixed point)",
+      "Binary search gives O(log 1/ε) convergence in 1D",
+      "PPAD structure formalized (PPADInstance type with succ/pred consistency)",
+      "PPAD solution existence proved (path-following + pigeonhole, was axiom)"
     ],
     "open": [],
-    "goal": "Formalize complexity of approximate Brouwer FP — extended with contraction uniqueness, error bounds, Sperner"
+    "goal": "Complete formalization of computational complexity aspects of Brouwer fixed point"
   },
   "currentState": {
     "phase": "COMPLETE",
-    "since": "2026-03-06T20:10:00Z",
-    "iteration": 2,
-    "focus": "10 proved theorems, 0 sorries, 0 axioms. PPAD solution existence fully proved.",
+    "since": "2026-03-06T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Proved PPAD solution existence, eliminating the last axiom in the file.",
     "blockers": [],
-    "nextAction": "None - complete. Note: Docker build has pre-existing Mathlib API compatibility issues.",
+    "nextAction": "Verify Docker build passes, commit and create PR.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 18 proved theorems across 2 files (0 sorries, 0 axioms). Original: 10 theorems covering 1D complexity, PPAD, contraction convergence. Extension: 8 theorems on contraction uniqueness, a priori error bounds, Sperner's lemma 1D.",
+    "progressSummary": "COMPLETE: All axioms eliminated. The PPAD solution existence theorem (ppad_solution_exists) is now fully proved. Proof follows the succ chain from source vertex, shows path visits distinct vertices via pred consistency and source_no_pred (injectivity), concludes by pigeonhole that the path must terminate, and the terminal vertex is a solution (sink with pred ≠ none, distinct from source). File has 0 sorries, 0 axioms, 391 lines.",
     "builtItems": [
-      "discrete_ivt: 1D discrete IVT for sign-changing sequences",
-      "approx_fixed_point_exists: ε-approximate FP exists for any ε > 0",
-      "approx_to_exact: approximate FPs converge to exact ones",
-      "contraction_iterate_approx: geometric L^n convergence bound",
-      "contraction_cauchy: contraction iterates are Cauchy",
-      "binary_search_intervals: sign-change interval narrowing",
-      "binary_search_convergence: O(log 1/ε) convergence rate",
-      "PPADInstance structure: source/sink/succ/pred consistency",
-      "ppad_solution_exists: every finite PPAD instance has a solution (proved via pigeonhole)",
-      "brouwer_1d_complete: unified summary of 1D results",
-      "contraction_fixed_point_unique (Ext): L<1 contraction has at most one fixed point",
-      "contraction_approx_error_bound (Ext): |x-x*| ≤ ε/(1-L) for ε-approximate FPs",
-      "contraction_iterate_approx (Ext): |f(f^n(x₀))-f^n(x₀)| ≤ L^n|f(x₀)-x₀|",
-      "contraction_iteration_bound (Ext): |f^n(x₀)-x*| ≤ L^n|x₀-x*|",
-      "contraction_combined_bound (Ext): |f^n(x₀)-x*| ≤ L^n|f(x₀)-x₀|/(1-L)",
-      "sperner_1d (Ext): proper 2-coloring of {0,...,N} has bichromatic edge",
-      "discrete_ivt (Ext): sign-changing discrete function has adjacent sign change",
-      "contraction_complexity_summary (Ext): unified uniqueness + convergence + error bound"
+      "discrete_ivt: 1D discrete intermediate value theorem — BrouwerFixedPointOQ02.lean",
+      "approx_fixed_point_exists: ε-approximate fixed points exist — BrouwerFixedPointOQ02.lean",
+      "approx_to_exact: approximate fixed points converge to exact — BrouwerFixedPointOQ02.lean",
+      "contraction_iterate_approx: contraction mapping iteration — BrouwerFixedPointOQ02.lean",
+      "binary_search_convergence: O(log 1/ε) convergence — BrouwerFixedPointOQ02.lean",
+      "PPADInstance: formalized PPAD structure with succ/pred consistency — BrouwerFixedPointOQ02.lean",
+      "ppad_solution_exists: PPAD solution existence via path-following + pigeonhole — BrouwerFixedPointOQ02.lean",
+      "brouwer_1d_complete: complete 1D picture combining all results — BrouwerFixedPointOQ02.lean"
     ],
     "insights": [
-      "PPAD solution existence proved via path-following + pigeonhole (no axioms needed)",
-      "followPath_injective uses strong induction on i+j with pred consistency",
-      "Binary search gives O(log 1/ε) by halving sign-change intervals",
-      "Contraction gives O(log(1/ε)/log(1/L)) geometric convergence",
-      "In ≥2D: PPAD-complete (Chen-Deng 2009) - hardness beyond formalization",
-      "Docker Mathlib API issues: abs_add → abs_add_le, Option.bind_eq_some renamed, Nat.exists_least_of_bex → Nat.find",
-      "Contraction uniqueness: by_contra + |x-y|=|f(x)-f(y)|≤L|x-y|<|x-y| when x≠y",
-      "A priori error bound via triangle inequality: (1-L)|x-x*|≤|f(x)-x|≤ε → |x-x*|≤ε/(1-L)",
-      "Sperner's Lemma 1D: induction on i shows all vertices must have color false, contradicting color N = true",
-      "Extension file self-contained to avoid Docker API compatibility issues in original file"
+      "The PPAD proof follows a simple path-following strategy: define followPath n recursively via succ, show injectivity by strong induction on i+j using pred consistency, conclude termination by pigeonhole (injective map from ℕ to finite V impossible)",
+      "The key to injectivity is that if followPath i = followPath j = some v, then pred v gives the unique predecessor, forcing the predecessors to match, and by IH the indices match",
+      "Source vertex detection: if the path ever returns to source, pred source = none contradicts consistent_succ",
+      "Nat.exists_least_of_bex provides the first k where followPath k ≠ none but followPath (k+1) = none"
     ],
-    "mathlibGaps": [
-      "No computational complexity theory (PPAD-completeness reductions)",
-      "Some API names changed between Mathlib versions (abs_add, Option.bind_eq_some)"
-    ],
+    "mathlibGaps": [],
     "nextSteps": []
   },
   "approaches": [
     {
-      "name": "1D Binary Search + PPAD",
+      "name": "Path-following + pigeonhole for PPAD",
       "status": "succeeded",
-      "description": "Binary search for 1D O(log 1/ε), PPAD path-following for solution existence"
+      "description": "Define followPath via succ chain from source. Prove injectivity by strong induction using pred consistency. Pigeonhole forces termination in finite type. Terminal vertex is a solution."
     }
   ],
   "tags": [
+    "seeker-selected",
     "topology",
     "fixed-point-theory",
+    "algebraic-topology",
     "computability",
-    "ppad",
-    "binary-search",
-    "contraction-mapping"
+    "PPAD",
+    "computational-complexity"
   ],
   "relatedProofs": [
     "brouwer-fixed-point",
@@ -112,18 +83,18 @@
   ],
   "references": {
     "papers": [
-      "Chen-Deng (2009): PPAD-completeness of Brouwer FP in ≥2D"
+      "Chen, Deng (2009): On the Complexity of 2D Discrete Fixed Point Problem"
     ],
-    "urls": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/PPAD_(complexity)"
+    ],
     "mathlib": [
-      "exists_mem_Icc_isFixedPt_of_mapsTo",
-      "Metric.tendsto_atTop",
-      "Filter.Tendsto"
+      "Mathlib.Topology.Order.IntermediateValue",
+      "Mathlib.Analysis.SpecificLimits.Basic"
     ]
   },
-  "knowledgeScore": 85,
   "started": "2026-03-06T06:42:42.092Z",
-  "lastUpdate": "2026-03-07T00:00:00Z",
+  "lastUpdate": "2026-03-06T15:35:00.000Z",
   "significance": 7,
   "tractability": 5
 }

@@ -16,11 +16,13 @@ A variant asks: if `a + b ∤ 2 * a * b` for all distinct `a, b ∈ A`, must `|A
 
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
-import Mathlib.Data.Nat.Defs
+import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
 
 open Finset
+open scoped Classical
 
 /- ## Sum-divides-product property -/
 
@@ -71,7 +73,7 @@ axiom sumDvdProd_iff_unitFraction (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
 
 /-- The empty set trivially satisfies SumNotDvdProd. -/
 theorem sumNotDvdProd_empty : SumNotDvdProd ∅ := by
-  intro a ha; exact absurd ha (Finset.not_mem_empty a)
+  intro a ha; exact absurd ha (Finset.notMem_empty a)
 
 /-- A singleton trivially satisfies SumNotDvdProd. -/
 theorem sumNotDvdProd_singleton (n : ℕ) : SumNotDvdProd {n} := by
@@ -83,7 +85,62 @@ theorem sumNotDvdProd_singleton (n : ℕ) : SumNotDvdProd {n} := by
 theorem sumNotDvdProd_subset {A B : Finset ℕ} (h : B ⊆ A) (hA : SumNotDvdProd A) :
     SumNotDvdProd B := fun a ha b hb => hA a (h ha) b (h hb)
 
-/-- The odd numbers in `{1,...,N}` satisfy SumNotDvdProd (since `a+b` is even
-but `a*b` is odd for odd `a, b`). -/
-axiom oddNumbers_sumNotDvdProd (N : ℕ) :
-    SumNotDvdProd ((Finset.Icc 1 N).filter (fun n => n % 2 = 1))
+/- ## Structural results -/
+
+/-- The odd numbers in `{1,...,N}` satisfy SumNotDvdProd.
+For odd `a, b`: their product `a*b` is odd (has odd remainder mod 2),
+while their sum `a+b` is even (divisible by 2). An even number cannot
+divide an odd number, so `a+b ∤ a*b`. -/
+theorem oddNumbers_sumNotDvdProd (N : ℕ) :
+    SumNotDvdProd ((Finset.Icc 1 N).filter (fun n => n % 2 = 1)) := by
+  intro a ha b hb _hab hdvd
+  simp only [Finset.mem_filter, Finset.mem_Icc] at ha hb
+  -- Product of odd numbers is odd: (a*b) % 2 = 1
+  have h_prod_odd : (a * b) % 2 = 1 := by
+    have h := Nat.mul_mod a b 2
+    rw [ha.2, hb.2] at h
+    simpa using h
+  -- Sum of odd numbers is even: 2 ∣ (a + b)
+  have h_sum_even : 2 ∣ (a + b) := by omega
+  -- By transitivity, 2 ∣ (a * b)
+  obtain ⟨k, hk⟩ := dvd_trans h_sum_even hdvd
+  -- But (2 * k) % 2 = 0, contradicting h_prod_odd
+  rw [hk] at h_prod_odd
+  omega
+
+/-- If `a` and `b` are coprime positive naturals, then `a + b ∤ a * b`.
+Proof: `gcd(a+b, a) = gcd(a, b) = 1`, so by Euclid's lemma
+`(a+b) ∣ (a*b)` would force `(a+b) ∣ b`, but `a+b > b` for `a > 0`. -/
+theorem coprime_sumNotDvdProd {a b : ℕ} (ha : 0 < a) (hb : 0 < b)
+    (hcop : Nat.Coprime a b) : ¬(a + b ∣ a * b) := by
+  intro hdvd
+  -- gcd(a, a+b) = gcd(a, b) = 1, so Coprime a (a+b)
+  have h_cop_a : Nat.Coprime a (a + b) := by
+    rwa [Nat.coprime_self_add_right]
+  -- Equivalently, Coprime (a+b) a
+  have h_cop : Nat.Coprime (a + b) a := h_cop_a.symm
+  -- By Euclid's lemma: (a+b) | (a * b) and Coprime (a+b) a → (a+b) | b
+  have h_dvd_b : (a + b) ∣ b := h_cop.dvd_of_dvd_mul_left hdvd
+  -- But a + b > b since a > 0, contradicting (a+b) | b for b > 0
+  exact absurd (Nat.le_of_dvd hb h_dvd_b) (by omega)
+
+/-- Any set of pairwise coprime positive naturals satisfies SumNotDvdProd. -/
+theorem sumNotDvdProd_of_pairwise_coprime {A : Finset ℕ} (hA : ∀ a ∈ A, 0 < a)
+    (hcop : ∀ a ∈ A, ∀ b ∈ A, a ≠ b → Nat.Coprime a b) : SumNotDvdProd A := by
+  intro a ha b hb hab hdvd
+  exact coprime_sumNotDvdProd (hA a ha) (hA b hb) (hcop a ha b hb hab) hdvd
+
+/- ## GCD characterization -/
+
+/-- Characterization: `a + b ∣ a * b` iff `(a/d + b/d) ∣ d` where `d = gcd(a,b)`.
+Writing `a = d*a', b = d*b'` with `gcd(a',b') = 1`:
+  `a + b = d(a'+b')` and `a*b = d²*a'*b'`.
+So `d(a'+b') ∣ d²*a'*b'` iff `(a'+b') ∣ d*a'*b'`.
+Since `gcd(a'*b', a'+b') = 1` (from `gcd(a',b')=1`), this reduces to `(a'+b') ∣ d`.
+
+Consequences:
+- Coprime pairs (d=1): need `(a+b) ∣ 1`, impossible for `a+b ≥ 2`.
+- Odd pairs: `d` is odd, `a'+b'` is even (both odd/d are odd), even ∤ odd. -/
+theorem sumDvdProd_iff_reduced_divides_gcd {a b : ℕ} (ha : 0 < a) (hb : 0 < b) :
+    a + b ∣ a * b ↔ (a / Nat.gcd a b + b / Nat.gcd a b) ∣ Nat.gcd a b := by
+  sorry

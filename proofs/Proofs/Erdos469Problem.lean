@@ -203,8 +203,25 @@ axiom erdos_469_convergence :
     ∀ (S : Finset ℕ), (∀ n ∈ S, IsPrimitivePseudoperfect n) →
       (S.sum (fun n => (1 : ℝ) / n)) ≤ B
 
-/-- Every multiple of a pseudoperfect number is pseudoperfect -/
-axiom multiple_of_pseudoperfect (n m : ℕ) (hn : IsPseudoperfect n)
-    (hm : 0 < m) : IsPseudoperfect (n * m)
+/-- Every multiple of a pseudoperfect number is pseudoperfect.
+    Proof: if n = d₁ + ⋯ + dₖ with dᵢ proper divisors of n, then
+    n·m = d₁·m + ⋯ + dₖ·m, and each dᵢ·m is a proper divisor of n·m. -/
+theorem multiple_of_pseudoperfect (n m : ℕ) (hn : IsPseudoperfect n)
+    (hm : 0 < m) : IsPseudoperfect (n * m) := by
+  obtain ⟨S, hS_sub, hS_sum⟩ := hn
+  have hinj : ∀ a ∈ S, ∀ b ∈ S, a * m = b * m → a = b := by
+    intro a _ b _ h; omega
+  refine ⟨S.image (· * m), ?_, ?_⟩
+  · -- Each d*m is a proper divisor of n*m
+    intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨d, hd_mem, rfl⟩ := hx
+    have hd := hS_sub hd_mem
+    rw [Nat.mem_properDivisors] at hd ⊢
+    exact ⟨mul_dvd_mul_right hd.1 m, Nat.mul_lt_mul_of_pos_right hd.2 hm⟩
+  · -- Sum of {d*m : d ∈ S} = n*m
+    rw [Finset.sum_image hinj]
+    simp only [id] at hS_sum ⊢
+    rw [← Finset.sum_mul, hS_sum]
 
 end Erdos469
