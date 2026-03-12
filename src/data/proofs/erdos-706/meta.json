@@ -28,8 +28,18 @@
       "field": "Combinatorial Geometry",
       "subfield": "Chromatic numbers of distance graphs in the Euclidean plane",
       "level": "research",
-      "centralObjects": ["multi-distance graph G_A", "chromatic function L(r)", "distance set A ⊂ (0,∞)", "unit distance graph"],
-      "keyTechniques": ["axiomatization of L(r)", "monotonicity from subgraph inclusion", "Hadwiger-Nelson base case (de Grey)", "Frankl-Wilson exponential bounds"],
+      "centralObjects": [
+        "multi-distance graph G_A",
+        "chromatic function L(r)",
+        "distance set A ⊂ (0,∞)",
+        "unit distance graph"
+      ],
+      "keyTechniques": [
+        "axiomatization of L(r)",
+        "monotonicity from subgraph inclusion",
+        "Hadwiger-Nelson base case (de Grey)",
+        "Frankl-Wilson exponential bounds"
+      ],
       "significance": "Generalizes the Hadwiger-Nelson problem from one forbidden distance to r distances. The gap between the known exponential upper bound L(r) ≤ C^r and the conjectured polynomial bound L(r) ≤ r^{O(1)} is vast. Even the r = 1 case (5 ≤ L(1) ≤ 7) remains unsolved after 75 years, making the general question one of the hardest open problems in chromatic geometry."
     },
     "references": [
@@ -151,12 +161,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #706 asks whether the maximum chromatic number L(r) of multi-distance graphs in the plane grows polynomially in r. Even the single-distance case (Hadwiger-Nelson, 5 ≤ L(1) ≤ 7) is unsolved, making the general question extremely challenging. The known bounds are L(r) ≥ 5 (trivial) and L(r) ≤ C^r (exponential), with a vast gap between these and the conjectured polynomial growth.",
-    "implications": [
-      "A polynomial bound would reveal deep structure in distance graphs: many forbidden distances increase chromatic requirement only mildly",
-      "An exponential lower bound would show distance constraints interact multiplicatively in the plane",
-      "Progress on L(r) for any r > 1 would shed light on the Hadwiger-Nelson problem",
-      "Connects to the broader study of chromatic numbers of geometric graphs"
-    ],
+    "implications": "A polynomial bound would reveal deep structure in distance graphs: many forbidden distances increase chromatic requirement only mildly An exponential lower bound would show distance constraints interact multiplicatively in the plane Progress on L(r) for any r > 1 would shed light on the Hadwiger-Nelson problem Connects to the broader study of chromatic numbers of geometric graphs",
     "openQuestions": [
       "Is L(r) ≤ r^{O(1)}? (the main conjecture)",
       "What is the exact value of L(1)? (Hadwiger-Nelson: 5, 6, or 7)",

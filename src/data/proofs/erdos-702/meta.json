@@ -28,8 +28,18 @@
       "field": "Extremal Set Theory",
       "subfield": "Forbidden intersection configurations in uniform families",
       "level": "research",
-      "centralObjects": ["k-uniform family F", "singleton intersection |A ∩ B| = 1", "extremal bound C(n-2, k-2)", "shifting operator"],
-      "keyTechniques": ["shifting (compression) technique", "extremal construction via fixed kernel", "binomial coefficient counting", "case analysis for small k"],
+      "centralObjects": [
+        "k-uniform family F",
+        "singleton intersection |A ∩ B| = 1",
+        "extremal bound C(n-2, k-2)",
+        "shifting operator"
+      ],
+      "keyTechniques": [
+        "shifting (compression) technique",
+        "extremal construction via fixed kernel",
+        "binomial coefficient counting",
+        "case analysis for small k"
+      ],
       "significance": "Resolves the Erdős-Sós conjecture on singleton intersection avoidance: the maximum k-uniform family avoiding |A ∩ B| = 1 has exactly C(n-2, k-2) sets (achieved by fixing two common elements). Frankl's proof via shifting established a paradigm for extremal set theory. The sharp threshold at k = 4 reveals a structural boundary — the theorem fails for k = 3 due to designs like Steiner triple systems."
     },
     "references": [
@@ -169,12 +179,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #702 (Erdős-Sós conjecture) was SOLVED by Frankl in 1977. For k ≥ 4, any k-uniform family with more than C(n-2, k-2) sets contains a singleton intersection pair. The bound is achieved by taking all k-sets through two fixed points. The proof uses the shifting technique, and the condition k ≥ 4 is necessary.",
-    "implications": [
-      "Characterizes the maximum k-uniform family avoiding singleton intersections for k ≥ 4",
-      "Establishes the shifting technique as a paradigm for extremal set theory proofs",
-      "Reveals a structural boundary at k = 4: the theorem fails for k = 3 due to combinatorial designs",
-      "The extremal family (sunflower with 2-element kernel) is the unique maximum-avoiding construction"
-    ],
+    "implications": "Characterizes the maximum k-uniform family avoiding singleton intersections for k ≥ 4 Establishes the shifting technique as a paradigm for extremal set theory proofs Reveals a structural boundary at k = 4: the theorem fails for k = 3 due to combinatorial designs The extremal family (sunflower with 2-element kernel) is the unique maximum-avoiding construction",
     "openQuestions": [
       "Characterize all extremal families achieving C(n-2, k-2) for each k ≥ 4",
       "Strengthen results for specific values of n and k",

@@ -8,15 +8,38 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/H%C3%B6lder%27s_inequality",
     "date": "1889 (Hölder), eLpNorm formalization 2026",
     "status": "complete",
-    "tags": ["analysis", "measure-theory", "inequalities", "holder", "cauchy-schwarz", "lp-spaces"],
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "inequalities",
+      "holder",
+      "cauchy-schwarz",
+      "lp-spaces"
+    ],
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01.lean",
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "ENNReal.lintegral_mul_le_Lp_mul_Lq", "description": "Hölder's inequality (lintegral form)", "module": "Mathlib.MeasureTheory.Integral.MeanInequalities"},
-      {"theorem": "eLpNorm_add_le", "description": "Minkowski inequality (eLpNorm form)", "module": "Mathlib.MeasureTheory.Function.L2Space"},
-      {"theorem": "abs_real_inner_le_norm", "description": "Cauchy-Schwarz for real inner product spaces", "module": "Mathlib.Analysis.InnerProductSpace.Basic"},
-      {"theorem": "NNReal.young_inequality", "description": "Young's inequality for NNReal", "module": "Mathlib.Analysis.MeanInequalities"}
+      {
+        "theorem": "ENNReal.lintegral_mul_le_Lp_mul_Lq",
+        "description": "Hölder's inequality (lintegral form)",
+        "module": "Mathlib.MeasureTheory.Integral.MeanInequalities"
+      },
+      {
+        "theorem": "eLpNorm_add_le",
+        "description": "Minkowski inequality (eLpNorm form)",
+        "module": "Mathlib.MeasureTheory.Function.L2Space"
+      },
+      {
+        "theorem": "abs_real_inner_le_norm",
+        "description": "Cauchy-Schwarz for real inner product spaces",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "NNReal.young_inequality",
+        "description": "Young's inequality for NNReal",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      }
     ],
     "originalContributions": [
       "cauchy_schwarz_lintegral: p=q=2 specialization of Hölder at the lintegral level",
@@ -41,21 +64,52 @@
     ]
   },
   "sections": [
-    {"id": "holder-lintegral", "title": "Part I: Hölder at Lintegral Level", "startLine": 38, "endLine": 61, "summary": "Hölder's inequality and its p=q=2 CS specialization at the ENNReal lintegral level."},
-    {"id": "minkowski-elpnorm", "title": "Part II: Minkowski in eLpNorm Form", "startLine": 63, "endLine": 81, "summary": "Triangle inequality for eLpNorm via eLpNorm_add_le, with p=2 specialization."},
-    {"id": "l2-cauchy-schwarz", "title": "Part III: L² Inner Product CS", "startLine": 83, "endLine": 99, "summary": "Cauchy-Schwarz for L² functions via abs_real_inner_le_norm."},
-    {"id": "minkowski-from-cs", "title": "Part IV: Minkowski from CS", "startLine": 101, "endLine": 117, "summary": "L² triangle inequality derived from CS via norm-squared identity."},
-    {"id": "young", "title": "Part V: Young's Inequality", "startLine": 119, "endLine": 132, "summary": "Young's inequality in real and NNReal forms — the pointwise foundation."},
-    {"id": "hierarchy", "title": "Part VI: Complete Hierarchy", "startLine": 134, "endLine": 149, "summary": "Summary and API verification confirming all key Mathlib 4.26+ lemmas exist."}
+    {
+      "id": "holder-lintegral",
+      "title": "Part I: Hölder at Lintegral Level",
+      "startLine": 38,
+      "endLine": 61,
+      "summary": "Hölder's inequality and its p=q=2 CS specialization at the ENNReal lintegral level."
+    },
+    {
+      "id": "minkowski-elpnorm",
+      "title": "Part II: Minkowski in eLpNorm Form",
+      "startLine": 63,
+      "endLine": 81,
+      "summary": "Triangle inequality for eLpNorm via eLpNorm_add_le, with p=2 specialization."
+    },
+    {
+      "id": "l2-cauchy-schwarz",
+      "title": "Part III: L² Inner Product CS",
+      "startLine": 83,
+      "endLine": 99,
+      "summary": "Cauchy-Schwarz for L² functions via abs_real_inner_le_norm."
+    },
+    {
+      "id": "minkowski-from-cs",
+      "title": "Part IV: Minkowski from CS",
+      "startLine": 101,
+      "endLine": 117,
+      "summary": "L² triangle inequality derived from CS via norm-squared identity."
+    },
+    {
+      "id": "young",
+      "title": "Part V: Young's Inequality",
+      "startLine": 119,
+      "endLine": 132,
+      "summary": "Young's inequality in real and NNReal forms — the pointwise foundation."
+    },
+    {
+      "id": "hierarchy",
+      "title": "Part VI: Complete Hierarchy",
+      "startLine": 134,
+      "endLine": 149,
+      "summary": "Summary and API verification confirming all key Mathlib 4.26+ lemmas exist."
+    }
   ],
   "conclusion": {
     "summary": "The complete Lp inequality hierarchy Young → Hölder → Cauchy-Schwarz → Minkowski is fully formalized using Mathlib 4.26+ eLpNorm API, with zero sorries. Both the general eLpNorm formulation and the L² inner product specialization are demonstrated, confirming the renamed API is complete and coherent.",
-    "implications": [
-      "The eLpNorm API migration from snorm is mathematically transparent — all fundamental Lp inequality lemmas exist and compose correctly, validating the Mathlib 4.26+ refactoring",
-      "The dual Minkowski derivation (general eLpNorm_add_le vs. CS-based norm-squared argument) provides two independent verification paths for the L² triangle inequality",
-      "The L² inner product Cauchy-Schwarz bridges measure-theoretic integration (lintegral) with Hilbert space structure (inner product), connecting two foundational Mathlib libraries",
-      "The complete hierarchy demonstrates that Lean 4 with Mathlib has a production-ready formalization of Lp space theory sufficient for functional analysis applications"
-    ],
+    "implications": "The eLpNorm API migration from snorm is mathematically transparent — all fundamental Lp inequality lemmas exist and compose correctly, validating the Mathlib 4.26+ refactoring The dual Minkowski derivation (general eLpNorm_add_le vs. CS-based norm-squared argument) provides two independent verification paths for the L² triangle inequality The L² inner product Cauchy-Schwarz bridges measure-theoretic integration (lintegral) with Hilbert space structure (inner product), connecting two foundational Mathlib libraries The complete hierarchy demonstrates that Lean 4 with Mathlib has a production-ready formalization of Lp space theory sufficient for functional analysis applications",
     "openQuestions": [
       "Can the sharp constant and equality conditions for eLpNorm Hölder be formalized?",
       "Can the Riesz representation theorem (Lp)* ≅ Lq be derived from the eLpNorm Hölder inequality?"

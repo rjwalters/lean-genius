@@ -26,8 +26,19 @@
       "field": "Multiplicative Number Theory",
       "subfield": "Divisibility covering and interval distribution",
       "level": "research",
-      "centralObjects": ["covering function f(m,N)", "countDivisible", "divisor multiples in intervals", "extremal sets A ⊆ {1,...,N}"],
-      "keyTechniques": ["pigeonhole principle", "inclusion-exclusion", "AM-HM inequality", "harmonic sum estimates", "double counting"],
+      "centralObjects": [
+        "covering function f(m,N)",
+        "countDivisible",
+        "divisor multiples in intervals",
+        "extremal sets A ⊆ {1,...,N}"
+      ],
+      "keyTechniques": [
+        "pigeonhole principle",
+        "inclusion-exclusion",
+        "AM-HM inequality",
+        "harmonic sum estimates",
+        "double counting"
+      ],
       "significance": "Determines the minimum guaranteed divisibility coverage in intervals. The Erdős-Sarányi lower bound f(m) ≥ c√m (1959) via counting arguments is established; the matching upper bound f(m) ≤ C√m remains open after 60+ years. Resolution would precisely characterize the covering efficiency of divisor sets."
     },
     "references": [
@@ -123,12 +134,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #650 on divisibility covering in intervals. The function f(m) measures the minimum guaranteed number of integers in any interval of length 2N that are divisible by distinct elements of a set A of size m. The √m lower bound is axiomatized from the Erdős-Sarányi counting argument; the matching upper bound remains one of the oldest open problems in this area.",
-    "implications": [
-      "Resolution of the upper bound would precisely characterize divisibility covering at the √m threshold",
-      "The problem connects multiplicative number theory to combinatorial covering optimization",
-      "Understanding extremal sets (those achieving f(m)) would reveal deep structure in divisor distribution",
-      "The √m barrier appears in many covering problems, suggesting a universal phenomenon"
-    ],
+    "implications": "Resolution of the upper bound would precisely characterize divisibility covering at the √m threshold The problem connects multiplicative number theory to combinatorial covering optimization Understanding extremal sets (those achieving f(m)) would reveal deep structure in divisor distribution The √m barrier appears in many covering problems, suggesting a universal phenomenon",
     "openQuestions": [
       "Is f(m) ≪ √m?",
       "What is the structure of extremal sets achieving f(m)?",
