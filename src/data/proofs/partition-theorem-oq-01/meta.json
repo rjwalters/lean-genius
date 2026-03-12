@@ -37,10 +37,13 @@
       }
     ],
     "originalContributions": [
+      "Gap monotonicity: proved hasMinGap_mono (d' ≤ d → gap d → gap d'), enabling systematic containment proofs",
+      "Generalized Nodup from gap: proved hasMinGap_ge_one_pairwise_gt and hasMinGap_ge_one_nodup (any gap ≥ 1 forces strictly decreasing, hence distinct)",
+      "Schur gap ⊆ RR1 gap: proved schur_gap_subset_rr1_gap via gap monotonicity (3 ≥ 2)",
+      "Schur Nodup redundancy: proved schur_nodup_redundant showing hasMinGap 3 already implies Nodup",
       "Gap ≥ 2 implies distinct: proved that any partition with minimum gap 2 between consecutive parts has all distinct parts, via Pairwise strict inequality on the sorted parts list",
       "RR2 ⊆ RR1: proved the containment of second Rogers-Ramanujan gap partitions in the first",
-      "Identified and removed false theorem: rr1Mod5Partitions ⊆ distincts is false (counterexample: 1+1+1 = 3)",
-      "Fixed Docker Mathlib v4.26.0 compatibility: updated import paths, removed noncomputable section blocking native_decide, fixed API name changes"
+      "Identified and removed false theorem: rr1Mod5Partitions ⊆ distincts is false (counterexample: 1+1+1 = 3)"
     ],
     "references": [
       {
@@ -117,16 +120,23 @@
     {
       "id": "structural-properties",
       "title": "Structural Properties and Containment",
-      "summary": "Proves three structural theorems with 0 sorries. `hasMinGap_two_pairwise_gt`: gap $\\geq 2$ implies `List.Pairwise (\\cdot > \\cdot)$, by induction with `omega`. `rr1_gap_implies_distinct`: chains pairwise strict inequality through `ne_of_gt` to `Nodup`, transferred via `Multiset.sort_eq`. `rr2_subset_rr1`: RR2 gap $\\subseteq$ RR1 gap by conjunction elimination. Also documents the counterexample: $3 = 1+1+1$ shows mod-5 partitions $\\not\\subseteq$ distinct.",
+      "summary": "Proves core structural theorems: `hasMinGap_two_pairwise_gt` (gap $\\geq 2$ implies pairwise strictly decreasing), `rr1_gap_implies_distinct` (gap $\\geq 2$ implies distinct parts via `Multiset.sort_eq`), `rr2_subset_rr1` (RR2 gap $\\subseteq$ RR1 gap by conjunction elimination). Documents the counterexample: $3 = 1+1+1$ shows mod-5 partitions $\\not\\subseteq$ distinct.",
       "startLine": 127,
       "endLine": 177
     },
     {
+      "id": "additional-structural",
+      "title": "Additional Structural Theorems",
+      "summary": "Proves 6 additional structural theorems: `hasMinGap_mono` (gap monotonicity: $d' \\leq d \\Rightarrow$ gap $d \\Rightarrow$ gap $d'$), `hasMinGap_ge_one_pairwise_gt` and `hasMinGap_ge_one_nodup` (gap $\\geq 1$ implies strictly decreasing and Nodup), `schur_gap_subset_rr1_gap` (Schur gap $\\subseteq$ RR1 gap via gap monotonicity $3 \\geq 2$), `schur_gap_implies_distinct` (Schur gap $\\Rightarrow$ distinct), `schur_nodup_redundant` (hasMinGap 3 already implies Nodup, so the explicit Nodup check in schurGapPartitions is redundant).",
+      "startLine": 179,
+      "endLine": 245
+    },
+    {
       "id": "summary",
       "title": "Type-Checking Summary",
-      "summary": "Verifies all 6 definitions and 3 axioms via `#check`. Catalogs: 6 partition set definitions, 3 axiomatized identities (Rogers-Ramanujan I & II, Schur), 3 proved structural theorems (0 sorries). Documents the infrastructure gap justifying axiomatization.",
-      "startLine": 179,
-      "endLine": 219
+      "summary": "Verifies all 6 definitions and 3 axioms via `#check`. Catalogs: 6 partition set definitions, 3 axiomatized identities (Rogers-Ramanujan I & II, Schur), 10 proved structural theorems (0 sorries). Documents the containment hierarchy Schur gap $\\subseteq$ RR2 gap $\\subseteq$ RR1 gap $\\subseteq$ distinct $\\subseteq$ all partitions.",
+      "startLine": 247,
+      "endLine": 289
     }
   ],
   "conclusion": {
