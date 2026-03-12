@@ -1,87 +1,54 @@
 {
   "slug": "cauchy-schwarz-integral-oq-03",
   "title": "Bridge theorem extension to complex-valued L2 functions",
-  "phase": "COMPLETE",
-  "status": "complete",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "theorem complex_bunyakovsky_schwarz (f g : Lp ℂ 2 μ) : ‖∫ a, ⟪(f : α → ℂ) a, (g : α → ℂ) a⟫_ℂ ∂μ‖ ≤ ‖f‖ * ‖g‖",
-    "plain": "Extend the Bunyakovsky-Schwarz integral inequality from real to complex L2 via a bridge theorem.",
-    "whyMatters": [
-      "Complex L2 Cauchy-Schwarz is fundamental to quantum mechanics and signal processing",
-      "The bridge theorem unifies abstract and integral forms",
-      "RCLike generalization covers both real and complex cases uniformly"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Bridge theorem: L2 inner product = integral of pointwise inner products",
-      "Complex Bunyakovsky-Schwarz in abstract, integral, and conjugation forms",
-      "Squared form, self-inner product properties",
-      "Equality characterization via linear dependence",
-      "Uniform RCLike formulation, real L2 recovery"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Complete complex L2 Cauchy-Schwarz development"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-11T22:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-03-06T11:43:14.355Z",
     "iteration": 1,
-    "focus": "Gallery entry created for existing proof (0 sorries, 0 axioms).",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None — complete.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Complete formalization of complex L2 Cauchy-Schwarz with bridge theorem, multiple forms, equality characterization, and uniform RCLike generalization. Gallery entry created.",
-    "builtItems": [
-      "proofs/Proofs/CauchySchwarzIntegralOq03.lean",
-      "src/data/proofs/cauchy-schwarz-integral-oq-03/"
-    ],
-    "insights": [
-      "L2.inner_def provides the bridge for any RCLike field",
-      "Complex inner product introduces conjugation: ⟪z,w⟫ = conj(z)·w"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Bridge theorem + abstract CS transfer",
-      "status": "complete",
-      "description": "Use L2.inner_def to bridge abstract inner product to integral, then transfer norm_inner_le_norm."
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "analysis",
-    "functional-analysis",
-    "complex-analysis",
     "extension"
   ],
-  "relatedProofs": [
-    "cauchy-schwarz-integral",
-    "cauchy-schwarz-integral-oq-01",
-    "cauchy-schwarz-integral-oq-02"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "L2.inner_def",
-      "norm_inner_le_norm",
-      "Complex.inner_apply",
-      "inner_self_eq_norm_sq_to_K"
-    ]
+    "mathlib": []
   },
   "started": "2026-03-07T18:02:01.175Z",
-  "lastUpdate": "2026-03-11T22:00:00.000Z",
+  "lastUpdate": "2026-03-07T18:02:01.175Z",
   "significance": 6,
   "tractability": 6
 }

@@ -17,9 +17,9 @@
   },
   "currentState": {
     "phase": "NEW",
-    "since": "2026-03-06T00:00:00Z",
-    "iteration": 5,
-    "focus": "Energy dissipation anomaly, regularity criteria hierarchy, dimensional analysis",
+    "since": "2026-01-01T21:55:27.888Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,314 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 380+ defs/theorems, 0 sorries, 6061 lines. Added vorticity dynamics and bounded domains. File covers 35 parts.",
-    "builtItems": [
-      "LerayHopfSolution: structure with energy inequality for 3D weak solutions",
-      "lerayHopf_energy_bounded: E(t) ≤ E₀ from energy inequality",
-      "average_dissipation_vanishes: ∀ε>0, ∃T₀, E₀/(2T₀) < ε",
-      "SerrinPair: structure for admissible (p,q) with Serrin condition",
-      "serrinPair_4_6, serrinPair_8_4: concrete critical pairs verified",
-      "serrin_critical_line: q = 3p/(p-2) proved from 2/p + 3/q = 1",
-      "reynoldsNumber, kolmogorovScale4, taylorMicroscale2: turbulence scaling",
-      "TurbulentDissipation: structure linking Re, η, λ, ε",
-      "BKMData: structure for Beale-Kato-Majda criterion with vorticity integral",
-      "bkm_enstrophy_bounded: proved E(t) ≤ E₀·exp(B) under BKM condition",
-      "StrongSolution, WeakStrongPair: structures for weak-strong uniqueness",
-      "weak_strong_uniqueness: proved W(0) = 0 ⟹ W(t) = 0 via Gronwall",
-      "energySpectrum: K41 E(k) = C_K ε^{2/3} k^{-5/3}",
-      "Ladyzhenskaya3D: structure with 3D interpolation inequality",
-      {
-        "name": "OnsagerConjecture section",
-        "description": "Part XX: Onsager conjecture infrastructure (~274 lines)",
-        "proven": true
-      },
-      {
-        "name": "HölderWeakSolution",
-        "description": "Structure for weak solutions with Hölder regularity data",
-        "proven": true
-      },
-      {
-        "name": "OnsagerConservation",
-        "description": "Structure for energy-conserving solutions (α > 1/3)",
-        "proven": true
-      },
-      {
-        "name": "OnsagerDissipation",
-        "description": "Structure for energy-dissipating solutions (α < 1/3)",
-        "proven": true
-      },
-      {
-        "name": "commutator_exponent_pos_above_threshold",
-        "description": "3α-1 > 0 when α > 1/3 (core of CET proof)",
-        "proven": true
-      },
-      {
-        "name": "spectrum_exponent_from_holder",
-        "description": "2·(1/3)+1 = 5/3 connecting Hölder to K41",
-        "proven": true
-      },
-      {
-        "name": "k41_at_onsager_threshold",
-        "description": "K41 lives exactly at the Onsager threshold",
-        "proven": true
-      },
-      {
-        "name": "she_leveque_p3",
-        "description": "She-Lévêque ζ_3 = 1 verification",
-        "proven": true
-      },
-      {
-        "name": "ViscousSolutionFamily",
-        "description": "Structure for ν-parameterized solution family with dissipation",
-        "proven": true
-      },
-      {
-        "name": "ZerothLaw",
-        "description": "Structure for positive limiting dissipation rate",
-        "proven": true
-      },
-      {
-        "name": "EnergyCascade",
-        "description": "Structure for constant energy flux through inertial range",
-        "proven": true
-      },
-      {
-        "name": "TaylorGreenVortex",
-        "description": "Structure for canonical turbulence test case",
-        "proven": true
-      },
-      {
-        "name": "ConstantinFeffermanCriterion",
-        "description": "Vorticity direction criterion for regularity",
-        "proven": true
-      },
-      {
-        "name": "RegularityCriterionLevel",
-        "description": "Hierarchy of 8 regularity criteria",
-        "proven": true
-      },
-      {
-        "name": "scalingDimension",
-        "description": "Sub/super/critical classification of mixed norms",
-        "proven": true
-      },
-      {
-        "name": "dimensionGap",
-        "description": "Gap (d-2)/2 explaining why 2D solved, 3D open",
-        "proven": true
-      },
-      {
-        "name": "ESSTheorem",
-        "description": "ESS 2003 endpoint regularity structure",
-        "proven": true
-      },
-      {
-        "name": "BackwardUniqueness",
-        "description": "Backward uniqueness for parabolic operators",
-        "proven": true
-      },
-      {
-        "name": "L3Concentration",
-        "description": "L3 concentration at singularities",
-        "proven": true
-      },
-      {
-        "name": "serrinP",
-        "description": "Serrin exponent p = 2q/(q-3)",
-        "proven": true
-      },
-      {
-        "name": "serrinP_critical",
-        "description": "Serrin exponent satisfies critical condition",
-        "proven": true
-      },
-      {
-        "name": "BesovParams",
-        "description": "Besov space B^s_{p,q} parameters",
-        "proven": true
-      },
-      {
-        "name": "criticalBesovSmoothness",
-        "description": "Critical smoothness -1+3/p",
-        "proven": true
-      },
-      {
-        "name": "critical_besov_at_2",
-        "description": "Critical Besov at p=2 is 1/2 (Leray-Hopf gap)",
-        "proven": true
-      },
-      {
-        "name": "critical_besov_decreasing",
-        "description": "Critical exponent decreasing in p",
-        "proven": true
-      },
-      {
-        "name": "critical_embedding_chain",
-        "description": "H^{1/2} > L^3 > BMO^{-1} ordering",
-        "proven": true
-      },
-      {
-        "name": "onsagerBesov",
-        "description": "Onsager threshold B^{1/3}_{3,inf}",
-        "proven": true
-      },
-      {
-        "name": "k41Spectrum",
-        "description": "K41 singularity spectrum D(1/3)=3",
-        "proven": true
-      },
-      {
-        "name": "sheLevequePlus",
-        "description": "She-Levesque structure function exponents",
-        "proven": true
-      },
-      {
-        "name": "sheLevesque_zeta3",
-        "description": "zeta_3 = 1 (Kolmogorov exact)",
-        "proven": true
-      },
-      {
-        "name": "sheLevesque_zeta6",
-        "description": "zeta_6 = 16/9 (intermittency)",
-        "proven": true
-      },
-      {
-        "name": "intermittency_correction",
-        "description": "delta = 2/9 intermittency dimension",
-        "proven": true
-      },
-      {
-        "name": "CKNPartialRegularity",
-        "description": "Singular set dim <= 1",
-        "proven": true
-      },
-      {
-        "name": "ConvexIntegrationScheme",
-        "description": "De Lellis-Szekely framework",
-        "proven": true
-      },
-      {
-        "name": "IsettTheorem",
-        "description": "Onsager conjecture resolution",
-        "proven": true
-      },
-      {
-        "name": "BuckmasterVicolTheorem",
-        "description": "Non-uniqueness of Leray-Hopf",
-        "proven": true
-      },
-      {
-        "name": "SelectionCriterion",
-        "description": "5 candidate selection principles",
-        "proven": true
-      },
-      {
-        "name": "TemporalIntermittency",
-        "description": "Viscous CI with time concentration",
-        "proven": true
-      },
-      {
-        "name": "TypeISingularity",
-        "description": "Self-similar blowup structure",
-        "proven": true
-      },
-      {
-        "name": "TypeIISingularity",
-        "description": "Non-self-similar blowup",
-        "proven": true
-      },
-      {
-        "name": "typeI_excluded",
-        "description": "Type I excluded via ESS",
-        "proven": true
-      },
-      {
-        "name": "QuantitativeRegularity",
-        "description": "Tao approach to regularity",
-        "proven": true
-      },
-      "Part XXXI: Stochastic NS (StochasticNSEquation, MartingaleSolution, MarkovSelection, RegularizationByNoise, ErgodicSNS, StochasticNonUniqueness, MalliavinDerivative)",
-      "Part XXXII: Compressible NS (CompressibleNS, LionsFeireisl, IncompressibleLimit, CompressibleEulerBlowup, NavierStokesFourier)",
-      "Part XXXIII: Critical Sobolev (SobolevEmbedding3D, GNSInequality, LadyzhenskayaInequality, EnergyInequality, SerrinGap, CriticalSpace, ProdiSerrin)",
-      "Part XXXIV: Vorticity formulation (VorticityEquation, VorticityEquation2D, EnstrophyProduction, BKMCriterion, VortexFilament, VortexReconnection, VorticityDirection)",
-      "Part XXXV: Bounded domains (NSBoundedDomain, PrandtlLayer, KatoCriterion, StokesOperator, ExponentialDecay)"
-    ],
-    "insights": [
-      "Leray energy inequality E(t) + 2∫D ≤ E₀ is the fundamental 3D weak solution bound",
-      "Average dissipation E₀/(2T) → 0 as T → ∞: weak solutions must dissipate on average",
-      "Serrin critical line: 2/p + 3/q = 1 gives q = 3p/(p-2), the scale-invariant condition",
-      "Serrin pairs (4,6) and (8,4) lie exactly on the critical line",
-      "Kolmogorov η⁴ = ν³/ε: scale decreases with dissipation, increases with viscosity",
-      "Taylor microscale λ² = 5νU²/ε: intermediate between integral and Kolmogorov scales",
-      "BKM criterion: ∫₀ᵀ ‖ω‖_∞ dt < ∞ ⟹ no blowup (vorticity controls all derivatives)",
-      "Weak-strong uniqueness: Leray-Hopf = strong when both exist (Gronwall on W = ‖u-v‖²)",
-      "K41 four-fifths law ζ₃ = 1 is the ONLY exact result in turbulence theory",
-      "3D Ladyzhenskaya exponent 3/4 makes ‖u‖_4⁴ cubic in ∇u (not absorbed by dissipation)",
-      "2D Ladyzhenskaya exponent 1/2 is subcritical - this is why 2D is solved",
-      "Onsager critical exponent 1/3 arises from energy flux scale-invariance: 3α-1=0",
-      "K41 energy spectrum E(k) ~ k^{-5/3} corresponds to Hölder-1/3 via 2α+1 = 5/3",
-      "Commutator exponent 3α-1 is the key: positive → conservation, zero → borderline, negative → dissipation",
-      "Serrin endpoint (p=3) via 2/3 + 3/q = 1 gives q=9, connecting Serrin regularity to Onsager",
-      "She-Lévêque intermittency: ζ_p = p/9 + 2(1-(2/3)^{p/3}), verified ζ_3 = 1 exactly",
-      "Zeroth law (Kolmogorov 1941): lim_{ν→0} ε > 0, dissipation is mechanism-independent",
-      "Inertial estimate ε ~ U³/L: velocity scaling is cubic (fundamental nonlinearity)",
-      "Scale separation L/η ~ Re^{3/4}, degrees of freedom ~ Re^{9/4} (Landau-Lifshitz)",
-      "Energy cascade: constant flux Π(k) = ε through inertial range implies k^{-5/3}",
-      "Anomaly-Onsager-K41 triangle: α=1/3, E(k)~k^{-5/3}, commutator 3α-1=0 all connected",
-      "Constantin-Fefferman: vorticity DIRECTION (not magnitude) controls blowup",
-      "Component criteria: n components → critical exponent (n+1)/4, gap of 1/4 per component",
-      "The critical gap is exactly 1/2: Leray-Hopf gives L^2 but ESŠ needs L^3 endpoint",
-      "In d dimensions, the gap is (d-2)/2: zero in 2D (solved), 1/2 in 3D (open)",
-      "ESS 2003: L^inf_t L^3_x regularity proved via backward uniqueness (parabolic Carleman estimates)",
-      "Serrin exponent p = 2q/(q-3) parameterizes the critical line, p -> inf as q -> 3+",
-      "Besov critical smoothness -1+3/p: at p=2 gives 1/2 (exactly the Leray-Hopf gap)",
-      "Koch-Tataru 2001: BMO^{-1} is the largest critical space for small-data GWP",
-      "Onsager threshold is B^{1/3}_{3,inf}, NOT Holder C^{1/3} (B is strictly larger)",
-      "K41 singularity spectrum: D(h) = 3 delta at h=1/3 (uniform Holder, no intermittency)",
-      "She-Levesque: zeta_p = p/9 + 2(1-(2/3)^{p/3}), gives zeta_3=1 exactly (Kolmogorov 4/5)",
-      "Intermittency dimension delta = 2-zeta_6 = 2/9 from She-Levesque",
-      "CKN: singular set has parabolic dim <= 1; regularity gap = 1 (need to close to 0)",
-      "Legendre transform D(h) <-> zeta_p duality connects structure functions to singularity spectrum",
-      "Buckmaster-Vicol 2019: Leray-Hopf weak solutions to 3D NS are NOT unique",
-      "Convex integration uses Mikado flows + temporal intermittency to handle viscosity",
-      "Isett 2018: Onsager conjecture resolved - wild solutions exist for Holder alpha < 1/3",
-      "Type I singularities (self-similar, rate 1/sqrt(T*-t)) are EXCLUDED via ESS",
-      "Type I exclusion chain: Type I -> L^inf L^3 -> ESS smooth -> contradiction",
-      "Type II singularities NOT excluded - this is the remaining open frontier",
-      "Necas-Ruzicka-Sverak 1996: no nontrivial L^3 self-similar NS solutions",
-      "Selection criteria (strong energy, local energy, entropy, smooth approx, Markov) all OPEN",
-      "Temporal intermittency: concentrate perturbation in time ~ 1/lambda, viscous penalty = nu*lambda",
-      "Millennium Prize restated: can Type II singularities occur?",
-      "Martingale solutions exist for 3D SNS (Da Prato-Debussche 2003)",
-      "Flandoli-Romito: Markov selection among non-unique solutions (2008)",
-      "Regularization by noise: conjectured that rough noise prevents NS blowup",
-      "Stochastic non-uniqueness (Hofmanova-Zhu-Zhu 2023): even noise doesnt resolve it",
-      "Lions-Feireisl: compressible NS weak solutions for gamma > 3/2 (improved from 9/5)",
-      "Incompressible limit: density deviation O(Ma^2), proved < 1 for Ma < 1",
-      "Sobolev star at p=2: p* = 6 (NS energy embedding), proved",
-      "Sobolev star at p=3/2: p* = 3 (critical for NS), proved",
-      "Energy inequality implies energy_decreasing: E(t) <= E(0), proved",
-      "Serrin gap = exactly 1/2: energy gives 3/2, regularity needs <= 1, proved",
-      "Serrin condition p=6 q=3: proved 2/3 + 3/6 = 1",
-      "2D regularity solved: no vortex stretching means enstrophy is non-increasing",
-      "3D problem IS the vortex stretching problem: (omega.nabla)u can amplify vorticity unboundedly",
-      "Enstrophy grows when stretching > dissipation (proved formally)",
-      "BKM criterion: blowup iff integral of sup|omega| = infinity",
-      "Constantin-Fefferman: blowup requires fast direction changes in omega, not just large magnitude",
-      "Reynolds number Re = UL/nu is positive (proved formally)",
-      "Bounded domains: Poincare gives exponential decay, but short-time regularity still unsolved",
-      "Stokes operator has discrete spectrum on bounded domains, lambda_1 ~ 1/L^2"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [
       "Sobolev spaces",
       "PDEs"
     ],
     "nextSteps": [
-      "Wild solutions: prescribed energy profiles",
-      "Tao averaged NS and finite-time blowup for averaged equations",
-      "NS on Riemannian manifolds (Ebin-Marsden framework)",
-      "Spectral methods and Galerkin approximation",
-      "Regularity transfer from Euler to NS"
+      "2D Navier-Stokes",
+      "Stokes Equations",
+      "Leray Solutions",
+      "Partial Regularity"
     ],
     "markdown": "# Knowledge Base: Navier-Stokes Existence and Smoothness\n\n## The Problem\n\nThe Navier-Stokes problem asks whether smooth, physically reasonable solutions exist for all time for the equations governing fluid flow in three dimensions.\n\n### Core Statement\n\n> In 3D, prove global existence and smoothness of Navier-Stokes solutions for all smooth initial data, or provide a counterexample showing finite-time blowup.\n\nThe equations describe how velocity and pressure of a fluid evolve:\n\n∂u/∂t + (u·∇)u = ν∆u - ∇p + f\n∇·u = 0\n\nwhere u is velocity, p is pressure, ν is viscosity, and f is external force.\n\n### Why It Matters\n\n1. **Fluid Dynamics**: Governs everything from weather to blood flow\n2. **Engineering**: Aircraft design, turbulence modeling, oceanography\n3. **Physics**: Fundamental understanding of fluids\n4. **Turbulence**: Connected to one of the last major unsolved physics problems\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1822 | Navier | Derived equations with molecular assumptions |\n| 1845 | Stokes | Rigorous continuum derivation |\n| 1934 | Leray | Weak solutions exist globally |\n| 1962 | Ladyzhenskaya | 2D global regularity |\n| 1977 | Scheffer | Partial regularity results |\n| 1982 | Caffarelli-Kohn-Nirenberg | Singular set has dimension ≤ 1 |\n\nThe 3D problem remains open despite 90+ years of effort since Leray.\n\n## The Key Difficulty: 3D vs 2D\n\n### 2D: Solved!\n\nIn 2D, global smooth solutions exist. Key facts:\n- Vorticity ω = curl(u) satisfies a nice transport equation\n- Enstrophy ∫|ω|² is bounded for all time\n- No vortex stretching term\n- Global regularity follows from energy estimates\n\n### 3D: Open\n\nIn 3D, the vortex stretching term (ω·∇)u can potentially cause:\n- Vorticity concentration\n- Energy cascade to small scales\n- Possible finite-time singularity\n\nThe Ladyzhenskaya inequality ||u||_4 ≤ C||u||_{H¹}^{3/4}||u||_2^{1/4} only works in 2D.\n\n## What We Could Build\n\n### In Mathlib Now\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Vector calculus | ✅ | div, curl, grad |\n| Sobolev spaces | ⚠️ Limited | Basic definitions |\n| PDEs | ⚠️ Limited | Linear theory |\n| Lebesgue spaces | ✅ | Well-developed |\n| Functional analysis | ✅ | Strong foundation |\n\n### Tractable Partial Work\n\n1. **2D Navier-Stokes** (see 2d-navier-stokes project)\n   - Global existence IS known\n   - Would be a major formalization achievement\n   - ~3000-5000 lines estimated\n\n2. **Stokes Equations** (linear case)\n   - ∆u = ∇p, ∇·u = 0\n   - Linear theory, more tractable\n   - Foundation for full N-S\n\n3. **Leray Solutions** (weak solutions)\n   - Energy inequality\n   - Existence without uniqueness\n   - Fundamental theory\n\n4. **Partial Regularity**\n   - Caffarelli-Kohn-Nirenberg\n   - Singular set is small (dimension ≤ 1)\n\n## Formalization Challenges\n\n### Primary Blocker: Advanced PDE Infrastructure\n\nFormalizing even 2D N-S requires:\n\n1. **Sobolev Spaces** (~1000 lines)\n   - H^s spaces on domains\n   - Trace theorems\n   - Embeddings\n\n2. **Energy Methods** (~1500 lines)\n   - A priori estimates\n   - Weak formulations\n   - Galerkin approximations\n\n3. **Regularity Theory** (~2000 lines)\n   - Bootstrapping\n   - Schauder estimates\n   - Maximum principles\n\n### The 3D-Specific Challenges\n\n3D uniquely requires handling:\n- **Enstrophy growth**: ∫|∇u|² can grow in 3D\n- **Vortex stretching**: (ω·∇)u term\n- **Critical scaling**: Equations are borderline in 3D\n\n## Current State of Knowledge\n\n### What's Known\n\n- **Weak solutions exist** (Leray 1934)\n- **Strong solutions exist locally** (Fujita-Kato)\n- **Small data ⟹ global existence** (for ||u₀|| small)\n- **Partial regularity** (singularities rare)\n- **Unique for 2D** and for small 3D data\n\n### What's Open\n\n- Do 3D solutions stay smooth forever?\n- Do finite-time singularities exist?\n- If blowup occurs, what does it look like?\n\n## Related Work\n\n| File | Relevance |\n|------|-----------|\n| `2d-navier-stokes` | The tractable 2D case |\n\n## Key References\n\n- Leray, J. (1934). \"Sur le mouvement d'un liquide visqueux\"\n- Ladyzhenskaya, O. (1969). \"The Mathematical Theory of Viscous Incompressible Flow\"\n- Caffarelli, L., Kohn, R., Nirenberg, L. (1982). \"Partial regularity\"\n- Constantin, P., Foias, C. (1988). \"Navier-Stokes Equations\"\n- Fefferman, C. (2006). \"Existence and Smoothness of the Navier-Stokes Equation\" (Clay Problem Statement)\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Current Status**: BLOCKED - Heavy PDE/analysis infrastructure required\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Basic PDEs | Yes | 2026-01-01 |\n| Sobolev spaces | Limited | 2026-01-01 |\n| Navier-Stokes | No | 2026-01-01 |\n| Fluid mechanics | No | 2026-01-01 |\n\n**Path Forward**:\n1. Build Sobolev space infrastructure\n2. Formalize 2D Navier-Stokes (known result)\n3. Add partial regularity for 3D weak solutions\n4. State the Millennium Problem precisely\n\n**Related Active Work**: `2d-navier-stokes` attempts the tractable 2D case\n\n**Next Scout**: Check Mathlib PDE development; 2D case is the near-term goal\n"
   },
@@ -354,7 +58,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-07T20:00:00Z",
+  "lastUpdate": "2026-02-21T19:21:07.125Z",
   "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1

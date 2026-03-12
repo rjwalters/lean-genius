@@ -1,10 +1,10 @@
 {
-  "slug": "bezout-identity-oq-02-oq-02-oq-01",
-  "title": "Constructive Divisibility Algorithm via Bézout Coefficients",
+  "slug": "feuerbachs-theorem-oq-01",
+  "title": "Prove Feuerbach distance relations via coordinate computation",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
-  "path": "full",
+  "path": "fast",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
     "plain": "AVAILABLE.",
@@ -17,7 +17,7 @@
   },
   "currentState": {
     "phase": "NEW",
-    "since": "2026-02-27T08:30:01.794Z",
+    "since": "2026-03-11T09:48:08.981Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
@@ -38,9 +38,9 @@
   "approaches": [],
   "tags": [
     "seeker-selected",
-    "number-theory",
-    "abstract-algebra",
-    "ring-theory"
+    "geometry",
+    "triangle",
+    "circle"
   ],
   "relatedProofs": [],
   "references": {
@@ -48,8 +48,8 @@
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-03-06T06:42:42.090Z",
-  "lastUpdate": "2026-03-06T06:42:42.091Z",
+  "started": "2026-03-12T05:34:54.574Z",
+  "lastUpdate": "2026-03-12T05:34:54.574Z",
   "significance": 6,
-  "tractability": 6
+  "tractability": 7
 }

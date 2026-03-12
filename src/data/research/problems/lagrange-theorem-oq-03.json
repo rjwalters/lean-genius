@@ -1,98 +1,54 @@
 {
   "slug": "lagrange-theorem-oq-03",
   "title": "Hall's theorem for solvable groups (converse of Lagrange)",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "Can the converse of Lagrange's theorem be formalized via Hall's theorem for solvable groups?",
-    "whyMatters": [
-      "Hall's theorem is a cornerstone of solvable group theory",
-      "Connects Lagrange, Sylow, and solvability"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "isHall_bot: trivial subgroup is Hall",
-      "isHall_card_dvd: Hall order divides group order",
-      "card_eq_mul_index: product formula |G|=|H|×[G:H]",
-      "sylow_is_hall_divisor: Sylow subgroups are Hall",
-      "comm_group_solvable: abelian groups are solvable",
-      "abelian_hall_exists: abelian groups satisfy Hall existence",
-      "normal_hall_unique: normal Hall subgroups are unique",
-      "a4_card: |A₄| = 12",
-      "six_not_hall_divisor_of_twelve: gcd(6,2) ≠ 1",
-      "lagrange_converse_fails: A₄ counterexample",
-      "index_two_isHall_of_odd_half: index 2 with odd half-order is Hall",
-      "cauchy_theorem: prime divisor gives element of that order",
-      "hall_generalizes_sylow: Hall extends Sylow for solvable groups"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Gallery entry created. 0 sorries, 3 axioms."
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-12T02:35:00Z",
+    "phase": "NEW",
+    "since": "2026-03-11T21:20:33.094Z",
     "iteration": 1,
-    "focus": "Gallery entry created. Docker build verified by prior researcher.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - work complete.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 271 lines, 0 sorries, 3 axioms. Gallery entry created.",
-    "builtItems": [
-      "proofs/Proofs/LagrangeTheoremOQ03.lean: 271 lines, 0 sorries",
-      "src/data/proofs/lagrange-theorem-oq-03/: gallery entry"
-    ],
-    "insights": [
-      "Hall subgroup = coprime order and index, generalizes Sylow",
-      "A₄ counterexample shows converse of Lagrange fails even for solvable groups at non-Hall divisors",
-      "Normal Hall subgroups are unique by conjugacy + normality",
-      "native_decide works for a4_card (12 elements)"
-    ],
-    "mathlibGaps": [
-      "No Hall subgroup existence theorem in Mathlib",
-      "No Hall conjugacy in Mathlib"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Axiom-based formalization with proved consequences",
-      "description": "Axiomize Hall existence/conjugacy, prove structural consequences and counterexample",
-      "status": "completed",
-      "outcome": "271 lines, 0 sorries, 3 axioms. Gallery entry created."
-    }
-  ],
+  "approaches": [],
   "tags": [
+    "seeker-selected",
     "group-theory",
-    "abstract-algebra",
-    "hall-theorem",
-    "solvable-groups"
+    "abstract-algebra"
   ],
-  "relatedProofs": [
-    "lagrange-theorem"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Hall 1928: A note on soluble groups"
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.GroupTheory.Subgroup.Basic",
-      "Mathlib.GroupTheory.Solvable"
-    ]
+    "mathlib": []
   },
-  "knowledgeScore": 85,
-  "started": "2026-03-12T02:28:08.097Z",
-  "lastUpdate": "2026-03-12T02:35:00.000Z",
+  "started": "2026-03-12T05:34:54.574Z",
+  "lastUpdate": "2026-03-12T05:34:54.574Z",
   "significance": 7,
   "tractability": 6
 }

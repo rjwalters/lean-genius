@@ -1,101 +1,54 @@
 {
   "slug": "cauchy-schwarz-oq-03-oq-01",
   "title": "Hölder's inequality equality case formalization",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "For conjugate exponents p, q > 1 with 1/p + 1/q = 1, equality holds in Hölder's inequality iff the sequences (or functions) satisfy power proportionality: f^p = c · g^q.",
-    "plain": "Formalize when equality holds in Hölder's inequality, for finite sums, inner product spaces, and integrals.",
-    "whyMatters": [
-      "Characterizes extremizers of fundamental inequalities in analysis",
-      "Prerequisite for duality theory in Lp spaces",
-      "Unifies Cauchy-Schwarz and Hölder equality cases under a single framework"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Young's equality case (both directions, fully proved via strict convexity of exp)",
-      "Finite-sum Hölder equality (normalized and general cases, fully proved)",
-      "Cauchy-Schwarz equality via Lagrange identity (fully proved)",
-      "Inner product space equality via norm_inner_eq_norm_iff (fully proved)",
-      "Integral Hölder equality (normalized case, fully proved)",
-      "Conjugate exponent identities (5 theorems, fully proved)"
-    ],
-    "open": [
-      "Integral Hölder equality general case (axiomatized - routine normalization bookkeeping)"
-    ],
-    "goal": "Complete formalization of Hölder equality for finite sums and integrals"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-11T09:30:00.000Z",
-    "iteration": 3,
-    "focus": "Integral Hölder equality via Young deficit framework",
+    "phase": "NEW",
+    "since": "2026-03-06T22:03:59.699Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - problem substantially complete",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 2,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: All 3 open questions answered. (1) Young's equality proved from strict convexity of exp (no axioms). (2) General Hölder equality normalized case fully proved for both finite sums and integrals. (3) Integral a.e. power proportionality proved for normalized case. File has 0 sorries, 1 axiom (general integral normalization bookkeeping).",
-    "builtItems": [
-      "youngDeficit_nonneg: Young deficit non-negativity proved via convexity of exp",
-      "youngDeficit_eq_zero_iff: Young equality case FULLY PROVED (both directions via strict convexity)",
-      "holder_eq_normalized_implies_power_prop: normalized finite-sum equality (fully proved)",
-      "holder_eq_implies_power_prop: general finite-sum equality (fully proved)",
-      "integral_youngDeficit: integral of Young deficits = Hölder deficit (proved)",
-      "holder_eq_integral_normalized: integral equality normalized case (FULLY PROVED, key result)",
-      "holder_eq_integral: general integral case (axiomatized, routine bookkeeping)",
-      "power_prop_sq_implies_prop: p=q=2 specialization (fully proved)"
-    ],
-    "insights": [
-      "Same technique works for finite sums and integrals: deficit = 0 implies pointwise/a.e. equality",
-      "integral_eq_zero_iff_of_nonneg_ae is the key Mathlib bridge for the integral case",
-      "Strict convexity of exp (strictConvexOn_exp) gives Young's reverse direction cleanly",
-      "Conv_lhs with change is needed to unfold noncomputable defs inside integral notation",
-      "The normalized case carries all the mathematical content; the general case is pure bookkeeping"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Optionally: prove general integral case without axiom (routine but verbose normalization)"
-    ]
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Young deficit framework",
-      "status": "successful",
-      "description": "Express Hölder deficit as sum/integral of pointwise Young deficits. Use sum/integral of nonneg = 0 to force each deficit = 0. Apply Young's equality case for power proportionality."
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "analysis",
-    "functional-analysis",
-    "measure-theory"
+    "functional-analysis"
   ],
-  "relatedProofs": [
-    "cauchy-schwarz-oq-03",
-    "cauchy-schwarz",
-    "cauchy-schwarz-integral"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
-    "urls": [
-      "https://en.wikipedia.org/wiki/H%C3%B6lder%27s_inequality#Equality_condition"
-    ],
-    "mathlib": [
-      "integral_eq_zero_iff_of_nonneg_ae",
-      "strictConvexOn_exp",
-      "NNReal.inner_le_Lp_mul_Lq"
-    ]
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-03-07T18:02:01.175Z",
-  "lastUpdate": "2026-03-11T09:30:00.000Z",
+  "lastUpdate": "2026-03-07T18:02:01.175Z",
   "significance": 6,
   "tractability": 6
 }

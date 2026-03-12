@@ -1,27 +1,55 @@
 {
-  "id": "fair-games-theorem-oq-01",
-  "title": "Distribution of Ruin Times",
-  "parentProof": "fair-games-theorem",
-  "openQuestion": "What is the distribution of ruin times?",
+  "slug": "fair-games-theorem-oq-01",
+  "title": "Distribution of ruin times (martingale stopping)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
   "currentState": {
-    "phase": "COMPLETE",
-    "status": "completed",
-    "lastUpdated": "2026-03-11"
+    "phase": "NEW",
+    "since": "2026-03-11T21:20:33.094Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
   },
   "knowledge": {
-    "insights": [
-      "All axioms eliminated: ost_linear and ruin_probabilities_sum_one proved from definitions",
-      "Biased random walk formalized with odds ratio r = q/p",
-      "Exponential decay rate cos(pi/N) in (0,1) for N >= 3 proved via sin/cos Pythagorean identity",
-      "AM-GM bound E[T] <= N^2/4 proved via (N-2k)^2 >= 0",
-      "Harmonic property connects to discrete potential theory"
-    ],
-    "builtItems": [
-      "GamblersRuin structure in FairGamesTheoremOQ01.lean",
-      "BiasedGamblersRuin structure with full probability analysis",
-      "ruin_time_decay_rate_pos/lt_one theorems for spectral decay",
-      "Gallery entry src/data/proofs/fair-games-theorem-oq-01/"
-    ],
-    "progressSummary": "COMPLETE: Axiom-free proof with biased games and exponential decay rate"
-  }
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "probability",
+    "stochastic-processes",
+    "martingale"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-12T05:34:54.574Z",
+  "lastUpdate": "2026-03-12T05:34:54.574Z",
+  "significance": 6,
+  "tractability": 7
 }

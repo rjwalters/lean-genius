@@ -1,101 +1,50 @@
 {
   "slug": "erdos-1142",
   "title": "Erdős #1142",
-  "phase": "FORMALIZED",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{Set.Infinite} \\{n : \\mathbb{N} \\mid \\text{SatisfiesErdos1142}\\, n\\}",
-    "plain": "Are there infinitely many n such that n − 2^k is prime for all 1 < 2^k < n?",
-    "whyMatters": [
-      "Explores the structure of primes near powers of 2",
-      "Only 7 known values: {4, 7, 15, 21, 45, 75, 105}",
-      "Connected to Erdős #236 (o(log n) conjecture)"
-    ]
+    "formal": "(LaTeX not available)",
+    "plain": "Problem statement not found",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Known values: {4, 7, 15, 21, 45, 75, 105} (OEIS A039669)",
-      "No further values up to 2^44 (Mientka & Weitzenkamp 1969)",
-      "Vaughan (1973): count extremely sparse",
-      "Verified complete list up to 105 in Lean (native_decide)"
-    ],
-    "open": [
-      "Is the sequence infinite?",
-      "Is the count of prime differences o(log n)? (stronger conjecture)"
-    ],
-    "goal": "Existing formalization with 6 sorries — update knowledge"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "FORMALIZED",
-    "since": "2026-03-11T00:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-01-15T16:41:04.199Z",
     "iteration": 1,
-    "focus": "Already formalized with 6 sorries, 0 axioms. Verified known values via native_decide.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Could eliminate sorries for structural properties (erdos1142_odd_or_4, erdos1142_ge_4, etc.)",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Existing formalization of Erdős #1142. 6 sorries, 0 axioms. 7 known values verified via native_decide. Complete list up to 105 verified. Structural properties and main conjecture stated.",
-    "builtItems": [
-      "proofs/Proofs/Erdos1142Problem.lean (175 lines, 6 sorries, 0 axioms)",
-      "src/data/proofs/erdos-1142/ (gallery entry exists)"
-    ],
-    "insights": [
-      "SatisfiesErdos1142 uses powersOfTwoBetween (filter on Finset.range) — decidable predicate",
-      "native_decide verifies all 7 known values and complete enumeration up to 105",
-      "erdos1142_odd_or_4: all values except 4 are odd (n-2 must be prime, so n odd for n>4)",
-      "Stronger conjecture: count of prime differences is o(log n) — implies eventual finiteness",
-      "erdos1142_complete_le_105 verified by native_decide — powerful computational verification",
-      "Related to Erdős #236 (o(log n) prime differences)"
-    ],
-    "mathlibGaps": [
-      "Nat.isPowerOfTwo available in Mathlib for the filter predicate",
-      "Nat.log 2 n gives floor(log₂ n) — used for card computation"
-    ],
-    "nextSteps": [
-      "Eliminate sorries for structural properties (erdos1142_odd_or_4, erdos1142_ge_4, erdos1142_n_minus_2_prime)",
-      "Consider Aristotle companion file for routine structural lemmas"
-    ],
-    "markdown": "# Erdős #1142 - Knowledge Base\n\n## Problem Statement\n\nAre there infinitely many n such that n − 2^k is prime for all 1 < 2^k < n?\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n## Formalization\n\n- **File**: proofs/Proofs/Erdos1142Problem.lean\n- **Sorries**: 6 (structural properties + main conjecture implication)\n- **Axioms**: 0\n- **Verified**: 7 known values by native_decide, complete list up to 105\n\n## Key Values\n\n{4, 7, 15, 21, 45, 75, 105} — no others up to 2^44.\n\n---\n\n*Knowledge updated by researcher-5 on 2026-03-11*\n"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Erdős #1142 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
-  "approaches": [
-    {
-      "name": "Computational verification with structural properties",
-      "status": "completed",
-      "description": "Verify known values via native_decide, state structural properties with sorry, state main open conjecture."
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "number-theory",
-    "primes",
-    "powers-of-two",
-    "computational-verification"
+    "erdos"
   ],
-  "relatedProofs": [
-    "erdos-1141"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Mientka & Weitzenkamp (1969) - verified no values up to 2^44",
-      "Vaughan (1973) - sparsity results"
-    ],
-    "urls": [
-      "https://erdosproblems.com/1142"
-    ],
-    "mathlib": [
-      "Nat.Prime",
-      "Nat.isPowerOfTwo",
-      "Nat.log",
-      "Finset.filter",
-      "native_decide"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-15T16:41:04.199Z",
   "significance": 7,

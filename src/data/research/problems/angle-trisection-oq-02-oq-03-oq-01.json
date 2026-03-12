@@ -1,66 +1,57 @@
 {
   "slug": "angle-trisection-oq-02-oq-03-oq-01",
   "title": "Gauss-Wantzel Theorem from Mathlib Cyclotomic Fields",
-  "phase": "BUILD",
+  "phase": "NEW",
   "status": "active",
-  "tier": "B",
+  "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "IsConstructibleNgon n ↔ TotientIsPow2 n, proved from decomposed axioms about cyclotomic fields",
-    "plain": "Prove the Gauss-Wantzel theorem (n-gon constructibility ↔ φ(n) is a power of 2) by decomposing it into smaller axioms that are closer to Mathlib's cyclotomic field infrastructure.",
-    "whyMatters": [
-      "Connects existing constructibility formalization to Mathlib cyclotomic theory",
-      "Reduces monolithic axiom to 2 primitive axioms + proved arithmetic bridge",
-      "Creates a clear roadmap for a full formal proof from Mathlib"
-    ]
+    "formal": "",
+    "plain": "Can the Gauss-Wantzel axiom (currently assumed in the proof) be proved from Mathlib's existing cyclotomic field infrastructure? The ingredients (`IsCyclotomicExtension`, `ZMod.unitsEquivCoprime`, degree computation) exist but need ~300 lines of assembly.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "IsConstructibleNgon defined in terms of constructible cos(2π/n)",
-      "Wantzel-Galois characterization: constructible ↔ 2-group Galois group (axiom in OQ02)",
-      "Fermat number infrastructure: F_k, primality proofs for F_0..F_4",
-      "Non-constructibility of specific n-gons via Fermat number decomposition",
-      "gauss_wantzel_theorem' proved as theorem from 2 decomposed axioms"
-    ],
-    "open": [
-      "Proving cos(2π/n) is algebraic from Mathlib cyclotomic theory",
-      "Proving |Gal(minpoly(cos(2π/n)))| = φ(n)/2 from maximal real subfield theory",
-      "Maximal real subfield ℚ(ζₙ⁺) = ℚ(cos(2π/n)) formalization"
-    ],
-    "goal": "Bridge the gap between the axiom and Mathlib cyclotomic infrastructure"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "leanFile": "proofs/Proofs/AngleTrisectionOQ02OQ03.lean",
-    "sorryCount": 0,
-    "axiomCount": 3,
-    "theoremCount": 40,
-    "builtItems": [
-      "cos_2pi_div_n_isIntegral: axiom that cos(2π/n) is integral over ℚ",
-      "cos_minpoly_gal_card: axiom that |Gal(minpoly(cos(2π/n)))| = φ(n)/2",
-      "totient_div2_pow2_iff: PROVED arithmetic bridge (φ(n)/2 = 2^k ↔ TotientIsPow2 n)",
-      "gauss_wantzel_theorem': PROVED from decomposed axioms (was axiom, now theorem)"
-    ],
-    "insights": [
-      "Mathlib has IsCyclotomicExtension.finrank giving [ℚ(ζₙ):ℚ] = φ(n)",
-      "Mathlib has IsCyclotomicExtension.autEquivPow giving Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)*",
-      "Missing in Mathlib: maximal real subfield ℚ(ζₙ⁺) formalization",
-      "Missing in Mathlib: connecting Real.cos to Complex.exp for algebraicity",
-      "The 2 remaining axioms are ~300 lines of work to prove from Mathlib",
-      "Nat.totient_even is available in Mathlib for the arithmetic bridge",
-      "IsPGroup.iff_card provides the equivalence between p-group and card = p^k"
-    ],
-    "mathlibGaps": [
-      "ℚ(cos(2π/n)) as an intermediate field of ℚ(ζₙ)/ℚ",
-      "[ℚ(cos(2π/n)):ℚ] = φ(n)/2 from complex conjugation index-2 subgroup",
-      "Real.cos ↔ Complex.exp algebraicity bridge"
-    ],
-    "nextSteps": [
-      "Prove cos_2pi_div_n_isIntegral via cyclotomic polynomial roots",
-      "Prove cos_minpoly_gal_card via maximal real subfield degree",
-      "Create Aristotle companion file for routine supporting lemmas"
-    ]
+    "phase": "OBSERVE",
+    "since": "2026-03-06T17:58:04-08:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
   },
-  "knowledgeScore": 72,
-  "researchNotes": "The axiom decomposition was the key insight: instead of one monolithic gauss_wantzel_theorem axiom, we now have 2 more primitive axioms that are each individually closer to Mathlib's existing infrastructure. The arithmetic bridge (totient_div2_pow2_iff) connecting φ(n)/2 = 2^k to TotientIsPow2 was proved fully. This creates a clear path: each remaining axiom corresponds to a specific gap in Mathlib's cyclotomic field formalization.",
-  "lastUpdated": "2026-03-07"
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: angle-trisection-oq-02-oq-03-oq-01\n\nGauss-Wantzel Theorem: prove cos_minpoly_gal_card from Mathlib cyclotomic infrastructure.\n\n---\n\n## Problem Understanding\n\nThe main axiom `cos_minpoly_gal_card` states |Gal(minpoly(cos(2π/n)))| = φ(n)/2.\nThis is the key remaining axiom blocking a complete proof of the Gauss-Wantzel theorem.\n\nThe proof strategy: ℚ(cos(2π/n)) is the maximal real subfield of ℚ(ζₙ), with index 2.\nMathlib has IsCyclotomicExtension with finrank = φ(n) and autEquivPow ≅ (ℤ/nℤ)*.\nThe maximal real subfield theory is NOT in Mathlib 4.26.\n\n---\n\n## Session 2026-03-11 (Session 1) - Chebyshev Conjugate Infrastructure\n\n**Mode**: FRESH (claimed via claim-random)\n**Outcome**: progress\n\n### What I Did\n- Scouted Mathlib cyclotomic infrastructure (IsCyclotomicExtension, autEquivPow, finrank)\n- Confirmed maximal real subfield NOT in Mathlib — need ~150-200 lines custom infrastructure\n- Proved 3 new theorems via Chebyshev polynomials (Section XIV-B):\n  1. `cos_2k_pi_eq_chebyshev_eval`: cos(2kπ/n) = T_k(cos(2π/n))\n  2. `cos_conjugate_mem_adjoin`: cos(2kπ/n) ∈ ℚ[cos(2π/n)]\n  3. `minpoly_cos_dvd_chebyshev`: minpoly | T_n - 1\n- Fixed `totient_div2_pow2_iff`: Mathlib 4.26 returns `Even` not `2 ∣` from `Nat.totient_even`\n- Docker build passes\n\n### Key Findings\n- `Chebyshev.T_real_cos` + `Chebyshev.aeval_T` gives cos(kθ) = T_k(cos θ) in one step\n- `Algebra.adjoin_singleton_eq_range_aeval` + `⟨T ℚ k, rfl⟩` proves adjoin membership cleanly\n- All conjugates of cos(2π/n) lie in ℚ[cos(2π/n)] → extension is normal (Galois)\n- Remaining gap: need [ℚ(cos(2π/n)):ℚ] = φ(n)/2 (requires maximal real subfield theory)\n\n### Files Modified\n- proofs/Proofs/AngleTrisectionOQ02OQ03.lean (+137/-39 lines)\n\n### Next Steps\n- Build maximal real subfield infrastructure (~150 lines):\n  - Show ℚ(cos(2π/n)) = ℚ(ζₙ)^{⟨complex_conj⟩}\n  - Use fixed field theorem: [ℚ(ζₙ):ℚ(cos(2π/n))] = 2\n  - Conclude [ℚ(cos(2π/n)):ℚ] = φ(n)/2\n- Then |Gal| = [field:ℚ] via IsGalois.card_aut_eq_finrank\n\n---\n\n## Insights\n\n- Chebyshev polynomials are the key bridge: T_k(cos(2π/n)) = cos(2kπ/n) gives all conjugates\n- The extension ℚ(cos(2π/n))/ℚ is Galois because it's generated by cos(2π/n) and all roots of the minimal polynomial are also cosines of rational multiples of π, which lie in the adjoin\n- Mathlib's `minpoly.dvd` easily shows minpoly | T_n - 1 (since T_n(cos(2π/n)) = cos(2π) = 1)\n- The hard part is computing the degree: need maximal real subfield = fixed field of complex conjugation\n\n---\n\n## Dead Ends\n\n- Direct cyclotomic approach without Chebyshev: can't show conjugates lie in adjoin without T_k\n- Trying to use `Nat.totient_even` as `2 ∣ _`: API changed in Mathlib 4.26 to return `Even`\n"
+  },
+  "approaches": [],
+  "tags": [
+    "geometry",
+    "galois-theory",
+    "field-theory",
+    "constructibility",
+    "fermat-primes"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-07T18:02:01.174Z",
+  "lastUpdate": "2026-03-07T18:02:01.174Z",
+  "significance": 7,
+  "tractability": 6
 }

@@ -1,107 +1,55 @@
 {
   "slug": "cauchy-schwarz-integral-oq-01-oq-02",
   "title": "Riesz-Thorin interpolation from Hölder in Lean 4",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Can the Riesz-Thorin interpolation theorem be derived from Hölder's inequality in Lean 4?",
-    "plain": "Partially. Hölder provides endpoint estimates and Lp space structure, but the full Riesz-Thorin proof additionally requires the Hadamard three-lines lemma from complex analysis.",
-    "whyMatters": [
-      "Riesz-Thorin is the fundamental tool for Lp space interpolation",
-      "Clarifies the precise role of Hölder in the interpolation hierarchy",
-      "Hausdorff-Young and Young's convolution inequality follow as corollaries"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Interpolated exponent infrastructure (interpRecip, interpExp, boundary values)",
-      "Conjugate exponent preservation under interpolation",
-      "Hölder-based endpoint operator norm bounds (LpLqBounded structure)",
-      "Log-convexity, scaling, submultiplicativity of interpolated norm M₀^(1-θ)·M₁^θ",
-      "AM-GM for interpolated norms via Real.geom_mean_le_arith_mean2_weighted",
-      "Hölder endpoint connection (ENNReal.lintegral_mul_le_Lp_mul_Lq)",
-      "Hausdorff-Young exponent computation and norm bound",
-      "Young's convolution exponent conditions",
-      "Interpolation space embedding exponents"
-    ],
-    "open": [
-      "Hadamard three-lines lemma (axiom: needs Phragmén-Lindelöf for strips, not in Mathlib)",
-      "Full Riesz-Thorin theorem (axiom: follows from three-lines lemma)"
-    ],
-    "goal": "Complete formalization of Hölder→Riesz-Thorin connection with minimal axioms"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-12T02:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-03-06T22:03:59.698Z",
     "iteration": 1,
-    "focus": "Verified existing formalization builds successfully in Docker.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - problem complete. Two axioms remain (three-lines lemma and Riesz-Thorin) which require Phragmén-Lindelöf principle not in Mathlib.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Full formalization in CauchySchwarzIntegralOQ01OQ02.lean (601 lines, 0 sorries, 2 axioms). Answers the question: Hölder provides endpoint bounds and Lp structure, but Riesz-Thorin additionally requires the Hadamard three-lines lemma (complex analysis). Gallery entry exists with meta.json and index.ts.",
-    "builtItems": [
-      "proofs/Proofs/CauchySchwarzIntegralOQ01OQ02.lean - Full Riesz-Thorin interpolation formalization (601 lines)",
-      "src/data/proofs/cauchy-schwarz-integral-oq-01-oq-02/ - Gallery entry (meta.json, index.ts, annotations.json)"
-    ],
-    "insights": [
-      "Hölder is necessary but not sufficient for Riesz-Thorin: provides endpoint estimates and duality, but three-lines lemma is the key complex-analytic ingredient",
-      "interpNorm (geometric mean M₀^(1-θ)·M₁^θ) satisfies AM-GM via Real.geom_mean_le_arith_mean2_weighted",
-      "Log-convexity of interpNorm proven via Real.log_rpow and Real.log_mul",
-      "ENNReal.lintegral_mul_le_Lp_mul_Lq gives Hölder at the lintegral level",
-      "The Phragmén-Lindelöf principle for strips (needed for three-lines) is not in Mathlib v4.26.0",
-      "Hierarchy: Young (pointwise) → Hölder (integral) → Minkowski (triangle) → Riesz-Thorin endpoints → + three-lines → full Riesz-Thorin → Hausdorff-Young, Young convolution"
-    ],
-    "mathlibGaps": [
-      "Hadamard three-lines lemma (Complex analysis on strips)",
-      "Phragmén-Lindelöf principle for strips",
-      "Maximum modulus principle for unbounded domains"
-    ],
-    "nextSteps": [
-      "Future: prove three-lines lemma when Phragmén-Lindelöf is added to Mathlib",
-      "Future: derive Riesz-Thorin from three-lines (construct analytic family on strip)"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Hölder + axiomatized three-lines",
-      "status": "completed",
-      "description": "Prove all Hölder-derivable components, axiomatize the complex-analytic gap (three-lines lemma), derive consequences (Hausdorff-Young, Young convolution)"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "analysis",
     "measure-theory",
     "lp-spaces"
   ],
-  "relatedProofs": [
-    "cauchy-schwarz-integral-oq-01-oq-01",
-    "cauchy-schwarz-integral-oq-03"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "M. Riesz (1927): Sur les maxima des formes bilinéaires",
-      "G.O. Thorin (1948): Convexity theorems generalizing those of M. Riesz",
-      "Stein & Weiss (1971): Introduction to Fourier Analysis, Ch. V"
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "ENNReal.lintegral_mul_le_Lp_mul_Lq",
-      "Real.geom_mean_le_arith_mean2_weighted",
-      "Real.log_rpow",
-      "Real.rpow_add"
-    ]
+    "mathlib": []
   },
   "started": "2026-03-07T18:02:01.175Z",
-  "lastUpdate": "2026-03-12T02:00:00.000Z",
+  "lastUpdate": "2026-03-07T18:02:01.175Z",
   "significance": 7,
   "tractability": 5
 }

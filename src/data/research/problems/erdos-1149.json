@@ -1,101 +1,50 @@
 {
   "slug": "erdos-1149",
   "title": "Erdős #1149",
-  "phase": "FORMALIZED",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\lim_{N \\to \\infty} \\frac{|\\{n \\leq N : \\gcd(n, \\lfloor n^\\alpha \\rfloor) = 1\\}|}{N} = \\frac{6}{\\pi^2}",
-    "plain": "For non-integer α > 0, the natural density of integers n where gcd(n, ⌊n^α⌋) = 1 is 6/π².",
-    "whyMatters": [
-      "Shows deterministic sequences can exhibit 'random' coprimality behavior",
-      "Connects ergodic theory to number-theoretic structure",
-      "6/π² = 1/ζ(2) links to the Riemann zeta function"
-    ]
+    "formal": "(LaTeX not available)",
+    "plain": "Problem statement not found",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Bergelson-Richter (2017): density is 6/π² for non-integer α > 0",
-      "Classical: probability two random integers coprime is 6/π²",
-      "Integer α case: density is 0 (gcd(n, n^k) = n)"
-    ],
-    "open": [
-      "Convergence rate / error term",
-      "Extension to gcd(n, ⌊n^α⌋) = d for d > 1",
-      "Generalization to other functions f(n)"
-    ],
-    "goal": "Formalize the Bergelson-Richter theorem statement and prove supporting properties"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "FORMALIZED",
-    "since": "2026-03-11T00:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-01-15T16:24:55.487Z",
     "iteration": 1,
-    "focus": "Complete formalization with 0 sorries, 2 axioms.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - formalization complete.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Complete formalization of Erdős #1149 (SOLVED). 0 sorries, 2 axioms (Bergelson-Richter theorem and classical coprime density). 5 proved theorems including density bounds and integer case exclusion.",
-    "builtItems": [
-      "proofs/Proofs/Erdos1149Problem.lean (168 lines, 0 sorries, 2 axioms)",
-      "src/data/proofs/erdos-1149/ (gallery entry with meta.json, annotations.json, index.ts)"
-    ],
-    "insights": [
-      "IsFloorPowerCoprime α n = Nat.Coprime n (Nat.floor ((n : ℝ) ^ α)) - clean predicate definition",
-      "HasNaturalDensity using Filter.Tendsto with Set.ncard and Set.Icc - standard density formulation",
-      "Real.pi_gt_three sufficient for proving 6/π² < 1 via nlinarith and calc chain",
-      "dvd_pow_self + Nat.Coprime gives clean proof that gcd(n, n^k) ≠ 1 for n > 1",
-      "Non-integer condition expressed as ∀ k : ℤ, (k : ℝ) ≠ α - avoids Int.fract",
-      "density_equals_inv_zeta2 proved by ring: 6/π² = 1/(π²/6)"
-    ],
-    "mathlibGaps": [
-      "No Bergelson-Richter theorem (ergodic theory result)",
-      "No classical coprime density theorem (requires Möbius inversion or Euler products)",
-      "No general natural density framework in Mathlib"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #1149 - Knowledge Base\n\n## Problem Statement\n\nFor non-integer α > 0, the natural density of {n ≥ 1 : gcd(n, ⌊n^α⌋) = 1} is 6/π².\n\n## Status\n\n**Erdős Database Status**: SOLVED (Bergelson-Richter 2017)\n\n## Formalization\n\n- **File**: proofs/Proofs/Erdos1149Problem.lean\n- **Sorries**: 0\n- **Axioms**: 2 (bergelson_richter, random_coprime_density)\n- **Proved**: density_equals_inv_zeta2, erdos_1149_solved, density_pos, density_lt_one, integer_alpha_trivial\n\n## Key Insight\n\nn and ⌊n^α⌋ behave as independent random integers for coprimality, despite being deterministically related. The density 6/π² = 1/ζ(2) = ∏_p(1 - 1/p²).\n\n## References\n\n- Bergelson, Richter (2017)\n- OEIS / erdosproblems.com/1149\n\n---\n\n*Formalized by researcher-5 on 2026-03-11*\n"
+    "markdown": "# Erdős #1149 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
-  "approaches": [
-    {
-      "name": "Direct formalization with axiomatized main theorem",
-      "status": "completed",
-      "description": "Axiomatize the Bergelson-Richter theorem and prove all supporting properties (density bounds, integer case, algebraic identities)."
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "number-theory",
-    "coprimality",
-    "asymptotic-density",
-    "floor-function",
-    "ergodic-theory"
+    "erdos"
   ],
-  "relatedProofs": [
-    "erdos-37"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Bergelson, Richter (2017) - Multiplicative functions along polynomial sequences"
-    ],
-    "urls": [
-      "https://erdosproblems.com/1149"
-    ],
-    "mathlib": [
-      "Real.pi_pos",
-      "Real.pi_gt_three",
-      "Nat.Coprime",
-      "Nat.floor",
-      "Filter.Tendsto",
-      "Set.ncard",
-      "dvd_pow_self"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-01-15T16:24:55.487Z",
   "significance": 7,

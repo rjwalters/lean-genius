@@ -1,77 +1,56 @@
 {
   "slug": "erdos-1155-oq-01",
   "title": "Triangle removal process: exact asymptotics f(n) = Θ(n^{3/2})",
-  "phase": "ACT",
-  "status": "progress",
+  "phase": "NEW",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "∃ c₁ c₂ : ℝ, 0 < c₁ ∧ c₁ ≤ c₂ ∧ ∀ᶠ (n : ℕ) in atTop, c₁ * n^(3/2) ≤ f(n) ∧ f(n) ≤ c₂ * n^(3/2)",
-    "plain": "The triangle removal process on K_n leaves Θ(n^{3/2}) edges: there exist constants c₁, c₂ > 0 such that c₁·n^{3/2} ≤ E[f(n)] ≤ c₂·n^{3/2} for all large n.",
-    "whyMatters": [
-      "Erdős Problem #1155: fundamental question in random graph processes",
-      "BFL (2015) gave n^{3/2+o(1)} but the exact Θ-bound is still open",
-      "Connects random graph theory to extremal combinatorics (Mantel/Turán)"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "BFL sandwich: ∀ε>0, eventually n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε}",
-      "BFL exponent is exactly 3/2: ∀α>3/2, eventually f(n) ≤ n^α",
-      "Complete K_n (n≥3) contains triangles (proved for Fin n)",
-      "f_small_values_bound: f(0)≤0, f(1)≤0, f(2)≤1 from complete graph bound",
-      "conjecture_iff_both_bounds: Θ(n^{3/2}) ↔ upper + lower Θ-bounds",
-      "Conjecture decomposition into upper_theta_bound ∧ lower_theta_bound"
-    ],
-    "open": [
-      "Full Erdős conjecture: explicit constants c₁, c₂ in Θ(n^{3/2})",
-      "Whether f(n)/n^{3/2} converges (limit_implies_conjecture shows sufficiency)"
-    ],
-    "goal": "Prove exact Θ(n^{3/2}) asymptotics or characterize what's needed"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-06T23:45:00Z",
+    "phase": "NEW",
+    "since": "2026-03-06T22:03:59.700Z",
     "iteration": 1,
-    "focus": "All sorries resolved. Complete formalization of BFL gap analysis.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - complete.",
-    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
   },
   "knowledge": {
-    "progressSummary": "Erdos1155OQ01.lean Docker-verified with 0 sorries (all 10 proved). Key proofs: triangleFree_iff_cliqueFree3, conjecture_iff_both_bounds, bfl_lower_tight, conjecture_implies_bfl_upper/lower (rpow growth via Nat.ceil+rpow_mul), bfl_ratio_characterization (rpow_add), limit_implies_conjecture (Icc_mem_nhds), limsup_liminf_implies_conjecture (div_le_iff₀).",
-    "builtItems": [
-      "proofs/Proofs/Erdos1155OQ01.lean (0 sorries, Docker-verified)"
-    ],
-    "insights": [
-      "The gap between BFL and the full conjecture is exactly: n^{-ε} vs constant in the ratio f(n)/n^{3/2}",
-      "BFL gives n^{-ε} ≤ f(n)/n^{3/2} ≤ n^ε; conjecture needs c ≤ f(n)/n^{3/2} ≤ C",
-      "The conjecture decomposes cleanly into independent upper and lower Θ-bounds",
-      "If f(n)/n^{3/2} has a positive limit, the full conjecture follows immediately",
-      "Fin n literals need explicit ⟨k, by omega⟩ construction when n is variable",
-      "SimpleGraph.top_adj works with simp for adjacency in complete graphs"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "None - all theorems proved. Open conjecture remains stated."
-    ]
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-1155-oq-01\n\nTriangle removal process exact asymptotics f(n) = Θ(n^{3/2}).\n\n---\n\n## Problem Understanding\n\nErdős Problem #1155: Start with K_n, repeatedly remove random triangle (all 3 edges) until triangle-free. Let f(n) = remaining edges. Is E[f(n)] ≍ n^{3/2}?\n\nKnown: BFL (2015) proved f(n) = n^{3/2+o(1)} a.s. The gap to Θ(n^{3/2}) is open.\n\n---\n\n## Session 2026-03-11 (Session 1) - Survey\n\n**Mode**: FRESH\n**Outcome**: surveyed\n\n### What I Did\n- Read Erdos1155Problem.lean (5 axioms, 4 proved theorems, 2 sorries)\n- Read Erdos1155OQ01.lean (6 axioms, 18 proved theorems, 0 sorries)\n- OQ01 already proves the parent sorries (triangleFree_iff_cliqueFree3, complete_has_triangles)\n- Comprehensive formalization: hierarchy, ratio characterization, sufficient conditions, exponent tightness\n\n### Key Findings\n- File is at full survey quality: 0 sorries, 18 proved theorems\n- 6 axioms encode known published results (BFL bounds, Mantel theorem, process properties)\n- The open conjecture f(n) = Θ(n^{3/2}) is genuinely open — no further formalization progress possible\n- Parent file's `trivial_upper_bound` sorry could be proved from `triangleRemoval_mantel_bound` but is redundant\n\n### Next Steps\n- No further work needed unless new mathematical results appear\n- Problem is survey-complete\n\n---\n\n## Insights\n\n- The gap between BFL and the conjecture is precisely: n^{-ε} ≤ f/n^{3/2} ≤ n^ε vs c ≤ f/n^{3/2} ≤ C\n- limit_implies_conjecture: if f(n)/n^{3/2} → L > 0, full conjecture follows\n- limsup_liminf_implies_conjecture: bounded ratio suffices\n\n---\n\n## Dead Ends\n\n- The open conjecture is not provable from current knowledge\n"
   },
-  "approaches": [
-    {
-      "name": "Gap analysis via ratio characterization",
-      "status": "in-progress",
-      "description": "Decompose the conjecture into equivalent conditions (ratio convergence, limsup/liminf) and prove structural relationships between BFL and the full Θ-bound."
-    }
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "combinatorics",
+    "probability"
   ],
-  "tags": ["graph-theory", "combinatorics", "probability", "asymptotics", "erdos"],
-  "relatedProofs": ["Erdos1155Problem.lean"],
+  "relatedProofs": [],
   "references": {
-    "papers": ["Bohman-Frieze-Lubetzky (2015)", "Grable (1997)"],
-    "urls": ["https://erdosproblems.com/1155"],
-    "mathlib": ["Filter.Eventually.and", "Filter.Eventually.mono", "SimpleGraph.CliqueFree"]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
-  "started": "2026-03-06T23:40:00Z",
-  "lastUpdate": "2026-03-07T00:00:00Z",
+  "started": "2026-03-07T18:02:01.177Z",
+  "lastUpdate": "2026-03-07T18:02:01.177Z",
   "significance": 6,
   "tractability": 5
 }

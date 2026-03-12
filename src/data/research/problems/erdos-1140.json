@@ -1,18 +1,14 @@
 {
   "slug": "erdos-1140",
-  "title": "Erdos #1140: Primes of the Form n - 2x^2",
+  "title": "Erdős #1140",
   "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "not (forall N, exists n > N, AllShiftsArePrime n)",
-    "plain": "Do there exist infinitely many n such that n - 2x^2 is prime for all x with 2x^2 < n? NO (Epure-Gica 2010). Only finitely many: {2, 5, 7, 13, 31, 61, 181, 199}.",
-    "whyMatters": [
-      "Connects prime distribution with quadratic residues",
-      "All 8 known values are computationally verified in Lean",
-      "The Epure-Gica classification splits into mod-4 residue classes"
-    ]
+    "formal": "(LaTeX not available)",
+    "plain": "Problem statement not found",
+    "whyMatters": []
   },
   "knownResults": {
     "proven": [],
@@ -20,53 +16,29 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "DEEP_DIVE",
-    "since": "2026-03-11T04:30:14Z",
-    "iteration": 2,
-    "focus": "Complete verification of all known values, proof fixes",
+    "phase": "NEW",
+    "since": "2026-01-15T16:10:18.693Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Investigate if mod-3 exception is ruled out in literature",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed broken even_case proof. Verified ALL 8 known values (was only 4). Added 5 failure cases, structural lemmas, and all_known_values_verified theorem. Theorem count: 7 -> 18.",
-    "builtItems": [
-      "Fixed even_case proof (was using incorrect Nat.Prime.not_dvd_one API)",
-      "Proved allShiftsArePrime_implies_prime: x=0 case gives primality",
-      "Proved allShiftsArePrime_odd: solutions > 2 must be odd",
-      "Verified n=31: 31,29,23,13 all prime",
-      "Verified n=61: 61,59,53,43,29,11 all prime",
-      "Verified n=181: 181,179,173,163,149,131,109,83,53,19 all prime",
-      "Verified n=199: 199,197,191,181,167,149,127,101,71,37 all prime",
-      "Added 5 failure cases: n=1,3,4,9,15",
-      "Proved all_known_values_verified: unified theorem for all 8 values"
-    ],
-    "insights": [
-      "The x=0 specialization immediately gives Nat.Prime n as necessary condition",
-      "Even n > 2 fail because even numbers > 2 are not prime",
-      "For n > 2, AllShiftsArePrime forces n odd, so n mod 4 in {1,3}",
-      "All 8 known values have n - 2x^2 producing only primes for all valid x",
-      "The pattern suggests quadratic residues modulo small primes create the obstruction for large n",
-      "Epure-Gica mod-3 case allows one possible exception > 199 - this prevents proving an explicit bound"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Consider proving erdos_1140_finite from epure_gica axioms if mod-3 exception is resolved",
-      "Add Aristotle companion file for routine supporting lemmas",
-      "Investigate whether the one possible exception in mod-3 case has been ruled out"
-    ]
+    "nextSteps": [],
+    "markdown": "# Erdős #1140 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
   "tags": [
-    "erdos",
-    "disproved",
-    "number-theory",
-    "primes",
-    "quadratic-forms"
+    "erdos"
   ],
   "relatedProofs": [],
   "references": {
@@ -76,7 +48,5 @@
   },
   "started": "2026-01-15T16:10:18.694Z",
   "significance": 7,
-  "tractability": 6,
-  "knowledgeScore": 65,
-  "lastUpdate": "2026-03-11T04:30:14Z"
+  "tractability": 6
 }
