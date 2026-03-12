@@ -226,5 +226,17 @@
     "significance": "supporting",
     "relatedConcepts": ["interval_cases", "anomaly classification", "deficiency", "open problem", "Maehara"],
     "prerequisites": ["deficiency_dim1", "deficiency_dim2", "deficiency_dim3", "deficiency_dim4", "deficiency_dim5"]
+  },
+  {
+    "id": "erdos-1007-oq-01-irrefl-embedding",
+    "proofId": "erdos-1007-oq-01",
+    "range": { "startLine": 283, "endLine": 316 },
+    "type": "theorem",
+    "title": "Constructive Embedding Existence for Irreflexive Graphs",
+    "content": "**Theorem** `hasUnitEmbedding_exists_irrefl`: every irreflexive finite graph admits a unit-distance embedding in some ℝⁿ.\n\nThis constructively proves what was axiomatized in §1 (`hasUnitEmbedding_exists'`), under the standard graph-theoretic assumption of irreflexivity (no self-loops). The proof splits on vertex count:\n- **|V| ≤ 1**: Irreflexivity forces adj to be empty (since u = v for all pairs). Map everything to 0 in ℝ¹.\n- **|V| ≥ 2**: Use `Fintype.truncEquivFin` to get V ≃ Fin |V|, then compose with the simplex embedding. Since adj u v → u ≠ v (by irreflexivity), the complete graph embedding works for any subgraph.\n\nThe helper `subgraph_unit_embedding` factors out the key insight: any subgraph of K_n inherits the unit-distance embedding from K_n.",
+    "mathContext": "For an irreflexive graph (no self-loops, standard for simple graphs), the irreflexivity hypothesis adj u v → u ≠ v ensures the simplex embedding of K_{|V|} is also valid for the original graph. This is because the simplex embedding achieves unit distance for *all* distinct pairs, so any subgraph's edges automatically have unit length. The use of `Fintype.truncEquivFin` to identify V with Fin |V| is a standard Lean technique for reducing problems on abstract finite types to concrete indexed types.",
+    "significance": "key",
+    "relatedConcepts": ["irreflexive graph", "simple graph", "subgraph embedding", "Fintype.truncEquivFin", "constructive proof"],
+    "prerequisites": ["simplexEmbed_dist_sq", "Real.sqrt_one", "Fintype.card_le_one_iff", "Irreflexive"]
   }
 ]
