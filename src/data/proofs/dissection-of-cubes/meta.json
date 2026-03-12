@@ -29,6 +29,16 @@
         "theorem": "WellFounded",
         "description": "Well-foundedness for infinite descent",
         "module": "Mathlib.Order.WellFounded"
+      },
+      {
+        "theorem": "Finset.exists_min_image",
+        "description": "Existence of minimum element in a nonempty Finset under a linear order",
+        "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "Fintype.card_le_of_injective",
+        "description": "If f : A -> B is injective, then |A| <= |B|. Used to bound chain length.",
+        "module": "Mathlib.Data.Fintype.Card"
       }
     ],
     "originalContributions": [
@@ -40,70 +50,126 @@
       "Proved smallest_cube_top_is_floor via Finset.exists_min_image",
       "Created DissectionOfCubesOQ01.lean: formalized collision pairs and minimum collision lower bound"
     ],
+    "references": [
+      {
+        "authors": "J. E. Littlewood",
+        "title": "A Mathematician's Miscellany",
+        "year": "1953",
+        "venue": "Methuen & Co., London",
+        "note": "Contains the elegant infinite descent proof that cubing the cube is impossible"
+      },
+      {
+        "authors": "R. L. Brooks, C. A. B. Smith, A. H. Stone, W. T. Tutte",
+        "title": "The dissection of rectangles into squares",
+        "year": "1940",
+        "venue": "Duke Math. J., 7, 312-340",
+        "note": "First construction of a 'squared square' (2D analog IS possible), using electrical network theory"
+      },
+      {
+        "authors": "F. Wiedijk",
+        "title": "Formalizing 100 Theorems",
+        "year": "2008",
+        "venue": "https://www.cs.ru.nl/~freek/100/",
+        "note": "This theorem is #82 on Wiedijk's list of 100 notable theorems to formalize"
+      },
+      {
+        "authors": "A. J. W. Duijvestijn",
+        "title": "Simple perfect squared square of lowest order",
+        "year": "1978",
+        "venue": "J. Combinatorial Theory Ser. B, 25, 240-243",
+        "note": "Found the smallest simple perfect squared square: 21 squares, side 112"
+      }
+    ],
+    "crossReferences": [
+      {
+        "proofId": "dissection-of-cubes-oq-01",
+        "relationship": "extends",
+        "description": "OQ01 formalizes collision pairs and minimum collision lower bounds, advancing toward removing the chain axiom"
+      }
+    ],
     "dateAdded": "12/28/25"
   },
   "overview": {
-    "historicalContext": "The impossibility of dissecting a cube into smaller cubes of all different sizes was proven elegantly by J.E. Littlewood. He included this proof in his book 'A Mathematician's Miscellany' as an example of mathematical elegance.\n\nInterestingly, the 2D analog has a completely different answer: a square CAN be dissected into squares of all different sizes. The first such 'squared square' was found by Brooks, Smith, Stone, and Tutte in 1940.",
+    "historicalContext": "The impossibility of dissecting a cube into smaller cubes of all different sizes was proved by J.E. Littlewood and included in his book 'A Mathematician's Miscellany' (1953) as an example of mathematical elegance. The proof requires no computation or algebraic manipulation — just geometric visualization and infinite descent.\n\nThe 2D analog has a completely different answer: a square CAN be dissected into squares of all different sizes. The first such 'squared square' was found by Brooks, Smith, Stone, and Tutte in 1940, using an ingenious connection to electrical network theory. The smallest 'simple perfect squared square' has 21 squares and side 112, found by Duijvestijn (1978).\n\nThe key geometric reason for the dimensional difference: in 3D, the smallest cube on any floor is completely surrounded by taller cubes on all 4 sides, forcing its top face to be a new interior floor. In 2D, a square can extend to the boundary wall, breaking the descent argument. The impossibility extends to all dimensions >= 3 and to rectangular boxes.",
     "problemStatement": "**Theorem (Littlewood)**: A cube cannot be dissected into a finite number of smaller cubes, all of different sizes.\n\nEquivalently: In any dissection of a cube into finitely many smaller cubes, at least two cubes must have the same size.\n\nThis is Wiedijk's 100 Theorems #82.",
-    "proofStrategy": "**Littlewood's Elegant Proof by Infinite Descent**:\n\n1. Consider the bottom face of the large cube, covered by smaller cubes\n2. Find the smallest cube touching the bottom - call it C\n3. Since all sizes differ, C is surrounded by taller cubes on all sides\n4. C's top face becomes a new 'floor' at a higher level\n5. This floor is also covered by cubes, all smaller than C\n6. The smallest cube on this new floor creates another floor\n7. This generates an infinite sequence of ever-smaller cubes\n8. But we only have finitely many cubes - contradiction!",
+    "proofStrategy": "**Littlewood's Proof by Infinite Descent**:\n\n1. Consider the bottom face of the large cube, covered by smaller cubes\n2. Find the smallest cube touching the bottom — call it C (via `Finset.exists_min_image`)\n3. Since all sizes differ, C is surrounded by taller cubes on all sides\n4. C's top face becomes a new 'floor' at a higher level\n5. This floor is covered by cubes smaller than C\n6. Repeat: generates an infinite strictly decreasing sequence of cube sizes\n7. A strictly decreasing chain of length n requires n distinct cubes (injectivity via `Fintype.card_le_of_injective`)\n8. Take a chain of length card+1 > card — contradiction with finiteness (`omega`)",
     "keyInsights": [
-      "The infinite descent argument requires no computation",
-      "The 2D case (squaring the square) is possible due to edge effects",
-      "The key is that interior cubes are completely surrounded",
-      "This exemplifies how dimension affects geometric problems"
+      "The infinite descent argument requires no computation — pure geometric reasoning",
+      "The 2D case (squaring the square) IS possible because edge squares can reach the boundary, breaking the surrounding argument",
+      "The key geometric step (3D surrounding) is axiomatized: the smallest cube on any floor has its top face as a new interior floor",
+      "The proved `chain_length_bounded` lemma reduces the problem to pigeonhole: a strictly decreasing chain is injective, so its length is bounded by the number of cubes",
+      "The impossibility generalizes to all dimensions >= 3 and to dissection of rectangular boxes"
+    ],
+    "prerequisites": [
+      "Finset operations and cardinality (Mathlib.Data.Finset.Basic)",
+      "Well-foundedness and infinite descent (Mathlib.Order.WellFounded)",
+      "Finset.exists_min_image for finding minimal elements",
+      "Fintype.card_le_of_injective for bounding chain lengths"
     ]
   },
   "sections": [
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "startLine": 52,
-      "endLine": 85,
-      "summary": "Defining cubes and their properties in 3D space."
+      "startLine": 86,
+      "endLine": 110,
+      "summary": "Cube structure (position + side length), Cube.size, Cube.touchesBottom, Cube.inUnitCube.",
+      "mathContext": "Axis-aligned cube: position $(x,y,z)$ (minimum corner), side $s > 0$. $c \\subset [0,1]^3$ iff $0 \\leq x,\\; x+s \\leq 1$ (and similarly for $y, z$)."
     },
     {
       "id": "cube-dissection",
       "title": "Cube Dissection Definition",
-      "startLine": 87,
-      "endLine": 120,
-      "summary": "What it means to dissect a cube into smaller cubes."
+      "startLine": 111,
+      "endLine": 143,
+      "summary": "Cube.interiorDisjoint (6-way axis separation), CubeDissection structure (cubes, containment, pairwise disjoint, covering axiomatized), allDifferentSizes.",
+      "mathContext": "Interior disjoint: $\\exists$ axis where the projections are separated. Covering: $\\bigcup_{c \\in \\text{cubes}} c = [0,1]^3$ (axiomatized as `True`)."
     },
     {
       "id": "floor-argument",
-      "title": "The Key Lemma - Smallest Cube on a Floor",
-      "startLine": 122,
-      "endLine": 155,
-      "summary": "The smallest cube on any floor has its top as a new floor."
+      "title": "The Key Lemma: Smallest Cube on a Floor",
+      "startLine": 145,
+      "endLine": 181,
+      "summary": "cubesTouchingBottom/cubesTouchingPlane (noncomputable via Classical.propDecidable), smallest_cube_top_is_floor via Finset.exists_min_image.",
+      "mathContext": "`Finset.exists_min_image`: for nonempty $S$ and $f : S \\to \\mathbb{R}$, $\\exists c \\in S,\\; \\forall c' \\in S,\\; f(c) \\leq f(c')$. Applied with $f = \\text{Cube.size}$."
     },
     {
       "id": "infinite-descent",
       "title": "The Infinite Descent Argument",
-      "startLine": 157,
-      "endLine": 200,
-      "summary": "Building arbitrarily long chains of decreasing cube sizes."
+      "startLine": 183,
+      "endLine": 256,
+      "summary": "hasDecreasingChain definition, two axioms (smaller_cube_above, long_chains), and the proved chain_length_bounded via Fintype.card_le_of_injective.",
+      "mathContext": "Strictly decreasing chain of length $n$ is injective $\\implies n \\leq |\\text{cubes}|$. Proof: $\\text{chain}(i) \\neq \\text{chain}(j)$ for $i < j$ since sizes differ; then `Fintype.card_le_of_injective`."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
-      "startLine": 202,
-      "endLine": 240,
-      "summary": "No dissection can have all different sizes."
-    }
-  ],
-  "crossReferences": [
+      "startLine": 258,
+      "endLine": 298,
+      "summary": "dissection_of_cubes: ¬ allDifferentSizes (3 lines + omega). two_cubes_same_size: existential reformulation via by_contra + push_neg.",
+      "mathContext": "Take chain of length $|\\text{cubes}| + 1 > |\\text{cubes}|$: contradicts `chain_length_bounded`. `omega` closes $n+1 \\leq n$."
+    },
     {
-      "targetId": "dissection-of-cubes-oq-01",
-      "relationship": "extends",
-      "description": "OQ01 formalizes collision pairs and minimum collision lower bounds, advancing the proof of the main theorem"
+      "id": "squaring-contrast",
+      "title": "Contrast with Squaring the Square",
+      "startLine": 300,
+      "endLine": 362,
+      "summary": "squaring_the_square_exists (True placeholder) and historical notes on the 2D/3D contrast, dimensional generalization.",
+      "mathContext": "2D: 'squared square' exists (Brooks-Smith-Stone-Tutte 1940, smallest: 21 squares, side 112). 3D: impossible by Littlewood's descent. The dimensional barrier: 3D cubes are surrounded on all sides; 2D squares can reach the boundary."
     }
   ],
   "conclusion": {
-    "summary": "Littlewood's proof elegantly shows that cube dissection into different-sized cubes is impossible through infinite descent. The smallest cube on any 'floor' creates a new floor above it with even smaller cubes, leading to infinitely many cubes.",
-    "implications": "**Contrast with 2D:**\n\nThe surprising fact is that squaring the square IS possible! The first solution was found in 1940 and had 69 squares. The smallest 'simple' squared square has 21 squares.\n\n**Why the difference?**\n\nIn 2D, squares near the edge don't need to be completely surrounded, allowing complex interlocking patterns that prevent infinite descent.\n\n**Generalizations:**\n\n- No rectangular box can be cubed with all different sizes\n- The same impossibility holds in all dimensions >= 3",
+    "summary": "Littlewood's proof elegantly shows that cube dissection into different-sized cubes is impossible through infinite descent. The smallest cube on any 'floor' creates a new floor above it with even smaller cubes, leading to infinitely many cubes — contradicting finiteness. The proof is remarkably short: the main theorem is just 3 lines of Lean + omega.",
+    "implications": [
+      "The 2D analog (squaring the square) IS possible — the first solution (1940) had 69 squares, the smallest simple one has 21 squares",
+      "The impossibility extends to all dimensions >= 3 and to rectangular boxes",
+      "The proof pattern (infinite descent via pigeonhole on chain length) appears in Erdős-Szekeres, Ramsey theory, and Dilworth's theorem",
+      "The axiomatized geometric covering step (smaller_cube_above) is the remaining gap — it requires formal 3D tiling theory"
+    ],
     "openQuestions": [
       "Minimum number of repeated sizes needed in a cube dissection",
-      "Generalizations to other 3D shapes",
-      "Connections to packing problems"
+      "Generalizations to other 3D shapes (e.g., can a tetrahedron be dissected into tetrahedra of all different sizes?)",
+      "Formalizing the geometric covering axiom (smaller_cube_above) without external axioms",
+      "Connections to packing problems and the Dehn invariant"
     ]
   }
 }
