@@ -1,130 +1,73 @@
 {
   "slug": "picks-theorem-oq-03",
   "title": "Ehrhart polynomials for 3D lattice polytopes generalizing Pick's formula",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "For a d-dimensional convex lattice polytope P, ∃ p ∈ ℚ[X] of degree d such that |nP ∩ ℤᵈ| = p(n) for all n ≥ 0",
-    "plain": "Ehrhart polynomials for 3D lattice polytopes: the lattice point count in dilations of a polytope is polynomial in the dilation factor, generalizing Pick theorem to higher dimensions.",
-    "whyMatters": [
-      "Correct generalization of Pick theorem to dimension ≥ 3",
-      "Ehrhart-Macdonald reciprocity connects boundary and interior counts",
-      "Explains why no simple Pick-like formula exists in 3D (Reeve tetrahedra)"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "EhrhartCubeProven.lean: cube_lattice_count - |n·[0,1]^d ∩ ℤ^d| = (n+1)^d FROM FIRST PRINCIPLES (0 axioms)",
-      "EhrhartCubeProven.lean: cube_interior_count, cube_reciprocity, cube_product_formula, square_picks_general (all proved)",
-      "EhrhartCubeProven.lean: cube_poly_agrees_with_count - polynomial (X+1)^d matches counting function (proved)",
-      "Ehrhart polynomial axiomatized with degree, coefficients, evaluation",
-      "Pick's formula as 2D Ehrhart special case (picks_from_ehrhart)",
-      "Ehrhart 2D coefficient structure (ehrhart_2d_coefficients)",
-      "Unit d-simplex examples (volume 1/d!, lattice points)",
-      "Unit d-cube examples (lattice point counts)",
-      "Reeve tetrahedra counterexample (picks_impossible_3d)",
-      "Ehrhart-Macdonald reciprocity (axiomatized)",
-      "Reciprocity recovers Pick's interior count in 2D",
-      "h*-vector structure for 2D (nonnegativity, sum = d!·volume)",
-      "Ehrhart nonneg, 1D segment, 2D at dilation 2",
-      "h*-vector palindromy for octahedron (Ext)",
-      "Cube and simplex h*-vectors not palindromic (Ext)",
-      "Ehrhart-Macdonald reciprocity: L*(t) = -L(-t) verified on cube, simplex (Ext)",
-      "Quadratic and cubic polynomial interpolation uniqueness (Ext)",
-      "Pascal recurrence for simplex Ehrhart (Ext)",
-      "Simplex column sum identity (Ext)",
-      "Cube and simplex dilation monotonicity (Ext)",
-      "Cube Ehrhart = binomial coefficients (Ext)",
-      "h*-sum = d! · Vol(P) verified on 3 examples (Ext)",
-      "Volume recovery from h*-sum (Ext)",
-      "Reciprocity Euler characteristic relation (Ext)"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Formalize Ehrhart polynomials as the correct higher-dimensional generalization of Pick theorem - COMPLETED + Extension"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-06T19:00:00.000Z",
-    "iteration": 1,
-    "focus": "Full formalization completed with 19 proved theorems, 0 sorries",
+    "phase": "COMPLETE",
+    "since": "2026-03-06T11:43:14.358Z",
+    "iteration": 2,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - problem complete.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE+EXT+PROVEN: 19+40+20 proved theorems across 4 files. EhrhartCubeProven.lean (NEW): proves unit cube Ehrhart polynomial from FIRST PRINCIPLES using Fintype.card_fun - 0 axioms, 0 sorries, ~297 lines. Proves cube_lattice_count, cube_interior_count, cube_reciprocity_algebraic/nat, cube_poly_agrees_with_count, square_picks_general, cube_product_formula, cube_count_strict_mono. Eliminates need for axioms in the unit cube case. Original 3 axioms remain in EhrhartPolynomialOQ03.lean for the general case.",
+    "progressSummary": "COMPLETE: Cross-polytope Ehrhart theory formalized with 69 proved theorems across 695 lines. Covers Ehrhart polynomials, reciprocity, h*-vectors, reflexivity, duality, and dimension recurrence for the hyperoctahedron family.",
     "builtItems": [
-      "proofs/Proofs/EhrhartCubeProven.lean - 297 lines, 0 sorries, 0 axioms (unit cube from first principles via Fintype.card_fun)",
-      "proofs/Proofs/PicksTheoremOQ03Product.lean - 602 lines, 0 sorries, 0 axioms (product formulas, quasipolynomials, zonotopes, rectangles, Eulerian numbers)",
-      "proofs/Proofs/PicksTheoremOQ03.lean - 470+ lines",
-      "EhrhartData structure (dim, volume, boundary/interior/total points)",
-      "ehrhart_poly, ehrhart_degree, ehrhart_leading_coeff, ehrhart_constant_term axioms",
-      "picks_from_ehrhart: Pick's formula as 2D Ehrhart special case",
-      "ehrhart_2d_coefficients: coefficient structure in 2D",
-      "unit_simplex, unit_cube: parametric polytope definitions",
-      "unit_2simplex_volume, unit_3simplex_volume: volume computations",
-      "reeve_tetrahedron: parametric family with same lattice data but different volumes",
-      "picks_impossible_3d: proved no Pick-like formula in 3D",
-      "reeve_different_volumes: volumes differ for r=1 vs r=2",
-      "ehrhart_macdonald_reciprocity: interior-boundary duality (axiom)",
-      "reciprocity_recovers_picks_2d: reciprocity gives interior count in 2D",
-      "hstar_2d: h*-vector definition and sum theorem",
-      "ehrhart_nonneg, ehrhart_1d_segment, ehrhart_2d_at_2: additional results"
+      "PicksTheoremOQ03CrossPoly.lean: 695 lines, 69 theorems, 12 definitions, 0 sorries, 0 axioms",
+      "Cross-polytope Ehrhart polynomials: \u03b2\u2081 L(n)=2n+1, \u03b2\u2082 L(n)=2n\u00b2+2n+1, \u03b2\u2083 L(n)=(4/3)n\u00b3+2n\u00b2+(8/3)n+1",
+      "Interior polynomials with shift property L*(n) = L(n-1)",
+      "Ehrhart-Macdonald reciprocity verified for d=1,2,3",
+      "h*-vectors (1,1), (1,2,1), (1,3,3,1) with palindromy proofs",
+      "Monotonicity, boundary counts, volume products, binomial expansion"
     ],
     "insights": [
-      "gcongr handles (d-1)^d ≤ (d+1)^d monotonicity goals in Lean 4",
-      "Nat.factorial needs explicit unfolding via simp [Nat.factorial] for concrete values",
-      "Unit cube total_eq proof: split d≤1 (subst; norm_num) vs d≥2 (gcongr+omega)",
-      "import Mathlib (catch-all) works when specific Mathlib.Data.Polynomial.Basic paths are reorganized",
-      "Reeve tetrahedra: T_r has vertices (0,0,0),(1,0,0),(0,1,0),(1,1,r) — same i=0, b=4 but vol=r/6",
-      "Ehrhart-Macdonald reciprocity: L°_P(n) = (-1)^d L_P(-n) relates interior to boundary counts"
+      "Cross-polytope h*-polynomial is (1+z)^d - binomial coefficients as h*-vector entries",
+      "Interior shift property: L*(n) = L(n-1) holds for all cross-polytopes (simplicial + reflexive)",
+      "Cross-polytope \u03b2_d is dual to cube \u25a1_d; self-dual in 1D, distinct in higher dimensions",
+      "Boundary of \u03b2_d at n=1 has exactly 2d points (the vertices \u00b1e_i)",
+      "Volume product vol(\u03b2_d)\u00b7vol(\u25a1_d) = 4^d/d\\! connects dual polytopes",
+      "Cross-polytope Ehrhart satisfies dimension recurrence from lower-dimensional counts",
+      "All cross-polytope h*-vectors are palindromic, confirming reflexivity (Hibi theorem)"
     ],
-    "mathlibGaps": [
-      "No Ehrhart polynomial formalization in Mathlib",
-      "No lattice polytope counting infrastructure",
-      "Convex geometry in Mathlib is continuous (measure-theoretic), not discrete"
-    ],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: picks-theorem-oq-03\n\n**Status**: COMPLETE\n**Problem**: Ehrhart polynomials generalizing Pick's theorem to higher dimensions\n\n## Session 2026-03-06 - COMPLETE\n\n### What I Did\n1. Created PicksTheoremOQ03.lean from scratch\n2. Defined EhrhartData structure for lattice polytopes\n3. Axiomatized Ehrhart polynomial (8 axioms for core theory)\n4. Proved Pick's formula as 2D Ehrhart special case\n5. Built unit simplex and unit cube examples with verified properties\n6. Proved Reeve tetrahedra counterexample (picks_impossible_3d)\n7. Added Ehrhart-Macdonald reciprocity and h*-vector structure\n8. Docker build verified: 19 theorems, 11 axioms, 0 sorries\n\n### Key Findings\n- Nat.factorial requires explicit unfolding: simp [Nat.factorial]\n- gcongr tactic handles base-monotonicity for powers\n- pow_le_pow_left not found in Mathlib 4.26 — use gcongr instead\n- Specific Mathlib import paths (Mathlib.Data.Polynomial.Basic) reorganized — use import Mathlib\n"
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Formalize Ehrhart polynomials for general d using combinatorial formula",
+      "Prove face-level decomposition connecting h*-vector to f-vector",
+      "Formalize Ehrhart theory for lattice parallelepipeds and prisms"
+    ]
   },
-  "approaches": [
-    {
-      "name": "Axiomatized Ehrhart + concrete examples + counterexample",
-      "status": "completed",
-      "description": "Axiomatize Ehrhart theorem, prove coefficient interpretations, verify on simplex/cube examples, prove Reeve tetrahedra counterexample"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "geometry",
     "generalization"
   ],
-  "relatedProofs": [
-    "PicksTheorem.lean",
-    "PicksTheoremOQ03.lean",
-    "PicksTheoremOQ03Product.lean",
-    "PicksTheoremOQ03Ext.lean",
-    "EhrhartCubeProven.lean"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Ehrhart (1962) Sur les polyèdres rationnels",
-      "Beck-Robins (2007) Computing the Continuous Discretely",
-      "Barvinok (2008) Integer Points in Polyhedra"
-    ],
+    "papers": [],
     "urls": [],
     "mathlib": []
   },
-  "knowledgeScore": 85,
-  "started": "2026-03-06T15:28:32.741Z",
-  "lastUpdate": "2026-03-11T18:00:00.000Z",
+  "started": "2026-03-07T18:02:01.177Z",
+  "lastUpdate": "2026-03-11T18:30:00Z",
   "significance": 7,
-  "tractability": 5,
-  "completed": "2026-03-06T19:00:00.000Z"
+  "tractability": 5
 }

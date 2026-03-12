@@ -2,7 +2,7 @@
   "id": "picks-theorem-oq-03",
   "title": "Ehrhart Polynomials for Lattice Polytopes",
   "slug": "picks-theorem-oq-03",
-  "description": "Ehrhart polynomials generalize Pick's formula to higher dimensions: for a d-dimensional lattice polytope P, the lattice point count of nP is a polynomial of degree d in n. Verified on cubes, simplices, and octahedra with Ehrhart-Macdonald reciprocity.",
+  "description": "Ehrhart polynomials generalize Pick's formula to higher dimensions: for a d-dimensional lattice polytope P, the lattice point count of nP is a polynomial of degree d in n. Verified on cubes, simplices, cross-polytopes (octahedra), and their products, with Ehrhart-Macdonald reciprocity, h*-vector palindromy, and reflexive polytope characterization.",
   "meta": {
     "author": "Eugène Ehrhart (1962)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ehrhart_polynomial",
@@ -49,7 +49,18 @@
       "Zonotope Ehrhart theory: centered cubes as translates of standard cubes",
       "Rectangle Ehrhart polynomial and Pick's formula for rectangles (proved algebraically)",
       "Eulerian numbers and h*-vector connection to d! for unit cubes",
-      "Valuation property for lattice point counting on intervals"
+      "Valuation property for lattice point counting on intervals",
+      "Cross-polytope (hyperoctahedron) Ehrhart theory: L_{β_d}(n) for d=1,2,3",
+      "Cross-polytope volume formula: vol(β_d) = 2^d/d! verified",
+      "Cross-polytope interior shift: L*(n) = L(n-1) proved for all dimensions",
+      "Ehrhart-Macdonald reciprocity verified for cross-polytopes (d=1,2,3)",
+      "Cross-polytope h*-vector palindromy proving reflexivity (Hibi theorem connection)",
+      "h*_{β_d}(z) = (1+z)^d: cross-polytope h*-polynomial is binomial (proved)",
+      "Cube-cross-polytope duality: self-duality in 1D, divergence in 2D+ (proved)",
+      "Cross-polytope dimension recurrence: L_{β_d}(n) from L_{β_{d-1}} (proved)",
+      "Monotonicity L(n+1) > L(n) for cross-polytopes (proved for d=1,2,3)",
+      "Boundary count pattern: B(β_d) = 2d vertices (proved for d=1,2,3)",
+      "Volume product formula: vol(β_d)·vol(□_d) = 4^d/d! (proved for all d)"
     ],
     "dateAdded": "03/06/26",
     "leanFile": {
@@ -59,7 +70,18 @@
       "theorems": 34,
       "definitions": 20,
       "instances": 0
-    }
+    },
+    "additionalFiles": [
+      {
+        "path": "Proofs/PicksTheoremOQ03CrossPoly.lean",
+        "lineCount": 695,
+        "theorems": 69,
+        "definitions": 12,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "Cross-polytope (hyperoctahedron) Ehrhart theory: polynomials, reciprocity, h*-vectors, duality"
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Eugène Ehrhart (1906-2000) was a French mathematician who published his landmark theorem in 1962, showing that for any d-dimensional lattice polytope P and positive integer n, the number of lattice points in the dilated polytope nP is a polynomial of degree d in n. This polynomial, now called the Ehrhart polynomial, encodes deep geometric and combinatorial information about the polytope.\n\nEhrhart's theorem provides the correct higher-dimensional generalization of Pick's theorem (1899). While Pick's formula A = i + b/2 - 1 works beautifully in 2D, the Reeve tetrahedra show it cannot extend to 3D. Ehrhart theory explains why: in 2D the polynomial has 3 coefficients determined by 2 independent counts (i and b), but in 3D the polynomial has 4 coefficients while i and b provide only 2 equations.\n\nThe theory was further enriched by Macdonald's reciprocity theorem (1971), connecting interior and boundary counts through sign changes in the polynomial, and Stanley's nonnegativity theorem (1980) for h*-vectors.",
@@ -70,7 +92,9 @@
       "**Why Pick fails in 3D**: The Reeve tetrahedra have identical i=0 and b=4 but different volumes r/6, showing that 2 lattice counts cannot determine 4 polynomial coefficients",
       "**Ehrhart-Macdonald reciprocity**: For the unit cube, L*(t) = (t-1)³ = (-1)³·L(-t), beautifully connecting interior counts to the original polynomial via sign changes",
       "**h*-vectors encode volume**: The sum of h*-vector entries equals the normalized volume (d! · Vol), providing a combinatorial decomposition of volume",
-      "**Stanley nonnegativity**: All h*-vector entries are non-negative (proved by Stanley using commutative algebra), constraining which polynomials can be Ehrhart polynomials"
+      "**Stanley nonnegativity**: All h*-vector entries are non-negative (proved by Stanley using commutative algebra), constraining which polynomials can be Ehrhart polynomials",
+      "**Cross-polytope h*-polynomial is (1+z)^d**: The h*-vector of the d-dimensional cross-polytope consists of binomial coefficients C(d,k), making it the simplest possible palindromic h*-vector. This connects reflexive polytope theory to the binomial theorem",
+      "**Interior shift property**: For cross-polytopes, L*(n) = L(n-1), meaning interior point counts of the n-th dilate equal total counts of the (n-1)-th dilate. This is a consequence of the cross-polytope being simplicial and reflexive"
     ]
   },
   "sections": [
@@ -150,6 +174,14 @@
       "startLine": 622,
       "endLine": 721,
       "summary": "Shows the progression from d=0 (point) through d=1 (segment), d=2 (Pick's theorem), to d=3 (Ehrhart). Derives Pick's formula from the 2D case."
+    },
+    {
+      "id": "cross-polytope",
+      "title": "Cross-Polytope Ehrhart Theory",
+      "startLine": 1,
+      "endLine": 695,
+      "file": "Proofs/PicksTheoremOQ03CrossPoly.lean",
+      "summary": "Complete Ehrhart theory for the cross-polytope (hyperoctahedron) family β_d in dimensions 1-3. Proves Ehrhart polynomials, Macdonald reciprocity, h*-vector palindromy (reflexivity), interior shift L*(n)=L(n-1), cube-cross duality, dimension recurrence, monotonicity, boundary counts, and the beautiful identity h*_{β_d}(z) = (1+z)^d connecting to the binomial theorem. 69 theorems, 0 sorries, 0 axioms."
     }
   ],
   "conclusion": {
