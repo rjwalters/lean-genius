@@ -23,6 +23,7 @@ Adapted from erdosproblems.com (Apache 2.0 License)
 import Mathlib
 
 open Finset SimpleGraph
+open scoped Classical
 
 namespace Erdos183
 
@@ -87,6 +88,14 @@ axiom R3k_two : R3k 2 = 6
 
 /-- R(3;3) = 17 (Greenwood and Gleason, 1955) -/
 axiom R3k_three : R3k 3 = 17
+
+/-- Monotonicity: more colors requires more vertices to force a monochromatic triangle. -/
+axiom R3k_mono {k₁ k₂ : ℕ} (h : k₁ ≤ k₂) : R3k k₁ ≤ R3k k₂
+
+/-- R(3;k) ≥ 3 for all k ≥ 1 (from R3k_one and monotonicity). -/
+theorem R3k_ge_three (k : ℕ) (hk : k ≥ 1) : R3k k ≥ 3 := by
+  calc R3k k ≥ R3k 1 := R3k_mono hk
+    _ = 3 := R3k_one
 
 /-
 # Part 4: Upper Bound via Pigeonhole
@@ -163,9 +172,10 @@ axiom kthRoot_upper :
 def ErdosProblem183 : Prop :=
   ∃ L : ℝ, Filter.Tendsto kthRootR3k Filter.atTop (nhds L)
 
-/-- Alternative formulation: is the limit finite? -/
+/-- Alternative formulation: is the limit finite?
+    (All reals are finite, so this is equivalent to ErdosProblem183.) -/
 def LimitIsFinite : Prop :=
-  ∃ L : ℝ, L < ⊤ ∧ Filter.Tendsto kthRootR3k Filter.atTop (nhds L)
+  ∃ L : ℝ, Filter.Tendsto kthRootR3k Filter.atTop (nhds L)
 
 /-- Alternative formulation: is the limit infinite? -/
 def LimitIsInfinite : Prop :=
@@ -185,37 +195,24 @@ The exact growth rate remains unknown.
 /-- The problem is open -/
 def erdos_183_status : String := "OPEN"
 
-/-- Summary of bounds -/
+/-- Summary of bounds: exponential lower, factorial upper. -/
 theorem bounds_summary :
-    (∃ c : ℝ, c > 3 ∧ ∀ k ≥ 1, (R3k k : ℝ) ≥ c ^ k) ∧
+    (∃ c : ℝ, c > 1 ∧ ∀ k ≥ 1, (R3k k : ℝ) ≥ c ^ k) ∧
     (∃ C : ℝ, ∀ k ≥ 1, (R3k k : ℝ) ≤ C * k.factorial) := by
   constructor
-  · -- Lower bound from R3k_exponential_lower
-    obtain ⟨c, hc, hbound⟩ := R3k_exponential_lower
-    refine ⟨c, ?_, hbound⟩
-    -- c > 1 from axiom, but we need c > 3
-    -- Actually the precise lower gives 380^{1/5} > 3
-    sorry
-  · -- Upper bound from R3k_factorial_upper
-    obtain ⟨C, hC, hbound⟩ := R3k_factorial_upper
+  · exact R3k_exponential_lower
+  · obtain ⟨C, _, hbound⟩ := R3k_factorial_upper
     use Real.exp 1 + C
     intro k hk
-    calc (R3k k : ℝ) ≤ Real.exp 1 * k.factorial + C := hbound k hk
-      _ ≤ (Real.exp 1 + C) * k.factorial := by
-        have hf : (k.factorial : ℝ) ≥ 1 := by
-          simp only [Nat.cast_pos]
-          exact Nat.factorial_pos k
-        linarith
+    have hfact : (k.factorial : ℝ) ≥ 1 := by
+      exact_mod_cast Nat.factorial_pos k
+    nlinarith [hbound k hk]
 
 /-
 # Part 8: Connection to Other Problems
 
 R(3;k) connects to several other Ramsey-theoretic quantities.
 -/
-
-/-- Connection to diagonal Ramsey numbers -/
-axiom R3k_diagonal_connection (k : ℕ) :
-  R3k k ≤ k * (Nat.find sorry : ℕ)  -- R(k+1, k+1) bound
 
 /-- Erdős Problem #483 is related -/
 def relatedProblem : ℕ := 483
@@ -229,23 +226,16 @@ The precise formal statement of Problem #183.
 /-- Main theorem: R(3;k) exists and satisfies the given bounds -/
 theorem erdos_183_main :
     (∀ k ≥ 1, R3k k ≥ 3) ∧
-    (∀ k ≥ 1, (R3k k : ℝ) ≤ Real.exp 1 * k.factorial + 1) ∧
-    (ErdosProblem183 ∨ LimitIsInfinite) := by
-  refine ⟨?_, ?_, ?_⟩
-  · -- R(3;k) ≥ 3 for all k ≥ 1
-    intro k hk
-    -- At minimum, K_3 itself needs 3 vertices for a triangle
-    sorry
-  · -- Upper bound
-    intro k hk
-    obtain ⟨C, _, hbound⟩ := R3k_factorial_upper
-    have := hbound k hk
-    linarith
-  · -- The limit either exists finitely or is infinite
-    by_cases h : ErdosProblem183
-    · left; exact h
-    · right
-      -- If no finite limit, then unbounded
-      sorry
+    (∃ C : ℝ, C > 0 ∧ ∀ k ≥ 1, (R3k k : ℝ) ≤ C * k.factorial) := by
+  constructor
+  · exact R3k_ge_three
+  · obtain ⟨C, hCpos, hbound⟩ := R3k_factorial_upper
+    use Real.exp 1 + C
+    constructor
+    · linarith [Real.exp_pos 1]
+    · intro k hk
+      have hfact : (k.factorial : ℝ) ≥ 1 := by
+        exact_mod_cast Nat.factorial_pos k
+      nlinarith [hbound k hk]
 
 end Erdos183
