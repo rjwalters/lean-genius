@@ -8,18 +8,53 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm",
     "date": "~300 BCE (constructive formalization 2026)",
     "status": "verified",
-    "tags": ["number-theory", "constructive-mathematics", "algorithms", "bezout", "divisibility", "euclid"],
+    "tags": [
+      "number-theory",
+      "constructive-mathematics",
+      "algorithms",
+      "bezout",
+      "divisibility",
+      "euclid"
+    ],
     "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ02OQ01.lean",
     "badge": "original",
     "sorries": 0,
     "mathlibDependencies": [
-      {"theorem": "Nat.gcd", "description": "Natural number GCD computation", "module": "Mathlib.Data.Nat.GCD.Basic"},
-      {"theorem": "IsCoprime", "description": "Coprimality via Bézout coefficients", "module": "Mathlib.RingTheory.Coprime.Basic"},
-      {"theorem": "IsCoprime.dvd_of_dvd_mul_left", "description": "Euclid's lemma via IsCoprime", "module": "Mathlib.RingTheory.Coprime.Basic"},
-      {"theorem": "mul_left_cancel₀", "description": "Left cancellation in integral domains", "module": "Mathlib.Algebra.GroupWithZero.Basic"},
-      {"theorem": "Nat.mod_lt", "description": "Modular reduction decreases", "module": "Mathlib.Data.Nat.Defs"},
-      {"theorem": "Nat.div_add_mod", "description": "Division algorithm: a = (a/b)*b + a%b", "module": "Mathlib.Data.Nat.Defs"},
-      {"theorem": "linear_combination", "description": "Tactic for proving linear equalities from hypotheses", "module": "Mathlib.Tactic.LinearCombination"}
+      {
+        "theorem": "Nat.gcd",
+        "description": "Natural number GCD computation",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "IsCoprime",
+        "description": "Coprimality via Bézout coefficients",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      },
+      {
+        "theorem": "IsCoprime.dvd_of_dvd_mul_left",
+        "description": "Euclid's lemma via IsCoprime",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      },
+      {
+        "theorem": "mul_left_cancel₀",
+        "description": "Left cancellation in integral domains",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      },
+      {
+        "theorem": "Nat.mod_lt",
+        "description": "Modular reduction decreases",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "Nat.div_add_mod",
+        "description": "Division algorithm: a = (a/b)*b + a%b",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "linear_combination",
+        "description": "Tactic for proving linear equalities from hypotheses",
+        "module": "Mathlib.Tactic.LinearCombination"
+      }
     ],
     "originalContributions": [
       "extGcd: Self-contained extended Euclidean algorithm with full correctness proofs (Bézout identity + GCD)",
@@ -142,12 +177,7 @@
   ],
   "conclusion": {
     "summary": "The answer is YES: Bézout coefficients from extGcd combine with the quotient formula to give a constructive divisibility algorithm. The explicit quotient q = u*c + v*k is correct in any CommRing, computed over ℕ via the extended Euclidean algorithm, and unique in integral domains. Zero sorries.",
-    "implications": [
-      "Completes the bezout-identity open question chain with a fully constructive algorithm",
-      "The ring-axiomatic quotient formula works in polynomial rings, Gaussian integers, and any Bézout domain",
-      "Demonstrates that classical existence proofs in number theory often contain implicit algorithms that can be extracted",
-      "The extended GCD provides modular inverses: when gcd(a,b) = 1, the Bézout coefficient u is the inverse of a mod b"
-    ],
+    "implications": "Completes the bezout-identity open question chain with a fully constructive algorithm The ring-axiomatic quotient formula works in polynomial rings, Gaussian integers, and any Bézout domain Demonstrates that classical existence proofs in number theory often contain implicit algorithms that can be extracted The extended GCD provides modular inverses: when gcd(a,b) = 1, the Bézout coefficient u is the inverse of a mod b",
     "openQuestions": [
       "Can the noncomputable annotation be removed by making the divisibility witness computable (e.g., via decidable divisibility)?",
       "Can the algorithm be extended to multivariate Bézout identities in polynomial rings?",
