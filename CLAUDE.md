@@ -35,8 +35,9 @@ This project uses **two distinct AI agent orchestration systems** for different 
 | **Scout** | Surveys gallery proofs, techniques, and literature for research problems | On-demand |
 | **Seeker** | Selects research problems when candidate pool runs low | Autonomous (15min) |
 | **Deployer** | Merges PRs, syncs data, deploys website to Cloudflare | Autonomous (30min) |
+| **Tester** | Tests random proof pages on the live site, files issues on failure | Autonomous (30min) |
 
-**Managed by `/lean`**: Enricher, Aristotle, Researcher, Seeker, Deployer
+**Managed by `/lean`**: Enricher, Aristotle, Researcher, Seeker, Deployer, Tester
 **Managed separately**: Erdos Enhancer (`make enhance`, `scripts/erdos/`)
 
 **Invoke via**: `/enricher`, `/aristotle`, `/research`, `/scout`, `/seeker`, `/deploy`
@@ -91,7 +92,7 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 | `/lean` | Start daemon with default pool |
 | `/lean status` | Show work queue and agent status |
 | `/lean start [options]` | Start with custom pool sizes |
-| `/lean spawn <type>` | Add one agent (enricher, aristotle, researcher, seeker, deployer) |
+| `/lean spawn <type>` | Add one agent (enricher, aristotle, researcher, seeker, deployer, tester) |
 | `/lean scale <type> <N>` | Scale pool to N agents |
 | `/lean stop` | Graceful shutdown of all agents (creates signal files) |
 | `/lean stop --force` | Force stop all agents (kills tmux sessions immediately) |
@@ -108,6 +109,7 @@ The `/lean` skill provides a unified interface to start, stop, and scale the mat
 | Researcher | 2 | 5 |
 | Seeker | 1 | 1 |
 | Deployer | 1 | 1 |
+| Tester | 1 | 1 |
 
 ## Helper Scripts
 

@@ -138,6 +138,7 @@ gather_status() {
     local researcher_sessions=()
     local seeker_status="stopped"
     local deployer_status="stopped"
+    local tester_status="stopped"
 
     # Enrichers
     for i in 1 2 3 4 5; do
@@ -166,6 +167,11 @@ gather_status() {
     # Deployer
     if session_exists "deployer"; then
         deployer_status="running:$(get_session_uptime "deployer")"
+    fi
+
+    # Tester
+    if session_exists "tester-agent"; then
+        tester_status="running:$(get_session_uptime "tester-agent")"
     fi
 
     # Work queue counts
@@ -232,6 +238,10 @@ gather_status() {
     "deployer": {
       "status": "${deployer_status%%:*}",
       "uptime": "${deployer_status#*:}"
+    },
+    "tester": {
+      "status": "${tester_status%%:*}",
+      "uptime": "${tester_status#*:}"
     }
   },
   "session_stats": {
@@ -318,6 +328,14 @@ EOF
             echo "      deployer: Running (${deployer_status#*:})"
         else
             echo -e "    ${BOLD}Deployer:${NC} ${YELLOW}0/1 active${NC}"
+        fi
+
+        # Tester
+        if [[ "${tester_status%%:*}" == "running" ]]; then
+            echo -e "    ${BOLD}Tester:${NC} ${GREEN}1/1 active${NC}"
+            echo "      tester-agent: Running (${tester_status#*:})"
+        else
+            echo -e "    ${BOLD}Tester:${NC} ${YELLOW}0/1 active${NC}"
         fi
         echo ""
 
