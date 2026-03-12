@@ -1,4 +1,26 @@
 /-
+This file was edited by Aristotle (https://aristotle.harmonic.fun).
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: 2f46a68b-3f4e-4af2-952a-28a2a86a1202
+
+To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+
+The following was proved by Aristotle:
+
+- theorem elemSymmA_succ_castSucc {n : ℕ} (k : ℕ) (x : Fin (n + 1) → ℝ) :
+    elemSymmA (k + 1) x =
+    elemSymmA (k + 1) (x ∘ Fin.castSucc) +
+    x (Fin.last n) * elemSymmA k (x ∘ Fin.castSucc)
+
+At Harmonic, we use a modified version of the `generalize_proofs` tactic.
+For compatibility, we include this tactic at the start of the file.
+If you add the comment "-- Harmonic `generalize_proofs` tactic" to your file, we will not do this.
+-/
+
+/-
   Aristotle targets for amgm-inequality-oq-02 (Maclaurin Inequalities)
   Routine supporting lemmas for automated proof search.
   See AmgmInequalityOQ02.lean for the main formalization.
@@ -23,6 +45,213 @@
 -/
 import Mathlib
 
+
+import Mathlib.Tactic.GeneralizeProofs
+
+namespace Harmonic.GeneralizeProofs
+-- Harmonic `generalize_proofs` tactic
+
+open Lean Meta Elab Parser.Tactic Elab.Tactic Mathlib.Tactic.GeneralizeProofs
+def mkLambdaFVarsUsedOnly' (fvars : Array Expr) (e : Expr) : MetaM (Array Expr × Expr) := do
+  let mut e := e
+  let mut fvars' : List Expr := []
+  for i' in [0:fvars.size] do
+    let fvar := fvars[fvars.size - i' - 1]!
+    e ← mkLambdaFVars #[fvar] e (usedOnly := false) (usedLetOnly := false)
+    match e with
+    | .letE _ _ v b _ => e := b.instantiate1 v
+    | .lam _ _ _b _ => fvars' := fvar :: fvars'
+    | _ => unreachable!
+  return (fvars'.toArray, e)
+
+partial def abstractProofs' (e : Expr) (ty? : Option Expr) : MAbs Expr := do
+  if (← read).depth ≤ (← read).config.maxDepth then MAbs.withRecurse <| visit (← instantiateMVars e) ty?
+  else return e
+where
+  visit (e : Expr) (ty? : Option Expr) : MAbs Expr := do
+    if (← read).config.debug then
+      if let some ty := ty? then
+        unless ← isDefEq (← inferType e) ty do
+          throwError "visit: type of{indentD e}\nis not{indentD ty}"
+    if e.isAtomic then
+      return e
+    else
+      checkCache (e, ty?) fun _ ↦ do
+        if ← isProof e then
+          visitProof e ty?
+        else
+          match e with
+          | .forallE n t b i =>
+            withLocalDecl n i (← visit t none) fun x ↦ MAbs.withLocal x do
+              mkForallFVars #[x] (← visit (b.instantiate1 x) none) (usedOnly := false) (usedLetOnly := false)
+          | .lam n t b i => do
+            withLocalDecl n i (← visit t none) fun x ↦ MAbs.withLocal x do
+              let ty'? ←
+                if let some ty := ty? then
+                  let .forallE _ _ tyB _ ← pure ty
+                    | throwError "Expecting forall in abstractProofs .lam"
+                  pure <| some <| tyB.instantiate1 x
+                else
+                  pure none
+              mkLambdaFVars #[x] (← visit (b.instantiate1 x) ty'?) (usedOnly := false) (usedLetOnly := false)
+          | .letE n t v b _ =>
+            let t' ← visit t none
+            withLetDecl n t' (← visit v t') fun x ↦ MAbs.withLocal x do
+              mkLetFVars #[x] (← visit (b.instantiate1 x) ty?) (usedLetOnly := false)
+          | .app .. =>
+            e.withApp fun f args ↦ do
+              let f' ← visit f none
+              let argTys ← appArgExpectedTypes f' args ty?
+              let mut args' := #[]
+              for arg in args, argTy in argTys do
+                args' := args'.push <| ← visit arg argTy
+              return mkAppN f' args'
+          | .mdata _ b  => return e.updateMData! (← visit b ty?)
+          | .proj _ _ b => return e.updateProj! (← visit b none)
+          | _           => unreachable!
+  visitProof (e : Expr) (ty? : Option Expr) : MAbs Expr := do
+    let eOrig := e
+    let fvars := (← read).fvars
+    let e := e.withApp' fun f args => f.beta args
+    if e.withApp' fun f args => f.isAtomic && args.all fvars.contains then return e
+    let e ←
+      if let some ty := ty? then
+        if (← read).config.debug then
+          unless ← isDefEq ty (← inferType e) do
+            throwError m!"visitProof: incorrectly propagated type{indentD ty}\nfor{indentD e}"
+        mkExpectedTypeHint e ty
+      else pure e
+    if (← read).config.debug then
+      unless ← Lean.MetavarContext.isWellFormed (← getLCtx) e do
+        throwError m!"visitProof: proof{indentD e}\nis not well-formed in the current context\n\
+          fvars: {fvars}"
+    let (fvars', pf) ← mkLambdaFVarsUsedOnly' fvars e
+    if !(← read).config.abstract && !fvars'.isEmpty then
+      return eOrig
+    if (← read).config.debug then
+      unless ← Lean.MetavarContext.isWellFormed (← read).initLCtx pf do
+        throwError m!"visitProof: proof{indentD pf}\nis not well-formed in the initial context\n\
+          fvars: {fvars}\n{(← mkFreshExprMVar none).mvarId!}"
+    let pfTy ← instantiateMVars (← inferType pf)
+    let pfTy ← abstractProofs' pfTy none
+    if let some pf' ← MAbs.findProof? pfTy then
+      return mkAppN pf' fvars'
+    MAbs.insertProof pfTy pf
+    return mkAppN pf fvars'
+partial def withGeneralizedProofs' {α : Type} [Inhabited α] (e : Expr) (ty? : Option Expr)
+    (k : Array Expr → Array Expr → Expr → MGen α) :
+    MGen α := do
+  let propToFVar := (← get).propToFVar
+  let (e, generalizations) ← MGen.runMAbs <| abstractProofs' e ty?
+  let rec
+    go [Inhabited α] (i : Nat) (fvars pfs : Array Expr)
+        (proofToFVar propToFVar : ExprMap Expr) : MGen α := do
+      if h : i < generalizations.size then
+        let (ty, pf) := generalizations[i]
+        let ty := (← instantiateMVars (ty.replace proofToFVar.get?)).cleanupAnnotations
+        withLocalDeclD (← mkFreshUserName `pf) ty fun fvar => do
+          go (i + 1) (fvars := fvars.push fvar) (pfs := pfs.push pf)
+            (proofToFVar := proofToFVar.insert pf fvar)
+            (propToFVar := propToFVar.insert ty fvar)
+      else
+        withNewLocalInstances fvars 0 do
+          let e' := e.replace proofToFVar.get?
+          modify fun s => { s with propToFVar }
+          k fvars pfs e'
+  go 0 #[] #[] (proofToFVar := {}) (propToFVar := propToFVar)
+
+partial def generalizeProofsCore'
+    (g : MVarId) (fvars rfvars : Array FVarId) (target : Bool) :
+    MGen (Array Expr × MVarId) := go g 0 #[]
+where
+  go (g : MVarId) (i : Nat) (hs : Array Expr) : MGen (Array Expr × MVarId) := g.withContext do
+    let tag ← g.getTag
+    if h : i < rfvars.size then
+      let fvar := rfvars[i]
+      if fvars.contains fvar then
+        let tgt ← instantiateMVars <| ← g.getType
+        let ty := (if tgt.isLet then tgt.letType! else tgt.bindingDomain!).cleanupAnnotations
+        if ← pure tgt.isLet <&&> Meta.isProp ty then
+          let tgt' := Expr.forallE tgt.letName! ty tgt.letBody! .default
+          let g' ← mkFreshExprSyntheticOpaqueMVar tgt' tag
+          g.assign <| .app g' tgt.letValue!
+          return ← go g'.mvarId! i hs
+        if let some pf := (← get).propToFVar.get? ty then
+          let tgt' := tgt.bindingBody!.instantiate1 pf
+          let g' ← mkFreshExprSyntheticOpaqueMVar tgt' tag
+          g.assign <| .lam tgt.bindingName! tgt.bindingDomain! g' tgt.bindingInfo!
+          return ← go g'.mvarId! (i + 1) hs
+        match tgt with
+        | .forallE n t b bi =>
+          let prop ← Meta.isProp t
+          withGeneralizedProofs' t none fun hs' pfs' t' => do
+            let t' := t'.cleanupAnnotations
+            let tgt' := Expr.forallE n t' b bi
+            let g' ← mkFreshExprSyntheticOpaqueMVar tgt' tag
+            g.assign <| mkAppN (← mkLambdaFVars hs' g' (usedOnly := false) (usedLetOnly := false)) pfs'
+            let (fvar', g') ← g'.mvarId!.intro1P
+            g'.withContext do Elab.pushInfoLeaf <|
+              .ofFVarAliasInfo { id := fvar', baseId := fvar, userName := ← fvar'.getUserName }
+            if prop then
+              MGen.insertFVar t' (.fvar fvar')
+            go g' (i + 1) (hs ++ hs')
+        | .letE n t v b _ =>
+          withGeneralizedProofs' t none fun hs' pfs' t' => do
+            withGeneralizedProofs' v t' fun hs'' pfs'' v' => do
+              let tgt' := Expr.letE n t' v' b false
+              let g' ← mkFreshExprSyntheticOpaqueMVar tgt' tag
+              g.assign <| mkAppN (← mkLambdaFVars (hs' ++ hs'') g' (usedOnly := false) (usedLetOnly := false)) (pfs' ++ pfs'')
+              let (fvar', g') ← g'.mvarId!.intro1P
+              g'.withContext do Elab.pushInfoLeaf <|
+                .ofFVarAliasInfo { id := fvar', baseId := fvar, userName := ← fvar'.getUserName }
+              go g' (i + 1) (hs ++ hs' ++ hs'')
+        | _ => unreachable!
+      else
+        let (fvar', g') ← g.intro1P
+        g'.withContext do Elab.pushInfoLeaf <|
+          .ofFVarAliasInfo { id := fvar', baseId := fvar, userName := ← fvar'.getUserName }
+        go g' (i + 1) hs
+    else if target then
+      withGeneralizedProofs' (← g.getType) none fun hs' pfs' ty' => do
+        let g' ← mkFreshExprSyntheticOpaqueMVar ty' tag
+        g.assign <| mkAppN (← mkLambdaFVars hs' g' (usedOnly := false) (usedLetOnly := false)) pfs'
+        return (hs ++ hs', g'.mvarId!)
+    else
+      return (hs, g)
+
+end GeneralizeProofs
+
+open Lean Elab Parser.Tactic Elab.Tactic Mathlib.Tactic.GeneralizeProofs
+partial def generalizeProofs'
+    (g : MVarId) (fvars : Array FVarId) (target : Bool) (config : Config := {}) :
+    MetaM (Array Expr × MVarId) := do
+  let (rfvars, g) ← g.revert fvars (clearAuxDeclsInsteadOfRevert := true)
+  g.withContext do
+    let s := { propToFVar := ← initialPropToFVar }
+    GeneralizeProofs.generalizeProofsCore' g fvars rfvars target |>.run config |>.run' s
+
+elab (name := generalizeProofsElab'') "generalize_proofs" config?:(Parser.Tactic.config)?
+    hs:(ppSpace colGt binderIdent)* loc?:(location)? : tactic => withMainContext do
+  let config ← elabConfig (mkOptionalNode config?)
+  let (fvars, target) ←
+    match expandOptLocation (Lean.mkOptionalNode loc?) with
+    | .wildcard => pure ((← getLCtx).getFVarIds, true)
+    | .targets t target => pure (← getFVarIds t, target)
+  liftMetaTactic1 fun g => do
+    let (pfs, g) ← generalizeProofs' g fvars target config
+    g.withContext do
+      let mut lctx ← getLCtx
+      for h in hs, fvar in pfs do
+        if let `(binderIdent| $s:ident) := h then
+          lctx := lctx.setUserName fvar.fvarId! s.getId
+        Expr.addLocalVarInfoForBinderIdent fvar h
+      Meta.withLCtx lctx (← Meta.getLocalInstances) do
+        let g' ← Meta.mkFreshExprSyntheticOpaqueMVar (← g.getType) (← g.getTag)
+        g.assign g'
+        return g'.mvarId!
+
+end Harmonic
+
 open Finset Real
 
 noncomputable def elemSymmA {n : ℕ} (k : ℕ) (x : Fin n → ℝ) : ℝ :=
@@ -38,86 +267,44 @@ theorem elemSymmA_one {n : ℕ} (x : Fin n → ℝ) : elemSymmA 1 x = ∑ i, x i
 
 /-- Recurrence: eₖ₊₁(x₀,...,xₙ) = eₖ₊₁(x₀,...,xₙ₋₁) + xₙ · eₖ(x₀,...,xₙ₋₁)
     This is the fundamental recurrence for elementary symmetric polynomials. -/
-private def csEmbA (n : ℕ) : Fin n ↪ Fin (n + 1) :=
-  ⟨Fin.castSucc, fun _ _ h => Fin.castSucc_inj.mp h⟩
-
-@[simp] private lemma csEmbA_apply (n : ℕ) (i : Fin n) : csEmbA n i = Fin.castSucc i := rfl
-
-private lemma fin_univ_insert_lastA (n : ℕ) :
-    (univ : Finset (Fin (n + 1))) = insert (Fin.last n) (univ.map (csEmbA n)) := by
-  ext i
-  simp only [mem_univ, mem_insert, mem_map, true_and, csEmbA_apply]
-  constructor
-  · intro _; exact Fin.lastCases (Or.inl rfl) (fun j => Or.inr ⟨j, rfl⟩) i
-  · intro _; trivial
-
-private lemma fin_last_not_mem_mapA (n : ℕ) :
-    Fin.last n ∉ (univ : Finset (Fin n)).map (csEmbA n) := by
-  simp only [mem_map, mem_univ, true_and, csEmbA_apply, not_exists]
-  intro i; exact (Fin.castSucc_lt_last i).ne
-
-private lemma mapEmbA_eq {n : ℕ} (s : Finset (Fin n)) :
-    (Finset.mapEmbedding (csEmbA n)).toEmbedding s = s.map (csEmbA n) := rfl
-
-private lemma prod_map_csEmbA {n : ℕ} (s : Finset (Fin n)) (x : Fin (n + 1) → ℝ) :
-    ∏ i ∈ s.map (csEmbA n), x i = ∏ j ∈ s, x (Fin.castSucc j) := by
-  rw [Finset.prod_map]; simp only [csEmbA_apply]
-
 theorem elemSymmA_succ_castSucc {n : ℕ} (k : ℕ) (x : Fin (n + 1) → ℝ) :
     elemSymmA (k + 1) x =
     elemSymmA (k + 1) (x ∘ Fin.castSucc) +
     x (Fin.last n) * elemSymmA k (x ∘ Fin.castSucc) := by
-  simp only [elemSymmA]
-  rw [fin_univ_insert_lastA, Finset.powersetCard_succ_insert (fin_last_not_mem_mapA n)]
-  have pc_disjA : Disjoint
-      (powersetCard (k + 1) ((univ : Finset (Fin n)).map (csEmbA n)))
-      ((powersetCard k ((univ : Finset (Fin n)).map (csEmbA n))).image
-        (insert (Fin.last n))) := by
-    apply Finset.disjoint_left.mpr
-    intro t ht1 ht2
-    simp only [mem_image, Finset.mem_powersetCard] at ht1 ht2
-    obtain ⟨s, hs, rfl⟩ := ht2
-    obtain ⟨ht1_sub, _⟩ := ht1
-    have hmem := ht1_sub (Finset.mem_insert_self (Fin.last n) _)
-    simp only [mem_map, mem_univ, true_and, csEmbA_apply] at hmem
-    obtain ⟨i, hi⟩ := hmem
-    exact (Fin.castSucc_lt_last i).ne hi
-  rw [Finset.sum_union pc_disjA]
-  congr 1
-  · rw [Finset.powersetCard_map, Finset.sum_map]
-    congr 1; ext s
-    simp only [mapEmbA_eq]
-    rw [prod_map_csEmbA]
-    simp only [Function.comp_apply]
-  · have insert_injA : Set.InjOn (insert (Fin.last n))
-        (powersetCard k ((univ : Finset (Fin n)).map (csEmbA n))).toSet := by
-      intro s hs t ht hst
-      rw [Finset.mem_coe] at hs ht
-      rw [Finset.mem_powersetCard] at hs ht
-      have hs' : Fin.last n ∉ s := by
-        intro hmem
-        have h := hs.1 hmem
-        simp only [mem_map, mem_univ, true_and, csEmbA_apply] at h
-        obtain ⟨i, hi⟩ := h
-        exact (Fin.castSucc_lt_last i).ne hi
-      have ht' : Fin.last n ∉ t := by
-        intro hmem
-        have h := ht.1 hmem
-        simp only [mem_map, mem_univ, true_and, csEmbA_apply] at h
-        obtain ⟨i, hi⟩ := h
-        exact (Fin.castSucc_lt_last i).ne hi
-      rw [show s = (insert (Fin.last n) s).erase (Fin.last n) from
-          (Finset.erase_insert hs').symm, hst, Finset.erase_insert ht']
-    rw [Finset.sum_image insert_injA, Finset.powersetCard_map, Finset.sum_map]
-    have h_prod : ∀ s ∈ (powersetCard k (univ : Finset (Fin n))),
-        ∏ i ∈ insert (Fin.last n) ((Finset.mapEmbedding (csEmbA n)).toEmbedding s), x i =
-        x (Fin.last n) * ∏ j ∈ s, (x ∘ Fin.castSucc) j := by
-      intro s _
-      rw [mapEmbA_eq, Finset.prod_insert]
-      · simp only [Function.comp_apply]; rw [prod_map_csEmbA]
-      · simp only [mem_map, csEmbA_apply, not_exists, not_and]
-        intro j _; exact (Fin.castSucc_lt_last j).ne
-    rw [Finset.sum_congr rfl h_prod, ← Finset.mul_sum]
+  unfold elemSymmA;
+  have h_split : Finset.powersetCard (k + 1) (Finset.univ : Finset (Fin (n + 1))) = Finset.image (fun s => Finset.image (fun i => Fin.castSucc i) s) (Finset.powersetCard (k + 1) (Finset.univ : Finset (Fin n))) ∪ Finset.image (fun s => Finset.image (fun i => Fin.castSucc i) s ∪ {Fin.last n}) (Finset.powersetCard k (Finset.univ : Finset (Fin n))) := by
+    ext s
+    simp [Finset.mem_union, Finset.mem_image];
+    constructor <;> intro hs
+    all_goals generalize_proofs at *;
+    · by_cases h : Fin.last n ∈ s;
+      · refine' Or.inr ⟨ Finset.univ.filter fun i => Fin.castSucc i ∈ s, _, _ ⟩;
+        · have h_sum : ∑ i : Fin (n + 1), (if i ∈ s then 1 else 0) = k + 1 := by
+            aesop;
+          rw [ Fin.sum_univ_castSucc ] at h_sum ; aesop;
+        · ext i; cases i using Fin.lastCases <;> aesop;
+      · refine' Or.inl ⟨ Finset.univ.filter fun i => Fin.castSucc i ∈ s, _, _ ⟩;
+        · rw [ ← hs, Finset.card_filter ];
+          rw [ Finset.card_eq_sum_ones, eq_comm ];
+          rw [ ← Finset.sum_filter ];
+          refine' Finset.sum_bij ( fun i hi => ⟨ i.val, by
+            exact lt_of_le_of_ne ( Nat.le_of_lt_succ i.2 ) fun con => h <| by convert hi; aesop; ⟩ ) _ _ _ _ <;> simp_all +decide [ Fin.ext_iff ];
+          exact fun b hb => ⟨ _, hb, rfl ⟩;
+        · -- To prove equality of finite sets, we show each set is a subset of the other.
+          apply Finset.ext
+          intro y
+          simp [Finset.mem_image];
+          exact ⟨ fun ⟨ a, ha₁, ha₂ ⟩ => ha₂ ▸ ha₁, fun hy => by cases y using Fin.lastCases <;> aesop ⟩;
+    · rcases hs with ( ⟨ a, ha, rfl ⟩ | ⟨ a, ha, rfl ⟩ ) <;> simp +decide [ Finset.card_image_of_injective, Function.Injective, ha ];
+  rw [ h_split, Finset.sum_union, Finset.sum_image, Finset.sum_image ];
+  · simp +decide [ Finset.prod_union, Finset.prod_singleton, mul_comm, Finset.mul_sum _ _ _ ];
+  · intro s hs t ht h_eq; simp_all +decide [ Finset.ext_iff ] ;
+    intro a; specialize h_eq ( Fin.castSucc a ) ; aesop;
+  · intro s hs t ht h_eq; ext i; replace h_eq := Finset.ext_iff.mp h_eq ( Fin.castSucc i ) ; aesop;
+  · norm_num [ Finset.disjoint_right ];
+    intro a ha b hb; intro H; replace H := Finset.ext_iff.mp H ( Fin.last n ) ; aesop;
+
+-- follows from Finset.powersetCard_succ_insert applied to Fin.last n ∉ image Fin.castSucc
 
 /-- elemSymm 2 of n+1 variables decomposes as:
     e₂(x₀,...,xₙ) = e₂(x₀,...,xₙ₋₁) + xₙ · (∑ᵢ xᵢ) -/

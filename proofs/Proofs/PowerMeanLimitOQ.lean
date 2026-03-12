@@ -82,25 +82,20 @@ private lemma sum_weighted_rpow_pos
     Differentiate the finite sum term-by-term. -/
 theorem hasDerivAt_sum_weighted_rpow_zero
     (hz : ∀ i ∈ s, 0 < z i)
-    (_hw : ∀ i ∈ s, 0 ≤ w i) :
+    (hw : ∀ i ∈ s, 0 ≤ w i) :
     HasDerivAt (fun (r : ℝ) => ∑ i ∈ s, w i * z i ^ r)
                (∑ i ∈ s, w i * Real.log (z i)) 0 := by
-  -- Prove derivative for each term individually
-  have hterm : ∀ i ∈ s, HasDerivAt (fun (r : ℝ) => w i * z i ^ r)
-      (w i * Real.log (z i)) (0 : ℝ) := by
-    intro i hi
-    have hzi : (0 : ℝ) < z i := hz i hi
-    have hderiv : HasDerivAt (fun (r : ℝ) => z i ^ r) (Real.log (z i)) 0 := by
-      have h := (Real.hasStrictDerivAt_const_rpow hzi 0).hasDerivAt
-      simp only [Real.rpow_zero, one_mul] at h
-      exact h
-    exact hderiv.const_mul (w i)
-  -- Combine: sum of individual HasDerivAt gives HasDerivAt of the sum
-  have hsum := HasDerivAt.sum hterm
-  -- Convert (∑ i, f_i) to (fun r => ∑ i, f_i r) using Finset.sum_apply
-  rwa [show (∑ i ∈ s, fun (r : ℝ) => w i * z i ^ r) =
-       (fun r => ∑ i ∈ s, w i * z i ^ r) from
-       funext fun r => Finset.sum_apply r s _] at hsum
+  refine HasDerivAt.sum (fun i hi => ?_)
+  have hzi : (0 : ℝ) < z i := hz i hi
+  -- d/dr[zᵢ^r]|_{r=0} = zᵢ^0 · log(zᵢ) = log(zᵢ)
+  have hderiv : HasDerivAt (fun (r : ℝ) => z i ^ r) (Real.log (z i)) 0 := by
+    have h := (Real.hasStrictDerivAt_const_rpow hzi 0).hasDerivAt
+    simp only [Real.rpow_zero, one_mul] at h
+    exact h
+  -- d/dr[wᵢ · zᵢ^r]|_{r=0} = wᵢ · log(zᵢ)
+  have hmul := hderiv.const_mul (w i)
+  simp only [mul_comm (w i)] at hmul
+  exact hmul
 
 /-
 ## Part II: The Log Identity f(0) = 0
@@ -108,8 +103,8 @@ theorem hasDerivAt_sum_weighted_rpow_zero
 
 /-- The function r ↦ log(∑ wᵢ zᵢ^r) has value 0 at r = 0 (when ∑ wᵢ = 1). -/
 theorem log_sum_weighted_rpow_zero
-    (_hz : ∀ i ∈ s, 0 < z i)
-    (_hw : ∀ i ∈ s, 0 ≤ w i)
+    (hz : ∀ i ∈ s, 0 < z i)
+    (hw : ∀ i ∈ s, 0 ≤ w i)
     (hw' : ∑ i ∈ s, w i = 1) :
     Real.log (∑ i ∈ s, w i * z i ^ (0 : ℝ)) = 0 := by
   simp only [Real.rpow_zero, mul_one]
@@ -172,7 +167,7 @@ theorem tendsto_log_sum_div_rpow
   -- slope g 0 r = (g r - g 0) / (r - 0) = g r / r  (since g 0 = 0)
   -- equality holds for all r (including r = 0 where both sides = 0)
   exact hg_deriv.congr (fun r => by
-    simp only [slope, vsub_eq_sub, sub_zero, hg_zero, smul_eq_mul]
+    simp only [slope, sub_zero, hg_zero, smul_eq_mul]
     ring)
 
 /-
@@ -182,7 +177,7 @@ theorem tendsto_log_sum_div_rpow
 /-- The geometric mean can be written as exp(∑ wᵢ log zᵢ). -/
 theorem geomMean_eq_exp_sum_log
     (hz : ∀ i ∈ s, 0 < z i)
-    (_hw : ∀ i ∈ s, 0 ≤ w i) :
+    (hw : ∀ i ∈ s, 0 ≤ w i) :
     ∏ i ∈ s, z i ^ w i = Real.exp (∑ i ∈ s, w i * Real.log (z i)) := by
   have hprod_pos : 0 < ∏ i ∈ s, z i ^ w i :=
     Finset.prod_pos (fun i hi => Real.rpow_pos_of_pos (hz i hi) (w i))
@@ -195,8 +190,8 @@ theorem geomMean_eq_exp_sum_log
 
 /-- For r = 1, the power mean equals the arithmetic mean. -/
 theorem powerMean_one_eq_arithMean
-    (_hw : ∀ i ∈ s, 0 ≤ w i)
-    (_hz : ∀ i ∈ s, 0 ≤ z i) :
+    (hw : ∀ i ∈ s, 0 ≤ w i)
+    (hz : ∀ i ∈ s, 0 ≤ z i) :
     (∑ i ∈ s, w i * z i ^ (1 : ℝ)) = ∑ i ∈ s, w i * z i := by
   simp [Real.rpow_one]
 
@@ -210,7 +205,7 @@ theorem powerMean_eq_exp_log
     (hz : ∀ i ∈ s, 0 < z i)
     (hw : ∀ i ∈ s, 0 ≤ w i)
     (hw' : ∑ i ∈ s, w i = 1)
-    {r : ℝ} (_hr : r ≠ 0) :
+    {r : ℝ} (hr : r ≠ 0) :
     (∑ i ∈ s, w i * z i ^ r) ^ (1 / r) =
     Real.exp ((1 / r) * Real.log (∑ i ∈ s, w i * z i ^ r)) := by
   have hsum_pos : 0 < ∑ i ∈ s, w i * z i ^ r :=
@@ -235,7 +230,7 @@ theorem tendsto_powerMean_zero
     (hw' : ∑ i ∈ s, w i = 1)
     (hz : ∀ i ∈ s, 0 < z i) :
     Filter.Tendsto
-      (fun (r : ℝ) => (∑ i ∈ s, w i * z i ^ r) ^ (1 / r))
+      (fun r => (∑ i ∈ s, w i * z i ^ r) ^ (1 / r))
       (nhdsWithin 0 ({0}ᶜ))
       (nhds (∏ i ∈ s, z i ^ w i)) := by
   -- Step 1: f(r)/r → ∑ wᵢ log zᵢ
@@ -243,12 +238,13 @@ theorem tendsto_powerMean_zero
   -- Step 2: Rewrite GM target to exp form
   rw [geomMean_eq_exp_sum_log s w z hz hw]
   -- Step 3: Rewrite power mean to exp form under the binder
-  have h_eq : ∀ r : ℝ, (∑ i ∈ s, w i * z i ^ r) ^ (1 / r) =
+  have h_eq : ∀ r : ℝ, (∑ i ∈ s, w i * z i ^ r) ^ (1 / r : ℝ) =
       Real.exp (Real.log (∑ i ∈ s, w i * z i ^ r) / r) := fun r => by
     rw [Real.rpow_def_of_pos (sum_weighted_rpow_pos s w z hz hw hw' r)]
     congr 1; ring
-  -- Step 4: Use tendsto_congr to switch from rpow to exp form
-  exact (Filter.tendsto_congr h_eq).mpr (continuous_exp.continuousAt.tendsto.comp hL)
+  simp_rw [h_eq]
+  -- Step 4: exp ∘ (f(r)/r) → exp(∑ wᵢ log zᵢ) by continuity of exp
+  exact Real.continuous_exp.continuousAt.tendsto.comp hL
 
 /-
 ## Part VIII: HM ≤ GM ≤ AM (Completing the Power Mean Chain)
