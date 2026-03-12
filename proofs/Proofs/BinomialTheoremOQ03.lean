@@ -18,7 +18,7 @@ Tags: probability, binomial-distribution, combinatorics, normalization, moments,
 
 import Mathlib
 
-open Finset BigOperators
+open Finset BigOperators Filter Topology
 
 namespace BinomialTheoremOQ03
 
@@ -329,11 +329,82 @@ theorem binomPMF_convolution (n m k : ℕ) (p : ℝ) :
 
 /-  ## Part X: Poisson Limit Theorem -/
 
--- The classical limit (1+x/n)^n → exp(x) is not yet in Mathlib v4.26.0.
--- We axiomatize it as a well-known result from real analysis.
-axiom tendsto_one_plus_div_pow_exp (x : ℝ) :
+/-- The classical limit (1+x/n)^n → exp(x).
+    Proved via: log(1+h)/h → 1 at h=0 (derivative of log at 1),
+    so n·log(1+x/n) → x, and continuity of exp gives the result. -/
+theorem tendsto_one_plus_div_pow_exp (x : ℝ) :
     Filter.Tendsto (fun n : ℕ => (1 + x / (↑n : ℝ)) ^ n)
-    Filter.atTop (nhds (Real.exp x))
+    Filter.atTop (nhds (Real.exp x)) := by
+  -- Case x = 0: trivial
+  by_cases hx : x = 0
+  · subst hx
+    simp only [zero_div, add_zero, one_pow, Real.exp_zero]
+    exact tendsto_const_nhds
+  -- Step A: HasDerivAt (fun t => log(1+t)) 1 0
+  have hd : HasDerivAt (fun t : ℝ => Real.log (1 + t)) 1 (0 : ℝ) := by
+    have h1 : HasDerivAt (fun t : ℝ => (1 : ℝ) + t) 1 (0 : ℝ) :=
+      (hasDerivAt_id (0 : ℝ)).const_add 1
+    have h2 : HasDerivAt Real.log (1 : ℝ)⁻¹ ((fun t : ℝ => 1 + t) (0 : ℝ)) := by
+      show HasDerivAt Real.log 1⁻¹ (1 + 0)
+      rw [add_zero]
+      exact Real.hasDerivAt_log one_ne_zero
+    have h3 := h2.comp (0 : ℝ) h1
+    simp only [inv_one, mul_one] at h3
+    exact h3
+  -- Step B: log(1+h)/h → 1 as h → 0 (from derivative of log at 1)
+  have hslope : Tendsto (fun h : ℝ => Real.log (1 + h) / h)
+      (nhdsWithin 0 {(0 : ℝ)}ᶜ) (nhds 1) := by
+    have hs : Tendsto (slope (fun t : ℝ => Real.log (1 + t)) 0)
+        (nhdsWithin 0 {(0 : ℝ)}ᶜ) (nhds 1) := by
+      rw [show nhdsWithin (0 : ℝ) {(0 : ℝ)}ᶜ = nhds 0 ⊓ 𝓟 {(0 : ℝ)}ᶜ from rfl]
+      exact hasDerivAtFilter_iff_tendsto_slope.mp (hd.hasDerivAtFilter le_rfl)
+    refine hs.congr (fun h => ?_)
+    simp [slope, sub_zero, Real.log_one, smul_eq_mul, inv_mul_eq_div]
+  -- Step C: x/n → 0 in nhdsWithin 0 {0}ᶜ (approaches 0 but ≠ 0)
+  have hxn : Tendsto (fun n : ℕ => x / (↑n : ℝ)) atTop
+      (nhdsWithin 0 {(0 : ℝ)}ᶜ) := by
+    rw [nhdsWithin, tendsto_inf]
+    exact ⟨tendsto_const_div_atTop_nhds_zero_nat x,
+      tendsto_principal.mpr (eventually_atTop.mpr ⟨1, fun n hn =>
+        div_ne_zero hx (Nat.cast_ne_zero.mpr (by omega))⟩)⟩
+  -- Step D: log(1+x/n)/(x/n) → 1 by composition
+  have hcomp : Tendsto (fun n : ℕ => Real.log (1 + x / ↑n) / (x / ↑n)) atTop (nhds 1) :=
+    hslope.comp hxn
+  -- Step E: n * log(1+x/n) = x * (log(1+x/n)/(x/n)) eventually
+  have heq : ∀ᶠ (n : ℕ) in atTop, (↑n : ℝ) * Real.log (1 + x / ↑n) =
+      x * (Real.log (1 + x / ↑n) / (x / ↑n)) := by
+    filter_upwards [Ici_mem_atTop 1] with n (hn : 1 ≤ n)
+    have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    have hxdiv : x / (x / (↑n : ℝ)) = ↑n := by field_simp
+    set L := Real.log (1 + x / (↑n : ℝ))
+    calc ↑n * L = L * ↑n := by ring
+      _ = L * (x / (x / ↑n)) := by rw [hxdiv]
+      _ = x * (L / (x / ↑n)) := by ring
+  -- Step F: n * log(1+x/n) → x
+  have hlog : Tendsto (fun n : ℕ => (↑n : ℝ) * Real.log (1 + x / ↑n)) atTop (nhds x) := by
+    have h := (tendsto_const_nhds (x := x)).mul hcomp
+    rw [mul_one] at h
+    exact h.congr' (heq.mono fun n hn => hn.symm)
+  -- Step G: exp(n * log(1+x/n)) → exp(x) by continuity of exp
+  have hexp := Real.continuous_exp.continuousAt.tendsto.comp hlog
+  -- Step H: exp(n * log(1+x/n)) = (1+x/n)^n for large n (when 1+x/n > 0)
+  refine hexp.congr' ?_
+  filter_upwards [Ici_mem_atTop (Nat.ceil |x| + 1)] with n hn
+  simp only [Function.comp]
+  have hn_pos : (0 : ℝ) < ↑n := by
+    have : 1 ≤ n := le_trans (Nat.le_add_left 1 _) hn
+    exact Nat.cast_pos.mpr (by omega)
+  have habs : |x| < ↑n := by
+    calc |x| ≤ ↑(Nat.ceil |x|) := Nat.le_ceil |x|
+      _ < ↑(Nat.ceil |x|) + 1 := by linarith
+      _ ≤ ↑n := by exact_mod_cast hn
+  have hbase : (0 : ℝ) < 1 + x / ↑n := by
+    have hle : -(x / ↑n) ≤ |x / ↑n| := neg_le_abs _
+    have hlt : |x / ↑n| < 1 := by
+      rw [abs_div, abs_of_pos hn_pos]
+      exact (div_lt_one hn_pos).mpr habs
+    linarith
+  rw [Real.exp_nat_mul, Real.exp_log hbase]
 
 -- The Poisson PMF
 /-- The Poisson probability mass function: P(X=k) = e^(-r) r^k / k! -/
