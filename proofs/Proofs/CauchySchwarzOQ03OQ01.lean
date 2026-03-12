@@ -738,26 +738,12 @@ theorem holder_eq_integral_normalized {α : Type*} [MeasurableSpace α]
     f^p and g^q are proportional a.e.: ∃ c ≥ 0, f^p = c · g^q a.e.
 
     This is the measure-theoretic analogue of
-    holder_eq_implies_power_prop. -/
-/-
-The general (non-normalized) integral Hölder equality follows by dividing f by
-a = (∫ f^p)^{1/p} and g by b = (∫ g^q)^{1/q}, applying the normalized result
-to get (f/a)^p = (g/b)^q a.e., then unscaling to get f^p = (Fp/Gq) · g^q a.e.
-This is identical in structure to holder_eq_implies_power_prop for finite sums.
+    holder_eq_implies_power_prop.
 
-The proof requires routine but verbose integrability bookkeeping:
-  - (f/a)^p = f^p / a^p (by Real.div_rpow for non-negative reals)
-  - Integrable (fun x => (f x / a) ^ p) from hfp_int.div_const (a^p)
-  - ∫ (f/a)^p = (∫ f^p) / a^p = 1 (since a^p = ∫ f^p)
-  - Similarly for g/b
-  - ∫ (f/a)·(g/b) = (∫ f·g) / (a·b) = 1 (from Hölder equality)
-  - Young deficit integrability for normalized functions
-
-We axiomatize this reduction to focus on the key mathematical content
-(the normalized case, proved above without sorry).
--/
-
-axiom holder_eq_integral {α : Type*} [MeasurableSpace α]
+    Proof: normalize f by a = (∫ f^p)^{1/p} and g by b = (∫ g^q)^{1/q},
+    apply the normalized result to get (f/a)^p = (g/b)^q a.e., then
+    unscale to get f^p = (∫f^p / ∫g^q) · g^q a.e. -/
+theorem holder_eq_integral {α : Type*} [MeasurableSpace α]
     {μ : Measure α} {f g : α → ℝ}
     {p q : ℝ} (hp : 1 < p) (hinv : 1 / p + 1 / q = 1)
     (hf_nn : ∀ᵐ x ∂μ, 0 ≤ f x) (hg_nn : ∀ᵐ x ∂μ, 0 ≤ g x)
@@ -767,6 +753,83 @@ axiom holder_eq_integral {α : Type*} [MeasurableSpace α]
     (hFp : 0 < ∫ x, f x ^ p ∂μ) (hGq : 0 < ∫ x, g x ^ q ∂μ)
     (heq : ∫ x, f x * g x ∂μ =
       (∫ x, f x ^ p ∂μ) ^ (1 / p) * (∫ x, g x ^ q ∂μ) ^ (1 / q)) :
-    ∃ c : ℝ, 0 ≤ c ∧ (fun x => f x ^ p) =ᵐ[μ] (fun x => c * g x ^ q)
+    ∃ c : ℝ, 0 ≤ c ∧ (fun x => f x ^ p) =ᵐ[μ] (fun x => c * g x ^ q) := by
+  -- Setup: exponent positivity
+  have hp_pos : (0 : ℝ) < p := by linarith
+  have hq_pos : (0 : ℝ) < q := lt_trans one_pos (conj_one_lt_q hp hinv)
+  have hp_ne : p ≠ 0 := ne_of_gt hp_pos
+  have hq_ne : q ≠ 0 := ne_of_gt hq_pos
+  -- Normalization constants
+  set Fp := ∫ x, f x ^ p ∂μ with hFp_def
+  set Gq := ∫ x, g x ^ q ∂μ with hGq_def
+  set a := Fp ^ (1 / p) with ha_def
+  set b := Gq ^ (1 / q) with hb_def
+  have ha_pos : 0 < a := rpow_pos_of_pos hFp _
+  have hb_pos : 0 < b := rpow_pos_of_pos hGq _
+  have ha_ne : a ≠ 0 := ne_of_gt ha_pos
+  have hb_ne : b ≠ 0 := ne_of_gt hb_pos
+  -- Key cancellation: a^p = Fp and b^q = Gq
+  have hap : a ^ p = Fp := by
+    rw [ha_def, ← rpow_mul (le_of_lt hFp)]
+    simp only [one_div, inv_mul_cancel₀ hp_ne, Real.rpow_one]
+  have hbq : b ^ q = Gq := by
+    rw [hb_def, ← rpow_mul (le_of_lt hGq)]
+    simp only [one_div, inv_mul_cancel₀ hq_ne, Real.rpow_one]
+  -- The proportionality constant c = Fp / Gq
+  use Fp / Gq
+  refine ⟨div_nonneg (le_of_lt hFp) (le_of_lt hGq), ?_⟩
+  -- A.e. equalities for normalized functions (typed as EventuallyEq for .symm)
+  have hdiv_f : (fun x => (f x / a) ^ p) =ᵐ[μ] (fun x => f x ^ p / a ^ p) := by
+    filter_upwards [hf_nn] with x hfx
+    exact Real.div_rpow hfx (le_of_lt ha_pos) p
+  have hdiv_g : (fun x => (g x / b) ^ q) =ᵐ[μ] (fun x => g x ^ q / b ^ q) := by
+    filter_upwards [hg_nn] with x hgx
+    exact Real.div_rpow hgx (le_of_lt hb_pos) q
+  have hdiv_fg : (fun x => (f x / a) * (g x / b)) =ᵐ[μ] (fun x => f x * g x / (a * b)) := by
+    filter_upwards with x
+    ring
+  -- Integrability of normalized functions
+  have hfp_norm_int : Integrable (fun x => (f x / a) ^ p) μ :=
+    (hfp_int.div_const (a ^ p)).congr hdiv_f.symm
+  have hgq_norm_int : Integrable (fun x => (g x / b) ^ q) μ :=
+    (hgq_int.div_const (b ^ q)).congr hdiv_g.symm
+  have hfg_norm_int : Integrable (fun x => (f x / a) * (g x / b)) μ :=
+    (hfg_int.div_const (a * b)).congr hdiv_fg.symm
+  -- Young deficit integrability for normalized functions
+  have hdef_norm_int : Integrable (fun x => youngDeficit p q (f x / a) (g x / b)) μ := by
+    simp only [youngDeficit]
+    exact ((hfp_norm_int.div_const p).add (hgq_norm_int.div_const q)).sub hfg_norm_int
+  -- Normalization conditions: ∫ (f/a)^p = 1, ∫ (g/b)^q = 1, ∫ (f/a)(g/b) = 1
+  have hnf : ∫ x, (f x / a) ^ p ∂μ = 1 := by
+    rw [integral_congr_ae hdiv_f, integral_div, hap, div_self (ne_of_gt hFp)]
+  have hng : ∫ x, (g x / b) ^ q ∂μ = 1 := by
+    rw [integral_congr_ae hdiv_g, integral_div, hbq, div_self (ne_of_gt hGq)]
+  have heq' : ∫ x, (f x / a) * (g x / b) ∂μ = 1 := by
+    rw [integral_congr_ae hdiv_fg, integral_div, heq,
+      div_self (mul_ne_zero ha_ne hb_ne)]
+  -- Non-negativity of normalized functions (a.e.)
+  have hf_norm_nn : ∀ᵐ x ∂μ, 0 ≤ f x / a := by
+    filter_upwards [hf_nn] with x hfx
+    exact div_nonneg hfx (le_of_lt ha_pos)
+  have hg_norm_nn : ∀ᵐ x ∂μ, 0 ≤ g x / b := by
+    filter_upwards [hg_nn] with x hgx
+    exact div_nonneg hgx (le_of_lt hb_pos)
+  -- Apply normalized theorem: (f/a)^p =ᵃᵉ (g/b)^q
+  have hnorm_result := holder_eq_integral_normalized hp hinv
+    hf_norm_nn hg_norm_nn hfp_norm_int hgq_norm_int hfg_norm_int
+    hdef_norm_int hnf hng heq'
+  -- Unscale: f^p / Fp =ᵃᵉ g^q / Gq, hence f^p =ᵃᵉ (Fp/Gq) · g^q
+  filter_upwards [hnorm_result, hdiv_f, hdiv_g] with x hx hdf hdg
+  -- hx : (f x / a) ^ p = (g x / b) ^ q
+  -- hdf : (f x / a) ^ p = f x ^ p / a ^ p
+  -- hdg : (g x / b) ^ q = g x ^ q / b ^ q
+  rw [hdf, hdg, hap, hbq] at hx
+  -- hx : f x ^ p / Fp = g x ^ q / Gq
+  rw [div_eq_div_iff (ne_of_gt hFp) (ne_of_gt hGq)] at hx
+  -- hx : f x ^ p * Gq = g x ^ q * Fp
+  -- Goal: f x ^ p = Fp / Gq * g x ^ q
+  rw [div_mul_eq_mul_div]
+  rw [eq_comm, div_eq_iff (ne_of_gt hGq)]
+  linarith [mul_comm (g x ^ q) Fp]
 
 end CauchySchwarzOQ03OQ01
