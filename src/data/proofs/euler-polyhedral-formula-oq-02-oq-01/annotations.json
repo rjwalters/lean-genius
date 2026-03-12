@@ -128,5 +128,45 @@
     "significance": "supporting",
     "relatedConcepts": ["round sphere", "flat torus", "hyperbolic surface", "constant curvature"],
     "prerequisites": ["OrientableClosedSurface", "averageCurvature"]
+  },
+  {
+    "id": "ann-boundary-gauss-bonnet",
+    "line": 468,
+    "type": "definition",
+    "content": "CompactSurfaceWithBoundary extends the Gauss-Bonnet framework to surfaces with boundary: ∫_M K dA + ∫_∂M κ_g ds = 2πχ(M). The boundary geodesic curvature term captures how the boundary curves relative to the surface.",
+    "mathContext": "$$\\int_M K\\,dA + \\int_{\\partial M} \\kappa_g\\,ds = 2\\pi\\chi(M)$$\nFor a disk ($\\chi = 1$): $\\int K\\,dA + \\int \\kappa_g\\,ds = 2\\pi$. For geodesic boundary ($\\kappa_g = 0$): recovers the closed Gauss-Bonnet.",
+    "significance": "key",
+    "relatedConcepts": ["geodesic curvature", "boundary term", "surfaces with boundary", "turning tangents"],
+    "prerequisites": ["CompactRiemannianSurface"]
+  },
+  {
+    "id": "ann-girard-formula",
+    "line": 548,
+    "type": "theorem",
+    "content": "Girard's formula (1629): on a surface of constant curvature K, a geodesic triangle has Area = (α + β + γ - π)/K. On the unit sphere: Area = α + β + γ - π (the spherical excess). This directly follows from the polygon Gauss-Bonnet with χ = 1.",
+    "mathContext": "For a geodesic triangle on a surface of constant curvature $K$:\n$$K \\cdot \\text{Area} = \\alpha + \\beta + \\gamma - \\pi$$\nThis gives the famous trichotomy: $K > 0$ (spherical geometry, angle excess), $K = 0$ (Euclidean, angle sum $= \\pi$), $K < 0$ (hyperbolic, angle deficit).",
+    "significance": "critical",
+    "relatedConcepts": ["spherical excess", "angular deficit", "Girard's theorem", "non-Euclidean geometry"],
+    "prerequisites": ["GeodesicTriangle", "gauss_bonnet_triangle"]
+  },
+  {
+    "id": "ann-poincare-hopf",
+    "line": 635,
+    "type": "theorem",
+    "content": "The Poincaré-Hopf index theorem: for a vector field on a compact surface with isolated zeros, Σ index(p_i) = χ(M). The hairy ball theorem follows immediately: a nowhere-vanishing field has total index 0, so χ must be 0 — impossible for S² (χ = 2).",
+    "mathContext": "$$\\sum_i \\text{index}(V, p_i) = \\chi(M)$$\nThe hairy ball theorem: every continuous tangent vector field on $S^2$ must vanish somewhere, since $\\chi(S^2) = 2 \\neq 0$. Only the torus ($\\chi = 0$) and Klein bottle support non-vanishing fields.",
+    "significance": "critical",
+    "relatedConcepts": ["Poincaré-Hopf theorem", "hairy ball theorem", "vector field index", "fixed point theory"],
+    "prerequisites": ["CompactRiemannianSurface", "VectorFieldOnSurface"]
+  },
+  {
+    "id": "ann-morse-theory",
+    "line": 700,
+    "type": "theorem",
+    "content": "Morse theory relates critical points of smooth functions to topology: χ(M) = #minima - #saddles + #maxima. For S² (χ = 2): every Morse function needs #min + #max ≥ 2 + #saddles. For T² (χ = 0): at least 2 saddles needed.",
+    "mathContext": "The weak Morse inequality: $\\chi(M) = \\sum_{k} (-1)^k c_k$ where $c_k$ is the number of index-$k$ critical points. For surfaces: $\\chi = c_0 - c_1 + c_2$. The strong Morse inequalities further constrain individual Betti numbers.",
+    "significance": "key",
+    "relatedConcepts": ["Morse function", "critical points", "Morse inequalities", "handle decomposition"],
+    "prerequisites": ["CompactRiemannianSurface", "MorseFunctionOnSurface"]
   }
 ]
