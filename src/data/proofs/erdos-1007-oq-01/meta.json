@@ -105,14 +105,31 @@
         "note": "Proved minEdges(5) = 15, showing d=5 returns to the complete graph pattern"
       }
     ],
-    "historicalContext": "The concept of graph dimension was introduced by Erdős, Harary, and Tutte in 1965: the dimension of a graph G is the minimum n such that G can be embedded in ℝⁿ with all edges having unit length. The function minEdges(d) — the minimum number of edges in a graph of dimension exactly d — captures a fundamental trade-off between combinatorial complexity and geometric freedom. For small d, the complete graph K_{d+1} is optimal (it embeds as a regular simplex). House (2013) discovered the first surprise at d=4: the complete bipartite graph K_{3,3} achieves dimension 4 with only 9 edges, beating K₅'s 10. Whether d=4 is the unique anomaly remains one of the central open questions in the area.",
-    "axioms": 10
+    "historicalContext": "The concept of graph dimension was introduced by Erdős, Harary, and Tutte in their seminal 1965 paper in Mathematika: the dimension of a graph $G$ is the minimum $n$ such that $G$ can be embedded in $\\mathbb{R}^n$ with all edges having unit length. This definition connects combinatorial graph theory to metric geometry and the classical theory of distance matrices developed by Schoenberg (1935) and Menger (1931). The function $\\text{minEdges}(d)$ — the minimum number of edges in a graph of dimension exactly $d$ — captures a fundamental trade-off between combinatorial complexity and geometric freedom. For small $d$, the complete graph $K_{d+1}$ is optimal: it embeds as a regular $d$-simplex with edge length 1 in $\\mathbb{R}^d$. Einhorn and Schoenberg (1966) studied two-distance sets in Euclidean space, laying groundwork for understanding which graphs require high dimension. Maehara (1991) established further bounds on embeddability as unit-distance subgraphs. House (2013) discovered the first surprise at $d=4$: the complete bipartite graph $K_{3,3}$ achieves dimension 4 with only 9 edges, beating $K_5$'s 10. Chaffee and Noble (2016) proved $\\text{minEdges}(5) = 15$, restoring the $K_{d+1}$ pattern. Whether $d=4$ is the unique anomaly remains one of the central open questions, connecting to the broader study of rigidity theory and the unit distance problem in combinatorial geometry.",
+    "axioms": 10,
+    "crossReferences": [
+      {
+        "proofId": "erdos-1007",
+        "relationship": "parent",
+        "description": "Parent formalization of Erdős Problem #1007; this OQ-01 extends the investigation to the general minEdges(d) function"
+      },
+      {
+        "proofId": "binomial-theorem",
+        "relationship": "uses",
+        "description": "Binomial coefficients C(d+1,2) are central to the analysis; the quadratic upper bound and deficiency function both rely on binomial coefficient identities"
+      },
+      {
+        "proofId": "ramseys-theorem",
+        "relationship": "related",
+        "description": "Ramsey theory provides another extremal function (R(s,t)) where exact values are known for small parameters and open for large ones, paralleling the structure of minEdges(d)"
+      }
+    ]
   },
   "sections": [
     {
       "id": "graph-dimension",
       "title": "Graph Dimension",
-      "summary": "Defines unit distance embeddings (structure UnitDistanceEmbedding') and the graph dimension function (graphDimension' via Nat.find).",
+      "summary": "Defines unit distance embeddings (structure `UnitDistanceEmbedding'`) with the condition $\\sqrt{\\sum_i (f(u)_i - f(v)_i)^2} = 1$ for all edges, and the graph dimension function (`graphDimension'`) as the minimum embedding dimension via `Nat.find`.",
       "startLine": 40,
       "endLine": 56
     },
@@ -126,21 +143,21 @@
     {
       "id": "known-values",
       "title": "Known Values",
-      "summary": "Records minEdges for d=0..5: 0, 1, 3, 6, 9, 15. Six axioms, one per dimension.",
+      "summary": "Records $\\text{minEdges}(0..5) = (0, 1, 3, 6, 9, 15)$ as six axioms. For $d \\le 3$ and $d=5$, these match $\\binom{d+1}{2}$; the $d=4$ value of 9 (from $K_{3,3}$) is the sole exception.",
       "startLine": 80,
       "endLine": 99
     },
     {
       "id": "structural-results",
       "title": "Structural Results",
-      "summary": "Three theorems: K_{d+1} optimality for d≤3 (via interval_cases), the d=4 surprise (9 < 10), and d=5 matching (15 = C(6,2)).",
+      "summary": "Three theorems: $K_{d+1}$ optimality for $d \\le 3$ (via `interval_cases`), the $d=4$ surprise ($9 < \\binom{5}{2} = 10$), and $d=5$ matching ($15 = \\binom{6}{2}$).",
       "startLine": 101,
       "endLine": 123
     },
     {
       "id": "general-bounds",
       "title": "General Bounds",
-      "summary": "Linear lower bound d ≤ minEdges(d) (axiomatized from rigidity) and quadratic upper bound minEdges(d) ≤ C(d+1,2) (from complete graphs). Plus nondecreasing verification for d=1..5.",
+      "summary": "Linear lower bound $d \\le \\text{minEdges}(d)$ (from rigidity) and quadratic upper bound $\\text{minEdges}(d) \\le \\binom{d+1}{2}$ (from complete graphs). Includes real-valued versions via `Nat.cast_le` and verified monotonicity for $d = 1..5$.",
       "startLine": 125,
       "endLine": 186
     },
@@ -154,28 +171,28 @@
     {
       "id": "simplex-embedding",
       "title": "Simplex Embedding Construction",
-      "summary": "Constructive proof that K_n embeds as unit distances in ℝⁿ via (1/√2)eᵢ. Key lemma: (1/√2)² = 1/2. Corollary: graphDimension(K_n) ≤ n.",
+      "summary": "Constructive proof that $K_n$ embeds as unit distances in $\\mathbb{R}^n$ via $v_i = \\frac{1}{\\sqrt{2}} e_i$. Key lemma: $(1/\\sqrt{2})^2 = 1/2$. Distance computation uses `Finset.add_sum_erase` to isolate the $i$-th and $j$-th terms. Corollary: $\\dim(K_n) \\le n$.",
       "startLine": 188,
       "endLine": 265
     },
     {
       "id": "conjecture-relationships",
       "title": "Conjecture Relationships",
-      "summary": "Proves complete graph optimality implies monotonicity via 4-way case analysis on d₁,d₂ being 4. Building blocks: C(d+1,2) monotonicity and C(d+1,2) ≥ d.",
+      "summary": "Proves $K_{d+1}$ optimality implies monotonicity via 4-way case analysis on $d_1, d_2$ being 4. Building blocks: $\\binom{n}{2}$ monotonicity via `Nat.choose_le_choose` and the inequality $\\binom{d+1}{2} \\ge d$.",
       "startLine": 267,
       "endLine": 326
     },
     {
       "id": "growth-rate",
       "title": "Growth Rate Analysis",
-      "summary": "Successive differences Δ(d) for d=1..4. The d=3→4 anomaly: Δ(3)=3<4. Under optimality conjecture, Δ(d)=d+1 (proved via binomial coefficient expansion).",
+      "summary": "Successive differences $\\Delta(d) = \\text{minEdges}(d+1) - \\text{minEdges}(d)$ for $d=1..4$. The $d=3 \\to 4$ anomaly: $\\Delta(3) = 3 < 4$. Under the optimality conjecture, $\\Delta(d) = d+1$ (proved via $\\binom{d+2}{2} - \\binom{d+1}{2} = d+1$).",
       "startLine": 328,
       "endLine": 371
     },
     {
       "id": "deficiency",
       "title": "Deficiency Function",
-      "summary": "δ(d) = C(d+1,2) - minEdges(d). Computed: δ=0 for d∈{1,2,3,5}, δ(4)=1. Equivalence: optimality conjecture ↔ zero deficiency. d=4 is unique anomaly for d≤5.",
+      "summary": "Deficiency $\\delta(d) = \\binom{d+1}{2} - \\text{minEdges}(d)$. Computed: $\\delta = 0$ for $d \\in \\{1,2,3,5\\}$, $\\delta(4) = 1$. Proves the equivalence: optimality conjecture $\\iff$ $\\delta(d) = 0$ for all $d \\neq 4$. Confirms $d = 4$ is the unique anomaly for $d \\le 5$ via `interval_cases`.",
       "startLine": 373,
       "endLine": 418
     }
@@ -190,7 +207,8 @@
       "The simplex embedding v_i = (1/√2)e_i is the simplest unit-distance embedding of K_n in ℝⁿ. The factor 1/√2 is forced by the requirement that ‖v_i - v_j‖ = 1.",
       "The complete graph optimality conjecture implies monotonicity — a non-obvious logical relationship between open problems. The proof reduces to sandwiching minEdges(4) = 9 between neighboring binomial coefficients.",
       "The deficiency function δ(d) = C(d+1,2) - minEdges(d) cleanly separates the anomalous d=4 case: optimality holds iff δ(d) = 0 for all d ≠ 4.",
-      "Conditional theorems (conjecture → consequence) are a powerful formalization strategy: they establish logical structure among open problems without resolving any."
+      "Conditional theorems (conjecture → consequence) are a powerful formalization strategy: they establish logical structure among open problems without resolving any.",
+      "The parallel with **Ramsey numbers** is instructive: both $R(s,t)$ and $\\text{minEdges}(d)$ are extremal functions known exactly for small parameters, with general asymptotics established but exact values unknown. In both cases, computational search determines small values while structural arguments give bounds."
     ],
     "prerequisites": [
       "Binomial coefficients Nat.choose",
