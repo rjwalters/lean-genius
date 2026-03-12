@@ -1,75 +1,90 @@
 {
   "slug": "buffons-needle-oq-01",
   "title": "Generalizations to curved needles",
-  "phase": "COMPLETED",
+  "phase": "COMPLETE",
   "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "For any C¹ curve γ on [a,b] with line spacing d > 0: E[crossings] = 2 · arcLength(γ) / (π · d)",
+    "plain": "Buffon-Barbier theorem for smooth curves: the expected number of crossings depends only on total arc length, not on curve shape.",
+    "whyMatters": [
+      "Generalizes Buffon's needle (Wiedijk #99) from straight needles to arbitrary C¹ curves",
+      "Demonstrates shape independence: only arc length determines expected crossings",
+      "Connects geometric probability to smooth curve theory via ContDiff infrastructure"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "buffon_smooth_of_contDiff: E[crossings] = 2·arcLength/(πd) for C¹ curves",
+      "smooth_shape_independence: curves with equal arc length have equal expected crossings",
+      "straight_line_crossings: recovers 2L/(πd) for straight needles",
+      "smooth_crossings_mono: longer curves have more expected crossings",
+      "crossings_tendsto_zero: E[crossings] → 0 as line spacing d → ∞",
+      "inner_integral_integrable: C¹ smoothness implies integrability (key bridging lemma)"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Prove Buffon-Barbier for C¹ curves requiring only ContDiff ℝ 1 γ"
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-02-21T19:21:07.131Z",
+    "phase": "COMPLETE",
+    "since": "2026-03-12T02:00:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Verified existing formalization builds successfully in Docker.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None - problem fully proved with 0 sorries and 0 axioms.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 15 proved theorems/lemmas, 0 sorries, 0 axioms. Full Buffon-Barbier for C¹ curves. PR #3270.",
+    "progressSummary": "COMPLETE: Full proof in BuffonsNeedleOQ01.lean (251 lines, 0 sorries, 0 axioms). Proves Buffon-Barbier for C¹ curves using ContDiff ℝ 1 γ as sole smoothness hypothesis. Depends on BuffonsNeedleOQ01OQ01.lean for angular average and base theorem. Gallery entry exists with tacticStates.",
     "builtItems": [
-      "buffon_smooth_of_contDiff: main theorem, E = 2L/(πd) for C¹ curves",
-      "contDiff_one_continuous_deriv: C¹ → continuous scalar derivative",
-      "inner_integral_continuous: inner integral continuous via angular average",
-      "smooth_shape_independence: same arc length → same expected crossings",
-      "straight_line_arclength: horizontal needle has arc length b-a",
-      "straight_line_crossings: confirms consistency with classical Buffon",
-      "smooth_crossings_mono: longer curve → more crossings",
-      "crossings_tendsto_zero: d→∞ implies crossings→0"
+      "proofs/Proofs/BuffonsNeedleOQ01.lean - Complete Buffon-Barbier for C¹ curves (251 lines)",
+      "src/data/proofs/buffons-needle-oq-01/ - Gallery entry (meta.json, index.ts, annotations.json, tacticStates.json)"
     ],
     "insights": [
-      "ContDiff ℝ 1 f → Continuous (deriv f) via ContDiff.continuous_fderiv + clm_apply",
-      "Angular average identity: ∫₀ᵖⁱ |a sin θ + b cos θ| dθ = 2√(a²+b²)",
-      "Inner integral integrability is automatic from C¹ smoothness via continuity",
-      "Shape independence: E[crossings] depends only on total arc length",
-      "Monotonicity and d→∞ limit are direct corollaries of the main formula"
+      "Key bridging lemma: ContDiff ℝ 1 γ → Continuous (deriv f) via ContDiff.continuous_fderiv + clm_apply",
+      "Angular average identity ∫₀^π |a sin θ + b cos θ| dθ = 2√(a²+b²) is the core calculus fact",
+      "Shape independence follows directly: formula depends on arc length integral, not curve geometry",
+      "Pattern: ContDiff → Differentiable → HasDerivAt for extracting derivative components"
     ],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "C¹ smoothness → integrability bridge",
+      "status": "completed",
+      "description": "Prove ContDiff ℝ 1 γ implies the inner integral is intervalIntegrable, then apply the conditional Buffon-Barbier theorem from OQ01OQ01"
+    }
+  ],
   "tags": [
     "seeker-selected",
     "extension",
-    "challenging",
     "probability",
     "geometric-probability",
     "integration",
     "wiedijk-100",
     "monte-carlo"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "buffons-needle",
+    "buffons-needle-oq-01-oq-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "ContDiff.continuous_fderiv",
+      "ContinuousLinearMap.apply",
+      "intervalIntegral"
+    ]
   },
-  "knowledgeScore": 85,
   "started": "2026-02-21T19:21:07.131Z",
-  "lastUpdate": "2026-03-06T16:00:53.000Z",
+  "lastUpdate": "2026-03-12T02:00:00.000Z",
   "significance": 6,
   "tractability": 6
 }
