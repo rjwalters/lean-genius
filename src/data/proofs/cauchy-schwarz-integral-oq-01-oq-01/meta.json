@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/H%C3%B6lder%27s_inequality",
     "date": "1889 (Hölder), eLpNorm formalization 2026",
-    "status": "verified",
+    "status": "complete",
     "tags": ["analysis", "measure-theory", "inequalities", "holder", "cauchy-schwarz", "lp-spaces"],
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01.lean",
     "badge": "original",
@@ -29,14 +29,15 @@
     "dateAdded": "2026-03-06"
   },
   "overview": {
-    "historicalContext": "Otto Hölder (1889) proved the integral generalization of the Cauchy-Schwarz inequality. The case p=q=2 recovers Cauchy-Schwarz, while Minkowski (1896) used Hölder to derive the Lp triangle inequality.\n\nIn Mathlib 4.26+, `snorm` was renamed to `eLpNorm` (extended Lp norm). This formalization demonstrates the full inequality hierarchy using the modern API naming.",
-    "problemStatement": "Can the snorm-based Hölder inequality be formalized using the renamed API in Mathlib 4.26+?\n\nAnswer: YES — all key lemmas (lintegral_mul_le_Lp_mul_Lq, eLpNorm_add_le, abs_real_inner_le_norm, NNReal.young_inequality) exist and connect cleanly.",
-    "proofStrategy": "Build the hierarchy bottom-up: (1) Young's inequality (pointwise), (2) Hölder at lintegral level, (3) Specialize to p=q=2 for CS, (4) Minkowski via eLpNorm_add_le, (5) Connect to L² inner product CS, (6) Derive Minkowski L² from CS via norm-squared identity.",
+    "historicalContext": "Otto Hölder proved his inequality for finite sums in 1889, generalizing Cauchy's inequality (1821) and Schwarz's integral version (1885) from the p = q = 2 case to arbitrary conjugate exponents satisfying 1/p + 1/q = 1. William Henry Young (1912) provided the pointwise foundation: ab ≤ a^p/p + b^q/q follows from the concavity of logarithm via the weighted AM-GM inequality. Hermann Minkowski (1896) used Hölder's inequality in a bootstrap argument to prove the Lp triangle inequality ‖f + g‖_p ≤ ‖f‖_p + ‖g‖_p, completing the Banach space structure of Lp.\n\nThe formalization uses Mathlib 4.26+, where the `snorm` API was renamed to `eLpNorm` (extended Lp norm). This renaming reflects the conceptual shift: `eLpNorm` computes the Lp seminorm as an extended non-negative real, handling the p = 0 and p = ∞ cases uniformly. The underlying mathematical content — Hölder, Cauchy-Schwarz, Minkowski — is unchanged, but the formalization serves as a demonstration that the modern API is complete and coherent.\n\nThe proof chain Young → Hölder → Cauchy-Schwarz → Minkowski recapitulates the historical development: each inequality is logically derived from the previous one. The dual derivation of Minkowski — both from the general eLpNorm_add_le and from Cauchy-Schwarz via the norm-squared identity — illustrates the two canonical proof strategies for the Lp triangle inequality.",
+    "problemStatement": "Formalize the complete hierarchy of Lp space inequalities using Mathlib 4.26+ eLpNorm API: Young's inequality (pointwise) → Hölder's inequality (lintegral) → Cauchy-Schwarz (p = q = 2 specialization) → Minkowski (triangle inequality). Demonstrate both the general eLpNorm formulation and the L² inner product specialization, confirming the renamed API is fully functional.",
+    "proofStrategy": "Build the hierarchy in two parallel chains: (1) The lintegral chain: Hölder via lintegral_mul_le_Lp_mul_Lq, then specialize to p = q = 2 for Cauchy-Schwarz using the 3-field HolderConjugate constructor. (2) The eLpNorm chain: Minkowski via eLpNorm_add_le for general p, then specialize to p = 2. (3) The L² chain: inner product Cauchy-Schwarz via abs_real_inner_le_norm, then derive Minkowski L² from CS using the norm-squared expansion ‖f+g‖² = ‖f‖² + 2⟨f,g⟩ + ‖g‖² ≤ (‖f‖+‖g‖)². Finally, Young's inequality at the NNReal level provides the pointwise foundation.",
     "keyInsights": [
-      "eLpNorm in Mathlib 4.26+ replaces snorm — the API is functionally identical",
-      "Hölder's inequality at the lintegral level directly specializes to CS via HolderConjugate 2 2",
-      "The L² inner product CS and the lintegral CS are different formulations of the same result",
-      "Minkowski (triangle inequality) can be derived from CS alone in L²"
+      "The eLpNorm rename from snorm in Mathlib 4.26+ is a clean API migration — all inequality lemmas (lintegral_mul_le_Lp_mul_Lq, eLpNorm_add_le) are preserved with identical mathematical content",
+      "Hölder's inequality at the lintegral level directly specializes to Cauchy-Schwarz via the 3-field HolderConjugate 2 2 constructor (1 < 2, 1 < 2, 1/2 + 1/2 = 1), resolved by norm_num",
+      "The L² inner product Cauchy-Schwarz (|⟨f,g⟩| ≤ ‖f‖·‖g‖) and the lintegral Cauchy-Schwarz (∫⁻ fg ≤ (∫⁻ f²)^½·(∫⁻ g²)^½) are different formulations connected by the L² norm-integral relationship",
+      "Minkowski's inequality in L² can be derived from Cauchy-Schwarz alone via the norm-squared identity, bypassing the general Hölder-based proof — this is the classical Hilbert space argument",
+      "Young's inequality a·b ≤ a²/2 + b²/2 at p = q = 2 reduces to the elementary AM-GM inequality (a-b)² ≥ 0, connecting the abstract Lp machinery to basic algebra"
     ]
   },
   "sections": [
@@ -48,8 +49,16 @@
     {"id": "hierarchy", "title": "Part VI: Complete Hierarchy", "startLine": 134, "endLine": 149, "summary": "Summary and API verification confirming all key Mathlib 4.26+ lemmas exist."}
   ],
   "conclusion": {
-    "summary": "YES — the snorm-based Hölder inequality is fully formalizable using Mathlib 4.26+ eLpNorm API. The complete hierarchy Young → Hölder → CS → Minkowski is demonstrated. Zero sorries.",
-    "implications": "The eLpNorm rename from snorm is a clean API migration. All inequality lemmas are preserved. The formalization confirms that measure-theoretic analysis in Lean 4 has a complete and coherent API for the fundamental Lp space inequalities.",
-    "openQuestions": []
+    "summary": "The complete Lp inequality hierarchy Young → Hölder → Cauchy-Schwarz → Minkowski is fully formalized using Mathlib 4.26+ eLpNorm API, with zero sorries. Both the general eLpNorm formulation and the L² inner product specialization are demonstrated, confirming the renamed API is complete and coherent.",
+    "implications": [
+      "The eLpNorm API migration from snorm is mathematically transparent — all fundamental Lp inequality lemmas exist and compose correctly, validating the Mathlib 4.26+ refactoring",
+      "The dual Minkowski derivation (general eLpNorm_add_le vs. CS-based norm-squared argument) provides two independent verification paths for the L² triangle inequality",
+      "The L² inner product Cauchy-Schwarz bridges measure-theoretic integration (lintegral) with Hilbert space structure (inner product), connecting two foundational Mathlib libraries",
+      "The complete hierarchy demonstrates that Lean 4 with Mathlib has a production-ready formalization of Lp space theory sufficient for functional analysis applications"
+    ],
+    "openQuestions": [
+      "Can the sharp constant and equality conditions for eLpNorm Hölder be formalized?",
+      "Can the Riesz representation theorem (Lp)* ≅ Lq be derived from the eLpNorm Hölder inequality?"
+    ]
   }
 }
