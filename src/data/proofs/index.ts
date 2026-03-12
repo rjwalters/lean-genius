@@ -81,11 +81,12 @@ export async function getProofAsync(slug: string): Promise<ProofData | undefined
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       proofData.annotations = proofData.annotations.filter((ann: any) => {
         if (ann.range) return true
-        if (ann.lineNumber != null) {
-          ann.range = { startLine: ann.lineNumber, endLine: ann.lineNumber }
+        const line = ann.lineNumber ?? ann.line
+        if (line != null) {
+          ann.range = { startLine: line, endLine: line }
           return true
         }
-        return false // drop annotations with neither range nor lineNumber
+        return false // drop annotations with no range, lineNumber, or line
       })
     }
 
