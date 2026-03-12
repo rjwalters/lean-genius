@@ -55,6 +55,43 @@
       "nesetril_rodl_1976 axiom: general k case",
       "erdos_924 theorem: main result"
     ],
+    "references": [
+      {
+        "authors": "J. Folkman",
+        "title": "Graphs with monochromatic complete subgraphs in every edge coloring",
+        "year": "1970",
+        "venue": "SIAM J. Appl. Math.",
+        "note": "Proved the k = 2 case; published posthumously after Folkman's death in 1969"
+      },
+      {
+        "authors": "J. Nešetřil, V. Rödl",
+        "title": "The Ramsey property for graphs with forbidden complete subgraphs",
+        "year": "1976",
+        "venue": "J. Combinatorial Theory Ser. B",
+        "note": "Proved the general case for all k ≥ 2 using the Hales-Jewett theorem and partite constructions"
+      },
+      {
+        "authors": "R. L. Graham",
+        "title": "On edgewise 2-colored graphs with monochromatic triangles and containing no complete hexagon",
+        "year": "1968",
+        "venue": "J. Combinatorial Theory",
+        "note": "Early upper bound on the Folkman number f(3; 2)"
+      },
+      {
+        "authors": "C. Lange, S. Radziszowski, X. Xu",
+        "title": "Use of ECJ and other tools in the computation of Folkman numbers",
+        "year": "2014",
+        "venue": "Preprint",
+        "note": "Determined the exact Folkman number f(3; 2) = 786"
+      },
+      {
+        "authors": "A. Dudek, V. Rödl",
+        "title": "On the Folkman number f(2, 3, 4)",
+        "year": "2008",
+        "venue": "Experimental Mathematics",
+        "note": "Improved upper bounds on small Folkman numbers via computational methods"
+      }
+    ],
     "crossReferences": [
       {
         "targetProofId": "erdos-920",
