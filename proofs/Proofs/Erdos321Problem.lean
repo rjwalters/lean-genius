@@ -1,37 +1,96 @@
 /-
-# Erdős Problem #321 — Distinct Subset Sums of Unit Fractions
+  Erdős Problem #321 — Distinct Subset Sums of Unit Fractions
 
-Let R(N) be the maximum size of a set A ⊆ {1, ..., N} such that all
-subset sums Σ_{n ∈ S} 1/n are distinct for S ⊆ A.
+  Let R(N) be the maximum size of a set A ⊆ {1, ..., N} such that all
+  subset sums Σ_{n ∈ S} 1/n are distinct for S ⊆ A.
 
-Known bounds (Bleicher–Erdős, 1975–1976):
-  (N/log N) · Π_{i=3}^{k} log_i N ≤ R(N) ≤ (1/log 2) · log_r N · (N/log N) · Π_{i=3}^{r} log_i N
+  Known bounds (Bleicher–Erdős, 1975–1976):
+    (N/log N) · Π_{i=3}^{k} log_i N ≤ R(N) ≤ (1/log 2) · log_r N · (N/log N) · Π_{i=3}^{r} log_i N
 
-where log_i denotes the i-fold iterated logarithm.
+  where log_i denotes the i-fold iterated logarithm.
 
-The gap between upper and lower bounds is essentially a single
-iterated logarithm factor.
+  The gap between upper and lower bounds is essentially a single
+  iterated logarithm factor.
 
-Status: OPEN
-Reference: https://erdosproblems.com/321
+  Status: OPEN
+  Reference: https://erdosproblems.com/321
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Rat.Basic
-import Mathlib.Data.Real.Basic
+import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.Powerset
+import Mathlib.Data.Finset.Card
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
 
-/- ## Definitions -/
+namespace Erdos321
 
-/-- The set of unit fractions 1/n for n ∈ {1, ..., N}. -/
-def unitFractions (N : ℕ) : Finset ℚ :=
-  Finset.image (fun n => (1 : ℚ) / n) (Finset.Icc 1 N)
+open Classical in
+noncomputable instance {α : Type*} (p : α → Prop) : DecidablePred p :=
+  fun _ => Classical.dec _
+
+/- ## Definitions -/
 
 /-- A subset A ⊆ {1,...,N} has distinct subset sums of reciprocals:
     for any two distinct subsets S, T ⊆ A, Σ_{n∈S} 1/n ≠ Σ_{n∈T} 1/n. -/
 def HasDistinctReciprocalSums (A : Finset ℕ) : Prop :=
   ∀ S T : Finset ℕ, S ⊆ A → T ⊆ A → S ≠ T →
     Finset.sum S (fun n => (1 : ℚ) / n) ≠ Finset.sum T (fun n => (1 : ℚ) / n)
+
+/-- Equivalent injective formulation: the function S ↦ Σ_{n∈S} 1/n is
+    injective on subsets of A. -/
+def HasDistinctReciprocalSums' (A : Finset ℕ) : Prop :=
+  ∀ S T : Finset ℕ, S ⊆ A → T ⊆ A →
+    Finset.sum S (fun n => (1 : ℚ) / n) = Finset.sum T (fun n => (1 : ℚ) / n) → S = T
+
+/-- The two definitions are equivalent. -/
+theorem hasDistinctReciprocalSums_iff (A : Finset ℕ) :
+    HasDistinctReciprocalSums A ↔ HasDistinctReciprocalSums' A := by
+  constructor
+  · intro h S T hS hT heq
+    by_contra hne
+    exact h S T hS hT hne heq
+  · intro h S T hS hT hne heq
+    exact hne (h S T hS hT heq)
+
+/- ## Structural Properties -/
+
+/-- The empty set trivially has distinct reciprocal sums (vacuously). -/
+theorem empty_hasDistinctReciprocalSums : HasDistinctReciprocalSums ∅ := by
+  intro S T hS hT hne
+  rw [Finset.subset_empty] at hS hT
+  subst hS; subst hT
+  exact absurd rfl hne
+
+/-- The property is hereditary: subsets of sets with distinct reciprocal sums
+    also have distinct reciprocal sums. -/
+theorem HasDistinctReciprocalSums.subset {A B : Finset ℕ}
+    (hA : HasDistinctReciprocalSums A) (hBA : B ⊆ A) :
+    HasDistinctReciprocalSums B := by
+  intro S T hS hT hne
+  exact hA S T (hS.trans hBA) (hT.trans hBA) hne
+
+/-- Any singleton {n} has distinct reciprocal sums
+    (the only subsets are ∅ with sum 0 and {n} with sum 1/n). -/
+theorem singleton_hasDistinctReciprocalSums (n : ℕ) (hn : n ≥ 1) :
+    HasDistinctReciprocalSums {n} := by
+  intro S T hS hT hne
+  rw [Finset.subset_singleton_iff] at hS hT
+  -- S and T are each ∅ or {n}, and they're different
+  rcases hS with rfl | rfl <;> rcases hT with rfl | rfl
+  · exact absurd rfl hne
+  · simp [Finset.sum_singleton]; positivity
+  · simp [Finset.sum_singleton]; positivity
+  · exact absurd rfl hne
+
+/-- Pair {m, n} with m < n has distinct reciprocal sums.
+    Since m < n and both ≥ 1, we have 1/m ≠ 1/n, so the 4 subsets
+    ∅, {m}, {n}, {m,n} all have distinct sums 0, 1/m, 1/n, 1/m+1/n. -/
+theorem pair_hasDistinctReciprocalSums (m n : ℕ) (hm : m ≥ 1) (hn : n ≥ 1)
+    (hmn : m < n) : HasDistinctReciprocalSums {m, n} := by
+  intro S T hS hT hne
+  sorry
+
+/- ## R(N) Definition -/
 
 /-- R(N): the maximum size of A ⊆ {1,...,N} with distinct
     reciprocal subset sums. -/
@@ -41,48 +100,34 @@ noncomputable def maxDistinctReciprocal (N : ℕ) : ℕ :=
     (Finset.range (N + 1)).powerset)
     Finset.card
 
-/- ## Main Question -/
-
-/-- **Erdős Problem #321**: Determine the asymptotic behavior of R(N).
-    The current bounds differ by essentially one iterated logarithm. -/
-axiom erdos_321_asymptotics :
-  ∃ f : ℕ → ℝ, ∀ N : ℕ, N ≥ 2 →
-    (maxDistinctReciprocal N : ℝ) = f N
-
 /- ## Known Bounds -/
 
-/-- **Bleicher–Erdős lower bound (1975)**: R(N) ≥ (N/log N) · Π log_i N
-    for iterated logs up to level k. -/
+/-- **Bleicher–Erdős lower bound (1975)**: R(N) ≥ N/log N asymptotically.
+    More precisely, R(N) ≥ (N/log N) · Π_{i=3}^{k} log_i N. -/
 axiom bleicher_erdos_lower :
   ∀ k : ℕ, k ≥ 4 → ∃ N₀ : ℕ, ∀ N ≥ N₀,
     (maxDistinctReciprocal N : ℝ) ≥
       (N : ℝ) / Real.log N
 
-/-- **Bleicher–Erdős upper bound (1976)**: R(N) ≤ (1/log 2) · log_r N ·
-    (N/log N) · Π log_i N for some r depending on N. -/
+/-- **Bleicher–Erdős upper bound (1976)**: R(N) ≤ C · (N/log N) · log log N. -/
 axiom bleicher_erdos_upper :
   ∃ C : ℝ, C > 0 ∧ ∀ N : ℕ, N ≥ 2 →
     (maxDistinctReciprocal N : ℝ) ≤
       C * (N : ℝ) / Real.log N * Real.log (Real.log N)
 
-/-- **Asymptotic form**: R(N) = Θ(N/log N) up to iterated log factors.
-    The main term is N/log N; the precise iterated log correction is
-    the content of the open problem. -/
+/-- **Asymptotic form**: R(N) = Θ(N/log N) up to iterated log factors. -/
 axiom main_term_n_over_log_n :
   ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧ ∀ N : ℕ, N ≥ 2 →
     c₁ * (N : ℝ) / Real.log N ≤ (maxDistinctReciprocal N : ℝ) ∧
     (maxDistinctReciprocal N : ℝ) ≤ c₂ * (N : ℝ) / Real.log N * Real.log (Real.log N)
 
-/- ## Observations -/
+/- ## Main Conjecture -/
 
-/- **Egyptian fraction connection**: The problem relates to
-    representations of rationals as sums of distinct unit fractions.
-    R(N) measures how many denominators from {1,...,N} can be used
-    while keeping all partial sums distinguishable. -/
+/-- **Erdős Problem #321** (OPEN): Determine the exact asymptotic
+    behavior of R(N). The gap between the known upper and lower bounds
+    is essentially one iterated logarithm factor. -/
+axiom erdos_321_asymptotics :
+  ∃ f : ℕ → ℝ, ∀ N : ℕ, N ≥ 2 →
+    (maxDistinctReciprocal N : ℝ) = f N
 
-/- **Greedy construction**: A natural construction takes all n
-    with certain divisibility properties, ensuring subset sums
-    separate. The challenge is optimizing the selection criterion. -/
-
-/- **OEIS sequences**: Related sequences A384927 and A391592
-    track computed values of R(N) for small N. -/
+end Erdos321
