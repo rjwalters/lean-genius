@@ -26,7 +26,7 @@ export const chineseRemainderNonCoprimeProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const chineseRemainderNonCoprimeAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const chineseRemainderNonCoprimeAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const chineseRemainderNonCoprimeData: ProofData = {
   proof: chineseRemainderNonCoprimeProof,

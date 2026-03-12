@@ -27,7 +27,7 @@ export const hodgeConjectureProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const hodgeConjectureAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const hodgeConjectureAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const hodgeConjectureTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const hodgeConjectureData: ProofData = {

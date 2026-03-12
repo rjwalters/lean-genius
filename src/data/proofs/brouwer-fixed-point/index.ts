@@ -26,7 +26,7 @@ export const brouwerFixedPointProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const brouwerFixedPointAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const brouwerFixedPointAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const brouwerFixedPointData: ProofData = {
   proof: brouwerFixedPointProof,

@@ -26,7 +26,7 @@ export const kummerTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const kummerTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const kummerTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const kummerTheoremData: ProofData = {
   proof: kummerTheoremProof,

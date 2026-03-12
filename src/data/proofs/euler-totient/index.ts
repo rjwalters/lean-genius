@@ -26,7 +26,7 @@ export const eulerTotientProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const eulerTotientAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const eulerTotientAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const eulerTotientData: ProofData = {
   proof: eulerTotientProof,

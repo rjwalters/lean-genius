@@ -26,7 +26,7 @@ export const godelIncompletenessProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const godelIncompletenessAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const godelIncompletenessAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const godelIncompletenessData: ProofData = {
   proof: godelIncompletenessProof,

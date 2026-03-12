@@ -1,74 +1,70 @@
 {
   "slug": "area-of-circle-oq-01-oq-03",
-  "title": "Isoperimetric Inequality C² ≥ 4πA with Equality Only for Circles",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "title": "Isoperimetric inequality: C^2 >= 4*pi*A with equality only for circles",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∀ γ : SmoothClosedCurve, 4 * π * γ.area ≤ γ.circumference ^ 2",
-    "plain": "Among all closed curves of given perimeter, the circle encloses the maximum area.",
-    "whyMatters": ["Wiedijk 100 Theorems chain", "Fundamental in geometric measure theory", "Connects analysis, geometry, and Fourier theory"]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Circle equality case: C² = 4πA (ring computation)",
-      "Square strict inequality: C² > 4πA (from π < 4)",
-      "Regular n-gon ratio: 4πA/C² = π/(n·tan(π/n))",
-      "n-gon limit: π/(n·tan(π/n)) → 1 (via hasDerivAt_tan)",
-      "circleGamma_circumference: arc-length integral = 2πr",
-      "circleGamma_area: Green's integral = πr²",
-      "Arithmetic kernel: isoperimetric_from_wirtinger_bounds",
-      "2D Cauchy-Schwarz: cross_product_sq_le",
-      "Equilateral triangle ratio < 1",
-      "isoperimetric_inequality_smooth: 4πA ≤ C² for all smooth closed curves (via analytical_assembly + arithmetic kernel)",
-      "circle_maximizes_area: circles enclose max area for given circumference",
-      "non_circle_area_lt_circle: strict suboptimality for non-circles"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Prove the general isoperimetric inequality for smooth closed curves — COMPLETED"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-06T11:00:00Z",
-    "iteration": 2,
-    "focus": "Problem complete: 24 theorems, 3 axioms, 0 sorries.",
+    "phase": "IN_PROGRESS",
+    "since": "2026-02-24T17:52:20.366Z",
+    "iteration": 1,
+    "focus": "Wirtinger proved, fourier_decomposition axiom remains",
     "blockers": [],
-    "nextAction": "None - problem complete.",
-    "attemptCounts": { "total": 2, "currentApproach": 2, "approachesTried": 1 }
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
   },
   "knowledge": {
-    "progressSummary": "24 theorems proved (0 sorries), 3 axioms. The sorry in isoperimetric_inequality_smooth was eliminated by adding analytical_assembly axiom (constant-speed reparametrization + integral estimates) and proving the main theorem from it via the arithmetic kernel. Also fixed a pre-existing build error in regular_ngon_isoperimetric_ratio where let-binding shadowing caused field_simp/ring to fail.",
+    "progressSummary": "PROGRESS: Proved Wirtinger inequality as theorem (was axiom). Replaced wirtinger_inequality axiom with fourier_decomposition axiom that is closer to Mathlib tsum_sq_fourierCoeff. The Wirtinger proof is 15 lines using hasSum_le for tsum comparison. File now has 0 sorries, 3 axioms (fourier_decomposition, exists_nice_reparam, equality_implies_circle).",
     "builtItems": [
-      "AreaOfCircleOQ01OQ03.lean (24 theorems, 0 sorries, 3 axioms)"
+      "wirtinger_inequality theorem in AreaOfCircleOQ01OQ03.lean (was axiom, now proved)",
+      "fourier_decomposition axiom in AreaOfCircleOQ01OQ03.lean (replaces wirtinger axiom)"
     ],
     "insights": [
-      "The Hurwitz 1901 proof requires constant-speed (arc-length) parametrization",
-      "Variable-speed approach fails: integral CS gives L² ≤ 2πE (wrong direction)",
-      "Constant-speed makes E = L²/(2π) EXACTLY (equality not inequality)",
-      "The analytical assembly step (reparametrization + integral estimates) is cleanly axiomatizable",
-      "The arithmetic kernel (isoperimetric_from_wirtinger_bounds) is pure algebra: S² ≤ (2πc)² → S ≤ 2πc → 2A ≤ 2πc² → 4πA ≤ L²",
-      "Let-binding shadowing in Lean theorems can break field_simp/ring: use 'intro' to name let-bindings explicitly, then 'show' to restate the goal with explicit terms",
-      "Mathlib has Fourier tools to prove Wirtinger but lacks arc-length reparametrization"
+      "Wirtinger inequality follows from Fourier decomposition: if ∫f²=Σcₙ² and ∫(f)²=Σn²cₙ², then n²≥1 for n≠0 gives ∫(f)²≥∫f² via hasSum_le",
+      "fourierCoeff_deriv NOT available in Mathlib 4.26.0 — need manual IBP on AddCircle",
+      "tsum_le_tsum NOT available in Mathlib 4.26.0 — use hasSum_le with Summable.hasSum instead",
+      "Framework bridge between interval integrals and AddCircle/Lp is the main remaining challenge",
+      "fourier_decomposition axiom is more fundamental than wirtinger_inequality: it states Parseval + IBP"
     ],
-    "mathlibGaps": [
-      "Arc-length reparametrization (listed in 'undergrad math not in Mathlib')",
-      "Wirtinger's inequality (provable from existing Fourier infrastructure)"
-    ],
-    "nextSteps": []
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove fourier_decomposition from tsum_sq_fourierCoeff: lift C¹ periodic function to Lp(AddCircle), apply Parseval, prove IBP",
+      "Prove exists_nice_reparam: arc-length reparametrization via inverse function theorem",
+      "Prove equality_implies_circle: equality case in Wirtinger gives f = a cos + b sin"
+    ]
   },
-  "approaches": [
-    {
-      "name": "Hurwitz 1901 (Fourier/Wirtinger)",
-      "status": "complete",
-      "description": "Sorry removed via analytical_assembly axiom + arithmetic kernel proof. 24 theorems, 0 sorries, 3 axioms."
-    }
+  "approaches": [],
+  "tags": [
+    "analysis",
+    "geometry",
+    "calculus",
+    "differentiation",
+    "extension",
+    "seeker-selected"
   ],
-  "tags": ["geometry", "analysis", "isoperimetric", "wiedijk-100"],
-  "relatedProofs": ["AreaOfCircle.lean", "AreaOfCircleOQ01OQ03.lean", "AreaOfCircleOQ02.lean"],
-  "references": { "papers": ["Hurwitz 1901"], "urls": [], "mathlib": ["ENNReal.lintegral_mul_le_Lp_mul_Lq", "fourierBasis", "tsum_sq_fourierCoeff"] },
-  "started": "2026-03-06T10:32:00Z",
-  "lastUpdate": "2026-03-06T11:00:00Z",
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-25T19:36:59.224Z",
+  "lastUpdate": "2026-02-25T19:36:59.224Z",
   "significance": 8,
-  "tractability": 3
+  "tractability": 5
 }

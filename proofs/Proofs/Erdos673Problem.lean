@@ -20,11 +20,7 @@
   Tags: number-theory, divisors, analytic-number-theory
 -/
 
-import Mathlib.NumberTheory.Divisors
-import Mathlib.NumberTheory.ArithmeticFunction
-import Mathlib.Data.Real.Basic
-import Mathlib.Topology.Instances.Real
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos673
 
@@ -62,7 +58,8 @@ noncomputable def G (n : ℕ) : ℝ :=
 
 /-- G(1) = 0 (no consecutive pairs). -/
 theorem G_one : G 1 = 0 := by
-  sorry
+  unfold G tau
+  simp [Nat.divisors_one]
 
 /-- G(p) = 1/p for prime p. -/
 theorem G_prime (p : ℕ) (hp : p.Prime) : G p = 1 / p := by

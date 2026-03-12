@@ -1,6 +1,4 @@
-import Mathlib.Analysis.Calculus.MeanValue
-import Mathlib.Analysis.Calculus.Deriv.Basic
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # Vector-Valued Mean Value Inequality
@@ -327,9 +325,42 @@ The vector inequality is MORE GENERAL and MORE USEFUL:
 - Foundation for nonlinear analysis in Banach spaces
 -/
 
-/-- The vector-valued MVT applies to any normed space,
-    while the scalar MVT requires the real line structure. -/
-example : True := trivial  -- placeholder for the general principle
+/-- **Strict monotonicity from positive derivative**:
+    If f'(x) > 0 on (a, b) with f continuous on [a, b], then f(a) < f(b).
+    This uses the scalar MVT (not available for vectors). -/
+theorem strict_mono_of_deriv_pos
+    {f : ℝ → ℝ} {a b : ℝ} (hab : a < b)
+    (hfc : ContinuousOn f (Icc a b))
+    (hfd : DifferentiableOn ℝ f (Ioo a b))
+    (hpos : ∀ x ∈ Ioo a b, 0 < deriv f x) :
+    f a < f b := by
+  obtain ⟨c, hc, hslope⟩ := exists_deriv_eq_slope f hab hfc hfd
+  have hba : (0 : ℝ) < b - a := sub_pos.mpr hab
+  have hfc' := hpos c hc
+  rw [hslope] at hfc'
+  have h := mul_pos hfc' hba
+  rw [div_mul_cancel₀ _ hba.ne'] at h
+  linarith
+
+/-- **Antiderivative uniqueness**: Two antiderivatives of the same function
+    on [a, b] differ by a constant. Uses the vector-valued zero-derivative result. -/
+theorem antiderivatives_differ_by_constant
+    {f g : ℝ → ℝ} {a b : ℝ} (hab : a ≤ b)
+    (hf : ∀ x ∈ Icc a b, HasDerivWithinAt f (deriv f x) (Icc a b) x)
+    (hg : ∀ x ∈ Icc a b, HasDerivWithinAt g (deriv g x) (Icc a b) x)
+    (heq : ∀ x ∈ Ico a b, deriv f x = deriv g x) :
+    ∀ x ∈ Icc a b, f x - g x = f a - g a := by
+  intro x hx
+  have hh : ∀ y ∈ Icc a b,
+      HasDerivWithinAt (fun t => f t - g t) (deriv f y - deriv g y) (Icc a b) y :=
+    fun y hy => (hf y hy).sub (hg y hy)
+  have h0 : ∀ y ∈ Ico a b, deriv f y - deriv g y = 0 :=
+    fun y hy => sub_eq_zero.mpr (heq y hy)
+  have hC : ∀ y ∈ Ico a b, ‖deriv f y - deriv g y‖ ≤ 0 :=
+    fun y hy => by rw [h0 y hy]; simp
+  have hbound := mean_value_inequality hh hC x hx
+  rw [zero_mul] at hbound
+  exact sub_eq_zero.mp (norm_eq_zero.mp (le_antisymm hbound (norm_nonneg _)))
 
 -- ============================================================
 -- Summary
@@ -348,6 +379,8 @@ example : True := trivial  -- placeholder for the general principle
 8. **Displacement Bound**: ‖f(T) - f(0)‖ ≤ C·T
 9. **Banach Spaces**: General f : E → F mean value inequality (proved from Mathlib)
 10. **ODE Connection**: Foundation for Picard-Lindelöf uniqueness
+11. **Strict Monotonicity**: f' > 0 on (a,b) → f(a) < f(b) (proved via scalar MVT)
+12. **Antiderivative Uniqueness**: Same derivative → differ by constant (proved via vector MVT)
 
 This answers Open Question #3 from the MVT gallery:
 "Vector-valued MVT generalization (mean value inequality)"
@@ -422,5 +455,7 @@ theorem lipschitz_of_nnnorm_fderiv_le {f : E → F} {s : Set E}
 #check @banach_mean_value_inequality
 #check @banach_mvt_differentiableAt
 #check @banach_constant_of_fderiv_zero
+#check @strict_mono_of_deriv_pos
+#check @antiderivatives_differ_by_constant
 
 end MeanValueTheoremOQ03

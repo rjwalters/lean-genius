@@ -26,7 +26,7 @@ export const mathematicalInductionProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const mathematicalInductionAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const mathematicalInductionAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const mathematicalInductionData: ProofData = {
   proof: mathematicalInductionProof,

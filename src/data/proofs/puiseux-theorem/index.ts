@@ -27,7 +27,7 @@ export const puiseuxTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const puiseuxTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const puiseuxTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const puiseuxTheoremTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const puiseuxTheoremData: ProofData = {

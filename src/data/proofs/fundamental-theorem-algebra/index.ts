@@ -26,7 +26,7 @@ export const fundamentalTheoremAlgebraProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const fundamentalTheoremAlgebraAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const fundamentalTheoremAlgebraAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const fundamentalTheoremAlgebraData: ProofData = {
   proof: fundamentalTheoremAlgebraProof,

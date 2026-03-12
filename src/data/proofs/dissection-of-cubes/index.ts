@@ -27,7 +27,7 @@ export const dissectionOfCubesProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const dissectionOfCubesAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const dissectionOfCubesAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const dissectionOfCubesTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const dissectionOfCubesData: ProofData = {

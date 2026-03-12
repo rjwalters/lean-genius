@@ -26,7 +26,7 @@ export const fundamentalTheoremCalculusProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const fundamentalTheoremCalculusAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const fundamentalTheoremCalculusAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const fundamentalTheoremCalculusData: ProofData = {
   proof: fundamentalTheoremCalculusProof,

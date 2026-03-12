@@ -14,8 +14,8 @@
 #     - Purpose-built for Aristotle: only routine lemma sorries, no axioms
 #     - Created by Researchers alongside main proof files
 #     - Score = theorem_sorries only (no axiom penalty)
-#   Tier 2 (fallback): *Problem.lean and other existing files
-#     - Regular proof files submitted when no Tier 1 slots available
+#   Tier 2 (fallback): Research output files (non-Erdos, non-Test, non-Aristotle)
+#     - Researcher-produced files with complete definitions and routine lemma sorries
 #     - Score = theorem_sorries only
 #
 # Candidates are files that:
@@ -211,7 +211,9 @@ main() {
         local tier2_files=()
         while IFS= read -r f; do
             tier2_files+=("$f")
-        done < <(find "$PROOFS_DIR" -name "Erdos*Problem.lean" -type f 2>/dev/null | sort)
+        done < <(find "$PROOFS_DIR" -name "*.lean" -type f \
+            ! -name "Erdos*" ! -name "Test*" ! -name "*Aristotle.lean" \
+            2>/dev/null | sort)
 
         if [[ ${#tier2_files[@]} -gt 0 ]]; then
             while IFS= read -r line; do
@@ -294,7 +296,7 @@ EOF
         tier2_count="${tier2_count:-0}"
         echo ""
         echo "Total candidates: $total_count (T1 companion: $tier1_count, T2 regular: $tier2_count)"
-        echo "T1 companion files are preferred. T2 files are fallback when T1 slots exhausted."
+        echo "T1 companion files are preferred. T2 research output files are fallback when T1 slots exhausted."
         echo "Best candidates have low score (few sorries, no def sorries)"
     fi
 }

@@ -26,7 +26,7 @@ export const schroederBernsteinProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const schroederBernsteinAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const schroederBernsteinAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const schroederBernsteinData: ProofData = {
   proof: schroederBernsteinProof,

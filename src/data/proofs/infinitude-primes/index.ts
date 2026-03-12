@@ -27,7 +27,7 @@ export const infinitudePrimesProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const infinitudePrimesAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const infinitudePrimesAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const infinitudePrimesTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const infinitudePrimesData: ProofData = {

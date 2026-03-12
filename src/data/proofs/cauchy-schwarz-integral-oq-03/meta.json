@@ -1,0 +1,127 @@
+{
+  "id": "cauchy-schwarz-integral-oq-03",
+  "title": "Complex L2 Cauchy-Schwarz via Bridge Theorem",
+  "slug": "cauchy-schwarz-integral-oq-03",
+  "description": "Extends the Bunyakovsky-Schwarz integral inequality from real to complex L2 spaces via a bridge theorem connecting the abstract inner product to the integral of pointwise inner products.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "functional-analysis",
+      "inner-product-spaces",
+      "L2-spaces",
+      "complex-analysis",
+      "extension"
+    ],
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOq03.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "L2.inner_def",
+        "description": "Bridge: L2 inner product equals integral of pointwise inner products",
+        "module": "Mathlib.MeasureTheory.Function.L2Space"
+      },
+      {
+        "theorem": "norm_inner_le_norm",
+        "description": "Abstract Cauchy-Schwarz: |⟪f,g⟫| ≤ ‖f‖·‖g‖",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "Complex.inner_apply",
+        "description": "Complex inner product: ⟪z,w⟫ = conj(z)·w",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "inner_self_eq_norm_sq_to_K",
+        "description": "Self inner product equals norm squared",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Bridge theorem: L2 inner product = integral of pointwise complex inner products",
+      "Complex Bunyakovsky-Schwarz with explicit conjugation form",
+      "Squared form of complex Cauchy-Schwarz",
+      "Self-inner product properties: real, non-negative, integral representation",
+      "Real and imaginary part bounds",
+      "Equality characterization via linear dependence",
+      "Uniform RCLike formulation covering both ℝ and ℂ",
+      "Real L2 recovery as specialization"
+    ],
+    "dateAdded": "03/11/26"
+  },
+  "overview": {
+    "historicalContext": "The Cauchy-Schwarz inequality in L2 spaces is foundational to functional analysis. While the real-valued case is classical, extending to complex L2 requires careful handling of conjugation in the inner product. This formalization bridges the gap between Mathlib's abstract inner product space Cauchy-Schwarz and the concrete integral inequality for complex-valued functions.",
+    "problemStatement": "**Open Question**: Can the bridge theorem connecting L2 inner products to integrals be extended from real to complex-valued functions?\n\n**Answer**: YES. The key bridge theorem `L2.inner_def` works uniformly for any `RCLike` field (including ℂ). We derive the complex Bunyakovsky-Schwarz inequality, equality characterization, and show the real case is recovered as a specialization.",
+    "proofStrategy": "1. **Bridge Theorem**: Use `L2.inner_def` to equate `⟪f,g⟫_ℂ` with `∫ conj(f(x))·g(x) dμ`.\n2. **Complex CS**: Apply abstract `norm_inner_le_norm` through the bridge to get the integral form.\n3. **Self-Inner Product**: Show `⟪f,f⟫_ℂ` is real, non-negative, and equals `∫ ‖f(x)‖² dμ`.\n4. **Equality**: Characterize equality via linear dependence using `norm_inner_eq_norm_iff`.\n5. **Uniformity**: Generalize to `RCLike 𝕜` covering both ℝ and ℂ simultaneously.\n6. **Recovery**: Specialize back to ℝ to recover the original Bunyakovsky-Schwarz.",
+    "keyInsights": [
+      "L2.inner_def provides the crucial bridge between abstract and integral forms for any RCLike field",
+      "Complex inner product ⟪z,w⟫_ℂ = conj(z)·w introduces conjugation not present in the real case",
+      "The RCLike typeclass unifies real and complex formulations in a single proof",
+      "Equality in complex CS iff functions are linearly dependent (same as real case)",
+      "Self-inner product ⟪f,f⟫_ℂ is always real and non-negative despite being complex-valued"
+    ]
+  },
+  "sections": [
+    {
+      "id": "complex-l2-bridge",
+      "title": "Complex L2 Bridge Theorem",
+      "startLine": 12,
+      "endLine": 36,
+      "summary": "Bridge between abstract L2 inner product and integral of pointwise complex inner products."
+    },
+    {
+      "id": "complex-cs",
+      "title": "Complex Cauchy-Schwarz",
+      "startLine": 38,
+      "endLine": 64,
+      "summary": "Cauchy-Schwarz for complex L2: abstract, integral, conjugation, and squared forms."
+    },
+    {
+      "id": "self-inner-product",
+      "title": "Self-Inner Product Properties",
+      "startLine": 66,
+      "endLine": 93,
+      "summary": "Self-inner product is real, non-negative, and equals integral of norm squared."
+    },
+    {
+      "id": "real-part",
+      "title": "Real and Imaginary Part Bounds",
+      "startLine": 95,
+      "endLine": 112,
+      "summary": "Bounds on real and imaginary parts of ⟪f,g⟫_ℂ."
+    },
+    {
+      "id": "equality",
+      "title": "Equality Characterization",
+      "startLine": 114,
+      "endLine": 130,
+      "summary": "Equality in complex CS iff linearly dependent."
+    },
+    {
+      "id": "rclike-uniform",
+      "title": "Uniform RCLike Formulation",
+      "startLine": 132,
+      "endLine": 156,
+      "summary": "Most general form using RCLike typeclass, covering both ℝ and ℂ."
+    },
+    {
+      "id": "real-recovery",
+      "title": "Real L2 Recovery",
+      "startLine": 158,
+      "endLine": 174,
+      "summary": "Specializing back to real L2 recovers original Bunyakovsky-Schwarz."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file extends the Bunyakovsky-Schwarz integral inequality to complex L2 spaces with zero sorries. The bridge theorem L2.inner_def provides the key connection between abstract and integral forms. The development covers complex CS in multiple forms (abstract, integral, conjugation, squared), self-inner product properties, equality characterization, and a uniform RCLike formulation that specializes to both real and complex cases.",
+    "implications": "1. **Unified framework**: The RCLike formulation shows real and complex CS are instances of the same theorem.\n2. **Practical bridge**: The explicit conjugation forms are directly usable in quantum mechanics and signal processing.\n3. **Completeness**: Together with the parent proof (real CS) and OQ01/OQ02 variants, this provides comprehensive coverage of the Cauchy-Schwarz family.",
+    "openQuestions": [
+      "Can the bridge theorem extend to Lp spaces for p ≠ 2?",
+      "Can Bessel's inequality be derived from this complex L2 framework?"
+    ]
+  }
+}

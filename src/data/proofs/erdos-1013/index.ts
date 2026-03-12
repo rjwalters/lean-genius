@@ -17,7 +17,7 @@ export const proof: Proof = {
   overview: meta.overview, conclusion: meta.conclusion,
 }
 
-export const annotations: Annotation[] = annotationsJson as Annotation[]
+export const annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const proofData: ProofData = { proof, annotations }
 
 export async function getProofSource(): Promise<string> {

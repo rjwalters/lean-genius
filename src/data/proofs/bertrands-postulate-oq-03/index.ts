@@ -27,7 +27,7 @@ export const bertrandsPostulateOQ03Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const bertrandsPostulateOQ03Annotations: Annotation[] = annotationsJson as Annotation[]
+export const bertrandsPostulateOQ03Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const bertrandsPostulateOQ03TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const bertrandsPostulateOQ03Data: ProofData = {

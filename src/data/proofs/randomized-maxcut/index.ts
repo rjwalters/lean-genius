@@ -27,7 +27,7 @@ export const randomizedMaxCutProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const randomizedMaxCutAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const randomizedMaxCutAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const randomizedMaxCutTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const randomizedMaxCutData: ProofData = {

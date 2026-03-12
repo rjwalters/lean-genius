@@ -1,0 +1,32 @@
+[
+  {
+    "lineNumber": 45,
+    "content": "**Multiplication Permutation**: For a unit $a \\in (\\mathbb{Z}/p\\mathbb{Z})^\\times$, the map $x \\mapsto ax$ is a bijection on the units. The inverse is $x \\mapsto a^{-1}x$. This is the central object in Zolotarev's approach — its permutation signature encodes the Legendre symbol.",
+    "type": "definition"
+  },
+  {
+    "lineNumber": 62,
+    "content": "**Group Homomorphism Property**: The map $a \\mapsto \\sigma_a$ (where $\\sigma_a(x) = ax$) is a group homomorphism $(\\mathbb{Z}/p\\mathbb{Z})^\\times \\to \\mathrm{Perm}((\\mathbb{Z}/p\\mathbb{Z})^\\times)$. This is the regular representation of the multiplicative group.",
+    "type": "insight"
+  },
+  {
+    "lineNumber": 74,
+    "content": "**Sign Character**: Composing `mulPerm` with the permutation sign gives a homomorphism to $\\{\\pm 1\\}$. Since $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of even order $p-1$, it has exactly one non-trivial quadratic character — which must be the Legendre symbol.",
+    "type": "insight"
+  },
+  {
+    "lineNumber": 89,
+    "content": "**Square Detection**: If $a = b^2$ is a square, then $\\sigma_a = \\sigma_b \\circ \\sigma_b = \\sigma_b^2$, so $\\mathrm{sign}(\\sigma_a) = \\mathrm{sign}(\\sigma_b)^2 = +1$. This gives a permutation-theoretic proof that quadratic residues have Legendre symbol $+1$.",
+    "type": "proof-technique"
+  },
+  {
+    "lineNumber": 124,
+    "content": "**Zolotarev's Lemma (Axiomatized)**: The key result $\\left(\\frac{a}{p}\\right) = \\mathrm{sign}(x \\mapsto ax)$ is axiomatized here. The full proof requires: (1) finding a primitive root $g$ of $(\\mathbb{Z}/p\\mathbb{Z})^\\times$, (2) analyzing the cycle structure of $\\sigma_g$, (3) showing both sides define the same quadratic character. This is a natural target for Aristotle proof search.",
+    "type": "axiom"
+  },
+  {
+    "lineNumber": 177,
+    "content": "**QR from Mathlib**: The QR statement $\\left(\\frac{q}{p}\\right)\\left(\\frac{p}{q}\\right) = (-1)^{\\frac{p-1}{2}\\frac{q-1}{2}}$ comes from Mathlib's `legendreSym.quadratic_reciprocity`. The Zolotarev proof would derive this by analyzing the permutation on $\\mathbb{Z}/pq\\mathbb{Z} \\cong \\mathbb{Z}/p\\mathbb{Z} \\times \\mathbb{Z}/q\\mathbb{Z}$ via CRT.",
+    "type": "insight"
+  }
+]

@@ -27,7 +27,7 @@ export const cantorDiagonalizationProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const cantorDiagonalizationAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const cantorDiagonalizationAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const cantorDiagonalizationTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const cantorDiagonalizationData: ProofData = {

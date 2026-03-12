@@ -26,7 +26,7 @@ export const konigsbergProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const konigsbergAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const konigsbergAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const konigsbergData: ProofData = {
   proof: konigsbergProof,

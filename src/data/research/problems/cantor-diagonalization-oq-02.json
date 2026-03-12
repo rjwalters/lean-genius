@@ -1,61 +1,68 @@
 {
   "slug": "cantor-diagonalization-oq-02",
   "title": "Cardinality of the Set of All Countable Ordinals",
-  "phase": "NEW",
-  "status": "active",
-  "tier": "A",
+  "phase": "COMPLETE",
+  "status": "completed",
+  "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "|{α : Ordinal | α.card ≤ ℵ₀}| = ℵ₁, and no surjection ℕ → {countable ordinals} exists",
+    "plain": "The set of all countable ordinals has cardinality ℵ₁ (the first uncountable cardinal). The Cantor diagonal argument shows no countable enumeration can cover all countable ordinals.",
+    "whyMatters": [
+      "Demonstrates the ordinal version of Cantor's diagonal argument",
+      "Establishes ℵ₁ as the cardinality of countable ordinals",
+      "Connects to the Continuum Hypothesis (is ℵ₁ = 2^ℵ₀?)"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "ω₁ = (aleph 1).ord is the first uncountable ordinal",
+      "ω₁.card = ℵ₁ (via Cardinal.card_ord)",
+      "ℵ₁ = Order.succ ℵ₀ (via Cardinal.aleph_succ)",
+      "ℵ₀ < ℵ₁ (via Cardinal.aleph_lt_aleph)",
+      "κ < ℵ₁ ↔ κ ≤ ℵ₀ (characterization of minimum uncountable)",
+      "ℵ₁ is minimum uncountable: ℵ₀ < κ → ℵ₁ ≤ κ",
+      "No cardinal between ℵ₀ and ℵ₁",
+      "α < ω₁ ↔ α.card ≤ ℵ₀ (countable ordinals = Iio(ω₁))",
+      "ω₁ is a limit ordinal (α < ω₁ → α+1 < ω₁)",
+      "Countable sup bounded: sup of ℕ-indexed countable ordinals < ω₁",
+      "Cantor diagonal: ∃ β < ω₁ with β > all f(n) for any f : ℕ → countable ordinals",
+      "No surjection from ℕ onto countable ordinals"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Prove the cardinality of countable ordinals is ℵ₁ — COMPLETED (0 sorries, 0 axioms)"
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-25T14:11:52.127Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
-  },
-  "knowledge": {
-    "progressSummary": "COMPLETE: Fixed iSup_lt_ord argument order for Mathlib 4.26 compatibility. Proof fully compiles with 0 sorries.",
+    "leanFile": "proofs/Proofs/CantorDiagonalizationOQ02.lean",
+    "sorryCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 14,
     "builtItems": [
-      "Fixed CantorDiagonalizationOQ02.lean:193 - swapped iSup_lt_ord arguments"
+      "omega1: definition of first uncountable ordinal",
+      "omega1_card: ω₁.card = ℵ₁",
+      "aleph1_eq_succ_aleph0: ℵ₁ = Order.succ ℵ₀",
+      "lt_aleph1_iff_le_aleph0: κ < ℵ₁ ↔ κ ≤ ℵ₀",
+      "aleph0_lt_aleph1: ℵ₀ < ℵ₁",
+      "omega1_uncountable: ℵ₀ < ω₁.card",
+      "aleph1_minimum_uncountable: ℵ₀ < κ → ℵ₁ ≤ κ",
+      "no_cardinal_between_aleph0_aleph1: gap theorem",
+      "lt_omega1_iff_countable: α < ω₁ ↔ countable ordinal",
+      "countable_ordinals_eq_Iio: {countable ordinals} = Iio(ω₁)",
+      "omega1_isLimit: ω₁ is a limit ordinal",
+      "countable_sup_lt_omega1: sup of countable sequence < ω₁",
+      "cantor_diagonal_countable_ordinals: diagonal argument",
+      "no_surjection_onto_countable_ordinals: no ℕ → countable ordinals surjection"
     ],
     "insights": [
-      "Ordinal.iSup_lt_ord argument order changed in Mathlib 4.26: now takes cofinality bound first, then pointwise bound",
-      "Cardinal.isRegular_aleph_one.cof_eq gives omega1.cof = aleph 1",
-      "Proof uses regularity of aleph_one to show countable sups of countable ordinals remain countable"
+      "Cardinal.isRegular_aleph_one.cof_eq gives ω₁.cof = ℵ₁ (regularity of ℵ₁)",
+      "Ordinal.iSup_lt_ord uses cofinality to bound countable suprema",
+      "The ordinal diagonal argument constructs β = sup(f) + 1 as witness",
+      "Full proof uses 0 axioms — everything from Mathlib cardinal/ordinal theory"
     ],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [],
-  "tags": [
-    "seeker-selected",
-    "set-theory",
-    "cardinal-arithmetic",
-    "ordinals"
-  ],
-  "relatedProofs": [],
-  "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
-  },
-  "started": "2026-02-25T19:36:59.225Z",
-  "lastUpdate": "2026-02-25T19:36:59.225Z",
-  "significance": 7,
-  "tractability": 6
+  "knowledgeScore": 95,
+  "researchNotes": "Fully proved (0 sorries, 0 axioms). The key insight is using regularity of ℵ₁ (isRegular_aleph_one) to bound countable suprema below ω₁. The diagonal argument constructs β = sup(f) + 1 which is countable but exceeds all elements of any countable sequence.",
+  "lastUpdated": "2026-03-07"
 }

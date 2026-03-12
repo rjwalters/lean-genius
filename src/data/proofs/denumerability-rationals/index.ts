@@ -27,7 +27,7 @@ export const denumerabilityRationalsProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const denumerabilityRationalsAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const denumerabilityRationalsAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const denumerabilityRationalsTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const denumerabilityRationalsData: ProofData = {

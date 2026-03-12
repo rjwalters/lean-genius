@@ -26,7 +26,7 @@ export const productOfSegmentsOfChordsProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const productOfSegmentsOfChordsAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const productOfSegmentsOfChordsAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const productOfSegmentsOfChordsData: ProofData = {
   proof: productOfSegmentsOfChordsProof,

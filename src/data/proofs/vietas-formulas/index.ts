@@ -26,7 +26,7 @@ export const vietasFormulasProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const vietasFormulasAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const vietasFormulasAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const vietasFormulasData: ProofData = {
   proof: vietasFormulasProof,

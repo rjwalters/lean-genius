@@ -1,0 +1,164 @@
+{
+  "id": "erdos-1007-oq-01",
+  "title": "Minimum Edges for Graph Dimension d",
+  "slug": "erdos-1007-oq-01",
+  "description": "Studies the function minEdges(d) giving the minimum number of edges in a graph of dimension exactly d. Formalizes known values (d=0..5), proves structural results including a constructive simplex embedding of K_n in ℝⁿ, shows the complete graph optimality conjecture implies monotonicity, analyzes growth rates, and introduces the deficiency function.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://erdosproblems.com/1007",
+    "date": "2026",
+    "status": "in-progress",
+    "proofRepoPath": "Proofs/Erdos1007OQ01.lean",
+    "tags": [
+      "erdos",
+      "graph-dimension",
+      "unit-distance",
+      "combinatorics",
+      "graph-theory",
+      "extension",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.choose",
+        "description": "Binomial coefficient C(n,k).",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_two_right",
+        "description": "C(n,2) = n*(n-1)/2.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Real.sqrt_one",
+        "description": "√1 = 1.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Nat.choose_le_choose",
+        "description": "Monotonicity of binomial coefficients.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Axiomatization of the minEdges(d) function for graph dimension",
+      "Known values for d=0..5 including the d=4 surprise (K_{3,3} beats K₅)",
+      "Small-dimension completeness: for d≤3, K_{d+1} is optimal",
+      "Proof that d=4 is the first deviation from the complete graph pattern",
+      "Verification that d=5 returns to the complete graph pattern",
+      "Constructive simplex embedding: K_n embeds as unit distances in ℝⁿ",
+      "graphDimension(K_n) ≤ n proved constructively from simplex embedding",
+      "Complete graph optimality conjecture implies monotonicity (conditional theorem)",
+      "Deficiency function δ(d) = C(d+1,2) - minEdges(d) with computed values",
+      "Equivalence: complete graph optimality ↔ zero deficiency (for d ≠ 4)",
+      "d=4 is the unique anomaly among d=1..5 (formally verified)",
+      "Growth rate analysis: successive differences and ratio computation",
+      "Under optimality conjecture, successive differences equal d+1",
+      "Linear lower bound from rigidity and quadratic upper bound from complete graphs"
+    ],
+    "references": [
+      {
+        "authors": "J. House",
+        "title": "Graphs of dimension 4",
+        "year": "2013",
+        "venue": "Preprint",
+        "note": "Proved minEdges(4) = 9 via K_{3,3}"
+      },
+      {
+        "authors": "J. Chaffee, M. Noble",
+        "title": "The dimension of the unit distance graph",
+        "year": "2016",
+        "venue": "Preprint",
+        "note": "Proved minEdges(5) = 15"
+      }
+    ],
+    "historicalContext": "Erdős asked about the dimension of graphs as unit-distance graphs in Euclidean space. The minimum number of edges needed for a given dimension reveals surprising structure: K_{3,3} achieves dimension 4 with fewer edges than K₅.",
+    "axioms": 10
+  },
+  "sections": [
+    {
+      "id": "graph-dimension",
+      "title": "Graph Dimension",
+      "summary": "Defines unit distance embeddings and the graph dimension function.",
+      "startLine": 40,
+      "endLine": 59
+    },
+    {
+      "id": "min-edge-function",
+      "title": "Minimum Edge Function",
+      "summary": "Axiomatizes minEdges(d) as the minimum edge count among graphs of dimension d.",
+      "startLine": 61,
+      "endLine": 80
+    },
+    {
+      "id": "known-values",
+      "title": "Known Values",
+      "summary": "Records minEdges for d=0..5: 0, 1, 3, 6, 9, 15.",
+      "startLine": 82,
+      "endLine": 102
+    },
+    {
+      "id": "structural-results",
+      "title": "Structural Results",
+      "summary": "Proves K_{d+1} optimality for d≤3, the d=4 surprise, and d=5 matching.",
+      "startLine": 104,
+      "endLine": 125
+    },
+    {
+      "id": "general-bounds",
+      "title": "General Bounds",
+      "summary": "Linear lower bound d ≤ minEdges(d) and quadratic upper bound minEdges(d) ≤ C(d+1,2).",
+      "startLine": 127,
+      "endLine": 195
+    },
+    {
+      "id": "simplex-embedding",
+      "title": "Simplex Embedding Construction",
+      "summary": "Constructive proof that K_n embeds as unit distances in ℝⁿ via the (1/√2)eᵢ basis vector construction.",
+      "startLine": 197,
+      "endLine": 265
+    },
+    {
+      "id": "conjecture-relationships",
+      "title": "Conjecture Relationships",
+      "summary": "Proves that the complete graph optimality conjecture implies monotonicity. Key building block: C(d+1,2) monotonicity.",
+      "startLine": 267,
+      "endLine": 320
+    },
+    {
+      "id": "growth-rate",
+      "title": "Growth Rate Analysis",
+      "summary": "Successive differences and growth rates for known values. Under optimality conjecture, differences are exactly d+1.",
+      "startLine": 322,
+      "endLine": 365
+    },
+    {
+      "id": "deficiency",
+      "title": "Deficiency Function",
+      "summary": "δ(d) = C(d+1,2) - minEdges(d) measures deviation from complete graph optimality. Proved: δ=0 for d≤3 and d=5, δ(4)=1.",
+      "startLine": 367,
+      "endLine": 418
+    }
+  ],
+  "overview": {
+    "summary": "Comprehensive investigation of the minimum edges function for graph dimension. Extends previous work with a constructive simplex embedding, conditional monotonicity proof, deficiency analysis, and growth rate characterization.",
+    "keyIdea": "The function minEdges(d) captures the trade-off between edge count and geometric dimension. The constructive simplex embedding proves K_n embeds in ℝⁿ with unit distances. The deficiency function δ(d) quantifies how much K_{d+1} differs from optimal, with d=4 as the unique known anomaly.",
+    "prerequisites": [
+      "Binomial coefficients Nat.choose",
+      "Basic real number arithmetic and casting",
+      "Unit distance graph embeddings",
+      "Finset sum manipulation"
+    ]
+  },
+  "conclusion": {
+    "summary": "We significantly extend the minEdges formalization with a constructive simplex embedding (K_n in ℝⁿ), prove the complete graph optimality conjecture implies monotonicity, introduce and analyze the deficiency function, and verify d=4 is the unique anomaly for d≤5. All theorems are fully proved (no sorries).",
+    "openQuestions": [
+      "Is minEdges monotone in d?",
+      "Does minEdges(d) = Θ(d²)?",
+      "Is K_{d+1} optimal for all d ≠ 4?",
+      "Can the simplex embedding be strengthened to K_n in ℝⁿ⁻¹?"
+    ]
+  }
+}

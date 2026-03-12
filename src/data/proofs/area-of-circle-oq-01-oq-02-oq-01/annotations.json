@@ -1,0 +1,22 @@
+[
+  {
+    "lineNumber": 37,
+    "content": "**Unit Ball Volume**: ω_n = π^(n/2)/Γ(n/2+1) is the volume of the unit n-ball. Key values: ω_0=1, ω_1=2, ω_2=π, ω_3=4π/3. Computing these requires Gamma function identities: Γ(1)=1, Γ(1/2)=√π, Γ(3/2)=√π/2, Γ(5/2)=3√π/4.",
+    "type": "definition"
+  },
+  {
+    "lineNumber": 117,
+    "content": "**Key Derivative**: d/dr[V_n(r)] = S_n(r) is the n-dimensional generalization of dA/dr = C = 2πr. Since V_n(r) = ω_n·r^n is polynomial, this is just the power rule. The constant ω_n multiplies through via `HasDerivAt.const_mul`.",
+    "type": "proof-technique"
+  },
+  {
+    "lineNumber": 148,
+    "content": "**Main Theorem**: V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC Part 2 (`integral_eq_sub_of_hasDerivAt`). The proof is: ∫₀ʳ V_n'(ρ) dρ = V_n(r) - V_n(0) = V_n(r) - 0 = V_n(r). The zero boundary condition V_n(0) = 0 comes from r^n = 0 for n ≥ 1.",
+    "type": "proof-technique"
+  },
+  {
+    "lineNumber": 248,
+    "content": "**Surface-to-Volume Ratio**: S_n(r)/V_n(r) = n/r grows linearly with dimension. This explains why high-dimensional balls have 'thin shells' — most of the volume is concentrated near the boundary. For n=2: 2/r (circumference/area), for n=3: 3/r (surface/volume).",
+    "type": "insight"
+  }
+]

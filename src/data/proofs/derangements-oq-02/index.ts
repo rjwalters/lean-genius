@@ -26,7 +26,7 @@ export const derangementsOq02Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const derangementsOq02Annotations: Annotation[] = annotationsJson as Annotation[]
+export const derangementsOq02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const derangementsOq02Data: ProofData = {
   proof: derangementsOq02Proof,

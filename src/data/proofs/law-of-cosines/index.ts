@@ -26,7 +26,7 @@ export const lawOfCosinesProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const lawOfCosinesAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const lawOfCosinesAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const lawOfCosinesData: ProofData = {
   proof: lawOfCosinesProof,

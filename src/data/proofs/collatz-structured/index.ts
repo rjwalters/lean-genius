@@ -26,7 +26,7 @@ export const collatzStructuredProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const collatzStructuredAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const collatzStructuredAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const collatzStructuredData: ProofData = {
   proof: collatzStructuredProof,

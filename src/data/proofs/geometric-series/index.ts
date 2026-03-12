@@ -27,7 +27,7 @@ export const geometricSeriesProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const geometricSeriesAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const geometricSeriesAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const geometricSeriesTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const geometricSeriesData: ProofData = {

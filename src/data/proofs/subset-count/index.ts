@@ -26,7 +26,7 @@ export const subsetCountProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const subsetCountAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const subsetCountAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const subsetCountData: ProofData = {
   proof: subsetCountProof,

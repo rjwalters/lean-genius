@@ -27,7 +27,7 @@ export const fermatTwoSquaresProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const fermatTwoSquaresAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const fermatTwoSquaresAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const fermatTwoSquaresTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const fermatTwoSquaresData: ProofData = {

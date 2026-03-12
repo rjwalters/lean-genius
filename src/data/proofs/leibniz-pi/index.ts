@@ -26,7 +26,7 @@ export const leibnizPiProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const leibnizPiAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const leibnizPiAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const leibnizPiData: ProofData = {
   proof: leibnizPiProof,

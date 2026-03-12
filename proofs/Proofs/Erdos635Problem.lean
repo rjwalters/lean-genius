@@ -98,12 +98,32 @@ theorem oddSet_admissible (N : ℕ) (hN : N ≥ 1) :
     have hba_even : (b - a) % 2 = 0 := by omega
     -- But b is odd, so b % 2 = 1
     -- If b = k * (b - a) and (b - a) is even, then b is even: contradiction
-    have : b % 2 = 0 := by omega
+    have hba_dvd_two : 2 ∣ (b - a) := Nat.dvd_of_mod_eq_zero hba_even
+    obtain ⟨m, hm⟩ := hba_dvd_two
+    have : b % 2 = 0 := by rw [hk, hm]; ring_nf; omega
     omega
 
 /-- The odd set has size ⌊(N+1)/2⌋. -/
 theorem oddSet_card (N : ℕ) : (oddSet N).card = (N + 1) / 2 := by
-  sorry -- Requires Finset.Icc filter cardinality; leave for Aristotle
+  simp only [oddSet]
+  induction N with
+  | zero => simp
+  | succ n ih =>
+    have key : (Finset.Icc 1 (n + 1)).filter (fun m => m % 2 = 1) =
+        if (n + 1) % 2 = 1 then
+          insert (n + 1) ((Finset.Icc 1 n).filter (fun m => m % 2 = 1))
+        else
+          (Finset.Icc 1 n).filter (fun m => m % 2 = 1) := by
+      split <;> {
+        ext x; simp only [Finset.mem_filter, Finset.mem_Icc, Finset.mem_insert]
+        constructor <;> intro h <;> omega
+      }
+    rw [key]
+    split <;> rename_i hn
+    · rw [Finset.card_insert_of_notMem]
+      · rw [ih]; omega
+      · simp only [Finset.mem_filter, Finset.mem_Icc, not_and_or]; omega
+    · rw [ih]; omega
 
 /-- For t = 1, the maximum is exactly ⌊(N+1)/2⌋.
 

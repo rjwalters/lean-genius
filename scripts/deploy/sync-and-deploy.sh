@@ -381,8 +381,12 @@ updated = 0
 for problem_file in problems_dir.glob("*.json"):
     slug = problem_file.stem
 
-    with open(problem_file) as f:
-        problem = json.load(f)
+    try:
+        with open(problem_file) as f:
+            problem = json.load(f)
+    except (json.JSONDecodeError, ValueError):
+        print(f"  WARN: skipping invalid JSON: {problem_file.name}")
+        continue
 
     knowledge = problem.get("knowledge", {})
     insights = len(knowledge.get("insights", []))

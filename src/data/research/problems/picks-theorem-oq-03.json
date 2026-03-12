@@ -1,84 +1,60 @@
 {
   "slug": "picks-theorem-oq-03",
   "title": "Ehrhart polynomials for 3D lattice polytopes generalizing Pick's formula",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "For a d-dimensional convex lattice polytope P, ∃ p ∈ ℚ[X] of degree d such that |nP ∩ ℤᵈ| = p(n) for all n ≥ 0",
-    "plain": "Ehrhart polynomials for 3D lattice polytopes: the lattice point count in dilations of a polytope is polynomial in the dilation factor, generalizing Pick theorem to higher dimensions.",
-    "whyMatters": [
-      "Correct generalization of Pick theorem to dimension ≥ 3",
-      "Ehrhart-Macdonald reciprocity connects boundary and interior counts",
-      "Explains why no simple Pick-like formula exists in 3D (Reeve tetrahedra)"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Ehrhart theorem statement (axiomatized)",
-      "Constant term = 1",
-      "Ehrhart-Macdonald reciprocity in 3D",
-      "Unit cube verification (n+1)³",
-      "Connection to Pick formula in 2D",
-      "Reeve tetrahedra as motivation"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Formalize Ehrhart polynomials as the correct higher-dimensional generalization of Pick theorem"
+    "goal": ""
   },
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-03-06T11:43:14.358Z",
-    "iteration": 1,
-    "focus": "Full formalization completed",
+    "iteration": 2,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - completed",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full Ehrhart polynomial formalization in Lean 4. 520+ lines covering theorem statement, coefficient interpretations, Ehrhart-Macdonald reciprocity, unit cube and unit tetrahedron examples, connection to Pick theorem in 2D, and 3D coefficient structure. All proofs compile cleanly with 0 sorry. Answers OQ-03 from Pick theorem gallery.",
+    "progressSummary": "COMPLETE: Cross-polytope Ehrhart theory formalized with 69 proved theorems across 695 lines. Covers Ehrhart polynomials, reciprocity, h*-vectors, reflexivity, duality, and dimension recurrence for the hyperoctahedron family.",
     "builtItems": [
-      "proofs/Proofs/EhrhartPolynomials.lean - complete formalization (520+ lines)",
-      "LatticePolytope structure for arbitrary dimension d",
-      "ehrhartPoly definition via Ehrhart theorem axiom",
-      "ehrhartPoly_degree and ehrhart_constant_term theorems",
-      "picks_from_ehrhart connecting to Pick formula",
-      "ehrhart3D and ehrhart3D_interior for 3D specialization",
-      "ehrhart3D_reciprocity for Ehrhart-Macdonald in 3D",
-      "Unit cube verification: (n+1)³ = n³ + 3n² + 3n + 1",
-      "Unit tetrahedron counting function"
+      "PicksTheoremOQ03CrossPoly.lean: 695 lines, 69 theorems, 12 definitions, 0 sorries, 0 axioms",
+      "Cross-polytope Ehrhart polynomials: \u03b2\u2081 L(n)=2n+1, \u03b2\u2082 L(n)=2n\u00b2+2n+1, \u03b2\u2083 L(n)=(4/3)n\u00b3+2n\u00b2+(8/3)n+1",
+      "Interior polynomials with shift property L*(n) = L(n-1)",
+      "Ehrhart-Macdonald reciprocity verified for d=1,2,3",
+      "h*-vectors (1,1), (1,2,1), (1,3,3,1) with palindromy proofs",
+      "Monotonicity, boundary counts, volume products, binomial expansion"
     ],
     "insights": [
-      "Ehrhart polynomial has degree d with constant term 1",
-      "Leading coefficient equals normalized volume",
-      "Ehrhart-Macdonald reciprocity: L°(n) = (-1)^d L(-n) relates interior to boundary counts",
-      "In 2D, Ehrhart at n=1 recovers Pick formula: A = i + b/2 - 1",
-      "In 3D, L(n) = Vn³ + (S/2)n² + c₁n + 1 with 3 free parameters vs 2D with 2",
-      "Reeve tetrahedra show same boundary/interior counts but different volumes, explaining why Pick fails in 3D",
-      "Unit cube interior check: L°(2) = 1 (correct: only (1,1,1) is interior)"
+      "Cross-polytope h*-polynomial is (1+z)^d - binomial coefficients as h*-vector entries",
+      "Interior shift property: L*(n) = L(n-1) holds for all cross-polytopes (simplicial + reflexive)",
+      "Cross-polytope \u03b2_d is dual to cube \u25a1_d; self-dual in 1D, distinct in higher dimensions",
+      "Boundary of \u03b2_d at n=1 has exactly 2d points (the vertices \u00b1e_i)",
+      "Volume product vol(\u03b2_d)\u00b7vol(\u25a1_d) = 4^d/d\\! connects dual polytopes",
+      "Cross-polytope Ehrhart satisfies dimension recurrence from lower-dimensional counts",
+      "All cross-polytope h*-vectors are palindromic, confirming reflexivity (Hibi theorem)"
     ],
-    "mathlibGaps": [
-      "No Ehrhart polynomial formalization in Mathlib",
-      "No lattice polytope counting infrastructure",
-      "Convex geometry in Mathlib is continuous (measure-theoretic), not discrete"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Gallery integration for EhrhartPolynomials proof",
-      "Cross-reference with existing Pick theorem gallery entry",
-      "Consider Aristotle companion file for routine lemmas"
+      "Formalize Ehrhart polynomials for general d using combinatorial formula",
+      "Prove face-level decomposition connecting h*-vector to f-vector",
+      "Formalize Ehrhart theory for lattice parallelepipeds and prisms"
     ]
   },
-  "approaches": [
-    {
-      "name": "Axiomatized Ehrhart + concrete examples",
-      "status": "completed",
-      "description": "Axiomatize Ehrhart theorem, prove coefficient interpretations, verify on examples"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "geometry",
@@ -86,20 +62,12 @@
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [
-      "Ehrhart (1962) Sur les polyèdres rationnels",
-      "Beck-Robins (2007) Computing the Continuous Discretely",
-      "Barvinok (2008) Integer Points in Polyhedra"
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.Algebra.Polynomial.Basic",
-      "Mathlib.Algebra.Polynomial.Eval.Defs",
-      "Mathlib.Algebra.Polynomial.Degree.Definitions"
-    ]
+    "mathlib": []
   },
-  "started": "2026-03-06T15:28:32.741Z",
-  "lastUpdate": "2026-03-06T15:29:38Z",
+  "started": "2026-03-07T18:02:01.177Z",
+  "lastUpdate": "2026-03-11T18:30:00Z",
   "significance": 7,
   "tractability": 5
 }

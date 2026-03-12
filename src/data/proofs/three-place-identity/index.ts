@@ -27,7 +27,7 @@ export const threePlaceIdentityProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const threePlaceIdentityAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const threePlaceIdentityAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const threePlaceIdentityTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const threePlaceIdentityData: ProofData = {

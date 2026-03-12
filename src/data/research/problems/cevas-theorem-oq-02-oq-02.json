@@ -1,0 +1,64 @@
+{
+  "slug": "cevas-theorem-oq-02-oq-02",
+  "title": "Ceva's Theorem for Spherical Polygons",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\prod_{i=1}^{n} \\frac{\\sin(\\angle P_i C Q_i)}{\\sin(\\angle Q_i C P_{i+1})} = 1",
+    "plain": "Ceva's theorem tells us when lines from the vertices of a triangle through points on opposite sides all meet at one point. We want to generalize this to polygons (quadrilaterals, pentagons, etc.) on a sphere.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-03-06T08:22:50-08:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Formalized polygon Ceva theorem for n-gons. 11 theorems, 0 sorries.",
+    "builtItems": [
+      "CevasTheoremOQ02OQ02.lean: 11 theorems, 0 sorries",
+      "Gallery entry cevas-theorem-oq-02-oq-02"
+    ],
+    "insights": [
+      "Weight balance prod(alpha)=prod(beta) generalizes triangle Ceva via Finset.prod_div_distrib",
+      "Quadrilateral Ceva n=4 is a novel result",
+      "Scaling invariance shows projective nature",
+      "Polygon Menelaus sign is (-1)^n"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: cevas-theorem-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "approaches": [],
+  "tags": [
+    "geometry",
+    "non-euclidean",
+    "spherical-geometry",
+    "concurrency",
+    "cevians",
+    "polygons"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-06T18:38:32.135Z",
+  "lastUpdate": "2026-03-06T18:38:32.135Z"
+}

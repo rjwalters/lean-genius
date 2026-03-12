@@ -698,6 +698,16 @@ theorem nthPrime_ge_add_two (n : ℕ) : nthPrime n ≥ n + 2 := by
     have hge : nthPrime k ≥ k + 2 := ih
     omega
 
+/-- nthPrime diverges to +∞. -/
+theorem nthPrime_tendsto_atTop : Tendsto (fun n => (nthPrime n : ℝ)) atTop atTop := by
+  rw [Filter.tendsto_atTop_atTop]
+  intro b
+  obtain ⟨N, hN⟩ := exists_nat_gt b
+  exact ⟨N, fun n hn => by
+    have : (N : ℝ) ≤ ↑(nthPrime n) := by
+      exact_mod_cast le_trans hn (le_trans (Nat.le_add_right n 2) (nthPrime_ge_add_two n))
+    linarith⟩
+
 /-
 ## Part XV: Maynard-Tao Implications for Specific m
 -/
@@ -1492,10 +1502,33 @@ GPY shows the gaps are small relative to the average spacing of log(p_n).
 open Real in
 /-- **GPY Theorem** (Goldston-Pintz-Yildirim, 2005): lim inf (primeGap n / log(p_n)) = 0.
     That is, for any ε > 0, infinitely many prime gaps g_n < ε · log(p_n).
-    This was the first major result toward bounded gaps, preceding Zhang (2013). -/
-axiom gpy_liminf_zero :
-  ∀ ε : ℝ, 0 < ε → ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧
-    (primeGap n : ℝ) < ε * Real.log (nthPrime n)
+
+    PROVED from polymath_bounded_gaps_246: since primeGap n ≤ 246 infinitely often
+    and log(nthPrime n) → ∞, for any ε > 0 we eventually have 246 < ε · log(p_n),
+    making primeGap n ≤ 246 < ε · log(p_n). -/
+theorem gpy_liminf_zero :
+    ∀ ε : ℝ, 0 < ε → ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧
+    (primeGap n : ℝ) < ε * Real.log (nthPrime n) := by
+  intro ε hε N
+  -- log(nthPrime n) → ∞ because nthPrime n → ∞
+  have hlog_tendsto : Tendsto (fun n => Real.log (nthPrime n : ℝ)) atTop atTop :=
+    Real.tendsto_log_atTop.comp nthPrime_tendsto_atTop
+  -- Find N₀ such that for n ≥ N₀, ε * log(nthPrime n) > 246
+  rw [Filter.tendsto_atTop_atTop] at hlog_tendsto
+  obtain ⟨N₀, hN₀⟩ := hlog_tendsto (246 / ε + 1)
+  -- Use Polymath for max(N, N₀)
+  obtain ⟨n, hn, hgap⟩ := polymath_bounded_gaps_246 (max N N₀)
+  refine ⟨n, le_of_max_le_left hn, ?_⟩
+  have hn₀ : n ≥ N₀ := le_of_max_le_right hn
+  have hlog_large := hN₀ n hn₀
+  -- log(nthPrime n) ≥ 246/ε + 1, so ε * log(nthPrime n) ≥ 246 + ε > 246
+  have h_mul : ε * (246 / ε + 1) ≤ ε * Real.log ↑(nthPrime n) :=
+    mul_le_mul_of_nonneg_left hlog_large (le_of_lt hε)
+  have h_simp : ε * (246 / ε + 1) = 246 + ε := by field_simp
+  calc (primeGap n : ℝ) ≤ 246 := by exact_mod_cast hgap
+    _ < 246 + ε := by linarith
+    _ = ε * (246 / ε + 1) := h_simp.symm
+    _ ≤ ε * Real.log ↑(nthPrime n) := h_mul
 
 open Real in
 /-- GPY implies that no uniform lower bound ε · log(p_n) holds for prime gaps.
@@ -1832,14 +1865,14 @@ Key theorems from previous sessions:
 - `prime_gaps_unbounded` (∀ N, ∃ n, N ≤ primeGap n, proved from factorial construction)
 - `prime_gaps_oscillate` (combines Zhang/Polymath with factorial construction)
 
-### Axioms Used (4)
+### Axioms Used (3)
 - `polymath_bounded_gaps_246`: Polymath 8b optimization (2014)
 - `maynard_tao_m_tuples`: Maynard-Tao generalization (2015)
 - `bounded_gaps_conditional_EH`: Conditional result assuming Elliott-Halberstam
-- `gpy_liminf_zero`: GPY theorem (Goldston-Pintz-Yildirim, 2005)
 
-### Previously Axiom, Now Proved (1)
+### Previously Axiom, Now Proved (2)
 - `exists_admissible_50_tuple_246`: Constructively proved via Engelsma/Polymath 50-tuple
+- `gpy_liminf_zero`: GPY theorem derived from Polymath + nthPrime divergence
 
 ### What's NOT Proven (and Why)
 - Polymath's 246 bound (requires sieve theory not in Mathlib)

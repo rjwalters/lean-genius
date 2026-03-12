@@ -27,7 +27,7 @@ export const sqrt2ExamplesProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const sqrt2ExamplesAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const sqrt2ExamplesAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const sqrt2ExamplesTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const sqrt2ExamplesData: ProofData = {

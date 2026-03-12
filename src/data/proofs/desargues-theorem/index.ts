@@ -26,7 +26,7 @@ export const desarguesTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const desarguesTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const desarguesTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const desarguesTheoremData: ProofData = {
   proof: desarguesTheoremProof,

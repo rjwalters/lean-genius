@@ -1,0 +1,32 @@
+[
+  {
+    "id": "bfl-sandwich",
+    "line": 104,
+    "type": "theorem",
+    "content": "Combines BFL upper and lower bounds into a single sandwich: for any ε > 0, eventually n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε}. This is the strongest known result about the triangle removal process."
+  },
+  {
+    "id": "conjecture-decomposition",
+    "line": 149,
+    "type": "theorem",
+    "content": "The full Erdős conjecture Θ(n^{3/2}) is equivalent to having both an upper Θ-bound (f(n) ≤ C·n^{3/2}) and a lower Θ-bound (c·n^{3/2} ≤ f(n)) holding simultaneously."
+  },
+  {
+    "id": "exponent-exact",
+    "line": 170,
+    "type": "theorem",
+    "content": "The BFL exponent is exactly 3/2: for any α > 3/2, we get f(n) ≤ n^α eventually. This is proved by substituting ε = α - 3/2 into the BFL upper bound."
+  },
+  {
+    "id": "complete-triangles",
+    "line": 54,
+    "type": "theorem",
+    "content": "The complete graph K_n for n ≥ 3 contains a triangle. Proved by constructing the explicit triangle (0, 1, 2) in Fin n using Fin.mk."
+  },
+  {
+    "id": "limit-sufficiency",
+    "line": 236,
+    "type": "theorem",
+    "content": "If f(n)/n^{3/2} converges to a positive limit L, the full Erdős conjecture holds. This reduces the conjecture to a convergence question about a single ratio."
+  }
+]

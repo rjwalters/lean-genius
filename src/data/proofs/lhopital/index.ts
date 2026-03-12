@@ -26,7 +26,7 @@ export const lhopitalProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const lhopitalAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const lhopitalAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const lhopitalData: ProofData = {
   proof: lhopitalProof,
