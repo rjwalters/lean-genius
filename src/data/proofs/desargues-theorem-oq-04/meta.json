@@ -1,0 +1,154 @@
+{
+  "id": "desargues-theorem-oq-04",
+  "title": "Self-Duality of Desargues's Theorem",
+  "slug": "desargues-theorem-oq-04",
+  "description": "Formalizes the self-duality of Desargues's theorem in projective geometry over arbitrary commutative rings. Shows that collinearity and concurrence are the same predicate in homogeneous coordinates (rfl), that the dual configuration's perspective-from-a-point equals the original's perspective-from-a-line (rfl), and that the Desargues identity is symmetric in the two triangles. Includes algebraic converse over integral domains.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Desargues%27s_theorem#Self-duality",
+    "date": "2026",
+    "status": "complete",
+    "proofRepoPath": "Proofs/DesarguesTheoremOQ04.lean",
+    "tags": [
+      "desargues",
+      "projective-geometry",
+      "self-duality",
+      "duality-principle",
+      "homogeneous-coordinates",
+      "cross-product",
+      "determinant",
+      "extension",
+      "research"
+    ],
+    "badge": "open",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.det_fin_three",
+        "description": "Explicit 3×3 determinant expansion, used for all algebraic ring proofs.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Proof that collinear = concurrent in homogeneous coordinates (rfl)",
+      "Dual configuration definition (vertices ↔ sides)",
+      "dual_perspFromPoint_eq_perspFromLine: duality converts point perspective to line perspective (rfl)",
+      "Desargues identity reproduced and proved over any CommRing K",
+      "perspFromPoint_swap: perspectivity is symmetric in the two triangles",
+      "perspFromLine_swap: collinearity of intersections is symmetric",
+      "Desargues identity is symmetric under triangle swap",
+      "Algebraic converse over integral domains via zero-product property",
+      "swap_swap: double swap is identity (rfl)"
+    ],
+    "references": [
+      {
+        "authors": "Girard Desargues",
+        "title": "Brouillon project d'une atteinte aux événemens des rencontres du Cône avec un Plan",
+        "year": "1639",
+        "venue": "Self-published",
+        "note": "Original statement of the theorem"
+      },
+      {
+        "authors": "Jean-Victor Poncelet",
+        "title": "Traité des propriétés projectives des figures",
+        "year": "1822",
+        "venue": "Bachelier, Paris",
+        "note": "Systematic development of projective duality"
+      },
+      {
+        "authors": "David Hilbert",
+        "title": "Grundlagen der Geometrie",
+        "year": "1899",
+        "venue": "Teubner",
+        "note": "Axiomatic analysis of Desargues's theorem and its role in geometry"
+      }
+    ],
+    "historicalContext": "Projective duality was systematically developed by Poncelet (1822) and Gergonne. The principle states that every theorem in projective geometry has a dual, obtained by interchanging 'point' and 'line'. Desargues's theorem is the premier example of a self-dual theorem: its dual is its own converse. This is why the theorem and its converse are sometimes stated as a single biconditional. Hilbert (1899) showed that Desargues's theorem is equivalent to the embeddability of a projective plane in 3-space."
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Cross Product and Determinant Setup",
+      "summary": "Defines `cross3` (K³ cross product), `threeVecMat` (3×3 row matrix), and the explicit determinant expansion. All over an arbitrary `CommRing K`.",
+      "startLine": 37,
+      "endLine": 72
+    },
+    {
+      "id": "duality-foundation",
+      "title": "Collinearity = Concurrence",
+      "summary": "Defines `collinear` and `concurrent` as $\\det(u,v,w) = 0$ and proves they are the SAME predicate via `rfl`. This is the foundation of projective duality in homogeneous coordinates.",
+      "startLine": 74,
+      "endLine": 93
+    },
+    {
+      "id": "config",
+      "title": "Projective Configuration",
+      "summary": "Defines `DesarguesConfig` (two triangles), `perspFromPoint` (joining lines concurrent), `perspFromLine` (intersection points collinear), and the `dual` and `swap` transformations.",
+      "startLine": 95,
+      "endLine": 140
+    },
+    {
+      "id": "dual-theorem",
+      "title": "Self-Duality Theorem",
+      "summary": "The central result: `dual_perspFromPoint_eq_perspFromLine` proves that 'perspective from a point' of the dual configuration IS 'perspective from a line' of the original — proved by `rfl` (definitional equality).",
+      "startLine": 126,
+      "endLine": 140
+    },
+    {
+      "id": "desargues-identity",
+      "title": "The Desargues Identity",
+      "summary": "Proves $\\det(P,Q,R) = \\det(AA',BB',CC') \\cdot \\det(ABC) \\cdot \\det(A'B'C')$ over any CommRing K via Lagrange cross product identity and degree-9 polynomial ring computation.",
+      "startLine": 142,
+      "endLine": 205
+    },
+    {
+      "id": "forward",
+      "title": "Forward Direction",
+      "summary": "Desargues's theorem: perspective from a point implies perspective from a line. One-line proof: substitute $\\det(AA',BB',CC') = 0$ into the identity.",
+      "startLine": 207,
+      "endLine": 216
+    },
+    {
+      "id": "symmetry",
+      "title": "Symmetry Results",
+      "summary": "Proves the Desargues identity is symmetric under triangle swap, perspectivity determinant negates under swap (from cross product anticommutativity), and both perspective conditions are preserved under swap.",
+      "startLine": 218,
+      "endLine": 310
+    },
+    {
+      "id": "algebraic-converse",
+      "title": "Algebraic Converse",
+      "summary": "Over integral domains with non-degenerate triangles ($\\det(ABC) \\cdot \\det(A'B'C') \\neq 0$), perspective from a line implies perspective from a point. Plus the biconditional form.",
+      "startLine": 312,
+      "endLine": 345
+    }
+  ],
+  "overview": {
+    "summary": "Desargues's theorem is self-dual in projective geometry: the dual statement (swapping 'point' and 'line') is again Desargues's theorem. This formalization proves self-duality over arbitrary commutative rings using homogeneous coordinates, where collinearity and concurrence are definitionally the same predicate.",
+    "historicalContext": "Projective duality, systematically developed by Poncelet (1822) and Gergonne, states that every theorem about points, lines, and incidence has a dual obtained by swapping 'point' and 'line'. Desargues's theorem (1639) is the most famous self-dual theorem: its dual is its own converse. Hilbert's Grundlagen (1899) showed that Desargues's theorem characterizes Desarguesian planes — those embeddable in projective 3-space.",
+    "proofStrategy": "The formalization works in homogeneous coordinates over a CommRing K, where points and lines are both K³ vectors. The proof of self-duality has two layers: (1) Definitional: collinear = concurrent and dual's perspFromPoint = original's perspFromLine, both by rfl. (2) Algebraic: the Desargues identity det(P,Q,R) = det(AA',BB',CC') · det(ABC) · det(A'B'C') is manifestly symmetric in the two triangles, with the perspectivity and collinearity determinants negating under swap but preserving the zero condition.",
+    "keyIdea": "In homogeneous coordinates, projective duality is not a deep theorem but a definitional triviality: points and lines are the same type (K³), and collinearity and concurrence are the same predicate (det = 0). The self-duality of Desargues's theorem follows immediately from this observation.",
+    "keyInsights": [
+      "**collinear = concurrent by rfl**: In homogeneous coordinates, both predicates are `(threeVecMat u v w).det = 0`. No proof needed — they are definitionally identical.",
+      "**Dual's perspFromPoint = original's perspFromLine by rfl**: The joining lines of the dual configuration's vertex pairs are the intersection points of the original's corresponding sides. This is a definitional equality, not an algebraic computation.",
+      "**The Desargues identity is symmetric**: det(P,Q,R) = det(AA',BB',CC') · det(ABC) · det(A'B'C') has the two triangle determinants as a commutative product, making the identity invariant under triangle swap.",
+      "**Anticommutativity gives neg, but det=0 is preserved**: Under swap, each cross product row negates, giving an overall factor of (-1)³ = -1 in the determinant. Since -0 = 0, the zero condition is preserved."
+    ],
+    "prerequisites": [
+      "Projective geometry basics",
+      "Homogeneous coordinates",
+      "Cross product in K³",
+      "Determinant of 3×3 matrices",
+      "Desargues's theorem (parent proofs)"
+    ]
+  },
+  "conclusion": {
+    "summary": "We formalize the self-duality of Desargues's theorem with 28 theorems and 0 sorries. The key results — collinear = concurrent and dual(perspFromPoint) = perspFromLine — are both proved by rfl, showing that self-duality is a definitional consequence of working in homogeneous coordinates.",
+    "implications": "This formalization shows that projective duality, far from being a mysterious principle, is a trivial consequence of the representation choice. In homogeneous coordinates, points and lines are the same type and the fundamental predicates are identical. The 'deep' content is not the duality but the Desargues identity itself — an algebraic identity in 18 variables that holds over any commutative ring.",
+    "openQuestions": [
+      "Can axiomatic projective planes be formalized in Lean 4, distinguishing Desarguesian from non-Desarguesian planes?",
+      "Can the equivalence between Desargues's theorem and embeddability in projective 3-space be formalized?",
+      "Can the duality principle be formalized as a functor between categories of projective configurations?"
+    ]
+  }
+}

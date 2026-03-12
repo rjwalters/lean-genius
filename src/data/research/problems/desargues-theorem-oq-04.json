@@ -1,54 +1,110 @@
 {
   "slug": "desargues-theorem-oq-04",
   "title": "Formalize self-duality of Desargues theorem in projective geometry",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "dual(perspFromPoint) = perspFromLine ∧ Desargues identity symmetric under triangle swap",
+    "plain": "Self-duality of Desargues's theorem: in homogeneous coordinates, collinearity and concurrence are the same predicate, so the dual configuration's perspective-from-a-point equals the original's perspective-from-a-line. The Desargues identity is symmetric under triangle swap.",
+    "whyMatters": [
+      "Projective duality is a cornerstone of projective geometry",
+      "Self-duality makes Desargues the premier example of the duality principle",
+      "Shows duality is definitional in homogeneous coordinates, not a deep theorem"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "collinear = concurrent (rfl)",
+      "dual(perspFromPoint) = perspFromLine (rfl)",
+      "Desargues identity over CommRing",
+      "Forward direction (perspective from point → line)",
+      "perspFromPoint_swap and perspFromLine_swap",
+      "desargues_identity_swap",
+      "Algebraic converse over integral domains",
+      "Biconditional desargues_iff",
+      "swap_swap = id (rfl)"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Complete formalization of self-duality with 0 sorries"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-12T05:32:38.516Z",
+    "phase": "COMPLETE",
+    "since": "2026-03-12T18:30:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Complete formalization of self-duality of Desargues's theorem.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — complete.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
+    "progressSummary": "COMPLETE: 415 lines, 28 theorems, 0 sorries. Self-duality proved via homogeneous coordinates where collinear=concurrent by rfl. Desargues identity, forward/converse directions, swap symmetry all proved.",
+    "builtItems": [
+      "DesarguesConfig structure with dual and swap (DesarguesTheoremOQ04.lean:95-140)",
+      "collinear_eq_concurrent: collinear = concurrent by rfl (line ~80)",
+      "dual_perspFromPoint_eq_perspFromLine: duality converts point perspective to line perspective by rfl (line ~130)",
+      "desargues_identity: det(P,Q,R) = det(AA',BB',CC')·det(ABC)·det(A'B'C') over CommRing (line ~170)",
+      "desargues_forward: perspective from point → perspective from line (line ~210)",
+      "perspFromPoint_swap: perspectivity determinant negates under swap (line ~240)",
+      "perspFromLine_swap: collinearity determinant negates under swap (line ~270)",
+      "desargues_converse: converse over integral domains (line ~320)",
+      "desargues_iff: biconditional form (line ~340)",
+      "swap_swap: double swap is identity by rfl (line ~310)"
+    ],
+    "insights": [
+      "In homogeneous coordinates, collinear and concurrent are DEFINITIONALLY the same predicate (det=0). This makes self-duality trivial.",
+      "The Desargues identity det(P,Q,R) = det(AA',BB',CC')·det(ABC)·det(A'B'C') is manifestly symmetric since det(ABC)·det(A'B'C') commutes.",
+      "Cross product anticommutativity means swap negates each row, giving factor (-1)^3=-1 in determinant. But -0=0 preserves the zero condition.",
+      "ring tactic needs 800M heartbeats for the degree-9 Desargues identity verification",
+      "linarith fails in CommRing (needs ordered type) — use rw [..., neg_eq_zero]; exact h instead"
+    ],
+    "mathlibGaps": [
+      "No projective geometry library in Mathlib (homogeneous coordinates, cross product as join/meet)",
+      "No Desargues theorem formalization in Mathlib"
+    ],
     "nextSteps": []
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Homogeneous coordinates with swap symmetry",
+      "status": "succeeded",
+      "description": "Work in K³ homogeneous coordinates where collinear=concurrent by rfl. Prove Desargues identity algebraically, then show swap (triangle interchange) preserves both perspective conditions via cross product anticommutativity."
+    }
+  ],
   "tags": [
     "seeker-selected",
     "geometry",
-    "projective"
+    "projective",
+    "desargues",
+    "self-duality",
+    "duality-principle",
+    "homogeneous-coordinates"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "desargues-theorem",
+    "desargues-theorem-oq-01",
+    "desargues-theorem-oq-02"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Desargues (1639): Brouillon project d'une atteinte aux événemens des rencontres du Cône avec un Plan",
+      "Poncelet (1822): Traité des propriétés projectives des figures",
+      "Hilbert (1899): Grundlagen der Geometrie"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Desargues%27s_theorem#Self-duality"
+    ],
+    "mathlib": [
+      "Matrix.det_fin_three"
+    ]
   },
   "started": "2026-03-12T05:34:54.573Z",
-  "lastUpdate": "2026-03-12T05:34:54.573Z",
+  "lastUpdate": "2026-03-12T18:30:00.000Z",
   "significance": 6,
   "tractability": 6
 }

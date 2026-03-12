@@ -1,0 +1,37 @@
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, TacticState } from '@/types/proof'
+import metaJson from './meta.json'
+import annotationsJson from './annotations.json'
+import tacticStatesJson from './tacticStates.json'
+import sourceRaw from '../../../../proofs/Proofs/DesarguesTheoremOQ04.lean?raw'
+
+const meta = metaJson as unknown as {
+  id: string
+  title: string
+  slug: string
+  description: string
+  meta: ProofMeta
+  sections: ProofSection[]
+  overview?: ProofOverview
+  conclusion?: ProofConclusion
+}
+
+export const desarguesTheoremOQ04Proof: Proof = {
+  id: meta.id,
+  title: meta.title,
+  slug: meta.slug,
+  description: meta.description,
+  meta: meta.meta,
+  sections: meta.sections,
+  source: sourceRaw,
+  overview: meta.overview,
+  conclusion: meta.conclusion,
+}
+
+export const desarguesTheoremOQ04Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const desarguesTheoremOQ04TacticStates: TacticState[] = tacticStatesJson as TacticState[]
+
+export const desarguesTheoremOQ04Data: ProofData = {
+  proof: desarguesTheoremOQ04Proof,
+  annotations: desarguesTheoremOQ04Annotations,
+  tacticStates: desarguesTheoremOQ04TacticStates,
+}
