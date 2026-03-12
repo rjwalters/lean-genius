@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "SURVEYED",
     "since": "2026-03-11T21:20:33.095Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Axiom elimination survey - reduced 8 to 7 axioms",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "SURVEY: Reduced axiom count from 8 to 7 by proving gwExpectedCut_nonneg. Remaining 7 axioms are fundamentally blocked by missing SDP infrastructure in Mathlib.",
+    "builtItems": [
+      "Converted gwExpectedCut_nonneg from axiom to lemma in GoemansWilliamsonMaxCut.lean"
+    ],
+    "insights": [
+      "gwExpectedCut_nonneg is redundant - follows from gw_rounding_inequality + sdpRelaxation_nonneg + αGW_pos",
+      "Core bottleneck is Mathlib has no SDP infrastructure (semidefinite cones, duality, optimization)",
+      "The arccos inequality arccos(x)/π ≥ α_GW·(1-x)/2 requires calculus of variations to verify the minimum of θ/(π(1-cos θ)/2)",
+      "Hyperplane rounding probability measure on the sphere also not in Mathlib"
+    ],
+    "mathlibGaps": [
+      "Semidefinite programming infrastructure (PSD cones, duality)",
+      "Measure theory on unit sphere (hyperplane rounding)",
+      "Calculus of variations for arccos inequality min"
+    ],
+    "nextSteps": [
+      "Prove arccos inequality for conservative bound 878/1000 (requires calculus infrastructure)",
+      "SDP infrastructure would require major Mathlib contribution (~1000+ lines)"
+    ]
   },
   "approaches": [],
   "tags": [
