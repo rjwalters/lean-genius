@@ -16,24 +16,44 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-11T09:48:08.982Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "COMPLETE",
+    "since": "2026-03-13T00:30:00.000Z",
+    "iteration": 2,
+    "focus": "Added 7 structural theorems: gap monotonicity, generalized Nodup, Schur⊆RR1, Schur Nodup redundancy",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "COMPLETE: Added 7 new structural theorems (0 sorries) to PartitionTheoremOQ01.lean. Total: 10 theorems, 3 axioms, 0 sorries. Key additions: gap monotonicity (hasMinGap_mono), generalized Nodup from gap ≥ 1, Schur gap ⊆ RR1 gap, Schur Nodup redundancy. The 3 axioms (rogers_ramanujan_first, rogers_ramanujan_second, schur_partition_identity) remain genuinely blocked by missing q-series infrastructure.",
+    "builtItems": [
+      "hasMinGap_mono: gap monotonicity theorem",
+      "hasMinGap_ge_one_pairwise_gt: generalized pairwise strict decrease for gap ≥ 1",
+      "hasMinGap_ge_one_nodup: gap ≥ 1 implies Nodup",
+      "schur_gap_subset_rr1_gap: Schur gap partitions ⊆ RR1 gap partitions",
+      "schur_gap_implies_distinct: Schur gap partitions → distinct",
+      "schur_nodup_redundant: hasMinGap 3 → Nodup (Nodup check in Schur definition is redundant)",
+      "Updated meta.json with new contributions and sections"
+    ],
+    "insights": [
+      "The 3 axioms are fundamentally blocked: Rogers-Ramanujan requires q-series (Jacobi triple product) or bijective proofs (Garsia-Milne involution, ~500+ lines each)",
+      "Gap monotonicity enables systematic containment proofs: Schur (gap 3) ⊆ RR1 (gap 2) ⊆ distinct (gap 1)",
+      "The Nodup condition in schurGapPartitions is redundant — hasMinGap 3 already implies gap ≥ 1 which implies Nodup",
+      "The containment hierarchy is: Schur gap ⊆ RR2 gap ⊆ RR1 gap ⊆ distinct ⊆ all partitions"
+    ],
+    "mathlibGaps": [
+      "q-series manipulation (formal power series product identities)",
+      "Bijective proof infrastructure (Garsia-Milne involution)",
+      "Partition identity framework"
+    ],
+    "nextSteps": [
+      "If q-series infrastructure appears in Mathlib, prove Rogers-Ramanujan axioms",
+      "Consider bijective proof of Schur's identity (simpler than RR)"
+    ]
   },
   "approaches": [],
   "tags": [
@@ -49,7 +69,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-12T05:34:54.574Z",
+  "lastUpdate": "2026-03-13T00:30:00.000Z",
   "significance": 7,
   "tractability": 6
 }

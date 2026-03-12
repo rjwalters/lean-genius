@@ -177,7 +177,73 @@ theorem rr1_gap_subset_distinct (n : ℕ) :
   fun p hp => rr1_gap_implies_distinct p hp
 
 -- ============================================================================
--- Part VII: Type-Checking Summary
+-- Part VII: Additional Structural Theorems
+-- ============================================================================
+
+/-- **Gap monotonicity**: If a list has minimum gap d, it also has minimum gap d'
+    for any d' ≤ d. -/
+theorem hasMinGap_mono (l : List ℕ) (d d' : ℕ) (hdd : d' ≤ d) :
+    hasMinGap l d = true → hasMinGap l d' = true := by
+  intro h
+  induction l with
+  | nil => simp [hasMinGap]
+  | cons a rest ih =>
+    match rest, h with
+    | [], _ => simp [hasMinGap]
+    | b :: rest', h =>
+      simp only [hasMinGap, Bool.and_eq_true, decide_eq_true_eq] at h ⊢
+      exact ⟨by omega, ih h.2⟩
+
+/-- A list with hasMinGap d for d ≥ 1 is pairwise strictly decreasing
+    (and hence has no duplicates). Generalizes hasMinGap_two_pairwise_gt. -/
+theorem hasMinGap_ge_one_pairwise_gt (l : List ℕ) (d : ℕ) (hd : 1 ≤ d) :
+    hasMinGap l d = true → l.Pairwise (· > ·) := by
+  intro h
+  induction l with
+  | nil => exact List.Pairwise.nil
+  | cons a rest ih =>
+    match rest, h with
+    | [], _ => exact List.pairwise_singleton _ _
+    | b :: rest', h =>
+      simp only [hasMinGap, Bool.and_eq_true, decide_eq_true_eq] at h
+      have htail := ih h.2
+      exact List.Pairwise.cons (fun x hx => by
+        rcases List.mem_cons.mp hx with rfl | hrest
+        · omega
+        · have := (List.pairwise_cons.mp htail).1 x hrest; omega) htail
+
+/-- hasMinGap d with d ≥ 1 implies Nodup. -/
+theorem hasMinGap_ge_one_nodup (l : List ℕ) (d : ℕ) (hd : 1 ≤ d) :
+    hasMinGap l d = true → l.Nodup :=
+  fun h => List.Pairwise.imp (fun h => ne_of_gt h) (hasMinGap_ge_one_pairwise_gt l d hd h)
+
+/-- Schur gap partitions are a subset of RR1 gap partitions.
+    (Gap ≥ 3 implies gap ≥ 2, and the Nodup condition is redundant.) -/
+theorem schur_gap_subset_rr1_gap (n : ℕ) :
+    schurGapPartitions n ⊆ rr1GapPartitions n := by
+  intro p hp
+  simp only [schurGapPartitions, rr1GapPartitions, Finset.mem_filter, Finset.mem_univ,
+    true_and] at *
+  simp only [Bool.and_eq_true] at hp
+  simp only [partHasMinGap]
+  exact hasMinGap_mono _ 3 2 (by omega) hp.2
+
+/-- Schur gap partitions consist of distinct parts.
+    (Follows from gap ≥ 3 ≥ 1, so parts are strictly decreasing.) -/
+theorem schur_gap_implies_distinct {n : ℕ} (p : Nat.Partition n)
+    (hp : p ∈ schurGapPartitions n) :
+    p ∈ Nat.Partition.distincts n := by
+  have hrr1 := schur_gap_subset_rr1_gap n hp
+  exact rr1_gap_implies_distinct p hrr1
+
+/-- The Nodup condition in schurGapPartitions is redundant: hasMinGap 3
+    already implies Nodup (since 3 ≥ 1). -/
+theorem schur_nodup_redundant {l : List ℕ} :
+    hasMinGap l 3 = true → l.Nodup :=
+  hasMinGap_ge_one_nodup l 3 (by omega)
+
+-- ============================================================================
+-- Part VIII: Type-Checking Summary
 -- ============================================================================
 
 #check rr1GapPartitions
@@ -203,10 +269,17 @@ theorem rr1_gap_subset_distinct (n : ℕ) :
   - rogers_ramanujan_second: RR2 identity for all n
   - schur_partition_identity: Schur's identity for all n
 
-### Structural theorems: 3 (0 sorries)
-  - rr1_gap_implies_distinct: gap ≥ 2 → distinct
+### Structural theorems: 9 (0 sorries)
+  - hasMinGap_mono: gap monotonicity (d' ≤ d → gap d → gap d')
+  - hasMinGap_ge_one_pairwise_gt: gap ≥ 1 → pairwise strictly decreasing
+  - hasMinGap_ge_one_nodup: gap ≥ 1 → Nodup
+  - hasMinGap_two_pairwise_gt: gap ≥ 2 → pairwise strictly decreasing
+  - rr1_gap_implies_distinct: RR1 gap → distinct
   - rr2_subset_rr1: RR2 gap ⊆ RR1 gap
   - rr1_gap_subset_distinct: RR1 gap ⊆ distinct partitions
+  - schur_gap_subset_rr1_gap: Schur gap ⊆ RR1 gap
+  - schur_gap_implies_distinct: Schur gap → distinct
+  - schur_nodup_redundant: hasMinGap 3 → Nodup (so Nodup check in Schur is redundant)
 
 ### Why axiomatized:
   The Rogers-Ramanujan identities require either:
