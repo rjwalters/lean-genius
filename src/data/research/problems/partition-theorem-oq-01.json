@@ -1,0 +1,37 @@
+{
+  "id": "partition-theorem-oq-01",
+  "name": "Rogers-Ramanujan and Schur partition identities in Lean",
+  "category": "combinatorics",
+  "status": "axiom-based",
+  "knowledge": {
+    "score": 8,
+    "insights": [
+      "Gap ≥ 2 between consecutive sorted parts implies all parts are distinct (proved via Pairwise)",
+      "rr1Mod5Partitions ⊆ distincts is FALSE: partition 1+1+1=3 has parts ≡ 1 mod 5 but is not distinct",
+      "Correct hierarchy: All ⊃ Distinct ⊃ Gap≥2 (RR1) ⊃ Gap≥2+min≥2 (RR2)",
+      "Multiset.toList is noncomputable in Mathlib v4.26.0 - prevents native_decide on partition definitions using it",
+      "The identities themselves require q-series or bijective proofs (~500+ lines each), correctly axiomatized"
+    ],
+    "builtItems": [
+      "hasMinGap_two_pairwise_gt: helper lemma proving gap ≥ 2 implies Pairwise (· > ·)",
+      "rr1_gap_implies_distinct: main theorem gap ≥ 2 → distinct partitions",
+      "rr2_subset_rr1: RR2 gap partitions ⊆ RR1 gap partitions",
+      "rr1_gap_subset_distinct: Finset subset version of gap → distinct",
+      "Gallery entry: meta.json, index.ts, annotations.json, tacticStates.json"
+    ],
+    "progressSummary": "COMPLETE: Proved 2 sorries (gap→distinct, removed false mod5→distinct), fixed Docker compatibility, created gallery entry. File builds with 0 sorries, 0 errors.",
+    "nextSteps": [
+      "Enricher can add annotations and tactic states",
+      "Aristotle cannot help (axioms are deep identities, not routine lemmas)",
+      "Future: formalize q-series proof or bijective proof to replace axioms"
+    ]
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "leanFile": "proofs/Proofs/PartitionTheoremOQ01.lean",
+    "sorries": 0,
+    "axioms": 3,
+    "lastModified": "2026-03-11",
+    "lastAgent": "researcher-1"
+  }
+}
