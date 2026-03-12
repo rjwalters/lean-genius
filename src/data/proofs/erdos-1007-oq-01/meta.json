@@ -224,12 +224,7 @@
   },
   "conclusion": {
     "summary": "We significantly extend the minEdges formalization with a constructive simplex embedding (K_n in ℝⁿ), prove the complete graph optimality conjecture implies monotonicity, introduce and analyze the deficiency function, and verify d=4 is the unique anomaly for d≤5. All theorems are fully proved (no sorries), with 10 axioms for the minEdges function and known values.",
-    "implications": [
-      "The simplex embedding construction provides a concrete geometric witness for the upper bound minEdges(d) ≤ C(d+1,2), useful as a starting point for dimension computations",
-      "The conditional monotonicity theorem demonstrates that resolving the complete graph optimality conjecture would simultaneously resolve the monotonicity question",
-      "The deficiency reformulation (δ(d) = 0 iff K_{d+1} optimal) reduces an infinite family of graph-theoretic questions to a numerical condition checkable dimension by dimension",
-      "The d=4 anomaly analysis suggests that bipartite structures may provide more efficient dimension-achieving graphs in higher dimensions"
-    ],
+    "implications": "The simplex embedding construction provides a concrete geometric witness for the upper bound minEdges(d) ≤ C(d+1,2), useful as a starting point for dimension computations\nThe conditional monotonicity theorem demonstrates that resolving the complete graph optimality conjecture would simultaneously resolve the monotonicity question\nThe deficiency reformulation (δ(d) = 0 iff K_{d+1} optimal) reduces an infinite family of graph-theoretic questions to a numerical condition checkable dimension by dimension\nThe d=4 anomaly analysis suggests that bipartite structures may provide more efficient dimension-achieving graphs in higher dimensions",
     "openQuestions": [
       "Is minEdges monotone in d?",
       "Does minEdges(d) = Θ(d²)?",

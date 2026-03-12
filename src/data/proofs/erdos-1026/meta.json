@@ -192,13 +192,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #1026 asked for the maximum sum over monotonic subsequences. The optimal constant is c = 1: every sequence has a monotonic subsequence with sum at least (1-o(1)) · totalSum/√n. This follows from the weighted Erdős-Szekeres theorem proved by Tidor-Wang-Yang (2016). Cambie's construction shows the bound is tight.",
-    "implications": [
-      "Extends Erdős-Szekeres from length bounds to weighted (sum) bounds — a qualitative strengthening",
-      "Connects to Dilworth's theorem: the decomposition bounds come from antichain decomposition in the product order",
-      "Wagner's alternative proof via tournament coloring reveals a connection to directed graph theory",
-      "Algorithmic applications: finding optimal monotonic subsequences in O(n log n) via patience sorting",
-      "Random sequences achieve the extremal bounds asymptotically, connecting to probabilistic combinatorics"
-    ],
+    "implications": "Extends Erdős-Szekeres from length bounds to weighted (sum) bounds — a qualitative strengthening\nConnects to Dilworth's theorem: the decomposition bounds come from antichain decomposition in the product order\nWagner's alternative proof via tournament coloring reveals a connection to directed graph theory\nAlgorithmic applications: finding optimal monotonic subsequences in O(n log n) via patience sorting\nRandom sequences achieve the extremal bounds asymptotically, connecting to probabilistic combinatorics",
     "openQuestions": [
       "What is the exact extremal construction for small n?",
       "Does the bound extend to approximate monotonicity?",

@@ -164,19 +164,17 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős #1149, proved by Bergelson-Richter (2017). The density of integers n coprime to ⌊n^α⌋ is 6/π² for non-integer α > 0. All theorems compile with 0 sorries. The 2 axioms capture deep results: the Bergelson-Richter theorem (ergodic theory) and classical coprime density (Euler product).",
-    "implications": [
-      "The result reveals that the deterministic function n ↦ ⌊n^α⌋ exhibits 'pseudorandom' behavior in the coprimality sense, connecting deterministic number theory to probabilistic heuristics",
-      "The proof technique (multiplicative functions along polynomial sequences) has applications beyond coprimality — it extends to other arithmetic functions evaluated at ⌊n^α⌋",
-      "The connection to ζ(2) = π²/6 places this result in the broader context of the Riemann zeta function and its role in counting problems",
-      "The integer exclusion argument shows that the non-integer hypothesis is not just technical but reflects a genuine phase transition in arithmetic behavior"
-    ],
+    "implications": "The result reveals that the deterministic function n ↦ ⌊n^α⌋ exhibits 'pseudorandom' behavior in the coprimality sense, connecting deterministic number theory to probabilistic heuristics\nThe proof technique (multiplicative functions along polynomial sequences) has applications beyond coprimality — it extends to other arithmetic functions evaluated at ⌊n^α⌋\nThe connection to ζ(2) = π²/6 places this result in the broader context of the Riemann zeta function and its role in counting problems\nThe integer exclusion argument shows that the non-integer hypothesis is not just technical but reflects a genuine phase transition in arithmetic behavior",
     "openQuestions": [
       "What is the density for more general functions f(n) replacing ⌊n^α⌋?",
       "Can the convergence rate be quantified (error term)?",
       "Does the result extend to gcd(n, ⌊n^α⌋) = d for d > 1?"
     ],
     "crossReferences": [
-      { "proofId": "erdos-37", "relationship": "Both involve density concepts (Schnirelmann vs natural density) and number-theoretic structure." }
+      {
+        "proofId": "erdos-37",
+        "relationship": "Both involve density concepts (Schnirelmann vs natural density) and number-theoretic structure."
+      }
     ]
   }
 }

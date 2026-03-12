@@ -178,12 +178,7 @@
   ],
   "conclusion": {
     "summary": "This formalization provides the complete generalization of the Chinese Remainder Theorem to non-coprime moduli. Every theorem is fully proved (0 sorries) using constructive methods based on Bezout's identity. The key results are: the gcd divisibility characterization of solvability, uniqueness modulo lcm, recovery of the classical CRT, and extension to three moduli.",
-    "implications": [
-      "In algebraic number theory, the non-coprime CRT arises when working with ideals in rings where unique factorization may fail",
-      "Redundant residue number systems (coding theory) use non-coprime moduli for error detection and correction",
-      "Scheduling problems with cycles sharing common periods require the non-coprime CRT to determine if alignment is possible",
-      "The lcm-based uniqueness gives strictly tighter bounds than the naive product when moduli share factors"
-    ],
+    "implications": "In algebraic number theory, the non-coprime CRT arises when working with ideals in rings where unique factorization may fail\nRedundant residue number systems (coding theory) use non-coprime moduli for error detection and correction\nScheduling problems with cycles sharing common periods require the non-coprime CRT to determine if alignment is possible\nThe lcm-based uniqueness gives strictly tighter bounds than the naive product when moduli share factors",
     "openQuestions": [
       "Can the construction be made more computationally efficient for large moduli?",
       "How does the non-coprime CRT extend to polynomial rings and general PIDs?",
