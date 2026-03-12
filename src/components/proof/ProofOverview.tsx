@@ -204,9 +204,11 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
                   <div className="flex items-center gap-3">
                     <ProofBadge badge={meta.badge} size="md" />
                   </div>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    {BADGE_INFO[meta.badge].description}
-                  </p>
+                  {BADGE_INFO[meta.badge] && (
+                    <p className="text-xs text-muted-foreground mt-2">
+                      {BADGE_INFO[meta.badge].description}
+                    </p>
+                  )}
                 </div>
               )}
 
