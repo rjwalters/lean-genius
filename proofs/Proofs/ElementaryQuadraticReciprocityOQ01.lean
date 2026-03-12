@@ -247,6 +247,141 @@ example : legendreSym 5 (13 : ℤ) = legendreSym 13 5 :=
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
+PART VIII: CYCLIC GROUP INFRASTRUCTURE
+═══════════════════════════════════════════════════════════════════════════════
+
+The units (ZMod p)ˣ form a cyclic group of order p-1.
+This structure is central to Zolotarev's proof strategy:
+the uniqueness of quadratic characters on cyclic groups
+forces signMulHom to agree with the Legendre character.
+-/
+
+/-- The group of units (ZMod p)ˣ has cardinality p - 1 for prime p. -/
+theorem card_units_prime : Fintype.card (ZMod p)ˣ = p - 1 := by
+  rw [ZMod.card_units_eq_totient, Nat.totient_prime (Fact.out)]
+
+/-- For odd primes p, the order p - 1 is even. This means the group
+    (ZMod p)ˣ has elements of order 2, and quadratic characters exist. -/
+theorem card_units_even (hp2 : p ≠ 2) : 2 ∣ Fintype.card (ZMod p)ˣ := by
+  rw [card_units_prime]
+  have hp := (Fact.out : Nat.Prime p)
+  have hodd : Odd p := by
+    refine (Nat.even_or_odd p).resolve_left (fun heven => ?_)
+    obtain ⟨k, hk⟩ := heven
+    have := hp.eq_one_or_self_of_dvd 2 ⟨k, by omega⟩
+    omega
+  obtain ⟨k, hk⟩ := hodd
+  exact ⟨k, by omega⟩
+
+/-- There exists a generator (primitive root) of the cyclic group (ZMod p)ˣ. -/
+theorem exists_primitive_root :
+    ∃ g : (ZMod p)ˣ, ∀ x : (ZMod p)ˣ, x ∈ Subgroup.zpowers g :=
+  IsCyclic.exists_generator
+
+/-- A generator of (ZMod p)ˣ has multiplicative order p - 1. -/
+theorem generator_orderOf (g : (ZMod p)ˣ)
+    (hg : ∀ x : (ZMod p)ˣ, x ∈ Subgroup.zpowers g) :
+    orderOf g = p - 1 := by
+  rw [← card_units_prime, ← Nat.card_eq_fintype_card]
+  exact orderOf_eq_card_of_forall_mem_zpowers hg
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART IX: MULTIPLICATION PERMUTATION ANALYSIS
+═══════════════════════════════════════════════════════════════════════════════
+
+Key structural properties of mulPerm beyond the basic homomorphism.
+-/
+
+/-- mulPerm has no fixed points when a ≠ 1: if ax = x then a = 1.
+    This means mulPerm(a) is a fixed-point-free permutation (derangement)
+    for every non-identity unit a. -/
+theorem mulPerm_no_fixed_point (a : (ZMod p)ˣ) (ha : a ≠ 1) (x : (ZMod p)ˣ) :
+    mulPerm a x ≠ x := by
+  intro h
+  apply ha
+  have heq : a * x = x := h
+  exact mul_right_cancel (heq.trans (one_mul x).symm)
+
+/-- mulPermHom is injective: distinct units yield distinct permutations.
+    (Evaluate at 1: if mulPerm(a) = mulPerm(b), then a·1 = b·1, so a = b.) -/
+theorem mulPermHom_injective :
+    Function.Injective (mulPermHom : (ZMod p)ˣ →* Perm (ZMod p)ˣ) := by
+  intro a b hab
+  have h : mulPerm a 1 = mulPerm b 1 := congr_fun (congr_arg Equiv.toFun hab) 1
+  simp [mulPerm] at h
+  exact h
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART X: CHARACTER UNIQUENESS — KEY TO PROVING ZOLOTAREV
+═══════════════════════════════════════════════════════════════════════════════
+
+The central algebraic insight: on a cyclic group, a group homomorphism
+to ℤˣ = {±1} is completely determined by its value on a generator.
+
+If two such homomorphisms are both surjective (non-trivial), they must
+map the generator to -1 (the only non-identity element of ℤˣ), and
+hence agree on all group elements.
+
+This reduces Zolotarev's Lemma to two non-triviality claims:
+(A) signMulHom is surjective — the generator's mulPerm is odd
+(B) The Legendre character is surjective — non-residues exist
+
+Both are known results. (A) follows from cycle analysis of mulPerm
+on a generator (single (p-1)-cycle, sign = (-1)^(p-2) = -1 for odd p).
+(B) follows from the fact that not all units are squares when p > 2.
+-/
+
+/-- On a cyclic group, a MonoidHom to ℤˣ is determined by its
+    value on a generator. This is the key uniqueness principle. -/
+theorem hom_to_int_units_eq_of_generator_eq {G : Type*} [Group G]
+    (φ ψ : G →* ℤˣ)
+    (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g)
+    (heq : φ g = ψ g) : φ = ψ := by
+  ext x
+  obtain ⟨n, rfl⟩ := Subgroup.mem_zpowers_iff.mp (hg x)
+  simp [map_zpow, heq]
+
+/-- A surjective homomorphism from a group to ℤˣ maps any generator to -1.
+    Proof: if φ(g) = 1, then φ(g^n) = 1^n = 1 for all n, making φ trivial,
+    contradicting surjectivity (since -1 ∈ ℤˣ is not in the image). -/
+theorem surj_hom_generator_neg_one {G : Type*} [Group G]
+    (φ : G →* ℤˣ) (hφ : Function.Surjective φ)
+    (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g) :
+    φ g = -1 := by
+  by_contra h
+  -- φ(g) ∈ {1, -1} and φ(g) ≠ -1, so φ(g) = 1
+  have hone : φ g = 1 := by
+    rcases Int.isUnit_iff.mp (φ g).isUnit with h1 | h1
+    · exact Units.ext h1
+    · exact absurd (Units.ext h1 : φ g = -1) h
+  -- Then φ is trivial: φ(x) = 1 for all x
+  have htriv : ∀ x, φ x = 1 := by
+    intro x
+    obtain ⟨n, rfl⟩ := Subgroup.mem_zpowers_iff.mp (hg x)
+    rw [map_zpow, hone, one_zpow]
+  -- But φ is surjective, so -1 is in the range — contradiction
+  obtain ⟨x, hx⟩ := hφ (-1)
+  rw [htriv x] at hx
+  exact absurd hx (by decide)
+
+/-- Two surjective homomorphisms from a cyclic group to ℤˣ are equal.
+    This is the uniqueness of the non-trivial quadratic character.
+
+    Zolotarev's Lemma follows from this: both signMulHom and the
+    Legendre character are surjective homomorphisms (ZMod p)ˣ →* ℤˣ
+    on the cyclic group (ZMod p)ˣ, hence they must agree. -/
+theorem unique_surj_hom_to_int_units {G : Type*} [Group G] [IsCyclic G]
+    (φ ψ : G →* ℤˣ) (hφ : Function.Surjective φ) (hψ : Function.Surjective ψ) :
+    φ = ψ := by
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := G)
+  exact hom_to_int_units_eq_of_generator_eq φ ψ g hg
+    (by rw [surj_hom_generator_neg_one φ hφ g hg,
+            surj_hom_generator_neg_one ψ hψ g hg])
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
 Summary
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -261,14 +396,16 @@ Summary
 - QR statement (from Mathlib)
 - First and second supplements (from Mathlib)
 - 5 computational examples
+- Cyclic group infrastructure: card, generator, order (Part VIII)
+- mulPerm analysis: no fixed points, injectivity (Part IX)
+- Character uniqueness: unique non-trivial quadratic character on cyclic
+  groups — the key algebraic reduction for Zolotarev (Part X)
 
 ### Axiomatized (1 axiom):
 - zolotarev_lemma: legendreSym p a = sign(mulPerm a)
-  The core of Zolotarev's argument. Full proof requires:
-  (a) primitive root existence for (ZMod p)ˣ
-  (b) cycle decomposition of mulPerm(generator)
-  (c) showing the sign equals the quadratic character
-  This is suitable for an Aristotle submission.
+  Reduced to two non-triviality claims via character uniqueness:
+  (A) signMulHom is surjective (needs cycle analysis of primitive root)
+  (B) Legendre character is surjective (needs existence of non-residues)
 
 ### Key insight:
 The Eisenstein proof counts lattice points; Zolotarev counts transpositions.
@@ -284,5 +421,10 @@ higher reciprocity via Artin symbols.
 #check mulPerm_sign_mul
 #check square_has_positive_sign
 #check zolotarev_qr
+#check card_units_prime
+#check exists_primitive_root
+#check mulPerm_no_fixed_point
+#check mulPermHom_injective
+#check unique_surj_hom_to_int_units
 
 end ZolotarevQR
