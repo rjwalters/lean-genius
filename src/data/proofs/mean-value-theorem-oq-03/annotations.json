@@ -1,46 +1,228 @@
-{
-  "sections": [
-    {
-      "id": "mean-value-inequality",
-      "title": "Mean Value Inequality",
-      "startLine": 78,
-      "endLine": 83,
-      "summary": "Core theorem wrapping Mathlib's norm_image_sub_le_of_norm_deriv_le_segment': for f : ℝ → E with ‖f'(x)‖ ≤ C on [a,b], we get ‖f(x) - f(a)‖ ≤ C·(x-a)."
+[
+  {
+    "id": "ann-mvtoq3-namespace",
+    "proofId": "mean-value-theorem-oq-03",
+    "range": {
+      "startLine": 43,
+      "endLine": 47
     },
-    {
-      "id": "scalar-special-case",
-      "title": "Scalar MVT as Special Case",
-      "startLine": 100,
-      "endLine": 115,
-      "summary": "Shows the scalar MVT is a special case of the vector inequality (when E = ℝ), and proves the classical equality version is strictly stronger using exists_deriv_eq_slope."
+    "type": "concept",
+    "title": "Setting Up the Normed Space Framework",
+    "content": "The proof opens by disabling unused variable linting and entering the topology/filter namespace. The entire development lives in a namespace MeanValueTheoremOQ03 and is parameterized over an arbitrary normed space E over the reals, allowing all results to apply simultaneously to finite-dimensional spaces, sequence spaces, and function spaces.",
+    "mathContext": "A normed space $E$ over $\\mathbb{R}$ satisfies $\\|\\alpha \\cdot x\\| = |\\alpha| \\cdot \\|x\\|$ and the triangle inequality. The type class constraints [NormedAddCommGroup E] [NormedSpace \\mathbb{R} E] encode this in Lean 4.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "normed space",
+      "Banach space",
+      "type class inference"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-mvtoq3-core-inequality",
+    "proofId": "mean-value-theorem-oq-03",
+    "range": {
+      "startLine": 76,
+      "endLine": 81
     },
-    {
-      "id": "counterexample",
-      "title": "Circular Motion Counterexample",
-      "startLine": 134,
-      "endLine": 146,
-      "summary": "Proves cos(2π) = 1 and sin²(t) + cos²(t) = 1, establishing the circular motion counterexample: f(t) = (cos t, sin t) has ‖f'‖ = 1 but f(2π) = f(0)."
+    "type": "theorem",
+    "title": "The Core Mean Value Inequality",
+    "content": "This is the central theorem of the file. It wraps Mathlib's norm_image_sub_le_of_norm_deriv_le_segment', stating that for a vector-valued function f whose derivative norm is bounded by C on [a,b], we have the displacement bound for every x in that interval. The one-line proof delegates entirely to Mathlib, but the statement serves as the anchor for all subsequent results.",
+    "mathContext": "For $f : \\mathbb{R} \\to E$ with $\\|f'(x)\\| \\le C$ on $[a,b]$: $$\\|f(x) - f(a)\\| \\le C \\cdot (x - a) \\quad \\forall x \\in [a,b]$$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "mean value theorem",
+      "Lipschitz continuity",
+      "derivative bounds"
+    ],
+    "prerequisites": [
+      "HasDerivWithinAt",
+      "norm_image_sub_le_of_norm_deriv_le_segment'"
+    ]
+  },
+  {
+    "id": "ann-mvtoq3-classical-equality",
+    "proofId": "mean-value-theorem-oq-03",
+    "range": {
+      "startLine": 108,
+      "endLine": 113
     },
-    {
-      "id": "lipschitz-consequences",
-      "title": "Lipschitz Consequences",
-      "startLine": 159,
-      "endLine": 181,
-      "summary": "Axiomatizes derivative-bound-implies-Lipschitz and proves zero derivative implies constant for vector-valued functions using the MVT inequality with C = 0."
+    "type": "theorem",
+    "title": "Classical MVT Gives Exact Equality",
+    "content": "For real-valued functions, the classical MVT is strictly stronger: it asserts the existence of a point c in (a,b) where the derivative exactly equals the secant slope. This result uses Mathlib's exists_deriv_eq_slope and exists because the intermediate value theorem applies to real-valued functions, allowing us to upgrade the inequality to equality.",
+    "mathContext": "For $f : \\mathbb{R} \\to \\mathbb{R}$ continuous on $[a,b]$ and differentiable on $(a,b)$: $$\\exists\\, c \\in (a,b),\\; f'(c) = \\frac{f(b) - f(a)}{b - a}$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "intermediate value theorem",
+      "Lagrange's mean value theorem",
+      "Rolle's theorem"
+    ],
+    "prerequisites": [
+      "ContinuousOn",
+      "DifferentiableOn",
+      "exists_deriv_eq_slope"
+    ]
+  },
+  {
+    "id": "ann-mvtoq3-counterexample",
+    "proofId": "mean-value-theorem-oq-03",
+    "range": {
+      "startLine": 135,
+      "endLine": 144
     },
-    {
-      "id": "contraction-bounds",
-      "title": "Contraction-Type Bounds",
-      "startLine": 200,
-      "endLine": 205,
-      "summary": "Contraction bound from derivative bounds: direct application of the mean value inequality showing how it underpins contraction mapping arguments."
+    "type": "insight",
+    "title": "Circular Motion: Why Equality Fails for Vectors",
+    "content": "The circular motion f(t) = (cos t, sin t) provides the canonical counterexample to a vector-valued MVT equality. The function returns to its starting point after one full revolution, so the net displacement is zero, yet the derivative has constant unit norm. No point c can satisfy f'(c) = 0 since f'(t) = (-sin t, cos t) never vanishes. This demonstrates that the intermediate value theorem, which underpins the scalar MVT, has no analogue for vector-valued functions.",
+    "mathContext": "For $f(t) = (\\cos t, \\sin t)$: $f(2\\pi) - f(0) = (0,0)$ but $\\|f'(t)\\| = \\sqrt{\\sin^2 t + \\cos^2 t} = 1$ for all $t$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "circular motion",
+      "intermediate value theorem",
+      "winding number"
+    ],
+    "prerequisites": [
+      "trigonometric identities",
+      "Pythagorean identity"
+    ]
+  },
+  {
+    "id": "ann-mvtoq3-lipschitz",
+    "proofId": "mean-value-theorem-oq-03",
+    "range": {
+      "startLine": 163,
+      "endLine": 169
     },
-    {
-      "id": "ode-application",
-      "title": "ODE Uniqueness Application",
-      "startLine": 284,
-      "endLine": 299,
-      "summary": "Proves difference bound for ODEs: if f and g start at the same point and their derivatives differ by at most q, then ‖(f-g)(x)‖ ≤ q·(x-a). Uses MVT on f-g directly."
-    }
-  ]
-}
+    "type": "theorem",
+    "title": "Derivative Bound Implies Lipschitz Continuity",
+    "content": "If the Frechet derivative of f has operator norm bounded by L on a convex set, then f is L-Lipschitz on that set. This is a direct consequence of the mean value inequality applied to arbitrary pairs of points. The proof uses NNReal (non-negative reals) for the Lipschitz constant, which is natural since Lipschitz constants are non-negative by definition.",
+    "mathContext": "If $\\|Df(x)\\|_{\\mathrm{op}} \\le L$ for all $x \\in S$ (convex), then: $$\\|f(x) - f(y)\\| \\le L \\cdot \\|x - y\\| \\quad \\forall x,y \\in S$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lipschitz continuity",
+      "Frechet derivative",
+      "operator norm",
+      "convex sets"
+    ],
+    "prerequisites": [
+      "NNReal",
+      "LipschitzOnWith",
+      "fderivWithin"
+    ]
+  },
+  {
+    "id": "ann-mvtoq3-zero-deriv-constant",
+    "proofId": "mean-value-theorem-oq-03",
+    "range": {
+      "startLine": 173,
+      "endLine": 185
+    },
+    "type": "theorem",
+    "title": "Zero Derivative Implies Constant (Vector Version)",
+    "content": "This theorem is a non-trivial application of the mean value inequality with C = 0. The proof sets up the bound, applies mean_value_inequality, deduces that the norm of f(b) - f(a) is at most 0, and then uses the fact that a non-negative quantity bounded by 0 must be 0. The key step is the antisymmetry argument: norm_nonneg gives the lower bound, the MVT gives the upper bound, and le_antisymm yields equality.",
+    "mathContext": "If $f'(t) = 0$ for all $t \\in [a,b)$ and $f$ has a derivative within $[a,b]$, then $f(b) = f(a)$. This is the vector-valued analogue of the scalar result, but cannot be proved via the scalar MVT since there is no intermediate value theorem for vector functions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "constant function",
+      "antiderivative uniqueness",
+      "fundamental theorem of calculus"
+    ],
+    "prerequisites": [
+      "norm_nonneg",
+      "le_antisymm",
+      "mean_value_inequality"
+    ]
+  },
+  {
+    "id": "ann-mvtoq3-ode-uniqueness",
+    "proofId": "mean-value-theorem-oq-03",
+    "range": {
+      "startLine": 294,
+      "endLine": 305
+    },
+    "type": "theorem",
+    "title": "ODE Difference Bound via MVT",
+    "content": "This theorem applies the mean value inequality to the difference h = f - g of two functions. If f and g start at the same point and their derivatives differ by at most q in norm, then the difference is controlled by q times the interval length. The proof constructs h and its derivative f' - g' using HasDerivWithinAt.sub, then delegates to Mathlib. This is the core argument behind Picard-Lindelof uniqueness.",
+    "mathContext": "Given $f(a) = g(a)$ and $\\|f'(t) - g'(t)\\| \\le q$ for $t \\in [a,b)$: $$\\|(f(x) - g(x)) - (f(a) - g(a))\\| \\le q \\cdot (x - a)$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Picard-Lindelof theorem",
+      "ODE uniqueness",
+      "Gronwall inequality",
+      "contraction mapping"
+    ],
+    "prerequisites": [
+      "HasDerivWithinAt.sub",
+      "norm_image_sub_le_of_norm_deriv_le_segment'"
+    ]
+  },
+  {
+    "id": "ann-mvtoq3-strict-mono",
+    "proofId": "mean-value-theorem-oq-03",
+    "range": {
+      "startLine": 331,
+      "endLine": 343
+    },
+    "type": "theorem",
+    "title": "Strict Monotonicity from Positive Derivative",
+    "content": "This result uses the scalar MVT (not the vector inequality) to prove that a positive derivative implies strict increase. The proof obtains c via exists_deriv_eq_slope, observes f'(c) > 0, substitutes the slope formula, and uses div_mul_cancel to recover f(b) - f(a) > 0. This showcases a situation where the scalar equality is genuinely needed, since the vector inequality would only give a non-negative bound.",
+    "mathContext": "If $f'(x) > 0$ for all $x \\in (a,b)$ with $f$ continuous on $[a,b]$, then $f(a) < f(b)$. The proof uses: $f'(c) = \\frac{f(b)-f(a)}{b-a} > 0$ and $b - a > 0$ to conclude $f(b) - f(a) > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotone functions",
+      "first derivative test",
+      "optimization"
+    ],
+    "prerequisites": [
+      "exists_deriv_eq_slope",
+      "div_mul_cancel"
+    ]
+  },
+  {
+    "id": "ann-mvtoq3-antiderivative-uniqueness",
+    "proofId": "mean-value-theorem-oq-03",
+    "range": {
+      "startLine": 347,
+      "endLine": 363
+    },
+    "type": "theorem",
+    "title": "Antiderivatives Differ by a Constant",
+    "content": "Two functions with the same derivative on [a,b] differ by the constant f(a) - g(a). The proof constructs h = f - g, shows h has zero derivative using sub_eq_zero, then applies the mean value inequality with C = 0 exactly as in constant_of_deriv_zero_vector. Notably, this uses the vector-valued machinery even for a scalar result, illustrating that the vector approach subsumes the scalar case.",
+    "mathContext": "If $f'(x) = g'(x)$ for all $x \\in [a,b)$, then $f(x) - g(x) = f(a) - g(a)$ for all $x \\in [a,b]$. Equivalently, $\\frac{d}{dx}(f - g) = 0$ implies $f - g$ is constant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fundamental theorem of calculus",
+      "antiderivative",
+      "constant of integration"
+    ],
+    "prerequisites": [
+      "HasDerivWithinAt.sub",
+      "mean_value_inequality",
+      "norm_eq_zero"
+    ]
+  },
+  {
+    "id": "ann-mvtoq3-banach-general",
+    "proofId": "mean-value-theorem-oq-03",
+    "range": {
+      "startLine": 265,
+      "endLine": 271
+    },
+    "type": "theorem",
+    "title": "General Banach Space Mean Value Inequality",
+    "content": "The most general form of the mean value inequality in this file: for f : E -> F between arbitrary normed spaces, differentiable on a convex set with bounded Frechet derivative, the displacement is controlled by the derivative bound times the distance. This wraps Mathlib's Convex.norm_image_sub_le_of_norm_fderivWithin_le and is the foundation for the contraction mapping theorem and implicit function theorem in infinite dimensions.",
+    "mathContext": "For $f : E \\to F$ Frechet differentiable on convex $S$ with $\\|Df(x)\\|_{\\mathrm{op}} \\le C$: $$\\|f(b) - f(a)\\| \\le C \\cdot \\|b - a\\| \\quad \\forall a,b \\in S$$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Banach space",
+      "Frechet derivative",
+      "contraction mapping theorem",
+      "implicit function theorem"
+    ],
+    "prerequisites": [
+      "Convex",
+      "DifferentiableOn",
+      "fderivWithin",
+      "Convex.norm_image_sub_le_of_norm_fderivWithin_le"
+    ]
+  }
+]
