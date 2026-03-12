@@ -156,6 +156,33 @@ def Triangle.midpoint_BH (T : Triangle) : Point := pointMidpoint T.B T.orthocent
 /-- Midpoint of CH (C to orthocenter) -/
 def Triangle.midpoint_CH (T : Triangle) : Point := pointMidpoint T.C T.orthocenter
 
+/-- Squared distance between two points (avoids sqrt) -/
+def dist2_sq (P Q : Point) : ℝ := (Q.1 - P.1)^2 + (Q.2 - P.2)^2
+
+/-- Foot of the altitude from A to line BC (orthogonal projection) -/
+def Triangle.foot_a (T : Triangle) : Point :=
+  let dx := T.C.1 - T.B.1
+  let dy := T.C.2 - T.B.2
+  let bc_sq := dx^2 + dy^2
+  let t := ((T.A.1 - T.B.1) * dx + (T.A.2 - T.B.2) * dy) / bc_sq
+  (T.B.1 + t * dx, T.B.2 + t * dy)
+
+/-- Foot of the altitude from B to line CA (orthogonal projection) -/
+def Triangle.foot_b (T : Triangle) : Point :=
+  let dx := T.A.1 - T.C.1
+  let dy := T.A.2 - T.C.2
+  let ca_sq := dx^2 + dy^2
+  let t := ((T.B.1 - T.C.1) * dx + (T.B.2 - T.C.2) * dy) / ca_sq
+  (T.C.1 + t * dx, T.C.2 + t * dy)
+
+/-- Foot of the altitude from C to line AB (orthogonal projection) -/
+def Triangle.foot_c (T : Triangle) : Point :=
+  let dx := T.B.1 - T.A.1
+  let dy := T.B.2 - T.A.2
+  let ab_sq := dx^2 + dy^2
+  let t := ((T.C.1 - T.A.1) * dx + (T.C.2 - T.A.2) * dy) / ab_sq
+  (T.A.1 + t * dx, T.A.2 + t * dy)
+
 -- ============================================================
 -- PART 4: Incircle and Excircles
 -- ============================================================
@@ -228,19 +255,18 @@ def circlesExternallyTangent (c₁ c₂ : Point) (r₁ r₂ : ℝ) : Prop :=
 -- ============================================================
 
 /-- The Euler line relation: O, G, H are collinear with G dividing OH in ratio 1:2.
-    This is formalized as: G = (O + 2H) / 3 -/
+    This is formalized as: G = (2O + H) / 3. -/
 theorem euler_line_relation (T : Triangle) :
-    T.centroid = ((T.circumcenter.1 + 2 * T.orthocenter.1) / 3,
-                  (T.circumcenter.2 + 2 * T.orthocenter.2) / 3) := by
-  unfold Triangle.centroid Triangle.circumcenter Triangle.orthocenter pointMidpoint
-  simp only
-  constructor <;> ring
+    T.centroid = ((2 * T.circumcenter.1 + T.orthocenter.1) / 3,
+                  (2 * T.circumcenter.2 + T.orthocenter.2) / 3) := by
+  unfold Triangle.centroid Triangle.orthocenter
+  exact Prod.ext (by ring) (by ring)
 
 /-- The nine-point center lies on the Euler line, midway between O and H -/
 theorem ninePointCenter_on_euler_line (T : Triangle) :
     T.ninePointCenter = pointMidpoint T.circumcenter T.orthocenter := by
-  unfold Triangle.ninePointCenter
-  rfl
+  unfold Triangle.ninePointCenter pointMidpoint
+  exact Prod.ext (by ring) (by ring)
 
 -- ============================================================
 -- PART 7: Feuerbach's Theorem - Key Distance Relations
@@ -277,29 +303,214 @@ axiom feuerbach_excircle_c_distance (T : Triangle) :
 theorem ninePointRadius_eq_half_circumradius (T : Triangle) :
     T.ninePointRadius = T.circumradius / 2 := rfl
 
-/-- The midpoint of side BC lies on the nine-point circle -/
-axiom midpoint_a_on_ninePointCircle (T : Triangle) :
-    dist2 T.ninePointCenter T.midpoint_a = T.ninePointRadius
+/-- Two nonneg reals with equal squares are equal -/
+private lemma eq_of_sq_eq_of_nonneg {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b)
+    (h : a ^ 2 = b ^ 2) : a = b := by
+  have h1 : (a - b) * (a + b) = 0 := by nlinarith
+  rcases mul_eq_zero.mp h1 with hab | hab
+  · linarith
+  · linarith
 
-/-- The midpoint of side CA lies on the nine-point circle -/
-axiom midpoint_b_on_ninePointCircle (T : Triangle) :
-    dist2 T.ninePointCenter T.midpoint_b = T.ninePointRadius
+/-- dist2 is nonneg -/
+private lemma dist2_nonneg (P Q : Point) : 0 ≤ dist2 P Q := by
+  unfold dist2; exact Real.sqrt_nonneg _
 
-/-- The midpoint of side AB lies on the nine-point circle -/
-axiom midpoint_c_on_ninePointCircle (T : Triangle) :
-    dist2 T.ninePointCenter T.midpoint_c = T.ninePointRadius
+/-- ninePointRadius is nonneg -/
+private lemma ninePointRadius_nonneg (T : Triangle) : 0 ≤ T.ninePointRadius := by
+  unfold Triangle.ninePointRadius
+  exact div_nonneg (dist2_nonneg _ _) (by norm_num)
 
-/-- The midpoint of AH lies on the nine-point circle -/
-axiom midpoint_AH_on_ninePointCircle (T : Triangle) :
-    dist2 T.ninePointCenter T.midpoint_AH = T.ninePointRadius
+/-- The circumcenter denominator is nonzero (follows from nondegenerate). -/
+private lemma circumcenter_denom_ne_zero (T : Triangle) :
+    2 * ((T.A.1 - T.C.1) * (T.B.2 - T.C.2) - (T.B.1 - T.C.1) * (T.A.2 - T.C.2)) ≠ 0 := by
+  intro h
+  apply T.nondegenerate
+  nlinarith
 
-/-- The midpoint of BH lies on the nine-point circle -/
-axiom midpoint_BH_on_ninePointCircle (T : Triangle) :
-    dist2 T.ninePointCenter T.midpoint_BH = T.ninePointRadius
+-- The perpendicular bisector condition: (B-A) dot (B+A-2O) = 0.
+-- This is LINEAR in O, so much easier to verify by ring than the quadratic form.
+set_option maxHeartbeats 6400000 in
+private lemma circumcenter_perp_bisector_AB (T : Triangle) :
+    (T.B.1 - T.A.1) * (T.B.1 + T.A.1 - 2 * T.circumcenter.1) +
+    (T.B.2 - T.A.2) * (T.B.2 + T.A.2 - 2 * T.circumcenter.2) = 0 := by
+  set d := 2 * ((T.A.1 - T.C.1) * (T.B.2 - T.C.2) - (T.B.1 - T.C.1) * (T.A.2 - T.C.2))
+  have hd_ne : d ≠ 0 := circumcenter_denom_ne_zero T
+  have hox : T.circumcenter.1 = ((T.A.1^2 + T.A.2^2 - T.C.1^2 - T.C.2^2) * (T.B.2 - T.C.2) -
+    (T.B.1^2 + T.B.2^2 - T.C.1^2 - T.C.2^2) * (T.A.2 - T.C.2)) / d := by
+    unfold Triangle.circumcenter; dsimp
+  have hoy : T.circumcenter.2 = ((T.B.1^2 + T.B.2^2 - T.C.1^2 - T.C.2^2) * (T.A.1 - T.C.1) -
+    (T.A.1^2 + T.A.2^2 - T.C.1^2 - T.C.2^2) * (T.B.1 - T.C.1)) / d := by
+    unfold Triangle.circumcenter; dsimp
+  rw [hox, hoy]
+  field_simp [hd_ne]
+  ring
 
-/-- The midpoint of CH lies on the nine-point circle -/
-axiom midpoint_CH_on_ninePointCircle (T : Triangle) :
-    dist2 T.ninePointCenter T.midpoint_CH = T.ninePointRadius
+-- The circumcenter is equidistant from B and A (squared version).
+private lemma circumcenter_equidist_sq_B (T : Triangle) :
+    (T.B.1 - T.circumcenter.1) ^ 2 + (T.B.2 - T.circumcenter.2) ^ 2 =
+    (T.A.1 - T.circumcenter.1) ^ 2 + (T.A.2 - T.circumcenter.2) ^ 2 := by
+  have h := circumcenter_perp_bisector_AB T
+  nlinarith [sq_nonneg (T.B.1 - T.circumcenter.1), sq_nonneg (T.A.1 - T.circumcenter.1),
+             sq_nonneg (T.B.2 - T.circumcenter.2), sq_nonneg (T.A.2 - T.circumcenter.2)]
+
+-- The perpendicular bisector condition for AC.
+set_option maxHeartbeats 6400000 in
+private lemma circumcenter_perp_bisector_AC (T : Triangle) :
+    (T.C.1 - T.A.1) * (T.C.1 + T.A.1 - 2 * T.circumcenter.1) +
+    (T.C.2 - T.A.2) * (T.C.2 + T.A.2 - 2 * T.circumcenter.2) = 0 := by
+  set d := 2 * ((T.A.1 - T.C.1) * (T.B.2 - T.C.2) - (T.B.1 - T.C.1) * (T.A.2 - T.C.2))
+  have hd_ne : d ≠ 0 := circumcenter_denom_ne_zero T
+  have hox : T.circumcenter.1 = ((T.A.1^2 + T.A.2^2 - T.C.1^2 - T.C.2^2) * (T.B.2 - T.C.2) -
+    (T.B.1^2 + T.B.2^2 - T.C.1^2 - T.C.2^2) * (T.A.2 - T.C.2)) / d := by
+    unfold Triangle.circumcenter; dsimp
+  have hoy : T.circumcenter.2 = ((T.B.1^2 + T.B.2^2 - T.C.1^2 - T.C.2^2) * (T.A.1 - T.C.1) -
+    (T.A.1^2 + T.A.2^2 - T.C.1^2 - T.C.2^2) * (T.B.1 - T.C.1)) / d := by
+    unfold Triangle.circumcenter; dsimp
+  rw [hox, hoy]
+  field_simp [hd_ne]
+  ring
+
+-- The circumcenter is equidistant from C and A (squared version).
+private lemma circumcenter_equidist_sq_C (T : Triangle) :
+    (T.C.1 - T.circumcenter.1) ^ 2 + (T.C.2 - T.circumcenter.2) ^ 2 =
+    (T.A.1 - T.circumcenter.1) ^ 2 + (T.A.2 - T.circumcenter.2) ^ 2 := by
+  have h := circumcenter_perp_bisector_AC T
+  nlinarith [sq_nonneg (T.C.1 - T.circumcenter.1), sq_nonneg (T.A.1 - T.circumcenter.1),
+             sq_nonneg (T.C.2 - T.circumcenter.2), sq_nonneg (T.A.2 - T.circumcenter.2)]
+
+/-- General nine-point membership: if P - N = (O - V)/2 for some vertex V
+    with dist(O,V)² = R², then dist(N, P) = R/2. -/
+private lemma ninepoint_membership (T : Triangle) (P : Point)
+    (dx dy : ℝ)
+    (hx : P.1 - T.ninePointCenter.1 = dx)
+    (hy : P.2 - T.ninePointCenter.2 = dy)
+    (hsq : dx ^ 2 + dy ^ 2 =
+      ((T.A.1 - T.circumcenter.1) ^ 2 + (T.A.2 - T.circumcenter.2) ^ 2) / 4) :
+    dist2 T.ninePointCenter P = T.ninePointRadius := by
+  apply eq_of_sq_eq_of_nonneg (dist2_nonneg _ _) (ninePointRadius_nonneg _)
+  unfold dist2
+  rw [Real.sq_sqrt (by positivity : 0 ≤ (P.1 - T.ninePointCenter.1) ^ 2 +
+      (P.2 - T.ninePointCenter.2) ^ 2)]
+  unfold Triangle.ninePointRadius Triangle.circumradius dist2
+  rw [div_pow, Real.sq_sqrt (by positivity : 0 ≤ (T.A.1 - T.circumcenter.1) ^ 2 +
+      (T.A.2 - T.circumcenter.2) ^ 2)]
+  rw [hx, hy]
+  linarith
+
+/-- The midpoint of side BC lies on the nine-point circle.
+    Key: M_a - N = (O - A)/2, and |O - A| = R. -/
+theorem midpoint_a_on_ninePointCircle (T : Triangle) :
+    dist2 T.ninePointCenter T.midpoint_a = T.ninePointRadius := by
+  apply ninepoint_membership T _
+    ((T.circumcenter.1 - T.A.1) / 2) ((T.circumcenter.2 - T.A.2) / 2)
+  · unfold Triangle.midpoint_a Triangle.ninePointCenter pointMidpoint Triangle.orthocenter; ring
+  · unfold Triangle.midpoint_a Triangle.ninePointCenter pointMidpoint Triangle.orthocenter; ring
+  · ring
+
+/-- The midpoint of side CA lies on the nine-point circle.
+    Key: M_b - N = (O - B)/2, and |O - B| = |O - A| = R. -/
+theorem midpoint_b_on_ninePointCircle (T : Triangle) :
+    dist2 T.ninePointCenter T.midpoint_b = T.ninePointRadius := by
+  apply ninepoint_membership T _
+    ((T.circumcenter.1 - T.B.1) / 2) ((T.circumcenter.2 - T.B.2) / 2)
+  · unfold Triangle.midpoint_b Triangle.ninePointCenter pointMidpoint Triangle.orthocenter; ring
+  · unfold Triangle.midpoint_b Triangle.ninePointCenter pointMidpoint Triangle.orthocenter; ring
+  · have h := circumcenter_equidist_sq_B T
+    nlinarith [sq_nonneg (T.B.1 - T.circumcenter.1), sq_nonneg (T.B.2 - T.circumcenter.2),
+               sq_nonneg (T.A.1 - T.circumcenter.1), sq_nonneg (T.A.2 - T.circumcenter.2)]
+
+/-- The midpoint of side AB lies on the nine-point circle.
+    Key: M_c - N = (O - C)/2, and |O - C| = |O - A| = R. -/
+theorem midpoint_c_on_ninePointCircle (T : Triangle) :
+    dist2 T.ninePointCenter T.midpoint_c = T.ninePointRadius := by
+  apply ninepoint_membership T _
+    ((T.circumcenter.1 - T.C.1) / 2) ((T.circumcenter.2 - T.C.2) / 2)
+  · unfold Triangle.midpoint_c Triangle.ninePointCenter pointMidpoint Triangle.orthocenter; ring
+  · unfold Triangle.midpoint_c Triangle.ninePointCenter pointMidpoint Triangle.orthocenter; ring
+  · have h := circumcenter_equidist_sq_C T
+    nlinarith [sq_nonneg (T.C.1 - T.circumcenter.1), sq_nonneg (T.C.2 - T.circumcenter.2),
+               sq_nonneg (T.A.1 - T.circumcenter.1), sq_nonneg (T.A.2 - T.circumcenter.2)]
+
+/-- The midpoint of AH lies on the nine-point circle.
+    Key: mid(A,H) - N = (A - O)/2, and |A - O| = R. -/
+theorem midpoint_AH_on_ninePointCircle (T : Triangle) :
+    dist2 T.ninePointCenter T.midpoint_AH = T.ninePointRadius := by
+  apply ninepoint_membership T _
+    ((T.A.1 - T.circumcenter.1) / 2) ((T.A.2 - T.circumcenter.2) / 2)
+  · unfold Triangle.midpoint_AH Triangle.ninePointCenter pointMidpoint Triangle.orthocenter; ring
+  · unfold Triangle.midpoint_AH Triangle.ninePointCenter pointMidpoint Triangle.orthocenter; ring
+  · ring
+
+/-- The midpoint of BH lies on the nine-point circle.
+    Key: mid(B,H) - N = (B - O)/2, and |B - O| = |A - O| = R. -/
+theorem midpoint_BH_on_ninePointCircle (T : Triangle) :
+    dist2 T.ninePointCenter T.midpoint_BH = T.ninePointRadius := by
+  apply ninepoint_membership T _
+    ((T.B.1 - T.circumcenter.1) / 2) ((T.B.2 - T.circumcenter.2) / 2)
+  · unfold Triangle.midpoint_BH Triangle.ninePointCenter pointMidpoint Triangle.orthocenter; ring
+  · unfold Triangle.midpoint_BH Triangle.ninePointCenter pointMidpoint Triangle.orthocenter; ring
+  · have h := circumcenter_equidist_sq_B T
+    nlinarith [sq_nonneg (T.B.1 - T.circumcenter.1), sq_nonneg (T.B.2 - T.circumcenter.2),
+               sq_nonneg (T.A.1 - T.circumcenter.1), sq_nonneg (T.A.2 - T.circumcenter.2)]
+
+/-- The midpoint of CH lies on the nine-point circle.
+    Key: mid(C,H) - N = (C - O)/2, and |C - O| = |A - O| = R. -/
+theorem midpoint_CH_on_ninePointCircle (T : Triangle) :
+    dist2 T.ninePointCenter T.midpoint_CH = T.ninePointRadius := by
+  apply ninepoint_membership T _
+    ((T.C.1 - T.circumcenter.1) / 2) ((T.C.2 - T.circumcenter.2) / 2)
+  · unfold Triangle.midpoint_CH Triangle.ninePointCenter pointMidpoint Triangle.orthocenter; ring
+  · unfold Triangle.midpoint_CH Triangle.ninePointCenter pointMidpoint Triangle.orthocenter; ring
+  · have h := circumcenter_equidist_sq_C T
+    nlinarith [sq_nonneg (T.C.1 - T.circumcenter.1), sq_nonneg (T.C.2 - T.circumcenter.2),
+               sq_nonneg (T.A.1 - T.circumcenter.1), sq_nonneg (T.A.2 - T.circumcenter.2)]
+
+-- ============================================================
+-- PART 8b: Altitude Feet on the Nine-Point Circle
+-- ============================================================
+
+/-- The foot of altitude from A lies on the nine-point circle.
+    The proof requires showing that the orthogonal projection of A onto BC
+    is at distance R/2 from the nine-point center. This involves heavy
+    algebraic manipulation due to division by |BC|² in the projection formula.
+
+    The identity ultimately follows from:
+    |H_a - N|² = R²/4  where H_a = proj_BC(A), N = (O+H)/2 -/
+axiom foot_a_on_ninePointCircle (T : Triangle) :
+    dist2 T.ninePointCenter T.foot_a = T.ninePointRadius
+
+/-- The foot of altitude from B lies on the nine-point circle. -/
+axiom foot_b_on_ninePointCircle (T : Triangle) :
+    dist2 T.ninePointCenter T.foot_b = T.ninePointRadius
+
+/-- The foot of altitude from C lies on the nine-point circle. -/
+axiom foot_c_on_ninePointCircle (T : Triangle) :
+    dist2 T.ninePointCenter T.foot_c = T.ninePointRadius
+
+/-- **The Nine-Point Circle passes through all 9 special points.**
+    Summary of all nine point memberships:
+    - 3 side midpoints: M_a, M_b, M_c ✓ (proved)
+    - 3 Euler midpoints: mid(A,H), mid(B,H), mid(C,H) ✓ (proved)
+    - 3 altitude feet: H_a, H_b, H_c (stated, proof requires heavy algebra) -/
+theorem ninePoints_all_on_circle (T : Triangle) :
+    dist2 T.ninePointCenter T.midpoint_a = T.ninePointRadius ∧
+    dist2 T.ninePointCenter T.midpoint_b = T.ninePointRadius ∧
+    dist2 T.ninePointCenter T.midpoint_c = T.ninePointRadius ∧
+    dist2 T.ninePointCenter T.midpoint_AH = T.ninePointRadius ∧
+    dist2 T.ninePointCenter T.midpoint_BH = T.ninePointRadius ∧
+    dist2 T.ninePointCenter T.midpoint_CH = T.ninePointRadius ∧
+    dist2 T.ninePointCenter T.foot_a = T.ninePointRadius ∧
+    dist2 T.ninePointCenter T.foot_b = T.ninePointRadius ∧
+    dist2 T.ninePointCenter T.foot_c = T.ninePointRadius :=
+  ⟨midpoint_a_on_ninePointCircle T,
+   midpoint_b_on_ninePointCircle T,
+   midpoint_c_on_ninePointCircle T,
+   midpoint_AH_on_ninePointCircle T,
+   midpoint_BH_on_ninePointCircle T,
+   midpoint_CH_on_ninePointCircle T,
+   foot_a_on_ninePointCircle T,
+   foot_b_on_ninePointCircle T,
+   foot_c_on_ninePointCircle T⟩
 
 -- ============================================================
 -- PART 9: Feuerbach's Theorem - Main Results
@@ -383,24 +594,26 @@ axiom equilateral_R_eq_2r (s : ℝ) (hs : s > 0) :
       A := (0, 0)
       B := (s, 0)
       C := (s/2, s * Real.sqrt 3 / 2)
-      nondegenerate := by simp only; have h : s * Real.sqrt 3 / 2 > 0 := by positivity; linarith
+      nondegenerate := by
+        intro heq
+        have : s * (s * Real.sqrt 3 / 2) > 0 := by positivity
+        nlinarith
     }
     T.circumradius = 2 * T.inradius
 
 /-- For an equilateral triangle, the circumradius R = 2r where r is the inradius.
     This means R/2 = r, so the nine-point circle has the same radius as the incircle. -/
-theorem equilateral_circumradius_inradius_relation :
-    ∀ s : ℝ, s > 0 →
+theorem equilateral_circumradius_inradius_relation (s : ℝ) (hs : s > 0) :
     let T : Triangle := {
       A := (0, 0)
       B := (s, 0)
       C := (s/2, s * Real.sqrt 3 / 2)
       nondegenerate := by
-        simp only
-        have h : s * Real.sqrt 3 / 2 > 0 := by positivity
-        linarith
+        intro heq
+        have : s * (s * Real.sqrt 3 / 2) > 0 := by positivity
+        nlinarith
     }
-    T.circumradius = 2 * T.inradius := fun s hs => equilateral_R_eq_2r s hs
+    T.circumradius = 2 * T.inradius := equilateral_R_eq_2r s hs
 
 -- ============================================================
 -- PART 12: Numerical Verification
@@ -421,24 +634,93 @@ def triangle_345 : Triangle := {
 
 theorem triangle_345_area : triangle_345.area = 6 := by
   unfold triangle_345 Triangle.area
-  simp only [abs_of_pos]
   norm_num
 
 theorem triangle_345_semiperimeter : triangle_345.semiperimeter = 6 := by
   unfold triangle_345 Triangle.semiperimeter Triangle.side_a Triangle.side_b Triangle.side_c
   simp only
   have h1 : Real.sqrt (((0 : ℝ) - 3)^2 + (4 - 0)^2) = 5 := by
-    rw [Real.sqrt_eq_iff_sq_eq] <;> norm_num
+    have : ((0 : ℝ) - 3) ^ 2 + (4 - 0) ^ 2 = 5 ^ 2 := by norm_num
+    rw [this, Real.sqrt_sq (by norm_num : (5 : ℝ) ≥ 0)]
   have h2 : Real.sqrt (((0 : ℝ) - 0)^2 + (0 - 4)^2) = 4 := by
-    rw [Real.sqrt_eq_iff_sq_eq] <;> norm_num
+    have : ((0 : ℝ) - 0) ^ 2 + (0 - 4) ^ 2 = 4 ^ 2 := by norm_num
+    rw [this, Real.sqrt_sq (by norm_num : (4 : ℝ) ≥ 0)]
   have h3 : Real.sqrt (((3 : ℝ) - 0)^2 + (0 - 0)^2) = 3 := by
-    rw [Real.sqrt_eq_iff_sq_eq] <;> norm_num
+    have : ((3 : ℝ) - 0) ^ 2 + (0 - 0) ^ 2 = 3 ^ 2 := by norm_num
+    rw [this, Real.sqrt_sq (by norm_num : (3 : ℝ) ≥ 0)]
   rw [h1, h2, h3]
   norm_num
 
 theorem triangle_345_inradius : triangle_345.inradius = 1 := by
   unfold Triangle.inradius
   rw [triangle_345_area, triangle_345_semiperimeter]
+  norm_num
+
+/-- Helper: side lengths of the 3-4-5 triangle -/
+private lemma triangle_345_side_a : triangle_345.side_a = 5 := by
+  unfold triangle_345 Triangle.side_a; simp only
+  have : ((0 : ℝ) - 3) ^ 2 + (4 - 0) ^ 2 = 5 ^ 2 := by norm_num
+  rw [this, Real.sqrt_sq (by norm_num : (5 : ℝ) ≥ 0)]
+
+private lemma triangle_345_side_b : triangle_345.side_b = 4 := by
+  unfold triangle_345 Triangle.side_b; simp only
+  have : ((0 : ℝ) - 0) ^ 2 + (0 - 4) ^ 2 = 4 ^ 2 := by norm_num
+  rw [this, Real.sqrt_sq (by norm_num : (4 : ℝ) ≥ 0)]
+
+private lemma triangle_345_side_c : triangle_345.side_c = 3 := by
+  unfold triangle_345 Triangle.side_c; simp only
+  have : ((3 : ℝ) - 0) ^ 2 + (0 - 0) ^ 2 = 3 ^ 2 := by norm_num
+  rw [this, Real.sqrt_sq (by norm_num : (3 : ℝ) ≥ 0)]
+
+/-- Circumcenter of 3-4-5 triangle is at (3/2, 2) = midpoint of hypotenuse -/
+theorem triangle_345_circumcenter : triangle_345.circumcenter = (3/2, 2) := by
+  unfold triangle_345 Triangle.circumcenter; simp only
+  exact Prod.ext (by norm_num) (by norm_num)
+
+/-- Circumradius of 3-4-5 right triangle is 5/2 (half the hypotenuse) -/
+theorem triangle_345_circumradius : triangle_345.circumradius = 5 / 2 := by
+  unfold Triangle.circumradius
+  rw [triangle_345_circumcenter]
+  unfold triangle_345 dist2; simp only
+  have : ((0 : ℝ) - 3 / 2) ^ 2 + ((0 : ℝ) - 2) ^ 2 = (5/2) ^ 2 := by norm_num
+  rw [this, Real.sqrt_sq (by norm_num : (5/2 : ℝ) ≥ 0)]
+
+/-- Nine-point radius of 3-4-5 triangle is 5/4 -/
+theorem triangle_345_ninePointRadius : triangle_345.ninePointRadius = 5 / 4 := by
+  unfold Triangle.ninePointRadius
+  rw [triangle_345_circumradius]; ring
+
+/-- Orthocenter of 3-4-5 right triangle is at the right angle vertex (0,0) -/
+theorem triangle_345_orthocenter : triangle_345.orthocenter = (0, 0) := by
+  unfold Triangle.orthocenter
+  rw [triangle_345_circumcenter]
+  unfold triangle_345; simp only
+  exact Prod.ext (by ring) (by ring)
+
+/-- Nine-point center of 3-4-5 triangle is at (3/4, 1) -/
+theorem triangle_345_ninePointCenter : triangle_345.ninePointCenter = (3/4, 1) := by
+  unfold Triangle.ninePointCenter
+  rw [triangle_345_orthocenter, triangle_345_circumcenter]
+  unfold pointMidpoint; simp only
+  exact Prod.ext (by norm_num) (by norm_num)
+
+/-- Incenter of 3-4-5 triangle is at (1, 1) -/
+theorem triangle_345_incenter : triangle_345.incenter = (1, 1) := by
+  unfold Triangle.incenter
+  simp only [triangle_345_side_a, triangle_345_side_b, triangle_345_side_c]
+  unfold triangle_345; simp only
+  exact Prod.ext (by norm_num) (by norm_num)
+
+/-- **Feuerbach verified for 3-4-5 triangle (incircle tangency)**
+    |NI| = |R/2 - r| = |5/4 - 1| = 1/4 -/
+theorem triangle_345_feuerbach_incircle :
+    dist2 triangle_345.ninePointCenter triangle_345.incenter =
+    abs (triangle_345.ninePointRadius - triangle_345.inradius) := by
+  rw [triangle_345_ninePointCenter, triangle_345_incenter,
+      triangle_345_ninePointRadius, triangle_345_inradius]
+  unfold dist2; simp only
+  have hlhs : ((1 : ℝ) - 3/4) ^ 2 + (1 - 1) ^ 2 = (1/4) ^ 2 := by norm_num
+  rw [hlhs, Real.sqrt_sq (by norm_num : (1/4 : ℝ) ≥ 0)]
   norm_num
 
 -- Export main results
