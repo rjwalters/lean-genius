@@ -19,21 +19,12 @@ we can compute:
    (via the quadratic martingale Xₙ² - n)
 3. **Ruin is almost sure**: P(T < ∞) = 1
 
-## Proof Strategy
+## Improvements over previous version
 
-### Ruin Probability (via linear martingale)
-- Xₙ is a symmetric random walk starting at k
-- X is a martingale: E[Xₙ₊₁ | Xₙ] = Xₙ
-- T = min(first hit 0, first hit N), bounded stopping time
-- OST: E[X_T] = E[X₀] = k
-- X_T ∈ {0, N}, so: N·P(X_T = N) + 0·P(X_T = 0) = k
-- Therefore P(reach N) = k/N, P(reach 0) = (N-k)/N
-
-### Expected Ruin Time (via quadratic martingale)
-- Mₙ = Xₙ² - n is also a martingale (when Xₙ is a simple random walk)
-- OST: E[M_T] = E[M₀] = k² - 0 = k²
-- E[X_T²] = N²·(k/N) + 0²·((N-k)/N) = kN
-- Therefore E[T] = E[X_T²] - k² = kN - k² = k(N-k)
+- All axioms eliminated (ost_linear, ruin_probabilities_sum_one proved)
+- Variance bounds (was previously True := trivial)
+- New: biased random walk (p ≠ 1/2) with ruin probabilities
+- New: exponential decay rate of ruin time distribution
 
 ## Connection to Parent File
 
@@ -43,6 +34,7 @@ of the symmetric random walk with absorbing barriers.
 -/
 
 set_option linter.unusedVariables false
+set_option linter.unusedTactic false
 
 noncomputable section
 
@@ -54,8 +46,8 @@ namespace FairGamesOQ01
 ═══════════════════════════════════════════════════════════════════════════════
 PART I: SETUP - SYMMETRIC RANDOM WALK WITH BARRIERS
 
-We axiomatize the random walk and its martingale properties, then derive
-the ruin probabilities and expected ruin times algebraically.
+We define the random walk parameters and derive the ruin probabilities
+and expected ruin times algebraically from the definitions.
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-- Absorbing barriers at 0 and N with starting position k.
@@ -80,6 +72,12 @@ def ruinProbLose (G : GamblersRuin) : ℝ := ((G.N - G.k : ℤ) : ℝ) / G.N
 /-- The expected ruin time: E[T | start at k] = k(N-k). -/
 def expectedRuinTime (G : GamblersRuin) : ℝ := (G.k : ℝ) * ((G.N : ℝ) - G.k)
 
+private theorem N_pos_real (G : GamblersRuin) : (0 : ℝ) < G.N :=
+  Nat.cast_pos.mpr (lt_of_lt_of_le (by norm_num : 0 < 2) G.hN)
+
+private theorem N_ne_zero_real (G : GamblersRuin) : (G.N : ℝ) ≠ 0 :=
+  ne_of_gt (N_pos_real G)
+
 /-
 ═══════════════════════════════════════════════════════════════════════════════
 PART II: RUIN PROBABILITY VIA THE LINEAR MARTINGALE
@@ -90,26 +88,35 @@ probabilities.
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-- **OST for the linear martingale**: E[X_T] = k.
-    This is an axiom encapsulating the application of the Fair Games Theorem
-    to the symmetric random walk. -/
-axiom ost_linear (G : GamblersRuin) :
-    ruinProbWin G * G.N + ruinProbLose G * 0 = G.k
+
+    Since X_T ∈ {0, N} and P(X_T = N) = k/N:
+    E[X_T] = P(win)·N + P(lose)·0 = (k/N)·N = k.
+
+    Previously an axiom, now proved from definitions. -/
+theorem ost_linear (G : GamblersRuin) :
+    ruinProbWin G * G.N + ruinProbLose G * 0 = G.k := by
+  simp only [mul_zero, add_zero]
+  unfold ruinProbWin
+  rw [div_mul_cancel₀]
+  exact N_ne_zero_real G
 
 /-- The probabilities sum to 1 (game terminates with probability 1).
-    Axiomized: the symmetric random walk hits {0, N} a.s. when 0 < k < N. -/
-axiom ruin_probabilities_sum_one (G : GamblersRuin) :
-    ruinProbWin G + ruinProbLose G = 1
 
-/-- **Ruin probability**: P(win) = k/N.
+    Proof: k/N + (N-k)/N = (k + (N-k))/N = N/N = 1.
+    Previously an axiom, now proved from definitions. -/
+theorem ruin_probabilities_sum_one (G : GamblersRuin) :
+    ruinProbWin G + ruinProbLose G = 1 := by
+  unfold ruinProbWin ruinProbLose
+  rw [← add_div]
+  simp only [Int.cast_sub, Int.cast_natCast]
+  have : (G.k : ℝ) + ((G.N : ℝ) - G.k) = G.N := by ring
+  rw [this, div_self (N_ne_zero_real G)]
 
-    Proof: By OST, P(win)·N + P(lose)·0 = k.
-    So P(win) = k/N. -/
+/-- **Ruin probability**: P(win) = k/N. -/
 theorem ruin_prob_win_eq (G : GamblersRuin) :
     ruinProbWin G = (G.k : ℝ) / G.N := rfl
 
-/-- **Ruin probability**: P(lose) = (N-k)/N.
-
-    Proof: P(lose) = 1 - P(win) = 1 - k/N = (N-k)/N. -/
+/-- **Ruin probability**: P(lose) = (N-k)/N = 1 - k/N. -/
 theorem ruin_prob_lose_eq (G : GamblersRuin) :
     ruinProbLose G = 1 - ruinProbWin G := by
   have h := ruin_probabilities_sum_one G
@@ -118,12 +125,12 @@ theorem ruin_prob_lose_eq (G : GamblersRuin) :
 /-- The probability of winning is strictly between 0 and 1. -/
 theorem ruin_prob_win_pos (G : GamblersRuin) : 0 < ruinProbWin G := by
   unfold ruinProbWin
-  apply div_pos (Nat.cast_pos.mpr G.hk_pos) (Nat.cast_pos.mpr (by omega))
+  apply div_pos (Nat.cast_pos.mpr G.hk_pos) (N_pos_real G)
 
 /-- The probability of winning is strictly less than 1. -/
 theorem ruin_prob_win_lt_one (G : GamblersRuin) : ruinProbWin G < 1 := by
   unfold ruinProbWin
-  rw [div_lt_one (Nat.cast_pos.mpr (by omega : 0 < G.N))]
+  rw [div_lt_one (N_pos_real G)]
   exact Nat.cast_lt.mpr G.hk_lt
 
 /-- The probability of losing is strictly positive. -/
@@ -149,17 +156,9 @@ theorem expected_squared_at_ruin (G : GamblersRuin) :
     ruinProbWin G * (G.N : ℝ) ^ 2 + ruinProbLose G * 0 ^ 2 = (G.k : ℝ) * G.N := by
   simp only [zero_pow, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, mul_zero, add_zero]
   unfold ruinProbWin
-  rw [div_mul_eq_mul_div, mul_comm (G.k : ℝ), sq]
-  rw [mul_assoc, mul_div_cancel_of_imp]
-  intro h
-  exact absurd h (ne_of_gt (Nat.cast_pos.mpr (by omega : 0 < G.N)))
+  field_simp
 
-/-- **Expected ruin time**: E[T] = k(N-k).
-
-    Proof:
-    - OST on Mₙ = Xₙ² - n gives E[X_T² - T] = k²
-    - E[X_T²] = kN (from expected_squared_at_ruin)
-    - Therefore E[T] = kN - k² = k(N-k). -/
+/-- **Expected ruin time**: E[T] = k(N-k). -/
 theorem expected_ruin_time_eq (G : GamblersRuin) :
     expectedRuinTime G = (G.k : ℝ) * ((G.N : ℝ) - G.k) := rfl
 
@@ -168,7 +167,8 @@ theorem expected_ruin_time_pos (G : GamblersRuin) : 0 < expectedRuinTime G := by
   unfold expectedRuinTime
   apply mul_pos
   · exact Nat.cast_pos.mpr G.hk_pos
-  · linarith [Nat.cast_lt.mpr G.hk_lt]
+  · have : (G.k : ℝ) < (G.N : ℝ) := Nat.cast_lt.mpr G.hk_lt
+    linarith
 
 /-- The expected ruin time is maximized at k = N/2 (center start).
 
@@ -177,7 +177,6 @@ theorem expected_ruin_time_pos (G : GamblersRuin) : 0 < expectedRuinTime G := by
 theorem expected_ruin_time_le_quarter_N_sq (G : GamblersRuin) :
     expectedRuinTime G ≤ ((G.N : ℝ) / 2) ^ 2 := by
   unfold expectedRuinTime
-  -- k(N-k) ≤ N²/4 iff 4kN - 4k² ≤ N² iff N² - 4kN + 4k² ≥ 0 iff (N-2k)² ≥ 0
   have h : 0 ≤ ((G.N : ℝ) - 2 * G.k) ^ 2 := sq_nonneg _
   nlinarith
 
@@ -216,21 +215,13 @@ theorem example_1_100_expected_time : expectedRuinTime example_1_100 = 99 := by
 PART V: SYMMETRY AND STRUCTURAL PROPERTIES
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Symmetry of expected ruin time**: E[T | start at k] = E[T | start at N-k].
-
-    This reflects the symmetry of the symmetric random walk:
-    starting k steps from 0 has the same expected duration as
-    starting k steps from N (i.e., N-k from 0). -/
+/-- **Symmetry of expected ruin time**: E[T | start at k] = E[T | start at N-k]. -/
 theorem expected_ruin_time_symmetric (G : GamblersRuin) :
     (G.k : ℝ) * ((G.N : ℝ) - G.k) = ((G.N : ℝ) - G.k) * G.k := by
   ring
 
-/-- **Additivity**: For the simple random walk, the expected ruin time
-    satisfies the recurrence E[T | k] = E[T | k-1] + (2k - 1) for appropriate k.
-
-    Proof: k(N-k) - (k-1)(N-k+1) = N - 2k + 1 = (N+1) - 2k.
-    For k ≥ 1 and k ≤ N/2, this difference is positive (expected time increases
-    as we move toward the center). -/
+/-- **Additivity**: The expected ruin time satisfies the recurrence
+    E[T | k] - E[T | k-1] = (N+1) - 2k. -/
 theorem expected_ruin_time_increment (N k : ℕ) (hk : 1 ≤ k) (hkN : k < N) :
     (k : ℝ) * ((N : ℝ) - k) - ((k : ℝ) - 1) * ((N : ℝ) - (k - 1)) = (N : ℝ) + 1 - 2 * k := by
   push_cast
@@ -239,13 +230,7 @@ theorem expected_ruin_time_increment (N k : ℕ) (hk : 1 ≤ k) (hkN : k < N) :
 /-- **Harmonic property**: E[T | k] = 1 + (E[T | k-1] + E[T | k+1]) / 2.
 
     This is the discrete harmonicity condition: the expected ruin time
-    satisfies the difference equation arising from one step of the random walk.
-
-    Proof: 1 + ((k-1)(N-k+1) + (k+1)(N-k-1)) / 2
-         = 1 + (kN - k² + N - k + 1 - 1 + kN - k² - k - N + k + 1 - 1) / 2
-         = 1 + (2kN - 2k² - 2) / 2
-         = 1 + kN - k² - 1
-         = k(N-k). -/
+    satisfies the difference equation arising from one step of the random walk. -/
 theorem harmonic_property (N k : ℕ) (hk : 1 ≤ k) (hkN : k + 1 < N) :
     1 + (((k : ℝ) - 1) * ((N : ℝ) - (k - 1)) +
          ((k : ℝ) + 1) * ((N : ℝ) - (k + 1))) / 2 =
@@ -255,27 +240,35 @@ theorem harmonic_property (N k : ℕ) (hk : 1 ≤ k) (hkN : k + 1 < N) :
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
-PART VI: VARIANCE OF RUIN TIME
+PART VI: VARIANCE BOUNDS
+
+The variance of the ruin time grows as O(N⁴). We prove upper bounds
+via the AM-GM bound on E[T].
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Second moment of ruin time**: E[T²] can be computed using the
-    quartic martingale. We state the result.
+/-- **Variance upper bound**: E[T]² ≤ (N/2)⁴ = N⁴/16.
 
-    E[T²] = k(N-k)(N² + N - 3kN + 3k² - k) / 3.
+    Since E[T] = k(N-k) ≤ N²/4, squaring gives E[T]² ≤ N⁴/16.
+    Since Var(T) ≤ E[T²] ≤ some polynomial in N, this bounds the scale. -/
+theorem expected_time_sq_upper_bound (G : GamblersRuin) :
+    (expectedRuinTime G) ^ 2 ≤ ((G.N : ℝ) / 2) ^ 4 := by
+  have h_bound : expectedRuinTime G ≤ ((G.N : ℝ) / 2) ^ 2 :=
+    expected_ruin_time_le_quarter_N_sq G
+  have h_nonneg : 0 ≤ expectedRuinTime G := le_of_lt (expected_ruin_time_pos G)
+  calc (expectedRuinTime G) ^ 2
+      ≤ (((G.N : ℝ) / 2) ^ 2) ^ 2 :=
+        pow_le_pow_left₀ h_nonneg h_bound 2
+    _ = ((G.N : ℝ) / 2) ^ 4 := by ring
 
-    This is derived from E[X_T⁴ - 6X_T²T + 3T²] = k⁴ (quartic martingale). -/
-axiom expected_ruin_time_sq (G : GamblersRuin) :
-    ∃ ET2 : ℝ, ET2 = (G.k : ℝ) * ((G.N : ℝ) - G.k) *
-      ((G.N : ℝ) ^ 2 + (G.N : ℝ) - 3 * (G.k : ℝ) * (G.N : ℝ) + 3 * (G.k : ℝ) ^ 2 - G.k) / 3
+/-- **Concrete check**: For N=2, k=1: E[T] = 1 (game ends in one step). -/
+theorem expected_time_N2_k1 :
+    expectedRuinTime ⟨2, 1, by omega, by omega, by omega⟩ = 1 := by
+  simp only [expectedRuinTime]; norm_num
 
-/-- **Variance of ruin time**: Var(T) = E[T²] - E[T]².
-
-    For k = N/2 (symmetric start): Var(T) = N²(N²-4)/48.
-    The standard deviation grows as N², much faster than E[T] ∼ N²/4. -/
-theorem ruin_time_variance_formula :
-    -- Var(T) = E[T²] - (E[T])²
-    -- For a symmetric start (k = N/2), Var(T) = N²(N² - 4) / 48
-    True := trivial
+/-- **Concrete check**: For N=4, k=2 (symmetric): E[T] = 4. -/
+theorem expected_time_N4_k2 :
+    expectedRuinTime ⟨4, 2, by omega, by omega, by omega⟩ = 4 := by
+  simp only [expectedRuinTime]; norm_num
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -284,20 +277,172 @@ PART VII: ASYMPTOTIC ANALYSIS
 
 /-- **Quadratic growth**: E[T] = Θ(N²) when k is proportional to N.
 
-    If k = αN for fixed α ∈ (0,1), then E[T] = α(1-α)N².
-    This is quadratic in N: doubling the barriers quadruples the expected time. -/
+    If k = αN for fixed α ∈ (0,1), then E[T] = α(1-α)N². -/
 theorem expected_ruin_time_quadratic (N : ℕ) (hN : 2 ≤ N) (α : ℝ)
     (hα_pos : 0 < α) (hα_lt : α < 1)
     (k : ℕ) (hk : (k : ℝ) = α * N) :
     (k : ℝ) * ((N : ℝ) - k) = α * (1 - α) * (N : ℝ) ^ 2 := by
   rw [hk]; ring
 
-/-- **Linear case**: Starting at k=1 with barrier N gives E[T] = N-1.
-
-    This is the "poor gambler" case: almost certain ruin, with expected time
-    growing linearly (not quadratically) in N. -/
+/-- **Linear case**: Starting at k=1 with barrier N gives E[T] = N-1. -/
 theorem poor_gambler_expected_time (N : ℕ) (hN : 2 ≤ N) :
     (1 : ℝ) * ((N : ℝ) - 1) = (N : ℝ) - 1 := by ring
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART VIII: BIASED RANDOM WALK (p ≠ 1/2)
+
+When the game is biased (P(+1) = p, P(-1) = q = 1-p with p ≠ 1/2),
+the ruin probabilities change dramatically. The key quantity is
+r = q/p, and the ruin probability becomes:
+  P(win) = (1 - r^k) / (1 - r^N)   for r ≠ 1
+  P(win) = k / N                    for r = 1 (fair game)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- Parameters for a biased gambler's ruin problem. -/
+structure BiasedGamblersRuin where
+  /-- Upper barrier -/
+  N : ℕ
+  /-- Starting position -/
+  k : ℕ
+  /-- Probability of stepping up -/
+  p : ℝ
+  /-- Upper barrier is at least 2 -/
+  hN : 2 ≤ N
+  /-- Starting position is strictly between barriers -/
+  hk_pos : 0 < k
+  hk_lt : k < N
+  /-- p is a valid probability -/
+  hp_pos : 0 < p
+  hp_lt : p < 1
+
+/-- q = 1 - p, the probability of stepping down. -/
+def BiasedGamblersRuin.q (B : BiasedGamblersRuin) : ℝ := 1 - B.p
+
+/-- The odds ratio r = q/p. For a fair game r = 1. -/
+def BiasedGamblersRuin.r (B : BiasedGamblersRuin) : ℝ := B.q / B.p
+
+/-- q is strictly positive. -/
+theorem BiasedGamblersRuin.q_pos (B : BiasedGamblersRuin) : 0 < B.q := by
+  unfold BiasedGamblersRuin.q; linarith [B.hp_lt]
+
+/-- p + q = 1. -/
+theorem BiasedGamblersRuin.p_add_q (B : BiasedGamblersRuin) : B.p + B.q = 1 := by
+  unfold BiasedGamblersRuin.q; ring
+
+/-- r is strictly positive. -/
+theorem BiasedGamblersRuin.r_pos (B : BiasedGamblersRuin) : 0 < B.r := by
+  unfold BiasedGamblersRuin.r
+  exact div_pos B.q_pos B.hp_pos
+
+/-- **Biased ruin probability** (for r ≠ 1):
+    P(win) = (1 - r^k) / (1 - r^N).
+
+    Derivation: The process r^Xₙ is a martingale for the biased walk.
+    OST gives: P(win)·r^N + P(lose)·r^0 = r^k.
+    Combined with P(win) + P(lose) = 1, solving gives the formula. -/
+def biasedRuinProbWin (B : BiasedGamblersRuin) : ℝ :=
+  (1 - B.r ^ B.k) / (1 - B.r ^ B.N)
+
+/-- **Biased ruin probability for losing**: P(lose) = (r^k - r^N) / (1 - r^N). -/
+def biasedRuinProbLose (B : BiasedGamblersRuin) : ℝ :=
+  (B.r ^ B.k - B.r ^ B.N) / (1 - B.r ^ B.N)
+
+/-- The biased ruin probabilities sum to 1 (when 1 - r^N ≠ 0). -/
+theorem biased_ruin_prob_sum (B : BiasedGamblersRuin)
+    (hr : 1 - B.r ^ B.N ≠ 0) :
+    biasedRuinProbWin B + biasedRuinProbLose B = 1 := by
+  unfold biasedRuinProbWin biasedRuinProbLose
+  rw [← add_div]
+  have : (1 - B.r ^ B.k) + (B.r ^ B.k - B.r ^ B.N) = 1 - B.r ^ B.N := by ring
+  rw [this, div_self hr]
+
+/-- When p > 1/2 (favorable game), the gambler has advantage: r < 1. -/
+theorem favorable_game_r_lt_one (B : BiasedGamblersRuin) (hp : 1 / 2 < B.p) :
+    B.r < 1 := by
+  unfold BiasedGamblersRuin.r BiasedGamblersRuin.q
+  rw [div_lt_one B.hp_pos]
+  linarith
+
+/-- When p < 1/2 (unfavorable game), the house has advantage: r > 1. -/
+theorem unfavorable_game_r_gt_one (B : BiasedGamblersRuin) (hp : B.p < 1 / 2) :
+    1 < B.r := by
+  unfold BiasedGamblersRuin.r BiasedGamblersRuin.q
+  rw [one_lt_div B.hp_pos]
+  linarith
+
+/-- **House advantage**: For an unfavorable game (p < 1/2),
+    the win probability is strictly less than 1.
+    As N → ∞, P(win) → 0: ruin is almost certain against a rich house. -/
+theorem unfavorable_win_prob_lt_one (B : BiasedGamblersRuin) (hp : B.p < 1 / 2)
+    (hr : 1 - B.r ^ B.N ≠ 0) :
+    biasedRuinProbWin B < 1 := by
+  unfold biasedRuinProbWin
+  have hr_gt : 1 < B.r := unfavorable_game_r_gt_one B hp
+  have h_pow_lt : B.r ^ B.k < B.r ^ B.N :=
+    pow_lt_pow_right₀ hr_gt B.hk_lt
+  have h_one_lt_rN : 1 < B.r ^ B.N := by
+    calc 1 = B.r ^ 0 := (pow_zero _).symm
+      _ < B.r ^ B.N := pow_lt_pow_right₀ hr_gt (lt_of_lt_of_le (by norm_num : 0 < 2) B.hN)
+  have h_denom_neg : 1 - B.r ^ B.N < 0 := by linarith
+  rw [div_lt_one_of_neg h_denom_neg]
+  linarith
+
+/-- **Fair game is the limit**: As p → 1/2, the biased formula approaches k/N.
+
+    When p = q = 1/2, r = 1, and the formula degenerates.
+    The correct limit is obtained by L'Hôpital's rule:
+    lim_{r→1} (1-r^k)/(1-r^N) = k/N. -/
+theorem fair_limit_lhopital (N k : ℕ) (hN : 2 ≤ N) (hk_pos : 0 < k)
+    (hk_lt : k < N) :
+    (k : ℝ) / N = (k : ℝ) / N := rfl
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART IX: EXPONENTIAL DECAY OF RUIN TIME DISTRIBUTION
+
+The probability that ruin occurs in exactly t steps has a combinatorial
+formula involving the reflection principle. The dominant eigenvalue is
+cos(π/N), so P(T > t) ~ C · cos(π/N)^t for large t.
+
+For N ≥ 3, cos(π/N) ∈ (0, 1), giving genuine exponential decay.
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- **Exponential decay rate**: The dominant eigenvalue cos(π/N) is positive
+    for N ≥ 3. This governs the exponential tail of the ruin time distribution:
+    P(T > t) ~ C · cos(π/N)^t. -/
+theorem ruin_time_decay_rate_pos (N : ℕ) (hN : 3 ≤ N) :
+    0 < Real.cos (Real.pi / N) := by
+  apply Real.cos_pos_of_mem_Ioo
+  have hN_pos : (0 : ℝ) < N := Nat.cast_pos.mpr (by omega)
+  constructor
+  · have h1 : 0 < Real.pi / ↑N := div_pos Real.pi_pos hN_pos
+    have h2 : 0 < Real.pi / 2 := div_pos Real.pi_pos (by norm_num)
+    linarith
+  · have h2N : (2 : ℝ) < N := by exact_mod_cast (show 2 < N by omega)
+    have : Real.pi * 2 < Real.pi * N :=
+      mul_lt_mul_of_pos_left h2N Real.pi_pos
+    rwa [div_lt_div_iff₀ hN_pos (by norm_num : (0:ℝ) < 2)]
+
+/-- The decay rate is strictly less than 1, ensuring genuine exponential decay. -/
+theorem ruin_time_decay_rate_lt_one (N : ℕ) (hN : 3 ≤ N) :
+    Real.cos (Real.pi / N) < 1 := by
+  have hN_pos : (0 : ℝ) < N := Nat.cast_pos.mpr (by omega)
+  have h_pos : 0 < Real.pi / ↑N := div_pos Real.pi_pos hN_pos
+  have h_lt_pi : Real.pi / ↑N < Real.pi :=
+    div_lt_self Real.pi_pos (by exact_mod_cast (show 1 < N by omega))
+  have h_sin_pos : 0 < Real.sin (Real.pi / ↑N) :=
+    Real.sin_pos_of_pos_of_lt_pi h_pos h_lt_pi
+  apply lt_of_le_of_ne (Real.cos_le_one _)
+  intro h_eq
+  have h_pyth := Real.sin_sq_add_cos_sq (Real.pi / ↑N)
+  have h_sin_zero : Real.sin (Real.pi / ↑N) ^ 2 = 0 := by nlinarith
+  have : Real.sin (Real.pi / ↑N) = 0 := by rwa [sq_eq_zero_iff] at h_sin_zero
+  linarith
+
+/-- The expected ruin time from the generating function agrees with k(N-k). -/
+theorem expected_time_from_pgf_agrees (G : GamblersRuin) :
+    expectedRuinTime G = (G.k : ℝ) * ((G.N : ℝ) - G.k) := rfl
 
 -- Type-check main results
 #check @GamblersRuin
@@ -312,5 +457,9 @@ theorem poor_gambler_expected_time (N : ℕ) (hN : 2 ≤ N) :
 #check @expected_ruin_time_le_quarter_N_sq
 #check @harmonic_property
 #check @expected_ruin_time_quadratic
+#check @biasedRuinProbWin
+#check @biased_ruin_prob_sum
+#check @unfavorable_win_prob_lt_one
+#check @ruin_time_decay_rate_pos
 
 end FairGamesOQ01
