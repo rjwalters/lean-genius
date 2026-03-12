@@ -48,6 +48,7 @@ DEFAULT_ARISTOTLE=1
 DEFAULT_RESEARCHER=2
 DEFAULT_SEEKER=1
 DEFAULT_DEPLOYER=1
+DEFAULT_TESTER=1
 
 # Max pool sizes
 MAX_ENRICHER=5
@@ -55,6 +56,7 @@ MAX_ARISTOTLE=2
 MAX_RESEARCHER=5
 MAX_SEEKER=1
 MAX_DEPLOYER=1
+MAX_TESTER=1
 
 # Helper: Print usage
 usage() {
@@ -77,6 +79,7 @@ Start Options:
   --researcher N         Number of Researchers (default: $DEFAULT_RESEARCHER, max: $MAX_RESEARCHER)
   --seeker N             Number of Seeker agents (default: $DEFAULT_SEEKER, max: $MAX_SEEKER)
   --deployer N           Number of Deployers (default: $DEFAULT_DEPLOYER, max: $MAX_DEPLOYER)
+  --tester N             Number of Testers (default: $DEFAULT_TESTER, max: $MAX_TESTER)
 
 Stop Options:
   <type>                 Stop only agents of this type (enricher, aristotle, etc.)
@@ -89,6 +92,7 @@ Daemon Options:
   --researcher N         Initial Researcher count (default: $DEFAULT_RESEARCHER, max: $MAX_RESEARCHER)
   --seeker N             Initial Seeker agent count (default: $DEFAULT_SEEKER, max: $MAX_SEEKER)
   --deployer N           Initial Deployer count (default: $DEFAULT_DEPLOYER, max: $MAX_DEPLOYER)
+  --tester N             Initial Tester count (default: $DEFAULT_TESTER, max: $MAX_TESTER)
 
 Agent Types:
   enricher    Enriches proof gallery entries with deeper annotations and commentary
@@ -96,6 +100,7 @@ Agent Types:
   researcher  Works on open mathematical problems
   seeker      Selects research problems when candidate pool runs low
   deployer    Merges PRs and deploys website
+  tester      Tests random proof pages on the live site
 
 Examples:
   $0 start                              # Start with defaults
@@ -133,6 +138,7 @@ init_state() {
     local researcher="${3:-$DEFAULT_RESEARCHER}"
     local seeker="${4:-$DEFAULT_SEEKER}"
     local deployer="${5:-$DEFAULT_DEPLOYER}"
+    local tester="${6:-$DEFAULT_TESTER}"
 
     mkdir -p "$(dirname "$STATE_FILE")"
 
@@ -153,6 +159,7 @@ init_state() {
         --argjson researcher "$researcher" \
         --argjson seeker "$seeker" \
         --argjson deployer "$deployer" \
+        --argjson tester "$tester" \
         --argjson prev_stats "$prev_stats" \
         '{
             started_at: $started_at,
@@ -162,7 +169,8 @@ init_state() {
                 aristotle: $aristotle,
                 researcher: $researcher,
                 seeker: $seeker,
-                deployer: $deployer
+                deployer: $deployer,
+                tester: $tester
             },
             agents: {},
             session_stats: (
@@ -248,6 +256,11 @@ get_sessions_for_type() {
                 sessions+=("deployer")
             fi
             ;;
+        tester)
+            if tmux has-session -t "tester-agent" 2>/dev/null; then
+                sessions+=("tester-agent")
+            fi
+            ;;
     esac
 
     if [[ ${#sessions[@]} -gt 0 ]]; then
@@ -280,6 +293,9 @@ signal_stop_session() {
             ;;
         deployer)
             touch "$SIGNALS_DIR/stop-deployer"
+            ;;
+        tester)
+            touch "$SIGNALS_DIR/stop-tester"
             ;;
     esac
 }
@@ -352,6 +368,7 @@ cmd_start() {
     local researcher=$DEFAULT_RESEARCHER
     local seeker=$DEFAULT_SEEKER
     local deployer=$DEFAULT_DEPLOYER
+    local tester=$DEFAULT_TESTER
 
     # Parse options
     while [[ $# -gt 0 ]]; do
@@ -374,6 +391,10 @@ cmd_start() {
                 ;;
             --deployer)
                 deployer="$2"
+                shift 2
+                ;;
+            --tester)
+                tester="$2"
                 shift 2
                 ;;
             *)
@@ -405,6 +426,10 @@ cmd_start() {
         echo -e "${YELLOW}Warning: Deployer count $deployer exceeds max $MAX_DEPLOYER, using $MAX_DEPLOYER${NC}"
         deployer=$MAX_DEPLOYER
     fi
+    if [[ $tester -gt $MAX_TESTER ]]; then
+        echo -e "${YELLOW}Warning: Tester count $tester exceeds max $MAX_TESTER, using $MAX_TESTER${NC}"
+        tester=$MAX_TESTER
+    fi
 
     echo -e "${BOLD}Starting Lean Genius Mathematical Orchestration${NC}"
     echo ""
@@ -414,13 +439,14 @@ cmd_start() {
     echo "  Researchers: $researcher"
     echo "  Seekers: $seeker"
     echo "  Deployers: $deployer"
+    echo "  Testers: $tester"
     echo ""
 
     # Migrate state file from old location if needed
     migrate_state_file
 
     # Initialize state
-    init_state "$enricher" "$aristotle" "$researcher" "$seeker" "$deployer"
+    init_state "$enricher" "$aristotle" "$researcher" "$seeker" "$deployer" "$tester"
 
     # Start agents
     local started=0
@@ -480,6 +506,17 @@ cmd_start() {
         fi
     fi
 
+    # Tester
+    if [[ $tester -gt 0 ]]; then
+        echo -e "${BLUE}Starting Tester agent...${NC}"
+        if check_script "./scripts/test/launch-agent.sh"; then
+            ./scripts/test/launch-agent.sh &
+            sleep 1
+            echo -e "${GREEN}✓ Tester agent launched${NC}"
+            started=$((started + 1))
+        fi
+    fi
+
     echo ""
     if [[ $started -gt 0 ]]; then
         echo -e "${GREEN}${BOLD}✓ Lean Genius team started!${NC}"
@@ -519,6 +556,10 @@ get_all_agent_sessions() {
     # Deployer
     if tmux has-session -t "deployer" 2>/dev/null; then
         sessions+=("deployer")
+    fi
+    # Tester
+    if tmux has-session -t "tester-agent" 2>/dev/null; then
+        sessions+=("tester-agent")
     fi
     if [[ ${#sessions[@]} -gt 0 ]]; then
         printf '%s\n' "${sessions[@]}"
@@ -675,7 +716,7 @@ is_script_based_agent() {
     local session="$1"
     local agent_type
     agent_type=$(get_agent_type "$session")
-    [[ "$agent_type" == "aristotle" ]]
+    [[ "$agent_type" == "aristotle" || "$agent_type" == "tester" ]]
 }
 
 # Helper: Check if an agent is a polling agent that legitimately idles between cycles
@@ -685,7 +726,7 @@ is_polling_agent() {
     local session="$1"
     local agent_type
     agent_type=$(get_agent_type "$session")
-    [[ "$agent_type" == "deployer" || "$agent_type" == "seeker" ]]
+    [[ "$agent_type" == "deployer" || "$agent_type" == "seeker" || "$agent_type" == "tester" ]]
 }
 
 # Helper: Determine agent health status
@@ -976,6 +1017,7 @@ get_agent_type() {
         researcher-*)     echo "researcher" ;;
         seeker-agent)     echo "seeker" ;;
         deployer)         echo "deployer" ;;
+        tester-agent)     echo "tester" ;;
         *)                echo "unknown" ;;
     esac
 }
@@ -1065,6 +1107,15 @@ respawn_agent() {
                 daemon_log "INFO" "Deployer respawned"
             else
                 daemon_log "WARN" "Cannot respawn deployer: script not found"
+            fi
+            ;;
+        tester)
+            if check_script "./scripts/test/launch-agent.sh" 2>/dev/null; then
+                ./scripts/test/launch-agent.sh &
+                sleep 1
+                daemon_log "INFO" "Tester agent respawned"
+            else
+                daemon_log "WARN" "Cannot respawn tester: script not found"
             fi
             ;;
         *)
@@ -1222,6 +1273,7 @@ cmd_daemon() {
     local researcher=$DEFAULT_RESEARCHER
     local seeker=$DEFAULT_SEEKER
     local deployer=$DEFAULT_DEPLOYER
+    local tester=$DEFAULT_TESTER
 
     # Parse options
     while [[ $# -gt 0 ]]; do
@@ -1248,6 +1300,10 @@ cmd_daemon() {
                 ;;
             --deployer)
                 deployer="$2"
+                shift 2
+                ;;
+            --tester)
+                tester="$2"
                 shift 2
                 ;;
             *)
@@ -1288,10 +1344,10 @@ cmd_daemon() {
     trap 'daemon_log "INFO" "Received SIGINT"; exit 0' INT
 
     daemon_log "INFO" "Starting daemon (PID $$, interval ${interval}s)"
-    daemon_log "INFO" "Pool config: enricher=$enricher, aristotle=$aristotle, researcher=$researcher, seeker=$seeker, deployer=$deployer"
+    daemon_log "INFO" "Pool config: enricher=$enricher, aristotle=$aristotle, researcher=$researcher, seeker=$seeker, deployer=$deployer, tester=$tester"
 
     # Start initial agents via cmd_start
-    cmd_start --enricher "$enricher" --aristotle "$aristotle" --researcher "$researcher" --seeker "$seeker" --deployer "$deployer"
+    cmd_start --enricher "$enricher" --aristotle "$aristotle" --researcher "$researcher" --seeker "$seeker" --deployer "$deployer" --tester "$tester"
 
     local cycle_count=0
     local total_respawns=0
@@ -1736,6 +1792,11 @@ cmd_stop_type() {
                     ./scripts/research/launch-seeker.sh --graceful-stop 2>/dev/null || true
                 fi
                 ;;
+            tester)
+                if [[ -x "./scripts/test/launch-agent.sh" ]]; then
+                    ./scripts/test/launch-agent.sh --graceful-stop 2>/dev/null || true
+                fi
+                ;;
         esac
 
         # Wait up to 60s for graceful shutdown, then force-kill
@@ -1748,7 +1809,7 @@ cmd_spawn() {
     local agent_type="${1:-}"
 
     if [[ -z "$agent_type" ]]; then
-        echo -e "${RED}Error: Must specify agent type (enricher, aristotle, researcher, deployer)${NC}" >&2
+        echo -e "${RED}Error: Must specify agent type (enricher, aristotle, researcher, deployer, tester)${NC}" >&2
         exit 1
     fi
 
@@ -1809,9 +1870,19 @@ cmd_spawn() {
                 echo -e "${GREEN}✓ Deployer spawned${NC}"
             fi
             ;;
+        tester)
+            echo -e "${BLUE}Spawning Tester agent...${NC}"
+            if tmux has-session -t "tester-agent" 2>/dev/null; then
+                echo -e "${YELLOW}Tester agent already running${NC}"
+            else
+                ./scripts/test/launch-agent.sh &
+                sleep 1
+                echo -e "${GREEN}✓ Tester agent spawned${NC}"
+            fi
+            ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Valid types: enricher, aristotle, researcher, seeker, deployer"
+            echo "Valid types: enricher, aristotle, researcher, seeker, deployer, tester"
             exit 1
             ;;
     esac
@@ -1915,7 +1986,7 @@ cmd_scale() {
                 echo -e "${GREEN}Already at $count Researchers${NC}"
             fi
             ;;
-        aristotle|seeker|deployer)
+        aristotle|seeker|deployer|tester)
             if [[ $count -gt 1 ]]; then
                 echo -e "${YELLOW}$agent_type can only have 0 or 1 instance, using 1${NC}"
                 count=1
@@ -1945,7 +2016,7 @@ cmd_scale() {
             ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Valid types: enricher, researcher, aristotle, seeker, deployer"
+            echo "Valid types: enricher, researcher, aristotle, seeker, deployer, tester"
             exit 1
             ;;
     esac
@@ -1990,9 +2061,13 @@ cmd_wake() {
                 fi
             done
             ;;
+        tester)
+            touch "$SIGNALS_DIR/wake-tester-agent"
+            echo -e "${GREEN}Wake signal sent to tester-agent${NC}"
+            ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Valid types: all, aristotle, researcher, deployer, seeker, enricher"
+            echo "Valid types: all, aristotle, researcher, deployer, seeker, enricher, tester"
             exit 1
             ;;
     esac
