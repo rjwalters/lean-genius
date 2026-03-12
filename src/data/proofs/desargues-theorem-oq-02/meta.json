@@ -41,7 +41,7 @@
     "dateAdded": "02/26/26"
   },
   "overview": {
-    "historicalContext": "Forest Ray Moulton introduced the Moulton plane in 1902 as a counterexample to Desargues's theorem in incidence geometry. While Desargues's theorem holds in all projective planes coordinatizable by a division ring (as shown in OQ-01), the Moulton plane demonstrates that modifying the line structure — even over the same point set — can break this fundamental theorem. The Moulton plane has the same points as ℝ² but 'bends' lines with negative slope at the y-axis, doubling their slope for positive x-values.",
+    "historicalContext": "Girard Desargues stated his theorem around 1639 in the context of perspective drawing and projective geometry. The theorem — that two triangles in perspective from a point are also in perspective from a line — holds in every projective plane coordinatizable by a division ring, a result formalized in OQ-01 using cross-product algebra. Forest Ray Moulton (1902) constructed the first concrete counterexample: an affine plane with the same point set as $\\mathbb{R}^2$ but modified lines, where negative slopes double upon crossing the $y$-axis. This showed that Desargues's theorem is not a consequence of the incidence axioms alone — it depends on the algebraic structure of the coordinate system. The Hessenberg-Artin theorem (Karl Hessenberg 1905, Emil Artin 1957) later proved the converse: a projective plane is Desarguesian if and only if it is coordinatizable by a division ring. The Moulton plane thus occupies a central place in the classification of projective planes and serves as the canonical example in most modern textbooks on incidence geometry (e.g., Hartshorne's *Foundations of Projective Geometry*).",
     "problemStatement": "**Open Question (OQ-02):** How can we formalize non-Desarguesian planes in Lean to demonstrate when Desargues's theorem fails?\n\n**Answer:** Construct the Moulton plane over ℚ with an explicit counterexample:\n- **Points:** ℚ × ℚ (rational coordinates)\n- **Lines:** Standard (slope ≥ 0), bent (slope < 0, doubles for x > 0), or vertical\n- **Counterexample:** Two triangles perspective from O = (-4, 12) whose side-intersections fail to be Moulton-collinear\n\nThe bending of line CA (slope -1/2 → -1 for x > 0) shifts one intersection point, breaking the alignment by 3/88.",
     "proofStrategy": "The proof has three components:\n\n**1. Moulton Plane Definitions:** An inductive type `MLine` with three constructors (standard, bent, vertical) and a piecewise incidence relation `onLine` that doubles negative slopes for x > 0.\n\n**2. Counterexample Construction:** Six vertices forming two triangles, all at x ≤ 0 (so the perspectivity lines are unaffected by bending). The side line CA has slope -1/2, which becomes -1 for x > 0, shifting the intersection CA ∩ C'A' from (1, 7/2) to (6/11, 38/11).\n\n**3. Non-Collinearity Proof:** Exhaustive case analysis over all three MLine constructors shows no Moulton line passes through all three intersection points. The key arithmetic: any line through α=(-3,4) and γ=(-35,8) misses β=(6/11,38/11) — by 9/88 for standard lines and 3/88 for bent lines.",
     "keyInsights": [
@@ -57,57 +57,57 @@
       "id": "moulton-plane",
       "title": "The Moulton Plane",
       "startLine": 1,
-      "endLine": 60,
-      "summary": "Definitions: MPoint (ℚ²), MLine (standard/bent/vertical), onLine incidence relation, MoultonCollinear."
+      "endLine": 59,
+      "summary": "Defines the Moulton plane primitives: $\\text{MPoint} = \\mathbb{Q} \\times \\mathbb{Q}$, the inductive `MLine` type (standard/bent/vertical), the piecewise incidence relation `onLine` where bent lines use slope $m$ for $x \\leq 0$ and $2m$ for $x > 0$, and `MoultonCollinear` (three points on a common Moulton line)."
     },
     {
       "id": "configuration",
       "title": "Counterexample Configuration",
-      "startLine": 62,
-      "endLine": 72,
-      "summary": "The seven points: center O and two triangles ABC, A'B'C', all with x ≤ 0."
+      "startLine": 61,
+      "endLine": 71,
+      "summary": "Seven rational points: center $O = (-4, 12)$ and two triangles $\\triangle ABC = \\{(-8,8), (-5,8), (-4,6)\\}$, $\\triangle A'B'C' = \\{(-14,2), (-7,0), (-4,3)\\}$. All vertices have $x \\leq 0$, ensuring perspectivity lines avoid Moulton bending."
     },
     {
       "id": "perspectivity",
       "title": "Perspectivity from Point O",
-      "startLine": 74,
+      "startLine": 73,
       "endLine": 105,
-      "summary": "Three perspectivity lines (standard slope 1, standard slope 4, vertical) all pass through O and corresponding vertex pairs."
+      "summary": "Proves $AA'$, $BB'$, $CC'$ all pass through $O$: $\\overline{OAA'}: y = x + 16$ (standard), $\\overline{OBB'}: y = 4x + 28$ (standard), $\\overline{OCC'}: x = -4$ (vertical). Bundles all 9 incidences into `perspective_from_point`."
     },
     {
       "id": "side-lines",
       "title": "Side Lines and Vertex Verification",
       "startLine": 107,
-      "endLine": 143,
-      "summary": "Six side lines (3 bent, 3 standard) with verified vertex incidences."
+      "endLine": 145,
+      "summary": "Defines 6 side lines: bent $A'B'$ ($m = -2/7$), $BC$ ($m = -2$), $CA$ ($m = -1/2$); standard $AB$ ($m = 0$), $B'C'$ ($m = 1$), $C'A'$ ($m = 1/10$). Verifies 12 vertex incidences. Only $CA$'s bending affects the counterexample at $\\beta$."
     },
     {
       "id": "intersections",
       "title": "Moulton Intersection Points",
-      "startLine": 145,
-      "endLine": 195,
-      "summary": "Three intersection points: α=(-3,4), β=(6/11,38/11), γ=(-35,8). Beta uses the bent branch of line CA."
+      "startLine": 147,
+      "endLine": 178,
+      "summary": "Computes $\\alpha = BC \\cap B'C' = (-3, 4)$, $\\beta = CA \\cap C'A' = (6/11, 38/11)$, $\\gamma = AB \\cap A'B' = (-35, 8)$. The critical computation: $CA$ has Moulton slope $-1/2$, so at $x = 6/11 > 0$ the effective slope is $-1$, giving $y = 38/11$ instead of the Euclidean $7/2$."
     },
     {
       "id": "non-collinearity",
       "title": "Non-Collinearity Proof",
-      "startLine": 197,
-      "endLine": 245,
-      "summary": "Exhaustive case analysis over MLine constructors proves no Moulton line passes through all three intersection points."
+      "startLine": 180,
+      "endLine": 224,
+      "summary": "Proves $\\neg \\text{MoultonCollinear}(\\alpha, \\beta, \\gamma)$ by case analysis over `MLine` constructors. Standard lines: overdetermined system gives $313/88 \\neq 304/88$ (gap $9/88$). Bent lines: right branch gives $307/88 \\neq 304/88$ (gap $3/88$). Vertical: $x$-coordinates $-3 \\neq 6/11$."
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem",
-      "startLine": 247,
-      "endLine": 280,
-      "summary": "desargues_fails_in_moulton: complete statement combining perspectivity, side-intersections, and non-collinearity."
+      "title": "Main Theorem: Desargues Fails",
+      "startLine": 226,
+      "endLine": 250,
+      "summary": "`desargues_fails_in_moulton`: 13-conjunct theorem assembling perspectivity (9 incidences), side-intersections (6 incidences), and $\\neg \\text{MoultonCollinear}(\\alpha, \\beta, \\gamma)$. Complete formal statement that Desargues's theorem fails in the Moulton plane."
     },
     {
       "id": "structural",
-      "title": "Structural Properties",
-      "startLine": 282,
+      "title": "Structural Properties and Comparison",
+      "startLine": 252,
       "endLine": 332,
-      "summary": "Non-degeneracy of both triangles, vertex distinctness, Euclidean comparison, and gap computation."
+      "summary": "Non-degeneracy: both triangles are non-collinear and vertices are pairwise distinct. Euclidean comparison: the same $\\alpha, \\beta_{\\text{Euc}} = (1, 7/2), \\gamma$ ARE collinear on $y = -x/8 + 29/8$, proving the failure is caused by Moulton bending. Moulton gap: the exact arithmetic discrepancy is $3/88$."
     }
   ],
   "conclusion": {
