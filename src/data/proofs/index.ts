@@ -8,7 +8,7 @@
  */
 
 import listingsData from './listings.json'
-import type { ProofData, ProofListing } from '@/types/proof'
+import type { Annotation, ProofData, ProofListing } from '@/types/proof'
 
 // Lightweight listings for HomePage - does not pull in proof data
 export const listings: ProofListing[] = listingsData as ProofListing[]
@@ -54,8 +54,27 @@ export async function getProofAsync(slug: string): Promise<ProofData | undefined
     // Try default export first, then named export, then fallback to first *Data export
     // (fallback handles casing mismatches like OQ vs Oq in export names)
     const exportName = slugToExportName(slug)
-    const proofData: ProofData = module.default || module[exportName] ||
+    let proofData: ProofData | undefined = module.default || module[exportName] ||
       Object.keys(module).filter(k => k.endsWith('Data')).map(k => module[k]).find(v => v?.proof)
+
+    // Fallback: construct ProofData from legacy { meta, annotations } exports
+    if (!proofData && module.meta) {
+      const m = module.meta.default || module.meta
+      proofData = {
+        proof: {
+          id: m.id,
+          title: m.title,
+          slug: m.slug,
+          description: m.description,
+          meta: m.meta,
+          sections: m.sections || [],
+          overview: m.overview,
+          conclusion: m.conclusion,
+          source: '',
+        },
+        annotations: (module.annotations?.default || module.annotations || []) as Annotation[],
+      }
+    }
 
     // Normalize annotations: convert legacy {lineNumber} format to {range}
     if (proofData?.annotations) {
