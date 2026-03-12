@@ -16,25 +16,41 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-02-25T14:11:52.126Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "SURVEYED",
+    "since": "2026-03-12T23:50:00.000Z",
+    "iteration": 2,
+    "focus": "Deep axiom analysis - all 5 axioms genuinely blocked by missing Mathlib infrastructure",
+    "blockers": [
+      "All 5 axioms require algebraic topology (degree theory, homology, covering spaces) not in Mathlib",
+      "Deriving no_retraction/brouwer_FP/LS/invariance from borsuk_ulam_general requires substantial intermediate constructions"
+    ],
+    "nextAction": "Prove sign_change_count_parity sorry in sub-OQ BorsukUlamOQ03OQ01.lean (product telescope argument).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED - 13 proved theorems, 1 axiom (general BU for n≥2), 0 sorries.",
+    "progressSummary": "SURVEYED - File now has 914 lines, ~30 proved theorems/lemmas, 5 axioms (borsuk_ulam_general, no_retraction, brouwer_fixed_point, lusternik_schnirelmann, invariance_of_dimension), 0 sorries. All 5 axioms are genuinely blocked. Sub-OQ file BorsukUlamOQ03OQ01.lean has 1 sorry (sign_change_count_parity) that is tractable.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# borsuk-ulam-oq-03: Constructive (Intuitionistic) Borsuk-Ulam\n\n## Problem Summary\n\n**Open Question**: Can the 1D Borsuk-Ulam theorem be proved constructively\n(without full classical logic)? What is the constructive status of\nhigher-dimensional Borsuk-Ulam?\n\n**Status**: SURVEYED - 13 proved theorems, 1 axiom (general BU for n≥2), 0 sorries.\n\n**Answer**:\n- 1D: YES, proved via IVT on antisymmetric difference\n- n≥2: Requires algebraic topology (axiomized); no known constructive proof\n\n## Session 2026-02-25 (Session 1) - Initial Formalization\n\n**Mode**: FRESH (problem had EMPTY knowledge)\n**Outcome**: surveyed/progress\n\n### What I Did\n\n- Created `proofs/Proofs/BorsukUlamOQ03.lean` with full 1D formalization\n- Proved 13 theorems covering:\n  - 1D interval BU via IVT\n  - Odd function zero lemma\n  - BU ↔ odd-zero equivalence\n  - S¹ parametric version via IVT on [0,π]\n  - Circle point on unit circle\n  - No odd map to {±1}\n  - 5 structural lemmas\n  - NSphere def + antipodal def\n  - Consequence of general BU axiom\n- Fixed key Lean 4 issue: `f (--x)` is INVALID because `--` starts a line comment;\n  must write `f (-(-x))` or restructure to avoid double negative\n- Fixed `ring` issue: after `simp only [hg_def]`, `ring` fails on `f (-(-x))` atoms;\n  add `neg_neg` to simp first\n- `Continuous.prod_mk` may not be directly accessible as a field; use `fun_prop` instead\n- Created PR #3246\n\n### Key Findings\n\n- `f (--x)` is a SYNTAX BUG: `--` starts a line comment in Lean 4!\n  Workaround: Write `f (-(-x))` or avoid double-negated function args\n- `fun_prop` tactic handles complex continuity goals automatically with `hf : Continuous f`\n- IVT API: `intermediate_value_Icc hab hg_cont ⟨ha, hb⟩` where `ha : f a ≤ 0` and `hb : 0 ≤ f b`\n- `le_or_gt` is the non-deprecated name for case split (not `le_or_lt`)\n- Constructive content: IVT uses Classical.em internally, but Bishop-style IVT holds\n\n### Files Created\n\n- `proofs/Proofs/BorsukUlamOQ03.lean` (324 lines, 13 theorems, 1 axiom, 0 sorries)\n\n### Next Steps\n\n- The higher-dimensional BU (n≥2) could potentially be proved using Tucker's lemma (combinatorial BU)\n- Tucker's lemma is more constructive than degree-theoretic approaches\n- Would require: triangulation, labeling, Tucker path → antipodal pair\n"
+    "insights": [
+      "Only borsuk_ulam_general is actually USED by other theorems (no_equivariant_map_sphere, bu_no_injective_map). The other 4 axioms are declared for completeness but never referenced.",
+      "no_retraction could theoretically be derived from borsuk_ulam_general via degree theory, but Mathlib lacks this infrastructure",
+      "brouwer_fixed_point could be derived from no_retraction via the ray-sphere intersection construction (quadratic formula for ||f(x)+t(x-f(x))||²=1), but needs ~100 lines of continuity proofs",
+      "invariance_of_dimension for n>m case: restrict φ to S^{n-1}, embed into R^{n-1}, contradicts bu_no_injective_map. For n<m case: requires invariance of domain (Brouwer), which itself needs degree theory",
+      "Sub-OQ file sorry (sign_change_count_parity) is provable via product telescope: ∏(s(i)*s(i+1)) = s(0)*s(last) = -1 implies odd number of sign changes. Requires general parity lemma by induction on sequence length."
+    ],
+    "mathlibGaps": [
+      "Algebraic topology: Brouwer degree, homology groups, covering spaces",
+      "No retraction theorem infrastructure (ball-sphere topology)",
+      "Invariance of domain (Brouwer's theorem)"
+    ],
+    "nextSteps": [
+      "Prove sign_change_count_parity in BorsukUlamOQ03OQ01.lean (50-100 lines, product telescope + parity)",
+      "If Mathlib adds degree theory, derive no_retraction from borsuk_ulam_general",
+      "If Mathlib adds SDP infra, the brouwer_fixed_point from no_retraction via ray construction is algebraically feasible"
+    ]
   },
   "approaches": [],
   "tags": [
