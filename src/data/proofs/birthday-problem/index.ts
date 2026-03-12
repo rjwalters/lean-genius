@@ -26,7 +26,7 @@ export const birthdayProblemProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const birthdayProblemAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const birthdayProblemAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const birthdayProblemData: ProofData = {
   proof: birthdayProblemProof,

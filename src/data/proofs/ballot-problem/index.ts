@@ -27,7 +27,7 @@ export const ballotProblemProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const ballotProblemAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const ballotProblemAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const ballotProblemTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const ballotProblemData: ProofData = {

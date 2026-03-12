@@ -1,0 +1,37 @@
+[
+  {
+    "lineStart": 46,
+    "lineEnd": 58,
+    "type": "definition",
+    "content": "**CompactRiemannianSurface**:\n\nAn axiomatic structure encoding the data of a compact orientable Riemannian 2-manifold:\n- Euler characteristic $\\chi(M)$\n- Total Gaussian curvature $\\int_M K\\,dA$\n- Area $\\int_M dA > 0$\n- The Gauss-Bonnet axiom: $\\int_M K\\,dA = 2\\pi\\chi$\n\nThis axiomatization is necessary because Mathlib v4.26.0 lacks Riemannian metrics, Gaussian curvature, and integration on manifolds. The axiom captures the correct mathematical content.",
+    "relatedConcepts": ["Riemannian manifold", "Gaussian curvature", "Euler characteristic"]
+  },
+  {
+    "lineStart": 92,
+    "lineEnd": 102,
+    "type": "keyStep",
+    "content": "**Gauss-Bonnet Theorem**:\n\n$$\\int_M K\\,dA = 2\\pi\\chi(M)$$\n\nThis is the central result: the total Gaussian curvature of a closed surface equals $2\\pi$ times the Euler characteristic. The proof for embedded surfaces uses Stokes' theorem and the structure equations; Chern's intrinsic proof uses the Pfaffian of the curvature form.\n\nThe theorem implies total curvature is a *topological invariant*: changing the metric changes $K$ pointwise but not $\\int K\\,dA$.",
+    "relatedConcepts": ["Gauss-Bonnet theorem", "topological invariant", "total curvature"]
+  },
+  {
+    "lineStart": 189,
+    "lineEnd": 221,
+    "type": "insight",
+    "content": "**Curvature Determines Genus**:\n\nThe Gauss-Bonnet theorem gives a complete classification:\n- $\\int K\\,dA > 0 \\Rightarrow$ genus $0$ (sphere): only topology supporting positive total curvature\n- $\\int K\\,dA = 0 \\Rightarrow$ genus $1$ (torus): flat metrics exist (e.g., $\\mathbb{R}^2/\\mathbb{Z}^2$)\n- $\\int K\\,dA < 0 \\Rightarrow$ genus $\\geq 2$ (hyperbolic): admits constant negative curvature metrics\n\nThis is the foundation of the *uniformization theorem*: every closed surface admits a metric of constant curvature $+1$, $0$, or $-1$.",
+    "relatedConcepts": ["genus", "uniformization", "constant curvature", "classification of surfaces"]
+  },
+  {
+    "lineStart": 305,
+    "lineEnd": 330,
+    "type": "technique",
+    "content": "**Smooth vs Discrete Gauss-Bonnet**:\n\nThe discrete version (EulerPolyhedralOQ02.lean) uses angular deficiency $\\delta(v) = 2\\pi - \\sum \\theta$, the smooth version uses Gaussian curvature $K$. Both give the same answer: total curvature $= 2\\pi\\chi$.\n\nAs a triangulation is refined (mesh $\\to 0$), the angular deficiency at vertices converges to the Gaussian curvature at the corresponding point: $\\sum_v \\delta(v) \\to \\int_M K\\,dA$. This is the discrete-to-smooth limit that justifies finite element methods in geometric computing.",
+    "relatedConcepts": ["discrete Gauss-Bonnet", "angular deficiency", "mesh refinement", "convergence"]
+  },
+  {
+    "lineStart": 332,
+    "lineEnd": 348,
+    "type": "insight",
+    "content": "**Chern-Gauss-Bonnet Generalization**:\n\nFor compact oriented $2n$-manifolds without boundary:\n$$\\int_M \\text{Pf}(\\Omega) = (2\\pi)^n \\cdot \\chi(M)$$\n\nwhere $\\text{Pf}(\\Omega)$ is the Pfaffian of the curvature $2$-form. For $n=1$ (surfaces), $\\text{Pf}(\\Omega) = K\\,dA/(2\\pi)$, recovering the classical theorem. This generalization connects to the Atiyah-Singer index theorem.",
+    "relatedConcepts": ["Chern-Gauss-Bonnet", "Pfaffian", "curvature form", "Atiyah-Singer"]
+  }
+]

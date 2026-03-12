@@ -27,7 +27,7 @@ export const pVsNpProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const pVsNpAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const pVsNpAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const pVsNpTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const pVsNpData: ProofData = {

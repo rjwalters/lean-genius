@@ -27,7 +27,7 @@ export const abelRuffiniProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const abelRuffiniAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const abelRuffiniAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const abelRuffiniTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const abelRuffiniData: ProofData = {

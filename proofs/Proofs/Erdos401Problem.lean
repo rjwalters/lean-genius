@@ -256,9 +256,12 @@ theorem erdos_401_complete :
 -- where s_p(n) is the digit sum of n in base p.
 
 /-- Legendre's formula: (p-1) · ν_p(n!) = n - s_p(n).
-    This is the well-known formula relating factorial valuation to digit sums. -/
-axiom legendre_formula (p n : ℕ) (hp : Nat.Prime p) :
-  ∃ v : ℕ, p ^ v ∣ n.factorial ∧ (p - 1) * v = n - (Nat.digits p n).sum
+    Proved from Mathlib's `Nat.Prime.sub_one_mul_multiplicity_factorial`. -/
+theorem legendre_formula (p n : ℕ) (hp : Nat.Prime p) :
+    ∃ v : ℕ, p ^ v ∣ n.factorial ∧ (p - 1) * v = n - (Nat.digits p n).sum := by
+  exact ⟨multiplicity p n.factorial,
+    pow_multiplicity_dvd p n.factorial,
+    hp.sub_one_mul_multiplicity_factorial⟩
 
 /-- p-adic valuation bound in divisibility form:
     There exists v with p^v | n! and v ≤ n/(p-1). -/
@@ -303,9 +306,9 @@ def g₂_modified (n r : ℕ) : ℝ :=
 -- 3. Same construction works for Problem #729
 -- 4. The "for all large n" version is FALSE (Sothanaphan)
 --
--- Axiom count: 4 (erdos_graham_baseline, barreto_leeham_401,
---                  sothanaphan_counterexample, legendre_formula)
--- Proved theorems: 18
+-- Axiom count: 3 (erdos_graham_baseline, barreto_leeham_401,
+--                  sothanaphan_counterexample)
+-- Proved theorems: 19 (legendre_formula now proved from Mathlib)
 
 end Erdos401
 

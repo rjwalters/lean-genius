@@ -26,7 +26,7 @@ export const knightsTourObliqueProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const knightsTourObliqueAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const knightsTourObliqueAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const knightsTourObliqueData: ProofData = {
   proof: knightsTourObliqueProof,

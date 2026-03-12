@@ -27,7 +27,7 @@ export const fairGamesTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const fairGamesTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const fairGamesTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const fairGamesTheoremTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const fairGamesTheoremData: ProofData = {

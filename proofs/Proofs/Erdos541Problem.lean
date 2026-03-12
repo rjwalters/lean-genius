@@ -53,20 +53,6 @@ The intuition: if there are 3 or more distinct values, one can construct
 zero-sum subsets of different sizes by mixing elements appropriately.
 -/
 
-/-- **Graham's Conjecture** (Erdős Problem #541)
-
-If a sequence of p residues modulo p has the property that all nonempty
-zero-sum subsets have the same cardinality, then at most 2 distinct
-residues appear in the sequence.
-
-This was first posed by Graham, proved for large p by Erdős-Szemerédi (1976),
-and fully resolved by Gao-Hamidoune-Wang (2010). -/
-theorem graham_conjecture (p : ℕ) [hp : Fact p.Prime] (a : Fin p → ZMod p)
-    (h : HasSomeUniqueZeroSumLength p a) : distinctCount p a ≤ 2 := by
-  -- The full proof uses combinatorial arguments about zero-sum sequences
-  -- and was resolved by Gao, Hamidoune, and Wang in 2010
-  sorry
-
 /-
 ## Special Cases and Variants
 -/
@@ -81,6 +67,20 @@ axiom erdos_szemeredi_large_primes :
 This is the most general form of Graham's conjecture. -/
 axiom gao_hamidoune_wang (n : ℕ) (a : Fin n → ZMod n)
     (h : HasSomeUniqueZeroSumLength n a) : distinctCount n a ≤ 2
+
+/-- **Graham's Conjecture** (Erdős Problem #541)
+
+If a sequence of p residues modulo p has the property that all nonempty
+zero-sum subsets have the same cardinality, then at most 2 distinct
+residues appear in the sequence.
+
+This was first posed by Graham, proved for large p by Erdős-Szemerédi (1976),
+and fully resolved by Gao-Hamidoune-Wang (2010).
+
+Follows directly from the general result of Gao-Hamidoune-Wang. -/
+theorem graham_conjecture (p : ℕ) [hp : Fact p.Prime] (a : Fin p → ZMod p)
+    (h : HasSomeUniqueZeroSumLength p a) : distinctCount p a ≤ 2 :=
+  gao_hamidoune_wang p a h
 
 /-
 ## Examples

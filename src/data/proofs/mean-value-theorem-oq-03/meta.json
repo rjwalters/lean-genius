@@ -11,9 +11,9 @@
     "proofRepoPath": "Proofs/MeanValueTheoremOQ03.lean",
     "badge": "mathlib",
     "sorries": 0,
-    "axioms": 2,
-    "theorems": 9,
-    "lines": 351,
+    "axioms": 0,
+    "theorems": 17,
+    "lines": 440,
     "mathlibDependencies": [
       {"theorem": "norm_image_sub_le_of_norm_deriv_le_segment'", "description": "Vector-valued mean value inequality", "module": "Mathlib.Analysis.Calculus.MeanValue"},
       {"theorem": "exists_deriv_eq_slope", "description": "Scalar MVT (Lagrange)", "module": "Mathlib.Analysis.Calculus.MeanValue"},
@@ -27,7 +27,9 @@
       "Contraction-type bounds from derivative bounds",
       "Displacement bound theorem",
       "ODE difference bound using MVT on f - g",
-      "Banach space mean value inequality (axiomatized for f : E → F)"
+      "Banach space mean value inequality (proved from Mathlib)",
+      "Strict monotonicity from positive derivative (proved via scalar MVT)",
+      "Antiderivative uniqueness: same derivative implies constant difference (proved via vector MVT)"
     ],
     "dateAdded": "03/06/26",
     "parentProof": "mean-value-theorem"

@@ -26,7 +26,7 @@ export const chineseRemainderConstructiveProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const chineseRemainderConstructiveAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const chineseRemainderConstructiveAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const chineseRemainderConstructiveData: ProofData = {
   proof: chineseRemainderConstructiveProof,

@@ -1,0 +1,68 @@
+{
+  "slug": "randomized-maxcut-oq-01",
+  "title": "Goemans-Williamson 0.878-approximation via SDP",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-03-11T21:20:33.095Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Formalized GW 0.878-approximation with axiomatized SDP. Main theorem (α_GW·MaxCut ≤ E[cut]) fully proved. 8 axioms for SDP infrastructure.",
+    "builtItems": [
+      "proofs/Proofs/GoemansWilliamsonMaxCut.lean - Complete formalization with axiomatized SDP",
+      "src/data/proofs/randomized-maxcut-oq-01/ - Gallery entry with meta, annotations, overview"
+    ],
+    "insights": [
+      "The GW result reduces to three components: SDP relaxation (upper bound on MaxCut), hyperplane rounding (converts SDP solution to cut), and the arccos inequality (bounds rounding probability)",
+      "The core algebraic chain α_GW·MaxCut ≤ α_GW·SDP ≤ E[cut] is fully provable once SDP infrastructure is axiomatized",
+      "α_GW ≈ 0.878 is the minimum of (2/π)·θ/(1-cos θ) over θ ∈ (0,π], achieved at θ* satisfying θ*sin(θ*)+cos(θ*)-1=0",
+      "Conservative rational bound 878/1000 < true α_GW ensures all inequalities remain valid",
+      "Full formalization would require SDP theory and measure theory on spheres (not in Mathlib)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Formalize SDP relaxation theory in Mathlib to remove axioms",
+      "Prove arccos inequality using Lean calculus library",
+      "Connect to weighted MaxCut and MAX-2SAT extensions"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "graph-theory",
+    "optimization",
+    "algorithms"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-11T22:52:43.406Z",
+  "lastUpdate": "2026-03-11T22:52:43.406Z",
+  "significance": 8,
+  "tractability": 5
+}

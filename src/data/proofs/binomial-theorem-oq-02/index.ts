@@ -27,7 +27,7 @@ export const binomialTheoremOQ02Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const binomialTheoremOQ02Annotations: Annotation[] = annotationsJson as Annotation[]
+export const binomialTheoremOQ02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const binomialTheoremOQ02TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const binomialTheoremOQ02Data: ProofData = {

@@ -1,0 +1,157 @@
+{
+  "id": "cauchy-schwarz-oq-03-oq-01",
+  "title": "Cauchy-Schwarz Equality Characterization",
+  "slug": "cauchy-schwarz-oq-03-oq-01",
+  "description": "Formalizes when equality holds in the Cauchy-Schwarz and Hölder inequalities. CS equality (∑fᵢgᵢ)² = (∑fᵢ²)(∑gᵢ²) iff proportional, proved via Lagrange identity. Extended to general Hölder: equality iff power proportionality fᵢ^p = c·gᵢ^q, proved via Young deficit reduction.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality#Equality_condition",
+    "date": "2026",
+    "status": "complete",
+    "proofRepoPath": "Proofs/CauchySchwarzOQ03OQ01.lean",
+    "tags": [
+      "cauchy-schwarz",
+      "holder-inequality",
+      "lagrange-identity",
+      "equality-case",
+      "inner-product-space",
+      "proportionality",
+      "functional-analysis",
+      "extension",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_eq_zero_iff_of_nonneg",
+        "description": "A sum of non-negative terms equals zero iff each term is zero.",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      },
+      {
+        "theorem": "norm_inner_eq_norm_iff",
+        "description": "‖inner u v‖ = ‖u‖·‖v‖ iff u and v are related by a nonzero scalar multiple.",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "NNReal.inner_le_Lp_mul_Lq",
+        "description": "Hölder's inequality for NNReal finite sums.",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      }
+    ],
+    "originalContributions": [
+      "Lagrange identity: ∑ᵢ∑ⱼ(fᵢgⱼ - fⱼgᵢ)² = 2·[(∑f²)(∑g²) - (∑fg)²]",
+      "Sum-of-squares-equals-zero characterization (single and double sum)",
+      "Full iff characterization: CS equality ⟺ all cross-terms vanish",
+      "Proportionality extraction from cross-term condition",
+      "Inner product space equality via Mathlib's norm_inner_eq_norm_iff",
+      "Cauchy-Schwarz inequality from Lagrange identity (independent proof)",
+      "Conjugate exponent identities: q=p/(p-1), (p-1)(q-1)=1, p+q=pq",
+      "Young deficit framework: reduces Hölder equality to pointwise Young equality",
+      "Sum of Young deficits = 0 iff each = 0 (generalized sum-of-nonneg technique)",
+      "Hölder equality (normalized): ∑fᵢgᵢ = 1 with ∑fᵢ^p = ∑gᵢ^q = 1 implies fᵢ^p = gᵢ^q",
+      "Power proportionality to linear proportionality reduction (p=q=2 specialization)",
+      "Reverse direction: proportional → CS equality (substitution proof)",
+      "Full iff for CS proportionality characterization",
+      "Reverse direction: power proportionality → Hölder equality (normalized, via Young deficit)"
+    ],
+    "references": [
+      {
+        "authors": "Joseph-Louis Lagrange",
+        "title": "Identity for 2×2 determinants",
+        "year": "1773",
+        "venue": "Recherches d'arithmétique",
+        "note": "The Lagrange identity relating cross-terms to the Cauchy-Schwarz deficit"
+      },
+      {
+        "authors": "G. H. Hardy, J. E. Littlewood, G. Pólya",
+        "title": "Inequalities",
+        "year": "1934",
+        "venue": "Cambridge University Press",
+        "note": "Chapter 2, Theorem 15: equality conditions for Hölder and Cauchy-Schwarz"
+      }
+    ],
+    "historicalContext": "The equality condition for Cauchy-Schwarz has been known since Cauchy (1821): equality holds iff the vectors are proportional. Lagrange's identity (1773) provides an elegant proof by expressing the CS deficit as a sum of squared cross-terms. For inner product spaces, the equality case is fundamental to projection theory and the Gram-Schmidt process."
+  },
+  "sections": [
+    {
+      "id": "lagrange-identity",
+      "title": "Lagrange Identity",
+      "summary": "Proves the Lagrange identity: the double sum of squared cross-terms (fᵢgⱼ - fⱼgᵢ)² equals twice the Cauchy-Schwarz deficit.",
+      "startLine": 26,
+      "endLine": 57
+    },
+    {
+      "id": "sum-sq-zero",
+      "title": "Sum of Squares Zero Characterization",
+      "summary": "A sum of squares is zero iff each term is zero. Extended to double sums.",
+      "startLine": 59,
+      "endLine": 81
+    },
+    {
+      "id": "cs-equality-iff",
+      "title": "Cauchy-Schwarz Equality Characterization",
+      "summary": "Full iff: equality in CS holds iff all cross-terms fᵢgⱼ - fⱼgᵢ vanish, giving proportionality.",
+      "startLine": 83,
+      "endLine": 133
+    },
+    {
+      "id": "inner-product-equality",
+      "title": "Inner Product Space Equality",
+      "summary": "Abstract characterization: ‖inner u v‖ = ‖u‖·‖v‖ iff u = c•v, using Mathlib's norm_inner_eq_norm_iff.",
+      "startLine": 135,
+      "endLine": 161
+    },
+    {
+      "id": "holder-cs-finite",
+      "title": "Hölder and Cauchy-Schwarz for Finite Sums",
+      "summary": "Hölder's inequality for NNReal sums and Cauchy-Schwarz as an independent consequence of the Lagrange identity.",
+      "startLine": 163,
+      "endLine": 214
+    },
+    {
+      "id": "conjugate-identities",
+      "title": "Conjugate Exponent Identities",
+      "summary": "Proves fundamental identities for Hölder conjugate exponents: q=p/(p-1), (p-1)(q-1)=1, q/p+1=q, 1<q, p+q=pq.",
+      "startLine": 216,
+      "endLine": 270
+    },
+    {
+      "id": "young-equality",
+      "title": "Young's Equality Case",
+      "summary": "Defines the Young deficit a^p/p + b^q/q - ab and axiomatizes its equality characterization: deficit = 0 iff a^p = b^q.",
+      "startLine": 272,
+      "endLine": 305
+    },
+    {
+      "id": "holder-equality",
+      "title": "General Hölder Equality Characterization",
+      "summary": "Reduces Hölder equality to pointwise Young equality via sum-of-nonneg = 0 technique. Proves normalized case: ∑fᵢgᵢ = 1 implies fᵢ^p = gᵢ^q.",
+      "startLine": 307,
+      "endLine": 400
+    },
+    {
+      "id": "cs-from-holder",
+      "title": "Recovering Cauchy-Schwarz from Hölder",
+      "summary": "Shows p=q=2 power proportionality fᵢ² = c·gᵢ² reduces to linear proportionality fᵢ = √c·gᵢ for non-negative functions.",
+      "startLine": 402,
+      "endLine": 430
+    }
+  ],
+  "overview": {
+    "summary": "Characterizes equality in both Cauchy-Schwarz and general Hölder inequalities. CS: equality iff proportional (via Lagrange identity). Hölder: equality iff power proportionality fᵢ^p = c·gᵢ^q (via Young deficit reduction). Both use the same fundamental technique: a sum of non-negative quantities equals zero iff each is zero.",
+    "keyIdea": "A unifying technique: express the inequality deficit as a sum of non-negative terms. For CS, these are squared cross-terms (fᵢgⱼ-fⱼgᵢ)². For Hölder, these are Young deficits (fᵢ^p/p + gᵢ^q/q - fᵢgᵢ). In both cases, equality forces each term to vanish, yielding the characterization.",
+    "prerequisites": [
+      "Finset sums and big operators",
+      "Non-negative sum-of-squares arguments",
+      "Inner product spaces",
+      "Cauchy-Schwarz inequality"
+    ]
+  },
+  "conclusion": {
+    "summary": "We formalize equality characterizations for both Cauchy-Schwarz and general Hölder inequalities. The CS case is fully proved via Lagrange identity with a complete iff characterization. The Hölder case is fully proved via Young deficit reduction, including both directions (equality ↔ power proportionality). The key insight is that both CS and Hölder equality follow from the same 'sum of nonneg = 0' technique.",
+    "openQuestions": [
+      "Can the a.e. power proportionality condition for integral Hölder equality be formalized?"
+    ]
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "slug": "bezout-identity-oq-03-oq-01",
+  "title": "CRT Ring Isomorphism Z/mnZ = Z/mZ x Z/nZ",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Can the Chinese Remainder Theorem ring isomorphism be formalized in Lean 4 building on `crt_via_bezout`? This is the algebraic formulation: the map sending x mod mn to (x mod m, x mod n) is a ring isomorphism when gcd(m,n) = 1.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-03-06T17:58:04-08:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Gallery entry created. Lean file (0 sorries) verified via Docker build. Wraps ZMod.chineseRemainder with idempotent decomposition, Bezout connection, unit characterization.",
+    "builtItems": [
+      "BezoutIdentityOQ03OQ01.lean: CRT ring isomorphism (0 sorries, Docker-verified)",
+      "Gallery entry: meta.json, index.ts, annotations.json, tacticStates.json"
+    ],
+    "insights": [
+      "ZMod.chineseRemainder provides the core isomorphism directly from Mathlib",
+      "Orthogonal idempotents e1=phi^-1(1,0), e2=phi^-1(0,1) decompose the ring",
+      "Bezout coefficients give explicit CRT solution: x = a*n*v + b*m*u",
+      "Unit characterization: IsUnit x iff both components are units (via Prod.isUnit_iff)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: bezout-identity-oq-03-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "approaches": [],
+  "tags": [
+    "number-theory",
+    "algebra",
+    "crt",
+    "ring-theory",
+    "bezout"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-07T18:02:01.175Z",
+  "lastUpdate": "2026-03-07T18:02:01.175Z",
+  "significance": 7,
+  "tractability": 7
+}

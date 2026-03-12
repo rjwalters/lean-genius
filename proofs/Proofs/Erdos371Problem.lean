@@ -25,49 +25,60 @@
   Tags: number-theory, prime-factors, density, analytic-number-theory
 -/
 
-import Mathlib.NumberTheory.Primorial
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Topology.Instances.Real
-import Mathlib.Tactic
+import Mathlib
 
 namespace Erdos371
 
-open Nat Real Filter Finset
+open scoped Classical
+open Nat Real Filter Finset Topology
 
 /- ## Part I: Greatest Prime Factor -/
 
 /-- The greatest prime factor of n, or 0 if n ≤ 1. -/
 noncomputable def P (n : ℕ) : ℕ :=
   if h : n ≤ 1 then 0
-  else (n.primeFactors).max' (Nat.primeFactors_nonempty (Nat.one_lt_iff_ne_one.mpr
-    (fun hn => h (le_of_eq hn))))
+  else (n.primeFactors).max' (by
+    rw [Finset.nonempty_iff_ne_empty]
+    intro he
+    have h1 : 1 < n := by omega
+    have ⟨p, hp, hpd⟩ := Nat.exists_prime_and_dvd (by omega : n ≠ 1)
+    exact absurd (Nat.mem_primeFactors.mpr ⟨hp, hpd, by omega⟩) (he ▸ Finset.not_mem_empty p))
 
 /-- P(n) divides n for n > 1. -/
 theorem P_dvd (n : ℕ) (hn : n > 1) : P n ∣ n := by
-  sorry
+  have h : ¬(n ≤ 1) := by omega
+  simp only [P, dif_neg h]
+  exact (Nat.mem_primeFactors.mp (Finset.max'_mem _ _)).2.1
 
 /-- P(n) is prime for n > 1. -/
 theorem P_prime (n : ℕ) (hn : n > 1) : (P n).Prime := by
-  sorry
+  have h : ¬(n ≤ 1) := by omega
+  simp only [P, dif_neg h]
+  exact (Nat.mem_primeFactors.mp (Finset.max'_mem _ _)).1
 
 /-- P(n) is the maximum prime dividing n. -/
 theorem P_is_max (n : ℕ) (hn : n > 1) (p : ℕ) (hp : p.Prime) (hdvd : p ∣ n) :
     p ≤ P n := by
-  sorry
+  have h : ¬(n ≤ 1) := by omega
+  simp only [P, dif_neg h]
+  exact Finset.le_max' _ _ (Nat.mem_primeFactors.mpr ⟨hp, hdvd, by omega⟩)
 
 /-- P(p) = p for prime p. -/
 theorem P_prime_eq (p : ℕ) (hp : p.Prime) : P p = p := by
-  sorry
+  apply le_antisymm
+  · exact Nat.le_of_dvd hp.pos (P_dvd p hp.one_lt)
+  · exact P_is_max p hp.one_lt p hp (dvd_refl p)
 
 /-- P(n) ≤ n for all n. -/
 theorem P_le (n : ℕ) : P n ≤ n := by
-  sorry
+  by_cases h : n ≤ 1
+  · simp [P, h]
+  · exact Nat.le_of_dvd (by omega) (P_dvd n (by omega))
 
 /- ## Part II: Natural Density -/
 
 /-- The counting function for a set of naturals. -/
-def countingFunction (S : Set ℕ) (x : ℕ) : ℕ :=
+noncomputable def countingFunction (S : Set ℕ) (x : ℕ) : ℕ :=
   (Finset.range x).filter (· ∈ S) |>.card
 
 /-- A set has natural density d if #{n < x : n ∈ S}/x → d. -/
@@ -247,31 +258,55 @@ theorem theoretical_density_zero :
 /- ## Part XII: Small Examples -/
 
 /-- P(2) = 2. -/
-theorem P_2 : P 2 = 2 := by sorry
+theorem P_2 : P 2 = 2 := P_prime_eq 2 (by norm_num)
 
 /-- P(3) = 3. -/
-theorem P_3 : P 3 = 3 := by sorry
+theorem P_3 : P 3 = 3 := P_prime_eq 3 (by norm_num)
 
 /-- P(4) = 2. -/
-theorem P_4 : P 4 = 2 := by sorry
+theorem P_4 : P 4 = 2 := by
+  have hp := P_prime 4 (by omega)
+  have hdvd := P_dvd 4 (by omega)
+  have h4 : (4 : ℕ) = 2 ^ 2 := by norm_num
+  rw [h4] at hdvd
+  have hdvd2 : P 4 ∣ 2 := hp.dvd_of_dvd_pow hdvd
+  have hle : P 4 ≤ 2 := Nat.le_of_dvd (by omega) hdvd2
+  have hge : P 4 ≥ 2 := hp.two_le
+  omega
 
 /-- P(5) = 5. -/
-theorem P_5 : P 5 = 5 := by sorry
+theorem P_5 : P 5 = 5 := P_prime_eq 5 (by norm_num)
 
 /-- P(6) = 3. -/
-theorem P_6 : P 6 = 3 := by sorry
+theorem P_6 : P 6 = 3 := by
+  have hp := P_prime 6 (by omega)
+  have hdvd := P_dvd 6 (by omega)
+  apply le_antisymm
+  · -- P(6) ≤ 3: P(6) is prime and divides 6 = 2 * 3
+    have h6 : (6 : ℕ) = 2 * 3 := by norm_num
+    rw [h6] at hdvd
+    rcases hp.dvd_mul.mp hdvd with h2 | h3
+    · exact le_trans (Nat.le_of_dvd (by omega) h2) (by omega)
+    · exact Nat.le_of_dvd (by omega) h3
+  · exact P_is_max 6 (by omega) 3 (by norm_num) (by norm_num)
 
 /-- 2 ∈ SetPIncreasing since P(2) = 2 < P(3) = 3. -/
 theorem two_in_set : 2 ∈ SetPIncreasing := by
-  sorry
+  constructor
+  · omega
+  · rw [P_2, P_3]; omega
 
 /-- 4 ∈ SetPIncreasing since P(4) = 2 < P(5) = 5. -/
 theorem four_in_set : 4 ∈ SetPIncreasing := by
-  sorry
+  constructor
+  · omega
+  · rw [P_4, P_5]; omega
 
 /-- 5 ∈ SetPDecreasing since P(5) = 5 > P(6) = 3. -/
 theorem five_in_complement : 5 ∈ SetPDecreasing := by
-  sorry
+  constructor
+  · omega
+  · rw [P_5, P_6]; omega
 
 /- ## Part XIII: Related Problems -/
 
@@ -293,7 +328,10 @@ def isOEIS_A070089 (n : ℕ) : Prop := n ∈ SetPIncreasing
 theorem even_often_in_set (n : ℕ) (hn : n ≥ 2) (heven : Even n)
     (hodd_next : Odd (n + 1)) (hn1_prime : (n + 1).Prime) :
     n ∈ SetPIncreasing := by
-  sorry
+  refine ⟨hn, ?_⟩
+  calc P n ≤ n := P_le n
+    _ < n + 1 := by omega
+    _ = P (n + 1) := (P_prime_eq (n + 1) hn1_prime).symm
 
 end Erdos371
 

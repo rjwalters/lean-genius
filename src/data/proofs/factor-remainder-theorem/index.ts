@@ -26,7 +26,7 @@ export const factorRemainderTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const factorRemainderTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const factorRemainderTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const factorRemainderTheoremData: ProofData = {
   proof: factorRemainderTheoremProof,

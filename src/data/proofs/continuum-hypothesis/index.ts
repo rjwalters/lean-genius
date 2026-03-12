@@ -27,7 +27,7 @@ export const continuumHypothesisProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const continuumHypothesisAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const continuumHypothesisAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const continuumHypothesisTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const continuumHypothesisData: ProofData = {

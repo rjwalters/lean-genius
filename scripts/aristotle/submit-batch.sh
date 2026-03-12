@@ -13,7 +13,7 @@
 #   ARISTOTLE_TARGET  - Target number of active jobs (default 10)
 #
 # Submission order: Tier 1 companion files (*Aristotle.lean) first,
-# then Tier 2 regular files (*Problem.lean) to fill remaining slots.
+# then Tier 2 research output files to fill remaining slots.
 #
 
 set -euo pipefail
@@ -52,7 +52,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --dry-run    Show what would be submitted"
             echo ""
             echo "Submission order: Tier 1 companion files (*Aristotle.lean) first,"
-            echo "then Tier 2 regular files (*Problem.lean) to fill remaining slots."
+            echo "then Tier 2 research output files to fill remaining slots."
             exit 0
             ;;
         *) echo "Unknown option: $1" >&2; exit 1 ;;

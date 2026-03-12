@@ -26,7 +26,7 @@ export const pythagoreanTriplesProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const pythagoreanTriplesAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const pythagoreanTriplesAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const pythagoreanTriplesData: ProofData = {
   proof: pythagoreanTriplesProof,

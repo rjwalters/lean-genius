@@ -27,7 +27,7 @@ export const poincareConjectureProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const poincareConjectureAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const poincareConjectureAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const poincareConjectureTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const poincareConjectureData: ProofData = {

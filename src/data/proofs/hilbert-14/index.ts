@@ -27,7 +27,7 @@ export const hilbert14Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const hilbert14Annotations: Annotation[] = annotationsJson as Annotation[]
+export const hilbert14Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const hilbert14TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const hilbert14Data: ProofData = {

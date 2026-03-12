@@ -26,7 +26,7 @@ export const wilsonsTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const wilsonsTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const wilsonsTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const wilsonsTheoremData: ProofData = {
   proof: wilsonsTheoremProof,

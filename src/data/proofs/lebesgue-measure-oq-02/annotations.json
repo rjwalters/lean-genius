@@ -1,0 +1,38 @@
+[
+  {
+    "lineStart": 29,
+    "lineEnd": 43,
+    "type": "definition",
+    "content": "**Hölder Conjugate Exponents**:\n\nTwo exponents $p, q > 1$ are Hölder conjugate if $\\frac{1}{p} + \\frac{1}{q} = 1$, equivalently $q = \\frac{p}{p-1}$. The most important case is $p = q = 2$ (Cauchy-Schwarz). The pair $(1, \\infty)$ is a limiting case.\n\nIn Mathlib, `Real.HolderConjugate p q` encodes the three conditions: $1 < p$, $1 < q$, and $p^{-1} + q^{-1} = 1$.",
+    "relatedConcepts": ["conjugate exponents", "dual exponents", "Lp-Lq duality"]
+  },
+  {
+    "lineStart": 55,
+    "lineEnd": 63,
+    "type": "technique",
+    "content": "**Young's Inequality**:\n\nFor conjugate $p, q > 1$ and non-negative $a, b$:\n$$ab \\leq \\frac{a^p}{p} + \\frac{b^q}{q}$$\n\nThis follows from the concavity of $\\log$: since $\\log$ is concave, $\\frac{1}{p}\\log(a^p) + \\frac{1}{q}\\log(b^q) \\leq \\log\\left(\\frac{a^p}{p} + \\frac{b^q}{q}\\right)$, and the left side equals $\\log(ab)$.\n\nYoung's inequality is the pointwise engine of Hölder: normalize $f, g$ to unit Lp/Lq norms, apply Young to each point, then integrate.",
+    "relatedConcepts": ["Young's inequality", "weighted AM-GM", "concavity of log"],
+    "mathContext": "Young's inequality is the pointwise foundation of Hölder's inequality"
+  },
+  {
+    "lineStart": 85,
+    "lineEnd": 93,
+    "type": "keyStep",
+    "content": "**Hölder's Inequality (Integral Form)**:\n\nFor Hölder conjugate $p, q$ and non-negative measurable $f, g$:\n$$\\int f \\cdot g \\, d\\mu \\leq \\left(\\int f^p \\, d\\mu\\right)^{1/p} \\cdot \\left(\\int g^q \\, d\\mu\\right)^{1/q}$$\n\nThe proof normalizes: let $F = f / \\|f\\|_p$ and $G = g / \\|g\\|_q$. Then $\\|F\\|_p = \\|G\\|_q = 1$. Apply Young pointwise: $F(x)G(x) \\leq F(x)^p/p + G(x)^q/q$. Integrate: $\\int FG \\leq 1/p + 1/q = 1$. Scale back to get the full inequality.\n\nThis is `ENNReal.lintegral_mul_le_Lp_mul_Lq` in Mathlib.",
+    "relatedConcepts": ["Hölder inequality", "Lp norm", "Lebesgue integral", "normalization trick"]
+  },
+  {
+    "lineStart": 116,
+    "lineEnd": 124,
+    "type": "insight",
+    "content": "**Cauchy-Schwarz from Hölder**:\n\nSetting $p = q = 2$ (which satisfies $1/2 + 1/2 = 1$) in Hölder gives:\n$$\\int f \\cdot g \\, d\\mu \\leq \\left(\\int f^2 \\, d\\mu\\right)^{1/2} \\cdot \\left(\\int g^2 \\, d\\mu\\right)^{1/2}$$\n\nThis is the integral Cauchy-Schwarz inequality, which makes $L^2(\\mu)$ into an inner product space via $\\langle f, g \\rangle = \\int fg \\, d\\mu$. It is the foundation of Hilbert space theory and Fourier analysis.",
+    "relatedConcepts": ["Cauchy-Schwarz", "L2 space", "inner product", "Hilbert space"]
+  },
+  {
+    "lineStart": 140,
+    "lineEnd": 152,
+    "type": "insight",
+    "content": "**Minkowski's Inequality (Lp Triangle Inequality)**:\n\nFor $p \\geq 1$ and $f, g \\in L^p$:\n$$\\|f + g\\|_p \\leq \\|f\\|_p + \\|g\\|_p$$\n\nThis is the triangle inequality that makes $L^p$ a normed space (and, with completeness, a Banach space). The proof for $p > 1$ cleverly uses Hölder:\n$$\\|f+g\\|_p^p = \\int |f+g|^p \\leq \\int |f+g|^{p-1}|f| + \\int |f+g|^{p-1}|g|$$\nApply Hölder to each term with exponents $p$ and $q = p/(p-1)$, then divide by $\\|f+g\\|_p^{p/q}$.\n\nIn Mathlib, this is captured by `norm_add_le` on the `Lp E p μ` type.",
+    "relatedConcepts": ["Minkowski inequality", "triangle inequality", "Banach space", "Lp space"]
+  }
+]

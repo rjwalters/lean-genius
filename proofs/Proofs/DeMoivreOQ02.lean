@@ -1,6 +1,4 @@
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev
-import Mathlib.RingTheory.Polynomial.Chebyshev
-import Mathlib.Tactic
+import Mathlib
 
 /-
 # De Moivre OQ-02: Chebyshev Polynomial Properties via De Moivre

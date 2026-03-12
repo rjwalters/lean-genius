@@ -27,7 +27,7 @@ export const isoperimetricTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const isoperimetricTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const isoperimetricTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const isoperimetricTheoremTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const isoperimetricTheoremData: ProofData = {

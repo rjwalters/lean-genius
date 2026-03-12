@@ -26,7 +26,7 @@ export const triangleAngleSumProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const triangleAngleSumAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const triangleAngleSumAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const triangleAngleSumData: ProofData = {
   proof: triangleAngleSumProof,

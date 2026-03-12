@@ -27,7 +27,7 @@ export const inverseGaloisProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const inverseGaloisAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const inverseGaloisAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const inverseGaloisTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const inverseGaloisData: ProofData = {

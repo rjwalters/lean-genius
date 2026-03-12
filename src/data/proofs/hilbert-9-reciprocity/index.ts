@@ -26,7 +26,7 @@ export const hilbert9ReciprocityProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const hilbert9ReciprocityAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const hilbert9ReciprocityAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const hilbert9ReciprocityData: ProofData = {
   proof: hilbert9ReciprocityProof,

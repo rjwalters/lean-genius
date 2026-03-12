@@ -26,7 +26,7 @@ export const primitiveRootsProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const primitiveRootsAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const primitiveRootsAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const primitiveRootsData: ProofData = {
   proof: primitiveRootsProof,

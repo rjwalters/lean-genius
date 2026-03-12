@@ -27,7 +27,7 @@ export const primeReciprocalDivergenceProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const primeReciprocalDivergenceAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const primeReciprocalDivergenceAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const primeReciprocalDivergenceTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const primeReciprocalDivergenceData: ProofData = {

@@ -27,7 +27,7 @@ export const picksTheoremOQ03Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const picksTheoremOQ03Annotations: Annotation[] = annotationsJson as Annotation[]
+export const picksTheoremOQ03Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const picksTheoremOQ03TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const picksTheoremOQ03Data: ProofData = {

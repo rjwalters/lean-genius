@@ -27,7 +27,7 @@ export const cantorsTheoremOQ01Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const cantorsTheoremOQ01Annotations: Annotation[] = annotationsJson as Annotation[]
+export const cantorsTheoremOQ01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const cantorsTheoremOQ01TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const cantorsTheoremOQ01Data: ProofData = {

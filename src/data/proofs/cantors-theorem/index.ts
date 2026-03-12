@@ -26,7 +26,7 @@ export const cantorsTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const cantorsTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const cantorsTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const cantorsTheoremData: ProofData = {
   proof: cantorsTheoremProof,

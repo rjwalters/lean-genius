@@ -27,7 +27,7 @@ export const sumOfKthPowersProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const sumOfKthPowersAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const sumOfKthPowersAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const sumOfKthPowersTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const sumOfKthPowersData: ProofData = {

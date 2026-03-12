@@ -1,0 +1,181 @@
+{
+  "id": "borsuk-ulam-oq-03-oq-01",
+  "title": "Quantitative Borsuk-Ulam and Tucker's Lemma in 1D",
+  "slug": "borsuk-ulam-oq-03-oq-01",
+  "description": "Quantitative aspects of the constructive 1D Borsuk-Ulam theorem: Lipschitz bounds on antipodal deviation (2L), bisection convergence rates (2^{1-n}), oscillation bounds, coincidence set structure (closed, symmetric, compact with infimum), circle BU deviation bounds, perturbation stability (2epsilon), and Tucker's lemma in 1D with integer labels {+-1} proved via discrete IVT. Tucker 2D and n-D are axiomized. Tucker-BU equivalence is established in 1D.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Tucker%27s_lemma",
+    "date": "2026",
+    "status": "open-question",
+    "proofRepoPath": "Proofs/BorsukUlamOQ03OQ01.lean",
+    "tags": [
+      "topology",
+      "combinatorial-topology",
+      "tucker-lemma",
+      "borsuk-ulam",
+      "quantitative",
+      "lipschitz",
+      "bisection",
+      "coincidence-set",
+      "perturbation",
+      "research"
+    ],
+    "badge": "open",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "LipschitzWith.sub",
+        "description": "Lipschitz functions are closed under subtraction",
+        "module": "Mathlib.Topology.MetricSpace.Lipschitz"
+      },
+      {
+        "theorem": "tendsto_pow_atTop_nhds_zero_of_lt_one",
+        "description": "Geometric sequences (1/2)^n tend to zero",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Order"
+      },
+      {
+        "theorem": "intermediate_value_Icc",
+        "description": "Intermediate Value Theorem on closed intervals",
+        "module": "Mathlib.Topology.Order.IntermediateValue"
+      },
+      {
+        "theorem": "isCompact_Icc",
+        "description": "Closed bounded intervals are compact",
+        "module": "Mathlib.Topology.Order.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Lipschitz BU: antisymmetric difference of L-Lipschitz f is 2L-Lipschitz, bounding |f(x)-f(-x)| <= 2L",
+      "Bisection convergence: zero-finding converges at rate 2^{1-n}, proved via geometric series",
+      "Oscillation bounds: antipodal deviation bounded by oscillation of f on [-1,1]",
+      "Coincidence set structure: nonempty, compact, symmetric, with minimum element (leftmost antipodal pair)",
+      "Circle BU deviation: |f(p)-f(-p)| <= 2L for Lipschitz f on S^1 via max-norm distance bound",
+      "Tucker's 1D lemma with integer labels {+-1}: antipodal boundary implies complementary edge",
+      "Tucker 1D via discrete IVT: if f(0) != f(last), adjacent pair differs",
+      "Tucker-BU equivalence in 1D: both directions proved",
+      "Perturbation stability: epsilon-close functions have antisymmetric differences differing by at most 2*epsilon",
+      "Even/constant/linear coincidence characterization"
+    ],
+    "references": [
+      {
+        "authors": "A. W. Tucker",
+        "title": "Some topological properties of disk and sphere",
+        "year": "1946",
+        "venue": "Proceedings of the First Canadian Mathematical Congress",
+        "note": "Tucker's combinatorial lemma"
+      },
+      {
+        "authors": "K. Borsuk",
+        "title": "Drei Satze uber die n-dimensionale euklidische Sphare",
+        "year": "1933",
+        "venue": "Fundamenta Mathematicae",
+        "note": "Original Borsuk-Ulam theorem"
+      }
+    ],
+    "dateAdded": "2026-03-11",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "**Quantitative Borsuk-Ulam and Tucker's Lemma**\n\nThe parent file (borsuk-ulam-oq-03) proved the 1D Borsuk-Ulam theorem constructively via IVT. This extension explores the quantitative and computational aspects: How fast can we locate antipodal pairs? What bounds does Lipschitz continuity impose? How does the modulus of continuity control the deviation |f(x) - f(-x)|?\n\nTucker's lemma (1946) is the combinatorial analog of Borsuk-Ulam: any signed labeling of a triangulated interval with antipodal boundary condition (f(0) = -f(last)) must have a complementary edge (adjacent vertices with opposite labels). In 1D, Tucker's lemma and BU are equivalent.\n\nThe higher-dimensional generalization of Tucker's lemma (to triangulated disks B^n with labels from {+-1,...,+-n}) implies the full n-dimensional Borsuk-Ulam theorem. The 2D and n-D cases are axiomized here, awaiting simplicial complex infrastructure in Mathlib.",
+    "problemStatement": "**The Open Question**\n\nWhat are the quantitative aspects of the constructive 1D Borsuk-Ulam theorem? Can Tucker's lemma be generalized to higher dimensions in Lean?\n\n**Answer**\n\n- Lipschitz BU: For L-Lipschitz f, the antipodal deviation |f(x)-f(-x)| is at most 2L\n- Bisection rate: Antipodal pairs located within 2^{1-n} after n bisection steps\n- Tucker 1D: Fully proved via discrete IVT with integer labels\n- Tucker 2D/nD: Axiomized (requires simplicial complex infrastructure not yet in Mathlib)",
+    "proofStrategy": "**Strategy: Quantitative Analysis + Discrete IVT**\n\n**Lipschitz Bounds**: The antisymmetric difference g(x) = f(x) - f(-x) of an L-Lipschitz function is (L+L)-Lipschitz. Since dist(x, -x) <= 2 on [-1,1], we get |g(x)| <= 2L.\n\n**Bisection Rate**: After n bisection steps, the interval width is 2*(1/2)^n = 2/2^n, which tends to 0 geometrically.\n\n**Tucker 1D**: By contradiction via Fin.induction. If all adjacent pairs agree, the function is constant (equals f(0)). But f(0) = -f(last) and labels are in {+-1}, so f(0) != f(last), contradiction. Then case-split on the four possible {+-1} combinations to show the differing pair sums to 0.\n\n**Tucker 2D/nD**: Axiomized using an abstract graph-theoretic formulation with adjacency, antipodal involution, and label conditions.",
+    "keyInsights": [
+      "**Lipschitz controls deviation**: L-Lipschitz f gives |f(x)-f(-x)| <= 2L because dist(x,-x) <= 2 on [-1,1]",
+      "**Bisection is constructive**: The IVT proof extracts a concrete algorithm converging at rate 2^{-n}",
+      "**Coincidence set has structure**: For continuous f, the set {x | f(x)=f(-x)} is compact, symmetric, and has a minimum element",
+      "**Tucker = BU in 1D**: Both directions of the equivalence are proved, connecting combinatorial and topological perspectives",
+      "**Perturbation stability**: epsilon-perturbations of f shift the antisymmetric difference by at most 2*epsilon",
+      "**Circle BU is genuinely non-trivial**: Proved via IVT on g(theta) with g(pi)=-g(0), unlike interval BU which has trivial witness x=0"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lipschitz-bu",
+      "title": "Lipschitz Borsuk-Ulam Bounds",
+      "summary": "For L-Lipschitz f, the antisymmetric difference is 2L-Lipschitz and the maximum antipodal deviation |f(x)-f(-x)| on [-1,1] is at most 2L.",
+      "startLine": 41,
+      "endLine": 76
+    },
+    {
+      "id": "bisection",
+      "title": "Bisection Convergence Rate",
+      "summary": "The bisection method on [-1,1] locates zeros with geometric convergence: interval width 2*(1/2)^n -> 0.",
+      "startLine": 78,
+      "endLine": 114
+    },
+    {
+      "id": "oscillation",
+      "title": "Oscillation Bounds on Antipodal Deviation",
+      "summary": "For continuous f on [-1,1], the antipodal deviation is bounded by the oscillation (sup - inf) of f on [-1,1].",
+      "startLine": 116,
+      "endLine": 154
+    },
+    {
+      "id": "coincidence-set",
+      "title": "Coincidence Set Structure",
+      "summary": "The set {x in [-1,1] | f(x) = f(-x)} is symmetric, nonempty, compact, and has a minimum element.",
+      "startLine": 156,
+      "endLine": 199
+    },
+    {
+      "id": "circle-bounds",
+      "title": "Quantitative Circle BU",
+      "summary": "For L-Lipschitz f: R^2 -> R, the circle antipodal deviation |f(p)-f(-p)| <= 2L, proved via max-norm distance bound.",
+      "startLine": 201,
+      "endLine": 241
+    },
+    {
+      "id": "uniform-continuity",
+      "title": "Uniformly Continuous Functions",
+      "summary": "Antisymmetric difference of uniformly continuous f is uniformly continuous. Bisection locates zeros to within epsilon in log_2((b-a)/epsilon) steps.",
+      "startLine": 243,
+      "endLine": 268
+    },
+    {
+      "id": "perturbation",
+      "title": "Perturbation Stability",
+      "summary": "If f and g are epsilon-close on [-1,1], their antisymmetric differences differ by at most 2*epsilon.",
+      "startLine": 425,
+      "endLine": 459
+    },
+    {
+      "id": "tucker-1d",
+      "title": "Tucker's Lemma (1D) via Discrete IVT",
+      "summary": "Full proof of Tucker's 1D lemma with integer labels {+-1}: an antipodal boundary labeling of Fin(n+2) has a complementary edge where f(i)+f(i+1)=0. Proved via discrete IVT and case analysis on {+-1} labels. Includes verified examples and counting version.",
+      "startLine": 514,
+      "endLine": 644
+    },
+    {
+      "id": "tucker-higher",
+      "title": "Tucker's Lemma in Higher Dimensions (Axiomized)",
+      "summary": "Tucker 2D (labels from {+-1,+-2}) and Tucker n-D (labels from {+-1,...,+-n}) axiomized with abstract graph-theoretic formulation. Tucker-BU equivalence proved in 1D.",
+      "startLine": 646,
+      "endLine": 766
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization provides a comprehensive quantitative analysis of the 1D Borsuk-Ulam theorem and a complete proof of Tucker's 1D lemma. 28 theorems are proved with 0 sorries, covering Lipschitz bounds, bisection convergence, oscillation estimates, coincidence set structure, circle BU bounds, perturbation stability, and the Tucker-BU equivalence. Tucker's lemma for 2D and n-D is axiomized (3 axioms total), accurately reflecting the infrastructure gap in Mathlib for simplicial complexes with antipodal structure.",
+    "implications": "**Implications**\n\n1. **Computational BU**: The bisection convergence rate makes the 1D constructive proof algorithmically explicit with complexity O(log(1/epsilon)).\n\n2. **Stability**: The 2*epsilon perturbation bound shows that BU solutions vary continuously with the input function.\n\n3. **Tucker-BU bridge**: The proved 1D equivalence validates Tucker's lemma as the discrete foundation for BU, supporting the combinatorial approach to higher-dimensional proofs.\n\n4. **Infrastructure roadmap**: The axiomized Tucker 2D/nD statements precisely specify what Mathlib infrastructure is needed: antipodal triangulations of B^n with labeling conditions.",
+    "openQuestions": [
+      "Can Tucker 2D be proved in Lean using a graph-theoretic path-following argument?",
+      "Can the odd counting version (number of complementary edges is odd) be formalized for Tucker 1D?",
+      "Does Mathlib's SimplicialComplex provide sufficient infrastructure for Tucker 2D, or is custom infrastructure needed?",
+      "Can the quantitative bisection bounds be extended to the circle version?"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "borsuk-ulam-oq-03",
+      "relationship": "Parent: constructive 1D BU theorem that this quantitative extension builds upon"
+    },
+    {
+      "id": "borsuk-ulam-oq-03-oq-03",
+      "relationship": "Sibling: 2D BU via Tucker's lemma, using the Tucker infrastructure axiomized here"
+    },
+    {
+      "id": "borsuk-ulam",
+      "relationship": "Base Borsuk-Ulam formalization"
+    }
+  ]
+}

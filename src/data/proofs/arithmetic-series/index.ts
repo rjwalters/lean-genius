@@ -26,7 +26,7 @@ export const arithmeticSeriesProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const arithmeticSeriesAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const arithmeticSeriesAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const arithmeticSeriesData: ProofData = {
   proof: arithmeticSeriesProof,

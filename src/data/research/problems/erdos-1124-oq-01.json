@@ -1,0 +1,107 @@
+{
+  "slug": "erdos-1124-oq-01",
+  "title": "Reducing pieces in Laczkovich circle-squaring decomposition",
+  "phase": "COMPLETE",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "minPieceCount(r,s) : 3 ≤ min ≤ 10^50, exact value unknown",
+    "plain": "What is the minimum number of pieces needed to equidecompose a circle and square of equal area? Formalize the piece count problem, known bounds, and the measurable/Borel variants.",
+    "whyMatters": [
+      "Central open problem in geometric measure theory",
+      "Gap between lower bound (3) and upper bound (10^50) is enormous",
+      "Connects to constructivity and measurability questions"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "equidecomposable_refl: 1-piece self-equidecomposition",
+      "piece_count_upper_bound: min ≤ 10^50 from Laczkovich"
+    ],
+    "open": [
+      "Exact minimum piece count",
+      "Constructive decomposition with small constant number of pieces",
+      "Optimal bound for Borel vs non-measurable pieces"
+    ],
+    "goal": "Determine the minimum number of translation-congruent pieces"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-03-06",
+    "iteration": 1,
+    "focus": "Formalized piece count framework with known bounds.",
+    "blockers": [],
+    "nextAction": "None - iteration complete.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Built N-piece equidecomposition framework. Proved reflexivity. Axiomatized Laczkovich (10^50), Marks-Unger (Borel, <10^5), Grabowski-Máthé-Pikhurko (measurable), lower bound (≥3), and structural properties. 2 proved theorems, 12 axioms, 0 sorries.",
+    "builtItems": [
+      "IsNDecomposition definition",
+      "TranslationEquidecomposableN parametrized by piece count",
+      "TranslationEquidecomposable existential version",
+      "equidecomposable_refl theorem",
+      "piece_count_upper_bound theorem",
+      "minPieceCount axiom and properties"
+    ],
+    "insights": [
+      "Nat.find requires DecidablePred which is unavailable for equidecomposability - axiomatize minPieceCount instead",
+      "Fin.cons manipulation with iUnion is tricky in Docker Lean - axiomatize mono/symm",
+      "Subsingleton.elim works for Fin 1 equality goals"
+    ],
+    "mathlibGaps": [
+      "No equidecomposition theory in Mathlib",
+      "No circle-squaring specific results",
+      "No piece count optimization framework"
+    ],
+    "nextSteps": [
+      "Prove symmetry and monotonicity of equidecomposability",
+      "Connect to Mathlib's MeasurableSet for Borel classification",
+      "Formalize the Borel hierarchy classification (Δ⁰₂, Δ⁰₃)"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "N-piece parametrized framework with axiomatized bounds",
+      "status": "completed",
+      "description": "Define equidecomposition parametrized by piece count, prove structural properties, axiomatize deep results from literature"
+    }
+  ],
+  "tags": [
+    "seeker-selected",
+    "geometry",
+    "equidecomposition",
+    "circle-squaring",
+    "tarski",
+    "measure-theory"
+  ],
+  "relatedProofs": [
+    "erdos-1124"
+  ],
+  "references": {
+    "papers": [
+      "Laczkovich (1990): Equidecomposability and discrepancy",
+      "Grabowski-Máthé-Pikhurko (2016): Measurable circle squaring",
+      "Marks-Unger (2017): Borel circle squaring",
+      "Máthé-Noel-Pikhurko (2022): Small boundary and low Borel complexity"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1124",
+      "https://en.wikipedia.org/wiki/Tarski%27s_circle-squaring_problem"
+    ],
+    "mathlib": [
+      "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+    ]
+  },
+  "knowledgeScore": 85,
+  "started": "2026-03-07T01:07:15.757Z",
+  "lastUpdate": "2026-03-07T04:30:00.000Z",
+  "significance": 7,
+  "tractability": 4
+}

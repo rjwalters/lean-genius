@@ -27,7 +27,7 @@ export const areaOfCircleOQ01OQ03Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const areaOfCircleOQ01OQ03Annotations: Annotation[] = annotationsJson as Annotation[]
+export const areaOfCircleOQ01OQ03Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const areaOfCircleOQ01OQ03TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const areaOfCircleOQ01OQ03Data: ProofData = {

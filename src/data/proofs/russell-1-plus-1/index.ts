@@ -27,7 +27,7 @@ export const russell1Plus1Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const russell1Plus1Annotations: Annotation[] = annotationsJson as Annotation[]
+export const russell1Plus1Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const russell1Plus1TacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const russell1Plus1Data: ProofData = {

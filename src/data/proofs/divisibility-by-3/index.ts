@@ -26,7 +26,7 @@ export const divisibilityBy3Proof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const divisibilityBy3Annotations: Annotation[] = annotationsJson as Annotation[]
+export const divisibilityBy3Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const divisibilityBy3Data: ProofData = {
   proof: divisibilityBy3Proof,

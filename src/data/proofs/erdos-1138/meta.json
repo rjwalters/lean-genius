@@ -17,7 +17,7 @@
       "open"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 1138,
     "erdosUrl": "https://erdosproblems.com/1138",
     "erdosProblemStatus": "open",
@@ -47,11 +47,6 @@
         "theorem": "Basic",
         "description": "From Mathlib.Data.Real.Basic",
         "module": "Mathlib.Data.Real.Basic"
-      },
-      {
-        "theorem": "AtTopBot",
-        "description": "From Mathlib.Order.Filter.AtTopBot",
-        "module": "Mathlib.Order.Filter.AtTopBot"
       },
       {
         "theorem": "Tactic",
@@ -137,7 +132,7 @@
     "openQuestions": [
       "Can the short interval prime number theorem be extended to intervals of length $(\\log x)^{2+\\varepsilon}$, bridging toward the conjectured $(\\log x)^2$ scale?",
       "Does Maier's theorem (1985) — showing that $\\pi(x+h) - \\pi(x)$ deviates from $h/\\log x$ for certain $h$ around $(\\log x)^A$ — obstruct Erdős's conjecture, or does the maximal gap normalization avoid Maier's phenomenon?",
-      "Can the sorry in `maxPrimeGap_le` be resolved by establishing `BddAbove` for the set of prime gaps below $x$ and bounding the supremum?"
+      "RESOLVED: The sorry in `maxPrimeGap_le` has been proved by establishing that every prime gap $q - p \\le q \\le x$ and applying `csSup_le`."
     ]
   },
   "crossReferences": [

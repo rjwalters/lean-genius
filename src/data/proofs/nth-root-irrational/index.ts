@@ -27,7 +27,7 @@ export const nthRootIrrationalProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const nthRootIrrationalAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const nthRootIrrationalAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const nthRootIrrationalTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const nthRootIrrationalData: ProofData = {

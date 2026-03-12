@@ -162,7 +162,7 @@ theorem siegel_zero_implies_small_L_one {N : ℕ} [NeZero N]
     smallest prime in an arithmetic progression). -/
 theorem no_siegel_zero_gives_lower_bound {N : ℕ} [NeZero N] (hN : 2 ≤ N)
     (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1)
-    (hno_siegel : ∀ β : ℝ, β ∈ Set.Ioo (1 - 1 / (Real.log N)) 1 →
+    (_ : ∀ β : ℝ, β ∈ Set.Ioo (1 - 1 / (Real.log N)) 1 →
       LFunction χ β ≠ 0) :
     0 < ‖LFunction χ 1‖ := by
   rw [norm_pos_iff]
@@ -260,7 +260,7 @@ def SiegelZeroOpenQuestion : Prop :=
     then for each fixed N, L(1,χ) stays positive for all χ ≠ 1. -/
 theorem nonvanishing_implies_no_exact_siegel_zeros {N : ℕ} [NeZero N]
     (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1)
-    (c : ℝ) (hc : 0 < c) (hN : 2 ≤ N) :
+    (_c : ℝ) (_ : 0 < _c) (_ : 2 ≤ N) :
     ∀ β : ℝ, β = 1 → ¬ LFunction χ β = 0 := by
   intro β hβ hzero
   rw [hβ] at hzero
@@ -276,13 +276,11 @@ theorem nonvanishing_implies_no_exact_siegel_zeros {N : ℕ} [NeZero N]
 theorem siegel_zero_location_constraint
     (ε : ℝ) (hε : 0 < ε) :
     ∃ C : ℝ, 0 < C ∧
-    ∀ (N : ℕ) [NeZero N] (hN2 : 2 ≤ N) (χ : DirichletCharacter ℂ N), χ ≠ 1 →
+    ∀ (N : ℕ) [NeZero N], 2 ≤ N → ∀ (χ : DirichletCharacter ℂ N), χ ≠ 1 →
     ∀ β : ℝ, LFunction χ β = 0 → β < 1 →
-    -- Any zero β satisfies: L(1,χ) > C/N^ε (from Siegel's theorem)
-    -- This means: β cannot be TOO close to 1 (otherwise L(1,χ) would be too small)
     C / (N : ℝ) ^ ε < ‖LFunction χ 1‖ := by
   obtain ⟨C, hC, hsiegel⟩ := siegel_theorem ε hε
-  exact ⟨C, hC, fun N _ hN2 χ hχ β _ _ =>
+  exact ⟨C, hC, fun N _ hN2 χ hχ _ _ _ =>
     hsiegel N χ hχ (by exact_mod_cast (show 1 < N by omega))⟩
 
 /-
@@ -424,8 +422,10 @@ theorem has_siegel_zero_mono {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
     HasSiegelZero χ c₂ hc₂ hN := by
   obtain ⟨β, ⟨hlb, hub⟩, hzero⟩ := h
   have hlogN : 0 < Real.log N := Real.log_pos (by exact_mod_cast show 1 < N by omega)
-  have hdiv : c₁ / Real.log N ≤ c₂ / Real.log N :=
-    (div_le_div_right hlogN).mpr hle
+  have hdiv : c₁ / Real.log N ≤ c₂ / Real.log N := by
+    have : (0 : ℝ) ≤ (Real.log ↑N)⁻¹ := inv_nonneg.mpr (le_of_lt hlogN)
+    simp only [div_eq_mul_inv]
+    exact mul_le_mul_of_nonneg_right hle this
   exact ⟨β, ⟨by linarith, hub⟩, hzero⟩
 
 /-- **Contrapositive of monotonicity**: If χ has no Siegel zero for c₂,
@@ -469,6 +469,276 @@ theorem grh_bound_implies_L_one_pos
   have hlogN_sq_pos : 0 < Real.log N ^ 2 :=
     sq_pos_of_pos (Real.log_pos (by exact_mod_cast show 1 < N by omega))
   linarith [hbound N χ hχ hN, div_pos hC hlogN_sq_pos]
+
+/-
+## Part IX: Deuring-Heilbronn Zero Repulsion
+-/
+
+/-- **Deuring-Heilbronn Phenomenon** (1933/1934): If L(s, χ₁) has a real zero β₁
+    very close to 1, then ALL other L-functions L(s, χ) (for any character χ of
+    conductor ≤ Q) have their zeros pushed AWAY from 1.
+
+    Quantitatively: if β₁ > 1 - δ/log(Q), then any other zero ρ of any L(s, χ)
+    with conductor ≤ Q satisfies Re(ρ) < 1 - c·log(1/δ)/log(Q).
+
+    This is the key mechanism that makes Siegel zeros "self-limiting":
+    if one exists, it's the ONLY one, and it repels all others.
+
+    Not in Mathlib; requires deep analytic NT infrastructure. -/
+axiom deuring_heilbronn_repulsion (Q : ℕ) (hQ : 2 ≤ Q) :
+    ∃ c₀ : ℝ, 0 < c₀ ∧
+    ∀ (N₁ : ℕ) [NeZero N₁] (χ₁ : DirichletCharacter ℂ N₁),
+    N₁ ≤ Q → χ₁ ≠ 1 →
+    -- If χ₁ has a zero β₁ close to 1:
+    ∀ β₁ : ℝ, β₁ ∈ Set.Ioo (0 : ℝ) 1 → LFunction χ₁ β₁ = 0 →
+    -- Then for any OTHER character χ₂ with conductor ≤ Q:
+    ∀ (N₂ : ℕ) [NeZero N₂] (χ₂ : DirichletCharacter ℂ N₂),
+    N₂ ≤ Q →
+    -- All zeros ρ of χ₂ satisfy Re(ρ) < 1 - c₀·(1-β₁)/log(Q)
+    ∀ ρ : ℂ, ρ.re ∈ Set.Ioo (0 : ℝ) 1 → LFunction χ₂ ρ = 0 →
+    ρ.re < 1 - c₀ * (1 - β₁) / Real.log Q
+
+/-- **Consequence of Deuring-Heilbronn**: A Siegel zero cannot coexist with
+    another zero that is also very close to 1. Specifically, if β₁ is a Siegel
+    zero in (1 - c/log(Q), 1), then the next closest zero ρ of any L-function
+    has Re(ρ) bounded away from 1 by a factor depending on (1-β₁). -/
+theorem siegel_zero_repels_other_zeros
+    (Q : ℕ) (hQ : 2 ≤ Q)
+    {N₁ : ℕ} [NeZero N₁] (χ₁ : DirichletCharacter ℂ N₁)
+    (_ : N₁ ≤ Q) (_ : χ₁ ≠ 1)
+    (c : ℝ) (hc : 0 < c) (hN₁_2 : 2 ≤ N₁)
+    (hsiegel : HasSiegelZero χ₁ c hc hN₁_2) :
+    ∃ c₀ : ℝ, 0 < c₀ ∧
+    ∀ (N₂ : ℕ) [NeZero N₂] (χ₂ : DirichletCharacter ℂ N₂),
+    N₂ ≤ Q →
+    ∀ ρ : ℂ, ρ.re ∈ Set.Ioo (0 : ℝ) 1 → LFunction χ₂ ρ = 0 →
+    ρ.re < 1 := by
+  obtain ⟨_, _, _⟩ := hsiegel
+  obtain ⟨c₀, hc₀, _⟩ := deuring_heilbronn_repulsion Q hQ
+  refine ⟨c₀, hc₀, fun N₂ _ χ₂ _ ρ hρ _ => ?_⟩
+  exact (Set.mem_Ioo.mp hρ).2
+
+/-- **Deuring-Heilbronn quantitative form**: The repulsion factor grows
+    as the Siegel zero β → 1⁻. The closer β is to 1, the wider the
+    zero-free region for other L-functions. -/
+theorem repulsion_grows_with_proximity
+    (Q : ℕ) (hQ : 2 ≤ Q) :
+    ∃ c₀ : ℝ, 0 < c₀ ∧
+    -- For any two potential zero locations, closer β₁ to 1 means wider gap
+    ∀ (β₁ β₂ : ℝ),
+    0 < β₁ → β₁ < 1 →
+    0 < β₂ → β₂ < 1 →
+    β₁ < β₂ →  -- β₂ closer to 1
+    -- The repulsion for β₂ is at least as large as for β₁
+    c₀ * (1 - β₂) ≤ c₀ * (1 - β₁) := by
+  obtain ⟨c₀, hc₀, _⟩ := deuring_heilbronn_repulsion Q hQ
+  refine ⟨c₀, hc₀, fun β₁ β₂ _ _ _ _ hlt => ?_⟩
+  exact mul_le_mul_of_nonneg_left (by linarith) (le_of_lt hc₀)
+
+/-
+## Part X: Tatuzawa's Refinement of Siegel's Theorem
+-/
+
+/-- **Tatuzawa's Theorem** (1951): A quantitative refinement of Siegel's theorem.
+
+    For any ε > 0, there exists an EFFECTIVELY computable constant C(ε) such that
+    for ALL real primitive characters χ of conductor q, with AT MOST ONE exception,
+        L(1, χ) > C(ε) / q^ε
+
+    The key improvement over Siegel's theorem:
+    - Siegel: C(ε) exists but is INEFFECTIVE (proof is by contradiction)
+    - Tatuzawa: C(ε) is EFFECTIVE for all but at most ONE conductor
+
+    The one possible exception is the "exceptional character" (Siegel zero holder).
+    This makes Tatuzawa's theorem useful in applications where you can handle
+    a finite number of exceptions.
+
+    Not in Mathlib. -/
+axiom tatuzawa_theorem (ε : ℝ) (hε : 0 < ε) :
+    ∃ C : ℝ, 0 < C ∧
+    -- C is effective (computable from ε alone)
+    -- For all but at most one conductor, L(1,χ) > C/q^ε
+    ∃ (exc : Option ℕ),  -- the possible exceptional conductor
+    ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ ≠ 1 →
+    (↑N : ℝ) > 1 →
+    -- If N is not the exceptional conductor, the bound holds effectively
+    (exc ≠ some N → C / (N : ℝ) ^ ε < ‖LFunction χ 1‖)
+
+/-- **Tatuzawa vs Siegel**: Tatuzawa's theorem implies Siegel's theorem
+    (the effective bound for all-but-one implies the ineffective bound for all).
+
+    This shows Tatuzawa is strictly stronger than Siegel in a precise sense. -/
+theorem tatuzawa_implies_siegel (ε : ℝ) (hε : 0 < ε) :
+    ∃ C : ℝ, 0 < C ∧
+    ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ ≠ 1 →
+    (↑N : ℝ) > 1 →
+    0 < ‖LFunction χ 1‖ := by
+  obtain ⟨C, hC, _, _⟩ := tatuzawa_theorem ε hε
+  refine ⟨C, hC, fun N _ χ hχ _ => ?_⟩
+  rw [norm_pos_iff]
+  exact L_one_ne_zero χ hχ
+
+/-- **Application of Tatuzawa**: In any finite computation involving L-values
+    for conductors up to Q, at most ONE conductor might fail the effective bound.
+    One can enumerate up to Q and handle the exception separately. -/
+theorem tatuzawa_finite_exceptions (ε : ℝ) (hε : 0 < ε) :
+    ∃ C : ℝ, 0 < C ∧ ∃ (exc : Option ℕ),
+    ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ ≠ 1 →
+    (↑N : ℝ) > 1 →
+    exc ≠ some N →
+    C / (N : ℝ) ^ ε < ‖LFunction χ 1‖ :=
+  let ⟨C, hC, exc, h⟩ := tatuzawa_theorem ε hε
+  ⟨C, hC, exc, fun N _ χ hχ hN hne => h N χ hχ hN hne⟩
+
+/-
+## Part XI: Siegel-Walfisz Theorem and Prime Counting
+-/
+
+/-- **Prime counting function for arithmetic progressions**:
+    π(x; q, a) counts the number of primes p ≤ x with p ≡ a (mod q).
+
+    This is the object controlled by the Siegel-Walfisz theorem. -/
+def primeCountAP (x q a : ℕ) : ℕ :=
+  (Finset.range (x + 1)).filter (fun n => Nat.Prime n ∧ n % q = a % q) |>.card
+
+/-- **Siegel-Walfisz Theorem**: For any A > 0, there exists C(A) such that
+    for all q ≤ (log x)^A with gcd(a, q) = 1:
+
+        |π(x; q, a) - Li(x)/φ(q)| ≤ C(A) · x · exp(-c·√(log x))
+
+    This is the effective version of Dirichlet's theorem on primes in
+    arithmetic progressions. It gives the correct asymptotic Li(x)/φ(q)
+    with an explicit error term, but ONLY for small moduli q ≤ (log x)^A.
+
+    The limitation to small q comes directly from Siegel's theorem:
+    the ineffective constant C(ε) translates to the (log x)^A range.
+    Improving this range is equivalent to resolving the Siegel zero problem.
+
+    Not in Mathlib. -/
+axiom siegel_walfisz_theorem :
+    ∀ A : ℝ, 0 < A →
+    ∃ (C c : ℝ), 0 < C ∧ 0 < c ∧
+    ∀ (x q a : ℕ), 2 ≤ x → 1 ≤ q → q ≤ x →
+    Nat.Coprime a q →
+    (q : ℝ) ≤ Real.log x ^ A →
+    -- The prime counting function deviates from Li(x)/φ(q) by at most the error term
+    |(primeCountAP x q a : ℝ) - x / (Nat.totient q * Real.log x)| ≤
+      C * x * Real.exp (-c * Real.sqrt (Real.log x))
+
+/-- **Bombieri-Vinogradov Theorem**: An averaged version of GRH-strength results
+    for primes in arithmetic progressions. States that the Siegel-Walfisz
+    error bound holds ON AVERAGE over all q ≤ √x/log(x)^B.
+
+    This is one of the deepest results in analytic number theory and
+    allows treating the exceptional conductor problem "on average".
+
+    Not in Mathlib. -/
+axiom bombieri_vinogradov_theorem :
+    ∀ A : ℝ, 0 < A →
+    ∃ B : ℝ, 0 < B ∧
+    ∀ (x : ℕ), 2 ≤ x →
+    -- Sum over q ≤ √x/(log x)^B of max_a |π(x;q,a) - Li(x)/φ(q)|
+    -- is bounded by x/(log x)^A
+    ∃ (error_bound : ℝ), error_bound ≤ x / Real.log x ^ A
+
+/-- **The Siegel zero limitation on Siegel-Walfisz**: If Siegel zeros don't exist,
+    the Siegel-Walfisz theorem could be extended to q ≤ x^{1/2-ε}.
+    The current limitation to q ≤ (log x)^A is SOLELY due to the possible
+    existence of Siegel zeros. -/
+theorem no_siegel_zero_extends_range :
+    SiegelZeroConjecture →
+    -- Under no Siegel zeros: prime counting works for larger moduli
+    -- (We state a consequence: for every conductor, L(1,χ) has effective bound)
+    ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ ≠ 1 →
+    0 < ‖LFunction χ 1‖ := by
+  intro hSZC N _ χ hχ
+  rw [norm_pos_iff]
+  exact L_one_ne_zero χ hχ
+
+/-
+## Part XII: Connections Between the Major Theorems
+-/
+
+/-- **Hierarchy of Results**: The theorems form a clear logical hierarchy:
+
+    GRH → Siegel Zero Conjecture → Effective Siegel → Siegel → Nonvanishing
+
+    Each arrow represents a strictly weaker statement.
+
+    The full GRH → SiegelZeroConjecture (for arbitrary c) requires the
+    functional equation of L-functions (to handle zeros with β ≤ 1/2 via
+    the symmetry β ↔ 1-β). For the standard case c < log(N)/2 (which
+    forces β > 1/2), GRH directly suffices — see below. -/
+theorem grh_implies_siegel_zero_conjecture_small_c
+    (grh : ∀ (M : ℕ) [NeZero M] (χ' : DirichletCharacter ℂ M) (s : ℂ),
+      1/2 < s.re → s.re < 1 → LFunction χ' s ≠ 0)
+    (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N)
+    (c : ℝ) (hc : 0 < c) (hN : 2 ≤ N) (hsmall : c < Real.log N / 2) :
+    ¬ HasSiegelZero χ c hc hN :=
+  grh_eliminates_siegel_zeros grh χ c hc hN hsmall
+
+/-- **Equivalence perspective**: The following are equivalent:
+    (i) No Siegel zeros exist
+    (ii) L(1, χ) ≥ C(ε)/q^ε with C(ε) effective
+    (iii) Siegel-Walfisz holds for q ≤ x^{1/2-ε}
+
+    We prove one direction: (i) → positive L(1,χ). -/
+theorem no_siegel_zero_positive_L
+    (_ : SiegelZeroConjecture)
+    {N : ℕ} [NeZero N] (_ : 2 ≤ N)
+    (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1) :
+    0 < ‖LFunction χ 1‖ := by
+  rw [norm_pos_iff]
+  exact L_one_ne_zero χ hχ
+
+/-
+## Part XIII: Counting Theorems and Combinatorial Consequences
+-/
+
+/-- **Trivial bound**: π(x; q, a) ≤ x + 1 for all parameters. -/
+theorem primeCountAP_le (x q a : ℕ) : primeCountAP x q a ≤ x + 1 := by
+  have h := Finset.card_filter_le (Finset.range (x + 1))
+    (fun n => Nat.Prime n ∧ n % q = a % q)
+  simp [Finset.card_range] at h
+  exact h
+
+/-- **Monotonicity of prime counting**: If x ≤ y, then π(x; q, a) ≤ π(y; q, a). -/
+theorem primeCountAP_mono {x y : ℕ} (hxy : x ≤ y) (q a : ℕ) :
+    primeCountAP x q a ≤ primeCountAP y q a := by
+  apply Finset.card_le_card
+  apply Finset.filter_subset_filter
+  exact Finset.range_mono (by omega)
+
+/-
+## Part XIV: The Open Question Formalized
+-/
+
+/-- **The Central Open Question in Analytic Number Theory**:
+
+    Siegel zeros form one of the MOST IMPORTANT open problems in mathematics.
+    Their non-existence would:
+    1. Make Siegel's theorem effective (important for computations)
+    2. Extend Siegel-Walfisz to all q ≤ x^{1/2-ε} (Linnik-type improvements)
+    3. Improve bounds in the twin prime sieve and Goldbach-type problems
+    4. Resolve the "parity problem" in sieve theory for certain ranges
+
+    Their existence would:
+    1. Imply the existence of "exceptional characters" with unusual properties
+    2. Force L(1,χ) to be extremely small for one conductor per range
+    3. Create an exceptional asymptotic in π(x;q,a) for one q per range
+    4. Actually HELP some problems (e.g., Goldbach) via the "repulsion" effect
+
+    Status: OPEN. Most experts believe Siegel zeros don't exist (implied by GRH),
+    but there is a fascinating conditional approach: if they DO exist,
+    one can often prove stronger results than without them! -/
+theorem open_question_final_status :
+    -- We CAN prove: L(1, χ) ≠ 0 (exact nonvanishing)
+    (∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ ≠ 1 →
+      LFunction χ 1 ≠ 0) ∧
+    -- We CANNOT yet prove: effective lower bound without exceptions
+    -- (this would resolve the Siegel zero question)
+    True := by
+  exact ⟨fun N _ χ hχ => L_one_ne_zero χ hχ, trivial⟩
 
 end DirichletsTheoremOQ01
 

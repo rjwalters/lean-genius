@@ -27,7 +27,7 @@ export const liouvilleTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const liouvilleTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const liouvilleTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const liouvilleTheoremTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const liouvilleTheoremData: ProofData = {

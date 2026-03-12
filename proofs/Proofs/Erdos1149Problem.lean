@@ -1,0 +1,168 @@
+/-
+  Erdős Problem #1149: Coprimality of n and ⌊n^α⌋
+
+  Source: https://erdosproblems.com/1149
+  Status: SOLVED (Bergelson-Richter 2017)
+
+  Statement:
+  Let α > 0 be a real number that is not an integer. Then the natural
+  density of the set {n ≥ 1 : gcd(n, ⌊n^α⌋) = 1} is 6/π².
+
+  Context:
+  The value 6/π² = 1/ζ(2) is the probability that two "random" integers
+  are coprime. This result shows that n and ⌊n^α⌋ behave as if they were
+  "independent" from a coprimality standpoint, despite the deterministic
+  relationship between them.
+
+  Reference:
+  - Bergelson, Richter (2017) [BeRi17]
+  - [Va99, Problem 1.34]
+-/
+
+import Mathlib
+
+open Finset Filter BigOperators Set
+
+namespace Erdos1149
+
+/-
+## Definitions
+-/
+
+/-- The floor-power coprimality property: gcd(n, ⌊n^α⌋) = 1. -/
+def IsFloorPowerCoprime (α : ℝ) (n : ℕ) : Prop :=
+  Nat.Coprime n (Nat.floor ((n : ℝ) ^ α))
+
+/-- The set of positive integers n where gcd(n, ⌊n^α⌋) = 1. -/
+def coprimeFloorPowerSet (α : ℝ) : Set ℕ :=
+  { n | 0 < n ∧ IsFloorPowerCoprime α n }
+
+/-- Counting function for the coprime floor-power set in {1, ..., N}. -/
+noncomputable def countCoprime (α : ℝ) (N : ℕ) : ℕ :=
+  Set.ncard (coprimeFloorPowerSet α ∩ Set.Icc 1 N)
+
+/-- Whether a set S ⊆ ℕ has natural density d: |S ∩ {1,...,N}| / N → d. -/
+def HasNaturalDensity (S : Set ℕ) (d : ℝ) : Prop :=
+  Filter.Tendsto
+    (fun N : ℕ => (Set.ncard (S ∩ Set.Icc 1 N) : ℝ) / N)
+    atTop (nhds d)
+
+/-
+## The Main Theorem
+-/
+
+/-- **Bergelson-Richter Theorem (2017)**:
+    For any non-integer α > 0, the natural density of
+    {n ≥ 1 : gcd(n, ⌊n^α⌋) = 1} is 6/π².
+
+    The value 6/π² = 1/ζ(2) is the "probability" that two random
+    integers are coprime, suggesting n and ⌊n^α⌋ behave independently
+    with respect to coprimality.
+
+    Stated as: |{n ≤ N : gcd(n, ⌊n^α⌋) = 1}| / N → 6/π² as N → ∞. -/
+axiom bergelson_richter (α : ℝ) (hα_pos : 0 < α)
+    (hα_nonint : ∀ k : ℤ, (k : ℝ) ≠ α) :
+    Filter.Tendsto
+      (fun N : ℕ => (countCoprime α N : ℝ) / N)
+      Filter.atTop
+      (nhds (6 / Real.pi ^ 2))
+
+/-- The density 6/π² ≈ 0.6079... is the reciprocal of ζ(2). -/
+theorem density_equals_inv_zeta2 : 6 / Real.pi ^ 2 = 1 / (Real.pi ^ 2 / 6) := by
+  ring
+
+/-- **Erdős Problem #1149 is SOLVED**: the density exists and equals 6/π². -/
+theorem erdos_1149_solved (α : ℝ) (hα_pos : 0 < α)
+    (hα_nonint : ∀ k : ℤ, (k : ℝ) ≠ α) :
+    Filter.Tendsto
+      (fun N : ℕ => (countCoprime α N : ℝ) / N)
+      Filter.atTop
+      (nhds (6 / Real.pi ^ 2)) :=
+  bergelson_richter α hα_pos hα_nonint
+
+/-
+## Properties and Context
+-/
+
+/-- The density 6/π² is positive (approximately 0.608). -/
+theorem density_pos : 0 < 6 / Real.pi ^ 2 := by
+  apply div_pos (by norm_num : (0:ℝ) < 6)
+  exact sq_pos_of_pos Real.pi_pos
+
+/-- The density 6/π² is less than 1 (since π > 3, so π² > 9 > 6). -/
+theorem density_lt_one : 6 / Real.pi ^ 2 < 1 := by
+  rw [div_lt_one (sq_pos_of_pos Real.pi_pos)]
+  have hpi : (3 : ℝ) < Real.pi := Real.pi_gt_three
+  calc (6 : ℝ) < 3 ^ 2 := by norm_num
+    _ < Real.pi ^ 2 := by nlinarith
+
+/-- For integer α, the problem statement doesn't apply.
+    When α is a positive integer, ⌊n^α⌋ = n^α exactly, and
+    gcd(n, n^α) = n^gcd(1,α) = n for α ≥ 1.
+    So the coprime set would be {1}, with density 0. -/
+theorem integer_alpha_trivial (k : ℕ) (hk : 0 < k) :
+    ∀ n : ℕ, 1 < n → ¬ Nat.Coprime n (n ^ k) := by
+  intro n hn hcop
+  have : n ∣ n ^ k := dvd_pow_self n (Nat.pos_iff_ne_zero.mp hk)
+  have : n ∣ Nat.gcd n (n ^ k) := Nat.dvd_gcd dvd_rfl this
+  rw [Nat.Coprime] at hcop
+  rw [hcop] at this
+  exact Nat.not_lt.mpr (Nat.le_of_dvd one_pos this) hn
+
+/-
+## Connection to Coprime Probability
+
+The value 6/π² = ∏_p (1 - 1/p²) where the product is over all primes p.
+This is the "probability" that two uniformly random integers are coprime.
+
+The Bergelson-Richter result shows that n and ⌊n^α⌋, despite being
+deterministically related, satisfy the same coprimality statistics as
+independent random integers.
+-/
+
+/-- The "probability" that two random integers are coprime is 6/π².
+    More precisely, lim_{N→∞} |{(a,b) ∈ [1,N]² : gcd(a,b) = 1}| / N² = 6/π².
+    This is a classical result (Euler product for 1/ζ(2)). -/
+axiom random_coprime_density :
+    Filter.Tendsto
+      (fun N : ℕ => (Set.ncard {p : ℕ × ℕ | p.1 ∈ Set.Icc 1 N ∧ p.2 ∈ Set.Icc 1 N ∧
+        Nat.Coprime p.1 p.2} : ℝ) / (N : ℝ) ^ 2)
+      Filter.atTop
+      (nhds (6 / Real.pi ^ 2))
+
+/-
+## Computational Verification (small cases)
+
+For α = 1/2 (square root), we verify coprimality for small n:
+- n = 1: ⌊1^{0.5}⌋ = 1, gcd(1,1) = 1 ✓
+- n = 2: ⌊2^{0.5}⌋ = 1, gcd(2,1) = 1 ✓
+- n = 3: ⌊3^{0.5}⌋ = 1, gcd(3,1) = 1 ✓
+- n = 4: ⌊4^{0.5}⌋ = 2, gcd(4,2) = 2 ✗
+- n = 5: ⌊5^{0.5}⌋ = 2, gcd(5,2) = 1 ✓
+- n = 6: ⌊6^{0.5}⌋ = 2, gcd(6,2) = 2 ✗
+- n = 7: ⌊7^{0.5}⌋ = 2, gcd(7,2) = 1 ✓
+- n = 8: ⌊8^{0.5}⌋ = 2, gcd(8,2) = 2 ✗
+- n = 9: ⌊9^{0.5}⌋ = 3, gcd(9,3) = 3 ✗
+- n = 10: ⌊10^{0.5}⌋ = 3, gcd(10,3) = 1 ✓
+
+Count in {1,...,10}: 6 out of 10 = 0.6 (close to 6/π² ≈ 0.608)
+-/
+
+/-
+## Summary
+
+**Erdős Problem #1149** asks for the density of integers n where
+gcd(n, ⌊n^α⌋) = 1, for non-integer α > 0.
+
+**Answer**: 6/π² ≈ 0.608 (Bergelson-Richter 2017)
+
+**Key insight**: n and ⌊n^α⌋ are coprime with the same "probability"
+as two random integers, despite the deterministic relationship.
+
+**Proof method**: Uses ergodic theory and the theory of multiplicative
+functions along polynomial sequences (Bergelson-Richter 2017).
+
+**Related**: 6/π² = 1/ζ(2) = ∏_p (1 - 1/p²) (Euler product formula).
+-/
+
+end Erdos1149

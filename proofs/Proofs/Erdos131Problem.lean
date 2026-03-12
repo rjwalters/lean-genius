@@ -38,6 +38,8 @@ import Mathlib
 
 namespace Erdos131
 
+open scoped Classical
+
 /- ## Basic Definitions -/
 
 /-- A set A is non-dividing if no a ∈ A divides the sum of any
@@ -170,13 +172,26 @@ theorem two_three_nondividing : IsNonDividing {2, 3} := by
   intro a ha S hS hCard
   simp only [Finset.mem_insert, Finset.mem_singleton] at ha
   rcases ha with rfl | rfl
-  · -- a = 2: need to show 2 ∤ sum of subset of {3}
-    -- S ⊆ {2,3}.erase 2 = {3}, but |S| ≥ 2, contradiction
-    simp at hS
-    sorry
-  · -- a = 3: need to show 3 ∤ sum of subset of {2}
-    simp at hS
-    sorry
+  · -- a = 2: S ⊆ {2,3}.erase 2 = {3}, but |S| ≥ 2, contradiction
+    have hle : S.card ≤ 1 := by
+      have : S ⊆ {3} := by
+        intro x hx
+        have := hS hx
+        simp [Finset.mem_erase] at this
+        exact this.2
+      calc S.card ≤ ({3} : Finset ℕ).card := Finset.card_le_card this
+        _ = 1 := by rfl
+    omega
+  · -- a = 3: S ⊆ {2,3}.erase 3 = {2}, but |S| ≥ 2, contradiction
+    have hle : S.card ≤ 1 := by
+      have : S ⊆ {2} := by
+        intro x hx
+        have := hS hx
+        simp [Finset.mem_erase] at this
+        exact this.2
+      calc S.card ≤ ({2} : Finset ℕ).card := Finset.card_le_card this
+        _ = 1 := by rfl
+    omega
 
 /-- Primes form a non-dividing set in their range -/
 theorem primes_nondividing_example :

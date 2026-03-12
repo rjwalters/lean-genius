@@ -27,7 +27,7 @@ export const pascalsHexagonProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const pascalsHexagonAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const pascalsHexagonAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const pascalsHexagonTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const pascalsHexagonData: ProofData = {

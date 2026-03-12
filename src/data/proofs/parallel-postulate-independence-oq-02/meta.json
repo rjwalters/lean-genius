@@ -1,0 +1,149 @@
+{
+  "id": "parallel-postulate-independence-oq-02",
+  "title": "Parallel Postulate Independence: Beltrami-Klein Verification",
+  "slug": "parallel-postulate-independence-oq-02",
+  "description": "Constructs the Beltrami-Klein disk model of hyperbolic geometry with explicit coordinate geometry and proves the hyperbolic parallel property concretely, establishing independence of the parallel postulate via model construction.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Beltrami%E2%80%93Klein_model",
+    "date": "2026",
+    "status": "complete",
+    "proofRepoPath": "Proofs/ParallelPostulateIndependenceOQ02.lean",
+    "tags": [
+      "non-euclidean-geometry",
+      "parallel-postulate",
+      "independence",
+      "beltrami-klein-model",
+      "hyperbolic-geometry",
+      "model-theory",
+      "coordinate-geometry",
+      "foundations",
+      "extension",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib.Logic.Basic",
+        "description": "Basic logical connectives and predicates",
+        "module": "Mathlib.Logic.Basic"
+      },
+      {
+        "theorem": "Mathlib.Tactic",
+        "description": "Standard tactic library (norm_num, linarith, nlinarith, simp)",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "Beltrami-Klein disk model with concrete coordinate types (DiskPoint, Chord)",
+      "Explicit construction: two parallel chords through (0, 1/2) to the x-axis",
+      "Proved par₁ ∥ xaxis: intersection at (-2, 0) lies outside unit disk",
+      "Proved par₂ ∥ xaxis: intersection at (2, 0) lies outside unit disk",
+      "Hyperbolic parallel property: existential statement with explicit witness",
+      "Violation of Playfair's axiom by uniqueness contradiction",
+      "Three non-collinear points verified (O, A, B)",
+      "Secant example: chord with slope 1 crosses x-axis inside disk (non-parallel)",
+      "Euclidean-parallel chords are BK-parallel (y=0 and y=1/3)",
+      "Reduced axiom count from 7 to 4 compared to ParallelPostulateIndependence.lean"
+    ],
+    "references": [
+      {
+        "authors": "Eugenio Beltrami",
+        "title": "Saggio di interpretazione della geometria non-euclidea",
+        "year": "1868",
+        "venue": "Giornale di Matematiche",
+        "note": "First construction of a model of hyperbolic geometry within Euclidean geometry"
+      },
+      {
+        "authors": "Felix Klein",
+        "title": "Über die sogenannte Nicht-Euklidische Geometrie",
+        "year": "1871",
+        "venue": "Mathematische Annalen",
+        "note": "The Klein model using projective geometry"
+      },
+      {
+        "authors": "David Hilbert",
+        "title": "Grundlagen der Geometrie",
+        "year": "1899",
+        "venue": "Teubner, Leipzig",
+        "note": "Axiomatic foundations of geometry"
+      }
+    ],
+    "historicalContext": "For over 2000 years mathematicians attempted to prove Euclid's Fifth Postulate from the other axioms. Bolyai (1832) and Lobachevsky (1829) independently developed hyperbolic geometry. Beltrami (1868) proved its consistency by constructing models within Euclidean geometry. The Beltrami-Klein model uses the open unit disk with chords as lines, making the hyperbolic parallel property visually intuitive: through any interior point not on a chord, multiple non-intersecting chords exist."
+  },
+  "sections": [
+    {
+      "id": "bk-model",
+      "title": "Beltrami-Klein Disk Model",
+      "summary": "Defines DiskPoint (open unit disk), Chord (line restricted to disk), OnChord (incidence), and ChordParallel (no common disk point).",
+      "startLine": 24,
+      "endLine": 52
+    },
+    {
+      "id": "concrete-constructions",
+      "title": "Concrete Constructions",
+      "summary": "Defines the x-axis chord, point P = (0, 1/2), and two parallel chords par₁ (slope 1/4) and par₂ (slope -1/4).",
+      "startLine": 54,
+      "endLine": 89
+    },
+    {
+      "id": "verification",
+      "title": "Incidence and Parallelism Verification",
+      "summary": "Proves P is not on xaxis, P lies on both parallels, parallels are distinct, and each parallel doesn't intersect xaxis in the disk.",
+      "startLine": 91,
+      "endLine": 131
+    },
+    {
+      "id": "hyperbolic-parallel",
+      "title": "Hyperbolic Parallel Property",
+      "summary": "Assembles the existential witness: chord xaxis, point P, and two distinct parallel chords through P.",
+      "startLine": 133,
+      "endLine": 146
+    },
+    {
+      "id": "pp-violation",
+      "title": "Parallel Postulate Violation",
+      "summary": "Defines Playfair's axiom for the BK model and proves it fails: uniqueness is contradicted by the two parallels.",
+      "startLine": 148,
+      "endLine": 168
+    },
+    {
+      "id": "incidence-axioms",
+      "title": "Incidence Axiom Verification",
+      "summary": "Proves three non-collinear points exist (O, A, B), disk nontriviality, and axiomatizes two-point-determine-chord and chord-has-two-points.",
+      "startLine": 170,
+      "endLine": 199
+    },
+    {
+      "id": "independence",
+      "title": "Independence Theorem",
+      "summary": "Combines Euclidean (axiomatized) and Beltrami-Klein (proved) models to establish that the parallel postulate is independent.",
+      "startLine": 201,
+      "endLine": 228
+    },
+    {
+      "id": "additional",
+      "title": "Additional Geometric Facts",
+      "summary": "Euclidean-parallel chords are BK-parallel; example of a non-parallel secant crossing xaxis inside the disk.",
+      "startLine": 230,
+      "endLine": 270
+    }
+  ],
+  "overview": {
+    "summary": "Constructs the Beltrami-Klein disk model concretely and proves the hyperbolic parallel property by explicit coordinate computation, reducing the axiom count from 7 to 4 compared to the original formalization.",
+    "keyIdea": "In the Beltrami-Klein model, 'lines' are chords of the open unit disk. Through point (0, 1/2), the chords x - 4y + 2 = 0 and x + 4y - 2 = 0 are both parallel to the x-axis chord because their intersections with y = 0 lie at x = ±2, outside the unit disk. This provides an explicit witness violating Playfair's uniqueness.",
+    "prerequisites": [
+      "Open unit disk geometry",
+      "Linear algebra (line equations)",
+      "Playfair's axiom (equivalent to Euclid's Fifth Postulate)"
+    ]
+  },
+  "conclusion": {
+    "summary": "We concretely verify the Beltrami-Klein disk model's hyperbolic parallel property using coordinate geometry. The key insight is that chords with shallow slope through an off-axis point have their x-axis intersection outside the unit disk, making them parallel in the hyperbolic sense. Combined with the Euclidean model (axiomatized), this establishes independence of the parallel postulate.",
+    "openQuestions": [
+      "Can the remaining 4 axioms be eliminated? (Full incidence axiom verification for the Klein model)",
+      "Can the hyperbolic metric ds² = 4(dx²+dy²)/(1-x²-y²)² be formalized to verify congruence axioms?"
+    ]
+  }
+}

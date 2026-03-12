@@ -27,7 +27,7 @@ export const lawsOfLargeNumbersProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const lawsOfLargeNumbersAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const lawsOfLargeNumbersAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const lawsOfLargeNumbersTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const lawsOfLargeNumbersData: ProofData = {

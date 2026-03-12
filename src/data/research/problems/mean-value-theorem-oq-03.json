@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 15 proved theorems, 0 sorries, 0 axioms. Eliminated 2 axioms (deriv_bound_implies_lipschitz, banach_mean_value_inequality) by connecting to Mathlib's Convex.lipschitzOnWith_of_nnnorm_fderivWithin_le and Convex.norm_image_sub_le_of_norm_fderivWithin_le.",
+    "progressSummary": "COMPLETE: 17 proved theorems, 0 sorries, 0 axioms. Eliminated 2 axioms (deriv_bound_implies_lipschitz, banach_mean_value_inequality) by connecting to Mathlib. Added strict_mono_of_deriv_pos and antiderivatives_differ_by_constant as new applications.",
     "builtItems": [
       "15 theorems in MeanValueTheoremOQ03.lean",
       "mean_value_inequality: vector MVT from Mathlib",
@@ -52,7 +52,9 @@
       "banach_mvt_differentiableAt: DifferentiableAt version",
       "banach_mvt_hasFDerivWithinAt: HasFDerivWithinAt version",
       "banach_constant_of_fderiv_zero: zero Frechet derivative -> constant",
-      "lipschitz_of_nnnorm_fderiv_le: pointwise Lipschitz version"
+      "lipschitz_of_nnnorm_fderiv_le: pointwise Lipschitz version",
+      "strict_mono_of_deriv_pos: f' > 0 implies f(a) < f(b) (proved via scalar MVT)",
+      "antiderivatives_differ_by_constant: same derivative implies constant difference (proved via vector MVT)"
     ],
     "insights": [
       "Convex.lipschitzOnWith_of_nnnorm_fderivWithin_le proves derivative bound -> Lipschitz directly",
@@ -86,6 +88,7 @@
       "Convex.lipschitzOnWith_of_nnnorm_fderiv_le"
     ]
   },
+  "knowledgeScore": 85,
   "started": "2026-03-06T18:00:58.198Z",
   "lastUpdate": "2026-03-06T18:30:00.000Z",
   "significance": 7,

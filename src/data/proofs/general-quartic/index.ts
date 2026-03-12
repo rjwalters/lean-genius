@@ -27,7 +27,7 @@ export const generalQuarticProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const generalQuarticAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const generalQuarticAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const generalQuarticTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const generalQuarticData: ProofData = {

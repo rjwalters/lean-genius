@@ -26,7 +26,7 @@ export const triangleInequalityProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const triangleInequalityAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const triangleInequalityAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const triangleInequalityData: ProofData = {
   proof: triangleInequalityProof,

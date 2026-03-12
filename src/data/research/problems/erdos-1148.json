@@ -7,8 +7,12 @@
   "path": "full",
   "problemStatement": {
     "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "plain": "Can every sufficiently large integer n be written as n = x^2 + y^2 - z^2 where max(x^2, y^2, z^2) <= n?",
+    "whyMatters": [
+      "Connects representation theory to Fermat-Euler sums of two squares",
+      "The strict bound constraint makes the problem substantially harder than unbounded version",
+      "Largest known non-representable number is 6563"
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -16,24 +20,43 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "SURVEYED",
     "since": "2026-01-15T16:24:55.486Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Structural theorems and small case analysis",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Extend non-representable classification or formalize Fermat-Euler connection",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Enhanced formalization with structural theorems. Proved sum_two_squares_representable (infinite family), 5 new representable cases (7,10,12,13,14), 3 non-representable cases (6,11,15). Fixed all pre-existing compilation errors. File compiles cleanly: 0 sorries, 1 axiom.",
+    "builtItems": [
+      "sum_two_squares_representable: IsRepresentable (a^2 + b^2) for all a, b",
+      "six_not_representable, eleven_not_representable, fifteen_not_representable",
+      "seven_representable, ten_representable, twelve_representable, thirteen_representable, fourteen_representable",
+      "repr_swap: symmetry in x, y components",
+      "repr_from_shifted_sum: construction lemma from shifted sum decomposition",
+      "Fixed odd_diff_squares_exceeds_bound and odd_diff_squares_identity (omega to nlinarith)"
+    ],
+    "insights": [
+      "Sum-of-two-squares implies representable (z=0): covers all n that are sums of two squares",
+      "Non-representable numbers up to 15: exactly {3, 6, 11, 15} (OEIS A390380)",
+      "Key reduction: n representable iff exists z with z^2<=n such that n+z^2 is sum of two bounded squares",
+      "Odd difference-of-squares identity violates bound for n>=3",
+      "Relaxed bound n+2sqrt(n) gives one extra search value for non-perfect-square n",
+      "The problem connects to Fermat-Euler theorem on sums of two squares"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Extend non-representable classification beyond n=15 (next: 22, 33, ...)",
+      "Formalize Fermat-Euler theorem connection for deeper structural results",
+      "Create Aristotle companion file for routine lemmas",
+      "Investigate Hardy-Littlewood circle method applicability to bounded ternary form"
+    ],
     "markdown": "# Erdős #1148 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],

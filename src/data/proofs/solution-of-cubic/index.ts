@@ -27,7 +27,7 @@ export const solutionOfCubicProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const solutionOfCubicAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const solutionOfCubicAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const solutionOfCubicTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const solutionOfCubicData: ProofData = {

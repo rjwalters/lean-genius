@@ -27,7 +27,7 @@ export const primeNumberTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const primeNumberTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const primeNumberTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const primeNumberTheoremTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const primeNumberTheoremData: ProofData = {

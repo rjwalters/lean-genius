@@ -1,0 +1,154 @@
+{
+  "id": "lebesgue-measure-oq-02",
+  "title": "Hölder's Inequality for Lebesgue Integration",
+  "slug": "lebesgue-measure-oq-02",
+  "description": "A complete formalization of Hölder's inequality in the measure-theoretic setting, replacing the placeholder in the parent Lebesgue Measure proof. Covers Young's inequality, the Lebesgue integral Hölder bound, Cauchy-Schwarz as the p=q=2 specialization, and Minkowski's inequality for Lp spaces.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/H%C3%B6lder%27s_inequality",
+    "date": "2026",
+    "status": "complete",
+    "proofRepoPath": "Proofs/LebesgueMeasureOQ02.lean",
+    "tags": [
+      "measure-theory",
+      "lebesgue-integral",
+      "holder-inequality",
+      "young-inequality",
+      "cauchy-schwarz",
+      "minkowski-inequality",
+      "lp-spaces",
+      "functional-analysis",
+      "extension",
+      "research"
+    ],
+    "badge": "open",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ENNReal.lintegral_mul_le_Lp_mul_Lq",
+        "description": "Hölder's inequality for the extended Lebesgue integral: ∫⁻ fg ≤ (∫⁻ f^p)^(1/p) · (∫⁻ g^q)^(1/q).",
+        "module": "Mathlib.MeasureTheory.Integral.MeanInequalities"
+      },
+      {
+        "theorem": "ENNReal.young_inequality",
+        "description": "Young's inequality: ab ≤ a^p/p + b^q/q for conjugate exponents.",
+        "module": "Mathlib.Analysis.MeanInequalitiesPow"
+      },
+      {
+        "theorem": "Real.HolderConjugate",
+        "description": "Definition of Hölder conjugate exponents: 1/p + 1/q = 1 with p, q > 1.",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      },
+      {
+        "theorem": "norm_add_le",
+        "description": "Minkowski's inequality on Lp spaces: ‖f+g‖ ≤ ‖f‖+‖g‖.",
+        "module": "Mathlib.MeasureTheory.Function.LpSpace.Basic"
+      },
+      {
+        "theorem": "Real.HolderConjugate.conjExponent",
+        "description": "For p > 1, constructs the conjugate exponent q = p/(p-1).",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      }
+    ],
+    "originalContributions": [
+      "Complete formalization of Hölder's inequality replacing the True placeholder in LebesgueMeasure.lean",
+      "Young's inequality (pointwise foundation) via ENNReal.young_inequality",
+      "Hölder for Lebesgue integral with general and Lebesgue-specific specializations",
+      "Cauchy-Schwarz as explicit p=q=2 specialization of Hölder",
+      "Minkowski's inequality for Lp spaces (triangle inequality)",
+      "L² inner product space instance verification"
+    ],
+    "references": [
+      {
+        "authors": "Otto Hölder",
+        "title": "Ueber einen Mittelwerthssatz",
+        "year": "1889",
+        "venue": "Nachrichten von der Königlichen Gesellschaft der Wissenschaften zu Göttingen",
+        "note": "Original statement and proof of the inequality for finite sums"
+      },
+      {
+        "authors": "Frigyes Riesz",
+        "title": "Untersuchungen über Systeme integrierbarer Funktionen",
+        "year": "1910",
+        "venue": "Mathematische Annalen",
+        "note": "Extended Hölder's inequality to Lebesgue-integrable functions and founded Lp space theory"
+      },
+      {
+        "authors": "Hermann Minkowski",
+        "title": "Geometrie der Zahlen",
+        "year": "1896",
+        "venue": "Teubner, Leipzig",
+        "note": "The triangle inequality for Lp norms, proved using Hölder's inequality"
+      }
+    ],
+    "historicalContext": "Otto Hölder proved his inequality for finite sums in 1889, generalizing the Cauchy-Schwarz inequality (1821/1859) from the p=q=2 case to arbitrary conjugate exponents. Frigyes Riesz extended it to Lebesgue integrals in 1910, founding the theory of Lp spaces. The inequality is fundamental to functional analysis: it establishes the duality (Lp)* ≅ Lq and makes Lp spaces into Banach spaces via Minkowski's inequality."
+  },
+  "sections": [
+    {
+      "id": "conjugate-exponents",
+      "title": "Conjugate Exponents",
+      "summary": "Establishes Hölder conjugate pairs: 1/p + 1/q = 1 with p, q > 1. Proves the (2,2) pair for Cauchy-Schwarz and the general construction via conjExponent.",
+      "startLine": 29,
+      "endLine": 43
+    },
+    {
+      "id": "young-inequality",
+      "title": "Young's Inequality",
+      "summary": "The pointwise foundation: ab ≤ a^p/p + b^q/q for conjugate p, q. Proved via weighted AM-GM / concavity of log. This is the building block integrated to get Hölder.",
+      "startLine": 45,
+      "endLine": 63
+    },
+    {
+      "id": "holder-lintegral",
+      "title": "Hölder for Lebesgue Integral",
+      "summary": "The main inequality: ∫⁻ f·g dμ ≤ (∫⁻ f^p dμ)^(1/p) · (∫⁻ g^q dμ)^(1/q). General version for any measure space, plus specialization to Lebesgue measure on ℝ.",
+      "startLine": 65,
+      "endLine": 103
+    },
+    {
+      "id": "cauchy-schwarz",
+      "title": "Cauchy-Schwarz Specialization",
+      "summary": "Setting p=q=2 in Hölder gives the integral Cauchy-Schwarz inequality, foundation of L² theory and Hilbert space methods.",
+      "startLine": 105,
+      "endLine": 124
+    },
+    {
+      "id": "minkowski",
+      "title": "Minkowski's Inequality",
+      "summary": "The triangle inequality for Lp norms: ‖f+g‖_p ≤ ‖f‖_p + ‖g‖_p. This makes Lp into a Banach space. The proof for p > 1 uses Hölder internally.",
+      "startLine": 126,
+      "endLine": 152
+    },
+    {
+      "id": "proper-statement",
+      "title": "Replacing the Placeholder",
+      "summary": "The proper Hölder statement and proof that replaces the True placeholder in LebesgueMeasure.lean. Bridges ENNReal/Real exponent conventions.",
+      "startLine": 154,
+      "endLine": 194
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "summary": "L² as an inner product space (setting for Fourier analysis), Lp norm non-negativity, and the role of Hölder in functional analysis.",
+      "startLine": 196,
+      "endLine": 218
+    }
+  ],
+  "overview": {
+    "summary": "Hölder's inequality is one of the most important inequalities in analysis, generalizing Cauchy-Schwarz to arbitrary Lp spaces. For conjugate exponents p, q (1/p + 1/q = 1), it bounds the integral of a product: ∫ f·g ≤ ‖f‖_p · ‖g‖_q. This file provides a complete formalization replacing the True placeholder in the parent Lebesgue Measure proof.",
+    "keyIdea": "Hölder's inequality follows from Young's pointwise estimate ab ≤ a^p/p + b^q/q by normalizing and integrating. The conjugate condition 1/p + 1/q = 1 emerges naturally from the normalization step.",
+    "prerequisites": [
+      "Lebesgue measure and integration",
+      "Conjugate exponents (1/p + 1/q = 1)",
+      "Lp spaces and their norms",
+      "Young's inequality"
+    ]
+  },
+  "conclusion": {
+    "summary": "We have replaced the True placeholder for Hölder's inequality in LebesgueMeasure.lean with a complete formalization. The proof chain Young → Hölder → Cauchy-Schwarz → Minkowski demonstrates the central role of Hölder's inequality in functional analysis. All 10 theorems are proved with zero sorries.",
+    "openQuestions": [
+      "Can the sharp constant in Hölder's inequality be characterized for specific function classes?",
+      "Can the Riesz representation theorem (Lp)* ≅ Lq be formalized as a consequence?"
+    ]
+  }
+}

@@ -26,7 +26,7 @@ export const erdos728FactorialDivisibilityProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const erdos728FactorialDivisibilityAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const erdos728FactorialDivisibilityAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const erdos728FactorialDivisibilityData: ProofData = {
   proof: erdos728FactorialDivisibilityProof,

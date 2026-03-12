@@ -1,0 +1,139 @@
+{
+  "id": "central-limit-theorem-oq-01-oq-01",
+  "title": "The Gnedenko-Kolmogorov Domain of Attraction Theorem",
+  "slug": "central-limit-theorem-oq-01-oq-01",
+  "description": "When does the Central Limit Theorem generalize beyond finite variance? The Gnedenko-Kolmogorov theorem gives a complete characterization: a distribution lies in the domain of attraction of an α-stable law if and only if its tails are regularly varying with index -α. This file formalizes slowly varying functions, regular variation, the tail balance condition, and states the full forward, converse, and Gaussian cases of the theorem.",
+  "meta": {
+    "author": "Gnedenko & Kolmogorov (1954), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Domain_of_attraction",
+    "date": "1954 (Gnedenko-Kolmogorov), formalized 2026",
+    "status": "axiom-based",
+    "proofRepoPath": "Proofs/CentralLimitTheoremOQ01OQ01.lean",
+    "tags": [
+      "probability",
+      "stable-distributions",
+      "domain-of-attraction",
+      "regular-variation",
+      "slowly-varying",
+      "analysis",
+      "advanced",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.rpow",
+        "description": "Real power function for defining regular variation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Filter-based convergence for asymptotic limits",
+        "module": "Mathlib.Order.Filter.Basic"
+      }
+    ],
+    "axioms": 7
+  },
+  "sections": [
+    {
+      "id": "slowly-varying",
+      "title": "Slowly Varying Functions",
+      "lines": [
+        1,
+        100
+      ],
+      "description": "Defines slowly varying functions L(x) satisfying L(cx)/L(x) → 1 as x → ∞. Proves closure under multiplication and power operations."
+    },
+    {
+      "id": "regularly-varying",
+      "title": "Regular Variation",
+      "lines": [
+        101,
+        130
+      ],
+      "description": "Defines regularly varying functions f(cx)/f(x) → c^α and connects to slowly varying (α=0 case). States that x^α is regularly varying."
+    },
+    {
+      "id": "tail-balance",
+      "title": "Tail Balance Condition",
+      "lines": [
+        131,
+        175
+      ],
+      "description": "Formalizes the tail balance structure: right and left tails decay as x^{-α}·L(x) with weights p and q determining the skewness of the stable limit."
+    },
+    {
+      "id": "domain-of-attraction",
+      "title": "Domain of Attraction",
+      "lines": [
+        176,
+        210
+      ],
+      "description": "Defines InDomainOfAttraction via characteristic function convergence: φ^n(t/aₙ)·exp(-ibₙt/aₙ) → exp(-|t|^α)."
+    },
+    {
+      "id": "gnedenko-kolmogorov",
+      "title": "The Gnedenko-Kolmogorov Theorem",
+      "lines": [
+        211,
+        290
+      ],
+      "description": "States the full theorem: forward direction (tail conditions → domain of attraction), Gaussian case (finite variance → α=2), and converse (domain of attraction → regular tail variation)."
+    },
+    {
+      "id": "properties",
+      "title": "Properties and Connections",
+      "lines": [
+        291,
+        340
+      ],
+      "description": "Potter's bound for slowly varying functions, Karamata's integral theorem, stable self-similarity, and the connection between classical CLT and Gaussian domain of attraction."
+    },
+    {
+      "id": "concrete-tail-balance",
+      "title": "Concrete Tail Balance Instances",
+      "lines": [
+        916,
+        1016
+      ],
+      "description": "Constructs TailBalance instances for the one-sided Pareto distribution (p=1, q=0) and symmetric Cauchy distribution (p=q=1/2), connecting abstract tail theory to concrete distributions."
+    },
+    {
+      "id": "domain-of-attraction-concrete",
+      "title": "Domain of Attraction for Concrete Distributions",
+      "lines": [
+        1018,
+        1055
+      ],
+      "description": "Uses the axiomatized forward direction to show Pareto (0<α<2) and symmetric Cauchy distributions lie in the domain of attraction of their respective α-stable laws."
+    },
+    {
+      "id": "sv-examples",
+      "title": "Slowly Varying Function Examples",
+      "lines": [
+        1057,
+        1122
+      ],
+      "description": "Proves log(x+a) is slowly varying for a≥1 and |log(x+a)|^β is slowly varying for any β≠0, providing non-constant examples of slowly varying functions."
+    }
+  ],
+  "overview": {
+    "summary": "The Central Limit Theorem tells us that sums of iid random variables with finite variance converge to a Gaussian. But what happens when variance is infinite? The Gnedenko-Kolmogorov theorem provides the complete answer: a distribution lies in the domain of attraction of an α-stable law (0 < α ≤ 2) if and only if its tails are regularly varying with index -α. This file builds the framework of slowly varying and regularly varying functions, defines the domain of attraction via characteristic functions, and states all three parts of the theorem.",
+    "keyIdeas": [
+      "Slowly varying functions L(x) satisfy L(cx)/L(x) → 1 and serve as correction factors in tail asymptotics",
+      "Regular variation f(cx)/f(x) → c^α generalizes power-law behavior",
+      "The tail balance condition p/(p+q) determines the skewness parameter of the limiting stable law",
+      "The Gnedenko-Kolmogorov theorem gives a complete iff characterization for domains of attraction",
+      "The classical CLT (α=2) is a special case where variance is finite and L is constant"
+    ]
+  },
+  "conclusion": {
+    "summary": "Formalizes the framework for understanding when the CLT generalizes beyond finite variance, culminating in the statement of the Gnedenko-Kolmogorov domain of attraction theorem with forward, converse, and Gaussian cases.",
+    "openQuestions": [
+      "Full proof of the forward direction requires Lévy's continuity theorem and Karamata theory",
+      "The converse requires Abelian-Tauberian theory connecting char fn convergence to tail behavior",
+      "Multivariate generalization to operator-stable distributions"
+    ]
+  }
+}

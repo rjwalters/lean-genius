@@ -48,6 +48,8 @@ This is the y-offset when entering column k. Key properties:
 - [x] Vandermonde identity
 - [x] Verified examples via native_decide
 - [x] Involution infrastructure (splitAfterEast, swapTails, involutivity)
+- [x] Entry gap analysis (entryGap framework, NI preserves gap positivity)
+- [x] swapTails East step and length preservation theorems
 - [ ] Lindström involution (axiomatized — needs firstIntersectionColumn construction)
 
 ## References
@@ -61,7 +63,7 @@ namespace LatticePathLGV
 
 open Finset List
 
-/-! ## Part I: Lattice Path Definitions -/
+/- ## Part I: Lattice Path Definitions -/
 
 /-- A lattice path: false = East (+x), true = North (+y) -/
 abbrev LPath := List Bool
@@ -106,7 +108,7 @@ noncomputable instance pathTypeFintype (m n : ℕ) : Fintype (pathType m n) := b
       left_inv  := fun ⟨⟨_, _⟩, _⟩ => rfl,
       right_inv := fun ⟨_, _, _⟩ => rfl }
 
-/-! ## Part II: The northBeforeEast Function -/
+/- ## Part II: The northBeforeEast Function -/
 
 /-- northBeforeEast l k = # North (true) steps in l before the k-th East (false) step.
     This gives the y-offset when entering column k+1, or equivalently the y
@@ -198,7 +200,7 @@ theorem colEntry_le_northSteps (l : LPath) (m : ℕ) (hm : l.countP (· = false)
   | zero => simp [colEntry]
   | succ m => simp only [colEntry]; exact northBeforeEast_le_northSteps l m
 
-/-! ## Part III: Column Ranges and Non-Intersecting -/
+/- ## Part III: Column Ranges and Non-Intersecting -/
 
 /-- The y-range visited at column x (for x < m): [y₀ + colEntry l x, y₀ + colEntry l (x+1)] -/
 def colYRange (l : LPath) (y₀ x : ℕ) : Set ℕ :=
@@ -213,7 +215,7 @@ def NonIntersecting (l₁ l₂ : LPath) (m y₁ y₂ : ℕ) : Prop :=
   (∀ x < m, ∀ y, ¬(y ∈ colYRange l₁ y₁ x ∧ y ∈ colYRange l₂ y₂ x)) ∧
   (∀ y, ¬(y ∈ finalRange l₁ y₁ m ∧ y ∈ finalRange l₂ y₂ m))
 
-/-! ## Part IV: The Crossing Lemma -/
+/- ## Part IV: The Crossing Lemma -/
 
 /-- **KEY LEMMA**: If paths are non-intersecting and P₁ enters column k below P₂
     (y₁ + entry₁(k) < y₂ + entry₂(k)), then P₁ also enters column k+1 below P₂.
@@ -290,7 +292,7 @@ theorem crossing_lemma {l₁ l₂ : LPath} (m n₁ n₂ y₁ y₂ : ℕ)
       exact ⟨le_refl _, Nat.add_le_add_left hn₂_bound y₂⟩
     exact hlast _ ⟨h_in₁, h_in₂⟩
 
-/-! ## Part V: Path Count Formula -/
+/- ## Part V: Path Count Formula -/
 
 /-- Paths with (m+1) east and (n+1) north steps biject with (m) east/(n+1) north ⊕ (m+1) east/n north.
     This implements the inductive splitting: a non-empty path either starts with East or North. -/
@@ -394,7 +396,7 @@ theorem path_count_eq_choose (m n : ℕ) :
           show m + 1 + (n + 1) = m + (n + 1) + 1 from by omega]
       exact (Nat.choose_succ_succ' (m + (n + 1)) m).symm
 
-/-! ## Part VI: Non-Intersecting Pair Count and LGV -/
+/- ## Part VI: Non-Intersecting Pair Count and LGV -/
 
 /-- Classical decidability for non-intersecting path pairs.
     Extracted as a named instance to avoid Fintype instance diamonds. -/
@@ -559,7 +561,7 @@ theorem lgv_lemma_2x2 (m a₁ b₁ a₂ b₂ : ℕ)
       unfold lgvDet; rw [h_ni]
       zify [h_le]; ring
 
-/-! ## Part VII: Vandermonde's Identity -/
+/- ## Part VII: Vandermonde's Identity -/
 
 /-- Vandermonde's identity: C(m+n, r) = Σ_{k=0}^{r} C(m,k) * C(n, r-k).
 
@@ -571,7 +573,7 @@ theorem vandermonde (m n r : ℕ) :
   exact (Finset.Nat.sum_antidiagonal_eq_sum_range_succ
     (fun i j => Nat.choose m i * Nat.choose n j) r)
 
-/-! ## Part VIII: Catalan Numbers -/
+/- ## Part VIII: Catalan Numbers -/
 
 /-- The n-th Catalan number via ballot formula -/
 def Cn (n : ℕ) : ℕ := Nat.choose (2 * n) n - Nat.choose (2 * n) (n + 1)
@@ -623,7 +625,7 @@ theorem catalan_formula (n : ℕ) : Cn n * (n + 1) = Nat.choose (2 * n) n := by
     zify [h_le] at h_abs ⊢
     linear_combination -h_abs
 
-/-! ## Part IX: Ballot Theorem -/
+/- ## Part IX: Ballot Theorem -/
 
 /-- Classical ballot count: sequences of p A-votes and q B-votes where A leads throughout.
     Formula (via reflection principle): C(p+q-1, p-1) - C(p+q-1, p) -/
@@ -686,7 +688,7 @@ theorem ballot_formula (p q : ℕ) (hpq : q < p) (hp : 1 ≤ p) (hq : 1 ≤ q) :
   zify [h_le, hqp] at h_abs ⊢
   linear_combination -2 * h_abs
 
-/-! ## Part X: Ballot Count via Path Difference -/
+/- ## Part X: Ballot Count via Path Difference -/
 
 /-- The ballot count equals the difference of two path counts (1D reflection principle).
     The reflection principle bijects "bad ballot sequences" (where B ever leads) with
@@ -705,7 +707,7 @@ theorem ballot_via_path_count (p q : ℕ) (hp : 1 ≤ p) (hq : 1 ≤ q) (hpq : q
     exact Nat.choose_symm_of_eq_add (by omega)
   rw [h1, h2]
 
-/-! ## Part XI: Involution Infrastructure for LGV -/
+/- ## Part XI: Involution Infrastructure for LGV -/
 
 /-- Split a path after its k-th East step: prefix (containing k East steps) and suffix.
     Uses direct component access (not let-bindings) for cleaner definitional reduction. -/
@@ -1007,12 +1009,12 @@ lemma lgv_zero_east_overlap (n₁ n₂ y₁ y₂ : ℕ)
   · rw [colEntry_zero, Nat.add_zero]
   · exact Nat.le_add_right y₂ _
 
-/-! ## Part XII: The 2×2 LGV Lemma (proved in Part VI via complement counting + axiom) -/
+/- ## Part XII: The 2×2 LGV Lemma (proved in Part VI via complement counting + axiom) -/
 
 -- The main theorem `lgv_lemma_2x2` is defined in Part VI above.
 -- It uses complement counting (ni_complement_count') + the Lindström involution axiom.
 
-/-! ## Part XIII: Verified LGV Examples -/
+/- ## Part XIII: Verified LGV Examples -/
 
 -- LGV det for (m=1, a₁=0, b₁=1, a₂=1, b₂=2):
 -- C(2,1)*C(2,1) - C(3,1)*C(1,1) = 4 - 3 = 1
@@ -1034,7 +1036,7 @@ example : lgvDet 4 0 4 1 5 = 490 := by native_decide
 -- When paths start in opposite vertical order vs endpoints (y₁ < y₂ but ends > ends),
 -- they MUST share a lattice point. This is why the "crossing" term in LGV vanishes.
 
-/-! ## Part XIII: Complement Counting and Lindström Involution -/
+/- ## Part XIII: Complement Counting and Lindström Involution -/
 
 -- The proof of the 2×2 LGV Lemma (Case 3: strict ordering a₁ < a₂ ≤ b₁ < b₂)
 -- reduces to a cardinality equation via complement counting:
@@ -1079,5 +1081,273 @@ theorem lindstrom_involution_card (m n₁ n₂ n₁' n₂' a₁ a₂ : ℕ)
       ¬NonIntersecting p.1.val p.2.val m a₁ a₂} =
     Fintype.card (pathType m n₁' × pathType m n₂') :=
   lindstrom_involution m n₁ n₂ n₁' n₂' a₁ a₂ h_strict_a h_n₁' h_n₂' h_n_sum
+
+/- ## Part XIV: Path Transposition (East ↔ North Flip) -/
+
+/-- Flip a lattice path: swap East (false) ↔ North (true).
+    This transposes the grid, mapping paths with m East + n North steps
+    to paths with n East + m North steps. -/
+def pathFlip (l : LPath) : LPath := l.map (!·)
+
+theorem pathFlip_length (l : LPath) : (pathFlip l).length = l.length := by
+  simp [pathFlip]
+
+/-- Flipping twice is the identity -/
+theorem pathFlip_involutive (l : LPath) : pathFlip (pathFlip l) = l := by
+  unfold pathFlip
+  rw [List.map_map,
+      show (fun x : Bool => !x) ∘ (fun x : Bool => !x) = id from by ext b; simp,
+      List.map_id]
+
+/-- East steps of the flipped path = North steps of the original -/
+theorem pathFlip_eastSteps (l : LPath) : eastSteps (pathFlip l) = northSteps l := by
+  induction l with
+  | nil => rfl
+  | cons x xs ih =>
+    cases x with
+    | false =>
+      have h1 : pathFlip (false :: xs) = true :: pathFlip xs := rfl
+      rw [h1]
+      have h2 : eastSteps (true :: pathFlip xs) = eastSteps (pathFlip xs) := by
+        simp [eastSteps]
+      rw [h2, northSteps_cons_false, ih]
+    | true =>
+      have h1 : pathFlip (true :: xs) = false :: pathFlip xs := rfl
+      rw [h1]
+      have h2 : eastSteps (false :: pathFlip xs) = eastSteps (pathFlip xs) + 1 := by
+        simp [eastSteps]
+      rw [h2, northSteps_cons_true, ih]; omega
+
+/-- North steps of the flipped path = East steps of the original -/
+theorem pathFlip_northSteps (l : LPath) : northSteps (pathFlip l) = eastSteps l := by
+  have h := eastSteps_add_northSteps (pathFlip l)
+  rw [pathFlip_length, pathFlip_eastSteps] at h
+  have h2 := eastSteps_add_northSteps l
+  omega
+
+/-- Path transposition: flipping East↔North gives a bijection pathType m n ≃ pathType n m.
+    This is the combinatorial proof that C(m+n, m) = C(m+n, n). -/
+def pathFlipEquiv (m n : ℕ) : pathType m n ≃ pathType n m where
+  toFun := fun ⟨l, hlen, heast⟩ =>
+    ⟨pathFlip l,
+     by rw [pathFlip_length, Nat.add_comm]; exact hlen,
+     by have h := pathFlip_eastSteps l
+        unfold eastSteps northSteps at h
+        have h_sum := eastSteps_add_northSteps l
+        unfold eastSteps northSteps at h_sum; omega⟩
+  invFun := fun ⟨l, hlen, heast⟩ =>
+    ⟨pathFlip l,
+     by rw [pathFlip_length, Nat.add_comm]; exact hlen,
+     by have h := pathFlip_eastSteps l
+        unfold eastSteps northSteps at h
+        have h_sum := eastSteps_add_northSteps l
+        unfold eastSteps northSteps at h_sum; omega⟩
+  left_inv := fun ⟨l, _, _⟩ => Subtype.ext (pathFlip_involutive l)
+  right_inv := fun ⟨l, _, _⟩ => Subtype.ext (pathFlip_involutive l)
+
+/-- **Binomial Coefficient Symmetry via Paths**: C(m+n, m) = C(m+n, n).
+    The path flip bijection gives a purely combinatorial proof: paths with m East + n North
+    steps biject with paths with n East + m North steps by swapping step types. -/
+theorem choose_symm_via_paths (m n : ℕ) :
+    Nat.choose (m + n) m = Nat.choose (m + n) n := by
+  have h1 := path_count_eq_choose m n
+  have h2 := path_count_eq_choose n m
+  rw [show n + m = m + n from Nat.add_comm n m] at h2
+  have h3 : Fintype.card (pathType m n) = Fintype.card (pathType n m) :=
+    Fintype.card_congr (pathFlipEquiv m n)
+  linarith
+
+/- ## Part XV: LGV Determinant Algebra -/
+
+/-- **Antisymmetry in Sources**: Swapping the source y-coordinates negates the LGV determinant. -/
+theorem lgvDet_swap_sources (m a₁ b₁ a₂ b₂ : ℕ) :
+    lgvDet m a₂ b₁ a₁ b₂ = -lgvDet m a₁ b₁ a₂ b₂ := by
+  unfold lgvDet; ring
+
+/-- **Antisymmetry in Targets**: Swapping the target y-coordinates negates the LGV determinant. -/
+theorem lgvDet_swap_targets (m a₁ b₁ a₂ b₂ : ℕ) :
+    lgvDet m a₁ b₂ a₂ b₁ = -lgvDet m a₁ b₁ a₂ b₂ := by
+  unfold lgvDet; ring
+
+/-- **Non-negativity**: Under proper ordering (a₁ ≤ a₂ ≤ b₁ ≤ b₂), the LGV determinant
+    is non-negative. This follows because lgvDet equals niPairCount (a natural number)
+    by the 2×2 LGV lemma. -/
+theorem lgvDet_nonneg (m a₁ b₁ a₂ b₂ : ℕ)
+    (ha : a₁ ≤ a₂) (hb : b₁ ≤ b₂) (ha₁ : a₁ ≤ b₁) (ha₂ : a₂ ≤ b₂) (ha₂₁ : a₂ ≤ b₁) :
+    0 ≤ lgvDet m a₁ b₁ a₂ b₂ := by
+  rw [← lgv_lemma_2x2 m a₁ b₁ a₂ b₂ ha hb ha₁ ha₂ ha₂₁]
+  exact Int.natCast_nonneg _
+
+/-- **Double swap vanishes**: Swapping both sources and targets recovers the original. -/
+theorem lgvDet_swap_both (m a₁ b₁ a₂ b₂ : ℕ) :
+    lgvDet m a₂ b₂ a₁ b₁ = lgvDet m a₁ b₁ a₂ b₂ := by
+  unfold lgvDet; ring
+
+/- ## Part XVI: Catalan-Ballot Unification -/
+
+/-- **Catalan = Ballot**: The n-th Catalan number equals the ballot count for (n+1) vs n votes.
+    Both count lattice paths that stay strictly above the diagonal, via two equivalent
+    formulations of the reflection principle:
+    - Cn n = C(2n,n) - C(2n,n+1) [Catalan via difference]
+    - ballotSeqCount (n+1) n = C(2n, n) - C(2n, n+1) [ballot via reflection] -/
+theorem catalan_eq_ballot (n : ℕ) : Cn n = ballotSeqCount (n + 1) n := by
+  simp only [Cn, ballotSeqCount,
+    show n + 1 + n - 1 = 2 * n from by omega,
+    show n + 1 - 1 = n from by omega]
+
+-- Verified for small values
+example : Cn 0 = ballotSeqCount 1 0 := by native_decide
+example : Cn 1 = ballotSeqCount 2 1 := by native_decide
+example : Cn 2 = ballotSeqCount 3 2 := by native_decide
+example : Cn 3 = ballotSeqCount 4 3 := by native_decide
+example : Cn 4 = ballotSeqCount 5 4 := by native_decide
+
+/-- **Catalan via (n+1)**: Cn(n) = C(2n,n) / (n+1), combined with ballot theorem.
+    If q < p and both ≥ 1, then ballotSeqCount p q * (p+q) = (p-q) * C(p+q,p).
+    Setting p = n+1, q = n gives Cn(n) * (2n+1) = 1 * C(2n+1, n+1).
+    Here we just show the implication: catalan_formula + catalan_eq_ballot together give
+    the ballot formula for (n+1, n). -/
+theorem catalan_ballot_division (n : ℕ) :
+    ballotSeqCount (n + 1) n * (n + 1) = Nat.choose (2 * n) n := by
+  rw [← catalan_eq_ballot]
+  exact catalan_formula n
+
+/- ## Part XVII: Entry Gap Analysis and swapTails Properties
+
+This section develops the entry gap framework and proves key properties of swapTails
+that are needed for the Lindström involution.
+
+**Entry gap**: Define gap(k) = (y₂ + colEntry l₂ k) - (y₁ + colEntry l₁ k).
+When y₁ < y₂, gap(0) > 0. Non-intersection preserves gap positivity (via
+nonIntersecting_entry_order). This is used in the crossing lemma.
+
+**swapTails properties**: We prove that swapTails preserves East step counts and
+total path lengths — essential for showing swapped paths are valid pathType elements.
+
+**Toward eliminating the Lindström axiom**: The full bijection requires finding the
+first shared lattice point between intersecting paths. This requires a finer analysis
+than column-entry boundaries alone:
+- NonIntersecting uses column Y-ranges (intervals), not just boundary points
+- ¬NonIntersecting gives overlap in some column's Y-range
+- The Lindström involution swaps at the lexicographically first shared lattice point
+- This point may be in the interior of a column, not just at a boundary
+See the axiom documentation for the remaining construction needed.
+-/
+
+/-- The "gap" between path entry y-coordinates at column k.
+    Positive means P₁ is below P₂, zero or negative means they've met/crossed.
+    Defined on ℤ to handle the subtraction cleanly. -/
+def entryGap (l₁ l₂ : LPath) (y₁ y₂ : ℕ) (k : ℕ) : ℤ :=
+  (y₂ + colEntry l₂ k : ℤ) - (y₁ + colEntry l₁ k : ℤ)
+
+/-- At column 0, the gap is y₂ - y₁ -/
+theorem entryGap_zero (l₁ l₂ : LPath) (y₁ y₂ : ℕ) :
+    entryGap l₁ l₂ y₁ y₂ 0 = (y₂ : ℤ) - y₁ := by
+  simp [entryGap, colEntry_zero]
+
+/-- If paths are non-intersecting and the gap is positive at column k,
+    the gap stays positive at column k+1 (rephrasing of nonIntersecting_entry_order). -/
+theorem entryGap_pos_succ {l₁ l₂ : LPath} {m y₁ y₂ : ℕ}
+    (hni : NonIntersecting l₁ l₂ m y₁ y₂)
+    (hk : k < m)
+    (hpos : 0 < entryGap l₁ l₂ y₁ y₂ k) :
+    0 < entryGap l₁ l₂ y₁ y₂ (k + 1) := by
+  simp only [entryGap] at hpos ⊢
+  have h_entry : y₁ + colEntry l₁ k < y₂ + colEntry l₂ k := by omega
+  have h_next := nonIntersecting_entry_order hni hk h_entry
+  omega
+
+/-- **Key lemma**: If paths are non-intersecting and y₁ < y₂,
+    the gap is positive at ALL columns k ≤ m.
+    (Proved by induction using entryGap_pos_succ.) -/
+theorem entryGap_pos_all {l₁ l₂ : LPath} {m y₁ y₂ : ℕ}
+    (hni : NonIntersecting l₁ l₂ m y₁ y₂)
+    (hstart : y₁ < y₂) :
+    ∀ k ≤ m, 0 < entryGap l₁ l₂ y₁ y₂ k := by
+  intro k hkm
+  induction k with
+  | zero => rw [entryGap_zero]; omega
+  | succ k ih =>
+    apply entryGap_pos_succ hni (by omega : k < m)
+    exact ih (by omega)
+
+/-- Gap non-positive means P₁'s entry y is at or above P₂'s entry y -/
+theorem crossing_col_entry_ge {l₁ l₂ : LPath} {y₁ y₂ k : ℕ}
+    (hgap : entryGap l₁ l₂ y₁ y₂ k ≤ 0) :
+    y₂ + colEntry l₂ k ≤ y₁ + colEntry l₁ k := by
+  simp only [entryGap] at hgap; omega
+
+/-- Gap positive means P₁'s entry y is strictly below P₂'s entry y -/
+theorem crossing_col_prev_lt {l₁ l₂ : LPath} {y₁ y₂ k : ℕ}
+    (hgap : 0 < entryGap l₁ l₂ y₁ y₂ k) :
+    y₁ + colEntry l₁ k < y₂ + colEntry l₂ k := by
+  simp only [entryGap] at hgap; omega
+
+/- ### swapTails East Step and Length Preservation -/
+
+/-- **swapTails preserves East step count** for the first resulting path.
+    Since pre₁ has k East steps and suf₂ has (m-k) East steps, their concatenation has m. -/
+theorem eastSteps_swapTails_fst (l₁ l₂ : LPath) (k m : ℕ)
+    (hk₁ : l₁.countP (· = false) = m)
+    (hk₂ : l₂.countP (· = false) = m)
+    (hkm : k ≤ m) :
+    eastSteps (swapTails l₁ l₂ k).1 = m := by
+  have heast₁ : k ≤ eastSteps l₁ := by simp only [eastSteps]; omega
+  have heast₂ : k ≤ eastSteps l₂ := by simp only [eastSteps]; omega
+  have hval : (swapTails l₁ l₂ k).1 =
+      (splitAfterEast l₁ k).1 ++ (splitAfterEast l₂ k).2 := rfl
+  rw [hval, show eastSteps ((splitAfterEast l₁ k).1 ++ (splitAfterEast l₂ k).2) =
+    eastSteps (splitAfterEast l₁ k).1 + eastSteps (splitAfterEast l₂ k).2 from by
+    simp [eastSteps, List.countP_append]]
+  have h_fst₁ := splitAfterEast_fst_eastSteps l₁ k heast₁
+  have h_sum₂ : eastSteps (splitAfterEast l₂ k).1 + eastSteps (splitAfterEast l₂ k).2 =
+      eastSteps l₂ := by
+    have h := splitAfterEast_append l₂ k
+    conv_rhs => rw [← h]
+    simp [eastSteps, List.countP_append]
+  have h_fst₂ := splitAfterEast_fst_eastSteps l₂ k heast₂
+  simp only [eastSteps] at h_fst₁ h_fst₂ h_sum₂ hk₂ ⊢; omega
+
+/-- **swapTails preserves East step count** for the second resulting path. -/
+theorem eastSteps_swapTails_snd (l₁ l₂ : LPath) (k m : ℕ)
+    (hk₁ : l₁.countP (· = false) = m)
+    (hk₂ : l₂.countP (· = false) = m)
+    (hkm : k ≤ m) :
+    eastSteps (swapTails l₁ l₂ k).2 = m := by
+  have heast₁ : k ≤ eastSteps l₁ := by simp only [eastSteps]; omega
+  have heast₂ : k ≤ eastSteps l₂ := by simp only [eastSteps]; omega
+  have hval : (swapTails l₁ l₂ k).2 =
+      (splitAfterEast l₂ k).1 ++ (splitAfterEast l₁ k).2 := rfl
+  rw [hval, show eastSteps ((splitAfterEast l₂ k).1 ++ (splitAfterEast l₁ k).2) =
+    eastSteps (splitAfterEast l₂ k).1 + eastSteps (splitAfterEast l₁ k).2 from by
+    simp [eastSteps, List.countP_append]]
+  have h_fst₂ := splitAfterEast_fst_eastSteps l₂ k heast₂
+  have h_sum₁ : eastSteps (splitAfterEast l₁ k).1 + eastSteps (splitAfterEast l₁ k).2 =
+      eastSteps l₁ := by
+    have h := splitAfterEast_append l₁ k
+    conv_rhs => rw [← h]
+    simp [eastSteps, List.countP_append]
+  have h_fst₁ := splitAfterEast_fst_eastSteps l₁ k heast₁
+  simp only [eastSteps] at h_fst₁ h_fst₂ h_sum₁ hk₁ ⊢; omega
+
+/-- **swapTails length preservation** for the first path -/
+theorem length_swapTails_fst (l₁ l₂ : LPath) (k : ℕ) :
+    (swapTails l₁ l₂ k).1.length =
+    (splitAfterEast l₁ k).1.length + (splitAfterEast l₂ k).2.length := by
+  simp [swapTails, List.length_append]
+
+/-- **swapTails length preservation** for the second path -/
+theorem length_swapTails_snd (l₁ l₂ : LPath) (k : ℕ) :
+    (swapTails l₁ l₂ k).2.length =
+    (splitAfterEast l₂ k).1.length + (splitAfterEast l₁ k).2.length := by
+  simp [swapTails, List.length_append]
+
+/-- **North steps of suffix**: northSteps of the suffix after k East steps equals
+    total northSteps minus the prefix northSteps (which equals colEntry l k). -/
+theorem northSteps_splitAfterEast_snd (l : LPath) (k : ℕ) :
+    northSteps (splitAfterEast l k).2 = northSteps l - colEntry l k := by
+  have h_sum := northSteps_splitAfterEast_sum l k
+  have h_fst := northSteps_splitAfterEast_fst l k
+  omega
 
 end LatticePathLGV

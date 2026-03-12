@@ -26,7 +26,7 @@ export const descartesRuleOfSignsProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const descartesRuleOfSignsAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const descartesRuleOfSignsAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const descartesRuleOfSignsData: ProofData = {
   proof: descartesRuleOfSignsProof,

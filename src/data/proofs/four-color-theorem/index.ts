@@ -26,7 +26,7 @@ export const fourColorTheoremProof: Proof = {
   conclusion: meta.conclusion,
 }
 
-export const fourColorTheoremAnnotations: Annotation[] = annotationsJson as Annotation[]
+export const fourColorTheoremAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const fourColorTheoremData: ProofData = {
   proof: fourColorTheoremProof,
