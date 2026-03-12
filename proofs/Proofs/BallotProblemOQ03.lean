@@ -2120,10 +2120,24 @@ theorem swapAtPoint_snd_north_corrected (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p
     (h_reach : a₂ ≤ a₁ + l₁.countP (· = true)) :
     (swapAtPoint l₁ l₂ a₁ a₂ p).2.countP (· = true) =
     (l₁.countP (· = true) + a₁) - a₂ := by
-  -- The second swapped path = l₂.take(splitIdx a₂ p) ++ l₁.drop(splitIdx a₁ p)
-  -- prefix₂ has (p.2 - a₂) north steps, suffix₁ has (n₁ + a₁ - p.2) north steps
-  -- Total = (p.2 - a₂) + (n₁ + a₁ - p.2) = n₁ + a₁ - a₂
-  sorry
+  -- swapAtPoint.2 = l₂.take(si₂) ++ l₁.drop(si₁)
+  -- North count: (p.2 - a₂) from prefix₂ + (n₁ + a₁ - p.2) from suffix₁ = n₁ + a₁ - a₂
+  simp only [swapAtPoint, List.countP_append]
+  simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h₁ h₂
+  obtain ⟨i₁, hi₁_bound, hi₁_eq⟩ := h₁
+  obtain ⟨i₂, hi₂_bound, hi₂_eq⟩ := h₂
+  simp [posAfter] at hi₁_eq hi₂_eq
+  have h_idx₁ : i₁ = splitIdx a₁ p := by
+    have : (l₁.take i₁).length = i₁ := by rw [List.length_take]; omega
+    have hsum := bool_list_countP_sum (l₁.take i₁)
+    rw [this] at hsum; simp [splitIdx]; omega
+  have h_idx₂ : i₂ = splitIdx a₂ p := by
+    have : (l₂.take i₂).length = i₂ := by rw [List.length_take]; omega
+    have hsum := bool_list_countP_sum (l₂.take i₂)
+    rw [this] at hsum; simp [splitIdx]; omega
+  rw [← h_idx₁, ← h_idx₂]
+  have h_sum₁ := take_drop_countP_sum l₁ i₁ (· = true)
+  omega
 
 /-- The first swapped path visits the shared point p.
     Since swapAtPoint takes the prefix of l₁ up to p, the swapped path's
@@ -2132,18 +2146,57 @@ theorem swapAtPoint_fst_visits_point (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : 
     (h₁ : p ∈ visitedPoints l₁ a₁) (h₂ : p ∈ visitedPoints l₂ a₂)
     (ha₁ : a₁ ≤ p.2) (ha₂ : a₂ ≤ p.2) :
     p ∈ visitedPoints (swapAtPoint l₁ l₂ a₁ a₂ p).1 a₁ := by
-  -- The swapped path = l₁.take(si₁) ++ l₂.drop(si₂).
-  -- Its first si₁ steps are exactly l₁.take(si₁), which visits p.
-  -- So posAfter (swapped) a₁ si₁ = posAfter l₁ a₁ si₁ = p.
-  sorry
+  -- swapAtPoint.1 = l₁.take(si₁) ++ l₂.drop(si₂)
+  -- posAfter of first si₁ steps = posAfter l₁ si₁ = p (since prefix is l₁.take si₁)
+  simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h₁ ⊢
+  obtain ⟨i₁, hi₁_bound, hi₁_eq⟩ := h₁
+  have h_idx₁ : i₁ = splitIdx a₁ p := by
+    simp [posAfter] at hi₁_eq
+    have : (l₁.take i₁).length = i₁ := by rw [List.length_take]; omega
+    have hsum := bool_list_countP_sum (l₁.take i₁)
+    rw [this] at hsum; simp [splitIdx]; omega
+  set si₁ := splitIdx a₁ p
+  refine ⟨si₁, ?_, ?_⟩
+  · -- si₁ < (swapped path).length + 1
+    simp [swapAtPoint, List.length_append]
+    have : si₁ ≤ l₁.length := splitIdx_le_length l₁ a₁ p h₁
+    omega
+  · -- posAfter (l₁.take si₁ ++ l₂.drop si₂) a₁ si₁ = p
+    simp only [swapAtPoint, posAfter]
+    have hlen : (l₁.take si₁).length = si₁ := by
+      rw [List.length_take]
+      exact Nat.min_eq_left (splitIdx_le_length l₁ a₁ p h₁)
+    rw [show (l₁.take si₁ ++ l₂.drop (splitIdx a₂ p)).take si₁ = l₁.take si₁ from by
+      rw [← hlen]; exact List.take_left]
+    rw [← h_idx₁]
+    exact hi₁_eq
 
 /-- The second swapped path visits the shared point p (symmetric). -/
 theorem swapAtPoint_snd_visits_point (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ × ℕ)
     (h₁ : p ∈ visitedPoints l₁ a₁) (h₂ : p ∈ visitedPoints l₂ a₂)
     (ha₁ : a₁ ≤ p.2) (ha₂ : a₂ ≤ p.2) :
     p ∈ visitedPoints (swapAtPoint l₁ l₂ a₁ a₂ p).2 a₂ := by
-  -- Symmetric to fst case via swapAtPoint symmetry
-  sorry
+  -- Symmetric: swapAtPoint.2 = l₂.take(si₂) ++ l₁.drop(si₁)
+  simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h₂ ⊢
+  obtain ⟨i₂, hi₂_bound, hi₂_eq⟩ := h₂
+  have h_idx₂ : i₂ = splitIdx a₂ p := by
+    simp [posAfter] at hi₂_eq
+    have : (l₂.take i₂).length = i₂ := by rw [List.length_take]; omega
+    have hsum := bool_list_countP_sum (l₂.take i₂)
+    rw [this] at hsum; simp [splitIdx]; omega
+  set si₂ := splitIdx a₂ p
+  refine ⟨si₂, ?_, ?_⟩
+  · simp [swapAtPoint, List.length_append]
+    have : si₂ ≤ l₂.length := splitIdx_le_length l₂ a₂ p h₂
+    omega
+  · simp only [swapAtPoint, posAfter]
+    have hlen : (l₂.take si₂).length = si₂ := by
+      rw [List.length_take]
+      exact Nat.min_eq_left (splitIdx_le_length l₂ a₂ p h₂)
+    rw [show (l₂.take si₂ ++ l₁.drop (splitIdx a₁ p)).take si₂ = l₂.take si₂ from by
+      rw [← hlen]; exact List.take_left]
+    rw [← h_idx₂]
+    exact hi₂_eq
 
 /-- **KEY**: Swapped paths are NOT non-intersecting.
     Both swapped paths visit the shared point p, so they share a lattice point. -/
@@ -2153,9 +2206,11 @@ theorem swapAtPoint_not_ni (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ × ℕ
     (heast₁ : eastSteps l₁ = m) (heast₂ : eastSteps l₂ = m) :
     ¬NonIntersecting (swapAtPoint l₁ l₂ a₁ a₂ p).1
       (swapAtPoint l₁ l₂ a₁ a₂ p).2 m a₁ a₂ := by
-  -- Both swapped paths visit p (fst_visits, snd_visits), so they share a lattice point
-  -- → not_ni_of_shared_point gives the result
-  sorry
+  have hv₁ := swapAtPoint_fst_visits_point l₁ l₂ a₁ a₂ p h₁ h₂ ha₁ ha₂
+  have hv₂ := swapAtPoint_snd_visits_point l₁ l₂ a₁ a₂ p h₁ h₂ ha₁ ha₂
+  have he₁ := swapAtPoint_fst_east l₁ l₂ a₁ a₂ p h₁ h₂ heast₁ heast₂
+  have he₂ := swapAtPoint_snd_east l₁ l₂ a₁ a₂ p h₁ h₂ heast₁ heast₂
+  exact not_ni_of_shared_point p hv₁ hv₂ he₁ he₂
 
 /-
 ### Proof Status for lindstrom_involution
