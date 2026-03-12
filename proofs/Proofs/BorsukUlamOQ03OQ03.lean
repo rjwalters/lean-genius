@@ -918,4 +918,236 @@ theorem diskLift_z_nonneg (p : ℝ × ℝ) (_hp : p.1 ^ 2 + p.2 ^ 2 ≤ 1) :
 #check @IsGridBoundary
 #check @antipodal_preserves_boundary
 
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART XVIII: IVT ON LINE SEGMENTS
+
+The Intermediate Value Theorem on line segments in ℝ² is the key tool for
+extracting approximate zeros from Tucker's complementary edges.
+
+Given a complementary edge (u, v) where g changes sign in coordinate k,
+the IVT on the segment [u,v] gives a point w where g(w)_k = 0.
+Combined with the dominant component labeling, this gives ‖g(w)‖ → 0
+as the mesh size → 0.
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- Parametrization of the line segment from u to v: t ↦ (1-t)·u + t·v. -/
+def segmentParam (u v : ℝ × ℝ) (t : ℝ) : ℝ × ℝ :=
+  ((1 - t) * u.1 + t * v.1, (1 - t) * u.2 + t * v.2)
+
+/-- segmentParam at t=0 gives u. -/
+theorem segmentParam_zero (u v : ℝ × ℝ) : segmentParam u v 0 = u := by
+  simp [segmentParam]
+
+/-- segmentParam at t=1 gives v. -/
+theorem segmentParam_one (u v : ℝ × ℝ) : segmentParam u v 1 = v := by
+  simp [segmentParam]
+
+/-- segmentParam is continuous in t. -/
+theorem segmentParam_continuous (u v : ℝ × ℝ) : Continuous (segmentParam u v) := by
+  unfold segmentParam; fun_prop
+
+/-- The first component along a segment is an affine function of t. -/
+theorem segmentParam_fst (u v : ℝ × ℝ) (t : ℝ) :
+    (segmentParam u v t).1 = (1 - t) * u.1 + t * v.1 := rfl
+
+/-- The second component along a segment is an affine function of t. -/
+theorem segmentParam_snd (u v : ℝ × ℝ) (t : ℝ) :
+    (segmentParam u v t).2 = (1 - t) * u.2 + t * v.2 := rfl
+
+/-- Points on the segment [u,v] (t ∈ [0,1]) are within dist(u,v) of u. -/
+theorem segmentParam_dist_le (u v : ℝ × ℝ) (t : ℝ) (ht0 : 0 ≤ t) (ht1 : t ≤ 1) :
+    dist (segmentParam u v t) u ≤ dist u v := by
+  simp only [segmentParam, Prod.dist_eq, dist_eq_norm, Prod.norm_def, Real.norm_eq_abs]
+  -- segmentParam u v t - u = (t * (v.1 - u.1), t * (v.2 - u.2))
+  have h1 : (1 - t) * u.1 + t * v.1 - u.1 = t * (v.1 - u.1) := by ring
+  have h2 : (1 - t) * u.2 + t * v.2 - u.2 = t * (v.2 - u.2) := by ring
+  rw [h1, h2, abs_mul, abs_mul, abs_of_nonneg ht0, abs_of_nonneg ht0]
+  -- max(t * |v.1 - u.1|, t * |v.2 - u.2|) = t * max(|v.1 - u.1|, |v.2 - u.2|)
+  rw [← mul_max_of_nonneg _ _ ht0]
+  -- t * max(...) ≤ 1 * max(...) = max(...)
+  calc t * max |v.1 - u.1| |v.2 - u.2|
+      ≤ 1 * max |v.1 - u.1| |v.2 - u.2| := by
+        apply mul_le_mul_of_nonneg_right ht1 (le_max_of_le_left (abs_nonneg _))
+    _ = max |v.1 - u.1| |v.2 - u.2| := one_mul _
+    _ = max |u.1 - v.1| |u.2 - v.2| := by rw [abs_sub_comm (v.1) (u.1), abs_sub_comm (v.2) (u.2)]
+
+/-- **IVT on a line segment (first component)**: If g is continuous and
+    g(u).1 and g(v).1 have opposite signs (product ≤ 0), then there exists
+    a point w on the segment [u,v] where g(w).1 = 0.
+
+    This is the key tool for extracting zeros from Tucker's complementary edges.
+    When Tucker gives a complementary edge labeled +k and -k, the continuous
+    function changes sign in component k, and this theorem gives the zero. -/
+theorem ivt_segment_fst (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
+    (u v : ℝ × ℝ) (h_neg : (g u).1 ≤ 0) (h_pos : 0 ≤ (g v).1) :
+    ∃ t ∈ Icc (0:ℝ) 1, (g (segmentParam u v t)).1 = 0 := by
+  -- Define h(t) = g(segmentParam u v t).1 on [0,1]
+  set h := fun t : ℝ => (g (segmentParam u v t)).1 with hh_def
+  have hh_cont : ContinuousOn h (Icc 0 1) :=
+    ((hg.comp (segmentParam_continuous u v)).fst).continuousOn
+  have hh_0 : h 0 = (g u).1 := by simp [hh_def, segmentParam_zero]
+  have hh_1 : h 1 = (g v).1 := by simp [hh_def, segmentParam_one]
+  -- Apply IVT: h(0) ≤ 0 ≤ h(1)
+  have hmem : (0 : ℝ) ∈ h '' Icc 0 1 :=
+    intermediate_value_Icc (by norm_num : (0:ℝ) ≤ 1) hh_cont
+      ⟨by rw [hh_0]; exact h_neg, by rw [hh_1]; exact h_pos⟩
+  obtain ⟨t, ht_mem, ht_zero⟩ := hmem
+  exact ⟨t, ht_mem, ht_zero⟩
+
+/-- IVT on a line segment (second component). -/
+theorem ivt_segment_snd (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
+    (u v : ℝ × ℝ) (h_neg : (g u).2 ≤ 0) (h_pos : 0 ≤ (g v).2) :
+    ∃ t ∈ Icc (0:ℝ) 1, (g (segmentParam u v t)).2 = 0 := by
+  set h := fun t : ℝ => (g (segmentParam u v t)).2 with hh_def
+  have hh_cont : ContinuousOn h (Icc 0 1) :=
+    ((hg.comp (segmentParam_continuous u v)).snd).continuousOn
+  have hh_0 : h 0 = (g u).2 := by simp [hh_def, segmentParam_zero]
+  have hh_1 : h 1 = (g v).2 := by simp [hh_def, segmentParam_one]
+  have hmem : (0 : ℝ) ∈ h '' Icc 0 1 :=
+    intermediate_value_Icc (by norm_num : (0:ℝ) ≤ 1) hh_cont
+      ⟨by rw [hh_0]; exact h_neg, by rw [hh_1]; exact h_pos⟩
+  obtain ⟨t, ht_mem, ht_zero⟩ := hmem
+  exact ⟨t, ht_mem, ht_zero⟩
+
+/-- **Zero-crossing on a complementary edge**: If g is continuous and
+    g(u).1 * g(v).1 ≤ 0 (opposite signs in first component), then there
+    exists a point w on the segment [u,v] where g(w).1 = 0 and
+    dist(w, u) ≤ dist(u, v).
+
+    This is the concrete zero-finding step: Tucker gives a complementary edge,
+    and this theorem produces the approximate zero. -/
+theorem complementary_edge_zero_fst (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
+    (u v : ℝ × ℝ) (h_sign : (g u).1 * (g v).1 ≤ 0) :
+    ∃ w : ℝ × ℝ, dist w u ≤ dist u v ∧ (g w).1 = 0 := by
+  -- Case split: either g(u).1 ≤ 0 ≤ g(v).1 or g(v).1 ≤ 0 ≤ g(u).1
+  rcases le_or_gt (g u).1 0 with h_neg | h_pos
+  · -- g(u).1 ≤ 0, need g(v).1 ≥ 0
+    rcases eq_or_lt_of_le h_neg with heq | hlt
+    · -- g(u).1 = 0: take w = u directly
+      exact ⟨u, by rw [dist_self]; exact dist_nonneg, heq.symm⟩
+    · -- g(u).1 < 0: must have g(v).1 ≥ 0
+      have h_v_pos : 0 ≤ (g v).1 := by
+        by_contra h_v_neg
+        push_neg at h_v_neg
+        linarith [mul_pos_of_neg_of_neg hlt h_v_neg]
+      obtain ⟨t, ht_mem, ht_zero⟩ := ivt_segment_fst g hg u v (le_of_lt hlt) h_v_pos
+      exact ⟨segmentParam u v t, segmentParam_dist_le u v t ht_mem.1 ht_mem.2, ht_zero⟩
+  · -- g(u).1 > 0, need g(v).1 ≤ 0; use IVT' (decreasing version)
+    have h_v_neg : (g v).1 ≤ 0 := by
+      by_contra h_v_pos
+      push_neg at h_v_pos
+      linarith [mul_pos h_pos h_v_pos]
+    -- Define h(t) = g(segmentParam u v t).1 on [0,1]; h(0) > 0, h(1) ≤ 0
+    set h := fun t : ℝ => (g (segmentParam u v t)).1 with hh_def
+    have hh_cont : ContinuousOn h (Icc 0 1) :=
+      ((hg.comp (segmentParam_continuous u v)).fst).continuousOn
+    have hh_0 : h 0 = (g u).1 := by simp [hh_def, segmentParam_zero]
+    have hh_1 : h 1 = (g v).1 := by simp [hh_def, segmentParam_one]
+    -- IVT': h(1) ≤ 0 ≤ h(0), so 0 ∈ h '' [0,1]
+    have hmem : (0 : ℝ) ∈ h '' Icc 0 1 :=
+      intermediate_value_Icc' (by norm_num : (0:ℝ) ≤ 1) hh_cont
+        ⟨by rw [hh_1]; exact h_v_neg, by rw [hh_0]; exact le_of_lt h_pos⟩
+    obtain ⟨t, ht_mem, ht_zero⟩ := hmem
+    exact ⟨segmentParam u v t, segmentParam_dist_le u v t ht_mem.1 ht_mem.2, ht_zero⟩
+
+/-- Zero-crossing on a complementary edge (second component). -/
+theorem complementary_edge_zero_snd (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
+    (u v : ℝ × ℝ) (h_sign : (g u).2 * (g v).2 ≤ 0) :
+    ∃ w : ℝ × ℝ, dist w u ≤ dist u v ∧ (g w).2 = 0 := by
+  rcases le_or_gt (g u).2 0 with h_neg | h_pos
+  · rcases eq_or_lt_of_le h_neg with heq | hlt
+    · exact ⟨u, by rw [dist_self]; exact dist_nonneg, heq.symm⟩
+    · have h_v_pos : 0 ≤ (g v).2 := by
+        by_contra h_v_neg; push_neg at h_v_neg
+        linarith [mul_pos_of_neg_of_neg hlt h_v_neg]
+      obtain ⟨t, ht_mem, ht_zero⟩ := ivt_segment_snd g hg u v (le_of_lt hlt) h_v_pos
+      exact ⟨segmentParam u v t, segmentParam_dist_le u v t ht_mem.1 ht_mem.2, ht_zero⟩
+  · have h_v_neg : (g v).2 ≤ 0 := by
+      by_contra h_v_pos; push_neg at h_v_pos
+      linarith [mul_pos h_pos h_v_pos]
+    set h := fun t : ℝ => (g (segmentParam u v t)).2 with hh_def
+    have hh_cont : ContinuousOn h (Icc 0 1) :=
+      ((hg.comp (segmentParam_continuous u v)).snd).continuousOn
+    have hmem : (0 : ℝ) ∈ h '' Icc 0 1 :=
+      intermediate_value_Icc' (by norm_num : (0:ℝ) ≤ 1) hh_cont
+        ⟨by simp [hh_def, segmentParam_one]; exact h_v_neg,
+         by simp [hh_def, segmentParam_zero]; exact le_of_lt h_pos⟩
+    obtain ⟨t, ht_mem, ht_zero⟩ := hmem
+    exact ⟨segmentParam u v t, segmentParam_dist_le u v t ht_mem.1 ht_mem.2, ht_zero⟩
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART XIX: DOMINANT COMPONENT AND MODULUS OF CONTINUITY
+
+The key insight connecting Tucker to Borsuk-Ulam: at a complementary edge
+with dominant component label ±k, the IVT gives g(w)_k = 0. The dominant
+component condition |g(u)_k| ≥ |g(u)_{3-k}| combined with continuity means
+|g(u)_k| ≤ ω(δ) (modulus of continuity at distance δ from the zero),
+hence |g(u)_{3-k}| ≤ ω(δ), hence |g(w)_{3-k}| ≤ 2ω(δ).
+
+This gives ‖g(w)‖ ≤ 2ω(δ) → 0 as δ → 0 (mesh refinement).
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- At a dominant-component labeled vertex, the IVT zero nearby implies
+    the dominant component value is small (bounded by the modulus of continuity).
+
+    If g(w)_k = 0 and dist(w, u) ≤ δ, then by continuity
+    |g(u)_k| = |g(u)_k - g(w)_k| ≤ |g(u)_k - g(w)_k| ≤ ω(δ).
+
+    Since the dominant component label means |g(u)_k| ≥ |g(u)_{3-k}|,
+    we get |g(u)_{3-k}| ≤ ω(δ) as well.
+
+    This is a standard continuity estimate - we state the concrete version. -/
+theorem dominant_component_small_at_zero
+    (g : ℝ × ℝ → ℝ × ℝ) (u w : ℝ × ℝ)
+    (hw_zero_fst : (g w).1 = 0)
+    (h_dom : |(g u).1| ≥ |(g u).2|) :
+    |(g u).2| ≤ |(g u).1 - (g w).1| := by
+  rw [hw_zero_fst, sub_zero]
+  exact h_dom
+
+/-- The non-dominant component at the IVT zero is bounded by the distance
+    to the dominant component at u, plus the continuity variation.
+
+    |g(w)_{3-k}| ≤ |g(u)_{3-k}| + |g(w)_{3-k} - g(u)_{3-k}|
+                 ≤ |g(u)_k| + |g(w)_{3-k} - g(u)_{3-k}|
+                 = |g(u)_k - g(w)_k| + |g(w)_{3-k} - g(u)_{3-k}|    (since g(w)_k = 0)
+                 ≤ 2 · max(|g_k(u) - g_k(w)|, |g_{3-k}(u) - g_{3-k}(w)|)
+                 = 2 · ‖g(u) - g(w)‖_∞ -/
+theorem non_dominant_at_zero_bound
+    (g : ℝ × ℝ → ℝ × ℝ) (u w : ℝ × ℝ)
+    (hw_zero_fst : (g w).1 = 0)
+    (h_dom : |(g u).1| ≥ |(g u).2|) :
+    |(g w).2| ≤ 2 * dist (g u) (g w) := by
+  -- Step 1: |g(w).2| ≤ |g(u).2| + |g(w).2 - g(u).2| (reverse triangle inequality)
+  have h_tri : |(g w).2| ≤ |(g u).2| + |(g w).2 - (g u).2| := by
+    have := abs_sub_abs_le_abs_sub (g w).2 (g u).2
+    linarith [abs_nonneg ((g w).2 - (g u).2), abs_nonneg (g u).2]
+  -- Step 2: |g(u).2| ≤ |g(u).1 - g(w).1| (dominant component + g(w).1 = 0)
+  have h_dom' : |(g u).2| ≤ |(g u).1 - (g w).1| := by
+    rw [hw_zero_fst, sub_zero]; exact h_dom
+  -- Step 3: Each component difference is ≤ dist (sup norm on ℝ × ℝ)
+  have h_fst_le : |(g u).1 - (g w).1| ≤ dist (g u) (g w) := by
+    rw [← Real.dist_eq, Prod.dist_eq]
+    exact le_max_left _ _
+  have h_snd_le : |(g w).2 - (g u).2| ≤ dist (g u) (g w) := by
+    rw [abs_sub_comm, ← Real.dist_eq, Prod.dist_eq]
+    exact le_max_right _ _
+  -- Combine: |g(w).2| ≤ dist + dist = 2 * dist
+  linarith
+
+-- Type-check Parts XVIII-XIX
+#check @segmentParam
+#check @segmentParam_zero
+#check @segmentParam_one
+#check @segmentParam_continuous
+#check @segmentParam_dist_le
+#check @ivt_segment_fst
+#check @ivt_segment_snd
+#check @complementary_edge_zero_fst
+#check @complementary_edge_zero_snd
+#check @dominant_component_small_at_zero
+#check @non_dominant_at_zero_bound
+
 end BorsukUlamTucker2D
