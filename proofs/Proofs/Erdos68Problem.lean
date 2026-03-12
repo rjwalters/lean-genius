@@ -84,12 +84,39 @@ theorem summand_tendsto_zero : Filter.Tendsto summand Filter.atTop (nhds 0) := b
         rw [mul_div_cancel₀ _ hε.ne'] at h5
         linarith
 
-/-- The sum Σ 1/(n!-1) converges. -/
-axiom factorialSum_summable : Summable summand
+/-- Factorial growth bound: (n+2)! ≥ 2^(n+1). -/
+private lemma factorial_ge_two_pow (n : ℕ) : (n + 2).factorial ≥ 2 ^ (n + 1) := by
+  induction n with
+  | zero => norm_num [Nat.factorial]
+  | succ n ih =>
+    show (n + 3).factorial ≥ 2 ^ (n + 2)
+    have h : (n + 3).factorial = (n + 3) * (n + 2).factorial := Nat.factorial_succ (n + 2)
+    rw [h]
+    calc 2 ^ (n + 2) = 2 * 2 ^ (n + 1) := by ring
+      _ ≤ (n + 3) * (n + 2).factorial := Nat.mul_le_mul (by omega) ih
+
+/-- Each summand is bounded by (1/2)^n. -/
+private lemma summand_le_half_pow (n : ℕ) : summand n ≤ (1 / 2 : ℝ) ^ n := by
+  unfold summand
+  have hfact : (2 : ℝ) ^ n ≤ ((n + 2).factorial : ℝ) - 1 := by
+    have h := factorial_ge_two_pow n
+    have h1 : ((n + 2).factorial : ℝ) ≥ (2 : ℝ) ^ (n + 1) := by exact_mod_cast h
+    have h2 : (2 : ℝ) ^ (n + 1) = 2 * (2 : ℝ) ^ n := by ring
+    have h3 : (1 : ℝ) ≤ (2 : ℝ) ^ n := by exact_mod_cast Nat.one_le_pow n 2 (by omega)
+    linarith
+  rw [show (1 / 2 : ℝ) ^ n = 1 / (2 : ℝ) ^ n from by rw [div_pow, one_pow]]
+  exact one_div_le_one_div_of_le (by positivity) hfact
+
+/-- The sum Σ 1/(n!-1) converges (by comparison with geometric series). -/
+theorem factorialSum_summable : Summable summand := by
+  apply Summable.of_norm_bounded (summable_geometric_of_lt_one (show (0 : ℝ) ≤ 1 / 2 by norm_num) (show (1 : ℝ) / 2 < 1 by norm_num))
+  intro n
+  rw [Real.norm_of_nonneg (le_of_lt (summand_pos n))]
+  exact summand_le_half_pow n
 
 /-- The sum is finite and positive (follows from positivity of each summand). -/
-theorem factorialSum_pos : factorialSum > 0 := by
-  sorry
+theorem factorialSum_pos : factorialSum > 0 :=
+  factorialSum_summable.tsum_pos (fun n => le_of_lt (summand_pos n)) 0 (summand_pos 0)
 
 /-
 # Part 3: Weisenberg's Identity
@@ -135,8 +162,12 @@ theorem inv_factorial_minus_one_eq_geom (n : ℕ) (hn : n ≥ 2) :
 
 Σ_{n≥2} 1/(n!-1) = Σ_{n≥2} Σ_{k≥1} 1/(n!)^k
 -/
-axiom weisenberg_identity :
-    factorialSum = ∑' n : ℕ, ∑' k : ℕ, ((1 : ℝ) / (n + 2).factorial) ^ (k + 1)
+theorem weisenberg_identity :
+    factorialSum = ∑' n : ℕ, ∑' k : ℕ, ((1 : ℝ) / (n + 2).factorial) ^ (k + 1) := by
+  unfold factorialSum
+  congr 1
+  ext n
+  exact inv_factorial_minus_one_eq_geom (n + 2) (by omega)
 
 /-
 # Part 4: The Main Conjecture
@@ -221,8 +252,10 @@ theorem fourth_term : summand 3 = 1 / 119 := by
   norm_num [factorial]
 
 /-- Partial sum S_4 = 1 + 1/5 + 1/23 + 1/119 ≈ 1.251... -/
-axiom partial_sum_approx :
-    summand 0 + summand 1 + summand 2 + summand 3 > 1.25
+theorem partial_sum_approx :
+    summand 0 + summand 1 + summand 2 + summand 3 > 1.25 := by
+  rw [first_term, second_term, third_term, fourth_term]
+  norm_num
 
 /-
 # Part 7: Why This Is Hard
