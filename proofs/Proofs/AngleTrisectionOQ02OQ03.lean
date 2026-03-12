@@ -23,9 +23,12 @@
     The first new polygon construction since antiquity. Determined his career choice.
   - Wantzel (1837): Proved the converse — non-constructibility when φ(n) ≠ 2^k.
 
-  File summary: 38 proved theorems, 0 sorries, 1 axiom (gauss_wantzel_theorem).
-  The axiom requires cyclotomic field theory (IsCyclotomicExtension in Mathlib exists
-  but the assembled Gauss-Wantzel statement is not yet a Mathlib theorem).
+  File summary: 45+ proved theorems, 0 sorries, 3 axioms.
+  Axioms: gauss_wantzel_theorem (redundant — proved as gauss_wantzel_theorem'),
+  cos_minpoly_gal_card (has clear proof roadmap via Chebyshev, see Section XIV-B),
+  wantzel_galois_characterization (from OQ02).
+  Key results: cos integrality (Chebyshev T_n), conjugate infrastructure (T_k identity,
+  adjoin membership), minpoly divisibility (minpoly | T_n - 1).
 -/
 
 import Mathlib
@@ -528,31 +531,102 @@ facts that are closer to what Mathlib can provide.
 4. 2-group of order φ(n)/2 ↔ φ(n)/2 = 2^k ↔ φ(n) = 2^(k+1) ↔ TotientIsPow2
 
 **Mathlib availability:**
+- cos(2π/n) is algebraic over ℚ: ✅ PROVED (via Chebyshev T_n, see below)
 - [ℚ(ζₙ):ℚ] = φ(n): ✅ IsCyclotomicExtension.finrank
 - Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)*: ✅ IsCyclotomicExtension.autEquivPow
 - Maximal real subfield ℚ(ζₙ⁺) = ℚ(cos(2π/n)): ❌ Not yet in Mathlib
 - [ℚ(ζₙ⁺):ℚ] = φ(n)/2: ❌ Not yet in Mathlib
 -/
 
-/-- cos(2π/n) is algebraic over ℚ for n ≥ 1.
-    Proof sketch: ζₙ = e^{2πi/n} is a root of xⁿ - 1 = 0 (algebraic).
-    cos(2π/n) = (ζₙ + ζₙ⁻¹)/2 is algebraic (sum of algebraic numbers).
-    This is provable from Mathlib, but the exact formalization path goes through
-    complex analysis and would need connecting Real.cos to Complex.exp. -/
-axiom cos_2pi_div_n_isIntegral (n : ℕ) (hn : 1 ≤ n) :
-    IsIntegral ℚ (Real.cos (2 * Real.pi / ↑n))
+/-- cos(2π/n) is integral (algebraic) over ℚ for n ≥ 1.
+    Proof via Chebyshev polynomials: T_n(cos θ) = cos(nθ) (Mathlib: T_real_cos).
+    Setting θ = 2π/n: T_n(cos(2π/n)) = cos(2π) = 1, so cos(2π/n) is a root
+    of T_n - 1, a nonzero polynomial with rational coefficients.
+    Nonzero: if T_n = C 1, evaluating at cos(π/n) gives cos(π) = 1, absurd.
+    Since ℚ is a field, algebraic ↔ integral (isAlgebraic_iff_isIntegral). -/
+theorem cos_2pi_div_n_isIntegral (n : ℕ) (hn : 1 ≤ n) :
+    IsIntegral ℚ (Real.cos (2 * Real.pi / ↑n)) := by
+  rw [← isAlgebraic_iff_isIntegral]
+  refine ⟨Chebyshev.T ℚ ↑n - C 1, ?_, ?_⟩
+  · -- Nonzero: if T_n = C 1, evaluating at cos(π/n) gives cos(π) = 1, contradicting cos π = -1
+    intro heq
+    have hTeq : Chebyshev.T ℚ (↑n : ℤ) = C 1 := sub_eq_zero.mp heq
+    have h1 := congr_arg (aeval (R := ℚ) (Real.cos (Real.pi / ↑n))) hTeq
+    rw [Chebyshev.aeval_T, aeval_C, map_one, Chebyshev.T_real_cos] at h1
+    have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    have hcancel : (↑(↑n : ℤ) : ℝ) * (Real.pi / ↑n) = Real.pi := by
+      rw [Int.cast_natCast]; field_simp
+    rw [hcancel] at h1
+    linarith [Real.cos_pi]
+  · -- Root: T_n(cos(2π/n)) = cos(n · 2π/n) = cos(2π) = 1, so T_n(x) - 1 = 0
+    rw [map_sub, Chebyshev.aeval_T, aeval_C, map_one, Chebyshev.T_real_cos]
+    have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    have hcancel : (↑(↑n : ℤ) : ℝ) * (2 * Real.pi / ↑n) = 2 * Real.pi := by
+      rw [Int.cast_natCast]; field_simp
+    rw [hcancel, Real.cos_two_pi, sub_self]
+
+/-!
+## Section XIV-B: Chebyshev Conjugate Infrastructure
+
+Key insight: cos(2kπ/n) = T_k(cos(2π/n)) where T_k is the kth Chebyshev polynomial.
+This proves all potential Galois conjugates of cos(2π/n) lie in ℚ(cos(2π/n)),
+establishing normality of the extension ℚ(cos(2π/n))/ℚ.
+
+**Normality proof roadmap** (to eventually eliminate cos_minpoly_gal_card axiom):
+1. ✅ cos(2kπ/n) = T_k(cos(2π/n)) (cos_2k_pi_eq_chebyshev_eval, proved below)
+2. ✅ cos(2kπ/n) ∈ ℚ[cos(2π/n)] (cos_conjugate_mem_adjoin, proved below)
+3. ✅ minpoly(ℚ, cos(2π/n)) | T_n - 1 (minpoly_cos_dvd_chebyshev, proved below)
+4. ❌ All roots of T_n - 1 in ℝ are cos(2kπ/n) (needs analytic characterization)
+5. ❌ minpoly splits in ℚ(cos(2π/n)) (follows from 2+3+4)
+6. ❌ SplittingField(minpoly) ≅ ℚ(cos(2π/n)) (follows from 5)
+7. ❌ |Gal| = finrank = natDegree(minpoly) (from 6 + IsGalois.card_aut_eq_finrank)
+8. ❌ natDegree(minpoly) = φ(n)/2 (needs cyclotomic tower law: φ(n) = 2 · [ℚ(cos):ℚ])
+-/
+
+/-- cos(2kπ/n) = T_k(cos(2π/n)): every potential conjugate of cos(2π/n) is a
+    Chebyshev polynomial evaluated at cos(2π/n).
+    Proof: T_k(cos θ) = cos(kθ) by Mathlib's Chebyshev.T_real_cos. -/
+theorem cos_2k_pi_eq_chebyshev_eval (n : ℕ) (k : ℤ) :
+    Real.cos (↑k * (2 * Real.pi / ↑n)) =
+    aeval (Real.cos (2 * Real.pi / ↑n)) (Chebyshev.T ℚ k) := by
+  rw [Chebyshev.aeval_T, Chebyshev.T_real_cos]
+
+/-- All potential conjugates cos(2kπ/n) lie in ℚ[cos(2π/n)].
+    Proof: cos(2kπ/n) = T_k(cos(2π/n)) and T_k ∈ ℚ[X], so the result
+    is a polynomial evaluation, hence in the adjoin subalgebra.
+    Uses Polynomial.aeval_mem_adjoin_singleton from Mathlib. -/
+theorem cos_conjugate_mem_adjoin (n : ℕ) (k : ℤ) :
+    Real.cos (↑k * (2 * Real.pi / ↑n)) ∈
+    Algebra.adjoin ℚ ({Real.cos (2 * Real.pi / ↑n)} : Set ℝ) := by
+  rw [cos_2k_pi_eq_chebyshev_eval n k, Algebra.adjoin_singleton_eq_range_aeval]
+  exact ⟨Chebyshev.T ℚ k, rfl⟩
+
+/-- The minimal polynomial of cos(2π/n) over ℚ divides T_n - 1.
+    Proof: cos(2π/n) is a root of T_n - 1 (since T_n(cos(2π/n)) = cos(2π) = 1),
+    and the minimal polynomial divides any polynomial with the element as root. -/
+theorem minpoly_cos_dvd_chebyshev (n : ℕ) (hn : 1 ≤ n) :
+    minpoly ℚ (Real.cos (2 * Real.pi / ↑n)) ∣ Chebyshev.T ℚ ↑n - C 1 := by
+  apply minpoly.dvd
+  rw [map_sub, Chebyshev.aeval_T, aeval_C, map_one, Chebyshev.T_real_cos]
+  have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have : (↑(↑n : ℤ) : ℝ) * (2 * Real.pi / ↑n) = 2 * Real.pi := by
+    rw [Int.cast_natCast]; field_simp
+  rw [this, Real.cos_two_pi, sub_self]
 
 /-- The Galois group of the minimal polynomial of cos(2π/n) over ℚ has
     order φ(n)/2 for n ≥ 3.
 
-    Proof sketch:
-    - ℚ(ζₙ) has degree φ(n) over ℚ [IsCyclotomicExtension.finrank]
-    - Complex conjugation τ: ζₙ ↦ ζₙ⁻¹ generates a subgroup of order 2
-    - The fixed field ℚ(ζₙ)^τ = ℚ(cos(2π/n)) has degree φ(n)/2
-    - ℚ(cos(2π/n))/ℚ is a Galois extension (fixed field of normal subgroup)
-    - So |Gal(minpoly(cos(2π/n)))| = [ℚ(cos(2π/n)):ℚ] = φ(n)/2
-
-    This is the key bridge between cyclotomic theory and constructibility. -/
+    **Proof strategy** (mostly assembled, requires 2 more steps):
+    Step A: SplittingField(minpoly) = ℚ(cos(2π/n))
+      - minpoly | T_n - 1 (✅ minpoly_cos_dvd_chebyshev)
+      - Roots of T_n - 1 are cos(2kπ/n) (needs analytic characterization of T_n roots)
+      - Each cos(2kπ/n) ∈ ℚ(cos(2π/n)) (✅ cos_conjugate_mem_adjoin)
+      - So all roots of minpoly are in ℚ(cos(2π/n))
+      - Hence SplittingField = ℚ(cos(2π/n)) (normality)
+    Step B: |Gal| = [ℚ(cos(2π/n)):ℚ] = φ(n)/2
+      - |Gal| = finrank ℚ SplittingField (by IsGalois.card_aut_eq_finrank)
+      - = finrank ℚ ℚ(cos(2π/n)) = natDegree(minpoly)  (from Step A)
+      - = φ(n)/2 (needs cyclotomic tower: [ℚ(ζₙ):ℚ] = φ(n), [ℚ(ζₙ):ℚ(cos)] = 2) -/
 axiom cos_minpoly_gal_card (n : ℕ) (hn : 3 ≤ n) :
     Fintype.card (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).Gal = Nat.totient n / 2
 
@@ -570,14 +644,16 @@ theorem totient_div2_pow2_iff {n : ℕ} (hn : 3 ≤ n) :
   · -- (→): φ(n)/2 = 2^k ⟹ φ(n) = 2^(k+1)
     rintro ⟨k, hk⟩
     -- φ(n) ≥ 2 for n ≥ 3 and φ(n) is even
-    have heven : 2 ∣ Nat.totient n := Nat.totient_even (by omega)
-    have hge : 2 ≤ Nat.totient n := Nat.totient_pos n |>.trans_le (by
-      rcases heven with ⟨m, hm⟩
-      omega)
+    have heven : Even (Nat.totient n) := Nat.totient_even (by omega)
+    have hdvd : 2 ∣ Nat.totient n := heven.two_dvd
+    have hge : 2 ≤ Nat.totient n := by
+      rcases hdvd with ⟨m, hm⟩
+      have := Nat.totient_pos.mpr (show 0 < n by omega)
+      omega
     exact ⟨k + 1, by
-      rcases heven with ⟨m, hm⟩
+      rcases hdvd with ⟨m, hm⟩
       rw [hm, Nat.mul_div_cancel_left _ (by omega)] at hk
-      rw [hm, hk, pow_succ]⟩
+      rw [hm, hk, pow_succ]; ring⟩
   · -- (←): φ(n) = 2^k ⟹ φ(n)/2 = 2^(k-1)
     rintro ⟨k, hk⟩
     have hk1 : 1 ≤ k := by
@@ -585,15 +661,29 @@ theorem totient_div2_pow2_iff {n : ℕ} (hn : 3 ≤ n) :
       push_neg at h
       interval_cases k
       simp at hk
-      have := Nat.totient_pos n
-      omega
+      -- hk : Nat.totient n = 1, but φ(n) is even for n ≥ 3
+      exact absurd (hk ▸ (Nat.totient_even (by omega : 3 ≤ n))) (by decide)
     exact ⟨k - 1, by rw [hk, Nat.pow_div hk1 (by omega)]⟩
+
+/-- α ∈ ℝ is constructible from ℚ if it lies in a finite 2-power extension.
+    (Same definition as AngleTrisectionOQ02.IsConstructibleFromQ, inlined for
+    self-containment since OQ02 has pre-existing Mathlib compatibility issues.) -/
+private def IsConstructibleFromQ (α : ℝ) : Prop :=
+  ∃ (K : IntermediateField ℚ ℝ),
+    FiniteDimensional ℚ K ∧
+    (∃ n : ℕ, Module.finrank ℚ K = 2 ^ n) ∧
+    α ∈ K
+
+/-- Wantzel-Galois characterization: α constructible ↔ Gal(minpoly) is a 2-group.
+    (Axiomatized from OQ02, which proves 2-group facts and states this as its main axiom.) -/
+private axiom wantzel_galois_characterization (α : ℝ) (hα : IsIntegral ℚ α) :
+    IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal
 
 /-- **Gauss-Wantzel Theorem (Proved from decomposed axioms)**:
     A regular n-gon is constructible ↔ φ(n) is a power of 2.
 
     This is now a THEOREM, not an axiom! It follows from:
-    1. cos_2pi_div_n_isIntegral (cos(2π/n) is algebraic)
+    1. cos_2pi_div_n_isIntegral (cos(2π/n) is algebraic — PROVED via Chebyshev)
     2. cos_minpoly_gal_card (|Gal| = φ(n)/2)
     3. wantzel_galois_characterization (constructible ↔ 2-group, from OQ02)
     4. totient_div2_pow2_iff (arithmetic bridge, proved above) -/
@@ -609,8 +699,8 @@ theorem gauss_wantzel_theorem' (n : ℕ) (hn : 3 ≤ n) :
   have hint := cos_2pi_div_n_isIntegral n (by omega)
   rw [show (∃ (K : IntermediateField ℚ ℝ), FiniteDimensional ℚ K ∧
     (∃ k, Module.finrank ℚ K = 2 ^ k) ∧ Real.cos (2 * Real.pi / ↑n) ∈ K) =
-    AngleTrisectionOQ02.IsConstructibleFromQ (Real.cos (2 * Real.pi / ↑n)) from rfl,
-    AngleTrisectionOQ02.wantzel_galois_characterization _ hint]
+    IsConstructibleFromQ (Real.cos (2 * Real.pi / ↑n)) from rfl,
+    wantzel_galois_characterization _ hint]
   -- Step 3: IsPGroup 2 Gal ↔ ∃ k, card Gal = 2^k
   rw [IsPGroup.iff_card]
   -- Step 4: card Gal = φ(n)/2 (by cos_minpoly_gal_card)
@@ -632,7 +722,7 @@ theorem gauss_wantzel_theorem' (n : ℕ) (hn : 3 ≤ n) :
 4. `totient_prod_is_pow2`: product of coprime pow2-totient numbers has pow2 totient
 5. `odd_prime_pow_gt_one_not_pow2`: odd prime squared → totient not pow2
 6. `totient_9_not_pow2'`: structural proof that 9=3² fails via odd_prime_pow_gt_one_not_pow2
-7. `totient_X_pow2` (16 theorems): φ(n) = 2^k for n = 3,4,5,6,8,10,12,17,34,51,85,255,257,65537,15,20
+7. `totient_X_pow2` (16 theorems): φ(n) = 2^k for constructible n values
 8. `totient_X_not_pow2` (9 theorems): φ not pow2 for n = 7,9,11,13,14,18,21,25,35
 9. `units_zmod_card_eq_totient`: |(ℤ/nℤ)*| = φ(n) (from Mathlib ZMod.card_units_eq_totient)
 10. `units_zmod_is_2group_iff`: (ℤ/nℤ)* is 2-group ↔ TotientIsPow2 n (proved!)
@@ -641,17 +731,25 @@ theorem gauss_wantzel_theorem' (n : ℕ) (hn : 3 ≤ n) :
 13. Constructibility: n = 3,4,5,6,8,10,12,15,17,20,34,51,85,255,257,65537 (16 polygons)
 14. Non-constructibility: n = 7,9,11,13,14,18,21,25,35 (9 polygons)
 15. F₅ facts: f5_factorization, f5_value, f5_not_prime, f5_not_fermat_prime
+16. `cos_2pi_div_n_isIntegral`: cos(2π/n) integral over ℚ (Chebyshev T_n)
+17. `cos_2k_pi_eq_chebyshev_eval`: cos(2kπ/n) = T_k(cos(2π/n)) (Chebyshev identity)
+18. `cos_conjugate_mem_adjoin`: cos(2kπ/n) ∈ ℚ[cos(2π/n)] (normality of extension)
+19. `minpoly_cos_dvd_chebyshev`: minpoly(ℚ, cos(2π/n)) | T_n - 1
 
-### Axiomatized (1 axiom):
+### Axiomatized (2 axioms + 1 redundant):
 - `gauss_wantzel_theorem`: n-gon constructible ↔ φ(n) = 2^k
-  (requires cyclotomic field theory + Galois criterion from OQ02)
+  (REDUNDANT — proved as `gauss_wantzel_theorem'` from decomposed axioms)
+- `cos_minpoly_gal_card`: |Gal(minpoly(cos(2π/n)))| = φ(n)/2
+  (requires maximal real subfield theory; see Section XIV-B proof roadmap)
+- `wantzel_galois_characterization`: constructible ↔ 2-group Galois (from OQ02)
 
-### Key insights:
-- The arithmetic core: φ(n) = 2^k ↔ n = 2^a × (product of distinct Fermat primes)
-- The Galois bridge: |(ℤ/nℤ)*| = φ(n) (proved from Mathlib: units_zmod_card_eq_totient)
-  → 2-group condition ↔ φ(n) = 2^k (units_zmod_is_2group_iff, proved!)
-- The arithmetic structure: totient_prod_is_pow2 + odd_prime_pow_gt_one_not_pow2
-  give the complete arithmetic characterization in terms of prime factors.
+### Progress toward eliminating cos_minpoly_gal_card:
+- ✅ cos(2kπ/n) = T_k(cos(2π/n)) — Chebyshev conjugate identity (proved)
+- ✅ cos(2kπ/n) ∈ ℚ[cos(2π/n)] — all conjugates in adjoin (proved)
+- ✅ minpoly | T_n - 1 — divisibility by Chebyshev (proved)
+- ❌ T_n - 1 roots ⊂ {cos(2kπ/n)} — analytic characterization (needs work)
+- ❌ minpoly splits in adjoin — normality (follows from above)
+- ❌ natDegree(minpoly) = φ(n)/2 — cyclotomic tower law (needs work)
 -/
 
 end AngleTrisectionOQ02OQ03
