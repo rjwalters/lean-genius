@@ -1,5 +1,4 @@
 import { Component, type ReactNode } from 'react'
-import { Link } from 'react-router-dom'
 
 interface Props {
   children: ReactNode
@@ -47,9 +46,9 @@ export class ErrorBoundary extends Component<Props, State> {
                 {this.state.error.message}
               </pre>
             )}
-            <Link to="/" className="text-annotation hover:underline">
+            <a href="/" className="text-annotation hover:underline">
               ← Back to home
-            </Link>
+            </a>
           </div>
         </div>
       )
