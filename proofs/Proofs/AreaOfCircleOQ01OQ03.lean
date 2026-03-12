@@ -26,7 +26,7 @@
   - Fourier basis on L²(AddCircle T): available
   - Parseval's identity: available (tsum_sq_fourierCoeff)
 
-  What This File Proves (27 theorems, 3 axioms, 0 sorries):
+  What This File Proves (28 theorems, 2 axioms, 0 sorries):
   1. Equality for circles: C² = 4πA  (ring computation)
   2. Strict inequality for squares: C² > 4πA  (π < 4)
   3. The isoperimetric ratio: A/(C²/4π) and its circle value
@@ -921,16 +921,17 @@ theorem non_circle_area_lt_circle (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve
 - `equiTriCirc` — perimeter of equilateral triangle with side a: 3a
 - `equiTriArea` — area of equilateral triangle with side a: (√3/4)a²
 
-### Axioms (3):
-1. `wirtinger_inequality` — ∫f² ≤ ∫(f')² for periodic mean-zero f
-   (Proof: Fourier series + Parseval; Mathlib has all ingredients)
-2. `equality_implies_circle` — equality iff circle
-   (Proof: equality in Wirtinger iff f = a cos + b sin)
-3. `exists_nice_reparam` — arc-length reparametrization + mean shift
+### Axioms (2):
+1. `fourier_decomposition` — Parseval + Fourier derivative relation for periodic C¹ functions
+   (Proof: lift to AddCircle, tsum_sq_fourierCoeff + integration by parts; Mathlib has ingredients)
+2. `exists_nice_reparam` — arc-length reparametrization + mean shift
    (Requires inverse function theorem on arc-length integral, not in Mathlib)
 
+Note: `wirtinger_inequality` is a THEOREM proved from fourier_decomposition.
+Note: `equality_implies_circle` is now a THEOREM (purely algebraic: set r = C/(2π)).
+
 ### Proof Structure for isoperimetric_inequality_smooth:
-The main theorem is FULLY PROVED (modulo 3 axioms, 0 sorries):
+The main theorem is FULLY PROVED (modulo 2 axioms, 0 sorries):
 
 **Proved** (structural reduction to arithmetic kernel):
 23. `integral_sqrt_sum_sq_nonneg` — ∫√(x²+y²) ≥ 0 [FULLY PROVED]

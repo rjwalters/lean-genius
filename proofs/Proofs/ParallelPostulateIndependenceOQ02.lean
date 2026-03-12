@@ -206,10 +206,45 @@ theorem disk_nontrivial :
     ∃ (l : Chord) (p : DiskPoint), ¬OnChord p l :=
   ⟨xaxis, P, P_not_on_xaxis⟩
 
--- Each chord has at least two points (the open disk intersection
--- of a line is an open interval, hence infinite)
-axiom chord_has_two_points (l : Chord) :
-    ∃ p₁ p₂ : DiskPoint, p₁ ≠ p₂ ∧ OnChord p₁ l ∧ OnChord p₂ l
+-- Each chord has at least two points.
+-- Proof: move along direction (b,-a) by small ε; stays on chord and in disk.
+theorem chord_has_two_points (l : Chord) :
+    ∃ p₁ p₂ : DiskPoint, p₁ ≠ p₂ ∧ OnChord p₁ l ∧ OnChord p₂ l := by
+  obtain ⟨x₀, y₀, hline, hdisk⟩ := l.meets_disk
+  -- f(t) = (x₀ + t·b)² + (y₀ - t·a)² is continuous with f(0) < 1
+  set f : ℝ → ℝ := fun t => (x₀ + t * l.b) ^ 2 + (y₀ - t * l.a) ^ 2
+  have hcont : ContinuousAt f 0 := by
+    show ContinuousAt (fun t => (x₀ + t * l.b) ^ 2 + (y₀ - t * l.a) ^ 2) 0
+    fun_prop
+  have hf0 : f 0 < 1 := by
+    show (x₀ + 0 * l.b) ^ 2 + (y₀ - 0 * l.a) ^ 2 < 1; simp; exact hdisk
+  -- By continuity, ∃ ε > 0 with ball(0,ε) ⊆ {t | f(t) < 1}
+  obtain ⟨ε, hε_pos, hε_ball⟩ := Metric.mem_nhds_iff.mp
+    (hcont.preimage_mem_nhds (Iio_mem_nhds hf0))
+  set δ := ε / 2
+  have hδ_pos : δ > 0 := by positivity
+  have hδ_mem : δ ∈ Metric.ball (0 : ℝ) ε := by
+    rw [Metric.mem_ball, Real.dist_eq, sub_zero, abs_of_pos hδ_pos]
+    change ε / 2 < ε; linarith
+  -- p₁ = (x₀, y₀), p₂ = (x₀ + δb, y₀ - δa)
+  refine ⟨⟨x₀, y₀, hdisk⟩,
+          ⟨x₀ + δ * l.b, y₀ - δ * l.a, hε_ball hδ_mem⟩, ?_, ?_, ?_⟩
+  · -- Distinct: δ > 0 and (a,b) ≠ (0,0)
+    intro heq
+    simp only [DiskPoint.mk.injEq] at heq
+    have hb : l.b = 0 := by
+      have : δ * l.b = 0 := by linarith [heq.1]
+      exact (mul_eq_zero.mp this).resolve_left (ne_of_gt hδ_pos)
+    have ha : l.a = 0 := by
+      have : δ * l.a = 0 := by linarith [heq.2]
+      exact (mul_eq_zero.mp this).resolve_left (ne_of_gt hδ_pos)
+    nlinarith [l.nondegenerate, sq_nonneg l.a, sq_nonneg l.b]
+  · exact hline
+  · -- a(x₀+δb) + b(y₀-δa) + c = ax₀+by₀+c = 0
+    show l.a * (x₀ + δ * l.b) + l.b * (y₀ - δ * l.a) + l.c = 0
+    have : l.a * (x₀ + δ * l.b) + l.b * (y₀ - δ * l.a) + l.c =
+           l.a * x₀ + l.b * y₀ + l.c := by ring
+    linarith
 
 -- Two distinct points determine a unique chord
 axiom two_points_determine_chord (p₁ p₂ : DiskPoint)
@@ -231,9 +266,83 @@ def SatisfiesPlayfair (G : IncidenceGeometry) : Prop :=
   ∀ (l : G.Line) (p : G.Point), ¬G.incident p l →
     ∃! m : G.Line, G.incident p m ∧ G.para m l
 
--- The Euclidean plane satisfies Playfair's axiom (standard result)
-axiom euclidean_geometry : IncidenceGeometry
-axiom euclidean_satisfies_playfair : SatisfiesPlayfair euclidean_geometry
+-- ============================================================================
+-- Part 6b: Concrete Euclidean Model (replaces axioms)
+-- ============================================================================
+
+-- Euclidean lines: non-vertical (y = mx + b) or vertical (x = c)
+inductive EucLine where
+  | slope (m b : ℝ) : EucLine
+  | vert (c : ℝ) : EucLine
+
+def eucIncident (p : ℝ × ℝ) (l : EucLine) : Prop :=
+  match l with
+  | .slope m b => p.2 = m * p.1 + b
+  | .vert c => p.1 = c
+
+@[simp] lemma eucIncident_slope (p : ℝ × ℝ) (m b : ℝ) :
+    eucIncident p (.slope m b) ↔ p.2 = m * p.1 + b := Iff.rfl
+
+@[simp] lemma eucIncident_vert (p : ℝ × ℝ) (c : ℝ) :
+    eucIncident p (.vert c) ↔ p.1 = c := Iff.rfl
+
+def eucPar (l₁ l₂ : EucLine) : Prop :=
+  ∀ p : ℝ × ℝ, ¬(eucIncident p l₁ ∧ eucIncident p l₂)
+
+-- The Euclidean plane as a concrete incidence geometry
+def eucGeom : IncidenceGeometry where
+  Point := ℝ × ℝ
+  Line := EucLine
+  incident := eucIncident
+  para := eucPar
+
+-- The Euclidean plane satisfies Playfair's axiom.
+-- Proof by case analysis: for each line type, construct the unique parallel.
+theorem euc_satisfies_playfair : SatisfiesPlayfair eucGeom := by
+  intro l p hp
+  dsimp [SatisfiesPlayfair, eucGeom] at hp ⊢
+  cases l with
+  | slope m b =>
+    dsimp [eucIncident] at hp
+    refine ⟨.slope m (p.2 - m * p.1), ⟨?_, ?_⟩, ?_⟩
+    · -- p on the parallel: p.2 = m * p.1 + (p.2 - m * p.1)
+      dsimp [eucIncident]; ring
+    · -- parallel to original: if q on both, then p.2 = m * p.1 + b
+      intro q ⟨h₁, h₂⟩
+      dsimp [eucIncident] at h₁ h₂
+      exact hp (by linarith)
+    · -- uniqueness
+      intro n ⟨hpn, hparn⟩
+      cases n with
+      | slope m' b'' =>
+        dsimp [eucIncident] at hpn
+        by_cases hm : m' = m
+        · subst hm; congr 1; linarith
+        · -- If slopes differ, construct intersection point → contradiction
+          exfalso
+          have hne : m' - m ≠ 0 := sub_ne_zero.mpr hm
+          apply hparn ((b - b'') / (m' - m), m * ((b - b'') / (m' - m)) + b)
+          exact ⟨by dsimp [eucIncident]; field_simp; ring, by dsimp [eucIncident]⟩
+      | vert c =>
+        -- Vertical + slope always intersect at (c, m*c+b)
+        exfalso
+        exact hparn (c, m * c + b) ⟨by dsimp [eucIncident], by dsimp [eucIncident]⟩
+  | vert c =>
+    dsimp [eucIncident] at hp
+    refine ⟨.vert p.1, ⟨?_, ?_⟩, ?_⟩
+    · dsimp [eucIncident]
+    · intro q ⟨h₁, h₂⟩
+      dsimp [eucIncident] at h₁ h₂
+      exact hp (by linarith)
+    · intro n ⟨hpn, hparn⟩
+      cases n with
+      | vert c' =>
+        dsimp [eucIncident] at hpn
+        exact congr_arg EucLine.vert hpn.symm
+      | slope m' b' =>
+        -- Slope + vertical always intersect at (c, m'*c+b')
+        exfalso
+        exact hparn (c, m' * c + b') ⟨by dsimp [eucIncident], by dsimp [eucIncident]⟩
 
 -- The BK disk as an incidence geometry
 def bk_geometry : IncidenceGeometry where
@@ -257,7 +366,7 @@ theorem bk_not_satisfies_playfair : ¬SatisfiesPlayfair bk_geometry := by
 theorem parallel_postulate_independent :
     (∃ G : IncidenceGeometry, SatisfiesPlayfair G) ∧
     (∃ G : IncidenceGeometry, ¬SatisfiesPlayfair G) :=
-  ⟨⟨euclidean_geometry, euclidean_satisfies_playfair⟩,
+  ⟨⟨eucGeom, euc_satisfies_playfair⟩,
    ⟨bk_geometry, bk_not_satisfies_playfair⟩⟩
 
 -- ============================================================================
@@ -324,18 +433,21 @@ end BeltramiKlein
   7. bk_not_playfair: The BK model violates Playfair's axiom
   8. three_noncollinear: Three non-collinear points exist
   9. disk_nontrivial: Model is non-trivial
-  10. bk_not_satisfies_playfair: Abstract version of PP failure
-  11. parallel_postulate_independent: Independence theorem
-  12. euclidean_parallel_implies_bk_parallel: Euclidean parallels are BK parallels
-  13. secant_not_parallel_xaxis: Example of a non-parallel chord (crosses xaxis in disk)
+  10. chord_has_two_points: Each chord has ≥2 disk points (by continuity)
+  11. euc_satisfies_playfair: Concrete ℝ² Euclidean model satisfies Playfair
+  12. bk_not_satisfies_playfair: Abstract version of PP failure
+  13. parallel_postulate_independent: Independence theorem (fully proved)
+  14. euclidean_parallel_implies_bk_parallel: Euclidean parallels are BK parallels
+  15. secant_not_parallel_xaxis: Example of a non-parallel chord
 
-  Axioms (4):
-  1. chord_has_two_points: Each chord has ≥2 disk points
-  2. two_points_determine_chord: Unique chord through two points
-  3. euclidean_geometry: Euclidean plane exists as an incidence geometry
-  4. euclidean_satisfies_playfair: Euclidean plane satisfies Playfair's axiom
+  Axioms (1):
+  1. two_points_determine_chord: Unique chord through two points
+     (Note: ∃! on Chord is slightly too strong — proportional coefficients
+      give different Chord values for the same geometric line. This axiom
+      is not used in any proof; it documents an incidence property.)
 
-  The key mathematical content (hyperbolic parallel property and PP violation)
-  is fully proved via explicit coordinate construction, reducing the axiom
-  count from 7 (in ParallelPostulateIndependence.lean) to 4.
+  The axiom count was reduced from 7 (original file) to 4 (BK construction)
+  to 1 (this version). The critical-path axioms (Euclidean geometry +
+  Playfair) are now fully proved via a concrete ℝ² model with slope/vertical
+  line representation.
 -/
