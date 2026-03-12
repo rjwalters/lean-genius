@@ -26,8 +26,20 @@
       "field": "Analytic Number Theory",
       "subfield": "Distribution of prime factor counts",
       "level": "research",
-      "centralObjects": ["ω(n) distinct prime factor count", "threshold (1+ε) log k / log log k", "SatisfiesProperty predicate", "Hardy-Ramanujan normal order"],
-      "keyTechniques": ["Hardy-Ramanujan theorem", "large deviation estimates for additive functions", "sieve methods", "density arguments", "probabilistic heuristics", "dichotomy principle"],
+      "centralObjects": [
+        "ω(n) distinct prime factor count",
+        "threshold (1+ε) log k / log log k",
+        "SatisfiesProperty predicate",
+        "Hardy-Ramanujan normal order"
+      ],
+      "keyTechniques": [
+        "Hardy-Ramanujan theorem",
+        "large deviation estimates for additive functions",
+        "sieve methods",
+        "density arguments",
+        "probabilistic heuristics",
+        "dichotomy principle"
+      ],
       "significance": "Probes the simultaneous distribution of ω across arithmetic progressions n-k. The main conjecture is open after 45+ years and cannot be resolved by finite computation. The disproved stronger version (O(1) error) shows the (1+ε) multiplicative slack is essential. Resolution would reveal deep structure in the correlation of prime factor counts across consecutive differences."
     },
     "references": [
@@ -207,12 +219,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #679 on simultaneous smallness of ω(n-k). The main conjecture (OPEN) asks whether infinitely many n have all predecessors with ω below (1+ε) times the extremal order. The stronger O(1) version is disproven. The problem cannot be resolved by finite computation and connects deeply to the Hardy-Ramanujan theorem and the distribution of prime factors.",
-    "implications": [
-      "Resolution would reveal whether the prime factor structure of n-1, n-2, ..., 1 can be simultaneously controlled",
-      "The disproof of the O(1) version shows the (1+ε) slack is essential and sharp",
-      "Connections to Problems #248 and #413 place this in a web of ω-distribution questions",
-      "The density bound x/log x suggests special n are at least as rare as primes"
-    ],
+    "implications": "Resolution would reveal whether the prime factor structure of n-1, n-2, ..., 1 can be simultaneously controlled The disproof of the O(1) version shows the (1+ε) slack is essential and sharp Connections to Problems #248 and #413 place this in a web of ω-distribution questions The density bound x/log x suggests special n are at least as rare as primes",
     "openQuestions": [
       "Does the main conjecture hold for any ε > 0?",
       "What is the density of special n if they exist?",

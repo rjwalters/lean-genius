@@ -28,8 +28,19 @@
       "field": "Extremal Graph Theory",
       "subfield": "Unavoidable cycle lengths under minimum degree constraints",
       "level": "research",
-      "centralObjects": ["cycle containment C_{2^k}", "minimum degree δ(G)", "powers of two set {4,8,16,...}", "finite simple graph"],
-      "keyTechniques": ["cyclic adjacency via Fin.succMod", "Liu-Montgomery even cycle theorem", "Dirac's Hamiltonian theorem", "Bondy's pancyclicity", "infinite 3-regular tree counterexample"],
+      "centralObjects": [
+        "cycle containment C_{2^k}",
+        "minimum degree δ(G)",
+        "powers of two set {4,8,16,...}",
+        "finite simple graph"
+      ],
+      "keyTechniques": [
+        "cyclic adjacency via Fin.succMod",
+        "Liu-Montgomery even cycle theorem",
+        "Dirac's Hamiltonian theorem",
+        "Bondy's pancyclicity",
+        "infinite 3-regular tree counterexample"
+      ],
       "significance": "One of the most prominent open problems in extremal graph theory, carrying a $1000 Erdős prize. The set {2^k : k ≥ 2} is exponentially sparse yet conjectured to be unavoidable for minimum degree 3. Liu-Montgomery (2020) resolved the large-degree case by showing every graph with δ(G) ≥ D contains all even cycle lengths in a geometric range, but the critical case δ = 3 remains completely open. The difficulty is concentrated entirely in the sparse regime."
     },
     "references": [
@@ -211,12 +222,7 @@
   ],
   "conclusion": {
     "summary": "Erdős Problem #64 is one of the most prominent open problems in extremal graph theory, carrying a $1000 Erdős prize. The formalization captures the main conjecture (δ ≥ 3 → ∃ C_{2^k}), the disproved Erdős-Gyárfás counter-conjecture, the Liu-Montgomery breakthrough (resolved for large degree), the infinite tree counterexample (finiteness essential), and classical supporting results (Dirac, Bondy, random graphs). The difficulty is entirely concentrated at δ = 3.",
-    "implications": [
-      "A positive resolution would establish that {4, 8, 16, ...} is unavoidable for δ = 3, a remarkable rigidity result for exponentially sparse cycle lengths",
-      "A counterexample would require a finite graph with δ ≥ 3 avoiding all 2^k-cycles, revealing deep structure about cycle avoidance",
-      "The Liu-Montgomery result shows the problem is about the sparse regime — reducing threshold D toward 3 is the path forward",
-      "Connects to unavoidable subgraph theory and the broader question of which cycle length sets are forced by degree conditions"
-    ],
+    "implications": "A positive resolution would establish that {4, 8, 16, ...} is unavoidable for δ = 3, a remarkable rigidity result for exponentially sparse cycle lengths A counterexample would require a finite graph with δ ≥ 3 avoiding all 2^k-cycles, revealing deep structure about cycle avoidance The Liu-Montgomery result shows the problem is about the sparse regime — reducing threshold D toward 3 is the path forward Connects to unavoidable subgraph theory and the broader question of which cycle length sets are forced by degree conditions",
     "openQuestions": [
       "Does the conjecture hold for minimum degree exactly 3? ($1000 Erdős prize)",
       "What is the exact threshold D from Liu-Montgomery? Can it be reduced to a small constant?",

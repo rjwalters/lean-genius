@@ -27,8 +27,19 @@
       "field": "Extremal Set Theory",
       "subfield": "Covering numbers of structured set families",
       "level": "research",
-      "centralObjects": ["covering function f(k,r)", "k-uniform family", "r-wise pair property", "coefficient sequence cᵣ"],
-      "keyTechniques": ["Helly-type conditions", "extremal constructions", "covering algorithms", "sunflower lemma connections", "asymptotic analysis"],
+      "centralObjects": [
+        "covering function f(k,r)",
+        "k-uniform family",
+        "r-wise pair property",
+        "coefficient sequence cᵣ"
+      ],
+      "keyTechniques": [
+        "Helly-type conditions",
+        "extremal constructions",
+        "covering algorithms",
+        "sunflower lemma connections",
+        "asymptotic analysis"
+      ],
       "significance": "Determines the precise covering efficiency of k-uniform set families under r-wise pair coherence. The known exact values f(k,3)=2k through f(k,6)=k reveal a decreasing coefficient sequence c₃=2, c₄=3/2, c₅=5/4, c₆=1. The open questions ask whether c₇=3/4 (crossing below the natural barrier c=1) and whether the linear-in-k behavior persists for all r."
     },
     "references": [
@@ -187,12 +198,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #644 on covering families of sets with the r-wise pair property. The function f(k,r) measures covering efficiency under structural constraints, with exact values known for r = 3, 4, 5, 6 revealing a decreasing coefficient sequence. The two open questions — whether c₇ = 3/4 and whether cᵣ exists for all r — probe the fundamental asymptotics of this covering function.",
-    "implications": [
-      "Resolution of Question 1 would determine whether the coefficient sequence crosses below the natural barrier c = 1",
-      "Resolution of Question 2 would establish whether all r-wise pair families have linear-in-k covering numbers",
-      "Understanding the limit of cᵣ as r → ∞ would reveal whether infinite coherence enables sublinear covering",
-      "Connections to the sunflower lemma suggest that improved sunflower bounds may yield progress on f(k,r)"
-    ],
+    "implications": "Resolution of Question 1 would determine whether the coefficient sequence crosses below the natural barrier c = 1 Resolution of Question 2 would establish whether all r-wise pair families have linear-in-k covering numbers Understanding the limit of cᵣ as r → ∞ would reveal whether infinite coherence enables sublinear covering Connections to the sunflower lemma suggest that improved sunflower bounds may yield progress on f(k,r)",
     "openQuestions": [
       "Is f(k,7) = (3/4 + o(1))k?",
       "Does f(k,r) = (c_r + o(1))k for all r ≥ 3?",

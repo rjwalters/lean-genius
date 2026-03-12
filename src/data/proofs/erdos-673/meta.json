@@ -26,8 +26,19 @@
       "field": "Analytic Number Theory",
       "subfield": "Divisor function asymptotics and distribution",
       "level": "research",
-      "centralObjects": ["G(n) = Σ dᵢ/dᵢ₊₁", "divisor count τ(n)", "GRatio = G(n)/τ(n)", "continuous distribution function F"],
-      "keyTechniques": ["Tao's divisor restriction argument", "Dirichlet divisor sum", "Hardy-Ramanujan normal order", "Erdős-Tenenbaum distribution theory", "density arguments"],
+      "centralObjects": [
+        "G(n) = Σ dᵢ/dᵢ₊₁",
+        "divisor count τ(n)",
+        "GRatio = G(n)/τ(n)",
+        "continuous distribution function F"
+      ],
+      "keyTechniques": [
+        "Tao's divisor restriction argument",
+        "Dirichlet divisor sum",
+        "Hardy-Ramanujan normal order",
+        "Erdős-Tenenbaum distribution theory",
+        "density arguments"
+      ],
       "significance": "Characterizes the sum of consecutive divisor ratios G(n), showing it is controlled by τ(n) via Tao's bounds τ(n/m)/m ≤ G(n) ≤ τ(n). The Erdős-Tenenbaum theorem that G(n)/τ(n) has a continuous distribution function reveals deep statistical structure in divisor sequences. The asymptotic formula Σ G(n) ~ c X log X parallels the classical Dirichlet divisor sum."
     },
     "references": [
@@ -191,12 +202,7 @@
   ],
   "conclusion": {
     "summary": "This formalization captures Erdős Problem #673 on consecutive divisor ratios. The function G(n) = Σ dᵢ/dᵢ₊₁ measures how smoothly divisors grow. Tao's bounds τ(n/m)/m ≤ G(n) ≤ τ(n) control G by the divisor function. The Erdős-Tenenbaum theorem reveals that G(n)/τ(n) has a continuous distribution, and the asymptotic formula Σ G(n) ~ c X log X parallels classical divisor sums.",
-    "implications": [
-      "G(n) provides a measure of divisor smoothness complementary to τ(n) and σ(n)",
-      "The continuous distribution of G(n)/τ(n) reveals statistical regularity in divisor sequences",
-      "The connection Σ G(n) ~ c X log X links divisor ratios to the classical Dirichlet divisor problem",
-      "Non-multiplicativity of G distinguishes it from classical arithmetic functions and requires new analytic tools"
-    ],
+    "implications": "G(n) provides a measure of divisor smoothness complementary to τ(n) and σ(n) The continuous distribution of G(n)/τ(n) reveals statistical regularity in divisor sequences The connection Σ G(n) ~ c X log X links divisor ratios to the classical Dirichlet divisor problem Non-multiplicativity of G distinguishes it from classical arithmetic functions and requires new analytic tools",
     "openQuestions": [
       "What is the exact constant c in Σ G(n) ~ c X log X?",
       "What is the explicit form of the distribution function for G(n)/τ(n)?",
