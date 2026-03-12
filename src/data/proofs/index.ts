@@ -57,6 +57,19 @@ export async function getProofAsync(slug: string): Promise<ProofData | undefined
     const proofData: ProofData = module.default || module[exportName] ||
       Object.keys(module).filter(k => k.endsWith('Data')).map(k => module[k]).find(v => v?.proof)
 
+    // Normalize annotations: convert legacy {lineNumber} format to {range}
+    if (proofData?.annotations) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      proofData.annotations = proofData.annotations.filter((ann: any) => {
+        if (ann.range) return true
+        if (ann.lineNumber != null) {
+          ann.range = { startLine: ann.lineNumber, endLine: ann.lineNumber }
+          return true
+        }
+        return false // drop annotations with neither range nor lineNumber
+      })
+    }
+
     // Load the source code if getProofSource is available
     if (module.getProofSource && proofData?.proof) {
       const source = await module.getProofSource()
