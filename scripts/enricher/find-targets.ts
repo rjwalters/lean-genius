@@ -98,7 +98,8 @@ function computeQuality(galleryPath: string): { score: number; breakdown: Target
   let annotations: any[] = []
   if (fs.existsSync(annotationsPath)) {
     try {
-      annotations = JSON.parse(fs.readFileSync(annotationsPath, 'utf-8'))
+      const parsed = JSON.parse(fs.readFileSync(annotationsPath, 'utf-8'))
+      annotations = Array.isArray(parsed) ? parsed : []
     } catch { /* skip */ }
   }
 
