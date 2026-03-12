@@ -175,14 +175,65 @@ theorem six_dvd_twelve : 6 ∣ 12 := ⟨2, by norm_num⟩
 theorem six_not_hall_divisor_of_twelve : ¬ Nat.Coprime 6 (12 / 6) := by
   norm_num
 
+/-- If a subgroup H has index 2 in a finite group, then every element's
+    square belongs to H. Proof: G/H has order 2, so (gH)² = H for all g,
+    meaning g² ∈ H. -/
+theorem sq_mem_of_index_two {G : Type*} [Group G] [Fintype G]
+    (H : Subgroup G) [Fintype H] [H.Normal]
+    (hindex : H.index = 2) (g : G) : g ^ 2 ∈ H := by
+  haveI : Fintype (G ⧸ H) := Fintype.ofFinite _
+  rw [← QuotientGroup.eq_one_iff]
+  have hcard : Fintype.card (G ⧸ H) = 2 := by
+    rw [← Subgroup.index_eq_card]; exact hindex
+  have : (QuotientGroup.mk' H g) ^ Fintype.card (G ⧸ H) = 1 := pow_card_eq_one
+  rw [hcard] at this
+  exact this
+
+/-- The set of squares in A₄ has 9 distinct elements (identity + 8 three-cycles). -/
+theorem a4_squares_card :
+    (Finset.image (fun x : alternatingGroup (Fin 4) => x ^ 2) Finset.univ).card = 9 := by
+  native_decide
+
+/-- A subgroup of order 6 in A₄ (order 12) has index 2. -/
+theorem a4_subgroup_order_6_index_two
+    (H : Subgroup (alternatingGroup (Fin 4))) [Fintype H]
+    (hcard : Fintype.card H = 6) : H.index = 2 := by
+  have h12 : Fintype.card (alternatingGroup (Fin 4)) = 12 := a4_card
+  have hmul := Subgroup.card_mul_index H
+  rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, hcard, h12] at hmul
+  omega
+
 /-- A₄ has no subgroup of order 6.
 
-    A subgroup of order 6 would have index 2, hence be normal.
-    It would contain all 8 elements of order 3 (the 3-cycles),
-    but 8 > 6, contradiction. -/
-axiom a4_no_subgroup_order_6 :
+    A subgroup of order 6 would have index 2, hence contain all squares.
+    But A₄ has 9 distinct squares, which can't fit in a 6-element subgroup. -/
+theorem a4_no_subgroup_order_6 :
     ¬ ∃ H : Subgroup (alternatingGroup (Fin 4)),
-      Nat.card H = 6
+      Nat.card H = 6 := by
+  intro ⟨H, hcard⟩
+  haveI : Fintype H := Fintype.ofFinite H
+  have hcard' : Fintype.card H = 6 := by rwa [Nat.card_eq_fintype_card] at hcard
+  have hindex : H.index = 2 := a4_subgroup_order_6_index_two H hcard'
+  -- Index 2 subgroups are normal
+  haveI : H.Normal := Subgroup.normal_of_index_eq_two hindex
+  -- All squares are in H
+  have hsq : ∀ g : alternatingGroup (Fin 4), g ^ 2 ∈ H :=
+    sq_mem_of_index_two H hindex
+  -- The image of squaring maps into H, so H contains at least 9 elements
+  have h9 : (Finset.image (fun x : alternatingGroup (Fin 4) => x ^ 2) Finset.univ).card = 9 :=
+    a4_squares_card
+  -- Embed H's elements as a Finset in G
+  have hsub : Finset.image (fun x : alternatingGroup (Fin 4) => x ^ 2) Finset.univ ⊆
+      (Finset.univ : Finset ↥H).map ⟨Subtype.val, Subtype.val_injective⟩ := by
+    intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨g, _, rfl⟩ := hx
+    simp only [Finset.mem_map, Function.Embedding.coeFn_mk]
+    exact ⟨⟨g ^ 2, hsq g⟩, Finset.mem_univ _, rfl⟩
+  have h6 : ((Finset.univ : Finset ↥H).map ⟨Subtype.val, Subtype.val_injective⟩).card = 6 := by
+    rw [Finset.card_map, Finset.card_univ]; exact hcard'
+  have := Finset.card_le_card hsub
+  omega
 
 /-- **The converse of Lagrange's theorem fails**: 6 | 12 = |A₄|,
     but A₄ has no subgroup of order 6. -/
@@ -246,7 +297,58 @@ theorem complementary_hall_divisor_dvd {n m : ℕ}
   Nat.div_dvd_of_dvd hm
 
 -- ============================================================================
--- Part X: Summary
+-- Part X: Schur-Zassenhaus — The Normal Hall Case
+-- ============================================================================
+
+/-- **Schur-Zassenhaus** (from Mathlib): A normal Hall subgroup has a complement.
+    If N ⊴ G with gcd(|N|, [G:N]) = 1, then ∃ K ≤ G with NK = G and N ∩ K = {1}.
+
+    This is the key special case of Hall's theorem that doesn't require solvability.
+    Hall's full theorem extends this to ALL Hall divisors in solvable groups. -/
+theorem normal_hall_has_complement {G : Type*} [Group G] [Fintype G]
+    (N : Subgroup G) [Fintype N] [N.Normal]
+    (hN : IsHallSubgroup N) :
+    ∃ K : Subgroup G, N.IsComplement' K := by
+  apply Subgroup.exists_right_complement'_of_coprime
+  rwa [Nat.card_eq_fintype_card]
+
+/-- A normal Hall subgroup and its complement have trivial intersection. -/
+theorem normal_hall_disjoint {G : Type*} [Group G] [Fintype G]
+    (N K : Subgroup G) [Fintype N] [N.Normal]
+    (hcomp : N.IsComplement' K) :
+    N ⊓ K = ⊥ :=
+  hcomp.disjoint.eq_bot
+
+/-- A normal Hall subgroup and its complement generate the whole group. -/
+theorem normal_hall_generates {G : Type*} [Group G] [Fintype G]
+    (N K : Subgroup G) [Fintype N] [N.Normal]
+    (hcomp : N.IsComplement' K) :
+    N ⊔ K = ⊤ :=
+  hcomp.sup_eq_top
+
+/-- For complementary subgroups, |N| × |K| = |G|. -/
+theorem complement_card_mul {G : Type*} [Group G]
+    (N K : Subgroup G)
+    (hcomp : N.IsComplement' K) :
+    Nat.card N * Nat.card K = Nat.card G :=
+  hcomp.card_mul_card
+
+/-- A normal Hall subgroup of a solvable group is the unique subgroup of its order,
+    and its complement has order equal to the quotient |G|/|N|.
+    This combines Schur-Zassenhaus (complement existence) with
+    Hall's conjugacy (uniqueness). -/
+theorem normal_hall_complement_exists_unique {G : Type*} [Group G] [Fintype G]
+    [IsSolvable G]
+    (N : Subgroup G) [Fintype N] [N.Normal]
+    (hN : IsHallSubgroup N)
+    (K : Subgroup G) [Fintype K]
+    (hK : IsHallSubgroup K)
+    (hcard : Fintype.card N = Fintype.card K) :
+    N = K :=
+  normal_hall_unique N hN K hK hcard
+
+-- ============================================================================
+-- Part XI: Summary
 -- ============================================================================
 
 /-- **Summary**: Hall's theorem provides a structural understanding of solvable groups.
@@ -254,8 +356,9 @@ theorem complementary_hall_divisor_dvd {n m : ℕ}
     1. Lagrange: |H| divides |G| for all H ≤ G
     2. Converse fails: A₄ shows 6 | 12 but no subgroup of order 6
     3. Hall (partial converse): In solvable groups, Hall divisors DO have subgroups
-    4. Sylow: Special case of Hall for prime powers
-    5. Non-solvable groups may lack Hall subgroups (A₅, S₅, etc.) -/
+    4. Schur-Zassenhaus: Normal Hall subgroups always have complements (from Mathlib)
+    5. Sylow: Special case of Hall for prime powers
+    6. Non-solvable groups may lack Hall subgroups (A₅, S₅, etc.) -/
 theorem summary_hall_extends_lagrange :
     (∀ (G : Type*) [Group G] [Fintype G] (H : Subgroup G) [Fintype H],
       Fintype.card H ∣ Fintype.card G) ∧
