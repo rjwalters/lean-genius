@@ -1,37 +1,132 @@
 [
   {
-    "lineStart": 39,
-    "lineEnd": 57,
-    "type": "keyStep",
-    "content": "**Lagrange Identity**:\n\nThe fundamental algebraic identity:\n$$\\sum_i \\sum_j (f_i g_j - f_j g_i)^2 = 2\\left[(\\sum f_i^2)(\\sum g_i^2) - (\\sum f_i g_i)^2\\right]$$\n\nThe left side is manifestly non-negative (sum of squares), so the right side is too, immediately giving Cauchy-Schwarz. More importantly, equality holds iff every cross-term $f_i g_j - f_j g_i$ vanishes.\n\nThe proof expands $(f_i g_j - f_j g_i)^2$ and uses Finset sum manipulation to collect terms into the three products $\\sum f^2 \\cdot \\sum g^2$, $\\sum g^2 \\cdot \\sum f^2$, and $2(\\sum fg)^2$.",
-    "relatedConcepts": ["Lagrange identity", "Cauchy-Schwarz deficit", "sum of squares"]
+    "id": "ann-lagrange-identity",
+    "line": 41,
+    "type": "theorem",
+    "content": "Proves the Lagrange identity: the double sum of squared cross-terms (fᵢgⱼ - fⱼgᵢ)² equals twice the Cauchy-Schwarz deficit. The proof expands the squared difference and uses Finset sum manipulation to collect terms into three products: ∑f²·∑g², ∑g²·∑f², and 2(∑fg)².",
+    "mathContext": "$$\\sum_{i \\in s} \\sum_{j \\in s} (f_i g_j - f_j g_i)^2 = 2\\left[(\\sum_{i \\in s} f_i^2)(\\sum_{i \\in s} g_i^2) - (\\sum_{i \\in s} f_i g_i)^2\\right]$$\nThe left side is manifestly $\\geq 0$ (sum of squares), immediately giving Cauchy-Schwarz. Equality holds iff every cross-term vanishes.",
+    "significance": "critical",
+    "relatedConcepts": ["Lagrange identity", "Cauchy-Schwarz deficit", "Gram determinant", "exterior algebra"],
+    "prerequisites": ["Finset.sum", "sub_sq", "mul_pow"]
   },
   {
-    "lineStart": 59,
-    "lineEnd": 81,
-    "type": "technique",
-    "content": "**Sum of Squares = 0 Characterization**:\n\nA non-negative sum equals zero iff each term is zero. For squares: $\\sum h_i^2 = 0 \\iff \\forall i,\\, h_i = 0$.\n\nThis uses `Finset.sum_eq_zero_iff_of_nonneg` from Mathlib. The double-sum version reduces to the single-sum version by first extracting the outer sum term, then the inner.",
-    "relatedConcepts": ["non-negative sum", "sum of squares", "characterization of equality"]
+    "id": "ann-sum-sq-zero",
+    "line": 60,
+    "type": "theorem",
+    "content": "A sum of squares over a Finset is zero iff each term is zero: ∑hᵢ² = 0 ⟺ ∀i, hᵢ = 0. Uses Mathlib's Finset.sum_eq_zero_iff_of_nonneg. Extended to double sums by first extracting the outer sum, then the inner. This is the key 'sum of nonneg = 0' principle.",
+    "mathContext": "$\\sum_{i \\in s} h_i^2 = 0 \\iff \\forall i \\in s,\\; h_i = 0$. This follows from: each $h_i^2 \\geq 0$, so if the sum vanishes, each summand must vanish individually.",
+    "significance": "key",
+    "relatedConcepts": ["non-negative sum characterization", "positive definiteness", "sum of squares"],
+    "prerequisites": ["Finset.sum_eq_zero_iff_of_nonneg", "sq_nonneg"]
   },
   {
-    "lineStart": 87,
-    "lineEnd": 102,
-    "type": "keyStep",
-    "content": "**Cauchy-Schwarz Equality ⟺ Cross-Terms Vanish**:\n\n$$(\\sum f_i g_i)^2 = (\\sum f_i^2)(\\sum g_i^2) \\iff \\forall i,j \\in s,\\, f_i g_j = f_j g_i$$\n\nThe forward direction: equality means the Lagrange RHS = 0, so the LHS (sum of squares) = 0, so each $f_i g_j - f_j g_i = 0$.\n\nThe reverse direction: all cross-terms vanish means the double sum = 0, so by Lagrange, the CS deficit = 0.",
-    "relatedConcepts": ["Cauchy-Schwarz equality", "proportionality", "cross-term condition"]
+    "id": "ann-cs-eq-iff",
+    "line": 87,
+    "type": "theorem",
+    "content": "Full iff characterization of Cauchy-Schwarz equality for finite sums: (∑fᵢgᵢ)² = (∑fᵢ²)(∑gᵢ²) iff all cross-terms vanish (fᵢgⱼ = fⱼgᵢ for all i,j). Forward: equality means Lagrange RHS = 0, so all cross-terms are zero. Backward: all cross-terms zero means double sum = 0, so Lagrange RHS = 0.",
+    "mathContext": "$(\\sum f_i g_i)^2 = (\\sum f_i^2)(\\sum g_i^2) \\;\\Longleftrightarrow\\; \\forall i,j \\in s,\\; f_i g_j = f_j g_i$. The cross-term condition says all $2 \\times 2$ minors of the matrix $(f|g)$ vanish, i.e., $\\text{rank}(f|g) \\leq 1$.",
+    "significance": "critical",
+    "relatedConcepts": ["Cauchy-Schwarz equality", "rank condition", "Gram matrix singularity"],
+    "prerequisites": ["lagrange_identity", "double_sum_sq_eq_zero_iff"]
   },
   {
-    "lineStart": 115,
-    "lineEnd": 133,
-    "type": "insight",
-    "content": "**Proportionality from Cross-Terms**:\n\nThe condition $f_i g_j = f_j g_i$ for all $i, j$ means all $2 \\times 2$ minors of the matrix $(f | g)$ vanish, i.e., $f$ and $g$ have rank $\\leq 1$.\n\nIf some $g_k \\neq 0$, then $f_i = (f_k / g_k) \\cdot g_i$ for all $i$: divide $f_i g_k = f_k g_i$ by $g_k$.\n\nThis is the classical proportionality condition: $f = c \\cdot g$ where $c = f_k / g_k$.",
-    "relatedConcepts": ["proportionality", "linear dependence", "rank-1 condition"]
+    "id": "ann-proportionality",
+    "line": 115,
+    "type": "theorem",
+    "content": "Extracts proportionality from the cross-term condition: if fᵢgⱼ = fⱼgᵢ for all i,j and some gₖ ≠ 0, then fᵢ = (fₖ/gₖ)·gᵢ for all i. This is the classical proportionality condition: the two vectors are scalar multiples. Proved by dividing fᵢgₖ = fₖgᵢ by gₖ.",
+    "mathContext": "If $f_i g_k = f_k g_i$ for all $i$ and $g_k \\neq 0$, then $f_i = \\frac{f_k}{g_k} \\cdot g_i$. This means $f = c \\cdot g$ where $c = f_k/g_k$, the classical proportionality characterization of CS equality.",
+    "significance": "key",
+    "relatedConcepts": ["proportionality", "linear dependence", "scalar multiple", "rank-1 matrix"],
+    "prerequisites": ["cauchy_schwarz_eq_iff", "field_simp"]
   },
   {
-    "lineStart": 143,
-    "lineEnd": 154,
-    "type": "keyStep",
-    "content": "**Inner Product Space Equality**:\n\n$$\\|\\langle u, v \\rangle\\| = \\|u\\| \\cdot \\|v\\| \\iff \\exists c \\in \\mathbb{R},\\, u = c \\cdot v$$\n\nThis is the abstract version of the finite-sum result. Uses Mathlib's `norm_inner_eq_norm_iff`, which gives $\\exists r \\neq 0,\\, r \\cdot u = v$. We invert to get $u = r^{-1} \\cdot v$.\n\nThe reverse direction expands $\\langle c \\cdot v, v \\rangle = c \\cdot \\|v\\|^2$ and uses the norm-smul identity.",
-    "relatedConcepts": ["inner product space", "Cauchy-Schwarz equality", "scalar multiple", "norm_inner_eq_norm_iff"]
+    "id": "ann-inner-product-eq",
+    "line": 158,
+    "type": "theorem",
+    "content": "Abstract CS equality for inner product spaces: ‖⟨u,v⟩‖ = ‖u‖·‖v‖ iff u = c·v for some scalar c. Uses Mathlib's norm_inner_eq_norm_iff (gives ∃r≠0, r•u = v) and inverts. The reverse direction expands ⟨c•v, v⟩ = c·‖v‖² and uses norm-smul.",
+    "mathContext": "In a real inner product space $E$: $\\|\\langle u, v \\rangle\\| = \\|u\\| \\cdot \\|v\\| \\;\\Longleftrightarrow\\; \\exists c \\in \\mathbb{R},\\; u = c \\cdot v$. This is the infinite-dimensional version of the finite-sum characterization.",
+    "significance": "key",
+    "relatedConcepts": ["inner product space", "Hilbert space", "projection theorem", "Gram-Schmidt"],
+    "prerequisites": ["norm_inner_eq_norm_iff", "InnerProductSpace", "smul_smul"]
+  },
+  {
+    "id": "ann-cs-from-lagrange",
+    "line": 215,
+    "type": "theorem",
+    "content": "Independent proof of Cauchy-Schwarz from the Lagrange identity: 0 ≤ ∑∑(fᵢgⱼ-fⱼgᵢ)² = 2[(∑f²)(∑g²) - (∑fg)²], so (∑fg)² ≤ (∑f²)(∑g²). This bypasses Mathlib's inner product infrastructure, giving a purely algebraic proof. Concrete examples verify equality (proportional vectors) and strict inequality (orthogonal vectors).",
+    "mathContext": "$(\\sum f_i g_i)^2 \\leq (\\sum f_i^2)(\\sum g_i^2)$. Proof: $0 \\leq \\sum_i \\sum_j (f_ig_j - f_jg_i)^2 = 2[(\\sum f^2)(\\sum g^2) - (\\sum fg)^2]$. Example: $(1,2,3) \\cdot (2,4,6) = 28$, and $14 \\cdot 56 = 784 = 28^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Cauchy-Schwarz inequality", "algebraic proof", "Lagrange identity"],
+    "prerequisites": ["lagrange_identity", "Finset.sum_nonneg"]
+  },
+  {
+    "id": "ann-conjugate-exponents",
+    "line": 245,
+    "type": "theorem",
+    "content": "Five identities for Hölder conjugate exponents with 1/p + 1/q = 1: (1) q = p/(p-1), (2) (p-1)(q-1) = 1, (3) q/p + 1 = q, (4) 1 < q, (5) p + q = pq. These are the algebraic backbone of Hölder theory, proved via field_simp and nlinarith.",
+    "mathContext": "For $1 < p$ and $1/p + 1/q = 1$: $q = \\frac{p}{p-1}$, $(p-1)(q-1) = 1$, $\\frac{q}{p} + 1 = q$, $1 < q$, and $p + q = pq$. The identity $p + q = pq$ ensures $\\frac{1}{p} + \\frac{1}{q} = 1$ after dividing by $pq$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Hölder conjugates", "dual exponents", "Lp-Lq duality"],
+    "prerequisites": ["field_simp", "nlinarith"]
+  },
+  {
+    "id": "ann-young-deficit",
+    "line": 315,
+    "type": "definition",
+    "content": "Defines the Young deficit δ(a,b) = a^p/p + b^q/q - ab ≥ 0. Nonnegativity proved from convexity of exp: setting x = p·log(a), y = q·log(b), the convexity inequality exp((1/p)x + (1/q)y) ≤ (1/p)exp(x) + (1/q)exp(y) gives ab ≤ a^p/p + b^q/q.",
+    "mathContext": "$\\delta(a,b) = \\frac{a^p}{p} + \\frac{b^q}{q} - ab \\geq 0$ for $a, b \\geq 0$. This is **Young's inequality**. Setting $x = p \\log a$, $y = q \\log b$: convexity of $\\exp$ gives $e^{x/p + y/q} \\leq e^x/p + e^y/q$, i.e., $ab \\leq a^p/p + b^q/q$.",
+    "significance": "critical",
+    "relatedConcepts": ["Young's inequality", "convexity of exp", "AM-GM generalization", "Fenchel conjugate"],
+    "prerequisites": ["convexOn_exp", "Real.rpow_def_of_pos", "Real.exp_log"]
+  },
+  {
+    "id": "ann-young-eq-case",
+    "line": 457,
+    "type": "theorem",
+    "content": "Young's equality: δ(a,b) = 0 iff a^p = b^q. The forward direction (deficit = 0 ⟹ equality) uses strict convexity of exp: the convexity inequality is strict unless x = y, i.e., p·log(a) = q·log(b), giving a^p = b^q. The reverse direction is algebraic: if a^p = b^q = c, then a^p/p + b^q/q = c(1/p+1/q) = c = ab.",
+    "mathContext": "$\\frac{a^p}{p} + \\frac{b^q}{q} = ab \\;\\Longleftrightarrow\\; a^p = b^q$. Forward: `strictConvexOn_exp` gives strict inequality unless $p \\log a = q \\log b$, i.e., $a^p = b^q$. Reverse: if $a^p = b^q = c$, then deficit $= c/p + c/q - c^{1/p+1/q} = c - c = 0$.",
+    "significance": "critical",
+    "relatedConcepts": ["strict convexity", "Young's equality", "equality in Jensen", "exponential function"],
+    "prerequisites": ["strictConvexOn_exp", "youngDeficit_nonneg"]
+  },
+  {
+    "id": "ann-holder-eq-normalized",
+    "line": 510,
+    "type": "theorem",
+    "content": "Hölder equality in the normalized case: if ∑fᵢ^p = ∑gᵢ^q = ∑fᵢgᵢ = 1, then fᵢ^p = gᵢ^q for all i. Proof: total Young deficit = ∑(fᵢ^p/p + gᵢ^q/q - fᵢgᵢ) = 1/p + 1/q - 1 = 0. Since each deficit ≥ 0, all are zero. By Young's equality case, fᵢ^p = gᵢ^q.",
+    "mathContext": "If $\\sum f_i^p = \\sum g_i^q = \\sum f_ig_i = 1$ with $f,g \\geq 0$, then $f_i^p = g_i^q$ for all $i$. The total deficit: $\\sum \\delta_i = \\frac{\\sum f^p}{p} + \\frac{\\sum g^q}{q} - \\sum fg = \\frac{1}{p} + \\frac{1}{q} - 1 = 0$.",
+    "significance": "critical",
+    "relatedConcepts": ["Hölder equality", "normalization trick", "deficit decomposition"],
+    "prerequisites": ["sum_youngDeficit_eq_zero_iff", "youngDeficit_eq_zero_iff"]
+  },
+  {
+    "id": "ann-holder-eq-general",
+    "line": 541,
+    "type": "theorem",
+    "content": "General Hölder equality: if ∑fᵢgᵢ = (∑fᵢ^p)^{1/p}(∑gᵢ^q)^{1/q}, then ∃c≥0 with fᵢ^p = c·gᵢ^q, where c = (∑f^p)/(∑g^q). Reduces to the normalized case by dividing f by a = (∑f^p)^{1/p} and g by b = (∑g^q)^{1/q}. Key cancellation: a^p = ∑f^p via rpow_mul.",
+    "mathContext": "If $\\sum f_ig_i = \\|f\\|_p \\cdot \\|g\\|_q$, then $f_i^p = \\frac{\\|f\\|_p^p}{\\|g\\|_q^q} \\cdot g_i^q$ for all $i \\in s$. The proportionality constant $c = \\|f\\|_p^p / \\|g\\|_q^q$.",
+    "significance": "key",
+    "relatedConcepts": ["normalization reduction", "Lp norm", "homogeneity"],
+    "prerequisites": ["holder_eq_normalized_implies_power_prop", "Real.rpow_mul"]
+  },
+  {
+    "id": "ann-cs-from-holder",
+    "line": 638,
+    "type": "theorem",
+    "content": "Recovers Cauchy-Schwarz proportionality from Hölder power proportionality at p=q=2: fᵢ² = c·gᵢ² with c≥0 and f,g≥0 implies fᵢ = √c·gᵢ. Computes (fᵢ - √c·gᵢ)² = fᵢ² - 2fᵢ√c·gᵢ + c·gᵢ² = 0 via nlinarith.",
+    "mathContext": "For $f_i, g_i \\geq 0$, $c \\geq 0$: $f_i^2 = c g_i^2 \\Rightarrow f_i = \\sqrt{c}\\, g_i$. Proof: $(f_i - \\sqrt{c}\\, g_i)^2 = f_i^2 - 2\\sqrt{c}\\,f_ig_i + c\\,g_i^2 = 0$ using $f_i^2 = c\\,g_i^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["p=q=2 specialization", "square root extraction", "non-negative functions"],
+    "prerequisites": ["Real.mul_self_sqrt", "nlinarith"]
+  },
+  {
+    "id": "ann-integral-holder",
+    "line": 701,
+    "type": "theorem",
+    "content": "Integral Hölder equality (normalized case): if ∫f^p = ∫g^q = ∫fg = 1, then f^p = g^q a.e. Proof mirrors finite sums: (1) integral of Young deficits = 1/p + 1/q - 1 = 0, (2) integrand a.e. nonneg by Young's inequality, (3) integral_eq_zero_iff_of_nonneg_ae gives deficits = 0 a.e., (4) Young's equality gives f^p = g^q a.e.",
+    "mathContext": "If $\\int f^p\\,d\\mu = \\int g^q\\,d\\mu = \\int fg\\,d\\mu = 1$ with $f, g \\geq 0$ a.e., then $f^p = g^q$ $\\mu$-a.e. Key step: `integral_eq_zero_iff_of_nonneg_ae` is the measure-theoretic `sum_eq_zero_iff_of_nonneg`.",
+    "significance": "key",
+    "relatedConcepts": ["a.e. equality", "Lebesgue integration", "Lp spaces", "Lp-Lq duality"],
+    "prerequisites": ["integral_eq_zero_iff_of_nonneg_ae", "youngDeficit_eq_zero_iff"]
   }
 ]
