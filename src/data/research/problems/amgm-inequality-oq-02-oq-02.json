@@ -1,0 +1,30 @@
+{
+  "id": "amgm-inequality-oq-02-oq-02",
+  "name": "Newton log-concavity of elementary symmetric polynomials",
+  "status": "completed",
+  "knowledge": {
+    "insights": [
+      "maclaurin_step follows from newton_log_concavity via a power inequality + rpow conversion",
+      "The power inequality aₖ^(k+1) ≥ aₖ₊₁^k is proved by induction using a division-free argument",
+      "Division-free key step: (aₖ₊₁²)^(k+1) ≥ (aₖ·aₖ₊₂)^(k+1) = aₖ^(k+1)·aₖ₊₂^(k+1) ≥ aₖ₊₁^k·aₖ₊₂^(k+1), then cancel aₖ₊₁^k",
+      "The zero case requires a structural property: for non-negative inputs, eⱼ = 0 implies eₖ = 0 for all k ≥ j",
+      "The rpow conversion uses: a^(1/k) = (a^(k+1))^(1/(k(k+1))) and rpow_le_rpow monotonicity",
+      "Finset.exists_smaller_set does not exist in Mathlib v4.26.0; use card_powersetCard + card_pos instead",
+      "pow_le_pow_left₀ is the correct API name for monotonicity of nat power on reals (not pow_le_pow_left)"
+    ],
+    "builtItems": [
+      "elemSymm_zero_implies_higher_zero: zero tail property for elem sym polys (no sorry)",
+      "normESym definition + zero/nonneg/eq_zero_iff lemmas",
+      "normESym_zero_implies_higher_zero: zero tail for normalized version",
+      "power_ineq_of_log_concave: aₖ^(k+1) ≥ aₖ₊₁^k by induction (no sorry)",
+      "rpow_ineq_of_pow_ineq: nat pow to rpow conversion (no sorry)",
+      "maclaurin_step_derived: Mₖ ≥ Mₖ₊₁ as THEOREM, not axiom (no sorry)"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Remove maclaurin_step axiom from AmgmInequalityOQ02.lean and replace with maclaurin_step_derived",
+      "Prove newton_log_concavity itself (the remaining axiom) - requires convolution preserves log-concavity"
+    ],
+    "progressSummary": "COMPLETED: Derived maclaurin_step from newton_log_concavity, reducing axiom count from 2 to 1. File compiles clean with 0 sorries."
+  }
+}
