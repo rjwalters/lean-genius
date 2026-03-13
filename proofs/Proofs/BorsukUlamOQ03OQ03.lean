@@ -802,7 +802,18 @@ theorem gridCoord_diff_le (N : ℕ) (hN : N ≥ 1) (i j : Fin (2 * N + 1))
 theorem gridMesh (N : ℕ) (hN : N ≥ 1) :
     ∀ u v : GridPoint N, gridEdge N u v →
       dist (gridToReal N hN u) (gridToReal N hN v) ≤ Real.sqrt 2 / N := by
-  sorry -- Needs Prod.dist bound from component bounds + √2 estimate
+  intro u v ⟨_, ⟨h1a, h1b⟩, ⟨h2a, h2b⟩⟩
+  simp only [gridToReal]
+  rw [Prod.dist_eq]
+  have hc1 := gridCoord_diff_le N hN u.1 v.1 h1a h1b
+  have hc2 := gridCoord_diff_le N hN u.2 v.2 h2a h2b
+  rw [Real.dist_eq, Real.dist_eq]
+  have hN_pos : (N : ℝ) > 0 := by positivity
+  have h1N_le : 1 / (N : ℝ) ≤ Real.sqrt 2 / N := by
+    apply div_le_div_of_nonneg_right _ (le_of_lt hN_pos)
+    calc (1 : ℝ) = Real.sqrt 1 := by rw [Real.sqrt_one]
+      _ ≤ Real.sqrt 2 := Real.sqrt_le_sqrt (by norm_num)
+  exact max_le (le_trans hc1 h1N_le) (le_trans hc2 h1N_le)
 
 /-- The antipodal map on the grid corresponds to negation in real coordinates. -/
 theorem gridAntipodal_neg (N : ℕ) (hN : N ≥ 1) (p : GridPoint N) :
@@ -1714,9 +1725,42 @@ theorem grid_edge_dist (N : ℕ) (hN : 0 < N)
     (u v : Fin (2 * N + 1) × Fin (2 * N + 1))
     (he : (u, v) ∈ gridEdgesFin N) :
     dist (gridVertexFin N u) (gridVertexFin N v) ≤ 1 / (N : ℝ) := by
-  -- Adjacent grid vertices differ by exactly 1/N in one coordinate and 0 in the other.
-  -- Prod dist (L∞ norm) = max(1/N, 0) = 1/N.
-  sorry -- Nat↔ℝ cast arithmetic: adjacent Fin vals differ by 1, mapping to 1/N distance
+  simp only [gridEdgesFin, Set.mem_setOf_eq] at he
+  simp only [gridVertexFin, gridVertex]
+  have hN_pos : (0 : ℝ) < N := Nat.cast_pos.mpr hN
+  have hN_ne : (N : ℝ) ≠ 0 := ne_of_gt hN_pos
+  rw [Prod.dist_eq, Real.dist_eq, Real.dist_eq]
+  rcases he with ⟨heq, hor⟩ | ⟨heq, hor⟩
+  · -- Same first coordinate, adjacent second coordinate
+    have h1 : u.1.val = v.1.val := by rw [← Fin.val_eq_val]; exact heq
+    rw [show (↑u.1.val : ℝ) / ↑N - 1 - (↑v.1.val / ↑N - 1) =
+        (↑u.1.val - ↑v.1.val) / ↑N from by ring]
+    rw [show (↑u.2.val : ℝ) / ↑N - 1 - (↑v.2.val / ↑N - 1) =
+        (↑u.2.val - ↑v.2.val) / ↑N from by ring]
+    rw [h1, sub_self, zero_div, abs_zero]
+    rw [abs_div, abs_of_pos hN_pos]
+    apply max_le (le_of_eq (by norm_num)) _
+    rw [div_le_div_iff_of_pos_right hN_pos]
+    rcases hor with h | h
+    · have : (u.2.val : ℝ) - v.2.val = -1 := by push_cast; omega
+      rw [this]; simp
+    · have : (u.2.val : ℝ) - v.2.val = 1 := by push_cast; omega
+      rw [this]; simp
+  · -- Same second coordinate, adjacent first coordinate
+    have h2 : u.2.val = v.2.val := by rw [← Fin.val_eq_val]; exact heq
+    rw [show (↑u.1.val : ℝ) / ↑N - 1 - (↑v.1.val / ↑N - 1) =
+        (↑u.1.val - ↑v.1.val) / ↑N from by ring]
+    rw [show (↑u.2.val : ℝ) / ↑N - 1 - (↑v.2.val / ↑N - 1) =
+        (↑u.2.val - ↑v.2.val) / ↑N from by ring]
+    rw [h2, sub_self, zero_div, abs_zero]
+    rw [abs_div, abs_of_pos hN_pos]
+    apply max_le _ (le_of_eq (by norm_num))
+    rw [div_le_div_iff_of_pos_right hN_pos]
+    rcases hor with h | h
+    · have : (u.1.val : ℝ) - v.1.val = -1 := by push_cast; omega
+      rw [this]; simp
+    · have : (u.1.val : ℝ) - v.1.val = 1 := by push_cast; omega
+      rw [this]; simp
 
 /-- **Main theorem**: tucker_disk_approx_zero follows from tuckers_lemma.
     This eliminates one of the two remaining axioms.
