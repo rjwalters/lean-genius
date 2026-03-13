@@ -954,6 +954,76 @@ theorem invariance_of_dimension (n m : ℕ) (hn : 1 ≤ n) (hm : 1 ≤ m) (hnm :
 theorem invariance_of_dimension_from_bu : True := trivial
 
 /-
+## Section XXVI: BU for n=1 in General Form (Proved Constructively)
+
+The `borsuk_ulam_general` axiom (§7) states BU for all n ≥ 1. But the n=1
+case can be proved constructively via the circle parametrization and IVT.
+This section proves BU for n=1 in the general type signature
+`(Fin 2 → ℝ) → (Fin 1 → ℝ)`, reducing the axiom requirement from n ≥ 1
+to n ≥ 2.
+-/
+
+/-- Circle parametrization: θ ↦ (cos θ, sin θ) as Fin 2 → ℝ -/
+noncomputable def circleParam (θ : ℝ) : Fin 2 → ℝ :=
+  fun i => if i = 0 then Real.cos θ else Real.sin θ
+
+private theorem circleParam_continuous : Continuous circleParam :=
+  continuous_pi fun i => by
+    simp only [circleParam]
+    fin_cases i <;> simp <;> fun_prop
+
+private theorem circleParam_on_sphere (θ : ℝ) :
+    ∑ i : Fin 2, (circleParam θ i) ^ 2 = 1 := by
+  simp only [Fin.sum_univ_two, circleParam, ite_true,
+    show ((1 : Fin 2) = 0) = False from by decide, ite_false]
+  linarith [Real.cos_sq_add_sin_sq θ]
+
+private theorem circleParam_pi_eq_neg_zero :
+    circleParam Real.pi = -circleParam 0 := by
+  ext i; simp only [circleParam, Pi.neg_apply]
+  fin_cases i
+  · simp [Real.cos_pi, Real.cos_zero]
+  · simp [Real.sin_pi, Real.sin_zero]
+
+/-- **BU for n=1 in general form** (proved constructively via IVT).
+
+    For any continuous f: S¹ → ℝ, there exist antipodal x, -x ∈ S¹
+    with f(x) = f(-x). This is the n=1 case of the general BU axiom
+    proved without axioms, reducing the requirement to n ≥ 2.
+
+    Proof: Parametrize S¹ by θ ↦ (cos θ, sin θ). Define
+    g(θ) = f(cos θ, sin θ) - f(-cos θ, -sin θ).
+    Then g(π) = -g(0) and IVT gives a zero of g. -/
+theorem borsuk_ulam_n1
+    (f : (Fin 2 → ℝ) → (Fin 1 → ℝ))
+    (hf : Continuous f) :
+    ∃ x : NSphere 1, f x.1 = f (fun i => -x.1 i) := by
+  -- Reduce Fin 1 → ℝ equality to scalar
+  suffices h : ∃ x : NSphere 1, f x.1 0 = f (fun i => -x.1 i) 0 by
+    obtain ⟨x, hx⟩ := h
+    exact ⟨x, funext fun j => by fin_cases j; exact hx⟩
+  -- Define g(θ) = f(circleParam θ)(0) - f(-circleParam θ)(0)
+  set g := fun θ : ℝ => f (circleParam θ) 0 - f (-circleParam θ) 0 with hg_def
+  have hg_cont : ContinuousOn g (Icc 0 Real.pi) :=
+    (((continuous_apply 0).comp (hf.comp circleParam_continuous)).sub
+     ((continuous_apply 0).comp (hf.comp circleParam_continuous.neg))).continuousOn
+  -- Antisymmetry: g(π) = -g(0) because circle(π) = -circle(0)
+  have hantiperiodic : g Real.pi = -(g 0) := by
+    simp only [hg_def, circleParam_pi_eq_neg_zero, neg_neg]; ring
+  -- Apply IVT to find θ₀ with g(θ₀) = 0
+  rcases le_or_gt (g 0) 0 with h0 | h0
+  · -- g(0) ≤ 0, so g(π) = -g(0) ≥ 0
+    obtain ⟨θ, hθ, hgθ⟩ := intermediate_value_Icc Real.pi_pos.le hg_cont
+      ⟨h0, by linarith [hantiperiodic]⟩
+    exact ⟨⟨circleParam θ, circleParam_on_sphere θ⟩, by
+      simp only [hg_def] at hgθ; exact sub_eq_zero.mp hgθ⟩
+  · -- g(0) > 0, so g(π) = -g(0) < 0
+    obtain ⟨θ, hθ, hgθ⟩ := intermediate_value_Icc' Real.pi_pos.le hg_cont
+      ⟨by linarith [hantiperiodic], le_of_lt h0⟩
+    exact ⟨⟨circleParam θ, circleParam_on_sphere θ⟩, by
+      simp only [hg_def] at hgθ; exact sub_eq_zero.mp hgθ⟩
+
+/-
 ## Section XXV: Complete Constructive Status Summary
 -/
 
@@ -968,7 +1038,11 @@ theorem invariance_of_dimension_from_bu : True := trivial
     - Approximate antipodal pairs
     - Tucker-BU logical reduction
 
-    **AXIOMIZED** (Sections VII, XXII-XXIII):
+    **PROVED for n=1 in GENERAL form** (Section XXVI):
+    - BU for n=1 with general type signature (Fin 2 → ℝ) → (Fin 1 → ℝ)
+    - Reduces the `borsuk_ulam_general` axiom requirement from n ≥ 1 to n ≥ 2
+
+    **AXIOMIZED** (Sections VII, XXII-XXIV):
     - General BU for n ≥ 2 (needs algebraic topology)
     - No-retraction theorem (needs ball-sphere relationship)
     - Brouwer Fixed Point for n ≥ 2 (needs ray-sphere construction)
