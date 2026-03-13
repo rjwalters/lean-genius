@@ -42,88 +42,101 @@
     "dateAdded": "02/10/26"
   },
   "overview": {
-    "historicalContext": "The classical Ballot Problem was posed by Joseph Bertrand in 1887: if candidate A receives p votes and B receives q votes (p > q), the probability that A leads throughout counting is (p-q)/(p+q). This was first proved by Desire Andre using the reflection principle. In 1947, Dvoretzky and Motzkin proved the Cycle Lemma, which gives a more general and elegant proof applicable to the k-fold generalization.",
+    "historicalContext": "The classical Ballot Problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus*: if candidate A receives $p$ votes and B receives $q$ votes ($p > q$), the probability that A leads throughout counting is $(p-q)/(p+q)$. Désiré André gave the first proof using the **reflection principle** (1887), mapping unfavorable sequences to their reflections across the axis. W.A. Whitworth independently discovered the result using a direct combinatorial argument. In 1947, Aryeh Dvoretzky and Theodore Motzkin proved the **Cycle Lemma** in the *Proceedings of the National Academy of Sciences*, which gives a far more general and elegant proof: for any integer sequence with positive sum $S$ and length $n$, exactly $S$ of its $n$ cyclic rotations have all positive prefix sums. This immediately implies the ballot theorem and its $k$-fold generalization. The cycle lemma has since found applications in lattice path enumeration, queueing theory, and the analysis of random trees (Raney's theorem).",
     "problemStatement": "**Generalized Ballot Theorem**: In an election where candidate A receives $a$ votes and candidate B receives $b$ votes, with $a > kb$ for a positive integer $k$, the probability that A always has more than $k$ times as many votes as B throughout the counting is:\n\n$$P = \\frac{a - kb}{a + b}$$\n\nWhen $k = 1$, this reduces to the classical formula $P = (p-q)/(p+q)$.",
     "proofStrategy": "**Lattice Path Model + Cycle Lemma**:\n\n1. Model vote counting as a lattice path: each A-vote is a +1 step, each B-vote is a $-k$ step\n2. The condition 'A has > k times B's votes' equals the path staying strictly above the x-axis\n3. Use the Dvoretzky-Motzkin Cycle Lemma: for a sequence with positive sum $S$ and length $n$, exactly $S$ of the $n$ cyclic rotations have all positive prefix sums\n4. Apply to ballot sequences: $S = a - kb$, $n = a + b$, giving the fraction of good orderings",
     "keyInsights": [
-      "The Dvoretzky-Motzkin cycle lemma unifies all ballot-type results: exactly $S$ of $n$ cyclic rotations have all positive prefix sums",
-      "Cyclic rotation preserves the multiset of values, so all rotations of a ballot sequence remain in $\\text{kCountedSequence}(a, b, k)$",
-      "The prefix sum of rotation $i$ at position $j$ satisfies $\\sigma_{\\text{rot}}(j) = \\sigma(i+j) - \\sigma(i)$ (non-wrapping) or $\\sigma(i+j-n) + S - \\sigma(i)$ (wrapping)",
-      "The permutation characterization $l \\sim \\text{replicate}(a, 1) \\mathbin{++} \\text{replicate}(b, -k)$ enables finiteness via Mathlib's `List.finite_permutations`"
+      "The **Dvoretzky-Motzkin cycle lemma** unifies all ballot-type results: exactly $S$ of $n$ cyclic rotations have all positive prefix sums, immediately giving $P = S/n = (a - kb)/(a + b)$",
+      "**Cyclic rotation preserves** the multiset of values, so all rotations of a ballot sequence remain in $\\text{kCountedSequence}(k, a, b)$ — a crucial invariant enabling the counting argument",
+      "The **prefix sum relation** $\\sigma_{\\text{rot}(i)}(j) = \\sigma(i+j) - \\sigma(i)$ (non-wrapping) connects rotated prefix sums to original ones, reducing good rotation analysis to prefix sum arithmetic",
+      "The proof uses a **sandwich argument**: an injection into $\\{0, \\ldots, S-1\\}$ gives $|\\text{goodRotations}| \\leq S$, while a surjection via `levelPos` (a discrete IVT argument exploiting $+1$ steps) gives $|\\text{goodRotations}| \\geq S$",
+      "The **rightmost minimum** of the prefix sum sequence is always a good rotation, providing the existence base case that bootstraps the full counting argument"
     ]
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Module docstring establishing the generalized ballot problem for $k$-fold dominance, imports from `Archive.Wiedijk100Theorems.BallotProblem` and `Mathlib.Tactic`"
+    },
+    {
       "id": "definitions",
-      "title": "Generalized Ballot Sequences",
-      "startLine": 52,
-      "endLine": 71,
-      "summary": "Definitions of kCountedSequence (lists with a +1s and b -k values) and kStaysPositive (all prefix sums positive).",
-      "mathContext": "$\\text{kCountedSequence}(a,b,k) = \\{l \\mid \\text{count}(1) = a,\\; \\text{count}(-k) = b\\}$"
+      "title": "Part I: Generalized Ballot Sequences",
+      "startLine": 61,
+      "endLine": 67,
+      "summary": "Defines $\\text{kCountedSequence}(k,a,b)$ (lists with $a$ copies of $+1$ and $b$ copies of $-k$) and $\\text{kStaysPositive}$ (all prefix sums positive)"
     },
     {
       "id": "algebraic-lemmas",
-      "title": "Core Algebraic Lemmas",
-      "startLine": 73,
-      "endLine": 122,
-      "summary": "Sum and length identities for binary-valued lists: sum = count(1) - k*count(-k), length = count(1) + count(-k).",
-      "mathContext": "$\\sum l = \\text{count}(1) - k \\cdot \\text{count}(-k)$ and $|l| = \\text{count}(1) + \\text{count}(-k)$"
+      "title": "Part II: Core Algebraic Lemmas",
+      "startLine": 69,
+      "endLine": 101,
+      "summary": "Proves $\\sum l = \\text{count}(1) - k \\cdot \\text{count}(-k)$ and $|l| = \\text{count}(1) + \\text{count}(-k)$ by list induction"
     },
     {
       "id": "basic-properties",
-      "title": "Basic Properties",
-      "startLine": 124,
-      "endLine": 177,
-      "summary": "Sum, length, permutation characterization, finiteness, and nonemptiness of kCountedSequence.",
-      "mathContext": "$l \\in \\text{kCountedSequence} \\iff l \\sim \\text{replicate}(a,1) \\mathbin{++} \\text{replicate}(b,-k)$"
+      "title": "Part III: Basic Properties",
+      "startLine": 103,
+      "endLine": 149,
+      "summary": "Derives sum $= a - kb$, length $= a + b$, permutation characterization $l \\sim \\text{replicate}(a,1) \\mathbin{\\|} \\text{replicate}(b,-k)$, finiteness, and nonemptiness"
     },
     {
       "id": "classical-connection",
-      "title": "Connection to Classical Ballot Problem",
-      "startLine": 184,
-      "endLine": 213,
-      "summary": "When k=1, kCountedSequence equals Mathlib's countedSequence, connecting to the classical result.",
-      "mathContext": "$\\text{kCountedSequence}(a, b, 1) = \\text{Ballot.countedSequence}(a, b)$ via `simpa`"
+      "title": "Part IV: Connection to Classical Ballot Problem",
+      "startLine": 150,
+      "endLine": 158,
+      "summary": "Shows $\\text{kCountedSequence}(1, a, b) = \\text{Ballot.countedSequence}(a, b)$ via `simpa`, validating against Wiedijk #30"
     },
     {
       "id": "ballot-theorem",
-      "title": "The Generalized Ballot Theorem",
-      "startLine": 215,
-      "endLine": 257,
-      "summary": "Statement of the counting theorem and probability formula, with verified special cases.",
-      "mathContext": "$P(\\text{A leads throughout}) = \\frac{a - kb}{a + b}$ for $a > kb$"
+      "title": "Part V: The Generalized Ballot Theorem",
+      "startLine": 160,
+      "endLine": 181,
+      "summary": "States the counting formula (1 sorry: double counting) and proves $P = (a - kb)/(a + b) > 0$; verified examples with `norm_num`"
     },
     {
       "id": "cyclic-rotations",
-      "title": "Cyclic Rotation Infrastructure",
-      "startLine": 259,
-      "endLine": 340,
-      "summary": "Definition and properties of cyclic rotations: sum/length preservation, membership, composition.",
-      "mathContext": "$\\text{rotate}(l, i) = \\text{drop}\\,i\\,l \\mathbin{++} \\text{take}\\,i\\,l$; $\\sum \\text{rotate}(l,i) = \\sum l$"
+      "title": "Part VII: Cyclic Rotation Infrastructure",
+      "startLine": 183,
+      "endLine": 235,
+      "summary": "Defines $\\text{rotate}(l, i) = l[i:] \\mathbin{\\|} l[:i]$ and proves sum/length preservation, identity, membership in kCountedSequence, and composition"
     },
     {
       "id": "prefix-sums",
       "title": "Prefix Sum Relations",
-      "startLine": 348,
-      "endLine": 412,
-      "summary": "Key structural lemma relating prefix sums of cyclic rotations to prefix sums of the original sequence.",
-      "mathContext": "$\\sigma_{\\text{rot}(i)}(j) = \\sigma(i+j) - \\sigma(i)$ or $\\sigma(i+j-n) + S - \\sigma(i)$ when wrapping"
+      "startLine": 237,
+      "endLine": 334,
+      "summary": "Proves the key relation $\\sigma_{\\text{rot}(i)}(j) = \\sigma(i+j) - \\sigma(i)$ (non-wrapping) or $\\sigma(i+j-n) + S - \\sigma(i)$ (wrapping); defines `prefixSum`, doubled periodicity, `isGoodRotation`, and `goodRotations`"
     },
     {
-      "id": "cycle-lemma",
-      "title": "The Cycle Lemma",
-      "startLine": 414,
-      "endLine": 443,
-      "summary": "Statement of the Dvoretzky-Motzkin cycle lemma (1947): for positive-sum sequences, exactly S of n rotations have all positive prefix sums.",
-      "mathContext": "$|\\{i < n \\mid \\forall j \\leq n,\\; \\sigma_{\\text{rot}(i)}(j) > 0\\}| = S$ where $S = \\sum l > 0$"
+      "id": "rightmost-minimum",
+      "title": "Rightmost Minimum Infrastructure",
+      "startLine": 335,
+      "endLine": 419,
+      "summary": "Defines `rightmostMinPos` as the last position achieving $\\min(\\sigma)$; proves it is a good rotation when $S > 0$, giving $|\\text{goodRotations}| \\geq 1$"
+    },
+    {
+      "id": "upper-bound",
+      "title": "Cycle Lemma Upper Bound",
+      "startLine": 421,
+      "endLine": 514,
+      "summary": "Proves $|\\text{goodRotations}| \\leq S$ via an injection $i \\mapsto \\sigma(i) - \\min(\\sigma)$ from good rotations into $\\{0, \\ldots, S-1\\}$, using prefix sum strict monotonicity and injectivity"
+    },
+    {
+      "id": "lower-bound",
+      "title": "Cycle Lemma Lower Bound and Main Theorem",
+      "startLine": 516,
+      "endLine": 700,
+      "summary": "Proves $|\\text{goodRotations}| \\geq S$ via `levelPos` surjection (discrete IVT exploiting $+1$ steps); combines with upper bound to prove the **cycle lemma**: $|\\text{goodRotations}| = a - kb$; includes `native_decide` verification examples"
     },
     {
       "id": "lattice-paths",
-      "title": "Lattice Path Interpretation",
-      "startLine": 445,
-      "endLine": 475,
-      "summary": "Physical interpretation of ballot sequences as lattice paths with height tracking.",
-      "mathContext": "Lattice path: A-vote = $(1, 1)$ step, B-vote = $(1, -k)$ step; path stays above $x$-axis iff all prefix sums positive"
+      "title": "Part VIII: Lattice Path Interpretation",
+      "startLine": 702,
+      "endLine": 710,
+      "summary": "Interprets prefix sums as lattice path heights: A-vote $= (+1)$ step, B-vote $= (-k)$ step; path stays above $x$-axis iff all prefix sums are positive"
     }
   ],
   "conclusion": {
