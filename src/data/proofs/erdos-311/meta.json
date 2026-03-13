@@ -4,8 +4,11 @@
   "slug": "erdos-311",
   "description": "Is δ(N) = e^{-(c+o(1))N} for c ∈ (0,1), where δ(N) is the minimal nonzero |1 - Σ 1/n| over A ⊆ {1,...,N}? Lower: e^{-(1+o(1))N}. Upper: exp(-cN/(log N log log N)³) (Tang). Open.",
   "meta": {
-    "erdosNumber": 311,
-    "status": "formalized",
+    "author": "Erdős–Graham (1980, open)",
+    "sourceUrl": "https://erdosproblems.com/311",
+    "date": "1980",
+    "status": "complete",
+    "proofRepoPath": "Proofs/Erdos311Problem.lean",
     "tags": [
       "erdos",
       "number-theory",
@@ -13,16 +16,50 @@
       "approximation",
       "open"
     ],
-    "references": [
-      "Erdős–Graham (1980): original question",
-      "Tang: upper bound exp(-cN/(log N log log N)³)",
-      "Kovac: equivalence of subset-sum-to-1 variant",
-      "https://erdosproblems.com/311"
-    ],
-    "leanFile": "Proofs/Erdos311Problem.lean",
+    "badge": "axiom",
     "sorries": 0,
-    "sourceUrl": "https://erdosproblems.com/311",
-    "erdosUrl": "https://erdosproblems.com/311"
+    "erdosNumber": 311,
+    "erdosUrl": "https://erdosproblems.com/311",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.exp",
+        "description": "Exponential function for decay bounds",
+        "module": "Mathlib.Analysis.SpecialFunctions.ExpDeriv"
+      },
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets for unit fraction sums",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "references": [
+      {
+        "cite": "Erdős–Graham 1980",
+        "title": "Old and New Problems and Results in Combinatorial Number Theory",
+        "year": 1980,
+        "relevance": "Original source of the conjecture about exponential decay rate of δ(N)"
+      },
+      {
+        "cite": "Tang",
+        "title": "Upper bound on δ(N)",
+        "relevance": "Best known upper bound: exp(-cN/(log N · log log N)³)"
+      },
+      {
+        "cite": "Kovac",
+        "title": "Equivalence of subset-sum-to-1 variant",
+        "relevance": "Showed the variant asking about exact representation of 1 is equivalent"
+      }
+    ],
+    "originalContributions": [
+      "unitFracSum definition",
+      "delta and delta_pos axioms",
+      "delta_lower_bound axiom (lcm/PNT lower bound)",
+      "tang_upper_bound axiom (subexponential upper bound)",
+      "erdos_311_conjecture axiom (ε-N₀ form)"
+    ]
   },
   "sections": [
     {
@@ -30,7 +67,7 @@
       "title": "Definitions",
       "startLine": 24,
       "endLine": 35,
-      "summary": "unitFracSum, delta (axiomatized), delta_pos.",
+      "summary": "Defines `unitFracSum(A) = \\sum_{n \\in A} 1/n$`, axiomatizes `delta(N)` as the minimal nonzero deviation $|1 - \\sum 1/n|$, and proves `delta_pos`: $\\delta(N) > 0$ for $N \\ge 1$.",
       "mathContext": "$\\text{unitFracSum}(A) = \\sum_{n \\in A} \\frac{1}{n}$ for $A \\subseteq \\{1, \\ldots, N\\}$. $\\delta(N) = \\min\\{|1 - \\text{unitFracSum}(A)| : A \\subseteq \\{1,\\ldots,N\\},\\, \\text{unitFracSum}(A) \\le 1,\\, \\text{unitFracSum}(A) \\ne 1\\}$."
     },
     {
@@ -38,7 +75,7 @@
       "title": "Lower Bound",
       "startLine": 37,
       "endLine": 42,
-      "summary": "δ(N) ≥ e^{-(1+o(1))N} from lcm bound.",
+      "summary": "Lower bound: $\\delta(N) \\ge e^{-(1+\\varepsilon)N}$ for large $N$, from $\\delta(N) \\ge 1/\\text{lcm}(1,\\ldots,N) = e^{-\\psi(N)}$ where $\\psi(N) \\sim N$ by PNT.",
       "mathContext": "$\\delta(N) \\ge \\frac{1}{\\text{lcm}(1,\\ldots,N)} = e^{-(1+o(1))N}$ by clearing denominators. Uses $\\text{lcm}(1,\\ldots,N) = e^{\\psi(N)}$ where $\\psi(N) \\sim N$ (Chebyshev/PNT)."
     },
     {
@@ -46,7 +83,7 @@
       "title": "Upper Bound",
       "startLine": 44,
       "endLine": 50,
-      "summary": "Tang: δ(N) ≤ exp(-cN/(log N log log N)³).",
+      "summary": "Tang's upper bound: $\\delta(N) \\le \\exp(-cN/(\\log N \\cdot \\log\\log N)^3)$ — subexponential, far from the conjectured $e^{-cN}$.",
       "mathContext": "$\\delta(N) \\le \\exp\\bigl(-\\frac{cN}{(\\log N \\cdot \\log\\log N)^3}\\bigr)$ for some $c > 0$ (Tang). This is subexponential — between the conjectured $e^{-cN}$ and polynomial decay."
     },
     {
@@ -54,12 +91,12 @@
       "title": "The Conjecture",
       "startLine": 52,
       "endLine": 61,
-      "summary": "δ(N) = e^{-(c+o(1))N} for c ∈ (0,1).",
+      "summary": "The conjecture: $\\exists c \\in (0,1)$ such that $\\delta(N) = e^{-(c+o(1))N}$, formalized in $\\varepsilon$-$N_0$ form. Equivalently $-\\log\\delta(N)/N \\to c$.",
       "mathContext": "$\\exists c \\in (0,1): \\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall N \\ge N_0: e^{-(c+\\varepsilon)N} \\le \\delta(N) \\le e^{-(c-\\varepsilon)N}$. Equivalently, $-\\frac{\\log \\delta(N)}{N} \\to c$ as $N \\to \\infty$."
     }
   ],
   "overview": {
-    "historicalContext": "Erdős and Graham (1980) studied the approximation of 1 by sums of distinct unit fractions from {1/1, 1/2, ..., 1/N}. The function δ(N) measures how close one can get to 1 without hitting it exactly. This connects to Egyptian fraction representations and the structure of the lcm of {1,...,N}.",
+    "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory'. The question connects to the ancient Egyptian tradition of representing fractions as sums of distinct unit fractions (e.g., 2/3 = 1/2 + 1/6). The function δ(N) quantifies how closely 1 can be approximated without being reached exactly. The trivial lower bound δ(N) ≥ 1/lcm(1,...,N) uses the Prime Number Theorem via the Chebyshev function ψ(N) ~ N. Tang obtained the best known upper bound using smooth number constructions, but the gap to the conjectured exponential rate remains enormous — roughly (log N)³ orders of magnitude in the exponent. Kovac proved an important equivalence: the deviation problem is equivalent to asking which integers N admit an exact representation 1 = Σ 1/nᵢ with all nᵢ ≤ N. This open problem remains one of the central questions in the theory of Egyptian fractions.",
     "problemStatement": "Is δ(N) = e^{-(c+o(1))N} for some constant c ∈ (0,1)? That is, does the minimal nonzero deviation from 1 by unit fraction sums decay exponentially at a rate strictly between 0 and 1?",
     "proofStrategy": "We axiomatize δ(N) and state its positivity, the lower bound from lcm, Tang's upper bound, and the full conjecture in ε-N₀ form.",
     "keyInsights": [
@@ -79,5 +116,17 @@
       "Can Tang's upper bound be improved to a true exponential exp(-cN)?",
       "Does the extremal subset A achieving δ(N) have any structural properties?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetProofId": "erdos-316",
+      "relationship": "related-problem",
+      "description": "Both involve unit fraction sums: #311 asks about approximating 1, while #316 asks about partitioning sets with reciprocal sum < 2"
+    },
+    {
+      "targetProofId": "prime-number-theorem",
+      "relationship": "uses-result",
+      "description": "The lower bound δ(N) ≥ 1/lcm(1,...,N) uses lcm(1,...,N) = e^{ψ(N)} where ψ(N) ~ N by PNT"
+    }
+  ]
 }
