@@ -80,7 +80,8 @@
       "title": "Collinearity = Concurrence",
       "summary": "Defines `collinear` and `concurrent` as $\\det(u,v,w) = 0$ and proves they are the SAME predicate via `rfl`. This is the foundation of projective duality in homogeneous coordinates.",
       "startLine": 74,
-      "endLine": 93
+      "endLine": 93,
+      "mathContext": "$\\text{collinear}(u,v,w) = \\text{concurrent}(u,v,w) = (\\det(u,v,w) = 0)$. Proved by `rfl`: both are definitionally the predicate $\\text{threeVecMat}(u,v,w).\\det = 0$."
     },
     {
       "id": "config",
@@ -95,14 +96,16 @@
       "title": "Self-Duality Theorem",
       "summary": "The central result: `dual_perspFromPoint_eq_perspFromLine` proves that 'perspective from a point' of the dual configuration IS 'perspective from a line' of the original — proved by `rfl` (definitional equality).",
       "startLine": 126,
-      "endLine": 140
+      "endLine": 140,
+      "mathContext": "$\\text{dual}(\\text{perspFromPoint}) = \\text{perspFromLine}$ by `rfl`. The joining lines of dual vertex pairs are the intersection points of original sides."
     },
     {
       "id": "desargues-identity",
       "title": "The Desargues Identity",
       "summary": "Proves $\\det(P,Q,R) = \\det(AA',BB',CC') \\cdot \\det(ABC) \\cdot \\det(A'B'C')$ over any CommRing K via Lagrange cross product identity and degree-9 polynomial ring computation.",
       "startLine": 142,
-      "endLine": 205
+      "endLine": 205,
+      "mathContext": "$\\det(P,Q,R) = \\det(AA',BB',CC') \\cdot \\det(A,B,C) \\cdot \\det(A',B',C')$ over any $\\text{CommRing}\\, K$. Degree-9 polynomial identity proved via Lagrange cross product identity."
     },
     {
       "id": "forward",
@@ -133,7 +136,8 @@
       "title": "Forward Direction for Swapped Configuration",
       "summary": "Desargues's theorem for both orderings: the forward direction holds for both (A,B,C)→(A',B',C') and (A',B',C')→(A,B,C). The self-duality chain `desargues_forward_both_orders` packages both.",
       "startLine": 305,
-      "endLine": 323
+      "endLine": 323,
+      "mathContext": "Desargues forward for both orderings: $\\text{perspFromPoint}(\\Delta, \\Delta') \\implies \\text{perspFromLine}(\\Delta, \\Delta')$ and $\\text{perspFromPoint}(\\Delta', \\Delta) \\implies \\text{perspFromLine}(\\Delta', \\Delta)$."
     },
     {
       "id": "algebraic-converse",
@@ -148,14 +152,16 @@
       "title": "Structural Properties",
       "summary": "Double swap is identity (`swap_swap` by `rfl`) and non-degeneracy is swap-invariant (`nonDegeneracy_swap` by `ring`). These complete the algebraic self-duality picture.",
       "startLine": 351,
-      "endLine": 362
+      "endLine": 362,
+      "mathContext": "$\\text{swap}(\\text{swap}(\\text{cfg})) = \\text{cfg}$ by `rfl` (double swap is identity). Non-degeneracy $\\det(ABC) \\cdot \\det(A'B'C') \\neq 0$ is swap-invariant by `ring`."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Comprehensive summary of all 14 results across definitional duality (2 rfl proofs), algebraic duality (Desargues identity and its symmetry), forward/converse directions, and structural lemmas — all with 0 sorries.",
       "startLine": 364,
-      "endLine": 415
+      "endLine": 415,
+      "mathContext": "14 results, 0 sorries: 2 definitional duality proofs (`rfl`), Desargues identity + symmetry, forward + converse directions, swap invariance, and full biconditional over integral domains."
     }
   ],
   "overview": {
