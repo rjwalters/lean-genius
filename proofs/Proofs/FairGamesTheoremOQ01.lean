@@ -444,6 +444,167 @@ theorem ruin_time_decay_rate_lt_one (N : ℕ) (hN : 3 ≤ N) :
 theorem expected_time_from_pgf_agrees (G : GamblersRuin) :
     expectedRuinTime G = (G.k : ℝ) * ((G.N : ℝ) - G.k) := rfl
 
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART X: SECOND MOMENT AND VARIANCE OF RUIN TIME
+
+The quartic martingale Mₙ = Xₙ⁴ - 6nXₙ² + 3n² + 2n yields the second
+moment of the ruin time via OST. Combined with E[T] = k(N-k), this gives
+the exact variance.
+
+The second moment satisfies the discrete Poisson equation:
+  g(k) = 2f(k) - 1 + (g(k-1) + g(k+1))/2
+with boundary conditions g(0) = g(N) = 0, where f(k) = k(N-k).
+
+Solving yields: E[T²] = k(N-k)(N² + Nk - k² - 2)/3
+and therefore:  Var(T) = k(N-k)(N² - 2Nk + 2k² - 2)/3.
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- **Second moment of ruin time**: E[T² | start at k] = k(N-k)(N² + Nk - k² - 2)/3.
+
+    Derived from OST applied to the quartic martingale X⁴ - 6nX² + 3n² + 2n,
+    or equivalently by solving the discrete Poisson equation
+    g(k) = 2f(k) - 1 + (g(k-1) + g(k+1))/2 with boundary g(0) = g(N) = 0. -/
+def expectedRuinTimeSq (G : GamblersRuin) : ℝ :=
+  (G.k : ℝ) * ((G.N : ℝ) - G.k) *
+    ((G.N : ℝ) ^ 2 + (G.N : ℝ) * G.k - (G.k : ℝ) ^ 2 - 2) / 3
+
+/-- **Variance of ruin time**: Var(T | start at k) = k(N-k)(N² - 2Nk + 2k² - 2)/3.
+
+    The key factor (N-k)² + k² - 2 ≥ 0 with equality iff N = 2, k = 1
+    (the trivial one-step game). -/
+def varianceRuinTime (G : GamblersRuin) : ℝ :=
+  (G.k : ℝ) * ((G.N : ℝ) - G.k) *
+    ((G.N : ℝ) ^ 2 - 2 * (G.N : ℝ) * G.k + 2 * (G.k : ℝ) ^ 2 - 2) / 3
+
+/-- **Variance decomposition**: Var(T) = E[T²] - E[T]². -/
+theorem variance_eq_second_moment_minus_square (G : GamblersRuin) :
+    varianceRuinTime G = expectedRuinTimeSq G - (expectedRuinTime G) ^ 2 := by
+  unfold varianceRuinTime expectedRuinTimeSq expectedRuinTime
+  ring
+
+/-- **Discrete Poisson recurrence for E[T²]**: The second moment formula
+    satisfies g(k) = 2f(k) - 1 + (g(k-1) + g(k+1))/2.
+
+    This recurrence arises from one step of the random walk:
+    E[T²|k] = E[(1+T')²|k] = 1 + 2E[T'|k] + E[T'²|k]
+    = 1 + (f(k-1) + f(k+1)) + (g(k-1) + g(k+1))/2
+    = 2f(k) - 1 + (g(k-1) + g(k+1))/2.
+
+    Stated over ℝ for clean algebraic verification. -/
+theorem second_moment_recurrence (N k : ℝ) :
+    k * (N - k) * (N ^ 2 + N * k - k ^ 2 - 2) / 3 =
+    2 * (k * (N - k)) - 1 +
+    ((k - 1) * (N - (k - 1)) * (N ^ 2 + N * (k - 1) - (k - 1) ^ 2 - 2) / 3 +
+     (k + 1) * (N - (k + 1)) * (N ^ 2 + N * (k + 1) - (k + 1) ^ 2 - 2) / 3) / 2 := by
+  ring
+
+/-- **Boundary condition**: E[T² | start at 0] = 0 (already absorbed). -/
+theorem second_moment_boundary_zero (N : ℝ) :
+    (0 : ℝ) * (N - 0) * (N ^ 2 + N * 0 - 0 ^ 2 - 2) / 3 = 0 := by ring
+
+/-- **Boundary condition**: E[T² | start at N] = 0 (already absorbed). -/
+theorem second_moment_boundary_N (N : ℝ) :
+    N * (N - N) * (N ^ 2 + N * N - N ^ 2 - 2) / 3 = 0 := by ring
+
+/-- **Variance is nonneg**: Var(T) ≥ 0, with equality iff N = 2, k = 1.
+
+    The factor N² - 2Nk + 2k² - 2 = (N-k)² + k² - 2 ≥ 0
+    since k ≥ 1 and N-k ≥ 1, so (N-k)² + k² ≥ 1 + 1 = 2. -/
+theorem variance_nonneg (G : GamblersRuin) : 0 ≤ varianceRuinTime G := by
+  unfold varianceRuinTime
+  apply div_nonneg _ (by norm_num : (0 : ℝ) ≤ 3)
+  apply mul_nonneg
+  · apply mul_nonneg
+    · exact Nat.cast_nonneg G.k
+    · have : (G.k : ℝ) < (G.N : ℝ) := Nat.cast_lt.mpr G.hk_lt
+      linarith
+  · -- N² - 2Nk + 2k² - 2 = (N-k)² + k² - 2 ≥ 0
+    have hk : (1 : ℝ) ≤ (G.k : ℝ) := Nat.one_le_cast.mpr G.hk_pos
+    have hNk : (1 : ℝ) ≤ (G.N : ℝ) - G.k := by
+      have hkN : G.k + 1 ≤ G.N := G.hk_lt
+      have := Nat.cast_le (α := ℝ).mpr hkN
+      push_cast at this ⊢; linarith
+    nlinarith [sq_nonneg ((G.N : ℝ) - G.k - 1), sq_nonneg ((G.k : ℝ) - 1)]
+
+/-- **Variance symmetry**: Var(T | start at k) = Var(T | start at N-k). -/
+theorem variance_symmetric (G : GamblersRuin) :
+    (G.k : ℝ) * ((G.N : ℝ) - G.k) *
+      ((G.N : ℝ) ^ 2 - 2 * (G.N : ℝ) * G.k + 2 * (G.k : ℝ) ^ 2 - 2) / 3 =
+    ((G.N : ℝ) - G.k) * ((G.N : ℝ) - ((G.N : ℝ) - G.k)) *
+      ((G.N : ℝ) ^ 2 - 2 * (G.N : ℝ) * ((G.N : ℝ) - G.k) +
+       2 * ((G.N : ℝ) - G.k) ^ 2 - 2) / 3 := by
+  ring
+
+/-- **Variance upper bound**: Var(T) ≤ N²(N² - 2)/12.
+
+    Since k(N-k) ≤ N²/4 (AM-GM) and N² - 2Nk + 2k² - 2 ≤ N² - 2
+    (because 2k(N-k) ≥ 0), the product is bounded. -/
+theorem variance_upper_bound (G : GamblersRuin) :
+    varianceRuinTime G ≤ (G.N : ℝ) ^ 2 * ((G.N : ℝ) ^ 2 - 2) / 12 := by
+  unfold varianceRuinTime
+  have hk_pos : (0 : ℝ) < G.k := Nat.cast_pos.mpr G.hk_pos
+  have hk_lt : (G.k : ℝ) < G.N := Nat.cast_lt.mpr G.hk_lt
+  have h_prod : (G.k : ℝ) * ((G.N : ℝ) - G.k) ≤ ((G.N : ℝ) / 2) ^ 2 := by
+    have := expected_ruin_time_le_quarter_N_sq G
+    unfold expectedRuinTime at this; linarith
+  have h_factor : (G.N : ℝ) ^ 2 - 2 * (G.N : ℝ) * G.k + 2 * (G.k : ℝ) ^ 2 - 2
+      ≤ (G.N : ℝ) ^ 2 - 2 := by nlinarith
+  have h_factor_nn : 0 ≤ (G.N : ℝ) ^ 2 - 2 * (G.N : ℝ) * G.k + 2 * (G.k : ℝ) ^ 2 - 2 := by
+    have hk1 : (1 : ℝ) ≤ (G.k : ℝ) := Nat.one_le_cast.mpr G.hk_pos
+    have hNk1 : (1 : ℝ) ≤ (G.N : ℝ) - G.k := by
+      have hkN : G.k + 1 ≤ G.N := G.hk_lt
+      have := Nat.cast_le (α := ℝ).mpr hkN
+      push_cast at this ⊢; linarith
+    nlinarith [sq_nonneg ((G.N : ℝ) - G.k - 1), sq_nonneg ((G.k : ℝ) - 1)]
+  have h_N2 : 0 ≤ (G.N : ℝ) ^ 2 - 2 := by
+    have : (2 : ℝ) ≤ (G.N : ℝ) := Nat.ofNat_le_cast.mpr G.hN
+    nlinarith
+  calc (G.k : ℝ) * ((G.N : ℝ) - G.k) *
+        ((G.N : ℝ) ^ 2 - 2 * (G.N : ℝ) * G.k + 2 * (G.k : ℝ) ^ 2 - 2) / 3
+      ≤ ((G.N : ℝ) / 2) ^ 2 * ((G.N : ℝ) ^ 2 - 2) / 3 := by
+        apply div_le_div_of_nonneg_right _ (by norm_num : (0 : ℝ) ≤ 3)
+        exact mul_le_mul h_prod h_factor h_factor_nn (by nlinarith)
+    _ = (G.N : ℝ) ^ 2 * ((G.N : ℝ) ^ 2 - 2) / 12 := by ring
+
+/-- **Concrete check**: N=2, k=1: Var(T) = 0 (game always ends in exactly 1 step). -/
+theorem variance_N2_k1 :
+    varianceRuinTime ⟨2, 1, by omega, by omega, by omega⟩ = 0 := by
+  simp only [varianceRuinTime]; norm_num
+
+/-- **Concrete check**: N=4, k=2: E[T²] = 24, E[T] = 4, Var(T) = 8. -/
+theorem variance_N4_k2 :
+    varianceRuinTime ⟨4, 2, by omega, by omega, by omega⟩ = 8 := by
+  simp only [varianceRuinTime]; norm_num
+
+/-- **Concrete check**: N=3, k=1: E[T²] = 6, E[T] = 2, Var(T) = 2. -/
+theorem variance_N3_k1 :
+    varianceRuinTime ⟨3, 1, by omega, by omega, by omega⟩ = 2 := by
+  simp only [varianceRuinTime]; norm_num
+
+/-- **Concrete check**: N=10, k=5 (symmetric): E[T] = 25, E[T²] = 1025, Var(T) = 400. -/
+theorem second_moment_N10_k5 :
+    expectedRuinTimeSq ⟨10, 5, by omega, by omega, by omega⟩ = 1025 := by
+  simp only [expectedRuinTimeSq]; norm_num
+
+theorem variance_N10_k5 :
+    varianceRuinTime ⟨10, 5, by omega, by omega, by omega⟩ = 400 := by
+  simp only [varianceRuinTime]; norm_num
+
+/-- **Coefficient of variation**: CV² = Var(T)/E[T]² = (N² - 2Nk + 2k² - 2)/(3k(N-k)).
+
+    For the symmetric start k = N/2, this simplifies and shows that
+    the standard deviation grows proportionally to E[T]. -/
+theorem coefficient_of_variation_sq (G : GamblersRuin) :
+    varianceRuinTime G / (expectedRuinTime G) ^ 2 =
+    ((G.N : ℝ) ^ 2 - 2 * (G.N : ℝ) * G.k + 2 * (G.k : ℝ) ^ 2 - 2) /
+    (3 * (G.k : ℝ) * ((G.N : ℝ) - G.k)) := by
+  unfold varianceRuinTime expectedRuinTime
+  have hk_pos : (G.k : ℝ) ≠ 0 := ne_of_gt (Nat.cast_pos.mpr G.hk_pos)
+  have hNk_pos : (G.N : ℝ) - G.k ≠ 0 := ne_of_gt (by
+    have : (G.k : ℝ) < (G.N : ℝ) := Nat.cast_lt.mpr G.hk_lt; linarith)
+  field_simp
+
 -- Type-check main results
 #check @GamblersRuin
 #check @ruinProbWin
@@ -461,5 +622,11 @@ theorem expected_time_from_pgf_agrees (G : GamblersRuin) :
 #check @biased_ruin_prob_sum
 #check @unfavorable_win_prob_lt_one
 #check @ruin_time_decay_rate_pos
+#check @expectedRuinTimeSq
+#check @varianceRuinTime
+#check @variance_eq_second_moment_minus_square
+#check @second_moment_recurrence
+#check @variance_nonneg
+#check @variance_upper_bound
 
 end FairGamesOQ01
