@@ -181,26 +181,24 @@ theorem antisymmetricDiff_continuous (f : ℝ × ℝ → ℝ × ℝ) (hf : Conti
 PART V: TUCKER TO APPROXIMATE BORSUK-ULAM
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- Given a complementary edge (labeled +k and -k), the continuous function g
-    must change sign in coordinate k along this edge. By continuity (and the
-    IVT), there is a nearby point where |g_k| is small.
+/-- **NOTE**: The original axiom `complementary_edge_gives_approximate_zero`
+    was INCORRECT as stated. It claimed that a sign change in any coordinate k
+    gives a nearby point with BOTH components small. This is false:
 
-    More precisely: if g(u)_k > 0 and g(v)_k < 0 (or vice versa), then
-    along any path from u to v (in particular the edge itself), g_k passes
-    through 0. Near this zero, |g| ≤ mesh_size · Lip(g).
+    **Counterexample**: g(x,y) = (x,y) is odd and continuous.
+    Take u = (0.01, 1), v = (-0.01, 1), δ = 0.02, k = 0.
+    - g(u).1 * g(v).1 = -0.0001 ≤ 0 (sign change in coord 0) ✓
+    - Any w within δ of u has w.2 ∈ [0.98, 1.02], so |g(w).2| ≥ 0.98
+    - But the claimed bound δ * (2 * sup) ≈ 0.08 < 0.98. Contradiction.
 
-    This gives an ε-approximate antipodal pair with ε proportional to mesh size. -/
-axiom complementary_edge_gives_approximate_zero
-    (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
-    (hodd : ∀ x, g (Prod.map Neg.neg Neg.neg x) = Prod.map Neg.neg Neg.neg (g x))
-    (u v : ℝ × ℝ) (δ : ℝ) (hδ : 0 < δ)
-    (h_close : dist u v ≤ δ)
-    (k : Fin 2)
-    -- Complementary edge: g(u)_k and g(v)_k have opposite signs
-    (h_sign : (if k = 0 then (g u).1 else (g u).2) *
-              (if k = 0 then (g v).1 else (g v).2) ≤ 0) :
-    ∃ w : ℝ × ℝ, dist w u ≤ δ ∧
-      ‖(g w).1‖ + ‖(g w).2‖ ≤ δ * (2 * (⨆ x ∈ Metric.closedBall u (2 * δ), ‖g x‖ + 1))
+    The fix: the conclusion should either
+    (a) only guarantee one component is zero (proven below), or
+    (b) require k to be the DOMINANT component at u (from Tucker's labeling),
+        which gives ‖g(w)‖ ≤ 2·dist(g(u), g(w)) → 0 as mesh → 0.
+
+    The corrected version (b) is `complementary_edge_approx_dominant` below.
+    The main theorem chain uses `tucker_disk_approx_zero` (independent axiom). -/
+theorem false_axiom_counterexample_note : True := trivial
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -754,9 +752,9 @@ g : D² → ℝ² that is antipodal on ∂D², g has approximate zeros with
 arbitrarily small norm.
 
 This follows from Tucker's lemma (axiom, Part I) + dominantComponentLabel
-(Part II) + complementary_edge_gives_approximate_zero (axiom, Part V)
-+ explicit grid construction. The combinatorial Fintype instantiation
-is axiomatized to avoid ~300 lines of boilerplate.
+(Part II) + complementary_edge_approx_dominant (Part XX, proved)
++ mesh_refinement_principle (Part XXI, proved)
++ explicit grid construction (Fintype instantiation, ~200 lines of boilerplate).
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-- **Tucker on the disk**: Any continuous g : ℝ² → ℝ² that is antipodal
@@ -767,10 +765,13 @@ is axiomatized to avoid ~300 lines of boilerplate.
     Label vertices using dominantComponentLabel(g(v)). The antipodal
     boundary condition ensures labels are complementary on ∂D².
     Tucker's lemma gives a complementary edge; IVT on that edge gives
-    |g| ≤ C·(√2/N) nearby. Taking N → ∞ gives any desired δ.
+    the dominant component is zero (complementary_edge_approx_dominant).
+    Mesh refinement (mesh_refinement_principle) then gives ‖g(w)‖ < δ.
 
-    This is a consequence of tuckers_lemma (Part I) and
-    complementary_edge_gives_approximate_zero (Part V). -/
+    This is a consequence of tuckers_lemma (Part I),
+    complementary_edge_approx_dominant (Part XX), and
+    mesh_refinement_principle (Part XXI).
+    The only remaining gap is the grid Fintype instantiation. -/
 axiom tucker_disk_approx_zero
     (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
     (h_odd_boundary : ∀ p : ℝ × ℝ, p.1 ^ 2 + p.2 ^ 2 = 1 →
@@ -958,19 +959,18 @@ theorem segmentParam_snd (u v : ℝ × ℝ) (t : ℝ) :
 /-- Points on the segment [u,v] (t ∈ [0,1]) are within dist(u,v) of u. -/
 theorem segmentParam_dist_le (u v : ℝ × ℝ) (t : ℝ) (ht0 : 0 ≤ t) (ht1 : t ≤ 1) :
     dist (segmentParam u v t) u ≤ dist u v := by
-  -- dist(s(t), u) = ‖s(t) - u‖ = ‖(t(v₁-u₁), t(v₂-u₂))‖ = t · ‖v - u‖ ≤ ‖v - u‖ = dist(u,v)
-  rw [dist_eq_norm, dist_eq_norm]
+  -- segmentParam u v t - u = t • (v - u), so dist = t * dist(u,v) ≤ dist(u,v)
   have key : segmentParam u v t - u = (t * (v.1 - u.1), t * (v.2 - u.2)) := by
     ext <;> simp [segmentParam] <;> ring
-  rw [key]
   have key2 : u - v = (u.1 - v.1, u.2 - v.2) := by ext <;> rfl
-  rw [key2, Prod.norm_def, Prod.norm_def]
-  simp only [Real.norm_eq_abs, abs_mul, abs_of_nonneg ht0]
-  rw [← mul_max_of_nonneg _ _ ht0]
-  have hab1 : |u.1 - v.1| = |v.1 - u.1| := abs_sub_comm _ _
-  have hab2 : |u.2 - v.2| = |v.2 - u.2| := abs_sub_comm _ _
-  rw [hab1, hab2]
-  exact mul_le_of_le_one_left (le_max_of_le_left (abs_nonneg _)) ht1
+  rw [dist_eq_norm, key, dist_eq_norm, key2]
+  simp only [Prod.norm_def, Real.norm_eq_abs, abs_mul, abs_of_nonneg ht0,
+             ← mul_max_of_nonneg _ _ ht0]
+  calc t * max |v.1 - u.1| |v.2 - u.2|
+      = t * max |u.1 - v.1| |u.2 - v.2| := by
+        rw [abs_sub_comm (v.1) (u.1), abs_sub_comm (v.2) (u.2)]
+    _ ≤ max |u.1 - v.1| |u.2 - v.2| :=
+        mul_le_of_le_one_left (le_max_of_le_left (abs_nonneg _)) ht1
 
 /-- **IVT on a line segment (first component)**: If g is continuous and
     g(u).1 and g(v).1 have opposite signs (product ≤ 0), then there exists
@@ -1025,7 +1025,7 @@ theorem complementary_edge_zero_fst (g : ℝ × ℝ → ℝ × ℝ) (hg : Contin
   · -- g(u).1 ≤ 0, need g(v).1 ≥ 0
     rcases eq_or_lt_of_le h_neg with heq | hlt
     · -- g(u).1 = 0: take w = u directly
-      exact ⟨u, by rw [dist_self]; exact dist_nonneg, by linarith⟩
+      exact ⟨u, by rw [dist_self]; exact dist_nonneg, heq⟩
     · -- g(u).1 < 0: must have g(v).1 ≥ 0
       have h_v_pos : 0 ≤ (g v).1 := by
         by_contra h_v_neg
@@ -1057,7 +1057,7 @@ theorem complementary_edge_zero_snd (g : ℝ × ℝ → ℝ × ℝ) (hg : Contin
     ∃ w : ℝ × ℝ, dist w u ≤ dist u v ∧ (g w).2 = 0 := by
   rcases le_or_gt (g u).2 0 with h_neg | h_pos
   · rcases eq_or_lt_of_le h_neg with heq | hlt
-    · exact ⟨u, by rw [dist_self]; exact dist_nonneg, by linarith⟩
+    · exact ⟨u, by rw [dist_self]; exact dist_nonneg, heq⟩
     · have h_v_pos : 0 ≤ (g v).2 := by
         by_contra h_v_neg; push_neg at h_v_neg
         linarith [mul_pos_of_neg_of_neg hlt h_v_neg]
@@ -1152,251 +1152,192 @@ theorem non_dominant_at_zero_bound
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
-PART XX: COMPUTATIONAL TUCKER 2D VERIFICATION
+PART XX: CORRECTED COMPLEMENTARY EDGE THEOREM
 
-Tucker's 2D lemma for specific triangulations, verified by exhaustive
-enumeration. The key insight: for FINITE triangulations, Tucker's lemma
-is a decidable statement (finitely many labelings to check).
+The original axiom `complementary_edge_gives_approximate_zero` was false
+(see counterexample in Part V). The corrected version requires that k is
+the DOMINANT component at the endpoint u, which is exactly what Tucker's
+dominant-component labeling guarantees.
 
-We verify Tucker 2D for:
-1. The 5-vertex centrally-symmetric disk (4 boundary + 1 center)
-   64 valid labelings, verified by `decide`
-2. The 9-vertex grid triangulation (8 boundary + 1 interior)
-   1024 valid labelings, verified by `native_decide`
-
-These are the first purely computational confirmations of Tucker's 2D lemma
-in Lean 4, complementing the general axiom in Part I.
+Key insight: At a Tucker complementary edge with label ±k:
+  - k is the dominant component at both endpoints (by definition of the labeling)
+  - g changes sign in component k (complementary edge)
+  - IVT gives w with g(w).k = 0
+  - Dominance + triangle inequality: |g(w).{3-k}| ≤ 2·dist(g(u), g(w))
+  - As mesh → 0, dist(u,w) → 0, so dist(g(u), g(w)) → 0 by continuity
+  - Therefore ‖g(w)‖ → 0
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- Tucker label type: Fin 2 × Bool represents {(0,true), (0,false), (1,true), (1,false)}
-    corresponding to {+1, -1, +2, -2}.
-    - (0, true)  = +1 (dominant first component, positive)
-    - (0, false) = -1 (dominant first component, negative)
-    - (1, true)  = +2 (dominant second component, positive)
-    - (1, false) = -2 (dominant second component, negative) -/
-abbrev TLabel := Fin 2 × Bool
+/-- Symmetric version of `non_dominant_at_zero_bound`: when the SECOND component
+    is zero at w and dominant at u, the first component at w is bounded. -/
+theorem non_dominant_at_zero_bound_snd
+    (g : ℝ × ℝ → ℝ × ℝ) (u w : ℝ × ℝ)
+    (hw_zero_snd : (g w).2 = 0)
+    (h_dom : |(g u).2| ≥ |(g u).1|) :
+    |(g w).1| ≤ 2 * dist (g u) (g w) := by
+  -- Step 1: |g(w).1| ≤ |g(u).1| + |g(w).1 - g(u).1| (triangle)
+  have h_tri : |(g w).1| ≤ |(g u).1| + |(g w).1 - (g u).1| := by
+    have := abs_sub_abs_le_abs_sub (g w).1 (g u).1
+    linarith [abs_nonneg ((g w).1 - (g u).1), abs_nonneg (g u).1]
+  -- Step 2: |g(u).1| ≤ |g(u).2 - g(w).2| (dominant + g(w).2 = 0)
+  have h_dom' : |(g u).1| ≤ |(g u).2 - (g w).2| := by
+    rw [hw_zero_snd, sub_zero]; exact h_dom
+  -- Step 3: Component differences ≤ dist (sup norm)
+  have h_snd_le : |(g u).2 - (g w).2| ≤ dist (g u) (g w) := by
+    rw [← Real.dist_eq, Prod.dist_eq]
+    exact le_max_right _ _
+  have h_fst_le : |(g w).1 - (g u).1| ≤ dist (g u) (g w) := by
+    rw [abs_sub_comm, ← Real.dist_eq, Prod.dist_eq]
+    exact le_max_left _ _
+  linarith
 
-/-- Negate a Tucker label: (k, b) ↦ (k, !b). This is the "complementary" operation. -/
-def TLabel.neg (l : TLabel) : TLabel := (l.1, !l.2)
+/-- **Corrected complementary edge theorem (first component dominant)**:
+    When g changes sign in the DOMINANT first component on edge (u,v),
+    the IVT zero w satisfies ‖g(w)‖ ≤ 2·dist(g(u), g(w)).
 
-/-- Two labels are complementary if they have the same coordinate but opposite signs. -/
-def TLabel.isComplementary (l1 l2 : TLabel) : Bool :=
-  l1.1 == l2.1 && l1.2 != l2.2
+    This is the correct replacement for the false axiom. Tucker's
+    dominant-component labeling guarantees that the complementary
+    coordinate IS the dominant one, so this hypothesis is natural. -/
+theorem complementary_edge_approx_dominant_fst
+    (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
+    (u v : ℝ × ℝ)
+    (h_sign : (g u).1 * (g v).1 ≤ 0)
+    (h_dom : |(g u).1| ≥ |(g u).2|) :
+    ∃ w : ℝ × ℝ, dist w u ≤ dist u v ∧
+      (g w).1 = 0 ∧ |(g w).2| ≤ 2 * dist (g u) (g w) := by
+  obtain ⟨w, hw_dist, hw_zero⟩ := complementary_edge_zero_fst g hg u v h_sign
+  exact ⟨w, hw_dist, hw_zero, non_dominant_at_zero_bound g u w hw_zero h_dom⟩
 
-/-- Complementary is equivalent to one being the negation of the other. -/
-theorem TLabel.isComplementary_iff (l1 l2 : TLabel) :
-    l1.isComplementary l2 = true ↔ l2 = l1.neg := by
-  fin_cases l1 <;> fin_cases l2 <;> simp [TLabel.isComplementary, TLabel.neg]
+/-- Corrected complementary edge theorem (second component dominant). -/
+theorem complementary_edge_approx_dominant_snd
+    (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
+    (u v : ℝ × ℝ)
+    (h_sign : (g u).2 * (g v).2 ≤ 0)
+    (h_dom : |(g u).2| ≥ |(g u).1|) :
+    ∃ w : ℝ × ℝ, dist w u ≤ dist u v ∧
+      (g w).2 = 0 ∧ |(g w).1| ≤ 2 * dist (g u) (g w) := by
+  obtain ⟨w, hw_dist, hw_zero⟩ := complementary_edge_zero_snd g hg u v h_sign
+  exact ⟨w, hw_dist, hw_zero, non_dominant_at_zero_bound_snd g u w hw_zero h_dom⟩
 
-/-
-PART XX-A: 5-VERTEX CENTRALLY-SYMMETRIC DISK
+/-- **Combined corrected complementary edge theorem**:
+    For either component k, if k is dominant at u and g changes sign in k
+    on edge (u,v), then there exists w on the segment with g(w).k = 0 and
+    the total ‖g(w)‖₁ ≤ 2·dist(g(u), g(w)).
 
-Vertices: Fin 5
-  0 = center (interior)
-  1 = (1, 0)   (boundary)
-  2 = (0, 1)   (boundary)
-  3 = (-1, 0)  (boundary, antipodal to 1)
-  4 = (0, -1)  (boundary, antipodal to 2)
+    This is the key analytical step: Tucker gives the complementary edge,
+    and this theorem gives the approximate zero. As mesh → 0,
+    dist(u,v) → 0, so dist(g(u), g(w)) → 0 by uniform continuity,
+    hence ‖g(w)‖₁ → 0.
 
-Edges (8 total):
-  (0,1), (0,2), (0,3), (0,4)  -- center to boundary
-  (1,2), (2,3), (3,4), (4,1)  -- boundary cycle
-
-Antipodal map: 1↔3, 2↔4 (center 0 is interior)
-Tucker boundary condition: L(3) = L(1).neg, L(4) = L(2).neg
-
-Free labels: L(0), L(1), L(2) -- 3 independent labels, 4 choices each = 64 total
--/
-
-/-- Check Tucker 2D for the 5-vertex disk: given free labels (l0, l1, l2)
-    for center and two independent boundary vertices, with antipodal constraint
-    on the other two boundary vertices, does there exist a complementary edge? -/
-def tucker5Check (l0 l1 l2 : TLabel) : Bool :=
-  let l3 := l1.neg  -- antipodal to vertex 1
-  let l4 := l2.neg  -- antipodal to vertex 2
-  -- Check all 8 edges for a complementary pair
-  l0.isComplementary l1 || l0.isComplementary l2 ||
-  l0.isComplementary l3 || l0.isComplementary l4 ||
-  l1.isComplementary l2 || l2.isComplementary l3 ||
-  l3.isComplementary l4 || l4.isComplementary l1
-
-/-- All Tucker labels: the 4-element set. -/
-def allTLabels : List TLabel :=
-  [(⟨0, by omega⟩, true), (⟨0, by omega⟩, false),
-   (⟨1, by omega⟩, true), (⟨1, by omega⟩, false)]
-
-/-- Tucker's 2D lemma for the 5-vertex centrally-symmetric triangulated disk.
-    Exhaustive verification: every valid labeling (satisfying the antipodal
-    boundary condition) has at least one complementary edge.
-    This checks 4³ = 64 cases. -/
-theorem tucker_2d_5vertex :
-    ∀ l0 l1 l2 : TLabel, tucker5Check l0 l1 l2 = true := by decide
-
-/-
-PART XX-B: 9-VERTEX GRID TRIANGULATION
-
-Vertices: Fin 9 arranged as a 3×3 grid on [-1, 1]²
-
-  6---7---8      (-1,1)  (0,1)  (1,1)
-  |  /|  /|
-  | / | / |
-  |/  |/  |
-  3---4---5      (-1,0)  (0,0)  (1,0)
-  |  /|  /|
-  | / | / |
-  |/  |/  |
-  0---1---2      (-1,-1) (0,-1) (1,-1)
-
-Boundary (8 vertices): 0,1,2,3,5,6,7,8
-Interior (1 vertex): 4
-
-Antipodal pairs (boundary):
-  0 ↔ 8  ((-1,-1) ↔ (1,1))
-  1 ↔ 7  ((0,-1) ↔ (0,1))
-  2 ↔ 6  ((1,-1) ↔ (-1,1))
-  3 ↔ 5  ((-1,0) ↔ (1,0))
-
-Free labels: 0,1,2,3 (boundary) + 4 (interior) = 5 independent
-Labels 5,6,7,8 determined by antipodal constraint.
-Total valid labelings: 4⁵ = 1024.
-
-Edges (16 total): horizontal, vertical, and diagonal
-  Bottom row:  (0,1), (1,2)
-  Middle row:  (3,4), (4,5)
-  Top row:     (6,7), (7,8)
-  Left col:    (0,3), (3,6)
-  Center col:  (1,4), (4,7)
-  Right col:   (2,5), (5,8)
-  Diagonals:   (0,4), (1,5), (3,7), (4,8)
--/
-
-/-- Check Tucker 2D for the 9-vertex grid: given free labels for vertices
-    0,1,2,3,4, with antipodal constraint determining 5,6,7,8. -/
-def tucker9Check (l0 l1 l2 l3 l4 : TLabel) : Bool :=
-  let l5 := l3.neg  -- antipodal to 3
-  let l6 := l2.neg  -- antipodal to 2
-  let l7 := l1.neg  -- antipodal to 1
-  let l8 := l0.neg  -- antipodal to 0
-  -- Check all 16 edges
-  -- Bottom row
-  l0.isComplementary l1 || l1.isComplementary l2 ||
-  -- Middle row
-  l3.isComplementary l4 || l4.isComplementary l5 ||
-  -- Top row
-  l6.isComplementary l7 || l7.isComplementary l8 ||
-  -- Left column
-  l0.isComplementary l3 || l3.isComplementary l6 ||
-  -- Center column
-  l1.isComplementary l4 || l4.isComplementary l7 ||
-  -- Right column
-  l2.isComplementary l5 || l5.isComplementary l8 ||
-  -- Diagonals (lower-left to upper-right in each cell)
-  l0.isComplementary l4 || l1.isComplementary l5 ||
-  l3.isComplementary l7 || l4.isComplementary l8
-
-/-- Tucker's 2D lemma for the 9-vertex grid triangulation.
-    Exhaustive verification: every valid labeling (satisfying the antipodal
-    boundary condition) has at least one complementary edge.
-    This checks 4⁵ = 1024 cases. -/
-theorem tucker_2d_9vertex :
-    ∀ l0 l1 l2 l3 l4 : TLabel, tucker9Check l0 l1 l2 l3 l4 = true := by native_decide
+    Note: the bound is stated as ‖·‖₁ = |·.1| + |·.2| ≤ 2·dist for clarity,
+    but since one component is exactly 0, this is just the other component. -/
+theorem complementary_edge_approx_dominant
+    (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
+    (u v : ℝ × ℝ)
+    (k : Fin 2)
+    (h_sign : (if k = 0 then (g u).1 else (g u).2) *
+              (if k = 0 then (g v).1 else (g v).2) ≤ 0)
+    (h_dom : (if k = 0 then |(g u).1| else |(g u).2|) ≥
+             (if k = 0 then |(g u).2| else |(g u).1|)) :
+    ∃ w : ℝ × ℝ, dist w u ≤ dist u v ∧
+      ‖(g w).1‖ + ‖(g w).2‖ ≤ 2 * dist (g u) (g w) := by
+  rcases k with ⟨k, hk⟩
+  interval_cases k
+  · -- k = 0: first component is dominant and changes sign
+    simp only [Fin.mk_zero, ↓reduceIte] at h_sign h_dom ⊢
+    obtain ⟨w, hw_dist, hw_zero, hw_bound⟩ :=
+      complementary_edge_approx_dominant_fst g hg u v h_sign h_dom
+    refine ⟨w, hw_dist, ?_⟩
+    simp only [hw_zero, norm_zero, zero_add]
+    rwa [Real.norm_eq_abs]
+  · -- k = 1: second component is dominant and changes sign
+    simp only [Fin.mk_one, show (1 : Fin 2) ≠ 0 from by decide, ↓reduceIte] at h_sign h_dom ⊢
+    obtain ⟨w, hw_dist, hw_zero, hw_bound⟩ :=
+      complementary_edge_approx_dominant_snd g hg u v h_sign h_dom
+    refine ⟨w, hw_dist, ?_⟩
+    simp only [hw_zero, norm_zero, add_zero]
+    rwa [Real.norm_eq_abs]
 
 /-
-PART XX-C: NECESSITY OF THE ANTIPODAL CONDITION
+═══════════════════════════════════════════════════════════════════════════════
+PART XXI: UNIFORM CONTINUITY ON COMPACT DISK
 
-Without the antipodal boundary condition, Tucker's lemma fails:
-a constant labeling has NO complementary edges. This shows
-the boundary condition is essential.
--/
+The final analytical ingredient for proving `tucker_disk_approx_zero` from
+`tuckers_lemma`: uniform continuity of g on the compact disk D̄².
 
-/-- Counterexample: constant labeling has no complementary edges.
-    If every vertex gets label (0, true), no edge is complementary
-    (complementary requires opposite Bool values). -/
-theorem tucker_constant_labeling_no_complement :
-    ¬ tucker5Check (⟨0, by omega⟩, true) (⟨0, by omega⟩, true) (⟨0, by omega⟩, true) = true →
-    False := by
-  intro h
-  -- Actually, constant labeling DOES violate the antipodal condition,
-  -- since l1.neg = (0, false) ≠ (0, true) = l1.
-  -- But the check still has complementary edges because l3 = l1.neg = (0, false)
-  -- and l1 = (0, true), so edge (4,1) i.e. l4.isComplementary l1 is checked.
-  -- The labeling satisfies tucker5Check because of the forced antipodal labels!
-  -- This means the check inherently includes antipodal labels.
-  simp [tucker5Check, TLabel.isComplementary, TLabel.neg] at h
+Combined with the corrected complementary edge theorem (Part XX), this gives:
+  mesh → 0 ⟹ dist(u,w) → 0 ⟹ dist(g(u), g(w)) → 0 ⟹ ‖g(w)‖ → 0
+═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- The antipodal condition is necessary: if we DON'T apply it (all labels free),
-    we can find a labeling with no complementary edge.
-    Using the ALL-SAME labeling: every vertex gets (+1). -/
-def noAntipodalCheck (l0 l1 l2 l3 l4 : TLabel) : Bool :=
-  -- Like tucker5Check but WITHOUT antipodal constraint (all labels independent)
-  l0.isComplementary l1 || l0.isComplementary l2 ||
-  l0.isComplementary l3 || l0.isComplementary l4 ||
-  l1.isComplementary l2 || l2.isComplementary l3 ||
-  l3.isComplementary l4 || l4.isComplementary l1
+/-- The closed unit disk D̄² = {(x,y) | x² + y² ≤ 1} is compact. -/
+theorem closedDisk_isCompact :
+    IsCompact {p : ℝ × ℝ | p.1 ^ 2 + p.2 ^ 2 ≤ 1} := by
+  apply (isCompact_closedBall (0 : ℝ × ℝ) 1).of_isClosed_subset
+  · exact isClosed_le (by fun_prop) continuous_const
+  · intro ⟨x, y⟩ hxy
+    simp only [Set.mem_setOf_eq] at hxy
+    simp only [Metric.mem_closedBall, dist_zero_right]
+    rw [Prod.norm_def]
+    apply max_le <;> rw [Real.norm_eq_abs] <;>
+      nlinarith [sq_nonneg x, sq_nonneg y, sq_abs x, sq_abs y]
 
-/-- Counterexample: constant labeling with no antipodal constraint
-    has zero complementary edges. -/
-theorem antipodal_necessary :
-    noAntipodalCheck (⟨0, by omega⟩, true) (⟨0, by omega⟩, true)
-      (⟨0, by omega⟩, true) (⟨0, by omega⟩, true) (⟨0, by omega⟩, true) = false := by
-  native_decide
+/-- A continuous function on D̄² is uniformly continuous (compact → uniform cont). -/
+theorem continuous_on_disk_uniformContinuousOn (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g) :
+    UniformContinuousOn g {p : ℝ × ℝ | p.1 ^ 2 + p.2 ^ 2 ≤ 1} :=
+  closedDisk_isCompact.uniformContinuousOn_of_continuous hg.continuousOn
 
-/-
-PART XX-D: BOUNDARY PARITY THEOREM (COMPUTATIONAL)
+/-- For a continuous function on D̄², closeness of inputs implies closeness of outputs.
+    This is the ε-δ form of uniform continuity on the disk. -/
+theorem disk_continuity_bound (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ δ > 0, ∀ u w : ℝ × ℝ,
+      u ∈ {p : ℝ × ℝ | p.1 ^ 2 + p.2 ^ 2 ≤ 1} →
+      w ∈ {p : ℝ × ℝ | p.1 ^ 2 + p.2 ^ 2 ≤ 1} →
+      dist u w < δ → dist (g u) (g w) < ε := by
+  have huc := continuous_on_disk_uniformContinuousOn g hg
+  rw [Metric.uniformContinuousOn_iff] at huc
+  obtain ⟨δ, hδ_pos, hδ⟩ := huc ε hε
+  exact ⟨δ, hδ_pos, fun u w hu hw hdist => hδ u hu w hw hdist⟩
 
-For any antipodal labeling of the boundary of the 5-vertex disk,
-the number of complementary boundary edges is even.
-This is a discrete analog of the topological fact that
-the degree of an odd map S¹ → S¹ is odd.
--/
+/-- **Mesh refinement principle**: For any continuous g on D̄² and any target ε > 0,
+    there exists a mesh resolution δ such that any complementary edge with
+    mesh < δ gives an approximate zero within ε.
 
-/-- Count complementary edges among the 4 boundary edges of the 5-vertex disk. -/
-def countBoundaryComplementary5 (l1 l2 : TLabel) : Nat :=
-  let l3 := l1.neg
-  let l4 := l2.neg
-  -- Boundary edges: (1,2), (2,3), (3,4), (4,1)
-  (if l1.isComplementary l2 then 1 else 0) +
-  (if l2.isComplementary l3 then 1 else 0) +
-  (if l3.isComplementary l4 then 1 else 0) +
-  (if l4.isComplementary l1 then 1 else 0)
+    Combined with Tucker's lemma (Part I), this proves `tucker_disk_approx_zero`:
+    for each mesh size, Tucker gives a complementary edge, and this theorem
+    converts it to an approximate zero.
 
-/-- Boundary parity theorem for the 5-vertex disk:
-    the number of complementary boundary edges is always even (0 or 2 or 4).
-    This holds for all 4² = 16 antipodal boundary labelings. -/
-theorem boundary_parity_5vertex :
-    ∀ l1 l2 : TLabel, (countBoundaryComplementary5 l1 l2) % 2 = 0 := by decide
+    What remains to prove `tucker_disk_approx_zero` from `tuckers_lemma`:
+    1. Instantiate the grid triangulation as a TriangulatedDisk2D (Fintype boilerplate)
+    2. Connect dominant-component labeling to Tucker's antipodal condition
+    3. Apply this theorem to the Tucker output
 
-/-- Count complementary edges among the 8 boundary edges of the 9-vertex grid. -/
-def countBoundaryComplementary9 (l0 l1 l2 l3 : TLabel) : Nat :=
-  let l5 := l3.neg
-  let l6 := l2.neg
-  let l7 := l1.neg
-  let l8 := l0.neg
-  -- Boundary edges: (0,1), (1,2), (2,5), (5,8), (8,7), (7,6), (6,3), (3,0)
-  (if l0.isComplementary l1 then 1 else 0) +
-  (if l1.isComplementary l2 then 1 else 0) +
-  (if l2.isComplementary l5 then 1 else 0) +
-  (if l5.isComplementary l8 then 1 else 0) +
-  (if l8.isComplementary l7 then 1 else 0) +
-  (if l7.isComplementary l6 then 1 else 0) +
-  (if l6.isComplementary l3 then 1 else 0) +
-  (if l3.isComplementary l0 then 1 else 0)
+    Items 1-2 are combinatorial boilerplate (~200 lines), not mathematical insight. -/
+theorem mesh_refinement_principle (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ δ > 0, ∀ u w : ℝ × ℝ,
+      u ∈ {p : ℝ × ℝ | p.1 ^ 2 + p.2 ^ 2 ≤ 1} →
+      w ∈ {p : ℝ × ℝ | p.1 ^ 2 + p.2 ^ 2 ≤ 1} →
+      dist u w < δ →
+      ‖(g w).1‖ + ‖(g w).2‖ ≤ 2 * dist (g u) (g w) →
+      ‖(g w).1‖ + ‖(g w).2‖ < ε := by
+  obtain ⟨δ, hδ_pos, hδ⟩ := disk_continuity_bound g hg (ε / 2) (by linarith)
+  refine ⟨δ, hδ_pos, fun u w hu hw huw hbound => ?_⟩
+  calc ‖(g w).1‖ + ‖(g w).2‖
+      ≤ 2 * dist (g u) (g w) := hbound
+    _ < 2 * (ε / 2) := by
+        apply mul_lt_mul_of_pos_left _ (by norm_num : (0:ℝ) < 2)
+        exact hδ u w hu hw huw
+    _ = ε := by ring
 
-/-- Boundary parity theorem for the 9-vertex grid:
-    the number of complementary boundary edges is always even.
-    This holds for all 4⁴ = 256 antipodal boundary labelings. -/
-theorem boundary_parity_9vertex :
-    ∀ l0 l1 l2 l3 : TLabel, (countBoundaryComplementary9 l0 l1 l2 l3) % 2 = 0 := by
-  native_decide
-
--- Type-check Part XX results
-#check @TLabel.neg
-#check @TLabel.isComplementary
-#check @TLabel.isComplementary_iff
-#check @tucker_2d_5vertex
-#check @tucker_2d_9vertex
-#check @antipodal_necessary
-#check @boundary_parity_5vertex
-#check @boundary_parity_9vertex
+-- Type-check Part XX-XXI
+#check @non_dominant_at_zero_bound_snd
+#check @complementary_edge_approx_dominant_fst
+#check @complementary_edge_approx_dominant_snd
+#check @complementary_edge_approx_dominant
+#check @closedDisk_isCompact
+#check @continuous_on_disk_uniformContinuousOn
+#check @disk_continuity_bound
+#check @mesh_refinement_principle
 
 end BorsukUlamTucker2D
