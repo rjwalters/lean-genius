@@ -97,6 +97,18 @@
       "mathContext": "For each level $v \\in [\\mu, \\mu + S)$ where $\\mu = \\min_i P(i)$ and $S = a - kb$, ballot_discrete_ivt produces a strict prefix $j_v < |l|$ with $P(j_v) = v$. The rightmost such $j_v$ at each level is a good rotation (all cyclic prefix sums positive). The map $v \\mapsto j_v$ is injective, giving $|\\text{goodRotations}| \\geq S = a - kb$."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "ballot-problem-oq-01",
+      "relationship": "parent",
+      "description": "Parent proof containing the full Dvoretzky-Motzkin Cycle Lemma (cycle_lemma: |goodRotations l| = a - k*b) that uses this discrete IVT as a key ingredient"
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "ancestor",
+      "description": "Classical Bertrand ballot theorem: setting k=1 in the cycle lemma recovers the ballot problem probability (a-b)/(a+b)"
+    }
+  ],
   "conclusion": {
     "summary": "This file proves `ballot_discrete_ivt`, the discrete intermediate value theorem for {+1,-k}-sequences. Combined with the infrastructure in BallotProblemOQ01.lean, the full Dvoretzky-Motzkin Cycle Lemma (`cycle_lemma`: |goodRotations l| = a - k*b) is proved with 0 sorries.",
     "implications": "**Mathematical Significance**\n\n1. **Cycle Lemma Completion**: The `cycle_lemma` theorem in BallotProblemOQ01.lean is now fully proved (0 sorries). It establishes that for any {+1,-k}-sequence with $a > kb$, exactly $a - kb$ cyclic rotations have all partial sums positive.\n\n2. **Ballot Problem Connection**: Setting $k=1$ recovers the classical Bertrand ballot theorem: exactly $a-b$ of the $a+b$ rotations are good, giving probability $(a-b)/(a+b)$.\n\n3. **Lattice Path Interpretation**: The cycle lemma counts lattice paths from $(0,0)$ to $(a+b, a-kb)$ that stay strictly above the $x$-axis. It is fundamental in combinatorics (parking functions, noncrossing partitions, Catalan number identities).\n\n4. **Finset.max' Technique**: The proof of `ballot_discrete_ivt` demonstrates a clean Lean 4 technique: rather than induction over list positions, define a Finset of relevant positions and use `Finset.max'` to extract the extremal element with desired properties.\n\n5. **Rightmost Position Pattern**: The 'rightmost position' is a recurring proof technique: it ensures uniqueness (injection into levels) and good behavior (followed by +1, not -k).",
