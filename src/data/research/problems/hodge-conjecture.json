@@ -29,9 +29,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Added 7 new sections (~490 lines) to HodgeConjecture.lean. Formalized morphisms of Hodge structures with proved composition, functoriality on Hodge/algebraic classes, sub-Hodge structures, polarizations with parity-dependent symmetry theorems, Lefschetz operator, and mixed Hodge structures. 13 new proved theorems/definitions, 0 new sorries.",
+    "builtItems": [
+      "HodgeStructureMorphism: morphisms with rational/complex components",
+      "HodgeStructureMorphism.id: identity morphism (proved)",
+      "HodgeStructureMorphism.comp: composition of morphisms (proved)",
+      "morphism_preserves_hodge_class: pullback preserves Hodge classes (proved)",
+      "morphism_preserves_algebraic_class: functoriality of algebraicity (proved)",
+      "SubHodgeStructure: sub-Hodge structures with Hodge compatibility",
+      "kernel_is_subHodge: kernel of morphism is sub-Hodge (proved)",
+      "Polarization: bilinear form with (-1)^k symmetry",
+      "polarization_symmetric_even: Q(v,w) = Q(w,v) for even weight (proved)",
+      "polarization_antisymmetric_odd: Q(v,w) = -Q(w,v) for odd weight (proved)",
+      "LefschetzOperator: structure for Hard Lefschetz theorem",
+      "MixedHodgeStructure: weight filtration generalization",
+      "PureHodgeStructure.toMixed: pure-to-mixed embedding (proved)"
+    ],
+    "insights": [
+      "Morphisms of Hodge structures form a category: identity and composition proved",
+      "Morphisms preserve Hodge classes (pullback functoriality proved)",
+      "Morphisms preserve algebraicity via cycle class map functoriality (proved with fiberwise sum)",
+      "Kernel of a Hodge morphism is a sub-Hodge structure (proved)",
+      "Polarization symmetry depends on weight parity: symmetric for even, antisymmetric for odd (both proved)",
+      "Pure Hodge structures embed into mixed Hodge structures via concentrated weight filtration (proved)"
+    ],
     "mathlibGaps": [
       "Complex manifolds",
       "Algebraic varieties",
