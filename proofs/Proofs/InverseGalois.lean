@@ -9,6 +9,7 @@ import Mathlib.FieldTheory.AbelRuffini
 import Mathlib.Algebra.Group.Equiv.Basic
 import Mathlib.RingTheory.Polynomial.Eisenstein.Criterion
 import Mathlib.RingTheory.Polynomial.GaussLemma
+import Proofs.NthRootIrrationalOQ01
 
 /-
 # The Inverse Galois Problem
@@ -362,6 +363,74 @@ theorem symmetric_group_realizable (n : ℕ) :
   sorry -- Classical: Hilbert's irreducibility theorem (not yet in Mathlib)
 
 /-
+## Part VII.b: S₃ Realizability via X³ - 2
+
+The symmetric group S₃ is the simplest non-abelian group (order 6). It is
+realizable as the Galois group of X³ - 2 over ℚ.
+
+**Why X³ - 2 works**:
+1. X³ - 2 is irreducible over ℚ (Eisenstein at p = 2) — PROVEN below
+2. Its splitting field is ℚ(∛2, ω) where ω = e^{2πi/3}
+3. [ℚ(∛2, ω) : ℚ] = 6 since ∛2 has degree 3 and ω has degree 2 over ℚ(∛2)
+4. |Gal(ℚ(∛2, ω)/ℚ)| = 6 = 3!, and Gal embeds into S₃ (acting on 3 roots)
+5. Since |Gal| = |S₃|, the embedding is an isomorphism
+
+We can prove:
+- X³ - 2 is irreducible over ℚ (Eisenstein)
+- 3 | |Gal(X³-2/ℚ)| (prime degree divides Galois group order)
+- |Gal(X³-2/ℚ)| | 6 (divides degree factorial)
+
+The full isomorphism Gal(X³-2/ℚ) ≅ S₃ is axiomatized (requires showing
+the splitting field has degree 6, which needs ω ∉ ℚ(∛2) — a real vs complex
+argument not directly available in Mathlib).
+-/
+
+/-- X³ - 2 is irreducible over ℚ, proved via Eisenstein at p = 2. -/
+theorem x_cube_sub_2_irreducible :
+    Irreducible (X ^ 3 - C (2 : ℚ) : ℚ[X]) :=
+  NthRootIrrationalOQ01.eisenstein_X_pow_sub_prime 3 2 (by omega) (by decide)
+
+/-- X³ - 2 has degree 3. -/
+theorem x_cube_sub_2_natDegree :
+    (X ^ 3 - C (2 : ℚ) : ℚ[X]).natDegree = 3 :=
+  NthRootIrrationalOQ01.natDegree_X_pow_sub_C_eq (by omega) (by norm_num)
+
+/--
+The Galois group of X³ - 2 over ℚ is isomorphic to S₃ (= Perm (Fin 3)).
+
+This is a classical result: the splitting field ℚ(∛2, ω) has degree 6 over ℚ,
+and the Galois group acts faithfully on the 3 roots {∛2, ω·∛2, ω²·∛2},
+giving an injection Gal → S₃. Since |Gal| = 6 = |S₃|, this is an isomorphism.
+
+We axiomatize this because proving [ℚ(∛2, ω) : ℚ] = 6 requires showing that
+the primitive cube root of unity ω is not in the real subfield ℚ(∛2) ⊂ ℝ,
+which requires analysis infrastructure beyond current Mathlib support.
+-/
+axiom x_cube_sub_2_gal_iso_s3 :
+    Nonempty ((X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal ≃* Equiv.Perm (Fin 3))
+
+/--
+The symmetric group S₃ is realizable as a Galois group over ℚ.
+
+This is the first concrete non-abelian realization in our formalization.
+S₃ has order 6 and is solvable (consistent with Shafarevich's theorem),
+but this direct construction via X³ - 2 is more explicit.
+-/
+theorem s3_realizable :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      Nonempty (Equiv.Perm (Fin 3) ≃* (K ≃ₐ[ℚ] K)) := by
+  let p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
+  -- p.SplittingField is Galois over ℚ (splitting field of separable poly in char 0)
+  -- p.Gal is definitionally (p.SplittingField ≃ₐ[ℚ] p.SplittingField)
+  have : Normal ℚ p.SplittingField := inferInstance
+  have : Algebra.IsSeparable ℚ p.SplittingField := inferInstance
+  exact ⟨p.SplittingField,
+    inferInstance, inferInstance, inferInstance,
+    IsGalois.mk,
+    x_cube_sub_2_gal_iso_s3.map MulEquiv.symm⟩
+
+/-
 ## Part VIII: What's Known and What's Open
 
 The Inverse Galois Problem breaks down into cases:
@@ -428,20 +497,15 @@ Abel-Ruffini asks about STRUCTURE of the Galois group when polynomial is solvabl
 
 X⁵ - 2 is irreducible over ℚ.
 
-Proof strategy: Eisenstein's criterion at p = 2 shows X⁵ - 2 is irreducible over ℤ.
-By Gauss's lemma, it is therefore irreducible over ℚ.
-
-Note: The detailed Eisenstein proof was previously verified but broke due to Mathlib
-API changes in `degree_X_pow_sub_C`, `leadingCoeff_X_pow_sub_C`, and
-`IsPrimitive.Int` signatures. The mathematical content is correct; the proof
-needs updating to match the current Mathlib v4.26.0 API.
+Proved via Eisenstein's criterion at p = 2 (from NthRootIrrationalOQ01),
+which shows X⁵ - 2 is irreducible over ℤ. By Gauss's lemma, it is
+therefore irreducible over ℚ. The degree is 5 by natDegree computation.
 -/
 theorem connection_to_abel_ruffini :
     ∃ (p : Polynomial ℚ), Irreducible p ∧ p.natDegree = 5 := by
-  exact ⟨X ^ 5 - C (2 : ℚ), by sorry, by sorry⟩
-  -- Eisenstein at p=2: all non-leading coefficients divisible by 2,
-  -- constant term -2 not divisible by 4, leading coefficient 1 coprime to 2.
-  -- natDegree = 5 by compute_degree!
+  exact ⟨X ^ 5 - C (2 : ℚ),
+    NthRootIrrationalOQ01.eisenstein_X_pow_sub_prime 5 2 (by omega) (by decide),
+    NthRootIrrationalOQ01.natDegree_X_pow_sub_C_eq (by omega) (by norm_num)⟩
 
 /--
 The distinction between solvable and non-solvable extensions:
@@ -480,8 +544,15 @@ theorem solvable_iff_solvable_galois_group
 12. **Abelian groups are realizable** (axiom: Kronecker-Weber + structure theorem)
 13. **Solvable groups are realizable** (axiom: Shafarevich 1954)
 14. **Symmetric groups are realizable** (sorry: Hilbert irreducibility, not in Mathlib)
-15. **X⁵ - 2 is irreducible over ℤ** (proven via Eisenstein criterion at p = 2)
-16. **∃ irreducible quintic over ℚ** (proven via Gauss's lemma transfer from ℤ to ℚ)
+15. **X⁵ - 2 is irreducible over ℚ** (proven via Eisenstein from NthRootIrrationalOQ01)
+16. **∃ irreducible quintic over ℚ** (proven: X⁵-2 with degree 5)
+17. **X³ - 2 is irreducible over ℚ** (proven via Eisenstein)
+18. **S₃ is realizable over ℚ** (proven from Gal(X³-2) ≅ S₃ axiom)
+
+### What's Axiomatized (3 axioms, for deep classical results):
+1. `abelian_realizable` — Kronecker-Weber theorem (every abelian group is realizable)
+2. `shafarevich_theorem` — All solvable groups are realizable (1954, class field theory)
+3. `x_cube_sub_2_gal_iso_s3` — Gal(X³-2/ℚ) ≅ S₃ (classical, requires ω ∉ ℚ(∛2))
 
 ### What Remains Open:
 - The general Inverse Galois Problem for arbitrary finite groups over ℚ
@@ -492,8 +563,9 @@ theorem solvable_iff_solvable_galois_group
 1. Give an explicit Galois extension with group S₅ (requires Hilbert irreducibility)
 2. Formalize the Kronecker-Weber theorem (would eliminate `abelian_realizable` axiom)
 3. Formalize at least one case of A₅ realization
+4. Prove Gal(X³-2/ℚ) ≅ S₃ to eliminate `x_cube_sub_2_gal_iso_s3` axiom
 
-**Theorem Count**: 22 proven theorems/lemmas, 2 axioms (for deep classical results)
+**Theorem Count**: 26 proven theorems/lemmas, 3 axioms (for deep classical results)
 **Sorries**: 2 (1 open problem + 1 theorem needing Hilbert irreducibility)
 -/
 
