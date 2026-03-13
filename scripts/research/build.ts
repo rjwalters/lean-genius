@@ -647,8 +647,6 @@ function build(): void {
       continue
     }
 
-    }
-
     console.log(`   Processing ${entry.slug}...`)
     const problem = processProblem(entry.slug, entry)
     if (problem) {
