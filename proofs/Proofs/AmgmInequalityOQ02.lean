@@ -391,6 +391,126 @@ theorem maclaurin_m1_ge_mn {n : ℕ} (hn : 0 < n) (x : Fin n → ℝ)
   maclaurin_chain 1 n (by omega) (by omega) le_rfl x hx
 
 /-
+## Part VI: General Recurrence and Structural Theorems
+These theorems provide the infrastructure for inductive proofs on n
+and establish boundary behavior of elementary symmetric polynomials.
+-/
+
+-- Generalized disjointness for powersetCard (k+1) vs image of insert on powersetCard k.
+-- Same proof as pc_disj: any subset of mapped range cannot contain Fin.last.
+private lemma pc_disj_general (n k : ℕ) :
+    Disjoint
+      (powersetCard (k + 1) ((univ : Finset (Fin n)).map (csEmb n)))
+      ((powersetCard k ((univ : Finset (Fin n)).map (csEmb n))).image
+        (insert (Fin.last n))) := by
+  apply Finset.disjoint_left.mpr
+  intro t ht1 ht2
+  simp only [mem_image, Finset.mem_powersetCard] at ht1 ht2
+  obtain ⟨s, _, rfl⟩ := ht2
+  obtain ⟨ht1_sub, _⟩ := ht1
+  have hmem := ht1_sub (Finset.mem_insert_self (Fin.last n) _)
+  simp only [mem_map, mem_univ, true_and, csEmb_apply] at hmem
+  obtain ⟨i, hi⟩ := hmem
+  exact (Fin.castSucc_lt_last i).ne hi
+
+/-- General recurrence for elementary symmetric polynomials:
+    eₖ₊₁(x₀,...,xₙ) = eₖ₊₁(x₀,...,xₙ₋₁) + xₙ · eₖ(x₀,...,xₙ₋₁)
+    Generalizes elemSymm_two_succ from k=1 to arbitrary k.
+    This is the essential tool for inductive proofs on n. -/
+theorem elemSymm_succ {n : ℕ} (k : ℕ) (x : Fin (n + 1) → ℝ) :
+    elemSymm (k + 1) x =
+    elemSymm (k + 1) (x ∘ Fin.castSucc) +
+    x (Fin.last n) * elemSymm k (x ∘ Fin.castSucc) := by
+  simp only [elemSymm]
+  rw [fin_univ_insert_last, Finset.powersetCard_succ_insert (fin_last_not_mem_map n)]
+  rw [Finset.sum_union (pc_disj_general n k)]
+  congr 1
+  · rw [Finset.powersetCard_map, Finset.sum_map]
+    congr 1; ext s
+    simp only [mapEmb_eq]
+    rw [prod_map_csEmb]
+    simp only [Function.comp_apply]
+  · have insert_inj : Set.InjOn (insert (Fin.last n))
+        (powersetCard k ((univ : Finset (Fin n)).map (csEmb n))).toSet := by
+      intro s hs t ht hst
+      rw [Finset.mem_coe] at hs ht
+      rw [Finset.mem_powersetCard] at hs ht
+      have hs' : Fin.last n ∉ s := by
+        intro hmem
+        have h := hs.1 hmem
+        simp only [mem_map, mem_univ, true_and, csEmb_apply] at h
+        obtain ⟨i, hi⟩ := h
+        exact (Fin.castSucc_lt_last i).ne hi
+      have ht' : Fin.last n ∉ t := by
+        intro hmem
+        have h := ht.1 hmem
+        simp only [mem_map, mem_univ, true_and, csEmb_apply] at h
+        obtain ⟨i, hi⟩ := h
+        exact (Fin.castSucc_lt_last i).ne hi
+      rw [show s = (insert (Fin.last n) s).erase (Fin.last n) from
+          (Finset.erase_insert hs').symm, hst, Finset.erase_insert ht']
+    rw [Finset.sum_image insert_inj, Finset.powersetCard_map, Finset.sum_map]
+    have h_prod : ∀ s ∈ (powersetCard k (univ : Finset (Fin n))),
+        ∏ i ∈ insert (Fin.last n) ((Finset.mapEmbedding (csEmb n)).toEmbedding s), x i =
+        x (Fin.last n) * ∏ j ∈ s, (x ∘ Fin.castSucc) j := by
+      intro s _
+      rw [mapEmb_eq, Finset.prod_insert]
+      · simp only [Function.comp_apply]; rw [prod_map_csEmb]
+      · simp only [mem_map, csEmb_apply, not_exists, not_and]
+        intro j _; exact (Fin.castSucc_lt_last j).ne
+    rw [Finset.sum_congr rfl h_prod, ← Finset.mul_sum]
+
+/-- eₖ = 0 when k > n (no k-element subsets of an n-element set). -/
+theorem elemSymm_gt_eq_zero {n : ℕ} (k : ℕ) (hk : n < k) (x : Fin n → ℝ) :
+    elemSymm k x = 0 := by
+  simp only [elemSymm]
+  apply Finset.sum_eq_zero
+  intro s hs
+  exfalso
+  have h1 := (Finset.mem_powersetCard.mp hs).2
+  have h2 : s.card ≤ (univ : Finset (Fin n)).card :=
+    Finset.card_le_card (Finset.mem_powersetCard.mp hs).1
+  simp only [card_univ, Fintype.card_fin] at h2
+  omega
+
+/-- eₙ(x₀,...,xₙ₋₁) = ∏ᵢ xᵢ (the only n-element subset of Fin n is the full set). -/
+theorem elemSymm_n_eq_prod {n : ℕ} (x : Fin n → ℝ) :
+    elemSymm n x = ∏ i : Fin n, x i := by
+  simp only [elemSymm]
+  have h_uniq : (univ : Finset (Fin n)).powersetCard n = {univ} := by
+    ext s
+    simp only [mem_powersetCard, mem_singleton, subset_univ, true_and]
+    constructor
+    · intro h; exact Finset.eq_univ_of_card s (by rwa [Fintype.card_fin])
+    · intro h; rw [h, Finset.card_univ, Fintype.card_fin]
+  rw [h_uniq, Finset.sum_singleton]
+
+/-- Newton's inequality for k=1, proved WITHOUT the newton_log_concavity axiom.
+    (e₁/C(n,1))² ≥ (e₀/C(n,0)) · (e₂/C(n,2))
+    Equivalently: C(n,2)·(∑xᵢ)² ≥ n²·e₂, which follows from the binomial
+    identity and Cauchy-Schwarz. Works for ALL reals, not just non-negative. -/
+theorem newton_k1 {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ) :
+    (elemSymm 1 x / (Nat.choose n 1 : ℝ)) ^ 2 ≥
+    (elemSymm 0 x / (Nat.choose n 0 : ℝ)) *
+    (elemSymm 2 x / (Nat.choose n 2 : ℝ)) := by
+  simp only [elemSymm_zero, elemSymm_one, Nat.choose_zero_right, Nat.choose_one_right,
+             Nat.cast_one, div_one, one_mul]
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
+  have hC_pos : (0 : ℝ) < (↑(Nat.choose n 2) : ℝ) :=
+    Nat.cast_pos.mpr (Nat.choose_pos (by omega))
+  have hN_ne : (n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  have hC_ne : (↑(Nat.choose n 2) : ℝ) ≠ 0 := ne_of_gt hC_pos
+  have h := maclaurin_sq_m1_ge_m2_general hn x
+  rw [ge_iff_le, ← sub_nonneg, div_pow]
+  have hdiff : (∑ i : Fin n, x i) ^ 2 / (n : ℝ) ^ 2 -
+      elemSymm 2 x / (↑(Nat.choose n 2) : ℝ) =
+      ((↑(Nat.choose n 2) : ℝ) * (∑ i : Fin n, x i) ^ 2 -
+       (n : ℝ) ^ 2 * elemSymm 2 x) / ((n : ℝ) ^ 2 * (↑(Nat.choose n 2) : ℝ)) := by
+    field_simp
+  rw [hdiff]
+  exact div_nonneg (by linarith) (le_of_lt (mul_pos (pow_pos hn_pos 2) hC_pos))
+
+/-
 ## Summary
 
 ### The Main Answer:
@@ -412,6 +532,10 @@ The chain follows from Newton's log-concavity inequalities for the sequence eₖ
 11. `maclaurin_sq_m1_ge_m2_from_newton` — C(n,2)·(∑xᵢ)² ≥ n²·e₂ (non-negative, Newton)
 12. `maclaurin_chain` — Mⱼ ≥ Mₖ for j ≤ k ≤ n (induction on k-j via maclaurin_step)
 13. `maclaurin_m1_ge_mn` — M₁ ≥ Mₙ, i.e., AM ≥ GM (corollary of chain)
+14. `elemSymm_succ` — general recurrence eₖ₊₁(x₁,...,xₙ₊₁) = eₖ₊₁(x₁,...,xₙ) + xₙ₊₁·eₖ(x₁,...,xₙ)
+15. `elemSymm_gt_eq_zero` — eₖ = 0 for k > n
+16. `elemSymm_n_eq_prod` — eₙ = ∏ xᵢ
+17. `newton_k1` — Newton's inequality at k=1, proved from scratch (no axiom)
 
 ### Axiomatized (deep results):
 1. `newton_log_concavity` — log-concavity of eₖ/C(n,k) for non-negative inputs
