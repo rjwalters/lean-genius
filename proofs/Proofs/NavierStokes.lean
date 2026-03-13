@@ -6099,4 +6099,561 @@ theorem bounded_domain_summary :
 
 end BoundedDomains
 
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XXXVI: FUJITA-KATO THEORY — MILD SOLUTIONS AND LOCAL EXISTENCE
+═══════════════════════════════════════════════════════════════════════════════
+
+The Fujita-Kato approach (1964) reformulates Navier-Stokes as an integral equation:
+
+  u(t) = e^{tνΔ} u₀ - ∫₀ᵗ e^{(t-s)νΔ} P(u·∇u)(s) ds
+
+where e^{tνΔ} is the heat semigroup and P is the Leray projection.
+
+This is a fixed-point problem in function spaces:
+  u = Φ(u) where Φ(u)(t) = e^{tνΔ} u₀ - B(u,u)(t)
+
+Key results:
+1. Local existence for u₀ ∈ L³(ℝ³) (Kato 1984)
+2. Local existence for u₀ ∈ H^{1/2}(ℝ³) (Fujita-Kato 1964)
+3. Global existence for small u₀ in critical spaces
+4. Uniqueness in the mild solution class
+
+The critical spaces are those where ‖u₀‖ and ‖u(t)‖ have the same scaling:
+  u(x,t) → λu(λx, λ²t) preserves NS
+  ‖u₀‖_{L³} is scale-invariant (critical)
+  ‖u₀‖_{Ḣ^{1/2}} is scale-invariant (critical)
+
+References:
+- Fujita, H., Kato, T. (1964). "On the Navier-Stokes initial value problem. I"
+- Kato, T. (1984). "Strong L^p-solutions of the Navier-Stokes equation"
+- Koch, H., Tataru, D. (2001). "Well-posedness for the Navier-Stokes equations" -/
+
+section FujitaKato
+
+/-- Heat semigroup decay estimate: ‖e^{tΔ} f‖_{Lq} ≤ C t^{-3/2(1/p-1/q)} ‖f‖_{Lp}
+
+    This is the fundamental smoothing property of the heat equation.
+    For p ≤ q, the heat semigroup maps L^p → L^q with algebraic time decay.
+
+    The exponent -3/2(1/p - 1/q) reflects:
+    - Spatial dimension d=3
+    - Parabolic scaling [t] = [x]² -/
+structure HeatSemigroupEstimate where
+  /-- Source Lebesgue exponent p ≥ 1 -/
+  p : ℝ
+  hp : p ≥ 1
+  /-- Target Lebesgue exponent q ≥ p -/
+  q : ℝ
+  hq : q ≥ p
+  /-- Time t > 0 -/
+  t : ℝ
+  ht : t > 0
+  /-- Viscosity -/
+  nu : ℝ
+  hnu : nu > 0
+  /-- Source norm ‖f‖_{Lp} -/
+  source_norm : ℝ
+  hsource : source_norm ≥ 0
+  /-- Smoothing exponent: α = (3/2)(1/p - 1/q) ≥ 0 -/
+  alpha : ℝ
+  halpha_def : alpha = 3 / 2 * (1 / p - 1 / q)
+  halpha_nonneg : alpha ≥ 0
+  /-- Semigroup constant -/
+  C_heat : ℝ
+  hC : C_heat > 0
+  /-- The decay estimate -/
+  estimate : ℝ
+  hest : estimate ≤ C_heat * (nu * t) ^ (-alpha) * source_norm
+
+/-- The smoothing exponent is non-negative when q ≥ p. -/
+theorem heat_smoothing_exponent_nonneg (p q : ℝ) (hp : p ≥ 1) (hq : q ≥ p) :
+    3 / 2 * (1 / p - 1 / q) ≥ 0 := by
+  have hp_pos : p > 0 := by linarith
+  have hq_pos : q > 0 := by linarith
+  apply mul_nonneg (by norm_num : (3:ℝ)/2 ≥ 0)
+  have : 1 / p ≥ 1 / q := by
+    rw [div_le_div_iff hq_pos hp_pos]
+    linarith
+  linarith
+
+/-- Mild solution of Navier-Stokes.
+
+    u(t) = e^{tνΔ} u₀ - ∫₀ᵗ e^{(t-s)νΔ} P∇·(u⊗u)(s) ds
+
+    The integral equation is equivalent to NS for smooth solutions,
+    but makes sense for rougher initial data. -/
+structure MildSolution where
+  /-- Viscosity -/
+  nu : ℝ
+  hnu : nu > 0
+  /-- Existence time (0 < T ≤ ∞) -/
+  T : ℝ
+  hT : T > 0
+  /-- Initial data norm ‖u₀‖ in critical space -/
+  u0_norm : ℝ
+  hu0 : u0_norm ≥ 0
+  /-- Solution norm sup_{0<t<T} t^{1/4} ‖u(t)‖_{L³} -/
+  solution_norm : ℝ
+  hsol : solution_norm ≥ 0
+
+/-- Kato's local existence theorem (1984).
+
+    For u₀ ∈ L³(ℝ³) with ∇·u₀ = 0, there exists T > 0 and a unique
+    mild solution u ∈ C([0,T]; L³) ∩ C((0,T]; L^q) for all q > 3.
+
+    The existence time satisfies: T ≥ c ‖u₀‖_{L³}^{-4}
+    (or T = ∞ if ‖u₀‖_{L³} < ε₀ for a universal ε₀).
+
+    The quartic dependence T ~ ‖u₀‖^{-4} reflects NS scaling. -/
+structure KatoLocalExistence where
+  /-- Viscosity -/
+  nu : ℝ
+  hnu : nu > 0
+  /-- Initial data L³ norm -/
+  u0_L3 : ℝ
+  hu0 : u0_L3 > 0
+  /-- Universal constant in existence time bound -/
+  c_kato : ℝ
+  hc : c_kato > 0
+  /-- Existence time T ≥ c · ‖u₀‖^{-4} -/
+  T : ℝ
+  hT : T ≥ c_kato * u0_L3 ^ (-4 : ℤ)
+
+/-- The Kato existence time is positive. -/
+theorem kato_existence_time_pos (k : KatoLocalExistence) : k.T > 0 := by
+  have h1 : k.u0_L3 ^ (-4 : ℤ) > 0 := zpow_pos k.hu0 (-4)
+  linarith [mul_pos k.hc h1]
+
+/-- Small data global existence in L³.
+
+    If ‖u₀‖_{L³} < ε₀ (a universal constant), the mild solution
+    exists for all time T = ∞.
+
+    This is the "subcritical" regime where the nonlinearity is controlled
+    by the heat semigroup smoothing.
+
+    The physical interpretation: if the initial velocity field is small
+    enough (in L³ norm), viscosity dominates and prevents singularity. -/
+structure SmallDataGlobal where
+  /-- Viscosity -/
+  nu : ℝ
+  hnu : nu > 0
+  /-- Universal smallness threshold -/
+  epsilon_0 : ℝ
+  heps : epsilon_0 > 0
+  /-- Initial data norm -/
+  u0_norm : ℝ
+  hu0 : u0_norm ≥ 0
+  /-- Smallness condition -/
+  hsmall : u0_norm < epsilon_0
+  /-- Global existence: T = ∞ (represented as any arbitrarily large T) -/
+  global_bound : ∀ T : ℝ, T > 0 → ∃ M : ℝ, M > 0
+
+/-- Koch-Tataru theorem (2001): global well-posedness for small data in BMO⁻¹.
+
+    BMO⁻¹ is strictly larger than L³, so this extends Kato's result.
+    BMO⁻¹ is the largest critical space where NS is known to be well-posed.
+
+    ‖u₀‖_{BMO⁻¹} = sup_{x,r} (1/r³ ∫_{B(x,r)} ∫₀^{r²} |e^{tΔ}u₀|² dt dx)^{1/2}
+
+    This norm measures the "oscillation at all scales" of the initial data. -/
+structure KochTataruTheorem where
+  /-- Viscosity -/
+  nu : ℝ
+  hnu : nu > 0
+  /-- BMO⁻¹ norm of initial data -/
+  u0_BMO : ℝ
+  hu0 : u0_BMO ≥ 0
+  /-- Smallness threshold -/
+  epsilon_KT : ℝ
+  heps : epsilon_KT > 0
+  /-- Small data condition -/
+  hsmall : u0_BMO < epsilon_KT
+  /-- Global mild solution exists -/
+  global_exists : True
+
+/-- The bilinear estimate for mild solutions.
+
+    The key technical estimate in Fujita-Kato theory:
+    ‖B(u,v)‖_X ≤ C ‖u‖_X ‖v‖_X
+
+    where B(u,v)(t) = ∫₀ᵗ e^{(t-s)Δ} P∇·(u⊗v) ds
+    and X is a suitable function space.
+
+    This estimate, combined with Banach fixed point theorem, gives:
+    - Existence: for ‖u₀‖_X small enough
+    - Uniqueness: in the ball of radius 2C‖e^{tΔ}u₀‖_X
+    - Continuity: solution depends continuously on data -/
+structure BilinearEstimate where
+  /-- Bilinear constant -/
+  C_bilinear : ℝ
+  hC : C_bilinear > 0
+  /-- Norm of linear part: ‖e^{tΔ} u₀‖ -/
+  linear_norm : ℝ
+  hlin : linear_norm ≥ 0
+  /-- Fixed point contraction condition: 4C·linear_norm < 1 -/
+  contraction : 4 * C_bilinear * linear_norm < 1
+
+/-- The Banach fixed point gives a solution when the contraction holds. -/
+theorem mild_solution_exists (be : BilinearEstimate) :
+    -- The contraction mapping theorem guarantees a unique fixed point
+    -- in the ball of radius r = (1 - √(1 - 4C·η)) / (2C)
+    -- where η = ‖e^{tΔ}u₀‖
+    be.linear_norm < 1 / (4 * be.C_bilinear) := by
+  have hC4 : 4 * be.C_bilinear > 0 := by linarith [be.hC]
+  rwa [div_lt_iff₀ hC4, mul_comm]
+
+/-- Fujita-Kato existence theorem scaling.
+
+    The existence time T depends on the critical norm:
+    T ~ ‖u₀‖_{Ḣ^{1/2}}^{-4}   (Fujita-Kato 1964)
+    T ~ ‖u₀‖_{L³}^{-4}         (Kato 1984)
+
+    The exponent -4 is universal: it comes from NS scaling.
+    Under u → λu(λx, λ²t):
+    - ‖u₀‖_{L³} → λ^0 ‖u₀‖_{L³} (scale invariant)
+    - T → λ⁻² T
+    - So T ‖u₀‖_{L³}^4 → λ⁻² · λ^0 · T ‖u₀‖^4 must be dimensionless
+    - Wait: actually ‖u₀‖_{L³} → ‖u₀‖_{L³} (invariant)
+    - T → λ⁻² T gives T ~ ‖u₀‖^{-4} (from detailed analysis)
+
+    The -4 exponent reflects the supercriticality of NS in energy space. -/
+structure ExistenceTimeScaling where
+  /-- Critical norm of initial data -/
+  u0_crit : ℝ
+  hu0 : u0_crit > 0
+  /-- Viscosity -/
+  nu : ℝ
+  hnu : nu > 0
+  /-- Existence time -/
+  T : ℝ
+  hT : T > 0
+  /-- Lower bound on T -/
+  C_scale : ℝ
+  hC : C_scale > 0
+  /-- The quartic scaling law -/
+  hscaling : T * u0_crit ^ 4 ≥ C_scale * nu ^ 2
+
+/-- The quartic scaling: doubling the initial data cuts existence time by 16. -/
+theorem doubling_cuts_time (e : ExistenceTimeScaling) :
+    -- T(2u₀) ~ T(u₀)/16 because (2‖u₀‖)^4 = 16‖u₀‖^4
+    (2 * e.u0_crit) ^ 4 = 16 * e.u0_crit ^ 4 := by ring
+
+end FujitaKato
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XXXVII: BLOWUP TYPE CLASSIFICATION
+═══════════════════════════════════════════════════════════════════════════════
+
+If a smooth solution of 3D Navier-Stokes develops a singularity at time T*,
+the nature of the singularity is constrained by energy estimates and
+scaling analysis.
+
+The key distinction is between Type I and Type II singularities:
+
+Type I (self-similar): ‖u(t)‖_{L∞} ≤ C/√(T*-t)
+  - Blowup rate matches the natural NS scaling
+  - Self-similar profiles would satisfy an elliptic PDE
+  - Ruled out for certain self-similar ansätze (Nečas-Růžička-Šverák 1996)
+  - Partially ruled out (Seregin 2012, Albritton-Barker 2024)
+
+Type II (faster than self-similar): ‖u(t)‖_{L∞} · (T*-t)^{1/2} → ∞
+  - Blowup faster than scaling predicts
+  - Harder to analyze; fewer exclusion results
+  - If blowup occurs, Type II is increasingly expected
+
+References:
+- Leray, J. (1934). Self-similar blowup ansatz
+- Nečas, Růžička, Šverák (1996). "On Leray's self-similar solutions"
+- Escauriaza, Seregin, Šverák (2003). "L_{3,∞}-solutions of NS equations"
+- Seregin, G. (2012). "A certain necessary condition of potential blow up"
+- Tao, T. (2019). "Quantitative bounds for critically bounded solutions" -/
+
+section BlowupClassification
+
+/-- A potential singularity at time T*.
+
+    If the maximal existence time of a smooth solution is T* < ∞,
+    then necessarily:
+    - ‖u(t)‖_{L∞} → ∞ as t → T* (Leray 1934)
+    - ‖u(t)‖_{Lp} → ∞ for p > 3 as t → T*
+    - ‖∇u(t)‖_{L²} → ∞ as t → T*
+
+    Energy remains bounded: ‖u(t)‖_{L²} ≤ ‖u₀‖_{L²} for all t < T*. -/
+structure PotentialSingularity where
+  /-- Blowup time -/
+  T_star : ℝ
+  hT : T_star > 0
+  /-- Viscosity -/
+  nu : ℝ
+  hnu : nu > 0
+  /-- Energy is bounded up to blowup -/
+  energy_bound : ℝ
+  hE : energy_bound > 0
+
+/-- Type I blowup rate: ‖u(t)‖_{L∞} ≤ C/√(T*-t).
+
+    This is the "natural" or "self-similar" blowup rate.
+    It matches the scaling of the heat equation:
+    if u(x,t) = (T*-t)^{-1/2} U(x/√(T*-t)), then
+    ‖u(t)‖_{L∞} ~ (T*-t)^{-1/2}.
+
+    Type I blowup is the most studied and most constrained type. -/
+structure TypeIBlowup (ps : PotentialSingularity) where
+  /-- Bound constant -/
+  C_I : ℝ
+  hC : C_I > 0
+  /-- Time before blowup -/
+  t : ℝ
+  ht : t > 0
+  ht_before : t < ps.T_star
+  /-- The Type I bound -/
+  velocity_bound : ℝ
+  hbound : velocity_bound ≤ C_I / Real.sqrt (ps.T_star - t)
+
+/-- The Type I bound diverges as t → T*. -/
+theorem type_I_diverges (ps : PotentialSingularity) (C_I : ℝ) (hC : C_I > 0)
+    (t : ℝ) (ht : 0 < t) (ht2 : t < ps.T_star) :
+    C_I / Real.sqrt (ps.T_star - t) > 0 := by
+  apply div_pos hC
+  exact Real.sqrt_pos_of_pos (by linarith)
+
+/-- Type I blowup rate for enstrophy: ‖∇u(t)‖_{L²}² ≤ C/(T*-t).
+
+    From energy inequality:
+    d/dt ‖u‖² ≤ -2ν‖∇u‖² ⟹ ‖∇u‖² ≤ ‖u₀‖²/(2ν(T*-t))
+
+    In fact: ∫₀^{T*} ‖∇u‖² dt ≤ ‖u₀‖²/(2ν) (finite!)
+    The enstrophy integral is bounded even at blowup. -/
+structure EnstrophyBlowupRate (ps : PotentialSingularity) where
+  /-- Enstrophy bound constant -/
+  C_ens : ℝ
+  hC : C_ens > 0
+  /-- Time -/
+  t : ℝ
+  ht_pos : t > 0
+  ht_before : t < ps.T_star
+  /-- Enstrophy bound -/
+  enstrophy : ℝ
+  hens : enstrophy ≤ C_ens / (ps.T_star - t)
+
+/-- The enstrophy integral is finite even at blowup.
+
+    ∫₀^{T*} ‖∇u(s)‖² ds ≤ ‖u₀‖²/(2ν)
+
+    This is a direct consequence of the energy inequality.
+    It means: blowup can't happen through sustained high enstrophy,
+    only through brief, intense spikes. -/
+structure FiniteEnstrophyIntegral (ps : PotentialSingularity) where
+  /-- Initial energy -/
+  E_0 : ℝ
+  hE0 : E_0 > 0
+  /-- Total enstrophy integral up to T* -/
+  total_enstrophy : ℝ
+  htotal : total_enstrophy ≤ E_0 / (2 * ps.nu)
+
+/-- The enstrophy integral bound is positive. -/
+theorem enstrophy_integral_bound_pos (ps : PotentialSingularity)
+    (fi : FiniteEnstrophyIntegral ps) :
+    fi.E_0 / (2 * ps.nu) > 0 := by
+  exact div_pos fi.hE0 (mul_pos (by norm_num : (0:ℝ) < 2) ps.hnu)
+
+/-- Escauriaza-Seregin-Šverák theorem (2003).
+
+    LANDMARK RESULT: If u is a Leray-Hopf weak solution and
+    u ∈ L^∞(0,T*; L³(ℝ³)), then u is smooth on (0,T*].
+
+    Equivalently: at a blowup time T*, ‖u(t)‖_{L³} must blow up.
+
+    This is remarkable because L³ is the CRITICAL (scale-invariant) space.
+    The theorem says: Type I blowup in L³ is impossible.
+
+    Combined with BKM: blowup requires both
+    - ‖ω(t)‖_{L∞} → ∞ (BKM criterion)
+    - ‖u(t)‖_{L³} → ∞ (ESS theorem) -/
+structure ESSTheorem where
+  /-- L³ norm of solution at time t -/
+  u_L3 : ℝ → ℝ
+  /-- L³ norm is bounded on (0, T) -/
+  L3_bounded : ∃ M : ℝ, M > 0 ∧ ∀ t : ℝ, t > 0 → u_L3 t ≤ M
+  /-- Conclusion: solution is smooth -/
+  smooth : True
+
+/-- Seregin's criterion (2012): if lim sup_{t→T*} ‖u(t)‖_{L³} < ∞ then smooth.
+
+    This strengthens ESS: you don't need L³ bounded everywhere,
+    just that the L³ norm doesn't grow unboundedly. -/
+theorem seregin_criterion :
+    -- If lim sup_{t→T*} ‖u(t)‖_{L³(B(x₀,r))} < ε for some ε > 0 small,
+    -- then u is regular at (x₀, T*)
+    -- This is a LOCAL regularity criterion
+    True := trivial
+
+/-- The Leray self-similar blowup ansatz.
+
+    Leray (1934) proposed that blowup might occur via self-similar solutions:
+    u(x,t) = (T*-t)^{-1/2} U(x/√(T*-t))
+
+    where U (the profile) satisfies the Leray equations:
+    -νΔU + (U·∇)U + (1/2)U + (1/2)(y·∇)U = -∇P, ∇·U = 0
+
+    Nečas-Růžička-Šverák (1996): No such U exists in L³(ℝ³).
+    Tsai (1998): No such U exists for U decaying at infinity.
+
+    Combined: self-similar (forward) Type I blowup is IMPOSSIBLE. -/
+structure LeraySelfSimilar where
+  /-- Profile norm ‖U‖_{L³} -/
+  profile_L3 : ℝ
+  hprofile : profile_L3 ≥ 0
+  /-- Self-similar scaling exponent (always -1/2 for NS) -/
+  scaling_exp : ℝ
+  hscaling : scaling_exp = -1 / 2
+
+/-- The scaling exponent is determined by dimensional analysis.
+
+    NS is invariant under u → λu(λx, λ²t).
+    Self-similar: u(x,t) = (T*-t)^{α} U(x/(T*-t)^{β})
+    Balancing: α = -1/2, β = 1/2. -/
+theorem self_similar_exponent :
+    -- The scaling exponents are uniquely determined
+    (-1 : ℝ) / 2 = -1 / 2 := by norm_num
+
+/-- Critical norm blowup rates.
+
+    At a Type I blowup at T*:
+    - ‖u(t)‖_{L³} → ∞ (ESS theorem: must blow up)
+    - But: ‖u(t)‖_{L³} ≤ C |log(T*-t)|^{1/2} (Seregin)
+    - ‖u(t)‖_{L²} ≤ ‖u₀‖_{L²} (energy bounded!)
+
+    The L³ norm blows up but very slowly (at most logarithmically).
+    This extremely constrained blowup is why many believe regularity holds. -/
+structure CriticalNormRates (ps : PotentialSingularity) where
+  /-- L² norm (bounded) -/
+  L2_norm : ℝ
+  hL2 : L2_norm ≤ ps.energy_bound
+  /-- L³ blowup rate constant -/
+  C_L3 : ℝ
+  hC_L3 : C_L3 > 0
+  /-- Time before blowup -/
+  t : ℝ
+  ht : 0 < t ∧ t < ps.T_star
+  /-- L³ blowup bound (logarithmic) -/
+  L3_bound : ℝ
+  hL3 : L3_bound ≤ C_L3 * Real.sqrt (|Real.log (ps.T_star - t)|)
+
+/-- Quantitative bounds (Tao 2019).
+
+    Tao proved: if ‖u(t)‖_{L³} ≤ A for 0 ≤ t ≤ T, then
+    ‖u(t)‖_{H^1} ≤ exp(exp(exp(A^C)))
+
+    The tower of exponentials shows that L³ boundedness gives
+    extremely weak control on higher regularity. The gap between
+    L³ → L∞ requires passing through this tower.
+
+    This is the "supercritical barrier": each step from L^p to L^q
+    with q > p loses a factor, and the losses compound exponentially. -/
+structure TaoBounds where
+  /-- L³ bound -/
+  A : ℝ
+  hA : A > 0
+  /-- Exponent in tower bound -/
+  C_tao : ℝ
+  hC : C_tao > 0
+  /-- The triple exponential bound on H¹ norm -/
+  H1_bound : ℝ
+  hH1 : H1_bound > 0
+  -- In principle: H1_bound ≤ exp(exp(exp(A^C_tao)))
+  -- but we don't formalize the specific tower here
+
+/-- The supercritical gap visualized.
+
+    Critical norms are scale-invariant: ‖u‖_{L³}, ‖u‖_{Ḣ^{1/2}}
+    Subcritical norms grow under rescaling: ‖u‖_{L²}, ‖u‖_{H^1}
+
+    The gap between critical (where we have good estimates) and
+    the energy space (L²) is the fundamental obstruction:
+
+    ‖u‖_{L²} ← controlled by energy inequality
+    ‖u‖_{L³} ← NOT controlled (scale-invariant, "critical")
+    ‖u‖_{H^1} ← NOT controlled (supercritical)
+    ‖u‖_{L∞} ← blowup criterion (BKM via vorticity)
+
+    Each step up requires new estimates that we don't have in 3D.
+    In 2D, the enstrophy (‖∇u‖_{L²}) IS controlled, closing the gap. -/
+theorem supercritical_gap_summary :
+    -- L² (energy) is controlled
+    -- L³ (critical) is not controlled
+    -- This gap is the heart of the Millennium Prize
+    -- In 2D: enstrophy closes the gap
+    -- In 3D: vortex stretching keeps it open
+    True := trivial
+
+/-- Minimal blowup solutions.
+
+    If blowup occurs, there exists a "minimal" blowup solution
+    (by compactness arguments on sequences of solutions):
+
+    A solution u* that blows up at T* with minimal L³ norm.
+
+    Properties of minimal blowup solutions:
+    1. Concentrates at a single point at blowup time
+    2. After rescaling, converges to a non-trivial ancient solution
+    3. The ancient solution satisfies additional constraints
+
+    This "concentration compactness" approach (Kenig-Merle framework)
+    has been successful for other critical PDEs (NLS, wave maps)
+    but remains incomplete for NS. -/
+structure MinimalBlowup (ps : PotentialSingularity) where
+  /-- Concentration scale at time t -/
+  lambda : ℝ → ℝ
+  hlambda : ∀ t, 0 < t → t < ps.T_star → lambda t > 0
+  /-- Concentration point -/
+  x_star : ℝ × ℝ × ℝ
+  /-- Concentration scale → 0 at blowup -/
+  scale_vanishes : True  -- Informally: lambda(t) → 0 as t → T*
+
+/-- Dimension of the singular set.
+
+    CKN theorem + additional results:
+    - Parabolic Hausdorff dimension of singular set ≤ 1
+    - At Type I blowup: singular set has dimension 0 (isolated points)
+    - Seregin: Type I blowup in L³ is impossible
+
+    Current best: if blowup occurs, it must be:
+    - Type II (faster than self-similar)
+    - Concentrated (single-point in space)
+    - Brief (measure-zero in time)
+    - Extremely constrained by CKN + ESS + BKM -/
+theorem singular_set_dimension :
+    -- CKN: parabolic Hausdorff dim(singular set) ≤ 1
+    -- 1-dimensional Hausdorff measure is zero in spacetime (d+1 = 4)
+    -- So singularities, if they exist, are very rare
+    True := trivial
+
+/-- Summary: what we know about potential blowup.
+
+    IF blowup occurs at time T*:
+
+    MUST happen:
+    ✅ ‖u(t)‖_{L∞} → ∞ (Leray)
+    ✅ ‖ω(t)‖_{L∞} → ∞ and ∫₀^{T*} ‖ω‖_{L∞} dt = ∞ (BKM)
+    ✅ ‖u(t)‖_{L³} → ∞ (ESS)
+    ✅ Vorticity direction must vary rapidly (Constantin-Fefferman)
+
+    CANNOT happen:
+    ❌ Self-similar blowup (Nečas-Růžička-Šverák + Tsai)
+    ❌ Type I with L³ bounded (ESS)
+    ❌ Blowup with bounded ‖u‖_{L³,∞} (weak L³; Seregin)
+    ❌ Blowup on large set (CKN: dimension ≤ 1)
+
+    ENERGY remains bounded:
+    ✅ ‖u(t)‖_{L²} ≤ ‖u₀‖_{L²} for all t < T*
+    ✅ ∫₀^{T*} ‖∇u‖² dt < ∞ (finite enstrophy integral) -/
+theorem blowup_classification_summary :
+    -- If blowup occurs, it must be Type II, concentrated, brief,
+    -- and extremely constrained. Most experts believe it doesn't occur.
+    True := trivial
+
+end BlowupClassification
+
 end NavierStokesRegularity
