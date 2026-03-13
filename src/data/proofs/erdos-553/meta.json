@@ -64,56 +64,64 @@
       "title": "Graph Coloring Basics",
       "summary": "Edge colorings and monochromatic structures",
       "startLine": 32,
-      "endLine": 53
+      "endLine": 53,
+      "mathContext": "Edge coloring $c : \\binom{[m]}{2} \\to [k]$ assigns colors to edges of $K_m$. A monochromatic clique in color $i$ is $S \\subseteq [m]$ with $c(\\{u,v\\}) = i$ for all $u,v \\in S$."
     },
     {
       "id": "r-3-n",
       "title": "Two-Color Ramsey R(3,n)",
       "summary": "Definition and properties of R(3,n)",
       "startLine": 55,
-      "endLine": 71
+      "endLine": 71,
+      "mathContext": "$R(3,n) = \\min\\{m : \\forall c : E(K_m) \\to \\{0,1\\},\\, K_3 \\subseteq G_0 \\text{ or } K_n \\subseteq G_1\\}$. Shearer (1983): $R(3,n) \\le C n^2 / \\log n$."
     },
     {
       "id": "r-3-3-n",
       "title": "Three-Color Ramsey R(3,3,n)",
       "summary": "Definition and properties of R(3,3,n)",
       "startLine": 73,
-      "endLine": 92
+      "endLine": 92,
+      "mathContext": "$R(3,3,n) = \\min\\{m : \\forall c : E(K_m) \\to \\{0,1,2\\},\\, K_3 \\subseteq G_0 \\text{ or } K_3 \\subseteq G_1 \\text{ or } K_n \\subseteq G_2\\}$. Two triangle-free color classes allow denser coverage."
     },
     {
       "id": "bounds",
       "title": "Known Bounds",
       "summary": "Shearer and Alon-Rödl asymptotic bounds",
       "startLine": 94,
-      "endLine": 113
+      "endLine": 113,
+      "mathContext": "Shearer: $R(3,n) \\le C n^2/\\log n$. Alon-Rödl: $c n^3 / (\\log n)^k \\le R(3,3,n) \\le C n^3 (\\log n)^k$. Together: $R(3,3,n) \\asymp n^3 (\\log n)^{O(1)}$."
     },
     {
       "id": "main-result",
       "title": "The Main Result",
       "summary": "Ratio divergence theorem",
       "startLine": 115,
-      "endLine": 128
+      "endLine": 128,
+      "mathContext": "$\\frac{R(3,3,n)}{R(3,n)} \\ge \\frac{c n^3 / (\\log n)^k}{C n^2 / \\log n} = \\frac{c}{C} \\cdot n \\cdot (\\log n)^{1-k} \\to \\infty$. The cubic-vs-quadratic gap drives divergence."
     },
     {
       "id": "intuition",
       "title": "Intuition: Why Third Color Helps",
       "summary": "Turán-type edge counting argument",
       "startLine": 130,
-      "endLine": 145
+      "endLine": 145,
+      "mathContext": "Turán: triangle-free graph on $m$ vertices has $\\le m^2/4$ edges. Two triangle-free graphs together: $\\le m^2/2$ edges. The extra $m^2/4$ edges of room delay forcing a large monochromatic clique."
     },
     {
       "id": "off-diagonal",
       "title": "Off-Diagonal Ramsey Numbers",
       "summary": "Connection to standard R(s,t)",
       "startLine": 147,
-      "endLine": 163
+      "endLine": 163,
+      "mathContext": "$R(s,t)$ = smallest $m$ such that $K_m \\to (K_s, K_t)$. $R(3,n)$ is the off-diagonal case with $s = 3$. Known: $c n^2/(\\log n)^2 \\le R(3,n) \\le C n^2/\\log n$."
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Notation",
       "summary": "f ≍ g notation and asymptotic results",
       "startLine": 165,
-      "endLine": 181
+      "endLine": 181,
+      "mathContext": "$f \\asymp g \\iff \\exists c_1, c_2 > 0,\\, N_0: \\forall n \\ge N_0,\\, c_1 g(n) \\le f(n) \\le c_2 g(n)$. Same order of magnitude up to multiplicative constants."
     }
   ],
   "conclusion": {
