@@ -469,23 +469,111 @@ theorem midpoint_CH_on_ninePointCircle (T : Triangle) :
 -- PART 8b: Altitude Feet on the Nine-Point Circle
 -- ============================================================
 
+/-- Side BC has positive length squared (follows from nondegeneracy). -/
+private lemma bc_sq_ne_zero (T : Triangle) :
+    (T.C.1 - T.B.1) ^ 2 + (T.C.2 - T.B.2) ^ 2 ≠ 0 := by
+  intro h
+  apply T.nondegenerate
+  have hx : T.C.1 = T.B.1 := by nlinarith [sq_nonneg (T.C.1 - T.B.1), sq_nonneg (T.C.2 - T.B.2)]
+  have hy : T.C.2 = T.B.2 := by nlinarith [sq_nonneg (T.C.1 - T.B.1), sq_nonneg (T.C.2 - T.B.2)]
+  rw [hx, hy]; ring
+
+/-- Side CA has positive length squared (follows from nondegeneracy). -/
+private lemma ca_sq_ne_zero (T : Triangle) :
+    (T.A.1 - T.C.1) ^ 2 + (T.A.2 - T.C.2) ^ 2 ≠ 0 := by
+  intro h
+  apply T.nondegenerate
+  have hx : T.A.1 = T.C.1 := by nlinarith [sq_nonneg (T.A.1 - T.C.1), sq_nonneg (T.A.2 - T.C.2)]
+  have hy : T.A.2 = T.C.2 := by nlinarith [sq_nonneg (T.A.1 - T.C.1), sq_nonneg (T.A.2 - T.C.2)]
+  rw [hx, hy]; ring
+
+/-- Side AB has positive length squared (follows from nondegeneracy). -/
+private lemma ab_sq_ne_zero (T : Triangle) :
+    (T.B.1 - T.A.1) ^ 2 + (T.B.2 - T.A.2) ^ 2 ≠ 0 := by
+  intro h
+  apply T.nondegenerate
+  have hx : T.B.1 = T.A.1 := by nlinarith [sq_nonneg (T.B.1 - T.A.1), sq_nonneg (T.B.2 - T.A.2)]
+  have hy : T.B.2 = T.A.2 := by nlinarith [sq_nonneg (T.B.1 - T.A.1), sq_nonneg (T.B.2 - T.A.2)]
+  rw [hx, hy]; ring
+
+set_option maxHeartbeats 25600000 in
 /-- The foot of altitude from A lies on the nine-point circle.
-    The proof requires showing that the orthogonal projection of A onto BC
-    is at distance R/2 from the nine-point center. This involves heavy
-    algebraic manipulation due to division by |BC|² in the projection formula.
 
-    The identity ultimately follows from:
-    |H_a - N|² = R²/4  where H_a = proj_BC(A), N = (O+H)/2 -/
-axiom foot_a_on_ninePointCircle (T : Triangle) :
-    dist2 T.ninePointCenter T.foot_a = T.ninePointRadius
+    **Proof strategy**: Show |H_a - N|² = R²/4. After clearing the
+    denominator |BC|² and circumcenter denominator d, this reduces to
+    a polynomial identity in the vertex coordinates. -/
+theorem foot_a_on_ninePointCircle (T : Triangle) :
+    dist2 T.ninePointCenter T.foot_a = T.ninePointRadius := by
+  apply eq_of_sq_eq_of_nonneg (dist2_nonneg _ _) (ninePointRadius_nonneg _)
+  have hlhs : dist2 T.ninePointCenter T.foot_a ^ 2 =
+    dist2_sq T.ninePointCenter T.foot_a := by
+    unfold dist2 dist2_sq
+    rw [Real.sq_sqrt (add_nonneg (sq_nonneg _) (sq_nonneg _))]
+  have hrhs : T.ninePointRadius ^ 2 =
+    dist2_sq T.circumcenter T.A / 4 := by
+    unfold Triangle.ninePointRadius Triangle.circumradius dist2 dist2_sq
+    rw [div_pow, Real.sq_sqrt (add_nonneg (sq_nonneg _) (sq_nonneg _))]
+    norm_num
+  rw [hlhs, hrhs]
+  unfold dist2_sq Triangle.foot_a Triangle.ninePointCenter pointMidpoint
+    Triangle.orthocenter Triangle.circumcenter
+  simp only []
+  set d := 2 * ((T.A.1 - T.C.1) * (T.B.2 - T.C.2) - (T.B.1 - T.C.1) * (T.A.2 - T.C.2))
+  have hd_ne : d ≠ 0 := circumcenter_denom_ne_zero T
+  set bc_sq := (T.C.1 - T.B.1) ^ 2 + (T.C.2 - T.B.2) ^ 2
+  have hbc_ne : bc_sq ≠ 0 := bc_sq_ne_zero T
+  field_simp [hd_ne, hbc_ne]
+  ring
 
+set_option maxHeartbeats 25600000 in
 /-- The foot of altitude from B lies on the nine-point circle. -/
-axiom foot_b_on_ninePointCircle (T : Triangle) :
-    dist2 T.ninePointCenter T.foot_b = T.ninePointRadius
+theorem foot_b_on_ninePointCircle (T : Triangle) :
+    dist2 T.ninePointCenter T.foot_b = T.ninePointRadius := by
+  apply eq_of_sq_eq_of_nonneg (dist2_nonneg _ _) (ninePointRadius_nonneg _)
+  have hlhs : dist2 T.ninePointCenter T.foot_b ^ 2 =
+    dist2_sq T.ninePointCenter T.foot_b := by
+    unfold dist2 dist2_sq
+    rw [Real.sq_sqrt (add_nonneg (sq_nonneg _) (sq_nonneg _))]
+  have hrhs : T.ninePointRadius ^ 2 =
+    dist2_sq T.circumcenter T.A / 4 := by
+    unfold Triangle.ninePointRadius Triangle.circumradius dist2 dist2_sq
+    rw [div_pow, Real.sq_sqrt (add_nonneg (sq_nonneg _) (sq_nonneg _))]
+    norm_num
+  rw [hlhs, hrhs]
+  unfold dist2_sq Triangle.foot_b Triangle.ninePointCenter pointMidpoint
+    Triangle.orthocenter Triangle.circumcenter
+  simp only []
+  set d := 2 * ((T.A.1 - T.C.1) * (T.B.2 - T.C.2) - (T.B.1 - T.C.1) * (T.A.2 - T.C.2))
+  have hd_ne : d ≠ 0 := circumcenter_denom_ne_zero T
+  set ca_sq := (T.A.1 - T.C.1) ^ 2 + (T.A.2 - T.C.2) ^ 2
+  have hca_ne : ca_sq ≠ 0 := ca_sq_ne_zero T
+  field_simp [hd_ne, hca_ne]
+  ring
 
+set_option maxHeartbeats 25600000 in
 /-- The foot of altitude from C lies on the nine-point circle. -/
-axiom foot_c_on_ninePointCircle (T : Triangle) :
-    dist2 T.ninePointCenter T.foot_c = T.ninePointRadius
+theorem foot_c_on_ninePointCircle (T : Triangle) :
+    dist2 T.ninePointCenter T.foot_c = T.ninePointRadius := by
+  apply eq_of_sq_eq_of_nonneg (dist2_nonneg _ _) (ninePointRadius_nonneg _)
+  have hlhs : dist2 T.ninePointCenter T.foot_c ^ 2 =
+    dist2_sq T.ninePointCenter T.foot_c := by
+    unfold dist2 dist2_sq
+    rw [Real.sq_sqrt (add_nonneg (sq_nonneg _) (sq_nonneg _))]
+  have hrhs : T.ninePointRadius ^ 2 =
+    dist2_sq T.circumcenter T.A / 4 := by
+    unfold Triangle.ninePointRadius Triangle.circumradius dist2 dist2_sq
+    rw [div_pow, Real.sq_sqrt (add_nonneg (sq_nonneg _) (sq_nonneg _))]
+    norm_num
+  rw [hlhs, hrhs]
+  unfold dist2_sq Triangle.foot_c Triangle.ninePointCenter pointMidpoint
+    Triangle.orthocenter Triangle.circumcenter
+  simp only []
+  set d := 2 * ((T.A.1 - T.C.1) * (T.B.2 - T.C.2) - (T.B.1 - T.C.1) * (T.A.2 - T.C.2))
+  have hd_ne : d ≠ 0 := circumcenter_denom_ne_zero T
+  set ab_sq := (T.B.1 - T.A.1) ^ 2 + (T.B.2 - T.A.2) ^ 2
+  have hab_ne : ab_sq ≠ 0 := ab_sq_ne_zero T
+  field_simp [hd_ne, hab_ne]
+  ring
 
 /-- **The Nine-Point Circle passes through all 9 special points.**
     Summary of all nine point memberships:
@@ -578,18 +666,11 @@ theorem feuerbachs_theorem (T : Triangle) :
 -- PART 11: Special Case - Equilateral Triangle
 -- ============================================================
 
-/-- **Axiom:** For an equilateral triangle, R = 2r (circumradius = 2 × inradius).
+set_option maxHeartbeats 51200000 in
+/-- For an equilateral triangle with side s, R = 2r (circumradius = 2 × inradius).
 
-    For an equilateral triangle with side s:
-    - Area = s² √3 / 4
-    - Semiperimeter = 3s / 2
-    - Inradius r = Area / semiperimeter = s√3 / 6
-    - Circumcenter is at (s/2, s√3/6)
-    - Circumradius R = s / √3 = s√3 / 3
-    - Therefore R = 2r
-
-    Full verification requires extensive real arithmetic with square roots. -/
-axiom equilateral_R_eq_2r (s : ℝ) (hs : s > 0) :
+    **Proof strategy**: Compute R = s√3/3 and r = s√3/6, then s√3/3 = 2·s√3/6 by ring. -/
+theorem equilateral_R_eq_2r (s : ℝ) (hs : s > 0) :
     let T : Triangle := {
       A := (0, 0)
       B := (s, 0)
@@ -599,7 +680,55 @@ axiom equilateral_R_eq_2r (s : ℝ) (hs : s > 0) :
         have : s * (s * Real.sqrt 3 / 2) > 0 := by positivity
         nlinarith
     }
-    T.circumradius = 2 * T.inradius
+    T.circumradius = 2 * T.inradius := by
+  intro T
+  have hsq3 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
+  have h3nn : (0 : ℝ) ≤ Real.sqrt 3 := Real.sqrt_nonneg 3
+  -- Side lengths: all equal s for equilateral triangle
+  have h_sa : T.side_a = s := by
+    unfold Triangle.side_a; simp only [T]
+    have : (s / 2 - s) ^ 2 + (s * Real.sqrt 3 / 2 - 0) ^ 2 = s ^ 2 := by nlinarith [hsq3]
+    rw [this]; exact Real.sqrt_sq (le_of_lt hs)
+  have h_sb : T.side_b = s := by
+    unfold Triangle.side_b; simp only [T]
+    have : (0 - s / 2) ^ 2 + (0 - s * Real.sqrt 3 / 2) ^ 2 = s ^ 2 := by nlinarith [hsq3]
+    rw [this]; exact Real.sqrt_sq (le_of_lt hs)
+  have h_sc : T.side_c = s := by
+    unfold Triangle.side_c; simp only [T]
+    have : (s - 0) ^ 2 + (0 - 0) ^ 2 = s ^ 2 := by nlinarith
+    rw [this]; exact Real.sqrt_sq (le_of_lt hs)
+  -- Semiperimeter = 3s/2
+  have h_semi : T.semiperimeter = 3 * s / 2 := by
+    unfold Triangle.semiperimeter; rw [h_sa, h_sb, h_sc]; ring
+  -- Area = s²√3/4
+  have h_area : T.area = s ^ 2 * Real.sqrt 3 / 4 := by
+    unfold Triangle.area; simp only [T]
+    have h1 : (s - 0) * (s * Real.sqrt 3 / 2 - 0) - (s / 2 - 0) * (0 - 0) =
+              s ^ 2 * Real.sqrt 3 / 2 := by ring
+    rw [h1, abs_of_nonneg (by positivity)]; ring
+  -- Inradius = s√3/6
+  have h_inr : T.inradius = s * Real.sqrt 3 / 6 := by
+    unfold Triangle.inradius; rw [h_area, h_semi]
+    have hs3 : 3 * s / 2 ≠ 0 := by positivity
+    field_simp [hs3]; ring
+  -- Prove R = 2r via R² = (2r)², both nonneg
+  apply eq_of_sq_eq_of_nonneg
+  · unfold Triangle.circumradius; exact dist2_nonneg _ _
+  · rw [h_inr]; positivity
+  · -- R² = (2r)²: both equal s²/3
+    have hrhs : (2 * T.inradius) ^ 2 = s ^ 2 / 3 := by
+      rw [h_inr]; nlinarith [hsq3]
+    rw [hrhs]
+    -- R² = dist2_sq(circumcenter, A)
+    unfold Triangle.circumradius dist2
+    rw [Real.sq_sqrt (by positivity)]
+    unfold dist2_sq Triangle.circumcenter; simp only [T]
+    -- Goal: rational expression in s and √3 = s²/3
+    set d := 2 * ((0 - s / 2) * (0 - s * Real.sqrt 3 / 2) -
+        (s - s / 2) * (0 - s * Real.sqrt 3 / 2)) with hd_def
+    have hd_ne : d ≠ 0 := by rw [hd_def]; nlinarith [hsq3, sq_nonneg s]
+    field_simp [hd_ne]
+    nlinarith [hsq3, sq_nonneg s, sq_nonneg (s * Real.sqrt 3)]
 
 /-- For an equilateral triangle, the circumradius R = 2r where r is the inradius.
     This means R/2 = r, so the nine-point circle has the same radius as the incircle. -/
