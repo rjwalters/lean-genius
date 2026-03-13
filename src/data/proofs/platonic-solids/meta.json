@@ -52,42 +52,48 @@
       "title": "The Schlafli Symbol",
       "startLine": 65,
       "endLine": 99,
-      "summary": "Definition of Schlafli pairs {p, q} and the regularity constraint."
+      "summary": "Definition of Schlafli pairs {p, q} and the regularity constraint.",
+      "mathContext": "A Schläfli pair $\\{p, q\\}$ encodes a regular polyhedron with $p$-gonal faces and $q$ faces meeting at each vertex ($p, q \\geq 3$). Euler's formula $V - E + F = 2$ combined with the double-counting relations $pF = 2E$ and $qV = 2E$ yields the constraint $\\frac{1}{p} + \\frac{1}{q} > \\frac{1}{2}$, equivalently $(p-2)(q-2) < 4$."
     },
     {
       "id": "five-solids",
       "title": "The Five Platonic Solids",
       "startLine": 100,
       "endLine": 161,
-      "summary": "Definitions of the five Platonic solids and verification they satisfy the constraint."
+      "summary": "Definitions of the five Platonic solids and verification they satisfy the constraint.",
+      "mathContext": "The five valid Schläfli pairs are $\\{3,3\\}$ (tetrahedron), $\\{4,3\\}$ (cube), $\\{3,4\\}$ (octahedron), $\\{5,3\\}$ (dodecahedron), $\\{3,5\\}$ (icosahedron). Each satisfies $(p-2)(q-2) < 4$: the products are 1, 2, 2, 3, 3 respectively."
     },
     {
       "id": "completeness",
       "title": "Completeness Proof",
       "startLine": 163,
       "endLine": 279,
-      "summary": "Proof that these five pairs are the only solutions to (p-2)(q-2) < 4."
+      "summary": "Proof that these five pairs are the only solutions to (p-2)(q-2) < 4.",
+      "mathContext": "For $p, q \\geq 3$, if $p = 3$ then $(q-2) < 4$ gives $q \\in \\{3,4,5\\}$; if $p = 4$ then $2(q-2) < 4$ gives $q = 3$; if $p = 5$ then $3(q-2) < 4$ gives $q = 3$; if $p \\geq 6$ then $(p-2)(q-2) \\geq 4 \\cdot 1 = 4$ for all valid $q$. This exhausts all cases, yielding exactly 5 solutions."
     },
     {
       "id": "main-theorem",
       "title": "The Main Theorem",
       "startLine": 280,
       "endLine": 313,
-      "summary": "Wiedijk #50: There are exactly five Platonic solids."
+      "summary": "Wiedijk #50: There are exactly five Platonic solids.",
+      "mathContext": "The set of valid pairs $\\{(p,q) : p, q \\geq 3,\\, (p-2)(q-2) < 4\\}$ has cardinality 5, proved by  on the finite enumeration. Distinctness follows from the pairs being literally different natural number tuples."
     },
     {
       "id": "geometry",
       "title": "Geometric Properties",
       "startLine": 314,
       "endLine": 369,
-      "summary": "Computing V, E, F for each solid and verifying Euler's formula."
+      "summary": "Computing V, E, F for each solid and verifying Euler's formula.",
+      "mathContext": "From $pF = 2E$, $qV = 2E$, and $V - E + F = 2$, one derives $E = \\frac{pq}{2p + 2q - pq} \\cdot 2$. For $\\{3,3\\}$: $(V,E,F) = (4,6,4)$; $\\{4,3\\}$: $(8,12,6)$; $\\{3,4\\}$: $(6,12,8)$; $\\{5,3\\}$: $(20,30,12)$; $\\{3,5\\}$: $(12,30,20)$. All satisfy $V - E + F = 2$."
     },
     {
       "id": "duality",
       "title": "Duality of Platonic Solids",
       "startLine": 371,
       "endLine": 420,
-      "summary": "Dual pairs and the self-duality of the tetrahedron."
+      "summary": "Dual pairs and the self-duality of the tetrahedron.",
+      "mathContext": "The dual of $\\{p, q\\}$ is $\\{q, p\\}$, swapping face-type and vertex-valence. This gives dual pairs: cube $\\{4,3\\} \\leftrightarrow \\{3,4\\}$ octahedron, dodecahedron $\\{5,3\\} \\leftrightarrow \\{3,5\\}$ icosahedron. The tetrahedron $\\{3,3\\}$ is self-dual. Duality is an involution: $\\mathrm{dual}(\\mathrm{dual}(s)) = s$."
     }
   ],
   "conclusion": {
