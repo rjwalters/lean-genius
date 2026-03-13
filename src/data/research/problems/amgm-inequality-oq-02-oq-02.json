@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
+    "phase": "BUILD",
     "since": "2026-03-13T03:56:04.572Z",
     "iteration": 1,
-    "focus": "",
+    "focus": "newton_cleared_denom induction proof",
     "blockers": [],
     "nextAction": "",
     "attemptCounts": {
@@ -29,19 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All 5 theorems proved, 0 sorries, 0 axioms in this file. Build verified. Derives maclaurin_step from newton_log_concavity, reducing parent file axiom count from 2 to 1.",
+    "progressSummary": "PROGRESS: Fixed cross_product_of_log_concave (was false theorem), proved newton_log_concavity_proved derives from newton_cleared_denom (1 sorry remains in cleared-denom induction)",
     "builtItems": [
       "elemSymm_zero_implies_higher_zero: zero tail property",
       "power_ineq_of_log_concave: a_k^(k+1) >= a_{k+1}^k by induction",
       "rpow_ineq_of_pow_ineq: nat pow to rpow conversion",
-      "maclaurin_step_derived: M_k >= M_{k+1} as theorem (not axiom)"
+      "maclaurin_step_derived: M_k >= M_{k+1} as theorem (not axiom)",
+      "Fixed cross_product_of_log_concave: added h3 hypothesis (theorem was false)",
+      "newton_cleared_denom: cleared-denominator form of normalized Newton (sorry)",
+      "newton_log_concavity_proved: derives from newton_cleared_denom via div_sub_div"
     ],
     "insights": [
       "Division-free induction argument: use mul_pow + cancel via pow_pos",
-      "maclaurin_step axiom in parent file is now provably redundant"
+      "maclaurin_step axiom in parent file is now provably redundant",
+      "cross_product_of_log_concave was FALSE: a=1,b=0,c=0,d=1 counterexample",
+      "Normalized Newton is strictly stronger than unnormalized - cannot derive one from other",
+      "Cleared-denominator induction yields quadratic in t needing discriminant argument"
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove newton_cleared_denom by induction: expand with Pascal rule, show quadratic non-negative",
+      "Key technique: 4AC >= B^2 discriminant argument for the linear coefficient"
+    ]
   },
   "approaches": [],
   "tags": [

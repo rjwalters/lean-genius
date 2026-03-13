@@ -249,36 +249,30 @@ log-concave: C(n,k)² ≥ C(n,k-1)·C(n,k+1).
     (aₖ₋₁·aₖ)² ≥ (aₖ₋₁·aₖ)·(aₖ₋₂·aₖ₊₁), then cancel. -/
 theorem cross_product_of_log_concave {a b c d : ℝ}
     (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c) (hd : 0 ≤ d)
-    (h1 : b ^ 2 ≥ a * c) (h2 : c ^ 2 ≥ b * d) :
+    (h1 : b ^ 2 ≥ a * c) (h2 : c ^ 2 ≥ b * d)
+    (h3 : b = 0 → c = 0 → a * d = 0) :
     c * b ≥ a * d := by
   -- (b·c)² ≥ (a·c)·(b·d) = (a·d)·(b·c) from h1·h2
   have hbc_sq : (b * c) ^ 2 ≥ (a * d) * (b * c) := by
     have := mul_le_mul h1 h2 (mul_nonneg hb hd) (sq_nonneg _)
     nlinarith [this]
   have hbc_nn : 0 ≤ b * c := mul_nonneg hb hc
-  -- From (b*c)² ≥ (a*d)*(b*c) with b*c ≥ 0:
-  -- If b*c = 0: then (a*d)·0 ≤ 0, so a*d ≤ 0, so a*d = 0, so c*b = 0 ≥ 0 = a*d
-  -- If b*c > 0: cancel to get b*c ≥ a*d
-  -- Goal: c * b ≥ a * d. Since c*b = b*c, suffices to show b*c ≥ a*d.
   suffices h : b * c ≥ a * d by linarith [show c * b = b * c from by ring]
   rcases eq_or_lt_of_le hbc_nn with hbc_eq | hbc_pos
-  · -- b*c = 0: the whole LHS of hbc_sq becomes 0
+  · -- b*c = 0
     have hbc_zero : b * c = 0 := hbc_eq.symm
-    have : (a * d) * (b * c) ≤ 0 := by rw [hbc_zero]; simp
-    have : a * d * 0 ≤ 0 := by simp
-    -- From b*c = 0: either b = 0 or c = 0
     rcases mul_eq_zero.mp hbc_zero with hb0 | hc0
-    · -- b = 0: b²=0 ≥ a*c, so a*c ≤ 0, so a*c = 0
+    · -- b = 0: b²=0 ≥ a*c, so a*c = 0
       have hac : a * c = 0 := le_antisymm (by nlinarith [hb0]) (mul_nonneg ha hc)
       rcases mul_eq_zero.mp hac with ha0 | hc0
       · linarith [show a * d = 0 from by rw [ha0]; ring]
-      · -- c = 0 too: c²=0 ≥ b*d, so b*d ≤ 0, so d = 0
-        have : d = 0 := le_antisymm (by nlinarith [hc0]) hd
-        linarith [show a * d = 0 from by rw [this]; ring]
-    · -- c = 0: c²=0 ≥ b*d, so b*d ≤ 0, so b*d = 0
+      · -- b = 0 and c = 0: use h3
+        linarith [h3 hb0 hc0]
+    · -- c = 0: c²=0 ≥ b*d, so b*d = 0
       have hbd : b * d = 0 := le_antisymm (by nlinarith [hc0]) (mul_nonneg hb hd)
       rcases mul_eq_zero.mp hbd with hb0 | hd0
-      · linarith [show b * c = 0 from hbc_zero]
+      · -- b = 0 and c = 0: use h3
+        linarith [h3 hb0 hc0]
       · linarith [show a * d = 0 from by rw [hd0]; ring]
   · -- b*c > 0: cancel from (b*c)² ≥ (a*d)*(b*c) to get b*c ≥ a*d
     exact le_of_mul_le_mul_left (by nlinarith [sq (b * c)]) hbc_pos
@@ -390,6 +384,12 @@ theorem elemSymm_log_concave : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
       -- Term 2: ek · ekm1 ≥ ekm2 · ekp1 (cross-product)
       have h_cross : ek * ekm1 ≥ ekm2 * ekp1 :=
         cross_product_of_log_concave hekm2_nn hekm1_nn hek_nn hekp1_nn h_delta_km1 h_delta_k
+          (fun hb0 hc0 => by
+            -- If ekm1 = 0 and ek = 0, then ekp1 = 0 by zero tail property
+            have hkp1_zero : ekp1 = 0 := by
+              have hkm1_zero : elemSymm (p + 1) y = 0 := hb0
+              exact elemSymm_zero_implies_higher_zero (p + 1) y hy_nn hkm1_zero (p + 3) (by omega)
+            simp [hkp1_zero])
 
       -- Combine: the difference is Δ_k + t·cross + t²·Δ_{k-1} ≥ 0
       nlinarith [sq_nonneg (ek + t * ekm1), sq_nonneg t,
@@ -473,31 +473,79 @@ theorem binom_log_concave (n k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n) :
 ## Part VII: Proving Normalized Newton from Unnormalized
 -/
 
-/-- Newton's log-concavity (normalized form), proved from the unnormalized version
-    and log-concavity of binomial coefficients.
+/-
+  Newton's log-concavity (normalized form).
 
-    Strategy: From eₖ² ≥ eₖ₋₁·eₖ₊₁ (unnormalized) and C(n,k)² ≥ C(n,k-1)·C(n,k+1) (binom),
-    we get: eₖ²/(C(n,k)²) ≥ eₖ₋₁·eₖ₊₁/(C(n,k)²) ≥ eₖ₋₁·eₖ₊₁/(C(n,k-1)·C(n,k+1)).
+  The normalized Newton is strictly STRONGER than the unnormalized version:
+    (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1))
+  equivalently eₖ²·C(n,k-1)·C(n,k+1) ≥ eₖ₋₁·eₖ₊₁·C(n,k)²
 
-    NOTE: This derivation is INCORRECT — the second step goes the wrong way!
-    C(n,k)² ≥ C(n,k-1)·C(n,k+1) means 1/C(n,k)² ≤ 1/(C(n,k-1)·C(n,k+1)),
-    so eₖ₋₁·eₖ₊₁/C(n,k)² ≤ eₖ₋₁·eₖ₊₁/(C(n,k-1)·C(n,k+1)).
+  NOTE: The unnormalized version (eₖ² ≥ eₖ₋₁·eₖ₊₁) does NOT imply this.
+  C(n,k)² ≥ C(n,k-1)·C(n,k+1) means the denominator correction goes the
+  wrong way when trying to derive normalized from unnormalized.
 
-    The normalized Newton is strictly STRONGER than the unnormalized version
-    (it states (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)),
-    equivalently eₖ²·C(n,k-1)·C(n,k+1) ≥ eₖ₋₁·eₖ₊₁·C(n,k)²).
-
-    A direct proof by induction on n using the recurrence with normalized
+  A direct proof by induction on n using the recurrence with normalized
     coefficients Aₖ = ((n-k+1)aₖ + k·t·aₖ₋₁)/(n+1) yields a quadratic in t
-    whose non-negativity for t ≥ 0 follows from a discriminant argument. -/
+    whose non-negativity for t ≥ 0 follows from a discriminant argument.
+
+    Architecture: We prove the cleared-denominator form (no division) and derive
+    the normalized form. The cleared-denominator form is:
+      eₖ² · C(n,k-1) · C(n,k+1) ≥ eₖ₋₁ · eₖ₊₁ · C(n,k)²
+    This is proved by direct induction on n using the recurrence.
+
+    Status: The direct induction approach requires handling a quadratic in t whose
+    coefficients involve products of binomial coefficients after Pascal expansion.
+    The constant and quadratic terms are ≥ 0 by IH, but the linear term can be
+    negative, requiring a discriminant argument (4AC ≥ B²). This algebraic
+    verification is the remaining challenge.
+
+    For now, we reduce to the cleared-denominator form and leave that as the
+    key lemma to prove. -/
+
+/-- Cleared-denominator form of Newton's log-concavity.
+    Equivalent to the normalized form but avoids division. -/
+theorem newton_cleared_denom : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
+    (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i),
+    elemSymm k x ^ 2 * ((Nat.choose n (k - 1) : ℝ) * (Nat.choose n (k + 1) : ℝ)) ≥
+    elemSymm (k - 1) x * elemSymm (k + 1) x * (Nat.choose n k : ℝ) ^ 2 := by
+  intro n
+  induction n with
+  | zero => intro k _ hkn; omega
+  | succ m ih =>
+    intro k hk hkn x hx
+    -- k = 1 case: use newton_k1 from parent file
+    -- k ≥ 2 case: induction with recurrence expansion
+    -- Both cases require the same cleared-denominator algebra.
+    -- The inductive step expands using E_j = e_j + t·e_{j-1} and
+    -- Pascal's rule C(m+1,j) = C(m,j) + C(m,j-1), yielding a
+    -- quadratic in t whose non-negativity follows from:
+    -- (1) IH: cleared-denominator Newton for m variables
+    -- (2) Unnormalized Newton (elemSymm_log_concave)
+    -- (3) Binomial log-concavity (binom_log_concave)
+    sorry
+
 theorem newton_log_concavity_proved {n : ℕ} (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
     (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
     (elemSymm k x / (Nat.choose n k : ℝ)) ^ 2 ≥
     (elemSymm (k - 1) x / (Nat.choose n (k - 1) : ℝ)) *
     (elemSymm (k + 1) x / (Nat.choose n (k + 1) : ℝ)) := by
-  -- Direct proof by induction on n with normalized coefficients
-  -- The quadratic decomposition yields all non-negative terms
-  sorry
+  -- Derive from the cleared-denominator form
+  have hCk : (0 : ℝ) < (Nat.choose n k : ℝ) :=
+    Nat.cast_pos.mpr (Nat.choose_pos (by omega : k ≤ n))
+  have hCkm1 : (0 : ℝ) < (Nat.choose n (k - 1) : ℝ) :=
+    Nat.cast_pos.mpr (Nat.choose_pos (by omega : k - 1 ≤ n))
+  have hCkp1 : (0 : ℝ) < (Nat.choose n (k + 1) : ℝ) :=
+    Nat.cast_pos.mpr (Nat.choose_pos (by omega : k + 1 ≤ n))
+  have h_cleared := newton_cleared_denom n k hk hkn x hx
+  -- Convert: (a/b)² ≥ (c/d)·(e/f) ↔ a²·d·f ≥ c·e·b²
+  -- Proof: show (RHS - LHS) ≥ 0 as a fraction with non-negative numerator
+  rw [ge_iff_le, ← sub_nonneg, div_pow, div_mul_div_comm]
+  rw [div_sub_div _ _ (pow_pos hCk 2).ne' (mul_pos hCkm1 hCkp1).ne']
+  apply div_nonneg
+  · -- Numerator: eₖ²·(Cₖ₋₁·Cₖ₊₁) - eₖ₋₁·eₖ₊₁·Cₖ² ≥ 0
+    nlinarith
+  · -- Denominator: Cₖ² · (Cₖ₋₁·Cₖ₊₁) ≥ 0
+    exact (mul_pos (pow_pos hCk 2) (mul_pos hCkm1 hCkp1)).le
 
 /-
 ## Summary
@@ -513,13 +561,21 @@ theorem newton_log_concavity_proved {n : ℕ} (k : ℕ) (hk : 1 ≤ k) (hkn : k 
 7. `rpow_ineq_of_pow_ineq` — conversion from nat pow to rpow inequality
 8. `maclaurin_step_derived` — Mₖ ≥ Mₖ₊₁ as THEOREM (not axiom, given newton_log_concavity)
 
+### Bug fix:
+`cross_product_of_log_concave` — the original statement was FALSE (counterexample:
+a=1,b=0,c=0,d=1). Added hypothesis h3 : b=0 → c=0 → a*d=0 which holds in the
+elemSymm context via the zero-tail property.
+
 ### Remaining sorry (1):
-`newton_log_concavity_proved` — normalized Newton's inequality.
-The unnormalized version (eₖ² ≥ eₖ₋₁eₖ₊₁) is proved but is strictly weaker than
-the normalized version ((eₖ/Cₖ)² ≥ (eₖ₋₁/Cₖ₋₁)(eₖ₊₁/Cₖ₊₁)). The gap is that
-C(n,k)² ≥ C(n,k-1)·C(n,k+1), so the denominator correction goes the wrong way.
-A direct induction with normalized coefficients requires a discriminant argument
-for the resulting quadratic in t.
+`newton_cleared_denom` — cleared-denominator form of normalized Newton:
+  eₖ² · C(n,k-1) · C(n,k+1) ≥ eₖ₋₁ · eₖ₊₁ · C(n,k)²
+The reduction from `newton_log_concavity_proved` to `newton_cleared_denom` is complete
+(via div_sub_div + div_nonneg). The induction structure is set up with recurrences
+and the unnormalized Newton as a key ingredient. The remaining challenge is the
+algebraic expansion after substituting Pascal's rule C(m+1,j) = C(m,j) + C(m,j-1),
+which yields a quadratic in t. The constant and quadratic coefficients are ≥ 0 by
+the IH, but the linear coefficient can be negative, requiring a discriminant
+argument (4AC ≥ B²).
 
 ### Architecture for future completion:
 When `newton_log_concavity_proved` is proved, the `newton_log_concavity` AXIOM
