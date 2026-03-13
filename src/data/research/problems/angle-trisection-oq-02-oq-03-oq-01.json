@@ -16,12 +16,15 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "BLOCKED",
     "since": "2026-03-06T17:58:04-08:00",
-    "iteration": 2,
-    "focus": "Survey: Mathlib API availability for eliminating axioms",
-    "blockers": [],
-    "nextAction": "Attempt complex_conj_order_two proof using autEquivPow",
+    "iteration": 3,
+    "focus": "Remaining 3 axioms all depend on fixedField infrastructure missing from Mathlib",
+    "blockers": [
+      "IntermediateField.fixedField not in Mathlib - needed for maximal real subfield degree",
+      "All 3 remaining axioms depend on this missing infrastructure (~300+ lines needed)"
+    ],
+    "nextAction": "Build IntermediateField.fixedField infrastructure, or wait for Mathlib to add it",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,12 +32,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: File has 18 proved theorems, 4 axioms (not 6 - chebyshev items are proved). Mathlib has autEquivPow and isGalois for CyclotomicField. Key gap: IntermediateField.fixedField not in Mathlib, blocking maximal real subfield degree computation.",
+    "progressSummary": "PROGRESS: Proved complex_conj_order_two (eliminated 1 axiom via autEquivPow). 3 axioms remain, all blocked on missing fixedField infrastructure in Mathlib. File has 20+ proved theorems, 3 axioms, 0 sorries.",
     "builtItems": [
       "Section XVI: Primitive Root Properties and Separability (zeta_ne_zero, zeta_pow_n_eq_one, minpoly_cos_separable, minpoly_cos_natDegree_pos, zeta_pow_pred_eq_conj, cos_eq_zeta_pow_re, sin_eq_zeta_pow_im, zeta_pow_norm_one, cos_2k_pi_div_n_bound)",
       "Section XVII: Cyclotomic Polynomial Connection (zeta_is_root_of_xn_sub_one, cyclotomic_natDegree_eq_totient)",
       "Survey: confirmed Mathlib has autEquivPow, isGalois, finrank, isMulCommutative for CyclotomicField",
-      "Survey: confirmed fixedField infrastructure is MISSING from Mathlib - this is the primary blocker"
+      "Survey: confirmed fixedField infrastructure is MISSING from Mathlib - this is the primary blocker",
+      "complex_conj_order_two: PROVED via autEquivPow and -1 ∈ (ℤ/nℤ)* (was axiom, now theorem)"
     ],
     "insights": [
       "Complex.exp_two_pi_mul_I gives exp(2πi)=1 directly for proving ζ^n=1",
@@ -75,7 +79,7 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.174Z",
-  "lastUpdate": "2026-03-13T23:45:00.000Z",
+  "lastUpdate": "2026-03-14T00:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
