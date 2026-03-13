@@ -1,54 +1,110 @@
 {
   "slug": "pythagorean-triples-oq-01",
   "title": "Density of primitive Pythagorean triples with hypotenuse ≤ N ~ N/(2π)",
-  "phase": "NEW",
+  "phase": "DEEP_DIVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "Tendsto (fun N : ℕ => (primitiveTripleCount N : ℝ) / (N : ℝ)) atTop (𝓝 (1 / (2 * π)))",
+    "plain": "The number of primitive Pythagorean triples (a,b,c) with hypotenuse c ≤ N is asymptotically N/(2π). The proof decomposes into three density factors: sector lattice points (π/8), coprime density (6/π²), and parity sieving (2/3).",
+    "whyMatters": [
+      "Classical result in analytic number theory connecting geometry (circle), arithmetic (coprimality), and analysis (asymptotics)",
+      "Demonstrates the telescoping technique for density decomposition in formal mathematics"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Main density theorem proved from 3 axioms (primitiveTripleCount_density)",
+      "Main asymptotic theorem proved (primitiveTripleCount_asymptotic)",
+      "Partition identity: coprime sector = primitive + both-odd (coprime_sector_partition)",
+      "Parity axiom reduced: bothOdd/coprime → 1/3 implies parity axiom (parity_axiom_equivalent)",
+      "28 parity/parametrization/algebra lemmas proved",
+      "Computational verifications for N = 0,4,5,13,25,50,100"
+    ],
+    "open": [
+      "Sector lattice point density: sectorPointCount(N)/N → π/8 (Gauss circle problem)",
+      "Coprime fraction in sector: → 6/π² (Möbius inversion)",
+      "Parity fraction: → 2/3 (reduced to bothOdd/coprime → 1/3)"
+    ],
+    "goal": "Remove all 3 axioms, or at minimum prove the parity axiom"
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "DEEP_DIVE",
     "since": "2026-03-12T05:32:38.520Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "iteration": 2,
+    "focus": "Parity partition infrastructure and axiom reduction",
+    "blockers": [
+      "Gauss circle problem (axiom 1) requires deep analytic NT - likely permanent axiom",
+      "Coprime density (axiom 2) requires Möbius inversion - very hard to formalize"
+    ],
+    "nextAction": "Attempt to prove parity axiom via equidistribution of residue classes mod 2 among coprime pairs",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Built parity partition infrastructure. Proved coprime_sector_partition (exact decomposition into primitive + both-odd pairs). Proved parity_axiom_equivalent (reduces parity axiom to bothOdd/coprime → 1/3). Created Aristotle companion file with 12 routine lemmas. Computational evidence shows fraction converges: 1/1 (N=5), 2/3 (N=13), 4/5 (N=25), 7/11 (N=50), 2/3 (N=100).",
+    "builtItems": [
+      "bothOddCoprimeCount: counting function for both-odd coprime pairs",
+      "coprime_sector_partition: exact partition identity (coprime = primitive + bothOdd)",
+      "parity_axiom_equivalent: reduction theorem for parity axiom",
+      "5 computational verifications for bothOddCoprimeCount",
+      "3 parity fraction verifications (N=25,50,100)",
+      "PythagoreanTriplesOQ01Aristotle.lean: companion file with 12 routine lemmas"
+    ],
+    "insights": [
+      "The coprime sector decomposes into exactly 2 parity classes (not 3): primitive (mixed parity) and both-odd. Both-even is impossible for coprime pairs.",
+      "The parity axiom (2/3 limit) is equivalent to bothOddCoprime/coprime → 1/3, a cleaner formulation involving a single residue class",
+      "Computational evidence shows the parity fraction oscillates around 2/3 for small N but stabilizes quickly",
+      "The three axioms have very different tractability: parity (combinatorial, possibly provable) >> coprime density (Möbius, very hard) > sector lattice points (Gauss circle, essentially impossible without analytic NT)",
+      "All main theorems are already proved from the 3 axioms - the file has 0 sorries"
+    ],
+    "mathlibGaps": [
+      "No Mathlib formalization of Gauss circle problem asymptotics",
+      "No Mathlib result on coprime density in lattice regions (Möbius sieving)",
+      "No Mathlib equidistribution result for coprime pairs by residue class"
+    ],
+    "nextSteps": [
+      "Prove parity axiom by showing equidistribution of coprime pairs among 3 non-trivial residue classes mod 2",
+      "Consider whether a Möbius-style argument for coprime density is feasible in Lean",
+      "Submit Aristotle companion file for automated proof search on routine lemmas"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Density decomposition via telescoping",
+      "status": "succeeded",
+      "description": "Decompose count/N into (count/coprime) × (coprime/sector) × (sector/N) and prove each factor converges. Main theorems proved from 3 axioms."
+    },
+    {
+      "name": "Parity partition infrastructure",
+      "status": "in-progress",
+      "description": "Define bothOddCoprimeCount, prove exact partition identity, reduce parity axiom to simpler 1/3 density statement."
+    }
+  ],
   "tags": [
     "seeker-selected",
     "number-theory",
-    "density"
+    "density",
+    "analytic-number-theory",
+    "pythagorean-triples"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "pythagorean-triples"
+  ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.NumberTheory.PythagoreanTriples",
+      "Mathlib.Data.Nat.GCD.Basic"
+    ]
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-12T05:34:54.574Z",
+  "lastUpdate": "2026-03-12T22:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
