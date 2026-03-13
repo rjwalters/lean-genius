@@ -29,9 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Added Fujita-Kato mild solution theory (Part XXXVI) and blowup type classification (Part XXXVII). File now 6658 lines, 0 sorries, 0 axioms. Fixed false Serrin pair in Aristotle file.",
+    "builtItems": [
+      "Part XXXVI: FujitaKato section in NavierStokes.lean (heat semigroup, mild solutions, Kato existence, Koch-Tataru)",
+      "Part XXXVII: BlowupClassification section (Type I/II, ESS theorem, Leray self-similar, Tao bounds, minimal blowup)"
+    ],
+    "insights": [
+      "Fujita-Kato theory gives local existence in L³ with T ~ ‖u₀‖^{-4} quartic scaling",
+      "Koch-Tataru (2001) extended small data global existence to BMO⁻¹ (largest critical space)",
+      "Self-similar (Type I) blowup ruled out by Nečas-Růžička-Šverák (1996) + Tsai (1998)",
+      "ESS theorem (2003): any blowup must have ‖u(t)‖_{L³} → ∞ (L³ regularity)",
+      "Tao (2019): L³ control gives only triple-exponential H¹ bounds (supercritical barrier)",
+      "Fixed false Serrin pair in Aristotle file (p=6,q=3 was wrong)"
+    ],
     "mathlibGaps": [
       "Sobolev spaces",
       "PDEs"

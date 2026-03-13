@@ -33,8 +33,8 @@ theorem sobolev_star_p65 : 3 * (6 / 5 : ℚ) / (3 - 6 / 5) = 2 := by norm_num
 -- Section 2: Serrin Exponent Pairs
 -- ═══════════════════════════════════════════════════════════════════
 
-/-- Serrin condition: 2/q + 3/p = 1. Check p=6, q=3 -/
-theorem serrin_p6_q3 : 2 / (3 : ℚ) + 3 / 6 = 1 := by sorry -- statement is false: 2/3 + 1/2 = 7/6 ≠ 1
+/-- Serrin condition: 2/q + 3/p = 1. Check p=3, q=∞ (formally: 0 + 3/3 = 1) -/
+theorem serrin_p3_qinf : 0 + 3 / (3 : ℚ) = 1 := by norm_num
 
 /-- Check p=4, q=8: 2/8 + 3/4 = 1/4 + 3/4 = 1 -/
 theorem serrin_p4_q8 : 2 / (8 : ℚ) + 3 / 4 = 1 := by norm_num
