@@ -497,20 +497,15 @@ Abel-Ruffini asks about STRUCTURE of the Galois group when polynomial is solvabl
 
 X⁵ - 2 is irreducible over ℚ.
 
-Proof strategy: Eisenstein's criterion at p = 2 shows X⁵ - 2 is irreducible over ℤ.
-By Gauss's lemma, it is therefore irreducible over ℚ.
-
-Note: The detailed Eisenstein proof was previously verified but broke due to Mathlib
-API changes in `degree_X_pow_sub_C`, `leadingCoeff_X_pow_sub_C`, and
-`IsPrimitive.Int` signatures. The mathematical content is correct; the proof
-needs updating to match the current Mathlib v4.26.0 API.
+Proof: Eisenstein's criterion at p = 2 shows X⁵ - 2 is irreducible over ℤ.
+By Gauss's lemma, it is therefore irreducible over ℚ. We reuse the general
+`eisenstein_X_pow_sub_prime` theorem from NthRootIrrationalOQ01.
 -/
 theorem connection_to_abel_ruffini :
-    ∃ (p : Polynomial ℚ), Irreducible p ∧ p.natDegree = 5 := by
-  exact ⟨X ^ 5 - C (2 : ℚ), by sorry, by sorry⟩
-  -- Eisenstein at p=2: all non-leading coefficients divisible by 2,
-  -- constant term -2 not divisible by 4, leading coefficient 1 coprime to 2.
-  -- natDegree = 5 by compute_degree!
+    ∃ (p : Polynomial ℚ), Irreducible p ∧ p.natDegree = 5 :=
+  ⟨X ^ 5 - C (2 : ℚ),
+   NthRootIrrationalOQ01.eisenstein_X_pow_sub_prime 5 2 (by norm_num) (by norm_num),
+   NthRootIrrationalOQ01.natDegree_X_pow_sub_C_eq (by norm_num) (by norm_num)⟩
 
 /--
 The distinction between solvable and non-solvable extensions:
@@ -550,7 +545,7 @@ theorem solvable_iff_solvable_galois_group
 13. **Solvable groups are realizable** (axiom: Shafarevich 1954)
 14. **Symmetric groups are realizable** (sorry: Hilbert irreducibility, not in Mathlib)
 15. **X⁵ - 2 is irreducible over ℤ** (proven via Eisenstein criterion at p = 2)
-16. **∃ irreducible quintic over ℚ** (proven via Gauss's lemma transfer from ℤ to ℚ)
+16. **∃ irreducible quintic over ℚ** (proven via Gauss's lemma + Eisenstein, reusing NthRootIrrationalOQ01)
 
 ### What Remains Open:
 - The general Inverse Galois Problem for arbitrary finite groups over ℚ
@@ -564,7 +559,7 @@ theorem solvable_iff_solvable_galois_group
 4. Prove Gal(X³-2/ℚ) ≅ S₃ to eliminate `x_cube_sub_2_gal_iso_s3` axiom
 
 **Theorem Count**: 22 proven theorems/lemmas, 2 axioms (for deep classical results)
-**Sorries**: 2 (1 open problem + 1 theorem needing Hilbert irreducibility)
+**Sorries**: 1 (open problem) + 1 (Hilbert irreducibility not in Mathlib)
 -/
 
 end InverseGaloisProblem
