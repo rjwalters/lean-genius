@@ -38,35 +38,40 @@
       "title": "Sums of k-th Powers",
       "startLine": 24,
       "endLine": 35,
-      "summary": "Definitions of IsSumOfPowers and the counting function f_{k,m}(x)."
+      "summary": "Definitions of IsSumOfPowers and the counting function f_{k,m}(x).",
+      "mathContext": "$\\text{IsSumOfPowers}(n, k, m) \\iff \\exists x_1, \\ldots, x_m \\in \\mathbb{N}: n = \\sum_{i=1}^{m} x_i^k$. $f_{k,m}(x) = |\\{n \\le x : \\text{IsSumOfPowers}(n,k,m)\\}|$."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 37,
       "endLine": 44,
-      "summary": "First powers trivial case and monotonicity in m."
+      "summary": "First powers trivial case and monotonicity in m.",
+      "mathContext": "$f_{1,m}(x) \\ge m$ (trivial for first powers). $f_{k,m}(x) \\le f_{k,m+1}(x)$ (monotonicity via zero-padding)."
     },
     {
       "id": "landau",
       "title": "Landau's Theorem",
       "startLine": 46,
       "endLine": 52,
-      "summary": "Landau: f_{2,2}(x) ~ c·x/√(log x) for sums of two squares."
+      "summary": "Landau: f_{2,2}(x) ~ c·x/√(log x) for sums of two squares.",
+      "mathContext": "$f_{2,2}(x) \\sim \\frac{c \\cdot x}{\\sqrt{\\log x}}$ where $c = \\frac{1}{\\sqrt{2}} \\prod_{p \\equiv 3 \\pmod{4}} \\frac{1}{\\sqrt{1 - p^{-2}}}$ (Landau-Ramanujan constant). An integer is a sum of two squares iff every prime $p \\equiv 3 \\pmod{4}$ divides it to an even power."
     },
     {
       "id": "main-conjectures",
       "title": "Main Conjectures",
       "startLine": 54,
       "endLine": 75,
-      "summary": "Part 1: f_{k,k}(x) ≫ x^{1-ε}. Part 2: f_{k,m}(x) ≫ x^{m/k} for m < k."
+      "summary": "Part 1: f_{k,k}(x) ≫ x^{1-ε}. Part 2: f_{k,m}(x) ≫ x^{m/k} for m < k.",
+      "mathContext": "Part 1: $\\forall k \\ge 2,\\, \\forall \\varepsilon > 0,\\, \\exists c > 0,\\, x_0: f_{k,k}(x) \\ge c \\cdot x^{1-\\varepsilon}$ for $x \\ge x_0$. Part 2: $\\forall 1 \\le m < k,\\, k \\ge 2,\\, \\exists c > 0,\\, x_0: f_{k,m}(x) \\ge c \\cdot x^{m/k}$ for $x \\ge x_0$."
     },
     {
       "id": "density-question",
       "title": "Density Question",
       "startLine": 77,
       "endLine": 84,
-      "summary": "Open: is f_{k,k}(x) = o(x) for k > 2?"
+      "summary": "Open: is f_{k,k}(x) = o(x) for k > 2?",
+      "mathContext": "$\\text{DensityQuestion}(k) \\iff \\forall \\varepsilon > 0,\\, \\exists x_0: f_{k,k}(x) < \\varepsilon \\cdot x$ for $x \\ge x_0$. Equivalently, $f_{k,k}(x) = o(x)$. Known for $k = 2$ (Landau), open for $k > 2$."
     }
   ],
   "conclusion": {
