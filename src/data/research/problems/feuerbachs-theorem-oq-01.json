@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "PROGRESS",
     "since": "2026-03-11T09:48:08.981Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Proved 4/8 axioms. Remaining 4 are Feuerbach distance relations involving sqrt in incenter/excenter formulas.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Attempt Feuerbach incircle distance or document as blocked",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Proved 4 of 8 axioms from FeuerbachsTheorem.lean via coordinate computation - 3 altitude feet on nine-point circle + equilateral R=2r",
+    "builtItems": [
+      "proofs/Proofs/FeuerbachsTheoremOQ01.lean: foot_a/b/c_on_ninePointCircle_proved",
+      "proofs/Proofs/FeuerbachsTheoremOQ01.lean: equilateral_R_eq_2r_proved",
+      "Helper lemmas: equi_side_a/b/c, equi_area, equi_inradius, equi_circumcenter_fst/snd"
+    ],
+    "insights": [
+      "Altitude foot proofs: unfold everything, set d (circ denom) and side², field_simp + ring closes it",
+      "Equilateral R=2r: need to compute circumcenter coordinates first (√3 cancels in x, requires √3²=3 for y)",
+      "Key helper: s²·(√3²-3)=0 as explicit nlinarith hint when √3²=3 doesnt propagate"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Remaining 4 axioms: feuerbach_incircle_distance, feuerbach_excircle_a/b/c_distance - these involve incenter/excenter with side-length-weighted coordinates (much harder due to sqrt in weights)",
+      "equilateral_R_eq_2r axiom in base file can now be replaced with theorem"
+    ]
   },
   "approaches": [],
   "tags": [
