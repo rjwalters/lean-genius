@@ -1138,6 +1138,71 @@ theorem zeta_pow_not_real (n k : ℕ) (hn : 3 ≤ n) (hk0 : 0 < k)
   linarith
 
 /-
+## Section XVIII: Roots of T_n − 1
+
+Establishes that cos(2kπ/n) are roots of the Chebyshev polynomial T_n − 1.
+Combined with minpoly | T_n − 1, this constrains the roots of the minimal
+polynomial to lie among these cosine values.
+-/
+
+/-- cos(2kπ/n) is a root of T_n − 1 for any k.
+    Proof: T_n(cos(2kπ/n)) = cos(n · 2kπ/n) = cos(2kπ) = 1.
+    So T_n(cos(2kπ/n)) − 1 = 0. -/
+theorem cos_is_root_of_chebyshev_sub_one (n k : ℕ) (hn : 1 ≤ n) :
+    Polynomial.aeval (Real.cos (↑k * (2 * Real.pi / ↑n)))
+      (Chebyshev.T ℝ n - Polynomial.C 1) = 0 := by
+  simp only [map_sub, Chebyshev.aeval_T, Polynomial.aeval_C, map_one]
+  rw [Chebyshev.T_real_cos]
+  have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have : (↑(↑n : ℤ) : ℝ) * (↑k * (2 * Real.pi / ↑n)) = ↑k * (2 * Real.pi) := by
+    rw [Int.cast_natCast]; field_simp; ring
+  rw [this, Real.cos_int_mul_two_pi]
+  simp
+
+/-- ζ_n^k + ζ_n^(-k) = 2cos(2kπ/n): sum of a root of unity and its inverse
+    equals twice the cosine. Generalization of cos_eq_half_zeta_add_conj. -/
+theorem zeta_pow_add_inv_pow (n k : ℕ) :
+    zeta n ^ k + (zeta n ^ k)⁻¹ = 2 * ↑(Real.cos (↑k * (2 * Real.pi / ↑n))) := by
+  have h_re := cos_eq_zeta_pow_re n k
+  have h_norm := zeta_pow_norm_one n k
+  -- (z^k)⁻¹ = conj(z^k) since |z^k| = 1
+  have h_inv : (zeta n ^ k)⁻¹ = starRingEnd ℂ (zeta n ^ k) := by
+    rw [inv_eq_of_mul_eq_one_right]
+    rw [Complex.mul_conj, ← Complex.ofReal_one]
+    congr 1
+    rw [Complex.normSq_eq_abs]
+    rw [← Complex.norm_eq_abs, h_norm, one_pow]
+  rw [h_inv, Complex.add_conj, h_re]
+  push_cast; ring
+
+/-- ζ_n^k · ζ_n^(-k) = 1: product of conjugate powers on the unit circle. -/
+theorem zeta_pow_mul_inv_pow (n k : ℕ) :
+    zeta n ^ k * (zeta n ^ k)⁻¹ = 1 := by
+  rcases eq_or_ne (zeta n ^ k) 0 with h | h
+  · exfalso
+    have := zeta_pow_norm_one n k
+    rw [h, norm_zero] at this
+    exact one_ne_zero this.symm
+  · exact mul_inv_cancel₀ h
+
+/-- The Chebyshev polynomial T_n evaluated at cos(2π/n) equals 1.
+    This is the k=1 case that was used for minpoly_cos_dvd_chebyshev,
+    stated as a standalone identity. -/
+theorem chebyshev_T_eval_cos_eq_one (n : ℕ) (hn : 1 ≤ n) :
+    Polynomial.aeval (Real.cos (2 * Real.pi / ↑n)) (Chebyshev.T ℝ n) = 1 := by
+  rw [Chebyshev.aeval_T, Chebyshev.T_real_cos]
+  have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have : (↑(↑n : ℤ) : ℝ) * (2 * Real.pi / ↑n) = 2 * Real.pi := by
+    rw [Int.cast_natCast]; field_simp
+  rw [this, Real.cos_two_pi]
+
+/-- cos(0) = 1 is always a root of T_n − 1 (the k=0 case).
+    More precisely, T_n(1) = 1 for all n. -/
+theorem chebyshev_T_one_eq_one (n : ℕ) :
+    Polynomial.aeval (1 : ℝ) (Chebyshev.T ℝ n) = 1 := by
+  rw [Chebyshev.aeval_T, Chebyshev.T_real_cos, Real.cos_zero]
+
+/-
 ## Summary
 
 ### Proved (0 sorries):
