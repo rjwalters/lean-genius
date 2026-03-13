@@ -14,7 +14,13 @@
     "relatedConcepts": [
       "Sum of divisors",
       "Counting solutions",
-      "Diophantine equations"
+      "Diophantine equations",
+      "multiplicative functions"
+    ],
+    "prerequisites": [
+      "Nat.divisors",
+      "arithmetic functions",
+      "number theory basics"
     ]
   },
   {
@@ -27,6 +33,16 @@
     "type": "definition",
     "title": "Sum of Divisors",
     "content": "**sigma:**\n\nSum of divisors function σ(k) = sum of all divisors of k.\n\n```lean\nabbrev sigma (k : N) : N := (Nat.divisors k).sum id\n```\n\n**Examples:**\n- σ(1) = 1\n- σ(6) = 1+2+3+6 = 12\n- σ(p) = p+1 for prime p",
+    "mathContext": "$\\sigma(k) = \\sum_{d \\mid k} d$. Multiplicative: $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for $\\gcd(m,n) = 1$. For prime powers: $\\sigma(p^a) = \\frac{p^{a+1}-1}{p-1}$.",
+    "relatedConcepts": [
+      "multiplicative functions",
+      "Nat.divisors",
+      "perfect numbers"
+    ],
+    "prerequisites": [
+      "Nat.divisors",
+      "Finset.sum"
+    ],
     "significance": "key"
   },
   {
@@ -75,6 +91,16 @@
     "type": "theorem",
     "title": "g(p) = p(p+1) for primes",
     "content": "**g_prime:**\n\nFor prime p, g(p) = p · (p+1).\n\n**Examples:**\n- g(2) = 2·3 = 6\n- g(3) = 3·4 = 12\n- g(5) = 5·6 = 30\n- g(7) = 7·8 = 56",
+    "mathContext": "$g(p) = p \\cdot \\sigma(p) = p(p+1)$ for prime $p$. Since $p(p+1)$ is always even and there are infinitely many primes, infinitely many even numbers are in the range of $g$. For twin primes $p, p+2$: $g(p) = p(p+1)$ and $g(p+2) = (p+2)(p+3)$.",
+    "relatedConcepts": [
+      "prime values",
+      "oblong numbers",
+      "range of g"
+    ],
+    "prerequisites": [
+      "sigma_prime",
+      "Nat.Prime"
+    ],
     "significance": "key"
   },
   {
