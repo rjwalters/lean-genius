@@ -226,23 +226,306 @@ theorem maclaurin_step_derived {n : ℕ} (k : ℕ) (hk : 0 < k) (hkn : k + 1 ≤
   convert h_rpow using 2 <;> simp [one_div, Nat.cast_add, Nat.cast_one]
 
 /-
+## Part V: Proving Newton's Log-Concavity (Eliminating the Last Axiom)
+
+Strategy: Prove the stronger UNNORMALIZED version
+  eₖ(x)² ≥ eₖ₋₁(x) · eₖ₊₁(x)
+by induction on n (number of variables), using the recurrence
+  eₖ(x₁,...,xₙ₊₁) = eₖ(x₁,...,xₙ) + xₙ₊₁ · eₖ₋₁(x₁,...,xₙ)
+
+The inductive step decomposes as:
+  Eₖ² - Eₖ₋₁·Eₖ₊₁ = (eₖ²-eₖ₋₁eₖ₊₁) + t·(eₖeₖ₋₁-eₖ₋₂eₖ₊₁) + t²·(eₖ₋₁²-eₖ₋₂eₖ)
+where all three summands are ≥ 0 by the induction hypothesis.
+
+The cross-product inequality eₖeₖ₋₁ ≥ eₖ₋₂eₖ₊₁ follows from log-concavity.
+
+The normalized Newton inequality then follows since binomial coefficients are
+log-concave: C(n,k)² ≥ C(n,k-1)·C(n,k+1).
+-/
+
+/-- Cross-product inequality: if a non-negative sequence is log-concave (aₖ² ≥ aₖ₋₁·aₖ₊₁),
+    then aₖ·aₖ₋₁ ≥ aₖ₋₂·aₖ₊₁.
+    Proof: From aₖ₋₁² ≥ aₖ₋₂·aₖ and aₖ² ≥ aₖ₋₁·aₖ₊₁, multiply to get
+    (aₖ₋₁·aₖ)² ≥ (aₖ₋₁·aₖ)·(aₖ₋₂·aₖ₊₁), then cancel. -/
+theorem cross_product_of_log_concave {a b c d : ℝ}
+    (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c) (hd : 0 ≤ d)
+    (h1 : b ^ 2 ≥ a * c) (h2 : c ^ 2 ≥ b * d) :
+    c * b ≥ a * d := by
+  -- (b·c)² ≥ (a·c)·(b·d) = (a·d)·(b·c) from h1·h2
+  have hbc_sq : (b * c) ^ 2 ≥ (a * d) * (b * c) := by
+    have := mul_le_mul h1 h2 (mul_nonneg hb hd) (sq_nonneg _)
+    nlinarith [this]
+  have hbc_nn : 0 ≤ b * c := mul_nonneg hb hc
+  -- From (b*c)² ≥ (a*d)*(b*c) with b*c ≥ 0:
+  -- If b*c = 0: then (a*d)·0 ≤ 0, so a*d ≤ 0, so a*d = 0, so c*b = 0 ≥ 0 = a*d
+  -- If b*c > 0: cancel to get b*c ≥ a*d
+  -- Goal: c * b ≥ a * d. Since c*b = b*c, suffices to show b*c ≥ a*d.
+  suffices h : b * c ≥ a * d by linarith [show c * b = b * c from by ring]
+  rcases eq_or_lt_of_le hbc_nn with hbc_eq | hbc_pos
+  · -- b*c = 0: the whole LHS of hbc_sq becomes 0
+    have hbc_zero : b * c = 0 := hbc_eq.symm
+    have : (a * d) * (b * c) ≤ 0 := by rw [hbc_zero]; simp
+    have : a * d * 0 ≤ 0 := by simp
+    -- From b*c = 0: either b = 0 or c = 0
+    rcases mul_eq_zero.mp hbc_zero with hb0 | hc0
+    · -- b = 0: b²=0 ≥ a*c, so a*c ≤ 0, so a*c = 0
+      have hac : a * c = 0 := le_antisymm (by nlinarith [hb0]) (mul_nonneg ha hc)
+      rcases mul_eq_zero.mp hac with ha0 | hc0
+      · linarith [show a * d = 0 from by rw [ha0]; ring]
+      · -- c = 0 too: c²=0 ≥ b*d, so b*d ≤ 0, so d = 0
+        have : d = 0 := le_antisymm (by nlinarith [hc0]) hd
+        linarith [show a * d = 0 from by rw [this]; ring]
+    · -- c = 0: c²=0 ≥ b*d, so b*d ≤ 0, so b*d = 0
+      have hbd : b * d = 0 := le_antisymm (by nlinarith [hc0]) (mul_nonneg hb hd)
+      rcases mul_eq_zero.mp hbd with hb0 | hd0
+      · linarith [show b * c = 0 from hbc_zero]
+      · linarith [show a * d = 0 from by rw [hd0]; ring]
+  · -- b*c > 0: cancel from (b*c)² ≥ (a*d)*(b*c) to get b*c ≥ a*d
+    exact le_of_mul_le_mul_left (by nlinarith [sq (b * c)]) hbc_pos
+
+/-- The recurrence for elemSymm at index 0 (base case):
+    elemSymm 0 (x ∘ Fin.castSucc) = 1 = elemSymm 0 x -/
+private lemma elemSymm_zero_castSucc {n : ℕ} (x : Fin (n + 1) → ℝ) :
+    elemSymm 0 (x ∘ Fin.castSucc) = 1 :=
+  elemSymm_zero _
+
+/-- Unnormalized Newton's inequality: eₖ² ≥ eₖ₋₁ · eₖ₊₁ for non-negative reals.
+    This is STRONGER than the normalized version.
+    Proved by induction on n using the recurrence. -/
+theorem elemSymm_log_concave : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
+    (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i),
+    elemSymm k x ^ 2 ≥ elemSymm (k - 1) x * elemSymm (k + 1) x := by
+  intro n
+  induction n with
+  | zero => intro k _ hkn; omega
+  | succ m ih =>
+    intro k hk hkn x hx
+    -- y = x restricted to first m variables, t = x (Fin.last m)
+    set y := x ∘ Fin.castSucc with hy_def
+    set t := x (Fin.last m) with ht_def
+    have ht_nn : 0 ≤ t := hx (Fin.last m)
+    have hy_nn : ∀ i, 0 ≤ y i := fun i => hx (Fin.castSucc i)
+    -- Rewrite k = j + 1
+    obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+    simp only [show j + 1 - 1 = j from by omega, show j + 1 + 1 = j + 2 from by omega]
+    -- hkn : j + 2 ≤ m + 1, i.e., j + 1 ≤ m
+    -- Split: j = 0 (k=1) needs special handling due to ℕ subtraction
+    cases j with
+    | zero =>
+      -- k = 1: Need (elemSymm 1 x) ^ 2 ≥ (elemSymm 0 x) * (elemSymm 2 x)
+      -- i.e., (elemSymm 1 x) ^ 2 ≥ elemSymm 2 x
+      rw [elemSymm_zero]
+      simp only [one_mul]
+      -- Recurrences
+      have rec_1 : elemSymm 1 x = elemSymm 1 y + t * 1 := by
+        rw [elemSymm_succ 0 x, elemSymm_zero]
+      have rec_2 : elemSymm 2 x = elemSymm 2 y + t * elemSymm 1 y :=
+        elemSymm_succ 1 x
+      rw [rec_1, rec_2, mul_one]
+      -- Goal: (elemSymm 1 y + t) ^ 2 ≥ elemSymm 2 y + t * elemSymm 1 y
+      set e1 := elemSymm 1 y
+      set e2 := elemSymm 2 y
+      have he1_nn : 0 ≤ e1 := elemSymm_nonneg _ y hy_nn
+      have he2_nn : 0 ≤ e2 := elemSymm_nonneg _ y hy_nn
+      -- IH or trivial: e1² ≥ 1 · e2 = e2
+      have h_ineq : e1 ^ 2 ≥ e2 := by
+        rcases le_or_lt 2 m with hm2 | hm2
+        · -- m ≥ 2: use IH at k=1 for y
+          have h := ih 1 le_rfl (by omega : 1 + 1 ≤ m) y hy_nn
+          simp only [show (1 : ℕ) - 1 = 0 from rfl, show (1 : ℕ) + 1 = 2 from rfl,
+                     elemSymm_zero, one_mul] at h
+          exact h
+        · -- m ≤ 1: e2 = elemSymm 2 y = 0 (since 2 > m)
+          have : e2 = 0 := elemSymm_gt_eq_zero 2 (by omega) y
+          rw [this]; exact sq_nonneg _
+      -- (e1 + t)² = e1² + 2·t·e1 + t² ≥ e2 + t·e1 + t·e1 + t²
+      -- ≥ e2 + t·e1 (since t·e1 + t² ≥ 0)
+      nlinarith [sq_nonneg t, mul_nonneg ht_nn he1_nn]
+    | succ p =>
+      -- k = p + 2, j = p + 1: general case where k ≥ 2
+      -- hkn : p + 3 ≤ m + 1, i.e., p + 2 ≤ m
+      simp only [show p + 1 + 1 = p + 2 from by omega,
+                 show p + 1 + 2 = p + 3 from by omega]
+      -- Recurrences (using elemSymm_succ)
+      have rec_k : elemSymm (p + 2) x = elemSymm (p + 2) y + t * elemSymm (p + 1) y :=
+        elemSymm_succ (p + 1) x
+      have rec_km1 : elemSymm (p + 1) x = elemSymm (p + 1) y + t * elemSymm p y :=
+        elemSymm_succ p x
+      have rec_kp1 : elemSymm (p + 3) x = elemSymm (p + 3) y + t * elemSymm (p + 2) y :=
+        elemSymm_succ (p + 2) x
+      -- Set abbreviations
+      set ek := elemSymm (p + 2) y
+      set ekm1 := elemSymm (p + 1) y
+      set ekp1 := elemSymm (p + 3) y
+      set ekm2 := elemSymm p y
+      -- Non-negativity
+      have hek_nn : 0 ≤ ek := elemSymm_nonneg _ y hy_nn
+      have hekm1_nn : 0 ≤ ekm1 := elemSymm_nonneg _ y hy_nn
+      have hekp1_nn : 0 ≤ ekp1 := elemSymm_nonneg _ y hy_nn
+      have hekm2_nn : 0 ≤ ekm2 := elemSymm_nonneg _ y hy_nn
+      rw [rec_k, rec_km1, rec_kp1]
+      -- Goal: (ek + t * ekm1) ^ 2 ≥ (ekm1 + t * ekm2) * (ekp1 + t * ek)
+      -- = Δ_k + t·cross + t²·Δ_{k-1} ≥ 0
+
+      -- Term 1: ek² ≥ ekm1 · ekp1 (Newton for y at k = p+2)
+      have h_delta_k : ek ^ 2 ≥ ekm1 * ekp1 := by
+        rcases le_or_lt (p + 3) m with hjm | hjm
+        · have h := ih (p + 2) (by omega) (by omega : p + 2 + 1 ≤ m) y hy_nn
+          simp only [show p + 2 - 1 = p + 1 from by omega,
+                     show p + 2 + 1 = p + 3 from by omega] at h
+          exact h
+        · have : ekp1 = 0 := elemSymm_gt_eq_zero (p + 3) (by omega) y
+          simp [this]; exact sq_nonneg _
+
+      -- Term 3: ekm1² ≥ ekm2 · ek (Newton for y at k = p+1)
+      have h_delta_km1 : ekm1 ^ 2 ≥ ekm2 * ek := by
+        rcases le_or_lt (p + 2) m with hpm | hpm
+        · have h := ih (p + 1) (by omega) (by omega : p + 1 + 1 ≤ m) y hy_nn
+          simp only [show p + 1 - 1 = p from by omega,
+                     show p + 1 + 1 = p + 2 from by omega] at h
+          exact h
+        · have : ek = 0 := elemSymm_gt_eq_zero (p + 2) (by omega) y
+          simp [this]; exact sq_nonneg _
+
+      -- Term 2: ek · ekm1 ≥ ekm2 · ekp1 (cross-product)
+      have h_cross : ek * ekm1 ≥ ekm2 * ekp1 :=
+        cross_product_of_log_concave hekm2_nn hekm1_nn hek_nn hekp1_nn h_delta_km1 h_delta_k
+
+      -- Combine: the difference is Δ_k + t·cross + t²·Δ_{k-1} ≥ 0
+      nlinarith [sq_nonneg (ek + t * ekm1), sq_nonneg t,
+                 mul_nonneg ht_nn (sub_nonneg.mpr h_cross),
+                 mul_nonneg (mul_nonneg ht_nn ht_nn) (sub_nonneg.mpr h_delta_km1)]
+
+/-
+## Part VI: Log-Concavity of Binomial Coefficients
+-/
+
+/-- Recurrence identity: (k+1) · C(n, k+1) = (n-k) · C(n, k) in ℕ.
+    Follows from Nat.choose_succ_right_eq: C(n, k+1) · (k+1) = (n-k) · C(n, k). -/
+private lemma choose_mul_succ (n k : ℕ) (hkn : k + 1 ≤ n) :
+    (k + 1) * Nat.choose n (k + 1) = (n - k) * Nat.choose n k := by
+  have h := Nat.choose_succ_right_eq n k
+  -- h: C(n,k+1) * (k+1) = C(n,k) * (n-k)
+  linarith [mul_comm (k + 1) (Nat.choose n (k + 1)),
+            mul_comm (n - k) (Nat.choose n k)]
+
+/-- Recurrence identity: k · C(n, k) = (n - k + 1) · C(n, k-1) in ℕ. -/
+private lemma choose_mul_pred (n k : ℕ) (hk : 1 ≤ k) (hkn : k ≤ n) :
+    k * Nat.choose n k = (n - k + 1) * Nat.choose n (k - 1) := by
+  have h := Nat.choose_succ_right_eq n (k - 1)
+  have hk1 : k - 1 + 1 = k := by omega
+  have hnk : n - (k - 1) = n - k + 1 := by omega
+  rw [hk1, hnk] at h
+  -- h : Nat.choose n k * k = Nat.choose n (k - 1) * (n - k + 1)
+  linarith [mul_comm k (Nat.choose n k), mul_comm (n - k + 1) (Nat.choose n (k - 1))]
+
+/-- Log-concavity of binomial coefficients: C(n,k)² ≥ C(n,k-1)·C(n,k+1).
+    Cross-multiply with (k+1)·(n-k+1) and use the recurrences:
+      C(n,k-1)·(n-k+1) = k·C(n,k)  and  C(n,k+1)·(k+1) = (n-k)·C(n,k)
+    to get C(n,k-1)·C(n,k+1)·(k+1)·(n-k+1) = k·(n-k)·C(n,k)².
+    Since (k+1)·(n-k+1) = k·(n-k) + (n+1), the result follows. -/
+theorem binom_log_concave (n k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n) :
+    (Nat.choose n k : ℝ) ^ 2 ≥ (Nat.choose n (k - 1) : ℝ) * (Nat.choose n (k + 1) : ℝ) := by
+  -- Prove in ℕ: C(n,k-1) · C(n,k+1) ≤ C(n,k)²
+  suffices h_nat : Nat.choose n (k - 1) * Nat.choose n (k + 1) ≤ Nat.choose n k ^ 2 by
+    have := @Nat.cast_le ℝ _ _ _ |>.mpr h_nat
+    push_cast at this ⊢; linarith
+  -- Key identity: C(n,k-1)·C(n,k+1)·(k+1)·(n-k+1) = k·(n-k)·C(n,k)²
+  have h_pred := choose_mul_pred n k hk (by omega)
+  have h_succ := choose_mul_succ n k hkn
+  -- Product identity: C(k-1)·C(k+1)·(k+1)·(n-k+1) = k·(n-k)·C(k)²
+  -- From h_succ: (k+1)·C(k+1) = (n-k)·C(k)
+  -- From h_pred: (n-k+1)·C(k-1) = k·C(k)
+  have h_prod : Nat.choose n (k - 1) * Nat.choose n (k + 1) * ((k + 1) * (n - k + 1)) =
+      k * (n - k) * Nat.choose n k ^ 2 := by
+    -- Rearrange: C(k-1) * [(k+1) * C(k+1)] * (n-k+1)
+    --          = C(k-1) * [(n-k) * C(k)] * (n-k+1)       [h_succ]
+    --          = [(n-k+1) * C(k-1)] * (n-k) * C(k)
+    --          = [k * C(k)] * (n-k) * C(k)                 [h_pred]
+    --          = k * (n-k) * C(k)²
+    have step1 : Nat.choose n (k - 1) * Nat.choose n (k + 1) * ((k + 1) * (n - k + 1)) =
+        Nat.choose n (k - 1) * ((k + 1) * Nat.choose n (k + 1)) * (n - k + 1) := by ring
+    rw [step1, h_succ]
+    have step2 : Nat.choose n (k - 1) * ((n - k) * Nat.choose n k) * (n - k + 1) =
+        ((n - k + 1) * Nat.choose n (k - 1)) * ((n - k) * Nat.choose n k) := by ring
+    rw [step2, ← h_pred]
+    ring
+  -- (k+1)·(n-k+1) > 0
+  have h_factor_pos : 0 < (k + 1) * (n - k + 1) := by positivity
+  -- From h_prod: LHS·factor = k·(n-k)·C² ≤ C²·factor, so LHS ≤ C²
+  apply Nat.le_of_mul_le_mul_right _ h_factor_pos
+  rw [h_prod]
+  -- Need: k · (n-k) · C² ≤ C² · (k+1) · (n-k+1)
+  -- Rewrite as: k*(n-k) ≤ (k+1)*(n-k+1), then multiply by C²
+  have h_kn : k < n := by omega
+  have h_ineq : k * (n - k) ≤ (k + 1) * (n - k + 1) := by
+    -- (k+1)*(n-k+1) = k*(n-k) + k + (n-k) + 1 = k*(n-k) + n + 1
+    have h1 : (k + 1) * (n - k + 1) = k * (n - k + 1) + (n - k + 1) := by ring
+    have h2 : k * (n - k + 1) = k * (n - k) + k := by
+      rw [show n - k + 1 = (n - k) + 1 from by omega]; ring
+    linarith [Nat.sub_le n k]
+  calc k * (n - k) * Nat.choose n k ^ 2
+      ≤ (k + 1) * (n - k + 1) * Nat.choose n k ^ 2 :=
+        Nat.mul_le_mul_right _ h_ineq
+    _ = Nat.choose n k ^ 2 * ((k + 1) * (n - k + 1)) := by ring
+
+/-
+## Part VII: Proving Normalized Newton from Unnormalized
+-/
+
+/-- Newton's log-concavity (normalized form), proved from the unnormalized version
+    and log-concavity of binomial coefficients.
+
+    Strategy: From eₖ² ≥ eₖ₋₁·eₖ₊₁ (unnormalized) and C(n,k)² ≥ C(n,k-1)·C(n,k+1) (binom),
+    we get: eₖ²/(C(n,k)²) ≥ eₖ₋₁·eₖ₊₁/(C(n,k)²) ≥ eₖ₋₁·eₖ₊₁/(C(n,k-1)·C(n,k+1)).
+
+    NOTE: This derivation is INCORRECT — the second step goes the wrong way!
+    C(n,k)² ≥ C(n,k-1)·C(n,k+1) means 1/C(n,k)² ≤ 1/(C(n,k-1)·C(n,k+1)),
+    so eₖ₋₁·eₖ₊₁/C(n,k)² ≤ eₖ₋₁·eₖ₊₁/(C(n,k-1)·C(n,k+1)).
+
+    The normalized Newton is strictly STRONGER than the unnormalized version
+    (it states (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)),
+    equivalently eₖ²·C(n,k-1)·C(n,k+1) ≥ eₖ₋₁·eₖ₊₁·C(n,k)²).
+
+    A direct proof by induction on n using the recurrence with normalized
+    coefficients Aₖ = ((n-k+1)aₖ + k·t·aₖ₋₁)/(n+1) yields a quadratic in t
+    whose non-negativity for t ≥ 0 follows from a discriminant argument. -/
+theorem newton_log_concavity_proved {n : ℕ} (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
+    (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
+    (elemSymm k x / (Nat.choose n k : ℝ)) ^ 2 ≥
+    (elemSymm (k - 1) x / (Nat.choose n (k - 1) : ℝ)) *
+    (elemSymm (k + 1) x / (Nat.choose n (k + 1) : ℝ)) := by
+  -- Direct proof by induction on n with normalized coefficients
+  -- The quadratic decomposition yields all non-negative terms
+  sorry
+
+/-
 ## Summary
 
-### Proved (no sorry):
+### Proved (0 sorries):
 1. `elemSymm_zero_implies_higher_zero` — zero tail property of elem sym polys
 2. `normESym_zero_implies_higher_zero` — same for normalized version
-3. `power_ineq_of_log_concave` — aₖ^(k+1) ≥ aₖ₊₁^k (key algebraic lemma)
-4. `rpow_ineq_of_pow_ineq` — conversion from nat pow to rpow inequality
-5. `maclaurin_step_derived` — Mₖ ≥ Mₖ₊₁ as THEOREM (not axiom)
+3. `cross_product_of_log_concave` — aₖ·aₖ₋₁ ≥ aₖ₋₂·aₖ₊₁ from log-concavity
+4. `elemSymm_log_concave` — eₖ² ≥ eₖ₋₁·eₖ₊₁ (UNNORMALIZED Newton, full proof by
+   induction on n using the recurrence, with the cross-product lemma for the linear term)
+5. `binom_log_concave` — C(n,k)² ≥ C(n,k-1)·C(n,k+1) (proved from recurrence identities)
+6. `power_ineq_of_log_concave` — aₖ^(k+1) ≥ aₖ₊₁^k (key algebraic lemma)
+7. `rpow_ineq_of_pow_ineq` — conversion from nat pow to rpow inequality
+8. `maclaurin_step_derived` — Mₖ ≥ Mₖ₊₁ as THEOREM (not axiom, given newton_log_concavity)
 
-### Significance:
-The `maclaurin_step` axiom in AmgmInequalityOQ02.lean is now redundant.
-The file's axiom count can be reduced from 2 to 1 (only `newton_log_concavity` remains).
+### Remaining sorry (1):
+`newton_log_concavity_proved` — normalized Newton's inequality.
+The unnormalized version (eₖ² ≥ eₖ₋₁eₖ₊₁) is proved but is strictly weaker than
+the normalized version ((eₖ/Cₖ)² ≥ (eₖ₋₁/Cₖ₋₁)(eₖ₊₁/Cₖ₊₁)). The gap is that
+C(n,k)² ≥ C(n,k-1)·C(n,k+1), so the denominator correction goes the wrong way.
+A direct induction with normalized coefficients requires a discriminant argument
+for the resulting quadratic in t.
 
-### Remaining axiom:
-`newton_log_concavity` — this is a deep classical result requiring
-polarization + induction on n (Hardy-Littlewood-Pólya §2.22).
-A full formalization would be a major Mathlib contribution.
+### Architecture for future completion:
+When `newton_log_concavity_proved` is proved, the `newton_log_concavity` AXIOM
+in AmgmInequalityOQ02.lean becomes redundant. Combined with `maclaurin_step_derived`,
+BOTH axioms are eliminated and the full Maclaurin chain M₁ ≥ M₂ ≥ ⋯ ≥ Mₙ
+becomes a complete theorem.
 -/
 
 end NewtonLogConcavity
