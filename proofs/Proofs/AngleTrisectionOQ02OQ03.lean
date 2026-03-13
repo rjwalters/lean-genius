@@ -1336,21 +1336,25 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
         exact_mod_cast this
       omega
   · rintro (h | h)
-    · -- k % n = j % n → cos equal
-      obtain ⟨m, hm⟩ : (↑n : ℤ) ∣ (↑j - ↑k) := by
-        rw [Int.dvd_iff_emod_eq_zero]; omega
-      refine ⟨m, Or.inl ?_⟩
-      have h_int : (↑j : ℤ) = m * ↑n + ↑k := by omega
-      have h_real : (↑j : ℝ) = ↑m * ↑n + ↑k := by
+    · -- k % n = j % n → cos equal via periodicity
+      -- k ≡ j (mod n) in ℕ → j - k divisible by n in ℤ
+      have h_mod : (↑j : ℤ) % ↑n = (↑k : ℤ) % ↑n := by
+        have : (↑(k % n) : ℤ) = ↑(j % n) := by exact_mod_cast h
+        simp only [Nat.cast_mod_cast] at this; omega
+      obtain ⟨m, hm⟩ := (Int.modEq_iff_dvd.mp h_mod : (↑n : ℤ) ∣ (↑k - ↑j))
+      refine ⟨-m, Or.inl ?_⟩
+      have h_int : (↑j : ℤ) = -m * ↑n + ↑k := by omega
+      have h_real : (↑j : ℝ) = ↑(-m) * ↑n + ↑k := by
         have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; exact this
       field_simp; nlinarith [h_real]
-    · -- k % n = (n - j % n) % n → cos equal
-      obtain ⟨m, hm⟩ : (↑n : ℤ) ∣ (↑j + ↑k) := by
-        rw [Int.dvd_iff_emod_eq_zero]; omega
-      refine ⟨m, Or.inr ?_⟩
-      -- hm : ↑j + ↑k = ↑n * m, need m * ↑n form
-      have h_int : (↑j : ℤ) + ↑k = m * ↑n := by linarith [mul_comm (↑n : ℤ) m]
-      have h_real : (↑j : ℝ) + ↑k = ↑m * ↑n := by
+    · -- k % n = (n - j % n) % n → cos equal via reflection
+      -- k + j ≡ 0 (mod n) in ℕ
+      have h_sum : (j + k) % n = 0 := by omega
+      obtain ⟨m', hm'⟩ := Nat.dvd_of_mod_eq_zero h_sum
+      have h_int : (↑j : ℤ) + ↑k = ↑m' * ↑n := by
+        have := congr_arg (Nat.cast (R := ℤ)) hm'; push_cast at this; linarith
+      refine ⟨(m' : ℤ), Or.inr ?_⟩
+      have h_real : (↑j : ℝ) + ↑k = ↑(m' : ℤ) * ↑n := by
         have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; linarith
       field_simp; nlinarith [h_real]
 
@@ -1378,9 +1382,10 @@ theorem chebyshev_T_sub_one_roots (n : ℕ) (hn : 1 ≤ n) (x : ℝ) (hx : |x| �
   have hcos_arccos : Real.cos (Real.arccos x) = x := Real.cos_arccos hx1 hx2
   -- Step 3: cos(n * arccos x) = 1
   have hT' : Real.cos (↑(↑n : ℤ) * Real.arccos x) = 1 := by
-    have h := Chebyshev.T_real_cos (↑n : ℤ) (Real.arccos x)
-    rw [hcos_arccos] at h  -- h : T ℝ ↑n x = cos(↑↑n * arccos x)
-    rw [← h, ← Chebyshev.aeval_T (R := ℝ)]; exact hT
+    have key : Polynomial.aeval (Real.cos (Real.arccos x)) (Chebyshev.T ℝ n) =
+               Real.cos (↑(↑n : ℤ) * Real.arccos x) := by
+      rw [Chebyshev.aeval_T, Chebyshev.T_real_cos]
+    rw [← key, hcos_arccos]; exact hT
   -- Step 4: n * arccos x = m * (2π) for some m : ℤ
   rw [Real.cos_eq_one_iff] at hT'
   obtain ⟨m, hm⟩ := hT'
