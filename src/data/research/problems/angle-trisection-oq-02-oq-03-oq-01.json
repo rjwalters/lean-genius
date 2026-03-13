@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "PROVE",
     "since": "2026-03-06T17:58:04-08:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Cyclotomic-cosine bridge: proved \u03b6 quadratic, irreducibility, bridge identities",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Build IntermediateField infrastructure for formal tower law computation",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,12 +29,43 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: 11 new theorems in Session 2 (cyclotomic-cosine bridge). Total 55+ proved theorems, 0 sorries, 3 axioms. Remaining: need IntermediateField infrastructure for formal tower law [\u211a(\u03b6):\u211a(cos)]=2 and degree computation.",
+    "builtItems": [
+      "cos_2k_pi_eq_chebyshev_eval: cos(2k\u03c0/n)=T_k(cos(2\u03c0/n)) (Session 1)",
+      "cos_conjugate_mem_adjoin: cos(2k\u03c0/n) \u2208 \u211a[cos(2\u03c0/n)] (Session 1)",
+      "minpoly_cos_dvd_chebyshev: minpoly | T_n-1 (Session 1)",
+      "zeta: exp(2\u03c0i/n) definition (Session 2)",
+      "zeta_norm_one: \u2016\u03b6_n\u2016=1 (Session 2)",
+      "cos_eq_zeta_re, sin_eq_zeta_im: cos/sin=Re/Im of \u03b6 (Session 2)",
+      "sin_2pi_div_n_pos: sin(2\u03c0/n)>0 for n\u22653 (Session 2)",
+      "zeta_not_ofReal: \u03b6_n \u2209 \u211d for n\u22653 (Session 2)",
+      "zeta_normSq_one: normSq(\u03b6_n)=1 (Session 2)",
+      "zeta_mul_conj: \u03b6\u00b7conj(\u03b6)=1 (Session 2)",
+      "cos_eq_half_zeta_add_conj: cos=(\u03b6+\u03b6\u0304)/2 (Session 2)",
+      "zeta_quadratic: \u03b6\u00b2-2cos\u00b7\u03b6+1=0 (Session 2)",
+      "quadratic_discriminant_neg: disc=-4sin\u00b2<0 for n\u22653 (Session 2)",
+      "quadratic_no_real_roots: no real root when n\u22653 (Session 2)",
+      "zeta_inv_eq_conj: \u03b6\u207b\u00b9=conj(\u03b6) (Session 2)"
+    ],
+    "insights": [
+      "Chebyshev T_k(cos(2\u03c0/n)) = cos(2k\u03c0/n) gives all conjugates (Session 1)",
+      "\u211a(cos(2\u03c0/n))/\u211a is Galois because all roots of minpoly lie in the adjoin (Session 1)",
+      "minpoly(cos(2\u03c0/n)) | T_n - 1 directly from Chebyshev (Session 1)",
+      "\u03b6_n satisfies X\u00b2-2cos(2\u03c0/n)X+1=0, proved via \u03b6\u00b7conj(\u03b6)=1 and \u03b6+conj(\u03b6)=2cos (Session 2)",
+      "Quadratic has negative discriminant -4sin\u00b2(2\u03c0/n) when n\u22653, so irreducible over \u211d (Session 2)",
+      "This proves [\u211a(cos)(\u03b6_n):\u211a(cos)] = 2, key for tower law \u03c6(n)/2 (Session 2)",
+      "Complex.norm_exp_ofReal_mul_I gives \u2016exp(\u2191\u03b8*I)\u2016=1 directly (Session 2)",
+      "div_lt_iff not in Mathlib 4.26.0 Docker; use div_lt_div_of_pos_left instead (Session 2)"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: angle-trisection-oq-02-oq-03-oq-01\n\nGauss-Wantzel Theorem: prove cos_minpoly_gal_card from Mathlib cyclotomic infrastructure.\n\n---\n\n## Problem Understanding\n\nThe main axiom `cos_minpoly_gal_card` states |Gal(minpoly(cos(2π/n)))| = φ(n)/2.\nThis is the key remaining axiom blocking a complete proof of the Gauss-Wantzel theorem.\n\nThe proof strategy: ℚ(cos(2π/n)) is the maximal real subfield of ℚ(ζₙ), with index 2.\nMathlib has IsCyclotomicExtension with finrank = φ(n) and autEquivPow ≅ (ℤ/nℤ)*.\nThe maximal real subfield theory is NOT in Mathlib 4.26.\n\n---\n\n## Session 2026-03-11 (Session 1) - Chebyshev Conjugate Infrastructure\n\n**Mode**: FRESH (claimed via claim-random)\n**Outcome**: progress\n\n### What I Did\n- Scouted Mathlib cyclotomic infrastructure (IsCyclotomicExtension, autEquivPow, finrank)\n- Confirmed maximal real subfield NOT in Mathlib — need ~150-200 lines custom infrastructure\n- Proved 3 new theorems via Chebyshev polynomials (Section XIV-B):\n  1. `cos_2k_pi_eq_chebyshev_eval`: cos(2kπ/n) = T_k(cos(2π/n))\n  2. `cos_conjugate_mem_adjoin`: cos(2kπ/n) ∈ ℚ[cos(2π/n)]\n  3. `minpoly_cos_dvd_chebyshev`: minpoly | T_n - 1\n- Fixed `totient_div2_pow2_iff`: Mathlib 4.26 returns `Even` not `2 ∣` from `Nat.totient_even`\n- Docker build passes\n\n### Key Findings\n- `Chebyshev.T_real_cos` + `Chebyshev.aeval_T` gives cos(kθ) = T_k(cos θ) in one step\n- `Algebra.adjoin_singleton_eq_range_aeval` + `⟨T ℚ k, rfl⟩` proves adjoin membership cleanly\n- All conjugates of cos(2π/n) lie in ℚ[cos(2π/n)] → extension is normal (Galois)\n- Remaining gap: need [ℚ(cos(2π/n)):ℚ] = φ(n)/2 (requires maximal real subfield theory)\n\n### Files Modified\n- proofs/Proofs/AngleTrisectionOQ02OQ03.lean (+137/-39 lines)\n\n### Next Steps\n- Build maximal real subfield infrastructure (~150 lines):\n  - Show ℚ(cos(2π/n)) = ℚ(ζₙ)^{⟨complex_conj⟩}\n  - Use fixed field theorem: [ℚ(ζₙ):ℚ(cos(2π/n))] = 2\n  - Conclude [ℚ(cos(2π/n)):ℚ] = φ(n)/2\n- Then |Gal| = [field:ℚ] via IsGalois.card_aut_eq_finrank\n\n---\n\n## Insights\n\n- Chebyshev polynomials are the key bridge: T_k(cos(2π/n)) = cos(2kπ/n) gives all conjugates\n- The extension ℚ(cos(2π/n))/ℚ is Galois because it's generated by cos(2π/n) and all roots of the minimal polynomial are also cosines of rational multiples of π, which lie in the adjoin\n- Mathlib's `minpoly.dvd` easily shows minpoly | T_n - 1 (since T_n(cos(2π/n)) = cos(2π) = 1)\n- The hard part is computing the degree: need maximal real subfield = fixed field of complex conjugation\n\n---\n\n## Dead Ends\n\n- Direct cyclotomic approach without Chebyshev: can't show conjugates lie in adjoin without T_k\n- Trying to use `Nat.totient_even` as `2 ∣ _`: API changed in Mathlib 4.26 to return `Even`\n"
+    "nextSteps": [
+      "Build IntermediateField infrastructure: \u211a(cos(2\u03c0/n)) \u2286 \u211a(\u03b6_n) as formal Lean types",
+      "Prove [\u211a(\u03b6_n):\u211a(cos(2\u03c0/n))]=2 formally using zeta_quadratic + quadratic_no_real_roots",
+      "Use IsCyclotomicExtension.finrank for [\u211a(\u03b6_n):\u211a]=\u03c6(n)",
+      "Tower law: deg(minpoly(cos))=\u03c6(n)/2, eliminating cos_minpoly_gal_card axiom",
+      "Characterize roots of T_n-1 analytically (all are cos(2k\u03c0/n))"
+    ],
+    "markdown": "# Knowledge Base: angle-trisection-oq-02-oq-03-oq-01\n\nGauss-Wantzel Theorem: prove cos_minpoly_gal_card from Mathlib cyclotomic infrastructure.\n\n---\n\n## Problem Understanding\n\nThe main axiom `cos_minpoly_gal_card` states |Gal(minpoly(cos(2\u03c0/n)))| = \u03c6(n)/2.\nThis is the key remaining axiom blocking a complete proof of the Gauss-Wantzel theorem.\n\nThe proof strategy: \u211a(cos(2\u03c0/n)) is the maximal real subfield of \u211a(\u03b6\u2099), with index 2.\nMathlib has IsCyclotomicExtension with finrank = \u03c6(n) and autEquivPow \u2245 (\u2124/n\u2124)*.\nThe maximal real subfield theory is NOT in Mathlib 4.26.\n\n---\n\n## Session 2026-03-11 (Session 1) - Chebyshev Conjugate Infrastructure\n\n**Mode**: FRESH (claimed via claim-random)\n**Outcome**: progress\n\n### What I Did\n- Scouted Mathlib cyclotomic infrastructure (IsCyclotomicExtension, autEquivPow, finrank)\n- Confirmed maximal real subfield NOT in Mathlib \u2014 need ~150-200 lines custom infrastructure\n- Proved 3 new theorems via Chebyshev polynomials (Section XIV-B):\n  1. `cos_2k_pi_eq_chebyshev_eval`: cos(2k\u03c0/n) = T_k(cos(2\u03c0/n))\n  2. `cos_conjugate_mem_adjoin`: cos(2k\u03c0/n) \u2208 \u211a[cos(2\u03c0/n)]\n  3. `minpoly_cos_dvd_chebyshev`: minpoly | T_n - 1\n- Fixed `totient_div2_pow2_iff`: Mathlib 4.26 returns `Even` not `2 \u2223` from `Nat.totient_even`\n- Docker build passes\n\n### Key Findings\n- `Chebyshev.T_real_cos` + `Chebyshev.aeval_T` gives cos(k\u03b8) = T_k(cos \u03b8) in one step\n- `Algebra.adjoin_singleton_eq_range_aeval` + `\u27e8T \u211a k, rfl\u27e9` proves adjoin membership cleanly\n- All conjugates of cos(2\u03c0/n) lie in \u211a[cos(2\u03c0/n)] \u2192 extension is normal (Galois)\n- Remaining gap: need [\u211a(cos(2\u03c0/n)):\u211a] = \u03c6(n)/2 (requires maximal real subfield theory)\n\n### Files Modified\n- proofs/Proofs/AngleTrisectionOQ02OQ03.lean (+137/-39 lines)\n\n### Next Steps\n- Build maximal real subfield infrastructure (~150 lines):\n  - Show \u211a(cos(2\u03c0/n)) = \u211a(\u03b6\u2099)^{\u27e8complex_conj\u27e9}\n  - Use fixed field theorem: [\u211a(\u03b6\u2099):\u211a(cos(2\u03c0/n))] = 2\n  - Conclude [\u211a(cos(2\u03c0/n)):\u211a] = \u03c6(n)/2\n- Then |Gal| = [field:\u211a] via IsGalois.card_aut_eq_finrank\n\n---\n\n## Insights\n\n- Chebyshev polynomials are the key bridge: T_k(cos(2\u03c0/n)) = cos(2k\u03c0/n) gives all conjugates\n- The extension \u211a(cos(2\u03c0/n))/\u211a is Galois because it's generated by cos(2\u03c0/n) and all roots of the minimal polynomial are also cosines of rational multiples of \u03c0, which lie in the adjoin\n- Mathlib's `minpoly.dvd` easily shows minpoly | T_n - 1 (since T_n(cos(2\u03c0/n)) = cos(2\u03c0) = 1)\n- The hard part is computing the degree: need maximal real subfield = fixed field of complex conjugation\n\n---\n\n## Dead Ends\n\n- Direct cyclotomic approach without Chebyshev: can't show conjugates lie in adjoin without T_k\n- Trying to use `Nat.totient_even` as `2 \u2223 _`: API changed in Mathlib 4.26 to return `Even`\n"
   },
   "approaches": [],
   "tags": [
