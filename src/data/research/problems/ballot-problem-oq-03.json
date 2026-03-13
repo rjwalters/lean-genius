@@ -16,24 +16,49 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "PROGRESS",
     "since": "2026-02-26T05:12:41.985Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Lindstrom involution injectivity via canonical split index preservation",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Fix infrastructure lemma Mathlib compatibility issues",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: Proved lindstromForward_injective and lindstromBackward_injective via canonical split index preservation. Added 10+ helper lemmas. Fixed 8 pre-existing Mathlib compat bugs. ~30 infrastructure lemma errors remain (visitedPoints_covers_column etc).",
+    "builtItems": [
+      "lindstromForward_injective proof via canonical index preservation + involutivity",
+      "lindstromBackward_injective proof (symmetric argument)",
+      "minSharedStepIdx_preserved - canonical split index invariant under swap",
+      "posAfter_take_eq - prefix independence lemma",
+      "splitIdx_posAfter - split index recovery",
+      "swapAtPoint_fst_take_prefix / snd_take_prefix",
+      "swapAtPoint_eq_of_splitIdx - swap depends only on split indices",
+      "visitedPoint_splitIdx_eq - step index recovery from visited points",
+      "splitIdx_const_diff - constant difference property"
+    ],
+    "insights": [
+      "The Lindstrom involution is self-inverse because the canonical shared point (minimum splitIdx) is preserved when paths are swapped at that point",
+      "splitIdx a p = p.1 + (p.2 - a) is the key deterministic index making the involution work",
+      "For shared points, splitIdx a2 p - splitIdx a1 p = a1 - a2 (constant), so preserving one index preserves the other",
+      "simp [eastSteps] introduces Bool.not vs decide mismatch in Lean4 Mathlib - use simp_all with hypothesis",
+      "Finset.choose requires unique existential; use Exists.choose for plain existential",
+      "set creates local definitions that block rw matching; use show/simp only [def] to unfold"
+    ],
+    "mathlibGaps": [
+      "visitedPoints_covers_column proof broken - Mathlib API changes in Finset/List",
+      "mem_visitedPoints_start needs repair",
+      "Multiple infrastructure lemmas in lines 1500-1900 need Mathlib compat fixes"
+    ],
+    "nextSteps": [
+      "Fix 30+ pre-existing infrastructure lemma errors (Mathlib compatibility)",
+      "Verify complete build passes after infrastructure fixes",
+      "The core mathematical argument is complete - only infrastructure remains"
+    ]
   },
   "approaches": [],
   "tags": [
@@ -50,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-02-26T17:08:50.304Z",
-  "lastUpdate": "2026-02-26T17:08:50.304Z",
+  "lastUpdate": "2026-03-13T00:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
