@@ -1283,4 +1283,67 @@ theorem chebyshev_T_one_eq_one (n : ℕ) :
 - ❌ natDegree(minpoly) = φ(n)/2 — cyclotomic tower law (needs above)
 -/
 
+/-
+═══════════════════════════════════════════════════════════════════════════════
+Section XVIII: ROOT CHARACTERIZATION FOR T_n - 1
+
+Key building blocks toward proving cos_minpoly_gal_card:
+- Characterize when cos(2kπ/n) = cos(2jπ/n) (cosine equality criterion)
+- Count distinct values in {cos(2kπ/n) : gcd(k,n) = 1}
+- Show these are exactly the Galois conjugates of cos(2π/n)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- cos(α) = cos(β) iff ∃ k : ℤ, α = β + 2kπ or α = -β + 2kπ.
+    This is the fundamental characterization of when two real cosines agree. -/
+theorem cos_eq_cos_iff (α β : ℝ) :
+    Real.cos α = Real.cos β ↔
+      ∃ k : ℤ, α = β + 2 * ↑k * Real.pi ∨ α = -β + 2 * ↑k * Real.pi := by
+  rw [← sub_eq_zero, ← Real.cos_sq_inj]
+  constructor
+  · intro h
+    -- cos α - cos β = 0 implies α = ±β + 2kπ
+    -- Use cos α = cos β iff α - β ∈ 2πℤ or α + β ∈ 2πℤ
+    rw [Real.cos_eq_one_iff_of_lt_of_lt] at *
+    sorry -- Standard trig identity, needs careful Mathlib navigation
+  · rintro ⟨k, h | h⟩ <;> simp [h, Real.cos_add, Real.cos_int_mul_two_pi_add, Real.cos_neg]
+
+/-- Two cosines of rational multiples of 2π/n are equal iff indices are conjugate mod n:
+    cos(2kπ/n) = cos(2jπ/n) ↔ k ≡ j (mod n) ∨ k ≡ n-j (mod n). -/
+theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
+    Real.cos (2 * ↑k * Real.pi / ↑n) = Real.cos (2 * ↑j * Real.pi / ↑n) ↔
+      k % n = j % n ∨ k % n = (n - j % n) % n := by
+  sorry -- Follows from cos_eq_cos_iff + divisibility analysis
+
+/-- The number of distinct Galois conjugates of cos(2π/n) over ℚ is φ(n)/2.
+    The conjugates are {cos(2kπ/n) : 1 ≤ k ≤ n, gcd(k,n) = 1}, and these come
+    in pairs {k, n-k} (since cos(2kπ/n) = cos(2(n-k)π/n)). -/
+theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
+    Finset.card (Finset.image (fun k => Real.cos (2 * ↑k * Real.pi / ↑n))
+      (Finset.filter (fun k => Nat.Coprime k n) (Finset.range n))) =
+    Nat.totient n / 2 := by
+  sorry -- Counting argument using cos_2kpi_div_n_eq_iff + coprime pairing
+
+/-- Every root of T_n - 1 in ℝ is of the form cos(2kπ/n) for some k.
+    Proof: T_n(x) = cos(n·arccos(x)) for |x| ≤ 1. T_n(x) = 1 iff
+    n·arccos(x) = 2kπ iff arccos(x) = 2kπ/n iff x = cos(2kπ/n). -/
+theorem chebyshev_T_sub_one_roots (n : ℕ) (hn : 1 ≤ n) (x : ℝ) (hx : |x| ≤ 1)
+    (h_root : Polynomial.aeval x (Chebyshev.T ℝ n - 1) = 0) :
+    ∃ k : ℕ, k < n ∧ x = Real.cos (2 * ↑k * Real.pi / ↑n) := by
+  sorry -- From Chebyshev.T_real_cos + cos equation analysis
+
+/-- The minimal polynomial of cos(2π/n) has degree exactly φ(n)/2.
+
+    Proof sketch:
+    1. minpoly divides T_n - 1 (from minpoly_cos_dvd_chebyshev)
+    2. All roots of minpoly are Galois conjugates (from IsGalois + separability)
+    3. All Galois conjugates are in {cos(2kπ/n) : gcd(k,n) = 1}
+       (from the Galois action σ(cos(2π/n)) = cos(2kπ/n) for some k coprime to n)
+    4. There are φ(n)/2 such distinct conjugates (from galois_conjugate_count)
+    5. natDegree(minpoly) = φ(n)/2
+
+    This theorem, combined with IsGalois.card_aut_eq_finrank, yields cos_minpoly_gal_card. -/
+theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
+    (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).natDegree = Nat.totient n / 2 := by
+  sorry -- Assembly of the above pieces
+
 end AngleTrisectionOQ02OQ03
