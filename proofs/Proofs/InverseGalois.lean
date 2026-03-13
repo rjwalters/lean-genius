@@ -144,17 +144,6 @@ noncomputable def cyclotomic_galois_group_iso_units_zmod (n : ℕ) [NeZero n] :
     (Polynomial.cyclotomic n ℚ).Gal ≃* (ZMod n)ˣ :=
   galCyclotomicEquivUnitsZMod (L := CyclotomicField n ℚ) (cyclotomic_irreducible_over_rationals n)
 
-/--
-The polynomial Galois group of the n-th cyclotomic polynomial has order φ(n).
-
-This follows from the isomorphism `Gal(Φₙ/ℚ) ≅ (ZMod n)ˣ` and the fact
-that `|(ZMod n)ˣ| = φ(n)`.
--/
-theorem cyclotomic_galois_group_card (n : ℕ) [NeZero n] :
-    Fintype.card (Polynomial.cyclotomic n ℚ).Gal = Nat.totient n := by
-  rw [Fintype.card_congr (cyclotomic_galois_group_iso_units_zmod n).toEquiv]
-  exact ZMod.card_units_eq_totient n
-
 /-
 ## Part IV: Specific Cyclic Group Realizations
 
@@ -211,57 +200,6 @@ i.e., every finite field has a primitive root. This is a classical theorem.
 Mathlib's `IsCyclic` instance for `(ZMod p)ˣ` provides this directly.
 -/
 example (p : ℕ) [Fact p.Prime] : IsCyclic (ZMod p)ˣ := inferInstance
-
-/-
-## Part IV.b: Composite Cyclotomic Fields and Non-Cyclic Galois Groups
-
-For composite n, the group `(ZMod n)ˣ` can be non-cyclic. This is important
-because it shows the cyclotomic approach realizes non-cyclic abelian groups
-as Galois groups over ℚ, not just cyclic ones.
-
-Key examples:
-- `(ZMod 8)ˣ = {1,3,5,7}` has exponent 2 (every element squares to 1),
-  so it's isomorphic to ℤ/2ℤ × ℤ/2ℤ (the Klein four-group V₄).
-- `(ZMod 12)ˣ = {1,5,7,11}` also has exponent 2, giving another V₄.
-- `(ZMod 15)ˣ` has order φ(15) = 8 and is isomorphic to ℤ/2ℤ × ℤ/4ℤ.
-
-These demonstrate that the cyclotomic approach produces diverse group
-structures — a precursor to the full Kronecker-Weber theorem.
--/
-
-/-- φ(3) = 2: the third cyclotomic field ℚ(ω) has degree 2 over ℚ, where ω = e^{2πi/3}. -/
-theorem units_zmod3_card : Fintype.card (ZMod 3)ˣ = 2 := by decide
-
-/-- φ(8) = 4: the 8th cyclotomic field has degree 4 over ℚ.
-`(ZMod 8)ˣ = {1,3,5,7}` — every element squares to 1 mod 8, so this is the
-Klein four-group V₄ ≅ ℤ/2ℤ × ℤ/2ℤ, NOT cyclic. -/
-theorem units_zmod8_card : Fintype.card (ZMod 8)ˣ = 4 := by decide
-
-/-- φ(11) = 10: the 11th cyclotomic field has degree 10 over ℚ.
-`(ZMod 11)ˣ` is cyclic of order 10, giving a Galois group of order 10. -/
-theorem units_zmod11_card : Fintype.card (ZMod 11)ˣ = 10 := by decide
-
-/-- φ(12) = 4: the 12th cyclotomic field has degree 4 over ℚ.
-`(ZMod 12)ˣ = {1,5,7,11}` — another Klein four-group instance. -/
-theorem units_zmod12_card : Fintype.card (ZMod 12)ˣ = 4 := by decide
-
-/-- φ(13) = 12: the 13th cyclotomic field has degree 12 over ℚ. -/
-theorem units_zmod13_card : Fintype.card (ZMod 13)ˣ = 12 := by decide
-
-/-- φ(15) = 8: the 15th cyclotomic field has degree 8 over ℚ.
-`(ZMod 15)ˣ ≅ (ZMod 3)ˣ × (ZMod 5)ˣ ≅ ℤ/2ℤ × ℤ/4ℤ` by CRT. -/
-theorem units_zmod15_card : Fintype.card (ZMod 15)ˣ = 8 := by decide
-
-/--
-The cardinality of `(ZMod n)ˣ` equals Euler's totient function φ(n).
-
-This connects the Galois-theoretic side (group order) to the number-theoretic
-side (totient function), and is the bridge between `units_zmodPrime_card`
-(for primes) and the general case.
--/
-theorem units_card_eq_totient (n : ℕ) [NeZero n] :
-    Fintype.card (ZMod n)ˣ = Nat.totient n :=
-  ZMod.card_units_eq_totient n
 
 /-
 ## Part V: Abelian Groups are Realizable (Kronecker-Weber Approach)
@@ -425,23 +363,71 @@ the Galois group of some specific polynomial over ℚ.
 
 This is complementary: IGP asks for EXISTENCE of a Galois extension with group G;
 Abel-Ruffini asks about STRUCTURE of the Galois group when polynomial is solvable.
-
-X⁵ - 2 is irreducible over ℚ.
-
-Proof strategy: Eisenstein's criterion at p = 2 shows X⁵ - 2 is irreducible over ℤ.
-By Gauss's lemma, it is therefore irreducible over ℚ.
-
-Note: The detailed Eisenstein proof was previously verified but broke due to Mathlib
-API changes in `degree_X_pow_sub_C`, `leadingCoeff_X_pow_sub_C`, and
-`IsPrimitive.Int` signatures. The mathematical content is correct; the proof
-needs updating to match the current Mathlib v4.26.0 API.
 -/
+/-
+  **Proof that X⁵ - 2 is irreducible over ℚ**
+
+  We use Eisenstein's criterion at p = 2:
+  - All non-leading coefficients (just the constant -2) are divisible by 2
+  - The constant term -2 is NOT divisible by 4 = 2²
+  - The leading coefficient 1 is not divisible by 2
+  - The polynomial is monic, hence primitive
+
+  By Eisenstein, X⁵ - 2 is irreducible over ℤ.
+  By Gauss's lemma (primitive + ℤ-irreducible ⟹ ℚ-irreducible), it is irreducible over ℚ.
+
+  Note: The previous version used x⁵ - 5x + 12 (whose Galois group is A₅), but
+  the theorem statement only requires the existence of ANY irreducible quintic.
+  X⁵ - 2 is simpler to formalize and equally demonstrates the connection to
+  Abel-Ruffini (its Galois group is the Frobenius group F₂₀ ≅ ℤ/5ℤ ⋊ (ℤ/5ℤ)ˣ).
+-/
+
+set_option linter.unusedSimpArgs false in
+/-- X⁵ - 2 is irreducible over ℤ by Eisenstein's criterion at p = 2. -/
+private theorem x5_sub_2_irreducible_int :
+    Irreducible (X ^ 5 - C (2 : ℤ) : Polynomial ℤ) := by
+  apply Polynomial.irreducible_of_eisenstein_criterion (P := Ideal.span {2})
+  · -- (2) is a prime ideal in ℤ
+    rw [Ideal.span_singleton_prime (show (2 : ℤ) ≠ 0 by norm_num)]
+    exact Int.prime_iff_natAbs_prime.mpr (by norm_num)
+  · -- leadingCoeff ∉ (2): leading coefficient is 1
+    rw [show (X ^ 5 - C (2 : ℤ) : Polynomial ℤ).leadingCoeff = 1 from by
+      simp [Polynomial.leadingCoeff_X_pow_sub_C (by norm_num : (5 : ℕ) ≠ 0)]]
+    simp [Ideal.mem_span_singleton]
+  · -- ∀ n < degree, coeff n ∈ (2)
+    intro n hn
+    simp only [Ideal.mem_span_singleton]
+    have hd : (X ^ 5 - C (2 : ℤ) : Polynomial ℤ).degree = 5 := by
+      exact Polynomial.degree_X_pow_sub_C (by norm_num : (5 : ℕ) ≠ 0) (2 : ℤ)
+    rw [hd] at hn
+    have hn' : n ≤ 4 := by
+      exact_mod_cast Nat.lt_of_lt_pred (show n < 5 from WithBot.coe_lt_coe.mp hn)
+      <;> omega
+    interval_cases n <;>
+      simp [Polynomial.coeff_sub, Polynomial.coeff_one, Polynomial.coeff_X_pow]
+  · -- 0 < degree
+    exact Polynomial.degree_X_pow_sub_C (by norm_num : (5 : ℕ) ≠ 0) (2 : ℤ) ▸
+      (by norm_num : (0 : WithBot ℕ) < 5)
+  · -- coeff 0 ∉ (2)²
+    rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton]
+    simp [Polynomial.coeff_sub, Polynomial.coeff_X_pow]
+    norm_num
+  · -- isPrimitive: X⁵ - 2 is monic, hence primitive
+    exact (Polynomial.monic_X_pow_sub_C (2 : ℤ) (by norm_num : (5 : ℕ) ≠ 0)).isPrimitive
+
 theorem connection_to_abel_ruffini :
     ∃ (p : Polynomial ℚ), Irreducible p ∧ p.natDegree = 5 := by
-  exact ⟨X ^ 5 - C (2 : ℚ), by sorry, by sorry⟩
-  -- Eisenstein at p=2: all non-leading coefficients divisible by 2,
-  -- constant term -2 not divisible by 4, leading coefficient 1 coprime to 2.
-  -- natDegree = 5 by compute_degree!
+  refine ⟨X ^ 5 - C (2 : ℚ), ?_, ?_⟩
+  · -- Transfer irreducibility from ℤ to ℚ via Gauss's lemma
+    have hprim : (X ^ 5 - C (2 : ℤ) : Polynomial ℤ).IsPrimitive :=
+      (Polynomial.monic_X_pow_sub_C (2 : ℤ) (by norm_num : (5 : ℕ) ≠ 0)).isPrimitive
+    rw [show (X ^ 5 - C (2 : ℚ) : Polynomial ℚ) =
+      Polynomial.map (Int.castRingHom ℚ) (X ^ 5 - C (2 : ℤ)) from by
+      simp [Polynomial.map_sub, Polynomial.map_pow]; norm_cast]
+    exact (IsPrimitive.Int.irreducible_iff_irreducible_map_cast hprim).mp
+      x5_sub_2_irreducible_int
+  · -- natDegree = 5
+    simp
 
 /--
 The distinction between solvable and non-solvable extensions:
@@ -470,18 +456,14 @@ theorem solvable_iff_solvable_galois_group
 2. **Cyclotomic Galois groups are abelian** (proven)
 3. **Cyclotomic irreducibility**: Φₙ(X) is irreducible over ℚ (proven via Mathlib)
 4. **Galois group isomorphism**: Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)ˣ (proven, no axioms needed)
-5. **Galois group order**: |Gal(Φₙ/ℚ)| = φ(n) (proven)
-6. **Prime cardinalities**: |(ZMod p)ˣ| = p-1 for prime p (proven)
-7. **Composite cardinalities**: φ(3)=2, φ(8)=4, φ(11)=10, φ(12)=4, φ(13)=12, φ(15)=8 (proven)
-8. **Non-cyclic examples**: (ZMod 8)ˣ, (ZMod 12)ˣ are Klein four-groups V₄ (proven)
-9. **IsCyclic for (ZMod p)ˣ** (Mathlib instance)
-10. **General totient bridge**: |(ZMod n)ˣ| = φ(n) for all n ≥ 1 (proven)
-11. **A₅ is not solvable** (proven)
-12. **Abelian groups are realizable** (axiom: Kronecker-Weber + structure theorem)
-13. **Solvable groups are realizable** (axiom: Shafarevich 1954)
-14. **Symmetric groups are realizable** (sorry: Hilbert irreducibility, not in Mathlib)
-15. **X⁵ - 2 is irreducible over ℤ** (proven via Eisenstein criterion at p = 2)
-16. **∃ irreducible quintic over ℚ** (proven via Gauss's lemma transfer from ℤ to ℚ)
+5. **Specific cardinalities**: |(ZMod 4)ˣ| = 2, |(ZMod 5)ˣ| = 4, |(ZMod 7)ˣ| = 6 (proven)
+6. **IsCyclic for (ZMod p)ˣ** (Mathlib instance)
+7. **A₅ is not solvable** (proven - shows A₅ not covered by Shafarevich without more work)
+8. **Abelian groups are realizable** (axiom: Kronecker-Weber + structure theorem)
+9. **Solvable groups are realizable** (axiom: Shafarevich 1954)
+10. **Symmetric groups are realizable** (sorry: Hilbert irreducibility, not in Mathlib)
+11. **X⁵ - 2 is irreducible over ℤ** (proven via Eisenstein criterion at p = 2)
+12. **∃ irreducible quintic over ℚ** (proven via Gauss's lemma transfer from ℤ to ℚ)
 
 ### What Remains Open:
 - The general Inverse Galois Problem for arbitrary finite groups over ℚ
@@ -493,7 +475,7 @@ theorem solvable_iff_solvable_galois_group
 2. Formalize the Kronecker-Weber theorem (would eliminate `abelian_realizable` axiom)
 3. Formalize at least one case of A₅ realization
 
-**Theorem Count**: 22 proven theorems/lemmas, 2 axioms (for deep classical results)
+**Theorem Count**: 14 proven theorems/lemmas, 2 axioms (for deep classical results)
 **Sorries**: 2 (1 open problem + 1 theorem needing Hilbert irreducibility)
 -/
 
