@@ -68,7 +68,7 @@
     ],
     "dateAdded": "2026-02-26",
     "mathlib_version": "4.26.0",
-    "axioms": 5
+    "axioms": 4
   },
   "overview": {
     "historicalContext": "**Constructive Borsuk-Ulam**\n\nThe Borsuk-Ulam theorem states that every continuous map f: S^n → ℝ^n has an antipodal pair: a point x with f(x) = f(-x). The classical proof for n ≥ 2 uses algebraic topology (Brouwer degree or homology), which is inherently non-constructive.\n\nFor n = 1, however, the theorem reduces to the Intermediate Value Theorem: define g(x) = f(x) - f(-x), observe g is antisymmetric (g(-a) = -g(a)), and apply IVT to find a zero. This argument is constructive in the sense that it produces a witness via IVT.\n\n**Tucker's Lemma**\n\nThe combinatorial analog: any signed labeling of a subdivided interval with opposite signs at the endpoints must have a sign-change edge. This is the discrete foundation for constructive Borsuk-Ulam proofs.",
@@ -134,7 +134,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization answers the constructive status question affirmatively for 1D: the Borsuk-Ulam theorem on intervals and circles is provable via IVT without algebraic topology. 24 theorems/lemmas with 0 sorries prove the full 1D theory including Tucker's combinatorial analog and Brouwer fixed-point. Higher-dimensional BU is axiomized (1 axiom), accurately reflecting the constructive barrier at n ≥ 2.",
+    "summary": "The formalization answers the constructive status question affirmatively for 1D: the Borsuk-Ulam theorem on intervals and circles is provable via IVT without algebraic topology. 30+ theorems/lemmas with 0 sorries prove the full 1D theory including Tucker's combinatorial analog, Brouwer fixed-point, invariance of dimension (proved from BU), and structural analysis. Higher-dimensional BU is axiomized (1 axiom), accurately reflecting the constructive barrier at n ≥ 2.",
     "implications": "**Implications**\n\n1. **Constructive 1D topology**: The IVT-based proof shows that 1D topological results (BU, Brouwer FP) are constructively valid, not requiring full classical logic.\n\n2. **Tucker's lemma bridge**: The combinatorial Tucker lemma provides a finite/discrete approximation pathway, potentially enabling computational approaches to BU-type problems.\n\n3. **Constructive barrier at n=2**: The axiomization of general BU precisely identifies where constructive methods fail — the Brouwer degree requires integration or homology.\n\n4. **Circle vs interval**: The observation that interval BU is trivial (x=0) while circle BU is genuine clarifies which formulation captures the true topological content.",
     "openQuestions": [
       "Can Tucker's lemma be generalized to higher dimensions in Lean?",

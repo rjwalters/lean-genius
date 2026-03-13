@@ -754,6 +754,59 @@ theorem bu_no_injective_map (n : ℕ) (hn : 1 ≤ n)
   simp only [antipodal]
   exact hx_eq
 
+/-- **Padding function**: extends a vector in ℝ^m to ℝ^n (for m ≤ n)
+    by filling extra coordinates with zero. -/
+noncomputable def padZero (m n : ℕ) (v : Fin m → ℝ) : Fin n → ℝ :=
+  fun j => if h : j.val < m then v ⟨j.val, h⟩ else 0
+
+@[simp] theorem padZero_lt {m n : ℕ} (v : Fin m → ℝ) (j : Fin n) (h : j.val < m) :
+    padZero m n v j = v ⟨j.val, h⟩ := dif_pos h
+
+@[simp] theorem padZero_ge {m n : ℕ} (v : Fin m → ℝ) (j : Fin n) (h : ¬(j.val < m)) :
+    padZero m n v j = 0 := dif_neg h
+
+/-- Two vectors with the same padZero image agree on all original coordinates. -/
+theorem padZero_injective_on_orig {m n : ℕ} (hm : m ≤ n) (v w : Fin m → ℝ)
+    (h : padZero m n v = padZero m n w) : v = w := by
+  funext j
+  have hjn : j.val < n := Nat.lt_of_lt_of_le j.isLt hm
+  have := congr_fun h ⟨j.val, hjn⟩
+  simp [padZero, j.isLt] at this
+  exact this
+
+/-- padZero is continuous (each coordinate is either a projection or constant). -/
+theorem padZero_continuous (m n : ℕ) : Continuous (padZero m n) := by
+  apply continuous_pi; intro j
+  by_cases h : j.val < m
+  · exact (continuous_apply ⟨j.val, h⟩).congr (fun v => (padZero_lt v j h).symm)
+  · exact continuous_const.congr (fun v => (padZero_ge v j h).symm)
+
+/-- **BU → No injective lower-dimensional map**: No continuous
+    map f: S^n → ℝ^m is injective when m ≤ n (for n ≥ 1).
+
+    This generalizes `bu_no_injective_map` to targets of any dimension ≤ n.
+    Proof: Pad f to ℝ^n, apply BU, extract equality in ℝ^m. -/
+theorem bu_no_injective_lower_dim (n : ℕ) (hn : 1 ≤ n) (m : ℕ) (hm : m ≤ n)
+    (f : (Fin (n+1) → ℝ) → (Fin m → ℝ))
+    (hf : Continuous f) :
+    ¬ Function.Injective (fun x : NSphere n => f x.1) := by
+  intro hinj
+  -- Pad f to g : ℝ^{n+1} → ℝ^n
+  set g := (fun x => padZero m n (f x)) with hg_def
+  have hg_cont : Continuous g := (padZero_continuous m n).comp hf
+  -- Apply BU to g
+  obtain ⟨x, hx_eq⟩ := borsuk_ulam_general n hn g hg_cont
+  -- g(x) = g(-x) means padZero(f(x)) = padZero(f(-x))
+  have hf_eq : f x.1 = f (fun i => -x.1 i) :=
+    padZero_injective_on_orig hm (f x.1) (f (fun i => -x.1 i)) hx_eq
+  -- So f is not injective on S^n (since x ≠ -x)
+  have hne := nsphere_ne_antipodal n x
+  apply hne
+  apply hinj
+  show f x.1 = f (antipodal n x).1
+  simp only [antipodal]
+  exact hf_eq
+
 /-
 ## Section XXII: BU → No Retraction and Brouwer Fixed Point (Consequence Chain)
 
@@ -847,31 +900,57 @@ A profound consequence of BU: ℝ^n and ℝ^m are not homeomorphic
 when n ≠ m. This is the invariance of dimension theorem.
 -/
 
-/-- **Invariance of Dimension** (consequence of BU):
+/-- **Invariance of Dimension** (proved from BU):
 
     ℝ^n and ℝ^m are not homeomorphic for n ≠ m.
 
-    Proof sketch (for n < m): If φ: ℝ^n → ℝ^m is a homeomorphism,
-    restrict to S^(n-1) ⊂ ℝ^n. The composition
-    π ∘ φ|_{S^(n-1)} : S^(n-1) → ℝ^(n-1)
-    (projecting to first n-1 coords) is continuous and injective
-    on S^(n-1), contradicting BU.
+    **Previous version was an incorrect axiom**: The original statement only
+    required a continuous left inverse (ψ ∘ φ = id), which is satisfiable
+    (e.g., φ: ℝ¹ → ℝ² by padding with 0, ψ: ℝ² → ℝ¹ by projection).
+    A homeomorphism requires BOTH ψ ∘ φ = id AND φ ∘ ψ = id.
 
-    This is axiomized since the full argument requires properties
-    of homeomorphisms and domain invariance. -/
-axiom invariance_of_dimension (n m : ℕ) (hn : 1 ≤ n) (hm : 1 ≤ m) (hnm : n ≠ m)
+    **Proof** (from BU):
+    - For n > m: φ is injective, restrict to S^{n-1}. Since m ≤ n-1,
+      `bu_no_injective_lower_dim` gives a contradiction.
+    - For n < m: φ ∘ ψ = id implies ψ is injective. Restrict ψ to S^{m-1}.
+      Since n ≤ m-1, `bu_no_injective_lower_dim` gives a contradiction. -/
+theorem invariance_of_dimension (n m : ℕ) (hn : 1 ≤ n) (hm : 1 ≤ m) (hnm : n ≠ m)
     (φ : (Fin n → ℝ) → (Fin m → ℝ))
     (hφ : Continuous φ)
     (hφ_inj : Function.Injective φ)
     (ψ : (Fin m → ℝ) → (Fin n → ℝ))
     (hψ : Continuous ψ)
-    (hψ_inv : Function.LeftInverse ψ φ) : False
+    (hψ_left : Function.LeftInverse ψ φ)
+    (hψ_right : Function.RightInverse ψ φ) : False := by
+  -- ψ is injective since φ ∘ ψ = id (hψ_right gives LeftInverse φ ψ)
+  have hψ_inj : Function.Injective ψ := Function.LeftInverse.injective hψ_right
+  -- Split on n < m vs n > m (they can't be equal by hnm)
+  rcases Nat.lt_or_gt_of_ne hnm with h_lt | h_gt
+  · -- Case n < m: ψ: ℝ^m → ℝ^n is injective, n ≤ m-1
+    -- Rewrite m = k + 1 to match BU axiom's Fin (k+1) type
+    obtain ⟨k, rfl⟩ : ∃ k, m = k + 1 := ⟨m - 1, by omega⟩
+    -- Now ψ : (Fin (k+1) → ℝ) → (Fin n → ℝ), matching bu_no_injective_lower_dim
+    have hle : n ≤ k := by omega
+    have hk1 : 1 ≤ k := by omega
+    exact bu_no_injective_lower_dim k hk1 n hle ψ hψ
+      (fun ⟨a, ha⟩ ⟨b, hb⟩ heq => Subtype.ext (hψ_inj heq))
+  · -- Case n > m: φ: ℝ^n → ℝ^m is injective, m ≤ n-1
+    -- Rewrite n = k + 1 to match BU axiom's Fin (k+1) type
+    obtain ⟨k, rfl⟩ : ∃ k, n = k + 1 := ⟨n - 1, by omega⟩
+    -- Now φ : (Fin (k+1) → ℝ) → (Fin m → ℝ), matching bu_no_injective_lower_dim
+    have hle : m ≤ k := by omega
+    have hk1 : 1 ≤ k := by omega
+    exact bu_no_injective_lower_dim k hk1 m hle φ hφ
+      (fun ⟨a, ha⟩ ⟨b, hb⟩ heq => Subtype.ext (hφ_inj heq))
 
 /-- **BU gives a topological proof of invariance of dimension**.
 
     Historical note: Brouwer originally proved invariance of dimension
     using degree theory in 1911. The BU-based proof (via Lusternik-
-    Schnirelmann) gives an alternative route that avoids homology. -/
+    Schnirelmann) gives an alternative route that avoids homology.
+
+    In this formalization, we prove it directly from the BU axiom
+    (for n ≥ 2) using the dimension-reducing non-injectivity lemma. -/
 theorem invariance_of_dimension_from_bu : True := trivial
 
 /-
@@ -889,20 +968,24 @@ theorem invariance_of_dimension_from_bu : True := trivial
     - Approximate antipodal pairs
     - Tucker-BU logical reduction
 
-    **AXIOMIZED** (Sections VII, XXII-XXIV):
+    **AXIOMIZED** (Sections VII, XXII-XXIII):
     - General BU for n ≥ 2 (needs algebraic topology)
     - No-retraction theorem (needs ball-sphere relationship)
     - Brouwer Fixed Point for n ≥ 2 (needs ray-sphere construction)
     - Lusternik-Schnirelmann for S^n (needs partition of unity)
-    - Invariance of dimension (needs domain invariance)
+
+    **PROVED FROM BU AXIOM** (Section XXIV):
+    - Invariance of dimension (proved via bu_no_injective_lower_dim)
+      Previously axiomized; original axiom was incorrectly stated
+      (only required left inverse, not homeomorphism). Fixed and proved.
 
     **CONSEQUENCE CHAIN** (logical structure):
     BU → No odd map S^n → S^(n-1) [proved from axiom]
        → No retraction B^(n+1) → S^n [axiomized]
        → Brouwer Fixed Point [axiomized]
     BU → Lusternik-Schnirelmann [axiomized]
-    BU → Invariance of dimension [axiomized]
-    BU → Non-injectivity of dimension-reducing maps [proved from axiom]
+    BU → Non-injectivity of dim-reducing maps [proved from axiom]
+    BU → Invariance of dimension [PROVED from axiom]
 
     **ANSWER TO OQ-03**:
     The 1D Borsuk-Ulam IS constructively provable via IVT.
