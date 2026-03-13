@@ -1,8 +1,8 @@
 {
   "id": "erdos-250",
-  "title": "Erdős Problem #250: Irrationality of the Sigma-Power Series",
+  "title": "Erdos Problem #250: Irrationality of the Sigma-Power Series",
   "slug": "erdos-250",
-  "description": "Is the sum Σ σ(n)/2^n irrational? Yes, proved by Nesterenko using modular functions.",
+  "description": "Is the sum Sigma sigma(n)/2^n irrational? Yes, proved by Nesterenko using modular functions.",
   "meta": {
     "author": "Yuri Nesterenko (1996)",
     "sourceUrl": "https://erdosproblems.com/250",
@@ -19,7 +19,7 @@
     "mathlibDependencies": [
       {
         "theorem": "ArithmeticFunction.sigma",
-        "description": "The sum of divisors function σₖ(n)",
+        "description": "The sum of divisors function sigma_k(n)",
         "module": "Mathlib.NumberTheory.ArithmeticFunction"
       },
       {
@@ -35,19 +35,21 @@
     ],
     "originalContributions": [
       "Educational formalization of Nesterenko's irrationality result",
-      "Verified computations of σ(n) for small values",
-      "Connection to Eisenstein series and modular functions explained"
+      "Verified computations of sigma(n) for small values via native_decide",
+      "Connection to Eisenstein series and modular functions explained",
+      "Lambert series alternative representation defined"
     ]
   },
   "overview": {
-    "historicalContext": "Erdős asked whether the series Σ σ(n)/2^n, where σ(n) is the sum of divisors function, is irrational. This connects to deep questions about values of arithmetic functions at algebraic points.\n\nYuri Nesterenko resolved this affirmatively in 1996 as part of his groundbreaking work on modular functions and transcendence. His proof established that this series is not only irrational but actually transcendental.\n\nNesterenko's methods also led to the famous result that π, e^π, and Γ(1/4) are algebraically independent—one of the deepest results in transcendental number theory.",
+    "historicalContext": "**Erdos's Question on Divisor Sum Series**\n\nErdos posed the question of whether $\\sum_{n=1}^{\\infty} \\sigma(n)/2^n$ is irrational, where $\\sigma(n) = \\sum_{d|n} d$ is the sum of divisors function. This was part of his broader program of asking whether specific naturally-occurring constants are irrational -- a notoriously difficult class of problems in number theory.\n\n**Why Is This Hard?**\nProving irrationality of explicitly defined real numbers is one of the hardest tasks in mathematics. Even for seemingly simple constants, proofs often require deep structural insights. Euler proved $e$ is irrational in 1737; Lambert proved $\\pi$ is irrational in 1768. But many constants formed from arithmetic functions resist all known approaches. Erdos's question about the sigma series seemed intractable until a breakthrough from an unexpected direction.\n\n**Nesterenko's Revolution (1996):**\nYuri Nesterenko resolved the problem as a consequence of his landmark work on algebraic independence of values of modular functions. His main theorem (Mat. Sb. 187, 1996) established that for algebraic $q$ with $0 < |q| < 1$, the three Ramanujan-Eisenstein series $P(q)$, $Q(q)$, $R(q)$ are algebraically independent over $\\mathbb{Q}$. Since $\\sum \\sigma(n)/2^n = (1 - P(1/2))/24$, the transcendence of $P(1/2)$ immediately gives transcendence (hence irrationality) of the sigma series.\n\n**Broader Impact:**\nNesterenko's methods also proved the algebraic independence of $\\pi$, $e^\\pi$, and $\\Gamma(1/4)$ -- one of the deepest results in transcendental number theory, settling questions that had been open since Hilbert's 7th problem (1900). The sigma series irrationality was, in a sense, an easy corollary of a far deeper theorem.",
     "problemStatement": "**Problem**: Is $\\displaystyle\\sum_{n=1}^{\\infty} \\frac{\\sigma(n)}{2^n}$ irrational, where $\\sigma(n) = \\sum_{d|n} d$ is the sum of divisors function?\n\n**Answer**: YES. The sum is transcendental (stronger than irrational).\n\n**Solver**: Yuri Nesterenko (1996)",
-    "proofStrategy": "The proof uses Nesterenko's deep work on modular functions and algebraic independence. The key insight is that this series can be expressed in terms of Eisenstein series evaluated at algebraic points. Nesterenko's theorem on algebraic independence of values of quasi-modular forms then implies transcendence.\n\nWe axiomatize the main result since the proof requires analytic number theory machinery (modular forms, transcendence methods) beyond current Mathlib.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization proceeds in four stages:\n\n1. **Arithmetic Setup:** The sum of divisors function $\\sigma(n)$ is accessed through Mathlib's `ArithmeticFunction.sigma 1 n`. Verified computations using `native_decide` confirm $\\sigma(1) = 1$, $\\sigma(2) = 3$, ..., $\\sigma(12) = 28$, ensuring the definition matches the mathematical one.\n\n2. **Convergence:** Partial sums $S_N = \\sum_{n=0}^{N} \\sigma(n)/2^n$ are defined. The bound $\\sigma(n) \\leq n^2$ (axiomatized) ensures convergence by comparison with $\\sum n^2/2^n$. The `sigma_series_summable` axiom captures this.\n\n3. **Irrationality:** Nesterenko's theorem is axiomatized as `nesterenko_irrationality`: any $x$ equaling the series sum is irrational. The main theorem `erdos_250` is then immediate. Axiomatization is necessary because the proof requires modular form theory, zero estimates, and transcendence machinery far beyond current Mathlib.\n\n4. **Context:** The Lambert series representation $\\sum \\sigma(n) q^n = \\sum nq^n/(1-q^n)$ is defined, and connections to Nesterenko's broader results (algebraic independence of $\\pi$, $e^\\pi$, $\\Gamma(1/4)$) are documented.",
     "keyInsights": [
-      "**Sum of Divisors Function**: σ(n) counts all divisors of n with weight equal to the divisor value. For example, σ(6) = 1 + 2 + 3 + 6 = 12.",
-      "**Rapid Convergence**: The series converges quickly because σ(n) ≤ n² while 2^n grows exponentially. The partial sums approach ≈3.31369...",
-      "**Eisenstein Connection**: The series relates to the Ramanujan-Eisenstein series P(q) = 1 - 24Σ σ(n)q^n at q = 1/2.",
-      "**Transcendence Over Irrationality**: Nesterenko proved the stronger result that the sum is transcendental—not equal to any root of a polynomial with integer coefficients."
+      "**Sum of Divisors Function**: $\\sigma(n)$ is multiplicative with $\\sigma(p^k) = (p^{k+1}-1)/(p-1)$. Its generating Dirichlet series is $\\zeta(s)\\zeta(s-1)$, connecting it to the Riemann zeta function. Values at perfect numbers satisfy $\\sigma(n) = 2n$.",
+      "**Rapid Convergence**: The series converges exponentially since $\\sigma(n) = O(n \\log \\log n)$ by Gronwall's theorem while $2^n$ grows doubly exponentially on a log scale. The first 50 terms suffice for dozens of decimal digits. The limit is approximately $3.313689\\ldots$",
+      "**Eisenstein Connection**: The series $\\sum \\sigma(n) q^n$ is essentially the Eisenstein series $G_2(\\tau)$ where $q = e^{2\\pi i \\tau}$. Setting $q = 1/2$ corresponds to $\\tau = \\log(2)/(2\\pi i)$. The Ramanujan-Eisenstein series $P(q) = 1 - 24\\sum \\sigma(n) q^n$ is a quasi-modular form of weight 2 satisfying differential equations related to the Weierstrass $\\wp$-function.",
+      "**Transcendence Over Irrationality**: Nesterenko proved the far stronger result that the sum is transcendental. His algebraic independence theorem for $P(q)$, $Q(q)$, $R(q)$ at algebraic $q$ implies that $P(1/2)$ is transcendental, and hence so is $(1 - P(1/2))/24 = \\sum \\sigma(n)/2^n$.",
+      "**Lambert Series Identity**: The classical identity $\\sum \\sigma(n) q^n = \\sum nq^n/(1-q^n)$, known to Euler and Jacobi, provides an alternative computational formula. It follows by expanding each $nq^n/(1-q^n)$ as a geometric series and noting that each divisor $d$ of $m$ contributes $d$ to $\\sigma(m)$."
     ]
   },
   "sections": [
@@ -56,37 +58,38 @@
       "title": "Background and Definitions",
       "startLine": 25,
       "endLine": 68,
-      "summary": "Introduces the sum of divisors function σ(n) with examples and verified computations."
+      "summary": "Introduces the sum of divisors function $\\sigma(n)$ with the Lambert series identity, then verifies $\\sigma(n)$ computations for $n = 1, 2, 3, 4, 6, 12$ using `native_decide`."
     },
     {
       "id": "convergence",
       "title": "Series Convergence",
       "startLine": 70,
       "endLine": 90,
-      "summary": "Defines partial sums and proves σ(n) ≤ n², ensuring series convergence."
+      "summary": "Defines partial sums $S_N = \\sum_{n=0}^{N} \\sigma(n)/2^n$, verifies $S_1 = 1/2$, and axiomatizes the bound $\\sigma(n) \\leq n^2$ ensuring convergence by comparison with the geometric series."
     },
     {
       "id": "main-result",
       "title": "Nesterenko's Irrationality Theorem",
       "startLine": 92,
       "endLine": 143,
-      "summary": "States the main axioms and theorem: the sigma series sum is irrational."
+      "summary": "Axiomatizes summability (`sigma_series_summable`) and Nesterenko's irrationality result (`nesterenko_irrationality`), then derives the main theorem `erdos_250` and proves existence of the limit via `sigma_series_has_sum`."
     },
     {
       "id": "numerical",
-      "title": "Numerical and Related Results",
+      "title": "Related Results and Lambert Series",
       "startLine": 145,
-      "endLine": 185,
-      "summary": "Discusses numerical approximation and connections to Nesterenko's broader work."
+      "endLine": 173,
+      "summary": "Documents Nesterenko's broader algebraic independence results ($\\pi$, $e^\\pi$, $\\Gamma(1/4)$), discusses connections to modular function values, and defines the Lambert series representation `lambertSeries`."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #250, proving that the series Σ σ(n)/2^n is irrational. The main result is axiomatized as it requires Nesterenko's deep work on modular functions and transcendence theory.",
-    "implications": "This problem connects arithmetic functions to transcendence theory. Nesterenko's methods opened new directions in understanding when series involving multiplicative functions have irrational (or transcendental) sums.",
+    "summary": "Erdos Problem #250 asks whether $\\sum \\sigma(n)/2^n$ is irrational. Nesterenko (1996) proved the stronger result that it is transcendental, using the connection between the sigma series and the Eisenstein series $G_2$ evaluated at $q = 1/2$, combined with his algebraic independence theorem for values of quasi-modular forms at algebraic points.",
+    "implications": "**Connections and Implications**\n\n1. **Modular Forms Meet Number Theory**: The proof exemplifies how deep analytic structure (modular forms, quasi-modular forms) can resolve elementary-sounding questions about specific constants. The sigma series is just $G_2(\\tau)$ in disguise.\n\n2. **Algebraic Independence Program**: Nesterenko's work extended the Lindemann-Weierstrass theorem and Gelfond-Schneider theorem into new territory. His proof that $\\pi$, $e^\\pi$, $\\Gamma(1/4)$ are algebraically independent was a landmark achievement, and the sigma series irrationality is a natural corollary.\n\n3. **Generalization Potential**: The method applies whenever a series can be expressed in terms of modular functions at algebraic arguments. This opens the door to proving irrationality/transcendence for many series involving multiplicative arithmetic functions.\n\n4. **Axiomatization in Lean**: The formalization illustrates a common pattern for deep analytic results: the structural framework (definitions, convergence, logical structure) is formalized in Lean, while the analytic core (transcendence proof) is axiomatized, awaiting future Mathlib development of modular form theory.",
     "openQuestions": [
-      "Are similar series Σ σ(n)/a^n irrational for other integers a ≥ 2?",
-      "What is the irrationality measure of this constant?",
-      "Can the transcendence be proved using simpler methods?"
+      "Are the series $\\sum \\sigma(n)/a^n$ irrational for all integers $a \\geq 2$? (Expected: yes, by the same methods, since $1/a$ is algebraic.)",
+      "What is the irrationality measure of $\\sum \\sigma(n)/2^n$? Can one prove $\\mu > 2$ using Nesterenko's methods?",
+      "Can the transcendence be proved using simpler methods that avoid the full algebraic independence machinery?",
+      "What about $\\sum \\sigma_k(n)/2^n$ for $k \\geq 2$? These relate to higher-weight Eisenstein series $G_{2k}$."
     ]
   }
 }
