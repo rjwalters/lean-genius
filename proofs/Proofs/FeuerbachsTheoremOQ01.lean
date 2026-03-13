@@ -563,6 +563,7 @@ The squared extended law of sines and sigma identity are the algebraic
 backbone needed for any of these approaches.
 -/
 
+
 -- Type-check results
 #check @foot_a_on_ninePointCircle_proved
 #check @foot_b_on_ninePointCircle_proved
