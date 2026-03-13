@@ -91,6 +91,18 @@
       "mathContext": "Concurrency: $\\frac{\\beta_D \\beta_E \\beta_F}{\\alpha_D \\alpha_E \\alpha_F} = 1 \\iff \\alpha_D \\alpha_E \\alpha_F = \\beta_D \\beta_E \\beta_F$. This is the spherical Ceva condition in weight-balance form. Equal weights $\\alpha_i = \\beta_i$ give concurrent medians (arc-bisecting cevians)."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "ancestor",
+      "description": "The classical (planar) Ceva theorem using length ratios — this file gives the spherical generalization using unit-vector weight parameters"
+    },
+    {
+      "targetId": "cevas-theorem-oq-02",
+      "relationship": "parent",
+      "description": "The parent open question on non-Euclidean Ceva formulations — this file answers OQ-02-OQ-01 specifically for unit-vector inner product spaces"
+    }
+  ],
   "conclusion": {
     "summary": "This formalization fully answers OQ-02-OQ-01: YES, the spherical Ceva theorem can be stated and proved using concrete unit vectors in an abstract real inner product space. The key algebraic insight is that the sin-ratio sin(BD)/sin(DC) = β/α depends only on the weight parameters defining the cevian point, not on the specific geometry. All theorems are proved with 0 sorries.",
     "implications": "**Mathematical Significance**:\n\n**1. Concrete Algebraic Criterion**\nThe weight balance condition α_D·α_E·α_F = β_D·β_E·β_F is a simpler, purely algebraic characterization of spherical concurrency than the traditional sin-product formulation. This could be useful for computational applications.\n\n**2. Dimension-Independence**\nThe formulation works in any real inner product space, so it applies to spheres of any dimension — not just the 2-sphere.\n\n**3. Bridging Two Approaches**\nThis file explicitly connects the abstract arc-length approach (CevasTheoremNonEuclidean.lean) with the concrete trigonometric approach (CevasTheoremSinRatio.lean), showing they are compatible.\n\n**4. Foundation for Future Work**\nThe weight-parameter framework could be extended to other spherical triangle theorems (e.g., the spherical law of cosines, spherical excess computations).",
