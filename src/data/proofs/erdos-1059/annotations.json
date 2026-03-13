@@ -19,7 +19,7 @@
     "title": "AllFactorialSubtractionsComposite",
     "content": "The key predicate: $n$ satisfies the property if for every $k$ with $k! < n$, both $\\neg(n - k!)$.Prime and $n - k! \\geq 2$. The $\\geq 2$ condition is essential—it excludes the trivial cases $n - k! \\in \\{0, 1\\}$ which are neither prime nor composite.",
     "mathContext": "$\\text{AllFactorialSubtractionsComposite}(n) \\iff \\forall k, k! < n \\implies \\neg(n-k!)\\text{.Prime} \\wedge n - k! \\geq 2$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["composite number", "factorial", "Nat.Prime"],
     "prerequisites": ["primality", "factorial function", "natural number subtraction"]
   },
@@ -79,7 +79,7 @@
     "title": "Main Conjecture: Infinitely Many Factorial-Avoiding Primes",
     "content": "The open conjecture: the set $\\{p \\in \\mathbb{N} : p\\text{ prime} \\wedge \\text{AllFactorialSubtractionsComposite}(p)\\}$ is infinite. Axiomatized using `Set.Infinite`. The probabilistic heuristic suggests most large primes satisfy this, so the set should have positive density among primes.",
     "mathContext": "$\\text{Set.Infinite}\\{p : \\mathbb{N} \\mid p.\\text{Prime} \\wedge \\text{AllFactorialSubtractionsComposite}(p)\\}$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Set.Infinite", "open problem", "prime density"],
     "prerequisites": ["AllFactorialSubtractionsComposite", "Set.Infinite"]
   },
