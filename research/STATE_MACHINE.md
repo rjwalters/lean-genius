@@ -35,7 +35,7 @@ This document defines the states a research problem moves through and the transi
 │        │                                               │                    │
 │        ├── attempt_succeeded() ──► [VERIFY]            │                    │
 │        │                              │                │                    │
-│        │                              ├── verified ──► [BREAKTHROUGH]       │
+│        │                              ├── verified ──► [COMPLETED]       │
 │        │                              │                                      │
 │        │                              └── failed ──────┘                    │
 │        │                                                                     │
@@ -53,7 +53,7 @@ This document defines the states a research problem moves through and the transi
 │                               └──► back to ORIENT (new direction)           │
 │                                                                              │
 │   ┌──────────────┐                                                          │
-│   │ BREAKTHROUGH │  Potential proof found, needs human review               │
+│   │ COMPLETED │  Potential proof found, needs human review               │
 │   └──────────────┘                                                          │
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -109,7 +109,7 @@ This document defines the states a research problem moves through and the transi
 - **Exit**: Ready for next approach or pivot
 - **Key files**: `approaches/*/post-mortem.md`, `knowledge.md`
 
-### BREAKTHROUGH
+### COMPLETED
 - Potential proof discovered, awaiting human review
 - Agent has done all verification it can
 - **Entry**: Proof survived adversarial testing
@@ -130,7 +130,7 @@ Each problem has a `state.md` file tracking its current state:
 # Research State: {problem-slug}
 
 ## Current State
-**Phase**: OBSERVE | ORIENT | DECIDE | ACT | VERIFY | LEARN | BREAKTHROUGH | PIVOT
+**Phase**: OBSERVE | ORIENT | DECIDE | ACT | VERIFY | LEARN | COMPLETED | PIVOT
 **Since**: 2025-01-15T10:30:00Z
 **Iteration**: 3
 
@@ -200,7 +200,7 @@ failure_documented():
 
 verified():
   - All adversarial tests passed
-  - Update state.md phase=BREAKTHROUGH
+  - Update state.md phase=COMPLETED
   - Add loom:breakthrough label to problem issue
   - Return: awaiting human review
 ```
@@ -244,7 +244,7 @@ function decide_action(state):
       - Run adversarial attacks on proof
       - Check edge cases
       - Stress test assumptions
-      - If survives → transition to BREAKTHROUGH
+      - If survives → transition to COMPLETED
       - If fails → transition to ACT with new info
 
     LEARN:
@@ -258,7 +258,7 @@ function decide_action(state):
       - Return to ORIENT with constraint: "not the previous direction"
       - Fresh exploration with accumulated knowledge
 
-    BREAKTHROUGH:
+    COMPLETED:
       - Notify humans
       - Document proof thoroughly
       - Wait for human review

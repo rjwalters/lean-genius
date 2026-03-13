@@ -14,7 +14,7 @@ interface ResearchCardProps {
  */
 export function ResearchCard({ problem }: ResearchCardProps) {
   const isGraduated = problem.status === 'graduated'
-  const isBreakthrough = problem.phase === 'BREAKTHROUGH'
+  const isCompleted = problem.phase === 'COMPLETED'
   const phaseInfo = PHASE_INFO[problem.phase]
 
   return (
@@ -42,7 +42,7 @@ export function ResearchCard({ problem }: ResearchCardProps) {
           className="h-10 w-10 rounded-lg flex items-center justify-center flex-shrink-0"
           style={{ backgroundColor: `${phaseInfo.color}20` }}
         >
-          {isBreakthrough ? (
+          {isCompleted ? (
             <Zap className="h-5 w-5" style={{ color: phaseInfo.color }} />
           ) : (
             <FlaskConical className="h-5 w-5" style={{ color: phaseInfo.color }} />

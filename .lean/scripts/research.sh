@@ -520,7 +520,7 @@ Commands:
   list                         List all problems
   help                         Show this help
 
-Phases: OBSERVE, ORIENT, DECIDE, ACT, VERIFY, LEARN, PIVOT, BREAKTHROUGH
+Phases: OBSERVE, ORIENT, DECIDE, ACT, VERIFY, LEARN, PIVOT, COMPLETED
 
 Template Options:
   --template=<name>   Use template (e.g., nrt-irrational)
@@ -860,7 +860,7 @@ show_status() {
                     ACT) color=$GREEN ;;
                     VERIFY) color=$GREEN ;;
                     LEARN) color=$YELLOW ;;
-                    BREAKTHROUGH) color=$GREEN ;;
+                    COMPLETED) color=$GREEN ;;
                     PIVOT) color=$RED ;;
                     *) color=$NC ;;
                 esac

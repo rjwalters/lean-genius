@@ -14,7 +14,7 @@ export type ResearchPhase =
   | 'ACT'          // Implementing proof attempt
   | 'VERIFY'       // Testing and validating proof
   | 'LEARN'        // Documenting insights from attempt
-  | 'BREAKTHROUGH' // Proof succeeded
+  | 'COMPLETED' // Proof succeeded
   | 'PIVOT'        // Changing direction after failure
 
 /**
@@ -93,8 +93,8 @@ export const PHASE_INFO: Record<ResearchPhase, PhaseInfo> = {
     color: '#6366F1',
     order: 6
   },
-  BREAKTHROUGH: {
-    phase: 'BREAKTHROUGH',
+  COMPLETED: {
+    phase: 'COMPLETED',
     label: 'Success',
     description: 'Proof completed',
     color: '#22C55E',

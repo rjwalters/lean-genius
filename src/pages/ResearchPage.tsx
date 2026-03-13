@@ -154,7 +154,7 @@ export function ResearchPage() {
 
   // Stats
   const activeCount = researchListings.filter(p => p.status === 'active').length
-  const successCount = researchListings.filter(p => p.phase === 'BREAKTHROUGH').length
+  const successCount = researchListings.filter(p => p.phase === 'COMPLETED').length
   const totalAttempts = researchListings.reduce((sum, p) => sum + p.attemptCount, 0)
 
   return (
@@ -325,7 +325,7 @@ export function ResearchPage() {
             <div>
               <span className="text-xs text-muted-foreground mb-2 block">Phase</span>
               <div className="flex flex-wrap gap-2">
-                {(['OBSERVE', 'ORIENT', 'DECIDE', 'ACT', 'VERIFY', 'LEARN', 'BREAKTHROUGH'] as ResearchPhase[]).map((phase) => {
+                {(['OBSERVE', 'ORIENT', 'DECIDE', 'ACT', 'VERIFY', 'LEARN', 'COMPLETED'] as ResearchPhase[]).map((phase) => {
                   const info = PHASE_INFO[phase]
                   const isSelected = selectedPhases.includes(phase)
                   return (

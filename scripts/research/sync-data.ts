@@ -66,6 +66,7 @@ interface Registry {
 const POOL_TO_REGISTRY_STATUS: Record<string, 'active' | 'graduated' | 'abandoned' | 'blocked'> = {
   'available': 'active',
   'in-progress': 'active',
+  'progress': 'active',
   'completed': 'graduated',
   'skipped': 'blocked',
   'surveyed': 'active'  // surveyed = ongoing research
@@ -85,7 +86,7 @@ function registryToPoolStatus(entry: RegistryEntry): PoolCandidate['status'] {
   if (entry.status === 'blocked' || entry.status === 'abandoned') return 'skipped'
   // For active, check phase
   if (entry.phase === 'NEW') return 'available'
-  if (entry.phase === 'BREAKTHROUGH') return 'completed'
+  if (entry.phase === 'COMPLETED') return 'completed'
   return 'in-progress'
 }
 
@@ -165,6 +166,41 @@ Begin problem exploration.
 `
 }
 
+
+/**
+ * Infer phase from problem directory contents.
+ */
+function inferPhaseFromDirectory(slug: string): string {
+  const problemDir = path.join(PROBLEMS_DIR, slug)
+  if (!fs.existsSync(problemDir)) return 'NEW'
+  const metaPath = path.join(problemDir, 'meta.json')
+  if (fs.existsSync(metaPath)) {
+    try {
+      const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'))
+      if (meta.status === 'graduated') return 'COMPLETED'
+      if (meta.phase && meta.phase !== 'NEW') return meta.phase
+    } catch { /* ignore */ }
+  }
+  try { if (findLeanFiles(problemDir)) return 'ACT' } catch { /* ignore */ }
+  const approachesDir = path.join(problemDir, 'approaches')
+  if (fs.existsSync(approachesDir)) {
+    try { if (fs.readdirSync(approachesDir).length > 0) return 'ORIENT' } catch { /* ignore */ }
+  }
+  const knowledgePath = path.join(problemDir, 'knowledge.md')
+  if (fs.existsSync(knowledgePath)) {
+    try { if (fs.readFileSync(knowledgePath, 'utf-8').trim().length > 100) return 'OBSERVE' } catch { /* ignore */ }
+  }
+  return 'NEW'
+}
+
+function findLeanFiles(dir: string): boolean {
+  const entries = fs.readdirSync(dir, { withFileTypes: true })
+  for (const entry of entries) {
+    if (entry.isFile() && entry.name.endsWith('.lean')) return true
+    if (entry.isDirectory()) { if (findLeanFiles(path.join(dir, entry.name))) return true }
+  }
+  return false
+}
 /**
  * Main sync function
  */
@@ -204,7 +240,7 @@ function sync(): void {
       // Add to registry
       const newEntry: RegistryEntry = {
         slug: candidate.id,
-        phase: candidate.status === 'completed' ? 'BREAKTHROUGH' : 'NEW',
+        phase: candidate.status === 'completed' ? 'COMPLETED' : 'NEW',
         path: candidate.tractability >= 7 ? 'fast' : 'full',
         started: new Date().toISOString(),
         status: POOL_TO_REGISTRY_STATUS[candidate.status] || 'active',
@@ -240,7 +276,7 @@ function sync(): void {
         // Pool takes precedence for high-level status
         if (candidate.status === 'completed' && registryEntry.status !== 'graduated') {
           registryEntry.status = 'graduated'
-          registryEntry.phase = 'BREAKTHROUGH'
+          registryEntry.phase = 'COMPLETED'
           registryEntry.completed = registryEntry.completed || new Date().toISOString()
           registryEntry.lastUpdate = new Date().toISOString()
           updatedInRegistry++
@@ -315,7 +351,7 @@ function sync(): void {
         // Meta.json takes precedence - it's the source of truth
         if (metaStatus === 'graduated' && entry.status !== 'graduated') {
           entry.status = 'graduated'
-          entry.phase = 'BREAKTHROUGH'
+          entry.phase = 'COMPLETED'
           entry.completed = entry.completed || meta.completed || new Date().toISOString()
           entry.lastUpdate = new Date().toISOString()
           updatedFromMeta++
@@ -337,7 +373,26 @@ function sync(): void {
     }
   }
 
-  // 4. Write updated files
+
+  // 4. Infer phases from problem directory contents for entries still at NEW
+  let updatedPhases = 0
+  for (const entry of registry.problems) {
+    if (entry.template) continue
+    if (entry.phase !== 'NEW') continue
+    const inferred = inferPhaseFromDirectory(entry.slug)
+    if (inferred !== 'NEW') {
+      entry.phase = inferred
+      entry.lastUpdate = new Date().toISOString()
+      if (inferred === 'COMPLETED' && !entry.completed) {
+        entry.status = 'graduated'
+        entry.completed = new Date().toISOString()
+      }
+      updatedPhases++
+      console.log(`   🔍 Inferred phase: ${entry.slug} → ${inferred}`)
+    }
+  }
+
+  // 5. Write updated files
   // Update pool timestamp
   pool.last_updated = new Date().toISOString()
 
@@ -351,6 +406,7 @@ function sync(): void {
   console.log(`   Updated from meta:     ${updatedFromMeta}`)
   console.log(`   Updated in pool:       ${updatedInPool}`)
   console.log(`   Created problem dirs:  ${createdProblemDirs}`)
+  console.log(`   Inferred phases:       ${updatedPhases}`)
   console.log(`\n✅ Sync complete!`)
 }
 

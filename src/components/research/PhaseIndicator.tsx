@@ -20,7 +20,7 @@ const PHASE_ICONS: Record<ResearchPhase, typeof Plus> = {
   ACT: Play,
   VERIFY: CheckCircle,
   LEARN: BookOpen,
-  BREAKTHROUGH: Sparkles,
+  COMPLETED: Sparkles,
   PIVOT: RotateCcw
 }
 
