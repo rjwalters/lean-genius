@@ -16,43 +16,38 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-13T00:30:00.000Z",
+    "phase": "PROGRESS",
+    "since": "2026-03-11T09:48:08.982Z",
     "iteration": 2,
-    "focus": "Added 7 structural theorems: gap monotonicity, generalized Nodup, Schur⊆RR1, Schur Nodup redundancy",
+    "focus": "Decidable predicates and computational verification",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Added 7 new structural theorems (0 sorries) to PartitionTheoremOQ01.lean. Total: 10 theorems, 3 axioms, 0 sorries. Key additions: gap monotonicity (hasMinGap_mono), generalized Nodup from gap ≥ 1, Schur gap ⊆ RR1 gap, Schur Nodup redundancy. The 3 axioms (rogers_ramanujan_first, rogers_ramanujan_second, schur_partition_identity) remain genuinely blocked by missing q-series infrastructure.",
+    "progressSummary": "PROGRESS: Added decidable partition predicates (6 definitions) enabling computational verification. Verified RR1, RR2, and Schur identities for n=0..7 via native_decide (24 examples). Proved 3 containment hierarchy theorems. Total: 13 proved theorems, 0 sorries, 3 axioms (deep identities).",
     "builtItems": [
-      "hasMinGap_mono: gap monotonicity theorem",
-      "hasMinGap_ge_one_pairwise_gt: generalized pairwise strict decrease for gap ≥ 1",
-      "hasMinGap_ge_one_nodup: gap ≥ 1 implies Nodup",
-      "schur_gap_subset_rr1_gap: Schur gap partitions ⊆ RR1 gap partitions",
-      "schur_gap_implies_distinct: Schur gap partitions → distinct",
-      "schur_nodup_redundant: hasMinGap 3 → Nodup (Nodup check in Schur definition is redundant)",
-      "Updated meta.json with new contributions and sections"
+      "PartitionDecidable.rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGap, schurMod: decidable partition set definitions",
+      "24 native_decide examples verifying all 3 identities for n=0..7",
+      "rr1_gap_card_le_distinct, rr2_gap_card_le_rr1, schur_gap_card_le_rr1: hierarchy theorems"
     ],
     "insights": [
-      "The 3 axioms are fundamentally blocked: Rogers-Ramanujan requires q-series (Jacobi triple product) or bijective proofs (Garsia-Milne involution, ~500+ lines each)",
-      "Gap monotonicity enables systematic containment proofs: Schur (gap 3) ⊆ RR1 (gap 2) ⊆ distinct (gap 1)",
-      "The Nodup condition in schurGapPartitions is redundant — hasMinGap 3 already implies gap ≥ 1 which implies Nodup",
-      "The containment hierarchy is: Schur gap ⊆ RR2 gap ⊆ RR1 gap ⊆ distinct ⊆ all partitions"
+      "Pairwise separation equivalence: for d≥1, sorted min gap d ⟺ Nodup ∧ all pairs separated by ≥d. Avoids noncomputable Multiset.sort.",
+      "Decidable predicates on Multiset: ∀ a ∈ M, ∀ b ∈ M, P a b is decidable, enabling Finset.filter + native_decide.",
+      "RR1 gap partitions of 5: only {[5],[4,1]} = 2 (not 3; [3,2] excluded by gap condition).",
+      "Schur gap ⊆ RR1 gap ⊆ distinct: strict containment hierarchy verified computationally.",
+      "Full proof requires q-series (Jacobi triple product) or bijections (Garsia-Milne involution, ~500+ lines)."
     ],
-    "mathlibGaps": [
-      "q-series manipulation (formal power series product identities)",
-      "Bijective proof infrastructure (Garsia-Milne involution)",
-      "Partition identity framework"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "If q-series infrastructure appears in Mathlib, prove Rogers-Ramanujan axioms",
-      "Consider bijective proof of Schur's identity (simpler than RR)"
+      "Prove equivalence between decidable and noncomputable partition set definitions",
+      "Extend computational verification to n=8..12 (may need memory optimization)",
+      "Investigate q-series approach using Mathlib PowerSeries",
+      "Consider bijective proof for Schur identity (simpler than RR)"
     ]
   },
   "approaches": [],
@@ -69,7 +64,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-13T00:30:00.000Z",
+  "lastUpdate": "2026-03-12T05:34:54.574Z",
   "significance": 7,
   "tractability": 6
 }
