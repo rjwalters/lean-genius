@@ -29,30 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 5 new sections (Parts XLV-XLIX) with ~450 lines of proved theorems. Key results: j-invariant classification, point doubling formula with verified computations, rank-2 Hadamard bound (PROVED, not axiomatized), additional congruent number verifications (n=15, n=34), and parametric congruent curve family properties. All new code compiles cleanly.",
+    "progressSummary": "BLOCKED: Clay Millennium Prize problem. 5197 lines with 75+ axioms/sorries encoding deep algebraic geometry. Requires L-function theory, Tate-Shafarevich groups, modular forms infrastructure not in Mathlib.",
     "builtItems": [
-      "Part XLV: j-invariant classification (jInvariant_zero_iff_a_zero, jInvariant_b_zero, discriminant_a_zero, discriminant_b_zero)",
-      "Part XLVI: Point doubling formula (tangentSlope, doubleX, doubleY, verified for E5 and E6)",
-      "Part XLVII: Rank-2 Hadamard bound PROVED (rank2_hadamard_bound, rank2_cauchy_schwarz, rank2_hadamard_equality)",
-      "Part XLVIII: Additional congruent numbers (n=15, n=34 verified points, negPoint)",
-      "Part XLIX: Congruent curve family properties (parametric j-invariant, discriminant scaling)"
+      "BirchSwinnertonDyer.lean: 5197 lines of axiomatized algebraic geometry foundations"
     ],
     "insights": [
-      "j-invariant in our convention: j=0 when a=0, j=108 when b=0 (differs from standard j=1728 normalization)",
-      "Point doubling formula verified: [2](-4,6) = (1681/144, -62279/1728) on E_5",
-      "Point doubling formula verified: [2](12,36) = (25/4, -35/8) on E_6",
-      "Rank-2 Hadamard bound PROVED (not axiomatized): R ≤ h1·h2 from sq_nonneg",
-      "Cauchy-Schwarz for height pairing proved: pairing² ≤ h1·h2",
-      "Rank-2 Hadamard equality iff orthogonal generators (proved both directions)",
-      "New congruent number verifications: n=15 point (-9,36), n=34 point (289/4,4335/8)",
-      "Congruent number curves all have j-invariant 108 (parametric proof)",
-      "Point negation (x,y)→(x,-y) proved to preserve curve membership and non-torsion property",
-      "Discriminant formulas proved: disc(a=0)=-432b², disc(b=0)=-64a³"
+      "Birch-Swinnerton-Dyer is a Clay Millennium Prize problem - fundamentally open",
+      "Formalization is extensive (5197 lines) but heavily axiomized (75+ axioms/sorries)",
+      "Requires Selmer groups, L-functions, modular forms - none available in Mathlib",
+      "No meaningful progress possible without major algebraic geometry infrastructure"
     ],
     "mathlibGaps": [
-      "Torsion subgroup",
-      "Mordell-Weil",
-      "L-functions"
+      "No L-function theory",
+      "No Tate-Shafarevich groups",
+      "No modular forms infrastructure"
     ],
     "nextSteps": [
       "Basic Properties of E(Q)",
