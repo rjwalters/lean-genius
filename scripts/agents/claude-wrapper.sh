@@ -136,6 +136,11 @@ check_usage_limits() {
         local throttle
         throttle=$("$REPO_ROOT/.loom/scripts/check-usage.sh" --throttle 2>/dev/null || echo "0")
 
+        # Ensure throttle is a valid integer (usage check may return JSON error)
+        if ! [[ "$throttle" =~ ^[0-9]+$ ]]; then
+            throttle=0
+        fi
+
         if [[ "$throttle" -ge 3 ]]; then
             local usage_info
             usage_info=$("$REPO_ROOT/.loom/scripts/check-usage.sh" --status 2>/dev/null || echo "High usage")

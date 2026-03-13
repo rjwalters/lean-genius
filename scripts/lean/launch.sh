@@ -1083,13 +1083,46 @@ respawn_agent() {
             fi
             ;;
         researcher)
-            if check_script "./scripts/research/parallel-research.sh" 2>/dev/null; then
-                ./scripts/research/parallel-research.sh 1 &
-                sleep 2
-                daemon_log "INFO" "Researcher respawned"
-            else
-                daemon_log "WARN" "Cannot respawn researcher: script not found"
+            # Respawn the specific researcher slot (mirrors enricher respawn pattern)
+            local agent_num="${session##*-}"
+            local worktree_dir=".loom/worktrees/researcher-$agent_num"
+            local branch="feature/researcher-$agent_num"
+            local log_file=".loom/logs/$session.log"
+            local prompt_file=".loom/logs/$session-prompt.md"
+            local repo_root
+            repo_root=$(pwd)
+
+            # Recreate worktree from current main
+            if [[ -d "$worktree_dir" ]]; then
+                git worktree remove "$worktree_dir" --force 2>/dev/null || rm -rf "$worktree_dir"
             fi
+            git branch -D "$branch" 2>/dev/null || true
+            git worktree add "$worktree_dir" -b "$branch" main 2>/dev/null || {
+                daemon_log "WARN" "Cannot create worktree for $session"
+                return
+            }
+            if [[ -f "$worktree_dir/.gitmodules" ]]; then
+                (cd "$worktree_dir" && git submodule update --init --recursive 2>/dev/null) || true
+            fi
+
+            # Symlink .lake for fast Lean builds
+            if [[ -d "$repo_root/proofs/.lake" ]] && [[ -d "$worktree_dir/proofs" ]]; then
+                rm -rf "$worktree_dir/proofs/.lake" 2>/dev/null || true
+                ln -s "$repo_root/proofs/.lake" "$worktree_dir/proofs/.lake"
+            fi
+
+            # Create tmux session and launch Claude
+            tmux new-session -d -s "$session" -c "$repo_root/$worktree_dir"
+            sleep 0.3
+            tmux send-keys -t "$session" "export ENHANCER_ID='researcher-$agent_num'" Enter
+            sleep 0.2
+            tmux send-keys -t "$session" "export REPO_ROOT='$repo_root'" Enter
+            sleep 0.2
+            local prompt="You are researcher-$agent_num. Read $repo_root/$prompt_file for your instructions, then start the research workflow."
+            local wrapper_script="$repo_root/scripts/agents/claude-wrapper.sh"
+            tmux send-keys -t "$session" "$wrapper_script --daemon --prompt '$prompt' --log '$repo_root/$log_file'" Enter
+            sleep 1
+            daemon_log "INFO" "Researcher $agent_num respawned (session: $session)"
             ;;
         seeker)
             if check_script "./scripts/research/launch-seeker.sh" 2>/dev/null; then
