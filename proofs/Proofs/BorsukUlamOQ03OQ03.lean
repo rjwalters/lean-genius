@@ -1592,7 +1592,34 @@ theorem radialExtend_odd_outside (g : ℝ × ℝ → ℝ × ℝ)
     At ‖x‖₂ = 1 (boundary of D̄²), both branches agree since x/‖x‖₂ = x. -/
 theorem radialExtend_continuous (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g) :
     Continuous (radialExtend g) := by
-  sorry -- Piecewise continuity: both branches agree on {euclidNormSq = 1}
+  -- Piecewise: g on D̄², g ∘ radialProj outside. Both agree on S¹.
+  show Continuous (fun x => if euclidNormSq x ≤ 1 then g x else
+    g (x.1 / euclidNorm x, x.2 / euclidNorm x))
+  apply continuous_if_le
+  -- Test function: euclidNormSq is continuous
+  · exact continuous_fst.pow 2 |>.add (continuous_snd.pow 2)
+  -- Threshold: constant 1 is continuous
+  · exact continuous_const
+  -- Branch 1: g is continuous on {euclidNormSq ≤ 1}
+  · exact hg.continuousOn
+  -- Branch 2: g ∘ radialProj is continuous on {euclidNormSq ≥ 1}
+  · apply ContinuousOn.comp hg.continuousOn _ (Set.mapsTo_univ _ _)
+    apply ContinuousOn.prod
+    · apply ContinuousOn.div continuous_fst.continuousOn
+        (continuous_sqrt.comp (continuous_fst.pow 2 |>.add (continuous_snd.pow 2))).continuousOn
+      intro ⟨a, b⟩ (hab : 1 ≤ a ^ 2 + b ^ 2)
+      exact ne_of_gt (Real.sqrt_pos_of_pos (by linarith : 0 < a ^ 2 + b ^ 2))
+    · apply ContinuousOn.div continuous_snd.continuousOn
+        (continuous_sqrt.comp (continuous_fst.pow 2 |>.add (continuous_snd.pow 2))).continuousOn
+      intro ⟨a, b⟩ (hab : 1 ≤ a ^ 2 + b ^ 2)
+      exact ne_of_gt (Real.sqrt_pos_of_pos (by linarith : 0 < a ^ 2 + b ^ 2))
+  -- Agreement on boundary {euclidNormSq = 1}: x/‖x‖ = x when ‖x‖ = 1
+  · intro ⟨a, b⟩ hab
+    simp only [euclidNormSq] at hab
+    have : euclidNorm (a, b) = 1 := by
+      unfold euclidNorm euclidNormSq; simp only
+      rw [hab, Real.sqrt_one]
+    simp only [this, div_one]
 
 /-- Convert an approximate zero of radialExtend to an approximate zero of g in D̄².
     Key cases:
