@@ -1,9 +1,9 @@
 {
   "slug": "borsuk-ulam-oq-03-oq-03",
   "title": "Constructive 2D Borsuk-Ulam via Tucker Lemma",
-  "phase": "BUILD",
+  "phase": "NEW",
   "status": "active",
-  "tier": "C",
+  "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\forall f : S^2 \\to \\mathbb{R}^2 \\text{ continuous}, \\exists x \\in S^2, f(x) = f(-x)",
@@ -11,85 +11,65 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "dominantComponentLabel_antipodal: label complement under negation (PROVED)",
-      "antisymmetricDiff_odd: g(x) = f(x) - f(-x) satisfies g(-x) = -g(x)",
-      "antisymmetricDiff_continuous: g is continuous when f is",
-      "no_fixed_point_on_circle: antipodal map has no fixed points on S^1",
-      "antisymmetricDiff_eq_zero_iff: g(x)=0 ⟺ f(x)=f(-x)",
-      "circle_isCompact: S^1 ⊂ ℝ² is compact (PROVED via closedBall)",
-      "grid_mesh_size: mesh size √2/N > 0",
-      "grid_mesh_tends_to_zero: mesh refinement convergence (PROVED)",
-      "compact_image_circle: f(S^1) is compact",
-      "approx_to_exact: approximate solutions for all ε → exact solution (PROVED via compactness)",
-      "borsuk_ulam_2d_from_tucker: exact BU via compactness (PROVED from approx + approx_to_exact)",
-      "odd_function_at_zero: odd functions vanish at origin",
-      "circle_isClosed, circle_bounded, circle_nonempty",
-      "continuous_on_circle_bounded: continuous functions on S¹ are bounded",
-      "approx_pair_small_diff: approximate pair implies small antisymmetricDiff",
-      "diskLift_on_sphere: disk lift (x,y)↦(x,y,√(1-x²-y²)) lands on S² (PROVED)",
-      "diskLift_boundary_z_zero: equator has z=0 (PROVED)",
-      "diskLift_boundary_neg_eq: on ∂D², lift(-p)=neg3(lift(p)) (PROVED)",
-      "diskFunction_antipodal_on_boundary: odd g∘diskLift is antipodal on ∂D² (PROVED)",
-      "diskLift_z_nonneg: upper hemisphere has z≥0 (PROVED)",
-      "gridVertex_center: center vertex (N,N) maps to origin (PROVED)",
-      "antipodal_preserves_boundary: boundary predicate preserved under (2N-i,2N-j) (PROVED)"
-    ],
-    "open": [
-      "approx_borsuk_ulam_2d_corrected (sorry): correct S2->R2 version needs explicit triangulation → Tucker → complementary edge → approximate zero",
-      "approx_borsuk_ulam_2d_from_tucker (sorry): KNOWN FALSE - S1->R2 BU does not hold"
-    ],
-    "goal": "Build explicit grid triangulation → Tucker labeling → complementary edge → approximate zero → exact BU"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "BUILD",
-    "since": "2026-03-11T11:10:00Z",
-    "iteration": 2,
-    "focus": "IVT infrastructure for Tucker-to-BU bridge",
+    "phase": "OBSERVE",
+    "since": "2026-03-06T08:22:48-08:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Use gridVertex + dominantComponentLabel to construct explicit Tucker labeling on grid. Prove boundary antipodality from gridVertex_antipodal + diskFunction_antipodal_on_boundary. Apply tuckers_lemma. Goal: prove tucker_disk_approx_zero from infrastructure.",
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts XVIII-XIX - IVT on line segments and dominant component analysis bridging Tucker to BU.",
+    "progressSummary": "PROGRESS: Computational Tucker 2D verifications added (5-vertex 64 cases, 9-vertex 1024 cases). Boundary parity theorems proved. Mathlib fixes applied. 7 new theorems in Part XX, file at 1402 lines.",
     "builtItems": [
       "segmentParam: line segment parametrization (Part XVIII)",
       "ivt_segment_fst/snd: IVT zero-crossing on segments (Part XVIII)",
       "complementary_edge_zero_fst/snd: zero from opposite signs (Part XVIII)",
       "dominant_component_small_at_zero: dominant component bound (Part XIX)",
-      "non_dominant_at_zero_bound: |g(w)| ≤ 2·dist at IVT zero (Part XIX)"
+      "non_dominant_at_zero_bound: |g(w)| ≤ 2·dist at IVT zero (Part XIX)",
+      "TLabel type with neg and isComplementary (Part XX)",
+      "tucker_2d_5vertex: Tucker 2D for 5-vertex disk (64 cases, decide)",
+      "tucker_2d_9vertex: Tucker 2D for 9-vertex grid (1024 cases, native_decide)",
+      "antipodal_necessary: constant labeling counterexample",
+      "boundary_parity_5vertex: even complementary boundary edges (16 cases, decide)",
+      "boundary_parity_9vertex: even complementary boundary edges (256 cases, native_decide)",
+      "Fixed segmentParam_dist_le for current Mathlib",
+      "Fixed complementary_edge_zero_fst/snd for current Mathlib"
     ],
     "insights": [
+      "Tucker 2D lemma is computationally verifiable for finite triangulations via decide/native_decide",
+      "5-vertex centrally-symmetric disk: 64 labelings, all have complementary edge (proved by decide)",
+      "9-vertex 3x3 grid: 1024 labelings, all have complementary edge (proved by native_decide)",
+      "Boundary parity theorem: number of complementary boundary edges is always even",
+      "Antipodal condition is necessary: constant labeling counterexample has no complementary edges",
       "IVT on line segments is the key tool for extracting zeros from complementary edges",
       "Dominant component labeling ensures both components are small at IVT zeros",
-      "Bound |g(w)| ≤ 2·ω(δ) → 0 as mesh δ → 0 gives approximate BU",
-      "Three axioms remain: tuckers_lemma, complementary_edge_gives_approximate_zero, tucker_disk_approx_zero"
+      "3 axioms remain: tuckers_lemma, complementary_edge_gives_approximate_zero, tucker_disk_approx_zero",
+      "Scaling to 25-vertex (4^17 cases) infeasible with brute-force decide/native_decide"
     ],
     "mathlibGaps": [
       "No Tucker's lemma proof in Mathlib (axiomatized in BorsukUlamOQ01)",
       "No Borsuk-Ulam theorem in Mathlib",
-      "No triangulated disk/simplicial complex combinatorial library in Mathlib",
-      "isCompact_sphere for ℝ² not directly available (need to compose closed + bounded)"
+      "No triangulated disk/simplicial complex combinatorial library in Mathlib"
     ],
     "nextSteps": [
-      "Prove complementary_edge_gives_approximate_zero using Parts XVIII-XIX",
-      "Build Fintype instance for grid vertices",
-      "Prove tucker_disk_approx_zero from Tucker + grid + IVT"
+      "Try to eliminate axiom complementary_edge_gives_approximate_zero using IVT + uniform continuity",
+      "Try 13-vertex triangulation (hexagonal or refined cross) as intermediate scaling step",
+      "Prove boundary parity theorem structurally (not just computationally)",
+      "Build Fintype instance for grid vertices to connect Tucker axiom to concrete grids"
     ],
-    "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-03\n\n## Answer to OQ-03 (2D Extension)\n\n**YES** — the 2D Borsuk-Ulam theorem CAN be proved via Tucker's lemma constructively.\n\n## What's Built\n\n### S¹ Infrastructure (Parts I-XIV)\n- Dominant component labeling with antipodal property\n- Antisymmetric difference framework\n- Triangulated disk structure\n- Grid triangulation with mesh convergence\n- Approximate → exact compactness bridge\n- Note: S¹→ℝ² BU is FALSE (documented with warning)\n\n### S² Corrected Version (Part XVI)\n- neg3, antisymmetricDiff3 with oddness/continuity\n- sphere_isCompact, sphere_nonempty\n- Correct S²→ℝ² statements for approximate and exact BU\n- Exact BU reduces to approximate via compactness minimization\n\n### Hemisphere Projection (Part XVII)\n- diskLift: D² → upper hemisphere of S²\n- diskLift_on_sphere: lift lands on S²\n- diskLift_boundary_neg_eq: on ∂D², lift(-p) = neg3(lift(p))\n- diskFunction_antipodal_on_boundary: Tucker compatibility\n\n## Remaining Work\n\n1. Build GridTriangulation → TriangulatedDisk2D instance\n2. Define labeling from g∘diskLift\n3. Apply Tucker to get complementary edge\n4. Use IVT to extract approximate zero\n5. This proves approx_borsuk_ulam_2d_corrected\n\n### Grid Vertex Infrastructure (Part X.5)\n- gridVertex: lattice {0,...,2N}² → [-1,1]²\n- gridVertex_center: (N,N) → (0,0) (PROVED)\n- gridVertex_in_range, gridVertex_antipodal (axioms)\n- IsGridBoundary + antipodal_preserves_boundary (PROVED)\n\n## Summary: ~20 axioms, 2 sorries (both FALSE S¹ versions), ~40 proved theorems, 924 lines\n"
+    "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "approaches": [
-    {
-      "name": "Dominant component labeling + Tucker 2D",
-      "description": "Label vertices by dominant coordinate direction of g = f - f∘(-), apply Tucker for complementary edge, use IVT for approximate zero, refine mesh for exact result",
-      "status": "in-progress",
-      "outcome": "Grid vertex infrastructure added (Part X.5). Hemisphere projection complete (Part XVII). Remaining: define Tucker labeling on grid, prove boundary condition, apply Tucker."
-    }
-  ],
+  "approaches": [],
   "tags": [
     "topology",
     "constructive-math",
@@ -97,19 +77,14 @@
     "tucker-lemma",
     "combinatorial-topology"
   ],
-  "relatedProofs": [
-    "borsuk-ulam-oq-03",
-    "borsuk-ulam-oq-01"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Mathlib.Analysis.InnerProductSpace.Basic",
-      "Mathlib.Topology.MetricSpace.Basic"
-    ]
+    "mathlib": []
   },
-  "knowledgeScore": 90,
-  "started": "2026-03-06T21:11:54.769Z",
-  "lastUpdate": "2026-03-11T00:00:00Z"
+  "started": "2026-03-07T18:02:01.175Z",
+  "lastUpdate": "2026-03-07T18:02:01.175Z",
+  "significance": 7,
+  "tractability": 6
 }
