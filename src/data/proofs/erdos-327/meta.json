@@ -38,35 +38,40 @@
       "title": "Sum-Divides-Product Property",
       "startLine": 25,
       "endLine": 37,
-      "summary": "Defines SumNotDvdProd, SumNotDvdTwoProd, and maxAvoidSize as extremal function."
+      "summary": "Defines SumNotDvdProd, SumNotDvdTwoProd, and maxAvoidSize as extremal function.",
+      "mathContext": "$\\text{SumNotDvdProd}(A) \\iff \\forall a, b \\in A,\\, a \\ne b \\implies (a+b) \\nmid (ab)$. Equivalently, $\\nexists c \\in \\mathbb{Z}^+: \\frac{1}{a} + \\frac{1}{b} = \\frac{1}{c}$. $\\text{maxAvoidSize}(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\, \\text{SumNotDvdProd}(A)\\}$."
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
       "startLine": 39,
       "endLine": 45,
-      "summary": "States ErdosProblem327: maxAvoidSize(N) ≤ (1/2+ε)N for all ε > 0."
+      "summary": "States ErdosProblem327: maxAvoidSize(N) ≤ (1/2+ε)N for all ε > 0.",
+      "mathContext": "$\\forall \\varepsilon > 0,\\, \\exists N_0: \\text{maxAvoidSize}(N) \\le (\\tfrac{1}{2} + \\varepsilon) N$ for $N \\ge N_0$. The odd numbers give $\\text{maxAvoidSize}(N) \\ge \\lceil N/2 \\rceil$."
     },
     {
       "id": "vandoorn",
       "title": "Van Doorn's Bound",
       "startLine": 47,
       "endLine": 53,
-      "summary": "Van Doorn's result: |A| ≥ 25N/28 forces a pair with a+b | ab."
+      "summary": "Van Doorn's result: |A| ≥ 25N/28 forces a pair with a+b | ab.",
+      "mathContext": "$|A| \\ge \\tfrac{25}{28} N \\implies \\exists a, b \\in A,\\, a \\ne b,\\, (a+b) \\mid (ab)$. Equivalently, $\\text{maxAvoidSize}(N) < \\tfrac{25}{28} N$ for large $N$. Gap: $\\tfrac{1}{2} \\le \\limsup \\tfrac{\\text{maxAvoidSize}(N)}{N} \\le \\tfrac{25}{28}$."
     },
     {
       "id": "variant",
       "title": "Factor-of-2 Variant",
       "startLine": 55,
       "endLine": 68,
-      "summary": "Variant conjecture with 2ab and unit-fraction equivalence axiom."
+      "summary": "Variant conjecture with 2ab and unit-fraction equivalence axiom.",
+      "mathContext": "$\\text{SumNotDvdTwoProd}(A) \\iff \\forall a, b \\in A,\\, a \\ne b \\implies (a+b) \\nmid (2ab)$. Conjecture: $\\forall \\varepsilon > 0,\\, |A| < \\varepsilon N$ for large $N$, i.e., $|A| = o(N)$."
     },
     {
       "id": "basic",
       "title": "Basic Properties",
       "startLine": 70,
       "endLine": 89,
-      "summary": "Proves SumNotDvdProd for empty, singleton, and subsets. States odd-numbers result."
+      "summary": "Proves SumNotDvdProd for empty, singleton, and subsets. States odd-numbers result.",
+      "mathContext": "$\\text{SumNotDvdProd}(\\emptyset)$ and $\\text{SumNotDvdProd}(\\{n\\})$ hold vacuously. $B \\subseteq A \\wedge \\text{SumNotDvdProd}(A) \\implies \\text{SumNotDvdProd}(B)$ (hereditary). Odd numbers $\\{1,3,5,\\ldots\\} \\cap [1,N]$ satisfy SumNotDvdProd since $2 \\mid (a+b)$ but $2 \\nmid (ab)$."
     }
   ],
   "conclusion": {
