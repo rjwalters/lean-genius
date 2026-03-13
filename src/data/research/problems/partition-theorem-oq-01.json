@@ -1,7 +1,7 @@
 {
   "slug": "partition-theorem-oq-01",
   "title": "Rogers-Ramanujan and Schur partition identities in Lean",
-  "phase": "NEW",
+  "phase": "DEEP_DIVE",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,26 +16,60 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-11T09:48:08.982Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "DEEP_DIVE",
+    "since": "2026-03-13T08:30:00.000Z",
+    "iteration": 3,
+    "focus": "Corrected Schur definition, extended verification, strict hierarchy",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove equivalence between decidable and noncomputable definitions; attempt bijective Schur proof",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "DEEP_DIVE: Extended RR verification to n=0..9, Schur to n=0..8. Discovered simplified Schur gap (uniform ≥3) diverges from true Schur identity at n=9. Created corrected schurGapFull definition with strengthened gap ≥4 for multiples of 3, verified n=0..9. Proved strict containment hierarchy, part properties, Full→Simplified containment. Total: 22 proved theorems + 8 named counts, 0 sorries, 3 axioms, 13 definitions.",
+    "builtItems": [
+      "PartitionDecidable.rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGap, schurMod: decidable partition set definitions",
+      "schurGapFull: corrected Schur gap with strengthened mod-3 condition",
+      "41 native_decide verifications (RR1 n=0..9, RR2 n=0..9, Schur n=0..8, corrected Schur n=0..9)",
+      "3 strict containment proofs (RR1⊂distinct, Schur⊂RR1, RR2⊂RR1)",
+      "3 part property theorems (mod5 nonzero, mod5 ≥2, coprime to 3)",
+      "schurGapFull_subset_schurGap: full Schur condition implies simplified",
+      "8 named partition count theorems (OEIS connection)",
+      "rr2_gap_implies_distinct, schur_gap_implies_distinct', schur_mod_implies_distinct"
+    ],
+    "insights": [
+      "Pairwise separation equivalence: for d≥1, sorted min gap d ⟺ Nodup ∧ all pairs separated by ≥d. Avoids noncomputable Multiset.sort.",
+      "Decidable predicates on Multiset: ∀ a ∈ M, ∀ b ∈ M, P a b is decidable, enabling Finset.filter + native_decide.",
+      "RR1 gap partitions of 5: only {[5],[4,1]} = 2 (not 3; [3,2] excluded by gap condition).",
+      "Schur gap ⊆ RR1 gap ⊆ distinct: strict containment hierarchy proved computationally for specific n.",
+      "Full proof requires q-series (Jacobi triple product) or bijections (Garsia-Milne involution, ~500+ lines).",
+      "CRITICAL: Simplified Schur gap (uniform ≥3) diverges from true Schur identity at n=9. The real condition requires gap ≥4 when a part ≡ 0 (mod 3). Corrected definition (schurGapFull) verifies through n=9.",
+      "RR2 mod5 parts are always ≥ 2 (parts ≡ 2,3 mod 5), Schur mod parts are coprime to 3.",
+      "The original axiom schur_partition_identity uses the simplified definition - should be restated with schurGapFull for mathematical correctness."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Restate schur_partition_identity axiom using schurGapFull for mathematical correctness",
+      "Prove equivalence between decidable and noncomputable partition set definitions",
+      "Attempt bijective proof for corrected Schur identity (Bressoud's proof)",
+      "Investigate q-series approach using Mathlib PowerSeries for Rogers-Ramanujan"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Decidable predicates with computational verification",
+      "status": "succeeded",
+      "description": "Define partition sets using decidable pairwise conditions, verify identities via native_decide for small n."
+    },
+    {
+      "name": "Corrected Schur gap definition",
+      "status": "succeeded",
+      "description": "Discovered simplified Schur gap diverges at n=9. Created schurGapFull with strengthened mod-3 gap condition. Verified n=0..9."
+    }
+  ],
   "tags": [
     "seeker-selected",
     "combinatorics",
@@ -49,7 +83,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-12T05:34:54.574Z",
+  "lastUpdate": "2026-03-13T08:45:00.000Z",
   "significance": 7,
   "tractability": 6
 }
