@@ -10,28 +10,35 @@ proved by direct coordinate computation in ℝ²?
 
 ## What This File Proves
 
-We prove the three "altitude foot on nine-point circle" results:
-  foot_a_on_ninePointCircle, foot_b_on_ninePointCircle, foot_c_on_ninePointCircle
+### Altitude Feet on Nine-Point Circle (3 axioms eliminated)
+We prove foot_a/b/c_on_ninePointCircle by clearing denominators (field_simp + ring).
 
-These were previously axiomatized because the coordinate algebra involves division
-by |BC|² in the projection formula AND division by the circumcenter denominator d.
-After clearing both denominators with field_simp, the identities reduce to
-polynomial ring equalities.
+### Equilateral Triangle Special Case
+R = 2r for equilateral triangles (circumradius = 2 × inradius).
 
-## Strategy
+### 3-4-5 Triangle Excircle Verification (NEW)
+All three excircle tangency relations verified numerically:
+- d(N, I_a) = R/2 + r_a = 29/4
+- d(N, I_b) = R/2 + r_b = 17/4
+- d(N, I_c) = R/2 + r_c = 13/4
 
-For each altitude foot H_k:
-1. Compute the squared distance |H_k - N|² by unfolding all definitions
-2. Clear denominators with field_simp (circumcenter denom d and |side|²)
-3. Verify the polynomial identity with ring
-4. Compare with R²/4 = |O - A|²/4 to conclude dist(N, H_k) = R/2
+### General Infrastructure (NEW)
+- area_pos: Triangle area is positive
+- semiperimeter_pos: Semiperimeter is positive
+- inradius_pos: Inradius is positive
 
-## Axioms Eliminated
+## Remaining Axioms (4)
+The four Feuerbach distance axioms remain for the general case:
+- feuerbach_incircle_distance: d(N,I) = |R/2 - r|
+- feuerbach_excircle_a/b/c_distance: d(N,I_k) = R/2 + r_k
 
-This file proves 3 of the 8 axioms in FeuerbachsTheorem.lean:
-- foot_a_on_ninePointCircle (axiom → theorem)
-- foot_b_on_ninePointCircle (axiom → theorem)
-- foot_c_on_ninePointCircle (axiom → theorem)
+### Why the General Case is Hard
+The incenter/excenter coordinates involve side lengths a,b,c = √(...).
+After squaring both sides, cross terms a·b = √(a²·b²) remain irrational.
+A general proof requires either:
+(a) Polynomial identity modulo constraints a² = P_a(coords)
+(b) Mathlib inner-product infrastructure
+(c) Algebraic elimination of cross-terms
 -/
 
 set_option linter.unusedVariables false
@@ -277,10 +284,183 @@ theorem equilateral_R_eq_2r_proved (s : ℝ) (hs : s > 0) :
   rw [equi_inradius]
   nlinarith [sqrt3_sq, sq_nonneg s, sq_nonneg (Real.sqrt 3)]
 
+-- ============================================================
+-- 3-4-5 TRIANGLE: EXCIRCLE DISTANCE VERIFICATION
+-- ============================================================
+
+-- We verify Feuerbach's excircle tangency for the 3-4-5 right triangle.
+-- For this triangle: R = 5/2, r_a = area/(s-a) = 6/1 = 6,
+--   r_b = area/(s-b) = 6/2 = 3, r_c = area/(s-c) = 6/3 = 2.
+-- Nine-point radius = R/2 = 5/4.
+-- Excircle tangency: d(N, I_k) = R/2 + r_k for each excircle.
+
+open FeuerbachsTheorem
+
+-- Side length helpers (re-proved since originals are private in main file)
+private lemma T345_side_a : triangle_345.side_a = 5 := by
+  unfold triangle_345 Triangle.side_a; simp only
+  have : ((0 : ℝ) - 3) ^ 2 + (4 - 0) ^ 2 = 5 ^ 2 := by norm_num
+  rw [this, Real.sqrt_sq (by norm_num : (5 : ℝ) ≥ 0)]
+
+private lemma T345_side_b : triangle_345.side_b = 4 := by
+  unfold triangle_345 Triangle.side_b; simp only
+  have : ((0 : ℝ) - 0) ^ 2 + (0 - 4) ^ 2 = 4 ^ 2 := by norm_num
+  rw [this, Real.sqrt_sq (by norm_num : (4 : ℝ) ≥ 0)]
+
+private lemma T345_side_c : triangle_345.side_c = 3 := by
+  unfold triangle_345 Triangle.side_c; simp only
+  have : ((3 : ℝ) - 0) ^ 2 + (0 - 0) ^ 2 = 3 ^ 2 := by norm_num
+  rw [this, Real.sqrt_sq (by norm_num : (3 : ℝ) ≥ 0)]
+
+/-- Excenter opposite A for 3-4-5 triangle.
+    I_a = (-a*Ax + b*Bx + c*Cx)/(-a+b+c) with a=5,b=4,c=3,
+    = (-5·0 + 4·3 + 3·0)/(-5+4+3), (-5·0 + 4·0 + 3·4)/(-5+4+3)
+    = (12/2, 12/2) = (6, 6) -/
+private lemma T345_excenter_a : triangle_345.excenter_a = (6, 6) := by
+  unfold Triangle.excenter_a
+  simp only [T345_side_a, T345_side_b, T345_side_c]
+  unfold triangle_345; simp only
+  exact Prod.ext (by norm_num) (by norm_num)
+
+/-- Exradius opposite A for 3-4-5 triangle: r_a = area/(s-a) = 6/1 = 6 -/
+private lemma T345_exradius_a : triangle_345.exradius_a = 6 := by
+  unfold Triangle.exradius_a
+  rw [triangle_345_area, triangle_345_semiperimeter]
+  simp only [T345_side_a]
+  norm_num
+
+/-- Excircle A tangency verified for 3-4-5 triangle:
+    d(N, I_a) = √((6-3/4)² + (6-1)²) = √(441/16 + 25) = √(841/16) = 29/4
+    R/2 + r_a = 5/4 + 6 = 29/4 ✓ -/
+theorem T345_feuerbach_excircle_a :
+    dist2 triangle_345.ninePointCenter triangle_345.excenter_a =
+    triangle_345.ninePointRadius + triangle_345.exradius_a := by
+  rw [triangle_345_ninePointCenter, T345_excenter_a,
+      triangle_345_ninePointRadius, T345_exradius_a]
+  unfold dist2; simp only
+  have hlhs : ((6 : ℝ) - 3/4) ^ 2 + (6 - 1) ^ 2 = (29/4) ^ 2 := by norm_num
+  rw [hlhs, Real.sqrt_sq (by norm_num : (29/4 : ℝ) ≥ 0)]
+  norm_num
+
+/-- Excenter opposite B for 3-4-5 triangle:
+    I_b = (a*Ax - b*Bx + c*Cx)/(a-b+c) = (5·0 - 4·3 + 3·0)/4 = -3
+    I_b_y = (5·0 - 4·0 + 3·4)/4 = 3.  So I_b = (-3, 3). -/
+private lemma T345_excenter_b : triangle_345.excenter_b = (-3, 3) := by
+  unfold Triangle.excenter_b
+  simp only [T345_side_a, T345_side_b, T345_side_c]
+  unfold triangle_345; simp only
+  exact Prod.ext (by norm_num) (by norm_num)
+
+/-- Exradius opposite B: r_b = area/(s-b) = 6/2 = 3 -/
+private lemma T345_exradius_b : triangle_345.exradius_b = 3 := by
+  unfold Triangle.exradius_b
+  rw [triangle_345_area, triangle_345_semiperimeter, T345_side_b]
+  norm_num
+
+/-- Excircle B tangency verified for 3-4-5 triangle:
+    d(N, I_b) = √((-3-3/4)² + (3-1)²) = √(225/16 + 4) = √(289/16) = 17/4
+    R/2 + r_b = 5/4 + 3 = 17/4 ✓ -/
+theorem T345_feuerbach_excircle_b :
+    dist2 triangle_345.ninePointCenter triangle_345.excenter_b =
+    triangle_345.ninePointRadius + triangle_345.exradius_b := by
+  rw [triangle_345_ninePointCenter, T345_excenter_b,
+      triangle_345_ninePointRadius, T345_exradius_b]
+  unfold dist2; simp only
+  have hlhs : ((-3 : ℝ) - 3/4) ^ 2 + (3 - 1) ^ 2 = (17/4) ^ 2 := by norm_num
+  rw [hlhs, Real.sqrt_sq (by norm_num : (17/4 : ℝ) ≥ 0)]
+  norm_num
+
+/-- Excenter opposite C for 3-4-5 triangle:
+    I_c = (a*Ax + b*Bx - c*Cx)/(a+b-c) = (5·0 + 4·3 - 3·0)/(5+4-3) = 12/6 = 2
+    I_c_y = (5·0 + 4·0 - 3·4)/(5+4-3) = -12/6 = -2
+    So I_c = (2, -2) -/
+private lemma T345_excenter_c : triangle_345.excenter_c = (2, -2) := by
+  unfold Triangle.excenter_c
+  simp only [T345_side_a, T345_side_b, T345_side_c]
+  unfold triangle_345; simp only
+  exact Prod.ext (by norm_num) (by norm_num)
+
+/-- Exradius opposite C: r_c = area/(s-c) = 6/3 = 2 -/
+private lemma T345_exradius_c : triangle_345.exradius_c = 2 := by
+  unfold Triangle.exradius_c
+  rw [triangle_345_area, triangle_345_semiperimeter, T345_side_c]
+  norm_num
+
+/-- Excircle C tangency verified for 3-4-5 triangle:
+    d(N, I_c) = √((2-3/4)² + (-2-1)²) = √(25/16 + 9) = √(169/16) = 13/4
+    R/2 + r_c = 5/4 + 2 = 13/4 ✓ -/
+theorem T345_feuerbach_excircle_c :
+    dist2 triangle_345.ninePointCenter triangle_345.excenter_c =
+    triangle_345.ninePointRadius + triangle_345.exradius_c := by
+  rw [triangle_345_ninePointCenter, T345_excenter_c,
+      triangle_345_ninePointRadius, T345_exradius_c]
+  unfold dist2; simp only
+  have hlhs : ((2 : ℝ) - 3/4) ^ 2 + ((-2 : ℝ) - 1) ^ 2 = (13/4) ^ 2 := by norm_num
+  rw [hlhs, Real.sqrt_sq (by norm_num : (13/4 : ℝ) ≥ 0)]
+  norm_num
+
+-- ============================================================
+-- GENERAL INFRASTRUCTURE: Euler's Formula OI² = R² - 2Rr
+-- ============================================================
+
+-- The classical approach to Feuerbach uses Euler's formula for the
+-- distance from circumcenter O to incenter I:
+--   OI² = R² - 2Rr
+-- and the nine-point variant:
+--   NI = R/2 - r  (Feuerbach's theorem for incircle)
+--
+-- The key algebraic obstacle for the GENERAL proof in coordinates:
+-- The incenter coordinates involve side lengths a, b, c which are
+-- square roots. Products like a·b cannot be simplified by `ring`.
+-- A full general proof would require either:
+--   (a) Working with squared expressions and proving auxiliary polynomial
+--       identities modulo constraints a² = P_a(coords), etc.
+--   (b) Using Mathlib's inner product / norm infrastructure instead
+--       of our custom coordinate geometry
+--   (c) An algebraic simplification that eliminates all cross-terms
+
+-- For now we prove key supporting results and verify numerically.
+
+/-- The area of a nondegenerate triangle is positive. -/
+theorem area_pos (T : Triangle) : T.area > 0 := by
+  unfold Triangle.area
+  have h := T.nondegenerate
+  have : (T.B.1 - T.A.1) * (T.C.2 - T.A.2) - (T.C.1 - T.A.1) * (T.B.2 - T.A.2) ≠ 0 := by
+    intro heq; exact h heq
+  exact div_pos (abs_pos.mpr this) (by norm_num : (0 : ℝ) < 2)
+
+/-- The semiperimeter is positive. -/
+theorem semiperimeter_pos (T : Triangle) : T.semiperimeter > 0 := by
+  unfold Triangle.semiperimeter Triangle.side_a Triangle.side_b Triangle.side_c
+  have ha : 0 ≤ Real.sqrt ((T.C.1 - T.B.1) ^ 2 + (T.C.2 - T.B.2) ^ 2) := Real.sqrt_nonneg _
+  have hb : 0 ≤ Real.sqrt ((T.A.1 - T.C.1) ^ 2 + (T.A.2 - T.C.2) ^ 2) := Real.sqrt_nonneg _
+  have hc : 0 ≤ Real.sqrt ((T.B.1 - T.A.1) ^ 2 + (T.B.2 - T.A.2) ^ 2) := Real.sqrt_nonneg _
+  -- At least one side has positive length (since triangle is nondegenerate)
+  -- Side c = |AB| > 0 because if A=B then cross product simplifies
+  have hc_pos : 0 < Real.sqrt ((T.B.1 - T.A.1) ^ 2 + (T.B.2 - T.A.2) ^ 2) := by
+    apply Real.sqrt_pos_of_pos
+    by_contra h
+    push_neg at h
+    have hx : T.B.1 = T.A.1 := by nlinarith [sq_nonneg (T.B.1 - T.A.1), sq_nonneg (T.B.2 - T.A.2)]
+    have hy : T.B.2 = T.A.2 := by nlinarith [sq_nonneg (T.B.1 - T.A.1), sq_nonneg (T.B.2 - T.A.2)]
+    exact T.nondegenerate (by rw [hx, hy]; ring)
+  linarith
+
+/-- The inradius is positive. -/
+theorem inradius_pos (T : Triangle) : T.inradius > 0 := by
+  unfold Triangle.inradius
+  exact div_pos (area_pos T) (semiperimeter_pos T)
+
 -- Type-check results
 #check @foot_a_on_ninePointCircle_proved
 #check @foot_b_on_ninePointCircle_proved
 #check @foot_c_on_ninePointCircle_proved
 #check @equilateral_R_eq_2r_proved
+#check @T345_feuerbach_excircle_a
+#check @T345_feuerbach_excircle_b
+#check @T345_feuerbach_excircle_c
+#check @area_pos
+#check @semiperimeter_pos
+#check @inradius_pos
 
 end FeuerbachsTheoremOQ01

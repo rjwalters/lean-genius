@@ -1,14 +1,17 @@
 {
   "slug": "feuerbachs-theorem-oq-01",
   "title": "Prove Feuerbach distance relations via coordinate computation",
-  "phase": "DEEP_DIVE",
+  "phase": "PROGRESS",
   "status": "active",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
     "formal": "dist2 T.ninePointCenter T.incenter = abs (T.ninePointRadius - T.inradius)",
     "plain": "The nine-point circle is tangent to the incircle and all three excircles. Core distance relations: |NI| = |R/2 - r| and |NI_a| = R/2 + r_a.",
-    "whyMatters": ["Wiedijk #29", "Classical Euclidean geometry masterpiece"]
+    "whyMatters": [
+      "Wiedijk #29",
+      "Classical Euclidean geometry masterpiece"
+    ]
   },
   "knownResults": {
     "proven": [
@@ -25,10 +28,10 @@
     "goal": "Eliminate remaining 4 axioms (Feuerbach distance relations)"
   },
   "currentState": {
-    "phase": "DEEP_DIVE",
+    "phase": "PROGRESS",
     "since": "2026-03-13T07:00:00.000Z",
     "iteration": 2,
-    "focus": "Core Feuerbach distance relations",
+    "focus": "Excircle tangency verification and infrastructure",
     "blockers": [
       "Incenter formula uses sqrt side lengths - nested sqrt makes field_simp/ring approach intractable",
       "Need alternative approach: complex coordinates, inversive geometry, or power-of-point"
@@ -41,25 +44,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 4/8 axioms. Proved altitude feet on nine-point circle (field_simp + ring on polynomial identity after clearing denominators). Proved equilateral R=2r by computing R²=(2r)²=s²/3. Remaining 4 axioms are the Feuerbach distance relations which involve the incenter (defined via sqrt side lengths) - fundamentally harder than the rational coordinate proofs.",
+    "progressSummary": "PROGRESS: Verified all 3 excircle tangency relations for 3-4-5 triangle. Proved area_pos, semiperimeter_pos, inradius_pos. Created Aristotle companion file with 15 provable supporting lemmas. Fixed pre-existing Mathlib v4.26 build breakage.",
     "builtItems": [
-      "bc_sq_ne_zero, ca_sq_ne_zero, ab_sq_ne_zero helper lemmas",
-      "foot_a/b/c_on_ninePointCircle theorems (were axioms)",
-      "equilateral_R_eq_2r theorem (was axiom)"
+      "T345_feuerbach_excircle_a: d(N,I_a) = 29/4 = R/2 + r_a verified",
+      "T345_feuerbach_excircle_b: d(N,I_b) = 17/4 = R/2 + r_b verified",
+      "T345_feuerbach_excircle_c: d(N,I_c) = 13/4 = R/2 + r_c verified",
+      "area_pos: Triangle area is positive (general)",
+      "semiperimeter_pos: Semiperimeter is positive (general)",
+      "inradius_pos: Inradius is positive (general)",
+      "FeuerbachsTheoremOQ01Aristotle.lean: 15 lemma targets for automated proof search"
     ],
     "insights": [
-      "Altitude feet proofs reduce to polynomial identities via field_simp after clearing |BC|² and circumcenter denominators",
-      "Equilateral proof needs eq_of_sq_eq_of_nonneg to handle sqrt comparison",
-      "Feuerbach distance relations involve incenter which uses sqrt(side²) - cannot be cleared by field_simp",
-      "The incenter I = (a*A + b*B + c*C)/(a+b+c) where a,b,c = sqrt(...) makes NI² non-polynomial",
-      "Possible approaches: (1) express NI² using Euler's formula OI²=R²-2Rr, (2) complex coordinates, (3) squared incenter"
+      "General Feuerbach distance proofs blocked by sqrt in side lengths: incenter coords involve a=sqrt(...), cross terms a*b resist ring tactic",
+      "NI = R/2 - r (Feuerbach incircle tangency) follows from Euler identity, but proving either requires eliminating sqrt",
+      "Excircle tangency d(N,I_k) = R/2 + r_k verified numerically for 3-4-5 triangle (all 3 cases)",
+      "The equilateral_R_eq_2r proof in main file was broken by Mathlib v4.26 upgrade (dist2_sq unfold change) - independently proved in OQ01",
+      "Approach for general case: introduce a^2, b^2, c^2 as polynomial constraints and use nlinarith - untested but promising"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Try Euler's formula approach: OI² = R² - 2Rr can be proved as polynomial identity",
-      "Then derive NI from N=(O+H)/2 relationship",
-      "Consider creating incenter_sq or incenter without sqrt for tractable computation",
-      "Consider splitting problem: prove distance relations as a new file with different definitions"
+      "Try proving general Feuerbach via polynomial identity with a^2/b^2/c^2 constraints",
+      "Wait for Aristotle results on companion file lemmas",
+      "Consider Mathlib inner-product approach instead of coordinate geometry"
     ]
   },
   "approaches": [
@@ -80,10 +86,14 @@
     "triangle",
     "circle"
   ],
-  "relatedProofs": ["feuerbachs-theorem"],
+  "relatedProofs": [
+    "feuerbachs-theorem"
+  ],
   "references": {
     "papers": [],
-    "urls": ["https://en.wikipedia.org/wiki/Feuerbach_point"],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Feuerbach_point"
+    ],
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
