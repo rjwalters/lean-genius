@@ -19,20 +19,22 @@
     "phase": "DEEP_DIVE",
     "since": "2026-03-12",
     "iteration": 4,
-    "focus": "Built grid Fintype infrastructure (Part XXII), 5 grid lemmas proved",
-    "activeApproach": "Grid infrastructure built; remaining gap is 2 grid geometry lemmas + composition proof",
+    "focus": "Built radial extension + grid infrastructure for eliminating tucker_disk_approx_zero axiom",
+    "activeApproach": "Radial extension trick: extend g from disk to square, grid [-1,1]² for Tucker",
     "blockers": [
-      "Grid Fintype instantiation requires ~400+ lines of Lean4 Nat↔ℝ casting boilerplate (not mathematical insight)"
+      "radialExtend_continuous: piecewise continuity proof (both branches agree on S¹)",
+      "grid_edge_dist: Nat↔ℝ cast arithmetic for adjacent Fin values",
+      "Main composition: construct labeling, apply Tucker, connect to analytical results"
     ],
-    "nextAction": "Consider Aristotle companion file for grid boilerplate lemmas, or dedicated builder session for Fintype infrastructure",
+    "nextAction": "Complete the 3 remaining sorries to eliminate tucker_disk_approx_zero axiom",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
-      "approachesTried": 1
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Grid infrastructure built (Part XXII). 6 definitions + 5 proved lemmas + 2 sorry lemmas (gridMesh, gridDense). Remaining gap to eliminate tucker_disk_approx_zero is now well-defined.",
+    "progressSummary": "PROGRESS: Built radial extension proof architecture (Parts XXII-XXIII, ~340 lines). Proved: radialExtend_odd_outside, radialExtend_zero_gives_disk_zero, closedSquare_isCompact, mesh_refinement_square, gridAntipodalFin_eq_neg, gridBoundary_euclidNormSq_ge_one, h=0 edge case of main theorem. 3 sorries remain to eliminate tucker_disk_approx_zero axiom.",
     "builtItems": [
       "non_dominant_at_zero_bound_snd (symmetric IVT bound, Part XX)",
       "complementary_edge_approx_dominant_fst/snd (corrected IVT+dominant theorems)",
@@ -41,13 +43,15 @@
       "continuous_on_disk_uniformContinuousOn (uniform continuity on D²)",
       "disk_continuity_bound (ε-δ form of uniform continuity)",
       "mesh_refinement_principle (mesh→0 implies approximate zeros)",
-      "gridCoord, GridPoint, gridToReal: coordinate mapping from Fin(2N+1)² to [-1,1]²",
-      "gridEdge, gridBoundary, gridAntipodal: combinatorial grid infrastructure",
-      "gridLabel: composition of g with gridToReal and dominantComponentLabel",
-      "gridCoord_zero, gridCoord_max: boundary coordinate values (proved)",
-      "gridCoord_diff_le: adjacent grid coordinates differ by ≤ 1/N (proved)",
-      "gridAntipodal_neg: antipodal map = negation in real coordinates (proved)",
-      "gridBoundary_on_circle: boundary points have |coord| = 1 (proved)"
+      "radialExtend: extends g from D² to [-1,1]² via radial projection (freezes S¹ values)",
+      "radialExtend_odd_outside: h is odd for ‖x‖₂ ≥ 1 when g is odd on S¹",
+      "radialExtend_zero_gives_disk_zero: converts h-zero to g-zero in D̄²",
+      "closedSquare_isCompact: [-1,1]² = closedBall 0 1 in L∞ norm",
+      "mesh_refinement_square: analog of mesh_refinement_principle for [-1,1]²",
+      "gridVertexFin/gridBoundaryFin/gridEdgesFin/gridAntipodalFin: Fin-based grid on [-1,1]²",
+      "gridAntipodalFin_eq_neg: antipodal map = negation in ℝ² (via Fin.rev)",
+      "gridBoundary_euclidNormSq_ge_one: boundary vertices have Euclidean norm ≥ 1",
+      "tucker_disk_approx_zero_proved: main theorem with h=0 edge case completed"
     ],
     "insights": [
       "CRITICAL: axiom complementary_edge_gives_approximate_zero was FALSE. Counterexample: g(x,y)=(x,y), u=(0.01,1), v=(-0.01,1). The bound δ*C ≈ 0.08 but |g(w).2| ≥ 0.98 for any w near u.",
@@ -56,17 +60,16 @@
       "The only remaining axiom gap is tuckers_lemma (deep combinatorial, hard) and tucker_disk_approx_zero (needs grid Fintype instance, ~200 lines boilerplate).",
       "uniform continuity on compact D² is the key analytical bridge: CompactSpace → UniformContinuousOn → ε-δ bounds on function variation.",
       "Grid Fintype boilerplate (Fin(2N+1)×Fin(2N+1), edges, antipodal map) involves heavy Nat↔ℝ casting. Lean4 exact_mod_cast/Fin.val handling makes this ~400 lines rather than ~200. Not mathematically hard, just tedious.",
-      "gridEdge definition needed ∧ not ∨ for Nat subtraction (∨ is always true for Nat subtraction)",
-      "gridCoord_diff_le proof: key trick is lifting to ℤ via omega, then exact_mod_cast to ℝ",
-      "gridAntipodal_neg proof: Nat.cast_sub + push_cast + ring handles the casting chain",
-      "gridBoundary_on_circle: proved via helper lemmas gridCoord_zero and gridCoord_max"
+      "KEY INSIGHT: radial extension trick avoids gridding the disk directly. Extend g to [-1,1]² by g(x/‖x‖) outside D̄². This makes h odd for ‖x‖₂ ≥ 1 (boundary of [-1,1]² has ‖x‖₂ ≥ 1). Grid the square, apply Tucker, then convert back.",
+      "The Prod norm/dist in Mathlib is L∞ (max norm), not Euclidean. Must use custom euclidNormSq/euclidNorm for disk membership.",
+      "When h vanishes at a grid vertex, we get immediate zero: either inside disk (direct) or outside (project to S¹)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove gridMesh: Prod.dist bound from component bounds (needs √2 estimate, ~20 lines)",
-      "Prove gridDense: Pigeonhole on grid to find nearby point (~30 lines)",
-      "Build gridLabel_antipodal: dominant component labeling satisfies Tucker antipodal condition",
-      "Compose Tucker → complementary edge → complementary_edge_approx_dominant → mesh_refinement_principle"
+      "Prove radialExtend_continuous: piecewise continuity, both branches agree at euclidNormSq = 1",
+      "Prove grid_edge_dist: adjacent Fin values → 1/N distance in Prod metric",
+      "Complete main theorem composition: construct SignedLabeling from dominantComponentLabel, verify Tucker antipodal condition, apply Tucker, connect complementary edge to mesh_refinement_square",
+      "Once all 3 sorries filled, replace axiom tucker_disk_approx_zero with tucker_disk_approx_zero_proved"
     ],
     "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-03\n\n## Problem Understanding\n\nThe 2D Borsuk-Ulam theorem proved via Tucker's lemma. File has main theorem\n`borsuk_ulam_2d_corrected` with complete proof chain modulo axioms.\n\n## Key Finding: False Axiom\n\n`complementary_edge_gives_approximate_zero` was FALSE as stated.\nCounterexample: g(x,y)=(x,y), u=(0.01,1), v=(-0.01,1), δ=0.02, k=0.\nThe bound 0.02·(2·sup) ≈ 0.08 but ‖g(w)‖₁ ≥ 0.98 for any w near u.\n\nFix: require k to be the dominant component (as Tucker's labeling guarantees).\n\n## Axiom Status (after this session)\n\n- `tuckers_lemma` — HARD to eliminate (deep combinatorial, path-following)\n- `tucker_disk_approx_zero` — TRACTABLE to eliminate (grid Fintype + our proved theorems)\n- ~~`complementary_edge_gives_approximate_zero`~~ — ELIMINATED (was false, replaced with proved theorems)\n\n## Dead Ends\n\n- The original axiom bound δ·(2·sup{‖g‖+1}) is too weak without dominant-component hypothesis\n"
   },
