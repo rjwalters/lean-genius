@@ -354,7 +354,7 @@ theorem igp_over_function_field_is_solved : True := by
 The IGP is closely connected to several other major results:
 -/
 
-/--
+/-
 Connection to Abel-Ruffini: the unsolvability of the quintic.
 
 Abel-Ruffini showed that S₅ (which has A₅ as a non-solvable composition factor)
@@ -382,45 +382,41 @@ Abel-Ruffini asks about STRUCTURE of the Galois group when polynomial is solvabl
   Abel-Ruffini (its Galois group is the Frobenius group F₂₀ ≅ ℤ/5ℤ ⋊ (ℤ/5ℤ)ˣ).
 -/
 
-set_option linter.unusedSimpArgs false in
 /-- X⁵ - 2 is irreducible over ℤ by Eisenstein's criterion at p = 2. -/
-private theorem x5_sub_2_irreducible_int :
+theorem x5_sub_2_irreducible_int :
     Irreducible (X ^ 5 - C (2 : ℤ) : Polynomial ℤ) := by
   apply Polynomial.irreducible_of_eisenstein_criterion (P := Ideal.span {2})
   · -- (2) is a prime ideal in ℤ
     rw [Ideal.span_singleton_prime (show (2 : ℤ) ≠ 0 by norm_num)]
-    exact Int.prime_iff_natAbs_prime.mpr (by norm_num)
+    exact Int.prime_iff_natAbs_prime.mpr (by decide)
   · -- leadingCoeff ∉ (2): leading coefficient is 1
-    rw [show (X ^ 5 - C (2 : ℤ) : Polynomial ℤ).leadingCoeff = 1 from by
-      simp [Polynomial.leadingCoeff_X_pow_sub_C (by norm_num : (5 : ℕ) ≠ 0)]]
-    simp [Ideal.mem_span_singleton]
+    have : (X ^ 5 - C (2 : ℤ) : Polynomial ℤ).leadingCoeff = 1 := by
+      exact Polynomial.leadingCoeff_X_pow_sub_C (show 0 < 5 by omega)
+    rw [this]; simp [Ideal.mem_span_singleton]
   · -- ∀ n < degree, coeff n ∈ (2)
     intro n hn
     simp only [Ideal.mem_span_singleton]
-    have hd : (X ^ 5 - C (2 : ℤ) : Polynomial ℤ).degree = 5 := by
-      exact Polynomial.degree_X_pow_sub_C (by norm_num : (5 : ℕ) ≠ 0) (2 : ℤ)
+    have hd : (X ^ 5 - C (2 : ℤ) : Polynomial ℤ).degree = 5 :=
+      Polynomial.degree_X_pow_sub_C (show 0 < 5 by omega) (2 : ℤ)
     rw [hd] at hn
-    have hn' : n ≤ 4 := by
-      exact_mod_cast Nat.lt_of_lt_pred (show n < 5 from WithBot.coe_lt_coe.mp hn)
-      <;> omega
+    have hn' : n < 5 := WithBot.coe_lt_coe.mp hn
     interval_cases n <;>
-      simp [Polynomial.coeff_sub, Polynomial.coeff_one, Polynomial.coeff_X_pow]
+      simp [Polynomial.coeff_sub, Polynomial.coeff_X_pow]
   · -- 0 < degree
-    exact Polynomial.degree_X_pow_sub_C (by norm_num : (5 : ℕ) ≠ 0) (2 : ℤ) ▸
-      (by norm_num : (0 : WithBot ℕ) < 5)
+    have := Polynomial.degree_X_pow_sub_C (show 0 < 5 by omega) (2 : ℤ)
+    rw [this]; norm_num
   · -- coeff 0 ∉ (2)²
     rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton]
     simp [Polynomial.coeff_sub, Polynomial.coeff_X_pow]
-    norm_num
   · -- isPrimitive: X⁵ - 2 is monic, hence primitive
-    exact (Polynomial.monic_X_pow_sub_C (2 : ℤ) (by norm_num : (5 : ℕ) ≠ 0)).isPrimitive
+    exact (Polynomial.monic_X_pow_sub_C (2 : ℤ) (show (5 : ℕ) ≠ 0 by omega)).isPrimitive
 
 theorem connection_to_abel_ruffini :
     ∃ (p : Polynomial ℚ), Irreducible p ∧ p.natDegree = 5 := by
   refine ⟨X ^ 5 - C (2 : ℚ), ?_, ?_⟩
   · -- Transfer irreducibility from ℤ to ℚ via Gauss's lemma
     have hprim : (X ^ 5 - C (2 : ℤ) : Polynomial ℤ).IsPrimitive :=
-      (Polynomial.monic_X_pow_sub_C (2 : ℤ) (by norm_num : (5 : ℕ) ≠ 0)).isPrimitive
+      (Polynomial.monic_X_pow_sub_C (2 : ℤ) (show (5 : ℕ) ≠ 0 by omega)).isPrimitive
     rw [show (X ^ 5 - C (2 : ℚ) : Polynomial ℚ) =
       Polynomial.map (Int.castRingHom ℚ) (X ^ 5 - C (2 : ℤ)) from by
       simp [Polynomial.map_sub, Polynomial.map_pow]; norm_cast]
@@ -476,6 +472,123 @@ theorem solvable_iff_solvable_galois_group
 3. Formalize at least one case of A₅ realization
 
 **Theorem Count**: 14 proven theorems/lemmas, 2 axioms (for deep classical results)
+**Sorries**: 2 (1 open problem + 1 theorem needing Hilbert irreducibility)
+-/
+
+/-
+## Part X: Explicit Realizability via Cyclotomic Fields
+
+We bridge the abstract cyclotomic Galois group computation to the IGP framework.
+The key theorem: every group of the form `(ZMod n)ˣ` is explicitly realizable as
+a Galois group over ℚ, using the splitting field of the cyclotomic polynomial.
+
+This is the first concrete family of groups we can formally prove are realizable.
+-/
+
+/-- The splitting field of the n-th cyclotomic polynomial over ℚ is a Galois extension.
+
+Proof: The cyclotomic polynomial `Φₙ(X)` is irreducible over ℚ (Gauss, 1801),
+hence separable in characteristic 0. Any splitting field of a separable polynomial
+is a Galois extension (separable + normal = Galois). -/
+instance cyclotomic_splitting_field_isGalois (n : ℕ) [NeZero n] :
+    IsGalois ℚ (Polynomial.cyclotomic n ℚ).SplittingField :=
+  IsGalois.of_separable_splitting_field
+    (cyclotomic_irreducible_over_rationals n).separable
+
+/-- **Cyclotomic Realizability**: Every group of the form `(ZMod n)ˣ` is realizable
+as the Galois group of a concrete Galois extension of ℚ.
+
+This bridges the cyclotomic Galois group computation to the IGP framework:
+- The splitting field of `Φₙ(X)` provides the Galois extension K/ℚ
+- `galCyclotomicEquivUnitsZMod` provides the isomorphism Gal(K/ℚ) ≅ (ZMod n)ˣ
+
+Combined with the cardinality results (Part IV), this gives explicit realizations
+of cyclic groups: C₂ via n=4, C₄ via n=5, C₆ via n=7, and C_{p-1} via any prime p. -/
+theorem units_zmod_realizable (n : ℕ) [NeZero n] :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), Nonempty ((ZMod n)ˣ ≃* (K ≃ₐ[ℚ] K)) :=
+  ⟨(Polynomial.cyclotomic n ℚ).SplittingField, inferInstance, inferInstance,
+   inferInstance, cyclotomic_splitting_field_isGalois n,
+   ⟨(cyclotomic_galois_group_iso_units_zmod n).symm⟩⟩
+
+/-- C₂ is realizable as a Galois group over ℚ.
+
+The 4th cyclotomic field ℚ(i) has `|(ZMod 4)ˣ| = 2` (from `units_zmod4_card`),
+so `Gal(ℚ(i)/ℚ) ≅ (ZMod 4)ˣ ≅ C₂`. This is the simplest non-trivial case. -/
+theorem c2_realizable :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), Nonempty ((ZMod 4)ˣ ≃* (K ≃ₐ[ℚ] K)) :=
+  units_zmod_realizable 4
+
+/-- C₄ is realizable as a Galois group over ℚ.
+
+The 5th cyclotomic field ℚ(ζ₅) has `|(ZMod 5)ˣ| = 4` (from `units_zmod5_card`),
+so `Gal(ℚ(ζ₅)/ℚ) ≅ (ZMod 5)ˣ ≅ C₄`. -/
+theorem c4_realizable :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), Nonempty ((ZMod 5)ˣ ≃* (K ≃ₐ[ℚ] K)) :=
+  units_zmod_realizable 5
+
+/-- C₆ is realizable as a Galois group over ℚ.
+
+The 7th cyclotomic field ℚ(ζ₇) has `|(ZMod 7)ˣ| = 6` (from `units_zmod7_card`),
+so `Gal(ℚ(ζ₇)/ℚ) ≅ (ZMod 7)ˣ ≅ C₆`. -/
+theorem c6_realizable :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), Nonempty ((ZMod 7)ˣ ≃* (K ≃ₐ[ℚ] K)) :=
+  units_zmod_realizable 7
+
+/-- For any prime p, the group `(ZMod p)ˣ` (cyclic of order p-1) is realizable.
+
+Combined with `units_zmodPrime_card`, this shows: for every prime p,
+there is a Galois extension K/ℚ with `|Gal(K/ℚ)| = p - 1` and
+`Gal(K/ℚ)` cyclic. This gives cyclic groups C₂, C₄, C₆, C₁₀, C₁₂, C₁₆, ... -/
+theorem cyclic_prime_minus_one_realizable (p : ℕ) [hp : Fact p.Prime] :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), Nonempty ((ZMod p)ˣ ≃* (K ≃ₐ[ℚ] K)) :=
+  units_zmod_realizable p
+
+/-
+## Part XI: The Irreducible Quintic and Non-Solvability
+
+We combine the irreducibility of X⁵ - 2 (Part IX) with the splitting field
+Galois instance to demonstrate a concrete non-abelian Galois extension of ℚ.
+
+The splitting field of X⁵ - 2 has degree 20 over ℚ and Galois group isomorphic
+to the Frobenius group F₂₀ ≅ ℤ/5ℤ ⋊ (ℤ/5ℤ)ˣ. This group is solvable (being a
+semidirect product of cyclic groups), so the polynomial IS solvable by radicals.
+
+For a truly non-solvable example, one would need x⁵ - 5x + 12 (Galois group A₅)
+or a generic quintic (Galois group S₅).
+-/
+
+/-- X⁵ - 2 is irreducible over ℚ.
+
+Transfers irreducibility from ℤ to ℚ via Gauss's lemma: X⁵ - 2 is monic (hence
+primitive) and irreducible over ℤ (by Eisenstein at p=2), so it is irreducible
+over ℚ. -/
+theorem x5_sub_2_irreducible_rat :
+    Irreducible (X ^ 5 - C (2 : ℚ) : Polynomial ℚ) := by
+  have hprim : (X ^ 5 - C (2 : ℤ) : Polynomial ℤ).IsPrimitive :=
+    (Polynomial.monic_X_pow_sub_C (2 : ℤ) (show (5 : ℕ) ≠ 0 by omega)).isPrimitive
+  rw [show (X ^ 5 - C (2 : ℚ) : Polynomial ℚ) =
+    Polynomial.map (Int.castRingHom ℚ) (X ^ 5 - C (2 : ℤ)) from by
+    simp [Polynomial.map_sub, Polynomial.map_pow]; norm_cast]
+  exact (IsPrimitive.Int.irreducible_iff_irreducible_map_cast hprim).mp
+    x5_sub_2_irreducible_int
+
+/-
+## Summary Update
+
+### What We've Shown (Updated):
+1-12. (Previous results, see Part IX summary)
+13. **Cyclotomic splitting fields are Galois** (proven: separable + normal)
+14. **Cyclotomic realizability**: (ZMod n)ˣ is a Galois group over ℚ for all n ≥ 1 (proven)
+15. **Specific realizations**: C₂, C₄, C₆ as Galois groups (proven, corollaries)
+16. **Prime cyclotomic realizability**: C_{p-1} for every prime p (proven)
+17. **X⁵ - 2 irreducible over ℚ** (proven, extracted as standalone theorem)
+
+**Theorem Count**: 20 proven theorems/lemmas, 2 axioms (for deep classical results)
 **Sorries**: 2 (1 open problem + 1 theorem needing Hilbert irreducibility)
 -/
 
