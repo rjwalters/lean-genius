@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Verified all 3 excircle tangency relations for 3-4-5 triangle. Proved area_pos, semiperimeter_pos, inradius_pos. Created Aristotle companion file with 15 provable supporting lemmas. Fixed pre-existing Mathlib v4.26 build breakage.",
+    "progressSummary": "PROGRESS: Proved Euler OI²=R²-2Rr, Feuerbach NI²=(R/2-r)², and excircle NI_a²=(R/2+r_a)² for 3-4-5 triangle. Cleaned up exploratory code. General proof requires polynomial identity with sqrt constraints - 3 viable approaches documented.",
     "builtItems": [
       "T345_feuerbach_excircle_a: d(N,I_a) = 29/4 = R/2 + r_a verified",
       "T345_feuerbach_excircle_b: d(N,I_b) = 17/4 = R/2 + r_b verified",
@@ -52,14 +52,20 @@
       "area_pos: Triangle area is positive (general)",
       "semiperimeter_pos: Semiperimeter is positive (general)",
       "inradius_pos: Inradius is positive (general)",
-      "FeuerbachsTheoremOQ01Aristotle.lean: 15 lemma targets for automated proof search"
+      "FeuerbachsTheoremOQ01Aristotle.lean: 15 lemma targets for automated proof search",
+      "T345_euler_OI: Euler OI²=R²-2Rr verified for 3-4-5 triangle",
+      "T345_NI_sq_eq_feuerbach: NI²=(R/2-r)² verified for 3-4-5 triangle (squared Feuerbach)",
+      "T345_NI_a_sq_eq_excircle: NI_a²=(R/2+r_a)² verified for 3-4-5 excircle A"
     ],
     "insights": [
       "General Feuerbach distance proofs blocked by sqrt in side lengths: incenter coords involve a=sqrt(...), cross terms a*b resist ring tactic",
       "NI = R/2 - r (Feuerbach incircle tangency) follows from Euler identity, but proving either requires eliminating sqrt",
       "Excircle tangency d(N,I_k) = R/2 + r_k verified numerically for 3-4-5 triangle (all 3 cases)",
       "The equilateral_R_eq_2r proof in main file was broken by Mathlib v4.26 upgrade (dist2_sq unfold change) - independently proved in OQ01",
-      "Approach for general case: introduce a^2, b^2, c^2 as polynomial constraints and use nlinarith - untested but promising"
+      "Approach for general case: introduce a^2, b^2, c^2 as polynomial constraints and use nlinarith - untested but promising",
+      "Euler formula OI²=R²-2Rr and Feuerbach NI²=(R/2-r)² are polynomial identities when side lengths are rational - verified for 3-4-5",
+      "General case requires handling sqrt side lengths: incenter coords are (a*Ax+b*Bx+c*Cx)/(a+b+c) where a,b,c=sqrt(...)",
+      "Three viable paths to general proof: (1) CAS polynomial certificate with constraints a²=Pa, (2) inversive geometry, (3) Mathlib EuclideanGeometry refactoring"
     ],
     "mathlibGaps": [],
     "nextSteps": [
