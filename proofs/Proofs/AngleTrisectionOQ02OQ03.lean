@@ -23,12 +23,13 @@
     The first new polygon construction since antiquity. Determined his career choice.
   - Wantzel (1837): Proved the converse — non-constructibility when φ(n) ≠ 2^k.
 
-  File summary: 45+ proved theorems, 0 sorries, 3 axioms.
+  File summary: 55+ proved theorems, 0 sorries, 3 axioms.
   Axioms: gauss_wantzel_theorem (redundant — proved as gauss_wantzel_theorem'),
-  cos_minpoly_gal_card (has clear proof roadmap via Chebyshev, see Section XIV-B),
+  cos_minpoly_gal_card (has clear proof roadmap via Chebyshev + cyclotomic bridge),
   wantzel_galois_characterization (from OQ02).
   Key results: cos integrality (Chebyshev T_n), conjugate infrastructure (T_k identity,
-  adjoin membership), minpoly divisibility (minpoly | T_n - 1).
+  adjoin membership), minpoly divisibility (minpoly | T_n - 1), cyclotomic-cosine bridge
+  (ζ quadratic, ζ ∉ ℝ, no real roots, ζ⁻¹ = conj(ζ)).
 -/
 
 import Mathlib
@@ -713,6 +714,143 @@ theorem gauss_wantzel_theorem' (n : ℕ) (hn : 3 ≤ n) :
     exact ⟨k, by rw [Nat.card_eq_fintype_card, cos_minpoly_gal_card n hn]; exact hk⟩
 
 /-!
+## Section XV: Cyclotomic-Cosine Bridge
+
+Establishes the algebraic relationship between the primitive root of unity
+ζ_n = exp(2πi/n) and cos(2π/n). This is the foundation for proving
+[ℚ(ζ_n):ℚ(cos(2π/n))] = 2 via the tower law.
+
+Key results:
+- ζ_n satisfies X² - 2cos(2π/n)X + 1 = 0 (quadratic over ℚ(cos))
+- sin(2π/n) > 0 for n ≥ 3 (ζ_n ∉ ℝ → quadratic irreducible over ℝ)
+- No real root exists for X² - 2cos(2π/n)X + 1 when n ≥ 3
+- cos(2π/n) = Re(ζ_n) = (ζ_n + ζ̄_n)/2
+
+These facts, combined with the tower law
+  φ(n) = [ℚ(ζ_n):ℚ] = [ℚ(ζ_n):ℚ(cos(2π/n))] · [ℚ(cos(2π/n)):ℚ] = 2 · deg(minpoly)
+establish deg(minpoly(cos(2π/n))) = φ(n)/2, the key computation for cos_minpoly_gal_card.
+-/
+
+/-- ζ_n = exp(2πi/n), the primitive nth root of unity. -/
+noncomputable def zeta (n : ℕ) : ℂ :=
+  Complex.exp (↑(2 * Real.pi / ↑n) * Complex.I)
+
+/-- ‖ζ_n‖ = 1: the primitive root of unity lies on the unit circle.
+    Proof: ‖exp(↑θ · I)‖ = 1 for any real θ (Mathlib: norm_exp_ofReal_mul_I). -/
+theorem zeta_norm_one (n : ℕ) : ‖zeta n‖ = 1 := by
+  unfold zeta; exact Complex.norm_exp_ofReal_mul_I _
+
+/-- cos(2π/n) = Re(ζ_n): the real part of the root of unity is the cosine.
+    Proof: Re(exp(↑θ · I)) = cos(θ) (Mathlib: exp_ofReal_mul_I_re). -/
+theorem cos_eq_zeta_re (n : ℕ) :
+    Real.cos (2 * Real.pi / ↑n) = (zeta n).re := by
+  unfold zeta; exact (Complex.exp_ofReal_mul_I_re _).symm
+
+/-- sin(2π/n) = Im(ζ_n): the imaginary part of the root of unity is the sine. -/
+theorem sin_eq_zeta_im (n : ℕ) :
+    Real.sin (2 * Real.pi / ↑n) = (zeta n).im := by
+  unfold zeta; exact (Complex.exp_ofReal_mul_I_im _).symm
+
+/-- sin(2π/n) > 0 for n ≥ 3.
+    Proof: For n ≥ 3, 0 < 2π/n ≤ 2π/3 < π, so sin is positive
+    by Real.sin_pos_of_pos_of_lt_pi. -/
+theorem sin_2pi_div_n_pos (n : ℕ) (hn : 3 ≤ n) :
+    0 < Real.sin (2 * Real.pi / ↑n) := by
+  apply Real.sin_pos_of_pos_of_lt_pi
+  · positivity
+  · -- 2π/n < π when n ≥ 3 > 2
+    have h2n : (2 : ℝ) < ↑n := by exact_mod_cast (show 2 < n by omega)
+    calc 2 * Real.pi / ↑n
+        < 2 * Real.pi / 2 := by
+          exact div_lt_div_of_pos_left (by positivity) (by positivity) h2n
+      _ = Real.pi := by ring
+
+/-- ζ_n ∉ ℝ for n ≥ 3: the primitive root of unity is not real.
+    Proof: Im(ζ_n) = sin(2π/n) > 0 ≠ 0 = Im(↑r) for any r : ℝ. -/
+theorem zeta_not_ofReal (n : ℕ) (hn : 3 ≤ n) :
+    ¬ ∃ r : ℝ, zeta n = ↑r := by
+  rintro ⟨r, hr⟩
+  have him := sin_eq_zeta_im n
+  rw [hr, Complex.ofReal_im] at him
+  linarith [sin_2pi_div_n_pos n hn]
+
+/-- normSq(ζ_n) = cos²(2π/n) + sin²(2π/n) = 1.
+    Key building block for the quadratic identity. -/
+theorem zeta_normSq_one (n : ℕ) : Complex.normSq (zeta n) = 1 := by
+  have hre := cos_eq_zeta_re n
+  have him := sin_eq_zeta_im n
+  rw [Complex.normSq_apply]
+  rw [← hre, ← him]
+  have := Real.sin_sq_add_cos_sq (2 * Real.pi / ↑n)
+  nlinarith [sq_abs (Real.cos (2 * Real.pi / ↑n)),
+             sq_abs (Real.sin (2 * Real.pi / ↑n))]
+
+/-- ζ_n · conj(ζ_n) = 1 since |ζ_n| = 1.
+    This is the core identity: ζ_n lies on the unit circle. -/
+theorem zeta_mul_conj (n : ℕ) : zeta n * starRingEnd ℂ (zeta n) = 1 := by
+  rw [Complex.mul_conj, ← Complex.ofReal_one]
+  congr 1
+  exact zeta_normSq_one n
+
+/-- cos(2π/n) = (ζ_n + ζ̄_n)/2: the cosine is the average of ζ_n and its conjugate.
+    This is the fundamental bridge between the cyclotomic and cosine worlds. -/
+theorem cos_eq_half_zeta_add_conj (n : ℕ) :
+    (↑(Real.cos (2 * Real.pi / ↑n)) : ℂ) =
+    (zeta n + starRingEnd ℂ (zeta n)) / 2 := by
+  rw [Complex.add_conj, cos_eq_zeta_re n]
+  push_cast; ring
+
+/-- ζ_n satisfies the quadratic X² - 2cos(2π/n)X + 1 = 0.
+    This is the minimal polynomial of ζ_n over ℚ(cos(2π/n)) (when n ≥ 3,
+    where it is irreducible since ζ_n ∉ ℝ).
+
+    Proof: Factor as (X - ζ)(X - ζ̄) where ζ + ζ̄ = 2cos(2π/n) and ζ·ζ̄ = 1.
+    So X² - (ζ+ζ̄)X + ζ·ζ̄ = X² - 2cos(2π/n)X + 1. -/
+theorem zeta_quadratic (n : ℕ) :
+    zeta n ^ 2 - 2 * ↑(Real.cos (2 * Real.pi / ↑n)) * zeta n + 1 = 0 := by
+  set ζ := zeta n with hζ_def
+  have h_conj_mul := zeta_mul_conj n
+  have h_sum := cos_eq_half_zeta_add_conj n
+  -- Rewrite: ζ² - (ζ+ζ̄)ζ + ζ·ζ̄ = 0 by ring
+  -- Step 1: 2 * ↑c = ζ + ζ̄
+  have h2c : 2 * (↑(Real.cos (2 * Real.pi / ↑n)) : ℂ) =
+      ζ + starRingEnd ℂ ζ := by
+    rw [h_sum]; ring
+  -- Step 2: algebraic identity
+  calc ζ ^ 2 - 2 * ↑(Real.cos (2 * Real.pi / ↑n)) * ζ + 1
+      = ζ ^ 2 - (ζ + starRingEnd ℂ ζ) * ζ + 1 := by rw [h2c]
+    _ = ζ ^ 2 - ζ * ζ - starRingEnd ℂ ζ * ζ + 1 := by ring
+    _ = -(ζ * starRingEnd ℂ ζ) + 1 := by ring
+    _ = -1 + 1 := by rw [h_conj_mul]
+    _ = 0 := by ring
+
+/-- The discriminant of X² - 2cos(2π/n)X + 1 is negative for n ≥ 3.
+    disc = 4cos²(2π/n) - 4 = -4sin²(2π/n) < 0.
+    This proves the quadratic is irreducible over ℝ. -/
+theorem quadratic_discriminant_neg (n : ℕ) (hn : 3 ≤ n) :
+    (2 * Real.cos (2 * Real.pi / ↑n)) ^ 2 - 4 < 0 := by
+  have hs := sin_2pi_div_n_pos n hn
+  nlinarith [Real.sin_sq_add_cos_sq (2 * Real.pi / ↑n),
+             sq_nonneg (Real.sin (2 * Real.pi / ↑n))]
+
+/-- X² - 2cos(2π/n)X + 1 has no real roots for n ≥ 3.
+    Proof: Complete the square: r² - 2cr + 1 = (r-c)² + sin²(2π/n) > 0.
+    This means [ℚ(cos(2π/n))(ζ_n) : ℚ(cos(2π/n))] = 2. -/
+theorem quadratic_no_real_roots (n : ℕ) (hn : 3 ≤ n) :
+    ∀ r : ℝ, r ^ 2 - 2 * Real.cos (2 * Real.pi / ↑n) * r + 1 ≠ 0 := by
+  intro r hr
+  have hs := sin_2pi_div_n_pos n hn
+  nlinarith [sq_nonneg (r - Real.cos (2 * Real.pi / ↑n)),
+             sq_nonneg (Real.sin (2 * Real.pi / ↑n)),
+             Real.sin_sq_add_cos_sq (2 * Real.pi / ↑n)]
+
+/-- ζ_n⁻¹ = conj(ζ_n) since |ζ_n| = 1 (unit circle element).
+    Proof: ζ · conj(ζ) = 1 means conj(ζ) is the multiplicative inverse. -/
+theorem zeta_inv_eq_conj (n : ℕ) :
+    (zeta n)⁻¹ = starRingEnd ℂ (zeta n) := by
+  rw [inv_eq_of_mul_eq_one_right (zeta_mul_conj n)]
+
+/-!
 ## Summary
 
 ### Proved (0 sorries):
@@ -735,21 +873,36 @@ theorem gauss_wantzel_theorem' (n : ℕ) (hn : 3 ≤ n) :
 17. `cos_2k_pi_eq_chebyshev_eval`: cos(2kπ/n) = T_k(cos(2π/n)) (Chebyshev identity)
 18. `cos_conjugate_mem_adjoin`: cos(2kπ/n) ∈ ℚ[cos(2π/n)] (normality of extension)
 19. `minpoly_cos_dvd_chebyshev`: minpoly(ℚ, cos(2π/n)) | T_n - 1
+20. `zeta_norm_one`: ‖ζ_n‖ = 1 (unit circle)
+21. `cos_eq_zeta_re`, `sin_eq_zeta_im`: cos/sin = Re/Im of ζ_n
+22. `sin_2pi_div_n_pos`: sin(2π/n) > 0 for n ≥ 3
+23. `zeta_not_ofReal`: ζ_n ∉ ℝ for n ≥ 3
+24. `zeta_normSq_one`: normSq(ζ_n) = 1
+25. `zeta_mul_conj`: ζ_n · conj(ζ_n) = 1
+26. `cos_eq_half_zeta_add_conj`: cos = (ζ + ζ̄)/2
+27. `zeta_quadratic`: ζ² - 2cos·ζ + 1 = 0
+28. `quadratic_discriminant_neg`: disc = -4sin² < 0 for n ≥ 3
+29. `quadratic_no_real_roots`: no real root for n ≥ 3
+30. `zeta_inv_eq_conj`: ζ⁻¹ = conj(ζ)
 
 ### Axiomatized (2 axioms + 1 redundant):
 - `gauss_wantzel_theorem`: n-gon constructible ↔ φ(n) = 2^k
   (REDUNDANT — proved as `gauss_wantzel_theorem'` from decomposed axioms)
 - `cos_minpoly_gal_card`: |Gal(minpoly(cos(2π/n)))| = φ(n)/2
-  (requires maximal real subfield theory; see Section XIV-B proof roadmap)
+  (requires maximal real subfield theory; see Section XIV-B and XV proof roadmap)
 - `wantzel_galois_characterization`: constructible ↔ 2-group Galois (from OQ02)
 
 ### Progress toward eliminating cos_minpoly_gal_card:
 - ✅ cos(2kπ/n) = T_k(cos(2π/n)) — Chebyshev conjugate identity (proved)
 - ✅ cos(2kπ/n) ∈ ℚ[cos(2π/n)] — all conjugates in adjoin (proved)
 - ✅ minpoly | T_n - 1 — divisibility by Chebyshev (proved)
+- ✅ ζ_n satisfies X²-2cos(2π/n)X+1=0 — cyclotomic quadratic (proved, Session 2)
+- ✅ ζ_n ∉ ℝ for n ≥ 3 — quadratic irreducible over ℝ (proved, Session 2)
+- ✅ ζ⁻¹ = conj(ζ) and cos = (ζ+ζ̄)/2 — bridge identities (proved, Session 2)
 - ❌ T_n - 1 roots ⊂ {cos(2kπ/n)} — analytic characterization (needs work)
 - ❌ minpoly splits in adjoin — normality (follows from above)
-- ❌ natDegree(minpoly) = φ(n)/2 — cyclotomic tower law (needs work)
+- ❌ [ℚ(ζ_n):ℚ(cos)] = 2 (formal) — needs IntermediateField infrastructure
+- ❌ natDegree(minpoly) = φ(n)/2 — cyclotomic tower law (needs above)
 -/
 
 end AngleTrisectionOQ02OQ03
