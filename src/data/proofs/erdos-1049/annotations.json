@@ -3,11 +3,11 @@
     "id": "ann-1049-1",
     "proofId": "erdos-1049",
     "range": { "startLine": 1, "endLine": 18 },
-    "type": "note",
+    "type": "context",
     "title": "Module Documentation: Erdos Problem #1049",
     "content": "Header documentation establishing the problem context: for rational t > 1, is the series S(t) = sum 1/(t^n - 1) irrational? The key identity S(t) = sum tau(n)/t^n connects the series to the divisor function. Erdos (1948) proved irrationality for integer t >= 2; Chowla's conjecture for all rationals remains open.",
     "mathContext": "The series $S(t) = \\sum_{n=1}^{\\infty} \\frac{1}{t^n - 1}$ equals $\\sum_{n=1}^{\\infty} \\frac{\\tau(n)}{t^n}$ where $\\tau(n) = |\\{d : d \\mid n\\}|$ is the divisor counting function.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Lambert series", "divisor function", "irrationality"],
     "prerequisites": ["Infinite series", "Divisor function", "Irrationality"]
   },
@@ -19,7 +19,7 @@
     "title": "tau: The Divisor Function",
     "content": "Defines tau(n) = n.divisors.card, the number of positive divisors of n, using Mathlib's Nat.divisors (the finset of all divisors). For example, tau(6) = 4 since {1, 2, 3, 6} divide 6. This is a fundamental arithmetic function appearing throughout analytic number theory.",
     "mathContext": "$\\tau(n) = |\\{d \\in \\mathbb{N} : d \\mid n\\}|$. Also denoted $d(n)$ or $\\sigma_0(n)$. It is multiplicative: $\\tau(mn) = \\tau(m)\\tau(n)$ for $\\gcd(m,n)=1$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Nat.divisors", "Finset.card", "multiplicative arithmetic functions"],
     "prerequisites": ["Mathlib.NumberTheory.Divisors", "Finset operations"]
   },
@@ -55,7 +55,7 @@
     "title": "tau_multiplicative: Multiplicativity of tau",
     "content": "States that tau is a multiplicative arithmetic function: tau(mn) = tau(m) * tau(n) when gcd(m,n) = 1. This is the key structural property allowing computation of tau via prime factorization: if n = p1^{a1} * ... * pk^{ak}, then tau(n) = (a1+1)...(ak+1). Sorry'd proof that would use Nat.Coprime.divisors.",
     "mathContext": "$\\tau$ is multiplicative: $\\gcd(m,n) = 1 \\implies \\tau(mn) = \\tau(m)\\tau(n)$. Combined with $\\tau(p^k) = k+1$, this gives the formula $\\tau(n) = \\prod_{p^a \\| n} (a+1)$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["multiplicative functions", "Nat.Coprime", "prime factorization"],
     "prerequisites": ["tau definition", "Coprimality", "Divisor structure of products"]
   },
@@ -67,7 +67,7 @@
     "title": "S: The Main Series S(t)",
     "content": "Defines S(t) = tsum (fun n => if n=0 then 0 else 1/(t^n - 1)), the main series of the problem. For t > 1, each term 1/(t^n - 1) is positive and decreasing, and the series converges since the terms decay like 1/t^n. The n=0 guard avoids division by t^0 - 1 = 0.",
     "mathContext": "$S(t) = \\sum_{n=1}^{\\infty} \\frac{1}{t^n - 1}$. Converges for $t > 1$ since $\\frac{1}{t^n - 1} \\sim \\frac{1}{t^n}$ and $\\sum 1/t^n$ is a geometric series.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["tsum", "geometric series", "convergence"],
     "prerequisites": ["Mathlib.Topology.Algebra.InfiniteSum.Basic", "Convergence of series"]
   },
@@ -79,7 +79,7 @@
     "title": "D: The Divisor Series D(t)",
     "content": "Defines D(t) = tsum (fun n => if n=0 then 0 else tau(n)/t^n), the divisor-weighted exponential series. By the classical identity S(t) = D(t), studying divisor sums via exponential generating functions is equivalent to studying the original series.",
     "mathContext": "$D(t) = \\sum_{n=1}^{\\infty} \\frac{\\tau(n)}{t^n}$. Since $\\tau(n) \\le n$, convergence follows from $\\sum n/t^n < \\infty$ for $t > 1$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Dirichlet series", "exponential generating function", "tsum"],
     "prerequisites": ["tau definition", "tsum", "Comparison test for series"]
   },
@@ -91,7 +91,7 @@
     "title": "S_eq_D: The Classical Identity",
     "content": "States the fundamental identity S(t) = D(t): sum 1/(t^n - 1) = sum tau(n)/t^n. The proof idea is: expand 1/(t^d-1) as geometric series sum_m 1/t^{dm}, then interchange summation order; grouping by n = dm collects exactly tau(n) terms for each n. This double-sum interchange is the key structural insight of the problem. Sorry'd.",
     "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{1}{t^n - 1} = \\sum_{n=1}^{\\infty} \\frac{\\tau(n)}{t^n}$. Proof: $\\sum_d \\frac{1}{t^d - 1} = \\sum_d \\sum_m \\frac{1}{t^{dm}} = \\sum_n \\frac{|\\{(d,m): dm=n\\}|}{t^n} = \\sum_n \\frac{\\tau(n)}{t^n}$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Fubini's theorem for series", "divisor sum interchange", "Lambert series expansion"],
     "prerequisites": ["S and D definitions", "Absolute convergence", "Double sum interchange"]
   },
@@ -103,7 +103,7 @@
     "title": "geometric_divisor: Geometric Series Step",
     "content": "States that sum_{m>=1} 1/t^{dm} = 1/(t^d - 1) for d >= 1 and t > 1. This is a standard geometric series with first term 1/t^d and ratio 1/t^d. It provides the key step converting the double sum back to the S(t) form. Sorry'd.",
     "mathContext": "$\\sum_{m=1}^{\\infty} \\frac{1}{t^{dm}} = \\frac{1/t^d}{1 - 1/t^d} = \\frac{1}{t^d - 1}$ for $t > 1$ and $d \\ge 1$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["geometric series formula", "tsum_geometric", "absolute convergence"],
     "prerequisites": ["Geometric series formula", "t^d > 1 for t > 1, d >= 1"]
   },
@@ -111,11 +111,11 @@
     "id": "ann-1049-10",
     "proofId": "erdos-1049",
     "range": { "startLine": 120, "endLine": 122 },
-    "type": "axiom",
+    "type": "insight",
     "title": "erdos_integer_irrational: Erdos's 1948 Theorem",
     "content": "Axiomatizes Erdos's 1948 result: S(t) is irrational for all integers t >= 2. This is the central known result toward Problem #1049. Erdos's original proof in 'On arithmetical properties of Lambert series' (J. Indian Math. Soc.) used p-adic valuations of partial sums to derive a contradiction from assuming S(t) = a/b rational.",
     "mathContext": "Erdős (1948): For integer $t \\ge 2$, $S(t) = \\sum_{n=1}^{\\infty} \\frac{1}{t^n - 1} \\notin \\mathbb{Q}$. The proof analyzes $v_p$ valuations of partial sums to show denominators grow faster than any fixed denominator allows.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Irrational", "p-adic valuation", "J. Indian Math. Soc."],
     "prerequisites": ["S definition", "Irrational predicate from Mathlib", "p-adic analysis"]
   },
@@ -127,7 +127,7 @@
     "title": "S_at_2: S(2) Definition",
     "content": "Defines S_at_2 = S(2) = sum 1/(2^n - 1) = 1 + 1/3 + 1/7 + 1/15 + 1/31 + .... This is the Erdos-Borwein constant, approximately 1.606695. It appears in the analysis of algorithms, particularly in the average-case analysis of mergesort.",
     "mathContext": "$S(2) = \\sum_{n=1}^{\\infty} \\frac{1}{2^n - 1} = 1 + \\frac{1}{3} + \\frac{1}{7} + \\frac{1}{15} + \\cdots \\approx 1.606695$",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["Erdos-Borwein constant", "mergesort analysis", "binary representations"],
     "prerequisites": ["S definition"]
   },
@@ -139,7 +139,7 @@
     "title": "S_at_2_irrational: Irrationality of S(2)",
     "content": "Proves S(2) is irrational by applying erdos_integer_irrational with t = 2 and the proof 2 >= 2 by norm_num. This is the simplest nontrivial instance of Erdos's theorem and establishes the irrationality of the Erdos-Borwein constant.",
     "mathContext": "$S(2) = \\sum_{n=1}^{\\infty} \\frac{1}{2^n - 1} \\notin \\mathbb{Q}$, from Erdős's theorem applied to $t = 2$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["erdos_integer_irrational", "norm_num", "Erdos-Borwein constant"],
     "prerequisites": ["erdos_integer_irrational axiom", "2 >= 2 by norm_num"]
   },
@@ -151,7 +151,7 @@
     "title": "ChowlaConjecture: The Open Conjecture",
     "content": "Defines ChowlaConjecture as the proposition that S(t) is irrational for ALL rational t > 1, not just integers. Chowla's conjecture extends Erdos's 1948 result to non-integer rationals like 3/2, 5/3, etc. The conjecture remains open because the p-adic techniques used for integers break down for non-integer rationals.",
     "mathContext": "Chowla's Conjecture: $\\forall\\, t \\in \\mathbb{Q},\\; t > 1 \\implies S(t) = \\sum_{n=1}^{\\infty} \\frac{1}{t^n - 1} \\notin \\mathbb{Q}$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Erdos Problem #1049", "irrationality of series", "open problems"],
     "prerequisites": ["S definition", "Irrational predicate", "Rational cast to Real"]
   },
@@ -187,7 +187,7 @@
     "title": "erdosBorweinConstant: The Named Constant",
     "content": "Defines the Erdos-Borwein constant as S(2). Named after Paul Erdos who proved its irrationality and Peter Borwein who studied its properties further. The constant also equals sum tau(n)/2^n and appears as a natural constant in the analysis of certain divide-and-conquer algorithms.",
     "mathContext": "The Erdős-Borwein constant $E = \\sum_{n=1}^{\\infty} \\frac{1}{2^n - 1} = \\sum_{n=1}^{\\infty} \\frac{\\tau(n)}{2^n} \\approx 1.606695$.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["mathematical constants", "Peter Borwein", "algorithm analysis"],
     "prerequisites": ["S_at_2 definition"]
   },
@@ -199,7 +199,7 @@
     "title": "TranscendentalConjecture",
     "content": "Defines the conjecture that S(t) is transcendental (not algebraic over Q) for all algebraic t > 1. This is strictly stronger than Chowla's conjecture since transcendental numbers are necessarily irrational. The conjecture is analogous to the Lindemann-Weierstrass theorem for exponential functions.",
     "mathContext": "Conjecture: $\\forall\\, t > 1$ algebraic over $\\mathbb{Q}$, $S(t)$ is transcendental, i.e., $S(t)$ is not a root of any polynomial with rational coefficients.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["IsAlgebraic", "Lindemann-Weierstrass theorem", "transcendence theory"],
     "prerequisites": ["IsAlgebraic from Mathlib", "S definition", "Transcendence theory basics"]
   },
@@ -223,7 +223,7 @@
     "title": "isLambertSeries: Lambert Series Definition",
     "content": "Defines a Lambert series as sum a_n * q^n / (1 - q^n). Lambert series are a classical tool in analytic number theory; their coefficients naturally extract divisor sums from the input sequence a_n. The series S(t) is the special case a_n = 1 and q = 1/t.",
     "mathContext": "A Lambert series is $L(q) = \\sum_{n=1}^{\\infty} \\frac{a_n q^n}{1 - q^n}$. Expanding: $L(q) = \\sum_{n=1}^{\\infty} \\left(\\sum_{d \\mid n} a_d\\right) q^n$, so Lambert series 'convolve' with the divisor function.",
-    "significance": "major",
+    "significance": "key",
     "relatedConcepts": ["Lambert series", "Dirichlet series", "divisor convolution"],
     "prerequisites": ["Power series", "tsum", "Divisor function"]
   },
@@ -259,7 +259,7 @@
     "title": "erdos_1049_partial: Main Known Result",
     "content": "Restates the main theorem for Problem #1049: for integer t >= 2, S(t) is irrational. This is a direct application of erdos_integer_irrational. The full problem (all rational t > 1) remains open.",
     "mathContext": "Main result: $\\forall\\, t \\in \\mathbb{Z},\\; t \\ge 2 \\implies \\sum_{n=1}^{\\infty} \\frac{1}{t^n - 1} \\notin \\mathbb{Q}$ (Erdős 1948).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["erdos_integer_irrational", "partial resolution"],
     "prerequisites": ["erdos_integer_irrational axiom"]
   },
@@ -271,7 +271,7 @@
     "title": "erdos_1049: Final Statement",
     "content": "The final clean statement of Erdos's partial resolution: for all natural numbers t >= 2, S(t) is irrational. Defined as a direct reference to erdos_integer_irrational. This is the strongest known result toward Problem #1049; the Chowla extension to all rationals remains open.",
     "mathContext": "$\\forall\\, t \\in \\mathbb{N},\\; t \\ge 2 \\implies S(t) \\notin \\mathbb{Q}$. This is Erdős's 1948 theorem, the strongest known result for Problem #1049.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["erdos_integer_irrational", "ChowlaConjecture", "Problem #1049 status"],
     "prerequisites": ["erdos_integer_irrational"]
   }
