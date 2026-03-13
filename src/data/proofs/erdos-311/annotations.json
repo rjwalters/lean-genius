@@ -2,56 +2,93 @@
   {
     "id": "ann-e311-header",
     "proofId": "erdos-311",
-    "range": { "startLine": 1, "endLine": 17 },
+    "range": {
+      "startLine": 1,
+      "endLine": 17
+    },
     "type": "concept",
     "title": "Problem Overview",
     "content": "**Erdős Problem #311** (Erdős–Graham 1980, OPEN):\n\nDefine δ(N) = min{|1 − Σ_{n∈A} 1/n| : A ⊆ {1,...,N}, Σ ≠ 1, Σ ≤ 1} — the minimal nonzero deviation from 1 achievable by unit fraction sums.\n\n**Conjecture:** δ(N) = e^{−(c+o(1))N} for some constant c ∈ (0,1).\n\n**Known:** e^{−(1+o(1))N} ≤ δ(N) ≤ exp(−cN/(log N · log log N)³).",
     "mathContext": "This problem connects number theory (lcm estimates via PNT), subset-sum problems, and exponential decay rates. Kovac showed the subset-sum-to-1 variant is equivalent.",
-    "significance": "critical",
-    "relatedConcepts": ["unit fractions", "Egyptian fractions", "subset sums", "prime number theorem"]
+    "significance": "key",
+    "relatedConcepts": [
+      "unit fractions",
+      "Egyptian fractions",
+      "subset sums",
+      "prime number theorem"
+    ]
   },
   {
     "id": "ann-e311-definitions",
     "proofId": "erdos-311",
-    "range": { "startLine": 19, "endLine": 35 },
+    "range": {
+      "startLine": 19,
+      "endLine": 35
+    },
     "type": "definition",
     "title": "Unit Fraction Sum and δ(N)",
     "content": "**unitFracSum A:** computes Σ_{n∈A} 1/n for a finite set A ⊆ ℕ.\n\n**delta N = δ(N):** axiomatised as the minimal nonzero value of |1 − unitFracSum A| over subsets A ⊆ {1,...,N} with sum ≤ 1 and sum ≠ 1.\n\n**delta_pos:** δ(N) > 0 for N ≥ 1 — the minimum is achieved and is strictly positive.\n\nδ(N) captures how closely 1 can be approximated (but not reached) by sums of distinct unit fractions from {1,...,N}.",
     "mathContext": "The function δ(N) is well-defined by finiteness of subsets. It measures a form of 'Diophantine approximation' using unit fractions rather than rationals.",
-    "significance": "essential",
-    "relatedConcepts": ["unit fractions", "subset sum", "Diophantine approximation"]
+    "significance": "key",
+    "relatedConcepts": [
+      "unit fractions",
+      "subset sum",
+      "Diophantine approximation"
+    ]
   },
   {
     "id": "ann-e311-lower",
     "proofId": "erdos-311",
-    "range": { "startLine": 37, "endLine": 43 },
-    "type": "result",
+    "range": {
+      "startLine": 37,
+      "endLine": 43
+    },
+    "type": "technique",
     "title": "Lower Bound via lcm",
     "content": "**delta_lower_bound:**\n\nδ(N) ≥ e^{−(1+ε)N} for large N.\n\n**Proof idea:** Any nonzero deviation |1 − Σ 1/n| is at least 1/lcm(1,...,N), since clearing denominators gives an integer. By the Prime Number Theorem, lcm(1,...,N) = e^{(1+o(1))N} (Chebyshev's formula).\n\nSo δ(N) ≥ e^{−(1+o(1))N}, giving exponential decay with rate 1.",
     "mathContext": "The lcm lower bound is the 'trivial' bound. The conjecture asks whether the true rate c is strictly less than 1 — meaning δ(N) decays slower than 1/lcm.",
-    "significance": "essential",
-    "relatedConcepts": ["lcm", "prime number theorem", "Chebyshev function"]
+    "significance": "key",
+    "relatedConcepts": [
+      "lcm",
+      "prime number theorem",
+      "Chebyshev function"
+    ]
   },
   {
     "id": "ann-e311-upper",
     "proofId": "erdos-311",
-    "range": { "startLine": 45, "endLine": 51 },
-    "type": "result",
+    "range": {
+      "startLine": 45,
+      "endLine": 51
+    },
+    "type": "technique",
     "title": "Tang's Upper Bound",
     "content": "**tang_upper_bound:**\n\nδ(N) ≤ exp(−cN/(log N · log log N)³) for some c > 0.\n\nThis is subexponential: faster than any polynomial decay, but much slower than the conjectured e^{−cN}. The triple logarithmic factor (log N · log log N)³ in the denominator significantly weakens the exponential rate.\n\nTang's result uses sophisticated constructions of near-1 unit fraction sums.",
     "mathContext": "The gap between Tang's subexponential upper bound and the conjectured exponential rate e^{−cN} is enormous. Closing this gap is the central challenge.",
     "significance": "key",
-    "relatedConcepts": ["unit fraction construction", "subexponential decay", "approximation"]
+    "relatedConcepts": [
+      "unit fraction construction",
+      "subexponential decay",
+      "approximation"
+    ]
   },
   {
     "id": "ann-e311-conjecture",
     "proofId": "erdos-311",
-    "range": { "startLine": 53, "endLine": 61 },
-    "type": "conjecture",
+    "range": {
+      "startLine": 53,
+      "endLine": 61
+    },
+    "type": "insight",
     "title": "The Erdős–Graham Conjecture (OPEN)",
     "content": "**erdos_311_conjecture:**\n\nThere exists c ∈ (0,1) such that δ(N) = e^{−(c+o(1))N}.\n\nFormally: for every ε > 0 and large N:\ne^{−(c+ε)N} ≤ δ(N) ≤ e^{−(c−ε)N}\n\nThis says δ(N) decays at a precise exponential rate c strictly between 0 and 1.\n\n**Why c < 1?** Because c = 1 would mean δ ~ 1/lcm, which is the trivial lower bound.\n**Why c > 0?** Because δ(N) > 0 (you can't exactly reach 1 for most N).",
     "mathContext": "The conjecture predicts that the best unit fraction approximation to 1 decays exponentially with a well-defined rate. This would be a deep result about the structure of Egyptian fraction decompositions.",
-    "significance": "critical",
-    "relatedConcepts": ["exponential decay", "Erdős–Graham", "Egyptian fractions", "open problem"]
+    "significance": "key",
+    "relatedConcepts": [
+      "exponential decay",
+      "Erdős–Graham",
+      "Egyptian fractions",
+      "open problem"
+    ]
   }
 ]
