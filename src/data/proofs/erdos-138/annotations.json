@@ -15,7 +15,8 @@
       "van der Waerden's theorem",
       "Ramsey theory",
       "arithmetic progressions"
-    ]
+    ],
+    "prerequisites": ["van der Waerden's theorem", "Finset.Icc", "arithmetic progressions"]
   },
   {
     "id": "ann-coloring-def",
@@ -33,7 +34,8 @@
       "proper coloring",
       "hypergraph coloring",
       "Finset"
-    ]
+    ],
+    "prerequisites": ["Finset.Icc", "Fin"]
   },
   {
     "id": "ann-monochromatic-ap",
@@ -51,7 +53,8 @@
       "arithmetic progression",
       "Szemerédi's theorem",
       "density conditions"
-    ]
+    ],
+    "prerequisites": ["Coloring", "Fin", "Finset.Icc"]
   },
   {
     "id": "ann-vdw-theorem",
@@ -69,7 +72,8 @@
       "Ramsey theory",
       "compactness argument",
       "finite unions theorem"
-    ]
+    ],
+    "prerequisites": ["Coloring", "HasMonochromaticAP"]
   },
   {
     "id": "ann-guarantee-set",
@@ -87,7 +91,8 @@
       "threshold function",
       "upward closed set",
       "infimum"
-    ]
+    ],
+    "prerequisites": ["Coloring", "HasMonochromaticAP", "van_der_waerden_theorem"]
   },
   {
     "id": "ann-vdw-number",
@@ -105,7 +110,8 @@
       "Ramsey number",
       "threshold function",
       "extremal combinatorics"
-    ]
+    ],
+    "prerequisites": ["GuaranteeSet", "Nat.sInf"]
   },
   {
     "id": "ann-berlekamp",
@@ -123,7 +129,8 @@
       "discrete logarithm",
       "finite field",
       "multiplicative group"
-    ]
+    ],
+    "prerequisites": ["W", "Nat.Prime"]
   },
   {
     "id": "ann-gowers",
@@ -141,7 +148,8 @@
       "tower function",
       "Szemerédi's theorem",
       "Gowers uniformity norms"
-    ]
+    ],
+    "prerequisites": ["W"]
   },
   {
     "id": "ann-kozik-shabanov",
@@ -159,7 +167,8 @@
       "Lovász Local Lemma",
       "probabilistic method",
       "hypergraph coloring"
-    ]
+    ],
+    "prerequisites": ["W"]
   },
   {
     "id": "ann-small-values",
@@ -177,7 +186,8 @@
       "SAT solving",
       "exhaustive search",
       "computational complexity"
-    ]
+    ],
+    "prerequisites": ["W"]
   },
   {
     "id": "ann-main-conjecture",
@@ -195,7 +205,8 @@
       "growth rate",
       "exponential growth",
       "Filter.Tendsto"
-    ]
+    ],
+    "prerequisites": ["W", "Filter.Tendsto", "Filter.atTop"]
   },
   {
     "id": "ann-related-questions",
@@ -213,7 +224,8 @@
       "growth comparison",
       "consecutive ratios",
       "divergence"
-    ]
+    ],
+    "prerequisites": ["W", "Filter.Tendsto", "Erdos138Conjecture"]
   },
   {
     "id": "ann-implication",
@@ -231,7 +243,8 @@
       "limit comparison",
       "growth rate hierarchy",
       "contrapositive"
-    ]
+    ],
+    "prerequisites": ["Erdos138Conjecture", "ExponentialDiverges", "Filter.Tendsto"]
   },
   {
     "id": "ann-summary",
@@ -249,6 +262,7 @@
       "open problem",
       "research frontier",
       "Erdős prize"
-    ]
+    ],
+    "prerequisites": ["all definitions and bounds above"]
   }
 ]
