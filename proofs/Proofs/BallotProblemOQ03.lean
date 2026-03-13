@@ -500,11 +500,19 @@ private theorem total_identity_count' (m n₁ n₂ : ℕ) :
     the swap infrastructure to produce the explicit `Equiv`. -/
 theorem lindstrom_involution (m n₁ n₂ n₁' n₂' a₁ a₂ : ℕ)
     (h_strict_a : a₁ < a₂)
+    (h_end : a₁ + n₁ < a₂ + n₂)
     (h_n₁' : n₁' = n₂ + a₂ - a₁) (h_n₂' : n₂' = n₁ + a₁ - a₂)
     (h_n_sum : n₁ + n₂ = n₁' + n₂') :
     Fintype.card {p : pathType m n₁ × pathType m n₂ //
       ¬NonIntersecting p.1.val p.2.val m a₁ a₂} =
-    Fintype.card (pathType m n₁' × pathType m n₂') := by sorry
+    Fintype.card (pathType m n₁' × pathType m n₂') := by
+  apply Nat.le_antisymm
+  · exact Fintype.card_le_of_injective _
+      (lindstromForward_injective m n₁ n₂ n₁' n₂' a₁ a₂
+        h_strict_a h_end h_n₁' h_n₂' h_n_sum)
+  · exact Fintype.card_le_of_injective _
+      (lindstromBackward_injective m n₁ n₂ n₁' n₂' a₁ a₂
+        h_strict_a h_end h_n₁' h_n₂' h_n_sum)
 
 /-- **The 2×2 LGV Lemma**: Non-intersecting path pairs count = lgvDet.
     Requires the ordering a₁ ≤ a₂ ≤ b₁ ≤ b₂ so that all four path types
@@ -550,8 +558,9 @@ theorem lgv_lemma_2x2 (m a₁ b₁ a₂ b₂ : ℕ)
       have h_n₁'_eq : n₁' = n₂ + a₂ - a₁ := by omega
       have h_n₂'_eq : n₂' = n₁ + a₁ - a₂ := by omega
       have h_n_sum : n₁ + n₂ = n₁' + n₂' := by omega
+      have h_end : a₁ + n₁ < a₂ + n₂ := by omega
       have h_bij := lindstrom_involution m n₁ n₂ n₁' n₂' a₁ a₂
-        h_strict_a h_n₁'_eq h_n₂'_eq h_n_sum
+        h_strict_a h_end h_n₁'_eq h_n₂'_eq h_n_sum
       -- Assemble: NI = total - crossing = lgvDet
       rw [h_total, h_bij, h_crossing] at h_compl
       -- h_compl: niPairCount + C(m+n₁',m)*C(m+n₂',m) = C(m+n₁,m)*C(m+n₂,m)
@@ -1079,12 +1088,13 @@ theorem total_identity_count (m n₁ n₂ : ℕ) :
 theorem lindstrom_involution_card (m n₁ n₂ n₁' n₂' a₁ a₂ : ℕ)
     (hn₁ : n₁ = n₁)  -- placeholder (unused, kept for API compatibility)
     (h_strict_a : a₁ < a₂)
+    (h_end : a₁ + n₁ < a₂ + n₂)
     (h_n₁' : n₁' = n₂ + a₂ - a₁) (h_n₂' : n₂' = n₁ + a₁ - a₂)
     (h_n_sum : n₁ + n₂ = n₁' + n₂') :
     Fintype.card {p : pathType m n₁ × pathType m n₂ //
       ¬NonIntersecting p.1.val p.2.val m a₁ a₂} =
     Fintype.card (pathType m n₁' × pathType m n₂') :=
-  lindstrom_involution m n₁ n₂ n₁' n₂' a₁ a₂ h_strict_a h_n₁' h_n₂' h_n_sum
+  lindstrom_involution m n₁ n₂ n₁' n₂' a₁ a₂ h_strict_a h_end h_n₁' h_n₂' h_n_sum
 
 /- ## Part XIV: Path Transposition (East ↔ North Flip) -/
 
@@ -1635,6 +1645,8 @@ theorem sharedPoints_nonempty_of_columnsOverlap
     (sharedPoints l₁ l₂ a₁ a₂).Nonempty := by
   obtain ⟨h₁₂, h₂₁⟩ := h
   -- The shared y is max(a₁ + colEntry l₁ x, a₂ + colEntry l₂ x)
+  have mono₁ := colEntry_mono l₁ x
+  have mono₂ := colEntry_mono l₂ x
   set y := max (a₁ + colEntry l₁ x) (a₂ + colEntry l₂ x) with hy_def
   have hy₁_lo : a₁ + colEntry l₁ x ≤ y := le_max_left _ _
   have hy₁_hi : y ≤ a₁ + colEntry l₁ (x + 1) := max_le (by omega) h₂₁
@@ -1676,18 +1688,18 @@ theorem sharedPoints_nonempty_of_not_ni {l₁ l₂ : LPath} {m a₁ a₂ : ℕ}
 Given that point p is visited by path l, recover the step index. -/
 
 /-- Find the step index where path l starting at a visits point p.
-    Uses Finset.choose on the range to pick a witness. -/
+    Uses Exists.choose to pick a witness. -/
 noncomputable def stepIndexOf (l : LPath) (a : ℕ) (p : ℕ × ℕ)
     (h : p ∈ visitedPoints l a) : ℕ :=
-  (Finset.range (l.length + 1)).choose (fun i => posAfter l a i = p)
-    (by simp [visitedPoints, Finset.mem_image] at h; exact h)
+  (by simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h; exact h :
+    ∃ i, i < l.length + 1 ∧ posAfter l a i = p).choose
 
 theorem stepIndexOf_spec (l : LPath) (a : ℕ) (p : ℕ × ℕ)
     (h : p ∈ visitedPoints l a) :
     posAfter l a (stepIndexOf l a p h) = p ∧ stepIndexOf l a p h < l.length + 1 := by
-  have := Finset.choose_spec (fun i => posAfter l a i = p)
-    (by simp [visitedPoints, Finset.mem_image] at h; exact h)
-  simp [stepIndexOf, Finset.mem_range] at this
+  have h_exists : ∃ i, i < l.length + 1 ∧ posAfter l a i = p := by
+    simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h; exact h
+  have := h_exists.choose_spec
   exact ⟨this.2, this.1⟩
 
 theorem stepIndexOf_le_length (l : LPath) (a : ℕ) (p : ℕ × ℕ)
@@ -1700,14 +1712,16 @@ theorem take_east_at_stepIndex (l : LPath) (a : ℕ) (p : ℕ × ℕ)
     (h : p ∈ visitedPoints l a) :
     (l.take (stepIndexOf l a p h)).countP (· = false) = p.1 := by
   have hs := (stepIndexOf_spec l a p h).1
-  simp [posAfter] at hs; exact hs.1
+  simp only [posAfter] at hs
+  exact (Prod.mk.inj hs).1
 
 /-- The north step count of the prefix equals y - a -/
 theorem take_north_at_stepIndex (l : LPath) (a : ℕ) (p : ℕ × ℕ)
     (h : p ∈ visitedPoints l a) :
     (l.take (stepIndexOf l a p h)).countP (· = true) = p.2 - a := by
   have hs := (stepIndexOf_spec l a p h).1
-  simp [posAfter] at hs; omega
+  simp only [posAfter] at hs
+  have := (Prod.mk.inj hs).2; omega
 
 /- ### The Lindström Swap at a Shared Point
 
@@ -1759,7 +1773,7 @@ theorem lindstromSwapAt_snd_east (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
     - Total: n₂ + a₂ - a₁ = n₁' -/
 theorem lindstromSwapAt_fst_north (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
     (p : ℕ × ℕ) (h₁ : p ∈ visitedPoints l₁ a₁) (h₂ : p ∈ visitedPoints l₂ a₂)
-    (ha : a₁ ≤ p.2) (ha₂ : a₂ ≤ p.2) :
+    (ha : a₁ ≤ p.2) (ha₂ : a₂ ≤ p.2) (h_a_le : a₁ ≤ a₂) :
     northSteps (lindstromSwapAt l₁ l₂ a₁ a₂ p h₁ h₂).1 =
     northSteps l₂ + (a₂ - a₁) := by
   simp only [lindstromSwapAt, northSteps, List.countP_append]
@@ -1772,7 +1786,7 @@ theorem lindstromSwapAt_fst_north (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
 /-- North step count of second swapped path = n₁ + a₁ - a₂ -/
 theorem lindstromSwapAt_snd_north (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
     (p : ℕ × ℕ) (h₁ : p ∈ visitedPoints l₁ a₁) (h₂ : p ∈ visitedPoints l₂ a₂)
-    (ha : a₁ ≤ p.2) (ha₂ : a₂ ≤ p.2) :
+    (ha : a₁ ≤ p.2) (ha₂ : a₂ ≤ p.2) (h_a_le : a₂ ≤ a₁) :
     northSteps (lindstromSwapAt l₁ l₂ a₁ a₂ p h₁ h₂).2 =
     northSteps l₁ + (a₁ - a₂) := by
   simp only [lindstromSwapAt, northSteps, List.countP_append]
@@ -2120,13 +2134,14 @@ theorem swapAtPoint_snd_north_corrected (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p
     (h_reach : a₂ ≤ a₁ + l₁.countP (· = true)) :
     (swapAtPoint l₁ l₂ a₁ a₂ p).2.countP (· = true) =
     (l₁.countP (· = true) + a₁) - a₂ := by
-  -- swapAtPoint.2 = l₂.take(si₂) ++ l₁.drop(si₁)
-  -- North count: (p.2 - a₂) from prefix₂ + (n₁ + a₁ - p.2) from suffix₁ = n₁ + a₁ - a₂
   simp only [swapAtPoint, List.countP_append]
-  simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h₁ h₂
-  obtain ⟨i₁, hi₁_bound, hi₁_eq⟩ := h₁
-  obtain ⟨i₂, hi₂_bound, hi₂_eq⟩ := h₂
-  simp [posAfter] at hi₁_eq hi₂_eq
+  have h₁' := h₁; have h₂' := h₂
+  simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h₁' h₂'
+  obtain ⟨i₁, hi₁_bound, hi₁_eq⟩ := h₁'
+  obtain ⟨i₂, hi₂_bound, hi₂_eq⟩ := h₂'
+  simp only [posAfter] at hi₁_eq hi₂_eq
+  have hi₁_eq' := Prod.mk.inj hi₁_eq
+  have hi₂_eq' := Prod.mk.inj hi₂_eq
   have h_idx₁ : i₁ = splitIdx a₁ p := by
     have : (l₁.take i₁).length = i₁ := by rw [List.length_take]; omega
     have hsum := bool_list_countP_sum (l₁.take i₁)
@@ -2137,6 +2152,7 @@ theorem swapAtPoint_snd_north_corrected (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p
     rw [this] at hsum; simp [splitIdx]; omega
   rw [← h_idx₁, ← h_idx₂]
   have h_sum₁ := take_drop_countP_sum l₁ i₁ (· = true)
+  have : (l₁.take i₁).countP (· = true) = p.2 - a₁ := by rw [hi₁_eq'.2]; omega
   omega
 
 /-- The first swapped path visits the shared point p.
@@ -2146,29 +2162,28 @@ theorem swapAtPoint_fst_visits_point (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : 
     (h₁ : p ∈ visitedPoints l₁ a₁) (h₂ : p ∈ visitedPoints l₂ a₂)
     (ha₁ : a₁ ≤ p.2) (ha₂ : a₂ ≤ p.2) :
     p ∈ visitedPoints (swapAtPoint l₁ l₂ a₁ a₂ p).1 a₁ := by
-  -- swapAtPoint.1 = l₁.take(si₁) ++ l₂.drop(si₂)
-  -- posAfter of first si₁ steps = posAfter l₁ si₁ = p (since prefix is l₁.take si₁)
+  have h₁_orig := h₁
   simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h₁ ⊢
   obtain ⟨i₁, hi₁_bound, hi₁_eq⟩ := h₁
   have h_idx₁ : i₁ = splitIdx a₁ p := by
-    simp [posAfter] at hi₁_eq
+    simp only [posAfter] at hi₁_eq
+    have hi := Prod.mk.inj hi₁_eq
     have : (l₁.take i₁).length = i₁ := by rw [List.length_take]; omega
     have hsum := bool_list_countP_sum (l₁.take i₁)
     rw [this] at hsum; simp [splitIdx]; omega
   set si₁ := splitIdx a₁ p
   refine ⟨si₁, ?_, ?_⟩
-  · -- si₁ < (swapped path).length + 1
-    simp [swapAtPoint, List.length_append]
-    have : si₁ ≤ l₁.length := splitIdx_le_length l₁ a₁ p h₁
+  · simp [swapAtPoint, List.length_append]
+    have : si₁ ≤ l₁.length := splitIdx_le_length l₁ a₁ p h₁_orig
     omega
-  · -- posAfter (l₁.take si₁ ++ l₂.drop si₂) a₁ si₁ = p
-    simp only [swapAtPoint, posAfter]
+  · simp only [swapAtPoint, posAfter]
     have hlen : (l₁.take si₁).length = si₁ := by
       rw [List.length_take]
-      exact Nat.min_eq_left (splitIdx_le_length l₁ a₁ p h₁)
-    rw [show (l₁.take si₁ ++ l₂.drop (splitIdx a₂ p)).take si₁ = l₁.take si₁ from by
-      rw [← hlen]; exact List.take_left]
-    rw [← h_idx₁]
+      exact Nat.min_eq_left (splitIdx_le_length l₁ a₁ p h₁_orig)
+    have h_take_eq : (l₁.take si₁ ++ l₂.drop (splitIdx a₂ p)).take si₁ = l₁.take si₁ := by
+      conv_lhs => rw [← hlen]
+      exact List.take_left
+    rw [h_take_eq, ← h_idx₁]
     exact hi₁_eq
 
 /-- The second swapped path visits the shared point p (symmetric). -/
@@ -2177,25 +2192,27 @@ theorem swapAtPoint_snd_visits_point (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : 
     (ha₁ : a₁ ≤ p.2) (ha₂ : a₂ ≤ p.2) :
     p ∈ visitedPoints (swapAtPoint l₁ l₂ a₁ a₂ p).2 a₂ := by
   -- Symmetric: swapAtPoint.2 = l₂.take(si₂) ++ l₁.drop(si₁)
+  have h₂_orig := h₂
   simp [visitedPoints, Finset.mem_image, Finset.mem_range] at h₂ ⊢
   obtain ⟨i₂, hi₂_bound, hi₂_eq⟩ := h₂
   have h_idx₂ : i₂ = splitIdx a₂ p := by
-    simp [posAfter] at hi₂_eq
+    have hi := Prod.mk.inj hi₂_eq
     have : (l₂.take i₂).length = i₂ := by rw [List.length_take]; omega
     have hsum := bool_list_countP_sum (l₂.take i₂)
     rw [this] at hsum; simp [splitIdx]; omega
   set si₂ := splitIdx a₂ p
   refine ⟨si₂, ?_, ?_⟩
   · simp [swapAtPoint, List.length_append]
-    have : si₂ ≤ l₂.length := splitIdx_le_length l₂ a₂ p h₂
+    have : si₂ ≤ l₂.length := splitIdx_le_length l₂ a₂ p h₂_orig
     omega
   · simp only [swapAtPoint, posAfter]
     have hlen : (l₂.take si₂).length = si₂ := by
       rw [List.length_take]
-      exact Nat.min_eq_left (splitIdx_le_length l₂ a₂ p h₂)
-    rw [show (l₂.take si₂ ++ l₁.drop (splitIdx a₁ p)).take si₂ = l₂.take si₂ from by
-      rw [← hlen]; exact List.take_left]
-    rw [← h_idx₂]
+      exact Nat.min_eq_left (splitIdx_le_length l₂ a₂ p h₂_orig)
+    have h_take_eq : (l₂.take si₂ ++ l₁.drop (splitIdx a₁ p)).take si₂ = l₂.take si₂ := by
+      conv_lhs => rw [← hlen]
+      exact List.take_left
+    rw [h_take_eq, ← h_idx₂]
     exact hi₂_eq
 
 /-- **KEY**: Swapped paths are NOT non-intersecting.
@@ -2212,26 +2229,677 @@ theorem swapAtPoint_not_ni (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ × ℕ
   have he₂ := swapAtPoint_snd_east l₁ l₂ a₁ a₂ p h₁ h₂ heast₁ heast₂
   exact not_ni_of_shared_point p hv₁ hv₂ he₁ he₂
 
-/-
-### Proof Status for lindstrom_involution
+/- ### Part XXI: Canonical Shared Point Selection
 
-The axiom has been converted to `theorem ... := by sorry` (line 501).
-This eliminates logical unsoundness while marking the proof as incomplete.
+For the Lindström involution to be self-inverse, we need a CANONICAL choice of shared
+point that is preserved by the swap. We use the minimum step index in path 1:
+  minStepIdx = min { splitIdx a₁ p | p ∈ sharedPoints l₁ l₂ a₁ a₂ }
 
-**Infrastructure completed**:
-- Forward map: swapAtPoint maps intersecting identity pairs to crossing pairs
-  (east steps preserved, north steps give n₁' = n₂ + a₂ - a₁ and n₂' = n₁ + a₁ - a₂)
-- Involutivity: swapAtPoint_involutive shows swap∘swap = id
-- Shared point preservation: swapAtPoint_fst/snd_visits_point
-- Not-NI preservation: swapAtPoint_not_ni
+Key property: After swapping at the min-step-index shared point p, the prefixes
+of both paths are unchanged (by definition of swapAtPoint). So any shared point
+with step index < splitIdx a₁ p in the swapped paths is also shared by the
+originals, contradicting minimality. Therefore p is also the min shared point
+of the swapped paths, ensuring the involution is self-inverse. -/
 
-**Remaining gap**: Constructing the explicit `Fintype.card` equality.
-The involution sends (l₁, l₂) ↦ (swapAtPoint l₁ l₂ a₁ a₂ p).
-To prove the card equality, one needs to:
-1. Show the map is well-typed: swapped paths have correct types (pathType m n₁' × pathType m n₂')
-2. Construct the backward map for crossing pairs (requires crossing paths to share a point,
-   guaranteed by h_strict_a and the endpoint ordering from the LGV call site: b₁ < b₂)
-3. Show these maps are mutual inverses (via involutivity + canonical point selection)
--/
+/-- The minimum step index among all shared points -/
+noncomputable def minSharedStepIdx (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
+    (h : (sharedPoints l₁ l₂ a₁ a₂).Nonempty) : ℕ :=
+  ((sharedPoints l₁ l₂ a₁ a₂).image (splitIdx a₁)).min'
+    (Finset.Nonempty.image h _)
+
+/-- There exists a shared point achieving the minimum step index -/
+theorem minSharedStepIdx_achieved (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
+    (h : (sharedPoints l₁ l₂ a₁ a₂).Nonempty) :
+    ∃ p ∈ sharedPoints l₁ l₂ a₁ a₂,
+      splitIdx a₁ p = minSharedStepIdx l₁ l₂ a₁ a₂ h := by
+  have hmin := Finset.min'_mem ((sharedPoints l₁ l₂ a₁ a₂).image (splitIdx a₁))
+    (Finset.Nonempty.image h _)
+  simp [Finset.mem_image] at hmin
+  exact hmin
+
+/-- Select the canonical shared point (min by step index in path 1) -/
+noncomputable def canonSharedPoint (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
+    (h : (sharedPoints l₁ l₂ a₁ a₂).Nonempty) : ℕ × ℕ :=
+  (minSharedStepIdx_achieved l₁ l₂ a₁ a₂ h).choose
+
+theorem canonSharedPoint_mem (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
+    (h : (sharedPoints l₁ l₂ a₁ a₂).Nonempty) :
+    canonSharedPoint l₁ l₂ a₁ a₂ h ∈ sharedPoints l₁ l₂ a₁ a₂ :=
+  (minSharedStepIdx_achieved l₁ l₂ a₁ a₂ h).choose_spec.1
+
+theorem canonSharedPoint_mem₁ (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
+    (h : (sharedPoints l₁ l₂ a₁ a₂).Nonempty) :
+    canonSharedPoint l₁ l₂ a₁ a₂ h ∈ visitedPoints l₁ a₁ :=
+  (Finset.mem_inter.mp (canonSharedPoint_mem l₁ l₂ a₁ a₂ h)).1
+
+theorem canonSharedPoint_mem₂ (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
+    (h : (sharedPoints l₁ l₂ a₁ a₂).Nonempty) :
+    canonSharedPoint l₁ l₂ a₁ a₂ h ∈ visitedPoints l₂ a₂ :=
+  (Finset.mem_inter.mp (canonSharedPoint_mem l₁ l₂ a₁ a₂ h)).2
+
+theorem canonSharedPoint_isMin (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
+    (h : (sharedPoints l₁ l₂ a₁ a₂).Nonempty)
+    (q : ℕ × ℕ) (hq : q ∈ sharedPoints l₁ l₂ a₁ a₂) :
+    splitIdx a₁ (canonSharedPoint l₁ l₂ a₁ a₂ h) ≤ splitIdx a₁ q := by
+  have hmin := (minSharedStepIdx_achieved l₁ l₂ a₁ a₂ h).choose_spec.2
+  rw [hmin]
+  exact Finset.min'_le _ _ (Finset.mem_image.mpr ⟨q, hq, rfl⟩)
+
+/- ### Part XXII: Proving the Lindström Involution
+
+The proof proceeds in two steps:
+1. Define injections A → B and B → A using swapAtPoint at canonSharedPoint
+2. Use `Nat.le_antisymm` with `Fintype.card_le_of_injective` to get equality
+
+For the forward injection f : {intersecting identity} → {crossing}:
+  Given (P₁, P₂) with ¬NI, swap at canonSharedPoint(P₁, P₂) → (Q₁, Q₂)
+  East steps: m (preserved)
+  North steps: n₂ + (a₂ - a₁) = n₁', and (n₁ + a₁) - a₂ = n₂'
+
+For the backward injection g : {crossing} → {intersecting identity}:
+  Given (Q₁, Q₂) : pathType m n₁' × pathType m n₂'
+  By crossing lemma: Q₁ starts at a₁ < a₂, ends at a₁+n₁' = a₂+n₂ > a₂+n₂' = a₁+n₁
+  So Q₁ starts lower, ends higher → they MUST intersect (¬NI)
+  Swap at canonSharedPoint(Q₁, Q₂) → (P₁, P₂) with correct types
+
+Both are injective because:
+- f(P₁, P₂) determines the swap point and swapping twice = id
+- Specifically: canonSharedPoint is preserved by swapAtPoint, so g(f(x)) = x -/
+
+/-- **Crossing pairs are always intersecting** (when h_end holds).
+    With a₁ < a₂ and a₂ + n₂' = a₁ + n₁ < a₂ + n₂ = a₁ + n₁', crossing paths
+    satisfy the crossing lemma hypotheses: Q₁ starts lower, ends higher. -/
+theorem crossing_always_intersecting (m n₁' n₂' a₁ a₂ : ℕ)
+    (h_strict_a : a₁ < a₂)
+    (h_cross_end : a₂ + n₂' < a₁ + n₁')
+    (Q₁ : pathType m n₁') (Q₂ : pathType m n₂') :
+    ¬NonIntersecting Q₁.val Q₂.val m a₁ a₂ := by
+  have hm₁ : Q₁.val.countP (· = false) = m := Q₁.property.2
+  have hn₁ : Q₁.val.countP (· = true) = n₁' := by
+    have := eastSteps_add_northSteps Q₁.val
+    simp only [eastSteps, northSteps] at this; omega
+  have hm₂ : Q₂.val.countP (· = false) = m := Q₂.property.2
+  have hn₂ : Q₂.val.countP (· = true) = n₂' := by
+    have := eastSteps_add_northSteps Q₂.val
+    simp only [eastSteps, northSteps] at this; omega
+  exact crossing_lemma m n₁' n₂' a₁ a₂ hm₁ hn₁ hm₂ hn₂ h_strict_a h_cross_end
+
+/-- The forward map: intersecting identity pair → crossing pair -/
+noncomputable def lindstromForward (m n₁ n₂ n₁' n₂' a₁ a₂ : ℕ)
+    (h_strict_a : a₁ < a₂)
+    (h_end : a₁ + n₁ < a₂ + n₂)
+    (h_n₁' : n₁' = n₂ + a₂ - a₁) (h_n₂' : n₂' = n₁ + a₁ - a₂)
+    (h_n_sum : n₁ + n₂ = n₁' + n₂')
+    (pair : {p : pathType m n₁ × pathType m n₂ //
+      ¬NonIntersecting p.1.val p.2.val m a₁ a₂}) :
+    pathType m n₁' × pathType m n₂' := by
+  set P₁ := pair.val.1 with hP₁_def
+  set P₂ := pair.val.2 with hP₂_def
+  have h_ni := pair.property
+  -- Find shared point
+  have h_east₁ : eastSteps P₁.val = m := by have := P₁.property.2; simp_all [eastSteps]
+  have h_east₂ : eastSteps P₂.val = m := by have := P₂.property.2; simp_all [eastSteps]
+  have h_shared := sharedPoints_nonempty_of_not_ni h_east₁ h_east₂ h_ni
+  set p := canonSharedPoint P₁.val P₂.val a₁ a₂ h_shared with hp_def
+  have hp₁ := canonSharedPoint_mem₁ P₁.val P₂.val a₁ a₂ h_shared
+  have hp₂ := canonSharedPoint_mem₂ P₁.val P₂.val a₁ a₂ h_shared
+  have ha₁ := shared_point_y_ge_a₁ P₁.val P₂.val a₁ a₂ p hp₁
+  have ha₂ := shared_point_y_ge_a₂ P₁.val P₂.val a₁ a₂ p hp₂
+  -- Swap at shared point
+  set result := swapAtPoint P₁.val P₂.val a₁ a₂ p
+  -- First component has m East steps and n₁' North steps
+  have hfst_east := swapAtPoint_fst_east P₁.val P₂.val a₁ a₂ p hp₁ hp₂ h_east₁ h_east₂
+  have hfst_north := swapAtPoint_fst_north P₁.val P₂.val a₁ a₂ p hp₁ hp₂ ha₁ ha₂
+  have hn₂_val : P₂.val.countP (· = true) = n₂ := by
+    have := eastSteps_add_northSteps P₂.val
+    simp only [eastSteps, northSteps] at this; omega
+  have hfst_north_eq : result.1.countP (· = true) = n₁' := by
+    rw [hfst_north, hn₂_val, h_n₁']
+  have hfst_len : result.1.length = m + n₁' := by
+    have := bool_list_countP_sum result.1; omega
+  -- Second component has m East steps and n₂' North steps
+  have hsnd_east := swapAtPoint_snd_east P₁.val P₂.val a₁ a₂ p hp₁ hp₂ h_east₁ h_east₂
+  have hn₁_val : P₁.val.countP (· = true) = n₁ := by
+    have := eastSteps_add_northSteps P₁.val
+    simp only [eastSteps, northSteps] at this; omega
+  -- For the second path: north = (n₁ + a₁) - a₂
+  have h_reach : a₂ ≤ a₁ + P₁.val.countP (· = true) := by
+    rw [hn₁_val]; omega
+  have hsnd_north := swapAtPoint_snd_north_corrected P₁.val P₂.val a₁ a₂ p hp₁ hp₂ ha₁ ha₂ h_reach
+  have hsnd_north_eq : result.2.countP (· = true) = n₂' := by
+    rw [hsnd_north, hn₁_val, h_n₂']
+  have hsnd_len : result.2.length = m + n₂' := by
+    have := bool_list_countP_sum result.2; omega
+  exact (⟨result.1, hfst_len, hfst_east⟩, ⟨result.2, hsnd_len, hsnd_east⟩)
+
+/-- The backward map: crossing pair → intersecting identity pair -/
+noncomputable def lindstromBackward (m n₁ n₂ n₁' n₂' a₁ a₂ : ℕ)
+    (h_strict_a : a₁ < a₂)
+    (h_end : a₁ + n₁ < a₂ + n₂)
+    (h_n₁' : n₁' = n₂ + a₂ - a₁) (h_n₂' : n₂' = n₁ + a₁ - a₂)
+    (h_n_sum : n₁ + n₂ = n₁' + n₂')
+    (pair : pathType m n₁' × pathType m n₂') :
+    {p : pathType m n₁ × pathType m n₂ //
+      ¬NonIntersecting p.1.val p.2.val m a₁ a₂} := by
+  set Q₁ := pair.1 with hQ₁_def
+  set Q₂ := pair.2 with hQ₂_def
+  -- Crossing pairs are always intersecting
+  have h_cross_end : a₂ + n₂' < a₁ + n₁' := by omega
+  have h_ni : ¬NonIntersecting Q₁.val Q₂.val m a₁ a₂ :=
+    crossing_always_intersecting m n₁' n₂' a₁ a₂ h_strict_a h_cross_end Q₁ Q₂
+  -- Find shared point
+  have h_east₁ : eastSteps Q₁.val = m := by have := Q₁.property.2; simp_all [eastSteps]
+  have h_east₂ : eastSteps Q₂.val = m := by have := Q₂.property.2; simp_all [eastSteps]
+  have h_shared := sharedPoints_nonempty_of_not_ni h_east₁ h_east₂ h_ni
+  set p := canonSharedPoint Q₁.val Q₂.val a₁ a₂ h_shared with hp_def
+  have hp₁ := canonSharedPoint_mem₁ Q₁.val Q₂.val a₁ a₂ h_shared
+  have hp₂ := canonSharedPoint_mem₂ Q₁.val Q₂.val a₁ a₂ h_shared
+  have ha₁ := shared_point_y_ge_a₁ Q₁.val Q₂.val a₁ a₂ p hp₁
+  have ha₂ := shared_point_y_ge_a₂ Q₁.val Q₂.val a₁ a₂ p hp₂
+  -- Swap at shared point
+  set result := swapAtPoint Q₁.val Q₂.val a₁ a₂ p
+  -- First component: m East, n₂' + (a₂ - a₁) = (n₁ + a₁ - a₂) + (a₂ - a₁) North steps
+  -- But by swapAtPoint_fst_north: North = n₂' + (a₂ - a₁)
+  -- n₂' + (a₂ - a₁) = (n₁ + a₁ - a₂) + (a₂ - a₁) = n₁ (since a₁ + n₁ ≥ a₂ from h_n_sum)
+  have hfst_east := swapAtPoint_fst_east Q₁.val Q₂.val a₁ a₂ p hp₁ hp₂ h_east₁ h_east₂
+  have hfst_north := swapAtPoint_fst_north Q₁.val Q₂.val a₁ a₂ p hp₁ hp₂ ha₁ ha₂
+  have hn₂'_val : Q₂.val.countP (· = true) = n₂' := by
+    have := eastSteps_add_northSteps Q₂.val
+    simp only [eastSteps, northSteps] at this; omega
+  have hfst_north_eq : result.1.countP (· = true) = n₁ := by
+    rw [hfst_north, hn₂'_val]; omega
+  have hfst_len : result.1.length = m + n₁ := by
+    have := bool_list_countP_sum result.1; omega
+  -- Second component
+  have hsnd_east := swapAtPoint_snd_east Q₁.val Q₂.val a₁ a₂ p hp₁ hp₂ h_east₁ h_east₂
+  have hn₁'_val : Q₁.val.countP (· = true) = n₁' := by
+    have := eastSteps_add_northSteps Q₁.val
+    simp only [eastSteps, northSteps] at this; omega
+  have h_reach : a₂ ≤ a₁ + Q₁.val.countP (· = true) := by
+    rw [hn₁'_val]; omega
+  have hsnd_north := swapAtPoint_snd_north_corrected Q₁.val Q₂.val a₁ a₂ p hp₁ hp₂ ha₁ ha₂ h_reach
+  have hsnd_north_eq : result.2.countP (· = true) = n₂ := by
+    rw [hsnd_north, hn₁'_val]; omega
+  have hsnd_len : result.2.length = m + n₂ := by
+    have := bool_list_countP_sum result.2; omega
+  -- Swapped paths are intersecting (they share point p)
+  have h_ni_result : ¬NonIntersecting result.1 result.2 m a₁ a₂ :=
+    swapAtPoint_not_ni Q₁.val Q₂.val a₁ a₂ p hp₁ hp₂ ha₁ ha₂ h_east₁ h_east₂
+  exact ⟨(⟨result.1, hfst_len, hfst_east⟩, ⟨result.2, hsnd_len, hsnd_east⟩), h_ni_result⟩
+
+/- ### Part XXIII: Canonical Index Preservation and Injectivity
+
+The injectivity of lindstromForward and lindstromBackward follows from:
+1. **Prefix preservation**: swapAtPoint preserves the prefix before the split index
+2. **splitIdx recovery**: splitIdx a (posAfter l a k) = k for visited points
+3. **Canonical index preservation**: the min shared step index is preserved by swap
+4. **Involutivity**: swapping twice at the same indices gives back the original
+
+Key insight: For a shared point q of swapped paths (Q₁, Q₂) with splitIdx a₁ q < i
+(where i = splitIdx of the canonical point), q is also shared by the originals (P₁, P₂)
+because the prefixes are unchanged. This contradicts minimality of i, so the canonical
+split index is the same for (Q₁, Q₂) as for (P₁, P₂). -/
+
+/-- posAfter depends only on the first i steps of the path -/
+private theorem posAfter_take_eq (l : LPath) (a i k : ℕ) (hk : k ≤ i) :
+    posAfter (l.take i) a k = posAfter l a k := by
+  simp [posAfter, List.take_take, min_eq_left hk]
+
+/-- splitIdx of posAfter recovers the step index -/
+private theorem splitIdx_posAfter (l : LPath) (a k : ℕ) (hk : k ≤ l.length) :
+    splitIdx a (posAfter l a k) = k := by
+  simp only [splitIdx, posAfter]
+  have hlen : (l.take k).length = k := by rw [List.length_take]; omega
+  have := bool_list_countP_sum (l.take k)
+  omega
+
+/-- Prefix of first swapped path equals prefix of original -/
+private theorem swapAtPoint_fst_take_prefix (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ × ℕ)
+    (hi : splitIdx a₁ p ≤ l₁.length) (k : ℕ) (hk : k ≤ splitIdx a₁ p) :
+    (swapAtPoint l₁ l₂ a₁ a₂ p).1.take k = l₁.take k := by
+  simp only [swapAtPoint]
+  set i := splitIdx a₁ p
+  have hli : (l₁.take i).length = i := by rw [List.length_take]; omega
+  have h1 : (l₁.take i ++ l₂.drop (splitIdx a₂ p)).take i = l₁.take i := by
+    rw [← hli]; exact List.take_left
+  have h2 := congr_arg (List.take k) h1
+  simp only [List.take_take, min_eq_right hk] at h2
+  exact h2
+
+/-- Prefix of second swapped path equals prefix of original -/
+private theorem swapAtPoint_snd_take_prefix (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p : ℕ × ℕ)
+    (hj : splitIdx a₂ p ≤ l₂.length) (k : ℕ) (hk : k ≤ splitIdx a₂ p) :
+    (swapAtPoint l₁ l₂ a₁ a₂ p).2.take k = l₂.take k := by
+  simp only [swapAtPoint]
+  set j := splitIdx a₂ p
+  have hlj : (l₂.take j).length = j := by rw [List.length_take]; omega
+  have h1 : (l₂.take j ++ l₁.drop (splitIdx a₁ p)).take j = l₂.take j := by
+    rw [← hlj]; exact List.take_left
+  have h2 := congr_arg (List.take k) h1
+  simp only [List.take_take, min_eq_right hk] at h2
+  exact h2
+
+/-- swapAtPoint only depends on splitIdx values, not on the specific point -/
+private theorem swapAtPoint_eq_of_splitIdx (l₁ l₂ : LPath) (a₁ a₂ : ℕ) (p q : ℕ × ℕ)
+    (h₁ : splitIdx a₁ p = splitIdx a₁ q) (h₂ : splitIdx a₂ p = splitIdx a₂ q) :
+    swapAtPoint l₁ l₂ a₁ a₂ p = swapAtPoint l₁ l₂ a₁ a₂ q := by
+  simp only [swapAtPoint, h₁, h₂]
+
+/-- A visited point q of a path with start a has splitIdx a q equal to its
+    step index. Specifically, for any i ≤ l.length, the point posAfter l a i
+    is visited and has splitIdx a = i. Conversely, any visited point q has
+    some step index k with posAfter l a k = q and splitIdx a q = k. -/
+private theorem visitedPoint_splitIdx_eq (l : LPath) (a : ℕ) (q : ℕ × ℕ)
+    (hq : q ∈ visitedPoints l a) :
+    ∃ k, k ≤ l.length ∧ posAfter l a k = q ∧ splitIdx a q = k := by
+  simp [visitedPoints, Finset.mem_image, Finset.mem_range] at hq
+  obtain ⟨k, hk_bound, hk_eq⟩ := hq
+  have hk_le : k ≤ l.length := by omega
+  refine ⟨k, hk_le, hk_eq, ?_⟩
+  rw [← hk_eq]; exact splitIdx_posAfter l a k hk_le
+
+/-- For a shared point, the splitIdx values for a₁ and a₂ differ by
+    the constant a₂ - a₁ (when a₁ ≤ a₂ and both ≤ p.2) -/
+private theorem splitIdx_const_diff (a₁ a₂ : ℕ) (q : ℕ × ℕ)
+    (ha₁ : a₁ ≤ q.2) (ha₂ : a₂ ≤ q.2) (h_le : a₁ ≤ a₂) :
+    splitIdx a₁ q = splitIdx a₂ q + (a₂ - a₁) := by
+  simp [splitIdx]; omega
+
+/-- **Canonical Split Index Preservation**: the min shared step index of the
+    swapped paths equals the min shared step index of the original paths.
+
+    After swapping at the canonical point p with splitIdx a₁ p = i:
+    - The prefix of Q₁ before step i equals the prefix of P₁ (prefix preservation)
+    - The prefix of Q₂ before step j equals the prefix of P₂
+    - Any shared point of (Q₁, Q₂) at step < i is therefore shared by (P₁, P₂)
+    - By minimality of p for (P₁, P₂), no such point exists
+    - Since p IS a shared point of (Q₁, Q₂), the minimum is exactly i -/
+private theorem minSharedStepIdx_preserved (l₁ l₂ : LPath) (a₁ a₂ : ℕ)
+    (h_strict : a₁ < a₂)
+    (h_shared : (sharedPoints l₁ l₂ a₁ a₂).Nonempty)
+    (hi : splitIdx a₁ (canonSharedPoint l₁ l₂ a₁ a₂ h_shared) ≤ l₁.length)
+    (hj : splitIdx a₂ (canonSharedPoint l₁ l₂ a₁ a₂ h_shared) ≤ l₂.length)
+    (h_shared' : (sharedPoints (swapAtPoint l₁ l₂ a₁ a₂
+      (canonSharedPoint l₁ l₂ a₁ a₂ h_shared)).1
+      (swapAtPoint l₁ l₂ a₁ a₂ (canonSharedPoint l₁ l₂ a₁ a₂ h_shared)).2
+      a₁ a₂).Nonempty) :
+    minSharedStepIdx
+      (swapAtPoint l₁ l₂ a₁ a₂ (canonSharedPoint l₁ l₂ a₁ a₂ h_shared)).1
+      (swapAtPoint l₁ l₂ a₁ a₂ (canonSharedPoint l₁ l₂ a₁ a₂ h_shared)).2
+      a₁ a₂ h_shared' =
+    minSharedStepIdx l₁ l₂ a₁ a₂ h_shared := by
+  set cp := canonSharedPoint l₁ l₂ a₁ a₂ h_shared with hcp_def
+  set Q₁ := (swapAtPoint l₁ l₂ a₁ a₂ cp).1
+  set Q₂ := (swapAtPoint l₁ l₂ a₁ a₂ cp).2
+  set i := splitIdx a₁ cp
+  set j := splitIdx a₂ cp
+  set minOrig := minSharedStepIdx l₁ l₂ a₁ a₂ h_shared
+  set minSwap := minSharedStepIdx Q₁ Q₂ a₁ a₂ h_shared'
+  -- Step 1: minOrig = i (by definition, canonSharedPoint achieves the minimum)
+  have hcp_idx := (minSharedStepIdx_achieved l₁ l₂ a₁ a₂ h_shared).choose_spec.2
+  have h_min_orig : minOrig = i := by
+    rw [show i = splitIdx a₁ cp from rfl]
+    exact hcp_idx.symm ▸ rfl
+  -- Step 2: p is a shared point of (Q₁, Q₂), so minSwap ≤ i
+  have hp₁ := canonSharedPoint_mem₁ l₁ l₂ a₁ a₂ h_shared
+  have hp₂ := canonSharedPoint_mem₂ l₁ l₂ a₁ a₂ h_shared
+  have ha₁ := shared_point_y_ge_a₁ l₁ l₂ a₁ a₂ cp hp₁
+  have ha₂ := shared_point_y_ge_a₂ l₁ l₂ a₁ a₂ cp hp₂
+  have hcp_in_Q : cp ∈ sharedPoints Q₁ Q₂ a₁ a₂ := by
+    simp only [sharedPoints, Finset.mem_inter]
+    exact ⟨swapAtPoint_fst_visits_point l₁ l₂ a₁ a₂ cp hp₁ hp₂ ha₁ ha₂,
+           swapAtPoint_snd_visits_point l₁ l₂ a₁ a₂ cp hp₁ hp₂ ha₁ ha₂⟩
+  have h_swap_le_i : minSwap ≤ i := by
+    exact Finset.min'_le _ _ (Finset.mem_image.mpr ⟨cp, hcp_in_Q, rfl⟩)
+  -- Step 3: Any shared point of (Q₁, Q₂) at step < i is also shared by (P₁, P₂)
+  -- This contradicts minimality, so minSwap ≥ i
+  have h_swap_ge_i : i ≤ minSwap := by
+    by_contra h_lt
+    push_neg at h_lt
+    -- There exists a shared point of (Q₁, Q₂) with step index < i
+    have hmin_mem := Finset.min'_mem
+      ((sharedPoints Q₁ Q₂ a₁ a₂).image (splitIdx a₁)) (Finset.Nonempty.image h_shared' _)
+    obtain ⟨q, hq_shared, hq_idx⟩ := Finset.mem_image.mp hmin_mem
+    -- q ∈ sharedPoints Q₁ Q₂ a₁ a₂ with splitIdx a₁ q = minSwap < i
+    have hq_lt_i : splitIdx a₁ q < i := by omega
+    -- q is visited by Q₁ and Q₂
+    have hq_Q₁ : q ∈ visitedPoints Q₁ a₁ := (Finset.mem_inter.mp hq_shared).1
+    have hq_Q₂ : q ∈ visitedPoints Q₂ a₂ := (Finset.mem_inter.mp hq_shared).2
+    -- Get the step indices for q in Q₁ and Q₂
+    obtain ⟨k₁, hk₁_le, hk₁_eq, hk₁_idx⟩ := visitedPoint_splitIdx_eq Q₁ a₁ q hq_Q₁
+    obtain ⟨k₂, hk₂_le, hk₂_eq, hk₂_idx⟩ := visitedPoint_splitIdx_eq Q₂ a₂ q hq_Q₂
+    -- k₁ = splitIdx a₁ q < i
+    have hk₁_lt_i : k₁ < i := by omega
+    -- For Q₂: splitIdx a₂ q < j because splitIdx a₁ q = splitIdx a₂ q + (a₂ - a₁)
+    -- and i = j + (a₂ - a₁) (same point cp has both indices)
+    have hq_y_ge_a₂ : a₂ ≤ q.2 := by
+      obtain ⟨k', _, hk'_eq⟩ := visitedPoint_splitIdx_eq Q₂ a₂ q hq_Q₂
+      rw [← hk'_eq]; simp [posAfter]; omega
+    have hq_y_ge_a₁ : a₁ ≤ q.2 := by omega
+    have h_diff_q := splitIdx_const_diff a₁ a₂ q hq_y_ge_a₁ hq_y_ge_a₂ (le_of_lt h_strict)
+    have h_diff_cp := splitIdx_const_diff a₁ a₂ cp ha₁ ha₂ (le_of_lt h_strict)
+    have hk₂_idx_eq : k₂ = splitIdx a₂ q := hk₂_idx
+    have hk₂_lt_j : k₂ < j := by omega
+    -- Since k₁ < i, prefix of Q₁ at step k₁ = prefix of l₁ at step k₁
+    -- So posAfter Q₁ a₁ k₁ = posAfter l₁ a₁ k₁
+    have h_prefix₁ := swapAtPoint_fst_take_prefix l₁ l₂ a₁ a₂ cp hi k₁ (le_of_lt hk₁_lt_i)
+    have h_pos₁ : posAfter Q₁ a₁ k₁ = posAfter l₁ a₁ k₁ := by
+      simp [posAfter]; congr 1 <;> (congr 1; exact h_prefix₁)
+    -- Similarly for Q₂
+    have h_prefix₂ := swapAtPoint_snd_take_prefix l₁ l₂ a₁ a₂ cp hj k₂ (le_of_lt hk₂_lt_j)
+    have h_pos₂ : posAfter Q₂ a₂ k₂ = posAfter l₂ a₂ k₂ := by
+      simp [posAfter]; congr 1 <;> (congr 1; exact h_prefix₂)
+    -- So q = posAfter l₁ a₁ k₁ = posAfter l₂ a₂ k₂, meaning q is shared by (l₁, l₂)
+    rw [hk₁_eq] at h_pos₁; rw [hk₂_eq] at h_pos₂
+    have hq_P₁ : q ∈ visitedPoints l₁ a₁ := by
+      simp [visitedPoints, Finset.mem_image, Finset.mem_range]
+      exact ⟨k₁, by omega, h_pos₁.symm⟩
+    have hq_P₂ : q ∈ visitedPoints l₂ a₂ := by
+      simp [visitedPoints, Finset.mem_image, Finset.mem_range]
+      exact ⟨k₂, by omega, h_pos₂.symm⟩
+    have hq_orig : q ∈ sharedPoints l₁ l₂ a₁ a₂ :=
+      Finset.mem_inter.mpr ⟨hq_P₁, hq_P₂⟩
+    -- By minimality of cp in (l₁, l₂): splitIdx a₁ q ≥ i
+    have := canonSharedPoint_isMin l₁ l₂ a₁ a₂ h_shared q hq_orig
+    omega
+  -- Combine: minSwap = i = minOrig
+  omega
+
+/-- The forward map is injective. This follows because:
+    1. canonSharedPoint is preserved by swap (the min step index property)
+    2. swapAtPoint is involutive
+    So applying backward ∘ forward = id, which implies forward is injective. -/
+theorem lindstromForward_injective (m n₁ n₂ n₁' n₂' a₁ a₂ : ℕ)
+    (h_strict_a : a₁ < a₂)
+    (h_end : a₁ + n₁ < a₂ + n₂)
+    (h_n₁' : n₁' = n₂ + a₂ - a₁) (h_n₂' : n₂' = n₁ + a₁ - a₂)
+    (h_n_sum : n₁ + n₂ = n₁' + n₂') :
+    Function.Injective (lindstromForward m n₁ n₂ n₁' n₂' a₁ a₂
+      h_strict_a h_end h_n₁' h_n₂' h_n_sum) := by
+  intro ⟨⟨P₁, P₂⟩, hni_x⟩ ⟨⟨P₁', P₂'⟩, hni_y⟩ heq
+  -- For input x = ⟨⟨P₁, P₂⟩, hni_x⟩, lindstromForward swaps at canonical point
+  -- producing (Q₁, Q₂). For input y = ⟨⟨P₁', P₂'⟩, hni_y⟩, it produces the same (Q₁, Q₂).
+  -- Strategy: show the originals (P₁, P₂) and (P₁', P₂') can both be recovered from
+  -- (Q₁, Q₂) by swapping at the canonical indices. Since the canonical indices agree
+  -- (by preservation) and swapAtPoint is deterministic, the originals must be equal.
+  -- Extract equality of output values
+  have h_fst : (lindstromForward m n₁ n₂ n₁' n₂' a₁ a₂
+    h_strict_a h_end h_n₁' h_n₂' h_n_sum ⟨⟨P₁, P₂⟩, hni_x⟩).1 =
+    (lindstromForward m n₁ n₂ n₁' n₂' a₁ a₂
+    h_strict_a h_end h_n₁' h_n₂' h_n_sum ⟨⟨P₁', P₂'⟩, hni_y⟩).1 := by
+    rw [heq]
+  have h_snd : (lindstromForward m n₁ n₂ n₁' n₂' a₁ a₂
+    h_strict_a h_end h_n₁' h_n₂' h_n_sum ⟨⟨P₁, P₂⟩, hni_x⟩).2 =
+    (lindstromForward m n₁ n₂ n₁' n₂' a₁ a₂
+    h_strict_a h_end h_n₁' h_n₂' h_n_sum ⟨⟨P₁', P₂'⟩, hni_y⟩).2 := by
+    rw [heq]
+  -- Both P₁ and P₁' are pathTypes, so equality of subtype vals suffices
+  -- lindstromForward ... ⟨⟨P₁, P₂⟩, hni⟩ = (⟨swap.1, ...⟩, ⟨swap.2, ...⟩)
+  -- where swap = swapAtPoint P₁.val P₂.val a₁ a₂ cp
+  -- Since the function is defined by tactic, we use that the output .val is the swap
+  -- For x: compute canonical point and swap
+  have h_east₁ : eastSteps P₁.val = m := by have := P₁.property.2; simp_all [eastSteps]
+  have h_east₂ : eastSteps P₂.val = m := by have := P₂.property.2; simp_all [eastSteps]
+  have h_shared_x := sharedPoints_nonempty_of_not_ni h_east₁ h_east₂ hni_x
+  set cpx := canonSharedPoint P₁.val P₂.val a₁ a₂ h_shared_x
+  have hpx₁ := canonSharedPoint_mem₁ P₁.val P₂.val a₁ a₂ h_shared_x
+  have hpx₂ := canonSharedPoint_mem₂ P₁.val P₂.val a₁ a₂ h_shared_x
+  have hax₁ := shared_point_y_ge_a₁ P₁.val P₂.val a₁ a₂ cpx hpx₁
+  have hax₂ := shared_point_y_ge_a₂ P₁.val P₂.val a₁ a₂ cpx hpx₂
+  have hix := splitIdx_le_length P₁.val a₁ cpx hpx₁
+  have hjx := splitIdx_le_length P₂.val a₂ cpx hpx₂
+  -- For y: compute canonical point and swap
+  have h_east₁' : eastSteps P₁'.val = m := by have := P₁'.property.2; simp_all [eastSteps]
+  have h_east₂' : eastSteps P₂'.val = m := by have := P₂'.property.2; simp_all [eastSteps]
+  have h_shared_y := sharedPoints_nonempty_of_not_ni h_east₁' h_east₂' hni_y
+  set cpy := canonSharedPoint P₁'.val P₂'.val a₁ a₂ h_shared_y
+  have hpy₁ := canonSharedPoint_mem₁ P₁'.val P₂'.val a₁ a₂ h_shared_y
+  have hpy₂ := canonSharedPoint_mem₂ P₁'.val P₂'.val a₁ a₂ h_shared_y
+  have hay₁ := shared_point_y_ge_a₁ P₁'.val P₂'.val a₁ a₂ cpy hpy₁
+  have hay₂ := shared_point_y_ge_a₂ P₁'.val P₂'.val a₁ a₂ cpy hpy₂
+  have hiy := splitIdx_le_length P₁'.val a₁ cpy hpy₁
+  have hjy := splitIdx_le_length P₂'.val a₂ cpy hpy₂
+  -- The outputs agree on .val:
+  -- lindstromForward returns (⟨(swapAtPoint P₁ P₂ cpx).1, ...⟩, ⟨(swapAtPoint P₁ P₂ cpx).2, ...⟩)
+  -- So the .val of the outputs are the swap results
+  -- Q₁.val = (swapAtPoint P₁.val P₂.val a₁ a₂ cpx).1 = (swapAtPoint P₁'.val P₂'.val a₁ a₂ cpy).1
+  -- By involutivity at cpx: swapAtPoint(swap(P₁,P₂,cpx)) at cpx = (P₁, P₂)
+  -- By involutivity at cpy: swapAtPoint(swap(P₁',P₂',cpy)) at cpy = (P₁', P₂')
+  -- Since the swaps produce the same output, and the canonical indices agree...
+  -- Apply involutivity to recover originals
+  have h_invol_x := swapAtPoint_involutive P₁.val P₂.val a₁ a₂ cpx hix hjx
+  have h_invol_y := swapAtPoint_involutive P₁'.val P₂'.val a₁ a₂ cpy hiy hjy
+  -- The key fact: swapAtPoint only depends on splitIdx values.
+  -- If splitIdx a₁ cpx = splitIdx a₁ cpy and splitIdx a₂ cpx = splitIdx a₂ cpy,
+  -- then swapping Q at cpx and at cpy give the same result.
+  -- Since swapping Q at cpx gives (P₁, P₂) and at cpy gives (P₁', P₂'),
+  -- we conclude (P₁, P₂) = (P₁', P₂').
+  -- To show splitIdx equality, we use that both are equal to the min shared step
+  -- index of the common output Q. But this requires knowing Q, which is the output
+  -- of lindstromForward. Instead, we use a more direct argument.
+  -- Direct argument: since both forward maps produce the same list values,
+  -- and involutivity at the respective canonical points recovers the originals,
+  -- if the canonical split indices agree, we're done.
+  -- The split indices agree because both equal the min shared step index of Q.
+  -- We need: splitIdx a₁ cpx = splitIdx a₁ cpy
+  -- Since heq says the outputs are equal (as pathType pairs),
+  -- the output list values are the same.
+  -- Let Q = swapAtPoint P₁.val P₂.val a₁ a₂ cpx = swapAtPoint P₁'.val P₂'.val a₁ a₂ cpy
+  set Qx := swapAtPoint P₁.val P₂.val a₁ a₂ cpx
+  set Qy := swapAtPoint P₁'.val P₂'.val a₁ a₂ cpy
+  -- From heq, the output .val fields are equal
+  -- (lindstromForward internally computes Qx and Qy, and wraps in subtypes)
+  -- The output .1.val = Qx.1 and output.1.val = Qy.1 (from the two inputs)
+  -- So Qx.1 = Qy.1 and Qx.2 = Qy.2
+  -- This means swapAtPoint at cpx of (P₁, P₂) = swapAtPoint at cpy of (P₁', P₂')
+  -- Applying involutivity:
+  -- (P₁.val, P₂.val) = swapAtPoint Qx.1 Qx.2 a₁ a₂ cpx  (from h_invol_x)
+  -- (P₁'.val, P₂'.val) = swapAtPoint Qy.1 Qy.2 a₁ a₂ cpy  (from h_invol_y)
+  -- Since Qx = Qy (pointwise) and splitIdx cpx = splitIdx cpy:
+  -- (P₁.val, P₂.val) = (P₁'.val, P₂'.val)
+  -- The core step: show Qx.1 = Qy.1 and Qx.2 = Qy.2
+  -- and splitIdx a₁ cpx = splitIdx a₁ cpy (and a₂)
+  -- We get Qx = Qy from heq (both are the output values of lindstromForward)
+  -- Getting exact list equality from heq requires knowing the definitional behavior.
+  -- Since lindstromForward ... ⟨⟨P₁, P₂⟩, hni_x⟩ is definitionally
+  -- (⟨Qx.1, _⟩, ⟨Qx.2, _⟩), the .val of .1 is Qx.1.
+  -- From h_fst: (the fst outputs are equal as subtypes)
+  -- Subtype.val injectivity: output.1.val (from x) = output.1.val (from y)
+  -- i.e., Qx.1 = Qy.1
+  -- Similarly Qx.2 = Qy.2
+  -- NOTE: This relies on definitional reduction of lindstromForward.
+  -- If the kernel can't reduce, we'd need characterization lemmas.
+  -- For now, use congr_arg Subtype.val on h_fst and h_snd.
+  have hQ1_eq : Qx.1 = Qy.1 := congr_arg Subtype.val h_fst
+  have hQ2_eq : Qx.2 = Qy.2 := congr_arg Subtype.val h_snd
+  -- From involutivity:
+  -- h_invol_x : swapAtPoint Qx.1 Qx.2 a₁ a₂ cpx = (P₁.val, P₂.val)
+  -- h_invol_y : swapAtPoint Qy.1 Qy.2 a₁ a₂ cpy = (P₁'.val, P₂'.val)
+  -- Rewrite h_invol_y using Qx = Qy:
+  have h_invol_y' : swapAtPoint Qx.1 Qx.2 a₁ a₂ cpy = (P₁'.val, P₂'.val) := by
+    rw [hQ1_eq, hQ2_eq]; exact h_invol_y
+  -- If splitIdx cpx = splitIdx cpy, then swapAtPoint at cpx = swapAtPoint at cpy
+  -- and we'd have (P₁.val, P₂.val) = (P₁'.val, P₂'.val)
+  -- Show split indices are equal via minSharedStepIdx
+  -- Both cpx and cpy, when their respective paths are swapped, produce Q (= Qx = Qy)
+  -- The min shared step idx of Q must equal both splitIdx a₁ cpx and splitIdx a₁ cpy
+  -- For cpx: Q = Qx, and minSharedStepIdx Qx = minSharedStepIdx (P₁, P₂) = splitIdx a₁ cpx
+  have h_shared_Q : (sharedPoints Qx.1 Qx.2 a₁ a₂).Nonempty := by
+    exact ⟨cpx, Finset.mem_inter.mpr
+      ⟨swapAtPoint_fst_visits_point P₁.val P₂.val a₁ a₂ cpx hpx₁ hpx₂ hax₁ hax₂,
+       swapAtPoint_snd_visits_point P₁.val P₂.val a₁ a₂ cpx hpx₁ hpx₂ hax₁ hax₂⟩⟩
+  have h_minQ_x := minSharedStepIdx_preserved P₁.val P₂.val a₁ a₂
+    h_strict_a h_shared_x hix hjx h_shared_Q
+  -- Similarly for cpy (but Q = Qx = Qy, and the shared points are the same)
+  have h_shared_Q' : (sharedPoints Qy.1 Qy.2 a₁ a₂).Nonempty := by
+    rw [hQ1_eq, hQ2_eq] at h_shared_Q; exact h_shared_Q
+  -- We need minSharedStepIdx Qy = minSharedStepIdx (P₁', P₂') = splitIdx a₁ cpy
+  -- But h_shared_Q uses Qx and h_shared_Q' uses Qy (which are equal)
+  -- The minSharedStepIdx should be the same since Qx = Qy
+  have h_shared_Qx_eq : sharedPoints Qx.1 Qx.2 a₁ a₂ = sharedPoints Qy.1 Qy.2 a₁ a₂ := by
+    simp [sharedPoints, visitedPoints, hQ1_eq, hQ2_eq]
+  have h_minQ_y := minSharedStepIdx_preserved P₁'.val P₂'.val a₁ a₂
+    h_strict_a h_shared_y hiy hjy h_shared_Q'
+  -- Now: both minSharedStepIdx give the same value for Q
+  -- h_minQ_x: minSharedStepIdx Qx (with h_shared_Q) = minSharedStepIdx P₁ P₂ (= splitIdx a₁ cpx)
+  -- h_minQ_y: minSharedStepIdx Qy (with h_shared_Q') = minSharedStepIdx P₁' P₂' (= splitIdx a₁ cpy)
+  -- Since Qx = Qy and the shared points sets are the same:
+  -- minSharedStepIdx Qx h_shared_Q = minSharedStepIdx Qy h_shared_Q'
+  have h_min_eq : minSharedStepIdx Qx.1 Qx.2 a₁ a₂ h_shared_Q =
+      minSharedStepIdx Qy.1 Qy.2 a₁ a₂ h_shared_Q' := by
+    simp only [minSharedStepIdx, h_shared_Qx_eq]
+  -- Therefore splitIdx a₁ cpx = splitIdx a₁ cpy (via the canonical point spec)
+  have hcpx_spec := (minSharedStepIdx_achieved P₁.val P₂.val a₁ a₂ h_shared_x).choose_spec.2
+  have hcpy_spec := (minSharedStepIdx_achieved P₁'.val P₂'.val a₁ a₂ h_shared_y).choose_spec.2
+  have h_idx_a₁ : splitIdx a₁ cpx = splitIdx a₁ cpy := by
+    show splitIdx a₁ (canonSharedPoint P₁.val P₂.val a₁ a₂ h_shared_x) =
+         splitIdx a₁ (canonSharedPoint P₁'.val P₂'.val a₁ a₂ h_shared_y)
+    simp only [canonSharedPoint]
+    have h_unfold_min_x : minSharedStepIdx Qx.1 Qx.2 a₁ a₂ h_shared_Q =
+        minSharedStepIdx P₁.val P₂.val a₁ a₂ h_shared_x := h_minQ_x
+    have h_unfold_min_y : minSharedStepIdx Qy.1 Qy.2 a₁ a₂ h_shared_Q' =
+        minSharedStepIdx P₁'.val P₂'.val a₁ a₂ h_shared_y := h_minQ_y
+    omega
+  -- For a₂: use the constant difference property
+  have h_idx_a₂ : splitIdx a₂ cpx = splitIdx a₂ cpy := by
+    have h1 := splitIdx_const_diff a₁ a₂ cpx hax₁ hax₂ (le_of_lt h_strict_a)
+    have h2 := splitIdx_const_diff a₁ a₂ cpy hay₁ hay₂ (le_of_lt h_strict_a)
+    omega
+  -- Now: swapAtPoint Qx at cpx = swapAtPoint Qx at cpy
+  have h_swap_eq := swapAtPoint_eq_of_splitIdx Qx.1 Qx.2 a₁ a₂ cpx cpy h_idx_a₁ h_idx_a₂
+  -- From involutivity: swapAtPoint Qx at cpx = (P₁.val, P₂.val)
+  -- and                 swapAtPoint Qx at cpy = (P₁'.val, P₂'.val)
+  -- Therefore (P₁.val, P₂.val) = (P₁'.val, P₂'.val)
+  have h_eq : (P₁.val, P₂.val) = (P₁'.val, P₂'.val) := by
+    rw [← h_invol_x, ← h_invol_y', h_swap_eq]
+  -- Extract component equalities and conclude
+  have h_P₁ : P₁ = P₁' := Subtype.ext (Prod.mk.inj h_eq).1
+  have h_P₂ : P₂ = P₂' := Subtype.ext (Prod.mk.inj h_eq).2
+  exact Subtype.ext (Prod.ext h_P₁ h_P₂)
+
+/-- The backward map is injective (symmetric argument). -/
+theorem lindstromBackward_injective (m n₁ n₂ n₁' n₂' a₁ a₂ : ℕ)
+    (h_strict_a : a₁ < a₂)
+    (h_end : a₁ + n₁ < a₂ + n₂)
+    (h_n₁' : n₁' = n₂ + a₂ - a₁) (h_n₂' : n₂' = n₁ + a₁ - a₂)
+    (h_n_sum : n₁ + n₂ = n₁' + n₂') :
+    Function.Injective (lindstromBackward m n₁ n₂ n₁' n₂' a₁ a₂
+      h_strict_a h_end h_n₁' h_n₂' h_n_sum) := by
+  intro ⟨Q₁, Q₂⟩ ⟨Q₁', Q₂'⟩ heq
+  -- lindstromBackward swaps at the canonical point of (Q₁, Q₂) to get an intersecting pair.
+  -- If backward(Q₁, Q₂) = backward(Q₁', Q₂'), the output subtype values are equal.
+  -- By the same canonical index preservation + involutivity argument, (Q₁, Q₂) = (Q₁', Q₂').
+  -- Extract the equality of the output subtype values
+  have h_val := congr_arg Subtype.val heq
+  -- h_val : (lindstromBackward ... (Q₁, Q₂)).val = (lindstromBackward ... (Q₁', Q₂')).val
+  -- The .val is a pair of pathTypes. Extract component-wise:
+  have h_val1 : (lindstromBackward m n₁ n₂ n₁' n₂' a₁ a₂
+    h_strict_a h_end h_n₁' h_n₂' h_n_sum (Q₁, Q₂)).val.1 =
+    (lindstromBackward m n₁ n₂ n₁' n₂' a₁ a₂
+    h_strict_a h_end h_n₁' h_n₂' h_n_sum (Q₁', Q₂')).val.1 := by
+    rw [heq]
+  have h_val2 : (lindstromBackward m n₁ n₂ n₁' n₂' a₁ a₂
+    h_strict_a h_end h_n₁' h_n₂' h_n_sum (Q₁, Q₂)).val.2 =
+    (lindstromBackward m n₁ n₂ n₁' n₂' a₁ a₂
+    h_strict_a h_end h_n₁' h_n₂' h_n_sum (Q₁', Q₂')).val.2 := by
+    rw [heq]
+  -- lindstromBackward computes:
+  -- 1. Prove Q₁, Q₂ are intersecting (crossing_always_intersecting)
+  -- 2. Find canonical shared point cpq of (Q₁, Q₂)
+  -- 3. Swap at cpq to get result
+  -- 4. Return ⟨(result.1, result.2), not_ni_proof⟩
+  -- So the output .val.1.val = (swapAtPoint Q₁.val Q₂.val a₁ a₂ cpq).1
+  -- For Q₁: set up canonical point
+  have h_cross_end : a₂ + n₂' < a₁ + n₁' := by omega
+  have h_ni_q : ¬NonIntersecting Q₁.val Q₂.val m a₁ a₂ :=
+    crossing_always_intersecting m n₁' n₂' a₁ a₂ h_strict_a h_cross_end Q₁ Q₂
+  have h_east_q₁ : eastSteps Q₁.val = m := by
+    have := Q₁.property.2; simp_all [eastSteps]
+  have h_east_q₂ : eastSteps Q₂.val = m := by
+    have := Q₂.property.2; simp_all [eastSteps]
+  have h_shared_q := sharedPoints_nonempty_of_not_ni h_east_q₁ h_east_q₂ h_ni_q
+  set cpq := canonSharedPoint Q₁.val Q₂.val a₁ a₂ h_shared_q
+  have hpq₁ := canonSharedPoint_mem₁ Q₁.val Q₂.val a₁ a₂ h_shared_q
+  have hpq₂ := canonSharedPoint_mem₂ Q₁.val Q₂.val a₁ a₂ h_shared_q
+  have haq₁ := shared_point_y_ge_a₁ Q₁.val Q₂.val a₁ a₂ cpq hpq₁
+  have haq₂ := shared_point_y_ge_a₂ Q₁.val Q₂.val a₁ a₂ cpq hpq₂
+  have hiq := splitIdx_le_length Q₁.val a₁ cpq hpq₁
+  have hjq := splitIdx_le_length Q₂.val a₂ cpq hpq₂
+  -- For Q₁':
+  have h_ni_q' : ¬NonIntersecting Q₁'.val Q₂'.val m a₁ a₂ :=
+    crossing_always_intersecting m n₁' n₂' a₁ a₂ h_strict_a h_cross_end Q₁' Q₂'
+  have h_east_q₁' : eastSteps Q₁'.val = m := by
+    have := Q₁'.property.2; simp_all [eastSteps]
+  have h_east_q₂' : eastSteps Q₂'.val = m := by
+    have := Q₂'.property.2; simp_all [eastSteps]
+  have h_shared_q' := sharedPoints_nonempty_of_not_ni h_east_q₁' h_east_q₂' h_ni_q'
+  set cpq' := canonSharedPoint Q₁'.val Q₂'.val a₁ a₂ h_shared_q'
+  have hpq₁' := canonSharedPoint_mem₁ Q₁'.val Q₂'.val a₁ a₂ h_shared_q'
+  have hpq₂' := canonSharedPoint_mem₂ Q₁'.val Q₂'.val a₁ a₂ h_shared_q'
+  have haq₁' := shared_point_y_ge_a₁ Q₁'.val Q₂'.val a₁ a₂ cpq' hpq₁'
+  have haq₂' := shared_point_y_ge_a₂ Q₁'.val Q₂'.val a₁ a₂ cpq' hpq₂'
+  have hiq' := splitIdx_le_length Q₁'.val a₁ cpq' hpq₁'
+  have hjq' := splitIdx_le_length Q₂'.val a₂ cpq' hpq₂'
+  -- The swapped results are:
+  set Rx := swapAtPoint Q₁.val Q₂.val a₁ a₂ cpq
+  set Ry := swapAtPoint Q₁'.val Q₂'.val a₁ a₂ cpq'
+  -- From heq: Rx.1 = Ry.1 and Rx.2 = Ry.2
+  have hR1_eq : Rx.1 = Ry.1 := congr_arg Subtype.val h_val1
+  have hR2_eq : Rx.2 = Ry.2 := congr_arg Subtype.val h_val2
+  -- By involutivity:
+  have h_invol_q := swapAtPoint_involutive Q₁.val Q₂.val a₁ a₂ cpq hiq hjq
+  have h_invol_q' := swapAtPoint_involutive Q₁'.val Q₂'.val a₁ a₂ cpq' hiq' hjq'
+  -- Canonical index preservation for both:
+  have h_shared_R : (sharedPoints Rx.1 Rx.2 a₁ a₂).Nonempty := by
+    exact ⟨cpq, Finset.mem_inter.mpr
+      ⟨swapAtPoint_fst_visits_point Q₁.val Q₂.val a₁ a₂ cpq hpq₁ hpq₂ haq₁ haq₂,
+       swapAtPoint_snd_visits_point Q₁.val Q₂.val a₁ a₂ cpq hpq₁ hpq₂ haq₁ haq₂⟩⟩
+  have h_shared_R' : (sharedPoints Ry.1 Ry.2 a₁ a₂).Nonempty := by
+    exact ⟨cpq', Finset.mem_inter.mpr
+      ⟨swapAtPoint_fst_visits_point Q₁'.val Q₂'.val a₁ a₂ cpq' hpq₁' hpq₂' haq₁' haq₂',
+       swapAtPoint_snd_visits_point Q₁'.val Q₂'.val a₁ a₂ cpq' hpq₁' hpq₂' haq₁' haq₂'⟩⟩
+  -- minSharedStepIdx Rx = minSharedStepIdx Q₁ Q₂
+  have h_min_x := minSharedStepIdx_preserved Q₁.val Q₂.val a₁ a₂
+    h_strict_a h_shared_q hiq hjq h_shared_R
+  -- minSharedStepIdx Ry = minSharedStepIdx Q₁' Q₂'
+  have h_min_y := minSharedStepIdx_preserved Q₁'.val Q₂'.val a₁ a₂
+    h_strict_a h_shared_q' hiq' hjq' h_shared_R'
+  -- Since Rx = Ry: their shared points sets are the same
+  have h_shared_eq : sharedPoints Rx.1 Rx.2 a₁ a₂ = sharedPoints Ry.1 Ry.2 a₁ a₂ := by
+    simp [sharedPoints, visitedPoints, hR1_eq, hR2_eq]
+  have h_min_eq : minSharedStepIdx Rx.1 Rx.2 a₁ a₂ h_shared_R =
+      minSharedStepIdx Ry.1 Ry.2 a₁ a₂ h_shared_R' := by
+    simp only [minSharedStepIdx, h_shared_eq]
+  -- splitIdx a₁ cpq = splitIdx a₁ cpq'
+  have hcpq_spec := (minSharedStepIdx_achieved Q₁.val Q₂.val a₁ a₂ h_shared_q).choose_spec.2
+  have hcpq'_spec := (minSharedStepIdx_achieved Q₁'.val Q₂'.val a₁ a₂ h_shared_q').choose_spec.2
+  have h_idx_a₁ : splitIdx a₁ cpq = splitIdx a₁ cpq' := by
+    show splitIdx a₁ (canonSharedPoint Q₁.val Q₂.val a₁ a₂ h_shared_q) =
+         splitIdx a₁ (canonSharedPoint Q₁'.val Q₂'.val a₁ a₂ h_shared_q')
+    simp only [canonSharedPoint]
+    -- Chain: splitIdx cpq = minSharedStepIdx Q = minSharedStepIdx Rx
+    --      = minSharedStepIdx Ry = minSharedStepIdx Q' = splitIdx cpq'
+    have h_unfold_min_x : minSharedStepIdx Rx.1 Rx.2 a₁ a₂ h_shared_R =
+        minSharedStepIdx Q₁.val Q₂.val a₁ a₂ h_shared_q := h_min_x
+    have h_unfold_min_y : minSharedStepIdx Ry.1 Ry.2 a₁ a₂ h_shared_R' =
+        minSharedStepIdx Q₁'.val Q₂'.val a₁ a₂ h_shared_q' := h_min_y
+    omega
+  have h_idx_a₂ : splitIdx a₂ cpq = splitIdx a₂ cpq' := by
+    have h1 := splitIdx_const_diff a₁ a₂ cpq haq₁ haq₂ (le_of_lt h_strict_a)
+    have h2 := splitIdx_const_diff a₁ a₂ cpq' haq₁' haq₂' (le_of_lt h_strict_a)
+    omega
+  -- swapAtPoint Q at cpq = swapAtPoint Q at cpq' (same indices)
+  -- From involutivity: swapAtPoint Rx at cpq = (Q₁.val, Q₂.val)
+  -- We need: swapAtPoint Rx at cpq' = (Q₁'.val, Q₂'.val)
+  -- h_invol_q' says swapAtPoint Ry at cpq' = (Q₁'.val, Q₂'.val)
+  -- Since Rx = Ry: swapAtPoint Rx at cpq' = (Q₁'.val, Q₂'.val)
+  have h_invol_q'_rewrite : swapAtPoint Rx.1 Rx.2 a₁ a₂ cpq' = (Q₁'.val, Q₂'.val) := by
+    rw [hR1_eq, hR2_eq]; exact h_invol_q'
+  -- And: swapAtPoint Rx at cpq = swapAtPoint Rx at cpq' (same splitIdx)
+  have h_swap_same := swapAtPoint_eq_of_splitIdx Rx.1 Rx.2 a₁ a₂ cpq cpq' h_idx_a₁ h_idx_a₂
+  -- Therefore: (Q₁.val, Q₂.val) = (Q₁'.val, Q₂'.val)
+  have h_eq : (Q₁.val, Q₂.val) = (Q₁'.val, Q₂'.val) := by
+    rw [← h_invol_q, h_swap_same, h_invol_q'_rewrite]
+  exact Prod.ext (Subtype.ext (Prod.mk.inj h_eq).1) (Subtype.ext (Prod.mk.inj h_eq).2)
 
 end LatticePathLGV
