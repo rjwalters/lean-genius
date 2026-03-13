@@ -103,71 +103,81 @@
       "id": "triangle-defs",
       "title": "Triangle Definitions",
       "summary": "Defines pointwise triangle predicates (IsTriangle', IsTriangleFree) and proves their equivalence with Mathlib's CliqueFree 3. Constructs explicit triangles in K_n for n ≥ 3.",
-      "startLine": 25,
-      "endLine": 76
+      "startLine": 22,
+      "endLine": 76,
+      "mathContext": "Triangle: $a \\neq b \\neq c \\neq a$ with edges $ab, bc, ac$. Equivalence: $\\text{IsTriangleFree}(G) \\iff G.\\text{CliqueFree}\\,3$."
     },
     {
       "id": "asymptotic-setup",
       "title": "Asymptotic Infrastructure",
       "summary": "Axiomatizes the triangle removal function f(n) with basic properties and BFL bounds. States the Erdős conjecture as ∃ c₁, c₂ > 0 with c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} eventually.",
       "startLine": 78,
-      "endLine": 104
+      "endLine": 104,
+      "mathContext": "Axioms: $0 \\leq f(n) \\leq \\binom{n}{2}$, BFL: $\\forall \\varepsilon > 0, \\; n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ eventually."
     },
     {
       "id": "bfl-sandwich",
       "title": "BFL Sandwich and Conjecture Implications",
       "summary": "Combines BFL bounds into a sandwich n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε}. Proves the conjecture strictly implies BFL via constant-to-sub-polynomial reduction.",
       "startLine": 105,
-      "endLine": 183
+      "endLine": 183,
+      "mathContext": "Conjecture $\\Longrightarrow$ BFL: $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$ implies $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ since $c, C$ are constants absorbed by $n^{\\pm \\varepsilon}$."
     },
     {
       "id": "conjecture-decomposition",
       "title": "Conjecture Decomposition",
       "summary": "The full conjecture Θ(n^{3/2}) is equivalent to both one-sided bounds holding independently: O(n^{3/2}) AND Ω(n^{3/2}). Shows c ≤ C by contradiction.",
       "startLine": 185,
-      "endLine": 219
+      "endLine": 219,
+      "mathContext": "$f(n) = \\Theta(n^{3/2}) \\iff f(n) = O(n^{3/2}) \\wedge f(n) = \\Omega(n^{3/2})$. Non-trivial: $c > C$ leads to $c \\cdot n^{3/2} \\leq f(n) \\leq C \\cdot n^{3/2}$, contradiction."
     },
     {
       "id": "exponent-characterization",
       "title": "Exponent Characterization and Small Values",
       "summary": "Proves 3/2 is the exact critical exponent. f(n) = O(n^α) for all α > 3/2 but for no β < 3/2. Includes small-value bounds and ratio reformulation of BFL.",
       "startLine": 221,
-      "endLine": 305
+      "endLine": 305,
+      "mathContext": "Critical exponent: $f(n) = O(n^\\alpha)$ for $\\alpha > 3/2$, $f(n) \\neq O(n^\\beta)$ for $\\beta < 3/2$. Ratio: $R(n) = f(n)/n^{3/2} \\in [n^{-\\varepsilon}, n^{\\varepsilon}]$."
     },
     {
       "id": "sufficient-conditions",
       "title": "Sufficient Conditions for the Conjecture",
       "summary": "If f(n)/n^{3/2} → L > 0, the conjecture holds with c₁ = L/2, c₂ = 3L/2. The weaker limsup/liminf boundedness condition also suffices.",
       "startLine": 306,
-      "endLine": 355
+      "endLine": 355,
+      "mathContext": "$f(n)/n^{3/2} \\to L > 0 \\implies$ conjecture with $c_1 = L/2, c_2 = 3L/2$. Weaker: $0 < \\liminf \\leq \\limsup < \\infty$ also suffices."
     },
     {
       "id": "lower-exponent",
       "title": "Lower Exponent Characterization",
       "summary": "BFL implies f eventually exceeds any sub-3/2 power: for any α < 3/2, eventually n^α ≤ f(n). Includes superlinear and n^{5/4} special cases.",
       "startLine": 357,
-      "endLine": 370
+      "endLine": 370,
+      "mathContext": "$\\forall \\alpha < 3/2: \\; n^\\alpha \\leq f(n)$ eventually. Take $\\varepsilon = 3/2 - \\alpha$ in the BFL lower bound."
     },
     {
       "id": "mantel-connection",
       "title": "Mantel/Turán Connection",
       "summary": "Connects the triangle removal process to Mantel's theorem: the triangle-free terminal graph has at most n²/4 edges. BFL's n^{7/4} bound is strictly tighter.",
       "startLine": 372,
-      "endLine": 403
+      "endLine": 403,
+      "mathContext": "Mantel: $f(n) \\leq n^2/4$ (triangle-free). BFL: $f(n) \\leq n^{7/4}$. Hierarchy: $n^{3/2} \\ll n^{7/4} \\ll n^2/4$."
     },
     {
       "id": "hierarchy",
       "title": "Hierarchy of Bounds",
       "summary": "Proves the strict weakening chain: Conjecture ⟹ BFL ⟹ Grable, each step losing information about the multiplicative constant.",
       "startLine": 405,
-      "endLine": 445
+      "endLine": 445,
+      "mathContext": "Strict hierarchy: $\\Theta(n^{3/2}) \\Longrightarrow n^{3/2 \\pm o(1)} \\Longrightarrow n^{7/4+o(1)}$. Each step relaxes the multiplicative constant control."
     },
     {
       "id": "tightness",
       "title": "Tightness and Ratio Characterization",
       "summary": "Under the conjecture, the normalized ratio f(n)/n^{3/2} is eventually in [c₁, c₂]. Characterizes the conjecture as a compactness condition on the ratio sequence in (0, ∞).",
       "startLine": 447,
-      "endLine": 491
+      "endLine": 491,
+      "mathContext": "Conjecture $\\iff \\{f(n)/n^{3/2}\\}_{n \\geq N}$ is bounded in $(0, \\infty)$: a compactness condition on the ratio sequence."
     }
   ],
   "overview": {
