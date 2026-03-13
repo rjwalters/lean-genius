@@ -1294,25 +1294,64 @@ Key building blocks toward proving cos_minpoly_gal_card:
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-- cos(α) = cos(β) iff ∃ k : ℤ, α = β + 2kπ or α = -β + 2kπ.
-    This is the fundamental characterization of when two real cosines agree. -/
+    Direct consequence of Mathlib's `Real.cos_eq_cos_iff`. -/
 theorem cos_eq_cos_iff (α β : ℝ) :
     Real.cos α = Real.cos β ↔
       ∃ k : ℤ, α = β + 2 * ↑k * Real.pi ∨ α = -β + 2 * ↑k * Real.pi := by
-  rw [← sub_eq_zero, ← Real.cos_sq_inj]
+  rw [Real.cos_eq_cos_iff]
   constructor
-  · intro h
-    -- cos α - cos β = 0 implies α = ±β + 2kπ
-    -- Use cos α = cos β iff α - β ∈ 2πℤ or α + β ∈ 2πℤ
-    rw [Real.cos_eq_one_iff_of_lt_of_lt] at *
-    sorry -- Standard trig identity, needs careful Mathlib navigation
-  · rintro ⟨k, h | h⟩ <;> simp [h, Real.cos_add, Real.cos_int_mul_two_pi_add, Real.cos_neg]
+  · rintro ⟨k, h | h⟩
+    · exact ⟨-k, Or.inl (by push_cast; linarith)⟩
+    · exact ⟨k, Or.inr (by push_cast; linarith)⟩
+  · rintro ⟨k, h | h⟩
+    · exact ⟨-k, Or.inl (by push_cast; linarith)⟩
+    · exact ⟨k, Or.inr (by push_cast; linarith)⟩
 
 /-- Two cosines of rational multiples of 2π/n are equal iff indices are conjugate mod n:
     cos(2kπ/n) = cos(2jπ/n) ↔ k ≡ j (mod n) ∨ k ≡ n-j (mod n). -/
 theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
     Real.cos (2 * ↑k * Real.pi / ↑n) = Real.cos (2 * ↑j * Real.pi / ↑n) ↔
       k % n = j % n ∨ k % n = (n - j % n) % n := by
-  sorry -- Follows from cos_eq_cos_iff + divisibility analysis
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  rw [Real.cos_eq_cos_iff]
+  constructor
+  · rintro ⟨m, h | h⟩
+    · -- h : 2jπ/n = 2mπ + 2kπ/n → j ≡ k (mod n)
+      left
+      have h_real : (↑j : ℝ) = ↑m * ↑n + ↑k := by
+        have := h; field_simp at this ⊢; nlinarith
+      have h_int : (↑j : ℤ) = m * ↑n + ↑k := by
+        have : ((↑j : ℤ) : ℝ) = ((m * ↑n + ↑k : ℤ) : ℝ) := by
+          push_cast; linarith [h_real]
+        exact_mod_cast this
+      omega
+    · -- h : 2jπ/n = 2mπ - 2kπ/n → k ≡ n - j (mod n)
+      right
+      have h_real : (↑j : ℝ) + ↑k = ↑m * ↑n := by
+        have := h; field_simp at this ⊢; nlinarith
+      have h_int : (↑j : ℤ) + ↑k = m * ↑n := by
+        have : ((↑j + ↑k : ℤ) : ℝ) = ((m * ↑n : ℤ) : ℝ) := by
+          push_cast; linarith [h_real]
+        exact_mod_cast this
+      omega
+  · rintro (h | h)
+    · -- k % n = j % n → cos equal
+      obtain ⟨m, hm⟩ : (↑n : ℤ) ∣ (↑j - ↑k) := by
+        rw [Int.dvd_iff_emod_eq_zero]; omega
+      refine ⟨m, Or.inl ?_⟩
+      have h_int : (↑j : ℤ) = m * ↑n + ↑k := by omega
+      have h_real : (↑j : ℝ) = ↑m * ↑n + ↑k := by
+        have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; exact this
+      field_simp; nlinarith [h_real]
+    · -- k % n = (n - j % n) % n → cos equal
+      obtain ⟨m, hm⟩ : (↑n : ℤ) ∣ (↑j + ↑k) := by
+        rw [Int.dvd_iff_emod_eq_zero]; omega
+      refine ⟨m, Or.inr ?_⟩
+      have h_int : (↑j : ℤ) + ↑k = m * ↑n := by omega
+      have h_real : (↑j : ℝ) + ↑k = ↑m * ↑n := by
+        have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; linarith
+      field_simp; nlinarith [h_real]
 
 /-- The number of distinct Galois conjugates of cos(2π/n) over ℚ is φ(n)/2.
     The conjugates are {cos(2kπ/n) : 1 ≤ k ≤ n, gcd(k,n) = 1}, and these come
@@ -1329,7 +1368,57 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
 theorem chebyshev_T_sub_one_roots (n : ℕ) (hn : 1 ≤ n) (x : ℝ) (hx : |x| ≤ 1)
     (h_root : Polynomial.aeval x (Chebyshev.T ℝ n - 1) = 0) :
     ∃ k : ℕ, k < n ∧ x = Real.cos (2 * ↑k * Real.pi / ↑n) := by
-  sorry -- From Chebyshev.T_real_cos + cos equation analysis
+  -- Step 1: T_n(x) = 1
+  have hT : Polynomial.aeval x (Chebyshev.T ℝ n) = 1 := by
+    have := h_root; simp only [map_sub, map_one] at this; linarith
+  -- Step 2: x = cos(arccos x) since |x| ≤ 1
+  have hx1 : -1 ≤ x := (abs_le.mp hx).1
+  have hx2 : x ≤ 1 := (abs_le.mp hx).2
+  have hcos_arccos : Real.cos (Real.arccos x) = x := Real.cos_arccos hx1 hx2
+  -- Step 3: cos(n * arccos x) = 1
+  have hT' : Real.cos (↑(↑n : ℤ) * Real.arccos x) = 1 := by
+    rw [← Chebyshev.T_real_cos, ← Chebyshev.aeval_T, hcos_arccos]; exact hT
+  -- Step 4: n * arccos x = m * (2π) for some m : ℤ
+  rw [Real.cos_eq_one_iff] at hT'
+  obtain ⟨m, hm⟩ := hT'
+  -- hm : ↑m * (2 * π) = ↑↑n * arccos x
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  have hpi_pos : (0 : ℝ) < Real.pi := Real.pi_pos
+  have h_arc_nn : 0 ≤ Real.arccos x := Real.arccos_nonneg x
+  have h_arc_le : Real.arccos x ≤ Real.pi := Real.arccos_le_pi x
+  -- Step 5: m ≥ 0 (from arccos x ≥ 0 and n > 0)
+  have hm_nn : 0 ≤ m := by
+    by_contra h; push_neg at h
+    have : (↑m : ℝ) < 0 := Int.cast_lt_zero.mpr h
+    nlinarith [mul_nonneg (le_of_lt hn_pos) h_arc_nn]
+  -- Step 6: m < n (from arccos x ≤ π)
+  have hm_lt_n : m < ↑n := by
+    by_contra h; push_neg at h
+    have hm_bound : (↑n : ℝ) ≤ ↑m := by exact_mod_cast h
+    -- m * 2π = n * arccos x ≤ nπ, but m ≥ n → m * 2π ≥ n * 2π > nπ
+    have h1 : ↑m * (2 * Real.pi) ≤ ↑n * Real.pi := by
+      have h2 := hm.symm  -- ↑↑n * arccos x = ↑m * (2 * π)
+      nlinarith [mul_le_mul_of_nonneg_left h_arc_le (le_of_lt hn_pos)]
+    nlinarith [mul_le_mul_of_nonneg_right hm_bound (by linarith : (0 : ℝ) ≤ 2 * Real.pi)]
+  -- Step 7: Convert m to ℕ
+  set k := m.toNat with hk_def
+  have hk_eq : (↑k : ℤ) = m := Int.toNat_of_nonneg hm_nn
+  have hk_lt : k < n := by omega
+  refine ⟨k, hk_lt, ?_⟩
+  -- Step 8: x = cos(2kπ/n)
+  -- arccos x = m * 2π / n, so x = cos(arccos x) = cos(2kπ/n)
+  rw [← hcos_arccos]
+  congr 1
+  -- arccos x = m * 2π / n = 2kπ/n
+  have h_arccos_eq : ↑(↑n : ℤ) * Real.arccos x = ↑m * (2 * Real.pi) := hm.symm
+  have hm_eq : (↑m : ℝ) = ↑k := by exact_mod_cast hk_eq.symm
+  rw [hm_eq] at h_arccos_eq
+  -- h_arccos_eq : ↑↑n * arccos x = ↑k * (2 * π)
+  -- goal: arccos x = 2 * ↑k * π / ↑n
+  rw [eq_div_iff hn_ne]
+  push_cast [Int.cast_natCast] at h_arccos_eq
+  linarith
 
 /-- The minimal polynomial of cos(2π/n) has degree exactly φ(n)/2.
 
