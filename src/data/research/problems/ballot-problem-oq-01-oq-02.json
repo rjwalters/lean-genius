@@ -1,106 +1,56 @@
 {
   "slug": "ballot-problem-oq-01-oq-02",
   "title": "Multi-candidate ballot problem (>2 candidates)",
-  "phase": "PROVING",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "For m ≥ 2 candidates with vote counts (a, a₁, ..., aₘ₋₁) where a > a₁+...+aₘ₋₁ = b, P(candidate 0 leads all combined throughout) = (a-b)/(a+b)",
-    "plain": "In a multi-candidate election, the probability that the winner leads all opponents combined throughout counting equals the classical 2-candidate ballot formula.",
-    "whyMatters": ["Generalizes Bertrand's 1887 ballot theorem (Wiedijk #30)", "Foundation for LGV determinant formula", "Connects multi-candidate elections to random walk theory"]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Projection from multi-candidate to ±1 sequences",
-      "Prefix sum equals 2*count(leader) - prefix_length",
-      "leadsAllThroughout is invariant under opponent relabeling",
-      "Projection lands in Mathlib countedSequence",
-      "Fiber structure: same-fiber sequences agree on leader positions",
-      "Fiber uniformity: all fibers have equal size (multinomial)",
-      "Ballot formula bounds: 0 ≤ (a-b)/(a+b) ≤ 1",
-      "Pairwise ratio verification for 3-candidate case"
-    ],
-    "open": [
-      "Full determinant formula for complete ordering probability (LGV lemma)",
-      "Close 3 remaining sorries (routine counting lemmas)"
-    ],
-    "goal": "Complete reduction from multi-candidate to classical ballot"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "PROVING",
-    "since": "2026-03-13T06:05:17Z",
-    "iteration": 2,
-    "focus": "Fiber uniformity and Mathlib connection completed",
+    "phase": "OBSERVE",
+    "since": "2026-03-13T03:56:04.574Z",
+    "iteration": 1,
+    "focus": "",
     "blockers": [],
-    "nextAction": "Close remaining 3 sorries (project_count_one, project_count_neg_one, fiber_same_leader_positions)",
+    "nextAction": "",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Built complete reduction framework from multi-candidate ballot to classical. 9 sections of proof (500+ lines). 3 routine sorries remain for List.count API.",
-    "builtItems": [
-      "BallotProblemOQ01OQ02.lean: project, prefixSum, leadsAllThroughout definitions",
-      "BallotProblemOQ01OQ02.lean: leadsAllThroughout_of_same_projection (key invariance)",
-      "BallotProblemOQ01OQ02.lean: leadsAllThroughout_relabel (opponent label permutation)",
-      "BallotProblemOQ01OQ02.lean: project_mem_countedSequence (bridge to Mathlib)",
-      "BallotProblemOQ01OQ02.lean: projectionFiber, fiber_same_length, fiber_uniformity_principle",
-      "BallotProblemOQ01OQ02.lean: Connection to Ballot.ballot_problem (uniformOn)"
-    ],
-    "insights": [
-      "The multi-candidate leads-all-combined property depends ONLY on the ±1 projection - not on how opponent votes are distributed among candidates",
-      "Fiber uniformity: each ±1 sequence has exactly b!/(a₁!...aₘ₋₁!) multi-candidate preimages, independent of WHICH ±1 sequence",
-      "Mathlib's ballot_problem uses ProbabilityTheory.uniformOn (not condCount as documented)",
-      "List.count_cons in current Mathlib has decide-based ifs that resist omega/simp; need BEq-aware tactics",
-      "getElem bounds proofs don't transport cleanly across congrArg when list changes - use getElem? instead"
-    ],
-    "mathlibGaps": [
-      "List.count_map doesn't exist - counting over mapped lists requires manual induction",
-      "getElem congruence for equal lists needs care with bound proofs"
-    ],
-    "nextSteps": [
-      "Close project_count_one sorry: induction with by_cases + BEq-aware decide",
-      "Close project_count_neg_one sorry: follows from project_count_one + total count argument",
-      "Close fiber_same_leader_positions sorry: use getElem? approach with Option.map reasoning",
-      "Submit *Aristotle.lean companion file for routine sorries",
-      "Explore LGV determinant formula (Part VII open challenge)"
-    ]
+    "progressSummary": "COMPLETED (fully proved, 0 sorries, 0 axioms)",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: ballot-problem-oq-01-oq-02\n\n## Problem Summary\n\nMulti-candidate ballot problem (>2 candidates): Generalize the classical ballot\ntheorem to elections with m ≥ 2 candidates.\n\n## Current State\n\n**Status**: COMPLETED (fully proved, 0 sorries, 0 axioms)\n\n## Key Results\n\n### Reduction Theorem\nThe probability that candidate 0 leads all opponents COMBINED throughout the counting\nequals the classical 2-candidate ballot formula: P = (a - b) / (a + b), where\na = votes for leader, b = total opponent votes. This follows because the \"leads\nall combined\" property depends only on the ±1 projection, not on how opponent votes\nare distributed.\n\n### Infrastructure Built\n1. **project**: Maps multi-candidate sequences to ±1 sequences (leader → +1, others → -1)\n2. **project_sum_eq**: Sum of projected list = 2 × leader_count - length\n3. **prefixSum_eq**: Prefix sum at position i = 2 × leader_count(prefix) - i\n4. **leadsAllThroughout**: Candidate 0 leads all others combined at every step\n5. **leadsAllThroughout_iff**: Equivalence to \"leader has > half votes at each prefix\"\n6. **leadsAllThroughout_of_same_projection**: Property invariant under same ±1 projection\n7. **leadsAllThroughout_relabel**: Property invariant under opponent relabeling\n8. **multi_candidate_ballot_bounds**: Probability is in [0, 1]\n9. **pairwiseRatio / threeCandidateProduct**: For the harder full-ordering problem\n\n### Key Insight\nThe multi-candidate ballot problem for \"leader vs all others combined\" is EXACTLY\nthe 2-candidate ballot problem. The proof uses:\n- Projection: project multi-candidate → ±1 by mapping leader → +1, others → -1\n- Invariance: the \"leads throughout\" property depends only on the projection\n- Uniform fiber: each ±1 pattern has q!/(a₁!...aₘ₋₁!) multi-candidate preimages\n\n### What Remains Open\nThe harder question: \"all candidates maintain their ranking throughout\" (the\nLindström-Gessel-Viennot determinantal formula). This is stated but not proved.\n\n## Session Log\n\n### Session 2026-03-12 (researcher-4)\n\n**Mode**: DEEP DIVE — Formalize multi-candidate ballot problem reduction\n**Decision**: Build projection infrastructure and prove reduction theorem\n**Outcome**: COMPLETED — BallotProblemOQ01OQ02.lean compiles clean (0 sorries, 0 axioms)\n**Files Created**: `proofs/Proofs/BallotProblemOQ01OQ02.lean`\n"
   },
-  "approaches": [
-    {
-      "name": "Projection reduction",
-      "description": "Reduce multi-candidate to classical 2-candidate via ±1 projection",
-      "status": "active",
-      "progress": "Framework complete, 3 routine sorries remain"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "combinatorics",
     "probability",
-    "lattice-paths",
-    "reduction"
+    "lattice-paths"
   ],
-  "relatedProofs": [
-    "ballot-problem",
-    "ballot-problem-oq-01",
-    "ballot-problem-oq-03"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": ["Bertrand (1887): Original 2-candidate ballot problem"],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "Archive.Wiedijk100Theorems.BallotProblem",
-      "Ballot.ballot_problem",
-      "Ballot.countedSequence",
-      "Ballot.staysPositive"
-    ]
+    "mathlib": []
   },
   "started": "2026-03-13T03:56:04.574Z",
-  "lastUpdate": "2026-03-13T06:30:00Z",
+  "lastUpdate": "2026-03-13T07:52:17.062Z",
   "significance": 7,
   "tractability": 6
 }

@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1007-oq-01",
   "title": "Minimum edges for graph dimension d in general",
-  "phase": "NEW",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -29,23 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved hasUnitEmbedding_exists_irrefl (constructive embedding existence for irreflexive graphs) and subgraph_unit_embedding. Axiom count reduced from 11 to 10 provable+1 proved. All other axioms encode genuinely open values or deep structural facts.",
-    "builtItems": [
-      "subgraph_unit_embedding: proved in Erdos1007OQ01.lean (any subgraph of K_n inherits unit embedding)",
-      "hasUnitEmbedding_exists_irrefl: proved in Erdos1007OQ01.lean (constructive proof of embedding existence for irreflexive graphs)"
-    ],
-    "insights": [
-      "hasUnitEmbedding_exists axiom is provable for irreflexive graphs (standard simple graphs) via simplex embedding",
-      "Key construction: compose simplexEmbed with Fintype.equivFin to embed any V in ℝ^|V|",
-      "The axiom without irreflexivity is unsound (self-loops require ‖0‖=1), but safe in practice since all graph uses are irreflexive",
-      "Subgraph embedding principle: any subgraph of K_n inherits K_ns unit embedding"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove dim(K_n) = n-1 via Gram matrix / linear independence argument (~300 lines)",
-      "Use dim(K_n) = n-1 to prove minEdges_upper_bound as theorem",
-      "Regular simplex embedding: embed K_n in ℝ^{n-1} instead of ℝ^n"
-    ],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-1007-oq-01\n\nMinimum edges for graph dimension d in general.\n\n---\n\n## Session 2026-03-11 (Session 1) - Survey\n\n**Mode**: FRESH\n**Outcome**: surveyed\n\n### Key Findings\n- OQ01 file fully proved: 25+ theorems, 0 sorries, 11 axioms\n- Simplex embedding construction: K_n embeds in ℝⁿ as unit distances (complete proof)\n- Deficiency function δ(d) = C(d+1,2) - minEdges(d) with d=4 as unique anomaly\n- optimal_implies_monotone: complete graph optimality conjecture → monotonicity (proved)\n- Growth rate analysis with verified successive differences\n\n### Assessment\n- All provable theorems already proved\n- Axioms encode known values (House 2013, Chaffee-Noble 2016) and search properties\n- General minEdges(d) is genuinely open\n- To make further progress, would need dim(K_n) = n-1 rigidity argument (non-trivial)\n"
   },
   "approaches": [],
@@ -61,7 +49,7 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.176Z",
-  "lastUpdate": "2026-03-07T18:02:01.176Z",
+  "lastUpdate": "2026-03-13T07:52:17.062Z",
   "significance": 6,
   "tractability": 5
 }

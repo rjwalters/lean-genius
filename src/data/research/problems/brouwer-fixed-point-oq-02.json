@@ -1,100 +1,57 @@
 {
   "slug": "brouwer-fixed-point-oq-02",
   "title": "Computational Complexity of Approximate Fixed Points",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∀ (G : PPADInstance V) [Fintype V], ∃ v, G.IsSolution v",
-    "plain": "Every finite PPAD instance has a solution: a vertex that is either a sink (no successor, has predecessor) or an additional source (has successor, no predecessor) distinct from the given source.",
-    "whyMatters": [
-      "PPAD-completeness of Brouwer fixed point computation (Chen-Deng 2009)",
-      "Connects topology (fixed points) to computational complexity (PPAD class)",
-      "Fundamental to understanding the hardness of equilibrium computation"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "1D Discrete IVT (sign-changing sequence has adjacent sign change)",
-      "Approximate fixed points exist (from exact fixed points via IVT)",
-      "Approximate fixed points converge to exact ones (completeness argument)",
-      "Contraction mappings converge geometrically (Banach fixed point)",
-      "Binary search gives O(log 1/ε) convergence in 1D",
-      "PPAD structure formalized (PPADInstance type with succ/pred consistency)",
-      "PPAD solution existence proved (path-following + pigeonhole, was axiom)"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Complete formalization of computational complexity aspects of Brouwer fixed point"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-06T00:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-02-27T08:30:01.795Z",
     "iteration": 1,
-    "focus": "Proved PPAD solution existence, eliminating the last axiom in the file.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Verify Docker build passes, commit and create PR.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: All axioms eliminated. The PPAD solution existence theorem (ppad_solution_exists) is now fully proved. Proof follows the succ chain from source vertex, shows path visits distinct vertices via pred consistency and source_no_pred (injectivity), concludes by pigeonhole that the path must terminate, and the terminal vertex is a solution (sink with pred ≠ none, distinct from source). File has 0 sorries, 0 axioms, 391 lines.",
-    "builtItems": [
-      "discrete_ivt: 1D discrete intermediate value theorem — BrouwerFixedPointOQ02.lean",
-      "approx_fixed_point_exists: ε-approximate fixed points exist — BrouwerFixedPointOQ02.lean",
-      "approx_to_exact: approximate fixed points converge to exact — BrouwerFixedPointOQ02.lean",
-      "contraction_iterate_approx: contraction mapping iteration — BrouwerFixedPointOQ02.lean",
-      "binary_search_convergence: O(log 1/ε) convergence — BrouwerFixedPointOQ02.lean",
-      "PPADInstance: formalized PPAD structure with succ/pred consistency — BrouwerFixedPointOQ02.lean",
-      "ppad_solution_exists: PPAD solution existence via path-following + pigeonhole — BrouwerFixedPointOQ02.lean",
-      "brouwer_1d_complete: complete 1D picture combining all results — BrouwerFixedPointOQ02.lean"
-    ],
-    "insights": [
-      "The PPAD proof follows a simple path-following strategy: define followPath n recursively via succ, show injectivity by strong induction on i+j using pred consistency, conclude termination by pigeonhole (injective map from ℕ to finite V impossible)",
-      "The key to injectivity is that if followPath i = followPath j = some v, then pred v gives the unique predecessor, forcing the predecessors to match, and by IH the indices match",
-      "Source vertex detection: if the path ever returns to source, pred source = none contradicts consistent_succ",
-      "Nat.exists_least_of_bex provides the first k where followPath k ≠ none but followPath (k+1) = none"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Path-following + pigeonhole for PPAD",
-      "status": "succeeded",
-      "description": "Define followPath via succ chain from source. Prove injectivity by strong induction using pred consistency. Pigeonhole forces termination in finite type. Terminal vertex is a solution."
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "topology",
     "fixed-point-theory",
     "algebraic-topology",
-    "computability",
-    "PPAD",
-    "computational-complexity"
+    "computability"
   ],
-  "relatedProofs": [
-    "brouwer-fixed-point",
-    "brouwer-fixed-point-oq-01"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Chen, Deng (2009): On the Complexity of 2D Discrete Fixed Point Problem"
-    ],
-    "urls": [
-      "https://en.wikipedia.org/wiki/PPAD_(complexity)"
-    ],
-    "mathlib": [
-      "Mathlib.Topology.Order.IntermediateValue",
-      "Mathlib.Analysis.SpecificLimits.Basic"
-    ]
+    "papers": [],
+    "urls": [],
+    "mathlib": []
   },
   "started": "2026-03-06T06:42:42.092Z",
-  "lastUpdate": "2026-03-06T15:35:00.000Z",
+  "lastUpdate": "2026-03-12T17:29:54.442Z",
+  "completed": "2026-03-12T17:29:54.442Z",
   "significance": 7,
   "tractability": 5
 }

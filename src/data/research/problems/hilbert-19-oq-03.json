@@ -1,89 +1,41 @@
 {
   "slug": "hilbert-19-oq-03",
   "title": "Regularity extension to fully nonlinear equations",
-  "phase": "DEEP_DIVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Evans-Krylov theorem: uniformly elliptic convex F(D^2u) = 0 => C^{2,alpha} regularity",
-    "plain": "Does regularity theory for elliptic PDEs extend from quasilinear (De Giorgi-Nash-Moser) to fully nonlinear equations F(D^2u, Du, u, x) = 0?",
-    "whyMatters": [
-      "Extends Hilbert's 19th from divergence-form to fully nonlinear setting",
-      "Evans-Krylov (1982) resolves the convex/concave case",
-      "Nadirashvili-Vladut (2008) shows convexity is essential in dim >= 5"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Pucci operators: M^-(t) <= M^+(t), superadditivity, sign cases",
-      "Pucci maximal operator is uniformly elliptic",
-      "Uniformly elliptic implies monotone (degenerate elliptic)",
-      "TouchesFromAbove/Below reflexivity",
-      "Classical C^2 solutions are viscosity subsolutions (via second derivative test axiom)",
-      "Viscosity uniqueness from comparison principle",
-      "Sup of affine functions is convex (Bellman equation motivation)",
-      "Krylov-Safonov implies Holder regularity",
-      "Full regularity chain: Evans-Krylov + Schauder => C^infinity",
-      "Hilbert 19 fully nonlinear main theorem"
-    ],
-    "open": [
-      "Full C^{2,alpha} for non-convex uniformly elliptic F (Isaacs equations)"
-    ],
-    "goal": "Formalize the Evans-Krylov extension of Hilbert's 19th problem to fully nonlinear equations"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "DEEP_DIVE",
-    "since": "2026-03-12T05:34:54.574Z",
-    "iteration": 2,
-    "focus": "Eliminated sorry on classical_implies_viscosity_sub via second derivative test axiom",
+    "phase": "NEW",
+    "since": "2026-03-11T21:20:33.094Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Consider proving more structural results or adding n-dimensional framework",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Eliminated the single sorry (classical_implies_viscosity_sub) by adding a clean axiom for the second derivative test of touching functions. File now has 15+ proved theorems, 8 axioms, 0 sorries. Complete regularity chain from ABP -> Krylov-Safonov -> Evans-Krylov -> Schauder -> C^infinity is formalized.",
-    "builtItems": [
-      "FullyNonlinearOp1D structure with normalization",
-      "IsMonotone and IsUniformlyElliptic1D definitions",
-      "Pucci extremal operators (pucciMax, pucciMin) with full properties",
-      "Viscosity solution framework (sub/super/solution)",
-      "TouchesFromAbove/Below definitions with reflexivity",
-      "touching_above_second_deriv axiom (second derivative test)",
-      "classical_implies_viscosity_sub theorem (proved, was sorry)",
-      "Evans-Krylov + Schauder regularity chain",
-      "hilbert19_fully_nonlinear main theorem"
-    ],
-    "insights": [
-      "1D simplification makes Pucci operators tractable: M+(t) = max(Lambda*t, lambda*t)",
-      "Viscosity solution definition only needs C^2 test functions, not u itself",
-      "The sorry was on classical_implies_viscosity_sub - needed second derivative test for touching functions",
-      "Convexity of F is essential - Nadirashvili-Vladut counterexample in dim >= 5",
-      "nlinarith handles all Pucci operator split_ifs cases cleanly"
-    ],
-    "mathlibGaps": [
-      "No viscosity solution framework in Mathlib",
-      "No Pucci extremal operators in Mathlib",
-      "No Evans-Krylov theorem in Mathlib",
-      "No ABP maximum principle in Mathlib"
-    ],
-    "nextSteps": [
-      "Add n-dimensional Pucci operators using Matrix.PosSemidef",
-      "Prove more structural properties of viscosity solutions",
-      "Connect to existing Mathlib ConvexOn infrastructure"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "1D simplification with axiomatized deep PDE results",
-      "status": "successful",
-      "description": "Simplified to 1D to make Pucci operators and viscosity solutions tractable. Axiomatized Evans-Krylov, Schauder, comparison principle, ABP, Krylov-Safonov. Proved structural results and regularity chain."
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "pde",
@@ -92,21 +44,13 @@
   ],
   "relatedProofs": [],
   "references": {
-    "papers": [
-      "Evans (1982) - Classical solutions of fully nonlinear, convex, second-order elliptic equations",
-      "Krylov (1982) - Boundedly inhomogeneous elliptic and parabolic equations",
-      "Crandall-Lions (1983) - Viscosity solutions of Hamilton-Jacobi equations",
-      "Nadirashvili-Vladut (2008) - Nonclassical solutions of fully nonlinear elliptic equations"
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "Analysis.Calculus.ContDiff.Basic",
-      "Analysis.Calculus.Deriv.Basic",
-      "Topology.MetricSpace.Basic"
-    ]
+    "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-12T06:00:00.000Z",
+  "lastUpdate": "2026-03-13T03:56:04.587Z",
+  "completed": "2026-03-13T03:56:04.587Z",
   "significance": 8,
   "tractability": 5
 }

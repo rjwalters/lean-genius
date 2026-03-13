@@ -1,8 +1,8 @@
 {
   "slug": "leibniz-pi-oq-01",
   "title": "Optimal convergence rate for arctangent-based pi series",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
+    "phase": "NEW",
     "since": "2026-03-12T05:32:38.519Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,23 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved error bound |π/4 - Sₙ| ≤ 1/(2n+1) and sharpness. Machin formula stated (1 sorry for arctan addition).",
-    "builtItems": [
-      "proofs/Proofs/LeibnizPiOQ01OQ01.lean: error_bound, rate_sharp, even_mono, odd_anti, machin_formula(sorry)",
-      "src/data/proofs/leibniz-pi-oq-01/: gallery entry with meta.json, index.ts"
-    ],
-    "insights": [
-      "Leibniz series error bound |π/4 - S(n)| ≤ 1/(2n+1) proved via alternating series estimation",
-      "Even partial sums monotonically increase, odd partial sums decrease — sandwich gives bound",
-      "Rate is sharp: |S(n+1) - S(n)| = 1/(2n+1) proves O(1/N) cannot be improved",
-      "Machin formula stated — exponential O(1/25^N) rate from small arctan arguments",
-      "arctan_add not directly available in Mathlib Docker v4.26 — Machin proof needs axiom"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove Machin formula from arctan addition (needs arctan_add API investigation)",
-      "Submit LeibnizPiOQ01OQ01Aristotle.lean companion for the machin_formula sorry"
-    ]
+    "nextSteps": []
   },
   "approaches": [],
   "tags": [
@@ -60,7 +48,8 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-12T05:34:54.574Z",
+  "lastUpdate": "2026-03-13T06:21:52.608Z",
+  "completed": "2026-03-13T06:21:52.608Z",
   "significance": 6,
   "tractability": 6
 }

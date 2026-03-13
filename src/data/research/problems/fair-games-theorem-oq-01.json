@@ -1,8 +1,8 @@
 {
   "slug": "fair-games-theorem-oq-01",
   "title": "Distribution of ruin times (martingale stopping)",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -29,22 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Full variance analysis added. File now covers ruin probabilities, expected time, biased walk, exponential decay, and exact variance with upper bounds.",
-    "builtItems": [
-      "expectedRuinTimeSq definition (second moment)",
-      "varianceRuinTime definition",
-      "variance_eq_second_moment_minus_square (decomposition proof)",
-      "second_moment_recurrence (Poisson equation verification)",
-      "variance_nonneg (nonnegativity via completing square)",
-      "variance_upper_bound (AM-GM bound)",
-      "coefficient_of_variation_sq (CV formula)"
-    ],
-    "insights": [
-      "Var(T) = k(N-k)(N²-2Nk+2k²-2)/3 from quartic martingale OST",
-      "Variance vanishes iff N=2,k=1 (trivial game) since (N-k)²+k²≥2",
-      "Upper bound Var(T) ≤ N²(N²-2)/12 via AM-GM on k(N-k)",
-      "CV² = O(1) for proportional start: std dev grows with mean"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -62,7 +49,8 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-12T05:34:54.574Z",
+  "lastUpdate": "2026-03-12T07:36:01.956Z",
+  "completed": "2026-03-12T07:36:01.956Z",
   "significance": 6,
   "tractability": 7
 }

@@ -1,97 +1,55 @@
 {
   "slug": "bezout-identity-oq-03-oq-01-oq-02",
-  "title": "Non-coprime CRT: Image Characterization",
-  "phase": "COMPLETED",
-  "status": "completed",
-  "tier": "B",
+  "title": "Non-coprime CRT: ℤ/mnℤ ↪ ℤ/mℤ × ℤ/nℤ image characterization",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "∀ m n a b : ℤ, (∃ x, x ≡ a [ZMOD m] ∧ x ≡ b [ZMOD n]) ↔ ↑(Int.gcd m n) ∣ (a - b)",
-    "plain": "Characterize the image of the natural map ℤ/mnℤ → ℤ/mℤ × ℤ/nℤ when gcd(m,n) ≠ 1. The system x ≡ a (mod m), x ≡ b (mod n) is solvable iff gcd(m,n) divides (a - b), and solutions are unique modulo lcm(m,n).",
-    "whyMatters": [
-      "Completes the CRT picture beyond the coprime case",
-      "Characterizes which pairs (a,b) are in the image of the diagonal map",
-      "Fundamental result in number theory with applications to modular arithmetic"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Solvability criterion: system solvable iff gcd(m,n) | (a-b)",
-      "Uniqueness modulo lcm(m,n)",
-      "Explicit solution formula via Bézout coefficients",
-      "Coprime case reduces to standard CRT",
-      "Concrete examples (solvable and unsolvable cases)"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Full characterization of non-coprime CRT image"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-13T04:50:00Z",
+    "phase": "NEW",
+    "since": "2026-03-13T03:56:04.575Z",
     "iteration": 1,
-    "focus": "Complete formalization achieved",
+    "focus": "",
     "blockers": [],
-    "nextAction": "None - problem complete",
+    "nextAction": "",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full generalized CRT formalized with 0 sorries. Proved solvability criterion (gcd divides difference), uniqueness modulo lcm, explicit solution formula, and complete iff characterization.",
-    "builtItems": [
-      "BezoutIdentityOQ03OQ01OQ02.lean: solvable_implies_gcd_dvd - forward direction of solvability",
-      "BezoutIdentityOQ03OQ01OQ02.lean: gcd_dvd_implies_solvable - backward direction with explicit construction",
-      "BezoutIdentityOQ03OQ01OQ02.lean: generalized_crt_iff - complete solvability iff",
-      "BezoutIdentityOQ03OQ01OQ02.lean: crt_unique_mod_lcm - uniqueness via natAbs and Nat.lcm_dvd",
-      "BezoutIdentityOQ03OQ01OQ02.lean: genCRTSolution - explicit solution function",
-      "BezoutIdentityOQ03OQ01OQ02.lean: generalized_crt_full - existence + uniqueness combined",
-      "BezoutIdentityOQ03OQ01OQ02.lean: generalized_crt_modEq - ModEq form of characterization"
-    ],
-    "insights": [
-      "Int.modEq_iff_dvd gives a ≡ b [ZMOD n] ↔ n ∣ (b - a) (note direction: b - a, not a - b)",
-      "Int.gcd_dvd_left takes explicit args in current Mathlib: Int.gcd_dvd_left m n",
-      "Int.lcm_dvd doesn't directly work with ℤ divisibility; route through Nat.lcm_dvd via natAbs",
-      "linear_combination is the key tactic for Bézout-based proofs",
-      "The backward direction constructs x = a - m * gcdA * k where k = (a-b)/gcd(m,n)"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Direct Bézout construction",
-      "status": "succeeded",
-      "description": "Use Bézout coefficients to construct explicit CRT solutions. Forward direction via gcd divisibility. Backward via explicit witness. Uniqueness via natAbs conversion to Nat.lcm_dvd."
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "number-theory",
+    "seeker-selected",
     "algebra",
-    "crt",
-    "bezout",
-    "modular-arithmetic"
+    "number-theory",
+    "chinese-remainder-theorem"
   ],
-  "relatedProofs": [
-    "bezout-identity",
-    "bezout-identity-oq-03",
-    "bezout-identity-oq-03-oq-01"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": [
-      "Int.modEq_iff_dvd",
-      "Int.gcd_dvd_left",
-      "Int.gcd_eq_gcd_ab",
-      "Int.natAbs_dvd_natAbs",
-      "Nat.lcm_dvd",
-      "Int.ediv_mul_cancel"
-    ]
+    "mathlib": []
   },
-  "started": "2026-03-13T04:50:00Z",
-  "lastUpdate": "2026-03-13T04:50:00Z",
+  "started": "2026-03-13T03:56:04.575Z",
+  "lastUpdate": "2026-03-13T03:56:04.575Z",
   "significance": 7,
   "tractability": 7
 }

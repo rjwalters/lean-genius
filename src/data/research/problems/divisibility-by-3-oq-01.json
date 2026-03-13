@@ -1,0 +1,57 @@
+{
+  "slug": "divisibility-by-3-oq-01",
+  "title": "Formal Divisibility Rules for Various Bases and Moduli",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-02-15T03:30:00Z",
+    "iteration": 1,
+    "focus": "Extended DivisibilityByThreeOQ01.lean with truncation methods for primes 7, 11, 17, and 19.",
+    "activeApproach": "Truncation (osculator) method: for p coprime to 10, find c such that 10c ≡ ±1 (mod p), then p | n iff p | (n/10 ± c·(n%10)).",
+    "blockers": [],
+    "nextAction": "Problem complete. Could extend to primes 23, 29, 31, 37, 41, 43 in a future iteration.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "modular-arithmetic",
+    "extension"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-02-08T06:11:43.710Z",
+  "lastUpdate": "2026-02-11T05:41:00.788Z",
+  "completed": "2026-02-11T05:41:00.788Z",
+  "significance": 6,
+  "tractability": 8
+}
