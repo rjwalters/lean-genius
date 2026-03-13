@@ -1,0 +1,93 @@
+{
+  "id": "feuerbachs-theorem-oq-01",
+  "title": "Feuerbach's Theorem OQ-01: Altitude Feet & Equilateral Case",
+  "slug": "feuerbachs-theorem-oq-01",
+  "description": "Proves that the three altitude feet lie on the nine-point circle and that R = 2r for equilateral triangles, replacing 4 axioms from the main Feuerbach formalization.",
+  "meta": {
+    "author": "Karl Wilhelm Feuerbach (1822)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Nine-point_circle",
+    "date": "1822",
+    "status": "proved",
+    "proofRepoPath": "Proofs/FeuerbachsTheoremOQ01.lean",
+    "tags": [
+      "geometry",
+      "triangle",
+      "circle",
+      "nine-point-circle",
+      "coordinate-geometry",
+      "wiedijk-100",
+      "open-question"
+    ],
+    "badge": "fully-proved",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root function for real numbers",
+        "module": "Mathlib.Data.Real.Sqrt"
+      },
+      {
+        "theorem": "field_simp",
+        "description": "Field simplification tactic for clearing denominators",
+        "module": "Mathlib.Tactic"
+      }
+    ],
+    "originalContributions": [
+      "Proof that altitude foot from A lies on nine-point circle via coordinate computation",
+      "Proof that altitude foot from B lies on nine-point circle via coordinate computation",
+      "Proof that altitude foot from C lies on nine-point circle via coordinate computation",
+      "Proof that circumradius = 2 * inradius for equilateral triangles"
+    ],
+    "dateAdded": "03/13/26"
+  },
+  "overview": {
+    "historicalContext": "The nine-point circle passes through nine special points of a triangle: the three side midpoints, the three altitude feet, and the three midpoints from vertices to orthocenter. The main Feuerbach formalization proved the six midpoint/Euler-point cases but axiomatized the altitude feet due to the algebraic complexity of the projection formula. This work completes the nine-point circle membership proofs.",
+    "problemStatement": "**Open Question**: Can the axiomatized distance relations in the Feuerbach formalization be fully proved in Lean using coordinate computation?\n\nThis work proves 4 of the 8 axioms:\n1. The altitude foot from A lies on the nine-point circle: d(N, H_a) = R/2\n2. The altitude foot from B lies on the nine-point circle: d(N, H_b) = R/2\n3. The altitude foot from C lies on the nine-point circle: d(N, H_c) = R/2\n4. For equilateral triangles: R = 2r (circumradius = 2 * inradius)",
+    "proofStrategy": "For the altitude feet, the proof reduces to showing that the squared distance from the nine-point center N to each altitude foot equals R^2/4. After unfolding coordinate definitions (circumcenter via perpendicular bisector intersection, altitude foot via orthogonal projection, nine-point center as midpoint of circumcenter and orthocenter), the identity is cleared of denominators via field_simp and verified as a polynomial identity by the ring tactic. Two nonzero denominators must be established: the circumcenter determinant (from non-degeneracy) and the squared side length (also from non-degeneracy). For the equilateral case, each quantity (circumcenter, circumradius, side lengths, area, semiperimeter, inradius) is computed explicitly, then R = 2r follows from R^2 = (2r)^2 with both sides nonnegative.",
+    "keyInsights": [
+      "The altitude foot proofs require handling two simultaneous divisions: by the circumcenter determinant d and by the squared side length |BC|^2. The key insight is that non-degeneracy implies both denominators are nonzero.",
+      "After clearing denominators with field_simp, the nine-point circle membership for altitude feet reduces to a polynomial identity in 6 variables (vertex coordinates) that ring verifies automatically.",
+      "For the equilateral case, avoiding direct computation of sqrt-valued quantities by working with squared distances (R^2 = s^2/3 and (2r)^2 = s^2/3) sidesteps the difficulty of sqrt arithmetic.",
+      "The proof that |BC|^2 != 0 follows from non-degeneracy: if B = C then the cross product (B-A) x (C-A) = 0, contradicting the Triangle structure's nondegenerate field."
+    ]
+  },
+  "sections": [
+    {
+      "id": "infrastructure",
+      "title": "Triangle Infrastructure",
+      "startLine": 32,
+      "endLine": 116,
+      "summary": "Definitions of Triangle, special points (circumcenter, orthocenter, nine-point center), altitude feet via orthogonal projection, and distance functions. Mirrors the main formalization."
+    },
+    {
+      "id": "helpers",
+      "title": "Helper Lemmas",
+      "startLine": 118,
+      "endLine": 168,
+      "summary": "Nonnegativity of distances and radii, circumcenter denominator nonzero, and squared side lengths nonzero (bc_sq, ca_sq, ab_sq) -- all derived from triangle non-degeneracy."
+    },
+    {
+      "id": "altitude-feet",
+      "title": "Altitude Feet on Nine-Point Circle (Proved)",
+      "startLine": 169,
+      "endLine": 236,
+      "summary": "Three theorems proving altitude feet lie on the nine-point circle. Each proof: (1) reduce to squared distance equality via eq_of_sq_eq_of_nonneg, (2) eliminate sqrt via Real.sq_sqrt, (3) establish nonzero denominators, (4) unfold all definitions, (5) field_simp + ring."
+    },
+    {
+      "id": "equilateral",
+      "title": "Equilateral Triangle R = 2r (Proved)",
+      "startLine": 238,
+      "endLine": 338,
+      "summary": "Proves R = 2r for equilateral triangle (0,0)-(s,0)-(s/2, s*sqrt(3)/2). Computes circumcenter = (s/2, s*sqrt(3)/6), R^2 = s^2/3, side lengths = s, area = s^2*sqrt(3)/4, inradius = s*sqrt(3)/6, then shows R^2 = (2r)^2."
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves 4 of the 8 axioms from the main Feuerbach formalization: all three altitude feet on the nine-point circle and the equilateral R=2r relation. 351 lines, 0 sorries, fully machine-checked. The altitude foot proofs demonstrate that coordinate computation with field_simp + ring can handle the algebraic complexity of orthogonal projections combined with circumcenter formulas.",
+    "implications": "With these 4 axioms proved, the main Feuerbach formalization has only 4 remaining axioms -- the core Feuerbach distance relations (incircle and three excircle tangency). These are significantly harder as they involve the incenter/excenter coordinates which depend on square roots (side lengths). A potential approach would use the Euler identity OI^2 = R^2 - 2Rr.",
+    "openQuestions": [
+      "Can the Feuerbach incircle distance relation d(N,I) = |R/2 - r| be proved via coordinate computation, or does it require the Euler identity OI^2 = R^2 - 2Rr?",
+      "Can the excircle tangency relations be proved by symmetry from the incircle case?",
+      "Is there a synthetic (non-coordinate) proof path using Mathlib's EuclideanGeometry?"
+    ]
+  }
+}
