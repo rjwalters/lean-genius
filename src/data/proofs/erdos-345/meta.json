@@ -4,32 +4,78 @@
   "slug": "erdos-345",
   "description": "Let T(n^k) be the completeness threshold for the k-th power sequence. Are there infinitely many k with T(n^k) > T(n^{k+1})? Known: T(n)=1, T(n²)=128, T(n³)=12758.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdős–Graham (1980, open)",
     "sourceUrl": "https://erdosproblems.com/345",
-    "status": "formalized",
+    "date": "1980",
+    "status": "complete",
     "proofRepoPath": "Proofs/Erdos345Problem.lean",
     "tags": [
       "erdos",
-      "number theory",
-      "complete sequences",
-      "subset sums",
-      "Waring problem"
+      "number-theory",
+      "complete-sequences",
+      "subset-sums",
+      "waring-problem",
+      "open"
     ],
-    "badge": "formalized",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 345,
     "erdosUrl": "https://erdosproblems.com/345",
-    "erdosProblemStatus": "open"
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-01-19",
+    "mathlib_version": "4.15.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum",
+        "description": "Summation over finite sets",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Set",
+        "description": "Set type for infinite sequences",
+        "module": "Mathlib.Data.Set.Basic"
+      }
+    ],
+    "references": [
+      {
+        "cite": "Erdős–Graham 1980",
+        "title": "Old and New Problems and Results in Combinatorial Number Theory",
+        "year": 1980,
+        "relevance": "Original source of the conjecture about threshold reversals for power sequences"
+      },
+      {
+        "cite": "Hilbert 1909",
+        "title": "Beweis für die Darstellbarkeit der ganzen Zahlen durch eine feste Anzahl n-ter Potenzen",
+        "year": 1909,
+        "relevance": "Waring's problem resolution: every integer is a sum of k-th powers, implying completeness"
+      },
+      {
+        "cite": "Sprague 1948",
+        "title": "Über Zerlegungen in ungleiche Quadratzahlen",
+        "year": 1948,
+        "relevance": "Proved completeness of distinct squares: every sufficiently large integer is a sum of distinct squares"
+      }
+    ],
+    "originalContributions": [
+      "subsetSums and IsComplete definitions",
+      "threshold axiomatization (correctness + minimality)",
+      "powerSeq definition",
+      "Known threshold values: T(n²)=128, T(n³)=12758, T(n⁴)=5134240, T(n⁵)=67898771",
+      "powerSeq_complete axiom (from Waring)",
+      "ErdosProblem345 conjecture statement",
+      "threshold_mono_small axiom"
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős and Graham (1980) studied the completeness threshold T(A) — the least m such that all n ≥ m are subset sums of A. For power sequences {n^k}, the thresholds grow rapidly. Erdős asked whether T(n^k) can ever decrease as k increases.",
+    "historicalContext": "The notion of **complete sequences** — sets whose subset sums eventually cover all integers — was systematically studied by Erdős and Graham in their 1980 monograph. The **completeness threshold** $T(A)$ measures the onset of full representability. For the sequence of positive integers, $T(\\{n\\}) = 1$ trivially (binary representation). For squares, Sprague (1948) showed completeness, and the exact value $T(n^2) = 128$ was computed by Wright (1960s). Hilbert's resolution of **Waring's problem** (1909) guarantees that $k$-th power sequences are complete for all $k$, but the threshold $T(n^k)$ measures representability by **distinct** $k$-th powers, a finer and harder question. The exact values $T(n^3) = 12758$, $T(n^4) = 5134240$, $T(n^5) = 67898771$ were determined by exhaustive computation. Despite the rapid growth, Erdős and Graham conjectured that the sequence $T(n^k)$ is **not eventually monotone** — that threshold reversals $T(n^k) > T(n^{k+1})$ occur infinitely often, perhaps at $k = 2^t$ for large $t$.",
     "problemStatement": "Are there infinitely many k such that T(n^k) > T(n^{k+1})?",
     "proofStrategy": "The formalization defines subset sums, completeness, and the threshold T(A) axiomatically. Power sequences are defined and their completeness follows from Waring's problem. Known threshold values are axiomatised.",
     "keyInsights": [
-      "T(n)=1, T(n²)=128, T(n³)=12758, T(n⁴)=5134240, T(n⁵)=67898771",
-      "Known thresholds are rapidly increasing, but the question is about eventual decrease",
-      "Erdős–Graham suggest k = 2^t for large t as candidates",
-      "Completeness of power sequences follows from Waring's problem"
+      "**Known thresholds**: $T(n)=1$, $T(n^2)=128$, $T(n^3)=12758$, $T(n^4)=5134240$, $T(n^5)=67898771$ — growth ratios oscillate wildly ($128, 99.7, 403.3, 13.2$)",
+      "**Threshold axiomatization** via correctness ($\\forall n \\ge T(A): n \\in P(A)$) and minimality ($T(A) > 0 \\implies \\exists n < T(A): n \\notin P(A)$) uniquely characterizes $T(A)$",
+      "**Waring completeness**: every $k$-th power sequence is complete (all sufficiently large integers are sums of distinct $k$-th powers), making $T(n^k)$ well-defined for all $k$",
+      "**Counterintuitive conjecture**: sparser sequences ($k+1$ powers) could have smaller thresholds — Erdős–Graham suggest $k = 2^t$ as candidates where extreme sparsity creates favorable additive structure",
+      "**Strict monotonicity** $T(n) < T(n^2) < T(n^3) < T(n^4) < T(n^5)$ in the computable range — any reversal must occur for $k \\ge 5$ where thresholds are computationally infeasible"
     ]
   },
   "sections": [
@@ -38,7 +84,7 @@
       "title": "Subset Sums and Completeness",
       "startLine": 21,
       "endLine": 30,
-      "summary": "Definitions of subset sums P(A) and completeness of a sequence.",
+      "summary": "Defines `subsetSums(A) = P(A) = \\{\\sum_{a \\in S} a : S \\subseteq A\\}$ and `IsComplete(A)`: $\\exists m, \\forall n \\ge m: n \\in P(A)$.",
       "mathContext": "$P(A) = \\{\\sum_{a \\in S} a : S \\subseteq A,\\, S \\text{ finite}\\}$. $\\text{IsComplete}(A) \\iff \\exists m,\\, \\forall n \\ge m: n \\in P(A)$. Subset sums use distinct elements (no repetition)."
     },
     {
@@ -46,7 +92,7 @@
       "title": "Completeness Threshold",
       "startLine": 32,
       "endLine": 47,
-      "summary": "Axiomatisation of T(A) with correctness and minimality properties.",
+      "summary": "Axiomatizes $T(A) = \\min\\{m : \\forall n \\ge m, n \\in P(A)\\}$ via correctness and minimality axioms.",
       "mathContext": "$T(A) = \\min\\{m : \\forall n \\ge m,\\, n \\in P(A)\\}$. Axiomatized via correctness ($\\forall n \\ge T(A): n \\in P(A)$) and minimality ($T(A) > 0 \\implies \\exists n < T(A): n \\notin P(A)$)."
     },
     {
@@ -54,7 +100,7 @@
       "title": "Power Sequences",
       "startLine": 49,
       "endLine": 57,
-      "summary": "Definition of {n^k : n ≥ 1} and T(n) = 1.",
+      "summary": "Defines `powerSeq(k) = \\{n^k : n \\ge 1\\}$. Proves $T(n^1) = 1$. Axiomatizes completeness for all $k \\ge 1$ via Waring's problem.",
       "mathContext": "$\\text{powerSeq}(k) = \\{n^k : n \\ge 1\\}$. $T(n^1) = 1$ since every positive integer is a sum of distinct positive integers. Completeness for all $k \\ge 1$ follows from Waring's problem."
     },
     {
@@ -62,7 +108,7 @@
       "title": "Known Threshold Values",
       "startLine": 59,
       "endLine": 71,
-      "summary": "T(n²) = 128, T(n³) = 12758, T(n⁴) = 5134240, T(n⁵) = 67898771.",
+      "summary": "Axiomatized exact values: $T(n^2) = 128$, $T(n^3) = 12758$, $T(n^4) = 5134240$, $T(n^5) = 67898771$. Growth ratios erratic: $128, 99.7, 403.3, 13.2$.",
       "mathContext": "$T(n) = 1$, $T(n^2) = 128$, $T(n^3) = 12758$, $T(n^4) = 5134240$, $T(n^5) = 67898771$. Growth ratios: $128, 99.7, 403.3, 13.2$. The sequence is strictly increasing for $k \\le 5$."
     },
     {
@@ -70,7 +116,7 @@
       "title": "Main Conjecture",
       "startLine": 79,
       "endLine": 84,
-      "summary": "Erdős Problem 345: infinitely many k with T(n^k) > T(n^{k+1}).",
+      "summary": "Conjecture: $\\exists^\\infty k: T(n^k) > T(n^{k+1})$. Formalized as $\\forall K, \\exists k \\ge K: T(n^{k+1}) < T(n^k)$.",
       "mathContext": "$\\exists^\\infty k: T(n^k) > T(n^{k+1})$. Erdos-Graham suggest $k = 2^t$ for large $t$ as candidates for threshold reversal. Any reversal must occur for $k \\ge 5$ by the computed monotonicity."
     },
     {
@@ -78,7 +124,7 @@
       "title": "Monotonicity Observations",
       "startLine": 86,
       "endLine": 94,
-      "summary": "Known thresholds T(n) < T(n²) < T(n³) < T(n⁴) < T(n⁵) are increasing.",
+      "summary": "Strict monotonicity: $T(n) < T(n^2) < T(n^3) < T(n^4) < T(n^5)$. No reversal in the computable range; any reversal requires $k \\ge 5$.",
       "mathContext": "$T(n) < T(n^2) < T(n^3) < T(n^4) < T(n^5)$: strict monotonicity holds in the computable range. Computing $T(n^k)$ for $k \\ge 6$ is currently infeasible."
     }
   ],
@@ -90,5 +136,15 @@
       "Does T(n^{2^t}) eventually decrease?",
       "What is the growth rate of T(n^k) as k → ∞?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "proofId": "erdos-323",
+      "relationship": "Both study counting functions for sums of k-th powers; Problem 323 asks about f_{k,m}(x) while Problem 345 asks about completeness thresholds T(n^k)"
+    },
+    {
+      "proofId": "erdos-344",
+      "relationship": "Problem 344 studies subcomplete sequences — Problem 345 extends to completeness thresholds for power sequences, a related structural question"
+    }
+  ]
 }
