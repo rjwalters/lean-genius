@@ -29,9 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SURVEYED: File is comprehensive at 6341 lines. Axioms are intentional physics foundations (Killing form, gauge invariance, etc.). Further work requires QFT infrastructure not in Mathlib.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "File is 6341 lines with 23 intentional physics axioms and 0 sorries - well beyond diminishing returns for incremental additions"
+    ],
     "mathlibGaps": [
       "Principal bundles",
       "Connections",
