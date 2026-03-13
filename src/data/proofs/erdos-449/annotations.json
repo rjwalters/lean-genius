@@ -2,121 +2,197 @@
   {
     "id": "ann-449-1",
     "proofId": "erdos-449",
-    "range": { "startLine": 48, "endLine": 52 },
+    "range": {
+      "startLine": 48,
+      "endLine": 52
+    },
     "type": "definition",
     "title": "Divisor Count Function τ(n)",
     "content": "The divisor count function τ(n) counts all positive divisors of n. For example, τ(12) = 6 because 12 has divisors {1, 2, 3, 4, 6, 12}. This is one of the most fundamental arithmetic functions in number theory.",
     "mathContext": "τ(n) = |{d : d | n}| = n.divisors.card",
     "significance": "key",
-    "relatedConcepts": ["arithmetic functions", "divisibility", "multiplicative functions"]
+    "relatedConcepts": [
+      "arithmetic functions",
+      "divisibility",
+      "multiplicative functions"
+    ]
   },
   {
     "id": "ann-449-2",
     "proofId": "erdos-449",
-    "range": { "startLine": 54, "endLine": 61 },
+    "range": {
+      "startLine": 54,
+      "endLine": 61
+    },
     "type": "definition",
     "title": "Close Divisor Pairs",
     "content": "A close divisor pair (d₁, d₂) of n satisfies: both divide n, and d₁ < d₂ < 2d₁. This means d₂ is strictly between d₁ and twice d₁ - the divisors are 'close' in multiplicative terms (within a factor of 2).",
     "mathContext": "closeDivisorPairs(n) = {(d₁, d₂) : d₁ | n ∧ d₂ | n ∧ d₁ < d₂ < 2d₁}",
-    "significance": "critical",
-    "relatedConcepts": ["divisor pairs", "ratio bounds", "multiplicative gaps"]
+    "significance": "key",
+    "relatedConcepts": [
+      "divisor pairs",
+      "ratio bounds",
+      "multiplicative gaps"
+    ]
   },
   {
     "id": "ann-449-3",
     "proofId": "erdos-449",
-    "range": { "startLine": 62, "endLine": 65 },
+    "range": {
+      "startLine": 62,
+      "endLine": 65
+    },
     "type": "definition",
     "title": "Close Pair Count r(n)",
     "content": "The function r(n) counts how many close divisor pairs n has. The conjecture asked whether r(n) is small compared to τ(n) for 'almost all' n.",
     "mathContext": "r(n) = |closeDivisorPairs(n)|",
     "significance": "key",
-    "relatedConcepts": ["counting functions", "divisor statistics"]
+    "relatedConcepts": [
+      "counting functions",
+      "divisor statistics"
+    ]
   },
   {
     "id": "ann-449-4",
     "proofId": "erdos-449",
-    "range": { "startLine": 67, "endLine": 72 },
+    "range": {
+      "startLine": 67,
+      "endLine": 72
+    },
     "type": "definition",
     "title": "Small Divisors τ⁺(n)",
     "content": "The function τ⁺(n) counts 'small' divisors d with d² ≤ n. These are divisors at most √n. For n = 36, divisors ≤ 6 are {1, 2, 3, 4, 6}, so τ⁺(36) = 5.",
     "mathContext": "τ⁺(n) = |{d : d | n ∧ d² ≤ n}|",
     "significance": "key",
-    "relatedConcepts": ["Problem 448", "divisor distribution", "square root threshold"]
+    "relatedConcepts": [
+      "Problem 448",
+      "divisor distribution",
+      "square root threshold"
+    ]
   },
   {
     "id": "ann-449-5",
     "proofId": "erdos-449",
-    "range": { "startLine": 76, "endLine": 88 },
+    "range": {
+      "startLine": 76,
+      "endLine": 88
+    },
     "type": "definition",
     "title": "The False Conjecture",
     "content": "Erdős conjectured that for every ε > 0, we have r(n) < ε·τ(n) for almost all n. 'Almost all' means the exceptional set has natural density 0. This would say close pairs become negligible.",
     "mathContext": "∀ε > 0: lim_{N→∞} |{n ≤ N : r(n) ≥ ε·τ(n)}|/N = 0",
-    "significance": "critical",
-    "relatedConcepts": ["natural density", "asymptotic behavior", "almost all integers"]
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "asymptotic behavior",
+      "almost all integers"
+    ]
   },
   {
     "id": "ann-449-6",
     "proofId": "erdos-449",
-    "range": { "startLine": 92, "endLine": 106 },
-    "type": "axiom",
+    "range": {
+      "startLine": 92,
+      "endLine": 106
+    },
+    "type": "theorem",
     "title": "The Disproof",
     "content": "The conjecture is not just false - its negation is strong. For ANY constant K > 0 (no matter how large), a positive density set of n has r(n) > K·τ(n). Close pairs can dominate!\n\n**erdos_449_false**: ¬ErdosConjecture449 asserts the conjecture is false.",
     "mathContext": "∀K > 0, ∃δ > 0: lim inf_{N→∞} |{n ≤ N : r(n) > K·τ(n)}|/N ≥ δ",
-    "significance": "critical",
-    "relatedConcepts": ["counterexample", "positive density", "strong negation"]
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "positive density",
+      "strong negation"
+    ]
   },
   {
     "id": "ann-449-7",
     "proofId": "erdos-449",
-    "range": { "startLine": 110, "endLine": 117 },
-    "type": "axiom",
+    "range": {
+      "startLine": 110,
+      "endLine": 117
+    },
+    "type": "theorem",
     "title": "Cauchy-Schwarz Inequality for Divisors",
     "content": "The key technical tool: r(n) + τ(n) ≥ τ(n)²/τ⁺(n). This relates close pairs to the ratio τ(n)/τ⁺(n). When τ⁺(n) is small relative to τ(n), r(n) must be large.",
     "mathContext": "r(n) + τ(n) ≥ τ(n)²/τ⁺(n)",
     "significance": "key",
-    "relatedConcepts": ["Cauchy-Schwarz", "divisor bounds", "arithmetic inequalities"]
+    "relatedConcepts": [
+      "Cauchy-Schwarz",
+      "divisor bounds",
+      "arithmetic inequalities"
+    ]
   },
   {
     "id": "ann-449-8",
     "proofId": "erdos-449",
-    "range": { "startLine": 119, "endLine": 129 },
-    "type": "axiom",
+    "range": {
+      "startLine": 119,
+      "endLine": 129
+    },
+    "type": "insight",
     "title": "Connection to Problem 448",
     "content": "Problem 448 shows that τ⁺(n) can be much smaller than τ(n) for a positive density set. Combined with Cauchy-Schwarz, this forces r(n) to exceed (K+1)τ(n) - τ(n) = K·τ(n) for positive density.",
     "mathContext": "Problem 448 ⟹ τ(n)²/τ⁺(n) ≥ (K+1)τ(n) for positive density",
     "significance": "key",
-    "relatedConcepts": ["Problem 448", "positive density arguments", "reduction between problems"]
+    "relatedConcepts": [
+      "Problem 448",
+      "positive density arguments",
+      "reduction between problems"
+    ]
   },
   {
     "id": "ann-449-9",
     "proofId": "erdos-449",
-    "range": { "startLine": 133, "endLine": 142 },
-    "type": "axiom",
+    "range": {
+      "startLine": 133,
+      "endLine": 142
+    },
+    "type": "concept",
     "title": "Example: n = 12",
     "content": "For n = 12, divisors are {1, 2, 3, 4, 6, 12}. Close pairs (d₁ < d₂ < 2d₁): (2,3), (3,4), (3,5)... Actually the pairs are all (d₁, d₂) both dividing 12 with d₁ < d₂ < 2d₁. We get r(12) = 5, τ(12) = 6.",
     "mathContext": "τ(12) = 6, r(12) = 5",
     "significance": "supporting",
-    "relatedConcepts": ["explicit computation", "small cases", "divisor enumeration"]
+    "relatedConcepts": [
+      "explicit computation",
+      "small cases",
+      "divisor enumeration"
+    ]
   },
   {
     "id": "ann-449-10",
     "proofId": "erdos-449",
-    "range": { "startLine": 146, "endLine": 158 },
-    "type": "axiom",
+    "range": {
+      "startLine": 146,
+      "endLine": 158
+    },
+    "type": "technique",
     "title": "Ford's Derivation from Problem 448",
     "content": "Kevin Ford observed that the disproof follows from Cauchy-Schwarz applied to divisor pairs together with Problem 448's result that τ⁺(n) can be much smaller than τ(n).\n\nSpecifically: r(n) + τ(n) ≥ τ(n)²/τ⁺(n), so when τ(n)/τ⁺(n) ≫ 1, we get r(n) ≫ τ(n).",
     "mathContext": "ford_derivation: ∀K > 0, ∃δ > 0 such that a δ-dense set of n has r(n) ≥ K·τ(n)",
     "significance": "key",
-    "relatedConcepts": ["Kevin Ford", "Problem 448", "Cauchy-Schwarz application"]
+    "relatedConcepts": [
+      "Kevin Ford",
+      "Problem 448",
+      "Cauchy-Schwarz application"
+    ]
   },
   {
     "id": "ann-449-11",
     "proofId": "erdos-449",
-    "range": { "startLine": 162, "endLine": 174 },
+    "range": {
+      "startLine": 162,
+      "endLine": 174
+    },
     "type": "theorem",
     "title": "Summary Theorem",
     "content": "**erdos_449_summary** combines the main results:\n1. ¬ErdosConjecture449 — the conjecture is false\n2. For any K > 0, a positive density set of n has r(n) > K·τ(n)\n\nThe proof assembles erdos_449_false and erdos_449_disproof.",
-    "significance": "critical",
-    "relatedConcepts": ["summary", "disproof", "positive density"]
+    "significance": "key",
+    "relatedConcepts": [
+      "summary",
+      "disproof",
+      "positive density"
+    ]
   }
 ]

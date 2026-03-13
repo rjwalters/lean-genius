@@ -9,7 +9,14 @@
     "date": "2005",
     "status": "verified",
     "proofRepoPath": "Proofs/Erdos736Problem.lean",
-    "tags": ["erdos", "graph-theory", "chromatic-number", "infinite-graphs", "set-theory", "independence"],
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "chromatic-number",
+      "infinite-graphs",
+      "set-theory",
+      "independence"
+    ],
     "badge": "mathlib",
     "sorries": 1,
     "erdosNumber": 736,
@@ -17,11 +24,31 @@
     "erdosProblemStatus": "open",
     "mathlib_version": "v4.x",
     "mathlibDependencies": [
-      { "theorem": "SimpleGraph", "description": "Simple graphs in combinatorics", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
-      { "theorem": "SimpleGraph.Subgraph", "description": "Subgraphs of simple graphs", "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph" },
-      { "theorem": "SimpleGraph.Coloring", "description": "Graph colorings", "module": "Mathlib.Combinatorics.SimpleGraph.Coloring" },
-      { "theorem": "Cardinal", "description": "Cardinal arithmetic", "module": "Mathlib.SetTheory.Cardinal.Basic" },
-      { "theorem": "aleph", "description": "Aleph cardinals (ℵ₀, ℵ₁, etc.)", "module": "Mathlib.SetTheory.Cardinal.Ordinal" }
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graphs in combinatorics",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "SimpleGraph.Subgraph",
+        "description": "Subgraphs of simple graphs",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Subgraph"
+      },
+      {
+        "theorem": "SimpleGraph.Coloring",
+        "description": "Graph colorings",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Coloring"
+      },
+      {
+        "theorem": "Cardinal",
+        "description": "Cardinal arithmetic",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      },
+      {
+        "theorem": "aleph",
+        "description": "Aleph cardinals (ℵ₀, ℵ₁, etc.)",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      }
     ],
     "originalContributions": [
       "Lean formalization of chromatic number for infinite graphs",
@@ -49,49 +76,56 @@
       "title": "Basic Definitions",
       "startLine": 45,
       "endLine": 79,
-      "summary": "Chromatic number, finite subgraphs, and subgraph embeddings"
+      "summary": "Chromatic number, finite subgraphs, and subgraph embeddings",
+      "mathContext": "$\\chi(G) = \\inf\\{\\kappa : G \\text{ has a proper } \\kappa\\text{-coloring}\\}$. For infinite graphs, $\\chi(G)$ is a cardinal number. Finite subgraph $G[S]$ = induced subgraph on finite $S \\subseteq V(G)$."
     },
     {
       "id": "taylor-conjecture",
       "title": "The Taylor Conjecture",
       "startLine": 80,
       "endLine": 111,
-      "summary": "Walter Taylor's original conjecture and its generalization"
+      "summary": "Walter Taylor's original conjecture and its generalization",
+      "mathContext": "$\\chi(G) = \\aleph_1 \\implies \\forall m,\\, \\exists G_m: \\chi(G_m) = m \\wedge (\\text{fin. subgraphs of } G_m \\subseteq \\text{fin. subgraphs of } G)$. Taylor's conjecture: $\\aleph_1$-chromatic graphs have universally rich finite structure."
     },
     {
       "id": "general-question",
       "title": "Erdős's General Question",
       "startLine": 112,
       "endLine": 139,
-      "summary": "Characterizing realizable families of finite graphs"
+      "summary": "Characterizing realizable families of finite graphs",
+      "mathContext": "$\\mathcal{F}$ is realizable at $\\aleph_\\alpha$ iff $\\exists G: \\chi(G) = \\aleph_\\alpha \\wedge \\{\\text{fin. subgraphs of } G\\} = \\mathcal{F}$. Erdős's generalization: characterize which families $\\mathcal{F}$ are realizable at each cardinal."
     },
     {
       "id": "consistency-result",
       "title": "Komjáth-Shelah Consistency",
       "startLine": 140,
       "endLine": 166,
-      "summary": "Independence from ZFC and the ℵ₂ bound"
+      "summary": "Independence from ZFC and the ℵ₂ bound",
+      "mathContext": "$\\text{Con}(\\text{ZFC} + \\exists G: \\chi(G) = \\aleph_1 \\wedge \\forall H\\,(\\text{fin. sub. of } H \\subseteq \\text{fin. sub. of } G \\implies \\chi(H) \\le \\aleph_2))$. Komjáth-Shelah: Taylor's conjecture is independent of ZFC."
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
       "startLine": 167,
       "endLine": 197,
-      "summary": "De Bruijn-Erdős theorem and chromatic compactness"
+      "summary": "De Bruijn-Erdős theorem and chromatic compactness",
+      "mathContext": "De Bruijn-Erdős: $(\\forall \\text{finite } S \\subseteq V,\\, G[S] \\text{ is } k\\text{-colorable}) \\implies \\chi(G) \\le k$. Finite chromatic number IS determined by finite subgraphs, but infinite ones may not be."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "startLine": 198,
       "endLine": 227,
-      "summary": "Countable and finite chromatic number cases"
+      "summary": "Countable and finite chromatic number cases",
+      "mathContext": "Countable case: if $\\chi(G) = \\aleph_0$, finite subgraphs determine everything by compactness. The critical gap is at $\\chi(G) = \\aleph_1$ where set-theoretic independence emerges."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 228,
       "endLine": 267,
-      "summary": "Main theorem statements and key insight"
+      "summary": "Main theorem statements and key insight",
+      "mathContext": "$\\text{ZFC} \\nvdash \\text{Taylor's conjecture} \\wedge \\text{ZFC} \\nvdash \\neg\\text{Taylor's conjecture}$. The answer depends on set-theoretic axioms beyond ZFC, placing this combinatorial problem at the foundations of mathematics."
     }
   ],
   "conclusion": {

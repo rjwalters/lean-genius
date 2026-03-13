@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #402 (Graham's GCD Conjecture)**: For any finite set A ⊂ ℕ, there exist a, b ∈ A such that gcd(a,b) ≤ a/|A|. Proved by Balasubramanian & Soundararajan (1996).",
     "mathContext": "The bound relates the gcd of elements to the set's cardinality. Graham also characterized when equality holds.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "gcd",
       "finite-sets",
@@ -28,7 +28,7 @@
     "title": "Main Statement",
     "content": "**Graham's GCD Conjecture**: For any finite nonempty set A of positive integers, there exist a, b ∈ A with gcd(a,b) ≤ a/|A|.",
     "mathContext": "erdos_402_graham_conjecture (A : Finset ℕ) (hA : A.Nonempty) (hpos : ∀ x ∈ A, x > 0) : ∃ a ∈ A, ∃ b ∈ A, Nat.gcd a b ≤ a / A.card",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "finset",
       "nat-gcd",
@@ -97,7 +97,7 @@
     "title": "Equality Characterization",
     "content": "**Graham's Equality Conjecture**: For primitive sets (gcd of all elements = 1), equality is achieved only for: {1,...,n}, {L/1,...,L/n} where L = lcm(1,...,n), or {2,3,4,6}.",
     "mathContext": "IsGrahamEqualityCase characterizes exactly which sets achieve the bound with equality.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "primitive-sets",
       "lcm",

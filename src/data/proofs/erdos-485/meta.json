@@ -40,42 +40,48 @@
       "title": "Term Count Definitions",
       "startLine": 35,
       "endLine": 48,
-      "summary": "Define termCount as the cardinality of a polynomial's support."
+      "summary": "Define termCount as the cardinality of a polynomial's support.",
+      "mathContext": "$\\text{termCount}(P) = |\\text{supp}(P)| = |\\{i : a_i \\neq 0\\}|$ for $P = \\sum_i a_i x^i$. $\\text{hasTerms}(P, k) \\iff \\text{termCount}(P) = k$."
     },
     {
       "id": "function-f",
       "title": "The Function f(k)",
       "startLine": 50,
       "endLine": 57,
-      "summary": "f(k) = minimum terms in P² for P with k terms."
+      "summary": "f(k) = minimum terms in P² for P with k terms.",
+      "mathContext": "$f(k) = \\inf\\{\\text{termCount}(P^2) : P \\in \\mathbb{Q}[x],\\, \\text{termCount}(P) = k\\}$. Measures the maximum compression achievable by squaring a $k$-term polynomial."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 59,
       "endLine": 71,
-      "summary": "f(1) = 1 (monomials), f(2) = 3 (binomials)."
+      "summary": "f(1) = 1 (monomials), f(2) = 3 (binomials).",
+      "mathContext": "$f(1) = 1$ (monomial: $(ax^n)^2 = a^2 x^{2n}$) and $f(2) = 3$ (binomial: $(a + bx^n)^2 = a^2 + 2abx^n + b^2 x^{2n}$, no cancellation possible)."
     },
     {
       "id": "upper-bound",
       "title": "Erdős Upper Bound",
       "startLine": 73,
       "endLine": 81,
-      "summary": "Erdős (1949): f(k) < k^(1-c) for some c > 0."
+      "summary": "Erdős (1949): f(k) < k^(1-c) for some c > 0.",
+      "mathContext": "$\\exists c > 0: f(k) < k^{1-c}$ for $k$ sufficiently large (Erdős, 1949). Squaring can reduce term count sublinearly."
     },
     {
       "id": "main-result",
       "title": "Main Divergence Result",
       "startLine": 83,
       "endLine": 107,
-      "summary": "Schinzel-Zannier: f(k) → ∞, specifically f(k) ≫ log k."
+      "summary": "Schinzel-Zannier: f(k) → ∞, specifically f(k) ≫ log k.",
+      "mathContext": "$f(k) > \\frac{\\log \\log k}{\\log 2}$ (Schinzel, 1987). $f(k) \\gg \\log k$ (Schinzel-Zannier, 2009). Together: $\\log k \\ll f(k) < k^{1-c}$, proving $f(k) \\to \\infty$."
     },
     {
       "id": "related",
       "title": "Related Concepts",
       "startLine": 124,
       "endLine": 167,
-      "summary": "Connections to sparse and lacunary polynomials."
+      "summary": "Connections to sparse and lacunary polynomials.",
+      "mathContext": "Generalization: $g(k, n) = \\inf\\{\\text{termCount}(P^n) : \\text{termCount}(P) = k\\}$. Schinzel's method extends to show $g(k, n) \\to \\infty$ for all $n \\ge 1$. Connections to lacunary and sparse polynomial theory."
     }
   ],
   "conclusion": {

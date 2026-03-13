@@ -10,7 +10,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #485**: Let f(k) = minimum terms in P(x)² for polynomials P with k terms. Does f(k) → ∞? Solved affirmatively by Schinzel (1987) and improved by Schinzel-Zannier (2009).",
     "mathContext": "f(k) measures how much squaring can compress polynomial terms. The answer is YES: compression is limited.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "sparse-polynomials",
       "polynomial-multiplication",
@@ -45,7 +45,7 @@
     "title": "The Function f(k)",
     "content": "**f(k)**: The infimum of termCount(P²) over all polynomials P ∈ ℚ[x] with exactly k non-zero terms.",
     "mathContext": "f(k) = inf{termCount(P²) : P ∈ ℚ[x], termCount(P) = k}",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "infimum",
       "polynomial-squaring"
@@ -96,7 +96,7 @@
     "title": "Schinzel's Lower Bounds",
     "content": "**Schinzel (1987)**: f(k) > (log log k)/log 2. **Schinzel-Zannier (2009)**: f(k) ≫ log k (improved bound).",
     "mathContext": "These lower bounds prove f(k) → ∞, solving the conjecture. The gap between k^(1-c) upper and log k lower remains.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "logarithmic-growth",
       "divergence"
@@ -113,7 +113,7 @@
     "title": "Main Theorem",
     "content": "**erdos_485_main**: f(k) → ∞ as k → ∞. Formally: Filter.Tendsto f atTop atTop.",
     "mathContext": "The central result: squaring cannot indefinitely compress polynomial terms.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": [
       "filter-tendsto",
       "divergence-to-infinity"

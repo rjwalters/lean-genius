@@ -38,42 +38,48 @@
       "title": "Monochromatic Subset Sums",
       "startLine": 24,
       "endLine": 33,
-      "summary": "2-colourings and monochromatic subset sums from a single colour class."
+      "summary": "2-colourings and monochromatic subset sums from a single colour class.",
+      "mathContext": "$\\text{monoSubsetSums}(A, c, k) = \\{\\sum_{s \\in S} s : S \\subseteq A,\\, \\forall s \\in S,\\, c(s) = k\\}$. Sums representable from one colour class of a 2-colouring."
     },
     {
       "id": "ramsey-2-complete",
       "title": "Ramsey 2-Completeness",
       "startLine": 35,
       "endLine": 42,
-      "summary": "IsRamsey2Complete: every 2-colouring yields a colour class whose subset sums cover all large integers."
+      "summary": "IsRamsey2Complete: every 2-colouring yields a colour class whose subset sums cover all large integers.",
+      "mathContext": "$\\text{IsRamsey2Complete}(A) \\iff \\forall c : A \\to \\{0,1\\},\\, \\exists k,\\, \\exists N_0,\\, \\forall n \\ge N_0: n \\in \\text{monoSubsetSums}(A, c, k)$. Every 2-colouring yields a complete colour class."
     },
     {
       "id": "lower-bound",
       "title": "Burr–Erdős Lower Bound",
       "startLine": 50,
       "endLine": 56,
-      "summary": "No Ramsey 2-complete set grows slower than c(log N)²."
+      "summary": "No Ramsey 2-complete set grows slower than c(log N)².",
+      "mathContext": "$\\exists c > 0: \\text{IsRamsey2Complete}(A) \\implies |A \\cap [1,N]| \\ge c (\\log N)^2$ for all large $N$ (Burr-Erdős, 1985)."
     },
     {
       "id": "upper-bound",
       "title": "Conlon–Fox–Pham Upper Bound",
       "startLine": 58,
       "endLine": 65,
-      "summary": "There exists a Ramsey 2-complete set with |A ∩ [1,N]| ≪ (log N)²."
+      "summary": "There exists a Ramsey 2-complete set with |A ∩ [1,N]| ≪ (log N)².",
+      "mathContext": "$\\exists A \\subseteq \\mathbb{N}: \\text{IsRamsey2Complete}(A) \\wedge |A \\cap [1,N]| \\ll (\\log N)^2$ (Conlon-Fox-Pham, 2021). Matches the lower bound."
     },
     {
       "id": "main-problem",
       "title": "Main Problem (Solved)",
       "startLine": 67,
       "endLine": 79,
-      "summary": "Erdős Problem 54: the minimum growth rate is Θ((log N)²), solved by Conlon–Fox–Pham."
+      "summary": "Erdős Problem 54: the minimum growth rate is Θ((log N)²), solved by Conlon–Fox–Pham.",
+      "mathContext": "$\\Theta((\\log N)^2)$: $\\exists c_1, c_2 > 0$ such that the minimum counting function of a Ramsey 2-complete set satisfies $c_1 (\\log N)^2 \\le f(N) \\le c_2 (\\log N)^2$."
     },
     {
       "id": "earlier-upper",
       "title": "Earlier Upper Bound",
       "startLine": 81,
       "endLine": 87,
-      "summary": "Burr–Erdős (1985) original upper bound (2 log₂ N)³."
+      "summary": "Burr–Erdős (1985) original upper bound (2 log₂ N)³.",
+      "mathContext": "$|A \\cap [1,N]| \\le (2 \\log_2 N)^3$ (Burr-Erdős, 1985). Original cubic upper bound, improved to quadratic by Conlon-Fox-Pham."
     }
   ],
   "conclusion": {

@@ -9,7 +9,13 @@
     "date": "2020",
     "status": "verified",
     "proofRepoPath": "Proofs/Erdos808Problem.lean",
-    "tags": ["erdos", "additive-combinatorics", "sum-product", "graph-theory", "disproved"],
+    "tags": [
+      "erdos",
+      "additive-combinatorics",
+      "sum-product",
+      "graph-theory",
+      "disproved"
+    ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 808,
@@ -17,10 +23,26 @@
     "erdosProblemStatus": "solved",
     "mathlib_version": "v4.x",
     "mathlibDependencies": [
-      { "theorem": "Finset.image", "description": "Image of finite set under function", "module": "Mathlib.Data.Finset.Image" },
-      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "SimpleGraph", "description": "Simple graph structure", "module": "Mathlib.Combinatorics.SimpleGraph.Basic" },
-      { "theorem": "Real.rpow", "description": "Real power function for exponents", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" }
+      {
+        "theorem": "Finset.image",
+        "description": "Image of finite set under function",
+        "module": "Mathlib.Data.Finset.Image"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real power function for exponents",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
     ],
     "originalContributions": [
       "Lean formalization of graph-restricted sumsets and product sets",
@@ -48,49 +70,56 @@
       "title": "Basic Definitions",
       "startLine": 50,
       "endLine": 82,
-      "summary": "Graph-restricted sumset, product set, and edge count"
+      "summary": "Graph-restricted sumset, product set, and edge count",
+      "mathContext": "$A +_G A = \\{a + b : (a,b) \\in E(G)\\}$, $A \\cdot_G A = \\{a \\cdot b : (a,b) \\in E(G)\\}$. Graph-restricted sumset and product set over a bipartite graph $G$ on $A \\times A$."
     },
     {
       "id": "original-conjecture",
       "title": "The Original Conjecture (DISPROVED)",
       "startLine": 83,
       "endLine": 105,
-      "summary": "Statement of the false Erdős-Szemerédi graph conjecture"
+      "summary": "Statement of the false Erdős-Szemerédi graph conjecture",
+      "mathContext": "$|E(G)| \\ge n^{1+c} \\implies \\max(|A +_G A|, |A \\cdot_G A|) \\ge n^{1+c-\\varepsilon}$. Conjectured generalization of the Erdős-Szemerédi sum-product phenomenon to sparse graphs. DISPROVED."
     },
     {
       "id": "counterexample",
       "title": "The Counterexample",
       "startLine": 106,
       "endLine": 134,
-      "summary": "ARS counterexample: n^{5/3} edges → n^{4/3} outputs"
+      "summary": "ARS counterexample: n^{5/3} edges → n^{4/3} outputs",
+      "mathContext": "$\\exists A, G: |E(G)| \\approx n^{5/3},\\, \\max(|A +_G A|, |A \\cdot_G A|) \\approx n^{4/3}$. Alon-Ruzsa-Solymosi (2020): exponent gap $5/3 - 4/3 = 1/3$ refutes the conjecture."
     },
     {
       "id": "positive-result",
       "title": "The Positive Result",
       "startLine": 135,
       "endLine": 159,
-      "summary": "ARS positive bound: max ≥ m^{3/2}/n^{7/4}"
+      "summary": "ARS positive bound: max ≥ m^{3/2}/n^{7/4}",
+      "mathContext": "$\\max(|A +_G A|, |A \\cdot_G A|) \\ge c \\cdot m^{3/2} \\cdot n^{-7/4}$ where $m = |E(G)|$, $n = |A|$. ARS positive bound: more edges do guarantee more outputs."
     },
     {
       "id": "sum-product-connection",
       "title": "Connection to Sum-Product",
       "startLine": 160,
       "endLine": 184,
-      "summary": "Relation to classical sum-product conjecture (Problem 52)"
+      "summary": "Relation to classical sum-product conjecture (Problem 52)",
+      "mathContext": "Classical: $\\max(|A+A|, |A \\cdot A|) \\ge |A|^{2-\\varepsilon}$ (Problem 52, open). Problem 808 is the graph-restricted version. Complete graph case reduces to the classical conjecture."
     },
     {
       "id": "construction-idea",
       "title": "The Construction Idea",
       "startLine": 185,
       "endLine": 208,
-      "summary": "How arithmetic structure enables the counterexample"
+      "summary": "How arithmetic structure enables the counterexample",
+      "mathContext": "Arithmetic progressions satisfy $|A + A| \\le 2|A| - 1$. The ARS counterexample exploits this: structured $A$ allows $n^{5/3}$ edges while $|A +_G A| \\le n^{4/3}$."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 209,
       "endLine": 253,
-      "summary": "Main results and key insight about graph structure"
+      "summary": "Main results and key insight about graph structure",
+      "mathContext": "$\\neg\\text{GraphSumProductConj} \\wedge \\max(|A +_G A|, |A \\cdot_G A|) \\ge c m^{3/2} n^{-7/4}$. Graph structure fundamentally changes sum-product behavior vs the complete graph case."
     }
   ],
   "conclusion": {

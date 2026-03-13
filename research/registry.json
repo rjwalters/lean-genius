@@ -215,8 +215,8 @@
       "phase": "BREAKTHROUGH",
       "path": "full",
       "started": "2026-01-01T05:32:39.476Z",
-      "status": "graduated",
-      "lastUpdate": "2026-03-12T17:29:54.434Z",
+      "status": "blocked",
+      "lastUpdate": "2026-03-13T03:56:04.567Z",
       "completed": "2026-02-07T00:59:53.358Z"
     },
     {
@@ -3754,11 +3754,12 @@
     },
     {
       "slug": "de-moivre-oq-03",
-      "phase": "NEW",
+      "phase": "BREAKTHROUGH",
       "path": "full",
       "started": "2026-02-26T17:08:50.306Z",
-      "status": "active",
-      "lastUpdate": "2026-02-26T17:08:50.306Z"
+      "status": "graduated",
+      "lastUpdate": "2026-03-13T03:56:04.582Z",
+      "completed": "2026-03-13T03:56:04.582Z"
     },
     {
       "slug": "derangements-oq-03",
@@ -3834,11 +3835,12 @@
     },
     {
       "slug": "euler-polyhedral-formula-oq-02",
-      "phase": "NEW",
+      "phase": "BREAKTHROUGH",
       "path": "full",
       "started": "2026-03-06T06:42:42.096Z",
-      "status": "active",
-      "lastUpdate": "2026-03-06T06:42:42.096Z"
+      "status": "graduated",
+      "lastUpdate": "2026-03-13T03:56:04.585Z",
+      "completed": "2026-03-13T03:56:04.585Z"
     },
     {
       "slug": "lebesgue-measure-oq-01",
@@ -4106,11 +4108,12 @@
     },
     {
       "slug": "hilbert-19-oq-03",
-      "phase": "NEW",
+      "phase": "BREAKTHROUGH",
       "path": "full",
       "started": "2026-03-12T05:34:54.574Z",
-      "status": "active",
-      "lastUpdate": "2026-03-12T05:34:54.574Z"
+      "status": "graduated",
+      "lastUpdate": "2026-03-13T03:56:04.587Z",
+      "completed": "2026-03-13T03:56:04.587Z"
     },
     {
       "slug": "lagrange-theorem-oq-03",
@@ -4164,11 +4167,44 @@
     },
     {
       "slug": "randomized-maxcut-oq-01",
-      "phase": "NEW",
+      "phase": "BREAKTHROUGH",
       "path": "full",
       "started": "2026-03-12T05:34:54.574Z",
+      "status": "graduated",
+      "lastUpdate": "2026-03-13T03:56:04.589Z",
+      "completed": "2026-03-13T03:56:04.589Z"
+    },
+    {
+      "slug": "amgm-inequality-oq-02-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-13T03:56:04.572Z",
       "status": "active",
-      "lastUpdate": "2026-03-12T05:34:54.574Z"
+      "lastUpdate": "2026-03-13T03:56:04.572Z"
+    },
+    {
+      "slug": "ballot-problem-oq-01-oq-02",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-13T03:56:04.574Z",
+      "status": "active",
+      "lastUpdate": "2026-03-13T03:56:04.574Z"
+    },
+    {
+      "slug": "bezout-identity-oq-03-oq-01-oq-02",
+      "phase": "NEW",
+      "path": "fast",
+      "started": "2026-03-13T03:56:04.575Z",
+      "status": "active",
+      "lastUpdate": "2026-03-13T03:56:04.575Z"
+    },
+    {
+      "slug": "euler-polyhedral-formula-oq-01-oq-04",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-03-13T03:56:04.585Z",
+      "status": "active",
+      "lastUpdate": "2026-03-13T03:56:04.585Z"
     }
   ],
   "config": {
