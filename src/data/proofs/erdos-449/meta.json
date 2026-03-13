@@ -9,7 +9,13 @@
     "date": "",
     "status": "verified",
     "proofRepoPath": "Proofs/Erdos449Problem.lean",
-    "tags": ["erdos", "number-theory", "divisors", "density", "disproved"],
+    "tags": [
+      "erdos",
+      "number-theory",
+      "divisors",
+      "density",
+      "disproved"
+    ],
     "badge": "mathlib",
     "sorries": 0,
     "erdosNumber": 449,
@@ -17,11 +23,31 @@
     "erdosProblemStatus": "disproved",
     "mathlib_version": "v4.x",
     "mathlibDependencies": [
-      { "theorem": "Nat.divisors", "description": "Set of divisors of a natural number", "module": "Mathlib.Data.Nat.Divisors" },
-      { "theorem": "Finset.card", "description": "Cardinality of finite sets", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Finset.filter", "description": "Filtering finite sets by predicate", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Filter.Tendsto", "description": "Limit definition for filters", "module": "Mathlib.Order.Filter.Basic" },
-      { "theorem": "nhds", "description": "Neighborhood filter for topology", "module": "Mathlib.Topology.Basic" }
+      {
+        "theorem": "Nat.divisors",
+        "description": "Set of divisors of a natural number",
+        "module": "Mathlib.Data.Nat.Divisors"
+      },
+      {
+        "theorem": "Finset.card",
+        "description": "Cardinality of finite sets",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.filter",
+        "description": "Filtering finite sets by predicate",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto",
+        "description": "Limit definition for filters",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "nhds",
+        "description": "Neighborhood filter for topology",
+        "module": "Mathlib.Topology.Basic"
+      }
     ],
     "originalContributions": [
       "Lean formalization of close divisor pair counting function r(n)",
@@ -49,49 +75,56 @@
       "title": "Basic Definitions",
       "startLine": 46,
       "endLine": 72,
-      "summary": "Defines τ(n), close divisor pairs, r(n), and τ⁺(n) functions"
+      "summary": "Defines τ(n), close divisor pairs, r(n), and τ⁺(n) functions",
+      "mathContext": "$\\tau(n) = |\\{d : d \\mid n\\}|$, $r(n) = |\\{(d_1, d_2) : d_1 \\mid n \\wedge d_2 \\mid n \\wedge d_1 < d_2 < 2d_1\\}|$, $\\tau^+(n) = |\\{d : d \\mid n \\wedge d^2 \\le n\\}|$."
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
       "startLine": 74,
       "endLine": 88,
-      "summary": "Formal statement of the (false) conjecture using natural density"
+      "summary": "Formal statement of the (false) conjecture using natural density",
+      "mathContext": "$\\forall \\varepsilon > 0: \\lim_{N \\to \\infty} \\frac{|\\{n \\le N : r(n) \\ge \\varepsilon \\cdot \\tau(n)\\}|}{N} = 0$. Erdős conjectured close divisor pairs are negligible for almost all $n$."
     },
     {
       "id": "disproof",
       "title": "The Disproof",
       "startLine": 90,
       "endLine": 106,
-      "summary": "Statement that the conjecture is false with quantified counterexamples"
+      "summary": "Statement that the conjecture is false with quantified counterexamples",
+      "mathContext": "$\\forall K > 0,\\, \\exists \\delta > 0: \\liminf_{N \\to \\infty} \\frac{|\\{n \\le N : r(n) > K \\cdot \\tau(n)\\}|}{N} \\ge \\delta$. The negation is quantitatively strong."
     },
     {
       "id": "key-inequality",
       "title": "The Key Inequality",
       "startLine": 108,
       "endLine": 129,
-      "summary": "Cauchy-Schwarz inequality for divisors and connection to Problem 448"
+      "summary": "Cauchy-Schwarz inequality for divisors and connection to Problem 448",
+      "mathContext": "$r(n) + \\tau(n) \\ge \\frac{\\tau(n)^2}{\\tau^+(n)}$. Cauchy-Schwarz applied to divisor pairs grouped by the smaller divisor. When $\\tau^+(n) \\ll \\tau(n)$, close pairs dominate."
     },
     {
       "id": "examples",
       "title": "Examples and Small Values",
       "startLine": 131,
       "endLine": 142,
-      "summary": "Concrete example: n=12 with τ(12)=6, r(12)=5"
+      "summary": "Concrete example: n=12 with τ(12)=6, r(12)=5",
+      "mathContext": "$\\tau(12) = 6$, close pairs: $(2,3), (3,4), (3,6), (4,6), (6,12)$, so $r(12) = 5$. Demonstrates $r(n)$ can be close to $\\tau(n)$."
     },
     {
       "id": "related-results",
       "title": "Related Results",
       "startLine": 144,
       "endLine": 158,
-      "summary": "Ford's derivation connecting Problem 448 to the disproof"
+      "summary": "Ford's derivation connecting Problem 448 to the disproof",
+      "mathContext": "From Problem 448: $\\tau(n)/\\tau^+(n)$ can be arbitrarily large on a positive density set. By Cauchy-Schwarz, $r(n) \\ge \\tau(n)^2/\\tau^+(n) - \\tau(n) \\ge K \\cdot \\tau(n)$ for such $n$."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 160,
       "endLine": 176,
-      "summary": "Main theorem combining the negative answer and quantitative bound"
+      "summary": "Main theorem combining the negative answer and quantitative bound",
+      "mathContext": "$\\neg\\text{ErdosConjecture449} \\wedge \\forall K > 0,\\, \\exists \\delta > 0: \\{n : r(n) > K \\cdot \\tau(n)\\}$ has lower density $\\ge \\delta$. The conjecture is false and close pairs can dominate divisor counts."
     }
   ],
   "conclusion": {
