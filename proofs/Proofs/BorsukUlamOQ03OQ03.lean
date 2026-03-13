@@ -745,7 +745,126 @@ theorem projected_diff_antipodal_boundary (f : ℝ × ℝ × ℝ → ℝ × ℝ)
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
-TUCKER ON THE DISK (AXIOMATIC)
+PART XXII: GRID INFRASTRUCTURE
+
+The (2N+1)² grid over [-1,1]², with coordinate mappings, edge definitions,
+boundary detection, and antipodal maps. This is the bridge between
+Tucker's lemma (combinatorial) and the analytical theorems (Parts XX-XXI).
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- Map a grid index i ∈ Fin(2N+1) to the real coordinate (i - N)/N ∈ [-1,1]. -/
+noncomputable def gridCoord (N : ℕ) (hN : N ≥ 1) (i : Fin (2 * N + 1)) : ℝ :=
+  ((i : ℕ) - (N : ℝ)) / N
+
+/-- A grid point is a pair of indices in Fin(2N+1) × Fin(2N+1). -/
+abbrev GridPoint (N : ℕ) := Fin (2 * N + 1) × Fin (2 * N + 1)
+
+/-- Map a grid point to its real coordinates in [-1,1]². -/
+noncomputable def gridToReal (N : ℕ) (hN : N ≥ 1) (p : GridPoint N) : ℝ × ℝ :=
+  (gridCoord N hN p.1, gridCoord N hN p.2)
+
+/-- Two grid points are edge-adjacent if they differ by at most 1 in each
+    coordinate and are not equal. -/
+def gridEdge (N : ℕ) (u v : GridPoint N) : Prop :=
+  u ≠ v ∧
+  ((u.1 : ℕ) - (v.1 : ℕ) ≤ 1 ∧ (v.1 : ℕ) - (u.1 : ℕ) ≤ 1) ∧
+  ((u.2 : ℕ) - (v.2 : ℕ) ≤ 1 ∧ (v.2 : ℕ) - (u.2 : ℕ) ≤ 1)
+
+/-- A grid point is on the boundary if any coordinate is at the extreme value
+    (0 or 2N). -/
+def gridBoundary (N : ℕ) (p : GridPoint N) : Prop :=
+  (p.1 : ℕ) = 0 ∨ (p.1 : ℕ) = 2 * N ∨ (p.2 : ℕ) = 0 ∨ (p.2 : ℕ) = 2 * N
+
+/-- The antipodal map on the grid: (i,j) ↦ (2N-i, 2N-j).
+    This maps the grid point at (x,y) to the one at (-x,-y). -/
+def gridAntipodal (N : ℕ) (p : GridPoint N) : GridPoint N :=
+  (⟨2 * N - (p.1 : ℕ), by omega⟩, ⟨2 * N - (p.2 : ℕ), by omega⟩)
+
+/-- The grid mesh size: distance between adjacent grid points is 1/N. -/
+theorem gridCoord_diff_le (N : ℕ) (hN : N ≥ 1) (i j : Fin (2 * N + 1))
+    (h1 : (i : ℕ) - (j : ℕ) ≤ 1) (h2 : (j : ℕ) - (i : ℕ) ≤ 1) :
+    |gridCoord N hN i - gridCoord N hN j| ≤ 1 / N := by
+  simp only [gridCoord]
+  have hN_pos : (N : ℝ) > 0 := by positivity
+  -- The difference simplifies to ((i:ℝ) - (j:ℝ)) / N
+  have heq : ((i : ℕ) - (N : ℝ)) / N - ((j : ℕ) - N) / N =
+      ((i : ℕ) - (j : ℕ)) / N := by ring
+  rw [heq, abs_div, abs_of_pos hN_pos]
+  apply div_le_div_of_nonneg_right _ (le_of_lt hN_pos)
+  -- |i - j| ≤ 1 as reals
+  rw [abs_le]
+  have : (i : ℤ) - j ≤ 1 := by omega
+  have : (j : ℤ) - i ≤ 1 := by omega
+  have hle : (i : ℤ) - j ≤ 1 := by omega
+  have hge : -1 ≤ (i : ℤ) - j := by omega
+  exact ⟨by exact_mod_cast hge, by exact_mod_cast hle⟩
+
+theorem gridMesh (N : ℕ) (hN : N ≥ 1) :
+    ∀ u v : GridPoint N, gridEdge N u v →
+      dist (gridToReal N hN u) (gridToReal N hN v) ≤ Real.sqrt 2 / N := by
+  sorry -- Needs Prod.dist bound from component bounds + √2 estimate
+
+/-- The antipodal map on the grid corresponds to negation in real coordinates. -/
+theorem gridAntipodal_neg (N : ℕ) (hN : N ≥ 1) (p : GridPoint N) :
+    gridToReal N hN (gridAntipodal N p) =
+      Prod.map Neg.neg Neg.neg (gridToReal N hN p) := by
+  simp only [gridToReal, gridAntipodal, gridCoord, Prod.map]
+  have hN_pos : (N : ℝ) > 0 := by positivity
+  have h1 : (p.1 : ℕ) ≤ 2 * N := by omega
+  have h2 : (p.2 : ℕ) ≤ 2 * N := by omega
+  ext <;> {
+    field_simp
+    rw [Nat.cast_sub (by omega)]
+    push_cast
+    ring
+  }
+
+/-- Grid points on the boundary map to the unit circle (approximately). -/
+theorem gridCoord_zero (N : ℕ) (hN : N ≥ 1) :
+    gridCoord N hN ⟨0, by omega⟩ = -1 := by
+  simp [gridCoord]
+  have : (N : ℝ) ≠ 0 := by positivity
+  field_simp
+
+theorem gridCoord_max (N : ℕ) (hN : N ≥ 1) :
+    gridCoord N hN ⟨2 * N, by omega⟩ = 1 := by
+  simp [gridCoord, Fin.val_mk]
+  have : (N : ℝ) ≠ 0 := by positivity
+  push_cast
+  field_simp
+  ring
+
+theorem gridBoundary_on_circle (N : ℕ) (hN : N ≥ 1) (p : GridPoint N) :
+    gridBoundary N p →
+      let r := gridToReal N hN p
+      |r.1| = 1 ∨ |r.2| = 1 := by
+  intro hb
+  simp only [gridBoundary] at hb
+  simp only [gridToReal]
+  rcases hb with h | h | h | h
+  · left; have : p.1 = ⟨0, by omega⟩ := by ext; exact h
+    rw [this, gridCoord_zero]; simp
+  · left; have : p.1 = ⟨2 * N, by omega⟩ := by ext; exact h
+    rw [this, gridCoord_max]; simp
+  · right; have : p.2 = ⟨0, by omega⟩ := by ext; exact h
+    rw [this, gridCoord_zero]; simp
+  · right; have : p.2 = ⟨2 * N, by omega⟩ := by ext; exact h
+    rw [this, gridCoord_max]; simp
+
+/-- For every point in D², there is a nearby grid point (mesh density). -/
+theorem gridDense (N : ℕ) (hN : N ≥ 1) (x : ℝ × ℝ)
+    (hx : x.1 ^ 2 + x.2 ^ 2 ≤ 1) :
+    ∃ p : GridPoint N, dist (gridToReal N hN p) x ≤ Real.sqrt 2 / N := by
+  sorry -- Pigeonhole: some grid point is within mesh distance
+
+/-- The grid labeling: compose g with gridToReal, then apply dominantComponentLabel. -/
+noncomputable def gridLabel (N : ℕ) (hN : N ≥ 1) (g : ℝ × ℝ → ℝ × ℝ)
+    (p : GridPoint N) (hgp : g (gridToReal N hN p) ≠ 0) : Fin 2 × Bool :=
+  dominantComponentLabel (g (gridToReal N hN p)) hgp
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
+TUCKER ON THE DISK (AXIOMATIC — to be replaced by grid infrastructure above)
 
 Tucker's lemma on grid triangulations of D² gives: for any continuous
 g : D² → ℝ² that is antipodal on ∂D², g has approximate zeros with
@@ -754,7 +873,7 @@ arbitrarily small norm.
 This follows from Tucker's lemma (axiom, Part I) + dominantComponentLabel
 (Part II) + complementary_edge_approx_dominant (Part XX, proved)
 + mesh_refinement_principle (Part XXI, proved)
-+ explicit grid construction (Fintype instantiation, ~200 lines of boilerplate).
++ explicit grid construction (Part XXII above, in progress).
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-- **Tucker on the disk**: Any continuous g : ℝ² → ℝ² that is antipodal
