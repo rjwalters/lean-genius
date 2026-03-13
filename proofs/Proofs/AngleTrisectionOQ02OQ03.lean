@@ -1387,6 +1387,9 @@ theorem chebyshev_T_sub_one_roots (n : ℕ) (hn : 1 ≤ n) (x : ℝ) (hx : |x| �
   have hpi_pos : (0 : ℝ) < Real.pi := Real.pi_pos
   have h_arc_nn : 0 ≤ Real.arccos x := Real.arccos_nonneg x
   have h_arc_le : Real.arccos x ≤ Real.pi := Real.arccos_le_pi x
+  -- Normalize ↑↑n to ↑n in hm for consistent reasoning
+  have hm' : ↑m * (2 * Real.pi) = (↑n : ℝ) * Real.arccos x := by
+    have := hm; push_cast [Int.cast_natCast] at this; linarith
   -- Step 5: m ≥ 0 (from arccos x ≥ 0 and n > 0)
   have hm_nn : 0 ≤ m := by
     by_contra h; push_neg at h
@@ -1396,11 +1399,11 @@ theorem chebyshev_T_sub_one_roots (n : ℕ) (hn : 1 ≤ n) (x : ℝ) (hx : |x| �
   have hm_lt_n : m < ↑n := by
     by_contra h; push_neg at h
     have hm_bound : (↑n : ℝ) ≤ ↑m := by exact_mod_cast h
-    -- m * 2π = n * arccos x ≤ nπ, but m ≥ n → m * 2π ≥ n * 2π > nπ
-    have h1 : ↑m * (2 * Real.pi) ≤ ↑n * Real.pi := by
-      have h2 := hm.symm  -- ↑↑n * arccos x = ↑m * (2 * π)
+    -- From hm': m * 2π = n * arccos x ≤ n * π (since arccos x ≤ π)
+    have h1 : ↑m * (2 * Real.pi) ≤ (↑n : ℝ) * Real.pi := by
       nlinarith [mul_le_mul_of_nonneg_left h_arc_le (le_of_lt hn_pos)]
-    nlinarith [mul_le_mul_of_nonneg_right hm_bound (by linarith : (0 : ℝ) ≤ 2 * Real.pi)]
+    -- But m ≥ n → m * 2π ≥ n * 2π > n * π
+    nlinarith [mul_le_mul_of_nonneg_right hm_bound (show (0 : ℝ) ≤ 2 * Real.pi by linarith)]
   -- Step 7: Convert m to ℕ
   set k := m.toNat with hk_def
   have hk_eq : (↑k : ℤ) = m := Int.toNat_of_nonneg hm_nn
