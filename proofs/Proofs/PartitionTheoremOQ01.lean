@@ -480,4 +480,222 @@ example : (Nat.Partition.odds 5).card = 3 := by native_decide
 #check schurGap
 #check schurMod
 
+-- ============================================================================
+-- Part XII: Extended Computational Verification (n=8,9)
+-- ============================================================================
+
+-- Rogers-Ramanujan First Identity for n=8,9
+example : (rr1Gap 8).card = (rr1Mod5 8).card := by native_decide
+example : (rr1Gap 9).card = (rr1Mod5 9).card := by native_decide
+
+-- Rogers-Ramanujan Second Identity for n=8,9
+example : (rr2Gap 8).card = (rr2Mod5 8).card := by native_decide
+example : (rr2Gap 9).card = (rr2Mod5 9).card := by native_decide
+
+-- Schur's Identity for n=8
+example : (schurGap 8).card = (schurMod 8).card := by native_decide
+-- Note: n=9 fails native_decide - the simplified Schur gap definition
+-- (uniform gap ≥ 3) diverges from the full Schur condition
+-- (gap ≥ 4 when a part ≡ 0 mod 3) starting at n=9.
+
+-- ============================================================================
+-- Part XIII: Strict Containment in the Hierarchy
+-- ============================================================================
+
+/-
+The containment hierarchy Schur gap ⊆ RR1 gap ⊆ distinct is strict.
+We prove this computationally by showing the cardinalities differ.
+-/
+
+/-- At n=5, the containment RR1 gap ⊂ distinct is strict. -/
+theorem rr1_gap_strict_subset_distinct_5 :
+    (rr1Gap 5).card < (Nat.Partition.distincts 5).card := by native_decide
+
+/-- At n=8, the containment Schur gap ⊂ RR1 gap is strict. -/
+theorem schur_gap_strict_subset_rr1_8 :
+    (schurGap 8).card < (rr1Gap 8).card := by native_decide
+
+/-- At n=5, the containment RR2 gap ⊂ RR1 gap is strict. -/
+theorem rr2_gap_strict_subset_rr1_5 :
+    (rr2Gap 5).card < (rr1Gap 5).card := by native_decide
+
+-- ============================================================================
+-- Part XIV: Explicit Partition Counts
+-- ============================================================================
+
+/-
+Named theorems for key partition counts. These serve as ground truth
+for the identities and connect to OEIS sequences.
+-/
+
+/-- RR1 counts (OEIS A003114): 1, 1, 1, 1, 2, 2, 3, 3, 4, 5, ... -/
+theorem rr1_count_0 : (rr1Gap 0).card = 1 := by native_decide
+theorem rr1_count_1 : (rr1Gap 1).card = 1 := by native_decide
+theorem rr1_count_4 : (rr1Gap 4).card = 2 := by native_decide
+theorem rr1_count_6 : (rr1Gap 6).card = 3 := by native_decide
+theorem rr1_count_9 : (rr1Gap 9).card = 5 := by native_decide
+
+/-- Schur gap counts for small n -/
+theorem schur_count_0 : (schurGap 0).card = 1 := by native_decide
+theorem schur_count_1 : (schurGap 1).card = 1 := by native_decide
+theorem schur_count_2 : (schurGap 2).card = 1 := by native_decide
+
+-- ============================================================================
+-- Part XV: Decidable Hierarchy Theorems
+-- ============================================================================
+
+/-- RR2 gap partitions have distinct parts (decidable version). -/
+theorem rr2_gap_implies_distinct (n : ℕ) :
+    rr2Gap n ⊆ Nat.Partition.distincts n := by
+  intro p hp
+  simp only [rr2Gap, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+  simp only [Nat.Partition.distincts, Finset.mem_filter, Finset.mem_univ, true_and]
+  exact hp.1
+
+/-- Schur gap partitions are a subset of distinct partitions (decidable version). -/
+theorem schur_gap_implies_distinct' (n : ℕ) :
+    schurGap n ⊆ Nat.Partition.distincts n := by
+  intro p hp
+  simp only [schurGap, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+  simp only [Nat.Partition.distincts, Finset.mem_filter, Finset.mem_univ, true_and]
+  exact hp.1
+
+/-- Schur mod partitions are a subset of distinct partitions. -/
+theorem schur_mod_implies_distinct (n : ℕ) :
+    schurMod n ⊆ Nat.Partition.distincts n := by
+  intro p hp
+  simp only [schurMod, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+  simp only [Nat.Partition.distincts, Finset.mem_filter, Finset.mem_univ, true_and]
+  exact hp.1
+
+-- ============================================================================
+-- Part XVI: Parity Observations for Mod Partition Sets
+-- ============================================================================
+
+/-- RR1 mod5 parts are always positive. -/
+theorem rr1_mod5_parts_nonzero {n : ℕ} (p : Nat.Partition n)
+    (hp : p ∈ rr1Mod5 n) (a : ℕ) (ha : a ∈ p.parts) : 0 < a :=
+  p.parts_pos ha
+
+/-- RR2 mod5 parts are at least 2 (2 and 3 mod 5 → smallest are 2, 3, 7, 8, ...). -/
+theorem rr2_mod5_parts_ge_two {n : ℕ} (p : Nat.Partition n)
+    (hp : p ∈ rr2Mod5 n) (a : ℕ) (ha : a ∈ p.parts) : 2 ≤ a := by
+  simp only [rr2Mod5, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+  have hmod := hp a ha
+  have hpos := p.parts_pos ha
+  omega
+
+/-- Schur mod parts are coprime to 3 (parts ≡ 1 or 2 mod 3 are never divisible by 3). -/
+theorem schur_mod_parts_coprime_three {n : ℕ} (p : Nat.Partition n)
+    (hp : p ∈ schurMod n) (a : ℕ) (ha : a ∈ p.parts) : ¬ (3 ∣ a) := by
+  simp only [schurMod, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+  have hmod := hp.2 a ha
+  intro ⟨k, hk⟩
+  have : a % 3 = 0 := by omega
+  omega
+
+-- ============================================================================
+-- Part XVII: Corrected Schur Gap Definition
+-- ============================================================================
+
+/-
+The original Schur identity (1926) requires a *strengthened* gap condition:
+consecutive parts differ by ≥ 3, but if either part is ≡ 0 (mod 3),
+they must differ by ≥ 4. The simplified definition (uniform gap ≥ 3)
+is equivalent for n ≤ 8 but diverges at n = 9.
+
+In pairwise form: for distinct parts a, b with a > b:
+  a - b ≥ 3  (always)
+  a - b ≥ 4  (if a % 3 = 0 or b % 3 = 0)
+-/
+
+/-- **Corrected Schur gap condition**: parts pairwise differ by ≥ 3,
+    with strengthened gap ≥ 4 when either part is divisible by 3. -/
+def schurGapFull (n : ℕ) : Finset (Nat.Partition n) :=
+  Finset.univ.filter (fun p =>
+    p.parts.Nodup ∧
+    ∀ a ∈ p.parts, ∀ b ∈ p.parts, a ≠ b →
+      if a % 3 = 0 ∨ b % 3 = 0
+      then (a + 4 ≤ b ∨ b + 4 ≤ a)
+      else (a + 3 ≤ b ∨ b + 3 ≤ a))
+
+/-- The corrected Schur identity holds for n = 9 (unlike the simplified version). -/
+example : (schurGapFull 9).card = (schurMod 9).card := by native_decide
+
+-- Verify the corrected definition agrees with simplified for n ≤ 8
+example : (schurGapFull 0).card = (schurGap 0).card := by native_decide
+example : (schurGapFull 5).card = (schurGap 5).card := by native_decide
+example : (schurGapFull 8).card = (schurGap 8).card := by native_decide
+
+-- The corrected Schur identity verified for n = 0..9
+example : (schurGapFull 0).card = (schurMod 0).card := by native_decide
+example : (schurGapFull 1).card = (schurMod 1).card := by native_decide
+example : (schurGapFull 2).card = (schurMod 2).card := by native_decide
+example : (schurGapFull 3).card = (schurMod 3).card := by native_decide
+example : (schurGapFull 4).card = (schurMod 4).card := by native_decide
+example : (schurGapFull 5).card = (schurMod 5).card := by native_decide
+example : (schurGapFull 6).card = (schurMod 6).card := by native_decide
+example : (schurGapFull 7).card = (schurMod 7).card := by native_decide
+example : (schurGapFull 8).card = (schurMod 8).card := by native_decide
+
+/-- The full Schur gap condition implies the simplified one
+    (gap ≥ 4 when mod 3 = 0 implies gap ≥ 3 always). -/
+theorem schurGapFull_subset_schurGap (n : ℕ) :
+    schurGapFull n ⊆ schurGap n := by
+  intro p hp
+  simp only [schurGapFull, schurGap, Finset.mem_filter, Finset.mem_univ, true_and] at *
+  refine ⟨hp.1, fun a ha b hb hab => ?_⟩
+  have h := hp.2 a ha b hb hab
+  by_cases hmod : a % 3 = 0 ∨ b % 3 = 0
+  · simp only [hmod, ↓reduceIte] at h
+    rcases h with h | h <;> [left; right] <;> omega
+  · simp only [hmod, ↓reduceIte] at h
+    exact h
+
+-- ============================================================================
+-- Part XVIII: Summary
+-- ============================================================================
+
+/-
+## Full File Summary
+
+### Definitions (13):
+  Noncomputable (6): rr1GapPartitions, rr1Mod5Partitions, rr2GapPartitions,
+    rr2Mod5Partitions, schurGapPartitions, schurModPartitions
+  Decidable (7): rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGap, schurMod,
+    schurGapFull (corrected Schur with mod-3 strengthened gap)
+
+### Axioms (3):
+  rogers_ramanujan_first, rogers_ramanujan_second, schur_partition_identity
+
+### Proved Theorems (22):
+  Structural (10): hasMinGap_mono, hasMinGap_ge_one_pairwise_gt,
+    hasMinGap_ge_one_nodup, hasMinGap_two_pairwise_gt,
+    rr1_gap_implies_distinct, rr2_subset_rr1, rr1_gap_subset_distinct,
+    schur_gap_subset_rr1_gap, schur_gap_implies_distinct, schur_nodup_redundant
+  Hierarchy (6): rr1_gap_card_le_distinct, rr2_gap_card_le_rr1,
+    schur_gap_card_le_rr1, rr2_gap_implies_distinct, schur_gap_implies_distinct',
+    schur_mod_implies_distinct
+  Strict containment (3): rr1_gap_strict_subset_distinct_5,
+    schur_gap_strict_subset_rr1_8, rr2_gap_strict_subset_rr1_5
+  Part properties (3): rr1_mod5_parts_nonzero, rr2_mod5_parts_ge_two,
+    schur_mod_parts_coprime_three
+
+### Named Count Theorems (8):
+  rr1_count_0, rr1_count_1, rr1_count_4, rr1_count_6, rr1_count_9,
+  schur_count_0, schur_count_1, schur_count_2
+
+### Computational Verifications (41):
+  RR1 for n=0..9, RR2 for n=0..9, Schur (simplified) for n=0..8
+  Schur (corrected) for n=0..9, plus 3 agreement checks
+
+### Key Finding:
+  The simplified Schur gap definition (uniform gap ≥ 3) diverges from
+  the full Schur identity at n=9. The proper Schur condition requires
+  gap ≥ 4 between parts that are multiples of 3. The corrected definition
+  (schurGapFull) verifies through n=9.
+
+### Sorries: 0
+-/
+
 end PartitionDecidable
