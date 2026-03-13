@@ -19,61 +19,112 @@
     "sorries": 0,
     "erdosNumber": 281,
     "erdosUrl": "https://erdosproblems.com/281",
-    "erdosProblemStatus": "proved"
+    "erdosProblemStatus": "proved",
+    "date": "2026-03-12",
+    "dateAdded": "03/12/26",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_filter_le",
+        "description": "Card of filtered subset ≤ card of original, used for uncoveredCount upper bound",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "div_le_one",
+        "description": "Division bound for density ≤ 1 proof",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formalization of covering systems via CongruenceChoice and IsCoveredByFirst",
+      "12 infrastructure lemmas proved constructively (monotonicity, antitonicity, bounds)",
+      "Easy direction (uniform → full) proved via uncoveredDensity_antitone",
+      "Axiomatization of Davenport–Erdős and Rogers theorems for the hard direction",
+      "Biconditional equivalence combining both directions"
+    ],
+    "references": [
+      {
+        "authors": "Paul Erdős",
+        "title": "Problems and results on combinatorial number theory III",
+        "year": "1980",
+        "venue": "Number Theory Day",
+        "note": "Original problem statement"
+      },
+      {
+        "authors": "Harold Davenport, Paul Erdős",
+        "title": "On sequences of positive integers",
+        "year": "1951",
+        "venue": "Acta Arithmetica",
+        "note": "Lower density = upper density for sets defined by divisibility conditions"
+      },
+      {
+        "authors": "Heini Halberstam, Klaus Roth",
+        "title": "Sequences",
+        "year": "1966",
+        "venue": "Oxford University Press",
+        "note": "Contains Rogers' theorem used in the uniformization step"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "Erdős asked whether the full-covering condition (every congruence class choice leaves a density-0 complement) automatically gives uniform finite approximation. The problem was resolved affirmatively using the Davenport–Erdős theorem on lower density and Rogers' theorem from Halberstam–Roth.",
+    "historicalContext": "Covering systems were introduced by Erdős in the 1950s. A covering system of congruences is a finite set of residue classes whose union is all integers; Erdős conjectured (and it was proved by Hough in 2015) that no covering system exists with all moduli distinct and greater than any given bound. Problem 281 is a density-theoretic variant: Erdős asked in 1980 whether the full-covering condition (every choice of congruence classes leaves density-0 uncovered) automatically gives *uniform* finite approximation. The affirmative resolution uses the Davenport–Erdős theorem (1951) — that upper and lower density coincide for divisibility-defined sets — and Rogers' maximization theorem from Halberstam–Roth's 'Sequences' (1966).",
     "problemStatement": "Let n₁ < n₂ < ⋯ be such that for any choice of classes aᵢ (mod nᵢ), the uncovered integers have density 0. Must there exist, for every ε > 0, a finite k achieving density < ε uniformly over all choices?",
     "proofStrategy": "The formalization defines congruence class assignments, coverage, and uncovered density. It axiomatises the divergence of reciprocals, the coprime special case, and the main theorem that full covering implies uniform finite approximation.",
     "keyInsights": [
       "Full covering implies Σ 1/nᵢ = ∞",
       "For pairwise coprime moduli, divergent reciprocals suffice",
       "The Davenport–Erdős theorem upgrades upper density 0 to a uniform finite bound",
-      "Rogers' theorem provides the maximization step"
+      "Rogers' theorem provides the maximization step",
+      "12 infrastructure lemmas are proved constructively, forming a verified foundation independent of the axiomatized main theorem"
     ]
   },
   "sections": [
     {
-      "id": "congruence-classes",
-      "title": "Congruence Classes and Coverage",
-      "startLine": 24,
-      "endLine": 40,
-      "summary": "Definitions of congruence choices, coverage, and coverage by the first k classes."
+      "id": "core-definitions",
+      "title": "Core Definitions",
+      "startLine": 33,
+      "endLine": 59,
+      "summary": "Defines `CongruenceChoice`, `IsCovered`, `IsCoveredByFirst`, `uncoveredCount`, and `uncoveredDensity`.",
+      "mathContext": "$\\text{uncoveredDensity}(k,N) = \\frac{|\\{m \\in [1,N] : m \\notin \\bigcup_{i<k} a_i \\pmod{n_i}\\}|}{N}$"
     },
     {
-      "id": "uncovered-density",
-      "title": "Counting Uncovered Integers",
-      "startLine": 42,
-      "endLine": 52,
-      "summary": "Count and density of integers not covered by the first k congruence classes."
+      "id": "infrastructure-lemmas",
+      "title": "Proven Infrastructure Lemmas",
+      "startLine": 61,
+      "endLine": 131,
+      "summary": "12 lemmas proved constructively: coverage monotonicity, uncovered count antitonicity, density bounds in $[0,1]$, structural properties of valid/increasing moduli.",
+      "mathContext": "$k_1 \\leq k_2 \\implies \\text{uncoveredDensity}(k_2, N) \\leq \\text{uncoveredDensity}(k_1, N) \\leq 1$"
     },
     {
       "id": "full-covering",
-      "title": "Full Covering Hypothesis",
-      "startLine": 54,
-      "endLine": 66,
-      "summary": "The sequence has full covering: every choice leaves density 0 uncovered. Auxiliary properties of valid moduli."
+      "title": "Full Covering and Structural Predicates",
+      "startLine": 133,
+      "endLine": 152,
+      "summary": "Defines `HasFullCovering`, `IsStrictlyIncreasing`, `ModuliValid`, `PairwiseCoprime`.",
+      "mathContext": "$\\text{HasFullCovering}: \\forall \\text{choice},\\; \\forall \\varepsilon > 0,\\; \\exists N_0,\\; \\forall N \\geq N_0,\\; \\text{density} < \\varepsilon$"
     },
     {
-      "id": "divergence",
-      "title": "Divergence of Reciprocals",
-      "startLine": 68,
-      "endLine": 73,
-      "summary": "Full covering implies Σ 1/nᵢ = ∞."
+      "id": "easy-direction",
+      "title": "Easy Direction (Proved)",
+      "startLine": 154,
+      "endLine": 213,
+      "summary": "Proves `uniform_implies_full` constructively and structural lemmas on moduli growth bounds. The easy direction: uniform → full via quantifier swap and density antitonicity.",
+      "mathContext": "$\\forall\\varepsilon,\\; \\exists k,\\; \\forall\\text{choice}: \\text{density} < \\varepsilon \\implies \\forall\\text{choice},\\; \\forall\\varepsilon: \\text{density} \\to 0$"
     },
     {
-      "id": "coprime-case",
-      "title": "Pairwise Coprime Case",
-      "startLine": 75,
-      "endLine": 86,
-      "summary": "When moduli are pairwise coprime, divergent reciprocals suffice for full covering."
+      "id": "divergence-coprime",
+      "title": "Divergence and Coprime Results",
+      "startLine": 215,
+      "endLine": 230,
+      "summary": "Full covering implies $\\sum 1/n_i = \\infty$. When moduli are pairwise coprime, divergence is also sufficient (by CRT).",
+      "mathContext": "$\\text{HasFullCovering} \\implies \\sum_{i} 1/n_i = \\infty$; coprime + divergence $\\implies$ full covering"
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem (Solved)",
-      "startLine": 88,
-      "endLine": 102,
-      "summary": "Erdős Problem 281: full covering implies uniform finite approximation, proved via Davenport–Erdős and Rogers."
+      "title": "Main Theorem and Equivalence",
+      "startLine": 232,
+      "endLine": 263,
+      "summary": "Erdős Problem 281 statement and axiomatized proof. The biconditional `full_covering_iff_uniform` combines hard (axiom) and easy (proved) directions.",
+      "mathContext": "$\\text{HasFullCovering} \\iff \\text{HasUniformFiniteCoverage}$ for valid strictly increasing moduli"
     }
   ],
   "conclusion": {
