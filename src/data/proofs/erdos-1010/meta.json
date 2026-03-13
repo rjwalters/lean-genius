@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lovász-Simonovits / Nikiforov-Khadzhiivanov",
     "sourceUrl": "https://erdosproblems.com/1010",
-    "date": "1976/1981",
+    "date": "2026-03-13",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos1010Problem.lean",
     "tags": [
@@ -21,55 +21,119 @@
     "sorries": 0,
     "erdosNumber": 1010,
     "erdosUrl": "https://erdosproblems.com/1010",
-    "erdosProblemStatus": "solved"
+    "erdosProblemStatus": "solved",
+    "dateAdded": "2026-01-22",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph definitions, adjacency, and edge sets",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets, filtering, and cardinality",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Fintype",
+        "description": "Finite types and decidable equality",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of turanThreshold and triangleCount",
+      "Axiomatized Rademacher's base case theorem",
+      "Axiomatized Erdős-Lovász-Simonovits supersaturation theorem",
+      "Tightness construction via existential type quantification"
+    ],
+    "references": [
+      {
+        "title": "On a theorem of Rademacher-Turán",
+        "authors": "P. Erdős",
+        "year": 1962,
+        "venue": "Illinois Journal of Mathematics, 6:122–127"
+      },
+      {
+        "title": "On the number of complete subgraphs of a graph II",
+        "authors": "L. Lovász, M. Simonovits",
+        "year": 1976,
+        "venue": "Studies in Pure Mathematics (Turán memorial volume), pp. 459–495"
+      },
+      {
+        "title": "Solution of a problem of P. Erdős about the number of triangles",
+        "authors": "V. Nikiforov, N. Khadzhiivanov",
+        "year": 1981,
+        "venue": "C. R. Acad. Bulgare Sci., 34(7):969–970"
+      },
+      {
+        "title": "On the number of complete subgraphs contained in certain graphs",
+        "authors": "P. Turán",
+        "year": 1941,
+        "venue": "J. Math. Phys., 20:33–38 (in Hungarian; translated 1970)"
+      }
+    ]
   },
   "overview": {
-    "historicalContext": "This problem extends the classical Turán theorem (1941), which established that a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges. Rademacher proved the first supersaturation result: exceeding this threshold by one edge forces at least ⌊n/2⌋ triangles. Erdős asked in 1962 whether adding t edges over the threshold forces t·⌊n/2⌋ triangles, for all t < ⌊n/2⌋.\n\nThe conjecture was proved independently by Lovász and Simonovits (1976) and by Nikiforov and Khadzhiivanov (1981). The Lovász-Simonovits proof was particularly influential: it introduced the 'stability method' for extremal graph theory, showing that graphs close to the Turán bound must structurally resemble the Turán graph K_{⌊n/2⌋,⌈n/2⌉}.\n\nThe result is tight: adding t edges to one part of the Turán graph creates exactly t·⌊n/2⌋ new triangles. This precise quantification of the supersaturation phenomenon has become a foundational result in extremal combinatorics.",
+    "historicalContext": "This problem extends the classical Turán theorem (1941), which established that a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges, achieved uniquely by K_{⌊n/2⌋,⌈n/2⌉}. Rademacher (unpublished, c. 1940s, attributed by Erdős) proved the first supersaturation result: exceeding this threshold by one edge forces at least ⌊n/2⌋ triangles. Erdős [Er62d] extended this to t < cn for a constant c and conjectured the full result for all t < ⌊n/2⌋. The conjecture was proved independently by Lovász-Simonovits (1976), who developed the influential 'stability method' for extremal graph theory, and by Nikiforov-Khadzhiivanov (1981). The stability method shows that graphs close to the Turán bound must structurally resemble the Turán graph, and has since become a fundamental technique in the field.",
     "problemStatement": "Let t < ⌊n/2⌋. Does every graph on n vertices with ⌊n²/4⌋ + t edges contain at least t·⌊n/2⌋ triangles?",
     "proofStrategy": "The problem was solved independently by Lovász-Simonovits (1976) and Nikiforov-Khadzhiivanov (1981). The Lovász-Simonovits proof introduced the influential 'stability method' in extremal graph theory: graphs close to the extremal bound must structurally resemble the extremal example (the Turán graph).",
     "keyInsights": [
       "The Turán graph K_{⌊n/2⌋,⌈n/2⌉} is the unique triangle-free graph with ⌊n²/4⌋ edges",
-      "Supersaturation quantifies how triangles 'explode' beyond the threshold",
-      "The bound t·⌊n/2⌋ is tight: adding t edges to one part of the Turán graph creates exactly this many triangles",
-      "The stability method shows near-extremal graphs must be close to bipartite"
+      "Supersaturation quantifies how triangles 'explode' beyond the threshold — they appear in clusters of ⌊n/2⌋, not individually",
+      "The bound t·⌊n/2⌋ is tight: adding t edges within one part of the Turán graph creates exactly this many triangles",
+      "The stability method shows near-extremal graphs must be structurally close to bipartite, constraining where extra edges can go",
+      "Rademacher's base case (t=1) reveals the fundamental phenomenon: each intra-part edge creates ⌊n/2⌋ triangles by pairing with every vertex in the other part"
     ]
   },
   "sections": [
     {
+      "id": "header",
+      "title": "File Header and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Problem statement, historical background, and Mathlib import.",
+      "mathContext": "Docstring references Erdős [Er62d] (1962), Lovász-Simonovits [LoSi76] (1976), and Nikiforov-Khadzhiivanov [NiKh81] (1981). Imports full `Mathlib`, opens `SimpleGraph` and `Finset` namespaces. Variables: `{V : Type*} [Fintype V] [DecidableEq V]`."
+    },
+    {
       "id": "turan",
-      "title": "Turán Threshold",
-      "summary": "The Turán number ex(n, K₃) = ⌊n²/4⌋ and triangle counting",
+      "title": "Turán Threshold and Triangle Counting",
+      "summary": "Defines turanThreshold(n) = n²/4 and triangleCount via Finset filtering.",
       "startLine": 45,
-      "endLine": 57
+      "endLine": 57,
+      "mathContext": "`turanThreshold(n) := n^2 / 4` (natural number floor division). `triangleCount(G)` filters `Finset.univ` for 3-element subsets with complete adjacency. Each triangle counted once as unordered set."
     },
     {
       "id": "rademacher",
-      "title": "Rademacher's Theorem",
-      "summary": "Base case: one extra edge forces ⌊n/2⌋ triangles",
+      "title": "Rademacher's Theorem (Base Case)",
+      "summary": "One extra edge over Turán forces ⌊n/2⌋ triangles.",
       "startLine": 59,
-      "endLine": 68
+      "endLine": 68,
+      "mathContext": "Axiom: `G.edgeFinset.card = turanThreshold(Fintype.card V) + 1 → triangleCount G ≥ Fintype.card V / 2`. The extra edge connects vertices in the same part, creating one triangle per vertex in the opposite part."
     },
     {
       "id": "main",
       "title": "Main Supersaturation Theorem",
-      "summary": "t extra edges force t·⌊n/2⌋ triangles (Lovász-Simonovits 1976)",
+      "summary": "t extra edges force t·⌊n/2⌋ triangles (Lovász-Simonovits 1976).",
       "startLine": 70,
-      "endLine": 82
+      "endLine": 82,
+      "mathContext": "Axiom with parameter `(t : ℕ)`: `t < Fintype.card V / 2 → G.edgeFinset.card = turanThreshold(Fintype.card V) + t → triangleCount G ≥ t * (Fintype.card V / 2)`. Linear growth for $t < \\lfloor n/2 \\rfloor$."
     },
     {
       "id": "corollaries",
       "title": "Corollaries and Tightness",
-      "summary": "Turán's theorem for K₃ and tightness of the bound",
+      "summary": "Turán's theorem for K₃ and extremal construction showing the bound is sharp.",
       "startLine": 84,
-      "endLine": 107
+      "endLine": 107,
+      "mathContext": "`turán_triangle_existence`: $|E(G)| > \\lfloor n^2/4 \\rfloor \\Rightarrow \\text{triangleCount}(G) \\ge 1$. `erdos_1010_tight`: existential construction $\\exists (V : \\text{Type}),\\ \\exists G$ with exactly $\\lfloor n^2/4 \\rfloor + t$ edges and $t \\cdot \\lfloor n/2 \\rfloor$ triangles."
     }
   ],
   "conclusion": {
-    "summary": "The Erdős-Lovász-Simonovits theorem resolves Problem #1010 affirmatively: for t < ⌊n/2⌋, any graph on n vertices with ⌊n²/4⌋ + t edges contains at least t·⌊n/2⌋ triangles. The bound is tight.",
-    "implications": "This result established the 'supersaturation' paradigm in extremal combinatorics. The stability method developed by Lovász and Simonovits has become a fundamental technique for proving exact results in extremal graph theory.",
+    "summary": "The Erdős-Lovász-Simonovits theorem resolves Problem #1010 affirmatively: for t < ⌊n/2⌋, any graph on n vertices with ⌊n²/4⌋ + t edges contains at least t·⌊n/2⌋ triangles. The bound is tight, achieved by modifying the Turán graph.",
+    "implications": "This result established the 'supersaturation' paradigm in extremal combinatorics. The stability method developed by Lovász and Simonovits has become a fundamental technique for proving exact results in extremal graph theory, later extended to general forbidden subgraphs and hypergraphs.",
     "openQuestions": [
-      "What happens for t ≥ ⌊n/2⌋? The linear relationship breaks down and the problem becomes more subtle.",
-      "Generalizations to counting K_r for r > 3 (Kruskal-Katona type problems)"
+      "What happens for t ≥ ⌊n/2⌋? The linear relationship breaks down and the exact minimum triangle count requires a more complex expression.",
+      "Generalizations to counting K_r for r > 3: the Kruskal-Katona theorem and Razborov's flag algebra methods address these.",
+      "Can the stability method yield effective bounds on how structurally close a near-extremal graph must be to the Turán graph?"
     ]
   }
 }
