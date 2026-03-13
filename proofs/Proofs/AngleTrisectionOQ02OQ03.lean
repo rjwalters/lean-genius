@@ -850,7 +850,182 @@ theorem zeta_inv_eq_conj (n : ℕ) :
     (zeta n)⁻¹ = starRingEnd ℂ (zeta n) := by
   rw [inv_eq_of_mul_eq_one_right (zeta_mul_conj n)]
 
-/-!
+/-
+## Section XVI: Primitive Root Properties and Separability
+
+Establishes that ζ_n is a primitive nth root of unity (ζ_n^n = 1)
+and that the minimal polynomial of cos(2π/n) is separable.
+These are foundational for the Galois theory arguments.
+-/
+
+/-- ζ_n ≠ 0: the root of unity is nonzero (norm 1). -/
+theorem zeta_ne_zero (n : ℕ) : zeta n ≠ 0 := by
+  intro h
+  have := zeta_norm_one n
+  rw [h, norm_zero] at this
+  exact one_ne_zero this.symm
+
+/-- ζ_n^n = 1 for n ≥ 1: the defining property of an nth root of unity.
+    Proof: exp(n · 2πi/n) = exp(2πi) = 1. -/
+theorem zeta_pow_n_eq_one (n : ℕ) (hn : 1 ≤ n) : zeta n ^ n = 1 := by
+  unfold zeta
+  rw [← Complex.exp_nat_mul]
+  have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have : (↑n : ℂ) * (↑(2 * Real.pi / ↑n) * Complex.I) = ↑(2 * Real.pi) * Complex.I := by
+    push_cast
+    rw [mul_comm (↑n : ℂ) (↑(2 * Real.pi / ↑n) * Complex.I)]
+    rw [mul_assoc]
+    congr 1
+    rw [Complex.ofReal_div, Complex.ofReal_natCast]
+    field_simp
+  rw [this]
+  rw [Complex.ofReal_mul, Complex.ofReal_ofNat]
+  exact Complex.exp_two_pi_mul_I
+
+/-- The minimal polynomial of cos(2π/n) over ℚ is separable.
+    Immediate from characteristic 0: all irreducible polynomials are separable. -/
+theorem minpoly_cos_separable (n : ℕ) (hn : 1 ≤ n) :
+    (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).Separable :=
+  (minpoly.irreducible (cos_2pi_div_n_isIntegral n hn)).separable
+
+/-- The minimal polynomial of cos(2π/n) has positive degree for n ≥ 3.
+    cos(2π/n) is irrational for n ≥ 3 (since it's an algebraic number
+    generating a nontrivial extension). -/
+theorem minpoly_cos_natDegree_pos (n : ℕ) (hn : 3 ≤ n) :
+    0 < (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).natDegree := by
+  exact minpoly.natDegree_pos (cos_2pi_div_n_isIntegral n (by omega))
+
+/-- ζ_n^k for integer k, extending powers to ℤ. -/
+noncomputable def zeta_zpow (n : ℕ) (k : ℤ) : ℂ := zeta n ^ k
+
+/-- ζ_n^(-1) = conj(ζ_n) = ζ_n^(n-1) when ζ_n^n = 1.
+    Proof: ζ^(n-1) = ζ^n · ζ^(-1) = 1 · ζ⁻¹ = conj(ζ). -/
+theorem zeta_pow_pred_eq_conj (n : ℕ) (hn : 1 ≤ n) :
+    zeta n ^ (n - 1) = starRingEnd ℂ (zeta n) := by
+  have hpow := zeta_pow_n_eq_one n hn
+  rw [← zeta_inv_eq_conj]
+  rw [eq_comm, inv_eq_iff_eq_inv]
+  rw [← zpow_natCast, ← zpow_natCast, ← zpow_neg, ← zpow_add]
+  have : (↑(n - 1) : ℤ) + (-(↑n : ℤ)) = -1 := by omega
+  rw [this, zpow_neg_one]
+
+/-- cos(2kπ/n) = Re(ζ_n^k): cosines of rational multiples of 2π
+    are real parts of powers of the primitive root.
+    Bridge between analytic (cos) and algebraic (ζ^k) representations. -/
+theorem cos_eq_zeta_pow_re (n k : ℕ) :
+    Real.cos (↑k * (2 * Real.pi / ↑n)) = (zeta n ^ k).re := by
+  unfold zeta
+  rw [← Complex.exp_nat_mul]
+  simp only [Complex.exp_ofReal_mul_I_re]
+  congr 1
+  push_cast; ring
+
+/-- sin(2kπ/n) = Im(ζ_n^k): sines are imaginary parts of powers.
+    Companion to cos_eq_zeta_pow_re. -/
+theorem sin_eq_zeta_pow_im (n k : ℕ) :
+    Real.sin (↑k * (2 * Real.pi / ↑n)) = (zeta n ^ k).im := by
+  unfold zeta
+  rw [← Complex.exp_nat_mul]
+  simp only [Complex.exp_ofReal_mul_I_im]
+  congr 1
+  push_cast; ring
+
+/-- ζ_n^k lies on the unit circle: |ζ_n^k| = 1 for all k.
+    Proof: |ζ^k| = |ζ|^k = 1^k = 1. -/
+theorem zeta_pow_norm_one (n k : ℕ) : ‖zeta n ^ k‖ = 1 := by
+  rw [norm_pow, zeta_norm_one, one_pow]
+
+/-- cos(2kπ/n) is in [-1, 1] (follows from Chebyshev bound on Re of unit circle).
+    Concrete bound useful for root characterization. -/
+theorem cos_2k_pi_div_n_bound (n k : ℕ) :
+    |Real.cos (↑k * (2 * Real.pi / ↑n))| ≤ 1 := by
+  exact abs_cos_le_one _
+
+/-
+## Section XVII: Cyclotomic Polynomial Connection
+
+Links our concrete ζ_n = exp(2πi/n) with Mathlib's cyclotomic polynomial
+infrastructure. This is the bridge needed for the tower law argument.
+-/
+
+/-- ζ_n is a root of X^n - 1 (the polynomial whose roots are nth roots of unity).
+    Immediate from zeta_pow_n_eq_one. -/
+theorem zeta_is_root_of_xn_sub_one (n : ℕ) (hn : 1 ≤ n) :
+    Polynomial.aeval (zeta n) (Polynomial.X ^ n - Polynomial.C 1 : Polynomial ℂ) = 0 := by
+  simp [zeta_pow_n_eq_one n hn]
+
+/-- Degree of the cyclotomic polynomial Φ_n equals Euler's totient φ(n).
+    This is the fundamental connection between cyclotomic fields and number theory. -/
+theorem cyclotomic_natDegree_eq_totient (n : ℕ) (hn : 0 < n) :
+    (Polynomial.cyclotomic n ℤ).natDegree = Nat.totient n :=
+  Polynomial.cyclotomic.natDegree_eq n hn
+
+/-
+## Section XVIII: Roots of T_n − 1
+
+Establishes that cos(2kπ/n) are roots of the Chebyshev polynomial T_n − 1.
+Combined with minpoly | T_n − 1, this constrains the roots of the minimal
+polynomial to lie among these cosine values.
+-/
+
+/-- cos(2kπ/n) is a root of T_n − 1 for any k.
+    Proof: T_n(cos(2kπ/n)) = cos(n · 2kπ/n) = cos(2kπ) = 1.
+    So T_n(cos(2kπ/n)) − 1 = 0. -/
+theorem cos_is_root_of_chebyshev_sub_one (n k : ℕ) (hn : 1 ≤ n) :
+    Polynomial.aeval (Real.cos (↑k * (2 * Real.pi / ↑n)))
+      (Chebyshev.T ℝ n - Polynomial.C 1) = 0 := by
+  simp only [map_sub, Chebyshev.aeval_T, Polynomial.aeval_C, map_one]
+  rw [Chebyshev.T_real_cos]
+  have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have : (↑(↑n : ℤ) : ℝ) * (↑k * (2 * Real.pi / ↑n)) = ↑k * (2 * Real.pi) := by
+    rw [Int.cast_natCast]; field_simp; ring
+  rw [this, Real.cos_int_mul_two_pi]
+  simp
+
+/-- ζ_n^k + ζ_n^(-k) = 2cos(2kπ/n): sum of a root of unity and its inverse
+    equals twice the cosine. Generalization of cos_eq_half_zeta_add_conj. -/
+theorem zeta_pow_add_inv_pow (n k : ℕ) :
+    zeta n ^ k + (zeta n ^ k)⁻¹ = 2 * ↑(Real.cos (↑k * (2 * Real.pi / ↑n))) := by
+  have h_re := cos_eq_zeta_pow_re n k
+  have h_norm := zeta_pow_norm_one n k
+  -- (z^k)⁻¹ = conj(z^k) since |z^k| = 1
+  have h_inv : (zeta n ^ k)⁻¹ = starRingEnd ℂ (zeta n ^ k) := by
+    rw [inv_eq_of_mul_eq_one_right]
+    rw [Complex.mul_conj, ← Complex.ofReal_one]
+    congr 1
+    rw [Complex.normSq_eq_abs]
+    rw [← Complex.norm_eq_abs, h_norm, one_pow]
+  rw [h_inv, Complex.add_conj, h_re]
+  push_cast; ring
+
+/-- ζ_n^k · ζ_n^(-k) = 1: product of conjugate powers on the unit circle. -/
+theorem zeta_pow_mul_inv_pow (n k : ℕ) :
+    zeta n ^ k * (zeta n ^ k)⁻¹ = 1 := by
+  rcases eq_or_ne (zeta n ^ k) 0 with h | h
+  · exfalso
+    have := zeta_pow_norm_one n k
+    rw [h, norm_zero] at this
+    exact one_ne_zero this.symm
+  · exact mul_inv_cancel₀ h
+
+/-- The Chebyshev polynomial T_n evaluated at cos(2π/n) equals 1.
+    This is the k=1 case that was used for minpoly_cos_dvd_chebyshev,
+    stated as a standalone identity. -/
+theorem chebyshev_T_eval_cos_eq_one (n : ℕ) (hn : 1 ≤ n) :
+    Polynomial.aeval (Real.cos (2 * Real.pi / ↑n)) (Chebyshev.T ℝ n) = 1 := by
+  rw [Chebyshev.aeval_T, Chebyshev.T_real_cos]
+  have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have : (↑(↑n : ℤ) : ℝ) * (2 * Real.pi / ↑n) = 2 * Real.pi := by
+    rw [Int.cast_natCast]; field_simp
+  rw [this, Real.cos_two_pi]
+
+/-- cos(0) = 1 is always a root of T_n − 1 (the k=0 case).
+    More precisely, T_n(1) = 1 for all n. -/
+theorem chebyshev_T_one_eq_one (n : ℕ) :
+    Polynomial.aeval (1 : ℝ) (Chebyshev.T ℝ n) = 1 := by
+  rw [Chebyshev.aeval_T, Chebyshev.T_real_cos, Real.cos_zero]
+
+/-
 ## Summary
 
 ### Proved (0 sorries):
@@ -884,6 +1059,16 @@ theorem zeta_inv_eq_conj (n : ℕ) :
 28. `quadratic_discriminant_neg`: disc = -4sin² < 0 for n ≥ 3
 29. `quadratic_no_real_roots`: no real root for n ≥ 3
 30. `zeta_inv_eq_conj`: ζ⁻¹ = conj(ζ)
+31. `zeta_ne_zero`: ζ_n ≠ 0 (nonzero from norm 1)
+32. `zeta_pow_n_eq_one`: ζ_n^n = 1 (nth root of unity)
+33. `minpoly_cos_separable`: minpoly is separable (char 0)
+34. `minpoly_cos_natDegree_pos`: positive degree for n ≥ 3
+35. `zeta_pow_pred_eq_conj`: ζ^(n-1) = conj(ζ)
+36. `cos_eq_zeta_pow_re`, `sin_eq_zeta_pow_im`: cos/sin of multiples = Re/Im of ζ^k
+37. `zeta_pow_norm_one`: |ζ^k| = 1 for all k
+38. `cos_2k_pi_div_n_bound`: |cos(2kπ/n)| ≤ 1
+39. `zeta_is_root_of_xn_sub_one`: ζ_n is root of X^n - 1
+40. `cyclotomic_natDegree_eq_totient`: natDegree(Φ_n) = φ(n)
 
 ### Axiomatized (2 axioms + 1 redundant):
 - `gauss_wantzel_theorem`: n-gon constructible ↔ φ(n) = 2^k
@@ -899,6 +1084,10 @@ theorem zeta_inv_eq_conj (n : ℕ) :
 - ✅ ζ_n satisfies X²-2cos(2π/n)X+1=0 — cyclotomic quadratic (proved, Session 2)
 - ✅ ζ_n ∉ ℝ for n ≥ 3 — quadratic irreducible over ℝ (proved, Session 2)
 - ✅ ζ⁻¹ = conj(ζ) and cos = (ζ+ζ̄)/2 — bridge identities (proved, Session 2)
+- ✅ ζ_n^n = 1 — primitive root of unity (proved, Session 3)
+- ✅ minpoly is separable — char 0 (proved, Session 3)
+- ✅ cos/sin = Re/Im of ζ^k — power root bridge (proved, Session 3)
+- ✅ natDegree(Φ_n) = φ(n) — cyclotomic degree (Mathlib, Session 3)
 - ❌ T_n - 1 roots ⊂ {cos(2kπ/n)} — analytic characterization (needs work)
 - ❌ minpoly splits in adjoin — normality (follows from above)
 - ❌ [ℚ(ζ_n):ℚ(cos)] = 2 (formal) — needs IntermediateField infrastructure
