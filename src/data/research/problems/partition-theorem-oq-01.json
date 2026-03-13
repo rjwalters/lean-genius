@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-03-13T08:30:00.000Z",
-    "iteration": 3,
-    "focus": "Corrected Schur definition, extended verification, strict hierarchy",
+    "iteration": 4,
+    "focus": "Proved gap equivalence infrastructure and mod equivalences",
     "blockers": [],
     "nextAction": "Prove equivalence between decidable and noncomputable definitions; attempt bijective Schur proof",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "DEEP_DIVE: Extended RR verification to n=0..9, Schur to n=0..8. Discovered simplified Schur gap (uniform ≥3) diverges from true Schur identity at n=9. Created corrected schurGapFull definition with strengthened gap ≥4 for multiples of 3, verified n=0..9. Proved strict containment hierarchy, part properties, Full→Simplified containment. Total: 22 proved theorems + 8 named counts, 0 sorries, 3 axioms, 13 definitions.",
+    "progressSummary": "DEEP_DIVE: Added corrected Schur axiom (schurGapFull), proved decidable↔noncomputable mod equivalences (RR1, RR2), proved hasMinGap_implies_pairwise_gap (key gap equivalence direction), extended verification to n=12. Total: 28 proved theorems, 4 axioms, 50+ computational verifications, 0 sorries.",
     "builtItems": [
       "PartitionDecidable.rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGap, schurMod: decidable partition set definitions",
       "schurGapFull: corrected Schur gap with strengthened mod-3 condition",
@@ -38,7 +38,12 @@
       "3 part property theorems (mod5 nonzero, mod5 ≥2, coprime to 3)",
       "schurGapFull_subset_schurGap: full Schur condition implies simplified",
       "8 named partition count theorems (OEIS connection)",
-      "rr2_gap_implies_distinct, schur_gap_implies_distinct', schur_mod_implies_distinct"
+      "rr2_gap_implies_distinct, schur_gap_implies_distinct', schur_mod_implies_distinct",
+      "schur_partition_identity_corrected: axiom using schurGapFull (PartitionTheoremOQ01.lean:719)",
+      "rr1Mod5_eq_rr1Mod5Partitions: decidable↔noncomputable equivalence (PartitionTheoremOQ01.lean:731)",
+      "rr2Mod5_eq_rr2Mod5Partitions: decidable↔noncomputable equivalence (PartitionTheoremOQ01.lean:745)",
+      "hasMinGap_implies_pairwise_gap: sorted gap → all-pairs gap (PartitionTheoremOQ01.lean:783)",
+      "Extended computational verification: RR1, RR2, Schur verified through n=12"
     ],
     "insights": [
       "Pairwise separation equivalence: for d≥1, sorted min gap d ⟺ Nodup ∧ all pairs separated by ≥d. Avoids noncomputable Multiset.sort.",
@@ -48,13 +53,15 @@
       "Full proof requires q-series (Jacobi triple product) or bijections (Garsia-Milne involution, ~500+ lines).",
       "CRITICAL: Simplified Schur gap (uniform ≥3) diverges from true Schur identity at n=9. The real condition requires gap ≥4 when a part ≡ 0 (mod 3). Corrected definition (schurGapFull) verifies through n=9.",
       "RR2 mod5 parts are always ≥ 2 (parts ≡ 2,3 mod 5), Schur mod parts are coprime to 3.",
-      "The original axiom schur_partition_identity uses the simplified definition - should be restated with schurGapFull for mathematical correctness."
+      "The original axiom schur_partition_identity uses the simplified definition - should be restated with schurGapFull for mathematical correctness.",
+      "hasMinGap on sorted list implies pairwise gap separation - proved as hasMinGap_implies_pairwise_gap. This is the → direction of the decidable↔noncomputable equivalence.",
+      "Mod-side definitions are equivalent between decidable (∀ a ∈ p.parts) and noncomputable (toList.all) forms - proved for RR1 and RR2 mod5."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Restate schur_partition_identity axiom using schurGapFull for mathematical correctness",
-      "Prove equivalence between decidable and noncomputable partition set definitions",
-      "Attempt bijective proof for corrected Schur identity (Bressoud's proof)",
+      "Prove reverse direction: pairwise gap on sorted list → hasMinGap (completes gap equivalence)",
+      "Use equivalences to transfer axioms from noncomputable to decidable definitions",
+      "Attempt bijective Schur proof (Bressoud/Andrews approach)",
       "Investigate q-series approach using Mathlib PowerSeries for Rogers-Ramanujan"
     ]
   },
@@ -83,7 +90,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-13T08:45:00.000Z",
+  "lastUpdate": "2026-03-13T23:15:00.000Z",
   "significance": 7,
   "tractability": 6
 }

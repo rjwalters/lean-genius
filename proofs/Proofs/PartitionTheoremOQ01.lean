@@ -928,4 +928,147 @@ theorem decidable_gap_sorted_implies_hasMinGap
 ### Sorries: 0
 -/
 
+-- ============================================================================
+-- Part XIX: Corrected Schur Identity Axiom
+-- ============================================================================
+
+/-
+The original axiom `schur_partition_identity` uses the simplified gap ≥ 3
+definition, which is incorrect at n ≥ 9. Here we state the mathematically
+correct version using `schurGapFull`.
+-/
+
+/-- **Schur's Partition Identity (Corrected)**: The number of partitions of n
+    into parts with gap ≥ 3 (strengthened to ≥ 4 for multiples of 3) equals
+    the number of partitions into distinct parts ≡ ±1 (mod 3). -/
+axiom schur_partition_identity_corrected (n : ℕ) :
+    (schurGapFull n).card = (schurMod n).card
+
+-- ============================================================================
+-- Part XX: Equivalence Between Decidable and Noncomputable Mod Definitions
+-- ============================================================================
+
+/-
+The mod-side definitions (rr1Mod5, rr2Mod5, schurMod) use `∀ a ∈ p.parts`,
+while the noncomputable versions (rr1Mod5Partitions, rr2Mod5Partitions,
+schurModPartitions) use `p.parts.toList.all`. These are equivalent because
+`List.all` on `toList` is just the decidable version of `∀ a ∈ p.parts`.
+-/
+
+/-- RR1 mod5 equivalence: decidable ↔ noncomputable. -/
+theorem rr1Mod5_eq_rr1Mod5Partitions (n : ℕ) :
+    rr1Mod5 n = RogersRamanujan.rr1Mod5Partitions n := by
+  ext p
+  simp only [rr1Mod5, RogersRamanujan.rr1Mod5Partitions, Finset.mem_filter,
+    Finset.mem_univ, true_and, RogersRamanujan.partAllModIn]
+  constructor
+  · intro h
+    rw [List.all_eq_true]
+    intro x hx
+    simp only [List.mem_cons, List.mem_singleton, decide_eq_true_eq]
+    rw [Multiset.mem_toList] at hx
+    exact h x hx
+  · intro h x hx
+    have := List.all_eq_true.mp h x (Multiset.mem_toList.mpr hx)
+    simp only [List.mem_cons, List.mem_singleton, decide_eq_true_eq] at this
+    exact this
+
+/-- RR2 mod5 equivalence: decidable ↔ noncomputable. -/
+theorem rr2Mod5_eq_rr2Mod5Partitions (n : ℕ) :
+    rr2Mod5 n = RogersRamanujan.rr2Mod5Partitions n := by
+  ext p
+  simp only [rr2Mod5, RogersRamanujan.rr2Mod5Partitions, Finset.mem_filter,
+    Finset.mem_univ, true_and, RogersRamanujan.partAllModIn]
+  constructor
+  · intro h
+    rw [List.all_eq_true]
+    intro x hx
+    simp only [List.mem_cons, List.mem_singleton, decide_eq_true_eq]
+    rw [Multiset.mem_toList] at hx
+    exact h x hx
+  · intro h x hx
+    have := List.all_eq_true.mp h x (Multiset.mem_toList.mpr hx)
+    simp only [List.mem_cons, List.mem_singleton, decide_eq_true_eq] at this
+    exact this
+
+-- ============================================================================
+-- Part XXI: Extended Verification (n=10..12)
+-- ============================================================================
+
+-- Rogers-Ramanujan First Identity for n=10,11,12
+example : (rr1Gap 10).card = (rr1Mod5 10).card := by native_decide
+example : (rr1Gap 11).card = (rr1Mod5 11).card := by native_decide
+example : (rr1Gap 12).card = (rr1Mod5 12).card := by native_decide
+
+-- Rogers-Ramanujan Second Identity for n=10,11,12
+example : (rr2Gap 10).card = (rr2Mod5 10).card := by native_decide
+example : (rr2Gap 11).card = (rr2Mod5 11).card := by native_decide
+example : (rr2Gap 12).card = (rr2Mod5 12).card := by native_decide
+
+-- Corrected Schur Identity for n=10,11,12
+example : (schurGapFull 10).card = (schurMod 10).card := by native_decide
+example : (schurGapFull 11).card = (schurMod 11).card := by native_decide
+example : (schurGapFull 12).card = (schurMod 12).card := by native_decide
+
+-- Named count for n=10 (OEIS A003114)
+theorem rr1_count_10 : (rr1Gap 10).card = 6 := by native_decide
+
+-- ============================================================================
+-- Part XXII: Gap Equivalence Infrastructure
+-- ============================================================================
+
+/-
+To prove the gap-side equivalences (decidable pairwise ↔ noncomputable
+sorted hasMinGap), we need the key lemma: for a sorted decreasing list l,
+`hasMinGap l d = true` ↔ `l.Nodup ∧ ∀ a ∈ l, ∀ b ∈ l, a ≠ b → (a+d ≤ b ∨ b+d ≤ a)`.
+
+The → direction (hasMinGap implies pairwise gap) is proved below.
+The ← direction (pairwise gap on a sorted list implies consecutive gap)
+requires showing that the minimum gap among all pairs occurs between
+consecutive elements in a sorted list.
+-/
+
+/-- hasMinGap implies the pairwise gap condition for elements in the list. -/
+theorem hasMinGap_implies_pairwise_gap {l : List ℕ} {d : ℕ}
+    (h : hasMinGap l d = true) :
+    ∀ a ∈ l, ∀ b ∈ l, a ≠ b → (a + d ≤ b ∨ b + d ≤ a) := by
+  intro a ha b hb hab
+  by_cases hd : d = 0
+  · subst hd; omega
+  · have hd1 : 1 ≤ d := by omega
+    have hsorted := hasMinGap_ge_one_pairwise_gt l d hd1 h
+    induction l with
+    | nil => exact absurd ha (List.not_mem_nil _)
+    | cons x xs ih =>
+      simp only [hasMinGap] at h
+      match xs, h with
+      | [], _ =>
+        simp only [List.mem_singleton] at ha hb
+        subst ha; subst hb; exact absurd rfl hab
+      | y :: ys, h =>
+        simp only [Bool.and_eq_true, decide_eq_true_eq] at h
+        have htail := h.2
+        have hsorted_tail := (List.pairwise_cons.mp hsorted).2
+        have hx_gt_all := (List.pairwise_cons.mp hsorted).1
+        rcases List.mem_cons.mp ha with rfl | ha'
+        · rcases List.mem_cons.mp hb with rfl | hb'
+          · exact absurd rfl hab
+          · left
+            rcases List.mem_cons.mp hb' with rfl | hb''
+            · omega
+            · have hyb := (List.pairwise_cons.mp hsorted_tail).1 b hb''
+              omega
+        · rcases List.mem_cons.mp hb with rfl | hb'
+          · right
+            rcases List.mem_cons.mp ha' with rfl | ha''
+            · omega
+            · have hya := (List.pairwise_cons.mp hsorted_tail).1 a ha''
+              omega
+          · exact ih htail hsorted_tail ha' hb' hab
+
+/-- hasMinGap with d ≥ 1 implies Nodup (re-exported for gap equivalence). -/
+theorem hasMinGap_implies_nodup {l : List ℕ} {d : ℕ} (hd : 1 ≤ d)
+    (h : hasMinGap l d = true) : l.Nodup :=
+  hasMinGap_ge_one_nodup l d hd h
+
 end PartitionDecidable
