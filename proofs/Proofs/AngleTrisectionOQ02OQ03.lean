@@ -23,7 +23,7 @@
     The first new polygon construction since antiquity. Determined his career choice.
   - Wantzel (1837): Proved the converse — non-constructibility when φ(n) ≠ 2^k.
 
-  File summary: 55+ proved theorems, 0 sorries, 3 axioms.
+  File summary: 62+ proved theorems, 0 sorries, 3 axioms.
   Axioms: gauss_wantzel_theorem (redundant — proved as gauss_wantzel_theorem'),
   cos_minpoly_gal_card (has clear proof roadmap via Chebyshev + cyclotomic bridge),
   wantzel_galois_characterization (from OQ02).
@@ -870,17 +870,10 @@ theorem zeta_ne_zero (n : ℕ) : zeta n ≠ 0 := by
 theorem zeta_pow_n_eq_one (n : ℕ) (hn : 1 ≤ n) : zeta n ^ n = 1 := by
   unfold zeta
   rw [← Complex.exp_nat_mul]
-  have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-  have : (↑n : ℂ) * (↑(2 * Real.pi / ↑n) * Complex.I) = ↑(2 * Real.pi) * Complex.I := by
-    push_cast
-    rw [mul_comm (↑n : ℂ) (↑(2 * Real.pi / ↑n) * Complex.I)]
-    rw [mul_assoc]
-    congr 1
-    rw [Complex.ofReal_div, Complex.ofReal_natCast]
-    field_simp
-  rw [this]
-  rw [Complex.ofReal_mul, Complex.ofReal_ofNat]
-  exact Complex.exp_two_pi_mul_I
+  have hn_c : (↑n : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have : (↑n : ℂ) * (↑(2 * Real.pi / ↑n) * Complex.I) =
+    2 * ↑Real.pi * Complex.I := by push_cast; field_simp
+  rw [this]; exact Complex.exp_two_pi_mul_I
 
 /-- The minimal polynomial of cos(2π/n) over ℚ is separable.
     Immediate from characteristic 0: all irreducible polynomials are separable. -/
@@ -902,12 +895,14 @@ noncomputable def zeta_zpow (n : ℕ) (k : ℤ) : ℂ := zeta n ^ k
     Proof: ζ^(n-1) = ζ^n · ζ^(-1) = 1 · ζ⁻¹ = conj(ζ). -/
 theorem zeta_pow_pred_eq_conj (n : ℕ) (hn : 1 ≤ n) :
     zeta n ^ (n - 1) = starRingEnd ℂ (zeta n) := by
-  have hpow := zeta_pow_n_eq_one n hn
   rw [← zeta_inv_eq_conj]
-  rw [eq_comm, inv_eq_iff_eq_inv]
-  rw [← zpow_natCast, ← zpow_natCast, ← zpow_neg, ← zpow_add]
-  have : (↑(n - 1) : ℤ) + (-(↑n : ℤ)) = -1 := by omega
-  rw [this, zpow_neg_one]
+  symm
+  apply inv_eq_of_mul_eq_one_right
+  calc zeta n * zeta n ^ (n - 1)
+      = zeta n ^ 1 * zeta n ^ (n - 1) := by rw [pow_one]
+    _ = zeta n ^ (1 + (n - 1)) := (pow_add _ _ _).symm
+    _ = zeta n ^ n := by congr 1; omega
+    _ = 1 := zeta_pow_n_eq_one n hn
 
 /-- cos(2kπ/n) = Re(ζ_n^k): cosines of rational multiples of 2π
     are real parts of powers of the primitive root.
@@ -916,9 +911,9 @@ theorem cos_eq_zeta_pow_re (n k : ℕ) :
     Real.cos (↑k * (2 * Real.pi / ↑n)) = (zeta n ^ k).re := by
   unfold zeta
   rw [← Complex.exp_nat_mul]
-  simp only [Complex.exp_ofReal_mul_I_re]
-  congr 1
-  push_cast; ring
+  have h : (↑k : ℂ) * (↑(2 * Real.pi / ↑n) * Complex.I) =
+    ↑(↑k * (2 * Real.pi / ↑n)) * Complex.I := by push_cast; ring
+  rw [h, Complex.exp_ofReal_mul_I_re]
 
 /-- sin(2kπ/n) = Im(ζ_n^k): sines are imaginary parts of powers.
     Companion to cos_eq_zeta_pow_re. -/
@@ -926,9 +921,9 @@ theorem sin_eq_zeta_pow_im (n k : ℕ) :
     Real.sin (↑k * (2 * Real.pi / ↑n)) = (zeta n ^ k).im := by
   unfold zeta
   rw [← Complex.exp_nat_mul]
-  simp only [Complex.exp_ofReal_mul_I_im]
-  congr 1
-  push_cast; ring
+  have h : (↑k : ℂ) * (↑(2 * Real.pi / ↑n) * Complex.I) =
+    ↑(↑k * (2 * Real.pi / ↑n)) * Complex.I := by push_cast; ring
+  rw [h, Complex.exp_ofReal_mul_I_im]
 
 /-- ζ_n^k lies on the unit circle: |ζ_n^k| = 1 for all k.
     Proof: |ζ^k| = |ζ|^k = 1^k = 1. -/
@@ -939,7 +934,7 @@ theorem zeta_pow_norm_one (n k : ℕ) : ‖zeta n ^ k‖ = 1 := by
     Concrete bound useful for root characterization. -/
 theorem cos_2k_pi_div_n_bound (n k : ℕ) :
     |Real.cos (↑k * (2 * Real.pi / ↑n))| ≤ 1 := by
-  exact abs_cos_le_one _
+  exact Real.abs_cos_le_one _
 
 /-
 ## Section XVII: Cyclotomic Polynomial Connection
@@ -956,9 +951,9 @@ theorem zeta_is_root_of_xn_sub_one (n : ℕ) (hn : 1 ≤ n) :
 
 /-- Degree of the cyclotomic polynomial Φ_n equals Euler's totient φ(n).
     This is the fundamental connection between cyclotomic fields and number theory. -/
-theorem cyclotomic_natDegree_eq_totient (n : ℕ) (hn : 0 < n) :
+theorem cyclotomic_natDegree_eq_totient (n : ℕ) :
     (Polynomial.cyclotomic n ℤ).natDegree = Nat.totient n :=
-  Polynomial.cyclotomic.natDegree_eq n hn
+  Polynomial.natDegree_cyclotomic n ℤ
 
 /-
 ## Section XVIII: Roots of T_n − 1
@@ -974,12 +969,14 @@ polynomial to lie among these cosine values.
 theorem cos_is_root_of_chebyshev_sub_one (n k : ℕ) (hn : 1 ≤ n) :
     Polynomial.aeval (Real.cos (↑k * (2 * Real.pi / ↑n)))
       (Chebyshev.T ℝ n - Polynomial.C 1) = 0 := by
-  simp only [map_sub, Chebyshev.aeval_T, Polynomial.aeval_C, map_one]
+  simp only [map_sub, Chebyshev.aeval_T, map_one]
   rw [Chebyshev.T_real_cos]
   have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-  have : (↑(↑n : ℤ) : ℝ) * (↑k * (2 * Real.pi / ↑n)) = ↑k * (2 * Real.pi) := by
-    rw [Int.cast_natCast]; field_simp; ring
-  rw [this, Real.cos_int_mul_two_pi]
+  have h1 : (↑(↑n : ℤ) : ℝ) * (↑k * (2 * Real.pi / ↑n)) = ↑k * (2 * Real.pi) := by
+    rw [Int.cast_natCast]; field_simp
+  rw [h1]
+  have h2 : ↑k * (2 * Real.pi) = ↑(↑k : ℤ) * (2 * Real.pi) := by push_cast; ring
+  rw [h2, Real.cos_int_mul_two_pi]
   simp
 
 /-- ζ_n^k + ζ_n^(-k) = 2cos(2kπ/n): sum of a root of unity and its inverse
@@ -993,8 +990,7 @@ theorem zeta_pow_add_inv_pow (n k : ℕ) :
     rw [inv_eq_of_mul_eq_one_right]
     rw [Complex.mul_conj, ← Complex.ofReal_one]
     congr 1
-    rw [Complex.normSq_eq_abs]
-    rw [← Complex.norm_eq_abs, h_norm, one_pow]
+    rw [Complex.normSq_eq_norm_sq, h_norm, one_pow]
   rw [h_inv, Complex.add_conj, h_re]
   push_cast; ring
 
@@ -1023,7 +1019,123 @@ theorem chebyshev_T_eval_cos_eq_one (n : ℕ) (hn : 1 ≤ n) :
     More precisely, T_n(1) = 1 for all n. -/
 theorem chebyshev_T_one_eq_one (n : ℕ) :
     Polynomial.aeval (1 : ℝ) (Chebyshev.T ℝ n) = 1 := by
-  rw [Chebyshev.aeval_T, Chebyshev.T_real_cos, Real.cos_zero]
+  conv_lhs => rw [show (1 : ℝ) = Real.cos 0 from Real.cos_zero.symm]
+  rw [Chebyshev.aeval_T, Chebyshev.T_real_cos, mul_zero, Real.cos_zero]
+
+/-
+## Section XIX: IsPrimitiveRoot Connection
+
+Connects our concrete ζ_n = exp(2πi/n) to Mathlib's IsPrimitiveRoot predicate.
+This unlocks the full cyclotomic field infrastructure:
+- IsCyclotomicExtension, finrank = φ(n)
+- autEquivPow ≅ (ℤ/nℤ)*
+- Cyclotomic polynomial factorization
+-/
+
+/-- Our ζ_n equals the Mathlib standard form exp(2πi/n).
+    Our definition: exp(↑(2π/n) * I) = exp((2π/n : ℝ) * I)
+    Mathlib form:   exp(2 * ↑π * I / ↑n) = exp(2πI/n)
+    These are equal by commutativity and associativity of multiplication. -/
+theorem zeta_eq_mathlib_form (n : ℕ) :
+    zeta n = Complex.exp (2 * ↑Real.pi * Complex.I / ↑n) := by
+  unfold zeta
+  congr 1
+  push_cast
+  ring
+
+/-- ζ_n is a primitive nth root of unity (Mathlib's IsPrimitiveRoot).
+    Connects to Complex.isPrimitiveRoot_exp from Mathlib. -/
+theorem zeta_isPrimitiveRoot (n : ℕ) (hn : 1 ≤ n) :
+    IsPrimitiveRoot (zeta n) n := by
+  rw [zeta_eq_mathlib_form]
+  exact Complex.isPrimitiveRoot_exp n (by omega)
+
+/-- ζ_n^k = 1 iff n ∣ k: characterization of when powers of ζ_n equal 1.
+    Direct from IsPrimitiveRoot. -/
+theorem zeta_pow_eq_one_iff (n : ℕ) (hn : 1 ≤ n) (k : ℕ) :
+    zeta n ^ k = 1 ↔ n ∣ k :=
+  (zeta_isPrimitiveRoot n hn).pow_eq_one_iff_dvd k
+
+/-- ζ_n is a root of the cyclotomic polynomial Φ_n.
+    Proof: IsPrimitiveRoot implies isRoot_cyclotomic. -/
+theorem zeta_isRoot_cyclotomic (n : ℕ) (hn : 1 ≤ n) :
+    Polynomial.IsRoot (Polynomial.cyclotomic n ℂ) (zeta n) :=
+  (zeta_isPrimitiveRoot n hn).isRoot_cyclotomic (by omega)
+
+/-- The minimal polynomial of ζ_n over ℤ divides the cyclotomic polynomial Φ_n.
+    Since Φ_n is irreducible over ℚ, they are actually equal. -/
+theorem minpoly_zeta_dvd_cyclotomic (n : ℕ) (hn : 1 ≤ n) :
+    minpoly ℤ (zeta n) ∣ Polynomial.cyclotomic n ℤ :=
+  (zeta_isPrimitiveRoot n hn).minpoly_dvd_cyclotomic (by omega)
+
+
+
+/-
+## Section XXI: ζ_n as Root of Cyclotomic Polynomial (Algebraic Bridge)
+
+The key algebraic fact: since ζ_n is a primitive nth root of unity,
+it is a root of the cyclotomic polynomial Φ_n, which is irreducible over ℚ.
+Therefore minpoly(ℚ, ζ_n) = Φ_n (up to leading coefficient), giving
+[ℚ(ζ_n):ℚ] = deg(Φ_n) = φ(n).
+
+Combined with [ℚ(ζ_n):ℚ(cos)] = 2 (from the quadratic X²-2cos·X+1),
+the tower law gives [ℚ(cos):ℚ] = φ(n)/2.
+-/
+
+/-- ζ_n^k is also a primitive nth root when gcd(k,n) = 1.
+    This identifies all the primitive roots among powers of ζ_n. -/
+theorem zeta_pow_isPrimitiveRoot_of_coprime (n : ℕ) (hn : 1 ≤ n) (k : ℕ)
+    (hk : k.Coprime n) : IsPrimitiveRoot (zeta n ^ k) n :=
+  (zeta_isPrimitiveRoot n hn).pow_of_coprime k hk
+
+/-- cos(2kπ/n) = cos(2(n-k)π/n) for k ≤ n: cosines are symmetric about k = n/2.
+    This is why the degree of minpoly(cos) is φ(n)/2 rather than φ(n):
+    conjugates pair up as cos(2kπ/n) = cos(2(n-k)π/n). -/
+theorem cos_symmetric (n k : ℕ) (hkn : k ≤ n) (hn : 1 ≤ n) :
+    Real.cos (↑(n - k) * (2 * Real.pi / ↑n)) =
+    Real.cos (↑k * (2 * Real.pi / ↑n)) := by
+  have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  rw [show (↑(n - k) : ℝ) * (2 * Real.pi / ↑n) =
+      -(↑k * (2 * Real.pi / ↑n)) + 2 * Real.pi from by
+    push_cast [Nat.cast_sub hkn]; field_simp; ring]
+  rw [Real.cos_add_two_pi, Real.cos_neg]
+
+/-- ζ_n^(n-k) = conj(ζ_n^k) for k ≤ n: powers symmetric about n/2 are conjugates.
+    Proof: ζ^(n-k) = ζ^n · ζ^(-k) = ζ^(-k) = (ζ^k)⁻¹ = conj(ζ^k). -/
+theorem zeta_pow_sub_eq_conj (n k : ℕ) (hn : 1 ≤ n) (hkn : k ≤ n) :
+    zeta n ^ (n - k) = starRingEnd ℂ (zeta n ^ k) := by
+  -- (ζ^k)⁻¹ = conj(ζ^k) since |ζ^k| = 1
+  have h_conj : (zeta n ^ k)⁻¹ = starRingEnd ℂ (zeta n ^ k) := by
+    apply inv_eq_of_mul_eq_one_right
+    rw [Complex.mul_conj, ← Complex.ofReal_one]
+    congr 1
+    rw [Complex.normSq_eq_norm_sq, zeta_pow_norm_one, one_pow]
+  rw [← h_conj]
+  -- ζ^(n-k) * ζ^k = ζ^n = 1, so ζ^(n-k) = (ζ^k)⁻¹
+  have hne : zeta n ^ k ≠ 0 := pow_ne_zero k (zeta_ne_zero n)
+  have h_prod : zeta n ^ (n - k) * zeta n ^ k = 1 := by
+    rw [← pow_add, show n - k + k = n from by omega, zeta_pow_n_eq_one n hn]
+  exact mul_right_cancel₀ hne (by rw [h_prod, inv_mul_cancel₀ hne])
+
+/-- For n ≥ 3 and 0 < k < n/2, ζ_n^k ∉ ℝ (has positive imaginary part).
+    This proves ζ^k ≠ conj(ζ^k), i.e., the conjugate pairing is nontrivial. -/
+theorem zeta_pow_not_real (n k : ℕ) (hn : 3 ≤ n) (hk0 : 0 < k)
+    (hk : 2 * k < n) : ¬ ∃ r : ℝ, zeta n ^ k = ↑r := by
+  rintro ⟨r, hr⟩
+  have h_im : (zeta n ^ k).im = 0 := by rw [hr, Complex.ofReal_im]
+  rw [← sin_eq_zeta_pow_im] at h_im
+  have h_pos : 0 < Real.sin (↑k * (2 * Real.pi / ↑n)) := by
+    apply Real.sin_pos_of_pos_of_lt_pi
+    · positivity
+    · have hn_pos : (0 : ℝ) < ↑n := by positivity
+      have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+      calc (↑k : ℝ) * (2 * Real.pi / ↑n)
+          < ↑n / 2 * (2 * Real.pi / ↑n) := by
+            apply mul_lt_mul_of_pos_right _ (by positivity)
+            have : (↑(2 * k) : ℝ) < ↑n := by exact_mod_cast hk
+            push_cast at this; linarith
+        _ = Real.pi := by field_simp
+  linarith
 
 /-
 ## Summary
@@ -1069,6 +1181,15 @@ theorem chebyshev_T_one_eq_one (n : ℕ) :
 38. `cos_2k_pi_div_n_bound`: |cos(2kπ/n)| ≤ 1
 39. `zeta_is_root_of_xn_sub_one`: ζ_n is root of X^n - 1
 40. `cyclotomic_natDegree_eq_totient`: natDegree(Φ_n) = φ(n)
+41. `zeta_eq_mathlib_form`: our ζ_n = Mathlib's exp(2πI/n)
+42. `zeta_isPrimitiveRoot`: IsPrimitiveRoot ζ_n n (connects to Mathlib cyclotomic)
+43. `zeta_pow_eq_one_iff`: ζ^k = 1 ↔ n ∣ k
+44. `zeta_isRoot_cyclotomic`: ζ_n is root of Φ_n
+45. `minpoly_zeta_dvd_cyclotomic`: minpoly(ℤ, ζ_n) | Φ_n
+46. `zeta_pow_isPrimitiveRoot_of_coprime`: ζ^k primitive when gcd(k,n)=1
+47. `cos_symmetric`: cos(2(n-k)π/n) = cos(2kπ/n)
+48. `zeta_pow_sub_eq_conj`: ζ^(n-k) = conj(ζ^k)
+49. `zeta_pow_not_real`: ζ^k ∉ ℝ for 0 < k < n/2
 
 ### Axiomatized (2 axioms + 1 redundant):
 - `gauss_wantzel_theorem`: n-gon constructible ↔ φ(n) = 2^k
@@ -1088,8 +1209,11 @@ theorem chebyshev_T_one_eq_one (n : ℕ) :
 - ✅ minpoly is separable — char 0 (proved, Session 3)
 - ✅ cos/sin = Re/Im of ζ^k — power root bridge (proved, Session 3)
 - ✅ natDegree(Φ_n) = φ(n) — cyclotomic degree (Mathlib, Session 3)
-- ❌ T_n - 1 roots ⊂ {cos(2kπ/n)} — analytic characterization (needs work)
-- ❌ minpoly splits in adjoin — normality (follows from above)
+- ✅ IsPrimitiveRoot ζ_n n — connects to Mathlib (proved, Session 4)
+- ✅ ζ_n root of Φ_n — cyclotomic root (proved, Session 4)
+- ✅ ζ^(n-k) = conj(ζ^k) — conjugate pairing (proved, Session 4)
+- ✅ ζ^k ∉ ℝ for 0 < k < n/2 — imaginary part nonzero (proved, Session 4)
+- ❌ minpoly splits in adjoin — normality (needs: roots of minpoly are cosines)
 - ❌ [ℚ(ζ_n):ℚ(cos)] = 2 (formal) — needs IntermediateField infrastructure
 - ❌ natDegree(minpoly) = φ(n)/2 — cyclotomic tower law (needs above)
 -/
