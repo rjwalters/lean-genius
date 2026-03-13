@@ -1,55 +1,93 @@
 {
   "slug": "feuerbachs-theorem-oq-01",
   "title": "Prove Feuerbach distance relations via coordinate computation",
-  "phase": "NEW",
+  "phase": "DEEP_DIVE",
   "status": "active",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "dist2 T.ninePointCenter T.incenter = abs (T.ninePointRadius - T.inradius)",
+    "plain": "The nine-point circle is tangent to the incircle and all three excircles. Core distance relations: |NI| = |R/2 - r| and |NI_a| = R/2 + r_a.",
+    "whyMatters": ["Wiedijk #29", "Classical Euclidean geometry masterpiece"]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "All 9 points on nine-point circle (3 midpoints, 3 Euler midpoints, 3 altitude feet)",
+      "Euler line relation",
+      "Nine-point radius = R/2",
+      "Equilateral triangle R = 2r",
+      "3-4-5 triangle numerical verification"
+    ],
+    "open": [
+      "feuerbach_incircle_distance: dist(N, I) = |R/2 - r|",
+      "feuerbach_excircle_a/b/c_distance: dist(N, I_a) = R/2 + r_a"
+    ],
+    "goal": "Eliminate remaining 4 axioms (Feuerbach distance relations)"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-11T09:48:08.981Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "DEEP_DIVE",
+    "since": "2026-03-13T07:00:00.000Z",
+    "iteration": 2,
+    "focus": "Core Feuerbach distance relations",
+    "blockers": [
+      "Incenter formula uses sqrt side lengths - nested sqrt makes field_simp/ring approach intractable",
+      "Need alternative approach: complex coordinates, inversive geometry, or power-of-point"
+    ],
+    "nextAction": "Try reformulating incenter without sqrt, or use squared distance identities directly",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Eliminated 4/8 axioms. Proved altitude feet on nine-point circle (field_simp + ring on polynomial identity after clearing denominators). Proved equilateral R=2r by computing R²=(2r)²=s²/3. Remaining 4 axioms are the Feuerbach distance relations which involve the incenter (defined via sqrt side lengths) - fundamentally harder than the rational coordinate proofs.",
+    "builtItems": [
+      "bc_sq_ne_zero, ca_sq_ne_zero, ab_sq_ne_zero helper lemmas",
+      "foot_a/b/c_on_ninePointCircle theorems (were axioms)",
+      "equilateral_R_eq_2r theorem (was axiom)"
+    ],
+    "insights": [
+      "Altitude feet proofs reduce to polynomial identities via field_simp after clearing |BC|² and circumcenter denominators",
+      "Equilateral proof needs eq_of_sq_eq_of_nonneg to handle sqrt comparison",
+      "Feuerbach distance relations involve incenter which uses sqrt(side²) - cannot be cleared by field_simp",
+      "The incenter I = (a*A + b*B + c*C)/(a+b+c) where a,b,c = sqrt(...) makes NI² non-polynomial",
+      "Possible approaches: (1) express NI² using Euler's formula OI²=R²-2Rr, (2) complex coordinates, (3) squared incenter"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Try Euler's formula approach: OI² = R² - 2Rr can be proved as polynomial identity",
+      "Then derive NI from N=(O+H)/2 relationship",
+      "Consider creating incenter_sq or incenter without sqrt for tractable computation",
+      "Consider splitting problem: prove distance relations as a new file with different definitions"
+    ]
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Coordinate algebra with field_simp/ring",
+      "status": "partial",
+      "notes": "Works for altitude feet and equilateral case, fails for incircle tangency due to sqrt in incenter"
+    },
+    {
+      "name": "Euler formula OI²=R²-2Rr",
+      "status": "planned",
+      "notes": "Could prove OI² as polynomial identity, then derive NI from midpoint relation"
+    }
+  ],
   "tags": [
     "seeker-selected",
     "geometry",
     "triangle",
     "circle"
   ],
-  "relatedProofs": [],
+  "relatedProofs": ["feuerbachs-theorem"],
   "references": {
     "papers": [],
-    "urls": [],
+    "urls": ["https://en.wikipedia.org/wiki/Feuerbach_point"],
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-12T05:34:54.574Z",
+  "lastUpdate": "2026-03-13T07:00:00.000Z",
   "significance": 6,
-  "tractability": 7
+  "tractability": 5
 }
