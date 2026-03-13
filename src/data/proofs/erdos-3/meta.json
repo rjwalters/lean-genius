@@ -1,10 +1,10 @@
 {
   "id": "erdos-3",
-  "title": "Erdős Problem #3: Arithmetic Progressions in Large Sets",
+  "title": "Erdos Problem #3: Arithmetic Progressions in Large Sets",
   "slug": "erdos-3",
-  "description": "If A ⊆ ℕ has divergent reciprocal sum, must A contain arbitrarily long arithmetic progressions? OPEN with $5,000 prize. Connected to Szemerédi's theorem and Green-Tao.",
+  "description": "If A has divergent reciprocal sum, must A contain arbitrarily long arithmetic progressions? OPEN with $5,000 prize. Connected to Szemeredi's theorem and Green-Tao.",
   "meta": {
-    "author": "Erdős",
+    "author": "Erdos",
     "sourceUrl": "https://erdosproblems.com/3",
     "date": "",
     "status": "complete",
@@ -43,89 +43,92 @@
     "originalContributions": [
       "Formalization of arithmetic progression containment",
       "Definition of Roth number r_k(N)",
-      "Axiomatization of major results (Szemerédi, Gowers, Kelley-Meka, Leng-Sah-Sawhney)",
+      "Axiomatization of major results (Szemeredi, Gowers, Kelley-Meka, Leng-Sah-Sawhney)",
       "Connection to Green-Tao theorem on primes",
-      "Behrend and Elkin constructions"
+      "Behrend and Elkin constructions axiomatized",
+      "Formal proof that Erdos #3 implies Green-Tao"
     ]
   },
   "overview": {
-    "historicalContext": "Erdős Problem #3 is one of the most important problems in additive combinatorics. It asks whether sets with 'large' reciprocal sum must contain arbitrarily long arithmetic progressions.\n\nThe problem is deeply connected to Szemerédi's theorem (1975), which earned Szemerédi the Abel Prize. Erdős believed solving Problem #3 would lead to proving the primes contain arbitrarily long APs - this was eventually achieved by Green-Tao (2008) through different methods.\n\nThe $5,000 prize remains unclaimed despite 80+ years of progress.",
-    "problemStatement": "**Conjecture (Erdős):** If A ⊆ ℕ has Σ(1/n : n ∈ A) = ∞, then A contains arbitrarily long arithmetic progressions.\n\n**Equivalent formulation:** For all k ≥ 3, is r_k(N) = o(N / log N)?\n\nHere r_k(N) is the maximum size of a subset of {1,...,N} without a k-term arithmetic progression.\n\n**Status:** OPEN. The best bounds fall short of the required threshold.",
-    "proofStrategy": "The formalization defines:\n\n1. `ArithProg a d k`: the k-term AP {a, a+d, a+2d, ..., a+(k-1)d}\n2. `ContainsAP A k`: set A contains some k-term AP\n3. `rothNumber k N`: maximum AP-free subset size (r_k(N))\n4. `HasDivergentSum A`: the reciprocal sum diverges\n5. `Erdos3Conjecture`: the main statement\n\nWe axiomatize the major milestones:\n- Szemerédi's theorem: r_k(N) = o(N)\n- Gowers' bounds: r_k(N) ≪ N / (log log N)^c\n- Kelley-Meka (2023): r_3(N) ≪ N / exp((log N)^{1/11})\n- Leng-Sah-Sawhney (2024): current best general bound",
+    "historicalContext": "**The Erdos-Turan Conjecture on Arithmetic Progressions**\n\nThis problem was first posed by Erdos and Turan in 1936, making it one of the oldest open problems in additive combinatorics. They conjectured that any subset $A \\subseteq \\mathbb{N}$ with $\\sum_{n \\in A} 1/n = \\infty$ must contain arbitrarily long arithmetic progressions.\n\n**Early History (1936--1975):**\nThe conjecture was motivated by the observation that 'large' sets (measured by reciprocal sum divergence) should be arithmetically rich. Roth made the first breakthrough in 1953, proving $r_3(N) = o(N)$ -- sets of positive density contain 3-term APs. This introduced Fourier analysis into combinatorics and contributed to Roth's Fields Medal. Twenty-two years later, Szemeredi (1975) proved the landmark theorem $r_k(N) = o(N)$ for all $k$, using his Regularity Lemma -- a purely combinatorial tour de force that won him the Abel Prize.\n\n**Multiple Proof Traditions (1977--2001):**\nFurstenberg (1977) gave a completely different proof of Szemeredi's theorem using ergodic theory, showing the equivalence with a multiple recurrence theorem. Gowers (2001) gave a third proof introducing the uniformity norms $\\|f\\|_{U^k}$ and higher-order Fourier analysis, obtaining the first quantitative bounds $r_k(N) \\ll N/(\\log \\log N)^{c_k}$. His Fields Medal recognized this achievement.\n\n**Modern Breakthroughs (2008--2024):**\nGreen and Tao (2008) proved primes contain arbitrarily long APs, confirming Erdos's intuition that the conjecture relates to primes. Kelley and Meka (2023) achieved a dramatic improvement for $k=3$: $r_3(N) \\ll N/\\exp((\\log N)^{1/11})$, nearly matching the Behrend lower bound. Leng, Sah, and Sawhney (2024) extended these methods to general $k$.\n\n**The Persistent Gap:**\nDespite 90 years of progress, the conjecture remains OPEN with Erdos's $5,000 prize unclaimed. Current bounds give $r_k(N) = o(N/\\exp((\\log \\log N)^c))$, but the conjecture requires $o(N/\\log N)$ -- an exponentially stronger statement. Neither a proof nor a counterexample appears within reach of current techniques.",
+    "problemStatement": "**Conjecture (Erdos-Turan, 1936):** If $A \\subseteq \\mathbb{N}$ has $\\sum_{n \\in A} 1/n = \\infty$, then $A$ contains arbitrarily long arithmetic progressions.\n\n**Equivalent formulation:** For all $k \\geq 3$, is $r_k(N) = o(N / \\log N)$?\n\nHere $r_k(N)$ is the maximum size of a subset of $\\{1,\\ldots,N\\}$ without a $k$-term arithmetic progression.\n\n**Status:** OPEN. Prize: $5,000.",
+    "proofStrategy": "**Formalization Approach**\n\nThe formalization models the conjecture and its mathematical landscape in Lean 4:\n\n1. **Core Definitions:** `ArithProg a d k` builds the $k$-AP as a `Finset` via `Finset.map`. `ContainsAP` and `ContainsArbitrarilyLongAP` formalize the key properties. `HasDivergentSum` uses Mathlib's `Summable` (negated).\n\n2. **Extremal Function:** `rothNumber k N` computes $r_k(N)$ as the supremum over the powerset of $\\{0, \\ldots, N\\}$ filtered by AP-freeness. `SublogarithmicGrowth` formalizes the threshold $r_k(N) = o(N/\\log N)$.\n\n3. **Historical Milestones:** Each major result (Roth, Szemeredi, Gowers, Kelley-Meka, Leng-Sah-Sawhney) is axiomatized as a bound on `rothNumber`. The progression from $o(N)$ to $o(N/(\\log \\log N)^c)$ to $o(N/\\exp((\\log \\log N)^c))$ is captured precisely.\n\n4. **Constructions:** Behrend's sphere construction ($r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$) and Elkin's refinement are axiomatized as lower bounds.\n\n5. **Green-Tao Connection:** The implication 'Erdos #3 $\\implies$ primes contain all APs' is formally proved from Euler's $\\sum 1/p = \\infty$.",
     "keyInsights": [
-      "**The gap:** Current bounds give r_k(N) = o(N / exp((log log N)^c)), but we need o(N / log N). This gap seems insurmountable with current methods.",
-      "**Szemerédi → Green-Tao:** Szemerédi's theorem shows positive density implies APs. Green-Tao extended this to primes (density 0 but pseudorandom).",
-      "**Construction vs bound:** Behrend (1946) gives AP-free sets of size N/exp(√log N). The conjecture asks if this can reach N/log N.",
-      "**Kelley-Meka breakthrough:** Their 2023 result r_3(N) ≪ N/exp((log N)^{1/11}) was a massive improvement, but still far from the goal.",
-      "**Why $5,000?** Erdős valued this highly because it bridges additive combinatorics, number theory, and harmonic analysis."
+      "**The Density vs Reciprocal Sum Gap:** Szemeredi's theorem handles positive density ($A(N)/N \\geq \\delta > 0$), but Erdos #3 only assumes $\\sum 1/n = \\infty$, which allows density as low as $A(N) \\sim N/\\log N$. This gap -- between constant density and $1/\\log N$ density -- is where all the difficulty lies.",
+      "**Three Proof Paradigms:** Szemeredi's theorem has three fundamentally different proofs: combinatorial (Regularity Lemma), ergodic-theoretic (multiple recurrence), and Fourier-analytic (Gowers norms). Each introduced transformative new techniques, yet none extends to the $1/\\log N$ density regime needed for Erdos #3.",
+      "**Behrend Barrier:** AP-free sets of size $N/\\exp(c\\sqrt{\\log N})$ exist (Behrend 1946), so upper bounds on $r_3(N)$ cannot decrease faster than this. Kelley-Meka (2023) nearly match this barrier with $N/\\exp((\\log N)^{1/11})$. But even matching Behrend exactly would not prove Erdos #3, which requires $o(N/\\log N)$.",
+      "**Kelley-Meka Revolution:** Their 2023 breakthrough achieved exponential-type bounds (in $\\log N$) by developing a multiplicative density increment: each step multiplies density by $(1+c)$ rather than adding $c\\alpha^2$. This geometric growth is exponentially faster than previous additive increments.",
+      "**Green-Tao Shortcut:** If Erdos #3 were proved, the Green-Tao theorem (primes contain all APs) would follow immediately from Euler's result $\\sum 1/p = \\infty$. Green-Tao had to develop the transference principle precisely because Erdos #3 was unavailable.",
+      "**The $5,000 Question:** Erdos offered this as one of his highest prizes, reflecting his belief that solving it would require fundamentally new ideas bridging analytic number theory and combinatorics. After 90 years, neither a proof nor a counterexample is in sight."
     ]
   },
   "sections": [
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "summary": "Arithmetic progressions, AP-freeness, reciprocal sums",
+      "summary": "Defines `ArithProg` (k-term AP as Finset), `ContainsAP` and `ContainsArbitrarilyLongAP` (AP containment), `IsAPFree` (AP avoidance), `reciprocalSum`, and `HasDivergentSum` (divergent reciprocal sum via negated Summable).",
       "startLine": 33,
       "endLine": 57
     },
     {
       "id": "roth-number",
       "title": "Roth Number r_k(N)",
-      "summary": "Maximum size of AP-free subsets",
+      "summary": "Defines `rothNumber k N` as the maximum AP-free subset size (via `Finset.sup` over filtered powerset), `countingFunction` for $A(N) = |A \\cap [0,N]|$, and `SublogarithmicGrowth` formalizing $r_k(N) = o(N/\\log N)$.",
       "startLine": 59,
       "endLine": 69
     },
     {
       "id": "conjecture",
       "title": "Main Conjecture",
-      "summary": "Erdős Problem #3 statement and threshold",
+      "summary": "States `Erdos3Conjecture`: every set with divergent reciprocal sum contains arbitrarily long APs. Equivalent to $r_k(N) = o(N/\\log N)$ for all $k \\geq 3$.",
       "startLine": 71,
       "endLine": 80
     },
     {
       "id": "historical",
       "title": "Historical Results",
-      "summary": "Roth, Szemerédi, Gowers, Kelley-Meka, Leng-Sah-Sawhney",
+      "summary": "Axiomatizes the progression of bounds: Roth (1953, $r_3 = o(N)$), Szemeredi (1975, $r_k = o(N)$), Gowers (2001, $r_k \\ll N/(\\log \\log N)^c$), Kelley-Meka (2023, $r_3 \\ll N/\\exp((\\log N)^{1/11})$), Leng-Sah-Sawhney (2024, $r_k \\ll N/\\exp((\\log \\log N)^c)$).",
       "startLine": 82,
       "endLine": 113
     },
     {
       "id": "gap",
       "title": "The Critical Gap",
-      "summary": "Why the conjecture remains open",
+      "summary": "Defines `RequiredBound` ($r_k(N) = o(N/\\log N)$) and proves `required_bound_implies_conjecture` (with sorry for partial summation). Explains the exponential gap between current bounds and the conjecture threshold.",
       "startLine": 115,
       "endLine": 134
     },
     {
       "id": "constructions",
       "title": "AP-Free Constructions",
-      "summary": "Behrend and Elkin lower bounds",
+      "summary": "Axiomatizes lower bounds: Behrend (1946, $r_3(N) \\geq N/\\exp(c\\sqrt{\\log N})$ via sphere construction in high-dimensional lattices) and Elkin (2011, improvement by $\\sqrt{\\log \\log N}$).",
       "startLine": 136,
       "endLine": 154
     },
     {
       "id": "green-tao",
       "title": "Green-Tao Connection",
-      "summary": "Primes contain arbitrarily long APs",
+      "summary": "Axiomatizes Green-Tao (primes contain all APs) and Euler ($\\sum 1/p = \\infty$), then formally proves `erdos3_implies_green_tao`: the conjecture implies Green-Tao as an immediate corollary.",
       "startLine": 156,
-      "endLine": 171
+      "endLine": 182
     },
     {
       "id": "status",
       "title": "Problem Status",
-      "summary": "Summary and open status",
+      "summary": "Concludes with `erdos_3_open` via `Classical.em`, plus references documenting the trajectory from Bloom-Sisask (2020) through Kelley-Meka (2023) to Leng-Sah-Sawhney (2024).",
       "startLine": 184,
-      "endLine": 212
+      "endLine": 214
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #3, an OPEN $5,000 conjecture asking whether sets with divergent reciprocal sums must contain arbitrarily long arithmetic progressions. The formalization includes the full history from Roth (1953) to Leng-Sah-Sawhney (2024), showing why the problem remains stubbornly open despite 70+ years of progress.",
-    "implications": "This problem sits at the heart of additive combinatorics:\n\n1. **Szemerédi theory:** Extensions of Szemerédi's theorem to sparse sets\n2. **Harmonic analysis:** Gowers' proof uses higher-order Fourier analysis\n3. **Number theory:** Connection to primes via Green-Tao\n4. **Ergodic theory:** Furstenberg's proof uses dynamical systems\n5. **Probabilistic methods:** Random constructions and the probabilistic lens",
+    "summary": "We formalize Erdos Problem #3, an OPEN $5,000 conjecture originally posed by Erdos and Turan in 1936. It asks whether sets with divergent reciprocal sums must contain arbitrarily long arithmetic progressions. The formalization captures the complete history from Roth (1953) through Leng-Sah-Sawhney (2024), the Green-Tao connection, and the fundamental gap between current bounds ($r_k(N) = o(N/\\exp((\\log \\log N)^c))$) and the required threshold ($r_k(N) = o(N/\\log N)$).",
+    "implications": "**Connections and Implications**\n\n1. **Szemeredi Theory:** The conjecture extends Szemeredi's theorem to sub-constant density. Its resolution would unify the theory of arithmetic progressions across all density regimes.\n\n2. **Higher-Order Fourier Analysis:** Progress on $r_k(N)$ has driven the development of Gowers uniformity norms, inverse theorems, and nilsequence theory -- a new branch of harmonic analysis created largely to attack this class of problems.\n\n3. **Number Theory:** If true, the conjecture immediately implies Green-Tao (primes contain all APs) via Euler's $\\sum 1/p = \\infty$, providing a vastly simpler proof than the transference principle approach.\n\n4. **Ergodic Theory:** Furstenberg's ergodic framework connects AP problems to multiple recurrence in dynamical systems. The conjecture corresponds to recurrence for certain natural non-invariant measures.\n\n5. **Extremal Combinatorics:** Behrend's construction ($N/\\exp(c\\sqrt{\\log N})$) shows AP-free sets can be surprisingly large. Whether constructions can reach $N/\\log N$ is the dual question to the conjecture.",
     "openQuestions": [
-      "Can we prove r_k(N) = o(N / log N) for any k ≥ 3?",
-      "Is there a counterexample: a set with divergent sum avoiding some k-AP?",
-      "Can Kelley-Meka methods extend to k > 3?",
-      "What is the true order of magnitude of r_3(N)?"
+      "Can $r_k(N) = o(N / \\log N)$ be proved for any $k \\geq 3$? Even $k = 3$ is open.",
+      "Is there a counterexample: a set with divergent reciprocal sum avoiding some fixed $k$-AP?",
+      "Can Kelley-Meka methods (multiplicative density increment) be pushed past the Behrend barrier $N/\\exp(c\\sqrt{\\log N})$?",
+      "What is the true order of magnitude of $r_3(N)$? Is it $\\Theta(N/\\exp(c\\sqrt{\\log N}))$ (matching Behrend)?",
+      "Does the conjecture hold for polynomial progressions $\\{a, a+d^2, a+2^2 d^2, \\ldots\\}$?"
     ]
   }
 }
