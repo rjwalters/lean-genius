@@ -1,121 +1,53 @@
 {
   "slug": "erdos-312",
-  "title": "Erdős #312: Subset Sums of Unit Fractions (Exponential Precision)",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "title": "Erdős #312",
+  "phase": "OBSERVE",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "∃ c > 0, ∀ K > 1, ∀ sufficiently large A with Σ 1/n > K, ∃ S ⊆ A: 1 - e^{-cK} < Σ_{n∈S} 1/n ≤ 1",
-    "plain": "Does there exist some c > 0 such that, for any K > 1, whenever A is a sufficiently large finite multiset of integers with Σ 1/n > K there exists a subset S ⊆ A with 1 - e^{-cK} < Σ_{n∈S} 1/n ≤ 1?",
-    "whyMatters": [
-      "Fundamental problem in additive combinatorics and number theory",
-      "Connects harmonic sums to subset selection precision",
-      "The polynomial version was proved by Erdős-Graham"
-    ]
+    "formal": "Does there exist some $c>0$ such that, for any $K>1$, whenever $A$ is a sufficiently large finite multiset of integers with $\\sum_{n\\in A}\\frac{1}{n}>K$ there exists some $S\\subseteq A$ such that\\[1-e^{-cK} < \\sum_{n\\in S}\\frac{1}{n}\\leq 1?\\]\n\n\n\nErd\\H{o}s and Graham knew this with $e^{-cK}$ replaced by $c/K^2$.",
+    "plain": "Does there exist some $c>0$ such that, for any $K>1$, whenever $A$ is a sufficiently large finite multiset of integers with $\\sum_{n\\in A}\\frac{1}{n}>K$ there exists some $S\\subseteq A$ such that\\[1-e^{-cK} < \\sum_{n\\in S}\\frac{1}{n}\\leq 1?\\]",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "Reciprocal sum non-negativity and monotonicity",
-      "Empty/full/singleton subset sum identities",
-      "Disjoint union additivity",
-      "Subset sum erase and insert operations",
-      "Reciprocal sum positivity for positive elements",
-      "Exponential precision definition and gap analysis",
-      "exp(-cK) dominance over c/K² (exponential vs polynomial)",
-      "Conjecture implies known result (exponential → polynomial)",
-      "Exponential/polynomial precision pointwise implication",
-      "Monotonicity of precision in constant c",
-      "Exponential gap non-negativity, strict < 1, monotonicity in K",
-      "Exponential gap tends to 1 as K → ∞",
-      "Taylor bound: exp(-x) ≤ 1/(1+x) for x ≥ 0",
-      "Exponential gap rational lower bound: cK/(1+cK)",
-      "exp(-x) ≥ 1-x (first-order lower bound)",
-      "Exponential gap sandwich: cK/(1+cK) ≤ gap ≤ cK",
-      "Harmonic number definition, monotonicity, recurrence",
-      "Harmonic numbers unbounded (from Mathlib)",
-      "H_0 = 0, H_1 = 1, H_n ≥ 0, H_n ≥ 1 for n ≥ 1",
-      "Canonical multiset {1,...,n} has reciprocal sum = H_n",
-      "Valid inputs exist for any K (via harmonic numbers)",
-      "Reciprocal sum upper bound n/m when all elements ≥ m",
-      "Trivial subset (empty) satisfies upper bound",
-      "Precision implies nontrivial subset (both exponential and polynomial)",
-      "Polynomial gap positivity, antitone, tends to 0"
-    ],
-    "open": [
-      "Main conjecture (OPEN - Erdős-Graham exponential precision)"
-    ],
-    "goal": "Formalize Erdős #312 — COMPLETE"
+    "proven": [],
+    "open": [],
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-11T00:00:00Z",
+    "phase": "NEW",
+    "since": "2026-01-12T23:55:09.603Z",
     "iteration": 1,
-    "focus": "44 proved theorems, 0 sorries, 1 axiom (known result). Comprehensive formalization.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - problem complete.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 44 proved theorems, 0 sorries, 1 axiom (erdos_graham_polynomial - the known polynomial bound). Comprehensive formalization covering reciprocal sums, precision analysis, Taylor bounds, harmonic numbers, and structural properties.",
-    "builtItems": [
-      "reciprocalSum, subsetReciprocalSum: core definitions",
-      "hasExponentialPrecision, hasPolynomialPrecision: precision predicates",
-      "mainConjecture: the open Erdős-Graham conjecture",
-      "exponential_stronger_than_polynomial: exp(-cK) < c'/K² for large K",
-      "conjecture_implies_known: exponential → polynomial",
-      "exponential_gap_sandwich: cK/(1+cK) ≤ 1-exp(-cK) ≤ cK",
-      "harmonicNumber: definition + 7 theorems (unbounded, mono, recurrence)",
-      "valid_inputs_exist: canonical multiset family via harmonic numbers",
-      "44 total theorems across 515 lines"
-    ],
-    "insights": [
-      "Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero proves exponential dominance",
-      "Real.tendsto_sum_range_one_div_nat_succ_atTop proves harmonic divergence",
-      "Fin.sum_univ_eq_sum_range connects Fin sums to range sums for harmonic numbers",
-      "positivity tactic handles most positivity goals automatically",
-      "Field_simp + ring handles most algebraic simplifications"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [],
+    "markdown": "# Erdős #312 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nDoes there exist some $c>0$ such that, for any $K>1$, whenever $A$ is a sufficiently large finite multiset of integers with $\\sum_{n\\in A}\\frac{1}{n}>K$ there exists some $S\\subseteq A$ such that\\[1-e^{-cK} < \\sum_{n\\in S}\\frac{1}{n}\\leq 1?\\]\n\n\n\nErd\\H{o}s and Graham knew this with $e^{-cK}$ replaced by $c/K^2$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #311\n- Problem #313\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
-  "approaches": [
-    {
-      "name": "Comprehensive formalization",
-      "status": "succeeded",
-      "description": "Full formalization of Erdős #312 with reciprocal sums, precision analysis, harmonic numbers"
-    }
-  ],
+  "approaches": [],
   "tags": [
-    "erdos",
-    "additive-combinatorics",
-    "number-theory",
-    "harmonic-sums",
-    "subset-sums"
+    "erdos"
   ],
-  "relatedProofs": [
-    "Erdos312Problem.lean"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Erdős-Graham [ErGr80]: polynomial precision bound c/K²"
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero",
-      "Real.tendsto_sum_range_one_div_nat_succ_atTop",
-      "Finset.sum_le_univ_sum_of_nonneg",
-      "Real.add_one_le_exp"
-    ]
+    "mathlib": []
   },
-  "knowledgeScore": 85,
   "started": "2026-01-12T23:55:09.603Z",
-  "lastUpdate": "2026-03-11T00:00:00Z",
+  "lastUpdate": "2026-03-13T07:52:17.045Z",
   "significance": 7,
-  "tractability": 5,
-  "completed": "2026-03-11T00:00:00Z"
+  "tractability": 5
 }

@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1170",
   "title": "Erdős #1170",
-  "phase": "NEW",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "(LaTeX not available)",
-    "plain": "Is it consistent that ω₂ → (α)²₂ for every α < ω₂? That is, for every 2-coloring of pairs from ω₂, is there a homogeneous set of order type α?",
+    "plain": "Problem statement not found",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,44 +16,24 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "EXPLORED",
+    "phase": "NEW",
     "since": "2026-01-15T16:53:51.159Z",
-    "iteration": 2,
-    "focus": "Ordinal partition calculus formalization",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Consider linking to #1171 partition relation infrastructure",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Formalized problem with partition relation framework. Proved omega1_lt_omega2, Laver application, and implication theorem. Problem is metamathematical (consistency), so full proof is out of scope for Lean.",
-    "builtItems": [
-      "Erdos1170Problem.lean: full formalization with partition relation definitions",
-      "omega1, omega2 ordinal definitions via Cardinal.aleph",
-      "ordinalPartitionBalanced and ordinalPartitionPolarized axioms",
-      "Monotonicity axioms for partition relations",
-      "omega1_lt_omega2: PROVED theorem",
-      "laver_gives_omega1Sq_partition: PROVED theorem",
-      "erdos1170_implies_laver_special: PROVED theorem (implication chain)"
-    ],
-    "insights": [
-      "This is a consistency question (metamathematical), not a ZFC theorem",
-      "ω₂ → (α)²₂ means: every 2-coloring of pairs from ω₂ has a monochromatic set of order type α",
-      "Laver (1982) proved consistency of the weaker polarized relation ω₂ → (ω₁²+1, α)² for α < ω₂",
-      "Foreman-Hajnal (2003) also proved the polarized consistency result",
-      "The gap between polarized and balanced partition relations is the key open question",
-      "Partition relation framework shares structure with problem #1171 (multicolor variant)"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Cannot prove the main conjecture - it is a consistency/independence question",
-      "Could formalize ordinalPartitionBalanced as a concrete definition (not axiom) using Ordinal embeddings",
-      "Could prove finite Ramsey theorem instances for omega2",
-      "Link to Erdős #1171 formalization via shared partition relation framework"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #1170 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "approaches": [],
@@ -67,6 +47,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:53:51.159Z",
+  "lastUpdate": "2026-03-13T07:52:17.059Z",
   "significance": 7,
   "tractability": 6
 }

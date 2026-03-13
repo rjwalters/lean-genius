@@ -1,103 +1,56 @@
 {
   "slug": "nth-root-irrational-oq-01",
   "title": "Extend nth-root irrationality to algebraic irrationality via irreducible polynomials",
-  "phase": "COMPLETE",
-  "status": "completed",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "For prime p and n ≥ 2, X^n - p is irreducible over ℚ (Eisenstein + Gauss), hence p^(1/n) is irrational. More generally, any root of an irreducible polynomial of degree ≥ 2 over ℚ is irrational.",
-    "plain": "Prove irrationality of nth roots of primes via irreducible polynomials (Eisenstein criterion + Gauss lemma), subsuming the counting-argument approach.",
-    "whyMatters": [
-      "Provides a more structural approach to irrationality than ad-hoc counting arguments",
-      "Eisenstein criterion + Gauss lemma is a fundamental technique in algebraic number theory",
-      "Connects irrationality to the broader theory of minimal polynomials and algebraic degrees"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "irreducible_no_rational_root: irreducible p ∈ ℚ[X] with deg ≥ 2 has no rational root",
-      "irrational_root_of_irreducible: real roots of such p are irrational",
-      "irrational_of_minpoly_degree_ge_two: algebraic degree ≥ 2 implies irrational",
-      "X_pow_sub_prime_irreducible_int: X^n - p irreducible over ℤ (Eisenstein at (p))",
-      "eisenstein_X_pow_sub_prime: X^n - p irreducible over ℚ (Gauss lemma transfer)",
-      "irrational_nthRoot_of_prime: p^(1/n) irrational for prime p, n ≥ 2",
-      "Concrete corollaries: √2, ∛2, ∛3, ⁵√7"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "Fully proved: 0 axioms, 0 sorries"
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-12T06:00:00.000Z",
+    "phase": "NEW",
+    "since": "2026-03-12T05:32:38.519Z",
     "iteration": 1,
-    "focus": "All theorems proved, axiom eliminated.",
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - problem complete.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: All 10 theorems proved, 0 axioms, 0 sorries. Eisenstein criterion + Gauss lemma fully formalized.",
-    "builtItems": [
-      "X_pow_sub_prime_irreducible_int: Eisenstein criterion over ℤ at prime ideal (p) (NthRootIrrationalOQ01.lean:97-132)",
-      "eisenstein_X_pow_sub_prime: Gauss lemma transfer ℤ→ℚ (NthRootIrrationalOQ01.lean:137-146)",
-      "irreducible_no_rational_root: core factorization argument (NthRootIrrationalOQ01.lean:44-59)",
-      "irrational_root_of_irreducible: algebraMap injection argument (NthRootIrrationalOQ01.lean:67-77)",
-      "irrational_of_minpoly_degree_ge_two: minpoly bridge (NthRootIrrationalOQ01.lean:84-89)",
-      "irrational_nthRoot_of_prime: rpow root-of-polynomial argument (NthRootIrrationalOQ01.lean:162-173)",
-      "natDegree_X_pow_sub_C_eq: degree computation helper (NthRootIrrationalOQ01.lean:149-154)",
-      "Concrete corollaries: irrational_sqrt2, irrational_cbrt2, irrational_cbrt3, irrational_fifthrt7 (NthRootIrrationalOQ01.lean:180-193)"
-    ],
-    "insights": [
-      "Eisenstein criterion API: Polynomial.irreducible_of_eisenstein_criterion requires 6 goals: prime ideal, leading coeff not in P, lower coeffs in P, positive degree, constant coeff not in P², isPrimitive",
-      "Gauss lemma: IsPrimitive.Int.irreducible_iff_irreducible_map_cast transfers irreducibility ℤ→ℚ; use convert+ext+simp for coefficient matching",
-      "coeff_X_pow uses if k = n (index first, power second), not if n = k",
-      "leadingCoeff_X_pow_sub_C and degree_X_pow_sub_C take (0 < n), while monic_X_pow_sub_C takes (n ≠ 0)",
-      "p² ∤ p proof: Int.le_of_dvd + nlinarith [sq_nonneg ((p:ℤ) - 1)]",
-      "aeval_algebraMap_apply has form: aeval (algebraMap R S x) p = algebraMap R S (aeval x p) — use ← to reverse"
-    ],
+    "progressSummary": "COMPLETE (0 axioms, 0 sorries)",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [],
+    "markdown": "# nth-root-irrational-oq-01: Knowledge\n\n## Problem Summary\n\nExtend nth-root irrationality to algebraic irrationality via irreducible polynomials.\nThe base `NthRootIrrational.lean` uses a counting argument; OQ-01 provides a structural\napproach via Eisenstein's criterion and the Gauss lemma.\n\n**Status**: COMPLETE (0 axioms, 0 sorries)\n\n## Session 2026-03-12 (Session 1) - Eisenstein + Gauss Proof\n\n**Mode**: FRESH\n**Outcome**: completed\n\n### What I Did\n- Identified the single axiom `eisenstein_X_pow_sub_prime` as the target\n- Found Mathlib APIs: `Polynomial.irreducible_of_eisenstein_criterion` and `IsPrimitive.Int.irreducible_iff_irreducible_map_cast`\n- Proved irreducibility over ℤ via Eisenstein at prime ideal (p) with 6 subgoals\n- Transferred to ℚ via Gauss lemma using `convert` + `ext` + `simp`\n- Fixed multiple API issues through 4 build iterations\n- Final result: 10 theorems, 0 axioms, 0 sorries\n\n### Key Findings\n- Eisenstein criterion requires 6 goals: prime ideal, leading coeff ∉ P, lower coeffs ∈ P, positive degree, constant coeff ∉ P², isPrimitive\n- Gauss lemma: `IsPrimitive` is a `def` not a `structure` — dot notation fails; use fully qualified function call\n- `coeff_X_pow` gives `if k = n` (index first), not `if n = k`\n- `leadingCoeff_X_pow_sub_C` and `degree_X_pow_sub_C` take `(0 < n)`, `monic_X_pow_sub_C` takes `(n ≠ 0)`\n- p² ∤ p proof: `Int.le_of_dvd` + `nlinarith [sq_nonneg ((p:ℤ) - 1)]`\n\n### Files Modified\n- `proofs/Proofs/NthRootIrrationalOQ01.lean` — eliminated axiom, all theorems proved\n\n### Next Steps\n- None — problem complete\n"
   },
-  "approaches": [
-    {
-      "name": "Eisenstein criterion + Gauss lemma",
-      "status": "succeeded",
-      "description": "Prove X^n - p irreducible over ℤ via Eisenstein at prime ideal (p), then transfer to ℚ via Gauss lemma for primitive polynomials."
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "algebra",
-    "irrationality",
-    "eisenstein-criterion",
-    "gauss-lemma",
-    "irreducible-polynomials"
+    "irrationality"
   ],
-  "relatedProofs": [
-    "NthRootIrrational.lean (counting-argument approach)",
-    "InverseGalois.lean (Eisenstein pattern for X^5 - 2)"
-  ],
+  "relatedProofs": [],
   "references": {
-    "papers": [
-      "Lang, S. (2002). Algebra. Ch. IV (Polynomials).",
-      "Dummit & Foote (2004). Abstract Algebra. §9.4 (Irreducibility Criteria)."
-    ],
+    "papers": [],
     "urls": [],
-    "mathlib": [
-      "Polynomial.irreducible_of_eisenstein_criterion",
-      "IsPrimitive.Int.irreducible_iff_irreducible_map_cast",
-      "Polynomial.monic_X_pow_sub_C",
-      "Polynomial.leadingCoeff_X_pow_sub_C",
-      "Polynomial.degree_X_pow_sub_C"
-    ]
+    "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-12T06:00:00.000Z",
+  "lastUpdate": "2026-03-13T06:21:52.608Z",
+  "completed": "2026-03-13T06:21:52.608Z",
   "significance": 6,
   "tractability": 7
 }

@@ -1,8 +1,8 @@
 {
   "slug": "area-of-circle-oq-01-oq-03",
   "title": "Isoperimetric inequality: C^2 >= 4*pi*A with equality only for circles",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
+    "phase": "NEW",
     "since": "2026-02-24T17:52:20.366Z",
-    "iteration": 2,
-    "focus": "Axiom elimination: equality_implies_circle proved",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,18 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axiom count from 3 to 2 by proving equality_implies_circle algebraically. Remaining axioms: fourier_decomposition (Parseval+IBP) and exists_nice_reparam (arc-length reparametrization).",
-    "builtItems": [
-      "Converted equality_implies_circle from axiom to theorem in AreaOfCircleOQ01OQ03.lean:824"
-    ],
-    "insights": [
-      "equality_implies_circle was axiom but is purely algebraic: set r=C/(2π), then C=2πr and A=πr² follow from 4πA=C² via field_simp+linarith"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove fourier_decomposition from Mathlib tsum_sq_fourierCoeff + IBP on AddCircle (~200 lines)",
-      "Prove exists_nice_reparam via inverse function theorem (harder, needs Mathlib infrastructure)"
-    ]
+    "nextSteps": []
   },
   "approaches": [],
   "tags": [
@@ -58,7 +51,8 @@
     "mathlib": []
   },
   "started": "2026-02-25T19:36:59.224Z",
-  "lastUpdate": "2026-02-25T19:36:59.224Z",
+  "lastUpdate": "2026-03-13T06:21:52.594Z",
+  "completed": "2026-03-13T06:21:52.594Z",
   "significance": 8,
   "tractability": 5
 }

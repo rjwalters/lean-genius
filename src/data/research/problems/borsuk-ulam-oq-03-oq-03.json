@@ -1,7 +1,7 @@
 {
   "slug": "borsuk-ulam-oq-03-oq-03",
   "title": "Constructive 2D Borsuk-Ulam via Tucker Lemma",
-  "phase": "NEW",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,44 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Computational Tucker 2D verifications added (5-vertex 64 cases, 9-vertex 1024 cases). Boundary parity theorems proved. Mathlib fixes applied. 7 new theorems in Part XX, file at 1402 lines.",
-    "builtItems": [
-      "segmentParam: line segment parametrization (Part XVIII)",
-      "ivt_segment_fst/snd: IVT zero-crossing on segments (Part XVIII)",
-      "complementary_edge_zero_fst/snd: zero from opposite signs (Part XVIII)",
-      "dominant_component_small_at_zero: dominant component bound (Part XIX)",
-      "non_dominant_at_zero_bound: |g(w)| ≤ 2·dist at IVT zero (Part XIX)",
-      "TLabel type with neg and isComplementary (Part XX)",
-      "tucker_2d_5vertex: Tucker 2D for 5-vertex disk (64 cases, decide)",
-      "tucker_2d_9vertex: Tucker 2D for 9-vertex grid (1024 cases, native_decide)",
-      "antipodal_necessary: constant labeling counterexample",
-      "boundary_parity_5vertex: even complementary boundary edges (16 cases, decide)",
-      "boundary_parity_9vertex: even complementary boundary edges (256 cases, native_decide)",
-      "Fixed segmentParam_dist_le for current Mathlib",
-      "Fixed complementary_edge_zero_fst/snd for current Mathlib"
-    ],
-    "insights": [
-      "Tucker 2D lemma is computationally verifiable for finite triangulations via decide/native_decide",
-      "5-vertex centrally-symmetric disk: 64 labelings, all have complementary edge (proved by decide)",
-      "9-vertex 3x3 grid: 1024 labelings, all have complementary edge (proved by native_decide)",
-      "Boundary parity theorem: number of complementary boundary edges is always even",
-      "Antipodal condition is necessary: constant labeling counterexample has no complementary edges",
-      "IVT on line segments is the key tool for extracting zeros from complementary edges",
-      "Dominant component labeling ensures both components are small at IVT zeros",
-      "3 axioms remain: tuckers_lemma, complementary_edge_gives_approximate_zero, tucker_disk_approx_zero",
-      "Scaling to 25-vertex (4^17 cases) infeasible with brute-force decide/native_decide"
-    ],
-    "mathlibGaps": [
-      "No Tucker's lemma proof in Mathlib (axiomatized in BorsukUlamOQ01)",
-      "No Borsuk-Ulam theorem in Mathlib",
-      "No triangulated disk/simplicial complex combinatorial library in Mathlib"
-    ],
-    "nextSteps": [
-      "Try to eliminate axiom complementary_edge_gives_approximate_zero using IVT + uniform continuity",
-      "Try 13-vertex triangulation (hexagonal or refined cross) as intermediate scaling step",
-      "Prove boundary parity theorem structurally (not just computationally)",
-      "Build Fintype instance for grid vertices to connect Tucker axiom to concrete grids"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "approaches": [],
@@ -84,7 +51,7 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.175Z",
-  "lastUpdate": "2026-03-07T18:02:01.175Z",
+  "lastUpdate": "2026-03-13T07:52:17.061Z",
   "significance": 7,
   "tractability": 6
 }

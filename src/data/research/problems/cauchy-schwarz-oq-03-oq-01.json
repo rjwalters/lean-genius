@@ -1,8 +1,8 @@
 {
   "slug": "cauchy-schwarz-oq-03-oq-01",
   "title": "Hölder's inequality equality case formalization",
-  "phase": "COMPLETE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-12T09:00:04Z",
-    "iteration": 2,
-    "focus": "All theorems proved, no axioms remain",
+    "phase": "NEW",
+    "since": "2026-03-06T22:03:59.699Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - problem complete",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,16 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Proved holder_eq_integral theorem, removing the last axiom. File is now fully proved (0 axioms, 0 sorries). Covers CS equality via Lagrange identity, Hölder equality via Young deficit, inner product spaces, and integral Hölder equality.",
-    "builtItems": [
-      "Proved theorem holder_eq_integral in CauchySchwarzOQ03OQ01.lean:760 (normalization reduction for integral case)"
-    ],
-    "insights": [
-      "Normalization for integral Hölder: divide f by (∫f^p)^{1/p}, g by (∫g^q)^{1/q}, apply normalized theorem",
-      "EventuallyEq typing is critical: filter_upwards produces Eventually, need EventuallyEq annotation for .symm",
-      "Real.div_rpow gives (f/a)^p = f^p/a^p for non-negative f,a",
-      "Integrability of normalized functions via Integrable.div_const + Integrable.congr"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -55,7 +48,8 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.175Z",
-  "lastUpdate": "2026-03-12T09:00:04Z",
+  "lastUpdate": "2026-03-12T17:29:54.444Z",
+  "completed": "2026-03-12T17:29:54.444Z",
   "significance": 6,
   "tractability": 6
 }
