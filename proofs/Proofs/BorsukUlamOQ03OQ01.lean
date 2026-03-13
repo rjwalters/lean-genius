@@ -914,23 +914,149 @@ theorem compl_opposite_sign {a b : ℤ} (ha : a ≠ 0) (hb : b ≠ 0) (h : a + b
   · have hb_neg : b < 0 := by linarith
     rw [signZ_pos ha ha_pos, signZ_neg hb hb_neg]; ring
 
+/-- signZ only takes values 1 or -1. -/
+private lemma signZ_val (a : ℤ) (ha : a ≠ 0) : signZ a ha = 1 ∨ signZ a ha = -1 := by
+  unfold signZ; split_ifs <;> [left; right] <;> rfl
+
+/-- signZ is determined by positivity. -/
+private lemma signZ_eq_iff {a b : ℤ} (ha : a ≠ 0) (hb : b ≠ 0) :
+    signZ a ha = signZ b hb ↔ (0 < a ↔ 0 < b) := by
+  unfold signZ; split_ifs with h1 h2 h2 <;> simp_all <;> omega
+
+/-- Count of sign changes along a path of nonzero integers.
+    Defined using ℕ indices to avoid Fin manipulation in proofs. -/
+private def signChangeCount (L : ℕ → ℤ) (hL : ∀ k, L k ≠ 0) (len : ℕ) : ℕ :=
+  (Finset.range len).filter (fun i => signZ (L i) (hL i) ≠ signZ (L (i + 1)) (hL _)) |>.card
+
+/-- **Sign change parity (ℕ-indexed version)**: The parity of sign changes
+    equals whether endpoint signs differ. -/
+private lemma sign_change_parity_nat (n : ℕ) (L : ℕ → ℤ) (hL : ∀ k, L k ≠ 0) :
+    (signZ (L 0) (hL 0) ≠ signZ (L (n + 1)) (hL _)) ↔ Odd (signChangeCount L hL (n + 1)) := by
+  induction n with
+  | zero =>
+    -- One edge: sign change iff endpoints differ
+    simp only [signChangeCount, Finset.range_one]
+    constructor
+    · intro h
+      have : ({0} : Finset ℕ).filter (fun i =>
+          signZ (L i) (hL i) ≠ signZ (L (i + 1)) (hL _)) = {0} := by
+        simp [Finset.filter_singleton, h]
+      rw [this]; exact ⟨0, by ring⟩
+    · intro ⟨k, hk⟩
+      by_contra h
+      push_neg at h
+      have : ({0} : Finset ℕ).filter (fun i =>
+          signZ (L i) (hL i) ≠ signZ (L (i + 1)) (hL _)) = ∅ := by
+        simp [Finset.filter_singleton, h]
+      rw [this, Finset.card_empty] at hk; omega
+  | succ m ih =>
+    -- Split range (m + 2) = range (m + 1) ∪ {m + 1}
+    have hrange : Finset.range (m + 2) = Finset.range (m + 1) ∪ {m + 1} := by
+      ext i; simp [Finset.mem_range, Finset.mem_union, Finset.mem_singleton]; omega
+    -- The sign change count splits
+    set P := fun i => signZ (L i) (hL i) ≠ signZ (L (i + 1)) (hL _)
+    have hdisj : Disjoint (Finset.range (m + 1)) {m + 1} := by
+      simp [Finset.disjoint_singleton_right, Finset.mem_range]; omega
+    have hcard : signChangeCount L hL (m + 2) =
+        signChangeCount L hL (m + 1) + if P (m + 1) then 1 else 0 := by
+      simp only [signChangeCount, hrange]
+      rw [Finset.filter_union, Finset.card_union_of_disjoint (Finset.disjoint_filter_filter hdisj)]
+      congr 1
+      simp [Finset.filter_singleton]
+    -- By IH: signZ(L 0) ≠ signZ(L (m+1)) ↔ Odd(prefix count)
+    have ih_applied := ih L hL
+    -- Case split on whether there's a sign change at the last edge
+    by_cases hlast : P (m + 1)
+    · -- Sign change at last edge: count = prefix + 1
+      rw [hcard, if_pos hlast]
+      constructor
+      · intro hne
+        -- signZ ∈ {1,-1}, so L(0) ≠ L(m+2) and L(m+1) ≠ L(m+2) → L(0) = L(m+1)
+        have hmid : signZ (L 0) (hL 0) = signZ (L (m + 1)) (hL _) := by
+          rcases signZ_val (L 0) (hL 0) with h0 | h0 <;>
+          rcases signZ_val (L (m + 1)) (hL _) with h1 | h1 <;>
+          rcases signZ_val (L (m + 2)) (hL _) with h2 | h2 <;> simp_all
+        -- Prefix is even (not odd)
+        have heven : ¬Odd (signChangeCount L hL (m + 1)) := by
+          rwa [← ih_applied, not_not]
+        -- Even + 1 = odd
+        obtain ⟨j, hj⟩ := Nat.even_iff_not_odd.mpr heven
+        exact ⟨j, by omega⟩
+      · intro ⟨k, hk⟩
+        -- prefix + 1 odd → prefix even → L(0) = L(m+1)
+        have heven : ¬Odd (signChangeCount L hL (m + 1)) := by
+          intro ⟨j, hj⟩; omega
+        have hmid : signZ (L 0) (hL 0) = signZ (L (m + 1)) (hL _) := by
+          by_contra h; exact heven (ih_applied.mp h)
+        -- L(0) = L(m+1) and L(m+1) ≠ L(m+2) → L(0) ≠ L(m+2)
+        rcases signZ_val (L 0) (hL 0) with h0 | h0 <;>
+        rcases signZ_val (L (m + 1)) (hL _) with h1 | h1 <;>
+        rcases signZ_val (L (m + 2)) (hL _) with h2 | h2 <;> simp_all
+    · -- No sign change at last edge: count = prefix
+      rw [hcard, if_neg hlast, Nat.add_zero]
+      -- signZ(L (m+1)) = signZ(L (m+2))
+      push_neg at hlast
+      rw [ih_applied]
+      constructor
+      · intro hne
+        -- signZ(L 0) ≠ signZ(L (m+2)) and signZ(L (m+1)) = signZ(L (m+2))
+        -- So signZ(L 0) ≠ signZ(L (m+1)), hence prefix is odd
+        rwa [hlast] at hne
+      · intro hodd
+        -- Prefix odd, so signZ(L 0) ≠ signZ(L (m+1))
+        -- signZ(L (m+1)) = signZ(L (m+2)), so signZ(L 0) ≠ signZ(L (m+2))
+        rwa [hlast]
+
+/-- Bridge: convert ℕ-indexed sign change count to Fin-indexed filter card. -/
+private lemma signChangeCount_eq_filter_card (n : ℕ) (L : Fin (n + 2) → ℤ)
+    (hnonzero : ∀ i, L i ≠ 0) :
+    let L' := fun k => L ⟨min k (n + 1), by omega⟩
+    let hL' : ∀ k, L' k ≠ 0 := fun k => hnonzero _
+    signChangeCount L' hL' (n + 1) =
+    (Finset.univ.filter (fun i : Fin (n + 1) =>
+      signZ (L i.castSucc) (hnonzero _) ≠ signZ (L i.succ) (hnonzero _))).card := by
+  -- Both count sign changes over positions 0..n
+  -- The ℕ version uses Finset.range (n+1), the Fin version uses Finset.univ (Fin (n+1))
+  -- They biject via i ↦ ⟨i, ...⟩
+  simp only [signChangeCount]
+  apply Finset.card_filter_congr_bij (fun i => ⟨i.1, by have := i.2; simp [Finset.mem_range] at this; exact this⟩)
+    (fun i _ => Finset.mem_univ _) (fun i j _ _ h => by ext; exact Fin.mk.inj h)
+    (fun j _ => ⟨⟨j, by simp [Finset.mem_range]; exact j.isLt⟩, Finset.mem_range.mpr j.isLt, by ext; simp⟩)
+  intro i hi
+  -- Need: signZ (L' i) = signZ (L i.castSucc) and signZ (L' (i+1)) = signZ (L i.succ)
+  -- L' i = L ⟨min i (n+1), ...⟩ and for i < n+1: min i (n+1) = i
+  -- i.castSucc = ⟨i, ...⟩ (same value)
+  simp only [Finset.mem_range] at hi
+  have hi' : i < n + 1 := hi
+  congr 1 <;> congr 1 <;> ext <;> simp [Fin.castSucc, Fin.succ, Nat.min_eq_left (by omega)]
+
 /-- **Sign product telescope**: On a path of nonzero integers, the product
     of signs of adjacent pairs telescopes to sign(first) * sign(last).
 
-    Specifically: ∏ᵢ (signZ(L(i)) * signZ(L(i+1))) = signZ(L(0))^(n+1) * signZ(L(last))^(n+1)
-    Actually the cleaner statement: the number of sign changes has the same
-    parity as whether the endpoints have the same or different signs. -/
+    The number of sign changes has the same parity as whether
+    the endpoints have the same or different signs. -/
 theorem sign_change_count_parity (n : ℕ) (L : Fin (n + 2) → ℤ)
     (hnonzero : ∀ i, L i ≠ 0)
     (hcompl : L 0 + L (Fin.last (n + 1)) = 0) :
     Odd (Finset.card (Finset.univ.filter (fun i : Fin (n + 1) =>
       signZ (L i.castSucc) (hnonzero _) ≠ signZ (L i.succ) (hnonzero _)))) := by
-  -- The proof proceeds by showing the product of sign(L(i))/sign(L(i+1))
-  -- telescopes to sign(L(0)) * sign(L(last)) = -1 (by compl_opposite_sign),
-  -- so an odd number of factors are -1, meaning an odd number of sign changes.
-  -- The induction on n handles base case (n=0: one edge, necessarily a sign change)
-  -- and step (extend path by one vertex, parity depends on last edge sign change).
-  sorry
+  -- Lift to ℕ-indexed version
+  set L' := fun k => L ⟨min k (n + 1), by omega⟩
+  have hL' : ∀ k, L' k ≠ 0 := fun k => hnonzero _
+  -- The filter card equals the ℕ-indexed count
+  rw [← signChangeCount_eq_filter_card]
+  -- Apply the ℕ-indexed parity lemma
+  apply (sign_change_parity_nat n L' hL').mp
+  -- Need: signZ(L' 0) ≠ signZ(L' (n+1))
+  -- L' 0 = L 0 and L' (n+1) = L (Fin.last (n+1))
+  have hL'0 : L' 0 = L 0 := by simp [L', Nat.min_eq_left (by omega)]
+  have hL'last : L' (n + 1) = L (Fin.last (n + 1)) := by
+    simp [L', Fin.last, Nat.min_self]
+  -- Endpoints are complementary, so signs differ
+  intro h_eq
+  have h_prod := compl_opposite_sign (hL' 0) (hL' (n + 1)) (by rw [hL'0, hL'last]; exact hcompl)
+  rw [h_eq] at h_prod
+  rcases signZ_val (L' (n + 1)) (hL' _) with h | h <;> simp [h] at h_prod
 
 /-
 ## Section XXIII: Tucker 2D — Verified Small Examples
@@ -1028,8 +1154,9 @@ theorem tucker_2d_via_path
 - Tucker 2D verified examples ({±1, ±2} labels)
 - Tucker 2D for ±1 labels via path reduction (tucker_2d_via_path)
 
-**IN PROGRESS** (1 sorry):
-- Sign change count parity (inductive step)
+**FULLY PROVED** (0 sorries):
+- Sign change count parity (proved by induction on ℕ-indexed paths)
+- All supporting lemmas including signZ properties and bridge lemma
 
 **AXIOMATIZED** (2 axioms, unchanged):
 - Tucker's Lemma 2D general (tucker_2d)
