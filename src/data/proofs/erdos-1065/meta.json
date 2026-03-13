@@ -68,42 +68,48 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 4,
-      "summary": "Imports Mathlib prime basics, finite set infrastructure, natural number arithmetic, and tactic framework."
+      "summary": "Imports Mathlib prime basics, finite set infrastructure, natural number arithmetic, and tactic framework.",
+      "mathContext": "Uses `Nat.Prime`, `Set.Infinite`, `Set.Finite`, `Finset`, and decision procedures (`decide`, `norm_num`) from Mathlib."
     },
     {
       "id": "definitions",
       "title": "Form Definitions",
       "startLine": 24,
       "endLine": 32,
-      "summary": "Defines IsTwoTimePrimePlusOne (p = 2^k · q + 1) and IsTwoThreeTimePrimePlusOne (p = 2^k · 3^l · q + 1) predicates."
+      "summary": "Defines IsTwoTimePrimePlusOne (p = 2^k · q + 1) and IsTwoThreeTimePrimePlusOne (p = 2^k · 3^l · q + 1) predicates.",
+      "mathContext": "$\\text{Form A}: p \\text{ prime} \\wedge \\exists q \\in \\mathbb{P}, k \\in \\mathbb{N}: p = 2^k q + 1$. $\\text{Form B}: p \\text{ prime} \\wedge \\exists q \\in \\mathbb{P}, k, l \\in \\mathbb{N}: p = 2^k \\cdot 3^l \\cdot q + 1$."
     },
     {
       "id": "main-conjectures",
       "title": "Main Conjectures (OPEN)",
       "startLine": 34,
       "endLine": 42,
-      "summary": "States both variants of the infinitude conjecture as Set.Infinite axioms."
+      "summary": "States both variants of the infinitude conjecture as Set.Infinite axioms.",
+      "mathContext": "Conjecture A: $|\\{p \\in \\mathbb{P} : \\exists q \\in \\mathbb{P}, k: p = 2^k q + 1\\}| = \\infty$. Conjecture B: $|\\{p \\in \\mathbb{P} : \\exists q \\in \\mathbb{P}, k, l: p = 2^k 3^l q + 1\\}| = \\infty$."
     },
     {
       "id": "examples",
       "title": "Verified Examples and Non-Example",
       "startLine": 44,
       "endLine": 104,
-      "summary": "Computationally verified: 8 Form A primes ≤ 100 (3, 5, 7, 11, 13, 29, 41, 97), one Form B-only example (61), and a non-example (37)."
+      "summary": "Computationally verified: 8 Form A primes ≤ 100 (3, 5, 7, 11, 13, 29, 41, 97), one Form B-only example (61), and a non-example (37).",
+      "mathContext": "$(p, k, q)$: $(3,0,2), (5,1,2), (7,1,3), (11,1,5), (13,2,3), (29,2,7), (41,3,5), (97,5,3)$. Separating example: $61 = 2^2 \\cdot 3 \\cdot 5 + 1$ (Form B only). Non-example: $37 - 1 = 36 = 2^2 \\cdot 3^2$ ($\\{2,3\\}$-smooth, no extra prime factor)."
     },
     {
       "id": "structural-theorems",
       "title": "Structural Theorems and Implications",
       "startLine": 106,
       "endLine": 136,
-      "summary": "Proves Form A ⊆ Form B, safe primes ⊆ Form A, smooth structure of p−1, and Conjecture A ⇒ Conjecture B."
+      "summary": "Proves Form A ⊆ Form B, safe primes ⊆ Form A, smooth structure of p−1, and Conjecture A ⇒ Conjecture B.",
+      "mathContext": "$\\{\\text{safe primes}\\} \\subseteq \\{\\text{Form A}\\} \\subseteq \\{\\text{Form B}\\}$ via $k=1$ and $l=0$ specializations. Form A implies $\\omega(p-1) \\leq 2$. Uses `Set.Infinite.mono` for infinitude lifting."
     },
     {
       "id": "computational",
       "title": "Computational Verification",
       "startLine": 138,
       "endLine": 163,
-      "summary": "Decidable check function for Form A membership and collective verification of all eight examples."
+      "summary": "Decidable check function for Form A membership and collective verification of all eight examples.",
+      "mathContext": "Algorithm: for each $k = 0, \\ldots, p-1$, check if $2^k \\mid (p-1)$ and $(p-1)/2^k$ is prime. Collectively verifies $\\forall p \\in \\{3,5,7,11,13,29,41,97\\}: \\text{IsTwoTimePrimePlusOne}(p)$."
     }
   ],
   "overview": {

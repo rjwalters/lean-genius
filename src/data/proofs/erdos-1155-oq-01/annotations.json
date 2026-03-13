@@ -1,5 +1,20 @@
 [
   {
+    "id": "ann-e1155-setup",
+    "proofId": "erdos-1155-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 16
+    },
+    "type": "context",
+    "title": "Module Header and Imports",
+    "content": "Documents the file's scope: extending the parent Erdos1155Problem.lean formalization to analyze the gap between the Bohman-Frieze-Lubetzky (BFL) $n^{3/2+o(1)}$ result and Erdős's conjectured $\\Theta(n^{3/2})$. Imports all of Mathlib to access filters (`Filter.Eventually`, `atTop`), real powers (`Real.rpow`), simple graph clique theory, and topological convergence (`Tendsto`, `nhds`). The `open` declarations bring `Filter`, `SimpleGraph`, and `Finset` into scope for concise notation.",
+    "mathContext": "Uses Mathlib's filter-based asymptotics: $\\forall^\\infty n$ means `Filter.Eventually` in `atTop`, and convergence uses `Filter.Tendsto` into `nhds`.",
+    "significance": "context",
+    "relatedConcepts": ["Mathlib", "Filter.Eventually", "atTop", "SimpleGraph"],
+    "prerequisites": ["Lean 4", "Mathlib"]
+  },
+  {
     "id": "ann-e1155-triangle-defs",
     "proofId": "erdos-1155-oq-01",
     "range": {
@@ -18,14 +33,14 @@
     "id": "ann-e1155-axioms",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 99,
-      "endLine": 104
+      "startLine": 83,
+      "endLine": 103
     },
     "type": "definition",
     "title": "Asymptotic Infrastructure: Axiomatized f(n) and BFL Bounds",
     "content": "Axiomatizes the triangle removal function f(n) = triangleRemovalEdges n with basic properties (non-negative, bounded by n(n-1)/2) and the BFL (Bohman-Frieze-Lubetzky 2015) bounds: for any ε > 0, eventually n^{3/2-ε} ≤ f(n) ≤ n^{3/2+ε}.\n\nThe Erdős conjecture erdos_1155_conjecture asks for the stronger statement: ∃ c₁, c₂ > 0 such that c₁·n^{3/2} ≤ f(n) ≤ c₂·n^{3/2} eventually. The gap between BFL and the conjecture is precisely the difference between sub-polynomial bounds (n^{±ε}) and constant bounds.",
     "mathContext": "The triangle removal process on $K_n$: repeatedly select a triangle uniformly at random and remove its edges, continuing until the graph is triangle-free. $f(n)$ counts the remaining edges. BFL proved $f(n) = n^{3/2+o(1)}$ a.s., meaning for any $\\varepsilon > 0$: $n^{3/2-\\varepsilon} \\leq f(n) \\leq n^{3/2+\\varepsilon}$ eventually.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["triangle removal process", "random graphs", "asymptotics", "Filter.Eventually"],
     "prerequisites": ["Filter.Eventually", "atTop", "Real.rpow"]
   },
@@ -75,6 +90,21 @@
     "prerequisites": ["bfl_upper_bound", "bfl_lower_bound", "Real.rpow_lt_rpow_of_exponent_lt"]
   },
   {
+    "id": "ann-e1155-small-values",
+    "proofId": "erdos-1155-oq-01",
+    "range": {
+      "startLine": 261,
+      "endLine": 277
+    },
+    "type": "concept",
+    "title": "Small Values and Base Cases",
+    "content": "Establishes trivial bounds for small $n$: $f(0) \\leq 0$ (no vertices), $f(1) \\leq 0$ (no edges), and $f(2) \\leq 1$ (one edge, no triangles to remove). These follow directly from the axiomatized bound $f(n) \\leq n(n-1)/2$ on the complete graph edge count. While elementary, these base cases ground the asymptotic analysis in concrete values and verify that the axiomatization is consistent with the combinatorial reality.",
+    "mathContext": "$f(0) = 0, \\; f(1) = 0, \\; f(2) \\leq 1$ from $f(n) \\leq \\binom{n}{2} = n(n-1)/2$.",
+    "significance": "technical",
+    "relatedConcepts": ["complete graph", "edge count", "base cases"],
+    "prerequisites": ["triangleRemovalEdges_le_complete"]
+  },
+  {
     "id": "ann-e1155-sufficient-conditions",
     "proofId": "erdos-1155-oq-01",
     "range": {
@@ -108,10 +138,10 @@
     "id": "ann-e1155-mantel",
     "proofId": "erdos-1155-oq-01",
     "range": {
-      "startLine": 387,
+      "startLine": 383,
       "endLine": 403
     },
-    "type": "theorem",
+    "type": "concept",
     "title": "Mantel/Turán Connection and BFL Improvement",
     "content": "Connects the triangle removal process to Mantel's theorem (1907): the terminal graph is triangle-free, so f(n) ≤ n²/4. The BFL bound f(n) ≤ n^{7/4} (taking ε = 1/4) is much tighter: n^{7/4} = o(n²).\n\nThe Mantel bound is axiomatized since it requires graph-theoretic machinery not in this file.",
     "mathContext": "Mantel's theorem (1907): a triangle-free graph on $n$ vertices has at most $\\lfloor n^2/4 \\rfloor$ edges. BFL gives $f(n) \\leq n^{7/4}$, which is $O(n^{1.75})$ vs Mantel's $O(n^2)$.",

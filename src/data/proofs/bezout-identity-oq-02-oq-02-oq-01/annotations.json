@@ -1,5 +1,20 @@
 [
   {
+    "id": "ann-bezout-module",
+    "proofId": "bezout-identity-oq-02-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "context",
+    "title": "Module Structure and Open Question Origin",
+    "content": "Imports `Nat.GCD.Basic` for natural number GCD, `Data.Int.GCD` for integer GCD, and `Mathlib.Tactic` for proof automation (including `linear_combination` and `native_decide`). The module documentation traces the open question back through the bezout-identity chain: starting from the basic Bézout identity (OQ-01), through Euclid's lemma generalization (OQ-02), to this constructive algorithm (OQ-02-OQ-01). The key formula $q = uc + vk$ is previewed in the header.",
+    "mathContext": "The open question asks whether Bézout coefficients can be combined with Euclid's lemma algorithmically. The affirmative answer: $ua + vb = 1$ and $a | bc$ yield explicit $q = uc + vk$ with $aq = c$.",
+    "significance": "context",
+    "relatedConcepts": ["open question chain", "constructive mathematics", "Bézout coefficients"],
+    "prerequisites": ["Mathlib", "Nat.GCD.Basic"]
+  },
+  {
     "id": "ann-bezout-extgcd",
     "proofId": "bezout-identity-oq-02-oq-02-oq-01",
     "range": {
@@ -25,7 +40,7 @@
     "title": "The Core Quotient Formula",
     "content": "The heart of the construction: in ANY CommRing, given u*a + v*b = 1 (Bézout) and b*c = a*k (divisibility witness), we have a*(u*c + v*k) = c. The proof is a beautiful calc chain: expand by ring → substitute a*k = b*c → factor as (u*a + v*b)*c → apply Bézout → simplify 1*c = c.\n\neuclids_lemma_constructive wraps this into a divisibility statement: the explicit witness is ⟨u*c + v*k, proof⟩. The ring-axiomatic generality means this works for integers, polynomials, Gaussian integers, and any commutative ring.",
     "mathContext": "The formula $q = uc + vk$ is the constructive content of Euclid's lemma. Classically, the proof is non-constructive: \"since $\\gcd(a,b) = 1$ and $a | bc$, therefore $a | c$.\" The constructive version gives an explicit algorithm: compute $u, v$ via extended GCD, extract $k$ from the divisibility proof, and return $uc + vk$.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Euclid's lemma", "CommRing", "constructive mathematics", "divisibility witness", "calc chain"],
     "prerequisites": ["CommRing", "one_mul"]
   },

@@ -123,65 +123,74 @@
       "title": "Imports",
       "startLine": 1,
       "endLine": 3,
-      "summary": "Imports Nat.GCD.Basic, Data.Int.GCD, and Mathlib.Tactic for the proof."
+      "summary": "Imports Nat.GCD.Basic, Data.Int.GCD, and Mathlib.Tactic for the proof.",
+      "mathContext": "Requires `Nat.gcd`, `Nat.mod_lt`, `Nat.div_add_mod` from GCD module, integer arithmetic from `Data.Int.GCD`, and `linear_combination`/`native_decide` tactics."
     },
     {
       "id": "module-doc",
       "title": "Module Documentation",
       "startLine": 5,
       "endLine": 23,
-      "summary": "Documents the open question origin, the affirmative answer, and the key formula u*c + v*k."
+      "summary": "Documents the open question origin, the affirmative answer, and the key formula u*c + v*k.",
+      "mathContext": "Key formula: if $ua + vb = 1$ and $a | bc$ with $bc = ak$, then $q = uc + vk$ satisfies $aq = c$."
     },
     {
       "id": "extgcd",
       "title": "Part I: The Extended Euclidean Algorithm",
       "startLine": 25,
       "endLine": 82,
-      "summary": "Self-contained extGcd implementation with extGcd_gcd (returns gcd via strong induction), extGcd_bezout (Bézout identity via linear_combination), and extGcd_correct (combined). Termination by Nat.mod_lt."
+      "summary": "Self-contained extGcd implementation with extGcd_gcd (returns gcd via strong induction), extGcd_bezout (Bézout identity via linear_combination), and extGcd_correct (combined). Termination by Nat.mod_lt.",
+      "mathContext": "Computes $(x, y, g)$ with $ax + by = g = \\gcd(a,b)$. Recursion: $\\text{extGcd}(a, b+1)$ reduces via $a \\bmod (b+1) < b+1$."
     },
     {
       "id": "quotient-formula",
       "title": "Part II: The Core Quotient Formula",
       "startLine": 84,
       "endLine": 107,
-      "summary": "quotient_formula proves a*(u*c + v*k) = c in any CommRing via calc chain. euclids_lemma_constructive wraps this as a divisibility statement with explicit witness."
+      "summary": "quotient_formula proves a*(u*c + v*k) = c in any CommRing via calc chain. euclids_lemma_constructive wraps this as a divisibility statement with explicit witness.",
+      "mathContext": "$a(uc + vk) = uac + vak = uac + vbc = (ua + vb)c = 1 \\cdot c = c$. Valid in any commutative ring."
     },
     {
       "id": "constructive-algorithm",
       "title": "Part III: Constructive Algorithm for ℕ via extGcd",
       "startLine": 109,
       "endLine": 144,
-      "summary": "constructive_div combines extGcd coefficients with divisibility witness. constructive_div_correct proves a*q = c. euclids_lemma_via_extGcd packages the result."
+      "summary": "constructive_div combines extGcd coefficients with divisibility witness. constructive_div_correct proves a*q = c. euclids_lemma_via_extGcd packages the result.",
+      "mathContext": "Assembly: $(x, y, g) \\leftarrow \\text{extGcd}(a, b)$; $k \\leftarrow bc/a$; return $q = xc + yk$."
     },
     {
       "id": "computational-verification",
       "title": "Part IV: Computational Verification",
       "startLine": 146,
       "endLine": 168,
-      "summary": "Seven native_decide examples verifying extGcd outputs correct GCD values and Bézout identities for (3,7), (5,7), (17,5), and (252,198)."
+      "summary": "Seven native_decide examples verifying extGcd outputs correct GCD values and Bézout identities for (3,7), (5,7), (17,5), and (252,198).",
+      "mathContext": "E.g., $\\text{extGcd}(3,7) = (-2, 1, 1)$: $3(-2) + 7(1) = 1$. Also $\\text{extGcd}(252, 198) = (4, -5, 18)$."
     },
     {
       "id": "uniqueness",
       "title": "Part V: Quotient Uniqueness",
       "startLine": 170,
       "endLine": 180,
-      "summary": "constructive_quotient_unique: in an integral domain with a ≠ 0, the quotient is unique via mul_left_cancel₀."
+      "summary": "constructive_quotient_unique: in an integral domain with a ≠ 0, the quotient is unique via mul_left_cancel₀.",
+      "mathContext": "$a \\neq 0, \\; aq_1 = c = aq_2 \\implies q_1 = q_2$ by cancellation (no zero divisors)."
     },
     {
       "id": "abstract-algebra",
       "title": "Part VI: Connection to Abstract Algebra",
       "startLine": 182,
       "endLine": 200,
-      "summary": "abstract_euclids_lemma via IsCoprime, confirming agreement with Mathlib's IsCoprime.dvd_of_dvd_mul_left. Our version additionally provides the explicit quotient formula."
+      "summary": "abstract_euclids_lemma via IsCoprime, confirming agreement with Mathlib's IsCoprime.dvd_of_dvd_mul_left. Our version additionally provides the explicit quotient formula.",
+      "mathContext": "Mathlib's `IsCoprime a b` $\\equiv \\exists u v, ua + vb = 1$. Our construction is compatible but additionally exposes $q = uc + vk$."
     }
   ],
   "conclusion": {
-    "summary": "The answer is YES: Bézout coefficients from extGcd combine with the quotient formula to give a constructive divisibility algorithm. The explicit quotient q = u*c + v*k is correct in any CommRing, computed over ℕ via the extended Euclidean algorithm, and unique in integral domains. Zero sorries.",
-    "implications": "Completes the bezout-identity open question chain with a fully constructive algorithm The ring-axiomatic quotient formula works in polynomial rings, Gaussian integers, and any Bézout domain Demonstrates that classical existence proofs in number theory often contain implicit algorithms that can be extracted The extended GCD provides modular inverses: when gcd(a,b) = 1, the Bézout coefficient u is the inverse of a mod b",
+    "summary": "The answer is YES: Bézout coefficients from extGcd combine with the quotient formula to give a constructive divisibility algorithm. The explicit quotient $q = uc + vk$ is correct in any CommRing, computed over $\\mathbb{N}$ via the extended Euclidean algorithm, and unique in integral domains. Zero sorries.",
+    "implications": "- Completes the bezout-identity open question chain with a fully constructive algorithm\n- The ring-axiomatic quotient formula works in polynomial rings, Gaussian integers, and any Bézout domain\n- Demonstrates that classical existence proofs in number theory often contain implicit algorithms that can be extracted\n- The extended GCD provides modular inverses: when $\\gcd(a,b) = 1$, the Bézout coefficient $u$ is the inverse of $a \\bmod b$",
     "openQuestions": [
       "Can the noncomputable annotation be removed by making the divisibility witness computable (e.g., via decidable divisibility)?",
       "Can the algorithm be extended to multivariate Bézout identities in polynomial rings?",
-      "Can the complexity bound O(log min(a,b)) for extGcd be formalized?"
+      "Can the complexity bound $O(\\log \\min(a,b))$ for extGcd be formalized in Lean?",
+      "Can the quotient formula be generalized to non-commutative rings (e.g., matrix rings) where Euclid's lemma fails?"
     ]
   }
 }
