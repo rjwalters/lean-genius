@@ -1,8 +1,8 @@
 {
   "slug": "area-of-circle-oq-01-oq-03",
   "title": "Isoperimetric inequality: C^2 >= 4*pi*A with equality only for circles",
-  "phase": "COMPLETED",
-  "status": "graduated",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-02-24T17:52:20.366Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "COMPLETE",
+    "since": "2026-03-13",
+    "iteration": 2,
+    "focus": "Axiom elimination: equality_implies_circle proved, 2 axioms remain",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Reduced axiom count from 3 to 2 by proving equality_implies_circle algebraically. Remaining axioms: fourier_decomposition (needs IBP on AddCircle, ~200 lines) and exists_nice_reparam (needs inverse function theorem).",
+    "builtItems": [
+      "Converted equality_implies_circle from axiom to theorem in AreaOfCircleOQ01OQ03.lean:824",
+      "Proved equality_implies_circle theorem in AreaOfCircleOQ01OQ03.lean (was axiom)"
+    ],
+    "insights": [
+      "equality_implies_circle was axiom but is purely algebraic: set r=C/(2π), then C=2πr and A=πr² follow from 4πA=C² via field_simp+linarith",
+      "equality_implies_circle is purely algebraic: set r=C/(2π), then C=2πr and A=πr² follow from 4πA=C² via field_simp/linarith"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove fourier_decomposition: lift periodic f to AddCircle, use tsum_sq_fourierCoeff (Parseval), prove IBP for Fourier coeffs (~200 lines)",
+      "Prove exists_nice_reparam: arc-length reparametrization via inverse function theorem (harder, needs Mathlib infrastructure)",
+      "IBP key gap: fourierCoeff(deriv f) n = n*I*fourierCoeff f n not in Mathlib",
+      "Real/complex bridge needed: convert Mathlib complex fourierCoeff to real cₙ coefficients"
+    ]
   },
   "approaches": [],
   "tags": [
@@ -51,8 +62,7 @@
     "mathlib": []
   },
   "started": "2026-02-25T19:36:59.224Z",
-  "lastUpdate": "2026-03-13T06:21:52.594Z",
-  "completed": "2026-03-13T06:21:52.594Z",
+  "lastUpdate": "2026-02-25T19:36:59.224Z",
   "significance": 8,
   "tractability": 5
 }

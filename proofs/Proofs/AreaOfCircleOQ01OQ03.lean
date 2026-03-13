@@ -26,7 +26,7 @@
   - Fourier basis on L²(AddCircle T): available
   - Parseval's identity: available (tsum_sq_fourierCoeff)
 
-  What This File Proves (28 theorems, 2 axioms, 0 sorries):
+  What This File Proves (29 theorems, 2 axioms, 0 sorries):
   1. Equality for circles: C² = 4πA  (ring computation)
   2. Strict inequality for squares: C² > 4πA  (π < 4)
   3. The isoperimetric ratio: A/(C²/4π) and its circle value
@@ -819,12 +819,29 @@ theorem circle_satisfies_isoperimetric (r : ℝ) (hr : 0 < r) :
     C ^ 2 = 4 * π * A := by
   exact circle_isoperimetric_equality r
 
-/-- If a smooth closed curve achieves equality, it is a circle.
-    (Equality condition in Wirtinger: only sinusoidal functions give equality) -/
-axiom equality_implies_circle (γ : SmoothClosedCurve)
+/-- If a smooth closed curve achieves equality 4πA = C², then its circumference
+    and area match those of a circle of radius r = C/(2π).
+    This is purely algebraic: C = 2πr and A = C²/(4π) = πr². -/
+theorem equality_implies_circle (γ : SmoothClosedCurve)
     (heq : 4 * π * γ.area = γ.circumference ^ 2) :
     ∃ (r : ℝ) (hx : γ.circumference = circleCirc r),
-      γ.area = circleArea r
+      γ.area = circleArea r := by
+  -- Set r = C / (2π)
+  refine ⟨γ.circumference / (2 * π), ?_, ?_⟩
+  · -- C = circleCirc r = 2πr = 2π · C/(2π) = C
+    unfold circleCirc
+    field_simp
+  · -- A = circleArea r = πr² = π(C/(2π))² = C²/(4π)
+    -- From heq: 4πA = C², so A = C²/(4π) = π(C/(2π))²
+    unfold circleArea
+    have hpi : π ≠ 0 := Real.pi_ne_zero
+    have h4pi : (4 : ℝ) * π ≠ 0 := by positivity
+    -- From 4πA = C²: A = C²/(4π)
+    have hA : γ.area = γ.circumference ^ 2 / (4 * π) := by
+      field_simp at heq ⊢; linarith
+    rw [hA]
+    field_simp
+    ring
 
 /-
 ## Part VII: Algebraic Corollaries of the Isoperimetric Inequality
