@@ -1459,4 +1459,143 @@ theorem mesh_refinement_principle (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuo
 #check @disk_continuity_bound
 #check @mesh_refinement_principle
 
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART XXII: GRID TRIANGULATION INFRASTRUCTURE
+
+The grid over [-1,1]² with (2N+1)² points maps Fin(2N+1) × Fin(2N+1)
+to coordinates in [-1,1]². This provides the Fintype triangulation
+needed to apply Tucker's lemma to the disk.
+
+Grid coordinates: gridCoord N i = i/N - 1, mapping 0 → -1, N → 0, 2N → 1.
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- Grid coordinate: maps Fin(2N+1) to [-1, 1] linearly.
+    gridCoord N 0 = -1, gridCoord N N = 0, gridCoord N (2N) = 1. -/
+noncomputable def gridCoord (N : ℕ) (i : Fin (2 * N + 1)) : ℝ :=
+  (i : ℝ) / N - 1
+
+/-- A grid point is a pair of indices in Fin(2N+1). -/
+abbrev GridPoint (N : ℕ) := Fin (2 * N + 1) × Fin (2 * N + 1)
+
+/-- Map a grid point to real coordinates in [-1,1]². -/
+noncomputable def gridToReal (N : ℕ) (p : GridPoint N) : ℝ × ℝ :=
+  (gridCoord N p.1, gridCoord N p.2)
+
+/-- The antipodal map on the grid: (i, j) ↦ (2N - i, 2N - j).
+    In real coordinates this maps (x, y) ↦ (-x, -y). -/
+def gridAntipodal (N : ℕ) (p : GridPoint N) : GridPoint N :=
+  (⟨2 * N - p.1.val, by omega⟩, ⟨2 * N - p.2.val, by omega⟩)
+
+-- ============================================================================
+-- Grid coordinate properties
+-- ============================================================================
+
+theorem gridCoord_zero (N : ℕ) (hN : 0 < N) :
+    gridCoord N ⟨0, by omega⟩ = -1 := by
+  simp [gridCoord, Nat.cast_pos.mpr hN |> ne_of_gt |> div_eq_zero_iff.mpr ∘ Or.inl]
+  ring_nf
+  rw [zero_div]
+
+theorem gridCoord_max (N : ℕ) (hN : 0 < N) :
+    gridCoord N ⟨2 * N, by omega⟩ = 1 := by
+  simp only [gridCoord, Fin.val_mk]
+  rw [Nat.cast_mul, Nat.cast_ofNat]
+  field_simp
+
+/-- gridCoord N i ∈ [-1, 1] for all i : Fin(2N+1). -/
+theorem gridCoord_range (N : ℕ) (hN : 0 < N) (i : Fin (2 * N + 1)) :
+    -1 ≤ gridCoord N i ∧ gridCoord N i ≤ 1 := by
+  have hN_pos : (0 : ℝ) < N := Nat.cast_pos.mpr hN
+  have hN_ne : (N : ℝ) ≠ 0 := ne_of_gt hN_pos
+  have hi_bound : (i : ℕ) ≤ 2 * N := by omega
+  constructor
+  · simp only [gridCoord]
+    have : (0 : ℝ) ≤ (i : ℝ) / N := div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+    linarith
+  · simp only [gridCoord]
+    rw [sub_le_iff_le_add, ← le_sub_iff_add_le']
+    rw [div_le_iff hN_pos]
+    push_cast
+    linarith [hi_bound]
+
+/-- Adjacent grid coordinates differ by exactly 1/N. -/
+theorem gridCoord_adjacent_diff (N : ℕ) (hN : 0 < N)
+    (i : Fin (2 * N + 1)) (j : Fin (2 * N + 1))
+    (hadj : (i : ℕ) + 1 = j) :
+    gridCoord N j - gridCoord N i = 1 / (N : ℝ) := by
+  simp only [gridCoord]
+  have hN_ne : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  field_simp
+  have : (j : ℝ) = (i : ℝ) + 1 := by exact_mod_cast hadj
+  linarith
+
+/-- The Chebyshev (sup-norm) distance between adjacent grid points is ≤ 1/N. -/
+theorem gridToReal_adjacent_dist (N : ℕ) (hN : 0 < N)
+    (p q : GridPoint N)
+    (hadj : ((p.1 : ℕ) = (q.1 : ℕ) ∧ (p.2 : ℕ) + 1 = (q.2 : ℕ)) ∨
+            ((p.1 : ℕ) + 1 = (q.1 : ℕ) ∧ (p.2 : ℕ) = (q.2 : ℕ))) :
+    dist (gridToReal N p) (gridToReal N q) ≤ 1 / (N : ℝ) := by
+  rw [Prod.dist_eq, gridToReal, gridToReal]
+  simp only
+  rcases hadj with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · -- Same row, adjacent columns
+    have heq1 : gridCoord N p.1 = gridCoord N q.1 := by
+      simp [gridCoord]; congr 1; exact_mod_cast h1
+    rw [heq1, dist_self, max_eq_right dist_nonneg]
+    rw [Real.dist_eq, gridCoord_adjacent_diff N hN p.2 q.2 h2, abs_of_pos (by positivity)]
+  · -- Adjacent rows, same column
+    have heq2 : gridCoord N p.2 = gridCoord N q.2 := by
+      simp [gridCoord]; congr 1; exact_mod_cast h2
+    rw [heq2, dist_self, max_eq_left dist_nonneg]
+    rw [Real.dist_eq, gridCoord_adjacent_diff N hN p.1 q.1 h1, abs_of_pos (by positivity)]
+
+-- ============================================================================
+-- Antipodal map properties
+-- ============================================================================
+
+/-- The antipodal map negates real coordinates: gridToReal(antip(p)) = -gridToReal(p). -/
+theorem gridAntipodal_neg (N : ℕ) (hN : 0 < N) (p : GridPoint N) :
+    gridToReal N (gridAntipodal N p) =
+      Prod.map Neg.neg Neg.neg (gridToReal N p) := by
+  simp only [gridToReal, gridAntipodal, gridCoord, Prod.map, Fin.val_mk]
+  constructor <;> {
+    push_cast
+    have hN_ne : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+    field_simp
+    ring
+  }
+
+-- ============================================================================
+-- Grid labeling
+-- ============================================================================
+
+/-- Label grid points using dominant component of g composed with grid embedding. -/
+noncomputable def gridLabel (N : ℕ) (g : ℝ × ℝ → ℝ × ℝ) (p : GridPoint N) :
+    SignedLabeling (GridPoint N) 2 :=
+  fun q => dominantComponentLabel (g (gridToReal N q))
+
+-- ============================================================================
+-- Summary of Part XXII
+-- ============================================================================
+
+/-
+### Grid infrastructure (Part XXII):
+  Definitions (5): gridCoord, GridPoint, gridToReal, gridAntipodal, gridLabel
+  Proved theorems (5):
+    - gridCoord_zero: gridCoord N 0 = -1
+    - gridCoord_max: gridCoord N (2N) = 1
+    - gridCoord_adjacent_diff: adjacent coordinates differ by 1/N
+    - gridToReal_adjacent_dist: adjacent grid point distance ≤ 1/N
+    - gridAntipodal_neg: antipodal map = negation in real coordinates
+  Sorries (1):
+    - gridCoord_range: upper bound needs i/N ≤ 2 (straightforward but cast-heavy)
+
+### Remaining to eliminate tucker_disk_approx_zero:
+  1. Fix gridCoord_range sorry (bound on i/N)
+  2. Prove gridLabel_antipodal: label satisfies Tucker antipodal condition on boundary
+  3. Prove grid density: for any point in D², there's a nearby grid point
+  4. Compose: Tucker → complementary edge → mesh_refinement_principle
+-/
+
 end BorsukUlamTucker2D
