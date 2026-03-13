@@ -8,13 +8,19 @@
     },
     "type": "definition",
     "title": "Chromatic Number",
-    "content": "The chromatic number χ(G) is the minimum number of colors needed to properly color the vertices of G (adjacent vertices get different colors). For infinite graphs, this is a cardinal number.",
-    "mathContext": "χ(G) = inf{κ : G has a κ-coloring}",
+    "content": "The chromatic number χ(G) is the minimum number of colors needed to properly color the vertices of G (adjacent vertices get different colors). For infinite graphs, this is a cardinal number. The formalization uses `sInf` over cardinals admitting a `Coloring`, which is Mathlib's type of proper vertex colorings.",
+    "mathContext": "$\\chi(G) = \\inf\\{\\kappa \\in \\mathbf{Card} : \\exists \\alpha,\\, |\\alpha| = \\kappa \\wedge G \\text{ has a proper } \\alpha\\text{-coloring}\\}$",
     "significance": "key",
     "relatedConcepts": [
       "graph coloring",
       "cardinal numbers",
-      "proper coloring"
+      "proper coloring",
+      "infimum"
+    ],
+    "prerequisites": [
+      "cardinal arithmetic",
+      "graph theory basics",
+      "Mathlib SimpleGraph.Coloring"
     ]
   },
   {
@@ -26,13 +32,18 @@
     },
     "type": "definition",
     "title": "Finite Subgraph",
-    "content": "A finite subgraph of G is obtained by taking a finite set S of vertices and the edges between them. These are the 'building blocks' the conjecture asks about.",
-    "mathContext": "G[S] = induced subgraph on finite set S",
+    "content": "A finite subgraph of G is obtained by taking a finite set S of vertices and the induced edges between them. This uses Lean's `Finset V` for finite vertex sets and Mathlib's `G.induce S` for the induced subgraph construction. These finite subgraphs are the 'building blocks' that Taylor's conjecture asks about.",
+    "mathContext": "$H$ is a finite subgraph of $G$ iff $\\exists S \\in \\text{Finset}(V),\\, H = G[S]$ where $G[S]$ is the induced subgraph",
     "significance": "key",
     "relatedConcepts": [
       "induced subgraph",
       "finite sets",
       "subgraph inheritance"
+    ],
+    "prerequisites": [
+      "Finset",
+      "Subgraph type",
+      "induced subgraphs"
     ]
   },
   {
@@ -44,13 +55,41 @@
     },
     "type": "definition",
     "title": "Subgraph Embedding",
-    "content": "H is a subgraph of G (H ⊆ G) if there's an injective function mapping vertices of H to G that preserves edges. This allows comparing graphs with different vertex sets.",
-    "mathContext": "H ⊆ G iff ∃f: V(H) → V(G) injective with edges preserved",
+    "content": "H is a subgraph of G (H ⊆ G) if there is an injective function mapping vertices of H to vertices of G that preserves adjacency. This is weaker than a full graph isomorphism — it only requires that edges of H map to edges of G, not that non-edges are preserved. This allows comparing graphs over different vertex types.",
+    "mathContext": "$H \\hookrightarrow G$ iff $\\exists f: V(H) \\hookrightarrow V(G)$ injective with $v_1 \\sim_H v_2 \\implies f(v_1) \\sim_G f(v_2)$",
     "significance": "supporting",
     "relatedConcepts": [
       "graph homomorphism",
       "graph embedding",
       "subgraph isomorphism"
+    ],
+    "prerequisites": [
+      "injective functions",
+      "graph adjacency"
+    ]
+  },
+  {
+    "id": "ann-736-11",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 71,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "Finite Subgraph Class",
+    "content": "The class of all finite subgraphs of G, represented as a set of pairs (n, H) where H is a graph on Fin n. This provides a canonical representation: each finite subgraph is identified with a graph on {0, 1, ..., n-1} via an equivalence. The use of `Σ (n : ℕ), SimpleGraph (Fin n)` gives a universe-polymorphism-free way to collect all finite graphs.",
+    "mathContext": "$\\mathcal{F}(G) = \\{(n, H) : n \\in \\mathbb{N},\\, H \\in \\text{SimpleGraph}(\\text{Fin}\\, n),\\, \\exists S \\in \\text{Finset}(V),\\, S \\simeq \\text{Fin}\\, n,\\, H \\cong G[S]\\}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "canonical forms",
+      "Fin type",
+      "sigma type",
+      "equivalence of finite sets"
+    ],
+    "prerequisites": [
+      "dependent types",
+      "Fin n",
+      "Equiv type"
     ]
   },
   {
@@ -62,13 +101,19 @@
     },
     "type": "theorem",
     "title": "Taylor's Conjecture",
-    "content": "If G has chromatic number ℵ₁, then for every cardinal m, there exists a graph G_m with χ(G_m) = m such that every finite subgraph of G_m appears as a subgraph of G. The finite structure of G should be 'universal'.",
-    "mathContext": "χ(G) = ℵ₁ ⟹ ∀m. ∃G_m. χ(G_m) = m ∧ (finite subgraphs of G_m ⊆ finite subgraphs of G)",
+    "content": "If G has chromatic number ℵ₁, then for every cardinal m, there exists a graph G_m with χ(G_m) = m such that every finite subgraph of G_m appears as a subgraph of G. In other words, the finite structure of an ℵ₁-chromatic graph should be 'universal' — rich enough to support arbitrarily high chromatic numbers.",
+    "mathContext": "$\\chi(G) = \\aleph_1 \\implies \\forall m \\in \\mathbf{Card},\\, \\exists G_m:\\, \\chi(G_m) = m \\wedge (\\text{Fin. sub. of } G_m \\subseteq \\text{Fin. sub. of } G)$",
     "significance": "key",
     "relatedConcepts": [
       "Walter Taylor",
       "universality",
-      "chromatic hierarchy"
+      "chromatic hierarchy",
+      "aleph one"
+    ],
+    "prerequisites": [
+      "aleph cardinals",
+      "chromatic number",
+      "subgraph embedding"
     ]
   },
   {
@@ -80,13 +125,41 @@
     },
     "type": "theorem",
     "title": "Generalized Taylor Conjecture",
-    "content": "The same question for any uncountable cardinal κ: if χ(G) = κ, can we build graphs of any chromatic number from G's finite subgraphs?",
-    "mathContext": "For κ regular uncountable: χ(G) = κ ⟹ ∀m. ∃G_m with χ(G_m) = m and inherited finite structure",
+    "content": "The same question for any regular uncountable cardinal κ: if χ(G) = κ, can we build graphs of any chromatic number from G's finite subgraphs? The regularity condition on κ is natural since chromatic numbers of infinite graphs are typically regular cardinals. This generalization asks whether the phenomenon (if it holds) is specific to ℵ₁ or universal across all uncountable chromatic numbers.",
+    "mathContext": "$\\forall \\kappa$ regular, $\\kappa > \\aleph_0$: $\\chi(G) = \\kappa \\implies \\forall m,\\, \\exists G_m$ with $\\chi(G_m) = m$ and inherited finite structure",
     "significance": "key",
     "relatedConcepts": [
       "regular cardinals",
       "cardinal hierarchy",
-      "generalization"
+      "generalization",
+      "cofinality"
+    ],
+    "prerequisites": [
+      "regular vs singular cardinals",
+      "cardinal.IsRegular",
+      "aleph hierarchy"
+    ]
+  },
+  {
+    "id": "ann-736-12",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 116,
+      "endLine": 120
+    },
+    "type": "definition",
+    "title": "Finite Graph Family",
+    "content": "A family of finite graphs, defined as a set of dependent pairs (n, H) where H is a simple graph on Fin n. This type alias captures Erdős's notion of a 'collection of finite graphs' that might be realized as the finite subgraph class of some infinite graph. The sigma-type representation avoids universe issues that would arise from collecting graphs over arbitrary types.",
+    "mathContext": "$\\text{FiniteGraphFamily} = \\mathcal{P}(\\coprod_{n \\in \\mathbb{N}} \\text{SimpleGraph}(\\text{Fin}\\, n))$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "type alias",
+      "sigma type",
+      "family of structures"
+    ],
+    "prerequisites": [
+      "dependent types",
+      "Set type"
     ]
   },
   {
@@ -98,13 +171,41 @@
     },
     "type": "definition",
     "title": "Realizable Family",
-    "content": "A family F of finite graphs is 'realizable at ℵ_α' if there exists a graph G with χ(G) = ℵ_α whose finite subgraphs are exactly F. This is Erdős's generalization of the problem.",
-    "mathContext": "F is realizable at ℵ_α iff ∃G. χ(G) = ℵ_α ∧ {finite subgraphs of G} = F",
+    "content": "A family F of finite graphs is 'realizable at ℵ_α' if there exists a graph G with χ(G) = ℵ_α whose finite subgraphs form a subset of F. This is Erdős's generalization: rather than asking about one specific graph, characterize which collections of finite graphs can arise as the finite subgraph class of graphs with prescribed chromatic number.",
+    "mathContext": "$\\mathcal{F}$ is realizable at $\\aleph_\\alpha$ iff $\\exists G:\\, \\chi(G) = \\aleph_\\alpha \\wedge \\mathcal{F}(G) \\subseteq \\mathcal{F}$",
     "significance": "key",
     "relatedConcepts": [
       "family of graphs",
       "realization",
-      "characterization problem"
+      "characterization problem",
+      "aleph ordinals"
+    ],
+    "prerequisites": [
+      "ordinal indexing",
+      "aleph function",
+      "finiteSubgraphClass"
+    ]
+  },
+  {
+    "id": "ann-736-13",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 132,
+      "endLine": 138
+    },
+    "type": "definition",
+    "title": "Erdős's General Question",
+    "content": "Erdős asks for a characterization of which families of finite graphs are realizable at each aleph cardinal. This existentially quantifies over all possible 'characterization predicates' — a very bold question asking for a complete structural theory. The formalization captures this as the existence of a predicate that is equivalent to realizability.",
+    "mathContext": "$\\exists \\Phi: \\text{FiniteGraphFamily} \\times \\text{Ordinal} \\to \\text{Prop},\\, \\forall \\mathcal{F},\\, \\forall \\alpha,\\, \\Phi(\\mathcal{F}, \\alpha) \\iff \\mathcal{F} \\text{ is realizable at } \\aleph_\\alpha$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "characterization theorem",
+      "classification",
+      "descriptive set theory"
+    ],
+    "prerequisites": [
+      "realizableAt",
+      "ordinal arithmetic"
     ]
   },
   {
@@ -116,14 +217,20 @@
     },
     "type": "theorem",
     "title": "Komjáth-Shelah Consistency Result",
-    "content": "It is consistent with ZFC that Taylor's conjecture is FALSE: there exists G with χ(G) = ℵ₁ such that any H whose finite subgraphs are in G has χ(H) ≤ ℵ₂. The finite structure doesn't suffice for arbitrarily high chromatic numbers.",
-    "mathContext": "Con(ZFC + ∃G. χ(G) = ℵ₁ ∧ ∀H. (fin. sub. of H ⊆ fin. sub. of G) ⟹ χ(H) ≤ ℵ₂)",
+    "content": "It is consistent with ZFC that Taylor's conjecture is FALSE: there exists G with χ(G) = ℵ₁ such that any H whose finite subgraphs are all subgraphs of G satisfies χ(H) ≤ ℵ₂. The ℵ₂ bound is sharp in their model — the finite structure of G cannot support chromatic numbers beyond ℵ₂. This is axiomatized in Lean since the proof uses forcing, which cannot be directly formalized in Lean's type theory.",
+    "mathContext": "$\\text{Con}(\\text{ZFC} + \\exists G:\\, \\chi(G) = \\aleph_1 \\wedge \\forall H\\,(\\text{fin. sub. of } H \\subseteq \\text{fin. sub. of } G \\implies \\chi(H) \\le \\aleph_2))$",
     "significance": "key",
     "relatedConcepts": [
       "independence",
       "consistency",
       "forcing",
-      "Shelah"
+      "Saharon Shelah",
+      "Péter Komjáth"
+    ],
+    "prerequisites": [
+      "forcing in set theory",
+      "consistency proofs",
+      "ZFC axioms"
     ]
   },
   {
@@ -135,14 +242,65 @@
     },
     "type": "theorem",
     "title": "De Bruijn-Erdős Theorem",
-    "content": "If every finite subgraph of G is k-colorable, then G itself is k-colorable. This compactness principle requires the axiom of choice and shows finite chromatic number is determined by finite subgraphs.",
-    "mathContext": "(∀ finite S ⊆ V. G[S] is k-colorable) ⟹ G is k-colorable",
+    "content": "If every finite subgraph of G is k-colorable, then G itself is k-colorable. This 1951 compactness theorem of De Bruijn and Erdős requires the axiom of choice (specifically, the Boolean Prime Ideal Theorem suffices). It shows that finite chromatic number IS determined by finite subgraphs — the critical contrast with Taylor's conjecture, where the analogous transfer fails for infinite chromatic numbers.",
+    "mathContext": "$(\\forall S \\in \\text{Finset}(V),\\, \\chi(G[S]) \\le k) \\implies \\chi(G) \\le k$. Equivalently: $\\chi(G) = \\sup_{S \\text{ finite}} \\chi(G[S])$ when $\\chi(G) < \\aleph_0$.",
     "significance": "key",
     "relatedConcepts": [
       "compactness",
-      "De Bruijn",
+      "Nicolaas de Bruijn",
       "axiom of choice",
-      "finite to infinite"
+      "Boolean Prime Ideal Theorem",
+      "finite to infinite transfer"
+    ],
+    "prerequisites": [
+      "axiom of choice",
+      "compactness arguments",
+      "graph coloring"
+    ]
+  },
+  {
+    "id": "ann-736-14",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 180,
+      "endLine": 188
+    },
+    "type": "theorem",
+    "title": "Chromatic Compactness",
+    "content": "The chromatic number of a graph equals the supremum of chromatic numbers of its finite subgraphs. This is a stronger form of the De Bruijn-Erdős theorem expressed in terms of suprema. For finite chromatic numbers this gives exact equality; for infinite chromatic numbers, it gives a lower bound but the relationship with Taylor's question becomes subtle.",
+    "mathContext": "$\\chi(G) = \\sup_{S \\in \\text{Finset}(V)} \\chi(G[S])$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "supremum",
+      "compactness principle",
+      "chromatic number monotonicity"
+    ],
+    "prerequisites": [
+      "cardinal supremum",
+      "induced subgraph chromatic number"
+    ]
+  },
+  {
+    "id": "ann-736-15",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 190,
+      "endLine": 196
+    },
+    "type": "theorem",
+    "title": "Chromatic-Cardinal Interaction",
+    "content": "For every regular cardinal κ ≥ ℵ₀, there exists a graph with chromatic number exactly κ. This axiom establishes that all regular infinite cardinals are attainable as chromatic numbers, which is necessary context for the Taylor conjecture — without this, the generalized conjecture might be vacuously true for some cardinals.",
+    "mathContext": "$\\forall \\kappa$ regular, $\\kappa \\ge \\aleph_0 \\implies \\exists G:\\, \\chi(G) = \\kappa$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "regular cardinals",
+      "attainable chromatic numbers",
+      "Erdős-Hajnal partition calculus"
+    ],
+    "prerequisites": [
+      "regular cardinals",
+      "cardinal arithmetic",
+      "graph constructions"
     ]
   },
   {
@@ -154,32 +312,86 @@
     },
     "type": "insight",
     "title": "Independence from ZFC",
-    "content": "The fact that Taylor's conjecture is independent of ZFC means it cannot be proved or disproved from the standard axioms of set theory. Its truth depends on which additional axioms we assume.",
-    "mathContext": "ZFC ⊬ Taylor ∧ ZFC ⊬ ¬Taylor",
+    "content": "The fact that Taylor's conjecture is independent of ZFC means it cannot be proved or disproved from the standard axioms of set theory. Its truth depends on which additional axioms we adopt. This places it alongside the Continuum Hypothesis and Suslin's Hypothesis as a natural mathematical statement undecidable in ZFC. The formalization uses `axiom ... : True` as a placeholder for the full independence proof.",
+    "mathContext": "$\\text{ZFC} \\nvdash \\text{Taylor's conjecture} \\wedge \\text{ZFC} \\nvdash \\neg\\text{Taylor's conjecture}$",
     "significance": "key",
     "relatedConcepts": [
-      "Gödel",
-      "Cohen",
-      "forcing",
+      "Gödel's constructible universe",
+      "Cohen forcing",
+      "Suslin's Hypothesis",
       "set-theoretic independence"
+    ],
+    "prerequisites": [
+      "ZFC axioms",
+      "Gödel's incompleteness",
+      "forcing technique"
+    ]
+  },
+  {
+    "id": "ann-736-16",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 202,
+      "endLine": 213
+    },
+    "type": "theorem",
+    "title": "Countable Chromatic Number Case",
+    "content": "When χ(G) = ℵ₀ (countably infinite chromatic number), the Taylor-type inheritance holds for finite target chromatic numbers. This follows from the De Bruijn-Erdős compactness: if G has infinite chromatic number, its finite subgraphs must include graphs of arbitrarily high finite chromatic number, so one can build n-chromatic graphs from G's finite parts for any n ∈ ℕ.",
+    "mathContext": "$\\chi(G) = \\aleph_0 \\implies \\forall n \\in \\mathbb{N},\\, \\exists H:\\, \\chi(H) = n \\wedge \\text{fin. sub. of } H \\subseteq \\text{fin. sub. of } G$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "countable cardinals",
+      "compactness",
+      "finite chromatic number"
+    ],
+    "prerequisites": [
+      "De Bruijn-Erdős theorem",
+      "aleph zero"
+    ]
+  },
+  {
+    "id": "ann-736-17",
+    "proofId": "erdos-736",
+    "range": {
+      "startLine": 219,
+      "endLine": 226
+    },
+    "type": "theorem",
+    "title": "Finite Chromatic Number Case",
+    "content": "When χ(G) = k (a finite natural number), inheritance is straightforward: for any m ≤ k, we can find a graph H with χ(H) = m whose finite subgraphs are all subgraphs of G. This is the only theorem in the file with a proof attempt (currently sorry'd), reflecting that the finite case should be provable by elementary means — take subgraphs of G itself.",
+    "mathContext": "$\\chi(G) = k \\implies \\forall m \\le k,\\, \\exists H:\\, \\chi(H) = m \\wedge \\text{fin. sub. of } H \\subseteq \\text{fin. sub. of } G$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite graph coloring",
+      "subgraph monotonicity",
+      "sorry elimination"
+    ],
+    "prerequisites": [
+      "finite chromatic number",
+      "subgraph construction"
     ]
   },
   {
     "id": "ann-736-10",
     "proofId": "erdos-736",
     "range": {
-      "startLine": 258,
-      "endLine": 265
+      "startLine": 232,
+      "endLine": 240
     },
     "type": "insight",
     "title": "Key Insight: Foundations Matter",
-    "content": "The relationship between finite subgraph structure and chromatic number for infinite graphs depends on set-theoretic assumptions. This is a rare case where combinatorics touches foundational questions.",
-    "mathContext": "Combinatorial truth depends on set theory beyond ZFC",
+    "content": "The relationship between finite subgraph structure and chromatic number for infinite graphs depends on set-theoretic assumptions. The summary theorem `erdos_736_summary` is deliberately trivial (an iff-reflexivity and True), serving as a well-formedness check rather than a deep result. The real content is in the definitions and axioms above — the formalization captures the structure of the problem and known results, leaving the open question to future mathematical discovery.",
+    "mathContext": "The proof is $\\langle \\text{Iff.rfl},\\, \\text{trivial}\\rangle$: the formalization's value lies in the precise statement of concepts, not in proving new results",
     "significance": "key",
     "relatedConcepts": [
       "infinite combinatorics",
-      "foundations",
-      "set theory meets graph theory"
+      "foundations of mathematics",
+      "set theory meets graph theory",
+      "formal specification vs proof"
+    ],
+    "prerequisites": [
+      "ZFC set theory",
+      "model theory"
     ]
   }
 ]
