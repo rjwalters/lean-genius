@@ -18,9 +18,9 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-03-12",
-    "iteration": 3,
-    "focus": "Attempted grid Fintype elimination of tucker_disk_approx_zero; Lean4 Nat↔ℝ casting boilerplate is ~400+ lines",
-    "activeApproach": "All analytical content proved; remaining gap is grid combinatorial boilerplate",
+    "iteration": 4,
+    "focus": "Built grid Fintype infrastructure (Part XXII), 5 grid lemmas proved",
+    "activeApproach": "Grid infrastructure built; remaining gap is 2 grid geometry lemmas + composition proof",
     "blockers": [
       "Grid Fintype instantiation requires ~400+ lines of Lean4 Nat↔ℝ casting boilerplate (not mathematical insight)"
     ],
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axiom count from 3 to 2. All analytical content fully proved (IVT, dominant component, uniform continuity, mesh refinement). Remaining tucker_disk_approx_zero axiom needs only grid Fintype boilerplate (~400 lines Nat↔ℝ casting), not new math.",
+    "progressSummary": "PROGRESS: Grid infrastructure built (Part XXII). 6 definitions + 5 proved lemmas + 2 sorry lemmas (gridMesh, gridDense). Remaining gap to eliminate tucker_disk_approx_zero is now well-defined.",
     "builtItems": [
       "non_dominant_at_zero_bound_snd (symmetric IVT bound, Part XX)",
       "complementary_edge_approx_dominant_fst/snd (corrected IVT+dominant theorems)",
@@ -40,7 +40,14 @@
       "closedDisk_isCompact (D² compactness)",
       "continuous_on_disk_uniformContinuousOn (uniform continuity on D²)",
       "disk_continuity_bound (ε-δ form of uniform continuity)",
-      "mesh_refinement_principle (mesh→0 implies approximate zeros)"
+      "mesh_refinement_principle (mesh→0 implies approximate zeros)",
+      "gridCoord, GridPoint, gridToReal: coordinate mapping from Fin(2N+1)² to [-1,1]²",
+      "gridEdge, gridBoundary, gridAntipodal: combinatorial grid infrastructure",
+      "gridLabel: composition of g with gridToReal and dominantComponentLabel",
+      "gridCoord_zero, gridCoord_max: boundary coordinate values (proved)",
+      "gridCoord_diff_le: adjacent grid coordinates differ by ≤ 1/N (proved)",
+      "gridAntipodal_neg: antipodal map = negation in real coordinates (proved)",
+      "gridBoundary_on_circle: boundary points have |coord| = 1 (proved)"
     ],
     "insights": [
       "CRITICAL: axiom complementary_edge_gives_approximate_zero was FALSE. Counterexample: g(x,y)=(x,y), u=(0.01,1), v=(-0.01,1). The bound δ*C ≈ 0.08 but |g(w).2| ≥ 0.98 for any w near u.",
@@ -48,14 +55,18 @@
       "Pre-existing build errors in segmentParam_dist_le, complementary_edge_zero_fst/snd were present - fixed Prod subtraction handling and eq_or_lt_of_le direction.",
       "The only remaining axiom gap is tuckers_lemma (deep combinatorial, hard) and tucker_disk_approx_zero (needs grid Fintype instance, ~200 lines boilerplate).",
       "uniform continuity on compact D² is the key analytical bridge: CompactSpace → UniformContinuousOn → ε-δ bounds on function variation.",
-      "Grid Fintype boilerplate (Fin(2N+1)×Fin(2N+1), edges, antipodal map) involves heavy Nat↔ℝ casting. Lean4 exact_mod_cast/Fin.val handling makes this ~400 lines rather than ~200. Not mathematically hard, just tedious."
+      "Grid Fintype boilerplate (Fin(2N+1)×Fin(2N+1), edges, antipodal map) involves heavy Nat↔ℝ casting. Lean4 exact_mod_cast/Fin.val handling makes this ~400 lines rather than ~200. Not mathematically hard, just tedious.",
+      "gridEdge definition needed ∧ not ∨ for Nat subtraction (∨ is always true for Nat subtraction)",
+      "gridCoord_diff_le proof: key trick is lifting to ℤ via omega, then exact_mod_cast to ℝ",
+      "gridAntipodal_neg proof: Nat.cast_sub + push_cast + ring handles the casting chain",
+      "gridBoundary_on_circle: proved via helper lemmas gridCoord_zero and gridCoord_max"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Build grid Fintype infrastructure in a dedicated session (~400 lines): Fin(2N+1)², edge adjacency, antipodal map with Nat↔ℝ casts",
-      "Prove gridLabel_antipodal_on_boundary: dominant-component labeling satisfies Tucker's antipodal condition",
-      "Prove complementary_edge_sign_change: Tucker complementary edge implies IVT sign-change condition",
-      "Compose with mesh_refinement_principle to eliminate tucker_disk_approx_zero axiom → reduce to 1 axiom (Tucker's lemma)"
+      "Prove gridMesh: Prod.dist bound from component bounds (needs √2 estimate, ~20 lines)",
+      "Prove gridDense: Pigeonhole on grid to find nearby point (~30 lines)",
+      "Build gridLabel_antipodal: dominant component labeling satisfies Tucker antipodal condition",
+      "Compose Tucker → complementary edge → complementary_edge_approx_dominant → mesh_refinement_principle"
     ],
     "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-03\n\n## Problem Understanding\n\nThe 2D Borsuk-Ulam theorem proved via Tucker's lemma. File has main theorem\n`borsuk_ulam_2d_corrected` with complete proof chain modulo axioms.\n\n## Key Finding: False Axiom\n\n`complementary_edge_gives_approximate_zero` was FALSE as stated.\nCounterexample: g(x,y)=(x,y), u=(0.01,1), v=(-0.01,1), δ=0.02, k=0.\nThe bound 0.02·(2·sup) ≈ 0.08 but ‖g(w)‖₁ ≥ 0.98 for any w near u.\n\nFix: require k to be the dominant component (as Tucker's labeling guarantees).\n\n## Axiom Status (after this session)\n\n- `tuckers_lemma` — HARD to eliminate (deep combinatorial, path-following)\n- `tucker_disk_approx_zero` — TRACTABLE to eliminate (grid Fintype + our proved theorems)\n- ~~`complementary_edge_gives_approximate_zero`~~ — ELIMINATED (was false, replaced with proved theorems)\n\n## Dead Ends\n\n- The original axiom bound δ·(2·sup{‖g‖+1}) is too weak without dominant-component hypothesis\n"
   },
