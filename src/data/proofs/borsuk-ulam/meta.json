@@ -162,6 +162,13 @@
       "mathContext": "Borsuk-Ulam bridges topology and combinatorics. Its proof techniques (covering spaces, fundamental groups, equivariant maps) are foundational in algebraic topology. Applications span fair division, graph coloring, computational complexity."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "implication",
+      "description": "Borsuk-Ulam implies Brouwer's Fixed Point Theorem: the retraction proof shows that a continuous map without a fixed point would yield an antipode-preserving map, contradicting Borsuk-Ulam"
+    }
+  ],
   "conclusion": {
     "summary": "The Borsuk-Ulam Theorem demonstrates that any continuous function from the n-sphere to n-dimensional Euclidean space must map some pair of antipodal points to the same value. The proof ingeniously transforms the antipodal pair problem into showing no odd map from S^n to S^(n-1) can exist, which follows from covering space theory.",
     "implications": "This theorem has far-reaching consequences:\n\n**1. Fair Division**\nThe Ham Sandwich Theorem guarantees n objects in R^n can be bisected by one cut. Necklace splitting problems become tractable.\n\n**2. Topological Combinatorics**\nLovasz's proof of Kneser's conjecture launched an entire field connecting topology and combinatorics.\n\n**3. Fixed Point Theory**\nBorsuk-Ulam implies Brouwer's Fixed Point Theorem, connecting different branches of topology.\n\n**4. Computer Science**\nTucker's Lemma (the discrete version) has applications in computational complexity.\n\n**5. Economics**\nRelated techniques appear in equilibrium theory and mechanism design.",

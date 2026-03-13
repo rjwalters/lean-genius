@@ -50,7 +50,8 @@
       "The pigeonhole principle on (longest-inc, longest-dec) pairs",
       "Pairs are distinct because extending subsequences increases at least one coordinate",
       "The bound (r-1)(s-1) + 1 is tight (optimal)",
-      "The theorem is a special case of Ramsey theory for ordered sets"
+      "The theorem is a special case of Ramsey theory for ordered sets",
+      "Equivalent to Dilworth's theorem for finite partially ordered sets: the minimum number of chains covering a poset equals the maximum antichain size"
     ]
   },
   "sections": [
@@ -101,6 +102,13 @@
       "endLine": 274,
       "summary": "The Erdős–Szekeres number and its connection to Ramsey theory.",
       "mathContext": "$ES(r,s) = (r-1)(s-1) + 1$. 2-color pairs $(i,j)$ by comparing $f(i)$ vs $f(j)$. The theorem guarantees a red $r$-clique (increasing) or blue $s$-clique (decreasing). $ES(r,s) = ES(s,r)$ by symmetry."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "generalization",
+      "description": "Ramsey's theorem generalizes the Erdős–Szekeres result: the ES theorem is a special case for ordered 2-colorings of pairs"
     }
   ],
   "conclusion": {

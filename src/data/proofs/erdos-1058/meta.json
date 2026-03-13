@@ -100,6 +100,13 @@
       "mathContext": "Combined status: finiteness (Luca 2001) + complete list $\\{1,2,3,4,5\\}$. The result demonstrates that super-exponential growth of $n!$ forces $n!+1$ to acquire diverse prime factors, making restricted factorization impossible for large $n$."
     }
   ],
+  "crossReferences": [
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "dependency",
+      "description": "Wilson's theorem (p-1)! ≡ -1 (mod p) ensures p_k divides (p_k-1)!+1, providing the starting divisor that motivates the problem"
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #1058 was SOLVED by Florian Luca in 2001. The answer is YES: there are only finitely many n satisfying the condition, and the complete list is n = 1, 2, 3, 4, 5. The proof uses growth rate arguments and diophantine techniques to show that for n ≥ 6, n!+1 necessarily has additional prime factors.",
     "implications": "The result shows how quickly factorial growth overwhelms the possibility of having restricted prime factorizations. It connects Wilson's theorem, prime gaps, and factorial arithmetic in a beautiful way.",

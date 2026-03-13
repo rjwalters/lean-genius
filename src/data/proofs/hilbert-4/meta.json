@@ -51,7 +51,8 @@
       "Minkowski geometries arise from translation-invariant norms",
       "Hilbert geometries are projectively invariant",
       "The triangle inequality forces geodesics to be straight lines",
-      "Convexity of the unit ball is the key geometric condition"
+      "Convexity of the unit ball is the key geometric condition",
+      "The Hilbert metric on the interior of an ellipsoid recovers hyperbolic geometry (Cayley-Klein model)"
     ]
   },
   "sections": [
@@ -102,6 +103,13 @@
       "endLine": 350,
       "summary": "Euclidean, taxicab, and Chebyshev norms as examples.",
       "mathContext": "Euclidean: $\\|x\\|_2 = \\sqrt{\\sum x_i^2}$, unit ball is a sphere. Taxicab: $\\|x\\|_1 = \\sum |x_i|$, unit ball is a cross-polytope. Chebyshev: $\\|x\\|_\\infty = \\max |x_i|$, unit ball is a hypercube. All are Minkowski geometries with convex unit balls, hence straight-line geodesics."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "desargues-theorem",
+      "relationship": "related",
+      "description": "Desargues' theorem is central to Hamel's 2D characterization: Desarguesian projective metrics are exactly Minkowski metrics in the plane"
     }
   ],
   "conclusion": {
