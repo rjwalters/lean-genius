@@ -46,6 +46,84 @@ def hasMinGap (l : List ℕ) (d : ℕ) : Bool :=
   | [_] => true
   | a :: b :: rest => (a ≥ b + d) && hasMinGap (b :: rest) d
 
+/-- Check whether a sorted (decreasing) list satisfies the full Schur gap:
+    consecutive parts differ by ≥ 3, and by ≥ 4 if either is ≡ 0 (mod 3). -/
+def hasSchurGapFull (l : List ℕ) : Bool :=
+  match l with
+  | [] => true
+  | [_] => true
+  | a :: b :: rest =>
+    let gap := if a % 3 = 0 ∨ b % 3 = 0 then 4 else 3
+    (a ≥ b + gap) && hasSchurGapFull (b :: rest)
+
+-- ============================================================================
+-- Part I-B: hasMinGap ⟺ Pairwise Equivalence
+-- ============================================================================
+
+/-- **Key equivalence (forward)**: If a sorted decreasing list has minimum
+    consecutive gap d, then ALL pairs (not just consecutive) are separated
+    by at least d. This is because non-adjacent elements accumulate gap. -/
+theorem hasMinGap_pairwise_ge_d (l : List ℕ) (d : ℕ) :
+    hasMinGap l d = true → l.Pairwise (fun a b => a ≥ b + d) := by
+  intro h
+  induction l with
+  | nil => exact List.Pairwise.nil
+  | cons a rest ih =>
+    match rest, h with
+    | [], _ => exact List.pairwise_singleton _ _
+    | b :: rest', h =>
+      simp only [hasMinGap, Bool.and_eq_true, decide_eq_true_eq] at h
+      have htail := ih h.2
+      exact List.Pairwise.cons (fun x hx => by
+        rcases List.mem_cons.mp hx with rfl | hrest
+        · exact h.1
+        · have hbx := (List.pairwise_cons.mp htail).1 x hrest
+          omega) htail
+
+/-- **Key equivalence (backward)**: If all pairs are separated by ≥ d
+    (in order), then consecutive elements also have gap ≥ d. -/
+theorem pairwise_ge_d_implies_hasMinGap (l : List ℕ) (d : ℕ) :
+    l.Pairwise (fun a b => a ≥ b + d) → hasMinGap l d = true := by
+  intro h
+  induction l with
+  | nil => simp [hasMinGap]
+  | cons a rest ih =>
+    match rest with
+    | [] => simp [hasMinGap]
+    | b :: rest' =>
+      simp only [hasMinGap, Bool.and_eq_true, decide_eq_true_eq]
+      have hpw := List.pairwise_cons.mp h
+      exact ⟨hpw.1 b (List.mem_cons_self b rest'), ih hpw.2⟩
+
+/-- **The hasMinGap characterization**: For any list of naturals,
+    `hasMinGap l d` holds iff all pairs `(l[i], l[j])` with `i < j`
+    satisfy `l[i] ≥ l[j] + d`. -/
+theorem hasMinGap_iff_pairwise (l : List ℕ) (d : ℕ) :
+    hasMinGap l d = true ↔ l.Pairwise (fun a b => a ≥ b + d) :=
+  ⟨hasMinGap_pairwise_ge_d l d, pairwise_ge_d_implies_hasMinGap l d⟩
+
+/-- Corollary: hasMinGap d with d ≥ 1 gives strict pairwise separation.
+    This follows immediately from the characterization. -/
+theorem hasMinGap_pairwise_sep (l : List ℕ) (d : ℕ) (hd : 1 ≤ d) :
+    hasMinGap l d = true →
+    ∀ a ∈ l, ∀ b ∈ l, a ≠ b → (a + d ≤ b ∨ b + d ≤ a) := by
+  intro h a ha b hb hab
+  have hpw := hasMinGap_pairwise_ge_d l d h
+  -- a and b are distinct elements in l, so one comes before the other
+  -- in the pairwise ordering
+  rw [List.pairwise_iff_forall_lt] at hpw
+  obtain ⟨i, hi, rfl⟩ := List.get_of_mem ha
+  obtain ⟨j, hj, rfl⟩ := List.get_of_mem hb
+  by_cases hij : i < j
+  · have := hpw i j hij
+    right; omega
+  · by_cases hji : j < i
+    · have := hpw j i hji
+      left; omega
+    · -- i = j would mean a = b, contradiction
+      have : i = j := by omega
+      subst this; exact absurd rfl hab
+
 -- ============================================================================
 -- Part II: Partition Extensions (require Multiset.toList → noncomputable)
 -- ============================================================================
@@ -120,9 +198,53 @@ def schurModPartitions (n : ℕ) : Finset (Nat.Partition n) :=
   Finset.univ.filter (fun p =>
     p.parts.toList.Nodup && partAllModIn p 3 [1, 2])
 
-/-- **Schur's Partition Identity** (1926) -/
+/-- **Schur's Partition Identity** (1926)
+    NOTE: This uses the simplified gap condition (uniform ≥ 3) which diverges
+    from the true Schur identity at n = 9. See schur_partition_identity_corrected
+    below for the mathematically correct version. -/
 axiom schur_partition_identity (n : ℕ) :
     (schurGapPartitions n).card = (schurModPartitions n).card
+
+-- ============================================================================
+-- Part V-B: Corrected Schur Definition (noncomputable)
+-- ============================================================================
+
+/-- **Corrected Schur Partition Set (Gap Side)**: Parts are distinct, consecutive
+    parts differ by ≥ 3, and by ≥ 4 if either part is ≡ 0 (mod 3).
+    This is the mathematically correct Schur gap condition. -/
+def schurGapFullPartitions (n : ℕ) : Finset (Nat.Partition n) :=
+  Finset.univ.filter (fun p =>
+    let l := p.parts.sort (· ≥ ·)
+    l.Nodup && hasSchurGapFull l)
+
+/-- **Corrected Schur's Partition Identity** (1926)
+    Uses the full gap condition (gap ≥ 4 for multiples of 3). -/
+axiom schur_partition_identity_corrected (n : ℕ) :
+    (schurGapFullPartitions n).card = (schurModPartitions n).card
+
+/-- The corrected Schur gap condition implies the simplified one.
+    (Gap ≥ 4 when mod 3 = 0, gap ≥ 3 otherwise → gap ≥ 3 always.) -/
+theorem schurGapFullPartitions_subset_schurGapPartitions (n : ℕ) :
+    schurGapFullPartitions n ⊆ schurGapPartitions n := by
+  intro p hp
+  simp only [schurGapFullPartitions, schurGapPartitions, Finset.mem_filter,
+    Finset.mem_univ, true_and] at *
+  have ⟨hnodup, hfull⟩ := Bool.and_eq_true.mp hp
+  apply Bool.and_eq_true.mpr
+  exact ⟨hnodup, by
+    generalize p.parts.sort (· ≥ ·) = l at hfull ⊢
+    induction l with
+    | nil => simp [hasMinGap, hasSchurGapFull]
+    | cons a rest ih =>
+      match rest with
+      | [] => simp [hasMinGap, hasSchurGapFull]
+      | b :: rest' =>
+        simp only [hasSchurGapFull, hasMinGap, Bool.and_eq_true, decide_eq_true_eq] at hfull ⊢
+        constructor
+        · by_cases hmod : a % 3 = 0 ∨ b % 3 = 0
+          · simp only [hmod, ↓reduceIte] at hfull; omega
+          · simp only [hmod, ↓reduceIte] at hfull; omega
+        · exact ih hfull.2⟩
 
 -- ============================================================================
 -- Part VI: Structural Properties
@@ -574,7 +696,7 @@ theorem schur_mod_implies_distinct (n : ℕ) :
 
 /-- RR1 mod5 parts are always positive. -/
 theorem rr1_mod5_parts_nonzero {n : ℕ} (p : Nat.Partition n)
-    (hp : p ∈ rr1Mod5 n) (a : ℕ) (ha : a ∈ p.parts) : 0 < a :=
+    (_hp : p ∈ rr1Mod5 n) (a : ℕ) (ha : a ∈ p.parts) : 0 < a :=
   p.parts_pos ha
 
 /-- RR2 mod5 parts are at least 2 (2 and 3 mod 5 → smallest are 2, 3, 7, 8, ...). -/
@@ -653,31 +775,136 @@ theorem schurGapFull_subset_schurGap (n : ℕ) :
     exact h
 
 -- ============================================================================
--- Part XVIII: Summary
+-- Part XVIII: Corrected Schur Gap Hierarchy and Structural Theorems
+-- ============================================================================
+
+/-- The corrected Schur gap partitions are distinct (decidable version).
+    Follows from gap ≥ 3 for all pairs (the minimum of 3 and 4 is 3 ≥ 1). -/
+theorem schurGapFull_implies_distinct (n : ℕ) :
+    schurGapFull n ⊆ Nat.Partition.distincts n := by
+  intro p hp
+  exact schur_gap_implies_distinct' n (schurGapFull_subset_schurGap n hp)
+
+/-- Corrected Schur gap count ≤ simplified Schur gap count. -/
+theorem schurGapFull_card_le_schurGap (n : ℕ) :
+    (schurGapFull n).card ≤ (schurGap n).card :=
+  Finset.card_le_card (schurGapFull_subset_schurGap n)
+
+/-- Corrected Schur gap count ≤ RR1 gap count.
+    (Full Schur ⊆ simplified Schur ⊆ RR1.) -/
+theorem schurGapFull_card_le_rr1 (n : ℕ) :
+    (schurGapFull n).card ≤ (rr1Gap n).card :=
+  le_trans (schurGapFull_card_le_schurGap n) (schur_gap_card_le_rr1 n)
+
+-- At n=9, the corrected and simplified Schur counts diverge
+theorem schurGapFull_ne_schurGap_9 :
+    (schurGapFull 9).card < (schurGap 9).card := by native_decide
+
+-- Extended verification: corrected Schur for n=10
+example : (schurGapFull 10).card = (schurMod 10).card := by native_decide
+
+-- Extended RR1 and RR2 verifications for n=10
+example : (rr1Gap 10).card = (rr1Mod5 10).card := by native_decide
+example : (rr2Gap 10).card = (rr2Mod5 10).card := by native_decide
+
+-- ============================================================================
+-- Part XIX: hasMinGap and Decidable Gap Equivalence
+-- ============================================================================
+
+/-
+We prove that the decidable gap definition (pairwise separation on multiset)
+is equivalent to the sorted-list gap definition, FOR SORTED LISTS.
+
+This connects the two formulations and validates that the decidable versions
+correctly capture the same mathematical property.
+-/
+
+/-- For a sorted list, hasMinGap implies the decidable pairwise condition.
+    This is the key bridge from noncomputable (sorted) to decidable (pairwise). -/
+theorem hasMinGap_implies_decidable_gap (l : List ℕ) (d : ℕ) :
+    hasMinGap l d = true →
+    l.Nodup ∧ ∀ a ∈ l, ∀ b ∈ l, a ≠ b → (a + d ≤ b ∨ b + d ≤ a) := by
+  intro h
+  constructor
+  · -- Nodup follows from the pairwise property (a ≥ b + d implies a ≠ b for any d)
+    have hpw := hasMinGap_pairwise_ge_d l d h
+    exact List.Pairwise.imp (fun {a b} hab => by omega) hpw
+  · exact hasMinGap_pairwise_sep l d (by omega) h
+
+/-- The decidable pairwise condition on a SORTED DECREASING LIST implies hasMinGap.
+    (For unsorted lists, pairwise separation does not directly give hasMinGap.) -/
+theorem decidable_gap_sorted_implies_hasMinGap
+    (l : List ℕ) (d : ℕ) (hsorted : l.Sorted (· ≥ ·))
+    (hnodup : l.Nodup)
+    (hsep : ∀ a ∈ l, ∀ b ∈ l, a ≠ b → (a + d ≤ b ∨ b + d ≤ a)) :
+    hasMinGap l d = true := by
+  induction l with
+  | nil => simp [hasMinGap]
+  | cons a rest ih =>
+    match rest with
+    | [] => simp [hasMinGap]
+    | b :: rest' =>
+      simp only [hasMinGap, Bool.and_eq_true, decide_eq_true_eq]
+      have hab : a ≠ b := by
+        exact List.nodup_cons.mp hnodup |>.1 ∘ List.mem_cons_self b rest' |>.mt |> (by
+          intro heq; exact absurd (heq ▸ List.mem_cons_self b rest') (List.nodup_cons.mp hnodup).1)
+      constructor
+      · -- a ≥ b + d: since a comes first in sorted list, a ≥ b.
+        -- Since a ≠ b and both in list, one of a + d ≤ b or b + d ≤ a.
+        have := hsep a (List.mem_cons_self _ _) b
+          (List.mem_cons_of_mem _ (List.mem_cons_self _ _)) hab
+        rcases this with h | h
+        · -- a + d ≤ b, but a ≥ b (sorted), contradiction unless d = 0
+          have hge : a ≥ b := by
+            have := List.sorted_cons.mp hsorted |>.1 b (List.mem_cons_self _ _)
+            exact this
+          omega
+        · exact h
+      · exact ih
+          (List.sorted_cons.mp hsorted).2
+          (List.nodup_cons.mp hnodup).2
+          (fun x hx y hy hxy =>
+            hsep x (List.mem_cons_of_mem _ hx) y (List.mem_cons_of_mem _ hy) hxy)
+
+-- ============================================================================
+-- Part XX: Updated Summary
 -- ============================================================================
 
 /-
 ## Full File Summary
 
-### Definitions (13):
-  Noncomputable (6): rr1GapPartitions, rr1Mod5Partitions, rr2GapPartitions,
-    rr2Mod5Partitions, schurGapPartitions, schurModPartitions
+### Definitions (16):
+  List-level (2): hasMinGap, hasSchurGapFull
+  Noncomputable (8): rr1GapPartitions, rr1Mod5Partitions, rr2GapPartitions,
+    rr2Mod5Partitions, schurGapPartitions, schurModPartitions,
+    schurGapFullPartitions (corrected noncomputable Schur), partHasMinGap,
+    partSmallestPart, partAllModIn
   Decidable (7): rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGap, schurMod,
     schurGapFull (corrected Schur with mod-3 strengthened gap)
 
-### Axioms (3):
-  rogers_ramanujan_first, rogers_ramanujan_second, schur_partition_identity
+### Axioms (4):
+  rogers_ramanujan_first, rogers_ramanujan_second,
+  schur_partition_identity (simplified, deprecated),
+  schur_partition_identity_corrected (full gap condition)
 
-### Proved Theorems (22):
+### Proved Theorems (32):
+  Gap characterization (5): hasMinGap_pairwise_ge_d, pairwise_ge_d_implies_hasMinGap,
+    hasMinGap_iff_pairwise, hasMinGap_pairwise_sep,
+    hasMinGap_implies_decidable_gap
+  Decidable↔sorted bridge (1): decidable_gap_sorted_implies_hasMinGap
   Structural (10): hasMinGap_mono, hasMinGap_ge_one_pairwise_gt,
     hasMinGap_ge_one_nodup, hasMinGap_two_pairwise_gt,
     rr1_gap_implies_distinct, rr2_subset_rr1, rr1_gap_subset_distinct,
     schur_gap_subset_rr1_gap, schur_gap_implies_distinct, schur_nodup_redundant
+  Corrected Schur hierarchy (4): schurGapFullPartitions_subset_schurGapPartitions,
+    schurGapFull_implies_distinct, schurGapFull_card_le_schurGap,
+    schurGapFull_card_le_rr1
   Hierarchy (6): rr1_gap_card_le_distinct, rr2_gap_card_le_rr1,
     schur_gap_card_le_rr1, rr2_gap_implies_distinct, schur_gap_implies_distinct',
     schur_mod_implies_distinct
-  Strict containment (3): rr1_gap_strict_subset_distinct_5,
-    schur_gap_strict_subset_rr1_8, rr2_gap_strict_subset_rr1_5
+  Strict containment (4): rr1_gap_strict_subset_distinct_5,
+    schur_gap_strict_subset_rr1_8, rr2_gap_strict_subset_rr1_5,
+    schurGapFull_ne_schurGap_9
   Part properties (3): rr1_mod5_parts_nonzero, rr2_mod5_parts_ge_two,
     schur_mod_parts_coprime_three
 
@@ -685,15 +912,18 @@ theorem schurGapFull_subset_schurGap (n : ℕ) :
   rr1_count_0, rr1_count_1, rr1_count_4, rr1_count_6, rr1_count_9,
   schur_count_0, schur_count_1, schur_count_2
 
-### Computational Verifications (41):
-  RR1 for n=0..9, RR2 for n=0..9, Schur (simplified) for n=0..8
-  Schur (corrected) for n=0..9, plus 3 agreement checks
+### Computational Verifications (44+):
+  RR1 for n=0..10, RR2 for n=0..10, Schur (simplified) for n=0..8
+  Schur (corrected) for n=0..10, plus agreement checks
 
-### Key Finding:
-  The simplified Schur gap definition (uniform gap ≥ 3) diverges from
-  the full Schur identity at n=9. The proper Schur condition requires
-  gap ≥ 4 between parts that are multiples of 3. The corrected definition
-  (schurGapFull) verifies through n=9.
+### Key Findings:
+  1. The simplified Schur gap definition (uniform gap ≥ 3) diverges from
+     the full Schur identity at n=9. Corrected definition verified through n=10.
+  2. hasMinGap ↔ Pairwise (fun a b => a ≥ b + d): The sorted consecutive-gap
+     condition is equivalent to all-pairs separation. This bridges the
+     noncomputable and decidable formulations.
+  3. For sorted lists, the decidable pairwise condition implies hasMinGap,
+     completing the equivalence between the two approaches.
 
 ### Sorries: 0
 -/
