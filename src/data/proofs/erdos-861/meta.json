@@ -9,7 +9,13 @@
     "date": "",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos861Problem.lean",
-    "tags": ["erdos", "combinatorics", "Sidon-sets", "additive-combinatorics", "counting"],
+    "tags": [
+      "erdos",
+      "combinatorics",
+      "Sidon-sets",
+      "additive-combinatorics",
+      "counting"
+    ],
     "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 861,
@@ -17,10 +23,26 @@
     "erdosProblemStatus": "solved",
     "mathlib_version": "v4.x",
     "mathlibDependencies": [
-      { "theorem": "Finset.filter", "description": "Filter finite sets by predicate", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Finset.powerset", "description": "Powerset of a finite set", "module": "Mathlib.Data.Finset.Basic" },
-      { "theorem": "Real.sqrt", "description": "Square root on reals", "module": "Mathlib.Data.Real.Basic" },
-      { "theorem": "Real.rpow", "description": "Real power function", "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real" }
+      {
+        "theorem": "Finset.filter",
+        "description": "Filter finite sets by predicate",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.powerset",
+        "description": "Powerset of a finite set",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Real.sqrt",
+        "description": "Square root on reals",
+        "module": "Mathlib.Data.Real.Basic"
+      },
+      {
+        "theorem": "Real.rpow",
+        "description": "Real power function",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
     ],
     "originalContributions": [
       "Lean formalization of Sidon set definition",
@@ -47,56 +69,64 @@
       "title": "Sidon Set Definitions",
       "startLine": 45,
       "endLine": 70,
-      "summary": "Definition of Sidon sets as sets with distinct pairwise sums"
+      "summary": "Definition of Sidon sets as sets with distinct pairwise sums",
+      "mathContext": "$\\text{IsSidon}(S) \\iff \\forall a \\le b,\\, c \\le d \\in S: a + b = c + d \\implies (a = c \\wedge b = d)$. All pairwise sums are distinct (B$_2$ sequence)."
     },
     {
       "id": "counting-functions",
       "title": "Functions f(N) and A(N)",
       "startLine": 71,
       "endLine": 90,
-      "summary": "Maximum Sidon size and count of Sidon subsets"
+      "summary": "Maximum Sidon size and count of Sidon subsets",
+      "mathContext": "$f(N) = \\max\\{|S| : S \\subseteq \\{1, \\ldots, N\\},\\, \\text{IsSidon}(S)\\}$. $A(N) = |\\{S : S \\subseteq \\{1, \\ldots, N\\},\\, \\text{IsSidon}(S)\\}|$."
     },
     {
       "id": "asymptotic",
       "title": "Known Asymptotic",
       "startLine": 91,
       "endLine": 113,
-      "summary": "Erdős-Turán result f(N) ~ √N"
+      "summary": "Erdős-Turán result f(N) ~ √N",
+      "mathContext": "$f(N) \\sim \\sqrt{N}$ as $N \\to \\infty$ (Erdős-Turán). The maximum Sidon subset of $\\{1, \\ldots, N\\}$ has $\\sim \\sqrt{N}$ elements."
     },
     {
       "id": "question1",
       "title": "Cameron-Erdős Question 1",
       "startLine": 114,
       "endLine": 134,
-      "summary": "Is A(N)/2^{f(N)} → ∞? (Answer: Yes)"
+      "summary": "Is A(N)/2^{f(N)} → ∞? (Answer: Yes)",
+      "mathContext": "Q1: Is $A(N) / 2^{f(N)} \\to \\infty$? *YES*. The Saxton-Thomason bound $A(N) \\ge 2^{1.16 f(N)}$ implies $A(N)/2^{f(N)} \\ge 2^{0.16 f(N)} \\to \\infty$."
     },
     {
       "id": "question2",
       "title": "Cameron-Erdős Question 2",
       "startLine": 135,
       "endLine": 156,
-      "summary": "Is A(N) = 2^{(1+o(1))f(N)}? (Answer: No)"
+      "summary": "Is A(N) = 2^{(1+o(1))f(N)}? (Answer: No)",
+      "mathContext": "Q2: Is $A(N) = 2^{(1+o(1))f(N)}$? *NO*. The bounds $2^{1.16 f(N)} \\le A(N) \\le 2^{6.442 f(N)}$ show the exponent is not $1 + o(1)$."
     },
     {
       "id": "bounds",
       "title": "Current Best Bounds",
       "startLine": 157,
       "endLine": 196,
-      "summary": "Saxton-Thomason lower and KLRS upper bounds"
+      "summary": "Saxton-Thomason lower and KLRS upper bounds",
+      "mathContext": "$2^{1.16 f(N)} \\le A(N) \\le 2^{6.442 f(N)}$ for large $N$. Lower: Saxton-Thomason (2015, hypergraph containers). Upper: Kohayakawa-Lee-Rödl-Samotij (2015)."
     },
     {
       "id": "properties",
       "title": "Basic Properties",
       "startLine": 197,
       "endLine": 224,
-      "summary": "Elementary Sidon set properties"
+      "summary": "Elementary Sidon set properties",
+      "mathContext": "Empty set is Sidon. Singletons are Sidon. Sidon subset of a Sidon set is Sidon. If $S \\subseteq \\{1, \\ldots, N\\}$ is Sidon, then $|S| \\le f(N)$."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 225,
       "endLine": 255,
-      "summary": "Main results and current state of knowledge"
+      "summary": "Main results and current state of knowledge",
+      "mathContext": "$A(N)/2^{f(N)} \\to \\infty$ (Q1: YES) and $\\exists c \\in [1.16, 6.442]: A(N) = 2^{(c+o(1))f(N)}$ (Q2: NO, exponent $\\neq 1$). The exact $c$ remains open."
     }
   ],
   "conclusion": {
