@@ -71,21 +71,24 @@
       "title": "Sin-Ratio Formula for a Single Cevian",
       "startLine": 60,
       "endLine": 129,
-      "summary": "sin_ratio_cevian_point: for D = normalize(α·B + β·C), proves sin(arccos(⟪B,D⟫))/sin(arccos(⟪D,C⟫)) = β/α. Self-contained proof via n²-(α+βm)² = β²(1-m²)."
+      "summary": "sin_ratio_cevian_point: for D = normalize(α·B + β·C), proves sin(arccos(⟪B,D⟫))/sin(arccos(⟪D,C⟫)) = β/α. Self-contained proof via n²-(α+βm)² = β²(1-m²).",
+      "mathContext": "For $D = \\mathrm{normalize}(\\alpha B + \\beta C)$ with $n = \\|\\alpha B + \\beta C\\|$ and $m = \\langle B, C \\rangle$: $\\langle B, D \\rangle = (\\alpha + \\beta m)/n$, $\\langle D, C \\rangle = (\\alpha m + \\beta)/n$. Key identity: $n^2 - (\\alpha + \\beta m)^2 = \\beta^2(1-m^2)$. Therefore $\\sin(\\angle BD)/\\sin(\\angle DC) = \\beta/\\alpha$ after cancellation of $\\sqrt{1-m^2}/n$."
     },
     {
       "id": "triple-product",
       "title": "Triple Sin-Product = Weight-Product Ratio",
       "startLine": 130,
       "endLine": 169,
-      "summary": "spherical_ceva_product_eq_weight_ratio: applies sin_ratio_cevian_point to all three cevians D, E, F. The triple product equals (β_D·β_E·β_F)/(α_D·α_E·α_F)."
+      "summary": "spherical_ceva_product_eq_weight_ratio: applies sin_ratio_cevian_point to all three cevians D, E, F. The triple product equals (β_D·β_E·β_F)/(α_D·α_E·α_F).",
+      "mathContext": "Apply sin_ratio_cevian_point to each cevian: $D$ on $BC$ with weights $(\\alpha_D, \\beta_D)$, $E$ on $CA$ with $(\\alpha_E, \\beta_E)$, $F$ on $AB$ with $(\\alpha_F, \\beta_F)$. Product: $\\frac{\\sin BD}{\\sin DC} \\cdot \\frac{\\sin CE}{\\sin EA} \\cdot \\frac{\\sin AF}{\\sin FB} = \\frac{\\beta_D \\beta_E \\beta_F}{\\alpha_D \\alpha_E \\alpha_F}$."
     },
     {
       "id": "weight-balance",
       "title": "Weight Balance Criterion and Main Theorem",
       "startLine": 170,
       "endLine": 262,
-      "summary": "spherical_ceva_weight_balance_iff, weight_balance_symmetric, equal_weight_ceva, and spherical_ceva_iff_weight_balance. The concurrency condition product=1 iff α_D·α_E·α_F = β_D·β_E·β_F."
+      "summary": "spherical_ceva_weight_balance_iff, weight_balance_symmetric, equal_weight_ceva, and spherical_ceva_iff_weight_balance. The concurrency condition product=1 iff α_D·α_E·α_F = β_D·β_E·β_F.",
+      "mathContext": "Concurrency: $\\frac{\\beta_D \\beta_E \\beta_F}{\\alpha_D \\alpha_E \\alpha_F} = 1 \\iff \\alpha_D \\alpha_E \\alpha_F = \\beta_D \\beta_E \\beta_F$. This is the spherical Ceva condition in weight-balance form. Equal weights $\\alpha_i = \\beta_i$ give concurrent medians (arc-bisecting cevians)."
     }
   ],
   "conclusion": {
