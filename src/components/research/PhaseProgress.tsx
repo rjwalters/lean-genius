@@ -10,7 +10,7 @@ const PHASE_ORDER: ResearchPhase[] = [
   'ACT',
   'VERIFY',
   'LEARN',
-  'BREAKTHROUGH'
+  'COMPLETED'
 ]
 
 interface PhaseProgressProps {

@@ -38,7 +38,7 @@ Repeat `/research` to continue advancing through the loop.
 /research   # Selects problem, starts OBSERVE
 /research   # Continues to ORIENT
 /research   # Continues to DECIDE
-...         # Keep going until BREAKTHROUGH or PIVOT
+...         # Keep going until COMPLETED or PIVOT
 ```
 
 ### Option 2: Manual Problem Selection
@@ -269,7 +269,7 @@ Each problem tracks its state in `state.md`:
 # Research State: {slug}
 
 ## Current State
-**Phase**: OBSERVE | ORIENT | DECIDE | ACT | VERIFY | LEARN | PIVOT | BREAKTHROUGH
+**Phase**: OBSERVE | ORIENT | DECIDE | ACT | VERIFY | LEARN | PIVOT | COMPLETED
 **Since**: 2025-01-15T10:30:00Z
 **Iteration**: 3
 
@@ -368,7 +368,7 @@ src/data/research/problems/<slug>.json  # Website JSON (synced from meta.json)
 {
   "slug": "problem-slug",
   "title": "Problem Title",
-  "phase": "SURVEY | DEEP_DIVE | PIVOT | BREAKTHROUGH",
+  "phase": "SURVEY | DEEP_DIVE | PIVOT | COMPLETED",
   "status": "active | graduated | blocked",
   "knowledge": {
     "progressSummary": "One-line summary of what we've achieved",

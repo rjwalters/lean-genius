@@ -22,7 +22,7 @@ const OUTPUT_DIR = path.join(__dirname, '../../src/data/research')
 const PROBLEMS_OUTPUT_DIR = path.join(OUTPUT_DIR, 'problems')
 
 // Types matching src/types/research.ts
-type ResearchPhase = 'NEW' | 'OBSERVE' | 'ORIENT' | 'DECIDE' | 'ACT' | 'VERIFY' | 'LEARN' | 'BREAKTHROUGH' | 'PIVOT'
+type ResearchPhase = 'NEW' | 'OBSERVE' | 'ORIENT' | 'DECIDE' | 'ACT' | 'VERIFY' | 'LEARN' | 'COMPLETED' | 'PIVOT'
 type ValueTier = 'S' | 'A' | 'B' | 'C' | 'D'
 type ResearchStatus = 'active' | 'graduated' | 'abandoned' | 'blocked'
 type ResearchPath = 'fast' | 'full'
@@ -647,11 +647,6 @@ function build(): void {
       continue
     }
 
-    // Skip graduated problems (they're in the proof gallery now)
-    // BUT keep blocked problems - they're still open research targets!
-    if (entry.status === 'graduated') {
-      console.log(`   Skipping ${entry.slug} (graduated)`)
-      continue
     }
 
     console.log(`   Processing ${entry.slug}...`)
