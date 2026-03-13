@@ -30,25 +30,24 @@
     "activeApproach": "Extending cyclotomic approach to non-cyclic abelian groups"
   },
   "knowledge": {
-    "progressSummary": "OPEN in general. The full conjecture is unproven.",
+    "progressSummary": "PROGRESS: Fixed connection_to_abel_ruffini sorry by reusing eisenstein_X_pow_sub_prime from NthRootIrrationalOQ01. Reduced from 4 sorries to 2 (open problem + Hilbert irreducibility). Reduced axioms from 3 to 2 (cyclotomic irreducibility now proved via Mathlib).",
     "builtItems": [
       "cyclotomic_galois_group_card: |Gal(Phi_n/Q)| = phi(n) (proven)",
       "units_zmod3_card = 2, units_zmod8_card = 4, units_zmod11_card = 10 (decide)",
       "units_zmod12_card = 4, units_zmod13_card = 12, units_zmod15_card = 8 (decide)",
       "units_card_eq_totient: general totient bridge theorem (proven)",
-      "Fixed Mathlib API breakage: open Polynomial, degree_X_pow_sub_C arg type"
+      "connection_to_abel_ruffini: X^5-2 irreducible over Q (proved via Eisenstein+Gauss)",
+      "cyclotomic_irreducible_over_rationals: proven via Polynomial.cyclotomic.irreducible_rat"
     ],
     "insights": [
       "Cyclotomic irreducibility proven via Polynomial.cyclotomic.irreducible_rat (axiom removed)",
       "(ZMod 8)^x and (ZMod 12)^x are Klein four-groups, non-cyclic abelian Galois groups",
-      "(ZMod 15)^x = Z/2Z x Z/4Z by CRT, another non-cyclic example",
-      "Eisenstein proof broke due to Mathlib API changes in v4.26.0",
-      "Total proven theorems: 22 (up from 14), 2 axioms, 3 sorries"
+      "Reused eisenstein_X_pow_sub_prime from NthRootIrrationalOQ01 to prove X^5-2 irreducibility",
+      "Total proven theorems: 22, 2 axioms (abelian_realizable, shafarevich_theorem), 2 sorries (open problem + Hilbert)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Fix Eisenstein criterion proof for X^5-2 to match current Mathlib API",
-      "Search for Kronecker-Weber in Mathlib",
+      "Search for Kronecker-Weber in Mathlib to eliminate abelian_realizable axiom",
       "Prove S_3 is realizable via splitting field of X^3-2",
       "Add Dirichlet theorem connection: every cyclic group Z/dZ is realizable"
     ],

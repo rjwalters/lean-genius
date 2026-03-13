@@ -545,7 +545,7 @@ theorem solvable_iff_solvable_galois_group
 13. **Solvable groups are realizable** (axiom: Shafarevich 1954)
 14. **Symmetric groups are realizable** (sorry: Hilbert irreducibility, not in Mathlib)
 15. **X⁵ - 2 is irreducible over ℤ** (proven via Eisenstein criterion at p = 2)
-16. **∃ irreducible quintic over ℚ** (proven via Gauss's lemma transfer from ℤ to ℚ)
+16. **∃ irreducible quintic over ℚ** (proven via Gauss's lemma + Eisenstein, reusing NthRootIrrationalOQ01)
 
 ### What Remains Open:
 - The general Inverse Galois Problem for arbitrary finite groups over ℚ
@@ -559,7 +559,7 @@ theorem solvable_iff_solvable_galois_group
 4. Prove Gal(X³-2/ℚ) ≅ S₃ to eliminate `x_cube_sub_2_gal_iso_s3` axiom
 
 **Theorem Count**: 22 proven theorems/lemmas, 2 axioms (for deep classical results)
-**Sorries**: 2 (1 open problem + 1 theorem needing Hilbert irreducibility)
+**Sorries**: 1 (open problem) + 1 (Hilbert irreducibility not in Mathlib)
 -/
 
 end InverseGaloisProblem
