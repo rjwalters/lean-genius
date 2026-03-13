@@ -39,49 +39,56 @@
       "title": "Basic Definitions",
       "startLine": 38,
       "endLine": 70,
-      "summary": "Define representability as p + floor(C^k) and the associated set"
+      "summary": "Define representability as p + floor(C^k) and the associated set",
+      "mathContext": "$\\text{IsRepresentable}(C, n) \\iff \\exists p, k \\in \\mathbb{N},\\; p \\text{ prime} \\wedge n = p + \\lfloor C^k \\rfloor_{\\mathbb{N}}$. For integer $C$, $\\lfloor C^k \\rfloor = C^k$ since $C^k \\in \\mathbb{N}$."
     },
     {
       "id": "density-concepts",
       "title": "Density Concepts",
       "startLine": 71,
       "endLine": 96,
-      "summary": "Define counting function, lower density, and positive density"
+      "summary": "Define counting function, lower density, and positive density",
+      "mathContext": "$\\underline{d}(S) = \\liminf_{N \\to \\infty} \\frac{|S \\cap [0,N]|}{N}$. $\\text{HasPositiveDensity}(S) \\iff \\underline{d}(S) > 0$. A set with positive lower density contains $\\Omega(N)$ elements up to $N$."
     },
     {
       "id": "romanoff-theorem",
       "title": "Romanoff's Theorem",
       "startLine": 97,
       "endLine": 140,
-      "summary": "State the 1934 result for integer C >= 2"
+      "summary": "State the 1934 result for integer C >= 2",
+      "mathContext": "Romanoff (1934): $\\forall C \\in \\mathbb{N},\\; C \\ge 2 \\implies \\underline{d}(\\{p + C^k : p \\text{ prime}, k \\ge 0\\}) > 0$. The proof uses sieve methods to count primes $p \\le N$ with $N - p$ a power of $C$."
     },
     {
       "id": "general-conjecture",
       "title": "General Conjecture",
       "startLine": 141,
       "endLine": 175,
-      "summary": "State the open problem for all C > 1 and Ding's partial result"
+      "summary": "State the open problem for all C > 1 and Ding's partial result",
+      "mathContext": "Conjecture: $\\forall C \\in \\mathbb{R},\\; C > 1 \\implies \\underline{d}(R(C)) > 0$. Ding (2025): $\\exists N \\subset (1, \\infty)$ with $\\mu(N) = 0$ such that $\\forall C > 1,\\; C \\notin N \\implies \\underline{d}(R(C)) > 0$."
     },
     {
       "id": "examples",
       "title": "Small Examples",
       "startLine": 176,
       "endLine": 201,
-      "summary": "Verify representability for specific numbers"
+      "summary": "Verify representability for specific numbers",
+      "mathContext": "$3 = 2 + \\lfloor C^0 \\rfloor = 2 + 1$ for any $C \\ge 1$ (prime $p = 2$, $k = 0$). $5 = 3 + 2^1$ for $C = 2$. $10 = 2 + 2^3$ for $C = 2$."
     },
     {
       "id": "connection-to-10",
       "title": "Connection to Problem #10",
       "startLine": 202,
       "endLine": 216,
-      "summary": "Explain the relationship between density and universality"
+      "summary": "Explain the relationship between density and universality",
+      "mathContext": "Problem #244 (density) vs Problem #10 (universality): $\\underline{d}(R(2)) > 0$ (Romanoff) but $\\mathbb{N} \\setminus R(2) \\ne \\emptyset$ (de Polignac). Positive density does not imply covering all integers."
     },
     {
       "id": "summary",
       "title": "Summary of Results",
       "startLine": 217,
       "endLine": 235,
-      "summary": "Combines all known partial results into a summary theorem"
+      "summary": "Combines all known partial results into a summary theorem",
+      "mathContext": "Known: (1) $\\forall C \\in \\mathbb{N}_{\\ge 2},\\; \\underline{d}(R(C)) > 0$ (Romanoff 1934). (2) For $\\mu$-a.e. $C > 1$, $\\underline{d}(R(C)) > 0$ (Ding 2025). Open: $\\forall C > 1$, $\\underline{d}(R(C)) > 0$?"
     }
   ],
   "conclusion": {
