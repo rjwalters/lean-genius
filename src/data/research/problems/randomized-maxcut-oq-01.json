@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEYED",
+    "phase": "NEW",
     "since": "2026-03-11T21:20:33.095Z",
-    "iteration": 2,
-    "focus": "Axiom elimination survey - reduced 8 to 7 axioms",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,24 +29,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Reduced axiom count from 8 to 7 by proving gwExpectedCut_nonneg. Remaining 7 axioms are fundamentally blocked by missing SDP infrastructure in Mathlib.",
+    "progressSummary": "PROGRESS: Added 23 proved theorems (arccos rounding probability framework, GW inequality boundary verification, ratio analysis). File now has 33 proved theorems, 9 axioms, 0 sorries. Key contribution: formalized the GW rounding probability using Mathlib Real.arccos and verified the GW inequality at boundary points x=-1,0,1.",
     "builtItems": [
-      "Converted gwExpectedCut_nonneg from axiom to lemma in GoemansWilliamsonMaxCut.lean"
+      "roundingProb: arccos(x)/π probability function with 5 proved properties",
+      "sdpContrib: (1-x)/2 SDP contribution with 5 proved properties",
+      "GW inequality boundary verification at x=-1,0,1 (3 theorems)",
+      "Ratio analysis at boundary points (4 theorems)",
+      "Enhanced structural bounds: bipartite, improvement factor, tighter αGW (6 theorems)",
+      "UGC hardness axiom (Khot et al. 2007)"
     ],
     "insights": [
-      "gwExpectedCut_nonneg is redundant - follows from gw_rounding_inequality + sdpRelaxation_nonneg + αGW_pos",
-      "Core bottleneck is Mathlib has no SDP infrastructure (semidefinite cones, duality, optimization)",
-      "The arccos inequality arccos(x)/π ≥ α_GW·(1-x)/2 requires calculus of variations to verify the minimum of θ/(π(1-cos θ)/2)",
-      "Hyperplane rounding probability measure on the sphere also not in Mathlib"
+      "Mathlib Real.arccos is sufficient to formalize the GW rounding probability arccos(x)/π",
+      "The GW inequality holds trivially at boundary points x=1,-1,0 (verified in Lean)",
+      "At x=0 (orthogonal vectors), rounding probability = 1/2 (same as random algorithm)",
+      "At x=-1 (antipodal vectors), rounding probability = 1 (certain to be cut)",
+      "The GW ratio roundingProb/sdpContrib equals 1 at boundaries; minimum α_GW ≈ 0.878 at x ≈ -0.690",
+      "SDP infrastructure (positive semidefinite cones) remains the main gap in Mathlib for full formalization",
+      "arccos(-1) = π proved via unfold arccos + arcsin_neg + arcsin_one + ring",
+      "arccos(0) = π/2 proved via unfold arccos + arcsin_zero + sub_zero",
+      "div_right_comm useful for π/2/π = 1/2 (reorders divisions to expose div_self)"
     ],
-    "mathlibGaps": [
-      "Semidefinite programming infrastructure (PSD cones, duality)",
-      "Measure theory on unit sphere (hyperplane rounding)",
-      "Calculus of variations for arccos inequality min"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Prove arccos inequality for conservative bound 878/1000 (requires calculus infrastructure)",
-      "SDP infrastructure would require major Mathlib contribution (~1000+ lines)"
+      "Prove GW inequality for additional points (x=1/2, x=-1/2) using norm_num on arccos bounds",
+      "Formalize arccos monotonicity: x < y → arccos(y) < arccos(x) (anti-monotone)",
+      "Prove roundingProb is Lipschitz continuous using deriv(arccos) = -1/sqrt(1-x^2)",
+      "Connect GWCut to Cut from RandomizedMaxCut.lean (structural equivalence)"
     ]
   },
   "approaches": [],

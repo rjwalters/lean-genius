@@ -17,7 +17,7 @@
     "proofRepoPath": "Proofs/GoemansWilliamsonMaxCut.lean",
     "badge": "open",
     "sorries": 0,
-    "axioms": 7,
+    "axioms": 9,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph",
@@ -38,6 +38,11 @@
         "theorem": "Sym2",
         "description": "Unordered pairs for representing edges",
         "module": "Mathlib.Data.Sym.Sym2"
+      },
+      {
+        "theorem": "Real.arccos",
+        "description": "Arccosine function and related lemmas (arccos_one, arcsin_neg, etc.)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
       }
     ],
     "originalContributions": [
@@ -45,7 +50,11 @@
       "Axiomatized SDP relaxation framework for MaxCut",
       "Main approximation theorem: α_GW · MaxCut ≤ E[GW cut]",
       "Ratio bound theorem: α_GW ≤ E[cut]/MaxCut",
-      "Comparison with simple 1/2-approximation (strict improvement)"
+      "Comparison with simple 1/2-approximation (strict improvement)",
+      "Arccos rounding probability framework using Mathlib's Real.arccos",
+      "Boundary verification of GW inequality at x = -1, 0, 1",
+      "Ratio analysis showing r(0) = r(-1) = 1 (tight at boundaries)",
+      "Bipartite graph specialization of the approximation guarantee"
     ],
     "externalReferences": [
       {
@@ -129,6 +138,34 @@
       "startLine": 197,
       "endLine": 225,
       "summary": "Prove MaxCut ≤ edges and expected cut ≤ edges bounds."
+    },
+    {
+      "id": "arccos-framework",
+      "title": "Arccos Rounding Probability Framework",
+      "startLine": 240,
+      "endLine": 310,
+      "summary": "Define roundingProb(x) = arccos(x)/π and sdpContrib(x) = (1-x)/2 using Mathlib's arccos. Prove boundary values at x = -1, 0, 1 and range properties [0,1]."
+    },
+    {
+      "id": "gw-boundary",
+      "title": "GW Inequality at Boundary Points",
+      "startLine": 312,
+      "endLine": 340,
+      "summary": "Prove the GW inequality αGW · sdpContrib(x) ≤ roundingProb(x) at the three critical points x = -1, 0, 1."
+    },
+    {
+      "id": "ratio-analysis",
+      "title": "Ratio Analysis",
+      "startLine": 342,
+      "endLine": 375,
+      "summary": "Analyze the GW ratio roundingProb(x)/sdpContrib(x) at boundary points, showing it equals 1 at x = 0 and x = -1."
+    },
+    {
+      "id": "enhanced-bounds",
+      "title": "Enhanced Structural Bounds",
+      "startLine": 377,
+      "endLine": 410,
+      "summary": "Additional bounds: improvement factor over random, bipartite specialization, tighter αGW estimates, and UGC hardness axiom."
     }
   ],
   "conclusion": {
