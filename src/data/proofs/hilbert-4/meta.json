@@ -60,42 +60,48 @@
       "title": "Basic Definitions",
       "startLine": 1,
       "endLine": 85,
-      "summary": "Introduction to Hilbert's 4th Problem and key definitions."
+      "summary": "Introduction to Hilbert's 4th Problem and key definitions.",
+      "mathContext": "A metric $d$ on $U \\subseteq \\mathbb{R}^n$ has *straight-line geodesics* if for all $x, y \\in U$, the infimum of path lengths is achieved by the line segment. Hilbert asked: characterize all such metrics retaining ordering and incidence axioms while weakening congruence."
     },
     {
       "id": "minkowski",
       "title": "Minkowski Geometry",
       "startLine": 86,
       "endLine": 130,
-      "summary": "Definition of Minkowski gauges and geometries."
+      "summary": "Definition of Minkowski gauges and geometries.",
+      "mathContext": "A Minkowski gauge is a function $f : E \\to \\mathbb{R}$ with $f(x) \\geq 0$, $f(x)=0 \\iff x=0$, $f(rx)=rf(x)$ for $r \\geq 0$, and $f(x+y) \\leq f(x)+f(y)$. The unit ball $B = \\{x : f(x) \\leq 1\\}$ is convex. The induced metric $d(x,y) = f(y-x)$ is translation-invariant."
     },
     {
       "id": "geodesics",
       "title": "Geodesics and Straight Lines",
       "startLine": 131,
       "endLine": 180,
-      "summary": "Proof that straight lines are geodesics in Minkowski spaces."
+      "summary": "Proof that straight lines are geodesics in Minkowski spaces.",
+      "mathContext": "In a Minkowski space with gauge $f$, for points $x, z, y$ collinear with $z$ between $x$ and $y$: $f(z-x) + f(y-z) = f(y-x)$. This is equality in the triangle inequality, proving line segments are geodesics. Uniqueness follows from strict convexity conditions."
     },
     {
       "id": "hilbert-geometry",
       "title": "Hilbert Geometry",
       "startLine": 181,
       "endLine": 230,
-      "summary": "The Hilbert metric on convex bodies."
+      "summary": "The Hilbert metric on convex bodies.",
+      "mathContext": "For a convex body $K$ and $x, y \\in \\mathrm{int}(K)$, let the line through $x, y$ meet $\\partial K$ at $p, q$ (ordered $p, x, y, q$). The Hilbert metric is $d_H(x,y) = \\frac{1}{2} \\log \\frac{|x-q|\\cdot|y-p|}{|x-p|\\cdot|y-q|}$. This is projectively invariant and has straight-line geodesics."
     },
     {
       "id": "busemann",
       "title": "Busemann's Classification",
       "startLine": 231,
       "endLine": 280,
-      "summary": "Statement of Busemann's characterization theorem."
+      "summary": "Statement of Busemann's characterization theorem.",
+      "mathContext": "Busemann's theorem (1955): Every continuous metric on an open convex $U \\subseteq \\mathbb{R}^n$ with straight-line geodesics is either a Minkowski metric (translation-invariant), a Hilbert metric (projectively invariant on a convex domain), or a Funk-type metric (asymmetric). This exhausts all possibilities."
     },
     {
       "id": "examples",
       "title": "Examples",
       "startLine": 281,
       "endLine": 350,
-      "summary": "Euclidean, taxicab, and Chebyshev norms as examples."
+      "summary": "Euclidean, taxicab, and Chebyshev norms as examples.",
+      "mathContext": "Euclidean: $\\|x\\|_2 = \\sqrt{\\sum x_i^2}$, unit ball is a sphere. Taxicab: $\\|x\\|_1 = \\sum |x_i|$, unit ball is a cross-polytope. Chebyshev: $\\|x\\|_\\infty = \\max |x_i|$, unit ball is a hypercube. All are Minkowski geometries with convex unit balls, hence straight-line geodesics."
     }
   ],
   "conclusion": {
