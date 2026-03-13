@@ -6,7 +6,7 @@
   "meta": {
     "author": "Paul Erdős, John Selfridge",
     "sourceUrl": "https://erdosproblems.com/912",
-    "date": "",
+    "date": "2026-03-12",
     "status": "complete",
     "proofRepoPath": "Proofs/Erdos912Problem.lean",
     "tags": ["erdos", "number-theory", "factorials", "prime-factorization", "exponents"],
@@ -26,19 +26,44 @@
       "Lean formalization of h(n) counting distinct exponents",
       "Formal statement of Erdős-Selfridge bounds",
       "Erdős conjecture and Tao's conjectured constant",
-      "Connection to Legendre's formula"
+      "Connection to Legendre's formula",
+      "Proved erdos_selfridge_asymptotic by combining axiomatized bounds with max threshold"
+    ],
+    "references": [
+      {
+        "authors": "Erdős, P.",
+        "title": "Miscellaneous problems in number theory",
+        "year": "1982",
+        "venue": "Congr. Numer. 34, 25-45",
+        "note": "Proved h(n) ≍ √(n/log n) with Selfridge"
+      },
+      {
+        "authors": "Legendre, A.-M.",
+        "title": "Essai sur la théorie des nombres",
+        "year": "1808",
+        "venue": "Courcier, Paris",
+        "note": "Legendre's formula for v_p(n!) = Σ floor(n/p^j)"
+      },
+      {
+        "authors": "Cramér, H.",
+        "title": "On the order of magnitude of the difference between consecutive prime numbers",
+        "year": "1936",
+        "venue": "Acta Arith. 2, 23-46",
+        "note": "Random model for primes underlying Tao's heuristic"
+      }
     ],
     "dateAdded": "2026-01-19"
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erdős and Selfridge, who proved the asymptotic order h(n) ≍ √(n/log n). The exact constant remains open. Terence Tao developed a heuristic using the Cramér model suggesting c = √(2π) ≈ 2.506.",
+    "historicalContext": "This problem was posed by Erdős and Selfridge in their 1982 paper in Congressus Numerantium. They proved the asymptotic order h(n) ≍ √(n/log n) using estimates from the prime number theorem and Legendre's formula (1808) for the p-adic valuation of factorials. The function h(n) is recorded as OEIS sequence A071626. The exact limiting constant remains open; Terence Tao developed a heuristic argument using Cramér's random model for primes (1936), which suggests c = √(2π) ≈ 2.506. This value arises from a central limit theorem argument applied to the distribution of exponents.",
     "problemStatement": "Let n! = ∏ᵢ pᵢ^{kᵢ} be the prime factorization. Define h(n) as the count of distinct exponents kᵢ. Prove there exists c > 0 such that h(n) ~ c·√(n/log n) as n → ∞.",
     "proofStrategy": "The formalization defines h(n) using p-adic valuations, states the Erdős-Selfridge bounds as axioms, and formally expresses the conjecture about the exact constant.",
     "keyInsights": [
       "h(n) counts distinct exponents in n!'s prime factorization",
       "Erdős-Selfridge proved h(n) ≍ √(n/log n) (asymptotic order)",
       "The exact constant c in h(n) ~ c·√(n/log n) is unknown",
-      "Tao's heuristic suggests c = √(2π) via Cramér model"
+      "Tao's heuristic suggests c = √(2π) via Cramér model — the √(2π) arises from CLT considerations on independent prime events",
+      "The formalization proves erdos_selfridge_asymptotic constructively by combining the two axiomatized bounds using max to unify thresholds"
     ]
   },
   "sections": [
@@ -47,49 +72,56 @@
       "title": "Basic Definitions",
       "startLine": 45,
       "endLine": 83,
-      "summary": "Definitions of exponentInFactorial, h(n), and related functions"
+      "summary": "Definitions of exponentInFactorial, h(n), and related functions",
+      "mathContext": "Defines $v_p(n!) = $ `padicValNat p n.factorial`, Legendre sum $\\sum \\lfloor n/p^j \\rfloor$, primes in factorial $\\{p \\leq n : p \\text{ prime}\\}$, exponent multiset, and $h(n) = |\\text{exponentMultiset}(n)|$."
     },
     {
       "id": "erdos-selfridge-bounds",
       "title": "Erdős-Selfridge Bounds",
       "startLine": 84,
       "endLine": 119,
-      "summary": "Known asymptotic bounds h(n) ≍ √(n/log n)"
+      "summary": "Known asymptotic bounds h(n) ≍ √(n/log n)",
+      "mathContext": "Axioms: $\\exists c_1 > 0, h(n) \\geq c_1\\sqrt{n/\\log n}$ and $\\exists c_2 > 0, h(n) \\leq c_2\\sqrt{n/\\log n}$. Combined in `erdos_selfridge_asymptotic` using `max N_1 N_2`."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 120,
       "endLine": 150,
-      "summary": "Formal statement of the conjecture and Tao's constant"
+      "summary": "Formal statement of the conjecture and Tao's constant",
+      "mathContext": "`ErdosConjecture912`: $\\exists c > 0$, `Filter.Tendsto (h(n)/√(n/log n)) atTop (nhds c)`. `taoConstant = √(2π)`. `TaoConjecture`: the specific $c = \\sqrt{2\\pi}$ claim."
     },
     {
       "id": "related-properties",
       "title": "Related Properties",
       "startLine": 151,
       "endLine": 178,
-      "summary": "Monotonicity and maximum exponent properties"
+      "summary": "Monotonicity and maximum exponent properties",
+      "mathContext": "`exponent_monotone`: $m \\leq n \\implies v_p(m!) \\leq v_p(n!)$ (proved via `padicValNat.factorial_le_factorial`). `max_exponent_is_two`: $v_2(n!)$ is the largest exponent. `exponent_of_two`: $v_2(n!) = n - \\text{popcount}(n)$."
     },
     {
       "id": "small-values",
       "title": "Small Values",
       "startLine": 179,
       "endLine": 199,
-      "summary": "Values of h(n) for small n (OEIS A071626)"
+      "summary": "Values of h(n) for small n (OEIS A071626)",
+      "mathContext": "Axiomatized: $h(1)=0, h(2)=1, h(3)=1, h(4)=2, h(10)=3, h(20)=4, h(100) \\geq 7$. OEIS A071626 sequence. Helps verify the definition and calibrate expectations."
     },
     {
       "id": "difficulty",
       "title": "Why the Conjecture is Hard",
       "startLine": 200,
       "endLine": 221,
-      "summary": "Connections to prime distribution"
+      "summary": "Connections to prime distribution",
+      "mathContext": "Placeholder axioms `conjecture_difficulty` and `prime_distribution_connection` (both `True`). The key difficulty is closing the gap between constants $c_1$ and $c_2$ to a single $c$, which requires understanding fine prime gap statistics."
     },
     {
       "id": "summary",
       "title": "Summary",
       "startLine": 222,
       "endLine": 270,
-      "summary": "Main results and current state of knowledge"
+      "summary": "Main results and current state of knowledge",
+      "mathContext": "`erdos_912_summary = ⟨erdos_selfridge_asymptotic, trivial⟩`. `constant_gap` axiomatizes $\\sqrt{2\\pi} \\in (2.5, 2.51)$. The open question is whether $\\lim h(n)/\\sqrt{n/\\log n}$ exists and equals $\\sqrt{2\\pi}$."
     }
   ],
   "conclusion": {
