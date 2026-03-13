@@ -729,6 +729,7 @@ theorem extended_law_of_sines (T : Triangle) :
     nlinarith [hsq]
   exact eq_of_sq_eq_nonneg hlhs_nn hrhs_nn hsq'
 
+
 -- Type-check results
 #check @foot_a_on_ninePointCircle_proved
 #check @foot_b_on_ninePointCircle_proved
