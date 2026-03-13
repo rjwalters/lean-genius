@@ -38,42 +38,48 @@
       "title": "Subset Sums and Completeness",
       "startLine": 21,
       "endLine": 30,
-      "summary": "Definitions of subset sums P(A) and completeness of a sequence."
+      "summary": "Definitions of subset sums P(A) and completeness of a sequence.",
+      "mathContext": "$P(A) = \\{\\sum_{a \\in S} a : S \\subseteq A,\\, S \\text{ finite}\\}$. $\\text{IsComplete}(A) \\iff \\exists m,\\, \\forall n \\ge m: n \\in P(A)$. Subset sums use distinct elements (no repetition)."
     },
     {
       "id": "threshold",
       "title": "Completeness Threshold",
       "startLine": 32,
       "endLine": 47,
-      "summary": "Axiomatisation of T(A) with correctness and minimality properties."
+      "summary": "Axiomatisation of T(A) with correctness and minimality properties.",
+      "mathContext": "$T(A) = \\min\\{m : \\forall n \\ge m,\\, n \\in P(A)\\}$. Axiomatized via correctness ($\\forall n \\ge T(A): n \\in P(A)$) and minimality ($T(A) > 0 \\implies \\exists n < T(A): n \\notin P(A)$)."
     },
     {
       "id": "power-sequences",
       "title": "Power Sequences",
       "startLine": 49,
       "endLine": 57,
-      "summary": "Definition of {n^k : n ≥ 1} and T(n) = 1."
+      "summary": "Definition of {n^k : n ≥ 1} and T(n) = 1.",
+      "mathContext": "$\\text{powerSeq}(k) = \\{n^k : n \\ge 1\\}$. $T(n^1) = 1$ since every positive integer is a sum of distinct positive integers. Completeness for all $k \\ge 1$ follows from Waring's problem."
     },
     {
       "id": "known-values",
       "title": "Known Threshold Values",
       "startLine": 59,
       "endLine": 71,
-      "summary": "T(n²) = 128, T(n³) = 12758, T(n⁴) = 5134240, T(n⁵) = 67898771."
+      "summary": "T(n²) = 128, T(n³) = 12758, T(n⁴) = 5134240, T(n⁵) = 67898771.",
+      "mathContext": "$T(n) = 1$, $T(n^2) = 128$, $T(n^3) = 12758$, $T(n^4) = 5134240$, $T(n^5) = 67898771$. Growth ratios: $128, 99.7, 403.3, 13.2$. The sequence is strictly increasing for $k \\le 5$."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
       "startLine": 79,
       "endLine": 84,
-      "summary": "Erdős Problem 345: infinitely many k with T(n^k) > T(n^{k+1})."
+      "summary": "Erdős Problem 345: infinitely many k with T(n^k) > T(n^{k+1}).",
+      "mathContext": "$\\exists^\\infty k: T(n^k) > T(n^{k+1})$. Erdos-Graham suggest $k = 2^t$ for large $t$ as candidates for threshold reversal. Any reversal must occur for $k \\ge 5$ by the computed monotonicity."
     },
     {
       "id": "monotonicity",
       "title": "Monotonicity Observations",
       "startLine": 86,
       "endLine": 94,
-      "summary": "Known thresholds T(n) < T(n²) < T(n³) < T(n⁴) < T(n⁵) are increasing."
+      "summary": "Known thresholds T(n) < T(n²) < T(n³) < T(n⁴) < T(n⁵) are increasing.",
+      "mathContext": "$T(n) < T(n^2) < T(n^3) < T(n^4) < T(n^5)$: strict monotonicity holds in the computable range. Computing $T(n^k)$ for $k \\ge 6$ is currently infeasible."
     }
   ],
   "conclusion": {

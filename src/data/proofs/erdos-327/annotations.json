@@ -3,120 +3,204 @@
     "id": "erdos-327-context",
     "proofId": "erdos-327",
     "type": "context",
-    "range": { "startLine": 1, "endLine": 15 },
+    "range": {
+      "startLine": 1,
+      "endLine": 15
+    },
     "title": "Problem Overview: Sum-Divides-Product Avoidance",
     "content": "Erdos Problem 327 asks: how large can a subset **A** of {1, ..., N} be if for all distinct a, b in A, **a + b does not divide a * b**? The odd numbers satisfy this property (since a + b is even but a * b is odd), giving sets of size roughly N/2. The conjecture is that one **cannot** do substantially better. A fascinating equivalence links the condition a + b | ab to **1/a + 1/b being a unit fraction**.",
     "mathContext": "This problem connects **divisibility avoidance** with **Egyptian fraction theory**. The condition a + b | ab is equivalent to asking that 1/a + 1/b = 1/c for some positive integer c. This reformulation places the problem in the same family as Erdos Problem 301 (Egyptian fraction avoidance). The odd-numbers construction shows the extremal density is at least 1/2; the question is whether it can exceed 1/2.",
-    "relatedConcepts": ["divisibility", "unit fractions", "Egyptian fractions", "extremal set theory", "parity arguments"],
-    "significance": "essential"
+    "relatedConcepts": [
+      "divisibility",
+      "unit fractions",
+      "Egyptian fractions",
+      "extremal set theory",
+      "parity arguments"
+    ],
+    "significance": "key"
   },
   {
     "id": "erdos-327-property",
     "proofId": "erdos-327",
     "type": "definition",
-    "range": { "startLine": 27, "endLine": 29 },
+    "range": {
+      "startLine": 27,
+      "endLine": 29
+    },
     "title": "SumNotDvdProd Property",
     "content": "**SumNotDvdProd A** holds when for all distinct a, b in A, the sum **a + b does not divide the product a * b**. This is the central avoidance condition of Problem 327, quantified over all ordered pairs of distinct elements.",
     "mathContext": "The divisibility condition a + b | ab has a rich algebraic structure. Writing ab/(a+b) = 1/(1/a + 1/b), the condition a + b | ab is equivalent to the **harmonic mean** of a and b being a rational number with denominator 1. This connects the combinatorial avoidance problem to the arithmetic of unit fractions.",
-    "relatedConcepts": ["divisibility", "harmonic mean", "pairwise condition", "avoidance property"],
-    "significance": "essential"
+    "relatedConcepts": [
+      "divisibility",
+      "harmonic mean",
+      "pairwise condition",
+      "avoidance property"
+    ],
+    "significance": "key"
   },
   {
     "id": "erdos-327-twoprod",
     "proofId": "erdos-327",
     "type": "definition",
-    "range": { "startLine": 31, "endLine": 33 },
+    "range": {
+      "startLine": 31,
+      "endLine": 33
+    },
     "title": "SumNotDvdTwoProd (Variant Condition)",
     "content": "**SumNotDvdTwoProd A** is a stronger avoidance condition: for all distinct a, b in A, **a + b does not divide 2 * a * b**. This is a factor-of-2 strengthening of SumNotDvdProd, used in the variant conjecture.",
     "mathContext": "The factor of 2 makes this condition **strictly stronger**: if a + b divides 2ab but not ab, the pair is forbidden by SumNotDvdTwoProd but allowed by SumNotDvdProd. This extra restriction is conjectured to force the set to have **zero density** (o(N) rather than N/2), a much stronger conclusion than the main conjecture.",
-    "relatedConcepts": ["strengthened condition", "zero density", "divisibility variant"],
-    "significance": "essential"
+    "relatedConcepts": [
+      "strengthened condition",
+      "zero density",
+      "divisibility variant"
+    ],
+    "significance": "key"
   },
   {
     "id": "erdos-327-maxsize",
     "proofId": "erdos-327",
     "type": "definition",
-    "range": { "startLine": 35, "endLine": 37 },
+    "range": {
+      "startLine": 35,
+      "endLine": 37
+    },
     "title": "Extremal Function maxAvoidSize(N)",
     "content": "**maxAvoidSize(N)** is the maximum cardinality of a SumNotDvdProd subset of {1, ..., N}. This is the extremal function whose asymptotic behavior Problem 327 seeks to determine, defined as the supremum over the powerset.",
     "mathContext": "Like many extremal functions in combinatorics, maxAvoidSize is **noncomputable** in practice due to the exponential powerset. The conjecture asserts maxAvoidSize(N) <= (1/2 + o(1)) * N, matching the odd-numbers lower bound.",
-    "relatedConcepts": ["extremal function", "powerset supremum", "asymptotic growth"],
-    "significance": "essential"
+    "relatedConcepts": [
+      "extremal function",
+      "powerset supremum",
+      "asymptotic growth"
+    ],
+    "significance": "key"
   },
   {
     "id": "erdos-327-conjecture",
     "proofId": "erdos-327",
-    "type": "conjecture",
-    "range": { "startLine": 43, "endLine": 45 },
+    "type": "insight",
+    "range": {
+      "startLine": 43,
+      "endLine": 45
+    },
     "title": "Main Conjecture: maxAvoidSize(N) <= (1/2 + epsilon) * N",
     "content": "**ErdosProblem327**: for every epsilon > 0, for sufficiently large N, **maxAvoidSize(N) <= (1/2 + epsilon) * N**. This says the odd numbers are essentially optimal -- no SumNotDvdProd set can be asymptotically larger than N/2.",
     "mathContext": "The conjecture is an **upper bound** only (the lower bound N/2 is trivial from odd numbers). Proving it requires showing that any dense enough set must contain a pair a, b with a + b | ab. Van Doorn's bound shows this is true at density 25/28, but the gap to 1/2 remains wide open.",
-    "relatedConcepts": ["asymptotic upper bound", "extremal density", "epsilon-delta formulation"],
-    "significance": "essential"
+    "relatedConcepts": [
+      "asymptotic upper bound",
+      "extremal density",
+      "epsilon-delta formulation"
+    ],
+    "significance": "key"
   },
   {
     "id": "erdos-327-vandoorn",
     "proofId": "erdos-327",
-    "type": "result",
-    "range": { "startLine": 49, "endLine": 53 },
+    "type": "technique",
+    "range": {
+      "startLine": 49,
+      "endLine": 53
+    },
     "title": "Van Doorn's Density Threshold",
     "content": "**Van Doorn's result**: if |A| >= (25/28) * N with A a subset of {1, ..., N}, then A must contain distinct a, b with **a + b | a * b**. This gives the best known upper bound: maxAvoidSize(N) < (25/28) * N for large N.",
     "mathContext": "The fraction 25/28 arises from a **covering argument**: in blocks of 28 consecutive integers, at least 3 must participate in a forbidden pair. The same constant 25/28 appears in Erdos Problem 301 (Egyptian fraction avoidance), reflecting the deep connection between the two problems. Improving 25/28 toward 1/2 is the central open challenge.",
-    "relatedConcepts": ["density threshold", "covering argument", "Van Doorn", "block decomposition"],
-    "significance": "essential"
+    "relatedConcepts": [
+      "density threshold",
+      "covering argument",
+      "Van Doorn",
+      "block decomposition"
+    ],
+    "significance": "key"
   },
   {
     "id": "erdos-327-variant",
     "proofId": "erdos-327",
-    "type": "conjecture",
-    "range": { "startLine": 57, "endLine": 62 },
+    "type": "insight",
+    "range": {
+      "startLine": 57,
+      "endLine": 62
+    },
     "title": "Factor-of-2 Variant: |A| = o(N)",
     "content": "**ErdosProblem327_variant**: if A is a subset of {1, ..., N} with a + b not dividing 2ab for all distinct a, b in A, then **|A| = o(N)**. The factor-of-2 strengthening is conjectured to force sets to have vanishing density, far stronger than the N/2 bound.",
     "mathContext": "This variant is substantially harder than the main conjecture. The condition a + b | 2ab is equivalent to asking that **2/(1/a + 1/b) is an integer**, i.e., the harmonic mean of a and b is an integer or a half-integer. Forbidding this for all pairs imposes a much tighter constraint, and the conjecture says no positive-density set can satisfy it.",
-    "relatedConcepts": ["zero density conjecture", "harmonic mean", "strengthened avoidance", "little-o notation"],
-    "significance": "essential"
+    "relatedConcepts": [
+      "zero density conjecture",
+      "harmonic mean",
+      "strengthened avoidance",
+      "little-o notation"
+    ],
+    "significance": "key"
   },
   {
     "id": "erdos-327-unitfraction",
     "proofId": "erdos-327",
-    "type": "result",
-    "range": { "startLine": 66, "endLine": 68 },
+    "type": "technique",
+    "range": {
+      "startLine": 66,
+      "endLine": 68
+    },
     "title": "Unit Fraction Equivalence",
     "content": "For positive a, b: **a + b | a * b if and only if 1/a + 1/b = 1/c** for some positive integer c. This elegant equivalence reframes the divisibility avoidance problem as a question about **Egyptian fractions** and unit fraction sums.",
     "mathContext": "The proof is elementary algebra: a + b | ab means ab/(a+b) = c is a positive integer, and then 1/a + 1/b = (a+b)/(ab) = 1/c. This equivalence shows that Erdos Problem 327 is really about avoiding pairs whose reciprocals sum to a unit fraction, placing it firmly in the **Egyptian fraction** family alongside Problem 301.",
-    "relatedConcepts": ["unit fractions", "Egyptian fractions", "algebraic equivalence", "reciprocal sums"],
-    "significance": "essential"
+    "relatedConcepts": [
+      "unit fractions",
+      "Egyptian fractions",
+      "algebraic equivalence",
+      "reciprocal sums"
+    ],
+    "significance": "key"
   },
   {
     "id": "erdos-327-empty-singleton",
     "proofId": "erdos-327",
-    "type": "proof",
-    "range": { "startLine": 73, "endLine": 80 },
+    "type": "technique",
+    "range": {
+      "startLine": 73,
+      "endLine": 80
+    },
     "title": "Base Cases: Empty Set and Singleton (Proved)",
     "content": "Both the **empty set** and any **singleton** {n} trivially satisfy SumNotDvdProd. For the empty set, there are no elements to test. For a singleton, there are no distinct pairs. These are **fully proved** in the formalization by contradiction on membership/distinctness.",
-    "relatedConcepts": ["base case", "vacuous truth", "distinctness"],
+    "relatedConcepts": [
+      "base case",
+      "vacuous truth",
+      "distinctness"
+    ],
     "significance": "supporting"
   },
   {
     "id": "erdos-327-hereditary",
     "proofId": "erdos-327",
-    "type": "proof",
-    "range": { "startLine": 82, "endLine": 84 },
+    "type": "technique",
+    "range": {
+      "startLine": 82,
+      "endLine": 84
+    },
     "title": "Hereditary Property (Proved)",
     "content": "**sumNotDvdProd_subset**: if A has the SumNotDvdProd property and B is a subset of A, then B also has SumNotDvdProd. The proof is immediate: any pair in B is also a pair in A, and the property holds for A.",
     "mathContext": "As with Egyptian fraction freeness, SumNotDvdProd is a **hereditary** (downward-closed) property. The family of SumNotDvdProd sets forms a **simplicial complex**, and the extremal problem asks for its maximum face size within {1, ..., N}.",
-    "relatedConcepts": ["hereditary property", "simplicial complex", "subset closure"],
+    "relatedConcepts": [
+      "hereditary property",
+      "simplicial complex",
+      "subset closure"
+    ],
     "significance": "supporting"
   },
   {
     "id": "erdos-327-oddnumbers",
     "proofId": "erdos-327",
-    "type": "result",
-    "range": { "startLine": 86, "endLine": 89 },
+    "type": "technique",
+    "range": {
+      "startLine": 86,
+      "endLine": 89
+    },
     "title": "Odd Numbers Construction",
     "content": "The set of **odd numbers** in {1, ..., N} satisfies SumNotDvdProd. The argument is a simple parity check: for odd a, b, the sum a + b is **even** while the product a * b is **odd**, so the even number a + b cannot divide the odd number a * b.",
     "mathContext": "This construction achieves |A| approximately equal to N/2 and is conjectured to be asymptotically optimal. The parity argument is elementary but powerful: it shows that **number-theoretic structure** (here, residues mod 2) can create large avoidance sets. The open question is whether more sophisticated constructions (using higher moduli or other techniques) can beat N/2.",
-    "relatedConcepts": ["parity argument", "modular arithmetic", "extremal construction", "lower bound"],
-    "significance": "essential"
+    "relatedConcepts": [
+      "parity argument",
+      "modular arithmetic",
+      "extremal construction",
+      "lower bound"
+    ],
+    "significance": "key"
   }
 ]

@@ -30,28 +30,32 @@
       "title": "Definitions",
       "startLine": 24,
       "endLine": 35,
-      "summary": "unitFracSum, delta (axiomatized), delta_pos."
+      "summary": "unitFracSum, delta (axiomatized), delta_pos.",
+      "mathContext": "$\\text{unitFracSum}(A) = \\sum_{n \\in A} \\frac{1}{n}$ for $A \\subseteq \\{1, \\ldots, N\\}$. $\\delta(N) = \\min\\{|1 - \\text{unitFracSum}(A)| : A \\subseteq \\{1,\\ldots,N\\},\\, \\text{unitFracSum}(A) \\le 1,\\, \\text{unitFracSum}(A) \\ne 1\\}$."
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound",
       "startLine": 37,
       "endLine": 42,
-      "summary": "δ(N) ≥ e^{-(1+o(1))N} from lcm bound."
+      "summary": "δ(N) ≥ e^{-(1+o(1))N} from lcm bound.",
+      "mathContext": "$\\delta(N) \\ge \\frac{1}{\\text{lcm}(1,\\ldots,N)} = e^{-(1+o(1))N}$ by clearing denominators. Uses $\\text{lcm}(1,\\ldots,N) = e^{\\psi(N)}$ where $\\psi(N) \\sim N$ (Chebyshev/PNT)."
     },
     {
       "id": "upper-bound",
       "title": "Upper Bound",
       "startLine": 44,
       "endLine": 50,
-      "summary": "Tang: δ(N) ≤ exp(-cN/(log N log log N)³)."
+      "summary": "Tang: δ(N) ≤ exp(-cN/(log N log log N)³).",
+      "mathContext": "$\\delta(N) \\le \\exp\\bigl(-\\frac{cN}{(\\log N \\cdot \\log\\log N)^3}\\bigr)$ for some $c > 0$ (Tang). This is subexponential — between the conjectured $e^{-cN}$ and polynomial decay."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
       "startLine": 52,
       "endLine": 61,
-      "summary": "δ(N) = e^{-(c+o(1))N} for c ∈ (0,1)."
+      "summary": "δ(N) = e^{-(c+o(1))N} for c ∈ (0,1).",
+      "mathContext": "$\\exists c \\in (0,1): \\forall \\varepsilon > 0,\\, \\exists N_0,\\, \\forall N \\ge N_0: e^{-(c+\\varepsilon)N} \\le \\delta(N) \\le e^{-(c-\\varepsilon)N}$. Equivalently, $-\\frac{\\log \\delta(N)}{N} \\to c$ as $N \\to \\infty$."
     }
   ],
   "overview": {
