@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Fujita-Kato mild solution theory (Part XXXVI) and blowup type classification (Part XXXVII). File now 6658 lines, 0 sorries, 0 axioms. Fixed false Serrin pair in Aristotle file.",
+    "progressSummary": "BLOCKED: NavierStokes.lean at 6658 lines, 0 sorries. Comprehensive axiomatized PDE formalization. Needs rigorous Sobolev spaces, Leray-Hopf weak solutions, and blowup analysis infrastructure not in Mathlib.",
     "builtItems": [
       "Part XXXVI: FujitaKato section in NavierStokes.lean (heat semigroup, mild solutions, Kato existence, Koch-Tataru)",
       "Part XXXVII: BlowupClassification section (Type I/II, ESS theorem, Leray self-similar, Tao bounds, minimal blowup)"
