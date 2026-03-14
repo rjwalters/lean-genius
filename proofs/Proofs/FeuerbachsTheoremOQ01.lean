@@ -1,4 +1,4 @@
-import Proofs.FeuerbachsTheorem
+import Proofs.FeuerbachsTheoremDefs
 
 /-
 # Feuerbach Distance Relations via Coordinate Computation (feuerbachs-theorem-oq-01)

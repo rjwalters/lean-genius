@@ -1,8 +1,8 @@
 {
   "slug": "feuerbachs-theorem-oq-01",
   "title": "Prove Feuerbach distance relations via coordinate computation",
-  "phase": "PROGRESS",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -21,11 +21,8 @@
       "Equilateral triangle R = 2r",
       "3-4-5 triangle numerical verification"
     ],
-    "open": [
-      "feuerbach_incircle_distance: dist(N, I) = |R/2 - r|",
-      "feuerbach_excircle_a/b/c_distance: dist(N, I_a) = R/2 + r_a"
-    ],
-    "goal": "Eliminate remaining 4 axioms (Feuerbach distance relations)"
+    "open": [],
+    "goal": "ACHIEVED: All 4 axioms eliminated and 1 sorry fixed. Proof fully integrated into parent."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -129,7 +126,8 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-14T01:27:45.000Z",
+  "lastUpdate": "2026-03-14T16:25:00.000Z",
+  "completed": "2026-03-14T16:25:00.000Z",
   "significance": 6,
   "tractability": 5
 }

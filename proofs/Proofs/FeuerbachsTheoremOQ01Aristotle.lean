@@ -9,7 +9,7 @@
   - Clean theorem statements with no definition sorries
   - No axioms (use theorem ... := by sorry instead)
 -/
-import Proofs.FeuerbachsTheorem
+import Proofs.FeuerbachsTheoremDefs
 
 set_option linter.unusedVariables false
 
