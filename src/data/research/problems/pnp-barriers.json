@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 15 axioms (down from 21). P_complement_closed now proved from Φ_negate. All 3 barriers + complexity hierarchy formalized soundly.",
+    "progressSummary": "PROGRESS: 11 axioms (down from 21). Removed 4 unused axioms, proved P_complement_closed from Φ_negate.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -186,7 +186,8 @@
         "description": "Extended landscape with BPP, PH, P/poly",
         "proven": true
       },
-      "Proved P_complement_closed from Φ_negate in PNPBarriersSound.lean:601-619"
+      "Proved P_complement_closed from Φ_negate in PNPBarriersSound.lean:601-619",
+      "Removed 4 unused axioms, replaced with comments in PNPBarriersSound.lean"
     ],
     "insights": [
       "P_subset_NP_relative",
@@ -215,7 +216,8 @@
       "3 axioms (NP⊆EXP, coNP⊆EXP, P⊆PSPACE) are redundant — derivable via Set.Subset.trans from the containment chain.",
       "some_inclusion_strict: P⊆NP⊆PSPACE⊆EXP with P≠EXP means at least one inclusion is strict.",
       "Polynomial hierarchy axioms connect circuit complexity (Karp-Lipton) to structural complexity.",
-      "Φ_negate axiom replaces P_complement_closed: more fundamental (program-level negation vs class closure), same axiom count (15)"
+      "Φ_negate axiom replaces P_complement_closed: more fundamental (program-level negation vs class closure), same axiom count (15)",
+      "Removed 4 unused axioms (Φ_oracle_access, Φ_no_oracle_access, P_rel_monotone, NP_rel_monotone): 15→11 axioms"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
