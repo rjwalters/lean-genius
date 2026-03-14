@@ -1040,12 +1040,35 @@ theorem eo_equidistribution
     Tendsto (fun N : ℕ =>
       (coprimeEvenOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
       atTop (𝓝 (1 / 3)) := by
-  -- Proof sketch: By coprime_sector_three_way_partition, EO = C - OE - OO.
+  -- By coprime_sector_three_way_partition, EO = C - OE - OO.
   -- For large N, C > 0, so EO/C = 1 - OE/C - OO/C → 1 - 1/3 - 1/3 = 1/3.
-  -- The limit arithmetic follows from (tendsto_const_nhds.sub h_oe).sub h_oo.
-  -- Needs eventual equality (C > 0 for large N) to convert between
-  -- the pointwise partition and the ratio identity.
-  sorry
+  -- Step 1: Show EO/C = 1 - OE/C - OO/C eventually (when C > 0)
+  have h_eq : ∀ᶠ N in atTop,
+      (coprimeEvenOddCount N : ℝ) / (coprimeInSectorCount N : ℝ) =
+      1 - (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ) -
+          (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ) := by
+    filter_upwards [Filter.eventually_atTop.mpr ⟨5, fun N hN => hN⟩] with N hN
+    have hC_pos : (0 : ℝ) < coprimeInSectorCount N := by exact_mod_cast coprimeInSectorCount_pos hN
+    have hC_ne : (coprimeInSectorCount N : ℝ) ≠ 0 := ne_of_gt hC_pos
+    have h3 := coprime_sector_three_way_partition N
+    have heo : (coprimeEvenOddCount N : ℝ) =
+        (coprimeInSectorCount N : ℝ) - (coprimeOddEvenCount N : ℝ) - (coprimeOddOddCount N : ℝ) := by
+      have h3' : (coprimeInSectorCount N : ℝ) =
+          (coprimeEvenOddCount N : ℝ) + (coprimeOddEvenCount N : ℝ) + (coprimeOddOddCount N : ℝ) := by
+        exact_mod_cast h3
+      linarith
+    rw [heo, sub_div, sub_div, div_self hC_ne]
+  -- Step 2: The RHS converges to 1 - 1/3 - 1/3 = 1/3
+  have h_target : Tendsto
+      (fun N : ℕ =>
+        1 - (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ) -
+            (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (1 / 3)) := by
+    have : (1 : ℝ) / 3 = 1 - 1 / 3 - 1 / 3 := by ring
+    rw [this]
+    exact (tendsto_const_nhds.sub h_oe).sub h_oo
+  -- Step 3: Conclude by eventually equal sequences have the same limit
+  exact h_target.congr' (h_eq.mono fun N hN => hN.symm)
 
 /-
 ## Part XVI: Per-Column Involution

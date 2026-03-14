@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 17→13 axioms total. Session 3: proved PSPACE_subset_EXP (trivial since PSPACE=EXP by definition). Session 2: proved Φ_total, Φ_deterministic, owf_exists_assumption.",
+    "progressSummary": "PROGRESS: 21→15 axioms in PNPBarriersSound.lean. Session 4: proved algebrizing_oracle_eq/sep (derived from BGS via AlgebraicOracle wrapping), proved PH_subset_PSPACE (from NP_subset_PSPACE since PH=NP in structural model). Session 3: proved PSPACE_subset_EXP. Session 2: proved Φ_total, Φ_deterministic, owf_exists_assumption.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -95,7 +95,10 @@
       "Φ_total: converted axiom→theorem (simple existential weakening)",
       "Φ_deterministic: converted axiom→theorem (function determinism of opaque Φ)",
       "owf_exists_assumption: converted axiom→theorem (was True)",
-      "PSPACE_subset_EXP converted from axiom to theorem (PSPACE and EXP have identical definitions in abstract model)"
+      "PSPACE_subset_EXP converted from axiom to theorem (PSPACE and EXP have identical definitions in abstract model)",
+      "algebrizing_oracle_eq converted from axiom to theorem (derived from baker_gill_solovay_eq via AlgebraicOracle wrapping)",
+      "algebrizing_oracle_sep converted from axiom to theorem (derived from baker_gill_solovay_sep via AlgebraicOracle wrapping)",
+      "PH_subset_PSPACE converted from axiom to theorem (PH = P ∪ NP = NP in structural model, so follows from NP_subset_PSPACE)"
     ],
     "insights": [
       "P_subset_NP_relative",
@@ -115,7 +118,9 @@
       "All 3 barriers (relativization, natural proofs, algebrization) formalized soundly in PNPBarriersSound.lean",
       "Φ_total was unnecessarily axiomatized: its conclusion is strictly weaker than its hypothesis. The bound s≤bound in the hypothesis is simply dropped.",
       "Φ_deterministic follows from Φ being a Lean function: same inputs → same output, so Option.some injection gives equality.",
-      "PSPACE and EXP have identical definitions: both are {f | ∃ e p, Solves e emptyOracle f}. The abstract model tracks decidability but not space/time resource bounds. PSPACE_subset_EXP is thus trivially true."
+      "PSPACE and EXP have identical definitions: both are {f | ∃ e p, Solves e emptyOracle f}. The abstract model tracks decidability but not space/time resource bounds. PSPACE_subset_EXP is thus trivially true.",
+      "P_alg(AO) and NP_alg(AO) just delegate to P_rel(AO.base) and NP_rel(AO.base) — the algebraic extension field is unused. So algebrization axioms are trivially derivable from BGS relativization axioms. A refined model should use the extension nontrivially.",
+      "In the structural model, Sigma_k(k+1) = NP for all k (the oracle at each level is not threaded through). So PH = P ∪ NP = NP (since P ⊆ NP). PH_subset_PSPACE is thus just NP_subset_PSPACE."
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
