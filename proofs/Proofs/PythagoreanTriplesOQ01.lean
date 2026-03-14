@@ -1,4 +1,32 @@
 /-
+This file was edited by Aristotle (https://aristotle.harmonic.fun).
+
+Lean version: leanprover/lean4:v4.24.0
+Mathlib version: f897ebcf72cd16f89ab4577d0c826cd14afaafc7
+This project request had uuid: 6d9dedc6-e760-48a7-91a4-18968bf45313
+
+To cite Aristotle, tag @Aristotle-Harmonic on GitHub PRs/issues, and add as co-author to commits:
+Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
+
+The following was proved by Aristotle:
+
+- theorem coprime_sector_three_way_partition (N : ℕ) :
+    coprimeInSectorCount N = coprimeEvenOddCount N + coprimeOddEvenCount N + coprimeOddOddCount N
+
+- theorem bothOdd_eq_oo (N : ℕ) :
+    bothOddCoprimeCount N = coprimeOddOddCount N
+
+- theorem primitive_eq_eo_plus_oe (N : ℕ) :
+    primitiveTripleCount N = coprimeEvenOddCount N + coprimeOddEvenCount N
+
+- theorem involution_coprime {m n : ℕ} (hcop : Nat.Coprime m n) (hn_lt : n < m) :
+    Nat.Coprime m (m - n)
+
+- theorem triangle_oe_eq_oo (K : ℕ) :
+    (triangleOE K).card = (triangleOO K).card
+-/
+
+/-
 # Density of Primitive Pythagorean Triples (OQ-01)
 
 ## What This Proves
