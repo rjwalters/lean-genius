@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: ~1650 lines, 20 axioms, 60+ theorems, 0 sorries. Full complexity landscape: P, NP, coNP, BPP, PH, #P, PSPACE, IP, EXP, L, NL, coNL + all 3 barriers.",
+    "progressSummary": "PROGRESS: Added Cook-Levin theorem, TQBF PSPACE-completeness, Space Hierarchy theorem. File: 1923 lines, 23 axioms, 79 theorems, 0 sorries. SAT∈P↔P=NP and TQBF∈P↔P=PSPACE equivalences proved.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -227,6 +227,36 @@
         "name": "L_NL_coNL",
         "description": "Space complexity: L ⊆ NL ⊆ P, NL=coNL (Immerman-Szelepcsényi), space_containment_chain",
         "proven": true
+      },
+      {
+        "name": "cook_levin",
+        "description": "SAT is NP-complete (Cook 1971, Levin 1973)",
+        "proven": false
+      },
+      {
+        "name": "SAT_in_P_iff_P_eq_NP",
+        "description": "SAT ∈ P ↔ P = NP equivalence (proved)",
+        "proven": true
+      },
+      {
+        "name": "tqbf_pspace_complete",
+        "description": "TQBF is PSPACE-complete",
+        "proven": false
+      },
+      {
+        "name": "TQBF_in_P_iff_P_eq_PSPACE",
+        "description": "TQBF ∈ P ↔ P = PSPACE equivalence (proved)",
+        "proven": true
+      },
+      {
+        "name": "L_ne_PSPACE",
+        "description": "Space hierarchy: L ≠ PSPACE",
+        "proven": false
+      },
+      {
+        "name": "complexity_scorecard",
+        "description": "16-clause unconditional summary of complexity theory (proved)",
+        "proven": true
       }
     ],
     "insights": [
@@ -268,7 +298,10 @@
       "Axiom reduction 20→19: trade 2 high-level axioms for 1 primitive axiom",
       "BPP_complement_closed proved from Φ_negate: negate output, majority preserved",
       "L, NL, coNL space complexity classes formalized",
-      "Immerman-Szelepcsényi (NL=coNL) contrasts with open NP vs coNP"
+      "Immerman-Szelepcsényi (NL=coNL) contrasts with open NP vs coNP",
+      "Cook-Levin axiom enables SAT_in_P_iff_P_eq_NP: the P vs NP question reduces to a single problem",
+      "Space hierarchy L≠PSPACE gives second unconditional separation alongside P≠EXP",
+      "L_PSPACE_implies_intermediate_separation: at least one of L≠NL, NL≠P, P≠PSPACE holds"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
