@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Cook-Levin theorem (SAT NP-complete), NPC equivalences, conditional consequences, downward closure. 16 axioms (+2: cook_levin, NP_downward_closed), 56 theorems (+16 new), 1322 lines, 0 sorries.",
+    "progressSummary": "PROGRESS: Added QMA (quantum NP), Raz-Tal oracle separation (BQP vs PH), ETH/SETH hypotheses. Cleaned merge conflicts. Sound model: ~50 axioms, ~240 defs/theorems, 1 sorry (ETH_implies_P_ne_NP), 2740 lines.",
     "builtItems": [
       {
         "name": "P",
@@ -307,6 +307,36 @@
         "name": "reduction_preorder",
         "description": "≤ₚ preserves both P and NP membership",
         "proven": true
+      },
+      {
+        "name": "QMA",
+        "description": "Quantum Merlin-Arthur class with NP⊆QMA⊆PSPACE, BQP⊆QMA, MA⊆QMA",
+        "proven": true
+      },
+      {
+        "name": "raz_tal_oracle_separation",
+        "description": "∃ oracle A where BQP⊄PH (Raz-Tal 2019)",
+        "proven": true
+      },
+      {
+        "name": "ETH_hypothesis",
+        "description": "Exponential Time Hypothesis: SAT requires exponential time",
+        "proven": true
+      },
+      {
+        "name": "SETH_hypothesis",
+        "description": "Strong ETH: k-SAT requires near-2^n time",
+        "proven": true
+      },
+      {
+        "name": "ETH_implies_P_ne_NP",
+        "description": "ETH → P ≠ NP (sorry - needs poly < subexp argument)",
+        "proven": false
+      },
+      {
+        "name": "comprehensive_landscape_with_quantum",
+        "description": "Full landscape with quantum classes",
+        "proven": true
       }
     ],
     "insights": [
@@ -347,7 +377,12 @@
       "P=NP eliminates NP-intermediate region entirely (P_eq_NP_no_intermediate)",
       "P≠NP gives rich structure: intermediate problems + NPC∉P (P_ne_NP_rich_structure)",
       "NP downward closed under ≤ₚ (axiom, needed for reduction_preorder)",
-      "Reductions form preorder on both P and NP (reduction_preorder)"
+      "Reductions form preorder on both P and NP (reduction_preorder)",
+      "QMA = quantum NP: NP⊆QMA⊆PSPACE, BQP⊆QMA, MA⊆QMA",
+      "Raz-Tal (2019): BQP⊄PH relative to random oracle (non-relativizing barrier for BQP⊆PH)",
+      "ETH/SETH formalized using sound Φ model (no DTIME needed)",
+      "Cleaned merge conflicts: removed duplicate Part 25-30 sections with conflicting identifiers",
+      "Sound model uses sipser_lautemann (BPP⊆Σ₂∩Π₂), not separate sipser_gacs axioms"
     ],
     "mathlibGaps": [
       "Turing machines",

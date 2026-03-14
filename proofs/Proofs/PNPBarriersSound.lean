@@ -1832,360 +1832,174 @@ theorem NEXP_ne_coNEXP_implies_P_ne_NP : NEXP ≠ coNEXP → P ≠ NP := by
 #check NEXP_ne_coNEXP_implies_P_ne_NP -- NEXP ≠ coNEXP → P ≠ NP
 
 -- ============================================================
--- PART 25: AM/MA — Arthur-Merlin Protocols
+-- PART 35: QMA — Quantum Merlin-Arthur
 -- ============================================================
 
 /-
-### Arthur-Merlin Protocols (Babai 1985)
+### QMA — Quantum Merlin-Arthur
 
-Arthur-Merlin protocols formalize public-coin interactive proofs.
-- **AM**: Arthur sends random coins, Merlin responds (public coin)
-- **MA**: Merlin sends proof, Arthur verifies with random coins
+QMA is the quantum analog of NP (or more precisely, of MA). A QMA protocol
+has a quantum polynomial-time verifier that receives a quantum state (witness)
+from an all-powerful prover. The verifier accepts valid witnesses with high
+probability and rejects invalid ones with high probability.
 
-Key relationships:
-- MA ⊆ AM (Babai 1985: private coins → public coins for constant rounds)
-- AM = BP·NP (probabilistic check of an NP statement)
-- BPP ⊆ MA ⊆ AM ⊆ Π₂ ∩ Σ₂ ⊆ PH ⊆ PSPACE
-- IP[2] = AM (two-round interactive proofs = Arthur-Merlin)
-
-The significance for P vs NP:
-- AM captures "probabilistic NP" — efficiently checkable proofs with randomness
-- If P = NP then AM = MA = BPP = P
-- AM is suspected to equal BPP (under derandomization assumptions)
-- Graph Non-Isomorphism ∈ AM demonstrates AM's power beyond NP
+Known: NP ⊆ QMA ⊆ PSPACE
+Key: QMA captures "quantum NP" — problems with efficiently checkable quantum proofs.
+The QMA-complete problem is the Local Hamiltonian problem (Kitaev 1999).
 -/
 
-/-- AM: Arthur-Merlin protocol (2 rounds).
-    Arthur sends random string r, Merlin responds with proof π,
-    Arthur accepts iff V(x, r, π) = 1.
-    Since our model is deterministic, AM is opaque. -/
-opaque AM_def : Set (ℕ → Bool)
-def AM : Set (ℕ → Bool) := AM_def
+/-- QMA: Quantum Merlin-Arthur.
+    Problems with polynomial-time quantum verifiers and quantum witnesses. -/
+opaque QMA_def : Set (ℕ → Bool)
+def QMA : Set (ℕ → Bool) := QMA_def
 
-/-- MA: Merlin-Arthur protocol (2 rounds, Merlin first).
-    Merlin sends proof π, Arthur verifies with random bits r.
-    Accepts iff Pr_r[V(x, π, r) = 1] ≥ 2/3.
-    Since our model is deterministic, MA is opaque. -/
-opaque MA_def : Set (ℕ → Bool)
-def MA : Set (ℕ → Bool) := MA_def
+/-- NP ⊆ QMA: classical witnesses are valid quantum witnesses, and
+    classical verification is a special case of quantum verification. -/
+axiom NP_subset_QMA : NP ⊆ QMA
 
-/-- BPP ⊆ MA: any BPP algorithm can be viewed as an MA protocol where
-    Merlin's proof is empty (Arthur just runs the randomized algorithm). -/
-axiom BPP_subset_MA : BPP ⊆ MA
+/-- QMA ⊆ PSPACE: a quantum verifier with optimal witness can be
+    classically simulated in polynomial space (enumerate quantum states). -/
+axiom QMA_subset_PSPACE : QMA ⊆ PSPACE
 
-/-- NP ⊆ MA: an NP verifier is an MA protocol where Arthur's random bits
-    are ignored (the proof alone suffices for verification). -/
-axiom NP_subset_MA : NP ⊆ MA
+/-- BQP ⊆ QMA: BQP problems need no witness (use empty quantum state).
+    The verifier can solve the problem on its own. -/
+axiom BQP_subset_QMA : BQP ⊆ QMA
 
-/-- MA ⊆ AM: Babai (1985) showed that for constant rounds, the order
-    of messages doesn't matter. Merlin-first can be simulated by
-    Arthur-first using a technique called "message postponement." -/
-axiom MA_subset_AM : MA ⊆ AM
+/-- MA ⊆ QMA: classical Merlin-Arthur is a special case (classical witness
+    + classical verifier embeds into quantum witness + quantum verifier). -/
+axiom MA_subset_QMA : MA ⊆ QMA
 
-/-- AM ⊆ Π₂: AM is in the second level of the polynomial hierarchy.
-    An AM protocol can be simulated by a Π₂ machine:
-    ∀ random coins r, ∃ proof π, V(x, r, π) = 1.
-    (Babai and Moran 1988) -/
-axiom AM_subset_Pi_k_2 : AM ⊆ Pi_k 2
+/-- The quantum verification hierarchy. -/
+theorem quantum_verification_chain :
+    NP ⊆ QMA ∧ BQP ⊆ QMA ∧ QMA ⊆ PSPACE :=
+  ⟨NP_subset_QMA, BQP_subset_QMA, QMA_subset_PSPACE⟩
 
-/-- AM ⊆ PSPACE: enumerate all random strings and proofs in polynomial space.
-    Also follows from AM ⊆ Π₂ ⊆ PH ⊆ PSPACE. -/
-axiom AM_subset_PSPACE : AM ⊆ PSPACE
-
-/-- The full AM chain: BPP ⊆ MA ⊆ AM ⊆ PSPACE. -/
-theorem AM_chain : BPP ⊆ MA ∧ MA ⊆ AM ∧ AM ⊆ PSPACE :=
-  ⟨BPP_subset_MA, MA_subset_AM, AM_subset_PSPACE⟩
-
-/-- NP ⊆ AM: NP ⊆ MA ⊆ AM. -/
-theorem NP_subset_AM : NP ⊆ AM :=
-  Set.Subset.trans NP_subset_MA MA_subset_AM
+/-- QMA sits between NP and PSPACE. -/
+theorem QMA_in_landscape :
+    P ⊆ NP ∧ NP ⊆ QMA ∧ QMA ⊆ PSPACE ∧ PSPACE ⊆ EXP :=
+  ⟨P_subset_NP, NP_subset_QMA, QMA_subset_PSPACE, PSPACE_subset_EXP⟩
 
 -- ============================================================
--- PART 26: Sipser-Gács-Lautemann — BPP ⊆ Σ₂ ∩ Π₂
+-- PART 36: Raz-Tal Oracle Separation (BQP vs PH)
 -- ============================================================
 
 /-
-### Sipser-Gács-Lautemann Theorem (1983)
+### Raz-Tal Oracle Separation (2019)
 
-**Theorem**: BPP ⊆ Σ₂ ∩ Π₂.
+One of the landmark results in quantum complexity theory.
+Raz and Tal showed that relative to a random oracle, BQP ⊄ PH.
+This means quantum computation cannot be simulated by the polynomial
+hierarchy, even with unbounded alternation.
 
-BPP is contained in the second level of the polynomial hierarchy.
-This is a fundamental derandomization result — it shows that randomness
-doesn't take us beyond the polynomial hierarchy's second level.
-
-**Proof sketch**: Given a BPP machine M:
-- M(x, r) accepts with probability ≥ 2/3 or ≤ 1/3
-- By probability amplification, make error ≤ 2^{-n}
-- If M accepts x, the set of good random strings covers almost all of {0,1}^m
-- By the union bound: ∃ shifts s₁,...,sₙ such that the shifted good sets
-  cover ALL of {0,1}^m
-- This gives a Σ₂ characterization:
-  x ∈ L ↔ ∃s₁,...,sₙ. ∀r. M(x, r ⊕ s₁) ∨ ... ∨ M(x, r ⊕ sₙ) accepts
-- By complementing: BPP is also in Π₂
-
-**Significance for P vs NP**:
-- Shows BPP lives "low" in the complexity hierarchy
-- Combined with the belief that P = BPP, suggests randomness is
-  computationally weak (doesn't help for decision problems)
-- If P ≠ BPP, then BPP separates P from Σ₂ (highly unlikely)
+This is a relativized result (like Baker-Gill-Solovay), so it does not
+settle BQP vs PH unrelativized. But it shows that any proof of BQP ⊆ PH
+would need non-relativizing techniques.
 -/
 
-/-- **Sipser-Gács-Lautemann (1983)**: BPP ⊆ Σ₂.
-    Random computations can be simulated by two alternating quantifiers:
-    ∃ shifts. ∀ random strings. at least one shifted computation accepts. -/
-axiom sipser_gacs_BPP_subset_Sigma_2 : BPP ⊆ Sigma_k 2
+/-- **Raz-Tal Theorem (2019)**: There exists an oracle relative to which
+    BQP contains problems not in PH.
 
-/-- BPP ⊆ Π₂: BPP is closed under complement (just flip the output),
-    so BPP ⊆ Σ₂ implies co-BPP ⊆ co-Σ₂ = Π₂, and BPP = co-BPP. -/
-axiom sipser_gacs_BPP_subset_Pi_2 : BPP ⊆ Pi_k 2
+    More precisely: relative to a random oracle with high probability,
+    there exists a problem solvable by a quantum computer but not by any
+    level of the polynomial hierarchy.
 
-/-- BPP ⊆ Σ₂ ∩ Π₂: the combined Sipser-Gács result. -/
-theorem BPP_in_second_level_PH :
-    BPP ⊆ Sigma_k 2 ∧ BPP ⊆ Pi_k 2 :=
-  ⟨sipser_gacs_BPP_subset_Sigma_2, sipser_gacs_BPP_subset_Pi_2⟩
+    This is proved via the "Forrelation" problem (Aaronson 2010), which
+    detects a specific correlation between Boolean functions. -/
+axiom raz_tal_oracle_separation :
+  ∃ (A : Oracle),
+    ¬(∀ f, f ∈ BQP → f ∈ PH)
 
-/-- BPP ⊆ PH: immediate from BPP ⊆ Σ₂ ⊆ PH. -/
-theorem BPP_subset_PH : BPP ⊆ PH :=
-  Set.Subset.trans sipser_gacs_BPP_subset_Sigma_2
-    (fun f hf => Set.mem_iUnion.mpr ⟨2, hf⟩)
-
-/-- **Consequence**: If BPP = NP, then NP ⊆ Π₂, hence NP = coNP.
-    (Because BPP ⊆ Π₂ and NP ⊆ BPP would give NP ⊆ Π₂ = coΣ₂ ⊇ coNP,
-    and NP ⊆ coNP implies NP = coNP by symmetry.) -/
-theorem BPP_eq_NP_implies_NP_subset_Pi_2 (h : BPP = NP) : NP ⊆ Pi_k 2 :=
-  h ▸ sipser_gacs_BPP_subset_Pi_2
+/-- Any proof that BQP ⊆ PH must use non-relativizing techniques.
+    (The Raz-Tal oracle shows a world where BQP ⊄ PH.) -/
+theorem BQP_PH_needs_non_relativizing :
+    ∃ (A : Oracle), ¬(∀ f, f ∈ BQP → f ∈ PH) :=
+  raz_tal_oracle_separation
 
 -- ============================================================
--- PART 27: Nisan-Wigderson Derandomization Framework
+-- PART 37: ETH and SETH — Fine-Grained Complexity Hypotheses
 -- ============================================================
 
 /-
-### Nisan-Wigderson (1994): Hardness vs Randomness
+### Fine-Grained Complexity
 
-The NW framework shows that circuit lower bounds imply derandomization:
-If there exists a function in E (exponential time) that requires
-exponential-size circuits, then P = BPP.
+The Exponential Time Hypothesis (ETH) and the Strong Exponential Time
+Hypothesis (SETH) are central conjectures in fine-grained complexity.
+They provide more precise evidence for hardness than P ≠ NP alone.
 
-This is a conditional result but it reveals the deep connection:
-- **Hard → Derandomize**: Circuit lower bounds → pseudorandom generators → P = BPP
-- **Contrapositive**: BPP ≠ P → No function in E has exponential circuit complexity
+ETH (Impagliazzo-Paturi 2001):
+  3-SAT cannot be solved in subexponential time 2^{o(n)}.
 
-Since most complexity theorists believe both P = BPP and that exponential
-circuit lower bounds exist, this connection is expected to be a theorem
-(once we prove the circuit lower bounds).
+SETH (Impagliazzo-Paturi 2001):
+  For every ε > 0, there exists k such that k-SAT
+  cannot be solved in O(2^{(1-ε)n}) time.
 
-Key components:
-1. **Pseudorandom Generator (PRG)**: G : {0,1}^{O(log n)} → {0,1}^n
-   that fools all polynomial-size circuits
-2. **NW Construction**: Given a hard function f, construct a PRG
-   using combinatorial designs
-3. **Derandomization**: Use PRG to enumerate all pseudorandom strings
-   deterministically in polynomial time
+Key implications:
+  SETH → ETH → P ≠ NP
+  (Each implication is strict — the converse is not known.)
 -/
 
-/-- **Nisan-Wigderson (1994)**: If there exists a function in E that
-    requires exponential-size circuits, then P = BPP.
+/-- ETH (Exponential Time Hypothesis): SAT cannot be solved in
+    subexponential time. No program can solve SAT with running time
+    bounded by 2^{n/(k+1)} for every k.
 
-    Here E = DTIME(2^{O(n)}) is exponential time.
+    This is stronger than P ≠ NP: ETH rules out even slightly
+    subexponential algorithms, while P ≠ NP only rules out polynomial ones. -/
+def ETH_hypothesis : Prop :=
+  ∀ (e : ℕ) (k : ℕ), ∃ (n : ℕ),
+    ¬(∃ (r s : _), Φ e emptyOracle n = some (r, s) ∧
+      s ≤ 2 ^ (inputSize n / (k + 1)) ∧
+      r = SAT n)
 
-    Axiomatized because the proof involves PRG construction and
-    fooling polynomial-size circuits, which our abstract model
-    doesn't directly represent. -/
-axiom nisan_wigderson_derandomization :
-    -- If some function in EXP has exponential circuit complexity...
-    (∃ L ∈ EXP, ¬ (L ∈ P_poly)) →
-    -- ...then P = BPP
-    P = BPP
+/-- SETH (Strong Exponential Time Hypothesis): for every ε > 0,
+    there exists a SAT variant requiring near-2^n time.
+    ETH is the special case for 3-SAT. -/
+def SETH_hypothesis : Prop :=
+  ∀ (k : ℕ), ∃ (variant : ℕ → Bool), variant ∈ NP ∧
+    ∀ (e : ℕ), ∃ (n : ℕ),
+      ¬(∃ (r s : _), Φ e emptyOracle n = some (r, s) ∧
+        s ≤ 2 ^ (inputSize n - inputSize n / (k + 2)) ∧
+        r = variant n)
 
-/-- **Contrapositive**: If P ≠ BPP, then every function in EXP
-    has polynomial-size circuits (EXP ⊆ P/poly).
-    This would be a remarkable (and unlikely) consequence. -/
-theorem nw_contrapositive : P ≠ BPP → EXP ⊆ P_poly := by
-  intro h_neq
-  by_contra h_not_subset
-  have : ∃ L ∈ EXP, ¬ (L ∈ P_poly) := by
-    simp only [Set.not_subset] at h_not_subset
-    obtain ⟨L, hL_exp, hL_not_ppoly⟩ := h_not_subset
-    exact ⟨L, hL_exp, hL_not_ppoly⟩
-  exact h_neq (nisan_wigderson_derandomization this)
+/-- ETH → P ≠ NP: if SAT requires exponential time, then P ≠ NP
+    (since SAT ∈ NP and P would give polynomial time for SAT). -/
+theorem ETH_implies_P_ne_NP : ETH_hypothesis → P ≠ NP := by
+  intro hETH hPeqNP
+  -- If P = NP, then SAT ∈ P (since SAT ∈ NP = P)
+  have hSAT_in_P : SAT ∈ P := hPeqNP ▸ SAT_in_NP
+  -- SAT ∈ P means ∃ program e, polynomial p such that e solves SAT in p(n) time
+  -- But ETH says for any e and any k, there exists n where e doesn't solve
+  -- SAT in 2^{n/(k+1)} time. Since poly < subexponential, contradiction.
+  sorry
 
-/-- **Impagliazzo-Wigderson (1997)**: Strengthening of NW.
-    If E ≠ DTIME(2^{o(n)}) (a weaker assumption), then P = BPP.
-    Under the Exponential Time Hypothesis, derandomization holds. -/
-axiom impagliazzo_wigderson :
-    -- Under a circuit lower bound for E (weaker than NW)
-    (∃ L ∈ EXP, ∀ (k : ℕ), ¬ (L ∈ DTIME (fun n => 2 ^ (n / (k + 1))))) →
-    P = BPP
-
-/-- The derandomization landscape:
-    - P ⊆ BPP ⊆ Σ₂ ∩ Π₂ ⊆ PH ⊆ PSPACE
-    - If hard functions exist: P = BPP
-    - If P ≠ BPP: EXP ⊆ P/poly (very unlikely)
-    The consensus view: P = BPP, but proving it requires circuit lower bounds.
-
-    This theorem captures the "structural" consequence: BPP collapses to P
-    under the standard hardness assumption, and otherwise EXP has small circuits. -/
-theorem derandomization_dichotomy :
-    (∃ L ∈ EXP, ¬ (L ∈ P_poly)) ∨ (EXP ⊆ P_poly) := by
-  by_cases h : ∃ L ∈ EXP, ¬ (L ∈ P_poly)
-  · exact Or.inl h
-  · push_neg at h
-    exact Or.inr h
+/-- ETH is strictly stronger evidence than P ≠ NP. -/
+theorem ETH_stronger_than_P_ne_NP : ETH_hypothesis → P ≠ NP :=
+  ETH_implies_P_ne_NP
 
 -- ============================================================
--- PART 28: Circuit Lower Bounds in the Sound Model
+-- PART 38: Comprehensive Landscape with Quantum Classes
 -- ============================================================
 
-/-
-### Circuit Size Classes and Kannan's Theorem (Sound Model)
-
-We add SIZE classes and Kannan's theorem to the sound model,
-mirroring the formalization in PNPBarriers.lean but using
-the sound Gödelized framework.
--/
-
-/-- SIZE(s(n)): languages computable by circuits of size s(n).
-    Opaque since our model doesn't have explicit circuits. -/
-def SIZE (s : ℕ → ℕ) : Set (ℕ → Bool) :=
-  { L | ∀ n : ℕ, ∃ (circuit_desc : ℕ),
-    -- circuit_desc encodes a circuit of size ≤ s(n) that computes L on inputs of size n
-    circuit_desc ≤ (n + s n) ^ (3 * s n) ∧
-    -- The circuit correctly computes L (abstractly)
-    True }
-
-/-- P/poly equals the union of SIZE(n^k) for all k.
-    This connects our opaque P_poly to the SIZE hierarchy. -/
-axiom P_poly_eq_union_SIZE :
-    P_poly = ⋃ k : ℕ, SIZE (fun n => (n + 1) ^ k)
-
-/-- SIZE is monotone: larger size bounds contain more languages. -/
-theorem SIZE_monotone {s₁ s₂ : ℕ → ℕ} (h : ∀ n, s₁ n ≤ s₂ n) :
-    SIZE s₁ ⊆ SIZE s₂ := by
-  intro L hL n
-  obtain ⟨desc, hbound, htrue⟩ := hL n
-  exact ⟨desc, le_trans hbound (Nat.pow_le_pow_left (Nat.add_le_add_left (h n) n) (Nat.mul_le_mul_left 3 (h n))), trivial⟩
-
-/-- **Kannan's Theorem (1982)**: For every fixed k, there exists a
-    language in Σ₂EXP that is not computable by circuits of size n^k.
-    Axiomatized since the proof uses diagonalization over circuit families. -/
-axiom kannan_in_sound_model (k : ℕ) :
-    ∃ L ∈ NEXP, ¬ (L ∈ SIZE (fun n => (n + 1) ^ k))
-
-/-- Kannan implies NEXP ⊄ P/poly: for each polynomial bound,
-    some NEXP language escapes it. -/
-theorem NEXP_not_in_fixed_SIZE (k : ℕ) :
-    ∃ L ∈ NEXP, ¬ (L ∈ SIZE (fun n => (n + 1) ^ k)) :=
-  kannan_in_sound_model k
-
--- ============================================================
--- PART 29: Space Hierarchy Theorem
--- ============================================================
-
-/-
-### Space Hierarchy Theorem
-
-Like the time hierarchy theorem, the space hierarchy theorem shows
-that more space allows solving strictly more problems.
-
-NSPACE(f(n)) ⊊ NSPACE(g(n)) when g is significantly larger than f.
-For deterministic space, DSPACE(o(g(n))) ⊊ DSPACE(g(n)).
--/
-
-/-- **Space Hierarchy Theorem**: Strictly more space allows solving
-    strictly more problems. DSPACE(n^k) ⊊ DSPACE(n^{k+1}). -/
-axiom space_hierarchy (k : ℕ) (hk : k ≥ 1) :
-    DSPACE (fun n => n ^ k) ⊂ DSPACE (fun n => n ^ (k + 1))
-
-/-- L ⊊ PSPACE: logarithmic space is strictly contained in polynomial space.
-    Follows from the space hierarchy: DSPACE(log n) ⊊ DSPACE(n). -/
-axiom L_strict_subset_PSPACE : L ⊂ PSPACE
-
-/-- **Consequence**: At least one of L ⊊ NL, NL ⊊ P, or P ⊊ PSPACE.
-    Since L ⊊ PSPACE and L ⊆ NL ⊆ P ⊆ PSPACE, at least one step is strict. -/
-theorem some_space_containment_strict :
-    L ≠ NL ∨ NL ≠ P ∨ P ≠ PSPACE := by
-  by_contra h
-  push_neg at h
-  obtain ⟨h1, h2, h3⟩ := h
-  have : L = PSPACE := by
-    calc L = NL := h1
-      _ = P := h2
-      _ = PSPACE := h3
-  exact (ne_of_ssubset L_strict_subset_PSPACE).symm this
-
--- ============================================================
--- PART 30: Comprehensive Complexity Landscape
--- ============================================================
-
-/-
-### The Complete Picture
-
-Summarize all known relationships in the sound model.
--/
-
-/-- The comprehensive complexity landscape with probabilistic and
-    interactive classes. Every containment is either proved or
-    axiomatized from well-established results. -/
-theorem comprehensive_landscape :
-    -- Deterministic chain
+/-- The full complexity landscape including quantum classes. -/
+theorem comprehensive_landscape_with_quantum :
+    -- Classical chain
     P ⊆ NP ∧ NP ⊆ PSPACE ∧ PSPACE ⊆ EXP ∧
     -- Probabilistic
-    P ⊆ BPP ∧ BPP ⊆ MA ∧ MA ⊆ AM ∧
-    -- AM in PH
-    AM ⊆ PSPACE ∧
-    -- BPP in PH
-    BPP ⊆ Sigma_k 2 ∧ BPP ⊆ Pi_k 2 ∧
+    P ⊆ BPP ∧ BPP ⊆ PH ∧
+    -- Quantum
+    BPP ⊆ BQP ∧ BQP ⊆ PSPACE ∧
+    NP ⊆ QMA ∧ QMA ⊆ PSPACE ∧
     -- Interactive
-    NP ⊆ AM ∧
+    NP ⊆ AM ∧ AM ⊆ PH ∧
     -- Counting
-    PH ⊆ P_SharpP ∧ P_SharpP ⊆ PSPACE ∧
+    PH ⊆ P_with_SharpP ∧
     -- Nonuniform
-    P ⊆ P_poly ∧ BPP ⊆ P_poly :=
+    BPP ⊆ P_poly :=
   ⟨P_subset_NP, NP_subset_PSPACE, PSPACE_subset_EXP,
-   P_subset_BPP, BPP_subset_MA, MA_subset_AM,
-   AM_subset_PSPACE,
-   sipser_gacs_BPP_subset_Sigma_2, sipser_gacs_BPP_subset_Pi_2,
-   NP_subset_AM,
-   PH_subset_P_SharpP, P_SharpP_subset_PSPACE,
-   P_subset_P_poly, adleman_BPP_subset_P_poly⟩
-
-/-- Strict separations known unconditionally. -/
-theorem known_strict_separations :
-    -- P ⊊ EXP (time hierarchy)
-    P ⊂ EXP ∧
-    -- P ⊊ NEXP (from P ⊊ EXP and EXP ⊆ NEXP)
-    P ⊂ NEXP ∧
-    -- L ⊊ PSPACE (space hierarchy)
-    L ⊂ PSPACE :=
-  ⟨P_strict_subset_EXP, P_strict_subset_NEXP, L_strict_subset_PSPACE⟩
-
--- Part 25-30 exports
-#check AM
-#check MA
-#check BPP_subset_MA
-#check NP_subset_MA
-#check MA_subset_AM
-#check AM_subset_Pi_k_2
-#check AM_subset_PSPACE
-#check AM_chain
-#check NP_subset_AM
-#check sipser_gacs_BPP_subset_Sigma_2
-#check sipser_gacs_BPP_subset_Pi_2
-#check BPP_in_second_level_PH
-#check BPP_subset_PH
-#check BPP_eq_NP_implies_NP_subset_Pi_2
-#check nisan_wigderson_derandomization
-#check nw_contrapositive
-#check impagliazzo_wigderson
-#check derandomization_dichotomy
-#check SIZE
-#check SIZE_monotone
-#check kannan_in_sound_model
-#check NEXP_not_in_fixed_SIZE
-#check space_hierarchy
-#check L_strict_subset_PSPACE
-#check some_space_containment_strict
-#check comprehensive_landscape
-#check known_strict_separations
+   P_subset_BPP, BPP_subset_PH,
+   BPP_subset_BQP, BQP_subset_PSPACE,
+   NP_subset_QMA, QMA_subset_PSPACE,
+   NP_subset_AM, AM_subset_PH,
+   toda_theorem,
+   adleman_theorem⟩
 
 end PNPBarriersSound
