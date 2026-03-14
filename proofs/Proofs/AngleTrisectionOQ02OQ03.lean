@@ -1615,13 +1615,154 @@ theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
   -- This is irreducible over F since F ⊆ ℝ and the quadratic has no real roots
   -- (quadratic_no_real_roots). So the minpoly of ζ over F has degree 2,
   -- giving finrank ↥F ↥E = 2. Combined with F ≤ E and E = F(ζ).
+  -- Algebra ↥F ↥E from the inclusion F ≤ E
+  letI algFE : Algebra ↥F ↥E := (IntermediateField.inclusion hFE).toAlgebra
+  -- IsScalarTower ℚ ↥F ↥E: the composition ℚ → F → E equals ℚ → E
+  letI : IsScalarTower ℚ ↥F ↥E := by
+    constructor; intro r f e
+    apply Subtype.ext
+    simp only [Algebra.smul_def, map_mul]
+    -- Both sides equal (algebraMap ℚ ℂ r) * f.val * e.val in ℂ
+    show ((algebraMap ↥F ↥E (algebraMap ℚ ↥F r * f)).val * e.val =
+          (algebraMap ℚ ↥E r).val * ((algebraMap ↥F ↥E f).val * e.val))
+    rw [map_mul, mul_assoc]
+    congr 1
+    -- algebraMap ↥F ↥E (algebraMap ℚ ↥F r)).val = (algebraMap ℚ ↥E r).val
+    -- Both are just r viewed as element of ℂ
+    rfl
+  -- FiniteDimensional instances
+  haveI : FiniteDimensional ℚ ↥F :=
+    IntermediateField.finiteDimensional_adjoin (fun x hx => by
+      rw [Set.mem_singleton_iff] at hx; subst hx; exact h_int_c)
+  haveI : FiniteDimensional ℚ ↥E :=
+    IntermediateField.finiteDimensional_adjoin (fun x hx => by
+      rw [Set.mem_singleton_iff] at hx; subst hx; exact zeta_isIntegral n (by omega))
+  haveI : FiniteDimensional ↥F ↥E := FiniteDimensional.right ℚ ↥F ↥E
+  -- ζ as element of E, c as element of F
+  have h_ζ_mem : ζ ∈ E := IntermediateField.mem_adjoin_simple_self ℚ ζ
+  set ζ_E : ↥E := ⟨ζ, h_ζ_mem⟩
+  have h_c_mem : c ∈ F := IntermediateField.mem_adjoin_simple_self ℚ c
+  set c_F : ↥F := ⟨c, h_c_mem⟩
+  -- ζ_E is integral over F (from FiniteDimensional ℚ ↥E + tower)
+  have h_ζ_int_F : IsIntegral ↥F ζ_E :=
+    (IsIntegral.of_finite ℚ ζ_E).tower_top
+  -- Step 6: finrank ↥F ↥E = 2
+  -- The quadratic X² - 2c_F·X + 1 over ↥F
+  set p : Polynomial ↥F :=
+    Polynomial.X ^ 2 - Polynomial.C (2 * c_F) * Polynomial.X + Polynomial.C 1
+  -- p is monic
+  have hp_monic : p.Monic := by
+    show p.leadingCoeff = 1
+    have hp_deg : p.natDegree = 2 := by
+      have h1 : (Polynomial.C (2 * c_F) * Polynomial.X : Polynomial ↥F).natDegree ≤ 1 := by
+        calc (Polynomial.C (2 * c_F) * Polynomial.X).natDegree
+            ≤ (Polynomial.C (2 * c_F)).natDegree + Polynomial.X.natDegree :=
+              Polynomial.natDegree_mul_le
+          _ ≤ 0 + 1 := by simp [Polynomial.natDegree_C, Polynomial.natDegree_X]
+          _ = 1 := by ring
+      have h2 : (Polynomial.C (1 : ↥F)).natDegree = 0 := Polynomial.natDegree_C _
+      have h3 : (Polynomial.X ^ 2 : Polynomial ↥F).natDegree = 2 :=
+        Polynomial.natDegree_X_pow
+      -- X^2 - C(2c)·X has natDegree 2
+      have h4 : (Polynomial.X ^ 2 - Polynomial.C (2 * c_F) * Polynomial.X :
+          Polynomial ↥F).natDegree = 2 := by
+        apply Polynomial.natDegree_sub_eq_left_of_natDegree_lt
+        rw [h3]; omega
+      -- Adding C 1 (degree 0) preserves natDegree 2
+      show (Polynomial.X ^ 2 - Polynomial.C (2 * c_F) * Polynomial.X +
+          Polynomial.C 1).natDegree = 2
+      apply Polynomial.natDegree_add_eq_left_of_natDegree_lt
+      rw [h4, h2]; omega
+    rw [Polynomial.Monic.def, hp_deg]
+    -- leadingCoeff of X^2 - 2c·X + 1 = coeff at degree 2 = 1
+    simp [p, Polynomial.coeff_add, Polynomial.coeff_sub, Polynomial.coeff_X_pow,
+          Polynomial.coeff_C_mul_X, Polynomial.coeff_C]
+  -- ζ_E satisfies p = 0 (lift from ℂ via Subtype.ext)
+  have hp_root : Polynomial.aeval ζ_E p = 0 := by
+    -- Strategy: show the ℂ-value of (aeval ζ_E p) is 0, then use injectivity
+    suffices h : (Polynomial.aeval ζ_E p : ↥E).val = (0 : ↥E).val by
+      exact Subtype.val_injective h
+    -- The ℂ-value of the evaluation is ζ² - 2c·ζ + 1 = 0
+    change (Polynomial.aeval ζ_E p : ↥E).val = 0
+    -- Unfold the aeval computation
+    have : (Polynomial.aeval ζ_E p : ↥E).val =
+        ζ ^ 2 - 2 * c * ζ + 1 := by
+      simp only [p, map_add, map_sub, map_mul, map_pow, Polynomial.aeval_X,
+                 Polynomial.aeval_C, map_one, map_ofNat, SubsemiringClass.coe_pow,
+                 SubsemiringClass.coe_mul, SubsemiringClass.coe_one]
+      ring
+    rw [this]
+    have := zeta_quadratic n
+    linarith
+  -- minpoly degree ≤ 2
+  have h_deg_le : (minpoly ↥F ζ_E).natDegree ≤ 2 := by
+    have hpd : p.natDegree = 2 := by
+      have h4 : (Polynomial.X ^ 2 - Polynomial.C (2 * c_F) * Polynomial.X :
+          Polynomial ↥F).natDegree = 2 := by
+        apply Polynomial.natDegree_sub_eq_left_of_natDegree_lt
+        rw [Polynomial.natDegree_X_pow]
+        calc (Polynomial.C (2 * c_F) * Polynomial.X).natDegree ≤ 1 := by
+              calc _ ≤ (Polynomial.C (2 * c_F)).natDegree + Polynomial.X.natDegree :=
+                    Polynomial.natDegree_mul_le
+                _ ≤ 0 + 1 := by simp [Polynomial.natDegree_C, Polynomial.natDegree_X]
+                _ = 1 := by ring
+          _ < 2 := by omega
+      show p.natDegree = 2
+      apply Polynomial.natDegree_add_eq_left_of_natDegree_lt
+      rw [h4, Polynomial.natDegree_C]; omega
+    calc (minpoly ↥F ζ_E).natDegree
+        ≤ p.natDegree := minpoly.natDegree_le_of_aeval_eq_zero h_ζ_int_F hp_monic hp_root
+      _ = 2 := hpd
+  -- minpoly degree ≥ 2 (since ζ ∉ F, minpoly cannot have degree 0 or 1)
+  have h_deg_ge : 2 ≤ (minpoly ↥F ζ_E).natDegree := by
+    have h_pos := minpoly.natDegree_pos h_ζ_int_F
+    -- If degree = 1, then ζ_E ∈ range(algebraMap ↥F ↥E), meaning ζ ∈ F
+    by_contra h_lt; push_neg at h_lt
+    have h_one : (minpoly ↥F ζ_E).natDegree = 1 := by omega
+    -- degree 1 minpoly means ζ_E = algebraMap ↥F ↥E (-coeff 0 / leadingCoeff)
+    rw [minpoly.natDegree_eq_one_iff] at h_one
+    obtain ⟨a, ha⟩ := h_one
+    -- ha : ζ_E = algebraMap ↥F ↥E a, so ζ = a.val ∈ F
+    have : ζ ∈ F := by
+      have := congr_arg Subtype.val ha
+      simp at this
+      rw [← this]
+      exact a.2
+    exact h_zeta_notin_F this
+  -- degree = 2
+  have h_deg_eq : (minpoly ↥F ζ_E).natDegree = 2 := le_antisymm h_deg_le h_deg_ge
+  -- E = F(ζ): adjoin ↥F {ζ_E} = ⊤ in IntermediateField ↥F ↥E
+  have h_adjoin_top : IntermediateField.adjoin ↥F ({ζ_E} : Set ↥E) = ⊤ := by
+    -- Every element of E is in the F-algebra generated by ζ_E
+    -- because E = ℚ(ζ) and F ⊇ ℚ, so F(ζ) ⊇ ℚ(ζ) = E
+    rw [eq_top_iff]
+    -- Show: ∀ x ∈ ⊤, x ∈ adjoin ↥F {ζ_E}
+    -- Equivalently: ⊤ ≤ adjoin ↥F {ζ_E}
+    intro x _
+    -- x : ↥E. We need x ∈ adjoin ↥F {ζ_E}.
+    -- The adjoin ↥F {ζ_E} contains ζ_E and all scalars from F.
+    -- Since E = adjoin ℚ {ζ}, x is a polynomial in ζ over ℚ.
+    -- Since ℚ ⊆ F, x is also in adjoin ↥F {ζ_E}.
+    -- Use: adjoin ↥F {ζ_E} is a field containing ζ_E and the image of ↥F.
+    -- The image of ↥F contains ℚ (via algebraMap ℚ ↥F ↥E).
+    -- So adjoin ↥F {ζ_E} ⊇ adjoin ℚ {ζ_E} = ⊤.
+    exact IntermediateField.adjoin_le_iff.mpr
+      (Set.singleton_subset_iff.mpr (IntermediateField.subset_adjoin rfl))
+      (le_top.trans (le_refl ⊤)) x (IntermediateField.mem_top x)
+  -- finrank ↥F ↥E = natDegree(minpoly ↥F ζ_E) = 2
   have h_finrank_FE : Module.finrank ↥F ↥E = 2 := by
-    sorry
+    have h_fr := IntermediateField.adjoin.finrank h_ζ_int_F
+    rw [h_adjoin_top] at h_fr
+    -- h_fr : finrank ↥F ↥⊤ = 2
+    rw [show Module.finrank ↥F ↥(⊤ : IntermediateField ↥F ↥E) =
+        Module.finrank ↥F ↥E from by
+      have := IntermediateField.topEquiv (F := ↥F) (E := ↥E)
+      exact this.toLinearEquiv.finrank_eq] at h_fr
+    rw [h_fr, h_deg_eq]
   -- Step 7: Tower law: finrank ℚ F * finrank F E = finrank ℚ E
-  -- Uses Module.finrank_mul_finrank with Algebra ↥F ↥E from inclusion.
   have h_tower : Module.finrank ℚ ↥F * Module.finrank ↥F ↥E =
       Module.finrank ℚ ↥E := by
-    sorry
+    exact Module.finrank_mul_finrank ℚ ↥F ↥E
   -- Step 8: Assembly: finrank ℚ F * 2 = φ(n), so finrank ℚ F = φ(n) / 2
   rw [h_finrank_FE, h_finrank_E] at h_tower
   omega
