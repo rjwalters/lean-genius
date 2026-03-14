@@ -1,5 +1,60 @@
 # Knowledge Base: P vs NP
 
+## Session 2026-03-14 (researcher-1) - Polynomial Hierarchy, PSPACE, EXP, Ladner
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 45)
+**Problem**: p-vs-np
+**Prior Status**: Sound model at 753 lines
+
+**Work done**:
+Extended `PNPBarriersSound.lean` from 753 → 1044 lines (+293 lines) with:
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `Sigma_rel` / `Sigma_k` | def | Proved (noncomputable recursive) |
+| `Pi_rel` / `Pi_k` | def | Proved |
+| `PH` | def | Proved (⋃ₖ Σₖ) |
+| `Sigma_zero_eq_P` | theorem | Proved |
+| `Sigma_one_eq_NP` | theorem | Proved |
+| `Pi_zero_eq_P` | theorem | Proved (via complement closure) |
+| `Pi_one_eq_coNP` | theorem | Proved |
+| `Sigma_monotone` | theorem | Proved |
+| `P_subset_PH` | theorem | Proved |
+| `NP_subset_PH` | theorem | Proved |
+| `P_eq_NP_implies_Sigma_collapse` | theorem | Proved (induction on k) |
+| `P_eq_NP_implies_PH_collapse` | theorem | Proved (P=NP → PH=P) |
+| `PH_ne_P_implies_P_ne_NP` | theorem | Proved (contrapositive) |
+| `PSPACE` | def | Defined (abstract) |
+| `EXP` | def | Defined (abstract) |
+| `NP_subset_PSPACE` | axiom | Standard |
+| `PSPACE_subset_EXP` | axiom | Standard |
+| `PH_subset_PSPACE` | axiom | Standard |
+| `complexity_chain` | theorem | Proved (P⊆NP⊆PH⊆PSPACE⊆EXP) |
+| `P_subset_PSPACE` | theorem | Proved (transitivity) |
+| `P_subset_EXP` | theorem | Proved (transitivity) |
+| `P_ne_EXP` | axiom | Time hierarchy theorem |
+| `P_strict_subset_EXP` | theorem | Proved (P⊊EXP) |
+| `some_containment_strict` | theorem | Proved (pigeonhole on chain) |
+| `NPIntermediate` | def | Defined |
+| `ladner_theorem` | axiom | Ladner 1975 |
+
+**Sound model totals**: 20 axioms, ~35 theorems, ~45 defs, 0 sorries, 1044 lines.
+
+**3 new axioms** (all standard containments):
+1. `NP_subset_PSPACE` - NP ⊆ PSPACE (iterate over certificates)
+2. `PSPACE_subset_EXP` - PSPACE ⊆ EXP (config count argument)
+3. `PH_subset_PSPACE` - PH ⊆ PSPACE (quantifier elimination)
+
+**3 new axioms** (well-known theorems):
+4. `P_ne_EXP` - Time Hierarchy Theorem (Hartmanis-Stearns 1965)
+5. `ladner_theorem` - Ladner's Theorem (1975) — P≠NP → NP-intermediate exists
+
+**Key theorem**: `some_containment_strict` — from P⊊EXP and the chain P⊆NP⊆PH⊆PSPACE⊆EXP, at least one containment must be strict. This is the strongest unconditional structural result we prove.
+
+**Outcome**: COMPLETED - major structural extension of the sound model.
+
+---
+
 ## Session 2026-03-14 (researcher-6) - Structural Theorems in Sound Model
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 32)
