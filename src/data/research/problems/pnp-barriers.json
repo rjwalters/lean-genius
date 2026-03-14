@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 trivial axioms (Φ_total, Φ_deterministic, owf_exists_assumption) by proving them. 17→14 axioms, 0 sorries. Φ_total is simple weakening, Φ_deterministic follows from function determinism, owf_exists_assumption was True.",
+    "progressSummary": "PROGRESS: 17→13 axioms total. Session 3: proved PSPACE_subset_EXP (trivial since PSPACE=EXP by definition). Session 2: proved Φ_total, Φ_deterministic, owf_exists_assumption.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -94,7 +94,8 @@
       },
       "Φ_total: converted axiom→theorem (simple existential weakening)",
       "Φ_deterministic: converted axiom→theorem (function determinism of opaque Φ)",
-      "owf_exists_assumption: converted axiom→theorem (was True)"
+      "owf_exists_assumption: converted axiom→theorem (was True)",
+      "PSPACE_subset_EXP converted from axiom to theorem (PSPACE and EXP have identical definitions in abstract model)"
     ],
     "insights": [
       "P_subset_NP_relative",
@@ -113,7 +114,8 @@
       "P_nontrivial proved from Φ_countably_many: countable programs cannot compute all uncountably many functions",
       "All 3 barriers (relativization, natural proofs, algebrization) formalized soundly in PNPBarriersSound.lean",
       "Φ_total was unnecessarily axiomatized: its conclusion is strictly weaker than its hypothesis. The bound s≤bound in the hypothesis is simply dropped.",
-      "Φ_deterministic follows from Φ being a Lean function: same inputs → same output, so Option.some injection gives equality."
+      "Φ_deterministic follows from Φ being a Lean function: same inputs → same output, so Option.some injection gives equality.",
+      "PSPACE and EXP have identical definitions: both are {f | ∃ e p, Solves e emptyOracle f}. The abstract model tracks decidability but not space/time resource bounds. PSPACE_subset_EXP is thus trivially true."
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
