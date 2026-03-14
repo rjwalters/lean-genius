@@ -16,7 +16,7 @@
 #
 # Environment:
 #   SEEKER_INTERVAL - Interval in minutes between checks (default: 15)
-#   SEEKER_THRESHOLD - Minimum available problems before triggering (default: 5)
+#   SEEKER_THRESHOLD - Minimum available problems before triggering (default: 15)
 
 set -euo pipefail
 
@@ -41,7 +41,7 @@ SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 SESSION_NAME="seeker-agent"
 LOG_FILE="$LOGS_DIR/seeker.log"
 INTERVAL="${SEEKER_INTERVAL:-15}"
-THRESHOLD="${SEEKER_THRESHOLD:-5}"
+THRESHOLD="${SEEKER_THRESHOLD:-15}"
 CANDIDATE_POOL="$REPO_ROOT/.lean/state/candidate-pool.json"
 WORKTREE_PATH="$WORKTREES_DIR/seeker"
 BRANCH_NAME="feature/seeker"

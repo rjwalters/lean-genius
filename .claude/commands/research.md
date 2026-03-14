@@ -74,10 +74,10 @@ fi
 
 | Total Items | Tier | Priority |
 |-------------|------|----------|
-| 0 | **EMPTY** | Highest - explore immediately |
-| 1-5 | **WEAK** | High - needs more research |
-| 6-15 | **MODERATE** | Medium - continue if promising |
-| 16+ | **RICH** | Lower - only if new approach found |
+| 6-15 | **MODERATE** | Highest - advance toward proof |
+| 16+ | **RICH** | Highest - near completion, push to finish |
+| 1-5 | **WEAK** | Medium - continue started survey |
+| 0 | **EMPTY** | Lowest - fresh problems only when nothing else |
 
 **Total Items** = insights + builtItems + mathlibGaps + nextSteps
 
@@ -88,12 +88,13 @@ fi
 .lean/scripts/knowledge-scores.sh
 ```
 
-### Selection Rule
+### Selection Rule — DEPTH OVER BREADTH
 
 When multiple problems are eligible:
-1. **Always prefer EMPTY/WEAK knowledge** over MODERATE/RICH
+1. **Always prefer MODERATE/RICH knowledge** over EMPTY/WEAK — advance existing work toward proof
 2. Among same knowledge tier, use tractability as tiebreaker
-3. Document why you chose a particular problem
+3. Only pick EMPTY problems when no MODERATE+ or WEAK problems are available
+4. Document why you chose a particular problem
 
 ---
 
@@ -214,6 +215,29 @@ Scout returns gallery proofs, techniques, Mathlib gaps, and recommended approach
    - Try manually first (should be quick)
    - Use `aristotle_prove` sync if you want instant answer
 
+### Step 5b: Advance Phase (MANDATORY)
+
+After each session, advance the problem's phase to reflect work done:
+
+```bash
+# After surveying (OBSERVE → ORIENT)
+.lean/scripts/research.sh phase "$PROBLEM_ID" "ORIENT"
+
+# After attempting proof work (ORIENT → ACT)
+.lean/scripts/research.sh phase "$PROBLEM_ID" "ACT"
+
+# After completing the proof (ACT → COMPLETED)
+.lean/scripts/research.sh phase "$PROBLEM_ID" "COMPLETED"
+```
+
+**Phase meanings:**
+- **OBSERVE**: Surveyed only — wrote knowledge.md but no proof attempt
+- **ORIENT**: Analyzed feasibility, identified approach, may have partial infrastructure
+- **ACT**: Actively writing Lean code, proof in progress
+- **COMPLETED**: Proof compiles, PR merged
+
+**Do NOT leave problems stuck at OBSERVE** — if you did any analysis beyond a basic survey, advance to ORIENT. If you wrote any Lean code, advance to ACT.
+
 ### Step 6: Release Lock & Submit Overnight Jobs
 
 ```bash
@@ -240,8 +264,8 @@ When pool is empty, we scout for new knowledge and attempt if promising.
 .lean/scripts/knowledge-scores.sh --revisit
 ```
 
-**Selection priority:**
-1. Lowest knowledge score (EMPTY > WEAK > MODERATE > RICH)
+**Selection priority (DEPTH OVER BREADTH):**
+1. Highest knowledge score (MODERATE > RICH > WEAK > EMPTY)
 2. Within same knowledge tier: `in-progress` > `surveyed` > `skipped`
 
 ### Step 2: Read Context
