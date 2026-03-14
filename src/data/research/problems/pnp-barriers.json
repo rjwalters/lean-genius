@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: ~1560 lines, 18 axioms (down from 20), 56 theorems, 0 sorries. Extended landscape + 3 axiom eliminations.",
+    "progressSummary": "PROGRESS: ~1650 lines, 20 axioms, 60+ theorems, 0 sorries. Full complexity landscape: P, NP, coNP, BPP, PH, #P, PSPACE, IP, EXP, L, NL, coNL + all 3 barriers.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -222,6 +222,11 @@
         "name": "Φ_pair_project_first",
         "description": "Pair projection axiom enabling P⊆NP and P⊆BPP proofs (20→19 axioms)",
         "proven": true
+      },
+      {
+        "name": "L_NL_coNL",
+        "description": "Space complexity: L ⊆ NL ⊆ P, NL=coNL (Immerman-Szelepcsényi), space_containment_chain",
+        "proven": true
       }
     ],
     "insights": [
@@ -261,7 +266,9 @@
       "barrier_landscape meta-theorem: all 3 barriers coexist with structural results",
       "Φ_pair_project_first axiom: single primitive for pair decomposition enables P⊆NP and P⊆BPP proofs",
       "Axiom reduction 20→19: trade 2 high-level axioms for 1 primitive axiom",
-      "BPP_complement_closed proved from Φ_negate: negate output, majority preserved"
+      "BPP_complement_closed proved from Φ_negate: negate output, majority preserved",
+      "L, NL, coNL space complexity classes formalized",
+      "Immerman-Szelepcsényi (NL=coNL) contrasts with open NP vs coNP"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
