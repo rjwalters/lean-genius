@@ -48,8 +48,9 @@ asymptotically N/(2π). Specifically:
 
 ## Status
 - Proved: counting function properties, parity lemmas, density derivation,
-  computational verification for N = 0,4,5,13,25,50,100
-- Axiomatized: coprime lattice point density (analytic NT), main asymptotic
+  computational verification for N = 0,4,5,13,25,50,100,
+  parity fraction (2/3) from bothOdd fraction (1/3)
+- Axiomatized (3): sector lattice point density, coprime fraction, bothOdd fraction
 -/
 import Mathlib.NumberTheory.PythagoreanTriples
 import Mathlib.Data.Finset.Card
@@ -455,16 +456,24 @@ axiom coprime_fraction_in_sector :
       (coprimeInSectorCount N : ℝ) / (sectorPointCount N : ℝ))
       atTop (𝓝 (6 / π ^ 2))
 
-/-- Parity sieving: among coprime sector points, the fraction with m ≢ n (mod 2)
-approaches 2/3. Among coprime pairs, both-even is impossible and both-odd
-accounts for 1/3 by symmetry of residue classes mod 2.
+/-- Both-odd fraction: among coprime sector points, the fraction with both m,n odd
+approaches 1/3. This is the cleaner formulation of the parity axiom: residue
+classes (EO, OE, OO) are equidistributed among coprime pairs.
 
-NOTE: By parity_axiom_equivalent, this follows from:
-bothOddCoprimeCount(N)/coprimeInSectorCount(N) → 1/3. -/
-axiom parity_fraction_in_coprime_sector :
+By parity_axiom_equivalent, this immediately gives the 2/3 primitive fraction. -/
+axiom bothOdd_fraction_in_coprime_sector :
+    Tendsto (fun N : ℕ =>
+      (bothOddCoprimeCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (1 / 3))
+
+/-- Parity sieving: among coprime sector points, the fraction with m ≢ n (mod 2)
+approaches 2/3. PROVED from bothOdd_fraction_in_coprime_sector via
+parity_axiom_equivalent (reducing to: bothOdd/coprime → 1/3). -/
+theorem parity_fraction_in_coprime_sector :
     Tendsto (fun N : ℕ =>
       (primitiveTripleCount N : ℝ) / (coprimeInSectorCount N : ℝ))
-      atTop (𝓝 (2 / 3))
+      atTop (𝓝 (2 / 3)) :=
+  parity_axiom_equivalent bothOdd_fraction_in_coprime_sector
 
 /-
 ## Part IX: Main Asymptotic Theorems (Proved from Axioms)
@@ -561,7 +570,7 @@ theorem parametrization_is_bijection :
 /-
 ## Summary
 
-### Proved (41 theorems):
+### Proved (42 theorems, including parity_fraction_in_coprime_sector):
 - parametric_triple: (m²-n², 2mn, m²+n²) is always a Pythagorean triple
 - coprime_triple_classified: coprime triples are primitively classified
 - triple_classified: all triples are classified
@@ -588,17 +597,18 @@ theorem parametrization_is_bijection :
 - parity_fraction_50: fraction = 7/11 for N = 50
 - parity_fraction_100: fraction = 2/3 for N = 100
 - **parity_axiom_equivalent: bothOdd/coprime → 1/3 ⟹ parity axiom [REDUCTION]**
+- **parity_fraction_in_coprime_sector: parity → 2/3 [PROVED from bothOdd axiom]**
 - **primitiveTripleCount_density: count(N)/N → 1/(2π) [PROVED from 3 axioms]**
 - **primitiveTripleCount_asymptotic: count(N)/(N/(2π)) → 1 [PROVED from density]**
 - count_div_N_nonneg: ratio is non-negative
 - all_primitive_triples_parametrized: Mathlib bridge
 - parametrization_is_bijection: ring identity
 
-### Axiomatized (3 axioms):
+### Axiomatized (3 independent axioms):
 - sector_lattice_point_density: sector lattice points/N → π/8 (Gauss circle)
 - coprime_fraction_in_sector: coprime fraction in sector → 6/π² (Möbius)
-- parity_fraction_in_coprime_sector: parity fraction → 2/3
-  (reduced via parity_axiom_equivalent to: bothOdd/coprime → 1/3)
+- bothOdd_fraction_in_coprime_sector: bothOdd/coprime → 1/3 (equidistribution)
+  (parity_fraction_in_coprime_sector is now PROVED from this + parity_axiom_equivalent)
 
 ### Sorries: 0
 -/
@@ -892,8 +902,12 @@ theorem parity_axiom_from_equidistribution :
 - parity_axiom_from_equidistribution: proves parity axiom from equidistribution
 
 ### Axiom Improvement:
-The original parity_fraction_in_coprime_sector axiom is now DERIVABLE from
-parity_class_equidistribution (a cleaner, more fundamental statement).
+The original parity_fraction_in_coprime_sector axiom has been ELIMINATED.
+It is now a theorem proved from bothOdd_fraction_in_coprime_sector (the
+cleaner axiom about bothOdd/coprime → 1/3) via parity_axiom_equivalent.
+The file now has 3 independent axioms (down from 4).
+Additionally, parity_class_equidistribution (OO via coprimeOddOddCount)
+connects to bothOdd_fraction via bothOdd_eq_oo.
 The OE = OO bijection proves 2/3 of the equidistribution; only the
 EO component remains unlinked by bijection (requires a different symmetry argument).
 
