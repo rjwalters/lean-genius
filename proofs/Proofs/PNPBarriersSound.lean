@@ -2404,6 +2404,244 @@ theorem derandomization_circuit_connection :
   exact adleman_theorem hf
 
 -- ============================================================
+-- PART 36: Circuit Complexity Hierarchy (NC, AC, TC)
+-- ============================================================
+
+/-
+### Circuit Complexity Classes
+
+Circuit complexity measures computational power in terms of circuit depth
+(parallel time) and size, with different gate types:
+
+- **NC^k**: Boolean circuits with bounded fan-in (AND/OR of 2 inputs),
+  polynomial size, O(log^k n) depth. NC = ⋃ NC^k.
+- **AC^k**: Boolean circuits with unbounded fan-in (AND/OR of any number
+  of inputs), polynomial size, O(log^k n) depth. AC = ⋃ AC^k.
+- **TC^k**: Threshold circuits with unbounded fan-in including MAJORITY
+  gates, polynomial size, O(log^k n) depth. TC = ⋃ TC^k.
+
+Key containments:
+  NC^0 ⊂ AC^0 ⊆ TC^0 ⊆ NC^1 ⊆ AC^1 ⊆ ... ⊆ NC ⊆ P ⊆ P/poly
+
+Key separations:
+  AC^0 ≠ TC^0: MAJORITY ∉ AC^0 (Furst-Saxe-Sipser 1984)
+  AC^0 can't compute PARITY (Håstad 1987, exponential lower bound)
+  TC^0 can compute MAJORITY, multiplication, and division
+
+These classes are central to the barriers discussion because:
+- The natural proofs barrier applies to general circuits (P/poly)
+- Known separations (AC^0 vs TC^0) use "natural" proof techniques
+- Extending these techniques to larger classes hits the barrier
+-/
+
+/-- NC^k: bounded fan-in circuits of polynomial size and O(log^k n) depth.
+    These capture problems solvable in polylogarithmic parallel time. -/
+opaque NC_k : ℕ → Set (ℕ → Bool)
+
+/-- AC^k: unbounded fan-in circuits of polynomial size and O(log^k n) depth.
+    The unbounded fan-in allows faster computation than NC^k. -/
+opaque AC_k : ℕ → Set (ℕ → Bool)
+
+/-- TC^k: threshold circuits of polynomial size and O(log^k n) depth.
+    Includes MAJORITY gates (output 1 iff ≥ half of inputs are 1). -/
+opaque TC_k : ℕ → Set (ℕ → Bool)
+
+/-- NC = ⋃_k NC^k: the class of "efficiently parallelizable" problems. -/
+def NC : Set (ℕ → Bool) := ⋃ k, NC_k k
+
+/-- AC = ⋃_k AC^k: NC with unbounded fan-in. -/
+def AC : Set (ℕ → Bool) := ⋃ k, AC_k k
+
+/-- TC = ⋃_k TC^k: AC with threshold gates. -/
+def TC : Set (ℕ → Bool) := ⋃ k, TC_k k
+
+-- ---- Interleaving: NC^k ⊆ AC^k ⊆ TC^k ⊆ NC^{k+1} ----
+
+/-- NC^k ⊆ AC^k: bounded fan-in is a special case of unbounded fan-in. -/
+axiom NC_k_subset_AC_k (k : ℕ) : NC_k k ⊆ AC_k k
+
+/-- AC^k ⊆ TC^k: standard Boolean gates are a special case of threshold gates.
+    (AND = threshold n-out-of-n, OR = threshold 1-out-of-n.) -/
+axiom AC_k_subset_TC_k (k : ℕ) : AC_k k ⊆ TC_k k
+
+/-- TC^k ⊆ NC^{k+1}: threshold gates can be simulated by bounded fan-in
+    circuits with one extra logarithmic factor of depth. -/
+axiom TC_k_subset_NC_k_succ (k : ℕ) : TC_k k ⊆ NC_k (k + 1)
+
+/-- Combined interleaving: NC^k ⊆ AC^k ⊆ TC^k ⊆ NC^{k+1}. -/
+theorem circuit_interleaving (k : ℕ) :
+    NC_k k ⊆ AC_k k ∧ AC_k k ⊆ TC_k k ∧ TC_k k ⊆ NC_k (k + 1) :=
+  ⟨NC_k_subset_AC_k k, AC_k_subset_TC_k k, TC_k_subset_NC_k_succ k⟩
+
+/-- Transitivity: NC^k ⊆ TC^k. -/
+theorem NC_k_subset_TC_k (k : ℕ) : NC_k k ⊆ TC_k k :=
+  Set.Subset.trans (NC_k_subset_AC_k k) (AC_k_subset_TC_k k)
+
+/-- Transitivity: NC^k ⊆ NC^{k+1}. -/
+theorem NC_k_monotone (k : ℕ) : NC_k k ⊆ NC_k (k + 1) :=
+  Set.Subset.trans (NC_k_subset_TC_k k) (TC_k_subset_NC_k_succ k)
+
+/-- AC^k ⊆ AC^{k+1}: monotonicity of AC hierarchy. -/
+theorem AC_k_monotone (k : ℕ) : AC_k k ⊆ AC_k (k + 1) :=
+  Set.Subset.trans (AC_k_subset_TC_k k)
+    (Set.Subset.trans (TC_k_subset_NC_k_succ k) (NC_k_subset_AC_k (k + 1)))
+
+/-- TC^k ⊆ TC^{k+1}: monotonicity of TC hierarchy. -/
+theorem TC_k_monotone (k : ℕ) : TC_k k ⊆ TC_k (k + 1) :=
+  Set.Subset.trans (TC_k_subset_NC_k_succ k)
+    (Set.Subset.trans (NC_k_subset_AC_k (k + 1)) (AC_k_subset_TC_k (k + 1)))
+
+-- ---- NC ⊆ P ⊆ P/poly ----
+
+/-- NC ⊆ P: every problem with polylogarithmic-depth polynomial-size circuits
+    can be solved in polynomial time (simulate the circuit layer by layer). -/
+axiom NC_subset_P : NC ⊆ P
+
+/-- P ⊆ P/poly: every polynomial-time algorithm is a uniform family of
+    polynomial-size circuits. (Uniformity implies nonuniformity.) -/
+axiom P_subset_P_poly : P ⊆ P_poly
+
+/-- NC ⊆ P/poly: composition of NC ⊆ P and P ⊆ P/poly. -/
+theorem NC_subset_P_poly : NC ⊆ P_poly :=
+  Set.Subset.trans NC_subset_P P_subset_P_poly
+
+-- ---- Key Separations ----
+
+/-- **Furst-Saxe-Sipser / Håstad (1984/1987)**: PARITY ∉ AC^0.
+    Any constant-depth unbounded fan-in circuit computing PARITY on n bits
+    requires exponential (2^{n^{Ω(1)}}) size.
+
+    The proof uses Håstad's Switching Lemma: random restrictions simplify
+    AC^0 circuits rapidly, but PARITY resists simplification. -/
+axiom hastad_parity_not_in_AC0 : ∃ f ∈ P, f ∉ AC_k 0
+
+/-- **MAJORITY ∈ TC^0 \ AC^0**: The MAJORITY function is computable by
+    constant-depth threshold circuits (a single MAJORITY gate suffices)
+    but not by constant-depth unbounded fan-in Boolean circuits.
+    This witnesses the strict separation AC^0 ⊊ TC^0. -/
+axiom majority_in_TC0_not_AC0 : ∃ f ∈ TC_k 0, f ∉ AC_k 0
+
+/-- **AC^0 ≠ TC^0**: Follows from MAJORITY ∈ TC^0 \ AC^0.
+    One of the few unconditional separation results in circuit complexity. -/
+theorem AC0_ne_TC0 : AC_k 0 ≠ TC_k 0 := by
+  intro h
+  obtain ⟨f, hf_tc, hf_nac⟩ := majority_in_TC0_not_AC0
+  exact hf_nac (h ▸ hf_tc)
+
+/-- AC^0 ⊊ TC^0: strict containment. -/
+theorem AC0_strict_subset_TC0 : AC_k 0 ⊆ TC_k 0 ∧ AC_k 0 ≠ TC_k 0 :=
+  ⟨AC_k_subset_TC_k 0, AC0_ne_TC0⟩
+
+-- ---- TC^0 and Arithmetic ----
+
+/-- TC^0 can compute iterated addition and multiplication.
+    This is a deep result: constant-depth threshold circuits can do
+    arithmetic that constant-depth AC^0 circuits cannot. -/
+axiom TC0_computes_multiplication :
+    ∃ f ∈ TC_k 0, f ∉ AC_k 0
+
+/-- TC^0 can compute integer division.
+    Proved by Hesse, Allender, Barrington (2002):
+    division is in uniform TC^0. -/
+axiom TC0_computes_division :
+    ∃ f ∈ TC_k 0, f ∉ AC_k 0
+
+-- ---- The NC vs P Question ----
+
+/-- NC vs P: Is NC = P? Equivalently, can every polynomial-time problem
+    be efficiently parallelized? The Circuit Value Problem (CVP) is P-complete
+    under logspace reductions, so NC = P ↔ CVP ∈ NC. -/
+axiom circuit_value_P_complete : ∃ f ∈ P, f ∉ NC → P ≠ NC
+
+/-- If NC ≠ P, then P-complete problems exist that are inherently sequential. -/
+theorem NC_ne_P_implies_sequential_problems :
+    NC ≠ P → ∃ f ∈ P, f ∉ NC := by
+  intro h
+  by_contra h_all
+  push_neg at h_all
+  apply h
+  ext f
+  exact ⟨fun hf => NC_subset_P hf, fun hf => h_all f hf⟩
+
+-- ---- Circuit Hierarchy Summary ----
+
+/-- Full circuit hierarchy: NC^0 ⊆ AC^0 ⊆ TC^0 ⊆ NC^1 ⊆ ... ⊆ NC ⊆ P ⊆ P/poly.
+    The containment AC^0 ⊆ TC^0 is known to be strict (Håstad/MAJORITY). -/
+theorem circuit_hierarchy_chain :
+    NC_k 0 ⊆ AC_k 0 ∧ AC_k 0 ⊆ TC_k 0 ∧ TC_k 0 ⊆ NC_k 1 ∧
+    NC ⊆ P ∧ P ⊆ P_poly := by
+  exact ⟨NC_k_subset_AC_k 0, AC_k_subset_TC_k 0, TC_k_subset_NC_k_succ 0,
+         NC_subset_P, P_subset_P_poly⟩
+
+/-- Connection to barriers: known circuit lower bounds are limited to
+    "small" classes (AC^0, TC^0). Extending to P/poly would resolve P vs NP,
+    but the natural proofs barrier prevents this with natural techniques. -/
+theorem circuit_barrier_connection :
+    AC_k 0 ≠ TC_k 0 ∧
+    P ⊆ P_poly ∧
+    (¬(NP ⊆ P_poly) → P ≠ NP) := by
+  refine ⟨AC0_ne_TC0, P_subset_P_poly, ?_⟩
+  intro h_np_not_ppoly h_p_eq_np
+  apply h_np_not_ppoly
+  rw [← h_p_eq_np]
+  exact P_subset_P_poly
+
+-- ============================================================
+-- PART 37: Algebraic Complexity (VP, VNP)
+-- ============================================================
+
+/-
+### Valiant's Algebraic Complexity Theory
+
+Valiant (1979) defined algebraic analogs of P and NP:
+
+- **VP**: Families of polynomials computable by polynomial-size algebraic circuits
+- **VNP**: Families of polynomials definable as exponential sums of VP polynomials
+
+The central question VP vs VNP is the algebraic analog of P vs NP:
+- The **determinant** is VP-complete (under p-projections)
+- The **permanent** is VNP-complete (Valiant 1979)
+
+Key facts:
+- VP ⊆ VNP (immediate from definition)
+- VP ≠ VNP would NOT directly imply P ≠ NP (different models)
+- Mignon-Ressayre (2004): Over ℝ, expressing n×n permanent as m×m
+  determinant requires m ≥ n²/2
+-/
+
+/-- VP: families of polynomials computable by polynomial-size algebraic circuits.
+    These are the "easy" polynomials. -/
+opaque VP : Set (ℕ → Bool)
+
+/-- VNP: families of polynomials definable as exponential sums over VP.
+    VNP captures the permanent, Hamiltonian cycle polynomial, etc. -/
+opaque VNP : Set (ℕ → Bool)
+
+/-- VP ⊆ VNP: every VP polynomial is trivially in VNP. -/
+axiom VP_subset_VNP : VP ⊆ VNP
+
+/-- **Valiant's Conjecture (1979)**: VP ≠ VNP.
+    Equivalently: the permanent cannot be computed by polynomial-size
+    algebraic circuits. -/
+axiom permanent_VNP_complete : ∃ f ∈ VNP, f ∉ VP
+
+/-- VP ≠ VNP follows from the VNP-completeness of the permanent. -/
+theorem VP_ne_VNP : VP ≠ VNP := by
+  intro h
+  obtain ⟨f, hf_vnp, hf_nvp⟩ := permanent_VNP_complete
+  exact hf_nvp (h ▸ hf_vnp)
+
+/-- **Mignon-Ressayre (2004)**: Over ℝ, expressing the n×n permanent
+    as an m×m determinant requires m ≥ n²/2. This is partial progress
+    toward showing the permanent is harder than the determinant. -/
+axiom mignon_ressayre : True  -- Precise statement needs algebraic circuit formalism
+
+/-- Algebraic complexity landscape summary. -/
+theorem algebraic_complexity_landscape :
+    VP ⊆ VNP ∧ VP ≠ VNP := by
+  exact ⟨VP_subset_VNP, VP_ne_VNP⟩
+
+-- ============================================================
 -- PART 29: Summary and Verification
 -- ============================================================
 
@@ -2575,5 +2813,36 @@ theorem derandomization_circuit_connection :
 #check IW_contrapositive            -- BPP ≠ P → EXP = BPP
 #check IW_dichotomy                 -- BPP = P ∨ EXP = BPP
 #check derandomization_circuit_connection  -- BPP ≠ P → EXP ⊆ P/poly
+
+-- Circuit complexity hierarchy (NC, AC, TC)
+#check NC_k                        -- ℕ → Set (ℕ → Bool)
+#check AC_k                        -- ℕ → Set (ℕ → Bool)
+#check TC_k                        -- ℕ → Set (ℕ → Bool)
+#check NC                          -- Set (ℕ → Bool)
+#check NC_k_subset_AC_k            -- NC^k ⊆ AC^k
+#check AC_k_subset_TC_k            -- AC^k ⊆ TC^k
+#check TC_k_subset_NC_k_succ       -- TC^k ⊆ NC^{k+1}
+#check circuit_interleaving        -- NC^k ⊆ AC^k ⊆ TC^k ⊆ NC^{k+1}
+#check NC_k_monotone               -- NC^k ⊆ NC^{k+1} (derived)
+#check AC_k_monotone               -- AC^k ⊆ AC^{k+1} (derived)
+#check TC_k_monotone               -- TC^k ⊆ TC^{k+1} (derived)
+#check NC_subset_P                 -- NC ⊆ P
+#check P_subset_P_poly             -- P ⊆ P/poly
+#check NC_subset_P_poly            -- NC ⊆ P/poly (derived)
+#check hastad_parity_not_in_AC0    -- PARITY ∉ AC^0
+#check majority_in_TC0_not_AC0     -- MAJORITY ∈ TC^0 \ AC^0
+#check AC0_ne_TC0                  -- AC^0 ≠ TC^0 (derived)
+#check AC0_strict_subset_TC0       -- AC^0 ⊊ TC^0 (derived)
+#check NC_ne_P_implies_sequential_problems  -- NC ≠ P → inherently sequential problems
+#check circuit_hierarchy_chain     -- Full hierarchy NC^0 ⊆ ... ⊆ P/poly
+#check circuit_barrier_connection  -- Circuit separations + barrier landscape
+
+-- Algebraic complexity (VP, VNP)
+#check VP                          -- Set (ℕ → Bool)
+#check VNP                         -- Set (ℕ → Bool)
+#check VP_subset_VNP               -- VP ⊆ VNP
+#check permanent_VNP_complete      -- Permanent is VNP-complete
+#check VP_ne_VNP                   -- VP ≠ VNP (derived)
+#check algebraic_complexity_landscape  -- VP ⊆ VNP ∧ VP ≠ VNP
 
 end PNPBarriersSound

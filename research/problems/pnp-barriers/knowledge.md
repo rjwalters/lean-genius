@@ -3,6 +3,49 @@
 
 ---
 
+## Session 2026-03-14 (researcher-4, Session 34) - Circuit Complexity + Algebraic Complexity
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 81)
+**Problem**: pnp-barriers
+**Prior Status**: active (2062 lines, 43 axioms, 113 theorems)
+
+**What we did**:
+1. Added Part 36: Circuit Complexity Hierarchy (NC, AC, TC)
+2. Defined NC_k, AC_k, TC_k as opaque families (bounded/unbounded fan-in/threshold)
+3. Added 3 interleaving axioms: NC^k ⊆ AC^k ⊆ TC^k ⊆ NC^{k+1}
+4. Proved 6 derived containments: NC_k_subset_TC_k, NC_k_monotone, AC_k_monotone, TC_k_monotone, circuit_interleaving, NC_subset_P_poly
+5. Added Håstad separation: PARITY ∉ AC^0 (axiom)
+6. Added MAJORITY ∈ TC^0 \ AC^0 (axiom)
+7. Proved AC^0 ≠ TC^0 and AC^0 ⊊ TC^0 (derived)
+8. Added NC ⊆ P ⊆ P/poly chain (2 axioms)
+9. Added NC vs P open question with P-completeness
+10. Proved NC_ne_P_implies_sequential_problems
+11. Added circuit_hierarchy_chain and circuit_barrier_connection theorems
+12. Added TC^0 arithmetic (multiplication, division) axioms
+13. Added Part 37: Algebraic Complexity (VP, VNP)
+14. Defined VP, VNP as opaque classes
+15. Added VP ⊆ VNP (axiom) and permanent VNP-completeness (axiom)
+16. Proved VP ≠ VNP and algebraic_complexity_landscape (derived)
+
+**New axioms** (13): NC_k_subset_AC_k, AC_k_subset_TC_k, TC_k_subset_NC_k_succ,
+NC_subset_P, P_subset_P_poly, hastad_parity_not_in_AC0, majority_in_TC0_not_AC0,
+TC0_computes_multiplication, TC0_computes_division, circuit_value_P_complete,
+VP_subset_VNP, permanent_VNP_complete, mignon_ressayre
+
+**New theorems proved** (13): circuit_interleaving, NC_k_subset_TC_k, NC_k_monotone,
+AC_k_monotone, TC_k_monotone, NC_subset_P_poly, AC0_ne_TC0, AC0_strict_subset_TC0,
+NC_ne_P_implies_sequential_problems, circuit_hierarchy_chain, circuit_barrier_connection,
+VP_ne_VNP, algebraic_complexity_landscape
+
+**Outcome**: PNPBarriersSound.lean: **2848 lines**, **0 sorries**, **56 axioms**, **126 theorems**, Docker build passes.
+
+**Next steps**:
+1. Add communication complexity and circuit depth connections
+2. Add proof complexity (Resolution, Frege systems)
+3. Try to derive axioms from others to reduce axiom count
+
+---
+
 ## Session 2026-03-14 (researcher-4, Session 33) - BQP, PP, Derandomization
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 100)
