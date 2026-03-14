@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-03-13T08:30:00.000Z",
-    "iteration": 5,
-    "focus": "All bridge theorems complete. Full decidable ↔ noncomputable equivalence for RR1, RR2, and Schur.",
+    "iteration": 6,
+    "focus": "All bridge theorems complete. Full decidable↔noncomputable equivalence for RR1, RR2, and corrected Schur.",
     "blockers": [],
-    "nextAction": "Bridge corrected Schur gap. Investigate bijective proof approaches to remove axioms.",
+    "nextAction": "Investigate axiom removal via q-series or bijective proofs.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Complete decidable↔noncomputable bridge for all three identities. 6 set equalities (rr1Gap_eq, rr1Mod5_eq, rr2Gap_eq, rr2Mod5_eq, schurGap_eq, schurMod_eq). 3 identity transfers (RR1, RR2, Schur decidable). Total: 45+ proved theorems, 4 axioms, 50+ verifications, 0 sorries.",
+    "progressSummary": "PROGRESS: All bridge theorems complete. 6 bridge theorems (RR1 gap/mod, RR2 gap/mod, Schur gap/mod), 3 derived decidable identities (RR1, RR2, Schur corrected). Full decidable↔noncomputable equivalence for all three partition identities. Total: 48+ proved theorems, 4 axioms, 44+ verifications, 0 sorries.",
     "builtItems": [
       "PartitionDecidable.rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGap, schurMod: decidable partition set definitions",
       "schurGapFull: corrected Schur gap with strengthened mod-3 condition",
@@ -45,7 +45,15 @@
       "rr2Gap_eq: decidable RR2 gap = noncomputable RR2 gap (bridges partSmallestPart ↔ ∀ parts ≥ 2)",
       "mem_parts_sort_le: ascending sort membership equivalence helper",
       "rogers_ramanujan_first_decidable: derived from axiom + bridges",
-      "rogers_ramanujan_second_decidable: derived from axiom + rr2Gap_eq + rr2Mod5_eq bridges"
+      "rogers_ramanujan_second_decidable: derived from axiom + rr2Gap_eq + rr2Mod5_eq bridges",
+      "hasSchurGapFull_implies_hasMinGap3: Schur gap → uniform gap ≥ 3",
+      "hasSchurGapFull_pairwise: forward Pairwise (sorted → ordered pairs)",
+      "hasSchurGapFull_sep: forward symmetric sep (all distinct elements)",
+      "decidable_schurSep_sorted_implies_hasSchurGapFull: backward direction",
+      "schurGapFull_eq_schurGapFullPartitions: decidable Schur gap = noncomputable",
+      "schurMod_eq_schurModPartitions: decidable Schur mod = noncomputable",
+      "schur_partition_identity_corrected_decidable: |schurGapFull n| = |schurMod n|",
+      "nodup_toList_iff: toList.Nodup ↔ Multiset.Nodup helper"
     ],
     "insights": [
       "Pairwise separation equivalence: for d≥1, sorted min gap d ⟺ Nodup ∧ all pairs separated by ≥d. Avoids noncomputable Multiset.sort.",
@@ -57,13 +65,17 @@
       "RR2 mod5 parts are always ≥ 2 (parts ≡ 2,3 mod 5), Schur mod parts are coprime to 3.",
       "The original axiom schur_partition_identity uses the simplified definition - should be restated with schurGapFull for mathematical correctness.",
       "Multiset.sort_sorted deprecated → Multiset.pairwise_sort. List.mem_cons_self takes implicit args. Bool.and_eq_true is Prop equality not Iff.",
-      "Bridge proof: pairwise_ge_d_implies_hasMinGap (forward) + hasMinGap_ge_one_nodup + hasMinGap_pairwise_sep (backward)"
+      "Bridge proof: pairwise_ge_d_implies_hasMinGap (forward) + hasMinGap_ge_one_nodup + hasMinGap_pairwise_sep (backward)",
+      "Non-adjacent pairs in hasSchurGapFull have accumulated gap ≥ 6 (3+3), which exceeds both gap thresholds (4 and 3). Only adjacent pairs need the specific Schur check.",
+      "Or.comm.mp enables symmetric condition transfer: (a%3=0 ∨ b%3=0) ↔ (b%3=0 ∨ a%3=0) for reversing Pairwise direction.",
+      "After rcases with rfl, the substituted variable may be removed from scope. Use split+rename_i instead of by_cases with explicit variable names.",
+      "The suffices pattern (from hasMinGap_pairwise_sep) cleanly separates the Pairwise induction from the main theorem statement."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Bridge corrected Schur gap (schurGapFull ↔ decidable equivalent)",
-      "Investigate q-series or bijective proofs to remove axioms",
-      "Consider companion Aristotle file for routine supporting lemmas"
+      "Investigate q-series or bijective proofs to remove the 4 remaining axioms",
+      "Consider Aristotle companion file for routine supporting lemmas",
+      "All bridge theorems complete - problem ready for COMPLETED status"
     ]
   },
   "approaches": [
@@ -91,7 +103,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-14T03:00:00.000Z",
+  "lastUpdate": "2026-03-14T13:45:00.000Z",
   "significance": 7,
   "tractability": 6
 }
