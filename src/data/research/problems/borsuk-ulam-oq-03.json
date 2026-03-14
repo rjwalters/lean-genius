@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-02-25T14:11:52.126Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 35+ proved theorems across 3 files, gridDense sorry resolved in OQ03OQ03, new sections XXX-XXXVI in main file.",
+    "progressSummary": "COMPLETED: Fixed all build errors in both OQ03 and OQ03OQ03. Both files compile clean (0 sorries). OQ03: 4 axioms (higher-D BU blocked on Mathlib). OQ03OQ03: 1 axiom (Tucker lemma). Full 2D BU proved from Tucker.",
     "builtItems": [
       "proofs/Proofs/BorsukUlamOQ03.lean (914 lines, 41 defs/theorems, 7 axioms, 0 sorries)",
       "src/data/proofs/borsuk-ulam-oq-03/ (gallery integration with meta.json, annotations.json, index.ts)",
@@ -44,7 +44,12 @@
       "discrete_ivt_sign_change: discrete IVT from Tucker signed lemma",
       "interval_borsuk_number: 1D Borsuk partition impossibility",
       "coincidence_set_closed: coincidence set of f on S1 is closed",
-      "BU preservation theorems: post-composition, even composition, max, min"
+      "BU preservation theorems: post-composition, even composition, max, min",
+      {
+        "name": "discrete_ivt_sign_change (fixed)",
+        "description": "Fixed 3 proof bugs: false hbdry, broken rw, invalid .2 projection",
+        "proven": true
+      }
     ],
     "insights": [
       "1D BU proved via IVT on antisymmetric difference g(x) = f(x) - f(-x)",
@@ -61,7 +66,10 @@
       "countTransitions is monotone and bounded by n; when endpoints differ, 1 <= count <= n with count odd",
       "gridDense proof: use Nat.floor to find nearest grid index, bound error by 1/N <= sqrt(2)/N via Prod.dist max metric",
       "BorsukUlamOQ03OQ03 has pre-existing build errors at lines 1510+ from Mathlib API changes (radialExtend infrastructure)",
-      "coincidence_set_closed uses isClosed_eq with fun_prop for continuity of composed trig functions"
+      "coincidence_set_closed uses isClosed_eq with fun_prop for continuity of composed trig functions",
+      "discrete_ivt_sign_change: hbdry lemma was false (sum=0 is not contradictory), removed it and fixed Bool comparison proof",
+      "Forward references in Lean 4 cause Unknown identifier errors - must define before use",
+      "Orphaned /-- doc comments (not attached to a declaration) cause parse errors in Lean 4"
     ],
     "mathlibGaps": [],
     "nextSteps": [

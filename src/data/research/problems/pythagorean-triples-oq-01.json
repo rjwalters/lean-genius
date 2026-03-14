@@ -33,12 +33,12 @@
     "phase": "DEEP_DIVE",
     "since": "2026-03-12T05:32:38.520Z",
     "iteration": 4,
-    "focus": "Eliminated 2 more axioms: proved parity_class_equidistribution, removed false column_discrepancy_bound",
+    "focus": "Square symmetry proved, coprime halving proved, density insight documented",
     "blockers": [
-      "Extending OE=OO from triangle to circle requires boundary analysis",
-      "EO component needs separate symmetry argument"
+      "Formalizing CRT independence of coprimality sieve and parity requires analytic NT infrastructure",
+      "Connecting square EO=OE to sector EO=OE requires circle boundary analysis"
     ],
-    "nextAction": "Extend OE=OO bijection to circle sector via boundary effect analysis",
+    "nextAction": "Formalize CRT-based argument or pursue boundary analysis for sector equidistribution",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 2,
@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 sorries, 3 axioms (all representing deep analytic NT results). All main theorems fully proved from axioms. Extensive infrastructure for boundary analysis and parity decomposition. Problem at natural completion point.",
+    "progressSummary": "PROGRESS: Proved eo_equidistribution (last sorry). File now has 0 sorries, 3 axioms. All main theorems fully proved from axioms.",
     "builtItems": [
       "bothOddCoprimeCount: counting function for both-odd coprime pairs",
       "coprime_sector_partition: exact partition identity (coprime = primitive + bothOdd)",
@@ -64,8 +64,29 @@
       "coprime_sector_three_way_partition: coprime = EO + OE + OO (PythagoreanTriplesOQ01.lean:618)",
       "parity_fraction_in_coprime_sector: CONVERTED axiom→theorem (proved from bothOdd axiom)",
       "bothOdd_fraction_in_coprime_sector: new cleaner axiom replacing parity_fraction axiom",
-      "parity_class_equidistribution: CONVERTED axiom→theorem (proved from bothOdd_fraction + bothOdd_eq_oo)",
-      "column_parity_partition: φ(m) = |even coprimes| + |odd coprimes| (fixed Nat.totient unfolding)"
+      "squareEO, squareOE, squareOO: parity class counts in full square (PythagoreanTriplesOQ01.lean:Part XVII)",
+      "square_eo_eq_oe: |EO|=|OE| in square via swap bijection (PythagoreanTriplesOQ01.lean:Part XVII)",
+      "square_oo_swap_closed: OO self-symmetric under swap (PythagoreanTriplesOQ01.lean:Part XVII)",
+      "coprime_eo_iff: coprime(2a,n) ↔ coprime(a,n) when n odd - key to EO density (PythagoreanTriplesOQ01.lean:Part XVIII)",
+      "triangleEO: EO pairs in triangle for decomposition analysis (PythagoreanTriplesOQ01.lean:Part XVII)",
+      "theorem bothOdd_fraction_from_equidistribution (axiom redundancy proof)",
+      "theorem eo_equidistribution (sorry - needs eventual equality for C>0)",
+      "Fixed column_parity_partition omega bug (n≥1 from coprimality)",
+      {
+        "name": "parity_class_equidistribution (theorem)",
+        "description": "Converted from axiom to theorem via bothOdd_eq_oo",
+        "proven": true
+      },
+      {
+        "name": "totient_even_of_odd (fixed)",
+        "description": "Fixed proof using rw + rfl instead of broken omega",
+        "proven": true
+      },
+      {
+        "name": "eo_equidistribution (proved)",
+        "description": "EO/C to 1/3 from OE/C,OO/C to 1/3 via partition",
+        "proven": true
+      }
     ],
     "insights": [
       "The coprime sector decomposes into exactly 2 parity classes (not 3): primitive (mixed parity) and both-odd. Both-even is impossible for coprime pairs.",
@@ -75,10 +96,17 @@
       "All main theorems are already proved from the 3 axioms - the file has 0 sorries",
       "PythagoreanTriplesOQ01.lean has pre-existing Mathlib v4.26.0 API breakage: native_decide for bothOddCoprimeCount 100 and coprimeInSectorCount 100 return false values; parity_axiom_equivalent proof broken (sub_div rewrite pattern not found, Tendsto.const_sub signature changed). File needs API repair before new research.",
       "The parity involution (m,n)→(m,m-n) gives an exact bijection OE↔OO in the coprime triangle. This proves |OE(K)|=|OO(K)| for all K, establishing the three-way partition is equitable in the triangle region.",
-      "column_discrepancy_bound axiom was FALSE: m=21, N=541 gives |sectorOE-sectorOO|=2, not ≤1. The bound fails because boundary coprime truncation can create imbalance >1 (120 violations found for m<50).",
-      "All 3 remaining axioms represent genuine analytic NT: Gauss circle problem (sector lattice density), coprime density in regions (Möbius sieving), parity equidistribution (CRT independence). Each requires ~500+ lines of formal infrastructure to eliminate.",
-      "The boundary analysis infrastructure (sector_boundary_balance, sector_oe_oo_discrepancy_bound) reduces the parity axiom to bounding O(√N) boundary effects, but formalizing this requires coprime count lower bounds which circularly depend on the sector axiom.",
-      "Aristotle companion file yielded 12 routine lemmas but cannot help with the deep axioms (these are open conjectures relative to Aristotle capabilities)."
+      "In the full square [1,K]², EO and OE coprime pairs have exactly equal counts via the (m,n)↦(n,m) swap. This is a different symmetry from the OE=OO triangle involution.",
+      "The coprime density within each non-EE parity class is the same (8/π²) because: at p=2, none can have 2|gcd (at least one element odd); at odd primes, sieving is independent of parity by CRT. This is the fundamental reason for equidistribution.",
+      "coprime(2a, n) ↔ coprime(a, n) when n is odd: the factor of 2 in even elements is irrelevant to coprimality with odd numbers. This halving principle connects EO density to the general coprime density.",
+      "The parity_fraction_in_coprime_sector axiom is fully derivable from parity_class_equidistribution via parity_axiom_from_equidistribution (Part XV). This reduces the effective axiom count.",
+      "bothOdd_fraction_in_coprime_sector is derivable from parity_class_equidistribution via bothOdd_eq_oo (proved in bothOdd_fraction_from_equidistribution)",
+      "EO equidistribution follows algebraically from OE+OO equidistribution + three-way partition (eo_equidistribution, needs eventual C>0)",
+      "Fixed column_parity_partition: n≥1 follows from Coprime n m when m>1 (was broken omega)",
+      "Converted parity_class_equidistribution from axiom to theorem (derived from bothOdd_fraction via bothOdd_eq_oo) — axiom count reduced from 4 to 3",
+      "Fixed totient_even_of_odd proof (pre-existing omega failure due to Mathlib API change)",
+      "Confirmed column_discrepancy_bound was already removed (false for m=21, N=541)",
+      "eo_equidistribution proved via Tendsto.congr: eventually EO/C = 1 - OE/C - OO/C (from partition + C>0), then sub limits"
     ],
     "mathlibGaps": [
       "No Mathlib formalization of Gauss circle problem asymptotics",
@@ -86,9 +114,10 @@
       "No Mathlib equidistribution result for coprime pairs by residue class"
     ],
     "nextSteps": [
-      "Problem effectively complete. Axioms represent genuine analytic NT results requiring major infrastructure investment.",
-      "Future work: formal Euler product for coprime density axiom (~500+ lines)",
-      "Future work: Gauss circle problem requires formal spectral theory or Poisson summation"
+      "Formalize the CRT-based sieving argument to prove parity_class_equidistribution from coprime_eo_iff and the square symmetries",
+      "Prove sector equidistribution of OE/OO using boundary analysis (sector_boundary_balance + O(√N) bound)",
+      "Connect square symmetries to sector counts via the circle constraint analysis",
+      "Consider replacing parity_class_equidistribution with a per-class coprime density axiom (more fundamental)"
     ]
   },
   "approaches": [
@@ -127,7 +156,7 @@
     ]
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-14T12:05:00.000Z",
+  "lastUpdate": "2026-03-14T04:10:00.000Z",
   "significance": 7,
   "tractability": 6
 }

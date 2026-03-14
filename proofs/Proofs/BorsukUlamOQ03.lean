@@ -1357,23 +1357,18 @@ theorem discrete_ivt_sign_change (n : ℕ) (f : Fin (n + 2) → ℤ)
                (f 0 < 0 ∧ 0 < f (Fin.last (n + 1)))) :
     ∃ i : Fin (n + 1),
       (0 < f i.castSucc ∧ f i.succ < 0) ∨ (f i.castSucc < 0 ∧ 0 < f i.succ) := by
-  have hbdry : f 0 + f (Fin.last (n + 1)) = 0 → False := by
-    intro h; rcases hf_sign with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> linarith
-  -- Apply Tucker signed with L = f, adjusted for boundary condition
-  -- Use Tucker sign change directly
+  -- Apply Tucker sign change directly
   set S : Fin (n + 2) → Bool := fun i => decide (0 < f i) with hS_def
   have hS_ne : S 0 ≠ S (Fin.last (n + 1)) := by
     rcases hf_sign with ⟨h1, h2⟩ | ⟨h1, h2⟩
-    · simp only [hS_def, decide_eq_true_eq, not_lt]
-      intro heq
-      have hS0 : S 0 = true := by simp [hS_def, h1]
+    · have hS0 : S 0 = true := by simp [hS_def, h1]
       have hSl : S (Fin.last (n + 1)) = false := by
         simp only [hS_def, decide_eq_false_iff_not]; linarith
-      rw [hS0, hSl] at heq; exact absurd heq (by decide)
-    · simp only [hS_def]; intro heq
-      have hS0 : S 0 = false := by simp [hS_def, show ¬(0 < f 0) from by linarith]
-      have hSl : S (Fin.last (n + 1)) = true := by simp [hS_def, h1.2]
-      rw [hS0, hSl] at heq; exact absurd heq (by decide)
+      simp [hS0, hSl]
+    · have hS0 : S 0 = false := by
+        simp only [hS_def, decide_eq_false_iff_not]; linarith
+      have hSl : S (Fin.last (n + 1)) = true := by simp [hS_def, h2]
+      simp [hS0, hSl]
   obtain ⟨i, hi⟩ := tucker_1d_sign_change n S hS_ne
   refine ⟨i, ?_⟩
   -- Convert Boolean sign change to integer sign change

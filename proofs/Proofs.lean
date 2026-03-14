@@ -1308,6 +1308,9 @@ import Proofs.FairGamesTheorem
 import Proofs.FermatTwoSquares
 import Proofs.FermatsLastTheorem
 import Proofs.FeuerbachsTheorem
+import Proofs.FeuerbachsTheoremDefs
+import Proofs.FeuerbachsTheoremOQ01
+import Proofs.FeuerbachsTheoremOQ01Aristotle
 import Proofs.FourColorTheorem
 import Proofs.FourSquareDistribution
 import Proofs.FourSquareRepresentations

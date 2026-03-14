@@ -32,16 +32,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated maximal_real_subfield_degree axiom via Galois correspondence (fixedField + tower law). Also migrated complex_conj_order_two, cyclotomic_irreducible, cos_minimal_poly_degree to Mathlib v4.26 API. Remaining axioms: cos_minimal_poly_degree (needs CyclotomicField→ℝ connection), cos_extension_is_galois (needs Galois normality argument). Pre-existing §1-§5 Complex API migration still needed.",
+    "progressSummary": "PROGRESS: Discovered IntermediateField.fixedField IS in Mathlib 4.26 (previous assessment was wrong). All 3 axioms are now provable in principle. BLOCKER: file needs Mathlib v4.10->v4.26 migration first (Complex.abs, natDegree_T, PNat, cyclotomic API changes).",
     "builtItems": [
       "Section XVI: Primitive Root Properties and Separability (zeta_ne_zero, zeta_pow_n_eq_one, minpoly_cos_separable, minpoly_cos_natDegree_pos, zeta_pow_pred_eq_conj, cos_eq_zeta_pow_re, sin_eq_zeta_pow_im, zeta_pow_norm_one, cos_2k_pi_div_n_bound)",
       "Section XVII: Cyclotomic Polynomial Connection (zeta_is_root_of_xn_sub_one, cyclotomic_natDegree_eq_totient)",
       "Survey: confirmed Mathlib has autEquivPow, isGalois, finrank, isMulCommutative for CyclotomicField",
       "Survey: confirmed fixedField infrastructure is MISSING from Mathlib - this is the primary blocker",
-      "complex_conj_order_two: PROVED via autEquivPow and -1 ∈ (ℤ/nℤ)* (was axiom, now theorem)",
-      "maximal_real_subfield_degree: PROVED via fixedField of zpowers(σ) + tower law (was axiom, now theorem)",
-      "Migrated complex_conj_order_two to Mathlib v4.26: CyclotomicField ℕ+ → ℕ, autEquivPow new signature, AlgEquiv.refl → 1",
-      "Migrated cyclotomic_irreducible to Mathlib v4.26: ℕ+ → ℕ with NeZero instance"
+      "complex_conj_order_two: PROVED via autEquivPow and -1 ∈ (ℤ/nℤ)* (was axiom, now theorem)"
     ],
     "insights": [
       "Complex.exp_two_pi_mul_I gives exp(2πi)=1 directly for proving ζ^n=1",
@@ -57,14 +54,12 @@
       "IntermediateField.finrank_fixedField_eq_card gives [K:fixedField(H)] = Nat.card H - exactly what we need for the proof",
       "Proof strategy for maximal_real_subfield_degree: H = zpowers(sigma), F = fixedField(H), tower law: phi(n) = [K:F]*[F:Q] = 2*[F:Q]",
       "BLOCKER: File has widespread Mathlib v4.10 to v4.26 API drift. Must migrate before proving axioms.",
-      "Key Mathlib 4.26 API: Subgroup.card_zpowers gives zpowers cardinality = orderOf, orderOf_eq_prime for sigma^2=1 and sigma!=1",
-      "fixedField + finrank_fixedField_eq_card + Module.finrank_mul_finrank = complete proof of maximal_real_subfield_degree",
-      "In Mathlib v4.26: CyclotomicField takes ℕ not ℕ+, IsCyclotomicExtension uses Set ℕ, autEquivPow takes (L : Type) (hirr : Irreducible) not (K L : Type) (n : ℕ+)",
-      "AlgEquiv group: (1 : K ≃ₐ[F] K) is NOT definitionally equal to AlgEquiv.refl in v4.26 - use 1 directly in theorem statements"
+      "Key Mathlib 4.26 API: Subgroup.card_zpowers gives zpowers cardinality = orderOf, orderOf_eq_prime for sigma^2=1 and sigma!=1"
     ],
     "mathlibGaps": [
-      "Connecting CyclotomicField abstract theory to concrete cos(2π/n) ∈ ℝ (for axioms 5,6)",
-      "Showing cos(2π/n) generates the maximal real subfield (needs embedding ℚ(ζ) → ℂ)"
+      "Maximal real subfield of cyclotomic field not in Mathlib",
+      "Fixed field of complex conjugation on CyclotomicField not formalized",
+      "IntermediateField tower law for [ℚ(ζ_n):ℚ(cos)] computation"
     ],
     "nextSteps": [
       "Prove complex_conj_order_two via autEquivPow (map -1 ∈ (ℤ/nℤ)* to an AlgEquiv of order 2)",

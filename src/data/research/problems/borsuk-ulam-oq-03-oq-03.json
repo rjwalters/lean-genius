@@ -34,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Built radial extension proof architecture (Parts XXII-XXIII, ~340 lines). Proved: radialExtend_odd_outside, radialExtend_zero_gives_disk_zero, closedSquare_isCompact, mesh_refinement_square, gridAntipodalFin_eq_neg, gridBoundary_euclidNormSq_ge_one, h=0 edge case of main theorem. 3 sorries remain to eliminate tucker_disk_approx_zero axiom.",
+    "progressSummary": "ASSESSED: Tucker lemma elimination remains BLOCKED. All three approaches (path-following, degree theory, Poincaré-Miranda) need 500-1000 lines. Mathlib v4.26 lacks Brouwer/Tucker/BU infrastructure. Current axiom statement is too general but safe for grid usage. Most promising: grid-specific proof with boundary parity argument.",
     "builtItems": [
       "non_dominant_at_zero_bound_snd (symmetric IVT bound, Part XX)",
       "complementary_edge_approx_dominant_fst/snd (corrected IVT+dominant theorems)",
@@ -62,7 +62,10 @@
       "Grid Fintype boilerplate (Fin(2N+1)×Fin(2N+1), edges, antipodal map) involves heavy Nat↔ℝ casting. Lean4 exact_mod_cast/Fin.val handling makes this ~400 lines rather than ~200. Not mathematically hard, just tedious.",
       "KEY INSIGHT: radial extension trick avoids gridding the disk directly. Extend g to [-1,1]² by g(x/‖x‖) outside D̄². This makes h odd for ‖x‖₂ ≥ 1 (boundary of [-1,1]² has ‖x‖₂ ≥ 1). Grid the square, apply Tucker, then convert back.",
       "The Prod norm/dist in Mathlib is L∞ (max norm), not Euclidean. Must use custom euclidNormSq/euclidNorm for disk membership.",
-      "When h vanishes at a grid vertex, we get immediate zero: either inside disk (direct) or outside (project to S¹)."
+      "When h vanishes at a grid vertex, we get immediate zero: either inside disk (direct) or outside (project to S¹).",
+      "Mathlib v4.26 has NO Brouwer FPT for n≥2, no Tucker, no Borsuk-Ulam. All axiomatized in our project files.",
+      "The tuckers_lemma axiom is too strong: it works for arbitrary (V, edges) without requiring proper triangulation. With empty edges, the conclusion is false. Current usage is safe because grid edges form a proper triangulation.",
+      "Most promising elimination approach: prove Tucker specifically for gridEdgesFin N (not the general statement). Middle-row argument almost works but labels can change through intermediate values (0,T)→(1,T)→(0,F) without complementary edge."
     ],
     "mathlibGaps": [],
     "nextSteps": [
