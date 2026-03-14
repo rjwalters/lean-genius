@@ -160,12 +160,12 @@ is_claim_expired() {
 get_knowledge_score() {
     local problem_id="$1"
     local problem_file="$PROBLEMS_DIR/${problem_id}.json"
-    
+
     if [[ ! -f "$problem_file" ]]; then
         echo "0"  # No file = EMPTY knowledge
         return
     fi
-    
+
     local score
     score=$(jq -r '
         (.knowledge.insights // [] | length) +
@@ -173,7 +173,7 @@ get_knowledge_score() {
         (.knowledge.mathlibGaps // [] | length) +
         (.knowledge.nextSteps // [] | length)
     ' "$problem_file" 2>/dev/null || echo "0")
-    
+
     echo "$score"
 }
 
@@ -269,22 +269,22 @@ EOF
     fi
 }
 
-# Claim a random problem (prioritized by knowledge score)
+# Claim a random problem (depth-first: prefer higher knowledge scores)
 claim_random_problem() {
-    # Get available problems sorted by knowledge score (ascending)
+    # Get available problems with knowledge scores
     local available=()
     local scores=()
-    
+
     while IFS= read -r problem_id; do
         [[ -z "$problem_id" ]] && continue
-        
+
         # Skip if currently claimed (and not expired)
         local lock_dir="$CLAIMS_DIR/${problem_id}.lock"
         local claim_file="$CLAIMS_DIR/${problem_id}.json"
         if [[ -d "$lock_dir" ]] && ! is_claim_expired "$claim_file"; then
             continue
         fi
-        
+
         local score
         score=$(get_knowledge_score "$problem_id")
         available+=("$problem_id")
@@ -296,27 +296,44 @@ claim_random_problem() {
         return 1
     fi
 
-    # Find problems with lowest knowledge score
-    local min_score=999999
-    for score in "${scores[@]}"; do
-        if [[ $score -lt $min_score ]]; then
-            min_score=$score
-        fi
-    done
+    # DEPTH OVER BREADTH: Prefer problems with MORE knowledge (closer to proof)
+    # Tier 1 (highest priority): MODERATE+ (score >= 6) — advance existing work
+    # Tier 2: WEAK (score 1-5) — continue started surveys
+    # Tier 3 (lowest priority): EMPTY (score 0) — fresh problems only when nothing else
+    local tier1=()  # MODERATE+ (>= 6)
+    local tier2=()  # WEAK (1-5)
+    local tier3=()  # EMPTY (0)
 
-    # Collect all problems with min score
-    local candidates=()
     for i in "${!available[@]}"; do
-        if [[ ${scores[$i]} -eq $min_score ]]; then
-            candidates+=("${available[$i]}")
+        local s=${scores[$i]}
+        if [[ $s -ge 6 ]]; then
+            tier1+=("${available[$i]}")
+        elif [[ $s -ge 1 ]]; then
+            tier2+=("${available[$i]}")
+        else
+            tier3+=("${available[$i]}")
         fi
     done
 
-    # Pick random from candidates with lowest score
+    # Select from highest-priority non-empty tier
+    local candidates=()
+    local tier_name=""
+    if [[ ${#tier1[@]} -gt 0 ]]; then
+        candidates=("${tier1[@]}")
+        tier_name="MODERATE+ (depth-first)"
+    elif [[ ${#tier2[@]} -gt 0 ]]; then
+        candidates=("${tier2[@]}")
+        tier_name="WEAK (continue survey)"
+    else
+        candidates=("${tier3[@]}")
+        tier_name="EMPTY (fresh problem)"
+    fi
+
+    # Pick random from selected tier
     local random_index=$((RANDOM % ${#candidates[@]}))
     local selected="${candidates[$random_index]}"
 
-    echo "Selected $selected (${#available[@]} available, ${#candidates[@]} with lowest knowledge)"
+    echo "Selected $selected (${#available[@]} available, tier: $tier_name, ${#candidates[@]} in tier)"
 
     # Claim it
     claim_problem "$selected"
@@ -341,6 +358,38 @@ release_problem() {
 update_problem_status() {
     local problem_id="$1"
     local new_status="$2"
+
+    # Quality gate for graduation to "completed"
+    if [[ "$new_status" == "completed" ]] && [[ "${FORCE_COMPLETE:-}" != "1" ]]; then
+        local problem_file="$PROBLEMS_DIR/${problem_id}.json"
+        local gate_passed=true
+
+        if [[ -f "$problem_file" ]]; then
+            # Check for non-empty progressSummary
+            local summary
+            summary=$(jq -r '.knowledge.progressSummary // ""' "$problem_file" 2>/dev/null)
+            if [[ -z "$summary" ]]; then
+                echo "Quality gate: missing progressSummary" >&2
+                gate_passed=false
+            fi
+
+            # Check for at least 3 items across insights + builtItems
+            local item_count
+            item_count=$(jq '(.knowledge.insights // [] | length) + (.knowledge.builtItems // [] | length)' "$problem_file" 2>/dev/null || echo "0")
+            if [[ "$item_count" -lt 3 ]]; then
+                echo "Quality gate: only $item_count items in insights+builtItems (need >= 3)" >&2
+                gate_passed=false
+            fi
+        else
+            echo "Quality gate: no problem file found at $problem_file" >&2
+            gate_passed=false
+        fi
+
+        if [[ "$gate_passed" == "false" ]]; then
+            echo "Graduation blocked — auto-downgrading to 'surveyed' (bypass with FORCE_COMPLETE=1)" >&2
+            new_status="surveyed"
+        fi
+    fi
 
     _update_problem_status_inner() {
         local tmp_file
@@ -511,7 +560,7 @@ Provides atomic claiming for parallel research agents.
 
 Commands:
   claim <problem-id>         Claim a specific problem
-  claim-random               Claim random problem (knowledge-prioritized)
+  claim-random               Claim random problem (depth-first priority)
   release <problem-id>       Release a claimed problem
   update <problem-id> <status>  Update problem status in pool
   extend <problem-id>        Extend claim TTL
@@ -520,18 +569,20 @@ Commands:
   help                       Show this help
 
 Environment Variables:
-  RESEARCHER_ID   Agent identifier (default: researcher-PID)
-  CLAIM_TTL       Claim time-to-live in minutes (default: 90)
+  RESEARCHER_ID    Agent identifier (default: researcher-PID)
+  CLAIM_TTL        Claim time-to-live in minutes (default: 90)
+  FORCE_COMPLETE   Set to 1 to bypass graduation quality gate
 
-Knowledge Tiers (lower = higher priority):
-  EMPTY (0)      - No knowledge yet
-  WEAK (1-5)     - Little exploration
-  MODERATE (6-15) - Some work done
-  RICH (16+)     - Well explored
+Knowledge Tiers (DEPTH OVER BREADTH - higher = higher priority):
+  MODERATE (6-15) - Highest priority: advance toward proof
+  RICH (16+)      - Highest priority: near completion
+  WEAK (1-5)      - Medium: continue started survey
+  EMPTY (0)       - Lowest: fresh problems last
 
 Examples:
   RESEARCHER_ID=agent-1 ./claim-problem.sh claim-random
   RESEARCHER_ID=agent-1 ./claim-problem.sh update weak-goldbach in-progress
+  FORCE_COMPLETE=1 ./claim-problem.sh update problem-id completed
   ./claim-problem.sh status
 EOF
         ;;
