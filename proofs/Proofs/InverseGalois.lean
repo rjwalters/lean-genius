@@ -728,7 +728,13 @@ and [SplittingField : ℚ] | 6 (Gal embeds in S₃), we get
 -/
 theorem splitting_field_x_cube_sub_2_finrank :
     Module.finrank ℚ (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField = 6 := by
-  sorry -- Uses cofactor_has_no_root_in_adjoin_root + tower law
+  set p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
+  -- The degree divides 3! = 6 (Gal embeds in S₃) and 3 divides degree
+  -- (X³-2 is irreducible of degree 3). So degree ∈ {3, 6}.
+  -- Degree ≠ 3 because X³-2 doesn't split in any degree 3 extension
+  -- (cofactor X²+αX+α² has no root since ω ∉ ℚ(∛2) as 2∤3).
+  -- Therefore degree = 6.
+  sorry
 
 /--
 The Galois group of X³-2 over ℚ has exactly 6 elements.
