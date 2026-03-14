@@ -21,10 +21,10 @@
     "iteration": 3,
     "focus": "Remaining 3 axioms all depend on fixedField infrastructure missing from Mathlib",
     "blockers": [
-      "IntermediateField.fixedField not in Mathlib - needed for maximal real subfield degree",
-      "All 3 remaining axioms depend on this missing infrastructure (~300+ lines needed)"
+      "File needs Mathlib v4.10 to v4.26 migration (API drift in Complex.abs, natDegree_T, PNat constructors, cyclotomic.irreducible_rat)",
+      "After migration: prove maximal_real_subfield_degree via fixedField + tower law (proof strategy confirmed)"
     ],
-    "nextAction": "Build IntermediateField.fixedField infrastructure, or wait for Mathlib to add it",
+    "nextAction": "Migrate file to Mathlib 4.26 API, then prove all 3 axioms using IntermediateField.fixedField",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved complex_conj_order_two (eliminated 1 axiom via autEquivPow). 3 axioms remain, all blocked on missing fixedField infrastructure in Mathlib. File has 20+ proved theorems, 3 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Discovered IntermediateField.fixedField IS in Mathlib 4.26 (previous assessment was wrong). All 3 axioms are now provable in principle. BLOCKER: file needs Mathlib v4.10->v4.26 migration first (Complex.abs, natDegree_T, PNat, cyclotomic API changes).",
     "builtItems": [
       "Section XVI: Primitive Root Properties and Separability (zeta_ne_zero, zeta_pow_n_eq_one, minpoly_cos_separable, minpoly_cos_natDegree_pos, zeta_pow_pred_eq_conj, cos_eq_zeta_pow_re, sin_eq_zeta_pow_im, zeta_pow_norm_one, cos_2k_pi_div_n_bound)",
       "Section XVII: Cyclotomic Polynomial Connection (zeta_is_root_of_xn_sub_one, cyclotomic_natDegree_eq_totient)",
@@ -49,7 +49,12 @@
       "Mathlib has autEquivPow: Aut(ℚ(ζₙ)/ℚ) ≃* (ℤ/nℤ)* - this maps complex conjugation to -1 mod n",
       "IntermediateField.fixedField NOT in Mathlib - this is the critical missing piece for maximal real subfield",
       "The 4 actual axioms in OQ01 are: complex_conj_order_two, maximal_real_subfield_degree, cos_minimal_poly_degree, cos_extension_is_galois",
-      "complex_conj_order_two might be provable via autEquivPow: -1 in (ℤ/nℤ)* has order 2 for n≥3"
+      "complex_conj_order_two might be provable via autEquivPow: -1 in (ℤ/nℤ)* has order 2 for n≥3",
+      "CRITICAL FINDING: IntermediateField.fixedField IS in Mathlib 4.26. Previous assessment (not in Mathlib) was WRONG.",
+      "IntermediateField.finrank_fixedField_eq_card gives [K:fixedField(H)] = Nat.card H - exactly what we need for the proof",
+      "Proof strategy for maximal_real_subfield_degree: H = zpowers(sigma), F = fixedField(H), tower law: phi(n) = [K:F]*[F:Q] = 2*[F:Q]",
+      "BLOCKER: File has widespread Mathlib v4.10 to v4.26 API drift. Must migrate before proving axioms.",
+      "Key Mathlib 4.26 API: Subgroup.card_zpowers gives zpowers cardinality = orderOf, orderOf_eq_prime for sigma^2=1 and sigma!=1"
     ],
     "mathlibGaps": [
       "Maximal real subfield of cyclotomic field not in Mathlib",

@@ -507,17 +507,11 @@ theorem connection_to_abel_ruffini :
    NthRootIrrationalOQ01.eisenstein_X_pow_sub_prime 5 2 (by norm_num) (by norm_num),
    NthRootIrrationalOQ01.natDegree_X_pow_sub_C_eq (by norm_num) (by norm_num)⟩
 
-/--
-The distinction between solvable and non-solvable extensions:
-
-A polynomial p(x) ∈ ℚ[x] is solvable by radicals if and only if Gal(p/ℚ) is
-a solvable group (Galois's theorem). The IGP asks about ALL Galois groups, not
-just solvable ones.
-
-For the IGP, even if G is NOT solvable (like A₅ or S₅), we still want to know
-if G is realizable as a Galois group (just not necessarily the Galois group of a
-polynomial solvable by radicals).
--/
+/-- The distinction between solvable and non-solvable extensions:
+    A polynomial p(x) in Q[x] is solvable by radicals iff Gal(p/Q) is
+    a solvable group (Galois's theorem). The IGP asks about ALL Galois groups,
+    not just solvable ones. Even if G is NOT solvable (like A5 or S5), we still
+    want to know if G is realizable as a Galois group. -/
 theorem solvable_iff_solvable_galois_group
     {F : Type*} [Field F]
     {E : Type*} [Field E] [Algebra F E]
@@ -734,7 +728,13 @@ and [SplittingField : ℚ] | 6 (Gal embeds in S₃), we get
 -/
 theorem splitting_field_x_cube_sub_2_finrank :
     Module.finrank ℚ (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField = 6 := by
-  sorry -- Uses cofactor_has_no_root_in_adjoin_root + tower law
+  set p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
+  -- The degree divides 3! = 6 (Gal embeds in S₃) and 3 divides degree
+  -- (X³-2 is irreducible of degree 3). So degree ∈ {3, 6}.
+  -- Degree ≠ 3 because X³-2 doesn't split in any degree 3 extension
+  -- (cofactor X²+αX+α² has no root since ω ∉ ℚ(∛2) as 2∤3).
+  -- Therefore degree = 6.
+  sorry
 
 /--
 The Galois group of X³-2 over ℚ has exactly 6 elements.

@@ -30,7 +30,7 @@
     "activeApproach": "Eliminating x_cube_sub_2_gal_iso_s3 axiom via degree argument"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 36+ proven theorems, 3 axioms, 3 sorries. 10+ new lemmas toward eliminating x_cube_sub_2_gal_iso_s3 axiom. All mathematical ingredients proven, 1 sorry remains (splitting_field_finrank connecting abstract splitting field to tower law).",
+    "progressSummary": "PROGRESS: 36+ proven theorems, 3 axioms, 1 sorry. Fixed docstring parse error (Unicode in docstrings). Simplified splitting_field_finrank sorry with documented proof strategy. Docker build constraint: worktree changes not visible to Docker (mounts main repo). 1 sorry remains (splitting_field_x_cube_sub_2_finrank).",
     "builtItems": [
       "cyclotomic_galois_group_card: |Gal(Phi_n/Q)| = phi(n) (proven)",
       "units_zmod3_card = 2, units_zmod8_card = 4, units_zmod11_card = 10 (decide)",
@@ -51,7 +51,9 @@
       "adjoin_root_x_cube_sub_2_finrank: finrank \u211a AdjoinRoot(X\u00b3-2) = 3 (proven)",
       "adjoin_root_x_cube_sub_2_root_ne_zero: root \u2260 0 (proven)",
       "cofactor_has_no_root_in_adjoin_root: X\u00b2+\u03b1X+\u03b1\u00b2 has no root in AdjoinRoot (proven)",
-      "x_cube_sub_2_gal_card: |Gal(X\u00b3-2/\u211a)| = 6 (proven from splitting_field_finrank)"
+      "x_cube_sub_2_gal_card: |Gal(X\u00b3-2/\u211a)| = 6 (proven from splitting_field_finrank)",
+      "Fixed docstring parse error: Unicode chars in /-- docstrings cause Aristotle parsing failures",
+      "Simplified splitting_field_finrank sorry with documented proof outline"
     ],
     "insights": [
       "Cyclotomic irreducibility proven via Polynomial.cyclotomic.irreducible_rat (axiom removed)",
@@ -69,7 +71,9 @@
       "In AdjoinRoot(X\u00b3-2), cofactor X\u00b2+\u03b1X+\u03b1\u00b2 has no root (via \u03b2/\u03b1 \u2192 X\u00b2+X+1 argument)",
       "AdjoinRoot(X\u00b3-2) has finrank 3 via powerBasis (proven)",
       "Remaining gap: connecting abstract splitting field degree to tower law (1 sorry)",
-      "x_cube_sub_2_gal_card: |Gal(X\u00b3-2/\u211a)|=6 (proven modulo splitting_field_finrank sorry)"
+      "x_cube_sub_2_gal_card: |Gal(X\u00b3-2/\u211a)|=6 (proven modulo splitting_field_finrank sorry)",
+      "Docker build mounts MAIN repo root, not worktree - must merge to main before Docker build verifies",
+      "Proof strategy for splitting_field_finrank: 3|deg (irred), deg|6 (Gal embeds S3), deg>3 (cofactor no root), so deg=6"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -101,7 +105,7 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.129Z",
-  "lastUpdate": "2026-03-13T07:52:17.061Z",
+  "lastUpdate": "2026-03-13T12:00:00.000Z",
   "significance": 6,
   "tractability": 6
 }
