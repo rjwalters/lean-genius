@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Cook-Levin theorem, TQBF PSPACE-completeness, Space Hierarchy theorem. File: 1923 lines, 23 axioms, 79 theorems, 0 sorries. SAT∈P↔P=NP and TQBF∈P↔P=PSPACE equivalences proved.",
+    "progressSummary": "PROGRESS: 2062 lines, 23 axioms, 90 theorems, 0 sorries. Added Cook-Levin, TQBF, Space Hierarchy, complement closure, conditional collapses. 29 new theorems in this session (3 new axioms + 26 proved from existing).",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -257,6 +257,26 @@
         "name": "complexity_scorecard",
         "description": "16-clause unconditional summary of complexity theory (proved)",
         "proven": true
+      },
+      {
+        "name": "PSPACE_complement_closed",
+        "description": "PSPACE closed under complement (proved from Φ_negate)",
+        "proven": true
+      },
+      {
+        "name": "P_eq_PSPACE_implies_P_eq_NP",
+        "description": "P=PSPACE → P=NP (proved)",
+        "proven": true
+      },
+      {
+        "name": "P_eq_EXP_implies_P_eq_NP",
+        "description": "P=EXP → P=NP (proved)",
+        "proven": true
+      },
+      {
+        "name": "TQBF_is_NPHard",
+        "description": "TQBF is NP-hard (proved from SAT ≤ₚ TQBF)",
+        "proven": true
       }
     ],
     "insights": [
@@ -301,7 +321,10 @@
       "Immerman-Szelepcsényi (NL=coNL) contrasts with open NP vs coNP",
       "Cook-Levin axiom enables SAT_in_P_iff_P_eq_NP: the P vs NP question reduces to a single problem",
       "Space hierarchy L≠PSPACE gives second unconditional separation alongside P≠EXP",
-      "L_PSPACE_implies_intermediate_separation: at least one of L≠NL, NL≠P, P≠PSPACE holds"
+      "L_PSPACE_implies_intermediate_separation: at least one of L≠NL, NL≠P, P≠PSPACE holds",
+      "PSPACE and EXP complement closure follows from Φ_negate - same proof structure as P complement closure",
+      "P=PSPACE is strictly stronger than P=NP: it implies PH=P (full hierarchy collapse)",
+      "TQBF is both NP-hard and PSPACE-hard, making it a bridge between the two questions"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
