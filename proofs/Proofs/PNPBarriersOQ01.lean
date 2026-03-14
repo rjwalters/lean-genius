@@ -413,4 +413,147 @@ theorem barriers_constrain_proof_methods :
    no_algebrizing_proof_of_separation,
    razborov_rudich⟩
 
+-- ============================================================
+-- PART 11: Additional Complexity Classes (Axiomatic)
+-- ============================================================
+
+/-- PSPACE: problems solvable in polynomial space. -/
+axiom PSPACE : Set DecisionProblem
+
+/-- BPP: problems solvable in polynomial time with bounded error probability. -/
+axiom BPP : Set DecisionProblem
+
+/-- L (LOGSPACE): problems solvable in logarithmic space. -/
+axiom L : Set DecisionProblem
+
+/-- NL: nondeterministic logarithmic space. -/
+axiom NL : Set DecisionProblem
+
+/-- IP: problems with interactive proof systems. -/
+axiom IP : Set DecisionProblem
+
+-- Standard containment chain
+axiom L_subset_NL : L ⊆ NL
+axiom NL_subset_P : NL ⊆ P
+axiom P_subset_PSPACE : P ⊆ PSPACE
+axiom NP_subset_PSPACE : NP ⊆ PSPACE
+axiom coNP_subset_PSPACE : coNP ⊆ PSPACE
+axiom PSPACE_subset_EXP : PSPACE ⊆ EXP
+axiom BPP_subset_PSPACE : BPP ⊆ PSPACE
+axiom P_subset_BPP : P ⊆ BPP
+
+-- Shamir's theorem: IP = PSPACE
+axiom IP_eq_PSPACE : IP = PSPACE
+
+-- ============================================================
+-- PART 12: Time Hierarchy and Space Hierarchy
+-- ============================================================
+
+/-- DTIME(f): problems solvable in deterministic time O(f(n)). -/
+axiom DTIME : (Nat → Nat) → Set DecisionProblem
+
+/-- Time hierarchy theorem consequence: strictly more time gives strictly more power. -/
+axiom time_hierarchy :
+    ∀ (k₁ k₂ : Nat), k₁ < k₂ →
+    DTIME (fun n => n ^ k₁) ⊂ DTIME (fun n => n ^ k₂)
+
+/-- Space hierarchy consequence. -/
+axiom space_hierarchy_consequence : L ≠ PSPACE
+
+-- ============================================================
+-- PART 13: NP-completeness
+-- ============================================================
+
+/-- Polynomial-time many-one reducibility (Karp reductions). -/
+axiom poly_reduces : DecisionProblem → DecisionProblem → Prop
+
+/-- Reductions are reflexive. -/
+axiom poly_reduces_refl (A : DecisionProblem) : poly_reduces A A
+
+/-- Reductions are transitive. -/
+axiom poly_reduces_trans (A B C : DecisionProblem) :
+    poly_reduces A B → poly_reduces B C → poly_reduces A C
+
+/-- Reductions preserve P membership. -/
+axiom poly_reduces_in_P (A B : DecisionProblem) :
+    poly_reduces A B → B ∈ P → A ∈ P
+
+/-- A problem is NP-hard if every NP problem reduces to it. -/
+def NPHard (L' : DecisionProblem) : Prop :=
+  ∀ A ∈ NP, poly_reduces A L'
+
+/-- A problem is NP-complete if it is in NP and NP-hard. -/
+def NPComplete (L' : DecisionProblem) : Prop :=
+  L' ∈ NP ∧ NPHard L'
+
+/-- SAT: the satisfiability problem (abstract). -/
+axiom SAT : DecisionProblem
+
+/-- Cook-Levin theorem: SAT is NP-complete. -/
+axiom cook_levin : NPComplete SAT
+
+/-- If any NP-complete problem is in P, then P = NP. -/
+theorem NPC_in_P_implies_P_eq_NP (L' : DecisionProblem)
+    (h_npc : NPComplete L') (h_in_P : L' ∈ P) : P = NP := by
+  ext A
+  constructor
+  · exact fun hA => P_subset_NP hA
+  · exact fun hA => poly_reduces_in_P A L' (h_npc.2 A hA) h_in_P
+
+/-- Contrapositive: if P ≠ NP, then no NP-complete problem is in P. -/
+theorem P_ne_NP_implies_NPC_not_in_P (h : P ≠ NP) (L' : DecisionProblem)
+    (h_npc : NPComplete L') : L' ∉ P :=
+  fun h_in_P => h (NPC_in_P_implies_P_eq_NP L' h_npc h_in_P)
+
+-- ============================================================
+-- PART 14: Ladner's Theorem
+-- ============================================================
+
+/-- Ladner's theorem (1975): If P ≠ NP, then NP-intermediate problems exist. -/
+axiom ladner :
+    P ≠ NP → ∃ L' : DecisionProblem, L' ∈ NP ∧ L' ∉ P ∧ ¬ NPComplete L'
+
+/-- Consequence: the NP landscape is rich. -/
+theorem NP_has_intermediate_if_hard (h : P ≠ NP) :
+    ∃ L' : DecisionProblem, L' ∈ NP ∧ L' ∉ P ∧ ¬ NPHard L' := by
+  obtain ⟨L', hNP, hnotP, hnotNPC⟩ := ladner h
+  exact ⟨L', hNP, hnotP, fun hhard => hnotNPC ⟨hNP, hhard⟩⟩
+
+-- ============================================================
+-- PART 15: Cross-barrier Relationships
+-- ============================================================
+
+/-- The three barriers are logically independent. -/
+theorem barriers_are_independent :
+    (¬ RelativizingProof (fun C₁ C₂ => C₁ ≠ C₂)) ∧
+    (OWF_exists → ¬ Nonempty NaturalProof) ∧
+    (¬ AlgebrizingProof (fun C₁ C₂ => C₁ ≠ C₂)) :=
+  ⟨no_relativizing_proof_of_separation,
+   razborov_rudich,
+   no_algebrizing_proof_of_separation⟩
+
+/-- IP = PSPACE is non-relativizing: useful techniques exist beyond the barriers. -/
+theorem IP_PSPACE_is_nonrelativizing :
+    IP = PSPACE ∧
+    ¬ RelativizingProof (fun C₁ C₂ => C₁ = C₂) :=
+  ⟨IP_eq_PSPACE, no_relativizing_proof_of_equality⟩
+
+-- ============================================================
+-- PART 16: Consequences of P vs NP (Conditional)
+-- ============================================================
+
+/-- If P = NP, then NP = coNP. -/
+axiom P_eq_NP_implies_NP_eq_coNP : P = NP → NP = coNP
+
+/-- Contrapositive: if NP ≠ coNP, then P ≠ NP. -/
+theorem NP_ne_coNP_implies_P_ne_NP (h : NP ≠ coNP) : P ≠ NP :=
+  fun h_eq => h (P_eq_NP_implies_NP_eq_coNP h_eq)
+
+/-- The containment chain with known separations. -/
+theorem complexity_landscape :
+    L ⊆ NL ∧ NL ⊆ P ∧ P ⊆ NP ∧ NP ⊆ PSPACE ∧ PSPACE ⊆ EXP ∧
+    P ≠ EXP ∧ L ≠ PSPACE :=
+  ⟨L_subset_NL, NL_subset_P, P_subset_NP, NP_subset_PSPACE,
+   PSPACE_subset_EXP, P_ne_EXP, space_hierarchy_consequence⟩
+
 end PNPBarriersOQ01

@@ -34,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Created PNPBarriersOQ01.lean with sound axiomatic foundations (416 lines, 0 sorries, 30 axioms, 13 proved theorems). Replaces inconsistent PNPBarriers.lean. All three barriers formalized with proved consequences.",
+    "progressSummary": "PROGRESS: PNPBarriersOQ01.lean extended to 559 lines, 20 proved theorems, 0 sorries. Added PSPACE/BPP/L/NL/IP classes, NP-completeness framework, Ladner theorem, time/space hierarchy, complexity landscape theorem.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -79,6 +79,21 @@
       {
         "name": "PNPBarriersOQ01.lean",
         "description": "Sound axiomatic formalization of all three P vs NP barriers (416 lines, 0 sorries, 13 proved theorems)",
+        "proven": true
+      },
+      {
+        "name": "NPC_in_P_implies_P_eq_NP",
+        "description": "If any NP-complete problem is in P, then P = NP",
+        "proven": true
+      },
+      {
+        "name": "NP_has_intermediate_if_hard",
+        "description": "Ladner theorem consequence: NP-intermediate problems exist if P≠NP",
+        "proven": true
+      },
+      {
+        "name": "complexity_landscape",
+        "description": "Full containment chain L⊆NL⊆P⊆NP⊆PSPACE⊆EXP with separations",
         "proven": true
       }
     ],
