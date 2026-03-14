@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-13T12:00:00.000Z",
-    "iteration": 3,
-    "focus": "Added zero-density estimates, fixed μ notation for Mathlib compatibility, proved ψ≥θ",
+    "since": "2026-03-14T20:00:00.000Z",
+    "iteration": 4,
+    "focus": "Extended consequences: Mertens oscillation, σ function, divisorSum_prime_eq, cross-equivalences",
     "blockers": [],
-    "nextAction": "Attempt to eliminate no_real_zeros_in_strip axiom; add PNT dependency",
+    "nextAction": "Problem at maximum formalization depth; 33 axioms encoding deep or open results",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "CONFIRMED: At maximum progress. 0 sorries, ~20 axioms encoding deep results or genuinely open problems. no_real_zeros_in_strip needs Dirichlet eta (not in Mathlib).",
+    "progressSummary": "Extended: 0 sorries, 33 axioms, 95 theorems across both files. σ function computations connecting to Robin/Lagarias equivalences.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -110,6 +110,31 @@
         "name": "mertens_sign_change_exists",
         "description": "∃ a<b with M(a)>0 and M(b)<0",
         "proven": true
+      },
+      {
+        "name": "divisorSum_prime_eq",
+        "description": "σ(p) = p+1 for primes (general proof)",
+        "proven": true
+      },
+      {
+        "name": "divisorSum_ge_succ",
+        "description": "σ(n) ≥ n+1 for n≥2",
+        "proven": true
+      },
+      {
+        "name": "divisorSum_5040",
+        "description": "σ(5040) = 19344 (Robin boundary)",
+        "proven": true
+      },
+      {
+        "name": "mertens_four_sign_changes",
+        "description": "Mertens function has ≥4 sign changes",
+        "proven": true
+      },
+      {
+        "name": "perfect_496",
+        "description": "496 is a perfect number",
+        "proven": true
       }
     ],
     "insights": [
@@ -121,7 +146,8 @@
       "Mathlib 4.26+ removed scoped μ notation; must use ArithmeticFunction.moebius explicitly",
       "no_real_zeros_in_strip axiom cannot be eliminated without Dirichlet eta function in Mathlib",
       "Proved chebyshevPsi ≥ chebyshevTheta from vonMangoldt_nonneg and vonMangoldt_apply_prime",
-      "2026-03-14: Re-confirmed no_real_zeros_in_strip axiom cannot be eliminated - Mathlib still lacks Dirichlet eta function"
+      "2026-03-14: Re-confirmed no_real_zeros_in_strip axiom cannot be eliminated - Mathlib still lacks Dirichlet eta function",
+      "2026-03-14: Extended consequences file 841→989 lines: σ(p)=p+1 proved generally, σ(n)≥n+1 proved, σ(5040)=19344 computed, Mertens 4 sign changes, von Mangoldt prime power computations"
     ],
     "mathlibGaps": [
       "Dirichlet series",

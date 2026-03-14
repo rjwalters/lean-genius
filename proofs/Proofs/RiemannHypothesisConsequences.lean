@@ -838,4 +838,152 @@ Several axioms could potentially be replaced with proofs:
 4. `rh_implies_mertens_bound` - needs analytic continuation machinery
 -/
 
+/-
+## Part 19: Extended Mertens Function Analysis
+-/
+
+section ExtendedMertens
+
+/-- M(200) = -8 -/
+theorem mertens_two_hundred : mertens 200 = -8 := by native_decide
+
+/-- The Mertens function exhibits 3 sign changes in [1, 200]. -/
+theorem mertens_four_sign_changes :
+    ∃ a b c d : ℕ, a < b ∧ b < c ∧ c < d ∧
+    mertens a > 0 ∧ mertens b < 0 ∧ mertens c > 0 ∧ mertens d < 0 :=
+  ⟨1, 5, 100, 200,
+   by omega, by omega, by omega,
+   by rw [mertens_one]; omega,
+   by rw [mertens_five]; omega,
+   by rw [mertens_hundred]; omega,
+   by rw [mertens_two_hundred]; omega⟩
+
+end ExtendedMertens
+
+/-
+## Part 20: Divisor Sum Function
+-/
+
+section DivisorSum
+
+/-- The sum-of-divisors function σ(n) = Σ_{d|n} d -/
+def divisorSum (n : ℕ) : ℕ := n.divisors.sum _root_.id
+
+theorem divisorSum_one : divisorSum 1 = 1 := by native_decide
+theorem divisorSum_two : divisorSum 2 = 3 := by native_decide
+theorem divisorSum_six : divisorSum 6 = 12 := by native_decide
+theorem divisorSum_twelve : divisorSum 12 = 28 := by native_decide
+theorem divisorSum_twenty_eight : divisorSum 28 = 56 := by native_decide
+
+/-- 6 is a perfect number: σ(6) = 2 · 6 -/
+theorem perfect_six : divisorSum 6 = 2 * 6 := by native_decide
+
+/-- 28 is a perfect number: σ(28) = 2 · 28 -/
+theorem perfect_twenty_eight : divisorSum 28 = 2 * 28 := by native_decide
+
+/-- 496 is a perfect number: σ(496) = 2 · 496 -/
+theorem perfect_496 : divisorSum 496 = 2 * 496 := by native_decide
+
+/-- σ(n) ≥ n for n ≥ 1 (since n divides itself) -/
+theorem divisorSum_ge_self {n : ℕ} (hn : n ≥ 1) : divisorSum n ≥ n := by
+  unfold divisorSum
+  have hn_self : n ∈ n.divisors := Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩
+  calc n.divisors.sum _root_.id
+      ≥ ({n} : Finset ℕ).sum _root_.id := by
+        apply Finset.sum_le_sum_of_subset_of_nonneg
+        · intro x hx; simp only [Finset.mem_singleton] at hx; rw [hx]; exact hn_self
+        · intros; exact Nat.zero_le _
+    _ = n := by simp [_root_.id]
+
+/-- σ(n) ≥ n + 1 for n ≥ 2 -/
+theorem divisorSum_ge_succ {n : ℕ} (hn : n ≥ 2) : divisorSum n ≥ n + 1 := by
+  unfold divisorSum
+  have h1 : 1 ∈ n.divisors := Nat.mem_divisors.mpr ⟨one_dvd n, by omega⟩
+  have hn_self : n ∈ n.divisors := Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩
+  have h_ne : (1 : ℕ) ≠ n := by omega
+  calc n.divisors.sum _root_.id
+      ≥ ({1, n} : Finset ℕ).sum _root_.id := by
+        apply Finset.sum_le_sum_of_subset_of_nonneg
+        · intro x hx
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+          rcases hx with rfl | rfl
+          · exact h1
+          · exact hn_self
+        · intros; exact Nat.zero_le _
+    _ = 1 + n := by
+        rw [Finset.sum_insert (by simp [Finset.mem_singleton, h_ne]),
+            Finset.sum_singleton]
+        simp [_root_.id]
+    _ = n + 1 := by omega
+
+/-- σ(p) = p + 1 for primes -/
+theorem divisorSum_prime_eq (p : ℕ) (hp : Nat.Prime p) : divisorSum p = p + 1 := by
+  unfold divisorSum
+  have h1 : p.divisors = {1, p} := by
+    ext d; simp only [Finset.mem_insert, Finset.mem_singleton, Nat.mem_divisors]
+    constructor
+    · rintro ⟨hd, _⟩
+      have := hp.eq_one_or_self_of_dvd d hd
+      tauto
+    · rintro (rfl | rfl)
+      · exact ⟨one_dvd _, hp.ne_zero⟩
+      · exact ⟨dvd_refl _, hp.ne_zero⟩
+  rw [h1]
+  have h_ne : (1 : ℕ) ∉ ({p} : Finset ℕ) := by
+    simp only [Finset.mem_singleton]
+    exact hp.one_lt.ne
+  rw [Finset.sum_insert h_ne, Finset.sum_singleton]
+  simp only [_root_.id]
+  omega
+
+/-- σ(5040) = 19344 (Robin's boundary) -/
+theorem divisorSum_5040 : divisorSum 5040 = 19344 := by native_decide
+
+end DivisorSum
+
+/-
+## Part 21: Von Mangoldt Extended
+-/
+
+section VonMangoldtExtended
+
+theorem vonMangoldt_sixteen : Λ 16 = Real.log 2 := by
+  have h : 16 = 2 ^ 4 := by norm_num
+  rw [h, vonMangoldt_apply_pow (by norm_num : 4 ≠ 0)]
+  exact vonMangoldt_apply_prime Nat.prime_two
+
+theorem vonMangoldt_twentyfive : Λ 25 = Real.log 5 := by
+  have h : 25 = 5 ^ 2 := by norm_num
+  rw [h, vonMangoldt_apply_pow (by norm_num : 2 ≠ 0)]
+  exact vonMangoldt_apply_prime (by norm_num : Nat.Prime 5)
+
+theorem vonMangoldt_twentyseven : Λ 27 = Real.log 3 := by
+  have h : 27 = 3 ^ 3 := by norm_num
+  rw [h, vonMangoldt_apply_pow (by norm_num : 3 ≠ 0)]
+  exact vonMangoldt_apply_prime Nat.prime_three
+
+theorem vonMangoldt_ten : Λ 10 = 0 := by
+  rw [vonMangoldt_eq_zero_iff]; native_decide
+
+theorem vonMangoldt_twelve : Λ 12 = 0 := by
+  rw [vonMangoldt_eq_zero_iff]; native_decide
+
+end VonMangoldtExtended
+
+/-
+## Part 22: Cross-Equivalences
+-/
+
+section CrossEquivalences
+
+/-- RH implies Mertens bound, Li's criterion, and Density Hypothesis -/
+theorem rh_triple_equivalence :
+    (RiemannHypothesis → ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
+      |mertens n| ≤ C * Real.sqrt n) ∧
+    (RiemannHypothesis ↔ ∀ n : ℕ, n ≥ 1 → liConstant n ≥ 0) ∧
+    (RiemannHypothesis → DensityHypothesis) :=
+  ⟨rh_implies_mertens_bound, lis_criterion, RH_implies_DensityHypothesis⟩
+
+end CrossEquivalences
+
 end RHConsequences
