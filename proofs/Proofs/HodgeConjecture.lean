@@ -1405,6 +1405,44 @@ def directSum_snd {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
     simp only [directSumHodge, LinearMap.snd_apply] at hx ⊢
     exact (Submodule.mem_prod.mp hx).2
 
+/-- **Retraction: π₁ ∘ ι₁ = id** (PROVED)
+
+The composition of the left injection with the left projection is the identity
+morphism on H₁. This shows the direct sum is a genuine biproduct. -/
+theorem directSum_fst_inl {k : ℕ} (H₁ H₂ : PureHodgeStructure k)
+    (v : H₁.VQ) :
+    (directSum_fst H₁ H₂).rationalMap ((directSum_inl H₁ H₂).rationalMap v) = v := by
+  show LinearMap.fst ℚ H₁.VQ H₂.VQ (LinearMap.inl ℚ H₁.VQ H₂.VQ v) = v
+  simp only [LinearMap.inl_apply, LinearMap.fst_apply]
+
+/-- **Retraction: π₂ ∘ ι₂ = id** (PROVED)
+
+The composition of the right injection with the right projection is the identity
+morphism on H₂. -/
+theorem directSum_snd_inr {k : ℕ} (H₁ H₂ : PureHodgeStructure k)
+    (v : H₂.VQ) :
+    (directSum_snd H₁ H₂).rationalMap ((directSum_inr H₁ H₂).rationalMap v) = v := by
+  show LinearMap.snd ℚ H₁.VQ H₂.VQ (LinearMap.inr ℚ H₁.VQ H₂.VQ v) = v
+  simp only [LinearMap.inr_apply, LinearMap.snd_apply]
+
+/-- **Cross retraction: π₁ ∘ ι₂ = 0** (PROVED)
+
+The composition of the right injection with the left projection is the zero map. -/
+theorem directSum_fst_inr {k : ℕ} (H₁ H₂ : PureHodgeStructure k)
+    (v : H₂.VQ) :
+    (directSum_fst H₁ H₂).rationalMap ((directSum_inr H₁ H₂).rationalMap v) = 0 := by
+  show LinearMap.fst ℚ H₁.VQ H₂.VQ (LinearMap.inr ℚ H₁.VQ H₂.VQ v) = 0
+  simp only [LinearMap.inr_apply, LinearMap.fst_apply]
+
+/-- **Cross retraction: π₂ ∘ ι₁ = 0** (PROVED)
+
+The composition of the left injection with the right projection is the zero map. -/
+theorem directSum_snd_inl {k : ℕ} (H₁ H₂ : PureHodgeStructure k)
+    (v : H₁.VQ) :
+    (directSum_snd H₁ H₂).rationalMap ((directSum_inl H₁ H₂).rationalMap v) = 0 := by
+  show LinearMap.snd ℚ H₁.VQ H₂.VQ (LinearMap.inl ℚ H₁.VQ H₂.VQ v) = 0
+  simp only [LinearMap.inl_apply, LinearMap.snd_apply]
+
 /-- **HC for direct sums: if HC holds for both summands, it holds for the sum**
 
 This is an important structural property: the Hodge Conjecture is "additive"
