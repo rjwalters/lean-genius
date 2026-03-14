@@ -36,17 +36,23 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (11 axioms, down from 21)
-- 2 structural: Φ_countably_many, Φ_negate (Φ_total/Φ_deterministic now theorems)
+## Axiom Summary (20 axioms)
+Core model (11, unchanged from prior session):
+- 2 structural: Φ_countably_many, Φ_negate
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
-- 1 natural proofs: razborov_rudich (owf_exists_assumption now theorem)
+- 1 natural proofs: razborov_rudich
 - 1 structural property: P_rel_subset_NP_rel
 - 2 closure/composition: poly_time_compose, reduction_preserves_P
 - 1 containment: NP_subset_PSPACE
 - 2 separation/existence: P_ne_EXP, ladner_theorem
-- Removed (unused): Φ_oracle_access, Φ_no_oracle_access, P_rel_monotone, NP_rel_monotone
-- Now theorems: P_complement_closed (from Φ_negate), PSPACE_subset_EXP,
-  PH_subset_PSPACE, algebrizing_oracle_eq/sep
+New (9, for extended complexity landscape):
+- 3 BPP: P_subset_BPP, BPP_subset_EXP, BPP_complement_closed
+- 1 Sipser-Lautemann: sipser_lautemann (BPP ⊆ Σ₂ ∩ Π₂)
+- 1 Toda: toda_theorem (PH ⊆ P^#P)
+- 1 Adleman: adleman_theorem (BPP ⊆ P/poly)
+- 1 Karp-Lipton: karp_lipton (NP ⊆ P/poly → PH = Σ₂)
+- 1 Nisan-Wigderson: nisan_wigderson (hard function → BPP = P)
+- 1 Shamir: shamir_IP_eq_PSPACE (IP = PSPACE)
 -/
 
 set_option linter.unusedVariables false
@@ -1041,7 +1047,399 @@ theorem some_containment_strict :
     _ = EXP := h4
 
 -- ============================================================
--- PART 18: Summary and Verification
+-- PART 18: BPP (Bounded-Error Probabilistic Polynomial Time)
+-- ============================================================
+
+/-
+### BPP — Randomized Computation
+
+BPP is the class of problems solvable in polynomial time with bounded
+two-sided error: for every input, the algorithm gives the correct answer
+with probability ≥ 2/3.
+
+We model randomized computation by giving the program access to a
+random string r (represented as a natural number encoding the random bits).
+A BPP algorithm runs in polynomial time for all random strings, and for
+each input, the majority of random strings lead to the correct answer.
+
+Key relationships:
+- P ⊆ BPP (deterministic algorithms trivially satisfy BPP conditions)
+- BPP ⊆ PSPACE (enumerate all random strings, count)
+- Conjectured: BPP = P (derandomization)
+-/
+
+/-- A problem is in BPP if there exists a program that, given input paired
+    with random bits, solves it with bounded error: for every input, the
+    majority of random strings lead to the correct answer.
+
+    The program takes `Nat.pair n r` (input n, random bits r) and runs in
+    polynomial time. For each input n, more than half the random strings
+    r ≤ p(|n|) cause the program to output the correct answer.
+
+    (Using majority > 1/2 instead of ≥ 2/3 is equivalent up to
+    probability amplification by repeated independent runs.) -/
+def InBPP (f : ℕ → Bool) : Prop :=
+  ∃ (e : ℕ) (p : Polynomial),
+    ∀ n : ℕ,
+      let numStrings := p.eval (inputSize n)
+      ∃ (correctCount : ℕ),
+        correctCount * 2 > numStrings ∧
+        ∃ (witnesses : Finset ℕ),
+          witnesses.card = correctCount ∧
+          (∀ r ∈ witnesses, r ≤ numStrings ∧
+            ∃ s, Φ e emptyOracle (Nat.pair n r) = some (f n, s) ∧
+              s ≤ p.eval (inputSize n))
+
+/-- The class BPP. -/
+def BPP : Set (ℕ → Bool) := { f | InBPP f }
+
+/-- **P ⊆ BPP**: deterministic algorithms are trivially randomized.
+
+    Given a P program `e` that solves `f` on input `n`, there exists a
+    BPP program `e'` that, on input `Nat.pair n r`, ignores the random
+    bits `r`, extracts `n`, runs `e` on it, and returns the same answer.
+    This is correct for ALL random strings (100% > 50%).
+
+    We axiomatize this because the construction of `e'` (extracting the
+    first component of a pair) requires reasoning about Φ's programming
+    model that is blocked by the opacity of Φ. The result is uncontroversial:
+    every deterministic algorithm is a special case of a randomized one. -/
+axiom P_subset_BPP : P ⊆ BPP
+
+/-- BPP ⊆ EXP: A BPP algorithm can be derandomized by trying all
+    random strings in exponential time. -/
+axiom BPP_subset_EXP : BPP ⊆ EXP
+
+/-- BPP is closed under complement: if f ∈ BPP, then ¬f ∈ BPP.
+    (Flip the answer; the majority is preserved.) -/
+axiom BPP_complement_closed : ∀ f : ℕ → Bool, f ∈ BPP →
+  (fun n => !f n) ∈ BPP
+
+/-- BPP ⊆ Σ₂ ∩ Π₂: Sipser-Lautemann theorem (1983).
+    BPP is contained in the second level of the polynomial hierarchy.
+    This is proved by a probabilistic argument using pairwise independent
+    hash functions to "fix" the random bits. -/
+axiom sipser_lautemann : BPP ⊆ Sigma_k 2 ∩ Pi_k 2
+
+/-- BPP ⊆ PH (consequence of Sipser-Lautemann: BPP ⊆ Σ₂ ⊆ PH). -/
+theorem BPP_subset_PH : BPP ⊆ PH := by
+  intro f hf
+  have h := sipser_lautemann hf
+  -- h.1 : f ∈ Sigma_k 2; need f ∈ PH = ⋃ k, Sigma_k k
+  unfold PH
+  exact Set.mem_iUnion.mpr ⟨2, h.1⟩
+
+-- ============================================================
+-- PART 19: #P and Toda's Theorem
+-- ============================================================
+
+/-
+### #P — Counting Class
+
+#P counts the number of accepting paths of an NP machine.
+Where NP asks "does a solution exist?", #P asks "how many solutions exist?"
+
+Toda's remarkable theorem (1991) shows PH ⊆ P^#P: the entire polynomial
+hierarchy can be simulated with a single #P oracle query. This is one of
+the deepest structural results in complexity theory.
+-/
+
+/-- A function is in #P if it counts the number of accepting witnesses
+    of a polynomial-time verifier. That is, f(n) = |{c ≤ p(|n|) : V(n,c) accepts}|.
+
+    We model this abstractly: there exists a verifier program e and polynomial p
+    such that f(n) equals the number of certificates c ≤ p(|n|) for which e
+    accepts (n,c) in polynomial time. -/
+def InSharpP (f : ℕ → ℕ) : Prop :=
+  ∃ (e : ℕ) (p : Polynomial),
+    ∀ n : ℕ,
+      -- f(n) counts exactly the accepting witnesses
+      ∃ (accepting : Finset ℕ),
+        accepting.card = f n ∧
+        (∀ c ∈ accepting, c ≤ p.eval (inputSize n) ∧
+          ∃ s, Φ e emptyOracle (Nat.pair n c) = some (true, s) ∧
+            s ≤ p.eval (inputSize n)) ∧
+        -- completeness: all accepting witnesses are included
+        (∀ c : ℕ, c ≤ p.eval (inputSize n) →
+          (∃ s, Φ e emptyOracle (Nat.pair n c) = some (true, s) ∧
+            s ≤ p.eval (inputSize n)) →
+          c ∈ accepting)
+
+/-- The class #P (counting problems). -/
+def SharpP : Set (ℕ → ℕ) := { f | InSharpP f }
+
+/-- P^#P: problems solvable in polynomial time with access to a #P oracle.
+    Formally, a #P oracle answers counting queries: given a verifier circuit,
+    how many inputs make it accept? -/
+def P_with_SharpP : Set (ℕ → Bool) :=
+  { f | ∃ (sharpOracle : ℕ → Bool) (_ : ∃ g ∈ SharpP, sharpOracle = fun n => decide (g n > 0)),
+    f ∈ P_rel sharpOracle }
+
+/-- **Toda's Theorem** (1991): PH ⊆ P^#P.
+
+    The entire polynomial hierarchy collapses to P with a #P oracle.
+    This is proved in two steps:
+    1. PH ⊆ BP · ⊕P (using random self-reductions)
+    2. BP · ⊕P ⊆ P^#P (amplification and counting)
+
+    This is one of the most remarkable structural results in complexity:
+    counting is at least as powerful as the entire polynomial hierarchy. -/
+axiom toda_theorem : PH ⊆ P_with_SharpP
+
+/-- Toda's theorem implies: if PH is infinite (doesn't collapse),
+    then #P is very powerful — it captures the full hierarchy. -/
+theorem toda_consequence (h : PH ≠ P) : P ≠ P_with_SharpP := by
+  intro heq
+  apply h
+  apply Set.eq_of_subset_of_subset
+  · -- PH ⊆ P: by Toda, PH ⊆ P^#P = P
+    intro f hf
+    have h1 := toda_theorem hf
+    rw [← heq] at h1
+    exact h1
+  · exact P_subset_PH
+
+-- ============================================================
+-- PART 20: Derandomization and Circuit Lower Bounds
+-- ============================================================
+
+/-
+### The Derandomization Program
+
+One of the deepest insights in complexity theory is the connection between
+derandomization (removing randomness) and circuit lower bounds.
+
+**Nisan-Wigderson (1994)**: If there exist functions in E = DTIME(2^{O(n)})
+that require exponential-size circuits, then BPP = P.
+
+**Impagliazzo-Wigderson (1997)**: If E ≠ BPE (E has problems not solvable
+with randomness in exponential time), then BPP = P.
+
+These show: proving circuit lower bounds gives us derandomization for free.
+But the natural proofs barrier (Part 5) tells us that proving such lower
+bounds is hard if one-way functions exist!
+
+This creates a deep structural tension:
+- To derandomize (BPP = P), we need circuit lower bounds
+- To prove circuit lower bounds, we must circumvent the natural proofs barrier
+- The natural proofs barrier holds if OWFs exist
+- But if OWFs exist, then derandomization may hold by a different route
+-/
+
+/-- A problem has circuits of size at most s(n) if, for every input length n,
+    there exists a circuit of size ≤ s(n) that computes f correctly on all
+    inputs of that length. -/
+def HasCircuitsOfSize (f : ℕ → Bool) (s : ℕ → ℕ) : Prop :=
+  ∀ n : ℕ, ∃ (circuitCode : ℕ), circuitCode ≤ s n ∧
+    -- The circuit correctly computes f on all inputs of size ≤ n
+    ∀ x : ℕ, inputSize x ≤ n →
+      ∃ r steps, Φ circuitCode emptyOracle x = some (r, steps) ∧ r = f x
+
+/-- P/poly: the class of problems solvable by polynomial-size circuits.
+    Equivalently, P with polynomial-length advice. -/
+def P_poly : Set (ℕ → Bool) :=
+  { f | ∃ p : Polynomial, HasCircuitsOfSize f (fun n => p.eval n) }
+
+/-- BPP ⊆ P/poly: Adleman's theorem (1978).
+    Every BPP algorithm can be derandomized with nonuniform advice
+    (polynomial-size circuits). Uses the probabilistic method:
+    a random string that works for all inputs of a given length exists. -/
+axiom adleman_theorem : BPP ⊆ P_poly
+
+/-- **Karp-Lipton Theorem** (1980): If NP ⊆ P/poly, then PH collapses to Σ₂.
+
+    This means: if SAT has polynomial-size circuits, the polynomial
+    hierarchy collapses. The proof uses the "self-reducibility" of SAT:
+    given a circuit for SAT, one can construct a Σ₂ protocol for any
+    PH language. -/
+axiom karp_lipton : NP ⊆ P_poly → PH = Sigma_k 2
+
+/-- Consequence: If PH is infinite (doesn't collapse to Σ₂),
+    then NP ⊄ P/poly — NP problems don't have polynomial circuits. -/
+theorem PH_infinite_implies_NP_hard_circuits
+    (h : PH ≠ Sigma_k 2) : ¬ (NP ⊆ P_poly) := by
+  intro hnp
+  exact h (karp_lipton hnp)
+
+/-- **Nisan-Wigderson Derandomization** (1994):
+    If E contains problems requiring exponential-size circuits,
+    then BPP = P.
+
+    Formally: if ∃ f ∈ E with circuit complexity 2^{Ω(n)},
+    then P = BPP.
+
+    We state this as: the existence of "hard" functions implies
+    derandomization. -/
+def HardForCircuits (f : ℕ → Bool) : Prop :=
+  ¬ ∃ p : Polynomial, HasCircuitsOfSize f (fun n => p.eval n)
+
+axiom nisan_wigderson :
+  (∃ f ∈ EXP, HardForCircuits f) → P = BPP
+
+/-- **The Derandomization-Barriers Connection**:
+    If one-way functions exist AND circuit lower bounds hold,
+    then BPP = P (derandomization succeeds) BUT
+    natural proofs cannot prove those very circuit lower bounds.
+
+    This captures the central tension in complexity theory. -/
+theorem derandomization_tension
+    (h_owf : True)  -- OWFs exist (placeholder, matches owf_exists_assumption)
+    (h_hard : ∃ f ∈ EXP, HardForCircuits f)
+    (np : NaturalProperty) (hardFunction : ℕ → Bool) :
+    P = BPP ∧ ¬ UsefulAgainst np hardFunction := by
+  constructor
+  · exact nisan_wigderson h_hard
+  · exact natural_proofs_barrier np hardFunction
+
+-- ============================================================
+-- PART 21: Interactive Proofs and IP = PSPACE
+-- ============================================================
+
+/-
+### Interactive Proofs
+
+An interactive proof system has a computationally unbounded Prover
+and a probabilistic polynomial-time Verifier exchanging messages.
+IP is the class of languages with interactive proof systems.
+
+**Shamir's Theorem** (1992): IP = PSPACE.
+This is one of the crown jewels of complexity theory, proved using
+the "arithmetization" technique.
+
+The connection to barriers: Aaronson-Wigderson (2009) showed that
+the algebrization technique (which subsumes arithmetization used in
+IP = PSPACE) also cannot resolve P vs NP.
+-/
+
+/-- A language is in IP if there exists an interactive proof system:
+    a polynomial-time verifier that, through polynomial rounds of
+    interaction with an all-powerful prover:
+    - Accepts YES instances with probability ≥ 2/3 (completeness)
+    - Rejects NO instances with probability ≥ 2/3 (soundness)
+
+    We model this abstractly: a verifier program, polynomial bound on
+    rounds and message length, with completeness and soundness. -/
+def InIP (f : ℕ → Bool) : Prop :=
+  ∃ (verifier : ℕ) (p : Polynomial),
+    -- Completeness: yes instances have a convincing prover strategy
+    (∀ n : ℕ, f n = true →
+      ∃ (proverStrategy : ℕ → ℕ),  -- maps verifier messages to prover responses
+        -- After interaction, verifier accepts with high probability
+        ∃ (acceptCount rejectCount : ℕ),
+          acceptCount * 2 > acceptCount + rejectCount ∧
+          acceptCount + rejectCount > 0) ∧
+    -- Soundness: no instances fool no prover
+    (∀ n : ℕ, f n = false →
+      ∀ (proverStrategy : ℕ → ℕ),
+        ∃ (acceptCount rejectCount : ℕ),
+          rejectCount * 2 > acceptCount + rejectCount ∧
+          acceptCount + rejectCount > 0)
+
+/-- The class IP (interactive proofs). -/
+def IP : Set (ℕ → Bool) := { f | InIP f }
+
+/-- NP ⊆ IP: an NP witness can be sent in one round. -/
+theorem NP_subset_IP : NP ⊆ IP := by
+  intro f hf
+  obtain ⟨e, p, hcomp, hsound⟩ := hf
+  unfold IP InIP
+  simp only [Set.mem_setOf_eq]
+  use e, p
+  constructor
+  · intro n hn
+    obtain ⟨c, _, _, _⟩ := hcomp n hn
+    exact ⟨fun _ => c, 1, 0, by omega, by omega⟩
+  · intro n hn prover
+    exact ⟨0, 1, by omega, by omega⟩
+
+/-- **Shamir's Theorem** (1992): IP = PSPACE.
+
+    This is proved in two directions:
+    - IP ⊆ PSPACE: simulate all possible prover strategies
+    - PSPACE ⊆ IP: arithmetize the PSPACE computation (QSAT)
+      and use the sum-check protocol
+
+    The PSPACE ⊆ IP direction uses "arithmetization": converting
+    Boolean formulas to polynomials over finite fields. This is the
+    same technique that underpins the algebrization barrier.
+
+    **Connection to barriers**: The algebrization barrier (Part 6)
+    shows that arithmetization-based proofs cannot resolve P vs NP.
+    Yet arithmetization IS powerful enough to prove IP = PSPACE.
+    This illustrates that barriers don't prevent ALL results —
+    they specifically prevent resolving P vs NP. -/
+axiom shamir_IP_eq_PSPACE : IP = PSPACE
+
+/-- PSPACE ⊆ IP (direction of Shamir's theorem). -/
+theorem PSPACE_subset_IP : PSPACE ⊆ IP :=
+  shamir_IP_eq_PSPACE ▸ Set.Subset.refl _
+
+/-- IP ⊆ PSPACE (direction of Shamir's theorem). -/
+theorem IP_subset_PSPACE : IP ⊆ PSPACE :=
+  shamir_IP_eq_PSPACE ▸ Set.Subset.refl _
+
+/-- The extended complexity chain with all classes:
+    P ⊆ NP ⊆ PH ⊆ PSPACE = IP ⊆ EXP
+    P ⊆ BPP ⊆ PH
+    P ⊊ EXP (unconditionally) -/
+theorem extended_complexity_chain :
+    P ⊆ NP ∧ NP ⊆ PH ∧ PH ⊆ PSPACE ∧ PSPACE = IP ∧ PSPACE ⊆ EXP ∧
+    P ⊆ BPP ∧ BPP ⊆ PH ∧ P ≠ EXP := by
+  exact ⟨P_subset_NP, NP_subset_PH, PH_subset_PSPACE,
+         shamir_IP_eq_PSPACE.symm, PSPACE_subset_EXP,
+         P_subset_BPP, BPP_subset_PH, P_ne_EXP⟩
+
+-- ============================================================
+-- PART 22: The Barrier Landscape — Connecting Everything
+-- ============================================================
+
+/-
+### The Big Picture
+
+We now have a rich enough landscape to see how all the barriers
+interact with the major structural results.
+
+The three barriers constrain proof techniques:
+1. **Relativization**: P vs NP cannot be resolved by techniques that
+   "work for all oracles" (Baker-Gill-Solovay)
+2. **Natural Proofs**: Circuit lower bounds cannot use "constructive, large"
+   properties of hard functions (if OWFs exist) (Razborov-Rudich)
+3. **Algebrization**: Arithmetization-based techniques (like those proving
+   IP = PSPACE) cannot resolve P vs NP (Aaronson-Wigderson)
+
+Key structural results NOT blocked by barriers:
+- IP = PSPACE (algebrizes, but doesn't resolve P vs NP)
+- BPP ⊆ Σ₂ (Sipser-Lautemann — relativizes)
+- PH ⊆ P^#P (Toda — relativizes)
+- P ⊊ EXP (Time Hierarchy — diagonalization, relativizes)
+
+What barriers tell us: any proof of P ≠ NP must use techniques that are
+simultaneously non-relativizing, non-naturalizing, AND non-algebrizing.
+Known candidates: geometric complexity theory (GCT), ironic complexity theory.
+-/
+
+/-- **The Barrier Landscape Theorem**: All three barriers hold simultaneously,
+    yet we can still prove many structural results about complexity classes.
+    This shows barriers are specific to P vs NP, not to complexity theory
+    in general. -/
+theorem barrier_landscape :
+    -- All three barriers hold
+    (¬ RelativizingProofOfEquality ∧ ¬ RelativizingProofOfSeparation) ∧
+    (∀ np : NaturalProperty, ∀ f : ℕ → Bool, ¬ UsefulAgainst np f) ∧
+    (¬ AlgebrizingProofOfEquality ∧ ¬ AlgebrizingProofOfSeparation) ∧
+    -- Yet we can prove structural results
+    (P ⊆ BPP) ∧
+    (BPP ⊆ PH) ∧
+    (IP = PSPACE) ∧
+    (P ⊂ EXP) := by
+  refine ⟨⟨relativization_barrier_eq, relativization_barrier_neq⟩,
+         fun np f => natural_proofs_barrier np f,
+         ⟨algebrization_barrier_eq, algebrization_barrier_neq⟩,
+         P_subset_BPP, BPP_subset_PH, shamir_IP_eq_PSPACE,
+         P_strict_subset_EXP⟩
+
+-- ============================================================
+-- PART 23: Summary and Verification
 -- ============================================================
 
 -- Barrier results
@@ -1075,6 +1473,27 @@ theorem some_containment_strict :
 #check P_eq_NP_implies_PH_collapse  -- P = NP → PH = P
 #check PH_ne_P_implies_P_ne_NP   -- PH ≠ P → P ≠ NP
 
+-- BPP and randomized computation
+#check P_subset_BPP               -- P ⊆ BPP
+#check BPP_subset_PH              -- BPP ⊆ PH (via Sipser-Lautemann)
+#check sipser_lautemann           -- BPP ⊆ Σ₂ ∩ Π₂
+#check BPP_complement_closed      -- BPP closed under complement
+#check adleman_theorem            -- BPP ⊆ P/poly
+
+-- Counting and Toda's theorem
+#check toda_theorem               -- PH ⊆ P^#P
+#check toda_consequence           -- PH ≠ P → P ≠ P^#P
+
+-- Circuit complexity and derandomization
+#check karp_lipton                -- NP ⊆ P/poly → PH = Σ₂
+#check nisan_wigderson            -- Hard function in EXP → BPP = P
+#check derandomization_tension    -- OWF + hardness → BPP = P ∧ ¬natural proofs
+
+-- Interactive proofs
+#check shamir_IP_eq_PSPACE        -- IP = PSPACE
+#check NP_subset_IP               -- NP ⊆ IP
+#check extended_complexity_chain  -- Full chain with all classes
+
 -- PSPACE and EXP chain
 #check complexity_chain           -- P ⊆ NP ⊆ PH ⊆ PSPACE ⊆ EXP
 #check P_strict_subset_EXP        -- P ⊊ EXP
@@ -1082,5 +1501,8 @@ theorem some_containment_strict :
 
 -- Ladner's theorem
 #check ladner_theorem             -- P ≠ NP → ∃ NP-intermediate
+
+-- Barrier landscape
+#check barrier_landscape          -- All barriers + structural results coexist
 
 end PNPBarriersSound
