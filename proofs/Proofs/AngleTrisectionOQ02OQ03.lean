@@ -1138,6 +1138,71 @@ theorem zeta_pow_not_real (n k : ℕ) (hn : 3 ≤ n) (hk0 : 0 < k)
   linarith
 
 /-
+## Section XVIII: Roots of T_n − 1
+
+Establishes that cos(2kπ/n) are roots of the Chebyshev polynomial T_n − 1.
+Combined with minpoly | T_n − 1, this constrains the roots of the minimal
+polynomial to lie among these cosine values.
+-/
+
+/-- cos(2kπ/n) is a root of T_n − 1 for any k.
+    Proof: T_n(cos(2kπ/n)) = cos(n · 2kπ/n) = cos(2kπ) = 1.
+    So T_n(cos(2kπ/n)) − 1 = 0. -/
+theorem cos_is_root_of_chebyshev_sub_one (n k : ℕ) (hn : 1 ≤ n) :
+    Polynomial.aeval (Real.cos (↑k * (2 * Real.pi / ↑n)))
+      (Chebyshev.T ℝ n - Polynomial.C 1) = 0 := by
+  simp only [map_sub, Chebyshev.aeval_T, Polynomial.aeval_C, map_one]
+  rw [Chebyshev.T_real_cos]
+  have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have : (↑(↑n : ℤ) : ℝ) * (↑k * (2 * Real.pi / ↑n)) = ↑k * (2 * Real.pi) := by
+    rw [Int.cast_natCast]; field_simp; ring
+  rw [this, Real.cos_int_mul_two_pi]
+  simp
+
+/-- ζ_n^k + ζ_n^(-k) = 2cos(2kπ/n): sum of a root of unity and its inverse
+    equals twice the cosine. Generalization of cos_eq_half_zeta_add_conj. -/
+theorem zeta_pow_add_inv_pow (n k : ℕ) :
+    zeta n ^ k + (zeta n ^ k)⁻¹ = 2 * ↑(Real.cos (↑k * (2 * Real.pi / ↑n))) := by
+  have h_re := cos_eq_zeta_pow_re n k
+  have h_norm := zeta_pow_norm_one n k
+  -- (z^k)⁻¹ = conj(z^k) since |z^k| = 1
+  have h_inv : (zeta n ^ k)⁻¹ = starRingEnd ℂ (zeta n ^ k) := by
+    rw [inv_eq_of_mul_eq_one_right]
+    rw [Complex.mul_conj, ← Complex.ofReal_one]
+    congr 1
+    rw [Complex.normSq_eq_abs]
+    rw [← Complex.norm_eq_abs, h_norm, one_pow]
+  rw [h_inv, Complex.add_conj, h_re]
+  push_cast; ring
+
+/-- ζ_n^k · ζ_n^(-k) = 1: product of conjugate powers on the unit circle. -/
+theorem zeta_pow_mul_inv_pow (n k : ℕ) :
+    zeta n ^ k * (zeta n ^ k)⁻¹ = 1 := by
+  rcases eq_or_ne (zeta n ^ k) 0 with h | h
+  · exfalso
+    have := zeta_pow_norm_one n k
+    rw [h, norm_zero] at this
+    exact one_ne_zero this.symm
+  · exact mul_inv_cancel₀ h
+
+/-- The Chebyshev polynomial T_n evaluated at cos(2π/n) equals 1.
+    This is the k=1 case that was used for minpoly_cos_dvd_chebyshev,
+    stated as a standalone identity. -/
+theorem chebyshev_T_eval_cos_eq_one (n : ℕ) (hn : 1 ≤ n) :
+    Polynomial.aeval (Real.cos (2 * Real.pi / ↑n)) (Chebyshev.T ℝ n) = 1 := by
+  rw [Chebyshev.aeval_T, Chebyshev.T_real_cos]
+  have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have : (↑(↑n : ℤ) : ℝ) * (2 * Real.pi / ↑n) = 2 * Real.pi := by
+    rw [Int.cast_natCast]; field_simp
+  rw [this, Real.cos_two_pi]
+
+/-- cos(0) = 1 is always a root of T_n − 1 (the k=0 case).
+    More precisely, T_n(1) = 1 for all n. -/
+theorem chebyshev_T_one_eq_one (n : ℕ) :
+    Polynomial.aeval (1 : ℝ) (Chebyshev.T ℝ n) = 1 := by
+  rw [Chebyshev.aeval_T, Chebyshev.T_real_cos, Real.cos_zero]
+
+/-
 ## Summary
 
 ### Proved (0 sorries):
@@ -1217,5 +1282,168 @@ theorem zeta_pow_not_real (n k : ℕ) (hn : 3 ≤ n) (hk0 : 0 < k)
 - ❌ [ℚ(ζ_n):ℚ(cos)] = 2 (formal) — needs IntermediateField infrastructure
 - ❌ natDegree(minpoly) = φ(n)/2 — cyclotomic tower law (needs above)
 -/
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
+Section XVIII: ROOT CHARACTERIZATION FOR T_n - 1
+
+Key building blocks toward proving cos_minpoly_gal_card:
+- Characterize when cos(2kπ/n) = cos(2jπ/n) (cosine equality criterion)
+- Count distinct values in {cos(2kπ/n) : gcd(k,n) = 1}
+- Show these are exactly the Galois conjugates of cos(2π/n)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- cos(α) = cos(β) iff ∃ k : ℤ, α = β + 2kπ or α = -β + 2kπ.
+    Direct consequence of Mathlib's `Real.cos_eq_cos_iff`. -/
+theorem cos_eq_cos_iff (α β : ℝ) :
+    Real.cos α = Real.cos β ↔
+      ∃ k : ℤ, α = β + 2 * ↑k * Real.pi ∨ α = -β + 2 * ↑k * Real.pi := by
+  rw [Real.cos_eq_cos_iff]
+  constructor
+  · rintro ⟨k, h | h⟩
+    · exact ⟨-k, Or.inl (by push_cast; linarith)⟩
+    · exact ⟨k, Or.inr (by push_cast; linarith)⟩
+  · rintro ⟨k, h | h⟩
+    · exact ⟨-k, Or.inl (by push_cast; linarith)⟩
+    · exact ⟨k, Or.inr (by push_cast; linarith)⟩
+
+/-- Two cosines of rational multiples of 2π/n are equal iff indices are conjugate mod n:
+    cos(2kπ/n) = cos(2jπ/n) ↔ k ≡ j (mod n) ∨ k ≡ n-j (mod n). -/
+theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
+    Real.cos (2 * ↑k * Real.pi / ↑n) = Real.cos (2 * ↑j * Real.pi / ↑n) ↔
+      k % n = j % n ∨ k % n = (n - j % n) % n := by
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  rw [Real.cos_eq_cos_iff]
+  constructor
+  · rintro ⟨m, h | h⟩
+    · -- h : 2jπ/n = 2mπ + 2kπ/n → j ≡ k (mod n)
+      left
+      have h_real : (↑j : ℝ) = ↑m * ↑n + ↑k := by
+        have := h; field_simp at this ⊢; nlinarith
+      have h_int : (↑j : ℤ) = m * ↑n + ↑k := by
+        have : ((↑j : ℤ) : ℝ) = ((m * ↑n + ↑k : ℤ) : ℝ) := by
+          push_cast; linarith [h_real]
+        exact_mod_cast this
+      omega
+    · -- h : 2jπ/n = 2mπ - 2kπ/n → k ≡ n - j (mod n)
+      right
+      have h_real : (↑j : ℝ) + ↑k = ↑m * ↑n := by
+        have := h; field_simp at this ⊢; nlinarith
+      have h_int : (↑j : ℤ) + ↑k = m * ↑n := by
+        have : ((↑j + ↑k : ℤ) : ℝ) = ((m * ↑n : ℤ) : ℝ) := by
+          push_cast; linarith [h_real]
+        exact_mod_cast this
+      omega
+  · rintro (h | h)
+    · -- k % n = j % n → cos equal via periodicity
+      -- k ≡ j (mod n) in ℕ → j - k divisible by n in ℤ
+      have h_mod : (↑j : ℤ) % ↑n = (↑k : ℤ) % ↑n := by
+        have : (↑(k % n) : ℤ) = ↑(j % n) := by exact_mod_cast h
+        simp only [Nat.cast_mod_cast] at this; omega
+      obtain ⟨m, hm⟩ := (Int.modEq_iff_dvd.mp h_mod : (↑n : ℤ) ∣ (↑k - ↑j))
+      refine ⟨-m, Or.inl ?_⟩
+      have h_int : (↑j : ℤ) = -m * ↑n + ↑k := by omega
+      have h_real : (↑j : ℝ) = ↑(-m) * ↑n + ↑k := by
+        have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; exact this
+      field_simp; nlinarith [h_real]
+    · -- k % n = (n - j % n) % n → cos equal via reflection
+      -- k + j ≡ 0 (mod n) in ℕ
+      have h_sum : (j + k) % n = 0 := by omega
+      obtain ⟨m', hm'⟩ := Nat.dvd_of_mod_eq_zero h_sum
+      have h_int : (↑j : ℤ) + ↑k = ↑m' * ↑n := by
+        have := congr_arg (Nat.cast (R := ℤ)) hm'; push_cast at this; linarith
+      refine ⟨(m' : ℤ), Or.inr ?_⟩
+      have h_real : (↑j : ℝ) + ↑k = ↑(m' : ℤ) * ↑n := by
+        have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; linarith
+      field_simp; nlinarith [h_real]
+
+/-- The number of distinct Galois conjugates of cos(2π/n) over ℚ is φ(n)/2.
+    The conjugates are {cos(2kπ/n) : 1 ≤ k ≤ n, gcd(k,n) = 1}, and these come
+    in pairs {k, n-k} (since cos(2kπ/n) = cos(2(n-k)π/n)). -/
+theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
+    Finset.card (Finset.image (fun k => Real.cos (2 * ↑k * Real.pi / ↑n))
+      (Finset.filter (fun k => Nat.Coprime k n) (Finset.range n))) =
+    Nat.totient n / 2 := by
+  sorry -- Counting argument using cos_2kpi_div_n_eq_iff + coprime pairing
+
+/-- Every root of T_n - 1 in ℝ is of the form cos(2kπ/n) for some k.
+    Proof: T_n(x) = cos(n·arccos(x)) for |x| ≤ 1. T_n(x) = 1 iff
+    n·arccos(x) = 2kπ iff arccos(x) = 2kπ/n iff x = cos(2kπ/n). -/
+theorem chebyshev_T_sub_one_roots (n : ℕ) (hn : 1 ≤ n) (x : ℝ) (hx : |x| ≤ 1)
+    (h_root : Polynomial.aeval x (Chebyshev.T ℝ n - 1) = 0) :
+    ∃ k : ℕ, k < n ∧ x = Real.cos (2 * ↑k * Real.pi / ↑n) := by
+  -- Step 1: T_n(x) = 1
+  have hT : Polynomial.aeval x (Chebyshev.T ℝ n) = 1 := by
+    have := h_root; simp only [map_sub, map_one] at this; linarith
+  -- Step 2: x = cos(arccos x) since |x| ≤ 1
+  have hx1 : -1 ≤ x := (abs_le.mp hx).1
+  have hx2 : x ≤ 1 := (abs_le.mp hx).2
+  have hcos_arccos : Real.cos (Real.arccos x) = x := Real.cos_arccos hx1 hx2
+  -- Step 3: cos(n * arccos x) = 1
+  have hT' : Real.cos (↑(↑n : ℤ) * Real.arccos x) = 1 := by
+    have key : Polynomial.aeval (Real.cos (Real.arccos x)) (Chebyshev.T ℝ n) =
+               Real.cos (↑(↑n : ℤ) * Real.arccos x) := by
+      rw [Chebyshev.aeval_T, Chebyshev.T_real_cos]
+    rw [← key, hcos_arccos]; exact hT
+  -- Step 4: n * arccos x = m * (2π) for some m : ℤ
+  rw [Real.cos_eq_one_iff] at hT'
+  obtain ⟨m, hm⟩ := hT'
+  -- hm : ↑m * (2 * π) = ↑↑n * arccos x
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  have hpi_pos : (0 : ℝ) < Real.pi := Real.pi_pos
+  have h_arc_nn : 0 ≤ Real.arccos x := Real.arccos_nonneg x
+  have h_arc_le : Real.arccos x ≤ Real.pi := Real.arccos_le_pi x
+  -- Normalize ↑↑n to ↑n in hm for consistent reasoning
+  have hm' : ↑m * (2 * Real.pi) = (↑n : ℝ) * Real.arccos x := by
+    have := hm; push_cast [Int.cast_natCast] at this; linarith
+  -- Step 5: m ≥ 0 (from arccos x ≥ 0 and n > 0)
+  have hm_nn : 0 ≤ m := by
+    by_contra h; push_neg at h
+    have : (↑m : ℝ) < 0 := Int.cast_lt_zero.mpr h
+    nlinarith [mul_nonneg (le_of_lt hn_pos) h_arc_nn]
+  -- Step 6: m < n (from arccos x ≤ π)
+  have hm_lt_n : m < ↑n := by
+    by_contra h; push_neg at h
+    have hm_bound : (↑n : ℝ) ≤ ↑m := by exact_mod_cast h
+    -- From hm': m * 2π = n * arccos x ≤ n * π (since arccos x ≤ π)
+    have h1 : ↑m * (2 * Real.pi) ≤ (↑n : ℝ) * Real.pi := by
+      nlinarith [mul_le_mul_of_nonneg_left h_arc_le (le_of_lt hn_pos)]
+    -- But m ≥ n → m * 2π ≥ n * 2π > n * π
+    nlinarith [mul_le_mul_of_nonneg_right hm_bound (show (0 : ℝ) ≤ 2 * Real.pi by linarith)]
+  -- Step 7: Convert m to ℕ
+  set k := m.toNat with hk_def
+  have hk_eq : (↑k : ℤ) = m := Int.toNat_of_nonneg hm_nn
+  have hk_lt : k < n := by omega
+  refine ⟨k, hk_lt, ?_⟩
+  -- Step 8: x = cos(2kπ/n)
+  -- arccos x = m * 2π / n, so x = cos(arccos x) = cos(2kπ/n)
+  rw [← hcos_arccos]
+  congr 1
+  -- arccos x = m * 2π / n = 2kπ/n
+  have h_arccos_eq : ↑(↑n : ℤ) * Real.arccos x = ↑m * (2 * Real.pi) := hm.symm
+  have hm_eq : (↑m : ℝ) = ↑k := by exact_mod_cast hk_eq.symm
+  rw [hm_eq] at h_arccos_eq
+  -- h_arccos_eq : ↑↑n * arccos x = ↑k * (2 * π)
+  -- goal: arccos x = 2 * ↑k * π / ↑n
+  rw [eq_div_iff hn_ne]
+  push_cast [Int.cast_natCast] at h_arccos_eq
+  linarith
+
+/-- The minimal polynomial of cos(2π/n) has degree exactly φ(n)/2.
+
+    Proof sketch:
+    1. minpoly divides T_n - 1 (from minpoly_cos_dvd_chebyshev)
+    2. All roots of minpoly are Galois conjugates (from IsGalois + separability)
+    3. All Galois conjugates are in {cos(2kπ/n) : gcd(k,n) = 1}
+       (from the Galois action σ(cos(2π/n)) = cos(2kπ/n) for some k coprime to n)
+    4. There are φ(n)/2 such distinct conjugates (from galois_conjugate_count)
+    5. natDegree(minpoly) = φ(n)/2
+
+    This theorem, combined with IsGalois.card_aut_eq_finrank, yields cos_minpoly_gal_card. -/
+theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
+    (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).natDegree = Nat.totient n / 2 := by
+  sorry -- Assembly of the above pieces
 
 end AngleTrisectionOQ02OQ03

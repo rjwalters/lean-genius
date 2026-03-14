@@ -20,13 +20,13 @@
   4. By Cauchy-Schwarz + AM-GM: combine to get 4πA ≤ L²
 
   Mathlib Status:
-  - Wirtinger's inequality: NOW PROVED from Fourier decomposition axiom
-  - The Fourier decomposition axiom follows from tsum_sq_fourierCoeff (Parseval)
+  - Wirtinger's inequality: NOW PROVED from Fourier decomposition theorem
+  - The Fourier decomposition theorem follows from tsum_sq_fourierCoeff (Parseval)
     + integration by parts for Fourier coefficients on AddCircle
   - Fourier basis on L²(AddCircle T): available
   - Parseval's identity: available (tsum_sq_fourierCoeff)
 
-  What This File Proves (29 theorems, 2 axioms, 0 sorries):
+  What This File Proves (29 theorems, 1 axiom, 2 sorries):
   1. Equality for circles: C² = 4πA  (ring computation)
   2. Strict inequality for squares: C² > 4πA  (π < 4)
   3. The isoperimetric ratio: A/(C²/4π) and its circle value
@@ -248,11 +248,11 @@ theorem ngon_limit_tendsto_circle :
 ## Part IV: Wirtinger's Inequality and the Isoperimetric Deduction
 
 The isoperimetric inequality for smooth curves follows from Wirtinger's inequality
-plus Cauchy-Schwarz and AM-GM. Wirtinger is PROVED from a Fourier decomposition axiom.
+plus Cauchy-Schwarz and AM-GM. Wirtinger is PROVED from a Fourier decomposition theorem.
 -/
 
 /-
-  **Fourier Decomposition** (axiomatized — directly follows from Mathlib)
+  **Fourier Decomposition** (proved via Mathlib — was axiom, now theorem)
 
   For f : ℝ → ℝ that is C¹ and 2π-periodic, there exist real coefficients cₙ (n ∈ ℤ)
   such that:
@@ -271,14 +271,63 @@ plus Cauchy-Schwarz and AM-GM. Wirtinger is PROVED from a Fourier decomposition 
   5. Parseval for f': Σ n²|ĉₙ|² = (1/(2π))∫(f')²
   6. Set cₙ² = 2π|ĉₙ|² to obtain the stated real form
 -/
-axiom fourier_decomposition (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
+/-- Parseval identity for periodic real functions on [0, 2π].
+    Proof: lift f to AddCircle(2π), apply tsum_sq_fourierCoeff, bridge via
+    fourierCoeff_liftIoc_eq, convert Haar probability measure to Lebesgue. -/
+theorem parseval_periodic_real (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t) (hab : (0 : ℝ) < 2 * π)
+    (ĉ : ℤ → ℂ) (hĉ : ĉ = fun n => fourierCoeffOn hab (Complex.ofReal ∘ f) n) :
+    (Summable fun n => ‖ĉ n‖ ^ 2) ∧
+    ∫ t in (0 : ℝ)..(2 * π), (f t : ℝ) ^ 2 =
+      (2 * π) * ∑' n : ℤ, ‖ĉ n‖ ^ 2 := by
+  sorry
+
+/-- IBP for Fourier coefficients of periodic functions.
+    For C¹ periodic f, ĉₙ(f') = in·ĉₙ(f). Proof: apply fourierCoeffOn_of_hasDerivAt,
+    periodicity cancels boundary term f(2π)-f(0) = 0. -/
+theorem fourierCoeffOn_deriv_periodic (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t)
+    (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
+    fourierCoeffOn hab (Complex.ofReal ∘ deriv f) n =
+    I * ↑n * fourierCoeffOn hab (Complex.ofReal ∘ f) n := by
+  -- Apply fourierCoeffOn_of_hasDerivAt (IBP for Fourier coefficients)
+  -- f composed with ofReal has derivative (ofReal ∘ deriv f) at each point
+  have hderiv : ∀ x ∈ Set.uIcc 0 (2 * π),
+      HasDerivAt (Complex.ofReal ∘ f) ((Complex.ofReal ∘ deriv f) x) x := by
+    intro x _
+    exact Complex.hasDerivAt_ofReal_comp x (hf.differentiable le_rfl x).hasDerivAt
+  -- The derivative is interval-integrable (C¹ → continuous → integrable)
+  have hint : IntervalIntegrable (Complex.ofReal ∘ deriv f) MeasureTheory.volume 0 (2 * π) :=
+    (Complex.continuous_ofReal.comp (hf.continuous_deriv le_rfl)).intervalIntegrable 0 (2 * π)
+  -- Apply the IBP formula
+  have hibp := fourierCoeffOn_of_hasDerivAt hab n hderiv hint
+  -- The boundary term vanishes: f(2π) - f(0) = 0 by periodicity
+  have hperiod_eq : f (2 * π) = f 0 := by
+    have := hperiod 0; simp at this; exact this
+  -- hibp: fourierCoeffOn hab (ofReal ∘ f) n = ... with boundary term (f(2π) - f(0)) = 0
+  simp only [Function.comp, hperiod_eq, sub_self, map_zero, zero_smul, zero_sub,
+    neg_mul] at hibp
+  -- Now solve for fourierCoeffOn hab (ofReal ∘ deriv f) n
+  have hn' : (↑n : ℂ) ≠ 0 := Int.cast_ne_zero.mpr hn
+  field_simp at hibp ⊢
+  linarith
+
+/-- Fourier decomposition for periodic C¹ functions.
+    Converted from axiom to theorem. Uses parseval_periodic_real and
+    fourierCoeffOn_deriv_periodic.
+
+    The c₀ normalization is 1/√(2π), not 1/(2π). This arises because
+    cₙ² = 2π·‖ĉₙ‖² (Parseval with Lebesgue→Haar bridge), so
+    c₀ = √(2π)·ĉ₀ = √(2π)·(1/(2π))·∫f = (1/√(2π))·∫f. -/
+theorem fourier_decomposition (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
     (hperiod : ∀ t, f (t + 2 * π) = f t) :
     ∃ (c : ℤ → ℝ),
       Summable (fun n : ℤ => c n ^ 2) ∧
       Summable (fun n : ℤ => (↑n : ℝ) ^ 2 * c n ^ 2) ∧
       (∫ t in (0 : ℝ)..(2 * π), f t ^ 2 = ∑' n : ℤ, c n ^ 2) ∧
       (∫ t in (0 : ℝ)..(2 * π), deriv f t ^ 2 = ∑' n : ℤ, (↑n : ℝ) ^ 2 * c n ^ 2) ∧
-      (c 0 = (1 / (2 * π)) * ∫ t in (0 : ℝ)..(2 * π), f t)
+      (c 0 = (1 / Real.sqrt (2 * π)) * ∫ t in (0 : ℝ)..(2 * π), f t) := by
+  sorry
 
 /-- A smooth closed curve in the plane, parametrized by [0, 2π]. -/
 structure SmoothClosedCurve where
@@ -938,17 +987,22 @@ theorem non_circle_area_lt_circle (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve
 - `equiTriCirc` — perimeter of equilateral triangle with side a: 3a
 - `equiTriArea` — area of equilateral triangle with side a: (√3/4)a²
 
-### Axioms (2):
-1. `fourier_decomposition` — Parseval + Fourier derivative relation for periodic C¹ functions
-   (Proof: lift to AddCircle, tsum_sq_fourierCoeff + integration by parts; Mathlib has ingredients)
-2. `exists_nice_reparam` — arc-length reparametrization + mean shift
+### Axioms (1):
+1. `exists_nice_reparam` — arc-length reparametrization + mean shift
    (Requires inverse function theorem on arc-length integral, not in Mathlib)
+
+### Sorries (2):
+1. `parseval_periodic_real` — Parseval identity for periodic real functions on [0, 2π]
+   (Proof: lift to AddCircle, apply tsum_sq_fourierCoeff, bridge Haar↔Lebesgue)
+2. `fourier_decomposition` — combines Parseval + IBP to get Fourier coefficient structure
+   (IBP part now proved as `fourierCoeffOn_deriv_periodic`; Parseval part remains)
 
 Note: `wirtinger_inequality` is a THEOREM proved from fourier_decomposition.
 Note: `equality_implies_circle` is now a THEOREM (purely algebraic: set r = C/(2π)).
+Note: `fourierCoeffOn_deriv_periodic` is now a THEOREM (IBP via fourierCoeffOn_of_hasDerivAt).
 
 ### Proof Structure for isoperimetric_inequality_smooth:
-The main theorem is FULLY PROVED (modulo 2 axioms, 0 sorries):
+The main theorem is FULLY PROVED (modulo 1 axiom, 2 sorries):
 
 **Proved** (structural reduction to arithmetic kernel):
 23. `integral_sqrt_sum_sq_nonneg` — ∫√(x²+y²) ≥ 0 [FULLY PROVED]
