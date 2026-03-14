@@ -17,20 +17,20 @@
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-02-21T19:21:07.129Z",
-    "iteration": 6,
-    "focus": "Eliminated x_cube_sub_2_gal_iso_s3 axiom",
+    "since": "2026-03-14T12:00:00.000Z",
+    "iteration": 7,
+    "focus": "Axiom eliminated: x_cube_sub_2_gal_iso_s3 proved, build verified",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Consider Kronecker-Weber search for abelian_realizable axiom, or Hilbert irreducibility for symmetric_group_realizable",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 1,
+      "total": 4,
+      "currentApproach": 2,
       "approachesTried": 3
     },
     "activeApproach": "Coprimality argument: 2|n, 3|n, n|6 forces n=6"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 48+ proven theorems, 2 deep axioms (abelian_realizable, shafarevich_theorem), 1 eliminated axiom (x_cube_sub_2_gal_iso_s3 proved). Only remaining sorries: open conjecture + Hilbert irreducibility.",
+    "progressSummary": "PROGRESS: 48+ proven theorems, 2 deep axioms (abelian_realizable, shafarevich_theorem), 1 axiom eliminated and verified (x_cube_sub_2_gal_iso_s3 proved, Docker build passes). Only remaining sorries: open conjecture + Hilbert irreducibility. Fixed Mathlib v4.26.0 API: Splits predicate, natDegree_eq_zero, permCongr.",
     "builtItems": [
       "cyclotomic_galois_group_card: |Gal(Phi_n/Q)| = phi(n) (proven)",
       "units_zmod3_card = 2, units_zmod8_card = 4, units_zmod11_card = 10 (decide)",
