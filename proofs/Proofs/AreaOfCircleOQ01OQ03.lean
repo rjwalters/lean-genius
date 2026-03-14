@@ -26,7 +26,7 @@
   - Fourier basis on L²(AddCircle T): available
   - Parseval's identity: available (tsum_sq_fourierCoeff)
 
-  What This File Proves (29 theorems, 2 axioms, 0 sorries):
+  What This File Proves (29 theorems, 1 axiom, 3 sorries):
   1. Equality for circles: C² = 4πA  (ring computation)
   2. Strict inequality for squares: C² > 4πA  (π < 4)
   3. The isoperimetric ratio: A/(C²/4π) and its circle value
@@ -294,7 +294,11 @@ theorem fourierCoeffOn_deriv_periodic (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
 
 /-- Fourier decomposition for periodic C¹ functions.
     Converted from axiom to theorem. Uses parseval_periodic_real and
-    fourierCoeffOn_deriv_periodic. -/
+    fourierCoeffOn_deriv_periodic.
+
+    The c₀ normalization is 1/√(2π), not 1/(2π). This arises because
+    cₙ² = 2π·‖ĉₙ‖² (Parseval with Lebesgue→Haar bridge), so
+    c₀ = √(2π)·ĉ₀ = √(2π)·(1/(2π))·∫f = (1/√(2π))·∫f. -/
 theorem fourier_decomposition (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
     (hperiod : ∀ t, f (t + 2 * π) = f t) :
     ∃ (c : ℤ → ℝ),
@@ -302,7 +306,7 @@ theorem fourier_decomposition (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
       Summable (fun n : ℤ => (↑n : ℝ) ^ 2 * c n ^ 2) ∧
       (∫ t in (0 : ℝ)..(2 * π), f t ^ 2 = ∑' n : ℤ, c n ^ 2) ∧
       (∫ t in (0 : ℝ)..(2 * π), deriv f t ^ 2 = ∑' n : ℤ, (↑n : ℝ) ^ 2 * c n ^ 2) ∧
-      (c 0 = (1 / (2 * π)) * ∫ t in (0 : ℝ)..(2 * π), f t) := by
+      (c 0 = (1 / Real.sqrt (2 * π)) * ∫ t in (0 : ℝ)..(2 * π), f t) := by
   sorry
 
 /-- A smooth closed curve in the plane, parametrized by [0, 2π]. -/
