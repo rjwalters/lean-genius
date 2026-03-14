@@ -166,7 +166,7 @@ theorem visitedPoints_covers_column (l : LPath) (a : ℕ) (x y : ℕ)
         · have hya1 : a + 1 ≤ y := by omega
           have hlo' : (a + 1) + colEntry xs 0 ≤ y := by simp [colEntry]; omega
           have hhi' : y ≤ (a + 1) + colEntry xs 1 := by
-            have : y ≤ a + colEntry (true :: xs) 1 := by convert hy_hi using 2; omega
+            have : y ≤ a + colEntry (true :: xs) 1 := by convert hy_hi using 2
             linarith
           exact visitedPoints_cons_true_of_mem xs a (0, y) (ih (a + 1) 0 y hx' hlo' hhi')
       | succ x' =>
