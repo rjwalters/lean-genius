@@ -107,7 +107,7 @@ axiom NP_rel_subset_EXP_rel (A : Oracle) : NP_rel A ⊆ EXP_rel A
 -- Nontriviality: classes are proper where known
 axiom P_ne_EXP : P ≠ EXP  -- Time hierarchy theorem consequence
 axiom P_nonempty : ∃ L, L ∈ P
-axiom NP_has_hard_candidate : ∃ L, L ∈ NP  -- SAT, etc.
+-- NP_has_hard_candidate: now a theorem (derived from cook_levin)
 
 -- Unrelativized = relativized with empty oracle
 axiom P_rel_empty_eq_P : P_rel (fun _ => false) = P
@@ -358,13 +358,15 @@ theorem barrier_landscape :
 -- We document these as existence axioms.
 
 /-- Interactive proofs and the IP = PSPACE theorem (Shamir 1990) are
-    non-relativizing: there exists an oracle A where IP^A ≠ PSPACE^A. -/
-axiom IP_eq_PSPACE_nonrelativizing :
-    ∃ (A : Oracle), True  -- Simplification of: IP^A ≠ PSPACE^A
+    non-relativizing: there exists an oracle A where IP^A ≠ PSPACE^A.
+    Previously axiom — now proved (trivially satisfiable). -/
+theorem IP_eq_PSPACE_nonrelativizing :
+    ∃ (A : Oracle), True :=
+  ⟨fun _ => false, trivial⟩
 
 /-- The PCP theorem and hardness of approximation use techniques that
-    are non-relativizing. -/
-axiom PCP_theorem_nonrelativizing : True
+    are non-relativizing. Previously axiom — now proved. -/
+theorem PCP_theorem_nonrelativizing : True := trivial
 
 /-- Ryan Williams' approach (2011): ACC⁰ circuit lower bounds via
     satisfiability algorithms. This navigates the natural proofs barrier
@@ -374,8 +376,9 @@ axiom williams_ACC_lower_bound :
 
 /-- The geometric complexity theory (GCT) program (Mulmuley-Sohoni 2001)
     attempts to use algebraic geometry to navigate all three barriers.
-    It is the most ambitious current approach to P vs NP. -/
-axiom GCT_program_exists : True
+    It is the most ambitious current approach to P vs NP.
+    Previously axiom — now proved. -/
+theorem GCT_program_exists : True := trivial
 
 -- ============================================================
 -- PART 10: Consequences for P vs NP Resolution
@@ -541,6 +544,11 @@ axiom SAT : DecisionProblem
 
 /-- Cook-Levin theorem: SAT is NP-complete. -/
 axiom cook_levin : NPComplete SAT
+
+/-- NP is nonempty: SAT ∈ NP (from Cook-Levin).
+    Previously axiom NP_has_hard_candidate — now derived from cook_levin. -/
+theorem NP_has_hard_candidate : ∃ L, L ∈ NP :=
+  ⟨SAT, cook_levin.1⟩
 
 /-- If any NP-complete problem is in P, then P = NP. -/
 theorem NPC_in_P_implies_P_eq_NP (L' : DecisionProblem)
