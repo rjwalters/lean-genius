@@ -89,6 +89,70 @@ axiom tuckers_lemma (n : ℕ) (hn : n ≥ 1)
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
+PART I.5: 1D TUCKER'S LEMMA (PROVED)
+
+The 1D case of Tucker's lemma: for a labeling L : {0,...,2N} → {±1}
+with L(0) ≠ L(2N) (antipodal boundary), there exists an edge i~(i+1)
+with complementary labels. This is the discrete intermediate value theorem.
+
+This serves as a template for the 2D proof (the axiom above).
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- 1D Tucker: if a function f : Fin (n+1) → Bool has f(0) ≠ f(n),
+    then there exists i < n with f(i) ≠ f(i+1).
+    (Discrete IVT / pigeonhole on a path.) -/
+theorem discrete_ivt (n : ℕ) (f : Fin (n + 1) → Bool) (hne : f 0 ≠ f (Fin.last n)) :
+    ∃ i : Fin n, f i.castSucc ≠ f i.castSucc.succ := by
+  by_contra h
+  push_neg at h
+  -- h : ∀ i, f i.castSucc = f i.castSucc.succ
+  -- By induction, f is constant, contradicting hne
+  have h_const : ∀ (j : Fin (n + 1)), f j = f 0 := by
+    intro j
+    induction j using Fin.induction with
+    | zero => rfl
+    | succ i ih =>
+      have := h i
+      rw [← ih]
+      exact this.symm
+  exact hne (by rw [h_const (Fin.last n)])
+
+/-- 1D Tucker's lemma for signed labels:
+    Any antipodal labeling of a path has a complementary edge. -/
+theorem tucker_1d (N : ℕ) (hN : 0 < N)
+    (L : Fin (2 * N + 1) → Bool)
+    (h_antipodal : L 0 ≠ L (Fin.last (2 * N))) :
+    ∃ i : Fin (2 * N), L i.castSucc ≠ L i.castSucc.succ :=
+  discrete_ivt (2 * N) L h_antipodal
+
+/-
+NOTE ON 2D TUCKER'S LEMMA:
+
+The 2D case is fundamentally harder than 1D. Key difficulties:
+
+1. A SINGLE PATH through the grid CAN avoid complementary edges with 4 labels.
+   Example: (0,T)→(1,T)→(0,F) has no complementary edge despite complementary
+   endpoints. So 1D Tucker on individual rows/columns doesn't suffice.
+
+2. The correct approach requires a GLOBAL parity argument on the dual graph:
+   - Define the "label-k boundary" as the set of edges where labels ±k meet
+   - On the grid boundary, the antipodal condition forces an ODD number of
+     label-k crossings for some k
+   - By the handshaking lemma, label-k paths through the interior must connect
+     an odd number of boundary crossings to interior complementary edges
+   - Therefore at least one complementary edge exists
+
+3. Formalizing this requires ~500-1000 lines:
+   - Dual graph infrastructure (edge-face adjacency)
+   - Path-following in the dual graph
+   - Parity argument (handshaking lemma / Euler characteristic)
+   - Connection to the triangulated grid structure
+
+This is a multi-session project equivalent to proving Brouwer FPT in 2D.
+-/
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
 PART II: THE DOMINANT COMPONENT LABELING
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
