@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended sound model from 753 to 1044 lines. Added Polynomial Hierarchy (Σₖ, Πₖ, PH), PSPACE, EXP, full containment chain P ⊆ NP ⊆ PH ⊆ PSPACE ⊆ EXP, PH collapse from P=NP, time hierarchy P⊊EXP, Ladner theorem, and \"some containment strict\" meta-theorem. 20 axioms, ~35 theorems, 0 sorries.",
+    "progressSummary": "PROGRESS: Proved PH_eq_NP (structural model collapse), converted PH_subset_PSPACE from axiom to theorem. Axiom count reduced from 18 to 17. Sound model at 1070 lines, ~37 theorems, 0 sorries.",
     "builtItems": [
       {
         "name": "P",
@@ -243,6 +243,16 @@
         "name": "NPIntermediate",
         "description": "NP-intermediate problem definition",
         "proven": true
+      },
+      {
+        "name": "PH_eq_NP",
+        "description": "PH = NP in structural model (unconditional collapse)",
+        "proven": true
+      },
+      {
+        "name": "PH_subset_PSPACE",
+        "description": "Now theorem (was axiom), derived from PH_eq_NP + NP_subset_PSPACE",
+        "proven": true
       }
     ],
     "insights": [
@@ -269,7 +279,9 @@
       "Defined PSPACE and EXP abstractly, proved full chain P ⊆ NP ⊆ PH ⊆ PSPACE ⊆ EXP",
       "Proved P ⊊ EXP (time hierarchy theorem) → at least one containment in the chain is strict",
       "Stated Ladner theorem: P≠NP → NP-intermediate problems exist",
-      "Sound model now at 1044 lines, 20 axioms, ~35 theorems, 0 sorries"
+      "Sound model now at 1044 lines, 20 axioms, ~35 theorems, 0 sorries",
+      "PH = NP unconditionally in structural model (Sigma_rel (k+1) A = NP_rel A for all k, so all hierarchy levels k≥1 are NP)",
+      "PH_subset_PSPACE can be derived from NP_subset_PSPACE via PH_eq_NP, eliminating one axiom"
     ],
     "mathlibGaps": [
       "Turing machines",
