@@ -18,11 +18,11 @@
   "currentState": {
     "phase": "ACT",
     "since": "2025-12-31",
-    "iteration": 5,
-    "focus": "Eliminated 3 redundant axioms. Added polynomial hierarchy, Karp-Lipton, derived containments.",
+    "iteration": 6,
+    "focus": "Added upward translation (padding arguments) and downward separation",
     "activeApproach": "Abstract complexity class definitions with barrier theorems.",
     "blockers": [],
-    "nextAction": "Consider formalizing Mahaney theorem or connecting to Mathlib TM2 definitions",
+    "nextAction": "Consider adding Immerman-Szelepcsényi consequences or connecting to Mathlib computability",
     "attemptCounts": {
       "total": 4,
       "currentApproach": 4,
@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 redundant axioms (NP⊆EXP, coNP⊆EXP, P⊆PSPACE → theorems via transitivity). Added polynomial hierarchy (PH, Σₖᵖ), Karp-Lipton theorem, 8 derived containments. Fixed trivial id theorem. File: 702 lines, 24 non-redundant axioms + 10 PH axioms, 38 theorems, 0 sorries.",
+    "progressSummary": "PROGRESS: Added upward translation theorems (padding arguments): P=NP→EXP=NEXP, downward separation proved. Added EXPSPACE and coNEXP definitions. File: 12160+ lines, 205 axioms, 603+ theorems, 0 sorries.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -210,7 +210,12 @@
         "name": "BPP_subset_IP",
         "description": "BPP ⊆ IP (derived theorem)",
         "proven": true
-      }
+      },
+      "upward_translation_P_NP: P=NP → EXP=NEXP (axiom, fundamental padding argument)",
+      "downward_separation_EXP_NEXP: EXP≠NEXP → P≠NP (PROVED from upward_translation)",
+      "upward_translation_P_PSPACE: P=PSPACE → EXP=EXPSPACE (axiom)",
+      "upward_translation_NP_coNP: NP=coNP → NEXP=coNEXP (axiom)",
+      "EXPSPACE, coNEXP definitions added"
     ],
     "insights": [
       "P_subset_NP_relative",
@@ -241,7 +246,9 @@
       "Polynomial hierarchy axioms connect circuit complexity (Karp-Lipton) to structural complexity.",
       "BPP defined as opaque set with P⊆BPP, BPP⊆PSPACE, BPP⊆P/poly (Adleman)",
       "IP defined as opaque set with NP⊆IP and IP=PSPACE (Shamir 1990)",
-      "BPP⊆IP derived as theorem from BPP⊆PSPACE + IP=PSPACE (no extra axiom needed)"
+      "BPP⊆IP derived as theorem from BPP⊆PSPACE + IP=PSPACE (no extra axiom needed)",
+      "Padding arguments show complexity collapses propagate upward: P=NP → EXP=NEXP, NP=coNP → NEXP=coNEXP, etc.",
+      "Downward separation principle: proving EXP≠NEXP would resolve P≠NP (potentially easier since stronger tools available at higher levels)"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
@@ -302,7 +309,7 @@
     "mathlib": []
   },
   "started": "2025-12-31T00:00:00-08:00",
-  "lastUpdate": "2026-03-14T19:30:00.000Z",
+  "lastUpdate": "2026-03-14T19:45:00.000Z",
   "significance": 8,
   "tractability": 4
 }
