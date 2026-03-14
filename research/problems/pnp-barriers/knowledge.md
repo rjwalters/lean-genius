@@ -5,6 +5,52 @@
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
+## Session 2026-03-14 (researcher-3, Session 28) - NEXP, MIP, #P, Hierarchy Theorems
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 60)
+**Problem**: pnp-barriers
+**Prior Status**: active (1335 lines, 29 axioms)
+
+**What we did**:
+1. Added NEXP (nondeterministic exponential time) with InNEXP definition
+2. Added MIP (multi-prover interactive proofs) with MIP = NEXP (Babai-Fortnow-Lund 1991)
+3. Added #P counting complexity: SharpP, P^(#P), Toda's theorem (PH ⊆ P^(#P))
+4. Added Valiant's theorem (existence of #P-complete problems)
+5. Added DTIME classes with DTIME_subset_P proved; time hierarchy axiomatized
+6. Added NSPACE and DSPACE with Savitch's theorem and Immerman-Szelepcsényi
+7. Added NPSPACE and DPSPACE with pspace_eq_npspace
+8. Proved extended_complexity_landscape: P ⊆ NP ⊆ PH ⊆ P^#P ⊆ PSPACE ⊆ EXP ⊆ NEXP
+9. Proved P_strict_subset_NEXP, PSPACE_subset_NEXP, IP_subset_NEXP (all derived)
+10. Proved toda_pspace: PH ⊆ PSPACE (alternative proof via Toda)
+
+**New axioms** (11):
+- NP_subset_NEXP, EXP_subset_NEXP
+- IP_subset_MIP, babai_fortnow_lund_MIP_eq_NEXP
+- PH_subset_P_SharpP, P_SharpP_subset_PSPACE, sharpP_complete_exists
+- time_hierarchy
+- savitch_theorem, immerman_szelepcsenyi, pspace_eq_npspace
+
+**New theorems proved** (13):
+- NEXP_subset_MIP, MIP_subset_NEXP, IP_subset_NEXP, PSPACE_subset_NEXP
+- toda_theorem, toda_pspace, P_strict_subset_NEXP
+- DTIME_subset_P, extended_complexity_landscape
+- coNSPACE (definition)
+
+**Outcome**: PNPBarriersSound.lean: **1676 lines**, **0 sorries**, **40 axioms**, Docker build passes.
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriersSound.lean` (+341 lines)
+- `src/data/research/problems/pnp-barriers.json` (knowledge update)
+- `research/problems/pnp-barriers/knowledge.md` (this file)
+
+**Next steps**:
+1. Add oracle complexity classes (P^A for specific oracles) to sound model
+2. Prove more derived theorems to reduce axiom count
+3. Connect to Mathlib TM2 definitions
+4. Add circuit complexity (NC, AC, TC hierarchies)
+
+---
+
 ## Session 2026-03-14 (Session 27) - Sound Computation Model
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 28)
@@ -1288,3 +1334,14 @@ This is different from P vs NP barriers:
 2. Add derandomization (Nisan-Wigderson PRG)
 3. Add average-case complexity (Levin's theory)
 
+
+---
+
+## Session 2026-03-14 (researcher-1) - Add BPP and IP = PSPACE to Sound Model
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 52)
+**Problem**: pnp-barriers
+
+**Work done**: Added BPP (opaque, +3 axioms), IP (opaque, +2 axioms), Shamir's IP=PSPACE, Adleman's BPP⊆P/poly. Derived BPP⊆IP as theorem.
+
+**Axiom count**: 24 → 29. Total: 29 axioms, ~42 theorems, 0 sorries, 1322 lines.

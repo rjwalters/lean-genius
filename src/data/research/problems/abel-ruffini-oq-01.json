@@ -17,20 +17,20 @@
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-02-21T19:21:07.129Z",
-    "iteration": 6,
-    "focus": "Eliminated x_cube_sub_2_gal_iso_s3 axiom",
+    "since": "2026-03-14T12:00:00.000Z",
+    "iteration": 8,
+    "focus": "Proved units_zmod_realizable, verified Docker build",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Remaining axioms need Kronecker-Weber/Shafarevich (not in Mathlib). Consider specific non-abelian group realizations (D₄, A₄).",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 1,
+      "total": 4,
+      "currentApproach": 2,
       "approachesTried": 3
     },
     "activeApproach": "Coprimality argument: 2|n, 3|n, n|6 forces n=6"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 48+ proven theorems, 2 deep axioms (abelian_realizable, shafarevich_theorem), 1 eliminated axiom (x_cube_sub_2_gal_iso_s3 proved). Only remaining sorries: open conjecture + Hilbert irreducibility.",
+    "progressSummary": "PROGRESS: 49+ proven theorems, 2 deep axioms (Kronecker-Weber, Shafarevich), 1 sorry (open problem) + 1 sorry (Hilbert irreducibility). New: units_zmod_realizable proves all (ZMod n)ˣ groups are realizable via cyclotomic fields. Docker build verified.",
     "builtItems": [
       "cyclotomic_galois_group_card: |Gal(Phi_n/Q)| = phi(n) (proven)",
       "units_zmod3_card = 2, units_zmod8_card = 4, units_zmod11_card = 10 (decide)",
@@ -62,7 +62,8 @@
       "x_sq_add_x_add_1_monic: X²+X+1 monic (proven)",
       "two_dvd_splitting_field_finrank: 2 | finrank ℚ SplittingField(X³-2) (proven via tower law)",
       "splitting_field_x_cube_sub_2_finrank: finrank = 6 (proven, was sorry)",
-      "x_cube_sub_2_gal_iso_s3_proved: Gal(X^3-2) iso S_3 (PROVEN, eliminates axiom)"
+      "x_cube_sub_2_gal_iso_s3_proved: Gal(X^3-2) iso S_3 (PROVEN, eliminates axiom)",
+      "units_zmod_realizable: (ZMod n)ˣ is realizable as Galois group over ℚ via CyclotomicField (PROVEN, no axioms)"
     ],
     "insights": [
       "Cyclotomic irreducibility proven via Polynomial.cyclotomic.irreducible_rat (axiom removed)",
@@ -88,7 +89,7 @@
       "x_sq_add_x_add_1_has_root_in_splitting_field: splitting field of X³-2 contains primitive cube root of unity",
       "Fixed no_root_of_irreducible_degree_ndvd: replaced non-existent minpoly.natDegree_dvd_finrank with tower law",
       "Eliminated x_cube_sub_2_gal_iso_s3 axiom: |Gal|=6=|Perm(rootSet)| + galActionHom injective => bijective => MulEquiv.ofBijective => permCongr(rootSet equiv Fin 3)",
-      "Kronecker-Weber theorem not in Mathlib as of 2026-03 (confirmed via web search). abelian_realizable axiom cannot be eliminated with current infrastructure."
+      "CyclotomicField n ℚ is definitionally SplittingField(cyclotomic n ℚ), so Polynomial.Gal type-checks directly as field automorphism group"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -117,7 +118,7 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.129Z",
-  "lastUpdate": "2026-03-13T12:00:00.000Z",
+  "lastUpdate": "2026-03-14T19:30:00.000Z",
   "significance": 6,
   "tractability": 6
 }

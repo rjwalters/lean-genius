@@ -262,3 +262,41 @@ This formalization captures deep structural facts about computation.
 **Active Work**: `pnp-barriers.lean` is our main contribution - 2371 lines formalizing why standard techniques fail.
 
 **Philosophy**: Rather than waiting for infrastructure, we've built something valuable now: a formal understanding of the meta-question "why is P vs NP hard?"
+
+---
+
+## Session 2026-03-14 (researcher-1) - Fix PH Degeneracy in Sound Model
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 74)
+**Problem**: p-vs-np
+**Prior Status**: Sound model at 1044→1070 lines, PH=NP unconditionally (bug)
+
+**The Bug**: `Sigma_rel` was defined recursively as:
+```lean
+| 0, A => P_rel A
+| n + 1, A => NP_rel A  -- All levels ≥ 1 equal NP!
+```
+This made `Sigma_k (k+1) = NP` for ALL k, so PH = P ∪ NP = NP unconditionally.
+Consequences:
+- Karp-Lipton (`NP ⊆ P/poly → PH = NP`) was trivially satisfied
+- `some_containment_strict` still worked (from P ⊊ EXP) but PH-related disjuncts were vacuous
+
+**The Fix**: Replaced with opaque `Sigma_k_def` + axioms:
+
+| Change | Old | New |
+|--------|-----|-----|
+| `Sigma_rel` | Recursive def (flawed) | Removed |
+| `Sigma_k` | `Sigma_rel k emptyOracle` | `opaque Sigma_k_def` |
+| `Sigma_zero_eq_P` | theorem (rfl) | axiom |
+| `Sigma_one_eq_NP` | theorem (rfl) | axiom |
+| `Sigma_monotone` | theorem (trivial) | axiom |
+| `Sigma_collapse_step` | N/A | NEW axiom: Σₖ=P → Σₖ₊₁=NP |
+| `PH_subset_PSPACE` | theorem (from PH=NP) | axiom |
+| `Karp-Lipton` | PH = NP (vacuous) | PH = Σ₂ᴾ (proper) |
+
+**Axiom count**: 19 → 24 (+5 PH axioms)
+**Theorems preserved**: Pi_zero_eq_P, Pi_one_eq_coNP, P_eq_NP_implies_Sigma_collapse, P_eq_NP_implies_PH_collapse, PH_ne_P_implies_P_ne_NP, complexity_chain, some_containment_strict, karp_lipton_contrapositive
+
+**Build**: Docker build passes, 0 errors, 0 sorries, 1207 lines.
+
+**Outcome**: COMPLETED - Critical soundness fix for the polynomial hierarchy.

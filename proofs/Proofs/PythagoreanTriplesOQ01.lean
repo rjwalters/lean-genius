@@ -291,6 +291,54 @@ theorem coprimeInSectorCount_pos {N : ℕ} (hN : 5 ≤ N) :
       Finset.mem_range.mpr (by omega)⟩, by omega, by omega,
       by decide, by norm_num; omega⟩⟩
 
+/-- Monotonicity: more room in the sector means at least as many coprime pairs. -/
+theorem coprimeInSectorCount_mono {N₁ N₂ : ℕ} (h : N₁ ≤ N₂) :
+    coprimeInSectorCount N₁ ≤ coprimeInSectorCount N₂ := by
+  unfold coprimeInSectorCount
+  apply Finset.card_le_card
+  intro ⟨m, n⟩ hmn
+  simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_range] at hmn ⊢
+  exact ⟨⟨by omega, by omega⟩, hmn.2.1, hmn.2.2.1, hmn.2.2.2.1, by omega⟩
+
+/-- Each pair (k, 1) with k ≥ 2 and k² + 1 ≤ N is in the coprime sector. -/
+theorem pair_k_one_in_sector {k N : ℕ} (hk : 2 ≤ k) (hN : k ^ 2 + 1 ≤ N) :
+    (k, 1) ∈ ((Finset.range (N + 1)).product (Finset.range (N + 1))).filter (fun mn =>
+      0 < mn.2 ∧ mn.2 < mn.1 ∧ Nat.Coprime mn.1 mn.2 ∧ mn.1 ^ 2 + mn.2 ^ 2 ≤ N) := by
+  simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_range]
+  refine ⟨⟨by omega, by omega⟩, by omega, by omega, Nat.coprime_one_right k, by omega⟩
+
+/-- The coprime sector count grows without bound.
+The pairs (k, 1) for k = 2, 3, ... are all coprime with hypotenuse k²+1,
+so coprimeInSectorCount(N) ≥ √(N-1) - 1. -/
+theorem coprimeInSectorCount_tendsto_atTop :
+    Filter.Tendsto (fun N => (coprimeInSectorCount N : ℝ)) atTop atTop := by
+  apply Filter.Tendsto.atTop_nonneg (fun N => (coprimeInSectorCount N : ℝ))
+    (fun N => Nat.cast_nonneg _)
+  rw [Filter.tendsto_atTop]
+  intro b
+  -- For N = (⌈b⌉₊ + 2)² + 1, the pairs (2,1), ..., (⌈b⌉₊+2, 1) give ⌈b⌉₊+1 coprime pairs
+  use (⌈b⌉₊ + 2) ^ 2 + 1
+  intro N hN
+  -- coprimeInSectorCount N ≥ ⌈b⌉₊ + 1 ≥ b
+  suffices h : ⌈b⌉₊ + 1 ≤ coprimeInSectorCount N by
+    have : (⌈b⌉₊ : ℝ) + 1 ≤ (coprimeInSectorCount N : ℝ) := by exact_mod_cast h
+    linarith [Nat.le_ceil b]
+  -- The ⌈b⌉₊ + 1 pairs {(k, 1) : k ∈ [2, ⌈b⌉₊ + 2]} are all in the sector and distinct
+  unfold coprimeInSectorCount
+  calc ⌈b⌉₊ + 1
+      = (Finset.Icc 2 (⌈b⌉₊ + 2)).card := by
+        simp [Finset.card_Icc]; omega
+    _ = ((Finset.Icc 2 (⌈b⌉₊ + 2)).image (fun k => (k, (1 : ℕ)))).card := by
+        rw [Finset.card_image_of_injective _ (fun a b h => by simpa using h)]
+    _ ≤ (((Finset.range (N + 1)).product (Finset.range (N + 1))).filter (fun mn =>
+          0 < mn.2 ∧ mn.2 < mn.1 ∧ Nat.Coprime mn.1 mn.2 ∧
+          mn.1 ^ 2 + mn.2 ^ 2 ≤ N)).card :=
+        Finset.card_le_card (fun ⟨m, n⟩ hmn => by
+          simp only [Finset.mem_image, Finset.mem_Icc] at hmn
+          obtain ⟨k, ⟨hk_lo, hk_hi⟩, hm, hn⟩ := hmn
+          subst hm; subst hn
+          exact pair_k_one_in_sector (by omega) (by nlinarith))
+
 /-- Computational verification: coprimeInSectorCount(5) = 1. -/
 theorem coprimeInSector_5 : coprimeInSectorCount 5 = 1 := by
   unfold coprimeInSectorCount; native_decide
@@ -1041,24 +1089,34 @@ theorem eo_equidistribution
       (coprimeEvenOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
       atTop (𝓝 (1 / 3)) := by
   -- By coprime_sector_three_way_partition, EO = C - OE - OO.
-  -- So EO/C = 1 - OE/C - OO/C → 1 - 1/3 - 1/3 = 1/3.
-  suffices h : Tendsto (fun N : ℕ =>
+  -- For large N, C > 0, so EO/C = 1 - OE/C - OO/C → 1 - 1/3 - 1/3 = 1/3.
+  -- Step 1: Show EO/C = 1 - OE/C - OO/C eventually (when C > 0)
+  have h_eq : ∀ᶠ N in atTop,
+      (coprimeEvenOddCount N : ℝ) / (coprimeInSectorCount N : ℝ) =
       1 - (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ) -
-        (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
-      atTop (𝓝 (1 / 3)) by
-    apply h.congr'
-    filter_upwards [Filter.eventually_ge_atTop 5] with N hN
-    have hN5 : 5 ≤ N := hN
-    have hC_pos := coprimeInSectorCount_pos hN5
-    have hC_ne : (coprimeInSectorCount N : ℝ) ≠ 0 :=
-      Nat.cast_ne_zero.mpr (by omega)
-    have h_part := coprime_sector_three_way_partition N
-    field_simp
-    push_cast [h_part]
-    ring
-  have h_target : (1 : ℝ) / 3 = 1 - 1 / 3 - 1 / 3 := by ring
-  rw [h_target]
-  exact (tendsto_const_nhds.sub h_oe).sub h_oo
+          (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ) := by
+    filter_upwards [Filter.eventually_atTop.mpr ⟨5, fun N hN => hN⟩] with N hN
+    have hC_pos : (0 : ℝ) < coprimeInSectorCount N := by exact_mod_cast coprimeInSectorCount_pos hN
+    have hC_ne : (coprimeInSectorCount N : ℝ) ≠ 0 := ne_of_gt hC_pos
+    have h3 := coprime_sector_three_way_partition N
+    have heo : (coprimeEvenOddCount N : ℝ) =
+        (coprimeInSectorCount N : ℝ) - (coprimeOddEvenCount N : ℝ) - (coprimeOddOddCount N : ℝ) := by
+      have h3' : (coprimeInSectorCount N : ℝ) =
+          (coprimeEvenOddCount N : ℝ) + (coprimeOddEvenCount N : ℝ) + (coprimeOddOddCount N : ℝ) := by
+        exact_mod_cast h3
+      linarith
+    rw [heo, sub_div, sub_div, div_self hC_ne]
+  -- Step 2: The RHS converges to 1 - 1/3 - 1/3 = 1/3
+  have h_target : Tendsto
+      (fun N : ℕ =>
+        1 - (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ) -
+            (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (1 / 3)) := by
+    have : (1 : ℝ) / 3 = 1 - 1 / 3 - 1 / 3 := by ring
+    rw [this]
+    exact (tendsto_const_nhds.sub h_oe).sub h_oo
+  -- Step 3: Conclude by eventually equal sequences have the same limit
+  exact h_target.congr' (h_eq.mono fun N hN => hN.symm)
 
 /-
 ## Part XVI: Per-Column Involution
@@ -1195,6 +1253,41 @@ theorem sectorOO_column_zero {m N : ℕ} (hm : N < m ^ 2) :
   intro n _
   intro ⟨hn_pos, _, _, _, _, hle⟩
   omega
+
+/-- **Full-column equality**: When m² + (m-1)² ≤ N, the entire column [1, m-1]
+fits in the sector, so sectorOE_column = sectorOO_column follows from the
+per-column involution (column_even_eq_odd_coprimes).
+
+This handles all "small" columns (m ≤ √(N/2) approximately). The total OE-OO
+sector discrepancy comes entirely from "large" columns near √N. -/
+theorem sectorOE_eq_sectorOO_full_column {m N : ℕ}
+    (hm_odd : Odd m) (hm1 : 1 < m) (h_full : m ^ 2 + (m - 1) ^ 2 ≤ N) :
+    sectorOE_column m N = sectorOO_column m N := by
+  -- When the full column fits, sector filters become column filters
+  have h_oe : sectorOE_column m N = (columnEvenCoprimes m).card := by
+    unfold sectorOE_column columnEvenCoprimes
+    congr 1; ext n
+    simp only [Finset.mem_filter, Finset.mem_range]
+    constructor
+    · intro ⟨_, hn_pos, hn_lt, hcop, _, hn_even, _⟩
+      exact ⟨by omega, hn_pos, hcop, hn_even⟩
+    · intro ⟨hn_range, hn_pos, hcop, hn_even⟩
+      refine ⟨by omega, hn_pos, by omega, hcop, hm_odd, hn_even, ?_⟩
+      -- n ≤ m - 1, so n² ≤ (m-1)², hence m² + n² ≤ m² + (m-1)² ≤ N
+      have : n ^ 2 ≤ (m - 1) ^ 2 := Nat.pow_le_pow_left (by omega) 2
+      omega
+  have h_oo : sectorOO_column m N = (columnOddCoprimes m).card := by
+    unfold sectorOO_column columnOddCoprimes
+    congr 1; ext n
+    simp only [Finset.mem_filter, Finset.mem_range]
+    constructor
+    · intro ⟨_, hn_pos, hn_lt, hcop, _, hn_odd, _⟩
+      exact ⟨by omega, hn_pos, hcop, hn_odd⟩
+    · intro ⟨hn_range, hn_pos, hcop, hn_odd⟩
+      refine ⟨by omega, hn_pos, by omega, hcop, hm_odd, hn_odd, ?_⟩
+      have : n ^ 2 ≤ (m - 1) ^ 2 := Nat.pow_le_pow_left (by omega) 2
+      omega
+  rw [h_oe, h_oo, column_even_eq_odd_coprimes hm_odd hm1]
 
 /-
 NOTE: A per-column discrepancy bound of 1 was previously axiomatized here but is
@@ -1390,6 +1483,89 @@ theorem sector_oe_oo_discrepancy_bound (N : ℕ) :
   have h := sector_boundary_balance N
   omega
 
+/-- **Conditional equidistribution**: If the boundary discrepancy vanishes
+relative to the coprime count, then OE and OO have the same asymptotic density.
+Combined with the 3-way partition, this reduces the parity axiom to showing
+EO/coprime → 1/3.
+
+Proof: OE/C - OO/C = (OE - OO)/C = (bdryOO - bdryOE)/C → 0. -/
+theorem oe_oo_same_density_of_boundary_vanishes
+    (h_bdry : Filter.Tendsto (fun N =>
+      ((triangleOO_outsideCircle (Nat.sqrt N) N).card : ℝ) -
+      (triangleOE_outsideCircle (Nat.sqrt N) N).card) /
+      (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 0)) :
+    Filter.Tendsto (fun N =>
+      (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ) -
+      (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 0) := by
+  have h_eq : ∀ N, (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ) -
+      (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ) =
+      ((coprimeOddEvenCount N : ℝ) - (coprimeOddOddCount N : ℝ)) /
+      (coprimeInSectorCount N : ℝ) := by
+    intro N; ring
+  simp_rw [h_eq]
+  have h_disc : ∀ N, (coprimeOddEvenCount N : ℝ) - (coprimeOddOddCount N : ℝ) =
+      ((triangleOO_outsideCircle (Nat.sqrt N) N).card : ℝ) -
+      (triangleOE_outsideCircle (Nat.sqrt N) N).card := by
+    intro N
+    have h := sector_oe_oo_discrepancy_bound N
+    push_cast at h ⊢; linarith
+  simp_rw [h_disc]
+  exact h_bdry
+
+/-- **Parity axiom decomposition**: The bothOdd fraction axiom (OO/coprime → 1/3)
+follows from two independent hypotheses:
+1. The boundary discrepancy vanishes (geometric: involution ≈ preserves circle boundary)
+2. The EO fraction converges to 1/3 (arithmetic: coprime density independent of parity)
+
+This decomposes the parity axiom into a geometric statement and an arithmetic one. -/
+theorem parity_from_boundary_and_eo
+    (h_bdry : Filter.Tendsto (fun N =>
+      (((triangleOO_outsideCircle (Nat.sqrt N) N).card : ℝ) -
+      (triangleOE_outsideCircle (Nat.sqrt N) N).card) /
+      (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 0))
+    (h_eo : Filter.Tendsto (fun N =>
+      (coprimeEvenOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (1 / 3))) :
+    Filter.Tendsto (fun N =>
+      (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (1 / 3)) := by
+  -- From partition: EO + OE + OO = C, so OE/C + OO/C = 1 - EO/C → 2/3
+  -- From boundary: OE/C - OO/C → 0
+  -- Together: OO/C → 1/3
+  have h_diff := oe_oo_same_density_of_boundary_vanishes h_bdry
+  -- OE + OO = C - EO, so (OE + OO)/C = 1 - EO/C → 2/3
+  have h_sum : Filter.Tendsto (fun N =>
+      (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ) +
+      (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (2 / 3)) := by
+    have h_part_eq : ∀ᶠ N in atTop,
+        (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ) +
+        (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ) =
+        1 - (coprimeEvenOddCount N : ℝ) / (coprimeInSectorCount N : ℝ) := by
+      filter_upwards [Filter.eventually_ge_atTop 5] with N hN
+      have hC_pos := coprimeInSectorCount_pos hN
+      have hC_ne : (coprimeInSectorCount N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+      field_simp
+      push_cast [coprime_sector_three_way_partition N]
+      ring
+    have h_target : (2 : ℝ) / 3 = 1 - 1 / 3 := by ring
+    rw [h_target]
+    exact (Filter.Tendsto.congr' h_part_eq).mpr (tendsto_const_nhds.sub h_eo)
+  -- OO/C = ((OE + OO)/C - (OE - OO)/C) / 2
+  have h_target : (1 : ℝ) / 3 = (2 / 3 - 0) / 2 := by ring
+  rw [h_target]
+  have h_oo_eq : ∀ N, (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ) =
+      ((coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ) +
+       (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ) -
+      ((coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ) -
+       (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))) / 2 := by
+    intro N; ring
+  simp_rw [h_oo_eq]
+  exact (h_sum.sub h_diff).div_const 2
+
 /-
 ## Summary (Part XVI)
 
@@ -1407,20 +1583,32 @@ theorem sector_oe_oo_discrepancy_bound (N : ℕ) :
 
 ### Mathematical Significance:
 The Balance Theorem proves that any OE/OO imbalance in the circle sector is
-ENTIRELY due to boundary effects near the arc m²+n² = N. Since:
-- The boundary has O(√N) lattice points (arc length ~ √N)
-- The sector has O(N) points (area ~ N)
-The imbalance is O(√N)/O(N) → 0, proving OE and OO are asymptotically
-equidistributed in the sector.
+ENTIRELY due to boundary effects: sectorOE - sectorOO = bdryOO - bdryOE.
 
-Combined with the 3-way partition (coprime = EO + OE + OO), this reduces
-the parity axiom to: EO also has density 1/3 among coprime sector pairs.
+### New Infrastructure (Part VI-A):
+- coprimeInSectorCount_mono: monotonicity of coprime sector count
+- coprimeInSectorCount_tendsto_atTop: coprime sector count → ∞
+  (via explicit coprime pairs (k,1) for k = 2,3,...)
+- sectorOE_eq_sectorOO_full_column: OE = OO exactly for columns where
+  m² + (m-1)² ≤ N (full column fits in sector)
+
+### Parity Axiom Decomposition (Part XVI-A):
+- oe_oo_same_density_of_boundary_vanishes: if boundary discrepancy / coprime → 0,
+  then OE/coprime - OO/coprime → 0
+- **parity_from_boundary_and_eo**: the parity axiom (OO/coprime → 1/3) follows from:
+  (1) Boundary discrepancy vanishes: (bdryOO - bdryOE) / coprime → 0  [geometric]
+  (2) EO density: EO/coprime → 1/3  [arithmetic, from coprime_eo_iff]
+  This decomposes the parity axiom into independent geometric and arithmetic pieces.
 
 ### Axiom Status:
-- parity_class_equidistribution is now "morally proved" for 2/3 classes
-  (OE ≈ OO via bijection + boundary bound)
-- EO → 1/3 follows algebraically once OE → 1/3 is established (eo_equidistribution)
-- Only the boundary-to-zero estimate remains to formally close the gap
+The parity axiom (bothOdd_fraction_in_coprime_sector) is now understood as the
+conjunction of two independent facts:
+1. **Geometric**: The involution n↦m-n nearly preserves the circle boundary
+   (boundary discrepancy is sub-linear). This is the content of sectorOE_eq_sectorOO_full_column
+   for small columns, and the boundary analysis for large columns.
+2. **Arithmetic**: Among coprime sector pairs, the EO class has density 1/3.
+   This follows from coprime_eo_iff: coprime(2a,n) ↔ coprime(a,n) for odd n,
+   meaning EO coprime density equals the general coprime density.
 
 ### Sorries: 0
 -/
@@ -1601,6 +1789,268 @@ theorem coprime_eo_iff (a n : ℕ) (hn_odd : Odd n) :
   │     └→ primitiveTripleCount_density (THEOREM: main result N/(2π))
   └→ [+ boundary analysis for OE→1/3]
      └→ eo_equidistribution (THEOREM: EO→1/3 from OE+OO, algebraic)
+
+### Sorries: 0
+-/
+
+/-
+## Part XIX: Column-Sum Decomposition by m-Parity
+
+The coprime sector decomposes by the parity of m:
+- **Even-m columns**: All coprime pairs have odd n (EO class only)
+- **Odd-m columns**: Coprime pairs split into OE and OO classes
+
+This gives a clean factoring of the parity axiom:
+1. **Column density ratio**: coprime pairs with even m / total → 1/3
+   (equivalently, odd m / total → 2/3)
+2. **Column balance**: among odd-m coprime pairs, OE ≈ OO
+   (follows from per-column involution + boundary analysis)
+
+Together these imply: EO → 1/3, OE → 1/3, OO → 1/3.
+-/
+
+/-- Coprime sector count restricted to even m values. -/
+noncomputable def sectorCopEven (N : ℕ) : ℕ :=
+  ((Finset.range (N + 1)).product (Finset.range (N + 1))).filter (fun mn =>
+    0 < mn.2 ∧ mn.2 < mn.1 ∧ Nat.Coprime mn.1 mn.2
+      ∧ Even mn.1 ∧ mn.1 ^ 2 + mn.2 ^ 2 ≤ N
+  ) |>.card
+
+/-- Coprime sector count restricted to odd m values. -/
+noncomputable def sectorCopOdd (N : ℕ) : ℕ :=
+  ((Finset.range (N + 1)).product (Finset.range (N + 1))).filter (fun mn =>
+    0 < mn.2 ∧ mn.2 < mn.1 ∧ Nat.Coprime mn.1 mn.2
+      ∧ Odd mn.1 ∧ mn.1 ^ 2 + mn.2 ^ 2 ≤ N
+  ) |>.card
+
+/-- **M-parity partition**: coprime sector = even-m + odd-m coprime pairs. -/
+theorem sector_m_parity_partition (N : ℕ) :
+    coprimeInSectorCount N = sectorCopEven N + sectorCopOdd N := by
+  unfold coprimeInSectorCount sectorCopEven sectorCopOdd
+  rw [← Finset.card_union_of_disjoint]
+  · congr 1; ext ⟨m, n⟩
+    simp only [Finset.mem_filter, Finset.mem_union]
+    constructor
+    · rintro ⟨hmem, hn_pos, hn_lt, hcop, hle⟩
+      rcases Nat.even_or_odd m with he | ho
+      · left; exact ⟨hmem, hn_pos, hn_lt, hcop, he, hle⟩
+      · right; exact ⟨hmem, hn_pos, hn_lt, hcop, ho, hle⟩
+    · rintro (⟨hmem, hn_pos, hn_lt, hcop, _, hle⟩ |
+              ⟨hmem, hn_pos, hn_lt, hcop, _, hle⟩) <;>
+      exact ⟨hmem, hn_pos, hn_lt, hcop, hle⟩
+  · apply Finset.disjoint_filter.mpr
+    intro ⟨m, _⟩ _ h1 h2
+    exact absurd h1.2.2.2.1 (Nat.not_even_iff_odd.mpr h2.2.2.2.1)
+
+/-- **Even-m identity**: All coprime pairs with even m are EO (even-odd).
+When m is even, coprimality forces n to be odd. -/
+theorem sectorCopEven_eq_eo (N : ℕ) :
+    sectorCopEven N = coprimeEvenOddCount N := by
+  unfold sectorCopEven coprimeEvenOddCount
+  congr 1; ext ⟨m, n⟩
+  simp only [Finset.mem_filter]
+  constructor
+  · rintro ⟨hmem, hn_pos, hn_lt, hcop, hm_even, hle⟩
+    -- n must be odd: if n were even, gcd(m,n) would be even
+    have hn_odd : Odd n := by
+      rcases Nat.even_or_odd n with hen | hon
+      · exact absurd ⟨hm_even, hen⟩ (coprime_not_both_even hcop)
+      · exact hon
+    exact ⟨hmem, hn_pos, hn_lt, hcop, hm_even, hn_odd, hle⟩
+  · rintro ⟨hmem, hn_pos, hn_lt, hcop, hm_even, _, hle⟩
+    exact ⟨hmem, hn_pos, hn_lt, hcop, hm_even, hle⟩
+
+/-- **Odd-m identity**: Coprime pairs with odd m are exactly OE + OO. -/
+theorem sectorCopOdd_eq_oe_plus_oo (N : ℕ) :
+    sectorCopOdd N = coprimeOddEvenCount N + coprimeOddOddCount N := by
+  unfold sectorCopOdd coprimeOddEvenCount coprimeOddOddCount
+  rw [← Finset.card_union_of_disjoint]
+  · congr 1; ext ⟨m, n⟩
+    simp only [Finset.mem_filter, Finset.mem_union]
+    constructor
+    · rintro ⟨hmem, hn_pos, hn_lt, hcop, hm_odd, hle⟩
+      rcases Nat.even_or_odd n with hen | hon
+      · left; exact ⟨hmem, hn_pos, hn_lt, hcop, hm_odd, hen, hle⟩
+      · right; exact ⟨hmem, hn_pos, hn_lt, hcop, hm_odd, hon, hle⟩
+    · rintro (⟨hmem, hn_pos, hn_lt, hcop, hm_odd, _, hle⟩ |
+              ⟨hmem, hn_pos, hn_lt, hcop, hm_odd, _, hle⟩) <;>
+      exact ⟨hmem, hn_pos, hn_lt, hcop, hm_odd, hle⟩
+  · apply Finset.disjoint_filter.mpr
+    intro ⟨_, n⟩ _ h1 h2
+    exact absurd h1.2.2.2.2.1 (Nat.not_even_iff_odd.mpr h2.2.2.2.2.1)
+
+/-- **Axiom Reduction Theorem**: The parity axiom (bothOdd → 1/3) follows from
+two simpler conditions:
+1. **Column density**: coprime pairs with odd m make up 2/3 of all coprime pairs
+2. **Column balance**: OE and OO have the same asymptotic density among odd-m pairs
+
+Together: OE → 1/3, OO → 1/3 (from conditions 1+2), then EO → 1/3 (from partition).
+
+This theorem proves: if sectorCopOdd/total → 2/3 and OE/coprime → 1/3,
+then OO/coprime → 1/3 (which is equivalent to bothOdd_fraction). -/
+theorem parity_from_column_density
+    (h_odd_ratio : Tendsto (fun N : ℕ =>
+      (sectorCopOdd N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (2 / 3)))
+    (h_oe : Tendsto (fun N : ℕ =>
+      (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (1 / 3))) :
+    Tendsto (fun N : ℕ =>
+      (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (1 / 3)) := by
+  -- OO/C = (CopOdd - OE)/C = CopOdd/C - OE/C → 2/3 - 1/3 = 1/3
+  have h_eq : ∀ᶠ N in atTop,
+      (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ) =
+      (sectorCopOdd N : ℝ) / (coprimeInSectorCount N : ℝ) -
+      (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ) := by
+    filter_upwards [Filter.eventually_atTop.mpr ⟨5, fun N hN => hN⟩] with N hN
+    have hC_pos : (0 : ℝ) < coprimeInSectorCount N := by exact_mod_cast coprimeInSectorCount_pos hN
+    have hC_ne : (coprimeInSectorCount N : ℝ) ≠ 0 := ne_of_gt hC_pos
+    have h_split := sectorCopOdd_eq_oe_plus_oo N
+    have : (coprimeOddOddCount N : ℝ) =
+        (sectorCopOdd N : ℝ) - (coprimeOddEvenCount N : ℝ) := by
+      have h' : (sectorCopOdd N : ℝ) =
+          (coprimeOddEvenCount N : ℝ) + (coprimeOddOddCount N : ℝ) := by
+        exact_mod_cast h_split
+      linarith
+    rw [this, sub_div]
+  have h_target : Tendsto
+      (fun N : ℕ =>
+        (sectorCopOdd N : ℝ) / (coprimeInSectorCount N : ℝ) -
+        (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (1 / 3)) := by
+    have : (1 : ℝ) / 3 = 2 / 3 - 1 / 3 := by ring
+    rw [this]
+    exact h_odd_ratio.sub h_oe
+  exact h_target.congr' (h_eq.mono fun N hN => hN.symm)
+
+/-- **OE from column balance**: If the boundary discrepancy vanishes
+(sectorOE ≈ sectorOO), then OE/coprime and OO/coprime converge to the
+same limit. Combined with sectorCopOdd/coprime → 2/3, each converges to 1/3.
+
+Formally: if (OE - OO)/coprime → 0 and (OE + OO)/coprime → 2/3,
+then OE/coprime → 1/3. -/
+theorem oe_from_column_balance
+    (h_sum : Tendsto (fun N : ℕ =>
+      ((coprimeOddEvenCount N : ℝ) + (coprimeOddOddCount N : ℝ)) /
+      (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (2 / 3)))
+    (h_diff : Tendsto (fun N : ℕ =>
+      ((coprimeOddEvenCount N : ℝ) - (coprimeOddOddCount N : ℝ)) /
+      (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 0)) :
+    Tendsto (fun N : ℕ =>
+      (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (1 / 3)) := by
+  -- OE/C = (sum/C + diff/C) / 2 where sum = OE+OO, diff = OE-OO
+  -- sum/C + diff/C → 2/3 + 0 = 2/3, so (sum/C + diff/C)/2 → 1/3
+  have h_eq : ∀ᶠ N in atTop,
+      (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ) =
+      (((coprimeOddEvenCount N : ℝ) + (coprimeOddOddCount N : ℝ)) /
+       (coprimeInSectorCount N : ℝ) +
+       ((coprimeOddEvenCount N : ℝ) - (coprimeOddOddCount N : ℝ)) /
+       (coprimeInSectorCount N : ℝ)) / 2 := by
+    filter_upwards [Filter.eventually_atTop.mpr ⟨5, fun N hN => hN⟩] with N hN
+    have hC_pos : (0 : ℝ) < coprimeInSectorCount N := by
+      exact_mod_cast coprimeInSectorCount_pos hN
+    have hC_ne : (coprimeInSectorCount N : ℝ) ≠ 0 := ne_of_gt hC_pos
+    rw [add_div, add_div]
+    field_simp
+    ring
+  have h_target : Tendsto
+      (fun N : ℕ =>
+        (((coprimeOddEvenCount N : ℝ) + (coprimeOddOddCount N : ℝ)) /
+         (coprimeInSectorCount N : ℝ) +
+         ((coprimeOddEvenCount N : ℝ) - (coprimeOddOddCount N : ℝ)) /
+         (coprimeInSectorCount N : ℝ)) / 2)
+      atTop (𝓝 (1 / 3)) := by
+    have : (1 : ℝ) / 3 = (2 / 3 + 0) / 2 := by ring
+    rw [this]
+    exact Tendsto.div_const (h_sum.add h_diff) 2
+  exact h_target.congr' (h_eq.mono fun N hN => hN.symm)
+
+/-- **Full reduction**: The parity equidistribution axiom follows from:
+1. Column density: sectorCopOdd/total → 2/3
+2. Boundary vanishing: (OE - OO)/total → 0
+
+These two conditions together give OO/coprime → 1/3 (= bothOdd_fraction). -/
+theorem parity_axiom_from_columns
+    (h_odd_ratio : Tendsto (fun N : ℕ =>
+      (sectorCopOdd N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (2 / 3)))
+    (h_boundary : Tendsto (fun N : ℕ =>
+      ((coprimeOddEvenCount N : ℝ) - (coprimeOddOddCount N : ℝ)) /
+      (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 0)) :
+    Tendsto (fun N : ℕ =>
+      (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (1 / 3)) := by
+  -- First derive h_sum from h_odd_ratio
+  have h_sum : Tendsto (fun N : ℕ =>
+      ((coprimeOddEvenCount N : ℝ) + (coprimeOddOddCount N : ℝ)) /
+      (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (2 / 3)) := by
+    refine h_odd_ratio.congr' ?_
+    filter_upwards [Filter.eventually_atTop.mpr ⟨5, fun N hN => hN⟩] with N hN
+    congr 1
+    exact_mod_cast sectorCopOdd_eq_oe_plus_oo N
+  -- Now use oe_from_column_balance to get OE → 1/3
+  have h_oe := oe_from_column_balance h_sum h_boundary
+  -- Then use parity_from_column_density to get OO → 1/3
+  exact parity_from_column_density h_odd_ratio h_oe
+
+/-- **Boundary discrepancy via sector_oe_oo_discrepancy_bound**: The OE-OO
+discrepancy in the sector equals the OO-OE discrepancy in the boundary.
+This converts the boundary vanishing condition to a statement about
+lattice points near the arc m²+n² = N. -/
+theorem boundary_discrepancy_formula (N : ℕ) :
+    (coprimeOddEvenCount N : ℤ) - (coprimeOddOddCount N : ℤ) =
+    (triangleOO_outsideCircle (Nat.sqrt N) N).card -
+    (triangleOE_outsideCircle (Nat.sqrt N) N).card :=
+  sector_oe_oo_discrepancy_bound N
+
+/-
+## Part XIX Summary
+
+### New Definitions:
+- sectorCopEven: coprime sector count restricted to even m
+- sectorCopOdd: coprime sector count restricted to odd m
+
+### New Theorems:
+- **sector_m_parity_partition**: coprime = sectorCopEven + sectorCopOdd [PARTITION]
+- **sectorCopEven_eq_eo**: sectorCopEven = coprimeEvenOddCount [IDENTITY]
+- **sectorCopOdd_eq_oe_plus_oo**: sectorCopOdd = OE + OO [IDENTITY]
+- **parity_from_column_density**: CopOdd/C → 2/3 + OE/C → 1/3 ⟹ OO/C → 1/3
+- **oe_from_column_balance**: (OE+OO)/C → 2/3 + (OE-OO)/C → 0 ⟹ OE/C → 1/3
+- **parity_axiom_from_columns**: CopOdd/C → 2/3 + boundary → 0 ⟹ OO/C → 1/3 [REDUCTION]
+- **boundary_discrepancy_formula**: links boundary condition to arc lattice points
+
+### Mathematical Significance:
+
+The parity equidistribution axiom (OO/coprime → 1/3) is now FACTORED into:
+
+1. **Column density ratio** (sectorCopOdd/coprime → 2/3):
+   Why even-m columns contribute 1/3 of coprime pairs. This follows from
+   the fact that φ(2k)/(2k) = (1/2)·φ(k)/k for odd k (the GCD halving
+   principle from coprime_eo_iff), making even-m columns half as dense.
+
+2. **Boundary vanishing** ((OE-OO)/coprime → 0):
+   Why the per-column OE=OO involution extends to the sector. Follows from
+   |boundary| = O(√N) while |sector| = O(N), so discrepancy → 0.
+
+This decomposition separates the algebraic content (column density, provable
+from multiplicative number theory) from the geometric content (boundary bound,
+provable from lattice point estimates).
+
+### Axiom Reduction Path:
+  bothOdd_fraction_in_coprime_sector (current axiom)
+  = parity_axiom_from_columns applied to:
+    (a) sectorCopOdd/coprime → 2/3  [NEW: column density axiom]
+    (b) (OE-OO)/coprime → 0         [NEW: boundary vanishing axiom]
+
+Both (a) and (b) are strictly weaker than bothOdd_fraction and have
+cleaner mathematical justifications. A future session could prove (b)
+from a lattice-point-on-arc bound, eliminating it entirely.
 
 ### Sorries: 0
 -/

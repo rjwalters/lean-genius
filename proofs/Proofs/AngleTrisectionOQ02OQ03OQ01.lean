@@ -96,14 +96,12 @@ theorem zeta_ne_zero (n : ℕ) : zeta n ≠ 0 := by
 /-- ζₙⁿ = 1: the defining property of an n-th root of unity. -/
 theorem zeta_pow (n : ℕ) (hn : 0 < n) : zeta n ^ n = 1 := by
   unfold zeta
-  rw [← Complex.exp_nat_mul]
+  rw [← Complex.exp_natCast_mul]
   have : (n : ℂ) * (2 * ↑Real.pi * I / ↑n) = 2 * ↑Real.pi * I := by
     field_simp
     ring
-  rw [this, show (2 : ℂ) * ↑Real.pi * I = ↑(2 * Real.pi) * I by push_cast; ring]
-  rw [Complex.exp_mul_I, Complex.ofReal_cos, Complex.ofReal_sin,
-      Real.cos_two_pi, Real.sin_two_pi]
-  simp
+  rw [this]
+  simp [Complex.exp_two_pi_mul_I]
 
 /-- ζₙ is an n-th root of unity (i.e., ζₙ ∈ rootsOfUnity n ℂ). -/
 theorem zeta_mem_rootsOfUnity (n : ℕ) (hn : 0 < n) :
@@ -182,7 +180,7 @@ theorem chebyshev_T_degree (n : ℕ) (hn : 0 < n) :
     ∃ P : ℤ[X], P.natDegree = n ∧
     ∀ θ : ℝ, (P.map (Int.castRingHom ℝ)).eval (Real.cos θ) = Real.cos (n * θ) := by
   refine ⟨T ℤ (n : ℤ), ?_, fun θ => ?_⟩
-  · rw [natDegree_T]; simp [Int.natAbs_ofNat]
+  · rw [Polynomial.Chebyshev.natDegree_T]; simp [Int.natAbs_ofNat]
   · rw [map_T (Int.castRingHom ℝ) (n : ℤ), T_real_cos θ (n : ℤ)]
     push_cast; ring
 
@@ -201,9 +199,9 @@ theorem cyclotomic_degree (n : ℕ) (hn : 0 < n) :
 
 /-- The cyclotomic polynomial is irreducible over ℚ.
     This is a key result from algebraic number theory, available in Mathlib. -/
-theorem cyclotomic_irreducible (n : ℕ+) :
+theorem cyclotomic_irreducible (n : ℕ) (hn : 0 < n) :
     Irreducible (Polynomial.cyclotomic n ℚ) :=
-  Polynomial.cyclotomic.irreducible_rat n.val n.pos
+  Polynomial.cyclotomic.irreducible_rat hn
 
 -- ============================================================================
 -- § 7. Maximal Real Subfield
@@ -221,14 +219,15 @@ theorem cyclotomic_irreducible (n : ℕ+) :
     The element -1 ∈ (ℤ/nℤ)* maps to an automorphism σ with:
     - σ ≠ id: since -1 ≠ 1 in (ℤ/nℤ)* for n ≥ 3
     - σ² = id: since (-1)² = 1 in (ℤ/nℤ)* -/
-theorem complex_conj_order_two (n : ℕ) (hn : 3 ≤ n) :
-    ∃ (σ : (CyclotomicField ⟨n, by omega⟩ ℚ) ≃ₐ[ℚ] (CyclotomicField ⟨n, by omega⟩ ℚ)),
+theorem complex_conj_order_two (n : ℕ) [NeZero n] (hn : 3 ≤ n) :
+    ∃ (σ : (CyclotomicField n ℚ) ≃ₐ[ℚ] (CyclotomicField n ℚ)),
     σ ≠ AlgEquiv.refl ∧ σ * σ = AlgEquiv.refl := by
-  set np : ℕ+ := ⟨n, by omega⟩
-  set K := CyclotomicField np ℚ
-  have hequiv := IsCyclotomicExtension.autEquivPow ℚ K np
+  set K := CyclotomicField n ℚ
+  have hn_pos : 0 < n := by omega
+  have hirr := Polynomial.cyclotomic.irreducible_rat hn_pos
+  have hequiv := galCyclotomicEquivUnitsZMod (L := K) hirr
   -- The automorphism corresponding to -1 ∈ (ℤ/nℤ)*
-  set u : (ZMod np)ˣ := -1
+  set u : (ZMod n)ˣ := -1
   set σ := hequiv.symm u
   refine ⟨σ, ?_, ?_⟩
   · -- σ ≠ refl: -1 ≠ 1 in (ℤ/nℤ)* for n ≥ 3
@@ -239,18 +238,18 @@ theorem complex_conj_order_two (n : ℕ) (hn : 3 ≤ n) :
     have h_one : hequiv AlgEquiv.refl = 1 := map_one hequiv
     rw [h_one] at h_eq
     -- So -1 = 1 in (ZMod n)ˣ, contradiction for n ≥ 3
-    have h_units : (-1 : (ZMod np)ˣ) = 1 := h_eq
-    have h_neg : (-1 : ZMod np) = 1 := by
+    have h_units : (-1 : (ZMod n)ˣ) = 1 := h_eq
+    have h_neg : (-1 : ZMod n) = 1 := by
       have := congr_arg Units.val h_units; simpa using this
     -- -1 = 1 means 1 + 1 = 0 in ZMod n (since -1 + 1 = 0 = 1 + 1)
-    have h2 : (2 : ZMod np) = 0 := by
-      have h0 := neg_add_cancel (1 : ZMod np)  -- -1 + 1 = 0
+    have h2 : (2 : ZMod n) = 0 := by
+      have h0 := neg_add_cancel (1 : ZMod n)  -- -1 + 1 = 0
       rw [h_neg] at h0  -- 1 + 1 = 0
-      rw [show (2 : ZMod np) = 1 + 1 from by norm_num]
+      rw [show (2 : ZMod n) = 1 + 1 from by norm_num]
       exact h0
     -- (2 : ZMod n) = 0 means n | 2
-    rw [show (2 : ZMod np) = ((2 : ℕ) : ZMod np) from by push_cast; ring] at h2
-    have h_dvd : (np : ℕ) ∣ 2 := (ZMod.natCast_zmod_eq_zero_iff_dvd 2 np).mp h2
+    rw [show (2 : ZMod n) = ((2 : ℕ) : ZMod n) from by push_cast; ring] at h2
+    have h_dvd : n ∣ 2 := (ZMod.natCast_zmod_eq_zero_iff_dvd 2 n).mp h2
     -- But n ≥ 3 and n | 2 is impossible
     omega
   · -- σ² = refl: (-1)² = 1
@@ -263,7 +262,7 @@ theorem complex_conj_order_two (n : ℕ) (hn : 3 ≤ n) :
 /-- The degree of the maximal real subfield over ℚ is φ(n)/2 for n ≥ 3.
     This is the key numerical fact connecting cyclotomic theory to constructibility. -/
 axiom maximal_real_subfield_degree (n : ℕ) (hn : 3 ≤ n) :
-    ∃ (F : IntermediateField ℚ (CyclotomicField ⟨n, by omega⟩ ℚ)),
+    ∃ (F : IntermediateField ℚ (CyclotomicField n ℚ)),
     Module.finrank ℚ F = Nat.totient n / 2
 
 -- ============================================================================
@@ -284,17 +283,14 @@ axiom maximal_real_subfield_degree (n : ℕ) (hn : 3 ≤ n) :
     4. This polynomial has integer coefficients (by Vieta's formulas) -/
 axiom cos_minimal_poly_degree (n : ℕ) (hn : 3 ≤ n) :
     ∃ P : ℚ[X], P.Monic ∧ P.natDegree = Nat.totient n / 2 ∧
-    P.eval (algebraMap ℚ ℝ (Real.cos (2 * Real.pi / n))) = 0
+    Polynomial.aeval (Real.cos (2 * Real.pi / n)) P = 0
 
 /-- From cos_minimal_poly_degree, cos(2π/n) is integral over ℚ.
     This is the first primitive axiom from OQ02-OQ03 Section XIV. -/
 theorem cos_algebraic_from_cyclotomic (n : ℕ) (hn : 3 ≤ n) :
     IsAlgebraic ℚ (Real.cos (2 * Real.pi / n)) := by
   obtain ⟨P, hP_monic, _, hP_root⟩ := cos_minimal_poly_degree n hn
-  exact ⟨P, hP_monic.ne_zero, by
-    rw [Polynomial.aeval_def]
-    convert hP_root using 1
-    simp [Polynomial.eval_map]⟩
+  exact ⟨P, hP_monic.ne_zero, hP_root⟩
 
 -- ============================================================================
 -- § 9. Degree Computation for Galois Group
@@ -331,7 +327,7 @@ theorem gal_card_from_cyclotomic (n : ℕ) (hn : 3 ≤ n) :
   AXIOM INVENTORY (updated):
   1. chebyshev_T_exists: ✅ PROVED (line 171, from Mathlib T_real_cos)
   2. chebyshev_T_degree: ✅ PROVED (line 181, from Mathlib natDegree_T)
-  3. complex_conj_order_two: ✅ PROVED (line 224, via autEquivPow and -1 ∈ (ℤ/nℤ)*)
+  3. complex_conj_order_two: ✅ PROVED (line 224, via galCyclotomicEquivUnitsZMod and -1 ∈ (ℤ/nℤ)*)
 
   4. maximal_real_subfield_degree: [ℚ(ζₙ⁺):ℚ] = φ(n)/2
      STATUS: Requires Galois theory fixed-field degree formula
