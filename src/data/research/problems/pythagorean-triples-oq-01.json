@@ -32,13 +32,13 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-03-12T05:32:38.520Z",
-    "iteration": 4,
-    "focus": "Square symmetry proved, coprime halving proved, density insight documented",
+    "iteration": 5,
+    "focus": "Proved coprime sector growth, per-column equality, axiom decomposition",
     "blockers": [
       "Formalizing CRT independence of coprimality sieve and parity requires analytic NT infrastructure",
       "Connecting square EO=OE to sector EO=OE requires circle boundary analysis"
     ],
-    "nextAction": "Formalize CRT-based argument or pursue boundary analysis for sector equidistribution",
+    "nextAction": "Prove boundary discrepancy sub-linearity or EO/coprime→1/3",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 2,
@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved eo_equidistribution (last sorry). File now has 0 sorries, 3 axioms. All main theorems fully proved from axioms.",
+    "progressSummary": "PROGRESS: 6 new theorems proved. Coprime sector count grows to infinity. Parity axiom decomposed into geometric (boundary discrepancy vanishes) + arithmetic (EO density = 1/3). Full-column OE=OO equality proved for small columns.",
     "builtItems": [
       "bothOddCoprimeCount: counting function for both-odd coprime pairs",
       "coprime_sector_partition: exact partition identity (coprime = primitive + bothOdd)",
@@ -86,7 +86,13 @@
         "name": "eo_equidistribution (proved)",
         "description": "EO/C to 1/3 from OE/C,OO/C to 1/3 via partition",
         "proven": true
-      }
+      },
+      "coprimeInSectorCount_mono: monotonicity (PythagoreanTriplesOQ01.lean)",
+      "pair_k_one_in_sector: (k,1) pairs in sector (PythagoreanTriplesOQ01.lean)",
+      "coprimeInSectorCount_tendsto_atTop: growth to infinity (PythagoreanTriplesOQ01.lean)",
+      "sectorOE_eq_sectorOO_full_column: per-column equality for small columns (PythagoreanTriplesOQ01.lean)",
+      "oe_oo_same_density_of_boundary_vanishes: conditional OE≈OO (PythagoreanTriplesOQ01.lean)",
+      "parity_from_boundary_and_eo: axiom decomposition theorem (PythagoreanTriplesOQ01.lean)"
     ],
     "insights": [
       "The coprime sector decomposes into exactly 2 parity classes (not 3): primitive (mixed parity) and both-odd. Both-even is impossible for coprime pairs.",
@@ -106,7 +112,11 @@
       "Converted parity_class_equidistribution from axiom to theorem (derived from bothOdd_fraction via bothOdd_eq_oo) — axiom count reduced from 4 to 3",
       "Fixed totient_even_of_odd proof (pre-existing omega failure due to Mathlib API change)",
       "Confirmed column_discrepancy_bound was already removed (false for m=21, N=541)",
-      "eo_equidistribution proved via Tendsto.congr: eventually EO/C = 1 - OE/C - OO/C (from partition + C>0), then sub limits"
+      "eo_equidistribution proved via Tendsto.congr: eventually EO/C = 1 - OE/C - OO/C (from partition + C>0), then sub limits",
+      "coprimeInSectorCount → ∞ proved via explicit coprime pairs (k,1) for k ≥ 2 with k²+1 ≤ N",
+      "Full-column OE=OO equality proved: when m²+(m-1)²≤N, the involution covers the entire column so sectorOE=sectorOO exactly",
+      "Parity axiom decomposed into 2 independent pieces: (1) boundary discrepancy vanishes (geometric) + (2) EO/coprime→1/3 (arithmetic from coprime_eo_iff)",
+      "The boundary region between triangle and sector is NOT O(√N) as previously stated — it can be O(N). The DISCREPANCY (bdryOO-bdryOE) is what needs to be sub-linear, not the total boundary size."
     ],
     "mathlibGaps": [
       "No Mathlib formalization of Gauss circle problem asymptotics",
@@ -114,10 +124,10 @@
       "No Mathlib equidistribution result for coprime pairs by residue class"
     ],
     "nextSteps": [
-      "Formalize the CRT-based sieving argument to prove parity_class_equidistribution from coprime_eo_iff and the square symmetries",
-      "Prove sector equidistribution of OE/OO using boundary analysis (sector_boundary_balance + O(√N) bound)",
-      "Connect square symmetries to sector counts via the circle constraint analysis",
-      "Consider replacing parity_class_equidistribution with a per-class coprime density axiom (more fundamental)"
+      "Prove boundary discrepancy is sub-linear: show |bdryOO - bdryOE| = o(coprimeInSectorCount). The involution maps most boundary pairs to boundary pairs; only straddling pairs contribute to discrepancy.",
+      "Prove EO/coprime → 1/3 from coprime_eo_iff + sector lattice point axiom. The halving bijection (2a,n)↔(a,n) for odd n connects EO coprime density to general coprime density.",
+      "Alternatively: prove the discrepancy is bounded by the number of lattice points near the arc m²+n²=N whose involution image crosses the arc.",
+      "Consider creating an Aristotle companion file for any routine lemmas extracted from the analysis."
     ]
   },
   "approaches": [
@@ -156,7 +166,7 @@
     ]
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-14T04:10:00.000Z",
+  "lastUpdate": "2026-03-14T19:40:00.000Z",
   "significance": 7,
   "tractability": 6
 }
