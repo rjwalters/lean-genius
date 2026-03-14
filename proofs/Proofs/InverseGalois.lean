@@ -507,17 +507,11 @@ theorem connection_to_abel_ruffini :
    NthRootIrrationalOQ01.eisenstein_X_pow_sub_prime 5 2 (by norm_num) (by norm_num),
    NthRootIrrationalOQ01.natDegree_X_pow_sub_C_eq (by norm_num) (by norm_num)⟩
 
-/--
-The distinction between solvable and non-solvable extensions:
-
-A polynomial p(x) ∈ ℚ[x] is solvable by radicals if and only if Gal(p/ℚ) is
-a solvable group (Galois's theorem). The IGP asks about ALL Galois groups, not
-just solvable ones.
-
-For the IGP, even if G is NOT solvable (like A₅ or S₅), we still want to know
-if G is realizable as a Galois group (just not necessarily the Galois group of a
-polynomial solvable by radicals).
--/
+/-- The distinction between solvable and non-solvable extensions:
+    A polynomial p(x) in Q[x] is solvable by radicals iff Gal(p/Q) is
+    a solvable group (Galois's theorem). The IGP asks about ALL Galois groups,
+    not just solvable ones. Even if G is NOT solvable (like A5 or S5), we still
+    want to know if G is realizable as a Galois group. -/
 theorem solvable_iff_solvable_galois_group
     {F : Type*} [Field F]
     {E : Type*} [Field E] [Algebra F E]
