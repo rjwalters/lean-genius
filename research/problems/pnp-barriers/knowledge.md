@@ -3,6 +3,185 @@
 
 ---
 
+## Session 2026-03-14 (Session 32) - Axiom Reduction + Savitch + Padding
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 87→95+)
+**Problem**: pnp-barriers
+**Prior Status**: progress
+**PR**: #3763
+
+**What we did**:
+
+### Axiom Reduction: NP_subset_PSPACE
+1. Proved `NP_subset_PSPACE` as theorem (was axiom)
+2. Strategy: moved IP definitions + Shamir's theorem before PSPACE section
+3. NP ⊆ IP (theorem) + IP = PSPACE (Shamir axiom) → NP ⊆ PSPACE (theorem)
+4. Removed redundant `NP_subset_PSPACE'` duplicate
+
+### New Content: Savitch's Theorem
+5. Defined NPSPACE class
+6. Added `savitch_NPSPACE_eq_PSPACE` axiom (NPSPACE = PSPACE)
+7. Proved PSPACE ⊆ NPSPACE and NPSPACE ⊆ PSPACE from Savitch
+8. `savitch_contrast_with_time`: NPSPACE = PSPACE contrasts with open NP vs P
+
+### New Content: Padding Arguments
+9. `padding_P_eq_NP_implies_EXP_eq_NEXP` (P=NP → EXP=NEXP)
+10. `EXP_ne_NEXP_implies_P_ne_NP` (contrapositive)
+11. `padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE`
+12. `padding_structural_summary` combining padding results
+
+### New Content: Complexity Zoo Summary
+13. `complexity_zoo_summary`: consolidated theorem covering 17 classes
+
+### Bug Fixes
+14. Fixed `time_hierarchy` → `P_ne_EXP` in separation_summary
+15. Fixed `.symm` direction in P_eq_NP_total_collapse
+16. Fixed `razborov_rudich` call (removed spurious owf_exists_assumption)
+17. Fixed `baker_gill_solovay_eq/sep` existential wrapping
+
+**Final stats**:
+- 2379 lines (+242 from last session)
+- 31 axioms (1 eliminated: NP_subset_PSPACE, 3 new: Savitch, 2 padding)
+- 106 theorems (+13 new)
+- 0 sorries, Docker build passes
+
+**Key insights**:
+- Moving definitions earlier enables axiom elimination via composition
+- Savitch captures why space is "easier" than time: nondeterminism collapses
+- Padding arguments show separations propagate upward through the hierarchy
+
+**Next steps**:
+1. Try to prove `reduction_preserves_P` (needs Φ_compose_decision primitive)
+2. Try to prove `P_subset_UP` and `UP_subset_NP` from Φ primitives
+3. Add NEXP ≠ EXP conditional results
+4. Consider oracle separation of PH levels (random oracle)
+
+---
+
+## Session 2026-03-14 (Sessions 28-31) - Extended Landscape + Axiom Reduction + Space Complexity
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 71→87)
+**Problem**: pnp-barriers
+**Prior Status**: progress
+**PR**: #3753
+
+**What we did across 4 iterations**:
+
+### Iteration 1: Extended Complexity Landscape
+1. Added BPP (bounded-error probabilistic polynomial time) with formal definition
+2. Added #P counting class with Toda's theorem (PH ⊆ P^#P)
+3. Added circuit complexity: P/poly, Adleman (BPP ⊆ P/poly), Karp-Lipton
+4. Added derandomization: Nisan-Wigderson (hard function in EXP → BPP = P)
+5. Proved `derandomization_tension`: NW + natural proofs barrier
+6. Added IP (interactive proofs) with Shamir's theorem (IP = PSPACE)
+7. Proved NP ⊆ IP, `extended_complexity_chain`, `barrier_landscape`
+
+### Iteration 2: Axiom Reduction (Φ_pair_project_first)
+8. Introduced `Φ_pair_project_first` axiom (pair decomposition primitive)
+9. Proved `P_rel_subset_NP_rel` from Φ_pair_project_first (was axiom)
+10. Proved `P_subset_BPP` from Φ_pair_project_first (was axiom)
+11. Net: +1 primitive axiom, -2 high-level axioms
+
+### Iteration 3: BPP Complement Closure
+12. Proved `BPP_complement_closed` from `Φ_negate` (was axiom)
+13. Net: -1 axiom
+
+### Iteration 4: Space Complexity
+14. Added L (LOGSPACE), NL (NLOGSPACE), coNL definitions
+15. Added Immerman-Szelepcsényi theorem (NL = coNL)
+16. Proved NL_complement_closed, space_containment_chain, NL_coNL_contrast
+17. 2 new axioms (NL_subset_P, immerman_szelepcsenyi)
+
+### Iteration 5: AM/MA Arthur-Merlin Classes
+18. Defined MA (Merlin-Arthur) and AM (Arthur-Merlin) complexity classes
+19. Added `NP_subset_MA` axiom (encoding mismatch too complex for direct proof)
+20. Added `babai_AM_in_Sigma2` axiom (AM ⊆ Σ₂ ∩ Π₂)
+21. Proved `NP_subset_AM` and `AM_subset_PH`
+22. Eliminated `BPP_subset_EXP` axiom (proved from BPP ⊆ PH ⊆ PSPACE ⊆ EXP chain)
+
+**Final stats**:
+- 1086 → 2137 lines (+1051)
+- 11 → 24 axioms (13 new, but 4 former axioms now proved as theorems)
+- ~40 → 93 theorems
+- 0 sorries, Docker build passes
+
+**Key insights**:
+- `Φ_pair_project_first` is a powerful primitive: it enables proving P⊆NP and P⊆BPP
+- `derandomization_tension` captures the central structural tension in complexity theory
+- NL = coNL contrasts with the open NP vs coNP question
+- The barrier_landscape meta-theorem shows barriers are specific to P vs NP, not complexity theory in general
+- AM = MA simplification is standard (Babai showed equivalence with constant rounds)
+- `complement_closure_summary` captures 5 classes proved closed under complement
+
+**Next steps**:
+1. Try to prove `reduction_preserves_P` from `poly_time_compose` + new primitives
+2. Formalize the connection to Geometric Complexity Theory (GCT)
+3. Add oracle separation theorems for PH (e.g., random oracle separates PH levels)
+4. Consider Mahaney's theorem (sparse NP-complete → P = NP)
+
+---
+
+## Session 2026-03-14 (Session 28) - Extended Complexity Landscape
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 71)
+**Problem**: pnp-barriers
+**Prior Status**: active
+
+**What we did**:
+1. Added BPP (bounded-error probabilistic polynomial time) with formal definition
+2. Proved BPP ⊆ PH from Sipser-Lautemann axiom (BPP ⊆ Σ₂ ∩ Π₂)
+3. Added #P counting class with Toda's theorem (PH ⊆ P^#P)
+4. Added circuit complexity: P/poly, Adleman's theorem (BPP ⊆ P/poly), Karp-Lipton
+5. Added derandomization: Nisan-Wigderson (hard function in EXP → BPP = P)
+6. Proved `derandomization_tension`: connecting NW derandomization with natural proofs barrier
+7. Added IP (interactive proofs) with Shamir's theorem (IP = PSPACE)
+8. Proved NP ⊆ IP from definitions
+9. Proved `extended_complexity_chain`: P ⊆ NP ⊆ PH ⊆ PSPACE = IP ⊆ EXP, P ⊆ BPP ⊆ PH
+10. Proved `barrier_landscape`: all 3 barriers + structural results coexist
+11. Docker build: 0 errors, 0 warnings, 0 sorries
+
+**New axioms added** (9, bringing total to 20):
+- `P_subset_BPP` — P programs are trivially randomized (needs Φ composition, axiomatized)
+- `BPP_subset_EXP` — enumerate random strings in exponential time
+- `BPP_complement_closed` — flip the answer, majority preserved
+- `sipser_lautemann` — BPP ⊆ Σ₂ ∩ Π₂
+- `toda_theorem` — PH ⊆ P^#P
+- `adleman_theorem` — BPP ⊆ P/poly
+- `karp_lipton` — NP ⊆ P/poly → PH = Σ₂
+- `nisan_wigderson` — hard function in EXP → P = BPP
+- `shamir_IP_eq_PSPACE` — IP = PSPACE
+
+**New theorems proved** (from axioms or definitions):
+- `BPP_subset_PH` (from sipser_lautemann)
+- `toda_consequence` (if PH ≠ P then P ≠ P^#P)
+- `PH_infinite_implies_NP_hard_circuits` (from karp_lipton)
+- `derandomization_tension` (NW + natural proofs barrier)
+- `NP_subset_IP` (from NP and IP definitions)
+- `PSPACE_subset_IP`, `IP_subset_PSPACE` (from shamir)
+- `extended_complexity_chain`, `barrier_landscape`
+
+**Key insight**: The derandomization_tension theorem captures the central structural
+tension in complexity theory: if one-way functions exist AND hard functions exist in
+EXP, then BPP = P (derandomization succeeds) but natural proofs cannot prove the very
+circuit lower bounds that underpin the derandomization. This shows why P vs NP is hard:
+the tools that would prove it (circuit lower bounds via natural properties) are exactly
+what the barriers prevent.
+
+**Stats**: 1502 lines, 20 axioms, 53 theorems, 47 definitions, 0 sorries
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriersSound.lean` (+416 lines)
+- `src/data/research/problems/pnp-barriers.json` (knowledge update)
+- `research/problems/pnp-barriers/knowledge.md` (this file)
+
+**Next steps**:
+1. Try to reduce axiom count by proving some from more primitive axioms
+2. Add MA, AM (Arthur-Merlin) protocols — intermediate between BPP and IP
+3. Connect to Geometric Complexity Theory (GCT) as a potential barrier-circumventing approach
+4. Formalize the Immerman-Szelepcsényi theorem (NL = coNL)
+
+---
+
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
 ## Session 2026-03-14 (researcher-2, Session 31) - Impagliazzo's Five Worlds
