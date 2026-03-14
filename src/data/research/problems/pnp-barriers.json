@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 1502 lines, 20 axioms, 53 theorems, 0 sorries. Added BPP, #P, Toda, IP=PSPACE, derandomization, circuit complexity, barrier landscape.",
+    "progressSummary": "PROGRESS: 1556 lines, 19 axioms (down from 20), 55 theorems, 0 sorries. Extended landscape + axiom reduction.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -217,6 +217,11 @@
         "name": "barrier_landscape",
         "description": "Meta-theorem: all 3 barriers + structural results (BPP, IP=PSPACE, P⊊EXP) coexist",
         "proven": true
+      },
+      {
+        "name": "Φ_pair_project_first",
+        "description": "Pair projection axiom enabling P⊆NP and P⊆BPP proofs (20→19 axioms)",
+        "proven": true
       }
     ],
     "insights": [
@@ -253,7 +258,9 @@
       "Derandomization-barriers tension: Nisan-Wigderson + natural proofs create structural tension",
       "IP = PSPACE (Shamir theorem) formalized, connecting to algebrization barrier",
       "Circuit complexity: P/poly, Karp-Lipton (NP ⊆ P/poly → PH collapses), Adleman (BPP ⊆ P/poly)",
-      "barrier_landscape meta-theorem: all 3 barriers coexist with structural results"
+      "barrier_landscape meta-theorem: all 3 barriers coexist with structural results",
+      "Φ_pair_project_first axiom: single primitive for pair decomposition enables P⊆NP and P⊆BPP proofs",
+      "Axiom reduction 20→19: trade 2 high-level axioms for 1 primitive axiom"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
