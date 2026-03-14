@@ -671,11 +671,12 @@ theorem coprime_sector_three_way_partition (N : ℕ) :
                ⟨hmem, hn_pos, hn_lt, hcop, _, _, hle⟩) |
               ⟨hmem, hn_pos, hn_lt, hcop, _, _, hle⟩) <;>
       exact ⟨hmem, hn_pos, hn_lt, hcop, hle⟩
-  · apply Finset.disjoint_filter.mpr
-    intro ⟨m, n⟩ _ h1 h2
-    rcases h1 with ⟨_, _, _, _, hm_even, _, _⟩ | ⟨_, _, _, _, hm_odd, _, _⟩
-    · exact absurd hm_even (Nat.not_even_iff_odd.mpr h2.2.2.2.1)
-    · exact absurd hm_odd (Nat.not_odd_iff_even.mpr h2.2.2.2.1)
+  · -- Disjoint (EO ∪ OE) OO: union left needs both halves
+    rw [Finset.disjoint_union_left]
+    exact ⟨Finset.disjoint_filter.mpr (fun ⟨_, _⟩ _ h1 h2 =>
+        absurd h1.2.2.2.1 (Nat.not_even_iff_odd.mpr h2.2.2.2.1)),
+      Finset.disjoint_filter.mpr (fun ⟨_, _⟩ _ h1 h2 =>
+        absurd h1.2.2.2.2.1 (Nat.not_even_iff_odd.mpr h2.2.2.2.2.1))⟩
   · apply Finset.disjoint_filter.mpr
     intro ⟨m, n⟩ _ h1 h2
     exact absurd h1.2.2.2.1 (Nat.not_even_iff_odd.mpr h2.2.2.2.1)
@@ -694,8 +695,8 @@ theorem bothOdd_eq_oo (N : ℕ) :
     refine ⟨hmem, hn_pos, hn_lt, hcop, ?_, ?_, hle⟩
     · -- Odd m: if m even, then m-n even → n even → not coprime
       by_contra hm_not_odd
-      have hm_even := Nat.even_of_not_odd hm_not_odd
-      have h_diff_even := Nat.even_of_not_odd hparity
+      have hm_even : Even m := (Nat.even_or_odd m).resolve_right hm_not_odd
+      have h_diff_even : Even (m - n) := (Nat.even_or_odd (m - n)).resolve_right hparity
       obtain ⟨a, ha⟩ := hm_even; obtain ⟨c, hc⟩ := h_diff_even
       have hn_even : Even n := ⟨a - c, by omega⟩
       obtain ⟨b, hb⟩ := hn_even
@@ -703,8 +704,8 @@ theorem bothOdd_eq_oo (N : ℕ) :
       rw [hcop] at h2g; omega
     · -- Odd n: if n even, then m-n even → m even → not coprime
       by_contra hn_not_odd
-      have hn_even := Nat.even_of_not_odd hn_not_odd
-      have h_diff_even := Nat.even_of_not_odd hparity
+      have hn_even : Even n := (Nat.even_or_odd n).resolve_right hn_not_odd
+      have h_diff_even : Even (m - n) := (Nat.even_or_odd (m - n)).resolve_right hparity
       obtain ⟨b, hb⟩ := hn_even; obtain ⟨c, hc⟩ := h_diff_even
       have hm_even : Even m := ⟨b + c, by omega⟩
       obtain ⟨a, ha⟩ := hm_even
@@ -777,7 +778,12 @@ theorem involution_coprime {m n : ℕ} (hcop : Nat.Coprime m n) (hn_lt : n < m) 
     rw [hcop] at this
     exact Nat.dvd_one.mp this
   -- gcd(m, m-n) | m and gcd(m, m-n) | (m-n), so it divides m - (m-n) = n
-  exact Nat.sub_sub_self (le_of_lt hn_lt) ▸ Nat.dvd_sub' hd1 hd2
+  have key : (↑(Nat.gcd m (m - n)) : ℤ) ∣ ↑n := by
+    have h1 : (↑(Nat.gcd m (m - n)) : ℤ) ∣ ↑m := by exact_mod_cast hd1
+    have h2 : (↑(Nat.gcd m (m - n)) : ℤ) ∣ ↑(m - n) := by exact_mod_cast hd2
+    have h3 : (↑n : ℤ) = ↑m - ↑(m - n) := by omega
+    rw [h3]; exact dvd_sub h1 h2
+  exact_mod_cast key
 
 /-- When m is odd: the involution maps even n to odd m-n (OE → OO). -/
 theorem involution_oe_to_oo {m n : ℕ} (hm : Odd m) (hn : Even n) (hn_lt : n < m) :
@@ -829,30 +835,134 @@ theorem triangle_oe_eq_oo (K : ℕ) :
   apply Finset.card_bij (fun mn _ => parityInvolution mn)
   · -- hi: parityInvolution maps triangleOE into triangleOO
     intro ⟨m, n⟩ hmn
-    simp only [triangleOE, triangleOO, Finset.mem_filter, Finset.mem_product, Finset.mem_range,
-      parityInvolution] at hmn ⊢
-    obtain ⟨⟨hm_range, hn_range⟩, hpos, hlt, hcop, hm_odd, hn_even⟩ := hmn
-    refine ⟨⟨hm_range, ?_⟩, ?_, ?_, involution_coprime hcop hlt, hm_odd, involution_oe_to_oo hm_odd hn_even hlt⟩
-    · omega  -- m - n < K + 1
-    · omega  -- 0 < m - n
-    · omega  -- m - n < m
+    simp only [triangleOE, triangleOO, Finset.mem_filter, parityInvolution] at hmn ⊢
+    obtain ⟨hmem, hpos, hlt, hcop, hm_odd, hn_even⟩ := hmn
+    have ⟨hm_range, _⟩ := Finset.mem_product.mp hmem
+    have hm_lt := Finset.mem_range.mp hm_range
+    refine ⟨Finset.mem_product.mpr ⟨hm_range, Finset.mem_range.mpr (by omega)⟩,
+      by omega, by omega, involution_coprime hcop hlt, hm_odd,
+      involution_oe_to_oo hm_odd hn_even hlt⟩
   · -- i_inj: parityInvolution is injective on triangleOE
     intro ⟨m₁, n₁⟩ hm₁ ⟨m₂, n₂⟩ hm₂ heq
     simp only [parityInvolution, Prod.mk.injEq] at heq
-    simp only [triangleOE, Finset.mem_filter, Finset.mem_product, Finset.mem_range] at hm₁ hm₂
+    simp only [triangleOE, Finset.mem_filter] at hm₁ hm₂
     obtain ⟨_, _, hlt₁, _, _, _⟩ := hm₁.2
     obtain ⟨_, _, hlt₂, _, _, _⟩ := hm₂.2
     ext <;> omega
   · -- i_surj: every element of triangleOO has a preimage in triangleOE
     intro ⟨m, n⟩ hmn
-    simp only [triangleOO, triangleOE, Finset.mem_filter, Finset.mem_product, Finset.mem_range,
-      parityInvolution] at hmn ⊢
-    obtain ⟨⟨hm_range, hn_range⟩, hpos, hlt, hcop, hm_odd, hn_odd⟩ := hmn
-    refine ⟨⟨m, m - n⟩, ⟨⟨hm_range, ?_⟩, ?_, ?_, involution_coprime hcop hlt, hm_odd, involution_oo_to_oe hm_odd hn_odd hlt⟩, ?_⟩
-    · omega  -- m - n < K + 1
-    · omega  -- 0 < m - n
-    · omega  -- m - n < m
-    · ext <;> omega  -- m - (m - n) = n
+    simp only [triangleOO, triangleOE, Finset.mem_filter, parityInvolution] at hmn ⊢
+    obtain ⟨hmem, hpos, hlt, hcop, hm_odd, hn_odd⟩ := hmn
+    have ⟨hm_range, _⟩ := Finset.mem_product.mp hmem
+    have hm_lt := Finset.mem_range.mp hm_range
+    exact ⟨⟨m, m - n⟩,
+      ⟨Finset.mem_product.mpr ⟨hm_range, Finset.mem_range.mpr (by omega)⟩,
+       by omega, by omega, involution_coprime hcop hlt, hm_odd,
+       involution_oo_to_oe hm_odd hn_odd hlt⟩,
+      by ext <;> omega⟩
+
+/-
+## Part XIV-B: Row-Level Parity Decomposition
+
+For each fixed m, coprime residues {n : 0 < n < m, gcd(m,n) = 1} decompose by
+parity of n:
+1. Even m: ALL coprime n are odd (only EO pairs)
+2. Odd m >= 3: involution n -> m-n bijects even <-> odd coprime residues
+-/
+
+/-- Row coprime count: #{n : 0 < n < m, gcd(m,n) = 1}. -/
+noncomputable def rowCoprimeCount (m : ℕ) : ℕ :=
+  (Finset.range m |>.filter (fun n => 0 < n ∧ Nat.Coprime m n)).card
+
+/-- Row even coprime count. -/
+noncomputable def rowEvenCount (m : ℕ) : ℕ :=
+  (Finset.range m |>.filter (fun n => 0 < n ∧ Nat.Coprime m n ∧ Even n)).card
+
+/-- Row odd coprime count. -/
+noncomputable def rowOddCount (m : ℕ) : ℕ :=
+  (Finset.range m |>.filter (fun n => 0 < n ∧ Nat.Coprime m n ∧ Odd n)).card
+
+/-- For even m, all coprime n are odd. -/
+theorem row_even_m_all_odd {m : ℕ} (hm : Even m) (hm_pos : 2 ≤ m) :
+    rowEvenCount m = 0 := by
+  unfold rowEvenCount
+  rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  intro n _; push_neg
+  intro _ hcop hn_even
+  exact absurd ⟨hm, hn_even⟩ (coprime_not_both_even hcop)
+
+/-- For even m >= 2: rowOddCount = rowCoprimeCount. -/
+theorem row_even_m_odd_eq_total {m : ℕ} (hm : Even m) (hm_pos : 2 ≤ m) :
+    rowOddCount m = rowCoprimeCount m := by
+  unfold rowOddCount rowCoprimeCount
+  congr 1; ext n; simp only [Finset.mem_filter, Finset.mem_range]
+  constructor
+  · rintro ⟨h1, h2, h3, _⟩; exact ⟨h1, h2, h3⟩
+  · rintro ⟨h1, h2, h3⟩; exact ⟨h1, h2, h3,
+      (Nat.even_or_odd n).resolve_left (fun he => absurd ⟨hm, he⟩ (coprime_not_both_even h3))⟩
+
+/-- The involution n -> m - n preserves coprimality for 0 < n < m. -/
+theorem row_involution_coprime {m n : ℕ} (hcop : Nat.Coprime m n) (hn_pos : 0 < n)
+    (hn_lt : n < m) : Nat.Coprime m (m - n) := by
+  rw [Nat.Coprime] at hcop ⊢
+  have hd1 := Nat.gcd_dvd_left m (m - n)
+  have hd2 := Nat.gcd_dvd_right m (m - n)
+  suffices h : Nat.gcd m (m - n) ∣ n by
+    have := Nat.dvd_gcd hd1 h; rw [hcop] at this; exact Nat.dvd_one.mp this
+  have key : (↑(Nat.gcd m (m - n)) : ℤ) ∣ ↑n := by
+    have h1 : (↑(Nat.gcd m (m - n)) : ℤ) ∣ ↑m := by exact_mod_cast hd1
+    have h2 : (↑(Nat.gcd m (m - n)) : ℤ) ∣ ↑(m - n) := by exact_mod_cast hd2
+    rw [show (↑n : ℤ) = ↑m - ↑(m - n) from by omega]
+    exact dvd_sub h1 h2
+  exact_mod_cast key
+
+/-- For odd m: n -> m - n swaps parity. -/
+theorem row_involution_swaps_parity {m n : ℕ} (hm : Odd m) (hn_lt : n < m) :
+    (Even n ↔ Odd (m - n)) ∧ (Odd n ↔ Even (m - n)) := by
+  obtain ⟨a, ha⟩ := hm
+  exact ⟨⟨fun ⟨b, hb⟩ => ⟨a - b, by omega⟩, fun ⟨c, hc⟩ => ⟨a - c, by omega⟩⟩,
+         ⟨fun ⟨b, hb⟩ => ⟨a - b, by omega⟩, fun ⟨c, hc⟩ => ⟨a - c, by omega⟩⟩⟩
+
+/-- For odd m >= 3: #{even coprime n < m} = #{odd coprime n < m}. -/
+theorem row_odd_m_even_eq_odd (m : ℕ) (hm : Odd m) (hm3 : 3 ≤ m) :
+    rowEvenCount m = rowOddCount m := by
+  unfold rowEvenCount rowOddCount
+  apply Finset.card_bij (fun n _ => m - n)
+  · intro n hn; simp only [Finset.mem_filter, Finset.mem_range] at hn ⊢
+    obtain ⟨hn_range, hn_pos, hcop, hn_even⟩ := hn
+    exact ⟨by omega, by omega, row_involution_coprime hcop hn_pos hn_range,
+      ((row_involution_swaps_parity hm hn_range).1).mp hn_even⟩
+  · intro n₁ hn₁ n₂ hn₂ heq
+    simp only [Finset.mem_filter, Finset.mem_range] at hn₁ hn₂; omega
+  · intro n hn; simp only [Finset.mem_filter, Finset.mem_range] at hn ⊢
+    obtain ⟨hn_range, hn_pos, hcop, hn_odd⟩ := hn
+    exact ⟨m - n, ⟨by omega, by omega, row_involution_coprime hcop hn_pos hn_range,
+      ((row_involution_swaps_parity hm hn_range).2).mp hn_odd⟩, by omega⟩
+
+/-- Row parity partition: rowCoprimeCount = rowEvenCount + rowOddCount. -/
+theorem row_parity_partition (m : ℕ) (hm : 2 ≤ m) :
+    rowCoprimeCount m = rowEvenCount m + rowOddCount m := by
+  unfold rowCoprimeCount rowEvenCount rowOddCount
+  rw [← Finset.card_union_of_disjoint]
+  · congr 1; ext n; simp only [Finset.mem_filter, Finset.mem_union, Finset.mem_range]
+    constructor
+    · rintro ⟨h1, h2, h3⟩; rcases Nat.even_or_odd n with h | h
+      · left; exact ⟨h1, h2, h3, h⟩
+      · right; exact ⟨h1, h2, h3, h⟩
+    · rintro (⟨h1, h2, h3, _⟩ | ⟨h1, h2, h3, _⟩) <;> exact ⟨h1, h2, h3⟩
+  · exact Finset.disjoint_filter.mpr (fun n _ h1 h2 =>
+      absurd h1.2.2 (Nat.not_even_iff_odd.mpr h2.2.2))
+
+/-- For odd m >= 3: 2 * rowEvenCount = rowCoprimeCount. -/
+theorem row_odd_m_half (m : ℕ) (hm : Odd m) (hm3 : 3 ≤ m) :
+    2 * rowEvenCount m = rowCoprimeCount m := by
+  have h1 := row_parity_partition m (by omega)
+  have h2 := row_odd_m_even_eq_odd m hm hm3; omega
+
+/-- Triangle EO pairs: (m,n) with m even, n odd, coprime, 0 < n < m <= K. -/
+noncomputable def triangleEO (K : ℕ) : Finset (ℕ × ℕ) :=
+  ((Finset.range (K + 1)).product (Finset.range (K + 1))).filter (fun mn =>
+    0 < mn.2 ∧ mn.2 < mn.1 ∧ Nat.Coprime mn.1 mn.2 ∧ Even mn.1 ∧ Odd mn.2)
 
 /-
 ## Part XV: Reduction of Parity Axiom
@@ -938,12 +1048,27 @@ theorem column_even_eq_odd_coprimes {m : ℕ} (hm : Odd m) (hm1 : 1 < m) :
 
 /-- Euler's totient of odd m > 1 is even: the involution n ↦ m-n pairs
 even and odd coprimes perfectly. -/
+/-- Column parity partition: φ(m) = |even coprimes| + |odd coprimes| for m > 1. -/
+theorem column_parity_partition {m : ℕ} (hm1 : 1 < m) :
+    Nat.totient m = (columnEvenCoprimes m).card + (columnOddCoprimes m).card := by
+  unfold columnEvenCoprimes columnOddCoprimes
+  rw [← Finset.card_union_of_disjoint]
+  · -- φ(m) = |coprimes in {1,...,m-1}|, and that equals |even coprimes ∪ odd coprimes|
+    rw [Nat.totient_eq_card_coprimes]
+    congr 1; ext n; simp only [Finset.mem_filter, Finset.mem_union, Finset.mem_range]
+    constructor
+    · intro ⟨h1, h2⟩
+      rcases Nat.even_or_odd n with he | ho
+      · left; exact ⟨h1, by omega, h2, he⟩
+      · right; exact ⟨h1, by omega, h2, ho⟩
+    · rintro (⟨h1, _, h3, _⟩ | ⟨h1, _, h3, _⟩) <;> exact ⟨h1, h3⟩
+  · exact Finset.disjoint_filter.mpr (fun n _ h1 h2 =>
+      absurd h1.2.2 (Nat.not_even_iff_odd.mpr h2.2.2))
+
 theorem totient_even_of_odd {m : ℕ} (hm : Odd m) (hm1 : 1 < m) :
     Even (Nat.totient m) := by
-  -- φ(m) = |{n ∈ {1,...,m-1} : gcd(m,n) = 1}| = |even coprimes| + |odd coprimes|
-  -- and even coprimes = odd coprimes by column_even_eq_odd_coprimes
   have heq := column_even_eq_odd_coprimes hm hm1
-  -- φ(m) = 2 * |even coprimes|
+  have hpart := column_parity_partition hm1
   exact ⟨(columnEvenCoprimes m).card, by omega⟩
 
 /-- Computational check: column counts for m = 3.
