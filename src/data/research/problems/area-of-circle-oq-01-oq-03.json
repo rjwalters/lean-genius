@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-03-13",
-    "iteration": 3,
-    "focus": "Axiom elimination: fourier_decomposition proved (with sorry), 1 axiom remains",
+    "iteration": 4,
+    "focus": "Axiom elimination complete. 0 axioms, 4 sorries remain.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,25 +29,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated fourier_decomposition axiom (now theorem with 3 sorries). File: 1 axiom (exists_nice_reparam) + 3 sorries. All Mathlib ingredients identified.",
+    "progressSummary": "PROGRESS: Axiom eliminated. exists_nice_reparam is now a theorem. 9 new theorems. File: 0 axioms, 4 sorries.",
     "builtItems": [
       "Converted equality_implies_circle from axiom to theorem in AreaOfCircleOQ01OQ03.lean:824",
       "Proved equality_implies_circle theorem in AreaOfCircleOQ01OQ03.lean (was axiom)",
       "Converted fourier_decomposition from axiom to theorem in AreaOfCircleOQ01OQ03.lean",
       "Added parseval_periodic_real sorry lemma (Parseval bridge)",
-      "Added fourierCoeffOn_deriv_periodic sorry lemma (IBP for Fourier coefficients)"
+      "Added fourierCoeffOn_deriv_periodic sorry lemma (IBP for Fourier coefficients)",
+      "integral_deriv_periodic_zero: FTC + periodicity helper lemma",
+      "SmoothClosedCurve.meanSubtract: mean subtraction definition",
+      "meanSubtract_deriv_x/y: derivative preservation lemmas",
+      "meanSubtract_speed/circumference/area: preservation theorems",
+      "meanSubtract_zero_mean_x/y: zero-mean property theorems",
+      "exists_arclength_reparam: well-scoped sorry for arc-length reparam",
+      "exists_nice_reparam: now theorem (was axiom)"
     ],
     "insights": [
       "equality_implies_circle was axiom but is purely algebraic: set r=C/(2π), then C=2πr and A=πr² follow from 4πA=C² via field_simp+linarith",
       "equality_implies_circle is purely algebraic: set r=C/(2π), then C=2πr and A=πr² follow from 4πA=C² via field_simp/linarith",
-      "fourier_decomposition axiom eliminated: converted to theorem with 3 sorry lemmas. All Mathlib ingredients exist: tsum_sq_fourierCoeff, fourierCoeffOn_of_hasDerivAt, fourierCoeff_liftIoc_eq."
+      "fourier_decomposition axiom eliminated: converted to theorem with 3 sorry lemmas. All Mathlib ingredients exist: tsum_sq_fourierCoeff, fourierCoeffOn_of_hasDerivAt, fourierCoeff_liftIoc_eq.",
+      "exists_nice_reparam axiom eliminated: factored into arc-length reparam (sorry) + mean subtraction (proved). 9 new theorems for mean subtraction infrastructure."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove fourier_decomposition: lift periodic f to AddCircle, use tsum_sq_fourierCoeff (Parseval), prove IBP for Fourier coeffs (~200 lines)",
-      "Prove exists_nice_reparam: arc-length reparametrization via inverse function theorem (harder, needs Mathlib infrastructure)",
-      "IBP key gap: fourierCoeff(deriv f) n = n*I*fourierCoeff f n not in Mathlib",
-      "Real/complex bridge needed: convert Mathlib complex fourierCoeff to real cₙ coefficients"
+      "Prove exists_arclength_reparam: IFT on arc-length integral",
+      "Fix fourierCoeffOn_deriv_periodic: Mathlib API break",
+      "Prove parseval_periodic_real: lift to AddCircle, bridge measures"
     ]
   },
   "approaches": [],
