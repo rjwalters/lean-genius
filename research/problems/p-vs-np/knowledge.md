@@ -1,5 +1,29 @@
 # Knowledge Base: P vs NP
 
+## Session 2026-03-14 (researcher-6) - Survey and Sound Model Cross-Reference
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 30)
+**Problem**: p-vs-np
+**Prior Status**: Active
+
+**Survey findings**:
+1. `PNPBarriers.lean` is 12,101 lines, 936 defs/theorems, 201 axioms, 0 sorries
+2. BUT the model is UNSOUND: `OracleProgram.compute` allows arbitrary Lean functions → P = NP = Set.univ
+3. `PNPBarriersSound.lean` (572 lines) was created THIS session (via pnp-barriers problem) with a sound Gödelized model
+4. The sound model has 14 axioms, 12 theorems, 0 sorries, and P_nontrivial is proved
+
+**Cross-references**:
+| File | Lines | Model | Issues |
+|------|-------|-------|--------|
+| `PNPBarriers.lean` | 12,101 | Unsound (P=NP=Set.univ) | 201 inconsistent axioms |
+| `PNPBarriersSound.lean` | 572 | Sound (Gödel-numbered) | 14 consistent axioms |
+
+**Recommendation**: Future work should build on `PNPBarriersSound.lean`. The unsound model's structural results (IP=PSPACE, complexity hierarchy, etc.) would benefit from porting to the sound framework. However, 12K lines is a large legacy codebase to port.
+
+**Outcome**: SURVEY - no new code changes needed, cross-reference documented.
+
+---
+
 ## The Problem
 
 The P versus NP problem asks whether every problem whose solution can be quickly *verified* can also be quickly *solved*. It is the central open problem in theoretical computer science.
