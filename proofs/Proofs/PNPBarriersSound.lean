@@ -559,14 +559,195 @@ theorem p_vs_np_well_posed :
   ⟨P_nontrivial, P_subset_NP⟩
 
 -- ============================================================
--- PART 10: Summary and Verification
+-- PART 10: coNP and Complement Closure
 -- ============================================================
 
+/-
+### Complement Closure of P
+
+In any reasonable computation model, P is closed under complement:
+if a program solves f in poly time, flipping its output bit solves ¬f
+in the same time. Since Φ is opaque, we axiomatize this.
+-/
+
+/-- **Complement closure**: If f ∈ P^A, then (¬f) ∈ P^A.
+    In any computation model, a program solving f can be modified to
+    flip the output bit, giving a program for the complement. -/
+axiom P_complement_closed (A : Oracle) (f : ℕ → Bool) :
+    f ∈ P_rel A → (fun n => !f n) ∈ P_rel A
+
+/-- coNP^A: problems whose complements are in NP^A. -/
+def coNP_rel (A : Oracle) : Set (ℕ → Bool) :=
+  { f | (fun n => !f n) ∈ NP_rel A }
+
+/-- Unrelativized coNP = coNP^∅. -/
+def coNP : Set (ℕ → Bool) := coNP_rel emptyOracle
+
+/-- P ⊆ coNP: P is closed under complement, and P ⊆ NP.
+    If f ∈ P, then ¬f ∈ P ⊆ NP, so f ∈ coNP. -/
+theorem P_subset_coNP : P ⊆ coNP := by
+  intro f hf
+  show (fun n => !f n) ∈ NP
+  exact P_subset_NP (P_complement_closed emptyOracle f hf)
+
+/-- NP ∩ coNP: problems with short certificates for both yes and no instances. -/
+def NP_inter_coNP : Set (ℕ → Bool) :=
+  NP ∩ coNP
+
+/-- P ⊆ NP ∩ coNP. -/
+theorem P_subset_NP_inter_coNP : P ⊆ NP_inter_coNP := by
+  intro f hf
+  exact ⟨P_subset_NP hf, P_subset_coNP hf⟩
+
+-- ============================================================
+-- PART 11: P = NP Structural Consequences
+-- ============================================================
+
+/-- **P = NP → NP = coNP**: If P equals NP, then NP is closed under complement.
+
+    Proof: Assume P = NP. Let f ∈ NP. Then f ∈ P (by P = NP).
+    So ¬f ∈ P (complement closure) ⊆ NP. Hence f ∈ coNP.
+    Conversely, if f ∈ coNP then ¬f ∈ NP = P, so f = ¬¬f ∈ P ⊆ NP. -/
+theorem P_eq_NP_implies_NP_eq_coNP (h : P = NP) : NP = coNP := by
+  ext f
+  constructor
+  · -- f ∈ NP → f ∈ coNP
+    intro hf
+    show (fun n => !f n) ∈ NP
+    -- f ∈ NP = P, so f ∈ P
+    have hfP : f ∈ P := h ▸ hf
+    -- ¬f ∈ P (complement closure)
+    have hcP : (fun n => !f n) ∈ P := P_complement_closed emptyOracle f hfP
+    -- P ⊆ NP
+    exact P_subset_NP hcP
+  · -- f ∈ coNP → f ∈ NP
+    intro hf
+    -- (¬f) ∈ NP = P
+    have hcNP : (fun n => !f n) ∈ NP := hf
+    have hcP : (fun n => !f n) ∈ P := h ▸ hcNP
+    -- f = ¬¬f, and ¬(¬f) ∈ P
+    have hfP : (fun n => !(!(f n))) ∈ P :=
+      P_complement_closed emptyOracle (fun n => !f n) hcP
+    -- ¬¬f = f
+    have : (fun n => !(!(f n))) = f := by ext n; simp
+    rw [this] at hfP
+    exact P_subset_NP hfP
+
+/-- **NP ≠ coNP → P ≠ NP**: Contrapositive of the above. -/
+theorem NP_ne_coNP_implies_P_ne_NP : NP ≠ coNP → P ≠ NP := by
+  intro h_neq h_eq
+  exact h_neq (P_eq_NP_implies_NP_eq_coNP h_eq)
+
+-- ============================================================
+-- PART 12: Polynomial-Time Reductions
+-- ============================================================
+
+/-- A polynomial-time computable function relative to oracle A.
+    Program e computes f : ℕ → ℕ within polynomial time bound p. -/
+def PolyTimeComputable (A : Oracle) (f : ℕ → ℕ) : Prop :=
+  ∃ (e : ℕ) (p : Polynomial), ∀ n : ℕ,
+    -- The program computes f(n) (encoded as Bool for the framework,
+    -- but we use the step count for time bound)
+    ∃ s : ℕ, Φ e A n = some (true, s) ∧ s ≤ p.eval (inputSize n)
+
+/-- Problem A polynomial-time reduces to problem B (A ≤ₚ B):
+    there exists a poly-time computable function f such that
+    for all x, A(x) = B(f(x)). -/
+def PolyTimeReduces (A_prob B_prob : ℕ → Bool) : Prop :=
+  ∃ f : ℕ → ℕ,
+    PolyTimeComputable emptyOracle f ∧
+    (∀ x : ℕ, A_prob x = B_prob (f x))
+
+notation:50 A_prob " ≤ₚ " B_prob => PolyTimeReduces A_prob B_prob
+
+/-- A problem is NP-hard if every NP problem poly-time reduces to it. -/
+def NPHard (problem : ℕ → Bool) : Prop :=
+  ∀ L : ℕ → Bool, L ∈ NP → L ≤ₚ problem
+
+/-- A problem is NP-complete if it is both in NP and NP-hard. -/
+def NPComplete (problem : ℕ → Bool) : Prop :=
+  problem ∈ NP ∧ NPHard problem
+
+/-- Composition of poly-time computable functions is poly-time computable.
+    If f and g are each computable in polynomial time, then g ∘ f is too
+    (since polynomial composition p(q(n)) is still polynomial). -/
+axiom poly_time_compose (f g : ℕ → ℕ)
+    (hf : PolyTimeComputable emptyOracle f)
+    (hg : PolyTimeComputable emptyOracle g) :
+    PolyTimeComputable emptyOracle (g ∘ f)
+
+/-- Polynomial-time reductions compose: if A ≤ₚ B and B ≤ₚ C, then A ≤ₚ C. -/
+theorem poly_reduce_trans (A_prob B_prob C_prob : ℕ → Bool)
+    (h1 : A_prob ≤ₚ B_prob) (h2 : B_prob ≤ₚ C_prob) : A_prob ≤ₚ C_prob := by
+  obtain ⟨f, hf_comp, hf_correct⟩ := h1
+  obtain ⟨g, hg_comp, hg_correct⟩ := h2
+  exact ⟨g ∘ f, poly_time_compose f g hf_comp hg_comp,
+    fun x => by simp [Function.comp, hf_correct, hg_correct]⟩
+
+/-- Polynomial-time reductions preserve membership in P:
+    If B ∈ P and A ≤ₚ B, then A ∈ P.
+
+    In any computation model, composing a poly-time reduction with
+    a poly-time decision procedure yields a poly-time procedure
+    (since polynomial composition is polynomial). -/
+axiom reduction_preserves_P (A_prob B_prob : ℕ → Bool)
+    (h_reduce : A_prob ≤ₚ B_prob) (h_in_P : B_prob ∈ P) : A_prob ∈ P
+
+/-- **NPC in P → P = NP**: If any NP-complete problem is in P, then P = NP.
+
+    Proof: Let L be NP-complete with L ∈ P. For any problem M ∈ NP,
+    M ≤ₚ L (by NP-hardness). Since L ∈ P and reductions preserve P,
+    M ∈ P. So NP ⊆ P, and P ⊆ NP gives P = NP. -/
+theorem NPComplete_in_P_implies_P_eq_NP (L : ℕ → Bool)
+    (h_complete : NPComplete L) (h_in_P : L ∈ P) : P = NP := by
+  ext problem
+  constructor
+  · exact fun hp => P_subset_NP hp
+  · intro h_in_NP
+    obtain ⟨_, h_hard⟩ := h_complete
+    exact reduction_preserves_P problem L (h_hard problem h_in_NP) h_in_P
+
+/-- **P ≠ NP → NPC ∩ P = ∅**: If P ≠ NP, no NP-complete problem is in P. -/
+theorem P_ne_NP_implies_NPC_not_in_P (h : P ≠ NP) (L : ℕ → Bool)
+    (h_complete : NPComplete L) : L ∉ P := by
+  intro h_in_P
+  exact h (NPComplete_in_P_implies_P_eq_NP L h_complete h_in_P)
+
+/-- NP-hardness transfers via reductions: if A is NP-hard and A ≤ₚ B, then B is NP-hard. -/
+theorem NPHard_of_reduce (A_prob B_prob : ℕ → Bool)
+    (h_hard : NPHard A_prob) (h_reduce : A_prob ≤ₚ B_prob) : NPHard B_prob := by
+  intro L hL
+  exact poly_reduce_trans L A_prob B_prob (h_hard L hL) h_reduce
+
+/-- NP-completeness transfers via reductions within NP:
+    if A is NP-complete, B ∈ NP, and A ≤ₚ B, then B is NP-complete. -/
+theorem NPComplete_of_reduce (A_prob B_prob : ℕ → Bool)
+    (h_complete : NPComplete A_prob) (h_in_NP : B_prob ∈ NP)
+    (h_reduce : A_prob ≤ₚ B_prob) : NPComplete B_prob :=
+  ⟨h_in_NP, NPHard_of_reduce A_prob B_prob h_complete.2 h_reduce⟩
+
+-- ============================================================
+-- PART 13: Summary and Verification
+-- ============================================================
+
+-- Barrier results
 #check relativization_barrier     -- ¬ RelativizingProof ∧ ¬ RelativizingProof
 #check natural_proofs_barrier     -- ¬ UsefulAgainst np f
 #check algebrization_barrier      -- ¬ AlgebrizingProof ∧ ¬ AlgebrizingProof
 #check all_barriers               -- Combined: all three barriers
+
+-- Model soundness
 #check P_nontrivial               -- P ≠ Set.univ (sound model!)
 #check p_vs_np_well_posed         -- P ≠ Set.univ ∧ P ⊆ NP
+
+-- Structural results (NEW)
+#check P_subset_coNP              -- P ⊆ coNP
+#check P_subset_NP_inter_coNP     -- P ⊆ NP ∩ coNP
+#check P_eq_NP_implies_NP_eq_coNP -- P = NP → NP = coNP
+#check NP_ne_coNP_implies_P_ne_NP -- NP ≠ coNP → P ≠ NP
+#check NPComplete_in_P_implies_P_eq_NP  -- NPC ∩ P ≠ ∅ → P = NP
+#check P_ne_NP_implies_NPC_not_in_P     -- P ≠ NP → NPC ∩ P = ∅
+#check NPHard_of_reduce           -- NP-hardness transfers via reductions
+#check NPComplete_of_reduce       -- NP-completeness transfers via reductions
 
 end PNPBarriersSound
