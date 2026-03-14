@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 7 new structural theorems: NP∩coNP with P⊆NP∩coNP, P=NP→NP=coNP, NP≠coNP→P≠NP, NPHard/NPC transfer via reductions, NPC poly-equivalence, complement involution. 4 axioms remain (all deep: Cook-Levin, time hierarchy, P≠EXP, Ladner).",
+    "progressSummary": "PROGRESS: Fixed 4 duplicate definitions preventing compilation, fixed PH collapse base bug, proved 4 new structural theorems (P_closed_union, P_closed_intersection, coP_eq_P, P_eq_NP_iff_NPC_in_P). File now compiles clean: 0 sorries, 4 axioms.",
     "builtItems": [
       {
         "name": "P",
@@ -123,6 +123,41 @@
         "name": "P_eq_NP_implies_PH_collapse_base",
         "description": "P = NP → PH collapse base case",
         "proven": true
+      },
+      {
+        "name": "P_closed_union",
+        "description": "P closed under union (disjunction)",
+        "proven": true
+      },
+      {
+        "name": "P_closed_intersection",
+        "description": "P closed under intersection (conjunction)",
+        "proven": true
+      },
+      {
+        "name": "coP_eq_P",
+        "description": "Complement class of P equals P",
+        "proven": true
+      },
+      {
+        "name": "P_eq_NP_iff_NPC_in_P",
+        "description": "P=NP iff some NPC in P (iff version)",
+        "proven": true
+      },
+      {
+        "name": "problem_union",
+        "description": "Union of decision problems definition",
+        "proven": true
+      },
+      {
+        "name": "problem_inter",
+        "description": "Intersection of decision problems definition",
+        "proven": true
+      },
+      {
+        "name": "coP",
+        "description": "Complement class of P definition",
+        "proven": true
       }
     ],
     "insights": [
@@ -135,7 +170,13 @@
       "Proved NP-hardness upward closure under poly reductions",
       "Proved P ≠ NP → no NPC problem in P",
       "All NP-complete problems are poly-time equivalent to each other (NPC_equivalent proved)",
-      "NP ∩ coNP defined, P ⊆ NP ∩ coNP proved"
+      "NP ∩ coNP defined, P ⊆ NP ∩ coNP proved",
+      "Removed 4 duplicate theorem definitions that prevented compilation (NPHard_of_reduce, NPComplete_of_reduce, P_eq_NP_implies_NP_eq_coNP, NP_ne_coNP_implies_P_ne_NP)",
+      "Fixed P_eq_NP_implies_PH_collapse_base - rewrite failed on inNP vs NP membership",
+      "Proved P_closed_union: P is closed under union of decision problems",
+      "Proved P_closed_intersection: P is closed under intersection of decision problems",
+      "Proved coP_eq_P: complement class of P equals P",
+      "Proved P_eq_NP_iff_NPC_in_P: P=NP iff some NP-complete problem is in P"
     ],
     "mathlibGaps": [
       "Turing machines",
