@@ -977,17 +977,20 @@ We can express this as: the parity axiom follows from showing that EACH of
 the three parity classes has the same asymptotic density in the coprime sector.
 -/
 
-/-- **Equidistribution Axiom** (cleaner than the parity axiom):
-Each of the three non-both-even parity classes has density 1/3 among coprime
-sector pairs. This is the natural statement: residue classes are equidistributed.
+/-- **Equidistribution** (derived, not an axiom):
+coprimeOddOddCount/coprimeInSectorCount → 1/3.
 
-NOTE: We already proved |OE| = |OO| exactly in the triangle. The circle
-constraint only introduces boundary effects that vanish as N → ∞. So this
-axiom is "morally proved" for 2 of the 3 classes. -/
-axiom parity_class_equidistribution :
+Previously axiomatized, now proved via bothOdd_eq_oo which shows
+coprimeOddOddCount = bothOddCoprimeCount, reducing this to
+bothOdd_fraction_in_coprime_sector. -/
+theorem parity_class_equidistribution :
     Tendsto (fun N : ℕ =>
       (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
-      atTop (𝓝 (1 / 3))
+      atTop (𝓝 (1 / 3)) := by
+  have heq : ∀ N, (coprimeOddOddCount N : ℝ) = (bothOddCoprimeCount N : ℝ) := by
+    intro N; exact_mod_cast (bothOdd_eq_oo N).symm
+  exact (Filter.tendsto_congr (fun N => by rw [heq N])).mpr
+    bothOdd_fraction_in_coprime_sector
 
 /-- The parity axiom follows from equidistribution. -/
 theorem parity_axiom_from_equidistribution :
