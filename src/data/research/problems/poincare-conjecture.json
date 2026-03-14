@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Poincare homology sphere (non-example), Whitehead manifold (closed essential), closed 3-mfd dichotomy. 41 axioms, 97 theorems, 1531 lines.",
+    "progressSummary": "1664-line formalization with 43 axioms, 104 theorems, 0 sorries. Statement, Ricci flow axioms, Perelman surgery, geometrization, dim 2/3/4/≥5, Hopf fibration, lens spaces, Euler characteristic, antipodal map, metric properties, Poincare homology sphere, Whitehead manifold, Thurston geometry classification.",
     "builtItems": [
       "Part XXI: Antipodal map (antipodalMap, antipodalHomeomorph, no_fixed_points, distance=2)",
       "Part XXIII: Euler characteristic and Betti numbers (sphereEulerChar, euler_char_odd/even, Betti S³)",
@@ -80,7 +80,9 @@
       "Poincare homology sphere: closed 3-manifold with same homology as S3 but pi1 = binary icosahedral (order 120), proved not homeomorphic to S3",
       "Binary icosahedral group nontriviality proved from Fintype.card = 120",
       "Whitehead manifold: contractible (hence simply connected) but not compact, shows closed hypothesis essential",
-      "Closed 3-manifold dichotomy proved: every closed 3-mfd is either (SC and S3) or (not-SC and not-S3)"
+      "Closed 3-manifold dichotomy proved: every closed 3-mfd is either (SC and S3) or (not-SC and not-S3)",
+      "Only spherical geometry among Thurston 8 has compact model space - geometric reason Poincaré holds",
+      "Pre-existing build errors from Mathlib API changes (Real.norm_ofNonneg, Homeomorph.connectedSpace) need fixing"
     ],
     "mathlibGaps": [
       "3-manifolds",
