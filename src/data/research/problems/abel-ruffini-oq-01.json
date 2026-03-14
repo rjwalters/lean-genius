@@ -87,7 +87,8 @@
       "cube_root_ratio_satisfies_cyclotomic: if a³=b³ and a≠b then (a/b)²+(a/b)+1=0 (proven by ring+nlinarith)",
       "x_sq_add_x_add_1_has_root_in_splitting_field: splitting field of X³-2 contains primitive cube root of unity",
       "Fixed no_root_of_irreducible_degree_ndvd: replaced non-existent minpoly.natDegree_dvd_finrank with tower law",
-      "Eliminated x_cube_sub_2_gal_iso_s3 axiom: |Gal|=6=|Perm(rootSet)| + galActionHom injective => bijective => MulEquiv.ofBijective => permCongr(rootSet equiv Fin 3)"
+      "Eliminated x_cube_sub_2_gal_iso_s3 axiom: |Gal|=6=|Perm(rootSet)| + galActionHom injective => bijective => MulEquiv.ofBijective => permCongr(rootSet equiv Fin 3)",
+      "Kronecker-Weber theorem not in Mathlib as of 2026-03 (confirmed via web search). abelian_realizable axiom cannot be eliminated with current infrastructure."
     ],
     "mathlibGaps": [],
     "nextSteps": [
