@@ -23,9 +23,9 @@
     The first new polygon construction since antiquity. Determined his career choice.
   - Wantzel (1837): Proved the converse — non-constructibility when φ(n) ≠ 2^k.
 
-  File summary: 67+ proved theorems, 3 sorries, 3 axioms.
-  Sorries: cos_2kpi_div_n_eq_iff (Mathlib API rename), galois_conjugate_count (depends on former),
-  minpoly_cos_natDegree_eq (capstone — cyclotomic tower law, partial infrastructure built).
+  File summary: 67+ proved theorems, 2 sorries, 3 axioms.
+  Sorries: galois_conjugate_count (counting argument via coprime pairing),
+  minpoly_cos_natDegree_eq (capstone — [E:F] ≥ 2 PROVED, [E:F] ≤ 2 needs adjoin F {ζ} = ⊤).
   Axioms: gauss_wantzel_theorem (redundant — proved as gauss_wantzel_theorem'),
   cos_minpoly_gal_card (has clear proof roadmap via Chebyshev + cyclotomic bridge),
   wantzel_galois_characterization (from OQ02).
@@ -1561,7 +1561,11 @@ theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
     induction hx using IntermediateField.adjoin_induction with
     | mem y hy =>
       rw [Set.mem_singleton_iff.mp hy, hc_def]; exact Complex.ofReal_im _
-    | algebraMap q => exact_mod_cast Complex.ofReal_im _
+    | algebraMap q =>
+      have : (algebraMap ℚ ℂ q).im = 0 := by
+        change ((q : ℝ) : ℂ).im = 0
+        exact Complex.ofReal_im _
+      exact this
     | add a b ha hb => simp [Complex.add_im, *]
     | inv a _ ih =>
       show (a⁻¹).im = 0
@@ -1595,14 +1599,36 @@ theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
   -- Therefore [E:F] = 2 and φ(n) = 2 * finrank ℚ F
   have h_ef_eq : Module.finrank ↥F ↥E = 2 := by
     -- Upper bound: [E:F] ≤ 2 via the quadratic X²-2cos·X+1
+    -- Proof: ζ_E satisfies p = X²-2c_F·X+1 ∈ F[X] (degree 2)
+    -- → minpoly F ζ_E divides p → degree(minpoly) ≤ 2
+    -- → adjoin F {ζ_E} = ⊤ (ζ generates E over ℚ ⊆ F)
+    -- → [E:F] = degree(minpoly) ≤ 2
     have h_le : Module.finrank ↥F ↥E ≤ 2 := by sorry
-      -- Proof sketch: ζ_E satisfies p = X²-2c_F·X+1 ∈ F[X] (degree 2)
-      -- → minpoly F ζ_E divides p → degree(minpoly) ≤ 2
-      -- → adjoin F {ζ_E} = ⊤ (ζ generates E over ℚ ⊆ F)
-      -- → [E:F] = degree(minpoly) ≤ 2
     -- Lower bound: [E:F] ≥ 2 from tower law + strict inequality
     -- [E:F] = 0 impossible (φ(n) ≥ 2), [E:F] = 1 impossible (F ⊊ E)
-    have h_ge : Module.finrank ↥F ↥E ≥ 2 := by sorry
+    have h_ge : Module.finrank ↥F ↥E ≥ 2 := by
+      by_contra h_lt
+      push_neg at h_lt
+      rcases show Module.finrank ↥F ↥E = 0 ∨ Module.finrank ↥F ↥E = 1 by omega with h0 | h1
+      · -- finrank F E = 0 → finrank ℚ E = 0 → φ(n) = 0, contradiction
+        have : Module.finrank ℚ ↥F * 0 = Module.finrank ℚ ↥E := by rw [← h0]; exact h_tower
+        linarith [h_finrank_E, (Nat.totient_pos).mpr (show 0 < n by omega)]
+      · -- finrank F E = 1 → inclusion F ↪ E is surjective → ζ ∈ F → contradiction
+        have h_rank_eq : Module.finrank ℚ ↥F = Module.finrank ℚ ↥E := by
+          have := h_tower; rw [h1, mul_one] at this; exact this
+        -- The inclusion is injective (IntermediateField.inclusion_injective)
+        set ι := IntermediateField.inclusion hFE
+        have h_inj : Function.Injective ι.toLinearMap :=
+          IntermediateField.inclusion_injective hFE
+        -- Surjective: injective linear map between same-dim fd spaces
+        have h_range_top : LinearMap.range ι.toLinearMap = ⊤ :=
+          Submodule.eq_top_of_finrank_eq
+            ((LinearEquiv.ofInjective ι.toLinearMap h_inj).finrank_eq.symm.trans h_rank_eq)
+        -- ζ ∈ range of inclusion, so ζ ∈ F, contradicting hζ_notin_F
+        obtain ⟨⟨f, hfF⟩, hf⟩ := (LinearMap.range_eq_top.mp h_range_top)
+          ⟨ζ, IntermediateField.mem_adjoin_simple_self ℚ ζ⟩
+        have hfζ : f = ζ := congr_arg Subtype.val hf
+        exact hζ_notin_F (hfζ ▸ hfF)
     omega
   -- Step 10: Goal is already finrank ℚ ↥F = n.totient / 2 (from rw in Steps 1-2)
   -- From tower: finrank ℚ F * 2 = finrank ℚ E = φ(n)
