@@ -6,6 +6,13 @@ The Inverse Galois Problem (IGP) asks: for every finite group G, does there exis
 
 **Status**: OPEN in general. The full conjecture is unproven.
 
+## Session 2026-03-14 (researcher-2) - Verification and Assessment
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 59)
+**Outcome**: verified, at frontier of formalizability
+
+**What we did**: Docker build verified (2 expected sorries). Confirmed KroneckersJugendtraum.lean has Kronecker-Weber as statement only (not proved). Updated outdated next steps. No tractable path to further progress without new Mathlib infrastructure.
+
 ## Session 2026-02-21 (Session 1) - Initial Exploration and Formalization
 
 **Mode**: FRESH

@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (40 axioms)
+## Axiom Summary (44 axioms)
 - 1 structural: Φ_countably_many (Φ_total and Φ_deterministic now theorems)
 - 2 oracle: Φ_oracle_access, Φ_no_oracle_access
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -55,6 +55,9 @@ This model is sound because:
 - 3 counting: PH_subset_P_SharpP, P_SharpP_subset_PSPACE, sharpP_complete_exists
 - 1 time hierarchy: time_hierarchy (DTIME(n^k) ⊊ DTIME(n^{k+1}))
 - 3 space: savitch_theorem, immerman_szelepcsenyi, pspace_eq_npspace
+- 1 sparsity: mahaney_theorem (no sparse NP-complete if P ≠ NP)
+- 3 upward translation: upward_translation_P_NP, upward_translation_P_PSPACE,
+    upward_translation_NP_coNP (padding arguments)
 - Now theorems: P_subset_EXP (proved), algebrizing_oracle_eq/sep, BPP_subset_IP,
     PSPACE_subset_NEXP (derived), DTIME_subset_P (proved), toda_pspace (derived)
 -/
@@ -1672,5 +1675,160 @@ theorem P_strict_subset_NEXP : P ⊂ NEXP :=
 
 -- Extended landscape
 #check extended_complexity_landscape  -- Full containment picture
+
+-- ============================================================
+-- PART 28: Sparse Languages and Mahaney's Theorem
+-- ============================================================
+
+/-
+### Sparse Languages and Mahaney's Theorem
+
+A language is "sparse" if it has at most polynomially many strings
+at each length. Mahaney (1982) proved that if P ≠ NP, then no sparse
+language can be NP-complete under polynomial-time many-one reductions.
+
+This is a structural consequence of P ≠ NP that constrains which
+problems can be NP-complete: hard problems must have exponentially
+many instances (at some lengths).
+
+Proof sketch: Assume SAT ≤ₚ S for sparse S. Use self-reducibility
+of SAT to binary search for satisfying assignments, using the
+reduction to S at each step. Since S is sparse, the number of
+distinct queries to S is polynomially bounded, so the search can
+be completed in polynomial time. This puts SAT in P, contradicting P ≠ NP.
+-/
+
+/-- A language (encoded as ℕ → Bool) is sparse if the number of
+    "true" elements below any bound grows at most polynomially.
+
+    Formally: there exists a polynomial p such that for all n,
+    |{x ≤ n : L(x) = true}| ≤ p(|n|).
+
+    Examples of sparse languages: the set of prime powers,
+    the set of perfect squares, any finite language.
+    Non-sparse: SAT (has exponentially many satisfiable formulas
+    at each length). -/
+def IsSparse (L : ℕ → Bool) : Prop :=
+  ∃ p : Polynomial, ∀ n : ℕ,
+    (Finset.filter (fun x => L x = true) (Finset.range (n + 1))).card
+    ≤ p.eval (inputSize n)
+
+/-- **Mahaney's Theorem (1982)**: If P ≠ NP, no sparse language is NP-complete.
+
+    Proof idea: Suppose SAT ≤ₚ S for sparse S via reduction f.
+    Use the self-reducibility of SAT: a formula φ is satisfiable iff
+    φ[x₁ = 0] is satisfiable OR φ[x₁ = 1] is satisfiable.
+
+    At each step, reduce both branches to S. Since S is sparse,
+    many of these reductions map to the same element of S.
+    By tracking which elements of S have been seen, we can prune
+    the search tree to polynomial size.
+
+    After at most n variable assignments (for an n-variable formula),
+    we determine satisfiability in polynomial time. Hence SAT ∈ P,
+    contradicting P ≠ NP. -/
+axiom mahaney_theorem (L : ℕ → Bool) :
+    NPComplete L → IsSparse L → P = NP
+
+/-- **Contrapositive of Mahaney**: P ≠ NP → no sparse NP-complete language. -/
+theorem mahaney_contrapositive (h : P ≠ NP) (L : ℕ → Bool)
+    (h_complete : NPComplete L) : ¬ IsSparse L := by
+  intro h_sparse
+  exact h (mahaney_theorem L h_complete h_sparse)
+
+/-- **Berman-Hartmanis Conjecture (1977)**: All NP-complete sets are
+    polynomial-time isomorphic (paddable). This is a stronger claim
+    than Mahaney's theorem. It remains open but implies:
+    - No sparse NP-complete set (Mahaney's theorem)
+    - All NP-complete sets have the same "density"
+
+    We state the key consequence: NP-complete languages are dense. -/
+theorem NPC_dense_if_P_ne_NP (h : P ≠ NP) (L : ℕ → Bool)
+    (h_complete : NPComplete L) :
+    ¬ IsSparse L :=
+  mahaney_contrapositive h L h_complete
+
+-- ============================================================
+-- PART 29: Upward Translation (Padding Arguments)
+-- ============================================================
+
+/-
+### Upward Translation (Padding Arguments)
+
+The "padding argument" is a fundamental technique in complexity theory
+that translates relationships between smaller classes to larger ones.
+
+Key principle: If P = NP, then by padding, EXP = NEXP.
+The converse (contrapositive): If EXP ≠ NEXP, then P ≠ NP.
+
+This gives an "upward" path to P ≠ NP: prove a separation at the
+exponential level (where we have more tools) and translate downward.
+-/
+
+/-- **Upward Translation (Padding Argument)**: P = NP → EXP = NEXP.
+
+    Proof idea: Given L ∈ NEXP decided by NTM M in time 2^{n^k},
+    define L' = {x#1^{2^{|x|^k}-|x|} : x ∈ L} (pad x to exponential length).
+    Then L' ∈ NP (the padded input has length 2^{|x|^k}, and M runs in
+    time polynomial in this padded length).
+    If P = NP, then L' ∈ P, so we can decide L' in poly time.
+    To decide L, pad the input and run the P algorithm for L'.
+    The padding is exponential, but so is our time budget (we're in EXP).
+    Hence L ∈ EXP, so NEXP ⊆ EXP, giving EXP = NEXP. -/
+axiom upward_translation_P_NP : P = NP → EXP = NEXP
+
+/-- **Downward Separation**: EXP ≠ NEXP → P ≠ NP.
+    Contrapositive of upward translation. -/
+theorem downward_separation_EXP_NEXP : EXP ≠ NEXP → P ≠ NP := by
+  intro h_neq h_eq
+  exact h_neq (upward_translation_P_NP h_eq)
+
+/-- EXPSPACE: problems solvable in exponential space.
+    By analogy with PSPACE, but with exponential space bound. -/
+opaque EXPSPACE_def : Set (ℕ → Bool)
+def EXPSPACE : Set (ℕ → Bool) := EXPSPACE_def
+
+/-- coNEXP: complement of NEXP. -/
+def coNEXP : Set (ℕ → Bool) :=
+  { f | (fun n => !f n) ∈ NEXP }
+
+/-- **Upward Translation for Space**: P = PSPACE → EXP = EXPSPACE.
+    Same padding argument applied to space classes. -/
+axiom upward_translation_P_PSPACE : P = PSPACE → EXP = EXPSPACE
+
+/-- **Upward Translation for Complements**: NP = coNP → NEXP = coNEXP.
+    The padding argument preserves complement closure. -/
+axiom upward_translation_NP_coNP : NP = coNP → NEXP = coNEXP
+
+/-- **Downward Separation for Space**: EXP ≠ EXPSPACE → P ≠ PSPACE. -/
+theorem downward_separation_EXP_EXPSPACE : EXP ≠ EXPSPACE → P ≠ PSPACE := by
+  intro h_neq h_eq
+  exact h_neq (upward_translation_P_PSPACE h_eq)
+
+/-- **Downward Separation for Complements**: NEXP ≠ coNEXP → NP ≠ coNP. -/
+theorem downward_separation_NEXP_coNEXP : NEXP ≠ coNEXP → NP ≠ coNP := by
+  intro h_neq h_eq
+  exact h_neq (upward_translation_NP_coNP h_eq)
+
+/-- **Consequence**: NEXP ≠ coNEXP → P ≠ NP.
+    Chain: NEXP ≠ coNEXP → NP ≠ coNP → P ≠ NP. -/
+theorem NEXP_ne_coNEXP_implies_P_ne_NP : NEXP ≠ coNEXP → P ≠ NP := by
+  intro h
+  have h_np_ne_conp := downward_separation_NEXP_coNEXP h
+  exact NP_ne_coNP_implies_P_ne_NP h_np_ne_conp
+
+-- Sparse languages and Mahaney
+#check mahaney_theorem               -- NPComplete L → IsSparse L → P = NP
+#check mahaney_contrapositive         -- P ≠ NP → NPC → ¬ IsSparse
+#check NPC_dense_if_P_ne_NP          -- P ≠ NP → NPC → ¬ IsSparse
+
+-- Upward translation (padding arguments)
+#check upward_translation_P_NP       -- P = NP → EXP = NEXP
+#check downward_separation_EXP_NEXP  -- EXP ≠ NEXP → P ≠ NP
+#check upward_translation_P_PSPACE   -- P = PSPACE → EXP = EXPSPACE
+#check downward_separation_EXP_EXPSPACE -- EXP ≠ EXPSPACE → P ≠ PSPACE
+#check upward_translation_NP_coNP    -- NP = coNP → NEXP = coNEXP
+#check downward_separation_NEXP_coNEXP -- NEXP ≠ coNEXP → NP ≠ coNP
+#check NEXP_ne_coNEXP_implies_P_ne_NP -- NEXP ≠ coNEXP → P ≠ NP
 
 end PNPBarriersSound
