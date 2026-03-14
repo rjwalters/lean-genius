@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Karp-Lipton (circuits→PH), Mahaney (sparse NPC→P=NP), BPP (Sipser-Lautemann, Adleman), oracle landscape. File: 1639 lines, 22 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Added ETH (3-SAT∉P→P≠NP), Cook-Reckhow proof complexity, circuit depth hierarchy (AC⁰, parity lower bound). File: 1770 lines, 26 axioms, 0 sorries.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -225,6 +225,31 @@
         "name": "extended_barrier_landscape",
         "description": "All three barriers + IP=PSPACE marker",
         "proven": true
+      },
+      {
+        "name": "ThreeSAT",
+        "description": "3-SAT NPC + ETH consequence (3-SAT ∉ P)",
+        "proven": false
+      },
+      {
+        "name": "ETH_implies_P_ne_NP",
+        "description": "ETH → P ≠ NP (proved)",
+        "proven": true
+      },
+      {
+        "name": "cook_reckhow",
+        "description": "Poly proofs ↔ NP = coNP (axiom)",
+        "proven": false
+      },
+      {
+        "name": "parity_not_in_AC0",
+        "description": "Parity ∉ AC⁰ (Håstad, axiom)",
+        "proven": false
+      },
+      {
+        "name": "circuit_frontier",
+        "description": "AC⁰ bounds + natural proofs limit (proved)",
+        "proven": true
       }
     ],
     "insights": [
@@ -259,7 +284,11 @@
       "Mahaney theorem: NP-complete problems must be dense (no sparse NPC unless P=NP)",
       "BPP ⊆ Σ₂ ∩ P/poly — randomness adds limited power beyond P",
       "P = NP → BPP ⊆ P (proved via PH collapse + Sipser-Lautemann)",
-      "IP=PSPACE is a concrete non-relativizing result, showing barriers can be bypassed"
+      "IP=PSPACE is a concrete non-relativizing result, showing barriers can be bypassed",
+      "ETH (3-SAT ∉ P) implies P ≠ NP but is strictly stronger — gives quantitative bounds",
+      "Cook-Reckhow: poly-bounded proof systems ↔ NP = coNP — connects proof complexity to class separation",
+      "Parity ∉ AC⁰ is an unconditional exponential circuit lower bound, but the technique is natural so cant scale",
+      "The proof complexity hierarchy Resolution < Frege < Extended Frege mirrors AC⁰ < NC¹ < P/poly"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",

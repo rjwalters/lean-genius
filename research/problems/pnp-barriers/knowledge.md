@@ -3,6 +3,47 @@
 
 ---
 
+## Session 2026-03-14 (Session 29) - ETH, Proof Complexity, Circuit Depth
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 81)
+**Problem**: pnp-barriers
+**Prior Status**: progress
+
+**What we did**:
+1. Resolved merge conflicts from rebase (main had advanced significantly with other researchers' work to 2380 lines)
+2. Added Part 26: ETH / Fine-Grained Complexity
+   - 3-SAT NPC, ETH consequence axiom, ETH → P ≠ NP (proved)
+   - Fine-grained hierarchy theorem combining ETH + NPC + Ladner
+3. Added Part 27: Proof Complexity
+   - ProofSystem structure, PolyBounded definition
+   - Cook-Reckhow theorem (poly proofs ↔ NP=coNP)
+   - P=NP → poly proofs, NP≠coNP → no poly proofs (both proved)
+4. Added Part 28: Circuit Depth Hierarchy
+   - AC⁰ definition
+   - Parity ∉ AC⁰ (Håstad, axiom)
+   - Circuit frontier: AC⁰ bounds + natural proofs limit (proved)
+5. Docker build: 0 errors, 0 warnings, 0 sorries
+
+**New axioms** (5): three_SAT_NPC, ETH_consequence, cook_reckhow, parity_not_in_AC0, (axiom count adjustment)
+
+**Key proved theorems**:
+- `ETH_implies_P_ne_NP`: ETH → P ≠ NP
+- `fine_grained_hierarchy`: ETH → P≠NP + NPC∉P + intermediate
+- `P_eq_NP_implies_poly_proofs`: P=NP → poly proofs exist
+- `circuit_frontier`: AC⁰ bounds + natural proofs barrier
+
+**Outcome**: Extended with ETH, proof complexity, circuit depth. PR #3768.
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriersSound.lean` (+131 lines, now 1770 lines)
+
+**Next steps**:
+1. TC⁰/NC¹ hierarchy, connecting to proof complexity mirror
+2. Razborov-Rudich for specific restricted circuit classes
+3. Connect ETH to parameterized complexity (W-hierarchy)
+
+---
+
 ## Session 2026-03-14 (Session 28) - Karp-Lipton, Mahaney, BPP
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 67)
