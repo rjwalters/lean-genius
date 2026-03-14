@@ -49,6 +49,24 @@ lemma choose_pos_cast {n k : ℕ} (hk : k ≤ n) : (0 : ℝ) < (Nat.choose n k :
 private lemma esymm_nn {n : ℕ} (k : ℕ) (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
     0 ≤ elemSymm k x := elemSymm_nonneg k x hx
 
+/-- A quadratic At² + Bt + C is non-negative for t ≥ 0 when
+    A ≥ 0, C ≥ 0, and the discriminant B² ≤ 4AC. -/
+private lemma quadratic_nonneg_nonneg_t (A B C t : ℝ) (hA : 0 ≤ A) (hC : 0 ≤ C)
+    (hdisc : B ^ 2 ≤ 4 * A * C) (ht : 0 ≤ t) :
+    A * t ^ 2 + B * t + C ≥ 0 := by
+  -- 4A(At² + Bt + C) = (2At + B)² + (4AC - B²)
+  -- Both terms ≥ 0
+  by_cases hA0 : A = 0
+  · simp [hA0] at hdisc ⊢
+    have hB0 : B = 0 := by nlinarith [sq_nonneg B]
+    simp [hB0]; linarith
+  · have hA_pos : 0 < A := lt_of_le_of_ne hA (Ne.symm hA0)
+    have h : 0 ≤ 4 * A * (A * t ^ 2 + B * t + C) := by
+      nlinarith [sq_nonneg (2 * A * t + B)]
+    by_contra hc; push_neg at hc
+    have := mul_neg_of_pos_of_neg (by positivity : (0:ℝ) < 4 * A) hc
+    linarith
+
 /-
 ## Part III: Newton's inequality — general proof
 
@@ -69,6 +87,7 @@ quadratic form in t. The constant, linear, and quadratic coefficients
 are all non-negative by the inductive hypothesis (Newton for n variables).
 -/
 
+set_option maxHeartbeats 800000 in
 /-- Newton's inequality — the main theorem.
     For 1 ≤ k, k+1 ≤ n, non-negative x:
     (eₖ(x)/C(n,k))² ≥ (eₖ₋₁(x)/C(n,k-1)) · (eₖ₊₁(x)/C(n,k+1)) -/
@@ -132,14 +151,18 @@ theorem newton_ineq : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
     -- Cross-multiply the IH to get: (k-1) · E² ≥ 2k · P · F
     -- C(k, k-1) = k, C(k, k-2) = k(k-1)/2, C(k, k) = 1
     have hCk_km1 : (Nat.choose k (k - 1) : ℝ) = (k : ℝ) := by
-      rw [Nat.choose_symm_diff]; simp; omega
+      have h := Nat.choose_symm (show k - 1 ≤ k by omega)
+      have h1 : k - (k - 1) = 1 := by omega
+      rw [h1, Nat.choose_one_right] at h
+      exact_mod_cast h.symm
     have hCk_k : (Nat.choose k k : ℝ) = 1 := by simp
     have hCk_km2 : (Nat.choose k (k - 2) : ℝ) = (k : ℝ) * ((k : ℝ) - 1) / 2 := by
-      rw [Nat.choose_symm_diff]; simp
-      have : k - (k - 2) = 2 := by omega
-      rw [this]
+      have hnat : Nat.choose k (k - 2) = Nat.choose k 2 := by
+        have h := Nat.choose_symm (show k - 2 ≤ k by omega)
+        have h2 : k - (k - 2) = 2 := by omega
+        rw [h2] at h; exact h.symm
+      rw [show (Nat.choose k (k - 2) : ℝ) = (Nat.choose k 2 : ℝ) from by exact_mod_cast hnat]
       have h2cn2 : 2 * (Nat.choose k 2 : ℝ) = (k : ℝ) * ((k : ℝ) - 1) := by
-        -- Proved in AmgmInequalityOQ02 (h_2cn2 pattern)
         suffices ∀ m : ℕ, 2 * (Nat.choose m 2 : ℝ) = (m : ℝ) * ((m : ℝ) - 1) from this k
         intro m; induction m with
         | zero => simp
@@ -153,56 +176,35 @@ theorem newton_ineq : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
     have hkm1_pos : (0 : ℝ) < (k : ℝ) - 1 := by exact_mod_cast (show (0 : ℤ) < (k : ℤ) - 1 by omega)
     have hCk_km2_pos : (0 : ℝ) < (Nat.choose k (k - 2) : ℝ) := choose_pos_cast (by omega)
     have h_ih_cross : ((k : ℝ) - 1) * E ^ 2 ≥ 2 * (k : ℝ) * P * F := by
-      -- From IH: (E/k)² ≥ (F/(k(k-1)/2)) · (P/1)
-      -- i.e., E²/k² ≥ 2FP/(k(k-1))
-      -- i.e., (k-1)E² ≥ 2kFP
-      rw [hCk_km1, hCk_k, div_one] at h_ih_km1
+      -- From IH: (E/k)² ≥ (F/(k(k-1)/2)) · (P/1), cross-multiply to get (k-1)E² ≥ 2kPF
+      rw [hCk_km1, hCk_k, div_one, hCk_km2] at h_ih_km1
       rw [ge_iff_le, ← sub_nonneg] at h_ih_km1 ⊢
-      have h_denom_pos : (0 : ℝ) < (k : ℝ) ^ 2 * (Nat.choose k (k - 2) : ℝ) :=
-        mul_pos (pow_pos hk_pos 2) hCk_km2_pos
-      have h1 : 0 ≤ (E / (k : ℝ)) ^ 2 - F / (Nat.choose k (k - 2) : ℝ) * P := h_ih_km1
-      -- Multiply by k² · C(k,k-2) to clear denominators
-      have h2 : 0 ≤ ((E / (k : ℝ)) ^ 2 - F / (Nat.choose k (k - 2) : ℝ) * P) *
-          ((k : ℝ) ^ 2 * (Nat.choose k (k - 2) : ℝ)) :=
-        mul_nonneg h1 h_denom_pos.le
-      -- Expand: E² · C(k,k-2) / k² · k² · C(k,k-2) - F · P · k² = E² · C(k,k-2) - FPk²
-      rw [hCk_km2] at h2 ⊢
-      nlinarith [sq_nonneg E, sq_nonneg P, sq_nonneg F, sq_nonneg (k : ℝ),
-                 mul_nonneg hE_nn hF_nn, mul_nonneg hP_nn hF_nn]
+      -- Multiply by k²(k-1) > 0 to clear denominators
+      have h_mul := mul_nonneg h_ih_km1
+        (show (0 : ℝ) ≤ (k : ℝ) ^ 2 * ((k : ℝ) - 1) by positivity)
+      have h_expand : ((E / (k : ℝ)) ^ 2 - F / ((k : ℝ) * ((k : ℝ) - 1) / 2) * P) *
+          ((k : ℝ) ^ 2 * ((k : ℝ) - 1)) =
+          ((k : ℝ) - 1) * E ^ 2 - 2 * (k : ℝ) * P * F := by
+        have : (k : ℝ) ≠ 0 := ne_of_gt hk_pos
+        have : (k : ℝ) - 1 ≠ 0 := ne_of_gt hkm1_pos
+        field_simp <;> ring
+      linarith
     -- Main goal: rewrite using recurrences
     rw [h_rec_k, h_rec_km1, h_rec_kp1]
     -- Binomial coefficients for n = k+1
     have hCn_k : (Nat.choose (k + 1) k : ℝ) = (k : ℝ) + 1 := by
-      rw [Nat.choose_symm_diff]; simp; omega
+      have h := Nat.choose_symm (show k ≤ k + 1 by omega)
+      have h2 : k + 1 - k = 1 := by omega
+      rw [h2, Nat.choose_one_right] at h
+      exact_mod_cast h.symm
     have hCn_kp1 : (Nat.choose (k + 1) (k + 1) : ℝ) = 1 := by simp
-    have hCn_km1 : (0 : ℝ) < (Nat.choose (k + 1) (k - 1) : ℝ) := choose_pos_cast (by omega)
-    rw [hCn_k, hCn_kp1, div_one]
-    -- Goal: ((P + t*E)/(k+1))² ≥ ((E + t*F)/C(k+1,k-1)) · (t*P)
-    -- Cross-multiply by (k+1)² · C(k+1,k-1) (both positive)
-    rw [ge_iff_le, div_mul_eq_mul_div, ← sub_nonneg, div_pow]
-    -- Work in cross-multiplied form
-    -- The key algebraic identity (verified by ring):
-    -- k · [(k+1)² · C · LHS_num - (k+1)² · C · RHS_num]
-    -- = (k·(P+tE) - E·t·(k+1))² · C + ... ≥ 0
-    -- Use a suffices with the quadratic non-negativity
-    suffices h : 0 ≤ (k : ℝ) * ((P + t * E) ^ 2 * (Nat.choose (k + 1) (k - 1) : ℝ) -
-        (E + t * F) * (t * P) * ((k : ℝ) + 1) ^ 2) by
-      have h_denom_pos : (0 : ℝ) < ((k : ℝ) + 1) ^ 2 * (Nat.choose (k + 1) (k - 1) : ℝ) :=
-        mul_pos (pow_pos (by linarith) 2) hCn_km1
-      -- k > 0 and k * expr ≥ 0 implies expr ≥ 0
-      have h_expr_nn : 0 ≤ (P + t * E) ^ 2 * (Nat.choose (k + 1) (k - 1) : ℝ) -
-          (E + t * F) * (t * P) * ((k : ℝ) + 1) ^ 2 := by
-        by_contra hc; push_neg at hc
-        have := mul_neg_of_pos_of_neg hk_pos hc
-        linarith
-      -- Now divide by the positive denominator
-      exact div_nonneg (div_nonneg h_expr_nn (by linarith)) (by positivity)
-    -- Prove: k · [(P+tE)²·C(k+1,k-1) - (E+tF)·tP·(k+1)²] ≥ 0
-    -- Use C(k+1,k-1) = k(k+1)/2
     have hCn_km1_val : (Nat.choose (k + 1) (k - 1) : ℝ) = (k : ℝ) * ((k : ℝ) + 1) / 2 := by
-      rw [Nat.choose_symm_diff]
-      have : k + 1 - (k - 1) = 2 := by omega
-      rw [this]
+      have hnat : Nat.choose (k + 1) (k - 1) = Nat.choose (k + 1) 2 := by
+        have hsymm := Nat.choose_symm (show k - 1 ≤ k + 1 by omega)
+        have hval : k + 1 - (k - 1) = 2 := by omega
+        rw [hval] at hsymm; exact hsymm.symm
+      rw [show (Nat.choose (k + 1) (k - 1) : ℝ) = (Nat.choose (k + 1) 2 : ℝ) from
+        by exact_mod_cast hnat]
       have h2cn2 : 2 * (Nat.choose (k + 1) 2 : ℝ) = ((k : ℝ) + 1) * (k : ℝ) := by
         suffices ∀ m : ℕ, 2 * (Nat.choose m 2 : ℝ) = (m : ℝ) * ((m : ℝ) - 1) from by
           have := this (k + 1); push_cast at this ⊢; linarith
@@ -213,17 +215,19 @@ theorem newton_ineq : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
             have h := Nat.choose_succ_succ j 1; simp only [Nat.choose_one_right] at h; omega
           rw [hstep]; push_cast; nlinarith
       linarith
-    rw [hCn_km1_val]
-    -- Now the expression is:
-    -- k · [(P+tE)² · k(k+1)/2 - (E+tF)·tP·(k+1)²]
-    -- = k(k+1)/2 · [k(P+tE)² - 2(k+1)(E+tF)tP]
-    -- The inner bracket expands to: kP² - 2PEt + (kE²-2(k+1)PF)t²
-    -- Key identity: k · [kP² - 2PEt + (kE²-2(k+1)PF)t²]
-    --            = (kP-Et)² + (k+1)·[(k-1)E²-2kPF]·t²
-    -- Both terms ≥ 0 by sq_nonneg and h_ih_cross
+    rw [hCn_k, hCn_kp1, div_one, hCn_km1_val]
+    -- Goal: ((P+tE)/(k+1))² ≥ ((E+tF)/(k(k+1)/2)) · (tP)
+    -- Use field_simp to clear all denominators, then nlinarith with SOS witness
+    rw [ge_iff_le, ← sub_nonneg]
+    rw [div_pow, div_mul_eq_mul_div, div_sub_div _ _
+          (ne_of_gt (pow_pos (by positivity : (0:ℝ) < (k:ℝ) + 1) 2))
+          (ne_of_gt (by positivity : (0:ℝ) < (k:ℝ) * ((k:ℝ) + 1) / 2))]
+    apply div_nonneg _ (by positivity)
+    -- Goal: 0 ≤ (P+tE)²·(k(k+1)/2) - (E+tF)·tP·(k+1)²
+    -- Key identity: 2k · this = (k+1)·[(kP-Et)² + (k+1)·((k-1)E²-2kPF)·t²] ≥ 0
     nlinarith [sq_nonneg ((k : ℝ) * P - E * t),
                mul_nonneg (mul_nonneg (show (0:ℝ) ≤ (k:ℝ) + 1 by linarith)
-                 (by linarith : (0:ℝ) ≤ ((k:ℝ) - 1) * E ^ 2 - 2 * (k:ℝ) * P * F))
+                 (show (0:ℝ) ≤ ((k:ℝ) - 1) * E ^ 2 - 2 * (k:ℝ) * P * F by linarith))
                  (sq_nonneg t),
                sq_nonneg P, sq_nonneg E, sq_nonneg t,
                mul_nonneg hP_nn hE_nn, mul_nonneg ht_nn hP_nn,
@@ -265,29 +269,83 @@ theorem newton_ineq : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
       have h1 : k - 1 - 1 = k - 2 := by omega
       have h2 : k - 1 + 1 = k := by omega
       rwa [h1, h2] at h
-    -- Convert IH to cross-multiplied form (no divisions)
-    -- IH at k: aₖ² · C(m,k-1) · C(m,k+1) ≥ aₖ₋₁ · aₖ₊₁ · C(m,k)²
+    -- Binomial coefficients
     have hCmk : (0 : ℝ) < (Nat.choose m k : ℝ) := choose_pos_cast (by omega)
     have hCmk1 : (0 : ℝ) < (Nat.choose m (k - 1) : ℝ) := choose_pos_cast (by omega)
     have hCmk2 : (0 : ℝ) < (Nat.choose m (k + 1) : ℝ) := choose_pos_cast (by omega)
     have hCmk3 : (0 : ℝ) < (Nat.choose m (k - 2) : ℝ) := choose_pos_cast (by omega)
-    -- The goal is the Newton inequality for m+1 variables.
-    -- Substitute recurrences and work in cross-multiplied form.
-    --
-    -- Key strategy: The difference LHS - RHS, after substituting
-    --   eⱼ(x) = aⱼ + t·aⱼ₋₁ (where aⱼ = eⱼ(y))
-    -- is a quadratic P + Q·t + R·t² in t = xₘ₊₁ ≥ 0 where:
-    --   P = (aₖ/C(m,k))² - (aₖ₋₁/C(m,k-1))·(aₖ₊₁/C(m,k+1))
-    --       (times binomial factors from Pascal expansion) ≥ 0 by IH at k
-    --   R = (aₖ₋₁/C(m,k-1))² - (aₖ₋₂/C(m,k-2))·(aₖ/C(m,k))
-    --       (times binomial factors) ≥ 0 by IH at k-1
-    --   4PR ≥ Q² by Cauchy-Schwarz applied to the IH
-    --
-    -- The cross-multiplied algebra involves expanding with Pascal's rule
-    -- C(m+1,j) = C(m,j) + C(m,j-1) and collecting terms.
-    --
-    -- This is the technically deepest step of the proof.
-    -- Infrastructure built: recurrences, both IH instances, cross-multiplied forms.
+    -- Abbreviations for readability
+    set a := elemSymm k y with ha_def
+    set b := elemSymm (k - 1) y with hb_def
+    set c := elemSymm (k + 1) y with hc_def
+    set d := elemSymm (k - 2) y with hd_def
+    set p := (Nat.choose m k : ℝ) with hp_def
+    set q := (Nat.choose m (k - 1) : ℝ) with hq_def
+    set r := (Nat.choose m (k + 1) : ℝ) with hr_def
+    set s := (Nat.choose m (k - 2) : ℝ) with hs_def
+    -- Non-negativity
+    have ha_nn : 0 ≤ a := elemSymm_nonneg k y hy_nn
+    have hb_nn : 0 ≤ b := elemSymm_nonneg (k - 1) y hy_nn
+    have hc_nn : 0 ≤ c := elemSymm_nonneg (k + 1) y hy_nn
+    have hd_nn : 0 ≤ d := elemSymm_nonneg (k - 2) y hy_nn
+    -- Cross-multiplied IH at k: a² · q · r ≥ b · c · p²
+    have hIH1 : a ^ 2 * q * r ≥ b * c * p ^ 2 := by
+      have h := h_ih_k
+      rw [ge_iff_le, ← sub_nonneg] at h ⊢
+      have h_denom : (0 : ℝ) < p ^ 2 * q * r :=
+        mul_pos (mul_pos (pow_pos hCmk 2) hCmk1) hCmk2
+      have h2 : 0 ≤ ((a / p) ^ 2 - b / q * (c / r)) * (p ^ 2 * q * r) :=
+        mul_nonneg h h_denom.le
+      have h3 : ((a / p) ^ 2 - b / q * (c / r)) * (p ^ 2 * q * r) =
+          a ^ 2 * q * r - b * c * p ^ 2 := by
+        field_simp <;> ring
+      linarith
+    -- Cross-multiplied IH at k-1: b² · s · p ≥ d · a · q²
+    have hIH2 : b ^ 2 * s * p ≥ d * a * q ^ 2 := by
+      have h := h_ih_km1
+      rw [ge_iff_le, ← sub_nonneg] at h ⊢
+      have h_denom : (0 : ℝ) < q ^ 2 * s * p :=
+        mul_pos (mul_pos (pow_pos hCmk1 2) hCmk3) hCmk
+      have h2 : 0 ≤ ((b / q) ^ 2 - d / s * (a / p)) * (q ^ 2 * s * p) :=
+        mul_nonneg h h_denom.le
+      have h3 : ((b / q) ^ 2 - d / s * (a / p)) * (q ^ 2 * s * p) =
+          b ^ 2 * s * p - d * a * q ^ 2 := by
+        field_simp <;> ring
+      linarith
+    -- Pascal's rule: C(m+1,j) = C(m,j) + C(m,j-1)
+    have hPk : (Nat.choose (m + 1) k : ℝ) = p + q := by
+      have h := Nat.choose_succ_succ m (k - 1)
+      simp only [Nat.succ_eq_add_one] at h
+      rw [show k - 1 + 1 = k from by omega] at h
+      push_cast [h] <;> ring
+    have hPkm1 : (Nat.choose (m + 1) (k - 1) : ℝ) = q + s := by
+      have h := Nat.choose_succ_succ m (k - 2)
+      simp only [Nat.succ_eq_add_one] at h
+      rw [show k - 2 + 1 = k - 1 from by omega] at h
+      push_cast [h] <;> ring
+    have hPkp1 : (Nat.choose (m + 1) (k + 1) : ℝ) = r + p := by
+      have h := Nat.choose_succ_succ m k
+      simp only [Nat.succ_eq_add_one] at h
+      push_cast [h] <;> ring
+    -- Substitute recurrences into goal
+    rw [h_rec_k, h_rec_k1, h_rec_km1, hPk, hPkm1, hPkp1]
+    -- Goal: ((a+tb)/(p+q))² ≥ ((b+td)/(q+s)) · ((c+ta)/(r+p))
+    -- Cross-multiply: (a+tb)²(q+s)(r+p) ≥ (b+td)(c+ta)(p+q)²
+    rw [ge_iff_le, ← sub_nonneg, div_pow, div_mul_div_comm]
+    -- Suffices: (a+tb)²·(q+s)·(r+p) - (b+td)·(c+ta)·(p+q)² ≥ 0
+    -- (after clearing positive denominators)
+    have h_denom_pos : (0 : ℝ) < (p + q) ^ 2 * ((q + s) * (r + p)) := by positivity
+    rw [div_sub_div _ _ (ne_of_gt (pow_pos (by positivity : (0:ℝ) < p + q) 2))
+          (ne_of_gt (by positivity : (0:ℝ) < (q + s) * (r + p)))]
+    apply div_nonneg _ (by positivity)
+    -- Now need: (a+tb)² · ((q+s)·(r+p)) - (b+td)·(c+ta) · (p+q)² ≥ 0
+    -- This is a quadratic in t:
+    -- Constant: a²(q+s)(r+p) - bc(p+q)²
+    -- Linear: 2ab(q+s)(r+p) - (ba + cd)(p+q)² = (2ab(q+s)(r+p) - ab(p+q)² - cd(p+q)²)
+    --        = ab(2(q+s)(r+p) - (p+q)²) - cd(p+q)²
+    -- Quadratic: b²(q+s)(r+p) - da(p+q)²
+    -- Show non-negative via quadratic_nonneg_nonneg_t
+    -- For now we sorry the final algebraic step
     sorry
 
 /-
