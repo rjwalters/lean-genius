@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (13 axioms, down from 17)
+## Axiom Summary (18 axioms, down from 21)
 - 1 structural: Φ_countably_many (Φ_total and Φ_deterministic now theorems)
 - 2 oracle: Φ_oracle_access, Φ_no_oracle_access
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -44,6 +44,8 @@ This model is sound because:
 - 2 algebrization: algebrizing_oracle_eq, algebrizing_oracle_sep
 - 3 structural properties: P_rel_monotone, NP_rel_monotone, P_rel_subset_NP_rel
 - 2 closure properties: P_complement_closed, poly_time_compose, reduction_preserves_P
+- 2 containment: NP_subset_PSPACE, PH_subset_PSPACE
+- 2 separation/existence: P_ne_EXP, ladner_theorem
 - Note: PSPACE_subset_EXP now theorem (PSPACE and EXP have identical definitions)
 -/
 
