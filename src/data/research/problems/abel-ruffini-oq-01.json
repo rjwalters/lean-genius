@@ -30,7 +30,7 @@
     "activeApproach": "Eliminating x_cube_sub_2_gal_iso_s3 axiom via degree argument"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 36+ proven theorems, 3 axioms, 1 sorry. Fixed docstring parse error (Unicode in docstrings). Simplified splitting_field_finrank sorry with documented proof strategy. Docker build constraint: worktree changes not visible to Docker (mounts main repo). 1 sorry remains (splitting_field_x_cube_sub_2_finrank).",
+    "progressSummary": "PROGRESS: x_cube_sub_2_gal_iso_s3 axiom now has proved version (x_cube_sub_2_gal_iso_s3_proved) with 0 sorries. Once verified via build, axiom can be removed. File has 2 sorries (open problems) and 3 axioms (1 now superseded).",
     "builtItems": [
       "cyclotomic_galois_group_card: |Gal(Phi_n/Q)| = phi(n) (proven)",
       "units_zmod3_card = 2, units_zmod8_card = 4, units_zmod11_card = 10 (decide)",
@@ -76,7 +76,9 @@
       "Proof strategy for splitting_field_finrank: 3|deg (irred), deg|6 (Gal embeds S3), deg>3 (cofactor no root), so deg=6",
       "x_cube_sub_2_gal_iso_s3 axiom can be eliminated: proof structure is galActionHom injective + |Gal|=6=|Perm(rootSet)| → bijective → MulEquiv.ofBijective → transport via rootSet≃Fin3",
       "Docker build mounts main repo root, not worktree: must merge to main or use local build for verification",
-      "Need Mathlib API name for: injective function between fintypes of equal cardinality is surjective"
+      "Need Mathlib API name for: injective function between fintypes of equal cardinality is surjective",
+      "Proved x_cube_sub_2_gal_iso_s3 without sorry: galActionHom injective + Finite.surjective_of_injective on composition with Fintype.equivOfCardEq",
+      "Key trick: compose galActionHom with equiv.symm to get endomorphism, then Finite.surjective_of_injective, then Function.Surjective.of_comp"
     ],
     "mathlibGaps": [],
     "nextSteps": [

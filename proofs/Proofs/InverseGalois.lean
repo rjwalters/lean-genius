@@ -825,13 +825,11 @@ This supersedes the `x_cube_sub_2_gal_iso_s3` axiom above. Once this proof
 is verified, the axiom can be removed and all references updated.
 -/
 /--
-Proof sketch: galActionHom : p.Gal →* Perm(rootSet K) is injective,
+galActionHom : p.Gal →* Perm(rootSet K) is injective,
 |p.Gal| = 6 = |Perm(rootSet K)|, so the injection is a bijection.
 Then transport rootSet K ≃ Fin 3 gives p.Gal ≃* Perm(Fin 3).
 
-The sorry is for `Function.Bijective` from injectivity + equal cardinality,
-which is a standard Fintype lemma. This eliminates the `x_cube_sub_2_gal_iso_s3`
-axiom above once the correct API name is found.
+This supersedes the `x_cube_sub_2_gal_iso_s3` axiom above.
 -/
 theorem x_cube_sub_2_gal_iso_s3_proved :
     Nonempty ((X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal ≃* Equiv.Perm (Fin 3)) := by
@@ -845,10 +843,21 @@ theorem x_cube_sub_2_gal_iso_s3_proved :
     rw [Polynomial.card_rootSet_eq_natDegree hp_sep hp_splits, x_cube_sub_2_natDegree]
   have hcard : Fintype.card p.Gal = Fintype.card (Equiv.Perm (p.rootSet K)) := by
     rw [x_cube_sub_2_gal_card, Fintype.card_perm, hrs]
-  -- Injective + equal cardinality → bijective (standard Fintype fact)
-  have hbij : Function.Bijective (Polynomial.Gal.galActionHom p K) := by
-    refine ⟨hinj, ?_⟩
-    sorry -- Fintype.surjective_of_injective or similar (equal card + injective → surjective)
+  -- Injective + equal cardinality → surjective → bijective
+  -- Strategy: compose galActionHom with equiv.symm to get endomorphism, apply
+  -- Finite.surjective_of_injective (works for endomorphisms), then extract surjectivity.
+  have hsurj : Function.Surjective (Polynomial.Gal.galActionHom p K) := by
+    -- e : Perm(rootSet K) ≃ p.Gal
+    have e := (Fintype.equivOfCardEq hcard).symm
+    -- galActionHom ∘ e : Perm(rootSet K) → Perm(rootSet K) is injective
+    have hinj_comp : Function.Injective ((Polynomial.Gal.galActionHom p K) ∘ e) :=
+      hinj.comp e.injective
+    -- Injective endomorphism on finite type → surjective
+    have hsurj_comp := Finite.surjective_of_injective hinj_comp
+    -- g ∘ f surjective → g surjective
+    exact hsurj_comp.of_comp
+  have hbij : Function.Bijective (Polynomial.Gal.galActionHom p K) :=
+    ⟨hinj, hsurj⟩
   exact ⟨(MulEquiv.ofBijective _ hbij).trans (Equiv.permCongr (Fintype.equivOfCardEq hrs))⟩
 
 end InverseGaloisProblem
