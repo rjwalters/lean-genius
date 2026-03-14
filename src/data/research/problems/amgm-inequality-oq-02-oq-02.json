@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "SURVEY",
-    "since": "2026-03-13T03:56:04.572Z",
-    "iteration": 2,
-    "focus": "newton_cleared_denom discriminant argument",
+    "phase": "DEEP_DIVE",
+    "since": "2026-03-13T07:30:00Z",
+    "iteration": 3,
+    "focus": "newton_cleared_denom k≥2 inductive step",
     "blockers": [],
     "nextAction": "",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 1
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 1 sorry remaining (inductive step k+1≤m). Base case and k=1 case proved. Full induction infrastructure with recurrences, both IH instances, cross-product, and unnormalized Newton. File architecture: newton_cleared_denom → newton_log_concavity_proved → maclaurin_step_derived eliminates both axioms.",
+    "progressSummary": "PROGRESS: k=1 case of newton_cleared_denom PROVED via Cauchy-Schwarz (maclaurin_sq_m1_ge_m2_general). Induction structure split: k=1 uses direct inequality, k≥2 uses recurrence. The k≥2 case remains as the sole sorry. Architecture: newton_cleared_denom → newton_log_concavity_proved → maclaurin_step_derived eliminates both axioms.",
     "builtItems": [
       "elemSymm_zero_implies_higher_zero: zero tail property",
       "power_ineq_of_log_concave: a_k^(k+1) >= a_{k+1}^k by induction",
@@ -39,7 +39,8 @@
       "newton_cleared_denom: cleared-denominator form of normalized Newton (sorry)",
       "newton_log_concavity_proved: derives from newton_cleared_denom via div_sub_div",
       "Proved base case (m=k) of newton_cleared_denom in AmgmInequalityOQ02OQ02.lean:597-750",
-      "Proved k=1 case via maclaurin_sq_m1_ge_m2_general with push_cast bridging"
+      "Proved k=1 case via maclaurin_sq_m1_ge_m2_general with push_cast bridging",
+      "newton_cleared_denom k=1 case: PROVED via Cauchy-Schwarz reduction to maclaurin_sq_m1_ge_m2_general"
     ],
     "insights": [
       "Division-free induction argument: use mul_pow + cancel via pow_pos",
@@ -52,12 +53,18 @@
       "nlinarith can handle the base case SOS with 6 variables (ek,ekm1,ekm2,t,k,C) and targeted hints",
       "Unnormalized Newton (eₖ² ≥ eₖ₋₁·eₖ₊₁) and binom log-concavity (C²≥C·C) go in OPPOSITE directions - cannot combine to get normalized Newton",
       "Direct induction on n with recurrence Eⱼ = eⱼ + t·eⱼ₋₁ and Pascal C(m+1,j) = C(m,j) + C(m,j-1) yields quadratic in t with 6+ cross terms",
-      "Alternative: real-rootedness approach (polynomial with roots -x₁,...,-xₙ has log-concave normalized coefficients) - would need significant infrastructure"
+      "Alternative: real-rootedness approach (polynomial with roots -x₁,...,-xₙ has log-concave normalized coefficients) - would need significant infrastructure",
+      "k=1 case reduces to C(n,2)·(Σxᵢ)² ≥ n²·e₂, which is exactly maclaurin_sq_m1_ge_m2_general",
+      "Derivative-based approach (applying unnorm Newton to P, P, ...) is too weak: gives ratio 2r/(r+1) but need (r+1)(n-r+1)/(r(n-r))",
+      "At x=(1,...,1), the normalized Newton is TIGHT (equality holds), so any SOS decomposition must vanish at this point",
+      "Decomposition f(t) = P·unnorm_diff - (Q-P)·product has opposite-sign terms that are equal at x=(1,...,1), preventing simple bounding",
+      "The k≥2 quadratic coefficients mix m-variable elemSymm with (m+1)-variable binomial coefficients, preventing direct use of the IH"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove newton_cleared_denom: discriminant argument 4AC ≥ B² after Pascal expansion",
-      "Alternative: build real-rootedness infrastructure (interlacing polynomials)",
+      "Prove newton_cleared_denom k≥2: the quadratic f(t)=αt²+βt+γ after Pascal expansion needs discriminant argument 4αγ≥β²",
+      "Alternative approach 1: Real-rootedness (∏(1+xᵢt) has real roots → normalized Newton). Needs Rolle theorem + polynomial root theory",
+      "Alternative approach 2: Coupling/injection proof mapping (k-1,k+1)-subset pairs to k-subset pairs via element exchange",
       "When proved, both axioms in AmgmInequalityOQ02.lean become theorems (newton_log_concavity, maclaurin_step)"
     ]
   },
@@ -75,7 +82,7 @@
     "mathlib": []
   },
   "started": "2026-03-13T03:56:04.572Z",
-  "lastUpdate": "2026-03-13T00:00:00.000Z",
+  "lastUpdate": "2026-03-13T07:30:00Z",
   "significance": 7,
   "tractability": 6
 }
