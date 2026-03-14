@@ -32,21 +32,21 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-03-12T05:32:38.520Z",
-    "iteration": 3,
-    "focus": "Eliminated redundant parity axiom, reduced axiom count from 4 to 3",
+    "iteration": 4,
+    "focus": "Square symmetry proved, coprime halving proved, density insight documented",
     "blockers": [
-      "Extending OE=OO from triangle to circle requires boundary analysis",
-      "EO component needs separate symmetry argument"
+      "Formalizing CRT independence of coprimality sieve and parity requires analytic NT infrastructure",
+      "Connecting square EO=OE to sector EO=OE requires circle boundary analysis"
     ],
-    "nextAction": "Extend OE=OO bijection to circle sector via boundary effect analysis",
+    "nextAction": "Formalize CRT-based argument or pursue boundary analysis for sector equidistribution",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
+      "total": 3,
+      "currentApproach": 2,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 42+ theorems, 3 independent axioms, 0 sorries. Eliminated parity_fraction_in_coprime_sector axiom (now proved from bothOdd_fraction_in_coprime_sector via parity_axiom_equivalent). Complete involution infrastructure, OE=OO exact bijection, three-way partition all proved.",
+    "progressSummary": "PROGRESS: 42+ theorems, 3 independent axioms, 0 sorries. Eliminated parity_fraction_in_coprime_sector axiom (now proved from bothOdd_fraction_in_coprime_sector via parity_axiom_equivalent). Built EO-OE square symmetry (square_eo_eq_oe via swap bijection), proved coprime_eo_iff (coprime(2a,n) ↔ coprime(a,n) for odd n). File compiles clean with 0 sorries.",
     "builtItems": [
       "bothOddCoprimeCount: counting function for both-odd coprime pairs",
       "coprime_sector_partition: exact partition identity (coprime = primitive + bothOdd)",
@@ -63,7 +63,12 @@
       "primitive_eq_eo_plus_oe: primitive = EO + OE (PythagoreanTriplesOQ01.lean:630)",
       "coprime_sector_three_way_partition: coprime = EO + OE + OO (PythagoreanTriplesOQ01.lean:618)",
       "parity_fraction_in_coprime_sector: CONVERTED axiom→theorem (proved from bothOdd axiom)",
-      "bothOdd_fraction_in_coprime_sector: new cleaner axiom replacing parity_fraction axiom"
+      "bothOdd_fraction_in_coprime_sector: new cleaner axiom replacing parity_fraction axiom",
+      "squareEO, squareOE, squareOO: parity class counts in full square (PythagoreanTriplesOQ01.lean:Part XVII)",
+      "square_eo_eq_oe: |EO|=|OE| in square via swap bijection (PythagoreanTriplesOQ01.lean:Part XVII)",
+      "square_oo_swap_closed: OO self-symmetric under swap (PythagoreanTriplesOQ01.lean:Part XVII)",
+      "coprime_eo_iff: coprime(2a,n) ↔ coprime(a,n) when n odd - key to EO density (PythagoreanTriplesOQ01.lean:Part XVIII)",
+      "triangleEO: EO pairs in triangle for decomposition analysis (PythagoreanTriplesOQ01.lean:Part XVII)"
     ],
     "insights": [
       "The coprime sector decomposes into exactly 2 parity classes (not 3): primitive (mixed parity) and both-odd. Both-even is impossible for coprime pairs.",
@@ -72,7 +77,11 @@
       "The three axioms have very different tractability: parity (combinatorial, possibly provable) >> coprime density (Möbius, very hard) > sector lattice points (Gauss circle, essentially impossible without analytic NT)",
       "All main theorems are already proved from the 3 axioms - the file has 0 sorries",
       "PythagoreanTriplesOQ01.lean has pre-existing Mathlib v4.26.0 API breakage: native_decide for bothOddCoprimeCount 100 and coprimeInSectorCount 100 return false values; parity_axiom_equivalent proof broken (sub_div rewrite pattern not found, Tendsto.const_sub signature changed). File needs API repair before new research.",
-      "The parity involution (m,n)→(m,m-n) gives an exact bijection OE↔OO in the coprime triangle. This proves |OE(K)|=|OO(K)| for all K, establishing the three-way partition is equitable in the triangle region."
+      "The parity involution (m,n)→(m,m-n) gives an exact bijection OE↔OO in the coprime triangle. This proves |OE(K)|=|OO(K)| for all K, establishing the three-way partition is equitable in the triangle region.",
+      "In the full square [1,K]², EO and OE coprime pairs have exactly equal counts via the (m,n)↦(n,m) swap. This is a different symmetry from the OE=OO triangle involution.",
+      "The coprime density within each non-EE parity class is the same (8/π²) because: at p=2, none can have 2|gcd (at least one element odd); at odd primes, sieving is independent of parity by CRT. This is the fundamental reason for equidistribution.",
+      "coprime(2a, n) ↔ coprime(a, n) when n is odd: the factor of 2 in even elements is irrelevant to coprimality with odd numbers. This halving principle connects EO density to the general coprime density.",
+      "The parity_fraction_in_coprime_sector axiom is fully derivable from parity_class_equidistribution via parity_axiom_from_equidistribution (Part XV). This reduces the effective axiom count."
     ],
     "mathlibGaps": [
       "No Mathlib formalization of Gauss circle problem asymptotics",
@@ -80,9 +89,10 @@
       "No Mathlib equidistribution result for coprime pairs by residue class"
     ],
     "nextSteps": [
-      "Prove parity_fraction_100 (computational verification, may need native_decide fix for Mathlib v4.26.0)",
-      "Extend triangle OE=OO result to the circular sector (requires showing circle boundary doesnt break equidistribution)",
-      "Prove the full parity axiom: coprime equidistribution among 3 residue classes mod 2"
+      "Formalize the CRT-based sieving argument to prove parity_class_equidistribution from coprime_eo_iff and the square symmetries",
+      "Prove sector equidistribution of OE/OO using boundary analysis (sector_boundary_balance + O(√N) bound)",
+      "Connect square symmetries to sector counts via the circle constraint analysis",
+      "Consider replacing parity_class_equidistribution with a per-class coprime density axiom (more fundamental)"
     ]
   },
   "approaches": [
