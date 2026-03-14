@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-13T12:00:00.000Z",
+    "since": "2026-03-14T20:00:00.000Z",
     "iteration": 4,
-    "focus": "Soundness fix + build error elimination",
+    "focus": "Extended consequences: Mertens oscillation, σ function, divisorSum_prime_eq, cross-equivalences",
     "blockers": [],
-    "nextAction": "Consider PrimeNumberTheoremAnd integration to eliminate PNT-related axioms",
+    "nextAction": "Problem at maximum formalization depth; 33 axioms encoding deep or open results",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed critical soundness bug (WeilPositivity was True placeholder making RH provable). Eliminated 2 trivial axioms. Fixed 8 pre-existing build errors. Both files now build clean (0 errors, 0 sorries).",
+    "progressSummary": "Extended: 0 sorries, 33 axioms, 95 theorems across both files. σ function computations connecting to Robin/Lagarias equivalences.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -115,6 +115,31 @@
         "name": "WeilPositivity abstract axiom",
         "description": "Replaced unsound True placeholder with opaque Prop axiom",
         "proven": false
+      },
+      {
+        "name": "divisorSum_prime_eq",
+        "description": "σ(p) = p+1 for primes (general proof)",
+        "proven": true
+      },
+      {
+        "name": "divisorSum_ge_succ",
+        "description": "σ(n) ≥ n+1 for n≥2",
+        "proven": true
+      },
+      {
+        "name": "divisorSum_5040",
+        "description": "σ(5040) = 19344 (Robin boundary)",
+        "proven": true
+      },
+      {
+        "name": "mertens_four_sign_changes",
+        "description": "Mertens function has ≥4 sign changes",
+        "proven": true
+      },
+      {
+        "name": "perfect_496",
+        "description": "496 is a perfect number",
+        "proven": true
       }
     ],
     "insights": [
@@ -129,7 +154,8 @@
       "2026-03-14: Re-confirmed no_real_zeros_in_strip axiom cannot be eliminated - Mathlib still lacks Dirichlet eta function",
       "2026-03-14: Fixed soundness bug - RH_iff_WeilPositivity was asserting RH↔True (the True placeholder in the biconditional made RH trivially provable). Now uses abstract WeilPositivity axiom.",
       "2026-03-14: Eliminated 2 trivial axioms in Consequences (gourdon_verification, selberg_central_limit) - both had True conclusions making them non-axioms",
-      "2026-03-14: Fixed 8 pre-existing build errors in RiemannHypothesis.lean: ext→Complex.ext, linarith→explicit, bernoulli simp→explicit values, abs_sub proof via abs_neg"
+      "2026-03-14: Fixed 8 pre-existing build errors in RiemannHypothesis.lean: ext→Complex.ext, linarith→explicit, bernoulli simp→explicit values, abs_sub proof via abs_neg",
+      "2026-03-14: Extended consequences file 841→989 lines: σ(p)=p+1 proved generally, σ(n)≥n+1 proved, σ(5040)=19344 computed, Mertens 4 sign changes, von Mangoldt prime power computations"
     ],
     "mathlibGaps": [
       "Dirichlet series",
