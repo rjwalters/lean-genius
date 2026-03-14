@@ -36,15 +36,15 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (15 axioms, down from 21)
+## Axiom Summary (11 axioms, down from 21)
 - 2 structural: Φ_countably_many, Φ_negate (Φ_total/Φ_deterministic now theorems)
-- 2 oracle: Φ_oracle_access, Φ_no_oracle_access
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
 - 1 natural proofs: razborov_rudich (owf_exists_assumption now theorem)
-- 3 structural properties: P_rel_monotone, NP_rel_monotone, P_rel_subset_NP_rel
+- 1 structural property: P_rel_subset_NP_rel
 - 2 closure/composition: poly_time_compose, reduction_preserves_P
 - 1 containment: NP_subset_PSPACE
 - 2 separation/existence: P_ne_EXP, ladner_theorem
+- Removed (unused): Φ_oracle_access, Φ_no_oracle_access, P_rel_monotone, NP_rel_monotone
 - Now theorems: P_complement_closed (from Φ_negate), PSPACE_subset_EXP,
   PH_subset_PSPACE, algebrizing_oracle_eq/sep
 -/
@@ -124,25 +124,16 @@ axiom Φ_countably_many :
       Φ e emptyOracle n = none ∨
       ∃ r s, Φ e emptyOracle n = some (r, s) ∧ r ≠ f n
 
-/-- **Oracle access**: Programs can query the oracle. Changing the oracle
-    can change the computation result.
+/-
+**Oracle access** (removed — implied by BGS axioms):
+Programs can query the oracle; different oracles yield different results.
+This follows from baker_gill_solovay_eq/sep: the existence of oracles that
+separate vs collapse P and NP requires oracle-sensitive programs.
 
-    More precisely: there exist programs that behave differently with
-    different oracles. (If no program could use oracles, relativization
-    would be trivially impossible.) -/
-axiom Φ_oracle_access :
-    ∃ e : ℕ, ∃ A B : Oracle, ∃ n : ℕ,
-      (∃ r₁ s₁, Φ e A n = some (r₁, s₁)) ∧
-      (∃ r₂ s₂, Φ e B n = some (r₂, s₂)) ∧
-      (∀ r₁ s₁ r₂ s₂,
-        Φ e A n = some (r₁, s₁) → Φ e B n = some (r₂, s₂) → r₁ ≠ r₂)
-
-/-- **No-oracle baseline**: With the empty oracle, programs compute standard
-    (unrelativized) functions. There exist programs that compute nontrivially
-    without oracle access. -/
-axiom Φ_no_oracle_access :
-    ∃ e : ℕ, ∃ n : ℕ,
-      ∃ r s, Φ e emptyOracle n = some (r, s) ∧ r = true
+**No-oracle baseline** (removed — follows from Φ_countably_many):
+Some programs halt and compute nontrivially without oracle access.
+Φ_countably_many already implies computable functions exist.
+-/
 
 -- ============================================================
 -- PART 3: Relativized Complexity Classes (Sound Definitions)
@@ -488,18 +479,13 @@ theorem all_barriers :
 -- PART 8: Monotonicity and Structural Properties
 -- ============================================================
 
-/-- Monotonicity: if oracle A can be simulated by oracle B in polynomial time,
-    then P^A ⊆ P^B. -/
-axiom P_rel_monotone (A B : Oracle)
-    (h : ∃ (e : ℕ) (poly : Polynomial), ∀ m : ℕ, ∃ s : ℕ,
-      Φ e B m = some (A m, s) ∧ s ≤ poly.eval (inputSize m)) :
-    P_rel A ⊆ P_rel B
-
-/-- Monotonicity for NP: same as above. -/
-axiom NP_rel_monotone (A B : Oracle)
-    (h : ∃ (e : ℕ) (poly : Polynomial), ∀ m : ℕ, ∃ s : ℕ,
-      Φ e B m = some (A m, s) ∧ s ≤ poly.eval (inputSize m)) :
-    NP_rel A ⊆ NP_rel B
+/-
+**Monotonicity** (removed — unused in current proofs):
+If oracle A can be simulated by oracle B in polynomial time, then P^A ⊆ P^B
+(and NP^A ⊆ NP^B). Would be needed for oracle separation proofs that construct
+specific oracles via diagonalization. Currently, BGS results are axiomatized
+directly rather than constructed.
+-/
 
 /-- P ⊆ NP (unrelativized). Follows from P^A ⊆ NP^A with empty oracle. -/
 theorem P_subset_NP : P ⊆ NP :=
