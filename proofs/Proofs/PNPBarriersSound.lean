@@ -36,17 +36,19 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (19 axioms)
+## Axiom Summary (24 axioms)
 - 1 structural: Φ_countably_many (Φ_total and Φ_deterministic now theorems)
 - 2 oracle: Φ_oracle_access, Φ_no_oracle_access
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
 - 1 natural proofs: razborov_rudich (owf_exists_assumption now theorem)
 - 3 structural properties: P_rel_monotone, NP_rel_monotone, P_rel_subset_NP_rel
 - 3 closure/composition: P_complement_closed, poly_time_compose, reduction_preserves_P
-- 2 containment: NP_subset_PSPACE, PSPACE_subset_EXP (now nontrivial: PSPACE opaque)
+- 3 containment: NP_subset_PSPACE, PSPACE_subset_EXP, PH_subset_PSPACE
 - 2 separation/existence: P_ne_EXP, ladner_theorem
 - 1 NP-completeness: cook_levin (SAT is NP-complete)
-- 2 circuit complexity: P_subset_P_poly, karp_lipton (NP ⊆ P/poly → PH = NP)
+- 2 circuit complexity: P_subset_P_poly, karp_lipton (NP ⊆ P/poly → PH = Σ₂ᴾ)
+- 4 polynomial hierarchy: Sigma_zero_eq_P, Sigma_one_eq_NP, Sigma_monotone,
+    Sigma_collapse_step (opaque Sigma_k fixes PH=NP degeneracy)
 - Now theorems: P_subset_EXP (proved: poly ≤ 2^poly), algebrizing_oracle_eq/sep
 -/
 
@@ -761,39 +763,41 @@ generalizes P, NP, and coNP:
 Key theorem: If P = NP, the entire hierarchy collapses to P.
 More generally, if Σₖᴾ = Πₖᴾ for any k, the hierarchy collapses at level k.
 
-We define PH using alternating quantifier characterization within our
-sound model. Since we use opaque computation, we define the hierarchy
-inductively via NP/coNP relative to "complete problems" at each level.
+We define PH using an opaque Sigma_k constant with axiomatized properties.
+The opacity prevents the degeneracy where all levels ≥ 1 collapse to NP
+(which happened with the previous recursive definition).
 -/
 
-/-- Σₖᴾ(A): the k-th level of the polynomial hierarchy relative to oracle A.
+/-- Σₖᴾ: the k-th level of the polynomial hierarchy.
 
-    Σ₀ᴾ(A) = P^A
-    Σₖ₊₁ᴾ(A) = NP^(Σₖ complete oracle)
+    Σ₀ᴾ = P
+    Σₖ₊₁ᴾ = NP^(Σₖᴾ) (NP with oracle for Σₖ-complete problems)
+    PH = ∪ₖ Σₖᴾ
 
-    Since we can't directly define "oracle for a complexity class," we use
-    a structural definition: Σₖᴾ is the set of problems solvable with k
-    alternations of quantifiers, starting with ∃. -/
-noncomputable def Sigma_rel : ℕ → Oracle → Set (ℕ → Bool)
-  | 0, A => P_rel A
-  | n + 1, A => NP_rel A  -- In the full model, this would use Σₙ as oracle
+    Since our model cannot directly encode "oracle for a complexity class"
+    (this would require defining complete problems at each level, which needs
+    the full Cook-Levin machinery relativized to each level), we define Σₖ
+    as an opaque constant and axiomatize its key properties.
 
-/-- Πₖᴾ(A) = co-Σₖᴾ(A): complement of each level. -/
-def Pi_rel (k : ℕ) (A : Oracle) : Set (ℕ → Bool) :=
-  { f | (fun n => !f n) ∈ Sigma_rel k A }
+    **Why opaque?** The previous recursive definition `| n + 1, A => NP_rel A`
+    made Σₖ₊₁ = NP for ALL k, causing PH = NP unconditionally. This made
+    Karp-Lipton and PH collapse theorems vacuous. The opaque approach avoids
+    this degeneracy while maintaining all essential structural properties. -/
+opaque Sigma_k_def : ℕ → Set (ℕ → Bool)
+noncomputable def Sigma_k (k : ℕ) : Set (ℕ → Bool) := Sigma_k_def k
 
-/-- Unrelativized Σₖᴾ and Πₖᴾ. -/
-noncomputable def Sigma_k (k : ℕ) : Set (ℕ → Bool) := Sigma_rel k emptyOracle
-def Pi_k (k : ℕ) : Set (ℕ → Bool) := Pi_rel k emptyOracle
+/-- Πₖᴾ = co-Σₖᴾ: the complement of each level. -/
+def Pi_k (k : ℕ) : Set (ℕ → Bool) :=
+  { f | (fun n => !f n) ∈ Sigma_k k }
 
 /-- The Polynomial Hierarchy PH = ∪ₖ Σₖᴾ. -/
 noncomputable def PH : Set (ℕ → Bool) := ⋃ k, Sigma_k k
 
-/-- Σ₀ᴾ = P. -/
-theorem Sigma_zero_eq_P : Sigma_k 0 = P := rfl
+/-- Σ₀ᴾ = P: the base of the hierarchy is deterministic polynomial time. -/
+axiom Sigma_zero_eq_P : Sigma_k 0 = P
 
-/-- Σ₁ᴾ = NP (in our structural model). -/
-theorem Sigma_one_eq_NP : Sigma_k 1 = NP := rfl
+/-- Σ₁ᴾ = NP: the first level is nondeterministic polynomial time. -/
+axiom Sigma_one_eq_NP : Sigma_k 1 = NP
 
 /-- Π₀ᴾ = P. Since Π₀ = co-Σ₀ = co-P, and P is complement-closed. -/
 theorem Pi_zero_eq_P : Pi_k 0 = P := by
@@ -802,7 +806,7 @@ theorem Pi_zero_eq_P : Pi_k 0 = P := by
   · -- f ∈ Π₀ → f ∈ P
     intro hf
     -- (¬f) ∈ Σ₀ = P
-    have hcf : (fun n => !f n) ∈ P := hf
+    have hcf : (fun n => !f n) ∈ P := by rw [← Sigma_zero_eq_P]; exact hf
     -- ¬¬f ∈ P by complement closure
     have hccf : (fun n => !(!(f n))) ∈ P :=
       P_complement_closed emptyOracle _ hcf
@@ -812,34 +816,33 @@ theorem Pi_zero_eq_P : Pi_k 0 = P := by
     exact hccf
   · -- f ∈ P → f ∈ Π₀
     intro hf
-    show (fun n => !f n) ∈ P
+    show (fun n => !f n) ∈ Sigma_k 0
+    rw [Sigma_zero_eq_P]
     exact P_complement_closed emptyOracle f hf
 
-/-- Π₁ᴾ = coNP. -/
-theorem Pi_one_eq_coNP : Pi_k 1 = coNP := rfl
+/-- Π₁ᴾ = coNP: the complement of the first level. -/
+theorem Pi_one_eq_coNP : Pi_k 1 = coNP := by
+  ext f
+  simp only [Pi_k, Set.mem_setOf_eq, coNP, coNP_rel]
+  constructor
+  · intro hf; rw [Sigma_one_eq_NP] at hf; exact hf
+  · intro hf; rw [Sigma_one_eq_NP]; exact hf
 
 /-- Σₖᴾ ⊆ Σₖ₊₁ᴾ: the hierarchy is monotonically increasing.
-    Since P ⊆ NP at each level. -/
-theorem Sigma_monotone (k : ℕ) : Sigma_k k ⊆ Sigma_k (k + 1) := by
-  cases k with
-  | zero =>
-    -- Σ₀ = P ⊆ NP = Σ₁
-    exact P_subset_NP
-  | succ k =>
-    -- Σₖ₊₁ = NP ⊆ NP = Σₖ₊₂ (in our structural model)
-    intro f hf
-    exact hf
+    Each level contains the previous one since adding a quantifier
+    alternation can only increase the class of solvable problems. -/
+axiom Sigma_monotone (k : ℕ) : Sigma_k k ⊆ Sigma_k (k + 1)
 
 /-- P ⊆ PH: P is contained in the polynomial hierarchy. -/
 theorem P_subset_PH : P ⊆ PH := by
   intro f hf
   show f ∈ ⋃ k, Sigma_k k
-  exact Set.mem_iUnion.mpr ⟨0, hf⟩
+  exact Set.mem_iUnion.mpr ⟨0, Sigma_zero_eq_P ▸ hf⟩
 
 /-- NP ⊆ PH: NP is contained in the polynomial hierarchy. -/
 theorem NP_subset_PH : NP ⊆ PH := by
   intro f hf
-  exact Set.mem_iUnion.mpr ⟨1, hf⟩
+  exact Set.mem_iUnion.mpr ⟨1, Sigma_one_eq_NP ▸ hf⟩
 
 -- ============================================================
 -- PART 14: PH Collapse from P = NP
@@ -854,19 +857,23 @@ by adding one more quantifier alternation, but if P = NP, the extra
 quantifier can be eliminated.
 -/
 
+/-- **Oracle trivialization**: If Σₖ = P, then Σₖ₊₁ = NP.
+    Standard result: Σₖ₊₁ = NP^(Σₖ), and if Σₖ = P, then the oracle for
+    level k is computable in polynomial time, so NP^(P) = NP. -/
+axiom Sigma_collapse_step (k : ℕ) : Sigma_k k = P → Sigma_k (k + 1) = NP
+
 /-- **P = NP → Σₖᴾ = P for all k**: If P equals NP, every level
     of the polynomial hierarchy collapses to P.
 
     Proof by induction:
-    - Base: Σ₀ = P (definition).
-    - Step: Σₖ₊₁ = NP = P (by hypothesis). -/
+    - Base: Σ₀ = P (axiom).
+    - Step: Σₖ = P (IH) → Σₖ₊₁ = NP (oracle trivialization) = P (hypothesis). -/
 theorem P_eq_NP_implies_Sigma_collapse (h : P = NP) (k : ℕ) :
     Sigma_k k = P := by
   induction k with
-  | zero => rfl
-  | succ k _ =>
-    -- Σₖ₊₁ = NP = P
-    exact h.symm
+  | zero => exact Sigma_zero_eq_P
+  | succ k ih =>
+    exact (Sigma_collapse_step k ih).trans h.symm
 
 /-- **P = NP → PH = P**: The full polynomial hierarchy collapses to P. -/
 theorem P_eq_NP_implies_PH_collapse (h : P = NP) : PH = P := by
@@ -932,15 +939,10 @@ axiom NP_subset_PSPACE : NP ⊆ PSPACE
 axiom PSPACE_subset_EXP : PSPACE ⊆ EXP
 
 /-- PH ⊆ PSPACE: Every level of the polynomial hierarchy is in PSPACE.
-
-    In our structural model, Sigma_k (k+1) = NP for all k, so PH = P ∪ NP = NP.
-    Thus PH ⊆ PSPACE follows from NP ⊆ PSPACE (and P ⊆ NP). -/
-theorem PH_subset_PSPACE : PH ⊆ PSPACE := by
-  intro f hf
-  obtain ⟨k, hk⟩ := Set.mem_iUnion.mp hf
-  cases k with
-  | zero => exact NP_subset_PSPACE (P_subset_NP hk)
-  | succ _ => exact NP_subset_PSPACE hk
+    Each Σₖ can be solved in polynomial space by iterating over quantifier
+    blocks, reusing space between iterations. Since both Σₖ and PSPACE are
+    opaque, this must be axiomatized. -/
+axiom PH_subset_PSPACE : PH ⊆ PSPACE
 
 /-- The full complexity containment chain: P ⊆ NP ⊆ PH ⊆ PSPACE ⊆ EXP. -/
 theorem complexity_chain :
@@ -1120,8 +1122,7 @@ axiom P_subset_P_poly : P ⊆ P_poly
 /-- **Karp-Lipton Theorem (1980)**: If NP ⊆ P/poly, then PH collapses.
 
     More precisely, NP ⊆ P/poly implies PH = Σ₂ᴾ (the hierarchy collapses
-    to the second level). In our structural model where PH = NP, this
-    simplifies to PH = NP.
+    to the second level).
 
     Proof idea: If NP ⊆ P/poly, then SAT has polynomial-size circuits.
     A Σ₂ machine can "guess" the circuit and verify it works for all
@@ -1132,10 +1133,11 @@ axiom P_subset_P_poly : P ⊆ P_poly
     If we could show NP ⊄ P/poly (i.e., NP problems need super-polynomial
     circuits), this would separate P from NP (since P ⊆ P/poly). But the
     natural proofs barrier blocks most approaches to circuit lower bounds. -/
-axiom karp_lipton : NP ⊆ P_poly → PH = NP
+axiom karp_lipton : NP ⊆ P_poly → PH = Sigma_k 2
 
-/-- **Contrapositive of Karp-Lipton**: If PH doesn't collapse, then NP ⊄ P/poly. -/
-theorem karp_lipton_contrapositive (h_neq : PH ≠ NP) : ¬ (NP ⊆ P_poly) := by
+/-- **Contrapositive of Karp-Lipton**: If PH doesn't collapse to Σ₂ᴾ,
+    then NP ⊄ P/poly. -/
+theorem karp_lipton_contrapositive (h_neq : PH ≠ Sigma_k 2) : ¬ (NP ⊆ P_poly) := by
   intro h_sub
   exact h_neq (karp_lipton h_sub)
 
@@ -1199,8 +1201,8 @@ theorem NP_not_subset_P_poly_implies_P_ne_NP (h : ¬ (NP ⊆ P_poly)) : P ≠ NP
 
 -- P/poly and Karp-Lipton
 #check P_subset_P_poly            -- P ⊆ P/poly
-#check karp_lipton                -- NP ⊆ P/poly → PH = NP
-#check karp_lipton_contrapositive -- PH ≠ NP → NP ⊄ P/poly
+#check karp_lipton                -- NP ⊆ P/poly → PH = Σ₂ᴾ
+#check karp_lipton_contrapositive -- PH ≠ Σ₂ᴾ → NP ⊄ P/poly
 #check NP_not_subset_P_poly_implies_P_ne_NP  -- NP ⊄ P/poly → P ≠ NP
 
 end PNPBarriersSound
