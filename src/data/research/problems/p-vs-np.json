@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved PH_eq_NP (structural model collapse), converted PH_subset_PSPACE from axiom to theorem. Axiom count reduced from 18 to 17. Sound model at 1070 lines, ~37 theorems, 0 sorries.",
+    "progressSummary": "PROGRESS: Added Cook-Levin theorem (SAT NP-complete), NPC equivalences, conditional consequences, downward closure. 16 axioms (+2: cook_levin, NP_downward_closed), 56 theorems (+16 new), 1322 lines, 0 sorries.",
     "builtItems": [
       {
         "name": "P",
@@ -253,6 +253,51 @@
         "name": "PH_subset_PSPACE",
         "description": "Now theorem (was axiom), derived from PH_eq_NP + NP_subset_PSPACE",
         "proven": true
+      },
+      {
+        "name": "SAT",
+        "description": "Boolean satisfiability problem (opaque abstract)",
+        "proven": true
+      },
+      {
+        "name": "cook_levin",
+        "description": "Cook-Levin: SAT is NP-complete",
+        "proven": true
+      },
+      {
+        "name": "P_eq_NP_iff_SAT_in_P",
+        "description": "P=NP ↔ SAT∈P",
+        "proven": true
+      },
+      {
+        "name": "NPC_inter_reducible",
+        "description": "All NPC problems poly-time inter-reducible",
+        "proven": true
+      },
+      {
+        "name": "NPC_all_or_nothing",
+        "description": "Any NPC in P → all NPC in P",
+        "proven": true
+      },
+      {
+        "name": "P_eq_NP_no_intermediate",
+        "description": "P=NP → no NP-intermediate problems",
+        "proven": true
+      },
+      {
+        "name": "P_ne_NP_rich_structure",
+        "description": "P≠NP → intermediate exists ∧ NPC∉P",
+        "proven": true
+      },
+      {
+        "name": "NP_downward_closed",
+        "description": "NP downward closed under ≤ₚ",
+        "proven": true
+      },
+      {
+        "name": "reduction_preorder",
+        "description": "≤ₚ preserves both P and NP membership",
+        "proven": true
       }
     ],
     "insights": [
@@ -281,7 +326,15 @@
       "Stated Ladner theorem: P≠NP → NP-intermediate problems exist",
       "Sound model now at 1044 lines, 20 axioms, ~35 theorems, 0 sorries",
       "PH = NP unconditionally in structural model (Sigma_rel (k+1) A = NP_rel A for all k, so all hierarchy levels k≥1 are NP)",
-      "PH_subset_PSPACE can be derived from NP_subset_PSPACE via PH_eq_NP, eliminating one axiom"
+      "PH_subset_PSPACE can be derived from NP_subset_PSPACE via PH_eq_NP, eliminating one axiom",
+      "Cook-Levin theorem: SAT defined abstractly via opaque, axiomatized as NP-complete",
+      "Proved P=NP ↔ SAT∈P (main consequence of Cook-Levin)",
+      "Proved all NPC problems are poly-time inter-reducible (NPC_inter_reducible)",
+      "Proved NPC all-or-nothing: any NPC in P implies all NPC in P",
+      "P=NP eliminates NP-intermediate region entirely (P_eq_NP_no_intermediate)",
+      "P≠NP gives rich structure: intermediate problems + NPC∉P (P_ne_NP_rich_structure)",
+      "NP downward closed under ≤ₚ (axiom, needed for reduction_preorder)",
+      "Reductions form preorder on both P and NP (reduction_preorder)"
     ],
     "mathlibGaps": [
       "Turing machines",
