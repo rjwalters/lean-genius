@@ -28,15 +28,12 @@
     "goal": "Eliminate remaining 4 axioms (Feuerbach distance relations)"
   },
   "currentState": {
-    "phase": "PROGRESS",
+    "phase": "COMPLETED",
     "since": "2026-03-13T07:00:00.000Z",
     "iteration": 5,
-    "focus": "Complete algebraic chain for Feuerbach, geometric link remains",
-    "blockers": [
-      "Need to formalize NI^2 expansion via bilinearity of dot product in coordinates",
-      "Cross terms a*b in (a+b+c)^2*NI^2 expansion require careful algebraic handling"
-    ],
-    "nextAction": "Prove NI^2 = (R/2-r)^2 using the dot product + Heron + sigma chain",
+    "focus": "All 4 Feuerbach distance axioms eliminated - full proof compiles",
+    "blockers": [],
+    "nextAction": "None - problem complete",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 1,
@@ -45,7 +42,7 @@
     "activeApproach": "Algebraic backbone: ext_law_of_sines -> sigma -> Heron -> Feuerbach"
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Complete algebraic backbone for Feuerbach proof. 7 new general theorems: Heron product/classical forms, sigma-Heron connection, Feuerbach algebraic core/chain, NI^2 algebraic formula. Remaining gap: geometric link connecting abstract |u|^2 to coordinate NI^2 (blocked by sqrt in incenter coords).",
+    "progressSummary": "COMPLETED: All 4 Feuerbach distance relations proved via coordinate computation. Eliminated sqrt obstacle using NI vector formula + bilinear expansion + algebraic chain. 1550-line proof file compiles clean.",
     "builtItems": [
       "T345_feuerbach_excircle_a: d(N,I_a) = 29/4 = R/2 + r_a verified",
       "T345_feuerbach_excircle_b: d(N,I_b) = 17/4 = R/2 + r_b verified",
@@ -54,10 +51,10 @@
       "semiperimeter_pos: Semiperimeter is positive (general)",
       "inradius_pos: Inradius is positive (general)",
       "FeuerbachsTheoremOQ01Aristotle.lean: 15 lemma targets for automated proof search",
-      "sigma_identity: (s-a)(s-b)c²+(s-a)(s-c)b²+(s-b)(s-c)a² = abcs-4s(s-a)(s-b)(s-c) [GENERAL, by ring]",
-      "extended_law_of_sines_sq: a²b²c² = 16R²·Area² [GENERAL, polynomial identity via field_simp+ring]",
-      "T345_euler_formula: OI² = R²-2Rr for 3-4-5 triangle [verified by norm_num]",
-      "T345_extended_law_of_sines: abc = 4R·Area for 3-4-5 [verified by norm_num]",
+      "sigma_identity: (s-a)(s-b)c\u00b2+(s-a)(s-c)b\u00b2+(s-b)(s-c)a\u00b2 = abcs-4s(s-a)(s-b)(s-c) [GENERAL, by ring]",
+      "extended_law_of_sines_sq: a\u00b2b\u00b2c\u00b2 = 16R\u00b2\u00b7Area\u00b2 [GENERAL, polynomial identity via field_simp+ring]",
+      "T345_euler_formula: OI\u00b2 = R\u00b2-2Rr for 3-4-5 triangle [verified by norm_num]",
+      "T345_extended_law_of_sines: abc = 4R\u00b7Area for 3-4-5 [verified by norm_num]",
       "herons_formula_sq: 16*Area^2 = 2a^2*b^2+2b^2*c^2+2c^2*a^2-a^4-b^4-c^4 [GENERAL, by ring]",
       "dot2_polarization: <A-O,B-O> = (|O-A|^2+|O-B|^2-|A-B|^2)/2 [GENERAL]",
       "dot_circumcenter_AB: <A-O,B-O> = R^2-c^2/2 [GENERAL, from circumcenter equidistance]",
@@ -72,7 +69,9 @@
       "sigma_eq_abcs_minus_4area_sq: sigma = abcs - 4*Area^2 [GENERAL]",
       "feuerbach_algebraic_core: R^2s^2-sigma = (Rs-2A)^2 given abc=4RA [GENERAL]",
       "feuerbach_algebraic_chain: R^2s^2-sigma = (Rs-2A)^2 for any triangle [GENERAL]",
-      "feuerbach_NI_sq_algebraic: (Rs-2A)^2/(4s^2) = (R/2-r)^2 [GENERAL, field_simp+ring]"
+      "feuerbach_NI_sq_algebraic: (Rs-2A)^2/(4s^2) = (R/2-r)^2 [GENERAL, field_simp+ring]",
+      "circumcenter_equidist_sq_B/C primes (local versions of private parent lemmas)",
+      "COMPLETE: feuerbach_incircle_distance_proved, excircle_a/b/c_distance_proved"
     ],
     "insights": [
       "General Feuerbach distance proofs blocked by sqrt in side lengths: incenter coords involve a=sqrt(...), cross terms a*b resist ring tactic",
@@ -80,17 +79,19 @@
       "Excircle tangency d(N,I_k) = R/2 + r_k verified numerically for 3-4-5 triangle (all 3 cases)",
       "The equilateral_R_eq_2r proof in main file was broken by Mathlib v4.26 upgrade (dist2_sq unfold change) - independently proved in OQ01",
       "Approach for general case: introduce a^2, b^2, c^2 as polynomial constraints and use nlinarith - untested but promising",
-      "Extended law of sines (squared) IS provable as polynomial identity - key was rw [sq_abs] to eliminate |x|² before ring",
-      "General Feuerbach proof chain: ext_law_of_sines → sigma_identity → Euler OI²=R²-2Rr → NI=(R/2-r)",
-      "FUNDAMENTAL OBSTACLE: incenter coords involve side_a/side_b/side_c (sqrt). Products a·b resist ring. Need reformulation without sqrt or algebraic elimination.",
+      "Extended law of sines (squared) IS provable as polynomial identity - key was rw [sq_abs] to eliminate |x|\u00b2 before ring",
+      "General Feuerbach proof chain: ext_law_of_sines \u2192 sigma_identity \u2192 Euler OI\u00b2=R\u00b2-2Rr \u2192 NI=(R/2-r)",
+      "FUNDAMENTAL OBSTACLE: incenter coords involve side_a/side_b/side_c (sqrt). Products a\u00b7b resist ring. Need reformulation without sqrt or algebraic elimination.",
       "Abstract inner-product proof of Feuerbach: N-I = [(s-a)(A-O)+(s-b)(B-O)+(s-c)(C-O)]/(2s), then |N-I|^2 expands via bilinearity using <X-O,Y-O>=R^2-|X-Y|^2/2",
-      "Key chain: bilinearity → |u|^2 = R^2*s^2 - sigma → sigma_identity → Heron → NI^2 = (R/2-r)^2",
+      "Key chain: bilinearity \u2192 |u|^2 = R^2*s^2 - sigma \u2192 sigma_identity \u2192 Heron \u2192 NI^2 = (R/2-r)^2",
       "Polarization identity <P-R,Q-R> = (|R-P|^2+|R-Q|^2-|P-Q|^2)/2 is the bridge between dot products and distances",
       "Heron formula (squared) is polynomial in coords: unfold side lengths, area, then ring",
       "Unsquared ext law of sines follows from squared version via eq_of_sq_eq_nonneg (both sides positive)",
       "Complete algebraic chain proved: ext_law_of_sines -> sigma -> Heron -> sigma=abcs-4A^2 -> R^2s^2-sigma=(Rs-2A)^2 -> (R/2-r)^2",
       "Classical Heron Area^2=s(s-a)(s-b)(s-c) derived from product form + coordinate Heron (no sqrt needed)",
-      "feuerbach_algebraic_chain uses nlinarith to chain sigma_eq_abcs_minus_4area_sq with feuerbach_algebraic_core(extended_law_of_sines)"
+      "feuerbach_algebraic_chain uses nlinarith to chain sigma_eq_abcs_minus_4area_sq with feuerbach_algebraic_core(extended_law_of_sines)",
+      "Key breakthrough: bypassed sqrt in incenter coords by expressing 4s^2*NI^2 as (2s*(N-I))^2 using vector components, then bilinear expansion with circumcenter dot products",
+      "Proof chain: NI_vector -> bilinear expansion -> substitute R^2 and dot products -> algebraic identity R^2*s^2 - sigma = (Rs-2A)^2 -> divide by 4s^2"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -106,9 +107,9 @@
       "notes": "Works for altitude feet and equilateral case, fails for incircle tangency due to sqrt in incenter"
     },
     {
-      "name": "Euler formula OI²=R²-2Rr",
+      "name": "Euler formula OI\u00b2=R\u00b2-2Rr",
       "status": "planned",
-      "notes": "Could prove OI² as polynomial identity, then derive NI from midpoint relation"
+      "notes": "Could prove OI\u00b2 as polynomial identity, then derive NI from midpoint relation"
     }
   ],
   "tags": [
