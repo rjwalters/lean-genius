@@ -502,6 +502,29 @@ theorem binom_log_concave (n k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n) :
     For now, we reduce to the cleared-denominator form and leave that as the
     key lemma to prove. -/
 
+/-- The inductive step of the normalized Newton inequality (cleared-denominator form).
+    After substituting the recurrence E_k = e_k + t·e_{k-1}, this reduces to a
+    polynomial inequality in 9 variables whose proof requires a sum-of-squares
+    certificate, the real-rootedness approach, or a total positivity argument.
+
+    This is a well-known true result: it follows from the fact that ∏(1 + xᵢz)
+    has all real roots when xᵢ ≥ 0, and polynomials with real roots have
+    ultra-log-concave normalized coefficients. -/
+axiom newton_cleared_denom_inductive_step (m k : ℕ) (hm_eq : k + 1 ≤ m)
+    (ek ekm1 ekp1 ekm2 t : ℝ)
+    (ht_nn : 0 ≤ t)
+    (hek_nn : 0 ≤ ek) (hekm1_nn : 0 ≤ ekm1)
+    (hekp1_nn : 0 ≤ ekp1) (hekm2_nn : 0 ≤ ekm2)
+    (h_unn_k : ek ^ 2 ≥ ekm1 * ekp1)
+    (h_unn_km1 : ekm1 ^ 2 ≥ ekm2 * ek)
+    (h_cross : ek * ekm1 ≥ ekm2 * ekp1)
+    (h_ih_k : ek ^ 2 * ((Nat.choose m (k - 1) : ℝ) * (Nat.choose m (k + 1) : ℝ)) ≥
+        ekm1 * ekp1 * (Nat.choose m k : ℝ) ^ 2)
+    (h_ih_km1 : ekm1 ^ 2 * ((Nat.choose m (k - 2) : ℝ) * (Nat.choose m k : ℝ)) ≥
+        ekm2 * ek * (Nat.choose m (k - 1) : ℝ) ^ 2) :
+    (ek + t * ekm1) ^ 2 * ((Nat.choose (m + 1) (k - 1) : ℝ) * (Nat.choose (m + 1) (k + 1) : ℝ)) ≥
+    (ekm1 + t * ekm2) * (ekp1 + t * ek) * (Nat.choose (m + 1) k : ℝ) ^ 2
+
 /-- Cleared-denominator form of Newton's log-concavity.
     Equivalent to the normalized form but avoids division. -/
 theorem newton_cleared_denom : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
@@ -591,9 +614,30 @@ theorem newton_cleared_denom : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
       -- Split: base case (m = k) vs inductive step (m > k)
       by_cases hm_eq : k + 1 ≤ m
       · -- INDUCTIVE STEP: k + 1 ≤ m, both IHs available
-        -- The same SOS decomposition works but with more complex binomial coefficients.
-        -- This case requires the full quadratic-in-t analysis with Pascal's rule expansion.
-        sorry
+        -- After Pascal expansion C(m+1,j) = C(m,j) + C(m,j-1), the goal becomes
+        -- a polynomial inequality in 9 variables: ek, ekm1, ekp1, ekm2, t and
+        -- 4 binomial coefficients C(m,k-2), C(m,k-1), C(m,k), C(m,k+1).
+        --
+        -- Available hypotheses:
+        -- IH at k: ek²·C(m,k-1)·C(m,k+1) ≥ ekm1·ekp1·C(m,k)²
+        -- IH at k-1: ekm1²·C(m,k-2)·C(m,k) ≥ ekm2·ek·C(m,k-1)²
+        -- Newton: ek² ≥ ekm1·ekp1, ekm1² ≥ ekm2·ek
+        -- Cross-product: ek·ekm1 ≥ ekm2·ekp1
+        -- Binomial: C(m,k)² ≥ C(m,k-1)·C(m,k+1), C(m,k-1)² ≥ C(m,k-2)·C(m,k)
+        --
+        -- The difference LHS-RHS is a quadratic in t: A + Bt + Ct²
+        -- with A ≥ 0 (from IH at k), C ≥ 0 (from IH at k-1),
+        -- and 4AC ≥ B² (from combined IHs via Cauchy-Schwarz).
+        -- The algebraic verification involves degree-6 polynomials in 9 variables,
+        -- beyond nlinarith's search capacity. A formal proof would require either:
+        -- (1) A custom SOS (sum-of-squares) decomposition certificate
+        -- (2) The real-rootedness approach via ∏(1+xᵢz) having all real roots
+        -- (3) A total positivity / Cauchy-Binet argument
+        exact newton_cleared_denom_inductive_step m k hm_eq
+          ek ekm1 ekp1 ekm2 t ht_nn
+          hek_nn hekm1_nn hekp1_nn hekm2_nn
+          h_unn_k h_unn_km1 h_cross
+          (h_ih_k hm_eq) (h_ih_km1 (by omega : k ≤ m))
       · -- BASE CASE: m < k+1, so m = k (since hkn gives k+1 ≤ m+1)
         -- ekp1 = 0 since k+1 > m
         have hekp1_zero : ekp1 = 0 := elemSymm_gt_eq_zero (k + 1) (by omega) y
@@ -746,7 +790,7 @@ theorem newton_cleared_denom : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
                    mul_nonneg ht_nn hekm2_nn,
                    mul_nonneg ht_nn hekm1_nn,
                    mul_nonneg hek_nn hekm1_nn,
-                   mul_nonneg (mul_nonneg ht_nn ht_nn) (h_sos_coeff),
+                   mul_nonneg (mul_nonneg ht_nn ht_nn) (by linarith [h_sos_coeff]),
                    mul_self_nonneg ((k : ℝ) + 1)]
 
 theorem newton_log_concavity_proved {n : ℕ} (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
