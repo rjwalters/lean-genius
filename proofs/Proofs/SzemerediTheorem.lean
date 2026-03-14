@@ -4,12 +4,13 @@
 Every subset of natural numbers with positive upper density contains
 arbitrarily long arithmetic progressions.
 
-**Status**: COMPLETED for k=3 (Roth's theorem via Mathlib)
+**Status**: Full theorem proved by cases (axiom reduced to k≥4 only)
 - General k-AP definition and formal statement
-- Trivial cases k=1,2 proved
+- Trivial cases k=1,2 proved (including density versions)
 - k=3 (Roth's theorem): PROVED using Mathlib's corner theorem chain
 - Equivalence between our IsAPFree and Mathlib's ThreeAPFree
-- k≥4: Still requires hypergraph regularity (stated as axiom)
+- k≥4: Axiomatized (requires hypergraph regularity, not in Mathlib)
+- Full SzemerediTheorem assembled from k=1,2,3 proofs + k≥4 axiom
 
 **What's in Mathlib already**:
 - `AddSalemSpencer`: Sets without 3-term APs (Mathlib.Combinatorics.Additive.SalemSpencer)
@@ -106,24 +107,22 @@ theorem szemeredi_k2 (S : Finset ℕ) (h : S.card ≥ 2) : hasAPOfLengthFinset S
       exact ha
 
 /-!
-## Full Theorem (Axiom)
+## Axiom Reduction
 
-The full proof for k ≥ 3 requires:
-1. k=3: Roth's theorem (in Mathlib via corners theorem)
-2. k≥4: Hypergraph regularity (NOT in Mathlib)
+The full Szemerédi theorem holds for all k ≥ 1:
+- k=1: Trivial (any nonempty set has a 1-AP)
+- k=2: Trivial (any set with ≥2 elements has a 2-AP)
+- k=3: Roth's theorem (proved in Mathlib via corners chain)
+- k≥4: Requires hypergraph regularity (NOT in Mathlib)
 
-We state the full theorem as an axiom.
+We axiomatize ONLY k ≥ 4 and prove the full theorem by combining all cases.
 -/
 
-/-- The full Szemerédi theorem (1975) -/
-axiom szemeredi_theorem : SzemerediTheorem
-
-/-- Corollary: every dense set contains arbitrarily long APs -/
-theorem dense_set_has_long_ap (k : ℕ) (δ : ℝ) (hk : k ≥ 1) (hδ : δ > 0) :
+/-- Szemerédi's theorem for k ≥ 4 (axiom — requires hypergraph regularity, not in Mathlib) -/
+axiom szemeredi_k_ge_4 : ∀ (k : ℕ) (δ : ℝ), k ≥ 4 → δ > 0 →
     ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
       ∀ S : Finset ℕ, S ⊆ Finset.range N → (S.card : ℝ) ≥ δ * N →
-        hasAPOfLengthFinset S k :=
-  szemeredi_theorem k δ hk hδ
+        hasAPOfLengthFinset S k
 
 /-!
 ## Connection to Mathlib's ThreeAPFree
@@ -269,5 +268,68 @@ theorem roth_theorem_via_mathlib : RothTheorem := by
   have hfree : ThreeAPFree (S : Set ℕ) := (threeAPFree_iff_isAPFree S).mpr hnoAP
   -- Apply Mathlib's Roth theorem
   exact roth_3ap_theorem_nat δ hδ hN S hS hcard hfree
+
+/-!
+## Full Theorem (Proved by Cases)
+
+We assemble the full Szemerédi theorem from:
+- k=1: `szemeredi_k1` (trivial)
+- k=2: `szemeredi_k2` (trivial)
+- k=3: `roth_theorem_via_mathlib` (Mathlib's corners chain)
+- k≥4: `szemeredi_k_ge_4` (axiom)
+-/
+
+/-- k=1 density version: any δ-dense subset of [N] has a 1-AP -/
+theorem szemeredi_k1_density (δ : ℝ) (hδ : δ > 0) :
+    ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
+      ∀ S : Finset ℕ, S ⊆ Finset.range N → (S.card : ℝ) ≥ δ * N →
+        hasAPOfLengthFinset S 1 := by
+  use 1
+  intro N hN S _ hcard
+  have hN_pos : (0 : ℝ) < ↑N := by exact_mod_cast (show 0 < N by omega)
+  have hcard_pos : 0 < S.card := by
+    by_contra h
+    push_neg at h
+    have : S.card = 0 := Nat.le_zero.mp h
+    rw [this, Nat.cast_zero] at hcard
+    linarith [mul_pos hδ hN_pos]
+  exact szemeredi_k1 (↑S) (Finset.coe_nonempty.mpr (Finset.card_pos.mp hcard_pos))
+
+/-- k=2 density version: any δ-dense subset of [N] has a 2-AP -/
+theorem szemeredi_k2_density (δ : ℝ) (hδ : δ > 0) :
+    ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
+      ∀ S : Finset ℕ, S ⊆ Finset.range N → (S.card : ℝ) ≥ δ * N →
+        hasAPOfLengthFinset S 2 := by
+  use ⌈2 / δ⌉₊
+  intro N hN S _ hcard
+  have hN_ge : (N : ℝ) ≥ 2 / δ := by
+    calc (N : ℝ) ≥ (⌈2 / δ⌉₊ : ℝ) := by exact_mod_cast hN
+    _ ≥ 2 / δ := Nat.le_ceil (2 / δ)
+  have h2 : S.card ≥ 2 := by
+    suffices h : (2 : ℝ) ≤ (S.card : ℝ) by exact_mod_cast h
+    calc (2 : ℝ) = δ * (2 / δ) := by field_simp
+    _ ≤ δ * ↑N := by nlinarith
+    _ ≤ ↑S.card := hcard
+  exact szemeredi_k2 S h2
+
+/-- **Szemerédi's Theorem** (proved by cases).
+The full theorem, with only k ≥ 4 axiomatized.
+k=1,2 are trivial, k=3 is Roth via Mathlib. -/
+theorem szemeredi_theorem : SzemerediTheorem := by
+  intro k δ hk hδ
+  rcases Nat.lt_or_ge k 4 with hlt | hge
+  · -- k ∈ {1, 2, 3}
+    interval_cases k
+    · exact szemeredi_k1_density δ hδ
+    · exact szemeredi_k2_density δ hδ
+    · exact roth_theorem_via_mathlib δ hδ
+  · exact szemeredi_k_ge_4 k δ hge hδ
+
+/-- Corollary: every dense set contains arbitrarily long APs -/
+theorem dense_set_has_long_ap (k : ℕ) (δ : ℝ) (hk : k ≥ 1) (hδ : δ > 0) :
+    ∃ N₀ : ℕ, ∀ N : ℕ, N ≥ N₀ →
+      ∀ S : Finset ℕ, S ⊆ Finset.range N → (S.card : ℝ) ≥ δ * N →
+        hasAPOfLengthFinset S k :=
+  szemeredi_theorem k δ hk hδ
 
 end Szemeredi
