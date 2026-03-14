@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 7 new structural theorems (NP/coNP relationship, Karp theorem, NP-hardness transfer, PH collapse). File now at ~1045 lines, 4 axioms, 0 sorries. All new theorems fully proved.",
+    "progressSummary": "PROGRESS: 7 new structural theorems: NP∩coNP with P⊆NP∩coNP, P=NP→NP=coNP, NP≠coNP→P≠NP, NPHard/NPC transfer via reductions, NPC poly-equivalence, complement involution. 4 axioms remain (all deep: Cook-Levin, time hierarchy, P≠EXP, Ladner).",
     "builtItems": [
       {
         "name": "P",
@@ -133,7 +133,9 @@
       "Proved NP ≠ coNP → P ≠ NP (contrapositive approach to separation)",
       "Proved Karps theorem: NP-completeness transfer via poly reductions",
       "Proved NP-hardness upward closure under poly reductions",
-      "Proved P ≠ NP → no NPC problem in P"
+      "Proved P ≠ NP → no NPC problem in P",
+      "All NP-complete problems are poly-time equivalent to each other (NPC_equivalent proved)",
+      "NP ∩ coNP defined, P ⊆ NP ∩ coNP proved"
     ],
     "mathlibGaps": [
       "Turing machines",

@@ -42,6 +42,7 @@ showing SAT is NP-complete.
   * NPComplete_of_reduce (Karp's theorem: NPC transfer)
   * NPHard_of_reduce (NP-hardness upward closure)
   * P_ne_NP_implies_NPC_not_in_P (separation consequence)
+  * NPC_equivalent (all NP-complete problems are poly-equivalent)
 - Polynomial.eval uses (n+1)^degree to avoid n=0 degenerate cases
 - PolyReduction extended with output size bounds for proper composition
 - Turing machines modeled abstractly; full formalization would require ~10,000+ lines
@@ -811,6 +812,99 @@ theorem P_subset_coNP : P ⊆ coNP := by
   exact P_subset_NP hp'
 
 -- ============================================================
+-- PART 13a: NP ∩ coNP
+-- ============================================================
+
+/-- NP ∩ coNP: problems where both the problem and its complement are in NP -/
+def NP_inter_coNP : Set DecisionProblem := NP ∩ coNP
+
+/-- P ⊆ NP ∩ coNP (PROVED)
+
+Every polynomial-time problem is in both NP and coNP. -/
+theorem P_subset_NP_inter_coNP : P ⊆ NP_inter_coNP := by
+  intro problem hp
+  exact ⟨P_subset_NP hp, P_subset_coNP hp⟩
+
+/-- If P = NP then NP = coNP (PROVED)
+
+This is a fundamental structural consequence. If every NP problem can be
+solved in P, then complements of NP problems are also in NP.
+
+**Proof**: Let L ∈ NP. Then L̄ ∈ coNP. Since P is closed under complement
+and P = NP, L̄ ∈ P = NP. Conversely, the same argument works for coNP ⊆ NP. -/
+theorem P_eq_NP_implies_NP_eq_coNP : P = NP → NP = coNP := by
+  intro h_eq
+  apply Set.eq_of_subset_of_subset
+  -- NP ⊆ coNP
+  · intro problem hp
+    simp only [coNP, Set.mem_setOf_eq]
+    -- problem ∈ NP = P, so problem ∈ P
+    have hp' : inP problem := by
+      have : problem ∈ P := by rw [h_eq]; exact hp
+      exact this
+    -- complement of problem is in P
+    have hc := (P_closed_complement problem).mp hp'
+    -- P ⊆ NP, so complement is in NP
+    exact P_subset_NP hc
+  -- coNP ⊆ NP
+  · intro problem hp
+    simp only [coNP, Set.mem_setOf_eq] at hp
+    -- complement(problem) ∈ NP = P
+    have hc : inP (complement problem) := by
+      have : complement problem ∈ P := by rw [h_eq]; exact hp
+      exact this
+    -- problem ∈ P (since P is closed under complement)
+    have hp' := (P_closed_complement problem).mpr hc
+    -- P ⊆ NP
+    exact P_subset_NP hp'
+
+/-- NP ≠ coNP implies P ≠ NP (PROVED)
+
+The contrapositive of P_eq_NP_implies_NP_eq_coNP. If NP and coNP differ,
+then P cannot equal NP. -/
+theorem NP_ne_coNP_implies_P_ne_NP : NP ≠ coNP → P ≠ NP := by
+  intro h_ne h_eq
+  exact h_ne (P_eq_NP_implies_NP_eq_coNP h_eq)
+
+-- ============================================================
+-- PART 13b: NP-Hardness Structural Properties
+-- ============================================================
+
+/-- NP-hardness transfers via reductions (PROVED)
+
+If problem B is NP-hard and B ≤ₚ C, then C is NP-hard.
+Intuitively: C is at least as hard as B, which is at least as hard as NP. -/
+theorem NPHard_of_reduce {B C : DecisionProblem}
+    (hB : NPHard B) (hred : B ≤ₚ C) : NPHard C := by
+  intro other h_np
+  exact poly_reduce_trans (hB other h_np) hred
+
+/-- NP-completeness transfers to harder problems in NP (PROVED)
+
+If L₁ is NP-complete and L₁ ≤ₚ L₂ and L₂ ∈ NP, then L₂ is NP-complete. -/
+theorem NPComplete_of_reduce {L₁ L₂ : DecisionProblem}
+    (hL₁ : NPComplete L₁) (hred : L₁ ≤ₚ L₂) (hL₂_NP : inNP L₂) :
+    NPComplete L₂ :=
+  ⟨hL₂_NP, NPHard_of_reduce hL₁.2 hred⟩
+
+/-- All NP-complete problems are polynomial-time equivalent (PROVED)
+
+If L₁ and L₂ are both NP-complete, then L₁ ≤ₚ L₂ and L₂ ≤ₚ L₁.
+
+**Proof**: L₁ ∈ NP and L₂ is NP-hard gives L₁ ≤ₚ L₂.
+           L₂ ∈ NP and L₁ is NP-hard gives L₂ ≤ₚ L₁. -/
+theorem NPC_equivalent {L₁ L₂ : DecisionProblem}
+    (h₁ : NPComplete L₁) (h₂ : NPComplete L₂) :
+    (L₁ ≤ₚ L₂) ∧ (L₂ ≤ₚ L₁) :=
+  ⟨h₂.2 L₁ h₁.1, h₁.2 L₂ h₂.1⟩ -- cross-apply NP-hardness to NP-membership
+
+/-- Complement of complement is the original problem (PROVED) -/
+theorem complement_complement (problem : DecisionProblem) :
+    complement (complement problem) = problem := by
+  funext n
+  simp [complement]
+
+-- ============================================================
 -- PART 14: The P vs NP Conjecture
 -- ============================================================
 
@@ -1006,14 +1100,22 @@ axiom ladner : P_ne_NP_Conjecture →
 5. **Ladner's Theorem** (`ladner`): If P ≠ NP, then NP-intermediate
    problems exist.
 
-6. **P = NP → NP = coNP** (`P_eq_NP_implies_NP_eq_coNP`): P = NP implies
+6. **NP ∩ coNP** (`P_subset_NP_inter_coNP`): P ⊆ NP ∩ coNP.
+
+7. **P = NP → NP = coNP** (`P_eq_NP_implies_NP_eq_coNP`): P = NP implies
    NP is closed under complement.
 
-7. **NP ≠ coNP → P ≠ NP** (`NP_ne_coNP_implies_P_ne_NP`): Contrapositive
+8. **NP ≠ coNP → P ≠ NP** (`NP_ne_coNP_implies_P_ne_NP`): Contrapositive
    approach to separating P from NP.
 
-8. **Karp's Theorem** (`NPComplete_of_reduce`): NP-completeness transfers
+9. **Karp's Theorem** (`NPComplete_of_reduce`): NP-completeness transfers
    via polynomial reductions.
+
+10. **NPC equivalence** (`NPC_equivalent`): All NP-complete problems
+    are polynomial-time equivalent to each other.
+
+11. **NP-hardness transfers** (`NPHard_of_reduce`): Reductions preserve
+    hardness upward.
 
 ### The Million Dollar Question
 
@@ -1033,13 +1135,18 @@ end PvsNP
 -- Export main definitions and theorems
 #check PvsNP.P
 #check PvsNP.NP
+#check PvsNP.coNP
+#check PvsNP.NP_inter_coNP
 #check PvsNP.NPComplete
 #check PvsNP.P_subset_NP
+#check PvsNP.P_subset_coNP
+#check PvsNP.P_subset_NP_inter_coNP
 #check PvsNP.cook_levin
 #check PvsNP.P_ne_NP_Conjecture
 #check PvsNP.NPC_in_P_implies_P_eq_NP
 #check PvsNP.P_eq_NP_implies_NP_eq_coNP
 #check PvsNP.NP_ne_coNP_implies_P_ne_NP
+#check PvsNP.NPC_equivalent
 #check PvsNP.NPComplete_of_reduce
 #check PvsNP.NPHard_of_reduce
 #check PvsNP.P_ne_NP_implies_NPC_not_in_P
