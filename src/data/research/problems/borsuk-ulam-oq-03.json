@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 35+ proved theorems across 3 files, gridDense sorry resolved in OQ03OQ03, new sections XXX-XXXVI in main file.",
+    "progressSummary": "COMPLETED: Fixed pre-existing build errors in BorsukUlamOQ03.lean (discrete_ivt_sign_change). Both OQ03 and OQ03OQ03 now compile clean.",
     "builtItems": [
       "proofs/Proofs/BorsukUlamOQ03.lean (914 lines, 41 defs/theorems, 7 axioms, 0 sorries)",
       "src/data/proofs/borsuk-ulam-oq-03/ (gallery integration with meta.json, annotations.json, index.ts)",
@@ -44,7 +44,12 @@
       "discrete_ivt_sign_change: discrete IVT from Tucker signed lemma",
       "interval_borsuk_number: 1D Borsuk partition impossibility",
       "coincidence_set_closed: coincidence set of f on S1 is closed",
-      "BU preservation theorems: post-composition, even composition, max, min"
+      "BU preservation theorems: post-composition, even composition, max, min",
+      {
+        "name": "discrete_ivt_sign_change (fixed)",
+        "description": "Repaired 3 proof bugs in BorsukUlamOQ03.lean:1354-1376",
+        "proven": true
+      }
     ],
     "insights": [
       "1D BU proved via IVT on antisymmetric difference g(x) = f(x) - f(-x)",
@@ -61,7 +66,9 @@
       "countTransitions is monotone and bounded by n; when endpoints differ, 1 <= count <= n with count odd",
       "gridDense proof: use Nat.floor to find nearest grid index, bound error by 1/N <= sqrt(2)/N via Prod.dist max metric",
       "BorsukUlamOQ03OQ03 has pre-existing build errors at lines 1510+ from Mathlib API changes (radialExtend infrastructure)",
-      "coincidence_set_closed uses isClosed_eq with fun_prop for continuity of composed trig functions"
+      "coincidence_set_closed uses isClosed_eq with fun_prop for continuity of composed trig functions",
+      "Fixed discrete_ivt_sign_change proof: removed false hbdry lemma, fixed Bool comparison proof, fixed .2 projection error",
+      "BorsukUlamOQ03.lean now compiles clean (0 sorries, 4 axioms)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
