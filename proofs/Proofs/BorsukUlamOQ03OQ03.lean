@@ -923,29 +923,6 @@ This follows from Tucker's lemma (axiom, Part I) + dominantComponentLabel
 + explicit grid construction (Part XXII above, in progress).
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Tucker on the disk**: Any continuous g : ℝ² → ℝ² that is antipodal
-    on S¹ (g(-p) = -g(p) for p on the unit circle) has approximate zeros
-    inside D̄² for any δ > 0.
-
-    Proof sketch: For each N, triangulate [-1,1]² with (2N+1)² grid.
-    Label vertices using dominantComponentLabel(g(v)). The antipodal
-    boundary condition ensures labels are complementary on ∂D².
-    Tucker's lemma gives a complementary edge; IVT on that edge gives
-    the dominant component is zero (complementary_edge_approx_dominant).
-    Mesh refinement (mesh_refinement_principle) then gives ‖g(w)‖ < δ.
-
-    This is a consequence of tuckers_lemma (Part I),
-    complementary_edge_approx_dominant (Part XX), and
-    mesh_refinement_principle (Part XXI).
-    The only remaining gap is the grid Fintype instantiation. -/
-axiom tucker_disk_approx_zero
-    (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
-    (h_odd_boundary : ∀ p : ℝ × ℝ, p.1 ^ 2 + p.2 ^ 2 = 1 →
-      g (Prod.map Neg.neg Neg.neg p) =
-        Prod.map Neg.neg Neg.neg (g p))
-    (δ : ℝ) (hδ : 0 < δ) :
-    ∃ w : ℝ × ℝ, w.1 ^ 2 + w.2 ^ 2 ≤ 1 ∧ dist (g w) 0 < δ
-
 /-- **Corrected approximate 2D Borsuk-Ulam from Tucker's Lemma**
 
     For any continuous f : ℝ³ → ℝ² and any ε > 0, there exists a point
@@ -961,7 +938,7 @@ theorem approx_borsuk_ulam_2d_corrected
     ∃ x : ℝ × ℝ × ℝ, x.1 ^ 2 + x.2.1 ^ 2 + x.2.2 ^ 2 = 1 ∧
       dist (f x) (f (neg3 x)) < ε := by
   -- Apply Tucker on disk to g̃ = antisymmetricDiff3 f ∘ diskToSphere
-  obtain ⟨w, hw_disk, hw_approx⟩ := tucker_disk_approx_zero
+  obtain ⟨w, hw_disk, hw_approx⟩ := tucker_disk_approx_zero_proved
     (antisymmetricDiff3 f ∘ diskToSphere)
     (projected_diff_continuous f hf)
     (fun p hp => projected_diff_antipodal_boundary f p hp)
@@ -1137,6 +1114,90 @@ theorem segmentParam_dist_le (u v : ℝ × ℝ) (t : ℝ) (ht0 : 0 ≤ t) (ht1 :
         rw [abs_sub_comm (v.1) (u.1), abs_sub_comm (v.2) (u.2)]
     _ ≤ max |u.1 - v.1| |u.2 - v.2| :=
         mul_le_of_le_one_left (le_max_of_le_left (abs_nonneg _)) ht1
+
+/-- Convex combination of points in [-1,1]² stays in [-1,1]². -/
+theorem segmentParam_in_square (u v : ℝ × ℝ) (t : ℝ)
+    (ht0 : 0 ≤ t) (ht1 : t ≤ 1)
+    (hu : |u.1| ≤ 1 ∧ |u.2| ≤ 1) (hv : |v.1| ≤ 1 ∧ |v.2| ≤ 1) :
+    |(segmentParam u v t).1| ≤ 1 ∧ |(segmentParam u v t).2| ≤ 1 := by
+  have h1t : 0 ≤ 1 - t := by linarith
+  constructor
+  · rw [segmentParam_fst]
+    calc |(1 - t) * u.1 + t * v.1|
+        ≤ |(1 - t) * u.1| + |t * v.1| := abs_add _ _
+      _ = (1 - t) * |u.1| + t * |v.1| := by
+          rw [abs_mul, abs_mul, abs_of_nonneg h1t, abs_of_nonneg ht0]
+      _ ≤ (1 - t) * 1 + t * 1 := by
+          apply add_le_add
+          · exact mul_le_mul_of_nonneg_left hu.1 h1t
+          · exact mul_le_mul_of_nonneg_left hv.1 ht0
+      _ = 1 := by ring
+  · rw [segmentParam_snd]
+    calc |(1 - t) * u.2 + t * v.2|
+        ≤ |(1 - t) * u.2| + |t * v.2| := abs_add _ _
+      _ = (1 - t) * |u.2| + t * |v.2| := by
+          rw [abs_mul, abs_mul, abs_of_nonneg h1t, abs_of_nonneg ht0]
+      _ ≤ (1 - t) * 1 + t * 1 := by
+          apply add_le_add
+          · exact mul_le_mul_of_nonneg_left hu.2 h1t
+          · exact mul_le_mul_of_nonneg_left hv.2 ht0
+      _ = 1 := by ring
+
+/-- Version of complementary_edge_zero_fst that also guarantees w ∈ [-1,1]². -/
+theorem complementary_edge_zero_fst_square (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
+    (u v : ℝ × ℝ) (h_sign : (g u).1 * (g v).1 ≤ 0)
+    (hu : |u.1| ≤ 1 ∧ |u.2| ≤ 1) (hv : |v.1| ≤ 1 ∧ |v.2| ≤ 1) :
+    ∃ w : ℝ × ℝ, dist w u ≤ dist u v ∧ (g w).1 = 0 ∧ |w.1| ≤ 1 ∧ |w.2| ≤ 1 := by
+  rcases le_or_gt (g u).1 0 with h_neg | h_pos
+  · rcases eq_or_lt_of_le h_neg with heq | hlt
+    · exact ⟨u, by rw [dist_self]; exact dist_nonneg, heq, hu⟩
+    · have h_v_pos : 0 ≤ (g v).1 := by
+        by_contra h_v_neg; push_neg at h_v_neg
+        linarith [mul_pos_of_neg_of_neg hlt h_v_neg]
+      obtain ⟨t, ht_mem, ht_zero⟩ := ivt_segment_fst g hg u v (le_of_lt hlt) h_v_pos
+      exact ⟨segmentParam u v t, segmentParam_dist_le u v t ht_mem.1 ht_mem.2,
+             ht_zero, segmentParam_in_square u v t ht_mem.1 ht_mem.2 hu hv⟩
+  · have h_v_neg : (g v).1 ≤ 0 := by
+      by_contra h_v_pos; push_neg at h_v_pos
+      linarith [mul_pos h_pos h_v_pos]
+    set f := fun t : ℝ => (g (segmentParam u v t)).1 with hf_def
+    have hf_cont : ContinuousOn f (Icc 0 1) :=
+      ((hg.comp (segmentParam_continuous u v)).fst).continuousOn
+    have hmem : (0 : ℝ) ∈ f '' Icc 0 1 :=
+      intermediate_value_Icc' (by norm_num : (0:ℝ) ≤ 1) hf_cont
+        ⟨by simp [hf_def, segmentParam_one]; exact h_v_neg,
+         by simp [hf_def, segmentParam_zero]; exact le_of_lt h_pos⟩
+    obtain ⟨t, ht_mem, ht_zero⟩ := hmem
+    exact ⟨segmentParam u v t, segmentParam_dist_le u v t ht_mem.1 ht_mem.2,
+           ht_zero, segmentParam_in_square u v t ht_mem.1 ht_mem.2 hu hv⟩
+
+/-- Version of complementary_edge_zero_snd that also guarantees w ∈ [-1,1]². -/
+theorem complementary_edge_zero_snd_square (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
+    (u v : ℝ × ℝ) (h_sign : (g u).2 * (g v).2 ≤ 0)
+    (hu : |u.1| ≤ 1 ∧ |u.2| ≤ 1) (hv : |v.1| ≤ 1 ∧ |v.2| ≤ 1) :
+    ∃ w : ℝ × ℝ, dist w u ≤ dist u v ∧ (g w).2 = 0 ∧ |w.1| ≤ 1 ∧ |w.2| ≤ 1 := by
+  rcases le_or_gt (g u).2 0 with h_neg | h_pos
+  · rcases eq_or_lt_of_le h_neg with heq | hlt
+    · exact ⟨u, by rw [dist_self]; exact dist_nonneg, heq, hu⟩
+    · have h_v_pos : 0 ≤ (g v).2 := by
+        by_contra h_v_neg; push_neg at h_v_neg
+        linarith [mul_pos_of_neg_of_neg hlt h_v_neg]
+      obtain ⟨t, ht_mem, ht_zero⟩ := ivt_segment_snd g hg u v (le_of_lt hlt) h_v_pos
+      exact ⟨segmentParam u v t, segmentParam_dist_le u v t ht_mem.1 ht_mem.2,
+             ht_zero, segmentParam_in_square u v t ht_mem.1 ht_mem.2 hu hv⟩
+  · have h_v_neg : (g v).2 ≤ 0 := by
+      by_contra h_v_pos; push_neg at h_v_pos
+      linarith [mul_pos h_pos h_v_pos]
+    set f := fun t : ℝ => (g (segmentParam u v t)).2 with hf_def
+    have hf_cont : ContinuousOn f (Icc 0 1) :=
+      ((hg.comp (segmentParam_continuous u v)).snd).continuousOn
+    have hmem : (0 : ℝ) ∈ f '' Icc 0 1 :=
+      intermediate_value_Icc' (by norm_num : (0:ℝ) ≤ 1) hf_cont
+        ⟨by simp [hf_def, segmentParam_one]; exact h_v_neg,
+         by simp [hf_def, segmentParam_zero]; exact le_of_lt h_pos⟩
+    obtain ⟨t, ht_mem, ht_zero⟩ := hmem
+    exact ⟨segmentParam u v t, segmentParam_dist_le u v t ht_mem.1 ht_mem.2,
+           ht_zero, segmentParam_in_square u v t ht_mem.1 ht_mem.2 hu hv⟩
 
 /-- **IVT on a line segment (first component)**: If g is continuous and
     g(u).1 and g(v).1 have opposite signs (product ≤ 0), then there exists
@@ -1862,25 +1923,160 @@ theorem tucker_disk_approx_zero_proved
   by_cases h_all_nonzero : ∀ (v : Fin (2 * N + 1) × Fin (2 * N + 1)),
       h (gridVertexFin N v) ≠ (0 : ℝ × ℝ)
   · -- Step 5: All grid vertices have h ≠ 0, so we can label using dominantComponentLabel
-    -- Define labeling: L(v) = dominantComponentLabel(h(gridVertex v))
-    -- The labeling is antipodal on the boundary because h is odd for ‖x‖₂ ≥ 1
-    --   (radialExtend_odd_outside) and boundary vertices have ‖x‖₂ ≥ 1
-    --   (gridBoundary_euclidNormSq_ge_one), so
-    --   L(antipodal(v)) = dominantComponentLabel(h(-gridVertex(v)))
-    --                    = dominantComponentLabel(-h(gridVertex(v)))
-    --                    = complement(L(v))
-    --   (by dominantComponentLabel_antipodal)
-    -- Apply tuckers_lemma with n=2, V = Fin(2N+1)², edges = gridEdgesFin,
-    --   boundary = gridBoundaryFin, antipodal = gridAntipodalFin
-    -- Tucker gives complementary edge (u, v) ∈ gridEdgesFin with label ±k
-    -- Apply complementary_edge_approx_dominant to h at gridVertex(u), gridVertex(v)
-    --   → ∃ w, ‖(h w).1‖ + ‖(h w).2‖ ≤ 2 * dist (h (gridVertex u)) (h w)
-    -- Since u, v are adjacent: dist(gridVertex u, gridVertex v) ≤ 1/N < δ₀
-    -- Since w is on segment [u,v]: w ∈ [-1,1]² and dist(gridVertex u, w) ≤ 1/N < δ₀
-    -- By mesh_refinement_square: ‖(h w).1‖ + ‖(h w).2‖ < δ
-    -- Hence dist(h w, 0) ≤ ‖(h w).1‖ + ‖(h w).2‖ < δ
-    -- By radialExtend_zero_gives_disk_zero: ∃ w' ∈ D̄², dist(g w', 0) < δ
-    sorry -- Composition of grid infrastructure + Tucker + analytical results
+    -- Step 5a: Define labeling L(v) = dominantComponentLabel(h(gridVertex v))
+    let L : SignedLabeling (Fin (2 * N + 1) × Fin (2 * N + 1)) 2 :=
+      fun v => dominantComponentLabel (h (gridVertexFin N v)) (h_all_nonzero v)
+    -- Step 5b: Prove antipodal condition on boundary
+    have h_antipodal_L : ∀ v ∈ gridBoundaryFin N,
+        L (gridAntipodalFin N v) = ⟨(L v).1, !(L v).2⟩ := by
+      intro v hv_bdy
+      show dominantComponentLabel (h (gridVertexFin N (gridAntipodalFin N v)))
+          (h_all_nonzero (gridAntipodalFin N v)) =
+        ⟨(dominantComponentLabel (h (gridVertexFin N v)) (h_all_nonzero v)).1,
+         !(dominantComponentLabel (h (gridVertexFin N v)) (h_all_nonzero v)).2⟩
+      -- gridVertexFin N (gridAntipodalFin N v) = -(gridVertexFin N v)
+      have h_neg := gridAntipodalFin_eq_neg N hN.1 v
+      -- Boundary vertices have euclidNormSq ≥ 1
+      have h_bdy := gridBoundary_euclidNormSq_ge_one N hN.1 v hv_bdy
+      -- h is odd outside the disk
+      have h_odd : h (Prod.map Neg.neg Neg.neg (gridVertexFin N v)) =
+          Prod.map Neg.neg Neg.neg (h (gridVertexFin N v)) :=
+        hh_def ▸ radialExtend_odd_outside g h_odd_boundary (gridVertexFin N v) h_bdy
+      -- Rewrite the LHS
+      conv_lhs => rw [show gridVertexFin N (gridAntipodalFin N v) =
+        Prod.map Neg.neg Neg.neg (gridVertexFin N v) from h_neg]
+      -- h(-x) = -h(x), so dominantComponentLabel(-h(x)) = complement(label(h(x)))
+      have h_eq : h (Prod.map Neg.neg Neg.neg (gridVertexFin N v)) =
+          -(h (gridVertexFin N v)) := by
+        rw [h_odd]; ext <;> simp [Prod.map]
+      rw [show dominantComponentLabel
+            (h (Prod.map Neg.neg Neg.neg (gridVertexFin N v)))
+            (h_all_nonzero (gridAntipodalFin N v)) =
+          dominantComponentLabel (-(h (gridVertexFin N v)))
+            (neg_ne_zero.mpr (h_all_nonzero v)) from by
+        congr 1
+        · exact h_eq
+        · exact Subsingleton.elim _ _]
+      exact dominantComponentLabel_antipodal _ _ _
+    -- Step 5c: Apply Tucker's lemma
+    obtain ⟨u_idx, v_idx, he, hcomp⟩ := tuckers_lemma 2 (by omega : 2 ≥ 1)
+      (Fin (2 * N + 1) × Fin (2 * N + 1))
+      (gridEdgesFin N) (gridBoundaryFin N) (gridAntipodalFin N) L h_antipodal_L
+    -- Step 5d: Extract complementary edge data
+    obtain ⟨k, hk⟩ := hcomp
+    -- Set up grid vertex abbreviations
+    set gu := gridVertexFin N u_idx with gu_def
+    set gv := gridVertexFin N v_idx with gv_def
+    -- Both grid vertices are in [-1,1]²
+    have hu_sq := gridVertexFin_in_square N hN.1 u_idx
+    have hv_sq := gridVertexFin_in_square N hN.1 v_idx
+    -- Grid edge distance bound
+    have h_edge_dist := grid_edge_dist N hN.1 u_idx v_idx he
+    have h_dist_lt : dist gu gv < δ₀ := lt_of_le_of_lt h_edge_dist hN.2
+    -- Step 5e: Extract sign change and dominance from complementary labels
+    -- In both cases of hk, the k-th component changes sign and is dominant at u
+    have h_sign : (if k = 0 then (h gu).1 else (h gu).2) *
+                  (if k = 0 then (h gv).1 else (h gv).2) ≤ 0 := by
+      rcases hk with ⟨hLu, hLv⟩ | ⟨hLu, hLv⟩
+      · -- L u = (k, true), L v = (k, false)
+        -- At u: k-th component ≥ 0; at v: k-th component < 0
+        have hu_true : (dominantComponentLabel (h gu) (h_all_nonzero u_idx)).2 = true := by
+          have := congr_arg Prod.snd hLu; simp at this; exact this
+        have hv_false : (dominantComponentLabel (h gv) (h_all_nonzero v_idx)).2 = false := by
+          have := congr_arg Prod.snd hLv; simp at this; exact this
+        have hku : (dominantComponentLabel (h gu) (h_all_nonzero u_idx)).1 = k := by
+          have := congr_arg Prod.fst hLu; simp at this; exact this
+        have hkv : (dominantComponentLabel (h gv) (h_all_nonzero v_idx)).1 = k := by
+          have := congr_arg Prod.fst hLv; simp at this; exact this
+        -- Extract sign information from dominantComponentLabel
+        -- true label means k-th component ≥ 0
+        have h_u_nonneg : (if (dominantComponentLabel (h gu) (h_all_nonzero u_idx)).1 = (0 : Fin 2)
+            then (h gu).1 else (h gu).2) ≥ 0 := by
+          unfold dominantComponentLabel
+          split_ifs <;> simp_all [decide_eq_true_eq]
+        -- false label means k-th component < 0
+        have h_v_neg : (if (dominantComponentLabel (h gv) (h_all_nonzero v_idx)).1 = (0 : Fin 2)
+            then (h gv).1 else (h gv).2) < 0 := by
+          unfold dominantComponentLabel
+          split_ifs <;> simp_all [decide_eq_false_iff_not, not_le]
+        rw [hku] at h_u_nonneg; rw [hkv] at h_v_neg
+        exact mul_nonpos_of_nonneg_of_nonpos h_u_nonneg (le_of_lt h_v_neg)
+      · -- L u = (k, false), L v = (k, true)
+        have hu_false : (dominantComponentLabel (h gu) (h_all_nonzero u_idx)).2 = false := by
+          have := congr_arg Prod.snd hLu; simp at this; exact this
+        have hv_true : (dominantComponentLabel (h gv) (h_all_nonzero v_idx)).2 = true := by
+          have := congr_arg Prod.snd hLv; simp at this; exact this
+        have hku : (dominantComponentLabel (h gu) (h_all_nonzero u_idx)).1 = k := by
+          have := congr_arg Prod.fst hLu; simp at this; exact this
+        have hkv : (dominantComponentLabel (h gv) (h_all_nonzero v_idx)).1 = k := by
+          have := congr_arg Prod.fst hLv; simp at this; exact this
+        have h_u_neg : (if (dominantComponentLabel (h gu) (h_all_nonzero u_idx)).1 = (0 : Fin 2)
+            then (h gu).1 else (h gu).2) < 0 := by
+          unfold dominantComponentLabel
+          split_ifs <;> simp_all [decide_eq_false_iff_not, not_le]
+        have h_v_nonneg : (if (dominantComponentLabel (h gv) (h_all_nonzero v_idx)).1 = (0 : Fin 2)
+            then (h gv).1 else (h gv).2) ≥ 0 := by
+          unfold dominantComponentLabel
+          split_ifs <;> simp_all [decide_eq_true_eq]
+        rw [hku] at h_u_neg; rw [hkv] at h_v_nonneg
+        exact mul_nonpos_of_nonpos_of_nonneg (le_of_lt h_u_neg) h_v_nonneg
+    have h_dom : (if k = 0 then |(h gu).1| else |(h gu).2|) ≥
+                 (if k = 0 then |(h gu).2| else |(h gu).1|) := by
+      have hku : (dominantComponentLabel (h gu) (h_all_nonzero u_idx)).1 = k := by
+        rcases hk with ⟨hLu, _⟩ | ⟨hLu, _⟩ <;>
+        · have := congr_arg Prod.fst hLu; simp at this; exact this
+      unfold dominantComponentLabel at hku
+      split_ifs at hku ⊢ with h_abs
+      · -- |h(gu).1| ≥ |h(gu).2|, and k = 0
+        exact h_abs
+      · -- |h(gu).2| > |h(gu).1|, and k = 1
+        push_neg at h_abs; exact le_of_lt h_abs
+    -- Step 5f: Apply IVT + dominance bound with square membership
+    -- Split on which component k
+    rcases k with ⟨k_val, hk_lt⟩
+    interval_cases k_val
+    · -- k = 0: first component changes sign, is dominant
+      simp only [Fin.mk_zero, ↓reduceIte] at h_sign h_dom
+      obtain ⟨w, hw_dist, hw_zero, hw_sq⟩ :=
+        complementary_edge_zero_fst_square h hh_cont gu gv h_sign hu_sq hv_sq
+      -- Non-dominant bound: |h(w).2| ≤ 2 * dist(h(gu), h(w))
+      have hw_bound : |(h w).2| ≤ 2 * dist (h gu) (h w) :=
+        non_dominant_at_zero_bound h gu w hw_zero h_dom
+      -- ‖(h w).1‖ + ‖(h w).2‖ = 0 + |h(w).2| = |h(w).2| ≤ 2 * dist(h(gu), h(w))
+      have hw_l1_bound : ‖(h w).1‖ + ‖(h w).2‖ ≤ 2 * dist (h gu) (h w) := by
+        simp only [hw_zero, norm_zero, zero_add, Real.norm_eq_abs]; exact hw_bound
+      -- dist(gu, w) ≤ dist(gu, gv) < δ₀
+      have hw_dist_lt : dist gu w < δ₀ := by
+        rw [dist_comm]; exact lt_of_le_of_lt hw_dist h_dist_lt
+      -- mesh_refinement_square gives ‖(h w).1‖ + ‖(h w).2‖ < δ
+      have hw_small : ‖(h w).1‖ + ‖(h w).2‖ < δ :=
+        hδ₀ gu w hu_sq hw_sq hw_dist_lt hw_l1_bound
+      -- dist(h(w), 0) ≤ ‖(h w).1‖ + ‖(h w).2‖ < δ
+      have hw_dist_zero : dist (h w) 0 < δ := by
+        calc dist (h w) 0 = ‖h w‖ := by rw [dist_zero_right]
+          _ = max ‖(h w).1‖ ‖(h w).2‖ := Prod.norm_def (h w)
+          _ ≤ ‖(h w).1‖ + ‖(h w).2‖ := max_le_add_of_nonneg (norm_nonneg _) (norm_nonneg _)
+          _ < δ := hw_small
+      -- Convert to g-zero in D̄²
+      exact radialExtend_zero_gives_disk_zero g w δ hδ (by rw [← hh_def]; exact hw_dist_zero)
+    · -- k = 1: second component changes sign, is dominant
+      simp only [Fin.mk_one, show (1 : Fin 2) ≠ 0 from by decide, ↓reduceIte] at h_sign h_dom
+      obtain ⟨w, hw_dist, hw_zero, hw_sq⟩ :=
+        complementary_edge_zero_snd_square h hh_cont gu gv h_sign hu_sq hv_sq
+      have hw_bound : |(h w).1| ≤ 2 * dist (h gu) (h w) :=
+        non_dominant_at_zero_bound_snd h gu w hw_zero h_dom
+      have hw_l1_bound : ‖(h w).1‖ + ‖(h w).2‖ ≤ 2 * dist (h gu) (h w) := by
+        simp only [hw_zero, norm_zero, add_zero, Real.norm_eq_abs]; exact hw_bound
+      have hw_dist_lt : dist gu w < δ₀ := by
+        rw [dist_comm]; exact lt_of_le_of_lt hw_dist h_dist_lt
+      have hw_small : ‖(h w).1‖ + ‖(h w).2‖ < δ :=
+        hδ₀ gu w hu_sq hw_sq hw_dist_lt hw_l1_bound
+      have hw_dist_zero : dist (h w) 0 < δ := by
+        calc dist (h w) 0 = ‖h w‖ := by rw [dist_zero_right]
+          _ = max ‖(h w).1‖ ‖(h w).2‖ := Prod.norm_def (h w)
+          _ ≤ ‖(h w).1‖ + ‖(h w).2‖ := max_le_add_of_nonneg (norm_nonneg _) (norm_nonneg _)
+          _ < δ := hw_small
+      exact radialExtend_zero_gives_disk_zero g w δ hδ (by rw [← hh_def]; exact hw_dist_zero)
   · -- Some grid vertex v₀ has h(gridVertex v₀) = 0
     push_neg at h_all_nonzero
     obtain ⟨v₀, hv₀⟩ := h_all_nonzero
