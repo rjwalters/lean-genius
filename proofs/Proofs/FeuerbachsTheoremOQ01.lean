@@ -563,6 +563,172 @@ The squared extended law of sines and sigma identity are the algebraic
 backbone needed for any of these approaches.
 -/
 
+-- ============================================================
+-- HERON'S FORMULA (SQUARED POLYNOMIAL FORM)
+-- ============================================================
+
+-- Heron's formula in its squared form avoids all square roots:
+--   16·Area² = 2a²b² + 2b²c² + 2c²a² - a⁴ - b⁴ - c⁴
+--
+-- This is equivalent to: 16·Area² = (a+b+c)(-a+b+c)(a-b+c)(a+b-c)
+-- but expressed entirely in terms of a², b², c² (polynomial in coordinates).
+
+set_option maxHeartbeats 64000000 in
+/-- Heron's formula (squared polynomial form):
+    16 · Area² = 2·a²·b² + 2·b²·c² + 2·c²·a² - a⁴ - b⁴ - c⁴
+
+    After substituting a² = |BC|², b² = |CA|², c² = |AB|² and
+    Area = |signed_area|/2, this reduces to a polynomial identity
+    in the 6 vertex coordinates, provable by ring. -/
+theorem herons_formula_sq (T : Triangle) :
+    16 * T.area ^ 2 =
+    2 * T.side_a ^ 2 * T.side_b ^ 2 +
+    2 * T.side_b ^ 2 * T.side_c ^ 2 +
+    2 * T.side_c ^ 2 * T.side_a ^ 2 -
+    T.side_a ^ 4 - T.side_b ^ 4 - T.side_c ^ 4 := by
+  unfold Triangle.area Triangle.side_a Triangle.side_b Triangle.side_c
+  rw [div_pow, sq_abs]
+  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _),
+      Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _),
+      Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
+  -- Now a⁴ = (a²)² etc., just square the squared expressions
+  ring
+
+-- ============================================================
+-- DOT PRODUCT AND INNER PRODUCT LEMMAS
+-- ============================================================
+
+/-- Dot product of 2D vectors (A-O) and (B-O). -/
+def dot2 (P Q R : Point) : ℝ :=
+  (P.1 - R.1) * (Q.1 - R.1) + (P.2 - R.2) * (Q.2 - R.2)
+
+/-- Polarization identity: ⟨A-O, B-O⟩ = (|A-O|² + |B-O|² - |A-B|²)/2.
+    This is a standard identity requiring no special properties of O. -/
+theorem dot2_polarization (A B O : Point) :
+    dot2 A B O = (dist2_sq O A + dist2_sq O B - dist2_sq A B) / 2 := by
+  unfold dot2 dist2_sq
+  ring
+
+/-- For the circumcenter O with |O-A|² = |O-B|² = R²:
+    ⟨A-O, B-O⟩ = R² - c²/2 where c = |AB|.
+
+    This is the key inner product identity used in the abstract
+    Feuerbach proof. -/
+theorem dot_circumcenter_AB (T : Triangle) :
+    dot2 T.A T.B T.circumcenter =
+    T.circumradius ^ 2 - T.side_c ^ 2 / 2 := by
+  rw [dot2_polarization]
+  have heq : dist2_sq T.circumcenter T.B = dist2_sq T.circumcenter T.A :=
+    circumcenter_equidist_sq_B T
+  unfold Triangle.circumradius dist2
+  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
+  unfold Triangle.side_c
+  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
+  rw [heq]
+  ring
+
+/-- ⟨A-O, C-O⟩ = R² - b²/2 where b = |CA|. -/
+theorem dot_circumcenter_AC (T : Triangle) :
+    dot2 T.A T.C T.circumcenter =
+    T.circumradius ^ 2 - T.side_b ^ 2 / 2 := by
+  rw [dot2_polarization]
+  have heq : dist2_sq T.circumcenter T.C = dist2_sq T.circumcenter T.A :=
+    circumcenter_equidist_sq_C T
+  unfold Triangle.circumradius dist2
+  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
+  unfold Triangle.side_b
+  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
+  rw [heq]
+  ring
+
+/-- ⟨B-O, C-O⟩ = R² - a²/2 where a = |BC|. -/
+theorem dot_circumcenter_BC (T : Triangle) :
+    dot2 T.B T.C T.circumcenter =
+    T.circumradius ^ 2 - T.side_a ^ 2 / 2 := by
+  rw [dot2_polarization]
+  have heqB : dist2_sq T.circumcenter T.B = dist2_sq T.circumcenter T.A :=
+    circumcenter_equidist_sq_B T
+  have heqC : dist2_sq T.circumcenter T.C = dist2_sq T.circumcenter T.A :=
+    circumcenter_equidist_sq_C T
+  unfold Triangle.circumradius dist2
+  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
+  unfold Triangle.side_a
+  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
+  rw [heqB, heqC]
+  ring
+
+-- ============================================================
+-- EXTENDED LAW OF SINES (UNSQUARED FORM)
+-- ============================================================
+
+/-- Side lengths are positive for nondegenerate triangles. -/
+theorem side_a_pos (T : Triangle) : T.side_a > 0 := by
+  unfold Triangle.side_a
+  apply Real.sqrt_pos_of_pos
+  exact_mod_cast (by
+    have := bc_sq_ne T
+    positivity : (0 : ℝ) < (T.C.1 - T.B.1) ^ 2 + (T.C.2 - T.B.2) ^ 2)
+
+theorem side_b_pos (T : Triangle) : T.side_b > 0 := by
+  unfold Triangle.side_b
+  apply Real.sqrt_pos_of_pos
+  exact_mod_cast (by
+    have := ca_sq_ne T
+    positivity : (0 : ℝ) < (T.A.1 - T.C.1) ^ 2 + (T.A.2 - T.C.2) ^ 2)
+
+theorem side_c_pos (T : Triangle) : T.side_c > 0 := by
+  unfold Triangle.side_c
+  apply Real.sqrt_pos_of_pos
+  exact_mod_cast (by
+    have := ab_sq_ne T
+    positivity : (0 : ℝ) < (T.B.1 - T.A.1) ^ 2 + (T.B.2 - T.A.2) ^ 2)
+
+/-- The circumradius is positive. -/
+theorem circumradius_pos (T : Triangle) : T.circumradius > 0 := by
+  -- R = |O - A| > 0. Since O ≠ A (otherwise all vertices equidistant from A
+  -- would force collinearity).
+  unfold Triangle.circumradius dist2
+  apply Real.sqrt_pos_of_pos
+  -- Need (A.1 - O.1)² + (A.2 - O.2)² > 0, i.e., A ≠ O
+  by_contra h
+  push_neg at h
+  have hx : T.A.1 = T.circumcenter.1 := by nlinarith [sq_nonneg (T.A.1 - T.circumcenter.1), sq_nonneg (T.A.2 - T.circumcenter.2)]
+  have hy : T.A.2 = T.circumcenter.2 := by nlinarith [sq_nonneg (T.A.1 - T.circumcenter.1), sq_nonneg (T.A.2 - T.circumcenter.2)]
+  -- If A = O, then |O-A|² = 0 = R², so |O-B|² = 0 and |O-C|² = 0
+  -- meaning B = O = A and C = O = A, contradicting nondegeneracy
+  have hOA : dist2_sq T.circumcenter T.A = 0 := by unfold dist2_sq; rw [hx, hy]; ring
+  have hOB : dist2_sq T.circumcenter T.B = 0 := by
+    rw [circumcenter_equidist_sq_B T]; exact hOA
+  have hOC : dist2_sq T.circumcenter T.C = 0 := by
+    rw [circumcenter_equidist_sq_C T]; exact hOA
+  have hBx : T.B.1 = T.A.1 := by
+    unfold dist2_sq at hOB; rw [hx, hy] at hOB
+    nlinarith [sq_nonneg (T.B.1 - T.A.1), sq_nonneg (T.B.2 - T.A.2)]
+  have hBy : T.B.2 = T.A.2 := by
+    unfold dist2_sq at hOB; rw [hx, hy] at hOB
+    nlinarith [sq_nonneg (T.B.1 - T.A.1), sq_nonneg (T.B.2 - T.A.2)]
+  exact T.nondegenerate (by rw [hBx, hBy]; ring)
+
+/-- Extended law of sines (unsquared form):
+    side_a · side_b · side_c = 4 · circumradius · area.
+
+    Derived from the squared version by taking positive square roots. -/
+theorem extended_law_of_sines (T : Triangle) :
+    T.side_a * T.side_b * T.side_c = 4 * T.circumradius * T.area := by
+  have hsq := extended_law_of_sines_sq T
+  -- Both sides are positive
+  have hlhs_pos : T.side_a * T.side_b * T.side_c > 0 := by
+    exact mul_pos (mul_pos (side_a_pos T) (side_b_pos T)) (side_c_pos T)
+  have hrhs_pos : 4 * T.circumradius * T.area > 0 := by
+    exact mul_pos (mul_pos (by norm_num : (4 : ℝ) > 0) (circumradius_pos T)) (area_pos T)
+  -- From x² = y² and x > 0 and y > 0, conclude x = y
+  have hlhs_nn : 0 ≤ T.side_a * T.side_b * T.side_c := le_of_lt hlhs_pos
+  have hrhs_nn : 0 ≤ 4 * T.circumradius * T.area := le_of_lt hrhs_pos
+  -- hsq says (abc)² = (4RA)² in expanded form; need to show (abc)² = (4RA)²
+  have hsq' : (T.side_a * T.side_b * T.side_c) ^ 2 = (4 * T.circumradius * T.area) ^ 2 := by
+    nlinarith [hsq]
+  exact eq_of_sq_eq_nonneg hlhs_nn hrhs_nn hsq'
+
 -- Type-check results
 #check @foot_a_on_ninePointCircle_proved
 #check @foot_b_on_ninePointCircle_proved
@@ -578,5 +744,15 @@ backbone needed for any of these approaches.
 #check @extended_law_of_sines_sq
 #check @T345_euler_formula
 #check @T345_extended_law_of_sines
+#check @herons_formula_sq
+#check @dot2_polarization
+#check @dot_circumcenter_AB
+#check @dot_circumcenter_AC
+#check @dot_circumcenter_BC
+#check @side_a_pos
+#check @side_b_pos
+#check @side_c_pos
+#check @circumradius_pos
+#check @extended_law_of_sines
 
 end FeuerbachsTheoremOQ01
