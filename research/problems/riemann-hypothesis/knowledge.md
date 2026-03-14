@@ -1,5 +1,39 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-14 (researcher-6) - Zero-Density Estimates
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 24)
+**Problem**: riemann-hypothesis
+**Prior Status**: ORIENT
+
+**What we did**:
+1. Extended `RiemannHypothesisConsequences.lean` from 632 → 841 lines
+2. Added zero-density estimates: Ingham (1940), Huxley (1972), Density Hypothesis
+3. Proved `chebyshevPsi_ge_theta` (ψ(n) ≥ θ(n)) unconditionally from Mathlib
+4. Proved `mertens_sign_change_exists` using existing computed values
+5. Fixed Mathlib 4.26+ incompatibility: `μ` notation → `ArithmeticFunction.moebius`
+6. Analyzed `no_real_zeros_in_strip` axiom: requires eta function, can't eliminate yet
+7. Docker build passes: 0 errors, 0 sorries
+
+**New content added**:
+| Item | Type | Status |
+|------|------|--------|
+| `zeroDensity` | Definition | Placeholder |
+| `ingham_zero_density` | Axiom | Ingham's 1940 bound |
+| `huxley_zero_density` | Axiom | Huxley's 1972 bound |
+| `DensityHypothesis` | Definition | Formal statement |
+| `RH_implies_DensityHypothesis` | Axiom | RH → DH |
+| `chebyshevPsi_ge_theta` | Theorem | **PROVED** |
+| `mertens_sign_change_exists` | Theorem | **PROVED** |
+| `density_crossover_at_three_quarters` | Theorem | **PROVED** |
+
+**Axiom analysis**:
+- `no_real_zeros_in_strip`: Needs Dirichlet eta function or real-analyticity argument. Neither in Mathlib.
+- `zeta_conj`: Partially proved for Re(s) > 1. Full proof needs identity theorem for meromorphic functions.
+- `riemannZeta_ne_zero_of_one_le_re`: Now in Mathlib (via `LSeries.Nonvanishing` import)
+
+---
+
 ## The Problem
 
 The Riemann Hypothesis (RH) is arguably the most famous unsolved problem in mathematics. Proposed by Bernhard Riemann in 1859, it concerns the distribution of prime numbers.

@@ -43,6 +43,10 @@ showing SAT is NP-complete.
   * NPHard_of_reduce (NP-hardness upward closure)
   * P_ne_NP_implies_NPC_not_in_P (separation consequence)
   * NPC_equivalent (all NP-complete problems are poly-equivalent)
+  * P_closed_union (P closed under union)
+  * P_closed_intersection (P closed under intersection)
+  * coP_eq_P (complement class of P equals P)
+  * P_eq_NP_iff_NPC_in_P (P = NP iff some NPC in P)
 - Polynomial.eval uses (n+1)^degree to avoid n=0 degenerate cases
 - PolyReduction extended with output size bounds for proper composition
 - Turing machines modeled abstractly; full formalization would require ~10,000+ lines
@@ -905,6 +909,111 @@ theorem complement_complement (problem : DecisionProblem) :
   simp [complement]
 
 -- ============================================================
+-- PART 13c: Closure Properties of P
+-- ============================================================
+
+/-- Union (disjunction) of two decision problems -/
+def problem_union (A B : DecisionProblem) : DecisionProblem :=
+  fun n => A n || B n
+
+/-- Intersection (conjunction) of two decision problems -/
+def problem_inter (A B : DecisionProblem) : DecisionProblem :=
+  fun n => A n && B n
+
+/-- P is closed under union (PROVED)
+
+    If both A and B can be solved in polynomial time, then "A or B" can
+    also be solved in polynomial time by running both solvers. -/
+theorem P_closed_union {A B : DecisionProblem} (hA : inP A) (hB : inP B) :
+    inP (problem_union A B) := by
+  obtain ⟨progA, polyA, hSA, hTA⟩ := hA
+  obtain ⟨progB, polyB, hSB, hTB⟩ := hB
+  let prog : Program := {
+    code := 0
+    decide := fun n =>
+      ((progA.decide n).1 || (progB.decide n).1,
+       (progA.decide n).2 + (progB.decide n).2)
+  }
+  let poly : Polynomial := ⟨max polyA.degree polyB.degree, polyA.coeff + polyB.coeff⟩
+  use prog, poly
+  constructor
+  · -- Correctness
+    intro n
+    simp only [prog, problem_union]
+    rw [hSA, hSB]
+  · -- Time bound
+    intro n
+    simp only [prog, Polynomial.toTimeBound, Polynomial.eval, poly]
+    have h1 := hTA n
+    have h2 := hTB n
+    simp only [Polynomial.toTimeBound, Polynomial.eval] at h1 h2
+    have hm : 1 ≤ inputSize n + 1 := by omega
+    have hdA : polyA.degree ≤ max polyA.degree polyB.degree := Nat.le_max_left _ _
+    have hdB : polyB.degree ≤ max polyA.degree polyB.degree := Nat.le_max_right _ _
+    have hpA : (inputSize n + 1) ^ polyA.degree ≤ (inputSize n + 1) ^ (max polyA.degree polyB.degree) :=
+      Nat.pow_le_pow_right hm hdA
+    have hpB : (inputSize n + 1) ^ polyB.degree ≤ (inputSize n + 1) ^ (max polyA.degree polyB.degree) :=
+      Nat.pow_le_pow_right hm hdB
+    calc (progA.decide n).2 + (progB.decide n).2
+      ≤ polyA.coeff * (inputSize n + 1) ^ polyA.degree +
+        polyB.coeff * (inputSize n + 1) ^ polyB.degree := Nat.add_le_add h1 h2
+      _ ≤ polyA.coeff * (inputSize n + 1) ^ (max polyA.degree polyB.degree) +
+          polyB.coeff * (inputSize n + 1) ^ (max polyA.degree polyB.degree) :=
+          Nat.add_le_add (Nat.mul_le_mul_left _ hpA) (Nat.mul_le_mul_left _ hpB)
+      _ = (polyA.coeff + polyB.coeff) * (inputSize n + 1) ^ (max polyA.degree polyB.degree) := by ring
+
+/-- P is closed under intersection (PROVED)
+
+    If both A and B can be solved in polynomial time, then "A and B" can
+    also be solved in polynomial time by running both solvers. -/
+theorem P_closed_intersection {A B : DecisionProblem} (hA : inP A) (hB : inP B) :
+    inP (problem_inter A B) := by
+  obtain ⟨progA, polyA, hSA, hTA⟩ := hA
+  obtain ⟨progB, polyB, hSB, hTB⟩ := hB
+  let prog : Program := {
+    code := 0
+    decide := fun n =>
+      ((progA.decide n).1 && (progB.decide n).1,
+       (progA.decide n).2 + (progB.decide n).2)
+  }
+  let poly : Polynomial := ⟨max polyA.degree polyB.degree, polyA.coeff + polyB.coeff⟩
+  use prog, poly
+  constructor
+  · intro n
+    simp only [prog, problem_inter]
+    rw [hSA, hSB]
+  · intro n
+    simp only [prog, Polynomial.toTimeBound, Polynomial.eval, poly]
+    have h1 := hTA n
+    have h2 := hTB n
+    simp only [Polynomial.toTimeBound, Polynomial.eval] at h1 h2
+    have hm : 1 ≤ inputSize n + 1 := by omega
+    have hdA : polyA.degree ≤ max polyA.degree polyB.degree := Nat.le_max_left _ _
+    have hdB : polyB.degree ≤ max polyA.degree polyB.degree := Nat.le_max_right _ _
+    have hpA : (inputSize n + 1) ^ polyA.degree ≤ (inputSize n + 1) ^ (max polyA.degree polyB.degree) :=
+      Nat.pow_le_pow_right hm hdA
+    have hpB : (inputSize n + 1) ^ polyB.degree ≤ (inputSize n + 1) ^ (max polyA.degree polyB.degree) :=
+      Nat.pow_le_pow_right hm hdB
+    calc (progA.decide n).2 + (progB.decide n).2
+      ≤ polyA.coeff * (inputSize n + 1) ^ polyA.degree +
+        polyB.coeff * (inputSize n + 1) ^ polyB.degree := Nat.add_le_add h1 h2
+      _ ≤ polyA.coeff * (inputSize n + 1) ^ (max polyA.degree polyB.degree) +
+          polyB.coeff * (inputSize n + 1) ^ (max polyA.degree polyB.degree) :=
+          Nat.add_le_add (Nat.mul_le_mul_left _ hpA) (Nat.mul_le_mul_left _ hpB)
+      _ = (polyA.coeff + polyB.coeff) * (inputSize n + 1) ^ (max polyA.degree polyB.degree) := by ring
+
+/-- coP = P: The complement class of P equals P (PROVED)
+
+    Since P is closed under complement, the class of problems whose
+    complements are in P is exactly P itself. -/
+def coP : Set DecisionProblem := { problem | inP (complement problem) }
+
+theorem coP_eq_P : coP = P := by
+  ext problem
+  simp only [coP, P, Set.mem_setOf_eq]
+  exact (P_closed_complement problem).symm
+
+-- ============================================================
 -- PART 14: The P vs NP Conjecture
 -- ============================================================
 
@@ -962,6 +1071,20 @@ theorem NPC_in_P_implies_P_eq_NP :
   -- Since L ∈ P and A ≤ₚ L, we have A ∈ P
   exact poly_reduce_P_preserved h_reduce h_L_in_P
 
+/-- **P = NP ↔ some NP-complete problem is in P** (PROVED)
+
+    Combines the two directions: P_eq_NP_implies_NPC_in_P and NPC_in_P_implies_P_eq_NP.
+    Uses SAT (which is NP-complete by Cook-Levin) as the canonical witness. -/
+theorem P_eq_NP_iff_NPC_in_P :
+    P = NP ↔ ∃ problem, NPComplete problem ∧ inP problem := by
+  constructor
+  · intro h
+    use SAT, cook_levin
+    have : SAT ∈ NP := cook_levin.1
+    rw [← h] at this
+    exact this
+  · exact NPC_in_P_implies_P_eq_NP
+
 -- ============================================================
 -- PART 15: Structural Theorems of Complexity Theory
 -- ============================================================
@@ -972,61 +1095,6 @@ theorem P_eq_NP_iff_NP_subset_P : P = NP ↔ NP ⊆ P := by
   constructor
   · intro h; rw [h]
   · intro h; exact Set.eq_of_subset_of_subset P_subset_NP h
-
-/-- If P = NP, then NP = coNP.
-    Since P is closed under complement and P = NP, NP inherits
-    closure under complement, giving NP = coNP.
-
-    Contrapositive: NP ≠ coNP implies P ≠ NP (a potentially easier
-    approach to separating P from NP). -/
-theorem P_eq_NP_implies_NP_eq_coNP (h : P = NP) : NP = coNP := by
-  apply Set.eq_of_subset_of_subset
-  -- NP ⊆ coNP: For problem in NP, show complement(problem) in NP
-  · intro problem h_np
-    simp only [coNP, Set.mem_setOf_eq]
-    -- problem ∈ NP = P, so problem ∈ P
-    rw [← h] at h_np
-    -- complement(problem) ∈ P by closure
-    have h_comp_P := (P_closed_complement problem).mp h_np
-    -- P ⊆ NP
-    exact P_subset_NP h_comp_P
-  -- coNP ⊆ NP: For problem in coNP, complement(problem) in NP = P
-  · intro problem h_conp
-    simp only [coNP, Set.mem_setOf_eq] at h_conp
-    -- complement(problem) ∈ NP = P
-    rw [← h] at h_conp
-    -- problem = complement(complement(problem)) ∈ P
-    have h_comp_comp : inP problem := by
-      have := (P_closed_complement (complement problem)).mp h_conp
-      simp only [complement, Bool.not_not] at this
-      exact this
-    -- P ⊆ NP
-    exact P_subset_NP h_comp_comp
-
-/-- Contrapositive: NP ≠ coNP implies P ≠ NP.
-    This is a standard approach: proving NP ≠ coNP would separate P from NP. -/
-theorem NP_ne_coNP_implies_P_ne_NP (h : NP ≠ coNP) : P ≠ NP := by
-  intro h_eq
-  exact h (P_eq_NP_implies_NP_eq_coNP h_eq)
-
-/-- NP-hardness is upward-closed under polynomial reductions.
-    If A is NP-hard and A ≤ₚ B, then B is NP-hard.
-
-    Proof: Every NP problem reduces to A (NP-hardness), and A reduces
-    to B, so by transitivity every NP problem reduces to B. -/
-theorem NPHard_of_reduce {A B : DecisionProblem}
-    (hA : NPHard A) (hab : A ≤ₚ B) : NPHard B := by
-  intro other h_np
-  exact poly_reduce_trans (hA other h_np) hab
-
-/-- **Karp's Theorem**: NP-completeness transfers via polynomial reductions.
-    If A is NP-complete, A ≤ₚ B, and B ∈ NP, then B is NP-complete.
-
-    This is the standard technique for proving NP-completeness:
-    reduce a known NP-complete problem to the target problem. -/
-theorem NPComplete_of_reduce {A B : DecisionProblem}
-    (hA : NPComplete A) (hab : A ≤ₚ B) (hB_NP : inNP B) : NPComplete B :=
-  ⟨hB_NP, NPHard_of_reduce hA.2 hab⟩
 
 /-- If P ≠ NP, then no NP-complete problem is in P. -/
 theorem P_ne_NP_implies_NPC_not_in_P (h : P_ne_NP_Conjecture) :
@@ -1041,8 +1109,9 @@ theorem P_ne_NP_implies_NPC_not_in_P (h : P_ne_NP_Conjecture) :
 theorem P_eq_NP_implies_PH_collapse_base (h : P = NP) :
     ∀ problem, inNP problem → inP problem := by
   intro problem h_np
-  rw [← h] at h_np
-  exact h_np
+  have : problem ∈ NP := h_np
+  rw [← h] at this
+  exact this
 
 -- ============================================================
 -- PART 16: Known Results and Barriers
@@ -1116,6 +1185,15 @@ axiom ladner : P_ne_NP_Conjecture →
 
 11. **NP-hardness transfers** (`NPHard_of_reduce`): Reductions preserve
     hardness upward.
+
+12. **P closed under union** (`P_closed_union`): If A, B ∈ P then A ∪ B ∈ P.
+
+13. **P closed under intersection** (`P_closed_intersection`): If A, B ∈ P then A ∩ B ∈ P.
+
+14. **coP = P** (`coP_eq_P`): The complement class of P equals P.
+
+15. **P = NP iff NPC in P** (`P_eq_NP_iff_NPC_in_P`): P = NP iff some NP-complete
+    problem is in P.
 
 ### The Million Dollar Question
 
