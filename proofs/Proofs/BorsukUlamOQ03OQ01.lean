@@ -312,17 +312,24 @@ theorem multi_function_interval_bu (ι : Type*) (f : ι → ℝ → ℝ) :
     ∃ x ∈ Icc (-1:ℝ) 1, ∀ i, f i x = f i (-x) :=
   ⟨0, by norm_num, fun i => by rw [neg_zero]⟩
 
-/-- **Two-function circle BU**: For two continuous functions f, g: ℝ² → ℝ,
-    there exists θ such that both f and g agree at antipodal points.
+/-- **WARNING: This axiom is FALSE.** It claims two continuous functions
+    f, g: ℝ² → ℝ must simultaneously agree at antipodal points on S¹.
 
-    This is the 2D Borsuk-Ulam theorem for S^1 → ℝ², which is deeper
-    than the 1D version. We axiomatize it since the proof requires
-    the full Borsuk-Ulam for S^1 → ℝ^1 applied to F = (f,g). -/
-axiom two_function_circle_bu
-    (f g : ℝ × ℝ → ℝ) (hf : Continuous f) (hg : Continuous g) :
-    ∃ θ : ℝ, θ ∈ Icc 0 Real.pi ∧
-    f (cos θ, sin θ) = f (-cos θ, -sin θ) ∧
-    g (cos θ, sin θ) = g (-cos θ, -sin θ)
+    Counterexample: f(x,y) = x, g(x,y) = y.
+    f(cos θ, sin θ) = cos θ = f(-cos θ, -sin θ) = -cos θ requires cos θ = 0, i.e., θ = π/2.
+    But g(0, 1) = 1 ≠ -1 = g(0, -1), so g does NOT agree at this θ.
+
+    The error is dimensional: BU for S^n → ℝ^n requires domain S^n, but two scalar
+    functions on S¹ form a map S¹ → ℝ², needing BU for S² → ℝ² (not S¹ → ℝ²).
+    The correct version would use S² as domain, not S¹.
+
+    This axiom is UNUSED in the file and introduces no inconsistency.
+    Retained (commented out) for documentation of the corrected understanding. -/
+-- axiom two_function_circle_bu
+--     (f g : ℝ × ℝ → ℝ) (hf : Continuous f) (hg : Continuous g) :
+--     ∃ θ : ℝ, θ ∈ Icc 0 Real.pi ∧
+--     f (cos θ, sin θ) = f (-cos θ, -sin θ) ∧
+--     g (cos θ, sin θ) = g (-cos θ, -sin θ)
 
 /-
 ## Section IX: Quantitative Non-Injectivity

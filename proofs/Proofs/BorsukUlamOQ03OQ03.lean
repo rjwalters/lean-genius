@@ -29,12 +29,21 @@ YES — the proof strategy is:
 - 1D BU and Tucker: BorsukUlamOQ03.lean
 - Spheres, antipodal maps: BorsukUlamOQ01/02.lean
 
-## What This File Builds
+## What This File Proves
 
-1. The "dominant component labeling" from continuous functions to signed labels
-2. Tucker's 2D specialization: complementary edges in labeled 2D disk triangulations
-3. The bridge: Tucker complementary edge → approximate BU solution
-4. The limiting argument: mesh refinement → exact BU solution (axiomatized)
+1. The "dominant component labeling" is antipodal (Part II)
+2. Tucker complementary edge → approximate zero via IVT (Parts XVIII-XX)
+3. Mesh refinement on compact sets gives arbitrarily small zeros (Part XXI)
+4. Radial extension from D² to [-1,1]² preserving odd boundary (Part XXII)
+5. Grid infrastructure: vertices, edges, boundary, antipodal map (Part XXIII)
+6. **Main theorem**: tucker_disk_approx_zero_proved (from tuckers_lemma axiom)
+7. Approximate and exact 2D Borsuk-Ulam (Part XVI)
+
+## Status: 1 axiom, 0 sorries
+
+The entire proof chain is complete modulo Tucker's lemma (Part I).
+Eliminating this axiom requires path-following, degree theory, or intersection
+theory — each equivalent to Brouwer's FPT in 2D.
 -/
 
 set_option maxHeartbeats 400000
@@ -596,44 +605,23 @@ theorem approx_to_exact (f : ℝ × ℝ → ℝ × ℝ) (hf : Continuous f)
   obtain ⟨x₁, hx₁on, hx₁lt⟩ := happrox _ hgt
   exact absurd hx₁lt (not_lt.mpr (hx₀min hx₁on))
 
-/-- **Open question status**: The Tucker → BU bridge requires
-    explicit triangulation construction, which is the combinatorial core.
-    The topological and analytical framework is fully established.
+/-- **Formalization status** (updated 2026-03-14):
 
-    Proved:
-    - Tucker's lemma (axiom, from combinatorial topology)
-    - Dominant component labeling is antipodal
-    - S¹ is compact, closed, bounded
-    - Continuous functions on S¹ are bounded
-    - Odd function framework
-    - Approximate → exact bridge (pending compactness argument)
+    COMPLETE (modulo Tucker's lemma axiom):
+    ✓ Dominant component labeling is antipodal
+    ✓ S¹ and D² compactness, boundedness
+    ✓ Odd function framework
+    ✓ IVT on line segments → complementary edge → approximate zero (Part XX)
+    ✓ Mesh refinement principle for compact sets (Part XXI)
+    ✓ Radial extension D² → [-1,1]² preserving oddness (Part XXII)
+    ✓ Grid infrastructure: Fin-based vertices, edges, boundary, antipodal (Part XXIII)
+    ✓ tucker_disk_approx_zero_proved (from tuckers_lemma)
+    ✓ Approximate → exact BU via compactness
+    ✓ Full 2D Borsuk-Ulam: borsuk_ulam_2d_corrected
 
-    Open in this formalization:
-    - Explicit triangulation builder (N×N grid → Tucker input)
-    - Approximate BU from Tucker (needs triangulation)
-    - Exact BU from Tucker (needs approximate + compactness) -/
-theorem open_question_status : True := trivial
-
-/-
-═══════════════════════════════════════════════════════════════════════════════
-PART XV: VERIFICATION
-═══════════════════════════════════════════════════════════════════════════════ -/
-
--- Type-check main results
-#check @dominantComponentLabel
-#check @dominantComponentLabel_antipodal
-#check @antisymmetricDiff_odd
-#check @antisymmetricDiff_continuous
-#check @no_fixed_point_on_circle
-#check @antisymmetricDiff_eq_zero_iff
-#check @circle_isCompact
-#check @grid_mesh_tends_to_zero
-#check @IsOddFunction
-#check @odd_function_at_zero
-#check @antipodal_preserves_circle
-#check @circle_bounded
-#check @continuous_on_circle_bounded
-#check @approx_to_exact
+    REMAINING:
+    - Tucker's lemma (1 axiom) — deep combinatorial/topological result -/
+theorem formalization_status : True := trivial
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -1367,19 +1355,6 @@ theorem non_dominant_at_zero_bound
   -- Combine: |g(w).2| ≤ dist + dist = 2 * dist
   linarith
 
--- Type-check Parts XVIII-XIX
-#check @segmentParam
-#check @segmentParam_zero
-#check @segmentParam_one
-#check @segmentParam_continuous
-#check @segmentParam_dist_le
-#check @ivt_segment_fst
-#check @ivt_segment_snd
-#check @complementary_edge_zero_fst
-#check @complementary_edge_zero_snd
-#check @dominant_component_small_at_zero
-#check @non_dominant_at_zero_bound
-
 /-
 ═══════════════════════════════════════════════════════════════════════════════
 PART XX: CORRECTED COMPLEMENTARY EDGE THEOREM
@@ -1650,16 +1625,6 @@ theorem mesh_refinement_principle (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuo
         apply mul_lt_mul_of_pos_left _ (by norm_num : (0:ℝ) < 2)
         exact hδ u w hu hw huw
     _ = ε := by ring
-
--- Type-check Part XX-XXI
-#check @non_dominant_at_zero_bound_snd
-#check @complementary_edge_approx_dominant_fst
-#check @complementary_edge_approx_dominant_snd
-#check @complementary_edge_approx_dominant
-#check @closedDisk_isCompact
-#check @continuous_on_disk_uniformContinuousOn
-#check @disk_continuity_bound
-#check @mesh_refinement_principle
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -2142,23 +2107,40 @@ theorem tucker_disk_approx_zero_proved
     exact radialExtend_zero_gives_disk_zero g (gridVertexFin N v₀) δ hδ
       (by rw [← hh_def, hv₀, dist_self]; exact hδ)
 
--- Type-check Part XXII-XXIII
-#check @euclidNormSq
-#check @euclidNorm
-#check @radialExtend
-#check @radialExtend_eq_on_disk
-#check @radialExtend_eq_outside
-#check @radial_proj_on_circle
-#check @radialExtend_zero_gives_disk_zero
-#check @closedSquare_isCompact
-#check @square_continuity_bound
-#check @mesh_refinement_square
-#check @gridVertexFin
-#check @gridBoundaryFin
-#check @gridEdgesFin
-#check @gridAntipodalFin
-#check @gridAntipodalFin_eq_neg
-#check @gridBoundary_euclidNormSq_ge_one
-#check @tucker_disk_approx_zero_proved
+/-
+═══════════════════════════════════════════════════════════════════════════════
+AXIOM STATUS SUMMARY
+
+This file has **1 axiom** and **0 sorries**.
+
+Remaining axiom:
+  tuckers_lemma (Part I, line 65): Tucker's lemma for antipodal labelings.
+  This is the ONLY unproved assumption. Everything else is proved from it.
+
+Proof chain:
+  tuckers_lemma → tucker_disk_approx_zero_proved → approx_borsuk_ulam_2d_corrected
+    → borsuk_ulam_2d_corrected (exact 2D BU from Tucker)
+
+Approaches to eliminate tuckers_lemma:
+  1. Path-following argument (combinatorial, ~500-1000 lines):
+     - Triangulate each grid cell into 2 triangles
+     - Define "complementary edge paths" through dual graph
+     - Prove boundary has odd number of path endpoints
+     - Therefore at least one interior complementary edge exists
+     Difficulty: Needs detailed finite graph bookkeeping in Lean 4.
+
+  2. Winding number / degree theory (~500 lines):
+     - If g ≠ 0 on D², then g/|g| : D² → S¹ extends from boundary
+     - Odd map S¹ → S¹ has odd degree
+     - Map extending over D² has degree 0 → contradiction
+     Difficulty: Needs winding number definition + basic properties.
+
+  3. Poincaré-Miranda / intersection theory (~300-500 lines):
+     - Zero sets Z₁ = {g₁ = 0} and Z₂ = {g₂ = 0} connect opposite boundary arcs
+     - Two arcs connecting opposite sides of a square must intersect
+     Difficulty: Needs discrete Jordan curve theorem.
+
+  All three are equivalent to Brouwer's FPT in 2D. Each is a multi-session project.
+═══════════════════════════════════════════════════════════════════════════════ -/
 
 end BorsukUlamTucker2D
