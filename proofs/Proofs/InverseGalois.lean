@@ -565,8 +565,186 @@ theorem solvable_iff_solvable_galois_group
 3. Formalize at least one case of A₅ realization
 4. Prove Gal(X³-2/ℚ) ≅ S₃ to eliminate `x_cube_sub_2_gal_iso_s3` axiom
 
-**Theorem Count**: 26 proven theorems/lemmas, 3 axioms (for deep classical results)
-**Sorries**: 2 (1 open problem + 1 theorem needing Hilbert irreducibility)
+**Theorem Count**: 37 proven theorems/lemmas, 3 axioms (for deep classical results)
+**Sorries**: 3 (1 open problem + 1 Hilbert irreducibility + 1 splitting field finrank)
+
+### Part X: Toward Eliminating the x_cube_sub_2_gal_iso_s3 axiom
+19. **Degree divisibility lemma**: Irreducible poly of degree d has no root in ext of degree n when d∤n (proven)
+20. **X²+X+1 = Φ₃** (proven via cyclotomic_three)
+21. **X²+X+1 is irreducible** (proven via cyclotomic_irreducible_rat)
+22. **No cube root of unity in degree 3 extension** (proven: 2 ∤ 3)
+23. **Difference of cubes identity**: X³-α³ = (X-α)(X²+αX+α²) (proven by ring)
+24. **Cofactor root → cube root of unity**: β²+αβ+α²=0 ⟹ (β/α)²+(β/α)+1=0 (proven)
+25. **X³-2 is monic** (proven)
+26. **AdjoinRoot(X³-2) has finrank 3** (proven via powerBasis)
+27. **AdjoinRoot root is nonzero** (proven: α³=2≠0)
+28. **Cofactor has no root in AdjoinRoot** (proven: combines all above)
+29. **|Gal(X³-2/ℚ)| = 6** (proven from splitting_field_finrank)
+- **splitting_field_x_cube_sub_2_finrank** = 6 (sorry: needs Lean infrastructure for extracting roots from abstract splitting field and applying tower law)
 -/
+
+/-
+## Part X: Proving |Gal(X³-2/ℚ)| = 6
+
+The key argument to eliminate the `x_cube_sub_2_gal_iso_s3` axiom:
+
+1. X²+X+1 = Φ₃(X) is irreducible over ℚ (degree 2)
+2. An irreducible polynomial of degree d cannot have a root in an extension
+   of degree n when d ∤ n
+3. So X²+X+1 has no root in any degree 3 extension of ℚ (since 2 ∤ 3)
+4. In the splitting field of X³-2, the ratio of any two distinct roots
+   is a primitive cube root of unity (root of X²+X+1)
+5. This forces the splitting field degree > 3
+6. Combined with |Gal| | 6 and 3 | |Gal|, we get |Gal| = 6
+-/
+
+/--
+An irreducible polynomial of degree d over a field F has no root in any finite
+extension K/F when d does not divide [K:F].
+
+This follows from the tower law: if α ∈ K is a root, then F(α) ⊆ K has
+[F(α):F] = d, so d | [K:F].
+-/
+theorem no_root_of_irreducible_degree_ndvd
+    {F : Type*} [Field F]
+    {p : F[X]}
+    (hp : Irreducible p)
+    {K : Type*} [Field K] [Algebra F K] [FiniteDimensional F K]
+    (hndvd : ¬ (p.natDegree ∣ Module.finrank F K)) :
+    ∀ x : K, Polynomial.aeval x p ≠ 0 := by
+  intro x hroot
+  apply hndvd
+  -- minpoly F x divides p (since aeval x p = 0)
+  have hdvd : minpoly F x ∣ p := minpoly.dvd F x hroot
+  -- Since p is irreducible and minpoly divides p, they are associated
+  have hassoc := hp.associated_of_dvd hdvd (minpoly.ne_zero_of_finite F x)
+  -- So natDegree(minpoly) = natDegree(p)
+  have hdegeq : (minpoly F x).natDegree = p.natDegree := by
+    have := hassoc.natDegree_eq
+    rwa [this]
+  -- [F(x):F] = natDegree(minpoly F x)
+  -- And [F(x):F] divides [K:F] by tower law
+  rw [← hdegeq]
+  exact (minpoly.natDegree_dvd_finrank F x)
+
+/-- X²+X+1 is the 3rd cyclotomic polynomial, and is irreducible over ℚ. -/
+theorem x_sq_add_x_add_1_eq_cyclotomic_3 :
+    X ^ 2 + X + 1 = Polynomial.cyclotomic 3 ℚ := by
+  simp [Polynomial.cyclotomic_three]
+
+theorem x_sq_add_x_add_1_irreducible :
+    Irreducible (X ^ 2 + X + 1 : ℚ[X]) := by
+  rw [x_sq_add_x_add_1_eq_cyclotomic_3]
+  exact cyclotomic_irreducible_over_rationals 3
+
+theorem x_sq_add_x_add_1_natDegree :
+    (X ^ 2 + X + 1 : ℚ[X]).natDegree = 2 := by
+  rw [x_sq_add_x_add_1_eq_cyclotomic_3]
+  simp [Polynomial.natDegree_cyclotomic]
+
+/--
+X²+X+1 has no root in any degree 3 extension of ℚ, because its degree 2
+does not divide 3.
+-/
+theorem no_cube_root_unity_in_degree_3_ext
+    {K : Type*} [Field K] [Algebra ℚ K] [FiniteDimensional ℚ K]
+    (hK : Module.finrank ℚ K = 3) :
+    ∀ x : K, Polynomial.aeval x (X ^ 2 + X + 1 : ℚ[X]) ≠ 0 := by
+  apply no_root_of_irreducible_degree_ndvd x_sq_add_x_add_1_irreducible
+  rw [x_sq_add_x_add_1_natDegree, hK]
+  omega
+
+/--
+The factorization X³ - a = (X - α)(X² + αX + α²) when α³ = a.
+This is the difference-of-cubes identity.
+-/
+theorem x_cube_sub_factor {R : Type*} [CommRing R] (α : R) :
+    (X : R[X]) ^ 3 - C (α ^ 3) = (X - C α) * (X ^ 2 + C α * X + C (α ^ 2)) := by
+  ring
+
+/--
+If β is a root of X²+αX+α² and α is invertible, then β/α (= β * α⁻¹)
+is a root of X²+X+1.
+
+This connects the factored form back to the cyclotomic polynomial.
+-/
+theorem root_of_cofactor_gives_cube_root_of_unity
+    {K : Type*} [Field K] {α β : K} (hα : α ≠ 0)
+    (hroot : β ^ 2 + α * β + α ^ 2 = 0) :
+    (β * α⁻¹) ^ 2 + (β * α⁻¹) + 1 = 0 := by
+  have hα2 : α ^ 2 ≠ 0 := pow_ne_zero 2 hα
+  field_simp
+  nlinarith [hroot]
+
+/--
+In AdjoinRoot(X³-2), the quotient polynomial X²+αX+α² (where α = root)
+has no root, because any root would give a root of X²+X+1 in a degree 3
+extension of ℚ, contradicting the fact that 2 ∤ 3.
+-/
+-- Helper: X³-2 is monic
+theorem x_cube_sub_2_monic : (X ^ 3 - C (2 : ℚ) : ℚ[X]).Monic :=
+  monic_X_pow_sub_C 2 (by omega)
+
+-- Helper: Module.finrank ℚ (AdjoinRoot (X³-2)) = 3
+theorem adjoin_root_x_cube_sub_2_finrank :
+    Module.finrank ℚ (AdjoinRoot (X ^ 3 - C (2 : ℚ) : ℚ[X])) = 3 := by
+  have hpb := AdjoinRoot.powerBasis x_cube_sub_2_monic
+  rw [hpb.finrank, AdjoinRoot.powerBasis_dim, x_cube_sub_2_natDegree]
+
+-- Helper: AdjoinRoot.root of X³-2 is nonzero (since α³ = 2 ≠ 0)
+theorem adjoin_root_x_cube_sub_2_root_ne_zero :
+    AdjoinRoot.root (X ^ 3 - C (2 : ℚ) : ℚ[X]) ≠ 0 := by
+  intro h
+  have heval := AdjoinRoot.eval₂_root (X ^ 3 - C (2 : ℚ) : ℚ[X])
+  simp [map_sub, map_pow, map_ofNat] at heval
+  rw [h] at heval
+  simp at heval
+
+-- Helper: connecting ring-level equation to aeval
+theorem aeval_x_sq_add_x_add_1 {K : Type*} [CommRing K] [Algebra ℚ K] (x : K) :
+    Polynomial.aeval x (X ^ 2 + X + 1 : ℚ[X]) = x ^ 2 + x + 1 := by
+  simp [Polynomial.aeval_def, Polynomial.eval₂_add, Polynomial.eval₂_pow,
+        Polynomial.eval₂_X, Polynomial.eval₂_one]
+
+theorem cofactor_has_no_root_in_adjoin_root :
+    ∀ β : AdjoinRoot (X ^ 3 - C (2 : ℚ)),
+    β ^ 2 + AdjoinRoot.root (X ^ 3 - C (2 : ℚ)) * β +
+    AdjoinRoot.root (X ^ 3 - C (2 : ℚ)) ^ 2 ≠ 0 := by
+  intro β hβ
+  -- α is nonzero because α³ = 2 ≠ 0
+  have hα_ne := adjoin_root_x_cube_sub_2_root_ne_zero
+  -- β/α satisfies (β/α)² + (β/α) + 1 = 0
+  set α := AdjoinRoot.root (X ^ 3 - C (2 : ℚ) : ℚ[X])
+  have hcube := root_of_cofactor_gives_cube_root_of_unity hα_ne hβ
+  -- But X²+X+1 has no root in AdjoinRoot (degree 3 extension, and 2 ∤ 3)
+  have hnoroot := no_cube_root_unity_in_degree_3_ext adjoin_root_x_cube_sub_2_finrank (β * α⁻¹)
+  apply hnoroot
+  rw [aeval_x_sq_add_x_add_1]
+  exact hcube
+
+/--
+In the splitting field of X³-2, the ratio of two distinct roots is a
+primitive cube root of unity. Since such a root satisfies X²+X+1 = 0,
+the splitting field must contain a root of the degree 2 irreducible
+X²+X+1, forcing 2 | [SplittingField : ℚ].
+
+Combined with 3 | [SplittingField : ℚ] (from irreducibility of X³-2)
+and [SplittingField : ℚ] | 6 (Gal embeds in S₃), we get
+[SplittingField : ℚ] = 6.
+-/
+theorem splitting_field_x_cube_sub_2_finrank :
+    Module.finrank ℚ (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField = 6 := by
+  sorry -- Uses cofactor_has_no_root_in_adjoin_root + tower law
+
+/--
+The Galois group of X³-2 over ℚ has exactly 6 elements.
+
+This follows from |Gal| = [SplittingField : ℚ] = 6.
+-/
+theorem x_cube_sub_2_gal_card :
+    Fintype.card (X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal = 6 := by
+  have hgal := IsGalois.card_aut_eq_finrank ℚ (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField
+  rw [Nat.card_eq_fintype_card] at hgal
+  rw [hgal, splitting_field_x_cube_sub_2_finrank]
 
 end InverseGaloisProblem
