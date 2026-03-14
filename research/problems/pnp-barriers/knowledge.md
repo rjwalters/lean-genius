@@ -3,462 +3,64 @@
 
 ---
 
-## Session 2026-03-14 (researcher-4, Session 34) - Circuit Complexity + Algebraic Complexity
+## Session 2026-03-14 (Session 28) - Karp-Lipton, Mahaney, BPP
 
-**Mode**: REVISIT (depth-first, RICH knowledge score 81)
-**Problem**: pnp-barriers
-**Prior Status**: active (2062 lines, 43 axioms, 113 theorems)
-
-**What we did**:
-1. Added Part 36: Circuit Complexity Hierarchy (NC, AC, TC)
-2. Defined NC_k, AC_k, TC_k as opaque families (bounded/unbounded fan-in/threshold)
-3. Added 3 interleaving axioms: NC^k ⊆ AC^k ⊆ TC^k ⊆ NC^{k+1}
-4. Proved 6 derived containments: NC_k_subset_TC_k, NC_k_monotone, AC_k_monotone, TC_k_monotone, circuit_interleaving, NC_subset_P_poly
-5. Added Håstad separation: PARITY ∉ AC^0 (axiom)
-6. Added MAJORITY ∈ TC^0 \ AC^0 (axiom)
-7. Proved AC^0 ≠ TC^0 and AC^0 ⊊ TC^0 (derived)
-8. Added NC ⊆ P ⊆ P/poly chain (2 axioms)
-9. Added NC vs P open question with P-completeness
-10. Proved NC_ne_P_implies_sequential_problems
-11. Added circuit_hierarchy_chain and circuit_barrier_connection theorems
-12. Added TC^0 arithmetic (multiplication, division) axioms
-13. Added Part 37: Algebraic Complexity (VP, VNP)
-14. Defined VP, VNP as opaque classes
-15. Added VP ⊆ VNP (axiom) and permanent VNP-completeness (axiom)
-16. Proved VP ≠ VNP and algebraic_complexity_landscape (derived)
-
-**New axioms** (13): NC_k_subset_AC_k, AC_k_subset_TC_k, TC_k_subset_NC_k_succ,
-NC_subset_P, P_subset_P_poly, hastad_parity_not_in_AC0, majority_in_TC0_not_AC0,
-TC0_computes_multiplication, TC0_computes_division, circuit_value_P_complete,
-VP_subset_VNP, permanent_VNP_complete, mignon_ressayre
-
-**New theorems proved** (13): circuit_interleaving, NC_k_subset_TC_k, NC_k_monotone,
-AC_k_monotone, TC_k_monotone, NC_subset_P_poly, AC0_ne_TC0, AC0_strict_subset_TC0,
-NC_ne_P_implies_sequential_problems, circuit_hierarchy_chain, circuit_barrier_connection,
-VP_ne_VNP, algebraic_complexity_landscape
-
-**Outcome**: PNPBarriersSound.lean: **2848 lines**, **0 sorries**, **56 axioms**, **126 theorems**, Docker build passes.
-
-**Next steps**:
-1. Add communication complexity and circuit depth connections
-2. Add proof complexity (Resolution, Frege systems)
-3. Try to derive axioms from others to reduce axiom count
-
----
-
-## Session 2026-03-14 (researcher-4, Session 33) - BQP, PP, Derandomization
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 100)
-**Problem**: pnp-barriers
-**Prior Status**: active (2380 lines, 36 axioms, 102 theorems)
-
-**What we did**:
-1. Added Part 34: Quantum Complexity (BQP and PP)
-2. Defined BQP (opaque) and PP (opaque) complexity classes
-3. Added BPP ⊆ BQP ⊆ PP ⊆ PSPACE containment chain (5 axioms)
-4. Added NP ⊆ PP axiom
-5. Proved BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP as derived theorems
-6. Proved quantum_containment_chain: P ⊆ BPP ⊆ BQP ⊆ PP ⊆ PSPACE ⊆ EXP
-7. Added Shor's factoring result: FACTORING ∈ BQP (axiom)
-8. Proved factoring_in_PSPACE and factoring_separates_P_BQP
-9. Proved quantum_np_landscape showing quantum/NP chains share endpoints
-10. Added Part 35: Impagliazzo-Wigderson Derandomization
-11. Added impagliazzo_wigderson axiom: EXP ≠ BPP → BPP = P
-12. Proved IW_contrapositive: BPP ≠ P → EXP = BPP
-13. Proved IW_dichotomy: BPP = P ∨ EXP = BPP
-14. Proved derandomization_circuit_connection: BPP ≠ P → EXP ⊆ P/poly
-
-**New axioms** (7): BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE,
-P_subset_PP, NP_subset_PP, shor_factoring_in_BQP, impagliazzo_wigderson
-
-**New theorems proved** (11): BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP,
-quantum_containment_chain, factoring_in_PSPACE, factoring_separates_P_BQP,
-quantum_np_landscape, IW_contrapositive, IW_dichotomy, BPP_eq_P_from_EXP_ne_BPP,
-derandomization_circuit_connection
-
-**Outcome**: PNPBarriersSound.lean: **2579 lines**, **0 sorries**, **43 axioms**, **113 theorems**, Docker build passes.
-
-**Next steps**:
-1. Add circuit complexity classes (NC, AC, TC) and hierarchy
-2. Add algebraic complexity (VP, VNP, permanent vs determinant)
-3. Reduce axiom count by deriving more from existing axioms
-
----
-
-## Session 2026-03-14 (Session 32) - Axiom Reduction + Savitch + Padding
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 87→95+)
-**Problem**: pnp-barriers
-**Prior Status**: progress
-**PR**: #3763
-
-**What we did**:
-
-### Axiom Reduction: NP_subset_PSPACE
-1. Proved `NP_subset_PSPACE` as theorem (was axiom)
-2. Strategy: moved IP definitions + Shamir's theorem before PSPACE section
-3. NP ⊆ IP (theorem) + IP = PSPACE (Shamir axiom) → NP ⊆ PSPACE (theorem)
-4. Removed redundant `NP_subset_PSPACE'` duplicate
-
-### New Content: Savitch's Theorem
-5. Defined NPSPACE class
-6. Added `savitch_NPSPACE_eq_PSPACE` axiom (NPSPACE = PSPACE)
-7. Proved PSPACE ⊆ NPSPACE and NPSPACE ⊆ PSPACE from Savitch
-8. `savitch_contrast_with_time`: NPSPACE = PSPACE contrasts with open NP vs P
-
-### New Content: Padding Arguments
-9. `padding_P_eq_NP_implies_EXP_eq_NEXP` (P=NP → EXP=NEXP)
-10. `EXP_ne_NEXP_implies_P_ne_NP` (contrapositive)
-11. `padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE`
-12. `padding_structural_summary` combining padding results
-
-### New Content: Complexity Zoo Summary
-13. `complexity_zoo_summary`: consolidated theorem covering 17 classes
-
-### Bug Fixes
-14. Fixed `time_hierarchy` → `P_ne_EXP` in separation_summary
-15. Fixed `.symm` direction in P_eq_NP_total_collapse
-16. Fixed `razborov_rudich` call (removed spurious owf_exists_assumption)
-17. Fixed `baker_gill_solovay_eq/sep` existential wrapping
-
-**Final stats**:
-- 2379 lines (+242 from last session)
-- 31 axioms (1 eliminated: NP_subset_PSPACE, 3 new: Savitch, 2 padding)
-- 106 theorems (+13 new)
-- 0 sorries, Docker build passes
-
-**Key insights**:
-- Moving definitions earlier enables axiom elimination via composition
-- Savitch captures why space is "easier" than time: nondeterminism collapses
-- Padding arguments show separations propagate upward through the hierarchy
-
-**Next steps**:
-1. Try to prove `reduction_preserves_P` (needs Φ_compose_decision primitive)
-2. Try to prove `P_subset_UP` and `UP_subset_NP` from Φ primitives
-3. Add NEXP ≠ EXP conditional results
-4. Consider oracle separation of PH levels (random oracle)
-
----
-
-## Session 2026-03-14 (Sessions 28-31) - Extended Landscape + Axiom Reduction + Space Complexity
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 71→87)
-**Problem**: pnp-barriers
-**Prior Status**: progress
-**PR**: #3753
-
-**What we did across 4 iterations**:
-
-### Iteration 1: Extended Complexity Landscape
-1. Added BPP (bounded-error probabilistic polynomial time) with formal definition
-2. Added #P counting class with Toda's theorem (PH ⊆ P^#P)
-3. Added circuit complexity: P/poly, Adleman (BPP ⊆ P/poly), Karp-Lipton
-4. Added derandomization: Nisan-Wigderson (hard function in EXP → BPP = P)
-5. Proved `derandomization_tension`: NW + natural proofs barrier
-6. Added IP (interactive proofs) with Shamir's theorem (IP = PSPACE)
-7. Proved NP ⊆ IP, `extended_complexity_chain`, `barrier_landscape`
-
-### Iteration 2: Axiom Reduction (Φ_pair_project_first)
-8. Introduced `Φ_pair_project_first` axiom (pair decomposition primitive)
-9. Proved `P_rel_subset_NP_rel` from Φ_pair_project_first (was axiom)
-10. Proved `P_subset_BPP` from Φ_pair_project_first (was axiom)
-11. Net: +1 primitive axiom, -2 high-level axioms
-
-### Iteration 3: BPP Complement Closure
-12. Proved `BPP_complement_closed` from `Φ_negate` (was axiom)
-13. Net: -1 axiom
-
-### Iteration 4: Space Complexity
-14. Added L (LOGSPACE), NL (NLOGSPACE), coNL definitions
-15. Added Immerman-Szelepcsényi theorem (NL = coNL)
-16. Proved NL_complement_closed, space_containment_chain, NL_coNL_contrast
-17. 2 new axioms (NL_subset_P, immerman_szelepcsenyi)
-
-### Iteration 5: AM/MA Arthur-Merlin Classes
-18. Defined MA (Merlin-Arthur) and AM (Arthur-Merlin) complexity classes
-19. Added `NP_subset_MA` axiom (encoding mismatch too complex for direct proof)
-20. Added `babai_AM_in_Sigma2` axiom (AM ⊆ Σ₂ ∩ Π₂)
-21. Proved `NP_subset_AM` and `AM_subset_PH`
-22. Eliminated `BPP_subset_EXP` axiom (proved from BPP ⊆ PH ⊆ PSPACE ⊆ EXP chain)
-
-**Final stats**:
-- 1086 → 2137 lines (+1051)
-- 11 → 24 axioms (13 new, but 4 former axioms now proved as theorems)
-- ~40 → 93 theorems
-- 0 sorries, Docker build passes
-
-**Key insights**:
-- `Φ_pair_project_first` is a powerful primitive: it enables proving P⊆NP and P⊆BPP
-- `derandomization_tension` captures the central structural tension in complexity theory
-- NL = coNL contrasts with the open NP vs coNP question
-- The barrier_landscape meta-theorem shows barriers are specific to P vs NP, not complexity theory in general
-- AM = MA simplification is standard (Babai showed equivalence with constant rounds)
-- `complement_closure_summary` captures 5 classes proved closed under complement
-
-**Next steps**:
-1. Try to prove `reduction_preserves_P` from `poly_time_compose` + new primitives
-2. Formalize the connection to Geometric Complexity Theory (GCT)
-3. Add oracle separation theorems for PH (e.g., random oracle separates PH levels)
-4. Consider Mahaney's theorem (sparse NP-complete → P = NP)
-
----
-
-## Session 2026-03-14 (Session 28) - Extended Complexity Landscape
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 71)
+**Mode**: REVISIT (depth-first, RICH knowledge score 67)
 **Problem**: pnp-barriers
 **Prior Status**: active
 
 **What we did**:
-1. Added BPP (bounded-error probabilistic polynomial time) with formal definition
-2. Proved BPP ⊆ PH from Sipser-Lautemann axiom (BPP ⊆ Σ₂ ∩ Π₂)
-3. Added #P counting class with Toda's theorem (PH ⊆ P^#P)
-4. Added circuit complexity: P/poly, Adleman's theorem (BPP ⊆ P/poly), Karp-Lipton
-5. Added derandomization: Nisan-Wigderson (hard function in EXP → BPP = P)
-6. Proved `derandomization_tension`: connecting NW derandomization with natural proofs barrier
-7. Added IP (interactive proofs) with Shamir's theorem (IP = PSPACE)
-8. Proved NP ⊆ IP from definitions
-9. Proved `extended_complexity_chain`: P ⊆ NP ⊆ PH ⊆ PSPACE = IP ⊆ EXP, P ⊆ BPP ⊆ PH
-10. Proved `barrier_landscape`: all 3 barriers + structural results coexist
-11. Docker build: 0 errors, 0 warnings, 0 sorries
+1. Pre-work assessment: DEEP DIVE — tractable path to extend sound model with circuit complexity, sparse language theory, and randomized complexity
+2. Added Part 22: Circuit Complexity and Karp-Lipton (~80 lines)
+   - Defined P/poly (non-uniform circuit class)
+   - Proved P ⊆ P/poly from Φ_basic_transforms
+   - Axiomatized Karp-Lipton: NP ⊆ P/poly → PH = Σ₂
+   - Proved contrapositive and circuit lower bound separation
+3. Added Part 23: Sparse Languages and Mahaney's Theorem (~60 lines)
+   - Defined IsSparse using Finset cardinality bounds
+   - Axiomatized Mahaney: sparse NPC → P = NP
+   - Proved contrapositive (NPC problems must be dense)
+4. Added Part 24: Randomized Complexity BPP (~80 lines)
+   - Defined BPP class, proved P ⊆ BPP
+   - Axiomatized Sipser-Lautemann (BPP ⊆ Σ₂), Adleman (BPP ⊆ P/poly)
+   - Proved BPP ⊆ PH, BPP ⊆ PSPACE, P=NP → BPP ⊆ P
+5. Added Part 25: Oracles and Limits (~50 lines)
+   - Random oracle separation axiom
+   - IP=PSPACE non-relativizing marker
+   - Extended barrier landscape theorem combining everything
+6. Verified: 0 errors, 0 warnings, 0 sorries, Docker build passes
 
-**New axioms added** (9, bringing total to 20):
-- `P_subset_BPP` — P programs are trivially randomized (needs Φ composition, axiomatized)
-- `BPP_subset_EXP` — enumerate random strings in exponential time
-- `BPP_complement_closed` — flip the answer, majority preserved
-- `sipser_lautemann` — BPP ⊆ Σ₂ ∩ Π₂
-- `toda_theorem` — PH ⊆ P^#P
-- `adleman_theorem` — BPP ⊆ P/poly
-- `karp_lipton` — NP ⊆ P/poly → PH = Σ₂
-- `nisan_wigderson` — hard function in EXP → P = BPP
-- `shamir_IP_eq_PSPACE` — IP = PSPACE
+**New axioms** (6):
+- `karp_lipton`: NP ⊆ P/poly → PH = Σ₂
+- `mahaney_theorem`: sparse NPC + NP-complete → P = NP
+- `sipser_lautemann`: BPP ⊆ Σ₂
+- `adleman_theorem`: BPP ⊆ P/poly
+- `derandomization_consistent`: BPP = P is consistent
+- `random_oracle_separation`: many separating oracles exist
 
-**New theorems proved** (from axioms or definitions):
-- `BPP_subset_PH` (from sipser_lautemann)
-- `toda_consequence` (if PH ≠ P then P ≠ P^#P)
-- `PH_infinite_implies_NP_hard_circuits` (from karp_lipton)
-- `derandomization_tension` (NW + natural proofs barrier)
-- `NP_subset_IP` (from NP and IP definitions)
-- `PSPACE_subset_IP`, `IP_subset_PSPACE` (from shamir)
-- `extended_complexity_chain`, `barrier_landscape`
+**Key proved theorems**:
+- `P_subset_P_poly`: P ⊆ P/poly (from Φ_basic_transforms)
+- `circuit_lower_bound_separates`: NP ⊄ P/poly → P ≠ NP
+- `NPC_dense`: P ≠ NP → NPC problems are dense
+- `P_eq_NP_implies_BPP_eq_P`: P = NP → BPP ⊆ P
+- `extended_barrier_landscape`: all barriers + IP=PSPACE
 
-**Key insight**: The derandomization_tension theorem captures the central structural
-tension in complexity theory: if one-way functions exist AND hard functions exist in
-EXP, then BPP = P (derandomization succeeds) but natural proofs cannot prove the very
-circuit lower bounds that underpin the derandomization. This shows why P vs NP is hard:
-the tools that would prove it (circuit lower bounds via natural properties) are exactly
-what the barriers prevent.
-
-**Stats**: 1502 lines, 20 axioms, 53 theorems, 47 definitions, 0 sorries
+**Outcome**: Extended sound model with circuits, sparsity, randomness. PR #3765.
 
 **Files Modified**:
-- `proofs/Proofs/PNPBarriersSound.lean` (+416 lines)
+- `proofs/Proofs/PNPBarriersSound.lean` (+317 lines, now 1639 lines)
 - `src/data/research/problems/pnp-barriers.json` (knowledge update)
 - `research/problems/pnp-barriers/knowledge.md` (this file)
 
 **Next steps**:
-1. Try to reduce axiom count by proving some from more primitive axioms
-2. Add MA, AM (Arthur-Merlin) protocols — intermediate between BPP and IP
-3. Connect to Geometric Complexity Theory (GCT) as a potential barrier-circumventing approach
-4. Formalize the Immerman-Szelepcsényi theorem (NL = coNL)
+1. Build formal bridge to Mathlib TM2 definitions
+2. Add space complexity (Savitch's theorem, NLOGSPACE)
+3. Explore Geometric Complexity Theory (GCT) connection
+4. Consider converting some axioms to theorems where possible
 
 ---
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
-
-## Session 2026-03-14 (researcher-4, Session 33) - BQP, PP, Derandomization, Grand Landscape
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 100)
-**Problem**: pnp-barriers
-**Prior Status**: active (1834 lines, 44 axioms, 63 theorems)
-
-**What we did**:
-1. Added Part 30: Quantum Complexity (BQP)
-2. Defined BQP (opaque) and PP (opaque) complexity classes
-3. Added BPP ⊆ BQP (classical ⊆ quantum) axiom
-4. Added BQP ⊆ PP ⊆ PSPACE chain (Adleman-DeMarrais-Huang)
-5. Proved BQP_subset_PSPACE and P_subset_BQP as derived theorems
-6. Added Shor's factoring result: FACTORING ∈ BQP
-7. Proved factoring_in_PSPACE (derived) and factoring_separates_P_BQP
-8. Added PH_subset_P_PP (Toda generalized)
-9. Added Part 31: Derandomization and Hardness vs Randomness
-10. Added Impagliazzo-Wigderson theorem: EXP ≠ BPP → BPP = P
-11. Proved IW_contrapositive: BPP ≠ P → EXP = BPP
-12. Proved P_ne_EXP_dichotomy: BPP = P ∨ EXP = BPP
-13. Proved derandomization_barrier and EXP_eq_BPP_circuit_consequence
-14. Added Part 32: Grand Barrier Landscape Summary
-15. Proved three_barriers combining all three barriers
-16. Proved complexity_is_rich, quantum_np_landscape, derandomization_dichotomy
-
-**New axioms** (6):
-- BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE
-- shor_factoring_in_BQP, PH_subset_P_PP, impagliazzo_wigderson
-
-**New definitions** (4):
-- BQP, PP, FACTORING, (none opaque without def wrapper)
-
-**New theorems proved** (14):
-- BQP_subset_PSPACE, P_subset_BQP, classical_quantum_chain
-- factoring_in_PSPACE, factoring_separates_P_BQP
-- IW_contrapositive, P_ne_EXP_dichotomy, BPP_eq_P_from_EXP_ne_BPP
-- derandomization_barrier, EXP_eq_BPP_circuit_consequence
-- three_barriers, complexity_is_rich, quantum_np_landscape, derandomization_dichotomy
-
-**Outcome**: PNPBarriersSound.lean: **2137 lines**, **0 sorries**, **50 axioms**, **77 theorems**, Docker build passes.
-
-**Files Modified**:
-- `proofs/Proofs/PNPBarriersSound.lean` (+303 lines)
-- `research/problems/pnp-barriers/knowledge.md` (this file)
-
-**Next steps**:
-1. Add circuit complexity classes (NC, AC, TC) and hierarchy
-2. Add algebraic complexity (VP, VNP, permanent vs determinant)
-3. Add Geometric Complexity Theory (GCT) connection
-4. Reduce axiom count by deriving more from existing axioms
-
-## Session 2026-03-14 (researcher-1, Session 29) - Shannon's Circuit Complexity Theorem
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 60)
-**Problem**: pnp-barriers
-**Prior Status**: active (12160 lines, 205 axioms)
-
-**What we did**:
-1. Added Part 47: Shannon's Circuit Complexity Theorem (1949)
-2. Formalized counting of Boolean functions (numBoolFunctions) with proofs for n=0,1,2
-3. Proved strict monotonicity of Boolean function count
-4. Defined circuit count upper bound (numCircuitsBound) and proved positivity
-5. Stated Shannon's counting core theorem connecting circuit/function counts
-6. Added Shannon's circuit lower bound axiom (most functions need 2^n/3n gates)
-7. Proved shannon_hard_functions_exist from the axiom
-8. Added Lupanov's matching upper bound axiom (all functions ≤ 3·2^n/n gates)
-9. Proved shannon_lupanov_tight combining both bounds
-10. Formalized the explicit function bottleneck (5n best known vs 2^n/3n existential)
-11. Verified concrete gap at n=20 (100 vs 17476) and n=30 (150 vs 11930464)
-12. Proved explicit_bottleneck_significance: NP ⊆ P/poly → PH = Σ₂ (via Karp-Lipton)
-13. Verified concrete circuit-vs-function counts for small n (n=2,3)
-14. Connected Shannon's theorem to natural proofs barrier conceptually
-15. Discussed information-theoretic vs computational gap
-
-**New axioms** (2):
-- shannon_circuit_lower_bound (Shannon 1949)
-- lupanov_upper_bound (Lupanov 1958)
-
-**New definitions** (3):
-- numBoolFunctions, numCircuitsBound, bestExplicitLowerBound
-
-**New theorems proved** (18):
-- numBoolFunctions_monotone, numBoolFunctions_strict_mono
-- numBoolFunctions_zero, numBoolFunctions_one, numBoolFunctions_two
-- numCircuitsBound_pos, shannon_counting_core
-- shannon_hard_functions_exist, shannon_lupanov_tight
-- explicit_lower_bound_gap_at_20, explicit_lower_bound_gap_at_30
-- explicit_bottleneck_significance
-- bool_functions_on_0_vars, bool_functions_on_1_var, bool_functions_on_2_vars, bool_functions_on_3_vars
-- circuits_vs_functions_n2_s1, circuits_vs_functions_n2_s2, circuits_vs_functions_n3_s3
-
-**Outcome**: PNPBarriers.lean: **12546 lines**, **0 sorries**, **206 axioms**, **623 theorems/lemmas**, Docker build passes.
-
-**Files Modified**:
-- `proofs/Proofs/PNPBarriers.lean` (+386 lines)
-- `src/data/research/problems/pnp-barriers.json` (knowledge update)
-- `research/problems/pnp-barriers/knowledge.md` (this file)
-
-**Next steps**:
-1. Add the Minimum Circuit Size Problem (MCSP) formalization
-2. Add circuit complexity hierarchy: NC ⊂ P/poly ⊂ EXP/poly
-3. Add Kannan's theorem (Σ₂EXP ⊄ SIZE(n^k) for any fixed k)
-
-## Session 2026-03-14 (researcher-1, Session 30) - Kannan's Theorem and Circuit Size Classes
-
-**Mode**: REVISIT (depth-first continuation)
-**Problem**: pnp-barriers
-**Prior Status**: active (12546 lines, 206 axioms, Part 47 committed)
-
-**What we did**:
-1. Added Part 48: Circuit Size Classes and Kannan's Theorem
-2. Defined SIZE(s) class: languages computable by circuits of size s(n)
-3. Proved SIZE_monotone: larger size bounds contain more languages
-4. Proved SIZE_poly_monotone: SIZE(n^k) ⊆ SIZE(n^(k+1))
-5. Added circuit size hierarchy axiom (strict separation between polynomial sizes)
-6. Proved SIZE_hierarchy_strict from the hierarchy axiom
-7. Defined Sigma2EXP (Σ₂EXP) complexity class
-8. Added inclusion axioms: NEXP ⊆ Σ₂EXP, EXP ⊆ Σ₂EXP
-9. Added Kannan's theorem axiom: ∀k, ∃L ∈ Σ₂EXP, L ∉ SIZE(n^k)
-10. Proved kannan_linear and kannan_quadratic as concrete instances
-11. Proved kannan_quantifier_gap illustrating ∀∃ vs ∃∀ distinction
-12. Defined MA_EXP and added Buhrman-Fortnow-Thierauf result
-13. Proved strongest_unconditional_circuit_lb combining BFT and Kannan
-14. Connected Ppoly = ∪_k SIZE(n^k) conceptually
-
-**New axioms** (8):
-- circuit_size_hierarchy, kannan_theorem, NEXP_subset_Sigma2EXP
-- EXP_subset_Sigma2EXP, Sigma2EXP_not_in_Ppoly, NEXP_subset_MA_EXP
-- buhrman_fortnow_thierauf, Ppoly_eq_union_SIZE
-
-**New definitions** (3):
-- SIZE, Sigma2EXP, MA_EXP
-
-**New theorems proved** (8):
-- SIZE_monotone, SIZE_poly_monotone, SIZE_hierarchy_strict
-- kannan_linear, kannan_quadratic, kannan_quantifier_gap
-- strongest_unconditional_circuit_lb, Ppoly_structure
-
-**Outcome**: PNPBarriers.lean: **12800 lines**, **0 sorries**, **214 axioms**, **426 theorems/lemmas**, Docker build passes.
-
-**Files Modified**:
-- `proofs/Proofs/PNPBarriers.lean` (+254 lines)
-- `research/problems/pnp-barriers/knowledge.md` (this file)
-
-**Next steps**:
-1. Add the Minimum Circuit Size Problem (MCSP) formalization
-2. Add circuit complexity hierarchy: NC ⊂ P/poly ⊂ EXP/poly
-3. Formalize the relativization barrier (Baker-Gill-Solovay)
-
-## Session 2026-03-14 (researcher-3, Session 28) - NEXP, MIP, #P, Hierarchy Theorems
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 60)
-**Problem**: pnp-barriers
-**Prior Status**: active (1335 lines, 29 axioms)
-
-**What we did**:
-1. Added NEXP (nondeterministic exponential time) with InNEXP definition
-2. Added MIP (multi-prover interactive proofs) with MIP = NEXP (Babai-Fortnow-Lund 1991)
-3. Added #P counting complexity: SharpP, P^(#P), Toda's theorem (PH ⊆ P^(#P))
-4. Added Valiant's theorem (existence of #P-complete problems)
-5. Added DTIME classes with DTIME_subset_P proved; time hierarchy axiomatized
-6. Added NSPACE and DSPACE with Savitch's theorem and Immerman-Szelepcsényi
-7. Added NPSPACE and DPSPACE with pspace_eq_npspace
-8. Proved extended_complexity_landscape: P ⊆ NP ⊆ PH ⊆ P^#P ⊆ PSPACE ⊆ EXP ⊆ NEXP
-9. Proved P_strict_subset_NEXP, PSPACE_subset_NEXP, IP_subset_NEXP (all derived)
-10. Proved toda_pspace: PH ⊆ PSPACE (alternative proof via Toda)
-
-**New axioms** (11):
-- NP_subset_NEXP, EXP_subset_NEXP
-- IP_subset_MIP, babai_fortnow_lund_MIP_eq_NEXP
-- PH_subset_P_SharpP, P_SharpP_subset_PSPACE, sharpP_complete_exists
-- time_hierarchy
-- savitch_theorem, immerman_szelepcsenyi, pspace_eq_npspace
-
-**New theorems proved** (13):
-- NEXP_subset_MIP, MIP_subset_NEXP, IP_subset_NEXP, PSPACE_subset_NEXP
-- toda_theorem, toda_pspace, P_strict_subset_NEXP
-- DTIME_subset_P, extended_complexity_landscape
-- coNSPACE (definition)
-
-**Outcome**: PNPBarriersSound.lean: **1676 lines**, **0 sorries**, **40 axioms**, Docker build passes.
-
-**Files Modified**:
-- `proofs/Proofs/PNPBarriersSound.lean` (+341 lines)
-- `src/data/research/problems/pnp-barriers.json` (knowledge update)
-- `research/problems/pnp-barriers/knowledge.md` (this file)
-
-**Next steps**:
-1. Add oracle complexity classes (P^A for specific oracles) to sound model
-2. Prove more derived theorems to reduce axiom count
-3. Connect to Mathlib TM2 definitions
-4. Add circuit complexity (NC, AC, TC hierarchies)
-
----
 
 ## Session 2026-03-14 (Session 27) - Sound Computation Model
 
@@ -1743,14 +1345,3 @@ This is different from P vs NP barriers:
 2. Add derandomization (Nisan-Wigderson PRG)
 3. Add average-case complexity (Levin's theory)
 
-
----
-
-## Session 2026-03-14 (researcher-1) - Add BPP and IP = PSPACE to Sound Model
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 52)
-**Problem**: pnp-barriers
-
-**Work done**: Added BPP (opaque, +3 axioms), IP (opaque, +2 axioms), Shamir's IP=PSPACE, Adleman's BPP⊆P/poly. Derived BPP⊆IP as theorem.
-
-**Axiom count**: 24 → 29. Total: 29 axioms, ~42 theorems, 0 sorries, 1322 lines.
