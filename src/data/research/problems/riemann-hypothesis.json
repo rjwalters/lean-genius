@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-03-13T12:00:00.000Z",
-    "iteration": 2,
-    "focus": "Added explicit zeta values and functional equation consequences.",
+    "iteration": 3,
+    "focus": "Added zero-density estimates, fixed μ notation for Mathlib compatibility, proved ψ≥θ",
     "blockers": [],
-    "nextAction": "Explore more equivalent formulations or zero-density estimates.",
+    "nextAction": "Attempt to eliminate no_real_zeros_in_strip axiom; add PNT dependency",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "PROGRESS: Extended RiemannHypothesisConsequences.lean from 632→841 lines. Added zero-density estimates (Ingham, Huxley, Density Hypothesis). Proved ψ(n)≥θ(n) and Mertens sign changes unconditionally. Fixed μ notation for Mathlib 4.26+ compatibility. Analyzed no_real_zeros_in_strip axiom (requires eta function, cannot eliminate yet).",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -90,13 +90,37 @@
         "name": "symmetric_distance_from_critical_line",
         "description": "|Re(ρ) - 1/2| = |Re(1-ρ) - 1/2|",
         "proven": true
+      },
+      {
+        "name": "zeroDensity",
+        "description": "Zero-density counting function N(σ,T)",
+        "proven": false
+      },
+      {
+        "name": "DensityHypothesis",
+        "description": "N(σ,T) ≪ T^{2(1-σ)+ε} formulation",
+        "proven": false
+      },
+      {
+        "name": "chebyshevPsi_ge_theta",
+        "description": "ψ(n) ≥ θ(n) proved from Λ≥0",
+        "proven": true
+      },
+      {
+        "name": "mertens_sign_change_exists",
+        "description": "∃ a<b with M(a)>0 and M(b)<0",
+        "proven": true
       }
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
       "explicit_formula",
       "zeta_special_values",
-      "Li_criterion"
+      "Li_criterion",
+      "Zero-density estimates formalized: Ingham (1940) and Huxley (1972) bounds on N(σ,T)",
+      "Mathlib 4.26+ removed scoped μ notation; must use ArithmeticFunction.moebius explicitly",
+      "no_real_zeros_in_strip axiom cannot be eliminated without Dirichlet eta function in Mathlib",
+      "Proved chebyshevPsi ≥ chebyshevTheta from vonMangoldt_nonneg and vonMangoldt_apply_prime"
     ],
     "mathlibGaps": [
       "Dirichlet series",
