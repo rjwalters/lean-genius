@@ -16,15 +16,15 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "BLOCKED",
-    "since": "2026-03-06T17:58:04-08:00",
-    "iteration": 5,
-    "focus": "maximal_real_subfield_degree PROVED. 2 axioms remain, blocked on CyclotomicField → ℂ embedding.",
+    "phase": "IN_PROGRESS",
+    "since": "2026-03-14T00:00:00.000Z",
+    "iteration": 6,
+    "focus": "h_ge PROVED ([E:F]≥2). 2 sorries remain: h_le ([E:F]≤2 via quadratic), galois_conjugate_count.",
     "blockers": [
-      "File needs Mathlib v4.10 to v4.26 migration (API drift in Complex.abs, natDegree_T, PNat constructors, cyclotomic.irreducible_rat)",
-      "After migration: prove maximal_real_subfield_degree via fixedField + tower law (proof strategy confirmed)"
+      "h_le needs adjoin F {ζ} = ⊤ proof (ζ generates E over F via quadratic X²-2cos·X+1)",
+      "Pre-existing build errors in cos_2kpi_div_n_eq_iff (omega/Nat.cast_mod_cast API drift)"
     ],
-    "nextAction": "Prove cos_minimal_poly_degree by connecting maxRealSubfield to cos(2π/n)",
+    "nextAction": "Prove h_le: construct degree-2 polynomial over F annihilating ζ, show minpoly divides it, deduce [E:F] ≤ 2",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved maximal_real_subfield_degree axiom via Galois fixed field theorem. File rewritten to eliminate API drift. 2 axioms remain (cos_minimal_poly_degree, cos_extension_is_galois).",
+    "progressSummary": "PROGRESS: Proved h_ge ([E:F]≥2) in minpoly_cos_natDegree_eq. Fixed 2 API drift issues (totient_pos, algebraMap). 2 sorries remain: h_le ([E:F]≤2), galois_conjugate_count. PR #3770.",
     "builtItems": [
       "Section XVI: Primitive Root Properties and Separability (zeta_ne_zero, zeta_pow_n_eq_one, minpoly_cos_separable, minpoly_cos_natDegree_pos, zeta_pow_pred_eq_conj, cos_eq_zeta_pow_re, sin_eq_zeta_pow_im, zeta_pow_norm_one, cos_2k_pi_div_n_bound)",
       "Section XVII: Cyclotomic Polynomial Connection (zeta_is_root_of_xn_sub_one, cyclotomic_natDegree_eq_totient)",
