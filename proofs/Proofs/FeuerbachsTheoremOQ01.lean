@@ -730,6 +730,142 @@ theorem extended_law_of_sines (T : Triangle) :
   exact eq_of_sq_eq_nonneg hlhs_nn hrhs_nn hsq'
 
 
+-- ============================================================
+-- HERON'S FORMULA: PRODUCT FORM AND CLASSICAL FORM
+-- ============================================================
+
+/-- **Heron product identity** (pure ring): The product of the four factors
+    (a+b+c)(b+c-a)(a+c-b)(a+b-c) equals 2a²b²+2b²c²+2c²a²-a⁴-b⁴-c⁴.
+    This is a polynomial identity requiring no geometric content. -/
+theorem heron_product_eq_polynomial (a b c : ℝ) :
+    (a + b + c) * (b + c - a) * (a + c - b) * (a + b - c) =
+    2 * a ^ 2 * b ^ 2 + 2 * b ^ 2 * c ^ 2 + 2 * c ^ 2 * a ^ 2 -
+    a ^ 4 - b ^ 4 - c ^ 4 := by ring
+
+/-- **Heron product form**: For any triangle, the product
+    (a+b+c)(b+c-a)(a+c-b)(a+b-c) = 16·Area².
+    Follows from the polynomial ring identity + the coordinate Heron formula. -/
+theorem heron_product_form (T : Triangle) :
+    (T.side_a + T.side_b + T.side_c) *
+    (T.side_b + T.side_c - T.side_a) *
+    (T.side_a + T.side_c - T.side_b) *
+    (T.side_a + T.side_b - T.side_c) =
+    16 * T.area ^ 2 := by
+  have h1 := heron_product_eq_polynomial T.side_a T.side_b T.side_c
+  have h2 := herons_formula_sq T
+  linarith
+
+/-- **Classical Heron's formula**: Area² = s(s-a)(s-b)(s-c).
+    This is the standard textbook form connecting area to semiperimeter. -/
+theorem area_sq_eq_heron (T : Triangle) :
+    T.area ^ 2 = T.semiperimeter * (T.semiperimeter - T.side_a) *
+      (T.semiperimeter - T.side_b) * (T.semiperimeter - T.side_c) := by
+  have h := heron_product_form T
+  unfold Triangle.semiperimeter
+  nlinarith
+
+/-- **Sigma-Heron connection**: The sigma expression equals abcs - 4·Area².
+    Combines the sigma identity with classical Heron to eliminate the
+    s(s-a)(s-b)(s-c) factor.
+    σ = abcs - 4s(s-a)(s-b)(s-c) = abcs - 4·Area² -/
+theorem sigma_eq_abcs_minus_4area_sq (T : Triangle) :
+    let a := T.side_a; let b := T.side_b; let c := T.side_c
+    let s := T.semiperimeter
+    (s - a) * (s - b) * c ^ 2 + (s - a) * (s - c) * b ^ 2 + (s - b) * (s - c) * a ^ 2 =
+    a * b * c * s - 4 * T.area ^ 2 := by
+  have hsigma := sigma_identity T.side_a T.side_b T.side_c
+  have hheron := area_sq_eq_heron T
+  simp only [Triangle.semiperimeter] at hsigma
+  nlinarith
+
+-- ============================================================
+-- FEUERBACH ALGEBRAIC CORE: THE KEY SUBSTITUTION
+-- ============================================================
+
+/-- **Feuerbach algebraic core**: The key identity that makes Feuerbach work.
+    Given abc = 4R·Area (extended law of sines), show:
+    R²s² - (abcs - 4·Area²) = (Rs - 2·Area)²
+
+    Proof: R²s²-abcs+4A² = R²s²-4RAs+4A² = (Rs-2A)²
+    where the substitution abcs = 4RAs uses the hypothesis.
+
+    Combined with |u|² = R²s² - σ from the bilinear expansion of
+    N-I (which uses dot_circumcenter lemmas), this gives
+    |u|² = (Rs - 2Area)², hence NI² = (R/2-r)². -/
+theorem feuerbach_algebraic_core (a b c R Area : ℝ)
+    (hels : a * b * c = 4 * R * Area) :
+    let s := (a + b + c) / 2
+    R ^ 2 * s ^ 2 - (a * b * c * s - 4 * Area ^ 2) = (R * s - 2 * Area) ^ 2 := by
+  simp only
+  have h : a * b * c * ((a + b + c) / 2) = 4 * R * Area * ((a + b + c) / 2) := by
+    rw [hels]
+  nlinarith [h]
+
+/-- **Feuerbach algebraic chain**: Complete algebraic proof that
+    R²s² - σ = (Rs - 2·Area)² for any triangle.
+    Uses: sigma identity + Heron + extended law of sines.
+
+    This is the central identity in Feuerbach's theorem:
+    it shows that |N-I|² = (R/2-r)² purely algebraically. -/
+theorem feuerbach_algebraic_chain (T : Triangle) :
+    let a := T.side_a; let b := T.side_b; let c := T.side_c
+    let s := T.semiperimeter; let R := T.circumradius
+    R ^ 2 * s ^ 2 -
+    ((s - a) * (s - b) * c ^ 2 + (s - a) * (s - c) * b ^ 2 + (s - b) * (s - c) * a ^ 2) =
+    (R * s - 2 * T.area) ^ 2 := by
+  have hsigma := sigma_eq_abcs_minus_4area_sq T
+  have hcore := feuerbach_algebraic_core T.side_a T.side_b T.side_c T.circumradius T.area
+    (extended_law_of_sines T)
+  simp only [Triangle.semiperimeter] at hsigma
+  nlinarith [hsigma]
+
+/-- **NI² = (R/2-r)² equivalence**: The Feuerbach distance relation
+    (R·s - 2·Area)² / (4s²) = (R/2 - r)² when r = Area/s.
+
+    This is the final algebraic step: divide by 4s² and substitute r = Area/s. -/
+theorem feuerbach_NI_sq_algebraic (R Area s : ℝ) (hs : s > 0) :
+    (R * s - 2 * Area) ^ 2 / (4 * s ^ 2) = (R / 2 - Area / s) ^ 2 := by
+  field_simp
+  ring
+
+-- ============================================================
+-- COMPLETE FEUERBACH PROOF ROADMAP (UPDATED)
+-- ============================================================
+
+/-
+## Updated Proof Chain for Feuerbach's Theorem
+
+### Algebraic backbone (ALL PROVED):
+  1. extended_law_of_sines: abc = 4R·Area [PROVED]
+  2. sigma_identity: σ = abcs - 4s(s-a)(s-b)(s-c) [PROVED by ring]
+  3. herons_formula_sq: 16·Area² = 2a²b²+2b²c²+2c²a²-a⁴-b⁴-c⁴ [PROVED by ring]
+  4. heron_product_form: (a+b+c)(b+c-a)(a+c-b)(a+b-c) = 16Area² [PROVED]
+  5. area_sq_eq_heron: Area² = s(s-a)(s-b)(s-c) [PROVED from 3+4]
+  6. sigma_eq_abcs_minus_4area_sq: σ = abcs - 4Area² [PROVED from 2+5]
+  7. feuerbach_algebraic_core: R²s² - σ = (Rs-2A)² given abc=4RA [PROVED]
+  8. feuerbach_algebraic_chain: R²s² - σ = (Rs-2A)² for any triangle [PROVED from 1+6+7]
+  9. feuerbach_NI_sq_algebraic: (Rs-2A)²/(4s²) = (R/2-r)² [PROVED by field_simp+ring]
+
+### Geometric link (REMAINING OBSTACLE):
+  10. N-I vector formula: N-I = u/(2s) where u = Σ(s-a_i)(V_i-O)
+      Status: Provable as coordinate identity (ring), but involves sqrt in denominators
+  11. |u|² = R²s² - σ via bilinear expansion using dot_circumcenter
+      Status: Blocked by sqrt in (s-a), (s-b), (s-c) coefficients
+  12. NI² = |u|²/(4s²) = (Rs-2A)²/(4s²) = (R/2-r)²
+
+### What remains to close the gap:
+  The algebraic chain (steps 1-9) is complete. The geometric link (steps 10-12)
+  requires expressing the bilinear expansion of |u|² in terms that avoid sqrt.
+
+  The most promising approach: express 4s²·NI² directly in coordinates via
+  the orthocenter/circumcenter/incenter definitions, clear ALL denominators
+  (including the circumcenter denominator d and (a+b+c)), and verify the
+  resulting polynomial identity by ring. This would bypass the sqrt issue entirely.
+
+  However, this polynomial identity has ~100+ terms in 6 variables and may
+  exceed Lean's heartbeat limits for ring.
+-/
+
 -- Type-check results
 #check @foot_a_on_ninePointCircle_proved
 #check @foot_b_on_ninePointCircle_proved
@@ -755,5 +891,12 @@ theorem extended_law_of_sines (T : Triangle) :
 #check @side_c_pos
 #check @circumradius_pos
 #check @extended_law_of_sines
+#check @heron_product_eq_polynomial
+#check @heron_product_form
+#check @area_sq_eq_heron
+#check @sigma_eq_abcs_minus_4area_sq
+#check @feuerbach_algebraic_core
+#check @feuerbach_algebraic_chain
+#check @feuerbach_NI_sq_algebraic
 
 end FeuerbachsTheoremOQ01

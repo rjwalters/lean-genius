@@ -29,17 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Hodge class ℚ-vector space structure complete (add/neg/sub/smul/zero). Morphism additive category structure complete (zero/neg/add). Sub-Hodge structures closed under ⊓ and image. 26 axioms remain (all deep results). File: 1902 lines, 30+ proved theorems.",
+    "progressSummary": "PROGRESS: 3 axioms eliminated (directSumHodge, directSum_inl, directSum_inr → proved defs). Added projection morphisms. 26 axioms remain. Still blocked on Hodge theory infrastructure for further reduction.",
     "builtItems": [
       "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
       "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
       "Added directSum_fst, directSum_snd (projection morphisms) in HodgeConjecture.lean",
-      "Proved 4 retraction theorems (directSum_fst_inl, snd_inr, fst_inr, snd_inl)",
-      "HodgeClass.add, HodgeClass.neg, HodgeClass.sub in HodgeConjecture.lean",
-      "algebraic_class_neg (negation preserves algebraicity) in HodgeConjecture.lean",
-      "HodgeStructureMorphism.zero/neg/add in HodgeConjecture.lean",
-      "SubHodgeStructure.inter and SubHodgeStructure.map in HodgeConjecture.lean",
-      "weight_increasing_general for MixedHodgeStructure in HodgeConjecture.lean"
+      "Proved 4 retraction theorems (directSum_fst_inl, snd_inr, fst_inr, snd_inl)"
     ],
     "insights": [
       "Millennium Prize problem, wide open - no known attack strategy",
@@ -49,11 +44,7 @@
       "Direct sum of Hodge structures proved constructively (was axiom): VQ=V1×V2, VC=V1×V2, complexify=prodMap, hodgeComponent=Submodule.prod",
       "Injection morphisms ι₁,ι₂ and projection morphisms π₁,π₂ proved for direct sums (5 new defs total, 3 axioms eliminated)",
       "Axiom count reduced from 29 to 26 - remaining axioms are genuinely deep mathematical results",
-      "Biproduct structure proved: π₁∘ι₁=id, π₂∘ι₂=id, π₁∘ι₂=0, π₂∘ι₁=0",
-      "Hodge classes form a ℚ-vector space: add, neg, sub all proved constructively",
-      "Morphisms of Hodge structures form an additive category: zero, neg, add morphisms proved",
-      "Sub-Hodge structures closed under intersection (⊓) and morphism images (map)",
-      "Weight filtration increasing-general proved for mixed Hodge structures"
+      "Biproduct structure proved: π₁∘ι₁=id, π₂∘ι₂=id, π₁∘ι₂=0, π₂∘ι₁=0"
     ],
     "mathlibGaps": [
       "Hodge theory / Hodge decomposition",

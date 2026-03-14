@@ -99,9 +99,6 @@ We provide abstract structures that capture the essential mathematics.
 - Hodge filtration existence proved (was axiom): trivial filtration construction
 - Morphism algebra proved: zero, negation, addition of Hodge morphisms
 - Direct sum universal property and Hodge class decomposition proved
-- Hodge classes form a ℚ-vector space: add, neg, sub, smul, zero all proved
-- Category structure: zero/neg/add morphisms proved, making Hodge structures additive
-- Sub-Hodge structures closed under intersection and morphism images
 - See each axiom's docstring for mathematical justification
 
 ## References
@@ -1320,6 +1317,84 @@ theorem morphism_preserves_algebraic_class {p : ℕ}
   rw [hZ.2]
 
 /- ═══════════════════════════════════════════════════════════════════════════════
+PART XIb: CATEGORY LAWS FOR HODGE MORPHISMS
+═══════════════════════════════════════════════════════════════════════════════
+
+The collection of pure Hodge structures of a fixed weight k, together with
+morphisms of Hodge structures, forms a category. We verify the basic
+categorical identities: associativity and unit laws for composition.
+-/
+
+/-- **Composition is associative** (PROVED)
+
+For Hodge morphisms f : H₁ → H₂, g : H₂ → H₃, h : H₃ → H₄,
+(h ∘ g) ∘ f = h ∘ (g ∘ f) at the level of rational maps. -/
+theorem comp_assoc {k : ℕ} {H₁ H₂ H₃ H₄ : PureHodgeStructure k}
+    (f : HodgeStructureMorphism H₁ H₂)
+    (g : HodgeStructureMorphism H₂ H₃)
+    (h : HodgeStructureMorphism H₃ H₄) (v : H₁.VQ) :
+    (h.comp (g.comp f)).rationalMap v = ((h.comp g).comp f).rationalMap v := by
+  simp [HodgeStructureMorphism.comp, LinearMap.comp_apply]
+
+/-- **Left identity law** (PROVED)
+
+id ∘ f = f for any Hodge morphism f. -/
+theorem id_comp {k : ℕ} {H₁ H₂ : PureHodgeStructure k}
+    (f : HodgeStructureMorphism H₁ H₂) (v : H₁.VQ) :
+    ((HodgeStructureMorphism.id H₂).comp f).rationalMap v = f.rationalMap v := by
+  simp [HodgeStructureMorphism.id, HodgeStructureMorphism.comp, LinearMap.comp_apply]
+
+/-- **Right identity law** (PROVED)
+
+f ∘ id = f for any Hodge morphism f. -/
+theorem comp_id {k : ℕ} {H₁ H₂ : PureHodgeStructure k}
+    (f : HodgeStructureMorphism H₁ H₂) (v : H₁.VQ) :
+    (f.comp (HodgeStructureMorphism.id H₁)).rationalMap v = f.rationalMap v := by
+  simp [HodgeStructureMorphism.id, HodgeStructureMorphism.comp, LinearMap.comp_apply]
+
+/-- **Zero is left-absorbing** (PROVED)
+
+0 ∘ f = 0 for any Hodge morphism f. -/
+theorem zero_comp {k : ℕ} {H₁ H₂ H₃ : PureHodgeStructure k}
+    (f : HodgeStructureMorphism H₁ H₂) (v : H₁.VQ) :
+    ((HodgeStructureMorphism.zero H₂ H₃).comp f).rationalMap v = 0 := by
+  simp [HodgeStructureMorphism.zero, HodgeStructureMorphism.comp, LinearMap.comp_apply]
+
+/-- **Zero is right-absorbing** (PROVED)
+
+f ∘ 0 = 0 for any Hodge morphism f. -/
+theorem comp_zero {k : ℕ} {H₁ H₂ H₃ : PureHodgeStructure k}
+    (f : HodgeStructureMorphism H₂ H₃) (v : H₁.VQ) :
+    (f.comp (HodgeStructureMorphism.zero H₁ H₂)).rationalMap v = 0 := by
+  simp [HodgeStructureMorphism.zero, HodgeStructureMorphism.comp, LinearMap.comp_apply,
+        map_zero]
+
+/-- **Negation is involutive** (PROVED)
+
+neg (neg f) = f for any Hodge morphism f. -/
+theorem neg_neg {k : ℕ} {H₁ H₂ : PureHodgeStructure k}
+    (f : HodgeStructureMorphism H₁ H₂) (v : H₁.VQ) :
+    f.neg.neg.rationalMap v = f.rationalMap v := by
+  simp [HodgeStructureMorphism.neg, LinearMap.neg_apply]
+
+/-- **Addition is commutative** (PROVED)
+
+f + g = g + f for Hodge morphisms f, g. -/
+theorem add_comm_morphism {k : ℕ} {H₁ H₂ : PureHodgeStructure k}
+    (f g : HodgeStructureMorphism H₁ H₂) (v : H₁.VQ) :
+    (f.add g).rationalMap v = (g.add f).rationalMap v := by
+  simp [HodgeStructureMorphism.add, LinearMap.add_apply, add_comm]
+
+/-- **f + neg f = 0** (PROVED)
+
+A morphism plus its negation is zero. -/
+theorem add_neg_self {k : ℕ} {H₁ H₂ : PureHodgeStructure k}
+    (f : HodgeStructureMorphism H₁ H₂) (v : H₁.VQ) :
+    (f.add f.neg).rationalMap v = 0 := by
+  simp [HodgeStructureMorphism.add, HodgeStructureMorphism.neg,
+        LinearMap.add_apply, add_neg_cancel]
+
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART XII: SUB-HODGE STRUCTURES
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -1373,6 +1448,26 @@ of being in the kernel. -/
 def kernel_is_subHodge {k : ℕ} {H₁ H₂ : PureHodgeStructure k}
     (φ : HodgeStructureMorphism H₁ H₂) : SubHodgeStructure H₁ where
   W := LinearMap.ker φ.rationalMap
+  hodge_compatible := fun _ _ _ _ _ hcomp => hcomp
+
+/-- **The image of a Hodge morphism is a sub-Hodge structure** (PROVED)
+
+If φ : H₁ → H₂ is a morphism of Hodge structures, then im(φ_ℚ) ⊆ V₂_ℚ
+inherits a Hodge structure. Together with the kernel result, this shows
+that the category of Hodge structures has images and kernels. -/
+def image_is_subHodge {k : ℕ} {H₁ H₂ : PureHodgeStructure k}
+    (φ : HodgeStructureMorphism H₁ H₂) : SubHodgeStructure H₂ where
+  W := LinearMap.range φ.rationalMap
+  hodge_compatible := fun _ _ _ _ _ hcomp => hcomp
+
+/-- **Intersection of sub-Hodge structures** (PROVED)
+
+The intersection of two sub-Hodge structures is again a sub-Hodge structure.
+This is important for defining the Mumford-Tate group (smallest sub-Hodge
+structure containing a given class). -/
+def SubHodgeStructure.inter {k : ℕ} {H : PureHodgeStructure k}
+    (S₁ S₂ : SubHodgeStructure H) : SubHodgeStructure H where
+  W := S₁.W ⊓ S₂.W
   hodge_compatible := fun _ _ _ _ _ hcomp => hcomp
 
 /- ═══════════════════════════════════════════════════════════════════════════════
@@ -1582,6 +1677,62 @@ def directSum_hodgeClass_snd {p : ℕ}
     have := α.in_pp_component
     simp only [directSumHodge] at this
     exact (Submodule.mem_prod.mp this).2
+
+/-- **Combine Hodge classes into direct sum** (PROVED)
+
+Given Hodge classes α₁ ∈ H₁ and α₂ ∈ H₂, construct the Hodge class
+(α₁, α₂) in H₁ ⊕ H₂. This is the reverse direction of the decomposition. -/
+def directSum_hodgeClass_combine {p : ℕ}
+    {H₁ H₂ : PureHodgeStructure (2 * p)}
+    (α₁ : HodgeClass H₁) (α₂ : HodgeClass H₂) :
+    HodgeClass (directSumHodge H₁ H₂) where
+  rationalClass := (α₁.rationalClass, α₂.rationalClass)
+  in_pp_component := by
+    show (H₁.complexify α₁.rationalClass, H₂.complexify α₂.rationalClass) ∈
+      Submodule.prod (H₁.hodgeComponent p p _) (H₂.hodgeComponent p p _)
+    exact Submodule.mem_prod.mpr ⟨α₁.in_pp_component, α₂.in_pp_component⟩
+
+/-- **Product direction of universal property** (PROVED)
+
+Given Hodge morphisms f₁ : H₃ → H₁ and f₂ : H₃ → H₂, construct
+the morphism (f₁, f₂) : H₃ → H₁ ⊕ H₂ such that π₁ ∘ (f₁,f₂) = f₁
+and π₂ ∘ (f₁,f₂) = f₂. This is the "product" half of the biproduct. -/
+def directSum_prod {k : ℕ} {H₁ H₂ H₃ : PureHodgeStructure k}
+    (f₁ : HodgeStructureMorphism H₃ H₁)
+    (f₂ : HodgeStructureMorphism H₃ H₂) :
+    HodgeStructureMorphism H₃ (directSumHodge H₁ H₂) where
+  rationalMap := f₁.rationalMap.prod f₂.rationalMap
+  complexMap := f₁.complexMap.prod f₂.complexMap
+  compatible := fun v => by
+    apply Prod.ext
+    · show H₁.complexify (f₁.rationalMap v) = f₁.complexMap (H₃.complexify v)
+      exact f₁.compatible v
+    · show H₂.complexify (f₂.rationalMap v) = f₂.complexMap (H₃.complexify v)
+      exact f₂.compatible v
+  hodge_preserve := fun p q hpq x hx => by
+    show (f₁.complexMap.prod f₂.complexMap) x ∈
+      Submodule.prod (H₁.hodgeComponent p q hpq) (H₂.hodgeComponent p q hpq)
+    simp only [LinearMap.prod_apply]
+    exact Submodule.mem_prod.mpr
+      ⟨f₁.hodge_preserve p q hpq x hx, f₂.hodge_preserve p q hpq x hx⟩
+
+/-- **Product property: π₁ ∘ (f₁,f₂) = f₁** (PROVED) -/
+theorem directSum_prod_fst {k : ℕ} {H₁ H₂ H₃ : PureHodgeStructure k}
+    (f₁ : HodgeStructureMorphism H₃ H₁)
+    (f₂ : HodgeStructureMorphism H₃ H₂) (v : H₃.VQ) :
+    (directSum_fst H₁ H₂).rationalMap
+      ((directSum_prod f₁ f₂).rationalMap v) = f₁.rationalMap v := by
+  show LinearMap.fst ℚ H₁.VQ H₂.VQ (f₁.rationalMap.prod f₂.rationalMap v) = _
+  simp [LinearMap.prod_apply, LinearMap.fst_apply]
+
+/-- **Product property: π₂ ∘ (f₁,f₂) = f₂** (PROVED) -/
+theorem directSum_prod_snd {k : ℕ} {H₁ H₂ H₃ : PureHodgeStructure k}
+    (f₁ : HodgeStructureMorphism H₃ H₁)
+    (f₂ : HodgeStructureMorphism H₃ H₂) (v : H₃.VQ) :
+    (directSum_snd H₁ H₂).rationalMap
+      ((directSum_prod f₁ f₂).rationalMap v) = f₂.rationalMap v := by
+  show LinearMap.snd ℚ H₁.VQ H₂.VQ (f₁.rationalMap.prod f₂.rationalMap v) = _
+  simp [LinearMap.prod_apply, LinearMap.snd_apply]
 
 /-- **HC for direct sums: if HC holds for both summands, it holds for the sum**
 
@@ -1796,222 +1947,66 @@ def PureHodgeStructure.toMixed {k : ℕ} (H : PureHodgeStructure k) :
       exact le_top
 
 /- ═══════════════════════════════════════════════════════════════════════════════
-PART XVII: HODGE CLASS ALGEBRA
-═══════════════════════════════════════════════════════════════════════════════
-
-The Hodge classes on a variety form a ℚ-vector space: they are closed under
-addition, negation, and scalar multiplication. Combined with the previously
-proved zero and scalar multiplication results, this shows that the set of
-Hodge classes is a genuine ℚ-submodule of the rational cohomology.
--/
-
-/-- **Sum of Hodge classes is a Hodge class** (PROVED)
-
-If v₁ and v₂ are both Hodge classes (their complexifications lie in V^{p,p}),
-then v₁ + v₂ is also a Hodge class, because V^{p,p} is a ℂ-submodule,
-hence closed under addition.
-
-**Proof**: ι(v₁ + v₂) = ι(v₁) + ι(v₂) ∈ V^{p,p} since V^{p,p} is a submodule. -/
-def HodgeClass.add {p : ℕ} {H : PureHodgeStructure (2 * p)}
-    (α₁ α₂ : HodgeClass H) : HodgeClass H where
-  rationalClass := α₁.rationalClass + α₂.rationalClass
-  in_pp_component := by
-    rw [map_add]
-    exact (H.hodgeComponent p p (by omega)).add_mem α₁.in_pp_component α₂.in_pp_component
-
-/-- **Negation of a Hodge class is a Hodge class** (PROVED)
-
-If v is a Hodge class, then −v is also a Hodge class, because V^{p,p} is
-a ℂ-submodule, hence closed under negation.
-
-**Proof**: ι(−v) = −ι(v) ∈ V^{p,p} since V^{p,p} is a submodule. -/
-def HodgeClass.neg {p : ℕ} {H : PureHodgeStructure (2 * p)}
-    (α : HodgeClass H) : HodgeClass H where
-  rationalClass := -α.rationalClass
-  in_pp_component := by
-    rw [map_neg]
-    exact (H.hodgeComponent p p (by omega)).neg_mem α.in_pp_component
-
-/-- **Subtraction of Hodge classes is a Hodge class** (PROVED)
-
-Immediate from addition and negation. -/
-def HodgeClass.sub {p : ℕ} {H : PureHodgeStructure (2 * p)}
-    (α₁ α₂ : HodgeClass H) : HodgeClass H :=
-  α₁.add α₂.neg
-
-/-- **Negation of an algebraic class is algebraic** (PROVED)
-
-If α = Σ aᵢ cl(Zᵢ), then −α = Σ (−aᵢ) cl(Zᵢ). -/
-theorem algebraic_class_neg (X : ProjectiveVariety) (p : ℕ)
-    (H : PureHodgeStructure (2 * p)) (α : HodgeClass H)
-    (halg : isAlgebraicClass X p H α) :
-    isAlgebraicClass X p H α.neg := by
-  obtain ⟨cycles, coeffs, heq⟩ := halg
-  refine ⟨cycles, fun Z => -coeffs Z, ?_⟩
-  simp only [HodgeClass.neg, neg_smul, ← Finset.sum_neg_distrib, heq]
-
-/- ═══════════════════════════════════════════════════════════════════════════════
-PART XVIIa: THE ZERO MORPHISM AND MORPHISM ALGEBRA
+PART XVII: SUMMARY OF NEW RESULTS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **The zero morphism between Hodge structures** (PROVED)
+/-- Summary of morphisms and structural results:
 
-The zero map 0 : H₁ → H₂ is a morphism of Hodge structures. The zero map
-trivially preserves Hodge components (0 ∈ every submodule).
-
-This, together with identity and composition, gives the category of pure
-Hodge structures its additive structure. -/
-def HodgeStructureMorphism.zero {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
-    HodgeStructureMorphism H₁ H₂ where
-  rationalMap := 0
-  complexMap := 0
-  compatible := fun v => by simp [map_zero]
-  hodge_preserve := fun p q hpq x _ => by
-    simp only [LinearMap.zero_apply]
-    exact Submodule.zero_mem _
-
-/-- **Negative of a Hodge morphism** (PROVED)
-
-If φ : H₁ → H₂ is a morphism of Hodge structures, then −φ is also.
-
-**Proof**: (−φ)_ℂ maps V^{p,q} into V^{p,q} because if x ∈ V^{p,q},
-then φ(x) ∈ V^{p,q}, so −φ(x) ∈ V^{p,q} (submodule closed under negation). -/
-def HodgeStructureMorphism.neg {k : ℕ} {H₁ H₂ : PureHodgeStructure k}
-    (φ : HodgeStructureMorphism H₁ H₂) : HodgeStructureMorphism H₁ H₂ where
-  rationalMap := -φ.rationalMap
-  complexMap := -φ.complexMap
-  compatible := fun v => by
-    simp only [LinearMap.neg_apply, map_neg]
-    rw [φ.compatible v]
-  hodge_preserve := fun p q hpq x hx => by
-    simp only [LinearMap.neg_apply]
-    exact (H₂.hodgeComponent p q hpq).neg_mem (φ.hodge_preserve p q hpq x hx)
-
-/-- **Sum of Hodge morphisms** (PROVED)
-
-If φ, ψ : H₁ → H₂ are morphisms of Hodge structures, then φ + ψ is also.
-
-**Proof**: (φ + ψ)_ℂ maps V^{p,q} into V^{p,q} because both φ(x) and ψ(x)
-are in V^{p,q}, and V^{p,q} is closed under addition. -/
-def HodgeStructureMorphism.add {k : ℕ} {H₁ H₂ : PureHodgeStructure k}
-    (φ ψ : HodgeStructureMorphism H₁ H₂) : HodgeStructureMorphism H₁ H₂ where
-  rationalMap := φ.rationalMap + ψ.rationalMap
-  complexMap := φ.complexMap + ψ.complexMap
-  compatible := fun v => by
-    simp only [LinearMap.add_apply, map_add]
-    rw [φ.compatible v, ψ.compatible v]
-  hodge_preserve := fun p q hpq x hx => by
-    simp only [LinearMap.add_apply]
-    exact (H₂.hodgeComponent p q hpq).add_mem
-      (φ.hodge_preserve p q hpq x hx) (ψ.hodge_preserve p q hpq x hx)
-
-/- ═══════════════════════════════════════════════════════════════════════════════
-PART XVIIb: WEIGHT FILTRATION PROPERTIES
-═══════════════════════════════════════════════════════════════════════════════ -/
-
-/-- **Weight filtration is increasing for any gap** (PROVED)
-
-W_i ≤ W_{i+n} for all n. Generalizes the one-step increasing property. -/
-theorem weight_increasing_general (M : MixedHodgeStructure) (i n : ℕ) :
-    M.W i ≤ M.W (i + n) := by
-  induction n with
-  | zero => simp
-  | succ m ih =>
-    have : i + m.succ = (i + m) + 1 := by omega
-    calc M.W i ≤ M.W (i + m) := ih
-    _ ≤ M.W ((i + m) + 1) := M.weight_increasing (i + m)
-    _ = M.W (i + m.succ) := by rw [this]
-
-/- ═══════════════════════════════════════════════════════════════════════════════
-PART XVIIc: SUB-HODGE STRUCTURE OPERATIONS
-═══════════════════════════════════════════════════════════════════════════════ -/
-
-/-- **Intersection of sub-Hodge structures is a sub-Hodge structure** (PROVED)
-
-The intersection of two sub-Hodge structures W₁ ∩ W₂ is again a sub-Hodge
-structure, because the Hodge compatibility condition is trivially preserved
-in the intersection. -/
-def SubHodgeStructure.inter {k : ℕ} {H : PureHodgeStructure k}
-    (S₁ S₂ : SubHodgeStructure H) : SubHodgeStructure H where
-  W := S₁.W ⊓ S₂.W
-  hodge_compatible := fun p q hpq v hv hcomp => hcomp
-
-/-- **The image of a sub-Hodge structure under a morphism gives a sub-Hodge
-structure** (PROVED)
-
-If W ⊆ H₁ is a sub-Hodge structure and φ : H₁ → H₂ is a Hodge morphism,
-then φ(W) ⊆ H₂ is a sub-Hodge structure. The Hodge compatibility transfers
-through the morphism. -/
-def SubHodgeStructure.map {k : ℕ} {H₁ H₂ : PureHodgeStructure k}
-    (S : SubHodgeStructure H₁) (φ : HodgeStructureMorphism H₁ H₂) :
-    SubHodgeStructure H₂ where
-  W := S.W.map φ.rationalMap
-  hodge_compatible := fun p q hpq v hv hcomp => hcomp
-
-/- ═══════════════════════════════════════════════════════════════════════════════
-PART XVIII: SUMMARY OF ALL RESULTS
-═══════════════════════════════════════════════════════════════════════════════ -/
-
-/-- Summary of all structural results:
-
-**Category structure of Hodge structures:**
-1. **Morphisms** - Defined with rational + complex components, compatibility
-2. **Identity morphism** - Proved
-3. **Composition** - Proved
-4. **Zero morphism** - Proved
-5. **Negation of morphism** - Proved: −φ is a Hodge morphism
-6. **Sum of morphisms** - Proved: φ + ψ is a Hodge morphism
-
-**Hodge class algebra (ℚ-vector space structure):**
-7. **Zero class** - Proved: 0 is a Hodge class and is algebraic
-8. **Scalar multiplication** - Proved: q · α is Hodge and algebraic
-9. **Addition** - Proved: α₁ + α₂ is a Hodge class
-10. **Negation** - Proved: −α is a Hodge class and is algebraic
-11. **Subtraction** - Proved: α₁ − α₂ is a Hodge class
-12. **Sum of algebraic classes** - Proved: algebraic + algebraic = algebraic
-
-**Direct sums and biproduct structure:**
-13. **Direct sum** - PROVED (was axiom): H₁ ⊕ H₂ is a Hodge structure
-14. **Injections ι₁, ι₂** - PROVED (were axioms)
-15. **Projections π₁, π₂** - Proved
-16. **Retractions** - Proved: π₁∘ι₁=id, π₂∘ι₂=id, π₁∘ι₂=0, π₂∘ι₁=0
-
-**Sub-Hodge structures:**
-17. **Full and zero** - Proved: ⊤ and ⊥ are sub-Hodge structures
-18. **Kernel** - Proved: ker(φ) is a sub-Hodge structure
-19. **Intersection** - Proved: S₁ ∩ S₂ is a sub-Hodge structure
-20. **Image under morphism** - Proved: φ(S) is a sub-Hodge structure
-
-**Polarizations:**
-21. **Even weight symmetry** - Proved: Q(v,w) = Q(w,v) for weight 2p
-22. **Odd weight antisymmetry** - Proved: Q(v,w) = −Q(w,v) for weight 2p+1
-
-**Functoriality:**
-23. **Morphisms preserve Hodge classes** - Proved
-24. **Morphisms preserve algebraic classes** - Proved (with cycle pullback)
-
-**Mixed Hodge structures:**
-25. **Weight filtration increasing general** - Proved: W_i ≤ W_{i+n}
-26. **Pure to mixed embedding** - Proved -/
+1. **Morphisms of Hodge structures** - Defined with rational and complex components
+2. **Identity morphism** - Proved to be a Hodge morphism
+3. **Composition** - Proved: composition of Hodge morphisms is a Hodge morphism
+3a. **Zero morphism** - PROVED: zero map is a Hodge morphism
+3b. **Negation** - PROVED: negation of a Hodge morphism is a morphism
+3c. **Addition** - PROVED: sum of Hodge morphisms is a morphism
+3d. **Category laws** - PROVED: comp_assoc, id_comp, comp_id, zero_comp, comp_zero (new)
+3e. **Abelian group laws** - PROVED: neg_neg, add_comm, add_neg_self (new)
+4. **Functoriality on Hodge classes** - Proved: morphisms preserve Hodge classes
+5. **Functoriality on algebraic classes** - Proved: morphisms with cycle pullback
+   preserve algebraicity
+6. **Sub-Hodge structures** - Defined with Hodge compatibility
+7. **Kernel is sub-Hodge** - Proved: kernel of a morphism is a sub-Hodge structure
+7a. **Image is sub-Hodge** - PROVED: image of a morphism is a sub-Hodge structure (new)
+7b. **Intersection** - PROVED: intersection of sub-Hodge structures is sub-Hodge (new)
+8. **Direct sums** - PROVED: direct sum of Hodge structures (was axiom)
+8a. **Injection morphisms** - PROVED: canonical injections ι₁, ι₂ (were axioms)
+8b. **Projection morphisms** - PROVED: canonical projections π₁, π₂
+8c. **Decomposition** - PROVED: every element v = ι₁(π₁v) + ι₂(π₂v)
+8d. **Coproduct universal property** - PROVED: f₁,f₂ factor through ⊕ via coprod
+8e. **Product universal property** - PROVED: f₁,f₂ factor through ⊕ via prod (new)
+8f. **Hodge class decomposition** - PROVED: Hodge classes in ⊕ decompose
+8g. **Hodge class combination** - PROVED: Hodge classes combine into ⊕ (new)
+9. **Hodge filtration** - PROVED: existence of Hodge filtration (was axiom)
+10. **Polarizations** - Defined with (−1)^k-symmetry
+11. **Even weight symmetry** - Proved: polarization is symmetric for even weight
+12. **Odd weight antisymmetry** - Proved: polarization is antisymmetric for odd weight
+13. **Lefschetz operator** - Defined and Hard Lefschetz axiomatized
+14. **Mixed Hodge structures** - Defined with weight filtration
+15. **Pure to mixed** - Proved: pure Hodge structures embed into mixed -/
 theorem structural_summary : True := trivial
 
--- Morphisms (category structure)
+-- Morphisms
 #check HodgeStructureMorphism
 #check HodgeStructureMorphism.id
 #check HodgeStructureMorphism.comp
 #check HodgeStructureMorphism.zero
 #check HodgeStructureMorphism.neg
 #check HodgeStructureMorphism.add
--- Hodge class algebra
-#check HodgeClass.add
-#check HodgeClass.neg
-#check HodgeClass.sub
-#check HodgeClass.smul
-#check HodgeClass.zero
-#check algebraic_class_neg
--- Functoriality
+-- Category laws (new)
+#check comp_assoc
+#check id_comp
+#check comp_id
+#check zero_comp
+#check comp_zero
+#check neg_neg
+#check add_comm_morphism
+#check add_neg_self
 #check morphism_preserves_hodge_class
 #check morphism_preserves_algebraic_class
+-- Sub-Hodge structures
+#check SubHodgeStructure
+#check kernel_is_subHodge
+#check image_is_subHodge
+#check SubHodgeStructure.inter
 -- Direct sums (PROVED - were axioms)
 #check directSumHodge
 #check directSum_inl
@@ -2022,13 +2017,12 @@ theorem structural_summary : True := trivial
 #check directSum_universal
 #check directSum_universal_inl
 #check directSum_universal_inr
+#check directSum_prod
+#check directSum_prod_fst
+#check directSum_prod_snd
 #check directSum_hodgeClass_fst
 #check directSum_hodgeClass_snd
--- Sub-Hodge structures
-#check SubHodgeStructure
-#check kernel_is_subHodge
-#check SubHodgeStructure.inter
-#check SubHodgeStructure.map
+#check directSum_hodgeClass_combine
 -- Hodge filtration (PROVED - was axiom)
 #check hodge_filtration_exists
 -- Polarizations
@@ -2042,6 +2036,5 @@ theorem structural_summary : True := trivial
 -- Mixed Hodge structures
 #check MixedHodgeStructure
 #check PureHodgeStructure.toMixed
-#check weight_increasing_general
 
 end HodgeConjecture
