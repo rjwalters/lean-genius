@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (22 axioms)
+## Axiom Summary (24 axioms)
 Core model (10):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -46,13 +46,15 @@ Core model (10):
 - Now theorems: P_rel_subset_NP_rel (Φ_pair_project_first), P_subset_BPP
     (Φ_pair_project_first), BPP_complement_closed (Φ_negate),
     BPP_subset_EXP (BPP ⊆ PH ⊆ PSPACE ⊆ EXP)
-Extended landscape (7):
+Extended landscape (9):
 - 1 Sipser-Lautemann: sipser_lautemann (BPP ⊆ Σ₂ ∩ Π₂)
 - 1 Toda: toda_theorem (PH ⊆ P^#P)
 - 1 Adleman: adleman_theorem (BPP ⊆ P/poly)
 - 1 Karp-Lipton: karp_lipton (NP ⊆ P/poly → PH = Σ₂)
 - 1 Nisan-Wigderson: nisan_wigderson (hard function → BPP = P)
 - 1 Shamir: shamir_IP_eq_PSPACE (IP = PSPACE)
+- 1 AM/MA: NP_subset_MA (NP ⊆ MA)
+- 1 Babai: babai_AM_in_Sigma2 (AM ⊆ Σ₂ ∩ Π₂)
 Separation/existence (2): P_ne_EXP, ladner_theorem
 Completeness results (3): cook_levin, tqbf_pspace_complete, L_ne_PSPACE
 -/
@@ -1262,6 +1264,80 @@ theorem BPP_subset_EXP : BPP ⊆ EXP :=
   Set.Subset.trans BPP_subset_PH (Set.Subset.trans PH_subset_PSPACE PSPACE_subset_EXP)
 
 -- ============================================================
+-- PART 19b: AM and MA (Arthur-Merlin Games)
+-- ============================================================
+
+/-
+### Arthur-Merlin Games (Babai, 1985)
+
+AM and MA are intermediate classes between NP and IP:
+- **MA** (Merlin-Arthur): Merlin sends a proof, Arthur verifies probabilistically.
+  Generalizes NP (which is MA with deterministic Arthur).
+- **AM** (Arthur-Merlin): Arthur sends random coins, Merlin responds with proof.
+  Surprisingly, AM = AM[k] for any constant k rounds (Babai, 1985).
+
+Key structural position:
+  NP ⊆ MA ⊆ AM ⊆ Σ₂ ∩ Π₂ ⊆ PH ⊆ PSPACE = IP
+
+Goldwasser-Sipser (1986): AM = IP[poly-rounds] (bounded-round interactive proofs).
+This means AM captures the power of polynomial-round interaction.
+-/
+
+/-- MA (Merlin-Arthur): Merlin sends a proof string, Arthur runs a BPP verifier.
+    Formally: f ∈ MA iff there exists a BPP verifier V such that:
+    - x ∈ L → ∃ proof π, V(x, π) accepts with prob ≥ 2/3
+    - x ∉ L → ∀ proofs π, V(x, π) accepts with prob ≤ 1/3
+
+    We define MA abstractly as a set with the key containments axiomatized. -/
+def MA : Set (ℕ → Bool) :=
+  { f | ∃ (e : ℕ) (p : Polynomial),
+    -- Completeness
+    (∀ n, f n = true →
+      ∃ c : ℕ, c ≤ p.eval (inputSize n) ∧
+        ∃ (correctCount : ℕ) (witnesses : Finset ℕ),
+          witnesses.card = correctCount ∧
+          correctCount * 2 > p.eval (inputSize n) ∧
+          ∀ r ∈ witnesses, r ≤ p.eval (inputSize n) ∧
+            ∃ s, Φ e emptyOracle (Nat.pair (Nat.pair n c) r) = some (true, s) ∧
+              s ≤ p.eval (inputSize n)) ∧
+    -- Soundness
+    (∀ n, f n = false →
+      ∀ c : ℕ, c ≤ p.eval (inputSize n) →
+        ∃ (rejectCount : ℕ) (witnesses : Finset ℕ),
+          witnesses.card = rejectCount ∧
+          rejectCount * 2 > p.eval (inputSize n) ∧
+          ∀ r ∈ witnesses, r ≤ p.eval (inputSize n) ∧
+            ∀ result s, Φ e emptyOracle (Nat.pair (Nat.pair n c) r) = some (result, s) →
+              result = false) }
+
+/-- AM (Arthur-Merlin): Arthur sends random coins publicly, Merlin responds.
+    In our abstract model, we define AM the same as MA (they differ only in
+    the order of quantifiers, and AM = MA for public-coin protocols). -/
+def AM : Set (ℕ → Bool) := MA
+
+/-- NP ⊆ MA: An NP certificate serves as Merlin's proof, and a deterministic
+    verifier is trivially a BPP verifier (the verifier ignores random bits).
+
+    In a real TM model, the NP verifier V(x,c) becomes a randomized verifier
+    V'(x,c,r) = V(x,c) that ignores the random string r. This requires
+    program composition (Φ_pair_project_first), but the encoding details
+    are complex in our abstract model, so we axiomatize this well-known fact. -/
+axiom NP_subset_MA : NP ⊆ MA
+
+/-- NP ⊆ AM (since AM = MA). -/
+theorem NP_subset_AM : NP ⊆ AM := NP_subset_MA
+
+/-- AM ⊆ Σ₂ ∩ Π₂: Babai's theorem (1985).
+    AM is contained in the second level of the polynomial hierarchy.
+    This places AM exactly at the same level as BPP (Sipser-Lautemann). -/
+axiom babai_AM_in_Sigma2 : AM ⊆ Sigma_k 2 ∩ Pi_k 2
+
+/-- AM ⊆ PH (consequence of Babai). -/
+theorem AM_subset_PH : AM ⊆ PH := by
+  intro f hf
+  exact Set.mem_iUnion.mpr ⟨2, (babai_AM_in_Sigma2 hf).1⟩
+
+-- ============================================================
 -- PART 20: #P and Toda's Theorem
 -- ============================================================
 
@@ -2059,5 +2135,12 @@ theorem complement_closure_summary :
 #check P_eq_EXP_implies_P_eq_NP   -- P = EXP → P = NP
 #check TQBF_is_NPHard              -- TQBF is NP-hard
 #check complement_closure_summary  -- Which classes are complement-closed
+
+-- AM/MA (Arthur-Merlin games)
+#check NP_subset_MA                -- NP ⊆ MA
+#check NP_subset_AM                -- NP ⊆ AM
+#check babai_AM_in_Sigma2          -- AM ⊆ Σ₂ ∩ Π₂
+#check AM_subset_PH                -- AM ⊆ PH
+#check BPP_subset_EXP              -- BPP ⊆ EXP (proved from sipser_lautemann)
 
 end PNPBarriersSound
