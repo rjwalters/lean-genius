@@ -6758,6 +6758,64 @@ axiom padding_sparsifies :
     ∀ L : Language, ∀ N : Nat,
     census (paddedLanguage L) N ≤ census L N * N
 
+/-! ### Upward Translation (Padding Arguments)
+
+Padding arguments are one of the most powerful tools in structural complexity.
+They show that complexity collapses "scale up" — if P = NP, then EXP = NEXP,
+and more generally, any collapse at one level implies a collapse at the next.
+
+The key idea: given a language L in NEXP, pad its inputs to exponential length.
+The padded version is in NP (the exponential padding makes the originally
+exponential computation polynomial). If P = NP, we can solve this padded version
+in P, hence L ∈ EXP.
+-/
+
+/-- **Upward Translation**: P = NP implies EXP = NEXP.
+
+    This is a fundamental padding argument:
+    1. Take L ∈ NEXP with exp-time verifier V
+    2. Define L_pad = {⟨x, 1^{2^|x|}⟩ : x ∈ L} (pad to exponential length)
+    3. L_pad ∈ NP (V runs in time 2^poly(|x|) = poly(|pad|))
+    4. If P = NP: L_pad ∈ P, so L_pad can be decided in poly(|pad|) = 2^poly(|x|)
+    5. Therefore L ∈ EXP
+
+    Contrapositive: **EXP ≠ NEXP implies P ≠ NP** — a downward separation. -/
+axiom upward_translation_P_NP :
+  P_unrelativized = NP_unrelativized → EXP = NEXP
+
+/-- **Downward Separation**: If EXP ≠ NEXP then P ≠ NP.
+
+    This is the contrapositive of the upward translation and provides a
+    potential avenue for proving P ≠ NP: prove a separation at a higher level
+    where more tools are available. -/
+theorem downward_separation_EXP_NEXP :
+    EXP ≠ NEXP → P_unrelativized ≠ NP_unrelativized := by
+  intro h_sep h_eq
+  exact h_sep (upward_translation_P_NP h_eq)
+
+/-- **Upward Translation for PSPACE**: P = PSPACE implies EXP = EXPSPACE.
+
+    Similar padding argument: pad EXPSPACE inputs to exponential length,
+    reducing them to PSPACE membership (polynomial in padded length).
+    If P = PSPACE, this gives EXP algorithms. -/
+axiom upward_translation_P_PSPACE :
+  P_unrelativized = PSPACE → EXP = EXPSPACE
+
+/-- EXPSPACE: problems solvable in exponential space 2^poly(n). -/
+def EXPSPACE : Set (Nat → Bool) :=
+  { problem | ∃ poly : Polynomial, True }  -- Abstract placeholder
+
+/-- **Upward Translation for NP vs coNP**: NP = coNP implies NEXP = coNEXP.
+
+    If NP-verifiers can be complemented (NP = coNP), then the same holds
+    for NEXP-verifiers after padding. -/
+axiom upward_translation_NP_coNP :
+  NP_unrelativized = coNP → NEXP = coNEXP
+
+/-- coNEXP: complement of NEXP. -/
+def coNEXP : Set (Nat → Bool) :=
+  { L | (fun n => !L n) ∈ NEXP }
+
 /-! ### Summary Theorem -/
 
 /-- Summary of structural complexity:
