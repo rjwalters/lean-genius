@@ -220,6 +220,17 @@
         "name": "Part 47: Shannon Circuit Complexity",
         "description": "numBoolFunctions, numCircuitsBound, Shannon-Lupanov bounds, explicit bottleneck, 18 new theorems proved",
         "proven": true
+      },
+      "IsSparse definition (Sound model)",
+      "mahaney_theorem + mahaney_contrapositive",
+      "EXPSPACE/coNEXP definitions",
+      "upward_translation_P_NP/P_PSPACE/NP_coNP",
+      "downward_separation theorems (3)",
+      "NEXP_ne_coNEXP_implies_P_ne_NP",
+      {
+        "name": "Part 48: Kannan's Theorem and Circuit Size Classes",
+        "description": "SIZE class, Sigma2EXP, MA_EXP, Kannan's theorem, Buhrman-Fortnow-Thierauf, 8 new theorems proved",
+        "proven": true
       }
     ],
     "insights": [
@@ -257,7 +268,13 @@
       "Shannon (1949): Most Boolean functions require 2^n/3n circuit gates - proved by counting argument",
       "Lupanov (1958): All Boolean functions can be computed by 3·2^n/n gates - matching upper bound",
       "Explicit function bottleneck: best known explicit lower bound is only 5n gates vs 2^n/3n existential",
-      "Shannon counting relativizes: works identically in any oracle model, so cannot separate P from NP"
+      "Shannon counting relativizes: works identically in any oracle model, so cannot separate P from NP",
+      "Mahaney theorem formalized in Sound model: P≠NP → no sparse NP-complete language",
+      "Upward translation axioms added: P=NP→EXP=NEXP, P=PSPACE→EXP=EXPSPACE, NP=coNP→NEXP=coNEXP",
+      "EXPSPACE and coNEXP definitions added to Sound model",
+      "Downward separation chain: NEXP≠coNEXP → NP≠coNP → P≠NP",
+      "Kannan's theorem: Σ₂EXP ⊄ SIZE(n^k) for any fixed k - strongest unconditional circuit lower bound",
+      "Buhrman-Fortnow-Thierauf: MA_EXP ⊄ P/poly - unconditional non-uniform lower bound"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
