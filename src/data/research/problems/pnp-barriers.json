@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 15→19 axioms (4 new meaningful axioms), P_subset_EXP now proved. Session 5: Fixed PSPACE/EXP definitions (were identical, now PSPACE opaque and EXP has 2^poly bound). Added Cook-Levin (SAT NP-complete), P/poly, Karp-Lipton theorem. Proved P⊆EXP directly (poly ≤ 2^poly).",
+    "progressSummary": "PROGRESS: Added BPP, IP, Shamir IP=PSPACE to sound model. 29 axioms, ~42 theorems, 0 sorries, 1322 lines.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -120,7 +120,32 @@
       "Proved P_subset_EXP directly from definitions (poly_le_exp lemma)",
       "Added SAT, cook_levin, NPC_exists, SAT_in_P_iff_P_eq_NP",
       "Added P_poly, P_subset_P_poly, karp_lipton, karp_lipton_contrapositive",
-      "Made PSPACE opaque (PSPACE_def), fixed EXP with InEXP and 2^poly bound"
+      "Made PSPACE opaque (PSPACE_def), fixed EXP with InEXP and 2^poly bound",
+      {
+        "name": "BPP",
+        "description": "Bounded-error probabilistic polynomial time (opaque)",
+        "proven": true
+      },
+      {
+        "name": "IP",
+        "description": "Interactive proofs class (opaque)",
+        "proven": true
+      },
+      {
+        "name": "shamir_IP_eq_PSPACE",
+        "description": "Shamir 1990: IP = PSPACE",
+        "proven": true
+      },
+      {
+        "name": "adleman_BPP_subset_P_poly",
+        "description": "Adleman 1978: BPP ⊆ P/poly",
+        "proven": true
+      },
+      {
+        "name": "BPP_subset_IP",
+        "description": "BPP ⊆ IP (derived theorem)",
+        "proven": true
+      }
     ],
     "insights": [
       "P_subset_NP_relative",
@@ -145,7 +170,10 @@
       "EXP now properly defined with 2^poly time bound instead of being identical to PSPACE",
       "P_subset_EXP proved directly: poly time ≤ exp time (n ≤ 2^n)",
       "Cook-Levin theorem added: SAT_in_P_iff_P_eq_NP reduces the question to one problem",
-      "Karp-Lipton connects circuit complexity to PH collapse: NP ⊄ P/poly would imply P ≠ NP"
+      "Karp-Lipton connects circuit complexity to PH collapse: NP ⊄ P/poly would imply P ≠ NP",
+      "BPP defined as opaque set with P⊆BPP, BPP⊆PSPACE, BPP⊆P/poly (Adleman)",
+      "IP defined as opaque set with NP⊆IP and IP=PSPACE (Shamir 1990)",
+      "BPP⊆IP derived as theorem from BPP⊆PSPACE + IP=PSPACE (no extra axiom needed)"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
@@ -207,7 +235,7 @@
     "mathlib": []
   },
   "started": "2025-12-31T00:00:00-08:00",
-  "lastUpdate": "2025-12-31T21:30:00-08:00",
+  "lastUpdate": "2026-03-14T19:00:00.000Z",
   "significance": 8,
   "tractability": 4
 }
