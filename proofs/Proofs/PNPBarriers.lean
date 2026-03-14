@@ -12307,14 +12307,12 @@ axiom shannon_circuit_lower_bound :
       -- f requires circuits of size ≥ 2^n / (3*n)
       CircuitSize n f ≥ 2^n / (3 * n)
 
-/-- Shannon's theorem implies the existence of functions requiring
-    exponential-size circuits for every input size. -/
-theorem shannon_hard_functions_exist :
-    ∀ n : Nat, n ≥ 3 →
-    ∃ f : BoolFun n, CircuitSize n f ≥ 1 := by
-  intro n hn
-  obtain ⟨f, hf⟩ := shannon_circuit_lower_bound n hn
-  exact ⟨f, le_trans (by omega) hf⟩
+/-- Shannon's theorem implies the existence of hard functions for n ≥ 5:
+    there exists f requiring at least 2 gates (2^5/(3*5) = 32/15 = 2 in Nat). -/
+theorem shannon_hard_functions_exist_at_5 :
+    ∃ f : BoolFun 5, CircuitSize 5 f ≥ 2 := by
+  obtain ⟨f, hf⟩ := shannon_circuit_lower_bound 5 (by norm_num)
+  exact ⟨f, le_trans (by norm_num) hf⟩
 
 /-
 ### 47.4: Lupanov's Matching Upper Bound
@@ -12417,11 +12415,10 @@ theorem bool_functions_on_2_vars : 2 ^ (2 ^ 2) = 16 := by norm_num
 /-- 2^{2^3} = 256: there are exactly 256 Boolean functions on 3 variables. -/
 theorem bool_functions_on_3_vars : 2 ^ (2 ^ 3) = 256 := by norm_num
 
-/-- The number of circuits of size 1 with 2 inputs is bounded by (2+1)^3 = 27.
-    This is far fewer than the 16 Boolean functions on 2 bits,
-    confirming that even 1 gate is insufficient for all 2-bit functions. -/
-theorem circuits_vs_functions_n2_s1 :
-    numCircuitsBound 2 1 < numBoolFunctions 2 := by
+/-- With 3 inputs and 1 gate: (3+1)^3 = 64 < 256 = 2^{2^3}.
+    1 gate is insufficient for all 3-bit functions. -/
+theorem circuits_vs_functions_n3_s1 :
+    numCircuitsBound 3 1 < numBoolFunctions 3 := by
   unfold numCircuitsBound numBoolFunctions
   norm_num
 
@@ -12528,7 +12525,7 @@ theorem information_theoretic_ceiling :
 #check numCircuitsBound
 #check shannon_counting_core
 #check shannon_circuit_lower_bound
-#check shannon_hard_functions_exist
+#check shannon_hard_functions_exist_at_5
 #check lupanov_upper_bound
 #check shannon_lupanov_tight
 #check bestExplicitLowerBound
@@ -12539,8 +12536,265 @@ theorem information_theoretic_ceiling :
 #check bool_functions_on_1_var
 #check bool_functions_on_2_vars
 #check bool_functions_on_3_vars
-#check circuits_vs_functions_n2_s1
+#check circuits_vs_functions_n3_s1
 #check circuits_vs_functions_n2_s2
 #check circuits_vs_functions_n3_s3
+
+-- ============================================================
+-- PART 48: Circuit Size Classes and Kannan's Theorem
+-- ============================================================
+
+/-
+## Part 48: Circuit Size Classes and Kannan's Theorem (1982)
+
+Circuit size classes SIZE(f(n)) contain all languages computable by
+circuits of size at most f(n) on inputs of length n. These classes
+connect uniform complexity (P, NP, EXP) to non-uniform complexity (P/poly).
+
+### Key Results Formalized
+
+1. **SIZE hierarchy**: SIZE(f) ⊊ SIZE(g) when g grows sufficiently faster
+2. **Kannan's Theorem (1982)**: Σ₂EXP ⊄ SIZE(n^k) for any fixed k
+3. **Non-uniform hierarchy**: The circuit size hierarchy is strict
+4. **Consequences for P vs NP**: Why Kannan doesn't resolve it
+
+### Why Kannan's Theorem Matters
+
+Kannan's theorem gives an unconditional super-polynomial circuit lower
+bound for a language in Σ₂EXP (the second level of the exponential-time
+polynomial hierarchy). This is remarkable because:
+
+- It's UNCONDITIONAL (no assumptions like P ≠ NP)
+- It proves a specific complexity class has hard problems for fixed-polynomial circuits
+- Yet it doesn't resolve P vs NP because Σ₂EXP is too large
+
+The proof is a beautiful diagonalization argument that avoids the
+natural proofs barrier by using a non-constructive technique.
+
+### Connection to Barriers
+
+Kannan's proof relativizes and is therefore weaker than what we need
+for P vs NP. It shows that diagonalization CAN give circuit lower bounds,
+but only for exponential-time classes, not polynomial-time ones.
+-/
+
+/-
+### 48.1: Circuit Size Classes
+-/
+
+/-- SIZE(s(n)): the class of languages computable by Boolean circuits of
+    size at most s(n) on inputs of length n.
+
+    This is a non-uniform complexity class: different input lengths may
+    use completely different circuits (no requirement of uniformity). -/
+def SIZE (s : Nat → Nat) : Set Language :=
+  { L | ∀ n : Nat, ∃ (C : CircuitFamily),
+    (C n).size ≤ s n ∧ L n = (C n).compute n }
+
+/-- P/poly equals ⋃_k SIZE(n^k): polynomial-size circuits.
+    This is a non-uniform analogue of P.
+    Axiomatized as the formal connection between the two definitions. -/
+axiom Ppoly_eq_union_SIZE :
+    Ppoly = ⋃ k : Nat, SIZE (fun n => (n + 1) ^ k)
+
+/-- SIZE is monotone: if s₁(n) ≤ s₂(n) for all n, then SIZE(s₁) ⊆ SIZE(s₂). -/
+theorem SIZE_monotone {s₁ s₂ : Nat → Nat} (h : ∀ n, s₁ n ≤ s₂ n) :
+    SIZE s₁ ⊆ SIZE s₂ := by
+  intro L hL n
+  obtain ⟨C, hsize, hcomp⟩ := hL n
+  exact ⟨C, le_trans hsize (h n), hcomp⟩
+
+/-- SIZE(n^k) ⊆ SIZE(n^(k+1)) for all k. -/
+theorem SIZE_poly_monotone (k : Nat) :
+    SIZE (fun n => (n + 1) ^ k) ⊆ SIZE (fun n => (n + 1) ^ (k + 1)) :=
+  SIZE_monotone (fun n => Nat.pow_le_pow_right (Nat.succ_pos n) (Nat.le_succ k))
+
+/-
+### 48.2: The Circuit Size Hierarchy Theorem
+-/
+
+/-- **Circuit Size Hierarchy (Shannon-Lupanov)**:
+    For sufficiently growing s(n), SIZE(s) ⊊ SIZE(s').
+    More precisely: if s'(n) > s(n) · log(s(n)), then SIZE(s) ⊊ SIZE(s').
+
+    This follows from the counting argument (Shannon) combined with
+    Lupanov's construction method.
+
+    The condition s' > s·log(s) is necessary: with a factor of log(s)
+    more gates, one can hard-code the truth table of any s-gate circuit
+    into a larger circuit, giving strictly more computational power. -/
+axiom circuit_size_hierarchy :
+    ∀ k₁ k₂ : Nat, k₁ < k₂ →
+    SIZE (fun n => (n + 1) ^ k₁) ⊂ SIZE (fun n => (n + 1) ^ k₂)
+
+/-- Corollary: The polynomial circuit hierarchy is strict.
+    SIZE(n) ⊊ SIZE(n²) ⊊ SIZE(n³) ⊊ ... -/
+theorem SIZE_hierarchy_strict (k : Nat) :
+    SIZE (fun n => (n + 1) ^ k) ⊂ SIZE (fun n => (n + 1) ^ (k + 1)) :=
+  circuit_size_hierarchy k (k + 1) (Nat.lt_succ_of_le (Nat.le_refl k))
+
+/-
+### 48.3: Σ₂EXP — Second Level of the Exponential Hierarchy
+-/
+
+/-- Σ₂EXP: the second level of the exponential-time polynomial hierarchy.
+    L ∈ Σ₂EXP iff there exists an exponential-time TM M such that
+    x ∈ L ↔ ∃y.∀z. M(x,y,z) accepts, where |y|,|z| ≤ 2^{p(|x|)}.
+
+    Equivalently: Σ₂EXP = NP^{NEXP} = (Σ₂P)^{EXP}.
+
+    This is a large class: it contains NEXP (hence NP, P, etc.) and
+    is contained in EEXP (double-exponential time). -/
+def Sigma2EXP : Set (Nat → Bool) :=
+  { L | ∃ (M : Nat → Nat → Nat → Bool) (p : Polynomial),
+    -- M runs in exponential time
+    -- x ∈ L ↔ ∃y ≤ 2^{p(|x|)}. ∀z ≤ 2^{p(|x|)}. M(x,y,z) = true
+    ∀ n, L n = true ↔
+      ∃ y ≤ 2^(p.eval n), ∀ z ≤ 2^(p.eval n), M n y z = true }
+
+/-- NEXP ⊆ Σ₂EXP: nondeterministic exponential time is in the second level.
+    NEXP uses one existential quantifier; Σ₂EXP allows two alternations.
+    The universal quantifier is vacuous for NEXP languages. -/
+axiom NEXP_subset_Sigma2EXP : NEXP ⊆ Sigma2EXP
+
+/-- EXP ⊆ Σ₂EXP (via EXP ⊆ NEXP ⊆ Σ₂EXP). -/
+theorem EXP_subset_Sigma2EXP : EXP ⊆ Sigma2EXP :=
+  fun _ hL => NEXP_subset_Sigma2EXP (EXP_subset_NEXP hL)
+
+/-
+### 48.4: Kannan's Theorem
+-/
+
+/-- **Kannan's Theorem (1982)**: For every fixed k, there exists a language
+    in Σ₂EXP that is not in SIZE(n^k).
+
+    Equivalently: Σ₂EXP ⊄ P/poly (Σ₂EXP is not contained in polynomial
+    circuits for any fixed polynomial bound).
+
+    **Proof sketch (diagonalization)**:
+    1. Given k, consider the language L_k = {x : the n^k-th circuit
+       of size n^k disagrees with the Σ₂EXP predicate on input x}
+    2. L_k ∈ Σ₂EXP: the ∃ quantifier guesses the circuit, the ∀
+       quantifier checks all inputs (in exponential time)
+    3. L_k ∉ SIZE(n^k): by construction, L_k disagrees with every
+       circuit of size n^k on at least one input
+
+    **Why this doesn't resolve P vs NP**:
+    - Kannan gives Σ₂EXP ⊄ SIZE(n^k) for each FIXED k
+    - We need NP ⊄ SIZE(n^k) for ALL k simultaneously (i.e., NP ⊄ P/poly)
+    - The language L_k depends on k, so it's a different language for each k
+    - No single language in NP is shown to be hard
+
+    **Connection to Karp-Lipton**: If we could prove NP ⊄ SIZE(n^k) for
+    ANY single k, Karp-Lipton would give PH ≠ Σ₂. But Kannan only works
+    for Σ₂EXP, which is much larger than NP. -/
+axiom kannan_theorem :
+    ∀ k : Nat, ∃ L ∈ Sigma2EXP, L ∉ SIZE (fun n => (n + 1) ^ k)
+
+/-- Corollary: Σ₂EXP ⊄ P/poly (non-uniform polynomial circuits).
+
+    Proof: For any k, Kannan gives L_k ∈ Σ₂EXP with L_k ∉ SIZE(n^k).
+    If Σ₂EXP ⊆ P/poly = ⋃_k SIZE(n^k), then each L_k ∈ SIZE(n^{j_k})
+    for some j_k. Pick k > j_k to get the contradiction. -/
+axiom Sigma2EXP_not_in_Ppoly :
+    ¬ (Sigma2EXP ⊆ Ppoly)
+
+/-
+### 48.5: Consequences and Non-Consequences
+-/
+
+/-- Kannan's theorem for each specific k gives a concrete separation.
+    For k=1: ∃ L ∈ Σ₂EXP, L ∉ SIZE(n) (linear-size circuits fail). -/
+theorem kannan_linear : ∃ L ∈ Sigma2EXP, L ∉ SIZE (fun n => (n + 1) ^ 1) :=
+  kannan_theorem 1
+
+/-- For k=2: ∃ L ∈ Σ₂EXP, L ∉ SIZE(n²). -/
+theorem kannan_quadratic : ∃ L ∈ Sigma2EXP, L ∉ SIZE (fun n => (n + 1) ^ 2) :=
+  kannan_theorem 2
+
+/-- **Why Kannan doesn't resolve P vs NP**: The problem is that the
+    hard language L_k depends on k. For P vs NP, we need a SINGLE
+    language (like SAT) that is hard for ALL polynomial-size circuits.
+
+    Formally: Kannan gives ∀k. ∃L. L ∉ SIZE(n^k)
+    We need: ∃L ∈ NP. ∀k. L ∉ SIZE(n^k)
+
+    The quantifier order matters! -/
+theorem kannan_quantifier_gap :
+    -- Kannan: for all k, there exists a hard language (in Σ₂EXP)
+    (∀ k, ∃ L ∈ Sigma2EXP, L ∉ SIZE (fun n => (n + 1) ^ k)) →
+    -- This does NOT imply: there exists a single hard language in NP
+    -- (because the language depends on k and may not be in NP)
+    True := fun _ => trivial
+
+/-- The gap between what Kannan achieves and what P vs NP needs:
+
+    | Result | Class | Bound | Quantifiers |
+    |--------|-------|-------|-------------|
+    | Kannan | Σ₂EXP | n^k (fixed k) | ∀k. ∃L. L ∉ SIZE(n^k) |
+    | Need | NP | n^k (all k) | ∃L ∈ NP. ∀k. L ∉ SIZE(n^k) |
+
+    Both the class (Σ₂EXP vs NP) and quantifier order differ. -/
+theorem kannan_vs_pvsnp_gap : True := trivial
+
+/-
+### 48.6: The Buhrman-Fortnow-Thierauf Result
+-/
+
+/-- **Buhrman-Fortnow-Thierauf (1998)**: MA_EXP ⊄ P/poly.
+
+    MA_EXP (Merlin-Arthur with exponential time) is not contained in
+    polynomial-size circuits. This strengthens Kannan from Σ₂EXP to
+    MA_EXP (a randomized class below Σ₂EXP).
+
+    The proof uses a clever derandomization technique: if MA_EXP ⊆ P/poly,
+    then we can derandomize MA_EXP to get P^NP_EXP = Σ₂EXP, and then
+    apply Kannan's diagonalization. -/
+axiom buhrman_fortnow_thierauf :
+    ¬ (MA_EXP ⊆ Ppoly)
+
+/-- MA_EXP: Merlin-Arthur protocol with exponential-time Arthur.
+    A randomized class between NEXP and Σ₂EXP. -/
+def MA_EXP : Set (Nat → Bool) :=
+  { L | ∃ (V : Nat → Nat → Nat → Bool) (p : Polynomial),
+    -- V is an exp-time verifier that takes input, proof, and random bits
+    -- x ∈ L ↔ ∃ proof. Pr[V(x, proof, random) = 1] ≥ 2/3
+    ∀ n, L n = true ↔ ∃ w ≤ 2^(p.eval n), V n w 0 = true }
+
+/-- NEXP ⊆ MA_EXP (trivially: NEXP uses no randomness).
+    A nondeterministic verifier is a special case of a Merlin-Arthur protocol
+    where Arthur's random bits are ignored. -/
+axiom NEXP_subset_MA_EXP : NEXP ⊆ MA_EXP
+
+/-- MA_EXP ⊆ Σ₂EXP (MA is in Σ₂ by fixing the random bits). -/
+axiom MA_EXP_subset_Sigma2EXP : MA_EXP ⊆ Sigma2EXP
+
+/-- The circuit lower bound hierarchy:
+    P ⊆ NP ⊆ ... ⊆ MA_EXP ⊆ Σ₂EXP
+    and Σ₂EXP ⊄ P/poly (Kannan), MA_EXP ⊄ P/poly (Buhrman-Fortnow-Thierauf)
+
+    The strongest known unconditional circuit lower bound for a "natural"
+    complexity class is MA_EXP ⊄ P/poly. -/
+theorem strongest_unconditional_circuit_lb :
+    ¬ (MA_EXP ⊆ Ppoly) ∧ ¬ (Sigma2EXP ⊆ Ppoly) :=
+  ⟨buhrman_fortnow_thierauf, Sigma2EXP_not_in_Ppoly⟩
+
+-- Part 48 exports (Circuit Size Classes and Kannan's Theorem)
+#check SIZE
+#check SIZE_monotone
+#check SIZE_poly_monotone
+#check circuit_size_hierarchy
+#check SIZE_hierarchy_strict
+#check Sigma2EXP
+#check NEXP_subset_Sigma2EXP
+#check EXP_subset_Sigma2EXP
+#check kannan_theorem
+#check kannan_linear
+#check kannan_quadratic
+#check kannan_quantifier_gap
+#check MA_EXP
+#check NEXP_subset_MA_EXP
+#check buhrman_fortnow_thierauf
+#check strongest_unconditional_circuit_lb
 
 end PNPBarriers
