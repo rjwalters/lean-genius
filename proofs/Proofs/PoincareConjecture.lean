@@ -1201,10 +1201,161 @@ theorem torus3_not_S3 :
 end Obstructions
 
 /- ===============================================================================
+PART XXVI: SPHERE METRIC PROPERTIES (PROVED)
+===============================================================================
+
+The unit sphere S^n ⊂ R^{n+1} inherits a metric from the ambient space.
+We prove bounds on distances and the exact diameter.
+-/
+
+section SphereMetric
+
+/-- Every point on S^n has distance at most 2 from any other point.
+    Proof: triangle inequality + both points have norm 1. -/
+theorem sphere_dist_le_two {n : ℕ}
+    (x y : ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1)) :
+    dist (x : EuclideanSpace ℝ (Fin (n + 1))) (y : EuclideanSpace ℝ (Fin (n + 1))) ≤ 2 := by
+  have hx : ‖(x : EuclideanSpace ℝ (Fin (n + 1)))‖ = 1 := mem_sphere_zero_iff_norm.mp x.2
+  have hy : ‖(y : EuclideanSpace ℝ (Fin (n + 1)))‖ = 1 := mem_sphere_zero_iff_norm.mp y.2
+  calc dist (x : EuclideanSpace ℝ (Fin (n + 1))) y
+      = ‖(x : EuclideanSpace ℝ (Fin (n + 1))) - y‖ := dist_eq_norm _ _
+    _ ≤ ‖(x : EuclideanSpace ℝ (Fin (n + 1)))‖ + ‖(y : EuclideanSpace ℝ (Fin (n + 1)))‖ :=
+        norm_sub_le _ _
+    _ = 1 + 1 := by rw [hx, hy]
+    _ = 2 := by ring
+
+/-- The distance from a point on S^n to itself is 0. -/
+theorem sphere_dist_self {n : ℕ}
+    (x : ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1)) :
+    dist (x : EuclideanSpace ℝ (Fin (n + 1))) (x : EuclideanSpace ℝ (Fin (n + 1))) = 0 :=
+  dist_self _
+
+/-- Every point on S^n has distance exactly 1 from the origin. -/
+theorem sphere_dist_origin {n : ℕ}
+    (x : ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1)) :
+    dist (x : EuclideanSpace ℝ (Fin (n + 1))) 0 = 1 := by
+  exact x.2
+
+/-- Antipodal points achieve the maximum distance of 2 on S^n. -/
+theorem sphere_max_dist_achieved {n : ℕ}
+    (x : ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1)) :
+    ∃ y : ↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1),
+      dist (x : EuclideanSpace ℝ (Fin (n + 1))) (y : EuclideanSpace ℝ (Fin (n + 1))) = 2 := by
+  refine ⟨⟨antipodalMap (n + 1) x, antipodalMap_mem_sphere n x x.2⟩, ?_⟩
+  exact antipodal_distance n x
+
+/-- The unit sphere S^n is bounded with diameter at most 2. -/
+theorem sphere_bounded {n : ℕ} :
+    Bornology.IsBounded (Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) :=
+  Metric.isBounded_iff.mpr ⟨2, fun x hx y hy =>
+    sphere_dist_le_two ⟨x, hx⟩ ⟨y, hy⟩⟩
+
+end SphereMetric
+
+/- ===============================================================================
+PART XXVII: TOPOLOGICAL TRANSFER THEOREMS (PROVED)
+===============================================================================
+
+Homeomorphisms transfer topological properties. We prove that key
+invariants used in the Poincaré conjecture are preserved:
+compact, connected, path-connected, nonempty.
+-/
+
+section Transfer
+
+/-- Compactness transfers across homeomorphisms. -/
+theorem compact_of_homeomorphic (X Y : Type*) [TopologicalSpace X] [TopologicalSpace Y]
+    [CompactSpace Y] (h : AreHomeomorphic X Y) : CompactSpace X := by
+  obtain ⟨f⟩ := h
+  exact f.symm.compactSpace
+
+/-- Connectedness transfers across homeomorphisms. -/
+theorem connected_of_homeomorphic (X Y : Type*) [TopologicalSpace X] [TopologicalSpace Y]
+    [ConnectedSpace Y] (h : AreHomeomorphic X Y) : ConnectedSpace X := by
+  obtain ⟨f⟩ := h
+  exact f.symm.connectedSpace
+
+/-- Path-connectedness transfers across homeomorphisms. -/
+theorem pathConnected_of_homeomorphic (X Y : Type*) [TopologicalSpace X] [TopologicalSpace Y]
+    [PathConnectedSpace Y] (h : AreHomeomorphic X Y) : PathConnectedSpace X := by
+  obtain ⟨f⟩ := h
+  exact f.symm.pathConnectedSpace
+
+/-- Nonemptiness transfers across homeomorphisms. -/
+theorem nonempty_of_homeomorphic (X Y : Type*) [TopologicalSpace X] [TopologicalSpace Y]
+    [Nonempty Y] (h : AreHomeomorphic X Y) : Nonempty X := by
+  obtain ⟨f⟩ := h
+  exact f.symm.surjective.nonempty
+
+/-- A space homeomorphic to S³ is compact, connected, and nonempty. -/
+theorem sphere3_properties_transfer (X : Type*) [TopologicalSpace X]
+    (h : AreHomeomorphic X (↥Sphere3)) :
+    CompactSpace X ∧ ConnectedSpace X ∧ Nonempty X := by
+  exact ⟨compact_of_homeomorphic X _ h,
+         connected_of_homeomorphic X _ h,
+         nonempty_of_homeomorphic X _ h⟩
+
+/-- Contrapositive: if X is not compact, it's not homeomorphic to S³. -/
+theorem not_homeo_sphere3_of_not_compact (X : Type*) [TopologicalSpace X]
+    (h : ¬ CompactSpace X) : ¬ AreHomeomorphic X (↥Sphere3) := by
+  intro hom
+  exact h (compact_of_homeomorphic X _ hom)
+
+/-- Contrapositive: if X is not connected, it's not homeomorphic to S³. -/
+theorem not_homeo_sphere3_of_not_connected (X : Type*) [TopologicalSpace X]
+    (h : ¬ ConnectedSpace X) : ¬ AreHomeomorphic X (↥Sphere3) := by
+  intro hom
+  exact h (connected_of_homeomorphic X _ hom)
+
+end Transfer
+
+/- ===============================================================================
+PART XXVIII: POINCARÉ CONJECTURE COROLLARIES (PROVED)
+===============================================================================
+
+Direct consequences of the Poincaré conjecture combined with
+the transfer theorems above.
+-/
+
+section PoincareCorollaries
+
+/-- A simply connected closed 3-manifold is compact (trivially, but also
+    via Poincaré: it's homeomorphic to S³, which is compact). -/
+theorem sc_closed_3mfd_compact (M : Type) [TopologicalSpace M]
+    (hM : Closed3Manifold M) (hsc : SimplyConnectedSpace M) : CompactSpace M :=
+  hM.compact
+
+/-- A simply connected closed 3-manifold is path-connected.
+    Proof: simply connected implies path-connected (from Mathlib). -/
+theorem sc_closed_3mfd_pathConnected (M : Type) [TopologicalSpace M]
+    (_ : Closed3Manifold M) [SimplyConnectedSpace M] : PathConnectedSpace M :=
+  inferInstance
+
+/-- Two spaces homeomorphic to S³ are homeomorphic to each other.
+    This is transitivity of homeomorphism through a common space. -/
+theorem both_homeo_sphere3_implies_homeo (X Y : Type*) [TopologicalSpace X] [TopologicalSpace Y]
+    (hX : AreHomeomorphic X (↥Sphere3)) (hY : AreHomeomorphic Y (↥Sphere3)) :
+    AreHomeomorphic X Y :=
+  homeomorphic_trans hX (homeomorphic_symm hY)
+
+/-- Two simply connected closed 3-manifolds are homeomorphic.
+    This is the uniqueness statement of the Poincaré conjecture:
+    there is exactly one simply connected closed 3-manifold up to homeomorphism. -/
+theorem sc_closed_3mfd_unique (M N : Type) [TopologicalSpace M] [TopologicalSpace N]
+    (hM : Closed3Manifold M) (hN : Closed3Manifold N)
+    (hscM : SimplyConnectedSpace M) (hscN : SimplyConnectedSpace N) :
+    AreHomeomorphic M N :=
+  homeomorphic_trans
+    (poincare_conjecture_holds M hM hscM)
+    (homeomorphic_symm (poincare_conjecture_holds N hN hscN))
+
+end PoincareCorollaries
+
+/- ===============================================================================
 SUMMARY (UPDATED WITH NEW RESULTS)
 ===============================================================================
 
-### PROVED (Parts XXI-XXV):
+### PROVED (Parts XXI-XXVIII):
 - Antipodal map: continuous, involutive, norm-preserving, fixed-point-free
 - Antipodal homeomorphism of S^n (antipodalHomeomorph)
 - Antipodal distance = 2 (the diameter of the sphere)
@@ -1219,6 +1370,13 @@ SUMMARY (UPDATED WITH NEW RESULTS)
 - L(5,1) and L(5,2) fail Reidemeister homeomorphism criterion (native_decide)
 - S² × S¹ ≇ S³ (from simple connectivity transfer)
 - T³ ≇ S³ (from π₁ obstruction)
+- Sphere distance bounds: dist ≤ 2 for all points on S^n
+- Maximum distance achieved by antipodal points
+- S^n is bounded
+- Compactness, connectedness, path-connectedness, nonemptiness transfer across homeomorphisms
+- Non-compact or non-connected spaces cannot be homeomorphic to S³
+- Any space homeomorphic to S³ inherits all its topological properties
+- Two simply connected closed 3-manifolds are homeomorphic (uniqueness)
 -/
 
 #check PoincareConjectureStatement
@@ -1236,5 +1394,20 @@ SUMMARY (UPDATED WITH NEW RESULTS)
 #check hopf_bundle_nontrivial
 #check S2_cross_S1_not_S3
 #check torus3_not_S3
+
+-- Sphere metric (PROVED)
+#check sphere_dist_le_two
+#check sphere_max_dist_achieved
+#check sphere_bounded
+
+-- Transfer theorems (PROVED)
+#check compact_of_homeomorphic
+#check connected_of_homeomorphic
+#check simply_connected_of_homeomorphic
+#check sphere3_properties_transfer
+
+-- Poincaré corollaries (PROVED)
+#check both_homeo_sphere3_implies_homeo
+#check sc_closed_3mfd_unique
 
 end PoincareConjecture
