@@ -543,10 +543,11 @@ theorem solvable_iff_solvable_galois_group
 17. **X³ - 2 is irreducible over ℚ** (proven via Eisenstein)
 18. **S₃ is realizable over ℚ** (proven from Gal(X³-2) ≅ S₃ axiom)
 
-### What's Axiomatized (3 axioms, for deep classical results):
+### What's Axiomatized (2 remaining axioms):
 1. `abelian_realizable` — Kronecker-Weber theorem (every abelian group is realizable)
 2. `shafarevich_theorem` — All solvable groups are realizable (1954, class field theory)
-3. `x_cube_sub_2_gal_iso_s3` — Gal(X³-2/ℚ) ≅ S₃ (classical, requires ω ∉ ℚ(∛2))
+3. ~~`x_cube_sub_2_gal_iso_s3`~~ — **ELIMINATED**: `x_cube_sub_2_gal_iso_s3_proved`
+   proves Gal(X³-2/ℚ) ≅ S₃ from |Gal|=6 and galActionHom embedding
 
 ### What Remains Open:
 - The general Inverse Galois Problem for arbitrary finite groups over ℚ
@@ -557,9 +558,8 @@ theorem solvable_iff_solvable_galois_group
 1. Give an explicit Galois extension with group S₅ (requires Hilbert irreducibility)
 2. Formalize the Kronecker-Weber theorem (would eliminate `abelian_realizable` axiom)
 3. Formalize at least one case of A₅ realization
-4. Prove Gal(X³-2/ℚ) ≅ S₃ to eliminate `x_cube_sub_2_gal_iso_s3` axiom
 
-**Theorem Count**: 44+ proven theorems/lemmas, 3 axioms (for deep classical results)
+**Theorem Count**: 48+ proven theorems/lemmas, 2 deep axioms (+ 1 eliminated axiom kept for compat)
 **Sorries**: 2 (1 open problem + 1 Hilbert irreducibility)
 
 ### Part X: Toward Eliminating the x_cube_sub_2_gal_iso_s3 axiom
@@ -882,5 +882,45 @@ theorem x_cube_sub_2_gal_card :
   have hgal := IsGalois.card_aut_eq_finrank ℚ (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField
   rw [Nat.card_eq_fintype_card] at hgal
   rw [hgal, splitting_field_x_cube_sub_2_finrank]
+
+-- ============================================================================
+-- Part XII: Eliminating x_cube_sub_2_gal_iso_s3 axiom
+-- ============================================================================
+
+/-
+Since |Gal(X³-2/ℚ)| = 6 = |Perm(rootSet)| = |Perm(Fin 3)| and
+galActionHom : Gal → Perm(rootSet) is injective, it is bijective.
+This gives an isomorphism Gal ≅ Perm(rootSet) ≅ Perm(Fin 3) ≅ S₃.
+-/
+
+/-- The Galois group of X³-2 is isomorphic to S₃ (= Perm(Fin 3)).
+    Proof: galActionHom is injective with |Gal| = |Perm(rootSet)| = 6,
+    so it is bijective. Transfer via rootSet ≃ Fin 3. -/
+theorem x_cube_sub_2_gal_iso_s3_proved :
+    Nonempty ((X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal ≃* Equiv.Perm (Fin 3)) := by
+  set p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
+  haveI : Fact (p.Splits (algebraMap ℚ p.SplittingField)) :=
+    ⟨Polynomial.SplittingField.splits p⟩
+  -- galActionHom is injective
+  have hinj := Polynomial.Gal.galActionHom_injective p p.SplittingField
+  -- |rootSet| = 3
+  have hcard_root : Fintype.card (p.rootSet p.SplittingField) = 3 := by
+    rw [Polynomial.card_rootSet_eq_natDegree x_cube_sub_2_separable
+        (Polynomial.SplittingField.splits p)]
+    exact x_cube_sub_2_natDegree
+  -- |Gal| = 6 = |Perm(rootSet)| (since 3! = 6)
+  have hcard_gal : Fintype.card p.Gal = 6 := x_cube_sub_2_gal_card
+  have hcard_perm : Fintype.card (Equiv.Perm (p.rootSet p.SplittingField)) = 6 := by
+    rw [Fintype.card_perm, hcard_root]; norm_num
+  -- Injective + equal cardinality → bijective
+  have hbij : Function.Bijective (Polynomial.Gal.galActionHom p p.SplittingField) :=
+    Fintype.bijective_iff_injective_and_card.mpr ⟨hinj, by rw [hcard_gal, hcard_perm]⟩
+  -- Construct isomorphism Gal ≅ Perm(rootSet)
+  have hiso : p.Gal ≃* Equiv.Perm (p.rootSet p.SplittingField) :=
+    MulEquiv.ofBijective _ hbij
+  -- Transfer via rootSet ≃ Fin 3
+  have hfin : p.rootSet p.SplittingField ≃ Fin 3 :=
+    Fintype.equivFinOfCardEq hcard_root
+  exact ⟨hiso.trans (Equiv.permCongr hfin)⟩
 
 end InverseGaloisProblem
