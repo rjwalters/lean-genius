@@ -3,7 +3,7 @@
 # parallel-research.sh - Launch parallel research agents
 #
 # Usage:
-#   ./parallel-research.sh [count]           Launch N agents (default: 2, max: 5)
+#   ./parallel-research.sh [count]           Launch N agents (default: 2, max: 7)
 #   ./parallel-research.sh --status          Show running agents and claims
 #   ./parallel-research.sh --graceful-stop   Signal agents to stop after current work
 #   ./parallel-research.sh --stop            Force stop all agents immediately
@@ -242,7 +242,7 @@ launch_agents() {
     local wait_interval="${RESEARCHER_WAIT_INTERVAL:-15}"
 
     # Validate count
-    if [[ $count -lt 1 || $count -gt 5 ]]; then
+    if [[ $count -lt 1 || $count -gt 7 ]]; then
         print_error "Agent count must be between 1 and 5 (got: $count)"
         exit 1
     fi
@@ -451,7 +451,7 @@ Launch multiple Claude Code agents to work on research problems concurrently.
 Each agent works in its own git worktree with a dedicated branch.
 
 Usage:
-  ./parallel-research.sh [count]            Launch N agents (default: 2, max: 5)
+  ./parallel-research.sh [count]            Launch N agents (default: 2, max: 7)
   ./parallel-research.sh --status           Show running agents and claims
   ./parallel-research.sh --continue         Resume all agents after API limits reset
   ./parallel-research.sh --continue N       Resume agent N specifically
