@@ -36,16 +36,17 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (19 axioms)
+## Axiom Summary (18 axioms)
 Core model (10):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
 - 1 natural proofs: razborov_rudich
 - 2 closure/composition: poly_time_compose, reduction_preserves_P
 - 1 containment: NP_subset_PSPACE
-- Now theorems (from Φ_pair_project_first): P_rel_subset_NP_rel, P_subset_BPP
-Extended landscape (9):
-- 2 BPP: BPP_subset_EXP, BPP_complement_closed
+- Now theorems: P_rel_subset_NP_rel (Φ_pair_project_first), P_subset_BPP
+    (Φ_pair_project_first), BPP_complement_closed (Φ_negate)
+Extended landscape (8):
+- 1 BPP: BPP_subset_EXP
 - 1 Sipser-Lautemann: sipser_lautemann (BPP ⊆ Σ₂ ∩ Π₂)
 - 1 Toda: toda_theorem (PH ⊆ P^#P)
 - 1 Adleman: adleman_theorem (BPP ⊆ P/poly)
@@ -1164,9 +1165,20 @@ theorem P_subset_BPP : P ⊆ BPP := by
 axiom BPP_subset_EXP : BPP ⊆ EXP
 
 /-- BPP is closed under complement: if f ∈ BPP, then ¬f ∈ BPP.
-    (Flip the answer; the majority is preserved.) -/
-axiom BPP_complement_closed : ∀ f : ℕ → Bool, f ∈ BPP →
-  (fun n => !f n) ∈ BPP
+    **Previously an axiom** — now proved from `Φ_negate`.
+    The negated program outputs `!r` for each `r`; since the majority of
+    random strings gave the correct answer `f n`, they now give `!f n`. -/
+theorem BPP_complement_closed : ∀ f : ℕ → Bool, f ∈ BPP →
+    (fun n => !f n) ∈ BPP := by
+  intro f ⟨e, p, hbpp⟩
+  obtain ⟨e', he'⟩ := Φ_negate e
+  refine ⟨e', p, ?_⟩
+  intro n
+  obtain ⟨correctCount, hmaj, witnesses, hcard, hwit⟩ := hbpp n
+  refine ⟨correctCount, hmaj, witnesses, hcard, ?_⟩
+  intro r hr
+  obtain ⟨hbound, s, hrun, htime⟩ := hwit r hr
+  exact ⟨hbound, s, he' emptyOracle (Nat.pair n r) (f n) s hrun, htime⟩
 
 /-- BPP ⊆ Σ₂ ∩ Π₂: Sipser-Lautemann theorem (1983).
     BPP is contained in the second level of the polynomial hierarchy.
