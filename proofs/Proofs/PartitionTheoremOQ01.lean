@@ -965,12 +965,13 @@ theorem rr1Mod5_eq_rr1Mod5Partitions (n : ℕ) :
   · intro h
     rw [List.all_eq_true]
     intro x hx
-    simp only [List.mem_cons, List.mem_singleton, decide_eq_true_eq]
     rw [Multiset.mem_toList] at hx
-    exact h x hx
+    have := h x hx
+    simp only [List.mem_cons, List.not_mem_nil, or_false, decide_eq_true_eq]
+    exact this
   · intro h x hx
     have := List.all_eq_true.mp h x (Multiset.mem_toList.mpr hx)
-    simp only [List.mem_cons, List.mem_singleton, decide_eq_true_eq] at this
+    simp only [List.mem_cons, List.not_mem_nil, or_false, decide_eq_true_eq] at this
     exact this
 
 /-- RR2 mod5 equivalence: decidable ↔ noncomputable. -/
@@ -983,12 +984,13 @@ theorem rr2Mod5_eq_rr2Mod5Partitions (n : ℕ) :
   · intro h
     rw [List.all_eq_true]
     intro x hx
-    simp only [List.mem_cons, List.mem_singleton, decide_eq_true_eq]
     rw [Multiset.mem_toList] at hx
-    exact h x hx
+    have := h x hx
+    simp only [List.mem_cons, List.not_mem_nil, or_false, decide_eq_true_eq]
+    exact this
   · intro h x hx
     have := List.all_eq_true.mp h x (Multiset.mem_toList.mpr hx)
-    simp only [List.mem_cons, List.mem_singleton, decide_eq_true_eq] at this
+    simp only [List.mem_cons, List.not_mem_nil, or_false, decide_eq_true_eq] at this
     exact this
 
 -- ============================================================================
@@ -1028,47 +1030,111 @@ requires showing that the minimum gap among all pairs occurs between
 consecutive elements in a sorted list.
 -/
 
+/-- Helper: hasMinGap implies each element exceeds the next by at least d. -/
+private theorem hasMinGap_pairwise_le {l : List ℕ} {d : ℕ}
+    (h : hasMinGap l d = true) : l.Pairwise (fun a b => b + d ≤ a) := by
+  induction l with
+  | nil => exact List.Pairwise.nil
+  | cons x xs ih =>
+    match xs, h with
+    | [], _ => exact List.pairwise_singleton _ _
+    | y :: ys, h =>
+      unfold hasMinGap at h
+      simp only [Bool.and_eq_true, decide_eq_true_eq] at h
+      have hxy : y + d ≤ x := h.1
+      have htail := ih h.2
+      constructor
+      · intro b hb
+        rcases List.mem_cons.mp hb with rfl | hb'
+        · exact hxy
+        · have hyb := (List.pairwise_cons.mp htail).1 b hb'
+          omega
+      · exact htail
+
 /-- hasMinGap implies the pairwise gap condition for elements in the list. -/
 theorem hasMinGap_implies_pairwise_gap {l : List ℕ} {d : ℕ}
     (h : hasMinGap l d = true) :
     ∀ a ∈ l, ∀ b ∈ l, a ≠ b → (a + d ≤ b ∨ b + d ≤ a) := by
+  have hpw := hasMinGap_pairwise_le h
   intro a ha b hb hab
   by_cases hd : d = 0
   · subst hd; omega
-  · have hd1 : 1 ≤ d := by omega
-    have hsorted := hasMinGap_ge_one_pairwise_gt l d hd1 h
+  · -- Use the Pairwise relation to find the order between a and b
+    clear h  -- no longer needed, work from hpw
     induction l with
-    | nil => exact absurd ha (List.not_mem_nil _)
-    | cons x xs ih =>
-      simp only [hasMinGap] at h
-      match xs, h with
-      | [], _ =>
-        simp only [List.mem_singleton] at ha hb
-        subst ha; subst hb; exact absurd rfl hab
-      | y :: ys, h =>
-        simp only [Bool.and_eq_true, decide_eq_true_eq] at h
-        have htail := h.2
-        have hsorted_tail := (List.pairwise_cons.mp hsorted).2
-        have hx_gt_all := (List.pairwise_cons.mp hsorted).1
-        rcases List.mem_cons.mp ha with rfl | ha'
-        · rcases List.mem_cons.mp hb with rfl | hb'
-          · exact absurd rfl hab
-          · left
-            rcases List.mem_cons.mp hb' with rfl | hb''
-            · omega
-            · have hyb := (List.pairwise_cons.mp hsorted_tail).1 b hb''
-              omega
-        · rcases List.mem_cons.mp hb with rfl | hb'
-          · right
-            rcases List.mem_cons.mp ha' with rfl | ha''
-            · omega
-            · have hya := (List.pairwise_cons.mp hsorted_tail).1 a ha''
-              omega
-          · exact ih htail hsorted_tail ha' hb' hab
+    | nil => simp at ha
+    | cons x xs ih_l =>
+      simp only [List.mem_cons] at ha hb
+      have hpw_tail := (List.pairwise_cons.mp hpw).2
+      have hx_all := (List.pairwise_cons.mp hpw).1
+      rcases ha with rfl | ha'
+      · rcases hb with rfl | hb'
+        · exact absurd rfl hab
+        · right; exact hx_all b hb'
+      · rcases hb with rfl | hb'
+        · left; exact hx_all a ha'
+        · exact ih_l hpw_tail ha' hb'
 
 /-- hasMinGap with d ≥ 1 implies Nodup (re-exported for gap equivalence). -/
 theorem hasMinGap_implies_nodup {l : List ℕ} {d : ℕ} (hd : 1 ≤ d)
     (h : hasMinGap l d = true) : l.Nodup :=
-  hasMinGap_ge_one_nodup l d hd h
+  RogersRamanujan.hasMinGap_ge_one_nodup l d hd h
+
+-- ============================================================================
+-- Part XXIII: Reverse Gap Equivalence (pairwise → hasMinGap)
+-- ============================================================================
+
+/-
+**Key Lemma**: For a sorted decreasing list, if all pairs of distinct elements
+differ by ≥ d, then consecutive elements differ by ≥ d (i.e., hasMinGap l d).
+
+This is the reverse direction of `hasMinGap_implies_pairwise_gap`.
+Together they give: for sorted decreasing lists with Nodup,
+  hasMinGap l d ↔ pairwise gap ≥ d
+-/
+
+/-- A sorted descending list with pairwise gap ≥ d has hasMinGap d. -/
+theorem pairwise_gap_implies_hasMinGap {l : List ℕ} {d : ℕ}
+    (hsorted : l.Pairwise (· ≥ ·))
+    (hnodup : l.Nodup)
+    (hpairwise : ∀ a ∈ l, ∀ b ∈ l, a ≠ b → (a + d ≤ b ∨ b + d ≤ a)) :
+    hasMinGap l d = true := by
+  induction l with
+  | nil => simp [hasMinGap]
+  | cons x xs ih =>
+    match xs, hsorted, hnodup with
+    | [], _, _ => simp [hasMinGap]
+    | y :: ys, hsorted, hnodup =>
+      unfold hasMinGap
+      simp only [Bool.and_eq_true, decide_eq_true_eq]
+      have hnodup_cons := List.nodup_cons.mp hnodup
+      have hx_ne_y : x ≠ y := by
+        intro heq; subst heq
+        exact hnodup_cons.1 (by simp)
+      have hpair := hpairwise x (by simp) y (by simp) hx_ne_y
+      have hx_ge_y : x ≥ y :=
+        (List.pairwise_cons.mp hsorted).1 y (by simp)
+      constructor
+      · rcases hpair with h | h
+        · omega
+        · exact h
+      · exact ih
+          (List.pairwise_cons.mp hsorted).2
+          hnodup_cons.2
+          (fun a ha b hb hab =>
+            hpairwise a (List.mem_cons.mpr (Or.inr ha))
+                      b (List.mem_cons.mpr (Or.inr hb)) hab)
+
+/-- Complete gap equivalence for sorted descending lists:
+    hasMinGap l d ↔ (Nodup ∧ pairwise gap ≥ d), assuming d ≥ 1 and sorted. -/
+theorem hasMinGap_iff_pairwise_gap {l : List ℕ} {d : ℕ} (hd : 1 ≤ d)
+    (hsorted : l.Pairwise (· ≥ ·)) :
+    hasMinGap l d = true ↔
+      (l.Nodup ∧ ∀ a ∈ l, ∀ b ∈ l, a ≠ b → (a + d ≤ b ∨ b + d ≤ a)) := by
+  constructor
+  · intro h
+    exact ⟨hasMinGap_implies_nodup hd h, hasMinGap_implies_pairwise_gap h⟩
+  · intro ⟨hnodup, hpw⟩
+    exact pairwise_gap_implies_hasMinGap hsorted hnodup hpw
 
 end PartitionDecidable
