@@ -796,4 +796,33 @@ theorem s3_realizable :
     IsGalois.mk,
     x_cube_sub_2_gal_iso_s3_proved.map MulEquiv.symm⟩
 
+/-
+## Part XI: General Cyclotomic Realizability
+
+Every group `(ZMod n)ˣ` is realizable as a Galois group over ℚ.
+This captures the full power of the cyclotomic approach without needing
+the Kronecker-Weber theorem.
+
+Key consequence: all cyclic groups of order p-1 (for prime p) are realizable,
+as well as many non-cyclic abelian groups like the Klein four-group V₄.
+-/
+
+/--
+The group `(ZMod n)ˣ` is realizable as a Galois group over ℚ for every n ≥ 1.
+
+This is the structural theorem behind cyclotomic Galois theory: the n-th
+cyclotomic field ℚ(ζₙ) is a Galois extension of ℚ with Galois group ≅ (ℤ/nℤ)ˣ.
+
+Since `(cyclotomic n ℚ).Gal` is definitionally the automorphism group of
+the splitting field, and CyclotomicField n ℚ IS this splitting field,
+we can directly use the cyclotomic isomorphism theorem.
+-/
+theorem units_zmod_realizable (n : ℕ) [NeZero n] :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K), Nonempty ((ZMod n)ˣ ≃* (K ≃ₐ[ℚ] K)) :=
+  ⟨CyclotomicField n ℚ,
+    inferInstance, inferInstance, inferInstance,
+    cyclotomic_field_isGalois n,
+    ⟨(cyclotomic_galois_group_iso_units_zmod n).symm⟩⟩
+
 end InverseGaloisProblem
