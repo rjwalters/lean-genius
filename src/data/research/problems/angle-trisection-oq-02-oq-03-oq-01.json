@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "BLOCKED",
     "since": "2026-03-06T17:58:04-08:00",
-    "iteration": 3,
-    "focus": "Remaining 3 axioms all depend on fixedField infrastructure missing from Mathlib",
+    "iteration": 5,
+    "focus": "maximal_real_subfield_degree PROVED. 2 axioms remain, blocked on CyclotomicField → ℂ embedding.",
     "blockers": [
       "File needs Mathlib v4.10 to v4.26 migration (API drift in Complex.abs, natDegree_T, PNat constructors, cyclotomic.irreducible_rat)",
       "After migration: prove maximal_real_subfield_degree via fixedField + tower law (proof strategy confirmed)"
     ],
-    "nextAction": "Migrate file to Mathlib 4.26 API, then prove all 3 axioms using IntermediateField.fixedField",
+    "nextAction": "Prove cos_minimal_poly_degree by connecting maxRealSubfield to cos(2π/n)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,13 +32,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Discovered IntermediateField.fixedField IS in Mathlib 4.26 (previous assessment was wrong). All 3 axioms are now provable in principle. BLOCKER: file needs Mathlib v4.10->v4.26 migration first (Complex.abs, natDegree_T, PNat, cyclotomic API changes).",
+    "progressSummary": "PROGRESS: Proved maximal_real_subfield_degree axiom via Galois fixed field theorem. File rewritten to eliminate API drift. 2 axioms remain (cos_minimal_poly_degree, cos_extension_is_galois).",
     "builtItems": [
       "Section XVI: Primitive Root Properties and Separability (zeta_ne_zero, zeta_pow_n_eq_one, minpoly_cos_separable, minpoly_cos_natDegree_pos, zeta_pow_pred_eq_conj, cos_eq_zeta_pow_re, sin_eq_zeta_pow_im, zeta_pow_norm_one, cos_2k_pi_div_n_bound)",
       "Section XVII: Cyclotomic Polynomial Connection (zeta_is_root_of_xn_sub_one, cyclotomic_natDegree_eq_totient)",
       "Survey: confirmed Mathlib has autEquivPow, isGalois, finrank, isMulCommutative for CyclotomicField",
       "Survey: confirmed fixedField infrastructure is MISSING from Mathlib - this is the primary blocker",
-      "complex_conj_order_two: PROVED via autEquivPow and -1 ∈ (ℤ/nℤ)* (was axiom, now theorem)"
+      "complex_conj_order_two: PROVED via autEquivPow and -1 ∈ (ℤ/nℤ)* (was axiom, now theorem)",
+      "maximal_real_subfield_degree: PROVED via fixedField of zpowers(conjAut) with tower law (§3 of OQ01)"
     ],
     "insights": [
       "Complex.exp_two_pi_mul_I gives exp(2πi)=1 directly for proving ζ^n=1",
@@ -54,7 +55,16 @@
       "IntermediateField.finrank_fixedField_eq_card gives [K:fixedField(H)] = Nat.card H - exactly what we need for the proof",
       "Proof strategy for maximal_real_subfield_degree: H = zpowers(sigma), F = fixedField(H), tower law: phi(n) = [K:F]*[F:Q] = 2*[F:Q]",
       "BLOCKER: File has widespread Mathlib v4.10 to v4.26 API drift. Must migrate before proving axioms.",
-      "Key Mathlib 4.26 API: Subgroup.card_zpowers gives zpowers cardinality = orderOf, orderOf_eq_prime for sigma^2=1 and sigma!=1"
+      "Key Mathlib 4.26 API: Subgroup.card_zpowers gives zpowers cardinality = orderOf, orderOf_eq_prime for sigma^2=1 and sigma!=1",
+      "galCyclotomicEquivUnitsZMod gives Gal(K/Q) ≅ (Z/nZ)* - maps -1 to complex conjugation analogue",
+      "Nat.card_zpowers gives |zpowers(σ)| = orderOf(σ) - key for fixed field degree",
+      "IntermediateField.finrank_fixedField_eq_card gives [K:fixedField(H)] = Nat.card H",
+      "Module.finrank_mul_finrank gives tower law [K:Q] = [K:F]*[F:Q]",
+      "orderOf_eq_prime works for showing σ has order exactly 2 from σ²=1 and σ≠1",
+      "The 2 remaining axioms (cos_minimal_poly_degree, cos_extension_is_galois) both require connecting abstract CyclotomicField n ℚ to concrete cos(2π/n) ∈ ℝ via an explicit embedding",
+      "This requires either: (a) Polynomial.SplittingField.lift to embed CyclotomicField → ℂ, or (b) direct minimal polynomial construction via Chebyshev factoring",
+      "The parent file has cos_2pi_div_n_isIntegral and minpoly_cos_dvd_chebyshev but not the degree computation natDegree(minpoly) = φ(n)/2",
+      "To prove natDegree(minpoly) = φ(n)/2, need: all cos(2kπ/n) with gcd(k,n)=1 are roots of minpoly (requires Galois action through embedding)"
     ],
     "mathlibGaps": [
       "Maximal real subfield of cyclotomic field not in Mathlib",
@@ -62,10 +72,10 @@
       "IntermediateField tower law for [ℚ(ζ_n):ℚ(cos)] computation"
     ],
     "nextSteps": [
-      "Prove complex_conj_order_two via autEquivPow (map -1 ∈ (ℤ/nℤ)* to an AlgEquiv of order 2)",
-      "Build IntermediateField.fixedField for order-2 subgroups (~150 lines)",
-      "Connect maximal real subfield to cos(2π/n) adjoin (~100 lines)",
-      "Eliminate cos_extension_is_galois using normality from Chebyshev root characterization"
+      "Find Mathlib API for SplittingField.lift or IsCyclotomicExtension embedding into ℂ",
+      "If embedding exists: show image of fixedField(⟨σ⟩) is ℚ(cos(2π/n)) ⊂ ℝ, then [ℚ(cos(2π/n)):ℚ] = φ(n)/2",
+      "Alternative: construct minimal polynomial of 2cos(2π/n) as ∏(x - 2cos(2kπ/n)) for gcd(k,n)=1, 1≤k≤n/2",
+      "Key Mathlib targets: SplittingField.lift, IsCyclotomicExtension.algEquiv, or rootSet-based approach"
     ],
     "markdown": "# Knowledge Base: angle-trisection-oq-02-oq-03-oq-01\n\nGauss-Wantzel Theorem: prove cos_minpoly_gal_card from Mathlib cyclotomic infrastructure.\n\n---\n\n## Problem Understanding\n\nThe main axiom `cos_minpoly_gal_card` states |Gal(minpoly(cos(2π/n)))| = φ(n)/2.\nThis is the key remaining axiom blocking a complete proof of the Gauss-Wantzel theorem.\n\nThe proof strategy: ℚ(cos(2π/n)) is the maximal real subfield of ℚ(ζₙ), with index 2.\nMathlib has IsCyclotomicExtension with finrank = φ(n) and autEquivPow ≅ (ℤ/nℤ)*.\nThe maximal real subfield theory is NOT in Mathlib 4.26.\n\n---\n\n## Session 2026-03-11 (Session 1) - Chebyshev Conjugate Infrastructure\n\n**Mode**: FRESH (claimed via claim-random)\n**Outcome**: progress\n\n### What I Did\n- Scouted Mathlib cyclotomic infrastructure (IsCyclotomicExtension, autEquivPow, finrank)\n- Confirmed maximal real subfield NOT in Mathlib — need ~150-200 lines custom infrastructure\n- Proved 3 new theorems via Chebyshev polynomials (Section XIV-B):\n  1. `cos_2k_pi_eq_chebyshev_eval`: cos(2kπ/n) = T_k(cos(2π/n))\n  2. `cos_conjugate_mem_adjoin`: cos(2kπ/n) ∈ ℚ[cos(2π/n)]\n  3. `minpoly_cos_dvd_chebyshev`: minpoly | T_n - 1\n- Fixed `totient_div2_pow2_iff`: Mathlib 4.26 returns `Even` not `2 ∣` from `Nat.totient_even`\n- Docker build passes\n\n### Key Findings\n- `Chebyshev.T_real_cos` + `Chebyshev.aeval_T` gives cos(kθ) = T_k(cos θ) in one step\n- `Algebra.adjoin_singleton_eq_range_aeval` + `⟨T ℚ k, rfl⟩` proves adjoin membership cleanly\n- All conjugates of cos(2π/n) lie in ℚ[cos(2π/n)] → extension is normal (Galois)\n- Remaining gap: need [ℚ(cos(2π/n)):ℚ] = φ(n)/2 (requires maximal real subfield theory)\n\n### Files Modified\n- proofs/Proofs/AngleTrisectionOQ02OQ03.lean (+137/-39 lines)\n\n### Next Steps\n- Build maximal real subfield infrastructure (~150 lines):\n  - Show ℚ(cos(2π/n)) = ℚ(ζₙ)^{⟨complex_conj⟩}\n  - Use fixed field theorem: [ℚ(ζₙ):ℚ(cos(2π/n))] = 2\n  - Conclude [ℚ(cos(2π/n)):ℚ] = φ(n)/2\n- Then |Gal| = [field:ℚ] via IsGalois.card_aut_eq_finrank\n\n---\n\n## Insights\n\n- Chebyshev polynomials are the key bridge: T_k(cos(2π/n)) = cos(2kπ/n) gives all conjugates\n- The extension ℚ(cos(2π/n))/ℚ is Galois because it's generated by cos(2π/n) and all roots of the minimal polynomial are also cosines of rational multiples of π, which lie in the adjoin\n- Mathlib's `minpoly.dvd` easily shows minpoly | T_n - 1 (since T_n(cos(2π/n)) = cos(2π) = 1)\n- The hard part is computing the degree: need maximal real subfield = fixed field of complex conjugation\n\n---\n\n## Dead Ends\n\n- Direct cyclotomic approach without Chebyshev: can't show conjugates lie in adjoin without T_k\n- Trying to use `Nat.totient_even` as `2 ∣ _`: API changed in Mathlib 4.26 to return `Even`\n\n---\n\n## Session 2026-03-13 (Session 3) - Primitive Root Properties + Cyclotomic Bridge\n\n**Mode**: REVISIT\n**Outcome**: progress\n\n### What I Did\n- Added Section XVI: Primitive Root Properties and Separability (9 theorems)\n- Added Section XVII: Cyclotomic Polynomial Connection (2 theorems)\n- Key theorems: zeta_pow_n_eq_one (ζ^n=1), minpoly_cos_separable, cos_eq_zeta_pow_re/im\n- Docker build passes, 0 sorries\n\n### Key Findings\n- Complex.exp_two_pi_mul_I directly gives exp(2πi)=1\n- zpow arithmetic cleanly handles ζ^(n-1) = conj(ζ)\n- Polynomial.cyclotomic.natDegree_eq wraps natDegree(Φ_n) = φ(n) from Mathlib\n\n### Files Modified\n- proofs/Proofs/AngleTrisectionOQ02OQ03.lean: 908 → ~1020 lines, +12 theorems\n\n### Next Steps\n- Root characterization for T_n - 1\n- Normality of ℚ(cos(2π/n))/ℚ\n- Tower law [ℚ(ζ_n):ℚ(cos)] = 2\n"
   },
