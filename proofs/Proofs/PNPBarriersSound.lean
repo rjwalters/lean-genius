@@ -36,23 +36,23 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (20 axioms)
-Core model (11, unchanged from prior session):
-- 2 structural: Φ_countably_many, Φ_negate
+## Axiom Summary (19 axioms)
+Core model (10):
+- 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
 - 1 natural proofs: razborov_rudich
-- 1 structural property: P_rel_subset_NP_rel
 - 2 closure/composition: poly_time_compose, reduction_preserves_P
 - 1 containment: NP_subset_PSPACE
-- 2 separation/existence: P_ne_EXP, ladner_theorem
-New (9, for extended complexity landscape):
-- 3 BPP: P_subset_BPP, BPP_subset_EXP, BPP_complement_closed
+- Now theorems (from Φ_pair_project_first): P_rel_subset_NP_rel, P_subset_BPP
+Extended landscape (9):
+- 2 BPP: BPP_subset_EXP, BPP_complement_closed
 - 1 Sipser-Lautemann: sipser_lautemann (BPP ⊆ Σ₂ ∩ Π₂)
 - 1 Toda: toda_theorem (PH ⊆ P^#P)
 - 1 Adleman: adleman_theorem (BPP ⊆ P/poly)
 - 1 Karp-Lipton: karp_lipton (NP ⊆ P/poly → PH = Σ₂)
 - 1 Nisan-Wigderson: nisan_wigderson (hard function → BPP = P)
 - 1 Shamir: shamir_IP_eq_PSPACE (IP = PSPACE)
+Separation/existence (2): P_ne_EXP, ladner_theorem
 -/
 
 set_option linter.unusedVariables false
@@ -130,15 +130,21 @@ axiom Φ_countably_many :
       Φ e emptyOracle n = none ∨
       ∃ r s, Φ e emptyOracle n = some (r, s) ∧ r ≠ f n
 
-/-
-**Oracle access** (removed — implied by BGS axioms):
-Programs can query the oracle; different oracles yield different results.
-This follows from baker_gill_solovay_eq/sep: the existence of oracles that
-separate vs collapse P and NP requires oracle-sensitive programs.
+/-- **Pair projection**: For every program `e`, there exists a program `e'`
+    that, given a paired input `⟨n, x⟩`, extracts `n` and runs `e` on it,
+    ignoring `x`. The overhead is bounded by a constant (extraction is O(1)).
 
-**No-oracle baseline** (removed — follows from Φ_countably_many):
-Some programs halt and compute nontrivially without oracle access.
-Φ_countably_many already implies computable functions exist.
+    This enables proving P ⊆ NP and P ⊆ BPP from this single primitive. -/
+axiom Φ_pair_project_first (e : ℕ) :
+    ∃ e' : ℕ, ∀ (A : Oracle) (n x : ℕ),
+      ∃ overhead : ℕ, overhead ≤ 1 ∧
+        (∀ r s, Φ e A n = some (r, s) →
+          Φ e' A (Nat.pair n x) = some (r, s + overhead)) ∧
+        (Φ e A n = none → Φ e' A (Nat.pair n x) = none)
+
+/-
+**Oracle access** (removed — implied by BGS axioms).
+**No-oracle baseline** (removed — follows from Φ_countably_many).
 -/
 
 -- ============================================================
@@ -192,8 +198,37 @@ def NP_rel (A : Oracle) : Set (ℕ → Bool) :=
 def NP : Set (ℕ → Bool) := NP_rel emptyOracle
 
 /-- P^A ⊆ NP^A for all oracles A.
-    A P program is a trivial NP verifier (ignore the certificate). -/
-axiom P_rel_subset_NP_rel (A : Oracle) : P_rel A ⊆ NP_rel A
+    Use `Φ_pair_project_first` to build a verifier ignoring the certificate.
+    **Previously an axiom** — now proved from `Φ_pair_project_first`. -/
+theorem P_rel_subset_NP_rel (A : Oracle) : P_rel A ⊆ NP_rel A := by
+  intro f hf
+  obtain ⟨e, p, hsolves, htime⟩ := hf
+  obtain ⟨e', he'⟩ := Φ_pair_project_first e
+  unfold NP_rel InNP; simp only [Set.mem_setOf_eq]
+  use e', ⟨p.degree, p.coeff + 1⟩
+  constructor
+  · intro n hn
+    use 0
+    constructor
+    · exact Nat.zero_le _
+    · obtain ⟨s, hs⟩ := hsolves n
+      obtain ⟨overhead, ho_le, hfwd, _⟩ := he' A n 0
+      rw [hn] at hs
+      refine ⟨s + overhead, hfwd true s hs, ?_⟩
+      have htime' := htime n s (by rw [hn]; exact hs)
+      simp only [Polynomial.eval] at htime' ⊢
+      have hxd : (inputSize n) ^ p.degree ≥ 1 :=
+        Nat.one_le_pow _ _ (by unfold inputSize; omega)
+      -- s + overhead ≤ p.coeff * x^d + 1 ≤ p.coeff * x^d + x^d = (p.coeff+1) * x^d
+      have : p.coeff * (inputSize n) ^ p.degree + (inputSize n) ^ p.degree =
+        (p.coeff + 1) * (inputSize n) ^ p.degree := by ring
+      omega
+  · intro n hn c _ r s hrun
+    obtain ⟨s_orig, hs_orig⟩ := hsolves n
+    obtain ⟨overhead, _, hfwd, _⟩ := he' A n c
+    rw [hn] at hs_orig
+    have := (hfwd false s_orig hs_orig).symm.trans hrun
+    simp at this; exact this.1
 
 -- ============================================================
 -- PART 4: Relativization Barrier (Baker-Gill-Solovay, 1975)
@@ -1094,17 +1129,35 @@ def InBPP (f : ℕ → Bool) : Prop :=
 def BPP : Set (ℕ → Bool) := { f | InBPP f }
 
 /-- **P ⊆ BPP**: deterministic algorithms are trivially randomized.
-
-    Given a P program `e` that solves `f` on input `n`, there exists a
-    BPP program `e'` that, on input `Nat.pair n r`, ignores the random
-    bits `r`, extracts `n`, runs `e` on it, and returns the same answer.
-    This is correct for ALL random strings (100% > 50%).
-
-    We axiomatize this because the construction of `e'` (extracting the
-    first component of a pair) requires reasoning about Φ's programming
-    model that is blocked by the opacity of Φ. The result is uncontroversial:
-    every deterministic algorithm is a special case of a randomized one. -/
-axiom P_subset_BPP : P ⊆ BPP
+    Use `Φ_pair_project_first` to ignore random bits.
+    **Previously an axiom** — now proved from `Φ_pair_project_first`. -/
+theorem P_subset_BPP : P ⊆ BPP := by
+  intro f hf
+  obtain ⟨e, p, hsolves, htime⟩ := hf
+  obtain ⟨e', he'⟩ := Φ_pair_project_first e
+  unfold BPP InBPP; simp only [Set.mem_setOf_eq]
+  use e', ⟨p.degree, p.coeff + 1⟩
+  intro n
+  let bound := (⟨p.degree, p.coeff + 1⟩ : Polynomial).eval (inputSize n)
+  use bound + 1
+  constructor
+  · omega
+  · use Finset.range (bound + 1)
+    constructor
+    · simp
+    · intro r hr; simp at hr
+      constructor
+      · omega
+      · obtain ⟨s, hs⟩ := hsolves n
+        obtain ⟨overhead, ho_le, hfwd, _⟩ := he' emptyOracle n r
+        refine ⟨s + overhead, hfwd (f n) s hs, ?_⟩
+        have htime' := htime n s hs
+        simp only [Polynomial.eval] at htime' ⊢
+        have hxd : (inputSize n) ^ p.degree ≥ 1 :=
+          Nat.one_le_pow _ _ (by unfold inputSize; omega)
+        have : p.coeff * (inputSize n) ^ p.degree + (inputSize n) ^ p.degree =
+          (p.coeff + 1) * (inputSize n) ^ p.degree := by ring
+        omega
 
 /-- BPP ⊆ EXP: A BPP algorithm can be derandomized by trying all
     random strings in exponential time. -/
