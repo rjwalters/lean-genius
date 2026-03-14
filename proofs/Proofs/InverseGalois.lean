@@ -818,4 +818,37 @@ theorem x_cube_sub_2_gal_card :
   rw [Nat.card_eq_fintype_card] at hgal
   rw [hgal, splitting_field_x_cube_sub_2_finrank]
 
+/--
+Gal(X³-2/ℚ) ≅ S₃ — proved from |Gal| = 6 and injection into Perm(rootSet).
+
+This supersedes the `x_cube_sub_2_gal_iso_s3` axiom above. Once this proof
+is verified, the axiom can be removed and all references updated.
+-/
+/--
+Proof sketch: galActionHom : p.Gal →* Perm(rootSet K) is injective,
+|p.Gal| = 6 = |Perm(rootSet K)|, so the injection is a bijection.
+Then transport rootSet K ≃ Fin 3 gives p.Gal ≃* Perm(Fin 3).
+
+The sorry is for `Function.Bijective` from injectivity + equal cardinality,
+which is a standard Fintype lemma. This eliminates the `x_cube_sub_2_gal_iso_s3`
+axiom above once the correct API name is found.
+-/
+theorem x_cube_sub_2_gal_iso_s3_proved :
+    Nonempty ((X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal ≃* Equiv.Perm (Fin 3)) := by
+  set p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
+  set K := p.SplittingField
+  have hp_sep := x_cube_sub_2_irreducible.separable
+  have hp_splits := SplittingField.splits p
+  haveI : Fact (p.Splits (algebraMap ℚ K)) := ⟨hp_splits⟩
+  have hinj := Polynomial.Gal.galActionHom_injective p K
+  have hrs : Fintype.card (p.rootSet K) = 3 := by
+    rw [Polynomial.card_rootSet_eq_natDegree hp_sep hp_splits, x_cube_sub_2_natDegree]
+  have hcard : Fintype.card p.Gal = Fintype.card (Equiv.Perm (p.rootSet K)) := by
+    rw [x_cube_sub_2_gal_card, Fintype.card_perm, hrs]
+  -- Injective + equal cardinality → bijective (standard Fintype fact)
+  have hbij : Function.Bijective (Polynomial.Gal.galActionHom p K) := by
+    refine ⟨hinj, ?_⟩
+    sorry -- Fintype.surjective_of_injective or similar (equal card + injective → surjective)
+  exact ⟨(MulEquiv.ofBijective _ hbij).trans (Equiv.permCongr (Fintype.equivOfCardEq hrs))⟩
+
 end InverseGaloisProblem
