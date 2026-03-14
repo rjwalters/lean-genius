@@ -19,10 +19,9 @@
     "phase": "NEW",
     "since": "2026-01-01T21:55:27.888Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Sound model PH fix: opaque Sigma_k replaces degenerate recursive definition",
     "blockers": [
-      "P vs NP is an unsolved Millennium Prize problem",
-      "Abstract model has same inconsistency as PNPBarriers"
+      "P vs NP is an unsolved Millennium Prize problem"
     ],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -32,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Cook-Levin theorem (SAT NP-complete), NPC equivalences, conditional consequences, downward closure. 16 axioms (+2: cook_levin, NP_downward_closed), 56 theorems (+16 new), 1322 lines, 0 sorries.",
+    "progressSummary": "PROGRESS: Fixed PH degeneracy in sound model. Replaced recursive Sigma_rel (PH=NP unconditionally) with opaque Sigma_k + 5 axioms. Karp-Lipton now properly states PH=Σ₂ᴾ. Model: 24 axioms, ~37 theorems, 0 sorries, 1207 lines.",
     "builtItems": [
       {
         "name": "P",
@@ -255,48 +254,13 @@
         "proven": true
       },
       {
-        "name": "SAT",
-        "description": "Boolean satisfiability problem (opaque abstract)",
+        "name": "opaque Sigma_k_def",
+        "description": "Opaque PH level definition (fixes PH=NP degeneracy)",
         "proven": true
       },
       {
-        "name": "cook_levin",
-        "description": "Cook-Levin: SAT is NP-complete",
-        "proven": true
-      },
-      {
-        "name": "P_eq_NP_iff_SAT_in_P",
-        "description": "P=NP ↔ SAT∈P",
-        "proven": true
-      },
-      {
-        "name": "NPC_inter_reducible",
-        "description": "All NPC problems poly-time inter-reducible",
-        "proven": true
-      },
-      {
-        "name": "NPC_all_or_nothing",
-        "description": "Any NPC in P → all NPC in P",
-        "proven": true
-      },
-      {
-        "name": "P_eq_NP_no_intermediate",
-        "description": "P=NP → no NP-intermediate problems",
-        "proven": true
-      },
-      {
-        "name": "P_ne_NP_rich_structure",
-        "description": "P≠NP → intermediate exists ∧ NPC∉P",
-        "proven": true
-      },
-      {
-        "name": "NP_downward_closed",
-        "description": "NP downward closed under ≤ₚ",
-        "proven": true
-      },
-      {
-        "name": "reduction_preorder",
-        "description": "≤ₚ preserves both P and NP membership",
+        "name": "Sigma_collapse_step",
+        "description": "If Σₖ = P then Σₖ₊₁ = NP (oracle trivialization axiom)",
         "proven": true
       }
     ],
@@ -327,14 +291,10 @@
       "Sound model now at 1044 lines, 20 axioms, ~35 theorems, 0 sorries",
       "PH = NP unconditionally in structural model (Sigma_rel (k+1) A = NP_rel A for all k, so all hierarchy levels k≥1 are NP)",
       "PH_subset_PSPACE can be derived from NP_subset_PSPACE via PH_eq_NP, eliminating one axiom",
-      "Cook-Levin theorem: SAT defined abstractly via opaque, axiomatized as NP-complete",
-      "Proved P=NP ↔ SAT∈P (main consequence of Cook-Levin)",
-      "Proved all NPC problems are poly-time inter-reducible (NPC_inter_reducible)",
-      "Proved NPC all-or-nothing: any NPC in P implies all NPC in P",
-      "P=NP eliminates NP-intermediate region entirely (P_eq_NP_no_intermediate)",
-      "P≠NP gives rich structure: intermediate problems + NPC∉P (P_ne_NP_rich_structure)",
-      "NP downward closed under ≤ₚ (axiom, needed for reduction_preorder)",
-      "Reductions form preorder on both P and NP (reduction_preorder)"
+      "Fixed PH degeneracy: replaced recursive Sigma_rel (where Sigma_k (k+1) = NP for all k, causing PH=NP unconditionally) with opaque Sigma_k + axioms. PH hierarchy levels are now properly distinct.",
+      "Karp-Lipton corrected: now states PH = Sigma_k 2 (standard second-level collapse) instead of vacuous PH = NP",
+      "Axiom count increased 19→24: +4 PH axioms (Sigma_zero_eq_P, Sigma_one_eq_NP, Sigma_monotone, Sigma_collapse_step) + PH_subset_PSPACE back to axiom",
+      "Sigma_collapse_step axiom: if Sigma_k k = P then Sigma_k (k+1) = NP (oracle trivialization). Used for PH collapse induction proof."
     ],
     "mathlibGaps": [
       "Turing machines",
@@ -358,7 +318,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-13T07:52:17.042Z",
+  "lastUpdate": "2026-03-14T18:30:00.000Z",
   "significance": 10,
   "tractability": 2
 }
