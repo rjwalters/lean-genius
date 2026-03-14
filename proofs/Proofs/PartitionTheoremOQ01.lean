@@ -104,7 +104,7 @@ theorem hasMinGap_iff_pairwise (l : List ℕ) (d : ℕ) :
 
 /-- Corollary: hasMinGap d with d ≥ 1 gives strict pairwise separation.
     This follows immediately from the characterization. -/
-theorem hasMinGap_pairwise_sep (l : List ℕ) (d : ℕ) (hd : 1 ≤ d) :
+theorem hasMinGap_pairwise_sep (l : List ℕ) (d : ℕ) (_hd : 1 ≤ d) :
     hasMinGap l d = true →
     ∀ a ∈ l, ∀ b ∈ l, a ≠ b → (a + d ≤ b ∨ b + d ≤ a) := by
   intro h

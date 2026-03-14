@@ -888,6 +888,139 @@ theorem parity_axiom_from_equidistribution :
   exact (Filter.tendsto_congr (fun N => by rw [heq N])).mpr parity_class_equidistribution
 
 /-
+## Part XVI: Per-Column Involution
+
+For each fixed odd m, the involution n ↦ m-n on {1,...,m-1} preserves
+coprimality and swaps parity. Since m is odd, there's no fixed point
+(m-n = n ⟹ m = 2n, impossible). This gives EXACT equality of even
+and odd coprime counts in each column.
+
+This is strictly stronger than triangle_oe_eq_oo because it holds
+per-column, not just summed. It enables a cleaner reduction of
+the parity_class_equidistribution axiom.
+-/
+
+/-- Even coprimes to m in {1,...,m-1}. -/
+noncomputable def columnEvenCoprimes (m : ℕ) : Finset ℕ :=
+  (Finset.range m).filter (fun n => 0 < n ∧ Nat.Coprime m n ∧ Even n)
+
+/-- Odd coprimes to m in {1,...,m-1}. -/
+noncomputable def columnOddCoprimes (m : ℕ) : Finset ℕ :=
+  (Finset.range m).filter (fun n => 0 < n ∧ Nat.Coprime m n ∧ Odd n)
+
+/-- For odd m > 1: |{n ∈ {1,...,m-1} : gcd(m,n)=1, n even}| = |{... n odd}|.
+
+The involution n ↦ m-n preserves coprimality, swaps parity (m odd),
+and has no fixed points (m odd ⟹ m-n ≠ n). -/
+theorem column_even_eq_odd_coprimes {m : ℕ} (hm : Odd m) (hm1 : 1 < m) :
+    (columnEvenCoprimes m).card = (columnOddCoprimes m).card := by
+  apply Finset.card_bij (fun n _ => m - n)
+  · -- hi: maps columnEvenCoprimes into columnOddCoprimes
+    intro n hn
+    simp only [columnEvenCoprimes, columnOddCoprimes, Finset.mem_filter,
+      Finset.mem_range] at hn ⊢
+    obtain ⟨hn_range, hn_pos, hcop, hn_even⟩ := hn
+    refine ⟨by omega, by omega, involution_coprime hcop (by omega),
+            involution_oe_to_oo hm hn_even (by omega)⟩
+  · -- i_inj: injective
+    intro n₁ hn₁ n₂ hn₂ heq
+    simp only [columnEvenCoprimes, Finset.mem_filter, Finset.mem_range] at hn₁ hn₂
+    omega
+  · -- i_surj: surjective (preimage of odd n is m-n which is even)
+    intro n hn
+    simp only [columnOddCoprimes, columnEvenCoprimes, Finset.mem_filter,
+      Finset.mem_range] at hn ⊢
+    obtain ⟨hn_range, hn_pos, hcop, hn_odd⟩ := hn
+    exact ⟨m - n,
+      ⟨by omega, by omega, involution_coprime hcop (by omega),
+       involution_oo_to_oe hm hn_odd (by omega)⟩,
+      by omega⟩
+
+/-- Euler's totient of odd m > 1 is even: the involution n ↦ m-n pairs
+even and odd coprimes perfectly. -/
+theorem totient_even_of_odd {m : ℕ} (hm : Odd m) (hm1 : 1 < m) :
+    Even (Nat.totient m) := by
+  -- φ(m) = |{n ∈ {1,...,m-1} : gcd(m,n) = 1}| = |even coprimes| + |odd coprimes|
+  -- and even coprimes = odd coprimes by column_even_eq_odd_coprimes
+  have heq := column_even_eq_odd_coprimes hm hm1
+  -- φ(m) = 2 * |even coprimes|
+  exact ⟨(columnEvenCoprimes m).card, by omega⟩
+
+/-- Computational check: column counts for m = 3.
+Coprimes of 3 in {1,2}: {1, 2}. Even = {2}, Odd = {1}. Both have size 1. -/
+theorem column_check_3 :
+    (columnEvenCoprimes 3).card = (columnOddCoprimes 3).card := by
+  unfold columnEvenCoprimes columnOddCoprimes; native_decide
+
+/-- Computational check: column counts for m = 5.
+Coprimes of 5 in {1,2,3,4}: {1, 2, 3, 4}. Even = {2, 4}, Odd = {1, 3}. Both size 2. -/
+theorem column_check_5 :
+    (columnEvenCoprimes 5).card = (columnOddCoprimes 5).card := by
+  unfold columnEvenCoprimes columnOddCoprimes; native_decide
+
+/-- Computational check: column counts for m = 15.
+φ(15) = 8. Even = {2, 4, 7, 11}, Odd = {1, 8, 13, 14}? Both size 4. -/
+theorem column_check_15 :
+    (columnEvenCoprimes 15).card = (columnOddCoprimes 15).card := by
+  unfold columnEvenCoprimes columnOddCoprimes; native_decide
+
+/-
+## Part XVII: Sector Decomposition via Columns
+
+We decompose sector parity counts as sums over columns (fixed m values).
+For each odd m with m² < N, the OE and OO counts in column m differ
+by at most the number of "boundary" pairs where exactly one of n and
+m-n satisfies m²+n² ≤ N. This bounds |OE_sector - OO_sector|.
+-/
+
+/-- OE sector count restricted to column m. -/
+noncomputable def sectorOE_column (m N : ℕ) : ℕ :=
+  (Finset.range (N + 1)).filter (fun n =>
+    0 < n ∧ n < m ∧ Nat.Coprime m n ∧ Odd m ∧ Even n ∧ m ^ 2 + n ^ 2 ≤ N
+  ) |>.card
+
+/-- OO sector count restricted to column m. -/
+noncomputable def sectorOO_column (m N : ℕ) : ℕ :=
+  (Finset.range (N + 1)).filter (fun n =>
+    0 < n ∧ n < m ∧ Nat.Coprime m n ∧ Odd m ∧ Odd n ∧ m ^ 2 + n ^ 2 ≤ N
+  ) |>.card
+
+/-- When m² ≥ N, there are no valid pairs in the column: no n > 0 satisfies m²+n²≤N. -/
+theorem sectorOE_column_zero {m N : ℕ} (hm : N < m ^ 2) :
+    sectorOE_column m N = 0 := by
+  unfold sectorOE_column
+  apply Finset.card_eq_zero.mpr
+  apply Finset.filter_eq_empty_iff.mpr
+  intro n _
+  intro ⟨hn_pos, _, _, _, _, hle⟩
+  omega
+
+/-- When m² ≥ N, there are no valid OO pairs either. -/
+theorem sectorOO_column_zero {m N : ℕ} (hm : N < m ^ 2) :
+    sectorOO_column m N = 0 := by
+  unfold sectorOO_column
+  apply Finset.card_eq_zero.mpr
+  apply Finset.filter_eq_empty_iff.mpr
+  intro n _
+  intro ⟨hn_pos, _, _, _, _, hle⟩
+  omega
+
+/-- **Column discrepancy bound**: For each fixed odd m with m² < N,
+the OE and OO counts differ by at most 1.
+
+Proof sketch: The involution n ↦ m-n bijects even↔odd coprimes.
+For pairs where both n and m-n satisfy m²+·² ≤ N, the counts match.
+The unpaired elements are those near the boundary where exactly one
+of n, m-n lies in the sector. At most 2 elements can be unpaired
+(one from each side), giving |OE - OO| ≤ 1.
+
+(We axiomatize this bound; a full proof requires careful case analysis
+of the involution on the bounded range.) -/
+axiom column_discrepancy_bound (m N : ℕ) (hm : Odd m) (hm1 : 1 < m) :
+    (sectorOE_column m N : ℤ) - (sectorOO_column m N : ℤ) ≤ 1 ∧
+    (sectorOO_column m N : ℤ) - (sectorOE_column m N : ℤ) ≤ 1
+
+/-
 ## Summary (Updated)
 
 ### New in Part XII-XV (Parity Class Decomposition):

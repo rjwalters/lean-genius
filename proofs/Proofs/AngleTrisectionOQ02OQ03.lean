@@ -23,13 +23,17 @@
     The first new polygon construction since antiquity. Determined his career choice.
   - Wantzel (1837): Proved the converse — non-constructibility when φ(n) ≠ 2^k.
 
-  File summary: 62+ proved theorems, 0 sorries, 3 axioms.
+  File summary: 67+ proved theorems, 3 sorries, 3 axioms.
+  Sorries: cos_2kpi_div_n_eq_iff (Mathlib API rename), galois_conjugate_count (depends on former),
+  minpoly_cos_natDegree_eq (capstone — cyclotomic tower law, partial infrastructure built).
   Axioms: gauss_wantzel_theorem (redundant — proved as gauss_wantzel_theorem'),
   cos_minpoly_gal_card (has clear proof roadmap via Chebyshev + cyclotomic bridge),
   wantzel_galois_characterization (from OQ02).
   Key results: cos integrality (Chebyshev T_n), conjugate infrastructure (T_k identity,
   adjoin membership), minpoly divisibility (minpoly | T_n - 1), cyclotomic-cosine bridge
-  (ζ quadratic, ζ ∉ ℝ, no real roots, ζ⁻¹ = conj(ζ)).
+  (ζ quadratic, ζ ∉ ℝ, no real roots, ζ⁻¹ = conj(ζ)),
+  cyclotomic tower infrastructure (ζ integral, minpoly ζ = Φₙ, finrank ℚ(ζ) = φ(n),
+  cos ∈ ℚ(ζ), ℚ(cos) ≤ ℚ(ζ)).
 -/
 
 import Mathlib
@@ -1138,71 +1142,6 @@ theorem zeta_pow_not_real (n k : ℕ) (hn : 3 ≤ n) (hk0 : 0 < k)
   linarith
 
 /-
-## Section XVIII: Roots of T_n − 1
-
-Establishes that cos(2kπ/n) are roots of the Chebyshev polynomial T_n − 1.
-Combined with minpoly | T_n − 1, this constrains the roots of the minimal
-polynomial to lie among these cosine values.
--/
-
-/-- cos(2kπ/n) is a root of T_n − 1 for any k.
-    Proof: T_n(cos(2kπ/n)) = cos(n · 2kπ/n) = cos(2kπ) = 1.
-    So T_n(cos(2kπ/n)) − 1 = 0. -/
-theorem cos_is_root_of_chebyshev_sub_one (n k : ℕ) (hn : 1 ≤ n) :
-    Polynomial.aeval (Real.cos (↑k * (2 * Real.pi / ↑n)))
-      (Chebyshev.T ℝ n - Polynomial.C 1) = 0 := by
-  simp only [map_sub, Chebyshev.aeval_T, Polynomial.aeval_C, map_one]
-  rw [Chebyshev.T_real_cos]
-  have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-  have : (↑(↑n : ℤ) : ℝ) * (↑k * (2 * Real.pi / ↑n)) = ↑k * (2 * Real.pi) := by
-    rw [Int.cast_natCast]; field_simp; ring
-  rw [this, Real.cos_int_mul_two_pi]
-  simp
-
-/-- ζ_n^k + ζ_n^(-k) = 2cos(2kπ/n): sum of a root of unity and its inverse
-    equals twice the cosine. Generalization of cos_eq_half_zeta_add_conj. -/
-theorem zeta_pow_add_inv_pow (n k : ℕ) :
-    zeta n ^ k + (zeta n ^ k)⁻¹ = 2 * ↑(Real.cos (↑k * (2 * Real.pi / ↑n))) := by
-  have h_re := cos_eq_zeta_pow_re n k
-  have h_norm := zeta_pow_norm_one n k
-  -- (z^k)⁻¹ = conj(z^k) since |z^k| = 1
-  have h_inv : (zeta n ^ k)⁻¹ = starRingEnd ℂ (zeta n ^ k) := by
-    rw [inv_eq_of_mul_eq_one_right]
-    rw [Complex.mul_conj, ← Complex.ofReal_one]
-    congr 1
-    rw [Complex.normSq_eq_abs]
-    rw [← Complex.norm_eq_abs, h_norm, one_pow]
-  rw [h_inv, Complex.add_conj, h_re]
-  push_cast; ring
-
-/-- ζ_n^k · ζ_n^(-k) = 1: product of conjugate powers on the unit circle. -/
-theorem zeta_pow_mul_inv_pow (n k : ℕ) :
-    zeta n ^ k * (zeta n ^ k)⁻¹ = 1 := by
-  rcases eq_or_ne (zeta n ^ k) 0 with h | h
-  · exfalso
-    have := zeta_pow_norm_one n k
-    rw [h, norm_zero] at this
-    exact one_ne_zero this.symm
-  · exact mul_inv_cancel₀ h
-
-/-- The Chebyshev polynomial T_n evaluated at cos(2π/n) equals 1.
-    This is the k=1 case that was used for minpoly_cos_dvd_chebyshev,
-    stated as a standalone identity. -/
-theorem chebyshev_T_eval_cos_eq_one (n : ℕ) (hn : 1 ≤ n) :
-    Polynomial.aeval (Real.cos (2 * Real.pi / ↑n)) (Chebyshev.T ℝ n) = 1 := by
-  rw [Chebyshev.aeval_T, Chebyshev.T_real_cos]
-  have hn_ne : (↑n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-  have : (↑(↑n : ℤ) : ℝ) * (2 * Real.pi / ↑n) = 2 * Real.pi := by
-    rw [Int.cast_natCast]; field_simp
-  rw [this, Real.cos_two_pi]
-
-/-- cos(0) = 1 is always a root of T_n − 1 (the k=0 case).
-    More precisely, T_n(1) = 1 for all n. -/
-theorem chebyshev_T_one_eq_one (n : ℕ) :
-    Polynomial.aeval (1 : ℝ) (Chebyshev.T ℝ n) = 1 := by
-  rw [Chebyshev.aeval_T, Chebyshev.T_real_cos, Real.cos_zero]
-
-/-
 ## Summary
 
 ### Proved (0 sorries):
@@ -1278,9 +1217,15 @@ theorem chebyshev_T_one_eq_one (n : ℕ) :
 - ✅ ζ_n root of Φ_n — cyclotomic root (proved, Session 4)
 - ✅ ζ^(n-k) = conj(ζ^k) — conjugate pairing (proved, Session 4)
 - ✅ ζ^k ∉ ℝ for 0 < k < n/2 — imaginary part nonzero (proved, Session 4)
-- ❌ minpoly splits in adjoin — normality (needs: roots of minpoly are cosines)
-- ❌ [ℚ(ζ_n):ℚ(cos)] = 2 (formal) — needs IntermediateField infrastructure
-- ❌ natDegree(minpoly) = φ(n)/2 — cyclotomic tower law (needs above)
+- ✅ ζ_n integral over ℚ — root of X^n - 1 (proved, Session 7)
+- ✅ minpoly ℚ ζ_n = Φ_n — via IsPrimitiveRoot (proved, Session 7)
+- ✅ finrank ℚ ℚ(ζ_n) = φ(n) — via IntermediateField.adjoin.finrank (proved, Session 7)
+- ✅ cos(2π/n) ∈ ℚ(ζ_n) — cos = (ζ + ζ⁻¹)/2 (proved, Session 7)
+- ✅ ℚ(cos) ≤ ℚ(ζ_n) — adjoin monotonicity (proved, Session 7)
+- ✅ minpoly invariance ℝ↔ℂ — via algHom_eq (proved, Session 7)
+- ❌ [ℚ(ζ_n):ℚ(cos)] = 2 — needs: ζ satisfies irreducible quadratic over ℚ(cos) ⊂ ℝ
+- ❌ Tower law assembly — finrank ℚ F * finrank F E = finrank ℚ E
+- ❌ natDegree(minpoly) = φ(n)/2 — final assembly from tower law
 -/
 
 /-
@@ -1356,6 +1301,50 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
       refine ⟨(m' : ℤ), Or.inr ?_⟩
       have h_real : (↑j : ℝ) + ↑k = ↑(m' : ℤ) * ↑n := by exact_mod_cast h_int
       field_simp; nlinarith [h_real]
+
+/-- If gcd(k, n) = 1 then gcd(n - k, n) = 1. -/
+private lemma coprime_sub_self {n k : ℕ} (hk : k ≤ n) (hc : k.Coprime n) :
+    (n - k).Coprime n := by
+  rw [Nat.Coprime] at *
+  by_contra hne
+  obtain ⟨p, hp, hpg⟩ := Nat.exists_prime_and_dvd hne
+  have hpnk : p ∣ (n - k) := hpg.trans (Nat.gcd_dvd_left _ _)
+  have hpn : p ∣ n := hpg.trans (Nat.gcd_dvd_right _ _)
+  -- In ℤ: p | n and p | (n-k) implies p | k
+  have hpk : p ∣ k := by
+    have h1 : (↑p : ℤ) ∣ ↑n := by exact_mod_cast hpn
+    have h2 : (↑p : ℤ) ∣ (↑(n - k) : ℤ) := by exact_mod_cast hpnk
+    have h3 : (↑k : ℤ) = ↑n - ↑(n - k) := by push_cast; omega
+    have h4 : (↑p : ℤ) ∣ (↑k : ℤ) := h3 ▸ dvd_sub h1 h2
+    exact_mod_cast h4
+  -- p | gcd(k, n) = 1, contradiction with p prime
+  have : p ∣ Nat.gcd k n := Nat.dvd_gcd hpk hpn
+  rw [hc] at this
+  exact absurd (Nat.le_of_dvd one_pos this) (not_le.mpr hp.one_lt)
+
+/-- For n ≥ 3 and coprime k ∈ (0, n), k ≠ n - k (the pairing has no fixed points). -/
+private lemma coprime_ne_sub_self {n k : ℕ} (hn : 3 ≤ n) (hk0 : 0 < k) (hk : k < n)
+    (hc : k.Coprime n) : k ≠ n - k := by
+  intro h
+  have hkn : k ∣ n := ⟨2, by omega⟩
+  have := Nat.le_of_dvd (by omega) (Nat.dvd_gcd (dvd_refl k) hkn)
+  rw [hc] at this; omega
+
+/-- Coprime residues in range n are positive when n ≥ 3. -/
+private lemma coprime_pos_of_ge_three {n k : ℕ} (hn : 3 ≤ n)
+    (hk_mem : k ∈ Finset.filter (fun k => k.Coprime n) (Finset.range n)) : 0 < k := by
+  have hk := Finset.mem_filter.mp hk_mem
+  have hc := hk.2
+  by_contra h; push_neg at h
+  interval_cases k
+  simp only [Nat.Coprime, Nat.gcd_zero_left] at hc; omega
+
+/-- n - k is in the coprime filter when k is. -/
+private lemma sub_mem_coprime_filter {n k : ℕ} (hn : 3 ≤ n) (hk0 : 0 < k)
+    (hk : k < n) (hc : k.Coprime n) :
+    n - k ∈ Finset.filter (fun j => j.Coprime n) (Finset.range n) := by
+  simp only [Finset.mem_filter, Finset.mem_range]
+  exact ⟨by omega, coprime_sub_self (by omega) hc⟩
 
 /-- cos(2kπ/n) = cos(2(n-k)π/n) for k < n. Cosine pairs coprime residues. -/
 theorem cos_complement_eq (n : ℕ) (hn : 1 ≤ n) (k : ℕ) (hk : k < n) :
@@ -1470,19 +1459,105 @@ theorem chebyshev_T_sub_one_roots (n : ℕ) (hn : 1 ≤ n) (x : ℝ) (hx : |x| �
   push_cast [Int.cast_natCast] at h_arccos_eq
   linarith
 
+/-
+## Section XXIII: Cyclotomic Tower Law (minpoly degree = φ(n)/2)
+
+Proof strategy:
+  1. minpoly ℚ ζ_n = Φ_n (cyclotomic), so natDegree = φ(n)
+  2. cos(2π/n) = (ζ + ζ⁻¹)/2 ∈ ℚ(ζ_n), so ℚ(cos) ⊆ ℚ(ζ_n)
+  3. ζ_n satisfies X² - 2cos·X + 1 = 0 over ℚ(cos), so [ℚ(ζ):ℚ(cos)] ≤ 2
+  4. ζ_n ∉ ℝ for n ≥ 3, and ℚ(cos) ⊂ ℝ, so [ℚ(ζ):ℚ(cos)] = 2
+  5. Tower: φ(n) = natDegree(minpoly ℚ cos) · 2, giving natDegree = φ(n)/2
+-/
+
+/-- ζ_n is integral (algebraic) over ℚ: it's a root of X^n - 1. -/
+theorem zeta_isIntegral (n : ℕ) (hn : 1 ≤ n) : IsIntegral ℚ (zeta n) := by
+  rw [← isAlgebraic_iff_isIntegral]
+  refine ⟨X ^ n - C 1, ?_, ?_⟩
+  · intro h
+    have h1 : (X ^ n : ℚ[X]) = C 1 := sub_eq_zero.mp h
+    have h2 := congr_arg Polynomial.natDegree h1
+    simp [Polynomial.natDegree_X_pow, Polynomial.natDegree_C] at h2
+    omega
+  · simp only [map_sub, map_pow, aeval_X, map_one]
+    rw [zeta_pow_n_eq_one n hn, sub_self]
+
+/-- natDegree of the minimal polynomial of ζ_n over ℚ equals φ(n). -/
+theorem minpoly_zeta_natDegree (n : ℕ) (hn : 1 ≤ n) :
+    (minpoly ℚ (zeta n)).natDegree = Nat.totient n := by
+  have h_prim := zeta_isPrimitiveRoot n hn
+  have hirr := Polynomial.cyclotomic.irreducible_rat (n := n) (by omega)
+  have hne : NeZero (n : ℚ) := ⟨Nat.cast_ne_zero.mpr (by omega)⟩
+  rw [← h_prim.minpoly_eq_cyclotomic_of_irreducible hirr]
+  exact Polynomial.natDegree_cyclotomic n ℚ
+
+/-- finrank ℚ ℚ(ζ_n) = φ(n), where ℚ(ζ_n) = IntermediateField.adjoin ℚ {ζ_n} in ℂ. -/
+theorem finrank_adjoin_zeta (n : ℕ) (hn : 1 ≤ n) :
+    Module.finrank ℚ ↥(IntermediateField.adjoin ℚ ({zeta n} : Set ℂ)) =
+    Nat.totient n := by
+  rw [IntermediateField.adjoin.finrank (zeta_isIntegral n hn)]
+  exact minpoly_zeta_natDegree n hn
+
+/-- The complex cast of cos(2π/n) lies in ℚ(ζ_n): cos = (ζ + ζ⁻¹)/2 ∈ ℚ(ζ). -/
+theorem cos_mem_adjoin_zeta (n : ℕ) :
+    (↑(Real.cos (2 * Real.pi / ↑n)) : ℂ) ∈
+    IntermediateField.adjoin ℚ ({zeta n} : Set ℂ) := by
+  have h_cos := cos_eq_half_zeta_add_conj n
+  -- cos = (ζ + conj(ζ))/2, and conj(ζ) = ζ⁻¹ ∈ ℚ(ζ)
+  rw [h_cos]
+  have h_mem : zeta n ∈ IntermediateField.adjoin ℚ ({zeta n} : Set ℂ) :=
+    IntermediateField.mem_adjoin_simple_self ℚ (zeta n)
+  set F := IntermediateField.adjoin ℚ ({zeta n} : Set ℂ) with hF_def
+  apply F.div_mem
+  · apply F.add_mem
+    · exact h_mem
+    · rw [← zeta_inv_eq_conj n]
+      exact F.inv_mem h_mem
+  · exact F.natCast_mem 2
+
+/-- ℚ(cos(2π/n)) ≤ ℚ(ζ_n) as intermediate fields of ℚ → ℂ. -/
+theorem adjoin_cos_le_adjoin_zeta (n : ℕ) :
+    IntermediateField.adjoin ℚ ({(↑(Real.cos (2 * Real.pi / ↑n)) : ℂ)} : Set ℂ) ≤
+    IntermediateField.adjoin ℚ ({zeta n} : Set ℂ) :=
+  IntermediateField.adjoin_le_iff.mpr (Set.singleton_subset_iff.mpr (cos_mem_adjoin_zeta n))
+
 /-- The minimal polynomial of cos(2π/n) has degree exactly φ(n)/2.
 
-    Proof sketch:
-    1. minpoly divides T_n - 1 (from minpoly_cos_dvd_chebyshev)
-    2. All roots of minpoly are Galois conjugates (from IsGalois + separability)
-    3. All Galois conjugates are in {cos(2kπ/n) : gcd(k,n) = 1}
-       (from the Galois action σ(cos(2π/n)) = cos(2kπ/n) for some k coprime to n)
-    4. There are φ(n)/2 such distinct conjugates (from galois_conjugate_count)
-    5. natDegree(minpoly) = φ(n)/2
+    Proof: Cyclotomic tower law.
+    ζ_n generates an extension of degree φ(n) over ℚ.
+    cos(2π/n) = (ζ + ζ⁻¹)/2 generates a subfield, and ζ satisfies
+    a quadratic X² - 2cos·X + 1 over it (irreducible since ζ ∉ ℝ).
+    Tower: φ(n) = [ℚ(ζ):ℚ] = [ℚ(ζ):ℚ(cos)] · [ℚ(cos):ℚ] = 2 · natDegree(minpoly).
 
     This theorem, combined with IsGalois.card_aut_eq_finrank, yields cos_minpoly_gal_card. -/
 theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
     (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).natDegree = Nat.totient n / 2 := by
-  sorry -- Assembly of the above pieces
+  -- The key idea: work in ℂ with intermediate fields ℚ ⊂ ℚ(cos) ⊂ ℚ(ζ_n)
+  set c := (↑(Real.cos (2 * Real.pi / ↑n)) : ℂ) with hc_def
+  set ζ := zeta n with hζ_def
+  set F := IntermediateField.adjoin ℚ ({c} : Set ℂ) with hF_def
+  set E := IntermediateField.adjoin ℚ ({ζ} : Set ℂ) with hE_def
+  -- Step 1: natDegree(minpoly ℚ cos_ℝ) = natDegree(minpoly ℚ cos_ℂ)
+  -- because algebraMap ℝ ℂ is injective
+  have h_minpoly_eq : minpoly ℚ (Real.cos (2 * Real.pi / ↑n)) =
+      minpoly ℚ c := by
+    exact (minpoly.algHom_eq (IsScalarTower.toAlgHom ℚ ℝ ℂ)
+      (IsScalarTower.toAlgHom ℚ ℝ ℂ).injective _).symm
+  rw [h_minpoly_eq]
+  -- Step 2: natDegree(minpoly ℚ c) = finrank ℚ F
+  have h_int_c : IsIntegral ℚ c := by
+    exact (cos_2pi_div_n_isIntegral n (by omega)).map (IsScalarTower.toAlgHom ℚ ℝ ℂ)
+  have h_deg_F : (minpoly ℚ c).natDegree = Module.finrank ℚ ↥F := by
+    rw [IntermediateField.adjoin.finrank h_int_c]
+  rw [h_deg_F]
+  -- Step 3: finrank ℚ E = φ(n)
+  have h_finrank_E := finrank_adjoin_zeta n (by omega : 1 ≤ n)
+  -- Step 4: F ≤ E
+  have hFE : F ≤ E := adjoin_cos_le_adjoin_zeta n
+  -- Step 5: Tower law: finrank ℚ E = finrank ℚ F * finrank F E
+  -- (where F is viewed as a subalgebra of E via the inclusion)
+  -- Step 6: finrank F E = 2 (ζ satisfies irreducible quadratic over F)
+  -- Step 7: φ(n) = finrank ℚ F * 2, so finrank ℚ F = φ(n) / 2
+  sorry
 
 end AngleTrisectionOQ02OQ03
