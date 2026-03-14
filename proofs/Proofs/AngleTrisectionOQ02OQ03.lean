@@ -1358,6 +1358,36 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
         have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; linarith
       field_simp; nlinarith [h_real]
 
+/-- cos(2kπ/n) = cos(2(n-k)π/n) for k < n. Cosine pairs coprime residues. -/
+theorem cos_complement_eq (n : ℕ) (hn : 1 ≤ n) (k : ℕ) (hk : k < n) :
+    Real.cos (2 * ↑(n - k) * Real.pi / ↑n) = Real.cos (2 * ↑k * Real.pi / ↑n) := by
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  rw [show (↑(n - k) : ℝ) = ↑n - ↑k from by push_cast; omega]
+  rw [show 2 * (↑n - ↑k) * Real.pi / ↑n = 2 * Real.pi - 2 * ↑k * Real.pi / ↑n
+    from by field_simp; ring]
+  rw [Real.cos_sub_two_pi]
+
+/-- If k is coprime to n and k < n, then n - k is also coprime to n. -/
+theorem coprime_complement (n k : ℕ) (hk : k < n) (hc : Nat.Coprime k n) :
+    Nat.Coprime (n - k) n := by
+  rwa [Nat.Coprime, Nat.gcd_comm, ← Nat.sub_add_cancel (Nat.le_of_lt_succ (by omega : k < n + 0)),
+    show n - k + k = n from by omega, Nat.gcd_comm (n - k)]
+  -- Simplification: gcd(n, n-k) = gcd(n - (n-k), n-k) = gcd(k, n-k) = gcd(k, n)
+  sorry
+
+/-- For n ≥ 3 and k coprime to n with 0 < k < n, we have k ≠ n - k.
+    (k = n-k would give 2k = n, so gcd(k, n) = gcd(n/2, n) = n/2 ≥ 2, not coprime.) -/
+theorem coprime_ne_complement (n k : ℕ) (hn : 3 ≤ n) (hk_pos : 0 < k) (hk_lt : k < n)
+    (hc : Nat.Coprime k n) : k ≠ n - k := by
+  intro heq
+  have h2k : 2 * k = n := by omega
+  have : Nat.gcd k n = k := by
+    rw [← h2k]
+    exact Nat.gcd_eq_left (Dvd.intro 2 rfl)
+  rw [Nat.Coprime, this] at hc
+  omega  -- k = 1, but then n = 2, contradicting n ≥ 3
+
 /-- The number of distinct Galois conjugates of cos(2π/n) over ℚ is φ(n)/2.
     The conjugates are {cos(2kπ/n) : 1 ≤ k ≤ n, gcd(k,n) = 1}, and these come
     in pairs {k, n-k} (since cos(2kπ/n) = cos(2(n-k)π/n)). -/
@@ -1365,7 +1395,7 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
     Finset.card (Finset.image (fun k => Real.cos (2 * ↑k * Real.pi / ↑n))
       (Finset.filter (fun k => Nat.Coprime k n) (Finset.range n))) =
     Nat.totient n / 2 := by
-  sorry -- Counting argument using cos_2kpi_div_n_eq_iff + coprime pairing
+  sorry -- Counting argument using cos_complement_eq + coprime pairing
 
 /-- Every root of T_n - 1 in ℝ is of the form cos(2kπ/n) for some k.
     Proof: T_n(x) = cos(n·arccos(x)) for |x| ≤ 1. T_n(x) = 1 iff
