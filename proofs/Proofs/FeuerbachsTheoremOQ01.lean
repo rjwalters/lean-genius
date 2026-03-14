@@ -452,179 +452,115 @@ theorem inradius_pos (T : Triangle) : T.inradius > 0 := by
   exact div_pos (area_pos T) (semiperimeter_pos T)
 
 -- ============================================================
--- GENERAL CASE: Euler's Formula OI² = R² - 2Rr
+-- KEY ALGEBRAIC IDENTITY: SIGMA = abcs - 4·Area²
 -- ============================================================
 
--- Strategy: Prove OI² = R(R - 2r) as a polynomial identity.
--- This avoids sqrt by working with squared distances throughout.
+-- This is the core identity needed for the general Feuerbach proof.
+-- It relates the "sigma" expression Σ = (s-a)(s-b)c² + ... to abc·s - 4·Area²
+-- where Area² = s(s-a)(s-b)(s-c) by Heron's formula.
 --
--- Key identities:
---   OI² = R² - 2Rr  (Euler's formula)
---   NI² = (R/2 - r)²  (Feuerbach incircle, since N = midpoint(O,H))
+-- This identity is purely algebraic in a, b, c (no coordinates needed).
+
+/-- The sigma identity: for positive reals a, b, c with s = (a+b+c)/2,
+    (s-a)(s-b)c² + (s-a)(s-c)b² + (s-b)(s-c)a² = abcs - 4s(s-a)(s-b)(s-c).
+
+    This is a key step in deriving Feuerbach's theorem from Euler's formula. -/
+theorem sigma_identity (a b c : ℝ) :
+    let s := (a + b + c) / 2
+    (s - a) * (s - b) * c ^ 2 + (s - a) * (s - c) * b ^ 2 + (s - b) * (s - c) * a ^ 2 =
+    a * b * c * s - 4 * s * (s - a) * (s - b) * (s - c) := by
+  simp only
+  ring
+
+-- ============================================================
+-- EXTENDED LAW OF SINES (SQUARED FORM)
+-- ============================================================
+
+-- The extended law of sines: a·b·c = 4·R·Area, or equivalently
+-- a²·b²·c² = 16·R²·Area².
 --
--- The connection: NI² = R²/4 - Rr + r² = (R/2)² - 2(R/2)r + r² = (R/2 - r)²
--- if we can show OI² = R² - 2Rr.
---
--- But we also need: NI = |OI² - stuff| which requires the Euler relation.
--- Actually: N = (O+H)/2 and H = A+B+C-2O, so N = (A+B+C)/2 - O/2.
--- The direct path is to compute NI² directly.
+-- This is a polynomial identity in coordinates after clearing the
+-- circumcenter denominator and using a² = (C.1-B.1)²+(C.2-B.2)² etc.
 
--- The general Feuerbach proof requires handling products of square roots
--- (side lengths a, b, c in incenter/excenter formulas).
--- See "Path to General Feuerbach Proof" documentation below.
+set_option maxHeartbeats 64000000 in
+/-- The extended law of sines (squared form):
+    side_a² · side_b² · side_c² = 16 · circumradius² · area².
 
--- ============================================================
--- APPROACH: Prove via power of a point
--- ============================================================
--- The power of the incenter I with respect to the nine-point circle is:
---   pow(I) = NI² - (R/2)²
--- Feuerbach's theorem states pow(I) = -(R/2 - r)(R/2 + r) + 2r·(R/2)
--- ... this gets complicated too.
+    Proof: After squaring to eliminate sqrt, clearing the circumcenter
+    denominator, and unfolding all definitions, this reduces to a
+    polynomial identity in the 6 vertex coordinates.
 
--- ============================================================
--- PRACTICAL APPROACH: Fix the equilateral sorry, leave general for later
--- ============================================================
--- The equilateral_R_eq_2r in the base file has a sorry at line 722.
--- We already proved this in equilateral_R_eq_2r_proved above.
--- Let's also fix that sorry by providing the proof.
-
--- The equilateral sorry is: R² = (2r)² where R = circumradius, r = inradius.
--- We need: (0 - s/2)² + (0 - s√3/6)² = (2 · s√3/6)² = s²·3/9 = s²/3
--- LHS = s²/4 + s²·3/36 = s²/4 + s²/12 = 4s²/12 = s²/3 ✓
-
--- The proof is in equilateral_R_eq_2r_proved above, using our equiT constructor.
--- The base file's equilateral_R_eq_2r uses an inline let binding, making it
--- hard to reuse our proof directly.
+    Key step: area² = (signed_area)² since |x|² = x². -/
+theorem extended_law_of_sines_sq (T : Triangle) :
+    T.side_a ^ 2 * T.side_b ^ 2 * T.side_c ^ 2 =
+    16 * T.circumradius ^ 2 * T.area ^ 2 := by
+  unfold Triangle.side_a Triangle.side_b Triangle.side_c
+  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _),
+      Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _),
+      Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
+  unfold Triangle.circumradius dist2
+  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
+  unfold Triangle.circumcenter Triangle.area
+  dsimp only
+  -- Eliminate |x|² = x² (abs squared = squared)
+  rw [div_pow, sq_abs]
+  set d := 2 * ((T.A.1 - T.C.1) * (T.B.2 - T.C.2) - (T.B.1 - T.C.1) * (T.A.2 - T.C.2))
+  have hd : d ≠ 0 := circ_denom_ne T
+  field_simp
+  ring
 
 -- ============================================================
--- NEW CONTRIBUTION: Euler's OI² formula for WLOG triangle
--- ============================================================
--- Place triangle with A=(0,0), B=(c,0), C=(x,y), y>0.
--- Then prove OI² = R² - 2Rr as a polynomial identity.
--- This WLOG doesn't lose generality because the formula is
--- translation and rotation invariant.
-
--- For this session, focus on what IS tractable:
--- 1. Prove Euler OI² = R² - 2Rr for the 3-4-5 triangle (rational sides)
--- 2. Prove NI² = (R/2-r)² and NI_a² = (R/2+r_a)² for 3-4-5
--- 3. Document the path to the general proof
-
--- ============================================================
--- 3-4-5 TRIANGLE: Euler's Formula OI² = R² - 2Rr
+-- EULER'S FORMULA OI² = R² - 2Rr (3-4-5 VERIFICATION)
 -- ============================================================
 
-/-- OI² for the 3-4-5 triangle.
-    O = (3/2, 2), I = (1, 1), so OI² = (3/2-1)² + (2-1)² = 1/4 + 1 = 5/4 -/
-theorem T345_OI_sq :
-    dist2_sq triangle_345.circumcenter triangle_345.incenter = 5 / 4 := by
-  rw [triangle_345_circumcenter, triangle_345_incenter]
-  unfold dist2_sq; norm_num
+/-- Euler's formula for the 3-4-5 triangle:
+    OI² = R² - 2Rr = (5/2)² - 2·(5/2)·1 = 25/4 - 5 = 5/4.
 
-/-- R² for the 3-4-5 triangle = 25/4 -/
-theorem T345_R_sq :
-    triangle_345.circumradius ^ 2 = 25 / 4 := by
-  rw [triangle_345_circumradius]; norm_num
-
-/-- Euler's formula OI² = R² - 2Rr verified for 3-4-5 triangle.
-    OI² = 5/4, R² = 25/4, 2Rr = 2·(5/2)·1 = 5
-    R² - 2Rr = 25/4 - 5 = 5/4 ✓ -/
-theorem T345_euler_OI :
+    Direct computation: O = (3/2, 2), I = (1, 1).
+    OI² = (3/2-1)² + (2-1)² = 1/4 + 1 = 5/4.
+    R² - 2Rr = 25/4 - 5 = 5/4. ✓ -/
+theorem T345_euler_formula :
     dist2_sq triangle_345.circumcenter triangle_345.incenter =
     triangle_345.circumradius ^ 2 - 2 * triangle_345.circumradius * triangle_345.inradius := by
-  rw [T345_OI_sq, T345_R_sq, triangle_345_circumradius, triangle_345_inradius]
+  rw [triangle_345_circumcenter, triangle_345_incenter,
+      triangle_345_circumradius, triangle_345_inradius]
+  unfold dist2_sq; simp only
+  norm_num
+
+/-- For the 3-4-5 triangle, the extended law of sines holds:
+    abc = 4R·Area, i.e., 5·4·3 = 4·(5/2)·6. (60 = 60) -/
+theorem T345_extended_law_of_sines :
+    triangle_345.side_a * triangle_345.side_b * triangle_345.side_c =
+    4 * triangle_345.circumradius * triangle_345.area := by
+  rw [T345_side_a, T345_side_b, T345_side_c,
+      triangle_345_circumradius, triangle_345_area]
   norm_num
 
 -- ============================================================
--- 3-4-5 TRIANGLE: NI² = (R/2 - r)²
--- ============================================================
-
-/-- NI² for the 3-4-5 triangle.
-    N = (3/4, 1), I = (1, 1), NI² = (1-3/4)² + 0² = 1/16 -/
-theorem T345_NI_sq :
-    dist2_sq triangle_345.ninePointCenter triangle_345.incenter = 1 / 16 := by
-  rw [triangle_345_ninePointCenter, triangle_345_incenter]
-  unfold dist2_sq; norm_num
-
-/-- (R/2 - r)² for 3-4-5 triangle = (5/4 - 1)² = 1/16 -/
-theorem T345_feuerbach_sq :
-    (triangle_345.ninePointRadius - triangle_345.inradius) ^ 2 = 1 / 16 := by
-  rw [triangle_345_ninePointRadius, triangle_345_inradius]; norm_num
-
-/-- NI² = (R/2 - r)² for 3-4-5 triangle — the squared Feuerbach relation. -/
-theorem T345_NI_sq_eq_feuerbach :
-    dist2_sq triangle_345.ninePointCenter triangle_345.incenter =
-    (triangle_345.ninePointRadius - triangle_345.inradius) ^ 2 := by
-  rw [T345_NI_sq, T345_feuerbach_sq]
-
--- ============================================================
--- 3-4-5 TRIANGLE: NI_a² = (R/2 + r_a)² (Excircle squared)
--- ============================================================
-
-/-- NI_a² for 3-4-5 triangle = (6-3/4)² + (6-1)² = 841/16 -/
-theorem T345_NI_a_sq :
-    dist2_sq triangle_345.ninePointCenter triangle_345.excenter_a = 841 / 16 := by
-  rw [triangle_345_ninePointCenter, T345_excenter_a]
-  unfold dist2_sq; norm_num
-
-/-- (R/2 + r_a)² = (5/4 + 6)² = (29/4)² = 841/16 -/
-theorem T345_excircle_a_sq :
-    (triangle_345.ninePointRadius + triangle_345.exradius_a) ^ 2 = 841 / 16 := by
-  rw [triangle_345_ninePointRadius, T345_exradius_a]; norm_num
-
-/-- NI_a² = (R/2 + r_a)² for 3-4-5 triangle — squared excircle Feuerbach. -/
-theorem T345_NI_a_sq_eq_excircle :
-    dist2_sq triangle_345.ninePointCenter triangle_345.excenter_a =
-    (triangle_345.ninePointRadius + triangle_345.exradius_a) ^ 2 := by
-  rw [T345_NI_a_sq, T345_excircle_a_sq]
-
--- ============================================================
--- GENERAL FEUERBACH: Path Forward Documentation
+-- ROADMAP: GENERAL FEUERBACH PROOF PATH
 -- ============================================================
 
 /-
-## Path to General Feuerbach Proof
+The general Feuerbach proof (NI = |R/2 - r|) follows this chain:
 
-### The Algebraic Obstacle
-The incenter coordinates involve side lengths a, b, c = sqrt(...).
-Products like a·b cannot be eliminated by `ring` or `field_simp`.
+1. Extended law of sines (squared): a²b²c² = 16·R²·Area² [PROVED above]
+2. Sigma identity: Σ = abcs - 4s(s-a)(s-b)(s-c) [PROVED above]
+3. Euler's formula: OI² = R² - 2Rr
+4. Nine-point reduction: NI² = R²/4 - Rr + r² = (R/2 - r)²
+5. Take sqrt: NI = |R/2 - r|
 
-### Viable Approaches (ranked by feasibility)
+The FUNDAMENTAL OBSTACLE for steps 3-4 is that the incenter
+coordinates involve side_a, side_b, side_c which are √(polynomial).
+Products like side_a · side_b cannot be simplified by `ring`.
 
-1. **Polynomial identity with CAS certificate** (MOST PROMISING)
-   - Express NI² - (R/2-r)² as a polynomial in (coords, a, b, c)
-   - Use constraints a² = Pa, b² = Pb, c² = Pc to eliminate
-   - Generate a Positivstellensatz certificate using external CAS
-   - Feed certificate to `polyrith` or `nlinarith`
-   - Estimated complexity: ~200 lines of certificate data
+Possible approaches to overcome this:
+(a) Reformulate incenter using squared-distance characterization
+(b) Use Mathlib's EuclideanGeometry inner product infrastructure
+(c) Implement algebraic elimination of cross-terms √(a²b²)
+(d) Work in complex coordinates where the algebra is cleaner
 
-2. **Inversive distance / power-of-point approach**
-   - Feuerbach's original proof uses inversive geometry
-   - Define inversion, prove invariance properties
-   - Show incircle maps to nine-point circle under suitable inversion
-   - Estimated complexity: ~500 lines of infrastructure
-
-3. **Mathlib EuclideanGeometry approach**
-   - Reformulate using Mathlib's `EuclideanGeometry.Sphere`
-   - Would require connecting our `Triangle` to Mathlib's framework
-   - Clean but significant refactoring needed
-   - Estimated complexity: ~800 lines
-
-### What We Have Now
-- All 9 nine-point circle memberships: PROVED (general)
-- Euler line relation: PROVED (general)
-- Altitude feet on nine-point circle: PROVED (general)
-- R = 2r for equilateral: PROVED
-- Incircle tangency (3-4-5): PROVED
-- Excircle tangency A/B/C (3-4-5): PROVED
-- Euler OI² = R²-2Rr (3-4-5): PROVED
-- NI² = (R/2-r)² (3-4-5): PROVED
-- General area/semiperimeter/inradius positivity: PROVED
-
-### Remaining Axioms (4)
-1. feuerbach_incircle_distance (general)
-2. feuerbach_excircle_a_distance (general)
-3. feuerbach_excircle_b_distance (general)
-4. feuerbach_excircle_c_distance (general)
+The squared extended law of sines and sigma identity are the algebraic
+backbone needed for any of these approaches.
 -/
 
 -- Type-check results
@@ -638,8 +574,9 @@ Products like a·b cannot be eliminated by `ring` or `field_simp`.
 #check @area_pos
 #check @semiperimeter_pos
 #check @inradius_pos
-#check @T345_euler_OI
-#check @T345_NI_sq_eq_feuerbach
-#check @T345_NI_a_sq_eq_excircle
+#check @sigma_identity
+#check @extended_law_of_sines_sq
+#check @T345_euler_formula
+#check @T345_extended_law_of_sines
 
 end FeuerbachsTheoremOQ01

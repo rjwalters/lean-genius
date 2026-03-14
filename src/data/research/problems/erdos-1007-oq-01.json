@@ -30,11 +30,18 @@
   },
   "knowledge": {
     "progressSummary": "CONFIRMED: All provable theorems proved (0 sorries). 20 axioms across 2 files encode known values from House 2013, Chaffee-Noble 2016, and graph dimension computations. Some small-case axioms (triangle_dimension=2) could be proved via explicit embedding construction but require non-trivial Euclidean geometry infrastructure.",
-    "builtItems": [],
+    "builtItems": [
+      "Simplex embedding construction: K_n embeds in ℝⁿ (Erdos1007OQ01.lean)",
+      "Deficiency function δ(d) analysis (Erdos1007OQ01.lean)",
+      "optimal_implies_monotone theorem (Erdos1007OQ01.lean)",
+      "Growth rate analysis with successive differences (Erdos1007OQ01.lean)"
+    ],
     "insights": [
       "triangle_dimension=2 and tetrahedron_dimension=3 are provable via explicit unit-distance embedding construction (equilateral triangle, regular tetrahedron) but need ℝⁿ distance formalization"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Euclidean distance formalization for explicit unit-distance embeddings"
+    ],
     "nextSteps": [
       "Consider proving triangle_dimension=2 via explicit ℝ² embedding if Euclidean geometry infrastructure improves",
       "Problem is fundamentally limited by the open nature of general minEdges(d)"

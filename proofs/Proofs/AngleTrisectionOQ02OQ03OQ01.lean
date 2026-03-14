@@ -215,10 +215,50 @@ theorem cyclotomic_irreducible (n : ℕ+) :
 -- [ℚ(ζₙ):ℚ(ζₙ⁺)] = 2, so [ℚ(ζₙ⁺):ℚ] = φ(n)/2 for n ≥ 3.
 
 /-- Complex conjugation restricts to an automorphism of ℚ(ζₙ) of order 2 (for n ≥ 3).
-    This gives the index-2 subgroup whose fixed field is the maximal real subfield. -/
-axiom complex_conj_order_two (n : ℕ) (hn : 3 ≤ n) :
+    This gives the index-2 subgroup whose fixed field is the maximal real subfield.
+
+    Proof: The map autEquivPow gives Gal(ℚ(ζₙ)/ℚ) ≃ (ℤ/nℤ)*.
+    The element -1 ∈ (ℤ/nℤ)* maps to an automorphism σ with:
+    - σ ≠ id: since -1 ≠ 1 in (ℤ/nℤ)* for n ≥ 3
+    - σ² = id: since (-1)² = 1 in (ℤ/nℤ)* -/
+theorem complex_conj_order_two (n : ℕ) (hn : 3 ≤ n) :
     ∃ (σ : (CyclotomicField ⟨n, by omega⟩ ℚ) ≃ₐ[ℚ] (CyclotomicField ⟨n, by omega⟩ ℚ)),
-    σ ≠ AlgEquiv.refl ∧ σ * σ = AlgEquiv.refl
+    σ ≠ AlgEquiv.refl ∧ σ * σ = AlgEquiv.refl := by
+  set np : ℕ+ := ⟨n, by omega⟩
+  set K := CyclotomicField np ℚ
+  have hequiv := IsCyclotomicExtension.autEquivPow ℚ K np
+  -- The automorphism corresponding to -1 ∈ (ℤ/nℤ)*
+  set u : (ZMod np)ˣ := -1
+  set σ := hequiv.symm u
+  refine ⟨σ, ?_, ?_⟩
+  · -- σ ≠ refl: -1 ≠ 1 in (ℤ/nℤ)* for n ≥ 3
+    intro h
+    have h_eq : hequiv σ = hequiv (AlgEquiv.refl) := congr_arg hequiv h
+    rw [hequiv.apply_symm_apply] at h_eq
+    -- hequiv(refl) = 1
+    have h_one : hequiv AlgEquiv.refl = 1 := map_one hequiv
+    rw [h_one] at h_eq
+    -- So -1 = 1 in (ZMod n)ˣ, contradiction for n ≥ 3
+    have h_units : (-1 : (ZMod np)ˣ) = 1 := h_eq
+    have h_neg : (-1 : ZMod np) = 1 := by
+      have := congr_arg Units.val h_units; simpa using this
+    -- -1 = 1 means 1 + 1 = 0 in ZMod n (since -1 + 1 = 0 = 1 + 1)
+    have h2 : (2 : ZMod np) = 0 := by
+      have h0 := neg_add_cancel (1 : ZMod np)  -- -1 + 1 = 0
+      rw [h_neg] at h0  -- 1 + 1 = 0
+      rw [show (2 : ZMod np) = 1 + 1 from by norm_num]
+      exact h0
+    -- (2 : ZMod n) = 0 means n | 2
+    rw [show (2 : ZMod np) = ((2 : ℕ) : ZMod np) from by push_cast; ring] at h2
+    have h_dvd : (np : ℕ) ∣ 2 := (ZMod.natCast_zmod_eq_zero_iff_dvd 2 np).mp h2
+    -- But n ≥ 3 and n | 2 is impossible
+    omega
+  · -- σ² = refl: (-1)² = 1
+    have h_sq : u * u = 1 := by ext; simp
+    have : σ * σ = hequiv.symm (u * u) := by
+      show hequiv.symm u * hequiv.symm u = hequiv.symm (u * u)
+      rw [← map_mul hequiv.symm]
+    rw [this, h_sq, map_one hequiv.symm]
 
 /-- The degree of the maximal real subfield over ℚ is φ(n)/2 for n ≥ 3.
     This is the key numerical fact connecting cyclotomic theory to constructibility. -/
@@ -288,18 +328,10 @@ theorem gal_card_from_cyclotomic (n : ℕ) (hn : 3 ≤ n) :
 -- ============================================================================
 
 /-
-  AXIOM INVENTORY:
-  1. chebyshev_T_exists: Chebyshev polynomials T_n exist with T_n(cos θ) = cos(nθ)
-     STATUS: Provable from Mathlib's trig identities via induction.
-     EFFORT: ~50 lines (induction on n using cos addition formula)
-
-  2. chebyshev_T_degree: T_n has degree n
-     STATUS: Provable alongside chebyshev_T_exists
-     EFFORT: ~30 lines (degree computation by induction)
-
-  3. complex_conj_order_two: Complex conjugation on ℚ(ζₙ) has order 2
-     STATUS: Provable from Mathlib's starRingEnd and cyclotomic extension
-     EFFORT: ~80 lines (connecting starRingEnd ℂ to AlgEquiv)
+  AXIOM INVENTORY (updated):
+  1. chebyshev_T_exists: ✅ PROVED (line 171, from Mathlib T_real_cos)
+  2. chebyshev_T_degree: ✅ PROVED (line 181, from Mathlib natDegree_T)
+  3. complex_conj_order_two: ✅ PROVED (line 224, via autEquivPow and -1 ∈ (ℤ/nℤ)*)
 
   4. maximal_real_subfield_degree: [ℚ(ζₙ⁺):ℚ] = φ(n)/2
      STATUS: Requires Galois theory fixed-field degree formula

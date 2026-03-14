@@ -497,15 +497,15 @@ Abel-Ruffini asks about STRUCTURE of the Galois group when polynomial is solvabl
 
 X⁵ - 2 is irreducible over ℚ.
 
-Proved via Eisenstein's criterion at p = 2 (from NthRootIrrationalOQ01),
-which shows X⁵ - 2 is irreducible over ℤ. By Gauss's lemma, it is
-therefore irreducible over ℚ. The degree is 5 by natDegree computation.
+Proof: Eisenstein's criterion at p = 2 shows X⁵ - 2 is irreducible over ℤ.
+By Gauss's lemma, it is therefore irreducible over ℚ. We reuse the general
+`eisenstein_X_pow_sub_prime` theorem from NthRootIrrationalOQ01.
 -/
 theorem connection_to_abel_ruffini :
-    ∃ (p : Polynomial ℚ), Irreducible p ∧ p.natDegree = 5 := by
-  exact ⟨X ^ 5 - C (2 : ℚ),
-    NthRootIrrationalOQ01.eisenstein_X_pow_sub_prime 5 2 (by omega) (by decide),
-    NthRootIrrationalOQ01.natDegree_X_pow_sub_C_eq (by omega) (by norm_num)⟩
+    ∃ (p : Polynomial ℚ), Irreducible p ∧ p.natDegree = 5 :=
+  ⟨X ^ 5 - C (2 : ℚ),
+   NthRootIrrationalOQ01.eisenstein_X_pow_sub_prime 5 2 (by norm_num) (by norm_num),
+   NthRootIrrationalOQ01.natDegree_X_pow_sub_C_eq (by norm_num) (by norm_num)⟩
 
 /--
 The distinction between solvable and non-solvable extensions:

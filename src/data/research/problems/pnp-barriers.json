@@ -19,10 +19,14 @@
     "phase": "ACT",
     "since": "2025-12-31",
     "iteration": 3,
-    "focus": "Extending complexity class formalization with PSPACE, EXP, and NP-completeness framework.",
+    "focus": "BLOCKED on fundamental model inconsistency. Abstract model proves False.",
     "activeApproach": "Abstract complexity class definitions with barrier theorems.",
-    "blockers": [],
-    "nextAction": "Add coNP, PSPACE-completeness, and explore removing sorries.",
+    "blockers": [
+      "Abstract OracleProgram model allows arbitrary Lean functions, trivializing all complexity classes",
+      "Bridge axioms (church_turing_P/NP) are provably inconsistent",
+      "Refactoring 12101 lines to use TM2ComputableInPolyTime is multi-session effort"
+    ],
+    "nextAction": "Full refactor to MathLibP/MathLibNP-based definitions (requires TM2 machine construction infrastructure)",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 3,
@@ -30,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Surveyed (has axioms, full proofs for consequences)",
+    "progressSummary": "BLOCKED: File is provably inconsistent. Abstract model (OracleProgram) trivializes all complexity classes to Set.univ, directly contradicting 201 axioms. File proves `abstract_model_inconsistent : False`. Only path forward: refactor to MathLibP-based definitions using TM2ComputableInPolyTime (multi-session architectural effort).",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -81,7 +85,11 @@
       "natural_proof_breaks_crypto",
       "relativization_insight",
       "P_subset_NP",
-      "all_barriers_constrain_proofs"
+      "all_barriers_constrain_proofs",
+      "Abstract model proves False: OracleProgram allows arbitrary Lean functions, making P = NP = EXP = Set.univ",
+      "201 axioms (not 40 as previously reported) - many contradicted by trivial model",
+      "church_turing_P bridge axiom is inconsistent: forces MathLibP = Set.univ but mathlib_P_nontrivial says otherwise",
+      "ETH/SETH sections use True placeholders - not meaningful mathematical content"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",

@@ -240,7 +240,11 @@ theorem project_mem_values {α : Type*} [DecidableEq α]
 theorem project_count_one {α : Type*} [DecidableEq α]
     (leader : α) (s : List α) :
     (project leader s).count 1 = s.count leader := by
-  sorry
+  induction s with
+  | nil => rfl
+  | cons v vs ih =>
+    simp only [project, List.map_cons, List.count_cons]
+    split_ifs with h <;> simp_all [project]
 
 /-- The count of -1 in the projection equals the opponent vote count.
     Follows from project_count_one and the fact that projection has length = s.length
@@ -248,7 +252,12 @@ theorem project_count_one {α : Type*} [DecidableEq α]
 theorem project_count_neg_one {α : Type*} [DecidableEq α]
     (leader : α) (s : List α) :
     (project leader s).count (-1) = s.length - s.count leader := by
-  sorry
+  induction s with
+  | nil => rfl
+  | cons v vs ih =>
+    simp only [project, List.map_cons, List.count_cons, List.length_cons]
+    have hle : List.count leader vs ≤ vs.length := List.count_le_length ..
+    split_ifs with h <;> simp_all [project] <;> omega
 
 /-- The projection of a multi-candidate sequence with a leader-votes and b
     opponent-votes lands in Mathlib's countedSequence a b.
@@ -345,19 +354,19 @@ theorem fiber_same_leader_positions {α : Type*} [DecidableEq α] (leader : α)
     have := congr_arg List.length hs; simp [project] at this; omega
   have hit : i < t.length := by
     have := congr_arg List.length ht; simp [project] at this; omega
-  -- Both project to target, so the projection values at position i agree.
-  -- Since projection maps leader → +1 and opponent → -1, the leader
-  -- positions in s and t must coincide.
-  -- Both project to target, so projection values at position i agree.
-  -- The key: s[i] = leader ↔ target[i] = 1 ↔ t[i] = leader
-  -- Use that the projection at position i maps leader → 1, other → -1
-  -- Both project to target. At position i, the projection is +1 iff the vote
-  -- is for the leader. Since both project to the same target, they agree on
-  -- which positions have leader votes.
-  -- The core reasoning: s[i] = leader ↔ target[i] = 1 ↔ t[i] = leader
-  -- (since projection maps leader → +1 and opponent → -1, and both
-  -- sequences project to the same target)
-  sorry
+  -- Helper: for any u with project leader u = target,
+  -- u[i]? = some leader ↔ target[i]? = some 1
+  have key : ∀ (u : List α), project leader u = target → (hui : i < u.length) →
+      (u[i]? = some leader ↔ target[i]? = some 1) := by
+    intro u hu hui
+    rw [List.getElem?_eq_getElem hui]
+    have hip : i < (project leader u).length := by rw [project_length]; exact hui
+    rw [← hu, List.getElem?_eq_getElem hip]
+    simp only [project, List.getElem_map, Option.some.injEq]
+    constructor
+    · intro heq; rw [heq]; simp
+    · intro heq; split_ifs at heq with h; exact h
+  exact (key s hs his).trans (key t ht hit).symm
 
 /-- **Fiber Uniformity Theorem**
 

@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: All API breakage fixed. File compiles with 0 sorries, 0 errors. Proved 5 key theorems: involution_coprime, bothOdd_eq_oo, primitive_eq_eo_plus_oe, coprime_sector_three_way_partition, triangle_oe_eq_oo (exact OE=OO bijection via parityInvolution). 4 axioms remain: sector lattice points, coprime density, parity equidistribution (refined from original parity axiom), original parity fraction.",
+    "progressSummary": "PROGRESS: Proved 5 key sorries in parity decomposition. Built complete involution infrastructure (coprimality preservation, parity mapping, involutivity). Proved triangle_oe_eq_oo via Finset.card_bij - exact OE↔OO bijection. Proved three-way partition, primitive=EO+OE, and bothOdd filter equivalence. Only 1 sorry remains (parity_fraction_100 computational value).",
     "builtItems": [
       "bothOddCoprimeCount: counting function for both-odd coprime pairs",
       "coprime_sector_partition: exact partition identity (coprime = primitive + bothOdd)",
@@ -54,11 +54,14 @@
       "5 computational verifications for bothOddCoprimeCount",
       "3 parity fraction verifications (N=25,50,100)",
       "PythagoreanTriplesOQ01Aristotle.lean: companion file with 12 routine lemmas",
-      "involution_coprime: gcd(m,n)=1 → gcd(m,m-n)=1 [manual dvd proof]",
-      "triangle_oe_eq_oo: |OE(K)| = |OO(K)| [Finset.card_bij with parityInvolution]",
-      "coprime_sector_three_way_partition: coprime = EO + OE + OO [3-way partition]",
-      "primitive_eq_eo_plus_oe: primitive = EO + OE [filter union + disjointness]",
-      "parity_axiom_from_equidistribution: derives parity axiom from cleaner equidistribution axiom"
+      "involution_coprime: gcd(m,n)=1 → gcd(m,m-n)=1 (PythagoreanTriplesOQ01.lean:728)",
+      "involution_oe_to_oo: odd m, even n → odd(m-n) (PythagoreanTriplesOQ01.lean:744)",
+      "involution_oo_to_oe: odd m, odd n → even(m-n) (PythagoreanTriplesOQ01.lean:750)",
+      "involution_involutive: m-(m-n)=n (PythagoreanTriplesOQ01.lean:756)",
+      "triangle_oe_eq_oo: |OE(K)|=|OO(K)| via Finset.card_bij (PythagoreanTriplesOQ01.lean:788)",
+      "bothOdd_eq_oo: filter equivalence ¬Odd(m-n) ↔ Odd m ∧ Odd n (PythagoreanTriplesOQ01.lean:625)",
+      "primitive_eq_eo_plus_oe: primitive = EO + OE (PythagoreanTriplesOQ01.lean:630)",
+      "coprime_sector_three_way_partition: coprime = EO + OE + OO (PythagoreanTriplesOQ01.lean:618)"
     ],
     "insights": [
       "The coprime sector decomposes into exactly 2 parity classes (not 3): primitive (mixed parity) and both-odd. Both-even is impossible for coprime pairs.",
@@ -67,10 +70,7 @@
       "The three axioms have very different tractability: parity (combinatorial, possibly provable) >> coprime density (Möbius, very hard) > sector lattice points (Gauss circle, essentially impossible without analytic NT)",
       "All main theorems are already proved from the 3 axioms - the file has 0 sorries",
       "PythagoreanTriplesOQ01.lean has pre-existing Mathlib v4.26.0 API breakage: native_decide for bothOddCoprimeCount 100 and coprimeInSectorCount 100 return false values; parity_axiom_equivalent proof broken (sub_div rewrite pattern not found, Tendsto.const_sub signature changed). File needs API repair before new research.",
-      "Mathlib v4.26.0 API breakage fully resolved: Nat.dvd_sub replaced with manual dvd proof, Finset.mem_product simp lemmas replaced with explicit rewrites",
-      "N=100 native_decide is version-dependent: bothOddCoprimeCount(100) and coprimeInSectorCount(100) give false for specific values. All N≤50 verifications work correctly.",
-      "The involution (m,n)→(m,m-n) gives EXACT bijection OE↔OO in the triangle {0<n<m≤K}. Extending to circle sector {m²+n²≤N} requires boundary analysis showing O(√N) discrepancy.",
-      "File has 4 axioms but only 3 are independent: parity_fraction_in_coprime_sector is derived from parity_class_equidistribution"
+      "The parity involution (m,n)→(m,m-n) gives an exact bijection OE↔OO in the coprime triangle. This proves |OE(K)|=|OO(K)| for all K, establishing the three-way partition is equitable in the triangle region."
     ],
     "mathlibGaps": [
       "No Mathlib formalization of Gauss circle problem asymptotics",
@@ -78,10 +78,9 @@
       "No Mathlib equidistribution result for coprime pairs by residue class"
     ],
     "nextSteps": [
-      "Extend OE=OO bijection from triangle to circle sector via boundary analysis (O(√N) discrepancy argument)",
-      "Build EO-OE symmetry argument to complete equidistribution for all 3 parity classes",
-      "Submit Aristotle companion file for automated proof search on routine lemmas",
-      "Consider whether Möbius-style argument for coprime density is feasible in Lean"
+      "Prove parity_fraction_100 (computational verification, may need native_decide fix for Mathlib v4.26.0)",
+      "Extend triangle OE=OO result to the circular sector (requires showing circle boundary doesnt break equidistribution)",
+      "Prove the full parity axiom: coprime equidistribution among 3 residue classes mod 2"
     ]
   },
   "approaches": [

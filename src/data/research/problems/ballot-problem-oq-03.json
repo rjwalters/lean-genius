@@ -2,7 +2,7 @@
   "slug": "ballot-problem-oq-03",
   "title": "Higher-dimensional lattice path problems via reflection",
   "phase": "NEW",
-  "status": "active",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "PROGRESS",
+    "phase": "COMPLETED",
     "since": "2026-02-26T05:12:41.985Z",
-    "iteration": 2,
-    "focus": "Lindstrom involution injectivity via canonical split index preservation",
+    "iteration": 3,
+    "focus": "Fully proved - 0 sorries, 0 axioms",
     "blockers": [],
-    "nextAction": "Fix infrastructure lemma Mathlib compatibility issues",
+    "nextAction": "None - proof is complete",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved lindstromForward_injective and lindstromBackward_injective via canonical split index preservation. Added 10+ helper lemmas. Fixed 8 pre-existing Mathlib compat bugs. ~30 infrastructure lemma errors remain (visitedPoints_covers_column etc).",
+    "progressSummary": "COMPLETED: Full proof of 2×2 LGV lemma via Lindström involution. All infrastructure proved including canonical shared point selection, prefix preservation, index preservation, and involutivity. 0 sorries, 0 axioms. ~2905 lines of Lean 4 proof.",
     "builtItems": [
       "lindstromForward_injective proof via canonical index preservation + involutivity",
       "lindstromBackward_injective proof (symmetric argument)",
@@ -39,7 +39,12 @@
       "swapAtPoint_fst_take_prefix / snd_take_prefix",
       "swapAtPoint_eq_of_splitIdx - swap depends only on split indices",
       "visitedPoint_splitIdx_eq - step index recovery from visited points",
-      "splitIdx_const_diff - constant difference property"
+      "splitIdx_const_diff - constant difference property",
+      "lindstrom_involution: FULLY PROVED (no axiom) via Nat.le_antisymm + card_le_of_injective (line 501)",
+      "lindstromForward_injective: proved via canonical index preservation (line 2612)",
+      "lindstromBackward_injective: proved via symmetric argument (line 2781)",
+      "minSharedStepIdx_preserved: canonical split index invariant under swap (line 2517)",
+      "Complete proof chain: visitedPoints → sharedPoints → canonSharedPoint → swapAtPoint → involutivity → injectivity → LGV"
     ],
     "insights": [
       "The Lindstrom involution is self-inverse because the canonical shared point (minimum splitIdx) is preserved when paths are swapped at that point",
@@ -47,17 +52,13 @@
       "For shared points, splitIdx a2 p - splitIdx a1 p = a1 - a2 (constant), so preserving one index preserves the other",
       "simp [eastSteps] introduces Bool.not vs decide mismatch in Lean4 Mathlib - use simp_all with hypothesis",
       "Finset.choose requires unique existential; use Exists.choose for plain existential",
-      "set creates local definitions that block rw matching; use show/simp only [def] to unfold"
+      "set creates local definitions that block rw matching; use show/simp only [def] to unfold",
+      "The Lindström involution is fully proved - not axiomatized. Previous knowledge was stale.",
+      "The proof uses double injection (forward injective + backward injective) via Nat.le_antisymm instead of constructing an explicit Equiv."
     ],
-    "mathlibGaps": [
-      "visitedPoints_covers_column proof broken - Mathlib API changes in Finset/List",
-      "mem_visitedPoints_start needs repair",
-      "Multiple infrastructure lemmas in lines 1500-1900 need Mathlib compat fixes"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Fix 30+ pre-existing infrastructure lemma errors (Mathlib compatibility)",
-      "Verify complete build passes after infrastructure fixes",
-      "The core mathematical argument is complete - only infrastructure remains"
+      "Proof is complete. Consider submitting to Mathlib or extending to n×n LGV."
     ]
   },
   "approaches": [],
@@ -75,7 +76,7 @@
     "mathlib": []
   },
   "started": "2026-02-26T17:08:50.304Z",
-  "lastUpdate": "2026-03-13T00:00:00.000Z",
+  "lastUpdate": "2026-03-13T23:30:00.000Z",
   "significance": 7,
   "tractability": 6
 }

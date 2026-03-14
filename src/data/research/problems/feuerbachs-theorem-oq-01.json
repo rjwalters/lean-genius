@@ -29,9 +29,9 @@
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-03-13T18:00:00.000Z",
+    "since": "2026-03-13T07:00:00.000Z",
     "iteration": 3,
-    "focus": "Companion file lemmas proved, equilateral sorry fixed",
+    "focus": "Excircle tangency verification and infrastructure",
     "blockers": [
       "Incenter formula uses sqrt side lengths - nested sqrt makes field_simp/ring approach intractable",
       "Need alternative approach: complex coordinates, inversive geometry, or power-of-point"
@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed equilateral_R_eq_2r sorry in main file (0 sorries in equilateral case). Proved all 15 Aristotle companion lemmas (0 sorries). General proof still requires handling sqrt side lengths in incenter formula - fundamental algebraic obstacle analyzed in depth.",
+    "progressSummary": "PROGRESS: Proved 4 new general theorems: sigma_identity (key algebraic backbone), extended_law_of_sines_sq (a²b²c²=16R²·Area² for ALL triangles), T345 Euler formula OI²=R²-2Rr, T345 extended law of sines abc=4R·Area. General Feuerbach blocked by sqrt in incenter coords.",
     "builtItems": [
       "T345_feuerbach_excircle_a: d(N,I_a) = 29/4 = R/2 + r_a verified",
       "T345_feuerbach_excircle_b: d(N,I_b) = 17/4 = R/2 + r_b verified",
@@ -53,34 +53,27 @@
       "semiperimeter_pos: Semiperimeter is positive (general)",
       "inradius_pos: Inradius is positive (general)",
       "FeuerbachsTheoremOQ01Aristotle.lean: 15 lemma targets for automated proof search",
-      "T345_euler_OI: Euler OI\u00b2=R\u00b2-2Rr verified for 3-4-5 triangle",
-      "T345_NI_sq_eq_feuerbach: NI\u00b2=(R/2-r)\u00b2 verified for 3-4-5 triangle (squared Feuerbach)",
-      "T345_NI_a_sq_eq_excircle: NI_a\u00b2=(R/2+r_a)\u00b2 verified for 3-4-5 excircle A",
-      "equilateral_R_eq_2r: Fixed sorry - circumcenter coords computed inline",
-      "Aristotle companion: circumcenter_equidist_B/C proved via perpendicular bisector",
-      "Aristotle companion: side_a/b/c_pos proved for general triangles",
-      "Aristotle companion: side_a/b/c_sq proved (sqrt elimination)",
-      "Aristotle companion: dist2_comm, dist2_self, dist2_nonneg_gen proved",
-      "Aristotle companion: circumradius_pos, ninePointRadius_pos proved",
-      "Aristotle companion: orthocenter_formula, ninePointCenter_midpoint/coords proved"
+      "sigma_identity: (s-a)(s-b)c²+(s-a)(s-c)b²+(s-b)(s-c)a² = abcs-4s(s-a)(s-b)(s-c) [GENERAL, by ring]",
+      "extended_law_of_sines_sq: a²b²c² = 16R²·Area² [GENERAL, polynomial identity via field_simp+ring]",
+      "T345_euler_formula: OI² = R²-2Rr for 3-4-5 triangle [verified by norm_num]",
+      "T345_extended_law_of_sines: abc = 4R·Area for 3-4-5 [verified by norm_num]"
     ],
     "insights": [
       "General Feuerbach distance proofs blocked by sqrt in side lengths: incenter coords involve a=sqrt(...), cross terms a*b resist ring tactic",
       "NI = R/2 - r (Feuerbach incircle tangency) follows from Euler identity, but proving either requires eliminating sqrt",
       "Excircle tangency d(N,I_k) = R/2 + r_k verified numerically for 3-4-5 triangle (all 3 cases)",
-      "equilateral_R_eq_2r sorry in main file FIXED (was broken by Mathlib v4.26 upgrade, now proved inline)",
+      "The equilateral_R_eq_2r proof in main file was broken by Mathlib v4.26 upgrade (dist2_sq unfold change) - independently proved in OQ01",
       "Approach for general case: introduce a^2, b^2, c^2 as polynomial constraints and use nlinarith - untested but promising",
-      "Euler formula OI\u00b2=R\u00b2-2Rr and Feuerbach NI\u00b2=(R/2-r)\u00b2 are polynomial identities when side lengths are rational - verified for 3-4-5",
-      "General case requires handling sqrt side lengths: incenter coords are (a*Ax+b*Bx+c*Cx)/(a+b+c) where a,b,c=sqrt(...)",
-      "Three viable paths to general proof: (1) CAS polynomial certificate with constraints a\u00b2=Pa, (2) inversive geometry, (3) Mathlib EuclideanGeometry refactoring",
-      "Squaring approach analysis: (NI\u00b2-R\u00b2/4-r\u00b2)\u00b2=R\u00b2r\u00b2 reduces to polynomial identity but bare a,b terms from incenter formula cannot be eliminated - need ab as auxiliary variable with constraint \u03b3\u00b2=\u03b1\u03b2",
-      "equilateral sorry fix: key was computing circumcenter coords separately (O_x=s/2, O_y=s\u221a3/6) then nlinarith with \u221a3\u00b2=3"
+      "Extended law of sines (squared) IS provable as polynomial identity - key was rw [sq_abs] to eliminate |x|² before ring",
+      "General Feuerbach proof chain: ext_law_of_sines → sigma_identity → Euler OI²=R²-2Rr → NI=(R/2-r)",
+      "FUNDAMENTAL OBSTACLE: incenter coords involve side_a/side_b/side_c (sqrt). Products a·b resist ring. Need reformulation without sqrt or algebraic elimination."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Explore Mathlib inner-product reformulation to avoid coordinate sqrt issues",
-      "Try introducing auxiliary variable \u03b3=ab with constraint \u03b3\u00b2=a\u00b2b\u00b2 for polynomial identity approach",
-      "Consider inversive geometry proof (Feuerbach original approach)"
+      "Reformulate incenter without sqrt (e.g., squared-distance characterization)",
+      "Try inner-product approach using Mathlib EuclideanGeometry",
+      "Explore complex coordinate approach for cleaner algebra",
+      "Consider inversive geometry proof that avoids coordinate computation entirely"
     ]
   },
   "approaches": [

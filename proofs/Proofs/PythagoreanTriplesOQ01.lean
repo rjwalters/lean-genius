@@ -639,6 +639,37 @@ noncomputable def coprimeOddOddCount (N : ℕ) : ℕ :=
       ∧ Odd mn.1 ∧ Odd mn.2 ∧ mn.1 ^ 2 + mn.2 ^ 2 ≤ N
   ) |>.card
 
+/-- **3-Way Partition**: The coprime sector splits into exactly three parity classes.
+coprimeInSectorCount = EO + OE + OO.
+
+Proof sketch: Each coprime pair (m,n) has exactly one of three parity types
+(EO, OE, OO) since both-even is excluded by coprime_not_both_even. -/
+theorem coprime_sector_three_way_partition (N : ℕ) :
+    coprimeInSectorCount N = coprimeEvenOddCount N + coprimeOddEvenCount N + coprimeOddOddCount N := by
+  unfold coprimeInSectorCount coprimeEvenOddCount coprimeOddEvenCount coprimeOddOddCount
+  -- Split into EO ∪ OE ∪ OO (disjoint by parity)
+  rw [← Finset.card_union_of_disjoint, ← Finset.card_union_of_disjoint]
+  · congr 1; ext ⟨m, n⟩
+    simp only [Finset.mem_filter, Finset.mem_union]
+    constructor
+    · rintro ⟨hmem, hn_pos, hn_lt, hcop, hle⟩
+      rcases coprime_parity_cases hcop with ⟨hm, hn⟩ | ⟨hm, hn⟩ | ⟨hm, hn⟩
+      · left; left; exact ⟨hmem, hn_pos, hn_lt, hcop, hm, hn, hle⟩
+      · left; right; exact ⟨hmem, hn_pos, hn_lt, hcop, hm, hn, hle⟩
+      · right; exact ⟨hmem, hn_pos, hn_lt, hcop, hm, hn, hle⟩
+    · rintro ((⟨hmem, hn_pos, hn_lt, hcop, _, _, hle⟩ |
+               ⟨hmem, hn_pos, hn_lt, hcop, _, _, hle⟩) |
+              ⟨hmem, hn_pos, hn_lt, hcop, _, _, hle⟩) <;>
+      exact ⟨hmem, hn_pos, hn_lt, hcop, hle⟩
+  · apply Finset.disjoint_filter.mpr
+    intro ⟨m, n⟩ _ h1 h2
+    rcases h1 with ⟨_, _, _, _, hm_even, _, _⟩ | ⟨_, _, _, _, hm_odd, _, _⟩
+    · exact absurd hm_even (Nat.not_even_iff_odd.mpr h2.2.2.2.1)
+    · exact absurd hm_odd (Nat.not_odd_iff_even.mpr h2.2.2.2.1)
+  · apply Finset.disjoint_filter.mpr
+    intro ⟨m, n⟩ _ h1 h2
+    exact absurd h1.2.2.2.1 (Nat.not_even_iff_odd.mpr h2.2.2.2.1)
+
 /-- bothOddCoprimeCount equals coprimeOddOddCount.
 Both count coprime pairs where m ≡ n (mod 2), which for coprime pairs
 means both odd (since both-even is impossible). -/
@@ -648,30 +679,34 @@ theorem bothOdd_eq_oo (N : ℕ) :
   congr 1; ext ⟨m, n⟩
   simp only [Finset.mem_filter]
   constructor
-  · rintro ⟨hmem, hn_pos, hn_lt, hcop, hne, hle⟩
-    refine ⟨hmem, hn_pos, hn_lt, hcop, ?_, ?_, hle⟩ <;> {
-      rcases Nat.even_or_odd m with hm | hm <;> rcases Nat.even_or_odd n with hn | hn
-      · -- both even: contradicts coprime
-        exfalso
-        have h2m : 2 ∣ m := by obtain ⟨k, hk⟩ := hm; exact ⟨k, by omega⟩
-        have h2n : 2 ∣ n := by obtain ⟨k, hk⟩ := hn; exact ⟨k, by omega⟩
-        have h2g := Nat.dvd_gcd h2m h2n; rw [hcop] at h2g; omega
-      · -- m even, n odd: m-n odd, contradicts hne
-        exfalso; apply hne
-        rw [Nat.odd_iff]; rw [Nat.even_iff] at hm; rw [Nat.odd_iff] at hn
-        have := Nat.le_of_lt hn_lt; omega
-      · -- m odd, n even: m-n odd, contradicts hne
-        exfalso; apply hne
-        rw [Nat.odd_iff]; rw [Nat.odd_iff] at hm; rw [Nat.even_iff] at hn
-        have := Nat.le_of_lt hn_lt; omega
-      · -- both odd: ✓
-        assumption
-    }
-  · rintro ⟨hmem, hn_pos, hn_lt, hcop, hm_odd, hn_odd, hle⟩
+  · -- ¬Odd(m-n) + Coprime → Odd m ∧ Odd n
+    rintro ⟨hmem, hn_pos, hn_lt, hcop, hparity, hle⟩
+    refine ⟨hmem, hn_pos, hn_lt, hcop, ?_, ?_, hle⟩
+    · -- Odd m: if m even, then m-n even → n even → not coprime
+      by_contra hm_not_odd
+      have hm_even := Nat.even_of_not_odd hm_not_odd
+      have h_diff_even := Nat.even_of_not_odd hparity
+      obtain ⟨a, ha⟩ := hm_even; obtain ⟨c, hc⟩ := h_diff_even
+      have hn_even : Even n := ⟨a - c, by omega⟩
+      obtain ⟨b, hb⟩ := hn_even
+      have h2g := Nat.dvd_gcd (⟨a, by omega⟩ : 2 ∣ m) (⟨b, by omega⟩ : 2 ∣ n)
+      rw [hcop] at h2g; omega
+    · -- Odd n: if n even, then m-n even → m even → not coprime
+      by_contra hn_not_odd
+      have hn_even := Nat.even_of_not_odd hn_not_odd
+      have h_diff_even := Nat.even_of_not_odd hparity
+      obtain ⟨b, hb⟩ := hn_even; obtain ⟨c, hc⟩ := h_diff_even
+      have hm_even : Even m := ⟨b + c, by omega⟩
+      obtain ⟨a, ha⟩ := hm_even
+      have h2g := Nat.dvd_gcd (⟨a, by omega⟩ : 2 ∣ m) (⟨b, by omega⟩ : 2 ∣ n)
+      rw [hcop] at h2g; omega
+  · -- Odd m ∧ Odd n → ¬Odd(m-n)
+    rintro ⟨hmem, hn_pos, hn_lt, hcop, hm_odd, hn_odd, hle⟩
     refine ⟨hmem, hn_pos, hn_lt, hcop, ?_, hle⟩
-    intro hodd
-    rw [Nat.odd_iff] at hm_odd hn_odd hodd
-    have := Nat.le_of_lt hn_lt; omega
+    intro h_odd_diff
+    obtain ⟨a, ha⟩ := hm_odd; obtain ⟨b, hb⟩ := hn_odd
+    obtain ⟨c, hc⟩ := h_odd_diff
+    omega
 
 /-- primitiveTripleCount equals EO + OE (the mixed-parity coprime pairs). -/
 theorem primitive_eq_eo_plus_oe (N : ℕ) :
@@ -682,41 +717,21 @@ theorem primitive_eq_eo_plus_oe (N : ℕ) :
     simp only [Finset.mem_filter, Finset.mem_union]
     constructor
     · rintro ⟨hmem, hn_pos, hn_lt, hcop, hodd_diff, hle⟩
-      rcases Nat.even_or_odd m with hm | hm <;> rcases Nat.even_or_odd n with hn | hn
-      · -- both even: contradicts coprime
-        exfalso
-        have h2m : 2 ∣ m := by obtain ⟨k, hk⟩ := hm; exact ⟨k, by omega⟩
-        have h2n : 2 ∣ n := by obtain ⟨k, hk⟩ := hn; exact ⟨k, by omega⟩
-        have h2g := Nat.dvd_gcd h2m h2n; rw [hcop] at h2g; omega
+      -- Odd(m-n) + Coprime → mixed parity (EO or OE)
+      rcases coprime_parity_cases hcop with ⟨hm, hn⟩ | ⟨hm, hn⟩ | ⟨hm, hn⟩
       · left; exact ⟨hmem, hn_pos, hn_lt, hcop, hm, hn, hle⟩
       · right; exact ⟨hmem, hn_pos, hn_lt, hcop, hm, hn, hle⟩
-      · -- both odd: m-n even, contradicts hodd_diff
-        exfalso; rw [Nat.odd_iff] at hm hn hodd_diff
-        have := Nat.le_of_lt hn_lt; omega
-    · rintro (⟨hmem, hn_pos, hn_lt, hcop, hm, hn, hle⟩ |
-              ⟨hmem, hn_pos, hn_lt, hcop, hm, hn, hle⟩)
-      · -- EO → Odd(m-n)
-        refine ⟨hmem, hn_pos, hn_lt, hcop, ?_, hle⟩
-        rw [Nat.odd_iff]; rw [Nat.even_iff] at hm; rw [Nat.odd_iff] at hn
-        have := Nat.le_of_lt hn_lt; omega
-      · -- OE → Odd(m-n)
-        refine ⟨hmem, hn_pos, hn_lt, hcop, ?_, hle⟩
-        rw [Nat.odd_iff]; rw [Nat.odd_iff] at hm; rw [Nat.even_iff] at hn
-        have := Nat.le_of_lt hn_lt; omega
-  · -- Disjointness: EO ∩ OE = ∅ (Even m vs Odd m)
-    apply Finset.disjoint_filter.mpr
+      · exact absurd hodd_diff (both_odd_even_diff hm hn (le_of_lt hn_lt))
+    · intro h
+      rcases h with ⟨hmem, hn_pos, hn_lt, hcop, hm_even, hn_odd, hle⟩ |
+                     ⟨hmem, hn_pos, hn_lt, hcop, hm_odd, hn_even, hle⟩
+      · exact ⟨hmem, hn_pos, hn_lt, hcop,
+              diff_parity_odd_diff (le_of_lt hn_lt) (Or.inl ⟨hm_even, hn_odd⟩), hle⟩
+      · exact ⟨hmem, hn_pos, hn_lt, hcop,
+              diff_parity_odd_diff (le_of_lt hn_lt) (Or.inr ⟨hm_odd, hn_even⟩), hle⟩
+  · apply Finset.disjoint_filter.mpr
     intro ⟨m, n⟩ _ h1 h2
-    have hm_even := h1.2.2.2.1  -- Even m
-    have hm_odd := h2.2.2.2.1   -- Odd m
-    rw [Nat.even_iff] at hm_even; rw [Nat.odd_iff] at hm_odd; omega
-
-/-- **3-Way Partition**: The coprime sector splits into exactly three parity classes.
-coprimeInSectorCount = EO + OE + OO.
-Derived from coprime_sector_partition + bothOdd_eq_oo + primitive_eq_eo_plus_oe. -/
-theorem coprime_sector_three_way_partition (N : ℕ) :
-    coprimeInSectorCount N = coprimeEvenOddCount N + coprimeOddEvenCount N + coprimeOddOddCount N := by
-  rw [← primitive_eq_eo_plus_oe, ← bothOdd_eq_oo]
-  exact coprime_sector_partition N
+    exact absurd h1.2.2.2.1 (Nat.not_even_iff_odd.mpr h2.2.2.2.1)
 
 /-
 ## Part XIII: The Parity Involution
@@ -751,13 +766,8 @@ theorem involution_coprime {m n : ℕ} (hcop : Nat.Coprime m n) (hn_lt : n < m) 
     have := Nat.dvd_gcd hd1 h
     rw [hcop] at this
     exact Nat.dvd_one.mp this
-  have hle : n ≤ m := le_of_lt hn_lt
-  -- d | m and d | (m-n) implies d | m - (m-n) = n
-  obtain ⟨a, ha⟩ := hd1
-  obtain ⟨b, hb⟩ := hd2
-  have hdvd : Nat.gcd m (m - n) ∣ m - (m - n) :=
-    ⟨a - b, by rw [mul_comm, Nat.sub_mul, mul_comm a, mul_comm b, ← ha, ← hb]⟩
-  rwa [Nat.sub_sub_self hle] at hdvd
+  -- gcd(m, m-n) | m and gcd(m, m-n) | (m-n), so it divides m - (m-n) = n
+  exact Nat.sub_sub_self (le_of_lt hn_lt) ▸ Nat.dvd_sub' hd1 hd2
 
 /-- When m is odd: the involution maps even n to odd m-n (OE → OO). -/
 theorem involution_oe_to_oo {m n : ℕ} (hm : Odd m) (hn : Even n) (hn_lt : n < m) :
@@ -807,38 +817,32 @@ Proof: The map (m,n) → (m, m-n) bijects OE to OO because:
 theorem triangle_oe_eq_oo (K : ℕ) :
     (triangleOE K).card = (triangleOO K).card := by
   apply Finset.card_bij (fun mn _ => parityInvolution mn)
-  · -- Maps OE → OO
-    intro ⟨m, n⟩ hmem
-    simp only [triangleOE, Finset.mem_filter] at hmem
-    obtain ⟨hmem_base, hn_pos, hn_lt, hcop, hm_odd, hn_even⟩ := hmem
-    simp only [triangleOO, Finset.mem_filter, parityInvolution]
-    refine ⟨?_, by omega, by omega, involution_coprime hcop hn_lt, hm_odd,
-            involution_oe_to_oo hm_odd hn_even hn_lt⟩
-    -- Show (m, m-n) ∈ base product set
-    have hm_range := (Finset.mem_product.mp hmem_base).1
-    exact Finset.mem_product.mpr ⟨hm_range, Finset.mem_range.mpr (by
-      have := Finset.mem_range.mp hm_range; omega)⟩
-  · -- Injective
-    intro ⟨m₁, n₁⟩ hmem1 ⟨m₂, n₂⟩ hmem2 h
-    simp only [parityInvolution, Prod.mk.injEq] at h
-    simp only [triangleOE, Finset.mem_filter] at hmem1 hmem2
-    obtain ⟨hm_eq, hsub_eq⟩ := h
-    obtain ⟨_, _, hn1_lt, _, _, _⟩ := hmem1
-    obtain ⟨_, _, hn2_lt, _, _, _⟩ := hmem2
+  · -- hi: parityInvolution maps triangleOE into triangleOO
+    intro ⟨m, n⟩ hmn
+    simp only [triangleOE, triangleOO, Finset.mem_filter, Finset.mem_product, Finset.mem_range,
+      parityInvolution] at hmn ⊢
+    obtain ⟨⟨hm_range, hn_range⟩, hpos, hlt, hcop, hm_odd, hn_even⟩ := hmn
+    refine ⟨⟨hm_range, ?_⟩, ?_, ?_, involution_coprime hcop hlt, hm_odd, involution_oe_to_oo hm_odd hn_even hlt⟩
+    · omega  -- m - n < K + 1
+    · omega  -- 0 < m - n
+    · omega  -- m - n < m
+  · -- i_inj: parityInvolution is injective on triangleOE
+    intro ⟨m₁, n₁⟩ hm₁ ⟨m₂, n₂⟩ hm₂ heq
+    simp only [parityInvolution, Prod.mk.injEq] at heq
+    simp only [triangleOE, Finset.mem_filter, Finset.mem_product, Finset.mem_range] at hm₁ hm₂
+    obtain ⟨_, _, hlt₁, _, _, _⟩ := hm₁.2
+    obtain ⟨_, _, hlt₂, _, _, _⟩ := hm₂.2
     ext <;> omega
-  · -- Surjective: preimage of OO pair (m,n) is OE pair (m, m-n)
-    intro ⟨m, n⟩ hmem
-    simp only [triangleOO, Finset.mem_filter] at hmem
-    obtain ⟨hmem_base, hn_pos, hn_lt, hcop, hm_odd, hn_odd⟩ := hmem
-    refine ⟨⟨m, m - n⟩, ?_, ?_⟩
-    · simp only [triangleOE, Finset.mem_filter]
-      refine ⟨?_, by omega, by omega, involution_coprime hcop hn_lt, hm_odd,
-              involution_oo_to_oe hm_odd hn_odd hn_lt⟩
-      have hm_range := (Finset.mem_product.mp hmem_base).1
-      exact Finset.mem_product.mpr ⟨hm_range, Finset.mem_range.mpr (by
-        have := Finset.mem_range.mp hm_range; omega)⟩
-    · unfold parityInvolution
-      ext <;> omega
+  · -- i_surj: every element of triangleOO has a preimage in triangleOE
+    intro ⟨m, n⟩ hmn
+    simp only [triangleOO, triangleOE, Finset.mem_filter, Finset.mem_product, Finset.mem_range,
+      parityInvolution] at hmn ⊢
+    obtain ⟨⟨hm_range, hn_range⟩, hpos, hlt, hcop, hm_odd, hn_odd⟩ := hmn
+    refine ⟨⟨m, m - n⟩, ⟨⟨hm_range, ?_⟩, ?_, ?_, involution_coprime hcop hlt, hm_odd, involution_oo_to_oe hm_odd hn_odd hlt⟩, ?_⟩
+    · omega  -- m - n < K + 1
+    · omega  -- 0 < m - n
+    · omega  -- m - n < m
+    · ext <;> omega  -- m - (m - n) = n
 
 /-
 ## Part XV: Reduction of Parity Axiom
