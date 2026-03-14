@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: File at 1865 lines, 25 axioms, 0 sorries. All axioms are deep algebraic geometry results not provable from current Mathlib. No improvements possible.",
+    "progressSummary": "PROGRESS: 3 axioms eliminated (directSumHodge, directSum_inl, directSum_inr → proved defs). Added projection morphisms. 26 axioms remain. Still blocked on Hodge theory infrastructure for further reduction.",
     "builtItems": [
       "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
       "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
@@ -44,8 +44,7 @@
       "Direct sum of Hodge structures proved constructively (was axiom): VQ=V1×V2, VC=V1×V2, complexify=prodMap, hodgeComponent=Submodule.prod",
       "Injection morphisms ι₁,ι₂ and projection morphisms π₁,π₂ proved for direct sums (5 new defs total, 3 axioms eliminated)",
       "Axiom count reduced from 29 to 26 - remaining axioms are genuinely deep mathematical results",
-      "Biproduct structure proved: π₁∘ι₁=id, π₂∘ι₂=id, π₁∘ι₂=0, π₂∘ι₁=0",
-      "All 25 axioms require Hodge theory / algebraic geometry infrastructure absent from Mathlib"
+      "Biproduct structure proved: π₁∘ι₁=id, π₂∘ι₂=id, π₁∘ι₂=0, π₂∘ι₁=0"
     ],
     "mathlibGaps": [
       "Hodge theory / Hodge decomposition",
