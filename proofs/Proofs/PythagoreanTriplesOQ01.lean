@@ -1040,12 +1040,25 @@ theorem eo_equidistribution
     Tendsto (fun N : ℕ =>
       (coprimeEvenOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
       atTop (𝓝 (1 / 3)) := by
-  -- Proof sketch: By coprime_sector_three_way_partition, EO = C - OE - OO.
-  -- For large N, C > 0, so EO/C = 1 - OE/C - OO/C → 1 - 1/3 - 1/3 = 1/3.
-  -- The limit arithmetic follows from (tendsto_const_nhds.sub h_oe).sub h_oo.
-  -- Needs eventual equality (C > 0 for large N) to convert between
-  -- the pointwise partition and the ratio identity.
-  sorry
+  -- By coprime_sector_three_way_partition, EO = C - OE - OO.
+  -- So EO/C = 1 - OE/C - OO/C → 1 - 1/3 - 1/3 = 1/3.
+  suffices h : Tendsto (fun N : ℕ =>
+      1 - (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ) -
+        (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (1 / 3)) by
+    apply h.congr'
+    filter_upwards [Filter.eventually_ge_atTop 5] with N hN
+    have hN5 : 5 ≤ N := hN
+    have hC_pos := coprimeInSectorCount_pos hN5
+    have hC_ne : (coprimeInSectorCount N : ℝ) ≠ 0 :=
+      Nat.cast_ne_zero.mpr (by omega)
+    have h_part := coprime_sector_three_way_partition N
+    field_simp
+    push_cast [h_part]
+    ring
+  have h_target : (1 : ℝ) / 3 = 1 - 1 / 3 - 1 / 3 := by ring
+  rw [h_target]
+  exact (tendsto_const_nhds.sub h_oe).sub h_oo
 
 /-
 ## Part XVI: Per-Column Involution

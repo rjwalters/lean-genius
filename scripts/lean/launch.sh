@@ -53,7 +53,7 @@ DEFAULT_TESTER=1
 # Max pool sizes
 MAX_ENRICHER=5
 MAX_ARISTOTLE=2
-MAX_RESEARCHER=5
+MAX_RESEARCHER=7
 MAX_SEEKER=1
 MAX_DEPLOYER=1
 MAX_TESTER=1
@@ -240,7 +240,7 @@ get_sessions_for_type() {
             fi
             ;;
         researcher)
-            for i in 1 2 3 4 5; do
+            for i in $(seq 1 $MAX_RESEARCHER); do
                 if tmux has-session -t "researcher-$i" 2>/dev/null; then
                     sessions+=("researcher-$i")
                 fi
@@ -544,7 +544,7 @@ get_all_agent_sessions() {
         sessions+=("aristotle-agent")
     fi
     # Researchers
-    for i in 1 2 3 4 5; do
+    for i in $(seq 1 $MAX_RESEARCHER); do
         if tmux has-session -t "researcher-$i" 2>/dev/null; then
             sessions+=("researcher-$i")
         fi
@@ -1496,8 +1496,10 @@ cmd_daemon() {
         fi
 
         local enricher_active=0 researcher_active=0 aristotle_active=0 seeker_active=0 deployer_active=0
-        for i in 1 2 3 4 5; do
+        for i in $(seq 1 $MAX_ENRICHER); do
             tmux has-session -t "enricher-$i" 2>/dev/null && enricher_active=$((enricher_active + 1))
+        done
+        for i in $(seq 1 $MAX_RESEARCHER); do
             tmux has-session -t "researcher-$i" 2>/dev/null && researcher_active=$((researcher_active + 1))
         done
         tmux has-session -t "aristotle-agent" 2>/dev/null && aristotle_active=1
@@ -1522,7 +1524,7 @@ cmd_daemon() {
         if [[ $researcher_active -lt $researcher ]]; then
             local missing_res=$((researcher - researcher_active))
             daemon_log "INFO" "Pool gap: researcher has $researcher_active/$researcher, spawning $missing_res"
-            for i in $(seq 1 5); do
+            for i in $(seq 1 $MAX_RESEARCHER); do
                 [[ $missing_res -le 0 ]] && break
                 if ! tmux has-session -t "researcher-$i" 2>/dev/null; then
                     if is_cooldown_elapsed "researcher-$i"; then
@@ -1873,7 +1875,7 @@ cmd_spawn() {
             ;;
         researcher)
             echo -e "${BLUE}Spawning additional Researcher...${NC}"
-            for i in 1 2 3 4 5; do
+            for i in $(seq 1 $MAX_RESEARCHER); do
                 if ! tmux has-session -t "researcher-$i" 2>/dev/null; then
                     ./scripts/research/parallel-research.sh 1 &
                     sleep 2
@@ -2000,7 +2002,7 @@ cmd_scale() {
             fi
 
             local current=0
-            for i in 1 2 3 4 5; do
+            for i in $(seq 1 $MAX_RESEARCHER); do
                 if tmux has-session -t "researcher-$i" 2>/dev/null; then
                     current=$((current + 1))
                 fi
@@ -2071,7 +2073,7 @@ cmd_wake() {
             echo -e "${GREEN}Wake signal sent to aristotle-agent${NC}"
             ;;
         researcher)
-            for i in 1 2 3 4 5; do
+            for i in $(seq 1 $MAX_RESEARCHER); do
                 if tmux has-session -t "researcher-$i" 2>/dev/null; then
                     touch "$SIGNALS_DIR/wake-researcher-$i"
                     echo -e "${GREEN}Wake signal sent to researcher-$i${NC}"

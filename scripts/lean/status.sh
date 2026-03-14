@@ -152,8 +152,8 @@ gather_status() {
         aristotle_status="running:$(get_session_uptime "aristotle-agent")"
     fi
 
-    # Researchers
-    for i in 1 2 3 4 5; do
+    # Researchers (up to 7 supported)
+    for i in 1 2 3 4 5 6 7; do
         if session_exists "researcher-$i"; then
             researcher_sessions+=("researcher-$i:$(get_session_uptime "researcher-$i")")
         fi

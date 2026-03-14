@@ -380,9 +380,8 @@ We can prove:
 - 3 | |Gal(X³-2/ℚ)| (prime degree divides Galois group order)
 - |Gal(X³-2/ℚ)| | 6 (divides degree factorial)
 
-The full isomorphism Gal(X³-2/ℚ) ≅ S₃ is axiomatized (requires showing
-the splitting field has degree 6, which needs ω ∉ ℚ(∛2) — a real vs complex
-argument not directly available in Mathlib).
+The full isomorphism Gal(X³-2/ℚ) ≅ S₃ is proved in Part XII below
+(|Gal|=6 via coprimality argument, then galActionHom bijectivity).
 -/
 
 /-- X³ - 2 is irreducible over ℚ, proved via Eisenstein at p = 2. -/
@@ -396,39 +395,26 @@ theorem x_cube_sub_2_natDegree :
   NthRootIrrationalOQ01.natDegree_X_pow_sub_C_eq (by omega) (by norm_num)
 
 /--
-The Galois group of X³ - 2 over ℚ is isomorphic to S₃ (= Perm (Fin 3)).
-
-This is a classical result: the splitting field ℚ(∛2, ω) has degree 6 over ℚ,
-and the Galois group acts faithfully on the 3 roots {∛2, ω·∛2, ω²·∛2},
-giving an injection Gal → S₃. Since |Gal| = 6 = |S₃|, this is an isomorphism.
-
-We axiomatize this because proving [ℚ(∛2, ω) : ℚ] = 6 requires showing that
-the primitive cube root of unity ω is not in the real subfield ℚ(∛2) ⊂ ℝ,
-which requires analysis infrastructure beyond current Mathlib support.
--/
-axiom x_cube_sub_2_gal_iso_s3 :
-    Nonempty ((X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal ≃* Equiv.Perm (Fin 3))
-
-/--
 The symmetric group S₃ is realizable as a Galois group over ℚ.
 
 This is the first concrete non-abelian realization in our formalization.
 S₃ has order 6 and is solvable (consistent with Shafarevich's theorem),
 but this direct construction via X³ - 2 is more explicit.
+
+Previously used an axiom for Gal(X³-2) ≅ S₃; now uses the fully proved
+`x_cube_sub_2_gal_iso_s3_proved` (see Part XII below).
 -/
 theorem s3_realizable :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
       (_ : IsGalois ℚ K),
       Nonempty (Equiv.Perm (Fin 3) ≃* (K ≃ₐ[ℚ] K)) := by
   let p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
-  -- p.SplittingField is Galois over ℚ (splitting field of separable poly in char 0)
-  -- p.Gal is definitionally (p.SplittingField ≃ₐ[ℚ] p.SplittingField)
   have : Normal ℚ p.SplittingField := inferInstance
   have : Algebra.IsSeparable ℚ p.SplittingField := inferInstance
   exact ⟨p.SplittingField,
     inferInstance, inferInstance, inferInstance,
     IsGalois.mk,
-    x_cube_sub_2_gal_iso_s3.map MulEquiv.symm⟩
+    x_cube_sub_2_gal_iso_s3_proved.map MulEquiv.symm⟩
 
 /-
 ## Part VIII: What's Known and What's Open
@@ -546,8 +532,6 @@ theorem solvable_iff_solvable_galois_group
 ### What's Axiomatized (2 remaining axioms):
 1. `abelian_realizable` — Kronecker-Weber theorem (every abelian group is realizable)
 2. `shafarevich_theorem` — All solvable groups are realizable (1954, class field theory)
-3. ~~`x_cube_sub_2_gal_iso_s3`~~ — **ELIMINATED**: `x_cube_sub_2_gal_iso_s3_proved`
-   proves Gal(X³-2/ℚ) ≅ S₃ from |Gal|=6 and galActionHom embedding
 
 ### What Remains Open:
 - The general Inverse Galois Problem for arbitrary finite groups over ℚ
@@ -559,7 +543,7 @@ theorem solvable_iff_solvable_galois_group
 2. Formalize the Kronecker-Weber theorem (would eliminate `abelian_realizable` axiom)
 3. Formalize at least one case of A₅ realization
 
-**Theorem Count**: 48+ proven theorems/lemmas, 2 deep axioms (+ 1 eliminated axiom kept for compat)
+**Theorem Count**: 48+ proven theorems/lemmas, 2 deep axioms
 **Sorries**: 2 (1 open problem + 1 Hilbert irreducibility)
 
 ### Part X: Toward Eliminating the x_cube_sub_2_gal_iso_s3 axiom
@@ -699,15 +683,14 @@ theorem adjoin_root_x_cube_sub_2_root_ne_zero :
     AdjoinRoot.root (X ^ 3 - C (2 : ℚ) : ℚ[X]) ≠ 0 := by
   intro h
   have heval := AdjoinRoot.eval₂_root (X ^ 3 - C (2 : ℚ) : ℚ[X])
-  simp [map_sub, map_pow, map_ofNat] at heval
+  simp [map_sub, map_ofNat] at heval
   rw [h] at heval
   simp at heval
 
 -- Helper: connecting ring-level equation to aeval
 theorem aeval_x_sq_add_x_add_1 {K : Type*} [CommRing K] [Algebra ℚ K] (x : K) :
     Polynomial.aeval x (X ^ 2 + X + 1 : ℚ[X]) = x ^ 2 + x + 1 := by
-  simp [Polynomial.aeval_def, Polynomial.eval₂_add, Polynomial.eval₂_pow,
-        Polynomial.eval₂_X, Polynomial.eval₂_one]
+  simp only [map_add, map_pow, map_one, aeval_X]
 
 theorem cofactor_has_no_root_in_adjoin_root :
     ∀ β : AdjoinRoot (X ^ 3 - C (2 : ℚ)),
@@ -750,8 +733,8 @@ theorem cube_root_ratio_satisfies_cyclotomic
     exact (mul_eq_zero.mp h0).resolve_left hsub
   -- Now divide by b² to get (a/b)² + (a/b) + 1 = 0
   have hb2 : b ^ 2 ≠ 0 := pow_ne_zero 2 hb
-  field_simp
-  nlinarith [hcofactor]
+  have : (a * b⁻¹) ^ 2 + (a * b⁻¹) + 1 = (a ^ 2 + a * b + b ^ 2) * (b⁻¹) ^ 2 := by ring
+  rw [this, hcofactor, zero_mul]
 
 -- Helper: X³-2 is separable (irreducible in char 0)
 theorem x_cube_sub_2_separable : (X ^ 3 - C (2 : ℚ) : ℚ[X]).Separable :=
@@ -762,13 +745,14 @@ theorem three_dvd_gal_card :
     3 ∣ Fintype.card (X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal := by
   have h := Polynomial.Gal.prime_degree_dvd_card x_cube_sub_2_irreducible
     (by rw [x_cube_sub_2_natDegree]; decide)
-  rwa [x_cube_sub_2_natDegree] at h
+  rw [x_cube_sub_2_natDegree, Nat.card_eq_fintype_card] at h
+  exact h
 
 -- Helper: |Gal(X³-2/ℚ)| divides 6 (Gal embeds into S₃ via action on roots)
 theorem gal_card_dvd_six :
     Fintype.card (X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal ∣ 6 := by
   set p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
-  haveI : Fact (p.Splits (algebraMap ℚ p.SplittingField)) :=
+  haveI : Fact (map (algebraMap ℚ p.SplittingField) p).Splits :=
     ⟨Polynomial.SplittingField.splits p⟩
   -- Gal embeds injectively into Perm(rootSet) via galActionHom
   have hinj := Polynomial.Gal.galActionHom_injective p p.SplittingField
@@ -844,7 +828,7 @@ theorem two_dvd_splitting_field_finrank :
     rw [← hmin, x_sq_add_x_add_1_natDegree]
   -- natDegree(minpoly) divides finrank (tower law)
   have hω_int : IsIntegral ℚ ω := .of_finite ℚ ω
-  have htower := FiniteDimensional.finrank_mul_finrank ℚ ℚ⟮ω⟯
+  have htower := Module.finrank_mul_finrank ℚ ℚ⟮ω⟯
     (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField
   rw [IntermediateField.adjoin.finrank hω_int, hdeg] at htower
   exact ⟨_, htower.symm⟩
@@ -853,14 +837,15 @@ theorem splitting_field_x_cube_sub_2_finrank :
     Module.finrank ℚ (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField = 6 := by
   set p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
   -- finrank = |Gal| for separable polynomials
-  have hcard_eq : Fintype.card p.Gal = Module.finrank ℚ p.SplittingField :=
+  have hcard_eq_nat : Nat.card p.Gal = Module.finrank ℚ p.SplittingField :=
     Polynomial.Gal.card_of_separable x_cube_sub_2_separable
+  rw [Nat.card_eq_fintype_card] at hcard_eq_nat
   -- 3 | finrank
   have h3 : 3 ∣ Module.finrank ℚ p.SplittingField := by
-    rw [← hcard_eq]; exact three_dvd_gal_card
+    rw [← hcard_eq_nat]; exact three_dvd_gal_card
   -- finrank | 6
   have hdvd6 : Module.finrank ℚ p.SplittingField ∣ 6 := by
-    rw [← hcard_eq]; exact gal_card_dvd_six
+    rw [← hcard_eq_nat]; exact gal_card_dvd_six
   -- 2 | finrank
   have h2 : 2 ∣ Module.finrank ℚ p.SplittingField :=
     two_dvd_splitting_field_finrank
@@ -879,9 +864,11 @@ This follows from |Gal| = [SplittingField : ℚ] = 6.
 -/
 theorem x_cube_sub_2_gal_card :
     Fintype.card (X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal = 6 := by
-  have hgal := IsGalois.card_aut_eq_finrank ℚ (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField
-  rw [Nat.card_eq_fintype_card] at hgal
-  rw [hgal, splitting_field_x_cube_sub_2_finrank]
+  have hcard_eq_nat : Nat.card (X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal =
+      Module.finrank ℚ (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField :=
+    Polynomial.Gal.card_of_separable x_cube_sub_2_separable
+  rw [Nat.card_eq_fintype_card] at hcard_eq_nat
+  rw [hcard_eq_nat, splitting_field_x_cube_sub_2_finrank]
 
 -- ============================================================================
 -- Part XII: Eliminating x_cube_sub_2_gal_iso_s3 axiom
@@ -899,7 +886,7 @@ This gives an isomorphism Gal ≅ Perm(rootSet) ≅ Perm(Fin 3) ≅ S₃.
 theorem x_cube_sub_2_gal_iso_s3_proved :
     Nonempty ((X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal ≃* Equiv.Perm (Fin 3)) := by
   set p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
-  haveI : Fact (p.Splits (algebraMap ℚ p.SplittingField)) :=
+  haveI : Fact (map (algebraMap ℚ p.SplittingField) p).Splits :=
     ⟨Polynomial.SplittingField.splits p⟩
   -- galActionHom is injective
   have hinj := Polynomial.Gal.galActionHom_injective p p.SplittingField
@@ -914,7 +901,7 @@ theorem x_cube_sub_2_gal_iso_s3_proved :
     rw [Fintype.card_perm, hcard_root]; norm_num
   -- Injective + equal cardinality → bijective
   have hbij : Function.Bijective (Polynomial.Gal.galActionHom p p.SplittingField) :=
-    Fintype.bijective_iff_injective_and_card.mpr ⟨hinj, by rw [hcard_gal, hcard_perm]⟩
+    (Fintype.bijective_iff_injective_and_card _).mpr ⟨hinj, by rw [hcard_gal, hcard_perm]⟩
   -- Construct isomorphism Gal ≅ Perm(rootSet)
   have hiso : p.Gal ≃* Equiv.Perm (p.rootSet p.SplittingField) :=
     MulEquiv.ofBijective _ hbij

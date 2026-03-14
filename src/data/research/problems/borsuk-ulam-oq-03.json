@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-02-25T14:11:52.126Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed pre-existing build errors in BorsukUlamOQ03.lean (discrete_ivt_sign_change). Both OQ03 and OQ03OQ03 now compile clean.",
+    "progressSummary": "COMPLETED: Fixed all build errors in both OQ03 and OQ03OQ03. Both files compile clean (0 sorries). OQ03: 4 axioms (higher-D BU blocked on Mathlib). OQ03OQ03: 1 axiom (Tucker lemma). Full 2D BU proved from Tucker.",
     "builtItems": [
       "proofs/Proofs/BorsukUlamOQ03.lean (914 lines, 41 defs/theorems, 7 axioms, 0 sorries)",
       "src/data/proofs/borsuk-ulam-oq-03/ (gallery integration with meta.json, annotations.json, index.ts)",
@@ -47,7 +47,7 @@
       "BU preservation theorems: post-composition, even composition, max, min",
       {
         "name": "discrete_ivt_sign_change (fixed)",
-        "description": "Repaired 3 proof bugs in BorsukUlamOQ03.lean:1354-1376",
+        "description": "Fixed 3 proof bugs: false hbdry, broken rw, invalid .2 projection",
         "proven": true
       }
     ],
@@ -67,8 +67,9 @@
       "gridDense proof: use Nat.floor to find nearest grid index, bound error by 1/N <= sqrt(2)/N via Prod.dist max metric",
       "BorsukUlamOQ03OQ03 has pre-existing build errors at lines 1510+ from Mathlib API changes (radialExtend infrastructure)",
       "coincidence_set_closed uses isClosed_eq with fun_prop for continuity of composed trig functions",
-      "Fixed discrete_ivt_sign_change proof: removed false hbdry lemma, fixed Bool comparison proof, fixed .2 projection error",
-      "BorsukUlamOQ03.lean now compiles clean (0 sorries, 4 axioms)"
+      "discrete_ivt_sign_change: hbdry lemma was false (sum=0 is not contradictory), removed it and fixed Bool comparison proof",
+      "Forward references in Lean 4 cause Unknown identifier errors - must define before use",
+      "Orphaned /-- doc comments (not attached to a declaration) cause parse errors in Lean 4"
     ],
     "mathlibGaps": [],
     "nextSteps": [
