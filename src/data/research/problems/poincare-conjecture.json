@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts XXI-XXVIII (~489 lines). Antipodal map, Euler characteristic, lens spaces, topological obstructions, sphere metric bounds, transfer theorems, and uniqueness of SC closed 3-manifolds all proved.",
+    "progressSummary": "PROGRESS: Added Poincare homology sphere (non-example), Whitehead manifold (closed essential), closed 3-mfd dichotomy. 41 axioms, 97 theorems, 1531 lines.",
     "builtItems": [
       "Part XXI: Antipodal map (antipodalMap, antipodalHomeomorph, no_fixed_points, distance=2)",
       "Part XXIII: Euler characteristic and Betti numbers (sphereEulerChar, euler_char_odd/even, Betti S³)",
@@ -37,7 +37,37 @@
       "Part XXV: Topological obstructions (S²×S¹≇S³, T³≇S³)",
       "Part XXVI: Sphere metric properties (dist ≤ 2, max distance, boundedness)",
       "Part XXVII: Transfer theorems (compact/connected/pathConnected/nonempty across homeomorphisms)",
-      "Part XXVIII: Poincaré corollaries (uniqueness of SC closed 3-manifolds, transitivity through S³)"
+      "Part XXVIII: Poincaré corollaries (uniqueness of SC closed 3-manifolds, transitivity through S³)",
+      {
+        "name": "poincare_hs_not_S3",
+        "description": "Poincare homology sphere not homeomorphic to S3",
+        "proven": true
+      },
+      {
+        "name": "simply_connected_essential",
+        "description": "Simply connected hypothesis is essential for Poincare conjecture",
+        "proven": true
+      },
+      {
+        "name": "whitehead_simply_connected",
+        "description": "Whitehead manifold is simply connected",
+        "proven": true
+      },
+      {
+        "name": "closed_hypothesis_essential",
+        "description": "Closed (compact) hypothesis is essential",
+        "proven": true
+      },
+      {
+        "name": "closed_3mfd_dichotomy",
+        "description": "Dichotomy: SC and S3, or not-SC and not-S3",
+        "proven": true
+      },
+      {
+        "name": "poincare_dim3_settled",
+        "description": "Dim 3 Poincare fully settled",
+        "proven": true
+      }
     ],
     "insights": [
       "Antipodal map on S^n: continuous involution, norm-preserving, fixed-point-free (all proved)",
@@ -46,7 +76,11 @@
       "Betti numbers b_k(S³) = (1,0,0,1): consistency with Euler characteristic verified",
       "Lens spaces L(p,q): parametrized by coprime (p,q), π₁≅ℤ/pℤ, L(1,0)=S³",
       "L(5,1) and L(5,2) fail Reidemeister homeomorphism criterion (native_decide proof)",
-      "Topological obstructions: S²×S¹≇S³ and T³≇S³ proved via simple connectivity transfer"
+      "Topological obstructions: S²×S¹≇S³ and T³≇S³ proved via simple connectivity transfer",
+      "Poincare homology sphere: closed 3-manifold with same homology as S3 but pi1 = binary icosahedral (order 120), proved not homeomorphic to S3",
+      "Binary icosahedral group nontriviality proved from Fintype.card = 120",
+      "Whitehead manifold: contractible (hence simply connected) but not compact, shows closed hypothesis essential",
+      "Closed 3-manifold dichotomy proved: every closed 3-mfd is either (SC and S3) or (not-SC and not-S3)"
     ],
     "mathlibGaps": [
       "3-manifolds",

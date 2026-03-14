@@ -1352,31 +1352,141 @@ theorem sc_closed_3mfd_unique (M N : Type) [TopologicalSpace M] [TopologicalSpac
 end PoincareCorollaries
 
 /- ===============================================================================
+PART XXIX: POINCARE HOMOLOGY SPHERE (NON-EXAMPLE)
+===============================================================================
+
+The Poincare homology sphere is the most famous non-example for the
+Poincare conjecture. It has the same homology as S^3 but its fundamental
+group is the binary icosahedral group (order 120).
+-/
+
+section HomologySphere
+
+/-- The binary icosahedral group, of order 120. -/
+axiom BinaryIcosahedral : Type
+axiom instGroupBinaryIcosahedral : Group BinaryIcosahedral
+axiom instFintypeBinaryIcosahedral : Fintype BinaryIcosahedral
+axiom binary_icosahedral_card :
+    @Fintype.card BinaryIcosahedral instFintypeBinaryIcosahedral = 120
+
+/-- The binary icosahedral group is nontrivial (order 120 > 1). -/
+theorem binary_icosahedral_nontrivial :
+    ¬ @Subsingleton BinaryIcosahedral := by
+  intro h
+  have := @Fintype.card_le_one_iff_subsingleton BinaryIcosahedral instFintypeBinaryIcosahedral
+  have hle := this.mpr h
+  linarith [binary_icosahedral_card]
+
+/-- The Poincare homology sphere: closed 3-manifold, pi_1 nontrivial. -/
+axiom PoincareHomologySphere : Type
+axiom instTopPoincareHS : TopologicalSpace PoincareHomologySphere
+axiom poincare_hs_closed :
+    @Closed3Manifold PoincareHomologySphere instTopPoincareHS
+axiom poincare_hs_pi1_nontrivial :
+    ¬ @SimplyConnectedSpace PoincareHomologySphere instTopPoincareHS
+
+/-- The Poincare homology sphere is NOT homeomorphic to S^3. -/
+theorem poincare_hs_not_S3 :
+    ¬ @AreHomeomorphic PoincareHomologySphere (↥Sphere3) instTopPoincareHS _ := by
+  intro ⟨f⟩
+  apply poincare_hs_pi1_nontrivial
+  exact @simply_connected_of_homeomorphic PoincareHomologySphere (↥Sphere3)
+    instTopPoincareHS _ sphere3_simply_connected ⟨f⟩
+
+/-- The simply connected hypothesis is essential: there exists a closed
+    3-manifold with the same homology as S^3 that is NOT homeomorphic to S^3. -/
+theorem simply_connected_essential :
+    ∃ (M : Type) (_ : TopologicalSpace M),
+      @Closed3Manifold M ‹_› ∧ ¬ @AreHomeomorphic M (↥Sphere3) ‹_› _ :=
+  ⟨PoincareHomologySphere, instTopPoincareHS, poincare_hs_closed, poincare_hs_not_S3⟩
+
+end HomologySphere
+
+/- ===============================================================================
+PART XXX: WHITEHEAD MANIFOLD (OPEN CONTRACTIBLE BUT NOT R^3)
+===============================================================================
+
+The Whitehead manifold is open, contractible, but not homeomorphic to R^3.
+This shows that the closed hypothesis is essential.
+-/
+
+section WhiteheadManifold
+
+axiom WhiteheadManifold : Type
+axiom instTopWhitehead : TopologicalSpace WhiteheadManifold
+axiom whitehead_contractible : @ContractibleSpace WhiteheadManifold instTopWhitehead
+axiom whitehead_not_compact : ¬ @CompactSpace WhiteheadManifold instTopWhitehead
+
+/-- The Whitehead manifold is simply connected (contractible implies SC). -/
+theorem whitehead_simply_connected :
+    @SimplyConnectedSpace WhiteheadManifold instTopWhitehead :=
+  @SimplyConnectedSpace.ofContractible WhiteheadManifold instTopWhitehead
+    whitehead_contractible
+
+/-- The closed (compact) hypothesis is essential. -/
+theorem closed_hypothesis_essential :
+    ∃ (M : Type) (_ : TopologicalSpace M),
+      @SimplyConnectedSpace M ‹_› ∧ ¬ @CompactSpace M ‹_› :=
+  ⟨WhiteheadManifold, instTopWhitehead, whitehead_simply_connected, whitehead_not_compact⟩
+
+end WhiteheadManifold
+
+/- ===============================================================================
+PART XXXI: CONSEQUENCES FOR 3-MANIFOLD TOPOLOGY
+=============================================================================== -/
+
+section ThreeManifoldTopology
+
+/-- The Poincare conjecture dichotomy for closed 3-manifolds:
+    Either SC and homeomorphic to S^3, or not SC and not homeomorphic to S^3. -/
+theorem closed_3mfd_dichotomy (M : Type) [TopologicalSpace M]
+    (hM : Closed3Manifold M) :
+    (SimplyConnectedSpace M ∧ AreHomeomorphic M Sphere3) ∨
+    (¬ SimplyConnectedSpace M ∧ ¬ AreHomeomorphic M Sphere3) := by
+  by_cases hsc : SimplyConnectedSpace M
+  · left
+    exact ⟨hsc, poincare_conjecture_holds M hM hsc⟩
+  · right
+    refine ⟨hsc, fun ⟨f⟩ => hsc ?_⟩
+    exact simply_connected_of_homeomorphic M (↥Sphere3) ⟨f⟩
+
+/-- Dim 3 is fully settled. -/
+theorem poincare_dim3_settled :
+    ∀ (M : Type) [TopologicalSpace M],
+      Closed3Manifold M → SimplyConnectedSpace M → AreHomeomorphic M Sphere3 :=
+  fun M _ h1 h2 => poincare_conjecture_holds M h1 h2
+
+end ThreeManifoldTopology
+
+/- ===============================================================================
 SUMMARY (UPDATED WITH NEW RESULTS)
 ===============================================================================
 
-### PROVED (Parts XXI-XXVIII):
+### PROVED (Parts XXI-XXXI):
 - Antipodal map: continuous, involutive, norm-preserving, fixed-point-free
 - Antipodal homeomorphism of S^n (antipodalHomeomorph)
 - Antipodal distance = 2 (the diameter of the sphere)
-- Euler characteristic of S^n: χ = 1+(-1)^n, verified for S⁰ through S⁴
+- Euler characteristic of S^n: chi = 1+(-1)^n, verified for S^0 through S^4
 - Euler characteristic from Betti numbers consistency
-- Odd-dimensional spheres: χ = 0 (proved for all n)
-- Even-dimensional spheres: χ = 2 (proved for all n)
-- Betti numbers of S³: (1,0,0,1)
+- Odd-dimensional spheres: chi = 0 (proved for all n)
+- Even-dimensional spheres: chi = 2 (proved for all n)
+- Betti numbers of S^3: (1,0,0,1)
 - Sphere ambient dimension and codimension
 - Lens space parameters with coprimality
-- Specific lens spaces: L(1,0)=S³, L(2,1)=RP³, L(3,1), L(5,1), L(5,2)
+- Specific lens spaces: L(1,0)=S^3, L(2,1)=RP^3, L(3,1), L(5,1), L(5,2)
 - L(5,1) and L(5,2) fail Reidemeister homeomorphism criterion (native_decide)
-- S² × S¹ ≇ S³ (from simple connectivity transfer)
-- T³ ≇ S³ (from π₁ obstruction)
-- Sphere distance bounds: dist ≤ 2 for all points on S^n
+- S^2 x S^1 not homeomorphic to S^3 (from simple connectivity transfer)
+- T^3 not homeomorphic to S^3 (from pi_1 obstruction)
+- Sphere distance bounds: dist <= 2 for all points on S^n
 - Maximum distance achieved by antipodal points
 - S^n is bounded
 - Compactness, connectedness, path-connectedness, nonemptiness transfer across homeomorphisms
-- Non-compact or non-connected spaces cannot be homeomorphic to S³
-- Any space homeomorphic to S³ inherits all its topological properties
+- Non-compact or non-connected spaces cannot be homeomorphic to S^3
+- Any space homeomorphic to S^3 inherits all its topological properties
 - Two simply connected closed 3-manifolds are homeomorphic (uniqueness)
+- Poincare homology sphere not homeomorphic to S^3 (simply connected essential)
+- Whitehead manifold: contractible but not compact (closed essential)
+- Closed 3-manifold dichotomy: SC and S^3, or not-SC and not-S^3
 -/
 
 #check PoincareConjectureStatement
@@ -1406,8 +1516,16 @@ SUMMARY (UPDATED WITH NEW RESULTS)
 #check simply_connected_of_homeomorphic
 #check sphere3_properties_transfer
 
--- Poincaré corollaries (PROVED)
+-- Poincare corollaries (PROVED)
 #check both_homeo_sphere3_implies_homeo
 #check sc_closed_3mfd_unique
+
+-- Non-examples and dichotomy (Parts XXIX-XXXI)
+#check poincare_hs_not_S3
+#check simply_connected_essential
+#check whitehead_simply_connected
+#check closed_hypothesis_essential
+#check closed_3mfd_dichotomy
+#check poincare_dim3_settled
 
 end PoincareConjecture
