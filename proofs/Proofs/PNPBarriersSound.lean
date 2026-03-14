@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (31 axioms)
+## Axiom Summary (39 axioms)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -57,6 +57,11 @@ Structural (5): valiant_vazirani, mahaney_theorem, NL_subset_P, immerman_szelepc
 Padding (2): padding_P_eq_NP_implies_EXP_eq_NEXP, padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE
 Separation/existence (2): P_ne_EXP, ladner_theorem
 Completeness results (3): cook_levin, tqbf_pspace_complete, L_ne_PSPACE
+Quantum (5): BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE, P_subset_PP, NP_subset_PP
+Quantum results (1): shor_factoring_in_BQP
+Derandomization (1): impagliazzo_wigderson (EXP ≠ BPP → BPP = P)
+Now theorems: BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP, factoring_in_PSPACE,
+    IW_contrapositive, IW_dichotomy, derandomization_circuit_connection (all derived)
 -/
 
 set_option linter.unusedVariables false
@@ -2226,6 +2231,179 @@ theorem complexity_zoo_summary :
          PSPACE_complement_closed⟩
 
 -- ============================================================
+-- PART 34: Quantum Complexity (BQP and PP)
+-- ============================================================
+
+/-
+### BQP — Bounded-Error Quantum Polynomial Time
+
+BQP is the class of problems solvable by a quantum computer in polynomial
+time with bounded error probability (≤ 1/3).
+
+Key relationships:
+- BPP ⊆ BQP (classical algorithms are special cases of quantum)
+- BQP ⊆ PP ⊆ PSPACE (Adleman-DeMarrais-Huang 1997)
+- Integer factoring ∈ BQP (Shor 1994) but not known to be in BPP
+
+The question BPP =? BQP is the "quantum advantage" question.
+BQP is not known to contain NP, and NP is not known to be in BQP.
+-/
+
+/-- A problem is in BQP if there exists a quantum polynomial-time
+    algorithm deciding it with bounded error.
+
+    We define via a classical simulation characterization:
+    there exists a program e and polynomial p such that for each input n,
+    program e on oracle A (encoding the quantum circuit) halts within
+    p(|n|) steps and gives the correct answer with probability ≥ 2/3.
+
+    For soundness, we use opaque definition. -/
+opaque BQP_def : Set (ℕ → Bool)
+def BQP : Set (ℕ → Bool) := BQP_def
+
+/-- PP (Probabilistic Polynomial Time): the class of problems solvable
+    by a probabilistic TM in polynomial time with probability > 1/2.
+    Unlike BPP, there is no gap between acceptance and rejection
+    probabilities, so error reduction does not apply.
+
+    PP is important because:
+    - BQP ⊆ PP (Adleman-DeMarrais-Huang 1997)
+    - PP is closely related to #P (counting)
+    - PH ⊆ P^PP (Toda 1991) -/
+opaque PP_def : Set (ℕ → Bool)
+def PP : Set (ℕ → Bool) := PP_def
+
+/-- Classical computation is a special case of quantum computation. -/
+axiom BPP_subset_BQP : BPP ⊆ BQP
+
+/-- Quantum computation can be simulated with unbounded-error
+    probability in polynomial time.
+    (Adleman-DeMarrais-Huang 1997) -/
+axiom BQP_subset_PP : BQP ⊆ PP
+
+/-- PP ⊆ PSPACE: enumerate all random strings, count accepting ones,
+    compare to threshold. Uses polynomial space for counting. -/
+axiom PP_subset_PSPACE : PP ⊆ PSPACE
+
+/-- P ⊆ PP: deterministic computation is a special case. -/
+axiom P_subset_PP : P ⊆ PP
+
+/-- BQP ⊆ PSPACE (derived: BQP ⊆ PP ⊆ PSPACE). -/
+theorem BQP_subset_PSPACE : BQP ⊆ PSPACE :=
+  Set.Subset.trans BQP_subset_PP PP_subset_PSPACE
+
+/-- P ⊆ BQP (derived: P ⊆ BPP ⊆ BQP). -/
+theorem P_subset_BQP : P ⊆ BQP :=
+  Set.Subset.trans P_subset_BPP BPP_subset_BQP
+
+/-- NP ⊆ PP: nondeterministic computation can be simulated
+    probabilistically (guess a path, check, accept with probability
+    > 1/2 iff accepting paths exist). -/
+axiom NP_subset_PP : NP ⊆ PP
+
+/-- PP ⊆ EXP (derived: PP ⊆ PSPACE ⊆ EXP). -/
+theorem PP_subset_EXP : PP ⊆ EXP :=
+  Set.Subset.trans PP_subset_PSPACE PSPACE_subset_EXP
+
+/-- The classical-quantum containment chain:
+    P ⊆ BPP ⊆ BQP ⊆ PP ⊆ PSPACE ⊆ EXP. -/
+theorem quantum_containment_chain :
+    P ⊆ BPP ∧ BPP ⊆ BQP ∧ BQP ⊆ PP ∧ PP ⊆ PSPACE ∧ PSPACE ⊆ EXP := by
+  exact ⟨P_subset_BPP, BPP_subset_BQP, BQP_subset_PP,
+         PP_subset_PSPACE, PSPACE_subset_EXP⟩
+
+/-- **Shor's Algorithm (1994)**: Integer factoring is in BQP.
+    Shor showed that quantum computers can find the period of
+    f(x) = a^x mod N using quantum Fourier transform, which
+    gives the factorization via continued fractions. -/
+opaque FACTORING_def : ℕ → Bool
+def FACTORING : ℕ → Bool := FACTORING_def
+
+axiom shor_factoring_in_BQP : FACTORING ∈ BQP
+
+/-- Factoring is in PSPACE (consequence of BQP ⊆ PSPACE). -/
+theorem factoring_in_PSPACE : FACTORING ∈ PSPACE :=
+  BQP_subset_PSPACE shor_factoring_in_BQP
+
+/-- If factoring ∉ P, then BQP ⊄ P (quantum provides speedup). -/
+theorem factoring_separates_P_BQP :
+    FACTORING ∉ P → ¬(BQP ⊆ P) := by
+  intro hf hsub
+  exact hf (hsub shor_factoring_in_BQP)
+
+/-- The quantum and classical containment chains both terminate
+    at PSPACE but their middle portions are incomparable. -/
+theorem quantum_np_landscape :
+    P ⊆ BQP ∧ BQP ⊆ PSPACE ∧ P ⊆ NP ∧ NP ⊆ PSPACE := by
+  exact ⟨P_subset_BQP, BQP_subset_PSPACE, P_subset_NP, NP_subset_PSPACE⟩
+
+-- ============================================================
+-- PART 35: Derandomization — Impagliazzo-Wigderson
+-- ============================================================
+
+/-
+### Impagliazzo-Wigderson Derandomization
+
+While Nisan-Wigderson (Part 24) shows "hard function → BPP = P",
+Impagliazzo-Wigderson (1997) strengthens this to a clean dichotomy:
+
+  **Either BPP = P, or EXP = BPP.**
+
+This means randomness either doesn't help at all, or it makes
+everything in EXP easy. The latter is considered extremely unlikely,
+so most experts believe BPP = P.
+
+The IW theorem is strictly stronger than NW because it shows the
+hard function can be found *within EXP* (not just assumed to exist).
+-/
+
+/-- **Impagliazzo-Wigderson Theorem (1997)**:
+    If EXP ≠ BPP, then BPP = P.
+
+    Proof outline: EXP ≠ BPP gives a function in E = DTIME(2^{O(n)})
+    that requires exponential circuits. The Nisan-Wigderson PRG converts
+    this into a pseudorandom generator fooling all poly-size circuits.
+    Replacing random bits with PRG output derandomizes all BPP algorithms.
+
+    This is stronger than nisan_wigderson because it locates the hard
+    function specifically within EXP (not just positing its existence). -/
+axiom impagliazzo_wigderson : EXP ≠ BPP → BPP = P
+
+/-- **Contrapositive of IW**: If BPP ≠ P, then EXP = BPP.
+    Remarkable: if randomness genuinely helps, then exponential-time
+    problems are all probabilistically easy! -/
+theorem IW_contrapositive : BPP ≠ P → EXP = BPP := by
+  intro h_neq
+  by_contra h_exp_neq
+  exact h_neq (impagliazzo_wigderson h_exp_neq)
+
+/-- **The IW Dichotomy**: BPP = P ∨ EXP = BPP.
+    Since P ≠ EXP (time hierarchy), at most one can hold.
+    Most experts believe BPP = P. -/
+theorem IW_dichotomy : BPP = P ∨ EXP = BPP := by
+  by_cases h : EXP = BPP
+  · exact Or.inr h
+  · exact Or.inl (impagliazzo_wigderson h)
+
+/-- Under EXP ≠ BPP (which follows from standard assumptions), BPP = P. -/
+theorem BPP_eq_P_from_EXP_ne_BPP (h : EXP ≠ BPP) : BPP = P :=
+  impagliazzo_wigderson h
+
+/-- **Connection to barriers**: If BPP ≠ P, then EXP = BPP, meaning
+    EXP ⊆ P/poly (via Adleman). Having EXP ⊆ P/poly means NO
+    exponential circuit lower bounds exist — the opposite of what
+    we need for P ≠ NP.
+
+    So: failure to derandomize ↔ failure to prove circuit lower bounds. -/
+theorem derandomization_circuit_connection :
+    BPP ≠ P → EXP ⊆ P_poly := by
+  intro h_bpp_ne_p
+  have h_eq := IW_contrapositive h_bpp_ne_p
+  intro f hf
+  rw [h_eq] at hf
+  exact adleman_theorem hf
+
+-- ============================================================
 -- PART 29: Summary and Verification
 -- ============================================================
 
@@ -2376,5 +2554,26 @@ theorem complexity_zoo_summary :
 #check P_eq_NP_total_collapse      -- P = NP → everything collapses
 #check meta_barrier_for_resolution -- Complete barrier picture
 #check complexity_zoo_summary      -- Full complexity zoo
+
+-- Quantum complexity (BQP, PP)
+#check BQP                          -- Set (ℕ → Bool)
+#check PP                           -- Set (ℕ → Bool)
+#check BPP_subset_BQP               -- BPP ⊆ BQP
+#check BQP_subset_PP                -- BQP ⊆ PP
+#check PP_subset_PSPACE             -- PP ⊆ PSPACE
+#check BQP_subset_PSPACE            -- BQP ⊆ PSPACE (derived)
+#check P_subset_BQP                 -- P ⊆ BQP (derived)
+#check NP_subset_PP                 -- NP ⊆ PP
+#check quantum_containment_chain    -- P ⊆ BPP ⊆ BQP ⊆ PP ⊆ PSPACE ⊆ EXP
+#check shor_factoring_in_BQP        -- FACTORING ∈ BQP
+#check factoring_in_PSPACE          -- FACTORING ∈ PSPACE (derived)
+#check factoring_separates_P_BQP    -- FACTORING ∉ P → ¬(BQP ⊆ P)
+#check quantum_np_landscape         -- Quantum/NP chains share endpoints
+
+-- Derandomization (Impagliazzo-Wigderson)
+#check impagliazzo_wigderson         -- EXP ≠ BPP → BPP = P
+#check IW_contrapositive            -- BPP ≠ P → EXP = BPP
+#check IW_dichotomy                 -- BPP = P ∨ EXP = BPP
+#check derandomization_circuit_connection  -- BPP ≠ P → EXP ⊆ P/poly
 
 end PNPBarriersSound
