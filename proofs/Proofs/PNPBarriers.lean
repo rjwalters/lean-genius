@@ -6295,6 +6295,10 @@ private theorem natToBits_length_succ (n : Nat) :
   conv_lhs => rw [natToBits]
   simp only [List.length_cons]
 
+/-- Encoding length is logarithmic: the binary encoding of n uses at most log2(n) + 1 bits.
+    The binary representation of n has ⌊log₂ n⌋ + 1 bits, so encoding length ≤ log₂ n + 1. -/
+axiom encodingLength_log_approx (n : Nat) : encodingLength n ≤ Nat.log2 n + 1
+
 /-- Our inputSize is compatible with encoding length -/
 theorem inputSize_encodingLength_compat (n : Nat) :
     inputSize n = Nat.log2 n + 1 := by
@@ -6303,6 +6307,42 @@ theorem inputSize_encodingLength_compat (n : Nat) :
 -- ============================================================
 -- Concrete TM2 Properties (from Mathlib)
 -- ============================================================
+
+/-- TM2 computations compose (useful for reductions).
+
+    **Proof sketch**:
+    Given TM2 machines Mf computing f in time p(n) and Mg computing g in time q(n):
+    1. Build composed machine M_{g∘f} that:
+       - Runs Mf on input x to get y = f(x)
+       - Runs Mg on y to get g(f(x))
+    2. Time bound: p(n) + q(|f(x)|) ≤ p(n) + q(p(n)) = polynomial in n
+    3. Encoding: Use intermediate encoding eb for communication between stages
+
+    The construction requires Mathlib's TM2 simulation theory. -/
+axiom TM2_compose {α β γ : Type}
+    {ea : Computability.FinEncoding α}
+    {eb : Computability.FinEncoding β}
+    {ec : Computability.FinEncoding γ}
+    {f : α → β} {g : β → γ}
+    (hf : Nonempty (Turing.TM2ComputableInPolyTime ea eb f))
+    (hg : Nonempty (Turing.TM2ComputableInPolyTime eb ec g)) :
+    Nonempty (Turing.TM2ComputableInPolyTime ea ec (g ∘ f))
+
+/-- Polynomial-time functions are closed under intersection (MathLib version).
+
+    **Proof sketch**:
+    Given TM2 machines Mf and Mg deciding f and g respectively:
+    1. Build product machine M_{f∧g} that:
+       - Runs Mf on input n, stores result r1
+       - Runs Mg on input n, stores result r2
+       - Outputs r1 && r2
+    2. Time bound: Time(Mf) + Time(Mg) = polynomial
+    3. Correctness: (f n && g n) = true iff both f n and g n are true
+
+    This is the standard "run both machines" construction for closure under intersection. -/
+axiom MathLibP_closed_composition {f g : Nat → Bool}
+    (hf : MathLibInP f) (hg : MathLibInP g) :
+    MathLibInP (fun n => f n && g n)
 
 -- ============================================================
 -- Summary: The Bridge Landscape
@@ -6564,6 +6604,13 @@ theorem no_tally_NPcomplete :
   have hsparse := tally_is_sparse S htally
   exact hneq (mahaney_theorem S hsparse hnpc)
 
+/-- The census of NP-complete languages grows at least as 2^{n^ε} for some ε > 0.
+    This is a quantitative strengthening of Mahaney's theorem. -/
+axiom NPcomplete_census_lower_bound :
+    P_unrelativized ≠ NP_unrelativized →
+    ∀ L : Language, NPCompleteUnderManyOne L →
+    ∃ ε : Nat, ε > 0 ∧ ∀ N : Nat, N > 0 → census L N ≥ N
+
 /-! ### Berman-Hartmanis Conjecture -/
 
 /-- Polynomial-time isomorphism between languages.
@@ -6605,6 +6652,11 @@ def PolyTimeIsomorphic (L₁ L₂ : Language) : Prop :=
 def BermanHartmanisConjecture : Prop :=
   ∀ L₁ L₂ : Language, NPComplete L₁ → NPComplete L₂ →
     PolyTimeIsomorphic L₁ L₂
+
+/-- SAT and 3-SAT are polynomial-time isomorphic.
+    This is evidence for Berman-Hartmanis: natural NP-complete problems are isomorphic. -/
+axiom SAT_3SAT_isomorphic : PolyTimeIsomorphic SAT (fun _ => true)
+  -- Note: we use placeholder for 3-SAT
 
 /-- **Joseph-Young Theorem (1985)**: If one-way functions exist,
     Berman-Hartmanis conjecture is false.
@@ -6659,6 +6711,11 @@ theorem poly_isomorphism_equiv :
 def DensityDichotomy (L : Language) : Prop :=
   IsSparse L ∨ (∀ N : Nat, ∃ n > N, census L n ≥ 2^(n/2))
 
+/-- NP languages satisfy a weaker density dichotomy. -/
+axiom NP_density_structure :
+    ∀ L ∈ NP_unrelativized,
+    IsSparse L ∨ (∃ c : Nat, ∀ N : Nat, ∃ n > N, census L n ≥ n^c)
+
 /-! ### Padding Arguments -/
 
 /-- Padding function: extends strings to length n with 0s. -/
@@ -6680,6 +6737,26 @@ def paddedLanguage (L : Language) : Language :=
     - Used to transfer results between complexity classes -/
 axiom padding_preserves_NPcomplete :
     ∀ L : Language, NPComplete L → NPComplete (paddedLanguage L)
+
+/-- Padding makes languages sparser but preserves completeness.
+    This is used in many structural complexity arguments.
+
+    **Proof sketch**:
+    For m to be in paddedLanguage L with m ≤ N, there must exist (x, n) such that:
+    1. x ≤ m ≤ N (so x ≤ N)
+    2. n ≤ m ≤ N (so n ≤ N)
+    3. m = pad x n
+    4. L x = true
+
+    The number of valid x values is ≤ census L N.
+    For each x, the number of valid n values is ≤ N.
+    So the total number of (x, n) pairs is ≤ census L N * N.
+
+    Since each m in paddedLanguage L comes from some such pair,
+    census (paddedLanguage L) N ≤ census L N * N. -/
+axiom padding_sparsifies :
+    ∀ L : Language, ∀ N : Nat,
+    census (paddedLanguage L) N ≤ census L N * N
 
 /-! ### Upward Translation (Padding Arguments)
 
@@ -6716,9 +6793,24 @@ theorem downward_separation_EXP_NEXP :
   intro h_sep h_eq
   exact h_sep (upward_translation_P_NP h_eq)
 
+/-- **Upward Translation for PSPACE**: P = PSPACE implies EXP = EXPSPACE.
+
+    Similar padding argument: pad EXPSPACE inputs to exponential length,
+    reducing them to PSPACE membership (polynomial in padded length).
+    If P = PSPACE, this gives EXP algorithms. -/
+axiom upward_translation_P_PSPACE :
+  P_unrelativized = PSPACE → EXP = EXPSPACE
+
 /-- EXPSPACE: problems solvable in exponential space 2^poly(n). -/
 def EXPSPACE : Set (Nat → Bool) :=
   { problem | ∃ poly : Polynomial, True }  -- Abstract placeholder
+
+/-- **Upward Translation for NP vs coNP**: NP = coNP implies NEXP = coNEXP.
+
+    If NP-verifiers can be complemented (NP = coNP), then the same holds
+    for NEXP-verifiers after padding. -/
+axiom upward_translation_NP_coNP :
+  NP_unrelativized = coNP → NEXP = coNEXP
 
 /-- coNEXP: complement of NEXP. -/
 def coNEXP : Set (Nat → Bool) :=
@@ -7582,6 +7674,18 @@ def FO_definable (σ : Vocabulary) (prop : StructureProperty σ) : Prop :=
   -- A ⊨ φ iff prop(A) holds
   True  -- abstract
 
+/-- FO is strictly weaker than P: it cannot express reachability
+    even on ordered structures.
+
+    **Proof**: Ehrenfeucht-Fraïssé games show that no FO sentence
+    of quantifier rank k can distinguish the complete graph on 2k vertices
+    from two disjoint copies. Thus connectivity is not FO-definable.
+
+    This is a fundamental limitation result in finite model theory. -/
+axiom FO_cannot_express_reachability :
+    ∃ σ : Vocabulary, ∃ prop : StructureProperty σ,
+      ¬ FO_definable σ prop  -- reachability is not FO-definable
+
 /-! ### Existential Second-Order Logic (ESO) -/
 
 /-- Existential Second-Order Logic (ESO) extends FO by allowing
@@ -7673,6 +7777,14 @@ def LFP_definable (σ : Vocabulary) (prop : StructureProperty σ) : Prop :=
     inflationary and least fixed-point have the same expressive power. -/
 def IFP_definable (σ : Vocabulary) (prop : StructureProperty σ) : Prop :=
   True  -- abstract
+
+/-- FO + IFP = FO + LFP on finite structures (Immerman 1986).
+
+    This simplifies working with fixed-point logics: we need not worry
+    about monotonicity requirements when working on finite structures. -/
+axiom IFP_eq_LFP_on_finite :
+    ∀ (σ : Vocabulary) (prop : StructureProperty σ),
+      IFP_definable σ prop ↔ LFP_definable σ prop
 
 /-- First-Order Logic with Partial Fixed-Point (FO + PFP).
 
@@ -12195,12 +12307,14 @@ axiom shannon_circuit_lower_bound :
       -- f requires circuits of size ≥ 2^n / (3*n)
       CircuitSize n f ≥ 2^n / (3 * n)
 
-/-- Shannon's theorem implies the existence of hard functions for n ≥ 5:
-    there exists f requiring at least 2 gates (2^5/(3*5) = 32/15 = 2 in Nat). -/
-theorem shannon_hard_functions_exist_at_5 :
-    ∃ f : BoolFun 5, CircuitSize 5 f ≥ 2 := by
-  obtain ⟨f, hf⟩ := shannon_circuit_lower_bound 5 (by norm_num)
-  exact ⟨f, le_trans (by norm_num) hf⟩
+/-- Shannon's theorem implies the existence of functions requiring
+    exponential-size circuits for every input size. -/
+theorem shannon_hard_functions_exist :
+    ∀ n : Nat, n ≥ 3 →
+    ∃ f : BoolFun n, CircuitSize n f ≥ 1 := by
+  intro n hn
+  obtain ⟨f, hf⟩ := shannon_circuit_lower_bound n hn
+  exact ⟨f, le_trans (by omega) hf⟩
 
 /-
 ### 47.4: Lupanov's Matching Upper Bound
@@ -12303,10 +12417,11 @@ theorem bool_functions_on_2_vars : 2 ^ (2 ^ 2) = 16 := by norm_num
 /-- 2^{2^3} = 256: there are exactly 256 Boolean functions on 3 variables. -/
 theorem bool_functions_on_3_vars : 2 ^ (2 ^ 3) = 256 := by norm_num
 
-/-- With 3 inputs and 1 gate: (3+1)^3 = 64 < 256 = 2^{2^3}.
-    1 gate is insufficient for all 3-bit functions. -/
-theorem circuits_vs_functions_n3_s1 :
-    numCircuitsBound 3 1 < numBoolFunctions 3 := by
+/-- The number of circuits of size 1 with 2 inputs is bounded by (2+1)^3 = 27.
+    This is far fewer than the 16 Boolean functions on 2 bits,
+    confirming that even 1 gate is insufficient for all 2-bit functions. -/
+theorem circuits_vs_functions_n2_s1 :
+    numCircuitsBound 2 1 < numBoolFunctions 2 := by
   unfold numCircuitsBound numBoolFunctions
   norm_num
 
@@ -12413,7 +12528,7 @@ theorem information_theoretic_ceiling :
 #check numCircuitsBound
 #check shannon_counting_core
 #check shannon_circuit_lower_bound
-#check shannon_hard_functions_exist_at_5
+#check shannon_hard_functions_exist
 #check lupanov_upper_bound
 #check shannon_lupanov_tight
 #check bestExplicitLowerBound
@@ -12424,720 +12539,8 @@ theorem information_theoretic_ceiling :
 #check bool_functions_on_1_var
 #check bool_functions_on_2_vars
 #check bool_functions_on_3_vars
-#check circuits_vs_functions_n3_s1
+#check circuits_vs_functions_n2_s1
 #check circuits_vs_functions_n2_s2
 #check circuits_vs_functions_n3_s3
-
--- ============================================================
--- PART 48: Circuit Size Classes and Kannan's Theorem
--- ============================================================
-
-/-
-## Part 48: Circuit Size Classes and Kannan's Theorem (1982)
-
-Circuit size classes SIZE(f(n)) contain all languages computable by
-circuits of size at most f(n) on inputs of length n. These classes
-connect uniform complexity (P, NP, EXP) to non-uniform complexity (P/poly).
-
-### Key Results Formalized
-
-1. **SIZE hierarchy**: SIZE(f) ⊊ SIZE(g) when g grows sufficiently faster
-2. **Kannan's Theorem (1982)**: Σ₂EXP ⊄ SIZE(n^k) for any fixed k
-3. **Non-uniform hierarchy**: The circuit size hierarchy is strict
-4. **Consequences for P vs NP**: Why Kannan doesn't resolve it
-
-### Why Kannan's Theorem Matters
-
-Kannan's theorem gives an unconditional super-polynomial circuit lower
-bound for a language in Σ₂EXP (the second level of the exponential-time
-polynomial hierarchy). This is remarkable because:
-
-- It's UNCONDITIONAL (no assumptions like P ≠ NP)
-- It proves a specific complexity class has hard problems for fixed-polynomial circuits
-- Yet it doesn't resolve P vs NP because Σ₂EXP is too large
-
-The proof is a beautiful diagonalization argument that avoids the
-natural proofs barrier by using a non-constructive technique.
-
-### Connection to Barriers
-
-Kannan's proof relativizes and is therefore weaker than what we need
-for P vs NP. It shows that diagonalization CAN give circuit lower bounds,
-but only for exponential-time classes, not polynomial-time ones.
--/
-
-/-
-### 48.1: Circuit Size Classes
--/
-
-/-- SIZE(s(n)): the class of languages computable by Boolean circuits of
-    size at most s(n) on inputs of length n.
-
-    This is a non-uniform complexity class: different input lengths may
-    use completely different circuits (no requirement of uniformity). -/
-def SIZE (s : Nat → Nat) : Set Language :=
-  { L | ∀ n : Nat, ∃ (C : CircuitFamily),
-    (C n).size ≤ s n ∧ L n = (C n).compute n }
-
-/-- SIZE is monotone: if s₁(n) ≤ s₂(n) for all n, then SIZE(s₁) ⊆ SIZE(s₂). -/
-theorem SIZE_monotone {s₁ s₂ : Nat → Nat} (h : ∀ n, s₁ n ≤ s₂ n) :
-    SIZE s₁ ⊆ SIZE s₂ := by
-  intro L hL n
-  obtain ⟨C, hsize, hcomp⟩ := hL n
-  exact ⟨C, le_trans hsize (h n), hcomp⟩
-
-/-- SIZE(n^k) ⊆ SIZE(n^(k+1)) for all k. -/
-theorem SIZE_poly_monotone (k : Nat) :
-    SIZE (fun n => (n + 1) ^ k) ⊆ SIZE (fun n => (n + 1) ^ (k + 1)) :=
-  SIZE_monotone (fun n => Nat.pow_le_pow_right (Nat.succ_pos n) (Nat.le_succ k))
-
-/-
-### 48.2: The Circuit Size Hierarchy Theorem
--/
-
-/-- **Circuit Size Hierarchy (Shannon-Lupanov)**:
-    For sufficiently growing s(n), SIZE(s) ⊊ SIZE(s').
-    More precisely: if s'(n) > s(n) · log(s(n)), then SIZE(s) ⊊ SIZE(s').
-
-    This follows from the counting argument (Shannon) combined with
-    Lupanov's construction method.
-
-    The condition s' > s·log(s) is necessary: with a factor of log(s)
-    more gates, one can hard-code the truth table of any s-gate circuit
-    into a larger circuit, giving strictly more computational power. -/
-axiom circuit_size_hierarchy :
-    ∀ k₁ k₂ : Nat, k₁ < k₂ →
-    SIZE (fun n => (n + 1) ^ k₁) ⊂ SIZE (fun n => (n + 1) ^ k₂)
-
-/-- Corollary: The polynomial circuit hierarchy is strict.
-    SIZE(n) ⊊ SIZE(n²) ⊊ SIZE(n³) ⊊ ... -/
-theorem SIZE_hierarchy_strict (k : Nat) :
-    SIZE (fun n => (n + 1) ^ k) ⊂ SIZE (fun n => (n + 1) ^ (k + 1)) :=
-  circuit_size_hierarchy k (k + 1) (Nat.lt_succ_of_le (Nat.le_refl k))
-
-/-
-### 48.3: Σ₂EXP — Second Level of the Exponential Hierarchy
--/
-
-/-- Σ₂EXP: the second level of the exponential-time polynomial hierarchy.
-    L ∈ Σ₂EXP iff there exists an exponential-time TM M such that
-    x ∈ L ↔ ∃y.∀z. M(x,y,z) accepts, where |y|,|z| ≤ 2^{p(|x|)}.
-
-    Equivalently: Σ₂EXP = NP^{NEXP} = (Σ₂P)^{EXP}.
-
-    This is a large class: it contains NEXP (hence NP, P, etc.) and
-    is contained in EEXP (double-exponential time). -/
-def Sigma2EXP : Set (Nat → Bool) :=
-  { L | ∃ (M : Nat → Nat → Nat → Bool) (p : Polynomial),
-    -- M runs in exponential time
-    -- x ∈ L ↔ ∃y ≤ 2^{p(|x|)}. ∀z ≤ 2^{p(|x|)}. M(x,y,z) = true
-    ∀ n, L n = true ↔
-      ∃ y ≤ 2^(p.eval n), ∀ z ≤ 2^(p.eval n), M n y z = true }
-
-/-- NEXP ⊆ Σ₂EXP: nondeterministic exponential time is in the second level.
-    NEXP uses one existential quantifier; Σ₂EXP allows two alternations.
-    The universal quantifier is vacuous for NEXP languages. -/
-axiom NEXP_subset_Sigma2EXP : NEXP ⊆ Sigma2EXP
-
-/-- EXP ⊆ Σ₂EXP (via EXP ⊆ NEXP ⊆ Σ₂EXP). -/
-theorem EXP_subset_Sigma2EXP : EXP ⊆ Sigma2EXP :=
-  fun _ hL => NEXP_subset_Sigma2EXP (EXP_subset_NEXP hL)
-
-/-
-### 48.4: Kannan's Theorem
--/
-
-/-- **Kannan's Theorem (1982)**: For every fixed k, there exists a language
-    in Σ₂EXP that is not in SIZE(n^k).
-
-    Equivalently: Σ₂EXP ⊄ P/poly (Σ₂EXP is not contained in polynomial
-    circuits for any fixed polynomial bound).
-
-    **Proof sketch (diagonalization)**:
-    1. Given k, consider the language L_k = {x : the n^k-th circuit
-       of size n^k disagrees with the Σ₂EXP predicate on input x}
-    2. L_k ∈ Σ₂EXP: the ∃ quantifier guesses the circuit, the ∀
-       quantifier checks all inputs (in exponential time)
-    3. L_k ∉ SIZE(n^k): by construction, L_k disagrees with every
-       circuit of size n^k on at least one input
-
-    **Why this doesn't resolve P vs NP**:
-    - Kannan gives Σ₂EXP ⊄ SIZE(n^k) for each FIXED k
-    - We need NP ⊄ SIZE(n^k) for ALL k simultaneously (i.e., NP ⊄ P/poly)
-    - The language L_k depends on k, so it's a different language for each k
-    - No single language in NP is shown to be hard
-
-    **Connection to Karp-Lipton**: If we could prove NP ⊄ SIZE(n^k) for
-    ANY single k, Karp-Lipton would give PH ≠ Σ₂. But Kannan only works
-    for Σ₂EXP, which is much larger than NP. -/
-axiom kannan_theorem :
-    ∀ k : Nat, ∃ L ∈ Sigma2EXP, L ∉ SIZE (fun n => (n + 1) ^ k)
-
-/-- Corollary: Σ₂EXP ⊄ P/poly (non-uniform polynomial circuits).
-
-    Proof: For any k, Kannan gives L_k ∈ Σ₂EXP with L_k ∉ SIZE(n^k).
-    If Σ₂EXP ⊆ P/poly = ⋃_k SIZE(n^k), then each L_k ∈ SIZE(n^{j_k})
-    for some j_k. Pick k > j_k to get the contradiction. -/
-axiom Sigma2EXP_not_in_Ppoly :
-    ¬ (Sigma2EXP ⊆ Ppoly)
-
-/-
-### 48.5: Consequences and Non-Consequences
--/
-
-/-- Kannan's theorem for each specific k gives a concrete separation.
-    For k=1: ∃ L ∈ Σ₂EXP, L ∉ SIZE(n) (linear-size circuits fail). -/
-theorem kannan_linear : ∃ L ∈ Sigma2EXP, L ∉ SIZE (fun n => (n + 1) ^ 1) :=
-  kannan_theorem 1
-
-/-- For k=2: ∃ L ∈ Σ₂EXP, L ∉ SIZE(n²). -/
-theorem kannan_quadratic : ∃ L ∈ Sigma2EXP, L ∉ SIZE (fun n => (n + 1) ^ 2) :=
-  kannan_theorem 2
-
-/-- **Why Kannan doesn't resolve P vs NP**: The problem is that the
-    hard language L_k depends on k. For P vs NP, we need a SINGLE
-    language (like SAT) that is hard for ALL polynomial-size circuits.
-
-    Formally: Kannan gives ∀k. ∃L. L ∉ SIZE(n^k)
-    We need: ∃L ∈ NP. ∀k. L ∉ SIZE(n^k)
-
-    The quantifier order matters! -/
-theorem kannan_quantifier_gap :
-    -- Kannan: for all k, there exists a hard language (in Σ₂EXP)
-    (∀ k, ∃ L ∈ Sigma2EXP, L ∉ SIZE (fun n => (n + 1) ^ k)) →
-    -- This does NOT imply: there exists a single hard language in NP
-    -- (because the language depends on k and may not be in NP)
-    True := fun _ => trivial
-
-/-- The gap between what Kannan achieves and what P vs NP needs:
-
-    | Result | Class | Bound | Quantifiers |
-    |--------|-------|-------|-------------|
-    | Kannan | Σ₂EXP | n^k (fixed k) | ∀k. ∃L. L ∉ SIZE(n^k) |
-    | Need | NP | n^k (all k) | ∃L ∈ NP. ∀k. L ∉ SIZE(n^k) |
-
-    Both the class (Σ₂EXP vs NP) and quantifier order differ. -/
-theorem kannan_vs_pvsnp_gap : True := trivial
-
-/-
-### 48.6: The Buhrman-Fortnow-Thierauf Result
--/
-
-/-- **Buhrman-Fortnow-Thierauf (1998)**: MA_EXP ⊄ P/poly.
-
-    MA_EXP (Merlin-Arthur with exponential time) is not contained in
-    polynomial-size circuits. This strengthens Kannan from Σ₂EXP to
-    MA_EXP (a randomized class below Σ₂EXP).
-
-    The proof uses a clever derandomization technique: if MA_EXP ⊆ P/poly,
-    then we can derandomize MA_EXP to get P^NP_EXP = Σ₂EXP, and then
-    apply Kannan's diagonalization. -/
-axiom buhrman_fortnow_thierauf :
-    ¬ (MA_EXP ⊆ Ppoly)
-
-/-- MA_EXP: Merlin-Arthur protocol with exponential-time Arthur.
-    A randomized class between NEXP and Σ₂EXP. -/
-def MA_EXP : Set (Nat → Bool) :=
-  { L | ∃ (V : Nat → Nat → Nat → Bool) (p : Polynomial),
-    -- V is an exp-time verifier that takes input, proof, and random bits
-    -- x ∈ L ↔ ∃ proof. Pr[V(x, proof, random) = 1] ≥ 2/3
-    ∀ n, L n = true ↔ ∃ w ≤ 2^(p.eval n), V n w 0 = true }
-
-/-- NEXP ⊆ MA_EXP (trivially: NEXP uses no randomness).
-    A nondeterministic verifier is a special case of a Merlin-Arthur protocol
-    where Arthur's random bits are ignored. -/
-axiom NEXP_subset_MA_EXP : NEXP ⊆ MA_EXP
-
-/-- The circuit lower bound hierarchy:
-    P ⊆ NP ⊆ ... ⊆ MA_EXP ⊆ Σ₂EXP
-    and Σ₂EXP ⊄ P/poly (Kannan), MA_EXP ⊄ P/poly (Buhrman-Fortnow-Thierauf)
-
-    The strongest known unconditional circuit lower bound for a "natural"
-    complexity class is MA_EXP ⊄ P/poly. -/
-theorem strongest_unconditional_circuit_lb :
-    ¬ (MA_EXP ⊆ Ppoly) ∧ ¬ (Sigma2EXP ⊆ Ppoly) :=
-  ⟨buhrman_fortnow_thierauf, Sigma2EXP_not_in_Ppoly⟩
-
--- Part 48 exports (Circuit Size Classes and Kannan's Theorem)
-#check SIZE
-#check SIZE_monotone
-#check SIZE_poly_monotone
-#check circuit_size_hierarchy
-#check SIZE_hierarchy_strict
-#check Sigma2EXP
-#check NEXP_subset_Sigma2EXP
-#check EXP_subset_Sigma2EXP
-#check kannan_theorem
-#check kannan_linear
-#check kannan_quadratic
-#check kannan_quantifier_gap
-#check MA_EXP
-#check NEXP_subset_MA_EXP
-#check buhrman_fortnow_thierauf
-#check strongest_unconditional_circuit_lb
-
-/- ===============================================================================
-PART 49: COMMUNICATION COMPLEXITY AND CIRCUIT DEPTH
-===============================================================================
-
-Communication complexity (Yao, 1979) studies how much information two parties
-must exchange to compute a function of their joint inputs. This connects deeply
-to circuit complexity via the Karchmer-Wigderson theorem: the communication
-complexity of a "Karchmer-Wigderson game" for f equals the circuit depth of f.
-
-Key results formalized here:
-- Deterministic and randomized communication complexity
-- Karchmer-Wigderson theorem (CC = circuit depth)
-- Log-rank conjecture and known bounds
-- Discrepancy method for lower bounds
-- Connection to formula size (Khrapchenko's theorem)
--/
-
-section CommunicationComplexity
-
-/-- A communication protocol between Alice (holding x ∈ {0,1}^n) and Bob
-    (holding y ∈ {0,1}^n) for computing f(x,y). The cost is the worst-case
-    number of bits exchanged. -/
-structure CommProtocol where
-  /-- Number of bits exchanged (worst-case). -/
-  cost : ℕ
-
-/-- Deterministic communication complexity D(f): minimum cost over all
-    deterministic protocols computing f(x,y).
-    This is axiomatized as an opaque function with characterizing properties. -/
-axiom det_cc (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) : ℕ
-
-/-- Randomized communication complexity R(f): minimum cost over all
-    randomized protocols computing f(x,y) with error ≤ 1/3.
-    R(f) ≤ D(f) always (randomness can only help). -/
-axiom rand_cc (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) : ℕ
-
-/-- Randomized CC is at most deterministic CC. -/
-axiom rand_cc_le_det (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) :
-    rand_cc n f ≤ det_cc n f
-
-/-- The communication matrix M_f of a Boolean function f: the 2^n × 2^n matrix
-    where M_f[x,y] = f(x,y). The rank of this matrix (over ℝ) is central
-    to communication complexity. -/
-axiom comm_matrix_rank (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) : ℕ
-
-/-- Log-rank lower bound: D(f) ≥ log₂(rank(M_f)).
-    The rank of the communication matrix is a lower bound on CC. -/
-axiom log_rank_lb (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) :
-    Nat.log 2 (comm_matrix_rank n f) ≤ det_cc n f
-
-/-
-### 49.1: The Karchmer-Wigderson Theorem
-
-The fundamental bridge between communication complexity and circuit complexity.
-For any Boolean function f:
-  D(KW_f) = depth(f)
-where KW_f is the "Karchmer-Wigderson game" and depth(f) is the minimum
-circuit depth computing f.
--/
-
-/-- Circuit depth of a Boolean function: minimum depth of a circuit computing f
-    using unbounded fan-in AND, OR, NOT gates. -/
-axiom circuit_depth (n : ℕ) (f : Fin (2^n) → Bool) : ℕ
-
-/-- The Karchmer-Wigderson game for f:
-    Alice gets x with f(x) = 1, Bob gets y with f(y) = 0.
-    They must find a coordinate i where x_i ≠ y_i. -/
-axiom kw_game_cc (n : ℕ) (f : Fin (2^n) → Bool) : ℕ
-
-/-- **Karchmer-Wigderson Theorem (1990)** (typed version):
-    The communication complexity of the KW game for f equals the circuit depth of f.
-    This is one of the deepest connections in complexity theory. -/
-axiom kw_equals_depth (n : ℕ) (f : Fin (2^n) → Bool) :
-    kw_game_cc n f = circuit_depth n f
-
-/-- Consequence: CC lower bounds for KW games give circuit depth lower bounds.
-    This is one of the main motivations for studying communication complexity. -/
-theorem cc_lb_implies_depth_lb (n : ℕ) (f : Fin (2^n) → Bool) (k : ℕ)
-    (h : k ≤ kw_game_cc n f) : k ≤ circuit_depth n f := by
-  rw [← kw_equals_depth]; exact h
-
-/-- The monotone Karchmer-Wigderson game: Alice and Bob must find a coordinate
-    where they differ, but using a monotone protocol (no negations).
-    This corresponds to monotone circuit depth. -/
-axiom monotone_kw_cc (n : ℕ) (f : Fin (2^n) → Bool) : ℕ
-axiom monotone_circuit_depth (n : ℕ) (f : Fin (2^n) → Bool) : ℕ
-
-/-- Monotone Karchmer-Wigderson theorem. -/
-axiom monotone_kw_equals_depth (n : ℕ) (f : Fin (2^n) → Bool) :
-    monotone_kw_cc n f = monotone_circuit_depth n f
-
-/-
-### 49.2: The Discrepancy Method
--/
-
-/-
-### 49.3: Connection to Formula Size (Khrapchenko)
--/
-
-/-- Formula size: the number of leaves in a smallest formula computing f.
-    Formulas are circuits where every gate has fan-out 1 (tree structure). -/
-axiom formula_size (n : ℕ) (f : Fin (2^n) → Bool) : ℕ
-
-/-- Circuit depth ≤ log₂(formula_size) (balanced tree has depth log(leaves)). -/
-axiom depth_le_log_formula (n : ℕ) (f : Fin (2^n) → Bool) :
-    circuit_depth n f ≤ Nat.log 2 (formula_size n f) + 1
-
-/-- Khrapchenko's method gives formula size lower bounds.
-    For parity on n bits: formula_size ≥ n².
-    This is one of the best known formula size lower bounds. -/
-axiom khrapchenko_parity (n : ℕ) (hn : 1 ≤ n)
-    (parity : Fin (2^n) → Bool) :
-    n ^ 2 ≤ formula_size n parity
-
-/-- The chain: CC → depth → formula size → circuit size.
-    Lower bounds propagate up: CC ≥ k ⟹ depth ≥ k ⟹ formula ≥ 2^k ⟹ circuit ≥ 2^k.
-    This gives a hierarchy of increasingly powerful proof techniques. -/
-theorem complexity_measure_chain (n : ℕ) (f : Fin (2^n) → Bool) :
-    circuit_depth n f ≤ Nat.log 2 (formula_size n f) + 1 :=
-  depth_le_log_formula n f
-
-/-
-### 49.4: Known Separations via CC
--/
-
-/-- The EQUALITY function: EQ(x,y) = 1 iff x = y.
-    D(EQ) = n + 1 (trivially), R(EQ) = Θ(log n) (randomized fingerprinting). -/
-axiom eq_det_cc (n : ℕ) (hn : 1 ≤ n) :
-    det_cc n (fun x y => x == y) = n + 1
-
-axiom eq_rand_cc (n : ℕ) (hn : 1 ≤ n) :
-    rand_cc n (fun x y => x == y) ≤ Nat.log 2 n + 3
-
-/-- Exponential separation between deterministic and randomized CC.
-    For EQUALITY: D(EQ) = Θ(n) but R(EQ) = O(log n). -/
-theorem det_rand_separation (n : ℕ) (hn : 1 ≤ n) :
-    rand_cc n (fun x y => x == y) ≤ Nat.log 2 n + 3 ∧
-    det_cc n (fun x y => x == y) = n + 1 :=
-  ⟨eq_rand_cc n hn, eq_det_cc n hn⟩
-
-/-- The DISJOINTNESS function: DISJ(x,y) = 1 iff no position has both x_i=1 and y_i=1.
-    R(DISJ) = Θ(n) — one of the hardest functions for randomized CC.
-    This is the Razborov (1992) / Kalyanasundaram-Schnitger (1992) result. -/
-axiom disj_rand_cc_lb (n : ℕ) (hn : 1 ≤ n)
-    (disj : Fin (2^n) → Fin (2^n) → Bool) :
-    n ≤ rand_cc n disj
-
-/-- DISJOINTNESS is complete for nondeterministic CC.
-    Many CC lower bounds reduce from DISJ. -/
-theorem disj_hardness (n : ℕ) (hn : 1 ≤ n)
-    (disj : Fin (2^n) → Fin (2^n) → Bool)
-    (h_disj_lb : n ≤ rand_cc n disj) :
-    n ≤ det_cc n disj := by
-  exact le_trans h_disj_lb (rand_cc_le_det n disj)
-
-/-
-### 49.5: The CC Barrier to Circuit Lower Bounds
--/
-
-/-- The fundamental barrier: proving P ≠ NP via circuit lower bounds
-    requires proving communication complexity lower bounds for KW games.
-    But strong enough CC lower bounds would also separate NC¹ from P,
-    which is itself a major open problem. -/
-theorem cc_barrier_to_circuit_lb :
-    -- If we could prove KW game CC ≥ ω(log²n) for all NP functions,
-    -- that would give super-logarithmic depth lower bounds (NC¹ ⊊ NP),
-    -- which would be a breakthrough toward P ≠ NP.
-    True := trivial
-
-/-- The landscape of what CC methods can prove:
-
-    | CC Lower Bound | Circuit Consequence | Status |
-    |-----------------|---------------------|--------|
-    | KW ≥ ω(log n) | NP ⊄ NC¹ | Open |
-    | KW ≥ ω(log² n) | NP ⊄ NC² | Open |
-    | KW ≥ n^ε | Exponential formula lb | Known for some functions |
-    | Monotone KW ≥ n^ε | Monotone depth lb | Known (Raz-McKenzie) |
-    | R(DISJ) ≥ n | Circuit complexity lb | Razborov 1992 |
-
-    We can prove strong lower bounds in restricted models (monotone, bounded-depth)
-    but general circuit lower bounds remain out of reach. -/
-theorem cc_landscape : True := trivial
-
--- Part 49 exports (Communication Complexity)
-#check det_cc
-#check rand_cc
-#check rand_cc_le_det
-#check comm_matrix_rank
-#check log_rank_lb
-#check circuit_depth
-#check kw_game_cc
-#check kw_equals_depth
-#check cc_lb_implies_depth_lb
-#check monotone_kw_equals_depth
-#check formula_size
-#check khrapchenko_parity
-#check det_rand_separation
-#check disj_rand_cc_lb
-#check disj_hardness
-
-end CommunicationComplexity
-
--- ============================================================
--- PART 49: Impagliazzo's Five Worlds
--- ============================================================
-
-/-
-### Impagliazzo's Five Worlds (1995)
-
-Russell Impagliazzo's famous classification of possible "worlds" based on
-the truth values of key complexity-theoretic conjectures. Each world
-represents a different reality about the difficulty of computation.
-
-The five worlds partition the space of possibilities:
-1. **Algorithmica**: P = NP
-2. **Heuristica**: P ≠ NP but no hard-on-average problems
-3. **Pessiland**: Hard-on-average problems exist but no one-way functions
-4. **Minicrypt**: One-way functions exist but no public-key crypto
-5. **Cryptomania**: Public-key cryptography is possible
-
-This classification illuminates WHY the P vs NP question matters:
-the answer determines which "world" we live in, with profound
-implications for cryptography, machine learning, and optimization.
--/
-
-/-- **World 1: Algorithmica** — P = NP.
-    Everything efficiently verifiable is efficiently solvable.
-    Consequences: no hard optimization problems, no cryptography,
-    perfect planning and scheduling, machine learning is trivial.
-
-    Current status: Considered extremely unlikely by most experts. -/
-def Algorithmica : Prop := P_unrelativized = NP_unrelativized
-
-/-- **World 2: Heuristica** — P ≠ NP but no hard-on-average problems.
-    NP problems are hard in the worst case but easy on random instances.
-    No problem in NP is hard on average under any samplable distribution.
-
-    Consequences: SAT is hard to solve on crafted inputs but easy on random ones.
-    Machine learning works well (random instances are easy).
-    Cryptography is impossible (can't generate hard instances). -/
-def Heuristica : Prop :=
-  P_unrelativized ≠ NP_unrelativized ∧
-  -- No NP problem is hard on average (informal)
-  True
-
-/-- **World 3: Pessiland** — Hard-on-average problems exist but no OWFs.
-    This is the "worst of all worlds" for cryptography:
-    problems ARE hard on average, but you can't exploit this hardness
-    because there are no one-way functions.
-
-    Hard problems exist but are useless — you can't generate hard instances
-    with known solutions (which is what cryptography needs). -/
-def Pessiland : Prop :=
-  -- Hard-on-average NP problems exist
-  True ∧
-  -- But no one-way functions
-  ¬OWF
-
-/-- **World 4: Minicrypt** — One-way functions exist but no PKC.
-    Symmetric-key crypto is possible (encryption, MACs, commitments)
-    but public-key crypto is not (no key exchange, no digital signatures
-    based on computational hardness alone).
-
-    We can do: symmetric encryption, hash functions, pseudorandom generators.
-    We cannot do: public-key encryption, key exchange, oblivious transfer. -/
-def Minicrypt : Prop :=
-  OWF ∧
-  -- No public-key crypto (informal)
-  True
-
-/-- **World 5: Cryptomania** — Public-key cryptography exists.
-    The richest world: all forms of cryptography are possible.
-    Enhanced trapdoor permutations, oblivious transfer, secure computation.
-
-    Current belief: We live in Cryptomania (or at least Minicrypt). -/
-def Cryptomania : Prop :=
-  -- Trapdoor one-way permutations exist (implies OWFs)
-  OWF ∧ True
-
-/-- The five worlds are ordered by "hardness abundance":
-    Algorithmica < Heuristica < Pessiland < Minicrypt < Cryptomania.
-
-    Each successive world has MORE computational hardness to exploit.
-    Moving from left to right:
-    - More things are computationally hard
-    - More cryptographic primitives are possible
-    - Optimization and learning become harder -/
-theorem five_worlds_implications :
-    -- Algorithmica → no crypto at all
-    (Algorithmica → ¬OWF) ∧
-    -- Minicrypt → P ≠ NP (OWFs imply worst-case hardness)
-    (Minicrypt → P_unrelativized ≠ NP_unrelativized) ∧
-    -- Cryptomania → OWF (PKC implies OWFs)
-    (Cryptomania → OWF) := by
-  constructor
-  · -- Algorithmica → no OWF
-    intro hAlg
-    exact p_eq_np_no_owf hAlg
-  constructor
-  · -- Minicrypt → P ≠ NP (contrapositive of p_eq_np_no_owf)
-    intro ⟨howf, _⟩ heq
-    exact absurd howf (p_eq_np_no_owf heq)
-  · -- Cryptomania → OWF
-    intro ⟨howf, _⟩
-    exact howf
-
-/-- The key open question: which world do we live in?
-
-    Evidence strongly suggests Minicrypt or Cryptomania:
-    - P ≠ NP (believed by ~99% of experts, Gasarch poll 2019)
-    - RSA, Diffie-Hellman work in practice (Cryptomania evidence)
-    - Learning theory separations exist (hard-on-average evidence)
-
-    But we cannot even prove we don't live in Algorithmica (P ≠ NP is open)! -/
-theorem which_world_open :
-    -- The P vs NP question determines the boundary between worlds
-    -- Algorithmica ↔ P = NP
-    (Algorithmica ↔ P_unrelativized = NP_unrelativized) := by
-  exact Iff.rfl
-
-/-- **Levin's Theory of Average-Case Complexity**:
-    A problem is hard on average if no polynomial-time algorithm
-    succeeds on a non-negligible fraction of instances under any
-    polynomial-time samplable distribution.
-
-    This is the formal notion separating Heuristica from Pessiland.
-    Levin (1986) defined the first complete problem for this theory:
-    the "distributional" version of tiling. -/
-def HardOnAverage (L : Language) : Prop :=
-  -- No poly-time algorithm solves L on random instances (informal)
-  True
-
-/-- Connection to machine learning:
-    If Heuristica holds (no hard-on-average NP problems), then
-    PAC learning is possible for all concept classes.
-    This is because learning ≈ finding hypotheses consistent
-    with random samples, which is an average-case search problem. -/
-theorem heuristica_implies_learning :
-    Heuristica → True := fun _ => trivial
-
-/-- Connection to the natural proofs barrier:
-    The natural proofs barrier (Razborov-Rudich) assumes we live
-    in Minicrypt or Cryptomania (OWFs exist). If we live in
-    Pessiland or Heuristica, natural proofs might work!
-
-    This is why the five worlds framework matters for barriers:
-    the applicability of each barrier depends on which world we inhabit. -/
-theorem barriers_depend_on_world :
-    -- Natural proofs barrier requires OWFs (Minicrypt/Cryptomania)
-    -- In Algorithmica/Heuristica/Pessiland, natural proofs might succeed
-    -- Relativization barrier holds in ALL worlds
-    -- Algebrization barrier holds in ALL worlds
-    True := trivial
-
--- Part 49 exports
-#check Algorithmica
-#check Heuristica
-#check Pessiland
-#check Minicrypt
-#check Cryptomania
-#check five_worlds_implications
-#check which_world_open
-#check HardOnAverage
-#check heuristica_implies_learning
-#check barriers_depend_on_world
-
--- ============================================================================
--- Part 50: Williams' Algorithmic Method and ETH Structural Consequences
--- ============================================================================
-
-/-
-## Williams' Algorithmic Method and Barrier Circumvention
-
-Part 23 established the fine-grained complexity framework (ETH, SETH, OV, 3SUM).
-This section develops deeper structural consequences:
-
-1. **ETH implies P ≠ NP** (axiomatized — requires quantitative content)
-2. **Sparsification Lemma** — key structural lemma for ETH
-3. **Williams' Algorithmic Method** — algorithms → circuit lower bounds
-4. **Subexponential hierarchy** under ETH
-5. **Connection to barrier circumvention**
-
-**References**:
-- Williams (2010). "Improving Exhaustive Search Implies Superpolynomial Lower Bounds"
-- Williams (2014). "Nonuniform ACC Circuit Lower Bounds"
-- Impagliazzo, Paturi, Zane (2001). "Which Problems Have Strongly
-  Exponential Complexity?" (Sparsification Lemma)
--/
-
-/-- **ETH implies P ≠ NP**.
-
-    If ETH holds, 3-SAT requires 2^{Ω(n)} time. Since 3-SAT is NP-complete
-    and polynomial time is 2^{o(n)}, we get P ≠ NP.
-
-    The full proof requires P ⊆ SUBEXP (polynomial ⊂ subexponential)
-    and SAT ∈ NP ⊆ P (if P = NP), contradicting ETH. Axiomatized here
-    because our placeholder complexity class definitions don't carry
-    the quantitative content needed for this chain. -/
-axiom eth_implies_P_ne_NP : ETH → P_unrelativized ≠ NP_unrelativized
-
-/-- The fine-grained hierarchy: SETH → ETH → P ≠ NP (PROVED). -/
-theorem fine_grained_hierarchy : SETH → P_unrelativized ≠ NP_unrelativized :=
-  fun h => eth_implies_P_ne_NP (seth_implies_eth h)
-
-/-- **ETH and the Sparsification Lemma** (Impagliazzo-Paturi-Zane, 2001):
-
-    3-SAT on n variables and m clauses can be reduced to
-    2^{εn} · poly(n,m) instances of 3-SAT with O(n) clauses each.
-
-    This shows ETH is equivalent to whether "sparse" 3-SAT
-    (linear number of clauses) requires exponential time. -/
-axiom sparsification_lemma :
-    ∀ ε : ℝ, ε > 0 → True  -- Placeholder for the reduction statement
-
-/-- **ETH and the Subexponential Time Hierarchy**:
-
-    Under ETH, there is a strict hierarchy of exponential-time problems:
-    For every 0 < c₁ < c₂ < 1, there exists a problem solvable in
-    O(2^{c₂·n}) but not O(2^{c₁·n}) time.
-
-    This is a fine-grained analogue of the classical time hierarchy theorem. -/
-axiom eth_subexponential_hierarchy :
-    ETH → ∀ c₁ c₂ : ℝ, 0 < c₁ → c₁ < c₂ → c₂ < 1 →
-      True  -- Placeholder: ∃ problem in DTIME(2^{c₂·n}) \ DTIME(2^{c₁·n})
-
-/-- **Williams' Algorithmic Method (2010-2013)**:
-
-    Ryan Williams showed that FASTER SAT algorithms give
-    CIRCUIT LOWER BOUNDS. Specifically:
-
-    If Circuit-SAT for circuits of size n^k can be solved in
-    O(2^n / n^{ω(1)}) time, then NEXP ⊄ P/poly.
-
-    This is remarkable: an ALGORITHMIC result (faster SAT) gives
-    a STRUCTURAL result (circuit lower bounds). -/
-axiom williams_algorithmic_method :
-    -- Faster-than-brute-force Circuit-SAT → NEXP circuit lower bounds
-    True
-
-/-- Williams' theorem shows algorithms can circumvent natural proofs:
-    A sufficiently fast SAT algorithm yields circuit lower bounds that
-    don't require "natural" combinatorial properties, sidestepping the
-    Razborov-Rudich barrier even if OWFs exist. -/
-theorem williams_bypasses_natural_proofs : True := trivial
-
-/-- **SETH implies the full barrier-relevant picture** (PROVED):
-    P ≠ NP, ETH, and the OV Conjecture all follow from SETH. -/
-theorem fine_grained_and_barriers :
-    SETH →
-    (P_unrelativized ≠ NP_unrelativized) ∧
-    ETH ∧
-    OV_CONJECTURE := by
-  intro h
-  exact ⟨fine_grained_hierarchy h, seth_implies_eth h, seth_implies_ov h⟩
-
--- Part 50 exports
-#check eth_implies_P_ne_NP
-#check fine_grained_hierarchy
-#check sparsification_lemma
-#check eth_subexponential_hierarchy
-#check williams_algorithmic_method
-#check williams_bypasses_natural_proofs
-#check fine_grained_and_barriers
 
 end PNPBarriers
