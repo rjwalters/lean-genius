@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (24 axioms)
+## Axiom Summary (29 axioms)
 - 1 structural: Φ_countably_many (Φ_total and Φ_deterministic now theorems)
 - 2 oracle: Φ_oracle_access, Φ_no_oracle_access
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -49,7 +49,9 @@ This model is sound because:
 - 2 circuit complexity: P_subset_P_poly, karp_lipton (NP ⊆ P/poly → PH = Σ₂ᴾ)
 - 4 polynomial hierarchy: Sigma_zero_eq_P, Sigma_one_eq_NP, Sigma_monotone,
     Sigma_collapse_step (opaque Sigma_k fixes PH=NP degeneracy)
-- Now theorems: P_subset_EXP (proved: poly ≤ 2^poly), algebrizing_oracle_eq/sep
+- 3 probabilistic: P_subset_BPP, BPP_subset_PSPACE, adleman_BPP_subset_P_poly
+- 2 interactive proofs: NP_subset_IP, shamir_IP_eq_PSPACE (IP = PSPACE)
+- Now theorems: P_subset_EXP (proved), algebrizing_oracle_eq/sep, BPP_subset_IP
 -/
 
 set_option linter.unusedVariables false
@@ -1150,7 +1152,120 @@ theorem NP_not_subset_P_poly_implies_P_ne_NP (h : ¬ (NP ⊆ P_poly)) : P ≠ NP
   exact P_subset_P_poly
 
 -- ============================================================
--- PART 20: Summary and Verification
+-- PART 20: BPP (Probabilistic Polynomial Time)
+-- ============================================================
+
+/-
+### BPP: Bounded-Error Probabilistic Polynomial Time
+
+BPP is the class of problems solvable by probabilistic polynomial-time
+algorithms with error probability ≤ 1/3. It captures "efficient randomized
+computation."
+
+Since our Φ model is deterministic, we define BPP as an opaque constant
+and axiomatize its key relationships to other classes.
+
+Key facts:
+- P ⊆ BPP (deterministic algorithms are trivially randomized)
+- BPP ⊆ PSPACE (simulate all random choices in polynomial space)
+- BPP ⊆ P/poly (Adleman 1978: random bits can be replaced by advice)
+- Whether P = BPP is a major open question (believed true)
+-/
+
+/-- BPP: problems solvable by probabilistic polynomial-time algorithms
+    with bounded error (≤ 1/3 on all inputs). Since our Φ model is
+    deterministic and doesn't model randomness, BPP is opaque. -/
+opaque BPP_def : Set (ℕ → Bool)
+def BPP : Set (ℕ → Bool) := BPP_def
+
+/-- P ⊆ BPP: every deterministic poly-time algorithm is trivially a
+    randomized algorithm (it ignores the random bits). -/
+axiom P_subset_BPP : P ⊆ BPP
+
+/-- BPP ⊆ PSPACE: enumerate all possible random strings (2^{p(n)} of them),
+    count accepting paths, decide majority. Reuses polynomial space. -/
+axiom BPP_subset_PSPACE : BPP ⊆ PSPACE
+
+/-- **Adleman's Theorem (1978)**: BPP ⊆ P/poly.
+    Random bits can be replaced by a fixed "good" advice string for each
+    input length. By a counting/probabilistic argument, for each length n,
+    there exists a single random string that works for all inputs of length n. -/
+axiom adleman_BPP_subset_P_poly : BPP ⊆ P_poly
+
+/-- The extended containment chain: P ⊆ BPP ⊆ PSPACE ⊆ EXP. -/
+theorem BPP_chain : P ⊆ BPP ∧ BPP ⊆ PSPACE ∧ PSPACE ⊆ EXP :=
+  ⟨P_subset_BPP, BPP_subset_PSPACE, PSPACE_subset_EXP⟩
+
+/-- P = BPP is a major open conjecture. Most complexity theorists believe
+    it is true (i.e., randomness does not help polynomial-time computation).
+    Evidence: pseudorandom generators under circuit lower bound assumptions. -/
+def P_eq_BPP_conjecture : Prop := P = BPP
+
+-- ============================================================
+-- PART 21: IP = PSPACE (Shamir's Theorem)
+-- ============================================================
+
+/-
+### Interactive Proofs and IP = PSPACE
+
+IP (Interactive Proofs) is the class of languages that have interactive
+proof systems: a polynomial-time verifier exchanges messages with an
+all-powerful prover, and the verifier accepts/rejects with bounded error.
+
+The landmark result IP = PSPACE (Shamir 1990) shows that interactive
+proofs capture exactly PSPACE. This is one of the deepest results in
+complexity theory, proved via arithmetization of Boolean formulas.
+
+The IP = PSPACE result is notable because it *algebrizes* — it uses
+algebraic techniques (polynomial evaluation over finite fields).
+Yet by the algebrization barrier, such techniques cannot resolve P vs NP.
+-/
+
+/-- IP: the class of problems with polynomial-round interactive proof systems.
+    A verifier V runs in probabilistic polynomial time and exchanges messages
+    with an all-powerful prover P. For YES instances, some prover convinces V
+    with probability ≥ 2/3. For NO instances, no prover convinces V with
+    probability > 1/3. -/
+opaque IP_def : Set (ℕ → Bool)
+def IP : Set (ℕ → Bool) := IP_def
+
+/-- NP ⊆ IP: NP problems have trivial interactive proofs (the prover sends
+    the witness, the verifier checks it deterministically). -/
+axiom NP_subset_IP : NP ⊆ IP
+
+/-- **Shamir's Theorem (1990)**: IP = PSPACE.
+
+    One of the most celebrated results in complexity theory.
+
+    **PSPACE ⊆ IP** (the hard direction): Uses arithmetization to convert
+    quantified Boolean formulas (QBF, the PSPACE-complete problem) into
+    polynomial identity testing over finite fields, then applies the
+    sumcheck protocol.
+
+    **IP ⊆ PSPACE** (easier): Enumerate all prover strategies using
+    polynomial space, computing optimal prover response at each round.
+
+    **Significance for barriers**: This proof *algebrizes* (it extends to
+    algebraic oracles), yet it cannot help resolve P vs NP because
+    algebrization is a barrier technique. -/
+axiom shamir_IP_eq_PSPACE : IP = PSPACE
+
+/-- BPP ⊆ IP: randomized computations are trivially interactive
+    (the verifier can simulate the algorithm without a prover). -/
+theorem BPP_subset_IP : BPP ⊆ IP :=
+  Set.Subset.trans BPP_subset_PSPACE shamir_IP_eq_PSPACE.symm.subset
+
+/-- The grand containment picture:
+    P ⊆ NP ⊆ IP = PSPACE ⊆ EXP
+    P ⊆ BPP ⊆ IP = PSPACE ⊆ EXP -/
+theorem grand_containment :
+    P ⊆ NP ∧ NP ⊆ IP ∧ IP = PSPACE ∧
+    P ⊆ BPP ∧ BPP ⊆ PSPACE :=
+  ⟨P_subset_NP, NP_subset_IP, shamir_IP_eq_PSPACE,
+   P_subset_BPP, BPP_subset_PSPACE⟩
+
+-- ============================================================
+-- PART 22: Summary and Verification
 -- ============================================================
 
 -- Barrier results
@@ -1204,5 +1319,17 @@ theorem NP_not_subset_P_poly_implies_P_ne_NP (h : ¬ (NP ⊆ P_poly)) : P ≠ NP
 #check karp_lipton                -- NP ⊆ P/poly → PH = Σ₂ᴾ
 #check karp_lipton_contrapositive -- PH ≠ Σ₂ᴾ → NP ⊄ P/poly
 #check NP_not_subset_P_poly_implies_P_ne_NP  -- NP ⊄ P/poly → P ≠ NP
+
+-- BPP and derandomization
+#check P_subset_BPP               -- P ⊆ BPP
+#check BPP_subset_PSPACE          -- BPP ⊆ PSPACE
+#check adleman_BPP_subset_P_poly  -- BPP ⊆ P/poly (Adleman)
+#check BPP_chain                  -- P ⊆ BPP ⊆ PSPACE ⊆ EXP
+
+-- Interactive proofs
+#check NP_subset_IP               -- NP ⊆ IP
+#check shamir_IP_eq_PSPACE        -- IP = PSPACE (Shamir 1990)
+#check BPP_subset_IP              -- BPP ⊆ IP (derived)
+#check grand_containment          -- Full containment picture
 
 end PNPBarriersSound

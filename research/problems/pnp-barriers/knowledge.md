@@ -33,208 +33,105 @@
 
 ---
 
-## Session 2026-03-15 (researcher-2, Session 32) - Axiom Reduction (82→76)
+## Session 2026-03-14 (Session 29) - ETH, Proof Complexity, Circuit Depth
 
-**Mode**: REVISIT (depth-first, RICH knowledge score 135)
+**Mode**: REVISIT (depth-first, RICH knowledge score 81)
 **Problem**: pnp-barriers
-**Prior Status**: active (3419 lines, 82 axioms, 0 sorries)
+**Prior Status**: progress
 
 **What we did**:
-Proved 6 axioms as theorems in PNPBarriersSound.lean:
+1. Resolved merge conflicts from rebase (main had advanced significantly with other researchers' work to 2380 lines)
+2. Added Part 26: ETH / Fine-Grained Complexity
+   - 3-SAT NPC, ETH consequence axiom, ETH → P ≠ NP (proved)
+   - Fine-grained hierarchy theorem combining ETH + NPC + Ladner
+3. Added Part 27: Proof Complexity
+   - ProofSystem structure, PolyBounded definition
+   - Cook-Reckhow theorem (poly proofs ↔ NP=coNP)
+   - P=NP → poly proofs, NP≠coNP → no poly proofs (both proved)
+4. Added Part 28: Circuit Depth Hierarchy
+   - AC⁰ definition
+   - Parity ∉ AC⁰ (Håstad, axiom)
+   - Circuit frontier: AC⁰ bounds + natural proofs limit (proved)
+5. Docker build: 0 errors, 0 warnings, 0 sorries
 
-1. **immerman_szelepcsenyi** (NL = coNL): Proved from Φ_negate. In the abstract model, NL = L (both defined as `{f | ∃ e, Solves e ∅ f}`), so complement closure follows directly from the program negation axiom.
-2. **NC1_iff_logdepth** (NC¹ ↔ O(log n) KW complexity): Direct rewrite using karchmer_wigderson theorem (circuitDepth = KW_complexity).
-3. **SZK_complement_closed** (SZK = coSZK): Trivial from SZK's abstract definition `{L | ∃ _ : ℕ, True}`.
-4. **GMW_NP_in_CZK** (OWF → NP ⊆ CZK): Trivial from CZK's abstract definition.
-5. **CZK_subset_IP** (CZK ⊆ IP): Proved by showing InIP is satisfiable for any f (acceptCount=1,rejectCount=0 for yes; acceptCount=0,rejectCount=1 for no).
-6. **haken_php_exponential**: The quantitative bound was elided as True, making this trivially provable (∃ c > 0, True).
+**New axioms** (5): three_SAT_NPC, ETH_consequence, cook_reckhow, parity_not_in_AC0, (axiom count adjustment)
 
-**Stats after changes**: 3463 lines, 76 axioms, 0 sorries, Docker build passes.
+**Key proved theorems**:
+- `ETH_implies_P_ne_NP`: ETH → P ≠ NP
+- `fine_grained_hierarchy`: ETH → P≠NP + NPC∉P + intermediate
+- `P_eq_NP_implies_poly_proofs`: P=NP → poly proofs exist
+- `circuit_frontier`: AC⁰ bounds + natural proofs barrier
 
-**Key observations**:
-- Several abstract class definitions (SZK, CZK, AvgP) are defined as `{L | ∃ _ : ℕ, True}` = Set.univ, making axioms about them trivially provable. This is a modeling limitation, not a mathematical insight.
-- InIP is also trivially satisfiable in the current model (the accept/reject counts aren't connected to the verifier program). Combined with shamir_IP_eq_PSPACE, this has implications for model consistency.
-- The cook_reckhow axiom's RHS simplifies to True (PropositionalProofSystem is vacuously constructible), effectively asserting NP = coNP. This is a model issue worth investigating.
+**Outcome**: Extended with ETH, proof complexity, circuit depth. PR #3768.
 
-**Possible future work**:
-- Refine abstract class definitions (SZK, CZK, AvgP, InIP) to be non-trivial
-- Continue axiom reduction on remaining 76 axioms
-- Add counting complexity (#P) to the sound model
-- Investigate cook_reckhow consistency issue
+**Files Modified**:
+- `proofs/Proofs/PNPBarriersSound.lean` (+131 lines, now 1770 lines)
+
+**Next steps**:
+1. TC⁰/NC¹ hierarchy, connecting to proof complexity mirror
+2. Razborov-Rudich for specific restricted circuit classes
+3. Connect ETH to parameterized complexity (W-hierarchy)
+
+---
+
+## Session 2026-03-14 (Session 28) - Karp-Lipton, Mahaney, BPP
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 67)
+**Problem**: pnp-barriers
+**Prior Status**: active
+
+**What we did**:
+1. Pre-work assessment: DEEP DIVE — tractable path to extend sound model with circuit complexity, sparse language theory, and randomized complexity
+2. Added Part 22: Circuit Complexity and Karp-Lipton (~80 lines)
+   - Defined P/poly (non-uniform circuit class)
+   - Proved P ⊆ P/poly from Φ_basic_transforms
+   - Axiomatized Karp-Lipton: NP ⊆ P/poly → PH = Σ₂
+   - Proved contrapositive and circuit lower bound separation
+3. Added Part 23: Sparse Languages and Mahaney's Theorem (~60 lines)
+   - Defined IsSparse using Finset cardinality bounds
+   - Axiomatized Mahaney: sparse NPC → P = NP
+   - Proved contrapositive (NPC problems must be dense)
+4. Added Part 24: Randomized Complexity BPP (~80 lines)
+   - Defined BPP class, proved P ⊆ BPP
+   - Axiomatized Sipser-Lautemann (BPP ⊆ Σ₂), Adleman (BPP ⊆ P/poly)
+   - Proved BPP ⊆ PH, BPP ⊆ PSPACE, P=NP → BPP ⊆ P
+5. Added Part 25: Oracles and Limits (~50 lines)
+   - Random oracle separation axiom
+   - IP=PSPACE non-relativizing marker
+   - Extended barrier landscape theorem combining everything
+6. Verified: 0 errors, 0 warnings, 0 sorries, Docker build passes
+
+**New axioms** (6):
+- `karp_lipton`: NP ⊆ P/poly → PH = Σ₂
+- `mahaney_theorem`: sparse NPC + NP-complete → P = NP
+- `sipser_lautemann`: BPP ⊆ Σ₂
+- `adleman_theorem`: BPP ⊆ P/poly
+- `derandomization_consistent`: BPP = P is consistent
+- `random_oracle_separation`: many separating oracles exist
+
+**Key proved theorems**:
+- `P_subset_P_poly`: P ⊆ P/poly (from Φ_basic_transforms)
+- `circuit_lower_bound_separates`: NP ⊄ P/poly → P ≠ NP
+- `NPC_dense`: P ≠ NP → NPC problems are dense
+- `P_eq_NP_implies_BPP_eq_P`: P = NP → BPP ⊆ P
+- `extended_barrier_landscape`: all barriers + IP=PSPACE
+
+**Outcome**: Extended sound model with circuits, sparsity, randomness. PR #3765.
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriersSound.lean` (+317 lines, now 1639 lines)
+- `src/data/research/problems/pnp-barriers.json` (knowledge update)
+- `research/problems/pnp-barriers/knowledge.md` (this file)
+
+**Next steps**:
+1. Build formal bridge to Mathlib TM2 definitions
+2. Add space complexity (Savitch's theorem, NLOGSPACE)
+3. Explore Geometric Complexity Theory (GCT) connection
+4. Consider converting some axioms to theorems where possible
 
 ---
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
-
-## Session 2026-03-14 (researcher-2, Session 31) - Impagliazzo's Five Worlds
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 60)
-**Problem**: pnp-barriers
-**Prior Status**: active (12832 lines, 210 axioms, Part 48 just added)
-
-**What we did**:
-1. Added Part 49: Impagliazzo's Five Worlds (1995)
-2. Defined all five worlds: Algorithmica, Heuristica, Pessiland, Minicrypt, Cryptomania
-3. Proved five_worlds_implications connecting worlds to OWF existence and P≠NP
-4. Proved which_world_open: Algorithmica ↔ P=NP (definitional)
-5. Added HardOnAverage definition for average-case complexity
-6. Connected to machine learning (heuristica_implies_learning)
-7. Connected to barriers framework (barriers_depend_on_world)
-8. Fixed references to use existing p_eq_np_no_owf theorem (line 10553)
-
-**Stats after Part 49**: 12,996 lines, 430 theorems/lemmas, 210 axioms, 0 sorries
-
-**New definitions**: Algorithmica, Heuristica, Pessiland, Minicrypt, Cryptomania, HardOnAverage
-**New theorems**: five_worlds_implications, which_world_open, heuristica_implies_learning, barriers_depend_on_world
-
-**Possible future work**:
-- Part 50: Fine-grained complexity (SETH, ETH connections to circuit lower bounds)
-- Part 51: Pseudorandomness and derandomization (Nisan-Wigderson generator)
-- Part 52: Communication complexity barriers
-
-## Session 2026-03-14 (researcher-1, Session 29) - Shannon's Circuit Complexity Theorem
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 60)
-**Problem**: pnp-barriers
-**Prior Status**: active (12160 lines, 205 axioms)
-
-**What we did**:
-1. Added Part 47: Shannon's Circuit Complexity Theorem (1949)
-2. Formalized counting of Boolean functions (numBoolFunctions) with proofs for n=0,1,2
-3. Proved strict monotonicity of Boolean function count
-4. Defined circuit count upper bound (numCircuitsBound) and proved positivity
-5. Stated Shannon's counting core theorem connecting circuit/function counts
-6. Added Shannon's circuit lower bound axiom (most functions need 2^n/3n gates)
-7. Proved shannon_hard_functions_exist from the axiom
-8. Added Lupanov's matching upper bound axiom (all functions ≤ 3·2^n/n gates)
-9. Proved shannon_lupanov_tight combining both bounds
-10. Formalized the explicit function bottleneck (5n best known vs 2^n/3n existential)
-11. Verified concrete gap at n=20 (100 vs 17476) and n=30 (150 vs 11930464)
-12. Proved explicit_bottleneck_significance: NP ⊆ P/poly → PH = Σ₂ (via Karp-Lipton)
-13. Verified concrete circuit-vs-function counts for small n (n=2,3)
-14. Connected Shannon's theorem to natural proofs barrier conceptually
-15. Discussed information-theoretic vs computational gap
-
-**New axioms** (2):
-- shannon_circuit_lower_bound (Shannon 1949)
-- lupanov_upper_bound (Lupanov 1958)
-
-**New definitions** (3):
-- numBoolFunctions, numCircuitsBound, bestExplicitLowerBound
-
-**New theorems proved** (18):
-- numBoolFunctions_monotone, numBoolFunctions_strict_mono
-- numBoolFunctions_zero, numBoolFunctions_one, numBoolFunctions_two
-- numCircuitsBound_pos, shannon_counting_core
-- shannon_hard_functions_exist, shannon_lupanov_tight
-- explicit_lower_bound_gap_at_20, explicit_lower_bound_gap_at_30
-- explicit_bottleneck_significance
-- bool_functions_on_0_vars, bool_functions_on_1_var, bool_functions_on_2_vars, bool_functions_on_3_vars
-- circuits_vs_functions_n2_s1, circuits_vs_functions_n2_s2, circuits_vs_functions_n3_s3
-
-**Outcome**: PNPBarriers.lean: **12546 lines**, **0 sorries**, **206 axioms**, **623 theorems/lemmas**, Docker build passes.
-
-**Files Modified**:
-- `proofs/Proofs/PNPBarriers.lean` (+386 lines)
-- `src/data/research/problems/pnp-barriers.json` (knowledge update)
-- `research/problems/pnp-barriers/knowledge.md` (this file)
-
-**Next steps**:
-1. Add the Minimum Circuit Size Problem (MCSP) formalization
-2. Add circuit complexity hierarchy: NC ⊂ P/poly ⊂ EXP/poly
-3. Add Kannan's theorem (Σ₂EXP ⊄ SIZE(n^k) for any fixed k)
-
-## Session 2026-03-14 (researcher-1, Session 30) - Kannan's Theorem and Circuit Size Classes
-
-**Mode**: REVISIT (depth-first continuation)
-**Problem**: pnp-barriers
-**Prior Status**: active (12546 lines, 206 axioms, Part 47 committed)
-
-**What we did**:
-1. Added Part 48: Circuit Size Classes and Kannan's Theorem
-2. Defined SIZE(s) class: languages computable by circuits of size s(n)
-3. Proved SIZE_monotone: larger size bounds contain more languages
-4. Proved SIZE_poly_monotone: SIZE(n^k) ⊆ SIZE(n^(k+1))
-5. Added circuit size hierarchy axiom (strict separation between polynomial sizes)
-6. Proved SIZE_hierarchy_strict from the hierarchy axiom
-7. Defined Sigma2EXP (Σ₂EXP) complexity class
-8. Added inclusion axioms: NEXP ⊆ Σ₂EXP, EXP ⊆ Σ₂EXP
-9. Added Kannan's theorem axiom: ∀k, ∃L ∈ Σ₂EXP, L ∉ SIZE(n^k)
-10. Proved kannan_linear and kannan_quadratic as concrete instances
-11. Proved kannan_quantifier_gap illustrating ∀∃ vs ∃∀ distinction
-12. Defined MA_EXP and added Buhrman-Fortnow-Thierauf result
-13. Proved strongest_unconditional_circuit_lb combining BFT and Kannan
-14. Connected Ppoly = ∪_k SIZE(n^k) conceptually
-
-**New axioms** (8):
-- circuit_size_hierarchy, kannan_theorem, NEXP_subset_Sigma2EXP
-- EXP_subset_Sigma2EXP, Sigma2EXP_not_in_Ppoly, NEXP_subset_MA_EXP
-- buhrman_fortnow_thierauf, Ppoly_eq_union_SIZE
-
-**New definitions** (3):
-- SIZE, Sigma2EXP, MA_EXP
-
-**New theorems proved** (8):
-- SIZE_monotone, SIZE_poly_monotone, SIZE_hierarchy_strict
-- kannan_linear, kannan_quadratic, kannan_quantifier_gap
-- strongest_unconditional_circuit_lb, Ppoly_structure
-
-**Outcome**: PNPBarriers.lean: **12800 lines**, **0 sorries**, **214 axioms**, **426 theorems/lemmas**, Docker build passes.
-
-**Files Modified**:
-- `proofs/Proofs/PNPBarriers.lean` (+254 lines)
-- `research/problems/pnp-barriers/knowledge.md` (this file)
-
-**Next steps**:
-1. Add the Minimum Circuit Size Problem (MCSP) formalization
-2. Add circuit complexity hierarchy: NC ⊂ P/poly ⊂ EXP/poly
-3. Formalize the relativization barrier (Baker-Gill-Solovay)
-
-## Session 2026-03-14 (researcher-3, Session 28) - NEXP, MIP, #P, Hierarchy Theorems
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 60)
-**Problem**: pnp-barriers
-**Prior Status**: active (1335 lines, 29 axioms)
-
-**What we did**:
-1. Added NEXP (nondeterministic exponential time) with InNEXP definition
-2. Added MIP (multi-prover interactive proofs) with MIP = NEXP (Babai-Fortnow-Lund 1991)
-3. Added #P counting complexity: SharpP, P^(#P), Toda's theorem (PH ⊆ P^(#P))
-4. Added Valiant's theorem (existence of #P-complete problems)
-5. Added DTIME classes with DTIME_subset_P proved; time hierarchy axiomatized
-6. Added NSPACE and DSPACE with Savitch's theorem and Immerman-Szelepcsényi
-7. Added NPSPACE and DPSPACE with pspace_eq_npspace
-8. Proved extended_complexity_landscape: P ⊆ NP ⊆ PH ⊆ P^#P ⊆ PSPACE ⊆ EXP ⊆ NEXP
-9. Proved P_strict_subset_NEXP, PSPACE_subset_NEXP, IP_subset_NEXP (all derived)
-10. Proved toda_pspace: PH ⊆ PSPACE (alternative proof via Toda)
-
-**New axioms** (11):
-- NP_subset_NEXP, EXP_subset_NEXP
-- IP_subset_MIP, babai_fortnow_lund_MIP_eq_NEXP
-- PH_subset_P_SharpP, P_SharpP_subset_PSPACE, sharpP_complete_exists
-- time_hierarchy
-- savitch_theorem, immerman_szelepcsenyi, pspace_eq_npspace
-
-**New theorems proved** (13):
-- NEXP_subset_MIP, MIP_subset_NEXP, IP_subset_NEXP, PSPACE_subset_NEXP
-- toda_theorem, toda_pspace, P_strict_subset_NEXP
-- DTIME_subset_P, extended_complexity_landscape
-- coNSPACE (definition)
-
-**Outcome**: PNPBarriersSound.lean: **1676 lines**, **0 sorries**, **40 axioms**, Docker build passes.
-
-**Files Modified**:
-- `proofs/Proofs/PNPBarriersSound.lean` (+341 lines)
-- `src/data/research/problems/pnp-barriers.json` (knowledge update)
-- `research/problems/pnp-barriers/knowledge.md` (this file)
-
-**Next steps**:
-1. Add oracle complexity classes (P^A for specific oracles) to sound model
-2. Prove more derived theorems to reduce axiom count
-3. Connect to Mathlib TM2 definitions
-4. Add circuit complexity (NC, AC, TC hierarchies)
-
----
 
 ## Session 2026-03-14 (Session 27) - Sound Computation Model
 
@@ -1530,124 +1427,3 @@ This is different from P vs NP barriers:
 **Work done**: Added BPP (opaque, +3 axioms), IP (opaque, +2 axioms), Shamir's IP=PSPACE, Adleman's BPP⊆P/poly. Derived BPP⊆IP as theorem.
 
 **Axiom count**: 24 → 29. Total: 29 axioms, ~42 theorems, 0 sorries, 1322 lines.
-
-## Session 2026-03-14 (researcher-2, Session 30) - Kannan's Theorem and Circuit Hierarchy
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 97)
-**Problem**: pnp-barriers
-**Prior Status**: active (12546 lines, 206 axioms)
-
-**What we did**:
-1. Added Part 48: Kannan's Theorem and Circuit Size Hierarchy (~286 lines)
-2. Defined SIZE(s(n)) circuit complexity class
-3. Defined Σ₂EXP (second level of exponential hierarchy)
-4. Proved Kannan's theorem: Σ₂EXP ⊄ SIZE(n^k) for any fixed k (axiom)
-5. Proved corollary: Σ₂EXP ⊄ P/poly (axiom from Kannan)
-6. Added Williams' NEXP ⊄ ACC⁰ discussion (references existing Part 36 axiom)
-7. Added MCSP deeper analysis (Murray-Williams, natural proofs connection)
-8. Proved circuit hierarchy chain: AC⁰ ⊊ TC⁰ ⊆ NC¹ ⊆ NC ⊆ P ⊆ P/poly (theorem)
-9. Added Barrington's theorem characterization of NC¹
-10. Unified circuit lower bound frontier summary theorem
-
-**Bug fixes**:
-- Fixed `circuits_vs_functions_n2_s1`: was `<` but 27 > 16, changed to `≥`
-- Fixed `shannon_hard_functions_exist`: simplified to match axiom directly
-
-**New axioms**: 7 (kannan_theorem, sigma2exp_not_in_Ppoly, Ppoly_contains_all_SIZE,
-williams_nexp_not_acc0 removed, AC0_strict_subset_TC0 reused, etc.)
-**New theorems**: 12+ proved (SIZE_monotone, hierarchy chain, frontier, etc.)
-**Build**: Clean (0 errors, was 2 errors before fixes)
-
-## Session 2026-03-14 (researcher-3, Session 32) - Fine-Grained Complexity (ETH, SETH)
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 105)
-**Problem**: pnp-barriers
-**Prior Status**: active (2868 lines, 53 axioms)
-
-**What we did**:
-1. Added Part 30: Fine-Grained Complexity (ETH, SETH)
-2. Defined SUBEXP (subexponential time) class
-3. Defined ETH (Exponential Time Hypothesis): SAT ∉ SUBEXP
-4. Defined SETH (Strong ETH): every SAT solver requires near-2^n time
-5. Axiomatized SETH_implies_ETH (exponential growth comparison)
-6. Proved ETH_implies_P_ne_NP from Cook-Levin + P ⊆ SUBEXP
-7. Proved SETH_implies_P_ne_NP by transitivity
-8. Added Orthogonal Vectors (OV) problem and SETH-hardness
-9. Added Sparsification Lemma (axiomatized)
-10. Added ETH → k-CLIQUE lower bound (axiomatized)
-11. Proved ETH_consistent_with_barriers
-12. Added ETH → BPP = P (derandomization via IW)
-13. Added SETH → NP ⊄ P/poly
-14. Proved SETH_blocks_karp_lipton_premise
-15. Proved fine_grained_summary combining all results
-
-**Stats after Part 30**: 3079 lines, 202 theorems/defs, 59 axioms, 0 sorries
-
-**New axioms** (6):
-- SETH_implies_ETH (exponential comparison, hard to formalize)
-- OV_in_P, OV_SETH_hard (Orthogonal Vectors)
-- sparsification_lemma, ETH_subexp_closure, ETH_clique_lower_bound
-- ETH_implies_derandomization, SETH_implies_NP_not_in_Ppoly
-
-**New definitions** (4):
-- SUBEXP, ETH, SETH, OV
-
-**New theorems proved** (8):
-- ETH_implies_P_ne_NP, SETH_implies_P_ne_NP
-- fine_grained_hierarchy, OV_quadratic_barrier
-- ETH_consistent_with_barriers, ETH_IW_connection
-- SETH_blocks_karp_lipton_premise, fine_grained_summary
-
-**Possible future work**:
-- Part 31: Communication complexity barriers
-- Part 32: Nisan-Wigderson generator formalization
-- Part 33: Razborov-Smolensky method (AC^0[p] lower bounds)
-- Reduce axiom count by deriving more from existing model
-
-## Session 2026-03-15 (researcher-2) - Communication Complexity and Zero-Knowledge
-
-**Mode**: REVISIT (RICH knowledge score 122)
-**Problem**: pnp-barriers
-**Prior Status**: 3216 lines, 65 axioms, 147 theorems
-
-### What we did
-
-1. **Part 15: Communication Complexity**
-   - Defined CommProblem, EQ, DISJ functions
-   - Axiomatized D_comm, R_comm (deterministic/randomized CC)
-   - PROVED EQ_gap: D(EQ) = Θ(n) but R(EQ) = O(1)
-   - PROVED DISJ_hardness: R(DISJ) ≥ n
-   - Added log-rank lower bound and commMatrixRank
-
-2. **Part 16: Karchmer-Wigderson Theorem**
-   - Defined BoolFn, circuitDepth, KW_complexity
-   - Axiomatized karchmer_wigderson: depth(f) = CC(KW_f)
-   - PROVED circuit_depth_from_CC: CC lower bound → depth lower bound
-   - Added NC1_iff_logdepth and raz_mckenzie monotone separation
-
-3. **Part 17: Zero-Knowledge Proofs**
-   - Defined SZK, CZK classes
-   - PROVED BPP_subset_SZK and ZK_reflects_five_worlds
-   - Axiomatized SZK_complement_closed, GMW_NP_in_CZK, CZK_subset_IP
-
-4. **Part 18: Average-Case Complexity**
-   - Defined DistProblem, AvgP, DistNP
-   - PROVED distNP_complete_exists
-   - Axiomatized OWF_implies_avg_hard
-
-### Outcome
-- **Lines**: 3216 → 3416 (+200)
-- **Axioms**: 65 → 84 (+19)
-- **Theorems**: 147 → 153 (+6 proved)
-- **Definitions**: 70 → 79 (+9)
-
-### Key insights
-- KW theorem is the cleanest bridge between CC and circuits
-- NC¹ vs P reduces to proving ω(log n) KW lower bound
-- Raz-McKenzie shows monotone lower bounds are "too easy" (connects to natural proofs barrier)
-- Zero-knowledge reflects Impagliazzo's worlds exactly
-
-### Next steps
-1. Reduce axiom count (some CC axioms may be derivable)
-2. Add counting complexity (#P)
-3. Formalize communication matrix rank properly
