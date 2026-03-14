@@ -1354,8 +1354,7 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
       have h_int : (↑j : ℤ) + ↑k = ↑m' * ↑n := by
         have := congr_arg (Nat.cast (R := ℤ)) hm'; push_cast at this; linarith
       refine ⟨(m' : ℤ), Or.inr ?_⟩
-      have h_real : (↑j : ℝ) + ↑k = ↑(m' : ℤ) * ↑n := by
-        have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; linarith
+      have h_real : (↑j : ℝ) + ↑k = ↑(m' : ℤ) * ↑n := by exact_mod_cast h_int
       field_simp; nlinarith [h_real]
 
 /-- cos(2kπ/n) = cos(2(n-k)π/n) for k < n. Cosine pairs coprime residues. -/
@@ -1363,18 +1362,28 @@ theorem cos_complement_eq (n : ℕ) (hn : 1 ≤ n) (k : ℕ) (hk : k < n) :
     Real.cos (2 * ↑(n - k) * Real.pi / ↑n) = Real.cos (2 * ↑k * Real.pi / ↑n) := by
   have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
   have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
-  rw [show (↑(n - k) : ℝ) = ↑n - ↑k from by push_cast; omega]
-  rw [show 2 * (↑n - ↑k) * Real.pi / ↑n = 2 * Real.pi - 2 * ↑k * Real.pi / ↑n
+  have hle : k ≤ n := le_of_lt hk
+  rw [Nat.cast_sub hle]
+  rw [show 2 * ((↑n : ℝ) - ↑k) * Real.pi / ↑n = -(2 * ↑k * Real.pi / ↑n - 2 * Real.pi)
     from by field_simp; ring]
-  rw [Real.cos_sub_two_pi]
+  rw [Real.cos_neg, Real.cos_sub_two_pi]
 
 /-- If k is coprime to n and k < n, then n - k is also coprime to n. -/
 theorem coprime_complement (n k : ℕ) (hk : k < n) (hc : Nat.Coprime k n) :
     Nat.Coprime (n - k) n := by
-  rwa [Nat.Coprime, Nat.gcd_comm, ← Nat.sub_add_cancel (Nat.le_of_lt_succ (by omega : k < n + 0)),
-    show n - k + k = n from by omega, Nat.gcd_comm (n - k)]
-  -- Simplification: gcd(n, n-k) = gcd(n - (n-k), n-k) = gcd(k, n-k) = gcd(k, n)
-  sorry
+  rw [Nat.Coprime] at *
+  -- gcd(n-k, n) = gcd(n-k, k) via gcd(a, b + k*a) = gcd(a, b)
+  have h1 : Nat.gcd (n - k) n = Nat.gcd (n - k) k := by
+    have := Nat.gcd_add_mul_right_right (n - k) k 1
+    rw [show k + 1 * (n - k) = n from by omega] at this
+    exact this
+  -- gcd(k, n-k) = gcd(k, n) by the same principle
+  have h2 : Nat.gcd k (n - k) = Nat.gcd k n := by
+    have := Nat.gcd_add_mul_right_right k (n - k) 1
+    rw [show n - k + 1 * k = n from by omega] at this
+    exact this.symm
+  rw [h1, Nat.gcd_comm, h2]
+  exact hc
 
 /-- For n ≥ 3 and k coprime to n with 0 < k < n, we have k ≠ n - k.
     (k = n-k would give 2k = n, so gcd(k, n) = gcd(n/2, n) = n/2 ≥ 2, not coprime.) -/
@@ -1384,7 +1393,7 @@ theorem coprime_ne_complement (n k : ℕ) (hn : 3 ≤ n) (hk_pos : 0 < k) (hk_lt
   have h2k : 2 * k = n := by omega
   have : Nat.gcd k n = k := by
     rw [← h2k]
-    exact Nat.gcd_eq_left (Dvd.intro 2 rfl)
+    exact Nat.gcd_eq_left (Dvd.intro 2 (by omega))
   rw [Nat.Coprime, this] at hc
   omega  -- k = 1, but then n = 2, contradicting n ≥ 3
 
