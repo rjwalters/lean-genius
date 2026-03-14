@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (23 axioms)
+## Axiom Summary (22 axioms)
 Core model (10):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -44,9 +44,9 @@ Core model (10):
 - 2 closure/composition: poly_time_compose, reduction_preserves_P
 - 1 containment: NP_subset_PSPACE
 - Now theorems: P_rel_subset_NP_rel (Φ_pair_project_first), P_subset_BPP
-    (Φ_pair_project_first), BPP_complement_closed (Φ_negate)
-Extended landscape (8):
-- 1 BPP: BPP_subset_EXP
+    (Φ_pair_project_first), BPP_complement_closed (Φ_negate),
+    BPP_subset_EXP (BPP ⊆ PH ⊆ PSPACE ⊆ EXP)
+Extended landscape (7):
 - 1 Sipser-Lautemann: sipser_lautemann (BPP ⊆ Σ₂ ∩ Π₂)
 - 1 Toda: toda_theorem (PH ⊆ P^#P)
 - 1 Adleman: adleman_theorem (BPP ⊆ P/poly)
@@ -1226,10 +1226,6 @@ theorem P_subset_BPP : P ⊆ BPP := by
           (p.coeff + 1) * (inputSize n) ^ p.degree := by ring
         omega
 
-/-- BPP ⊆ EXP: A BPP algorithm can be derandomized by trying all
-    random strings in exponential time. -/
-axiom BPP_subset_EXP : BPP ⊆ EXP
-
 /-- BPP is closed under complement: if f ∈ BPP, then ¬f ∈ BPP.
     **Previously an axiom** — now proved from `Φ_negate`.
     The negated program outputs `!r` for each `r`; since the majority of
@@ -1259,6 +1255,11 @@ theorem BPP_subset_PH : BPP ⊆ PH := by
   -- h.1 : f ∈ Sigma_k 2; need f ∈ PH = ⋃ k, Sigma_k k
   unfold PH
   exact Set.mem_iUnion.mpr ⟨2, h.1⟩
+
+/-- BPP ⊆ EXP: follows from BPP ⊆ PH ⊆ PSPACE ⊆ EXP.
+    **Previously an axiom** — now proved by transitivity via Sipser-Lautemann. -/
+theorem BPP_subset_EXP : BPP ⊆ EXP :=
+  Set.Subset.trans BPP_subset_PH (Set.Subset.trans PH_subset_PSPACE PSPACE_subset_EXP)
 
 -- ============================================================
 -- PART 20: #P and Toda's Theorem
