@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-03-12",
-    "iteration": 4,
-    "focus": "Built radial extension + grid infrastructure for eliminating tucker_disk_approx_zero axiom",
+    "iteration": 5,
+    "focus": "Axiom reduction: 2→1 axiom (only tuckers_lemma remains)",
     "activeApproach": "Radial extension trick: extend g from disk to square, grid [-1,1]² for Tucker",
     "blockers": [
       "radialExtend_continuous: piecewise continuity proof (both branches agree on S¹)",
@@ -34,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Built radial extension proof architecture (Parts XXII-XXIII, ~340 lines). Proved: radialExtend_odd_outside, radialExtend_zero_gives_disk_zero, closedSquare_isCompact, mesh_refinement_square, gridAntipodalFin_eq_neg, gridBoundary_euclidNormSq_ge_one, h=0 edge case of main theorem. 3 sorries remain to eliminate tucker_disk_approx_zero axiom.",
+    "progressSummary": "PROGRESS: Eliminated tucker_disk_approx_zero axiom by wiring approx_borsuk_ulam_2d_corrected to tucker_disk_approx_zero_proved. File now has only 1 axiom (tuckers_lemma) and 0 sorries.",
     "builtItems": [
       "non_dominant_at_zero_bound_snd (symmetric IVT bound, Part XX)",
       "complementary_edge_approx_dominant_fst/snd (corrected IVT+dominant theorems)",
@@ -51,7 +51,8 @@
       "gridVertexFin/gridBoundaryFin/gridEdgesFin/gridAntipodalFin: Fin-based grid on [-1,1]²",
       "gridAntipodalFin_eq_neg: antipodal map = negation in ℝ² (via Fin.rev)",
       "gridBoundary_euclidNormSq_ge_one: boundary vertices have Euclidean norm ≥ 1",
-      "tucker_disk_approx_zero_proved: main theorem with h=0 edge case completed"
+      "tucker_disk_approx_zero_proved: main theorem with h=0 edge case completed",
+      "Eliminated tucker_disk_approx_zero axiom: replaced usage in approx_borsuk_ulam_2d_corrected with tucker_disk_approx_zero_proved"
     ],
     "insights": [
       "CRITICAL: axiom complementary_edge_gives_approximate_zero was FALSE. Counterexample: g(x,y)=(x,y), u=(0.01,1), v=(-0.01,1). The bound δ*C ≈ 0.08 but |g(w).2| ≥ 0.98 for any w near u.",
@@ -62,7 +63,8 @@
       "Grid Fintype boilerplate (Fin(2N+1)×Fin(2N+1), edges, antipodal map) involves heavy Nat↔ℝ casting. Lean4 exact_mod_cast/Fin.val handling makes this ~400 lines rather than ~200. Not mathematically hard, just tedious.",
       "KEY INSIGHT: radial extension trick avoids gridding the disk directly. Extend g to [-1,1]² by g(x/‖x‖) outside D̄². This makes h odd for ‖x‖₂ ≥ 1 (boundary of [-1,1]² has ‖x‖₂ ≥ 1). Grid the square, apply Tucker, then convert back.",
       "The Prod norm/dist in Mathlib is L∞ (max norm), not Euclidean. Must use custom euclidNormSq/euclidNorm for disk membership.",
-      "When h vanishes at a grid vertex, we get immediate zero: either inside disk (direct) or outside (project to S¹)."
+      "When h vanishes at a grid vertex, we get immediate zero: either inside disk (direct) or outside (project to S¹).",
+      "tucker_disk_approx_zero_proved was already complete but the axiom was still being used by the main theorem. Simple wiring change to connect them."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -88,7 +90,7 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.175Z",
-  "lastUpdate": "2026-03-13T00:30:00.000Z",
+  "lastUpdate": "2026-03-14T15:30:00.000Z",
   "significance": 7,
   "tractability": 6
 }
