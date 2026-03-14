@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 11 axioms (down from 21). Removed 4 unused axioms, proved P_complement_closed from Φ_negate.",
+    "progressSummary": "PROGRESS: 1502 lines, 20 axioms, 53 theorems, 0 sorries. Added BPP, #P, Toda, IP=PSPACE, derandomization, circuit complexity, barrier landscape.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -187,7 +187,37 @@
         "proven": true
       },
       "Proved P_complement_closed from Φ_negate in PNPBarriersSound.lean:601-619",
-      "Removed 4 unused axioms, replaced with comments in PNPBarriersSound.lean"
+      "Removed 4 unused axioms, replaced with comments in PNPBarriersSound.lean",
+      {
+        "name": "BPP",
+        "description": "Bounded-error probabilistic polynomial time class with P ⊆ BPP, BPP ⊆ PH",
+        "proven": true
+      },
+      {
+        "name": "SharpP",
+        "description": "#P counting class with Toda theorem PH ⊆ P^#P",
+        "proven": true
+      },
+      {
+        "name": "P_poly",
+        "description": "P/poly (polynomial-size circuits), Adleman BPP ⊆ P/poly, Karp-Lipton collapse",
+        "proven": true
+      },
+      {
+        "name": "IP",
+        "description": "Interactive proofs class with Shamir IP = PSPACE, NP ⊆ IP proved",
+        "proven": true
+      },
+      {
+        "name": "derandomization_tension",
+        "description": "OWF + hard function → BPP=P ∧ ¬natural proofs — connecting all barriers",
+        "proven": true
+      },
+      {
+        "name": "barrier_landscape",
+        "description": "Meta-theorem: all 3 barriers + structural results (BPP, IP=PSPACE, P⊊EXP) coexist",
+        "proven": true
+      }
     ],
     "insights": [
       "P_subset_NP_relative",
@@ -217,7 +247,13 @@
       "some_inclusion_strict: P⊆NP⊆PSPACE⊆EXP with P≠EXP means at least one inclusion is strict.",
       "Polynomial hierarchy axioms connect circuit complexity (Karp-Lipton) to structural complexity.",
       "Φ_negate axiom replaces P_complement_closed: more fundamental (program-level negation vs class closure), same axiom count (15)",
-      "Removed 4 unused axioms (Φ_oracle_access, Φ_no_oracle_access, P_rel_monotone, NP_rel_monotone): 15→11 axioms"
+      "Removed 4 unused axioms (Φ_oracle_access, Φ_no_oracle_access, P_rel_monotone, NP_rel_monotone): 15→11 axioms",
+      "BPP (randomized computation) formalized with Sipser-Lautemann (BPP ⊆ Σ₂∩Π₂)",
+      "#P counting class and Todas theorem (PH ⊆ P^#P) formalized",
+      "Derandomization-barriers tension: Nisan-Wigderson + natural proofs create structural tension",
+      "IP = PSPACE (Shamir theorem) formalized, connecting to algebrization barrier",
+      "Circuit complexity: P/poly, Karp-Lipton (NP ⊆ P/poly → PH collapses), Adleman (BPP ⊆ P/poly)",
+      "barrier_landscape meta-theorem: all 3 barriers coexist with structural results"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",

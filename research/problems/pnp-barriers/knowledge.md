@@ -3,6 +3,67 @@
 
 ---
 
+## Session 2026-03-14 (Session 28) - Extended Complexity Landscape
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 71)
+**Problem**: pnp-barriers
+**Prior Status**: active
+
+**What we did**:
+1. Added BPP (bounded-error probabilistic polynomial time) with formal definition
+2. Proved BPP ⊆ PH from Sipser-Lautemann axiom (BPP ⊆ Σ₂ ∩ Π₂)
+3. Added #P counting class with Toda's theorem (PH ⊆ P^#P)
+4. Added circuit complexity: P/poly, Adleman's theorem (BPP ⊆ P/poly), Karp-Lipton
+5. Added derandomization: Nisan-Wigderson (hard function in EXP → BPP = P)
+6. Proved `derandomization_tension`: connecting NW derandomization with natural proofs barrier
+7. Added IP (interactive proofs) with Shamir's theorem (IP = PSPACE)
+8. Proved NP ⊆ IP from definitions
+9. Proved `extended_complexity_chain`: P ⊆ NP ⊆ PH ⊆ PSPACE = IP ⊆ EXP, P ⊆ BPP ⊆ PH
+10. Proved `barrier_landscape`: all 3 barriers + structural results coexist
+11. Docker build: 0 errors, 0 warnings, 0 sorries
+
+**New axioms added** (9, bringing total to 20):
+- `P_subset_BPP` — P programs are trivially randomized (needs Φ composition, axiomatized)
+- `BPP_subset_EXP` — enumerate random strings in exponential time
+- `BPP_complement_closed` — flip the answer, majority preserved
+- `sipser_lautemann` — BPP ⊆ Σ₂ ∩ Π₂
+- `toda_theorem` — PH ⊆ P^#P
+- `adleman_theorem` — BPP ⊆ P/poly
+- `karp_lipton` — NP ⊆ P/poly → PH = Σ₂
+- `nisan_wigderson` — hard function in EXP → P = BPP
+- `shamir_IP_eq_PSPACE` — IP = PSPACE
+
+**New theorems proved** (from axioms or definitions):
+- `BPP_subset_PH` (from sipser_lautemann)
+- `toda_consequence` (if PH ≠ P then P ≠ P^#P)
+- `PH_infinite_implies_NP_hard_circuits` (from karp_lipton)
+- `derandomization_tension` (NW + natural proofs barrier)
+- `NP_subset_IP` (from NP and IP definitions)
+- `PSPACE_subset_IP`, `IP_subset_PSPACE` (from shamir)
+- `extended_complexity_chain`, `barrier_landscape`
+
+**Key insight**: The derandomization_tension theorem captures the central structural
+tension in complexity theory: if one-way functions exist AND hard functions exist in
+EXP, then BPP = P (derandomization succeeds) but natural proofs cannot prove the very
+circuit lower bounds that underpin the derandomization. This shows why P vs NP is hard:
+the tools that would prove it (circuit lower bounds via natural properties) are exactly
+what the barriers prevent.
+
+**Stats**: 1502 lines, 20 axioms, 53 theorems, 47 definitions, 0 sorries
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriersSound.lean` (+416 lines)
+- `src/data/research/problems/pnp-barriers.json` (knowledge update)
+- `research/problems/pnp-barriers/knowledge.md` (this file)
+
+**Next steps**:
+1. Try to reduce axiom count by proving some from more primitive axioms
+2. Add MA, AM (Arthur-Merlin) protocols — intermediate between BPP and IP
+3. Connect to Geometric Complexity Theory (GCT) as a potential barrier-circumventing approach
+4. Formalize the Immerman-Szelepcsényi theorem (NL = coNL)
+
+---
+
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
 ## Session 2026-03-14 (Session 27) - Sound Computation Model
