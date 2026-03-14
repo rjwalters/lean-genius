@@ -128,14 +128,20 @@ Integrate any completed proofs before selecting new work.
 $REPO_ROOT/scripts/research/claim-problem.sh claim-random
 ```
 
-This atomically claims a random available problem based on knowledge score priority.
+This atomically claims a random available problem using **depth-first priority**: problems with MORE existing knowledge (MODERATE/RICH) are selected first, so you advance existing work toward proof rather than always grabbing fresh problems.
 
 The claim script will output:
 ```
+Selected weak-goldbach (45 available, tier: MODERATE+ (depth-first), 19 in tier)
 Claimed weak-goldbach by researcher-1
-Knowledge score: 3 (WEAK - high priority)
-Status: in-progress
+Knowledge score: 8 (MODERATE)
 ```
+
+**When you receive a problem with existing knowledge:**
+- Read `research/problems/<id>/knowledge.md` for prior session notes
+- Read `src/data/research/problems/<id>.json` for accumulated insights
+- Build on prior work — don't re-survey from scratch
+- Advance the phase (OBSERVE → ORIENT → ACT → COMPLETED)
 
 **IMPORTANT:** After claiming, work in your worktree:
 ```bash
