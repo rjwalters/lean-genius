@@ -36,15 +36,18 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (13 axioms, down from 17)
+## Axiom Summary (16 axioms, down from 18)
 - 1 structural: Φ_countably_many (Φ_total and Φ_deterministic now theorems)
 - 2 oracle: Φ_oracle_access, Φ_no_oracle_access
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
 - 1 natural proofs: razborov_rudich (owf_exists_assumption now theorem)
 - 2 algebrization: algebrizing_oracle_eq, algebrizing_oracle_sep
 - 3 structural properties: P_rel_monotone, NP_rel_monotone, P_rel_subset_NP_rel
-- 2 closure properties: P_complement_closed, poly_time_compose, reduction_preserves_P
+- 3 closure properties: P_complement_closed, poly_time_compose, reduction_preserves_P
+- 1 containment: NP_subset_PSPACE
+- 1 separation: P_ne_EXP
 - Note: PSPACE_subset_EXP now theorem (PSPACE and EXP have identical definitions)
+- Note: PH_subset_PSPACE now theorem (PH = NP in structural model, derived from NP_subset_PSPACE)
 -/
 
 set_option linter.unusedVariables false
@@ -828,6 +831,26 @@ theorem NP_subset_PH : NP ⊆ PH := by
   intro f hf
   exact Set.mem_iUnion.mpr ⟨1, hf⟩
 
+/-- **PH = NP (structural model)**: In our simplified structural model where
+    Σₖ₊₁ᴾ = NP for all k, the polynomial hierarchy collapses to NP unconditionally.
+
+    This is an artifact of the structural model (which defines Sigma_rel (k+1) A = NP_rel A
+    for all k, rather than using Σₖ as oracle). In a refined oracle-recursive model,
+    PH would be a proper tower. Nevertheless, this collapse is sound within the model
+    and allows us to derive PH ⊆ PSPACE from NP ⊆ PSPACE without an extra axiom. -/
+theorem PH_eq_NP : PH = NP := by
+  ext f
+  constructor
+  · -- f ∈ PH → f ∈ NP
+    intro hf
+    obtain ⟨k, hk⟩ := Set.mem_iUnion.mp hf
+    cases k with
+    | zero => exact P_subset_NP hk
+    | succ _ => exact hk
+  · -- f ∈ NP → f ∈ PH
+    intro hf
+    exact NP_subset_PH hf
+
 -- ============================================================
 -- PART 14: PH Collapse from P = NP
 -- ============================================================
@@ -919,8 +942,11 @@ theorem PSPACE_subset_EXP : PSPACE ⊆ EXP := by
   intro f ⟨e, p, h⟩; exact ⟨e, p, h⟩
 
 /-- PH ⊆ PSPACE: Every level of the polynomial hierarchy is in PSPACE.
-    Σₖ problems can be solved in PSPACE by iterating over quantifiers. -/
-axiom PH_subset_PSPACE : PH ⊆ PSPACE
+
+    In our structural model, PH = NP (see PH_eq_NP), so this follows
+    directly from NP ⊆ PSPACE. Previously axiomatized; now a theorem. -/
+theorem PH_subset_PSPACE : PH ⊆ PSPACE := by
+  rw [PH_eq_NP]; exact NP_subset_PSPACE
 
 /-- The full complexity containment chain: P ⊆ NP ⊆ PH ⊆ PSPACE ⊆ EXP. -/
 theorem complexity_chain :
@@ -1040,11 +1066,13 @@ theorem some_containment_strict :
 #check Sigma_monotone             -- Σₖ ⊆ Σₖ₊₁
 #check P_subset_PH                -- P ⊆ PH
 #check NP_subset_PH               -- NP ⊆ PH
+#check PH_eq_NP                   -- PH = NP (structural model collapse)
 #check P_eq_NP_implies_PH_collapse  -- P = NP → PH = P
 #check PH_ne_P_implies_P_ne_NP   -- PH ≠ P → P ≠ NP
 
 -- PSPACE and EXP chain
 #check complexity_chain           -- P ⊆ NP ⊆ PH ⊆ PSPACE ⊆ EXP
+#check PH_subset_PSPACE           -- PH ⊆ PSPACE (now theorem, was axiom)
 #check P_strict_subset_EXP        -- P ⊊ EXP
 #check some_containment_strict    -- At least one containment is strict
 
