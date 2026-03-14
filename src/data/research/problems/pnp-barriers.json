@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Shannon circuit complexity theorem (Part 47): function counting, circuit counting, Shannon-Lupanov tight bounds, explicit function bottleneck with verified computations. File: 12546 lines, 206 axioms, 623 theorems/lemmas, 0 sorries.",
+    "progressSummary": "PROGRESS: Added Shannon circuit complexity theorem (Part 47), Mahaney theorem, upward translation. File: 12546+ lines, 206+ axioms, 623+ theorems/lemmas, 0 sorries.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -220,7 +220,13 @@
         "name": "Part 47: Shannon Circuit Complexity",
         "description": "numBoolFunctions, numCircuitsBound, Shannon-Lupanov bounds, explicit bottleneck, 18 new theorems proved",
         "proven": true
-      }
+      },
+      "IsSparse definition (Sound model)",
+      "mahaney_theorem + mahaney_contrapositive",
+      "EXPSPACE/coNEXP definitions",
+      "upward_translation_P_NP/P_PSPACE/NP_coNP",
+      "downward_separation theorems (3)",
+      "NEXP_ne_coNEXP_implies_P_ne_NP"
     ],
     "insights": [
       "P_subset_NP_relative",
@@ -257,7 +263,11 @@
       "Shannon (1949): Most Boolean functions require 2^n/3n circuit gates - proved by counting argument",
       "Lupanov (1958): All Boolean functions can be computed by 3·2^n/n gates - matching upper bound",
       "Explicit function bottleneck: best known explicit lower bound is only 5n gates vs 2^n/3n existential",
-      "Shannon counting relativizes: works identically in any oracle model, so cannot separate P from NP"
+      "Shannon counting relativizes: works identically in any oracle model, so cannot separate P from NP",
+      "Mahaney theorem formalized in Sound model: P≠NP → no sparse NP-complete language",
+      "Upward translation axioms added: P=NP→EXP=NEXP, P=PSPACE→EXP=EXPSPACE, NP=coNP→NEXP=coNEXP",
+      "EXPSPACE and coNEXP definitions added to Sound model",
+      "Downward separation chain: NEXP≠coNEXP → NP≠coNP → P≠NP"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
