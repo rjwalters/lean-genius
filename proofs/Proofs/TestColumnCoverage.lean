@@ -122,8 +122,10 @@ private lemma visitedPoints_cons_true_of_mem (xs : LPath) (a : ℕ) (p : ℕ × 
     p ∈ visitedPoints (true :: xs) a := by
   simp only [visitedPoints, Finset.mem_image, Finset.mem_range] at hp ⊢
   obtain ⟨i, hi, hpi⟩ := hp
-  exact ⟨i + 1, by simp [List.length_cons]; omega,
-    by rw [posAfter_cons_succ]; simp [← hpi]; omega⟩
+  refine ⟨i + 1, by simp [List.length_cons]; omega, ?_⟩
+  rw [posAfter_cons_succ]
+  simp only [Bool.true_eq_false, ↓reduceIte, Bool.true_eq]
+  exact hpi
 
 theorem visitedPoints_covers_column (l : LPath) (a : ℕ) (x y : ℕ)
     (hx : x < eastSteps l)
@@ -138,6 +140,7 @@ theorem visitedPoints_covers_column (l : LPath) (a : ℕ) (x y : ℕ)
         simp [eastSteps, List.countP_cons]
       cases x with
       | zero =>
+        have h0 : colEntry (false :: xs) 0 = 0 := rfl
         have h1 : colEntry (false :: xs) 1 = 0 := by
           simp [colEntry, northBeforeEast]
         have : y = a := by omega
