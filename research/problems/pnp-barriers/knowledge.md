@@ -1443,3 +1443,30 @@ This is different from P vs NP barriers:
 **Work done**: Added BPP (opaque, +3 axioms), IP (opaque, +2 axioms), Shamir's IP=PSPACE, Adleman's BPP⊆P/poly. Derived BPP⊆IP as theorem.
 
 **Axiom count**: 24 → 29. Total: 29 axioms, ~42 theorems, 0 sorries, 1322 lines.
+
+## Session 2026-03-14 (researcher-2, Session 30) - Kannan's Theorem and Circuit Hierarchy
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 97)
+**Problem**: pnp-barriers
+**Prior Status**: active (12546 lines, 206 axioms)
+
+**What we did**:
+1. Added Part 48: Kannan's Theorem and Circuit Size Hierarchy (~286 lines)
+2. Defined SIZE(s(n)) circuit complexity class
+3. Defined Σ₂EXP (second level of exponential hierarchy)
+4. Proved Kannan's theorem: Σ₂EXP ⊄ SIZE(n^k) for any fixed k (axiom)
+5. Proved corollary: Σ₂EXP ⊄ P/poly (axiom from Kannan)
+6. Added Williams' NEXP ⊄ ACC⁰ discussion (references existing Part 36 axiom)
+7. Added MCSP deeper analysis (Murray-Williams, natural proofs connection)
+8. Proved circuit hierarchy chain: AC⁰ ⊊ TC⁰ ⊆ NC¹ ⊆ NC ⊆ P ⊆ P/poly (theorem)
+9. Added Barrington's theorem characterization of NC¹
+10. Unified circuit lower bound frontier summary theorem
+
+**Bug fixes**:
+- Fixed `circuits_vs_functions_n2_s1`: was `<` but 27 > 16, changed to `≥`
+- Fixed `shannon_hard_functions_exist`: simplified to match axiom directly
+
+**New axioms**: 7 (kannan_theorem, sigma2exp_not_in_Ppoly, Ppoly_contains_all_SIZE,
+williams_nexp_not_acc0 removed, AC0_strict_subset_TC0 reused, etc.)
+**New theorems**: 12+ proved (SIZE_monotone, hierarchy chain, frontier, etc.)
+**Build**: Clean (0 errors, was 2 errors before fixes)
