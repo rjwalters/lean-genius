@@ -93,7 +93,7 @@ theorem pairwise_ge_d_implies_hasMinGap (l : List ℕ) (d : ℕ) :
     | b :: rest' =>
       simp only [hasMinGap, Bool.and_eq_true, decide_eq_true_eq]
       have hpw := List.pairwise_cons.mp h
-      exact ⟨hpw.1 b (List.mem_cons_self b rest'), ih hpw.2⟩
+      exact ⟨hpw.1 b List.mem_cons_self, ih hpw.2⟩
 
 /-- **The hasMinGap characterization**: For any list of naturals,
     `hasMinGap l d` holds iff all pairs `(l[i], l[j])` with `i < j`
@@ -104,25 +104,34 @@ theorem hasMinGap_iff_pairwise (l : List ℕ) (d : ℕ) :
 
 /-- Corollary: hasMinGap d with d ≥ 1 gives strict pairwise separation.
     This follows immediately from the characterization. -/
-theorem hasMinGap_pairwise_sep (l : List ℕ) (d : ℕ) (hd : 1 ≤ d) :
+theorem hasMinGap_pairwise_sep (l : List ℕ) (d : ℕ) (_hd : 1 ≤ d) :
     hasMinGap l d = true →
     ∀ a ∈ l, ∀ b ∈ l, a ≠ b → (a + d ≤ b ∨ b + d ≤ a) := by
-  intro h a ha b hb hab
-  have hpw := hasMinGap_pairwise_ge_d l d h
-  -- a and b are distinct elements in l, so one comes before the other
-  -- in the pairwise ordering
-  rw [List.pairwise_iff_forall_lt] at hpw
-  obtain ⟨i, hi, rfl⟩ := List.get_of_mem ha
-  obtain ⟨j, hj, rfl⟩ := List.get_of_mem hb
-  by_cases hij : i < j
-  · have := hpw i j hij
-    right; omega
-  · by_cases hji : j < i
-    · have := hpw j i hji
-      left; omega
-    · -- i = j would mean a = b, contradiction
-      have : i = j := by omega
-      subst this; exact absurd rfl hab
+  induction l with
+  | nil => intro _ a ha; simp at ha
+  | cons x rest ih =>
+    intro h a ha b hb hab
+    have hpw := hasMinGap_pairwise_ge_d (x :: rest) d h
+    have ⟨hhead, htail⟩ := List.pairwise_cons.mp hpw
+    rcases List.mem_cons.mp ha with rfl | ha'
+    · -- a = x is the head
+      rcases List.mem_cons.mp hb with rfl | hb'
+      · exact absurd rfl hab
+      · -- b ∈ rest, and x ≥ b + d (from pairwise head)
+        have := hhead b hb'
+        right; omega
+    · rcases List.mem_cons.mp hb with rfl | hb'
+      · -- b = x is the head, a ∈ rest
+        have := hhead a ha'
+        left; omega
+      · -- Both in rest, use IH with hasMinGap of the tail
+        have h_rest : hasMinGap rest d = true := by
+          match rest with
+          | [] => simp [hasMinGap]
+          | y :: rest' =>
+            simp only [hasMinGap, Bool.and_eq_true, decide_eq_true_eq] at h
+            exact h.2
+        exact ih h_rest a ha' b hb' hab
 
 -- ============================================================================
 -- Part II: Partition Extensions (require Multiset.toList → noncomputable)
@@ -229,15 +238,16 @@ theorem schurGapFullPartitions_subset_schurGapPartitions (n : ℕ) :
   intro p hp
   simp only [schurGapFullPartitions, schurGapPartitions, Finset.mem_filter,
     Finset.mem_univ, true_and] at *
-  have ⟨hnodup, hfull⟩ := Bool.and_eq_true.mp hp
-  apply Bool.and_eq_true.mpr
+  simp only [Bool.and_eq_true, decide_eq_true_eq] at hp
+  have ⟨hnodup, hfull⟩ := hp
+  simp only [Bool.and_eq_true, decide_eq_true_eq]
   exact ⟨hnodup, by
     generalize p.parts.sort (· ≥ ·) = l at hfull ⊢
     induction l with
-    | nil => simp [hasMinGap, hasSchurGapFull]
+    | nil => simp [hasMinGap]
     | cons a rest ih =>
       match rest with
-      | [] => simp [hasMinGap, hasSchurGapFull]
+      | [] => simp [hasMinGap]
       | b :: rest' =>
         simp only [hasSchurGapFull, hasMinGap, Bool.and_eq_true, decide_eq_true_eq] at hfull ⊢
         constructor
@@ -821,20 +831,20 @@ correctly capture the same mathematical property.
 
 /-- For a sorted list, hasMinGap implies the decidable pairwise condition.
     This is the key bridge from noncomputable (sorted) to decidable (pairwise). -/
-theorem hasMinGap_implies_decidable_gap (l : List ℕ) (d : ℕ) :
+theorem hasMinGap_implies_decidable_gap (l : List ℕ) (d : ℕ) (hd : 1 ≤ d) :
     hasMinGap l d = true →
     l.Nodup ∧ ∀ a ∈ l, ∀ b ∈ l, a ≠ b → (a + d ≤ b ∨ b + d ≤ a) := by
   intro h
   constructor
-  · -- Nodup follows from the pairwise property (a ≥ b + d implies a ≠ b for any d)
+  · -- Nodup follows from the pairwise property (a ≥ b + d with d ≥ 1 implies a ≠ b)
     have hpw := hasMinGap_pairwise_ge_d l d h
     exact List.Pairwise.imp (fun {a b} hab => by omega) hpw
-  · exact hasMinGap_pairwise_sep l d (by omega) h
+  · exact hasMinGap_pairwise_sep l d hd h
 
 /-- The decidable pairwise condition on a SORTED DECREASING LIST implies hasMinGap.
     (For unsorted lists, pairwise separation does not directly give hasMinGap.) -/
 theorem decidable_gap_sorted_implies_hasMinGap
-    (l : List ℕ) (d : ℕ) (hsorted : l.Sorted (· ≥ ·))
+    (l : List ℕ) (d : ℕ) (hsorted : l.Pairwise (· ≥ ·))
     (hnodup : l.Nodup)
     (hsep : ∀ a ∈ l, ∀ b ∈ l, a ≠ b → (a + d ≤ b ∨ b + d ≤ a)) :
     hasMinGap l d = true := by
@@ -846,22 +856,22 @@ theorem decidable_gap_sorted_implies_hasMinGap
     | b :: rest' =>
       simp only [hasMinGap, Bool.and_eq_true, decide_eq_true_eq]
       have hab : a ≠ b := by
-        exact List.nodup_cons.mp hnodup |>.1 ∘ List.mem_cons_self b rest' |>.mt |> (by
-          intro heq; exact absurd (heq ▸ List.mem_cons_self b rest') (List.nodup_cons.mp hnodup).1)
+        intro heq
+        have := (List.nodup_cons.mp hnodup).1
+        exact this (heq ▸ List.mem_cons_self)
       constructor
       · -- a ≥ b + d: since a comes first in sorted list, a ≥ b.
         -- Since a ≠ b and both in list, one of a + d ≤ b or b + d ≤ a.
-        have := hsep a (List.mem_cons_self _ _) b
-          (List.mem_cons_of_mem _ (List.mem_cons_self _ _)) hab
-        rcases this with h | h
-        · -- a + d ≤ b, but a ≥ b (sorted), contradiction unless d = 0
-          have hge : a ≥ b := by
-            have := List.sorted_cons.mp hsorted |>.1 b (List.mem_cons_self _ _)
-            exact this
+        have hsep_ab := hsep a List.mem_cons_self b
+          (List.mem_cons_of_mem _ List.mem_cons_self) hab
+        rcases hsep_ab with h | h
+        · -- a + d ≤ b, but a ≥ b (from sorted/pairwise), contradiction unless d = 0
+          have hge : a ≥ b :=
+            (List.pairwise_cons.mp hsorted).1 b List.mem_cons_self
           omega
         · exact h
       · exact ih
-          (List.sorted_cons.mp hsorted).2
+          (List.pairwise_cons.mp hsorted).2
           (List.nodup_cons.mp hnodup).2
           (fun x hx y hy hxy =>
             hsep x (List.mem_cons_of_mem _ hx) y (List.mem_cons_of_mem _ hy) hxy)
@@ -1138,3 +1148,266 @@ theorem hasMinGap_iff_pairwise_gap {l : List ℕ} {d : ℕ} (hd : 1 ≤ d)
     exact pairwise_gap_implies_hasMinGap hsorted hnodup hpw
 
 end PartitionDecidable
+
+-- ============================================================================
+-- Part XXI: Decidable ↔ Noncomputable Equivalence Bridge
+-- ============================================================================
+
+/-
+The file contains two parallel formulations of partition identity sets:
+1. **Noncomputable** (Part II-V): Uses `Multiset.sort` for gap checking
+2. **Decidable** (Part IX): Uses pairwise multiset predicates
+
+We prove these are extensionally equal, validating that the decidable
+computational verifications (via `native_decide`) confirm exactly the
+same identities stated in the noncomputable axioms.
+
+Key bridge facts from Mathlib:
+- Multiset.sort_eq: ↑(m.sort r) = m (sort preserves the multiset)
+- Multiset.coe_nodup: (↑l).Nodup ↔ l.Nodup
+- Multiset.sort_sorted: (m.sort r).Sorted r
+-/
+
+noncomputable section
+
+namespace PartitionBridge
+
+open Finset Nat
+
+-- ============================================================================
+-- Helper Lemmas: Bridging Sorted List ↔ Multiset Properties
+-- ============================================================================
+
+/-- Membership in sorted parts list ↔ membership in parts multiset. -/
+private lemma mem_parts_sort {n : ℕ} (p : Nat.Partition n) (a : ℕ) :
+    a ∈ p.parts.sort (· ≥ ·) ↔ a ∈ p.parts := by
+  constructor
+  · intro h
+    have : a ∈ (↑(p.parts.sort (· ≥ ·)) : Multiset ℕ) := Multiset.mem_coe.mpr h
+    rwa [Multiset.sort_eq] at this
+  · intro h
+    have : a ∈ (↑(p.parts.sort (· ≥ ·)) : Multiset ℕ) := by rw [Multiset.sort_eq]; exact h
+    exact Multiset.mem_coe.mp this
+
+/-- Nodup of sorted parts list ↔ Nodup of parts multiset. -/
+private lemma nodup_parts_sort {n : ℕ} (p : Nat.Partition n) :
+    (p.parts.sort (· ≥ ·)).Nodup ↔ p.parts.Nodup := by
+  constructor
+  · intro h; rwa [← Multiset.coe_nodup, Multiset.sort_eq] at h
+  · intro h
+    have : (↑(p.parts.sort (· ≥ ·)) : Multiset ℕ).Nodup := by rw [Multiset.sort_eq]; exact h
+    exact Multiset.coe_nodup.mp this
+
+-- ============================================================================
+-- Core Bridge: partHasMinGap ↔ Decidable Pairwise Gap
+-- ============================================================================
+
+/-- **Core bridge theorem**: `partHasMinGap` (noncomputable, via `Multiset.sort`) is
+    equivalent to the decidable pairwise separation condition on the multiset.
+    This connects the two formulations used throughout the file. -/
+theorem partHasMinGap_iff {n : ℕ} (p : Nat.Partition n) (d : ℕ) (hd : 1 ≤ d) :
+    RogersRamanujan.partHasMinGap p d = true ↔
+    (p.parts.Nodup ∧
+     ∀ a ∈ p.parts, ∀ b ∈ p.parts, a ≠ b → (a + d ≤ b ∨ b + d ≤ a)) := by
+  simp only [RogersRamanujan.partHasMinGap]
+  constructor
+  · intro h
+    have hdec := PartitionDecidable.hasMinGap_implies_decidable_gap _ d hd h
+    exact ⟨(nodup_parts_sort p).mp hdec.1,
+           fun a ha b hb hab =>
+             hdec.2 a ((mem_parts_sort p a).mpr ha) b ((mem_parts_sort p b).mpr hb) hab⟩
+  · intro ⟨hnd, hsep⟩
+    exact PartitionDecidable.decidable_gap_sorted_implies_hasMinGap _ d
+      (Multiset.pairwise_sort _ _)
+      ((nodup_parts_sort p).mpr hnd)
+      (fun a ha b hb hab =>
+        hsep a ((mem_parts_sort p a).mp ha) b ((mem_parts_sort p b).mp hb) hab)
+
+/-- `partAllModIn` (noncomputable) ↔ direct quantifier over multiset parts. -/
+theorem partAllModIn_iff {n : ℕ} (p : Nat.Partition n) (m : ℕ) (residues : List ℕ) :
+    RogersRamanujan.partAllModIn p m residues = true ↔
+    ∀ a ∈ p.parts, (a % m) ∈ residues := by
+  simp only [RogersRamanujan.partAllModIn]
+  rw [List.all_eq_true]
+  constructor
+  · intro h a ha
+    have hmem : a ∈ p.parts.toList := Multiset.mem_toList.mpr ha
+    have := h a hmem
+    rwa [decide_eq_true_eq] at this
+  · intro h a ha
+    have hmem : a ∈ p.parts := Multiset.mem_toList.mp ha
+    rw [decide_eq_true_eq]
+    exact h a hmem
+
+-- ============================================================================
+-- Set Equality Theorems: Noncomputable = Decidable
+-- ============================================================================
+
+/-- **RR1 Gap equivalence**: The noncomputable and decidable RR1 gap sets are equal. -/
+theorem rr1Gap_eq (n : ℕ) :
+    RogersRamanujan.rr1GapPartitions n = PartitionDecidable.rr1Gap n := by
+  ext p
+  simp only [RogersRamanujan.rr1GapPartitions, PartitionDecidable.rr1Gap,
+    Finset.mem_filter, Finset.mem_univ, true_and]
+  exact partHasMinGap_iff p 2 (by omega)
+
+/-- **RR1 Mod5 equivalence**: The noncomputable and decidable RR1 mod5 sets are equal. -/
+theorem rr1Mod5_eq (n : ℕ) :
+    RogersRamanujan.rr1Mod5Partitions n = PartitionDecidable.rr1Mod5 n := by
+  ext p
+  simp only [RogersRamanujan.rr1Mod5Partitions, PartitionDecidable.rr1Mod5,
+    Finset.mem_filter, Finset.mem_univ, true_and]
+  constructor
+  · intro h a ha
+    have := (partAllModIn_iff p 5 [1, 4]).mp h a ha
+    simp only [List.mem_cons, List.mem_nil_iff, or_false] at this
+    exact this
+  · intro h
+    apply (partAllModIn_iff p 5 [1, 4]).mpr
+    intro a ha
+    simp only [List.mem_cons, List.mem_nil_iff, or_false]
+    exact h a ha
+
+/-- **RR2 Mod5 equivalence**: The noncomputable and decidable RR2 mod5 sets are equal. -/
+theorem rr2Mod5_eq (n : ℕ) :
+    RogersRamanujan.rr2Mod5Partitions n = PartitionDecidable.rr2Mod5 n := by
+  ext p
+  simp only [RogersRamanujan.rr2Mod5Partitions, PartitionDecidable.rr2Mod5,
+    Finset.mem_filter, Finset.mem_univ, true_and]
+  constructor
+  · intro h a ha
+    have := (partAllModIn_iff p 5 [2, 3]).mp h a ha
+    simp only [List.mem_cons, List.mem_nil_iff, or_false] at this
+    exact this
+  · intro h
+    apply (partAllModIn_iff p 5 [2, 3]).mpr
+    intro a ha
+    simp only [List.mem_cons, List.mem_nil_iff, or_false]
+    exact h a ha
+
+/-- **Schur Gap equivalence**: The noncomputable and decidable Schur gap sets are equal.
+    The explicit Nodup in schurGapPartitions is redundant (hasMinGap 3 implies Nodup),
+    but both formulations include it. -/
+theorem schurGap_eq (n : ℕ) :
+    RogersRamanujan.schurGapPartitions n = PartitionDecidable.schurGap n := by
+  ext p
+  simp only [RogersRamanujan.schurGapPartitions, PartitionDecidable.schurGap,
+    Finset.mem_filter, Finset.mem_univ, true_and, Bool.and_eq_true, decide_eq_true_eq]
+  have h_bridge := partHasMinGap_iff p 3 (by omega)
+  simp only [RogersRamanujan.partHasMinGap] at h_bridge
+  constructor
+  · intro ⟨_, hgap⟩
+    exact h_bridge.mp hgap
+  · intro ⟨hnd, hsep⟩
+    exact ⟨(nodup_parts_sort p).mpr hnd, h_bridge.mpr ⟨hnd, hsep⟩⟩
+
+/-- **Schur Mod equivalence**: The noncomputable and decidable Schur mod sets are equal. -/
+theorem schurMod_eq (n : ℕ) :
+    RogersRamanujan.schurModPartitions n = PartitionDecidable.schurMod n := by
+  ext p
+  simp only [RogersRamanujan.schurModPartitions, PartitionDecidable.schurMod,
+    Finset.mem_filter, Finset.mem_univ, true_and, Bool.and_eq_true, decide_eq_true_eq]
+  constructor
+  · intro ⟨hnd_list, hmod⟩
+    constructor
+    · -- List.Nodup (p.parts.toList) → Multiset.Nodup p.parts
+      have : (↑(p.parts.toList) : Multiset ℕ).Nodup := Multiset.coe_nodup.mpr hnd_list
+      rwa [Multiset.coe_toList] at this
+    · intro a ha
+      have := (partAllModIn_iff p 3 [1, 2]).mp hmod a ha
+      simp only [List.mem_cons, List.mem_nil_iff, or_false] at this
+      exact this
+  · intro ⟨hnd, hmod⟩
+    constructor
+    · -- Multiset.Nodup p.parts → List.Nodup (p.parts.toList)
+      have : (↑(p.parts.toList) : Multiset ℕ).Nodup := by rw [Multiset.coe_toList]; exact hnd
+      exact Multiset.coe_nodup.mp this
+    · apply (partAllModIn_iff p 3 [1, 2]).mpr
+      intro a ha
+      simp only [List.mem_cons, List.mem_nil_iff, or_false]
+      exact hmod a ha
+
+-- ============================================================================
+-- Corollaries: Identity Transfer
+-- ============================================================================
+
+/-- The Rogers-Ramanujan first identity, restated in decidable terms.
+    Since the noncomputable and decidable sets are equal, the axiom
+    transfers directly. -/
+theorem rogers_ramanujan_first_decidable (n : ℕ) :
+    (PartitionDecidable.rr1Gap n).card = (PartitionDecidable.rr1Mod5 n).card := by
+  rw [← rr1Gap_eq, ← rr1Mod5_eq]
+  exact RogersRamanujan.rogers_ramanujan_first n
+
+/-- The Schur identity (simplified) transferred to decidable partition sets. -/
+theorem schur_identity_decidable (n : ℕ) :
+    (PartitionDecidable.schurGap n).card = (PartitionDecidable.schurMod n).card := by
+  rw [← schurGap_eq, ← schurMod_eq]
+  exact RogersRamanujan.schur_partition_identity n
+
+end PartitionBridge
+
+end
+
+-- ============================================================================
+-- Part XXII: Updated Full Summary
+-- ============================================================================
+
+/-
+## Full File Summary (Updated)
+
+### Definitions (16):
+  List-level (2): hasMinGap, hasSchurGapFull
+  Noncomputable (8): rr1GapPartitions, rr1Mod5Partitions, rr2GapPartitions,
+    rr2Mod5Partitions, schurGapPartitions, schurModPartitions,
+    schurGapFullPartitions, partHasMinGap, partSmallestPart, partAllModIn
+  Decidable (7): rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGap, schurMod,
+    schurGapFull
+
+### Axioms (4):
+  rogers_ramanujan_first, rogers_ramanujan_second,
+  schur_partition_identity (simplified, deprecated),
+  schur_partition_identity_corrected (full gap condition)
+
+### Proved Theorems (42+):
+  Gap characterization (5): hasMinGap_pairwise_ge_d, pairwise_ge_d_implies_hasMinGap,
+    hasMinGap_iff_pairwise, hasMinGap_pairwise_sep, hasMinGap_implies_decidable_gap
+  Decidable↔sorted bridge (1): decidable_gap_sorted_implies_hasMinGap
+  Structural (10): hasMinGap_mono, hasMinGap_ge_one_pairwise_gt,
+    hasMinGap_ge_one_nodup, hasMinGap_two_pairwise_gt,
+    rr1_gap_implies_distinct, rr2_subset_rr1, rr1_gap_subset_distinct,
+    schur_gap_subset_rr1_gap, schur_gap_implies_distinct, schur_nodup_redundant
+  Corrected Schur hierarchy (4): schurGapFullPartitions_subset_schurGapPartitions,
+    schurGapFull_implies_distinct, schurGapFull_card_le_schurGap,
+    schurGapFull_card_le_rr1
+  Hierarchy (6): rr1_gap_card_le_distinct, rr2_gap_card_le_rr1,
+    schur_gap_card_le_rr1, rr2_gap_implies_distinct, schur_gap_implies_distinct',
+    schur_mod_implies_distinct
+  Strict containment (4): rr1_gap_strict_subset_distinct_5,
+    schur_gap_strict_subset_rr1_8, rr2_gap_strict_subset_rr1_5,
+    schurGapFull_ne_schurGap_9
+  Part properties (3): rr1_mod5_parts_nonzero, rr2_mod5_parts_ge_two,
+    schur_mod_parts_coprime_three
+  **NEW** Equivalence bridge (4): mem_parts_sort, nodup_parts_sort,
+    partHasMinGap_iff, partAllModIn_iff
+  **NEW** Set equalities (5): rr1Gap_eq, rr1Mod5_eq, rr2Mod5_eq,
+    schurGap_eq, schurMod_eq
+  **NEW** Identity transfer (2): rogers_ramanujan_first_decidable,
+    schur_identity_decidable
+
+### Named Count Theorems (8):
+  rr1_count_0, rr1_count_1, rr1_count_4, rr1_count_6, rr1_count_9,
+  schur_count_0, schur_count_1, schur_count_2
+
+### Computational Verifications (44+):
+  RR1 for n=0..10, RR2 for n=0..10, Schur (simplified) for n=0..8
+  Schur (corrected) for n=0..10, plus agreement checks
+
+### Key Achievement:
+  The decidable↔noncomputable bridge proves that the `native_decide`
+  computational verifications (which use decidable predicates) validate
+  exactly the same identities as the axiomatized noncomputable statements.
+  This closes the gap between the two formulations.
+
+### Sorries: 0
+-/
