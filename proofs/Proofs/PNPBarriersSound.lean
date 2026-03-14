@@ -37,15 +37,16 @@ This model is sound because:
 - [x] Pedagogical example
 
 ## Axiom Summary (15 axioms, down from 21)
-- 1 structural: Φ_countably_many (Φ_total and Φ_deterministic now theorems)
+- 2 structural: Φ_countably_many, Φ_negate (Φ_total/Φ_deterministic now theorems)
 - 2 oracle: Φ_oracle_access, Φ_no_oracle_access
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
 - 1 natural proofs: razborov_rudich (owf_exists_assumption now theorem)
 - 3 structural properties: P_rel_monotone, NP_rel_monotone, P_rel_subset_NP_rel
-- 3 closure/composition: P_complement_closed, poly_time_compose, reduction_preserves_P
+- 2 closure/composition: poly_time_compose, reduction_preserves_P
 - 1 containment: NP_subset_PSPACE
 - 2 separation/existence: P_ne_EXP, ladner_theorem
-- Now theorems: PSPACE_subset_EXP, PH_subset_PSPACE, algebrizing_oracle_eq/sep
+- Now theorems: P_complement_closed (from Φ_negate), PSPACE_subset_EXP,
+  PH_subset_PSPACE, algebrizing_oracle_eq/sep
 -/
 
 set_option linter.unusedVariables false
@@ -578,18 +579,45 @@ theorem p_vs_np_well_posed :
 -- ============================================================
 
 /-
-### Complement Closure of P
+### Program Negation and Complement Closure
 
-In any reasonable computation model, P is closed under complement:
-if a program solves f in poly time, flipping its output bit solves ¬f
-in the same time. Since Φ is opaque, we axiomatize this.
+In any reasonable computation model, for every program there exists
+a "negated" version that flips the output bit without additional time.
+This is the fundamental axiom; complement closure of P follows.
 -/
 
+/-- **Program negation**: For every program e, there exists a program e'
+    that computes the negation. Running e' with oracle A on input n
+    gives the opposite Boolean result in the same number of steps.
+
+    This captures the most basic program transformation: appending a
+    NOT gate to the output. It holds in all standard models of computation
+    (Turing machines, circuits, RAM machines). -/
+axiom Φ_negate (e : ℕ) :
+    ∃ e' : ℕ, ∀ A : Oracle, ∀ n : ℕ, ∀ r : Bool, ∀ s : ℕ,
+      Φ e A n = some (r, s) → Φ e' A n = some (!r, s)
+
 /-- **Complement closure**: If f ∈ P^A, then (¬f) ∈ P^A.
-    In any computation model, a program solving f can be modified to
-    flip the output bit, giving a program for the complement. -/
-axiom P_complement_closed (A : Oracle) (f : ℕ → Bool) :
-    f ∈ P_rel A → (fun n => !f n) ∈ P_rel A
+    PROVED from Φ_negate: the negated program solves ¬f with the same time bound. -/
+theorem P_complement_closed (A : Oracle) (f : ℕ → Bool) :
+    f ∈ P_rel A → (fun n => !f n) ∈ P_rel A := by
+  intro ⟨e, p, hsolves, htime⟩
+  obtain ⟨e', he'⟩ := Φ_negate e
+  refine ⟨e', p, ?_, ?_⟩
+  · -- e' solves ¬f
+    intro n
+    obtain ⟨s, hs⟩ := hsolves n
+    exact ⟨s, he' A n (f n) s hs⟩
+  · -- e' runs within the same time bound
+    intro n s hs'
+    -- Need to find what e computes on n to get the time bound
+    obtain ⟨s₀, hs₀⟩ := hsolves n
+    have h_neg := he' A n (f n) s₀ hs₀
+    -- e' on n gives some (!f n, s₀), and also some (!f n, s)
+    -- By determinism, s = s₀
+    have := Φ_deterministic e' A n (!f n) s₀ (!f n) s h_neg hs'
+    rw [← this.2]
+    exact htime n s₀ hs₀
 
 /-- coNP^A: problems whose complements are in NP^A. -/
 def coNP_rel (A : Oracle) : Set (ℕ → Bool) :=
