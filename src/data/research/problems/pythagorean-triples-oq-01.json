@@ -33,7 +33,7 @@
     "phase": "DEEP_DIVE",
     "since": "2026-03-12T05:32:38.520Z",
     "iteration": 3,
-    "focus": "API fixes applied, OE=OO bijection proved, file compiles clean",
+    "focus": "Eliminated redundant parity axiom, reduced axiom count from 4 to 3",
     "blockers": [
       "Extending OE=OO from triangle to circle requires boundary analysis",
       "EO component needs separate symmetry argument"
@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 5 key sorries in parity decomposition. Built complete involution infrastructure (coprimality preservation, parity mapping, involutivity). Proved triangle_oe_eq_oo via Finset.card_bij - exact OE↔OO bijection. Proved three-way partition, primitive=EO+OE, and bothOdd filter equivalence. Only 1 sorry remains (parity_fraction_100 computational value).",
+    "progressSummary": "PROGRESS: 42+ theorems, 3 independent axioms, 0 sorries. Eliminated parity_fraction_in_coprime_sector axiom (now proved from bothOdd_fraction_in_coprime_sector via parity_axiom_equivalent). Complete involution infrastructure, OE=OO exact bijection, three-way partition all proved.",
     "builtItems": [
       "bothOddCoprimeCount: counting function for both-odd coprime pairs",
       "coprime_sector_partition: exact partition identity (coprime = primitive + bothOdd)",
@@ -61,7 +61,9 @@
       "triangle_oe_eq_oo: |OE(K)|=|OO(K)| via Finset.card_bij (PythagoreanTriplesOQ01.lean:788)",
       "bothOdd_eq_oo: filter equivalence ¬Odd(m-n) ↔ Odd m ∧ Odd n (PythagoreanTriplesOQ01.lean:625)",
       "primitive_eq_eo_plus_oe: primitive = EO + OE (PythagoreanTriplesOQ01.lean:630)",
-      "coprime_sector_three_way_partition: coprime = EO + OE + OO (PythagoreanTriplesOQ01.lean:618)"
+      "coprime_sector_three_way_partition: coprime = EO + OE + OO (PythagoreanTriplesOQ01.lean:618)",
+      "parity_fraction_in_coprime_sector: CONVERTED axiom→theorem (proved from bothOdd axiom)",
+      "bothOdd_fraction_in_coprime_sector: new cleaner axiom replacing parity_fraction axiom"
     ],
     "insights": [
       "The coprime sector decomposes into exactly 2 parity classes (not 3): primitive (mixed parity) and both-odd. Both-even is impossible for coprime pairs.",
@@ -119,7 +121,7 @@
     ]
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-13T08:30:00.000Z",
+  "lastUpdate": "2026-03-14T04:10:00.000Z",
   "significance": 7,
   "tractability": 6
 }
