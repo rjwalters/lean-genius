@@ -1,5 +1,42 @@
 # Knowledge Base: P vs NP
 
+## Session 2026-03-14 (researcher-1) - QMA, Raz-Tal, ETH/SETH + Merge Cleanup
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 80)
+**Problem**: p-vs-np
+**Prior Status**: Sound model at ~2936 lines (with merge conflicts)
+
+**Work done**:
+
+1. **Merged main** into feature/researcher-1, resolved conflicts in PNPBarriers.lean and pnp-barriers.json
+2. **Cleaned merge duplicates**: Removed duplicate Part 25-30 sections that defined conflicting AM/MA/Sipser-Gacs axioms alongside existing definitions
+3. **Added QMA** (Quantum Merlin-Arthur): 4 axioms (NP⊆QMA, QMA⊆PSPACE, BQP⊆QMA, MA⊆QMA), 2 theorems
+4. **Added Raz-Tal oracle separation**: BQP⊄PH relative to random oracle (2019 landmark result)
+5. **Added ETH/SETH**: Exponential Time Hypothesis formulated using sound Φ model, ETH→P≠NP (1 sorry)
+6. **Added comprehensive_landscape_with_quantum**: Consolidated landscape theorem with all quantum classes
+
+| New Component | Type | Status |
+|---|---|---|
+| `QMA` | opaque def | Defined |
+| `NP_subset_QMA` | axiom | Standard |
+| `QMA_subset_PSPACE` | axiom | Standard |
+| `BQP_subset_QMA` | axiom | Standard |
+| `MA_subset_QMA` | axiom | Standard |
+| `quantum_verification_chain` | theorem | Proved |
+| `QMA_in_landscape` | theorem | Proved |
+| `raz_tal_oracle_separation` | axiom | Raz-Tal 2019 |
+| `BQP_PH_needs_non_relativizing` | theorem | Proved |
+| `ETH_hypothesis` | def | Formulated |
+| `SETH_hypothesis` | def | Formulated |
+| `ETH_implies_P_ne_NP` | theorem | Sorry (needs poly < subexp) |
+| `comprehensive_landscape_with_quantum` | theorem | Proved |
+
+**Sound model totals**: ~50 axioms, ~240 defs/theorems, 1 sorry (ETH), 2740 lines.
+
+**Outcome**: COMPLETED — quantum complexity classes + fine-grained hypotheses added.
+
+---
+
 ## Session 2026-03-14 (researcher-1) - Polynomial Hierarchy, PSPACE, EXP, Ladner
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 45)

@@ -1254,6 +1254,41 @@ theorem sectorOO_column_zero {m N : ℕ} (hm : N < m ^ 2) :
   intro ⟨hn_pos, _, _, _, _, hle⟩
   omega
 
+/-- **Full-column equality**: When m² + (m-1)² ≤ N, the entire column [1, m-1]
+fits in the sector, so sectorOE_column = sectorOO_column follows from the
+per-column involution (column_even_eq_odd_coprimes).
+
+This handles all "small" columns (m ≤ √(N/2) approximately). The total OE-OO
+sector discrepancy comes entirely from "large" columns near √N. -/
+theorem sectorOE_eq_sectorOO_full_column {m N : ℕ}
+    (hm_odd : Odd m) (hm1 : 1 < m) (h_full : m ^ 2 + (m - 1) ^ 2 ≤ N) :
+    sectorOE_column m N = sectorOO_column m N := by
+  -- When the full column fits, sector filters become column filters
+  have h_oe : sectorOE_column m N = (columnEvenCoprimes m).card := by
+    unfold sectorOE_column columnEvenCoprimes
+    congr 1; ext n
+    simp only [Finset.mem_filter, Finset.mem_range]
+    constructor
+    · intro ⟨_, hn_pos, hn_lt, hcop, _, hn_even, _⟩
+      exact ⟨by omega, hn_pos, hcop, hn_even⟩
+    · intro ⟨hn_range, hn_pos, hcop, hn_even⟩
+      refine ⟨by omega, hn_pos, by omega, hcop, hm_odd, hn_even, ?_⟩
+      -- n ≤ m - 1, so n² ≤ (m-1)², hence m² + n² ≤ m² + (m-1)² ≤ N
+      have : n ^ 2 ≤ (m - 1) ^ 2 := Nat.pow_le_pow_left (by omega) 2
+      omega
+  have h_oo : sectorOO_column m N = (columnOddCoprimes m).card := by
+    unfold sectorOO_column columnOddCoprimes
+    congr 1; ext n
+    simp only [Finset.mem_filter, Finset.mem_range]
+    constructor
+    · intro ⟨_, hn_pos, hn_lt, hcop, _, hn_odd, _⟩
+      exact ⟨by omega, hn_pos, hcop, hn_odd⟩
+    · intro ⟨hn_range, hn_pos, hcop, hn_odd⟩
+      refine ⟨by omega, hn_pos, by omega, hcop, hm_odd, hn_odd, ?_⟩
+      have : n ^ 2 ≤ (m - 1) ^ 2 := Nat.pow_le_pow_left (by omega) 2
+      omega
+  rw [h_oe, h_oo, column_even_eq_odd_coprimes hm_odd hm1]
+
 /-
 NOTE: A per-column discrepancy bound of 1 was previously axiomatized here but is
 FALSE. Counterexample: m=21, N=541 gives sectorOE=4 (n∈{2,4,8,10}), sectorOO=2
@@ -1566,10 +1601,14 @@ ENTIRELY due to boundary effects: sectorOE - sectorOO = bdryOO - bdryOE.
   This decomposes the parity axiom into independent geometric and arithmetic pieces.
 
 ### Axiom Status:
-- parity_class_equidistribution is now "morally proved" for 2/3 classes
-  (OE ≈ OO via bijection + boundary bound)
-- EO → 1/3 follows algebraically once OE → 1/3 is established (eo_equidistribution)
-- Only the boundary-to-zero estimate remains to formally close the gap
+The parity axiom (bothOdd_fraction_in_coprime_sector) is now understood as the
+conjunction of two independent facts:
+1. **Geometric**: The involution n↦m-n nearly preserves the circle boundary
+   (boundary discrepancy is sub-linear). This is the content of sectorOE_eq_sectorOO_full_column
+   for small columns, and the boundary analysis for large columns.
+2. **Arithmetic**: Among coprime sector pairs, the EO class has density 1/3.
+   This follows from coprime_eo_iff: coprime(2a,n) ↔ coprime(a,n) for odd n,
+   meaning EO coprime density equals the general coprime density.
 
 ### Sorries: 0
 -/
