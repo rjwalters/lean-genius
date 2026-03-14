@@ -36,16 +36,21 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (15 axioms, down from 21)
+## Axiom Summary (16 axioms, down from 21)
 - 1 structural: Φ_countably_many (Φ_total and Φ_deterministic now theorems)
 - 2 oracle: Φ_oracle_access, Φ_no_oracle_access
+- 1 program transforms: Φ_basic_transforms (input projection + output negation)
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
 - 1 natural proofs: razborov_rudich (owf_exists_assumption now theorem)
-- 3 structural properties: P_rel_monotone, NP_rel_monotone, P_rel_subset_NP_rel
-- 3 closure/composition: P_complement_closed, poly_time_compose, reduction_preserves_P
+- 1 Cook-Levin: cook_levin (SAT is NP-complete)
+- 1 NP closure: NP_downward_closed (NP downward closed under ≤ₚ)
+- 2 structural properties: P_rel_monotone, NP_rel_monotone
+- 2 closure/composition: poly_time_compose, reduction_preserves_P
 - 1 containment: NP_subset_PSPACE
 - 2 separation/existence: P_ne_EXP, ladner_theorem
-- Now theorems: PSPACE_subset_EXP, PH_subset_PSPACE, algebrizing_oracle_eq/sep
+- Now theorems: P_rel_subset_NP_rel (from Φ_basic_transforms.1),
+  P_complement_closed (from Φ_basic_transforms.2),
+  PSPACE_subset_EXP, PH_subset_PSPACE, algebrizing_oracle_eq/sep
 -/
 
 set_option linter.unusedVariables false
@@ -143,6 +148,33 @@ axiom Φ_no_oracle_access :
     ∃ e : ℕ, ∃ n : ℕ,
       ∃ r s, Φ e emptyOracle n = some (r, s) ∧ r = true
 
+/-- **Basic Program Transformations**: Two fundamental properties of any
+    reasonable computation model:
+
+    (1) **Input projection**: A program can be adapted to extract its actual
+        input from a `Nat.pair` encoding, ignoring the second component.
+        This is needed to show P ⊆ NP (a P program ignores the certificate).
+
+    (2) **Output negation**: A program's Boolean output can be flipped.
+        This is needed for complement closure of P.
+
+    Both transformations preserve polynomial time bounds (with a potentially
+    larger polynomial). These are strictly weaker than full program composition
+    and capture only the minimal structure needed for basic complexity class
+    relationships. -/
+axiom Φ_basic_transforms :
+    -- (1) Input projection: run program on first component of Nat.pair
+    (∀ (e : ℕ) (p : Polynomial), ∃ (e' : ℕ) (p' : Polynomial),
+      ∀ (A : Oracle) (n c : ℕ) (r : Bool) (s : ℕ),
+        Φ e A n = some (r, s) → s ≤ p.eval (inputSize n) →
+        ∃ s', Φ e' A (Nat.pair n c) = some (r, s') ∧
+          s' ≤ p'.eval (inputSize n)) ∧
+    -- (2) Output negation: flip the Boolean result
+    (∀ (e : ℕ) (p : Polynomial), ∃ (e' : ℕ) (p' : Polynomial),
+      ∀ (A : Oracle) (n : ℕ) (r : Bool) (s : ℕ),
+        Φ e A n = some (r, s) → s ≤ p.eval (inputSize n) →
+        ∃ s', Φ e' A n = some (!r, s') ∧ s' ≤ p'.eval (inputSize n))
+
 -- ============================================================
 -- PART 3: Relativized Complexity Classes (Sound Definitions)
 -- ============================================================
@@ -193,9 +225,30 @@ def NP_rel (A : Oracle) : Set (ℕ → Bool) :=
 /-- Unrelativized NP = NP^∅. -/
 def NP : Set (ℕ → Bool) := NP_rel emptyOracle
 
-/-- P^A ⊆ NP^A for all oracles A.
-    A P program is a trivial NP verifier (ignore the certificate). -/
-axiom P_rel_subset_NP_rel (A : Oracle) : P_rel A ⊆ NP_rel A
+/-- **P^A ⊆ NP^A for all oracles A.**
+    A P program is a trivial NP verifier (ignore the certificate).
+
+    Proof: Given a P program `e` for `f`, use `Φ_basic_transforms` to get `e'`
+    that on input `⟨n, c⟩` ignores `c` and runs `e` on `n`.
+    - Completeness: use certificate c = 0.
+    - Soundness: the program always returns `f n`, so if `f n = false`, `r = false`. -/
+theorem P_rel_subset_NP_rel (A : Oracle) : P_rel A ⊆ NP_rel A := by
+  intro f ⟨e, p, hsolves, htime⟩
+  -- Get a program that projects away the certificate
+  obtain ⟨e', p', he'⟩ := Φ_basic_transforms.1 e p
+  exact ⟨e', p', -- Completeness
+    fun n hfn => by
+      obtain ⟨s₀, hs₀⟩ := hsolves n
+      obtain ⟨s', hs', hs'_le⟩ := he' A n 0 (f n) s₀ hs₀ (htime n s₀ hs₀)
+      rw [hfn] at hs'
+      exact ⟨0, Nat.zero_le _, s', hs', hs'_le⟩,
+    -- Soundness
+    fun n hfn c _ r s hΦ => by
+      obtain ⟨s₀, hs₀⟩ := hsolves n
+      obtain ⟨s', hs', _⟩ := he' A n c (f n) s₀ hs₀ (htime n s₀ hs₀)
+      have h := hs'.symm.trans hΦ
+      simp only [Option.some.injEq, Prod.mk.injEq] at h
+      rw [← h.1, hfn]⟩
 
 -- ============================================================
 -- PART 4: Relativization Barrier (Baker-Gill-Solovay, 1975)
@@ -587,9 +640,27 @@ in the same time. Since Φ is opaque, we axiomatize this.
 
 /-- **Complement closure**: If f ∈ P^A, then (¬f) ∈ P^A.
     In any computation model, a program solving f can be modified to
-    flip the output bit, giving a program for the complement. -/
-axiom P_complement_closed (A : Oracle) (f : ℕ → Bool) :
-    f ∈ P_rel A → (fun n => !f n) ∈ P_rel A
+    flip the output bit, giving a program for the complement.
+
+    Proof: Use `Φ_basic_transforms` output negation to construct a program
+    that negates the result of the original P program. -/
+theorem P_complement_closed (A : Oracle) (f : ℕ → Bool) :
+    f ∈ P_rel A → (fun n => !f n) ∈ P_rel A := by
+  intro ⟨e, p, hsolves, htime⟩
+  obtain ⟨e', p', he'⟩ := Φ_basic_transforms.2 e p
+  refine ⟨e', p', ?_, ?_⟩
+  · -- Solves: ∀ n, ∃ s, Φ e' A n = some (!(f n), s)
+    intro n
+    obtain ⟨s₀, hs₀⟩ := hsolves n
+    obtain ⟨s', hs', _⟩ := he' A n (f n) s₀ hs₀ (htime n s₀ hs₀)
+    exact ⟨s', hs'⟩
+  · -- Time bound: s ≤ p'.eval (inputSize n)
+    intro n s hΦ
+    obtain ⟨s₀, hs₀⟩ := hsolves n
+    obtain ⟨s', hs', hs'_le⟩ := he' A n (f n) s₀ hs₀ (htime n s₀ hs₀)
+    have h := hs'.symm.trans hΦ
+    simp only [Option.some.injEq, Prod.mk.injEq] at h
+    linarith [h.2]
 
 /-- coNP^A: problems whose complements are in NP^A. -/
 def coNP_rel (A : Oracle) : Set (ℕ → Bool) :=
@@ -1027,7 +1098,165 @@ theorem some_containment_strict :
     _ = EXP := h4
 
 -- ============================================================
--- PART 18: Summary and Verification
+-- PART 18: Cook-Levin Theorem and SAT
+-- ============================================================
+
+/-
+### Cook-Levin Theorem (Cook 1971, Levin 1973)
+
+The Cook-Levin theorem establishes that the Boolean satisfiability problem (SAT)
+is NP-complete. This is the foundational result of NP-completeness theory.
+
+Since we work in an abstract Gödelized model (programs are ℕ, not explicit
+Turing machines), we define SAT abstractly as a canonical NP-complete problem
+and axiomatize the Cook-Levin theorem.
+-/
+
+/-- SAT: the Boolean satisfiability problem, abstracted as a decision problem.
+    In the concrete setting, SAT(φ) = true iff formula φ is satisfiable.
+    We define it opaquely since our model doesn't include Boolean formula syntax. -/
+opaque SAT : ℕ → Bool
+
+/-- **Cook-Levin Theorem (1971/1973)**: SAT is NP-complete.
+
+    This is the foundational result: every NP computation can be encoded as a
+    polynomial-size Boolean formula. The verifier's computation table becomes
+    the formula, with variables for each cell, and clauses enforcing local
+    consistency of the computation. -/
+axiom cook_levin : NPComplete SAT
+
+/-- SAT ∈ NP: immediate from NP-completeness. -/
+theorem SAT_in_NP : SAT ∈ NP := cook_levin.1
+
+/-- SAT is NP-hard: immediate from NP-completeness. -/
+theorem SAT_NPHard : NPHard SAT := cook_levin.2
+
+/-- **P = NP ↔ SAT ∈ P**: The P vs NP question reduces to one problem.
+
+    This is arguably the most important consequence of Cook-Levin:
+    the entire P vs NP question hinges on the tractability of SAT. -/
+theorem P_eq_NP_iff_SAT_in_P : P = NP ↔ SAT ∈ P := by
+  constructor
+  · -- P = NP → SAT ∈ P: SAT ∈ NP = P
+    intro h
+    have hSAT := SAT_in_NP
+    rw [← h] at hSAT
+    exact hSAT
+  · -- SAT ∈ P → P = NP: by Cook-Levin completeness
+    exact NPComplete_in_P_implies_P_eq_NP SAT cook_levin
+
+/-- **P ≠ NP → SAT ∉ P**: Contrapositive of the above. -/
+theorem P_ne_NP_implies_SAT_not_in_P (h : P ≠ NP) : SAT ∉ P :=
+  P_ne_NP_implies_NPC_not_in_P h SAT cook_levin
+
+-- ============================================================
+-- PART 19: NP-Complete Problem Equivalences
+-- ============================================================
+
+/-
+### NP-Complete Equivalences
+
+All NP-complete problems are polynomial-time equivalent to each other.
+This means any single NP-complete problem captures the full difficulty
+of the P vs NP question.
+
+Karp (1972) showed 21 problems are NP-complete by reducing from SAT.
+This section proves that all NPC problems are polynomial-time inter-reducible.
+-/
+
+/-- All NP-complete problems reduce to each other:
+    if A and B are both NP-complete, then A ≤ₚ B and B ≤ₚ A. -/
+theorem NPC_inter_reducible (A_prob B_prob : ℕ → Bool)
+    (hA : NPComplete A_prob) (hB : NPComplete B_prob) :
+    (A_prob ≤ₚ B_prob) ∧ (B_prob ≤ₚ A_prob) :=
+  ⟨hB.2 A_prob hA.1, hA.2 B_prob hB.1⟩
+
+/-- **NPC equivalence class**: P = NP iff any single NPC problem is in P. -/
+theorem P_eq_NP_iff_any_NPC_in_P (L : ℕ → Bool) (h : NPComplete L) :
+    P = NP ↔ L ∈ P := by
+  constructor
+  · intro heq
+    have hNP := h.1
+    rw [← heq] at hNP
+    exact hNP
+  · exact NPComplete_in_P_implies_P_eq_NP L h
+
+/-- If any NPC problem is in P, then ALL NPC problems are in P.
+    This shows that NP-completeness gives an "all-or-nothing" picture. -/
+theorem NPC_all_or_nothing (A_prob B_prob : ℕ → Bool)
+    (hA : NPComplete A_prob) (hB : NPComplete B_prob)
+    (hA_in_P : A_prob ∈ P) : B_prob ∈ P := by
+  have h_eq : P = NP := NPComplete_in_P_implies_P_eq_NP A_prob hA hA_in_P
+  have hNP := hB.1
+  rw [← h_eq] at hNP
+  exact hNP
+
+-- ============================================================
+-- PART 20: Conditional Consequences
+-- ============================================================
+
+/-
+### Conditional Consequences of P = NP
+
+If P = NP, many important consequences follow beyond hierarchy collapse.
+These show just how dramatic a P = NP proof would be.
+-/
+
+/-- If P = NP, then Ladner's NP-intermediate region is empty:
+    every NP problem is either in P or is NP-complete.
+
+    Proof: If P = NP, then NP ⊆ P, so every NP problem is in P,
+    and every NP problem is NPC (since every NP problem reduces to SAT,
+    which is now in P = NP). -/
+theorem P_eq_NP_no_intermediate (h : P = NP) (L : ℕ → Bool) :
+    ¬ NPIntermediate L := by
+  intro ⟨hNP, hnotP, _⟩
+  exact hnotP (h ▸ hNP)
+
+/-- If P ≠ NP, the NP-intermediate region is nonempty (Ladner)
+    and contains problems not poly-equivalent to SAT. -/
+theorem P_ne_NP_rich_structure (h : P ≠ NP) :
+    (∃ L, NPIntermediate L) ∧     -- Intermediate problems exist
+    (∀ L, NPComplete L → L ∉ P) := -- No NPC is in P
+  ⟨ladner_theorem h, fun L hL => P_ne_NP_implies_NPC_not_in_P h L hL⟩
+
+-- ============================================================
+-- PART 21: Downward Closure and NP Structure
+-- ============================================================
+
+/-
+### Downward Closure Under Reductions
+
+NP-hardness is "upward closed" and P is "downward closed" under
+polynomial-time reductions. These are key structural properties.
+-/
+
+/-- P is downward closed: if B ∈ P and A ≤ₚ B, then A ∈ P. -/
+theorem P_downward_closed (A_prob B_prob : ℕ → Bool)
+    (h_reduce : A_prob ≤ₚ B_prob) (h_B_in_P : B_prob ∈ P) :
+    A_prob ∈ P :=
+  reduction_preserves_P A_prob B_prob h_reduce h_B_in_P
+
+/-- NP is downward closed under reductions: if B ∈ NP and A ≤ₚ B,
+    then A ∈ NP.
+
+    Proof: A ≤ₚ B means there's a poly-time f with A(x) = B(f(x)).
+    Given B's verifier V, define A's verifier as V(f(x), c).
+    This is poly-time since f is poly-time and V is poly-time. -/
+axiom NP_downward_closed (A_prob B_prob : ℕ → Bool)
+    (h_reduce : A_prob ≤ₚ B_prob) (h_B_in_NP : B_prob ∈ NP) :
+    A_prob ∈ NP
+
+/-- **Combining upward and downward closure**: Reductions preserve
+    membership in both P and NP, forming a preorder on decision problems. -/
+theorem reduction_preorder :
+    (∀ (L M : ℕ → Bool), PolyTimeReduces L M → M ∈ P → L ∈ P) ∧
+    (∀ (L M : ℕ → Bool), PolyTimeReduces L M → M ∈ NP → L ∈ NP) :=
+  ⟨fun L M h hP => reduction_preserves_P L M h hP,
+   fun L M h hNP => NP_downward_closed L M h hNP⟩
+
+-- ============================================================
+-- PART 22: Summary and Verification
 -- ============================================================
 
 -- Barrier results
@@ -1049,6 +1278,27 @@ theorem some_containment_strict :
 #check P_ne_NP_implies_NPC_not_in_P     -- P ≠ NP → NPC ∩ P = ∅
 #check NPHard_of_reduce           -- NP-hardness transfers via reductions
 #check NPComplete_of_reduce       -- NP-completeness transfers via reductions
+
+-- Cook-Levin theorem
+#check cook_levin                 -- SAT is NP-complete
+#check SAT_in_NP                  -- SAT ∈ NP
+#check SAT_NPHard                 -- SAT is NP-hard
+#check P_eq_NP_iff_SAT_in_P      -- P = NP ↔ SAT ∈ P
+#check P_ne_NP_implies_SAT_not_in_P  -- P ≠ NP → SAT ∉ P
+
+-- NP-complete equivalences
+#check NPC_inter_reducible        -- All NPC problems are inter-reducible
+#check P_eq_NP_iff_any_NPC_in_P   -- P = NP ↔ any NPC in P
+#check NPC_all_or_nothing         -- Any NPC in P → all NPC in P
+
+-- Conditional consequences
+#check P_eq_NP_no_intermediate    -- P = NP → no NP-intermediate problems
+#check P_ne_NP_rich_structure     -- P ≠ NP → intermediate exists ∧ NPC ∉ P
+
+-- Downward closure
+#check P_downward_closed          -- P downward closed under ≤ₚ
+#check NP_downward_closed         -- NP downward closed under ≤ₚ
+#check reduction_preorder         -- Reductions form preorder on P and NP
 
 -- Polynomial Hierarchy
 #check Sigma_zero_eq_P            -- Σ₀ᴾ = P
