@@ -19,18 +19,18 @@
     "phase": "ACT",
     "since": "2025-12-31",
     "iteration": 6,
-    "focus": "Added upward translation (padding arguments) and downward separation",
+    "focus": "Added AM/MA Arthur-Merlin classes. Eliminated BPP_subset_EXP axiom.",
     "activeApproach": "Abstract complexity class definitions with barrier theorems.",
     "blockers": [],
-    "nextAction": "Consider adding Immerman-Szelepcsényi consequences or connecting to Mathlib computability",
+    "nextAction": "GCT connection, oracle PH separations, or Mahaney theorem",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 4,
+      "total": 5,
+      "currentApproach": 5,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2063 lines, 22 axioms, 91 theorems, 0 sorries. Eliminated BPP_subset_EXP axiom (proved from Sipser-Lautemann chain). Total session: 29 new theorems, 4 axiom reductions.",
+    "progressSummary": "PROGRESS: 2137 lines, 24 axioms, 93 theorems, 0 sorries. Added AM/MA Arthur-Merlin classes. Eliminated BPP_subset_EXP axiom. Total: 31 new theorems across 5 iterations, 4 axiom reductions.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",

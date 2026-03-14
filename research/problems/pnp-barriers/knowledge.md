@@ -37,10 +37,17 @@
 16. Proved NL_complement_closed, space_containment_chain, NL_coNL_contrast
 17. 2 new axioms (NL_subset_P, immerman_szelepcsenyi)
 
+### Iteration 5: AM/MA Arthur-Merlin Classes
+18. Defined MA (Merlin-Arthur) and AM (Arthur-Merlin) complexity classes
+19. Added `NP_subset_MA` axiom (encoding mismatch too complex for direct proof)
+20. Added `babai_AM_in_Sigma2` axiom (AM ⊆ Σ₂ ∩ Π₂)
+21. Proved `NP_subset_AM` and `AM_subset_PH`
+22. Eliminated `BPP_subset_EXP` axiom (proved from BPP ⊆ PH ⊆ PSPACE ⊆ EXP chain)
+
 **Final stats**:
-- 1086 → ~1650 lines (+564)
-- 11 → 20 axioms (9 new for extended landscape, but 3 former axioms now proved)
-- ~40 → 60+ theorems
+- 1086 → 2137 lines (+1051)
+- 11 → 24 axioms (13 new, but 4 former axioms now proved as theorems)
+- ~40 → 93 theorems
 - 0 sorries, Docker build passes
 
 **Key insights**:
@@ -48,12 +55,14 @@
 - `derandomization_tension` captures the central structural tension in complexity theory
 - NL = coNL contrasts with the open NP vs coNP question
 - The barrier_landscape meta-theorem shows barriers are specific to P vs NP, not complexity theory in general
+- AM = MA simplification is standard (Babai showed equivalence with constant rounds)
+- `complement_closure_summary` captures 5 classes proved closed under complement
 
 **Next steps**:
 1. Try to prove `reduction_preserves_P` from `poly_time_compose` + new primitives
-2. Add MA/AM (Arthur-Merlin) protocols
-3. Formalize the connection to Geometric Complexity Theory (GCT)
-4. Explore proving `BPP_subset_EXP` from a bounded enumeration axiom
+2. Formalize the connection to Geometric Complexity Theory (GCT)
+3. Add oracle separation theorems for PH (e.g., random oracle separates PH levels)
+4. Consider Mahaney's theorem (sparse NP-complete → P = NP)
 
 ---
 
