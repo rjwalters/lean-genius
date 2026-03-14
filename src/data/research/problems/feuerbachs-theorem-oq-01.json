@@ -29,22 +29,22 @@
   },
   "currentState": {
     "phase": "PROGRESS",
-    "since": "2026-03-13T07:00:00.000Z",
-    "iteration": 2,
-    "focus": "Excircle tangency verification and infrastructure",
+    "since": "2026-03-13T18:00:00.000Z",
+    "iteration": 3,
+    "focus": "Companion file lemmas proved, equilateral sorry fixed",
     "blockers": [
       "Incenter formula uses sqrt side lengths - nested sqrt makes field_simp/ring approach intractable",
       "Need alternative approach: complex coordinates, inversive geometry, or power-of-point"
     ],
-    "nextAction": "Try reformulating incenter without sqrt, or use squared distance identities directly",
+    "nextAction": "Explore squaring approach for general Feuerbach or Mathlib inner-product reformulation",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved Euler OI²=R²-2Rr, Feuerbach NI²=(R/2-r)², and excircle NI_a²=(R/2+r_a)² for 3-4-5 triangle. Cleaned up exploratory code. General proof requires polynomial identity with sqrt constraints - 3 viable approaches documented.",
+    "progressSummary": "PROGRESS: Fixed equilateral_R_eq_2r sorry in main file (0 sorries in equilateral case). Proved all 15 Aristotle companion lemmas (0 sorries). General proof still requires handling sqrt side lengths in incenter formula - fundamental algebraic obstacle analyzed in depth.",
     "builtItems": [
       "T345_feuerbach_excircle_a: d(N,I_a) = 29/4 = R/2 + r_a verified",
       "T345_feuerbach_excircle_b: d(N,I_b) = 17/4 = R/2 + r_b verified",
@@ -53,25 +53,34 @@
       "semiperimeter_pos: Semiperimeter is positive (general)",
       "inradius_pos: Inradius is positive (general)",
       "FeuerbachsTheoremOQ01Aristotle.lean: 15 lemma targets for automated proof search",
-      "T345_euler_OI: Euler OI²=R²-2Rr verified for 3-4-5 triangle",
-      "T345_NI_sq_eq_feuerbach: NI²=(R/2-r)² verified for 3-4-5 triangle (squared Feuerbach)",
-      "T345_NI_a_sq_eq_excircle: NI_a²=(R/2+r_a)² verified for 3-4-5 excircle A"
+      "T345_euler_OI: Euler OI\u00b2=R\u00b2-2Rr verified for 3-4-5 triangle",
+      "T345_NI_sq_eq_feuerbach: NI\u00b2=(R/2-r)\u00b2 verified for 3-4-5 triangle (squared Feuerbach)",
+      "T345_NI_a_sq_eq_excircle: NI_a\u00b2=(R/2+r_a)\u00b2 verified for 3-4-5 excircle A",
+      "equilateral_R_eq_2r: Fixed sorry - circumcenter coords computed inline",
+      "Aristotle companion: circumcenter_equidist_B/C proved via perpendicular bisector",
+      "Aristotle companion: side_a/b/c_pos proved for general triangles",
+      "Aristotle companion: side_a/b/c_sq proved (sqrt elimination)",
+      "Aristotle companion: dist2_comm, dist2_self, dist2_nonneg_gen proved",
+      "Aristotle companion: circumradius_pos, ninePointRadius_pos proved",
+      "Aristotle companion: orthocenter_formula, ninePointCenter_midpoint/coords proved"
     ],
     "insights": [
       "General Feuerbach distance proofs blocked by sqrt in side lengths: incenter coords involve a=sqrt(...), cross terms a*b resist ring tactic",
       "NI = R/2 - r (Feuerbach incircle tangency) follows from Euler identity, but proving either requires eliminating sqrt",
       "Excircle tangency d(N,I_k) = R/2 + r_k verified numerically for 3-4-5 triangle (all 3 cases)",
-      "The equilateral_R_eq_2r proof in main file was broken by Mathlib v4.26 upgrade (dist2_sq unfold change) - independently proved in OQ01",
+      "equilateral_R_eq_2r sorry in main file FIXED (was broken by Mathlib v4.26 upgrade, now proved inline)",
       "Approach for general case: introduce a^2, b^2, c^2 as polynomial constraints and use nlinarith - untested but promising",
-      "Euler formula OI²=R²-2Rr and Feuerbach NI²=(R/2-r)² are polynomial identities when side lengths are rational - verified for 3-4-5",
+      "Euler formula OI\u00b2=R\u00b2-2Rr and Feuerbach NI\u00b2=(R/2-r)\u00b2 are polynomial identities when side lengths are rational - verified for 3-4-5",
       "General case requires handling sqrt side lengths: incenter coords are (a*Ax+b*Bx+c*Cx)/(a+b+c) where a,b,c=sqrt(...)",
-      "Three viable paths to general proof: (1) CAS polynomial certificate with constraints a²=Pa, (2) inversive geometry, (3) Mathlib EuclideanGeometry refactoring"
+      "Three viable paths to general proof: (1) CAS polynomial certificate with constraints a\u00b2=Pa, (2) inversive geometry, (3) Mathlib EuclideanGeometry refactoring",
+      "Squaring approach analysis: (NI\u00b2-R\u00b2/4-r\u00b2)\u00b2=R\u00b2r\u00b2 reduces to polynomial identity but bare a,b terms from incenter formula cannot be eliminated - need ab as auxiliary variable with constraint \u03b3\u00b2=\u03b1\u03b2",
+      "equilateral sorry fix: key was computing circumcenter coords separately (O_x=s/2, O_y=s\u221a3/6) then nlinarith with \u221a3\u00b2=3"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Try proving general Feuerbach via polynomial identity with a^2/b^2/c^2 constraints",
-      "Wait for Aristotle results on companion file lemmas",
-      "Consider Mathlib inner-product approach instead of coordinate geometry"
+      "Explore Mathlib inner-product reformulation to avoid coordinate sqrt issues",
+      "Try introducing auxiliary variable \u03b3=ab with constraint \u03b3\u00b2=a\u00b2b\u00b2 for polynomial identity approach",
+      "Consider inversive geometry proof (Feuerbach original approach)"
     ]
   },
   "approaches": [
@@ -81,9 +90,9 @@
       "notes": "Works for altitude feet and equilateral case, fails for incircle tangency due to sqrt in incenter"
     },
     {
-      "name": "Euler formula OI²=R²-2Rr",
+      "name": "Euler formula OI\u00b2=R\u00b2-2Rr",
       "status": "planned",
-      "notes": "Could prove OI² as polynomial identity, then derive NI from midpoint relation"
+      "notes": "Could prove OI\u00b2 as polynomial identity, then derive NI from midpoint relation"
     }
   ],
   "tags": [
@@ -103,7 +112,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-13T07:00:00.000Z",
+  "lastUpdate": "2026-03-13T18:00:00.000Z",
   "significance": 6,
   "tractability": 5
 }
