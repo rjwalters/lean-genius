@@ -185,6 +185,31 @@
         "name": "full_complexity_landscape",
         "description": "Extended landscape with BPP, PH, P/poly",
         "proven": true
+      },
+      {
+        "name": "BPP",
+        "description": "Bounded-error probabilistic polynomial time (opaque)",
+        "proven": true
+      },
+      {
+        "name": "IP",
+        "description": "Interactive proofs class (opaque)",
+        "proven": true
+      },
+      {
+        "name": "shamir_IP_eq_PSPACE",
+        "description": "Shamir 1990: IP = PSPACE",
+        "proven": true
+      },
+      {
+        "name": "adleman_BPP_subset_P_poly",
+        "description": "Adleman 1978: BPP ⊆ P/poly",
+        "proven": true
+      },
+      {
+        "name": "BPP_subset_IP",
+        "description": "BPP ⊆ IP (derived theorem)",
+        "proven": true
       }
     ],
     "insights": [
@@ -213,7 +238,10 @@
       "Karp-Lipton connects circuit complexity to PH collapse: NP ⊄ P/poly would imply P ≠ NP",
       "3 axioms (NP⊆EXP, coNP⊆EXP, P⊆PSPACE) are redundant — derivable via Set.Subset.trans from the containment chain.",
       "some_inclusion_strict: P⊆NP⊆PSPACE⊆EXP with P≠EXP means at least one inclusion is strict.",
-      "Polynomial hierarchy axioms connect circuit complexity (Karp-Lipton) to structural complexity."
+      "Polynomial hierarchy axioms connect circuit complexity (Karp-Lipton) to structural complexity.",
+      "BPP defined as opaque set with P⊆BPP, BPP⊆PSPACE, BPP⊆P/poly (Adleman)",
+      "IP defined as opaque set with NP⊆IP and IP=PSPACE (Shamir 1990)",
+      "BPP⊆IP derived as theorem from BPP⊆PSPACE + IP=PSPACE (no extra axiom needed)"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",

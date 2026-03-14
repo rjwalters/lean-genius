@@ -201,12 +201,8 @@ def schurModPartitions (n : ℕ) : Finset (Nat.Partition n) :=
   Finset.univ.filter (fun p =>
     p.parts.toList.Nodup && partAllModIn p 3 [1, 2])
 
-/-- **Schur's Partition Identity** (1926)
-    NOTE: This uses the simplified gap condition (uniform ≥ 3) which diverges
-    from the true Schur identity at n = 9. See schur_partition_identity_corrected
-    below for the mathematically correct version. -/
-axiom schur_partition_identity (n : ℕ) :
-    (schurGapPartitions n).card = (schurModPartitions n).card
+-- NOTE: `schur_partition_identity` (simplified, uniform gap ≥ 3) was REMOVED —
+-- mathematically incorrect at n = 9. Use `schur_partition_identity_corrected`.
 
 -- ============================================================================
 -- Part V-B: Corrected Schur Definition (noncomputable)
@@ -380,7 +376,7 @@ theorem schur_nodup_redundant {l : List ℕ} :
 #check schurModPartitions
 #check rogers_ramanujan_first
 #check rogers_ramanujan_second
-#check schur_partition_identity
+#check schur_partition_identity_corrected
 
 /-
 ## Summary
@@ -390,10 +386,9 @@ theorem schur_nodup_redundant {l : List ℕ} :
   - rr2GapPartitions, rr2Mod5Partitions
   - schurGapPartitions, schurModPartitions
 
-### Axioms (3):
+### Axioms (2):
   - rogers_ramanujan_first: RR1 identity for all n
   - rogers_ramanujan_second: RR2 identity for all n
-  - schur_partition_identity: Schur's identity for all n
 
 ### Structural theorems: 9 (0 sorries)
   - hasMinGap_mono: gap monotonicity (d' ≤ d → gap d → gap d')
@@ -877,10 +872,10 @@ theorem decidable_gap_sorted_implies_hasMinGap
   Decidable (7): rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGap, schurMod,
     schurGapFull (corrected Schur with mod-3 strengthened gap)
 
-### Axioms (4):
+### Axioms (3):
   rogers_ramanujan_first, rogers_ramanujan_second,
-  schur_partition_identity (simplified, deprecated),
   schur_partition_identity_corrected (full gap condition)
+  NOTE: schur_partition_identity (simplified) was removed — wrong at n=9.
 
 ### Proved Theorems (32):
   Gap characterization (5): hasMinGap_pairwise_ge_d, pairwise_ge_d_implies_hasMinGap,
@@ -1177,7 +1172,7 @@ theorem rr2Gap_eq_rr2GapPartitions (n : ℕ) :
       subst hn0
       intro a ha
       exact absurd (parts_empty_of_n_zero ▸ ha : a ∈ (0 : Multiset ℕ))
-        (Multiset.not_mem_zero a)
+        (Multiset.notMem_zero a)
     · -- partSmallestPart ≥ 2: all parts ≥ 2
       have hne : p.parts ≠ 0 := by
         intro h
@@ -1254,7 +1249,7 @@ private theorem hasSchurGapFull_pairwise_schur (l : List ℕ) :
         intro c hc
         rcases List.mem_cons.mp hc with rfl | hc'
         · -- c = b (adjacent): direct from hasSchurGapFull
-          split_ifs with hmod <;> split_ifs at hgap with hmod' <;> omega
+          split_ifs with hmod <;> split_ifs at hgap with _ <;> omega
         · -- c ∈ rest' (non-adjacent)
           -- b relates to c from hpw_rest
           have hbc := (List.pairwise_cons.mp hpw_rest).1 c hc'
@@ -1452,10 +1447,10 @@ theorem schur_partition_identity_corrected_decidable (n : ℕ) :
 
 ### All bridges complete.
 
-### Axioms (4):
+### Axioms (3):
   rogers_ramanujan_first, rogers_ramanujan_second,
-  schur_partition_identity (simplified, deprecated - known wrong at n=9),
   schur_partition_identity_corrected (full gap condition)
+  NOTE: schur_partition_identity (simplified) was removed — wrong at n=9.
 
 ### Sorries: 0
 -/

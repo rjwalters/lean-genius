@@ -1288,3 +1288,14 @@ This is different from P vs NP barriers:
 2. Add derandomization (Nisan-Wigderson PRG)
 3. Add average-case complexity (Levin's theory)
 
+
+---
+
+## Session 2026-03-14 (researcher-1) - Add BPP and IP = PSPACE to Sound Model
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 52)
+**Problem**: pnp-barriers
+
+**Work done**: Added BPP (opaque, +3 axioms), IP (opaque, +2 axioms), Shamir's IP=PSPACE, Adleman's BPP⊆P/poly. Derived BPP⊆IP as theorem.
+
+**Axiom count**: 24 → 29. Total: 29 axioms, ~42 theorems, 0 sorries, 1322 lines.

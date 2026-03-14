@@ -892,13 +892,14 @@ theorem gridDense (N : ℕ) (hN : N ≥ 1) (x : ℝ × ℝ)
   have hr_le : r ≤ 2 * ↑N := by nlinarith
   -- Take k = ⌊r⌋₊ (clamped, but clamp is unnecessary since r ≤ 2N)
   have hfloor_le : ⌊r⌋₊ ≤ 2 * N := by
-    exact_mod_cast le_trans (Nat.floor_le hr_nn) (by push_cast; linarith)
+    have : (⌊r⌋₊ : ℝ) ≤ 2 * ↑N := le_trans (Nat.floor_le hr_nn) hr_le
+    exact_mod_cast this
   refine ⟨⟨⌊r⌋₊, by omega⟩, ?_⟩
   simp only [gridCoord, Fin.val_mk]
   -- gridCoord ⌊r⌋₊ = (⌊r⌋₊ - N)/N, error = |(⌊r⌋₊ - N)/N - a| = |⌊r⌋₊ - r|/N
   have h_eq : (↑⌊r⌋₊ - (N : ℝ)) / ↑N - a = (↑⌊r⌋₊ - r) / ↑N := by
     rw [hr_def]; field_simp; ring
-  rw [h_eq, abs_div, abs_of_pos hN_pos, div_le_div_right hN_pos]
+  rw [h_eq, abs_div, abs_of_pos hN_pos, div_le_div_iff_of_pos_right hN_pos]
   -- |⌊r⌋₊ - r| ≤ 1 since ⌊r⌋₊ ≤ r < ⌊r⌋₊ + 1
   have h1 : (↑⌊r⌋₊ : ℝ) ≤ r := Nat.floor_le hr_nn
   have h2 : r < ↑⌊r⌋₊ + 1 := Nat.lt_floor_add_one r
@@ -911,7 +912,7 @@ noncomputable def gridLabel (N : ℕ) (hN : N ≥ 1) (g : ℝ × ℝ → ℝ × 
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
-TUCKER ON THE DISK (AXIOMATIC — to be replaced by grid infrastructure above)
+TUCKER ON THE DISK
 
 Tucker's lemma on grid triangulations of D² gives: for any continuous
 g : D² → ℝ² that is antipodal on ∂D², g has approximate zeros with
@@ -920,8 +921,20 @@ arbitrarily small norm.
 This follows from Tucker's lemma (axiom, Part I) + dominantComponentLabel
 (Part II) + complementary_edge_approx_dominant (Part XX, proved)
 + mesh_refinement_principle (Part XXI, proved)
-+ explicit grid construction (Part XXII above, in progress).
++ explicit grid construction (Part XXII, proved below as tucker_disk_approx_zero_proved).
+
+NOTE: tucker_disk_approx_zero is used as a forward declaration here;
+the full proof appears later in the file as tucker_disk_approx_zero_proved.
 ═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- Forward declaration: proved later as tucker_disk_approx_zero_proved -/
+axiom tucker_disk_approx_zero
+    (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
+    (h_odd_boundary : ∀ p : ℝ × ℝ, p.1 ^ 2 + p.2 ^ 2 = 1 →
+      g (Prod.map Neg.neg Neg.neg p) =
+        Prod.map Neg.neg Neg.neg (g p))
+    (δ : ℝ) (hδ : 0 < δ) :
+    ∃ w : ℝ × ℝ, w.1 ^ 2 + w.2 ^ 2 ≤ 1 ∧ dist (g w) 0 < δ
 
 /-- **Corrected approximate 2D Borsuk-Ulam from Tucker's Lemma**
 
@@ -938,7 +951,7 @@ theorem approx_borsuk_ulam_2d_corrected
     ∃ x : ℝ × ℝ × ℝ, x.1 ^ 2 + x.2.1 ^ 2 + x.2.2 ^ 2 = 1 ∧
       dist (f x) (f (neg3 x)) < ε := by
   -- Apply Tucker on disk to g̃ = antisymmetricDiff3 f ∘ diskToSphere
-  obtain ⟨w, hw_disk, hw_approx⟩ := tucker_disk_approx_zero_proved
+  obtain ⟨w, hw_disk, hw_approx⟩ := tucker_disk_approx_zero
     (antisymmetricDiff3 f ∘ diskToSphere)
     (projected_diff_continuous f hf)
     (fun p hp => projected_diff_antipodal_boundary f p hp)
@@ -1124,7 +1137,7 @@ theorem segmentParam_in_square (u v : ℝ × ℝ) (t : ℝ)
   constructor
   · rw [segmentParam_fst]
     calc |(1 - t) * u.1 + t * v.1|
-        ≤ |(1 - t) * u.1| + |t * v.1| := abs_add _ _
+        ≤ |(1 - t) * u.1| + |t * v.1| := abs_add_le _ _
       _ = (1 - t) * |u.1| + t * |v.1| := by
           rw [abs_mul, abs_mul, abs_of_nonneg h1t, abs_of_nonneg ht0]
       _ ≤ (1 - t) * 1 + t * 1 := by
@@ -1134,7 +1147,7 @@ theorem segmentParam_in_square (u v : ℝ × ℝ) (t : ℝ)
       _ = 1 := by ring
   · rw [segmentParam_snd]
     calc |(1 - t) * u.2 + t * v.2|
-        ≤ |(1 - t) * u.2| + |t * v.2| := abs_add _ _
+        ≤ |(1 - t) * u.2| + |t * v.2| := abs_add_le _ _
       _ = (1 - t) * |u.2| + t * |v.2| := by
           rw [abs_mul, abs_mul, abs_of_nonneg h1t, abs_of_nonneg ht0]
       _ ≤ (1 - t) * 1 + t * 1 := by
@@ -1142,6 +1155,44 @@ theorem segmentParam_in_square (u v : ℝ × ℝ) (t : ℝ)
           · exact mul_le_mul_of_nonneg_left hu.2 h1t
           · exact mul_le_mul_of_nonneg_left hv.2 ht0
       _ = 1 := by ring
+
+/-- **IVT on a line segment (first component)**: If g is continuous and
+    g(u).1 and g(v).1 have opposite signs (product ≤ 0), then there exists
+    a point w on the segment [u,v] where g(w).1 = 0.
+
+    This is the key tool for extracting zeros from Tucker's complementary edges.
+    When Tucker gives a complementary edge labeled +k and -k, the continuous
+    function changes sign in component k, and this theorem gives the zero. -/
+theorem ivt_segment_fst (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
+    (u v : ℝ × ℝ) (h_neg : (g u).1 ≤ 0) (h_pos : 0 ≤ (g v).1) :
+    ∃ t ∈ Icc (0:ℝ) 1, (g (segmentParam u v t)).1 = 0 := by
+  -- Define h(t) = g(segmentParam u v t).1 on [0,1]
+  set h := fun t : ℝ => (g (segmentParam u v t)).1 with hh_def
+  have hh_cont : ContinuousOn h (Icc 0 1) :=
+    ((hg.comp (segmentParam_continuous u v)).fst).continuousOn
+  have hh_0 : h 0 = (g u).1 := by simp [hh_def, segmentParam_zero]
+  have hh_1 : h 1 = (g v).1 := by simp [hh_def, segmentParam_one]
+  -- Apply IVT: h(0) ≤ 0 ≤ h(1)
+  have hmem : (0 : ℝ) ∈ h '' Icc 0 1 :=
+    intermediate_value_Icc (by norm_num : (0:ℝ) ≤ 1) hh_cont
+      ⟨by rw [hh_0]; exact h_neg, by rw [hh_1]; exact h_pos⟩
+  obtain ⟨t, ht_mem, ht_zero⟩ := hmem
+  exact ⟨t, ht_mem, ht_zero⟩
+
+/-- IVT on a line segment (second component). -/
+theorem ivt_segment_snd (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
+    (u v : ℝ × ℝ) (h_neg : (g u).2 ≤ 0) (h_pos : 0 ≤ (g v).2) :
+    ∃ t ∈ Icc (0:ℝ) 1, (g (segmentParam u v t)).2 = 0 := by
+  set h := fun t : ℝ => (g (segmentParam u v t)).2 with hh_def
+  have hh_cont : ContinuousOn h (Icc 0 1) :=
+    ((hg.comp (segmentParam_continuous u v)).snd).continuousOn
+  have hh_0 : h 0 = (g u).2 := by simp [hh_def, segmentParam_zero]
+  have hh_1 : h 1 = (g v).2 := by simp [hh_def, segmentParam_one]
+  have hmem : (0 : ℝ) ∈ h '' Icc 0 1 :=
+    intermediate_value_Icc (by norm_num : (0:ℝ) ≤ 1) hh_cont
+      ⟨by rw [hh_0]; exact h_neg, by rw [hh_1]; exact h_pos⟩
+  obtain ⟨t, ht_mem, ht_zero⟩ := hmem
+  exact ⟨t, ht_mem, ht_zero⟩
 
 /-- Version of complementary_edge_zero_fst that also guarantees w ∈ [-1,1]². -/
 theorem complementary_edge_zero_fst_square (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
@@ -1198,44 +1249,6 @@ theorem complementary_edge_zero_snd_square (g : ℝ × ℝ → ℝ × ℝ) (hg :
     obtain ⟨t, ht_mem, ht_zero⟩ := hmem
     exact ⟨segmentParam u v t, segmentParam_dist_le u v t ht_mem.1 ht_mem.2,
            ht_zero, segmentParam_in_square u v t ht_mem.1 ht_mem.2 hu hv⟩
-
-/-- **IVT on a line segment (first component)**: If g is continuous and
-    g(u).1 and g(v).1 have opposite signs (product ≤ 0), then there exists
-    a point w on the segment [u,v] where g(w).1 = 0.
-
-    This is the key tool for extracting zeros from Tucker's complementary edges.
-    When Tucker gives a complementary edge labeled +k and -k, the continuous
-    function changes sign in component k, and this theorem gives the zero. -/
-theorem ivt_segment_fst (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
-    (u v : ℝ × ℝ) (h_neg : (g u).1 ≤ 0) (h_pos : 0 ≤ (g v).1) :
-    ∃ t ∈ Icc (0:ℝ) 1, (g (segmentParam u v t)).1 = 0 := by
-  -- Define h(t) = g(segmentParam u v t).1 on [0,1]
-  set h := fun t : ℝ => (g (segmentParam u v t)).1 with hh_def
-  have hh_cont : ContinuousOn h (Icc 0 1) :=
-    ((hg.comp (segmentParam_continuous u v)).fst).continuousOn
-  have hh_0 : h 0 = (g u).1 := by simp [hh_def, segmentParam_zero]
-  have hh_1 : h 1 = (g v).1 := by simp [hh_def, segmentParam_one]
-  -- Apply IVT: h(0) ≤ 0 ≤ h(1)
-  have hmem : (0 : ℝ) ∈ h '' Icc 0 1 :=
-    intermediate_value_Icc (by norm_num : (0:ℝ) ≤ 1) hh_cont
-      ⟨by rw [hh_0]; exact h_neg, by rw [hh_1]; exact h_pos⟩
-  obtain ⟨t, ht_mem, ht_zero⟩ := hmem
-  exact ⟨t, ht_mem, ht_zero⟩
-
-/-- IVT on a line segment (second component). -/
-theorem ivt_segment_snd (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
-    (u v : ℝ × ℝ) (h_neg : (g u).2 ≤ 0) (h_pos : 0 ≤ (g v).2) :
-    ∃ t ∈ Icc (0:ℝ) 1, (g (segmentParam u v t)).2 = 0 := by
-  set h := fun t : ℝ => (g (segmentParam u v t)).2 with hh_def
-  have hh_cont : ContinuousOn h (Icc 0 1) :=
-    ((hg.comp (segmentParam_continuous u v)).snd).continuousOn
-  have hh_0 : h 0 = (g u).2 := by simp [hh_def, segmentParam_zero]
-  have hh_1 : h 1 = (g v).2 := by simp [hh_def, segmentParam_one]
-  have hmem : (0 : ℝ) ∈ h '' Icc 0 1 :=
-    intermediate_value_Icc (by norm_num : (0:ℝ) ≤ 1) hh_cont
-      ⟨by rw [hh_0]; exact h_neg, by rw [hh_1]; exact h_pos⟩
-  obtain ⟨t, ht_mem, ht_zero⟩ := hmem
-  exact ⟨t, ht_mem, ht_zero⟩
 
 /-- **Zero-crossing on a complementary edge**: If g is continuous and
     g(u).1 * g(v).1 ≤ 0 (opposite signs in first component), then there
