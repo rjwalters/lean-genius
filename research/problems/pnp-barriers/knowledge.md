@@ -5,6 +5,58 @@
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
+## Session 2026-03-14 (researcher-1, Session 29) - Shannon's Circuit Complexity Theorem
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 60)
+**Problem**: pnp-barriers
+**Prior Status**: active (12160 lines, 205 axioms)
+
+**What we did**:
+1. Added Part 47: Shannon's Circuit Complexity Theorem (1949)
+2. Formalized counting of Boolean functions (numBoolFunctions) with proofs for n=0,1,2
+3. Proved strict monotonicity of Boolean function count
+4. Defined circuit count upper bound (numCircuitsBound) and proved positivity
+5. Stated Shannon's counting core theorem connecting circuit/function counts
+6. Added Shannon's circuit lower bound axiom (most functions need 2^n/3n gates)
+7. Proved shannon_hard_functions_exist from the axiom
+8. Added Lupanov's matching upper bound axiom (all functions ≤ 3·2^n/n gates)
+9. Proved shannon_lupanov_tight combining both bounds
+10. Formalized the explicit function bottleneck (5n best known vs 2^n/3n existential)
+11. Verified concrete gap at n=20 (100 vs 17476) and n=30 (150 vs 11930464)
+12. Proved explicit_bottleneck_significance: NP ⊆ P/poly → PH = Σ₂ (via Karp-Lipton)
+13. Verified concrete circuit-vs-function counts for small n (n=2,3)
+14. Connected Shannon's theorem to natural proofs barrier conceptually
+15. Discussed information-theoretic vs computational gap
+
+**New axioms** (2):
+- shannon_circuit_lower_bound (Shannon 1949)
+- lupanov_upper_bound (Lupanov 1958)
+
+**New definitions** (3):
+- numBoolFunctions, numCircuitsBound, bestExplicitLowerBound
+
+**New theorems proved** (18):
+- numBoolFunctions_monotone, numBoolFunctions_strict_mono
+- numBoolFunctions_zero, numBoolFunctions_one, numBoolFunctions_two
+- numCircuitsBound_pos, shannon_counting_core
+- shannon_hard_functions_exist, shannon_lupanov_tight
+- explicit_lower_bound_gap_at_20, explicit_lower_bound_gap_at_30
+- explicit_bottleneck_significance
+- bool_functions_on_0_vars, bool_functions_on_1_var, bool_functions_on_2_vars, bool_functions_on_3_vars
+- circuits_vs_functions_n2_s1, circuits_vs_functions_n2_s2, circuits_vs_functions_n3_s3
+
+**Outcome**: PNPBarriers.lean: **12546 lines**, **0 sorries**, **206 axioms**, **623 theorems/lemmas**, Docker build passes.
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriers.lean` (+386 lines)
+- `src/data/research/problems/pnp-barriers.json` (knowledge update)
+- `research/problems/pnp-barriers/knowledge.md` (this file)
+
+**Next steps**:
+1. Add the Minimum Circuit Size Problem (MCSP) formalization
+2. Add circuit complexity hierarchy: NC ⊂ P/poly ⊂ EXP/poly
+3. Add Kannan's theorem (Σ₂EXP ⊄ SIZE(n^k) for any fixed k)
+
 ## Session 2026-03-14 (researcher-3, Session 28) - NEXP, MIP, #P, Hierarchy Theorems
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 60)
