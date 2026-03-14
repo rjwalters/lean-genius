@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Shannon circuit complexity theorem (Part 47), Mahaney theorem, upward translation. File: 12546+ lines, 206+ axioms, 623+ theorems/lemmas, 0 sorries.",
+    "progressSummary": "PROGRESS: Added Kannan's theorem and circuit size classes (Part 48): SIZE class definitions, circuit size hierarchy, Sigma2EXP, MA_EXP, Buhrman-Fortnow-Thierauf. File: 12800 lines, 214 axioms, 426 theorems/lemmas, 0 sorries.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -226,7 +226,12 @@
       "EXPSPACE/coNEXP definitions",
       "upward_translation_P_NP/P_PSPACE/NP_coNP",
       "downward_separation theorems (3)",
-      "NEXP_ne_coNEXP_implies_P_ne_NP"
+      "NEXP_ne_coNEXP_implies_P_ne_NP",
+      {
+        "name": "Part 48: Kannan's Theorem and Circuit Size Classes",
+        "description": "SIZE class, Sigma2EXP, MA_EXP, Kannan's theorem, Buhrman-Fortnow-Thierauf, 8 new theorems proved",
+        "proven": true
+      }
     ],
     "insights": [
       "P_subset_NP_relative",
@@ -267,7 +272,9 @@
       "Mahaney theorem formalized in Sound model: P≠NP → no sparse NP-complete language",
       "Upward translation axioms added: P=NP→EXP=NEXP, P=PSPACE→EXP=EXPSPACE, NP=coNP→NEXP=coNEXP",
       "EXPSPACE and coNEXP definitions added to Sound model",
-      "Downward separation chain: NEXP≠coNEXP → NP≠coNP → P≠NP"
+      "Downward separation chain: NEXP≠coNEXP → NP≠coNP → P≠NP",
+      "Kannan's theorem: Σ₂EXP ⊄ SIZE(n^k) for any fixed k - strongest unconditional circuit lower bound",
+      "Buhrman-Fortnow-Thierauf: MA_EXP ⊄ P/poly - unconditional non-uniform lower bound"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
@@ -328,7 +335,7 @@
     "mathlib": []
   },
   "started": "2025-12-31T00:00:00-08:00",
-  "lastUpdate": "2026-03-14T19:45:00.000Z",
+  "lastUpdate": "2026-03-14T22:00:00.000Z",
   "significance": 8,
   "tractability": 4
 }
