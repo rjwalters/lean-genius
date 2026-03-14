@@ -138,7 +138,57 @@ theorem maximal_real_subfield_degree (hn : 3 ≤ n) :
   omega
 
 -- ============================================================================
--- § 4. Remaining Axioms (to be proved in future sessions)
+-- § 4. Abstract Zeta and Embedding into ℂ
+-- ============================================================================
+
+/-- A primitive n-th root of unity in CyclotomicField n ℚ. -/
+noncomputable def abstractZeta :
+    CyclotomicField n ℚ :=
+  (IsCyclotomicExtension.exists_isPrimitiveRoot ℚ
+    (B := CyclotomicField n ℚ) (Set.mem_singleton n) (NeZero.ne n)).choose
+
+theorem abstractZeta_isPrimRoot :
+    IsPrimitiveRoot (abstractZeta n) n :=
+  (IsCyclotomicExtension.exists_isPrimitiveRoot ℚ
+    (B := CyclotomicField n ℚ) (Set.mem_singleton n) (NeZero.ne n)).choose_spec
+
+/-- α = ζ + ζ⁻¹ in the abstract cyclotomic field. Under any embedding into ℂ,
+    this maps to 2cos(2kπ/n) for some k coprime to n. -/
+noncomputable def alpha : CyclotomicField n ℚ :=
+  abstractZeta n + (abstractZeta n)⁻¹
+
+/-- ζ satisfies X² - αX + 1 = 0: the quadratic relating ζ to α = ζ + ζ⁻¹. -/
+theorem zeta_quadratic_over_alpha (hn_pos : 0 < n) :
+    let ζ := abstractZeta n
+    let α := alpha n
+    ζ ^ 2 - α * ζ + 1 = 0 := by
+  simp only [alpha]
+  set ζ := abstractZeta n
+  have hζ : ζ ≠ 0 := (abstractZeta_isPrimRoot n).ne_zero (by omega)
+  field_simp
+  ring
+
+/-- An embedding CyclotomicField n ℚ →ₐ[ℚ] ℂ exists (since ℂ is algebraically closed
+    and contains ℚ). Under this embedding, ζ maps to a primitive n-th root in ℂ. -/
+noncomputable def cyclotomicEmbedding :
+    CyclotomicField n ℚ →ₐ[ℚ] ℂ :=
+  IsAlgClosed.lift (R := ℚ) (S := CyclotomicField n ℚ)
+
+/-- Under the embedding, ζ maps to a primitive n-th root of unity in ℂ. -/
+theorem embedding_zeta_isPrimRoot :
+    IsPrimitiveRoot (cyclotomicEmbedding n (abstractZeta n)) n :=
+  (abstractZeta_isPrimRoot n).map_of_injective (cyclotomicEmbedding n).injective
+
+/-- Under the embedding, α = ζ + ζ⁻¹ maps to w + w⁻¹ where w is a primitive root in ℂ.
+    Since w = exp(2πik/n) for some k coprime to n, this equals 2cos(2kπ/n). -/
+theorem embedding_alpha :
+    cyclotomicEmbedding n (alpha n) =
+    cyclotomicEmbedding n (abstractZeta n) +
+    (cyclotomicEmbedding n (abstractZeta n))⁻¹ := by
+  simp [alpha, map_add, map_inv₀]
+
+-- ============================================================================
+-- § 5. Remaining Axioms (to be proved in future sessions)
 -- ============================================================================
 
 /-- cos(2π/n) satisfies a monic polynomial over ℚ of degree φ(n)/2. -/

@@ -1354,9 +1354,7 @@ theorem nonTrivialZero_has_nonzero_im (s : ℂ) (hs : isNonTrivialZero s) :
   intro him
   -- If Im(s) = 0, then s is real
   have h_real : s = (s.re : ℂ) := by
-    ext
-    · simp
-    · simp [him]
+    apply Complex.ext <;> simp [him]
   -- s is in the critical strip
   obtain ⟨hz, hpos, hlt⟩ := hs
   -- Apply no_real_zeros_in_strip
@@ -1371,7 +1369,8 @@ theorem nonTrivialZero_ne_conj (s : ℂ) (hs : isNonTrivialZero s) :
   have him := nonTrivialZero_has_nonzero_im s hs
   have : s.im = (starRingEnd ℂ s).im := congr_arg Complex.im heq
   rw [Complex.conj_im] at this
-  linarith [him]
+  have : s.im = 0 := by linarith
+  exact him this
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XVI: THE HEIGHT PAIRING AND WEIL EXPLICIT FORMULA
@@ -1407,17 +1406,24 @@ This approach has inspired:
 - Bombieri, E. (2000). "The Riemann Hypothesis" (Clay Mathematics Institute)
 -/
 
-/-- **Weil's Explicit Formula Positivity Criterion** (axiom)
+/-- Weil's positivity criterion as an abstract proposition.
 
 RH is equivalent to a positivity condition: for every suitable test function,
 the sum over non-trivial zeros of its Mellin transform is non-negative.
 
-This is stated abstractly because formalizing the Mellin transform and the
-class of admissible test functions requires significant analytic infrastructure. -/
-axiom RH_iff_WeilPositivity : RiemannHypothesis ↔
-    ∀ (f : ℝ → ℝ), (∀ x, 0 < x → f x = f (1/x)) →
-    -- For all symmetric test functions, the "explicit formula sum" is non-negative
-    True  -- Placeholder for the full positivity condition
+The full statement requires: for every smooth compactly supported test function
+f on (0,∞) satisfying f(x) = f(1/x), the sum Σ_ρ f̂(ρ) ≥ 0 where ρ ranges
+over non-trivial zeros and f̂ is the Mellin transform.
+
+This is left abstract (axiom) because formalizing the Mellin transform,
+Schwartz space, and the explicit formula sum requires significant analytic
+infrastructure not yet in Mathlib. A `True` placeholder would make the
+biconditional unsound (asserting RH holds). -/
+axiom WeilPositivity : Prop
+
+/-- RH is equivalent to Weil's positivity criterion.
+This is a deep result requiring analytic machinery not yet in Mathlib. -/
+axiom RH_iff_WeilPositivity : RiemannHypothesis ↔ WeilPositivity
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XVII: SUMMARY AND SIGNIFICANCE
@@ -1501,35 +1507,39 @@ section ExplicitValues
     From the general formula: ζ(-k) = (-1)^k · B_{k+1}/(k+1).
     For k=1: ζ(-1) = (-1)¹ · B₂/2 = -1 · (1/6)/2 = -1/12. -/
 theorem zeta_neg_one : riemannZeta (-1) = -1 / 12 := by
-  have h := zeta_neg_nat 1
-  simp at h
+  have h := riemannZeta_neg_nat_eq_bernoulli 1
+  simp only [Nat.cast_one, pow_one, one_add_one_eq_two] at h
   convert h using 1
-  simp [bernoulli]
+  have hb2 : bernoulli 2 = 1/6 := by
+    rw [bernoulli_eq_bernoulli'_of_ne_one (by decide : (2 : ℕ) ≠ 1)]
+    exact bernoulli'_two
+  simp only [hb2]; ring
 
 /-- **ζ(-2) = 0** (first trivial zero).
     From the general formula: ζ(-2) = (-1)² · B₃/3 = B₃/3 = 0/3 = 0.
     B₃ = 0 because all odd Bernoulli numbers B_{2k+1} = 0 for k ≥ 1. -/
 theorem zeta_neg_two : riemannZeta (-2) = 0 := by
-  have h := zeta_neg_nat 2
+  have h := riemannZeta_neg_two_mul_nat_add_one 0
   simp at h
-  convert h using 1
-  simp [bernoulli]
+  exact h
 
 /-- **ζ(-3) = 1/120** (value at second negative odd integer).
     From ζ(-3) = (-1)³ · B₄/4 = -(−1/30)/4 = 1/120. -/
 theorem zeta_neg_three : riemannZeta (-3) = 1 / 120 := by
-  have h := zeta_neg_nat 3
-  simp at h
+  have h := riemannZeta_neg_nat_eq_bernoulli 3
+  simp only [Nat.cast_ofNat] at h
   convert h using 1
-  simp [bernoulli]
+  have hb4 : bernoulli 4 = -1/30 := by
+    rw [bernoulli_eq_bernoulli'_of_ne_one (by decide : (4 : ℕ) ≠ 1)]
+    exact bernoulli'_four
+  simp only [hb4]; ring
 
 /-- **ζ(-4) = 0** (second trivial zero).
     B₅ = 0 ⟹ ζ(-4) = 0. -/
 theorem zeta_neg_four : riemannZeta (-4) = 0 := by
-  have h := zeta_neg_nat 4
-  simp at h
-  convert h using 1
-  simp [bernoulli]
+  have h := riemannZeta_neg_two_mul_nat_add_one 1
+  simp only [Nat.cast_one] at h
+  convert h using 2; ring
 
 /-- The trivial zeros of ζ(s) are at s = -2, -4, -6, ...
     These arise from the zeros of sin(πs/2) in the functional equation.
@@ -1552,15 +1562,9 @@ theorem zeta_zero_ne_zero : riemannZeta 0 ≠ 0 := by
     We prove a weaker statement: ζ(2) ≠ 0. -/
 theorem zeta_two_ne_zero : riemannZeta 2 ≠ 0 := by
   rw [zeta_two]
-  intro h
-  have : (Real.pi : ℂ) ^ 2 / 6 = 0 := h
   have hpi : (Real.pi : ℂ) ≠ 0 := by
-    simp [Complex.ofReal_ne_zero]
-    exact Real.pi_ne_zero
-  have : (Real.pi : ℂ) ^ 2 = 0 := by
-    field_simp at this
-    exact this
-  exact pow_ne_zero 2 hpi this
+    exact_mod_cast Real.pi_ne_zero
+  exact div_ne_zero (pow_ne_zero 2 hpi) (by norm_num)
 
 end ExplicitValues
 
@@ -1608,8 +1612,9 @@ theorem critical_line_bisects :
     This is automatic since Re(1-ρ) = 1 - Re(ρ). -/
 theorem symmetric_distance_from_critical_line (s : ℂ) :
     |s.re - 1/2| = |(1 - s).re - 1/2| := by
-  simp [Complex.sub_re, Complex.one_re, Complex.ofReal_re, abs_sub_comm]
-  ring_nf
+  simp only [Complex.sub_re, Complex.one_re]
+  rw [show 1 - s.re - 1 / 2 = -(s.re - 1 / 2) from by ring]
+  rw [abs_neg]
 
 end FunctionalEquationConsequences
 

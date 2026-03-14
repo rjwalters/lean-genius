@@ -842,12 +842,22 @@ normalized Newton. The base case (m = k) is FULLY PROVED using:
 - IH at k-1 provides the bound (k-1)·ekm1² ≥ 2k·ek·ekm2
 - Explicit computation of C(k+1,k+1)=1, C(k+1,k)=k+1, C(k+1,k-1)=k(k+1)/2
 
-The inductive step (k+1 ≤ m) requires expanding with Pascal's rule
-C(m+1,j) = C(m,j) + C(m,j-1), which yields a quadratic in t with coefficients
-involving products of 4 binomial coefficient variables and 4 elemSymm variables.
-The constant and quadratic coefficients are ≥ 0 by IH, and the discriminant
-is ≤ 0 by Cauchy-Schwarz on the IHs, but the algebraic verification is beyond
+The k=1 case is also PROVED via Cauchy-Schwarz (maclaurin_sq_m1_ge_m2_general).
+
+The inductive step (k+1 ≤ m, k ≥ 2) requires expanding with Pascal's rule
+C(m+1,j) = C(m,j) + C(m,j-1), which yields a quadratic f(t) = αt² + βt + γ.
+The constant γ and quadratic α terms involve the IH at k and k-1 respectively
+(for m variables with m+1-variable binomial coefficients — a "mixed" expression).
+The linear coefficient β can be negative, requiring a discriminant argument (4αγ ≥ β²).
+
+**Key obstacle**: The mixing of m-variable elemSymm values with (m+1)-variable binomial
+coefficients prevents a clean decomposition. The algebraic verification is beyond
 what nlinarith can handle with 9+ variables.
+
+**Possible approaches**:
+1. Direct algebra: expand via Pascal, collect the quadratic in t, prove discriminant ≤ 0
+2. Real-rootedness: ∏(1+xᵢt) has real roots → normalized Newton (needs infrastructure)
+3. Coupling/injection: map (k-1,k+1)-pairs to k-pairs (needs Finset combinatorics)
 
 ### Architecture for future completion:
 When `newton_log_concavity_proved` is proved, the `newton_log_concavity` AXIOM

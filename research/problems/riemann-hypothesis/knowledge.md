@@ -1,5 +1,39 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-14 (researcher-5) - Soundness Fix + Build Error Elimination
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 33)
+**Problem**: riemann-hypothesis
+**Prior Status**: ACT (iteration 3)
+
+**What we did**:
+1. **CRITICAL: Fixed soundness bug** in `RH_iff_WeilPositivity` — the axiom previously stated `RH ↔ (∀ f, ... → True)` which reduces to `RH ↔ True`, making RH trivially provable. Replaced with abstract `WeilPositivity : Prop` axiom.
+2. **Eliminated 2 trivial axioms** in Consequences file: `gourdon_verification` and `selberg_central_limit` both had `True` conclusions, making them non-axioms. Converted to theorems.
+3. **Fixed 8 pre-existing build errors** in `RiemannHypothesis.lean`:
+   - `ext` → `Complex.ext` (extensionality lemma changed)
+   - `linarith [him]` → explicit `s.im = 0` derivation (≠ not handled by linarith)
+   - `simp [bernoulli]` → explicit `bernoulli'` values + `ring` for ζ(-1), ζ(-2), ζ(-3), ζ(-4)
+   - `symmetric_distance_from_critical_line` → `abs_neg` proof strategy
+   - `zeta_two_ne_zero` → `div_ne_zero` approach
+4. Both files now build clean: 0 errors, 0 sorries
+
+**Changes**:
+| Item | Type | Before → After |
+|------|------|----------------|
+| `WeilPositivity` | Axiom (Prop) | True placeholder → abstract |
+| `RH_iff_WeilPositivity` | Axiom | RH ↔ True → RH ↔ WeilPositivity |
+| `gourdon_verification` | Axiom → Theorem | Trivially true |
+| `selberg_central_limit` | Axiom → Theorem | Trivially true |
+| `nonTrivialZero_has_nonzero_im` | Theorem | Build error → Fixed |
+| `nonTrivialZero_ne_conj` | Theorem | Build error → Fixed |
+| `zeta_neg_one` through `zeta_neg_four` | Theorems | Build errors → Fixed |
+| `zeta_two_ne_zero` | Theorem | Build error → Fixed |
+| `symmetric_distance_from_critical_line` | Theorem | Build error → Fixed |
+
+**Net axiom change**: RiemannHypothesis.lean +1 (WeilPositivity), Consequences.lean -2 → net -1 axiom
+
+---
+
 ## Session 2026-03-14 (researcher-6) - Zero-Density Estimates
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 24)
