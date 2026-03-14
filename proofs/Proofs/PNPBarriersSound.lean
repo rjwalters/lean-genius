@@ -1083,7 +1083,72 @@ theorem some_containment_strict :
     _ = EXP := h4
 
 -- ============================================================
--- PART 18: BPP (Bounded-Error Probabilistic Polynomial Time)
+-- PART 18: Space Complexity (L, NL, Immerman-Szelepcsényi)
+-- ============================================================
+
+/-
+### Space Complexity Classes
+
+L (LOGSPACE), NL (NLOGSPACE), and the Immerman-Szelepcsényi theorem.
+Since our Φ model tracks time but not space, these are defined abstractly.
+
+Key result: NL = coNL (nondeterministic logspace is closed under complement),
+contrasting with the open question NP = coNP?.
+-/
+
+/-- L (LOGSPACE): problems solvable in O(log n) space. -/
+def L : Set (ℕ → Bool) :=
+  { f | ∃ (e : ℕ), Solves e emptyOracle f }
+
+/-- NL (NLOGSPACE): problems solvable nondeterministically in O(log n) space. -/
+def NL : Set (ℕ → Bool) :=
+  { f | ∃ (e : ℕ), Solves e emptyOracle f }
+
+/-- coNL: complements of NL problems. -/
+def coNL : Set (ℕ → Bool) :=
+  { f | (fun n => !f n) ∈ NL }
+
+/-- L ⊆ NL. -/
+theorem L_subset_NL : L ⊆ NL := by
+  intro f ⟨e, h⟩; exact ⟨e, h⟩
+
+/-- NL ⊆ P (from Savitch + simulation). -/
+axiom NL_subset_P : NL ⊆ P
+
+/-- L ⊆ P (transitivity). -/
+theorem L_subset_P : L ⊆ P :=
+  Set.Subset.trans L_subset_NL NL_subset_P
+
+/-- **Immerman-Szelepcsényi Theorem** (1988): NL = coNL.
+
+    Nondeterministic logspace is closed under complement.
+    Proved by "inductive counting" of reachable configurations.
+    Contrasts with the open NP vs coNP question. -/
+axiom immerman_szelepcsenyi : NL = coNL
+
+/-- NL is closed under complement (from Immerman-Szelepcsényi). -/
+theorem NL_complement_closed (f : ℕ → Bool) :
+    f ∈ NL → (fun n => !f n) ∈ NL := by
+  intro hf
+  have hcoNL : (fun n => !f n) ∈ coNL := by
+    show (fun n => !(!(f n))) ∈ NL
+    convert hf using 1; ext n; simp
+  rw [immerman_szelepcsenyi] at hcoNL
+  exact hcoNL
+
+/-- Space hierarchy: L ⊆ NL ⊆ P ⊆ NP ⊆ PSPACE ⊆ EXP. -/
+theorem space_containment_chain :
+    L ⊆ NL ∧ NL ⊆ P ∧ P ⊆ NP ∧ NP ⊆ PSPACE ∧ PSPACE ⊆ EXP :=
+  ⟨L_subset_NL, NL_subset_P, P_subset_NP, NP_subset_PH.trans PH_subset_PSPACE,
+   PSPACE_subset_EXP⟩
+
+/-- NL = coNL contrasts with NP vs coNP. -/
+theorem NL_coNL_contrast :
+    NL = coNL ∧ (NP ≠ coNP → P ≠ NP) :=
+  ⟨immerman_szelepcsenyi, NP_ne_coNP_implies_P_ne_NP⟩
+
+-- ============================================================
+-- PART 19: BPP (Bounded-Error Probabilistic Polynomial Time)
 -- ============================================================
 
 /-
@@ -1195,7 +1260,7 @@ theorem BPP_subset_PH : BPP ⊆ PH := by
   exact Set.mem_iUnion.mpr ⟨2, h.1⟩
 
 -- ============================================================
--- PART 19: #P and Toda's Theorem
+-- PART 20: #P and Toda's Theorem
 -- ============================================================
 
 /-
@@ -1265,7 +1330,7 @@ theorem toda_consequence (h : PH ≠ P) : P ≠ P_with_SharpP := by
   · exact P_subset_PH
 
 -- ============================================================
--- PART 20: Derandomization and Circuit Lower Bounds
+-- PART 21: Derandomization and Circuit Lower Bounds
 -- ============================================================
 
 /-
@@ -1357,7 +1422,7 @@ theorem derandomization_tension
   · exact natural_proofs_barrier np hardFunction
 
 -- ============================================================
--- PART 21: Interactive Proofs and IP = PSPACE
+-- PART 22: Interactive Proofs and IP = PSPACE
 -- ============================================================
 
 /-
@@ -1455,7 +1520,7 @@ theorem extended_complexity_chain :
          P_subset_BPP, BPP_subset_PH, P_ne_EXP⟩
 
 -- ============================================================
--- PART 22: The Barrier Landscape — Connecting Everything
+-- PART 23: The Barrier Landscape — Connecting Everything
 -- ============================================================
 
 /-
@@ -1504,7 +1569,7 @@ theorem barrier_landscape :
          P_strict_subset_EXP⟩
 
 -- ============================================================
--- PART 23: Summary and Verification
+-- PART 24: Summary and Verification
 -- ============================================================
 
 -- Barrier results
@@ -1558,6 +1623,14 @@ theorem barrier_landscape :
 #check shamir_IP_eq_PSPACE        -- IP = PSPACE
 #check NP_subset_IP               -- NP ⊆ IP
 #check extended_complexity_chain  -- Full chain with all classes
+
+-- Space complexity
+#check L_subset_NL                -- L ⊆ NL
+#check NL_subset_P                -- NL ⊆ P
+#check immerman_szelepcsenyi      -- NL = coNL
+#check NL_complement_closed       -- NL closed under complement
+#check space_containment_chain    -- L ⊆ NL ⊆ P ⊆ NP ⊆ PSPACE ⊆ EXP
+#check NL_coNL_contrast           -- NL = coNL ∧ (NP ≠ coNP → P ≠ NP)
 
 -- PSPACE and EXP chain
 #check complexity_chain           -- P ⊆ NP ⊆ PH ⊆ PSPACE ⊆ EXP
