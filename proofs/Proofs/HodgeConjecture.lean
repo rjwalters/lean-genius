@@ -60,6 +60,8 @@ This file does NOT prove the Hodge Conjecture. It provides:
 | Extreme codimension (0, top) | PROVEN from case axioms |
 | Hodge-Tate equivalence (abelian) | PROVEN from axioms |
 | Conjecture hierarchy SC ⟹ GHC ⟹ HC ⟹ MT | PROVEN from axioms |
+| Direct sum of Hodge structures | PROVEN (was axiom) |
+| Injection morphisms ι₁, ι₂ into direct sum | PROVEN (was axiom) |
 | General case for higher codimension | **CONJECTURE** |
 | Integral Hodge conjecture | FALSE (Atiyah-Hirzebruch) |
 
@@ -92,6 +94,7 @@ We provide abstract structures that capture the essential mathematics.
 - IsScalarTower ℚ ℂ V_ℂ ensures rational scalars act via ℚ ↪ ℂ
 - Hodge symmetry is proved from the conjugation axiom
 - ℚ-scalar closure of Hodge components proved (was axiom, now theorem)
+- Direct sum construction proved (3 axioms → defs): directSumHodge, directSum_inl, directSum_inr
 - See each axiom's docstring for mathematical justification
 
 ## References
@@ -1322,28 +1325,85 @@ This operation, together with kernels and cokernels, makes the category of
 pure Hodge structures of weight k into an abelian category.
 -/
 
-/-- **Axiom: Direct sum of Hodge structures**
+/-- **Direct sum of Hodge structures** (PROVED - was axiom)
 
 The direct sum of two pure Hodge structures of the same weight k is a pure
-Hodge structure. The rational space is V₁_ℚ ⊕ V₂_ℚ, the complexification
-is V₁_ℂ ⊕ V₂_ℂ, and the Hodge components decompose as direct sums.
+Hodge structure. The rational space is V₁_ℚ × V₂_ℚ, the complexification
+is V₁_ℂ × V₂_ℂ, and the Hodge components decompose as products.
 
-**Why an axiom?** While the construction is straightforward in principle,
-Lean's type class system makes constructing the direct sum with all required
-instances (FiniteDimensional, IsScalarTower, etc.) highly technical. The
-mathematical content is standard. -/
-axiom directSumHodge {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
-    PureHodgeStructure k
+**Construction**: Uses Lean's product types with componentwise operations.
+The complexification map is the product of the individual complexification maps.
+Hodge components are Submodule.prod of the individual components. -/
+def directSumHodge {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
+    PureHodgeStructure k where
+  VQ := H₁.VQ × H₂.VQ
+  VC := H₁.VC × H₂.VC
+  complexify := H₁.complexify.prodMap H₂.complexify
+  complexify_injective := by
+    intro ⟨a₁, a₂⟩ ⟨b₁, b₂⟩ h
+    simp only [LinearMap.prodMap_apply, Prod.mk.injEq] at h
+    exact Prod.ext (H₁.complexify_injective h.1) (H₂.complexify_injective h.2)
+  hodgeComponent := fun p q hpq =>
+    (H₁.hodgeComponent p q hpq).prod (H₂.hodgeComponent p q hpq)
 
-/-- **Axiom: Injection into direct sum**
+/-- **Injection into direct sum** (PROVED - was axiom)
 
-The canonical injections ι₁ : H₁ → H₁ ⊕ H₂ and ι₂ : H₂ → H₁ ⊕ H₂
-are morphisms of Hodge structures. -/
-axiom directSum_inl {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
-    HodgeStructureMorphism H₁ (directSumHodge H₁ H₂)
+The canonical injection ι₁ : H₁ → H₁ ⊕ H₂ is a morphism of Hodge structures.
 
-axiom directSum_inr {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
-    HodgeStructureMorphism H₂ (directSumHodge H₁ H₂)
+**Proof**: The rational and complex maps are the canonical left injections.
+Compatibility follows from the product structure of the complexification map.
+Hodge preservation follows because (x, 0) ∈ S₁ × S₂ when x ∈ S₁ and 0 ∈ S₂. -/
+def directSum_inl {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
+    HodgeStructureMorphism H₁ (directSumHodge H₁ H₂) where
+  rationalMap := LinearMap.inl ℚ H₁.VQ H₂.VQ
+  complexMap := LinearMap.inl ℂ H₁.VC H₂.VC
+  compatible := fun v => by
+    simp only [directSumHodge, LinearMap.prodMap_apply, LinearMap.inl_apply, map_zero]
+  hodge_preserve := fun p q hpq x hx => by
+    simp only [directSumHodge, LinearMap.inl_apply]
+    exact Submodule.mem_prod.mpr ⟨hx, Submodule.zero_mem _⟩
+
+/-- **Injection into direct sum (right)** (PROVED - was axiom)
+
+The canonical injection ι₂ : H₂ → H₁ ⊕ H₂ is a morphism of Hodge structures. -/
+def directSum_inr {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
+    HodgeStructureMorphism H₂ (directSumHodge H₁ H₂) where
+  rationalMap := LinearMap.inr ℚ H₁.VQ H₂.VQ
+  complexMap := LinearMap.inr ℂ H₁.VC H₂.VC
+  compatible := fun v => by
+    simp only [directSumHodge, LinearMap.prodMap_apply, LinearMap.inr_apply, map_zero]
+  hodge_preserve := fun p q hpq x hx => by
+    simp only [directSumHodge, LinearMap.inr_apply]
+    exact Submodule.mem_prod.mpr ⟨Submodule.zero_mem _, hx⟩
+
+/-- **Projection from direct sum (left)** (PROVED)
+
+The canonical projection π₁ : H₁ ⊕ H₂ → H₁ is a morphism of Hodge structures.
+
+**Proof**: The rational and complex maps are the canonical left projections.
+Hodge preservation follows because if (x, y) ∈ S₁ × S₂ then x ∈ S₁. -/
+def directSum_fst {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
+    HodgeStructureMorphism (directSumHodge H₁ H₂) H₁ where
+  rationalMap := LinearMap.fst ℚ H₁.VQ H₂.VQ
+  complexMap := LinearMap.fst ℂ H₁.VC H₂.VC
+  compatible := fun v => by
+    simp only [directSumHodge, LinearMap.prodMap_apply, LinearMap.fst_apply]
+  hodge_preserve := fun p q hpq x hx => by
+    simp only [directSumHodge, LinearMap.fst_apply] at hx ⊢
+    exact (Submodule.mem_prod.mp hx).1
+
+/-- **Projection from direct sum (right)** (PROVED)
+
+The canonical projection π₂ : H₁ ⊕ H₂ → H₂ is a morphism of Hodge structures. -/
+def directSum_snd {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
+    HodgeStructureMorphism (directSumHodge H₁ H₂) H₂ where
+  rationalMap := LinearMap.snd ℚ H₁.VQ H₂.VQ
+  complexMap := LinearMap.snd ℂ H₁.VC H₂.VC
+  compatible := fun v => by
+    simp only [directSumHodge, LinearMap.prodMap_apply, LinearMap.snd_apply]
+  hodge_preserve := fun p q hpq x hx => by
+    simp only [directSumHodge, LinearMap.snd_apply] at hx ⊢
+    exact (Submodule.mem_prod.mp hx).2
 
 /-- **HC for direct sums: if HC holds for both summands, it holds for the sum**
 
@@ -1571,7 +1631,9 @@ PART XVII: SUMMARY OF NEW RESULTS
    preserve algebraicity
 6. **Sub-Hodge structures** - Defined with Hodge compatibility
 7. **Kernel is sub-Hodge** - Proved: kernel of a morphism is a sub-Hodge structure
-8. **Direct sums** - Axiomatized: direct sum of Hodge structures
+8. **Direct sums** - PROVED: direct sum of Hodge structures (was axiom)
+8a. **Injection morphisms** - PROVED: canonical injections ι₁, ι₂ (were axioms)
+8b. **Projection morphisms** - PROVED: canonical projections π₁, π₂ (new)
 9. **Polarizations** - Defined with (−1)^k-symmetry
 10. **Even weight symmetry** - Proved: polarization is symmetric for even weight
 11. **Odd weight antisymmetry** - Proved: polarization is antisymmetric for odd weight
@@ -1586,6 +1648,12 @@ theorem structural_summary : True := trivial
 #check HodgeStructureMorphism.comp
 #check morphism_preserves_hodge_class
 #check morphism_preserves_algebraic_class
+-- Direct sums (PROVED - were axioms)
+#check directSumHodge
+#check directSum_inl
+#check directSum_inr
+#check directSum_fst
+#check directSum_snd
 -- Sub-Hodge structures
 #check SubHodgeStructure
 #check kernel_is_subHodge

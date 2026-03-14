@@ -29,13 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: No Lean file. Requires Hodge theory, algebraic cycles, Kähler manifolds, Dolbeault cohomology - none in Mathlib. Even stating the conjecture precisely needs thousands of lines of infrastructure.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: 3 axioms eliminated (directSumHodge, directSum_inl, directSum_inr → proved defs). Added projection morphisms. 26 axioms remain. Still blocked on Hodge theory infrastructure for further reduction.",
+    "builtItems": [
+      "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
+      "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
+      "Added directSum_fst, directSum_snd (projection morphisms) in HodgeConjecture.lean"
+    ],
     "insights": [
       "Millennium Prize problem, wide open - no known attack strategy",
       "Integral Hodge conjecture is FALSE (Atiyah-Hirzebruch 1962) - only rational version is conjectured",
       "Codimension 1 case (Lefschetz 1,1 theorem) is proven - most tractable partial result",
-      "Mathlib has basic scheme theory but lacks Hodge theory, algebraic cycles, Kähler manifolds entirely"
+      "Mathlib has basic scheme theory but lacks Hodge theory, algebraic cycles, Kähler manifolds entirely",
+      "Direct sum of Hodge structures proved constructively (was axiom): VQ=V1×V2, VC=V1×V2, complexify=prodMap, hodgeComponent=Submodule.prod",
+      "Injection morphisms ι₁,ι₂ and projection morphisms π₁,π₂ proved for direct sums (5 new defs total, 3 axioms eliminated)",
+      "Axiom count reduced from 29 to 26 - remaining axioms are genuinely deep mathematical results"
     ],
     "mathlibGaps": [
       "Hodge theory / Hodge decomposition",
