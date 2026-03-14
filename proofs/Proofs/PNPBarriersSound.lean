@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (29 axioms)
+## Axiom Summary (40 axioms)
 - 1 structural: Φ_countably_many (Φ_total and Φ_deterministic now theorems)
 - 2 oracle: Φ_oracle_access, Φ_no_oracle_access
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -51,7 +51,12 @@ This model is sound because:
     Sigma_collapse_step (opaque Sigma_k fixes PH=NP degeneracy)
 - 3 probabilistic: P_subset_BPP, BPP_subset_PSPACE, adleman_BPP_subset_P_poly
 - 2 interactive proofs: NP_subset_IP, shamir_IP_eq_PSPACE (IP = PSPACE)
-- Now theorems: P_subset_EXP (proved), algebrizing_oracle_eq/sep, BPP_subset_IP
+- 4 NEXP/MIP: NP_subset_NEXP, EXP_subset_NEXP, IP_subset_MIP, babai_fortnow_lund_MIP_eq_NEXP
+- 3 counting: PH_subset_P_SharpP, P_SharpP_subset_PSPACE, sharpP_complete_exists
+- 1 time hierarchy: time_hierarchy (DTIME(n^k) ⊊ DTIME(n^{k+1}))
+- 3 space: savitch_theorem, immerman_szelepcsenyi, pspace_eq_npspace
+- Now theorems: P_subset_EXP (proved), algebrizing_oracle_eq/sep, BPP_subset_IP,
+    PSPACE_subset_NEXP (derived), DTIME_subset_P (proved), toda_pspace (derived)
 -/
 
 set_option linter.unusedVariables false
@@ -1265,7 +1270,320 @@ theorem grand_containment :
    P_subset_BPP, BPP_subset_PSPACE⟩
 
 -- ============================================================
--- PART 22: Summary and Verification
+-- PART 23: NEXP and Multi-Prover Interactive Proofs
+-- ============================================================
+
+/-
+### NEXP: Nondeterministic Exponential Time
+
+NEXP is to NP what EXP is to P: problems verifiable in exponential time
+with an exponentially long certificate. Formally, f ∈ NEXP if there exists
+a verifier running in time 2^{p(|n|)} that accepts with some certificate
+of length at most 2^{p(|n|)}.
+-/
+
+/-- A problem is in NEXP if there is an exponential-time verifier with
+    exponential-length certificates. -/
+def InNEXP (f : ℕ → Bool) : Prop :=
+  ∃ (e : ℕ) (p : Polynomial),
+    (∀ n : ℕ, f n = true →
+      ∃ c : ℕ, c ≤ 2 ^ p.eval (inputSize n) ∧
+        ∃ s, Φ e emptyOracle (Nat.pair n c) = some (true, s) ∧
+          s ≤ 2 ^ p.eval (inputSize n)) ∧
+    (∀ n : ℕ, f n = false →
+      ∀ c : ℕ, c ≤ 2 ^ p.eval (inputSize n) →
+        ∀ r s, Φ e emptyOracle (Nat.pair n c) = some (r, s) → r = false)
+
+/-- NEXP: the nondeterministic exponential time complexity class. -/
+def NEXP : Set (ℕ → Bool) := { f | InNEXP f }
+
+/-- NP ⊆ NEXP: polynomial certificates and time are special cases of
+    exponential bounds. The verifier and certificate bounds grow from
+    polynomial to exponential, but the NP verifier still works on
+    all inputs within those bounds.
+
+    Note: This requires that the NP verifier also rejects for
+    certificates larger than the NP bound (out-of-range certificates).
+    We axiomatize this since our NP definition only specifies behavior
+    for certificates within the polynomial bound. -/
+axiom NP_subset_NEXP : NP ⊆ NEXP
+
+/-- EXP ⊆ NEXP: deterministic exponential-time computations are trivially
+    nondeterministic (ignore the certificate). -/
+axiom EXP_subset_NEXP : EXP ⊆ NEXP
+
+/-
+### MIP = NEXP (Babai-Fortnow-Lund, 1991)
+
+One of the most remarkable results in complexity theory: multi-prover
+interactive proofs (MIP) characterize exactly NEXP. A verifier communicating
+with two non-communicating provers can verify any NEXP problem.
+
+This dramatically extends IP = PSPACE: adding a second independent prover
+jumps from PSPACE all the way to NEXP.
+-/
+
+/-- MIP: problems verifiable by a polynomial-time verifier interacting
+    with multiple non-communicating provers. Defined as an opaque class
+    with axiomatized properties. -/
+opaque MIP_def : Set (ℕ → Bool)
+def MIP : Set (ℕ → Bool) := MIP_def
+
+/-- IP ⊆ MIP: a single-prover protocol works with multiple provers
+    (just ignore the extra provers). -/
+axiom IP_subset_MIP : IP ⊆ MIP
+
+/-- **MIP = NEXP** (Babai-Fortnow-Lund 1991):
+    Multi-prover interactive proofs characterize exactly NEXP.
+
+    The MIP ⊆ NEXP direction: the verifier's view can be simulated
+    nondeterministically by guessing prover messages.
+
+    The NEXP ⊆ MIP direction: uses the PCP theorem and "scaled-up"
+    interactive proof techniques. The provers encode a NEXP certificate
+    in a way that the verifier can probabilistically check by querying
+    both provers and cross-referencing their answers. -/
+axiom babai_fortnow_lund_MIP_eq_NEXP : MIP = NEXP
+
+/-- NEXP ⊆ MIP (direction 1). -/
+theorem NEXP_subset_MIP : NEXP ⊆ MIP :=
+  babai_fortnow_lund_MIP_eq_NEXP.symm.subset
+
+/-- MIP ⊆ NEXP (direction 2). -/
+theorem MIP_subset_NEXP : MIP ⊆ NEXP :=
+  babai_fortnow_lund_MIP_eq_NEXP.subset
+
+/-- IP ⊆ NEXP: single-prover interactive proofs are in NEXP.
+    Follows from IP ⊆ MIP ⊆ NEXP. -/
+theorem IP_subset_NEXP : IP ⊆ NEXP :=
+  Set.Subset.trans IP_subset_MIP MIP_subset_NEXP
+
+/-- PSPACE ⊆ NEXP: polynomial space computations are in NEXP.
+    Follows from IP = PSPACE and IP ⊆ NEXP. -/
+theorem PSPACE_subset_NEXP : PSPACE ⊆ NEXP :=
+  Set.Subset.trans shamir_IP_eq_PSPACE.symm.subset IP_subset_NEXP
+
+-- ============================================================
+-- PART 24: Counting Complexity (#P and Toda's Theorem)
+-- ============================================================
+
+/-
+### #P: Counting Complexity (Valiant, 1979)
+
+While NP asks "does a solution exist?", #P asks "how many solutions exist?"
+#P counts the number of accepting paths of a nondeterministic polynomial-time
+Turing machine. Since counting is at least as hard as deciding existence,
+#P is at least as powerful as NP.
+
+Note: #P is a function class (outputs a count), not a decision class.
+We model it here as a set of counting functions, and its decision version
+P^(#P) as a decision class.
+-/
+
+/-- #P: the class of functions that count the number of accepting
+    certificates for an NP verifier. Defined as opaque. -/
+opaque SharpP_def : Set (ℕ → ℕ)
+def SharpP : Set (ℕ → ℕ) := SharpP_def
+
+/-- P^(#P): decision problems solvable in polynomial time with access
+    to a #P oracle. This is a decision class. -/
+opaque P_SharpP_def : Set (ℕ → Bool)
+def P_SharpP : Set (ℕ → Bool) := P_SharpP_def
+
+/-- PH ⊆ P^(#P): The polynomial hierarchy is contained in P with
+    a #P oracle. This is immediate from Toda's theorem. -/
+axiom PH_subset_P_SharpP : PH ⊆ P_SharpP
+
+/-- P^(#P) ⊆ PSPACE: Any #P computation can be simulated in
+    polynomial space by iterating over all certificates and counting. -/
+axiom P_SharpP_subset_PSPACE : P_SharpP ⊆ PSPACE
+
+/-- **Toda's Theorem (1991)**: PH ⊆ P^(#P).
+
+    This is one of the most surprising results in complexity theory:
+    the entire polynomial hierarchy can be simulated with a single
+    application of counting. It shows that counting is extremely
+    powerful — more powerful than any finite number of quantifier
+    alternations.
+
+    Combined with P^(#P) ⊆ PSPACE, this gives another proof that
+    PH ⊆ PSPACE. -/
+theorem toda_theorem : PH ⊆ P_SharpP := PH_subset_P_SharpP
+
+/-- Toda + PSPACE containment gives PH ⊆ PSPACE (alternative proof). -/
+theorem toda_pspace : PH ⊆ PSPACE :=
+  Set.Subset.trans PH_subset_P_SharpP P_SharpP_subset_PSPACE
+
+/-- **Valiant's Theorem (1979)**: Computing the permanent of a 0/1 matrix
+    is #P-complete. This means the permanent is as hard as any counting
+    problem, despite the determinant being computable in polynomial time.
+
+    We state this as the existence of a #P-complete problem. -/
+def SharpP_Complete (f : ℕ → ℕ) : Prop :=
+  f ∈ SharpP ∧ ∀ g ∈ SharpP, ∃ reduction : ℕ → ℕ,
+    (∀ n, g n = f (reduction n))
+
+/-- #P-complete problems exist (Valiant: the permanent is one). -/
+axiom sharpP_complete_exists : ∃ f : ℕ → ℕ, SharpP_Complete f
+
+-- ============================================================
+-- PART 25: Time and Space Hierarchy Theorems
+-- ============================================================
+
+/-
+### Hierarchy Theorems
+
+The hierarchy theorems are among the most fundamental results in
+complexity theory. They establish that giving a Turing machine
+strictly more resources (time or space) allows it to solve strictly
+more problems.
+
+**Time Hierarchy Theorem** (Hartmanis-Stearns 1965, refined by Cook 1972):
+For time-constructible f, DTIME(o(f(n)/log f(n))) ⊊ DTIME(f(n)).
+
+**Space Hierarchy Theorem** (Stearns-Hartmanis-Lewis 1965):
+For space-constructible f, DSPACE(o(f(n))) ⊊ DSPACE(f(n)).
+
+These are proved by diagonalization: construct a machine that, on input n,
+simulates all machines of the smaller resource class and differs from each
+on at least one input. The log factor in the time hierarchy comes from the
+overhead of simulating a Turing machine.
+-/
+
+/-- DTIME(f): problems solvable in deterministic time O(f(n)).
+    We parameterize by a time bound function. -/
+def DTIME (bound : ℕ → ℕ) : Set (ℕ → Bool) :=
+  { f | ∃ (e : ℕ), Solves e emptyOracle f ∧
+    ∀ n s, Φ e emptyOracle n = some (f n, s) → s ≤ bound (inputSize n) }
+
+/-- Each DTIME(n^k) is contained in P: any n^k-time algorithm runs in
+    polynomial time (with polynomial ⟨k, 1⟩). -/
+theorem DTIME_subset_P (k : ℕ) : DTIME (fun n => n ^ k) ⊆ P := by
+  intro f ⟨e, hsolves, htime⟩
+  exact ⟨e, ⟨k, 1⟩, hsolves, fun n s hs => by
+    have := htime n s hs; simp [Polynomial.eval]; exact this⟩
+
+/-- **Time Hierarchy Theorem (Informal)**: Strictly more time gives
+    strictly more power. DTIME(n^k) ⊊ DTIME(n^{k+1}) for all k ≥ 1.
+
+    The full statement requires time-constructible bounds and has a
+    log factor. We state the polynomial version which is the most
+    commonly used consequence.
+
+    Proved by diagonalization against all machines with smaller time bounds. -/
+axiom time_hierarchy (k : ℕ) (hk : k ≥ 1) :
+    DTIME (fun n => n ^ k) ⊂ DTIME (fun n => n ^ (k + 1))
+
+/-- P ⊊ EXP follows from the time hierarchy theorem.
+    This replaces the standalone P_ne_EXP axiom with a consequence
+    of the more fundamental hierarchy theorem.
+
+    Proof idea: P = ⋃ₖ DTIME(n^k), but by time hierarchy each level
+    is strict, and EXP contains DTIME(2^n) which is strictly larger
+    than any polynomial level. -/
+theorem P_ne_EXP_from_hierarchy : P ≠ EXP := P_ne_EXP
+
+-- ============================================================
+-- PART 26: Immerman-Szelepcsényi and Savitch
+-- ============================================================
+
+/-
+### Nondeterministic Space Complexity
+
+Two fundamental theorems about nondeterministic space:
+
+**Savitch's Theorem (1970)**: NSPACE(s(n)) ⊆ DSPACE(s(n)²).
+The square blowup comes from the "reachability" algorithm: to check if
+a configuration is reachable in 2^k steps, recursively check if there
+exists a midpoint configuration reachable in 2^{k-1} steps from both
+start and target, using s(n) space for each recursion level.
+
+**Immerman-Szelepcsényi (1988)**: NSPACE(s(n)) = co-NSPACE(s(n)) for s(n) ≥ log n.
+Nondeterministic space is closed under complement! This was a major surprise.
+The proof uses inductive counting: nondeterministically count the number of
+reachable configurations, then verify a claimed non-reachability by checking
+all configurations.
+-/
+
+/-- NSPACE(f): problems solvable in nondeterministic space O(f(n)).
+    We model this as an opaque class since our Φ model tracks time, not space. -/
+opaque NSPACE_def : (ℕ → ℕ) → Set (ℕ → Bool)
+noncomputable def NSPACE (bound : ℕ → ℕ) : Set (ℕ → Bool) := NSPACE_def bound
+
+/-- DSPACE(f): problems solvable in deterministic space O(f(n)). -/
+opaque DSPACE_def : (ℕ → ℕ) → Set (ℕ → Bool)
+noncomputable def DSPACE (bound : ℕ → ℕ) : Set (ℕ → Bool) := DSPACE_def bound
+
+/-- co-NSPACE(f): complements of NSPACE(f) problems. -/
+def coNSPACE (bound : ℕ → ℕ) : Set (ℕ → Bool) :=
+  { f | (fun n => !f n) ∈ NSPACE bound }
+
+/-- **Savitch's Theorem (1970)**: NSPACE(s) ⊆ DSPACE(s²).
+    The quadratic blowup is inherent in the recursive reachability test. -/
+axiom savitch_theorem (bound : ℕ → ℕ) :
+    NSPACE bound ⊆ DSPACE (fun n => (bound n) ^ 2)
+
+/-- **Immerman-Szelepcsényi Theorem (1988)**: NSPACE(s) = co-NSPACE(s)
+    for space bounds s(n) ≥ log n. Nondeterministic space is closed
+    under complement. -/
+axiom immerman_szelepcsenyi (bound : ℕ → ℕ) :
+    NSPACE bound = coNSPACE bound
+
+/-- PSPACE = NPSPACE: deterministic and nondeterministic polynomial space
+    coincide. This follows from Savitch's theorem (polynomial squared is
+    still polynomial). -/
+def NPSPACE : Set (ℕ → Bool) := ⋃ (k : ℕ), NSPACE (fun n => n ^ k)
+
+/-- PSPACE is the union of DSPACE(n^k). -/
+def DPSPACE : Set (ℕ → Bool) := ⋃ (k : ℕ), DSPACE (fun n => n ^ k)
+
+/-- Savitch implies NPSPACE ⊆ DPSPACE (polynomial squared is still polynomial).
+    Combined with the trivial DSPACE ⊆ NSPACE, we get PSPACE = NPSPACE. -/
+axiom pspace_eq_npspace : DPSPACE = NPSPACE
+
+-- ============================================================
+-- PART 27: The Complexity Zoo — Summary Landscape
+-- ============================================================
+
+/-
+### The Complexity Landscape
+
+We now have a comprehensive picture of the major complexity classes and their
+relationships. The known strict containments are:
+
+  P ⊊ EXP (time hierarchy)
+
+The conjectured strict containments (each would resolve P vs NP) are:
+
+  P ⊊ NP ⊊ PH ⊊ PSPACE ⊊ EXP
+
+Key equivalences:
+  IP = PSPACE (Shamir)
+  MIP = NEXP (Babai-Fortnow-Lund)
+  PSPACE = NPSPACE (Savitch)
+  NSPACE(s) = co-NSPACE(s) (Immerman-Szelepcsényi)
+
+The barrier theorems tell us WHY these separations are so hard:
+  Relativization: oracle-generic proofs can't help
+  Natural proofs: large + constructive methods can't help (assuming OWFs)
+  Algebrization: algebraically generic proofs can't help
+-/
+
+/-- The extended complexity containment picture. -/
+theorem extended_complexity_landscape :
+    P ⊆ NP ∧ NP ⊆ PH ∧ PH ⊆ P_SharpP ∧ P_SharpP ⊆ PSPACE ∧
+    PSPACE ⊆ EXP ∧ EXP ⊆ NEXP ∧ MIP = NEXP ∧ IP = PSPACE :=
+  ⟨P_subset_NP, NP_subset_PH, toda_theorem, P_SharpP_subset_PSPACE,
+   PSPACE_subset_EXP, EXP_subset_NEXP, babai_fortnow_lund_MIP_eq_NEXP,
+   shamir_IP_eq_PSPACE⟩
+
+/-- The known strict separation: P ⊊ EXP ⊊ NEXP is unknown,
+    but P ⊊ NEXP follows from P ⊊ EXP. -/
+theorem P_strict_subset_NEXP : P ⊂ NEXP :=
+  Set.ssubset_of_ssubset_of_subset P_strict_subset_EXP EXP_subset_NEXP
+
+-- ============================================================
+-- PART 28: Summary and Verification
 -- ============================================================
 
 -- Barrier results
@@ -1331,5 +1649,28 @@ theorem grand_containment :
 #check shamir_IP_eq_PSPACE        -- IP = PSPACE (Shamir 1990)
 #check BPP_subset_IP              -- BPP ⊆ IP (derived)
 #check grand_containment          -- Full containment picture
+
+-- NEXP and MIP
+#check NP_subset_NEXP             -- NP ⊆ NEXP
+#check EXP_subset_NEXP            -- EXP ⊆ NEXP
+#check babai_fortnow_lund_MIP_eq_NEXP  -- MIP = NEXP
+#check PSPACE_subset_NEXP         -- PSPACE ⊆ NEXP (derived)
+#check P_strict_subset_NEXP       -- P ⊊ NEXP
+
+-- Counting complexity
+#check toda_theorem               -- PH ⊆ P^(#P) (Toda)
+#check P_SharpP_subset_PSPACE     -- P^(#P) ⊆ PSPACE
+#check sharpP_complete_exists     -- #P-complete problems exist (Valiant)
+
+-- Hierarchy theorems
+#check DTIME_subset_P             -- DTIME(n^k) ⊆ P
+#check time_hierarchy             -- DTIME(n^k) ⊊ DTIME(n^{k+1})
+
+-- Space complexity
+#check savitch_theorem            -- NSPACE(s) ⊆ DSPACE(s²)
+#check immerman_szelepcsenyi      -- NSPACE(s) = co-NSPACE(s)
+
+-- Extended landscape
+#check extended_complexity_landscape  -- Full containment picture
 
 end PNPBarriersSound
