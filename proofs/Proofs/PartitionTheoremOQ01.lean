@@ -1200,256 +1200,237 @@ theorem rogers_ramanujan_second_decidable (n : ℕ) :
   exact RogersRamanujan.rogers_ramanujan_second n
 
 -- ============================================================================
--- Part XXIV: Schur Gap Bridge - Forward Direction
+-- Part XXIV: Schur Gap Bridge Theorems
 -- ============================================================================
 
 /-
-The Schur gap bridge is more complex than the RR bridges because the gap
-condition varies: gap ≥ 3 normally, gap ≥ 4 when either part ≡ 0 (mod 3).
+The Schur bridge is more complex than RR1/RR2 because the gap depends on
+the parts' residues mod 3:
+  - Noncomputable: hasSchurGapFull on sorted list (consecutive gap check)
+  - Decidable: ∀ a b ∈ parts, a ≠ b → Schur separation condition
 
-Key insight: For non-adjacent pairs in a sorted decreasing list satisfying
-hasSchurGapFull, the accumulated gap is at least 3 + 3 = 6 > 4, so the
-strengthened mod-3 condition is trivially satisfied. Only adjacent pairs
-need the specific Schur gap check.
+Key insight: hasSchurGapFull guarantees consecutive gap ≥ 3 (at minimum).
+For non-adjacent pairs, accumulated gap ≥ 6 > 4, so the Schur condition
+is automatically satisfied regardless of mod-3 residues.
 -/
 
-/-- hasSchurGapFull implies hasMinGap 3: the Schur gap condition gives at least
-    gap 3 between all consecutive elements. -/
-theorem hasSchurGapFull_implies_hasMinGap3 (l : List ℕ) :
+/-- hasSchurGapFull implies hasMinGap 3 (every consecutive gap is at least 3). -/
+private theorem hasSchurGapFull_implies_hasMinGap3 (l : List ℕ) :
     hasSchurGapFull l = true → hasMinGap l 3 = true := by
+  intro h
   induction l with
-  | nil => simp [hasSchurGapFull, hasMinGap]
+  | nil => simp [hasMinGap]
   | cons a rest ih =>
-    intro h
-    cases rest with
-    | nil => simp [hasMinGap]
-    | cons b rest' =>
+    match rest with
+    | [] => simp [hasMinGap]
+    | b :: rest' =>
       simp only [hasSchurGapFull, Bool.and_eq_true, decide_eq_true_eq] at h
       simp only [hasMinGap, Bool.and_eq_true, decide_eq_true_eq]
-      refine ⟨?_, ih h.2⟩
-      -- h.1 : a ≥ b + if ... then 4 else 3. Since both 4 ≥ 3 and 3 ≥ 3:
-      have h1 := h.1
-      by_cases hmod : a % 3 = 0 ∨ b % 3 = 0
-      · simp only [if_pos hmod] at h1; omega
-      · simp only [if_neg hmod] at h1; omega
+      have ⟨hgap, htail⟩ := h
+      constructor
+      · -- The Schur gap is ≥ 3 regardless of the mod-3 condition
+        split_ifs at hgap with hmod <;> omega
+      · exact ih htail
 
-/-- **Forward direction (Pairwise)**: hasSchurGapFull on a sorted decreasing list
-    implies the ordered Schur gap condition on all pairs (not just consecutive).
-
-    For adjacent pairs: direct from hasSchurGapFull.
-    For non-adjacent pairs: accumulated gap ≥ 6 > 4 trivially satisfies both cases. -/
-private theorem hasSchurGapFull_pairwise (l : List ℕ) :
+/-- Forward: hasSchurGapFull → Pairwise with Schur separation.
+    Non-adjacent pairs have accumulated gap ≥ 6 > 4, so the mod-3
+    condition is automatically satisfied. -/
+private theorem hasSchurGapFull_pairwise_schur (l : List ℕ) :
     hasSchurGapFull l = true →
-    l.Pairwise (fun a b =>
-      if a % 3 = 0 ∨ b % 3 = 0 then a ≥ b + 4 else a ≥ b + 3) := by
-  induction l with
-  | nil => intro _; exact List.Pairwise.nil
-  | cons a rest ih =>
-    intro h
-    cases rest with
-    | nil => exact List.pairwise_singleton _ _
-    | cons b rest' =>
-      simp only [hasSchurGapFull, Bool.and_eq_true, decide_eq_true_eq] at h
-      have htail := ih h.2
-      -- Get gap ≥ 3 for non-adjacent bound
-      have hgap3_tail := hasMinGap_pairwise_ge_d (b :: rest') 3
-        (hasSchurGapFull_implies_hasMinGap3 (b :: rest') h.2)
-      apply List.Pairwise.cons _ htail
-      intro x hx
-      rcases List.mem_cons.mp hx with rfl | hrest
-      · -- x = b: adjacent pair, extract from h.1
-        -- After rfl, the surviving variable appears in both h.1 and goal
-        have h1 := h.1
-        -- Split on the if in the goal, then simplify h1 to match
-        split
-        · rename_i hmod; simp only [if_pos hmod] at h1; omega
-        · rename_i hmod; simp only [if_neg hmod] at h1; omega
-      · -- x ∈ rest': non-adjacent, gap ≥ 6
-        have hab : a ≥ b + 3 := by
-          have h1 := h.1
-          by_cases hmod : a % 3 = 0 ∨ b % 3 = 0
-          · simp only [if_pos hmod] at h1; omega
-          · simp only [if_neg hmod] at h1; exact h1
-        have hbx : b ≥ x + 3 :=
-          (List.pairwise_cons.mp hgap3_tail).1 x hrest
-        -- a ≥ x + 6: both 4 and 3 thresholds satisfied
-        split <;> omega
-
-/-- **Forward direction (Symmetric)**: hasSchurGapFull gives the pairwise Schur
-    separation for all pairs in membership form (symmetric, for the bridge). -/
-theorem hasSchurGapFull_sep (l : List ℕ) :
-    hasSchurGapFull l = true →
-    ∀ a ∈ l, ∀ b ∈ l, a ≠ b →
-      if a % 3 = 0 ∨ b % 3 = 0
-      then (a + 4 ≤ b ∨ b + 4 ≤ a)
-      else (a + 3 ≤ b ∨ b + 3 ≤ a) := by
+    l.Pairwise (fun a b => if a % 3 = 0 ∨ b % 3 = 0 then a ≥ b + 4 else a ≥ b + 3) := by
   intro h
-  have hpw := hasSchurGapFull_pairwise l h
-  -- From Pairwise (ordered), derive symmetric membership condition.
-  -- Use suffices to induct on the Pairwise property directly.
-  suffices ∀ (m : List ℕ),
-      m.Pairwise (fun a b =>
-        if a % 3 = 0 ∨ b % 3 = 0 then a ≥ b + 4 else a ≥ b + 3) →
-      ∀ a ∈ m, ∀ b ∈ m, a ≠ b →
-        if a % 3 = 0 ∨ b % 3 = 0
-        then (a + 4 ≤ b ∨ b + 4 ≤ a)
-        else (a + 3 ≤ b ∨ b + 3 ≤ a) by
-    exact this l hpw
-  intro m hm
-  induction m with
-  | nil => intro a ha; simp at ha
-  | cons c rest ih =>
-    intro a ha b hb hab
-    have hpw_c := (List.pairwise_cons.mp hm).1
+  induction l with
+  | nil => exact List.Pairwise.nil
+  | cons a rest ih =>
+    match rest with
+    | [] => exact List.pairwise_singleton _ _
+    | b :: rest' =>
+      simp only [hasSchurGapFull, Bool.and_eq_true, decide_eq_true_eq] at h
+      have ⟨hgap, htail⟩ := h
+      have hpw_rest := ih htail
+      rw [List.pairwise_cons]
+      constructor
+      · -- a relates to all elements in b :: rest'
+        intro c hc
+        rcases List.mem_cons.mp hc with rfl | hc'
+        · -- c = b (adjacent): direct from hasSchurGapFull
+          split_ifs with hmod <;> split_ifs at hgap with hmod' <;> omega
+        · -- c ∈ rest' (non-adjacent)
+          -- b relates to c from hpw_rest
+          have hbc := (List.pairwise_cons.mp hpw_rest).1 c hc'
+          -- a ≥ b + 3 at minimum
+          have hab : a ≥ b + 3 := by split_ifs at hgap with _ <;> omega
+          -- b ≥ c + 3 at minimum
+          have hbc_ge : b ≥ c + 3 := by split_ifs at hbc with _ <;> omega
+          -- a ≥ c + 6 ≥ c + 4
+          split_ifs with _ <;> omega
+      · exact hpw_rest
+
+/-- Forward direction: Pairwise Schur relation → symmetric separation for all
+    distinct pairs. Uses induction to handle both orderings. -/
+private theorem pairwise_schur_to_sep :
+    ∀ (l : List ℕ),
+    l.Pairwise (fun a b => if a % 3 = 0 ∨ b % 3 = 0 then a ≥ b + 4 else a ≥ b + 3) →
+    l.Nodup →
+    ∀ a ∈ l, ∀ b ∈ l, a ≠ b →
+      if a % 3 = 0 ∨ b % 3 = 0 then (a + 4 ≤ b ∨ b + 4 ≤ a)
+      else (a + 3 ≤ b ∨ b + 3 ≤ a)
+  | [], _, _, _, ha, _, _, _ => nomatch ha
+  | _ :: rest, hpw, hnodup, a, ha, b, hb, hab => by
+    have hpw_cons := List.pairwise_cons.mp hpw
+    have hpw_rest := hpw_cons.2
+    have hx_rel := hpw_cons.1
+    have hnodup_rest := (List.nodup_cons.mp hnodup).2
     rcases List.mem_cons.mp ha with rfl | ha'
-    · -- a = c
+    · -- a = head
       rcases List.mem_cons.mp hb with rfl | hb'
       · exact absurd rfl hab
-      · -- a = c, b ∈ rest: from hpw_c, a ≥ b + gap
-        have h1 := hpw_c b hb'
-        by_cases hmod : a % 3 = 0 ∨ b % 3 = 0
-        · simp only [if_pos hmod] at h1 ⊢; right; omega
-        · simp only [if_neg hmod] at h1 ⊢; right; omega
+      · -- a = head, b ∈ rest
+        have hrel := hx_rel b hb'
+        split_ifs at hrel ⊢ with hmod
+        · right; omega
+        · right; omega
     · rcases List.mem_cons.mp hb with rfl | hb'
-      · -- b = c, a ∈ rest: from hpw_c, b ≥ a + gap
-        have h1 := hpw_c a ha'
-        -- h1 condition is (c%3=0 ∨ a%3=0), goal has (a%3=0 ∨ b%3=0) where b=c
+      · -- b = head, a ∈ rest
+        have hrel := hx_rel a ha'
+        -- hrel has condition: b%3=0 ∨ a%3=0; goal has: a%3=0 ∨ b%3=0
         by_cases hmod : a % 3 = 0 ∨ b % 3 = 0
-        · have hmod' : b % 3 = 0 ∨ a % 3 = 0 := Or.comm.mp hmod
-          simp only [if_pos hmod'] at h1
-          simp only [if_pos hmod]; left; omega
-        · have hmod' : ¬(b % 3 = 0 ∨ a % 3 = 0) := fun h => hmod (Or.comm.mp h)
-          simp only [if_neg hmod'] at h1
-          simp only [if_neg hmod]; left; omega
-      · -- Both in rest
-        exact ih (List.pairwise_cons.mp hm).2 a ha' b hb' hab
+        · simp only [hmod, ↓reduceIte]
+          have hmod' : b % 3 = 0 ∨ a % 3 = 0 := hmod.symm
+          simp only [hmod', ↓reduceIte] at hrel
+          left; omega
+        · simp only [hmod, ↓reduceIte]
+          have hmod' : ¬(b % 3 = 0 ∨ a % 3 = 0) := fun h => hmod h.symm
+          simp only [hmod', ↓reduceIte] at hrel
+          left; omega
+      · -- a, b ∈ rest
+        exact pairwise_schur_to_sep rest hpw_rest hnodup_rest a ha' b hb' hab
 
--- ============================================================================
--- Part XXV: Schur Gap Bridge - Backward Direction
--- ============================================================================
+/-- Forward direction: hasSchurGapFull on a list implies all pairs
+    satisfy the Schur separation condition. -/
+private theorem hasSchurGapFull_all_pairs_sep (l : List ℕ)
+    (hnodup : l.Nodup) :
+    hasSchurGapFull l = true →
+    ∀ a ∈ l, ∀ b ∈ l, a ≠ b →
+      if a % 3 = 0 ∨ b % 3 = 0 then (a + 4 ≤ b ∨ b + 4 ≤ a)
+      else (a + 3 ≤ b ∨ b + 3 ≤ a) := by
+  intro h
+  exact pairwise_schur_to_sep l (hasSchurGapFull_pairwise_schur l h) hnodup
 
-/-- **Backward direction**: The decidable pairwise Schur separation on a SORTED
-    DECREASING LIST implies hasSchurGapFull. Since consecutive elements are a
-    subset of all pairs, extracting the consecutive condition is straightforward. -/
-theorem decidable_schurSep_sorted_implies_hasSchurGapFull
-    (l : List ℕ) (hsorted : l.Pairwise (· ≥ ·))
-    (hnodup : l.Nodup)
-    (hsep : ∀ a ∈ l, ∀ b ∈ l, a ≠ b →
-      if a % 3 = 0 ∨ b % 3 = 0
-      then (a + 4 ≤ b ∨ b + 4 ≤ a)
-      else (a + 3 ≤ b ∨ b + 3 ≤ a)) :
-    hasSchurGapFull l = true := by
-  induction l with
-  | nil => simp [hasSchurGapFull]
-  | cons a rest ih =>
-    cases rest with
-    | nil => simp [hasSchurGapFull]
-    | cons b rest' =>
-      simp only [hasSchurGapFull, Bool.and_eq_true, decide_eq_true_eq]
-      constructor
-      · -- Consecutive pair (a, b): extract from hsep
-        have ha : a ∈ a :: b :: rest' := List.mem_cons_self ..
-        have hb : b ∈ a :: b :: rest' :=
-          List.mem_cons.mpr (.inr (List.mem_cons_self ..))
-        have hab : a ≠ b := fun heq =>
-          (List.nodup_cons.mp hnodup).1 (heq ▸ List.mem_cons_self ..)
-        have ha_ge_b : a ≥ b :=
-          (List.pairwise_cons.mp hsorted).1 b (List.mem_cons_self ..)
-        have hsep_ab := hsep a ha b hb hab
-        -- Goal: a ≥ b + if ... then 4 else 3
-        by_cases hmod : a % 3 = 0 ∨ b % 3 = 0
-        · simp only [if_pos hmod] at hsep_ab ⊢
-          -- hsep_ab : a + 4 ≤ b ∨ b + 4 ≤ a, with a ≥ b
-          rcases hsep_ab with h | h <;> omega
-        · simp only [if_neg hmod] at hsep_ab ⊢
-          rcases hsep_ab with h | h <;> omega
-      · -- Recursive: rest satisfies hasSchurGapFull
-        exact ih
-          (List.pairwise_cons.mp hsorted).2
-          (List.nodup_cons.mp hnodup).2
-          (fun x hx y hy hxy =>
-            hsep x (List.mem_cons.mpr (.inr hx)) y (List.mem_cons.mpr (.inr hy)) hxy)
+/-- Backward direction: if all pairs in a list satisfy Schur separation,
+    and the list is sorted descending with no duplicates, then hasSchurGapFull holds. -/
+private theorem schur_sep_sorted_implies_hasSchurGapFull :
+    ∀ (l : List ℕ),
+    l.Pairwise (· ≥ ·) →
+    l.Nodup →
+    (∀ a ∈ l, ∀ b ∈ l, a ≠ b →
+      if a % 3 = 0 ∨ b % 3 = 0 then (a + 4 ≤ b ∨ b + 4 ≤ a)
+      else (a + 3 ≤ b ∨ b + 3 ≤ a)) →
+    hasSchurGapFull l = true
+  | [], _, _, _ => by simp [hasSchurGapFull]
+  | [_], _, _, _ => by simp [hasSchurGapFull]
+  | a :: b :: rest', hsorted, hnodup, hsep => by
+    simp only [hasSchurGapFull, Bool.and_eq_true, decide_eq_true_eq]
+    constructor
+    · -- Adjacent pair (a, b)
+      have hab : a ≠ b := by
+        intro h_eq
+        have hnd := List.nodup_cons.mp hnodup
+        exact hnd.1 (h_eq ▸ List.mem_cons.mpr (Or.inl rfl))
+      have ha_mem : a ∈ a :: b :: rest' := List.mem_cons.mpr (Or.inl rfl)
+      have hb_mem : b ∈ a :: b :: rest' :=
+        List.mem_cons.mpr (Or.inr (List.mem_cons.mpr (Or.inl rfl)))
+      have hsep_ab := hsep a ha_mem b hb_mem hab
+      -- a ≥ b from sorted
+      have hab_ge : a ≥ b :=
+        (List.pairwise_cons.mp hsorted).1 b (List.mem_cons.mpr (Or.inl rfl))
+      split_ifs at hsep_ab with hmod
+      · -- hmod: a%3=0 ∨ b%3=0, so goal simplifies to a ≥ b + 4
+        simp only [hmod, ↓reduceIte]
+        rcases hsep_ab with h | h <;> omega
+      · -- ¬hmod, so goal simplifies to a ≥ b + 3
+        simp only [hmod, ↓reduceIte]
+        rcases hsep_ab with h | h <;> omega
+    · -- Recursive case
+      exact schur_sep_sorted_implies_hasSchurGapFull (b :: rest')
+        (List.pairwise_cons.mp hsorted).2
+        (List.nodup_cons.mp hnodup).2
+        (fun a' ha' b' hb' hab' =>
+          hsep a' (List.mem_cons.mpr (Or.inr ha'))
+               b' (List.mem_cons.mpr (Or.inr hb')) hab')
 
--- ============================================================================
--- Part XXVI: Schur Gap Bridge Theorem
--- ============================================================================
-
--- Helper: Nodup on toList ↔ Nodup on multiset
-private theorem nodup_toList_iff {n : ℕ} {p : Nat.Partition n} :
-    p.parts.toList.Nodup ↔ p.parts.Nodup := by
-  rw [← Multiset.coe_nodup, Multiset.coe_toList]
-
-/-- **Bridge theorem (Schur Gap Full)**: The decidable corrected Schur gap set
-    equals the noncomputable one. Connects the pairwise Schur separation on the
-    multiset to hasSchurGapFull on the sorted list. -/
+/-- **Bridge theorem (Schur Gap, corrected)**: The decidable corrected Schur gap
+    set equals the noncomputable one. -/
 theorem schurGapFull_eq_schurGapFullPartitions (n : ℕ) :
     PartitionDecidable.schurGapFull n = RogersRamanujan.schurGapFullPartitions n := by
   ext p
   simp only [PartitionDecidable.schurGapFull, RogersRamanujan.schurGapFullPartitions,
-    Finset.mem_filter, Finset.mem_univ, true_and,
-    Bool.and_eq_true, decide_eq_true_eq]
+    Finset.mem_filter, Finset.mem_univ, true_and]
   constructor
   · -- Decidable → noncomputable
     intro ⟨hnodup, hsep⟩
-    exact ⟨nodup_parts_sort_iff.mpr hnodup,
-      decidable_schurSep_sorted_implies_hasSchurGapFull _
+    -- Need: decide (sorted.Nodup) = true ∧ hasSchurGapFull sorted = true
+    simp only [Bool.and_eq_true, decide_eq_true_eq]
+    constructor
+    · exact nodup_parts_sort_iff.mpr hnodup
+    · exact schur_sep_sorted_implies_hasSchurGapFull _
         (p.parts.pairwise_sort (· ≥ ·))
         (nodup_parts_sort_iff.mpr hnodup)
         (fun a ha b hb hab =>
-          hsep a (mem_parts_sort_iff.mp ha) b (mem_parts_sort_iff.mp hb) hab)⟩
+          hsep a (mem_parts_sort_iff.mp ha) b (mem_parts_sort_iff.mp hb) hab)
   · -- Noncomputable → decidable
-    intro ⟨hnodup, hsgf⟩
-    exact ⟨nodup_parts_sort_iff.mp hnodup,
-      fun a ha b hb hab =>
-        hasSchurGapFull_sep _ hsgf
-          a (mem_parts_sort_iff.mpr ha) b (mem_parts_sort_iff.mpr hb) hab⟩
+    intro h
+    simp only [Bool.and_eq_true, decide_eq_true_eq] at h
+    have ⟨hnodup_sorted, hfull⟩ := h
+    constructor
+    · exact nodup_parts_sort_iff.mp hnodup_sorted
+    · intro a ha b hb hab
+      exact hasSchurGapFull_all_pairs_sep _
+        (nodup_parts_sort_iff.mpr (nodup_parts_sort_iff.mp hnodup_sorted))
+        hfull a (mem_parts_sort_iff.mpr ha) b (mem_parts_sort_iff.mpr hb) hab
 
--- ============================================================================
--- Part XXVII: Schur Mod Bridge Theorem
--- ============================================================================
+/-- Nodup equivalence: toList ↔ multiset -/
+private theorem nodup_toList_iff {m : Multiset α} :
+    m.toList.Nodup ↔ m.Nodup := by
+  rw [← Multiset.coe_nodup, Multiset.coe_toList]
 
 /-- **Bridge theorem (Schur Mod)**: The decidable Schur mod set equals the
-    noncomputable one. Connects multiset Nodup + membership to List.all on toList. -/
+    noncomputable one. -/
 theorem schurMod_eq_schurModPartitions (n : ℕ) :
     PartitionDecidable.schurMod n = RogersRamanujan.schurModPartitions n := by
   ext p
   simp only [PartitionDecidable.schurMod, RogersRamanujan.schurModPartitions,
-    Finset.mem_filter, Finset.mem_univ, true_and, RogersRamanujan.partAllModIn,
-    Bool.and_eq_true, decide_eq_true_eq]
+    Finset.mem_filter, Finset.mem_univ, true_and, RogersRamanujan.partAllModIn]
   constructor
-  · -- Decidable → noncomputable
-    intro ⟨hnodup, hmod⟩
-    refine ⟨nodup_toList_iff.mpr hnodup, ?_⟩
-    show p.parts.toList.all (fun x => decide ((x % 3) ∈ [1, 2])) = true
-    rw [List.all_eq_true]
-    intro a ha
-    have := hmod a (Multiset.mem_toList.mp ha)
-    simp only [decide_eq_true_eq, List.mem_cons, List.not_mem_nil, or_false]
-    exact this
-  · -- Noncomputable → decidable
-    intro ⟨hnodup_list, hmod_list⟩
-    refine ⟨nodup_toList_iff.mp hnodup_list, ?_⟩
-    have hall : p.parts.toList.all (fun x => decide ((x % 3) ∈ [1, 2])) = true := hmod_list
-    rw [List.all_eq_true] at hall
-    intro a ha
-    have := hall a (Multiset.mem_toList.mpr ha)
-    simp only [decide_eq_true_eq, List.mem_cons, List.not_mem_nil, or_false] at this
-    exact this
+  · intro ⟨hnodup, hmod⟩
+    simp only [Bool.and_eq_true, decide_eq_true_eq]
+    constructor
+    · exact nodup_toList_iff.mpr hnodup
+    · rw [List.all_eq_true]
+      intro a ha
+      have := hmod a (Multiset.mem_toList.mp ha)
+      simp only [decide_eq_true_eq, List.mem_cons, List.not_mem_nil, or_false]
+      exact this
+  · intro h
+    simp only [Bool.and_eq_true, decide_eq_true_eq] at h
+    have ⟨hnodup_list, hmod_list⟩ := h
+    constructor
+    · exact nodup_toList_iff.mp hnodup_list
+    · rw [List.all_eq_true] at hmod_list
+      intro a ha
+      have := hmod_list a (Multiset.mem_toList.mpr ha)
+      simp only [decide_eq_true_eq, List.mem_cons, List.not_mem_nil, or_false] at this
+      exact this
 
--- ============================================================================
--- Part XXVIII: Derived Corrected Schur Identity (Decidable)
--- ============================================================================
-
-/-- **Derived Corrected Schur Partition Identity (decidable)**: The decidable
-    corrected Schur gap count equals the decidable Schur mod count. This follows
-    from the axiomatized noncomputable identity via the bridge theorems. -/
+/-- **Derived Corrected Schur Identity (decidable)**: The decidable corrected
+    Schur gap count equals the decidable Schur mod count. -/
 theorem schur_partition_identity_corrected_decidable (n : ℕ) :
     (PartitionDecidable.schurGapFull n).card = (PartitionDecidable.schurMod n).card := by
   rw [schurGapFull_eq_schurGapFullPartitions, schurMod_eq_schurModPartitions]
   exact RogersRamanujan.schur_partition_identity_corrected n
 
 -- ============================================================================
--- Part XXIX: Final Summary
+-- Part XXV: Final Summary
 -- ============================================================================
 
 /-
@@ -1460,8 +1441,8 @@ theorem schur_partition_identity_corrected_decidable (n : ℕ) :
   - rr1Mod5_eq_rr1Mod5Partitions: decidable RR1 mod = noncomputable RR1 mod
   - rr2Gap_eq_rr2GapPartitions: decidable RR2 gap = noncomputable RR2 gap
   - rr2Mod5_eq_rr2Mod5Partitions: decidable RR2 mod = noncomputable RR2 mod
-  - schurGapFull_eq_schurGapFullPartitions: decidable Schur gap = noncomputable Schur gap
-  - schurMod_eq_schurModPartitions: decidable Schur mod = noncomputable Schur mod
+  - schurGapFull_eq_schurGapFullPartitions: decidable corrected Schur gap = noncomputable
+  - schurMod_eq_schurModPartitions: decidable Schur mod = noncomputable
 
 ### Derived Identities (3):
   - rogers_ramanujan_first_decidable: |rr1Gap n| = |rr1Mod5 n|
@@ -1469,20 +1450,14 @@ theorem schur_partition_identity_corrected_decidable (n : ℕ) :
   - schur_partition_identity_corrected_decidable: |schurGapFull n| = |schurMod n|
     (All follow from axioms + bridge theorems)
 
-### Schur Gap Bridge Supporting Theorems:
-  - hasSchurGapFull_implies_hasMinGap3: Schur gap → uniform gap ≥ 3
-  - hasSchurGapFull_pairwise: forward Pairwise direction (sorted → ordered pairs)
-  - hasSchurGapFull_sep: forward symmetric direction (for all distinct elements)
-  - decidable_schurSep_sorted_implies_hasSchurGapFull: backward direction
+### All bridges complete.
 
-### Total Statistics:
-  Definitions: 16
-  Axioms: 4 (RR1, RR2, Schur simplified, Schur corrected)
-  Proved theorems: 48+
-  Bridge theorems: 6 (complete coverage)
-  Derived identities: 3 (complete coverage)
-  Computational verifications: 44+
-  Sorries: 0
+### Axioms (4):
+  rogers_ramanujan_first, rogers_ramanujan_second,
+  schur_partition_identity (simplified, deprecated - known wrong at n=9),
+  schur_partition_identity_corrected (full gap condition)
+
+### Sorries: 0
 -/
 
 end
