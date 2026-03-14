@@ -37,6 +37,11 @@ showing SAT is NP-complete.
   * poly_reduce_in_P (if B ∈ P and A ≤ₚ B then A ∈ P)
   * NPC_in_P_implies_P_eq_NP (NP-complete problem in P implies P = NP)
   * P_subset_NP (P ⊆ NP)
+  * P_eq_NP_implies_NP_eq_coNP (P = NP implies NP = coNP)
+  * NP_ne_coNP_implies_P_ne_NP (contrapositive approach)
+  * NPComplete_of_reduce (Karp's theorem: NPC transfer)
+  * NPHard_of_reduce (NP-hardness upward closure)
+  * P_ne_NP_implies_NPC_not_in_P (separation consequence)
 - Polynomial.eval uses (n+1)^degree to avoid n=0 degenerate cases
 - PolyReduction extended with output size bounds for proper composition
 - Turing machines modeled abstractly; full formalization would require ~10,000+ lines
@@ -864,7 +869,89 @@ theorem NPC_in_P_implies_P_eq_NP :
   exact poly_reduce_P_preserved h_reduce h_L_in_P
 
 -- ============================================================
--- PART 15: Known Results and Barriers
+-- PART 15: Structural Theorems of Complexity Theory
+-- ============================================================
+
+/-- P = NP if and only if NP ⊆ P.
+    The forward direction is trivial; the reverse combines with P ⊆ NP. -/
+theorem P_eq_NP_iff_NP_subset_P : P = NP ↔ NP ⊆ P := by
+  constructor
+  · intro h; rw [h]
+  · intro h; exact Set.eq_of_subset_of_subset P_subset_NP h
+
+/-- If P = NP, then NP = coNP.
+    Since P is closed under complement and P = NP, NP inherits
+    closure under complement, giving NP = coNP.
+
+    Contrapositive: NP ≠ coNP implies P ≠ NP (a potentially easier
+    approach to separating P from NP). -/
+theorem P_eq_NP_implies_NP_eq_coNP (h : P = NP) : NP = coNP := by
+  apply Set.eq_of_subset_of_subset
+  -- NP ⊆ coNP: For problem in NP, show complement(problem) in NP
+  · intro problem h_np
+    simp only [coNP, Set.mem_setOf_eq]
+    -- problem ∈ NP = P, so problem ∈ P
+    rw [← h] at h_np
+    -- complement(problem) ∈ P by closure
+    have h_comp_P := (P_closed_complement problem).mp h_np
+    -- P ⊆ NP
+    exact P_subset_NP h_comp_P
+  -- coNP ⊆ NP: For problem in coNP, complement(problem) in NP = P
+  · intro problem h_conp
+    simp only [coNP, Set.mem_setOf_eq] at h_conp
+    -- complement(problem) ∈ NP = P
+    rw [← h] at h_conp
+    -- problem = complement(complement(problem)) ∈ P
+    have h_comp_comp : inP problem := by
+      have := (P_closed_complement (complement problem)).mp h_conp
+      simp only [complement, Bool.not_not] at this
+      exact this
+    -- P ⊆ NP
+    exact P_subset_NP h_comp_comp
+
+/-- Contrapositive: NP ≠ coNP implies P ≠ NP.
+    This is a standard approach: proving NP ≠ coNP would separate P from NP. -/
+theorem NP_ne_coNP_implies_P_ne_NP (h : NP ≠ coNP) : P ≠ NP := by
+  intro h_eq
+  exact h (P_eq_NP_implies_NP_eq_coNP h_eq)
+
+/-- NP-hardness is upward-closed under polynomial reductions.
+    If A is NP-hard and A ≤ₚ B, then B is NP-hard.
+
+    Proof: Every NP problem reduces to A (NP-hardness), and A reduces
+    to B, so by transitivity every NP problem reduces to B. -/
+theorem NPHard_of_reduce {A B : DecisionProblem}
+    (hA : NPHard A) (hab : A ≤ₚ B) : NPHard B := by
+  intro other h_np
+  exact poly_reduce_trans (hA other h_np) hab
+
+/-- **Karp's Theorem**: NP-completeness transfers via polynomial reductions.
+    If A is NP-complete, A ≤ₚ B, and B ∈ NP, then B is NP-complete.
+
+    This is the standard technique for proving NP-completeness:
+    reduce a known NP-complete problem to the target problem. -/
+theorem NPComplete_of_reduce {A B : DecisionProblem}
+    (hA : NPComplete A) (hab : A ≤ₚ B) (hB_NP : inNP B) : NPComplete B :=
+  ⟨hB_NP, NPHard_of_reduce hA.2 hab⟩
+
+/-- If P ≠ NP, then no NP-complete problem is in P. -/
+theorem P_ne_NP_implies_NPC_not_in_P (h : P_ne_NP_Conjecture) :
+    ∀ problem, NPComplete problem → ¬inP problem := by
+  intro problem h_npc h_p
+  apply h
+  exact NPC_in_P_implies_P_eq_NP ⟨problem, h_npc, h_p⟩
+
+/-- If P = NP, then the polynomial hierarchy collapses:
+    every level of PH equals P.
+    We state this for Σ₁ᵖ = NP as the base case. -/
+theorem P_eq_NP_implies_PH_collapse_base (h : P = NP) :
+    ∀ problem, inNP problem → inP problem := by
+  intro problem h_np
+  rw [← h] at h_np
+  exact h_np
+
+-- ============================================================
+-- PART 16: Known Results and Barriers
 -- ============================================================
 
 /-- Time Hierarchy Theorem: Given more time, we can solve more problems.
@@ -887,7 +974,7 @@ def EXPTIME : Set DecisionProblem := { problem |
 axiom P_ne_EXPTIME : P ≠ EXPTIME
 
 -- ============================================================
--- PART 16: Ladner's Theorem (NP-Intermediate Problems)
+-- PART 17: Ladner's Theorem (NP-Intermediate Problems)
 -- ============================================================
 
 /-- **Ladner's Theorem (1975):** If P ≠ NP, then there exist problems
@@ -919,6 +1006,15 @@ axiom ladner : P_ne_NP_Conjecture →
 5. **Ladner's Theorem** (`ladner`): If P ≠ NP, then NP-intermediate
    problems exist.
 
+6. **P = NP → NP = coNP** (`P_eq_NP_implies_NP_eq_coNP`): P = NP implies
+   NP is closed under complement.
+
+7. **NP ≠ coNP → P ≠ NP** (`NP_ne_coNP_implies_P_ne_NP`): Contrapositive
+   approach to separating P from NP.
+
+8. **Karp's Theorem** (`NPComplete_of_reduce`): NP-completeness transfers
+   via polynomial reductions.
+
 ### The Million Dollar Question
 
 The P vs NP problem asks: Does P = NP?
@@ -942,3 +1038,8 @@ end PvsNP
 #check PvsNP.cook_levin
 #check PvsNP.P_ne_NP_Conjecture
 #check PvsNP.NPC_in_P_implies_P_eq_NP
+#check PvsNP.P_eq_NP_implies_NP_eq_coNP
+#check PvsNP.NP_ne_coNP_implies_P_ne_NP
+#check PvsNP.NPComplete_of_reduce
+#check PvsNP.NPHard_of_reduce
+#check PvsNP.P_ne_NP_implies_NPC_not_in_P
