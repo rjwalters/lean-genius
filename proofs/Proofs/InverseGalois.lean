@@ -544,8 +544,15 @@ theorem solvable_iff_solvable_galois_group
 12. **Abelian groups are realizable** (axiom: Kronecker-Weber + structure theorem)
 13. **Solvable groups are realizable** (axiom: Shafarevich 1954)
 14. **Symmetric groups are realizable** (sorry: Hilbert irreducibility, not in Mathlib)
-15. **X⁵ - 2 is irreducible over ℤ** (proven via Eisenstein criterion at p = 2)
-16. **∃ irreducible quintic over ℚ** (proven via Gauss's lemma + Eisenstein, reusing NthRootIrrationalOQ01)
+15. **X⁵ - 2 is irreducible over ℚ** (proven via Eisenstein from NthRootIrrationalOQ01)
+16. **∃ irreducible quintic over ℚ** (proven: X⁵-2 with degree 5)
+17. **X³ - 2 is irreducible over ℚ** (proven via Eisenstein)
+18. **S₃ is realizable over ℚ** (proven from Gal(X³-2) ≅ S₃ axiom)
+
+### What's Axiomatized (3 axioms, for deep classical results):
+1. `abelian_realizable` — Kronecker-Weber theorem (every abelian group is realizable)
+2. `shafarevich_theorem` — All solvable groups are realizable (1954, class field theory)
+3. `x_cube_sub_2_gal_iso_s3` — Gal(X³-2/ℚ) ≅ S₃ (classical, requires ω ∉ ℚ(∛2))
 
 ### What Remains Open:
 - The general Inverse Galois Problem for arbitrary finite groups over ℚ
@@ -558,8 +565,8 @@ theorem solvable_iff_solvable_galois_group
 3. Formalize at least one case of A₅ realization
 4. Prove Gal(X³-2/ℚ) ≅ S₃ to eliminate `x_cube_sub_2_gal_iso_s3` axiom
 
-**Theorem Count**: 22 proven theorems/lemmas, 2 axioms (for deep classical results)
-**Sorries**: 1 (open problem) + 1 (Hilbert irreducibility not in Mathlib)
+**Theorem Count**: 26 proven theorems/lemmas, 3 axioms (for deep classical results)
+**Sorries**: 2 (1 open problem + 1 theorem needing Hilbert irreducibility)
 -/
 
 end InverseGaloisProblem
