@@ -1521,6 +1521,7 @@ theorem adjoin_cos_le_adjoin_zeta (n : ℕ) :
     IntermediateField.adjoin ℚ ({zeta n} : Set ℂ) :=
   IntermediateField.adjoin_le_iff.mpr (Set.singleton_subset_iff.mpr (cos_mem_adjoin_zeta n))
 
+set_option maxHeartbeats 800000 in
 /-- The minimal polynomial of cos(2π/n) has degree exactly φ(n)/2.
 
     Proof: Cyclotomic tower law.
@@ -1554,10 +1555,59 @@ theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
   have h_finrank_E := finrank_adjoin_zeta n (by omega : 1 ≤ n)
   -- Step 4: F ≤ E
   have hFE : F ≤ E := adjoin_cos_le_adjoin_zeta n
-  -- Step 5: Tower law: finrank ℚ E = finrank ℚ F * finrank F E
-  -- (where F is viewed as a subalgebra of E via the inclusion)
-  -- Step 6: finrank F E = 2 (ζ satisfies irreducible quadratic over F)
-  -- Step 7: φ(n) = finrank ℚ F * 2, so finrank ℚ F = φ(n) / 2
-  sorry
+  -- Step 5: ℚ(cos) ⊂ ℝ (every element of F has zero imaginary part)
+  have hF_real : ∀ x ∈ (F : Set ℂ), (x : ℂ).im = 0 := by
+    intro x hx
+    induction hx using IntermediateField.adjoin_induction with
+    | mem y hy =>
+      rw [Set.mem_singleton_iff.mp hy, hc_def]; exact Complex.ofReal_im _
+    | algebraMap q => exact_mod_cast Complex.ofReal_im _
+    | add a b ha hb => simp [Complex.add_im, *]
+    | inv a _ ih =>
+      show (a⁻¹).im = 0
+      by_cases ha0 : a = 0
+      · simp [ha0]
+      · have hre : a = ↑a.re := Complex.ext rfl (by rw [Complex.ofReal_im]; exact ih)
+        rw [hre, ← Complex.ofReal_inv]; exact Complex.ofReal_im _
+    | mul a b ha hb => simp [Complex.mul_im, *]
+  -- Step 6: ζ ∉ F (since ζ.im ≠ 0 but all of F has im = 0)
+  have hζ_notin_F : ζ ∉ (F : Set ℂ) := by
+    intro hζF
+    apply zeta_not_ofReal n hn
+    exact ⟨ζ.re, Complex.ext rfl (hF_real ζ hζF)⟩
+  -- Step 7: F < E (strict containment)
+  have hFE_strict : F < E := lt_of_le_of_ne hFE (by
+    intro h_eq
+    exact hζ_notin_F (h_eq ▸ IntermediateField.mem_adjoin_simple_self ℚ ζ))
+  -- Step 8: Set up algebra tower ℚ → ↥F → ↥E
+  haveI : FiniteDimensional ℚ ↥E := adjoin.finiteDimensional (zeta_isIntegral n (by omega))
+  haveI : FiniteDimensional ℚ ↥F := adjoin.finiteDimensional h_int_c
+  letI algFE : Algebra ↥F ↥E :=
+    (IntermediateField.inclusion hFE).toRingHom.toAlgebra
+  haveI : IsScalarTower ℚ ↥F ↥E := IsScalarTower.of_algebraMap_eq (fun q => by
+    show (IntermediateField.inclusion hFE) ((algebraMap ℚ ↥F) q) = (algebraMap ℚ ↥E) q
+    ext; rfl)
+  -- Step 9: Tower law + [E:F] = 2 → finrank ℚ F = φ(n)/2
+  -- Tower law: [E:ℚ] = [F:ℚ] * [E:F]
+  have h_tower := Module.finrank_mul_finrank ℚ ↥F ↥E
+  -- [E:F] ≤ 2: ζ satisfies X² - 2cos·X + 1 over F (degree 2)
+  -- [E:F] ≥ 2: F ≠ E (ζ ∉ F), so strict containment, so [E:F] > 1
+  -- Therefore [E:F] = 2 and φ(n) = 2 * finrank ℚ F
+  have h_ef_eq : Module.finrank ↥F ↥E = 2 := by
+    -- Upper bound: [E:F] ≤ 2 via the quadratic X²-2cos·X+1
+    have h_le : Module.finrank ↥F ↥E ≤ 2 := by sorry
+      -- Proof sketch: ζ_E satisfies p = X²-2c_F·X+1 ∈ F[X] (degree 2)
+      -- → minpoly F ζ_E divides p → degree(minpoly) ≤ 2
+      -- → adjoin F {ζ_E} = ⊤ (ζ generates E over ℚ ⊆ F)
+      -- → [E:F] = degree(minpoly) ≤ 2
+    -- Lower bound: [E:F] ≥ 2 from tower law + strict inequality
+    -- [E:F] = 0 impossible (φ(n) ≥ 2), [E:F] = 1 impossible (F ⊊ E)
+    have h_ge : Module.finrank ↥F ↥E ≥ 2 := by sorry
+    omega
+  -- Step 10: Goal is already finrank ℚ ↥F = n.totient / 2 (from rw in Steps 1-2)
+  -- From tower: finrank ℚ F * 2 = finrank ℚ E = φ(n)
+  have h_eq : Module.finrank ℚ ↥F * 2 = Nat.totient n := by
+    have := h_tower; rw [h_ef_eq] at this; linarith [h_finrank_E]
+  omega
 
 end AngleTrisectionOQ02OQ03
