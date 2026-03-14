@@ -1061,4 +1061,164 @@ theorem rr2Mod5_eq_rr2Mod5Partitions (n : ℕ) :
   logically from the axiomatized identities.
 -/
 
+-- ============================================================================
+-- Part XXIII: RR2 Gap Bridge Theorem
+-- ============================================================================
+
+/-
+The RR2 gap bridge is more complex than RR1 because RR2 has an extra condition:
+  - Noncomputable: `partHasMinGap p 2 && (n == 0 || partSmallestPart p ≥ 2)`
+  - Decidable: `Nodup ∧ pairwise_sep ∧ (∀ a ∈ p.parts, 2 ≤ a)`
+
+We need helper lemmas about `partSmallestPart` to bridge the smallest-part condition.
+-/
+
+/-- If `p.parts` is nonempty, its smallest part belongs to the multiset. -/
+private lemma smallest_part_mem_parts {n : ℕ} {p : Nat.Partition n}
+    (hne : p.parts ≠ 0) :
+    RogersRamanujan.partSmallestPart p ∈ p.parts := by
+  simp only [RogersRamanujan.partSmallestPart]
+  have hsorted := p.parts.sort_eq (· ≤ ·)
+  -- The sorted list is nonempty since p.parts is nonempty
+  match hm : p.parts.sort (· ≤ ·) with
+  | [] =>
+    -- Contradiction: sorted list empty but multiset nonempty
+    have : (p.parts.sort (· ≤ ·) : Multiset ℕ) = p.parts := hsorted
+    rw [hm] at this
+    simp at this
+    exact absurd this.symm hne
+  | a :: rest =>
+    -- a is the head of the sorted list, hence a ∈ sorted list ↔ a ∈ multiset
+    have : a ∈ (p.parts.sort (· ≤ ·)) := hm ▸ List.mem_cons_self ..
+    rwa [← Multiset.mem_coe, hsorted] at this
+
+/-- If all parts ≥ 2, then `partSmallestPart p ≥ 2` (when parts nonempty). -/
+private lemma all_ge_two_implies_smallest_ge_two {n : ℕ} {p : Nat.Partition n}
+    (hne : p.parts ≠ 0)
+    (hall : ∀ a ∈ p.parts, 2 ≤ a) :
+    RogersRamanujan.partSmallestPart p ≥ 2 :=
+  hall _ (smallest_part_mem_parts hne)
+
+/-- If `partSmallestPart p ≥ 2` and parts nonempty, then all parts ≥ 2.
+    (The smallest part is the minimum of the sorted list.) -/
+private lemma smallest_ge_two_implies_all_ge_two {n : ℕ} {p : Nat.Partition n}
+    (hne : p.parts ≠ 0)
+    (hsmall : RogersRamanujan.partSmallestPart p ≥ 2) :
+    ∀ a ∈ p.parts, 2 ≤ a := by
+  intro a ha
+  simp only [RogersRamanujan.partSmallestPart] at hsmall
+  have hsorted_eq := p.parts.sort_eq (· ≤ ·)
+  have hsorted := p.parts.pairwise_sort (· ≤ ·)
+  match hm : p.parts.sort (· ≤ ·) with
+  | [] =>
+    have : (p.parts.sort (· ≤ ·) : Multiset ℕ) = p.parts := hsorted_eq
+    rw [hm] at this; simp at this; exact absurd this.symm hne
+  | head :: rest =>
+    rw [hm] at hsmall
+    -- head ≥ 2, and sorted ascending means all elements ≥ head
+    have ha_in_sorted : a ∈ (p.parts.sort (· ≤ ·)) := by
+      rwa [← Multiset.mem_coe, hsorted_eq]
+    rw [hm] at ha_in_sorted hsorted
+    rcases List.mem_cons.mp ha_in_sorted with rfl | ha_rest
+    · exact hsmall
+    · -- a is in rest, and sorted means head ≤ a
+      have hpw := (List.pairwise_cons.mp hsorted).1
+      exact le_trans hsmall (hpw a ha_rest)
+
+/-- For n = 0, the partition has empty parts. -/
+private lemma parts_empty_of_n_zero {p : Nat.Partition 0} :
+    p.parts = 0 := by
+  by_contra h
+  obtain ⟨a, ha⟩ := Multiset.exists_mem_of_ne_zero h
+  have hpos := p.parts_pos ha
+  have hsum := p.parts_sum
+  obtain ⟨rest, hrest⟩ := Multiset.exists_cons_of_mem ha
+  rw [hrest, Multiset.sum_cons] at hsum
+  omega
+
+/-- **Bridge theorem (RR2 Gap)**: The decidable RR2 gap set equals the
+    noncomputable one. Bridges both the gap condition AND the smallest-part
+    condition. -/
+theorem rr2Gap_eq_rr2GapPartitions (n : ℕ) :
+    PartitionDecidable.rr2Gap n = RogersRamanujan.rr2GapPartitions n := by
+  ext p
+  simp only [PartitionDecidable.rr2Gap, RogersRamanujan.rr2GapPartitions,
+    Finset.mem_filter, Finset.mem_univ, true_and, RogersRamanujan.partHasMinGap,
+    Bool.and_eq_true, Bool.or_eq_true, beq_iff_eq, decide_eq_true_eq]
+  constructor
+  · -- Decidable → noncomputable
+    intro ⟨hnodup, hsep, hall⟩
+    -- Gap condition: same as RR1 bridge
+    have hgap := PartitionDecidable.decidable_gap_sorted_implies_hasMinGap _ 2
+      (p.parts.pairwise_sort (· ≥ ·))
+      (nodup_parts_sort_iff.mpr hnodup)
+      (fun a ha b hb hab =>
+        hsep a (mem_parts_sort_iff.mp ha) b (mem_parts_sort_iff.mp hb) hab)
+    refine ⟨hgap, ?_⟩
+    -- Smallest part condition: n = 0 ∨ partSmallestPart p ≥ 2
+    by_cases hn : n = 0
+    · left; exact hn
+    · right
+      have hne : p.parts ≠ 0 := by
+        intro h; apply hn
+        have := p.parts_sum; rw [h] at this; simp at this; exact this.symm
+      exact all_ge_two_implies_smallest_ge_two hne hall
+  · -- Noncomputable → decidable
+    intro ⟨hgap, hsmall⟩
+    -- Gap → nodup + sep (same as RR1 bridge backward)
+    have hnodup := nodup_parts_sort_iff.mp (RogersRamanujan.hasMinGap_ge_one_nodup _ 2 (by omega) hgap)
+    have hsep := fun a ha b hb hab =>
+        hasMinGap_pairwise_sep _ 2 (by omega) hgap
+          a (mem_parts_sort_iff.mpr ha) b (mem_parts_sort_iff.mpr hb) hab
+    refine ⟨hnodup, hsep, ?_⟩
+    -- Smallest part condition
+    rcases hsmall with hn0 | hge2
+    · -- n = 0: parts are empty, vacuously true
+      subst hn0
+      intro a ha
+      exact absurd (parts_empty_of_n_zero ▸ ha : a ∈ (0 : Multiset ℕ))
+        (Multiset.not_mem_zero a)
+    · -- partSmallestPart ≥ 2: all parts ≥ 2
+      have hne : p.parts ≠ 0 := by
+        intro h
+        simp only [RogersRamanujan.partSmallestPart] at hge2
+        have hempty : p.parts.sort (· ≤ ·) = [] := by
+          rw [List.eq_nil_iff_forall_not_mem]
+          intro x hx
+          have := (Multiset.mem_sort (· ≤ ·)).mp hx
+          rw [h] at this
+          exact Multiset.notMem_zero x this
+        rw [hempty] at hge2
+        simp at hge2
+      exact smallest_ge_two_implies_all_ge_two hne hge2
+
+/-- **Derived Rogers-Ramanujan Second Identity (decidable)**: The decidable
+    RR2 gap count equals the decidable RR2 mod count. -/
+theorem rogers_ramanujan_second_decidable (n : ℕ) :
+    (PartitionDecidable.rr2Gap n).card = (PartitionDecidable.rr2Mod5 n).card := by
+  rw [rr2Gap_eq_rr2GapPartitions, rr2Mod5_eq_rr2Mod5Partitions]
+  exact RogersRamanujan.rogers_ramanujan_second n
+
+-- ============================================================================
+-- Part XXIV: Final Summary
+-- ============================================================================
+
+/-
+## Complete Bridge Theorems Summary
+
+### Equivalence Theorems (4):
+  - rr1Gap_eq_rr1GapPartitions: decidable RR1 gap = noncomputable RR1 gap
+  - rr1Mod5_eq_rr1Mod5Partitions: decidable RR1 mod = noncomputable RR1 mod
+  - rr2Gap_eq_rr2GapPartitions: decidable RR2 gap = noncomputable RR2 gap
+  - rr2Mod5_eq_rr2Mod5Partitions: decidable RR2 mod = noncomputable RR2 mod
+
+### Derived Identities (2):
+  - rogers_ramanujan_first_decidable: |rr1Gap n| = |rr1Mod5 n|
+  - rogers_ramanujan_second_decidable: |rr2Gap n| = |rr2Mod5 n|
+    (Both follow from axioms + bridge theorems)
+
+### Remaining bridges needed:
+  - Schur gap bridge (corrected Schur gap definition)
+-/
+
 end
