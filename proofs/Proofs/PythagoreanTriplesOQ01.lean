@@ -457,15 +457,15 @@ axiom coprime_fraction_in_sector :
       atTop (𝓝 (6 / π ^ 2))
 
 /-- Both-odd fraction: among coprime sector points, the fraction with both m,n odd
-approaches 1/3. This is equivalent to parity_class_equidistribution (via bothOdd_eq_oo),
-so only one of the two is truly independent. We keep this as an axiom here because
-coprimeOddOddCount is defined later in Part XII.
-
+approaches 1/3. PROVED from parity_class_equidistribution via bothOdd_eq_oo.
 By parity_axiom_equivalent, this immediately gives the 2/3 primitive fraction. -/
-axiom bothOdd_fraction_in_coprime_sector :
+theorem bothOdd_fraction_in_coprime_sector :
     Tendsto (fun N : ℕ =>
       (bothOddCoprimeCount N : ℝ) / (coprimeInSectorCount N : ℝ))
-      atTop (𝓝 (1 / 3))
+      atTop (𝓝 (1 / 3)) := by
+  have heq : ∀ N, (bothOddCoprimeCount N : ℝ) = (coprimeOddOddCount N : ℝ) := by
+    intro N; exact_mod_cast bothOdd_eq_oo N
+  exact (Filter.tendsto_congr (fun N => by rw [heq N])).mpr parity_class_equidistribution
 
 /-- Parity sieving: among coprime sector points, the fraction with m ≢ n (mod 2)
 approaches 2/3. PROVED from bothOdd_fraction_in_coprime_sector via
@@ -720,6 +720,14 @@ theorem bothOdd_eq_oo (N : ℕ) :
     obtain ⟨a, ha⟩ := hm_odd; obtain ⟨b, hb⟩ := hn_odd
     obtain ⟨c, hc⟩ := h_odd_diff
     omega
+
+/-- **Equidistribution Axiom**: OO/coprime → 1/3 among coprime sector pairs.
+Each non-both-even parity class has density 1/3. The circle constraint
+introduces only boundary effects that vanish as N → ∞. -/
+axiom parity_class_equidistribution :
+    Tendsto (fun N : ℕ =>
+      (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (1 / 3))
 
 /-- primitiveTripleCount equals EO + OE (the mixed-parity coprime pairs). -/
 theorem primitive_eq_eo_plus_oe (N : ℕ) :
@@ -977,39 +985,12 @@ We can express this as: the parity axiom follows from showing that EACH of
 the three parity classes has the same asymptotic density in the coprime sector.
 -/
 
-/-- **Equidistribution Axiom** (cleaner than the parity axiom):
-Each of the three non-both-even parity classes has density 1/3 among coprime
-sector pairs. This is the natural statement: residue classes are equidistributed.
-
-NOTE: We already proved |OE| = |OO| exactly in the triangle. The circle
-constraint only introduces boundary effects that vanish as N → ∞. So this
-axiom is "morally proved" for 2 of the 3 classes. -/
-axiom parity_class_equidistribution :
-    Tendsto (fun N : ℕ =>
-      (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
-      atTop (𝓝 (1 / 3))
-
-/-- The parity axiom follows from equidistribution. -/
+/-- The parity axiom follows from equidistribution (alternative derivation path). -/
 theorem parity_axiom_from_equidistribution :
     Tendsto (fun N : ℕ =>
       (primitiveTripleCount N : ℝ) / (coprimeInSectorCount N : ℝ))
-      atTop (𝓝 (2 / 3)) := by
-  apply parity_axiom_equivalent
-  have heq : ∀ N, (bothOddCoprimeCount N : ℝ) = (coprimeOddOddCount N : ℝ) := by
-    intro N; exact_mod_cast bothOdd_eq_oo N
-  exact (Filter.tendsto_congr (fun N => by rw [heq N])).mpr parity_class_equidistribution
-
-/-- **Axiom redundancy**: bothOdd_fraction_in_coprime_sector is derivable from
-parity_class_equidistribution via bothOdd_eq_oo. This means only 3 axioms are
-truly independent: sector_lattice_point_density, coprime_fraction_in_sector,
-and parity_class_equidistribution (which implies bothOdd_fraction). -/
-theorem bothOdd_fraction_from_equidistribution :
-    Tendsto (fun N : ℕ =>
-      (bothOddCoprimeCount N : ℝ) / (coprimeInSectorCount N : ℝ))
-      atTop (𝓝 (1 / 3)) := by
-  have heq : ∀ N, (bothOddCoprimeCount N : ℝ) = (coprimeOddOddCount N : ℝ) := by
-    intro N; exact_mod_cast bothOdd_eq_oo N
-  exact (Filter.tendsto_congr (fun N => by rw [heq N])).mpr parity_class_equidistribution
+      atTop (𝓝 (2 / 3)) :=
+  parity_fraction_in_coprime_sector
 
 /-
 ## Part XV-B: Three-Class Equidistribution Derivation
@@ -1037,12 +1018,26 @@ theorem eo_equidistribution
     Tendsto (fun N : ℕ =>
       (coprimeEvenOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
       atTop (𝓝 (1 / 3)) := by
-  -- Proof sketch: By coprime_sector_three_way_partition, EO = C - OE - OO.
-  -- For large N, C > 0, so EO/C = 1 - OE/C - OO/C → 1 - 1/3 - 1/3 = 1/3.
-  -- The limit arithmetic follows from (tendsto_const_nhds.sub h_oe).sub h_oo.
-  -- Needs eventual equality (C > 0 for large N) to convert between
-  -- the pointwise partition and the ratio identity.
-  sorry
+  -- Target: 1/3 = 1 - 1/3 - 1/3
+  have htgt : (1 : ℝ) / 3 = 1 - 1 / 3 - 1 / 3 := by ring
+  rw [htgt]
+  -- EO/C = 1 - OE/C - OO/C eventually (from the three-way partition)
+  have hsub : Tendsto (fun N : ℕ =>
+      1 - (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ)
+        - (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
+      atTop (𝓝 (1 - 1 / 3 - 1 / 3)) :=
+    (tendsto_const_nhds.sub h_oe).sub h_oo
+  refine (Filter.tendsto_congr' ?_).mp hsub
+  filter_upwards [Filter.eventually_ge_atTop 5] with N hN
+  have hC : (coprimeInSectorCount N : ℝ) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (coprimeInSectorCount_pos hN).ne'
+  have hpart := coprime_sector_three_way_partition N
+  -- EO(N) = C(N) - OE(N) - OO(N) from the partition
+  have heo : (coprimeEvenOddCount N : ℝ) =
+      (coprimeInSectorCount N : ℝ) - (coprimeOddEvenCount N : ℝ)
+        - (coprimeOddOddCount N : ℝ) := by
+    push_cast [hpart]; ring
+  rw [heo, sub_div, sub_div, div_self hC]
 
 /-
 ## Part XVI: Per-Column Involution
