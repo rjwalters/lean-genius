@@ -3,6 +3,60 @@
 
 ---
 
+## Session 2026-03-14 (Sessions 28-31) - Extended Landscape + Axiom Reduction + Space Complexity
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 71→87)
+**Problem**: pnp-barriers
+**Prior Status**: progress
+**PR**: #3753
+
+**What we did across 4 iterations**:
+
+### Iteration 1: Extended Complexity Landscape
+1. Added BPP (bounded-error probabilistic polynomial time) with formal definition
+2. Added #P counting class with Toda's theorem (PH ⊆ P^#P)
+3. Added circuit complexity: P/poly, Adleman (BPP ⊆ P/poly), Karp-Lipton
+4. Added derandomization: Nisan-Wigderson (hard function in EXP → BPP = P)
+5. Proved `derandomization_tension`: NW + natural proofs barrier
+6. Added IP (interactive proofs) with Shamir's theorem (IP = PSPACE)
+7. Proved NP ⊆ IP, `extended_complexity_chain`, `barrier_landscape`
+
+### Iteration 2: Axiom Reduction (Φ_pair_project_first)
+8. Introduced `Φ_pair_project_first` axiom (pair decomposition primitive)
+9. Proved `P_rel_subset_NP_rel` from Φ_pair_project_first (was axiom)
+10. Proved `P_subset_BPP` from Φ_pair_project_first (was axiom)
+11. Net: +1 primitive axiom, -2 high-level axioms
+
+### Iteration 3: BPP Complement Closure
+12. Proved `BPP_complement_closed` from `Φ_negate` (was axiom)
+13. Net: -1 axiom
+
+### Iteration 4: Space Complexity
+14. Added L (LOGSPACE), NL (NLOGSPACE), coNL definitions
+15. Added Immerman-Szelepcsényi theorem (NL = coNL)
+16. Proved NL_complement_closed, space_containment_chain, NL_coNL_contrast
+17. 2 new axioms (NL_subset_P, immerman_szelepcsenyi)
+
+**Final stats**:
+- 1086 → ~1650 lines (+564)
+- 11 → 20 axioms (9 new for extended landscape, but 3 former axioms now proved)
+- ~40 → 60+ theorems
+- 0 sorries, Docker build passes
+
+**Key insights**:
+- `Φ_pair_project_first` is a powerful primitive: it enables proving P⊆NP and P⊆BPP
+- `derandomization_tension` captures the central structural tension in complexity theory
+- NL = coNL contrasts with the open NP vs coNP question
+- The barrier_landscape meta-theorem shows barriers are specific to P vs NP, not complexity theory in general
+
+**Next steps**:
+1. Try to prove `reduction_preserves_P` from `poly_time_compose` + new primitives
+2. Add MA/AM (Arthur-Merlin) protocols
+3. Formalize the connection to Geometric Complexity Theory (GCT)
+4. Explore proving `BPP_subset_EXP` from a bounded enumeration axiom
+
+---
+
 ## Session 2026-03-14 (Session 28) - Extended Complexity Landscape
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 71)
