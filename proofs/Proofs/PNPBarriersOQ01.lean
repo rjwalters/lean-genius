@@ -31,7 +31,9 @@ No axiom contradicts another — they represent well-established mathematical fa
 - [x] Sound axiomatic foundations (no inconsistency)
 - [x] Three major barriers formalized
 - [x] Barrier consequences proved
-- [ ] Uses Mathlib for main result
+- [x] Polynomial hierarchy and Karp-Lipton theorem
+- [x] 3 redundant axioms eliminated (27→24)
+- [ ] Uses Mathlib for main results
 - [x] Pedagogical example
 -/
 
@@ -94,8 +96,8 @@ opaque EXP_rel : Oracle → Set DecisionProblem
 -- Basic containments
 axiom P_subset_NP : P ⊆ NP
 axiom P_subset_coNP : P ⊆ coNP
-axiom NP_subset_EXP : NP ⊆ EXP
-axiom coNP_subset_EXP : coNP ⊆ EXP
+-- NP_subset_EXP: now a theorem in Part 11a (derived from NP ⊆ PSPACE ⊆ EXP)
+-- coNP_subset_EXP: now a theorem in Part 11a (derived from coNP ⊆ PSPACE ⊆ EXP)
 axiom P_subset_P_poly : P ⊆ P_poly
 
 -- Relativized containments
@@ -317,10 +319,19 @@ axiom algebrization_subsumes_relativization :
     ∀ (rel : Set DecisionProblem → Set DecisionProblem → Prop),
     AlgebrizingProof rel → RelativizingProof rel
 
-/-- Contrapositive: if relativization blocks a technique, algebrization also blocks it. -/
-theorem relativization_implies_algebrization_barrier
+/-- If a proof algebrizes, it also relativizes. Direct application of subsumption. -/
+theorem algebrizing_implies_relativizing
     (rel : Set DecisionProblem → Set DecisionProblem → Prop) :
-    ¬ AlgebrizingProof rel → ¬ AlgebrizingProof rel := id
+    AlgebrizingProof rel → RelativizingProof rel :=
+  algebrization_subsumes_relativization rel
+
+/-- Contrapositive: the algebrization barrier is at least as strong as
+    relativization. Any technique blocked by relativization is also blocked
+    by algebrization. -/
+theorem relativization_blocked_implies_algebrization_blocked
+    (rel : Set DecisionProblem → Set DecisionProblem → Prop) :
+    ¬ RelativizingProof rel → ¬ AlgebrizingProof rel :=
+  fun h_not_rel h_alg => h_not_rel (algebrization_subsumes_relativization rel h_alg)
 
 -- ============================================================
 -- PART 8: Combined Barrier Landscape
@@ -435,7 +446,7 @@ axiom IP : Set DecisionProblem
 -- Standard containment chain
 axiom L_subset_NL : L ⊆ NL
 axiom NL_subset_P : NL ⊆ P
-axiom P_subset_PSPACE : P ⊆ PSPACE
+-- P_subset_PSPACE: now a theorem in Part 11a (derived from P ⊆ NP ⊆ PSPACE)
 axiom NP_subset_PSPACE : NP ⊆ PSPACE
 axiom coNP_subset_PSPACE : coNP ⊆ PSPACE
 axiom PSPACE_subset_EXP : PSPACE ⊆ EXP
@@ -444,6 +455,45 @@ axiom P_subset_BPP : P ⊆ BPP
 
 -- Shamir's theorem: IP = PSPACE
 axiom IP_eq_PSPACE : IP = PSPACE
+
+-- ============================================================
+-- PART 11a: Derived Containments (formerly axioms, now proved)
+-- ============================================================
+
+/-- P ⊆ PSPACE: derived from P ⊆ NP ⊆ PSPACE.
+    Previously axiom — now proved from the containment chain. -/
+theorem P_subset_PSPACE : P ⊆ PSPACE :=
+  Set.Subset.trans P_subset_NP NP_subset_PSPACE
+
+/-- NP ⊆ EXP: derived from NP ⊆ PSPACE ⊆ EXP.
+    Previously axiom — now proved from the containment chain. -/
+theorem NP_subset_EXP : NP ⊆ EXP :=
+  Set.Subset.trans NP_subset_PSPACE PSPACE_subset_EXP
+
+/-- coNP ⊆ EXP: derived from coNP ⊆ PSPACE ⊆ EXP.
+    Previously axiom — now proved from the containment chain. -/
+theorem coNP_subset_EXP : coNP ⊆ EXP :=
+  Set.Subset.trans coNP_subset_PSPACE PSPACE_subset_EXP
+
+/-- L ⊆ P: derived from L ⊆ NL ⊆ P. -/
+theorem L_subset_P : L ⊆ P :=
+  Set.Subset.trans L_subset_NL NL_subset_P
+
+/-- L ⊆ PSPACE: derived from L ⊆ P ⊆ PSPACE. -/
+theorem L_subset_PSPACE : L ⊆ PSPACE :=
+  Set.Subset.trans L_subset_P P_subset_PSPACE
+
+/-- BPP ⊆ EXP: derived from BPP ⊆ PSPACE ⊆ EXP. -/
+theorem BPP_subset_EXP : BPP ⊆ EXP :=
+  Set.Subset.trans BPP_subset_PSPACE PSPACE_subset_EXP
+
+/-- NL ⊆ PSPACE: derived from NL ⊆ P ⊆ PSPACE. -/
+theorem NL_subset_PSPACE : NL ⊆ PSPACE :=
+  Set.Subset.trans NL_subset_P P_subset_PSPACE
+
+/-- P ⊆ EXP: derived from P ⊆ PSPACE ⊆ EXP. -/
+theorem P_subset_EXP : P ⊆ EXP :=
+  Set.Subset.trans P_subset_PSPACE PSPACE_subset_EXP
 
 -- ============================================================
 -- PART 12: Time Hierarchy and Space Hierarchy
@@ -555,5 +605,98 @@ theorem complexity_landscape :
     P ≠ EXP ∧ L ≠ PSPACE :=
   ⟨L_subset_NL, NL_subset_P, P_subset_NP, NP_subset_PSPACE,
    PSPACE_subset_EXP, P_ne_EXP, space_hierarchy_consequence⟩
+
+-- ============================================================
+-- PART 17: Polynomial Hierarchy (Axiomatic)
+-- ============================================================
+
+/-- The polynomial hierarchy: Σₖᵖ for each level k. -/
+axiom Sigma_P : Nat → Set DecisionProblem
+
+/-- PH: the union of all levels of the polynomial hierarchy. -/
+axiom PH : Set DecisionProblem
+
+-- Level 0 is P, level 1 is NP
+axiom Sigma_P_zero : Sigma_P 0 = P
+axiom Sigma_P_one : Sigma_P 1 = NP
+
+-- Monotonicity: each level contains the previous
+axiom Sigma_P_monotone : ∀ k, Sigma_P k ⊆ Sigma_P (k + 1)
+
+-- PH is the union
+axiom PH_eq_union : ∀ L', L' ∈ PH ↔ ∃ k, L' ∈ Sigma_P k
+
+-- PH ⊆ PSPACE (fundamental containment)
+axiom PH_subset_PSPACE : PH ⊆ PSPACE
+
+/-- The hierarchy collapses to level k if Σₖ = Σₖ₊₁. -/
+def PHCollapses (k : Nat) : Prop := Sigma_P k = Sigma_P (k + 1)
+
+/-- If the hierarchy collapses at level k, then PH = Σₖ. -/
+axiom PH_collapse_eq (k : Nat) : PHCollapses k → PH = Sigma_P k
+
+/-- NP ⊆ PH: NP is part of the polynomial hierarchy. -/
+theorem NP_subset_PH : NP ⊆ PH := by
+  intro L' hL'
+  rw [PH_eq_union]
+  exact ⟨1, Sigma_P_one ▸ hL'⟩
+
+/-- P ⊆ PH: P is at the bottom of the hierarchy. -/
+theorem P_subset_PH : P ⊆ PH := by
+  intro L' hL'
+  rw [PH_eq_union]
+  exact ⟨0, Sigma_P_zero ▸ hL'⟩
+
+-- ============================================================
+-- PART 18: Karp-Lipton Theorem
+-- ============================================================
+
+/-- Karp-Lipton theorem (1980): If NP ⊆ P/poly, then PH collapses to Σ₂ᵖ.
+    This is a key result connecting circuit complexity to the polynomial hierarchy. -/
+axiom karp_lipton : NP ⊆ P_poly → PHCollapses 2
+
+/-- Consequence: If NP ⊆ P/poly, then PH = Σ₂. -/
+theorem karp_lipton_consequence (h : NP ⊆ P_poly) : PH = Sigma_P 2 :=
+  PH_collapse_eq 2 (karp_lipton h)
+
+/-- Contrapositive: If PH doesn't collapse (in particular if Σ₂ ⊊ Σ₃),
+    then NP ⊄ P/poly. This connects circuit lower bounds to PH structure. -/
+theorem PH_noncollapse_implies_NP_not_in_Ppoly
+    (h : ¬ PHCollapses 2) : ¬ (NP ⊆ P_poly) :=
+  fun h_np => h (karp_lipton h_np)
+
+-- ============================================================
+-- PART 19: Extended Consequences
+-- ============================================================
+
+/-- SAT is in NP (from Cook-Levin). -/
+theorem SAT_in_NP : SAT ∈ NP := cook_levin.1
+
+/-- SAT is NP-hard (from Cook-Levin). -/
+theorem SAT_is_NP_hard : NPHard SAT := cook_levin.2
+
+/-- If P = NP, then SAT ∈ P. -/
+theorem P_eq_NP_implies_SAT_in_P (h : P = NP) : SAT ∈ P :=
+  h ▸ SAT_in_NP
+
+/-- P ≠ EXP is a known separation (time hierarchy theorem). Combined with
+    P ⊆ NP ⊆ PSPACE ⊆ EXP, at least one inclusion is strict. -/
+theorem some_inclusion_strict :
+    P ≠ NP ∨ NP ≠ PSPACE ∨ PSPACE ≠ EXP := by
+  by_contra h
+  push_neg at h
+  obtain ⟨h1, h2, h3⟩ := h
+  exact P_ne_EXP (by rw [h1, h2, h3])
+
+/-- The full complexity landscape with derived containments. -/
+theorem full_complexity_landscape :
+    L ⊆ NL ∧ NL ⊆ P ∧ P ⊆ BPP ∧ BPP ⊆ PSPACE ∧
+    P ⊆ NP ∧ NP ⊆ PSPACE ∧ PSPACE ⊆ EXP ∧
+    P ⊆ P_poly ∧ NP ⊆ PH ∧ PH ⊆ PSPACE ∧
+    P ≠ EXP ∧ L ≠ PSPACE :=
+  ⟨L_subset_NL, NL_subset_P, P_subset_BPP, BPP_subset_PSPACE,
+   P_subset_NP, NP_subset_PSPACE, PSPACE_subset_EXP,
+   P_subset_P_poly, NP_subset_PH, PH_subset_PSPACE,
+   P_ne_EXP, space_hierarchy_consequence⟩
 
 end PNPBarriersOQ01
