@@ -83,7 +83,7 @@ private lemma posAfter_false_succ (xs : LPath) (a i : ℕ) :
 private lemma posAfter_true_succ (xs : LPath) (a i : ℕ) :
     posAfter (true :: xs) a (i + 1) = posAfter xs (a + 1) i := by
   simp only [posAfter, List.take_succ_cons, List.countP_cons]
-  simp [Prod.ext_iff]; omega
+  simp
 
 def visitedPoints (l : LPath) (a : ℕ) : Finset (ℕ × ℕ) :=
   (Finset.range (l.length + 1)).image (posAfter l a)
@@ -148,11 +148,9 @@ theorem visitedPoints_covers_column (l : LPath) (a : ℕ) (x y : ℕ)
       | zero =>
         -- colEntry (true :: xs) 0 = 0
         -- colEntry (true :: xs) 1 = colEntry xs 1 + 1
-        simp only [colEntry] at hy_lo
-        have hce1 := colEntry_true_succ xs 0
-        rw [hce1] at hy_hi
+        simp only [colEntry, northBeforeEast] at hy_lo hy_hi
         have hlo' : (a + 1) + colEntry xs 0 ≤ y := by simp [colEntry]; omega
-        have hhi' : y ≤ (a + 1) + colEntry xs 1 := by linarith
+        have hhi' : y ≤ (a + 1) + colEntry xs 1 := by simp [colEntry]; linarith
         exact visitedPoints_cons_true_of_mem xs a (0, y) (ih (a + 1) 0 y hx' hlo' hhi')
       | succ x' =>
         have hce_lo := colEntry_true_succ xs x'
@@ -194,11 +192,13 @@ theorem visitedPoints_covers_final (l : LPath) (a : ℕ) (y : ℕ)
         rw [heast, hm] at hy_lo ⊢
         simp [colEntry] at hy_lo
         have hhi' : y ≤ (a + 1) + northSteps xs := by linarith
-        have hlo' : (a + 1) + colEntry xs 0 ≤ y := by simp [colEntry]; omega
+        have hlo' : (a + 1) + colEntry xs (eastSteps xs) ≤ y := by
+          rw [hm]; simp [colEntry]; omega
         exact visitedPoints_cons_true_of_mem xs a (0, y) (ih (a + 1) y hlo' hhi')
       | succ m' =>
         have hce := colEntry_true_succ xs m'
         rw [heast, hm] at hy_lo ⊢
-        have hlo' : (a + 1) + colEntry xs (m' + 1) ≤ y := by linarith
+        have hlo' : (a + 1) + colEntry xs (eastSteps xs) ≤ y := by
+          rw [hm]; linarith
         have hhi' : y ≤ (a + 1) + northSteps xs := by linarith
         exact visitedPoints_cons_true_of_mem xs a (m' + 1, y) (ih (a + 1) y hlo' hhi')
