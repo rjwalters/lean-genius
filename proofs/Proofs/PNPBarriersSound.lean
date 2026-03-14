@@ -36,14 +36,15 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (14 axioms, down from 17)
+## Axiom Summary (13 axioms, down from 17)
 - 1 structural: Φ_countably_many (Φ_total and Φ_deterministic now theorems)
 - 2 oracle: Φ_oracle_access, Φ_no_oracle_access
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
 - 1 natural proofs: razborov_rudich (owf_exists_assumption now theorem)
 - 2 algebrization: algebrizing_oracle_eq, algebrizing_oracle_sep
 - 3 structural properties: P_rel_monotone, NP_rel_monotone, P_rel_subset_NP_rel
-- 3 closure properties: P_complement_closed, poly_time_compose, reduction_preserves_P
+- 2 closure properties: P_complement_closed, poly_time_compose, reduction_preserves_P
+- Note: PSPACE_subset_EXP now theorem (PSPACE and EXP have identical definitions)
 -/
 
 set_option linter.unusedVariables false
@@ -908,8 +909,14 @@ def EXP : Set (ℕ → Bool) :=
 axiom NP_subset_PSPACE : NP ⊆ PSPACE
 
 /-- PSPACE ⊆ EXP: A polynomial-space computation can have at most
-    2^{p(n)} configurations, so it must halt within exponential time. -/
-axiom PSPACE_subset_EXP : PSPACE ⊆ EXP
+    2^{p(n)} configurations, so it must halt within exponential time.
+
+    NOTE: In our abstract model, PSPACE and EXP have the same definition
+    (both track decidability without explicit space/time resource bounds),
+    so this is trivially true. A refined model would distinguish them by
+    resource bounds. -/
+theorem PSPACE_subset_EXP : PSPACE ⊆ EXP := by
+  intro f ⟨e, p, h⟩; exact ⟨e, p, h⟩
 
 /-- PH ⊆ PSPACE: Every level of the polynomial hierarchy is in PSPACE.
     Σₖ problems can be solved in PSPACE by iterating over quantifiers. -/
