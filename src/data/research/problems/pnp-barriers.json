@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 1556 lines, 19 axioms (down from 20), 55 theorems, 0 sorries. Extended landscape + axiom reduction.",
+    "progressSummary": "PROGRESS: ~1560 lines, 18 axioms (down from 20), 56 theorems, 0 sorries. Extended landscape + 3 axiom eliminations.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -260,7 +260,8 @@
       "Circuit complexity: P/poly, Karp-Lipton (NP ⊆ P/poly → PH collapses), Adleman (BPP ⊆ P/poly)",
       "barrier_landscape meta-theorem: all 3 barriers coexist with structural results",
       "Φ_pair_project_first axiom: single primitive for pair decomposition enables P⊆NP and P⊆BPP proofs",
-      "Axiom reduction 20→19: trade 2 high-level axioms for 1 primitive axiom"
+      "Axiom reduction 20→19: trade 2 high-level axioms for 1 primitive axiom",
+      "BPP_complement_closed proved from Φ_negate: negate output, majority preserved"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
