@@ -36,16 +36,19 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (15 axioms, down from 21)
+## Axiom Summary (14 axioms, down from 21)
 - 1 structural: Φ_countably_many (Φ_total and Φ_deterministic now theorems)
 - 2 oracle: Φ_oracle_access, Φ_no_oracle_access
+- 1 program transforms: Φ_basic_transforms (input projection + output negation)
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
 - 1 natural proofs: razborov_rudich (owf_exists_assumption now theorem)
-- 3 structural properties: P_rel_monotone, NP_rel_monotone, P_rel_subset_NP_rel
-- 3 closure/composition: P_complement_closed, poly_time_compose, reduction_preserves_P
+- 2 structural properties: P_rel_monotone, NP_rel_monotone
+- 2 closure/composition: poly_time_compose, reduction_preserves_P
 - 1 containment: NP_subset_PSPACE
 - 2 separation/existence: P_ne_EXP, ladner_theorem
-- Now theorems: PSPACE_subset_EXP, PH_subset_PSPACE, algebrizing_oracle_eq/sep
+- Now theorems: P_rel_subset_NP_rel (from Φ_basic_transforms.1),
+  P_complement_closed (from Φ_basic_transforms.2),
+  PSPACE_subset_EXP, PH_subset_PSPACE, algebrizing_oracle_eq/sep
 -/
 
 set_option linter.unusedVariables false
@@ -143,6 +146,33 @@ axiom Φ_no_oracle_access :
     ∃ e : ℕ, ∃ n : ℕ,
       ∃ r s, Φ e emptyOracle n = some (r, s) ∧ r = true
 
+/-- **Basic Program Transformations**: Two fundamental properties of any
+    reasonable computation model:
+
+    (1) **Input projection**: A program can be adapted to extract its actual
+        input from a `Nat.pair` encoding, ignoring the second component.
+        This is needed to show P ⊆ NP (a P program ignores the certificate).
+
+    (2) **Output negation**: A program's Boolean output can be flipped.
+        This is needed for complement closure of P.
+
+    Both transformations preserve polynomial time bounds (with a potentially
+    larger polynomial). These are strictly weaker than full program composition
+    and capture only the minimal structure needed for basic complexity class
+    relationships. -/
+axiom Φ_basic_transforms :
+    -- (1) Input projection: run program on first component of Nat.pair
+    (∀ (e : ℕ) (p : Polynomial), ∃ (e' : ℕ) (p' : Polynomial),
+      ∀ (A : Oracle) (n c : ℕ) (r : Bool) (s : ℕ),
+        Φ e A n = some (r, s) → s ≤ p.eval (inputSize n) →
+        ∃ s', Φ e' A (Nat.pair n c) = some (r, s') ∧
+          s' ≤ p'.eval (inputSize n)) ∧
+    -- (2) Output negation: flip the Boolean result
+    (∀ (e : ℕ) (p : Polynomial), ∃ (e' : ℕ) (p' : Polynomial),
+      ∀ (A : Oracle) (n : ℕ) (r : Bool) (s : ℕ),
+        Φ e A n = some (r, s) → s ≤ p.eval (inputSize n) →
+        ∃ s', Φ e' A n = some (!r, s') ∧ s' ≤ p'.eval (inputSize n))
+
 -- ============================================================
 -- PART 3: Relativized Complexity Classes (Sound Definitions)
 -- ============================================================
@@ -193,9 +223,30 @@ def NP_rel (A : Oracle) : Set (ℕ → Bool) :=
 /-- Unrelativized NP = NP^∅. -/
 def NP : Set (ℕ → Bool) := NP_rel emptyOracle
 
-/-- P^A ⊆ NP^A for all oracles A.
-    A P program is a trivial NP verifier (ignore the certificate). -/
-axiom P_rel_subset_NP_rel (A : Oracle) : P_rel A ⊆ NP_rel A
+/-- **P^A ⊆ NP^A for all oracles A.**
+    A P program is a trivial NP verifier (ignore the certificate).
+
+    Proof: Given a P program `e` for `f`, use `Φ_basic_transforms` to get `e'`
+    that on input `⟨n, c⟩` ignores `c` and runs `e` on `n`.
+    - Completeness: use certificate c = 0.
+    - Soundness: the program always returns `f n`, so if `f n = false`, `r = false`. -/
+theorem P_rel_subset_NP_rel (A : Oracle) : P_rel A ⊆ NP_rel A := by
+  intro f ⟨e, p, hsolves, htime⟩
+  -- Get a program that projects away the certificate
+  obtain ⟨e', p', he'⟩ := Φ_basic_transforms.1 e p
+  exact ⟨e', p', -- Completeness
+    fun n hfn => by
+      obtain ⟨s₀, hs₀⟩ := hsolves n
+      obtain ⟨s', hs', hs'_le⟩ := he' A n 0 (f n) s₀ hs₀ (htime n s₀ hs₀)
+      rw [hfn] at hs'
+      exact ⟨0, Nat.zero_le _, s', hs', hs'_le⟩,
+    -- Soundness
+    fun n hfn c _ r s hΦ => by
+      obtain ⟨s₀, hs₀⟩ := hsolves n
+      obtain ⟨s', hs', _⟩ := he' A n c (f n) s₀ hs₀ (htime n s₀ hs₀)
+      have h := hs'.symm.trans hΦ
+      simp only [Option.some.injEq, Prod.mk.injEq] at h
+      rw [← h.1, hfn]⟩
 
 -- ============================================================
 -- PART 4: Relativization Barrier (Baker-Gill-Solovay, 1975)
@@ -587,9 +638,27 @@ in the same time. Since Φ is opaque, we axiomatize this.
 
 /-- **Complement closure**: If f ∈ P^A, then (¬f) ∈ P^A.
     In any computation model, a program solving f can be modified to
-    flip the output bit, giving a program for the complement. -/
-axiom P_complement_closed (A : Oracle) (f : ℕ → Bool) :
-    f ∈ P_rel A → (fun n => !f n) ∈ P_rel A
+    flip the output bit, giving a program for the complement.
+
+    Proof: Use `Φ_basic_transforms` output negation to construct a program
+    that negates the result of the original P program. -/
+theorem P_complement_closed (A : Oracle) (f : ℕ → Bool) :
+    f ∈ P_rel A → (fun n => !f n) ∈ P_rel A := by
+  intro ⟨e, p, hsolves, htime⟩
+  obtain ⟨e', p', he'⟩ := Φ_basic_transforms.2 e p
+  refine ⟨e', p', ?_, ?_⟩
+  · -- Solves: ∀ n, ∃ s, Φ e' A n = some (!(f n), s)
+    intro n
+    obtain ⟨s₀, hs₀⟩ := hsolves n
+    obtain ⟨s', hs', _⟩ := he' A n (f n) s₀ hs₀ (htime n s₀ hs₀)
+    exact ⟨s', hs'⟩
+  · -- Time bound: s ≤ p'.eval (inputSize n)
+    intro n s hΦ
+    obtain ⟨s₀, hs₀⟩ := hsolves n
+    obtain ⟨s', hs', hs'_le⟩ := he' A n (f n) s₀ hs₀ (htime n s₀ hs₀)
+    have h := hs'.symm.trans hΦ
+    simp only [Option.some.injEq, Prod.mk.injEq] at h
+    linarith [h.2]
 
 /-- coNP^A: problems whose complements are in NP^A. -/
 def coNP_rel (A : Oracle) : Set (ℕ → Bool) :=
