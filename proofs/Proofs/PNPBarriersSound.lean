@@ -36,13 +36,14 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (14 axioms)
-- 3 structural: Φ_total, Φ_deterministic, Φ_countably_many
+## Axiom Summary (14 axioms, down from 17)
+- 1 structural: Φ_countably_many (Φ_total and Φ_deterministic now theorems)
 - 2 oracle: Φ_oracle_access, Φ_no_oracle_access
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
-- 2 natural proofs: owf_exists_assumption, razborov_rudich
+- 1 natural proofs: razborov_rudich (owf_exists_assumption now theorem)
 - 2 algebrization: algebrizing_oracle_eq, algebrizing_oracle_sep
 - 3 structural properties: P_rel_monotone, NP_rel_monotone, P_rel_subset_NP_rel
+- 3 closure properties: P_complement_closed, poly_time_compose, reduction_preserves_P
 -/
 
 set_option linter.unusedVariables false
@@ -97,15 +98,17 @@ opaque Φ : ℕ → Oracle → ℕ → Option (Bool × ℕ)
 
     We don't assume all programs halt (that would be wrong — the halting problem
     is undecidable). We only assume totality for programs with polynomial bounds. -/
-axiom Φ_total (e : ℕ) (A : Oracle) (n : ℕ) (bound : ℕ)
+theorem Φ_total (e : ℕ) (A : Oracle) (n : ℕ) (bound : ℕ)
     (h : ∃ r s, Φ e A n = some (r, s) ∧ s ≤ bound) :
-    ∃ r s, Φ e A n = some (r, s)
+    ∃ r s, Φ e A n = some (r, s) := by
+  obtain ⟨r, s, hs, _⟩ := h; exact ⟨r, s, hs⟩
 
 /-- **Determinism**: Running the same program on the same input with the same
     oracle always gives the same result. -/
-axiom Φ_deterministic (e : ℕ) (A : Oracle) (n : ℕ) (r₁ s₁ r₂ s₂ : _)
+theorem Φ_deterministic (e : ℕ) (A : Oracle) (n : ℕ) (r₁ s₁ r₂ s₂ : _)
     (h₁ : Φ e A n = some (r₁, s₁)) (h₂ : Φ e A n = some (r₂, s₂)) :
-    r₁ = r₂ ∧ s₁ = s₂
+    r₁ = r₂ ∧ s₁ = s₂ := by
+  have := h₁.symm.trans h₂; simp at this; exact this
 
 /-- **Non-triviality**: Not every decision problem is computable (and hence
     not every problem is in P). There exist functions `ℕ → Bool` that no
@@ -335,7 +338,7 @@ def UsefulAgainst (np : NaturalProperty) (hardFunction : ℕ → Bool) : Prop :=
 
     If OWFs don't exist, there is no secure encryption, no digital signatures,
     no commitment schemes — essentially no cryptography. -/
-axiom owf_exists_assumption : True  -- Placeholder for the OWF assumption
+theorem owf_exists_assumption : True := trivial  -- Placeholder for the OWF assumption
 
 /-- **Razborov-Rudich (1997)**: Natural proofs of superpolynomial circuit
     lower bounds contradict the existence of one-way functions.
