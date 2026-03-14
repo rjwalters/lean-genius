@@ -559,8 +559,8 @@ theorem solvable_iff_solvable_galois_group
 3. Formalize at least one case of A₅ realization
 4. Prove Gal(X³-2/ℚ) ≅ S₃ to eliminate `x_cube_sub_2_gal_iso_s3` axiom
 
-**Theorem Count**: 37 proven theorems/lemmas, 3 axioms (for deep classical results)
-**Sorries**: 3 (1 open problem + 1 Hilbert irreducibility + 1 splitting field finrank)
+**Theorem Count**: 44+ proven theorems/lemmas, 3 axioms (for deep classical results)
+**Sorries**: 2 (1 open problem + 1 Hilbert irreducibility)
 
 ### Part X: Toward Eliminating the x_cube_sub_2_gal_iso_s3 axiom
 19. **Degree divisibility lemma**: Irreducible poly of degree d has no root in ext of degree n when d∤n (proven)
@@ -574,7 +574,14 @@ theorem solvable_iff_solvable_galois_group
 27. **AdjoinRoot root is nonzero** (proven: α³=2≠0)
 28. **Cofactor has no root in AdjoinRoot** (proven: combines all above)
 29. **|Gal(X³-2/ℚ)| = 6** (proven from splitting_field_finrank)
-- **splitting_field_x_cube_sub_2_finrank** = 6 (sorry: needs Lean infrastructure for extracting roots from abstract splitting field and applying tower law)
+30. **Cube root ratio → cyclotomic**: a³=b³, a≠b ⟹ (a/b)²+(a/b)+1=0 (proven)
+31. **X³-2 is separable** (proven: irreducible in char 0)
+32. **3 | |Gal(X³-2/ℚ)|** (proven: prime degree divides Galois group order)
+33. **|Gal(X³-2/ℚ)| | 6** (proven: Gal embeds in S₃ via action on roots)
+34. **X²+X+1 has root in SplittingField** (proven: ratio of distinct roots)
+35. **X²+X+1 is monic** (proven: equals Φ₃ which is monic)
+36. **2 | finrank SplittingField** (proven: minpoly of ω has degree 2, tower law)
+37. **splitting_field_x_cube_sub_2_finrank = 6** (PROVEN: 2|n, 3|n, n|6 ⟹ n=6)
 -/
 
 /-
@@ -616,10 +623,12 @@ theorem no_root_of_irreducible_degree_ndvd
   have hdegeq : (minpoly F x).natDegree = p.natDegree := by
     have := hassoc.natDegree_eq
     rwa [this]
-  -- [F(x):F] = natDegree(minpoly F x)
-  -- And [F(x):F] divides [K:F] by tower law
+  -- [F(x):F] = natDegree(minpoly F x), and [F(x):F] divides [K:F] by tower law
   rw [← hdegeq]
-  exact (minpoly.natDegree_dvd_finrank F x)
+  have hx_int : IsIntegral F x := .of_finite F x
+  have htower := FiniteDimensional.finrank_mul_finrank F F⟮x⟯ K
+  rw [IntermediateField.adjoin.finrank hx_int] at htower
+  exact ⟨_, htower.symm⟩
 
 /-- X²+X+1 is the 3rd cyclotomic polynomial, and is irreducible over ℚ. -/
 theorem x_sq_add_x_add_1_eq_cyclotomic_3 :
@@ -726,15 +735,142 @@ Combined with 3 | [SplittingField : ℚ] (from irreducibility of X³-2)
 and [SplittingField : ℚ] | 6 (Gal embeds in S₃), we get
 [SplittingField : ℚ] = 6.
 -/
+-- Helper: in a field, if a³ = b³ and a ≠ b, then (a/b)² + (a/b) + 1 = 0
+theorem cube_root_ratio_satisfies_cyclotomic
+    {K : Type*} [Field K] {a b : K} (ha3 : a ^ 3 = b ^ 3) (hab : a ≠ b) (hb : b ≠ 0) :
+    (a * b⁻¹) ^ 2 + (a * b⁻¹) + 1 = 0 := by
+  have hb3 : b ^ 3 ≠ 0 := pow_ne_zero 3 hb
+  -- a³ = b³ means a³ - b³ = 0, i.e., (a-b)(a²+ab+b²) = 0
+  -- Since a ≠ b (so a - b ≠ 0 in a field), we get a² + ab + b² = 0
+  have hcofactor : a ^ 2 + a * b + b ^ 2 = 0 := by
+    have hdiff : a ^ 3 - b ^ 3 = (a - b) * (a ^ 2 + a * b + b ^ 2) := by ring
+    have h0 : a ^ 3 - b ^ 3 = 0 := by rw [ha3]; ring
+    rw [hdiff] at h0
+    have hsub : a - b ≠ 0 := sub_ne_zero.mpr hab
+    exact (mul_eq_zero.mp h0).resolve_left hsub
+  -- Now divide by b² to get (a/b)² + (a/b) + 1 = 0
+  have hb2 : b ^ 2 ≠ 0 := pow_ne_zero 2 hb
+  field_simp
+  nlinarith [hcofactor]
+
+-- Helper: X³-2 is separable (irreducible in char 0)
+theorem x_cube_sub_2_separable : (X ^ 3 - C (2 : ℚ) : ℚ[X]).Separable :=
+  x_cube_sub_2_irreducible.separable
+
+-- Helper: 3 | |Gal(X³-2/ℚ)| (prime degree divides Galois group order)
+theorem three_dvd_gal_card :
+    3 ∣ Fintype.card (X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal := by
+  have h := Polynomial.Gal.prime_degree_dvd_card x_cube_sub_2_irreducible
+    (by rw [x_cube_sub_2_natDegree]; decide)
+  rwa [x_cube_sub_2_natDegree] at h
+
+-- Helper: |Gal(X³-2/ℚ)| divides 6 (Gal embeds into S₃ via action on roots)
+theorem gal_card_dvd_six :
+    Fintype.card (X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal ∣ 6 := by
+  set p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
+  haveI : Fact (p.Splits (algebraMap ℚ p.SplittingField)) :=
+    ⟨Polynomial.SplittingField.splits p⟩
+  -- Gal embeds injectively into Perm(rootSet) via galActionHom
+  have hinj := Polynomial.Gal.galActionHom_injective p p.SplittingField
+  -- By Lagrange, |Gal| divides |Perm(rootSet)|
+  have hdvd : Nat.card p.Gal ∣ Nat.card (Equiv.Perm (p.rootSet p.SplittingField)) :=
+    Subgroup.card_dvd_of_injective _ hinj
+  rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card] at hdvd
+  -- |Perm(rootSet)| = (|rootSet|)! = 3! = 6
+  rw [Fintype.card_perm] at hdvd
+  have hcard : Fintype.card (p.rootSet p.SplittingField) = 3 := by
+    rw [Polynomial.card_rootSet_eq_natDegree x_cube_sub_2_separable
+        (Polynomial.SplittingField.splits p)]
+    exact x_cube_sub_2_natDegree
+  rw [hcard] at hdvd
+  simpa using hdvd
+
+-- Helper: X²+X+1 has a root in the splitting field of X³-2
+-- (the ratio of any two distinct roots satisfies X²+X+1 = 0)
+theorem x_sq_add_x_add_1_has_root_in_splitting_field :
+    ∃ ω : (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField,
+      ω ^ 2 + ω + 1 = 0 := by
+  set p := (X ^ 3 - C (2 : ℚ) : ℚ[X]) with hp_def
+  set E := p.SplittingField
+  have hsplit := Polynomial.SplittingField.splits p
+  have hsep := x_cube_sub_2_separable
+  -- rootSet has 3 elements (separable degree 3 poly splits completely)
+  have hcard : Fintype.card (p.rootSet E) = 3 :=
+    (Polynomial.card_rootSet_eq_natDegree hsep hsplit).trans x_cube_sub_2_natDegree
+  -- Extract two distinct roots (card = 3 > 1)
+  obtain ⟨⟨a, ha⟩, ⟨b, hb⟩, hab⟩ :=
+    Fintype.exists_pair_of_one_lt_card (by rw [hcard]; omega : 1 < Fintype.card (p.rootSet E))
+  -- Both are roots: aeval a p = 0, aeval b p = 0
+  have ha_eval : Polynomial.aeval a p = 0 := (Polynomial.mem_rootSet.mp ha).2
+  have hb_eval : Polynomial.aeval b p = 0 := (Polynomial.mem_rootSet.mp hb).2
+  -- Convert: aeval a (X³-C 2) = a³ - algebraMap 2 = 0, so a³ = b³
+  have aeval_eq : ∀ x : E, Polynomial.aeval x p = x ^ 3 - algebraMap ℚ E 2 := by
+    intro x; simp [hp_def, map_sub, map_pow, Polynomial.aeval_X, Polynomial.aeval_C]
+  have ha3b3 : a ^ 3 = b ^ 3 := by
+    have ha3 : a ^ 3 = algebraMap ℚ E 2 := sub_eq_zero.mp (by rw [← aeval_eq]; exact ha_eval)
+    have hb3 : b ^ 3 = algebraMap ℚ E 2 := sub_eq_zero.mp (by rw [← aeval_eq]; exact hb_eval)
+    rw [ha3, hb3]
+  -- a ≠ b (subtypes are distinct)
+  have hab' : a ≠ b := fun h => hab (Subtype.ext h)
+  -- b ≠ 0 (since b³ = algebraMap 2 ≠ 0)
+  have hb_ne : b ≠ 0 := by
+    intro h
+    have hb3 : b ^ 3 = algebraMap ℚ E 2 :=
+      sub_eq_zero.mp (by rw [← aeval_eq]; exact hb_eval)
+    rw [h, zero_pow (by omega : 3 ≠ 0)] at hb3
+    -- hb3 : 0 = algebraMap ℚ E 2, but 2 ≠ 0 in E
+    simp [map_ofNat] at hb3
+  exact ⟨a * b⁻¹, cube_root_ratio_satisfies_cyclotomic ha3b3 hab' hb_ne⟩
+
+-- Helper: X²+X+1 is monic
+theorem x_sq_add_x_add_1_monic : (X ^ 2 + X + 1 : ℚ[X]).Monic := by
+  rw [x_sq_add_x_add_1_eq_cyclotomic_3]
+  exact Polynomial.cyclotomic.monic 3 ℚ
+
+-- Helper: 2 | finrank ℚ SplittingField(X³-2)
+-- (X²+X+1 is irreducible of degree 2 and has a root there)
+theorem two_dvd_splitting_field_finrank :
+    2 ∣ Module.finrank ℚ (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField := by
+  obtain ⟨ω, hω⟩ := x_sq_add_x_add_1_has_root_in_splitting_field
+  -- ω is a root of X²+X+1 (irreducible of degree 2)
+  have haeval : Polynomial.aeval ω (X ^ 2 + X + 1 : ℚ[X]) = 0 := by
+    rw [aeval_x_sq_add_x_add_1]; exact hω
+  -- X²+X+1 is irreducible and monic, so minpoly ℚ ω = X²+X+1
+  have hmin : (X ^ 2 + X + 1 : ℚ[X]) = minpoly ℚ ω :=
+    minpoly.eq_of_irreducible_of_monic x_sq_add_x_add_1_irreducible haeval
+      x_sq_add_x_add_1_monic
+  -- So natDegree(minpoly) = 2
+  have hdeg : (minpoly ℚ ω).natDegree = 2 := by
+    rw [← hmin, x_sq_add_x_add_1_natDegree]
+  -- natDegree(minpoly) divides finrank (tower law)
+  have hω_int : IsIntegral ℚ ω := .of_finite ℚ ω
+  have htower := FiniteDimensional.finrank_mul_finrank ℚ ℚ⟮ω⟯
+    (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField
+  rw [IntermediateField.adjoin.finrank hω_int, hdeg] at htower
+  exact ⟨_, htower.symm⟩
+
 theorem splitting_field_x_cube_sub_2_finrank :
     Module.finrank ℚ (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField = 6 := by
   set p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
-  -- The degree divides 3! = 6 (Gal embeds in S₃) and 3 divides degree
-  -- (X³-2 is irreducible of degree 3). So degree ∈ {3, 6}.
-  -- Degree ≠ 3 because X³-2 doesn't split in any degree 3 extension
-  -- (cofactor X²+αX+α² has no root since ω ∉ ℚ(∛2) as 2∤3).
-  -- Therefore degree = 6.
-  sorry
+  -- finrank = |Gal| for separable polynomials
+  have hcard_eq : Fintype.card p.Gal = Module.finrank ℚ p.SplittingField :=
+    Polynomial.Gal.card_of_separable x_cube_sub_2_separable
+  -- 3 | finrank
+  have h3 : 3 ∣ Module.finrank ℚ p.SplittingField := by
+    rw [← hcard_eq]; exact three_dvd_gal_card
+  -- finrank | 6
+  have hdvd6 : Module.finrank ℚ p.SplittingField ∣ 6 := by
+    rw [← hcard_eq]; exact gal_card_dvd_six
+  -- 2 | finrank
+  have h2 : 2 ∣ Module.finrank ℚ p.SplittingField :=
+    two_dvd_splitting_field_finrank
+  -- 6 | finrank (since gcd(2,3) = 1 and both divide finrank)
+  have h6 : 6 ∣ Module.finrank ℚ p.SplittingField := by
+    have : Nat.Coprime 2 3 := by decide
+    have h23 := this.mul_dvd_of_dvd_of_dvd h2 h3
+    simpa using h23
+  -- finrank | 6 and 6 | finrank → finrank = 6
+  exact Nat.dvd_antisymm hdvd6 h6
 
 /--
 The Galois group of X³-2 over ℚ has exactly 6 elements.
