@@ -36,6 +36,7 @@ YES — the proof strategy is:
 3. Mesh refinement on compact sets gives arbitrarily small zeros (Part XXI)
 4. Radial extension from D² to [-1,1]² preserving odd boundary (Part XXII)
 5. Grid infrastructure: vertices, edges, boundary, antipodal map (Part XXIII)
+5b. **Triangulated grid** `gridEdgesTriFin`: H/V + NE-SW diagonal edges (Part XXIII)
 6. **Main theorem**: tucker_disk_approx_zero_proved (from tuckers_lemma axiom)
 7. Approximate and exact 2D Borsuk-Ulam (Part XVI)
 
@@ -44,6 +45,12 @@ YES — the proof strategy is:
 The entire proof chain is complete modulo Tucker's lemma (Part I).
 Eliminating this axiom requires path-following, degree theory, or intersection
 theory — each equivalent to Brouwer's FPT in 2D.
+
+## Soundness fix (2026-03-14): Tucker applied to triangulated grid
+
+Tucker's lemma requires a **triangulated** grid. The original `gridEdgesFin`
+(H/V edges only) admits counterexamples. The fix: use `gridEdgesTriFin` which
+adds NE-SW diagonal edges, splitting each cell into two triangles.
 -/
 
 set_option maxHeartbeats 400000
@@ -1800,11 +1807,28 @@ def gridVertexFin (N : ℕ) (v : Fin (2 * N + 1) × Fin (2 * N + 1)) : ℝ × �
 def gridBoundaryFin (N : ℕ) : Set (Fin (2 * N + 1) × Fin (2 * N + 1)) :=
   {v | v.1.val = 0 ∨ v.1.val = 2 * N ∨ v.2.val = 0 ∨ v.2.val = 2 * N}
 
-/-- Grid edges: horizontally or vertically adjacent pairs. -/
+/-- Grid edges: horizontally or vertically adjacent pairs.
+    NOTE: This does NOT form a triangulation. Tucker's lemma requires
+    a triangulated grid — see `gridEdgesTriFin` below. -/
 def gridEdgesFin (N : ℕ) :
     Set ((Fin (2 * N + 1) × Fin (2 * N + 1)) × (Fin (2 * N + 1) × Fin (2 * N + 1))) :=
   {e | (e.1.1 = e.2.1 ∧ (e.1.2.val + 1 = e.2.2.val ∨ e.2.2.val + 1 = e.1.2.val)) ∨
        (e.1.2 = e.2.2 ∧ (e.1.1.val + 1 = e.2.1.val ∨ e.2.1.val + 1 = e.1.1.val))}
+
+/-- Triangulated grid edges: horizontal, vertical, AND NE-SW diagonal edges.
+    Each cell (i,j)-(i+1,j)-(i+1,j+1)-(i,j+1) is split into two triangles
+    by the diagonal (i,j)-(i+1,j+1). The diagonal edges are antipodally
+    symmetric: antipodal of (i,j)→(i+1,j+1) is (2N-i-1,2N-j-1)→(2N-i,2N-j),
+    which is also a NE-SW diagonal. Tucker's lemma requires triangulated grids. -/
+def gridEdgesTriFin (N : ℕ) :
+    Set ((Fin (2 * N + 1) × Fin (2 * N + 1)) × (Fin (2 * N + 1) × Fin (2 * N + 1))) :=
+  {e | -- Horizontal edges (same row, adjacent columns)
+       (e.1.1 = e.2.1 ∧ (e.1.2.val + 1 = e.2.2.val ∨ e.2.2.val + 1 = e.1.2.val)) ∨
+       -- Vertical edges (same column, adjacent rows)
+       (e.1.2 = e.2.2 ∧ (e.1.1.val + 1 = e.2.1.val ∨ e.2.1.val + 1 = e.1.1.val)) ∨
+       -- NE-SW diagonal edges: (i,j)→(i+1,j+1)
+       (e.1.1.val + 1 = e.2.1.val ∧ e.1.2.val + 1 = e.2.2.val) ∨
+       (e.2.1.val + 1 = e.1.1.val ∧ e.2.2.val + 1 = e.1.2.val)}
 
 /-- Grid antipodal map using Fin.rev: (i,j) ↦ (2N-i, 2N-j).
     Fin.rev i = ⟨n - 1 - i, ...⟩ for Fin n, so for Fin (2N+1), rev i = 2N - i. -/
@@ -1853,7 +1877,7 @@ theorem gridVertexFin_in_square (N : ℕ) (hN : 0 < N)
     (by omega) (by omega)
   exact ⟨abs_le.mpr ⟨h1, h2⟩, abs_le.mpr ⟨h3, h4⟩⟩
 
-/-- Grid mesh: adjacent vertices have distance 1/N. -/
+/-- Grid mesh: adjacent vertices (H/V) have distance ≤ 1/N. -/
 theorem grid_edge_dist (N : ℕ) (hN : 0 < N)
     (u v : Fin (2 * N + 1) × Fin (2 * N + 1))
     (he : (u, v) ∈ gridEdgesFin N) :
@@ -1900,6 +1924,56 @@ theorem grid_edge_dist (N : ℕ) (hN : 0 < N)
       rw [this]; norm_num
     · have : (u.1.val : ℝ) - v.1.val = 1 := by
         have hcast : (v.1.val : ℝ) + 1 = u.1.val := by exact_mod_cast h
+        linarith
+      rw [this]; norm_num
+
+/-- Triangulated grid mesh: adjacent vertices (including diagonal edges) have
+    distance ≤ 1/N in the L∞ (max) metric on ℝ². Diagonal edges connect
+    (i,j)→(i+1,j+1), which in coordinates is (i/N-1, j/N-1) and
+    ((i+1)/N-1, (j+1)/N-1), differing by (1/N, 1/N). In L∞, this is 1/N. -/
+theorem grid_tri_edge_dist (N : ℕ) (hN : 0 < N)
+    (u v : Fin (2 * N + 1) × Fin (2 * N + 1))
+    (he : (u, v) ∈ gridEdgesTriFin N) :
+    dist (gridVertexFin N u) (gridVertexFin N v) ≤ 1 / (N : ℝ) := by
+  simp only [gridEdgesTriFin, Set.mem_setOf_eq] at he
+  rcases he with hhv | hhv | hdiag | hdiag
+  · -- Horizontal or vertical: delegate to grid_edge_dist
+    exact grid_edge_dist N hN u v (Or.inl hhv)
+  · exact grid_edge_dist N hN u v (Or.inr hhv)
+  · -- NE-SW diagonal: (i,j)→(i+1,j+1)
+    simp only [gridVertexFin, gridVertex]
+    have hN_pos : (0 : ℝ) < N := Nat.cast_pos.mpr hN
+    rw [Prod.dist_eq, Real.dist_eq, Real.dist_eq]
+    rw [show (↑u.1.val : ℝ) / ↑N - 1 - (↑v.1.val / ↑N - 1) =
+        (↑u.1.val - ↑v.1.val) / ↑N from by ring]
+    rw [show (↑u.2.val : ℝ) / ↑N - 1 - (↑v.2.val / ↑N - 1) =
+        (↑u.2.val - ↑v.2.val) / ↑N from by ring]
+    rw [abs_div, abs_div, abs_of_pos hN_pos]
+    apply max_le <;> rw [div_le_div_iff_of_pos_right hN_pos]
+    · have : (u.1.val : ℝ) - v.1.val = -1 := by
+        have hcast : (u.1.val : ℝ) + 1 = v.1.val := by exact_mod_cast hdiag.1
+        linarith
+      rw [this]; norm_num
+    · have : (u.2.val : ℝ) - v.2.val = -1 := by
+        have hcast : (u.2.val : ℝ) + 1 = v.2.val := by exact_mod_cast hdiag.2
+        linarith
+      rw [this]; norm_num
+  · -- Reverse diagonal: (i+1,j+1)→(i,j)
+    simp only [gridVertexFin, gridVertex]
+    have hN_pos : (0 : ℝ) < N := Nat.cast_pos.mpr hN
+    rw [Prod.dist_eq, Real.dist_eq, Real.dist_eq]
+    rw [show (↑u.1.val : ℝ) / ↑N - 1 - (↑v.1.val / ↑N - 1) =
+        (↑u.1.val - ↑v.1.val) / ↑N from by ring]
+    rw [show (↑u.2.val : ℝ) / ↑N - 1 - (↑v.2.val / ↑N - 1) =
+        (↑u.2.val - ↑v.2.val) / ↑N from by ring]
+    rw [abs_div, abs_div, abs_of_pos hN_pos]
+    apply max_le <;> rw [div_le_div_iff_of_pos_right hN_pos]
+    · have : (u.1.val : ℝ) - v.1.val = 1 := by
+        have hcast : (v.1.val : ℝ) + 1 = u.1.val := by exact_mod_cast hdiag.1
+        linarith
+      rw [this]; norm_num
+    · have : (u.2.val : ℝ) - v.2.val = 1 := by
+        have hcast : (v.2.val : ℝ) + 1 = u.2.val := by exact_mod_cast hdiag.2
         linarith
       rw [this]; norm_num
 
@@ -1972,17 +2046,23 @@ theorem tucker_disk_approx_zero_proved
       -- Transport via dcl_congr, then apply antipodal lemma
       rw [dcl_congr _ _ _ h_neg_ne h_val_eq]
       exact dominantComponentLabel_antipodal (h (gridVertexFin N v)) (h_all_nonzero v) h_neg_ne
-    -- Step 7: Apply Tucker's lemma
+    -- Step 7: Apply Tucker's lemma (using TRIANGULATED grid, not just H/V edges)
+    -- NOTE: Tucker's lemma requires a triangulated grid. The non-triangulated
+    -- gridEdgesFin admits counterexamples (e.g., 5×5 grid with all top-row
+    -- component-0-true, bottom-row component-0-false, sides component-1, and
+    -- interior labels chosen to avoid complementary H/V edges — but the diagonal
+    -- (2,2)→(3,3) IS complementary). The triangulated grid gridEdgesTriFin
+    -- adds NE-SW diagonals, making each cell a pair of triangles.
     obtain ⟨u_fin, v_fin, he, hcomp⟩ := tuckers_lemma 2 (by omega)
       (Fin (2 * N + 1) × Fin (2 * N + 1))
-      (gridEdgesFin N) (gridBoundaryFin N) (gridAntipodalFin N) L h_antipodal
+      (gridEdgesTriFin N) (gridBoundaryFin N) (gridAntipodalFin N) L h_antipodal
     -- Step 8: Extract the complementary edge info
     obtain ⟨k, hk⟩ := hcomp
     -- Grid vertices are in [-1,1]²
     have hu_sq := gridVertexFin_in_square N hN.1 u_fin
     have hv_sq := gridVertexFin_in_square N hN.1 v_fin
-    -- Grid edge distance bound
-    have h_edge_dist := grid_edge_dist N hN.1 u_fin v_fin he
+    -- Grid edge distance bound (triangulated grid includes diagonals)
+    have h_edge_dist := grid_tri_edge_dist N hN.1 u_fin v_fin he
     have h_dist_lt : dist (gridVertexFin N u_fin) (gridVertexFin N v_fin) < δ₀ :=
       lt_of_le_of_lt h_edge_dist hN.2
     -- Step 9: Helper to convert IVT result to disk zero
@@ -2053,16 +2133,33 @@ AXIOM STATUS SUMMARY
 This file has **1 axiom** and **0 sorries**.
 
 Remaining axiom:
-  tuckers_lemma (Part I, line 65): Tucker's lemma for antipodal labelings.
+  tuckers_lemma (Part I): Tucker's lemma for antipodal labelings.
   This is the ONLY unproved assumption. Everything else is proved from it.
+
+IMPORTANT (soundness fix, 2026-03-14):
+  Tucker's lemma is now applied to `gridEdgesTriFin` (triangulated grid with
+  H/V + diagonal edges), NOT the original `gridEdgesFin` (H/V only).
+
+  The non-triangulated grid admits counterexamples to Tucker's lemma:
+  - 5×5 grid (N=2) with antipodal labeling: top row all (0,true), bottom row
+    all (0,false), sides all component 1, interior chosen to avoid ALL
+    complementary H/V edges. But the diagonal (2,2)→(3,3) IS complementary.
+  - This shows gridEdgesFin is insufficient; proper triangulation is needed.
+
+  The triangulated grid `gridEdgesTriFin` adds NE-SW diagonals: each cell
+  (i,j)-(i+1,j)-(i+1,j+1)-(i,j+1) is split into two triangles by the
+  diagonal (i,j)-(i+1,j+1). This diagonal is antipodally symmetric.
+
+  The edge distance bound is unchanged: diagonal edges have L∞ distance
+  1/N (same as H/V edges), so the mesh refinement argument is unaffected.
 
 Proof chain:
   tuckers_lemma → tucker_disk_approx_zero_proved → approx_borsuk_ulam_2d_corrected
     → borsuk_ulam_2d_corrected (exact 2D BU from Tucker)
 
-Approaches to eliminate tuckers_lemma:
+Approaches to eliminate tuckers_lemma (for the triangulated grid):
   1. Path-following argument (combinatorial, ~500-1000 lines):
-     - Triangulate each grid cell into 2 triangles
+     - Use the NE-SW triangulation of each cell (already in gridEdgesTriFin)
      - Define "complementary edge paths" through dual graph
      - Prove boundary has odd number of path endpoints
      - Therefore at least one interior complementary edge exists
