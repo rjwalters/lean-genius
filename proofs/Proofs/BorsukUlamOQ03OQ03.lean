@@ -980,17 +980,9 @@ This follows from Tucker's lemma (axiom, Part I) + dominantComponentLabel
     the dominant component is zero (complementary_edge_approx_dominant).
     Mesh refinement (mesh_refinement_principle) then gives ‖g(w)‖ < δ.
 
-    This is a consequence of tuckers_lemma (Part I),
-    complementary_edge_approx_dominant (Part XX), and
-    mesh_refinement_principle (Part XXI).
-    The only remaining gap is the grid Fintype instantiation. -/
-axiom tucker_disk_approx_zero
-    (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g)
-    (h_odd_boundary : ∀ p : ℝ × ℝ, p.1 ^ 2 + p.2 ^ 2 = 1 →
-      g (Prod.map Neg.neg Neg.neg p) =
-        Prod.map Neg.neg Neg.neg (g p))
-    (δ : ℝ) (hδ : 0 < δ) :
-    ∃ w : ℝ × ℝ, w.1 ^ 2 + w.2 ^ 2 ≤ 1 ∧ dist (g w) 0 < δ
+    This is proved in tucker_disk_approx_zero_proved (Part XXIII) using
+    tuckers_lemma (Part I), complementary_edge_approx_dominant (Part XX),
+    mesh_refinement_principle (Part XXI), and radial extension (Part XXII). -/
 
 /-- **Corrected approximate 2D Borsuk-Ulam from Tucker's Lemma**
 
@@ -1007,7 +999,7 @@ theorem approx_borsuk_ulam_2d_corrected
     ∃ x : ℝ × ℝ × ℝ, x.1 ^ 2 + x.2.1 ^ 2 + x.2.2 ^ 2 = 1 ∧
       dist (f x) (f (neg3 x)) < ε := by
   -- Apply Tucker on disk to g̃ = antisymmetricDiff3 f ∘ diskToSphere
-  obtain ⟨w, hw_disk, hw_approx⟩ := tucker_disk_approx_zero
+  obtain ⟨w, hw_disk, hw_approx⟩ := tucker_disk_approx_zero_proved
     (antisymmetricDiff3 f ∘ diskToSphere)
     (projected_diff_continuous f hf)
     (fun p hp => projected_diff_antipodal_boundary f p hp)
