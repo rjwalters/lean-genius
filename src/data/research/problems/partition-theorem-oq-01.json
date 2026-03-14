@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved bridge theorems connecting decidable and noncomputable partition definitions. rr1Gap = rr1GapPartitions, rr1Mod5 = rr1Mod5Partitions, rr2Mod5 = rr2Mod5Partitions. Derived rogers_ramanujan_first_decidable from axiom + bridges. Fixed 6 Mathlib API breaks. Total: 38+ proved theorems, 4 axioms, 50+ verifications, 0 sorries.",
+    "progressSummary": "PROGRESS: Proved RR2 Gap Bridge theorem connecting decidable and noncomputable partition definitions. File now has bridge theorems for RR1 Gap, RR1 Mod5, RR2 Gap (all proved). Remaining: RR2 Mod5, Schur Gap, Schur Mod bridges.",
     "builtItems": [
       "PartitionDecidable.rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGap, schurMod: decidable partition set definitions",
       "schurGapFull: corrected Schur gap with strengthened mod-3 condition",
@@ -42,7 +42,8 @@
       "rr1Gap_eq_rr1GapPartitions: decidable RR1 gap = noncomputable RR1 gap",
       "rr1Mod5_eq_rr1Mod5Partitions: decidable RR1 mod = noncomputable RR1 mod",
       "rr2Mod5_eq_rr2Mod5Partitions: decidable RR2 mod = noncomputable RR2 mod",
-      "rogers_ramanujan_first_decidable: derived from axiom + bridges"
+      "rogers_ramanujan_first_decidable: derived from axiom + bridges",
+      "Part XXIII: RR2 Gap Bridge - rr2Gap_eq_rr2GapPartitions theorem + rogers_ramanujan_second_decidable derived identity (6 helper lemmas)"
     ],
     "insights": [
       "Pairwise separation equivalence: for d≥1, sorted min gap d ⟺ Nodup ∧ all pairs separated by ≥d. Avoids noncomputable Multiset.sort.",
@@ -54,7 +55,9 @@
       "RR2 mod5 parts are always ≥ 2 (parts ≡ 2,3 mod 5), Schur mod parts are coprime to 3.",
       "The original axiom schur_partition_identity uses the simplified definition - should be restated with schurGapFull for mathematical correctness.",
       "Multiset.sort_sorted deprecated → Multiset.pairwise_sort. List.mem_cons_self takes implicit args. Bool.and_eq_true is Prop equality not Iff.",
-      "Bridge proof: pairwise_ge_d_implies_hasMinGap (forward) + hasMinGap_ge_one_nodup + hasMinGap_pairwise_sep (backward)"
+      "Bridge proof: pairwise_ge_d_implies_hasMinGap (forward) + hasMinGap_ge_one_nodup + hasMinGap_pairwise_sep (backward)",
+      "List.eq_nil_iff_forall_not_mem + Multiset.mem_sort cleanly proves sorted list is empty when multiset is zero",
+      "List.mem_cons_self no longer takes explicit arguments in Mathlib v4.26 - use .. for auto-binding"
     ],
     "mathlibGaps": [],
     "nextSteps": [

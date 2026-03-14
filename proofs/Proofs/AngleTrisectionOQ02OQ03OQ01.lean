@@ -201,9 +201,10 @@ theorem cyclotomic_degree (n : ℕ) (hn : 0 < n) :
 
 /-- The cyclotomic polynomial is irreducible over ℚ.
     This is a key result from algebraic number theory, available in Mathlib. -/
-theorem cyclotomic_irreducible (n : ℕ+) :
-    Irreducible (Polynomial.cyclotomic n ℚ) :=
-  Polynomial.cyclotomic.irreducible_rat n.val n.pos
+theorem cyclotomic_irreducible (n : ℕ) (hn : 0 < n) :
+    Irreducible (Polynomial.cyclotomic n ℚ) := by
+  haveI : NeZero n := ⟨by omega⟩
+  exact Polynomial.cyclotomic.irreducible_rat (NeZero.pos n)
 
 -- ============================================================================
 -- § 7. Maximal Real Subfield
@@ -222,49 +223,86 @@ theorem cyclotomic_irreducible (n : ℕ+) :
     - σ ≠ id: since -1 ≠ 1 in (ℤ/nℤ)* for n ≥ 3
     - σ² = id: since (-1)² = 1 in (ℤ/nℤ)* -/
 theorem complex_conj_order_two (n : ℕ) (hn : 3 ≤ n) :
-    ∃ (σ : (CyclotomicField ⟨n, by omega⟩ ℚ) ≃ₐ[ℚ] (CyclotomicField ⟨n, by omega⟩ ℚ)),
-    σ ≠ AlgEquiv.refl ∧ σ * σ = AlgEquiv.refl := by
-  set np : ℕ+ := ⟨n, by omega⟩
-  set K := CyclotomicField np ℚ
-  have hequiv := IsCyclotomicExtension.autEquivPow ℚ K np
+    ∃ (σ : (CyclotomicField n ℚ) ≃ₐ[ℚ] (CyclotomicField n ℚ)),
+    σ ≠ 1 ∧ σ ^ 2 = 1 := by
+  set K := CyclotomicField n ℚ
+  haveI : NeZero n := ⟨by omega⟩
+  have hirr : Irreducible (Polynomial.cyclotomic n ℚ) :=
+    Polynomial.cyclotomic.irreducible_rat (NeZero.pos n)
+  have hequiv := IsCyclotomicExtension.autEquivPow K hirr
   -- The automorphism corresponding to -1 ∈ (ℤ/nℤ)*
-  set u : (ZMod np)ˣ := -1
+  set u : (ZMod n)ˣ := -1
   set σ := hequiv.symm u
   refine ⟨σ, ?_, ?_⟩
-  · -- σ ≠ refl: -1 ≠ 1 in (ℤ/nℤ)* for n ≥ 3
+  · -- σ ≠ 1: -1 ≠ 1 in (ℤ/nℤ)* for n ≥ 3
     intro h
-    have h_eq : hequiv σ = hequiv (AlgEquiv.refl) := congr_arg hequiv h
-    rw [hequiv.apply_symm_apply] at h_eq
-    -- hequiv(refl) = 1
-    have h_one : hequiv AlgEquiv.refl = 1 := map_one hequiv
-    rw [h_one] at h_eq
+    have h_eq : hequiv σ = hequiv 1 := congr_arg hequiv h
+    rw [hequiv.apply_symm_apply, map_one] at h_eq
     -- So -1 = 1 in (ZMod n)ˣ, contradiction for n ≥ 3
-    have h_units : (-1 : (ZMod np)ˣ) = 1 := h_eq
-    have h_neg : (-1 : ZMod np) = 1 := by
+    have h_units : (-1 : (ZMod n)ˣ) = 1 := h_eq
+    have h_neg : (-1 : ZMod n) = 1 := by
       have := congr_arg Units.val h_units; simpa using this
     -- -1 = 1 means 1 + 1 = 0 in ZMod n (since -1 + 1 = 0 = 1 + 1)
-    have h2 : (2 : ZMod np) = 0 := by
-      have h0 := neg_add_cancel (1 : ZMod np)  -- -1 + 1 = 0
+    have h2 : (2 : ZMod n) = 0 := by
+      have h0 := neg_add_cancel (1 : ZMod n)  -- -1 + 1 = 0
       rw [h_neg] at h0  -- 1 + 1 = 0
-      rw [show (2 : ZMod np) = 1 + 1 from by norm_num]
+      rw [show (2 : ZMod n) = 1 + 1 from by norm_num]
       exact h0
     -- (2 : ZMod n) = 0 means n | 2
-    rw [show (2 : ZMod np) = ((2 : ℕ) : ZMod np) from by push_cast; ring] at h2
-    have h_dvd : (np : ℕ) ∣ 2 := (ZMod.natCast_zmod_eq_zero_iff_dvd 2 np).mp h2
+    rw [show (2 : ZMod n) = ((2 : ℕ) : ZMod n) from by push_cast; ring] at h2
+    have h_dvd : n ∣ 2 := (ZMod.natCast_zmod_eq_zero_iff_dvd 2 n).mp h2
     -- But n ≥ 3 and n | 2 is impossible
-    omega
-  · -- σ² = refl: (-1)² = 1
-    have h_sq : u * u = 1 := by ext; simp
+    exact absurd (Nat.le_of_dvd (by omega) h_dvd) (by omega)
+  · -- σ² = 1: (-1)² = 1
+    rw [pow_two]
+    have h_sq : u * u = 1 := by
+      apply Units.ext; show (-1 : ZMod n) * (-1) = 1; ring
     have : σ * σ = hequiv.symm (u * u) := by
       show hequiv.symm u * hequiv.symm u = hequiv.symm (u * u)
       rw [← map_mul hequiv.symm]
     rw [this, h_sq, map_one hequiv.symm]
 
 /-- The degree of the maximal real subfield over ℚ is φ(n)/2 for n ≥ 3.
-    This is the key numerical fact connecting cyclotomic theory to constructibility. -/
-axiom maximal_real_subfield_degree (n : ℕ) (hn : 3 ≤ n) :
-    ∃ (F : IntermediateField ℚ (CyclotomicField ⟨n, by omega⟩ ℚ)),
-    Module.finrank ℚ F = Nat.totient n / 2
+    Proved via the Galois correspondence applied to the order-2 conjugation automorphism.
+
+    Proof strategy:
+    1. Get the order-2 automorphism σ (from complex_conj_order_two)
+    2. H = ⟨σ⟩ has |H| = 2
+    3. By Galois correspondence: [K : fixedField H] = |H| = 2
+    4. By Galois theory: |Gal(K/ℚ)| = [K:ℚ] and |Gal(K/ℚ)| = |(ℤ/nℤ)*| = φ(n)
+    5. Tower law: φ(n) = [fixedField H : ℚ] · 2, so [fixedField H : ℚ] = φ(n)/2 -/
+theorem maximal_real_subfield_degree (n : ℕ) (hn : 3 ≤ n) :
+    ∃ (F : IntermediateField ℚ (CyclotomicField n ℚ)),
+    Module.finrank ℚ F = Nat.totient n / 2 := by
+  set K := CyclotomicField n ℚ
+  haveI : NeZero n := ⟨by omega⟩
+  -- Get the order-2 automorphism σ (analog of complex conjugation)
+  obtain ⟨σ, hne, hsq⟩ := complex_conj_order_two n hn
+  -- σ has order 2 in the automorphism group Gal(K/ℚ)
+  have hord : orderOf σ = 2 := orderOf_eq_prime hsq hne
+  -- Define H = ⟨σ⟩ (cyclic subgroup of order 2) and its fixed field
+  set H := Subgroup.zpowers σ
+  refine ⟨IntermediateField.fixedField H, ?_⟩
+  -- |H| = orderOf σ = 2
+  have hcard : Nat.card ↥H = 2 := by rw [Nat.card_zpowers, hord]
+  -- Finite dimensionality of K/ℚ (cyclotomic extensions are finite-dimensional)
+  haveI : FiniteDimensional ℚ K :=
+    IsCyclotomicExtension.finiteDimensional {n} ℚ K
+  -- [K : fixedField(H)] = |H| = 2 (Galois correspondence)
+  have hfix : Module.finrank ↥(IntermediateField.fixedField H) K = 2 := by
+    rw [IntermediateField.finrank_fixedField_eq_card, hcard]
+  -- [K : ℚ] = φ(n) (from IsCyclotomicExtension.finrank)
+  have hirr : Irreducible (Polynomial.cyclotomic n ℚ) :=
+    Polynomial.cyclotomic.irreducible_rat (NeZero.pos n)
+  have hK : Module.finrank ℚ K = Nat.totient n :=
+    IsCyclotomicExtension.finrank K hirr
+  -- Tower law: [K:ℚ] = [fixedField(H):ℚ] · [K:fixedField(H)]
+  have htower : Module.finrank ℚ ↥(IntermediateField.fixedField H) *
+    Module.finrank ↥(IntermediateField.fixedField H) K = Module.finrank ℚ K :=
+    Module.finrank_mul_finrank ℚ ↥(IntermediateField.fixedField H) K
+  -- Combine: finrank * 2 = φ(n), so finrank = φ(n) / 2
+  rw [hfix, hK] at htower
+  omega
 
 -- ============================================================================
 -- § 8. Connecting to the OQ02-OQ03 Axioms
@@ -284,7 +322,7 @@ axiom maximal_real_subfield_degree (n : ℕ) (hn : 3 ≤ n) :
     4. This polynomial has integer coefficients (by Vieta's formulas) -/
 axiom cos_minimal_poly_degree (n : ℕ) (hn : 3 ≤ n) :
     ∃ P : ℚ[X], P.Monic ∧ P.natDegree = Nat.totient n / 2 ∧
-    P.eval (algebraMap ℚ ℝ (Real.cos (2 * Real.pi / n))) = 0
+    (P.map (algebraMap ℚ ℝ)).eval (Real.cos (2 * Real.pi / n)) = 0
 
 /-- From cos_minimal_poly_degree, cos(2π/n) is integral over ℚ.
     This is the first primitive axiom from OQ02-OQ03 Section XIV. -/
@@ -292,9 +330,7 @@ theorem cos_algebraic_from_cyclotomic (n : ℕ) (hn : 3 ≤ n) :
     IsAlgebraic ℚ (Real.cos (2 * Real.pi / n)) := by
   obtain ⟨P, hP_monic, _, hP_root⟩ := cos_minimal_poly_degree n hn
   exact ⟨P, hP_monic.ne_zero, by
-    rw [Polynomial.aeval_def]
-    convert hP_root using 1
-    simp [Polynomial.eval_map]⟩
+    rwa [Polynomial.aeval_def, ← Polynomial.eval_map]⟩
 
 -- ============================================================================
 -- § 9. Degree Computation for Galois Group
@@ -333,9 +369,8 @@ theorem gal_card_from_cyclotomic (n : ℕ) (hn : 3 ≤ n) :
   2. chebyshev_T_degree: ✅ PROVED (line 181, from Mathlib natDegree_T)
   3. complex_conj_order_two: ✅ PROVED (line 224, via autEquivPow and -1 ∈ (ℤ/nℤ)*)
 
-  4. maximal_real_subfield_degree: [ℚ(ζₙ⁺):ℚ] = φ(n)/2
-     STATUS: Requires Galois theory fixed-field degree formula
-     EFFORT: ~150 lines (fixed field of order-2 subgroup has index 2)
+  4. maximal_real_subfield_degree: ✅ PROVED (via Galois correspondence + tower law)
+     Fixed field of order-2 conjugation automorphism has degree φ(n)/2
 
   5. cos_minimal_poly_degree: minpoly(cos(2π/n)) has degree φ(n)/2
      STATUS: Follows from maximal_real_subfield_degree + cos generates subfield
