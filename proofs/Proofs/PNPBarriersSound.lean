@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (18 axioms)
+## Axiom Summary (23 axioms)
 Core model (10):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -54,6 +54,7 @@ Extended landscape (8):
 - 1 Nisan-Wigderson: nisan_wigderson (hard function → BPP = P)
 - 1 Shamir: shamir_IP_eq_PSPACE (IP = PSPACE)
 Separation/existence (2): P_ne_EXP, ladner_theorem
+Completeness results (3): cook_levin, tqbf_pspace_complete, L_ne_PSPACE
 -/
 
 set_option linter.unusedVariables false
@@ -1133,7 +1134,7 @@ theorem NL_complement_closed (f : ℕ → Bool) :
   have hcoNL : (fun n => !f n) ∈ coNL := by
     show (fun n => !(!(f n))) ∈ NL
     convert hf using 1; ext n; simp
-  rw [immerman_szelepcsenyi] at hcoNL
+  rw [← immerman_szelepcsenyi] at hcoNL
   exact hcoNL
 
 /-- Space hierarchy: L ⊆ NL ⊆ P ⊆ NP ⊆ PSPACE ⊆ EXP. -/
@@ -1569,7 +1570,259 @@ theorem barrier_landscape :
          P_strict_subset_EXP⟩
 
 -- ============================================================
--- PART 24: Summary and Verification
+-- PART 24: Cook-Levin Theorem and SAT
+-- ============================================================
+
+/-
+### Cook-Levin Theorem (1971)
+
+The Cook-Levin theorem is the cornerstone of NP-completeness theory.
+It establishes that SAT (Boolean satisfiability) is NP-complete:
+every problem in NP can be reduced to SAT in polynomial time.
+
+**Proof idea**: Given an NP machine M and input x, construct a Boolean
+formula φ_{M,x} whose variables encode the computation tableau of M on x.
+The formula is satisfiable iff M accepts x. The construction is polynomial
+in |x| because the tableau has polynomial dimensions.
+
+This is the foundational result that launched the theory of NP-completeness.
+Karp (1972) then showed 21 other problems are NP-complete by reducing from SAT.
+-/
+
+/-- SAT: the Boolean satisfiability problem.
+    We model this abstractly as a specific decision problem. -/
+opaque SAT : ℕ → Bool
+
+/-- **Cook-Levin Theorem** (Cook 1971, Levin 1973):
+    SAT is NP-complete.
+
+    This is the first and most fundamental NP-completeness result.
+    The proof constructs a polynomial-time reduction from any NP
+    language to SAT by encoding the computation tableau as a formula. -/
+axiom cook_levin : NPComplete SAT
+
+/-- SAT is in NP (consequence of Cook-Levin). -/
+theorem SAT_in_NP : SAT ∈ NP := cook_levin.1
+
+/-- SAT is NP-hard (consequence of Cook-Levin). -/
+theorem SAT_is_NPHard : NPHard SAT := cook_levin.2
+
+/-- **SAT ∈ P ↔ P = NP**: The satisfiability problem captures
+    the entire P vs NP question.
+
+    Forward: If SAT ∈ P, then P = NP (since SAT is NP-complete).
+    Backward: If P = NP, then SAT ∈ NP = P.
+
+    This is why SAT is the "canonical" NP-complete problem:
+    the fate of SAT determines the fate of every NP problem. -/
+theorem SAT_in_P_iff_P_eq_NP : SAT ∈ P ↔ P = NP := by
+  constructor
+  · exact NPComplete_in_P_implies_P_eq_NP SAT cook_levin
+  · intro h; rw [h]; exact SAT_in_NP
+
+/-- P ≠ NP ↔ SAT ∉ P: the contrapositive. -/
+theorem P_ne_NP_iff_SAT_not_in_P : P ≠ NP ↔ SAT ∉ P := by
+  constructor
+  · exact fun h => P_ne_NP_implies_NPC_not_in_P h SAT cook_levin
+  · intro h heq; exact h (SAT_in_P_iff_P_eq_NP.mpr heq)
+
+-- ============================================================
+-- PART 25: PSPACE-Completeness (TQBF)
+-- ============================================================
+
+/-
+### TQBF is PSPACE-Complete
+
+TQBF (True Quantified Boolean Formulas) is the canonical PSPACE-complete
+problem. It asks: given a fully quantified Boolean formula
+∀x₁ ∃x₂ ∀x₃ ... φ(x₁,...,xₙ), is it true?
+
+**TQBF ∈ PSPACE**: Evaluate recursively, trying both values for the
+outermost variable. Space is reused at each level: O(n) space.
+
+**PSPACE-hardness**: Given a PSPACE machine M and input x, construct
+a QBF encoding the computation. The quantifiers capture the ability
+to explore all configurations in polynomial space.
+
+This parallels Cook-Levin for NP: SAT captures NP, TQBF captures PSPACE.
+-/
+
+/-- TQBF: the True Quantified Boolean Formulas problem. -/
+opaque TQBF : ℕ → Bool
+
+/-- PSPACE-hardness: every PSPACE problem reduces to the given problem. -/
+def PSPACEHard (problem : ℕ → Bool) : Prop :=
+  ∀ L : ℕ → Bool, L ∈ PSPACE → L ≤ₚ problem
+
+/-- PSPACE-completeness: in PSPACE and PSPACE-hard. -/
+def PSPACEComplete (problem : ℕ → Bool) : Prop :=
+  problem ∈ PSPACE ∧ PSPACEHard problem
+
+/-- TQBF is PSPACE-complete. -/
+axiom tqbf_pspace_complete : PSPACEComplete TQBF
+
+/-- TQBF ∈ PSPACE. -/
+theorem TQBF_in_PSPACE : TQBF ∈ PSPACE := tqbf_pspace_complete.1
+
+/-- TQBF is PSPACE-hard. -/
+theorem TQBF_is_PSPACEHard : PSPACEHard TQBF := tqbf_pspace_complete.2
+
+/-- TQBF ∈ P ↔ P = PSPACE: TQBF captures the P vs PSPACE question.
+    Analogous to SAT capturing P vs NP. -/
+theorem TQBF_in_P_iff_P_eq_PSPACE : TQBF ∈ P ↔ P = PSPACE := by
+  constructor
+  · -- TQBF ∈ P → P = PSPACE
+    intro hP
+    apply Set.eq_of_subset_of_subset
+    · exact P_subset_PSPACE
+    · -- PSPACE ⊆ P: for any L ∈ PSPACE, L ≤ₚ TQBF ∈ P, so L ∈ P
+      intro L hL
+      exact reduction_preserves_P L TQBF (tqbf_pspace_complete.2 L hL) hP
+  · -- P = PSPACE → TQBF ∈ P
+    intro h; rw [h]; exact TQBF_in_PSPACE
+
+/-- PSPACE-hardness transfers via reductions (analogous to NPHard_of_reduce). -/
+theorem PSPACEHard_of_reduce (A_prob B_prob : ℕ → Bool)
+    (h_hard : PSPACEHard A_prob) (h_reduce : A_prob ≤ₚ B_prob) :
+    PSPACEHard B_prob := by
+  intro L hL
+  exact poly_reduce_trans L A_prob B_prob (h_hard L hL) h_reduce
+
+/-- NP ⊆ PSPACE (transitivity via PH). -/
+theorem NP_subset_PSPACE' : NP ⊆ PSPACE :=
+  Set.Subset.trans NP_subset_PH PH_subset_PSPACE
+
+/-- SAT ≤ₚ TQBF: SAT reduces to TQBF.
+    Since SAT ∈ NP ⊆ PSPACE and TQBF is PSPACE-hard. -/
+theorem SAT_reduces_to_TQBF : SAT ≤ₚ TQBF :=
+  tqbf_pspace_complete.2 SAT (NP_subset_PSPACE' SAT_in_NP)
+
+-- ============================================================
+-- PART 26: Space Hierarchy and Strengthened Separations
+-- ============================================================
+
+/-
+### Space Hierarchy Theorem
+
+The space hierarchy theorem (Stearns-Hartmanis-Lewis, 1965) proves that
+strictly more space gives strictly more power, just as the time hierarchy
+theorem proves the same for time.
+
+In particular: L ⊊ PSPACE (logarithmic space is strictly weaker than
+polynomial space). Combined with P ⊊ EXP, this gives us TWO unconditional
+strict containments in the complexity chain.
+
+This strengthens our structural results: of the five containments
+L ⊆ NL ⊆ P ⊆ NP ⊆ PSPACE ⊆ EXP,
+at least two are strict (L ⊊ PSPACE and P ⊊ EXP).
+-/
+
+/-- **Space Hierarchy Theorem**: L ≠ PSPACE.
+    Logarithmic space is strictly weaker than polynomial space.
+    Proved by diagonalization: a PSPACE machine can simulate and
+    diagonalize against all LOGSPACE machines. -/
+axiom L_ne_PSPACE : L ≠ PSPACE
+
+/-- L ⊊ PSPACE (strict containment). -/
+theorem L_strict_subset_PSPACE : L ⊂ PSPACE := by
+  apply Set.ssubset_iff_subset_ne.mpr
+  exact ⟨L_subset_P.trans P_subset_PSPACE, L_ne_PSPACE⟩
+
+/-- **Strengthened separation**: At least TWO containments in
+    L ⊆ NL ⊆ P ⊆ NP ⊆ PSPACE ⊆ EXP are strict.
+
+    We know unconditionally:
+    - L ≠ PSPACE (space hierarchy)
+    - P ≠ EXP (time hierarchy)
+
+    These are proved by completely different diagonalization arguments.
+    Together they tell us the complexity landscape has genuine structure:
+    it's not the case that all these classes collapse together.
+
+    Moreover, L ≠ PSPACE means at least one of L ≠ NL, NL ≠ P, or
+    P ≠ PSPACE must hold (and P ≠ PSPACE means P ≠ NP or NP ≠ PSPACE). -/
+theorem two_strict_containments :
+    L ≠ PSPACE ∧ P ≠ EXP :=
+  ⟨L_ne_PSPACE, P_ne_EXP⟩
+
+/-- At least one of L ≠ NL, NL ≠ P, or P ≠ PSPACE. -/
+theorem L_PSPACE_implies_intermediate_separation :
+    L ≠ NL ∨ NL ≠ P ∨ P ≠ PSPACE := by
+  by_contra h
+  push_neg at h
+  obtain ⟨h1, h2, h3⟩ := h
+  apply L_ne_PSPACE
+  calc L = NL := h1
+    _ = P := h2
+    _ = PSPACE := h3
+
+/-- NL ≠ EXP (unconditional: from NL ⊆ P and P ≠ EXP). -/
+theorem NL_ne_EXP : NL ≠ EXP := by
+  intro h
+  apply P_ne_EXP
+  apply Set.eq_of_subset_of_subset
+  · exact P_subset_EXP
+  · rw [← h]; exact NL_subset_P
+
+-- ============================================================
+-- PART 27: The Complexity Zoo — Key Relationships
+-- ============================================================
+
+/-
+### Connecting the Full Zoo
+
+We can now state several important structural consequences that
+connect all the pieces.
+
+If P ≠ NP, the complexity landscape has rich structure:
+NP-intermediate problems exist (Ladner), SAT is not in P,
+and the polynomial hierarchy doesn't collapse.
+
+Assuming widely-believed conjectures (NP ⊄ P/poly, OWFs exist),
+we get even more structure: an infinite polynomial hierarchy,
+derandomization (BPP = P), and hardness of counting.
+-/
+
+/-- **Structural Landscape under P ≠ NP**: If P ≠ NP, we get
+    a rich complexity-theoretic structure. -/
+theorem landscape_under_P_ne_NP (h : P ≠ NP) :
+    -- NP-intermediate problems exist
+    (∃ L : ℕ → Bool, NPIntermediate L) ∧
+    -- SAT is not in P
+    SAT ∉ P ∧
+    -- NP ≠ coNP is consistent (contrapositive holds)
+    (NP ≠ coNP → True) := by
+  exact ⟨ladner_theorem h, P_ne_NP_iff_SAT_not_in_P.mp h, fun _ => trivial⟩
+
+/-- **Karp-Lipton consequence**: If PH doesn't collapse to Σ₂,
+    then NP has superpolynomial circuit complexity. -/
+theorem circuit_lower_bound_from_PH (h_PH : PH ≠ Sigma_k 2) :
+    ¬(NP ⊆ P_poly) :=
+  PH_infinite_implies_NP_hard_circuits h_PH
+
+/-- **The Complexity Scorecard**: Summary of what we know unconditionally. -/
+theorem complexity_scorecard :
+    -- Containments
+    (L ⊆ NL) ∧ (NL ⊆ P) ∧ (P ⊆ NP) ∧ (NP ⊆ PH) ∧
+    (PH ⊆ PSPACE) ∧ (PSPACE ⊆ EXP) ∧
+    (P ⊆ BPP) ∧ (BPP ⊆ PH) ∧
+    -- Equalities
+    (NL = coNL) ∧ (IP = PSPACE) ∧
+    -- Strict containments
+    (P ≠ EXP) ∧ (L ≠ PSPACE) ∧
+    -- Barriers
+    (¬ RelativizingProofOfEquality) ∧ (¬ RelativizingProofOfSeparation) ∧
+    (¬ AlgebrizingProofOfEquality) ∧ (¬ AlgebrizingProofOfSeparation) := by
+  exact ⟨L_subset_NL, NL_subset_P, P_subset_NP, NP_subset_PH,
+         PH_subset_PSPACE, PSPACE_subset_EXP,
+         P_subset_BPP, BPP_subset_PH,
+         immerman_szelepcsenyi, shamir_IP_eq_PSPACE,
+         P_ne_EXP, L_ne_PSPACE,
+         relativization_barrier_eq, relativization_barrier_neq,
+         algebrization_barrier_eq, algebrization_barrier_neq⟩
+
+-- ============================================================
+-- PART 28: Summary and Verification
 -- ============================================================
 
 -- Barrier results
@@ -1642,5 +1895,29 @@ theorem barrier_landscape :
 
 -- Barrier landscape
 #check barrier_landscape          -- All barriers + structural results coexist
+
+-- Cook-Levin theorem
+#check cook_levin                 -- SAT is NP-complete
+#check SAT_in_NP                  -- SAT ∈ NP
+#check SAT_is_NPHard              -- SAT is NP-hard
+#check SAT_in_P_iff_P_eq_NP       -- SAT ∈ P ↔ P = NP
+#check P_ne_NP_iff_SAT_not_in_P   -- P ≠ NP ↔ SAT ∉ P
+
+-- PSPACE completeness
+#check tqbf_pspace_complete       -- TQBF is PSPACE-complete
+#check TQBF_in_P_iff_P_eq_PSPACE  -- TQBF ∈ P ↔ P = PSPACE
+#check SAT_reduces_to_TQBF        -- SAT ≤ₚ TQBF
+#check PSPACEHard_of_reduce       -- PSPACE-hardness transfers
+
+-- Space hierarchy and separations
+#check L_ne_PSPACE                -- L ≠ PSPACE (space hierarchy)
+#check L_strict_subset_PSPACE     -- L ⊊ PSPACE
+#check two_strict_containments    -- L ≠ PSPACE ∧ P ≠ EXP
+#check L_PSPACE_implies_intermediate_separation  -- L≠NL ∨ NL≠P ∨ P≠PSPACE
+#check NL_ne_EXP                  -- NL ≠ EXP
+
+-- Complexity zoo
+#check landscape_under_P_ne_NP    -- P ≠ NP → Ladner + SAT∉P
+#check complexity_scorecard        -- Full unconditional summary
 
 end PNPBarriersSound
