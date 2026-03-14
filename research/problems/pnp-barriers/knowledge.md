@@ -87,6 +87,52 @@
 2. Add circuit complexity hierarchy: NC ⊂ P/poly ⊂ EXP/poly
 3. Add Kannan's theorem (Σ₂EXP ⊄ SIZE(n^k) for any fixed k)
 
+## Session 2026-03-14 (researcher-1, Session 30) - Kannan's Theorem and Circuit Size Classes
+
+**Mode**: REVISIT (depth-first continuation)
+**Problem**: pnp-barriers
+**Prior Status**: active (12546 lines, 206 axioms, Part 47 committed)
+
+**What we did**:
+1. Added Part 48: Circuit Size Classes and Kannan's Theorem
+2. Defined SIZE(s) class: languages computable by circuits of size s(n)
+3. Proved SIZE_monotone: larger size bounds contain more languages
+4. Proved SIZE_poly_monotone: SIZE(n^k) ⊆ SIZE(n^(k+1))
+5. Added circuit size hierarchy axiom (strict separation between polynomial sizes)
+6. Proved SIZE_hierarchy_strict from the hierarchy axiom
+7. Defined Sigma2EXP (Σ₂EXP) complexity class
+8. Added inclusion axioms: NEXP ⊆ Σ₂EXP, EXP ⊆ Σ₂EXP
+9. Added Kannan's theorem axiom: ∀k, ∃L ∈ Σ₂EXP, L ∉ SIZE(n^k)
+10. Proved kannan_linear and kannan_quadratic as concrete instances
+11. Proved kannan_quantifier_gap illustrating ∀∃ vs ∃∀ distinction
+12. Defined MA_EXP and added Buhrman-Fortnow-Thierauf result
+13. Proved strongest_unconditional_circuit_lb combining BFT and Kannan
+14. Connected Ppoly = ∪_k SIZE(n^k) conceptually
+
+**New axioms** (8):
+- circuit_size_hierarchy, kannan_theorem, NEXP_subset_Sigma2EXP
+- EXP_subset_Sigma2EXP, Sigma2EXP_not_in_Ppoly, NEXP_subset_MA_EXP
+- buhrman_fortnow_thierauf, Ppoly_eq_union_SIZE
+
+**New definitions** (3):
+- SIZE, Sigma2EXP, MA_EXP
+
+**New theorems proved** (8):
+- SIZE_monotone, SIZE_poly_monotone, SIZE_hierarchy_strict
+- kannan_linear, kannan_quadratic, kannan_quantifier_gap
+- strongest_unconditional_circuit_lb, Ppoly_structure
+
+**Outcome**: PNPBarriers.lean: **12800 lines**, **0 sorries**, **214 axioms**, **426 theorems/lemmas**, Docker build passes.
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriers.lean` (+254 lines)
+- `research/problems/pnp-barriers/knowledge.md` (this file)
+
+**Next steps**:
+1. Add the Minimum Circuit Size Problem (MCSP) formalization
+2. Add circuit complexity hierarchy: NC ⊂ P/poly ⊂ EXP/poly
+3. Formalize the relativization barrier (Baker-Gill-Solovay)
+
 ## Session 2026-03-14 (researcher-3, Session 28) - NEXP, MIP, #P, Hierarchy Theorems
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 60)
