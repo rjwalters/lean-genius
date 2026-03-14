@@ -93,17 +93,142 @@ theorem newton_ineq : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
   by_cases hbase : n = k + 1
   · -- n = k + 1
     subst hbase
-    -- eₖ₊₁ = ∏ xᵢ
-    have h_top : elemSymm (k + 1) x = ∏ i : Fin (k + 1), x i :=
-      elemSymm_n_eq_prod x
-    -- For the base case, we use a direct argument.
-    -- eₖ has C(k+1,k) = k+1 terms, each a product of k out of k+1 variables.
-    -- eₖ = ∑ᵢ ∏_{j≠i} xⱼ = (∏ xⱼ) · ∑ᵢ (1/xᵢ) when all xᵢ > 0.
-    -- eₖ₋₁ has C(k+1,k-1) = C(k+1,2) terms.
-    -- Newton: (eₖ/(k+1))² ≥ (eₖ₋₁/C(k+1,k-1)) · (∏xᵢ/1)
-    -- This is a non-trivial algebraic identity; we sorry it for now
-    -- and focus on the inductive step.
-    sorry
+    -- Decompose into first k variables (y) and last variable (t)
+    set y := x ∘ Fin.castSucc with hy_def
+    set t := x (Fin.last k) with ht_def
+    have ht_nn : 0 ≤ t := hx (Fin.last k)
+    have hy_nn : ∀ i, 0 ≤ y i := fun i => hx (Fin.castSucc i)
+    -- Key quantities
+    set P := elemSymm k y with hP_def
+    set E := elemSymm (k - 1) y with hE_def
+    set F := elemSymm (k - 2) y with hF_def
+    -- Non-negativity
+    have hP_nn : 0 ≤ P := elemSymm_nonneg k y hy_nn
+    have hE_nn : 0 ≤ E := elemSymm_nonneg (k - 1) y hy_nn
+    have hF_nn : 0 ≤ F := elemSymm_nonneg (k - 2) y hy_nn
+    -- Simplifications for n = k+1 (k variables in y)
+    have hEkp1_zero : elemSymm (k + 1) y = 0 :=
+      elemSymm_gt_eq_zero (k + 1) (by omega) y
+    -- Recurrences
+    have h_rec_k : elemSymm k x = P + t * E := by
+      have hkm : k - 1 + 1 = k := by omega
+      have h := elemSymm_succ (k - 1) x
+      rwa [hkm] at h
+    have h_rec_kp1 : elemSymm (k + 1) x = t * P := by
+      have h := elemSymm_succ k x
+      rw [hEkp1_zero, zero_add] at h; exact h
+    have h_rec_km1 : elemSymm (k - 1) x = E + t * F := by
+      have hkm : k - 2 + 1 = k - 1 := by omega
+      have h := elemSymm_succ (k - 2) x
+      rwa [hkm] at h
+    -- IH at (m=k, index=k-1): Newton's inequality for k variables at index k-1
+    -- This is valid since k-1 ≥ 1 (k ≥ 2) and (k-1)+1 = k ≤ k
+    have h_ih_km1 : (E / (Nat.choose k (k - 1) : ℝ)) ^ 2 ≥
+        (F / (Nat.choose k (k - 2) : ℝ)) * (P / (Nat.choose k k : ℝ)) := by
+      have h := ih k (by omega) (k - 1) (by omega) (by omega : k - 1 + 1 ≤ k) y hy_nn
+      have h1 : k - 1 - 1 = k - 2 := by omega
+      have h2 : k - 1 + 1 = k := by omega
+      rwa [h1, h2] at h
+    -- Cross-multiply the IH to get: (k-1) · E² ≥ 2k · P · F
+    -- C(k, k-1) = k, C(k, k-2) = k(k-1)/2, C(k, k) = 1
+    have hCk_km1 : (Nat.choose k (k - 1) : ℝ) = (k : ℝ) := by
+      rw [Nat.choose_symm_diff]; simp; omega
+    have hCk_k : (Nat.choose k k : ℝ) = 1 := by simp
+    have hCk_km2 : (Nat.choose k (k - 2) : ℝ) = (k : ℝ) * ((k : ℝ) - 1) / 2 := by
+      rw [Nat.choose_symm_diff]; simp
+      have : k - (k - 2) = 2 := by omega
+      rw [this]
+      have h2cn2 : 2 * (Nat.choose k 2 : ℝ) = (k : ℝ) * ((k : ℝ) - 1) := by
+        -- Proved in AmgmInequalityOQ02 (h_2cn2 pattern)
+        suffices ∀ m : ℕ, 2 * (Nat.choose m 2 : ℝ) = (m : ℝ) * ((m : ℝ) - 1) from this k
+        intro m; induction m with
+        | zero => simp
+        | succ j ihj =>
+          have hstep : Nat.choose (j + 1) 2 = j + Nat.choose j 2 := by
+            have h := Nat.choose_succ_succ j 1; simp only [Nat.choose_one_right] at h; omega
+          rw [hstep]; push_cast; nlinarith
+      linarith
+    -- Cross-multiply IH
+    have hk_pos : (0 : ℝ) < (k : ℝ) := Nat.cast_pos.mpr (by omega)
+    have hkm1_pos : (0 : ℝ) < (k : ℝ) - 1 := by exact_mod_cast (show (0 : ℤ) < (k : ℤ) - 1 by omega)
+    have hCk_km2_pos : (0 : ℝ) < (Nat.choose k (k - 2) : ℝ) := choose_pos_cast (by omega)
+    have h_ih_cross : ((k : ℝ) - 1) * E ^ 2 ≥ 2 * (k : ℝ) * P * F := by
+      -- From IH: (E/k)² ≥ (F/(k(k-1)/2)) · (P/1)
+      -- i.e., E²/k² ≥ 2FP/(k(k-1))
+      -- i.e., (k-1)E² ≥ 2kFP
+      rw [hCk_km1, hCk_k, div_one] at h_ih_km1
+      rw [ge_iff_le, ← sub_nonneg] at h_ih_km1 ⊢
+      have h_denom_pos : (0 : ℝ) < (k : ℝ) ^ 2 * (Nat.choose k (k - 2) : ℝ) :=
+        mul_pos (pow_pos hk_pos 2) hCk_km2_pos
+      have h1 : 0 ≤ (E / (k : ℝ)) ^ 2 - F / (Nat.choose k (k - 2) : ℝ) * P := h_ih_km1
+      -- Multiply by k² · C(k,k-2) to clear denominators
+      have h2 : 0 ≤ ((E / (k : ℝ)) ^ 2 - F / (Nat.choose k (k - 2) : ℝ) * P) *
+          ((k : ℝ) ^ 2 * (Nat.choose k (k - 2) : ℝ)) :=
+        mul_nonneg h1 h_denom_pos.le
+      -- Expand: E² · C(k,k-2) / k² · k² · C(k,k-2) - F · P · k² = E² · C(k,k-2) - FPk²
+      rw [hCk_km2] at h2 ⊢
+      nlinarith [sq_nonneg E, sq_nonneg P, sq_nonneg F, sq_nonneg (k : ℝ),
+                 mul_nonneg hE_nn hF_nn, mul_nonneg hP_nn hF_nn]
+    -- Main goal: rewrite using recurrences
+    rw [h_rec_k, h_rec_km1, h_rec_kp1]
+    -- Binomial coefficients for n = k+1
+    have hCn_k : (Nat.choose (k + 1) k : ℝ) = (k : ℝ) + 1 := by
+      rw [Nat.choose_symm_diff]; simp; omega
+    have hCn_kp1 : (Nat.choose (k + 1) (k + 1) : ℝ) = 1 := by simp
+    have hCn_km1 : (0 : ℝ) < (Nat.choose (k + 1) (k - 1) : ℝ) := choose_pos_cast (by omega)
+    rw [hCn_k, hCn_kp1, div_one]
+    -- Goal: ((P + t*E)/(k+1))² ≥ ((E + t*F)/C(k+1,k-1)) · (t*P)
+    -- Cross-multiply by (k+1)² · C(k+1,k-1) (both positive)
+    rw [ge_iff_le, div_mul_eq_mul_div, ← sub_nonneg, div_pow]
+    -- Work in cross-multiplied form
+    -- The key algebraic identity (verified by ring):
+    -- k · [(k+1)² · C · LHS_num - (k+1)² · C · RHS_num]
+    -- = (k·(P+tE) - E·t·(k+1))² · C + ... ≥ 0
+    -- Use a suffices with the quadratic non-negativity
+    suffices h : 0 ≤ (k : ℝ) * ((P + t * E) ^ 2 * (Nat.choose (k + 1) (k - 1) : ℝ) -
+        (E + t * F) * (t * P) * ((k : ℝ) + 1) ^ 2) by
+      have h_denom_pos : (0 : ℝ) < ((k : ℝ) + 1) ^ 2 * (Nat.choose (k + 1) (k - 1) : ℝ) :=
+        mul_pos (pow_pos (by linarith) 2) hCn_km1
+      -- k > 0 and k * expr ≥ 0 implies expr ≥ 0
+      have h_expr_nn : 0 ≤ (P + t * E) ^ 2 * (Nat.choose (k + 1) (k - 1) : ℝ) -
+          (E + t * F) * (t * P) * ((k : ℝ) + 1) ^ 2 := by
+        by_contra hc; push_neg at hc
+        have := mul_neg_of_pos_of_neg hk_pos hc
+        linarith
+      -- Now divide by the positive denominator
+      exact div_nonneg (div_nonneg h_expr_nn (by linarith)) (by positivity)
+    -- Prove: k · [(P+tE)²·C(k+1,k-1) - (E+tF)·tP·(k+1)²] ≥ 0
+    -- Use C(k+1,k-1) = k(k+1)/2
+    have hCn_km1_val : (Nat.choose (k + 1) (k - 1) : ℝ) = (k : ℝ) * ((k : ℝ) + 1) / 2 := by
+      rw [Nat.choose_symm_diff]
+      have : k + 1 - (k - 1) = 2 := by omega
+      rw [this]
+      have h2cn2 : 2 * (Nat.choose (k + 1) 2 : ℝ) = ((k : ℝ) + 1) * (k : ℝ) := by
+        suffices ∀ m : ℕ, 2 * (Nat.choose m 2 : ℝ) = (m : ℝ) * ((m : ℝ) - 1) from by
+          have := this (k + 1); push_cast at this ⊢; linarith
+        intro m; induction m with
+        | zero => simp
+        | succ j ihj =>
+          have hstep : Nat.choose (j + 1) 2 = j + Nat.choose j 2 := by
+            have h := Nat.choose_succ_succ j 1; simp only [Nat.choose_one_right] at h; omega
+          rw [hstep]; push_cast; nlinarith
+      linarith
+    rw [hCn_km1_val]
+    -- Now the expression is:
+    -- k · [(P+tE)² · k(k+1)/2 - (E+tF)·tP·(k+1)²]
+    -- = k(k+1)/2 · [k(P+tE)² - 2(k+1)(E+tF)tP]
+    -- The inner bracket expands to: kP² - 2PEt + (kE²-2(k+1)PF)t²
+    -- Key identity: k · [kP² - 2PEt + (kE²-2(k+1)PF)t²]
+    --            = (kP-Et)² + (k+1)·[(k-1)E²-2kPF]·t²
+    -- Both terms ≥ 0 by sq_nonneg and h_ih_cross
+    nlinarith [sq_nonneg ((k : ℝ) * P - E * t),
+               mul_nonneg (mul_nonneg (show (0:ℝ) ≤ (k:ℝ) + 1 by linarith)
+                 (by linarith : (0:ℝ) ≤ ((k:ℝ) - 1) * E ^ 2 - 2 * (k:ℝ) * P * F))
+                 (sq_nonneg t),
+               sq_nonneg P, sq_nonneg E, sq_nonneg t,
+               mul_nonneg hP_nn hE_nn, mul_nonneg ht_nn hP_nn,
+               mul_nonneg ht_nn hE_nn, mul_nonneg hF_nn ht_nn,
+               sq_nonneg (k : ℝ)]
   -- Inductive step: n ≥ k + 2
   · have hn_ge : k + 2 ≤ n := by omega
     -- Decompose: n = m + 1 for m ≥ k + 1
@@ -172,24 +297,27 @@ theorem newton_ineq : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
 1. `newton_n3_k1` — Newton for 3 vars, k=1
 2. `newton_n3_k2` — Newton for 3 vars, k=2
 3. Helper lemmas
+4. `newton_ineq` base case (n = k+1) — proved via quadratic non-negativity
 
-### Sorries remaining (2):
-1. `newton_ineq` base case (n = k+1)
-2. `newton_ineq` inductive step (quadratic form in t)
+### Sorries remaining (1):
+1. `newton_ineq` inductive step (n ≥ k+2, quadratic form in t with Pascal's rule)
 
 ### Key infrastructure built:
 - Strong induction on n with `Nat.strong_rec_on`
 - k=1 case dispatched to existing `newton_k1`
+- Base case n=k+1 proved: decompose via recurrence, use IH at (k,k-1) for
+  discriminant bound, complete the square: k·expr = (kP-Et)² + (k+1)·IH·t² ≥ 0
 - Recurrences for eₖ, eₖ₋₁, eₖ₊₁ correctly stated
 - Both IH instances (at k and k-1) correctly invoked
 - Proof structure matches Hardy-Littlewood-Pólya §2.22
 
-### Next steps:
-- Complete the quadratic form argument for the inductive step
-- The algebra: expand (aₖ + t·aₖ₋₁)² · C(m+1,k-1) · C(m+1,k+1)
-  and (aₖ₋₁ + t·aₖ₋₂) · (aₖ₊₁ + t·aₖ) · C(m+1,k)²
-  using Pascal C(m+1,j) = C(m,j) + C(m,j-1)
-- Show the difference is a non-negative quadratic in t
+### Next steps for inductive step (n ≥ k+2):
+- Use Pascal's rule: C(m+1,j) = C(m,j) + C(m,j-1) to expand
+- Show LHS - RHS = α + βt + γt² where:
+  - α ≥ 0 from IH at k (after Pascal expansion)
+  - γ ≥ 0 from IH at k-1 (after Pascal expansion)
+  - 4αγ ≥ β² from Cauchy-Schwarz/AM-GM on the two IH instances
+- Therefore the quadratic in t is non-negative everywhere
 -/
 
 end NewtonLC
