@@ -866,7 +866,43 @@ theorem gridBoundary_on_circle (N : ℕ) (hN : N ≥ 1) (p : GridPoint N) :
 theorem gridDense (N : ℕ) (hN : N ≥ 1) (x : ℝ × ℝ)
     (hx : x.1 ^ 2 + x.2 ^ 2 ≤ 1) :
     ∃ p : GridPoint N, dist (gridToReal N hN p) x ≤ Real.sqrt 2 / N := by
-  sorry -- Pigeonhole: some grid point is within mesh distance
+  have hN_pos : (0 : ℝ) < N := Nat.cast_pos.mpr (by omega)
+  have hx1_lo : -1 ≤ x.1 := by nlinarith [sq_nonneg x.2]
+  have hx1_hi : x.1 ≤ 1 := by nlinarith [sq_nonneg x.2]
+  have hx2_lo : -1 ≤ x.2 := by nlinarith [sq_nonneg x.1]
+  have hx2_hi : x.2 ≤ 1 := by nlinarith [sq_nonneg x.1]
+  -- 1D helper: for a ∈ [-1,1], nearest grid coordinate is within 1/N
+  suffices h1d : ∀ (a : ℝ), -1 ≤ a → a ≤ 1 →
+      ∃ k : Fin (2 * N + 1), |gridCoord N hN k - a| ≤ 1 / ↑N by
+    obtain ⟨i, hi⟩ := h1d x.1 hx1_lo hx1_hi
+    obtain ⟨j, hj⟩ := h1d x.2 hx2_lo hx2_hi
+    refine ⟨(i, j), ?_⟩
+    rw [Prod.dist_eq, gridToReal]
+    simp only [Real.dist_eq]
+    have h1_le_sqrt2 : (1 : ℝ) ≤ Real.sqrt 2 := by
+      rw [← Real.sqrt_one]; exact Real.sqrt_le_sqrt (by norm_num)
+    have h1N : 1 / (N : ℝ) ≤ Real.sqrt 2 / N :=
+      div_le_div_of_nonneg_right h1_le_sqrt2 (le_of_lt hN_pos)
+    exact max_le (le_trans hi h1N) (le_trans hj h1N)
+  -- Prove the 1D claim
+  intro a ha_lo ha_hi
+  -- r = (a + 1) * N ∈ [0, 2N]
+  set r := (a + 1) * N with hr_def
+  have hr_nn : 0 ≤ r := by nlinarith
+  have hr_le : r ≤ 2 * ↑N := by nlinarith
+  -- Take k = ⌊r⌋₊ (clamped, but clamp is unnecessary since r ≤ 2N)
+  have hfloor_le : ⌊r⌋₊ ≤ 2 * N := by
+    exact_mod_cast le_trans (Nat.floor_le hr_nn) (by push_cast; linarith)
+  refine ⟨⟨⌊r⌋₊, by omega⟩, ?_⟩
+  simp only [gridCoord, Fin.val_mk]
+  -- gridCoord ⌊r⌋₊ = (⌊r⌋₊ - N)/N, error = |(⌊r⌋₊ - N)/N - a| = |⌊r⌋₊ - r|/N
+  have h_eq : (↑⌊r⌋₊ - (N : ℝ)) / ↑N - a = (↑⌊r⌋₊ - r) / ↑N := by
+    rw [hr_def]; field_simp; ring
+  rw [h_eq, abs_div, abs_of_pos hN_pos, div_le_div_right hN_pos]
+  -- |⌊r⌋₊ - r| ≤ 1 since ⌊r⌋₊ ≤ r < ⌊r⌋₊ + 1
+  have h1 : (↑⌊r⌋₊ : ℝ) ≤ r := Nat.floor_le hr_nn
+  have h2 : r < ↑⌊r⌋₊ + 1 := Nat.lt_floor_add_one r
+  rw [abs_le]; constructor <;> linarith
 
 /-- The grid labeling: compose g with gridToReal, then apply dominantComponentLabel. -/
 noncomputable def gridLabel (N : ℕ) (hN : N ≥ 1) (g : ℝ × ℝ → ℝ × ℝ)
