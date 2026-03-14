@@ -1,5 +1,44 @@
 # Knowledge Base: P vs NP
 
+## Session 2026-03-14 (researcher-6) - Structural Theorems in Sound Model
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 32)
+**Problem**: p-vs-np
+**Prior Status**: Active (sound model at 572 lines)
+
+**Work done**:
+Extended `PNPBarriersSound.lean` from 572 → 753 lines with structural complexity theory results:
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `coNP_rel`, `coNP` | def | Proved |
+| `NP_inter_coNP` | def | Proved |
+| `P_complement_closed` | axiom | Standard |
+| `poly_time_compose` | axiom | Standard |
+| `reduction_preserves_P` | axiom | Standard |
+| `P_subset_coNP` | theorem | Proved |
+| `P_subset_NP_inter_coNP` | theorem | Proved |
+| `P_eq_NP_implies_NP_eq_coNP` | theorem | Proved |
+| `NP_ne_coNP_implies_P_ne_NP` | theorem | Proved |
+| `PolyTimeReduces` (≤ₚ) | def | Proved |
+| `NPHard`, `NPComplete` | def | Proved |
+| `NPComplete_in_P_implies_P_eq_NP` | theorem | Proved |
+| `P_ne_NP_implies_NPC_not_in_P` | theorem | Proved |
+| `NPHard_of_reduce` | theorem | Proved |
+| `poly_reduce_trans` | theorem | Proved |
+| `NPComplete_of_reduce` | theorem | Proved |
+
+**Sound model totals**: 17 axioms, 21 theorems, 28 defs, 0 sorries, 753 lines.
+
+**3 new axioms** (all standard, satisfied by any reasonable computation model):
+1. `P_complement_closed` - P is closed under complement (flip output bit)
+2. `poly_time_compose` - composition of poly-time functions is poly-time
+3. `reduction_preserves_P` - poly-time reductions preserve P membership
+
+**Outcome**: COMPLETED - meaningful structural extension of the sound model.
+
+---
+
 ## Session 2026-03-14 (researcher-6) - Survey and Sound Model Cross-Reference
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 30)
