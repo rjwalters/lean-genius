@@ -36,17 +36,16 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (18 axioms, down from 21)
+## Axiom Summary (15 axioms, down from 21)
 - 1 structural: Φ_countably_many (Φ_total and Φ_deterministic now theorems)
 - 2 oracle: Φ_oracle_access, Φ_no_oracle_access
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
 - 1 natural proofs: razborov_rudich (owf_exists_assumption now theorem)
-- 2 algebrization: algebrizing_oracle_eq, algebrizing_oracle_sep
 - 3 structural properties: P_rel_monotone, NP_rel_monotone, P_rel_subset_NP_rel
-- 2 closure properties: P_complement_closed, poly_time_compose, reduction_preserves_P
-- 2 containment: NP_subset_PSPACE, PH_subset_PSPACE
+- 3 closure/composition: P_complement_closed, poly_time_compose, reduction_preserves_P
+- 1 containment: NP_subset_PSPACE
 - 2 separation/existence: P_ne_EXP, ladner_theorem
-- Note: PSPACE_subset_EXP now theorem (PSPACE and EXP have identical definitions)
+- Now theorems: PSPACE_subset_EXP, PH_subset_PSPACE, algebrizing_oracle_eq/sep
 -/
 
 set_option linter.unusedVariables false
@@ -424,14 +423,24 @@ def AlgebrizingProofOfSeparation : Prop :=
   ∀ AO : AlgebraicOracle, P_alg AO ≠ NP_alg AO
 
 /-- **Aaronson-Wigderson (2009), Part 1**: There exists an algebraic oracle
-    collapsing P and NP. -/
-axiom algebrizing_oracle_eq :
-    ∃ AO : AlgebraicOracle, P_alg AO = NP_alg AO
+    collapsing P and NP.
+
+    In our model, P_alg and NP_alg delegate to P_rel and NP_rel of the base
+    oracle, so this follows directly from Baker-Gill-Solovay.
+    (A refined model would use the algebraic extension nontrivially.) -/
+theorem algebrizing_oracle_eq :
+    ∃ AO : AlgebraicOracle, P_alg AO = NP_alg AO := by
+  obtain ⟨A, hA⟩ := baker_gill_solovay_eq
+  exact ⟨⟨A, id⟩, hA⟩
 
 /-- **Aaronson-Wigderson (2009), Part 2**: There exists an algebraic oracle
-    separating P and NP. -/
-axiom algebrizing_oracle_sep :
-    ∃ AO : AlgebraicOracle, P_alg AO ≠ NP_alg AO
+    separating P and NP.
+
+    Same derivation from Baker-Gill-Solovay as above. -/
+theorem algebrizing_oracle_sep :
+    ∃ AO : AlgebraicOracle, P_alg AO ≠ NP_alg AO := by
+  obtain ⟨B, hB⟩ := baker_gill_solovay_sep
+  exact ⟨⟨B, id⟩, hB⟩
 
 /-- **Algebrization Barrier**: No algebrizing technique can prove P = NP. -/
 theorem algebrization_barrier_eq : ¬ AlgebrizingProofOfEquality := by
@@ -921,8 +930,15 @@ theorem PSPACE_subset_EXP : PSPACE ⊆ EXP := by
   intro f ⟨e, p, h⟩; exact ⟨e, p, h⟩
 
 /-- PH ⊆ PSPACE: Every level of the polynomial hierarchy is in PSPACE.
-    Σₖ problems can be solved in PSPACE by iterating over quantifiers. -/
-axiom PH_subset_PSPACE : PH ⊆ PSPACE
+
+    In our structural model, Sigma_k (k+1) = NP for all k, so PH = P ∪ NP = NP.
+    Thus PH ⊆ PSPACE follows from NP ⊆ PSPACE (and P ⊆ NP). -/
+theorem PH_subset_PSPACE : PH ⊆ PSPACE := by
+  intro f hf
+  obtain ⟨k, hk⟩ := Set.mem_iUnion.mp hf
+  cases k with
+  | zero => exact NP_subset_PSPACE (P_subset_NP hk)
+  | succ _ => exact NP_subset_PSPACE hk
 
 /-- The full complexity containment chain: P ⊆ NP ⊆ PH ⊆ PSPACE ⊆ EXP. -/
 theorem complexity_chain :
