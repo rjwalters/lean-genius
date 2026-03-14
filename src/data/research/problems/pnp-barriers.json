@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 redundant axioms (NP⊆EXP, coNP⊆EXP, P⊆PSPACE → theorems via transitivity). Added polynomial hierarchy (PH, Σₖᵖ), Karp-Lipton theorem, 8 derived containments. Fixed trivial id theorem. File: 702 lines, 24 non-redundant axioms + 10 PH axioms, 38 theorems, 0 sorries.",
+    "progressSummary": "PROGRESS: 15 axioms (down from 21). P_complement_closed now proved from Φ_negate. All 3 barriers + complexity hierarchy formalized soundly.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -185,7 +185,8 @@
         "name": "full_complexity_landscape",
         "description": "Extended landscape with BPP, PH, P/poly",
         "proven": true
-      }
+      },
+      "Proved P_complement_closed from Φ_negate in PNPBarriersSound.lean:601-619"
     ],
     "insights": [
       "P_subset_NP_relative",
@@ -213,7 +214,8 @@
       "Karp-Lipton connects circuit complexity to PH collapse: NP ⊄ P/poly would imply P ≠ NP",
       "3 axioms (NP⊆EXP, coNP⊆EXP, P⊆PSPACE) are redundant — derivable via Set.Subset.trans from the containment chain.",
       "some_inclusion_strict: P⊆NP⊆PSPACE⊆EXP with P≠EXP means at least one inclusion is strict.",
-      "Polynomial hierarchy axioms connect circuit complexity (Karp-Lipton) to structural complexity."
+      "Polynomial hierarchy axioms connect circuit complexity (Karp-Lipton) to structural complexity.",
+      "Φ_negate axiom replaces P_complement_closed: more fundamental (program-level negation vs class closure), same axiom count (15)"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
