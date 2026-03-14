@@ -261,10 +261,54 @@ theorem complex_conj_order_two (n : ℕ) (hn : 3 ≤ n) :
     rw [this, h_sq, map_one hequiv.symm]
 
 /-- The degree of the maximal real subfield over ℚ is φ(n)/2 for n ≥ 3.
-    This is the key numerical fact connecting cyclotomic theory to constructibility. -/
-axiom maximal_real_subfield_degree (n : ℕ) (hn : 3 ≤ n) :
+    This is the key numerical fact connecting cyclotomic theory to constructibility.
+
+    Proof: Complex conjugation σ (the automorphism corresponding to -1 ∈ (ℤ/nℤ)*)
+    generates a subgroup H = ⟨σ⟩ of order 2 in Gal(ℚ(ζₙ)/ℚ).
+    The fixed field F = ℚ(ζₙ)^H has:
+    - [ℚ(ζₙ) : F] = |H| = 2 (by IntermediateField.finrank_fixedField_eq_card)
+    - [ℚ(ζₙ) : ℚ] = φ(n) (by IsCyclotomicExtension.finrank)
+    - [ℚ(ζₙ) : ℚ] = [ℚ(ζₙ) : F] × [F : ℚ] (tower law)
+    Therefore [F : ℚ] = φ(n) / 2. -/
+theorem maximal_real_subfield_degree (n : ℕ) (hn : 3 ≤ n) :
     ∃ (F : IntermediateField ℚ (CyclotomicField ⟨n, by omega⟩ ℚ)),
-    Module.finrank ℚ F = Nat.totient n / 2
+    Module.finrank ℚ F = Nat.totient n / 2 := by
+  set np : ℕ+ := ⟨n, by omega⟩
+  set K := CyclotomicField np ℚ
+  -- Get the order-2 automorphism
+  obtain ⟨σ, hσ_ne, hσ_sq⟩ := complex_conj_order_two n hn
+  -- Construct the cyclic subgroup H = ⟨σ⟩
+  set H : Subgroup (K ≃ₐ[ℚ] K) := Subgroup.zpowers σ
+  -- The fixed field
+  set F := IntermediateField.fixedField H
+  use F
+  -- Step 1: [K : ℚ] = φ(n)
+  have h_finrank : Module.finrank ℚ K = Nat.totient n :=
+    IsCyclotomicExtension.finrank (CyclotomicField np ℚ) (n := {np})
+      (Polynomial.cyclotomic.irreducible_rat np.val np.pos)
+  -- Step 2: orderOf σ = 2 (σ ≠ 1 and σ² = 1)
+  have h_ord : orderOf σ = 2 := by
+    have h2 : σ ^ 2 = 1 := by
+      rw [sq]; exact hσ_sq
+    have h1 : σ ≠ 1 := by
+      intro h; exact hσ_ne (by rw [h]; rfl)
+    exact orderOf_eq_prime h2 h1
+  -- Step 3: |H| = 2
+  have h_card : Nat.card H = 2 := by
+    rw [Subgroup.card_zpowers]
+    exact h_ord
+  -- Step 4: [K : F] = |H| = 2 (from finrank_fixedField_eq_card)
+  have h_top : Module.finrank F K = 2 := by
+    have := IntermediateField.finrank_fixedField_eq_card (F := ℚ) (E := K) H
+    rw [h_card] at this
+    exact this
+  -- Step 5: Tower law: [K:ℚ] = [K:F] × [F:ℚ]
+  have h_tower := IntermediateField.finrank_mul_finrank ℚ F K
+  -- φ(n) = 2 * [F:ℚ]
+  rw [h_finrank] at h_tower
+  rw [h_top] at h_tower
+  -- [F:ℚ] = φ(n) / 2
+  omega
 
 -- ============================================================================
 -- § 8. Connecting to the OQ02-OQ03 Axioms
