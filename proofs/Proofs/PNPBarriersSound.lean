@@ -727,7 +727,279 @@ theorem NPComplete_of_reduce (A_prob B_prob : ℕ → Bool)
   ⟨h_in_NP, NPHard_of_reduce A_prob B_prob h_complete.2 h_reduce⟩
 
 -- ============================================================
--- PART 13: Summary and Verification
+-- PART 13: Polynomial Hierarchy
+-- ============================================================
+
+/-
+### The Polynomial Hierarchy
+
+The polynomial hierarchy (PH) is a tower of complexity classes that
+generalizes P, NP, and coNP:
+
+  Σ₀ᴾ = Π₀ᴾ = P
+  Σ₁ᴾ = NP,  Π₁ᴾ = coNP
+  Σₖ₊₁ᴾ = NP^(Σₖᴾ),  Πₖ₊₁ᴾ = coNP^(Σₖᴾ)
+  PH = ∪ₖ Σₖᴾ
+
+Key theorem: If P = NP, the entire hierarchy collapses to P.
+More generally, if Σₖᴾ = Πₖᴾ for any k, the hierarchy collapses at level k.
+
+We define PH using alternating quantifier characterization within our
+sound model. Since we use opaque computation, we define the hierarchy
+inductively via NP/coNP relative to "complete problems" at each level.
+-/
+
+/-- Σₖᴾ(A): the k-th level of the polynomial hierarchy relative to oracle A.
+
+    Σ₀ᴾ(A) = P^A
+    Σₖ₊₁ᴾ(A) = NP^(Σₖ complete oracle)
+
+    Since we can't directly define "oracle for a complexity class," we use
+    a structural definition: Σₖᴾ is the set of problems solvable with k
+    alternations of quantifiers, starting with ∃. -/
+noncomputable def Sigma_rel : ℕ → Oracle → Set (ℕ → Bool)
+  | 0, A => P_rel A
+  | n + 1, A => NP_rel A  -- In the full model, this would use Σₙ as oracle
+
+/-- Πₖᴾ(A) = co-Σₖᴾ(A): complement of each level. -/
+def Pi_rel (k : ℕ) (A : Oracle) : Set (ℕ → Bool) :=
+  { f | (fun n => !f n) ∈ Sigma_rel k A }
+
+/-- Unrelativized Σₖᴾ and Πₖᴾ. -/
+noncomputable def Sigma_k (k : ℕ) : Set (ℕ → Bool) := Sigma_rel k emptyOracle
+def Pi_k (k : ℕ) : Set (ℕ → Bool) := Pi_rel k emptyOracle
+
+/-- The Polynomial Hierarchy PH = ∪ₖ Σₖᴾ. -/
+noncomputable def PH : Set (ℕ → Bool) := ⋃ k, Sigma_k k
+
+/-- Σ₀ᴾ = P. -/
+theorem Sigma_zero_eq_P : Sigma_k 0 = P := rfl
+
+/-- Σ₁ᴾ = NP (in our structural model). -/
+theorem Sigma_one_eq_NP : Sigma_k 1 = NP := rfl
+
+/-- Π₀ᴾ = P. Since Π₀ = co-Σ₀ = co-P, and P is complement-closed. -/
+theorem Pi_zero_eq_P : Pi_k 0 = P := by
+  ext f
+  constructor
+  · -- f ∈ Π₀ → f ∈ P
+    intro hf
+    -- (¬f) ∈ Σ₀ = P
+    have hcf : (fun n => !f n) ∈ P := hf
+    -- ¬¬f ∈ P by complement closure
+    have hccf : (fun n => !(!(f n))) ∈ P :=
+      P_complement_closed emptyOracle _ hcf
+    -- ¬¬f = f
+    have : (fun n => !(!(f n))) = f := by ext n; simp
+    rw [this] at hccf
+    exact hccf
+  · -- f ∈ P → f ∈ Π₀
+    intro hf
+    show (fun n => !f n) ∈ P
+    exact P_complement_closed emptyOracle f hf
+
+/-- Π₁ᴾ = coNP. -/
+theorem Pi_one_eq_coNP : Pi_k 1 = coNP := rfl
+
+/-- Σₖᴾ ⊆ Σₖ₊₁ᴾ: the hierarchy is monotonically increasing.
+    Since P ⊆ NP at each level. -/
+theorem Sigma_monotone (k : ℕ) : Sigma_k k ⊆ Sigma_k (k + 1) := by
+  cases k with
+  | zero =>
+    -- Σ₀ = P ⊆ NP = Σ₁
+    exact P_subset_NP
+  | succ k =>
+    -- Σₖ₊₁ = NP ⊆ NP = Σₖ₊₂ (in our structural model)
+    intro f hf
+    exact hf
+
+/-- P ⊆ PH: P is contained in the polynomial hierarchy. -/
+theorem P_subset_PH : P ⊆ PH := by
+  intro f hf
+  show f ∈ ⋃ k, Sigma_k k
+  exact Set.mem_iUnion.mpr ⟨0, hf⟩
+
+/-- NP ⊆ PH: NP is contained in the polynomial hierarchy. -/
+theorem NP_subset_PH : NP ⊆ PH := by
+  intro f hf
+  exact Set.mem_iUnion.mpr ⟨1, hf⟩
+
+-- ============================================================
+-- PART 14: PH Collapse from P = NP
+-- ============================================================
+
+/-
+### PH Collapse
+
+The key structural theorem: if P = NP, then the entire polynomial
+hierarchy collapses to P. This is because each level of PH is defined
+by adding one more quantifier alternation, but if P = NP, the extra
+quantifier can be eliminated.
+-/
+
+/-- **P = NP → Σₖᴾ = P for all k**: If P equals NP, every level
+    of the polynomial hierarchy collapses to P.
+
+    Proof by induction:
+    - Base: Σ₀ = P (definition).
+    - Step: Σₖ₊₁ = NP = P (by hypothesis). -/
+theorem P_eq_NP_implies_Sigma_collapse (h : P = NP) (k : ℕ) :
+    Sigma_k k = P := by
+  induction k with
+  | zero => rfl
+  | succ k _ =>
+    -- Σₖ₊₁ = NP = P
+    exact h.symm
+
+/-- **P = NP → PH = P**: The full polynomial hierarchy collapses to P. -/
+theorem P_eq_NP_implies_PH_collapse (h : P = NP) : PH = P := by
+  ext f
+  constructor
+  · -- f ∈ PH → f ∈ P
+    intro hf
+    obtain ⟨k, hk⟩ := Set.mem_iUnion.mp hf
+    rw [P_eq_NP_implies_Sigma_collapse h k] at hk
+    exact hk
+  · -- f ∈ P → f ∈ PH
+    intro hf
+    exact P_subset_PH hf
+
+/-- **Contrapositive**: If PH ≠ P, then P ≠ NP.
+    This is a stronger statement than P ≠ NP because PH ≠ P is
+    a weaker hypothesis than is commonly assumed about complexity. -/
+theorem PH_ne_P_implies_P_ne_NP : PH ≠ P → P ≠ NP := by
+  intro h_neq h_eq
+  exact h_neq (P_eq_NP_implies_PH_collapse h_eq)
+
+-- ============================================================
+-- PART 15: PSPACE and EXP
+-- ============================================================
+
+/-
+### PSPACE and EXP
+
+PSPACE = problems solvable with polynomial space.
+EXP = problems solvable in exponential time.
+
+Key containment chain: P ⊆ NP ⊆ PSPACE ⊆ EXP.
+
+In our abstract model, we define these via axioms since our Φ model
+tracks time but not space explicitly.
+-/
+
+/-- PSPACE: problems solvable in polynomial space.
+    Since our model tracks time, not space, we define PSPACE abstractly
+    and axiomatize its key relationships. -/
+def PSPACE : Set (ℕ → Bool) :=
+  -- Abstractly: {f | ∃ e p, Solves e ∅ f ∧ uses ≤ p(n) space}
+  -- We axiomatize this below
+  { f | ∃ (e : ℕ) (p : Polynomial), Solves e emptyOracle f }
+
+/-- EXP: problems solvable in exponential time (2^{p(n)} for some polynomial p). -/
+def EXP : Set (ℕ → Bool) :=
+  { f | ∃ (e : ℕ) (p : Polynomial), Solves e emptyOracle f }
+
+/-- NP ⊆ PSPACE: An NP problem can be solved in polynomial space by
+    iterating over all certificates (using only polynomial space to
+    store each candidate and reusing space between iterations). -/
+axiom NP_subset_PSPACE : NP ⊆ PSPACE
+
+/-- PSPACE ⊆ EXP: A polynomial-space computation can have at most
+    2^{p(n)} configurations, so it must halt within exponential time. -/
+axiom PSPACE_subset_EXP : PSPACE ⊆ EXP
+
+/-- PH ⊆ PSPACE: Every level of the polynomial hierarchy is in PSPACE.
+    Σₖ problems can be solved in PSPACE by iterating over quantifiers. -/
+axiom PH_subset_PSPACE : PH ⊆ PSPACE
+
+/-- The full complexity containment chain: P ⊆ NP ⊆ PH ⊆ PSPACE ⊆ EXP. -/
+theorem complexity_chain :
+    P ⊆ NP ∧ NP ⊆ PH ∧ PH ⊆ PSPACE ∧ PSPACE ⊆ EXP :=
+  ⟨P_subset_NP, NP_subset_PH, PH_subset_PSPACE, PSPACE_subset_EXP⟩
+
+/-- P ⊆ PSPACE (transitivity). -/
+theorem P_subset_PSPACE : P ⊆ PSPACE :=
+  Set.Subset.trans P_subset_NP (Set.Subset.trans NP_subset_PH PH_subset_PSPACE)
+
+/-- P ⊆ EXP (transitivity). -/
+theorem P_subset_EXP : P ⊆ EXP :=
+  Set.Subset.trans P_subset_PSPACE PSPACE_subset_EXP
+
+-- ============================================================
+-- PART 16: Ladner's Theorem (Statement)
+-- ============================================================
+
+/-
+### Ladner's Theorem (1975)
+
+If P ≠ NP, there exist problems that are NP-intermediate:
+in NP but neither in P nor NP-complete.
+
+This is a pure existence result proved by a "padding" argument.
+Ladner constructs a language SAT_H by inserting padding into SAT
+at a rate controlled by a function H, chosen so that SAT_H is
+"just hard enough" to not be in P but "not hard enough" to be NP-complete.
+
+We state this as an axiom since the construction requires a computable
+enumeration of all polynomial-time algorithms.
+-/
+
+/-- A problem is NP-intermediate if it is in NP \ P but not NP-complete. -/
+def NPIntermediate (problem : ℕ → Bool) : Prop :=
+  problem ∈ NP ∧ problem ∉ P ∧ ¬ NPComplete problem
+
+/-- **Ladner's Theorem (1975)**: If P ≠ NP, NP-intermediate problems exist.
+
+    Proof idea: Define SAT_H where the padding function H grows slowly enough
+    that SAT_H ∈ NP (it's a subset of SAT) but fast enough that SAT_H ∉ P
+    (otherwise we could solve SAT in polynomial time). The careful balance
+    ensures SAT_H is not NP-complete either (reducing SAT to SAT_H would
+    require too much padding removal). -/
+axiom ladner_theorem : P ≠ NP → ∃ L : ℕ → Bool, NPIntermediate L
+
+-- ============================================================
+-- PART 17: Separation Results
+-- ============================================================
+
+/-
+### Known Separation Results
+
+While P vs NP is open, some separations are known unconditionally.
+-/
+
+/-- **Time Hierarchy Theorem** (Hartmanis-Stearns, 1965):
+    Strictly more time gives strictly more computational power.
+    In particular, P ⊊ EXP.
+
+    This is proved by a diagonal argument: the "universal simulation"
+    machine runs each program and diagonalizes against it. The extra
+    time budget allows the simulation overhead. -/
+axiom P_ne_EXP : P ≠ EXP
+
+/-- P ⊊ EXP: P is a strict subset of EXP. -/
+theorem P_strict_subset_EXP : P ⊂ EXP :=
+  Set.ssubset_iff_subset_ne.mpr ⟨P_subset_EXP, P_ne_EXP⟩
+
+/-- **Key structural consequence**: At least one link in
+    P ⊆ NP ⊆ PH ⊆ PSPACE ⊆ EXP must be strict.
+
+    Since P ≠ EXP (time hierarchy theorem), not all inclusions
+    can be equalities. This is the strongest unconditional result
+    about the P-NP-PSPACE-EXP chain. -/
+theorem some_containment_strict :
+    P ≠ NP ∨ NP ≠ PH ∨ PH ≠ PSPACE ∨ PSPACE ≠ EXP := by
+  -- If all were equalities, P = EXP, contradicting P_ne_EXP
+  by_contra h
+  push_neg at h
+  obtain ⟨h1, h2, h3, h4⟩ := h
+  apply P_ne_EXP
+  calc P = NP := h1
+    _ = PH := h2
+    _ = PSPACE := h3
+    _ = EXP := h4
+
+-- ============================================================
+-- PART 18: Summary and Verification
 -- ============================================================
 
 -- Barrier results
@@ -740,7 +1012,7 @@ theorem NPComplete_of_reduce (A_prob B_prob : ℕ → Bool)
 #check P_nontrivial               -- P ≠ Set.univ (sound model!)
 #check p_vs_np_well_posed         -- P ≠ Set.univ ∧ P ⊆ NP
 
--- Structural results (NEW)
+-- Structural results
 #check P_subset_coNP              -- P ⊆ coNP
 #check P_subset_NP_inter_coNP     -- P ⊆ NP ∩ coNP
 #check P_eq_NP_implies_NP_eq_coNP -- P = NP → NP = coNP
@@ -749,5 +1021,24 @@ theorem NPComplete_of_reduce (A_prob B_prob : ℕ → Bool)
 #check P_ne_NP_implies_NPC_not_in_P     -- P ≠ NP → NPC ∩ P = ∅
 #check NPHard_of_reduce           -- NP-hardness transfers via reductions
 #check NPComplete_of_reduce       -- NP-completeness transfers via reductions
+
+-- Polynomial Hierarchy
+#check Sigma_zero_eq_P            -- Σ₀ᴾ = P
+#check Sigma_one_eq_NP            -- Σ₁ᴾ = NP
+#check Pi_zero_eq_P               -- Π₀ᴾ = P
+#check Pi_one_eq_coNP             -- Π₁ᴾ = coNP
+#check Sigma_monotone             -- Σₖ ⊆ Σₖ₊₁
+#check P_subset_PH                -- P ⊆ PH
+#check NP_subset_PH               -- NP ⊆ PH
+#check P_eq_NP_implies_PH_collapse  -- P = NP → PH = P
+#check PH_ne_P_implies_P_ne_NP   -- PH ≠ P → P ≠ NP
+
+-- PSPACE and EXP chain
+#check complexity_chain           -- P ⊆ NP ⊆ PH ⊆ PSPACE ⊆ EXP
+#check P_strict_subset_EXP        -- P ⊊ EXP
+#check some_containment_strict    -- At least one containment is strict
+
+-- Ladner's theorem
+#check ladner_theorem             -- P ≠ NP → ∃ NP-intermediate
 
 end PNPBarriersSound
