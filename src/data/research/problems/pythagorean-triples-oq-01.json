@@ -32,21 +32,21 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-03-12T05:32:38.520Z",
-    "iteration": 3,
-    "focus": "Eliminated redundant parity axiom, reduced axiom count from 4 to 3",
+    "iteration": 4,
+    "focus": "Eliminated 2 more axioms: proved parity_class_equidistribution, removed false column_discrepancy_bound",
     "blockers": [
       "Extending OE=OO from triangle to circle requires boundary analysis",
       "EO component needs separate symmetry argument"
     ],
     "nextAction": "Extend OE=OO bijection to circle sector via boundary effect analysis",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
+      "total": 3,
+      "currentApproach": 2,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 42+ theorems, 3 independent axioms, 0 sorries. Eliminated parity_fraction_in_coprime_sector axiom (now proved from bothOdd_fraction_in_coprime_sector via parity_axiom_equivalent). Complete involution infrastructure, OE=OO exact bijection, three-way partition all proved.",
+    "progressSummary": "PROGRESS: 3 independent axioms (down from 5). Proved parity_class_equidistribution from bothOdd axiom. Removed FALSE column_discrepancy_bound axiom (counterexample: m=21, N=541). Fixed column_parity_partition compilation. 0 sorries.",
     "builtItems": [
       "bothOddCoprimeCount: counting function for both-odd coprime pairs",
       "coprime_sector_partition: exact partition identity (coprime = primitive + bothOdd)",
@@ -63,7 +63,9 @@
       "primitive_eq_eo_plus_oe: primitive = EO + OE (PythagoreanTriplesOQ01.lean:630)",
       "coprime_sector_three_way_partition: coprime = EO + OE + OO (PythagoreanTriplesOQ01.lean:618)",
       "parity_fraction_in_coprime_sector: CONVERTED axiom→theorem (proved from bothOdd axiom)",
-      "bothOdd_fraction_in_coprime_sector: new cleaner axiom replacing parity_fraction axiom"
+      "bothOdd_fraction_in_coprime_sector: new cleaner axiom replacing parity_fraction axiom",
+      "parity_class_equidistribution: CONVERTED axiom→theorem (proved from bothOdd_fraction + bothOdd_eq_oo)",
+      "column_parity_partition: φ(m) = |even coprimes| + |odd coprimes| (fixed Nat.totient unfolding)"
     ],
     "insights": [
       "The coprime sector decomposes into exactly 2 parity classes (not 3): primitive (mixed parity) and both-odd. Both-even is impossible for coprime pairs.",
@@ -72,7 +74,8 @@
       "The three axioms have very different tractability: parity (combinatorial, possibly provable) >> coprime density (Möbius, very hard) > sector lattice points (Gauss circle, essentially impossible without analytic NT)",
       "All main theorems are already proved from the 3 axioms - the file has 0 sorries",
       "PythagoreanTriplesOQ01.lean has pre-existing Mathlib v4.26.0 API breakage: native_decide for bothOddCoprimeCount 100 and coprimeInSectorCount 100 return false values; parity_axiom_equivalent proof broken (sub_div rewrite pattern not found, Tendsto.const_sub signature changed). File needs API repair before new research.",
-      "The parity involution (m,n)→(m,m-n) gives an exact bijection OE↔OO in the coprime triangle. This proves |OE(K)|=|OO(K)| for all K, establishing the three-way partition is equitable in the triangle region."
+      "The parity involution (m,n)→(m,m-n) gives an exact bijection OE↔OO in the coprime triangle. This proves |OE(K)|=|OO(K)| for all K, establishing the three-way partition is equitable in the triangle region.",
+      "column_discrepancy_bound axiom was FALSE: m=21, N=541 gives |sectorOE-sectorOO|=2, not ≤1. The bound fails because boundary coprime truncation can create imbalance >1 (120 violations found for m<50)."
     ],
     "mathlibGaps": [
       "No Mathlib formalization of Gauss circle problem asymptotics",
@@ -121,7 +124,7 @@
     ]
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-14T04:10:00.000Z",
+  "lastUpdate": "2026-03-14T12:05:00.000Z",
   "significance": 7,
   "tractability": 6
 }
