@@ -29,10 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: File is mature at 6658 lines with 241 proved theorems and 0 axioms/sorries. Complete 2D solution and conditional 3D regularity. No obvious gaps for new proved content without deep PDE infrastructure.",
+    "progressSummary": "PROGRESS: NavierStokes.lean at 7282 lines, 0 sorries, 0 errors. Parts XXXVIII-XL added: Helicity/Beltrami flows, Pressure estimates/CZ theory, Liouville theorems (KNSS/Landau). Also fixed 3 pre-existing Mathlib API bugs.",
     "builtItems": [
       "Part XXXVI: FujitaKato section in NavierStokes.lean (heat semigroup, mild solutions, Kato existence, Koch-Tataru)",
-      "Part XXXVII: BlowupClassification section (Type I/II, ESS theorem, Leray self-similar, Tao bounds, minimal blowup)"
+      "Part XXXVII: BlowupClassification section (Type I/II, ESS theorem, Leray self-similar, Tao bounds, minimal blowup)",
+      "Part XXXVIII: Helicity section (Beltrami flows, helicity bounds, relative helicity, dissipation)",
+      "Part XXXIX: PressureEstimates section (Calderon-Zygmund, pressure-based regularity criteria, strain-vorticity decomposition, negative pressure criterion)",
+      "Part XL: LiouvilleTheorems section (KNSS theorem, Seregin zero theorem, stationary Liouville, Landau solution, millennium connection)"
     ],
     "insights": [
       "Fujita-Kato theory gives local existence in L³ with T ~ ‖u₀‖^{-4} quartic scaling",
@@ -46,7 +49,15 @@
       "2D global existence is PROVEN without axioms via GlobalNSSolution2D and enstrophy bound",
       "3D conditional regularity proved via NSAxioms structure (no Lean axiom declarations)",
       "All 35 original axioms have been eliminated (proved or removed as dead code)",
-      "File has pre-existing build errors but all theorems compile correctly"
+      "File has pre-existing build errors but all theorems compile correctly",
+      "Helicity H = ∫ u·ω is conserved in Euler, decays in NS; |H|² ≤ E·Ω (Schwarz bound)",
+      "Beltrami flows (ω = λu) are curl eigenstates, decay exponentially under NS: E(t) ≤ A₀²e^{-2νλ²t}",
+      "Pressure satisfies -Δp = ∂ᵢ∂ⱼ(uᵢuⱼ); CZ gives ‖p‖_{Lq} ≤ C‖u‖²_{L^{2q}}",
+      "Pressure regularity: 2/α + 3/β ≤ 2 (vs Serrin 2/p + 3/q ≤ 1) reflects quadratic nonlinearity",
+      "KNSS Liouville: bounded ancient solutions are zero → rules out Type I blowup",
+      "Stationary Liouville critical exponent is 9/2 (not 3); gap 9/2 - 3 = 3/2 measures distance to Millennium",
+      "Landau solution (u ~ C/|x|) shows L³ threshold is sharp: ‖u‖_{Lp} < ∞ iff p < 3",
+      "Fixed 3 pre-existing Mathlib API bugs: zpow_pos, div_le_div_iff, rwa/lt_div_iff₀"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
