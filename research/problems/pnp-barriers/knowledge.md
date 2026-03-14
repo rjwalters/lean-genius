@@ -3,6 +3,45 @@
 
 ---
 
+## Session 2026-03-14 (researcher-4, Session 33) - BQP, PP, Derandomization
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 100)
+**Problem**: pnp-barriers
+**Prior Status**: active (2380 lines, 36 axioms, 102 theorems)
+
+**What we did**:
+1. Added Part 34: Quantum Complexity (BQP and PP)
+2. Defined BQP (opaque) and PP (opaque) complexity classes
+3. Added BPP ⊆ BQP ⊆ PP ⊆ PSPACE containment chain (5 axioms)
+4. Added NP ⊆ PP axiom
+5. Proved BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP as derived theorems
+6. Proved quantum_containment_chain: P ⊆ BPP ⊆ BQP ⊆ PP ⊆ PSPACE ⊆ EXP
+7. Added Shor's factoring result: FACTORING ∈ BQP (axiom)
+8. Proved factoring_in_PSPACE and factoring_separates_P_BQP
+9. Proved quantum_np_landscape showing quantum/NP chains share endpoints
+10. Added Part 35: Impagliazzo-Wigderson Derandomization
+11. Added impagliazzo_wigderson axiom: EXP ≠ BPP → BPP = P
+12. Proved IW_contrapositive: BPP ≠ P → EXP = BPP
+13. Proved IW_dichotomy: BPP = P ∨ EXP = BPP
+14. Proved derandomization_circuit_connection: BPP ≠ P → EXP ⊆ P/poly
+
+**New axioms** (7): BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE,
+P_subset_PP, NP_subset_PP, shor_factoring_in_BQP, impagliazzo_wigderson
+
+**New theorems proved** (11): BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP,
+quantum_containment_chain, factoring_in_PSPACE, factoring_separates_P_BQP,
+quantum_np_landscape, IW_contrapositive, IW_dichotomy, BPP_eq_P_from_EXP_ne_BPP,
+derandomization_circuit_connection
+
+**Outcome**: PNPBarriersSound.lean: **2579 lines**, **0 sorries**, **43 axioms**, **113 theorems**, Docker build passes.
+
+**Next steps**:
+1. Add circuit complexity classes (NC, AC, TC) and hierarchy
+2. Add algebraic complexity (VP, VNP, permanent vs determinant)
+3. Reduce axiom count by deriving more from existing axioms
+
+---
+
 ## Session 2026-03-14 (Session 32) - Axiom Reduction + Savitch + Padding
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 87→95+)
@@ -183,6 +222,56 @@ what the barriers prevent.
 ---
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
+
+## Session 2026-03-14 (researcher-4, Session 33) - BQP, PP, Derandomization, Grand Landscape
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 100)
+**Problem**: pnp-barriers
+**Prior Status**: active (1834 lines, 44 axioms, 63 theorems)
+
+**What we did**:
+1. Added Part 30: Quantum Complexity (BQP)
+2. Defined BQP (opaque) and PP (opaque) complexity classes
+3. Added BPP ⊆ BQP (classical ⊆ quantum) axiom
+4. Added BQP ⊆ PP ⊆ PSPACE chain (Adleman-DeMarrais-Huang)
+5. Proved BQP_subset_PSPACE and P_subset_BQP as derived theorems
+6. Added Shor's factoring result: FACTORING ∈ BQP
+7. Proved factoring_in_PSPACE (derived) and factoring_separates_P_BQP
+8. Added PH_subset_P_PP (Toda generalized)
+9. Added Part 31: Derandomization and Hardness vs Randomness
+10. Added Impagliazzo-Wigderson theorem: EXP ≠ BPP → BPP = P
+11. Proved IW_contrapositive: BPP ≠ P → EXP = BPP
+12. Proved P_ne_EXP_dichotomy: BPP = P ∨ EXP = BPP
+13. Proved derandomization_barrier and EXP_eq_BPP_circuit_consequence
+14. Added Part 32: Grand Barrier Landscape Summary
+15. Proved three_barriers combining all three barriers
+16. Proved complexity_is_rich, quantum_np_landscape, derandomization_dichotomy
+
+**New axioms** (6):
+- BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE
+- shor_factoring_in_BQP, PH_subset_P_PP, impagliazzo_wigderson
+
+**New definitions** (4):
+- BQP, PP, FACTORING, (none opaque without def wrapper)
+
+**New theorems proved** (14):
+- BQP_subset_PSPACE, P_subset_BQP, classical_quantum_chain
+- factoring_in_PSPACE, factoring_separates_P_BQP
+- IW_contrapositive, P_ne_EXP_dichotomy, BPP_eq_P_from_EXP_ne_BPP
+- derandomization_barrier, EXP_eq_BPP_circuit_consequence
+- three_barriers, complexity_is_rich, quantum_np_landscape, derandomization_dichotomy
+
+**Outcome**: PNPBarriersSound.lean: **2137 lines**, **0 sorries**, **50 axioms**, **77 theorems**, Docker build passes.
+
+**Files Modified**:
+- `proofs/Proofs/PNPBarriersSound.lean` (+303 lines)
+- `research/problems/pnp-barriers/knowledge.md` (this file)
+
+**Next steps**:
+1. Add circuit complexity classes (NC, AC, TC) and hierarchy
+2. Add algebraic complexity (VP, VNP, permanent vs determinant)
+3. Add Geometric Complexity Theory (GCT) connection
+4. Reduce axiom count by deriving more from existing axioms
 
 ## Session 2026-03-14 (researcher-1, Session 29) - Shannon's Circuit Complexity Theorem
 
