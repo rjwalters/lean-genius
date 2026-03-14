@@ -380,9 +380,8 @@ We can prove:
 - 3 | |Gal(X³-2/ℚ)| (prime degree divides Galois group order)
 - |Gal(X³-2/ℚ)| | 6 (divides degree factorial)
 
-The full isomorphism Gal(X³-2/ℚ) ≅ S₃ is axiomatized (requires showing
-the splitting field has degree 6, which needs ω ∉ ℚ(∛2) — a real vs complex
-argument not directly available in Mathlib).
+The full isomorphism Gal(X³-2/ℚ) ≅ S₃ is proved in Part XII below
+(|Gal|=6 via coprimality argument, then galActionHom bijectivity).
 -/
 
 /-- X³ - 2 is irreducible over ℚ, proved via Eisenstein at p = 2. -/
@@ -396,39 +395,26 @@ theorem x_cube_sub_2_natDegree :
   NthRootIrrationalOQ01.natDegree_X_pow_sub_C_eq (by omega) (by norm_num)
 
 /--
-The Galois group of X³ - 2 over ℚ is isomorphic to S₃ (= Perm (Fin 3)).
-
-This is a classical result: the splitting field ℚ(∛2, ω) has degree 6 over ℚ,
-and the Galois group acts faithfully on the 3 roots {∛2, ω·∛2, ω²·∛2},
-giving an injection Gal → S₃. Since |Gal| = 6 = |S₃|, this is an isomorphism.
-
-We axiomatize this because proving [ℚ(∛2, ω) : ℚ] = 6 requires showing that
-the primitive cube root of unity ω is not in the real subfield ℚ(∛2) ⊂ ℝ,
-which requires analysis infrastructure beyond current Mathlib support.
--/
-axiom x_cube_sub_2_gal_iso_s3 :
-    Nonempty ((X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal ≃* Equiv.Perm (Fin 3))
-
-/--
 The symmetric group S₃ is realizable as a Galois group over ℚ.
 
 This is the first concrete non-abelian realization in our formalization.
 S₃ has order 6 and is solvable (consistent with Shafarevich's theorem),
 but this direct construction via X³ - 2 is more explicit.
+
+Previously used an axiom for Gal(X³-2) ≅ S₃; now uses the fully proved
+`x_cube_sub_2_gal_iso_s3_proved` (see Part XII below).
 -/
 theorem s3_realizable :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
       (_ : IsGalois ℚ K),
       Nonempty (Equiv.Perm (Fin 3) ≃* (K ≃ₐ[ℚ] K)) := by
   let p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
-  -- p.SplittingField is Galois over ℚ (splitting field of separable poly in char 0)
-  -- p.Gal is definitionally (p.SplittingField ≃ₐ[ℚ] p.SplittingField)
   have : Normal ℚ p.SplittingField := inferInstance
   have : Algebra.IsSeparable ℚ p.SplittingField := inferInstance
   exact ⟨p.SplittingField,
     inferInstance, inferInstance, inferInstance,
     IsGalois.mk,
-    x_cube_sub_2_gal_iso_s3.map MulEquiv.symm⟩
+    x_cube_sub_2_gal_iso_s3_proved.map MulEquiv.symm⟩
 
 /-
 ## Part VIII: What's Known and What's Open
@@ -546,8 +532,6 @@ theorem solvable_iff_solvable_galois_group
 ### What's Axiomatized (2 remaining axioms):
 1. `abelian_realizable` — Kronecker-Weber theorem (every abelian group is realizable)
 2. `shafarevich_theorem` — All solvable groups are realizable (1954, class field theory)
-3. ~~`x_cube_sub_2_gal_iso_s3`~~ — **ELIMINATED**: `x_cube_sub_2_gal_iso_s3_proved`
-   proves Gal(X³-2/ℚ) ≅ S₃ from |Gal|=6 and galActionHom embedding
 
 ### What Remains Open:
 - The general Inverse Galois Problem for arbitrary finite groups over ℚ
@@ -559,7 +543,7 @@ theorem solvable_iff_solvable_galois_group
 2. Formalize the Kronecker-Weber theorem (would eliminate `abelian_realizable` axiom)
 3. Formalize at least one case of A₅ realization
 
-**Theorem Count**: 48+ proven theorems/lemmas, 2 deep axioms (+ 1 eliminated axiom kept for compat)
+**Theorem Count**: 48+ proven theorems/lemmas, 2 deep axioms
 **Sorries**: 2 (1 open problem + 1 Hilbert irreducibility)
 
 ### Part X: Toward Eliminating the x_cube_sub_2_gal_iso_s3 axiom

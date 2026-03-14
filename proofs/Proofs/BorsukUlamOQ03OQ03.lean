@@ -957,7 +957,7 @@ This follows from Tucker's lemma (axiom, Part I) + dominantComponentLabel
 + explicit grid construction (Part XXII above, in progress).
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Tucker on the disk**: Any continuous g : ℝ² → ℝ² that is antipodal
+/- **Tucker on the disk**: Any continuous g : ℝ² → ℝ² that is antipodal
     on S¹ (g(-p) = -g(p) for p on the unit circle) has approximate zeros
     inside D̄² for any δ > 0.
 
@@ -972,69 +972,8 @@ This follows from Tucker's lemma (axiom, Part I) + dominantComponentLabel
     tuckers_lemma (Part I), complementary_edge_approx_dominant (Part XX),
     mesh_refinement_principle (Part XXI), and radial extension (Part XXII). -/
 
-/-- **Corrected approximate 2D Borsuk-Ulam from Tucker's Lemma**
-
-    For any continuous f : ℝ³ → ℝ² and any ε > 0, there exists a point
-    on S² where |f(x) - f(-x)| < ε.
-
-    Proof: Project the odd function g̃ = f(x) - f(-x) to the disk D²
-    via hemisphere projection. g̃ is antipodal on ∂D² (where z=0,
-    the equator). Tucker on the disk gives an approximate zero w ∈ D².
-    Lift w back to S² via diskToSphere to get the approximate pair. -/
-theorem approx_borsuk_ulam_2d_corrected
-    (f : ℝ × ℝ × ℝ → ℝ × ℝ) (hf : Continuous f)
-    (ε : ℝ) (hε : 0 < ε) :
-    ∃ x : ℝ × ℝ × ℝ, x.1 ^ 2 + x.2.1 ^ 2 + x.2.2 ^ 2 = 1 ∧
-      dist (f x) (f (neg3 x)) < ε := by
-  -- Apply Tucker on disk to g̃ = antisymmetricDiff3 f ∘ diskToSphere
-  obtain ⟨w, hw_disk, hw_approx⟩ := tucker_disk_approx_zero_proved
-    (antisymmetricDiff3 f ∘ diskToSphere)
-    (projected_diff_continuous f hf)
-    (fun p hp => projected_diff_antipodal_boundary f p hp)
-    ε hε
-  -- Lift w to S² via diskToSphere
-  refine ⟨diskToSphere w, diskToSphere_on_sphere w hw_disk, ?_⟩
-  -- dist(f(x), f(-x)) = ‖antisymmetricDiff3 f x‖ = dist(g̃(w), 0) < ε
-  simp only [Function.comp_apply] at hw_approx
-  rw [dist_f_eq_norm_antisymDiff3, ← dist_zero_right]
-  exact hw_approx
-
-/-- **Corrected exact 2D Borsuk-Ulam from Tucker's Lemma**
-
-    By taking triangulations with mesh size → 0, the approximate solutions
-    converge (by compactness of S²) to an exact solution. -/
-theorem borsuk_ulam_2d_corrected
-    (f : ℝ × ℝ × ℝ → ℝ × ℝ) (hf : Continuous f) :
-    ∃ x : ℝ × ℝ × ℝ, x.1 ^ 2 + x.2.1 ^ 2 + x.2.2 ^ 2 = 1 ∧
-      f x = f (neg3 x) := by
-  -- Minimize d(x) = dist(f(x), f(-x)) on compact S²
-  have hd : Continuous (fun x : ℝ × ℝ × ℝ => dist (f x) (f (neg3 x))) :=
-    Continuous.dist hf (hf.comp neg3_continuous)
-  obtain ⟨x₀, hx₀S, hx₀min⟩ :=
-    sphere_isCompact.exists_isMinOn sphere_nonempty hd.continuousOn
-  refine ⟨x₀, hx₀S, dist_eq_zero.mp (le_antisymm ?_ dist_nonneg)⟩
-  by_contra hgt
-  push_neg at hgt
-  obtain ⟨x₁, hx₁on, hx₁lt⟩ := approx_borsuk_ulam_2d_corrected f hf _ hgt
-  exact absurd hx₁lt (not_lt.mpr (hx₀min hx₁on))
-
--- Type-check corrected results
-#check @neg3
-#check @neg3_preserves_sphere
-#check @no_fixed_point_on_sphere
-#check @antisymmetricDiff3
-#check @antisymmetricDiff3_odd
-#check @antisymmetricDiff3_eq_zero_iff
-#check @sphere_isCompact
-#check @diskToSphere
-#check @diskToSphere_on_sphere
-#check @diskToSphere_continuous
-#check @diskToSphere_neg_eq_neg3_boundary
-#check @dist_f_eq_norm_antisymDiff3
-#check @projected_diff_continuous
-#check @projected_diff_antipodal_boundary
-#check @approx_borsuk_ulam_2d_corrected
-#check @borsuk_ulam_2d_corrected
+/- The approximate and exact 2D BU theorems are stated after
+   tucker_disk_approx_zero_proved (Part XXIII) which they depend on. -/
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -1718,7 +1657,7 @@ theorem gridVertex_boundary_coord_abs (N : ℕ) (hN : 0 < N) (i : ℕ)
   have hN_pos : (0 : ℝ) < N := Nat.cast_pos.mpr hN
   have hN_ne : (N : ℝ) ≠ 0 := ne_of_gt hN_pos
   rcases hi with rfl | rfl
-  · simp [hN_ne]
+  · simp
   · rw [Nat.cast_mul, Nat.cast_ofNat, mul_div_cancel_of_imp (by intro h; linarith)]
     norm_num
 
@@ -1899,10 +1838,10 @@ theorem gridBoundary_euclidNormSq_ge_one (N : ℕ) (hN : 0 < N)
   have hN_pos : (0 : ℝ) < N := Nat.cast_pos.mpr hN
   have hN_ne : (N : ℝ) ≠ 0 := ne_of_gt hN_pos
   rcases hv with h | h | h | h
-  · left; rw [h]; simp [hN_ne]
+  · left; rw [h]; simp
   · left; rw [h, Nat.cast_mul, Nat.cast_ofNat, mul_div_cancel_of_imp (by intro h; linarith)]
     norm_num
-  · right; rw [h]; simp [hN_ne]
+  · right; rw [h]; simp
   · right; rw [h, Nat.cast_mul, Nat.cast_ofNat, mul_div_cancel_of_imp (by intro h; linarith)]
     norm_num
 
@@ -2142,5 +2081,77 @@ Approaches to eliminate tuckers_lemma:
 
   All three are equivalent to Brouwer's FPT in 2D. Each is a multi-session project.
 ═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART XXIV: 2D BORSUK-ULAM FROM TUCKER (APPROXIMATE AND EXACT)
+
+Now that tucker_disk_approx_zero_proved is available, we can state
+the full 2D Borsuk-Ulam theorem: approximate (∀ε>0) and exact versions.
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- **Corrected approximate 2D Borsuk-Ulam from Tucker's Lemma**
+
+    For any continuous f : ℝ³ → ℝ² and any ε > 0, there exists a point
+    on S² where |f(x) - f(-x)| < ε.
+
+    Proof: Project the odd function g̃ = f(x) - f(-x) to the disk D²
+    via hemisphere projection. g̃ is antipodal on ∂D² (where z=0,
+    the equator). Tucker on the disk gives an approximate zero w ∈ D².
+    Lift w back to S² via diskToSphere to get the approximate pair. -/
+theorem approx_borsuk_ulam_2d_corrected
+    (f : ℝ × ℝ × ℝ → ℝ × ℝ) (hf : Continuous f)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ x : ℝ × ℝ × ℝ, x.1 ^ 2 + x.2.1 ^ 2 + x.2.2 ^ 2 = 1 ∧
+      dist (f x) (f (neg3 x)) < ε := by
+  -- Apply Tucker on disk to g̃ = antisymmetricDiff3 f ∘ diskToSphere
+  obtain ⟨w, hw_disk, hw_approx⟩ := tucker_disk_approx_zero_proved
+    (antisymmetricDiff3 f ∘ diskToSphere)
+    (projected_diff_continuous f hf)
+    (fun p hp => projected_diff_antipodal_boundary f p hp)
+    ε hε
+  -- Lift w to S² via diskToSphere
+  refine ⟨diskToSphere w, diskToSphere_on_sphere w hw_disk, ?_⟩
+  -- dist(f(x), f(-x)) = ‖antisymmetricDiff3 f x‖ = dist(g̃(w), 0) < ε
+  simp only [Function.comp_apply] at hw_approx
+  rw [dist_f_eq_norm_antisymDiff3, ← dist_zero_right]
+  exact hw_approx
+
+/-- **Corrected exact 2D Borsuk-Ulam from Tucker's Lemma**
+
+    By taking triangulations with mesh size → 0, the approximate solutions
+    converge (by compactness of S²) to an exact solution. -/
+theorem borsuk_ulam_2d_corrected
+    (f : ℝ × ℝ × ℝ → ℝ × ℝ) (hf : Continuous f) :
+    ∃ x : ℝ × ℝ × ℝ, x.1 ^ 2 + x.2.1 ^ 2 + x.2.2 ^ 2 = 1 ∧
+      f x = f (neg3 x) := by
+  -- Minimize d(x) = dist(f(x), f(-x)) on compact S²
+  have hd : Continuous (fun x : ℝ × ℝ × ℝ => dist (f x) (f (neg3 x))) :=
+    Continuous.dist hf (hf.comp neg3_continuous)
+  obtain ⟨x₀, hx₀S, hx₀min⟩ :=
+    sphere_isCompact.exists_isMinOn sphere_nonempty hd.continuousOn
+  refine ⟨x₀, hx₀S, dist_eq_zero.mp (le_antisymm ?_ dist_nonneg)⟩
+  by_contra hgt
+  push_neg at hgt
+  obtain ⟨x₁, hx₁on, hx₁lt⟩ := approx_borsuk_ulam_2d_corrected f hf _ hgt
+  exact absurd hx₁lt (not_lt.mpr (hx₀min hx₁on))
+
+-- Type-check corrected results
+#check @neg3
+#check @neg3_preserves_sphere
+#check @no_fixed_point_on_sphere
+#check @antisymmetricDiff3
+#check @antisymmetricDiff3_odd
+#check @antisymmetricDiff3_eq_zero_iff
+#check @sphere_isCompact
+#check @diskToSphere
+#check @diskToSphere_on_sphere
+#check @diskToSphere_continuous
+#check @diskToSphere_neg_eq_neg3_boundary
+#check @dist_f_eq_norm_antisymDiff3
+#check @projected_diff_continuous
+#check @projected_diff_antipodal_boundary
+#check @approx_borsuk_ulam_2d_corrected
+#check @borsuk_ulam_2d_corrected
 
 end BorsukUlamTucker2D
