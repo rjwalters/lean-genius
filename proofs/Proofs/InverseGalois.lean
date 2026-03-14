@@ -546,7 +546,7 @@ theorem solvable_iff_solvable_galois_group
 ### What's Axiomatized (3 axioms, for deep classical results):
 1. `abelian_realizable` — Kronecker-Weber theorem (every abelian group is realizable)
 2. `shafarevich_theorem` — All solvable groups are realizable (1954, class field theory)
-3. `x_cube_sub_2_gal_iso_s3` — Gal(X³-2/ℚ) ≅ S₃ (classical, requires ω ∉ ℚ(∛2))
+3. `x_cube_sub_2_gal_iso_s3` — Gal(X³-2/ℚ) ≅ S₃ (classical, can now be derived from |Gal|=6)
 
 ### What Remains Open:
 - The general Inverse Galois Problem for arbitrary finite groups over ℚ
@@ -557,10 +557,10 @@ theorem solvable_iff_solvable_galois_group
 1. Give an explicit Galois extension with group S₅ (requires Hilbert irreducibility)
 2. Formalize the Kronecker-Weber theorem (would eliminate `abelian_realizable` axiom)
 3. Formalize at least one case of A₅ realization
-4. Prove Gal(X³-2/ℚ) ≅ S₃ to eliminate `x_cube_sub_2_gal_iso_s3` axiom
+4. Derive Gal(X³-2/ℚ) ≅ S₃ from |Gal|=6 to eliminate `x_cube_sub_2_gal_iso_s3` axiom
 
-**Theorem Count**: 37 proven theorems/lemmas, 3 axioms (for deep classical results)
-**Sorries**: 3 (1 open problem + 1 Hilbert irreducibility + 1 splitting field finrank)
+**Theorem Count**: 38 proven theorems/lemmas, 3 axioms (for deep classical results)
+**Sorries**: 2 (1 open problem + 1 Hilbert irreducibility)
 
 ### Part X: Toward Eliminating the x_cube_sub_2_gal_iso_s3 axiom
 19. **Degree divisibility lemma**: Irreducible poly of degree d has no root in ext of degree n when d∤n (proven)
@@ -574,7 +574,7 @@ theorem solvable_iff_solvable_galois_group
 27. **AdjoinRoot root is nonzero** (proven: α³=2≠0)
 28. **Cofactor has no root in AdjoinRoot** (proven: combines all above)
 29. **|Gal(X³-2/ℚ)| = 6** (proven from splitting_field_finrank)
-- **splitting_field_x_cube_sub_2_finrank** = 6 (sorry: needs Lean infrastructure for extracting roots from abstract splitting field and applying tower law)
+30. **splitting_field_x_cube_sub_2_finrank = 6** (PROVEN: 3|deg, deg≤6, deg≠3 via cube roots of unity)
 -/
 
 /-
@@ -729,12 +729,83 @@ and [SplittingField : ℚ] | 6 (Gal embeds in S₃), we get
 theorem splitting_field_x_cube_sub_2_finrank :
     Module.finrank ℚ (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField = 6 := by
   set p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
-  -- The degree divides 3! = 6 (Gal embeds in S₃) and 3 divides degree
-  -- (X³-2 is irreducible of degree 3). So degree ∈ {3, 6}.
-  -- Degree ≠ 3 because X³-2 doesn't split in any degree 3 extension
-  -- (cofactor X²+αX+α² has no root since ω ∉ ℚ(∛2) as 2∤3).
-  -- Therefore degree = 6.
-  sorry
+  set K := p.SplittingField
+  have hp_irr := x_cube_sub_2_irreducible
+  have hp_sep := hp_irr.separable
+  have hp_splits := SplittingField.splits p
+  -- Step 1: 3 ∣ finrank (irreducible of prime degree 3)
+  have h3_dvd : 3 ∣ Module.finrank ℚ K := by
+    have hcard := Polynomial.Gal.card_of_separable hp_sep
+    rw [← hcard]
+    have := Polynomial.Gal.prime_degree_dvd_card hp_irr
+      (by rw [x_cube_sub_2_natDegree]; decide)
+    rwa [x_cube_sub_2_natDegree] at this
+  -- Step 2: finrank ≤ 6 (Gal injects into Perm of 3-element rootSet)
+  have h_le_6 : Module.finrank ℚ K ≤ 6 := by
+    rw [← Polynomial.Gal.card_of_separable hp_sep]
+    haveI : Fact (p.Splits (algebraMap ℚ K)) := ⟨hp_splits⟩
+    calc Fintype.card p.Gal
+        ≤ Fintype.card (Equiv.Perm (p.rootSet K)) :=
+          Fintype.card_le_of_injective _ (Polynomial.Gal.galActionHom_injective p K)
+      _ = (Fintype.card (p.rootSet K)).factorial := Fintype.card_perm
+      _ = 6 := by
+          rw [Polynomial.card_rootSet_eq_natDegree hp_sep hp_splits,
+              x_cube_sub_2_natDegree]
+  -- Step 3: finrank ≠ 3 (two distinct roots ⟹ cube root of unity ⟹ contradiction)
+  have h_ne_3 : Module.finrank ℚ K ≠ 3 := by
+    intro h3
+    -- rootSet has 3 ≥ 2 elements, so pick two distinct roots
+    have hcard_rs : Fintype.card (p.rootSet K) = 3 := by
+      rw [Polynomial.card_rootSet_eq_natDegree hp_sep hp_splits, x_cube_sub_2_natDegree]
+    obtain ⟨⟨α, hα⟩, ⟨β, hβ⟩, hne⟩ :=
+      Fintype.exists_pair_of_one_lt_card (by omega : 1 < Fintype.card (p.rootSet K))
+    -- Both are roots: aeval α p = 0, aeval β p = 0
+    have hα_root := Polynomial.aeval_eq_zero_of_mem_rootSet hα
+    have hβ_root := Polynomial.aeval_eq_zero_of_mem_rootSet hβ
+    -- α³ = algebraMap ℚ K 2 (from aeval α (X³-2) = 0)
+    have hα3 : α ^ 3 = algebraMap ℚ K 2 := by
+      have h := hα_root
+      simp only [p, map_sub, map_pow, aeval_X, aeval_C] at h
+      exact sub_eq_zero.mp h
+    have hβ3 : β ^ 3 = algebraMap ℚ K 2 := by
+      have h := hβ_root
+      simp only [p, map_sub, map_pow, aeval_X, aeval_C] at h
+      exact sub_eq_zero.mp h
+    -- α ≠ 0 (since α³ = 2 ≠ 0)
+    have hα_ne : α ≠ 0 := by
+      intro h0; rw [h0, zero_pow (by omega : 3 ≠ 0)] at hα3
+      have : (algebraMap ℚ K) 2 = (algebraMap ℚ K) 0 := by simp [hα3.symm]
+      exact absurd ((algebraMap ℚ K).injective this) (by norm_num)
+    -- α ≠ β
+    have hαβ : α ≠ β := fun h => hne (Subtype.ext h)
+    -- β * α⁻¹ ≠ 1 (since α ≠ β)
+    have hne1 : β * α⁻¹ ≠ 1 := by
+      intro h; rw [mul_inv_eq_one₀ hα_ne] at h; exact hαβ h.symm
+    -- algebraMap ℚ K 2 ≠ 0 (needed for cube root cancellation)
+    have h2ne : (algebraMap ℚ K) 2 ≠ 0 := by
+      rw [Ne, ← map_zero (algebraMap ℚ K), (algebraMap ℚ K).injective.eq_iff]
+      norm_num
+    -- (β * α⁻¹)³ = 1 (since β³ = α³ = 2)
+    have hcube1 : (β * α⁻¹) ^ 3 = 1 := by
+      rw [mul_pow, inv_pow, hβ3, hα3]
+      exact mul_inv_cancel₀ h2ne
+    -- (β * α⁻¹)² + (β * α⁻¹) + 1 = 0 (cube root of unity, not 1)
+    have hcrt : (β * α⁻¹) ^ 2 + (β * α⁻¹) + 1 = 0 := by
+      have h1 : (β * α⁻¹) ^ 3 - 1 = 0 := by rw [hcube1]; ring
+      have h2 : (β * α⁻¹ - 1) * ((β * α⁻¹) ^ 2 + β * α⁻¹ + 1) =
+                (β * α⁻¹) ^ 3 - 1 := by ring
+      rcases mul_eq_zero.mp (h2.trans h1) with h | h
+      · exact absurd (sub_eq_zero.mp h) hne1
+      · exact h
+    -- aeval (β * α⁻¹) (X²+X+1) = 0, contradicting [K:ℚ] = 3 (since 2 ∤ 3)
+    exact no_cube_root_unity_in_degree_3_ext h3 (β * α⁻¹)
+      (by rw [aeval_x_sq_add_x_add_1]; exact hcrt)
+  -- Conclusion: 3 | n, 0 < n, n ≤ 6, n ≠ 3 ⟹ n = 6
+  have h_pos : 0 < Module.finrank ℚ K := by
+    rw [← Polynomial.Gal.card_of_separable hp_sep]
+    exact @Fintype.card_pos _ _ ⟨1⟩
+  obtain ⟨k, hk⟩ := h3_dvd
+  omega
 
 /--
 The Galois group of X³-2 over ℚ has exactly 6 elements.
