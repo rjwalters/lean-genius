@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved bothOdd_fraction axiom is redundant (derivable from parity_class_equidistribution). EO equidistribution theorem stated with proof sketch (sorry for eventual equality). Fixed pre-existing column_parity_partition omega bug. File compiles clean.",
+    "progressSummary": "PROGRESS: 3 independent axioms (down from 4). Converted parity_class_equidistribution from axiom to theorem via bothOdd_eq_oo. Fixed pre-existing totient_even_of_odd proof. 1 sorry remains (eo_equidistribution at line 1048). File compiles clean.",
     "builtItems": [
       "bothOddCoprimeCount: counting function for both-odd coprime pairs",
       "coprime_sector_partition: exact partition identity (coprime = primitive + bothOdd)",
@@ -71,7 +71,17 @@
       "triangleEO: EO pairs in triangle for decomposition analysis (PythagoreanTriplesOQ01.lean:Part XVII)",
       "theorem bothOdd_fraction_from_equidistribution (axiom redundancy proof)",
       "theorem eo_equidistribution (sorry - needs eventual equality for C>0)",
-      "Fixed column_parity_partition omega bug (n≥1 from coprimality)"
+      "Fixed column_parity_partition omega bug (n≥1 from coprimality)",
+      {
+        "name": "parity_class_equidistribution (theorem)",
+        "description": "Converted from axiom to theorem via bothOdd_eq_oo",
+        "proven": true
+      },
+      {
+        "name": "totient_even_of_odd (fixed)",
+        "description": "Fixed proof using rw + rfl instead of broken omega",
+        "proven": true
+      }
     ],
     "insights": [
       "The coprime sector decomposes into exactly 2 parity classes (not 3): primitive (mixed parity) and both-odd. Both-even is impossible for coprime pairs.",
@@ -87,7 +97,10 @@
       "The parity_fraction_in_coprime_sector axiom is fully derivable from parity_class_equidistribution via parity_axiom_from_equidistribution (Part XV). This reduces the effective axiom count.",
       "bothOdd_fraction_in_coprime_sector is derivable from parity_class_equidistribution via bothOdd_eq_oo (proved in bothOdd_fraction_from_equidistribution)",
       "EO equidistribution follows algebraically from OE+OO equidistribution + three-way partition (eo_equidistribution, needs eventual C>0)",
-      "Fixed column_parity_partition: n≥1 follows from Coprime n m when m>1 (was broken omega)"
+      "Fixed column_parity_partition: n≥1 follows from Coprime n m when m>1 (was broken omega)",
+      "Converted parity_class_equidistribution from axiom to theorem (derived from bothOdd_fraction via bothOdd_eq_oo) — axiom count reduced from 4 to 3",
+      "Fixed totient_even_of_odd proof (pre-existing omega failure due to Mathlib API change)",
+      "Confirmed column_discrepancy_bound was already removed (false for m=21, N=541)"
     ],
     "mathlibGaps": [
       "No Mathlib formalization of Gauss circle problem asymptotics",
