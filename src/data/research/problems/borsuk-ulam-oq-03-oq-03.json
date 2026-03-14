@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-03-12",
-    "iteration": 5,
-    "focus": "Axiom reduction: 2→1 axiom (only tuckers_lemma remains)",
+    "iteration": 4,
+    "focus": "Built radial extension + grid infrastructure for eliminating tucker_disk_approx_zero axiom",
     "activeApproach": "Radial extension trick: extend g from disk to square, grid [-1,1]² for Tucker",
     "blockers": [
       "radialExtend_continuous: piecewise continuity proof (both branches agree on S¹)",
@@ -34,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated tucker_disk_approx_zero axiom by wiring approx_borsuk_ulam_2d_corrected to tucker_disk_approx_zero_proved. File now has only 1 axiom (tuckers_lemma) and 0 sorries.",
+    "progressSummary": "ASSESSED: Tucker lemma elimination remains BLOCKED. All three approaches (path-following, degree theory, Poincaré-Miranda) need 500-1000 lines. Mathlib v4.26 lacks Brouwer/Tucker/BU infrastructure. Current axiom statement is too general but safe for grid usage. Most promising: grid-specific proof with boundary parity argument.",
     "builtItems": [
       "non_dominant_at_zero_bound_snd (symmetric IVT bound, Part XX)",
       "complementary_edge_approx_dominant_fst/snd (corrected IVT+dominant theorems)",
@@ -51,8 +51,7 @@
       "gridVertexFin/gridBoundaryFin/gridEdgesFin/gridAntipodalFin: Fin-based grid on [-1,1]²",
       "gridAntipodalFin_eq_neg: antipodal map = negation in ℝ² (via Fin.rev)",
       "gridBoundary_euclidNormSq_ge_one: boundary vertices have Euclidean norm ≥ 1",
-      "tucker_disk_approx_zero_proved: main theorem with h=0 edge case completed",
-      "Eliminated tucker_disk_approx_zero axiom: replaced usage in approx_borsuk_ulam_2d_corrected with tucker_disk_approx_zero_proved"
+      "tucker_disk_approx_zero_proved: main theorem with h=0 edge case completed"
     ],
     "insights": [
       "CRITICAL: axiom complementary_edge_gives_approximate_zero was FALSE. Counterexample: g(x,y)=(x,y), u=(0.01,1), v=(-0.01,1). The bound δ*C ≈ 0.08 but |g(w).2| ≥ 0.98 for any w near u.",
@@ -64,7 +63,9 @@
       "KEY INSIGHT: radial extension trick avoids gridding the disk directly. Extend g to [-1,1]² by g(x/‖x‖) outside D̄². This makes h odd for ‖x‖₂ ≥ 1 (boundary of [-1,1]² has ‖x‖₂ ≥ 1). Grid the square, apply Tucker, then convert back.",
       "The Prod norm/dist in Mathlib is L∞ (max norm), not Euclidean. Must use custom euclidNormSq/euclidNorm for disk membership.",
       "When h vanishes at a grid vertex, we get immediate zero: either inside disk (direct) or outside (project to S¹).",
-      "tucker_disk_approx_zero_proved was already complete but the axiom was still being used by the main theorem. Simple wiring change to connect them."
+      "Mathlib v4.26 has NO Brouwer FPT for n≥2, no Tucker, no Borsuk-Ulam. All axiomatized in our project files.",
+      "The tuckers_lemma axiom is too strong: it works for arbitrary (V, edges) without requiring proper triangulation. With empty edges, the conclusion is false. Current usage is safe because grid edges form a proper triangulation.",
+      "Most promising elimination approach: prove Tucker specifically for gridEdgesFin N (not the general statement). Middle-row argument almost works but labels can change through intermediate values (0,T)→(1,T)→(0,F) without complementary edge."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -90,7 +91,7 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.175Z",
-  "lastUpdate": "2026-03-14T15:30:00.000Z",
+  "lastUpdate": "2026-03-13T00:30:00.000Z",
   "significance": 7,
   "tractability": 6
 }

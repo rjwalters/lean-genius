@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Base case proved. Inductive step reduced to final algebraic inequality. 1 sorry remains.",
+    "progressSummary": "PROGRESS: Proved base case (n=k+1) of Newton log-concavity. Reduced from 2 sorries to 1.",
     "builtItems": [
       "elemSymm_zero_implies_higher_zero: zero tail property",
       "power_ineq_of_log_concave: a_k^(k+1) >= a_{k+1}^k by induction",
@@ -44,9 +44,7 @@
         "name": "newton_ineq base case",
         "description": "n=k+1 case proved via completing the square",
         "proven": true
-      },
-      "Fixed all Mathlib4 build errors in NewtonLogConcavity.lean",
-      "Cross-multiplied IH forms and Pascal rule infrastructure in inductive step"
+      }
     ],
     "insights": [
       "Division-free induction argument: use mul_pow + cancel via pow_pos",
@@ -60,9 +58,7 @@
       "Base case n=k+1 reduces to quadratic non-negativity in last variable t",
       "Key identity: k*expr = (kP-Et)^2 + (k+1)*((k-1)E^2-2kPF)*t^2 >= 0",
       "IH at (m=k, k-1) provides discriminant bound: (k-1)E^2 >= 2kPF",
-      "Inductive step needs Pascal rule + Cauchy-Schwarz on both IH instances",
-      "Inductive step reduced to degree-6 polynomial non-negativity in 9 variables - too complex for direct nlinarith",
-      "Real-rootedness or Schur convexity approach may be needed for inductive step"
+      "Inductive step needs Pascal rule + Cauchy-Schwarz on both IH instances"
     ],
     "mathlibGaps": [],
     "nextSteps": [

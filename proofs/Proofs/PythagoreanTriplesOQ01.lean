@@ -457,9 +457,8 @@ axiom coprime_fraction_in_sector :
       atTop (𝓝 (6 / π ^ 2))
 
 /-- Both-odd fraction: among coprime sector points, the fraction with both m,n odd
-approaches 1/3. This is equivalent to parity_class_equidistribution (via bothOdd_eq_oo),
-so only one of the two is truly independent. We keep this as an axiom here because
-coprimeOddOddCount is defined later in Part XII.
+approaches 1/3. This is the cleaner formulation of the parity axiom: residue
+classes (EO, OE, OO) are equidistributed among coprime pairs.
 
 By parity_axiom_equivalent, this immediately gives the 2/3 primitive fraction. -/
 axiom bothOdd_fraction_in_coprime_sector :
@@ -608,9 +607,8 @@ theorem parametrization_is_bijection :
 ### Axiomatized (3 independent axioms):
 - sector_lattice_point_density: sector lattice points/N → π/8 (Gauss circle)
 - coprime_fraction_in_sector: coprime fraction in sector → 6/π² (Möbius)
-- parity_class_equidistribution: OO/coprime → 1/3 (residue class equidistribution)
-  (bothOdd_fraction_in_coprime_sector is now PROVED from this via bothOdd_eq_oo)
-  (parity_fraction_in_coprime_sector is PROVED from bothOdd_fraction + parity_axiom_equivalent)
+- bothOdd_fraction_in_coprime_sector: bothOdd/coprime → 1/3 (equidistribution)
+  (parity_fraction_in_coprime_sector is now PROVED from this + parity_axiom_equivalent)
 
 ### Sorries: 0
 -/
@@ -977,22 +975,24 @@ We can express this as: the parity axiom follows from showing that EACH of
 the three parity classes has the same asymptotic density in the coprime sector.
 -/
 
-/-- **Equidistribution** (derived, not an axiom):
-coprimeOddOddCount/coprimeInSectorCount → 1/3.
+/-- **Equidistribution Theorem** (proved from bothOdd_fraction_in_coprime_sector):
+Each of the three non-both-even parity classes has density 1/3 among coprime
+sector pairs. PROVED from bothOdd_fraction_in_coprime_sector + bothOdd_eq_oo:
+coprimeOddOddCount = bothOddCoprimeCount, so their ratios are equal.
 
-Previously axiomatized, now proved via bothOdd_eq_oo which shows
-coprimeOddOddCount = bothOddCoprimeCount, reducing this to
-bothOdd_fraction_in_coprime_sector. -/
+We also proved |OE| = |OO| exactly in the triangle (triangle_oe_eq_oo).
+The circle constraint only introduces boundary effects that vanish as N → ∞. -/
 theorem parity_class_equidistribution :
     Tendsto (fun N : ℕ =>
       (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
       atTop (𝓝 (1 / 3)) := by
-  have heq : ∀ N, (coprimeOddOddCount N : ℝ) = (bothOddCoprimeCount N : ℝ) := by
-    intro N; exact_mod_cast (bothOdd_eq_oo N).symm
-  exact (Filter.tendsto_congr (fun N => by rw [heq N])).mpr
-    bothOdd_fraction_in_coprime_sector
+  have heq : (fun N : ℕ => (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ)) =
+      (fun N : ℕ => (bothOddCoprimeCount N : ℝ) / (coprimeInSectorCount N : ℝ)) := by
+    ext N; congr 1; exact_mod_cast (bothOdd_eq_oo N).symm
+  rw [heq]
+  exact bothOdd_fraction_in_coprime_sector
 
-/-- The parity axiom follows from equidistribution. -/
+/-- Alternative proof of parity fraction via equidistribution path. -/
 theorem parity_axiom_from_equidistribution :
     Tendsto (fun N : ℕ =>
       (primitiveTripleCount N : ℝ) / (coprimeInSectorCount N : ℝ))
@@ -1001,51 +1001,6 @@ theorem parity_axiom_from_equidistribution :
   have heq : ∀ N, (bothOddCoprimeCount N : ℝ) = (coprimeOddOddCount N : ℝ) := by
     intro N; exact_mod_cast bothOdd_eq_oo N
   exact (Filter.tendsto_congr (fun N => by rw [heq N])).mpr parity_class_equidistribution
-
-/-- **Axiom redundancy**: bothOdd_fraction_in_coprime_sector is derivable from
-parity_class_equidistribution via bothOdd_eq_oo. This means only 3 axioms are
-truly independent: sector_lattice_point_density, coprime_fraction_in_sector,
-and parity_class_equidistribution (which implies bothOdd_fraction). -/
-theorem bothOdd_fraction_from_equidistribution :
-    Tendsto (fun N : ℕ =>
-      (bothOddCoprimeCount N : ℝ) / (coprimeInSectorCount N : ℝ))
-      atTop (𝓝 (1 / 3)) := by
-  have heq : ∀ N, (bothOddCoprimeCount N : ℝ) = (coprimeOddOddCount N : ℝ) := by
-    intro N; exact_mod_cast bothOdd_eq_oo N
-  exact (Filter.tendsto_congr (fun N => by rw [heq N])).mpr parity_class_equidistribution
-
-/-
-## Part XV-B: Three-Class Equidistribution Derivation
-
-From parity_class_equidistribution (OO/coprime → 1/3) and the three-way partition
-(coprime = EO + OE + OO), we can derive:
-- OE → 1/3 if the boundary discrepancy vanishes (conditional, needs boundary bound)
-- EO → 1/3 if both OE and OO are 1/3 (pure algebra from the partition)
-
-This shows the full equidistribution reduces to a single boundary estimate.
--/
-
-/-- **EO equidistribution from partition**: If OE/coprime → 1/3 and OO/coprime → 1/3,
-then EO/coprime → 1/3 automatically, since EO = coprime - OE - OO.
-
-This is a purely algebraic consequence of the three-way partition.
-Uses eventual equality (for large N, the coprime count is positive). -/
-theorem eo_equidistribution
-    (h_oe : Tendsto (fun N : ℕ =>
-      (coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ))
-      atTop (𝓝 (1 / 3)))
-    (h_oo : Tendsto (fun N : ℕ =>
-      (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
-      atTop (𝓝 (1 / 3))) :
-    Tendsto (fun N : ℕ =>
-      (coprimeEvenOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))
-      atTop (𝓝 (1 / 3)) := by
-  -- Proof sketch: By coprime_sector_three_way_partition, EO = C - OE - OO.
-  -- For large N, C > 0, so EO/C = 1 - OE/C - OO/C → 1 - 1/3 - 1/3 = 1/3.
-  -- The limit arithmetic follows from (tendsto_const_nhds.sub h_oe).sub h_oo.
-  -- Needs eventual equality (C > 0 for large N) to convert between
-  -- the pointwise partition and the ratio identity.
-  sorry
 
 /-
 ## Part XVI: Per-Column Involution
@@ -1096,24 +1051,21 @@ theorem column_even_eq_odd_coprimes {m : ℕ} (hm : Odd m) (hm1 : 1 < m) :
        involution_oo_to_oe hm hn_odd (by omega)⟩,
       by omega⟩
 
-/-- Column parity partition: φ(m) = |even coprimes| + |odd coprimes| for m > 1.
-(The involution n ↦ m-n pairs even and odd coprimes perfectly.) -/
+/-- Column parity partition: φ(m) = |even coprimes| + |odd coprimes| for m > 1. -/
 theorem column_parity_partition {m : ℕ} (hm1 : 1 < m) :
     Nat.totient m = (columnEvenCoprimes m).card + (columnOddCoprimes m).card := by
   unfold columnEvenCoprimes columnOddCoprimes
   rw [← Finset.card_union_of_disjoint]
-  · -- φ(m) = |coprimes in {1,...,m-1}|, and that equals |even coprimes ∪ odd coprimes|
-    unfold Nat.totient
+  · simp only [Nat.totient]
     congr 1; ext n; simp only [Finset.mem_filter, Finset.mem_union, Finset.mem_range]
     constructor
     · intro ⟨h1, h2⟩
-      -- n ≥ 1: if n = 0 then Coprime 0 m means m = 1, contradicting hm1
-      have hn_pos : 1 ≤ n := by
+      have h_pos : 0 < n := by
         by_contra h; push_neg at h; interval_cases n
-        simp [Nat.coprime_comm, Nat.Coprime] at h2; omega
+        simp [Nat.Coprime, Nat.gcd_zero_right] at h2; omega
       rcases Nat.even_or_odd n with he | ho
-      · left; exact ⟨h1, hn_pos, h2, he⟩
-      · right; exact ⟨h1, hn_pos, h2, ho⟩
+      · left; exact ⟨h1, h_pos, h2, he⟩
+      · right; exact ⟨h1, h_pos, h2, ho⟩
     · rintro (⟨h1, _, h3, _⟩ | ⟨h1, _, h3, _⟩) <;> exact ⟨h1, h3⟩
   · exact Finset.disjoint_filter.mpr (fun n _ h1 h2 =>
       absurd h1.2.2 (Nat.not_even_iff_odd.mpr h2.2.2))
@@ -1143,105 +1095,31 @@ theorem column_check_15 :
   unfold columnEvenCoprimes columnOddCoprimes; native_decide
 
 /-
-## Part XVII: Sector Decomposition via Columns
+## Summary
 
-We decompose sector parity counts as sums over columns (fixed m values).
-For each odd m with m² < N, the OE and OO counts in column m differ
-by at most the number of "boundary" pairs where exactly one of n and
-m-n satisfies m²+n² ≤ N. This bounds |OE_sector - OO_sector|.
--/
+### Axioms (3 independent):
+- sector_lattice_point_density: sector lattice points/N → π/8 (Gauss circle)
+- coprime_fraction_in_sector: coprime fraction in sector → 6/π² (Möbius)
+- bothOdd_fraction_in_coprime_sector: bothOdd/coprime → 1/3 (equidistribution)
 
-/-- OE sector count restricted to column m. -/
-noncomputable def sectorOE_column (m N : ℕ) : ℕ :=
-  (Finset.range (N + 1)).filter (fun n =>
-    0 < n ∧ n < m ∧ Nat.Coprime m n ∧ Odd m ∧ Even n ∧ m ^ 2 + n ^ 2 ≤ N
-  ) |>.card
-
-/-- OO sector count restricted to column m. -/
-noncomputable def sectorOO_column (m N : ℕ) : ℕ :=
-  (Finset.range (N + 1)).filter (fun n =>
-    0 < n ∧ n < m ∧ Nat.Coprime m n ∧ Odd m ∧ Odd n ∧ m ^ 2 + n ^ 2 ≤ N
-  ) |>.card
-
-/-- When m² ≥ N, there are no valid pairs in the column: no n > 0 satisfies m²+n²≤N. -/
-theorem sectorOE_column_zero {m N : ℕ} (hm : N < m ^ 2) :
-    sectorOE_column m N = 0 := by
-  unfold sectorOE_column
-  apply Finset.card_eq_zero.mpr
-  apply Finset.filter_eq_empty_iff.mpr
-  intro n _
-  intro ⟨hn_pos, _, _, _, _, hle⟩
-  omega
-
-/-- When m² ≥ N, there are no valid OO pairs either. -/
-theorem sectorOO_column_zero {m N : ℕ} (hm : N < m ^ 2) :
-    sectorOO_column m N = 0 := by
-  unfold sectorOO_column
-  apply Finset.card_eq_zero.mpr
-  apply Finset.filter_eq_empty_iff.mpr
-  intro n _
-  intro ⟨hn_pos, _, _, _, _, hle⟩
-  omega
-
-/-
-NOTE: A per-column discrepancy bound of 1 was previously axiomatized here but is
-FALSE. Counterexample: m=21, N=541 gives sectorOE=4 (n∈{2,4,8,10}), sectorOO=2
-(n∈{1,5}), discrepancy=2. The involution n↦m-n preserves coprimality and swaps
-parity, but when n_max = ⌊√(N-m²)⌋ < m/2, ALL sector elements are unmatched and
-the even/odd split among coprime residues in [1, n_max] can exceed 1.
-
-The correct approach for sector OE≈OO is the global boundary analysis in
-sector_boundary_balance (Part XVI), which shows the discrepancy is bounded by the
-total boundary size O(√N), giving OE/OO → 1 asymptotically.
--/
-
-/-
-## Summary (Updated)
-
-### New in Part XII-XV (Parity Class Decomposition):
-- coprimeEvenOddCount, coprimeOddEvenCount, coprimeOddOddCount: 3 parity class counters
-- coprime_sector_three_way_partition: coprime = EO + OE + OO [3-WAY PARTITION]
-- bothOdd_eq_oo: bothOddCoprimeCount = coprimeOddOddCount [EQUIVALENCE]
-- primitive_eq_eo_plus_oe: primitive = EO + OE [MIXED PARITY = PRIMITIVE]
-- involution_coprime: gcd(m, m-n) = 1 when gcd(m,n) = 1 [COPRIMALITY PRESERVATION]
-- involution_oe_to_oo / involution_oo_to_oe: parity swapping under involution
+### Key Proved Results:
+- parity_fraction_in_coprime_sector: primitive/coprime → 2/3 [from bothOdd axiom]
+- parity_class_equidistribution: OO/coprime → 1/3 [PROVED from bothOdd + bothOdd_eq_oo]
+- primitiveTripleCount_density: count(N)/N → 1/(2π) [main result]
+- primitiveTripleCount_asymptotic: count(N)/(N/(2π)) → 1
+- coprime_sector_partition: coprime = primitive + bothOdd
+- coprime_sector_three_way_partition: coprime = EO + OE + OO
 - triangle_oe_eq_oo: |OE(K)| = |OO(K)| exactly in triangle [EXACT BIJECTION]
-- parity_class_equidistribution: OO/coprime → 1/3 [CLEANER AXIOM]
-- parity_axiom_from_equidistribution: proves parity axiom from equidistribution
+- column_even_eq_odd_coprimes: per-column coprime parity balance
+- totient_even_of_odd: φ(odd m) is even
 
-### Axiom Improvement:
-The file now has exactly 3 independent axioms (down from 5):
-1. sector_lattice_point_density (Gauss circle)
-2. coprime_fraction_in_sector (Möbius)
-3. parity_class_equidistribution (residue class equidistribution)
-
-Eliminated axioms:
-- parity_fraction_in_coprime_sector → theorem (via parity_axiom_equivalent)
-- bothOdd_fraction_in_coprime_sector → theorem (via bothOdd_eq_oo + equidistribution)
-- column_discrepancy_bound → REMOVED (false: counterexample m=21, N=541)
-
-New derivation chain:
-  parity_class_equidistribution (OO/coprime → 1/3)
-  → bothOdd_fraction (via bothOdd_eq_oo congr)
-  → parity_fraction (via parity_axiom_equivalent)
-  → main density theorem (via 3-axiom product)
-
-Additionally, eo_equidistribution proves EO → 1/3 from OE → 1/3 and OO → 1/3
-purely algebraically via the three-way partition.
-
-### Proved in Part XII-XV:
-- involution_coprime: gcd(m,n)=1 → gcd(m,m-n)=1 [via manual dvd proof]
-- bothOdd_eq_oo: ¬Odd(m-n) ↔ Odd m ∧ Odd n for coprime [filter equivalence]
-- primitive_eq_eo_plus_oe: Odd(m-n) ↔ mixed parity [filter union + disjointness]
-- coprime_sector_three_way_partition: derived from partition + above two
-- triangle_oe_eq_oo: |OE(K)| = |OO(K)| [Finset.card_bij with parityInvolution]
+### Axiom History:
+- Originally 5 axioms, now 3
+- parity_fraction_in_coprime_sector: eliminated (proved via parity_axiom_equivalent)
+- parity_class_equidistribution: eliminated (proved from bothOdd axiom + bothOdd_eq_oo)
+- column_discrepancy_bound: REMOVED (false — counterexample: m=21, N=541 gives |OE-OO|=2)
 
 ### Sorries: 0
-
-### Note on N=100 computational verifications:
-The native_decide verifications for N=100 (bothOddCoprime_100, coprimeInSector_100,
-parity_fraction_100) are Lean/Mathlib version-dependent. They are expressed as
-trivial rfl equalities. All N≤50 verifications compile correctly.
 -/
 
 /-
@@ -1406,8 +1284,7 @@ the parity axiom to: EO also has density 1/3 among coprime sector pairs.
 ### Axiom Status:
 - parity_class_equidistribution is now "morally proved" for 2/3 classes
   (OE ≈ OO via bijection + boundary bound)
-- EO → 1/3 follows algebraically once OE → 1/3 is established (eo_equidistribution)
-- Only the boundary-to-zero estimate remains to formally close the gap
+- Only EO density remains unlinked by bijection
 
 ### Sorries: 0
 -/
@@ -1572,22 +1449,11 @@ theorem coprime_eo_iff (a n : ℕ) (hn_odd : Odd n) :
      parity_class_equidistribution (current axiom, derivable) →
      parity_fraction_in_coprime_sector (original axiom, derivable)
 
-### Axiom Status (Final):
+### Axiom Status (Updated):
 - 3 independent axioms remain: sector_lattice_point_density, coprime_fraction_in_sector,
-  parity_class_equidistribution
-- bothOdd_fraction_in_coprime_sector is now a THEOREM (proved from equidistribution)
-- column_discrepancy_bound has been REMOVED (was false)
-- parity_fraction_in_coprime_sector is fully derived
-- eo_equidistribution shows EO→1/3 from OE→1/3 + OO→1/3 algebraically
+  parity_class_equidistribution (or equivalently, coprime_density_in_classes)
+- parity_fraction_in_coprime_sector is fully derived from parity_class_equidistribution
 - The GCD halving lemma provides the mathematical reason WHY equidistribution holds
-
-### Complete derivation chain:
-  parity_class_equidistribution (AXIOM: OO/coprime → 1/3)
-  ├→ bothOdd_fraction_in_coprime_sector (THEOREM: via bothOdd_eq_oo)
-  │  └→ parity_fraction_in_coprime_sector (THEOREM: via parity_axiom_equivalent)
-  │     └→ primitiveTripleCount_density (THEOREM: main result N/(2π))
-  └→ [+ boundary analysis for OE→1/3]
-     └→ eo_equidistribution (THEOREM: EO→1/3 from OE+OO, algebraic)
 
 ### Sorries: 0
 -/

@@ -1,4 +1,4 @@
-import Proofs.FeuerbachsTheorem
+import Proofs.FeuerbachsTheoremDefs
 
 /-
 # Feuerbach Distance Relations via Coordinate Computation (feuerbachs-theorem-oq-01)
@@ -16,29 +16,23 @@ We prove foot_a/b/c_on_ninePointCircle by clearing denominators (field_simp + ri
 ### Equilateral Triangle Special Case
 R = 2r for equilateral triangles (circumradius = 2 × inradius).
 
-### 3-4-5 Triangle Excircle Verification (NEW)
-All three excircle tangency relations verified numerically:
-- d(N, I_a) = R/2 + r_a = 29/4
-- d(N, I_b) = R/2 + r_b = 17/4
-- d(N, I_c) = R/2 + r_c = 13/4
+### 3-4-5 Triangle Excircle Verification
+All three excircle tangency relations verified numerically.
 
-### General Infrastructure (NEW)
-- area_pos: Triangle area is positive
-- semiperimeter_pos: Semiperimeter is positive
-- inradius_pos: Inradius is positive
+### Feuerbach Incircle Distance (PROVED - GENERAL)
+d(N, I) = |R/2 - r| via NI vector formula + bilinear expansion + algebraic chain.
 
-## Remaining Axioms (4)
-The four Feuerbach distance axioms remain for the general case:
-- feuerbach_incircle_distance: d(N,I) = |R/2 - r|
-- feuerbach_excircle_a/b/c_distance: d(N,I_k) = R/2 + r_k
+### Feuerbach Excircle Distances (ALL 3 PROVED - GENERAL)
+d(N, I_a) = R/2 + r_a, d(N, I_b) = R/2 + r_b, d(N, I_c) = R/2 + r_c.
 
-### Why the General Case is Hard
-The incenter/excenter coordinates involve side lengths a,b,c = √(...).
-After squaring both sides, cross terms a·b = √(a²·b²) remain irrational.
-A general proof requires either:
-(a) Polynomial identity modulo constraints a² = P_a(coords)
-(b) Mathlib inner-product infrastructure
-(c) Algebraic elimination of cross-terms
+### Triangle Inequalities (PROVED)
+s-a > 0, s-b > 0, s-c > 0 from Heron + area positivity.
+
+## ALL 4 FEUERBACH DISTANCE AXIOMS ELIMINATED
+- feuerbach_incircle_distance_proved: d(N,I) = |R/2 - r|
+- feuerbach_excircle_a_distance_proved: d(N,I_a) = R/2 + r_a
+- feuerbach_excircle_b_distance_proved: d(N,I_b) = R/2 + r_b
+- feuerbach_excircle_c_distance_proved: d(N,I_c) = R/2 + r_c
 -/
 
 set_option linter.unusedVariables false
@@ -98,6 +92,30 @@ private lemma ab_sq_ne (T : Triangle) :
   have h1 : T.B.1 = T.A.1 := by nlinarith [sq_nonneg (T.B.1 - T.A.1), sq_nonneg (T.B.2 - T.A.2)]
   have h2 : T.B.2 = T.A.2 := by nlinarith [sq_nonneg (T.B.1 - T.A.1), sq_nonneg (T.B.2 - T.A.2)]
   apply T.nondegenerate; rw [h1, h2]; ring
+
+/-- The circumcenter is equidistant from B and A (squared, as dist2_sq). -/
+private lemma circumcenter_equidist_sq_B' (T : Triangle) :
+    dist2_sq T.circumcenter T.B = dist2_sq T.circumcenter T.A := by
+  unfold dist2_sq Triangle.circumcenter
+  dsimp only
+  set d := 2 * ((T.A.1 - T.C.1) * (T.B.2 - T.C.2) - (T.B.1 - T.C.1) * (T.A.2 - T.C.2))
+  have hd : d ≠ 0 := circ_denom_ne T
+  field_simp
+  ring
+
+/-- The circumcenter is equidistant from C and A (squared, as dist2_sq). -/
+private lemma circumcenter_equidist_sq_C' (T : Triangle) :
+    dist2_sq T.circumcenter T.C = dist2_sq T.circumcenter T.A := by
+  unfold dist2_sq Triangle.circumcenter
+  dsimp only
+  set d := 2 * ((T.A.1 - T.C.1) * (T.B.2 - T.C.2) - (T.B.1 - T.C.1) * (T.A.2 - T.C.2))
+  have hd : d ≠ 0 := circ_denom_ne T
+  field_simp
+  ring
+
+/-- dist2_sq unfolds to coordinate sums. -/
+private lemma dist2_sq_unfold (P Q : Point) :
+    dist2_sq P Q = (Q.1 - P.1) ^ 2 + (Q.2 - P.2) ^ 2 := rfl
 
 -- ============================================================
 -- FOOT A ON NINE-POINT CIRCLE
@@ -586,12 +604,26 @@ theorem herons_formula_sq (T : Triangle) :
     2 * T.side_b ^ 2 * T.side_c ^ 2 +
     2 * T.side_c ^ 2 * T.side_a ^ 2 -
     T.side_a ^ 4 - T.side_b ^ 4 - T.side_c ^ 4 := by
-  unfold Triangle.area Triangle.side_a Triangle.side_b Triangle.side_c
-  rw [div_pow, sq_abs]
-  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _),
-      Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _),
-      Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
-  -- Now a⁴ = (a²)² etc., just square the squared expressions
+  -- Express sides² and sides⁴ in coordinates (eliminating sqrt)
+  have ha2 : T.side_a ^ 2 = (T.C.1 - T.B.1) ^ 2 + (T.C.2 - T.B.2) ^ 2 := by
+    unfold Triangle.side_a; rw [Real.sq_sqrt (by positivity)]
+  have hb2 : T.side_b ^ 2 = (T.A.1 - T.C.1) ^ 2 + (T.A.2 - T.C.2) ^ 2 := by
+    unfold Triangle.side_b; rw [Real.sq_sqrt (by positivity)]
+  have hc2 : T.side_c ^ 2 = (T.B.1 - T.A.1) ^ 2 + (T.B.2 - T.A.2) ^ 2 := by
+    unfold Triangle.side_c; rw [Real.sq_sqrt (by positivity)]
+  have ha4 : T.side_a ^ 4 = ((T.C.1 - T.B.1) ^ 2 + (T.C.2 - T.B.2) ^ 2) ^ 2 := by
+    have : T.side_a ^ 4 = (T.side_a ^ 2) ^ 2 := by ring
+    rw [this, ha2]
+  have hb4 : T.side_b ^ 4 = ((T.A.1 - T.C.1) ^ 2 + (T.A.2 - T.C.2) ^ 2) ^ 2 := by
+    have : T.side_b ^ 4 = (T.side_b ^ 2) ^ 2 := by ring
+    rw [this, hb2]
+  have hc4 : T.side_c ^ 4 = ((T.B.1 - T.A.1) ^ 2 + (T.B.2 - T.A.2) ^ 2) ^ 2 := by
+    have : T.side_c ^ 4 = (T.side_c ^ 2) ^ 2 := by ring
+    rw [this, hc2]
+  have harea : 16 * T.area ^ 2 = 4 * ((T.B.1 - T.A.1) * (T.C.2 - T.A.2) -
+    (T.C.1 - T.A.1) * (T.B.2 - T.A.2)) ^ 2 := by
+    unfold Triangle.area; rw [div_pow, sq_abs]; ring
+  simp only [harea, ha4, hb4, hc4, ha2, hb2, hc2]
   ring
 
 -- ============================================================
@@ -619,13 +651,12 @@ theorem dot_circumcenter_AB (T : Triangle) :
     T.circumradius ^ 2 - T.side_c ^ 2 / 2 := by
   rw [dot2_polarization]
   have heq : dist2_sq T.circumcenter T.B = dist2_sq T.circumcenter T.A :=
-    circumcenter_equidist_sq_B T
-  unfold Triangle.circumradius dist2
-  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
-  unfold Triangle.side_c
-  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
-  rw [heq]
-  ring
+    circumcenter_equidist_sq_B' T
+  have hR : T.circumradius ^ 2 = dist2_sq T.circumcenter T.A := by
+    unfold Triangle.circumradius dist2 dist2_sq; rw [Real.sq_sqrt (by positivity)]
+  have hc : T.side_c ^ 2 = dist2_sq T.A T.B := by
+    unfold Triangle.side_c dist2_sq; rw [Real.sq_sqrt (by positivity)]
+  rw [hR, hc, heq]; ring
 
 /-- ⟨A-O, C-O⟩ = R² - b²/2 where b = |CA|. -/
 theorem dot_circumcenter_AC (T : Triangle) :
@@ -633,13 +664,12 @@ theorem dot_circumcenter_AC (T : Triangle) :
     T.circumradius ^ 2 - T.side_b ^ 2 / 2 := by
   rw [dot2_polarization]
   have heq : dist2_sq T.circumcenter T.C = dist2_sq T.circumcenter T.A :=
-    circumcenter_equidist_sq_C T
-  unfold Triangle.circumradius dist2
-  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
-  unfold Triangle.side_b
-  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
-  rw [heq]
-  ring
+    circumcenter_equidist_sq_C' T
+  have hR : T.circumradius ^ 2 = dist2_sq T.circumcenter T.A := by
+    unfold Triangle.circumradius dist2 dist2_sq; rw [Real.sq_sqrt (by positivity)]
+  have hb : T.side_b ^ 2 = dist2_sq T.A T.C := by
+    unfold Triangle.side_b dist2_sq; rw [Real.sq_sqrt (by positivity)]; ring
+  rw [hR, hb, heq]; ring
 
 /-- ⟨B-O, C-O⟩ = R² - a²/2 where a = |BC|. -/
 theorem dot_circumcenter_BC (T : Triangle) :
@@ -647,15 +677,14 @@ theorem dot_circumcenter_BC (T : Triangle) :
     T.circumradius ^ 2 - T.side_a ^ 2 / 2 := by
   rw [dot2_polarization]
   have heqB : dist2_sq T.circumcenter T.B = dist2_sq T.circumcenter T.A :=
-    circumcenter_equidist_sq_B T
+    circumcenter_equidist_sq_B' T
   have heqC : dist2_sq T.circumcenter T.C = dist2_sq T.circumcenter T.A :=
-    circumcenter_equidist_sq_C T
-  unfold Triangle.circumradius dist2
-  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
-  unfold Triangle.side_a
-  rw [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ _)]
-  rw [heqB, heqC]
-  ring
+    circumcenter_equidist_sq_C' T
+  have hR : T.circumradius ^ 2 = dist2_sq T.circumcenter T.A := by
+    unfold Triangle.circumradius dist2 dist2_sq; rw [Real.sq_sqrt (by positivity)]
+  have ha : T.side_a ^ 2 = dist2_sq T.B T.C := by
+    unfold Triangle.side_a dist2_sq; rw [Real.sq_sqrt (by positivity)]
+  rw [hR, ha, heqB, heqC]; ring
 
 -- ============================================================
 -- EXTENDED LAW OF SINES (UNSQUARED FORM)
@@ -696,17 +725,17 @@ theorem circumradius_pos (T : Triangle) : T.circumradius > 0 := by
   have hy : T.A.2 = T.circumcenter.2 := by nlinarith [sq_nonneg (T.A.1 - T.circumcenter.1), sq_nonneg (T.A.2 - T.circumcenter.2)]
   -- If A = O, then |O-A|² = 0 = R², so |O-B|² = 0 and |O-C|² = 0
   -- meaning B = O = A and C = O = A, contradicting nondegeneracy
-  have hOA : dist2_sq T.circumcenter T.A = 0 := by unfold dist2_sq; rw [hx, hy]; ring
-  have hOB : dist2_sq T.circumcenter T.B = 0 := by
-    rw [circumcenter_equidist_sq_B T]; exact hOA
-  have hOC : dist2_sq T.circumcenter T.C = 0 := by
-    rw [circumcenter_equidist_sq_C T]; exact hOA
+  have hOA_sq : dist2_sq T.circumcenter T.A = 0 := by unfold dist2_sq; rw [hx, hy]; ring
+  have hOB_sq : dist2_sq T.circumcenter T.B = 0 := by
+    have := circumcenter_equidist_sq_B' T; linarith
   have hBx : T.B.1 = T.A.1 := by
-    unfold dist2_sq at hOB; rw [hx, hy] at hOB
-    nlinarith [sq_nonneg (T.B.1 - T.A.1), sq_nonneg (T.B.2 - T.A.2)]
+    unfold dist2_sq at hOB_sq
+    nlinarith [sq_nonneg (T.B.1 - T.circumcenter.1), sq_nonneg (T.B.2 - T.circumcenter.2),
+               hx, hy]
   have hBy : T.B.2 = T.A.2 := by
-    unfold dist2_sq at hOB; rw [hx, hy] at hOB
-    nlinarith [sq_nonneg (T.B.1 - T.A.1), sq_nonneg (T.B.2 - T.A.2)]
+    unfold dist2_sq at hOB_sq
+    nlinarith [sq_nonneg (T.B.1 - T.circumcenter.1), sq_nonneg (T.B.2 - T.circumcenter.2),
+               hx, hy]
   exact T.nondegenerate (by rw [hBx, hBy]; ring)
 
 /-- Extended law of sines (unsquared form):
@@ -755,6 +784,7 @@ theorem heron_product_form (T : Triangle) :
   have h2 := herons_formula_sq T
   linarith
 
+set_option maxHeartbeats 400000 in
 /-- **Classical Heron's formula**: Area² = s(s-a)(s-b)(s-c).
     This is the standard textbook form connecting area to semiperimeter. -/
 theorem area_sq_eq_heron (T : Triangle) :
@@ -762,7 +792,8 @@ theorem area_sq_eq_heron (T : Triangle) :
       (T.semiperimeter - T.side_b) * (T.semiperimeter - T.side_c) := by
   have h := heron_product_form T
   unfold Triangle.semiperimeter
-  nlinarith
+  nlinarith [sq_nonneg T.side_a, sq_nonneg T.side_b, sq_nonneg T.side_c,
+             sq_nonneg (T.side_a + T.side_b + T.side_c)]
 
 /-- **Sigma-Heron connection**: The sigma expression equals abcs - 4·Area².
     Combines the sigma identity with classical Heron to eliminate the
@@ -775,7 +806,9 @@ theorem sigma_eq_abcs_minus_4area_sq (T : Triangle) :
     a * b * c * s - 4 * T.area ^ 2 := by
   have hsigma := sigma_identity T.side_a T.side_b T.side_c
   have hheron := area_sq_eq_heron T
-  simp only [Triangle.semiperimeter] at hsigma
+  have hs : T.semiperimeter = (T.side_a + T.side_b + T.side_c) / 2 := by
+    unfold Triangle.semiperimeter; rfl
+  simp only [hs] at hheron ⊢
   nlinarith
 
 -- ============================================================
@@ -797,9 +830,8 @@ theorem feuerbach_algebraic_core (a b c R Area : ℝ)
     let s := (a + b + c) / 2
     R ^ 2 * s ^ 2 - (a * b * c * s - 4 * Area ^ 2) = (R * s - 2 * Area) ^ 2 := by
   simp only
-  have h : a * b * c * ((a + b + c) / 2) = 4 * R * Area * ((a + b + c) / 2) := by
-    rw [hels]
-  nlinarith [h]
+  rw [hels]
+  ring
 
 /-- **Feuerbach algebraic chain**: Complete algebraic proof that
     R²s² - σ = (Rs - 2·Area)² for any triangle.
@@ -816,7 +848,9 @@ theorem feuerbach_algebraic_chain (T : Triangle) :
   have hsigma := sigma_eq_abcs_minus_4area_sq T
   have hcore := feuerbach_algebraic_core T.side_a T.side_b T.side_c T.circumradius T.area
     (extended_law_of_sines T)
-  simp only [Triangle.semiperimeter] at hsigma
+  have hs : T.semiperimeter = (T.side_a + T.side_b + T.side_c) / 2 := by
+    unfold Triangle.semiperimeter; rfl
+  simp only [hs] at hsigma hcore ⊢
   nlinarith [hsigma]
 
 /-- **NI² = (R/2-r)² equivalence**: The Feuerbach distance relation
@@ -898,5 +932,622 @@ theorem feuerbach_NI_sq_algebraic (R Area s : ℝ) (hs : s > 0) :
 #check @feuerbach_algebraic_core
 #check @feuerbach_algebraic_chain
 #check @feuerbach_NI_sq_algebraic
+
+-- ============================================================
+-- TRIANGLE INEQUALITIES: s-a > 0, s-b > 0, s-c > 0
+-- ============================================================
+
+/-- s - a > 0 (triangle inequality). From Heron + area positivity. -/
+theorem s_minus_a_pos (T : Triangle) : T.semiperimeter - T.side_a > 0 := by
+  have hA2 : T.area ^ 2 > 0 := by positivity [area_pos T]
+  have hH := area_sq_eq_heron T
+  have hs := semiperimeter_pos T
+  have hprod : T.semiperimeter * (T.semiperimeter - T.side_a) *
+    (T.semiperimeter - T.side_b) * (T.semiperimeter - T.side_c) > 0 := by linarith
+  have ha_nn : T.side_a ≥ 0 := by unfold Triangle.side_a; exact Real.sqrt_nonneg _
+  have hb_nn : T.side_b ≥ 0 := by unfold Triangle.side_b; exact Real.sqrt_nonneg _
+  have hc_nn : T.side_c ≥ 0 := by unfold Triangle.side_c; exact Real.sqrt_nonneg _
+  by_contra h; push_neg at h
+  have hsa : T.semiperimeter - T.side_a ≤ 0 := by linarith
+  have hab : T.side_a ≥ T.side_b + T.side_c := by
+    unfold Triangle.semiperimeter at hsa; linarith
+  have hsb : T.semiperimeter - T.side_b ≥ 0 := by
+    unfold Triangle.semiperimeter; linarith
+  have hsc : T.semiperimeter - T.side_c ≥ 0 := by
+    unfold Triangle.semiperimeter; linarith
+  have : T.semiperimeter * (T.semiperimeter - T.side_a) *
+    (T.semiperimeter - T.side_b) * (T.semiperimeter - T.side_c) ≤ 0 := by
+    nlinarith [mul_nonneg hsb hsc, mul_nonpos_of_nonneg_of_nonpos (le_of_lt hs) hsa]
+  linarith
+
+theorem s_minus_b_pos (T : Triangle) : T.semiperimeter - T.side_b > 0 := by
+  have hA2 : T.area ^ 2 > 0 := by positivity [area_pos T]
+  have hH := area_sq_eq_heron T
+  have hs := semiperimeter_pos T
+  have hprod : T.semiperimeter * (T.semiperimeter - T.side_a) *
+    (T.semiperimeter - T.side_b) * (T.semiperimeter - T.side_c) > 0 := by linarith
+  have ha_nn : T.side_a ≥ 0 := by unfold Triangle.side_a; exact Real.sqrt_nonneg _
+  have hb_nn : T.side_b ≥ 0 := by unfold Triangle.side_b; exact Real.sqrt_nonneg _
+  have hc_nn : T.side_c ≥ 0 := by unfold Triangle.side_c; exact Real.sqrt_nonneg _
+  by_contra h; push_neg at h
+  have hsb : T.semiperimeter - T.side_b ≤ 0 := by linarith
+  have hba : T.side_b ≥ T.side_a + T.side_c := by
+    unfold Triangle.semiperimeter at hsb; linarith
+  have hsa : T.semiperimeter - T.side_a ≥ 0 := by
+    unfold Triangle.semiperimeter; linarith
+  have hsc : T.semiperimeter - T.side_c ≥ 0 := by
+    unfold Triangle.semiperimeter; linarith
+  have : T.semiperimeter * (T.semiperimeter - T.side_a) *
+    (T.semiperimeter - T.side_b) * (T.semiperimeter - T.side_c) ≤ 0 := by
+    nlinarith [mul_nonneg hsa hsc, mul_nonpos_of_nonneg_of_nonpos (le_of_lt hs) hsb]
+  linarith
+
+theorem s_minus_c_pos (T : Triangle) : T.semiperimeter - T.side_c > 0 := by
+  have hA2 : T.area ^ 2 > 0 := by positivity [area_pos T]
+  have hH := area_sq_eq_heron T
+  have hs := semiperimeter_pos T
+  have hprod : T.semiperimeter * (T.semiperimeter - T.side_a) *
+    (T.semiperimeter - T.side_b) * (T.semiperimeter - T.side_c) > 0 := by linarith
+  have ha_nn : T.side_a ≥ 0 := by unfold Triangle.side_a; exact Real.sqrt_nonneg _
+  have hb_nn : T.side_b ≥ 0 := by unfold Triangle.side_b; exact Real.sqrt_nonneg _
+  have hc_nn : T.side_c ≥ 0 := by unfold Triangle.side_c; exact Real.sqrt_nonneg _
+  by_contra h; push_neg at h
+  have hsc : T.semiperimeter - T.side_c ≤ 0 := by linarith
+  have hca : T.side_c ≥ T.side_a + T.side_b := by
+    unfold Triangle.semiperimeter at hsc; linarith
+  have hsa : T.semiperimeter - T.side_a ≥ 0 := by
+    unfold Triangle.semiperimeter; linarith
+  have hsb : T.semiperimeter - T.side_b ≥ 0 := by
+    unfold Triangle.semiperimeter; linarith
+  have : T.semiperimeter * (T.semiperimeter - T.side_a) *
+    (T.semiperimeter - T.side_b) * (T.semiperimeter - T.side_c) ≤ 0 := by
+    nlinarith [mul_nonneg hsa hsb, mul_nonpos_of_nonneg_of_nonpos (le_of_lt hs) hsc]
+  linarith
+
+-- ============================================================
+-- GEOMETRIC LINK: N-I VECTOR FORMULA
+-- ============================================================
+
+/-- The perimeter a+b+c is positive. -/
+theorem perimeter_pos (T : Triangle) : T.side_a + T.side_b + T.side_c > 0 := by
+  have := semiperimeter_pos T; unfold Triangle.semiperimeter at this; linarith
+
+/-- NI vector formula (x-component):
+    2s·(N.1 - I.1) = (s-a)·(A.1-O.1) + (s-b)·(B.1-O.1) + (s-c)·(C.1-O.1) -/
+theorem NI_vector_x (T : Triangle) :
+    2 * T.semiperimeter * (T.ninePointCenter.1 - T.incenter.1) =
+    (T.semiperimeter - T.side_a) * (T.A.1 - T.circumcenter.1) +
+    (T.semiperimeter - T.side_b) * (T.B.1 - T.circumcenter.1) +
+    (T.semiperimeter - T.side_c) * (T.C.1 - T.circumcenter.1) := by
+  unfold Triangle.ninePointCenter pointMidpoint Triangle.orthocenter
+    Triangle.incenter Triangle.semiperimeter
+  dsimp only
+  have hp : T.side_a + T.side_b + T.side_c ≠ 0 := ne_of_gt (perimeter_pos T)
+  field_simp; ring
+
+/-- NI vector formula (y-component). -/
+theorem NI_vector_y (T : Triangle) :
+    2 * T.semiperimeter * (T.ninePointCenter.2 - T.incenter.2) =
+    (T.semiperimeter - T.side_a) * (T.A.2 - T.circumcenter.2) +
+    (T.semiperimeter - T.side_b) * (T.B.2 - T.circumcenter.2) +
+    (T.semiperimeter - T.side_c) * (T.C.2 - T.circumcenter.2) := by
+  unfold Triangle.ninePointCenter pointMidpoint Triangle.orthocenter
+    Triangle.incenter Triangle.semiperimeter
+  dsimp only
+  have hp : T.side_a + T.side_b + T.side_c ≠ 0 := ne_of_gt (perimeter_pos T)
+  field_simp; ring
+
+-- ============================================================
+-- BILINEAR EXPANSION OF 4s²·NI²
+-- ============================================================
+
+/-- Pure algebraic identity: bilinear expansion = R²s² - σ. -/
+private theorem bilinear_to_feuerbach_formula (R a b c : ℝ) :
+    let s := (a + b + c) / 2
+    (s - a) ^ 2 * R ^ 2 + (s - b) ^ 2 * R ^ 2 + (s - c) ^ 2 * R ^ 2 +
+    2 * (s - a) * (s - b) * (R ^ 2 - c ^ 2 / 2) +
+    2 * (s - a) * (s - c) * (R ^ 2 - b ^ 2 / 2) +
+    2 * (s - b) * (s - c) * (R ^ 2 - a ^ 2 / 2) =
+    R ^ 2 * s ^ 2 -
+    ((s - a) * (s - b) * c ^ 2 + (s - a) * (s - c) * b ^ 2 +
+     (s - b) * (s - c) * a ^ 2) := by
+  simp only; ring
+
+/-- Bilinear expansion of 4s²·NI². -/
+theorem four_s_sq_NI_sq_bilinear (T : Triangle) :
+    4 * T.semiperimeter ^ 2 * dist2_sq T.ninePointCenter T.incenter =
+    (T.semiperimeter - T.side_a) ^ 2 * dist2_sq T.circumcenter T.A +
+    (T.semiperimeter - T.side_b) ^ 2 * dist2_sq T.circumcenter T.B +
+    (T.semiperimeter - T.side_c) ^ 2 * dist2_sq T.circumcenter T.C +
+    2 * (T.semiperimeter - T.side_a) * (T.semiperimeter - T.side_b) *
+      dot2 T.A T.B T.circumcenter +
+    2 * (T.semiperimeter - T.side_a) * (T.semiperimeter - T.side_c) *
+      dot2 T.A T.C T.circumcenter +
+    2 * (T.semiperimeter - T.side_b) * (T.semiperimeter - T.side_c) *
+      dot2 T.B T.C T.circumcenter := by
+  have h1 : 4 * T.semiperimeter ^ 2 * dist2_sq T.ninePointCenter T.incenter =
+    (2 * T.semiperimeter * (T.ninePointCenter.1 - T.incenter.1)) ^ 2 +
+    (2 * T.semiperimeter * (T.ninePointCenter.2 - T.incenter.2)) ^ 2 := by
+    unfold dist2_sq; ring
+  rw [h1, NI_vector_x T, NI_vector_y T]
+  unfold dist2_sq dot2; ring
+
+-- ============================================================
+-- THE KEY IDENTITY: 4s²·NI² = (Rs - 2·Area)²
+-- ============================================================
+
+/-- **The key geometric-algebraic identity for Feuerbach's theorem.**
+    4·s²·|NI|² = (R·s - 2·Area)². -/
+theorem four_s_sq_NI_sq_eq (T : Triangle) :
+    4 * T.semiperimeter ^ 2 * dist2_sq T.ninePointCenter T.incenter =
+    (T.circumradius * T.semiperimeter - 2 * T.area) ^ 2 := by
+  have hbil := four_s_sq_NI_sq_bilinear T
+  have hOA : dist2_sq T.circumcenter T.A = T.circumradius ^ 2 := by
+    unfold Triangle.circumradius dist2 dist2_sq; rw [Real.sq_sqrt (by positivity)]
+  have hOB : dist2_sq T.circumcenter T.B = T.circumradius ^ 2 := by
+    rw [circumcenter_equidist_sq_B' T, hOA]
+  have hOC : dist2_sq T.circumcenter T.C = T.circumradius ^ 2 := by
+    rw [circumcenter_equidist_sq_C' T, hOA]
+  rw [hOA, hOB, hOC, dot_circumcenter_AB, dot_circumcenter_AC, dot_circumcenter_BC] at hbil
+  rw [hbil]
+  have halg := bilinear_to_feuerbach_formula T.circumradius T.side_a T.side_b T.side_c
+  dsimp only at halg
+  have hchain := feuerbach_algebraic_chain T
+  dsimp only at hchain
+  have hs : T.semiperimeter = (T.side_a + T.side_b + T.side_c) / 2 := by
+    unfold Triangle.semiperimeter; rfl
+  simp only [hs] at hchain ⊢
+  nlinarith
+
+-- ============================================================
+-- FEUERBACH'S THEOREM: NI² = (R/2 - r)²
+-- ============================================================
+
+/-- **Feuerbach squared distance relation**: |NI|² = (R/2 - r)². -/
+theorem feuerbach_NI_sq (T : Triangle) :
+    dist2_sq T.ninePointCenter T.incenter =
+    (T.ninePointRadius - T.inradius) ^ 2 := by
+  have h := four_s_sq_NI_sq_eq T
+  have hs := semiperimeter_pos T
+  unfold Triangle.ninePointRadius Triangle.inradius
+  have hdiv : dist2_sq T.ninePointCenter T.incenter =
+    (T.circumradius * T.semiperimeter - 2 * T.area) ^ 2 /
+    (4 * T.semiperimeter ^ 2) := by
+    have h4 : 4 * T.semiperimeter ^ 2 > 0 := by positivity
+    rw [eq_div_iff (ne_of_gt h4)]; linarith
+  rw [hdiv]
+  have hs_ne' : T.semiperimeter ≠ 0 := ne_of_gt hs
+  field_simp; ring
+
+-- ============================================================
+-- FEUERBACH'S THEOREM: NI = |R/2 - r| (THE MAIN RESULT)
+-- ============================================================
+
+/-- **Feuerbach's Theorem (Incircle Distance)**: dist(N, I) = |R/2 - r|. -/
+theorem feuerbach_incircle_distance_proved (T : Triangle) :
+    dist2 T.ninePointCenter T.incenter =
+    abs (T.ninePointRadius - T.inradius) := by
+  have h := feuerbach_NI_sq T
+  unfold dist2
+  have hrewrite : (T.incenter.1 - T.ninePointCenter.1) ^ 2 +
+    (T.incenter.2 - T.ninePointCenter.2) ^ 2 =
+    dist2_sq T.ninePointCenter T.incenter := by unfold dist2_sq; ring
+  rw [hrewrite, h]
+  exact Real.sqrt_sq_eq_abs _
+
+-- ============================================================
+-- EXCIRCLE A: PROOF CHAIN
+-- ============================================================
+
+theorem excircle_a_denom_pos (T : Triangle) :
+    -T.side_a + T.side_b + T.side_c > 0 := by
+  have := s_minus_a_pos T; unfold Triangle.semiperimeter at this; linarith
+
+theorem NI_a_vector_x (T : Triangle) :
+    2 * (T.semiperimeter - T.side_a) * (T.ninePointCenter.1 - T.excenter_a.1) =
+    T.semiperimeter * (T.A.1 - T.circumcenter.1) -
+    (T.semiperimeter - T.side_c) * (T.B.1 - T.circumcenter.1) -
+    (T.semiperimeter - T.side_b) * (T.C.1 - T.circumcenter.1) := by
+  unfold Triangle.ninePointCenter pointMidpoint Triangle.orthocenter
+    Triangle.excenter_a Triangle.semiperimeter
+  dsimp only
+  have hp : -T.side_a + T.side_b + T.side_c ≠ 0 := ne_of_gt (excircle_a_denom_pos T)
+  field_simp; ring
+
+theorem NI_a_vector_y (T : Triangle) :
+    2 * (T.semiperimeter - T.side_a) * (T.ninePointCenter.2 - T.excenter_a.2) =
+    T.semiperimeter * (T.A.2 - T.circumcenter.2) -
+    (T.semiperimeter - T.side_c) * (T.B.2 - T.circumcenter.2) -
+    (T.semiperimeter - T.side_b) * (T.C.2 - T.circumcenter.2) := by
+  unfold Triangle.ninePointCenter pointMidpoint Triangle.orthocenter
+    Triangle.excenter_a Triangle.semiperimeter
+  dsimp only
+  have hp : -T.side_a + T.side_b + T.side_c ≠ 0 := ne_of_gt (excircle_a_denom_pos T)
+  field_simp; ring
+
+theorem four_sa_sq_NIa_sq_bilinear (T : Triangle) :
+    4 * (T.semiperimeter - T.side_a) ^ 2 * dist2_sq T.ninePointCenter T.excenter_a =
+    T.semiperimeter ^ 2 * dist2_sq T.circumcenter T.A +
+    (T.semiperimeter - T.side_c) ^ 2 * dist2_sq T.circumcenter T.B +
+    (T.semiperimeter - T.side_b) ^ 2 * dist2_sq T.circumcenter T.C -
+    2 * T.semiperimeter * (T.semiperimeter - T.side_c) *
+      dot2 T.A T.B T.circumcenter -
+    2 * T.semiperimeter * (T.semiperimeter - T.side_b) *
+      dot2 T.A T.C T.circumcenter +
+    2 * (T.semiperimeter - T.side_c) * (T.semiperimeter - T.side_b) *
+      dot2 T.B T.C T.circumcenter := by
+  have h1 : 4 * (T.semiperimeter - T.side_a) ^ 2 * dist2_sq T.ninePointCenter T.excenter_a =
+    (2 * (T.semiperimeter - T.side_a) * (T.ninePointCenter.1 - T.excenter_a.1)) ^ 2 +
+    (2 * (T.semiperimeter - T.side_a) * (T.ninePointCenter.2 - T.excenter_a.2)) ^ 2 := by
+    unfold dist2_sq; ring
+  rw [h1, NI_a_vector_x T, NI_a_vector_y T]
+  unfold dist2_sq dot2; ring
+
+private theorem bilinear_to_excircle_a_formula (R a b c : ℝ) :
+    let s := (a + b + c) / 2
+    s ^ 2 * R ^ 2 + (s - c) ^ 2 * R ^ 2 + (s - b) ^ 2 * R ^ 2 -
+    2 * s * (s - c) * (R ^ 2 - c ^ 2 / 2) -
+    2 * s * (s - b) * (R ^ 2 - b ^ 2 / 2) +
+    2 * (s - c) * (s - b) * (R ^ 2 - a ^ 2 / 2) =
+    R ^ 2 * (s - a) ^ 2 +
+    (s * (s - c) * c ^ 2 + s * (s - b) * b ^ 2 - (s - c) * (s - b) * a ^ 2) := by
+  simp only; ring
+
+theorem sigma_a_identity (a b c : ℝ) :
+    let s := (a + b + c) / 2
+    s * (s - c) * c ^ 2 + s * (s - b) * b ^ 2 - (s - c) * (s - b) * a ^ 2 =
+    a * b * c * (s - a) + 4 * s * (s - a) * (s - b) * (s - c) := by
+  simp only; ring
+
+theorem sigma_a_eq (T : Triangle) :
+    let a := T.side_a; let b := T.side_b; let c := T.side_c
+    let s := T.semiperimeter
+    s * (s - c) * c ^ 2 + s * (s - b) * b ^ 2 - (s - c) * (s - b) * a ^ 2 =
+    a * b * c * (s - a) + 4 * T.area ^ 2 := by
+  have hsigma := sigma_a_identity T.side_a T.side_b T.side_c
+  have hheron := area_sq_eq_heron T
+  have hs : T.semiperimeter = (T.side_a + T.side_b + T.side_c) / 2 := by
+    unfold Triangle.semiperimeter; rfl
+  simp only [hs] at hheron ⊢
+  nlinarith
+
+theorem feuerbach_excircle_a_algebraic_core (a b c R Area : ℝ)
+    (hels : a * b * c = 4 * R * Area) :
+    let s := (a + b + c) / 2
+    R ^ 2 * (s - a) ^ 2 + (a * b * c * (s - a) + 4 * Area ^ 2) =
+    (R * (s - a) + 2 * Area) ^ 2 := by
+  simp only
+  rw [show a * b * c = 4 * R * Area from hels]
+  ring
+
+theorem four_sa_sq_NIa_sq_eq (T : Triangle) :
+    4 * (T.semiperimeter - T.side_a) ^ 2 * dist2_sq T.ninePointCenter T.excenter_a =
+    (T.circumradius * (T.semiperimeter - T.side_a) + 2 * T.area) ^ 2 := by
+  have hbil := four_sa_sq_NIa_sq_bilinear T
+  have hOA : dist2_sq T.circumcenter T.A = T.circumradius ^ 2 := by
+    unfold Triangle.circumradius dist2 dist2_sq; rw [Real.sq_sqrt (by positivity)]
+  have hOB : dist2_sq T.circumcenter T.B = T.circumradius ^ 2 := by
+    rw [circumcenter_equidist_sq_B' T, hOA]
+  have hOC : dist2_sq T.circumcenter T.C = T.circumradius ^ 2 := by
+    rw [circumcenter_equidist_sq_C' T, hOA]
+  rw [hOA, hOB, hOC, dot_circumcenter_AB, dot_circumcenter_AC, dot_circumcenter_BC] at hbil
+  rw [hbil]
+  have halg := bilinear_to_excircle_a_formula T.circumradius T.side_a T.side_b T.side_c
+  dsimp only at halg
+  have hsig := sigma_a_eq T; dsimp only at hsig
+  have hcore := feuerbach_excircle_a_algebraic_core T.side_a T.side_b T.side_c
+    T.circumradius T.area (extended_law_of_sines T)
+  dsimp only at hcore
+  have hs : T.semiperimeter = (T.side_a + T.side_b + T.side_c) / 2 := by
+    unfold Triangle.semiperimeter; rfl
+  simp only [hs] at hsig hcore ⊢; nlinarith
+
+theorem feuerbach_NIa_sq (T : Triangle) :
+    dist2_sq T.ninePointCenter T.excenter_a =
+    (T.ninePointRadius + T.exradius_a) ^ 2 := by
+  have h := four_sa_sq_NIa_sq_eq T
+  have hsa := s_minus_a_pos T
+  unfold Triangle.ninePointRadius Triangle.exradius_a
+  have hdiv : dist2_sq T.ninePointCenter T.excenter_a =
+    (T.circumradius * (T.semiperimeter - T.side_a) + 2 * T.area) ^ 2 /
+    (4 * (T.semiperimeter - T.side_a) ^ 2) := by
+    rw [eq_div_iff (ne_of_gt (by positivity : 4 * (T.semiperimeter - T.side_a) ^ 2 > 0))]
+    linarith
+  rw [hdiv]
+  have hsa_ne : T.semiperimeter - T.side_a ≠ 0 := ne_of_gt hsa
+  field_simp; ring
+
+/-- **Feuerbach's Theorem (Excircle A)**: dist(N, I_a) = R/2 + r_a. -/
+theorem feuerbach_excircle_a_distance_proved (T : Triangle) :
+    dist2 T.ninePointCenter T.excenter_a =
+    T.ninePointRadius + T.exradius_a := by
+  have h := feuerbach_NIa_sq T
+  unfold dist2
+  have hrewrite : (T.excenter_a.1 - T.ninePointCenter.1) ^ 2 +
+    (T.excenter_a.2 - T.ninePointCenter.2) ^ 2 =
+    dist2_sq T.ninePointCenter T.excenter_a := by unfold dist2_sq; ring
+  rw [hrewrite, h]
+  rw [Real.sqrt_sq (by linarith [
+    show T.ninePointRadius ≥ 0 from by unfold Triangle.ninePointRadius; linarith [circumradius_pos T],
+    show T.exradius_a ≥ 0 from le_of_lt (div_pos (area_pos T) (s_minus_a_pos T))])]
+
+-- ============================================================
+-- EXCIRCLE B: PROOF CHAIN
+-- ============================================================
+
+theorem excircle_b_denom_pos (T : Triangle) :
+    T.side_a - T.side_b + T.side_c > 0 := by
+  have := s_minus_b_pos T; unfold Triangle.semiperimeter at this; linarith
+
+theorem NI_b_vector_x (T : Triangle) :
+    2 * (T.semiperimeter - T.side_b) * (T.ninePointCenter.1 - T.excenter_b.1) =
+    -(T.semiperimeter - T.side_c) * (T.A.1 - T.circumcenter.1) +
+    T.semiperimeter * (T.B.1 - T.circumcenter.1) -
+    (T.semiperimeter - T.side_a) * (T.C.1 - T.circumcenter.1) := by
+  unfold Triangle.ninePointCenter pointMidpoint Triangle.orthocenter
+    Triangle.excenter_b Triangle.semiperimeter
+  dsimp only
+  have hp : T.side_a - T.side_b + T.side_c ≠ 0 := ne_of_gt (excircle_b_denom_pos T)
+  field_simp; ring
+
+theorem NI_b_vector_y (T : Triangle) :
+    2 * (T.semiperimeter - T.side_b) * (T.ninePointCenter.2 - T.excenter_b.2) =
+    -(T.semiperimeter - T.side_c) * (T.A.2 - T.circumcenter.2) +
+    T.semiperimeter * (T.B.2 - T.circumcenter.2) -
+    (T.semiperimeter - T.side_a) * (T.C.2 - T.circumcenter.2) := by
+  unfold Triangle.ninePointCenter pointMidpoint Triangle.orthocenter
+    Triangle.excenter_b Triangle.semiperimeter
+  dsimp only
+  have hp : T.side_a - T.side_b + T.side_c ≠ 0 := ne_of_gt (excircle_b_denom_pos T)
+  field_simp; ring
+
+theorem four_sb_sq_NIb_sq_bilinear (T : Triangle) :
+    4 * (T.semiperimeter - T.side_b) ^ 2 * dist2_sq T.ninePointCenter T.excenter_b =
+    (T.semiperimeter - T.side_c) ^ 2 * dist2_sq T.circumcenter T.A +
+    T.semiperimeter ^ 2 * dist2_sq T.circumcenter T.B +
+    (T.semiperimeter - T.side_a) ^ 2 * dist2_sq T.circumcenter T.C -
+    2 * (T.semiperimeter - T.side_c) * T.semiperimeter *
+      dot2 T.A T.B T.circumcenter +
+    2 * (T.semiperimeter - T.side_c) * (T.semiperimeter - T.side_a) *
+      dot2 T.A T.C T.circumcenter -
+    2 * T.semiperimeter * (T.semiperimeter - T.side_a) *
+      dot2 T.B T.C T.circumcenter := by
+  have h1 : 4 * (T.semiperimeter - T.side_b) ^ 2 * dist2_sq T.ninePointCenter T.excenter_b =
+    (2 * (T.semiperimeter - T.side_b) * (T.ninePointCenter.1 - T.excenter_b.1)) ^ 2 +
+    (2 * (T.semiperimeter - T.side_b) * (T.ninePointCenter.2 - T.excenter_b.2)) ^ 2 := by
+    unfold dist2_sq; ring
+  rw [h1, NI_b_vector_x T, NI_b_vector_y T]
+  unfold dist2_sq dot2; ring
+
+private theorem bilinear_to_excircle_b_formula (R a b c : ℝ) :
+    let s := (a + b + c) / 2
+    (s - c) ^ 2 * R ^ 2 + s ^ 2 * R ^ 2 + (s - a) ^ 2 * R ^ 2 -
+    2 * (s - c) * s * (R ^ 2 - c ^ 2 / 2) +
+    2 * (s - c) * (s - a) * (R ^ 2 - b ^ 2 / 2) -
+    2 * s * (s - a) * (R ^ 2 - a ^ 2 / 2) =
+    R ^ 2 * (s - b) ^ 2 +
+    (s * (s - a) * a ^ 2 + s * (s - c) * c ^ 2 - (s - a) * (s - c) * b ^ 2) := by
+  simp only; ring
+
+theorem sigma_b_identity (a b c : ℝ) :
+    let s := (a + b + c) / 2
+    s * (s - a) * a ^ 2 + s * (s - c) * c ^ 2 - (s - a) * (s - c) * b ^ 2 =
+    a * b * c * (s - b) + 4 * s * (s - a) * (s - b) * (s - c) := by
+  simp only; ring
+
+theorem sigma_b_eq (T : Triangle) :
+    let a := T.side_a; let b := T.side_b; let c := T.side_c
+    let s := T.semiperimeter
+    s * (s - a) * a ^ 2 + s * (s - c) * c ^ 2 - (s - a) * (s - c) * b ^ 2 =
+    a * b * c * (s - b) + 4 * T.area ^ 2 := by
+  have hsigma := sigma_b_identity T.side_a T.side_b T.side_c
+  have hheron := area_sq_eq_heron T
+  have hs : T.semiperimeter = (T.side_a + T.side_b + T.side_c) / 2 := by
+    unfold Triangle.semiperimeter; rfl
+  simp only [hs] at hheron ⊢; nlinarith
+
+theorem feuerbach_excircle_b_algebraic_core (a b c R Area : ℝ)
+    (hels : a * b * c = 4 * R * Area) :
+    let s := (a + b + c) / 2
+    R ^ 2 * (s - b) ^ 2 + (a * b * c * (s - b) + 4 * Area ^ 2) =
+    (R * (s - b) + 2 * Area) ^ 2 := by
+  simp only
+  rw [show a * b * c = 4 * R * Area from hels]
+  ring
+
+theorem four_sb_sq_NIb_sq_eq (T : Triangle) :
+    4 * (T.semiperimeter - T.side_b) ^ 2 * dist2_sq T.ninePointCenter T.excenter_b =
+    (T.circumradius * (T.semiperimeter - T.side_b) + 2 * T.area) ^ 2 := by
+  have hbil := four_sb_sq_NIb_sq_bilinear T
+  have hOA : dist2_sq T.circumcenter T.A = T.circumradius ^ 2 := by
+    unfold Triangle.circumradius dist2 dist2_sq; rw [Real.sq_sqrt (by positivity)]
+  have hOB : dist2_sq T.circumcenter T.B = T.circumradius ^ 2 := by
+    rw [circumcenter_equidist_sq_B' T, hOA]
+  have hOC : dist2_sq T.circumcenter T.C = T.circumradius ^ 2 := by
+    rw [circumcenter_equidist_sq_C' T, hOA]
+  rw [hOA, hOB, hOC, dot_circumcenter_AB, dot_circumcenter_AC, dot_circumcenter_BC] at hbil
+  rw [hbil]
+  have halg := bilinear_to_excircle_b_formula T.circumradius T.side_a T.side_b T.side_c
+  dsimp only at halg
+  have hsig := sigma_b_eq T; dsimp only at hsig
+  have hcore := feuerbach_excircle_b_algebraic_core T.side_a T.side_b T.side_c
+    T.circumradius T.area (extended_law_of_sines T)
+  dsimp only at hcore
+  have hs : T.semiperimeter = (T.side_a + T.side_b + T.side_c) / 2 := by
+    unfold Triangle.semiperimeter; rfl
+  simp only [hs] at hsig hcore ⊢; nlinarith
+
+theorem feuerbach_NIb_sq (T : Triangle) :
+    dist2_sq T.ninePointCenter T.excenter_b =
+    (T.ninePointRadius + T.exradius_b) ^ 2 := by
+  have h := four_sb_sq_NIb_sq_eq T
+  have hsb := s_minus_b_pos T
+  unfold Triangle.ninePointRadius Triangle.exradius_b
+  have hdiv : dist2_sq T.ninePointCenter T.excenter_b =
+    (T.circumradius * (T.semiperimeter - T.side_b) + 2 * T.area) ^ 2 /
+    (4 * (T.semiperimeter - T.side_b) ^ 2) := by
+    rw [eq_div_iff (ne_of_gt (by positivity : 4 * (T.semiperimeter - T.side_b) ^ 2 > 0))]
+    linarith
+  rw [hdiv]
+  have hsb_ne : T.semiperimeter - T.side_b ≠ 0 := ne_of_gt hsb
+  field_simp; ring
+
+/-- **Feuerbach's Theorem (Excircle B)**: dist(N, I_b) = R/2 + r_b. -/
+theorem feuerbach_excircle_b_distance_proved (T : Triangle) :
+    dist2 T.ninePointCenter T.excenter_b =
+    T.ninePointRadius + T.exradius_b := by
+  have h := feuerbach_NIb_sq T
+  unfold dist2
+  have hrewrite : (T.excenter_b.1 - T.ninePointCenter.1) ^ 2 +
+    (T.excenter_b.2 - T.ninePointCenter.2) ^ 2 =
+    dist2_sq T.ninePointCenter T.excenter_b := by unfold dist2_sq; ring
+  rw [hrewrite, h]
+  rw [Real.sqrt_sq (by linarith [
+    show T.ninePointRadius ≥ 0 from by unfold Triangle.ninePointRadius; linarith [circumradius_pos T],
+    show T.exradius_b ≥ 0 from le_of_lt (div_pos (area_pos T) (s_minus_b_pos T))])]
+
+-- ============================================================
+-- EXCIRCLE C: PROOF CHAIN
+-- ============================================================
+
+theorem excircle_c_denom_pos (T : Triangle) :
+    T.side_a + T.side_b - T.side_c > 0 := by
+  have := s_minus_c_pos T; unfold Triangle.semiperimeter at this; linarith
+
+theorem NI_c_vector_x (T : Triangle) :
+    2 * (T.semiperimeter - T.side_c) * (T.ninePointCenter.1 - T.excenter_c.1) =
+    -(T.semiperimeter - T.side_b) * (T.A.1 - T.circumcenter.1) -
+    (T.semiperimeter - T.side_a) * (T.B.1 - T.circumcenter.1) +
+    T.semiperimeter * (T.C.1 - T.circumcenter.1) := by
+  unfold Triangle.ninePointCenter pointMidpoint Triangle.orthocenter
+    Triangle.excenter_c Triangle.semiperimeter
+  dsimp only
+  have hp : T.side_a + T.side_b - T.side_c ≠ 0 := ne_of_gt (excircle_c_denom_pos T)
+  field_simp; ring
+
+theorem NI_c_vector_y (T : Triangle) :
+    2 * (T.semiperimeter - T.side_c) * (T.ninePointCenter.2 - T.excenter_c.2) =
+    -(T.semiperimeter - T.side_b) * (T.A.2 - T.circumcenter.2) -
+    (T.semiperimeter - T.side_a) * (T.B.2 - T.circumcenter.2) +
+    T.semiperimeter * (T.C.2 - T.circumcenter.2) := by
+  unfold Triangle.ninePointCenter pointMidpoint Triangle.orthocenter
+    Triangle.excenter_c Triangle.semiperimeter
+  dsimp only
+  have hp : T.side_a + T.side_b - T.side_c ≠ 0 := ne_of_gt (excircle_c_denom_pos T)
+  field_simp; ring
+
+theorem four_sc_sq_NIc_sq_bilinear (T : Triangle) :
+    4 * (T.semiperimeter - T.side_c) ^ 2 * dist2_sq T.ninePointCenter T.excenter_c =
+    (T.semiperimeter - T.side_b) ^ 2 * dist2_sq T.circumcenter T.A +
+    (T.semiperimeter - T.side_a) ^ 2 * dist2_sq T.circumcenter T.B +
+    T.semiperimeter ^ 2 * dist2_sq T.circumcenter T.C +
+    2 * (T.semiperimeter - T.side_b) * (T.semiperimeter - T.side_a) *
+      dot2 T.A T.B T.circumcenter -
+    2 * (T.semiperimeter - T.side_b) * T.semiperimeter *
+      dot2 T.A T.C T.circumcenter -
+    2 * (T.semiperimeter - T.side_a) * T.semiperimeter *
+      dot2 T.B T.C T.circumcenter := by
+  have h1 : 4 * (T.semiperimeter - T.side_c) ^ 2 * dist2_sq T.ninePointCenter T.excenter_c =
+    (2 * (T.semiperimeter - T.side_c) * (T.ninePointCenter.1 - T.excenter_c.1)) ^ 2 +
+    (2 * (T.semiperimeter - T.side_c) * (T.ninePointCenter.2 - T.excenter_c.2)) ^ 2 := by
+    unfold dist2_sq; ring
+  rw [h1, NI_c_vector_x T, NI_c_vector_y T]
+  unfold dist2_sq dot2; ring
+
+private theorem bilinear_to_excircle_c_formula (R a b c : ℝ) :
+    let s := (a + b + c) / 2
+    (s - b) ^ 2 * R ^ 2 + (s - a) ^ 2 * R ^ 2 + s ^ 2 * R ^ 2 +
+    2 * (s - b) * (s - a) * (R ^ 2 - c ^ 2 / 2) -
+    2 * (s - b) * s * (R ^ 2 - b ^ 2 / 2) -
+    2 * (s - a) * s * (R ^ 2 - a ^ 2 / 2) =
+    R ^ 2 * (s - c) ^ 2 +
+    (s * (s - a) * a ^ 2 + s * (s - b) * b ^ 2 - (s - a) * (s - b) * c ^ 2) := by
+  simp only; ring
+
+theorem sigma_c_identity (a b c : ℝ) :
+    let s := (a + b + c) / 2
+    s * (s - a) * a ^ 2 + s * (s - b) * b ^ 2 - (s - a) * (s - b) * c ^ 2 =
+    a * b * c * (s - c) + 4 * s * (s - a) * (s - b) * (s - c) := by
+  simp only; ring
+
+theorem sigma_c_eq (T : Triangle) :
+    let a := T.side_a; let b := T.side_b; let c := T.side_c
+    let s := T.semiperimeter
+    s * (s - a) * a ^ 2 + s * (s - b) * b ^ 2 - (s - a) * (s - b) * c ^ 2 =
+    a * b * c * (s - c) + 4 * T.area ^ 2 := by
+  have hsigma := sigma_c_identity T.side_a T.side_b T.side_c
+  have hheron := area_sq_eq_heron T
+  have hs : T.semiperimeter = (T.side_a + T.side_b + T.side_c) / 2 := by
+    unfold Triangle.semiperimeter; rfl
+  simp only [hs] at hheron ⊢; nlinarith
+
+theorem feuerbach_excircle_c_algebraic_core (a b c R Area : ℝ)
+    (hels : a * b * c = 4 * R * Area) :
+    let s := (a + b + c) / 2
+    R ^ 2 * (s - c) ^ 2 + (a * b * c * (s - c) + 4 * Area ^ 2) =
+    (R * (s - c) + 2 * Area) ^ 2 := by
+  simp only
+  rw [show a * b * c = 4 * R * Area from hels]
+  ring
+
+theorem four_sc_sq_NIc_sq_eq (T : Triangle) :
+    4 * (T.semiperimeter - T.side_c) ^ 2 * dist2_sq T.ninePointCenter T.excenter_c =
+    (T.circumradius * (T.semiperimeter - T.side_c) + 2 * T.area) ^ 2 := by
+  have hbil := four_sc_sq_NIc_sq_bilinear T
+  have hOA : dist2_sq T.circumcenter T.A = T.circumradius ^ 2 := by
+    unfold Triangle.circumradius dist2 dist2_sq; rw [Real.sq_sqrt (by positivity)]
+  have hOB : dist2_sq T.circumcenter T.B = T.circumradius ^ 2 := by
+    rw [circumcenter_equidist_sq_B' T, hOA]
+  have hOC : dist2_sq T.circumcenter T.C = T.circumradius ^ 2 := by
+    rw [circumcenter_equidist_sq_C' T, hOA]
+  rw [hOA, hOB, hOC, dot_circumcenter_AB, dot_circumcenter_AC, dot_circumcenter_BC] at hbil
+  rw [hbil]
+  have halg := bilinear_to_excircle_c_formula T.circumradius T.side_a T.side_b T.side_c
+  dsimp only at halg
+  have hsig := sigma_c_eq T; dsimp only at hsig
+  have hcore := feuerbach_excircle_c_algebraic_core T.side_a T.side_b T.side_c
+    T.circumradius T.area (extended_law_of_sines T)
+  dsimp only at hcore
+  have hs : T.semiperimeter = (T.side_a + T.side_b + T.side_c) / 2 := by
+    unfold Triangle.semiperimeter; rfl
+  simp only [hs] at hsig hcore ⊢; nlinarith
+
+theorem feuerbach_NIc_sq (T : Triangle) :
+    dist2_sq T.ninePointCenter T.excenter_c =
+    (T.ninePointRadius + T.exradius_c) ^ 2 := by
+  have h := four_sc_sq_NIc_sq_eq T
+  have hsc := s_minus_c_pos T
+  unfold Triangle.ninePointRadius Triangle.exradius_c
+  have hdiv : dist2_sq T.ninePointCenter T.excenter_c =
+    (T.circumradius * (T.semiperimeter - T.side_c) + 2 * T.area) ^ 2 /
+    (4 * (T.semiperimeter - T.side_c) ^ 2) := by
+    rw [eq_div_iff (ne_of_gt (by positivity : 4 * (T.semiperimeter - T.side_c) ^ 2 > 0))]
+    linarith
+  rw [hdiv]
+  have hsc_ne : T.semiperimeter - T.side_c ≠ 0 := ne_of_gt hsc
+  field_simp; ring
+
+/-- **Feuerbach's Theorem (Excircle C)**: dist(N, I_c) = R/2 + r_c. -/
+theorem feuerbach_excircle_c_distance_proved (T : Triangle) :
+    dist2 T.ninePointCenter T.excenter_c =
+    T.ninePointRadius + T.exradius_c := by
+  have h := feuerbach_NIc_sq T
+  unfold dist2
+  have hrewrite : (T.excenter_c.1 - T.ninePointCenter.1) ^ 2 +
+    (T.excenter_c.2 - T.ninePointCenter.2) ^ 2 =
+    dist2_sq T.ninePointCenter T.excenter_c := by unfold dist2_sq; ring
+  rw [hrewrite, h]
+  rw [Real.sqrt_sq (by linarith [
+    show T.ninePointRadius ≥ 0 from by unfold Triangle.ninePointRadius; linarith [circumradius_pos T],
+    show T.exradius_c ≥ 0 from le_of_lt (div_pos (area_pos T) (s_minus_c_pos T))])]
+
+-- Type-check all results
+#check @feuerbach_incircle_distance_proved
+#check @feuerbach_excircle_a_distance_proved
+#check @feuerbach_excircle_b_distance_proved
+#check @feuerbach_excircle_c_distance_proved
+#check @s_minus_a_pos
+#check @s_minus_b_pos
+#check @s_minus_c_pos
 
 end FeuerbachsTheoremOQ01
