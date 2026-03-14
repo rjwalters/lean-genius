@@ -146,8 +146,8 @@ axiom cos_minimal_poly_degree (hn : 3 ≤ n) :
     ∃ P : ℚ[X], P.Monic ∧ P.natDegree = Nat.totient n / 2 ∧
     Polynomial.aeval (Real.cos (2 * Real.pi / n)) P = 0
 
-/-- From cos_minimal_poly_degree, cos(2π/n) is algebraic over ℚ. -/
 omit [NeZero n] in
+/-- From cos_minimal_poly_degree, cos(2π/n) is algebraic over ℚ. -/
 theorem cos_algebraic_from_cyclotomic (hn : 3 ≤ n) :
     IsAlgebraic ℚ (Real.cos (2 * Real.pi / n)) := by
   obtain ⟨P, hP_monic, _, hP_root⟩ := cos_minimal_poly_degree n hn
