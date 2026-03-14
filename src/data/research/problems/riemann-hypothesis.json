@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "CONFIRMED: At maximum progress. 0 sorries, ~20 axioms encoding deep results or genuinely open problems. no_real_zeros_in_strip needs Dirichlet eta (not in Mathlib).",
+    "progressSummary": "PROGRESS: Extended RiemannHypothesisConsequences.lean from 632→841 lines. Added zero-density estimates (Ingham, Huxley, Density Hypothesis). Proved ψ(n)≥θ(n) and Mertens sign changes unconditionally. Fixed μ notation for Mathlib 4.26+ compatibility. Analyzed no_real_zeros_in_strip axiom (requires eta function, cannot eliminate yet).",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -120,8 +120,7 @@
       "Zero-density estimates formalized: Ingham (1940) and Huxley (1972) bounds on N(σ,T)",
       "Mathlib 4.26+ removed scoped μ notation; must use ArithmeticFunction.moebius explicitly",
       "no_real_zeros_in_strip axiom cannot be eliminated without Dirichlet eta function in Mathlib",
-      "Proved chebyshevPsi ≥ chebyshevTheta from vonMangoldt_nonneg and vonMangoldt_apply_prime",
-      "2026-03-14: Re-confirmed no_real_zeros_in_strip axiom cannot be eliminated - Mathlib still lacks Dirichlet eta function"
+      "Proved chebyshevPsi ≥ chebyshevTheta from vonMangoldt_nonneg and vonMangoldt_apply_prime"
     ],
     "mathlibGaps": [
       "Dirichlet series",
