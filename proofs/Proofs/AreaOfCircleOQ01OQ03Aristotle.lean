@@ -60,6 +60,32 @@ theorem fourierCoeffOn_deriv_periodic (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
     (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
     fourierCoeffOn hab (ofReal ∘ deriv f) n =
     I * ↑n * fourierCoeffOn hab (ofReal ∘ f) n := by
-  sorry
+  -- Apply fourierCoeffOn_of_hasDerivAt (IBP for Fourier coefficients)
+  have hle : (0 : ℝ) ≤ 2 * π := le_of_lt hab
+  -- f composed with ofReal has derivative (ofReal ∘ deriv f) at each point
+  have hderiv : ∀ x ∈ Set.uIcc 0 (2 * π),
+      HasDerivAt (ofReal ∘ f) ((ofReal ∘ deriv f) x) x := by
+    intro x _
+    exact (hasDerivAt_ofReal_comp x (hf.differentiable le_rfl x).hasDerivAt)
+  -- The derivative is interval-integrable (C¹ → continuous → integrable)
+  have hint : IntervalIntegrable (ofReal ∘ deriv f) MeasureTheory.volume 0 (2 * π) := by
+    apply Continuous.intervalIntegrable
+    exact continuous_ofReal.comp (hf.continuous_deriv le_rfl)
+  -- Apply the IBP formula
+  have hibp := fourierCoeffOn_of_hasDerivAt hab n hderiv hint
+  -- The boundary term vanishes: f(2π) - f(0) = 0 by periodicity
+  have hperiod_eq : f (2 * π) = f 0 := by
+    have := hperiod 0; simp at this; exact this
+  -- Rearrange: from the IBP formula, extract ĉₙ(f') = in · ĉₙ(f)
+  -- hibp says: fourierCoeffOn hab (ofReal ∘ f) n =
+  --   1/(-2πin/(2π)) * (fourier(-n)(↑0) * (f(2π)-f(0)) - (2π) * fourierCoeffOn hab (ofReal ∘ deriv f) n)
+  -- With f(2π) = f(0), the first term vanishes
+  rw [hperiod_eq, sub_self, map_zero, zero_smul, zero_sub, neg_mul] at hibp
+  -- Now hibp: fourierCoeffOn hab (ofReal ∘ f) n = (2π * fourierCoeffOn hab (ofReal ∘ deriv f) n) / (2πin/(2π))
+  -- Solve for fourierCoeffOn hab (ofReal ∘ deriv f) n
+  have hn' : (↑n : ℂ) ≠ 0 := Int.cast_ne_zero.mpr hn
+  have hI : (I : ℂ) ≠ 0 := I_ne_zero
+  field_simp at hibp ⊢
+  linarith
 
 end IsoperimetricOQAristotle

@@ -26,7 +26,7 @@
   - Fourier basis on L²(AddCircle T): available
   - Parseval's identity: available (tsum_sq_fourierCoeff)
 
-  What This File Proves (29 theorems, 1 axiom, 3 sorries):
+  What This File Proves (29 theorems, 1 axiom, 2 sorries):
   1. Equality for circles: C² = 4πA  (ring computation)
   2. Strict inequality for squares: C² > 4πA  (π < 4)
   3. The isoperimetric ratio: A/(C²/4π) and its circle value
@@ -290,7 +290,27 @@ theorem fourierCoeffOn_deriv_periodic (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
     (hab : (0 : ℝ) < 2 * π) (n : ℤ) (hn : n ≠ 0) :
     fourierCoeffOn hab (Complex.ofReal ∘ deriv f) n =
     I * ↑n * fourierCoeffOn hab (Complex.ofReal ∘ f) n := by
-  sorry
+  -- Apply fourierCoeffOn_of_hasDerivAt (IBP for Fourier coefficients)
+  -- f composed with ofReal has derivative (ofReal ∘ deriv f) at each point
+  have hderiv : ∀ x ∈ Set.uIcc 0 (2 * π),
+      HasDerivAt (Complex.ofReal ∘ f) ((Complex.ofReal ∘ deriv f) x) x := by
+    intro x _
+    exact Complex.hasDerivAt_ofReal_comp x (hf.differentiable le_rfl x).hasDerivAt
+  -- The derivative is interval-integrable (C¹ → continuous → integrable)
+  have hint : IntervalIntegrable (Complex.ofReal ∘ deriv f) MeasureTheory.volume 0 (2 * π) :=
+    (Complex.continuous_ofReal.comp (hf.continuous_deriv le_rfl)).intervalIntegrable 0 (2 * π)
+  -- Apply the IBP formula
+  have hibp := fourierCoeffOn_of_hasDerivAt hab n hderiv hint
+  -- The boundary term vanishes: f(2π) - f(0) = 0 by periodicity
+  have hperiod_eq : f (2 * π) = f 0 := by
+    have := hperiod 0; simp at this; exact this
+  -- hibp: fourierCoeffOn hab (ofReal ∘ f) n = ... with boundary term (f(2π) - f(0)) = 0
+  simp only [Function.comp, hperiod_eq, sub_self, map_zero, zero_smul, zero_sub,
+    neg_mul] at hibp
+  -- Now solve for fourierCoeffOn hab (ofReal ∘ deriv f) n
+  have hn' : (↑n : ℂ) ≠ 0 := Int.cast_ne_zero.mpr hn
+  field_simp at hibp ⊢
+  linarith
 
 /-- Fourier decomposition for periodic C¹ functions.
     Converted from axiom to theorem. Uses parseval_periodic_real and
@@ -967,17 +987,22 @@ theorem non_circle_area_lt_circle (r : ℝ) (hr : 0 < r) (γ : SmoothClosedCurve
 - `equiTriCirc` — perimeter of equilateral triangle with side a: 3a
 - `equiTriArea` — area of equilateral triangle with side a: (√3/4)a²
 
-### Axioms (2):
-1. `fourier_decomposition` — Parseval + Fourier derivative relation for periodic C¹ functions
-   (Proof: lift to AddCircle, tsum_sq_fourierCoeff + integration by parts; Mathlib has ingredients)
-2. `exists_nice_reparam` — arc-length reparametrization + mean shift
+### Axioms (1):
+1. `exists_nice_reparam` — arc-length reparametrization + mean shift
    (Requires inverse function theorem on arc-length integral, not in Mathlib)
+
+### Sorries (2):
+1. `parseval_periodic_real` — Parseval identity for periodic real functions on [0, 2π]
+   (Proof: lift to AddCircle, apply tsum_sq_fourierCoeff, bridge Haar↔Lebesgue)
+2. `fourier_decomposition` — combines Parseval + IBP to get Fourier coefficient structure
+   (IBP part now proved as `fourierCoeffOn_deriv_periodic`; Parseval part remains)
 
 Note: `wirtinger_inequality` is a THEOREM proved from fourier_decomposition.
 Note: `equality_implies_circle` is now a THEOREM (purely algebraic: set r = C/(2π)).
+Note: `fourierCoeffOn_deriv_periodic` is now a THEOREM (IBP via fourierCoeffOn_of_hasDerivAt).
 
 ### Proof Structure for isoperimetric_inequality_smooth:
-The main theorem is FULLY PROVED (modulo 2 axioms, 0 sorries):
+The main theorem is FULLY PROVED (modulo 1 axiom, 2 sorries):
 
 **Proved** (structural reduction to arithmetic kernel):
 23. `integral_sqrt_sum_sq_nonneg` — ∫√(x²+y²) ≥ 0 [FULLY PROVED]
