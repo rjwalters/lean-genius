@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3 axioms remain (sector_lattice_point_density, coprime_fraction_in_sector, bothOdd_fraction_in_coprime_sector). 0 sorries. Proved eo_equidistribution via three-way partition + limit arithmetic. Converted parity_class_equidistribution from axiom to theorem. File compiles clean with 0 sorries.",
+    "progressSummary": "PROGRESS: Factored parity axiom (OO→1/3) into column density ratio (CopOdd/total→2/3) and boundary vanishing ((OE-OO)/total→0). Both sub-axioms have cleaner mathematical justifications. 7 new theorems, 0 sorries, 3 axioms remain.",
     "builtItems": [
       "bothOddCoprimeCount: counting function for both-odd coprime pairs",
       "coprime_sector_partition: exact partition identity (coprime = primitive + bothOdd)",
@@ -81,7 +81,16 @@
         "name": "totient_even_of_odd (fixed)",
         "description": "Fixed proof using rw + rfl instead of broken omega",
         "proven": true
-      }
+      },
+      "sectorCopEven: coprime sector count restricted to even m",
+      "sectorCopOdd: coprime sector count restricted to odd m",
+      "sector_m_parity_partition: coprime = sectorCopEven + sectorCopOdd",
+      "sectorCopEven_eq_eo: even-m coprime = EO exactly",
+      "sectorCopOdd_eq_oe_plus_oo: odd-m coprime = OE + OO",
+      "parity_from_column_density: CopOdd/C→2/3 + OE/C→1/3 ⟹ OO/C→1/3",
+      "oe_from_column_balance: (OE+OO)/C→2/3 + (OE-OO)/C→0 ⟹ OE/C→1/3",
+      "parity_axiom_from_columns: FULL REDUCTION of parity axiom to column density + boundary vanishing",
+      "boundary_discrepancy_formula: links boundary condition to arc lattice points"
     ],
     "insights": [
       "The coprime sector decomposes into exactly 2 parity classes (not 3): primitive (mixed parity) and both-odd. Both-even is impossible for coprime pairs.",
@@ -100,7 +109,10 @@
       "Fixed column_parity_partition: n≥1 follows from Coprime n m when m>1 (was broken omega)",
       "Converted parity_class_equidistribution from axiom to theorem (derived from bothOdd_fraction via bothOdd_eq_oo) — axiom count reduced from 4 to 3",
       "Fixed totient_even_of_odd proof (pre-existing omega failure due to Mathlib API change)",
-      "Confirmed column_discrepancy_bound was already removed (false for m=21, N=541)"
+      "Confirmed column_discrepancy_bound was already removed (false for m=21, N=541)",
+      "The parity axiom (bothOdd→1/3) factors cleanly into two independent conditions: (a) sectorCopOdd/total → 2/3 (column density ratio) and (b) (OE-OO)/total → 0 (boundary vanishing). Proved parity_axiom_from_columns.",
+      "Column density ratio has clean mathematical justification: φ(2k)/(2k) = (1/2)φ(k)/k for odd k (GCD halving from coprime_eo_iff), making even-m columns half as coprime-dense as odd-m columns.",
+      "Boundary vanishing has geometric justification: |boundary| = O(√N) lattice points on arc vs O(N) sector points, already formalized in sector_boundary_balance."
     ],
     "mathlibGaps": [
       "No Mathlib formalization of Gauss circle problem asymptotics",
@@ -108,10 +120,10 @@
       "No Mathlib equidistribution result for coprime pairs by residue class"
     ],
     "nextSteps": [
-      "Prove boundary discrepancy is sub-linear: show |bdryOO - bdryOE| = o(coprimeInSectorCount). The involution maps most boundary pairs to boundary pairs; only straddling pairs contribute to discrepancy.",
-      "Prove EO/coprime → 1/3 from coprime_eo_iff + sector lattice point axiom. The halving bijection (2a,n)↔(a,n) for odd n connects EO coprime density to general coprime density.",
-      "Alternatively: prove the discrepancy is bounded by the number of lattice points near the arc m²+n²=N whose involution image crosses the arc.",
-      "Consider creating an Aristotle companion file for any routine lemmas extracted from the analysis."
+      "Prove boundary vanishing from arc lattice point bound: formalize |boundary| = O(√N) using sector geometry",
+      "Prove column density ratio from GCD halving: formalize Σ_even φ(m)/m ≈ (1/2)·Σ_odd φ(m)/m using coprime_eo_iff",
+      "These two results would eliminate the parity axiom entirely, reducing to 2 axioms",
+      "Consider formalizing the Gauss circle lattice point bound for the arc O(√N) estimate"
     ]
   },
   "approaches": [
