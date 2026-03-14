@@ -3,6 +3,61 @@
 
 ---
 
+## Session 2026-03-14 (Session 32) - Axiom Reduction + Savitch + Padding
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 87→95+)
+**Problem**: pnp-barriers
+**Prior Status**: progress
+**PR**: #3763
+
+**What we did**:
+
+### Axiom Reduction: NP_subset_PSPACE
+1. Proved `NP_subset_PSPACE` as theorem (was axiom)
+2. Strategy: moved IP definitions + Shamir's theorem before PSPACE section
+3. NP ⊆ IP (theorem) + IP = PSPACE (Shamir axiom) → NP ⊆ PSPACE (theorem)
+4. Removed redundant `NP_subset_PSPACE'` duplicate
+
+### New Content: Savitch's Theorem
+5. Defined NPSPACE class
+6. Added `savitch_NPSPACE_eq_PSPACE` axiom (NPSPACE = PSPACE)
+7. Proved PSPACE ⊆ NPSPACE and NPSPACE ⊆ PSPACE from Savitch
+8. `savitch_contrast_with_time`: NPSPACE = PSPACE contrasts with open NP vs P
+
+### New Content: Padding Arguments
+9. `padding_P_eq_NP_implies_EXP_eq_NEXP` (P=NP → EXP=NEXP)
+10. `EXP_ne_NEXP_implies_P_ne_NP` (contrapositive)
+11. `padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE`
+12. `padding_structural_summary` combining padding results
+
+### New Content: Complexity Zoo Summary
+13. `complexity_zoo_summary`: consolidated theorem covering 17 classes
+
+### Bug Fixes
+14. Fixed `time_hierarchy` → `P_ne_EXP` in separation_summary
+15. Fixed `.symm` direction in P_eq_NP_total_collapse
+16. Fixed `razborov_rudich` call (removed spurious owf_exists_assumption)
+17. Fixed `baker_gill_solovay_eq/sep` existential wrapping
+
+**Final stats**:
+- 2379 lines (+242 from last session)
+- 31 axioms (1 eliminated: NP_subset_PSPACE, 3 new: Savitch, 2 padding)
+- 106 theorems (+13 new)
+- 0 sorries, Docker build passes
+
+**Key insights**:
+- Moving definitions earlier enables axiom elimination via composition
+- Savitch captures why space is "easier" than time: nondeterminism collapses
+- Padding arguments show separations propagate upward through the hierarchy
+
+**Next steps**:
+1. Try to prove `reduction_preserves_P` (needs Φ_compose_decision primitive)
+2. Try to prove `P_subset_UP` and `UP_subset_NP` from Φ primitives
+3. Add NEXP ≠ EXP conditional results
+4. Consider oracle separation of PH levels (random oracle)
+
+---
+
 ## Session 2026-03-14 (Sessions 28-31) - Extended Landscape + Axiom Reduction + Space Complexity
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 71→87)
