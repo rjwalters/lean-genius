@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Factored parity axiom (OO→1/3) into column density ratio (CopOdd/total→2/3) and boundary vanishing ((OE-OO)/total→0). Both sub-axioms have cleaner mathematical justifications. 7 new theorems, 0 sorries, 3 axioms remain.",
+    "progressSummary": "PROGRESS: Added per-column boundary analysis (Part XX-XXI). Proved column_discrepancy_abs_bound bounding per-column sector discrepancy. 19 new theorems total this session, 0 sorries, 3 axioms remain.",
     "builtItems": [
       "bothOddCoprimeCount: counting function for both-odd coprime pairs",
       "coprime_sector_partition: exact partition identity (coprime = primitive + bothOdd)",
@@ -90,7 +90,12 @@
       "parity_from_column_density: CopOdd/C→2/3 + OE/C→1/3 ⟹ OO/C→1/3",
       "oe_from_column_balance: (OE+OO)/C→2/3 + (OE-OO)/C→0 ⟹ OE/C→1/3",
       "parity_axiom_from_columns: FULL REDUCTION of parity axiom to column density + boundary vanishing",
-      "boundary_discrepancy_formula: links boundary condition to arc lattice points"
+      "boundary_discrepancy_formula: links boundary condition to arc lattice points",
+      "columnSectorEven/Odd: per-column sector coprime counts by n-parity",
+      "columnTriangleEven/Odd: per-column triangle counts (no circle constraint)",
+      "column_sector_boundary_balance: per-column version of sector_boundary_balance",
+      "column_discrepancy_abs_bound: |sector_even - sector_odd| ≤ triangle_even per column",
+      "5 computational verifications (sectorCopEven/Odd for N=13,25,50; column checks m=3,5,7)"
     ],
     "insights": [
       "The coprime sector decomposes into exactly 2 parity classes (not 3): primitive (mixed parity) and both-odd. Both-even is impossible for coprime pairs.",
@@ -112,7 +117,9 @@
       "Confirmed column_discrepancy_bound was already removed (false for m=21, N=541)",
       "The parity axiom (bothOdd→1/3) factors cleanly into two independent conditions: (a) sectorCopOdd/total → 2/3 (column density ratio) and (b) (OE-OO)/total → 0 (boundary vanishing). Proved parity_axiom_from_columns.",
       "Column density ratio has clean mathematical justification: φ(2k)/(2k) = (1/2)φ(k)/k for odd k (GCD halving from coprime_eo_iff), making even-m columns half as coprime-dense as odd-m columns.",
-      "Boundary vanishing has geometric justification: |boundary| = O(√N) lattice points on arc vs O(N) sector points, already formalized in sector_boundary_balance."
+      "Boundary vanishing has geometric justification: |boundary| = O(√N) lattice points on arc vs O(N) sector points, already formalized in sector_boundary_balance.",
+      "Per-column boundary balance proved: for each odd m, |sector_even(m) - sector_odd(m)| ≤ triangle_even(m). The total discrepancy is bounded by the sum of per-column boundaries.",
+      "Computational checks confirm discrepancy = 0 for small N (N=13,25,50) and per-column (m=3,5,7). Discrepancy only appears when the circle boundary crosses a column midpoint."
     ],
     "mathlibGaps": [
       "No Mathlib formalization of Gauss circle problem asymptotics",
