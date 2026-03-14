@@ -17,11 +17,17 @@ theorem eastSteps_add_northSteps (l : LPath) :
   | cons x xs ih =>
     cases x with
     | false =>
-      simp only [eastSteps, northSteps, List.countP_cons, List.length_cons] at *
-      omega
+      have he : eastSteps (false :: xs) = eastSteps xs + 1 := by
+        simp [eastSteps, List.countP_cons]
+      have hn : northSteps (false :: xs) = northSteps xs := by
+        simp [northSteps, List.countP_cons]
+      simp only [he, hn, List.length_cons]; omega
     | true =>
-      simp only [eastSteps, northSteps, List.countP_cons, List.length_cons] at *
-      omega
+      have he : eastSteps (true :: xs) = eastSteps xs := by
+        simp [eastSteps, List.countP_cons]
+      have hn : northSteps (true :: xs) = northSteps xs + 1 := by
+        simp [northSteps, List.countP_cons]
+      simp only [he, hn, List.length_cons]; omega
 
 lemma northSteps_cons_false (xs : LPath) : northSteps (false :: xs) = northSteps xs := by
   simp [northSteps, List.countP_cons]
@@ -78,12 +84,12 @@ private lemma posAfter_false_succ (xs : LPath) (a i : ℕ) :
     posAfter (false :: xs) a (i + 1) =
     ((posAfter xs a i).1 + 1, (posAfter xs a i).2) := by
   simp only [posAfter, List.take_succ_cons, List.countP_cons]
-  simp [Prod.ext_iff]; omega
+  constructor <;> simp <;> omega
 
 private lemma posAfter_true_succ (xs : LPath) (a i : ℕ) :
     posAfter (true :: xs) a (i + 1) = posAfter xs (a + 1) i := by
   simp only [posAfter, List.take_succ_cons, List.countP_cons]
-  simp
+  constructor <;> simp <;> omega
 
 def visitedPoints (l : LPath) (a : ℕ) : Finset (ℕ × ℕ) :=
   (Finset.range (l.length + 1)).image (posAfter l a)
@@ -122,23 +128,28 @@ theorem visitedPoints_covers_column (l : LPath) (a : ℕ) (x y : ℕ)
         simp [eastSteps, List.countP_cons]
       cases x with
       | zero =>
-        -- colEntry (false :: xs) 0 = 0 and colEntry (false :: xs) 1 = 0
-        -- so y = a
-        simp only [colEntry, northBeforeEast] at hy_lo hy_hi
+        have h0 : colEntry (false :: xs) 0 = 0 := rfl
+        have h1 : colEntry (false :: xs) 1 = 0 := by simp [colEntry, northBeforeEast]
+        -- hy_lo: a + 0 ≤ y, hy_hi: y ≤ a + colEntry(false::xs)(0+1)
+        -- colEntry(false::xs)(0+1) = colEntry(false::xs) 1 = 0
+        have hhi : y ≤ a := by
+          calc y ≤ a + colEntry (false :: xs) (0 + 1) := hy_hi
+            _ = a + colEntry (false :: xs) 1 := by ring_nf
+            _ = a + 0 := by rw [h1]
+            _ = a := by omega
+        have hlo : a ≤ y := by linarith [h0]
         have : y = a := by omega
         subst this
         exact mem_visitedPoints_start _ _
       | succ x' =>
         have hx' : x' < eastSteps xs := by omega
-        -- colEntry (false :: xs) (x'+1) = colEntry xs x'
-        -- colEntry (false :: xs) (x'+2) = colEntry xs (x'+1)
         have hcf1 := colEntry_false_succ xs x'
         have hcf2 := colEntry_false_succ xs (x' + 1)
-        -- Need: x'+1+1 = x'+2 for the second one
-        have heq : x' + 1 + 1 = x' + 2 := by omega
-        rw [heq] at hy_hi
         have hlo : a + colEntry xs x' ≤ y := by linarith
-        have hhi : y ≤ a + colEntry xs (x' + 1) := by linarith
+        have hhi : y ≤ a + colEntry xs (x' + 1) := by
+          have : colEntry (false :: xs) (x' + 1 + 1) = colEntry (false :: xs) (x' + 2) := by
+            ring_nf
+          linarith [this]
         exact visitedPoints_cons_false_of_mem xs a (x', y) (ih a x' y hx' hlo hhi)
     | true =>
       have heast : eastSteps (true :: xs) = eastSteps xs := by
@@ -146,19 +157,22 @@ theorem visitedPoints_covers_column (l : LPath) (a : ℕ) (x y : ℕ)
       have hx' : x < eastSteps xs := by omega
       cases x with
       | zero =>
-        -- colEntry (true :: xs) 0 = 0
-        -- colEntry (true :: xs) 1 = colEntry xs 1 + 1
-        simp only [colEntry, northBeforeEast] at hy_lo hy_hi
-        have hlo' : (a + 1) + colEntry xs 0 ≤ y := by simp [colEntry]; omega
-        have hhi' : y ≤ (a + 1) + colEntry xs 1 := by simp [colEntry]; linarith
+        have hce0 : colEntry (true :: xs) 0 = 0 := rfl
+        have hce1 : colEntry (true :: xs) 1 = colEntry xs 1 + 1 := colEntry_true_succ xs 0
+        have hlo' : (a + 1) + colEntry xs 0 ≤ y := by
+          simp only [colEntry]; omega
+        have hhi' : y ≤ (a + 1) + colEntry xs 1 := by
+          have : colEntry (true :: xs) (0 + 1) = colEntry (true :: xs) 1 := by ring_nf
+          linarith [this]
         exact visitedPoints_cons_true_of_mem xs a (0, y) (ih (a + 1) 0 y hx' hlo' hhi')
       | succ x' =>
         have hce_lo := colEntry_true_succ xs x'
         have hce_hi := colEntry_true_succ xs (x' + 1)
-        have heq : x' + 1 + 1 = x' + 2 := by omega
-        rw [heq] at hy_hi
         have hlo' : (a + 1) + colEntry xs (x' + 1) ≤ y := by linarith
-        have hhi' : y ≤ (a + 1) + colEntry xs (x' + 2) := by linarith
+        have hhi' : y ≤ (a + 1) + colEntry xs (x' + 2) := by
+          have : colEntry (true :: xs) (x' + 1 + 1) = colEntry (true :: xs) (x' + 2) := by
+            ring_nf
+          linarith [this]
         exact visitedPoints_cons_true_of_mem xs a (x' + 1, y)
           (ih (a + 1) (x' + 1) y hx' hlo' hhi')
 
@@ -187,18 +201,27 @@ theorem visitedPoints_covers_final (l : LPath) (a : ℕ) (y : ℕ)
       have heast : eastSteps (true :: xs) = eastSteps xs := by
         simp [eastSteps, List.countP_cons]
       have hnorth : northSteps (true :: xs) = 1 + northSteps xs := northSteps_cons_true xs
+      -- colEntry (true :: xs) (eastSteps (true :: xs))
+      -- = colEntry (true :: xs) (eastSteps xs)
+      -- When eastSteps xs = 0: colEntry (true :: xs) 0 = 0
+      -- When eastSteps xs = m'+1: colEntry (true :: xs) (m'+1) = colEntry xs (m'+1) + 1
+      rw [heast] at hy_lo ⊢
       cases hm : eastSteps xs with
       | zero =>
-        rw [heast, hm] at hy_lo ⊢
-        simp [colEntry] at hy_lo
+        rw [hm] at hy_lo ⊢
+        simp only [colEntry] at hy_lo
         have hhi' : y ≤ (a + 1) + northSteps xs := by linarith
         have hlo' : (a + 1) + colEntry xs (eastSteps xs) ≤ y := by
           rw [hm]; simp [colEntry]; omega
-        exact visitedPoints_cons_true_of_mem xs a (0, y) (ih (a + 1) y hlo' hhi')
+        have := ih (a + 1) y hlo' hhi'
+        rw [hm] at this
+        exact visitedPoints_cons_true_of_mem xs a (0, y) this
       | succ m' =>
         have hce := colEntry_true_succ xs m'
-        rw [heast, hm] at hy_lo ⊢
+        rw [hm] at hy_lo
         have hlo' : (a + 1) + colEntry xs (eastSteps xs) ≤ y := by
           rw [hm]; linarith
         have hhi' : y ≤ (a + 1) + northSteps xs := by linarith
-        exact visitedPoints_cons_true_of_mem xs a (m' + 1, y) (ih (a + 1) y hlo' hhi')
+        have := ih (a + 1) y hlo' hhi'
+        rw [hm] at this
+        exact visitedPoints_cons_true_of_mem xs a (m' + 1, y) this
