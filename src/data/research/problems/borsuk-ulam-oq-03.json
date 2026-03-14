@@ -29,12 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 17+ proved theorems, 0 sorries. BU n=1 proved in general form (borsuk_ulam_n1), reducing axiom to n>=2.",
+    "progressSummary": "COMPLETED: 25+ proved theorems, 0 sorries. Tucker parity lemma + non-trivial LS for S1 added.",
     "builtItems": [
       "proofs/Proofs/BorsukUlamOQ03.lean (914 lines, 41 defs/theorems, 7 axioms, 0 sorries)",
       "src/data/proofs/borsuk-ulam-oq-03/ (gallery integration with meta.json, annotations.json, index.ts)",
       "circleParam: circle parametrization as Fin 2 → ℝ",
-      "borsuk_ulam_n1: BU for n=1 in general type"
+      "borsuk_ulam_n1: BU for n=1 in general type",
+      "Tucker parity lemma (countTransitions, tucker_parity, tucker_count_odd/even)",
+      "countTransitions_mono, countTransitions_le, tucker_count_bounds",
+      "lusternik_schnirelman_S1: Non-trivial LS for circle via infDist + circle BU",
+      "lusternik_schnirelman_S1: A-possibly-empty variant"
     ],
     "insights": [
       "1D BU proved via IVT on antisymmetric difference g(x) = f(x) - f(-x)",
@@ -44,7 +48,11 @@
       "The interval BU has trivial witness x=0 (self-antipodal); circle BU is genuinely non-trivial",
       "7 axioms needed for higher-D: general BU, no-retraction, Brouwer FP, LS covering, invariance of dimension",
       "All axioms are blocked by lack of algebraic topology in Mathlib (homology, degree theory)",
-      "borsuk_ulam_n1 proves n=1 case of general BU via circle parametrization + IVT"
+      "borsuk_ulam_n1 proves n=1 case of general BU via circle parametrization + IVT",
+      "Tucker parity lemma: count of sign-change edges has same parity as endpoint XOR (mod 2 = boundary data)",
+      "Non-trivial LS for S1 proved from circle BU via infDist(p, A): equal distance => same membership",
+      "fun_prop handles Metric.infDist continuity; Prod.ext proves product equalities from component equalities",
+      "countTransitions is monotone and bounded by n; when endpoints differ, 1 <= count <= n with count odd"
     ],
     "mathlibGaps": [],
     "nextSteps": [

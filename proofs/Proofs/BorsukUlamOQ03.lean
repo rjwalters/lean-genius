@@ -1068,4 +1068,207 @@ theorem borsuk_ulam_n1
     provides a combinatorial/constructive foundation for 1D. -/
 theorem bu_complete_summary : True := trivial
 
+/-
+## Section XXVII: Tucker's Parity Lemma
+
+The number of sign-change edges in a Boolean sequence on {0, ..., n}
+always has the same parity as the endpoint comparison. When endpoints
+differ (Tucker's hypothesis), the count is ODD — strictly stronger
+than "at least one exists."
+
+This is the combinatorial heart of why Tucker's lemma is true:
+the parity of sign changes is a topological invariant determined
+entirely by the boundary data.
+-/
+
+/-- Count adjacent transitions (disagreements) in a Boolean sequence on {0, ..., n}. -/
+def countTransitions (s : ℕ → Bool) : ℕ → ℕ
+  | 0 => 0
+  | n + 1 => countTransitions s n + if s n != s (n + 1) then 1 else 0
+
+@[simp] theorem countTransitions_zero (s : ℕ → Bool) :
+    countTransitions s 0 = 0 := rfl
+
+theorem countTransitions_succ (s : ℕ → Bool) (n : ℕ) :
+    countTransitions s (n + 1) =
+      countTransitions s n + if s n != s (n + 1) then 1 else 0 := rfl
+
+/-- Boolean parity step: adding a transition flips the parity correctly.
+    This is verified by exhaustive case analysis on the 8 Boolean combinations.
+    The inner `% 2` on the delta term arises from `Nat.add_mod`. -/
+private theorem bool_parity_mod2 (a b c : Bool) :
+    ((if a == b then 0 else 1 : ℕ) + (if b != c then 1 else 0) % 2) % 2 =
+    if a == c then 0 else 1 := by
+  cases a <;> cases b <;> cases c <;> decide
+
+/-- **Tucker's Parity Lemma**: The transition count has the same parity as
+    the endpoint comparison.
+
+    - If s(0) = s(n): EVEN number of transitions
+    - If s(0) ≠ s(n): ODD number of transitions (hence ≥ 1)
+
+    This is strictly stronger than Tucker's 1D lemma (which only asserts
+    existence of at least one sign change when endpoints differ).
+
+    **Proof**: By induction on n. The base case is trivial. For the inductive
+    step, adding a transition flips the parity, and the Boolean XOR identity
+    (a⊕b)⊕(b⊕c) = a⊕c ensures consistency. -/
+theorem tucker_parity (s : ℕ → Bool) : ∀ n : ℕ,
+    countTransitions s n % 2 = if s 0 == s n then 0 else 1 := by
+  intro n
+  induction n with
+  | zero => simp [countTransitions]
+  | succ n ih =>
+    rw [countTransitions_succ, Nat.add_mod, ih]
+    exact bool_parity_mod2 (s 0) (s n) (s (n + 1))
+
+/-- **Corollary**: When endpoints differ, the transition count is ODD (hence ≥ 1).
+    This gives Tucker's 1D lemma as an immediate corollary, but with the
+    stronger parity information. -/
+theorem tucker_count_odd (s : ℕ → Bool) (n : ℕ) (h : s 0 ≠ s n) :
+    countTransitions s n % 2 = 1 := by
+  rw [tucker_parity]
+  simp [h]
+
+/-- **Corollary**: When endpoints agree, the transition count is EVEN.
+    In particular, there is no topological obstruction to having zero transitions. -/
+theorem tucker_count_even (s : ℕ → Bool) (n : ℕ) (h : s 0 = s n) :
+    countTransitions s n % 2 = 0 := by
+  rw [tucker_parity]
+  simp [h]
+
+/-- The transition count is monotone: extending the sequence doesn't decrease it. -/
+theorem countTransitions_mono (s : ℕ → Bool) : ∀ n : ℕ,
+    countTransitions s n ≤ countTransitions s (n + 1) := by
+  intro n
+  rw [countTransitions_succ]
+  omega
+
+/-- The transition count is bounded by n (at most one transition per position). -/
+theorem countTransitions_le (s : ℕ → Bool) : ∀ n : ℕ,
+    countTransitions s n ≤ n := by
+  intro n
+  induction n with
+  | zero => simp [countTransitions]
+  | succ n ih =>
+    rw [countTransitions_succ]
+    split <;> omega
+
+/-- When endpoints differ, there are at least 1 and at most n transitions.
+    The parity says the exact count is odd, so the minimum is 1.
+    Combined with the upper bound, we get 1 ≤ count ≤ n. -/
+theorem tucker_count_bounds (s : ℕ → Bool) (n : ℕ) (hn : 0 < n) (h : s 0 ≠ s n) :
+    1 ≤ countTransitions s n ∧ countTransitions s n ≤ n := by
+  constructor
+  · -- count is odd, hence ≥ 1
+    have hodd := tucker_count_odd s n h
+    omega
+  · exact countTransitions_le s n
+
+/-
+## Section XXVIII: Non-Trivial Lusternik-Schnirelman for S¹
+
+The 1D LS theorem (Section XV) uses the trivial witness x = 0 (which
+is its own antipodal on the interval). On the circle S¹, no point is
+self-antipodal (Section IX), making LS genuinely non-trivial.
+
+Here we prove the circle LS from the circle BU theorem using the
+metric distance to the complement of a set.
+
+**Theorem**: If two closed sets A, B cover S¹, at least one contains
+an antipodal pair.
+
+**Proof idea**: Define f(p) = infDist(p, A) for p ∈ ℝ². By circle BU,
+∃ antipodal pair with equal f-values. If f = 0 at both: both in A.
+If f > 0 at both: both outside A, hence in B.
+-/
+
+/-- **Lusternik-Schnirelman for S¹**: If two closed sets A, B cover the
+    unit circle (parametrically), at least one contains an antipodal pair.
+
+    Unlike the interval LS (Section XV), this is genuinely non-trivial:
+    no point on S¹ is its own antipodal, so the proof must use BU.
+
+    **Proof**: Apply circle BU to f(p) = infDist(p, A). The common value
+    at an antipodal pair is either 0 (both in A) or positive (both in B). -/
+theorem lusternik_schnirelman_S1
+    (A B : Set (ℝ × ℝ))
+    (hA : IsClosed A) (hB : IsClosed B)
+    (hAne : A.Nonempty)
+    (hcover : ∀ θ : ℝ, (Real.cos θ, Real.sin θ) ∈ A ∨ (Real.cos θ, Real.sin θ) ∈ B) :
+    (∃ θ ∈ Icc 0 Real.pi,
+      (Real.cos θ, Real.sin θ) ∈ A ∧ (-Real.cos θ, -Real.sin θ) ∈ A) ∨
+    (∃ θ ∈ Icc 0 Real.pi,
+      (Real.cos θ, Real.sin θ) ∈ B ∧ (-Real.cos θ, -Real.sin θ) ∈ B) := by
+  -- Define f(p) = infDist(p, A), continuous on ℝ²
+  have hf_cont : Continuous (fun p : ℝ × ℝ => Metric.infDist p A) := by fun_prop
+  -- By circle BU, ∃ antipodal pair with f equal
+  obtain ⟨θ, hθ, hθ_eq⟩ := borsuk_ulam_circle_param _ hf_cont
+  -- Helper: infDist = 0 ↔ in A (for closed, nonempty A)
+  have mem_of_zero : ∀ p : ℝ × ℝ, Metric.infDist p A = 0 → p ∈ A := by
+    intro p hp
+    have := (Metric.mem_closure_iff_infDist_zero hAne).mpr hp
+    rwa [hA.closure_eq] at this
+  -- Extract the equality as infDist equality
+  have hθ_infDist : Metric.infDist (Real.cos θ, Real.sin θ) A =
+      Metric.infDist (-Real.cos θ, -Real.sin θ) A := hθ_eq
+  by_cases h0 : Metric.infDist (Real.cos θ, Real.sin θ) A = 0
+  · -- f = 0 at (cos θ, sin θ): both in A
+    left; refine ⟨θ, hθ, mem_of_zero _ h0, mem_of_zero _ ?_⟩
+    linarith [hθ_infDist]
+  · -- f > 0 at both: both outside A, hence in B by covering
+    right; refine ⟨θ, hθ, ?_, ?_⟩
+    · have hnotA : (Real.cos θ, Real.sin θ) ∉ A := by
+        intro ha; exact h0 (Metric.infDist_zero_of_mem ha)
+      exact (hcover θ).resolve_left hnotA
+    · have hnotA' : (-Real.cos θ, -Real.sin θ) ∉ A := by
+        intro ha
+        exact h0 (by linarith [Metric.infDist_zero_of_mem ha, hθ_infDist])
+      -- (-cos θ, -sin θ) = (cos(θ+π), sin(θ+π)), use hcover (θ + π)
+      have hantipodal : (Real.cos (θ + Real.pi), Real.sin (θ + Real.pi)) =
+          (-Real.cos θ, -Real.sin θ) :=
+        Prod.ext (Real.cos_add_pi θ) (Real.sin_add_pi θ)
+      have hcov := (hcover (θ + Real.pi)).resolve_left (by rwa [hantipodal])
+      rwa [hantipodal] at hcov
+
+/-- **LS for S¹ when A could be empty**: If A is empty, B covers everything
+    and trivially contains an antipodal pair. -/
+theorem lusternik_schnirelman_S1' (A B : Set (ℝ × ℝ))
+    (hA : IsClosed A) (hB : IsClosed B)
+    (hcover : ∀ θ : ℝ, (Real.cos θ, Real.sin θ) ∈ A ∨ (Real.cos θ, Real.sin θ) ∈ B) :
+    (∃ θ ∈ Icc 0 Real.pi,
+      (Real.cos θ, Real.sin θ) ∈ A ∧ (-Real.cos θ, -Real.sin θ) ∈ A) ∨
+    (∃ θ ∈ Icc 0 Real.pi,
+      (Real.cos θ, Real.sin θ) ∈ B ∧ (-Real.cos θ, -Real.sin θ) ∈ B) := by
+  by_cases hAne : A.Nonempty
+  · exact lusternik_schnirelman_S1 A B hA hB hAne hcover
+  · -- A empty, B covers everything
+    rw [Set.not_nonempty_iff_eq_empty] at hAne
+    right; refine ⟨0, by constructor <;> linarith [Real.pi_pos], ?_, ?_⟩
+    · exact (hcover 0).resolve_left (by simp [hAne])
+    · have := (hcover Real.pi).resolve_left (by simp [hAne])
+      rwa [show (-Real.cos 0, -Real.sin 0) = (Real.cos Real.pi, Real.sin Real.pi) from by
+        simp [Real.cos_zero, Real.cos_pi, Real.sin_zero, Real.sin_pi]]
+
+/-
+## Section XXIX: Updated Summary
+-/
+
+/-- Updated constructive status:
+
+    **NEW in this session (Section XXVII)**:
+    - Tucker's Parity Lemma: transition count mod 2 = endpoint XOR
+    - Corollaries: odd count when endpoints differ, even when they agree
+    - Monotonicity and upper bound for transition counts
+    - Tucker's 1D lemma re-derived from parity (stronger result)
+
+    **NEW in this session (Section XXVIII)**:
+    - Non-trivial Lusternik-Schnirelman for S¹ via infDist + circle BU
+    - Unlike interval LS (trivial x=0 witness), circle LS uses BU genuinely
+    - Both A-nonempty and A-possibly-empty variants proved
+
+    The file now contains a complete constructive toolkit for 1D
+    Borsuk-Ulam and its combinatorial/topological consequences. -/
+theorem bu_updated_summary : True := trivial
+
 end BorsukUlamOQ03
