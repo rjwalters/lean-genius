@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added per-column boundary analysis (Part XX-XXI). Proved column_discrepancy_abs_bound bounding per-column sector discrepancy. 19 new theorems total this session, 0 sorries, 3 axioms remain.",
+    "progressSummary": "BLOCKED: 3 axioms remain, all require deep analytic NT infrastructure. 0 sorries. Column decomposition complete but boundary vanishing needs lattice geometry.",
     "builtItems": [
       "bothOddCoprimeCount: counting function for both-odd coprime pairs",
       "coprime_sector_partition: exact partition identity (coprime = primitive + bothOdd)",
@@ -119,7 +119,8 @@
       "Column density ratio has clean mathematical justification: φ(2k)/(2k) = (1/2)φ(k)/k for odd k (GCD halving from coprime_eo_iff), making even-m columns half as coprime-dense as odd-m columns.",
       "Boundary vanishing has geometric justification: |boundary| = O(√N) lattice points on arc vs O(N) sector points, already formalized in sector_boundary_balance.",
       "Per-column boundary balance proved: for each odd m, |sector_even(m) - sector_odd(m)| ≤ triangle_even(m). The total discrepancy is bounded by the sum of per-column boundaries.",
-      "Computational checks confirm discrepancy = 0 for small N (N=13,25,50) and per-column (m=3,5,7). Discrepancy only appears when the circle boundary crosses a column midpoint."
+      "Computational checks confirm discrepancy = 0 for small N (N=13,25,50) and per-column (m=3,5,7). Discrepancy only appears when the circle boundary crosses a column midpoint.",
+      "All 3 remaining axioms (Gauss circle, coprime density, parity fraction) require analytic number theory infrastructure not in Mathlib: lattice point asymptotics, Möbius Dirichlet series, sector geometry"
     ],
     "mathlibGaps": [
       "No Mathlib formalization of Gauss circle problem asymptotics",
