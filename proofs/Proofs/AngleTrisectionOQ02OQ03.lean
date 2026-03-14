@@ -1562,10 +1562,7 @@ theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
     | mem y hy =>
       rw [Set.mem_singleton_iff.mp hy, hc_def]; exact Complex.ofReal_im _
     | algebraMap q =>
-      have : (algebraMap ℚ ℂ q).im = 0 := by
-        change ((q : ℝ) : ℂ).im = 0
-        exact Complex.ofReal_im _
-      exact this
+      simp only [Complex.ofReal_im, map_ratCast]
     | add a b ha hb => simp [Complex.add_im, *]
     | inv a _ ih =>
       show (a⁻¹).im = 0
