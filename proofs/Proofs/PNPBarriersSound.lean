@@ -36,16 +36,18 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (15 axioms, down from 21)
+## Axiom Summary (19 axioms)
 - 1 structural: Φ_countably_many (Φ_total and Φ_deterministic now theorems)
 - 2 oracle: Φ_oracle_access, Φ_no_oracle_access
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
 - 1 natural proofs: razborov_rudich (owf_exists_assumption now theorem)
 - 3 structural properties: P_rel_monotone, NP_rel_monotone, P_rel_subset_NP_rel
 - 3 closure/composition: P_complement_closed, poly_time_compose, reduction_preserves_P
-- 1 containment: NP_subset_PSPACE
+- 2 containment: NP_subset_PSPACE, PSPACE_subset_EXP (now nontrivial: PSPACE opaque)
 - 2 separation/existence: P_ne_EXP, ladner_theorem
-- Now theorems: PSPACE_subset_EXP, PH_subset_PSPACE, algebrizing_oracle_eq/sep
+- 1 NP-completeness: cook_levin (SAT is NP-complete)
+- 2 circuit complexity: P_subset_P_poly, karp_lipton (NP ⊆ P/poly → PH = NP)
+- Now theorems: P_subset_EXP (proved: poly ≤ 2^poly), algebrizing_oracle_eq/sep
 -/
 
 set_option linter.unusedVariables false
@@ -903,16 +905,21 @@ tracks time but not space explicitly.
 -/
 
 /-- PSPACE: problems solvable in polynomial space.
-    Since our model tracks time, not space, we define PSPACE abstractly
-    and axiomatize its key relationships. -/
-def PSPACE : Set (ℕ → Bool) :=
-  -- Abstractly: {f | ∃ e p, Solves e ∅ f ∧ uses ≤ p(n) space}
-  -- We axiomatize this below
-  { f | ∃ (e : ℕ) (p : Polynomial), Solves e emptyOracle f }
+    Since our Φ model tracks time (step count) but not space explicitly,
+    we define PSPACE as an opaque constant and axiomatize its relationships.
+    This is more honest than giving it the same definition as EXP. -/
+opaque PSPACE_def : Set (ℕ → Bool)
+def PSPACE : Set (ℕ → Bool) := PSPACE_def
 
-/-- EXP: problems solvable in exponential time (2^{p(n)} for some polynomial p). -/
-def EXP : Set (ℕ → Bool) :=
-  { f | ∃ (e : ℕ) (p : Polynomial), Solves e emptyOracle f }
+/-- EXP: problems solvable in exponential time (2^{p(n)} for some polynomial p).
+    Unlike PSPACE, we CAN define EXP properly because Φ tracks step counts.
+    A problem is in EXP if some program solves it within 2^{p(|n|)} steps. -/
+def InEXP (f : ℕ → Bool) : Prop :=
+  ∃ (e : ℕ) (p : Polynomial),
+    Solves e emptyOracle f ∧
+    ∀ n s, Φ e emptyOracle n = some (f n, s) → s ≤ 2 ^ p.eval (inputSize n)
+
+def EXP : Set (ℕ → Bool) := { f | InEXP f }
 
 /-- NP ⊆ PSPACE: An NP problem can be solved in polynomial space by
     iterating over all certificates (using only polynomial space to
@@ -921,13 +928,8 @@ axiom NP_subset_PSPACE : NP ⊆ PSPACE
 
 /-- PSPACE ⊆ EXP: A polynomial-space computation can have at most
     2^{p(n)} configurations, so it must halt within exponential time.
-
-    NOTE: In our abstract model, PSPACE and EXP have the same definition
-    (both track decidability without explicit space/time resource bounds),
-    so this is trivially true. A refined model would distinguish them by
-    resource bounds. -/
-theorem PSPACE_subset_EXP : PSPACE ⊆ EXP := by
-  intro f ⟨e, p, h⟩; exact ⟨e, p, h⟩
+    With opaque PSPACE, this must be axiomatized. -/
+axiom PSPACE_subset_EXP : PSPACE ⊆ EXP
 
 /-- PH ⊆ PSPACE: Every level of the polynomial hierarchy is in PSPACE.
 
@@ -949,9 +951,20 @@ theorem complexity_chain :
 theorem P_subset_PSPACE : P ⊆ PSPACE :=
   Set.Subset.trans P_subset_NP (Set.Subset.trans NP_subset_PH PH_subset_PSPACE)
 
-/-- P ⊆ EXP (transitivity). -/
-theorem P_subset_EXP : P ⊆ EXP :=
-  Set.Subset.trans P_subset_PSPACE PSPACE_subset_EXP
+/-- Helper: polynomial values are bounded by exponentials. n ≤ 2^n for all n. -/
+private theorem poly_le_exp (n : ℕ) : n ≤ 2 ^ n := by
+  induction n with
+  | zero => simp
+  | succ k ih =>
+    calc k + 1 ≤ 2 ^ k + 1 := Nat.add_le_add_right ih 1
+      _ ≤ 2 ^ k + 2 ^ k := Nat.add_le_add_left (Nat.one_le_two_pow) _
+      _ = 2 ^ (k + 1) := by ring
+
+/-- P ⊆ EXP: every poly-time computation runs in exp-time.
+    Direct proof: if s ≤ p.eval(|n|) then s ≤ 2^p.eval(|n|). -/
+theorem P_subset_EXP : P ⊆ EXP := by
+  intro f ⟨e, p, hsolves, htime⟩
+  exact ⟨e, p, hsolves, fun n s hs => le_trans (htime n s hs) (poly_le_exp _)⟩
 
 -- ============================================================
 -- PART 16: Ladner's Theorem (Statement)
@@ -1027,7 +1040,115 @@ theorem some_containment_strict :
     _ = EXP := h4
 
 -- ============================================================
--- PART 18: Summary and Verification
+-- PART 18: Cook-Levin Theorem (NP-Complete Problems Exist)
+-- ============================================================
+
+/-
+### Cook-Levin Theorem (1971)
+
+The Cook-Levin theorem establishes that SAT (Boolean satisfiability) is
+NP-complete. This is the foundational result of NP-completeness theory:
+it shows that NP-complete problems exist and provides the first example.
+
+Cook (1971) proved SAT is NP-complete by showing how to encode any
+polynomial-time nondeterministic computation as a satisfiability instance.
+Levin independently proved the same result in the USSR.
+-/
+
+/-- SAT: the Boolean satisfiability problem.
+    Given a Boolean formula (encoded as ℕ), decide whether it is satisfiable.
+    We define this as an opaque constant since the encoding details
+    are irrelevant to the structural results. -/
+opaque SAT_def : ℕ → Bool
+def SAT : ℕ → Bool := SAT_def
+
+/-- **Cook-Levin Theorem (1971)**: SAT is NP-complete.
+
+    Proof sketch: Given any NP language L with verifier V, for input x,
+    construct a Boolean formula φ_x that encodes "∃ certificate c such that
+    V(x, c) accepts." The formula describes the entire computation tableau
+    of V on (x, c), with c as free variables. Then x ∈ L iff φ_x ∈ SAT.
+
+    The reduction runs in polynomial time because V's computation tableau
+    has polynomial size. -/
+axiom cook_levin : NPComplete SAT
+
+/-- NP-complete problems exist. Immediate from Cook-Levin. -/
+theorem NPC_exists : ∃ L : ℕ → Bool, NPComplete L :=
+  ⟨SAT, cook_levin⟩
+
+/-- SAT is in NP (from Cook-Levin). -/
+theorem SAT_in_NP : SAT ∈ NP := cook_levin.1
+
+/-- SAT is NP-hard (from Cook-Levin). -/
+theorem SAT_NPHard : NPHard SAT := cook_levin.2
+
+/-- **SAT in P ↔ P = NP**: The P vs NP question reduces to whether SAT is in P. -/
+theorem SAT_in_P_iff_P_eq_NP : SAT ∈ P ↔ P = NP :=
+  ⟨fun h => NPComplete_in_P_implies_P_eq_NP SAT cook_levin h,
+   fun h => h ▸ SAT_in_NP⟩
+
+-- ============================================================
+-- PART 19: P/poly and Karp-Lipton
+-- ============================================================
+
+/-
+### P/poly and the Karp-Lipton Theorem
+
+P/poly is the class of problems solvable by polynomial-size Boolean circuits
+(equivalently, by polynomial-time algorithms with polynomial-length advice
+strings). P/poly is a nonuniform complexity class: the "algorithm" can be
+different for each input length.
+
+Key facts:
+- P ⊆ P/poly (uniform algorithms are a special case)
+- BPP ⊆ P/poly (Adleman's theorem: random bits can be replaced by advice)
+- If NP ⊆ P/poly, the polynomial hierarchy collapses (Karp-Lipton)
+-/
+
+/-- P/poly: problems solvable by polynomial-size circuits (nonuniform).
+    Since our model doesn't have circuits, we define this as an opaque
+    set and axiomatize its key relationships. -/
+opaque P_poly_def : Set (ℕ → Bool)
+def P_poly : Set (ℕ → Bool) := P_poly_def
+
+/-- P ⊆ P/poly: uniform polynomial-time algorithms are a special case
+    of nonuniform polynomial-size circuits (use the same circuit for
+    all inputs of each length). -/
+axiom P_subset_P_poly : P ⊆ P_poly
+
+/-- **Karp-Lipton Theorem (1980)**: If NP ⊆ P/poly, then PH collapses.
+
+    More precisely, NP ⊆ P/poly implies PH = Σ₂ᴾ (the hierarchy collapses
+    to the second level). In our structural model where PH = NP, this
+    simplifies to PH = NP.
+
+    Proof idea: If NP ⊆ P/poly, then SAT has polynomial-size circuits.
+    A Σ₂ machine can "guess" the circuit and verify it works for all
+    inputs of the relevant length, then use it to simulate any NP oracle.
+    This eliminates all quantifier alternations above level 2.
+
+    **Significance**: This is a key barrier to proving circuit lower bounds.
+    If we could show NP ⊄ P/poly (i.e., NP problems need super-polynomial
+    circuits), this would separate P from NP (since P ⊆ P/poly). But the
+    natural proofs barrier blocks most approaches to circuit lower bounds. -/
+axiom karp_lipton : NP ⊆ P_poly → PH = NP
+
+/-- **Contrapositive of Karp-Lipton**: If PH doesn't collapse, then NP ⊄ P/poly. -/
+theorem karp_lipton_contrapositive (h_neq : PH ≠ NP) : ¬ (NP ⊆ P_poly) := by
+  intro h_sub
+  exact h_neq (karp_lipton h_sub)
+
+/-- **Structural consequence**: If we could prove NP ⊄ P/poly, then P ≠ NP.
+    This is because P ⊆ P/poly, so NP ⊄ P/poly implies NP ⊄ P. -/
+theorem NP_not_subset_P_poly_implies_P_ne_NP (h : ¬ (NP ⊆ P_poly)) : P ≠ NP := by
+  intro h_eq
+  apply h
+  rw [← h_eq]
+  exact P_subset_P_poly
+
+-- ============================================================
+-- PART 20: Summary and Verification
 -- ============================================================
 
 -- Barrier results
@@ -1068,5 +1189,18 @@ theorem some_containment_strict :
 
 -- Ladner's theorem
 #check ladner_theorem             -- P ≠ NP → ∃ NP-intermediate
+
+-- Cook-Levin and NP-completeness
+#check cook_levin                 -- SAT is NP-complete
+#check NPC_exists                 -- NP-complete problems exist
+#check SAT_in_NP                  -- SAT ∈ NP
+#check SAT_NPHard                 -- SAT is NP-hard
+#check SAT_in_P_iff_P_eq_NP       -- SAT ∈ P ↔ P = NP
+
+-- P/poly and Karp-Lipton
+#check P_subset_P_poly            -- P ⊆ P/poly
+#check karp_lipton                -- NP ⊆ P/poly → PH = NP
+#check karp_lipton_contrapositive -- PH ≠ NP → NP ⊄ P/poly
+#check NP_not_subset_P_poly_implies_P_ne_NP  -- NP ⊄ P/poly → P ≠ NP
 
 end PNPBarriersSound
