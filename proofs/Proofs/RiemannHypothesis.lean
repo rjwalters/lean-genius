@@ -1618,6 +1618,125 @@ theorem symmetric_distance_from_critical_line (s : ℂ) :
 
 end FunctionalEquationConsequences
 
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XX: EQUIVALENCE WITH MATHLIB'S RIEMANN HYPOTHESIS (PROVED)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-
+Mathlib defines `RiemannHypothesis` (in `Mathlib.NumberTheory.LSeries.RiemannZeta`)
+using exclusion of trivial zeros and s ≠ 1:
+  ∀ s, ζ(s) = 0 → s ≠ trivial zero → s ≠ 1 → Re(s) = 1/2
+
+Our definition uses the critical strip directly:
+  ∀ s, ζ(s) = 0 ∧ 0 < Re(s) < 1 → Re(s) = 1/2
+
+These are equivalent: `zero_in_strip_of_zero` classifies all zeros,
+showing that non-trivial zeros (those excluded by Mathlib's conditions)
+are precisely the zeros in the critical strip.
+-/
+
+/-- **Our RH definition is equivalent to Mathlib's standard definition** (PROVED).
+
+This validates that our critical-strip formulation captures exactly the same
+mathematical content as Mathlib's `RiemannHypothesis`. -/
+theorem RH_iff_mathlib : RiemannHypothesis ↔ _root_.RiemannHypothesis := by
+  constructor
+  · -- Our RH → Mathlib's RH: non-trivial zeros lie in the critical strip
+    intro h s hz hnt h1
+    exact h s ⟨hz, zero_in_strip_of_zero s hz hnt⟩
+  · -- Mathlib's RH → Our RH: critical strip zeros are non-trivial
+    intro h s ⟨hz, hpos, hlt⟩
+    refine h s hz ?_ (ne_one_of_mem_criticalStrip s ⟨hpos, hlt⟩)
+    -- Trivial zeros have Re(s) = -2(n+1) ≤ -2 < 0, contradicting Re(s) > 0
+    rintro ⟨n, rfl⟩
+    have key : (-2 : ℂ) * (↑n + 1) = ↑((-2 : ℝ) * (↑n + 1)) := by push_cast; ring
+    rw [key, Complex.ofReal_re] at hpos
+    linarith [show (n : ℝ) + 1 > 0 from by positivity]
+
+/-- Corollary: GRH implies Mathlib's RH (through our equivalence chain). -/
+theorem GRH_implies_mathlib_RH (h : GeneralizedRiemannHypothesis) :
+    _root_.RiemannHypothesis :=
+  RH_iff_mathlib.mp (GRH_implies_RH h)
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XXI: THE LINDELÖF HYPOTHESIS
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-
+### The Lindelöf Hypothesis (1908)
+
+Emil Lindelöf conjectured that the Riemann zeta function grows slowly on
+the critical line:
+  ζ(1/2 + it) = O(|t|^ε) for every ε > 0 as |t| → ∞
+
+This is a major open conjecture, strictly weaker than RH but extremely deep.
+
+**Known bounds** (unconditional, exponent on critical line):
+
+| Year | Author | Exponent |
+|------|--------|----------|
+| 1908 | Phragmén-Lindelöf | 1/4 (convexity) |
+| 1921 | Weyl | 1/6 |
+| 2017 | Bourgain | 13/84 ≈ 0.1547 |
+| RH | (conditional) | 0 (i.e., O(|t|^ε)) |
+
+**Hierarchy**: RH → Lindelöf → subconvexity → convexity
+
+**References**:
+- Lindelöf, E. (1908). "Quelques remarques sur la croissance de la fonction ζ(s)"
+- Titchmarsh, E.C. (1986). "The Theory of the Riemann Zeta-function", Ch. 5
+-/
+
+/-- **The Lindelöf Hypothesis**: ζ(1/2 + it) grows slower than any positive
+power of |t|.
+
+Formally: for every ε > 0, there exists C > 0 such that
+|ζ(1/2 + it)| ≤ C|t|^ε for all |t| ≥ 1. -/
+def LindelofHypothesis : Prop :=
+  ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧ ∀ t : ℝ, |t| ≥ 1 →
+    ‖riemannZeta (1/2 + ↑t * Complex.I)‖ ≤ C * |t| ^ ε
+
+/-- **RH implies the Lindelöf Hypothesis** (Titchmarsh, Theorem 14.5).
+
+Under RH, the zero-free region extends to the full half-plane Re(s) > 1/2.
+Combined with the Phragmén-Lindelöf convexity principle and the functional
+equation, this yields the optimal bound ζ(1/2 + it) = O(|t|^ε) for all ε > 0.
+
+**References**:
+- Titchmarsh, "The Theory of the Riemann Zeta-function", Theorem 14.5 -/
+axiom RH_implies_Lindelof : RiemannHypothesis → LindelofHypothesis
+
+/-- **Phragmén-Lindelöf convexity bound** (unconditional, 1908):
+ζ(1/2 + it) = O(|t|^{1/4+ε}) for every ε > 0.
+
+This is the baseline bound from the convexity principle applied to the
+critical strip. The Lindelöf Hypothesis asserts the exponent can be
+reduced to ε for any ε > 0. Any bound beating 1/4 is called "subconvexity".
+
+**References**:
+- Phragmén, L. & Lindelöf, E. (1908). Classic convexity principle -/
+axiom phragmen_lindelof_convexity :
+    ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧ ∀ t : ℝ, |t| ≥ 1 →
+      ‖riemannZeta (1/2 + ↑t * Complex.I)‖ ≤ C * |t| ^ (1/4 + ε)
+
+/-- **Lindelöf implies the convexity bound** (PROVED, trivially).
+
+The Lindelöf bound O(|t|^ε) for all ε > 0 trivially implies the convexity
+bound O(|t|^{1/4+ε}) by specializing ε' = 1/4 + ε in the Lindelöf hypothesis. -/
+theorem Lindelof_implies_convexity : LindelofHypothesis →
+    ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧ ∀ t : ℝ, |t| ≥ 1 →
+      ‖riemannZeta (1/2 + ↑t * Complex.I)‖ ≤ C * |t| ^ (1/4 + ε) := by
+  intro hL ε hε
+  exact hL (1/4 + ε) (by linarith)
+
+/-- The Lindelöf Hypothesis is weaker than RH: RH → Lindelöf → convexity bound.
+This chain formalizes the hierarchy of growth conjectures. -/
+theorem RH_implies_convexity : RiemannHypothesis →
+    ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧ ∀ t : ℝ, |t| ≥ 1 →
+      ‖riemannZeta (1/2 + ↑t * Complex.I)‖ ≤ C * |t| ^ (1/4 + ε) := by
+  intro hRH
+  exact Lindelof_implies_convexity (RH_implies_Lindelof hRH)
+
 -- Core definitions and statement
 #check RiemannHypothesis
 #check RH_alt
@@ -1661,5 +1780,16 @@ end FunctionalEquationConsequences
 #check zeta_four
 #check zeta_even_nat
 #check zeta_neg_nat
+
+-- Equivalence with Mathlib (PROVED)
+#check RH_iff_mathlib
+#check GRH_implies_mathlib_RH
+
+-- Lindelöf Hypothesis
+#check LindelofHypothesis
+#check RH_implies_Lindelof
+#check phragmen_lindelof_convexity
+#check Lindelof_implies_convexity
+#check RH_implies_convexity
 
 end RiemannHypothesis
