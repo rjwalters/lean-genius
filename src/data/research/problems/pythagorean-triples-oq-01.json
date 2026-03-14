@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 42+ theorems, 3 independent axioms, 0 sorries. Eliminated parity_fraction_in_coprime_sector axiom (now proved from bothOdd_fraction_in_coprime_sector via parity_axiom_equivalent). Built EO-OE square symmetry (square_eo_eq_oe via swap bijection), proved coprime_eo_iff (coprime(2a,n) ↔ coprime(a,n) for odd n). File compiles clean with 0 sorries.",
+    "progressSummary": "PROGRESS: Proved bothOdd_fraction axiom is redundant (derivable from parity_class_equidistribution). EO equidistribution theorem stated with proof sketch (sorry for eventual equality). Fixed pre-existing column_parity_partition omega bug. File compiles clean.",
     "builtItems": [
       "bothOddCoprimeCount: counting function for both-odd coprime pairs",
       "coprime_sector_partition: exact partition identity (coprime = primitive + bothOdd)",
@@ -68,7 +68,10 @@
       "square_eo_eq_oe: |EO|=|OE| in square via swap bijection (PythagoreanTriplesOQ01.lean:Part XVII)",
       "square_oo_swap_closed: OO self-symmetric under swap (PythagoreanTriplesOQ01.lean:Part XVII)",
       "coprime_eo_iff: coprime(2a,n) ↔ coprime(a,n) when n odd - key to EO density (PythagoreanTriplesOQ01.lean:Part XVIII)",
-      "triangleEO: EO pairs in triangle for decomposition analysis (PythagoreanTriplesOQ01.lean:Part XVII)"
+      "triangleEO: EO pairs in triangle for decomposition analysis (PythagoreanTriplesOQ01.lean:Part XVII)",
+      "theorem bothOdd_fraction_from_equidistribution (axiom redundancy proof)",
+      "theorem eo_equidistribution (sorry - needs eventual equality for C>0)",
+      "Fixed column_parity_partition omega bug (n≥1 from coprimality)"
     ],
     "insights": [
       "The coprime sector decomposes into exactly 2 parity classes (not 3): primitive (mixed parity) and both-odd. Both-even is impossible for coprime pairs.",
@@ -81,7 +84,10 @@
       "In the full square [1,K]², EO and OE coprime pairs have exactly equal counts via the (m,n)↦(n,m) swap. This is a different symmetry from the OE=OO triangle involution.",
       "The coprime density within each non-EE parity class is the same (8/π²) because: at p=2, none can have 2|gcd (at least one element odd); at odd primes, sieving is independent of parity by CRT. This is the fundamental reason for equidistribution.",
       "coprime(2a, n) ↔ coprime(a, n) when n is odd: the factor of 2 in even elements is irrelevant to coprimality with odd numbers. This halving principle connects EO density to the general coprime density.",
-      "The parity_fraction_in_coprime_sector axiom is fully derivable from parity_class_equidistribution via parity_axiom_from_equidistribution (Part XV). This reduces the effective axiom count."
+      "The parity_fraction_in_coprime_sector axiom is fully derivable from parity_class_equidistribution via parity_axiom_from_equidistribution (Part XV). This reduces the effective axiom count.",
+      "bothOdd_fraction_in_coprime_sector is derivable from parity_class_equidistribution via bothOdd_eq_oo (proved in bothOdd_fraction_from_equidistribution)",
+      "EO equidistribution follows algebraically from OE+OO equidistribution + three-way partition (eo_equidistribution, needs eventual C>0)",
+      "Fixed column_parity_partition: n≥1 follows from Coprime n m when m>1 (was broken omega)"
     ],
     "mathlibGaps": [
       "No Mathlib formalization of Gauss circle problem asymptotics",
