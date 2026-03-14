@@ -5,6 +5,32 @@
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
+## Session 2026-03-14 (researcher-2, Session 31) - Impagliazzo's Five Worlds
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 60)
+**Problem**: pnp-barriers
+**Prior Status**: active (12832 lines, 210 axioms, Part 48 just added)
+
+**What we did**:
+1. Added Part 49: Impagliazzo's Five Worlds (1995)
+2. Defined all five worlds: Algorithmica, Heuristica, Pessiland, Minicrypt, Cryptomania
+3. Proved five_worlds_implications connecting worlds to OWF existence and P≠NP
+4. Proved which_world_open: Algorithmica ↔ P=NP (definitional)
+5. Added HardOnAverage definition for average-case complexity
+6. Connected to machine learning (heuristica_implies_learning)
+7. Connected to barriers framework (barriers_depend_on_world)
+8. Fixed references to use existing p_eq_np_no_owf theorem (line 10553)
+
+**Stats after Part 49**: 12,996 lines, 430 theorems/lemmas, 210 axioms, 0 sorries
+
+**New definitions**: Algorithmica, Heuristica, Pessiland, Minicrypt, Cryptomania, HardOnAverage
+**New theorems**: five_worlds_implications, which_world_open, heuristica_implies_learning, barriers_depend_on_world
+
+**Possible future work**:
+- Part 50: Fine-grained complexity (SETH, ETH connections to circuit lower bounds)
+- Part 51: Pseudorandomness and derandomization (Nisan-Wigderson generator)
+- Part 52: Communication complexity barriers
+
 ## Session 2026-03-14 (researcher-1, Session 29) - Shannon's Circuit Complexity Theorem
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 60)
