@@ -1596,11 +1596,31 @@ theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
   -- Therefore [E:F] = 2 and φ(n) = 2 * finrank ℚ F
   have h_ef_eq : Module.finrank ↥F ↥E = 2 := by
     -- Upper bound: [E:F] ≤ 2 via the quadratic X²-2cos·X+1
-    have h_le : Module.finrank ↥F ↥E ≤ 2 := by sorry
-      -- Proof sketch: ζ_E satisfies p = X²-2c_F·X+1 ∈ F[X] (degree 2)
-      -- → minpoly F ζ_E divides p → degree(minpoly) ≤ 2
-      -- → adjoin F {ζ_E} = ⊤ (ζ generates E over ℚ ⊆ F)
-      -- → [E:F] = degree(minpoly) ≤ 2
+    have h_le : Module.finrank ↥F ↥E ≤ 2 := by
+      -- Strategy: ζ satisfies X²-2cos·X+1 over F = ℚ(cos), and ζ generates E over F.
+      -- So [E:F] = deg(minpoly F ζ) ≤ 2.
+      --
+      -- Key elements
+      have hζ_in_E : ζ ∈ (E : Set ℂ) :=
+        IntermediateField.mem_adjoin_simple_self ℚ ζ
+      set ζ_E : ↥E := ⟨ζ, hζ_in_E⟩ with hζ_E_def
+      -- ζ is integral over F (finite extension → integral)
+      have h_int_ζ : IsIntegral ↥F ζ_E :=
+        IsIntegral.tower_top (Algebra.IsIntegral.isIntegral (R := ℚ) ζ_E)
+      -- Step A: adjoin F {ζ_E} = ⊤ in IntermediateField F E
+      -- Since E = ℚ(ζ) and ℚ ⊆ F, every element of E is a rational expression
+      -- in ζ over ℚ, hence also over F. So F(ζ) = E.
+      have h_top : IntermediateField.adjoin ↥F ({ζ_E} : Set ↥E) = ⊤ := by
+        sorry -- TODO: adjoin_induction on E = adjoin ℚ {ζ} with type coercions
+      -- Step B: minpoly F ζ divides the degree-2 polynomial X²-2cos·X+1
+      -- So deg(minpoly F ζ) ≤ 2
+      have h_deg : (minpoly ↥F ζ_E).natDegree ≤ 2 := by
+        sorry -- TODO: construct annihilating polynomial, use minpoly.dvd + natDegree_le_of_dvd
+      -- Step C: finrank F E = deg(minpoly F ζ) via adjoin.finrank + h_top
+      -- adjoin.finrank: finrank F (F(ζ)) = natDegree(minpoly F ζ)
+      -- h_top: F(ζ) = ⊤, so finrank F ⊤ = natDegree(minpoly F ζ) ≤ 2
+      -- finrank F ⊤ = finrank F E via topEquiv
+      sorry -- TODO: connect adjoin.finrank + h_top + h_deg + topEquiv
     -- Lower bound: [E:F] ≥ 2 from tower law + strict inequality
     have h_ge : Module.finrank ↥F ↥E ≥ 2 := by
       have h_finrank_E' : Module.finrank ℚ ↥E = Nat.totient n := by
