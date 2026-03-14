@@ -36,12 +36,14 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (14 axioms, down from 21)
+## Axiom Summary (16 axioms, down from 21)
 - 1 structural: Φ_countably_many (Φ_total and Φ_deterministic now theorems)
 - 2 oracle: Φ_oracle_access, Φ_no_oracle_access
 - 1 program transforms: Φ_basic_transforms (input projection + output negation)
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
 - 1 natural proofs: razborov_rudich (owf_exists_assumption now theorem)
+- 1 Cook-Levin: cook_levin (SAT is NP-complete)
+- 1 NP closure: NP_downward_closed (NP downward closed under ≤ₚ)
 - 2 structural properties: P_rel_monotone, NP_rel_monotone
 - 2 closure/composition: poly_time_compose, reduction_preserves_P
 - 1 containment: NP_subset_PSPACE
@@ -1096,7 +1098,165 @@ theorem some_containment_strict :
     _ = EXP := h4
 
 -- ============================================================
--- PART 18: Summary and Verification
+-- PART 18: Cook-Levin Theorem and SAT
+-- ============================================================
+
+/-
+### Cook-Levin Theorem (Cook 1971, Levin 1973)
+
+The Cook-Levin theorem establishes that the Boolean satisfiability problem (SAT)
+is NP-complete. This is the foundational result of NP-completeness theory.
+
+Since we work in an abstract Gödelized model (programs are ℕ, not explicit
+Turing machines), we define SAT abstractly as a canonical NP-complete problem
+and axiomatize the Cook-Levin theorem.
+-/
+
+/-- SAT: the Boolean satisfiability problem, abstracted as a decision problem.
+    In the concrete setting, SAT(φ) = true iff formula φ is satisfiable.
+    We define it opaquely since our model doesn't include Boolean formula syntax. -/
+opaque SAT : ℕ → Bool
+
+/-- **Cook-Levin Theorem (1971/1973)**: SAT is NP-complete.
+
+    This is the foundational result: every NP computation can be encoded as a
+    polynomial-size Boolean formula. The verifier's computation table becomes
+    the formula, with variables for each cell, and clauses enforcing local
+    consistency of the computation. -/
+axiom cook_levin : NPComplete SAT
+
+/-- SAT ∈ NP: immediate from NP-completeness. -/
+theorem SAT_in_NP : SAT ∈ NP := cook_levin.1
+
+/-- SAT is NP-hard: immediate from NP-completeness. -/
+theorem SAT_NPHard : NPHard SAT := cook_levin.2
+
+/-- **P = NP ↔ SAT ∈ P**: The P vs NP question reduces to one problem.
+
+    This is arguably the most important consequence of Cook-Levin:
+    the entire P vs NP question hinges on the tractability of SAT. -/
+theorem P_eq_NP_iff_SAT_in_P : P = NP ↔ SAT ∈ P := by
+  constructor
+  · -- P = NP → SAT ∈ P: SAT ∈ NP = P
+    intro h
+    have hSAT := SAT_in_NP
+    rw [← h] at hSAT
+    exact hSAT
+  · -- SAT ∈ P → P = NP: by Cook-Levin completeness
+    exact NPComplete_in_P_implies_P_eq_NP SAT cook_levin
+
+/-- **P ≠ NP → SAT ∉ P**: Contrapositive of the above. -/
+theorem P_ne_NP_implies_SAT_not_in_P (h : P ≠ NP) : SAT ∉ P :=
+  P_ne_NP_implies_NPC_not_in_P h SAT cook_levin
+
+-- ============================================================
+-- PART 19: NP-Complete Problem Equivalences
+-- ============================================================
+
+/-
+### NP-Complete Equivalences
+
+All NP-complete problems are polynomial-time equivalent to each other.
+This means any single NP-complete problem captures the full difficulty
+of the P vs NP question.
+
+Karp (1972) showed 21 problems are NP-complete by reducing from SAT.
+This section proves that all NPC problems are polynomial-time inter-reducible.
+-/
+
+/-- All NP-complete problems reduce to each other:
+    if A and B are both NP-complete, then A ≤ₚ B and B ≤ₚ A. -/
+theorem NPC_inter_reducible (A_prob B_prob : ℕ → Bool)
+    (hA : NPComplete A_prob) (hB : NPComplete B_prob) :
+    (A_prob ≤ₚ B_prob) ∧ (B_prob ≤ₚ A_prob) :=
+  ⟨hB.2 A_prob hA.1, hA.2 B_prob hB.1⟩
+
+/-- **NPC equivalence class**: P = NP iff any single NPC problem is in P. -/
+theorem P_eq_NP_iff_any_NPC_in_P (L : ℕ → Bool) (h : NPComplete L) :
+    P = NP ↔ L ∈ P := by
+  constructor
+  · intro heq
+    have hNP := h.1
+    rw [← heq] at hNP
+    exact hNP
+  · exact NPComplete_in_P_implies_P_eq_NP L h
+
+/-- If any NPC problem is in P, then ALL NPC problems are in P.
+    This shows that NP-completeness gives an "all-or-nothing" picture. -/
+theorem NPC_all_or_nothing (A_prob B_prob : ℕ → Bool)
+    (hA : NPComplete A_prob) (hB : NPComplete B_prob)
+    (hA_in_P : A_prob ∈ P) : B_prob ∈ P := by
+  have h_eq : P = NP := NPComplete_in_P_implies_P_eq_NP A_prob hA hA_in_P
+  have hNP := hB.1
+  rw [← h_eq] at hNP
+  exact hNP
+
+-- ============================================================
+-- PART 20: Conditional Consequences
+-- ============================================================
+
+/-
+### Conditional Consequences of P = NP
+
+If P = NP, many important consequences follow beyond hierarchy collapse.
+These show just how dramatic a P = NP proof would be.
+-/
+
+/-- If P = NP, then Ladner's NP-intermediate region is empty:
+    every NP problem is either in P or is NP-complete.
+
+    Proof: If P = NP, then NP ⊆ P, so every NP problem is in P,
+    and every NP problem is NPC (since every NP problem reduces to SAT,
+    which is now in P = NP). -/
+theorem P_eq_NP_no_intermediate (h : P = NP) (L : ℕ → Bool) :
+    ¬ NPIntermediate L := by
+  intro ⟨hNP, hnotP, _⟩
+  exact hnotP (h ▸ hNP)
+
+/-- If P ≠ NP, the NP-intermediate region is nonempty (Ladner)
+    and contains problems not poly-equivalent to SAT. -/
+theorem P_ne_NP_rich_structure (h : P ≠ NP) :
+    (∃ L, NPIntermediate L) ∧     -- Intermediate problems exist
+    (∀ L, NPComplete L → L ∉ P) := -- No NPC is in P
+  ⟨ladner_theorem h, fun L hL => P_ne_NP_implies_NPC_not_in_P h L hL⟩
+
+-- ============================================================
+-- PART 21: Downward Closure and NP Structure
+-- ============================================================
+
+/-
+### Downward Closure Under Reductions
+
+NP-hardness is "upward closed" and P is "downward closed" under
+polynomial-time reductions. These are key structural properties.
+-/
+
+/-- P is downward closed: if B ∈ P and A ≤ₚ B, then A ∈ P. -/
+theorem P_downward_closed (A_prob B_prob : ℕ → Bool)
+    (h_reduce : A_prob ≤ₚ B_prob) (h_B_in_P : B_prob ∈ P) :
+    A_prob ∈ P :=
+  reduction_preserves_P A_prob B_prob h_reduce h_B_in_P
+
+/-- NP is downward closed under reductions: if B ∈ NP and A ≤ₚ B,
+    then A ∈ NP.
+
+    Proof: A ≤ₚ B means there's a poly-time f with A(x) = B(f(x)).
+    Given B's verifier V, define A's verifier as V(f(x), c).
+    This is poly-time since f is poly-time and V is poly-time. -/
+axiom NP_downward_closed (A_prob B_prob : ℕ → Bool)
+    (h_reduce : A_prob ≤ₚ B_prob) (h_B_in_NP : B_prob ∈ NP) :
+    A_prob ∈ NP
+
+/-- **Combining upward and downward closure**: Reductions preserve
+    membership in both P and NP, forming a preorder on decision problems. -/
+theorem reduction_preorder :
+    (∀ (L M : ℕ → Bool), PolyTimeReduces L M → M ∈ P → L ∈ P) ∧
+    (∀ (L M : ℕ → Bool), PolyTimeReduces L M → M ∈ NP → L ∈ NP) :=
+  ⟨fun L M h hP => reduction_preserves_P L M h hP,
+   fun L M h hNP => NP_downward_closed L M h hNP⟩
+
+-- ============================================================
+-- PART 22: Summary and Verification
 -- ============================================================
 
 -- Barrier results
@@ -1118,6 +1278,27 @@ theorem some_containment_strict :
 #check P_ne_NP_implies_NPC_not_in_P     -- P ≠ NP → NPC ∩ P = ∅
 #check NPHard_of_reduce           -- NP-hardness transfers via reductions
 #check NPComplete_of_reduce       -- NP-completeness transfers via reductions
+
+-- Cook-Levin theorem
+#check cook_levin                 -- SAT is NP-complete
+#check SAT_in_NP                  -- SAT ∈ NP
+#check SAT_NPHard                 -- SAT is NP-hard
+#check P_eq_NP_iff_SAT_in_P      -- P = NP ↔ SAT ∈ P
+#check P_ne_NP_implies_SAT_not_in_P  -- P ≠ NP → SAT ∉ P
+
+-- NP-complete equivalences
+#check NPC_inter_reducible        -- All NPC problems are inter-reducible
+#check P_eq_NP_iff_any_NPC_in_P   -- P = NP ↔ any NPC in P
+#check NPC_all_or_nothing         -- Any NPC in P → all NPC in P
+
+-- Conditional consequences
+#check P_eq_NP_no_intermediate    -- P = NP → no NP-intermediate problems
+#check P_ne_NP_rich_structure     -- P ≠ NP → intermediate exists ∧ NPC ∉ P
+
+-- Downward closure
+#check P_downward_closed          -- P downward closed under ≤ₚ
+#check NP_downward_closed         -- NP downward closed under ≤ₚ
+#check reduction_preorder         -- Reductions form preorder on P and NP
 
 -- Polynomial Hierarchy
 #check Sigma_zero_eq_P            -- Σ₀ᴾ = P
