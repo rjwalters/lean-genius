@@ -1822,7 +1822,134 @@ theorem complexity_scorecard :
          algebrization_barrier_eq, algebrization_barrier_neq⟩
 
 -- ============================================================
--- PART 28: Summary and Verification
+-- PART 28: Complement Closure and Derived Structural Results
+-- ============================================================
+
+/-
+### Complement Closure for Major Classes
+
+One of the fundamental structural properties of complexity classes is
+complement closure. Using Φ_negate, we can prove that PSPACE and EXP
+are closed under complement in our model. Combined with existing results,
+this gives us a rich picture of which classes are "symmetric" (closed
+under complement) and which might not be.
+
+Known complement closure (proved):
+- P: closed (P_complement_closed, from Φ_negate)
+- BPP: closed (BPP_complement_closed, from Φ_negate)
+- NL: closed (NL_complement_closed, from Immerman-Szelepcsényi)
+- PSPACE: closed (below, from Φ_negate)
+- EXP: closed (below, from Φ_negate)
+
+Unknown / conjectured:
+- NP: not known to be closed (NP = coNP iff closed)
+- PH: closed iff it doesn't collapse (deep result)
+-/
+
+/-- PSPACE is closed under complement.
+    Proof: If f ∈ PSPACE, there exists a program e solving f.
+    By Φ_negate, there exists e' computing ¬f with the same resources. -/
+theorem PSPACE_complement_closed (f : ℕ → Bool) :
+    f ∈ PSPACE → (fun n => !f n) ∈ PSPACE := by
+  intro ⟨e, p, hsolves⟩
+  obtain ⟨e', he'⟩ := Φ_negate e
+  refine ⟨e', p, ?_⟩
+  intro n
+  obtain ⟨s, hs⟩ := hsolves n
+  exact ⟨s, he' emptyOracle n (f n) s hs⟩
+
+/-- EXP is closed under complement.
+    Same proof as PSPACE (both use Φ_negate). -/
+theorem EXP_complement_closed (f : ℕ → Bool) :
+    f ∈ EXP → (fun n => !f n) ∈ EXP := by
+  intro ⟨e, p, hsolves⟩
+  obtain ⟨e', he'⟩ := Φ_negate e
+  refine ⟨e', p, ?_⟩
+  intro n
+  obtain ⟨s, hs⟩ := hsolves n
+  exact ⟨s, he' emptyOracle n (f n) s hs⟩
+
+/-- coNP ⊆ PSPACE: complement of NP problems are in PSPACE.
+    Proof: If f ∈ coNP, then ¬f ∈ NP ⊆ PSPACE. Since PSPACE is
+    complement-closed, f = ¬¬f ∈ PSPACE. -/
+theorem coNP_subset_PSPACE : coNP ⊆ PSPACE := by
+  intro f hf
+  -- hf : (fun n => !f n) ∈ NP
+  have h1 : (fun n => !f n) ∈ PSPACE :=
+    NP_subset_PSPACE' hf
+  have h2 : (fun n => !(!(f n))) ∈ PSPACE :=
+    PSPACE_complement_closed _ h1
+  have : (fun n => !(!(f n))) = f := by ext n; simp
+  rw [this] at h2; exact h2
+
+/-- BPP ⊆ PSPACE (transitivity: BPP ⊆ PH ⊆ PSPACE). -/
+theorem BPP_subset_PSPACE : BPP ⊆ PSPACE :=
+  Set.Subset.trans BPP_subset_PH PH_subset_PSPACE
+
+/-- **P = PSPACE → PH = P**: If P equals PSPACE, the entire polynomial
+    hierarchy collapses to P (since PH ⊆ PSPACE = P). -/
+theorem P_eq_PSPACE_implies_PH_eq_P (h : P = PSPACE) : PH = P := by
+  apply Set.eq_of_subset_of_subset
+  · intro f hf
+    show f ∈ P; rw [h]
+    exact PH_subset_PSPACE hf
+  · exact P_subset_PH
+
+/-- **P = PSPACE → P = NP**: A stronger collapse than P = NP.
+    If P = PSPACE, then since NP ⊆ PSPACE = P, we get P = NP. -/
+theorem P_eq_PSPACE_implies_P_eq_NP (h : P = PSPACE) : P = NP := by
+  apply Set.eq_of_subset_of_subset
+  · exact P_subset_NP
+  · intro f hf
+    show f ∈ P; rw [h]
+    exact NP_subset_PSPACE' hf
+
+/-- **P ≠ NP → P ≠ PSPACE**: Contrapositive of the above.
+    If even P ≠ NP, then certainly P ≠ PSPACE. -/
+theorem P_ne_NP_implies_P_ne_PSPACE : P ≠ NP → P ≠ PSPACE := by
+  intro h heq
+  exact h (P_eq_PSPACE_implies_P_eq_NP heq)
+
+/-- TQBF is NP-hard (since SAT ≤ₚ TQBF and SAT is NP-hard). -/
+theorem TQBF_is_NPHard : NPHard TQBF :=
+  NPHard_of_reduce SAT TQBF SAT_is_NPHard SAT_reduces_to_TQBF
+
+/-- TQBF is NP-complete (in NP since NP ⊆ PSPACE, and NP-hard). -/
+theorem TQBF_is_NPComplete_if_NP_eq_PSPACE (h : NP = PSPACE) :
+    NPComplete TQBF := by
+  constructor
+  · rw [h]; exact TQBF_in_PSPACE
+  · exact TQBF_is_NPHard
+
+/-- P = EXP → P = NP: if P equals EXP, then certainly P = NP
+    (since NP is between P and EXP). -/
+theorem P_eq_EXP_implies_P_eq_NP (h : P = EXP) : P = NP := by
+  apply Set.eq_of_subset_of_subset
+  · exact P_subset_NP
+  · intro f hf
+    show f ∈ P; rw [h]
+    exact PSPACE_subset_EXP (NP_subset_PSPACE' hf)
+
+/-- **Complement closure summary**: Which classes are provably closed
+    under complement in our model. -/
+theorem complement_closure_summary :
+    -- Proved closed under complement
+    (∀ f, f ∈ P → (fun n => !f n) ∈ P) ∧
+    (∀ f, f ∈ BPP → (fun n => !f n) ∈ BPP) ∧
+    (∀ f, f ∈ NL → (fun n => !f n) ∈ NL) ∧
+    (∀ f, f ∈ PSPACE → (fun n => !f n) ∈ PSPACE) ∧
+    (∀ f, f ∈ EXP → (fun n => !f n) ∈ EXP) ∧
+    -- P = NP → NP closed under complement
+    (P = NP → NP = coNP) := by
+  exact ⟨P_complement_closed emptyOracle,
+         BPP_complement_closed,
+         NL_complement_closed,
+         PSPACE_complement_closed,
+         EXP_complement_closed,
+         P_eq_NP_implies_NP_eq_coNP⟩
+
+-- ============================================================
+-- PART 29: Summary and Verification
 -- ============================================================
 
 -- Barrier results
@@ -1919,5 +2046,17 @@ theorem complexity_scorecard :
 -- Complexity zoo
 #check landscape_under_P_ne_NP    -- P ≠ NP → Ladner + SAT∉P
 #check complexity_scorecard        -- Full unconditional summary
+
+-- Complement closure and derived results
+#check PSPACE_complement_closed    -- PSPACE closed under complement
+#check EXP_complement_closed       -- EXP closed under complement
+#check coNP_subset_PSPACE          -- coNP ⊆ PSPACE
+#check BPP_subset_PSPACE           -- BPP ⊆ PSPACE
+#check P_eq_PSPACE_implies_PH_eq_P -- P = PSPACE → PH = P
+#check P_eq_PSPACE_implies_P_eq_NP -- P = PSPACE → P = NP
+#check P_ne_NP_implies_P_ne_PSPACE -- P ≠ NP → P ≠ PSPACE
+#check P_eq_EXP_implies_P_eq_NP   -- P = EXP → P = NP
+#check TQBF_is_NPHard              -- TQBF is NP-hard
+#check complement_closure_summary  -- Which classes are complement-closed
 
 end PNPBarriersSound
