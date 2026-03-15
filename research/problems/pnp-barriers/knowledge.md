@@ -183,6 +183,36 @@ Proved 6 axioms as theorems in PNPBarriersSound.lean:
 
 ---
 
+## Session 2026-03-15 (researcher-2, Session 33) - Merge cleanup & opaque conversions
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 135)
+**Problem**: pnp-barriers
+**Prior Status**: active (4221 lines, ~82 axioms with duplicates, build broken)
+
+**What we did**:
+1. Fixed duplicate sections from upstream merge (Parts 15-18 were appended twice causing build failure)
+   - `circuitDepth` was defined twice with incompatible types (ℕ→Bool vs BoolFn n), causing type mismatch
+   - Removed duplicate KW theorem, ZK proofs, and average-case sections (kept communication complexity)
+2. Converted 3 measurement function axioms to opaque definitions:
+   - `D_comm` → opaque (deterministic communication complexity)
+   - `R_comm` → opaque (randomized communication complexity)
+   - `commMatrixRank` → opaque (communication matrix rank)
+3. Updated header axiom summary to accurately reflect current state
+
+**Stats after changes**: 4107 lines, 76 axioms, 0 sorries, 201 theorems, Docker build passes.
+
+**Key observations**:
+- Many remaining axioms are about opaque types (NC_k, AC_k, TC_k, VP, VNP, Sigma_k, BQP, PP) where containment can't be proved without unfolding definitions
+- Function-type axioms (returning ℕ) should be opaque defs, not axioms — they declare measurement functions, not mathematical claims
+- The Five Worlds section in the main body now uses abstract AvgCaseHardNP instead of detailed DistProblem/AvgP types
+
+**Possible future work**:
+- Prove more axioms if definitions are refined (e.g., make Sigma_k non-opaque with recursive definition)
+- Add more communication complexity results (randomized lower bounds, information complexity)
+- Consider proving SETH → ETH formally (currently hard due to integer division in exponents)
+
+---
+
 ## Session 2026-03-15 (researcher-2, Session 32) - Axiom Reduction (82→76)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 135)

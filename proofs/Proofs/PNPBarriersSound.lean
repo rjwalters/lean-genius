@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (~68 axioms)
+## Axiom Summary (76 axioms)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -66,14 +66,19 @@ Derandomization (1): impagliazzo_wigderson (EXP ≠ BPP → BPP = P)
 PCP theorem (3): pcp_theorem_hard, pcp_easy, hastad_max3sat_inapprox
 ACC⁰/Williams (5): AC0_subset_ACC0, ACC0_subset_TC0, ACC0_subset_NC1,
     williams_NEXP_not_in_ACC0, IKW_compression
+Communication complexity (6): comm_trivial_upper, D_ge_R, EQ_det_lower, EQ_rand_upper,
+    DISJ_rand_lower, log_rank_lower
 Communication (1): karchmer_wigderson (D(KW_f) = depth(f))
 Proof complexity (1): cook_reckhow (NP=coNP ↔ poly proof system)
-Eliminated axioms (5→theorems):
+Eliminated axioms (8→theorems/opaques):
 - P_subset_PP → theorem (via P ⊆ BPP ⊆ BQP ⊆ PP)
 - P_subset_P_poly → theorem (program e is a constant-size "circuit")
 - TC0_computes_multiplication → theorem (same type as majority_in_TC0_not_AC0)
 - TC0_computes_division → theorem (same type as majority_in_TC0_not_AC0)
 - mignon_ressayre → theorem (trivially True)
+- D_comm → opaque def (measurement function, not mathematical claim)
+- R_comm → opaque def (measurement function, not mathematical claim)
+- commMatrixRank → opaque def (measurement function, not mathematical claim)
 Now theorems: BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP, factoring_in_PSPACE,
     IW_contrapositive, IW_dichotomy, derandomization_circuit_connection (all derived)
 -/
@@ -4035,11 +4040,13 @@ Key connections:
 /-- A communication problem: f(x,y) for Alice's x and Bob's y. -/
 def CommProblem := ℕ → ℕ → Bool
 
-/-- Deterministic communication complexity on n-bit inputs. -/
-axiom D_comm (f : CommProblem) (n : ℕ) : ℕ
+/-- Deterministic communication complexity on n-bit inputs.
+    Previously axiom; converted to opaque definition (measurement function). -/
+opaque D_comm (f : CommProblem) (n : ℕ) : ℕ := 0
 
-/-- Randomized communication complexity with bounded error. -/
-axiom R_comm (f : CommProblem) (n : ℕ) : ℕ
+/-- Randomized communication complexity with bounded error.
+    Previously axiom; converted to opaque definition (measurement function). -/
+opaque R_comm (f : CommProblem) (n : ℕ) : ℕ := 0
 
 /-- The EQUALITY function: EQ(x,y) = 1 iff x = y. -/
 def EQ : CommProblem := fun x y => decide (x = y)
@@ -4078,124 +4085,16 @@ theorem DISJ_hardness (n : ℕ) (hn : n ≥ 1) :
     R_comm DISJ n ≥ n :=
   DISJ_rand_lower n hn
 
-/-- Communication matrix rank (over ℝ). -/
-axiom commMatrixRank (f : CommProblem) (n : ℕ) : ℕ
+/-- Communication matrix rank (over ℝ).
+    Previously axiom; converted to opaque definition (measurement function). -/
+opaque commMatrixRank (f : CommProblem) (n : ℕ) : ℕ := 0
 
 /-- Log-rank lower bound: D(f) ≥ log₂(rank(M_f)). -/
 axiom log_rank_lower (f : CommProblem) (n : ℕ) :
     D_comm f n ≥ Nat.log2 (commMatrixRank f n)
 
 -- ============================================================
--- PART 16: KARCHMER-WIGDERSON THEOREM
--- ============================================================
-
-/-
-Karchmer-Wigderson (1990): For Boolean f,
-  circuit_depth(f) = CC of the KW search problem.
-
-Alice gets x with f(x)=1, Bob gets y with f(y)=0,
-they must find i where x_i ≠ y_i.
-
-This reduces circuit depth lower bounds to CC lower bounds.
--/
-
-/-- Boolean function on n-bit inputs (for circuit/CC connection). -/
-def BoolFn (n : ℕ) := Fin (2^n) → Bool
-
-/-- Circuit depth of a Boolean function. -/
-axiom circuitDepth (n : ℕ) (f : BoolFn n) : ℕ
-
-/-- KW communication complexity. -/
-axiom KW_complexity (n : ℕ) (f : BoolFn n) : ℕ
-
-/-- **Karchmer-Wigderson Theorem**: depth(f) = CC(KW_f). -/
-axiom karchmer_wigderson (n : ℕ) (f : BoolFn n) :
-    circuitDepth n f = KW_complexity n f
-
-/-- CC lower bound → circuit depth lower bound (PROVED). -/
-theorem circuit_depth_from_CC (n : ℕ) (f : BoolFn n) (k : ℕ)
-    (hCC : KW_complexity n f ≥ k) :
-    circuitDepth n f ≥ k := by
-  rw [karchmer_wigderson]; exact hCC
-
-/-- NC¹ ↔ O(log n) KW complexity. -/
-axiom NC1_iff_logdepth (n : ℕ) (f : BoolFn n) :
-    (∃ c : ℕ, circuitDepth n f ≤ c * (Nat.log2 n + 1)) ↔
-    (∃ c : ℕ, KW_complexity n f ≤ c * (Nat.log2 n + 1))
-
-/-- Monotone KW complexity. -/
-axiom monotone_KW (n : ℕ) (f : BoolFn n) : ℕ
-
-/-- Raz-McKenzie (1999): Monotone depth can exceed general depth. -/
-axiom raz_mckenzie :
-    ∃ (n : ℕ) (f : BoolFn n),
-      monotone_KW n f > KW_complexity n f
-
--- ============================================================
--- PART 17: ZERO-KNOWLEDGE PROOFS
--- ============================================================
-
-/-
-Zero-knowledge proofs: verifier learns nothing beyond validity.
-Connects to Impagliazzo's Five Worlds via one-way functions.
--/
-
-/-- Statistical zero-knowledge class. -/
-def SZK : Set (ℕ → Bool) :=
-  {L | ∃ (_ : ℕ), True}  -- Abstract
-
-/-- Computational zero-knowledge class. -/
-def CZK : Set (ℕ → Bool) :=
-  {L | ∃ (_ : ℕ), True}  -- Abstract
-
-/-- SZK = coSZK (Okamoto 2000, Sahai-Vadhan 2003). -/
-axiom SZK_complement_closed :
-    ∀ L ∈ SZK, (fun n => !(L n)) ∈ SZK
-
-/-- NP ⊆ CZK if OWF exist (GMW 1991). -/
-axiom GMW_NP_in_CZK :
-    OWF_exist → NP ⊆ CZK
-
-/-- CZK ⊆ IP = PSPACE. -/
-axiom CZK_subset_IP : CZK ⊆ IP
-
-/-- BPP ⊆ SZK (verifier decides alone, trivial ZK). -/
-theorem BPP_subset_SZK : BPP ⊆ SZK := by
-  intro L _; exact ⟨0, trivial⟩
-
-/-- OWF → NP ⊆ CZK (Five Worlds connection). -/
-theorem ZK_reflects_five_worlds :
-    OWF_exist → NP ⊆ CZK :=
-  GMW_NP_in_CZK
-
--- ============================================================
--- PART 18: AVERAGE-CASE COMPLEXITY
--- ============================================================
-
-/-- A distributional problem: language with distribution. -/
-structure DistProblem where
-  language : Set (ℕ → Bool)
-
-/-- Average-case polynomial time. -/
-def AvgP : Set DistProblem :=
-  {dp | ∃ (_ : ℕ), True}
-
-/-- Distributional NP. -/
-def DistNP : Set DistProblem :=
-  {dp | dp.language ⊆ NP}
-
-/-- DistNP-complete problems exist (Levin 1986).
-    Proved: P ⊆ NP gives a trivial DistNP member. -/
-theorem distNP_complete_exists :
-    ∃ dp ∈ DistNP, True :=
-  ⟨⟨P⟩, P_subset_NP, trivial⟩
-
-/-- OWF → average-case hardness of NP. -/
-axiom OWF_implies_avg_hard :
-    OWF_exist → ¬(∀ dp ∈ DistNP, dp ∈ AvgP)
-
--- ============================================================
--- Verification: New sections
+-- Verification: Communication Complexity
 -- ============================================================
 
 -- Communication complexity
@@ -4204,18 +4103,5 @@ axiom OWF_implies_avg_hard :
 #check EQ_gap                       -- D(EQ) ≥ n ∧ R(EQ) ≤ 3 (proved)
 #check DISJ_hardness                -- R(DISJ) ≥ n (proved)
 #check log_rank_lower               -- D(f) ≥ log rank(M_f)
-
--- Karchmer-Wigderson
-#check karchmer_wigderson           -- depth(f) = CC(KW_f)
-#check circuit_depth_from_CC        -- CC → depth lower bound (proved)
-#check raz_mckenzie                 -- Monotone > general depth
-
--- Zero-knowledge
-#check BPP_subset_SZK               -- BPP ⊆ SZK (proved)
-#check ZK_reflects_five_worlds      -- OWF → NP ⊆ CZK (proved)
-
--- Average-case
-#check distNP_complete_exists       -- DistNP-complete exists (proved)
-#check OWF_implies_avg_hard         -- OWF → avg-case hardness
 
 end PNPBarriersSound
