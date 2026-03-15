@@ -2769,11 +2769,11 @@ Zero-density estimates bound how many zeros can exist near the line Re(s) = 1.
 
 /-- The Chebyshev psi function ψ(n) = Σ_{k≤n} Λ(k).
     Opaque here since the full definition is in the Consequences file. -/
-axiom chebyshevPsi' : ℕ → ℝ
+opaque chebyshevPsi' : ℕ → ℝ
 
 /-- The Mertens function M(n) = Σ_{k≤n} μ(k), as a real-valued function.
     Opaque here since the full definition is in the Consequences file. -/
-axiom mertensM : ℕ → ℝ
+opaque mertensM : ℕ → ℝ
 
 /-- The Vinogradov-Korobov zero-free region (1958).
     Improved over the classical region by de la Vallée-Poussin.
@@ -2919,11 +2919,15 @@ axiom selberg_degree_conjecture :
 axiom selberg_degree_zero :
     ∀ F : SelbergClassFunction, F.degree = 0 → ∀ n : ℕ, n ≥ 2 → F.coeff n = 0
 
-/-- Degree 1 elements include Riemann zeta and Dirichlet L-functions -/
-axiom selberg_degree_one_classification :
+/-- Degree 1 elements include Riemann zeta and Dirichlet L-functions.
+    PROVED from Kaczorowski-Perelli (stronger result). -/
+theorem selberg_degree_one_classification :
     ∀ F : SelbergClassFunction, F.degree = 1 →
       -- F is a shift of a Dirichlet L-function
-      ∃ q : ℕ, q ≥ 1 ∧ F.conductor = q
+      ∃ q : ℕ, q ≥ 1 ∧ F.conductor = q := by
+  intro F hF
+  obtain ⟨q, hq1, hq2, _⟩ := kaczorowski_perelli_degree_one F hF
+  exact ⟨q, hq1, hq2⟩
 
 /-- Grand RH (Selberg class version) implies our RH.
     ζ(s) is in the Selberg class, so Grand RH applied to ζ gives RH. -/

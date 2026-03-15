@@ -1,30 +1,28 @@
 # Knowledge Base: Riemann Hypothesis
 
-## Session 2026-03-15 (researcher-3) - Soundness Audit + Build Fix
+## Session 2026-03-15 (researcher-1) - Major axiom reduction (70→58, -12 axioms)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 64)
 **Problem**: riemann-hypothesis
-**Prior Status**: COMPLETED/graduated
+**Prior Status**: completed (continuing improvement)
 
 **What we did**:
-1. **Fixed pre-existing build error**: `chebyshevPsi` axiom conflicted with Mathlib 4.26's
-   `ArithmeticFunction.chebyshevPsi` (opened via `open ArithmeticFunction`). Renamed to `chebyshevPsi'`.
-2. **Eliminated vacuous axiom**: `voronin_universality` was `axiom ... : True` — converted to
-   `theorem ... := trivial`. Net -1 meaningless axiom.
-3. **Fixed vacuous existential**: `turanInequalities` used `∃ (ξ_deriv : ℕ → ℝ), ...` which is
-   satisfiable by the zero function. Introduced opaque `axiom xiDerivCoeff : ℕ → ℝ` and rewrote
-   the inequality to use it directly. Now has genuine mathematical content.
-4. **Fixed wrong bound**: `rh_explicit_formula_optimal` stated `|ψ(x)-x| ≤ x^(1/2) * log²x * x`
-   which equals `x^(3/2) * log²x` — far weaker than the correct RH bound `C * √x * log²x`.
-   Fixed to `∃ C > 0, ... ≤ C * x^(1/2) * log²x`.
+1. **Converted 11 function/type axioms to `opaque`** across both files:
+   - Consequences: `liConstant`, `zeroCountingFunction`, `zeroDensity`, `argumentFunction`, `SelbergClassFunction`, `selbergDegree`, `zeroSum`, `zetaMoment`, `GRH_selberg_class`
+   - Main: `chebyshevPsi'`, `mertensM`
+2. **Proved `selberg_degree_one_classification`** — was axiom, now theorem from `kaczorowski_perelli_degree_one` (which is strictly stronger)
+3. Docker build verified: both files build clean, 0 errors, 0 sorries
 
-**Stats**: Main file 55 axioms (net: +1 xiDerivCoeff, -1 voronin → same count), 156 theorems, 0 sorries.
-Both files build clean.
+**Stats**:
+- Main: 3470 lines, 46 axioms (+8 opaque), 156 theorems, 0 sorries
+- Consequences: 1591 lines, 12 axioms (+9 opaque), 108 theorems, 0 sorries
+- Combined: 5061 lines, 58 axioms, 264 theorems, 0 sorries
 
-**Remaining targets**:
-- `zeta_conj` — needs identity theorem (NOT in Mathlib)
-- `no_real_zeros_in_strip` — needs eta function or real-analyticity
-- Deprecated import `Mathlib.NumberTheory.ArithmeticFunction` (warning only)
+**Remaining axiom elimination targets**:
+- `zeta_conj` — needs identity theorem for meromorphic functions (NOT in Mathlib)
+- `no_real_zeros_in_strip` — needs Dirichlet eta function or real-analyticity argument
+- `linnik_constant_pos` — can't derive from `linnik_constant_upper` (opaque)
+- `selberg_degree_zero` — Conrey-Ghosh result, needs Selberg class theory
 
 ---
 
