@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-03-11T09:48:08.982Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 3,
+    "focus": "Building GF coefficient infrastructure toward axiom elimination",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,27 +29,39 @@
     }
   },
   "knowledge": {
-    "progressSummary": "0 sorries, 3 axioms, 1789 lines. GF infrastructure added, broken Part XXVI removed.",
+    "progressSummary": "PROGRESS: 3 sorries (subset image, GF coeff, partition-to-subset), 3 axioms. Extended verification to n=15. GF infrastructure advancing.",
     "builtItems": [
       "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
       "subsetsWithSum: subset sum counting infrastructure",
-      "Bridge theorems connecting decidable ↔ noncomputable formulations"
+      "Bridge theorems connecting decidable ↔ noncomputable formulations",
+      "subsetsWithSum_insert_not_mem: subsets not containing k are subsets of S (proved)",
+      "subsetsWithSum_insert_mem_empty: no containing-k subsets when k > n (proved)",
+      "subsetsWithSum_insert_card: cardinality recursion (proved modulo image lemma)",
+      "distinctPartGF_coeff_empty: base case of coefficient theorem (proved)",
+      "partitionOfSubset: Finset → Nat.Partition constructor (defined, compiles)",
+      "native_decide verification extended from n=12 to n=15 for all identities"
     ],
     "insights": [
       "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
       "Noncomputable definitions prevent native_decide verification",
       "Proving any axiom requires 300-500+ lines of GF proof per identity",
-      "Part XXVI (part count bounds) broke due to Mathlib API changes"
+      "Part XXVI (part count bounds) broke due to Mathlib API changes",
+      "Subset sum recursion: inserting element k splits subsets into containing-k and not-containing-k families",
+      "GF coefficient theorem connects algebraic (PowerSeries) to combinatorial (subsetsWithSum) counting",
+      "partitionOfSubset converts finsets to Nat.Partition, bridging subset and partition formulations",
+      "All three identities (RR1, RR2, Schur corrected) computationally verified through n=15"
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",
       "No bijective proof machinery for partition identities"
     ],
     "nextSteps": [
-      "Connect GF coefficients to partition counts via subsetsWithSum",
-      "Build q-series identity framework for RR1/RR2",
-      "Explore bijective proof path for Schur identity"
+      "Prove subsetsWithSum_insert_mem_image: the bijection for containing-k subsets (needs Finset.cons manipulation)",
+      "Prove distinctPartGF_coeff via PowerSeries.coeff_mul chain (main coefficient theorem)",
+      "Build full bijection subsetsWithSum ↔ distinct partitions from a set S",
+      "Specialize to S = {k ≡ 1,2 mod 3} for Schur mod-side characterization",
+      "The hard step: gap-side generating function characterization (Schur functional equation)"
     ]
   },
   "approaches": [],
