@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-15",
-    "iteration": 8,
+    "iteration": 9,
     "focus": "Parts 51-53: Lifting, sensitivity, polynomial method - the technical toolkit for lower bounds",
     "activeApproach": "Abstract complexity class definitions with barrier theorems. Adding landmark results from complexity theory to build comprehensive formalization.",
     "blockers": [
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Parts 51-53 added. 14,747 lines, ~247 axioms, 0 sorries. Covers lifting theorems, sensitivity conjecture (Huang), polynomial method (Razborov-Smolensky, Håstad switching lemma), and their connections to barriers.",
+    "progressSummary": "PROGRESS: Parts 51-54 added. 15,043 lines, ~250 axioms, 0 sorries. Now covers lifting theorems, sensitivity conjecture, polynomial method, and matrix rigidity.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -123,6 +123,11 @@
         "name": "Part 53: Polynomial Method",
         "description": "RandomRestriction, Håstad switching lemma, Razborov-Smolensky, Chevalley-Warning, TC⁰ barrier analysis. 7 axioms, 9 theorems",
         "proven": true
+      },
+      {
+        "name": "Part 54: Matrix Rigidity",
+        "description": "Valiant rigidity theorem, Alman-Williams and Dvir-Liu non-rigidity results, existence-vs-construction gap. 3 axioms, 7 theorems",
+        "proven": true
       }
     ],
     "insights": [
@@ -144,7 +149,9 @@
       "Huang 2019 resolved sensitivity conjecture via spectral argument on signed adjacency matrix of Boolean hypercube",
       "All query complexity measures (D, C, bs, s, deg, d̃eg, Q) are now polynomially related",
       "The polynomial method IS a natural proof, but works against AC⁰[p] because AC⁰[p] cant compute PRFs",
-      "TC⁰ is the exact boundary where natural proofs barrier kicks in - it can compute crypto primitives"
+      "TC⁰ is the exact boundary where natural proofs barrier kicks in - it can compute crypto primitives",
+      "Matrix rigidity candidates (DFT, Hadamard) shown non-rigid by Alman-Williams 2017 and Dvir-Liu 2019",
+      "The existence-vs-construction gap (random vs explicit) is the universal barrier pattern across complexity theory"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",

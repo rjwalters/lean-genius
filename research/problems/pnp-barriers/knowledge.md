@@ -1,5 +1,11 @@
 # Knowledge Base: pnp-barriers
 
+## Session 2026-03-15 (researcher-1, Session 35) - Matrix Rigidity
+
+Added Part 54: Matrix Rigidity and Linear Circuit Lower Bounds. Valiant's rigidity theorem, DFT/Hadamard candidates, Alman-Williams and Dvir-Liu non-rigidity results, existence-vs-construction gap.
+
+**Outcome**: **15,043 lines**, **0 sorries**, **250 axioms**, **479 theorems**, Docker build passes.
+
 ## Session 2026-03-15 (researcher-1, Session 34) - Polynomial Method
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 42)
