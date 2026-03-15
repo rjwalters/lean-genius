@@ -813,6 +813,18 @@ imaginary unit quaternions (≅ S²). In coordinates:
 The key identity ‖h(x)‖² = ‖x‖⁴ (Euler four-square) ensures S³ maps to S².
 -/
 
+/-- The L2 norm squared equals the sum of coordinate squares (4D).
+    Shared utility for HopfMap and ConcreteLieGroup sections. -/
+theorem eucl4_norm_sq_global (x : EuclideanSpace ℝ (Fin 4)) :
+    ‖x‖ ^ 2 = (x 0) ^ 2 + (x 1) ^ 2 + (x 2) ^ 2 + (x 3) ^ 2 := by
+  have h := PiLp.norm_sq_eq_of_L2 (fun _ : Fin 4 => ℝ) x
+  simp only [Fin.sum_univ_four, Real.norm_eq_abs, sq_abs] at h
+  exact h
+
+/-- Helper: x ≥ 0 and x² = 1 imply x = 1. -/
+theorem norm_eq_one_of_sq_global {x : ℝ} (h_nn : 0 ≤ x) (h_sq : x ^ 2 = 1) : x = 1 := by
+  nlinarith [sq_nonneg (x - 1)]
+
 section HopfMap
 
 /-- L2 norm squared for EuclideanSpace ℝ (Fin 3). -/
@@ -849,7 +861,7 @@ private theorem hopfMapE_coord2 (x : EuclideanSpace ℝ (Fin 4)) :
     This is the Euler four-square identity in disguise. -/
 theorem hopfMapE_norm_sq (x : EuclideanSpace ℝ (Fin 4)) :
     ‖hopfMapE x‖ ^ 2 = (‖x‖ ^ 2) ^ 2 := by
-  rw [eucl3_norm_sq (hopfMapE x), eucl4_norm_sq x,
+  rw [eucl3_norm_sq (hopfMapE x), eucl4_norm_sq_global x,
       hopfMapE_coord0, hopfMapE_coord1, hopfMapE_coord2]
   ring
 
@@ -858,7 +870,9 @@ theorem hopfMapE_maps_sphere (x : EuclideanSpace ℝ (Fin 4)) (hx : ‖x‖ = 1)
     ‖hopfMapE x‖ = 1 := by
   have h := hopfMapE_norm_sq x
   rw [hx] at h; simp at h
-  exact norm_eq_one_of_sq (norm_nonneg _) h
+  rcases h with h | h
+  · exact h
+  · linarith [norm_nonneg (hopfMapE x)]
 
 private theorem hopfMapE_mem_sphere2 (x : EuclideanSpace ℝ (Fin 4))
     (hx : x ∈ Sphere3) : hopfMapE x ∈ Sphere2 := by
@@ -875,13 +889,11 @@ noncomputable def hopfMap : ↥Sphere3 → ↥Sphere2 :=
 theorem hopfMap_continuous : Continuous hopfMap := by
   apply Continuous.subtype_mk
   show Continuous (fun x : ↥Sphere3 => hopfMapE x.val)
-  apply Continuous.comp (f := hopfMapE) (g := Subtype.val)
-  · -- hopfMapE is continuous (polynomial map)
-    show Continuous hopfMapE
+  have : Continuous hopfMapE := by
     unfold hopfMapE
     exact continuous_induced_rng.mpr (continuous_pi (fun i => by
       fin_cases i <;> simp only <;> fun_prop))
-  · exact continuous_subtype_val
+  exact this.comp continuous_subtype_val
 
 /-- Preimage of (0,0,1) under the Hopf map: h(1,0,0,0) = (0,0,1). -/
 private theorem hopfMapE_north_pole :
@@ -932,28 +944,28 @@ theorem hopfMap_surjective : Function.Surjective hopfMap := by
       show WithLp.equiv 2 (Fin 4 → ℝ) x 3 = _; simp [x]
     -- Prove x ∈ S³: ‖x‖ = 1
     have hx_norm : ‖x‖ = 1 := by
-      apply norm_eq_one_of_sq (norm_nonneg _)
-      rw [eucl4_norm_sq, hx0, hx1, hx2, hx3]
+      apply norm_eq_one_of_sq_global (norm_nonneg _)
+      rw [eucl4_norm_sq_global, hx0, hx1, hx2, hx3]
       have hsum : (y 0) ^ 2 + (y 1) ^ 2 + (y 2) ^ 2 = 1 := by
         have := eucl3_norm_sq y; rw [hy] at this; linarith
       have hab : (y 0) ^ 2 + (y 1) ^ 2 = 1 - (y 2) ^ 2 := by linarith
-      field_simp
+      field_simp [hr_ne]
       nlinarith [hr_sq, sq_nonneg r, sq_nonneg (y 0), sq_nonneg (y 1)]
     have hx_mem : x ∈ Sphere3 := by
       simp [Sphere3, Metric.mem_sphere, dist_zero_right]; exact hx_norm
     -- Prove hopfMapE x = y coordinate by coordinate
     have hh0 : hopfMapE x 0 = y 0 := by
-      rw [hopfMapE_coord0, hx0, hx1, hx2, hx3]; field_simp
+      rw [hopfMapE_coord0, hx0, hx1, hx2, hx3]; field_simp [hr_ne]; ring
     have hh1 : hopfMapE x 1 = y 1 := by
-      rw [hopfMapE_coord1, hx0, hx1, hx2, hx3]; field_simp
+      rw [hopfMapE_coord1, hx0, hx1, hx2, hx3]; field_simp [hr_ne]; ring
     have hh2 : hopfMapE x 2 = y 2 := by
       rw [hopfMapE_coord2, hx0, hx1, hx2, hx3]
       have hsum : (y 0) ^ 2 + (y 1) ^ 2 + (y 2) ^ 2 = 1 := by
         have := eucl3_norm_sq y; rw [hy] at this; linarith
-      field_simp; nlinarith [hr_sq]
+      field_simp [hr_ne]; nlinarith [hr_sq]
     -- Combine into hopfMap equality
     exact ⟨⟨x, hx_mem⟩, Subtype.ext (by
-      apply funext; intro i; fin_cases i <;> simp [hopfMap, hh0, hh1, hh2])⟩
+      ext i; fin_cases i <;> simp [hopfMap, hh0, hh1, hh2])⟩
   · -- Case: c = -1 (south pole only: a = b = 0 since a² + b² + c² = 1)
     push_neg at hc
     have hc_eq : y 2 = -1 := by
@@ -981,7 +993,7 @@ theorem hopfMap_surjective : Function.Surjective hopfMap := by
     have hh2 : hopfMapE x 2 = y 2 := by
       rw [hopfMapE_coord2, hc_eq]; simp [x, EuclideanSpace.single_apply]
     exact ⟨⟨x, hx_mem⟩, Subtype.ext (by
-      apply funext; intro i; fin_cases i <;> simp [hopfMap, hh0, hh1, hh2])⟩
+      ext i; fin_cases i <;> simp [hopfMap, hh0, hh1, hh2])⟩
 
 /-- The Hopf map S³ → S² exists as a continuous surjection.
     PROVED by explicit construction using the quaternionic Hopf map:
@@ -1152,22 +1164,20 @@ theorem sphere3_mul_right_inv (a : ↥Sphere3) :
 theorem quatMulE_continuous :
     Continuous (fun p : EuclideanSpace ℝ (Fin 4) × EuclideanSpace ℝ (Fin 4) =>
       quatMulE p.1 p.2) := by
-  show Continuous (fun p => (WithLp.equiv 2 (Fin 4 → ℝ)).symm (fun i =>
-    if i = 0 then p.1 0 * p.2 0 - p.1 1 * p.2 1 - p.1 2 * p.2 2 - p.1 3 * p.2 3
-    else if i = 1 then p.1 0 * p.2 1 + p.1 1 * p.2 0 + p.1 2 * p.2 3 - p.1 3 * p.2 2
-    else if i = 2 then p.1 0 * p.2 2 - p.1 1 * p.2 3 + p.1 2 * p.2 0 + p.1 3 * p.2 1
-    else p.1 0 * p.2 3 + p.1 1 * p.2 2 - p.1 2 * p.2 1 + p.1 3 * p.2 0))
-  exact continuous_induced_rng.mpr (continuous_pi (fun i => by
-    fin_cases i <;> simp only <;> fun_prop))
+  apply continuous_induced_rng.mpr
+  apply continuous_pi
+  intro i
+  simp only [Function.comp, quatMulE, Equiv.apply_symm_apply]
+  fin_cases i <;> simp <;> fun_prop
 
 /-- Quaternion conjugation on ℝ⁴ is continuous (polynomial in coordinates). -/
 theorem quatConjE_continuous :
     Continuous (fun x : EuclideanSpace ℝ (Fin 4) => quatConjE x) := by
-  show Continuous (fun x => (WithLp.equiv 2 (Fin 4 → ℝ)).symm (fun i =>
-    if i = 0 then x 0 else if i = 1 then -(x 1)
-    else if i = 2 then -(x 2) else -(x 3)))
-  exact continuous_induced_rng.mpr (continuous_pi (fun i => by
-    fin_cases i <;> simp only <;> fun_prop))
+  apply continuous_induced_rng.mpr
+  apply continuous_pi
+  intro i
+  simp only [Function.comp, quatConjE, Equiv.apply_symm_apply]
+  fin_cases i <;> simp <;> fun_prop
 
 /-- sphere3Mul is continuous (restriction of continuous quatMulE to subtype). -/
 theorem sphere3Mul_continuous :
