@@ -38,7 +38,8 @@
       "RationalPoint structure with on_curve proof",
       "Negation and torsion point operations proved",
       "BSD weak and strong form statements axiomatized",
-      "Selmer group, Iwasawa theory, Heegner point frameworks"
+      "Selmer group, Iwasawa theory, Heegner point frameworks",
+      "Eliminated 29 dead-code axioms (74→45): Mordell-Weil, Mazur torsion, modularity, computational verification, congruent numbers, Selmer groups, regulators, Sato-Tate, Cassels-Tate, Perrin-Riou, Manin, Fontaine, Faltings"
     ],
     "insights": [
       "Millennium Prize problem - rank(E(Q)) = ord_{s=1} L(E,s)",
