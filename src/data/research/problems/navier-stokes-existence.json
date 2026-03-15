@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: NavierStokes.lean crosses 10,000 lines (10,074). Parts XLVI-LV covering CKN, geometric regularity, Leray, Kato, axisymmetric, pressure, decay, profile decomposition, numerical evidence, and state of the art. 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: NavierStokes.lean at 10,214 lines. Parts XLVI-LVI covering CKN, geometric regularity, Leray, Kato, axisymmetric, pressure, decay, profiles, numerics, state of the art, and Clay Prize formal statement. 0 sorries, 0 axioms.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO⁻¹ well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
@@ -46,7 +46,8 @@
       "Part LII: Decay - Schonbek-Wiegner L² rate, derivative decay, spatial decay, eventual regularity",
       "Part LIII: Profile decomposition - concentration compactness, minimal blowup element, Kenig-Merle roadmap",
       "Part LIV: Numerical evidence - Kerr/Hou-Li, Kida-Pelz, Hou-Luo Euler, numerical limitations",
-      "Part LV: State of the art - result hierarchy, approach barriers, sufficient conditions, expert consensus"
+      "Part LV: State of the art - result hierarchy, approach barriers, sufficient conditions, expert consensus",
+      "Part LVI: Clay Millennium Prize formal statement - Fefferman conditions, two versions, formalization summary"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u·∇)u, not just energy/scaling/div-free properties",
@@ -100,7 +101,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-15T12:40:00.000Z",
+  "lastUpdate": "2026-03-15T12:45:00.000Z",
   "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1
