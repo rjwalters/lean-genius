@@ -174,19 +174,6 @@ noncomputable def graphDimension' (V : Type*) [Fintype V] (adj : V → V → Pro
     We axiomatize this as extracting the minimum requires a search over all graphs. -/
 axiom minEdgesForDim : ℕ → ℕ
 
-/-- Every simple (irreflexive) graph of dimension d has at least minEdges(d) edges. -/
-axiom minEdgesForDim_le (d : ℕ) (V : Type) [Fintype V] [DecidableEq V]
-    (adj : V → V → Prop) [DecidableRel adj] (hirr : Irreflexive adj) :
-    graphDimension' V adj hirr = d →
-    minEdgesForDim d ≤ (Finset.univ.filter (fun p : V × V => adj p.1 p.2)).card
-
-/-- There exists a simple (irreflexive) graph achieving the minimum. -/
-axiom minEdgesForDim_achieved (d : ℕ) (hd : 0 < d) :
-    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V)
-      (adj : V → V → Prop) (_ : DecidableRel adj) (hirr : Irreflexive adj),
-      graphDimension' V adj hirr = d ∧
-      (Finset.univ.filter (fun p : V × V => adj p.1 p.2)).card = minEdgesForDim d
-
 -- ============================================================================
 -- § 3. Known Values
 -- ============================================================================

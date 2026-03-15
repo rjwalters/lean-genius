@@ -90,15 +90,6 @@ theorem completeBipartite_edge_count (m n : ℕ) :
 ## Known Dimension Results
 -/
 
-/-- K₃ (triangle) has dimension 2 -/
-axiom triangle_dimension : graphDimension (Fin 3) (fun i j => i ≠ j) = 2
-
-/-- K₄ (tetrahedron) has dimension 3 -/
-axiom tetrahedron_dimension : graphDimension (Fin 4) (fun i j => i ≠ j) = 3
-
-/-- K_{3,3} has dimension 4 -/
-axiom k33_dimension : graphDimension (Fin 3 ⊕ Fin 3) (completeBipartiteAdj 3 3) = 4
-
 /-
 ## Erdős Problem #1007: Main Result
 -/
@@ -123,9 +114,6 @@ axiom k33_unique_minimum : ∀ (V : Type) [Fintype V] [DecidableEq V]
 /-
 ## Extension to Dimension 5 (Chaffee-Noble 2016)
 -/
-
-/-- K₆ has dimension 5 -/
-axiom k6_dimension : graphDimension (Fin 6) (fun i j => i ≠ j) = 5
 
 /-- The minimum edges for a dimension-5 graph is 15 -/
 axiom min_edges_dimension_5 : ∀ (V : Type) [Fintype V] [DecidableEq V]
