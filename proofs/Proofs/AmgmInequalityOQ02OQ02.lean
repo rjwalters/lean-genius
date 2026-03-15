@@ -502,7 +502,7 @@ theorem binom_log_concave (n k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n) :
     For now, we reduce to the cleared-denominator form and leave that as the
     key lemma to prove. -/
 
-set_option maxHeartbeats 1600000 in
+set_option maxHeartbeats 3200000 in
 /-- The inductive step of the normalized Newton inequality (cleared-denominator form).
     After substituting the recurrence E_k = e_k + t·e_{k-1}, this reduces to a
     polynomial inequality in 9 variables whose proof requires a sum-of-squares
@@ -556,46 +556,16 @@ theorem newton_cleared_denom_inductive_step (m k : ℕ) (hk : 2 ≤ k) (hm_eq : 
   have hb_nn : 0 ≤ b := Nat.cast_nonneg _
   have hc_nn : 0 ≤ c := Nat.cast_nonneg _
   have hd_nn : 0 ≤ d := Nat.cast_nonneg _
-  -- Goal: (ek + t*ekm1)² * (a+b)*(c+d) ≥ (ekm1 + t*ekm2)(ekp1 + t*ek) * (b+c)²
-  -- LHS - RHS = γ + β·t + α·t² where γ,α ≥ 0.
-  -- Binomial log-concavity: c² ≥ bd and b² ≥ ac
-  have h_blc_k : c ^ 2 ≥ b * d :=
-    binom_log_concave m k (by omega) (by omega)
-  have h_blc_km1 : b ^ 2 ≥ a * c := by
-    have h := binom_log_concave m (k - 1) (by omega) (by omega)
-    have h1 : k - 1 - 1 = k - 2 := by omega
-    have h2 : k - 1 + 1 = k := by omega
-    simp only [h1, h2] at h; exact h
   -- Goal: (ek + t*ekm1)² * (b+a)*(d+c) ≥ (ekm1+t*ekm2)(ekp1+t*ek)*(c+b)²
-  -- Prove via single nlinarith with comprehensive SOS certificates.
-  nlinarith [h_ih_k, h_ih_km1, h_unn_k, h_unn_km1, h_cross,
-             h_blc_k, h_blc_km1,
-             sq_nonneg (ek * d - ekp1 * c),
-             sq_nonneg (ek * b - ekm1 * a),
-             sq_nonneg (ekm1 * d - ekp1 * b),
-             sq_nonneg (ekm1 * c - ekm2 * b),
-             sq_nonneg (ek * c - ekm1 * b),
-             sq_nonneg (t * (ek * ekm1 - ekm2 * ekp1)),
-             sq_nonneg (t * ekm1 * c - t * ekm2 * b),
-             sq_nonneg (ek * c * t - ekm1 * b * t),
-             sq_nonneg (ek * (d + c) - ekp1 * (c + b)),
-             sq_nonneg (ekm1 * (d + c) - ek * (c + b)),
-             mul_nonneg ht_nn (sub_nonneg.mpr h_cross),
-             mul_nonneg ht_nn hek_nn,
-             mul_nonneg ht_nn hekm1_nn,
-             mul_nonneg hek_nn hekm1_nn,
-             mul_nonneg hek_nn hekp1_nn,
-             mul_nonneg hekm1_nn hekm2_nn,
-             mul_nonneg ha_nn hb_nn,
-             mul_nonneg hb_nn hc_nn,
-             mul_nonneg hc_nn hd_nn,
-             mul_nonneg ha_nn hd_nn,
-             mul_nonneg ha_nn hc_nn,
-             mul_nonneg hb_nn hd_nn,
-             mul_nonneg (mul_nonneg ht_nn ht_nn) (sq_nonneg ekm1),
-             mul_nonneg (mul_nonneg ht_nn ht_nn) (sq_nonneg ek),
-             mul_self_nonneg (t * ekm1),
-             mul_self_nonneg (t * ek)]
+  -- Strategy: LHS - RHS is a quadratic in t: α·t² + β·t + γ.
+  -- The t⁰ coefficient γ ≥ 0 from IH at k; the t² coefficient α ≥ 0 from IH at k-1;
+  -- the discriminant 4αγ ≥ β² from combining IH instances.
+  --
+  -- NOTE: This nlinarith proof compiled with Mathlib ~v4.25 but regressed with v4.26.0.
+  -- The SOS certificate search in nlinarith no longer finds the decomposition.
+  -- Possible fixes: (1) explicit SOS certificate, (2) real-rootedness approach,
+  -- (3) absorption identity reduction, (4) Cauchy-Binet.
+  sorry
 
 /-- Cleared-denominator form of Newton's log-concavity.
     Equivalent to the normalized form but avoids division. -/
