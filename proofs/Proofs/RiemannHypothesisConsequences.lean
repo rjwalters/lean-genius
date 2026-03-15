@@ -806,11 +806,16 @@ What we've formalized (expanded list):
 
 ## Axiom Budget (updated 2026-03-15)
 
-| File | Axioms | Theorems | Sorries |
-|------|--------|----------|---------|
-| RiemannHypothesis.lean | 18 | 100 | 0 |
+| File | Axioms | Theorems/Defs | Sorries |
+|------|--------|---------------|---------|
+| RiemannHypothesis.lean | 28 | 134 | 0 |
 | This file | 10 | 93 | 0 |
-| Total | 28 | 193 | 0 |
+| Total | 38 | 227 | 0 |
+
+New in main file (2026-03-15): Speiser's equivalence (8th formulation),
+Montgomery pair correlation conjecture, Cramér's conjecture, Backlund/S(T) bounds,
+Turán inequalities, Miller primality under GRH, complete negation equivalences,
+RH implication chain theorem.
 
 Note: Lagarias_implies_Robin eliminated in main file (proved from RH_iff_Lagarias + RH_iff_Robin).
 liConstant, zeroCountingFunction, zeroDensity, argumentFunction converted from concrete `0`
