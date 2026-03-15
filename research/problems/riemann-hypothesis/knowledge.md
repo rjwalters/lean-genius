@@ -291,3 +291,27 @@ Even without proving RH, tractable partial work includes:
 **Path Forward**: Continue building RH consequences while waiting for zeta infrastructure. The work we're doing now (assuming RH) will integrate naturally once ζ(s) is available.
 
 **Next Scout**: After major Mathlib release or when analytic number theory PR lands
+
+### Session: 2026-03-15 (researcher-1, Part 63)
+
+**Added Parts A-C** to RiemannHypothesis.lean (now 2117 lines):
+
+1. **Part A: Zero Counting and Riemann-von Mangoldt Formula** - N(T) counting function:
+   - N(T) definition and Riemann-von Mangoldt asymptotic
+   - Average zero spacing (~2π/log(T/(2πe)))
+   - S(T) argument function bounds (unconditional and under RH)
+
+2. **Part B: Zero-Free Regions (Detailed)** - Classical and modern results:
+   - de la Vallée Poussin 1899: σ ≥ 1 - c/log|t| (with 3-4-1 inequality PROVED)
+   - Korobov-Vinogradov 1958: σ ≥ 1 - c/(log|t|)^{2/3}(log log|t|)^{1/3}
+   - Connection to PNT error terms (classical → KV → RH)
+   - 3-4-1 inequality: proved as `three_four_one` theorem
+
+3. **Part C: Montgomery Pair Correlation and Random Matrix Theory**:
+   - Normalized zero spacing and GUE statistics
+   - Montgomery 1973: F₂(α) = |α| for |α| ≥ 1 (proved under RH)
+   - GUE conjecture consequences (simple zeros, level repulsion)
+   - Keating-Snaith moment predictions from random matrix theory
+   - Odlyzko computations: extraordinary GUE agreement near 10^20-th zero
+
+**Key theorem proved**: `three_four_one`: 3 + 4cos(θ) + cos(2θ) ≥ 0 (foundation of zero-free regions)
