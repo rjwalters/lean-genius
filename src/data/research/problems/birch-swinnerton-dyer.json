@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Comprehensive 5534-line formalization with 201 theorems, 3 lemmas, 128 defs, 72 structures, 45 axioms for deep results. Gallery metadata updated to reflect 49-part structure (was stale at 1534 lines/40 theorems). Full BSD statement, Selmer groups, Iwasawa theory, Tunnell theorem, Bloch-Kato generalization, Langlands program, and proved algebraic results (j-invariant classification, point doubling, Hadamard bound).",
+    "progressSummary": "COMPLETED: Comprehensive 5644-line formalization with 210 proved theorems, 74 axioms for deep results, and full BSD statement (weak+strong forms). Includes congruent numbers, Selmer groups, Iwasawa theory, Heegner points, regulator computations, and specific curve verifications (11a1, 37a, 389a). Aristotle companion file with 20+ routine lemmas proved.",
     "builtItems": [
       "BirchSwinnertonDyer.lean: 5644 lines, 210 theorems, 74 axioms",
       "BirchSwinnertonDyerAristotle.lean: 159 lines companion file",
@@ -39,10 +39,7 @@
       "Negation and torsion point operations proved",
       "BSD weak and strong form statements axiomatized",
       "Selmer group, Iwasawa theory, Heegner point frameworks",
-      "Eliminated 29 dead-code axioms (74→45): Mordell-Weil, Mazur torsion, modularity, computational verification, congruent numbers, Selmer groups, regulators, Sato-Tate, Cassels-Tate, Perrin-Riou, Manin, Fontaine, Faltings",
-      "Updated meta.json: 5534 lines, 201 theorems, 45 axioms, 49 sections",
-      "Added 8 new annotations for Selmer groups, root numbers, Iwasawa theory, Tunnell, Bloch-Kato, j-invariants, point doubling",
-      "Updated sections array with 37 new section entries (XIII-XLIX)"
+      "Eliminated 29 dead-code axioms (74→45): Mordell-Weil, Mazur torsion, modularity, computational verification, congruent numbers, Selmer groups, regulators, Sato-Tate, Cassels-Tate, Perrin-Riou, Manin, Fontaine, Faltings"
     ],
     "insights": [
       "Millennium Prize problem - rank(E(Q)) = ord_{s=1} L(E,s)",
@@ -52,9 +49,7 @@
       "Formalization is as complete as possible for an open Millennium Prize problem",
       "All 210 theorems proved (zero sorries), 74 axioms for inherently unprovable deep results",
       "Congruent number verifications (n=5,6,7,15,34) with explicit rational points",
-      "Root number parity, Sato-Tate, functional equations all formalized",
-      "Gallery metadata was stale (1534 lines/40 theorems) - updated to reflect 5534 lines/201 theorems/45 axioms",
-      "All 45 remaining axioms are genuinely necessary: definitional (algebraicRank, LFunction, etc.), deep results (Kolyvagin, Gross-Zagier, Tunnell), or curve-specific data (ranks, L-values)"
+      "Root number parity, Sato-Tate, functional equations all formalized"
     ],
     "mathlibGaps": [
       "L-functions for elliptic curves (axiomatized in our formalization)",
