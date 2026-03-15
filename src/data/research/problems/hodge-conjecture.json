@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Major dedup cleanup. Removed ~500 lines of duplicate VHS/MHS sections. Fixed axiom syntax and type mismatch errors. 4505 lines, 75 axioms, 1 sorry (kuenneth_formula universe mismatch). Clean build.",
+    "progressSummary": "PROGRESS: Axiom elimination. Converted 8 vacuous True-concluding axioms to theorems (including evaluation_nondegeneracy, poincare_duality_hodge, torelli_k3, beilinson_regulator, cycle_class_factors_motivic). 4763 lines, 73 axioms, 169 theorems, 0 sorries. Build passes.",
     "builtItems": [
       "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
       "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
@@ -225,7 +225,11 @@
       "Duplicate cattani_deligne_kaplan axiom removed (was at both line 2880 and 4426)",
       "primitive_hodge_numbers was trivially satisfiable (∃ h, h ≤ n — take h=0) and converted to theorem",
       "Fixed all 30 build errors: removed duplicate VHS/PeriodDomain/MHS structures from Part XXVII-XXVIII, fixed IntermediateJacobian/DeligneCohomology constructors, resolved universe level metavariables, fixed argument ordering in GHC coniveau",
-      "Build now passes cleanly: 4574 lines, 76 axioms, 155 theorems, 0 sorries"
+      "Build now passes cleanly: 4574 lines, 76 axioms, 155 theorems, 0 sorries",
+      "Converted 8 more vacuous True-concluding axioms to theorems: evaluation_nondegeneracy, poincare_duality_hodge, torelli_k3, mhs_strict_morphisms, beilinson_regulator, regulator_factors_through_cycle_class, beilinson_conjecture_l_values, cycle_class_factors_motivic",
+      "regulator_factors_through_cycle_class proved via zero map: ∃ f, True satisfied by ⟨0, trivial⟩",
+      "cycle_class_factors_motivic proved via zero maps: ⟨0, 0, trivial⟩",
+      "Build passes: 4763 lines, 73 axioms, 169 theorems, 0 sorries"
     ],
     "mathlibGaps": [
       "Complex manifolds",
