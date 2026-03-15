@@ -1740,6 +1740,77 @@ theorem RH_implies_convexity : RiemannHypothesis →
   intro hRH
   exact Lindelof_implies_convexity (RH_implies_Lindelof hRH)
 
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XXII: CROSS-EQUIVALENCE THEOREMS (PROVED)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- All 7 equivalent formulations are pairwise equivalent (PROVED).
+    Each direction goes through RH as the hub. -/
+theorem Robin_iff_Lagarias : RobinsInequality ↔ LagariasInequality :=
+  ⟨fun h => RH_iff_Lagarias.mp (RH_iff_Robin.mpr h),
+   fun h => RH_iff_Robin.mp (RH_iff_Lagarias.mpr h)⟩
+
+theorem Robin_iff_Mertens : RobinsInequality ↔ MertensBound :=
+  ⟨fun h => RH_iff_Mertens.mp (RH_iff_Robin.mpr h),
+   fun h => RH_iff_Robin.mp (RH_iff_Mertens.mpr h)⟩
+
+theorem Robin_iff_PrimeCounting : RobinsInequality ↔ PrimeCountingBound :=
+  ⟨fun h => RH_iff_PrimeCounting.mp (RH_iff_Robin.mpr h),
+   fun h => RH_iff_Robin.mp (RH_iff_PrimeCounting.mpr h)⟩
+
+theorem Robin_iff_deBruijnNewman : RobinsInequality ↔ deBruijnNewmanConstant = 0 :=
+  ⟨fun h => RH_iff_deBruijnNewman_eq_zero.mp (RH_iff_Robin.mpr h),
+   fun h => RH_iff_Robin.mp (RH_iff_deBruijnNewman_eq_zero.mpr h)⟩
+
+theorem Mertens_iff_PrimeCounting : MertensBound ↔ PrimeCountingBound :=
+  ⟨fun h => RH_iff_PrimeCounting.mp (RH_iff_Mertens.mpr h),
+   fun h => RH_iff_Mertens.mp (RH_iff_PrimeCounting.mpr h)⟩
+
+theorem Lagarias_iff_deBruijnNewman : LagariasInequality ↔ deBruijnNewmanConstant = 0 :=
+  ⟨fun h => RH_iff_deBruijnNewman_eq_zero.mp (RH_iff_Lagarias.mpr h),
+   fun h => RH_iff_Lagarias.mp (RH_iff_deBruijnNewman_eq_zero.mpr h)⟩
+
+/-- The 7 formulations form a complete equivalence class.
+    If any one holds, they all hold. If any one fails, they all fail. -/
+theorem RH_equivalence_class :
+    (RiemannHypothesis ↔ RobinsInequality) ∧
+    (RiemannHypothesis ↔ LagariasInequality) ∧
+    (RiemannHypothesis ↔ MertensBound) ∧
+    (RiemannHypothesis ↔ PrimeCountingBound) ∧
+    (RiemannHypothesis ↔ deBruijnNewmanConstant = 0) ∧
+    (RiemannHypothesis ↔ WeilPositivity) :=
+  ⟨RH_iff_Robin, RH_iff_Lagarias, RH_iff_Mertens,
+   RH_iff_PrimeCounting, RH_iff_deBruijnNewman_eq_zero, RH_iff_WeilPositivity⟩
+
+/-- GRH implies all 7 equivalent formulations (PROVED).
+    Since GRH → RH and RH ↔ each formulation. -/
+theorem GRH_implies_Robin (h : GeneralizedRiemannHypothesis) : RobinsInequality :=
+  RH_iff_Robin.mp (GRH_implies_RH h)
+
+theorem GRH_implies_Lagarias (h : GeneralizedRiemannHypothesis) : LagariasInequality :=
+  RH_iff_Lagarias.mp (GRH_implies_RH h)
+
+theorem GRH_implies_Mertens (h : GeneralizedRiemannHypothesis) : MertensBound :=
+  RH_iff_Mertens.mp (GRH_implies_RH h)
+
+theorem GRH_implies_Lindelof (h : GeneralizedRiemannHypothesis) : LindelofHypothesis :=
+  RH_implies_Lindelof (GRH_implies_RH h)
+
+/-- If any formulation fails, RH fails and all formulations fail (PROVED). -/
+theorem not_Robin_iff_not_RH : ¬RobinsInequality ↔ ¬RiemannHypothesis :=
+  RH_iff_Robin.not.symm
+
+theorem not_Lagarias_iff_not_RH : ¬LagariasInequality ↔ ¬RiemannHypothesis :=
+  RH_iff_Lagarias.not.symm
+
+/-- If RH fails, the de Bruijn-Newman constant is positive (PROVED). -/
+theorem not_RH_iff_deBruijnNewman_pos :
+    ¬RiemannHypothesis ↔ 0 < deBruijnNewmanConstant := by
+  rw [RH_iff_deBruijnNewman_eq_zero]
+  constructor
+  · intro h; exact lt_of_le_of_ne rodgers_tao (Ne.symm (Ne.intro h))
+  · intro h; linarith
+
 -- Core definitions and statement
 #check RiemannHypothesis
 #check RH_alt
@@ -1794,5 +1865,25 @@ theorem RH_implies_convexity : RiemannHypothesis →
 #check phragmen_lindelof_convexity
 #check Lindelof_implies_convexity
 #check RH_implies_convexity
+
+-- Cross-equivalences (PROVED)
+#check Robin_iff_Lagarias
+#check Robin_iff_Mertens
+#check Robin_iff_PrimeCounting
+#check Robin_iff_deBruijnNewman
+#check Mertens_iff_PrimeCounting
+#check Lagarias_iff_deBruijnNewman
+#check RH_equivalence_class
+
+-- GRH consequences (PROVED)
+#check GRH_implies_Robin
+#check GRH_implies_Lagarias
+#check GRH_implies_Mertens
+#check GRH_implies_Lindelof
+
+-- Negation equivalences (PROVED)
+#check not_Robin_iff_not_RH
+#check not_Lagarias_iff_not_RH
+#check not_RH_iff_deBruijnNewman_pos
 
 end RiemannHypothesis
