@@ -1,5 +1,35 @@
 # Knowledge Base: pnp-barriers
 
+---
+
+## Session 2026-03-15 (researcher-3) - Soundness Fix + Axiom Reduction (89→84)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 109)
+**Problem**: pnp-barriers
+**Prior Status**: active (4221 lines, 89 axioms, 0 sorries)
+
+### Critical Soundness Fix
+**`OWF_implies_avg_hard` derived `False`!**
+- `OWF_exist = ∃ _ : ℕ, True = True` (abstract placeholder)
+- `AvgP = {dp | ∃ _ : ℕ, True} = Set.univ`
+- So `∀ dp ∈ DistNP, dp ∈ AvgP = True`
+- Axiom said `OWF_exist → ¬(∀ dp ∈ DistNP, dp ∈ AvgP)` = `True → ¬True = False`
+- **Fix**: Replaced with sound `OWF_implies_avg_hard_sound` theorem using existing `owf_implies_avg_hard`
+
+### Axioms Eliminated (5)
+1. `SZK_complement_closed` → theorem (SZK = Set.univ)
+2. `GMW_NP_in_CZK` → theorem (CZK = Set.univ)
+3. `CZK_subset_IP` → theorem (InIP trivially satisfiable)
+4. `OWF_implies_avg_hard` → removed (unsound, derived False)
+5. `trapdoor_implies_owf` → theorem (both sides are True)
+
+### Modeling Issues Documented
+- Five Worlds: Heuristica, Pessiland, Minicrypt are all `False` because `OWF_exist = True` and `TrapdoorOWF_exist = True`
+- Only Algorithmica (P=NP) and Cryptomania (True) are non-degenerate
+- `UP_subset_NP` not provable from definitions (UP's ↔ allows multiple witnesses for false instances)
+
+### Files Modified
+- `proofs/Proofs/PNPBarriersSound.lean` — 5 axiom eliminations, soundness fix
 
 ---
 
