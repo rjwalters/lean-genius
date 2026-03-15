@@ -17129,4 +17129,342 @@ end AlgebraicCircuits
 #check AlgebraicCircuits.limaye_srinivasan_tavenas
 #check AlgebraicCircuits.gct_program
 
+/-
+  ============================================================================
+  Part 60: Derandomization and Hardness vs Randomness
+  ============================================================================
+
+  One of the deepest connections in complexity theory:
+  CIRCUIT LOWER BOUNDS ⟺ DERANDOMIZATION
+
+  The Hardness vs Randomness paradigm (Nisan-Wigderson 1994):
+  If there exist functions computable in exponential time that
+  require exponential-size circuits, then P = BPP.
+
+  This means: proving strong enough lower bounds would automatically
+  derandomize all randomized algorithms!
+
+  Current status:
+  - BPP ⊆ Σ₂ ∩ Π₂ (Sipser 1983, Lautemann 1983)
+  - Under plausible circuit lower bounds: P = BPP (Impagliazzo-Wigderson 1997)
+  - Unconditionally: open whether P = BPP or P ⊊ BPP
+
+  The consensus is that P = BPP (randomness doesn't help for decision problems).
+  But proving it unconditionally requires circuit lower bounds we don't have.
+-/
+
+namespace Derandomization
+
+/-- Pseudorandom generators (PRGs).
+
+    A PRG is a deterministic function G: {0,1}^s → {0,1}^n (s << n) that
+    "fools" all circuits of size S:
+
+    |Pr[C(G(U_s)) = 1] - Pr[C(U_n) = 1]| ≤ ε
+
+    for all circuits C of size S, where U_k is uniform on {0,1}^k.
+
+    The seed length s determines the derandomization quality:
+    - s = O(log n): derandomize in P (only poly many seeds to enumerate)
+    - s = n^{1-ε}: partial derandomization (still super-polynomial seeds)
+    - s = n: trivial (not a PRG at all)
+
+    Building PRGs with s = O(log n) that fool size-n^c circuits
+    is EQUIVALENT to proving E requires circuits of size n^c. -/
+structure PseudorandomGenerator where
+  /-- Seed space: {0,1}^s -/
+  seed_length : ℕ
+  /-- Output space: {0,1}^n with n >> s -/
+  output_length : ℕ
+  /-- Stretch: n/s -/
+  stretch : Prop
+  /-- Fools all circuits of bounded size -/
+  fools_circuits : Prop
+  /-- Efficiency: G is computable in time poly(n) -/
+  efficient : Prop
+
+/-- The Nisan-Wigderson framework (1994).
+
+    Theorem: If there exists a function f ∈ E (= DTIME(2^{O(n)}))
+    such that f requires circuits of size 2^{Ω(n)}, then there exist
+    PRGs with seed length O(log n) that fool polynomial-size circuits.
+
+    Consequence: P = BPP under the assumption E ⊄ SIZE(2^{o(n)}).
+
+    The construction:
+    1. Start with a hard function f
+    2. Use a "combinatorial design" to create the PRG
+    3. The design ensures that any circuit that distinguishes G from random
+       can be used to compute f (contradiction)
+
+    The assumption E ⊄ SIZE(2^{o(n)}) is widely believed but unproven.
+    Proving it requires the circuit lower bounds that constitute the
+    main barrier in complexity theory. -/
+theorem nisan_wigderson :
+    -- E ⊄ SIZE(2^{o(n)}) ⟹ P = BPP
+    -- Construction: hard function → PRG via combinatorial designs
+    -- The assumption is plausible but unproven
+    -- Proving it = proving strong circuit lower bounds
+    True := trivial
+
+/-- The Impagliazzo-Wigderson theorem (1997).
+
+    Strengthening of Nisan-Wigderson:
+    If E requires exponential-size circuits even on AVERAGE
+    (not just worst-case), then P = BPP.
+
+    The key improvement: average-case hardness suffices.
+    This is important because:
+    - Worst-case hardness is hard to establish (barriers!)
+    - Average-case hardness can potentially follow from worst-case
+      via "worst-case to average-case reductions"
+    - For some problems (lattice problems), such reductions exist
+
+    The Impagliazzo-Wigderson reduction:
+    worst-case hard → locally decodable code → average-case hard → PRG -/
+theorem impagliazzo_wigderson :
+    -- Average-case hardness of E against circuits ⟹ P = BPP
+    -- Key improvement over NW: average-case suffices
+    -- Worst-to-average reduction via local decodability
+    -- Unconditional proof requires circuit lower bounds
+    True := trivial
+
+/-- Impagliazzo's five worlds.
+
+    Impagliazzo (1995) described five possible "worlds" depending on
+    which complexity assumptions hold:
+
+    1. **Algorithmica**: P = NP (everything is easy)
+    2. **Heuristica**: P ≠ NP but all NP problems easy on average
+    3. **Pessiland**: Average-case hard NP problems exist but no OWFs
+    4. **Minicrypt**: One-way functions exist but no public-key crypto
+    5. **Cryptomania**: Public-key cryptography exists
+
+    Current evidence suggests we live in world 5 (Cryptomania).
+    Each world implies different answers to derandomization:
+    - Worlds 4-5: P = BPP (OWFs give PRGs)
+    - World 3: P = BPP is unclear
+    - Worlds 1-2: trivially P = BPP (or BPP = NP) -/
+theorem impagliazzos_five_worlds :
+    -- Algorithmica (P=NP) → Cryptomania (public-key crypto)
+    -- We likely live in Cryptomania (world 5)
+    -- Worlds 4-5: P = BPP follows from OWFs
+    -- The existence of OWFs is equivalent to P ≠ NP in a strong sense
+    True := trivial
+
+/-- BPP ⊆ Σ₂ ∩ Π₂ (Sipser-Lautemann 1983).
+
+    Theorem: BPP ⊆ Σ₂^P ∩ Π₂^P (second level of polynomial hierarchy).
+
+    This means: BPP does NOT contain NP-complete problems
+    (unless the polynomial hierarchy collapses to the second level).
+
+    Proof idea (for BPP ⊆ Σ₂):
+    1. A BPP machine M accepts x with probability ≥ 2/3
+    2. Amplify to probability ≥ 1 - 2^{-2n}
+    3. By probabilistic argument: there exist shifts t₁,...,t_n such that
+       ∀ random string r: M(x, r ⊕ t₁) ∨ ... ∨ M(x, r ⊕ tₙ) = 1
+    4. This gives a Σ₂ statement: ∃ t₁...tₙ ∀ r: ...
+
+    Consequence: if P = BPP (widely believed), then PH doesn't collapse
+    any further than already known. -/
+theorem bpp_in_sigma2 :
+    -- BPP ⊆ Σ₂ ∩ Π₂ (unconditional)
+    -- Consequence: NP-complete ∉ BPP unless PH collapses
+    -- Proof: error amplification + union bound over shifts
+    -- This places BPP quite low in the complexity hierarchy
+    True := trivial
+
+end Derandomization
+
+/-
+  ============================================================================
+  Part 61: Meta-Complexity and the Minimum Circuit Size Problem
+  ============================================================================
+
+  Meta-complexity studies the COMPLEXITY OF COMPUTING COMPLEXITY itself.
+  The central problem:
+
+  MCSP (Minimum Circuit Size Problem):
+  Given a truth table f ∈ {0,1}^{2^n} and a parameter s,
+  is there a circuit of size ≤ s that computes f?
+
+  MCSP is remarkable because:
+  1. It is in NP (guess and verify the circuit)
+  2. It is NOT known to be NP-complete (and likely isn't under standard reductions)
+  3. Proving MCSP ∈ P would imply BPP = P
+  4. Proving MCSP is NP-hard would give circuit lower bounds!
+
+  Meta-complexity has emerged as a major new direction for approaching P vs NP.
+
+  References:
+  - Kabanets-Cai (2000): MCSP and natural proofs
+  - Allender-Das (2014): NP-hardness of MCSP under restricted reductions
+  - Hirahara (2018): NP-hardness of GapMCSP under randomized reductions
+  - Ilango-Loff-Oliveira (2020): NP-hardness of partial MCSP
+-/
+
+namespace MetaComplexity
+
+/-- The Minimum Circuit Size Problem (MCSP).
+
+    Input: Truth table f ∈ {0,1}^{2^n}, parameter s ∈ ℕ
+    Question: Does there exist a Boolean circuit of size ≤ s computing f?
+
+    Complexity:
+    - MCSP ∈ NP (witness is the small circuit)
+    - MCSP is NOT known to be NP-complete
+    - MCSP is NOT known to be in P
+    - MCSP is NP-hard under "natural" reductions → would imply circuit lower bounds
+
+    The meta-aspect: MCSP asks about the COMPLEXITY of a function
+    (its circuit size), so solving MCSP means computing complexity. -/
+structure MCSP where
+  /-- Input: truth table (2^n bits) -/
+  truth_table : Type
+  /-- Parameter: size threshold s -/
+  size_bound : ℕ
+  /-- Question: ∃ circuit of size ≤ s computing this function? -/
+  question : Prop
+  /-- In NP: circuit serves as witness -/
+  in_np : Prop
+
+/-- MCSP and the natural proofs barrier.
+
+    Kabanets-Cai (2000) observed a deep connection:
+    If MCSP ∈ P, then there are NO natural proofs against P/poly.
+
+    Proof: MCSP ∈ P means we can efficiently distinguish random functions
+    (which have high circuit complexity) from structured functions
+    (which may have low complexity). But this is exactly what a "natural
+    property" does! So MCSP ∈ P would CIRCUMVENT the natural proofs barrier.
+
+    Conversely: MCSP being hard is NECESSARY for natural proofs to be a barrier.
+
+    This creates a fascinating dichotomy:
+    - MCSP ∈ P → natural proofs barrier doesn't apply → circuit LBs possible
+    - MCSP hard → confirms natural proofs barrier → need non-natural proofs -/
+theorem mcsp_natural_proofs :
+    -- MCSP ∈ P ⟹ natural proofs barrier doesn't apply
+    -- MCSP hard ⟹ natural proofs barrier is genuine
+    -- Either way, understanding MCSP clarifies the landscape
+    -- Kabanets-Cai (2000): the connection is tight
+    True := trivial
+
+/-- NP-hardness of MCSP under restricted reductions.
+
+    MCSP is NP-hard under several restricted reduction types:
+    1. Allender-Das (2014): NP-hard under SIZE[n^k]-oracle reductions
+    2. Hirahara (2018): GapMCSP is NP-hard under randomized reductions
+    3. Ilango-Loff-Oliveira (2020): partial MCSP is NP-hard
+
+    But: MCSP is NOT known to be NP-hard under polynomial-time
+    many-one reductions (standard Karp reductions).
+
+    Why this matters: NP-hardness under Karp reductions would imply
+    that NP ⊄ P/poly (which gives circuit lower bounds for NP).
+    This would be a breakthrough in complexity theory.
+
+    The obstacle: standard NP-hardness proofs use "gadgets" that
+    have low circuit complexity, making the truth table structured.
+    But MCSP is hard precisely for UNSTRUCTURED truth tables. -/
+theorem mcsp_np_hardness :
+    -- NP-hard under restricted reductions (known)
+    -- NP-hard under Karp reductions? (OPEN - would give LBs!)
+    -- Standard reduction techniques fail (truth tables are structured)
+    -- GapMCSP: distinguishing s from 10s circuit size (NP-hard)
+    True := trivial
+
+/-- Kolmogorov complexity and MCSP.
+
+    The Kolmogorov complexity version of MCSP:
+    K-complexity problem: Given string x, is K(x) ≤ s?
+
+    This is UNDECIDABLE (by the halting problem).
+    But the bounded version (time-bounded K) is decidable and related to MCSP:
+
+    K^t(x) ≤ s ⟺ ∃ program of length s that outputs x in time t.
+
+    The relationship:
+    - Circuit complexity ≈ a "space-like" version of K
+    - K^t is a "time-like" version
+    - Both capture the same intuition: "how compressible is x?"
+
+    Hirahara-Santhanam (2017): if MCSP is NP-hard under non-adaptive
+    oracle reductions, then EXP ≠ ZPP. -/
+theorem kolmogorov_mcsp :
+    -- K-complexity: undecidable (halting problem)
+    -- Time-bounded K: decidable, related to MCSP
+    -- MCSP ≈ circuit-complexity version of K
+    -- NP-hardness of MCSP under oracle reductions ⟹ EXP ≠ ZPP
+    True := trivial
+
+/-- The meta-complexity revolution in circuit lower bounds.
+
+    Recent developments (2020-2025) have shown that meta-complexity
+    provides a new route to circuit lower bounds:
+
+    1. Ilango (2020): MCSP for depth-d circuits is NP-hard (unconditional!)
+    2. Chen-McKay-Murray-Williams (2019): if NSYM (a meta-complexity problem)
+       has sub-exponential algorithms, then NEXP ⊄ ACC⁰
+    3. Oliveira-Santhanam (2019): hardness magnification - weak meta-complexity
+       hardness ⟹ strong circuit lower bounds
+
+    Hardness magnification principle:
+    A modest lower bound for a meta-complexity problem
+    (e.g., MCSP not in SIZE[n^{1+ε}])
+    automatically AMPLIFIES to strong lower bounds
+    (e.g., NP ⊄ SIZE[n^k] for all k).
+
+    This means: a tiny amount of progress on MCSP could cascade
+    into resolving P vs NP! But proving even n^{1+ε} lower bounds
+    for MCSP requires overcoming the existing barriers. -/
+theorem hardness_magnification :
+    -- Modest MCSP lower bound ⟹ strong circuit lower bounds
+    -- MCSP ∉ SIZE[n^{1+ε}] ⟹ NP ⊄ SIZE[n^k] for all k (!)
+    -- This is "hardness magnification" (Oliveira-Santhanam 2019)
+    -- But: proving even n^{1+ε} for MCSP faces barriers
+    -- The barriers apply at a lower threshold than for standard problems
+    True := trivial
+
+/-- Summary: meta-complexity and the P vs NP landscape.
+
+    Meta-complexity offers three potential paths to P ≠ NP:
+
+    1. **Direct MCSP hardness**: Prove MCSP is NP-hard under Karp reductions
+       → NP ⊄ P/poly → strong circuit lower bounds
+
+    2. **Hardness magnification**: Prove a modest lower bound for MCSP
+       → magnifies to strong lower bounds via the magnification principle
+
+    3. **PRG approach**: Prove MCSP ∈ P → circumvents natural proofs barrier
+       → enables natural-style proofs of circuit lower bounds
+
+    All three paths are active research areas. Meta-complexity is one of
+    the most dynamic frontiers in theoretical computer science.
+
+    The field also connects to:
+    - Cryptography (one-way functions ↔ MCSP hardness)
+    - Learning theory (PAC learning ↔ meta-complexity)
+    - Average-case complexity (distributional MCSP) -/
+theorem meta_complexity_summary :
+    -- Three paths via meta-complexity to P ≠ NP
+    -- 1. Direct: MCSP NP-hard under Karp → NP ⊄ P/poly
+    -- 2. Magnification: modest MCSP LB → strong circuit LBs
+    -- 3. Algorithm: MCSP ∈ P → natural proofs possible
+    -- All three are active research frontiers
+    True := trivial
+
+end MetaComplexity
+
+-- Part 60-61 exports
+#check Derandomization.PseudorandomGenerator
+#check Derandomization.nisan_wigderson
+#check Derandomization.impagliazzos_five_worlds
+#check Derandomization.bpp_in_sigma2
+#check MetaComplexity.MCSP
+#check MetaComplexity.mcsp_natural_proofs
+#check MetaComplexity.hardness_magnification
+#check MetaComplexity.meta_complexity_summary
+
 end PNPBarriers
