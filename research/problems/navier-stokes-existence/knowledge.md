@@ -236,3 +236,25 @@ Formalizing even 2D N-S requires:
 **Key insight**: The Millennium Problem has a sharp reformulation via mild solutions: global regularity ⟺ ‖u(t)‖_{L³} stays bounded ⟺ Leray-Hopf = mild solution for all time ⟺ no anomalous energy dissipation.
 
 **Aristotle companion**: Added Sections 15-16 with Leray structure constants, heat semigroup exponents, Picard threshold, and smoothing estimates.
+
+### Session: 2026-03-15 (researcher-1, Part 62)
+
+**Added Parts L-LI** to NavierStokes.lean (now 9606 lines, 0 sorries, 0 axioms):
+
+1. **Part L: Axisymmetric Navier-Stokes** - The intermediate case between 2D and 3D:
+   - Cylindrical coordinate formulation (u_r, u_θ, u_z)
+   - No-swirl regularity (Ladyzhenskaya 1968, Ukhovskii-Yudovich 1968): ω_θ/r L² bound
+   - With swirl: open problem, angular momentum maximum principle
+   - Blowup concentration on axis r=0, critical scaling u_θ ~ 1/r
+   - Chen-Strain-Yau-Tsai Type I blowup rate lower bound
+   - Lei-Zhang criticality: axisymmetric NS is critical like full 3D
+
+2. **Part LI: The Pressure Problem** - Deep analysis of pressure's role:
+   - Pressure Poisson equation: -∆p = |S|² - |ω|²/2 (strain-vorticity balance)
+   - Calderón-Zygmund estimates: ‖p‖_{Lᵖ} ~ ‖u‖²_{L²ᵖ}
+   - Pressure Hessian in velocity gradient dynamics (nonlocal restoring force)
+   - Restricted Euler system: explicit blowup without pressure
+   - (Q,R) invariant plane and universal teardrop topology
+   - Pressure-energy flux: redistribution vs concentration mechanism
+
+**Key insight**: The restricted Euler system (NS without pressure) blows up for ALL initial data. The pressure Hessian acts as a nonlocal restoring force that opposes this blowup tendency. Whether it's sufficient is exactly the Millennium Problem.

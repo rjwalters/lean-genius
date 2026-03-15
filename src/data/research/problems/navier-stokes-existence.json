@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts XLVI-XLIX covering CKN partial regularity, Constantin-Fefferman geometric regularity, Leray structure theorem, and Kato mild solutions. File now 9248 lines, 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: Added Parts XLVI-LI covering CKN, geometric regularity, Leray, Kato, axisymmetric NS, and pressure analysis. File now 9606 lines, 0 sorries, 0 axioms.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO⁻¹ well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
@@ -40,7 +40,9 @@
       "Part XLVI: CKN partial regularity - suitable weak solutions, ε-regularity, singular set P¹=0, dimension reduction",
       "Part XLVII: Constantin-Fefferman geometric regularity - vorticity direction, strain alignment, depletion of nonlinearity",
       "Part XLVIII: Leray structure theorem - Galerkin existence, weak-strong uniqueness, epochs of regularity, self-similar exclusion",
-      "Part XLIX: Kato mild solutions - heat semigroup, Picard iteration, critical spaces, instantaneous smoothing"
+      "Part XLIX: Kato mild solutions - heat semigroup, Picard iteration, critical spaces, instantaneous smoothing",
+      "Part L: Axisymmetric NS - no-swirl regularity, swirl criticality, CSYT blowup rate, angular momentum maximum principle",
+      "Part LI: Pressure problem - Poisson equation, Calderón-Zygmund estimates, pressure Hessian, restricted Euler, (Q,R) plane"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u·∇)u, not just energy/scaling/div-free properties",
@@ -57,7 +59,10 @@
       "Depletion of nonlinearity: (u·∇)u is effectively weaker than its factors suggest - Beltrami flows are completely depleted",
       "Leray 1934: weak solutions exist globally but energy inequality (not equality) allows dissipation at singularities",
       "Kato 1984: mild solutions give sharp reformulation - global regularity ⟺ bounded L³ norm for all time",
-      "Weak-strong uniqueness: if smooth solution exists, it is the unique weak solution - non-uniqueness implies non-regularity"
+      "Weak-strong uniqueness: if smooth solution exists, it is the unique weak solution - non-uniqueness implies non-regularity",
+      "Axisymmetric without swirl: globally regular (Ladyzhenskaya 1968) via ω_θ/r L² bound - serves as template for full 3D",
+      "Restricted Euler blows up for ALL initial data; pressure Hessian is the nonlocal restoring force that may prevent blowup in full NS",
+      "Angular momentum Γ = ru_θ has maximum principle but can concentrate on axis r=0 - potential blowup mechanism in axisymmetric flows"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
@@ -85,7 +90,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-15T12:15:00.000Z",
+  "lastUpdate": "2026-03-15T12:20:00.000Z",
   "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1

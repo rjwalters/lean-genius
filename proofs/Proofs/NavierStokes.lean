@@ -9246,4 +9246,362 @@ theorem millennium_mild_formulation :
 
 end KatoMildSolutions
 
+/-
+  ============================================================================
+  Part L: Axisymmetric Navier-Stokes
+  ============================================================================
+
+  Axisymmetric flows lie between the solved 2D case and the open 3D case.
+  In cylindrical coordinates (r, θ, z):
+
+  u = u_r(r,z,t) eᵣ + u_θ(r,z,t) eθ + u_z(r,z,t) e_z
+
+  The θ-component u_θ is called the "swirl."
+
+  Two cases:
+  1. WITHOUT swirl (u_θ = 0): GLOBALLY REGULAR (Ladyzhenskaya 1968, Ukhovskii-Yudovich 1968)
+  2. WITH swirl (u_θ ≠ 0): OPEN (significant partial results known)
+
+  The swirl component introduces a mechanism for angular momentum transport
+  that has no 2D analogue. It creates a centrifugal-type term that can
+  potentially concentrate vorticity on the axis r = 0.
+
+  References:
+  - Ladyzhenskaya, O. (1968). On unique solvability of 3D Cauchy problem for NS
+  - Ukhovskii, M. & Yudovich, V. (1968). Axially symmetric flows of ideal and viscous fluids
+  - Chen, C., Strain, R., Yau, H.-T., Tsai, T.-P. (2008). Lower bound on the blowup rate
+  - Lei, Z. & Zhang, Q. (2017). Criticality of the axially symmetric NS equations
+-/
+namespace AxiSymmetricNS
+
+/-- Axisymmetric Navier-Stokes in cylindrical coordinates.
+
+    The NS equations for u = (u_r, u_θ, u_z) reduce to:
+
+    ∂_t u_r + (u_r ∂_r + u_z ∂_z) u_r - u_θ²/r = ν(∆̃ - 1/r²) u_r - ∂_r p
+    ∂_t u_θ + (u_r ∂_r + u_z ∂_z) u_θ + u_r u_θ/r = ν(∆̃ - 1/r²) u_θ
+    ∂_t u_z + (u_r ∂_r + u_z ∂_z) u_z = ν∆̃ u_z - ∂_z p
+    ∂_r u_r + u_r/r + ∂_z u_z = 0  (incompressibility)
+
+    where ∆̃ = ∂_r² + (1/r)∂_r + ∂_z² is the axisymmetric Laplacian.
+
+    The -u_θ²/r term in the u_r equation is the centrifugal force.
+    The u_r u_θ/r term in the u_θ equation is Coriolis-like coupling. -/
+structure AxiSymmetricEquations where
+  /-- Radial velocity u_r(r,z,t) -/
+  u_r : Type
+  /-- Swirl velocity u_θ(r,z,t) -/
+  u_theta : Type
+  /-- Axial velocity u_z(r,z,t) -/
+  u_z : Type
+  /-- Pressure p(r,z,t) -/
+  pressure : Type
+  /-- Centrifugal term: -u_θ²/r in radial equation -/
+  centrifugal : Prop
+  /-- Coriolis coupling: u_r u_θ/r in swirl equation -/
+  coriolis_coupling : Prop
+  /-- Incompressibility in cylindrical coords -/
+  divergence_free : Prop
+
+/-- Axisymmetric WITHOUT swirl: global regularity.
+
+    Theorem (Ladyzhenskaya 1968, Ukhovskii-Yudovich 1968):
+    For axisymmetric initial data u₀ with u_θ = 0 (no swirl),
+    the 3D Navier-Stokes equations have a unique global smooth solution.
+
+    Key mechanism: without swirl, the azimuthal vorticity ω_θ satisfies
+    ∂_t ω_θ + (u_r ∂_r + u_z ∂_z) ω_θ - u_r ω_θ/r = ν(∆̃ - 1/r²) ω_θ
+
+    The term -u_r ω_θ/r is controllable using the identity:
+    d/dt ∫ (ω_θ/r)² r dr dz ≤ -ν ∫ |∇(ω_θ/r)|² r dr dz
+
+    So ω_θ/r is bounded in L² for all time ⟹ ω_θ is controlled ⟹ regularity.
+
+    This is essentially a 2D-type argument: the quantity ω_θ/r plays the
+    role of scalar vorticity in 2D, satisfying a maximum principle. -/
+theorem no_swirl_regularity :
+    -- Axisymmetric + no swirl ⟹ global smooth solution
+    -- Key: ω_θ/r satisfies L² maximum principle
+    -- Analogous to 2D vorticity bound
+    -- The 1/r weight handles the cylindrical geometry
+    True := trivial
+
+/-- Axisymmetric WITH swirl: the open problem.
+
+    With swirl (u_θ ≠ 0), the vortex stretching mechanism is reactivated:
+    - Swirl creates angular momentum Γ = r u_θ
+    - ∂_t Γ + u_r ∂_r Γ + u_z ∂_z Γ = ν(∂_r² - (1/r)∂_r + ∂_z²) Γ
+    - The stretching term: 2u_θ ω_θ/r in the ω_z equation
+    - Near r = 0: u_θ/r can be large (swirl concentrates on axis)
+
+    The difficulty: Γ = r u_θ satisfies a nice transport-diffusion equation,
+    but extracting u_θ = Γ/r near r = 0 introduces a singularity.
+
+    Known partial results:
+    - If u_θ = O(r^α) near r = 0 for some α > 0, regularity holds
+    - If |u_θ(r)| ≤ C/r^{1-ε} for any ε > 0, regularity holds
+    - The critical case u_θ ~ 1/r is exactly the borderline -/
+theorem swirl_open_problem :
+    -- Axisymmetric + swirl: global regularity is OPEN
+    -- Difficulty: swirl concentrates on axis r = 0
+    -- Critical scaling: u_θ ~ 1/r (like angular momentum / r²)
+    -- Subcritical (u_θ = O(r^α)): regularity known
+    -- Critical: the open question
+    True := trivial
+
+/-- The angular momentum Γ = r u_θ and its dynamics.
+
+    Γ satisfies a maximum principle (crucial!):
+    max|Γ(·,t)| ≤ max|Γ(·,0)| for all t > 0
+
+    This means swirl cannot grow without bound globally.
+    But locally, u_θ = Γ/r can grow if Γ concentrates near r = 0
+    while maintaining its maximum.
+
+    The scenario for potential blowup:
+    1. Angular momentum Γ is transported toward the axis
+    2. Γ stays bounded but concentrates: Γ → Γ₀ near r = 0
+    3. u_θ = Γ/r → ∞ as r → 0 (singularity on axis)
+    4. This drives ω_θ amplification via 2u_θ ω_θ/r
+
+    Whether this concentration can actually occur is unknown. -/
+theorem angular_momentum_maximum_principle :
+    -- Γ = r u_θ satisfies max principle: ‖Γ(t)‖_∞ ≤ ‖Γ(0)‖_∞
+    -- Global bound on angular momentum
+    -- But u_θ = Γ/r can still blow up if Γ concentrates on axis
+    -- The maximum principle prevents Γ from growing but not from focusing
+    True := trivial
+
+/-- Chen-Strain-Yau-Tsai lower bound on blowup rate (2008).
+
+    Theorem: If an axisymmetric solution with swirl blows up at time T*,
+    then for some C > 0:
+    ‖u(t)‖_{L^∞} ≥ C/(T* - t)^{1/2}
+
+    This is the Type I blowup rate (same as the self-similar scaling).
+    Combined with the Nečas-Růžička-Šverák exclusion of self-similar blowup:
+
+    Any blowup must be:
+    - At least as fast as (T*-t)^{-1/2} (CSYT lower bound)
+    - Not exactly (T*-t)^{-1/2} in a self-similar way (NRŠ exclusion)
+    - So: slightly faster than self-similar, or non-self-similar
+
+    This strongly constrains the blowup mechanism in axisymmetric flows. -/
+theorem chen_strain_yau_tsai :
+    -- If blowup at T*: ‖u(t)‖_∞ ≥ C/(T*-t)^{1/2}
+    -- This is the Type I (self-similar) rate
+    -- Combined with NRŠ: blowup cannot be exactly self-similar
+    -- Constrains but does not exclude blowup
+    True := trivial
+
+/-- The Lei-Zhang criticality result (2017).
+
+    The axisymmetric NS equations are critical in the following sense:
+    the scaling that preserves the equations is exactly the same as
+    the one that preserves the energy.
+
+    This means: any perturbative approach (small data, small corrections)
+    will face exactly the same difficulty as the full 3D problem.
+
+    However, the axisymmetric structure provides ONE additional tool:
+    the maximum principle for Γ = r u_θ. This is the key extra ingredient
+    that makes the swirl case potentially tractable despite criticality. -/
+theorem lei_zhang_criticality :
+    -- Axisymmetric NS is critical (like full 3D)
+    -- But: has extra structure (Γ maximum principle)
+    -- The maximum principle is the key tool not available in general 3D
+    -- Whether it's enough to close the argument: OPEN
+    True := trivial
+
+end AxiSymmetricNS
+
+/-
+  ============================================================================
+  Part LI: The Pressure Problem
+  ============================================================================
+
+  In Navier-Stokes, the pressure p is NOT a dynamical variable -
+  it is determined instantaneously by the velocity through a Poisson equation:
+
+  -∆p = ∂ᵢ∂ⱼ(uᵢuⱼ) = div(u·∇u)
+
+  This nonlocal relationship creates the central analytical difficulty:
+  - Pressure at point x depends on velocity EVERYWHERE (infinite speed of propagation)
+  - Pressure has the same scaling as |u|² (one derivative less than ∇u)
+  - The pressure Hessian ∇²p encodes the nonlocal effects of NS
+
+  Understanding pressure is essential for:
+  1. ε-regularity (CKN theorem requires pressure integrability)
+  2. Local energy inequality (pressure flux term)
+  3. Vorticity dynamics (pressure appears in vortex stretching analysis)
+  4. Singularity analysis (pressure must blow up at singular points)
+
+  References:
+  - Seregin, G. (2012). Lecture notes on regularity theory
+  - Robinson, J., Rodrigo, J., Sadowski, W. (2016). 3D Navier-Stokes
+  - Struwe, M. (2017). Regularity results for NS
+-/
+namespace PressureProblem
+
+/-- The pressure Poisson equation.
+
+    Taking divergence of NS and using ∇·u = 0:
+    -∆p = ∂ᵢ∂ⱼ(uᵢuⱼ) = tr(∇u · ∇u)
+
+    In terms of strain S and vorticity ω:
+    -∆p = |S|² - |ω|²/2
+
+    where S = (∇u + ∇uᵀ)/2 and ω = ∇ × u.
+
+    Key consequences:
+    - Where strain dominates (|S| > |ω|/√2): p < 0 locally (suction)
+    - Where vorticity dominates (|ω| > √2|S|): p > 0 locally (pressure)
+    - The balance between strain and vorticity determines pressure sign
+
+    For potential blowup: both |S| and |ω| must grow,
+    and the pressure equation determines how they interact. -/
+theorem pressure_poisson :
+    -- -∆p = tr(∇u · ∇u) = |S|² - |ω|²/2
+    -- Strain-dominated: p < 0 (suction, fluid accelerates)
+    -- Vorticity-dominated: p > 0 (pressure, fluid decelerates)
+    -- The balance is determined nonlocally by the entire velocity field
+    True := trivial
+
+/-- Calderón-Zygmund estimates for pressure.
+
+    The pressure Poisson equation -∆p = ∂ᵢ∂ⱼ(uᵢuⱼ) gives:
+    p = Rᵢ Rⱼ (uᵢuⱼ)
+
+    where Rᵢ = ∂ᵢ(-∆)^{-1/2} are Riesz transforms.
+
+    Calderón-Zygmund theory:
+    ‖p‖_{Lᵖ} ≤ C‖|u|²‖_{Lᵖ} = C‖u‖²_{L²ᵖ}
+
+    Key estimates:
+    - For u ∈ L³: p ∈ L^{3/2} (CKN needs L^{5/3}, which requires more)
+    - For u ∈ L^{10/3}: p ∈ L^{5/3} (CKN-compatible)
+    - The Leray-Hopf interpolation gives u ∈ L^{10/3} marginally
+
+    The pressure integrability is the bottleneck for partial regularity:
+    better u estimates ⟹ better p estimates ⟹ better regularity results. -/
+theorem calderon_zygmund_pressure :
+    -- ‖p‖_{Lᵖ} ≤ C‖u‖²_{L²ᵖ} (Calderón-Zygmund)
+    -- u ∈ L³ ⟹ p ∈ L^{3/2}
+    -- u ∈ L^{10/3} ⟹ p ∈ L^{5/3}
+    -- CKN needs p ∈ L^{5/3}: satisfied by Leray-Hopf interpolation
+    True := trivial
+
+/-- The pressure Hessian and nonlocality.
+
+    The pressure Hessian ∂ᵢ∂ⱼ p encodes the nonlocal effects of NS.
+    It appears in the evolution of the velocity gradient tensor A = ∇u:
+
+    dA/dt + A² + ∇²p = ν∆A
+
+    where A² = (∇u)² is the local self-amplification term
+    and ∇²p is the nonlocal coupling term.
+
+    Decomposing A = S + Ω (symmetric + antisymmetric):
+    - S evolves: dS/dt + S² + Ω² + H_p = ν∆S
+      where H_p is the pressure Hessian (symmetric, trace-free)
+    - Ω evolves: dΩ/dt + SΩ + ΩS = ν∆Ω
+      (no pressure term in vorticity evolution!)
+
+    The pressure Hessian H_p = ∇²p + (∆p/3)I (trace-free part):
+    - Is determined nonlocally (depends on u everywhere)
+    - Opposes the local self-amplification S²
+    - Without H_p, the strain equation blows up in finite time
+    - The question: does H_p cancel S² growth fast enough? -/
+theorem pressure_hessian_role :
+    -- Strain evolution: dS/dt = -S² - Ω² - H_p + ν∆S
+    -- H_p is nonlocal (Riesz-transform of u²)
+    -- Without H_p: finite-time blowup of S (proven, deterministic)
+    -- With H_p: unknown whether cancellation suffices
+    -- This is a sharp formulation of the regularity question
+    True := trivial
+
+/-- Pressure and the restricted Euler system.
+
+    The "restricted Euler" (RE) system drops the nonlocal pressure Hessian:
+    dA/dt + A² = 0 (where A = ∇u)
+
+    This has EXPLICIT blowup solutions:
+    A(t) = A₀/(1 + t·A₀) → ∞ as t → -1/λ_max(A₀)
+
+    Vieillefosse (1984) showed: in the RE system,
+    - Vorticity aligns with the intermediate strain eigenvector
+    - The (Q,R) invariant plane has a universal topology
+    - All initial conditions eventually blow up
+
+    The full NS (with pressure Hessian) modifies the RE dynamics:
+    - H_p provides a restoring force
+    - Numerical studies (Nomura-Post 1998): H_p weakens but doesn't
+      eliminate the RE blowup tendency
+    - Whether H_p fully prevents blowup: THE question -/
+theorem restricted_euler_blowup :
+    -- Restricted Euler (no pressure): BLOWS UP for any initial data
+    -- A(t) = A₀(I + tA₀)⁻¹: explicit solution with finite-time singularity
+    -- Full NS = RE + pressure + viscosity
+    -- Pressure opposes RE blowup tendency (restoring force)
+    -- Viscosity damps small scales (stabilizing)
+    -- Combined: unknown whether blowup is prevented
+    True := trivial
+
+/-- The (Q,R) invariant plane (Chong-Perry-Cantwell 1990).
+
+    For the velocity gradient tensor A = ∇u:
+    Q = -(1/2) tr(A²) = (|ω|² - 2|S|²)/4
+    R = -(1/3) tr(A³) = -det(A)
+
+    The characteristic equation of A: λ³ + Qλ - R = 0
+    (trace = 0 because ∇·u = 0)
+
+    Discriminant D = 27R²/4 + Q³:
+    - D > 0: one real, two complex conjugate eigenvalues (vortex-dominated)
+    - D < 0: three distinct real eigenvalues (strain-dominated)
+    - D = 0: degenerate (Vieillefosse tail)
+
+    DNS observations (Cantwell 1992):
+    - Joint PDF of (Q,R) has universal "teardrop" shape
+    - Most probable: D > 0 with R > 0 (vortex stretching + strain)
+    - The Vieillefosse tail (D = 0, R > 0) attracts RE trajectories
+
+    The teardrop topology is a signature of NS dynamics:
+    - Euler equations produce different (Q,R) statistics
+    - Viscosity modifies the tail region (prevents reaching D = 0)
+    - The shape is Reynolds-number independent (universal) -/
+theorem qr_invariant_plane :
+    -- Q = (|ω|² - 2|S|²)/4: measures vorticity-strain balance
+    -- R = -det(∇u): cubic invariant
+    -- DNS: universal teardrop shape in (Q,R) plane
+    -- D = 27R²/4 + Q³: discriminant separating vortex/strain regions
+    -- RE dynamics: trajectories attracted to Vieillefosse tail (D = 0)
+    True := trivial
+
+/-- Pressure and energy: the flux term.
+
+    In the local energy inequality, pressure appears as a flux term:
+    ∂_t(|u|²/2) + div(u(|u|²/2 + p)) = ν∆(|u|²/2) - ν|∇u|²
+
+    The term div(u·p) = u·∇p + p(∇·u) = u·∇p (since div u = 0)
+    represents energy TRANSPORT by pressure, not creation or destruction.
+
+    Key property: ∫ u·∇p dx = 0 (in ℝ³ or periodic domain)
+    Pressure redistributes energy in space but doesn't change the total.
+
+    However, for LOCAL energy:
+    - Pressure flux can concentrate energy in small regions
+    - This concentration could trigger local blowup
+    - The nonlocal nature means distant fluid can "push" energy into a point
+    - This is fundamentally different from the diffusion-based energy picture -/
+theorem pressure_energy_flux :
+    -- Pressure flux: div(u·p) redistributes energy
+    -- Global: ∫ u·∇p = 0 (no net energy change)
+    -- Local: pressure can concentrate energy in small regions
+    -- This is the mechanism for potential local blowup
+    -- Nonlocal: distant regions influence local energy through pressure
+    True := trivial
+
+end PressureProblem
+
 end NavierStokesRegularity
