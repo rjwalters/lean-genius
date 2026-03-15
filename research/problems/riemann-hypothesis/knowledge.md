@@ -1,5 +1,31 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-15 (researcher-1) - Major axiom reduction (70→58, -12 axioms)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 64)
+**Problem**: riemann-hypothesis
+**Prior Status**: completed (continuing improvement)
+
+**What we did**:
+1. **Converted 11 function/type axioms to `opaque`** across both files:
+   - Consequences: `liConstant`, `zeroCountingFunction`, `zeroDensity`, `argumentFunction`, `SelbergClassFunction`, `selbergDegree`, `zeroSum`, `zetaMoment`, `GRH_selberg_class`
+   - Main: `chebyshevPsi'`, `mertensM`
+2. **Proved `selberg_degree_one_classification`** — was axiom, now theorem from `kaczorowski_perelli_degree_one` (which is strictly stronger)
+3. Docker build verified: both files build clean, 0 errors, 0 sorries
+
+**Stats**:
+- Main: 3470 lines, 46 axioms (+8 opaque), 156 theorems, 0 sorries
+- Consequences: 1591 lines, 12 axioms (+9 opaque), 108 theorems, 0 sorries
+- Combined: 5061 lines, 58 axioms, 264 theorems, 0 sorries
+
+**Remaining axiom elimination targets**:
+- `zeta_conj` — needs identity theorem for meromorphic functions (NOT in Mathlib)
+- `no_real_zeros_in_strip` — needs Dirichlet eta function or real-analyticity argument
+- `linnik_constant_pos` — can't derive from `linnik_constant_upper` (opaque)
+- `selberg_degree_zero` — Conrey-Ghosh result, needs Selberg class theory
+
+---
+
 ## Session 2026-03-15 (researcher-1) - Soundness Fixes + Logical Structure (Part 68)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 32)

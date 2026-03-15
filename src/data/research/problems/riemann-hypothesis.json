@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed 3 sorries + 6 soundness bugs. Added Parts XXXV-XXXVI: logical structure (11 proved), Dirichlet consequences. File now 3460 lines, 55 axioms, 180 theorems, 0 sorries.",
+    "progressSummary": "PROGRESS: Major axiom reduction (70→58, -12 axioms). Converted 11 function/type axioms to opaque, proved selberg_degree_one_classification from KP theorem. Both files build clean.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -158,7 +158,11 @@
       "Proved jutila_mean_value (was axiom, zeroDensityCount=0)",
       "Proved gue_pair_correlation_limit (was sorry)",
       "Part XXXV: Logical structure - 11 proved theorems (failure_propagates, not_RH_iff_Lambda_pos, deBruijnNewman_dichotomy, gue_symmetric, etc.)",
-      "Part XXXVI: Dirichlet consequences - Linnik constant, GRH → Artin, GRH → efficient primality"
+      "Part XXXVI: Dirichlet consequences - Linnik constant, GRH → Artin, GRH → efficient primality",
+      "opaque conversions: liConstant, zeroCountingFunction, zeroDensity, argumentFunction, SelbergClassFunction, selbergDegree, zeroSum, zetaMoment (consequences)",
+      "opaque conversions: chebyshevPsi', mertensM (main)",
+      "opaque conversion: GRH_selberg_class (consequences)",
+      "theorem selberg_degree_one_classification (proved from kaczorowski_perelli)"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
@@ -184,7 +188,10 @@
       "Fixed soundness: bare RH auto-variables in 6 axioms made them vacuously provable - replaced with _root_.RiemannHypothesis",
       "GUE pair correlation gue(n) = 1 at all integers n ≥ 1 since sin(nπ) = 0 - proved in Lean",
       "¬RH ↔ Λ > 0 (proved from Rodgers-Tao + deBruijnNewman equivalence)",
-      "Linnik constant L ≤ 5 unconditionally (Xylouris 2011), L = 2 under GRH"
+      "Linnik constant L ≤ 5 unconditionally (Xylouris 2011), L = 2 under GRH",
+      "Converted 11 function/type axioms to opaque across both files (70→58 total axioms)",
+      "Proved selberg_degree_one_classification from kaczorowski_perelli_degree_one (axiom→theorem)",
+      "GRH_selberg_class (Prop axiom) converted to opaque - safe since only used as hypothesis parameter"
     ],
     "mathlibGaps": [
       "Dirichlet series",
