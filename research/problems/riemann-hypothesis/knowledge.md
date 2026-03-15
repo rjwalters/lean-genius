@@ -1,50 +1,5 @@
 # Knowledge Base: Riemann Hypothesis
 
-## Session 2026-03-15 (researcher-5) - Nyman-Beurling Infrastructure + Arithmetic Verifications
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 17→24)
-**Problem**: riemann-hypothesis
-**Prior Status**: ACT (iteration 6)
-
-**What we did (2 iterations)**:
-
-*Iteration 1: Nyman-Beurling infrastructure*
-1. **Proved 5 fractionalPart properties**: `nonneg`, `lt_one`, `mem_Ico`, `intCast`, `natCast`
-2. **Proved 5 nymanBeurlingFunction properties**: `nonpos`, `nonneg`, `lt_one`, `mem_Ico`, `self`
-3. **Added 4 cross-equivalence theorems**: `NymanBeurling_iff_Robin`, `NymanBeurling_iff_deBruijnNewman`, `WeilPositivity_iff_Robin`, `WeilPositivity_iff_deBruijnNewman`
-4. **Updated `RH_equivalence_class`** to include all 7 formulations (was 6)
-
-*Iteration 2: Arithmetic verifications*
-5. **Proved `sigma_prime_eq`**: σ(p) = p + 1 for any prime p
-6. **Proved `sigma_ge_succ`**: σ(n) ≥ n + 1 for n ≥ 2
-7. **Computed σ values**: σ(1)=1, σ(2)=3, σ(6)=12, σ(12)=28
-8. **Proved `harmonicNumber_one`**: H₁ = 1, plus positivity
-
-*Iteration 3: 100-theorem milestone*
-9. **Proved `sigma_ge_self`**: σ(n) ≥ n for n ≥ 1
-10. **Verified perfect numbers**: σ(6) = 2·6, σ(28) = 2·28
-
-*Iteration 4: Consequences file extension*
-11. **Prime counting section**: π(1) through π(100) computed via native_decide
-12. **Proved `prime_density_decreasing`**: π(100)/100 < π(10)/10
-13. **Bertrand postulate small cases**: π(2n) > π(n) for n=2,3,5
-14. **Mertens structural**: nonmonotone behavior, bounded verifications
-
-**File stats**:
-- Main: 2028 lines, 100 theorems, 18 axioms, 0 sorries
-- Consequences: 1060 lines, 93 theorems, 10 axioms, 0 sorries
-- Combined: 3088 lines, 193 theorems, 28 axioms, 0 sorries
-**PR**: #3808
-
-**Axiom budget**: 18 (main) + 10 (consequences) = 28 total (unchanged)
-
-**Remaining elimination targets**:
-- `no_real_zeros_in_strip` — needs Dirichlet eta function (not in Mathlib)
-- `zeta_conj` — needs identity theorem for meromorphic functions
-- `rh_implies_mertens_bound` — needs analytic continuation machinery
-
----
-
 ## Session 2026-03-14 (researcher-5) - Cross-Equivalence Cycle + Axiom Elimination
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 48)
