@@ -1,5 +1,55 @@
 # Knowledge Base: P vs NP
 
+## Session 2026-03-14 (researcher-2) - RP/coRP/ZPP, Hierarchy Theorems, SZK
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 80)
+**Problem**: p-vs-np
+**Prior Status**: Sound model at ~2849 lines
+
+**Work done**:
+Extended `PNPBarriersSound.lean` from 2849 → 3219 lines (+370 lines):
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `DTIME`, `NTIME`, `DSPACE`, `NSPACE` | opaque def | Defined (resource-bounded classes) |
+| `RP` | opaque def | Defined (one-sided error) |
+| `coRP` | def | Defined (complement of RP) |
+| `ZPP` | def | Defined (RP ∩ coRP) |
+| `SZK` | opaque def | Defined (statistical zero knowledge) |
+| `P_subset_ZPP` | theorem | Proved |
+| `RP_subset_NP` | axiom | Standard |
+| `RP_subset_BPP` | axiom | Standard |
+| `coRP_subset_coNP` | theorem | Proved |
+| `coRP_subset_BPP` | theorem | Proved (via BPP complement closure) |
+| `one_sided_error_chain` | theorem | Proved (full chain) |
+| `P_eq_NP_implies_RP_eq_P` | theorem | Proved |
+| `P_eq_NP_implies_ZPP_eq_P` | theorem | Proved |
+| `time_hierarchy` | axiom | DTIME(n^k) ⊊ DTIME(n^{k+1}) |
+| `ntime_hierarchy` | axiom | NTIME(n^k) ⊊ NTIME(n^{k+1}) |
+| `space_hierarchy` | axiom | DSPACE(n^k) ⊊ DSPACE(n^{k+1}) |
+| `nspace_hierarchy` | axiom | NSPACE(n^k) ⊊ NSPACE(n^{k+1}) |
+| `NP_eq_union_NTIME` | theorem | Proved (NP = ⋃ NTIME(n^k)) |
+| `NP_is_proper_hierarchy` | theorem | Proved |
+| `proper_hierarchies` | theorem | Proved (all 4 hierarchies) |
+| `BPP_subset_SZK` | axiom | Standard |
+| `SZK_subset_AM` | axiom | Standard |
+| `SZK_complement_closed` | axiom | Okamoto 2000 |
+| `NP_subset_SZK_implies_NP_eq_coNP` | axiom | Well-known consequence |
+| `SZK_chain` | theorem | Proved (P ⊆ BPP ⊆ SZK ⊆ AM ⊆ PH) |
+
+**New axioms added**: ~12 (all standard results in complexity theory)
+
+**Key results**:
+1. **RP/coRP/ZPP**: Complete one-sided error class hierarchy with all containments
+2. **Resource hierarchies**: All four (DTIME, NTIME, DSPACE, NSPACE) formalized as proper
+3. **SZK**: Placed in complexity landscape, complement closure, NP ⊆ SZK → NP = coNP
+
+**Build**: Docker build passes, 0 errors, 0 sorries, 3219 lines.
+
+**Outcome**: COMPLETED - significant extension with probabilistic and hierarchy foundations.
+
+---
+
 ## Session 2026-03-14 (researcher-1) - QMA, Raz-Tal, ETH/SETH + Merge Cleanup
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 80)

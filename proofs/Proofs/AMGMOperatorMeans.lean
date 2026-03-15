@@ -184,38 +184,13 @@ theorem loewner_le_arithMean_right {A B : Matrix n n ℝ}
 /-- Matrix square root for PSD matrices -/
 axiom matSqrt (A : Matrix n n ℝ) (hA : RealPosSemidef A) : Matrix n n ℝ
 
-/-- The matrix square root is PSD -/
-axiom matSqrt_posSemidef (A : Matrix n n ℝ) (hA : RealPosSemidef A) :
-    RealPosSemidef (matSqrt A hA)
-
-/-- S * S = A -/
-axiom matSqrt_sq (A : Matrix n n ℝ) (hA : RealPosSemidef A) :
-    matSqrt A hA * matSqrt A hA = A
-
 /-- Matrix geometric mean for positive definite matrices -/
 axiom matGeomMean (A B : Matrix n n ℝ) (hA : RealPosDef A) (hB : RealPosDef B) :
     Matrix n n ℝ
 
-/-- The geometric mean is positive definite -/
-axiom matGeomMean_posDef (A B : Matrix n n ℝ)
-    (hA : RealPosDef A) (hB : RealPosDef B) :
-    RealPosDef (matGeomMean A B hA hB)
-
-/-- Commutativity: A # B = B # A -/
-axiom matGeomMean_comm (A B : Matrix n n ℝ)
-    (hA : RealPosDef A) (hB : RealPosDef B) :
-    matGeomMean A B hA hB = matGeomMean B A hB hA
-
 /-- Self geometric mean: A # A = A -/
 axiom matGeomMean_self (A : Matrix n n ℝ) (hA : RealPosDef A) :
     matGeomMean A A hA hA = A
-
-/-- Monotonicity in both arguments -/
-axiom matGeomMean_mono {A A' B B' : Matrix n n ℝ}
-    (hA : RealPosDef A) (hA' : RealPosDef A')
-    (hB : RealPosDef B) (hB' : RealPosDef B')
-    (hAA' : A ≤_L A') (hBB' : B ≤_L B') :
-    matGeomMean A B hA hB ≤_L matGeomMean A' B' hA' hB'
 
 /-
 ## Section 5: The Operator AM-GM Inequality
@@ -298,16 +273,5 @@ theorem harmonic_geometric_arithmetic (A B : Matrix n n ℝ)
     (hA : RealPosDef A) (hB : RealPosDef B) :
     matHarmonicMean A B hA hB ≤_L matArithMean A B :=
   loewner_trans (harmonic_le_geometric A B hA hB) (operator_am_gm A B hA hB)
-
-/-
-## Section 8: Congruence Invariance
--/
-
-/-- C^T (A # B) C = (C^T A C) # (C^T B C) for invertible C -/
-axiom matGeomMean_congruence (A B C : Matrix n n ℝ)
-    (hA : RealPosDef A) (hB : RealPosDef B) (hC : IsUnit C)
-    (hCAC : RealPosDef (Cᵀ * A * C)) (hCBC : RealPosDef (Cᵀ * B * C)) :
-    Cᵀ * matGeomMean A B hA hB * C =
-      matGeomMean (Cᵀ * A * C) (Cᵀ * B * C) hCAC hCBC
 
 end

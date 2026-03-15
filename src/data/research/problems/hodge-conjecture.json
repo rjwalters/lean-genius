@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Removed 3 duplicate definitions, proved 7 new preadditive category laws (distributivity, negation interaction, associativity, zero identity). File now 2241 lines with 37+ proved theorems, 25 axioms (all deep algebraic geometry). Category of Hodge structures verified as preadditive.",
+    "progressSummary": "PROGRESS: Eliminated 8 unused axioms (37→29). File: 2476 lines, 29 axioms, 0 sorries.",
     "builtItems": [
       "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
       "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
@@ -44,7 +44,8 @@
       "neg_comp, comp_neg (negation interaction with composition) in HodgeConjecture.lean",
       "add_assoc_morphism, zero_add_morphism, add_zero_morphism (abelian group laws for Hom) in HodgeConjecture.lean",
       "SubHodgeStructure.map (image of sub-Hodge structure under morphism) in HodgeConjecture.lean",
-      "HodgeStructureMorphism.sub (subtraction of morphisms) in HodgeConjecture.lean"
+      "HodgeStructureMorphism.sub (subtraction of morphisms) in HodgeConjecture.lean",
+      "Eliminated 8 dead-code axioms: serre_duality_hodge_numbers, cycleClassMap_additive, hodge_tate_equivalent_abelian, hodge_conjecture_direct_sum, geometric_hodge_is_polarizable, lefschetz_preserves_algebraic, deligne_mixed_hodge_structure, tateTwist_component (37 → 29 axioms)"
     ],
     "insights": [
       "Millennium Prize problem, wide open - no known attack strategy",
@@ -61,7 +62,10 @@
       "Weight filtration increasing-general proved for mixed Hodge structures",
       "Removed duplicate definitions (zero/neg/add morphisms and SubHodgeStructure.inter appeared twice)",
       "Proved 7 new preadditive category laws: comp_add, add_comp, neg_comp, comp_neg, add_assoc_morphism, zero_add_morphism, add_zero_morphism",
-      "Pure Hodge structures of weight k now verified as preadditive category: composition is bilinear over the additive group of morphisms"
+      "Pure Hodge structures of weight k now verified as preadditive category: composition is bilinear over the additive group of morphisms",
+      "Tate object Q(1) proved constructively as weight-0 Hodge structure over Q with complexification via algebraMap Q C",
+      "Tate twist and dual require axiomatization due to N-indexed weights (signed integer weights would allow more proofs)",
+      "Poincare duality statement requires integer weights for precise formulation; axiomatized abstractly"
     ],
     "mathlibGaps": [
       "Hodge theory / Hodge decomposition",

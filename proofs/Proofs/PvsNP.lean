@@ -1121,11 +1121,6 @@ theorem P_eq_NP_implies_PH_collapse_base (h : P = NP) :
     Specifically, DTIME(n) ⊊ DTIME(n²).
 
     This is a known separation result proven by diagonalization. -/
-axiom time_hierarchy : ∃ problem : DecisionProblem,
-    (∃ (prog : Program) (poly : Polynomial), poly.degree = 2 ∧
-      solves prog problem ∧ runsInTime prog poly.toTimeBound) ∧
-    ¬(∃ (prog : Program) (poly : Polynomial), poly.degree = 1 ∧
-      solves prog problem ∧ runsInTime prog poly.toTimeBound)
 
 /-- EXPTIME: Problems solvable in exponential time -/
 def EXPTIME : Set DecisionProblem := { problem |
@@ -1134,7 +1129,6 @@ def EXPTIME : Set DecisionProblem := { problem |
 }
 
 /-- P ≠ EXPTIME is a known separation result -/
-axiom P_ne_EXPTIME : P ≠ EXPTIME
 
 -- ============================================================
 -- PART 17: Ladner's Theorem (NP-Intermediate Problems)

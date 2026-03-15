@@ -96,20 +96,6 @@ axiom IsHarmonic {n : ℕ} (Ω : BoundedDomain n) (u : (Fin n → ℝ) → ℝ) 
 def DirichletProblem {n : ℕ} (Ω : BoundedDomain n) (f : (Fin n → ℝ) → ℝ) : Prop :=
   ∃ u : (Fin n → ℝ) → ℝ, IsHarmonic Ω u ∧ ∀ x ∈ boundary Ω, u x = f x
 
-/-- **Dirichlet Existence Theorem**: For a bounded domain with regular boundary
-    and continuous boundary data, the Dirichlet problem has a unique solution.
-
-    This is one of the major positive results for Hilbert's twentieth problem. -/
-axiom dirichlet_existence {n : ℕ} (Ω : BoundedDomain n)
-    (f : (Fin n → ℝ) → ℝ) (hf : Continuous f) :
-    DirichletProblem Ω f
-
-/-- Uniqueness of the Dirichlet problem solution (Maximum Principle) -/
-axiom dirichlet_uniqueness {n : ℕ} (Ω : BoundedDomain n)
-    (u v : (Fin n → ℝ) → ℝ) (hu : IsHarmonic Ω u) (hv : IsHarmonic Ω v)
-    (hbdry : ∀ x ∈ boundary Ω, u x = v x) :
-    ∀ x ∈ Ω.domain, u x = v x
-
 end DirichletProblem
 
 /-!
@@ -164,44 +150,12 @@ section LaxMilgram
 
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [CompleteSpace V]
 
-/-- **The Lax-Milgram Theorem**
-
-    For a bounded, coercive bilinear form a and bounded linear functional F
-    on a Hilbert space V, there exists a unique u such that a(u,v) = F(v)
-    for all v.
-
-    This is the workhorse theorem for proving existence of weak solutions
-    to elliptic boundary value problems. -/
-axiom lax_milgram (a : BilinearForm V) (F : V →ₗ[ℝ] ℝ)
-    (ha_bounded : IsBoundedBilinear a)
-    (ha_coercive : IsCoercive a)
-    (hF_bounded : IsBoundedFunctional F) :
-    ∃! u : V, ∀ v : V, a u v = F v
-
-/-- The Lax-Milgram solution satisfies an a priori estimate.
-    This shows the solution depends continuously on the data. -/
-axiom lax_milgram_estimate (a : BilinearForm V) (F : V →ₗ[ℝ] ℝ)
-    (ha_coercive : IsCoercive a) (hF_bounded : IsBoundedFunctional F)
-    (u : V) (hu : ∀ v : V, a u v = F v) :
-    ∃ α C : ℝ, (0 < α) ∧ ‖u‖ ≤ C / α
-
 /-- When the bilinear form is symmetric, Lax-Milgram reduces to
     minimizing the energy functional J(v) = (1/2)a(v,v) - F(v).
 
     The solution u minimizes J over V. -/
 def EnergyFunctional (a : BilinearForm V) (F : V →ₗ[ℝ] ℝ) (v : V) : ℝ :=
   (1/2) * a v v - F v
-
-/-- For symmetric bilinear forms, Lax-Milgram is equivalent to
-    minimizing the energy functional. This is the direct method
-    in the calculus of variations. -/
-axiom lax_milgram_variational (a : BilinearForm V) (F : V →ₗ[ℝ] ℝ)
-    (ha_symmetric : ∀ u v : V, a u v = a v u)
-    (ha_bounded : IsBoundedBilinear a)
-    (ha_coercive : IsCoercive a)
-    (hF_bounded : IsBoundedFunctional F) :
-    ∃ u : V, (∀ v : V, a u v = F v) ∧
-             (∀ v : V, EnergyFunctional a F u ≤ EnergyFunctional a F v)
 
 end LaxMilgram
 
@@ -224,33 +178,10 @@ section PoissonEquation
     Dirichlet boundary value problems. -/
 axiom H1_zero (n : ℕ) (Ω : BoundedDomain n) : Type
 
-/-- H₀¹(Ω) is a Hilbert space with the H¹ inner product -/
-axiom H1_zero_hilbert (n : ℕ) (Ω : BoundedDomain n) :
-    InnerProductSpace ℝ (H1_zero n Ω)
-
-/-- H₀¹(Ω) is complete (it's a Hilbert space) -/
-axiom H1_zero_complete (n : ℕ) (Ω : BoundedDomain n) :
-    CompleteSpace (H1_zero n Ω)
-
 /-- The weak formulation of -Δu = f: find u such that
     ∫ ∇u · ∇v = ∫ fv for all test functions v -/
 axiom WeakPoisson (n : ℕ) (Ω : BoundedDomain n)
     (f : (Fin n → ℝ) → ℝ) (u : H1_zero n Ω) : Prop
-
-/-- **Existence theorem for Poisson equation**
-
-    For f ∈ L²(Ω), the Poisson equation -Δu = f with u = 0 on ∂Ω
-    has a unique weak solution u ∈ H₀¹(Ω).
-
-    This is a direct application of Lax-Milgram. -/
-axiom poisson_existence (n : ℕ) (Ω : BoundedDomain n)
-    (f : (Fin n → ℝ) → ℝ) :
-    ∃! u : H1_zero n Ω, WeakPoisson n Ω f u
-
-/-- The weak solution satisfies an energy estimate -/
-axiom poisson_estimate (n : ℕ) (Ω : BoundedDomain n)
-    (f : (Fin n → ℝ) → ℝ) (u : H1_zero n Ω) (hu : WeakPoisson n Ω f u) :
-    ∃ C : ℝ, 0 < C  -- ‖u‖_{H¹} ≤ C‖f‖_{L²}
 
 end PoissonEquation
 
@@ -270,25 +201,6 @@ section LewysExample
 /-- Lewy's operator: L = ∂/∂x + i∂/∂y - 2i(x + iy)∂/∂t
     This is a perfectly smooth first-order linear operator. -/
 axiom LewyOperator : ((ℝ × ℝ × ℝ) → ℂ) → ((ℝ × ℝ × ℝ) → ℂ)
-
-/-- There exist smooth functions f such that Lu = f has no
-    solution u in any neighborhood of any point.
-
-    This is Lewy's famous negative result (1957). -/
-axiom lewys_example :
-    ∃ f : (ℝ × ℝ × ℝ) → ℂ,
-      Continuous f ∧
-      ¬∃ u : (ℝ × ℝ × ℝ) → ℂ, ∀ p, LewyOperator u p = f p
-
-/-- The failure is not about boundary conditions - there's no
-    solution even locally, ignoring boundaries entirely.
-
-    Lewy's example shows that solvability is a deep structural
-    property of the PDE, not just about the boundary. -/
-axiom lewy_local_unsolvability :
-    ∃ f : (ℝ × ℝ × ℝ) → ℂ,
-    ∀ (U : Set (ℝ × ℝ × ℝ)), IsOpen U → U.Nonempty →
-    ¬∃ u : (ℝ × ℝ × ℝ) → ℂ, ∀ p ∈ U, LewyOperator u p = f p
 
 end LewysExample
 
@@ -328,16 +240,5 @@ theorem hilbert_20_status :
     -- Negative: Not all PDEs solvable
     (∃ (_ : Prop), True)    -- Lewy's counterexample
     := ⟨⟨True, trivial⟩, ⟨True, trivial⟩, ⟨True, trivial⟩, ⟨True, trivial⟩⟩
-
-/-- The complete answer to Hilbert's twentieth problem -/
-axiom hilbert_20_complete :
-    -- For elliptic PDEs with coercive bilinear forms: YES, solutions exist
-    (∀ V : Type*, ∀ [NormedAddCommGroup V], ∀ [InnerProductSpace ℝ V], ∀ [CompleteSpace V],
-      ∀ a : BilinearForm V, ∀ F : V →ₗ[ℝ] ℝ,
-        IsBoundedBilinear a → IsCoercive a → IsBoundedFunctional F →
-        ∃! u : V, ∀ v, a u v = F v) ∧
-    -- For some smooth PDEs: NO, solutions do not exist (Lewy)
-    (∃ L : ((ℝ × ℝ × ℝ) → ℂ) → ((ℝ × ℝ × ℝ) → ℂ),
-      ∃ f : (ℝ × ℝ × ℝ) → ℂ, ¬∃ u, ∀ p, L u p = f p)
 
 end Hilbert20BoundaryValue

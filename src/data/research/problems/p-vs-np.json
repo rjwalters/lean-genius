@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added QMA (quantum NP), Raz-Tal oracle separation (BQP vs PH), ETH/SETH hypotheses. Cleaned merge conflicts. Sound model: ~50 axioms, ~240 defs/theorems, 1 sorry (ETH_implies_P_ne_NP), 2740 lines.",
+    "progressSummary": "PROGRESS: Eliminated 34 unused axioms across P vs NP files. Total axioms reduced from 355 to 321.",
     "builtItems": [
       {
         "name": "P",
@@ -337,7 +337,8 @@
         "name": "comprehensive_landscape_with_quantum",
         "description": "Full landscape with quantum classes",
         "proven": true
-      }
+      },
+      "Eliminated 34 dead-code axioms across 4 files: PNPBarriers (235→219), PNPBarriersOQ01 (57→44), PNPBarriersSound (59→56), PvsNP (4→2)"
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",

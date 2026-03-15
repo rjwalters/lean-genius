@@ -1,8 +1,8 @@
 {
   "slug": "bezout-identity-oq-03-oq-01-oq-02",
   "title": "Non-coprime CRT: ℤ/mnℤ ↪ ℤ/mℤ × ℤ/nℤ image characterization",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
@@ -11,31 +11,39 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "solvable_implies_gcd_dvd",
+      "gcd_dvd_implies_solvable",
+      "generalized_crt_iff",
+      "crt_unique_mod_lcm",
+      "generalized_crt_full",
+      "genCRTSolution"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Characterize image of Z -> Z/mZ x Z/nZ for non-coprime m,n (ACHIEVED)"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-13T03:56:04.575Z",
-    "iteration": 1,
-    "focus": "",
+    "phase": "COMPLETED",
+    "since": "2026-03-14T01:40:00.000Z",
+    "iteration": 2,
+    "focus": "Gallery integration",
     "blockers": [],
     "nextAction": "",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: File complete - 12 theorems, 0 sorries, 0 axioms. Non-coprime CRT fully characterized: solvability iff gcd|diff, uniqueness mod lcm, explicit formula, concrete examples.",
+    "progressSummary": "COMPLETED: Full gallery integration created. 12 theorems, 0 sorries, 0 axioms.",
     "builtItems": [
       "solvable_implies_gcd_dvd: forward direction of solvability criterion",
       "gcd_dvd_implies_solvable: backward direction via Bezout identity",
       "generalized_crt_iff: complete solvability iff",
       "crt_unique_mod_lcm: uniqueness modulo lcm",
-      "generalized_crt_full: existence + uniqueness combined"
+      "generalized_crt_full: existence + uniqueness combined",
+      "Gallery entry: meta.json, annotations.json, index.ts"
     ],
     "insights": [
       "File is complete with 0 sorries - no further work needed",
@@ -59,7 +67,7 @@
     "mathlib": []
   },
   "started": "2026-03-13T03:56:04.575Z",
-  "lastUpdate": "2026-03-13T20:15:00.000Z",
+  "lastUpdate": "2026-03-14T01:40:00.000Z",
   "significance": 7,
   "tractability": 7
 }

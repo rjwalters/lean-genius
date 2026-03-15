@@ -1496,3 +1496,49 @@ This is different from P vs NP barriers:
 williams_nexp_not_acc0 removed, AC0_strict_subset_TC0 reused, etc.)
 **New theorems**: 12+ proved (SIZE_monotone, hierarchy chain, frontier, etc.)
 **Build**: Clean (0 errors, was 2 errors before fixes)
+
+## Session 2026-03-14 (researcher-3, Session 32) - Fine-Grained Complexity (ETH, SETH)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 105)
+**Problem**: pnp-barriers
+**Prior Status**: active (2868 lines, 53 axioms)
+
+**What we did**:
+1. Added Part 30: Fine-Grained Complexity (ETH, SETH)
+2. Defined SUBEXP (subexponential time) class
+3. Defined ETH (Exponential Time Hypothesis): SAT ∉ SUBEXP
+4. Defined SETH (Strong ETH): every SAT solver requires near-2^n time
+5. Axiomatized SETH_implies_ETH (exponential growth comparison)
+6. Proved ETH_implies_P_ne_NP from Cook-Levin + P ⊆ SUBEXP
+7. Proved SETH_implies_P_ne_NP by transitivity
+8. Added Orthogonal Vectors (OV) problem and SETH-hardness
+9. Added Sparsification Lemma (axiomatized)
+10. Added ETH → k-CLIQUE lower bound (axiomatized)
+11. Proved ETH_consistent_with_barriers
+12. Added ETH → BPP = P (derandomization via IW)
+13. Added SETH → NP ⊄ P/poly
+14. Proved SETH_blocks_karp_lipton_premise
+15. Proved fine_grained_summary combining all results
+
+**Stats after Part 30**: 3079 lines, 202 theorems/defs, 59 axioms, 0 sorries
+
+**New axioms** (6):
+- SETH_implies_ETH (exponential comparison, hard to formalize)
+- OV_in_P, OV_SETH_hard (Orthogonal Vectors)
+- sparsification_lemma, ETH_subexp_closure, ETH_clique_lower_bound
+- ETH_implies_derandomization, SETH_implies_NP_not_in_Ppoly
+
+**New definitions** (4):
+- SUBEXP, ETH, SETH, OV
+
+**New theorems proved** (8):
+- ETH_implies_P_ne_NP, SETH_implies_P_ne_NP
+- fine_grained_hierarchy, OV_quadratic_barrier
+- ETH_consistent_with_barriers, ETH_IW_connection
+- SETH_blocks_karp_lipton_premise, fine_grained_summary
+
+**Possible future work**:
+- Part 31: Communication complexity barriers
+- Part 32: Nisan-Wigderson generator formalization
+- Part 33: Razborov-Smolensky method (AC^0[p] lower bounds)
+- Reduce axiom count by deriving more from existing model

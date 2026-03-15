@@ -90,12 +90,6 @@ Key values:
     Axiomatized since full construction requires polytope theory. -/
 axiom ehrhart_fn (P : EhrhartData) : ℕ → ℕ
 
-/-- L_P(0) = 1 for any lattice polytope (the constant term) -/
-axiom ehrhart_at_zero (P : EhrhartData) : ehrhart_fn P 0 = 1
-
-/-- L_P(1) = total number of lattice points in P -/
-axiom ehrhart_at_one (P : EhrhartData) : ehrhart_fn P 1 = P.total_points
-
 -- ============================================================
 -- PART 3: Polynomiality (Ehrhart's Theorem)
 -- ============================================================
@@ -110,22 +104,6 @@ The leading coefficient is vol(P) and the constant term is 1.
 /-- The Ehrhart polynomial L_P(X) ∈ ℚ[X] such that L_P(n) = |nP ∩ ℤᵈ|.
     This is Ehrhart's main theorem: the counting function is polynomial. -/
 axiom ehrhart_poly (P : EhrhartData) : ℚ[X]
-
-/-- The Ehrhart polynomial has degree equal to the dimension -/
-axiom ehrhart_degree (P : EhrhartData) :
-    (ehrhart_poly P).natDegree = P.dim
-
-/-- The leading coefficient is the volume -/
-axiom ehrhart_leading_coeff (P : EhrhartData) :
-    (ehrhart_poly P).leadingCoeff = P.volume
-
-/-- The constant term is 1 (L_P(0) = 1) -/
-axiom ehrhart_constant_term (P : EhrhartData) :
-    (ehrhart_poly P).eval 0 = 1
-
-/-- The polynomial evaluates to the counting function at positive integers -/
-axiom ehrhart_eval (P : EhrhartData) (n : ℕ) :
-    (ehrhart_poly P).eval (n : ℚ) = ehrhart_fn P n
 
 -- ============================================================
 -- PART 4: 2D Case - Recovering Pick's Theorem
@@ -356,16 +334,9 @@ Combined with L_P(X) = A·X² + (b/2)·X + 1:
 /-- Interior lattice point counting function for dilates -/
 axiom ehrhart_interior_fn (P : EhrhartData) : ℕ → ℕ
 
-/-- At n=1, interior counting gives interior points of P -/
-axiom ehrhart_interior_at_one (P : EhrhartData) :
-    ehrhart_interior_fn P 1 = P.interior_points
-
 /-- **Ehrhart-Macdonald Reciprocity**:
     Evaluating the Ehrhart polynomial at -n gives (-1)^d times
     the interior lattice point count of the n-th dilate. -/
-axiom ehrhart_macdonald_reciprocity (P : EhrhartData) (n : ℕ) (hn : 0 < n) :
-    (ehrhart_poly P).eval (-(n : ℚ)) =
-      (-1) ^ P.dim * ehrhart_interior_fn P n
 
 /-- For 2D polygons, reciprocity at n=1 recovers Pick's theorem:
     L_P(-1) = A - b/2 + 1 = i (interior points) -/

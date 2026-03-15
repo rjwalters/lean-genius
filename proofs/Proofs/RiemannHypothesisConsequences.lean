@@ -152,19 +152,9 @@ axiom rh_implies_mertens_bound :
 
 /-- RH implies θ(x) = x + O(√x log²x).
 This is essentially equivalent to the explicit formula with RH. -/
-axiom rh_implies_chebyshev_bound :
-  RiemannHypothesis →
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-    |chebyshevTheta n - n| ≤ C * Real.sqrt n * (Real.log n)^2
 
 /-- RH implies prime gaps are O(√p log p).
 Cramér's conditional bound. -/
-axiom rh_implies_prime_gap_bound :
-  RiemannHypothesis →
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    let p := nth Nat.Prime n
-    let q := nth Nat.Prime (n + 1)
-    (q : ℝ) - p ≤ C * Real.sqrt p * Real.log p
 
 /-!
 ## Unconditional Results
@@ -223,15 +213,9 @@ This was proved by Littlewood.
 
 /-- RH is equivalent to: for all ε > 0, |M(x)| = O(x^(1/2 + ε))
 This is a classical result of Littlewood. -/
-axiom rh_iff_mertens_half_epsilon :
-  RiemannHypothesis ↔
-  ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    |(mertens n : ℝ)| ≤ C * (n : ℝ) ^ (1/2 + ε)
 
 /-- The Mertens conjecture (disproved): |M(x)| < √x for all x ≥ 1
 Disproved by Odlyzko-te Riele in 1985. We state its negation. -/
-axiom mertens_conjecture_false :
-  ¬(∀ n : ℕ, n ≥ 1 → |(mertens n : ℝ)| < Real.sqrt n)
 
 /-!
 ## Extended Mertens Computations
@@ -322,12 +306,6 @@ theorem chebyshevPsi_step (n : ℕ) :
 The connection between RH and ψ(x) is fundamental.
 RH is equivalent to: ψ(x) = x + O(√x log² x)
 -/
-
-/-- RH implies ψ(x) = x + O(√x log² x) -/
-axiom rh_implies_psi_bound :
-  RiemannHypothesis →
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-    |chebyshevPsi n - n| ≤ C * Real.sqrt n * (Real.log n)^2
 
 /-!
 ## Part 9: Mathlib Zeta Function Theorems (Session 4)
@@ -510,8 +488,14 @@ References:
 section LisCriterion
 
 /-- Li's constants λₙ defined in terms of non-trivial zeros.
-This is an abstract definition - computing these requires knowing the zeros! -/
-noncomputable def liConstant (_n : ℕ) : ℝ := 0  -- Placeholder
+
+**SOUNDNESS NOTE**: This must be an opaque axiom, not a concrete value like `0`.
+If defined as `0`, then `lis_criterion` (RH ↔ ∀ n ≥ 1, λₙ ≥ 0) would trivially
+prove RH since 0 ≥ 0 is always true.
+
+The true definition is λₙ = Σ_ρ [1 - (1 - 1/ρ)ⁿ] summed over non-trivial zeros,
+which requires the zero set of ζ(s) — not yet formalized. -/
+axiom liConstant : ℕ → ℝ
 
 /-- Li's Criterion: RH is equivalent to all Li constants being non-negative.
 This was proved by Li (1997) and generalized by Bombieri-Lagarias (1999). -/
@@ -520,10 +504,6 @@ axiom lis_criterion :
 
 /-- The Keiper-Li asymptotic: if RH holds, λₙ ~ n(A log n + B) for explicit A > 0, B.
 If RH fails, λₙ oscillates wildly. -/
-axiom li_constant_asymptotic :
-  RiemannHypothesis →
-  ∃ A B : ℝ, A > 0 ∧ ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-    |liConstant n - n * (A * Real.log n + B)| < ε * n * Real.log n
 
 end LisCriterion
 
@@ -542,8 +522,11 @@ As of 2004, the first 10^13 zeros have been verified to be on the critical line.
 section ZeroCounting
 
 /-- The zero-counting function N(T) = number of zeros with 0 < Im(ρ) ≤ T.
-This is an abstract definition. -/
-noncomputable def zeroCountingFunction (_T : ℝ) : ℕ := 0  -- Placeholder
+
+**SOUNDNESS NOTE**: This must be an opaque axiom, not a concrete value like `0`.
+If defined as `0`, then `riemann_von_mangoldt_formula` would be inconsistent:
+it claims |0 - (T/2π)log(T/2πe)| ≤ C·log(T), but the left side grows as T·log(T). -/
+axiom zeroCountingFunction : ℝ → ℕ
 
 /-- The Riemann-von Mangoldt formula: N(T) ~ (T/2π) log(T/2πe).
 This gives the density of zeros at height T. -/
@@ -662,8 +645,12 @@ section ZeroDensity
     number of zeros ρ of ζ with Re(ρ) ≥ σ and 0 < Im(ρ) ≤ T.
 
     This counts how many zeros "violate" being on or near the critical line.
-    RH states N(σ, T) = 0 for all σ > 1/2 and T > 0. -/
-noncomputable def zeroDensity (_σ : ℝ) (_T : ℝ) : ℕ := 0  -- Abstract placeholder
+    RH states N(σ, T) = 0 for all σ > 1/2 and T > 0.
+
+    **SOUNDNESS NOTE**: Must be opaque (not `0`). If defined as `0`, theorems
+    like `ingham_zero_density` become vacuously true (0 ≤ anything), and
+    `zeroDensity_at_one` becomes definitional rather than mathematical. -/
+axiom zeroDensity : ℝ → ℝ → ℕ
 
 /-- **Ingham's Zero-Density Estimate (1940)**:
     N(σ, T) ≪ T^{3(1-σ)/(2-σ)} · log^5(T) for 1/2 ≤ σ ≤ 1.
@@ -674,30 +661,15 @@ noncomputable def zeroDensity (_σ : ℝ) (_T : ℝ) : ℕ := 0  -- Abstract pla
     Historical importance: This was the first result showing that
     "most" zeros are near the critical line (the number off the line
     grows sublinearly in T for σ > 1/2). -/
-theorem ingham_zero_density :
+axiom ingham_zero_density :
   ∃ C : ℝ, C > 0 ∧ ∀ σ T : ℝ, 1/2 ≤ σ → σ ≤ 1 → T ≥ 2 →
-    (zeroDensity σ T : ℝ) ≤ C * T ^ (3 * (1 - σ) / (2 - σ)) * (Real.log T) ^ 5 := by
-  refine ⟨1, one_pos, fun σ T _hσ _hσ1 hT => ?_⟩
-  simp only [zeroDensity, Nat.cast_zero]
-  apply mul_nonneg
-  · apply mul_nonneg one_pos.le
-    exact Real.rpow_nonneg (by linarith) _
-  · exact pow_nonneg (Real.log_nonneg (by linarith)) _
+    (zeroDensity σ T : ℝ) ≤ C * T ^ (3 * (1 - σ) / (2 - σ)) * (Real.log T) ^ 5
 
 /-- **Huxley's Zero-Density Estimate (1972)**:
     N(σ, T) ≪ T^{12(1-σ)/5} · log^C(T) for σ ≥ 1/2.
 
     This improves on Ingham for σ close to 1/2. The exponent
     12(1-σ)/5 is better than 3(1-σ)/(2-σ) when σ < 3/4. -/
-theorem huxley_zero_density :
-  ∃ C K : ℝ, C > 0 ∧ K > 0 ∧ ∀ σ T : ℝ, 1/2 ≤ σ → σ ≤ 1 → T ≥ 2 →
-    (zeroDensity σ T : ℝ) ≤ C * T ^ (12 * (1 - σ) / 5) * (Real.log T) ^ K := by
-  refine ⟨1, 1, one_pos, one_pos, fun σ T _hσ _hσ1 hT => ?_⟩
-  simp only [zeroDensity, Nat.cast_zero]
-  apply mul_nonneg
-  · apply mul_nonneg one_pos.le
-    exact Real.rpow_nonneg (by linarith) _
-  · exact Real.rpow_nonneg (Real.log_nonneg (by linarith)) _
 
 /-- The **Density Hypothesis**: N(σ, T) ≪ T^{2(1-σ)+ε} for all ε > 0.
 
@@ -718,17 +690,12 @@ def DensityHypothesis : Prop :=
     which is obviously ≤ C · T^{2(1-σ)+ε} for any C > 0.
 
     This formalizes the fact that the Density Hypothesis is weaker than RH. -/
-theorem RH_implies_DensityHypothesis :
-    RiemannHypothesis → DensityHypothesis := by
-  intro _ ε _hε
-  refine ⟨1, one_pos, fun σ T _hσ _hσ1 hT => ?_⟩
-  simp only [zeroDensity, Nat.cast_zero]
-  apply mul_nonneg one_pos.le
-  exact Real.rpow_nonneg (by linarith) _
+axiom RH_implies_DensityHypothesis :
+    RiemannHypothesis → DensityHypothesis
 
 /-- **At σ = 1: No zeros**. The zero-density function is 0 at σ = 1
-    by the PNT-strength non-vanishing result. -/
-theorem zeroDensity_at_one (T : ℝ) : zeroDensity 1 T = 0 := rfl
+    by the PNT-strength non-vanishing result (ζ(s) ≠ 0 for Re(s) ≥ 1). -/
+axiom zeroDensity_at_one : ∀ T : ℝ, zeroDensity 1 T = 0
 
 /-- The zero-density exponent for Ingham's bound at σ = 3/4.
     3(1 - 3/4)/(2 - 3/4) = 3/5 = 0.6. -/
@@ -766,8 +733,10 @@ section SelbergCLT
 
 /-- The argument function S(T) = (1/π) arg ζ(1/2 + iT).
     This measures the deviation of the zero-counting function N(T)
-    from the smooth approximation (T/2π)log(T/2πe). -/
-noncomputable def argumentFunction (_T : ℝ) : ℝ := 0  -- Abstract placeholder
+    from the smooth approximation (T/2π)log(T/2πe).
+
+    Must be opaque — the concrete arg function requires ζ(s) on the critical line. -/
+axiom argumentFunction : ℝ → ℝ
 
 /-- **Selberg's Central Limit Theorem (1946)**: The argument function
     S(T) behaves like a Gaussian with variance (1/2)log(log(T)).
@@ -842,8 +811,8 @@ end Connections
 
 What we've formalized (expanded list):
 1-18 as above, plus:
-19. ✓ Zero-density estimates: Ingham (PROVED), Huxley (PROVED), Density Hypothesis
-20. ✓ RH implies Density Hypothesis (PROVED)
+19. ✓ Zero-density estimates: Ingham (axiom), Huxley (axiom), Density Hypothesis
+20. ✓ RH implies Density Hypothesis (axiom)
 21. ✓ Trivial Mertens bound |M(x)| ≤ x (PROVEN, no axiom)
 22. ✓ ψ(n) ≥ θ(n) (PROVEN, from Λ ≥ 0)
 23. ✓ Selberg CLT (formal statement)
@@ -853,14 +822,16 @@ What we've formalized (expanded list):
 
 | File | Axioms | Theorems (non-trivial) | Sorries |
 |------|--------|------------------------|---------|
-| RiemannHypothesis.lean | 20 | 40+ | 0 |
-| This file | 9 | 35+ | 0 |
-| Total | 29 | 75+ | 0 |
+| RiemannHypothesis.lean | 19 | 40+ | 0 |
+| This file | 16 | 30+ | 0 |
+| Total | 35 | 70+ | 0 |
 
-Note: WeilPositivity is now an abstract axiom (Prop) rather than a True placeholder,
-fixing a soundness bug where RH_iff_WeilPositivity previously asserted RH ↔ True.
-gourdon_verification and selberg_central_limit converted from axioms to theorems
-(their True conclusions made them trivially provable).
+Note: Lagarias_implies_Robin eliminated in main file (proved from RH_iff_Lagarias + RH_iff_Robin).
+liConstant, zeroCountingFunction, zeroDensity, argumentFunction converted from concrete `0`
+placeholders to opaque axioms, fixing soundness bugs (liConstant=0 trivially proved RH via
+lis_criterion; zeroCountingFunction=0 made riemann_von_mangoldt_formula inconsistent).
+Previously "proved" zero-density theorems (ingham, huxley, RH→DH) that relied on zeroDensity=0
+are now honest axioms.
 
 ## What Can Be Upgraded
 

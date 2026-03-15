@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-non-coprime-crt-preamble",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 20 },
+    "type": "context",
+    "title": "Non-Coprime CRT: Beyond Standard CRT",
+    "content": "When gcd(m,n) > 1, the natural map x \u21a6 (x mod m, x mod n) is no longer surjective onto \u2124/m\u2124 \u00d7 \u2124/n\u2124. This file characterizes the image: a pair (a,b) is reachable iff gcd(m,n) | (a-b). The proof uses B\u00e9zout coefficients (Int.gcdA, Int.gcdB) for the constructive direction and basic divisibility for the necessary condition. All 12 results are fully proved with 0 sorries.",
+    "mathContext": "The generalized CRT: x \u2261 a (mod m) \u2227 x \u2261 b (mod n) is solvable iff gcd(m,n) | (a-b). Solutions are unique mod lcm(m,n).",
+    "significance": "context",
+    "relatedConcepts": ["Int.gcd", "Int.modEq_iff_dvd", "Int.gcdA", "Int.gcdB"],
+    "prerequisites": ["Int.gcd_eq_gcd_ab", "Int.modEq_iff_dvd"]
+  },
+  {
+    "id": "ann-non-coprime-crt-forward",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 28, "endLine": 37 },
+    "type": "theorem",
+    "title": "Forward Direction: Solvability Implies Divisibility",
+    "content": "If x \u2261 a (mod m) and x \u2261 b (mod n), then gcd(m,n) | (a-b). The proof rewrites a-b = (a-x) - (b-x), then uses transitivity: gcd(m,n) | m | (a-x) and gcd(m,n) | n | (b-x), so gcd(m,n) divides the difference.",
+    "mathContext": "This is the necessary condition for solvability. It follows from the fact that gcd(m,n) divides both m and n, hence any common residue must satisfy this constraint.",
+    "significance": "theorem",
+    "relatedConcepts": ["Int.gcd_dvd_left", "Int.gcd_dvd_right", "dvd_sub", "dvd_trans"],
+    "prerequisites": ["Int.modEq_iff_dvd"]
+  },
+  {
+    "id": "ann-non-coprime-crt-backward",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 39, "endLine": 53 },
+    "type": "theorem",
+    "title": "Backward Direction: B\u00e9zout Construction",
+    "content": "Given gcd(m,n) | (a-b), constructs x = a - m\u00b7gcdA(m,n)\u00b7k where k = (a-b)/gcd(m,n). For the first congruence, m clearly divides a - x. For the second, the key step uses `linear_combination` with B\u00e9zout's identity gcd = m\u00b7gcdA + n\u00b7gcdB to show n divides b - x.",
+    "mathContext": "This is the constructive heart of the theorem. B\u00e9zout coefficients provide the 'glue' that connects the two congruences. The `linear_combination` tactic automates the algebraic verification.",
+    "significance": "theorem",
+    "relatedConcepts": ["Int.gcd_eq_gcd_ab", "Int.gcdA", "Int.gcdB", "linear_combination"],
+    "prerequisites": ["Int.gcd_eq_gcd_ab"]
+  },
+  {
+    "id": "ann-non-coprime-crt-uniqueness",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 67, "endLine": 89 },
+    "type": "theorem",
+    "title": "Uniqueness Modulo LCM",
+    "content": "If x \u2261 y (mod m) and x \u2261 y (mod n), then x \u2261 y (mod lcm(m,n)). The proof goes through natAbs: convert Int divisibility to Nat divisibility, apply Nat.lcm_dvd, then case-split on the sign of (y-x) via Int.natAbs_eq to convert back.",
+    "mathContext": "In the coprime case, lcm(m,n) = mn recovers standard CRT uniqueness. For non-coprime moduli, lcm(m,n) < mn, giving a coarser but correct uniqueness modulus.",
+    "significance": "theorem",
+    "relatedConcepts": ["Int.natAbs_dvd_natAbs", "Nat.lcm_dvd", "Int.natAbs_eq"],
+    "prerequisites": ["Int.modEq_iff_dvd"]
+  },
+  {
+    "id": "ann-non-coprime-crt-formula",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 112, "endLine": 136 },
+    "type": "theorem",
+    "title": "Explicit Solution Formula",
+    "content": "genCRTSolution m n a b = a - m\u00b7gcdA(m,n)\u00b7((a-b)/gcd(m,n)). The first congruence holds unconditionally (m divides the correction term). The second congruence requires gcd(m,n) | (a-b) and uses the same linear_combination technique as the existence proof.",
+    "mathContext": "This makes the generalized CRT constructive and algorithmic. Given any solvable system, this formula directly computes a solution without search.",
+    "significance": "theorem",
+    "relatedConcepts": ["Int.ediv_mul_cancel", "linear_combination"],
+    "prerequisites": ["Int.gcd_eq_gcd_ab", "Int.ediv_mul_cancel"]
+  },
+  {
+    "id": "ann-non-coprime-crt-full",
+    "proofId": "bezout-identity-oq-03-oq-01-oq-02",
+    "range": { "startLine": 193, "endLine": 201 },
+    "type": "theorem",
+    "title": "Full Generalized CRT: Existence + Uniqueness",
+    "content": "generalized_crt_full combines everything: given a \u2261 b (mod gcd(m,n)), there exists x satisfying both congruences, and any two solutions are congruent mod lcm(m,n). The proof composes generalized_crt_modEq for existence with crt_unique_mod_lcm for uniqueness.",
+    "mathContext": "This is the definitive statement of the non-coprime CRT. It packages existence (via B\u00e9zout) and uniqueness (via LCM) into a single theorem, ready for use in downstream formalizations.",
+    "significance": "theorem",
+    "relatedConcepts": ["generalized_crt_modEq", "crt_unique_mod_lcm"],
+    "prerequisites": ["generalized_crt_modEq", "crt_unique_mod_lcm"]
+  }
+]

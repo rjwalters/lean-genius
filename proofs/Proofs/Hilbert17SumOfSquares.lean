@@ -432,10 +432,6 @@ theorem real_is_real_closed : True := by
 
     The full statement requires ordered field structure. Here we state a simplified version
     for documentation purposes. -/
-axiom real_closed_transfer :
-    ∀ (n : ℕ) (p : MvPolynomial (Fin n) ℤ),
-      (∀ x : Fin n → ℝ, 0 ≤ MvPolynomial.eval x (MvPolynomial.map (algebraMap ℤ ℝ) p)) →
-      True  -- Placeholder: "The same holds in all real closed fields"
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VII: MODERN APPLICATIONS

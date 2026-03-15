@@ -1,0 +1,122 @@
+{
+  "id": "ballot-problem-oq-01-oq-02",
+  "title": "Multi-Candidate Ballot Problem",
+  "slug": "ballot-problem-oq-01-oq-02",
+  "description": "Generalizes the classical Ballot Problem from 2 candidates to m candidates. Proves the reduction principle: P(candidate 0 leads all opponents combined throughout counting) = (a-b)/(a+b), exactly the classical formula. Uses projection to 2-candidate sequences, fiber uniformity, and connects to Mathlib's Wiedijk #30. 498 lines, 20 theorems, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Bertrand%27s_ballot_theorem",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BallotProblemOQ01OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "probability",
+      "ballot-problem",
+      "generalization",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "BallotProblem",
+        "description": "Classical 2-candidate ballot theorem (Wiedijk #30)",
+        "module": "Archive.Wiedijk100Theorems.BallotProblem"
+      }
+    ],
+    "originalContributions": [
+      "Projection from m-candidate sequences to 2-candidate (±1) sequences",
+      "Prefix sum preservation under projection",
+      "leadsAllCombined ↔ projected sequence has all positive prefix sums",
+      "Fiber uniformity: all projected patterns have equal preimage sizes",
+      "Reduction of multi-candidate ballot probability to classical formula (a-b)/(a+b)",
+      "Connection to Mathlib's countedSequence and classical ballot theorem"
+    ],
+    "dateAdded": "03/14/26",
+    "relatedProblems": [
+      {
+        "id": "ballot-problem",
+        "relationship": "Root: Classical ballot problem"
+      },
+      {
+        "id": "ballot-problem-oq-01",
+        "relationship": "Parent: Multi-candidate extensions"
+      },
+      {
+        "id": "ballot-problem-oq-03",
+        "relationship": "Sibling: LGV lemma approach"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Multi-Candidate Ballot Problem**\n\nBertrand (1887) proved the classical ballot theorem: if candidate A receives a votes and candidate B receives b votes with a > b, the probability A leads throughout the counting is (a-b)/(a+b). This file extends the result to m \u2265 2 candidates, proving that the \"leads all opponents combined\" probability is identical to the 2-candidate formula.",
+    "problemStatement": "**Theorem (Reduction Principle)**: Given m candidates where candidate 0 receives a votes and all others combined receive b votes (a > b), the probability candidate 0 leads all opponents combined throughout equals (a-b)/(a+b) \u2014 exactly the classical 2-candidate ballot formula.",
+    "proofStrategy": "The proof has three key steps:\n\n1. **Projection**: Map m-candidate vote sequences to 2-candidate (\u00b11) sequences by collapsing all non-zero candidates to -1\n2. **Prefix sum preservation**: The projection preserves the \"leads throughout\" property because prefix sums only depend on votes-for vs votes-against\n3. **Fiber uniformity**: Every 2-candidate pattern has the same number of m-candidate refinements (b!/(a\u2081!\u00b7...\u00b7a\u2098\u208b\u2081!)), so conditional probability equals the classical result",
+    "keyInsights": [
+      "The 'leads all combined' property depends only on which positions have a vote for candidate 0 vs against",
+      "Fiber uniformity: each binary pattern has b!/(a\u2081!\u00b7...\u00b7a\u2098\u208b\u2081!) multi-candidate refinements",
+      "The reduction makes the m-candidate problem no harder than the 2-candidate case",
+      "Directly connects to Mathlib's Archive.Wiedijk100Theorems.BallotProblem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "projection",
+      "title": "Part I: Projection from Multi-Candidate to 2-Candidate",
+      "summary": "Defines the projection map from m-candidate vote sequences to \u00b11 sequences: vote for candidate 0 maps to +1, all others to -1.",
+      "startLine": 50,
+      "endLine": 86
+    },
+    {
+      "id": "prefix-sums",
+      "title": "Part II: Prefix Sums and Leading Property",
+      "summary": "Defines prefix sums and the 'leads throughout' predicate. Proves prefix sum preservation under projection.",
+      "startLine": 87,
+      "endLine": 140
+    },
+    {
+      "id": "projection-preserves",
+      "title": "Part III: Projection Preserves Leading",
+      "summary": "Proves the key equivalence: candidate 0 leads all opponents combined iff the projected \u00b11 sequence has all positive prefix sums.",
+      "startLine": 141,
+      "endLine": 187
+    },
+    {
+      "id": "fin-instantiation",
+      "title": "Part IV: Concrete Instantiation with Fin m",
+      "summary": "Instantiates the abstract framework with Fin m for concrete computations.",
+      "startLine": 188,
+      "endLine": 215
+    },
+    {
+      "id": "mathlib-connection",
+      "title": "Part V: Connection to Mathlib's Ballot Theorem",
+      "summary": "Links the projected sequences to Mathlib's countedSequence type, enabling use of the classical ballot theorem.",
+      "startLine": 216,
+      "endLine": 288
+    },
+    {
+      "id": "fiber-uniformity",
+      "title": "Part VII: Fiber Uniformity",
+      "summary": "The core counting argument: all projected patterns have equal preimage sizes under the projection map, proving the conditional probability equals the classical formula.",
+      "startLine": 312,
+      "endLine": 428
+    },
+    {
+      "id": "examples",
+      "title": "Parts VIII-IX: Examples and Open Challenge",
+      "summary": "Conditional probability framework, concrete verification examples, and statement of the harder 'full ordering' problem (candidate 0 leads each individual opponent).",
+      "startLine": 429,
+      "endLine": 498
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete proof (0 sorries, 0 axioms) that the multi-candidate ballot problem reduces to the classical 2-candidate case. The fiber uniformity argument shows the reduction is exact, not approximate.",
+    "implications": "**Significance**\n\n1. **Clean generalization**: Extends Wiedijk #30 to arbitrary numbers of candidates with zero axioms.\n2. **Connects to Mathlib**: Directly uses Archive.Wiedijk100Theorems.BallotProblem.\n3. **Fiber counting technique**: The uniform fiber argument is a general technique applicable to other combinatorial probability problems.",
+    "openQuestions": [
+      "Can the 'full ordering' problem (candidate 0 leads each individual opponent) be solved using similar projection techniques?",
+      "What is the probability of a specific ranking order among all m candidates?"
+    ]
+  }
+}

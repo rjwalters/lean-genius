@@ -1,0 +1,139 @@
+{
+  "id": "bezout-identity-oq-03-oq-01-oq-02",
+  "title": "Non-Coprime CRT: Image Characterization",
+  "slug": "bezout-identity-oq-03-oq-01-oq-02",
+  "description": "Formalizes the generalized Chinese Remainder Theorem for non-coprime moduli: characterizes when the system x \u2261 a (mod m), x \u2261 b (mod n) is solvable (iff gcd(m,n) | (a-b)), proves uniqueness modulo lcm(m,n), and gives an explicit solution formula via B\u00e9zout coefficients.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chinese_remainder_theorem#Generalization_to_non-coprime_moduli",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ03OQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "algebra",
+      "chinese-remainder-theorem",
+      "bezout",
+      "modular-arithmetic",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.gcd_eq_gcd_ab",
+        "description": "B\u00e9zout's identity: gcd(a,b) = a * gcdA + b * gcdB",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.modEq_iff_dvd",
+        "description": "x \u2261 y [ZMOD n] iff n | (y - x)",
+        "module": "Mathlib.Data.Int.ModCast"
+      },
+      {
+        "theorem": "Int.gcd_dvd_left",
+        "description": "gcd(m,n) divides m",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Nat.lcm_dvd",
+        "description": "If a | c and b | c then lcm(a,b) | c",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Int.ediv_mul_cancel",
+        "description": "a / b * b = a when b | a",
+        "module": "Mathlib.Data.Int.Dvd"
+      }
+    ],
+    "originalContributions": [
+      "solvable_implies_gcd_dvd: forward direction of non-coprime CRT solvability criterion",
+      "gcd_dvd_implies_solvable: backward direction via B\u00e9zout identity construction",
+      "generalized_crt_iff: complete solvability iff-characterization",
+      "crt_unique_mod_lcm: uniqueness of solutions modulo lcm(m,n)",
+      "genCRTSolution: explicit solution formula using gcdA coefficients",
+      "generalized_crt_full: combined existence + uniqueness theorem",
+      "Concrete examples demonstrating solvable and unsolvable systems"
+    ],
+    "dateAdded": "03/14/26",
+    "relatedProblems": [
+      {
+        "id": "bezout-identity-oq-03-oq-01",
+        "relationship": "Sibling: CRT ring isomorphism for the coprime case"
+      },
+      {
+        "id": "bezout-identity-oq-03",
+        "relationship": "Parent: CRT via B\u00e9zout's identity for integers"
+      },
+      {
+        "id": "bezout-identity",
+        "relationship": "Foundational: B\u00e9zout's identity gcd(a,b) = ax + by"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Non-Coprime Chinese Remainder Theorem**\n\nThe standard CRT requires gcd(m,n) = 1. When moduli are not coprime, the natural map \u2124 \u2192 \u2124/m\u2124 \u00d7 \u2124/n\u2124 is no longer surjective. The generalized CRT characterizes exactly which pairs (a,b) lie in the image: precisely those satisfying a \u2261 b (mod gcd(m,n)). Solutions, when they exist, are unique modulo lcm(m,n) rather than mod mn. This extends the classical CRT to handle arbitrary moduli.",
+    "problemStatement": "**Theorem**: The system x \u2261 a (mod m), x \u2261 b (mod n) has a solution if and only if gcd(m,n) | (a - b). When solutions exist, they are unique modulo lcm(m,n), and an explicit solution is given by x = a - m \u00b7 gcdA(m,n) \u00b7 ((a-b)/gcd(m,n)).",
+    "proofStrategy": "The proof proceeds in six parts:\n\n1. **Forward direction**: If x solves both congruences, then m | (a-x) and n | (b-x), so gcd(m,n) divides both, hence gcd(m,n) | (a-b).\n2. **Backward direction**: Given gcd(m,n) | (a-b), use B\u00e9zout coefficients to construct x = a - m \u00b7 gcdA \u00b7 k where k = (a-b)/gcd. The key identity is proved by `linear_combination`.\n3. **Uniqueness**: If x,y both solve the system, then m | (x-y) and n | (x-y), so lcm(m,n) | (x-y) via `Nat.lcm_dvd`.\n4. **Explicit formula**: `genCRTSolution` packages the construction with verified congruences.\n5. **Special cases**: Coprime case recovers standard CRT; concrete examples demonstrate solvable and unsolvable instances.\n6. **Full theorem**: Combines existence and uniqueness into a single statement.",
+    "keyInsights": [
+      "The solvability condition gcd(m,n) | (a-b) is both necessary and sufficient \u2014 a complete characterization",
+      "Solutions are unique mod lcm(m,n), not mod mn \u2014 reflecting that the map \u2124 \u2192 \u2124/m\u2124 \u00d7 \u2124/n\u2124 has kernel lcm(m,n)\u2124",
+      "B\u00e9zout coefficients (gcdA, gcdB) provide the explicit construction, with `linear_combination` handling the algebraic verification",
+      "The coprime case (gcd = 1) recovers standard CRT since 1 divides everything and lcm(m,n) = mn",
+      "Going through natAbs for the lcm uniqueness proof bridges Nat.lcm and Int divisibility cleanly"
+    ]
+  },
+  "sections": [
+    {
+      "id": "solvability",
+      "title": "Solvability Condition",
+      "summary": "Proves both directions: the system x \u2261 a (mod m), x \u2261 b (mod n) is solvable iff gcd(m,n) | (a-b). Forward: transitivity of divisibility. Backward: B\u00e9zout coefficient construction.",
+      "startLine": 23,
+      "endLine": 60
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness Modulo LCM",
+      "summary": "Two solutions to the same system are congruent mod lcm(m,n). Uses natAbs bridge to apply Nat.lcm_dvd, then case-splits on sign.",
+      "startLine": 62,
+      "endLine": 89
+    },
+    {
+      "id": "gcd-lcm-identity",
+      "title": "GCD-LCM Relationship",
+      "summary": "The fundamental identity m*n = gcd(m,n) * lcm(m,n) and the coprime specialization lcm(m,n) = mn.",
+      "startLine": 91,
+      "endLine": 104
+    },
+    {
+      "id": "explicit-formula",
+      "title": "Explicit Solution Formula",
+      "summary": "Defines genCRTSolution and verifies it satisfies both congruences. The second congruence proof uses linear_combination with the B\u00e9zout equation.",
+      "startLine": 106,
+      "endLine": 136
+    },
+    {
+      "id": "special-cases",
+      "title": "Special Cases and Examples",
+      "summary": "Coprime case recovers standard CRT. Concrete examples: (4,6) solvable with gcd=2, (4,6) unsolvable when 2 does not divide, (6,9) solvable with gcd=3.",
+      "startLine": 138,
+      "endLine": 169
+    },
+    {
+      "id": "complete-characterization",
+      "title": "Complete Characterization",
+      "summary": "Reformulates solvability as a modular congruence a \u2261 b (mod gcd(m,n)). Combines existence and uniqueness into the full generalized CRT theorem.",
+      "startLine": 171,
+      "endLine": 201
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization fully proves the generalized Chinese Remainder Theorem for non-coprime moduli with 0 sorries and 0 axioms. It provides: (1) a complete solvability characterization, (2) uniqueness modulo lcm, (3) an explicit computable solution formula, and (4) concrete examples demonstrating both solvable and unsolvable systems.",
+    "implications": "**Mathematical Significance**\n\n1. **Completeness**: Unlike the standard CRT which requires coprimality, this handles arbitrary moduli and characterizes exactly when solutions exist.\n2. **Constructivity**: The explicit formula via B\u00e9zout coefficients is algorithmically computable, giving an effective solution method.\n3. **Structural insight**: The image of \u2124 \u2192 \u2124/m\u2124 \u00d7 \u2124/n\u2124 is characterized by the congruence condition modulo gcd, revealing the kernel-cokernel structure.\n4. **Foundation for extensions**: This result generalizes to k-fold non-coprime systems and to general Dedekind domains.",
+    "openQuestions": [
+      "Can this be extended to systems of k simultaneous congruences with arbitrary (non-pairwise-coprime) moduli?",
+      "Can the image of the map \u2124/mn\u2124 \u2192 \u2124/m\u2124 \u00d7 \u2124/n\u2124 be characterized as a subring, and its index computed?",
+      "Can the non-coprime CRT be formalized for general PIDs or Dedekind domains?"
+    ]
+  }
+}

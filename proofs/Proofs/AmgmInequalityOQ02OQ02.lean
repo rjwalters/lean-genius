@@ -667,10 +667,14 @@ theorem newton_cleared_denom : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
         -- C(m, k) = C(k, k) = 1
         have hCmk : (Nat.choose m k : ℝ) = 1 := by
           rw [hm_k]; simp [Nat.choose_self]
-        -- C(m, k-1) = k
+        -- C(m, k-1) = C(k, k-1) = k
         have hCmkm1 : (Nat.choose m (k - 1) : ℝ) = (k : ℝ) := by
-          rw [hm_k, Nat.choose_symm (by omega : k - 1 ≤ k)]
-          simp [show k - (k - 1) = 1 from by omega, Nat.choose_one_right]
+          rw [hm_k]
+          have : Nat.choose k (k - 1) = k := by
+            cases k with
+            | zero => omega
+            | succ n => simp [Nat.succ_sub_one]
+          exact_mod_cast this
         -- (k-1)*C(m,k-1) = 2*C(m,k-2) in ℕ
         have h_rel2_nat := choose_mul_pred m (k - 1) (by omega) (by omega : k - 1 ≤ m)
         rw [show k - 1 - 1 = k - 2 from by omega,
@@ -678,8 +682,8 @@ theorem newton_cleared_denom : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
         -- h_rel2_nat : (k-1) * C(m,k-1) = 2 * C(m,k-2)  in ℕ
         -- Cast to ℝ
         have h_rel2 : ((k : ℝ) - 1) * (Nat.choose m (k - 1) : ℝ) = 2 * (Nat.choose m (k - 2) : ℝ) := by
-          have := congr_arg (Nat.cast : ℕ → ℝ) h_rel2_nat
-          push_cast at this ⊢
+          have h_cast := congr_arg (Nat.cast : ℕ → ℝ) h_rel2_nat
+          push_cast [Nat.cast_sub (show 1 ≤ k by omega)] at h_cast
           linarith
         -- Now use hCmkm1 to get (k-1)*k = 2*C(m,k-2) in ℝ
         rw [hCmkm1] at h_rel2
@@ -729,8 +733,8 @@ theorem newton_cleared_denom : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
         -- Hmm, this doesn't match the SOS decomposition exactly. Let me compute C(k+1,k).
         have hCmp1k : (Nat.choose (m + 1) k : ℝ) = ((k : ℝ) + 1) := by
           rw [hm_k]
-          rw [Nat.choose_symm (by omega : k ≤ k + 1)]
-          simp [show k + 1 - k = 1 from by omega, Nat.choose_one_right]
+          have : Nat.choose (k + 1) k = k + 1 := by simp
+          exact_mod_cast this
         -- C(m+1,k-1) = k*(k+1)/2 from h_rel
         have hCmp1km1 : (Nat.choose (m + 1) (k - 1) : ℝ) = (k : ℝ) * ((k : ℝ) + 1) / 2 := by
           have := h_rel; rw [hCmp1k] at this
@@ -766,32 +770,36 @@ theorem newton_cleared_denom : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
         -- Or if A = 0, need B ≥ 0 (B = -2*ek*ekm1 ≤ 0, so need ek*ekm1 = 0).
         -- Let's just use nlinarith with the right hints.
         rw [hCmp1km1, hCmp1k]
-        -- Goal is now purely in terms of ek, ekm1, ekm2, t, k (ℝ)
+        -- Goal: (ek+t*ekm1)^2 * (k*(k+1)/2) ≥ (ekm1+t*ekm2)*(t*ek)*(k+1)^2
+        -- Reduce to division-free form by suffices
         have hk_pos : (0 : ℝ) < k := by positivity
-        -- The quadratic discriminant approach:
-        -- Express as: k*(ek - t*ekm1/k... no, let's just use nlinarith hints
-        -- Key hints:
-        -- 1. sq_nonneg (k*ek - t*ekm1) for the constant+linear part
-        -- 2. h_sos_coeff for the t^2 coefficient
-        -- 3. sq_nonneg (sqrt(k)*ek - t*ekm1/sqrt(k))... but no sqrt in nlinarith
-        -- Better: use the factored form directly
-        -- 4AC - B² = 4*ek^2*(k+1)*((k-1)*ekm1^2 - 2k*ek*ekm2) ≥ 0
-        -- So C*A ≥ B^2/4, and the quadratic value at t is
-        -- = A*t^2 + B*t + C = A*(t + B/(2A))^2 + C - B^2/(4A)
-        -- where A ≥ 0 and C - B^2/(4A) ≥ 0.
-        -- But nlinarith can't do division. Instead:
-        -- 4A*(At^2+Bt+C) = (2At+B)^2 + 4AC - B^2 ≥ 0
-        -- so At^2+Bt+C ≥ 0 when A ≥ 0 (since 4A*(value) ≥ 0 and A ≥ 0 → value ≥ 0)
-        -- or when A = 0: value = Bt + C, need B ≥ 0 or t*|B| ≤ C.
-        -- Hmm this is getting complicated. Let me just try nlinarith with good hints.
-        nlinarith [sq_nonneg ((k : ℝ) * ek - t * ekm1),
-                   sq_nonneg (ek * ekm1),
-                   sq_nonneg t,
-                   mul_nonneg ht_nn hekm2_nn,
-                   mul_nonneg ht_nn hekm1_nn,
-                   mul_nonneg hek_nn hekm1_nn,
-                   mul_nonneg (mul_nonneg ht_nn ht_nn) (by linarith [h_sos_coeff]),
-                   mul_self_nonneg ((k : ℝ) + 1)]
+        have hkp1_pos : (0 : ℝ) < (k : ℝ) + 1 := by positivity
+        -- Suffices: k*(ek+t*ekm1)^2 ≥ 2*(k+1)*(ekm1+t*ekm2)*(t*ek)
+        -- Then multiply by (k+1)/2 to get the original goal
+        suffices hsuff : (↑k : ℝ) * (ek + t * ekm1) ^ 2 ≥
+            2 * ((↑k : ℝ) + 1) * ((ekm1 + t * ekm2) * (t * ek)) by
+          -- hsuff * (k+1)/2 gives: k*(k+1)/2 * f^2 ≥ (k+1)^2 * g*t*ek
+          nlinarith [mul_le_mul_of_nonneg_right hsuff (by linarith : (0 : ℝ) ≤ ((↑k : ℝ) + 1) / 2)]
+        -- Now prove hsuff (no division in goal)
+        -- SOS: k*(k*f^2 - 2*(k+1)*g*t*ek) = (k*ek-t*ekm1)^2 + t^2*(k+1)*((k-1)*ekm1^2-2k*ek*ekm2)
+        have h_coeff_nn : ((k : ℝ) - 1) * ekm1 ^ 2 - 2 * (k : ℝ) * ek * ekm2 ≥ 0 := by
+          linarith [h_sos_coeff]
+        have h_sq1 := sq_nonneg ((k : ℝ) * ek - t * ekm1)
+        have h_term2 : t ^ 2 * ((k : ℝ) + 1) * (((k : ℝ) - 1) * ekm1 ^ 2 - 2 * (k : ℝ) * ek * ekm2) ≥ 0 := by
+          apply mul_nonneg
+          · apply mul_nonneg; exact sq_nonneg t; linarith
+          · linarith [h_coeff_nn]
+        -- k * (k*f^2 - 2*(k+1)*g*t*ek) ≥ 0, and k > 0, so k*f^2 ≥ 2*(k+1)*g*t*ek
+        have h_k_times : (↑k : ℝ) * ((↑k : ℝ) * (ek + t * ekm1) ^ 2 -
+            2 * ((↑k : ℝ) + 1) * ((ekm1 + t * ekm2) * (t * ek))) ≥ 0 := by
+          nlinarith [h_sq1, h_term2]
+        -- Divide by k > 0
+        by_contra h_neg
+        push_neg at h_neg
+        have : (↑k : ℝ) * ((↑k : ℝ) * (ek + t * ekm1) ^ 2 -
+            2 * ((↑k : ℝ) + 1) * ((ekm1 + t * ekm2) * (t * ek))) < 0 := by
+          nlinarith
+        linarith
 
 theorem newton_log_concavity_proved {n : ℕ} (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
     (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :

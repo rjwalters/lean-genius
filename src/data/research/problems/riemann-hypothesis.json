@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 axioms from Consequences file (ingham_zero_density, huxley_zero_density, RH_implies_DensityHypothesis). Axiom count now 9 in Consequences (was 12). Build verified clean.",
+    "progressSummary": "PROGRESS: Eliminated 3 unused axioms (21→18). File: 1798→~1740 lines, 18 axioms, 0 sorries.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -150,7 +150,8 @@
         "name": "RH_implies_convexity",
         "description": "RH → convexity bound (PROVED)",
         "proven": true
-      }
+      },
+      "Eliminated 3 dead-code axioms (21→18): computationally_verified_zeros, RH_implies_prime_gaps, RH_implies_ternary_goldbach_effective"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",

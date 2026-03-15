@@ -17,20 +17,20 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2025-12-31",
-    "iteration": 6,
-    "focus": "Circuit complexity hierarchy + algebraic complexity",
+    "since": "2026-03-14T01:00:00Z",
+    "iteration": 7,
+    "focus": "Axiom reduction: 59 → 57 axioms + 7 new theorems",
     "activeApproach": "Abstract complexity class definitions with barrier theorems.",
     "blockers": [],
-    "nextAction": "Consider formalizing Mahaney theorem or connecting to Mathlib TM2 definitions",
+    "nextAction": "Consider proving P_subset_UP, UP_subset_NP from definitions, or add counting complexity (#P vs FP)",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 4,
+      "total": 6,
+      "currentApproach": 6,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added circuit complexity hierarchy (NC, AC, TC) with interleaving, Håstad separation, and algebraic complexity (VP, VNP). File: 2848 lines, 56 axioms, 126 theorems, 0 sorries.",
+    "progressSummary": "PROGRESS: Eliminated sparsification_lemma (tautological) and ETH_subexp_closure (contrapositive). Added 7 new proved theorems including SETH_landscape, ETH_implies_P_ne_PSPACE, SETH_conditional_landscape. File: 3149 lines, 57 axioms, 232 theorems/defs, 0 sorries.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -254,7 +254,17 @@
       "NC_k, AC_k, TC_k opaque families with 3 interleaving axioms and 6 derived theorems",
       "Håstad parity/AC^0 and MAJORITY TC^0 separations (2 axioms, 2 derived theorems)",
       "NC vs P open question formalized with P-completeness",
-      "VP, VNP algebraic classes with VP ≠ VNP proved"
+      "VP, VNP algebraic classes with VP ≠ VNP proved",
+      {
+        "name": "P_subset_P_poly (proved)",
+        "description": "Axiom → theorem: program e serves as constant-size circuit",
+        "proven": true
+      },
+      {
+        "name": "P_subset_PP (derived)",
+        "description": "Axiom → theorem via P ⊆ BPP ⊆ BQP ⊆ PP chain",
+        "proven": true
+      }
     ],
     "insights": [
       "P_subset_NP_relative",
@@ -296,7 +306,15 @@
       "Circuit hierarchy NC^k ⊆ AC^k ⊆ TC^k ⊆ NC^{k+1} proved from 3 axioms",
       "AC^0 ≠ TC^0 proved from MAJORITY separation — strongest unconditional circuit lower bound",
       "NC ⊆ P ⊆ P/poly chain connects parallel complexity to nonuniform computation",
-      "VP ≠ VNP (algebraic P vs NP) proved from permanent VNP-completeness axiom"
+      "VP ≠ VNP (algebraic P vs NP) proved from permanent VNP-completeness axiom",
+      "Session 8: P_subset_P_poly proved: a P program e serves as a constant-size circuit (code e, size e) for all input lengths. Uses HasCircuitsOfSize with constant polynomial q(n) = e.",
+      "Session 8: P_subset_PP derived via chain P ⊆ BPP ⊆ BQP ⊆ PP (3 existing results).",
+      "Session 8: TC0_computes_multiplication and TC0_computes_division share exact type with majority_in_TC0_not_AC0 (∃ f ∈ TC_k 0, f ∉ AC_k 0). Different mathematical witnesses but formally identical.",
+      "Session 8: mignon_ressayre was trivially True - converted to theorem.",
+      "ETH (SAT ∉ SUBEXP) implies P ≠ NP via Cook-Levin: if P=NP then SAT∈P⊆SUBEXP",
+      "SETH → ETH requires exponential growth comparison, axiomatized in model",
+      "SETH → NP ⊄ P/poly blocks Karp-Lipton collapse premise",
+      "ETH → BPP=P via Impagliazzo-Wigderson derandomization connection"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
