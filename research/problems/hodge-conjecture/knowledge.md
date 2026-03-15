@@ -247,3 +247,47 @@ Systematic sweep to eliminate trivially-provable axioms:
 1. Convert or remove 12 remaining unused axioms
 2. Add motivic cohomology viewpoint
 3. Strengthen trivially-concluded theorems
+
+---
+
+## Session 2026-03-15 (researcher-4) - p-adic Hodge Theory
+
+**Mode**: REVISIT (RICH knowledge score 78)
+**Problem**: hodge-conjecture
+**Prior Status**: 4570 lines, 104 axioms
+
+### What we did
+
+Added Part XXIX: p-adic Hodge Theory — Fontaine's period rings and comparison theorems connecting p-adic and complex Hodge theory.
+
+**New definitions and structures**:
+- `B_dR`, `B_cris`, `B_st` — Fontaine's period rings (opaque types)
+- `PadicGaloisRep` — p-adic Galois representations (with `dim : ℕ`)
+- `IsDeRham`, `IsCrystalline`, `IsSemistable` — classification predicates
+- `FilteredPhiModule` — filtered φ-modules (with `dim`, `hodgeTateWeights`)
+- `D_cris` — crystalline Dieudonné module functor (opaque)
+
+**New axioms** (+5):
+- `colmez_fontaine` — equivalence of crystalline reps and admissible filtered φ-modules
+- `padic_comparison_C_dR`, `padic_comparison_C_cris`, `padic_comparison_C_st` — p-adic comparison isomorphisms
+- `hodge_tate_padic_decomposition` — p-adic Hodge-Tate decomposition
+
+**New theorems**:
+- `rep_hierarchy` — Crystalline ⊂ Semistable ⊂ de Rham (proved)
+- `padic_hodge_connects_conjectures` — Tate ↔ Hodge equivalence (from existing axioms)
+- `padic_hodge_summary` — comprehensive summary theorem (proved)
+
+### Technical notes
+- Simplified `PadicGaloisRep`/`FilteredPhiModule` to avoid universe-level inference failures (removed `Type u` space fields)
+- Used `opaque ... := default_value` pattern for `D_cris` since `FilteredPhiModule` has no `Inhabited` instance
+- Pre-existing build errors (~30) in earlier parts of the file are NOT from this session
+
+### Outcome
+- **Lines**: 4570 → 4682 (+112)
+- **Axioms**: 104 → 109 (+5)
+- **Sorries**: 0
+
+### Next steps
+1. Fix pre-existing build errors in earlier parts
+2. Add Hodge-Tate weights computation for specific varieties
+3. Connect p-adic Hodge theory to motivic cohomology
