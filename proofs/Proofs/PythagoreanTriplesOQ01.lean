@@ -298,23 +298,22 @@ theorem coprimeInSectorCount_mono {N₁ N₂ : ℕ} (h : N₁ ≤ N₂) :
   apply Finset.card_le_card
   intro ⟨m, n⟩ hmn
   simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_range] at hmn ⊢
-  exact ⟨⟨by omega, by omega⟩, hmn.2.1, hmn.2.2.1, hmn.2.2.2.1, by omega⟩
+  obtain ⟨hm, hn, h1, h2, h3, h4⟩ := hmn
+  refine ⟨by omega, by omega, h1, h2, h3, le_trans h4 h⟩
 
 /-- Each pair (k, 1) with k ≥ 2 and k² + 1 ≤ N is in the coprime sector. -/
 theorem pair_k_one_in_sector {k N : ℕ} (hk : 2 ≤ k) (hN : k ^ 2 + 1 ≤ N) :
     (k, 1) ∈ ((Finset.range (N + 1)).product (Finset.range (N + 1))).filter (fun mn =>
       0 < mn.2 ∧ mn.2 < mn.1 ∧ Nat.Coprime mn.1 mn.2 ∧ mn.1 ^ 2 + mn.2 ^ 2 ≤ N) := by
   simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_range]
-  refine ⟨⟨by omega, by omega⟩, by omega, by omega, Nat.coprime_one_right k, by omega⟩
+  exact ⟨by omega, by omega, by omega, by omega, Nat.coprime_one_right k, by omega⟩
 
 /-- The coprime sector count grows without bound.
 The pairs (k, 1) for k = 2, 3, ... are all coprime with hypotenuse k²+1,
 so coprimeInSectorCount(N) ≥ √(N-1) - 1. -/
 theorem coprimeInSectorCount_tendsto_atTop :
     Filter.Tendsto (fun N => (coprimeInSectorCount N : ℝ)) atTop atTop := by
-  apply Filter.Tendsto.atTop_nonneg (fun N => (coprimeInSectorCount N : ℝ))
-    (fun N => Nat.cast_nonneg _)
-  rw [Filter.tendsto_atTop]
+  rw [Filter.tendsto_atTop_atTop]
   intro b
   -- For N = (⌈b⌉₊ + 2)² + 1, the pairs (2,1), ..., (⌈b⌉₊+2, 1) give ⌈b⌉₊+1 coprime pairs
   use (⌈b⌉₊ + 2) ^ 2 + 1
@@ -1272,6 +1271,7 @@ theorem sectorOE_eq_sectorOO_full_column {m N : ℕ}
     · intro ⟨_, hn_pos, hn_lt, hcop, _, hn_even, _⟩
       exact ⟨by omega, hn_pos, hcop, hn_even⟩
     · intro ⟨hn_range, hn_pos, hcop, hn_even⟩
+      have hm_le_N : m ≤ N := by nlinarith [h_full]
       refine ⟨by omega, hn_pos, by omega, hcop, hm_odd, hn_even, ?_⟩
       -- n ≤ m - 1, so n² ≤ (m-1)², hence m² + n² ≤ m² + (m-1)² ≤ N
       have : n ^ 2 ≤ (m - 1) ^ 2 := Nat.pow_le_pow_left (by omega) 2
@@ -1284,6 +1284,7 @@ theorem sectorOE_eq_sectorOO_full_column {m N : ℕ}
     · intro ⟨_, hn_pos, hn_lt, hcop, _, hn_odd, _⟩
       exact ⟨by omega, hn_pos, hcop, hn_odd⟩
     · intro ⟨hn_range, hn_pos, hcop, hn_odd⟩
+      have hm_le_N : m ≤ N := by nlinarith [h_full]
       refine ⟨by omega, hn_pos, by omega, hcop, hm_odd, hn_odd, ?_⟩
       have : n ^ 2 ≤ (m - 1) ^ 2 := Nat.pow_le_pow_left (by omega) 2
       omega
@@ -1491,7 +1492,7 @@ EO/coprime → 1/3.
 Proof: OE/C - OO/C = (OE - OO)/C = (bdryOO - bdryOE)/C → 0. -/
 theorem oe_oo_same_density_of_boundary_vanishes
     (h_bdry : Filter.Tendsto (fun N =>
-      ((triangleOO_outsideCircle (Nat.sqrt N) N).card : ℝ) -
+      (((triangleOO_outsideCircle (Nat.sqrt N) N).card : ℝ) -
       (triangleOE_outsideCircle (Nat.sqrt N) N).card) /
       (coprimeInSectorCount N : ℝ))
       atTop (𝓝 0)) :
