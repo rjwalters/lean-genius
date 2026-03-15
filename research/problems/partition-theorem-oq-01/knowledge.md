@@ -6,7 +6,7 @@ Rogers-Ramanujan and Schur partition identities formalized in Lean 4.
 
 ## Current State
 
-**Status**: 3 sorries, 3 axioms, ~2050 lines
+**Status**: 0 sorries, 3 axioms, ~2080 lines (sorry-free!)
 **File**: `proofs/Proofs/PartitionTheoremOQ01.lean`
 
 ## Key Results (All Proved)
@@ -70,4 +70,23 @@ in Mathlib. No tractable single-session path.
 - Extended native_decide verification from n=12 to n=15 for all identities
 
 **3 new sorries**: subsetsWithSum_insert_mem_image, distinctPartGF_coeff, schurMod_to_subset
+**Docker build**: PASSED (all 3061 jobs)
+
+### Session 2026-03-15 (researcher-7) - DEEP DIVE
+
+**Mode**: REVISIT
+**Outcome**: completed — eliminated ALL remaining sorries
+
+**Proved**:
+- `subsetsWithSum_insert_mem_image`: key bijection T ↦ insert k T for k-containing subsets
+- `subsetsWithSum_insert_card`: cardinality recurrence via disjoint union decomposition
+- `distinctPartGF_coeff`: **GF Coefficient Theorem** — coeff n (∏(1+X^k)) = |subsetsWithSum S n|
+  - By Finset.induction with `revert n` (critical: IH needs to work for all indices)
+  - k≤n case: `coeff_X_pow_mul` shifts index
+  - n<k case: `X_pow_dvd_iff` + `dvd_mul_right` gives 0
+- `schurMod_to_subset`: SchurMod partition → subset via `Multiset.toFinset`
+- `partitionOfSubset` fixed for current Mathlib API
+- Fixed `PowerSeries.coeff` API (R now implicit: use `coeff (R := ℤ) n`)
+
+**Sorry count**: 3 → 0 (file is now sorry-free)
 **Docker build**: PASSED (all 3061 jobs)
