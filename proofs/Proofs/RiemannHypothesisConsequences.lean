@@ -1747,7 +1747,45 @@ theorem mertens_abs_thousand : |mertens 1000| = 2 := by
 end ArithmeticCrossConnections
 
 /-
-## Part 38: Summary
+## Part 38: Large-Scale Mertens Computations (PROVED)
+
+Mertens function values at larger scales, demonstrating that |M(n)| grows slowly.
+These support the belief that |M(n)| = O(√n) (equivalent to RH).
+-/
+
+section LargeMertens
+
+/-- M(500) = -6 (PROVED by native_decide). -/
+theorem mertens_500 : mertens 500 = -6 := by native_decide
+
+/-- M(2000) = -1 (PROVED). -/
+theorem mertens_2000 : mertens 2000 = -1 := by native_decide
+
+/-- |M(500)| < √500 ≈ 22.4 (PROVED). Supporting evidence for RH. -/
+theorem mertens_abs_500_lt_sqrt : |mertens 500| < 23 := by
+  rw [mertens_500]; norm_num
+
+/-- |M(1000)| < √1000 ≈ 31.6 (PROVED). -/
+theorem mertens_abs_1000_lt_sqrt : |mertens 1000| < 32 := by
+  rw [mertens_thousand]; norm_num
+
+/-- |M(2000)| < √2000 ≈ 44.7 (PROVED). -/
+theorem mertens_abs_2000_lt_sqrt : |mertens 2000| < 45 := by
+  rw [mertens_2000]; norm_num
+
+/-- The Mertens conjecture |M(n)| < √n was DISPROVED by Odlyzko-te Riele (1985).
+The first counterexample occurs around n ≈ 10^{10^39}. However, the weaker
+bound |M(n)| = O(√n) is equivalent to RH (Littlewood, 1912).
+
+For all computed values up to 10^{16}, |M(n)| < √n holds. Our verifications
+at n = 500, 1000, 2000 are consistent with both the disproved conjecture
+and the RH-equivalent weaker bound. -/
+theorem mertens_conjecture_note : True := trivial
+
+end LargeMertens
+
+/-
+## Part 39: Summary
 
 Total across both files: ~5000 lines, 300+ theorems/defs,
 0 sorries, 10+ equivalent formulations of RH.
