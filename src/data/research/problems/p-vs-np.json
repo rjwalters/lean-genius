@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added QMA (quantum NP), Raz-Tal oracle separation (BQP vs PH), ETH/SETH hypotheses. Cleaned merge conflicts. Sound model: ~50 axioms, ~240 defs/theorems, 1 sorry (ETH_implies_P_ne_NP), 2740 lines.",
+    "progressSummary": "PROGRESS: Added PCP theorem + hardness of approximation, Williams NEXP⊄ACC⁰, Karchmer-Wigderson communication complexity, Cook-Reckhow proof complexity. Sound model: ~68 axioms, 164 theorems, 88 defs, 0 sorries, 3569 lines.",
     "builtItems": [
       {
         "name": "P",
@@ -337,7 +337,13 @@
         "name": "comprehensive_landscape_with_quantum",
         "description": "Full landscape with quantum classes",
         "proven": true
-      }
+      },
+      "Eliminated 34 dead-code axioms across 4 files: PNPBarriers (235→219), PNPBarriersOQ01 (57→44), PNPBarriersSound (59→56), PvsNP (4→2)",
+      "PCP_class, pcp_theorem, pcp_theorem_hard, pcp_easy in PNPBarriersSound.lean",
+      "ACC0, williams_NEXP_not_in_ACC0, NEXP_ACC0_separation, williams_bypasses_barriers in PNPBarriersSound.lean",
+      "CC, circuitDepth, KW_game, karchmer_wigderson in PNPBarriersSound.lean",
+      "PropProofSystem, cook_reckhow, proof_complexity_approach in PNPBarriersSound.lean",
+      "NEXP_not_subset_P, NEXP_ne_P, IKW_compression, NEXP_Ppoly_implies_NEXP_in_PSPACE in PNPBarriersSound.lean"
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",
@@ -382,7 +388,12 @@
       "Raz-Tal (2019): BQP⊄PH relative to random oracle (non-relativizing barrier for BQP⊆PH)",
       "ETH/SETH formalized using sound Φ model (no DTIME needed)",
       "Cleaned merge conflicts: removed duplicate Part 25-30 sections with conflicting identifiers",
-      "Sound model uses sipser_lautemann (BPP⊆Σ₂∩Π₂), not separate sipser_gacs axioms"
+      "Sound model uses sipser_lautemann (BPP⊆Σ₂∩Π₂), not separate sipser_gacs axioms",
+      "PCP theorem formalized: NP = PCP[O(log n), O(1)], Håstad MAX-3SAT inapproximability",
+      "Williams NEXP⊄ACC⁰ (2011) formalized with full circuit hierarchy interleaving AC⁰⊆ACC⁰⊆TC⁰⊆NC¹⊆NC",
+      "Karchmer-Wigderson theorem: communication complexity = circuit depth",
+      "Cook-Reckhow proof complexity: NP=coNP ↔ poly proof system exists",
+      "IKW compression: NEXP⊆P/poly → NEXP⊆MA"
     ],
     "mathlibGaps": [
       "Turing machines",
