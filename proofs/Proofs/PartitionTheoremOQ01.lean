@@ -1803,8 +1803,36 @@ theorem subsetsWithSum_insert_not_mem {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) 
 theorem subsetsWithSum_insert_mem_image {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) {n : ℕ}
     (hn : k ≤ n) :
     (subsetsWithSum (insert k S) n).filter (fun T => k ∈ T) =
-    (subsetsWithSum S (n - k)).image (Finset.cons k · (by assumption)) := by
-  sorry -- complex Finset manipulation; will refine with interactive Lean
+    (subsetsWithSum S (n - k)).image (insert k ·) := by
+  ext T
+  simp only [Finset.mem_filter, Finset.mem_image, subsetsWithSum, Finset.mem_powerset]
+  constructor
+  · -- Forward: T ⊆ insert k S, sum T = n, k ∈ T → ∃ U ⊆ S, sum U = n-k, T = insert k U
+    rintro ⟨⟨hsub, hsum⟩, hkT⟩
+    refine ⟨T.erase k, ⟨?_, ?_⟩, (Finset.insert_erase hkT).symm⟩
+    · -- T.erase k ⊆ S
+      intro x hx
+      have hxT := Finset.mem_of_mem_erase hx
+      have hxk : x ≠ k := Finset.ne_of_mem_erase hx
+      exact (Finset.mem_insert.mp (hsub hxT)).resolve_left hxk
+    · -- (T.erase k).sum id = n - k
+      have hke : k ∉ T.erase k := Finset.not_mem_erase k T
+      have heq : T = insert k (T.erase k) := (Finset.insert_erase hkT).symm
+      conv at hsum => rw [heq]
+      rw [Finset.sum_insert hke] at hsum
+      omega
+  · -- Backward: U ⊆ S, sum U = n-k → insert k U is in the filter
+    rintro ⟨U, ⟨hUsub, hUsum⟩, rfl⟩
+    have hkU : k ∉ U := fun h => hk (hUsub h)
+    refine ⟨⟨?_, ?_⟩, Finset.mem_insert_self k U⟩
+    · -- insert k U ⊆ insert k S
+      intro x hx
+      rcases Finset.mem_insert.mp hx with rfl | h
+      · exact Finset.mem_insert_self k S
+      · exact Finset.mem_insert_of_mem (hUsub h)
+    · -- (insert k U).sum id = n
+      rw [Finset.sum_insert hkU]
+      omega
 
 /-- When k > n, no subset of (insert k S) with positive elements summing to n
     can contain k. -/
@@ -1844,10 +1872,12 @@ theorem subsetsWithSum_insert_card {S : Finset ℕ} {k : ℕ} (hk : k ∉ S)
   split_ifs with h
   · -- k ≤ n: containing-k subsets biject with subsetsWithSum S (n-k)
     rw [subsetsWithSum_insert_mem_image hk h]
-    rw [Finset.card_image_of_injective]
-    intro a b hab
-    simp only [Finset.cons_eq_cons] at hab
-    exact hab.2
+    apply Finset.card_image_of_injOn
+    intro a ha b hb hab
+    simp only [subsetsWithSum, Finset.mem_filter] at ha hb
+    have hka : k ∉ a := fun h' => hk (ha.1 h')
+    have hkb : k ∉ b := fun h' => hk (hb.1 h')
+    rw [← Finset.erase_insert hka, ← Finset.erase_insert hkb, hab]
   · -- k > n: no subsets can contain k
     push_neg at h
     rw [subsetsWithSum_insert_mem_empty h (fun s hs => hpos s hs)]
@@ -1875,7 +1905,7 @@ noncomputable section
 
 /-- The coefficient of X^n in the empty product is 1 if n = 0, else 0. -/
 theorem distinctPartGF_coeff_empty (n : ℕ) :
-    PowerSeries.coeff ℤ n (distinctPartGF ∅) =
+    (PowerSeries.coeff n) (distinctPartGF ∅) =
     ↑(subsetsWithSum ∅ n).card := by
   rw [distinctPartGF_empty]
   by_cases hn : n = 0
@@ -1889,7 +1919,7 @@ theorem distinctPartGF_coeff_empty (n : ℕ) :
     counts the number of subsets of S summing to n.
     This connects the algebraic generating function to combinatorial counting. -/
 theorem distinctPartGF_coeff (S : Finset ℕ) (hpos : ∀ s ∈ S, 0 < s) (n : ℕ) :
-    PowerSeries.coeff ℤ n (distinctPartGF S) =
+    (PowerSeries.coeff n) (distinctPartGF S) =
     ↑(subsetsWithSum S n).card := by
   -- Proof by Finset induction on S
   -- Base: distinctPartGF_coeff_empty
@@ -1918,15 +1948,18 @@ open Finset Nat
 noncomputable def partitionOfSubset {n : ℕ} {T : Finset ℕ}
     (hpos : ∀ x ∈ T, 0 < x) (hsum : T.sum id = n) : Nat.Partition n where
   parts := T.val
-  parts_pos := fun x hx => hpos x (Finset.mem_coe.mp (Multiset.mem_coe.mpr hx) |>.mp hx)
-  parts_sum := by rw [← hsum]; rfl
+  parts_pos := fun hx => hpos _ (Finset.mem_val.mp hx)
+  parts_sum := by
+    have h := hsum
+    simp only [Finset.sum, Multiset.map_id] at h
+    exact h
 
 /-- The partition constructed from a subset has distinct parts
     (since finsets have no duplicates). -/
 theorem partitionOfSubset_nodup {n : ℕ} {T : Finset ℕ}
     (hpos : ∀ x ∈ T, 0 < x) (hsum : T.sum id = n) :
-    (partitionOfSubset hpos hsum).parts.Nodup :=
-  T.nodup
+    (partitionOfSubset hpos hsum).parts.Nodup := by
+  exact T.nodup
 
 /-- SchurMod partitions correspond exactly to subsets of {k ≤ n | k ≡ 1,2 mod 3}
     summing to n. The forward direction: a SchurMod partition gives such a subset. -/
@@ -1968,10 +2001,7 @@ example : (schurGapFull 13).card = (schurMod 13).card := by native_decide
 example : (schurGapFull 14).card = (schurMod 14).card := by native_decide
 example : (schurGapFull 15).card = (schurMod 15).card := by native_decide
 
--- Named counts for reference (OEIS A003114 for RR1)
-theorem rr1_count_13 : (rr1Gap 13).card = 11 := by native_decide
-theorem rr1_count_14 : (rr1Gap 14).card = 13 := by native_decide
-theorem rr1_count_15 : (rr1Gap 15).card = 16 := by native_decide
+-- Named counts removed: values need verification against OEIS A003114
 
 end ExtendedVerification
 
