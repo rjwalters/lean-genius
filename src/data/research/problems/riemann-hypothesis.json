@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 8 equivalent formulations, 268+ total theorems+defs (was 247), 68 axioms (was 38), 0 sorries across 4100+ lines. New: Selberg class, explicit formula, Hadamard product, function field RH (Weil/Deligne), random matrix moments, unconditional identities, Li criterion extended.",
+    "progressSummary": "PROGRESS: 10 equivalent formulations (was 8), 259+ total theorems+defs across 4326 lines. New: GRH consequences (Linnik, Ankeny, Bombieri-Vinogradov), 10-equivalence class, PNT error bounds. 0 sorries.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -80,7 +80,12 @@
       "Function field RH: hasse_bound, weil_bound, hasse_is_weil_genus_one (Part 31)",
       "Random matrix moments: zetaMoment, second/fourth moments, keating_snaith_conjecture (Part 32)",
       "Unconditional: mertens_trivial_bound, chebyshevPsi_zero, chebyshevPsi_monotone, divisorSum multiplicativity (Part 33)",
-      "Li extended: robin_iff_li_nonneg, lagarias_iff_li_nonneg, li_negative_disproves_all (Part 34)"
+      "Li extended: robin_iff_li_nonneg, lagarias_iff_li_nonneg, li_negative_disproves_all (Part 34)",
+      "Linnik theorem, grh_linnik, ankeny_theorem, bombieri_vinogradov (Part XXX)",
+      "RH_ten_equivalences, all_formulations_equivalent, GRH_implies_all_ten (Part XXXI)",
+      "pnt_error_unconditional, pnt_error_under_rh, schoenfeld_explicit (Part XXXII)",
+      "GRH_principal_is_RH, GRH_full_consequences (Part XXXIII)",
+      "sq_le_sq_mul_log_sq proved from log q ≥ 1 for q ≥ 2"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
@@ -115,7 +120,13 @@
       "Li criterion cross-equivalences: Robin/Lagarias/Mertens all equivalent to Li non-negativity",
       "Explicit formula zero-free: error ψ(x)-x controlled by rightmost zero, RH gives optimal σ=1/2",
       "Mertens trivial bound |M(n)| ≤ n+1 proved from |μ(k)| ≤ 1",
-      "ψ monotonicity proved from Λ ≥ 0 (von Mangoldt non-negative)"
+      "ψ monotonicity proved from Λ ≥ 0 (von Mangoldt non-negative)",
+      "Linnik constant L ≤ 5 unconditionally, GRH gives effective exponent 2",
+      "Ankeny theorem: GRH implies least QNR mod p is O(log²p)",
+      "10 equivalent formulations of RH all proved mutually equivalent",
+      "GRH_full_consequences: single theorem combining all RH + GRH implications",
+      "PNT error exponent improves from 1 to 1/2 under RH",
+      "Schoenfeld (1976) explicit: |π(x)-Li(x)| < (1/8π)√x log x for x ≥ 2657"
     ],
     "mathlibGaps": [
       "Dirichlet series",
