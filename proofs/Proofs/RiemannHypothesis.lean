@@ -940,6 +940,77 @@ axiom RH_iff_NymanBeurling : RiemannHypothesis ↔
         (1 - ∑ i, c i * nymanBeurlingFunction (θ i) x)^2 < ε
 
 /- ═══════════════════════════════════════════════════════════════════════════════
+PART X-ter: FRACTIONAL PART AND NYMAN-BEURLING FUNCTION PROPERTIES (PROVED)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-
+Properties of the fractional part {x} = x - ⌊x⌋ and the Nyman-Beurling
+functions f_θ(x) = {θ/x}. These are the building blocks of the
+Nyman-Beurling criterion for RH.
+-/
+
+/-- The fractional part satisfies {x} = x - ⌊x⌋ (definitional unfolding). -/
+theorem fractionalPart_eq (x : ℝ) : fractionalPart x = x - ↑(⌊x⌋) := rfl
+
+/-- The fractional part is non-negative: {x} ≥ 0 for all x. -/
+theorem fractionalPart_nonneg (x : ℝ) : 0 ≤ fractionalPart x := by
+  unfold fractionalPart
+  linarith [Int.floor_le x]
+
+/-- The fractional part is strictly less than 1: {x} < 1 for all x. -/
+theorem fractionalPart_lt_one (x : ℝ) : fractionalPart x < 1 := by
+  unfold fractionalPart
+  linarith [Int.lt_floor_add_one x]
+
+/-- The fractional part lies in [0, 1) for all x. -/
+theorem fractionalPart_mem_Ico (x : ℝ) : fractionalPart x ∈ Set.Ico 0 1 :=
+  ⟨fractionalPart_nonneg x, fractionalPart_lt_one x⟩
+
+/-- The fractional part of an integer is 0. -/
+theorem fractionalPart_intCast (n : ℤ) : fractionalPart (n : ℝ) = 0 := by
+  unfold fractionalPart
+  simp [Int.floor_intCast]
+
+/-- The fractional part of a natural number is 0. -/
+theorem fractionalPart_natCast (n : ℕ) : fractionalPart (n : ℝ) = 0 := by
+  unfold fractionalPart
+  simp [Int.floor_natCast]
+
+/-- The Nyman-Beurling function is zero for non-positive x. -/
+theorem nymanBeurlingFunction_nonpos (θ : ℝ) (x : ℝ) (hx : x ≤ 0) :
+    nymanBeurlingFunction θ x = 0 := by
+  unfold nymanBeurlingFunction
+  simp only [show ¬(x > 0) from not_lt.mpr hx, ite_false]
+
+/-- The Nyman-Beurling function is non-negative for all x. -/
+theorem nymanBeurlingFunction_nonneg (θ : ℝ) (x : ℝ) :
+    0 ≤ nymanBeurlingFunction θ x := by
+  unfold nymanBeurlingFunction
+  split_ifs with h
+  · exact fractionalPart_nonneg _
+  · exact le_refl 0
+
+/-- The Nyman-Beurling function is strictly less than 1 for positive x. -/
+theorem nymanBeurlingFunction_lt_one (θ : ℝ) (x : ℝ) (hx : x > 0) :
+    nymanBeurlingFunction θ x < 1 := by
+  unfold nymanBeurlingFunction
+  simp only [hx, ite_true]
+  exact fractionalPart_lt_one _
+
+/-- The Nyman-Beurling function is bounded: 0 ≤ f_θ(x) < 1 for positive x. -/
+theorem nymanBeurlingFunction_mem_Ico (θ : ℝ) (x : ℝ) (hx : x > 0) :
+    nymanBeurlingFunction θ x ∈ Set.Ico 0 1 :=
+  ⟨nymanBeurlingFunction_nonneg θ x, nymanBeurlingFunction_lt_one θ x hx⟩
+
+/-- f_θ(θ) = 0 when θ > 0 (since {θ/θ} = {1} = 0). -/
+theorem nymanBeurlingFunction_self (θ : ℝ) (hθ : θ > 0) :
+    nymanBeurlingFunction θ θ = 0 := by
+  unfold nymanBeurlingFunction
+  simp only [hθ, ite_true, div_self (ne_of_gt hθ)]
+  unfold fractionalPart
+  simp [Int.floor_one]
+
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART XI: THE GENERALIZED RIEMANN HYPOTHESIS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -1712,6 +1783,36 @@ theorem Lagarias_iff_deBruijnNewman : LagariasInequality ↔ deBruijnNewmanConst
   ⟨fun h => RH_iff_deBruijnNewman_eq_zero.mp (RH_iff_Lagarias.mpr h),
    fun h => RH_iff_Lagarias.mp (RH_iff_deBruijnNewman_eq_zero.mpr h)⟩
 
+/-- NymanBeurling ↔ Robin (PROVED via RH as hub). -/
+theorem NymanBeurling_iff_Robin :
+    (∀ ε > 0, ∃ (n : ℕ) (θ : Fin n → ℝ) (c : Fin n → ℝ),
+      (∀ i, 0 < θ i ∧ θ i ≤ 1) ∧
+      ∫ x in Set.Icc 0 1,
+        (1 - ∑ i, c i * nymanBeurlingFunction (θ i) x)^2 < ε) ↔ RobinsInequality :=
+  ⟨fun h => RH_iff_Robin.mp (RH_iff_NymanBeurling.mpr h),
+   fun h => RH_iff_NymanBeurling.mp (RH_iff_Robin.mpr h)⟩
+
+/-- NymanBeurling ↔ deBruijnNewman = 0 (PROVED via RH as hub). -/
+theorem NymanBeurling_iff_deBruijnNewman :
+    (∀ ε > 0, ∃ (n : ℕ) (θ : Fin n → ℝ) (c : Fin n → ℝ),
+      (∀ i, 0 < θ i ∧ θ i ≤ 1) ∧
+      ∫ x in Set.Icc 0 1,
+        (1 - ∑ i, c i * nymanBeurlingFunction (θ i) x)^2 < ε) ↔
+    deBruijnNewmanConstant = 0 :=
+  ⟨fun h => RH_iff_deBruijnNewman_eq_zero.mp (RH_iff_NymanBeurling.mpr h),
+   fun h => RH_iff_NymanBeurling.mp (RH_iff_deBruijnNewman_eq_zero.mpr h)⟩
+
+/-- WeilPositivity ↔ Robin (PROVED via RH as hub). -/
+theorem WeilPositivity_iff_Robin : WeilPositivity ↔ RobinsInequality :=
+  ⟨fun h => RH_iff_Robin.mp (RH_iff_WeilPositivity.mpr h),
+   fun h => RH_iff_WeilPositivity.mp (RH_iff_Robin.mpr h)⟩
+
+/-- WeilPositivity ↔ deBruijnNewman = 0 (PROVED via RH as hub). -/
+theorem WeilPositivity_iff_deBruijnNewman :
+    WeilPositivity ↔ deBruijnNewmanConstant = 0 :=
+  ⟨fun h => RH_iff_deBruijnNewman_eq_zero.mp (RH_iff_WeilPositivity.mpr h),
+   fun h => RH_iff_WeilPositivity.mp (RH_iff_deBruijnNewman_eq_zero.mpr h)⟩
+
 /-- The 7 formulations form a complete equivalence class.
     If any one holds, they all hold. If any one fails, they all fail. -/
 theorem RH_equivalence_class :
@@ -1720,9 +1821,14 @@ theorem RH_equivalence_class :
     (RiemannHypothesis ↔ MertensBound) ∧
     (RiemannHypothesis ↔ PrimeCountingBound) ∧
     (RiemannHypothesis ↔ deBruijnNewmanConstant = 0) ∧
-    (RiemannHypothesis ↔ WeilPositivity) :=
+    (RiemannHypothesis ↔ WeilPositivity) ∧
+    (RiemannHypothesis ↔ ∀ ε > 0, ∃ (n : ℕ) (θ : Fin n → ℝ) (c : Fin n → ℝ),
+      (∀ i, 0 < θ i ∧ θ i ≤ 1) ∧
+      ∫ x in Set.Icc 0 1,
+        (1 - ∑ i, c i * nymanBeurlingFunction (θ i) x)^2 < ε) :=
   ⟨RH_iff_Robin, RH_iff_Lagarias, RH_iff_Mertens,
-   RH_iff_PrimeCounting, RH_iff_deBruijnNewman_eq_zero, RH_iff_WeilPositivity⟩
+   RH_iff_PrimeCounting, RH_iff_deBruijnNewman_eq_zero, RH_iff_WeilPositivity,
+   RH_iff_NymanBeurling⟩
 
 /-- GRH implies all 7 equivalent formulations (PROVED).
     Since GRH → RH and RH ↔ each formulation. -/
