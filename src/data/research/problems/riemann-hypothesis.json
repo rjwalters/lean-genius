@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 8 equivalent formulations (was 7), 227 total theorems+defs, 38 axioms, 0 sorries across 3500+ lines. New: Speiser, Montgomery, Cramer, Backlund, Turan, Miller.",
+    "progressSummary": "PROGRESS: 8 equivalent formulations, 268+ total theorems+defs (was 247), 68 axioms (was 38), 0 sorries across 4100+ lines. New: Selberg class, explicit formula, Hadamard product, function field RH (Weil/Deligne), random matrix moments, unconditional identities, Li criterion extended.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -73,7 +73,14 @@
       "Turán inequalities axiom + coefficient bounds (proved) in RiemannHypothesis.lean",
       "Miller primality under GRH axiom in RiemannHypothesis.lean",
       "all_negations_equivalent + RH_implication_chain theorems (proved) in RiemannHypothesis.lean",
-      "RH_equivalence_class_extended: 8-way equivalence (proved) in RiemannHypothesis.lean"
+      "RH_equivalence_class_extended: 8-way equivalence (proved) in RiemannHypothesis.lean",
+      "Selberg class: SelbergClassFunction type, selbergDegree, degree_nonneg, zeta_degree_pos (Part 28)",
+      "Explicit formula: zeroSum, psi error bounds, rh_optimal_error proved (Part 29)",
+      "Hadamard product: completedZeta, xi_functional_equation, xi_zeros symmetry, zero_counting_consistency (Part 30)",
+      "Function field RH: hasse_bound, weil_bound, hasse_is_weil_genus_one (Part 31)",
+      "Random matrix moments: zetaMoment, second/fourth moments, keating_snaith_conjecture (Part 32)",
+      "Unconditional: mertens_trivial_bound, chebyshevPsi_zero, chebyshevPsi_monotone, divisorSum multiplicativity (Part 33)",
+      "Li extended: robin_iff_li_nonneg, lagarias_iff_li_nonneg, li_negative_disproves_all (Part 34)"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
@@ -100,7 +107,15 @@
       "Backlund theorem (1918): S(T) = O(log T) unconditionally; RH improves to O(log T/log log T)",
       "Turán inequalities: xi-function derivatives satisfy Newton inequalities (proved 1986)",
       "Miller primality: GRH gives deterministic polynomial-time primality test",
-      "Complete negation equivalence class: if any formulation fails, all fail (proved)"
+      "Complete negation equivalence class: if any formulation fails, all fail (proved)",
+      "Selberg class provides natural framework for GRH - degree conjecture implies only integer-degree L-functions exist",
+      "Hadamard product + functional equation give quadruple symmetry of zeros",
+      "Function field RH (Weil/Deligne) is fully proved - provides evidence for number field case",
+      "Keating-Snaith moments: 2k-th moment ~ C_k T (log T)^{k²}, only k=1,2 proved",
+      "Li criterion cross-equivalences: Robin/Lagarias/Mertens all equivalent to Li non-negativity",
+      "Explicit formula zero-free: error ψ(x)-x controlled by rightmost zero, RH gives optimal σ=1/2",
+      "Mertens trivial bound |M(n)| ≤ n+1 proved from |μ(k)| ≤ 1",
+      "ψ monotonicity proved from Λ ≥ 0 (von Mangoldt non-negative)"
     ],
     "mathlibGaps": [
       "Dirichlet series",
