@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2774 lines (+172), 8 axioms, 0 sorries. Parts XIII-XIV: Bailey chains and q-series (Bailey pairs, q-Pochhammer, Jacobi triple product, RR continued fraction), partition asymptotics (Hardy-Ramanujan, Rademacher exact formula, Ramanujan congruences with verified small cases).",
+    "progressSummary": "PROGRESS: 2940 lines (+166), 8 axioms, 0 sorries. Parts XV-XVI: partition bijections (conjugation, Franklin involution, pentagonal theorem, Durfee square, Sylvester) and modular forms (Dedekind eta, Rademacher, Ono congruences, RR modularity, mock theta functions).",
     "builtItems": [
       "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
@@ -43,7 +43,9 @@
       "native_decide verification extended from n=12 to n=15 for all identities",
       "geomSeries_inverse: proved (1-X^k)*geomSeries(k) = 1 as formal power series",
       "Part XIII: Bailey chains - BaileyPair, BaileyLemma, QPochhammer, QBinomial, JacobiTripleProduct, RRContinuedFraction, rogers_ramanujan_from_bailey",
-      "Part XIV: Partition asymptotics - HardyRamanujanFormula, RademacherFormula, RamanujanCongruences, 5 congruence verifications proved (p(4)%5, p(9)%5, p(5)%7, p(12)%7, p(6)%11)"
+      "Part XIV: Partition asymptotics - HardyRamanujanFormula, RademacherFormula, RamanujanCongruences, 5 congruence verifications proved (p(4)%5, p(9)%5, p(5)%7, p(12)%7, p(6)%11)",
+      "Part XV: Partition bijections - PartitionConjugate, FranklinInvolution, pentagonal numbers (5 proved), PentagonalTheorem, DurfeeSquare, SylvesterBijection",
+      "Part XVI: Partitions and modular forms - DedekindEta, PartitionModularity, CongruenceViaModularForms, RRModularity, MockThetaFunctions"
     ],
     "insights": [
       "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
@@ -62,7 +64,9 @@
       "PowerSeries.coeff_X_pow_mul gives shift: coeff d (X^n * p) = if n ≤ d then coeff (d-n) p else 0",
       "Bailey chain method: start with unit Bailey pair (q^{n²}, 1/(q;q)_n), apply Bailey lemma to derive Rogers-Ramanujan — this is the modern proof approach",
       "Hardy-Ramanujan: p(n) ~ exp(π√(2n/3))/(4n√3), growth is sub-exponential (exp(C√n))",
-      "Ramanujan congruences p(5n+4)≡0 mod 5 etc. — Ono (2000) showed congruences exist for every prime"
+      "Ramanujan congruences p(5n+4)≡0 mod 5 etc. — Ono (2000) showed congruences exist for every prime",
+      "Franklin involution gives bijective proof of Euler pentagonal theorem; fixed points at pentagonal numbers k(3k-1)/2",
+      "Partition function p(n) = coefficients of 1/η(τ) — Dedekind eta modularity underlies both Rademacher formula and congruences"
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",
