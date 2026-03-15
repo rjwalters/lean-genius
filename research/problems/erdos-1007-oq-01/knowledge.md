@@ -84,3 +84,27 @@ Lean infrastructure but mathematically straightforward.
 - Axioms encode known values (House 2013, Chaffee-Noble 2016) and search properties
 - General minEdges(d) is genuinely open
 - To make further progress, would need dim(K_n) = n-1 rigidity argument (non-trivial)
+
+---
+
+## Session 2026-03-15 (Session 4) - K₃ Embedding & Cleanup
+
+**Mode**: REVISIT (depth-first, RICH knowledge)
+**Outcome**: progress — new embedding theorem, file cleanup
+
+### What Was Done
+- **K₃ equilateral triangle embedding** (§15): Proved `K3_unit_embedding` — K₃ admits a
+  unit-distance embedding in ℝ² using vertices (0,0), (1,0), (1/2, √3/2). Helper lemmas
+  `sq_sqrt_three` and `sq_sqrt_three_half` handle √3 arithmetic.
+- **dim(K₃) ≤ 2** (§15): `complete_graph_dim_le_tight_3` — tight bound via equilateral
+  triangle. Fixed `open Classical in` placement for `Nat.find_le` decidability.
+- **Removed duplicate §11**: Cleaned up redundant theorems and broken helper lemmas.
+- Axiom count: 9. 41 theorems, 0 sorries.
+
+### Assessment: General dim(K_n) = n-1
+- Upper bound requires ~200-300 lines ONB infrastructure (BUILD task)
+- Lower bound requires Gram matrix positive definiteness (needs Mathlib)
+- Both mathematically straightforward but infrastructure-heavy
+
+### Files Modified
+- `proofs/Proofs/Erdos1007OQ01.lean` — added §15, removed §11, fixed Classical placement
