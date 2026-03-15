@@ -6,9 +6,9 @@ The number of primitive Pythagorean triples with hypotenuse c ≤ N is asymptoti
 
 ## Formalization Status: COMPLETED
 
-**File**: `proofs/Proofs/PythagoreanTriplesOQ01.lean` (2326 lines)
+**File**: `proofs/Proofs/PythagoreanTriplesOQ01.lean` (~2490 lines)
 **Companion**: `proofs/Proofs/PythagoreanTriplesOQ01Aristotle.lean` (12 routine lemmas proved)
-**Stats**: ~110 theorems, ~35 definitions, 0 sorries, 5 axioms (3 core + 2 generalization)
+**Stats**: ~120 theorems, ~39 definitions, 0 sorries, 6 axioms (3 core + 3 supplementary)
 
 ## Proof Architecture
 
@@ -67,11 +67,24 @@ Each factor is proved as a separate `Tendsto` statement, then combined via arith
 - `sector_oe_oo_discrepancy_bound`: sector discrepancy = boundary discrepancy
 - Total boundary is Θ(N), NOT O(√N); the discrepancy must be shown o(N)
 
+### Straddling Pair Analysis (Part XXIII)
+- `circleNorm`, `circleNormInv`: circle distance under involution
+- `circle_norm_gap`: norm difference = m|m-2n| (algebraic identity)
+- `norm_inv_larger_when_n_small/large`: involution geometry (n < m/2 → outward, n > m/2 → inward)
+- `parity_from_straddling_vanishes`: column density + straddling → 0 implies OO → 1/3
+- **Key insight**: straddling pairs = O(√N) << coprime sector = Θ(N), so boundary vanishes
+
+### Upgraded Axioms (Part XXIII)
+- `triple_count_from_r2_connection`: PROVED (π/8)×(6/π²)×(2/3) = 1/(2π)
+- `landau_two_squares`: upgraded from True to proper Landau-Ramanujan Tendsto statement
+- `r2_pos_iff`: converted to axiom (requires Gaussian integer UFD)
+
 ## Approaches Explored
 
 1. **Density decomposition via telescoping** - SUCCEEDED: Main theorems proved from 3 axioms
 2. **Parity partition infrastructure** - SUCCEEDED: Exact bijections, partition identities
-3. **Boundary analysis for parity axiom** - BLOCKED: Per-column parity balance of coprime residues requires character sum bounds absent from Mathlib
+3. **Boundary analysis for parity axiom** - BLOCKED: Per-column parity balance requires character sum bounds absent from Mathlib
+4. **Straddling pair analysis** - SUCCEEDED: Complete geometric explanation of parity axiom via O(√N) straddling bound
 
 ## Why 3 Axioms Are Irreducible (Current Mathlib)
 
