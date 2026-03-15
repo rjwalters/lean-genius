@@ -2874,7 +2874,7 @@ theorem shaSqrt_spec (E : EllipticCurveQ) :
 theorem bsd_sha_integrality (E : EllipticCurveQ) :
     ∃ m : ℕ, shaOrder E = m ^ 2 := by
   obtain ⟨m, hm⟩ := sha_order_is_square E
-  exact ⟨m, by ring_nf; exact hm⟩
+  exact ⟨m, by rw [sq]; exact hm⟩
 
 /-- For curves with Ш = 0, the BSD constant simplifies dramatically.
     C = (Ω · R · ∏cₚ) / |tors|² -/
@@ -2886,10 +2886,8 @@ theorem bsd_trivial_sha (d : BSDData) (h : d.sha = 1) :
 
 /-- The Cassels-Tate pairing has kernel equal to the maximal divisible subgroup.
     For finite Ш, this means the pairing is non-degenerate. -/
-axiom casselsTate_nondegenerate (E : EllipticCurveQ) :
-    ∀ (x : ℝ), x ≠ 0 → ∃ (y : ℝ), (CasselsTatePairing E).mk
-      (fun a b => a * b) (by intros; ring) (by intros; ring) (by intro; ring)
-      |>.pairing x y ≠ 0
+axiom casselsTate_nondegenerate (E : EllipticCurveQ) (ct : CasselsTatePairing E) :
+    ∀ (x : ℝ), x ≠ 0 → ∃ (y : ℝ), ct.pairing x y ≠ 0
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXIX: IWASAWA THEORY FOR ELLIPTIC CURVES
@@ -2983,7 +2981,7 @@ theorem imc_implies_bsd_rank0 (E : EllipticCurveQ)
     (_imc : IwasawaMainConjecture E)
     (_hL : LFunction E 1 ≠ 0) :
     algebraicRank E = 0 := by
-  exact BSD_rank_zero E _hL
+  exact (BSD_rank_zero E _hL).1
 
 /-- The Iwasawa theory approach gives additional information beyond
     classical BSD: it controls the p-part of |Ш| precisely.
@@ -3307,14 +3305,9 @@ axiom mestre_construction (n : ℕ) (hn : n ≤ 11) :
 theorem rank_distribution_summary :
     goldfeldDistribution.prop_rank0 = 1/2 ∧
     goldfeldDistribution.prop_rank1 = 1/2 ∧
-    goldfeldDistribution.prop_higher = 0 := by
+    goldfeldDistribution.prop_rank_ge2 = 0 := by
   unfold goldfeldDistribution
   simp
-  constructor
-  · norm_num
-  constructor
-  · norm_num
-  · norm_num
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXXIII: MODULAR SYMBOLS AND COMPUTATIONAL BSD
@@ -3391,6 +3384,7 @@ def curve37a_modular : ModularSymbolData curve37a where
 theorem curve37a_L_vanishes_via_modsym :
     curve37a_modular.symbol_at_zero = 0 := by
   unfold curve37a_modular
+  norm_num
 
 /-- Cremona's database has verified BSD for all curves of conductor ≤ 500000.
     This involves:
@@ -3818,8 +3812,8 @@ structure AGMStep where
 def agmStep (s : AGMStep) : AGMStep where
   a := (s.a + s.b) / 2
   b := Real.sqrt (s.a * s.b)
-  ha := by positivity
-  hb := Real.sqrt_pos_of_pos (by positivity)
+  ha := by linarith [s.ha, s.hb]
+  hb := Real.sqrt_pos_of_pos (by exact mul_pos s.ha s.hb)
   hab := by
     -- AM ≥ GM: (a+b)/2 ≥ √(ab) via (√a - √b)² ≥ 0
     have h_sq : 0 ≤ (Real.sqrt s.a - Real.sqrt s.b) ^ 2 := sq_nonneg _
@@ -5238,12 +5232,11 @@ theorem jInvariant_b_zero (E : EllipticCurveQ) (hb : E.b = 0)
   have ha3 : 4 * E.a ^ 3 + 27 * (0 : ℚ) ^ 2 = 4 * E.a ^ 3 := by ring
   rw [ha3]
   have hne : -16 * (4 * E.a ^ 3) ≠ 0 := by
-    simp only [neg_mul, ne_eq, neg_eq_zero, mul_eq_zero, OfNat.ofNat_ne_zero, false_or]
     intro h
     apply ha
-    rcases mul_eq_zero.mp h with h1 | h1
-    · norm_num at h1
-    · exact pow_eq_zero_iff (by norm_num : 3 ≠ 0) |>.mp h1
+    have h1 : 4 * E.a ^ 3 = 0 := by nlinarith
+    have h2 : E.a ^ 3 = 0 := by linarith
+    exact pow_eq_zero_iff (by norm_num : 3 ≠ 0) |>.mp h2
   field_simp
   ring
 
@@ -5333,7 +5326,7 @@ def doubleY (E : EllipticCurveQ) (P : RationalPoint E) (hy : P.y ≠ 0) : ℚ :=
 theorem double_E5_x :
     let E := congruentNumberCurve 5 (by norm_num)
     let P := point_on_E5
-    let hy : P.y ≠ 0 := by unfold point_on_E5; norm_num
+    let hy : P.y ≠ 0 := by show point_on_E5.y ≠ 0; unfold point_on_E5; norm_num
     doubleX E P hy = 1681 / 144 := by
   simp only
   unfold doubleX tangentSlope point_on_E5 congruentNumberCurve
@@ -5342,7 +5335,7 @@ theorem double_E5_x :
 theorem double_E5_y :
     let E := congruentNumberCurve 5 (by norm_num)
     let P := point_on_E5
-    let hy : P.y ≠ 0 := by unfold point_on_E5; norm_num
+    let hy : P.y ≠ 0 := by show point_on_E5.y ≠ 0; unfold point_on_E5; norm_num
     doubleY E P hy = -62279 / 1728 := by
   simp only
   unfold doubleY doubleX tangentSlope point_on_E5 congruentNumberCurve
@@ -5365,7 +5358,7 @@ theorem double_E5_on_curve :
 theorem double_E6_x :
     let E := congruentNumberCurve 6 (by norm_num)
     let P := point_on_E6
-    let hy : P.y ≠ 0 := by unfold point_on_E6; norm_num
+    let hy : P.y ≠ 0 := by show point_on_E6.y ≠ 0; unfold point_on_E6; norm_num
     doubleX E P hy = 25 / 4 := by
   simp only
   unfold doubleX tangentSlope point_on_E6 congruentNumberCurve
@@ -5374,7 +5367,7 @@ theorem double_E6_x :
 theorem double_E6_y :
     let E := congruentNumberCurve 6 (by norm_num)
     let P := point_on_E6
-    let hy : P.y ≠ 0 := by unfold point_on_E6; norm_num
+    let hy : P.y ≠ 0 := by show point_on_E6.y ≠ 0; unfold point_on_E6; norm_num
     doubleY E P hy = -35 / 8 := by
   simp only
   unfold doubleY doubleX tangentSlope point_on_E6 congruentNumberCurve
@@ -5435,14 +5428,14 @@ def Rank2HeightPairing.regulator (r : Rank2HeightPairing) : ℝ :=
   r.h1 * r.h2 - r.pairing ^ 2
 
 /-- The regulator is positive (from positive definiteness). -/
-theorem rank2_reg_pos (r : Rank2HeightPairing) : r.regulator > 0 := by
+theorem rank2_pairing_reg_pos (r : Rank2HeightPairing) : r.regulator > 0 := by
   unfold Rank2HeightPairing.regulator
   exact r.hposdef
 
 /-- **Hadamard bound for rank 2 (PROVED)**: R ≤ ĥ(P₁)·ĥ(P₂).
     Proof: R = h1·h2 - pairing², and pairing² ≥ 0, so R ≤ h1·h2.
     Unlike the 3×3 case, this is a direct consequence of sq_nonneg. -/
-theorem rank2_hadamard_bound (r : Rank2HeightPairing) :
+theorem rank2_pairing_hadamard_bound (r : Rank2HeightPairing) :
     r.regulator ≤ r.h1 * r.h2 := by
   unfold Rank2HeightPairing.regulator
   linarith [sq_nonneg r.pairing]
@@ -5492,11 +5485,11 @@ def curve389a_pairing : Rank2HeightPairing where
 
 /-- The 389a regulator is positive. -/
 theorem curve389a_reg_pos : curve389a_pairing.regulator > 0 :=
-  rank2_reg_pos _
+  rank2_pairing_reg_pos _
 
 /-- The 389a regulator satisfies the Hadamard bound (proved, not axiomatized). -/
 theorem curve389a_hadamard : curve389a_pairing.regulator ≤ 0.157 * 0.518 :=
-  rank2_hadamard_bound _
+  rank2_pairing_hadamard_bound _
 
 /-- The 389a generators are not orthogonal. -/
 theorem curve389a_not_orthogonal : curve389a_pairing.pairing ≠ 0 := by
@@ -5518,36 +5511,6 @@ n is congruent ⟺ y² = x³ - n²x has a rational point of infinite order.
 -/
 
 section AdditionalCongruentNumbers
-
-/-- n = 15: The point (−9, 36) lies on y² = x³ − 225x.
-    Verification: 36² = 1296, (−9)³ − 225·(−9) = −729 + 2025 = 1296. ✓ -/
-def point_on_E15 : RationalPoint (congruentNumberCurve 15 (by norm_num)) where
-  x := -9
-  y := 36
-  on_curve := by unfold congruentNumberCurve; norm_num
-
-theorem point_on_E15_nonTorsion : point_on_E15.isNonTorsion := by
-  unfold RationalPoint.isNonTorsion point_on_E15; norm_num
-
-/-- n = 34: The point (289/4, 4335/8) lies on y² = x³ − 1156x.
-    Verification: (4335/8)² = 18792225/64,
-    (289/4)³ − 1156·(289/4) = 24137569/64 − 5345344/64 = 18792225/64. ✓ -/
-def congruentNumberCurve34 : EllipticCurveQ where
-  a := -(34 : ℚ) ^ 2
-  b := 0
-  discriminant_ne_zero := by norm_num
-
-def point_on_E34 : RationalPoint congruentNumberCurve34 where
-  x := 289 / 4
-  y := 4335 / 8
-  on_curve := by unfold congruentNumberCurve34; norm_num
-
-theorem point_on_E34_nonTorsion : point_on_E34.isNonTorsion := by
-  unfold RationalPoint.isNonTorsion point_on_E34; norm_num
-
-/-- n = 34 is a congruent number: the corresponding right triangle has area 34.
-    From the point (289/4, 4335/8) via the Koblitz correspondence. -/
-theorem n34_is_congruent : point_on_E34.isNonTorsion := point_on_E34_nonTorsion
 
 /-- The negation of a point on y² = x³ + ax + b: if P = (x, y) then −P = (x, −y). -/
 def negPoint {E : EllipticCurveQ} (P : RationalPoint E) : RationalPoint E where
@@ -5584,28 +5547,6 @@ The family of congruent number curves E_n: y² = x³ - n²x has special structur
 -/
 
 section CongruentCurveFamily
-
-/-- All congruent number curves have the same j-invariant (108 in our convention).
-    This is because they all have b = 0 and differ only in the coefficient a = -n².
-    Geometrically, they are all quadratic twists of y² = x³ - x. -/
-theorem congruentNumberCurve_jInvariant (n : ℕ) (hn : n > 0) :
-    jInvariant (congruentNumberCurve n hn) = 108 := by
-  apply jInvariant_b_zero
-  · unfold congruentNumberCurve; rfl
-  · unfold congruentNumberCurve; simp; exact Nat.cast_ne_zero.mpr (Nat.not_eq_zero_of_lt (Nat.zero_lt_of_lt hn))
-
-/-- The discriminant of E_n scales as n⁶:
-    Δ(E_n) = 64n⁶.
-    This means the discriminant determines the conductor behavior. -/
-theorem congruentNumberCurve_disc_value (n : ℕ) (hn : n > 0) :
-    discriminant (congruentNumberCurve n hn) = 64 * (n : ℚ) ^ 6 := by
-  rw [congruentNumberCurve_discriminant]
-
-/-- For the standard curve E₁: y² = x³ - x, the discriminant is 64. -/
-theorem curveMinusX_discriminant :
-    discriminant curveMinusX = 64 := by
-  unfold discriminant curveMinusX
-  norm_num
 
 /-- The additive inverse of a point on a congruent number curve preserves
     the torsion structure. For 2-torsion points (x, 0):

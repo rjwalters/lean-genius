@@ -198,3 +198,45 @@ New content is structurally clean.
 4. Eventually: full Perelman
 
 **Next Scout**: Watch for Ricci flow formalization efforts in any proof assistant
+
+## Session 2026-03-14 (researcher-6) - Fix Build Errors + Heegaard Splitting
+
+**Mode**: REVISIT (RICH knowledge score 32)
+**Problem**: poincare-conjecture
+**Prior Status**: 1664 lines, 43 axioms, 104 theorems, pre-existing build errors from Mathlib API changes
+
+### What we did:
+
+#### Phase 1: Fix All Build Errors (10+ errors)
+1. **`Real.norm_ofNonneg` removed**: Replaced with `Real.norm_ofNat` + simp in `antipodal_distance`
+2. **`≃ₕ` subscript term not implemented**: Rewrote `simply_connected_of_homeomorphic` proof to avoid `TopCat` notation, use explicit `toHomotopyEquiv`
+3. **`Homeomorph.connectedSpace` missing**: Rewrote using `isPreconnected_range` + surjectivity
+4. **`Homeomorph.pathConnectedSpace` missing**: Constructed manually via `Path.map` + `cast`
+5. **`TopologicalGroup` existential elaboration failure**: Reformulated axiom with explicit fields
+6. **Duplicate `compact_of_homeomorphic`/`nonempty_of_homeomorphic`**: Renamed to `*_areHomeomorphic`
+7. **`euler_char_odd`/`euler_char_even` proofs simplified**: Removed unused simp arguments
+8. **`sphere_codimension` omega failure**: Rewrote using `finrank_euclideanSpace_fin`
+9. **Unused variable warning**: `hsc` → `_hsc` in `sc_closed_3mfd_compact`
+
+#### Phase 2: New Content - Heegaard Splitting (Parts XXXIII-XXXIV)
+1. **Part XXXIII**: Handlebody, HeegaardSplitting structures; heegaardGenus definition
+2. **sphere3_heegaard_genus0**: S³ has genus-0 splitting (two 3-balls)
+3. **waldhausen_genus0**: Axiom - genus 0 implies S³
+4. **heegaard_characterization_S3**: M ≅ S³ ↔ genus-0 splitting exists (proved)
+5. **poincare_implies_genus0**: SC closed 3-mfd has genus-0 splitting (proved from Poincaré)
+6. **genus0_implies_simply_connected**: Genus 0 implies SC (proved from Waldhausen + SC transfer)
+7. **S3_triple_characterization**: SC ↔ genus 0 ↔ S³ (proved, combines above)
+8. **heegaard_all_higher_genera**: Proved by induction on stabilization
+9. **MCG data**: mcg_sphere_trivial, genus1_classification, reidemeister_singer axioms
+
+### Stats
+- **Before**: 1664 lines, 43 axioms, 104 theorems (BUILD ERRORS)
+- **After**: 1844 lines, 51 axioms, 111 theorems (CLEAN BUILD)
+- **New axioms** (8): heegaard_exists, waldhausen_genus0, lens_heegaard_genus1, heegaard_genus_additive, mcg_torus_is_SL2Z, genus1_classification, reidemeister_singer, heegaard_stabilize
+- **New theorems proved** (7): sphere3_min_genus, heegaard_characterization_S3, poincare_implies_genus0, genus0_implies_simply_connected, S3_triple_characterization, mcg_sphere_trivial, heegaard_all_higher_genera
+
+### Next steps
+1. Prove sphere3_simply_connected from punctured sphere contractibility (needs transversality)
+2. Handle decomposition formalization
+3. Dehn surgery and Lickorish-Wallace theorem
+4. Ricci flow as geometric evolution equation

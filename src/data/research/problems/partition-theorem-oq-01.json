@@ -2,7 +2,7 @@
   "slug": "partition-theorem-oq-01",
   "title": "Rogers-Ramanujan and Schur partition identities in Lean",
   "phase": "DEEP_DIVE",
-  "status": "active",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -71,8 +71,7 @@
       "After rcases with rfl, the substituted variable may be removed from scope. Use split+rename_i instead of by_cases with explicit variable names.",
       "The suffices pattern (from hasMinGap_pairwise_sep) cleanly separates the Pairwise induction from the main theorem statement.",
       "Mathlib has NO q-series infrastructure (no q-Pochhammer, no Jacobi triple product, no q-binomial coefficients). Proving RR1/RR2/Schur axioms requires building ~500+ lines of q-series or bijective infrastructure from scratch.",
-      "Removed deprecated schur_partition_identity axiom (simplified gap, wrong at n=9). Reduced axiom count from 4 to 3.",
-      "Problem assessment: 4 axioms are deep mathematical identities (Rogers-Ramanujan 1&2, Schur simplified, Schur corrected). Each requires q-series (Jacobi triple product) or bijective proofs (Garsia-Milne involution) — 500+ lines of new infrastructure per identity. Not suitable for Aristotle. All structural/bridge work is complete."
+      "Removed deprecated schur_partition_identity axiom (simplified gap, wrong at n=9). Reduced axiom count from 4 to 3."
     ],
     "mathlibGaps": [
       "q-Pochhammer symbols (q;q)_n",

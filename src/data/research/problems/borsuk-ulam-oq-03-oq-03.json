@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-03-14",
-    "iteration": 7,
+    "iteration": 8,
     "focus": "Eliminated tucker_disk_approx_zero axiom, added triangulated grid. 1 axiom remains (tuckers_lemma).",
     "activeApproach": "Tucker 2D lemma proof: path-following, degree theory, or Hex approach (~500-1000 lines)",
     "blockers": [
       "tuckers_lemma axiom: requires path-following (~500-1000 lines), degree theory, or intersection theory — each equivalent to Brouwer FPT in 2D"
     ],
-    "nextAction": "Prove Tucker 2D lemma for n=2 on triangulated grid",
+    "nextAction": "Prove Tucker 2D - requires building dual graph infrastructure (~500 lines)",
     "attemptCounts": {
       "total": 5,
       "currentApproach": 1,
@@ -52,7 +52,9 @@
       "tucker_disk_approx_zero_proved: main theorem with h=0 edge case completed",
       "gridEdgesTriFin: Triangulated grid edges with H/V + NE-SW diagonals for Tucker soundness",
       "grid_tri_edge_dist: Edge distance bound ≤ 1/N for all triangulated edges (H/V and diagonal)",
-      "gridEdgesFin_subset_tri: H/V edges are a subset of triangulated edges"
+      "gridEdgesFin_subset_tri: H/V edges are a subset of triangulated edges",
+      "discrete_ivt: 1D discrete IVT - if f(0) ≠ f(n) then ∃ i, f(i) ≠ f(i+1)",
+      "tucker_1d: 1D Tucker lemma for grid {0,...,2N} with antipodal boundary"
     ],
     "insights": [
       "CRITICAL: axiom complementary_edge_gives_approximate_zero was FALSE. Counterexample: g(x,y)=(x,y), u=(0.01,1), v=(-0.01,1). The bound δ*C ≈ 0.08 but |g(w).2| ≥ 0.98 for any w near u.",
@@ -68,7 +70,10 @@
       "The tuckers_lemma axiom is too strong: it works for arbitrary (V, edges) without requiring proper triangulation. With empty edges, the conclusion is false. Current usage is safe because grid edges form a proper triangulation.",
       "Most promising elimination approach: prove Tucker specifically for gridEdgesFin N (not the general statement). Middle-row argument almost works but labels can change through intermediate values (0,T)→(1,T)→(0,F) without complementary edge.",
       "Eliminated tucker_disk_approx_zero axiom by reordering: moved approx_borsuk_ulam_2d_corrected and borsuk_ulam_2d_corrected to end of file, after tucker_disk_approx_zero_proved. No forward declaration needed.",
-      "File structure: Parts I-XVI (S² infrastructure), Part XVII-XXIII (grid infrastructure + tucker_disk_approx_zero_proved), Part XXIV (main theorems using proved version)"
+      "File structure: Parts I-XVI (S² infrastructure), Part XVII-XXIII (grid infrastructure + tucker_disk_approx_zero_proved), Part XXIV (main theorems using proved version)",
+      "CONFIRMED: Bottom row sign change is NOT guaranteed from boundary conditions. Counter-example: L(0,0)=(0,T), L(2N,0)=(1,T) is consistent with antipodal L(2N,2N)=(0,F), L(0,2N)=(1,F). The 2D Tucker proof requires global dual-graph parity, not row-by-row 1D Tucker.",
+      "1D Tucker proof pattern: by_contra + Fin.induction shows function is constant, contradicting boundary",
+      "Session 8 assessment: File is very mature (2318 lines, 1 axiom, 0 sorries). The only axiom (tuckers_lemma) requires 500-1000 lines of dual graph infrastructure, path-following, and parity argument. This is a multi-session project. No quick wins available."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -94,7 +99,7 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.175Z",
-  "lastUpdate": "2026-03-13T00:30:00.000Z",
+  "lastUpdate": "2026-03-14T18:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
