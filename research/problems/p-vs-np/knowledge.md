@@ -1,5 +1,68 @@
 # Knowledge Base: P vs NP
 
+## Session 2026-03-15 (researcher-4) - TFNP/PPAD + Descriptive Complexity
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 131)
+**Problem**: p-vs-np
+**Prior Status**: Sound model at 4136 lines, 73 axioms, 308 defs/theorems
+
+**Work done**:
+Extended `PNPBarriersSound.lean` from 4136 → 4467 lines (+331 lines) with two new sections:
+
+### Part 37: Total Search Problems (TFNP, PPAD, PLS)
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `FNP` | opaque def | Function NP class |
+| `TFNP` | opaque def | Total Function NP class |
+| `PPAD` | opaque def | Polynomial Parity Argument (Directed) |
+| `PLS` | opaque def | Polynomial Local Search |
+| `PPP` | opaque def | Polynomial Pigeonhole Principle |
+| `CLS` | def | PPAD ∩ PLS |
+| `FP` | opaque def | Function problems in P |
+| `NASH` | opaque def | Nash equilibrium problem |
+| `FP_subset_TFNP` | axiom | FP ⊆ TFNP |
+| `PPAD_subset_TFNP` | axiom | PPAD ⊆ TFNP |
+| `PLS_subset_TFNP` | axiom | PLS ⊆ TFNP |
+| `PPP_subset_TFNP` | axiom | PPP ⊆ TFNP |
+| `TFNP_subset_FNP` | axiom | TFNP ⊆ FNP |
+| `nash_in_PPAD` | axiom | Nash ∈ PPAD (PPAD-complete) |
+| `CLS_subset_PPAD` | theorem | Proved (set intersection) |
+| `CLS_subset_PLS` | theorem | Proved (set intersection) |
+| `CLS_subset_TFNP` | theorem | Proved (transitivity) |
+| `nash_in_TFNP` | theorem | Proved (via PPAD ⊆ TFNP) |
+| `tfnp_containment_chain` | theorem | Proved (full chain) |
+
+### Part 38: Descriptive Complexity (Fagin, Immerman, Vardi)
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `ESO` | opaque def | Existential Second-Order Logic |
+| `FO_LFP` | opaque def | FO + Least Fixed Point |
+| `FO_TC` | opaque def | FO + Transitive Closure |
+| `fagin_theorem` | axiom | NP = ESO (Fagin 1974) |
+| `immerman_vardi` | axiom | P = FO(LFP) (Immerman-Vardi 1982) |
+| `immerman_NL_eq_FO_TC` | axiom | NL = FO(TC) (Immerman 1999) |
+| `descriptive_P_vs_NP` | theorem | Proved: P = NP ↔ FO(LFP) = ESO |
+| `descriptive_hierarchy` | theorem | Proved: NL⊆P⊆NP with logical characterizations |
+| `fagin_cook_levin_connection` | theorem | Proved: NP=ESO ∧ SAT∈NP ∧ NPHard SAT |
+| `descriptive_vs_barriers` | theorem | Proved: descriptive + barriers |
+| `tfnp_descriptive_summary` | theorem | Proved: comprehensive summary |
+
+**New axioms added**: 10 (all standard results)
+**New theorems/defs proved**: 22
+
+**Key insights**:
+1. **TFNP** captures a fundamentally different kind of hardness from NP: guaranteed-to-exist solutions that resist efficient search. PPAD ⊄ FP does NOT imply P ≠ NP.
+2. **Descriptive P vs NP**: P = NP ↔ FO(LFP) = ESO gives a purely logical reformulation with no reference to time, space, or machines.
+3. **Fagin's theorem** (NP = ESO) is the logical counterpart of Cook-Levin: both characterize NP, one computationally, one logically.
+
+**Build**: Docker build passes, 0 errors, 0 sorries, 4467 lines.
+
+**Outcome**: COMPLETED - Two major new areas of complexity theory formalized.
+
+---
+
 ## Session 2026-03-14 (researcher-1) - PCP Theorem, Williams NEXP⊄ACC⁰, Proof Complexity
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 108)
