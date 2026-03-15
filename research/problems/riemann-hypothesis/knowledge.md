@@ -20,10 +20,18 @@
 **Combined stats**: ~4400 lines, 0 sorries, 281+ theorems/lemmas/defs, 79 axioms
 **PR**: #3815
 
-**Axiom elimination targets**:
-- `xi_zero_value` / `xi_one_value` — may derive from Mathlib's `completedRiemannZeta`
-- `hasse_bound` / `weil_bound` — proved theorems needing algebraic geometry
+### Iteration 4-5: Axiom Elimination
+- **Eliminated 4 axioms** by using Mathlib's `completedRiemannZeta` directly:
+  - `completedZeta` → replaced with `completedRiemannZeta`
+  - `xi_zero_value`, `xi_one_value` → derivable from Mathlib
+  - `xi_functional_equation` → proved from `completedRiemannZeta_one_sub`
+- `xi_zeros_one_minus` now proved directly from Mathlib's functional equation
+- Consequences axioms: 40 → 36
+
+**Remaining axiom elimination targets**:
+- `zeta_conj` — needs identity theorem for meromorphic functions (NOT in Mathlib)
 - `no_real_zeros_in_strip` — needs eta function or real-analyticity argument
+- `hasse_bound` / `weil_bound` — proved theorems needing algebraic geometry
 
 ---
 

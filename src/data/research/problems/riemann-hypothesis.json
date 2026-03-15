@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 10 equivalent formulations, 281+ theorems across 4400+ lines (2 files). 0 sorries. New: Robin verification, Chebyshev extended, GRH consequences, Selberg class, explicit formula, Hadamard product, function field RH.",
+    "progressSummary": "PROGRESS: 10 equivalent formulations, 281+ theorems across ~4500 lines. 4 axioms ELIMINATED (completedZeta → Mathlib). 75 axioms total (was 79). 0 sorries.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -88,7 +88,9 @@
       "sq_le_sq_mul_log_sq proved from log q ≥ 1 for q ≥ 2",
       "Robin verification: robin_at_5041, divisorSum_10080, divisorSum_7560, coprime verifications (Part 35)",
       "Chebyshev extended: chebyshevPsi_four, chebyshevPsi_five, chebyshevPsi_at_prime (Part 36)",
-      "Arithmetic cross: mertens_at_prime, vonMangoldt_{10,12,16,27}, mertens_thousand (Part 37)"
+      "Arithmetic cross: mertens_at_prime, vonMangoldt_{10,12,16,27}, mertens_thousand (Part 37)",
+      "AXIOM ELIMINATION: xi_functional_equation now proved from completedRiemannZeta_one_sub",
+      "xi_zeros_one_minus proved from Mathlib functional equation (no custom axioms)"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
@@ -133,7 +135,10 @@
       "Robin inequality verified at key test points: σ(5041)=5042, σ(10080)=39312, σ(7560)=29160",
       "Chebyshev ψ at primes: ψ(p) = ψ(p-1) + log p proved from vonMangoldt_apply_prime",
       "M(1000) = 2 by native_decide - Mertens function stays remarkably small",
-      "Docker build mounts main repo, not worktree - need to verify builds separately in worktree"
+      "Docker build mounts main repo, not worktree - need to verify builds separately in worktree",
+      "AXIOM ELIMINATION: completedZeta replaced with Mathlib completedRiemannZeta, eliminating 4 axioms",
+      "zeta_conj cannot be eliminated yet - needs identity theorem for meromorphic functions, not in Mathlib",
+      "completedRiemannZeta_one_sub proves functional equation directly from Mathlib"
     ],
     "mathlibGaps": [
       "Dirichlet series",
