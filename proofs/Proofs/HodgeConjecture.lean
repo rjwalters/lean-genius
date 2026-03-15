@@ -2619,10 +2619,16 @@ def AbsoluteHodgeClass.smul {p : ℕ} {H : PureHodgeStructure (2 * p)}
 PART XIIc: PROVED CONSEQUENCES OF TENSOR/DUAL AXIOMS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Tate unit left**: ℚ(0) ⊗ H ≅ H (follows from comm + right unit). -/
-axiom tateStructure_unit_left {k : ℕ} (H : PureHodgeStructure k) :
+/-- **Tate unit left**: ℚ(0) ⊗ H ≅ H (PROVED from comm + right unit).
+
+    Compose the commutativity isomorphism ℚ(0) ⊗ H ≅ H ⊗ ℚ(0)
+    with the right unit isomorphism H ⊗ ℚ(0) ≅ H. -/
+theorem tateStructure_unit_left {k : ℕ} (H : PureHodgeStructure k) :
     ∃ f : (tensorHodge tateStructure H).VQ →ₗ[ℚ] H.VQ,
-    Function.Bijective f
+    Function.Bijective f := by
+  obtain ⟨c, hc⟩ := tensorHodge_comm tateStructure H
+  obtain ⟨u, hu⟩ := tateStructure_unit_right H
+  exact ⟨u.comp c, hu.comp hc⟩
 
 /-- **Tensor-dual trace** (PROVED from eval axiom). -/
 theorem tensor_dual_has_trace {k : ℕ} (H : PureHodgeStructure k) :
