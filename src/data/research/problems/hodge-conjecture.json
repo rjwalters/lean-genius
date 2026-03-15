@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed 5 build errors, eliminated 3 duplicate + 2 trivial axioms, proved tateStructure. File: 3259 lines, 64 axioms, 0 sorries. Builds cleanly.",
+    "progressSummary": "PROGRESS: Added Chow groups, K-theory, Chern character, Hodge-to-de Rham degeneration, Noether-Lefschetz, coniveau filtration, GHC, K3 surfaces. Fixed pre-existing build bugs (SubHodgeStructure field, duplicate declarations, universe issues). File: 3813 lines, 87 axioms, 0 sorries.",
     "builtItems": [
       "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
       "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
@@ -45,7 +45,15 @@
       "add_assoc_morphism, zero_add_morphism, add_zero_morphism (abelian group laws for Hom) in HodgeConjecture.lean",
       "SubHodgeStructure.map (image of sub-Hodge structure under morphism) in HodgeConjecture.lean",
       "HodgeStructureMorphism.sub (subtraction of morphisms) in HodgeConjecture.lean",
-      "Eliminated 8 dead-code axioms: serre_duality_hodge_numbers, cycleClassMap_additive, hodge_tate_equivalent_abelian, hodge_conjecture_direct_sum, geometric_hodge_is_polarizable, lefschetz_preserves_algebraic, deligne_mixed_hodge_structure, tateTwist_component (37 → 29 axioms)"
+      "ChowGroup, chow_group_exists, chow_intersection_product in HodgeConjecture.lean",
+      "VectorBundle, GrothendieckGroup, ChernClass, ChernCharacter in HodgeConjecture.lean",
+      "hodge_de_rham_degeneration, betti_equals_hodge_sum in HodgeConjecture.lean",
+      "PicardGroup, picardNumber, noether_lefschetz, hodge_trivial_for_NL_surface in HodgeConjecture.lean",
+      "ConiveauFiltration, GeneralizedHodgeConjectureStatement, ghc_implies_hc in HodgeConjecture.lean",
+      "K3Surface, k3_hodge_diamond, k3_torelli, hodge_conjecture_k3, k3_lattice_structure in HodgeConjecture.lean",
+      "Fixed polarization_restricts_to_subHodge (SubHodgeStructure.W field name)",
+      "Fixed duplicate hodge_symmetry, tateTwist, dualHodge declarations",
+      "Removed stale summary sections (PART X and XVIII)"
     ],
     "insights": [
       "Millennium Prize problem, wide open - no known attack strategy",
@@ -66,12 +74,13 @@
       "Tate object Q(1) proved constructively as weight-0 Hodge structure over Q with complexification via algebraMap Q C",
       "Tate twist and dual require axiomatization due to N-indexed weights (signed integer weights would allow more proofs)",
       "Poincare duality statement requires integer weights for precise formulation; axiomatized abstractly",
-      "Fixed 5 pre-existing build errors masked by duplicate declarations",
-      "Consolidated dualHodge axioms with implicit k parameter, removed 3 duplicates",
-      "Renamed tateTwist(n:Z) to tateTwistObj to avoid name collision",
-      "Eliminated 2 trivially-True axioms (evaluation_nondegeneracy, poincare_duality_hodge)",
-      "Proved tateStructure = TateObject (axiom to def)",
-      "Converted 2 sorry theorems to documented axioms (Hodge-Tate equivalence)"
+      "Chow groups CH^p(X) formalized with intersection product and cycle class factoring through CH^p",
+      "Grothendieck group K₀(X) and Chern character ch: K₀(X)→H^*(X,ℚ) formalized - alternative viewpoint on HC",
+      "Chern classes are always Hodge and algebraic (known theorem, not conjecture)",
+      "Hodge-to-de Rham E₁ degeneration axiomatized (Betti = sum of Hodge numbers)",
+      "Noether-Lefschetz: very general surfaces of degree ≥ 4 have ρ=1, HC trivial",
+      "Coniveau filtration N^c and Generalized Hodge Conjecture (GHC) formalized",
+      "K3 surfaces: dim=2, Torelli theorem, lattice Λ=U³⊕E₈(-1)², HC holds trivially"
     ],
     "mathlibGaps": [
       "Hodge theory / Hodge decomposition",
