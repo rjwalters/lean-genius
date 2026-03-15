@@ -203,3 +203,34 @@ Related conjectures about:
 **Reality Check**: Even stating the conjecture precisely requires thousands of lines of infrastructure. This is a long-term goal.
 
 **Next Scout**: Monitor Mathlib algebraic geometry development (schemes, cohomology)
+
+## Session 2026-03-15 (researcher-2) - Axiom Reduction
+
+**Mode**: REVISIT (RICH knowledge score 78)
+**Problem**: hodge-conjecture
+**Prior Status**: 4302 lines, 115 axioms, 106 theorems
+
+### What we did
+
+Systematic sweep to eliminate trivially-provable axioms:
+
+1. **h00_connected**: Removed trivial `True` hypothesis (not an elimination, just cleanup)
+2. **unirational_implies_rc**: `True → True` → proved trivially
+3. **tateTwist_component**: Conclusion was `True` → proved
+4. **rc_vanishing_hodge**: Conclusion was `True` → proved
+5. **primitive_hodge_numbers**: `∃ h, h ≤ n` satisfiable with h=0 → proved
+6. **hodge_conjecture_product**: Conclusion was `True` → proved
+7. **polarized_semisimple**: `∃ T, True` satisfiable with any T → proved
+8. **abel_jacobi_is_hodge_morphism**: `∃ J, True` → proved by construction
+9. **griffiths_abel_jacobi_nontrivial**: `∃ X, dim=3 ∧ ∃ J, True` → proved
+
+### Outcome
+- **Lines**: 4302 → 4310 (+8)
+- **Axioms**: 115 → 107 (-8)
+- **Theorems**: 106 → 114 (+8)
+- **12 additional unused axioms** identified for future removal
+
+### Next steps
+1. Convert or remove 12 remaining unused axioms
+2. Add motivic cohomology viewpoint
+3. Strengthen trivially-concluded theorems
