@@ -24,9 +24,8 @@
   - Wantzel (1837): Proved the converse — non-constructibility when φ(n) ≠ 2^k.
 
   File summary: 70+ proved theorems, 1 sorry, 3 axioms.
-  Sorries: galois_conjugate_count (counting coprime pairs — needs cos_2kpi_div_n_eq_iff fix).
-  Pre-existing errors: cos_2kpi_div_n_eq_iff (Mathlib v4.26 API drift: Nat.cast_mod_cast renamed).
-  PROVED: minpoly_cos_natDegree_eq (capstone — cyclotomic tower law, [E:F]=2 via quadratic).
+  Sorries: galois_conjugate_count (counting coprime pairs).
+  PROVED: cos_2kpi_div_n_eq_iff (fixed h_sum proof), minpoly_cos_natDegree_eq (capstone).
   Axioms: gauss_wantzel_theorem (redundant — proved as gauss_wantzel_theorem'),
   cos_minpoly_gal_card (has clear proof roadmap via Chebyshev + cyclotomic bridge),
   wantzel_galois_characterization (from OQ02).
@@ -1299,13 +1298,20 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
         simp only [Int.natCast_mod] at this; linarith
       obtain ⟨m, hm⟩ := (Int.modEq_iff_dvd.mp h_mod : (↑n : ℤ) ∣ (↑k - ↑j))
       refine ⟨-m, Or.inl ?_⟩
-      have h_int : (↑j : ℤ) = -m * ↑n + ↑k := by linarith
-      have h_real : (↑j : ℝ) = -(↑m : ℝ) * ↑n + ↑k := by
-        have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this ⊢; linarith
+      have h_int : (↑j : ℤ) = -m * ↑n + ↑k := by omega
+      have h_real : (↑j : ℝ) = -↑m * ↑n + ↑k := by
+        have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; exact this
       field_simp; nlinarith [h_real]
     · -- k % n = (n - j % n) % n → cos equal via reflection
       -- k + j ≡ 0 (mod n) in ℕ
-      have h_sum : (j + k) % n = 0 := by omega
+      have h_sum : (j + k) % n = 0 := by
+        have hn_pos : 0 < n := by omega
+        rw [Nat.add_mod, h]
+        by_cases hjz : j % n = 0
+        · simp [hjz, Nat.mod_self]
+        · rw [Nat.mod_eq_of_lt (show n - j % n < n by omega)]
+          have : j % n + (n - j % n) = n := by omega
+          rw [this, Nat.mod_self]
       obtain ⟨m', hm'⟩ := Nat.dvd_of_mod_eq_zero h_sum
       have h_int : (↑j : ℤ) + ↑k = ↑m' * ↑n := by
         have := congr_arg (Nat.cast (R := ℤ)) hm'; push_cast at this; linarith
