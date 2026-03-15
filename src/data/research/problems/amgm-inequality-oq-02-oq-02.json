@@ -17,21 +17,21 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-15",
-    "iteration": 6,
-    "focus": "NewtonLogConcavity.lean now sorry-free (delegates to newton_log_concavity_proved). 1 axiom remains in AmgmInequalityOQ02OQ02.lean (newton_cleared_denom_inductive_step). AngleTrisectionEmbedding.lean committed.",
+    "since": "2026-03-14",
+    "iteration": 5,
+    "focus": "binom_ineq proved in NewtonInductiveStep.lean. Main sorry at NewtonLogConcavity.lean:349 remains (quadratic non-negativity via discriminant bound)",
     "blockers": [
       "Algebraic complexity of inductive step beyond nlinarith capacity"
     ],
-    "nextAction": "Prove newton_cleared_denom_inductive_step via discriminant identity: 4AC-B² = N[4M(a²-bc)(b²-ad) - N(ab-cd)²] where M=kρ, N=(ρ+1)(k+1)",
+    "nextAction": "Compute explicit SOS certificate using IH constraints (not just unnormalized Newton), or implement real-rootedness approach",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
-      "approachesTried": 4
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Build passes. NewtonLogConcavity.lean is sorry-free (delegates to newton_log_concavity_proved). 1 axiom remains (newton_cleared_denom_inductive_step). AngleTrisectionEmbedding.lean added (1 sorry).",
+    "progressSummary": "PROGRESS: Base case proved. Inductive step reduced to final algebraic inequality. 1 sorry remains.",
     "builtItems": [
       "elemSymm_zero_implies_higher_zero: zero tail property",
       "power_ineq_of_log_concave: a_k^(k+1) >= a_{k+1}^k by induction",
@@ -50,8 +50,7 @@
       "Fixed all Mathlib4 build errors in NewtonLogConcavity.lean",
       "Cross-multiplied IH forms and Pascal rule infrastructure in inductive step",
       "binom_ineq: proved bc³+adc²+ac³ ≥ 2b²cd+b³d via absorption identities and linear_combination (NewtonInductiveStep.lean)",
-      "quadratic_nonneg: helper for αt²+βt+γ ≥ 0 when α,γ ≥ 0 and 4αγ ≥ β² (NewtonInductiveStep.lean)",
-      "Fixed SOS proof in base case: replaced nlinarith with ring+linarith chain"
+      "quadratic_nonneg: helper for αt²+βt+γ ≥ 0 when α,γ ≥ 0 and 4αγ ≥ β² (NewtonInductiveStep.lean)"
     ],
     "insights": [
       "Division-free induction argument: use mul_pow + cancel via pow_pos",
@@ -84,14 +83,7 @@
       "Absorption identities: k·C(m,k)=(m-k+1)·C(m,k-1) cast to ℝ via congr_arg + push_cast + Nat.cast_sub + linarith",
       "Key algebraic identity: D·(bc³+adc²+ac³-2b²cd-b³d) = r·(k+r)²·b⁴ where D=k³(k+1)(r+1), r=m-k+1",
       "linear_combination tactic essential for polynomial identities; nlinarith insufficient for degree-6+ in 6+ variables",
-      "4αγ-β² factors as 4(q+s)(r+p)(a²-bc)(b²-ad) - (p+q)⁴(ab-cd)²; needs both IHs + binom coefficient structure",
-      "Fixed nlinarith timeout by providing explicit ring identity for SOS decomposition: k*(k*f^2 - 2*(k+1)*g*t*ek) = (k*ek-t*ekm1)^2 + t^2*(k+1)*((k-1)*ekm1^2-2k*ek*ekm2)",
-      "Build now succeeds (was timing out at lines 795-798)",
-      "NewtonLogConcavity.lean made sorry-free by importing newton_log_concavity_proved from AmgmInequalityOQ02OQ02",
-      "Consolidation: 1 sorry + 1 axiom → 1 axiom (newton_cleared_denom_inductive_step)",
-      "Discriminant identity: 4αγ-β² = N[4M(a²-bc)(b²-ad) - N(ab-cd)²] where M=kρ, N=(ρ+1)(k+1), ρ=m-k+1",
-      "Direct abstraction with generic M,N FAILS: counterexample M=1,N=10,a=10,b=1,c=1,d=0. Need specific binomial structure.",
-      "AngleTrisectionEmbedding.lean: cyclotomic field embedding proof, 1 sorry (PowerBasis.lift coercion)"
+      "4αγ-β² factors as 4(q+s)(r+p)(a²-bc)(b²-ad) - (p+q)⁴(ab-cd)²; needs both IHs + binom coefficient structure"
     ],
     "mathlibGaps": [],
     "nextSteps": [
