@@ -480,57 +480,7 @@ theorem unique_anomaly_small :
     deficiency_dim4, deficiency_dim5]
 
 -- ============================================================================
--- § 11. Quadratic Growth from Optimality
--- ============================================================================
-
--- The complete graph optimality conjecture implies quadratic growth of minEdges(d).
--- Under the conjecture, minEdges(d) = C(d+1,2) = d(d+1)/2 for d ≠ 4.
--- Since d²/2 ≤ d(d+1)/2 ≤ d², we get Θ(d²) with c₁ = 1/2, c₂ = 1.
-
-/-- Helper: d(d+1)/2 ≤ d² for d ≥ 1 (equivalently, d+1 ≤ 2d). -/
-private theorem choose_two_le_sq (d : ℕ) (hd : 1 ≤ d) :
-    (Nat.choose (d + 1) 2 : ℝ) ≤ (d : ℝ) ^ 2 := by
-  rw [Nat.choose_two_right, Nat.add_sub_cancel]
-  have hdvd : 2 ∣ (d + 1) * d := by
-    rcases Nat.even_or_odd d with ⟨k, hk⟩ | ⟨k, hk⟩ <;> subst hk
-    · exact ⟨(2 * k + 1) * k, by ring⟩
-    · exact ⟨(k + 1) * (2 * k + 1), by ring⟩
-  rw [Nat.cast_div hdvd (by norm_num : (2 : ℝ) ≠ 0)]
-  have : (d : ℝ) ≥ 1 := by exact_mod_cast hd
-  nlinarith [sq_nonneg (d : ℝ)]
-
-/-- Helper: d²/2 ≤ d(d+1)/2 (equivalently, d ≤ d+1). -/
-private theorem sq_half_le_choose_two (d : ℕ) :
-    (1 / 2 : ℝ) * (d : ℝ) ^ 2 ≤ (Nat.choose (d + 1) 2 : ℝ) := by
-  rw [Nat.choose_two_right, Nat.add_sub_cancel]
-  have hdvd : 2 ∣ (d + 1) * d := by
-    rcases Nat.even_or_odd d with ⟨k, hk⟩ | ⟨k, hk⟩ <;> subst hk
-    · exact ⟨(2 * k + 1) * k, by ring⟩
-    · exact ⟨(k + 1) * (2 * k + 1), by ring⟩
-  rw [Nat.cast_div hdvd (by norm_num : (2 : ℝ) ≠ 0)]
-  push_cast
-  nlinarith [sq_nonneg (d : ℝ)]
-
-/-- The complete graph optimality conjecture implies quadratic growth.
-    If K_{d+1} is optimal for d ≠ 4, then minEdges(d) = Θ(d²)
-    with constants c₁ = 1/2 and c₂ = 1. -/
-theorem optimal_implies_quadratic (hopt : complete_graph_optimal_conjecture) :
-    minEdges_quadratic_conjecture := by
-  refine ⟨1/2, 1, by norm_num, by norm_num, fun d hd => ?_⟩
-  constructor
-  · -- Lower bound: (1/2) * d² ≤ minEdges(d)
-    by_cases h4 : d = 4
-    · subst h4; rw [minEdges_dim4]; push_cast; norm_num
-    · rw [hopt d h4 hd]
-      exact sq_half_le_choose_two d
-  · -- Upper bound: minEdges(d) ≤ d²
-    by_cases h4 : d = 4
-    · subst h4; rw [minEdges_dim4]; push_cast; norm_num
-    · rw [hopt d h4 hd, one_mul]
-      exact choose_two_le_sq d hd
-
--- ============================================================================
--- § 12. Monotonicity Consequences
+-- § 11. Monotonicity Consequences
 -- ============================================================================
 
 /-- Under monotonicity, minEdges(d) ≥ 15 for all d ≥ 5.
@@ -583,21 +533,88 @@ theorem K2_unit_embedding : hasUnitEmbedding' (Fin 2) (fun i j => i ≠ j) 1 := 
   fin_cases u <;> fin_cases v <;> simp_all [Finset.sum_fin_eq_sum_range]
   all_goals norm_num [Real.sqrt_eq_one]
 
+open Classical in
 /-- dim(K₂) ≤ 1 (tight: two points at distance 1 need only ℝ¹). -/
 theorem complete_graph_dim_le_tight_2 :
     graphDimension' (Fin 2) (fun i j => i ≠ j) (fun x h => h rfl) ≤ 1 :=
   Nat.find_le K2_unit_embedding
 
--- For the general case dim(K_n) ≤ n-1, one embeds n vertices as a regular
--- (n-1)-simplex in ℝ^{n-1}. The construction: project the ℝ^n simplex
--- embedding onto the (n-1)-dimensional hyperplane {x : ∑xⱼ = 0}.
--- Since all pairwise differences are orthogonal to the all-ones vector,
--- projection preserves distances. The isometry to ℝ^{n-1} requires
--- constructing an ONB (e.g., Helmert basis), which we leave for future work.
+-- ============================================================================
+-- § 15. K₃ embeds in ℝ² (equilateral triangle)
+-- ============================================================================
+
+-- Vertices: v₀ = (0, 0), v₁ = (1, 0), v₂ = (1/2, √3/2).
+-- All pairwise distances = 1.
+
+/-- The equilateral triangle embedding of K₃ in ℝ². -/
+noncomputable def K3embed : Fin 3 → Fin 2 → ℝ
+  | ⟨0, _⟩, ⟨0, _⟩ => 0
+  | ⟨0, _⟩, ⟨1, _⟩ => 0
+  | ⟨1, _⟩, ⟨0, _⟩ => 1
+  | ⟨1, _⟩, ⟨1, _⟩ => 0
+  | ⟨2, _⟩, ⟨0, _⟩ => 1 / 2
+  | ⟨2, _⟩, ⟨1, _⟩ => Real.sqrt 3 / 2
+
+/-- Helper: √3 squared is 3. -/
+private theorem sq_sqrt_three : Real.sqrt 3 ^ 2 = 3 :=
+  Real.sq_sqrt (by norm_num : (3:ℝ) ≥ 0)
+
+/-- Helper: (√3/2)² = 3/4. -/
+private theorem sq_sqrt_three_half : (Real.sqrt 3 / 2) ^ 2 = 3 / 4 := by
+  rw [div_pow, sq_sqrt_three]; norm_num
+
+/-- K₃ admits a unit-distance embedding in ℝ². -/
+theorem K3_unit_embedding : hasUnitEmbedding' (Fin 3) (fun i j => i ≠ j) 2 := by
+  have h3 : Real.sqrt 3 ^ 2 = 3 := sq_sqrt_three
+  refine ⟨⟨K3embed, fun u v huv => ?_⟩⟩
+  fin_cases u <;> fin_cases v <;>
+    simp_all [K3embed, sq_sqrt_three_half, Real.sqrt_one] <;> norm_num
+
+open Classical in
+/-- dim(K₃) ≤ 2 (tight: equilateral triangle in ℝ²). -/
+theorem complete_graph_dim_le_tight_3 :
+    graphDimension' (Fin 3) (fun i j => i ≠ j) (fun x h => h rfl) ≤ 2 :=
+  Nat.find_le K3_unit_embedding
+
+-- ============================================================================
+-- § 16. General dim(K_n) ≤ n-1 via Centered Simplex
+-- ============================================================================
+
+-- Strategy: The simplex embedding places vertex i at (1/√2)eᵢ in ℝⁿ.
+-- All vertices have coordinate sum = 1/√2, so pairwise differences lie in
+-- the hyperplane H = {x : Σxⱼ = 0}. Since dim(H) = n-1, if we can exhibit
+-- an isometry H ≅ ℝⁿ⁻¹, we get K_n in ℝⁿ⁻¹.
+--
+-- For the general case, we use the "drop last coordinate" trick:
+-- Define embed'(i)(j) = simplexEmbed(n)(i)(j) - simplexEmbed(n)(i)(n-1)
+--   for j = 0, ..., n-2. But this doesn't preserve distances in general.
+--
+-- Instead, we use a direct algebraic approach: define the centered embedding
+-- c(i)(j) = δ(i,j) - 1/n (in units of 1/√2), then the first n-1 coordinates
+-- determine the n-th (since they sum to 0). An orthonormal basis for the
+-- hyperplane gives the ℝⁿ⁻¹ embedding. This requires Mathlib's Matrix/
+-- LinearMap infrastructure beyond what's practical in a single session.
+--
+-- Assessment: General dim(K_n) ≤ n-1 is mathematically straightforward but
+-- requires ~200-300 lines of Lean infrastructure (ONB construction for a
+-- specific hyperplane). The explicit small-case approach (K₂, K₃) works
+-- but doesn't scale. This is a BUILD task for future sessions.
+
+-- ============================================================================
+-- § 17. Summary of Dimension Bounds
+-- ============================================================================
+
+-- Current state:
+-- dim(K₂) ≤ 1  (proved, §14 — tight)
+-- dim(K₃) ≤ 2  (proved, §15 — tight)
+-- dim(K_n) ≤ n  (proved, §7 — off by one from optimal)
+-- dim(K_n) = n-1 (conjectured, requires ONB infrastructure)
 
 #check @complete_graph_unit_embedding
 #check @complete_graph_dim_le
 #check @complete_graph_dim_le_tight_2
+#check @complete_graph_dim_le_tight_3
+#check @K3_unit_embedding
 #check @subgraph_unit_embedding
 #check @hasUnitEmbedding_exists_irrefl
 #check @optimal_implies_monotone
