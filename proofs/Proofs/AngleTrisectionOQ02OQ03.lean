@@ -23,9 +23,9 @@
     The first new polygon construction since antiquity. Determined his career choice.
   - Wantzel (1837): Proved the converse — non-constructibility when φ(n) ≠ 2^k.
 
-  File summary: 67+ proved theorems, 4 sorries, 3 axioms.
-  Sorries: galois_conjugate_count (counting argument for coprime pairing),
-  minpoly_cos_natDegree_eq (capstone — 3 sub-sorries in upper bound: h_top, h_deg, final).
+  File summary: 67+ proved theorems, 1 sorry, 3 axioms.
+  Sorries: galois_conjugate_count (counting argument for coprime pairing).
+  minpoly_cos_natDegree_eq PROVED (3 sorries eliminated: h_top, h_deg, combining).
   Axioms: gauss_wantzel_theorem (redundant — proved as gauss_wantzel_theorem'),
   cos_minpoly_gal_card (has clear proof roadmap via Chebyshev + cyclotomic bridge),
   wantzel_galois_characterization (from OQ02).
@@ -1621,26 +1621,76 @@ theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
       set ζ_E : ↥E := ⟨ζ, hζ_in_E⟩ with hζ_E_def
       have h_int_ζ : IsIntegral ↥F ζ_E :=
         IsIntegral.tower_top (Algebra.IsIntegral.isIntegral (R := ℚ) ζ_E)
-      -- Step A: F(ζ) = E
+      -- Step A: F(ζ) = E (ζ generates E over ℚ ⊆ F)
       have h_top : IntermediateField.adjoin ↥F ({ζ_E} : Set ↥E) = ⊤ := by
-        sorry -- ζ generates E over ℚ ⊆ F, so F(ζ) = E
+        -- First show ζ_E generates ↥E over ℚ
+        have h_int_ζQ : IsIntegral ℚ ζ_E := Algebra.IsIntegral.isIntegral ζ_E
+        have h_gen_Q : IntermediateField.adjoin ℚ ({ζ_E} : Set ↥E) = ⊤ := by
+          -- finrank argument: adjoin ℚ {ζ_E} has dim φ(n) = dim ↥E, so = ⊤
+          have h_adj_dim := IntermediateField.adjoin.finrank h_int_ζQ
+          -- minpoly ℚ ζ_E = minpoly ℚ ζ via injective embedding ↥E → ℂ
+          have f : ↥E →ₐ[ℚ] ℂ := IsScalarTower.toAlgHom ℚ ↥E ℂ
+          have h_mp_eq : minpoly ℚ ζ_E = minpoly ℚ (ζ : ℂ) := by
+            have h := minpoly.algHom_eq f Subtype.val_injective ζ_E
+            -- h : minpoly ℚ (f ζ_E) = minpoly ℚ ζ_E
+            -- f ζ_E = ↑ζ_E = ζ (definitionally)
+            rw [show f ζ_E = ζ from rfl] at h
+            exact h.symm
+          rw [h_mp_eq, minpoly_zeta_natDegree n (by omega)] at h_adj_dim
+          have h_finrank_E' : Module.finrank ℚ ↥E = Nat.totient n := by
+            rw [hE_def, hζ_def]; exact h_finrank_E
+          -- adjoin ℚ {ζ_E} has same finrank as E → must be ⊤
+          -- If adjoin ≠ ⊤, then adjoin < ⊤, so finrank(adjoin) < finrank(E)
+          -- But finrank(adjoin) = φ(n) = finrank(E), contradiction.
+          by_contra h_ne_top
+          have h_lt : IntermediateField.adjoin ℚ ({ζ_E} : Set ↥E) < ⊤ :=
+            lt_top_iff_ne_top.mpr h_ne_top
+          haveI : FiniteDimensional ℚ ↥(IntermediateField.adjoin ℚ ({ζ_E} : Set ↥E)) :=
+            adjoin.finiteDimensional h_int_ζQ
+          have h_strict := Submodule.finrank_lt_finrank_of_lt
+            (IntermediateField.toSubmodule_strictMono h_lt)
+          rw [IntermediateField.toSubmodule_top] at h_strict
+          -- h_strict: finrank(adjoin) < finrank(⊤) = finrank(↥E)
+          rw [Submodule.finrank_top] at h_strict
+          omega
+        -- Lift from ℚ to F
+        exact IntermediateField.adjoin_eq_top_of_adjoin_eq_top ℚ h_gen_Q
       -- Step B: deg(minpoly F ζ) ≤ 2 (from X²-2cos·X+1)
       have h_deg : (minpoly ↥F ζ_E).natDegree ≤ 2 := by
-        sorry -- ζ satisfies quadratic X²-2cos·X+1, use minpoly.dvd
-      -- Step C: finrank F E ≤ 2
-      -- adjoin F {ζ_E} = ⊤, so [F(ζ):F] = [E:F]
-      -- [F(ζ):F] = natDegree(minpoly F ζ) ≤ 2
-      -- Use: adjoin.finrank gives finrank of the simple adjoin
-      -- With h_top, this equals finrank F E
+        -- Construct the annihilating polynomial X² - 2cos·X + 1 over F
+        have c_mem_F : c ∈ (F : Set ℂ) :=
+          IntermediateField.mem_adjoin_simple_self ℚ c
+        set twocos_F : ↥F := ⟨2 * c,
+          F.mul_mem (F.natCast_mem 2) c_mem_F⟩ with htwocos_F_def
+        set p : Polynomial ↥F :=
+          Polynomial.C 1 * Polynomial.X ^ 2 +
+          Polynomial.C (-twocos_F) * Polynomial.X +
+          Polynomial.C 1
+        -- aeval ζ_E p = 0 (ζ satisfies X²-2cos·X+1)
+        have h_aeval : Polynomial.aeval ζ_E p = 0 := by
+          -- Push to ℂ via Subtype.val_injective
+          ext
+          simp only [p, ZeroMemClass.coe_zero, Polynomial.aeval_add,
+            Polynomial.aeval_mul, Polynomial.aeval_C, Polynomial.aeval_X,
+            Polynomial.aeval_X_pow, AddMemClass.coe_add, MulMemClass.coe_mul,
+            SubmonoidClass.coe_pow, AddSubgroupClass.coe_neg,
+            OneMemClass.coe_one]
+          -- Goal: 1 * ↑ζ_E^2 + (-(↑(algebraMap F E twocos_F))) * ↑ζ_E + 1 = 0
+          have h_val : (↑((algebraMap ↥F ↥E) twocos_F) : ℂ) = 2 * c := rfl
+          rw [h_val, hζ_E_def, one_mul]
+          exact zeta_quadratic n
+        -- natDegree p = 2
+        have h_deg_p : p.natDegree = 2 := by
+          exact Polynomial.natDegree_quadratic one_ne_zero
+        -- minpoly divides p, so deg(minpoly) ≤ deg(p) = 2
+        have h_dvd := minpoly.dvd (↥F) ζ_E h_aeval
+        have h_p_ne_zero : p ≠ 0 := by
+          intro hp; rw [hp, Polynomial.natDegree_zero] at h_deg_p; omega
+        exact le_trans (Polynomial.natDegree_le_of_dvd h_dvd h_p_ne_zero) (le_of_eq h_deg_p)
+      -- Step C: finrank F E ≤ 2 (from h_top + h_deg)
       have h_adj := IntermediateField.adjoin.finrank h_int_ζ
-      -- h_adj : finrank F (adjoin F {ζ_E}) = natDegree(minpoly F ζ_E)
-      -- Since adjoin F {ζ_E} ≤ E and adjoin F {ζ_E} = ⊤, we get finrank F E = finrank F ⊤
-      -- Avoid topEquiv typeclass issues by using the tower law directly
-      -- [E:ℚ] = [E:F] * [F:ℚ], and [adjoin F {ζ}:ℚ] = [adjoin F {ζ}:F] * [F:ℚ]
-      -- Since adjoin F {ζ} = ⊤ = E: finrank F E = natDegree(minpoly F ζ) ≤ 2
-      -- Direct: finrank F ↥(adjoin F {ζ_E}) ≤ finrank F ↥E (submodule of finite dim)
-      -- Combined with equality from h_top:
-      sorry
+      erw [h_top, IntermediateField.finrank_top'] at h_adj
+      linarith
     -- Lower bound: [E:F] ≥ 2 from tower law + strict inequality
     have h_ge : Module.finrank ↥F ↥E ≥ 2 := by
       have h_finrank_E' : Module.finrank ℚ ↥E = Nat.totient n := by

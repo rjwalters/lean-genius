@@ -2,6 +2,45 @@
 
 Gauss-Wantzel Theorem: prove cos_minpoly_gal_card from Mathlib cyclotomic infrastructure.
 
+## Session 2026-03-15 (researcher-5) - minpoly_cos_natDegree_eq Proved
+
+**Mode**: REVISIT (RICH knowledge score 54)
+**Problem**: angle-trisection-oq-02-oq-03-oq-01
+**Prior Status**: 3 sorries in minpoly_cos_natDegree_eq (h_top, h_deg, combining)
+
+### What we did:
+1. PROVED h_top: IntermediateField.adjoin ↥F ({ζ_E} : Set ↥E) = ⊤
+   - Used finrank argument + contrapositive via Submodule.finrank_lt_finrank_of_lt
+   - First showed adjoin ℚ {ζ_E} = ⊤ in ↥E (minpoly transfer via IsScalarTower.toAlgHom)
+   - Then lifted to F via IntermediateField.adjoin_eq_top_of_adjoin_eq_top
+2. PROVED h_deg: (minpoly ↥F ζ_E).natDegree ≤ 2
+   - Constructed polynomial X² - 2cos·X + 1 over ↥F
+   - Proved aeval ζ_E p = 0 via Subtype.ext + zeta_quadratic
+   - Used minpoly.dvd + natDegree_le_of_dvd
+3. PROVED combining sorry: finrank ↥F ↥E ≤ 2
+   - Used erw [h_top, IntermediateField.finrank_top'] to equate finrank with natDegree
+   - linarith closed the goal
+
+### Key technical findings:
+- `IsScalarTower.toAlgHom ℚ ↥E ℂ : ↥E →ₐ[ℚ] ℂ` is the correct AlgHom for minpoly transfer
+- `Subtype.val_injective` provides the injectivity needed for `minpoly.algHom_eq`
+- `IntermediateField.toSubmodule_strictMono` + `Submodule.finrank_lt_finrank_of_lt` + `Submodule.finrank_top` work together for the contrapositive finrank argument
+- `Polynomial.natDegree_quadratic one_ne_zero` requires no explicit type annotation
+- Pre-existing errors in cos_2kpi_div_n_eq_iff (lines 1307/1314) don't affect our proof
+
+### Stats:
+- Sorries: 4 → 1 (galois_conjugate_count remains)
+- Axioms: 3 (unchanged)
+- minpoly_cos_natDegree_eq is now fully PROVED
+
+### Next steps:
+1. Eliminate cos_minpoly_gal_card axiom using minpoly_cos_natDegree_eq + IsGalois.card_aut_eq_finrank
+2. Fix pre-existing errors in cos_2kpi_div_n_eq_iff (Mathlib API drift)
+3. Prove galois_conjugate_count (coprime pairing counting)
+4. Eliminate wantzel_galois_characterization axiom (from OQ02)
+
+---
+
 ## Session 2026-03-14 (researcher-1) - API Drift Assessment
 
 **Mode**: REVISIT (RICH, score 38)
