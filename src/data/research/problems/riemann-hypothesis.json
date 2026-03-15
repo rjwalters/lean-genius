@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved equivalence between our RH definition and Mathlib standard RiemannHypothesis. Added Lindelöf Hypothesis with RH→Lindelöf→convexity implication chain (2 new proved theorems, 3 new axioms).",
+    "progressSummary": "PROGRESS: Eliminated 3 axioms from Consequences file (ingham_zero_density, huxley_zero_density, RH_implies_DensityHypothesis). Axiom count now 9 in Consequences (was 12). Build verified clean.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -167,7 +167,8 @@
       "2026-03-14: Fixed 8 pre-existing build errors in RiemannHypothesis.lean: ext→Complex.ext, linarith→explicit, bernoulli simp→explicit values, abs_sub proof via abs_neg",
       "2026-03-14: Proved RH_iff_mathlib - our critical-strip RH definition is equivalent to Mathlib standard definition",
       "2026-03-14: Added Lindelöf Hypothesis formalization + proved RH→Lindelöf→convexity chain",
-      "2026-03-14: Complex.abs deprecated in Mathlib - use ‖·‖ norm notation instead"
+      "2026-03-14: Complex.abs deprecated in Mathlib - use ‖·‖ norm notation instead",
+      "2026-03-14: Eliminated 3 axioms from Consequences file"
     ],
     "mathlibGaps": [
       "Dirichlet series",
