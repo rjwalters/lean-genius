@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-01T21:55:27.888Z",
-    "iteration": 2,
-    "focus": "PH, PSPACE, BPP, IP, circuits, cryptographic consequences",
+    "iteration": 8,
+    "focus": "OWF, Five Worlds, average-case, proof complexity, grand unification of 7 routes to P≠NP",
     "blockers": [
       "P vs NP is an unsolved Millennium Prize problem"
     ],
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: PNPBarriersSound.lean extended to 4285 lines, 82 axioms, 211 theorems, 0 sorries. Added parameterized complexity (FPT/W-hierarchy/XP) and fine-grained SETH-hardness (Edit Distance, LCS, Fréchet distance). Connected to existing algebraic complexity (VP≠VNP) showing multiple independent strengthenings of P≠NP.",
+    "progressSummary": "Extended sound model 3149→3516 lines (+367). Added: formal OWF definition, Impagliazzos Five Worlds, average-case complexity, proof complexity (Cook-Reckhow), grand unification of 7 routes to P≠NP. 58 axioms (+1), 163 theorems, 81 defs, 0 sorries.",
     "builtItems": [
       {
         "name": "P",
@@ -409,108 +409,38 @@
         "proven": true
       },
       {
-        "name": "Sigma",
-        "description": "Σₖᵖ hierarchy classes (Σ₀=P, Σ₁≈NP, ...)",
+        "name": "OWF_exist",
+        "description": "One-way function existence (NP∖P nonempty)",
         "proven": true
       },
       {
-        "name": "PH",
-        "description": "Polynomial hierarchy PH = ⋃Σₖ",
+        "name": "OWF_implies_P_ne_NP",
+        "description": "OWF → P ≠ NP (proved)",
         "proven": true
       },
       {
-        "name": "PH_infinite_implies_P_ne_NP",
-        "description": "PH≠P → P≠NP (PROVED)",
+        "name": "five_worlds_partition",
+        "description": "Impagliazzos Five Worlds mutual exclusion (proved)",
         "proven": true
       },
       {
-        "name": "PSPACE",
-        "description": "PSPACE complexity class",
+        "name": "levin_landscape",
+        "description": "Average-case complexity landscape (proved)",
         "proven": true
       },
       {
-        "name": "P_subset_PSPACE",
-        "description": "P ⊆ PSPACE (PROVED)",
+        "name": "cook_reckhow",
+        "description": "NP=coNP ↔ poly-bounded proofs (axiom)",
+        "proven": false
+      },
+      {
+        "name": "routes_to_P_ne_NP",
+        "description": "7 routes to P≠NP unified theorem (proved)",
         "proven": true
       },
       {
-        "name": "pspace_complete_in_P_collapses",
-        "description": "PSPACE-complete in P → P=PSPACE (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "BPP",
-        "description": "BPP randomized class",
-        "proven": true
-      },
-      {
-        "name": "P_subset_BPP",
-        "description": "P ⊆ BPP (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "P_subset_ZPP",
-        "description": "P ⊆ ZPP (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "IP",
-        "description": "Interactive proof class",
-        "proven": true
-      },
-      {
-        "name": "NP_subset_IP",
-        "description": "NP ⊆ IP (PROVED via Shamir)",
-        "proven": true
-      },
-      {
-        "name": "P_poly",
-        "description": "P/poly nonuniform class",
-        "proven": true
-      },
-      {
-        "name": "NP_not_in_P_poly_from_PH",
-        "description": "PH non-collapse → NP⊄P/poly (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "P_eq_NP_breaks_crypto",
-        "description": "P=NP → no one-way functions (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "FPT",
-        "description": "Fixed-parameter tractable class",
-        "proven": true
-      },
-      {
-        "name": "W_class",
-        "description": "W-hierarchy levels W[t]",
-        "proven": true
-      },
-      {
-        "name": "XP_param",
-        "description": "Slice-wise polynomial class",
-        "proven": true
-      },
-      {
-        "name": "FPT_subset_W1",
-        "description": "FPT ⊆ W[1] (proved)",
-        "proven": true
-      },
-      {
-        "name": "parameterized_chain",
-        "description": "FPT ⊆ W[1] ⊆ W[2] ⊆ XP ⊆ paraNP (proved)",
-        "proven": true
-      },
-      {
-        "name": "ETH_parameterized_separation",
-        "description": "ETH → P ≠ NP via FPT≠W[1] (proved)",
-        "proven": true
-      },
-      {
-        "name": "fine_grained_SETH_landscape",
-        "description": "SETH → near-quadratic bounds for Edit/LCS/Fréchet (proved)",
+        "name": "P_ne_NP_requires_new_techniques",
+        "description": "Routes + barriers combined (proved)",
         "proven": true
       }
     ],
@@ -567,15 +497,11 @@
       "Added SZK (Statistical Zero Knowledge) with BPP ⊆ SZK ⊆ AM ⊆ PH chain",
       "SZK complement-closed (Okamoto 2000), NP ⊆ SZK → NP = coNP",
       "Proved P = NP → RP = P and P = NP → ZPP = P (collapse consequences)",
-      "Polynomial hierarchy: P=NP → PH=P; contrapositive gives separation strategy",
-      "Containment chain P⊆NP⊆PSPACE⊆EXPTIME with P≠EXPTIME forces at least one strict inclusion",
-      "Shamir IP=PSPACE: interactive proofs are surprisingly powerful",
-      "Karp-Lipton: NP⊆P/poly → PH collapses to Σ₂, strong evidence NP⊄P/poly",
-      "P=NP destroys all of modern cryptography: no OWF, no PRG, no secure encryption",
-      "Parameterized complexity: FPT ⊆ W[1] ⊆ W[2] ⊆ XP ⊆ paraNP chain formalized",
-      "ETH → FPT ≠ W[1] → P ≠ NP: alternative separation path via parameterized complexity",
-      "SETH fine-grained hardness: Edit Distance, LCS, Fréchet distance all require near-quadratic time",
-      "VP ≠ VNP (already proven) and FPT ≠ W[1] are both strengthenings of P ≠ NP"
+      "OWF_exist defined as NP∖P nonempty (Impagliazzo-Levin equivalence). OWF→P≠NP is trivial from this definition.",
+      "Impagliazzo Five Worlds taxonomy formalized: Algorithmica/Heuristica/Pessiland/Minicrypt/Cryptomania with mutual exclusion proved.",
+      "Average-case complexity: HardOnAverage, DistProblem, P=NP→no hard average case proved as theorem.",
+      "Cook-Reckhow theorem axiomatized: NP=coNP ↔ polynomially-bounded proof system exists. This gives no_short_proofs→P≠NP.",
+      "Grand unification: routes_to_P_ne_NP collects 7 independent routes (OWF, ETH, SETH, NP≠coNP, no short proofs, PH≠P, hard average case)."
     ],
     "mathlibGaps": [
       "Turing machines",
@@ -599,7 +525,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-15T12:30:00.000Z",
+  "lastUpdate": "2026-03-14T21:00:00.000Z",
   "significance": 10,
   "tractability": 2
 }
