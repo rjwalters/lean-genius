@@ -577,7 +577,55 @@ theorem complete_graph_dim_le_tight_3 :
   Nat.find_le K3_unit_embedding
 
 -- ============================================================================
--- § 16. General dim(K_n) ≤ n-1 via Centered Simplex
+-- § 16. K₄ embeds in ℝ³ (regular tetrahedron)
+-- ============================================================================
+
+-- Vertices of a regular tetrahedron with unit edge length:
+-- v₀ = (0, 0, 0)
+-- v₁ = (1, 0, 0)
+-- v₂ = (1/2, √3/2, 0)
+-- v₃ = (1/2, √3/6, √6/3)
+
+/-- Helper: √6 squared is 6. -/
+private theorem sq_sqrt_six : Real.sqrt 6 ^ 2 = 6 :=
+  Real.sq_sqrt (by norm_num : (6:ℝ) ≥ 0)
+
+/-- Helper: (√6/3)² = 2/3. -/
+private theorem sq_sqrt_six_third : (Real.sqrt 6 / 3) ^ 2 = 2 / 3 := by
+  rw [div_pow, sq_sqrt_six]; norm_num
+
+/-- Helper: (√3/6)² = 1/12. -/
+private theorem sq_sqrt_three_sixth : (Real.sqrt 3 / 6) ^ 2 = 1 / 12 := by
+  rw [div_pow, sq_sqrt_three]; norm_num
+
+/-- The regular tetrahedron embedding of K₄ in ℝ³. -/
+noncomputable def K4embed : Fin 4 → Fin 3 → ℝ
+  | ⟨0, _⟩, _ => 0
+  | ⟨1, _⟩, ⟨0, _⟩ => 1
+  | ⟨1, _⟩, _ => 0
+  | ⟨2, _⟩, ⟨0, _⟩ => 1 / 2
+  | ⟨2, _⟩, ⟨1, _⟩ => Real.sqrt 3 / 2
+  | ⟨2, _⟩, _ => 0
+  | ⟨3, _⟩, ⟨0, _⟩ => 1 / 2
+  | ⟨3, _⟩, ⟨1, _⟩ => Real.sqrt 3 / 6
+  | ⟨3, _⟩, ⟨2, _⟩ => Real.sqrt 6 / 3
+
+/-- K₄ admits a unit-distance embedding in ℝ³. -/
+theorem K4_unit_embedding : hasUnitEmbedding' (Fin 4) (fun i j => i ≠ j) 3 := by
+  refine ⟨⟨K4embed, fun u v huv => ?_⟩⟩
+  fin_cases u <;> fin_cases v <;>
+    simp_all [K4embed, Finset.sum_fin_eq_sum_range, Finset.sum_range_succ,
+              sq_sqrt_three_half, sq_sqrt_three_sixth,
+              sq_sqrt_six_third, Real.sqrt_one] <;> norm_num
+
+open Classical in
+/-- dim(K₄) ≤ 3 (tight: regular tetrahedron in ℝ³). -/
+theorem complete_graph_dim_le_tight_4 :
+    graphDimension' (Fin 4) (fun i j => i ≠ j) (fun x h => h rfl) ≤ 3 :=
+  Nat.find_le K4_unit_embedding
+
+-- ============================================================================
+-- § 17. General dim(K_n) ≤ n-1 via Centered Simplex
 -- ============================================================================
 
 -- Strategy: The simplex embedding places vertex i at (1/√2)eᵢ in ℝⁿ.
@@ -601,20 +649,23 @@ theorem complete_graph_dim_le_tight_3 :
 -- but doesn't scale. This is a BUILD task for future sessions.
 
 -- ============================================================================
--- § 17. Summary of Dimension Bounds
+-- § 18. Summary of Dimension Bounds
 -- ============================================================================
 
 -- Current state:
 -- dim(K₂) ≤ 1  (proved, §14 — tight)
 -- dim(K₃) ≤ 2  (proved, §15 — tight)
+-- dim(K₄) ≤ 3  (proved, §16 — tight)
 -- dim(K_n) ≤ n  (proved, §7 — off by one from optimal)
--- dim(K_n) = n-1 (conjectured, requires ONB infrastructure)
+-- dim(K_n) = n-1 (conjectured, proved for n=2,3,4; general requires ONB infrastructure)
 
 #check @complete_graph_unit_embedding
 #check @complete_graph_dim_le
 #check @complete_graph_dim_le_tight_2
 #check @complete_graph_dim_le_tight_3
+#check @complete_graph_dim_le_tight_4
 #check @K3_unit_embedding
+#check @K4_unit_embedding
 #check @subgraph_unit_embedding
 #check @hasUnitEmbedding_exists_irrefl
 #check @optimal_implies_monotone
