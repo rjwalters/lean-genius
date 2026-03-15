@@ -2071,6 +2071,60 @@ theorem quat_unit_right_inverse (a₀ a₁ a₂ a₃ : ℝ)
   obtain ⟨h0, h1, h2, h3⟩ := quat_right_inverse a₀ a₁ a₂ a₃
   exact ⟨by linarith, h1, h2, h3⟩
 
+/-- Quaternion right identity: (a₀,a₁,a₂,a₃) · (1,0,0,0) = (a₀,a₁,a₂,a₃). -/
+theorem quat_right_identity (a₀ a₁ a₂ a₃ : ℝ) :
+    (a₀*1 - a₁*0 - a₂*0 - a₃*0 = a₀) ∧
+    (a₀*0 + a₁*1 + a₂*0 - a₃*0 = a₁) ∧
+    (a₀*0 - a₁*0 + a₂*1 + a₃*0 = a₂) ∧
+    (a₀*0 + a₁*0 - a₂*0 + a₃*1 = a₃) := by
+  constructor <;> [ring; constructor <;> [ring; constructor <;> ring]]
+
+/-- Quaternion left inverse: for unit quaternions, x* · x = (1, 0, 0, 0). -/
+theorem quat_unit_left_inverse (a₀ a₁ a₂ a₃ : ℝ)
+    (ha : a₀^2 + a₁^2 + a₂^2 + a₃^2 = 1) :
+    (a₀*a₀ - (-a₁)*a₁ - (-a₂)*a₂ - (-a₃)*a₃ = 1) ∧
+    (a₀*a₁ + (-a₁)*a₀ + (-a₂)*a₃ - (-a₃)*a₂ = 0) ∧
+    (a₀*a₂ - (-a₁)*a₃ + (-a₂)*a₀ + (-a₃)*a₁ = 0) ∧
+    (a₀*a₃ + (-a₁)*a₂ - (-a₂)*a₁ + (-a₃)*a₀ = 0) := by
+  refine ⟨by nlinarith, by ring, by ring, by ring⟩
+
+/-- Norm squared of quaternion product via four-square identity.
+    If ‖x‖² = s and ‖y‖² = t, then ‖xy‖² = s * t.
+    In particular, unit * unit = unit. -/
+theorem quat_norm_sq_mul (a₀ a₁ a₂ a₃ b₀ b₁ b₂ b₃ : ℝ) :
+    (a₀*b₀ - a₁*b₁ - a₂*b₂ - a₃*b₃)^2 +
+    (a₀*b₁ + a₁*b₀ + a₂*b₃ - a₃*b₂)^2 +
+    (a₀*b₂ - a₁*b₃ + a₂*b₀ + a₃*b₁)^2 +
+    (a₀*b₃ + a₁*b₂ - a₂*b₁ + a₃*b₀)^2 =
+    (a₀^2 + a₁^2 + a₂^2 + a₃^2) * (b₀^2 + b₁^2 + b₂^2 + b₃^2) :=
+  (euler_four_square a₀ a₁ a₂ a₃ b₀ b₁ b₂ b₃).symm
+
+/-- The quaternion group on unit vectors satisfies all algebraic axioms:
+    associativity (quat_assoc), identity (quat_left/right_identity),
+    inverse (quat_unit_left/right_inverse), norm preservation (euler_four_square).
+    Only continuity of multiplication and inversion remains for sphere3_is_lie_group. -/
+theorem quat_group_algebraic_complete :
+    -- Identity element is (1,0,0,0)
+    (∀ b₀ b₁ b₂ b₃ : ℝ,
+      1*b₀ - 0*b₁ - 0*b₂ - 0*b₃ = b₀ ∧
+      1*b₁ + 0*b₀ + 0*b₃ - 0*b₂ = b₁ ∧
+      1*b₂ - 0*b₃ + 0*b₀ + 0*b₁ = b₂ ∧
+      1*b₃ + 0*b₂ - 0*b₁ + 0*b₀ = b₃) ∧
+    -- Right identity
+    (∀ a₀ a₁ a₂ a₃ : ℝ,
+      a₀*1 - a₁*0 - a₂*0 - a₃*0 = a₀ ∧
+      a₀*0 + a₁*1 + a₂*0 - a₃*0 = a₁ ∧
+      a₀*0 - a₁*0 + a₂*1 + a₃*0 = a₂ ∧
+      a₀*0 + a₁*0 - a₂*0 + a₃*1 = a₃) ∧
+    -- Closure under multiplication
+    (∀ a₀ a₁ a₂ a₃ b₀ b₁ b₂ b₃ : ℝ,
+      a₀^2 + a₁^2 + a₂^2 + a₃^2 = 1 →
+      b₀^2 + b₁^2 + b₂^2 + b₃^2 = 1 →
+      (a₀*b₀-a₁*b₁-a₂*b₂-a₃*b₃)^2 + (a₀*b₁+a₁*b₀+a₂*b₃-a₃*b₂)^2 +
+      (a₀*b₂-a₁*b₃+a₂*b₀+a₃*b₁)^2 + (a₀*b₃+a₁*b₂-a₂*b₁+a₃*b₀)^2 = 1) :=
+  ⟨quat_left_identity, quat_right_identity,
+   fun _ _ _ _ _ _ _ _ ha hb => quat_unit_mul_unit _ _ _ _ _ _ _ _ ha hb⟩
+
 end QuaternionStructure
 
 /- ===============================================================================
