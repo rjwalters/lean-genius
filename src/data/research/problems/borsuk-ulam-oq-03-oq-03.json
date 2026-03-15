@@ -1,7 +1,7 @@
 {
   "slug": "borsuk-ulam-oq-03-oq-03",
   "title": "Constructive 2D Borsuk-Ulam via Tucker Lemma",
-  "phase": "OBSERVE",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,25 +16,82 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-06T08:22:48-08:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "phase": "DEEP_DIVE",
+    "since": "2026-03-14",
+    "iteration": 9,
+    "focus": "Improved axiom to grid-specific tucker_2d_grid, fixed Fin API breakage, added infrastructure",
+    "activeApproach": "Tucker 2D lemma proof: path-following, degree theory, or Hex approach (~500-1000 lines)",
+    "blockers": [
+      "tuckers_lemma axiom: requires path-following (~500-1000 lines), degree theory, or intersection theory — each equivalent to Brouwer FPT in 2D"
+    ],
+    "nextAction": "Prove Tucker 2D lemma for n=2 on triangulated grid",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 5,
+      "currentApproach": 1,
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "AXIOM IMPROVED: Replaced overly general tuckers_lemma with grid-specific tucker_2d_grid. Fixed Mathlib v4.26.0 Fin API breakage in discrete_ivt and tucker_1d. Added 3 infrastructure lemmas for antipodal map. File: 1 axiom, 0 sorries, builds clean.",
+    "builtItems": [
+      "non_dominant_at_zero_bound_snd (symmetric IVT bound, Part XX)",
+      "complementary_edge_approx_dominant_fst/snd (corrected IVT+dominant theorems)",
+      "complementary_edge_approx_dominant (combined for arbitrary k)",
+      "closedDisk_isCompact (D² compactness)",
+      "continuous_on_disk_uniformContinuousOn (uniform continuity on D²)",
+      "disk_continuity_bound (ε-δ form of uniform continuity)",
+      "mesh_refinement_principle (mesh→0 implies approximate zeros)",
+      "radialExtend: extends g from D² to [-1,1]² via radial projection (freezes S¹ values)",
+      "radialExtend_odd_outside: h is odd for ‖x‖₂ ≥ 1 when g is odd on S¹",
+      "radialExtend_zero_gives_disk_zero: converts h-zero to g-zero in D̄²",
+      "closedSquare_isCompact: [-1,1]² = closedBall 0 1 in L∞ norm",
+      "mesh_refinement_square: analog of mesh_refinement_principle for [-1,1]²",
+      "gridVertexFin/gridBoundaryFin/gridEdgesFin/gridAntipodalFin: Fin-based grid on [-1,1]²",
+      "gridAntipodalFin_eq_neg: antipodal map = negation in ℝ² (via Fin.rev)",
+      "gridBoundary_euclidNormSq_ge_one: boundary vertices have Euclidean norm ≥ 1",
+      "tucker_disk_approx_zero_proved: main theorem with h=0 edge case completed",
+      "gridEdgesTriFin: Triangulated grid edges with H/V + NE-SW diagonals for Tucker soundness",
+      "grid_tri_edge_dist: Edge distance bound ≤ 1/N for all triangulated edges (H/V and diagonal)",
+      "gridEdgesFin_subset_tri: H/V edges are a subset of triangulated edges",
+      "discrete_ivt: 1D discrete IVT - if f(0) ≠ f(n) then ∃ i, f(i) ≠ f(i+1)",
+      "tucker_1d: 1D Tucker lemma for grid {0,...,2N} with antipodal boundary",
+      "tucker_2d_grid: properly constrained Tucker 2D axiom for gridEdgesTriFin N (replaces overly general tuckers_lemma)",
+      "gridAntipodalFin_involution: Fin.rev is involution (proved)",
+      "gridAntipodalFin_maps_boundary: antipodal map preserves boundary (proved)",
+      "gridAntipodalFin_preserves_edges: antipodal map preserves triangulated edge set (proved)",
+      "discrete_ivt: fixed Fin API breakage (Fin.castSucc.succ → Fin.succ)",
+      "tucker_1d: fixed Fin API breakage"
+    ],
+    "insights": [
+      "CRITICAL: axiom complementary_edge_gives_approximate_zero was FALSE. Counterexample: g(x,y)=(x,y), u=(0.01,1), v=(-0.01,1). The bound δ*C ≈ 0.08 but |g(w).2| ≥ 0.98 for any w near u.",
+      "The fix: require k to be the DOMINANT component (Tucker's labeling guarantees this). Then IVT zero + dominant component bound gives ‖g(w)‖ ≤ 2·dist(g(u),g(w)) → 0 by uniform continuity.",
+      "Pre-existing build errors in segmentParam_dist_le, complementary_edge_zero_fst/snd were present - fixed Prod subtraction handling and eq_or_lt_of_le direction.",
+      "The only remaining axiom gap is tuckers_lemma (deep combinatorial, hard) and tucker_disk_approx_zero (needs grid Fintype instance, ~200 lines boilerplate).",
+      "uniform continuity on compact D² is the key analytical bridge: CompactSpace → UniformContinuousOn → ε-δ bounds on function variation.",
+      "Grid Fintype boilerplate (Fin(2N+1)×Fin(2N+1), edges, antipodal map) involves heavy Nat↔ℝ casting. Lean4 exact_mod_cast/Fin.val handling makes this ~400 lines rather than ~200. Not mathematically hard, just tedious.",
+      "KEY INSIGHT: radial extension trick avoids gridding the disk directly. Extend g to [-1,1]² by g(x/‖x‖) outside D̄². This makes h odd for ‖x‖₂ ≥ 1 (boundary of [-1,1]² has ‖x‖₂ ≥ 1). Grid the square, apply Tucker, then convert back.",
+      "The Prod norm/dist in Mathlib is L∞ (max norm), not Euclidean. Must use custom euclidNormSq/euclidNorm for disk membership.",
+      "When h vanishes at a grid vertex, we get immediate zero: either inside disk (direct) or outside (project to S¹).",
+      "Mathlib v4.26 has NO Brouwer FPT for n≥2, no Tucker, no Borsuk-Ulam. All axiomatized in our project files.",
+      "The tuckers_lemma axiom is too strong: it works for arbitrary (V, edges) without requiring proper triangulation. With empty edges, the conclusion is false. Current usage is safe because grid edges form a proper triangulation.",
+      "Most promising elimination approach: prove Tucker specifically for gridEdgesFin N (not the general statement). Middle-row argument almost works but labels can change through intermediate values (0,T)→(1,T)→(0,F) without complementary edge.",
+      "Eliminated tucker_disk_approx_zero axiom by reordering: moved approx_borsuk_ulam_2d_corrected and borsuk_ulam_2d_corrected to end of file, after tucker_disk_approx_zero_proved. No forward declaration needed.",
+      "File structure: Parts I-XVI (S² infrastructure), Part XVII-XXIII (grid infrastructure + tucker_disk_approx_zero_proved), Part XXIV (main theorems using proved version)",
+      "CONFIRMED: Bottom row sign change is NOT guaranteed from boundary conditions. Counter-example: L(0,0)=(0,T), L(2N,0)=(1,T) is consistent with antipodal L(2N,2N)=(0,F), L(0,2N)=(1,F). The 2D Tucker proof requires global dual-graph parity, not row-by-row 1D Tucker.",
+      "1D Tucker proof pattern: by_contra + Fin.induction shows function is constant, contradicting boundary",
+      "Replaced overly general tuckers_lemma axiom (false for empty edges) with grid-specific tucker_2d_grid axiom",
+      "Fixed Mathlib v4.26.0 API breakage: Fin.castSucc.succ → Fin.succ in discrete_ivt and tucker_1d",
+      "Added gridAntipodalFin_involution, gridAntipodalFin_maps_boundary, gridAntipodalFin_preserves_edges",
+      "DEAD END CONFIRMED: Single-path arguments (diagonal, row, column) cannot prove Tucker 2D. Parity analysis shows complementary edges Ce=0 is consistent when all sign changes coincide with component changes",
+      "Hex theorem reduction analyzed: if C connects left-right, C monochromatic, need to show antipodal vertex is in same connected component. Requires additional separation argument beyond bare Hex statement"
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-03\n\n## Problem Understanding\n\nThe 2D Borsuk-Ulam theorem proved via Tucker's lemma. File has main theorem\n`borsuk_ulam_2d_corrected` with complete proof chain modulo axioms.\n\n## Key Finding: False Axiom\n\n`complementary_edge_gives_approximate_zero` was FALSE as stated.\nCounterexample: g(x,y)=(x,y), u=(0.01,1), v=(-0.01,1), delta=0.02, k=0.\nThe bound 0.02*(2*sup) ~ 0.08 but ||g(w)||_1 >= 0.98 for any w near u.\n\nFix: require k to be the dominant component (as Tucker's labeling guarantees).\n\n## Axiom Status\n\n### Current (session 9, 2026-03-14)\n- `tucker_2d_grid` -- 1 remaining axiom, properly constrained to triangulated grid\n- Previous `tuckers_lemma` was overly general (false for empty edges)\n\n### Infrastructure Added (session 9)\n- `gridAntipodalFin_involution`: antipodal map is an involution (proved)\n- `gridAntipodalFin_maps_boundary`: preserves boundary (proved)\n- `gridAntipodalFin_preserves_edges`: preserves edge set (proved)\n- Fixed Fin API breakage in `discrete_ivt` and `tucker_1d`\n\n### Previously Eliminated\n- `complementary_edge_gives_approximate_zero` -- ELIMINATED (was false)\n- `tucker_disk_approx_zero` -- ELIMINATED (reordered file)\n- `x_cube_sub_2_gal_iso_s3` -- ELIMINATED (from InverseGalois)\n\n## Dead Ends\n\n### Single-path arguments for Tucker 2D (CONFIRMED DEAD END)\nA single path through the grid (diagonal, row, column) CANNOT prove Tucker 2D.\n\nLabels from {(0,T), (0,F), (1,T), (1,F)} allow complementary-free paths:\n  (0,T) -> (1,F) -> (0,F) has 0 complementary edges despite complementary endpoints.\n\nParity analysis on diagonal path (0,0) -> (2N,2N):\n- Sign changes (Ce + Cb) = ODD (antipodal condition)\n- Component changes (Co + Cb) = EVEN (same start/end component)\n- Ce - Co = ODD, but Ce = 0 is consistent (all sign changes coincide with component changes)\n\n### Row-by-row 1D Tucker (CONFIRMED DEAD END)\nBottom row sign change NOT guaranteed from boundary conditions.\nThe antipodal condition links (0,j) <-> (2N, 2N-j), not same-row endpoints.\n\n### Hex theorem (PARTIALLY VIABLE)\nHex gives connected same-component path. But monochromatic case\nneeds additional argument: must show antipodal vertex is in same\nconnected component, or use separation/Jordan curve theorem.\n\n## Proof Approaches for tucker_2d_grid\n\nAll three are equivalent to Brouwer FPT in 2D. Multi-session project.\n\n1. **Path-following / complementary pivoting** (~500-1000 lines)\n2. **Hex theorem reduction** (~300 lines + Hex proof ~300-500 lines)\n3. **Poincare-Miranda / intersection theory** (~300-500 lines)\n"
+    "nextSteps": [
+      "Prove tucker_2d_grid via path-following (~500-1000 lines), Hex reduction (~300 lines + Hex proof), or Poincare-Miranda (~300-500 lines)",
+      "All approaches equivalent to Brouwer FPT in 2D - multi-session project",
+      "Key infrastructure already in place: grid definitions, antipodal properties, discrete_ivt, 1D Tucker"
+    ],
+    "markdown": "# Knowledge Base: borsuk-ulam-oq-03-oq-03\n\n## Problem Understanding\n\nThe 2D Borsuk-Ulam theorem proved via Tucker's lemma. File has main theorem\n`borsuk_ulam_2d_corrected` with complete proof chain modulo axioms.\n\n## Key Finding: False Axiom\n\n`complementary_edge_gives_approximate_zero` was FALSE as stated.\nCounterexample: g(x,y)=(x,y), u=(0.01,1), v=(-0.01,1), δ=0.02, k=0.\nThe bound 0.02·(2·sup) ≈ 0.08 but ‖g(w)‖₁ ≥ 0.98 for any w near u.\n\nFix: require k to be the dominant component (as Tucker's labeling guarantees).\n\n## Axiom Status (after this session)\n\n- `tuckers_lemma` — HARD to eliminate (deep combinatorial, path-following)\n- `tucker_disk_approx_zero` — TRACTABLE to eliminate (grid Fintype + our proved theorems)\n- ~~`complementary_edge_gives_approximate_zero`~~ — ELIMINATED (was false, replaced with proved theorems)\n\n## Dead Ends\n\n- The original axiom bound δ·(2·sup{‖g‖+1}) is too weak without dominant-component hypothesis\n"
   },
   "approaches": [],
   "tags": [
@@ -51,7 +108,7 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.175Z",
-  "lastUpdate": "2026-03-13T07:52:17.061Z",
+  "lastUpdate": "2026-03-13T00:30:00.000Z",
   "significance": 7,
   "tractability": 6
 }
