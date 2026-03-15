@@ -8,10 +8,10 @@
   and by the universal property of the cyclotomic field (= splitting field),
   there exists a ℚ-algebra hom sending the canonical primitive root to ω.
 
-  Status:
+  Status: COMPLETE (0 sorries)
   - Euler formula computation (ω + ω⁻¹ = 2cos): PROVED
-  - Embedding construction (φ with φ(ζ) = ω): 2 sorries (type coercion)
-  - Overall structure: complete modulo PowerBasis.lift composition with topEquiv
+  - Embedding construction (φ with φ(ζ) = ω): PROVED via PowerBasis.lift + topEquiv
+  - Main theorem exists_embedding_alpha_eq_2cos: PROVED
 -/
 
 import Mathlib
@@ -68,13 +68,60 @@ theorem exists_embedding_zeta_to_exp (hn : 3 ≤ n) :
   -- ω is a root of minpoly ℚ ζ
   have h_ω_root : Polynomial.aeval ω (minpoly ℚ ζ) = 0 := by
     rw [h_minpoly]; exact h_ω_aeval
-  -- PowerBasis for ℚ(ζ) and lift to ℂ
-  -- The construction: PowerBasis.lift gives ↥(adjoin ℚ {ζ}) →ₐ[ℚ] ℂ
-  -- Then compose with the equivalence adjoin ℚ {ζ} ≃ₐ[ℚ] CyclotomicField
-  -- (since ζ generates the whole field)
-  -- This is a type-theoretic construction, not a mathematical one.
-  -- The 2 sorries below are purely about Lean type coercions.
-  sorry
+  -- Step 1: PowerBasis for ℚ⟮ζ⟯
+  let F := IntermediateField.adjoin ℚ ({ζ} : Set (CyclotomicField n ℚ))
+  let pb := IntermediateField.adjoin.powerBasis h_int
+  -- pb : PowerBasis ℚ ↥F, pb.gen = AdjoinSimple.gen ℚ ζ, ↑pb.gen = ζ
+  have h_gen_coe : (pb.gen : CyclotomicField n ℚ) = ζ := by
+    show ↑(IntermediateField.adjoin.powerBasis h_int).gen = ζ
+    rw [IntermediateField.adjoin.powerBasis_gen]; rfl
+  -- Step 2: ω is a root of minpoly of pb.gen
+  have h_root_pb : aeval ω (minpoly ℚ pb.gen) = 0 := by
+    -- minpoly ℚ pb.gen = minpoly ℚ ζ (via subtype inclusion)
+    have h_mp : minpoly ℚ pb.gen = minpoly ℚ ζ := by
+      have h := minpoly.algHom_eq (IsScalarTower.toAlgHom ℚ ↥F (CyclotomicField n ℚ))
+        Subtype.val_injective pb.gen
+      -- h has (IsScalarTower.toAlgHom ...) pb.gen; normalize to algebraMap form
+      simp only [IsScalarTower.toAlgHom_apply] at h
+      rw [show algebraMap ↥F (CyclotomicField n ℚ) pb.gen = ζ from h_gen_coe] at h
+      exact h.symm
+    rw [h_mp]; exact h_ω_root
+  -- Step 3: Lift from ↥F to ℂ
+  let φ_sub := pb.lift ω h_root_pb
+  -- Step 4: F = ⊤ (ζ generates the cyclotomic field)
+  have h_top : F = ⊤ := by
+    rw [eq_top_iff]; intro x _
+    apply IntermediateField.algebra_adjoin_le_adjoin ℚ ({ζ} : Set _)
+    -- x ∈ Algebra.adjoin ℚ {ζ}
+    -- Step A: x ∈ Algebra.adjoin ℚ {b | ∃ n₁ ∈ {n}, n₁ ≠ 0 ∧ b ^ n₁ = 1}
+    have hx_in := IsCyclotomicExtension.adjoin_roots (S := {n}) (A := ℚ)
+      (B := CyclotomicField n ℚ) x
+    -- Step B: that adjoin ≤ Algebra.adjoin ℚ {ζ} (each root is a power of ζ)
+    have h_le : Algebra.adjoin ℚ {b : CyclotomicField n ℚ |
+        ∃ n₁ ∈ ({n} : Set ℕ), n₁ ≠ 0 ∧ b ^ n₁ = 1} ≤
+        Algebra.adjoin ℚ ({ζ} : Set (CyclotomicField n ℚ)) := by
+      apply Algebra.adjoin_le
+      rintro b ⟨m, hm_mem, -, hb_pow⟩
+      simp only [Set.mem_singleton_iff] at hm_mem; subst hm_mem
+      obtain ⟨k, -, rfl⟩ := hζ.eq_pow_of_pow_eq_one hb_pow
+      exact Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_singleton ζ)) k
+    exact h_le hx_in
+  -- Step 5: Compose with equivalence F ≃ₐ[ℚ] CyclotomicField n ℚ
+  let e := (IntermediateField.equivOfEq h_top).trans IntermediateField.topEquiv
+  refine ⟨φ_sub.comp e.symm.toAlgHom, ?_⟩
+  -- Step 6: Show φ(ζ) = ω
+  show φ_sub (e.symm ζ) = ω
+  -- e.symm preserves val: (e.symm ζ).val = ζ = pb.gen.val
+  suffices h_eq : e.symm ζ = pb.gen by rw [h_eq]; exact pb.lift_gen ω h_root_pb
+  apply Subtype.val_injective
+  show (e.symm ζ : CyclotomicField n ℚ) = (pb.gen : CyclotomicField n ℚ)
+  rw [h_gen_coe]
+  -- (e.symm ζ : CyclotomicField) = ζ
+  -- e.symm = topEquiv.symm ∘ equivOfEq.symm : CyclotomicField → ↥⊤ → ↥F
+  -- Both preserve the underlying value
+  show ↑(((IntermediateField.equivOfEq h_top).trans IntermediateField.topEquiv).symm ζ) = ζ
+  -- topEquiv.symm just wraps ζ into ↥⊤, equivOfEq.symm transports membership, val preserved
+  rfl
 
 omit [NeZero n] in
 /-- ω + ω⁻¹ = 2cos(2π/n) for ω = exp(2πi/n), proved via |ω| = 1 and Euler's formula. -/
@@ -118,19 +165,10 @@ theorem exists_embedding_alpha_eq_2cos (hn : 3 ≤ n) :
   PROOF STATUS:
 
   ✅ exp_add_inv_eq_two_cos: PROVED (Euler formula, |ω|=1 → ω⁻¹=conj(ω))
-  ✅ exists_embedding_alpha_eq_2cos: PROVED (modulo exists_embedding_zeta_to_exp)
-  🔲 exists_embedding_zeta_to_exp: 1 sorry (PowerBasis.lift + topEquiv composition)
+  ✅ exists_embedding_zeta_to_exp: PROVED (PowerBasis.lift + topEquiv composition)
+  ✅ exists_embedding_alpha_eq_2cos: PROVED (from zeta embedding + Euler formula)
 
-  The sorry in exists_embedding_zeta_to_exp is purely about Lean type coercions:
-  - PowerBasis.lift gives ↥(adjoin ℚ {ζ}) →ₐ[ℚ] ℂ
-  - We need CyclotomicField n ℚ →ₐ[ℚ] ℂ
-  - adjoin ℚ {ζ} = ⊤ (ζ generates), so ↥(adjoin) ≃ₐ[ℚ] CyclotomicField
-  - Composing PowerBasis.lift with this equiv gives the desired AlgHom
-  - The sorry is about making Lean accept the dependent type coercion
-
-  MATHEMATICAL CONTENT: Complete. The proof that ω + ω⁻¹ = 2cos(2π/n) is fully
-  verified. The embedding construction is mathematically clear but needs
-  IntermediateField type coercion work.
+  All theorems proved with 0 sorries.
 -/
 
 end AngleTrisectionEmbedding
