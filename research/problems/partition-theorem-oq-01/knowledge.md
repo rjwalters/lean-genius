@@ -6,7 +6,7 @@ Rogers-Ramanujan and Schur partition identities formalized in Lean 4.
 
 ## Current State
 
-**Status**: 3 sorries, 3 axioms, ~2050 lines
+**Status**: 0 sorries, 3 axioms, ~2160 lines (sorry-free!)
 **File**: `proofs/Proofs/PartitionTheoremOQ01.lean`
 
 ## Key Results (All Proved)
@@ -36,14 +36,18 @@ Rogers-Ramanujan and Schur partition identities formalized in Lean 4.
 
 ### Assessment
 
-GF infrastructure is being built. The path to axiom elimination is:
+GF infrastructure is complete through step 6. The path to axiom elimination is:
 1. ✅ Define distinctPartGF = ∏_{k ∈ S} (1 + X^k)
 2. ✅ Define subsetsWithSum S n (subsets summing to n)
 3. ✅ Prove subset sum recursion (insert splitting)
-4. 🔲 Prove GF coefficient = |subsetsWithSum S n| (sorry - needs PowerSeries.coeff_mul)
-5. 🔲 Build bijection: subsetsWithSum ≃ distinct partitions
-6. 🔲 Specialize for mod-side partition sets
+4. ✅ Prove GF coefficient = |subsetsWithSum S n| (distinctPartGF_coeff)
+5. ✅ Build partition-subset correspondence (partitionOfSubset, schurMod_to_subset)
+6. ✅ Specialize for Schur mod-side: |schurMod n| = coeff n (schurModGF n)
+   - Built schurModSet, bijection via Finset.card_bij, GF link
+   - **Note**: RR1/RR2 mod sides allow repetition → need ∏ 1/(1-X^k) (not yet built)
 7. 🔲 Build gap-side generating function characterization (**hard step**)
+   - For Schur: gap condition → recurrence/functional equation for GF
+   - Standard approach: Schur's original iterative construction
 8. 🔲 Compose to prove identities
 
 ## Session Log
@@ -71,3 +75,45 @@ in Mathlib. No tractable single-session path.
 
 **3 new sorries**: subsetsWithSum_insert_mem_image, distinctPartGF_coeff, schurMod_to_subset
 **Docker build**: PASSED (all 3061 jobs)
+
+### Session 2026-03-15 (researcher-7) - DEEP DIVE
+
+**Mode**: REVISIT
+**Outcome**: completed — eliminated ALL remaining sorries
+
+**Proved**:
+- `subsetsWithSum_insert_mem_image`: key bijection T ↦ insert k T for k-containing subsets
+- `subsetsWithSum_insert_card`: cardinality recurrence via disjoint union decomposition
+- `distinctPartGF_coeff`: **GF Coefficient Theorem** — coeff n (∏(1+X^k)) = |subsetsWithSum S n|
+  - By Finset.induction with `revert n` (critical: IH needs to work for all indices)
+  - k≤n case: `coeff_X_pow_mul` shifts index
+  - n<k case: `X_pow_dvd_iff` + `dvd_mul_right` gives 0
+- `schurMod_to_subset`: SchurMod partition → subset via `Multiset.toFinset`
+- `partitionOfSubset` fixed for current Mathlib API
+- Fixed `PowerSeries.coeff` API (R now implicit: use `coeff (R := ℤ) n`)
+
+**Sorry count**: 3 → 0 (file is now sorry-free)
+**Docker build**: PASSED (all 3061 jobs)
+
+### Session 2026-03-15 (researcher-1) - DEEP DIVE
+
+**Mode**: REVISIT
+**Outcome**: progress — completed step 6: Schur mod-side specialization
+
+**Proved**:
+- `schurModSet`: {k ∈ [1..n] | k ≡ 1,2 mod 3} definition
+- `schurModSet_pos`: elements are positive
+- `schurModSet_eq_gf_set`: equivalence with schurModGF filter
+- `schurMod_card_eq_subsetsWithSum`: **Bijection theorem** — |schurMod n| = |subsetsWithSum S n|
+  - Via `Finset.card_bij` with forward map p ↦ p.parts.toFinset
+  - Injectivity: nodup parts ⇒ toFinset determines partition
+  - Surjectivity: partitionOfSubset gives inverse
+- `schurMod_card_eq_gf_coeff`: **GF Link** — |schurMod n| = coeff n (schurModGF n)
+  - Chains bijection + distinctPartGF_coeff + GF definition
+
+**Key insight**: RR1/RR2 mod sides allow repetition (no Nodup condition), so
+distinctPartGF (∏(1+X^k)) doesn't directly apply. Schur mod side IS distinct,
+so the bijection works. RR would need ∏ 1/(1-X^k) infrastructure.
+
+**Docker build**: PASSED (all 3061 jobs)
+**Lines added**: ~80 (Part XXXIV-B + XXXIV-C)

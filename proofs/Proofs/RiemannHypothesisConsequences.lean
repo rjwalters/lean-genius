@@ -488,7 +488,7 @@ prove RH since 0 ≥ 0 is always true.
 
 The true definition is λₙ = Σ_ρ [1 - (1 - 1/ρ)ⁿ] summed over non-trivial zeros,
 which requires the zero set of ζ(s) — not yet formalized. -/
-axiom liConstant : ℕ → ℝ
+opaque liConstant : ℕ → ℝ
 
 /-- Li's Criterion: RH is equivalent to all Li constants being non-negative.
 This was proved by Li (1997) and generalized by Bombieri-Lagarias (1999). -/
@@ -519,7 +519,7 @@ section ZeroCounting
 **SOUNDNESS NOTE**: This must be an opaque axiom, not a concrete value like `0`.
 If defined as `0`, then `riemann_von_mangoldt_formula` would be inconsistent:
 it claims |0 - (T/2π)log(T/2πe)| ≤ C·log(T), but the left side grows as T·log(T). -/
-axiom zeroCountingFunction : ℝ → ℕ
+opaque zeroCountingFunction : ℝ → ℕ
 
 /-- The Riemann-von Mangoldt formula: N(T) ~ (T/2π) log(T/2πe).
 This gives the density of zeros at height T. -/
@@ -643,7 +643,7 @@ section ZeroDensity
     **SOUNDNESS NOTE**: Must be opaque (not `0`). If defined as `0`, theorems
     like `ingham_zero_density` become vacuously true (0 ≤ anything), and
     `zeroDensity_at_one` becomes definitional rather than mathematical. -/
-axiom zeroDensity : ℝ → ℝ → ℕ
+opaque zeroDensity : ℝ → ℝ → ℕ
 
 /-- **Ingham's Zero-Density Estimate (1940)**:
     N(σ, T) ≪ T^{3(1-σ)/(2-σ)} · log^5(T) for 1/2 ≤ σ ≤ 1.
@@ -728,7 +728,7 @@ section SelbergCLT
     from the smooth approximation (T/2π)log(T/2πe).
 
     Must be opaque — the concrete arg function requires ζ(s) on the critical line. -/
-axiom argumentFunction : ℝ → ℝ
+opaque argumentFunction : ℝ → ℝ
 
 /-- **Selberg's Central Limit Theorem (1946)**: The argument function
     S(T) behaves like a Gaussian with variance (1/2)log(log(T)).
@@ -1243,13 +1243,13 @@ section SelbergClass
 
 A function in the Selberg class is a Dirichlet series satisfying:
 Ramanujan bound, analytic continuation, functional equation, Euler product. -/
-axiom SelbergClassFunction : Type
+opaque SelbergClassFunction : Type
 
 /-- The degree of a function in the Selberg class.
 For ζ(s), d = 1. For Dirichlet L-functions, d = 1.
 For Dedekind zeta functions of number fields [K:ℚ] = n, d = n.
 For GL(n) L-functions, d = n. -/
-axiom selbergDegree : SelbergClassFunction → ℝ
+opaque selbergDegree : SelbergClassFunction → ℝ
 
 /-- The Riemann zeta function is in the Selberg class with degree 1. -/
 axiom zeta_in_selberg_class : ∃ F : SelbergClassFunction, selbergDegree F = 1
@@ -1260,7 +1260,7 @@ axiom selberg_degree_conjecture :
 
 /-- **GRH for the Selberg class**: All non-trivial zeros of all F ∈ 𝒮
 lie on the critical line Re(s) = 1/2. This implies ordinary RH. -/
-axiom GRH_selberg_class :
+opaque GRH_selberg_class :
   Prop  -- Abstract: all F ∈ 𝒮 have zeros only on Re(s) = 1/2
 
 /-- The Selberg class GRH implies ordinary RH (PROVED).
@@ -1309,7 +1309,7 @@ section ExplicitFormula
 
 This is the oscillatory term that connects zero locations to prime distribution.
 When truncated to |Im(ρ)| ≤ T, the error is O(log²(xT)/T). -/
-axiom zeroSum : ℝ → ℝ
+opaque zeroSum : ℝ → ℝ
 
 /-- **The explicit formula error is dominated by the nearest zero to Re(s)=1**.
 If no zeros exist with Re(ρ) > σ, then ψ(x) = x + O(x^σ · log²x).
@@ -1470,7 +1470,7 @@ References:
 section RandomMatrixMoments
 
 /-- The 2k-th moment of ζ on the critical line: ∫_0^T |ζ(1/2+it)|^{2k} dt. -/
-axiom zetaMoment : ℕ → ℝ → ℝ  -- k, T ↦ moment
+opaque zetaMoment : ℕ → ℝ → ℝ  -- k, T ↦ moment
 
 /-- The moment exponent k² grows quadratically (PROVED). -/
 theorem moment_exponent_quadratic (k : ℕ) (hk : k ≥ 1) : k ^ 2 ≥ 1 := by

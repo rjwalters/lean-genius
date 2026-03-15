@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2598 lines (+153), 0 sorries, 5 axioms. Added Euler partition identity (distinct=odd) with native_decide verification n=0..10, GF theory summary.",
+    "progressSummary": "PROGRESS: Step 6 complete. SchurMod ↔ subsetsWithSum bijection proved, GF coefficient link established. 0 sorries, 3 axioms. Next: gap-side GF characterization (step 7).",
     "builtItems": [
       "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
@@ -40,7 +40,13 @@
       "subsetsWithSum_insert_card: cardinality recursion (proved modulo image lemma)",
       "distinctPartGF_coeff_empty: base case of coefficient theorem (proved)",
       "partitionOfSubset: Finset → Nat.Partition constructor (defined, compiles)",
-      "native_decide verification extended from n=12 to n=15 for all identities"
+      "native_decide verification extended from n=12 to n=15 for all identities",
+      "distinctPartGF_coeff: GF coefficient = subset count (Finset induction proof)",
+      "schurMod_to_subset: forward direction of SchurMod partition ↔ subset correspondence",
+      "Fixed partitionOfSubset parts_sum proof for new Mathlib API",
+      "schurModSet: {k ∈ [1..n] | k ≡ 1,2 mod 3} definition",
+      "schurMod_card_eq_subsetsWithSum: bijection via Finset.card_bij (proved)",
+      "schurMod_card_eq_gf_coeff: |schurMod n| = coeff n (schurModGF n) (proved)"
     ],
     "insights": [
       "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
@@ -51,20 +57,22 @@
       "GF coefficient theorem connects algebraic (PowerSeries) to combinatorial (subsetsWithSum) counting",
       "partitionOfSubset converts finsets to Nat.Partition, bridging subset and partition formulations",
       "All three identities (RR1, RR2, Schur corrected) computationally verified through n=15",
-      "Euler partition identity (distinct=odd) is the simplest partition identity and natural stepping stone toward Rogers-Ramanujan",
-      "Hierarchy: Euler (product manipulation) < Schur (gap analysis) < Rogers-Ramanujan (Bailey chains)",
-      "native_decide verification of Euler identity passes for n=0..10, confirming definitions are correct"
+      "Proved distinctPartGF_coeff by Finset.induction: key insight is to revert n before induction so IH works for all indices. Uses PowerSeries.coeff_X_pow_mul for k≤n case and X_pow_dvd_iff for n<k case.",
+      "Proved schurMod_to_subset: convert Nodup multiset to Finset via toFinset, use Multiset.dedup_eq_self for sum equality.",
+      "PowerSeries.coeff API change: R is now implicit (use coeff (R := ℤ) n, not coeff ℤ n).",
+      "SchurMod ↔ subsetsWithSum bijection via Finset.card_bij: forward p↦parts.toFinset, inverse via partitionOfSubset",
+      "RR1/RR2 mod sides allow repeated parts (no Nodup) → distinctPartGF approach only works for Schur, not RR",
+      "schurMod_card_eq_gf_coeff chains: bijection → distinctPartGF_coeff → GF definition equality"
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",
       "No bijective proof machinery for partition identities"
     ],
     "nextSteps": [
-      "Prove subsetsWithSum_insert_mem_image: the bijection for containing-k subsets (needs Finset.cons manipulation)",
-      "Prove distinctPartGF_coeff via PowerSeries.coeff_mul chain (main coefficient theorem)",
-      "Build full bijection subsetsWithSum ↔ distinct partitions from a set S",
-      "Specialize to S = {k ≡ 1,2 mod 3} for Schur mod-side characterization",
-      "The hard step: gap-side generating function characterization (Schur functional equation)"
+      "Build gap-side GF characterization for Schur (recurrence/functional equation)",
+      "Build partGF = ∏ 1/(1-X^k) for RR mod-side (allows repetition)",
+      "Prove gap-side partition count = coeff n (gap-side GF)",
+      "Equate mod-side and gap-side GFs to prove identities"
     ]
   },
   "approaches": [],
