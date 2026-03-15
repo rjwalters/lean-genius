@@ -397,11 +397,81 @@ theorem minpoly_alpha_natDegree (hn : 3 ≤ n) :
 -- § 7. Connection to cos(2π/n)
 -- ============================================================================
 
+/-- exp(θI) + exp(-θI) = 2cos(θ) for real θ, via Euler's formula. -/
+private theorem exp_add_exp_neg_eq_two_cos (θ : ℝ) :
+    Complex.exp (↑θ * Complex.I) + Complex.exp (-(↑θ * Complex.I)) =
+    ↑(2 * Real.cos θ) := by
+  have h := Complex.exp_mul_I (↑θ : ℂ)
+  have h' := Complex.exp_mul_I (-(↑θ : ℂ))
+  rw [show (-(↑θ : ℂ)) * Complex.I = -(↑θ * Complex.I) from by ring] at h'
+  rw [Complex.cos_neg, Complex.sin_neg] at h'
+  rw [h, h', ← Complex.ofReal_cos, ← Complex.ofReal_sin]
+  push_cast; ring
+
+/-- exp(θI) + (exp(θI))⁻¹ = 2cos(θ): inverse form of Euler sum. -/
+private theorem exp_add_inv_eq_two_cos (θ : ℝ) :
+    Complex.exp (↑θ * Complex.I) + (Complex.exp (↑θ * Complex.I))⁻¹ =
+    ↑(2 * Real.cos θ) := by
+  -- (exp(iθ))⁻¹ = exp(-iθ) since exp(-iθ) * exp(iθ) = 1
+  have h_inv : (Complex.exp (↑θ * Complex.I))⁻¹ =
+      Complex.exp (-(↑θ * Complex.I)) := by
+    symm
+    have h1 : Complex.exp (-(↑θ * Complex.I)) * Complex.exp (↑θ * Complex.I) = 1 := by
+      rw [← Complex.exp_add]
+      rw [show -(↑θ * Complex.I) + ↑θ * Complex.I = (0 : ℂ) from by ring]
+      exact Complex.exp_zero
+    exact (inv_eq_of_mul_eq_one_left h1).symm
+  rw [h_inv]
+  exact exp_add_exp_neg_eq_two_cos θ
+
+/-- exp(θI) + 1/exp(θI) = 2cos(θ): division form. -/
+private theorem exp_add_div_eq_two_cos (θ : ℝ) :
+    Complex.exp (↑θ * Complex.I) + 1 / Complex.exp (↑θ * Complex.I) =
+    ↑(2 * Real.cos θ) := by
+  rw [one_div]; exact exp_add_inv_eq_two_cos θ
+
 /-- There exists a ℚ-algebra embedding of CyclotomicField into ℂ that sends
     α = ζ + ζ⁻¹ to 2cos(2π/n). -/
-axiom exists_embedding_alpha_eq_2cos (hn : 3 ≤ n) :
+theorem exists_embedding_alpha_eq_2cos (hn : 3 ≤ n) :
     ∃ φ : CyclotomicField n ℚ →ₐ[ℚ] ℂ,
-    φ (alpha n) = ↑(2 * Real.cos (2 * Real.pi / ↑n))
+    φ (alpha n) = ↑(2 * Real.cos (2 * Real.pi / ↑n)) := by
+  -- PowerBasis for ζ over ℚ
+  have hζ := abstractZeta_isPrimRoot n
+  set pb := hζ.powerBasis ℚ
+  -- exp(2πi/n) is a primitive n-th root in ℂ
+  set w : ℂ := Complex.exp (2 * ↑Real.pi * Complex.I / ↑(n : ℕ))
+  have hw : IsPrimitiveRoot w n := Complex.isPrimitiveRoot_exp n (by omega)
+  -- minpoly ℚ ζ = cyclotomic n ℚ
+  have h_gen : pb.gen = abstractZeta n := hζ.powerBasis_gen ℚ
+  have h_minpoly : minpoly ℚ (abstractZeta n) = Polynomial.cyclotomic n ℚ :=
+    (minpoly.eq_of_irreducible_of_monic
+      (Polynomial.cyclotomic.irreducible_rat (by omega))
+      (by rw [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map,
+              Polynomial.map_cyclotomic]
+          exact hζ.isRoot_cyclotomic (by omega))
+      (Polynomial.cyclotomic.monic n ℚ)).symm
+  -- w is a root of minpoly ℚ pb.gen
+  have h_root : Polynomial.aeval w (minpoly ℚ pb.gen) = 0 := by
+    rw [h_gen, h_minpoly,
+        Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map,
+        Polynomial.map_cyclotomic]
+    exact hw.isRoot_cyclotomic (by omega)
+  -- Construct embedding via PowerBasis.lift: sends ζ ↦ exp(2πi/n)
+  refine ⟨pb.lift w h_root, ?_⟩
+  -- φ sends ζ to w
+  have h_zeta : pb.lift w h_root (abstractZeta n) = w := by
+    rw [← h_gen]; exact pb.lift_gen w h_root
+  -- φ(α) = φ(ζ + ζ⁻¹) = w + w⁻¹
+  show pb.lift w h_root (abstractZeta n + (abstractZeta n)⁻¹) =
+      ↑(2 * Real.cos (2 * Real.pi / ↑n))
+  rw [map_add, map_inv₀, h_zeta]
+  -- w = exp(↑θ * I) where θ = 2π/n
+  have h_rw : w = Complex.exp (↑(2 * Real.pi / ↑(n : ℕ)) * Complex.I) := by
+    show Complex.exp (2 * ↑Real.pi * Complex.I / ↑(n : ℕ)) =
+      Complex.exp (↑(2 * Real.pi / ↑(n : ℕ)) * Complex.I)
+    congr 1; push_cast; ring
+  rw [h_rw]
+  exact exp_add_inv_eq_two_cos (2 * Real.pi / ↑(n : ℕ))
 
 /-- alphaCos = α/2. Under the right embedding, maps to cos(2π/n). -/
 noncomputable def alphaCos : CyclotomicField n ℚ :=
@@ -516,7 +586,7 @@ theorem cos_extension_is_galois (hn : 3 ≤ n) :
 -- ============================================================================
 
 /-
-  AXIOM STATUS (updated by researcher-2, 2026-03-14):
+  AXIOM STATUS (updated by researcher-7, 2026-03-15):
 
   ✅ maximal_real_subfield_degree: PROVED via fixed field of ⟨σ⟩ (§3)
   ✅ zeta_quadratic_over_alpha: PROVED (ζ² - αζ + 1 = 0, §4)
@@ -531,10 +601,11 @@ theorem cos_extension_is_galois (hn : 3 ≤ n) :
   ✅ cos_extension_is_galois: PROVED (ℚ(cos) has finrank φ(n)/2, §9)
   ✅ cos_algebraic_from_cyclotomic: PROVED (from cos_minimal_poly_degree)
 
-  🔲 exists_embedding_alpha_eq_2cos: AXIOM (∃ φ sending α to 2cos(2π/n))
-     Proof approach: PowerBasis.lift with exp(2πi/n) as target root of
-     cyclotomic n ℚ = minpoly ℚ ζ. The construction exists but needs
-     careful type coercion through IntermediateField.topEquiv.
+  ✅ exists_embedding_alpha_eq_2cos: PROVED (PowerBasis.lift with exp(2πi/n), §7)
+     Uses IsPrimitiveRoot.powerBasis, PowerBasis.lift, Euler's formula.
+
+  PROGRESS: ALL AXIOMS ELIMINATED — 0 axioms, 0 sorries
+  The Gauss-Wantzel maximal real subfield degree theorem is fully proved!
 
   PROGRESS: 6 axioms → 1 axiom, 0 sorries
   All the mathematical content is proved; the remaining gap is purely about
