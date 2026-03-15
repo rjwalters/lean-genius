@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: K_3 equilateral triangle embedding proved. dim(K_3)<=2 established. Cleanup removed duplicate §11. 9 axioms, 41 theorems, 0 sorries.",
+    "progressSummary": "PROGRESS: Erdos1007OQ01.lean at 979 lines (+75). Added §21 (lower bound sketch dim(K_n)≥n-1) and §22 (known values summary with d=4 anomaly). Created Aristotle companion. 9 axioms, 2 sorries remain (regSimplexEmbed distance proofs).",
     "builtItems": [
       "optimal_implies_quadratic theorem (§11)",
       "choose_two_le_sq helper: C(d+1,2) <= d^2 for d>=1 (§11)",
@@ -42,7 +42,10 @@
       "K3embed: equilateral triangle embedding of K_3 in R^2 (§15)",
       "K3_unit_embedding: K_3 unit-distance embedding in R^2 (§15)",
       "complete_graph_dim_le_tight_3: dim(K_3) <= 2 (§15)",
-      "sq_sqrt_three, sq_sqrt_three_half: helper lemmas for sqrt(3) arithmetic"
+      "sq_sqrt_three, sq_sqrt_three_half: helper lemmas for sqrt(3) arithmetic",
+      "§21: Lower bound sketch dim(K_n)≥n-1 via centered Gram matrix rank argument",
+      "§22: Known values summary with deficiency analysis and d=4 anomaly proof",
+      "Erdos1007OQ01Aristotle.lean: Companion file with telescoping sum, centroid/height computations, graph dimension bounds"
     ],
     "insights": [
       "optimal_implies_quadratic: complete graph optimality conjecture implies Theta(d^2) growth with c1=1/2, c2=1",
@@ -52,7 +55,9 @@
       "General dim(K_n) <= n-1 requires projecting R^n simplex to hyperplane; key insight: pairwise differences orthogonal to all-ones vector so projection preserves distances",
       "dim(K_3) <= 2 proved via explicit equilateral triangle in R^2: vertices (0,0), (1,0), (1/2,sqrt(3)/2)",
       "Removed duplicate §11 (redundant with §8 optimal_implies_quadratic), reducing axiom count to 9",
-      "General dim(K_n) <= n-1 assessed as BUILD task: requires ~200-300 lines ONB infrastructure for hyperplane isometry"
+      "General dim(K_n) <= n-1 assessed as BUILD task: requires ~200-300 lines ONB infrastructure for hyperplane isometry",
+      "dim(K_n) = n-1 exactly: upper bound from regular simplex, lower bound from Gram matrix rank",
+      "d=4 is the ONLY known anomaly where complete graph is not optimal for minimum edges"
     ],
     "mathlibGaps": [],
     "nextSteps": [
