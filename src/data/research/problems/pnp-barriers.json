@@ -19,10 +19,10 @@
     "phase": "ACT",
     "since": "2026-03-15T00:00:00Z",
     "iteration": 11,
-    "focus": "Proved immerman_szelepcsenyi (NL=coNL from Φ_negate) and trapdoor_implies_owf (trivial from definitions). 74 axioms.",
+    "focus": "Proved padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE (EXP = EXPSPACE definitionally). 73 axioms.",
     "activeApproach": "Abstract complexity class definitions with barrier theorems. Proof complexity and cryptographic world classification.",
     "blockers": [],
-    "nextAction": "Continue axiom reduction; add counting complexity (#P); consider model refinements for abstract classes",
+    "nextAction": "Remaining 73 axioms are about opaque types or deep theorems - further reduction requires model refinements",
     "attemptCounts": {
       "total": 6,
       "currentApproach": 6,
@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "4127-line sound formalization with 74 axioms (down from 76), 203 theorems, 0 sorries. Proved NL=coNL via Φ_negate and trapdoor→OWF from trivial definitions.",
+    "progressSummary": "4131-line sound formalization with 73 axioms (down from 76), 203+ theorems, 0 sorries. Latest: padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE proved (EXP=EXPSPACE definitionally).",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -365,6 +365,7 @@
       "EQ has exponential det/rand CC gap: D(EQ)=Θ(n) but R(EQ)=O(1)",
       "DISJ is maximally hard: Ω(n) randomized lower bound (no savings from randomization)",
       "Karchmer-Wigderson: circuit depth = CC of search problem. Reduces depth lower bounds to CC.",
+      "EXP and EXPSPACE have identical definitions in the abstract model, making padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE trivially provable (rfl). Model also collapses L=PSPACE=EXP (all just 'computable'), creating potential inconsistency with L_ne_PSPACE and P_ne_EXP axioms.",
       "NC¹ vs P reduces to ω(log n) KW lower bound for P-complete functions",
       "Raz-McKenzie: monotone depth can exceed general depth (monotone lower bounds are easier)",
       "OWF → NP ⊆ CZK (GMW): zero-knowledge reflects Impagliazzos worlds",
@@ -434,7 +435,7 @@
     "mathlib": []
   },
   "started": "2025-12-31T00:00:00-08:00",
-  "lastUpdate": "2026-03-14T19:30:00.000Z",
+  "lastUpdate": "2026-03-15T00:00:00.000Z",
   "significance": 8,
   "tractability": 4
 }
