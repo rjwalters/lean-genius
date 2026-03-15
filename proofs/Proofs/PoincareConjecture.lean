@@ -816,11 +816,34 @@ axiom sphere3_is_lie_group :
     trivial homology in all positive degrees. -/
 axiom sphere3_not_contractible : ¬ ContractibleSpace (↥Sphere3)
 
-/-- The Hopf invariant of the Hopf map is ±1, proving it is
-    essential (not null-homotopic). This is the generator of π₃(S²) ≅ ℤ. -/
-axiom hopf_map_essential :
-  ∀ (π : ↥Sphere3 → ↥Sphere2), Continuous π → Function.Surjective π →
-    ¬ ∃ (x₀ : ↥Sphere2), ∀ t : ↥Sphere3, π t = x₀
+/-- A continuous surjection onto a space with ≥2 points cannot be constant.
+    This is a simple consequence of surjectivity and the fact that S² has at least
+    two distinct points ((1,0,0) and (0,1,0)).
+
+    Note: The deeper fact that the Hopf map is *essential* (not null-homotopic,
+    i.e., not homotopic to a constant map) requires Hopf invariant theory.
+    This theorem only proves the weaker statement that it is not literally constant.
+
+    **Proof**: S² contains two distinct points p₁ = (1,0,0) and p₂ = (0,1,0).
+    If π were constant at x₀, surjectivity gives ∀ y ∈ S², y = x₀.
+    But p₁ ≠ p₂ gives p₂ = x₀ = p₁, contradiction. -/
+theorem hopf_map_essential :
+    ∀ (π : ↥Sphere3 → ↥Sphere2), Continuous π → Function.Surjective π →
+      ¬ ∃ (x₀ : ↥Sphere2), ∀ t : ↥Sphere3, π t = x₀ := by
+  intro π _ hsurj ⟨x₀, hall⟩
+  -- Every point of S² equals x₀ (from surjectivity + constancy)
+  have hall_eq : ∀ y : ↥Sphere2, y = x₀ := by
+    intro y; obtain ⟨t, ht⟩ := hsurj y; rw [← ht]; exact hall t
+  -- Construct two distinct points on S²
+  have hp1 : EuclideanSpace.single (0 : Fin 3) (1 : ℝ) ∈ Sphere2 := by
+    simp [Sphere2, Metric.mem_sphere, dist_eq_norm, sub_zero, EuclideanSpace.norm_single]
+  have hp2 : EuclideanSpace.single (1 : Fin 3) (1 : ℝ) ∈ Sphere2 := by
+    simp [Sphere2, Metric.mem_sphere, dist_eq_norm, sub_zero, EuclideanSpace.norm_single]
+  have hne : (⟨_, hp1⟩ : ↥Sphere2) ≠ ⟨_, hp2⟩ := by
+    intro h
+    have := congr_arg (fun x => x.val (0 : Fin 3)) h
+    simp [EuclideanSpace.single_apply] at this
+  exact hne (by rw [hall_eq ⟨_, hp1⟩, hall_eq ⟨_, hp2⟩])
 
 /-- S² × S¹ is not simply connected because π₁(S² × S¹) ≅ π₁(S¹) ≅ ℤ.
     The S¹ factor contributes a nontrivial fundamental group. -/
