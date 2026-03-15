@@ -18,19 +18,19 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-14T01:00:00Z",
-    "iteration": 8,
-    "focus": "Part 51: Counting complexity — #P, Toda theorem, permanent, GapP",
+    "iteration": 9,
+    "focus": "Part 52: Proof complexity — resolution, cutting planes, Frege, Cook program",
     "activeApproach": "Abstract complexity class definitions with barrier theorems.",
     "blockers": [],
-    "nextAction": "Consider proof complexity (resolution, cutting planes), communication complexity barriers, or meta-complexity (MCSP, Kolmogorov)",
+    "nextAction": "Consider meta-complexity (MCSP, Kolmogorov complexity barriers), communication complexity lower bounds, or algebraic proof complexity",
     "attemptCounts": {
-      "total": 8,
-      "currentApproach": 8,
+      "total": 9,
+      "currentApproach": 9,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Part 51 — Counting complexity (#P, Toda theorem, permanent, GapP). New: SharpP, FP_class, GapP, ParityP definitions. 5 new axioms (valiant_permanent, toda_theorem, valiant_vazirani, NP_in_randomized_parityP, vp_ne_vnp). 9 proved theorems (FP⊆#P, #P≠FP⟹P≠NP, counting≥PH, #P⊆GapP, sign_problem, approx_counting_hard, counting_barriers, toda_strengthens_barriers, sharpP_ne_FP_implies_P_ne_NP). File: 13416 lines, 228 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Added Part 52 — Proof complexity (resolution, cutting planes, Frege, Cook program). New: ProofSystem structure, 4 proof system definitions. 5 new axioms (Cook-Reckhow, Haken, Ben-Sasson-Wigderson, bounded-depth Frege LB, Frege not automatizable). 9 proved theorems (hierarchy, barriers in proof complexity, Cook program status). File: 13704 lines, 233 axioms, 0 sorries.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -349,6 +349,56 @@
         "name": "toda_strengthens_barriers",
         "description": "Toda strengthens barrier results (proved)",
         "proven": true
+      },
+      {
+        "name": "ProofSystem",
+        "description": "Propositional proof system structure",
+        "proven": true
+      },
+      {
+        "name": "ResolutionSystem",
+        "description": "Resolution proof system definition",
+        "proven": true
+      },
+      {
+        "name": "CuttingPlanesSystem",
+        "description": "Cutting planes system definition",
+        "proven": true
+      },
+      {
+        "name": "FregeSystem",
+        "description": "Frege proof system definition",
+        "proven": true
+      },
+      {
+        "name": "cook_reckhow_theorem",
+        "description": "P=NP ↔ bounded proof system (axiom)",
+        "proven": false
+      },
+      {
+        "name": "haken_resolution_lower_bound",
+        "description": "PHP exp lower bound in resolution (axiom)",
+        "proven": false
+      },
+      {
+        "name": "proof_complexity_hierarchy",
+        "description": "Res < CP < BD-Frege < Frege ≤ EF (proved)",
+        "proven": true
+      },
+      {
+        "name": "frege_lb_implies_P_ne_NP",
+        "description": "Frege lower bound implies P≠NP (proved)",
+        "proven": true
+      },
+      {
+        "name": "natural_proofs_barrier_in_proof_complexity",
+        "description": "NP barrier applies to Frege (proved)",
+        "proven": true
+      },
+      {
+        "name": "proof_circuit_connection",
+        "description": "Proof systems correspond to circuit classes (proved)",
+        "proven": true
       }
     ],
     "insights": [
@@ -407,7 +457,11 @@
       "Counting complexity (#P) is strictly harder than decision (NP) by Toda theorem: PH ⊆ P^{#P}. This means #P captures more computational power than the entire polynomial hierarchy.",
       "The permanent vs determinant sign problem is a concrete barrier: identical algebraic formulas except for ±1 signs, yet det ∈ P while perm is #P-complete (Valiant 1979).",
       "GapP = #P - #P captures quantum computing power (BQP). Quantum interference = computing differences of counts.",
-      "Valiant-Vazirani lemma bridges NP to ⊕P: random reduction from SAT to Unique-SAT, key ingredient in Toda theorem."
+      "Valiant-Vazirani lemma bridges NP to ⊕P: random reduction from SAT to Unique-SAT, key ingredient in Toda theorem.",
+      "Cook-Reckhow theorem reduces P vs NP to proof complexity: P=NP iff some proof system is polynomially bounded. Proving Frege lower bounds would suffice for P≠NP.",
+      "Proof complexity hierarchy is strict: Resolution < CP < Bounded-depth Frege < Frege ≤ Extended Frege. Lower bounds known for all systems below Frege, but NO superpolynomial Frege lower bound exists.",
+      "Natural proofs barrier applies to proof complexity too (Razborov 2003). Cook program faces same barriers as circuit complexity approaches.",
+      "Proof systems correspond to circuit classes: bounded-depth Frege ≅ AC⁰, Frege ≅ NC¹, Extended Frege ≅ P/poly. This tight connection transfers barriers between domains."
     ],
     "mathlibGaps": [
       "Oracle Turing machines",

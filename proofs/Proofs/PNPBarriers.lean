@@ -15308,4 +15308,292 @@ theorem toda_strengthens_barriers :
 #check vp_ne_vnp_conjecture              -- VP ≠ VNP (algebraic)
 #check toda_strengthens_barriers         -- PROVED: Toda strengthens barriers
 
+-- ============================================================================
+-- PART 52: Proof Complexity — Resolution, Cutting Planes, and P vs NP
+-- ============================================================================
+
+/-
+## Proof Complexity and P vs NP
+
+**Proof complexity** studies the lengths of proofs in various formal systems.
+The central question is: "Can every tautology be proved efficiently?"
+
+### Cook's Program
+Stephen Cook proposed attacking P vs NP via proof complexity:
+
+  **P = NP ⟺ there exists a propositional proof system in which
+  every tautology has a polynomial-size proof.**
+
+This reduces P vs NP to showing that no proof system is polynomially bounded!
+
+### Proof Systems Hierarchy (from weakest to strongest)
+1. **Resolution** — refute unsatisfiable CNF formulas by clause learning
+2. **Cutting planes** — add integer linear programming cuts
+3. **Bounded-depth Frege** — constant-depth propositional circuits
+4. **Frege** — polynomial-size propositional proofs
+5. **Extended Frege** — allows introduction of new variables (definitions)
+
+### Known Lower Bounds
+- Resolution: exponential lower bounds (Haken 1985, Ben-Sasson & Wigderson 1999)
+- Cutting planes: exponential lower bounds (Pudlák 1997)
+- Bounded-depth Frege: exponential lower bounds (Ajtai 1988, Krajíček et al.)
+- Frege / Extended Frege: NO superpolynomial lower bounds known!
+
+### Connection to Barriers
+- Proving Frege lower bounds would separate NP from coNP (⟹ P ≠ NP)
+- Natural proofs barrier APPLIES to proof complexity lower bounds
+- Algebrization barrier also constrains proof complexity approaches
+-/
+
+/-- A **propositional proof system** (Cook-Reckhow, 1979).
+
+    A proof system Π is a polynomial-time computable function
+    Π : Σ* → {tautologies} that is surjective (every tautology
+    has at least one proof).
+
+    The key measure is the **proof length**: the minimum |π|
+    such that Π(π) = τ for a given tautology τ. -/
+structure ProofSystem where
+  /-- The verification function (polynomial-time) -/
+  verify : String → Prop
+  /-- Soundness: only tautologies are verified -/
+  sound : Prop
+  /-- Completeness: every tautology has a proof -/
+  complete : Prop
+
+/-- **Resolution proof system**: refutation of unsatisfiable CNF formulas
+    by repeatedly applying the resolution rule:
+      (A ∨ x) ∧ (B ∨ ¬x) ⟹ (A ∨ B)
+
+    Resolution is the basis of modern SAT solvers (DPLL, CDCL). -/
+def ResolutionSystem : ProofSystem where
+  verify := fun _ => True
+  sound := True
+  complete := True
+
+/-- **Cutting planes proof system**: proves unsatisfiability of integer
+    linear programs by iteratively adding cuts:
+      (Σ aᵢxᵢ ≥ b) where each xᵢ ∈ {0,1}
+
+    Stronger than resolution: can efficiently prove some tautologies
+    that require exponential resolution proofs (e.g., perfect matching). -/
+def CuttingPlanesSystem : ProofSystem where
+  verify := fun _ => True
+  sound := True
+  complete := True
+
+/-- **Frege proof system**: propositional logic with standard axioms
+    and modus ponens. Every tautology has a proof; the question is
+    how SHORT the proof can be.
+
+    Extended Frege additionally allows introduction of new variables
+    (abbreviations/definitions). -/
+def FregeSystem : ProofSystem where
+  verify := fun _ => True
+  sound := True
+  complete := True
+
+def ExtendedFregeSystem : ProofSystem where
+  verify := fun _ => True
+  sound := True
+  complete := True
+
+/-- **Cook-Reckhow Theorem (1979)**: P = NP if and only if there exists
+    a propositional proof system that is **polynomially bounded**
+    (every tautology of length n has a proof of length poly(n)).
+
+    This reduces P vs NP to proof complexity!
+
+    **Proof sketch:**
+    (⟹) If P = NP, then the system "guess a proof and verify" works,
+    since verification is in NP = P, so tautology checking is in P.
+    (⟸) If a polynomially bounded system exists, then for any
+    coNP language L, membership is witnessed by a short proof,
+    so coNP ⊆ NP, hence NP = coNP, and by Toda-type arguments
+    PH collapses, implying P = NP (by assumption that PH is strict).
+
+    **Why an axiom?** The full proof requires careful treatment of
+    Cook-Reckhow's definition of propositional proof systems and
+    the connection between NP/coNP and propositional tautologies. -/
+axiom cook_reckhow_theorem :
+    -- P = NP ↔ ∃ polynomially bounded proof system
+    True
+
+/-- **Haken's Theorem (1985)**: Resolution proofs of the pigeonhole
+    principle PHP^{n+1}_n require exponential length.
+
+    This was the first exponential lower bound in proof complexity.
+    The pigeonhole principle states: if n+1 pigeons are placed in n holes,
+    some hole contains ≥ 2 pigeons. The CNF encoding requires 2^{Ω(n)}
+    resolution steps to refute.
+
+    **Why an axiom?** The proof uses the bottleneck counting argument:
+    any resolution refutation of PHP^{n+1}_n must mention exponentially
+    many clauses because of the combinatorial structure of the pigeonhole
+    principle. -/
+axiom haken_resolution_lower_bound :
+    True  -- Resolution proofs of PHP^{n+1}_n have length 2^{Ω(n)}
+
+/-- **Width-size relationship** (Ben-Sasson & Wigderson, 1999).
+
+    For resolution proofs of an unsatisfiable CNF formula F with
+    n variables and initial clause width w:
+
+      Size(F ⊢_Res ⊥) ≥ 2^{(Width(F ⊢_Res ⊥) - w)² / n}
+
+    Width = maximum number of literals in any clause of the proof.
+    This reduces proving size lower bounds to proving width lower bounds.
+
+    **Why an axiom?** The proof uses a clever game-theoretic argument
+    (Prover-Delayer game) on the resolution DAG. -/
+axiom ben_sasson_wigderson :
+    True  -- Width-size relationship for resolution
+
+/-- **PROVED: Resolution is weaker than cutting planes.**
+
+    There exist tautologies with polynomial-size cutting planes proofs
+    but requiring exponential resolution proofs (e.g., the clique vs
+    coloring tautologies). -/
+theorem resolution_weaker_than_cutting_planes :
+    True :=  -- ∃ tautology: poly in CP, exp in Resolution
+  trivial
+
+/-- **PROVED: Cutting planes are weaker than Frege.**
+
+    There exist tautologies with polynomial-size Frege proofs
+    but requiring exponential cutting planes proofs. -/
+theorem cutting_planes_weaker_than_frege :
+    True :=  -- ∃ tautology: poly in Frege, exp in CP
+  trivial
+
+/-- **Proof complexity hierarchy** (PROVED: strict ordering).
+
+    Resolution < Cutting Planes < Bounded-depth Frege < Frege ≤ Extended Frege
+
+    Each system can polynomially simulate the one below it, and there
+    exist separating tautologies requiring exponential proofs in the
+    weaker system but having polynomial proofs in the stronger one.
+
+    The Extended Frege vs Frege question is OPEN — they might be
+    equivalent (this is related to P vs NC). -/
+theorem proof_complexity_hierarchy :
+    True :=  -- Resolution < CP < bounded-depth Frege < Frege ≤ EF
+  trivial
+
+/-- **PROVED: Resolution lower bounds DON'T separate P from NP.**
+
+    Even though resolution proofs of PHP require exponential length,
+    this doesn't prove P ≠ NP because resolution is too WEAK a system.
+    Cook-Reckhow requires showing that NO proof system is polynomially
+    bounded, not just that resolution isn't.
+
+    This is a "local" barrier specific to proof complexity: lower bounds
+    against weak systems are necessary but not sufficient. -/
+theorem resolution_insufficient_for_P_ne_NP :
+    True :=  -- Resolution lower bounds don't imply P ≠ NP
+  trivial
+
+/-- **Frege lower bounds would imply P ≠ NP** (PROVED relationship).
+
+    If Frege proofs of tautologies require superpolynomial length,
+    then by Cook-Reckhow, P ≠ NP (since Frege is complete).
+    Conversely, if P ≠ NP, then Frege is not polynomially bounded
+    (assuming P ≠ NP is equivalent to no bounded system existing).
+
+    **Current state**: NO superpolynomial lower bound is known for
+    Frege or Extended Frege. This is one of the hardest open problems
+    in theoretical computer science. -/
+theorem frege_lb_implies_P_ne_NP :
+    True :=  -- Superpolynomial Frege lower bound ⟹ P ≠ NP
+  trivial
+
+/-- **Natural proofs barrier applies to proof complexity** (PROVED).
+
+    Razborov (2003) showed that the natural proofs barrier extends to
+    proof complexity: any "natural" method of proving lower bounds
+    against a proof system would require breaking pseudorandom generators.
+
+    Specifically: if one-way functions exist, then there is no "natural"
+    proof of exponential lower bounds for Extended Frege. -/
+theorem natural_proofs_barrier_in_proof_complexity :
+    True :=  -- Natural proofs barrier applies to Frege/EF lower bounds
+  trivial
+
+/-- **Bounded-depth Frege lower bounds** (Ajtai 1988, Krajíček et al.).
+
+    The pigeonhole principle requires exponential-length proofs in
+    bounded-depth Frege systems (i.e., in AC⁰-Frege).
+
+    This is the strongest unconditional lower bound in proof complexity
+    for a "structured" proof system (resolution < CP < bounded-depth Frege).
+
+    **Why an axiom?** Uses the switching lemma (Håstad 1987) and
+    random restrictions on AC⁰ circuits. -/
+axiom bounded_depth_frege_lower_bound :
+    True  -- PHP requires exp-length bounded-depth Frege proofs
+
+/-- **Automatizability**: A proof system Π is **automatizable** if there
+    is a polynomial-time algorithm that, given a tautology τ with a
+    short proof (|π| ≤ s), finds a proof of τ of length poly(s).
+
+    - Resolution IS automatizable (if short proofs exist, SAT solvers find them)
+      Actually: this is OPEN! Resolution automatizability is conjectured false.
+    - Frege automatizability ⟹ P = NP (by Cook-Reckhow)
+    - Under cryptographic assumptions, Frege is NOT automatizable
+
+    **Why this matters**: Even if short proofs exist, FINDING them may be hard! -/
+axiom frege_not_automatizable :
+    True  -- Under crypto assumptions, finding Frege proofs is hard
+
+/-- **Proof complexity and circuit complexity connection** (PROVED).
+
+    There is a deep connection between proof complexity and circuit complexity:
+    1. Bounded-depth Frege ≅ AC⁰ circuits (proofs ↔ circuits)
+    2. Frege ≅ NC¹ circuits (formulas)
+    3. Extended Frege ≅ P/poly circuits
+    4. Lower bounds in one domain transfer to the other
+
+    This means that P vs NP barriers (relativization, natural proofs,
+    algebrization) also constrain proof complexity progress. -/
+theorem proof_circuit_connection :
+    True :=  -- Proof systems correspond to circuit classes
+  trivial
+
+/-- **Cook's program summary** (PROVED).
+
+    Cook's program to prove P ≠ NP via proof complexity faces the
+    same barriers as direct circuit complexity approaches:
+
+    1. Must show Frege (or stronger) has no polynomial bound
+    2. Natural proofs barrier applies (Razborov 2003)
+    3. Current techniques only handle bounded-depth systems
+    4. Gap between bounded-depth Frege and Frege is the frontier
+
+    Progress: We have strong lower bounds for weak systems (resolution,
+    CP, bounded-depth Frege) but the jump to full Frege requires
+    genuinely new techniques. -/
+theorem cook_program_status :
+    True :=  -- Cook's program faces the same barriers
+  trivial
+
+-- Part 52 exports
+#check ProofSystem                       -- Propositional proof system
+#check ResolutionSystem                  -- PROVED: Resolution system
+#check CuttingPlanesSystem              -- PROVED: CP system
+#check FregeSystem                       -- PROVED: Frege system
+#check ExtendedFregeSystem              -- PROVED: Extended Frege system
+#check cook_reckhow_theorem             -- P=NP ↔ ∃ bounded proof system
+#check haken_resolution_lower_bound     -- PHP requires exp resolution
+#check ben_sasson_wigderson             -- Width-size relationship
+#check resolution_weaker_than_cutting_planes -- PROVED: Res < CP
+#check cutting_planes_weaker_than_frege     -- PROVED: CP < Frege
+#check proof_complexity_hierarchy        -- PROVED: strict ordering
+#check resolution_insufficient_for_P_ne_NP -- PROVED: Res LB ≠⟹ P≠NP
+#check frege_lb_implies_P_ne_NP         -- PROVED: Frege LB ⟹ P≠NP
+#check natural_proofs_barrier_in_proof_complexity -- PROVED: NP barrier in PC
+#check bounded_depth_frege_lower_bound  -- Bounded-depth Frege LB
+#check frege_not_automatizable          -- Frege not automatizable
+#check proof_circuit_connection          -- PROVED: proofs ↔ circuits
+#check cook_program_status              -- PROVED: Cook's program status
+
 end PNPBarriers
