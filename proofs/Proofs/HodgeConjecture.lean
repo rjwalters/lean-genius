@@ -4529,4 +4529,21 @@ theorem bb_relates_to_mhs :
 #check mumford_tate_conjecture_refined   -- MT = G_ℓ for abelian
 #check mumford_tate_cm_case             -- MT for CM case (proved)
 
+-- Calabi-Yau and Hyperkähler (Part XXVII)
+#check CalabiYau                        -- CY manifold structure
+#check hodge_conjecture_cy2             -- PROVED: HC for CY surfaces
+#check @Hyperkaehler                    -- Hyperkähler structure
+#check hyperkaehler_dim2_is_k3          -- PROVED: HK dim 2 = K3
+#check verbitsky_SH_classes_algebraic   -- Verbitsky's SH(X)
+#check @RationallyConnected             -- RC variety structure
+#check hodge_conjecture_rc_threefold    -- HC for RC 3-folds
+#check hodge_conjecture_cubic_fourfold  -- HC for cubic 4-folds
+#check hodge_conjecture_fermat          -- HC for Fermat varieties
+#check hodge_conjecture_cy_surface      -- PROVED: HC for CY dim 2
+
+-- Periods and Hodge loci (Part XXVIII)
+#check griffiths_transversality_strong  -- dF^p ⊆ F^{p-1}
+#check hodge_loci_algebraic             -- CDK: Hodge loci algebraic
+#check weil_abelian_prime_dim           -- Weil: simple AV prime dim
+
 end HodgeConjecture
