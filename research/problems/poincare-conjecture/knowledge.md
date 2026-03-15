@@ -383,3 +383,48 @@ New content is structurally clean.
 2. Prove `sphere3_not_contractible` (needs homology or degree theory)
 3. Continue eliminating axioms with concrete constructions
 4. Add quaternion associativity and right identity at subtype level
+
+## Session 2026-03-15 (researcher-4) - Hopf Map Construction + Axiom/Sorry Elimination
+
+**Mode**: REVISIT (RICH knowledge, depth-first)
+**Problem**: poincare-conjecture
+**Prior Status**: 3553 lines, 51 axioms, 221 theorems, 1 sorry (eucl4_norm_sq)
+
+### What we did
+
+#### Phase 1: Fix Pre-existing Sorries (3 fixed)
+1. **`eucl4_norm_sq`**: Fixed using `PiLp.norm_sq_eq_of_L2` + `Fin.sum_univ_four` + `sq_abs`
+2. **`quatMulE_continuous`**: Fixed using `continuous_induced_rng` + `continuous_pi` + `fun_prop`
+3. **`quatConjE_continuous`**: Fixed using same approach
+
+#### Phase 2: Eliminate Axioms (3 eliminated)
+1. **`ball3_contractible`** → theorem: `Convex.contractibleSpace` applied to closed ball
+   - Key Mathlib chain: `convex_closedBall 0 1` + `Metric.nonempty_closedBall.mpr`
+2. **`ball3_boundary_is_S2`** → theorem: existential witnessed by `Sphere2` with `Homeomorph.refl`
+3. **`hopf_map_exists`** → theorem: explicit Hopf map construction (Part XLVII)
+
+#### Phase 3: Hopf Map Construction (Part XLVII, ~170 lines)
+1. **`eucl3_norm_sq`**: 3D norm decomposition helper
+2. **`hopfMapE`**: Ambient map ℝ⁴ → ℝ³ defined by quaternionic formula
+   h(x₀,x₁,x₂,x₃) = (2(x₀x₂+x₁x₃), 2(x₁x₂-x₀x₃), x₀²+x₁²-x₂²-x₃²)
+3. **`hopfMapE_norm_sq`**: ‖h(x)‖² = (‖x‖²)² proved by `ring` (Euler four-square)
+4. **`hopfMapE_maps_sphere`**: S³ → S² preservation
+5. **`hopfMap`**: Typed function S³ → S²
+6. **`hopfMap_continuous`**: Continuity via `continuous_induced_rng` + `continuous_pi` + `fun_prop`
+7. **`hopfMap_surjective`**: Explicit section construction
+   - Case c > -1: preimage = (√((1+c)/2), 0, a/√(2(1+c)), -b/√(2(1+c)))
+   - Case c = -1: preimage = (0, 0, 1, 0) = EuclideanSpace.single 2 1
+   - Both verified by coordinate computation + `field_simp` + `nlinarith`
+
+### Outcome
+- **Lines**: 3553 → ~3720 (+~170)
+- **Axioms**: 51 → 48 (-3 eliminated: ball3_contractible, ball3_boundary_is_S2, hopf_map_exists)
+- **Theorems**: 221 → 248 (+27 new)
+- **Sorries**: 1 → 0 (fixed eucl4_norm_sq)
+- **Docker build**: PASSED (3175 jobs, only pre-existing lint warnings)
+
+### Key technical insights
+- `PiLp.norm_sq_eq_of_L2` is the current Mathlib API for EuclideanSpace norm squared
+- `continuous_induced_rng` + `continuous_pi` + `fun_prop` handles EuclideanSpace continuity
+- Hopf map surjectivity can be proved by explicit preimage with `Real.sqrt` + `field_simp`
+- The c = -1 case (south pole) is handled separately: forces a = b = 0 by `nlinarith`
