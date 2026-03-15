@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: 8 build errors in cos_2kpi_div_n_eq_iff (omega/API drift), 4 sorries remain. Build errors need modular arithmetic refactoring before sorry work can proceed.",
+    "progressSummary": "BLOCKED: Mathlib API drift in OQ02OQ03.lean (12 errors) and OQ01.lean (8 errors) after merging main. Needs Int modular arithmetic API fixup + Submodule.finrank API update.",
     "builtItems": [
       "Section XVI: Primitive Root Properties and Separability (zeta_ne_zero, zeta_pow_n_eq_one, minpoly_cos_separable, minpoly_cos_natDegree_pos, zeta_pow_pred_eq_conj, cos_eq_zeta_pow_re, sin_eq_zeta_pow_im, zeta_pow_norm_one, cos_2k_pi_div_n_bound)",
       "Section XVII: Cyclotomic Polynomial Connection (zeta_is_root_of_xn_sub_one, cyclotomic_natDegree_eq_totient)",
@@ -66,7 +66,9 @@
       "The parent file has cos_2pi_div_n_isIntegral and minpoly_cos_dvd_chebyshev but not the degree computation natDegree(minpoly) = φ(n)/2",
       "To prove natDegree(minpoly) = φ(n)/2, need: all cos(2kπ/n) with gcd(k,n)=1 are roots of minpoly (requires Galois action through embedding)",
       "2026-03-14: OQ02OQ03 has 8 build errors (lines 1273-1297) from omega/API drift in cos_2kpi_div_n_eq_iff theorem - needs modular arithmetic refactoring",
-      "2026-03-14: 4 sorries remain: galois_conjugate_count (line 1396), h_top/h_deg/final (lines 1614-1623) for [E:F]≤2 proof"
+      "2026-03-14: 4 sorries remain: galois_conjugate_count (line 1396), h_top/h_deg/final (lines 1614-1623) for [E:F]≤2 proof",
+      "Mathlib API drift from main merge (2026-03-14): 12 build errors in OQ02OQ03.lean. Int.add_mul_emod_self_left, Int.natCast_mod, Submodule.finrank_le_finrank_of_le renamed or signature changed.",
+      "conjAut_zeta_eq_inv elimination strategy: autToPow_spec + root-independence + galEquiv.apply_symm_apply. Blocked by Lean type unification between galCyclotomicEquivUnitsZMod and autToPow"
     ],
     "mathlibGaps": [
       "Maximal real subfield of cyclotomic field not in Mathlib",

@@ -2,6 +2,32 @@
 
 Gauss-Wantzel Theorem: prove cos_minpoly_gal_card from Mathlib cyclotomic infrastructure.
 
+## Session 2026-03-14 (researcher-1) - API Drift Assessment
+
+**Mode**: REVISIT (RICH, score 38)
+**Problem**: angle-trisection-oq-02-oq-03-oq-01
+**Prior Status**: 6 axioms in OQ01.lean, 2 axioms + 1 sorry in OQ02OQ03.lean
+
+**Findings**: After merging origin/main, both files have Mathlib API drift:
+- OQ02OQ03.lean: 12 build errors (Int modular arithmetic API, Submodule.finrank)
+- OQ01.lean: 8 build errors (IntermediateField.mem_fixedField, Type coercions)
+
+**Root causes**:
+1. `Int.add_mul_emod_self_left` signature/type changed
+2. `Int.natCast_mod` pattern matching fails
+3. `Submodule.finrank_le_finrank_of_le` renamed or removed
+4. `IntermediateField.mem_fixedField` renamed to `IntermediateField.mem_fixedField_iff`
+5. Various `Type mismatch` from coercion changes
+
+**conjAut_zeta_eq_inv strategy documented**:
+- Use `IsPrimitiveRoot.autToPow_spec ℚ hζ σ` to get ζ^(autToPow(σ)).val = σ(ζ)
+- Show `autToPow ℚ hζ (galEquiv.symm(-1)) = -1` via root-independence
+- Then ζ^((-1 : ZMod n).val) = ζ^(n-1) = ζ⁻¹
+
+**Outcome**: SURVEY — API drift needs dedicated fixup before proof work can continue.
+
+---
+
 ---
 
 ## Problem Understanding
