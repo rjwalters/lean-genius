@@ -1397,6 +1397,14 @@ theorem add_neg_self {k : ℕ} {H₁ H₂ : PureHodgeStructure k}
   simp [HodgeStructureMorphism.add, HodgeStructureMorphism.neg,
         LinearMap.add_apply, add_neg_cancel]
 
+/-- **Subtraction of Hodge morphisms** (PROVED)
+
+φ − ψ = φ + (−ψ) is a Hodge morphism. -/
+def HodgeStructureMorphism.sub {k : ℕ} {H₁ H₂ : PureHodgeStructure k}
+    (φ ψ : HodgeStructureMorphism H₁ H₂) :
+    HodgeStructureMorphism H₁ H₂ :=
+  φ.add ψ.neg
+
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XII: SUB-HODGE STRUCTURES
 ═══════════════════════════════════════════════════════════════════════════════
@@ -2184,7 +2192,7 @@ theorem structural_summary : True := trivial
 #check neg_neg
 #check add_comm_morphism
 #check add_neg_self
--- Preadditive category laws (new)
+-- Preadditive category laws
 #check comp_add
 #check add_comp
 #check neg_comp
@@ -2192,6 +2200,7 @@ theorem structural_summary : True := trivial
 #check add_assoc_morphism
 #check zero_add_morphism
 #check add_zero_morphism
+#check HodgeStructureMorphism.sub
 -- Hodge class algebra
 #check HodgeClass.add
 #check HodgeClass.neg
