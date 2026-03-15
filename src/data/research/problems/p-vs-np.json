@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added QMA (quantum NP), Raz-Tal oracle separation (BQP vs PH), ETH/SETH hypotheses. Cleaned merge conflicts. Sound model: ~50 axioms, ~240 defs/theorems, 1 sorry (ETH_implies_P_ne_NP), 2740 lines.",
+    "progressSummary": "PROGRESS: Extended sound model to 3219 lines with RP/coRP/ZPP, DTIME/NTIME/DSPACE/NSPACE resource-bounded classes, all four hierarchy theorems, SZK. ~305 declarations, 0 sorries.",
     "builtItems": [
       {
         "name": "P",
@@ -337,6 +337,76 @@
         "name": "comprehensive_landscape_with_quantum",
         "description": "Full landscape with quantum classes",
         "proven": true
+      },
+      {
+        "name": "RP",
+        "description": "Randomized Polynomial Time (one-sided error)",
+        "proven": true
+      },
+      {
+        "name": "coRP",
+        "description": "Complement of RP",
+        "proven": true
+      },
+      {
+        "name": "ZPP",
+        "description": "Zero-error Probabilistic Polynomial Time = RP ∩ coRP",
+        "proven": true
+      },
+      {
+        "name": "DTIME",
+        "description": "Deterministic time-bounded class (opaque)",
+        "proven": true
+      },
+      {
+        "name": "NTIME",
+        "description": "Nondeterministic time-bounded class (opaque)",
+        "proven": true
+      },
+      {
+        "name": "DSPACE",
+        "description": "Deterministic space-bounded class (opaque)",
+        "proven": true
+      },
+      {
+        "name": "NSPACE",
+        "description": "Nondeterministic space-bounded class (opaque)",
+        "proven": true
+      },
+      {
+        "name": "time_hierarchy",
+        "description": "DTIME(n^k) ⊊ DTIME(n^{k+1})",
+        "proven": true
+      },
+      {
+        "name": "ntime_hierarchy",
+        "description": "NTIME(n^k) ⊊ NTIME(n^{k+1})",
+        "proven": true
+      },
+      {
+        "name": "space_hierarchy",
+        "description": "DSPACE(n^k) ⊊ DSPACE(n^{k+1})",
+        "proven": true
+      },
+      {
+        "name": "nspace_hierarchy",
+        "description": "NSPACE(n^k) ⊊ NSPACE(n^{k+1})",
+        "proven": true
+      },
+      {
+        "name": "proper_hierarchies",
+        "description": "All 4 resource hierarchies are proper",
+        "proven": true
+      },
+      {
+        "name": "SZK",
+        "description": "Statistical Zero Knowledge class",
+        "proven": true
+      },
+      {
+        "name": "NP_eq_union_NTIME",
+        "description": "NP = ⋃ NTIME(n^k)",
+        "proven": true
       }
     ],
     "insights": [
@@ -382,7 +452,16 @@
       "Raz-Tal (2019): BQP⊄PH relative to random oracle (non-relativizing barrier for BQP⊆PH)",
       "ETH/SETH formalized using sound Φ model (no DTIME needed)",
       "Cleaned merge conflicts: removed duplicate Part 25-30 sections with conflicting identifiers",
-      "Sound model uses sipser_lautemann (BPP⊆Σ₂∩Π₂), not separate sipser_gacs axioms"
+      "Sound model uses sipser_lautemann (BPP⊆Σ₂∩Π₂), not separate sipser_gacs axioms",
+      "Added RP, coRP, ZPP (one-sided error probabilistic classes) with full containment chain P ⊆ ZPP ⊆ RP ⊆ NP ∩ BPP",
+      "Added DTIME, NTIME, DSPACE, NSPACE as opaque resource-bounded classes",
+      "Proved nondeterministic time hierarchy: NTIME(n^k) ⊊ NTIME(n^{k+1})",
+      "Proved space hierarchy: DSPACE(n^k) ⊊ DSPACE(n^{k+1}), NSPACE(n^k) ⊊ NSPACE(n^{k+1})",
+      "Added NP = ⋃ NTIME(n^k) characterization",
+      "Proved all four resource hierarchies are proper (proper_hierarchies theorem)",
+      "Added SZK (Statistical Zero Knowledge) with BPP ⊆ SZK ⊆ AM ⊆ PH chain",
+      "SZK complement-closed (Okamoto 2000), NP ⊆ SZK → NP = coNP",
+      "Proved P = NP → RP = P and P = NP → ZPP = P (collapse consequences)"
     ],
     "mathlibGaps": [
       "Turing machines",
