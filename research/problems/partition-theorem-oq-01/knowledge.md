@@ -6,7 +6,7 @@ Rogers-Ramanujan and Schur partition identities formalized in Lean 4.
 
 ## Current State
 
-**Status**: 0 sorries, 3 axioms, ~2160 lines (sorry-free!)
+**Status**: 3 sorries (recurrence bridge), 3 axioms, ~2300 lines
 **File**: `proofs/Proofs/PartitionTheoremOQ01.lean`
 
 ## Key Results (All Proved)
@@ -139,3 +139,40 @@ allow repeated parts, needing ∏ 1/(1-X^k) framework instead of ∏ (1+X^k).
 **Roadmap update**: Steps 1-6 complete. Remaining:
 - Step 7: Gap-side generating function characterization (hard)
 - Step 8: Compose mod + gap to prove Schur identity axiom
+
+### Session 2026-03-15 (researcher-2) - BUILD (second iteration)
+
+**Mode**: REVISIT
+**Outcome**: progress — fixed flawed bijection, added counting recurrences
+
+**Critical finding**: The subtractTriangular bijection approach (from a previous
+session) is **mathematically INCORRECT** for Schur's identity:
+1. Doesn't preserve partition sums: [6,1] (sum 7) → [3,1] (sum 4)
+2. `subtractTriangular_mod3` was FALSE: [6,1] → [3,1], but 3%3=0
+3. Gap partitions include parts ≡ 0 mod 3 (e.g., [6,1] is valid Schur gap-full),
+   and subtracting a multiple of 3 preserves the residue class
+
+**Removed**: subtractTriangular/addTriangular infrastructure (also failed to
+compile — `List.enum` doesn't exist in current Lean/Mathlib v4.26.0)
+
+**Removed**: Duplicate ModSideSpecialization section (Part XXXVII was identical
+to existing Part XXXIV-B/C definitions)
+
+**Added**: Counting recurrence approach (Part XXXIX):
+- `schurGapCount n m`: recursive count of gap partitions of n with parts ≤ m
+- `schurModCount n m`: recursive count of mod partitions of n with parts ≤ m
+- Both verified computationally through n=20 (beyond the n=15 Finset limit!)
+- Three sorry'd bridge theorems: `schurGapCount_eq_card`, `schurModCount_eq_card`,
+  `schurGapCount_eq_schurModCount`
+
+**Key insight**: The recurrence approach enables verification beyond n=15 (where
+Finset/native_decide exhausts memory). Extends to n=20+ via efficient recursion.
+
+**File state**: 3 sorries (recurrence bridge), 3 axioms, ~2300 lines
+**Docker build**: PASSED (3061 jobs)
+
+**Roadmap update**: Steps 1-6 complete, step 7a-7b complete. Remaining:
+- Step 7c: Prove schurGapCount_eq_card (recurrence = Finset for gap side)
+- Step 7d: Prove schurModCount_eq_card (recurrence = Finset for mod side)
+- Step 7e: Prove schurGapCount_eq_schurModCount (the deep step)
+- Step 8: Compose to eliminate axiom

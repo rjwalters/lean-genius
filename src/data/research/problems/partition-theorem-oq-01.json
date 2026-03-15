@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-03-11T09:48:08.982Z",
-    "iteration": 4,
-    "focus": "Mod-side specialization complete, gap-side characterization next",
+    "iteration": 5,
+    "focus": "Counting recurrence approach: bridge theorems + equality proof",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 sorries, 3 axioms. Step 6 (mod-side specialization) COMPLETE. |schurMod n| = coeff n (schurModGF n) proved.",
+    "progressSummary": "PROGRESS: 3 sorries (recurrence bridge), 3 axioms. Steps 1-6 + 7a-7b complete. schurGapCount/schurModCount verified to n=20. Previous subtractTriangular approach was incorrect and removed.",
     "builtItems": [
       "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
@@ -47,7 +47,10 @@
       "schurModSet: definition of {k ≤ n | k ≡ 1,2 mod 3}",
       "schurMod_card_eq_subsetsWithSum: bijection schurMod ↔ subsetsWithSum (card equality)",
       "schurMod_card_eq_gf_coeff: |schurMod n| = coeff n (schurModGF n)",
-      "part_le_of_mem: a ∈ p.parts → a ≤ n (utility lemma)"
+      "part_le_of_mem: a ∈ p.parts → a ≤ n (utility lemma)",
+      "schurGapCount: recursive counting function for Schur gap partitions",
+      "schurModCount: recursive counting function for Schur mod partitions",
+      "Computational verification: both recurrences agree for n=0..20 (native_decide)"
     ],
     "insights": [
       "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
@@ -63,18 +66,22 @@
       "PowerSeries.coeff API change: R is now implicit (use coeff (R := ℤ) n, not coeff ℤ n).",
       "RR1/RR2 mod sides allow repeated parts, so distinctPartGF approach only applies to Schur",
       "Bijection uses p.parts.toFinset (forward) and partitionOfSubset (backward)",
-      "Nodup condition on schurMod is essential for the toFinset injection"
+      "Nodup condition on schurMod is essential for the toFinset injection",
+      "subtractTriangular bijection is INCORRECT for Schur: does not preserve sums, mod3 lemma is FALSE (counterexample [6,1]→[3,1])",
+      "List.enum does not exist in Lean/Mathlib v4.26.0 — use List.enumFrom 0 or List.mapIdx",
+      "Counting recurrences (schurGapCount/schurModCount) enable verification beyond n=15 Finset limit",
+      "Correct Schur bijection requires context-dependent splitting (Bressoud 1980), not simple offset"
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",
       "No bijective proof machinery for partition identities"
     ],
     "nextSteps": [
-      "Build gap-side generating function characterization (step 7 - hardest remaining step)",
-      "Need to show Schur gap condition ↔ functional equation on power series",
-      "Consider q-series approach: Schur gap = coefficient of q-series satisfying f(q) = ...",
-      "Alternative: build explicit bijection between gap and mod partitions (combinatorial approach)",
-      "For RR1/RR2: need ∏ 1/(1-X^k) framework for non-distinct parts"
+      "Prove schurGapCount_eq_card: recursive count matches Finset.card for gap side",
+      "Prove schurModCount_eq_card: recursive count matches Finset.card for mod side",
+      "Prove schurGapCount_eq_schurModCount: the deep step, both recurrences equal",
+      "Consider Schur iterative proof: process parts 3 at a time in induction on m",
+      "Alternative: define paired recurrence P(n,N) processing {3N-2, 3N-1, 3N} together"
     ]
   },
   "approaches": [],
