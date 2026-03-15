@@ -31,14 +31,19 @@ theorem binom_ineq (m k : ℕ) (hk : 2 ≤ k) (hkm : k + 1 ≤ m) :
   have h1 : (k : ℝ) * c = ((m : ℝ) - k + 1) * b := by
     have := Nat.choose_succ_right_eq m (k - 1)
     rw [show k - 1 + 1 = k from by omega, show m - (k - 1) = m - k + 1 from by omega] at this
-    have := congr_arg (Nat.cast : ℕ → ℝ) this; push_cast at this ⊢; linarith
+    have := congr_arg (Nat.cast : ℕ → ℝ) this; push_cast at this ⊢
+    rw [Nat.cast_sub (show k ≤ m by omega)] at this; linarith
   have h2 : ((k : ℝ) + 1) * d = ((m : ℝ) - k) * c := by
     have := Nat.choose_succ_right_eq m k
-    have := congr_arg (Nat.cast : ℕ → ℝ) this; push_cast at this ⊢; linarith
+    have := congr_arg (Nat.cast : ℕ → ℝ) this; push_cast at this ⊢
+    rw [Nat.cast_sub (show k ≤ m by omega)] at this; linarith
   have h3 : ((k : ℝ) - 1) * b = ((m : ℝ) - k + 2) * a := by
     have := Nat.choose_succ_right_eq m (k - 2)
     rw [show k - 2 + 1 = k - 1 from by omega, show m - (k - 2) = m - k + 2 from by omega] at this
-    have := congr_arg (Nat.cast : ℕ → ℝ) this; push_cast at this ⊢; linarith
+    have := congr_arg (Nat.cast : ℕ → ℝ) this; push_cast at this ⊢
+    rw [Nat.cast_sub (show 1 ≤ k by omega), Nat.cast_sub (show k ≤ m by omega),
+        Nat.cast_one] at this
+    linarith
   -- Positivity
   set r := (m : ℝ) - k + 1 with hr_def
   have hk_pos : (0 : ℝ) < k := by positivity
@@ -102,16 +107,46 @@ theorem binom_ineq (m k : ℕ) (hk : 2 ≤ k) (hkm : k + 1 ≤ m) :
   have key3 : (k : ℝ) ^ 2 * b ^ 2 * c ^ 2 = r ^ 2 * b ^ 4 := by
     linear_combination b ^ 2 * h1_sq
   -- For the a·d·c² and a·c³ terms, we need (r+1)a = (k-1)b
-  -- k³(k+1)(r+1)·a·d·c² = k³ · [(k+1)d] · [(r+1)a] · c²
+  -- (k+1)d = (r-1)c  [from h2, since m-k = r-1]
+  have h2' : ((k : ℝ) + 1) * d = (r - 1) * c := by linarith
+  -- k³(k+1)(r+1)·adc² = k³ · [(k+1)d] · [(r+1)a] · c²
   -- = k³ · (r-1)c · (k-1)b · c² = (k-1)(r-1) · k³bc³ = (k-1)(r-1)r³b⁴
   have key4 : (k : ℝ) ^ 3 * ((k : ℝ) + 1) * (r + 1) * (a * d * c ^ 2) =
       ((k : ℝ) - 1) * (r - 1) * r ^ 3 * b ^ 4 := by
-    -- k³ * [(k+1)*d] * [(r+1)*a] * c² = k³ * (r-1)*c * (k-1)*b * c²
-    -- = (k-1)(r-1) * k³*b*c³ = (k-1)(r-1) * r³b⁴
-    have step1 : ((k : ℝ) + 1) * d * ((r + 1) * a) = (r - 1) * c * ((k : ℝ) - 1) * b := by
-      linear_combination b * h2 + d * h3' - b * ((m : ℝ) - k) * a
-      -- Hmm, this might not work. Let me try differently.
-    sorry
-  sorry
-
-end
+    -- Multiply the two absorption identities: (k+1)d·(r+1)a = (r-1)c·(k-1)b
+    have step1 : ((k : ℝ) + 1) * d * ((r + 1) * a) = (r - 1) * ((k : ℝ) - 1) * b * c := by
+      -- From h2': (k+1)*d = (r-1)*c and h3': (r+1)*a = (k-1)*b
+      linear_combination (r + 1) * a * h2' + (r - 1) * c * h3'
+    -- k³ * [(k+1)d·(r+1)a] * c² = k³ * (k-1)(r-1)bc * c² = (k-1)(r-1) * k³bc³
+    -- And k³bc³ = r³b⁴ (from key1)
+    linear_combination (k - 1) * (r - 1) * key1 + (k : ℝ) ^ 3 * c ^ 2 * step1
+  -- k³(k+1)(r+1)·ac³ = k³(k+1) · (k-1)b · c³ = (k²-1)(k) · k²bc³ = (k²-1)r³b⁴
+  -- Actually: k³(k+1)(r+1)ac³ = k³ · (r+1)a · (k+1) · c³ = k³ · (k-1)b · (k+1) · c³
+  have key5 : (k : ℝ) ^ 3 * ((k : ℝ) + 1) * (r + 1) * (a * c ^ 3) =
+      ((k : ℝ) ^ 2 - 1) * r ^ 3 * b ^ 4 := by
+    -- (r+1)*a = (k-1)*b, so (k+1)*(r+1)*a = (k+1)*(k-1)*b = (k²-1)*b
+    -- k³(k+1)(r+1)ac³ = k³ · (k²-1) · b · c³ = (k²-1) · k³bc³ = (k²-1) · r³b⁴
+    linear_combination ((k : ℝ) ^ 2 - 1) * key1 + (k : ℝ) ^ 3 * (k + 1) * c ^ 3 * h3'
+  -- The key identity:
+  -- D * (bc³+adc²+ac³-2b²cd-b³d) = r*(k+r)²*b⁴ ≥ 0
+  -- where D = k³(k+1)(r+1)
+  --
+  -- Proof: Express each term of D*target via absorption identities:
+  -- D*bc³     = (k+1)(r+1)*r³b⁴   [via key1]
+  -- D*adc²    = (k-1)(r-1)*r³b⁴   [via key4]
+  -- D*ac³     = (k²-1)*r³b⁴       [via key5]
+  -- D*2b²cd   = 2kr²(r²-1)b⁴      [via h2' and key3]
+  -- D*b³d     = k²r(r²-1)b⁴       [via key2]
+  -- Sum: [(k+1)(r+1)+(k-1)(r-1)+(k²-1)]r³ - [2kr²+k²r](r²-1) = r(k+r)²
+  suffices h_ident : (k : ℝ) ^ 3 * ((k : ℝ) + 1) * (r + 1) *
+      (b * c ^ 3 + a * d * c ^ 2 + a * c ^ 3 - 2 * b ^ 2 * c * d - b ^ 3 * d) =
+      r * ((k : ℝ) + r) ^ 2 * b ^ 4 by
+    rw [h_ident]; positivity
+  -- Prove the identity using all absorption identities via linear_combination.
+  -- Each key_i is an equation; we provide polynomial coefficients for the combination.
+  linear_combination
+    ((k : ℝ) + 1) * (r + 1) * key1 +
+    key4 + key5 -
+    2 * (k : ℝ) ^ 3 * (r + 1) * b ^ 2 * c * h2' -
+    2 * (k : ℝ) * (r ^ 2 - 1) * key3 -
+    (k : ℝ) ^ 2 * (r + 1) * key2
