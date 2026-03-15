@@ -2306,18 +2306,22 @@ theorem geomSeries_coeff_zero (k : ℕ) :
   split_ifs <;> simp_all
 
 /-- geomSeries k for k > 0 satisfies: (1 - X^k) * geomSeries k = 1.
-    This is the formal power series identity for the geometric series.
+    This is the formal power series identity for the geometric series:
+    (1 - X^k)(1 + X^k + X^{2k} + ...) = 1.
 
-    **Why an axiom?** The convolution proof requires showing that in the
-    antidiagonal sum, the only contributing terms are i=n (coefficient 1)
-    and i=n-k (coefficient -1), which cancel. The Mathlib API for
-    PowerSeries.coeff_mul and coefficient extraction from (1 - X^k)
-    needs careful handling of the sub/coeff interaction.
-
-    Telescoping: (1 - X^k)(1 + X^k + X^{2k} + ...) = 1.
-    Computationally verified for all k ≤ 100. -/
-axiom geomSeries_inverse (k : ℕ) (hk : 0 < k) :
-    (1 - (X : PowerSeries ℤ) ^ k) * geomSeries k = 1
+    **Proof**: Coefficient-wise. The n-th coefficient of the LHS is:
+    [k|n ? 1 : 0] - [k≤n ? [k|(n-k) ? 1 : 0] : 0]
+    Since (n-k) % k = n % k for k ≤ n, the first case gives 0 for n ≥ k.
+    For n < k: k|n ↔ n = 0 (since 0 < n < k can't be divisible by k).
+    So the coefficient is δ_{n,0} = coeff_n(1). -/
+theorem geomSeries_inverse (k : ℕ) (hk : 0 < k) :
+    (1 - (X : PowerSeries ℤ) ^ k) * geomSeries k = 1 := by
+  ext n
+  have gc : ∀ m, PowerSeries.coeff ℤ m (geomSeries k) =
+      if m % k = 0 then 1 else 0 := fun m => geomSeries_coeff k m hk
+  simp only [sub_mul, one_mul, map_sub, PowerSeries.coeff_one,
+    PowerSeries.coeff_X_pow_mul', gc]
+  split_ifs <;> omega
 
 /-- The generating function for partitions with repeated parts from S:
     GF_S(q) = ∏_{k ∈ S} (1 + X^k + X^{2k} + ...) = ∏_{k ∈ S} geomSeries(k). -/

@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: exists_embedding_alpha_eq_2cos axiom ELIMINATED. AngleTrisectionEmbedding.lean now fully proved (0 sorries). OQ02OQ03OQ01.lean has 0 researcher-introduced axioms remaining. Pre-existing Mathlib API drift (15 errors) in OQ01 unrelated to embedding work.",
+    "progressSummary": "PROGRESS: minpoly_cos_natDegree_eq PROVED (3 sorries eliminated). File now has 1 sorry (galois_conjugate_count) + 3 axioms. Next: eliminate cos_minpoly_gal_card axiom using minpoly_cos_natDegree_eq + Galois property.",
     "builtItems": [
       "Section XVI: Primitive Root Properties and Separability (zeta_ne_zero, zeta_pow_n_eq_one, minpoly_cos_separable, minpoly_cos_natDegree_pos, zeta_pow_pred_eq_conj, cos_eq_zeta_pow_re, sin_eq_zeta_pow_im, zeta_pow_norm_one, cos_2k_pi_div_n_bound)",
       "Section XVII: Cyclotomic Polynomial Connection (zeta_is_root_of_xn_sub_one, cyclotomic_natDegree_eq_totient)",
@@ -45,7 +45,10 @@
       "Helper: exp_add_inv_eq_two_cos (inverse form)",
       "Helper: exp_add_div_eq_two_cos (division form)",
       "PROVED exists_embedding_zeta_to_exp in AngleTrisectionEmbedding.lean (PowerBasis.lift + topEquiv composition, 0 sorries)",
-      "ELIMINATED exists_embedding_alpha_eq_2cos axiom in AngleTrisectionOQ02OQ03OQ01.lean (now theorem via import)"
+      "ELIMINATED exists_embedding_alpha_eq_2cos axiom in AngleTrisectionOQ02OQ03OQ01.lean (now theorem via import)",
+      "PROVED h_top: IntermediateField.adjoin ↥F {ζ_E} = ⊤ via finrank contrapositive in OQ02OQ03.lean",
+      "PROVED h_deg: (minpoly ↥F ζ_E).natDegree ≤ 2 via quadratic X²-2cosX+1 in OQ02OQ03.lean",
+      "PROVED combining sorry: finrank ↥F ↥E ≤ 2 via erw h_top + IntermediateField.finrank_top in OQ02OQ03.lean"
     ],
     "insights": [
       "Complex.exp_two_pi_mul_I gives exp(2πi)=1 directly for proving ζ^n=1",
@@ -82,7 +85,11 @@
       "IsCyclotomicExtension.adjoin_roots provides ∀ x, x ∈ Algebra.adjoin ℚ {b | b^n=1} (not Eq ⊤ form)",
       "IsPrimitiveRoot.eq_pow_of_pow_eq_one takes 2 args (not 3): hζ.eq_pow_of_pow_eq_one hb_pow",
       "algebraMap ↥F L x and ↑x are same semantically but syntactically different in Lean - use show/change to convert",
-      "IntermediateField.adjoin.powerBasis_gen requires show to unfold let/set definitions"
+      "IntermediateField.adjoin.powerBasis_gen requires show to unfold let/set definitions",
+      "PROVED minpoly_cos_natDegree_eq: natDegree(minpoly ℚ cos(2π/n)) = φ(n)/2 via cyclotomic tower law",
+      "h_top (ζ generates E over F) proved via finrank argument + IntermediateField.finrank_lt_finrank_of_lt contrapositive",
+      "h_deg (minpoly F ζ has deg ≤ 2) proved via X²-2cosX+1 quadratic annihilation + minpoly.dvd",
+      "IsScalarTower.toAlgHom ℚ ↥E ℂ gives the injective ℚ-AlgHom for minpoly transfer between ↥E and ℂ"
     ],
     "mathlibGaps": [
       "Maximal real subfield of cyclotomic field not in Mathlib",
