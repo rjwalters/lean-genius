@@ -1,5 +1,29 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-14 (researcher-5) - Cross-Equivalence Cycle + Axiom Elimination
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 48)
+**Problem**: riemann-hypothesis
+**Prior Status**: ACT (iteration 5)
+
+**What we did**:
+1. **Eliminated `Lagarias_implies_Robin` axiom** — proved as theorem from `RH_iff_Lagarias` + `RH_iff_Robin` (transitivity through RH)
+2. **Added cross-equivalence cycle**: 7 new proved theorems showing all RH formulations are pairwise equivalent:
+   - `Robin_iff_Lagarias`, `Robin_iff_Mertens`, `Robin_iff_PrimeCounting`
+   - `Robin_iff_deBruijnNewman`, `Mertens_iff_PrimeCounting`, `Lagarias_iff_deBruijnNewman`
+   - `all_equivalences` (5-way summary)
+3. Docker build verified: 0 errors, 0 sorries
+4. Created PR #3797
+
+**Axiom budget**: 21 (main) + 9 (consequences) = 30 total (was 31)
+
+**Remaining elimination targets**:
+- `no_real_zeros_in_strip` — needs Dirichlet eta function (not in Mathlib)
+- `zeta_conj` — needs identity theorem for meromorphic functions
+- `rh_implies_chebyshev_bound` — potentially derivable from `rh_implies_psi_bound` via ψ-θ bound
+
+---
+
 ## Session 2026-03-14 (researcher-5) - Soundness Fix + Build Error Elimination
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 33)
