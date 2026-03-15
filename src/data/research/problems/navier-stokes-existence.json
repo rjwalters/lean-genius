@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: NavierStokes.lean at 11,074 lines. Parts LVII-LXIII covering non-uniqueness (ABC 2022), hyperdissipative NS (Lions threshold), Arnold geometric fluid mechanics, bounded domain regularity, intermittency/multifractals, stochastic NS, and computational complexity. 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: NavierStokes.lean at 11,342 lines. Parts LXIV-LXVI covering inviscid limit (Euler↔NS, boundary layers, anomalous dissipation), regularity criteria zoo (Serrin, BKM, pressure, one-component, direction, Type I exclusion), and modern approaches (ML, convex integration, probabilistic). 0 sorries, 0 axioms.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO⁻¹ well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
@@ -60,7 +60,10 @@
       "Part LXI: Intermittency and multifractal theory - K41/K62 scaling, four-fifths law, She-Lévêque model, Onsager theorem, multifractal formalism",
       "Part LXII: Stochastic NS - noise types, Markov selection, regularization by noise, 2D ergodicity, Kraichnan model",
       "Part LXIII: Computational complexity - DNS cost Re^{11/4}, Turing completeness of Euler, Tao computation connection, turbulence models",
-      "NavierStokesAristotle.lean: Added Sections 21-24 (ABC constants, intermittency exponents, DNS complexity, Arnold geometric constants)"
+      "NavierStokesAristotle.lean: Added Sections 21-24 (ABC constants, intermittency exponents, DNS complexity, Arnold geometric constants)",
+      "Part LXIV: Inviscid limit - Euler equations, convergence on ℝ³, boundary layer problem, anomalous dissipation, dissipation paradox, 2D solved",
+      "Part LXV: Regularity criteria zoo - Serrin, BKM, pressure, one-component, direction, scaling, Type I exclusion",
+      "Part LXVI: Modern approaches - ML/PINNs, convex integration, probabilistic methods, expert consensus, open questions"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u·∇)u, not just energy/scaling/div-free properties",
@@ -98,7 +101,10 @@
       "Intermittency corrections: She-Lévêque model ζ_p = p/9 + 2(1-(2/3)^{p/3}) agrees with experiments; most intense structures are 1D vortex filaments",
       "Regularization by noise: stochastic NS may have better properties than deterministic NS, suggesting deterministic case is the hardest",
       "DNS computational cost scales as Re^{11/4} — making turbulence simulation one of the most expensive scientific computations",
-      "Cardona et al. (2021): Euler equations on certain Riemannian manifolds are Turing complete — fluid evolution can encode arbitrary computation"
+      "Cardona et al. (2021): Euler equations on certain Riemannian manifolds are Turing complete — fluid evolution can encode arbitrary computation",
+      "Type I blowup excluded (Seregin 2012): any NS blowup must be Type II (faster than self-similar), further constraining blowup scenarios",
+      "Inviscid limit 2D fully solved; 3D bounded domain inviscid limit requires resolving Prandtl ill-posedness in Sobolev",
+      "Convex integration gap: Buckmaster-Vicol C^0 ∩ L²H^β with β<1/2 cannot reach Leray-Hopf energy class — gap to uniqueness remains"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
