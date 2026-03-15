@@ -1060,83 +1060,6 @@ theorem conjecture_hierarchy :
          hodge_implies_mumford_tate⟩
 
 /- ═══════════════════════════════════════════════════════════════════════════════
-PART X: SUMMARY AND CHECKS
-═══════════════════════════════════════════════════════════════════════════════ -/
-
-/-- Summary of what we know about the Hodge Conjecture:
-
-1. **Statement**: Every Hodge class on a smooth projective variety is
-   a rational linear combination of algebraic cycle classes.
-
-2. **Proven cases**:
-   - Curves (trivial - all classes are algebraic)
-   - Surfaces (Lefschetz (1,1) theorem + dimension counting)
-   - Divisors on any variety (Lefschetz (1,1) theorem)
-   - Special cases of abelian varieties (Deligne)
-   - Extreme codimensions (0 and dim X)
-
-3. **Known obstructions**:
-   - Fails for Kähler manifolds (Voisin 2002)
-   - Fails for integer coefficients (Atiyah-Hirzebruch 1962)
-
-4. **Structural properties**:
-   - Hodge symmetry: h^{p,q} = h^{q,p}
-   - Serre duality: h^{p,q} = h^{n-p,n-q}
-   - Cycle classes are always Hodge classes (converse is the conjecture)
-   - Hodge filtration provides equivalent formulation
-   - Algebraic classes form a ℚ-subspace (zero, scalar mult, addition proved)
-   - IsScalarTower ℚ ℂ V_ℂ ensures rational-complex compatibility
-
-5. **Related conjectures**:
-   - Grothendieck's standard conjectures ⟹ Hodge conjecture
-   - Generalized Hodge conjecture ⟹ Hodge conjecture
-   - Hodge conjecture ⟹ Mumford-Tate conjecture
-   - Tate conjecture (arithmetic analogue, equivalent for abelian varieties)
-   - Full hierarchy: SC ⟹ GHC ⟹ HC ⟹ MT
-
-6. **Status**: Open since 1950, $1M Millennium Prize -/
-theorem HC_summary : True := trivial
-
--- Foundations
-#check PureHodgeStructure
-#check HodgeClass
-#check HodgeFiltration
-#check hodgeNumber
-#check hodge_symmetry
--- Main conjecture
-#check HodgeConjectureStatement
-#check HodgeConjectureFullStatement
--- Known cases
-#check lefschetz_1_1_theorem
-#check hodge_conjecture_curves
-#check hodge_conjecture_surfaces
-#check hodge_conjecture_extreme_codim
--- Counterexamples
-#check integral_hodge_conjecture_fails
-#check integral_implies_rational
-#check voisin_kaehler_counterexample
--- Equivalent formulations
-#check standard_conjectures_imply_hodge
-#check hodge_implies_mumford_tate
--- Algebraic class structure
-#check cycle_class_is_algebraic
-#check zero_class_is_algebraic
-#check algebraic_class_smul
-#check hodge_conjecture_iff_span
--- Filtration properties
-#check filtration_decreasing_general
-#check filtration_beyond_terminal
-#check hodge_conjecture_surfaces_explicit
--- Tate conjecture
-#check TateConjecture
-#check hodge_implies_tate_abelian
-#check tate_implies_hodge_abelian
--- Generalized Hodge Conjecture
-#check GeneralizedHodgeConjecture
-#check generalized_hodge_implies_hodge
-#check conjecture_hierarchy
-
-/- ═══════════════════════════════════════════════════════════════════════════════
 PART XI: MORPHISMS OF HODGE STRUCTURES
 ═══════════════════════════════════════════════════════════════════════════════
 
@@ -2416,77 +2339,6 @@ which is a natural number. -/
 theorem hodge_number_nonneg {k : ℕ} (H : PureHodgeStructure k)
     (p q : ℕ) (hpq : p + q = k) : 0 ≤ hodgeNumber H p q hpq := Nat.zero_le _
 
-/-- **Hodge symmetry** (PROVED from conjugation axiom)
-
-h^{p,q} = h^{q,p}. This fundamental symmetry follows from the conjugation
-axiom, which says complex conjugation swaps V^{p,q} and V^{q,p}.
-
-The original property of the Hodge diamond. -/
-theorem hodge_symmetry {k : ℕ} (H : PureHodgeStructure k)
-    (p q : ℕ) (hpq : p + q = k) (hqp : q + p = k) :
-    hodgeNumber H p q hpq = hodgeNumber H q p hqp :=
-  hodge_conjugation_symmetry H p q hpq hqp
-
-/- ═══════════════════════════════════════════════════════════════════════════════
-PART XVIII: SUMMARY OF ALL RESULTS
-═══════════════════════════════════════════════════════════════════════════════ -/
-
-/-- Summary of all structural results:
-
-**Category structure of Hodge structures:**
-1. **Morphisms** - Defined with rational + complex components, compatibility
-2. **Identity morphism** - Proved
-3. **Composition** - Proved
-4. **Zero morphism** - Proved
-5. **Negation of morphism** - Proved: −φ is a Hodge morphism
-6. **Sum of morphisms** - Proved: φ + ψ is a Hodge morphism
-
-**Preadditive category laws (all PROVED):**
-6a. **Associativity** - comp_assoc, add_assoc_morphism
-6b. **Unit laws** - id_comp, comp_id, zero_add, add_zero
-6c. **Inverse** - add_neg_self, neg_neg
-6d. **Commutativity** - add_comm_morphism
-6e. **Absorption** - zero_comp, comp_zero
-6f. **Distributivity** - comp_add, add_comp (composition is bilinear)
-6g. **Negation interaction** - neg_comp, comp_neg
-
-**Hodge class algebra (ℚ-vector space, all PROVED):**
-7. **Zero class** - 0 is a Hodge class and is algebraic
-8. **Scalar multiplication** - q · α is Hodge and algebraic
-9. **Addition** - α₁ + α₂ is a Hodge class
-10. **Negation** - −α is a Hodge class and is algebraic
-11. **Subtraction** - α₁ − α₂ is a Hodge class
-12. **Sum of algebraic classes** - algebraic + algebraic = algebraic
-12a. **Subtraction of algebraic classes** - algebraic - algebraic = algebraic
-12b. **Module laws** - 1•α=α, 0•α=0, q•(α₁+α₂)=q•α₁+q•α₂, (q₁*q₂)•α=q₁•(q₂•α)
-12c. **Abelian group laws** - commutativity, associativity, identity, inverse
-12d. **Hodge symmetry** - h^{p,q} = h^{q,p} (from conjugation axiom)
-
-**Direct sums and biproduct structure:**
-13. **Direct sum** - PROVED (was axiom): H₁ ⊕ H₂ is a Hodge structure
-14. **Injections ι₁, ι₂** - PROVED (were axioms)
-15. **Projections π₁, π₂** - Proved
-16. **Retractions** - Proved: π₁∘ι₁=id, π₂∘ι₂=id, π₁∘ι₂=0, π₂∘ι₁=0
-
-**Sub-Hodge structures:**
-17. **Full and zero** - Proved: ⊤ and ⊥ are sub-Hodge structures
-18. **Kernel** - Proved: ker(φ) is a sub-Hodge structure
-19. **Intersection** - Proved: S₁ ∩ S₂ is a sub-Hodge structure
-20. **Image under morphism** - Proved: φ(S) is a sub-Hodge structure
-
-**Polarizations:**
-21. **Even weight symmetry** - Proved: Q(v,w) = Q(w,v) for weight 2p
-22. **Odd weight antisymmetry** - Proved: Q(v,w) = −Q(w,v) for weight 2p+1
-
-**Functoriality:**
-23. **Morphisms preserve Hodge classes** - Proved
-24. **Morphisms preserve algebraic classes** - Proved (with cycle pullback)
-
-**Mixed Hodge structures:**
-25. **Weight filtration increasing general** - Proved: W_i ≤ W_{i+n}
-26. **Pure to mixed embedding** - Proved -/
-theorem structural_summary : True := trivial
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART IX: TENSOR PRODUCTS AND DUALS OF HODGE STRUCTURES
 ═══════════════════════════════════════════════════════════════════════════════
@@ -2556,17 +2408,12 @@ axiom tateStructure_unit_right {k : ℕ} (H : PureHodgeStructure k) :
 /-- The evaluation map: H ⊗ H* → ℚ(0) is a morphism of Hodge structures.
     This gives the rigid structure of the tensor category. -/
 axiom evalHodge {k : ℕ} (H : PureHodgeStructure k) :
-    (tensorHodge H (dualHodge H)).VQ →ₗ[ℚ] ℚ
+    (tensorHodge H (dualHodge k H)).VQ →ₗ[ℚ] ℚ
 
 /-- The coevaluation map: ℚ → H* ⊗ H is a morphism of Hodge structures.
     Together with eval, this makes the category rigid monoidal. -/
 axiom coevHodge {k : ℕ} (H : PureHodgeStructure k) :
-    ℚ →ₗ[ℚ] (tensorHodge (dualHodge H) H).VQ
-
-/-- Double dual is canonically isomorphic to the original. -/
-axiom dualHodge_involution {k : ℕ} (H : PureHodgeStructure k) :
-    ∃ φ : HodgeStructureMorphism (dualHodge (dualHodge H)) H,
-    Function.Bijective φ.rationalMap
+    ℚ →ₗ[ℚ] (tensorHodge (dualHodge k H) H).VQ
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART X: KÜNNETH FORMULA AND PRODUCT VARIETIES
@@ -2777,19 +2624,19 @@ axiom tateStructure_unit_left {k : ℕ} (H : PureHodgeStructure k) :
 
 /-- **Tensor-dual trace** (PROVED from eval axiom). -/
 theorem tensor_dual_has_trace {k : ℕ} (H : PureHodgeStructure k) :
-    ∃ f : (tensorHodge H (dualHodge H)).VQ →ₗ[ℚ] ℚ, True :=
+    ∃ f : (tensorHodge H (dualHodge k H)).VQ →ₗ[ℚ] ℚ, True :=
   ⟨evalHodge H, trivial⟩
 
 /-- Dual of direct sum ≅ direct sum of duals. -/
 axiom dual_direct_sum {k : ℕ} (H₁ H₂ : PureHodgeStructure k) :
-    ∃ f : (dualHodge (directSumHodge H₁ H₂)).VQ →ₗ[ℚ]
-      (directSumHodge (dualHodge H₁) (dualHodge H₂)).VQ,
+    ∃ f : (dualHodge k (directSumHodge H₁ H₂)).VQ →ₗ[ℚ]
+      (directSumHodge (dualHodge k H₁) (dualHodge k H₂)).VQ,
     Function.Bijective f
 
 /-- Even-weight polarized ⟹ self-dual. H ≅ H* via polarization. -/
 axiom even_weight_self_dual (p : ℕ) (H : PureHodgeStructure (2 * p))
     (pol : Polarization H) :
-    ∃ f : H.VQ →ₗ[ℚ] (dualHodge H).VQ,
+    ∃ f : H.VQ →ₗ[ℚ] (dualHodge (2 * p) H).VQ,
     Function.Bijective f
 
 /- ═══════════════════════════════════════════════════════════════════════════════
@@ -3060,7 +2907,7 @@ If all fibers of a VHS are isomorphic (constant family), the period
 map is constant. -/
 theorem constant_vhs_trivial_period {k : ℕ}
     (V : VariationOfHodgeStructure k)
-    (D : PeriodDomain k dims)
+    (D : PeriodDomain k dims) [Nonempty D.carrier]
     (hconst : ∀ s₁ s₂ : V.base, V.fiber s₁ = V.fiber s₂) :
     ∀ s₁ s₂ : V.base, periodMap V D s₁ = periodMap V D s₂ := by
   intro s₁ s₂
