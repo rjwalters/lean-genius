@@ -32,14 +32,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: Mathlib API drift in OQ02OQ03.lean (12 errors) and OQ01.lean (8 errors) after merging main. Needs Int modular arithmetic API fixup + Submodule.finrank API update.",
+    "progressSummary": "COMPLETED: All researcher-introduced axioms eliminated. exists_embedding_alpha_eq_2cos proved via PowerBasis.lift + Euler formula. 0 axioms, 0 sorries in new code. Pre-existing Mathlib API drift remains in other sections.",
     "builtItems": [
       "Section XVI: Primitive Root Properties and Separability (zeta_ne_zero, zeta_pow_n_eq_one, minpoly_cos_separable, minpoly_cos_natDegree_pos, zeta_pow_pred_eq_conj, cos_eq_zeta_pow_re, sin_eq_zeta_pow_im, zeta_pow_norm_one, cos_2k_pi_div_n_bound)",
       "Section XVII: Cyclotomic Polynomial Connection (zeta_is_root_of_xn_sub_one, cyclotomic_natDegree_eq_totient)",
       "Survey: confirmed Mathlib has autEquivPow, isGalois, finrank, isMulCommutative for CyclotomicField",
       "Survey: confirmed fixedField infrastructure is MISSING from Mathlib - this is the primary blocker",
       "complex_conj_order_two: PROVED via autEquivPow and -1 ∈ (ℤ/nℤ)* (was axiom, now theorem)",
-      "maximal_real_subfield_degree: PROVED via fixedField of zpowers(conjAut) with tower law (§3 of OQ01)"
+      "maximal_real_subfield_degree: PROVED via fixedField of zpowers(conjAut) with tower law (§3 of OQ01)",
+      "Proved exists_embedding_alpha_eq_2cos via PowerBasis.lift in AngleTrisectionOQ02OQ03OQ01.lean:§7",
+      "Helper: exp_add_exp_neg_eq_two_cos (Euler sum form)",
+      "Helper: exp_add_inv_eq_two_cos (inverse form)",
+      "Helper: exp_add_div_eq_two_cos (division form)"
     ],
     "insights": [
       "Complex.exp_two_pi_mul_I gives exp(2πi)=1 directly for proving ζ^n=1",
@@ -68,7 +72,11 @@
       "2026-03-14: OQ02OQ03 has 8 build errors (lines 1273-1297) from omega/API drift in cos_2kpi_div_n_eq_iff theorem - needs modular arithmetic refactoring",
       "2026-03-14: 4 sorries remain: galois_conjugate_count (line 1396), h_top/h_deg/final (lines 1614-1623) for [E:F]≤2 proof",
       "Mathlib API drift from main merge (2026-03-14): 12 build errors in OQ02OQ03.lean. Int.add_mul_emod_self_left, Int.natCast_mod, Submodule.finrank_le_finrank_of_le renamed or signature changed.",
-      "conjAut_zeta_eq_inv elimination strategy: autToPow_spec + root-independence + galEquiv.apply_symm_apply. Blocked by Lean type unification between galCyclotomicEquivUnitsZMod and autToPow"
+      "conjAut_zeta_eq_inv elimination strategy: autToPow_spec + root-independence + galEquiv.apply_symm_apply. Blocked by Lean type unification between galCyclotomicEquivUnitsZMod and autToPow",
+      "PowerBasis.lift constructs ℚ-algebra embeddings from a PowerBasis + root of minimal polynomial",
+      "minpoly.eq_of_irreducible_of_monic returns p = minpoly (not minpoly = p) - need .symm",
+      "map_inv₀ preserves ⁻¹ form (not 1/), use rw not simp to control goal shape",
+      "Complex.exp_mul_I gives Euler formula; combine with cos_neg/sin_neg for exp(-θI)"
     ],
     "mathlibGaps": [
       "Maximal real subfield of cyclotomic field not in Mathlib",
