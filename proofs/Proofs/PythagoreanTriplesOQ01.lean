@@ -1288,6 +1288,7 @@ theorem sectorOE_eq_sectorOO_full_column {m N : ℕ}
     · intro ⟨_, hn_pos, hn_lt, hcop, _, hn_even, _⟩
       exact ⟨by omega, hn_pos, hcop, hn_even⟩
     · intro ⟨hn_range, hn_pos, hcop, hn_even⟩
+      have hmN : m ≤ N := by nlinarith [sq_nonneg (m - 1)]
       refine ⟨by omega, hn_pos, by omega, hcop, hm_odd, hn_even, ?_⟩
       -- n ≤ m - 1, so n² ≤ (m-1)², hence m² + n² ≤ m² + (m-1)² ≤ N
       have : n ^ 2 ≤ (m - 1) ^ 2 := Nat.pow_le_pow_left (by omega) 2
@@ -1300,6 +1301,7 @@ theorem sectorOE_eq_sectorOO_full_column {m N : ℕ}
     · intro ⟨_, hn_pos, hn_lt, hcop, _, hn_odd, _⟩
       exact ⟨by omega, hn_pos, hcop, hn_odd⟩
     · intro ⟨hn_range, hn_pos, hcop, hn_odd⟩
+      have hmN : m ≤ N := by nlinarith [sq_nonneg (m - 1)]
       refine ⟨by omega, hn_pos, by omega, hcop, hm_odd, hn_odd, ?_⟩
       have : n ^ 2 ≤ (m - 1) ^ 2 := Nat.pow_le_pow_left (by omega) 2
       omega
