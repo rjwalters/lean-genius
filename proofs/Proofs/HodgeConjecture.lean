@@ -4500,6 +4500,39 @@ theorem bb_relates_to_mhs :
 #check mhs_strict_morphisms
 #check mhs_category_abelian
 
+-- Grassmannians and flag varieties (Part XXVI)
+#check Grassmannian                      -- G(k,n) structure
+#check grassmannian_is_projective        -- G(k,n) is projective
+#check grassmannian_dim                  -- dim G(k,n) = k(n-k)
+#check schubert_classes_generate         -- Schubert classes span H*
+#check hodge_conjecture_grassmannian     -- PROVED: HC for Grassmannians
+#check projective_space                  -- ℙⁿ = G(1,n+1)
+#check FlagVariety                       -- Partial flag varieties
+#check hodge_conjecture_flag             -- HC for flag varieties
+
+-- Complete intersections (Part XXVI)
+#check CompleteIntersection              -- V(f₁,...,fₖ) ⊂ ℙⁿ
+#check ci_is_projective                  -- CI is projective
+#check ci_dim                            -- dim = n - k
+#check lefschetz_hyperplane_iso          -- Weak Lefschetz (iso)
+#check lefschetz_hyperplane_inj          -- Weak Lefschetz (inj)
+#check hodge_conjecture_ci_dim_le_3      -- HC for CI dim ≤ 3
+#check smoothHypersurface                -- Smooth hypersurface in ℙⁿ
+
+-- Toric varieties (Part XXVI)
+#check ToricVariety                      -- Toric variety structure
+#check toric_is_projective               -- Toric → projective
+#check hodge_conjecture_toric            -- HC for toric varieties
+#check toric_hodge_diagonal              -- h^{p,q} = 0 for p ≠ q
+
+-- Enriques surfaces (Part XXVI)
+#check EnriquesSurface                   -- Enriques surface structure
+#check hodge_conjecture_enriques         -- PROVED: HC for Enriques
+
+-- Mumford-Tate groups (Part XXVI)
+#check MumfordTateGroup                  -- MT(H) group structure
+#check mumford_tate_conjecture_refined   -- MT = G_ℓ for abelian
+#check mumford_tate_cm_case             -- MT for CM case (proved)
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXVII: VARIATIONS OF HODGE STRUCTURE AND PERIOD DOMAINS
 ═══════════════════════════════════════════════════════════════════════════════
