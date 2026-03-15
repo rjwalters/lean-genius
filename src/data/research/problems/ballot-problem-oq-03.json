@@ -1,8 +1,8 @@
 {
   "slug": "ballot-problem-oq-03",
   "title": "Higher-dimensional lattice path problems via reflection",
-  "phase": "NEW",
-  "status": "completed",
+  "phase": "OBSERVE",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,50 +16,25 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "NEW",
     "since": "2026-02-26T05:12:41.985Z",
-    "iteration": 3,
-    "focus": "Fully proved - 0 sorries, 0 axioms",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - proof is complete",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full proof of 2×2 LGV lemma via Lindström involution. All infrastructure proved including canonical shared point selection, prefix preservation, index preservation, and involutivity. 0 sorries, 0 axioms. ~2905 lines of Lean 4 proof.",
-    "builtItems": [
-      "lindstromForward_injective proof via canonical index preservation + involutivity",
-      "lindstromBackward_injective proof (symmetric argument)",
-      "minSharedStepIdx_preserved - canonical split index invariant under swap",
-      "posAfter_take_eq - prefix independence lemma",
-      "splitIdx_posAfter - split index recovery",
-      "swapAtPoint_fst_take_prefix / snd_take_prefix",
-      "swapAtPoint_eq_of_splitIdx - swap depends only on split indices",
-      "visitedPoint_splitIdx_eq - step index recovery from visited points",
-      "splitIdx_const_diff - constant difference property",
-      "lindstrom_involution: FULLY PROVED (no axiom) via Nat.le_antisymm + card_le_of_injective (line 501)",
-      "lindstromForward_injective: proved via canonical index preservation (line 2612)",
-      "lindstromBackward_injective: proved via symmetric argument (line 2781)",
-      "minSharedStepIdx_preserved: canonical split index invariant under swap (line 2517)",
-      "Complete proof chain: visitedPoints → sharedPoints → canonSharedPoint → swapAtPoint → involutivity → injectivity → LGV"
-    ],
-    "insights": [
-      "The Lindstrom involution is self-inverse because the canonical shared point (minimum splitIdx) is preserved when paths are swapped at that point",
-      "splitIdx a p = p.1 + (p.2 - a) is the key deterministic index making the involution work",
-      "For shared points, splitIdx a2 p - splitIdx a1 p = a1 - a2 (constant), so preserving one index preserves the other",
-      "simp [eastSteps] introduces Bool.not vs decide mismatch in Lean4 Mathlib - use simp_all with hypothesis",
-      "Finset.choose requires unique existential; use Exists.choose for plain existential",
-      "set creates local definitions that block rw matching; use show/simp only [def] to unfold",
-      "The Lindström involution is fully proved - not axiomatized. Previous knowledge was stale.",
-      "The proof uses double injection (forward injective + backward injective) via Nat.le_antisymm instead of constructing an explicit Equiv."
-    ],
+    "progressSummary": "COMPLETED (fully proved, 0 sorries, 0 axioms, 2878 lines)",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Proof is complete. Consider submitting to Mathlib or extending to n×n LGV."
-    ]
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: ballot-problem-oq-03\n\n## Problem Summary\n\nHigher-dimensional lattice path problems via reflection principle.\n2x2 Lindström-Gessel-Viennot (LGV) Lemma formalization.\n\n## Current State\n\n**Status**: COMPLETED (fully proved, 0 sorries, 0 axioms, 2878 lines)\n\n## Key Results\n\n- 2x2 LGV Lemma (Lindström 1973, Gessel-Viennot 1985)\n- Crossing Lemma (2D reflection principle)\n- northBeforeEast recursive function\n- Path count: |PathMN m n| = C(m+n, m)\n- Lindström involution (fully proved)\n- Catalan number computations\n- Ballot theorem formula\n- Vandermonde identity\n\n## Session Log\n\n### Session 2026-03-14 (researcher-6) - Verification\n\n**Mode**: REVISIT\n**Outcome**: Verified complete. Updated status from NEW to COMPLETED.\n**File**: `proofs/Proofs/BallotProblemOQ03.lean`\n"
   },
   "approaches": [],
   "tags": [
@@ -76,7 +51,7 @@
     "mathlib": []
   },
   "started": "2026-02-26T17:08:50.304Z",
-  "lastUpdate": "2026-03-13T23:30:00.000Z",
+  "lastUpdate": "2026-03-15T02:41:51.104Z",
   "significance": 7,
   "tractability": 6
 }

@@ -2,7 +2,7 @@
   "slug": "borsuk-ulam-oq-03",
   "title": "Constructive (Intuitionistic) Borsuk-Ulam Theorem",
   "phase": "OBSERVE",
-  "status": "completed",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,54 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed pre-existing build errors in BorsukUlamOQ03.lean (discrete_ivt_sign_change). Both OQ03 and OQ03OQ03 now compile clean.",
-    "builtItems": [
-      "proofs/Proofs/BorsukUlamOQ03.lean (914 lines, 41 defs/theorems, 7 axioms, 0 sorries)",
-      "src/data/proofs/borsuk-ulam-oq-03/ (gallery integration with meta.json, annotations.json, index.ts)",
-      "circleParam: circle parametrization as Fin 2 → ℝ",
-      "borsuk_ulam_n1: BU for n=1 in general type",
-      "Tucker parity lemma (countTransitions, tucker_parity, tucker_count_odd/even)",
-      "countTransitions_mono, countTransitions_le, tucker_count_bounds",
-      "lusternik_schnirelman_S1: Non-trivial LS for circle via infDist + circle BU",
-      "lusternik_schnirelman_S1: A-possibly-empty variant",
-      "gridDense: proved nearest-grid-point theorem (resolved sorry in OQ03OQ03:869)",
-      "odd_periodic_zero_pair: zeros of anti-periodic functions come in antipodal pairs",
-      "discrete_ivt_sign_change: discrete IVT from Tucker signed lemma",
-      "interval_borsuk_number: 1D Borsuk partition impossibility",
-      "coincidence_set_closed: coincidence set of f on S1 is closed",
-      "BU preservation theorems: post-composition, even composition, max, min",
-      {
-        "name": "discrete_ivt_sign_change (fixed)",
-        "description": "Repaired 3 proof bugs in BorsukUlamOQ03.lean:1354-1376",
-        "proven": true
-      }
-    ],
-    "insights": [
-      "1D BU proved via IVT on antisymmetric difference g(x) = f(x) - f(-x)",
-      "Tucker 1D lemma (Boolean + signed) proved, provides combinatorial foundation",
-      "f(--x) is a SYNTAX BUG in Lean 4: -- starts a line comment; use f(-(-x))",
-      "fun_prop handles complex continuity goals automatically",
-      "The interval BU has trivial witness x=0 (self-antipodal); circle BU is genuinely non-trivial",
-      "7 axioms needed for higher-D: general BU, no-retraction, Brouwer FP, LS covering, invariance of dimension",
-      "All axioms are blocked by lack of algebraic topology in Mathlib (homology, degree theory)",
-      "borsuk_ulam_n1 proves n=1 case of general BU via circle parametrization + IVT",
-      "Tucker parity lemma: count of sign-change edges has same parity as endpoint XOR (mod 2 = boundary data)",
-      "Non-trivial LS for S1 proved from circle BU via infDist(p, A): equal distance => same membership",
-      "fun_prop handles Metric.infDist continuity; Prod.ext proves product equalities from component equalities",
-      "countTransitions is monotone and bounded by n; when endpoints differ, 1 <= count <= n with count odd",
-      "gridDense proof: use Nat.floor to find nearest grid index, bound error by 1/N <= sqrt(2)/N via Prod.dist max metric",
-      "BorsukUlamOQ03OQ03 has pre-existing build errors at lines 1510+ from Mathlib API changes (radialExtend infrastructure)",
-      "coincidence_set_closed uses isClosed_eq with fun_prop for continuity of composed trig functions",
-      "Fixed discrete_ivt_sign_change proof: removed false hbdry lemma, fixed Bool comparison proof, fixed .2 projection error",
-      "BorsukUlamOQ03.lean now compiles clean (0 sorries, 4 axioms)"
-    ],
+    "progressSummary": "SURVEYED - 13 proved theorems, 1 axiom (general BU for n≥2), 0 sorries.",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Fix pre-existing build errors in BorsukUlamOQ03OQ03.lean lines 1510+ (radialExtend, gridVertexFin Mathlib API changes)",
-      "Resolve final sorry in BorsukUlamOQ03OQ03.lean:1847 (Tucker + grid + analytical composition)",
-      "Higher-D BU requires algebraic topology (homology groups, covering spaces) - blocked on Mathlib",
-      "If Mathlib adds degree theory, the axioms in the main file could be proved"
-    ],
+    "nextSteps": [],
     "markdown": "# borsuk-ulam-oq-03: Constructive (Intuitionistic) Borsuk-Ulam\n\n## Problem Summary\n\n**Open Question**: Can the 1D Borsuk-Ulam theorem be proved constructively\n(without full classical logic)? What is the constructive status of\nhigher-dimensional Borsuk-Ulam?\n\n**Status**: SURVEYED - 13 proved theorems, 1 axiom (general BU for n≥2), 0 sorries.\n\n**Answer**:\n- 1D: YES, proved via IVT on antisymmetric difference\n- n≥2: Requires algebraic topology (axiomized); no known constructive proof\n\n## Session 2026-02-25 (Session 1) - Initial Formalization\n\n**Mode**: FRESH (problem had EMPTY knowledge)\n**Outcome**: surveyed/progress\n\n### What I Did\n\n- Created `proofs/Proofs/BorsukUlamOQ03.lean` with full 1D formalization\n- Proved 13 theorems covering:\n  - 1D interval BU via IVT\n  - Odd function zero lemma\n  - BU ↔ odd-zero equivalence\n  - S¹ parametric version via IVT on [0,π]\n  - Circle point on unit circle\n  - No odd map to {±1}\n  - 5 structural lemmas\n  - NSphere def + antipodal def\n  - Consequence of general BU axiom\n- Fixed key Lean 4 issue: `f (--x)` is INVALID because `--` starts a line comment;\n  must write `f (-(-x))` or restructure to avoid double negative\n- Fixed `ring` issue: after `simp only [hg_def]`, `ring` fails on `f (-(-x))` atoms;\n  add `neg_neg` to simp first\n- `Continuous.prod_mk` may not be directly accessible as a field; use `fun_prop` instead\n- Created PR #3246\n\n### Key Findings\n\n- `f (--x)` is a SYNTAX BUG: `--` starts a line comment in Lean 4!\n  Workaround: Write `f (-(-x))` or avoid double-negated function args\n- `fun_prop` tactic handles complex continuity goals automatically with `hf : Continuous f`\n- IVT API: `intermediate_value_Icc hab hg_cont ⟨ha, hb⟩` where `ha : f a ≤ 0` and `hb : 0 ≤ f b`\n- `le_or_gt` is the non-deprecated name for case split (not `le_or_lt`)\n- Constructive content: IVT uses Classical.em internally, but Bishop-style IVT holds\n\n### Files Created\n\n- `proofs/Proofs/BorsukUlamOQ03.lean` (324 lines, 13 theorems, 1 axiom, 0 sorries)\n\n### Next Steps\n\n- The higher-dimensional BU (n≥2) could potentially be proved using Tucker's lemma (combinatorial BU)\n- Tucker's lemma is more constructive than degree-theoretic approaches\n- Would require: triangulation, labeling, Tucker path → antipodal pair\n"
   },
   "approaches": [],

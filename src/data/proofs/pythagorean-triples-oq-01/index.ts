@@ -1,10 +1,44 @@
-import type { ProofEntry } from "../../types";
-import meta from "./meta.json";
-import annotations from "./annotations.json";
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion } from '@/types/proof'
+import metaJson from './meta.json'
+import annotationsJson from './annotations.json'
 
-const entry: ProofEntry = {
-  ...meta,
-  annotations: annotations.annotations,
-};
+// Type assertion for JSON import
+const meta = metaJson as {
+  id: string
+  title: string
+  slug: string
+  description: string
+  meta: ProofMeta
+  sections: ProofSection[]
+  overview?: ProofOverview
+  conclusion?: ProofConclusion
+}
 
-export default entry;
+// Import the Lean source file
+const leanSource = () => import('../../../../proofs/Proofs/PythagoreanTriplesOQ01.lean?raw')
+
+export const proof: Proof = {
+  id: meta.id,
+  title: meta.title,
+  slug: meta.slug,
+  description: meta.description,
+  meta: meta.meta,
+  sections: meta.sections,
+  source: '', // Loaded dynamically
+  overview: meta.overview,
+  conclusion: meta.conclusion,
+}
+
+export const annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+
+export const proofData: ProofData = {
+  proof,
+  annotations,
+}
+
+export async function getProofSource(): Promise<string> {
+  const module = await leanSource()
+  return module.default
+}
+
+export default proofData

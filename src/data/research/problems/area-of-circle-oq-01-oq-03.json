@@ -1,8 +1,8 @@
 {
   "slug": "area-of-circle-oq-01-oq-03",
   "title": "Isoperimetric inequality: C^2 >= 4*pi*A with equality only for circles",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-03-13",
-    "iteration": 4,
-    "focus": "Axiom elimination complete. 0 axioms, 4 sorries remain.",
+    "phase": "NEW",
+    "since": "2026-02-24T17:52:20.366Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,33 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom eliminated. exists_nice_reparam is now a theorem. 9 new theorems. File: 0 axioms, 4 sorries.",
-    "builtItems": [
-      "Converted equality_implies_circle from axiom to theorem in AreaOfCircleOQ01OQ03.lean:824",
-      "Proved equality_implies_circle theorem in AreaOfCircleOQ01OQ03.lean (was axiom)",
-      "Converted fourier_decomposition from axiom to theorem in AreaOfCircleOQ01OQ03.lean",
-      "Added parseval_periodic_real sorry lemma (Parseval bridge)",
-      "Added fourierCoeffOn_deriv_periodic sorry lemma (IBP for Fourier coefficients)",
-      "integral_deriv_periodic_zero: FTC + periodicity helper lemma",
-      "SmoothClosedCurve.meanSubtract: mean subtraction definition",
-      "meanSubtract_deriv_x/y: derivative preservation lemmas",
-      "meanSubtract_speed/circumference/area: preservation theorems",
-      "meanSubtract_zero_mean_x/y: zero-mean property theorems",
-      "exists_arclength_reparam: well-scoped sorry for arc-length reparam",
-      "exists_nice_reparam: now theorem (was axiom)"
-    ],
-    "insights": [
-      "equality_implies_circle was axiom but is purely algebraic: set r=C/(2π), then C=2πr and A=πr² follow from 4πA=C² via field_simp+linarith",
-      "equality_implies_circle is purely algebraic: set r=C/(2π), then C=2πr and A=πr² follow from 4πA=C² via field_simp/linarith",
-      "fourier_decomposition axiom eliminated: converted to theorem with 3 sorry lemmas. All Mathlib ingredients exist: tsum_sq_fourierCoeff, fourierCoeffOn_of_hasDerivAt, fourierCoeff_liftIoc_eq.",
-      "exists_nice_reparam axiom eliminated: factored into arc-length reparam (sorry) + mean subtraction (proved). 9 new theorems for mean subtraction infrastructure."
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove exists_arclength_reparam: IFT on arc-length integral",
-      "Fix fourierCoeffOn_deriv_periodic: Mathlib API break",
-      "Prove parseval_periodic_real: lift to AddCircle, bridge measures"
-    ]
+    "nextSteps": []
   },
   "approaches": [],
   "tags": [
@@ -73,7 +51,8 @@
     "mathlib": []
   },
   "started": "2026-02-25T19:36:59.224Z",
-  "lastUpdate": "2026-02-25T19:36:59.224Z",
+  "lastUpdate": "2026-03-13T06:21:52.594Z",
+  "completed": "2026-03-13T06:21:52.594Z",
   "significance": 8,
   "tractability": 5
 }

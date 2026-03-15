@@ -2,7 +2,7 @@
   "slug": "erdos-1007-oq-01",
   "title": "Minimum edges for graph dimension d in general",
   "phase": "OBSERVE",
-  "status": "completed",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-03-06T22:03:59.699Z",
-    "iteration": 2,
+    "iteration": 1,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,24 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "CONFIRMED: All provable theorems proved (0 sorries). 20 axioms across 2 files encode known values from House 2013, Chaffee-Noble 2016, and graph dimension computations. Some small-case axioms (triangle_dimension=2) could be proved via explicit embedding construction but require non-trivial Euclidean geometry infrastructure.",
-    "builtItems": [
-      "Simplex embedding construction: K_n embeds in ℝⁿ (Erdos1007OQ01.lean)",
-      "Deficiency function δ(d) analysis (Erdos1007OQ01.lean)",
-      "optimal_implies_monotone theorem (Erdos1007OQ01.lean)",
-      "Growth rate analysis with successive differences (Erdos1007OQ01.lean)"
-    ],
-    "insights": [
-      "triangle_dimension=2 and tetrahedron_dimension=3 are provable via explicit unit-distance embedding construction (equilateral triangle, regular tetrahedron) but need ℝⁿ distance formalization"
-    ],
-    "mathlibGaps": [
-      "Euclidean distance formalization for explicit unit-distance embeddings"
-    ],
-    "nextSteps": [
-      "Consider proving triangle_dimension=2 via explicit ℝ² embedding if Euclidean geometry infrastructure improves",
-      "Problem is fundamentally limited by the open nature of general minEdges(d)"
-    ],
-    "markdown": "# Knowledge Base: erdos-1007-oq-01\n\nMinimum edges for graph dimension d in general.\n\n---\n\n## Session 2026-03-11 (Session 1) - Survey\n\n**Mode**: FRESH\n**Outcome**: surveyed\n\n### Key Findings\n- OQ01 file fully proved: 25+ theorems, 0 sorries, 11 axioms\n- Simplex embedding construction: K_n embeds in ℝⁿ as unit distances (complete proof)\n- Deficiency function δ(d) = C(d+1,2) - minEdges(d) with d=4 as unique anomaly\n- optimal_implies_monotone: complete graph optimality conjecture → monotonicity (proved)\n- Growth rate analysis with verified successive differences\n\n### Assessment\n- All provable theorems already proved\n- Axioms encode known values (House 2013, Chaffee-Noble 2016) and search properties\n- General minEdges(d) is genuinely open\n- To make further progress, would need dim(K_n) = n-1 rigidity argument (non-trivial)\n"
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-1007-oq-01\n\nMinimum edges for graph dimension d in general.\n\n---\n\n## Session 2026-03-14 (Session 2) - Soundness Fix\n\n**Mode**: REVISIT (depth-first, MODERATE knowledge)\n**Outcome**: progress — eliminated unsound axiom, improved formalization\n\n### What Was Done\n- **Found soundness bug**: `hasUnitEmbedding_exists'` axiom claimed every graph (including\n  those with self-loops) has a unit embedding. Self-loops require ‖0‖ = 1 = impossible.\n  This axiom could derive `False` for any graph with `adj v v`.\n- **Fixed by elimination**: Reorganized file to move simplex embedding infrastructure (§7)\n  before `graphDimension'` definition (§1), allowing `graphDimension'` to use the\n  proved `hasUnitEmbedding_exists_irrefl` theorem instead of the unsound axiom.\n- Added `Irreflexive adj` hypothesis to `graphDimension'`, `minEdgesForDim_le`,\n  and `minEdgesForDim_achieved` — mathematically correct since we only study simple graphs.\n- Axiom count: 12 → 11. All remaining axioms are sound (encode computational search\n  results and rigidity bounds not provable in Lean).\n\n### Files Modified\n- `proofs/Proofs/Erdos1007OQ01.lean` — reorganized, eliminated axiom\n\n---\n\n## Session 2026-03-11 (Session 1) - Survey\n\n**Mode**: FRESH\n**Outcome**: surveyed\n\n### Key Findings\n- OQ01 file fully proved: 25+ theorems, 0 sorries, 12 axioms (now 11 after Session 2)\n- Simplex embedding construction: K_n embeds in ℝⁿ as unit distances (complete proof)\n- Deficiency function δ(d) = C(d+1,2) - minEdges(d) with d=4 as unique anomaly\n- optimal_implies_monotone: complete graph optimality conjecture → monotonicity (proved)\n- Growth rate analysis with verified successive differences\n\n### Assessment\n- All provable theorems already proved\n- Axioms encode known values (House 2013, Chaffee-Noble 2016) and search properties\n- General minEdges(d) is genuinely open\n- To make further progress, would need dim(K_n) = n-1 rigidity argument (non-trivial)\n"
   },
   "approaches": [],
   "tags": [
@@ -61,7 +49,7 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.176Z",
-  "lastUpdate": "2026-03-13T00:00:00.000Z",
+  "lastUpdate": "2026-03-13T07:52:17.062Z",
   "significance": 6,
   "tractability": 5
 }
