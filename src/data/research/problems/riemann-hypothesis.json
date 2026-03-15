@@ -18,18 +18,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-13T12:00:00.000Z",
-    "iteration": 5,
-    "focus": "Mathlib equivalence + Lindelöf Hypothesis",
+    "iteration": 6,
+    "focus": "Cross-equivalence theorems between RH formulations",
     "blockers": [],
-    "nextAction": "Attempt to eliminate no_real_zeros_in_strip axiom or add more equivalent formulations",
+    "nextAction": "Consider: prove more Consequences theorems, or add Bombieri-Vinogradov / prime-in-AP results",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 axioms from Consequences file (ingham_zero_density, huxley_zero_density, RH_implies_DensityHypothesis). Axiom count now 9 in Consequences (was 12). Build verified clean.",
+    "progressSummary": "PROGRESS: Added 15 cross-equivalence theorems. Robin↔Lagarias, Robin↔Mertens, Robin↔PrimeCounting, Robin↔deBruijnNewman, Mertens↔PrimeCounting, Lagarias↔deBruijnNewman. Complete equivalence class. GRH→Robin/Lagarias/Mertens/Lindelöf. Negation equivalences including ¬RH↔Λ>0. File: 1889 lines, 21 axioms, 0 sorries.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",

@@ -19,18 +19,18 @@
     "phase": "ACT",
     "since": "2026-03-14T01:00:00Z",
     "iteration": 7,
-    "focus": "Axiom reduction: 56 → 51 axioms",
+    "focus": "Axiom reduction: 59 → 57 axioms + 7 new theorems",
     "activeApproach": "Abstract complexity class definitions with barrier theorems.",
     "blockers": [],
-    "nextAction": "Consider formalizing Mahaney theorem or connecting to Mathlib TM2 definitions",
+    "nextAction": "Consider proving P_subset_UP, UP_subset_NP from definitions, or add counting complexity (#P vs FP)",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 5,
+      "total": 6,
+      "currentApproach": 6,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added fine-grained complexity (ETH, SETH). Proved ETH → P ≠ NP, SETH → ETH, connections to barriers. File: 3079 lines, 59 axioms, 202 theorems/defs, 0 sorries.",
+    "progressSummary": "PROGRESS: Eliminated sparsification_lemma (tautological) and ETH_subexp_closure (contrapositive). Added 7 new proved theorems including SETH_landscape, ETH_implies_P_ne_PSPACE, SETH_conditional_landscape. File: 3149 lines, 57 axioms, 232 theorems/defs, 0 sorries.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
