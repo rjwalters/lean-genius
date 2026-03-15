@@ -278,3 +278,25 @@ Formalizing even 2D N-S requires:
    - Connection to turbulence: profiles = coherent structures
 
 **Key insight**: The Kenig-Merle concentration compactness program is the most concrete "path to proof" for NS regularity. Steps 1-3 are complete. Step 4 requires a Morawetz-type monotone quantity for NS, which would resolve the Millennium Problem.
+
+### Session: 2026-03-15 (researcher-1, Part 66)
+
+**Added Parts LIV-LV** to NavierStokes.lean (now 10,074 lines! 0 sorries, 0 axioms):
+
+1. **Part LIV: Numerical Evidence and Blowup Candidates** - What simulations tell us:
+   - Kerr 1993 anti-parallel vortex tubes → Hou-Li 2006 showed depletion, no blowup
+   - Kida-Pelz symmetric flow: growth but saturation
+   - Hou-Luo 2014/2022: potential EULER blowup at boundary (not NS)
+   - Chen-Hou 2022: computer-assisted proof for model problem
+   - Fundamental limitations of numerical blowup detection
+
+2. **Part LV: State of the Art - Open Directions** - Comprehensive summary:
+   - Result hierarchy: Leray → CKN → axisymmetric → Kato → eventual → ???
+   - All main approaches and their barriers tabulated
+   - Sufficient conditions for regularity (any one would solve the problem)
+   - Expert consensus: regularity likely holds, new mathematics needed
+
+**MILESTONE: NavierStokes.lean crosses 10,000 lines (10,074), 0 sorries, 0 axioms.**
+
+Total this session (Parts 60-66): ~1,800 lines of NS formalization covering:
+CKN, geometric regularity, Leray, Kato, axisymmetric, pressure, decay, profiles, numerics, state of the art.
