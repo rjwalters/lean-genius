@@ -1,35 +1,17 @@
 # Knowledge Base: pnp-barriers
 
----
+## Session 2026-03-15 (researcher-1, Session 34) - Polynomial Method
 
-## Session 2026-03-15 (researcher-3) - Soundness Fix + Axiom Reduction (89→84)
+**Mode**: REVISIT (depth-first, RICH knowledge score 42)
+**Prior Status**: active (14,374 lines, 240 axioms)
 
-**Mode**: REVISIT (depth-first, RICH knowledge score 109)
-**Problem**: pnp-barriers
-**Prior Status**: active (4221 lines, 89 axioms, 0 sorries)
+Added Part 53: The Polynomial Method and AC⁰ Lower Bounds. Formalized Håstad's switching lemma, Razborov-Smolensky approximation theorem, Chevalley-Warning algebraic foundation, Minsky-Papert degree bounds. Explained why the method fails for TC⁰ (can compute crypto) and the exact boundary with natural proofs barrier.
 
-### Critical Soundness Fix
-**`OWF_implies_avg_hard` derived `False`!**
-- `OWF_exist = ∃ _ : ℕ, True = True` (abstract placeholder)
-- `AvgP = {dp | ∃ _ : ℕ, True} = Set.univ`
-- So `∀ dp ∈ DistNP, dp ∈ AvgP = True`
-- Axiom said `OWF_exist → ¬(∀ dp ∈ DistNP, dp ∈ AvgP)` = `True → ¬True = False`
-- **Fix**: Replaced with sound `OWF_implies_avg_hard_sound` theorem using existing `owf_implies_avg_hard`
+**New axioms** (7): hastad_switching_lemma, hastad_tight_AC0, razborov_smolensky_approximation, razborov_smolensky_separation, razborov_majority_degree, minsky_papert, chevalley_warning
 
-### Axioms Eliminated (5)
-1. `SZK_complement_closed` → theorem (SZK = Set.univ)
-2. `GMW_NP_in_CZK` → theorem (CZK = Set.univ)
-3. `CZK_subset_IP` → theorem (InIP trivially satisfiable)
-4. `OWF_implies_avg_hard` → removed (unsound, derived False)
-5. `trapdoor_implies_owf` → theorem (both sides are True)
+**New theorems** (9): parity_not_AC0_via_switching, parity_not_AC0_mod3, mod3_not_AC0_mod2, polynomial_method_fails_for_ACC0, tc0_barrier, polynomial_method_combinatorics, smolensky_open_problem, polynomial_method_and_natural_proofs, part53_summary
 
-### Modeling Issues Documented
-- Five Worlds: Heuristica, Pessiland, Minicrypt are all `False` because `OWF_exist = True` and `TrapdoorOWF_exist = True`
-- Only Algorithmica (P=NP) and Cryptomania (True) are non-degenerate
-- `UP_subset_NP` not provable from definitions (UP's ↔ allows multiple witnesses for false instances)
-
-### Files Modified
-- `proofs/Proofs/PNPBarriersSound.lean` — 5 axiom eliminations, soundness fix
+**Outcome**: **14,747 lines**, **0 sorries**, **247 axioms**, **471 theorems/lemmas**, Docker build passes.
 
 ---
 

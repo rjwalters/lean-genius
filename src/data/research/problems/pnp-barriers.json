@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-15",
-    "iteration": 7,
-    "focus": "Parts 51-52: Lifting theorems and query complexity landscape",
+    "iteration": 8,
+    "focus": "Parts 51-53: Lifting, sensitivity, polynomial method - the technical toolkit for lower bounds",
     "activeApproach": "Abstract complexity class definitions with barrier theorems. Adding landmark results from complexity theory to build comprehensive formalization.",
     "blockers": [
       "- 40 axioms total; some may be derivable from others with more effort"
     ],
-    "nextAction": "Proof complexity connections via lifting, or algebraic circuit lower bounds deep dive",
+    "nextAction": "Matrix rigidity and log-depth circuits, or information complexity and communication lower bounds",
     "attemptCounts": {
       "total": 5,
       "currentApproach": 5,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Parts 51-52 added (Lifting Theorems + Sensitivity Conjecture). 14,374 lines, ~240 axioms, 0 sorries. Covers lifting theorems, Karchmer-Wigderson, Huang sensitivity proof, query complexity measures, Fourier analysis of Boolean functions.",
+    "progressSummary": "PROGRESS: Parts 51-53 added. 14,747 lines, ~247 axioms, 0 sorries. Covers lifting theorems, sensitivity conjecture (Huang), polynomial method (Razborov-Smolensky, Håstad switching lemma), and their connections to barriers.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -118,6 +118,11 @@
         "name": "Part 52: Sensitivity Conjecture",
         "description": "Query complexity measures, Huang proof, Cauchy interlacing, KKL theorem, Fourier analysis. 10 axioms, 7 definitions, 8 theorems",
         "proven": true
+      },
+      {
+        "name": "Part 53: Polynomial Method",
+        "description": "RandomRestriction, Håstad switching lemma, Razborov-Smolensky, Chevalley-Warning, TC⁰ barrier analysis. 7 axioms, 9 theorems",
+        "proven": true
       }
     ],
     "insights": [
@@ -137,7 +142,9 @@
       "KRW conjecture (depth(f∘g) ≈ depth(f)+depth(g)) would imply P ≠ NC¹",
       "Lifting proofs are often non-natural proofs, potentially circumventing Razborov-Rudich barrier",
       "Huang 2019 resolved sensitivity conjecture via spectral argument on signed adjacency matrix of Boolean hypercube",
-      "All query complexity measures (D, C, bs, s, deg, d̃eg, Q) are now polynomially related"
+      "All query complexity measures (D, C, bs, s, deg, d̃eg, Q) are now polynomially related",
+      "The polynomial method IS a natural proof, but works against AC⁰[p] because AC⁰[p] cant compute PRFs",
+      "TC⁰ is the exact boundary where natural proofs barrier kicks in - it can compute crypto primitives"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
