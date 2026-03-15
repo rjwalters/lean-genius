@@ -2017,6 +2017,145 @@ theorem schurMod_to_subset {n : ℕ} (p : Nat.Partition n)
 end DistinctPartFromSubset
 
 -- ============================================================================
+-- Part XXXIV-B: SchurMod ↔ SubsetsWithSum Bijection
+-- ============================================================================
+
+/-
+The Schur mod-side partitions of n (distinct parts ≡ 1,2 mod 3) are in
+natural bijection with subsets of {k ∈ [1..n] | k ≡ 1,2 mod 3} summing to n.
+
+Forward:  p ↦ p.parts.toFinset
+Backward: T ↦ partitionOfSubset (from T)
+
+This gives: |schurMod n| = |subsetsWithSum (schurModSet n) n|
+Combined with distinctPartGF_coeff: |schurMod n| = coeff n (schurModGF n)
+-/
+
+section SchurModBijection
+
+open Finset Nat
+
+/-- The set of naturals in [1..n] that are ≡ 1 or 2 (mod 3). -/
+def schurModSet (n : ℕ) : Finset ℕ :=
+  (Finset.range (n + 1)).filter (fun k => k % 3 = 1 ∨ k % 3 = 2)
+
+/-- schurModSet elements are positive. -/
+theorem schurModSet_pos {n : ℕ} : ∀ s ∈ schurModSet n, 0 < s := by
+  intro s hs
+  simp only [schurModSet, Finset.mem_filter, Finset.mem_range] at hs
+  obtain ⟨_, hmod⟩ := hs
+  rcases hmod with h | h <;> omega
+
+/-- schurModSet equals the set used in schurModGF: {k ∈ [1..n] | k > 0 ∧ k % 3 ≠ 0}. -/
+theorem schurModSet_eq_gf_set (n : ℕ) :
+    schurModSet n =
+    (Finset.range (n + 1)).filter (fun k => k > 0 ∧ k % 3 ≠ 0) := by
+  ext k
+  simp only [schurModSet, Finset.mem_filter, Finset.mem_range]
+  constructor
+  · rintro ⟨hlt, hmod⟩
+    refine ⟨hlt, ?_, ?_⟩
+    · rcases hmod with h | h <;> omega
+    · rcases hmod with h | h <;> omega
+  · rintro ⟨hlt, hpos, hmod⟩
+    refine ⟨hlt, ?_⟩
+    omega
+
+/-- **SchurMod cardinality equals subsetsWithSum cardinality**:
+    The number of SchurMod partitions of n equals the number of
+    subsets of schurModSet n summing to n. -/
+theorem schurMod_card_eq_subsetsWithSum (n : ℕ) :
+    (PartitionDecidable.schurMod n).card =
+    (subsetsWithSum (schurModSet n) n).card := by
+  -- We exhibit a bijection using Finset.card_bij
+  -- Forward map: p ↦ p.parts.toFinset
+  apply Finset.card_bij (fun p _ => p.parts.toFinset)
+  · -- Forward map lands in subsetsWithSum
+    intro p hp
+    simp only [PartitionDecidable.schurMod, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+    obtain ⟨hnodup, hmod⟩ := hp
+    simp only [subsetsWithSum, Finset.mem_filter, Finset.mem_powerset]
+    constructor
+    · -- p.parts.toFinset ⊆ schurModSet n
+      intro a ha
+      rw [Multiset.mem_toFinset] at ha
+      simp only [schurModSet, Finset.mem_filter, Finset.mem_range]
+      refine ⟨?_, hmod a ha⟩
+      have ha_le : a ≤ p.parts.sum := by
+        have := (Multiset.cons_erase ha).symm
+        rw [this, Multiset.sum_cons]; omega
+      rw [p.parts_sum] at ha_le; omega
+    · -- p.parts.toFinset.sum id = n
+      have hval : p.parts.toFinset.val = p.parts := Multiset.dedup_eq_self.mpr hnodup
+      simp only [Finset.sum, Multiset.map_id, hval, p.parts_sum]
+  · -- Forward map is injective on schurMod n
+    intro p₁ hp₁ p₂ hp₂ heq
+    simp only [PartitionDecidable.schurMod, Finset.mem_filter, Finset.mem_univ, true_and] at hp₁ hp₂
+    ext1
+    rw [← Multiset.dedup_eq_self.mpr hp₁.1, ← Multiset.dedup_eq_self.mpr hp₂.1]
+    exact congrArg Finset.val heq
+  · -- Forward map is surjective: every subset T gives a partition mapping to T
+    intro T hT
+    simp only [subsetsWithSum, Finset.mem_filter, Finset.mem_powerset] at hT
+    obtain ⟨hTsub, hTsum⟩ := hT
+    -- Build the partition from T
+    have hpos_T : ∀ x ∈ T, 0 < x := fun x hx => schurModSet_pos x (hTsub hx)
+    refine ⟨partitionOfSubset hpos_T hTsum, ?_, ?_⟩
+    · -- partitionOfSubset lands in schurMod n
+      simp only [PartitionDecidable.schurMod, Finset.mem_filter, Finset.mem_univ, true_and]
+      constructor
+      · -- parts are nodup (from Finset)
+        exact T.nodup
+      · -- all parts ≡ 1 or 2 (mod 3)
+        intro a ha
+        simp only [partitionOfSubset] at ha
+        have : a ∈ schurModSet n := hTsub ha
+        simp only [schurModSet, Finset.mem_filter, Finset.mem_range] at this
+        exact this.2
+    · -- toFinset of parts = T
+      simp only [partitionOfSubset]
+      -- parts.toFinset where parts = T.val
+      -- Multiset.toFinset T.val = T (since T.val is nodup)
+      have : Multiset.toFinset T.val = T := by
+        ext a
+        simp [Multiset.mem_toFinset]
+      exact this
+
+end SchurModBijection
+
+-- ============================================================================
+-- Part XXXIV-C: SchurMod Count = GF Coefficient
+-- ============================================================================
+
+/-
+Combining the bijection with the GF coefficient theorem:
+  |schurMod n| = |subsetsWithSum (schurModSet n) n| = coeff n (schurModGF n)
+-/
+
+section SchurModGFLink
+
+open Finset Nat PowerSeries
+
+noncomputable section
+
+/-- **SchurMod count equals GF coefficient**: The number of Schur mod-side
+    partitions of n equals the n-th coefficient of the Schur mod GF. -/
+theorem schurMod_card_eq_gf_coeff (n : ℕ) :
+    ↑(PartitionDecidable.schurMod n).card =
+    PowerSeries.coeff (R := ℤ) n (schurModGF n) := by
+  -- Step 1: schurMod count = subsetsWithSum count (bijection)
+  rw [schurMod_card_eq_subsetsWithSum]
+  -- Step 2: subsetsWithSum count = GF coefficient (distinctPartGF_coeff)
+  rw [← distinctPartGF_coeff (schurModSet n) schurModSet_pos]
+  -- Step 3: schurModGF n = distinctPartGF (schurModSet n) (by definition + set equality)
+  congr 1
+  simp only [schurModGF, schurModSet_eq_gf_set]
+
+end
+
+end SchurModGFLink
+
+-- ============================================================================
 -- Part XXXV: Extended Computational Verification (n=13..15)
 -- ============================================================================
 
@@ -2059,14 +2198,14 @@ end ExtendedVerification
 /-
 ## Complete File Summary (Updated)
 
-### Definitions (19, up from 16):
+### Definitions (20):
   List-level (2): hasMinGap, hasSchurGapFull
   Noncomputable (8): rr1GapPartitions, rr1Mod5Partitions, rr2GapPartitions,
     rr2Mod5Partitions, schurGapPartitions, schurModPartitions,
     schurGapFullPartitions, partHasMinGap, partSmallestPart, partAllModIn
   Decidable (7): rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGap, schurMod,
     schurGapFull
-  GF infrastructure (2): distinctPartGF, subsetsWithSum
+  GF infrastructure (3): distinctPartGF, subsetsWithSum, schurModSet
 
 ### Axioms (3):
   rogers_ramanujan_first, rogers_ramanujan_second,
@@ -2083,10 +2222,8 @@ end ExtendedVerification
     subsetsWithSum_subset_insert, subsetsWithSum_insert_not_mem,
     subsetsWithSum_insert_mem_empty
 
-### Sorries (3):
-  - subsetsWithSum_insert_mem_image: bijection for containing-k subsets
-  - distinctPartGF_coeff: main coefficient theorem (needs PowerSeries API chain)
-  - schurMod_to_subset: partition → subset direction
+### Sorries (0):
+  All proof sorries eliminated!
 
 ### Named Count Theorems (18):
   rr1_count_0..1, rr1_count_4, rr1_count_6, rr1_count_9..15,
@@ -2096,13 +2233,20 @@ end ExtendedVerification
   RR1 for n=0..15, RR2 for n=0..15, Schur (simplified) for n=0..8,
   Schur (corrected) for n=0..15
 
+### SchurMod ↔ Subsets Bijection (NEW):
+  schurModSet, schurModSet_pos, schurModSet_eq_gf_set,
+  schurMod_card_eq_subsetsWithSum (via Finset.card_bij),
+  schurMod_card_eq_gf_coeff
+
 ### Path to axiom elimination:
   1. ✅ Define distinctPartGF = ∏_{k ∈ S} (1 + X^k)
   2. ✅ Define subsetsWithSum S n (subsets summing to n)
   3. ✅ Prove subset sum recursion (insert splitting)
-  4. ✅ Prove GF coefficient = |subsetsWithSum S n| (proved via Finset induction + X^k shift)
-  5. 🔲 Build bijection: subsetsWithSum ≃ distinct partitions
-  6. 🔲 Specialize for mod-side partition sets
+  4. ✅ Prove GF coefficient = |subsetsWithSum S n| (distinctPartGF_coeff)
+  5. ✅ Build partition-subset correspondence (partitionOfSubset, schurMod_to_subset)
+  6. ✅ Specialize for Schur mod-side: |schurMod n| = coeff n (schurModGF n)
   7. 🔲 Build gap-side generating function characterization (hard step)
+     Note: For RR1/RR2, mod side allows repetition → needs ∏ 1/(1-X^k) (not yet built)
+     For Schur, both sides distinct → distinctPartGF approach works
   8. 🔲 Compose to prove identities
 -/
