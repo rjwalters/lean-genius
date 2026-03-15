@@ -1,19 +1,27 @@
 # Knowledge Base: Riemann Hypothesis
 
-## Session 2026-03-15 (researcher-5) - Nyman-Beurling Infrastructure + Complete Equivalence Class
+## Session 2026-03-15 (researcher-5) - Nyman-Beurling Infrastructure + Arithmetic Verifications
 
-**Mode**: REVISIT (depth-first, RICH knowledge score 17)
+**Mode**: REVISIT (depth-first, RICH knowledge score 17→24)
 **Problem**: riemann-hypothesis
 **Prior Status**: ACT (iteration 6)
 
-**What we did**:
+**What we did (2 iterations)**:
+
+*Iteration 1: Nyman-Beurling infrastructure*
 1. **Proved 5 fractionalPart properties**: `nonneg`, `lt_one`, `mem_Ico`, `intCast`, `natCast`
 2. **Proved 5 nymanBeurlingFunction properties**: `nonpos`, `nonneg`, `lt_one`, `mem_Ico`, `self`
 3. **Added 4 cross-equivalence theorems**: `NymanBeurling_iff_Robin`, `NymanBeurling_iff_deBruijnNewman`, `WeilPositivity_iff_Robin`, `WeilPositivity_iff_deBruijnNewman`
-4. **Updated `RH_equivalence_class`** to include all 7 formulations (was 6, now includes NymanBeurling)
-5. Docker build verified: 0 errors, 0 sorries
+4. **Updated `RH_equivalence_class`** to include all 7 formulations (was 6)
 
-**File stats**: 1937 lines (+106), 88 theorems, 18 axioms, 0 sorries
+*Iteration 2: Arithmetic verifications*
+5. **Proved `sigma_prime_eq`**: σ(p) = p + 1 for any prime p
+6. **Proved `sigma_ge_succ`**: σ(n) ≥ n + 1 for n ≥ 2
+7. **Computed σ values**: σ(1)=1, σ(2)=3, σ(6)=12, σ(12)=28
+8. **Proved `harmonicNumber_one`**: H₁ = 1, plus positivity
+
+**File stats**: 2008 lines (+177 from 1831), 96 theorems, 18 axioms, 0 sorries
+**PR**: #3808
 
 **Axiom budget**: 18 (main) + 10 (consequences) = 28 total (unchanged)
 
