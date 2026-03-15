@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-03-11T09:48:08.982Z",
-    "iteration": 5,
-    "focus": "Exchange bijection between gap-only and mod-only partitions",
+    "iteration": 3,
+    "focus": "Building GF coefficient infrastructure toward axiom elimination",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,35 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Built formal reduction framework. Schur axiom <=> gap count = GF coeff <=> |GapOnly|=|ModOnly| (exchange bijection). Canonical split defined with 11 properties proved. Collision analysis shows context-dependent splitting needed. 0 sorries, 3 axioms, ~3070 lines.",
+    "progressSummary": "PROGRESS: 3 sorries (subset image, GF coeff, partition-to-subset), 3 axioms. Extended verification to n=15. GF infrastructure advancing.",
     "builtItems": [
-      "distinctPartGF: generating function \u220f(1+X^k) as PowerSeries \u2124",
+      "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
       "subsetsWithSum: subset sum counting infrastructure",
-      "Bridge theorems connecting decidable \u2194 noncomputable formulations",
+      "Bridge theorems connecting decidable ↔ noncomputable formulations",
       "subsetsWithSum_insert_not_mem: subsets not containing k are subsets of S (proved)",
       "subsetsWithSum_insert_mem_empty: no containing-k subsets when k > n (proved)",
       "subsetsWithSum_insert_card: cardinality recursion (proved modulo image lemma)",
       "distinctPartGF_coeff_empty: base case of coefficient theorem (proved)",
-      "partitionOfSubset: Finset \u2192 Nat.Partition constructor (defined, compiles)",
-      "native_decide verification extended from n=12 to n=15 for all identities",
-      "distinctPartGF_coeff: GF coefficient = subset count (Finset induction proof)",
-      "schurMod_to_subset: forward direction of SchurMod partition \u2194 subset correspondence",
-      "Fixed partitionOfSubset parts_sum proof for new Mathlib API",
-      "schurModSet: {k \u2208 [1..n] | k \u2261 1,2 mod 3} definition",
-      "schurMod_card_eq_subsetsWithSum: bijection via Finset.card_bij (proved)",
-      "schurMod_card_eq_gf_coeff: |schurMod n| = coeff n (schurModGF n) (proved)",
-      "schurGapBounded(m,n): gap-side partitions with largest part \u2264 m (Finset filter)",
-      "schurModBounded(m,n): mod-side partitions with largest part \u2264 m (Finset filter)",
-      "schurGapRec/schurModRec: pure recursive counting functions verified against Finset defs",
-      "schurGapBounded_ge/schurModBounded_ge: m\u2265n reduces to full set",
-      "schurGapBounded_mono/schurModBounded_mono: monotonicity in bound m",
-      "schurModBounded_div3: m\u22610 mod 3 \u27f9 schurModBounded m = schurModBounded (m-1)",
-      "schurGapBounded_split: union decomposition by m-membership",
-      "schur_axiom_from_gap_gf: Schur axiom from gap-side GF link (Part XLIII)",
-      "splitHi/splitLo: canonical split for parts 0 mod 3 (Part XLIV)",
-      "schurGapOnly/schurModOnly/schurBoth: partition classification (Part XLV)",
-      "schur_identity_iff_exchange: Schur identity <=> |GapOnly|=|ModOnly| (Part XLV)"
+      "partitionOfSubset: Finset → Nat.Partition constructor (defined, compiles)",
+      "native_decide verification extended from n=12 to n=15 for all identities"
     ],
     "insights": [
       "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
@@ -67,31 +50,18 @@
       "Subset sum recursion: inserting element k splits subsets into containing-k and not-containing-k families",
       "GF coefficient theorem connects algebraic (PowerSeries) to combinatorial (subsetsWithSum) counting",
       "partitionOfSubset converts finsets to Nat.Partition, bridging subset and partition formulations",
-      "All three identities (RR1, RR2, Schur corrected) computationally verified through n=15",
-      "Proved distinctPartGF_coeff by Finset.induction: key insight is to revert n before induction so IH works for all indices. Uses PowerSeries.coeff_X_pow_mul for k\u2264n case and X_pow_dvd_iff for n<k case.",
-      "Proved schurMod_to_subset: convert Nodup multiset to Finset via toFinset, use Multiset.dedup_eq_self for sum equality.",
-      "PowerSeries.coeff API change: R is now implicit (use coeff (R := \u2124) n, not coeff \u2124 n).",
-      "SchurMod \u2194 subsetsWithSum bijection via Finset.card_bij: forward p\u21a6parts.toFinset, inverse via partitionOfSubset",
-      "RR1/RR2 mod sides allow repeated parts (no Nodup) \u2192 distinctPartGF approach only works for Schur, not RR",
-      "schurMod_card_eq_gf_coeff chains: bijection \u2192 distinctPartGF_coeff \u2192 GF definition equality",
-      "Bounded counts schurGapBounded(m,n) \u2260 schurModBounded(m,n) for m < n \u2014 the identity is genuinely global",
-      "Gap-side recurrence uses gap(m) offset: G(m,n)=G(m-1,n)+G(m-gap,n-m). Mod-side uses M(m,n)=M(m-1,n)+M(m-1,n-m). Different recurrences \u2192 cannot prove by matching.",
-      "Three viable proof strategies remain: (a) direct bijection, (b) GF identity at power series level, (c) clever variable substitution",
-      "Session 5 assessment: 3 axioms remain (RR1, RR2, Schur). All verified computationally to n=15. Proving symbolically requires either bijective proof (Bressoud-Zeilberger style) or GF identity approach. The GF infrastructure (partGF, geomSeries, convolution) is mature but connecting it to the specific partition sets needs additional work.",
-      "Exchange reduction: Schur identity <=> |GapOnly| = |ModOnly| where GapOnly = gap-valid with div3-part, ModOnly = mod-valid with gap-violation",
-      "Canonical split of c=0 mod 3: splitHi=(c+2)/2, splitLo=c-splitHi. Gap <= 2 (violates Schur >=3). Split parts not 0 mod 3.",
-      "Collision issue: canonical split(9)=(5,4) collides with existing part 4 in {9,4,1}. Context-dependent split needed for general case."
+      "All three identities (RR1, RR2, Schur corrected) computationally verified through n=15"
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",
       "No bijective proof machinery for partition identities"
     ],
     "nextSteps": [
-      "Build exchange bijection: context-dependent splitting for gap-only to mod-only",
-      "Key challenge: when canonical split collides, find collision-free alternative split",
-      "Build inverse merging map: mod-only to gap-only",
-      "Alternative: try Bressoud-Zeilberger bijection from the literature",
-      "Alternative: prove bounded identity gapBounded(n-1,n) vs modBounded(n-1,n) by induction"
+      "Prove subsetsWithSum_insert_mem_image: the bijection for containing-k subsets (needs Finset.cons manipulation)",
+      "Prove distinctPartGF_coeff via PowerSeries.coeff_mul chain (main coefficient theorem)",
+      "Build full bijection subsetsWithSum ↔ distinct partitions from a set S",
+      "Specialize to S = {k ≡ 1,2 mod 3} for Schur mod-side characterization",
+      "The hard step: gap-side generating function characterization (Schur functional equation)"
     ]
   },
   "approaches": [],
@@ -108,7 +78,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-17T08:30:00.000Z",
+  "lastUpdate": "2026-03-15T12:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
