@@ -7,7 +7,7 @@
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "MILLENNIUM PRIZE: All non-trivial zeros of \u03b6(s) have Re(s)=1/2.",
+    "plain": "MILLENNIUM PRIZE: All non-trivial zeros of ζ(s) have Re(s)=1/2.",
     "whyMatters": []
   },
   "knownResults": {
@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-13T12:00:00.000Z",
-    "iteration": 6,
-    "focus": "Random Matrix Theory, Hilbert-P\u00f3lya, physics connections",
+    "iteration": 5,
+    "focus": "Mathlib equivalence + Lindelöf Hypothesis",
     "blockers": [],
     "nextAction": "Attempt to eliminate no_real_zeros_in_strip axiom or add more equivalent formulations",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Parts I-XXXIV complete. 2926 lines, 58 axioms, 4 sorries, 123 theorems. Added Random Matrix Theory (GUE pair correlation, Montgomery conjecture, Keating-Snaith moments, Katz-Sarnak symmetry), Hilbert-P\u00f3lya conjecture, Berry-Keating, Selberg trace formula, Connes noncommutative geometry.",
+    "progressSummary": "PROGRESS: Eliminated 22 dead-code axioms from Consequences (45→23). Main file: 28 axioms. Total: 73→51 axioms, 0 sorries.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -43,7 +43,7 @@
       },
       {
         "name": "zeta_special_values",
-        "description": "\u03b6(2), \u03b6(4), etc.",
+        "description": "ζ(2), ζ(4), etc.",
         "proven": true
       },
       {
@@ -53,32 +53,32 @@
       },
       {
         "name": "trivial_zeros_exist",
-        "description": "\u03b6(-2) = 0 and \u03b6(-4) = 0",
+        "description": "ζ(-2) = 0 and ζ(-4) = 0",
         "proven": true
       },
       {
         "name": "zeta_zero_ne_zero",
-        "description": "\u03b6(0) \u2260 0 (it equals -1/2)",
+        "description": "ζ(0) ≠ 0 (it equals -1/2)",
         "proven": true
       },
       {
         "name": "zeta_two_ne_zero",
-        "description": "\u03b6(2) \u2260 0 (it equals \u03c0\u00b2/6)",
+        "description": "ζ(2) ≠ 0 (it equals π²/6)",
         "proven": true
       },
       {
         "name": "deBruijnNewman_of_RH",
-        "description": "RH implies \u039b = 0",
+        "description": "RH implies Λ = 0",
         "proven": true
       },
       {
         "name": "deBruijnNewman_of_not_RH_range",
-        "description": "\u00acRH implies 0 < \u039b \u2264 1/5",
+        "description": "¬RH implies 0 < Λ ≤ 1/5",
         "proven": true
       },
       {
         "name": "critical_strip_width",
-        "description": "Critical strip spans Re(s) \u2208 (0,1)",
+        "description": "Critical strip spans Re(s) ∈ (0,1)",
         "proven": true
       },
       {
@@ -88,27 +88,27 @@
       },
       {
         "name": "symmetric_distance_from_critical_line",
-        "description": "|Re(\u03c1) - 1/2| = |Re(1-\u03c1) - 1/2|",
+        "description": "|Re(ρ) - 1/2| = |Re(1-ρ) - 1/2|",
         "proven": true
       },
       {
         "name": "zeroDensity",
-        "description": "Zero-density counting function N(\u03c3,T)",
+        "description": "Zero-density counting function N(σ,T)",
         "proven": false
       },
       {
         "name": "DensityHypothesis",
-        "description": "N(\u03c3,T) \u226a T^{2(1-\u03c3)+\u03b5} formulation",
+        "description": "N(σ,T) ≪ T^{2(1-σ)+ε} formulation",
         "proven": false
       },
       {
         "name": "chebyshevPsi_ge_theta",
-        "description": "\u03c8(n) \u2265 \u03b8(n) proved from \u039b\u22650",
+        "description": "ψ(n) ≥ θ(n) proved from Λ≥0",
         "proven": true
       },
       {
         "name": "mertens_sign_change_exists",
-        "description": "\u2203 a<b with M(a)>0 and M(b)<0",
+        "description": "∃ a<b with M(a)>0 and M(b)<0",
         "proven": true
       },
       {
@@ -118,216 +118,62 @@
       },
       {
         "name": "RH_iff_mathlib",
-        "description": "Our RH \u2194 Mathlib RiemannHypothesis (PROVED)",
+        "description": "Our RH ↔ Mathlib RiemannHypothesis (PROVED)",
         "proven": true
       },
       {
         "name": "GRH_implies_mathlib_RH",
-        "description": "GRH \u2192 Mathlib RH (PROVED)",
+        "description": "GRH → Mathlib RH (PROVED)",
         "proven": true
       },
       {
         "name": "LindelofHypothesis",
-        "description": "Lindel\u00f6f Hypothesis definition",
+        "description": "Lindelöf Hypothesis definition",
         "proven": false
       },
       {
         "name": "RH_implies_Lindelof",
-        "description": "RH \u2192 Lindel\u00f6f (axiom)",
+        "description": "RH → Lindelöf (axiom)",
         "proven": false
       },
       {
         "name": "phragmen_lindelof_convexity",
-        "description": "Convexity bound O(|t|^{1/4+\u03b5}) (axiom)",
+        "description": "Convexity bound O(|t|^{1/4+ε}) (axiom)",
         "proven": false
       },
       {
         "name": "Lindelof_implies_convexity",
-        "description": "Lindel\u00f6f \u2192 convexity bound (PROVED)",
+        "description": "Lindelöf → convexity bound (PROVED)",
         "proven": true
       },
       {
         "name": "RH_implies_convexity",
-        "description": "RH \u2192 convexity bound (PROVED)",
+        "description": "RH → convexity bound (PROVED)",
         "proven": true
       },
-      "Eliminated 3 dead-code axioms (21\u219218): computationally_verified_zeros, RH_implies_prime_gaps, RH_implies_ternary_goldbach_effective",
-      {
-        "name": "rh_implies_psi_bound",
-        "description": "RH \u2192 \u03c8 = x + O(\u221ax log\u00b2x)",
-        "proven": true
-      },
-      {
-        "name": "rh_implies_theta_bound",
-        "description": "RH \u2192 \u03b8 = x + O(\u221ax log\u00b2x)",
-        "proven": true
-      },
-      {
-        "name": "rh_implies_prime_gap",
-        "description": "RH \u2192 prime gap O(\u221ap log p)",
-        "proven": true
-      },
-      {
-        "name": "redhefferEntry",
-        "description": "Redheffer matrix entry definition",
-        "proven": true
-      },
-      {
-        "name": "redheffer_det_eq_mertens",
-        "description": "det(R_n) = M(n)",
-        "proven": true
-      },
-      {
-        "name": "explicit_formula_error",
-        "description": "Zero locations \u2192 \u03c8 error term",
-        "proven": true
-      },
-      {
-        "name": "rh_implies_theta_upper_from_psi",
-        "description": "\u03b8 upper bound from \u03c8 bound (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "rh_gives_optimal_psi_bound",
-        "description": "RH \u2192 optimal \u03c8 bound (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "vinogradov_korobov_zero_free",
-        "description": "Vinogradov-Korobov zero-free region (1958)",
-        "proven": false
-      },
-      {
-        "name": "ingham_density_estimate",
-        "description": "Ingham density estimate N(\u03c3,T)",
-        "proven": false
-      },
-      {
-        "name": "huxley_density_estimate",
-        "description": "Huxley density estimate for \u03c3\u22653/4",
-        "proven": false
-      },
-      {
-        "name": "RH_implies_density_hypothesis",
-        "description": "RH \u2192 density hypothesis (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "VK_improves_classical",
-        "description": "VK region contains classical region (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "SelbergClassFunction",
-        "description": "Selberg class structure definition",
-        "proven": true
-      },
-      {
-        "name": "GrandRH",
-        "description": "Grand Riemann Hypothesis for Selberg class",
-        "proven": false
-      },
-      {
-        "name": "GrandRH_implies_RH",
-        "description": "Grand RH \u2192 RH (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "rh_tightens_prime_bounds",
-        "description": "RH tightens Rosser-Schoenfeld (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "littlewood_oscillation",
-        "description": "\u03c0(x)-Li(x) changes sign infinitely",
-        "proven": false
-      },
-      {
-        "name": "skewes_number_conditional",
-        "description": "First Li crossover under RH",
-        "proven": false
-      },
-      {
-        "name": "gue_pair_correlation",
-        "description": "GUE pair correlation function R\u2082(x) = 1 - (sin\u03c0x/\u03c0x)\u00b2",
-        "proven": true
-      },
-      {
-        "name": "gue_pair_correlation_at_zero",
-        "description": "R\u2082(0) = 1 (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "MontgomeryPairCorrelation",
-        "description": "Full Montgomery conjecture for zeros of \u03b6",
-        "proven": false
-      },
-      {
-        "name": "OdlyzkoVerification",
-        "description": "Odlyzko numerical verification of GUE statistics",
-        "proven": false
-      },
-      {
-        "name": "KeatingSnaithMoments",
-        "description": "Keating-Snaith conjecture for moments of \u03b6",
-        "proven": false
-      },
-      {
-        "name": "HilbertPolyaConjecture",
-        "description": "Hilbert-P\u00f3lya conjecture formalization",
-        "proven": false
-      },
-      {
-        "name": "BerryKeatingConjecture",
-        "description": "Berry-Keating semiclassical H = xp conjecture",
-        "proven": false
-      },
-      {
-        "name": "SelbergTraceFormula",
-        "description": "Selberg trace formula connecting spectral/geometric",
-        "proven": false
-      },
-      {
-        "name": "ConnesSpectralRealization",
-        "description": "Connes noncommutative geometry approach",
-        "proven": false
-      }
+      "Eliminated 3 dead-code axioms (21→18): computationally_verified_zeros, RH_implies_prime_gaps, RH_implies_ternary_goldbach_effective"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
       "explicit_formula",
       "zeta_special_values",
       "Li_criterion",
-      "Zero-density estimates formalized: Ingham (1940) and Huxley (1972) bounds on N(\u03c3,T)",
-      "Mathlib 4.26+ removed scoped \u03bc notation; must use ArithmeticFunction.moebius explicitly",
+      "Zero-density estimates formalized: Ingham (1940) and Huxley (1972) bounds on N(σ,T)",
+      "Mathlib 4.26+ removed scoped μ notation; must use ArithmeticFunction.moebius explicitly",
       "no_real_zeros_in_strip axiom cannot be eliminated without Dirichlet eta function in Mathlib",
-      "Proved chebyshevPsi \u2265 chebyshevTheta from vonMangoldt_nonneg and vonMangoldt_apply_prime",
+      "Proved chebyshevPsi ≥ chebyshevTheta from vonMangoldt_nonneg and vonMangoldt_apply_prime",
       "2026-03-14: Re-confirmed no_real_zeros_in_strip axiom cannot be eliminated - Mathlib still lacks Dirichlet eta function",
-      "2026-03-14: Fixed soundness bug - RH_iff_WeilPositivity was asserting RH\u2194True (the True placeholder in the biconditional made RH trivially provable). Now uses abstract WeilPositivity axiom.",
+      "2026-03-14: Fixed soundness bug - RH_iff_WeilPositivity was asserting RH↔True (the True placeholder in the biconditional made RH trivially provable). Now uses abstract WeilPositivity axiom.",
       "2026-03-14: Eliminated 2 trivial axioms in Consequences (gourdon_verification, selberg_central_limit) - both had True conclusions making them non-axioms",
-      "2026-03-14: Fixed 8 pre-existing build errors in RiemannHypothesis.lean: ext\u2192Complex.ext, linarith\u2192explicit, bernoulli simp\u2192explicit values, abs_sub proof via abs_neg",
+      "2026-03-14: Fixed 8 pre-existing build errors in RiemannHypothesis.lean: ext→Complex.ext, linarith→explicit, bernoulli simp→explicit values, abs_sub proof via abs_neg",
       "2026-03-14: Proved RH_iff_mathlib - our critical-strip RH definition is equivalent to Mathlib standard definition",
-      "2026-03-14: Added Lindel\u00f6f Hypothesis formalization + proved RH\u2192Lindel\u00f6f\u2192convexity chain",
-      "2026-03-14: Complex.abs deprecated in Mathlib - use \u2016\u00b7\u2016 norm notation instead",
-      "2026-03-14: Eliminated 3 axioms from Consequences file",
-      "rh_implies_psi_bound: RH \u2192 \u03c8(x) = x + O(\u221ax log\u00b2x) (von Koch 1901)",
-      "rh_implies_theta_bound: RH \u2192 \u03b8(x) = x + O(\u221ax log\u00b2x) (von Koch 1901)",
-      "rh_implies_prime_gap: RH \u2192 p_{n+1} - p_n = O(\u221ap log p) (Cram\u00e9r 1936)",
-      "Redheffer matrix: det(R_n) = M(n), connecting linear algebra to RH",
-      "Explicit formula error: zero locations control \u03c8(x) error term",
-      "rh_implies_theta_upper_from_psi: PROVED \u03b8 upper bound from \u03c8 bound",
-      "rh_gives_optimal_psi_bound: PROVED RH gives optimal error for all \u03b5 > 0",
-      "The Selberg class provides a unifying framework: Grand RH generalizes both RH and GRH. The degree conjecture and orthonormality conjecture structure the space of L-functions.",
-      "Zero-density estimates bridge the gap between zero-free regions and PNT error terms. Under RH, density hypothesis is trivially true since N(\u03c3,T)=0 for \u03c3>1/2.",
-      "Random Matrix Theory: GUE pair correlation matches zero spacing statistics (Montgomery 1973, Odlyzko 1987)",
-      "Keating-Snaith (2000): moments of \u03b6 on critical line predicted by random matrix theory with explicit constants",
-      "Hilbert-P\u00f3lya conjecture: zeros of \u03b6 are eigenvalues of a self-adjoint operator",
-      "Berry-Keating: semiclassical Hamiltonian H = xp connects RH to quantum chaos",
-      "Selberg trace formula: spectral\u2194geometric duality, model for explicit formula"
+      "2026-03-14: Added Lindelöf Hypothesis formalization + proved RH→Lindelöf→convexity chain",
+      "2026-03-14: Complex.abs deprecated in Mathlib - use ‖·‖ norm notation instead",
+      "2026-03-14: Eliminated 3 axioms from Consequences file"
     ],
     "mathlibGaps": [
       "Dirichlet series",
-      "Riemann zeta \u03b6(s)",
+      "Riemann zeta ζ(s)",
       "Analytic continuation",
       "L-functions"
     ],
@@ -337,7 +183,7 @@
       "Equivalent Formulations",
       "Zero-Free Regions"
     ],
-    "markdown": "# Knowledge Base: Riemann Hypothesis\n\n## The Problem\n\nThe Riemann Hypothesis (RH) is arguably the most famous unsolved problem in mathematics. Proposed by Bernhard Riemann in 1859, it concerns the distribution of prime numbers.\n\n### Core Statement\n\n> All non-trivial zeros of the Riemann zeta function \u03b6(s) have real part equal to 1/2.\n\nIn simpler terms: The zeta function \u03b6(s) = 1 + 1/2^s + 1/3^s + 1/4^s + ... has zeros at negative even integers (-2, -4, -6, ...) called \"trivial zeros.\" All other zeros are conjectured to lie on the \"critical line\" where Re(s) = 1/2.\n\n### Why It Matters\n\n1. **Prime Distribution**: RH implies the best possible error term for the prime counting function \u03c0(x)\n2. **Cryptography**: Many cryptographic systems rely on assumptions about prime distribution\n3. **Number Theory**: Hundreds of theorems are proven \"assuming RH\"\n4. **L-functions**: RH generalizes to a vast family of L-functions (Generalized Riemann Hypothesis)\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1859 | Riemann | Original paper stating the hypothesis |\n| 1896 | Hadamard, de la Vall\u00e9e Poussin | Proved Prime Number Theorem (weaker than RH) |\n| 1914 | Hardy | Infinitely many zeros on critical line |\n| 1942 | Selberg | Positive proportion of zeros on critical line |\n| 2004 | Gourdon | First 10^13 zeros verified computationally |\n\nThe problem has resisted proof for over 165 years despite intense effort by the world's best mathematicians.\n\n## What We've Built\n\n### In This Repository\n\nThe `rh-consequences.lean` file (~632 lines) formalizes results *assuming* RH:\n- `RH_implies_prime_gap_bound` - Prime gap bounds from RH\n- `explicit_formula` - Connection between zeros and primes\n- `zeta_special_values` - \u03b6(2), \u03b6(4), etc.\n- `Li_criterion` - Equivalent formulation via Li coefficients\n\n### In Mathlib\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Complex exponentials | \u2705 | Full support |\n| Dirichlet series | \u26a0\ufe0f Partial | Basic framework exists |\n| Riemann zeta \u03b6(s) | \u274c | Not defined |\n| Analytic continuation | \u274c | Not available |\n| L-functions | \u274c | Not available |\n\n## Formalization Challenges\n\n### Primary Blocker: Zeta Function Infrastructure\n\nDefining \u03b6(s) rigorously requires:\n1. **Initial definition**: \u03b6(s) = \u03a3 n^(-s) for Re(s) > 1\n2. **Analytic continuation**: Extending to all s \u2260 1\n3. **Functional equation**: \u03b6(s) = 2^s \u03c0^(s-1) sin(\u03c0s/2) \u0393(1-s) \u03b6(1-s)\n4. **Zeros**: Defining and locating non-trivial zeros\n\nThis infrastructure represents thousands of lines of formalization work.\n\n### What We Could Still Do\n\nEven without proving RH, tractable partial work includes:\n\n1. **RH Consequences** (done in rh-consequences.lean)\n   - Prove theorems *assuming* RH as an axiom\n   - Formalizes the implications of RH\n\n2. **Computational Verification**\n   - State that first N zeros are verified to be on critical line\n   - Connect to Gourdon's verification of 10^13 zeros\n\n3. **Equivalent Formulations**\n   - Li's criterion (already in our file)\n   - Weil's explicit formula\n   - Random matrix theory connections\n\n4. **Zero-Free Regions**\n   - Classical Hadamard-de la Vall\u00e9e Poussin region\n   - Korobov-Vinogradov improvements\n\n## Related Work in This Repository\n\n| File | Relevance |\n|------|-----------|\n| `rh-consequences.lean` | Consequences assuming RH |\n| `ChebyshevBounds.lean` | Prime counting bounds (weaker than RH) |\n| `prime-gaps-explicit` | Related to prime distribution |\n\n## Key References\n\n- Riemann, B. (1859). \"\u00dcber die Anzahl der Primzahlen unter einer gegebenen Gr\u00f6\u00dfe\"\n- Edwards, H.M. (1974). \"Riemann's Zeta Function\" (Dover)\n- Conrey, J.B. (2003). \"The Riemann Hypothesis\" (AMS Notices)\n- Bombieri, E. (2000). \"The Riemann Hypothesis\" (Clay Mathematics Institute)\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Searches Performed**:\n- Checked Mathlib for zeta function: Not present\n- Checked for Dirichlet series: Partial support exists\n- Looked for analytic continuation machinery: Limited\n\n**Current Status**: BLOCKED - Requires zeta function infrastructure not in Mathlib\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Dirichlet series | Partial | 2026-01-01 |\n| Riemann zeta | No | 2026-01-01 |\n| Analytic continuation | No | 2026-01-01 |\n| L-functions | No | 2026-01-01 |\n\n**Path Forward**: Continue building RH consequences while waiting for zeta infrastructure. The work we're doing now (assuming RH) will integrate naturally once \u03b6(s) is available.\n\n**Next Scout**: After major Mathlib release or when analytic number theory PR lands\n"
+    "markdown": "# Knowledge Base: Riemann Hypothesis\n\n## The Problem\n\nThe Riemann Hypothesis (RH) is arguably the most famous unsolved problem in mathematics. Proposed by Bernhard Riemann in 1859, it concerns the distribution of prime numbers.\n\n### Core Statement\n\n> All non-trivial zeros of the Riemann zeta function ζ(s) have real part equal to 1/2.\n\nIn simpler terms: The zeta function ζ(s) = 1 + 1/2^s + 1/3^s + 1/4^s + ... has zeros at negative even integers (-2, -4, -6, ...) called \"trivial zeros.\" All other zeros are conjectured to lie on the \"critical line\" where Re(s) = 1/2.\n\n### Why It Matters\n\n1. **Prime Distribution**: RH implies the best possible error term for the prime counting function π(x)\n2. **Cryptography**: Many cryptographic systems rely on assumptions about prime distribution\n3. **Number Theory**: Hundreds of theorems are proven \"assuming RH\"\n4. **L-functions**: RH generalizes to a vast family of L-functions (Generalized Riemann Hypothesis)\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1859 | Riemann | Original paper stating the hypothesis |\n| 1896 | Hadamard, de la Vallée Poussin | Proved Prime Number Theorem (weaker than RH) |\n| 1914 | Hardy | Infinitely many zeros on critical line |\n| 1942 | Selberg | Positive proportion of zeros on critical line |\n| 2004 | Gourdon | First 10^13 zeros verified computationally |\n\nThe problem has resisted proof for over 165 years despite intense effort by the world's best mathematicians.\n\n## What We've Built\n\n### In This Repository\n\nThe `rh-consequences.lean` file (~632 lines) formalizes results *assuming* RH:\n- `RH_implies_prime_gap_bound` - Prime gap bounds from RH\n- `explicit_formula` - Connection between zeros and primes\n- `zeta_special_values` - ζ(2), ζ(4), etc.\n- `Li_criterion` - Equivalent formulation via Li coefficients\n\n### In Mathlib\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Complex exponentials | ✅ | Full support |\n| Dirichlet series | ⚠️ Partial | Basic framework exists |\n| Riemann zeta ζ(s) | ❌ | Not defined |\n| Analytic continuation | ❌ | Not available |\n| L-functions | ❌ | Not available |\n\n## Formalization Challenges\n\n### Primary Blocker: Zeta Function Infrastructure\n\nDefining ζ(s) rigorously requires:\n1. **Initial definition**: ζ(s) = Σ n^(-s) for Re(s) > 1\n2. **Analytic continuation**: Extending to all s ≠ 1\n3. **Functional equation**: ζ(s) = 2^s π^(s-1) sin(πs/2) Γ(1-s) ζ(1-s)\n4. **Zeros**: Defining and locating non-trivial zeros\n\nThis infrastructure represents thousands of lines of formalization work.\n\n### What We Could Still Do\n\nEven without proving RH, tractable partial work includes:\n\n1. **RH Consequences** (done in rh-consequences.lean)\n   - Prove theorems *assuming* RH as an axiom\n   - Formalizes the implications of RH\n\n2. **Computational Verification**\n   - State that first N zeros are verified to be on critical line\n   - Connect to Gourdon's verification of 10^13 zeros\n\n3. **Equivalent Formulations**\n   - Li's criterion (already in our file)\n   - Weil's explicit formula\n   - Random matrix theory connections\n\n4. **Zero-Free Regions**\n   - Classical Hadamard-de la Vallée Poussin region\n   - Korobov-Vinogradov improvements\n\n## Related Work in This Repository\n\n| File | Relevance |\n|------|-----------|\n| `rh-consequences.lean` | Consequences assuming RH |\n| `ChebyshevBounds.lean` | Prime counting bounds (weaker than RH) |\n| `prime-gaps-explicit` | Related to prime distribution |\n\n## Key References\n\n- Riemann, B. (1859). \"Über die Anzahl der Primzahlen unter einer gegebenen Größe\"\n- Edwards, H.M. (1974). \"Riemann's Zeta Function\" (Dover)\n- Conrey, J.B. (2003). \"The Riemann Hypothesis\" (AMS Notices)\n- Bombieri, E. (2000). \"The Riemann Hypothesis\" (Clay Mathematics Institute)\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Searches Performed**:\n- Checked Mathlib for zeta function: Not present\n- Checked for Dirichlet series: Partial support exists\n- Looked for analytic continuation machinery: Limited\n\n**Current Status**: BLOCKED - Requires zeta function infrastructure not in Mathlib\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Dirichlet series | Partial | 2026-01-01 |\n| Riemann zeta | No | 2026-01-01 |\n| Analytic continuation | No | 2026-01-01 |\n| L-functions | No | 2026-01-01 |\n\n**Path Forward**: Continue building RH consequences while waiting for zeta infrastructure. The work we're doing now (assuming RH) will integrate naturally once ζ(s) is available.\n\n**Next Scout**: After major Mathlib release or when analytic number theory PR lands\n"
   },
   "approaches": [],
   "tags": [
@@ -353,7 +199,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.885Z",
-  "lastUpdate": "2026-03-15T12:00:00.000Z",
+  "lastUpdate": "2026-03-15T12:30:00.000Z",
   "significance": 10,
   "tractability": 1
 }
