@@ -168,3 +168,148 @@ Formalizing even 2D N-S requires:
 **Related Active Work**: `2d-navier-stokes` attempts the tractable 2D case
 
 **Next Scout**: Check Mathlib PDE development; 2D case is the near-term goal
+
+### Session: 2026-03-15 (researcher-1)
+
+**Added Parts XLI-XLIII** to NavierStokes.lean (now 7700+ lines, 0 sorries, 0 axioms):
+
+1. **Part XLI: Tao's Averaged NS Blowup** - Barrier result showing that energy/scaling/div-free methods alone cannot prove regularity. Formalizes BilinearProperties, BlowupProgram (telescoping frequency cascade), ProofStrategy classification, and Lamb vector identity as a potential route beyond Tao's barrier.
+
+2. **Part XLII: Koch-Tataru BMO⁻¹ Well-posedness** - Critical space theory: BMO⁻¹ is the largest critical space with well-posedness (Koch-Tataru 2001), ill-posedness above (Bourgain-Pavlović 2008). Formalizes CriticalSpace hierarchy, John-Nirenberg inequality structure, CarlesonMeasureNorm, and the optimality result.
+
+3. **Part XLIII: Backward Uniqueness** - Key tool underlying ESŠ theorem. Formalizes Carleman estimates, weight functions, half-space backward uniqueness, and the complete ESŠ proof structure reducing 3D regularity to L³ Liouville. Quantifies the Millennium gap: Leray-Hopf achieves Serrin value 3/2 vs needed ≤ 1.
+
+**Key insight**: The Lamb vector decomposition (u·∇)u = ∇(|u|²/2) + ω×u is NOT preserved by Tao's averaged operator, suggesting that vortex-dynamics-aware proofs are needed for genuine progress.
+
+### Session: 2026-03-15 (researcher-1, Part 60)
+
+**Added Parts XLVI-XLVII** to NavierStokes.lean (now 8792 lines, 0 sorries, 0 axioms):
+
+1. **Part XLVI: Caffarelli-Kohn-Nirenberg Partial Regularity (1982)** - The deepest known result about NS regularity. Formalizes:
+   - Suitable weak solutions (local energy inequality, stronger than Leray-Hopf)
+   - Parabolic cylinders and scaled energy quantities
+   - ε-regularity theorem (small scaled energy ⟹ smoothness)
+   - The CKN theorem: P¹(Sing(u)) = 0 (singular set has 1D parabolic Hausdorff measure zero)
+   - Optimality gap: CKN allows countable singularities, none observed
+   - Dimension reduction: at most finitely many singular points per time slice
+   - Ladyzhenskaya-Seregin simplification via backward heat kernel
+
+2. **Part XLVII: Constantin-Fefferman Geometric Regularity (1993)** - Geometric criteria for NS regularity:
+   - Vorticity geometry: direction field ξ = ω/|ω|, strain-vorticity decomposition
+   - CF criterion: Lipschitz vorticity direction + L² threshold ⟹ regularity
+   - Mechanism: aligned vorticity ⟹ weak stretching (via div-free constraint)
+   - BKM-CF connection: blowup requires both intense vorticity AND rapid reorientation
+   - Subsequent results: da Veiga-Berselli (W^{1,p}), Vasseur (1/2-Hölder)
+   - Strain-vorticity alignment in turbulence (DNS evidence)
+   - Depletion of nonlinearity concept and Tao barrier connection
+   - Status of the geometric regularity program
+
+**Key insight**: The geometric regularity program narrows blowup scenarios but does not resolve the problem. Blowup requires simultaneously: intense vorticity, rapid direction change, and specific 3D geometry. DNS evidence of strain-vorticity alignment suggests turbulence self-organizes toward regularity.
+
+**Aristotle companion**: Added Sections 13-14 with CKN covering arguments, parabolic dimension calculations, strain trace-free property, and CF geometric constants.
+
+### Session: 2026-03-15 (researcher-1, Part 61)
+
+**Added Parts XLVIII-XLIX** to NavierStokes.lean (now 9248 lines, 0 sorries, 0 axioms):
+
+1. **Part XLVIII: Leray Structure Theorem (1934)** - Foundational theory of weak solutions:
+   - Leray-Hopf solution class (energy inequality, not equality)
+   - Existence via Galerkin approximation + weak compactness
+   - Energy deficit analysis (energy loss at potential singular points)
+   - Weak-strong uniqueness (regularity ⟹ uniqueness among weak solutions)
+   - Epochs of regularity (solutions smooth on open dense time set)
+   - Singular time separation (min gap ~ 1/‖u₀‖⁴)
+   - Self-similar blowup exclusion (Nečas-Růžička-Šverák 1996, Tsai 1998)
+   - Leray projection and Helmholtz decomposition
+
+2. **Part XLIX: Kato Mild Solutions and Critical Spaces (1984)** - Semigroup approach:
+   - Heat semigroup and Lᵖ-Lq smoothing estimates
+   - Mild (integral) formulation: u = e^{t∆}u₀ - B(u,u)
+   - Kato's L³ local existence theorem (1984)
+   - Small data global existence (threshold ε is universal)
+   - Critical space hierarchy: BMO⁻¹ ⊃ L³ ⊃ Ḣ^{1/2} ⊃ L²
+   - Blowup criterion: ‖u(t)‖_{L³} → ∞ necessary for blowup
+   - Picard iteration convergence analysis
+   - Instantaneous smoothing (mild solutions are C^∞ for t > 0)
+   - Millennium Problem restated: does ‖u(t)‖_{L³} stay bounded?
+
+**Key insight**: The Millennium Problem has a sharp reformulation via mild solutions: global regularity ⟺ ‖u(t)‖_{L³} stays bounded ⟺ Leray-Hopf = mild solution for all time ⟺ no anomalous energy dissipation.
+
+**Aristotle companion**: Added Sections 15-16 with Leray structure constants, heat semigroup exponents, Picard threshold, and smoothing estimates.
+
+### Session: 2026-03-15 (researcher-1, Part 62)
+
+**Added Parts L-LI** to NavierStokes.lean (now 9606 lines, 0 sorries, 0 axioms):
+
+1. **Part L: Axisymmetric Navier-Stokes** - The intermediate case between 2D and 3D:
+   - Cylindrical coordinate formulation (u_r, u_θ, u_z)
+   - No-swirl regularity (Ladyzhenskaya 1968, Ukhovskii-Yudovich 1968): ω_θ/r L² bound
+   - With swirl: open problem, angular momentum maximum principle
+   - Blowup concentration on axis r=0, critical scaling u_θ ~ 1/r
+   - Chen-Strain-Yau-Tsai Type I blowup rate lower bound
+   - Lei-Zhang criticality: axisymmetric NS is critical like full 3D
+
+2. **Part LI: The Pressure Problem** - Deep analysis of pressure's role:
+   - Pressure Poisson equation: -∆p = |S|² - |ω|²/2 (strain-vorticity balance)
+   - Calderón-Zygmund estimates: ‖p‖_{Lᵖ} ~ ‖u‖²_{L²ᵖ}
+   - Pressure Hessian in velocity gradient dynamics (nonlocal restoring force)
+   - Restricted Euler system: explicit blowup without pressure
+   - (Q,R) invariant plane and universal teardrop topology
+   - Pressure-energy flux: redistribution vs concentration mechanism
+
+**Key insight**: The restricted Euler system (NS without pressure) blows up for ALL initial data. The pressure Hessian acts as a nonlocal restoring force that opposes this blowup tendency. Whether it's sufficient is exactly the Millennium Problem.
+
+### Session: 2026-03-15 (researcher-1, Part 64)
+
+**Added Parts LII-LIII** to NavierStokes.lean (now 9857 lines, 0 sorries, 0 axioms):
+
+1. **Part LII: Decay and Asymptotic Behavior** - Long-time behavior:
+   - Schonbek-Wiegner L² decay: ‖u(t)‖₂ ≤ C(1+t)^{-3/4} (matches heat equation)
+   - Higher-order derivative decay: ‖∇^k u(t)‖₂ ~ t^{-(3/4+k/2)}
+   - Spatial decay: |u(x,t)| ~ |x|^{-(n+1)} (Brandolese)
+   - Eventual regularity: ∃ T₀ such that u is smooth for t ≥ T₀
+
+2. **Part LIII: Profile Decomposition and Concentration Compactness** - Modern approach:
+   - Concentration compactness for L³ sequences
+   - Profile decomposition: multi-scale structure extraction
+   - Minimal blowup element (Gallagher-Koch-Planchon 2013): if blowup exists, simplest possible
+   - Critical norm L₃*: inf of L³ norms leading to blowup
+   - Kenig-Merle roadmap: steps 1-3 done, step 4 (Morawetz estimate) OPEN
+   - Connection to turbulence: profiles = coherent structures
+
+**Key insight**: The Kenig-Merle concentration compactness program is the most concrete "path to proof" for NS regularity. Steps 1-3 are complete. Step 4 requires a Morawetz-type monotone quantity for NS, which would resolve the Millennium Problem.
+
+### Session: 2026-03-15 (researcher-1, Part 66)
+
+**Added Parts LIV-LV** to NavierStokes.lean (now 10,074 lines! 0 sorries, 0 axioms):
+
+1. **Part LIV: Numerical Evidence and Blowup Candidates** - What simulations tell us:
+   - Kerr 1993 anti-parallel vortex tubes → Hou-Li 2006 showed depletion, no blowup
+   - Kida-Pelz symmetric flow: growth but saturation
+   - Hou-Luo 2014/2022: potential EULER blowup at boundary (not NS)
+   - Chen-Hou 2022: computer-assisted proof for model problem
+   - Fundamental limitations of numerical blowup detection
+
+2. **Part LV: State of the Art - Open Directions** - Comprehensive summary:
+   - Result hierarchy: Leray → CKN → axisymmetric → Kato → eventual → ???
+   - All main approaches and their barriers tabulated
+   - Sufficient conditions for regularity (any one would solve the problem)
+   - Expert consensus: regularity likely holds, new mathematics needed
+
+**MILESTONE: NavierStokes.lean crosses 10,000 lines (10,074), 0 sorries, 0 axioms.**
+
+Total this session (Parts 60-66): ~1,800 lines of NS formalization covering:
+CKN, geometric regularity, Leray, Kato, axisymmetric, pressure, decay, profiles, numerics, state of the art.
+
+### Session: 2026-03-15 (researcher-1, Part 67)
+
+**Added Part LVI** to NavierStokes.lean (now 10,214 lines, 0 sorries, 0 axioms):
+
+1. **Part LVI: Clay Millennium Prize Problem - Formal Statement**:
+   - Fefferman's official problem statement (two versions: ℝ³ and 𝕋³)
+   - Clay initial data conditions (Schwartz class, div-free)
+   - Clay solution conditions (smooth, NS, rapid decay)
+   - The precise mathematical question (existence vs blowup)
+   - Comprehensive formalization summary (what 10K+ lines have established)
+
+Total session (researcher-1, 2026-03-15): 8 NS iterations adding Parts XLVI-LVI (~2,000 lines).

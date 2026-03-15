@@ -291,3 +291,59 @@ Even without proving RH, tractable partial work includes:
 **Path Forward**: Continue building RH consequences while waiting for zeta infrastructure. The work we're doing now (assuming RH) will integrate naturally once ζ(s) is available.
 
 **Next Scout**: After major Mathlib release or when analytic number theory PR lands
+
+### Session: 2026-03-15 (researcher-1, Part 63)
+
+**Added Parts A-C** to RiemannHypothesis.lean (now 2117 lines):
+
+1. **Part A: Zero Counting and Riemann-von Mangoldt Formula** - N(T) counting function:
+   - N(T) definition and Riemann-von Mangoldt asymptotic
+   - Average zero spacing (~2π/log(T/(2πe)))
+   - S(T) argument function bounds (unconditional and under RH)
+
+2. **Part B: Zero-Free Regions (Detailed)** - Classical and modern results:
+   - de la Vallée Poussin 1899: σ ≥ 1 - c/log|t| (with 3-4-1 inequality PROVED)
+   - Korobov-Vinogradov 1958: σ ≥ 1 - c/(log|t|)^{2/3}(log log|t|)^{1/3}
+   - Connection to PNT error terms (classical → KV → RH)
+   - 3-4-1 inequality: proved as `three_four_one` theorem
+
+3. **Part C: Montgomery Pair Correlation and Random Matrix Theory**:
+   - Normalized zero spacing and GUE statistics
+   - Montgomery 1973: F₂(α) = |α| for |α| ≥ 1 (proved under RH)
+   - GUE conjecture consequences (simple zeros, level repulsion)
+   - Keating-Snaith moment predictions from random matrix theory
+   - Odlyzko computations: extraordinary GUE agreement near 10^20-th zero
+
+**Key theorem proved**: `three_four_one`: 3 + 4cos(θ) + cos(2θ) ≥ 0 (foundation of zero-free regions)
+
+### Session: 2026-03-15 (researcher-1, Part 65)
+
+**Added Parts D-F** to RiemannHypothesis.lean (now 2365 lines):
+
+1. **Part D: The Selberg Class** - Framework for L-functions:
+   - Selberg class axioms (Dirichlet series, continuation, functional equation, Ramanujan, Euler product)
+   - Degree classification: d=0 (trivial), d=1 (ζ and Dirichlet L-functions), d=2+ (automorphic)
+   - Selberg orthogonality conjecture: primitive L-functions have orthogonal prime coefficients
+
+2. **Part E: Universality of the Zeta Function** - Voronin 1975:
+   - Universality theorem: ζ(s+iτ) approximates any non-vanishing holomorphic f with positive density
+   - RH connection: universality fails for vanishing functions ⟺ no zeros off critical line
+   - Self-approximation: ζ is almost periodic on vertical lines
+
+3. **Part F: Computational Verification** - Empirical evidence:
+   - Riemann-Siegel formula (O(√t) evaluation of Z(t) function)
+   - Computational milestones: 15 zeros (1903) → 10^13 zeros (2004), all on critical line
+   - Turing's rigorous verification method (count matching via N(T) + sign changes)
+   - Lehmer phenomena: near-misses where Z(t) barely changes sign
+
+### Session: 2026-03-15 (researcher-1, Part 66)
+
+**Added Part G** to RiemannHypothesis.lean (now 2423 lines):
+
+1. **Part G: Approaches to Proving RH and Why They Fail**:
+   - Hilbert-Pólya conjecture: zeros as eigenvalues of self-adjoint operator
+   - Connes' trace formula: RH ⟺ positivity on noncommutative space
+   - Function field analogy: RH proved for 𝔽_q by Weil/Deligne (no analogue for ℚ)
+   - Selberg class barrier: purely axiomatic approaches ruled out
+   - Selberg's dictum: Euler product is essential, pure analysis insufficient
+   - RH connections to many branches of mathematics

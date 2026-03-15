@@ -1270,10 +1270,7 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
         have : ((↑j : ℤ) : ℝ) = ((m * ↑n + ↑k : ℤ) : ℝ) := by
           push_cast; linarith [h_real]
         exact_mod_cast this
-      -- j = m * n + k in ℤ → j % n = k % n in ℕ
-      -- PRE-EXISTING: Int↔Nat mod cast API drift (Nat.cast_mod_cast removed in Mathlib 4.26)
-      -- Fix strategy: use Int.add_mul_emod_self + Int.ofNat_mod (names need verification)
-      sorry
+      omega
     · -- h : 2jπ/n = 2mπ - 2kπ/n → k ≡ n - j (mod n)
       right
       have h_real : (↑j : ℝ) + ↑k = ↑m * ↑n := by
@@ -1282,15 +1279,35 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
         have : ((↑j + ↑k : ℤ) : ℝ) = ((m * ↑n : ℤ) : ℝ) := by
           push_cast; linarith [h_real]
         exact_mod_cast this
-      -- PRE-EXISTING: Int↔Nat mod cast API drift
-      sorry
+      omega
   · rintro (h | h)
     · -- k % n = j % n → cos equal via periodicity
-      -- PRE-EXISTING: Int↔Nat mod cast API drift
-      sorry
+      -- k ≡ j (mod n) in ℕ → j - k divisible by n in ℤ
+      have h_mod : (↑j : ℤ) % ↑n = (↑k : ℤ) % ↑n := by
+        have : (↑(k % n) : ℤ) = ↑(j % n) := by exact_mod_cast h
+        simp only [Nat.cast_mod_cast] at this; omega
+      obtain ⟨m, hm⟩ := (Int.modEq_iff_dvd.mp h_mod : (↑n : ℤ) ∣ (↑k - ↑j))
+      refine ⟨-m, Or.inl ?_⟩
+      have h_int : (↑j : ℤ) = -m * ↑n + ↑k := by omega
+      have h_real : (↑j : ℝ) = -↑m * ↑n + ↑k := by
+        have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; exact this
+      field_simp; nlinarith [h_real]
     · -- k % n = (n - j % n) % n → cos equal via reflection
-      -- PRE-EXISTING: Int↔Nat mod cast API drift
-      sorry
+      -- k + j ≡ 0 (mod n) in ℕ
+      have h_sum : (j + k) % n = 0 := by
+        have hn_pos : 0 < n := by omega
+        rw [Nat.add_mod, h]
+        by_cases hjz : j % n = 0
+        · simp [hjz, Nat.mod_self]
+        · rw [Nat.mod_eq_of_lt (show n - j % n < n by omega)]
+          have : j % n + (n - j % n) = n := by omega
+          rw [this, Nat.mod_self]
+      obtain ⟨m', hm'⟩ := Nat.dvd_of_mod_eq_zero h_sum
+      have h_int : (↑j : ℤ) + ↑k = ↑m' * ↑n := by
+        have := congr_arg (Nat.cast (R := ℤ)) hm'; push_cast at this; linarith
+      refine ⟨(m' : ℤ), Or.inr ?_⟩
+      have h_real : (↑j : ℝ) + ↑k = ↑(m' : ℤ) * ↑n := by exact_mod_cast h_int
+      field_simp; nlinarith [h_real]
 
 /-- If gcd(k, n) = 1 then gcd(n - k, n) = 1. -/
 private lemma coprime_sub_self {n k : ℕ} (hk : k ≤ n) (hc : k.Coprime n) :
