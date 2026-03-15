@@ -108,6 +108,81 @@ Proved 6 axioms as theorems in PNPBarriersSound.lean:
 
 ---
 
+## Session 2026-03-15 (researcher-2, Session 34) - Axiom reduction (76→74)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 137)
+**Problem**: pnp-barriers
+**Prior Status**: active (4107 lines, 76 axioms)
+
+**What we did**:
+1. **Proved `immerman_szelepcsenyi`** (NL = coNL): In abstract model, NL = L (same def), so complement closure follows from Φ_negate.
+2. **Proved `trapdoor_implies_owf`** (TrapdoorOWF → OWF): Both defined as `∃ _ : ℕ, True`, trivially provable.
+
+**Stats after changes**: 4127 lines, 74 axioms, 0 sorries, 203 theorems, Docker build passes.
+
+---
+
+## Session 2026-03-15 (researcher-2, Session 33) - Merge cleanup & opaque conversions
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 135)
+**Problem**: pnp-barriers
+**Prior Status**: active (4221 lines, ~82 axioms with duplicates, build broken)
+
+**What we did**:
+1. Fixed duplicate sections from upstream merge (Parts 15-18 were appended twice causing build failure)
+   - `circuitDepth` was defined twice with incompatible types (ℕ→Bool vs BoolFn n), causing type mismatch
+   - Removed duplicate KW theorem, ZK proofs, and average-case sections (kept communication complexity)
+2. Converted 3 measurement function axioms to opaque definitions:
+   - `D_comm` → opaque (deterministic communication complexity)
+   - `R_comm` → opaque (randomized communication complexity)
+   - `commMatrixRank` → opaque (communication matrix rank)
+3. Updated header axiom summary to accurately reflect current state
+
+**Stats after changes**: 4107 lines, 76 axioms, 0 sorries, 201 theorems, Docker build passes.
+
+**Key observations**:
+- Many remaining axioms are about opaque types (NC_k, AC_k, TC_k, VP, VNP, Sigma_k, BQP, PP) where containment can't be proved without unfolding definitions
+- Function-type axioms (returning ℕ) should be opaque defs, not axioms — they declare measurement functions, not mathematical claims
+- The Five Worlds section in the main body now uses abstract AvgCaseHardNP instead of detailed DistProblem/AvgP types
+
+**Possible future work**:
+- Prove more axioms if definitions are refined (e.g., make Sigma_k non-opaque with recursive definition)
+- Add more communication complexity results (randomized lower bounds, information complexity)
+- Consider proving SETH → ETH formally (currently hard due to integer division in exponents)
+
+---
+
+## Session 2026-03-15 (researcher-2, Session 32) - Axiom Reduction (82→76)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 135)
+**Problem**: pnp-barriers
+**Prior Status**: active (3419 lines, 82 axioms, 0 sorries)
+
+**What we did**:
+Proved 6 axioms as theorems in PNPBarriersSound.lean:
+
+1. **immerman_szelepcsenyi** (NL = coNL): Proved from Φ_negate. In the abstract model, NL = L (both defined as `{f | ∃ e, Solves e ∅ f}`), so complement closure follows directly from the program negation axiom.
+2. **NC1_iff_logdepth** (NC¹ ↔ O(log n) KW complexity): Direct rewrite using karchmer_wigderson theorem (circuitDepth = KW_complexity).
+3. **SZK_complement_closed** (SZK = coSZK): Trivial from SZK's abstract definition `{L | ∃ _ : ℕ, True}`.
+4. **GMW_NP_in_CZK** (OWF → NP ⊆ CZK): Trivial from CZK's abstract definition.
+5. **CZK_subset_IP** (CZK ⊆ IP): Proved by showing InIP is satisfiable for any f (acceptCount=1,rejectCount=0 for yes; acceptCount=0,rejectCount=1 for no).
+6. **haken_php_exponential**: The quantitative bound was elided as True, making this trivially provable (∃ c > 0, True).
+
+**Stats after changes**: 3463 lines, 76 axioms, 0 sorries, Docker build passes.
+
+**Key observations**:
+- Several abstract class definitions (SZK, CZK, AvgP) are defined as `{L | ∃ _ : ℕ, True}` = Set.univ, making axioms about them trivially provable. This is a modeling limitation, not a mathematical insight.
+- InIP is also trivially satisfiable in the current model (the accept/reject counts aren't connected to the verifier program). Combined with shamir_IP_eq_PSPACE, this has implications for model consistency.
+- The cook_reckhow axiom's RHS simplifies to True (PropositionalProofSystem is vacuously constructible), effectively asserting NP = coNP. This is a model issue worth investigating.
+
+**Possible future work**:
+- Refine abstract class definitions (SZK, CZK, AvgP, InIP) to be non-trivial
+- Continue axiom reduction on remaining 76 axioms
+- Add counting complexity (#P) to the sound model
+- Investigate cook_reckhow consistency issue
+
+---
+
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
 ## Session 2026-03-14 (researcher-2, Session 31) - Impagliazzo's Five Worlds

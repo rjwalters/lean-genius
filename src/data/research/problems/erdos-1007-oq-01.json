@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-06T22:03:59.699Z",
-    "iteration": 3,
-    "focus": "Structural results connecting conjectures; tighter complete graph dimension bounds",
+    "iteration": 4,
+    "focus": "K_3 embedding, dim bounds, file cleanup",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 8 new theorems connecting optimality/monotonicity/quadratic conjectures. Proved dim(K_2)<=1. Unconditional quadratic bounds verified for d<=5.",
+    "progressSummary": "PROGRESS: K_3 equilateral triangle embedding proved. dim(K_3)<=2 established. Cleanup removed duplicate §11. 9 axioms, 41 theorems, 0 sorries.",
     "builtItems": [
       "optimal_implies_quadratic theorem (§11)",
       "choose_two_le_sq helper: C(d+1,2) <= d^2 for d>=1 (§11)",
@@ -38,20 +38,28 @@
       "optimal_chain: optimality → monotonicity → lower bounds (§12)",
       "quadratic_verified_small: unconditional quadratic bounds for d<=5 (§13)",
       "K2_unit_embedding: K_2 embeds in R^1 (§14)",
-      "complete_graph_dim_le_tight_2: dim(K_2) <= 1 (§14)"
+      "complete_graph_dim_le_tight_2: dim(K_2) <= 1 (§14)",
+      "K3embed: equilateral triangle embedding of K_3 in R^2 (§15)",
+      "K3_unit_embedding: K_3 unit-distance embedding in R^2 (§15)",
+      "complete_graph_dim_le_tight_3: dim(K_3) <= 2 (§15)",
+      "sq_sqrt_three, sq_sqrt_three_half: helper lemmas for sqrt(3) arithmetic"
     ],
     "insights": [
       "optimal_implies_quadratic: complete graph optimality conjecture implies Theta(d^2) growth with c1=1/2, c2=1",
       "Monotonicity propagates known values: mono + minEdges(5)=15 gives minEdges(d)>=15 for all d>=5",
       "Quadratic bounds d^2/2 <= minEdges(d) <= d^2 verified unconditionally for d<=5",
       "dim(K_2) <= 1 proved (tight bound, embedding two points in R^1)",
-      "General dim(K_n) <= n-1 requires projecting R^n simplex to hyperplane; key insight: pairwise differences orthogonal to all-ones vector so projection preserves distances"
+      "General dim(K_n) <= n-1 requires projecting R^n simplex to hyperplane; key insight: pairwise differences orthogonal to all-ones vector so projection preserves distances",
+      "dim(K_3) <= 2 proved via explicit equilateral triangle in R^2: vertices (0,0), (1,0), (1/2,sqrt(3)/2)",
+      "Removed duplicate §11 (redundant with §8 optimal_implies_quadratic), reducing axiom count to 9",
+      "General dim(K_n) <= n-1 assessed as BUILD task: requires ~200-300 lines ONB infrastructure for hyperplane isometry"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove dim(K_n) <= n-1 in general via Helmert basis or Householder projection",
-      "Prove dim(K_n) >= n-1 via Gram matrix positive definiteness argument",
-      "Mark as completed once dim(K_n)=n-1 is established or assessed as requiring new Mathlib infra"
+      "General dim(K_n) <= n-1: BUILD task requiring ONB for hyperplane {x: sum=0} to R^{n-1}",
+      "dim(K_n) >= n-1 lower bound via Gram matrix argument (needs Matrix.PosDef from Mathlib)",
+      "Consider explicit K_4 <= 3 embedding (tetrahedron in R^3) as intermediate step",
+      "Mark completed once general result established or assessed as blocked on Mathlib infra"
     ],
     "markdown": "# Knowledge Base: erdos-1007-oq-01\n\nMinimum edges for graph dimension d in general.\n\n---\n\n## Session 2026-03-14 (Session 2) - Soundness Fix\n\n**Mode**: REVISIT (depth-first, MODERATE knowledge)\n**Outcome**: progress — eliminated unsound axiom, improved formalization\n\n### What Was Done\n- **Found soundness bug**: `hasUnitEmbedding_exists'` axiom claimed every graph (including\n  those with self-loops) has a unit embedding. Self-loops require ‖0‖ = 1 = impossible.\n  This axiom could derive `False` for any graph with `adj v v`.\n- **Fixed by elimination**: Reorganized file to move simplex embedding infrastructure (§7)\n  before `graphDimension'` definition (§1), allowing `graphDimension'` to use the\n  proved `hasUnitEmbedding_exists_irrefl` theorem instead of the unsound axiom.\n- Added `Irreflexive adj` hypothesis to `graphDimension'`, `minEdgesForDim_le`,\n  and `minEdgesForDim_achieved` — mathematically correct since we only study simple graphs.\n- Axiom count: 12 → 11. All remaining axioms are sound (encode computational search\n  results and rigidity bounds not provable in Lean).\n\n### Files Modified\n- `proofs/Proofs/Erdos1007OQ01.lean` — reorganized, eliminated axiom\n\n---\n\n## Session 2026-03-11 (Session 1) - Survey\n\n**Mode**: FRESH\n**Outcome**: surveyed\n\n### Key Findings\n- OQ01 file fully proved: 25+ theorems, 0 sorries, 12 axioms (now 11 after Session 2)\n- Simplex embedding construction: K_n embeds in ℝⁿ as unit distances (complete proof)\n- Deficiency function δ(d) = C(d+1,2) - minEdges(d) with d=4 as unique anomaly\n- optimal_implies_monotone: complete graph optimality conjecture → monotonicity (proved)\n- Growth rate analysis with verified successive differences\n\n### Assessment\n- All provable theorems already proved\n- Axioms encode known values (House 2013, Chaffee-Noble 2016) and search properties\n- General minEdges(d) is genuinely open\n- To make further progress, would need dim(K_n) = n-1 rigidity argument (non-trivial)\n"
   },
@@ -68,7 +76,7 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.176Z",
-  "lastUpdate": "2026-03-15T08:40:00Z",
+  "lastUpdate": "2026-03-15T09:45:00Z",
   "significance": 6,
   "tractability": 5
 }
