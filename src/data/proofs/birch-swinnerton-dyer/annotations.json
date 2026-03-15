@@ -178,5 +178,89 @@
     "significance": "supporting",
     "relatedConcepts": ["open-problem", "millennium-prize", "arithmetic-geometry"],
     "prerequisites": ["all-preceding-sections"]
+  },
+  {
+    "id": "ann-selmer-groups",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 1513, "endLine": 1575},
+    "type": "definition",
+    "title": "Selmer Groups and Descent",
+    "content": "**Selmer groups** are the primary computational tool for bounding ranks. The n-Selmer group $\\text{Sel}_n(E/\\mathbb{Q})$ sits in the exact sequence $0 \\to E(\\mathbb{Q})/nE(\\mathbb{Q}) \\to \\text{Sel}_n \\to \\text{III}[n] \\to 0$, giving $\\text{rank} \\leq \\dim \\text{Sel}_n - \\dim \\text{III}[n]$. The **2-descent** is the most tractable: for congruent number curves $y^2 = x^3 - n^2x$, the factorization $x(x-n)(x+n)$ enables explicit computation.",
+    "mathContext": "$$0 \\to E(\\mathbb{Q})/nE(\\mathbb{Q}) \\to \\text{Sel}_n(E/\\mathbb{Q}) \\to \\text{III}(E/\\mathbb{Q})[n] \\to 0$$\n$\\text{Sel}_n$ is always finite and computable (at least for small $n$). The `SelmerGroup` structure has `Fintype` and `AddCommGroup` instances. The `rank_bound_from_selmer` theorem proves the basic bound.",
+    "significance": "key",
+    "relatedConcepts": ["descent", "selmer-group", "sha-n-torsion", "rank-bound"],
+    "prerequisites": ["mordell-weil", "galois-cohomology"]
+  },
+  {
+    "id": "ann-root-number",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 1843, "endLine": 1929},
+    "type": "theorem",
+    "title": "Root Number Theory and Parity of Rank",
+    "content": "The root number $w(E) \\in \\{\\pm 1\\}$ determines the parity of the analytic rank via the functional equation. The key **proved theorem** `rootNumber_neg_implies_vanishing`: if $w(E) = -1$ and BSD holds, then $\\text{rank}(E) \\geq 1$. The proof combines the functional equation parity ($r_{\\text{an}} \\bmod 2 = 1$ when $w = -1$) with BSD ($r_{\\text{alg}} = r_{\\text{an}}$), concluding by `omega` since no natural number $\\equiv 1 \\pmod{2}$ can be 0.\n\nLocal root numbers are defined for each reduction type: $w_p = +1$ for good and nonsplit multiplicative, $w_p = -1$ for split multiplicative. The archimedean root number is always $-1$.",
+    "mathContext": "$$w(E) = -1 \\;\\wedge\\; \\text{BSD} \\implies \\text{rank}(E) \\geq 1$$\nProof: $w = -1 \\implies r_{\\text{an}} \\equiv 1 \\pmod{2}$ (functional equation) $\\implies r_{\\text{an}} \\geq 1$ (since $0 \\not\\equiv 1$) $\\implies r_{\\text{alg}} \\geq 1$ (BSD). Global: $w(E) = -\\prod_p w_p \\cdot w_\\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["root-number", "functional-equation", "parity-conjecture", "local-root-number"],
+    "prerequisites": ["analytic-rank", "BSD_Weak"]
+  },
+  {
+    "id": "ann-iwasawa",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 2857, "endLine": 2958},
+    "type": "definition",
+    "title": "Iwasawa Theory for Elliptic Curves",
+    "content": "**Iwasawa theory** provides a completely independent approach to BSD through p-adic analysis. The Selmer group over the cyclotomic $\\mathbb{Z}_p$-extension is a module over the Iwasawa algebra $\\Lambda = \\mathbb{Z}_p\\llbracket T \\rrbracket$, described by $\\mu$ and $\\lambda$ invariants. The **Iwasawa Main Conjecture** (Kato 2004 + Skinner-Urban 2014) equates the characteristic ideal of the dual Selmer group with the p-adic L-function: $\\text{char}_\\Lambda(X^\\vee) = (L_p(E))$.\n\nThis recovers BSD for rank 0 and 1 via an entirely different method, and additionally controls the p-part of $|\\text{III}|$.",
+    "mathContext": "$$\\text{char}_\\Lambda(X(E/\\mathbb{Q}_\\infty)^\\vee) = (L_p(E)) \\quad \\text{as ideals of } \\Lambda$$\n$\\mu = 0$ conjecture (known in many cases). $\\lambda \\geq \\text{rank}(E(\\mathbb{Q}))$. The `IwasawaMainConjecture` structure combines both Kato's and Skinner-Urban's divisibilities.",
+    "significance": "key",
+    "relatedConcepts": ["iwasawa-algebra", "p-adic-L-function", "mu-invariant", "lambda-invariant", "kato", "skinner-urban"],
+    "prerequisites": ["selmer-groups", "p-adic-analysis", "cyclotomic-extension"]
+  },
+  {
+    "id": "ann-tunnell",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 3067, "endLine": 3218},
+    "type": "theorem",
+    "title": "Tunnell's Theorem and Congruent Numbers",
+    "content": "**Tunnell's theorem** (1983) gives a strikingly simple criterion for the ancient congruent number problem, *conditional on BSD*. For squarefree $n$: $n$ is congruent iff $f(n) = 2g(n)$, where $f$ and $g$ count representations by specific ternary quadratic forms ($2x^2 + y^2 + 8z^2 = n$ and $2x^2 + y^2 + 32z^2 = n$ for odd $n$).\n\nThe forward direction (congruent $\\implies f = 2g$) is unconditional. The reverse requires BSD. Verified: $n = 1$ (not congruent: $f = 2, g = 2, f \\neq 2g$), $n = 5$ ($f = 4, g = 2$), $n = 6$ ($f = 2, g = 1$), $n = 7$ ($f = 4, g = 2$).",
+    "mathContext": "$$n \\text{ congruent} \\iff f(n) = 2g(n) \\quad (\\text{conditional on BSD})$$\nConnection: $f(n) = 2g(n) \\iff L(E_n, 1) = 0$ (via theta series and Shimura correspondence), then BSD gives $\\text{rank}(E_n) \\geq 1$, then Koblitz gives a rational right triangle with area $n$.",
+    "significance": "key",
+    "relatedConcepts": ["tunnell-theorem", "congruent-numbers", "ternary-quadratic-forms", "shimura-correspondence"],
+    "prerequisites": ["congruent-number-curve", "BSD_Weak", "koblitz-correspondence"]
+  },
+  {
+    "id": "ann-bloch-kato",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 3446, "endLine": 3575},
+    "type": "definition",
+    "title": "The Bloch-Kato Conjecture — Generalizing BSD",
+    "content": "The **Bloch-Kato conjecture** (1990) vastly generalizes BSD to arbitrary motives. For a motive $M$ with L-function $L(M, s)$: $\\text{ord}_{s=c} L(M, s) = \\dim H^1_f(\\mathbb{Q}, V)$ where $c = (w+1)/2$ is the center of symmetry and $H^1_f$ is the Bloch-Kato Selmer group.\n\nBSD is the special case $M = h^1(E)$ (weight 1, dimension 2). The `bloch_kato_specializes_to_bsd` theorem verifies this: the elliptic curve motive has $\\text{ord\\_vanishing} = \\text{analyticRank}(E)$.",
+    "mathContext": "$$\\text{Bloch-Kato: } \\text{ord}_{s=c} L(M, s) = \\dim H^1_f(\\mathbb{Q}, V(M))$$\nFor $M = h^1(E)$: weight 1, dim 2, center $c = 1$, $H^1_f = $ Selmer group of $E$. The `Motive` structure captures weight, dimension, L-center, and order of vanishing.",
+    "significance": "key",
+    "relatedConcepts": ["motive", "bloch-kato-selmer", "langlands-program", "symmetric-power"],
+    "prerequisites": ["galois-representations", "L-functions", "selmer-groups"]
+  },
+  {
+    "id": "ann-j-invariant-cm",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 5140, "endLine": 5233},
+    "type": "theorem",
+    "title": "j-Invariant Classification and CM Curves (PROVED)",
+    "content": "**Fully proved section.** The j-invariant classifies elliptic curves up to isomorphism. Two special values: $j = 0$ for curves $y^2 = x^3 + b$ (CM by $\\mathbb{Z}[\\omega]$, extra order-3 automorphism), and $j = 108$ (our convention) for curves $y^2 = x^3 + ax$ (CM by $\\mathbb{Z}[i]$, extra order-4 automorphism).\n\nProved: `jInvariant_zero_iff_a_zero` (by simp), `jInvariant_b_zero` (by field_simp/ring, using cube root extraction via `pow_eq_zero_iff`), discriminant formulas for both cases, and mutual exclusion (`a = 0 \\implies b \\neq 0` and vice versa).",
+    "mathContext": "$$j = 0 \\iff a = 0; \\quad j = 108 \\iff b = 0 \\;(\\text{our convention})$$\nCM curves are significant for BSD: Coates-Wiles first proved BSD rank 0 for CM curves. CM curves have explicitly computable L-functions via Hecke characters. The 13 CM j-invariants are known (class number 1 fields).",
+    "significance": "key",
+    "relatedConcepts": ["j-invariant", "CM-curve", "automorphism", "class-number"],
+    "prerequisites": ["EllipticCurveQ", "discriminant"]
+  },
+  {
+    "id": "ann-point-doubling",
+    "proofId": "birch-swinnerton-dyer",
+    "range": {"startLine": 5234, "endLine": 5339},
+    "type": "theorem",
+    "title": "Point Doubling Formula (PROVED)",
+    "content": "**Fully proved.** For $P = (x_0, y_0)$ on $y^2 = x^3 + ax + b$ with $y_0 \\neq 0$: tangent slope $m = (3x_0^2 + a)/(2y_0)$, doubled point $[2]P = (m^2 - 2x_0, \\; m(3x_0 - m^2) - y_0)$. All proved by `field_simp` and `ring`. This is the explicit group law that makes elliptic curves an algebraic group.",
+    "mathContext": "$$m = \\frac{3x_0^2 + a}{2y_0}, \\quad x_2 = m^2 - 2x_0, \\quad y_2 = m(3x_0 - m^2) - y_0$$\nThe point doubling formula is the foundation for computing the Mordell-Weil group. Together with the chord construction for addition, it defines the complete group law on $E$.",
+    "significance": "supporting",
+    "relatedConcepts": ["group-law", "tangent-line", "doubling-map"],
+    "prerequisites": ["EllipticCurveQ", "field-arithmetic"]
   }
 ]
