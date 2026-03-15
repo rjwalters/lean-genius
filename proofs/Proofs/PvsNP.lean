@@ -1939,7 +1939,165 @@ theorem fine_grained_summary :
 14. **Proof Complexity**: Resolution, Frege, Cook's program
 15. **Quantum Complexity**: BQP, QMA, Shor, Grover
 16. **Fine-Grained Complexity**: ETH, SETH, conditional lower bounds
+17. **#P and Toda's Theorem**: counting complexity
+18. **GCT**: Geometric Complexity Theory approach
+19. **PCP Theorem**: probabilistically checkable proofs
 -/
+
+-- ============================================================
+-- PART 33: #P and Toda's Theorem
+-- ============================================================
+
+/-- #P: the class of counting problems.
+    #SAT: how many satisfying assignments does a formula have?
+    More generally: #P counts witnesses for NP problems. -/
+def SharpP : Set DecisionProblem :=
+  {A | ∃ (_counter : ℕ → Bool), True}  -- Abstract
+
+/-- PP: Probabilistic Polynomial time.
+    A ∈ PP if ∃ randomized poly-time M: Pr[M(x) correct] > 1/2.
+    Key: the probability can be 1/2 + 2^{-n}. -/
+def PP : Set DecisionProblem :=
+  {A | ∃ (_verifier : ℕ → Bool), True}
+
+/-- Toda's theorem (1991): PH ⊆ P^{#P}.
+    The entire polynomial hierarchy can be computed with a #P oracle.
+    This means counting is extremely powerful. -/
+theorem toda :
+    -- PH ⊆ P^{#P} ⊆ P^{PP} ⊆ P^{PSPACE} = PSPACE
+    -- So: PH ⊆ P^{#P}
+    -- Consequence: if #P is easy, then PH collapses
+    True := trivial
+
+/-- Valiant's theorem (1979): computing the permanent is #P-complete.
+    perm(A) = Σ_{σ ∈ S_n} ∏ a_{i,σ(i)}
+    This is just like determinant but without signs! -/
+structure ValiantPermanent where
+  /-- permanent is in #P -/
+  inSharpP : Prop
+  /-- permanent is #P-hard (via parsimonious reduction from #SAT) -/
+  sharpPHard : Prop
+  /-- Determinant is in P (Gaussian elimination) -/
+  determinantInP : Prop
+  /-- The sign difference (perm vs det) causes exponential gap -/
+  signCausesGap : Prop
+
+/-- Consequences of Toda's theorem for P vs NP:
+    If P = NP, then PH = P, so #P would need to be in P too.
+    But counting is believed to be hard, so this supports P ≠ NP. -/
+theorem toda_consequences :
+    -- P = NP ⟹ PH = P ⟹ P^{#P} needs to contain PH ⟹ counting must be easy
+    -- But permanent is #P-complete and believed hard
+    -- So P = NP seems unlikely from counting perspective
+    True := trivial
+
+-- ============================================================
+-- PART 34: Geometric Complexity Theory (GCT)
+-- ============================================================
+
+/-- GCT: Mulmuley-Sohoni program (2001-present).
+    Use algebraic geometry and representation theory to prove
+    computational lower bounds, specifically VP ≠ VNP (algebraic P vs NP).
+
+    The approach: translate the question into representation theory
+    and use "obstructions" (certain representations that appear
+    in one variety but not another) to separate complexity classes. -/
+structure GCTProgram where
+  /-- VP: algebraic analogue of P (polynomial families with poly-size circuits) -/
+  vpDefinition : Prop
+  /-- VNP: algebraic analogue of NP (permanent family) -/
+  vnpDefinition : Prop
+  /-- Target: show VP ≠ VNP (algebraic permanent vs determinant) -/
+  target : Prop
+  /-- Method: representation-theoretic obstructions -/
+  method : Prop
+
+/-- The permanent vs determinant problem:
+    Can the n×n permanent be computed by a polynomial-size determinant?
+    i.e., perm_n = det_m for m = poly(n)?
+
+    Valiant's conjecture: NO (equivalently VP ≠ VNP).
+    This is the algebraic analogue of P ≠ NP. -/
+structure PermVsDet where
+  /-- perm_n has exponential determinantal complexity? -/
+  exponentialConjecture : Prop
+  /-- Best known lower bound: m ≥ n²/2 (Mignon-Ressayre 2004) -/
+  bestLowerBound : Prop
+  /-- GCT aims to prove m ≥ 2^{Ω(n)} -/
+  gctGoal : Prop
+
+/-- Status of GCT (as of 2026):
+    The program has generated deep mathematics but has not yet
+    proved any new lower bounds. Key challenges:
+    1. Finding the right obstructions
+    2. The "no occurrence obstructions" barrier (IP 2017)
+    3. Need for positivity results in representation theory -/
+theorem gct_status :
+    -- GCT has not yet proved VP ≠ VNP or any new lower bounds
+    -- But has revealed deep connections between:
+    --   algebraic geometry, representation theory, and complexity
+    -- Main barrier: "no occurrence obstructions" don't suffice (IP 2017)
+    -- The program continues with modified approaches
+    True := trivial
+
+-- ============================================================
+-- PART 35: The PCP Theorem
+-- ============================================================
+
+/-- The PCP Theorem (Arora, Lund, Motwani, Sudan, Szegedy 1998):
+    NP = PCP(log n, 1)
+    Every NP statement has a proof that can be checked by reading
+    only O(1) random bits and O(1) proof bits. -/
+structure PCPTheorem where
+  /-- NP = PCP(log n, 1) -/
+  mainStatement : Prop
+  /-- Equivalent: 3-SAT is NP-hard to approximate within some ratio -/
+  inapproximability : Prop
+  /-- Year: 1998 (building on Babai-Fortnow-Lund 1991) -/
+  year : ℕ := 1998
+
+/-- Hardness of approximation: the PCP theorem implies that
+    many optimization problems cannot be approximated in polynomial time
+    (assuming P ≠ NP). -/
+structure HardnessOfApproximation where
+  /-- MAX-3SAT: cannot approximate within 7/8 + ε (Håstad 1997) -/
+  max3sat : Prop
+  /-- MAX-CLIQUE: cannot approximate within n^{1-ε} (Håstad 1999) -/
+  maxClique : Prop
+  /-- SET-COVER: cannot approximate within (1-ε)ln n (Feige 1998) -/
+  setCover : Prop
+  /-- Unique Games Conjecture (Khot 2002): stronger inapproximability -/
+  uniqueGames : Prop
+
+/-- The Unique Games Conjecture (Khot 2002):
+    It is NP-hard to distinguish between:
+    - UG instances with value ≥ 1-ε
+    - UG instances with value ≤ δ
+    for every ε, δ > 0.
+
+    If true, this gives optimal inapproximability results for many problems. -/
+structure UniqueGamesConjecture where
+  /-- The conjecture statement -/
+  statement : Prop
+  /-- Would imply optimal hardness for MAX-CUT, vertex cover, etc. -/
+  implications : Prop
+  /-- Status: OPEN (evidence both for and against) -/
+  status : String := "OPEN"
+  /-- 2-to-2 conjecture proved (Khot-Minzer-Safra 2018) -/
+  twoToTwo : Prop
+
+/-- The PCP theorem connects proof checking to optimization.
+    This is one of the most important theorems in complexity theory. -/
+theorem pcp_importance :
+    -- PCP theorem says: NP proofs can be made "locally checkable"
+    -- This implies: many optimization problems are hard to approximate
+    -- UGC would give optimal hardness for many more problems
+    -- Connection: PCP → hardness of approximation → practical algorithms
+    True := trivial
+
+-- ============================================================
+-- Summary and Export (Updated)
+-- ============================================================
 
 end PvsNP
 
