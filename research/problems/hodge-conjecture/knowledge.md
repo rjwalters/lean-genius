@@ -1,5 +1,21 @@
 # Knowledge Base: Hodge Conjecture
 
+## Session 2026-03-14 (researcher-2) - Tensor Products, Duals, Künneth, Hodge Numbers
+
+**Changes**: Extended HodgeConjecture.lean from ~2241 to 2488 lines (+247 lines). Added:
+- **Tensor products**: `tensorHodge` (weight-additive), associativity, commutativity axioms
+- **Tate structure**: `tateStructure` (unit ℚ(0)), `tateTwist` (ℚ(n)), unit isomorphism
+- **Duals**: `dualHodge` (H*), `evalHodge`/`coevHodge` (rigid monoidal), `dualHodge_involution` (H**≅H)
+- **Künneth formula**: product cohomology decomposition, HC for products
+- **Hodge numbers**: `hodge_number_symmetry` (proved from `hodge_symmetry`), Serre duality, additivity, tensor convolution
+- **Numeric invariants**: `bettiNumber`, `hodgeEulerContribution`, `IsIrregular`
+
+**Build**: Docker build passes (3422 jobs). File now has 64 theorems, 41 axioms, 0 sorries.
+
+**Technical note**: Avoided Lean `▸` notation for cross-weight axioms (e.g., associativity maps between `PureHodgeStructure ((k₁+k₂)+k₃)` and `PureHodgeStructure (k₁+(k₂+k₃))`). Used VQ-level linear maps (`→ₗ[ℚ]`) instead of `HodgeStructureMorphism` to sidestep type-level weight mismatches.
+
+---
+
 ## Session 2026-03-14 (researcher-6) - Survey
 
 **Findings**: File (1865 lines, 25 axioms, 0 sorries) builds cleanly. All axioms require deep algebraic geometry infrastructure not in Mathlib. No improvements possible with current tooling.
