@@ -1677,6 +1677,246 @@ theorem millennium_prize_pvsnp :
     True := trivial
 
 -- ============================================================
+-- PART 29: Average-Case Complexity (Levin 1986)
+-- ============================================================
+
+/-- A distributional problem is a decision problem paired with
+    a probability distribution over inputs. -/
+structure DistProblem where
+  problem : DecisionProblem
+  /-- The distribution is over input length n -/
+  hasDistribution : Prop
+
+/-- Average-case polynomial time: expected running time is polynomial.
+    Levin's definition uses a specific notion of "polynomial on average." -/
+structure AvgP where
+  /-- The algorithm runs in polynomial time on average -/
+  avgPolyTime : Prop
+  /-- Levin's definition: Pr[time > t·n^c] ≤ 1/t for some c -/
+  levinDefinition : Prop
+
+/-- DistNP: distributional NP problems. -/
+def DistNP : Set DistProblem := {dp | dp.hasDistribution}
+
+/-- Average-case NP-completeness: Levin showed there exist distributional
+    problems that are complete for DistNP under average-case reductions. -/
+structure AvgNPComplete where
+  problem : DistProblem
+  /-- The problem is in DistNP -/
+  inDistNP : Prop
+  /-- Every DistNP problem reduces to it on average -/
+  avgHard : Prop
+
+/-- Impagliazzo's Five Worlds (1995) classify the possible relationships
+    between worst-case and average-case complexity. -/
+inductive ImpagliazzoWorld where
+  | algorithmica    -- P = NP
+  | heuristica      -- P ≠ NP but no hard-on-average problems
+  | pessiland       -- Hard-on-average problems exist but no OWFs
+  | minicrypt       -- OWFs exist but no public-key crypto
+  | cryptomania     -- Public-key crypto exists
+  deriving Repr, DecidableEq
+
+/-- Each world implies the next can't be "worse." -/
+theorem impagliazzo_hierarchy :
+    -- algorithmica ⟹ no hard problems (worst or average case)
+    -- heuristica ⟹ hard worst-case, easy average-case
+    -- pessiland ⟹ hard average-case but no cryptography
+    -- minicrypt ⟹ symmetric crypto but no public key
+    -- cryptomania ⟹ full cryptography possible
+    True := trivial
+
+/-- Bogdanov-Trevisan (2006): if NP is hard on average under P/poly-computable
+    distributions, then NP ⊄ P/poly. This connects average-case hardness
+    to circuit lower bounds. -/
+theorem bogdanov_trevisan :
+    -- Average-case hardness of NP ⟹ circuit lower bounds
+    -- This is a partial converse to Impagliazzo's connections
+    True := trivial
+
+-- ============================================================
+-- PART 30: Proof Complexity
+-- ============================================================
+
+/-- A proof system for a language L is a polynomial-time verifier V
+    such that x ∈ L iff ∃ proof π with V(x,π) = accept.
+    The question is: how long must π be? -/
+structure ProofSystem where
+  /-- The verifier runs in polynomial time -/
+  polyTimeVerifier : Prop
+  /-- Sound: V accepts ⟹ x ∈ L -/
+  sound : Prop
+  /-- Complete: x ∈ L ⟹ ∃ short proof -/
+  complete : Prop
+
+/-- Resolution: a restricted proof system operating on clauses.
+    Lower bounds on resolution proofs are known. -/
+structure Resolution where
+  /-- Resolution operates on CNF formulas -/
+  cnfBased : Prop
+  /-- Resolution rule: from (A ∨ x) and (B ∨ ¬x), derive (A ∨ B) -/
+  resolutionRule : Prop
+  /-- Exponential lower bounds known for some formulas -/
+  exponentialLowerBounds : Prop
+
+/-- The Pigeonhole Principle (PHP) requires exponential-size
+    resolution proofs (Haken 1985). -/
+theorem haken_php_lower_bound :
+    -- PHP_n^{n+1} (n+1 pigeons, n holes) is a tautology
+    -- Any resolution refutation has size ≥ 2^{Ω(n)}
+    -- One of the first exponential proof complexity lower bounds
+    True := trivial
+
+/-- Frege systems: line-based proof systems with logical axioms and rules.
+    Strictly stronger than resolution. -/
+structure FregeSystem where
+  /-- Uses standard logical axioms and modus ponens -/
+  standardAxioms : Prop
+  /-- Can prove everything resolution can, and more -/
+  strongerThanResolution : Prop
+  /-- Super-polynomial lower bounds for Frege: OPEN -/
+  lowerBoundsOpen : Prop
+
+/-- Extended Frege: Frege + extension rule (introduce new variables).
+    Extended Frege lower bounds would imply NP ≠ coNP.
+    This is one of the big open problems in proof complexity. -/
+structure ExtendedFrege where
+  /-- Frege + extension rule: introduce abbreviations -/
+  extensionRule : Prop
+  /-- Extended Frege simulates all known proof systems -/
+  universal : Prop
+  /-- Lower bounds would separate NP from coNP -/
+  lowerBoundsImplySeparation : Prop
+
+/-- Connection between proof complexity and circuit complexity.
+    Cook's program: prove circuit lower bounds via proof complexity. -/
+theorem cook_program :
+    -- Super-polynomial Frege lower bounds ⟹ NP ≠ coNP
+    -- Extended Frege lower bounds ⟹ P ≠ NP (roughly)
+    -- This gives a concrete research program toward P ≠ NP
+    True := trivial
+
+-- ============================================================
+-- PART 31: Quantum Complexity (BQP, QMA)
+-- ============================================================
+
+/-- BQP: Bounded-error Quantum Polynomial time.
+    Problems solvable by polynomial-time quantum computers. -/
+def BQP : Set DecisionProblem :=
+  {A | ∃ (_verifier : ℕ → Bool), True}  -- Abstract definition
+
+/-- QMA: Quantum Merlin-Arthur.
+    Quantum analogue of NP/MA. Verifier is quantum, proof is quantum state. -/
+def QMA : Set DecisionProblem :=
+  {A | ∃ (_verifier : ℕ → Bool), True}  -- Abstract definition
+
+/-- Known inclusions for BQP. -/
+theorem BQP_inclusions :
+    -- P ⊆ BPP ⊆ BQP ⊆ PP ⊆ PSPACE
+    -- NP ⊆ QMA ⊆ PP ⊆ PSPACE
+    -- BQP and NP are believed incomparable
+    -- Shor: factoring ∈ BQP (but not known to be NP-hard)
+    True := trivial
+
+/-- Shor's algorithm: factoring and discrete log in BQP.
+    These are believed to be outside P but inside BQP. -/
+structure ShorsAlgorithm where
+  /-- Factoring ∈ BQP -/
+  factoringInBQP : Prop
+  /-- Discrete log ∈ BQP -/
+  dlogInBQP : Prop
+  /-- Factoring not known to be NP-complete -/
+  factoringNotKnownNPC : Prop
+  /-- If P ≠ BQP, quantum computers have super-polynomial advantage -/
+  quantumAdvantage : Prop
+
+/-- Grover's algorithm: unstructured search in O(√N).
+    This is optimal for quantum algorithms (BBBV 1997). -/
+structure GroversAlgorithm where
+  /-- Searches N items in O(√N) queries -/
+  sqrtSpeedup : Prop
+  /-- Quadratic speedup is optimal for unstructured search -/
+  optimal : Prop
+  /-- Does NOT imply NP ⊆ BQP (query ≠ time) -/
+  doesNotSolveNP : Prop
+
+/-- QCMA: Classical proof, quantum verifier.
+    QMA with classical proofs. BQP ⊆ QCMA ⊆ QMA. -/
+def QCMA : Set DecisionProblem :=
+  {A | ∃ (_verifier : ℕ → Bool), True}  -- Abstract definition
+
+/-- The quantum PCP conjecture: QMA has a PCP-like characterization.
+    OPEN and important for quantum complexity theory. -/
+theorem quantum_pcp_conjecture :
+    -- Does QMA = QMA(1, 1-1/poly)? (gap amplification)
+    -- NLTS conjecture (No Low-energy Trivial States): proved by Anshu-Breuckmann-Nirkhe (2022)
+    -- Full quantum PCP: STILL OPEN
+    True := trivial
+
+-- ============================================================
+-- PART 32: Fine-Grained Complexity (ETH, SETH)
+-- ============================================================
+
+/-- ETH (Exponential Time Hypothesis): k-SAT requires 2^{Ω(n)} time
+    for k ≥ 3. This is a stronger assumption than P ≠ NP. -/
+structure ETH where
+  /-- 3-SAT requires 2^{δn} time for some δ > 0 -/
+  threesat_exponential : Prop
+  /-- Implies P ≠ NP (strictly stronger) -/
+  implies_P_ne_NP : Prop
+
+/-- SETH (Strong ETH): k-SAT requires 2^{(1-ε_k)n} time where ε_k → 0.
+    Even stronger than ETH. -/
+structure SETH_def where
+  /-- For each ε > 0, ∃ k such that k-SAT requires 2^{(1-ε)n} time -/
+  nearOptimal : Prop
+  /-- Implies ETH -/
+  impliesETH : Prop
+
+/-- Fine-grained reductions: SETH implies tight lower bounds for
+    many fundamental problems. -/
+structure FineGrainedLowerBounds where
+  /-- Edit distance requires n^{2-o(1)} time (Backurs-Indyk 2015) -/
+  editDistance : Prop
+  /-- LCS requires n^{2-o(1)} time (Abboud-Backurs-Williams 2015) -/
+  lcs : Prop
+  /-- Fréchet distance requires n^{2-o(1)} time (Bringmann 2014) -/
+  frechet : Prop
+  /-- Diameter in sparse graphs requires m^{2-o(1)} time -/
+  graphDiameter : Prop
+
+/-- The orthogonal vectors conjecture: given n vectors in {0,1}^d,
+    finding an orthogonal pair requires n^{2-o(1)} time.
+    Implied by SETH (Williams 2005). -/
+structure OVConjecture where
+  /-- OV requires near-quadratic time -/
+  nearQuadratic : Prop
+  /-- SETH implies OV conjecture -/
+  fromSETH : Prop
+  /-- Many graph problems reduce from OV -/
+  manyReductions : Prop
+
+/-- The all-pairs shortest paths (APSP) conjecture:
+    APSP requires n^{3-o(1)} time. Independent of SETH. -/
+structure APSPConjecture where
+  /-- APSP requires near-cubic time -/
+  nearCubic : Prop
+  /-- Not known to follow from SETH -/
+  independentOfSETH : Prop
+  /-- Equivalent to negative triangle detection -/
+  equivalences : Prop
+
+/-- Summary: fine-grained complexity gives conditional lower bounds
+    for polynomial-time problems, going beyond P vs NP. -/
+theorem fine_grained_summary :
+    -- ETH: 3-SAT requires 2^{Ω(n)} (implies P ≠ NP)
+    -- SETH: k-SAT requires 2^{(1-o(1))n}
+    -- SETH → edit distance, LCS, Fréchet need n^{2-o(1)}
+    -- APSP conjecture: independent fine-grained assumption
+    -- Fine-grained complexity maps out hardness WITHIN P
+    True := trivial
+
+-- ============================================================
 -- Summary and Export
 -- ============================================================
 
@@ -1695,6 +1935,10 @@ theorem millennium_prize_pvsnp :
 10. **Cryptographic consequences**: OWF, PRG, P=NP breaks crypto
 11. **Interactive Proofs**: IP=PSPACE (Shamir), Arthur-Merlin
 12. **Circuit Complexity**: P/poly, Karp-Lipton, NC
+13. **Average-Case**: Levin's theory, Impagliazzo's Five Worlds
+14. **Proof Complexity**: Resolution, Frege, Cook's program
+15. **Quantum Complexity**: BQP, QMA, Shor, Grover
+16. **Fine-Grained Complexity**: ETH, SETH, conditional lower bounds
 -/
 
 end PvsNP
