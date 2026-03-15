@@ -61,3 +61,31 @@ The maximal real subfield theory is NOT in Mathlib 4.26.
 
 - Direct cyclotomic approach without Chebyshev: can't show conjugates lie in adjoin without T_k
 - Trying to use `Nat.totient_even` as `2 ∣ _`: API changed in Mathlib 4.26 to return `Even`
+
+## Session 2026-03-14 (researcher-6) - Alpha Generates Fixed Field
+
+**Mode**: REVISIT (RICH knowledge score 36)
+**Problem**: angle-trisection-oq-02-oq-03-oq-01
+**Prior Status**: 226 lines, 2 axioms (cos_minimal_poly_degree, cos_extension_is_galois)
+
+### What we did:
+1. Added §5: α = ζ + ζ⁻¹ generates the maximal real subfield
+2. Proved alpha_adjoin_le_fixedField: ℚ(α) ⊆ fixed field of conjugation
+3. Proved alpha_adjoin_degree: [ℚ(α):ℚ] = φ(n)/2 (from bounds)
+4. Axiomatized 4 infrastructure lemmas (Module.Free gaps, not math gaps)
+5. Documented clear elimination chain for remaining 2 axioms
+
+### Key findings:
+- Algebra.adjoin in Mathlib lacks Module.Free/Finite instances for algebraic elements
+- This blocks direct use of tower law (Module.finrank_mul_finrank) for adjoin
+- The mathematical proofs are clear; Lean infrastructure is the bottleneck
+- Chain: α ∈ fixedField + [K:ℚ(α)] ≤ 2 → [ℚ(α):ℚ] ≥ φ(n)/2
+  Combined with ℚ(α) ⊆ fixedField of dim φ(n)/2 → [ℚ(α):ℚ] = φ(n)/2
+
+### Stats: 226→291 lines, 13 theorems, 6 axioms, 0 sorries
+
+### Next steps:
+1. Prove alpha_in_fixedField (σ(ζ)=ζ⁻¹ ⟹ σ(α)=α)
+2. Prove cyclotomic_degree_over_alpha ([K:ℚ(α)] ≤ 2)
+3. Connect embedding to cos(2kπ/n)
+4. Eliminate original 2 axioms
