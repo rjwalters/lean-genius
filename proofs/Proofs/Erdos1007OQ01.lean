@@ -27,6 +27,7 @@ This formalization proves:
 - Known values and structural results for small d (§3-4)
 - General upper/lower bounds (§5)
 - The complete graph optimality conjecture implies monotonicity (§8)
+- The complete graph optimality conjecture implies quadratic growth (§8)
 - Verified monotonicity of C(d+1,2) as a building block (§8)
 - Growth rate analysis from known values (§9)
 
@@ -368,6 +369,43 @@ theorem optimal_implies_monotone :
       rw [hopt d₁ h4a (by omega), hopt d₂ h4b (by omega)]
       exact choose_succ_two_mono hle
 
+/-- Helper: C(d+1, 2) as a real number equals (d+1)*d/2. -/
+private theorem choose_succ_two_real (d : ℕ) :
+    (Nat.choose (d + 1) 2 : ℝ) = ((d : ℝ) + 1) * (d : ℝ) / 2 := by
+  rw [Nat.choose_two_right, Nat.add_sub_cancel]
+  have hdvd : 2 ∣ (d + 1) * d := by
+    rcases Nat.even_or_odd d with ⟨k, hk⟩ | ⟨k, hk⟩ <;> subst hk
+    · exact ⟨(2 * k + 1) * k, by ring⟩
+    · exact ⟨(k + 1) * (2 * k + 1), by ring⟩
+  rw [Nat.cast_div hdvd (by norm_num : (2 : ℝ) ≠ 0)]
+  push_cast; ring
+
+/-- The complete graph optimality conjecture implies quadratic growth.
+    If K_{d+1} is optimal for all d ≠ 4, then minEdges(d) = Θ(d²)
+    with constants c₁ = 1/2, c₂ = 1.
+    - Lower: d²/2 ≤ d(d+1)/2 since d ≤ d+1. For d=4: 8 ≤ 9.
+    - Upper: d(d+1)/2 ≤ d² since d+1 ≤ 2d for d ≥ 1. For d=4: 9 ≤ 16. -/
+theorem optimal_implies_quadratic :
+    complete_graph_optimal_conjecture → minEdges_quadratic_conjecture := by
+  intro hopt
+  refine ⟨1/2, 1, by norm_num, by norm_num, fun d hd => ?_⟩
+  by_cases hd4 : d = 4
+  · -- d = 4: minEdges(4) = 9, need 8 ≤ 9 and 9 ≤ 16
+    subst hd4
+    simp only [minEdges_dim4]
+    constructor <;> norm_num
+  · -- d ≠ 4: minEdges(d) = C(d+1,2) = d(d+1)/2
+    rw [hopt d hd4 hd]
+    rw [choose_succ_two_real]
+    constructor
+    · -- 1/2 * d² ≤ (d+1)*d/2, i.e., d² ≤ (d+1)*d = d²+d
+      have hd_pos : (0 : ℝ) < d := Nat.cast_pos.mpr (by omega)
+      nlinarith
+    · -- (d+1)*d/2 ≤ 1 * d², i.e., (d+1)*d ≤ 2*d², i.e., d+1 ≤ 2*d
+      have hd_pos : (0 : ℝ) < d := Nat.cast_pos.mpr (by omega)
+      have hd_ge : (1 : ℝ) ≤ d := by exact_mod_cast hd
+      nlinarith
+
 -- ============================================================================
 -- § 9. Growth Rate Analysis
 -- ============================================================================
@@ -459,5 +497,6 @@ theorem unique_anomaly_small :
 #check @subgraph_unit_embedding
 #check @hasUnitEmbedding_exists_irrefl
 #check @optimal_implies_monotone
+#check @optimal_implies_quadratic
 #check @optimal_iff_zero_deficiency
 #check @unique_anomaly_small
