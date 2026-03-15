@@ -1,0 +1,133 @@
+{
+  "id": "angle-trisection-oq-02-oq-03-oq-01",
+  "title": "Gauss-Wantzel Theorem via Cyclotomic Fields",
+  "slug": "angle-trisection-oq-02-oq-03-oq-01",
+  "description": "Bridges the Gauss-Wantzel constructibility theorem to Mathlib's cyclotomic field infrastructure. Proves \u03b6\u2099 = exp(2\u03c0i/n) properties, Chebyshev polynomial connections, complex conjugation as order-2 automorphism via galCyclotomicEquivUnitsZMod, and derives cos(2\u03c0/n) algebraicity from cyclotomic theory. 371 lines, 17 theorems, 3 axioms, 0 sorries.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Constructible_number#Gauss%E2%80%93Wantzel_theorem",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ03OQ01.lean",
+    "tags": [
+      "algebra",
+      "number-theory",
+      "galois-theory",
+      "cyclotomic-fields",
+      "constructibility",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "galCyclotomicEquivUnitsZMod",
+        "description": "Gal(\u211a(\u03b6\u2099)/\u211a) \u2243 (\u2124/n\u2124)*",
+        "module": "Mathlib.NumberTheory.Cyclotomic.Gal"
+      },
+      {
+        "theorem": "Polynomial.cyclotomic.irreducible_rat",
+        "description": "\u03a6\u2099(x) is irreducible over \u211a",
+        "module": "Mathlib.RingTheory.Polynomial.Cyclotomic.Eval"
+      },
+      {
+        "theorem": "T_real_cos",
+        "description": "Chebyshev T\u2099(cos \u03b8) = cos(n\u03b8)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev"
+      },
+      {
+        "theorem": "Polynomial.natDegree_cyclotomic",
+        "description": "deg(\u03a6\u2099) = \u03c6(n)",
+        "module": "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic"
+      }
+    ],
+    "originalContributions": [
+      "zeta_eq_cos_sin: \u03b6\u2099 = cos(2\u03c0/n) + i\u00b7sin(2\u03c0/n) via Euler's formula",
+      "zeta_conj: conj(\u03b6\u2099) = \u03b6\u2099\u207b\u00b9 and zeta_add_inv: \u03b6\u2099 + \u03b6\u2099\u207b\u00b9 = 2cos(2\u03c0/n)",
+      "zeta_pow: \u03b6\u2099\u207f = 1 from Euler's formula and exp(2\u03c0i) = 1",
+      "complex_conj_order_two: conjugation has order 2 in Gal(\u211a(\u03b6\u2099)/\u211a) via -1 \u2208 (\u2124/n\u2124)*",
+      "Chebyshev polynomial connection: T\u2099(cos \u03b8) = cos(n\u03b8) from Mathlib",
+      "cos_algebraic_from_cyclotomic: cos(2\u03c0/n) is algebraic over \u211a"
+    ],
+    "dateAdded": "03/14/26",
+    "relatedProblems": [
+      {
+        "id": "angle-trisection-oq-02-oq-03",
+        "relationship": "Parent: Gauss-Wantzel theorem (axiomized version)"
+      },
+      {
+        "id": "angle-trisection-oq-02",
+        "relationship": "Grandparent: Impossibility of angle trisection"
+      },
+      {
+        "id": "angle-trisection",
+        "relationship": "Root: Angle trisection impossibility"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Gauss-Wantzel Theorem and Cyclotomic Fields**\n\nThe Gauss-Wantzel theorem (Gauss 1796, Wantzel 1837) characterizes which regular polygons are constructible: a regular n-gon is constructible iff n is a product of a power of 2 and distinct Fermat primes. The key algebraic fact is that cos(2\u03c0/n) is constructible iff its minimal polynomial has degree a power of 2, and this degree equals \u03c6(n)/2.\n\nThis file bridges the axiomized Gauss-Wantzel theorem to Mathlib's cyclotomic field infrastructure, proving the connection between exp(2\u03c0i/n), cyclotomic polynomials, and cos(2\u03c0/n).",
+    "problemStatement": "**Theorem**: cos(2\u03c0/n) is algebraic over \u211a with minimal polynomial of degree \u03c6(n)/2. This degree determines constructibility: a regular n-gon is constructible iff \u03c6(n)/2 is a power of 2.",
+    "proofStrategy": "The proof connects several mathematical theories:\n\n1. **Euler's formula**: \u03b6\u2099 = exp(2\u03c0i/n) = cos(2\u03c0/n) + i\u00b7sin(2\u03c0/n)\n2. **Root of unity**: \u03b6\u2099\u207f = 1, hence \u03b6\u2099 is algebraic over \u211a\n3. **Cyclotomic bridge**: cos(2\u03c0/n) = (\u03b6\u2099 + \u03b6\u2099\u207b\u00b9)/2\n4. **Galois theory**: Gal(\u211a(\u03b6\u2099)/\u211a) \u2243 (\u2124/n\u2124)* has order \u03c6(n)\n5. **Complex conjugation**: the element -1 \u2208 (\u2124/n\u2124)* gives an order-2 automorphism\n6. **Fixed field**: the maximal real subfield has degree \u03c6(n)/2 over \u211a\n\nThe key proved result is `complex_conj_order_two`, which uses `galCyclotomicEquivUnitsZMod` to identify the conjugation automorphism with -1 in the units group.",
+    "keyInsights": [
+      "The bridge \u03b6\u2099 + \u03b6\u2099\u207b\u00b9 = 2cos(2\u03c0/n) connects cyclotomic fields to real cosines",
+      "Complex conjugation corresponds to -1 \u2208 (\u2124/n\u2124)* via the Galois group isomorphism",
+      "For n \u2265 3, -1 \u2260 1 in (\u2124/n\u2124)* because n | 2 fails, giving a non-trivial order-2 automorphism",
+      "Chebyshev polynomials T\u2099(cos \u03b8) = cos(n\u03b8) provide the polynomial framework for cos(2\u03c0/n)",
+      "Three remaining axioms form a dependency chain: maximal_real_subfield_degree \u2192 cos_minimal_poly_degree \u2192 cos_extension_is_galois"
+    ]
+  },
+  "sections": [
+    {
+      "id": "roots-of-unity",
+      "title": "Primitive Roots of Unity and Euler's Formula",
+      "summary": "Defines \u03b6\u2099 = exp(2\u03c0i/n), proves it equals cos + i\u00b7sin, extracts real/imaginary parts, proves conj(\u03b6\u2099) = \u03b6\u2099\u207b\u00b9, and establishes the key bridge \u03b6\u2099 + \u03b6\u2099\u207b\u00b9 = 2cos(2\u03c0/n).",
+      "startLine": 30,
+      "endLine": 78
+    },
+    {
+      "id": "unit-circle",
+      "title": "Powers and Unit Circle",
+      "summary": "Proves |\u03b6\u2099| = 1, \u03b6\u2099 \u2260 0, and \u03b6\u2099\u207f = 1 (the defining property). Shows \u03b6\u2099 belongs to rootsOfUnity.",
+      "startLine": 79,
+      "endLine": 111
+    },
+    {
+      "id": "chebyshev",
+      "title": "Chebyshev Polynomials",
+      "summary": "Proves existence and degree of Chebyshev polynomials satisfying T\u2099(cos \u03b8) = cos(n\u03b8), connecting polynomial algebra to trigonometry.",
+      "startLine": 154,
+      "endLine": 186
+    },
+    {
+      "id": "cyclotomic-degree",
+      "title": "Cyclotomic Extension Degree",
+      "summary": "Wraps Mathlib results: deg(\u03a6\u2099) = \u03c6(n) and \u03a6\u2099 is irreducible over \u211a.",
+      "startLine": 187,
+      "endLine": 204
+    },
+    {
+      "id": "galois-conjugation",
+      "title": "Complex Conjugation as Order-2 Automorphism",
+      "summary": "The main proved result: via galCyclotomicEquivUnitsZMod, -1 \u2208 (\u2124/n\u2124)* gives \u03c3 \u2260 id with \u03c3\u00b2 = id. Uses n \u2265 3 to show -1 \u2260 1 (since n \u2224 2).",
+      "startLine": 206,
+      "endLine": 261
+    },
+    {
+      "id": "axiom-bridge",
+      "title": "Bridge to Gauss-Wantzel Axioms",
+      "summary": "Three axioms connecting cyclotomic theory to constructibility: maximal real subfield degree, minimal polynomial degree, and Galois extension property. Derives cos(2\u03c0/n) algebraicity.",
+      "startLine": 262,
+      "endLine": 371
+    }
+  ],
+  "conclusion": {
+    "summary": "This file bridges the gap between the axiomized Gauss-Wantzel theorem and Mathlib's cyclotomic infrastructure. It proves 17 theorems with 0 sorries, leaving 3 axioms that form a clear dependency chain requiring ~490 lines of Galois theory to eliminate.",
+    "implications": "**Mathematical Significance**\n\n1. **Infrastructure bridge**: Connects two independently developed parts of the formalization (constructibility theory and cyclotomic fields).\n2. **Galois theory application**: The complex_conj_order_two proof demonstrates practical use of galCyclotomicEquivUnitsZMod.\n3. **Clear axiom roadmap**: The 3 remaining axioms have well-defined proof strategies and effort estimates.\n4. **Chebyshev connection**: Shows how Chebyshev polynomials provide the algebraic framework for trigonometric constructibility.",
+    "openQuestions": [
+      "Can maximal_real_subfield_degree be proved from the tower law and complex conjugation order?",
+      "Can the explicit minimal polynomial of cos(2\u03c0/n) be computed via the Chebyshev substitution in \u03a6\u2099?",
+      "Can the full Gauss-Wantzel theorem be connected directly to Mathlib's cyclotomic infrastructure without intermediate axioms?"
+    ]
+  }
+}

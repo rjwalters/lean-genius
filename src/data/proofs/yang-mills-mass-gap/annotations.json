@@ -1,0 +1,100 @@
+{
+  "annotations": [
+    {
+      "id": "gauge-group-typeclass",
+      "type": "technique",
+      "targetLines": [59, 78],
+      "title": "CompactSimpleGaugeGroup Typeclass",
+      "content": "The formalization introduces a custom typeclass CompactSimpleGaugeGroup capturing the essential properties: G is a compact Lie group with simple (non-abelian) Lie algebra. This allows all 273+ theorems to be polymorphic over the gauge group, applying equally to SU(2), SU(3), or any compact simple group.",
+      "tags": ["typeclass", "gauge-theory", "lie-group"]
+    },
+    {
+      "id": "minkowski-metric",
+      "type": "proof-step",
+      "targetLines": [82, 147],
+      "title": "Minkowski Metric Formalization",
+      "content": "The Minkowski metric \u03b7_\u03bc\u03bd with signature (-,+,+,+) is formalized with proved properties: diagonality, symmetry, \u03b7\u2080\u2080 = -1, \u03b7\u1d62\u1d62 = 1 for i \u2265 1, trace \u03b7^\u03bc_\u03bc = 2, and Lorentzian signature (1,3). The squared norm s\u00b2 = -t\u00b2 + x\u00b2 + y\u00b2 + z\u00b2 is derived from diagonality.",
+      "tags": ["special-relativity", "metric", "lorentzian"]
+    },
+    {
+      "id": "yang-mills-equations",
+      "type": "context",
+      "targetLines": [233, 250],
+      "title": "The Classical Yang-Mills Equations",
+      "content": "D_\u03bc F^\u03bc\u03bd = 0 (Yang-Mills equation) and D_[\u03bc F_\u03bd\u03c1] = 0 (Bianchi identity). Unlike Maxwell's equations, these are non-linear because the covariant derivative D involves the gauge field A itself. This non-linearity is the source of both the richness and the difficulty of non-abelian gauge theory.",
+      "tags": ["yang-mills", "pde", "gauge-theory"]
+    },
+    {
+      "id": "gauge-invariance-group",
+      "type": "insight",
+      "targetLines": [252, 308],
+      "title": "Gauge Transformations Form a Group",
+      "content": "Gauge transformations g(x): R\u2074 \u2192 G form an infinite-dimensional group under pointwise multiplication, with the Yang-Mills action invariant: S[A^g] = S[A]. This gauge symmetry is the defining feature of Yang-Mills theory and the reason gauge fixing (Faddeev-Popov, Part XXXVII) is needed for quantization.",
+      "tags": ["gauge-symmetry", "group-theory", "invariance"]
+    },
+    {
+      "id": "wightman-structure",
+      "type": "technique",
+      "targetLines": [380, 406],
+      "title": "Wightman QFT Axioms as Lean Structure",
+      "content": "The Wightman axioms are encoded as a Lean structure with fields: Hilbert space H, vacuum state \u03a9, Hamiltonian H, field operators, Poincar\u00e9 covariance, spectral condition (E \u2265 0), and locality (spacelike commutativity). QuantumYangMills extends this with gauge field operators, capturing the mathematical framework for rigorous QFT.",
+      "tags": ["wightman-axioms", "qft", "hilbert-space"]
+    },
+    {
+      "id": "mass-gap-definition",
+      "type": "insight",
+      "targetLines": [411, 437],
+      "title": "The Mass Gap: Spectrum Has a Gap",
+      "content": "A QFT has mass gap \u0394 > 0 if all states orthogonal to the vacuum have energy \u2265 \u0394. Equivalently, the Hamiltonian spectrum is {0} \u222a [\u0394, \u221e). Key proved properties: any \u0394' < \u0394 is also a mass gap (monotonicity), and vacuum energy is zero by axiom. The mass gap explains why nuclear forces are short-range.",
+      "tags": ["mass-gap", "spectral-theory", "millennium-prize"]
+    },
+    {
+      "id": "wilson-area-perimeter",
+      "type": "insight",
+      "targetLines": [574, 612],
+      "title": "Area Law vs Perimeter Law: Confinement Criterion",
+      "content": "Wilson's confinement criterion: W(C) ~ exp(-\u03c3\u00b7Area) indicates confinement (quarks bound), while W(C) ~ exp(-\u03ba\u00b7Perimeter) indicates deconfinement (free quarks). A key proved theorem shows these are mutually exclusive: a theory cannot exhibit both behaviors simultaneously, as area grows faster than perimeter for large loops.",
+      "tags": ["wilson-loops", "confinement", "area-law"]
+    },
+    {
+      "id": "migdal-2d",
+      "type": "technique",
+      "targetLines": [870, 972],
+      "title": "2D Yang-Mills: The Exactly Solvable Case",
+      "content": "In 2D, Yang-Mills is exactly solvable via Migdal's formula: Wilson loop expectations reduce to finite-dimensional group integrals weighted by heat kernel. The partition function Z = \u03a3_R (dim R)\u00b2 exp(-C\u2082(R)\u00b7A/(2\u03b2)) sums over representations. This provides the only dimension where the mass gap can be computed explicitly.",
+      "tags": ["2d-yang-mills", "migdal-formula", "exact-solution"]
+    },
+    {
+      "id": "center-symmetry",
+      "type": "insight",
+      "targetLines": [1288, 1457],
+      "title": "Center Symmetry Z_N Classifies Confinement",
+      "content": "The center Z_N of SU(N) acts on Polyakov loops P by multiplication: P \u2192 \u03c9\u00b7P. In the confined phase (Z_N unbroken), \u27e8P\u27e9 = 0 (averaging over center elements). In the deconfined phase, Z_N is spontaneously broken: \u27e8P\u27e9 \u2260 0. For SU(2), Z_2 = {1,-1} with the key theorem: \u03c9\u00b2=1 and |\u03c9|=1 implies \u03c9 \u2208 {1,-1}.",
+      "tags": ["center-symmetry", "confinement", "phase-transition"]
+    },
+    {
+      "id": "gribov-copies",
+      "type": "insight",
+      "targetLines": [3876, 4027],
+      "title": "Gribov Copies: Global Gauge Fixing Is Impossible",
+      "content": "Singer's theorem (axiomatized): for non-abelian gauge theories, no global gauge-fixing condition can uniquely select one representative from each gauge orbit. The Gribov region \u03a9 (where the Faddeev-Popov operator is positive) has a boundary \u2202\u03a9 where det(FP) = 0, creating copies. This is a fundamental obstruction to perturbative quantization.",
+      "tags": ["gribov-copies", "gauge-fixing", "non-perturbative"]
+    },
+    {
+      "id": "adscft",
+      "type": "context",
+      "targetLines": [5283, 5496],
+      "title": "AdS/CFT and Holographic Mass Gap",
+      "content": "Maldacena's AdS/CFT correspondence maps N=4 SU(N) Yang-Mills to string theory on AdS\u2085\u00d7S\u2075. While N=4 SYM is conformal (no mass gap), deformations that break conformal symmetry can produce a mass gap. The holographic approach provides non-perturbative insights but applies to supersymmetric theories rather than pure Yang-Mills.",
+      "tags": ["adscft", "holography", "string-theory"]
+    },
+    {
+      "id": "constructive-qft",
+      "type": "technique",
+      "targetLines": [5497, 5775],
+      "title": "Constructive QFT: Rigorous 2D Yang-Mills",
+      "content": "Constructive QFT provides mathematically rigorous definitions of quantum field theories. In 2D, Yang-Mills has been rigorously constructed (unlike 4D). The formalization covers the lattice-to-continuum limit, gauge-invariant observables, and the connection to Migdal's exact solution. This represents the state of the art for rigorous QFT.",
+      "tags": ["constructive-qft", "mathematical-rigor", "2d-yang-mills"]
+    }
+  ]
+}
