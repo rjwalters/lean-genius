@@ -23,9 +23,10 @@
     The first new polygon construction since antiquity. Determined his career choice.
   - Wantzel (1837): Proved the converse — non-constructibility when φ(n) ≠ 2^k.
 
-  File summary: 67+ proved theorems, 2 sorries, 3 axioms.
-  Sorries: galois_conjugate_count (counting argument via coprime pairing),
-  minpoly_cos_natDegree_eq (capstone — [E:F] ≥ 2 PROVED, [E:F] ≤ 2 needs adjoin F {ζ} = ⊤).
+  File summary: 70+ proved theorems, 1 sorry, 3 axioms.
+  Sorries: galois_conjugate_count (counting coprime pairs — needs cos_2kpi_div_n_eq_iff fix).
+  Pre-existing errors: cos_2kpi_div_n_eq_iff (Mathlib v4.26 API drift: Nat.cast_mod_cast renamed).
+  PROVED: minpoly_cos_natDegree_eq (capstone — cyclotomic tower law, [E:F]=2 via quadratic).
   Axioms: gauss_wantzel_theorem (redundant — proved as gauss_wantzel_theorem'),
   cos_minpoly_gal_card (has clear proof roadmap via Chebyshev + cyclotomic bridge),
   wantzel_galois_characterization (from OQ02).
@@ -1270,7 +1271,11 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
         have : ((↑j : ℤ) : ℝ) = ((m * ↑n + ↑k : ℤ) : ℝ) := by
           push_cast; linarith [h_real]
         exact_mod_cast this
-      omega
+      -- j = m*n + k in ℤ → j % n = k % n in ℕ
+      have h_mod_int : (↑j : ℤ) % ↑n = (↑k : ℤ) % ↑n := by
+        rw [h_int, show m * ↑n + ↑k = ↑k + m * ↑n from by ring]
+        exact Int.add_mul_emod_self_left (↑k) m (↑n)
+      rwa [Int.natCast_mod, Int.natCast_mod, Nat.cast_inj] at h_mod_int
     · -- h : 2jπ/n = 2mπ - 2kπ/n → k ≡ n - j (mod n)
       right
       have h_real : (↑j : ℝ) + ↑k = ↑m * ↑n := by
@@ -1279,18 +1284,24 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
         have : ((↑j + ↑k : ℤ) : ℝ) = ((m * ↑n : ℤ) : ℝ) := by
           push_cast; linarith [h_real]
         exact_mod_cast this
+      -- (j + k) ≡ 0 (mod n) in ℤ → k % n = (n - j % n) % n in ℕ
+      have h_mod_int : ((↑j : ℤ) + ↑k) % ↑n = 0 := by
+        rw [h_int]; exact Int.mul_emod_right m ↑n
+      have h_sum_nat : (j + k) % n = 0 := by
+        rwa [show (↑j : ℤ) + ↑k = ↑(j + k) from by push_cast; ring,
+          Int.natCast_mod, show (0 : ℤ) = ↑(0 : ℕ) from rfl, Nat.cast_inj] at h_mod_int
       omega
   · rintro (h | h)
     · -- k % n = j % n → cos equal via periodicity
       -- k ≡ j (mod n) in ℕ → j - k divisible by n in ℤ
       have h_mod : (↑j : ℤ) % ↑n = (↑k : ℤ) % ↑n := by
         have : (↑(k % n) : ℤ) = ↑(j % n) := by exact_mod_cast h
-        simp only [Nat.cast_mod_cast] at this; omega
+        simp only [Int.natCast_mod] at this; linarith
       obtain ⟨m, hm⟩ := (Int.modEq_iff_dvd.mp h_mod : (↑n : ℤ) ∣ (↑k - ↑j))
       refine ⟨-m, Or.inl ?_⟩
-      have h_int : (↑j : ℤ) = -m * ↑n + ↑k := by omega
-      have h_real : (↑j : ℝ) = ↑(-m) * ↑n + ↑k := by
-        have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; exact this
+      have h_int : (↑j : ℤ) = -m * ↑n + ↑k := by linarith
+      have h_real : (↑j : ℝ) = -(↑m : ℝ) * ↑n + ↑k := by
+        have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this ⊢; linarith
       field_simp; nlinarith [h_real]
     · -- k % n = (n - j % n) % n → cos equal via reflection
       -- k + j ≡ 0 (mod n) in ℕ
@@ -1562,7 +1573,7 @@ theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
     | mem y hy =>
       rw [Set.mem_singleton_iff.mp hy, hc_def]; exact Complex.ofReal_im _
     | algebraMap q =>
-      simp only [Complex.ofReal_im, map_ratCast]
+      rw [IsScalarTower.algebraMap_apply ℚ ℝ ℂ]; exact Complex.ofReal_im _
     | add a b ha hb => simp [Complex.add_im, *]
     | inv a _ ih =>
       show (a⁻¹).im = 0
@@ -1594,38 +1605,89 @@ theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
   -- [E:F] ≤ 2: ζ satisfies X² - 2cos·X + 1 over F (degree 2)
   -- [E:F] ≥ 2: F ≠ E (ζ ∉ F), so strict containment, so [E:F] > 1
   -- Therefore [E:F] = 2 and φ(n) = 2 * finrank ℚ F
+  haveI hFD_FE : FiniteDimensional ↥F ↥E :=
+    Module.Finite.of_restrictScalars_finite ℚ ↥F ↥E
   have h_ef_eq : Module.finrank ↥F ↥E = 2 := by
-    -- Upper bound: [E:F] ≤ 2 via the quadratic X²-2cos·X+1
-    -- Proof: ζ_E satisfies p = X²-2c_F·X+1 ∈ F[X] (degree 2)
-    -- → minpoly F ζ_E divides p → degree(minpoly) ≤ 2
-    -- → adjoin F {ζ_E} = ⊤ (ζ generates E over ℚ ⊆ F)
-    -- → [E:F] = degree(minpoly) ≤ 2
-    have h_le : Module.finrank ↥F ↥E ≤ 2 := by sorry
-    -- Lower bound: [E:F] ≥ 2 from tower law + strict inequality
-    -- [E:F] = 0 impossible (φ(n) ≥ 2), [E:F] = 1 impossible (F ⊊ E)
-    have h_ge : Module.finrank ↥F ↥E ≥ 2 := by
-      by_contra h_lt
-      push_neg at h_lt
-      rcases show Module.finrank ↥F ↥E = 0 ∨ Module.finrank ↥F ↥E = 1 by omega with h0 | h1
-      · -- finrank F E = 0 → finrank ℚ E = 0 → φ(n) = 0, contradiction
-        have : Module.finrank ℚ ↥F * 0 = Module.finrank ℚ ↥E := by rw [← h0]; exact h_tower
-        linarith [h_finrank_E, (Nat.totient_pos).mpr (show 0 < n by omega)]
-      · -- finrank F E = 1 → inclusion F ↪ E is surjective → ζ ∈ F → contradiction
-        have h_rank_eq : Module.finrank ℚ ↥F = Module.finrank ℚ ↥E := by
-          have := h_tower; rw [h1, mul_one] at this; exact this
-        -- The inclusion is injective (IntermediateField.inclusion_injective)
-        set ι := IntermediateField.inclusion hFE
-        have h_inj : Function.Injective ι.toLinearMap :=
-          IntermediateField.inclusion_injective hFE
-        -- Surjective: injective linear map between same-dim fd spaces
-        have h_range_top : LinearMap.range ι.toLinearMap = ⊤ :=
-          Submodule.eq_top_of_finrank_eq
-            ((LinearEquiv.ofInjective ι.toLinearMap h_inj).finrank_eq.symm.trans h_rank_eq)
-        -- ζ ∈ range of inclusion, so ζ ∈ F, contradicting hζ_notin_F
-        obtain ⟨⟨f, hfF⟩, hf⟩ := (LinearMap.range_eq_top.mp h_range_top)
-          ⟨ζ, IntermediateField.mem_adjoin_simple_self ℚ ζ⟩
-        have hfζ : f = ζ := congr_arg Subtype.val hf
-        exact hζ_notin_F (hfζ ▸ hfF)
+    -- Lower bound: [E:F] ≥ 2
+    -- Derive [E:F] > 0 from tower law (avoids NoZeroSMulDivisors synthesis)
+    have h_ef_pos : 0 < Module.finrank ↥F ↥E := by
+      by_contra h
+      push_neg at h
+      have h0 : Module.finrank ↥F ↥E = 0 := by omega
+      rw [h0, mul_zero] at h_tower
+      linarith [h_finrank_E, (Nat.totient_pos).mpr (show 0 < n by omega)]
+    -- [E:F] ≠ 1: if [E:F] = 1 then [F:ℚ] = [E:ℚ], so F = E, contradicting F < E
+    have h_ef_ne_one : Module.finrank ↥F ↥E ≠ 1 := by
+      intro h_one
+      have h_eq_dim : Module.finrank ℚ ↥E ≤ Module.finrank ℚ ↥F := by
+        have h1 := h_tower
+        rw [h_one, mul_one] at h1
+        omega
+      exact absurd (IntermediateField.eq_of_le_of_finrank_le hFE h_eq_dim)
+        (ne_of_lt hFE_strict)
+    -- Upper bound: [E:F] ≤ 2
+    -- ζ satisfies X² - 2cos·X + 1 over F (degree 2 polynomial)
+    -- So minpoly(ζ/F) | (X² - 2c·X + 1), giving deg(minpoly) ≤ 2
+    -- Since E = ℚ(ζ) = F(ζ), [E:F] = deg(minpoly(ζ/F)) ≤ 2
+    have h_le : Module.finrank ↥F ↥E ≤ 2 := by
+      -- Key elements
+      set ζE : ↥E := ⟨ζ, IntermediateField.mem_adjoin_simple_self ℚ ζ⟩ with hζE_def
+      -- Step A: ζE generates E over ℚ (PowerBasis → adjoin = ⊤)
+      have h_int_ζ := zeta_isIntegral n (by omega : 1 ≤ n)
+      have pb := IntermediateField.adjoin.powerBasis h_int_ζ
+      have h_pb_gen : pb.gen = ζE := IntermediateField.adjoin.powerBasis_gen h_int_ζ
+      have h_alg_top : Algebra.adjoin ℚ ({ζE} : Set ↥E) = ⊤ := by
+        rw [← h_pb_gen]; exact pb.adjoin_gen_eq_top
+      have h_gen_Q : IntermediateField.adjoin ℚ ({ζE} : Set ↥E) = ⊤ :=
+        IntermediateField.adjoin_eq_top_of_algebra h_alg_top
+      -- Step B: Lift to tower: ζE generates E over F
+      have h_gen_F : IntermediateField.adjoin ↥F ({ζE} : Set ↥E) = ⊤ :=
+        IntermediateField.adjoin_eq_top_of_adjoin_eq_top ℚ h_gen_Q
+      -- Step C: ζE is integral over F
+      have h_int_ζE : IsIntegral ↥F ζE := .of_finite ↥F ζE
+      -- Step D: finrank ↥F ↥E = natDegree(minpoly ↥F ζE)
+      have h_finrank_eq : Module.finrank ↥F ↥E = (minpoly ↥F ζE).natDegree := by
+        have := IntermediateField.adjoin.finrank h_int_ζE
+        erw [h_gen_F, IntermediateField.finrank_top'] at this
+        exact this
+      -- Step E: Construct annihilating polynomial C 1 * X² + C(-2cF) * X + C 1
+      set cF : ↥F := ⟨c, IntermediateField.mem_adjoin_simple_self ℚ c⟩ with hcF_def
+      -- Use canonical form C a * X^2 + C b * X + C c for natDegree_quadratic
+      set p : Polynomial ↥F :=
+        Polynomial.C 1 * Polynomial.X ^ 2 +
+        Polynomial.C (-(2 * cF)) * Polynomial.X +
+        Polynomial.C 1 with hp_def
+      -- Step F: Show aeval ζE p = 0 by pushing down to ℂ
+      have h_aeval : Polynomial.aeval ζE p = 0 := by
+        -- Suffices to show the ℂ-value is 0 (via injective coercion)
+        have h_inj : Function.Injective (algebraMap ↥E ℂ) := Subtype.val_injective
+        apply h_inj
+        simp only [hp_def, map_zero, Polynomial.aeval_add, Polynomial.aeval_mul,
+          Polynomial.aeval_C, Polynomial.aeval_X, Polynomial.aeval_X_pow,
+          map_add, map_mul, map_pow, map_neg, map_one, map_ofNat]
+        -- Goal: 1 * ζ^2 + -(2 * c') * ζ + 1 = 0 where c' = algebraMap cF
+        -- The algebraMap ↥F ↥E is the inclusion, so (algebraMap ↥F ↥E cF : ℂ) = c
+        change (1 : ℂ) * (ζE : ℂ) ^ 2 +
+          -((2 : ℂ) * (algebraMap ↥F ↥E cF : ℂ)) * (ζE : ℂ) + 1 = 0
+        have h_coe_ζ : (ζE : ℂ) = ζ := rfl
+        have h_coe_c : (algebraMap ↥F ↥E cF : ℂ) = c := by
+          show (IntermediateField.inclusion hFE cF : ℂ) = c
+          rfl
+        rw [h_coe_ζ, h_coe_c]
+        have := zeta_quadratic n
+        -- zeta_quadratic: ζ^2 - 2*c*ζ + 1 = 0
+        linarith
+      -- Step G: natDegree p = 2
+      have h_deg_p : p.natDegree = 2 :=
+        Polynomial.natDegree_quadratic (one_ne_zero (M₀ := ↥F))
+      -- Step H: minpoly divides p, so deg(minpoly) ≤ 2
+      have h_dvd := minpoly.dvd ↥F ζE h_aeval
+      have h_p_ne_zero : p ≠ 0 := by
+        intro hp; rw [hp, Polynomial.natDegree_zero] at h_deg_p; omega
+      rw [h_finrank_eq]
+      calc (minpoly ↥F ζE).natDegree
+          ≤ p.natDegree := Polynomial.natDegree_le_of_dvd h_dvd h_p_ne_zero
+        _ = 2 := h_deg_p
     omega
   -- Step 10: Goal is already finrank ℚ ↥F = n.totient / 2 (from rw in Steps 1-2)
   -- From tower: finrank ℚ F * 2 = finrank ℚ E = φ(n)
