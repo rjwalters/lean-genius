@@ -18,11 +18,11 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-15T00:00:00Z",
-    "iteration": 10,
-    "focus": "Axiom reduction: sparsification_lemma, ETH_subexp_closure proved from definitions",
+    "iteration": 11,
+    "focus": "Axiom reduction: 6 axioms proved as theorems (82→76)",
     "activeApproach": "Abstract complexity class definitions with barrier theorems. Proof complexity and cryptographic world classification.",
     "blockers": [],
-    "nextAction": "Reduce axiom count by deriving more results; add counting complexity (#P)",
+    "nextAction": "Continue axiom reduction; add counting complexity (#P); consider model refinements for abstract classes",
     "attemptCounts": {
       "total": 6,
       "currentApproach": 6,
@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "3416-line formalization with 84 axioms, 153 theorems, 79 definitions. Added communication complexity (EQ gap, DISJ hardness, log-rank), Karchmer-Wigderson depth=CC theorem, zero-knowledge (SZK, CZK, GMW), and average-case complexity.",
+    "progressSummary": "3463-line sound formalization with 76 axioms (down from 82). Derived immerman_szelepcsenyi, NC1_iff_logdepth, SZK_complement_closed, GMW_NP_in_CZK, CZK_subset_IP, haken_php_exponential from definitions.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
