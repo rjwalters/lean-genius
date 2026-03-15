@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 5 new sections (Parts 23-27): RH-conditional Chebyshev bounds, prime gap bound, Redheffer matrix equivalence, explicit formula error connection, and unconditional Mertens analysis. 4 new axioms, 8 new proved theorems. File grew from 993 to 1252 lines.",
+    "progressSummary": "PROGRESS: Eliminated 3 unused axioms (21→18). File: 1798→~1740 lines, 18 axioms, 0 sorries.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -151,47 +151,7 @@
         "description": "RH → convexity bound (PROVED)",
         "proven": true
       },
-      "Eliminated 3 dead-code axioms (21→18): computationally_verified_zeros, RH_implies_prime_gaps, RH_implies_ternary_goldbach_effective",
-      {
-        "name": "rh_implies_psi_bound",
-        "description": "RH → ψ = x + O(√x log²x)",
-        "proven": true
-      },
-      {
-        "name": "rh_implies_theta_bound",
-        "description": "RH → θ = x + O(√x log²x)",
-        "proven": true
-      },
-      {
-        "name": "rh_implies_prime_gap",
-        "description": "RH → prime gap O(√p log p)",
-        "proven": true
-      },
-      {
-        "name": "redhefferEntry",
-        "description": "Redheffer matrix entry definition",
-        "proven": true
-      },
-      {
-        "name": "redheffer_det_eq_mertens",
-        "description": "det(R_n) = M(n)",
-        "proven": true
-      },
-      {
-        "name": "explicit_formula_error",
-        "description": "Zero locations → ψ error term",
-        "proven": true
-      },
-      {
-        "name": "rh_implies_theta_upper_from_psi",
-        "description": "θ upper bound from ψ bound (PROVED)",
-        "proven": true
-      },
-      {
-        "name": "rh_gives_optimal_psi_bound",
-        "description": "RH → optimal ψ bound (PROVED)",
-        "proven": true
-      }
+      "Eliminated 3 dead-code axioms (21→18): computationally_verified_zeros, RH_implies_prime_gaps, RH_implies_ternary_goldbach_effective"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
@@ -209,14 +169,7 @@
       "2026-03-14: Proved RH_iff_mathlib - our critical-strip RH definition is equivalent to Mathlib standard definition",
       "2026-03-14: Added Lindelöf Hypothesis formalization + proved RH→Lindelöf→convexity chain",
       "2026-03-14: Complex.abs deprecated in Mathlib - use ‖·‖ norm notation instead",
-      "2026-03-14: Eliminated 3 axioms from Consequences file",
-      "rh_implies_psi_bound: RH → ψ(x) = x + O(√x log²x) (von Koch 1901)",
-      "rh_implies_theta_bound: RH → θ(x) = x + O(√x log²x) (von Koch 1901)",
-      "rh_implies_prime_gap: RH → p_{n+1} - p_n = O(√p log p) (Cramér 1936)",
-      "Redheffer matrix: det(R_n) = M(n), connecting linear algebra to RH",
-      "Explicit formula error: zero locations control ψ(x) error term",
-      "rh_implies_theta_upper_from_psi: PROVED θ upper bound from ψ bound",
-      "rh_gives_optimal_psi_bound: PROVED RH gives optimal error for all ε > 0"
+      "2026-03-14: Eliminated 3 axioms from Consequences file"
     ],
     "mathlibGaps": [
       "Dirichlet series",
