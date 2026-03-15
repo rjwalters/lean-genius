@@ -4265,6 +4265,47 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 #check dual_direct_sum                   -- (H₁⊕H₂)* ≅ H₁*⊕H₂*
 #check even_weight_self_dual             -- Polarized → self-dual
 
+-- Hodge-Riemann bilinear relations
+#check hodge_riemann_positivity          -- Positivity on primitive classes
+#check hodge_index_surface               -- Signature (1, h^{1,1}-1)
+#check polarized_semisimple              -- Polarized HS are semisimple
+#check polarization_restricts_to_subHodge -- PROVED: Q restricts to sub-HS
+#check polarization_to_dual              -- PROVED: Q gives H → H*
+#check polarization_symmetry_type        -- PROVED: symmetry from weight parity
+
+-- Intermediate Jacobians
+#check IntermediateJacobian              -- J^p(X) complex torus
+#check intermediate_jacobian_exists      -- Existence
+#check AbelJacobiMap                     -- AJ : Z^p_alg → J^p
+#check abel_jacobi_is_hodge_morphism     -- AJ is HS morphism
+#check griffiths_abel_jacobi_nontrivial  -- Griffiths' detection
+#check intermediate_jacobian_curve       -- PROVED: J^1(curve) = Jacobian
+
+-- Variations of Hodge structures
+#check VariationOfHodgeStructure         -- Family of HS over base
+#check geometric_family_gives_vhs        -- Smooth families → VHS
+#check HodgeLocus                        -- PROVED: where extra classes appear
+#check cattani_deligne_kaplan            -- Hodge loci are algebraic
+#check PeriodDomain                      -- Classifying space D
+#check periodMap                         -- PROVED: Φ : S → D
+#check constant_vhs_trivial_period       -- PROVED: constant → trivial
+#check hodge_locus_constant              -- PROVED: constant VHS locus
+
+-- Motivic perspective
+#check Motive                            -- Abstract motive h(X)
+#check hodgeRealization                  -- PROVED: R_H : Mot → HS
+#check hodge_iff_full_realization        -- HC ↔ R_H full
+#check standard_conjecture_B             -- Lefschetz standard conj
+#check standard_conjecture_C             -- Künneth standard conj
+#check standard_conjectures_imply_semisimple -- PROVED: B+C → semisimple
+#check realization_preserves_tensor      -- PROVED: R_H preserves ⊗
+
+-- Special classes
+#check hodge_for_abelian_absolute        -- Deligne: abelian → absolute
+#check hodge_for_uniruled_codim1         -- Uniruled codim 1
+#check hodge_product_from_factors        -- PROVED: HC(X)∧HC(Y) → HC(X×Y)
+#check hodge_zero_dimensional            -- PROVED: HC for dim 0
+
 -- Morphisms (category structure)
 #check HodgeStructureMorphism
 #check HodgeStructureMorphism.id
