@@ -170,8 +170,6 @@ axiom fourierPartialSum_eq_convolution
     This follows from the orthogonality of the Fourier monomials: only the n=0
     term survives the integration. This property is essential for D_N to act
     as an approximate identity. -/
-axiom dirichletKernel_integral_eq_one (N : ℕ) :
-    ∫ t : AddCircle T, dirichletKernel N t ∂haarAddCircle = 1
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -235,11 +233,6 @@ PART VI: THE RIEMANN-LEBESGUE LEMMA (BV VERSION)
     minus a Stieltjes integral against e^{iλt}/iλ which also → 0.
 
     This is the key analytical input for the Dirichlet convergence theorem. -/
-axiom riemannLebesgue_BV
-    {a b : ℝ} (hab : a < b)
-    (g : ℝ → ℂ) (hg : BoundedVariationOn g (Set.Icc a b)) :
-    Tendsto (fun freq : ℝ => ∫ t in Set.Icc a b,
-      g t * Complex.exp (Complex.I * freq * t)) atTop (𝓝 0)
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -392,9 +385,6 @@ PART IX: LIPSCHITZ AND SMOOTH FUNCTIONS (COROLLARIES)
 
 /-- Lipschitz functions have bounded variation on compact intervals.
     This connects Lipschitz regularity to the BV hypothesis of Dirichlet's theorem. -/
-axiom lipschitz_hasBV {C : ℝ≥0} {f : ℝ → ℂ}
-    (hf : LipschitzWith C f) (a b : ℝ) :
-    BoundedVariationOn f (Set.Icc a b)
 
 /-- Continuously differentiable functions on the circle are Lipschitz
     (on compact sets), hence BV. This gives a large class of functions
@@ -415,10 +405,6 @@ PART X: MONOTONE FUNCTIONS (SPECIAL CASE)
 
 /-- Monotone functions on closed intervals have bounded variation.
     The total variation of a monotone function equals |f(b) - f(a)|. -/
-axiom monotone_hasBV {f : ℝ → ℂ} {a b : ℝ} (hab : a ≤ b)
-    (hf : MonotoneOn (fun x => (f x).re) (Set.Icc a b))
-    (hf_im : MonotoneOn (fun x => (f x).im) (Set.Icc a b)) :
-    BoundedVariationOn f (Set.Icc a b)
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -506,11 +492,6 @@ theorem fejerKernel_at_zero_value (N : ℕ) (hN : 0 < N) :
 /-- The Cesàro mean can be expressed as a convolution with the Fejér kernel.
     σ_N f(x) = ∫ f(t) · F_N(x - t) dt
     This is the key structural identity for Fejér theory. -/
-axiom cesaroMean_eq_convolution
-    (f : AddCircle T → ℂ) (N : ℕ) (hN : 0 < N)
-    (x : AddCircle T) (hf : Integrable f haarAddCircle) :
-    cesaroMean f N x =
-      ∫ t : AddCircle T, f t * fejerKernel N (x - t) ∂haarAddCircle
 
 /-- **Fejér's Theorem**: For continuous periodic f, the Cesàro means
     converge uniformly to f.
@@ -523,10 +504,6 @@ axiom cesaroMean_eq_convolution
 
     Axiomatized: the proof uses the approximate identity properties of F_N
     (non-negativity, normalization, concentration). -/
-axiom fejer_theorem
-    (f : AddCircle T → ℂ)
-    (hf_cont : Continuous f) (hf_int : Integrable f haarAddCircle) :
-    TendstoUniformly (fun N => cesaroMean f N) f atTop
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════

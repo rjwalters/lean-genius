@@ -217,8 +217,6 @@ def PoincareConjectureStatement : Prop :=
     Closed3Manifold M → SimplyConnectedSpace M → AreHomeomorphic M Sphere3
 
 axiom RiemannianMetric (M : Type*) [TopologicalSpace M] : Type
-axiom RicciFlow (M : Type*) [TopologicalSpace M] :
-  RiemannianMetric M → (ℝ → RiemannianMetric M)
 
 
 axiom perelman_finite_extinction (M : Type) [TopologicalSpace M]
@@ -243,10 +241,6 @@ theorem thurston_geometry_count : Fintype.card ThurstonGeometry = 8 := by
     into pieces each carrying one of Thurston's eight geometries. -/
 axiom thurston_geometrization (M : Type) [TopologicalSpace M] (hM : Closed3Manifold M) :
   ∃ (pieces : List (GeometricPiece M)), pieces.length ≥ 1
-
-/-- Perelman's W-entropy functional: monotone along Ricci flow. -/
-axiom PerelmanWEntropy (M : Type*) [TopologicalSpace M] :
-  RiemannianMetric M → ℝ
 
 
 
