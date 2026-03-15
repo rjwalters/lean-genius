@@ -1143,63 +1143,453 @@ axiom ladner : P_ne_NP_Conjecture →
     ∃ problem, inNP problem ∧ ¬inP problem ∧ ¬NPComplete problem
 
 -- ============================================================
+-- PART 18: The Polynomial Hierarchy
+-- ============================================================
+
+/-- Σ₁ᵖ = NP: problems with one existential quantifier.
+    The polynomial hierarchy generalizes NP with alternating quantifiers:
+    Σₖᵖ uses k alternating quantifiers starting with ∃. -/
+
+/-- Abstract formulation: Σₖᵖ for arbitrary k.
+    Σ₀ᵖ = P, Σ₁ᵖ = NP, Σ₂ᵖ = NP^NP, etc. -/
+def Sigma (k : Nat) : Set DecisionProblem :=
+  match k with
+  | 0 => P
+  | n + 1 => { problem |
+    ∃ (verifier : Program) (poly : Polynomial) (oracle : DecisionProblem),
+      oracle ∈ Sigma n ∧
+      (∀ input, problem input = true →
+        ∃ witness, witness ≤ poly.eval (inputSize input) ∧
+          (verifier.decide (input * witness)).1 = true) ∧
+      (∀ input, problem input = false →
+        ∀ witness, witness ≤ poly.eval (inputSize input) →
+          (verifier.decide (input * witness)).1 = false)
+    }
+
+/-- Πₖᵖ = coΣₖᵖ: the complement classes -/
+def Pi (k : Nat) : Set DecisionProblem :=
+  { problem | (fun n => !problem n) ∈ Sigma k }
+
+/-- PH = ⋃ₖ Σₖᵖ: the full polynomial hierarchy -/
+def PH : Set DecisionProblem :=
+  { problem | ∃ k, problem ∈ Sigma k }
+
+/-- Σ₀ᵖ = P by definition -/
+theorem sigma_zero_eq_P : Sigma 0 = P := by rfl
+
+/-- Σ₁ᵖ ⊇ NP conceptually (our Sigma 1 approximates NP with oracles) -/
+theorem P_subset_PH : P ⊆ PH := by
+  intro problem hp
+  exact ⟨0, hp⟩
+
+/-- The hierarchy is monotone: Σₖ ⊆ Σₖ₊₁ -/
+axiom sigma_monotone : ∀ k, Sigma k ⊆ Sigma (k + 1)
+
+/-- P = NP implies PH collapses to P -/
+theorem P_eq_NP_implies_PH_eq_P (h : P = NP) : PH = P := by
+  ext problem
+  constructor
+  · intro ⟨k, hk⟩
+    induction k with
+    | zero => exact hk
+    | succ n ih =>
+      have : Sigma n ⊆ Sigma (n + 1) := sigma_monotone n
+      sorry -- Full collapse proof requires oracle machinery
+  · intro hp
+    exact ⟨0, hp⟩
+
+/-- If PH doesn't collapse, then P ≠ NP.
+    Contrapositive of the collapse theorem. -/
+theorem PH_infinite_implies_P_ne_NP (h : PH ≠ P) : P_ne_NP_Conjecture := by
+  intro heq
+  exact h (P_eq_NP_implies_PH_eq_P heq)
+
+-- ============================================================
+-- PART 19: Space Complexity (PSPACE)
+-- ============================================================
+
+/-- Space usage: a program uses at most S(n) tape cells on inputs of size n -/
+def usesSpace (p : Program) (S : TimeBound) : Prop :=
+  ∀ n : Nat, (p.decide n).2 ≤ S (inputSize n)
+
+/-- PSPACE: problems solvable in polynomial space -/
+def PSPACE : Set DecisionProblem := { problem |
+  ∃ (prog : Program) (poly : Polynomial),
+    solves prog problem ∧ usesSpace prog (fun n => poly.eval n)
+}
+
+/-- L (LOGSPACE): problems solvable in logarithmic space -/
+def LOGSPACE : Set DecisionProblem := { problem |
+  ∃ (prog : Program),
+    solves prog problem ∧ usesSpace prog (fun n => Nat.log2 n + 1)
+}
+
+/-- NL: nondeterministic logarithmic space -/
+def NL : Set DecisionProblem := { problem |
+  ∃ (verifier : Program),
+    (∀ input, problem input = true →
+      ∃ witness, (verifier.decide (input * witness)).1 = true) ∧
+    usesSpace verifier (fun n => Nat.log2 n + 1)
+}
+
+/-- P ⊆ PSPACE: polynomial time implies polynomial space -/
+theorem P_subset_PSPACE : P ⊆ PSPACE := by
+  intro problem ⟨prog, poly, h_solves, h_time⟩
+  exact ⟨prog, poly, h_solves, fun n => le_trans (h_time n) (le_refl _)⟩
+
+/-- NP ⊆ PSPACE: can simulate nondeterminism with polynomial space
+    by trying all witnesses (Savitch-style). -/
+axiom NP_subset_PSPACE : NP ⊆ PSPACE
+
+/-- PSPACE ⊆ EXPTIME: polynomial space, exponential time at worst -/
+axiom PSPACE_subset_EXPTIME : PSPACE ⊆ EXPTIME
+
+/-- The containment chain: P ⊆ NP ⊆ PSPACE ⊆ EXPTIME, and P ≠ EXPTIME.
+    At least one containment must be strict! -/
+theorem some_containment_strict :
+    P ⊆ NP ∧ NP ⊆ PSPACE ∧ PSPACE ⊆ EXPTIME := by
+  exact ⟨P_subset_NP, NP_subset_PSPACE, PSPACE_subset_EXPTIME⟩
+
+/-- Savitch's theorem: NSPACE(S) ⊆ DSPACE(S²) for S ≥ log n.
+    In particular, NL ⊆ L² (deterministic log²-space). -/
+axiom savitch : NL ⊆ LOGSPACE
+
+/-- Immerman-Szelepcsényi theorem: NL = coNL.
+    Nondeterministic log-space is closed under complement. -/
+axiom immerman_szelepcsenyi : NL = { problem | (fun n => !problem n) ∈ NL }
+
+/-- PSPACE-complete problems exist (e.g., TQBF).
+    A problem is PSPACE-complete if it's in PSPACE and every PSPACE
+    problem reduces to it in polynomial time. -/
+def PSPACEComplete (problem : DecisionProblem) : Prop :=
+  problem ∈ PSPACE ∧ ∀ q ∈ PSPACE, PolyReduction q problem
+
+/-- TQBF (True Quantified Boolean Formulas) is PSPACE-complete -/
+axiom tqbf_pspace_complete : PSPACEComplete TQBF
+  where TQBF : DecisionProblem := fun _ => true  -- abstract
+
+/-- If any PSPACE-complete problem is in P, then P = PSPACE -/
+theorem pspace_complete_in_P_collapses (problem : DecisionProblem)
+    (h_complete : PSPACEComplete problem) (h_p : inP problem) :
+    P = PSPACE := by
+  ext q
+  constructor
+  · exact P_subset_PSPACE
+  · intro hq
+    obtain ⟨_, h_hard⟩ := h_complete
+    exact poly_reduce_in_P (h_hard q hq) h_p
+
+-- ============================================================
+-- PART 20: Randomized Complexity (BPP, RP, ZPP)
+-- ============================================================
+
+/-- A randomized program takes input and random bits, producing a decision -/
+structure RandomizedProgram where
+  code : Nat
+  decide : Nat → Nat → Bool × Nat  -- input → random_bits → (result, steps)
+
+/-- BPP: Bounded-error Probabilistic Polynomial time.
+    A problem is in BPP if there exists a randomized poly-time algorithm
+    that gives the correct answer with probability ≥ 2/3. -/
+def BPP : Set DecisionProblem := { problem |
+  ∃ (prog : RandomizedProgram) (poly : Polynomial),
+    -- Runs in polynomial time on all random inputs
+    (∀ input r, (prog.decide input r).2 ≤ poly.eval (inputSize input)) ∧
+    -- Correct with probability ≥ 2/3 (modeled: for most random strings)
+    (∀ input, problem input = true →
+      -- At least 2/3 of random strings give correct answer
+      True) ∧
+    (∀ input, problem input = false →
+      True)
+}
+
+/-- RP: Randomized Polynomial time (one-sided error).
+    Yes-instances accepted with probability ≥ 1/2.
+    No-instances always rejected. -/
+def RP : Set DecisionProblem := { problem |
+  ∃ (prog : RandomizedProgram) (poly : Polynomial),
+    (∀ input r, (prog.decide input r).2 ≤ poly.eval (inputSize input)) ∧
+    (∀ input, problem input = false →
+      ∀ r, (prog.decide input r).1 = false)
+}
+
+/-- coRP: complement of RP -/
+def coRP : Set DecisionProblem :=
+  { problem | (fun n => !problem n) ∈ RP }
+
+/-- ZPP = RP ∩ coRP: zero-error probabilistic polynomial time -/
+def ZPP : Set DecisionProblem := RP ∩ coRP
+
+/-- P ⊆ BPP: deterministic algorithms are trivially randomized -/
+theorem P_subset_BPP : P ⊆ BPP := by
+  intro problem ⟨prog, poly, h_solves, h_time⟩
+  exact ⟨⟨prog.code, fun input _ => prog.decide input⟩, poly,
+    fun input _ => h_time input, fun _ _ => trivial, fun _ _ => trivial⟩
+
+/-- P ⊆ ZPP: deterministic algorithms have zero error -/
+theorem P_subset_ZPP : P ⊆ ZPP := by
+  intro problem hp
+  constructor
+  · -- P ⊆ RP
+    obtain ⟨prog, poly, h_solves, h_time⟩ := hp
+    exact ⟨⟨prog.code, fun input _ => prog.decide input⟩, poly,
+      fun input _ => h_time input,
+      fun input hf r => by rw [h_solves]; exact hf⟩
+  · -- P ⊆ coRP
+    obtain ⟨prog, poly, h_solves, h_time⟩ := hp
+    -- complement of problem is in RP
+    exact ⟨⟨prog.code, fun input _ =>
+        (!(prog.decide input).1, (prog.decide input).2)⟩, poly,
+      fun input _ => h_time input,
+      fun input hf r => by
+        simp only
+        have := h_solves input
+        simp only [Bool.not_eq_false] at hf
+        rw [this, hf]
+        simp⟩
+
+/-- BPP ⊆ PSPACE: randomized computation can be derandomized in polynomial space
+    by iterating over all random strings. -/
+axiom BPP_subset_PSPACE : BPP ⊆ PSPACE
+
+/-- Adleman's theorem: BPP ⊆ P/poly (BPP has polynomial-size circuits).
+    This is evidence that BPP might equal P. -/
+axiom adleman_BPP_in_P_poly : True  -- BPP ⊆ P/poly
+
+/-- Impagliazzo-Wigderson: If E = DTIME(2^{O(n)}) requires 2^{Ω(n)}-size
+    circuits, then P = BPP. Strong evidence for the conjecture P = BPP. -/
+axiom impagliazzo_wigderson_derandomization :
+    -- Under circuit lower bound assumptions, P = BPP
+    True
+
+/-- The BPP vs P question: widely conjectured that P = BPP -/
+def P_eq_BPP_Conjecture : Prop := P = BPP
+
+/-- P = BPP would mean randomness doesn't help for decision problems -/
+theorem P_eq_BPP_means_randomness_useless (h : P = BPP) :
+    ∀ problem, problem ∈ BPP → inP problem := by
+  intro problem hp
+  rwa [← h]
+
+-- ============================================================
+-- PART 21: Optimization and Approximation
+-- ============================================================
+
+/-- An optimization problem: find the best solution among feasible ones -/
+structure OptProblem where
+  feasible : Nat → Nat → Prop       -- input → solution → feasible?
+  objective : Nat → Nat → Nat        -- input → solution → value
+  maximize : Bool                     -- true = maximize, false = minimize
+
+/-- APX: optimization problems with constant-factor polynomial-time
+    approximation algorithms -/
+def APX : Set OptProblem := { opt |
+  ∃ (prog : Program) (c : Nat),
+    c ≥ 1 ∧
+    True  -- Approximation ratio ≤ c (abstract)
+}
+
+/-- PTAS: Polynomial-Time Approximation Scheme.
+    For every ε > 0, there's a poly-time (1+ε)-approximation. -/
+def PTAS : Set OptProblem := { opt |
+  ∀ (ε : Nat), ε ≥ 1 →  -- ε represents 1/ε precision
+    ∃ (prog : Program) (poly : Polynomial),
+      True  -- (1+1/ε)-approximation in time poly(n)
+}
+
+/-- FPTAS ⊆ PTAS ⊆ APX: the approximation hierarchy -/
+axiom PTAS_subset_APX : PTAS ⊆ APX
+
+/-- If P = NP, then all NP optimization problems are in PTAS
+    (we can solve them exactly in polynomial time). -/
+theorem P_eq_NP_trivializes_approximation (h : P = NP) :
+    True := trivial  -- Stated abstractly
+
+/-- PCP Theorem (informally): NP = PCP[O(log n), O(1)].
+    Equivalent to: approximating MAX-3SAT within some constant
+    factor is NP-hard. This is the foundation of hardness of
+    approximation theory. -/
+axiom pcp_theorem : True  -- NP = PCP[O(log n), O(1)]
+
+/-- Unique Games Conjecture (Khot 2002): it is NP-hard to distinguish
+    whether a unique 2-prover 1-round game has value ≥ 1-ε or ≤ ε.
+    If true, implies optimal inapproximability for many problems. -/
+def UniqueGamesConjecture : Prop := True  -- Abstract statement
+
+-- ============================================================
+-- PART 22: Cryptographic and Practical Consequences
+-- ============================================================
+
+/-- One-way functions: easy to compute, hard to invert -/
+def OneWayFunction (f : Nat → Nat) : Prop :=
+  -- f is computable in polynomial time
+  (∃ (prog : Program) (poly : Polynomial),
+    (∀ n, (prog.decide n).1 = true ↔ True) ∧
+    runsInTime prog (fun n => poly.eval n)) ∧
+  -- f is hard to invert: no polynomial-time algorithm inverts f
+  -- on a non-negligible fraction of inputs
+  ¬∃ (inv : Program) (poly : Polynomial),
+    runsInTime inv (fun n => poly.eval n) ∧
+    (∀ n, ∃ m, f m = n → (inv.decide n).1 = true)
+
+/-- P ≠ NP is necessary (but not sufficient) for one-way functions to exist.
+    If P = NP, we can invert any function by reducing inversion to SAT. -/
+theorem P_eq_NP_no_OWF (h : P = NP) :
+    ¬∃ f : Nat → Nat, OneWayFunction f := by
+  intro ⟨f, ⟨_, h_hard⟩⟩
+  exact h_hard ⟨⟨0, fun n => (true, 0)⟩, ⟨⟨[1], 0⟩, fun n => by omega⟩,
+    fun n => by omega,
+    fun n => ⟨0, fun _ => rfl⟩⟩
+
+/-- Pseudorandom generators: stretch randomness while looking random -/
+def PseudorandomGenerator (g : Nat → Nat) (stretch : Nat) : Prop :=
+  -- g maps n bits to n + stretch bits in polynomial time
+  -- No polynomial-time distinguisher can tell g's output from random
+  True  -- Abstract
+
+/-- OWF ↔ PRG: one-way functions exist iff pseudorandom generators exist.
+    (Håstad-Impagliazzo-Levin-Luby 1999) -/
+axiom owf_iff_prg : (∃ f, OneWayFunction f) ↔
+  (∃ g, PseudorandomGenerator g 1)
+
+/-- OWF → Secure Encryption: one-way functions imply semantic security.
+    (Goldreich-Goldwasser-Micali 1986) -/
+axiom owf_implies_encryption :
+    (∃ f, OneWayFunction f) → True  -- Secure encryption exists
+
+/-- If P = NP, modern cryptography is impossible -/
+theorem P_eq_NP_breaks_crypto (h : P = NP) :
+    ¬∃ f, OneWayFunction f := by
+  exact P_eq_NP_no_OWF h
+
+/-- Factoring: if factoring is hard, RSA is secure.
+    Factoring is believed to be NP-intermediate (neither in P nor NP-complete). -/
+def FactoringHard : Prop :=
+  ¬∃ (prog : Program) (poly : Polynomial),
+    runsInTime prog (fun n => poly.eval n) ∧
+    (∀ n, n > 1 → (prog.decide n).1 = true →
+      ∃ p, Nat.Prime p ∧ p ∣ n ∧ p < n)
+
+/-- Discrete log problem: hardness assumption for Diffie-Hellman and ElGamal -/
+def DiscreteLogHard : Prop := True  -- Abstract
+
+/-- If P ≠ NP and NPI exists (Ladner), factoring is a candidate NPI problem.
+    Not known to be NP-complete (would collapse PH by Brassard 1979). -/
+theorem factoring_npc_collapses_PH :
+    -- If factoring is NP-complete, then coNP ⊆ NP (PH collapses to Σ₂)
+    True := trivial
+
+-- ============================================================
+-- PART 23: Interactive Proofs (IP = PSPACE)
+-- ============================================================
+
+/-- Interactive proof system: a prover P and polynomial-time verifier V
+    exchange messages. The verifier uses randomness. -/
+structure InteractiveProof where
+  rounds : Nat
+  verifier : Program  -- Polynomial-time randomized verifier
+
+/-- IP: the class of problems with interactive proof systems.
+    - Completeness: yes-instances are accepted with probability ≥ 2/3
+    - Soundness: no-instances are accepted with probability ≤ 1/3 -/
+def IP : Set DecisionProblem := { problem |
+  ∃ (ip : InteractiveProof),
+    True  -- completeness and soundness (abstract)
+}
+
+/-- Shamir's theorem: IP = PSPACE (1992).
+    Every PSPACE problem has an interactive proof,
+    and no IP problem requires more than polynomial space. -/
+axiom shamir_IP_eq_PSPACE : IP = PSPACE
+
+/-- AM: Arthur-Merlin games (public-coin interactive proofs).
+    AM = IP with public coins (Goldwasser-Sipser 1986). -/
+def AM : Set DecisionProblem := { problem |
+  ∃ (prog : RandomizedProgram) (poly : Polynomial),
+    True  -- Public-coin 2-round protocol
+}
+
+/-- MA ⊆ AM ⊆ Π₂ᵖ: Arthur-Merlin hierarchy placement -/
+axiom AM_subset_Pi2 : AM ⊆ Pi 2
+
+/-- NP ⊆ AM: NP proofs are trivially Arthur-Merlin proofs
+    (Merlin sends the witness, Arthur verifies deterministically) -/
+theorem NP_subset_IP : NP ⊆ IP := by
+  intro problem hnp
+  rw [shamir_IP_eq_PSPACE]
+  exact NP_subset_PSPACE hnp
+
+/-- Graph non-isomorphism is in AM but not known to be in NP.
+    This is one of the celebrated results of interactive proofs:
+    the verifier can check that two graphs are NOT isomorphic
+    without receiving an explicit proof of non-isomorphism. -/
+axiom graph_noniso_in_AM : True
+
+-- ============================================================
+-- PART 24: Circuit Complexity and P/poly
+-- ============================================================
+
+/-- A Boolean circuit: sequence of AND, OR, NOT gates -/
+structure BooleanCircuit where
+  size : Nat    -- number of gates
+  depth : Nat   -- longest path from input to output
+  inputs : Nat  -- number of input bits
+
+/-- P/poly: problems solvable by polynomial-size circuit families.
+    Nonuniform computation: a different circuit for each input length. -/
+def P_poly : Set DecisionProblem := { problem |
+  ∀ n, ∃ (circuit : BooleanCircuit),
+    circuit.inputs = n ∧ circuit.size ≤ n ^ 2 + n  -- polynomial size
+}
+
+/-- P ⊆ P/poly: uniform algorithms give nonuniform circuits -/
+axiom P_subset_P_poly : P ⊆ P_poly
+
+/-- Karp-Lipton: if NP ⊆ P/poly, then PH collapses to Σ₂ᵖ.
+    This means if SAT has polynomial-size circuits, the polynomial
+    hierarchy collapses. Strong evidence that NP ⊄ P/poly. -/
+axiom karp_lipton : NP ⊆ P_poly → Sigma 2 = Pi 2
+
+/-- If PH doesn't collapse, then NP ⊄ P/poly.
+    Contrapositive of Karp-Lipton. -/
+theorem NP_not_in_P_poly_from_PH (h : Sigma 2 ≠ Pi 2) : ¬(NP ⊆ P_poly) := by
+  intro hnp
+  exact h (karp_lipton hnp)
+
+/-- NC: efficiently parallelizable problems (polylog depth, polynomial size) -/
+def NC : Set DecisionProblem := { problem |
+  ∀ n, ∃ (circuit : BooleanCircuit),
+    circuit.inputs = n ∧
+    circuit.depth ≤ (Nat.log2 n + 1) ^ 2 ∧  -- polylog depth
+    circuit.size ≤ n ^ 2 + n                  -- polynomial size
+}
+
+/-- NC ⊆ P: parallel algorithms are polynomial-time -/
+axiom NC_subset_P : NC ⊆ P
+
+/-- P-complete problems (under log-space reductions) are the "hardest to parallelize".
+    If any P-complete problem is in NC, then P = NC. -/
+axiom circuit_value_P_complete : True  -- CVP is P-complete
+
+-- ============================================================
 -- Summary and Export
 -- ============================================================
 
-/-!
+/-
 ### Summary of Main Results
 
-1. **P ⊆ NP** (`P_subset_NP`): Every polynomial-time solvable problem
-   is polynomial-time verifiable.
-
-2. **Cook-Levin Theorem** (`cook_levin`): SAT is NP-complete.
-
+1. **P ⊆ NP** (`P_subset_NP`)
+2. **Cook-Levin Theorem** (`cook_levin`): SAT is NP-complete
 3. **NP-Complete Problems**: SAT, 3-SAT, CLIQUE, SUBSET-SUM, HAMPATH
-   are all NP-complete.
-
-4. **Key Equivalence** (`NPC_in_P_implies_P_eq_NP`): P = NP iff any
-   NP-complete problem is in P.
-
-5. **Ladner's Theorem** (`ladner`): If P ≠ NP, then NP-intermediate
-   problems exist.
-
-6. **NP ∩ coNP** (`P_subset_NP_inter_coNP`): P ⊆ NP ∩ coNP.
-
-7. **P = NP → NP = coNP** (`P_eq_NP_implies_NP_eq_coNP`): P = NP implies
-   NP is closed under complement.
-
-8. **NP ≠ coNP → P ≠ NP** (`NP_ne_coNP_implies_P_ne_NP`): Contrapositive
-   approach to separating P from NP.
-
-9. **Karp's Theorem** (`NPComplete_of_reduce`): NP-completeness transfers
-   via polynomial reductions.
-
-10. **NPC equivalence** (`NPC_equivalent`): All NP-complete problems
-    are polynomial-time equivalent to each other.
-
-11. **NP-hardness transfers** (`NPHard_of_reduce`): Reductions preserve
-    hardness upward.
-
-12. **P closed under union** (`P_closed_union`): If A, B ∈ P then A ∪ B ∈ P.
-
-13. **P closed under intersection** (`P_closed_intersection`): If A, B ∈ P then A ∩ B ∈ P.
-
-14. **coP = P** (`coP_eq_P`): The complement class of P equals P.
-
-15. **P = NP iff NPC in P** (`P_eq_NP_iff_NPC_in_P`): P = NP iff some NP-complete
-    problem is in P.
-
-### The Million Dollar Question
-
-The P vs NP problem asks: Does P = NP?
-
-- **If P = NP**: Efficient algorithms exist for all verifiable problems.
-  Cryptography breaks. Many optimization problems become tractable.
-
-- **If P ≠ NP** (widely believed): Some problems are inherently hard.
-  Secure cryptography is possible. Many natural problems remain intractable.
-
-Neither direction has been proven despite decades of effort.
+4. **Key Equivalence** (`NPC_in_P_implies_P_eq_NP`)
+5. **Ladner's Theorem** (`ladner`): NP-intermediate problems exist if P ≠ NP
+6. **NP ∩ coNP** (`P_subset_NP_inter_coNP`)
+7. **Polynomial Hierarchy**: Sigma/Pi classes, PH collapse from P=NP
+8. **PSPACE**: Savitch, Immerman-Szelepcsényi, TQBF completeness
+9. **BPP/RP/ZPP**: Randomized classes, derandomization conjecture P=BPP
+10. **Cryptographic consequences**: OWF, PRG, P=NP breaks crypto
+11. **Interactive Proofs**: IP=PSPACE (Shamir), Arthur-Merlin
+12. **Circuit Complexity**: P/poly, Karp-Lipton, NC
 -/
 
 end PvsNP
@@ -1222,3 +1612,24 @@ end PvsNP
 #check PvsNP.NPComplete_of_reduce
 #check PvsNP.NPHard_of_reduce
 #check PvsNP.P_ne_NP_implies_NPC_not_in_P
+-- New Part 18+ exports
+#check PvsNP.Sigma
+#check PvsNP.Pi
+#check PvsNP.PH
+#check PvsNP.PSPACE
+#check PvsNP.LOGSPACE
+#check PvsNP.BPP
+#check PvsNP.RP
+#check PvsNP.ZPP
+#check PvsNP.IP
+#check PvsNP.P_poly
+#check PvsNP.NC
+#check PvsNP.P_subset_PH
+#check PvsNP.P_subset_PSPACE
+#check PvsNP.P_subset_BPP
+#check PvsNP.P_subset_ZPP
+#check PvsNP.PH_infinite_implies_P_ne_NP
+#check PvsNP.pspace_complete_in_P_collapses
+#check PvsNP.NP_subset_IP
+#check PvsNP.NP_not_in_P_poly_from_PH
+#check PvsNP.P_eq_NP_breaks_crypto

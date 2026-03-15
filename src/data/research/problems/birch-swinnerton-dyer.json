@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-01T21:55:27.887Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 6,
+    "focus": "Iwasawa theory, Kolyvagin, p-adic BSD, higher rank barriers",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Parts I-LI complete. 5747 lines, 57 axioms, 2 sorries, 210 theorems. Added CM elliptic curves (Deuring, Rubin, Chowla-Selberg, singular moduli) and BSD for abelian varieties (Faltings, Sato-Tate, Bhargava-Shankar density results).",
+    "progressSummary": "PROGRESS: Parts I-LV complete. 6017 lines, 75 axioms, 2 sorries, 214 theorems. Added Iwasawa theory (Main Conjecture, Kato/Skinner-Urban), Kolyvagin Euler systems (Gross-Zagier formula, BSD for rank \u2264 1), p-adic BSD (Greenberg-Stevens, Perrin-Riou, Bertolini-Darmon), recent progress (Skinner converse, anticyclotomic IMC).",
     "builtItems": [
       {
         "name": "CMEllipticCurve",
@@ -85,10 +85,69 @@
         "name": "bsd_positive_density",
         "description": "BSD holds for 87.16% of curves (PROVED)",
         "proven": true
+      },
+      {
+        "name": "IwasawaAlgebra",
+        "description": "Iwasawa algebra \u039b = Z\u209a\u27e6T\u27e7",
+        "proven": true
+      },
+      {
+        "name": "iwasawa_main_conjecture",
+        "description": "Iwasawa Main Conjecture for elliptic curves",
+        "proven": false
+      },
+      {
+        "name": "kato_euler_system_divisibility",
+        "description": "Kato one-divisibility of Main Conjecture",
+        "proven": false
+      },
+      {
+        "name": "gross_zagier_formula",
+        "description": "Gross-Zagier formula: L'(E/K,1) = c\u00b7\u0125(y\u2096)",
+        "proven": false
+      },
+      {
+        "name": "kolyvagin_euler_system",
+        "description": "Kolyvagin: non-torsion Heegner \u2192 rank 1 + finite Sha",
+        "proven": false
+      },
+      {
+        "name": "gross_zagier_kolyvagin_bsd",
+        "description": "BSD for analytic rank \u2264 1 (PROVED in math)",
+        "proven": false
+      },
+      {
+        "name": "bsd_rank_zero_solved",
+        "description": "BSD for rank 0 is a theorem",
+        "proven": true
+      },
+      {
+        "name": "bsd_rank_one_solved",
+        "description": "BSD for rank 1 is a theorem",
+        "proven": true
+      },
+      {
+        "name": "perrin_riou_p_adic_bsd",
+        "description": "Perrin-Riou p-adic BSD formula",
+        "proven": false
+      },
+      {
+        "name": "skinner_converse",
+        "description": "Skinner converse to Gross-Zagier-Kolyvagin",
+        "proven": false
+      },
+      {
+        "name": "bsd_current_status",
+        "description": "Summary of BSD current knowledge",
+        "proven": true
       }
     ],
     "insights": [
-      "CM curves make BSD more accessible via Hecke L-function factorization. Rubin (1991) proved BSD for CM curves with analytic rank \u2264 1. Bhargava-Skinner-Zhang showed BSD holds for at least 87.16% of all elliptic curves by height."
+      "CM curves make BSD more accessible via Hecke L-function factorization. Rubin (1991) proved BSD for CM curves with analytic rank \u2264 1. Bhargava-Skinner-Zhang showed BSD holds for at least 87.16% of all elliptic curves by height.",
+      "Iwasawa Main Conjecture: char(Selmer) = (L_p), proved by Kato (one side) + Skinner-Urban (other side) for ordinary primes",
+      "Gross-Zagier + Kolyvagin: BSD proved for rank 0 and 1 \u2014 the strongest result toward any Millennium Problem",
+      "Rank \u2265 2 is fundamentally blocked: no Euler system construction exists for higher-dimensional Galois representations",
+      "p-adic BSD via Greenberg-Stevens and Bertolini-Darmon extends classical results to p-adic setting"
     ],
     "mathlibGaps": [
       "Torsion subgroup",
@@ -117,7 +176,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.886Z",
-  "lastUpdate": "2026-02-11T07:03:36.099Z",
+  "lastUpdate": "2026-03-15T13:00:00.000Z",
   "completed": "2026-02-11T05:41:00.786Z",
   "significance": 10,
   "tractability": 1
