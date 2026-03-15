@@ -98,11 +98,9 @@ theorem complexPlane_isConnected : IsConnected (Set.univ : Set ℂ) :=
 /-- The complex plane is simply connected (stated as an axiom).
     In topology, a space is simply connected if it is path-connected
     and every loop can be continuously contracted to a point. -/
-axiom complexPlane_simplyConnected : True  -- Placeholder for simply connected property
 
 /-- The unit disk is simply connected (stated as an axiom).
     This follows from convexity: every convex subset of ℝⁿ is simply connected. -/
-axiom unitDisk_simplyConnected : True  -- Placeholder for simply connected property
 
 end ModelSpaces
 
@@ -150,10 +148,6 @@ theorem conformallyEquivalent_refl (U : Set ℂ) (_hU : IsOpen U) :
     rightInverse := fun _ _ => rfl
   }⟩
 
-/-- Conformal equivalence is symmetric (axiomatized for simplicity) -/
-axiom conformallyEquivalent_symm (U V : Set ℂ) :
-    ConformallyEquivalent U V → ConformallyEquivalent V U
-
 end ConformalMappings
 
 /-!
@@ -171,19 +165,6 @@ section RiemannMappingTheorem
     to the open unit disk.
 
     This is one of the most important theorems in complex analysis. -/
-axiom riemann_mapping_theorem (U : Set ℂ)
-    (hOpen : IsOpen U)
-    (hConn : IsConnected U)
-    (hSC : True)  -- Placeholder for simply connected
-    (hProper : U ≠ Set.univ) :
-    ConformallyEquivalent U UnitDisk
-
-/-- The Riemann mapping is unique up to Möbius transformations of the disk -/
-axiom riemann_mapping_uniqueness (U : Set ℂ)
-    (hOpen : IsOpen U) (hSC : True)
-    (z₀ : ℂ) (hz₀ : z₀ ∈ U) :
-    ∃! (f : ConformalEquivalence U UnitDisk),
-      f.toFun z₀ = 0 ∧ (deriv f.toFun z₀).re > 0
 
 end RiemannMappingTheorem
 
@@ -211,24 +192,14 @@ def RiemannSurface.IsSimplyConnected (_S : RiemannSurface) : Prop := True
     exactly one of: the Riemann sphere, the complex plane, or the unit disk.
 
     This completely classifies simply connected Riemann surfaces. -/
-axiom uniformization_theorem (S : RiemannSurface) (hSC : S.IsSimplyConnected) :
-    ∃! (t : UniformizationType), match t with
-      | .sphere => True  -- Conformally equivalent to Riemann sphere
-      | .plane => ConformallyEquivalent S.carrier Set.univ
-      | .disk => ConformallyEquivalent S.carrier UnitDisk
 
 /-- Corollary: Every Riemann surface has a universal cover that is
     one of the three model spaces -/
-axiom universal_cover_classification (_S : RiemannSurface) :
-    ∃ (_t : UniformizationType), True  -- The universal cover is of type t
 
 /-- The type of a Riemann surface is determined by its fundamental group:
     - Sphere: trivial π₁, compact
     - Plane: trivial π₁, non-compact with small ends
     - Disk: trivial π₁, non-compact with large ends -/
-axiom type_from_topology (S : RiemannSurface) (hSC : S.IsSimplyConnected) :
-    (S.carrier = Set.univ → ∃ t, t = UniformizationType.plane) ∧
-    (S.carrier ≠ Set.univ → ∃ t, t = UniformizationType.disk ∨ t = UniformizationType.sphere)
 
 end UniformizationTheorem
 
@@ -256,9 +227,6 @@ def IsAutomorphic {X : Type*} [TopologicalSpace X]
 
 /-- The quotient of a simply connected surface by a discrete group
     gives a Riemann surface that can be uniformized -/
-axiom quotient_uniformization (_Ω : Set ℂ) (_Γ : DiscreteGroup ℂ)
-    (_hΩ : IsOpen _Ω) (_hSC : True) :
-    ∃ (_S : RiemannSurface), True  -- S is Ω/Γ and inherits complex structure
 
 /-- Fuchsian groups: discrete subgroups of PSL(2,ℝ) acting on the upper half-plane -/
 structure FuchsianGroup where
@@ -271,9 +239,6 @@ structure FuchsianGroup where
 /-- Every compact Riemann surface of genus g ≥ 2 is uniformized by
     the upper half-plane (or equivalently, the unit disk) modulo
     a Fuchsian group -/
-axiom genus_ge_2_uniformization :
-    ∀ (g : ℕ), g ≥ 2 →
-    ∃ (_Γ : FuchsianGroup), True  -- Compact surface of genus g = ℍ/Γ
 
 end AutomorphicFunctions
 
@@ -292,21 +257,14 @@ section Connections
 /-- Every compact Riemann surface of genus g has a unique hyperbolic metric
     (for g ≥ 2), a unique Euclidean metric (for g = 1), or a unique
     spherical metric (for g = 0) -/
-axiom canonical_metrics :
-    ∀ (g : ℕ),
-      (g = 0 → True) ∧  -- Spherical: Riemann sphere
-      (g = 1 → True) ∧  -- Flat: torus
-      (g ≥ 2 → True)    -- Hyperbolic: negative curvature
 
 /-- The modular curve relates to uniformization:
     The modular group SL(2,ℤ) acts on the upper half-plane,
     and the quotient parametrizes elliptic curves -/
-axiom modular_curve_example : True
 
 /-- Belyi's Theorem (1979): A Riemann surface is defined over ℚ̄ iff it
     admits a holomorphic map to ℙ¹ ramified over at most 3 points.
     This connects uniformization to arithmetic geometry. -/
-axiom belyi_theorem : True
 
 end Connections
 

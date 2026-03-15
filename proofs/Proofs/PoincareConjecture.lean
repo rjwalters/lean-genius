@@ -216,22 +216,8 @@ def PoincareConjectureStatement : Prop :=
   ∀ (M : Type) [TopologicalSpace M],
     Closed3Manifold M → SimplyConnectedSpace M → AreHomeomorphic M Sphere3
 
-/- ===============================================================================
-PART VI: RICCI FLOW AND PERELMAN'S APPROACH
-=============================================================================== -/
-
-axiom RicciCurvature (M : Type*) [TopologicalSpace M] : Type
 axiom RiemannianMetric (M : Type*) [TopologicalSpace M] : Type
-axiom RicciFlow (M : Type*) [TopologicalSpace M] :
-  RiemannianMetric M → (ℝ → RiemannianMetric M)
 
-/- ===============================================================================
-PART VII: PERELMAN'S AXIOMS AND THURSTON GEOMETRIZATION
-=============================================================================== -/
-
-axiom perelman_surgery (M : Type) [TopologicalSpace M] (hM : Closed3Manifold M) :
-  ∀ _g : RiemannianMetric M, ∃ (M' : Type), ∃ (_ : TopologicalSpace M'),
-    Closed3Manifold M' ∧ (SimplyConnectedSpace M → SimplyConnectedSpace M')
 
 axiom perelman_finite_extinction (M : Type) [TopologicalSpace M]
     (hM : Closed3Manifold M) (hsc : SimplyConnectedSpace M) :
@@ -256,19 +242,7 @@ theorem thurston_geometry_count : Fintype.card ThurstonGeometry = 8 := by
 axiom thurston_geometrization (M : Type) [TopologicalSpace M] (hM : Closed3Manifold M) :
   ∃ (pieces : List (GeometricPiece M)), pieces.length ≥ 1
 
-/-- Perelman's W-entropy functional: monotone along Ricci flow. -/
-axiom PerelmanWEntropy (M : Type*) [TopologicalSpace M] :
-  RiemannianMetric M → ℝ
 
-axiom perelman_entropy_monotone (M : Type*) [TopologicalSpace M]
-    (g : RiemannianMetric M) (t₁ t₂ : ℝ) (_h : t₁ ≤ t₂) :
-    PerelmanWEntropy M ((RicciFlow M g) t₁) ≤ PerelmanWEntropy M ((RicciFlow M g) t₂)
-
-/-- Hamilton's theorem (1982): Simply connected + positive Ricci → S³. -/
-axiom hamilton_positive_ricci (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) (hsc : SimplyConnectedSpace M)
-    (_hpositive : ∃ _g : RiemannianMetric M, True) :
-    AreHomeomorphic M Sphere3
 
 /- ===============================================================================
 PART VIII: THE MAIN THEOREM
@@ -588,13 +562,6 @@ theorem poincare_self_consistency :
     AreHomeomorphic (↥Sphere3) Sphere3 :=
   poincare_conjecture_holds (↥Sphere3) sphere3_closedManifold sphere3_simply_connected_inst
 
-/-- More generally, S^n is simply connected for n ≥ 2.
-    This follows from Seifert-van Kampen: decompose S^n into two hemispheres
-    (each contractible), overlapping in a band homeomorphic to S^{n-1} × (-1,1).
-    For n ≥ 2, the overlap is connected, so π₁(S^n) = π₁(D^n) *_{π₁(S^{n-1}×I)} π₁(D^n) = 1.
-    -/
-axiom sphere_n_simply_connected (n : ℕ) (hn : 2 ≤ n) :
-    SimplyConnectedSpace (↥(Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1))
 
 /- ===============================================================================
 PART XVII-B: PUNCTURED SPHERE CONTRACTIBILITY
@@ -709,14 +676,7 @@ def IsPrime3Manifold (M : Type) [TopologicalSpace M] (_hM : Closed3Manifold M) :
     AreHomeomorphic M (ConnectedSum A B) →
     AreHomeomorphic A Sphere3 ∨ AreHomeomorphic B Sphere3
 
-/-- Connected sum with S³ is trivial: M # S³ ≅ M. -/
-axiom connected_sum_sphere3_trivial (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) :
-    AreHomeomorphic (ConnectedSum M Sphere3) M
 
-/-- Connected sum is commutative: M # N ≅ N # M. -/
-axiom connected_sum_comm (M N : Type) [TopologicalSpace M] [TopologicalSpace N] :
-    AreHomeomorphic (ConnectedSum M N) (ConnectedSum N M)
 
 /-- Helper: if A # B ≅ S³, then A ≅ S³ (left factor).
     This follows from: S³ simply connected ⟹ π₁(A#B) = π₁(A) * π₁(B) trivial
@@ -726,16 +686,6 @@ axiom sphere3_prime_factor_left (A B : Type) [TopologicalSpace A] [TopologicalSp
     (hHomeo : AreHomeomorphic Sphere3 (ConnectedSum A B)) :
     AreHomeomorphic A Sphere3
 
-/-- Kneser's Prime Decomposition (1929): Every closed orientable 3-manifold decomposes
-    as a connected sum of finitely many prime 3-manifolds, and this decomposition
-    is unique up to order and homeomorphism (Milnor, 1962). -/
-axiom kneser_prime_decomposition (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) :
-    ∃ (n : ℕ) (factors : Fin n → Type),
-      (∀ i, ∃ (inst : TopologicalSpace (factors i)),
-        ∃ (hcm : @Closed3Manifold (factors i) inst),
-          @IsPrime3Manifold (factors i) inst hcm) ∧
-      True -- Full statement would require iterated connected sum homeomorphism
 
 /-- S³ is prime (since it's the identity for connected sum). -/
 theorem sphere3_is_prime : IsPrime3Manifold (↥Sphere3)
@@ -789,17 +739,7 @@ abbrev Sphere1 : Set (EuclideanSpace ℝ (Fin 2)) := Metric.sphere 0 1
 /-- The 2-sphere S² as unit sphere in ℝ³. -/
 abbrev Sphere2 : Set (EuclideanSpace ℝ (Fin 3)) := Metric.sphere 0 1
 
-/-- The Hopf map S³ → S² exists as a continuous surjection.
-    Constructed via quaternionic multiplication: for q ∈ S³ ⊂ ℍ,
-    π(q) = q·i·q⁻¹ identifies points on great circle orbits. -/
-axiom hopf_map_exists :
-  ∃ (π : ↥Sphere3 → ↥Sphere2), Continuous π ∧ Function.Surjective π
 
-/-- Each fiber of the Hopf map is homeomorphic to S¹ (a great circle in S³). -/
-axiom hopf_fibers_are_circles :
-  ∀ (π : ↥Sphere3 → ↥Sphere2), Continuous π → Function.Surjective π →
-    ∀ p : ↥Sphere2, ∃ (f : ↥(π ⁻¹' {p}) → ↥Sphere1),
-      Continuous f ∧ Function.Bijective f
 
 /-- S³ admits a Lie group structure (homeomorphic to SU(2)).
     The unit quaternions form a group under quaternion multiplication,
@@ -1147,16 +1087,6 @@ theorem lensL31_not_SC : lensL31.p ≠ 1 := by unfold lensL31; norm_num
 /-- The order of the fundamental group of L(p,q) is p. -/
 theorem lens_pi1_order (L : LensSpaceParams) : L.p ≥ 1 := L.hp
 
-/-- Necessary condition for lens space homeomorphism:
-    L(p,q) ≅ L(p,q') requires q' ≡ ±q (mod p) or q'q ≡ ±1 (mod p). -/
-axiom lens_homeomorphism_necessary (L₁ L₂ : LensSpaceParams)
-    (hsamep : L₁.p = L₂.p) :
-    -- L₁ ≅ L₂ only if one of these conditions holds:
-    (L₂.q % L₁.p = L₁.q % L₁.p) ∨
-    (L₂.q % L₁.p = (-L₁.q) % L₁.p) ∨
-    ((L₂.q * L₁.q) % L₁.p = 1 % L₁.p) ∨
-    ((L₂.q * L₁.q) % L₁.p = (-1 : ℤ) % L₁.p) ∨
-    True -- weaker statement for axiom soundness
 
 /-- L(5,1) and L(5,2) have the same p but are NOT homeomorphic.
     They ARE homotopy equivalent (same homology, same π₁).
@@ -1391,7 +1321,6 @@ section HomologySphere
 
 /-- The binary icosahedral group, of order 120. -/
 axiom BinaryIcosahedral : Type
-axiom instGroupBinaryIcosahedral : Group BinaryIcosahedral
 axiom instFintypeBinaryIcosahedral : Fintype BinaryIcosahedral
 axiom binary_icosahedral_card :
     @Fintype.card BinaryIcosahedral instFintypeBinaryIcosahedral = 120
@@ -1721,9 +1650,6 @@ noncomputable def heegaardGenus (M : Type) [TopologicalSpace M]
     (splits : Nonempty (HeegaardSplitting M)) : ℕ :=
   splits.some.genus
 
-/-- Every closed orientable 3-manifold admits a Heegaard splitting (existence axiom). -/
-axiom heegaard_exists (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) : Nonempty (HeegaardSplitting M)
 
 /-- S³ admits a genus-0 Heegaard splitting (two 3-balls glued along S²). -/
 def sphere3_heegaard_genus0 : HeegaardSplitting (↥Sphere3) :=
@@ -1754,17 +1680,7 @@ theorem heegaard_characterization_S3 (M : Type) [TopologicalSpace M]
   · rintro ⟨h, hg⟩
     exact waldhausen_genus0 M hM h hg
 
-/-- Lens spaces L(p,q) with p ≥ 2 have Heegaard genus 1 (two solid tori). -/
-axiom lens_heegaard_genus1 (L : LensSpaceParams) (hp : L.p ≥ 2) :
-    ∃ h : HeegaardSplitting Unit, h.genus = 1
 
-/-- Heegaard genus is additive under connected sum: g(M # N) = g(M) + g(N).
-    This is a classical result in 3-manifold topology. -/
-axiom heegaard_genus_additive (M N : Type) [TopologicalSpace M] [TopologicalSpace N]
-    (hM : Closed3Manifold M) (hN : Closed3Manifold N)
-    (sM : HeegaardSplitting M) (sN : HeegaardSplitting N) :
-    ∃ (P : Type) (_ : TopologicalSpace P) (_ : Closed3Manifold P)
-      (sP : HeegaardSplitting P), sP.genus = sM.genus + sN.genus
 
 /-- The Poincaré conjecture from the Heegaard perspective:
     Simply connected closed 3-manifolds have Heegaard genus 0. -/
@@ -1822,20 +1738,7 @@ theorem mcg_sphere_trivial : (MCGData.mk 0).genus = 0 := rfl
     The lens space L(p,q) corresponds to the matrix [[q,*],[p,*]] ∈ SL(2,ℤ). -/
 theorem mcg_torus_is_SL2Z : True := trivial  -- Was axiom; trivially provable
 
-/-- Genus-1 Heegaard splittings correspond bijectively to lens spaces and S³. -/
-axiom genus1_classification :
-    ∀ (M : Type) [TopologicalSpace M],
-      Closed3Manifold M →
-      (∃ h : HeegaardSplitting M, h.genus = 1) →
-      (AreHomeomorphic M Sphere3 ∨ ∃ L : LensSpaceParams, L.p ≥ 2)
 
-/-- The Reidemeister-Singer theorem: any two Heegaard splittings of a closed
-    3-manifold become isotopic after a finite number of stabilizations
-    (increasing the genus by 1). -/
-axiom reidemeister_singer (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M)
-    (s1 s2 : HeegaardSplitting M) :
-    ∃ (k1 k2 : ℕ), s1.genus + k1 = s2.genus + k2
 
 /-- Stabilization increases genus by 1: if M has a genus-g splitting,
     it also has a genus-(g+1) splitting. -/
@@ -1909,10 +1812,6 @@ axiom instDehnSurgeryTop (M : Type) [TopologicalSpace M]
     (K : Knot M) (s : SurgerySlope) :
     TopologicalSpace (DehnSurgeryResult M K s)
 
-/-- Dehn surgery on a knot in a closed 3-manifold produces a closed 3-manifold. -/
-axiom dehn_surgery_closed (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) (K : Knot M) (s : SurgerySlope) :
-    @Closed3Manifold (DehnSurgeryResult M K s) (instDehnSurgeryTop M K s)
 
 /-- Trivial surgery (slope ∞ = 1/0) gives back the original manifold. -/
 axiom dehn_surgery_trivial (M : Type) [TopologicalSpace M]
@@ -1920,23 +1819,7 @@ axiom dehn_surgery_trivial (M : Type) [TopologicalSpace M]
     let s : SurgerySlope := ⟨1, 0, by norm_num⟩
     @AreHomeomorphic M (DehnSurgeryResult M K s) _ (instDehnSurgeryTop M K s)
 
-/-- The **Lickorish-Wallace theorem**: Every closed, orientable 3-manifold
-    can be obtained from S³ by Dehn surgery on a link (finite collection
-    of knots).
 
-    This is one of the most important structural results in 3-manifold topology.
-    Combined with Kirby calculus, it reduces the classification of 3-manifolds
-    to the study of links and their surgery descriptions. -/
-axiom lickorish_wallace (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) :
-    ∃ (n : ℕ) (knots : Fin n → Knot (↥Sphere3))
-      (slopes : Fin n → SurgerySlope), True
-    -- Full statement: the result of successive surgeries is homeomorphic to M
-    -- Simplified here; full version needs iterated surgery
-
-/-- Dehn surgery on the unknot in S³ with slope p/q gives the lens space L(p,q). -/
-axiom unknot_surgery_lens_space (s : SurgerySlope) (hp : s.p.natAbs ≥ 2) :
-    ∃ L : LensSpaceParams, L.p = s.p.natAbs
 
 /-- Surgery on the unknot with slope 1/0 gives S³ (trivial knot, trivial surgery). -/
 theorem unknot_trivial_surgery :
@@ -2154,14 +2037,7 @@ axiom rp3_projection_continuous :
 axiom rp3_projection_surjective :
     Function.Surjective rp3_projection
 
-/-- Antipodal points project to the same point: π(x) = π(A(x)). -/
-axiom rp3_identifies_antipodal (x : ↥Sphere3) :
-    rp3_projection x = rp3_projection ((antipodalHomeomorph 3) x)
 
-/-- The covering S³ → RP³ is 2-fold: each point has exactly 2 preimages. -/
-axiom rp3_covering_sheets :
-    ∀ y : RP3, ∃ (x₁ x₂ : ↥Sphere3),
-      rp3_projection x₁ = y ∧ rp3_projection x₂ = y ∧ x₁ ≠ x₂
 
 /-- RP³ has fundamental group ℤ/2ℤ, which is nontrivial.
     Proof: The universal cover of RP³ is S³ (simply connected), and the
@@ -2219,26 +2095,7 @@ theorem multiple_non_sphere3_manifolds :
    poincare_hs_closed, poincare_hs_not_S3,
    rp3_closed3manifold, rp3_not_homeomorphic_sphere3⟩
 
-/-- Every closed 3-manifold that is a quotient of S³ by a free group
-    action fails to be simply connected (unless the group is trivial).
-    This is a consequence of covering space theory: π₁(S³/G) ≅ G. -/
-axiom quotient_S3_pi1 (G : Type) [Group G] [Fintype G]
-    (hfree : Fintype.card G ≥ 2) :
-    ∀ (M : Type) (_ : TopologicalSpace M),
-      @Closed3Manifold M ‹_› →
-      (∃ (_ : @CoveringSpace M ‹_›), True) →
-      ¬ @SimplyConnectedSpace M ‹_›
 
-/-- The classification of spherical space forms: every closed 3-manifold
-    with spherical geometry is a quotient S³/Γ where Γ is a finite
-    subgroup of SO(4) acting freely. -/
-axiom spherical_space_form_classification :
-    ∀ (M : Type) [TopologicalSpace M],
-      @Closed3Manifold M _ →
-      (∃ (pieces : List (GeometricPiece M)),
-        pieces.length = 1 ∧ (pieces.head?).map GeometricPiece.geometry = some ThurstonGeometry.spherical) →
-      ∃ (Γ : Type) (_ : Group Γ) (_ : Fintype Γ),
-        @AreHomeomorphic M (↥Sphere3) _ _ ∨ ¬ @SimplyConnectedSpace M _
 
 end CoveringSpaces
 
@@ -2263,8 +2120,6 @@ section AlexanderSchoenflies
 axiom Ball3 : Type
 axiom instBall3Top : TopologicalSpace Ball3
 
-/-- B³ is compact. -/
-axiom ball3_compact : @CompactSpace Ball3 instBall3Top
 
 /-- B³ is contractible. -/
 axiom ball3_contractible : @ContractibleSpace Ball3 instBall3Top
@@ -2274,10 +2129,6 @@ theorem ball3_simply_connected :
     @SimplyConnectedSpace Ball3 instBall3Top :=
   @SimplyConnectedSpace.ofContractible Ball3 instBall3Top ball3_contractible
 
-/-- The boundary of B³ is homeomorphic to S². -/
-axiom ball3_boundary_is_S2 :
-    ∃ (∂B : Type) (_ : TopologicalSpace ∂B),
-      @AreHomeomorphic ∂B (↥Sphere2) ‹_› _
 
 /-- A tame embedding of S² in S³: a subspace that separates S³ into
     two connected components. -/
@@ -2287,32 +2138,7 @@ structure TameS2inS3 where
   /-- The embedding is homeomorphic to S² -/
   is_sphere : AreHomeomorphic ↥carrier (↥Sphere2)
 
-/-- Alexander's theorem (1924, smooth/PL version):
-    Every tame S² in S³ bounds a 3-ball on each side.
-    That is, each component of S³ \ S² is homeomorphic to an open 3-ball,
-    and each closure is homeomorphic to B³. -/
-axiom alexander_theorem (Σ : TameS2inS3) :
-    ∃ (A B : Set (↥Sphere3)),
-      -- A and B are the two components
-      A ∪ B ∪ Σ.carrier = Set.univ ∧
-      Disjoint A B ∧
-      Disjoint A Σ.carrier ∧
-      Disjoint B Σ.carrier ∧
-      -- Each component's closure is homeomorphic to B³
-      (∃ (_ : TopologicalSpace ↥(closure A)),
-        @AreHomeomorphic ↥(closure A) Ball3 ‹_› instBall3Top) ∧
-      (∃ (_ : TopologicalSpace ↥(closure B)),
-        @AreHomeomorphic ↥(closure B) Ball3 ‹_› instBall3Top)
 
-/-- An embedded S² in S³ separates it into exactly 2 components.
-    This is a consequence of Alexander duality and the Jordan-Brouwer
-    separation theorem in dimension 3. -/
-axiom jordan_brouwer_3d (Σ : TameS2inS3) :
-    ∃ (A B : Set (↥Sphere3)),
-      A ∪ B ∪ Σ.carrier = Set.univ ∧
-      Disjoint A B ∧
-      IsOpen A ∧ IsOpen B ∧
-      IsConnected A ∧ IsConnected B
 
 /-- The genus-0 Heegaard splitting of S³ is a consequence of Alexander's
     theorem: choose any tame S² in S³; the two 3-balls it bounds give a
@@ -2354,25 +2180,7 @@ fundamental group: it's the obstruction to being S³.
 
 section FundamentalGroupSurgery
 
-/-- Axiom: A finite group that is a fundamental group of a 3-manifold
-    must act freely on S³. This is the Milnor-Swan condition.
-    Combined with the classification of finite groups acting freely on
-    spheres, this severely constrains which finite groups can appear. -/
-axiom milnor_swan_condition (G : Type) [Group G] [Fintype G] :
-    (∃ (M : Type) (_ : TopologicalSpace M),
-      @Closed3Manifold M ‹_› ∧ True) →
-    -- G admits a free action on some sphere
-    True
 
-/-- π₁ of connected sum: For closed 3-manifolds M, N,
-    π₁(M # N) ≅ π₁(M) * π₁(N) (free product of groups).
-    This follows from van Kampen's theorem applied to the connected
-    sum decomposition along S². -/
-axiom pi1_connected_sum :
-    ∀ (M N : Type) [TopologicalSpace M] [TopologicalSpace N],
-      @Closed3Manifold M _ → @Closed3Manifold N _ →
-      -- If M # N is SC, then both factors are SC
-      @SimplyConnectedSpace M _ ∨ True
 
 /-- If M # N is simply connected, then both M and N are simply connected.
     This follows from π₁(M # N) = π₁(M) * π₁(N): a free product is

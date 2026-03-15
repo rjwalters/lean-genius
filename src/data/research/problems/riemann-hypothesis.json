@@ -18,18 +18,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-13T12:00:00.000Z",
-    "iteration": 6,
-    "focus": "Cross-equivalence theorems between RH formulations",
+    "iteration": 5,
+    "focus": "Mathlib equivalence + Lindelöf Hypothesis",
     "blockers": [],
-    "nextAction": "Consider: prove more Consequences theorems, or add Bombieri-Vinogradov / prime-in-AP results",
+    "nextAction": "Attempt to eliminate no_real_zeros_in_strip axiom or add more equivalent formulations",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
+      "total": 1,
+      "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 15 cross-equivalence theorems. Robin↔Lagarias, Robin↔Mertens, Robin↔PrimeCounting, Robin↔deBruijnNewman, Mertens↔PrimeCounting, Lagarias↔deBruijnNewman. Complete equivalence class. GRH→Robin/Lagarias/Mertens/Lindelöf. Negation equivalences including ¬RH↔Λ>0. File: 1889 lines, 21 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Eliminated 3 unused axioms (21→18). File: 1798→~1740 lines, 18 axioms, 0 sorries.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -150,7 +150,8 @@
         "name": "RH_implies_convexity",
         "description": "RH → convexity bound (PROVED)",
         "proven": true
-      }
+      },
+      "Eliminated 3 dead-code axioms (21→18): computationally_verified_zeros, RH_implies_prime_gaps, RH_implies_ternary_goldbach_effective"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",

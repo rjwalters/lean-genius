@@ -55,10 +55,6 @@ noncomputable def diracProb (x : ℝ) : ProbMeasure where
     We axiomatize this as it requires the product measure construction. -/
 axiom convolution : ProbMeasure → ProbMeasure → ProbMeasure
 
-/-- Convolution preserves the probability measure property. -/
-axiom convolution_isProbability (μ ν : ProbMeasure) :
-    IsProbabilityMeasure (convolution μ ν).measure
-
 -- ============================================================================
 -- § 3. Monoid Structure
 -- ============================================================================
@@ -158,18 +154,8 @@ axiom mean : ProbMeasure → ℝ
 /-- The variance of a probability measure. -/
 axiom variance : ProbMeasure → ℝ
 
-/-- A normalized measure has mean 0. -/
-axiom normalize_mean (μ : ProbMeasure) : mean (normalize μ) = 0
-
-/-- A normalized measure has variance 1 (when original variance is positive). -/
-axiom normalize_variance (μ : ProbMeasure) (hσ : 0 < variance μ) :
-    variance (normalize μ) = 1
-
 /-- The standard Gaussian distribution N(0,1). -/
 axiom standardGaussian : ProbMeasure
-
-/-- The Gaussian has mean 0. -/
-axiom gaussian_mean : mean standardGaussian = 0
 
 /-- The Gaussian has variance 1. -/
 axiom gaussian_variance : variance standardGaussian = 1
@@ -195,22 +181,10 @@ axiom clt_convergence (μ : ProbMeasure)
 /-- The Gaussian is a fixed point of normalized self-convolution:
     normalizing G * G gives G back. This is the "stability" property
     that characterizes the Gaussian in the convolution monoid. -/
-axiom gaussian_fixed_point :
-    normalizedConvPow standardGaussian 2 = standardGaussian
-
-/-- More generally, the Gaussian is stable under all convolution powers. -/
-axiom gaussian_stable (n : ℕ) (hn : 0 < n) :
-    normalizedConvPow standardGaussian n = standardGaussian
 
 /-- **Cramér's theorem**: If X + Y is Gaussian and X, Y are independent,
     then X and Y are both Gaussian. The Gaussian is "indecomposable"
     (prime) in the convolution monoid modulo scaling. -/
-axiom cramer_theorem (μ ν : ProbMeasure)
-    (h : ∃ a b : ℝ, ∀ t : ℝ,
-      charFun (convolution μ ν) t = Complex.exp (-t^2 / 2 * ↑a + Complex.I * ↑b * ↑t)) :
-    ∃ a₁ b₁ a₂ b₂ : ℝ,
-      (∀ t : ℝ, charFun μ t = Complex.exp (-t^2 / 2 * ↑a₁ + Complex.I * ↑b₁ * ↑t)) ∧
-      (∀ t : ℝ, charFun ν t = Complex.exp (-t^2 / 2 * ↑a₂ + Complex.I * ↑b₂ * ↑t))
 
 -- ============================================================================
 -- § 8. Categorical Perspective
@@ -242,10 +216,6 @@ theorem gaussian_in_own_domain :
 
 /-- Convolution preserves the domain of attraction (under suitable conditions):
     if μ and ν are both in the DOA of the Gaussian, so is μ * ν. -/
-axiom doa_closed_under_convolution (μ ν : ProbMeasure)
-    (hμ : InDomainOfAttraction μ) (hν : InDomainOfAttraction ν)
-    (hvar : 0 < variance (convolution μ ν)) :
-    InDomainOfAttraction (convolution μ ν)
 
 -- ============================================================================
 -- § 9. Summary of Algebraic Structure

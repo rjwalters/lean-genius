@@ -152,19 +152,9 @@ axiom rh_implies_mertens_bound :
 
 /-- RH implies θ(x) = x + O(√x log²x).
 This is essentially equivalent to the explicit formula with RH. -/
-axiom rh_implies_chebyshev_bound :
-  RiemannHypothesis →
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-    |chebyshevTheta n - n| ≤ C * Real.sqrt n * (Real.log n)^2
 
 /-- RH implies prime gaps are O(√p log p).
 Cramér's conditional bound. -/
-axiom rh_implies_prime_gap_bound :
-  RiemannHypothesis →
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    let p := nth Nat.Prime n
-    let q := nth Nat.Prime (n + 1)
-    (q : ℝ) - p ≤ C * Real.sqrt p * Real.log p
 
 /-!
 ## Unconditional Results
@@ -223,15 +213,9 @@ This was proved by Littlewood.
 
 /-- RH is equivalent to: for all ε > 0, |M(x)| = O(x^(1/2 + ε))
 This is a classical result of Littlewood. -/
-axiom rh_iff_mertens_half_epsilon :
-  RiemannHypothesis ↔
-  ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 →
-    |(mertens n : ℝ)| ≤ C * (n : ℝ) ^ (1/2 + ε)
 
 /-- The Mertens conjecture (disproved): |M(x)| < √x for all x ≥ 1
 Disproved by Odlyzko-te Riele in 1985. We state its negation. -/
-axiom mertens_conjecture_false :
-  ¬(∀ n : ℕ, n ≥ 1 → |(mertens n : ℝ)| < Real.sqrt n)
 
 /-!
 ## Extended Mertens Computations
@@ -322,12 +306,6 @@ theorem chebyshevPsi_step (n : ℕ) :
 The connection between RH and ψ(x) is fundamental.
 RH is equivalent to: ψ(x) = x + O(√x log² x)
 -/
-
-/-- RH implies ψ(x) = x + O(√x log² x) -/
-axiom rh_implies_psi_bound :
-  RiemannHypothesis →
-  ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-    |chebyshevPsi n - n| ≤ C * Real.sqrt n * (Real.log n)^2
 
 /-!
 ## Part 9: Mathlib Zeta Function Theorems (Session 4)
@@ -526,10 +504,6 @@ axiom lis_criterion :
 
 /-- The Keiper-Li asymptotic: if RH holds, λₙ ~ n(A log n + B) for explicit A > 0, B.
 If RH fails, λₙ oscillates wildly. -/
-axiom li_constant_asymptotic :
-  RiemannHypothesis →
-  ∃ A B : ℝ, A > 0 ∧ ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
-    |liConstant n - n * (A * Real.log n + B)| < ε * n * Real.log n
 
 end LisCriterion
 
@@ -696,9 +670,6 @@ axiom ingham_zero_density :
 
     This improves on Ingham for σ close to 1/2. The exponent
     12(1-σ)/5 is better than 3(1-σ)/(2-σ) when σ < 3/4. -/
-axiom huxley_zero_density :
-  ∃ C K : ℝ, C > 0 ∧ K > 0 ∧ ∀ σ T : ℝ, 1/2 ≤ σ → σ ≤ 1 → T ≥ 2 →
-    (zeroDensity σ T : ℝ) ≤ C * T ^ (12 * (1 - σ) / 5) * (Real.log T) ^ K
 
 /-- The **Density Hypothesis**: N(σ, T) ≪ T^{2(1-σ)+ε} for all ε > 0.
 

@@ -190,10 +190,6 @@ theorem fieldStrength_independent_components :
       ((Finset.univ : Finset (Fin 4)).filter (fun ν => μ < ν)).card) = 6 := by
   native_decide
 
-/-- Compute field strength from gauge field (axiomatized - needs fiber bundle calculus). -/
-axiom fieldStrength_of_gaugeField {G : Type*} [CompactSimpleGaugeGroup G]
-    (𝔤 : GaugeLieAlgebra G) (A : GaugeField G 𝔤) : FieldStrength G 𝔤
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART III: YANG-MILLS ACTION AND CLASSICAL EQUATIONS
 ═══════════════════════════════════════════════════════════════════════════════ -/
@@ -201,20 +197,6 @@ PART III: YANG-MILLS ACTION AND CLASSICAL EQUATIONS
 /-- The Killing form ⟨X, Y⟩ on the Lie algebra. For su(n): ⟨X, Y⟩ = -2n·Tr(XY). -/
 axiom killingForm {G : Type*} [CompactSimpleGaugeGroup G]
     (𝔤 : GaugeLieAlgebra G) : 𝔤.carrier → 𝔤.carrier → ℝ
-
-axiom killingForm_symmetric {G : Type*} [CompactSimpleGaugeGroup G]
-    (𝔤 : GaugeLieAlgebra G) : ∀ x y, killingForm 𝔤 x y = killingForm 𝔤 y x
-
-axiom killingForm_negative_definite {G : Type*} [CompactSimpleGaugeGroup G]
-    (𝔤 : GaugeLieAlgebra G) : ∀ x, killingForm 𝔤 x x ≤ 0
-
-axiom killingForm_zero_iff {G : Type*} [CompactSimpleGaugeGroup G]
-    (𝔤 : GaugeLieAlgebra G) : ∀ x, killingForm 𝔤 x x = 0 ↔ x = 0
-
-/-- The Killing form is ad-invariant: ⟨[Z,X], Y⟩ + ⟨X, [Z,Y]⟩ = 0. -/
-axiom killingForm_ad_invariant {G : Type*} [CompactSimpleGaugeGroup G]
-    (𝔤 : GaugeLieAlgebra G) : ∀ x y z,
-    killingForm 𝔤 (𝔤.bracket z x) y + killingForm 𝔤 x (𝔤.bracket z y) = 0
 
 /-- The Yang-Mills action S[A] = -1/(4g²) ∫ Tr(F_μν F^μν) d⁴x. -/
 structure YangMillsAction (G : Type*) [CompactSimpleGaugeGroup G]
@@ -240,15 +222,6 @@ structure SatisfiesYangMillsEquations {G : Type*} [CompactSimpleGaugeGroup G]
     (Finset.univ : Finset (Fin 4)).sum
       (fun μ => D.apply μ (fun y => F.component y μ ν) x) = 0
 
-/-- The Bianchi identity: D_[μ F_νρ] = 0. -/
-axiom bianchi_identity {G : Type*} [CompactSimpleGaugeGroup G]
-    (𝔤 : GaugeLieAlgebra G) (A : GaugeField G 𝔤) (F : FieldStrength G 𝔤)
-    (D : CovariantDerivative G 𝔤) :
-  ∀ (μ ν ρ : Fin 4) (x : Spacetime),
-    D.apply μ (fun y => F.component y ν ρ) x +
-    D.apply ν (fun y => F.component y ρ μ) x +
-    D.apply ρ (fun y => F.component y μ ν) x = 0
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART IV: GAUGE TRANSFORMATIONS AND INVARIANCE
 ═══════════════════════════════════════════════════════════════════════════════ -/
@@ -263,12 +236,6 @@ structure GaugeTransformation (G : Type*) [CompactSimpleGaugeGroup G] where
 axiom gaugeTransform {G : Type*} [CompactSimpleGaugeGroup G]
     (𝔤 : GaugeLieAlgebra G) (g : GaugeTransformation G)
     (A : GaugeField G 𝔤) : GaugeField G 𝔤
-
-/-- GAUGE INVARIANCE: S[A^g] = S[A]. -/
-axiom yang_mills_gauge_invariant {G : Type*} [CompactSimpleGaugeGroup G]
-    (𝔤 : GaugeLieAlgebra G) (S : YangMillsAction G 𝔤)
-    (g : GaugeTransformation G) (A : GaugeField G 𝔤) :
-  S.action (gaugeTransform 𝔤 g A) = S.action A
 
 /-- Gauge transformations form a group under pointwise multiplication. -/
 instance gaugeTransformGroup (G : Type*) [CompactSimpleGaugeGroup G] :
@@ -491,12 +458,6 @@ structure Instanton (G : Type*) [CompactSimpleGaugeGroup G]
   action_formula : ∀ (g : ℝ), g > 0 →
     actionValue = 8 * Real.pi ^ 2 * |↑topologicalCharge| / g ^ 2
 
-/-- The Bogomolny bound: S[A] ≥ 8π²|k|/g². -/
-axiom bogomolny_bound {G : Type*} [CompactSimpleGaugeGroup G]
-    (𝔤 : GaugeLieAlgebra G) (S : YangMillsAction G 𝔤) (A : GaugeField G 𝔤)
-    (k : ℤ) :
-  S.action A ≥ 8 * Real.pi ^ 2 * |↑k| / S.coupling ^ 2
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XI: ENERGY-MOMENTUM TENSOR
 ═══════════════════════════════════════════════════════════════════════════════ -/
@@ -508,21 +469,6 @@ structure EnergyMomentumTensor (G : Type*) [CompactSimpleGaugeGroup G]
   component : Spacetime → Fin 4 → Fin 4 → ℝ
   symmetric : ∀ x μ ν, component x μ ν = component x ν μ
   energy_density_nonneg : ∀ x, component x 0 0 ≥ 0
-
-/-- Energy-momentum conservation ∂_μ T^μν = 0 (Noether's theorem). -/
-axiom energy_momentum_conserved {G : Type*} [CompactSimpleGaugeGroup G]
-    (𝔤 : GaugeLieAlgebra G) (T : EnergyMomentumTensor G 𝔤)
-    (partialDeriv : Fin 4 → (Spacetime → ℝ) → (Spacetime → ℝ)) :
-  ∀ (ν : Fin 4) (x : Spacetime),
-    (Finset.univ : Finset (Fin 4)).sum
-      (fun μ => partialDeriv μ (fun y => T.component y μ ν) x) = 0
-
-/-- Classical Yang-Mills is conformally invariant in 4D: η^μν T_μν = 0. -/
-axiom classical_trace_vanishes {G : Type*} [CompactSimpleGaugeGroup G]
-    (𝔤 : GaugeLieAlgebra G) (T : EnergyMomentumTensor G 𝔤) :
-  ∀ x : Spacetime,
-    (Finset.univ : Finset (Fin 4)).sum
-      (fun μ => minkowskiMetric μ μ * T.component x μ μ) = 0
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XII: WILSON LOOPS
@@ -566,10 +512,6 @@ theorem wilson_loop_trivial {G : Type*} [CompactSimpleGaugeGroup G]
 
 /-- The Wilson loop is multiplicative under composition of loops.
     W(C₁ · C₂) relates to W(C₁) and W(C₂). -/
-axiom wilson_loop_composition {G : Type*} [CompactSimpleGaugeGroup G]
-    (𝔤 : GaugeLieAlgebra G) (W₁ W₂ : WilsonLoop G 𝔤)
-    (A : GaugeField G 𝔤) :
-  ∃ W₁₂ : WilsonLoop G 𝔤, True
 
 /-- **The Area Law**: For confining theories, the Wilson loop expectation value
     decays exponentially with the area: ⟨W(C)⟩ ~ exp(-σ · Area(C))
@@ -3264,8 +3206,6 @@ structure TopologicalSusceptibility where
     m²_{η'} ∝ 2N_f · χ_t
     In pure gauge theory (no fermions), χ_t is positive and
     proportional to Λ_QCD⁴. -/
-axiom witten_veneziano_relation :
-    ∀ (ts : TopologicalSusceptibility), ts.chi_t > 0
 
 /-- Instanton moduli space dimension for SU(N) instantons with charge n on S⁴.
     dim = 4N|n| (from the Atiyah-Singer index theorem).
@@ -3918,9 +3858,6 @@ structure GribovData where
 
     This is a topological obstruction — no gauge condition can
     intersect every orbit exactly once. -/
-axiom singer_no_global_gauge_fixing :
-    ∀ (N : ℕ), N ≥ 2 →  -- SU(N) with N ≥ 2
-    True  -- π_k(A/G) ≠ 0 for some k
 
 /-- The Gribov horizon Ω is the boundary of the first Gribov region.
     It's defined as the set where the lowest eigenvalue of the
@@ -4073,8 +4010,6 @@ structure AnomalyCoefficient where
 
     Consequence: the anomaly coefficient is scheme-independent and
     can be computed exactly. -/
-axiom adler_bardeen_exact :
-    True  -- anomaly = one-loop (exact)
 
 /-- The anomaly and topology: the Atiyah-Singer index theorem relates
     the anomaly to the instanton number:
@@ -4125,8 +4060,6 @@ structure BanksCasherRelation where
 
     The pion mass comes from the explicit chiral symmetry breaking
     by quark masses: m_π² ∝ m_q · ⟨ψ̄ψ⟩ (Gell-Mann-Oakes-Renner). -/
-axiom qcd_chiral_broken :
-    True  -- ρ(0) > 0 for SU(3) with light quarks
 
 /-- The Witten-Veneziano formula for the η' mass:
     m²_{η'} = (2N_f / f²_π) · χ_t
@@ -4924,13 +4857,9 @@ structure RegularityStructureYM where
 
 /-- In 2D, the Yang-Mills Langevin equation is just barely regular enough
     to be handled by classical theory (regularity > 0 marginally). -/
-axiom ym_langevin_2d_regularity :
-  ∃ (r : RegularityStructureYM), r.d = 2 ∧ r.regularity ≥ 0
 
 /-- In 3D, the Yang-Mills Langevin equation requires renormalization.
     The regularity is negative: α = -1/2 - ε. -/
-axiom ym_langevin_3d_singular :
-  ∃ (r : RegularityStructureYM), r.d = 3 ∧ r.regularity < 0
 
 /-- Stochastic quantization and the mass gap: a unified picture.
 
@@ -5815,10 +5744,6 @@ structure WetterinckEquation where
   hk : 0 ≤ k ∧ k ≤ Lambda
   /-- Gluon mass parameter at scale k -/
   m_gluon_sq : ℝ
-
-/-- In the UV (k → Λ), the gluon is massless (perturbative). -/
-axiom frg_uv_massless :
-  ∀ (w : WetterinckEquation), w.k = w.Lambda → w.m_gluon_sq = 0
 
 /-- In the IR (k → 0), FRG studies consistently find a dynamically
     generated gluon mass m_gluon > 0.

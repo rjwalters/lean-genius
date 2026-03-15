@@ -228,8 +228,6 @@ attribute [instance] MordellWeilGroup.addCommGroup
 
     This is one of the foundational theorems in arithmetic geometry.
     The proof uses descent (going back to Fermat) and heights. -/
-axiom mordell_weil_theorem (E : EllipticCurveQ) :
-  ∃ (_ : MordellWeilGroup E), True
 
 /-- **Axiom: Algebraic rank exists for each elliptic curve**
 
@@ -261,8 +259,6 @@ def torsionSubgroup (E : EllipticCurveQ) : Type* := torsionSubgroup_axiom E
 /-- **Mazur's Torsion Theorem** (1977)
 
     The torsion subgroup of E(ℚ) is one of exactly 15 isomorphism classes. -/
-axiom mazur_torsion_theorem (E : EllipticCurveQ) :
-  True  -- Placeholder: torsionSubgroup E is one of the 15 groups
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART III: L-FUNCTIONS OF ELLIPTIC CURVES
@@ -374,8 +370,6 @@ structure ModularForm (k N : ℕ) where
     This is arguably the most important theorem in modern number theory.
     It was proved for semistable curves by Wiles (1995), completing FLT,
     and extended to all E/ℚ by 2001. -/
-axiom modularity_theorem (E : EllipticCurveQ) :
-  ∃ (_ : ModularForm 2 (conductor E)), True
 
 /-- Consequence: L(E, s) has analytic continuation to all of ℂ. -/
 theorem LFunction_analytic_continuation (_E : EllipticCurveQ) :
@@ -679,8 +673,6 @@ PART IX: COMPUTATIONAL EVIDENCE
     - The leading coefficient formula matches to high precision
 
     No counterexamples have ever been found! -/
-axiom computationally_verified (E : EllipticCurveQ) (hN : conductor E ≤ 500000) :
-    algebraicRank E = analyticRank E
 
 /-- Famous example: the congruent number curve E: y² = x³ - n²x
 
@@ -817,11 +809,8 @@ theorem cremona11a1_discriminant : discriminant cremona11a1 = -77824 := by
 
 /-- For all these specific curves, BSD is consistent: they have rank 0
     and L(E, 1) ≠ 0 (axiomatized as these are proven facts). -/
-axiom curveMinusX_rank_zero : algebraicRank curveMinusX = 0
 axiom curveMinusX_L_nonzero : LFunction curveMinusX 1 ≠ 0
-axiom curveJZero_rank_zero : algebraicRank curveJZero = 0
 axiom curveJZero_L_nonzero : LFunction curveJZero 1 ≠ 0
-axiom cremona11a1_rank_zero : algebraicRank cremona11a1 = 0
 axiom cremona11a1_L_nonzero : LFunction cremona11a1 1 ≠ 0
 
 /-- BSD holds for y² = x³ - x (follows from rank 0 case and known L-value). -/
@@ -857,18 +846,15 @@ Certain cases of the congruent number problem have been known for centuries.
 
     Actually, the point (-4, 6) is easier to verify:
     36 = -64 - (-100) = 36 ✓ -/
-axiom five_is_congruent : algebraicRank (congruentNumberCurve 5 (by norm_num)) ≥ 1
 
 /-- 6 is a congruent number: it's the area of the famous (3, 4, 5) right triangle.
 
     The point (x, y) = (12, 36) lies on y² = x³ - 36x:
     1296 = 1728 - 432 = 1296 ✓ -/
-axiom six_is_congruent : algebraicRank (congruentNumberCurve 6 (by norm_num)) ≥ 1
 
 /-- 7 is a congruent number (proved by Euler).
 
     The smallest triangle has sides 35/12, 24/5, 337/60. -/
-axiom seven_is_congruent : algebraicRank (congruentNumberCurve 7 (by norm_num)) ≥ 1
 
 /-- 1 is NOT a congruent number (proved by Fermat using infinite descent).
 
@@ -882,7 +868,6 @@ axiom one_not_congruent : algebraicRank (congruentNumberCurve 1 (by norm_num)) =
 axiom two_not_congruent : algebraicRank (congruentNumberCurve 2 (by norm_num)) = 0
 
 /-- 3 is NOT a congruent number (proved by Fermat). -/
-axiom three_not_congruent : algebraicRank (congruentNumberCurve 3 (by norm_num)) = 0
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART IX.d: VERIFIED RATIONAL POINTS ON CONGRUENT NUMBER CURVES (PROVEN)
@@ -1550,15 +1535,11 @@ structure SelmerGroup (E : EllipticCurveQ) (n : ℕ) where
 attribute [instance] SelmerGroup.fintype SelmerGroup.addCommGroup
 
 /-- Axiom: The n-Selmer group exists and is finite for any n ≥ 2. -/
-axiom selmer_group_exists (E : EllipticCurveQ) (n : ℕ) (hn : n ≥ 2) :
-  ∃ (_ : SelmerGroup E n), True
 
 /-- The order of the n-Selmer group is a power of n.
 
     |Sel_n(E/ℚ)| = n^s for some s ≥ rank(E(ℚ)) + dim Ш[n].
     This gives the inequality: rank(E(ℚ)) ≤ s - dim Ш[n] ≤ s. -/
-axiom selmer_order_power (E : EllipticCurveQ) (n : ℕ) (hn : n ≥ 2) :
-  ∃ s : ℕ, s ≥ algebraicRank E
 
 /-- The fundamental exact sequence for n-Selmer groups:
 
@@ -1566,8 +1547,6 @@ axiom selmer_order_power (E : EllipticCurveQ) (n : ℕ) (hn : n ≥ 2) :
 
     This means: rank of Selmer ≥ rank of curve (with equality iff Ш[n] = 0).
     The 2-Selmer group is most commonly computed via 2-descent. -/
-axiom selmer_exact_sequence (E : EllipticCurveQ) (n : ℕ) (hn : n ≥ 2) :
-  True -- Placeholder for exact sequence
 
 /-- The rank bound from n-descent:
     rank(E(ℚ)) ≤ dim_n Sel_n(E/ℚ) - dim_n Ш[n]
@@ -1654,8 +1633,6 @@ axiom regulator_pos (E : EllipticCurveQ) (hr : algebraicRank E > 0) :
     regulatorValue E > 0
 
 /-- The regulator equals 1 for rank 0 curves (convention). -/
-axiom regulator_rank_zero (E : EllipticCurveQ) (hr : algebraicRank E = 0) :
-    regulatorValue E = 1
 
 /-- For a rank 1 curve, the regulator is just the canonical height of a generator:
     R = ĥ(P) where P generates E(ℚ)/torsion. -/
@@ -1668,13 +1645,11 @@ theorem regulator_rank_one_is_height (_E : EllipticCurveQ)
 
     The generator is P = (-4, 6) with ĥ(P) ≈ 0.8563...
     So R(E₅) ≈ 0.8563. -/
-axiom regulator_E5 : regulatorValue (congruentNumberCurve 5 (by norm_num)) > 0
 
 /-- **Explicit regulator computation for y² = x³ - 36x (n=6 curve)**
 
     The generator is P = (12, 36) with ĥ(P) ≈ 1.5822...
     So R(E₆) ≈ 1.5822. -/
-axiom regulator_E6 : regulatorValue (congruentNumberCurve 6 (by norm_num)) > 0
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XV: LOCAL FACTORS AND THE EULER PRODUCT
@@ -1777,7 +1752,6 @@ theorem euler_product_factor_bound (p : ℕ) (hp : p ≥ 5) (ap : ℤ)
 
     This was proved using potential automorphy and is one of the great
     achievements of modern number theory. -/
-axiom sato_tate_proved (E : EllipticCurveQ) (hNCM : True) : True
 
 /-- The Sato-Tate distribution determines the average of aₚ/√p.
 
@@ -2245,7 +2219,6 @@ def curve37a : EllipticCurveQ where
 axiom curve37a_rank : algebraicRank curve37a = 1
 
 /-- The generator P = (0, 0) of E(ℚ)/tors for curve 37a. -/
-axiom curve37a_generator_height : ∃ h : ℝ, h > 0 ∧ h < 1 / 10
 
 /-- Curve 37a has root number -1 (consistent with odd rank). -/
 axiom curve37a_rootNumber : rootNumber curve37a = -1
@@ -2309,15 +2282,10 @@ In practice, 2-descent (n = 2) is the main tool for bounding ranks.
 
 /-- The Selmer rank (log_n |Sel_n|) bounds the algebraic rank from above.
     For any n ≥ 2: rank(E) ≤ dim_{F_n} Sel_n(E). -/
-axiom rank_le_selmer_dim (E : EllipticCurveQ) (n : ℕ) (selmer_dim : ℕ)
-    (hn : n ≥ 2) : algebraicRank E ≤ selmer_dim
 
 /-- Two-descent principle: when Ш(E)[2] = 0, the 2-Selmer rank equals the rank.
     This is the main practical method for computing ranks of elliptic curves.
     For curve 37a: dim₂ Sel₂ = 1, Ш[2] = 0, so rank = 1. -/
-axiom two_descent_sharp (E : EllipticCurveQ) (selmer_dim : ℕ)
-    (h_sha_trivial : True) :  -- Ш[2] = 0 in practice
-    algebraicRank E ≤ selmer_dim
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXV: BSD VERIFICATION — RANK-2 CURVE 389a
@@ -2368,7 +2336,6 @@ def curve389a : EllipticCurveQ where
 axiom curve389a_rank : algebraicRank curve389a = 2
 
 /-- Curve 389a has root number +1 (consistent with even rank). -/
-axiom curve389a_rootNumber : rootNumber curve389a = 1
 
 /-- Under BSD, rootNumber = +1 correctly predicts even rank for curve 389a. -/
 theorem curve389a_parity_check
@@ -2886,8 +2853,6 @@ theorem bsd_trivial_sha (d : BSDData) (h : d.sha = 1) :
 
 /-- The Cassels-Tate pairing has kernel equal to the maximal divisible subgroup.
     For finite Ш, this means the pairing is non-degenerate. -/
-axiom casselsTate_nondegenerate (E : EllipticCurveQ) (ct : CasselsTatePairing E) :
-    ∀ (x : ℝ), x ≠ 0 → ∃ (y : ℝ), ct.pairing x y ≠ 0
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXIX: IWASAWA THEORY FOR ELLIPTIC CURVES
@@ -3098,9 +3063,6 @@ theorem padic_bsd_compatible (E : EllipticCurveQ)
     L'_p(E, 1) = (1 - α_p⁻¹)² · ĥ_p(y_K) · (something explicit)
 
     This is the p-adic analogue of the Gross-Zagier formula. -/
-axiom perrin_riou_formula (E : EllipticCurveQ)
-    (Lp : PadicLFunction E) :
-    True  -- L'_p(E, 1) relates to p-adic Heegner height
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXXI: TUNNELL'S THEOREM AND CONGRUENT NUMBERS
@@ -3350,9 +3312,6 @@ structure ModularSymbolData (E : EllipticCurveQ) where
     This is known for:
     - Semistable curves (Mazur, 1978)
     - Curves with conductor N ≤ 500000 (Cremona's tables) -/
-axiom manin_conjecture_semistable (E : EllipticCurveQ)
-    (ms : ModularSymbolData E) :
-    True → ms.manin_constant = 1
 
 /-- For the curve 11a1 (conductor 11), the modular symbol at 0 is 1/5.
     Since [0]⁺ ≠ 0, we get L(E, 1) ≠ 0, confirming rank = 0.
@@ -3611,8 +3570,6 @@ def TamagawaNumberConjecture (M : Motive) : Prop :=
 
     This "cohomological" formulation is more amenable to proof
     via Iwasawa theory. -/
-axiom fontaine_perrin_riou_det :
-    True  -- det_Zp RGamma_f = Zp * L*/Omega
 
 end BlochKato
 
@@ -5022,8 +4979,6 @@ structure SilvermanBound where
 
 /-- The regulator grows at most polynomially with the conductor.
     Lang-Silverman conjecture: R(E) ≫ N^{-1-ε} where N is the conductor. -/
-axiom regulator_polynomial_bound :
-    ∀ (N : ℕ) (_ : N ≥ 1) (R : ℝ) (_ : R > 0), True
 
 /-- Discriminant-conductor inequality (Szpiro's conjecture, now Mochizuki's claim).
     For E/ℚ with minimal discriminant Δ and conductor N:
@@ -5067,8 +5022,6 @@ structure FaltingsHeight where
 /-- The Faltings height relates to the conductor via Szpiro.
     Under Szpiro's conjecture: h_F(E) ≤ (1/2 + ε) log N.
     Unconditionally (semistable): h_F(E) ≤ log N + O(1). -/
-axiom faltings_conductor_bound :
-    ∀ (hF : FaltingsHeight), hF.height ≥ 0 → True
 
 end HeightConductorBounds
 
@@ -5181,10 +5134,6 @@ theorem non_congruent_1_mod_8 :
 /-- The average analytic rank of the family E_n: y² = x³ - n²x is 1/2
     under Goldfeld's conjecture. Combined with root number equidistribution,
     this predicts ~50% of n are congruent numbers. -/
-axiom congruent_number_density :
-    -- The density of congruent numbers among n with w(E_n) = -1 is
-    -- predicted to be 100% under BSD (all such n have rank ≥ 1)
-    True
 
 end CongruentNumberBSD
 

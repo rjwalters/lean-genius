@@ -1,0 +1,119 @@
+{
+  "id": "pythagorean-triples-oq-01",
+  "title": "Density of Primitive Pythagorean Triples",
+  "slug": "pythagorean-triples-oq-01",
+  "description": "Proves that the number of primitive Pythagorean triples with hypotenuse c \u2264 N is asymptotically N/(2\u03c0). Decomposes the result into sector lattice point density (\u03c0/8), coprime fraction (6/\u03c0\u00b2), and parity correction (2/3). Includes parity involutions, column decomposition, and computational verification. 2075 lines, 97 theorems, 3 axioms, 0 sorries.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pythagorean_triple#Generating_a_triple",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PythagoreanTriplesOQ01.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "analytic-number-theory",
+      "pythagorean-triples",
+      "asymptotics",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "PythagoreanTriple",
+        "description": "Definition of Pythagorean triples",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      }
+    ],
+    "originalContributions": [
+      "Counting functions: primitiveTripleCount, sectorPointCount, coprimeInSectorCount",
+      "Parity analysis: even-odd, odd-even, odd-odd decomposition of coprime pairs",
+      "Density derivation: \u03c0N/8 \u00d7 6/\u03c0\u00b2 \u00d7 2/3 = N/(2\u03c0)",
+      "Parity involution: (m,n) \u2194 (m, m-n) preserves coprimality, swaps EO\u2194OO",
+      "Coprime sector grows to infinity (coprimeInSectorCount_tendsto_atTop)",
+      "Per-column OE=OO equality via triangle counting",
+      "EO coprime density analysis via GCD halving",
+      "Computational verification for N = 0, 4, 5, 13, 25, 50",
+      "Column-sum decomposition separating m-parity classes"
+    ],
+    "dateAdded": "03/14/26",
+    "relatedProblems": [
+      {
+        "id": "pythagorean-triples",
+        "relationship": "Root: Pythagorean triples formalization"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Density of Primitive Pythagorean Triples**\n\nA primitive Pythagorean triple (a,b,c) with a\u00b2+b\u00b2=c\u00b2 and gcd(a,b,c)=1 corresponds to a unique pair (m,n) with m>n>0, gcd(m,n)=1, m\u2262n (mod 2), via a=m\u00b2-n\u00b2, b=2mn, c=m\u00b2+n\u00b2. The density N/(2\u03c0) was known classically but not previously formalized in Lean.",
+    "problemStatement": "**Theorem**: lim_{N\u2192\u221e} primitiveTripleCount(N) \u00b7 (2\u03c0)/N = 1. That is, the number of primitive Pythagorean triples with hypotenuse \u2264 N grows as N/(2\u03c0).",
+    "proofStrategy": "The proof decomposes into three factors:\n\n1. **Sector area** (Part VIII-B, axiom): The quarter-disk sector {(x,y): 0<y<x, x\u00b2+y\u00b2\u2264N} contains ~\u03c0N/8 lattice points\n2. **Coprime density** (Part VIII-B, axiom): Among lattice points in the sector, ~6/\u03c0\u00b2 fraction are coprime\n3. **Parity correction** (Part VIII-B, axiom + Parts XIII-XIX): Among coprime pairs, 2/3 have opposite parity (m\u2262n mod 2)\n\nProduct: \u03c0N/8 \u00d7 6/\u03c0\u00b2 \u00d7 2/3 = N/(2\u03c0)",
+    "keyInsights": [
+      "The parity involution (m,n) \u2194 (m, m-n) preserves coprimality and swaps EO\u2194OO parity classes",
+      "The three factors are independent: geometry (sector area), number theory (coprime density), and combinatorics (parity)",
+      "The 2/3 parity fraction follows from showing the OO (both-odd) class is exactly 1/3 of coprime pairs",
+      "Column-level analysis decomposes the global parity result into per-column identities"
+    ]
+  },
+  "sections": [
+    {
+      "id": "counting-functions",
+      "title": "Parts I-II: Counting Functions and Parametrization",
+      "summary": "Defines primitiveTripleCount, sectorPointCount, coprimeInSectorCount. Connects to Mathlib's PythagoreanTriple parametrization.",
+      "startLine": 69,
+      "endLine": 110
+    },
+    {
+      "id": "parity-density",
+      "title": "Parts III-IV: Parity Analysis and Density Algebra",
+      "summary": "Decomposes coprime pairs into even-odd (EO), odd-even (OE), and odd-odd (OO) classes. Derives the N/(2\u03c0) formula from three factors.",
+      "startLine": 111,
+      "endLine": 183
+    },
+    {
+      "id": "verification",
+      "title": "Part V: Computational Verification",
+      "summary": "Verifies the counting functions for small values (N = 0, 4, 5, 13, 25, 50) via native_decide.",
+      "startLine": 184,
+      "endLine": 221
+    },
+    {
+      "id": "partition-axioms",
+      "title": "Parts VIII-A/B: Parity Partition and Density Axioms",
+      "summary": "Three-way partition of coprime sector into EO+OE+OO. Three axioms: sector point density (\u03c0/8), coprime fraction (6/\u03c0\u00b2), both-odd fraction (1/3).",
+      "startLine": 376,
+      "endLine": 543
+    },
+    {
+      "id": "main-theorems",
+      "title": "Parts IX-X: Main Asymptotic Theorems",
+      "summary": "Derives the main result from the three axioms. Proves primitiveTripleCount(N)/N \u2192 1/(2\u03c0) and consequences.",
+      "startLine": 544,
+      "endLine": 618
+    },
+    {
+      "id": "involution",
+      "title": "Parts XIII-XIV: The Parity Involution",
+      "summary": "The key bijection (m,n) \u2194 (m, m-n) preserves coprimality and swaps EO\u2194OO. Proves triangle-level OE=OO equality.",
+      "startLine": 814,
+      "endLine": 930
+    },
+    {
+      "id": "column-analysis",
+      "title": "Parts XVI-XIX: Column Decomposition and Density",
+      "summary": "Per-column involution analysis, sector-triangle boundary analysis, EO coprime density via GCD halving, and column-sum decomposition by m-parity.",
+      "startLine": 1138,
+      "endLine": 2029
+    }
+  ],
+  "conclusion": {
+    "summary": "A thorough formalization of the primitive Pythagorean triple density theorem with 97 theorems, 3 axioms (analytic number theory results), and 0 sorries. The 3 axioms encode deep results from analytic number theory that require sieve methods or complex analysis.",
+    "implications": "**Significance**\n\n1. **First Lean formalization**: The N/(2\u03c0) asymptotic density for primitive Pythagorean triples.\n2. **Clean decomposition**: The three-factor approach separates geometric, number-theoretic, and combinatorial ingredients.\n3. **Involution technique**: The (m,n)\u2194(m,m-n) bijection is a general technique for parity-class counting.\n4. **Extensive verification**: Computational checks confirm the counting functions for small values.",
+    "openQuestions": [
+      "Can the sector lattice point density axiom be proved from Gauss circle problem results?",
+      "Can the coprime density 6/\u03c0\u00b2 be proved from Euler product for \u03b6(2)?",
+      "Is the bothOdd fraction 1/3 provable from the involution alone (without the asymptotic axiom)?"
+    ]
+  }
+}

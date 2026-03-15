@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Tate object Q(1) (proved constructively), Tate twist H(n), dual Hodge structure H*. Poincare duality axiom. File: 2453 lines, 37 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Eliminated 8 unused axioms (37→29). File: 2476 lines, 29 axioms, 0 sorries.",
     "builtItems": [
       "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
       "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
@@ -44,7 +44,8 @@
       "neg_comp, comp_neg (negation interaction with composition) in HodgeConjecture.lean",
       "add_assoc_morphism, zero_add_morphism, add_zero_morphism (abelian group laws for Hom) in HodgeConjecture.lean",
       "SubHodgeStructure.map (image of sub-Hodge structure under morphism) in HodgeConjecture.lean",
-      "HodgeStructureMorphism.sub (subtraction of morphisms) in HodgeConjecture.lean"
+      "HodgeStructureMorphism.sub (subtraction of morphisms) in HodgeConjecture.lean",
+      "Eliminated 8 dead-code axioms: serre_duality_hodge_numbers, cycleClassMap_additive, hodge_tate_equivalent_abelian, hodge_conjecture_direct_sum, geometric_hodge_is_polarizable, lefschetz_preserves_algebraic, deligne_mixed_hodge_structure, tateTwist_component (37 → 29 axioms)"
     ],
     "insights": [
       "Millennium Prize problem, wide open - no known attack strategy",

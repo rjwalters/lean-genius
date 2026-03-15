@@ -478,67 +478,9 @@ PART VI: COMPUTATIONAL VERIFICATION
 The first zero is at s = 1/2 + 14.134725...i -/
 def firstZeroImaginaryPart : ℝ := 14.134725141734693790
 
-/-- **Computational verification**: All zeros up to height T have been verified
-to lie on the critical line.
-
-As of 2024, this has been verified for the first 10^13 zeros. -/
-axiom computationally_verified_zeros (T : ℝ) (hT : T ≤ 10^13) :
-    ∀ s : ℂ, riemannZeta s = 0 → s ∈ criticalStrip → |s.im| ≤ T → s.re = 1/2
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART VII: CONSEQUENCES OF RH
 ═══════════════════════════════════════════════════════════════════════════════ -/
-
-/-- **Axiom: RH Implies Prime Gap Bounds**
-
-Conditional on the Riemann Hypothesis, there are no extremely large gaps between primes.
-Specifically, the gap between consecutive primes p_n and p_{n+1} satisfies:
-  p_{n+1} - p_n = O(√p_n · (log p_n)²)
-
-**Proof idea**: Under RH, the prime counting function satisfies:
-  π(x) = Li(x) + O(√x log x)
-
-This implies for any prime p, there is another prime in [p, p + C√p log²p].
-
-**Unconditional results**: Without RH, the best known bound is:
-  p_{n+1} - p_n ≤ p_n^(0.525) (Baker-Harman-Pintz, 2001)
-
-**References**:
-- Cramer, H. (1936). "On the order of magnitude of the difference between
-  consecutive prime numbers"
-- Conditional results follow from explicit forms of π(x) - Li(x) under RH
-
-**Status**: Follows from RH via the prime counting error bound, but the full
-derivation requires estimates not yet in Mathlib. -/
-axiom RH_implies_prime_gaps (h : RiemannHypothesis) :
-    ∃ C > 0, ∀ n : ℕ, Nat.Prime n →
-      ∃ p : ℕ, Nat.Prime p ∧ n < p ∧ p ≤ n + C * Real.sqrt n * (Real.log n)^2
-
-/-- **Axiom: RH Gives Effective Ternary Goldbach**
-
-Under the Riemann Hypothesis, the ternary Goldbach conjecture has an effective bound.
-That is, there exists an explicit N₀ such that every odd n > N₀ is the sum of three primes.
-
-**Background**: Vinogradov (1937) proved unconditionally that every sufficiently large
-odd integer is the sum of three primes, but his proof was ineffective (did not give N₀).
-
-**With RH**: The Riemann Hypothesis allows computation of an explicit N₀.
-Without RH, the first effective bound was found by Helfgott (2013) who proved
-the full ternary Goldbach: every odd n > 5 is the sum of three primes.
-
-**Historical note**: Helfgott's proof completed the ternary Goldbach without assuming RH,
-making this consequence of RH now unconditionally known. However, RH-based proofs
-give better quantitative bounds and simpler arguments.
-
-**References**:
-- Vinogradov, I.M. (1937). "Representation of an odd number as a sum of three primes"
-- Helfgott, H.A. (2013). "Major arcs for Goldbach's problem"
-
-**Status**: The ternary Goldbach is now proven unconditionally (Helfgott 2013),
-but RH-conditional proofs remain of theoretical interest. -/
-axiom RH_implies_ternary_goldbach_effective (h : RiemannHypothesis) :
-    ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ → Odd n →
-      ∃ p q r : ℕ, Nat.Prime p ∧ Nat.Prime q ∧ Nat.Prime r ∧ n = p + q + r
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART VIII: EULER PRODUCT AND NON-VANISHING (PROVEN)

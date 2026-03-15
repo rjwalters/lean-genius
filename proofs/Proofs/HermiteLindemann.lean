@@ -153,9 +153,6 @@ If e^α is algebraic (for non-zero α), then α is transcendental.
 
 This is the logical contrapositive of the Hermite-Lindemann theorem.
 The proof follows directly from the main theorem. -/
-axiom exp_algebraic_imp_base_transcendental
-    (α : ℂ) (hα : α ≠ 0) (h : IsAlgebraic ℚ (Complex.exp α)) :
-    Transcendental ℚ α
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: THE LINDEMANN-WEIERSTRASS THEOREM
@@ -184,11 +181,6 @@ The full proof requires deep analysis of auxiliary polynomial integrals.
 **Technical Note**: This axiom expresses that exponentials of distinct algebraics
 are ℚ-linearly independent. The full theorem over algebraic numbers requires
 additional machinery. -/
-axiom lindemann_weierstrass_linear :
-    ∀ (n : ℕ) (α : Fin n → ℂ),
-      (∀ i, IsAlgebraic ℚ (α i)) →
-      (∀ i j, i ≠ j → α i ≠ α j) →
-      LinearIndependent ℚ (fun i => Complex.exp (α i))
 
 /-- **Lindemann-Weierstrass Theorem** (Strong Form)
 
@@ -198,11 +190,6 @@ then e^α₁, e^α₂, ..., e^αₙ are algebraically independent over ℚ.
 This is the strongest form of the theorem.
 
 **Implementation Note**: Stated as axiom pending full formalization. -/
-axiom lindemann_weierstrass_strong :
-    ∀ (n : ℕ) (α : Fin n → ℂ),
-      (∀ i, IsAlgebraic ℚ (α i)) →
-      LinearIndependent ℚ α →
-      AlgebraicallyIndependent (Set.range (fun i => Complex.exp (α i)))
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART IV: FUNDAMENTAL COROLLARIES
@@ -220,8 +207,6 @@ This was first proved by Hermite in 1873.
 **Why axiomatized**: Applying hermite_lindemann to α = 1 requires
 showing that 1 : ℂ is algebraic over ℚ. While this is trivially true
 (1 is a root of X - 1), the type inference is complex. -/
-axiom e_transcendental_from_hermite_lindemann :
-    Transcendental ℤ (Complex.exp 1)
 
 /-- **Axiom: e is transcendental over ℚ (Real version)**
 
@@ -274,9 +259,6 @@ By Hermite-Lindemann, e^(n*α) is transcendental.
 
 **Why axiomatized**: Requires the fact that the product of algebraic numbers
 is algebraic, which needs IsAlgebraic.mul from Mathlib's algebraic number API. -/
-axiom exp_nat_mul_transcendental (α : ℂ) (hα : α ≠ 0) (h_alg : IsAlgebraic ℚ α)
-    (n : ℕ) (hn : n ≠ 0) :
-    Transcendental ℤ (Complex.exp (n * α))
 
 end Corollaries
 
@@ -297,8 +279,6 @@ transcendental by pi_transcendental_real. Contradiction!
 **Consequence**: Transcendental numbers are not constructible with compass
 and straightedge, so the ancient problem of constructing a square with the
 same area as a given circle is impossible. -/
-axiom sqrt_pi_transcendental :
-    Transcendental ℤ (Real.sqrt Real.pi)
 
 /-- **Axiom: e is not rational**
 
@@ -311,8 +291,6 @@ by e_transcendental_rationals. Contradiction!
 
 **Note**: The title refers to non-periodic decimal expansion because rational
 numbers have eventually periodic decimal expansions, and transcendentals don't. -/
-axiom e_decimal_non_periodic :
-    ¬∃ (p q : ℕ), q ≠ 0 ∧ Real.exp 1 = p / q
 
 end Applications
 

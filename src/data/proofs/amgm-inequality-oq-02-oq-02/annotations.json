@@ -1,0 +1,36 @@
+{
+  "annotations": [
+    {
+      "id": "unnormalized-newton",
+      "type": "insight",
+      "targetLines": [228, 398],
+      "title": "Unnormalized Newton's Inequality: Full Proof",
+      "content": "The complete proof of e\u2096\u00b2 \u2265 e\u2096\u208b\u2081\u00b7e\u2096\u208a\u2081 by induction on n. The inductive step uses the recurrence e\u2096(x\u2081,...,x\u2099\u208a\u2081) = e\u2096(y) + t\u00b7e\u2096\u208b\u2081(y) and shows the discriminant of the resulting quadratic in t is non-negative by the induction hypothesis.",
+      "tags": ["newton-inequality", "induction", "symmetric-polynomials"]
+    },
+    {
+      "id": "cross-product-lemma",
+      "type": "technique",
+      "targetLines": [228, 260],
+      "title": "Cross-Product Lemma for Log-Concavity",
+      "content": "From adjacent log-concavity a\u2096\u00b2 \u2265 a\u2096\u208b\u2081\u00b7a\u2096\u208a\u2081, derives the cross-product inequality a\u2096\u00b7a\u2096\u208b\u2081 \u2265 a\u2096\u208b\u2082\u00b7a\u2096\u208a\u2081. This handles the linear term in the quadratic decomposition of the inductive step.",
+      "tags": ["cross-product", "log-concavity", "technique"]
+    },
+    {
+      "id": "normalization-gap",
+      "type": "context",
+      "targetLines": [471, 520],
+      "title": "The Normalization Gap",
+      "content": "The unnormalized Newton (e\u2096\u00b2 \u2265 e\u2096\u208b\u2081e\u2096\u208a\u2081) does NOT imply the normalized version because C(n,k)\u00b2 \u2265 C(n,k-1)\u00b7C(n,k+1) means dividing by C(n,k)\u00b2 makes the left side SMALLER relative to the right. The normalized version requires a direct induction with the normalized recurrence.",
+      "tags": ["normalization", "open-problem", "subtlety"]
+    },
+    {
+      "id": "maclaurin-derived",
+      "type": "proof-step",
+      "targetLines": [208, 227],
+      "title": "Maclaurin Step Derived from Newton",
+      "content": "M\u2096 \u2265 M\u2096\u208a\u2081 is proved as a theorem (not axiom) using the power inequality a\u2096^(k+1) \u2265 a\u2096\u208a\u2081^k from log-concavity, then converting to rpow. This eliminates the maclaurin_step axiom from the parent proof.",
+      "tags": ["maclaurin", "derived", "axiom-elimination"]
+    }
+  ]
+}

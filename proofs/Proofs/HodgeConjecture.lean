@@ -660,37 +660,6 @@ theorem hodge_implies_mumford_tate (h : HodgeConjectureFullStatement) :
 PART VIII: STRUCTURAL PROPERTIES
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Axiom: Serre Duality for Hodge Numbers**
-
-For a smooth projective variety X of dimension n:
-    h^{p,q}(X) = h^{n-p,n-q}(X)
-
-This comes from Serre duality: H^q(X, Ω^p) ≅ H^{n-q}(X, Ω^{n-p}).
-Combined with Hodge symmetry h^{p,q} = h^{q,p}, this gives the full
-symmetry group of the Hodge diamond (dihedral group of order 4).
-
-**Why an axiom?** Requires:
-1. Serre duality for coherent sheaves
-2. Identification of Ω^p_X with the sheaf of p-forms
-3. Dualizing sheaf = Ω^n for smooth varieties -/
-axiom serre_duality_hodge_numbers (X : ProjectiveVariety) (n : ℕ) (hn : X.dim = n)
-    (H_k : PureHodgeStructure (2 * n)) -- H^{2n}(X)
-    (H_k' : PureHodgeStructure (2 * n)) -- H^{2n}(X) (same weight, for n-p, n-q)
-    (p q : ℕ) (hpq : p + q = 2 * n)
-    (hp : p ≤ n) (hq : q ≤ n)
-    (hnpnq : (n - p) + (n - q) = 2 * n) :
-    hodgeNumber H_k p q hpq = hodgeNumber H_k' (n - p) (n - q) hnpnq
-
-/-- **Cycle class map is additive**
-
-The cycle class map respects formal sums: cl(Z₁ + Z₂) = cl(Z₁) + cl(Z₂).
-This is fundamental to the Hodge Conjecture since it means the image of
-the cycle class map forms a ℚ-subspace of the Hodge classes. -/
-axiom cycleClassMap_additive (X : ProjectiveVariety) (p : ℕ)
-    (H : PureHodgeStructure (2 * p)) (Z₁ Z₂ : AlgebraicCycle X p)
-    (hsum : AlgebraicCycle X p) :
-    cycleClassMap X p H hsum = cycleClassMap X p H Z₁ + cycleClassMap X p H Z₂
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART IXa: PROVED THEOREMS ABOUT ALGEBRAIC CLASSES
 ═══════════════════════════════════════════════════════════════════════════════
@@ -983,31 +952,15 @@ is a ℚ_ℓ-linear combination of algebraic cycle classes.
 and ℓ-adic analysis, none of which are in Mathlib. -/
 axiom TateConjecture : Prop
 
-/-- **Axiom: Hodge-Tate Equivalence for Abelian Varieties**
-
-For abelian varieties, the Hodge Conjecture (over ℂ) and the Tate
-Conjecture (over number fields) are equivalent. This deep result
-connects transcendental and arithmetic approaches to algebraic cycles.
-
-This was established through work of Deligne, Faltings, and others:
-- Faltings (1983): Tate conjecture for abelian varieties over number fields
-- Deligne: Connection between Hodge and Tate classes via absolute Hodge cycles
-
-**Why an axiom?** Requires comparison isomorphisms between Betti, de Rham,
-and étale cohomology, plus the theory of absolute Hodge cycles. -/
-axiom hodge_tate_equivalent_abelian.{v} :
-    (HodgeConjectureFullStatement.{v} → TateConjecture) ∧
-    (TateConjecture → HodgeConjectureFullStatement.{v})
-
 /-- **Hodge implies Tate for abelian varieties.** -/
 theorem hodge_implies_tate_abelian (h : HodgeConjectureFullStatement.{u}) :
     TateConjecture :=
-  (hodge_tate_equivalent_abelian.{u}).1 h
+  sorry
 
 /-- **Tate implies Hodge for abelian varieties.** -/
 theorem tate_implies_hodge_abelian (h : TateConjecture) :
     HodgeConjectureFullStatement.{u} :=
-  (hodge_tate_equivalent_abelian.{u}).2 h
+  sorry
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART IXe: GENERALIZED HODGE CONJECTURE
@@ -1745,24 +1698,6 @@ theorem directSum_prod_snd {k : ℕ} {H₁ H₂ H₃ : PureHodgeStructure k}
   show LinearMap.snd ℚ H₁.VQ H₂.VQ (f₁.rationalMap.prod f₂.rationalMap v) = _
   simp [LinearMap.prod_apply, LinearMap.snd_apply]
 
-/-- **HC for direct sums: if HC holds for both summands, it holds for the sum**
-
-This is an important structural property: the Hodge Conjecture is "additive"
-in the sense that if every Hodge class on X and Y is algebraic, then every
-Hodge class on X ⊔ Y (disjoint union, which gives direct sum on cohomology)
-is algebraic.
-
-**Why an axiom?** The proof requires showing that every Hodge class in the
-direct sum decomposes as a sum of Hodge classes from the summands, which needs
-the projection maps and their interaction with the cycle class map. -/
-axiom hodge_conjecture_direct_sum {p : ℕ}
-    (X₁ X₂ : ProjectiveVariety)
-    (H₁ H₂ : PureHodgeStructure (2 * p))
-    (hHC₁ : HodgeConjectureStatement X₁ p H₁)
-    (hHC₂ : HodgeConjectureStatement X₂ p H₂) :
-    ∃ (X₁₂ : ProjectiveVariety),
-      HodgeConjectureStatement X₁₂ p (directSumHodge H₁ H₂)
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XIV: POLARIZATIONS
 ═══════════════════════════════════════════════════════════════════════════════
@@ -1796,19 +1731,6 @@ polarization. These are the Hodge structures that arise from geometry. -/
 structure PolarizedHodgeStructure (k : ℕ) extends PureHodgeStructure k where
   /-- The polarization -/
   polarization : Polarization toPureHodgeStructure
-
-/-- **Axiom: Geometric Hodge structures are polarizable**
-
-Every pure Hodge structure arising from the cohomology of a smooth projective
-variety admits a polarization. This is a consequence of the Hard Lefschetz
-theorem and the Kähler package.
-
-**Why an axiom?** Requires:
-1. Hard Lefschetz theorem (needs Kähler geometry)
-2. Primitive decomposition
-3. Hodge-Riemann bilinear relations (needs positivity of Kähler form) -/
-axiom geometric_hodge_is_polarizable (X : ProjectiveVariety) (k : ℕ)
-    (H : PureHodgeStructure k) : Polarization H
 
 /-- **Theorem: Polarization symmetry for even weight** (PROVED)
 
@@ -1879,19 +1801,6 @@ axiom hard_lefschetz (X : ProjectiveVariety) (n : ℕ) (hn : X.dim = n)
     (Hk : PureHodgeStructure k) (H2nk : PureHodgeStructure (2 * n - k)) :
     ∃ (f : Hk.VQ →ₗ[ℚ] H2nk.VQ), Function.Bijective f
 
-/-- **Axiom: Lefschetz preserves algebraicity**
-
-The Lefschetz operator maps algebraic classes to algebraic classes.
-This is because L is itself the class of an algebraic cycle (a hyperplane
-section), so L(cl(Z)) = cl(H ∩ Z) where H is a hyperplane.
-
-**Why an axiom?** Needs intersection theory of algebraic cycles. -/
-axiom lefschetz_preserves_algebraic (X : ProjectiveVariety) (p : ℕ)
-    (Hp : PureHodgeStructure (2 * p)) (Hp1 : PureHodgeStructure (2 * (p + 1)))
-    (Lop : LefschetzOperator X (2 * p) Hp Hp1)
-    (α : HodgeClass Hp) (halg : isAlgebraicClass X p Hp α) :
-    ∃ (β : HodgeClass Hp1), isAlgebraicClass X (p + 1) Hp1 β
-
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XVI: WEIGHT STRUCTURES AND MIXED HODGE THEORY (OVERVIEW)
 ═══════════════════════════════════════════════════════════════════════════════
@@ -1920,24 +1829,6 @@ structure MixedHodgeStructure where
 
 attribute [instance] MixedHodgeStructure.addCommGroup_VQ
 attribute [instance] MixedHodgeStructure.module_VQ
-
-/-- **Axiom: Deligne's Theorem on Mixed Hodge Structures**
-
-The cohomology of every complex algebraic variety (possibly singular,
-possibly non-compact) carries a canonical mixed Hodge structure.
-
-This is one of the most important theorems in algebraic geometry.
-For smooth projective varieties, it reduces to the classical (pure) Hodge
-structure. For open varieties, the weight filtration detects the "boundary"
-behavior. For singular varieties, it detects singularity types.
-
-**Why an axiom?** Deligne's proof (Hodge II, III) requires:
-1. Simplicial resolution of singularities
-2. Logarithmic de Rham complex
-3. Spectral sequences for filtered complexes
-4. GAGA and comparison theorems -/
-axiom deligne_mixed_hodge_structure :
-    ∀ (X : ProjectiveVariety), MixedHodgeStructure
 
 /-- **A pure Hodge structure gives a mixed Hodge structure** (PROVED)
 
@@ -2031,12 +1922,6 @@ axiom tateTwist (k n : ℕ) (H : PureHodgeStructure k) :
 /-- Tate twist preserves the underlying rational space. -/
 axiom tateTwist_VQ_eq (k n : ℕ) (H : PureHodgeStructure k) :
     (tateTwist k n H).VQ = H.VQ
-
-/-- Tate twist shifts Hodge components: H(n)^{p,q} = H^{p+n, q+n}. -/
-axiom tateTwist_component (k n : ℕ) (H : PureHodgeStructure k)
-    (p q : ℕ) (hpq : p + q = k + 2 * n) (hp : n ≤ p) (hq : n ≤ q) :
-    -- The component H(n)^{p,q} corresponds to H^{p-n, q-n}
-    True  -- Placeholder for submodule equality (requires transport)
 
 /-- A morphism of Hodge structures induces a morphism on Tate twists.
     If φ : H₁ → H₂ then φ(n) : H₁(n) → H₂(n). -/
