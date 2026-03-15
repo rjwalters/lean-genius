@@ -1334,6 +1334,26 @@ theorem harmonicNumber_one : harmonicNumber 1 = 1 := by
 theorem harmonicNumber_one_pos : 0 < harmonicNumber 1 := by
   rw [harmonicNumber_one]; norm_num
 
+/-- σ(n) ≥ n for all n ≥ 1 (since n divides itself). -/
+theorem sigma_ge_self {n : ℕ} (hn : n ≥ 1) : sigma n ≥ n := by
+  unfold sigma
+  have hn_self : n ∈ n.divisors := Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩
+  calc n.divisors.sum _root_.id
+      ≥ ({n} : Finset ℕ).sum _root_.id := by
+        apply Finset.sum_le_sum_of_subset_of_nonneg
+        · intro x hx; simp only [Finset.mem_singleton] at hx; rw [hx]; exact hn_self
+        · intros; exact Nat.zero_le _
+    _ = n := by simp [_root_.id]
+
+/-- σ(28) = 56: 28 is a perfect number (σ(28) = 2·28). -/
+theorem sigma_twentyeight : sigma 28 = 56 := by native_decide
+
+/-- 6 is perfect: σ(6) = 2·6. -/
+theorem perfect_number_six : sigma 6 = 2 * 6 := by native_decide
+
+/-- 28 is perfect: σ(28) = 2·28. -/
+theorem perfect_number_twentyeight : sigma 28 = 2 * 28 := by native_decide
+
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XIV: ZETA SPECIAL VALUES (PROVED)
 ═══════════════════════════════════════════════════════════════════════════════ -/
