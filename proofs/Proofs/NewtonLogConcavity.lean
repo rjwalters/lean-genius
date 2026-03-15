@@ -339,13 +339,25 @@ theorem newton_ineq : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
           (ne_of_gt (by positivity : (0:ℝ) < (q + s) * (r + p)))]
     apply div_nonneg _ (by positivity)
     -- Now need: (a+tb)² · ((q+s)·(r+p)) - (b+td)·(c+ta) · (p+q)² ≥ 0
-    -- This is a quadratic in t:
-    -- Constant: a²(q+s)(r+p) - bc(p+q)²
-    -- Linear: 2ab(q+s)(r+p) - (ba + cd)(p+q)² = (2ab(q+s)(r+p) - ab(p+q)² - cd(p+q)²)
-    --        = ab(2(q+s)(r+p) - (p+q)²) - cd(p+q)²
-    -- Quadratic: b²(q+s)(r+p) - da(p+q)²
-    -- Show non-negative via quadratic_nonneg_nonneg_t
-    -- For now we sorry the final algebraic step
+    -- This is a quadratic in t: A·t² + B·t + C where
+    --   C = a²(q+s)(r+p) - bc(p+q)²  ≥ 0 (from IH at k, using Pascal)
+    --   A = b²(q+s)(r+p) - da(p+q)²  ≥ 0 (from IH at k-1, using Pascal)
+    --   B = 2ab(q+s)(r+p) - (ab+cd)(p+q)²
+    --
+    -- Analysis (verified numerically for all integer k,u ∈ [2,14]):
+    -- When B ≥ 0: all coefficients non-negative for t ≥ 0, done.
+    -- When B < 0: discriminant 4AC ≥ B² holds (proved for k=2,u=2 analytically;
+    --   conjectured for general k,u).
+    --
+    -- The difficulty: E ≥ 0 does NOT hold for arbitrary non-negative a,b,c,d,p,q,r,s
+    -- satisfying just IH1 and IH2. The binomial coefficient structure (p,q,r,s satisfy
+    -- specific ratios from Pascal's rule) is essential but makes the algebra intractable
+    -- for nlinarith (9 variables, 55-term discriminant polynomial).
+    --
+    -- Potential approaches for closing this sorry:
+    -- 1. Cauchy-Binet identity (express Newton as sum over subset pairs)
+    -- 2. Real-rootedness of ∏(1+xᵢz) → log-concavity of coefficients
+    -- 3. Explicit SOS decomposition using the binomial ratio parametrization
     sorry
 
 /-
@@ -366,16 +378,31 @@ theorem newton_ineq : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
 - Base case n=k+1 proved: decompose via recurrence, use IH at (k,k-1) for
   discriminant bound, complete the square: k·expr = (kP-Et)² + (k+1)·IH·t² ≥ 0
 - Recurrences for eₖ, eₖ₋₁, eₖ₊₁ correctly stated
-- Both IH instances (at k and k-1) correctly invoked
-- Proof structure matches Hardy-Littlewood-Pólya §2.22
+- Both IH instances (at k and k-1) correctly invoked and cross-multiplied
+- Pascal's rule for all relevant binomial coefficients
+- Denominators cleared and div_nonneg applied
 
-### Next steps for inductive step (n ≥ k+2):
-- Use Pascal's rule: C(m+1,j) = C(m,j) + C(m,j-1) to expand
-- Show LHS - RHS = α + βt + γt² where:
-  - α ≥ 0 from IH at k (after Pascal expansion)
-  - γ ≥ 0 from IH at k-1 (after Pascal expansion)
-  - 4αγ ≥ β² from Cauchy-Schwarz/AM-GM on the two IH instances
-- Therefore the quadratic in t is non-negative everywhere
+### Analysis of the inductive step (n ≥ k+2):
+The cross-multiplied form is: (a+tb)²(q+s)(r+p) - (b+td)(c+ta)(p+q)² ≥ 0
+where a=eₖ(y), b=eₖ₋₁(y), c=eₖ₊₁(y), d=eₖ₋₂(y), t=xₙ₊₁.
+
+This is a quadratic At²+Bt+C in t with:
+  C ≥ 0 (from IH1: a²qr ≥ bcp², using Pascal: C ≥ bc(k+1)/(u-1) ≥ 0)
+  A ≥ 0 (from IH2: b²sp ≥ daq², using Pascal: A ≥ da(u+1)/(k-1) ≥ 0)
+
+Key findings:
+- E ≥ 0 does NOT hold for free (a,b,c,d,p,q,r,s) with just IH1,IH2.
+  The binomial coefficient ratios p/q=(m-k+1)/k etc. are essential.
+- When B ≥ 0: trivially non-negative for t ≥ 0.
+- When B < 0: discriminant 4AC ≥ B² holds (verified numerically for k,u∈[2,14]).
+- The discriminant polynomial has 55 terms in 8 variables — too complex for nlinarith.
+- Unnormalized Newton (eₖ²≥eₖ₋₁eₖ₊₁) is provable by induction (all 3 coefficients
+  non-negative), but normalized cannot be derived from it.
+
+### Promising approaches for closing:
+1. Cauchy-Binet: Newton = sum of non-negative terms over pairs of k-subsets
+2. Real-rootedness: ∏(1+xᵢz) has real roots → coefficient log-concavity
+3. Parametrized discriminant proof using k,u = m-k+1 (reduces free variables)
 -/
 
 end NewtonLC
