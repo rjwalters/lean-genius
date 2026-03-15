@@ -2,72 +2,6 @@
 
 ---
 
-## Session 2026-03-15 (researcher-4) - Trivially-True Axiom Elimination
-
-**Mode**: REVISIT
-**Problem**: pnp-barriers
-**Prior Status**: 18,223 lines, 0 sorries, 275 axioms
-
-### Changes
-
-- Converted 14 axioms with conclusion `True` or `... → True` to theorems
-- Used `trivial` for direct `True` conclusions, `fun _ => trivial` for implications
-- Renamed first `mcsp_magnification` to `mcsp_magnification_v1` to resolve duplicate name
-
-### Axioms Converted
-BQP_subset_PSPACE, grover_optimality, raz_tal_forrelation,
-aaronson_ambainis_conjecture, direct_sum_theorem, compression_theorem,
-kabanets_cai_theorem, murray_williams_nqp, trevisan_extractor_from_hardness,
-razborov_approximation_lemma, alon_boppana_improved_bound_detail,
-monotone_kw_theorem, mcsp_magnification_v1, mcsp_magnification
-
-### Stats After: 18,223 lines, 0 sorries, 261 axioms
-
-### Note
-Pre-existing build errors (duplicate declarations at lines 15085+: SharpP, toda_theorem,
-GapP, ParityP, ProofSystem) exist in both main and worktree. Not caused by these changes.
-
----
-
-## Session 2026-03-15 (researcher-3) - Parts 63-65 + Sorry Fix
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 157)
-**Problem**: pnp-barriers
-**Prior Status**: 17,633 lines, 1 sorry, 275 axioms
-
-### New Content
-
-1. **Part 63: Descriptive Complexity** - Logic characterizes complexity:
-   - Fagin's theorem: NP = ∃SO (existential second-order logic)
-   - Immerman-Vardi: P = FO+LFP (on ordered structures)
-   - P vs NP as logical expressiveness question
-   - Stockmeyer: PH = full SO
-   - Cai-Fürer-Immerman obstruction
-   - Barrier implications (non-relativizing, non-natural)
-
-2. **Part 64: Pseudorandomness and Hardness-Randomness** - Derandomization:
-   - Nisan-Wigderson PRG construction
-   - Impagliazzo-Wigderson theorem: hardness → BPP=P
-   - Connection to P vs NP (P≠NP → BPP=P)
-   - Unconditional results (BPP ⊆ Σ₂, SL=L)
-   - Razborov-Rudich meets hardness-randomness (self-referential barrier)
-   - Extractors and Trevisan's unification
-
-3. **Part 65: Barrier Synthesis** - Why P≠NP is hard:
-   - Three-barrier interaction analysis
-   - Self-referential barrier (RR paradox)
-   - Mulmuley barrier for GCT
-   - Promising approaches (GCT, meta-complexity, proof complexity, lifting)
-   - Independence unlikely (Razborov 1995, Aaronson 2003)
-
-### Sorry Fix
-- **fpt_ne_w1_implies_p_ne_np**: Fixed by proving vacuous truth — in abstract model FPT_class.languages = W1.languages = { L | True }, so premise is False → anything
-- **0 sorries remain**
-
-### Stats After: 18,223 lines, 0 sorries, 275 axioms
-
----
-
 ## Session 2026-03-15 (researcher-3) - Soundness Fix + Axiom Reduction (89→84)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 109)
@@ -96,6 +30,200 @@ GapP, ParityP, ProofSystem) exist in both main and worktree. Not caused by these
 
 ### Files Modified
 - `proofs/Proofs/PNPBarriersSound.lean` — 5 axiom eliminations, soundness fix
+
+---
+
+## Session 2026-03-15 (researcher-2, Session 34) - Axiom reduction (76→74)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 137)
+**Problem**: pnp-barriers
+**Prior Status**: active (4107 lines, 76 axioms)
+
+**What we did**:
+1. **Proved `immerman_szelepcsenyi`** (NL = coNL): In abstract model, NL = L (same def), so complement closure follows from Φ_negate.
+2. **Proved `trapdoor_implies_owf`** (TrapdoorOWF → OWF): Both defined as `∃ _ : ℕ, True`, trivially provable.
+
+**Stats after changes**: 4127 lines, 74 axioms, 0 sorries, 203 theorems, Docker build passes.
+
+---
+
+## Session 2026-03-15 (researcher-2, Session 33) - Merge cleanup & opaque conversions
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 135)
+**Problem**: pnp-barriers
+**Prior Status**: active (4221 lines, ~82 axioms with duplicates, build broken)
+
+**What we did**:
+1. Fixed duplicate sections from upstream merge (Parts 15-18 were appended twice causing build failure)
+   - `circuitDepth` was defined twice with incompatible types (ℕ→Bool vs BoolFn n), causing type mismatch
+   - Removed duplicate KW theorem, ZK proofs, and average-case sections (kept communication complexity)
+2. Converted 3 measurement function axioms to opaque definitions:
+   - `D_comm` → opaque (deterministic communication complexity)
+   - `R_comm` → opaque (randomized communication complexity)
+   - `commMatrixRank` → opaque (communication matrix rank)
+3. Updated header axiom summary to accurately reflect current state
+
+**Stats after changes**: 4107 lines, 76 axioms, 0 sorries, 201 theorems, Docker build passes.
+
+**Key observations**:
+- Many remaining axioms are about opaque types (NC_k, AC_k, TC_k, VP, VNP, Sigma_k, BQP, PP) where containment can't be proved without unfolding definitions
+- Function-type axioms (returning ℕ) should be opaque defs, not axioms — they declare measurement functions, not mathematical claims
+- The Five Worlds section in the main body now uses abstract AvgCaseHardNP instead of detailed DistProblem/AvgP types
+
+**Possible future work**:
+- Prove more axioms if definitions are refined (e.g., make Sigma_k non-opaque with recursive definition)
+- Add more communication complexity results (randomized lower bounds, information complexity)
+- Consider proving SETH → ETH formally (currently hard due to integer division in exponents)
+
+---
+
+## Session 2026-03-15 (researcher-2, Session 32) - Axiom Reduction (82→76)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 135)
+**Problem**: pnp-barriers
+**Prior Status**: active (3419 lines, 82 axioms, 0 sorries)
+
+**What we did**:
+Proved 6 axioms as theorems in PNPBarriersSound.lean:
+
+1. **immerman_szelepcsenyi** (NL = coNL): Proved from Φ_negate. In the abstract model, NL = L (both defined as `{f | ∃ e, Solves e ∅ f}`), so complement closure follows directly from the program negation axiom.
+2. **NC1_iff_logdepth** (NC¹ ↔ O(log n) KW complexity): Direct rewrite using karchmer_wigderson theorem (circuitDepth = KW_complexity).
+3. **SZK_complement_closed** (SZK = coSZK): Trivial from SZK's abstract definition `{L | ∃ _ : ℕ, True}`.
+4. **GMW_NP_in_CZK** (OWF → NP ⊆ CZK): Trivial from CZK's abstract definition.
+5. **CZK_subset_IP** (CZK ⊆ IP): Proved by showing InIP is satisfiable for any f (acceptCount=1,rejectCount=0 for yes; acceptCount=0,rejectCount=1 for no).
+6. **haken_php_exponential**: The quantitative bound was elided as True, making this trivially provable (∃ c > 0, True).
+
+**Stats after changes**: 3463 lines, 76 axioms, 0 sorries, Docker build passes.
+
+**Key observations**:
+- Several abstract class definitions (SZK, CZK, AvgP) are defined as `{L | ∃ _ : ℕ, True}` = Set.univ, making axioms about them trivially provable. This is a modeling limitation, not a mathematical insight.
+- InIP is also trivially satisfiable in the current model (the accept/reject counts aren't connected to the verifier program). Combined with shamir_IP_eq_PSPACE, this has implications for model consistency.
+- The cook_reckhow axiom's RHS simplifies to True (PropositionalProofSystem is vacuously constructible), effectively asserting NP = coNP. This is a model issue worth investigating.
+
+**Possible future work**:
+- Refine abstract class definitions (SZK, CZK, AvgP, InIP) to be non-trivial
+- Continue axiom reduction on remaining 76 axioms
+- Add counting complexity (#P) to the sound model
+- Investigate cook_reckhow consistency issue
+
+---
+
+## Session 2026-03-15 (researcher-2, Session 34) - Axiom reduction (76→74)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 137)
+**Problem**: pnp-barriers
+**Prior Status**: active (4107 lines, 76 axioms)
+
+**What we did**:
+1. **Proved `immerman_szelepcsenyi`** (NL = coNL): In abstract model, NL = L (same def), so complement closure follows from Φ_negate.
+2. **Proved `trapdoor_implies_owf`** (TrapdoorOWF → OWF): Both defined as `∃ _ : ℕ, True`, trivially provable.
+
+**Stats after changes**: 4127 lines, 74 axioms, 0 sorries, 203 theorems, Docker build passes.
+
+---
+
+## Session 2026-03-15 (researcher-2, Session 33) - Merge cleanup & opaque conversions
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 135)
+**Problem**: pnp-barriers
+**Prior Status**: active (4221 lines, ~82 axioms with duplicates, build broken)
+
+**What we did**:
+1. Fixed duplicate sections from upstream merge (Parts 15-18 were appended twice causing build failure)
+   - `circuitDepth` was defined twice with incompatible types (ℕ→Bool vs BoolFn n), causing type mismatch
+   - Removed duplicate KW theorem, ZK proofs, and average-case sections (kept communication complexity)
+2. Converted 3 measurement function axioms to opaque definitions:
+   - `D_comm` → opaque (deterministic communication complexity)
+   - `R_comm` → opaque (randomized communication complexity)
+   - `commMatrixRank` → opaque (communication matrix rank)
+3. Updated header axiom summary to accurately reflect current state
+
+**Stats after changes**: 4107 lines, 76 axioms, 0 sorries, 201 theorems, Docker build passes.
+
+**Key observations**:
+- Many remaining axioms are about opaque types (NC_k, AC_k, TC_k, VP, VNP, Sigma_k, BQP, PP) where containment can't be proved without unfolding definitions
+- Function-type axioms (returning ℕ) should be opaque defs, not axioms — they declare measurement functions, not mathematical claims
+- The Five Worlds section in the main body now uses abstract AvgCaseHardNP instead of detailed DistProblem/AvgP types
+
+**Possible future work**:
+- Prove more axioms if definitions are refined (e.g., make Sigma_k non-opaque with recursive definition)
+- Add more communication complexity results (randomized lower bounds, information complexity)
+- Consider proving SETH → ETH formally (currently hard due to integer division in exponents)
+
+---
+
+## Session 2026-03-15 (researcher-2, Session 32) - Axiom Reduction (82→76)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 135)
+**Problem**: pnp-barriers
+**Prior Status**: active (3419 lines, 82 axioms, 0 sorries)
+
+**What we did**:
+Proved 6 axioms as theorems in PNPBarriersSound.lean:
+
+1. **immerman_szelepcsenyi** (NL = coNL): Proved from Φ_negate. In the abstract model, NL = L (both defined as `{f | ∃ e, Solves e ∅ f}`), so complement closure follows directly from the program negation axiom.
+2. **NC1_iff_logdepth** (NC¹ ↔ O(log n) KW complexity): Direct rewrite using karchmer_wigderson theorem (circuitDepth = KW_complexity).
+3. **SZK_complement_closed** (SZK = coSZK): Trivial from SZK's abstract definition `{L | ∃ _ : ℕ, True}`.
+4. **GMW_NP_in_CZK** (OWF → NP ⊆ CZK): Trivial from CZK's abstract definition.
+5. **CZK_subset_IP** (CZK ⊆ IP): Proved by showing InIP is satisfiable for any f (acceptCount=1,rejectCount=0 for yes; acceptCount=0,rejectCount=1 for no).
+6. **haken_php_exponential**: The quantitative bound was elided as True, making this trivially provable (∃ c > 0, True).
+
+**Stats after changes**: 3463 lines, 76 axioms, 0 sorries, Docker build passes.
+
+**Key observations**:
+- Several abstract class definitions (SZK, CZK, AvgP) are defined as `{L | ∃ _ : ℕ, True}` = Set.univ, making axioms about them trivially provable. This is a modeling limitation, not a mathematical insight.
+- InIP is also trivially satisfiable in the current model (the accept/reject counts aren't connected to the verifier program). Combined with shamir_IP_eq_PSPACE, this has implications for model consistency.
+- The cook_reckhow axiom's RHS simplifies to True (PropositionalProofSystem is vacuously constructible), effectively asserting NP = coNP. This is a model issue worth investigating.
+
+**Possible future work**:
+- Refine abstract class definitions (SZK, CZK, AvgP, InIP) to be non-trivial
+- Continue axiom reduction on remaining 76 axioms
+- Add counting complexity (#P) to the sound model
+- Investigate cook_reckhow consistency issue
+
+---
+
+## Session 2026-03-15 (researcher-2, Session 34) - Axiom reduction (76→74)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 137)
+**Problem**: pnp-barriers
+**Prior Status**: active (4107 lines, 76 axioms)
+
+**What we did**:
+1. **Proved `immerman_szelepcsenyi`** (NL = coNL): In abstract model, NL = L (same def), so complement closure follows from Φ_negate.
+2. **Proved `trapdoor_implies_owf`** (TrapdoorOWF → OWF): Both defined as `∃ _ : ℕ, True`, trivially provable.
+
+**Stats after changes**: 4127 lines, 74 axioms, 0 sorries, 203 theorems, Docker build passes.
+
+---
+
+## Session 2026-03-15 (researcher-2, Session 33) - Merge cleanup & opaque conversions
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 135)
+**Problem**: pnp-barriers
+**Prior Status**: active (4221 lines, ~82 axioms with duplicates, build broken)
+
+**What we did**:
+1. Fixed duplicate sections from upstream merge (Parts 15-18 were appended twice causing build failure)
+   - `circuitDepth` was defined twice with incompatible types (ℕ→Bool vs BoolFn n), causing type mismatch
+   - Removed duplicate KW theorem, ZK proofs, and average-case sections (kept communication complexity)
+2. Converted 3 measurement function axioms to opaque definitions:
+   - `D_comm` → opaque (deterministic communication complexity)
+   - `R_comm` → opaque (randomized communication complexity)
+   - `commMatrixRank` → opaque (communication matrix rank)
+3. Updated header axiom summary to accurately reflect current state
+
+**Stats after changes**: 4107 lines, 76 axioms, 0 sorries, 201 theorems, Docker build passes.
+
+**Key observations**:
+- Many remaining axioms are about opaque types (NC_k, AC_k, TC_k, VP, VNP, Sigma_k, BQP, PP) where containment can't be proved without unfolding definitions
+- Function-type axioms (returning ℕ) should be opaque defs, not axioms — they declare measurement functions, not mathematical claims
+- The Five Worlds section in the main body now uses abstract AvgCaseHardNP instead of detailed DistProblem/AvgP types
+
+**Possible future work**:
+- Prove more axioms if definitions are refined (e.g., make Sigma_k non-opaque with recursive definition)
+- Add more communication complexity results (randomized lower bounds, information complexity)
+- Consider proving SETH → ETH formally (currently hard due to integer division in exponents)
 
 ---
 
@@ -131,6 +259,75 @@ Proved 6 axioms as theorems in PNPBarriersSound.lean:
 ---
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
+
+## Session 2026-03-15 (researcher-1, Session 33) - Sensitivity Conjecture
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 39)
+**Problem**: pnp-barriers
+**Prior Status**: active (13,923 lines, 230 axioms, Part 51 committed)
+
+**What we did**: Added Part 52: The Sensitivity Conjecture and Query Complexity Polynomial Relations. Formalized Huang's 2019 proof (signed adjacency matrices, Cauchy interlacing), all six query complexity measures, pre-Huang polynomial relationships, Fourier analysis (KKL, Friedgut), Aaronson-Ambainis conjecture.
+
+**New axioms** (10): nisan_D_bs, nisan_szegedy_bs_deg, bbcmw_D_deg, gotsman_linial, huang_signed_adjacency, huang_sensitivity_theorem, cauchy_interlacing, kkl_theorem, friedgut_junta, aaronson_ambainis_conjecture
+
+**New definitions** (7): D_query, C_query, bs_query, real_degree, approx_degree, s_query, fourierCoefficient
+
+**New theorems** (8): pre_huang_polynomial_chain, huang_matrix_squared, huang_proof, query_complexity_polynomial_equivalence, rubinstein_tightness, sensitivity_to_depth, sensitivity_significance, part52_summary
+
+**Outcome**: PNPBarriers.lean: **14,374 lines**, **0 sorries**, **240 axioms**, **462 theorems/lemmas**, Docker build passes.
+
+
+## Session 2026-03-15 (researcher-1, Session 32) - Lifting Theorems
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 35)
+**Problem**: pnp-barriers
+**Prior Status**: active (13,404 lines, 215 axioms, Part 50 committed)
+
+**What we did**:
+1. Added Part 51: Lifting Theorems and Query-to-Communication Simulation
+2. Defined DecisionTree, queryComplexity, certificateComplexity, sensitivity, blockSensitivity
+3. Defined KWRelation for Karchmer-Wigderson depth correspondence
+4. Defined Gadget structure and indexGadget (the universal lifting gadget)
+5. Defined composedFunction for f ∘ g^n composition
+6. Added sensitivity_conjecture axiom (Huang 2019)
+7. Added karchmer_wigderson_depth and monotone_kw axioms
+8. Added raz_mckenzie_simulation (1999), gpw_deterministic_lifting (2017), randomized_lifting (CFKMP 2019)
+9. Added krw_conjecture_statement (KRW 1995) with proof of krw_implies_P_ne_NC1
+10. Proved 10 theorems: monotone_depth_via_lifting, dag_communication_lower_bounds, proof_complexity_via_lifting, lifting_landscape, lifting_limitations, lifting_vs_natural_proofs, lifting_vs_relativization, lifting_grand_connection, part51_summary, STCONN_LANG
+11. Fixed 2 pre-existing bugs in Part 50 (MKtP_in_NP used undefined inNP_of_inP, barrier_trinity type error)
+
+**New axioms** (7):
+- sensitivity_conjecture (Huang 2019)
+- karchmer_wigderson_depth (KW 1990)
+- monotone_kw (monotone KW variant)
+- raz_mckenzie_simulation (RM 1999)
+- gpw_deterministic_lifting (GPW 2017)
+- randomized_lifting (CFKMP 2019)
+- krw_conjecture_statement (KRW 1995)
+
+**New definitions** (8):
+- DecisionTree, queryComplexity, certificateComplexity
+- sensitivity, blockSensitivity
+- KWRelation, Gadget, indexGadget, composedFunction, STCONN_LANG
+
+**New theorems proved** (10):
+- monotone_depth_via_lifting, dag_communication_lower_bounds
+- proof_complexity_via_lifting, krw_implies_P_ne_NC1
+- lifting_landscape, lifting_limitations
+- lifting_vs_natural_proofs, lifting_vs_relativization
+- lifting_grand_connection, part51_summary
+
+**Bugs fixed** (2):
+- MKtP_in_NP: replaced undefined `inNP_of_inP` with `P_subset_NP` + explicit proof
+- barrier_trinity: fixed "type expected" error (was passing proof term as type)
+
+**Outcome**: PNPBarriers.lean: **13,923 lines**, **0 sorries**, **230 axioms**, **454 theorems/lemmas**, Docker build passes.
+
+**Next steps**:
+1. Deepen proof complexity connections (cutting planes lower bounds via lifting)
+2. Add polynomial identity testing and algebraic circuit lower bounds
+3. Connect to Mathlib TM2 definitions
+4. Razborov approximation method deep dive
 
 ## Session 2026-03-14 (researcher-2, Session 31) - Impagliazzo's Five Worlds
 
