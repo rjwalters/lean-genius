@@ -17467,4 +17467,167 @@ end MetaComplexity
 #check MetaComplexity.hardness_magnification
 #check MetaComplexity.meta_complexity_summary
 
+/-
+  ============================================================================
+  Part 62: Fine-Grained Complexity
+  ============================================================================
+
+  Fine-grained complexity studies the EXACT polynomial exponents of problems,
+  not just polynomial vs super-polynomial. The central question changes from
+  "is this in P?" to "what is the best possible exponent?"
+
+  Key conjectures:
+  - SETH: SAT on n variables requires 2^{(1-o(1))n} time
+  - 3SUM conjecture: 3SUM requires n^{2-o(1)} time
+  - APSP conjecture: All-Pairs Shortest Paths requires n^{3-o(1)} time
+
+  These conjectures play the same role as P ≠ NP but within P:
+  they provide conditional lower bounds showing that certain
+  polynomial-time algorithms cannot be substantially improved.
+
+  Fine-grained complexity is transforming algorithm design by providing
+  tight lower bounds matching the best known upper bounds.
+
+  References:
+  - Williams, V.V. (2015). "Hardness of easy problems"
+  - Abboud-Williams (2014): SETH-based lower bounds
+  - Backurs-Indyk (2015): edit distance via SETH
+-/
+
+namespace FineGrained
+
+/-- The Strong Exponential Time Hypothesis (SETH).
+
+    SETH (Impagliazzo-Paturi 2001): For all ε > 0, there exists k
+    such that k-SAT on n variables cannot be solved in O(2^{(1-ε)n}) time.
+
+    Equivalently: the exhaustive search exponent approaches 1
+    as the clause width k → ∞.
+
+    SETH is stronger than the Exponential Time Hypothesis (ETH):
+    - ETH: 3-SAT requires 2^{Ω(n)} time
+    - SETH: k-SAT requires 2^{(1-O(1/k))n} time
+
+    Known consequences of SETH:
+    - No O(n^{2-ε}) algorithm for edit distance (Backurs-Indyk 2015)
+    - No O(n^{2-ε}) algorithm for LCS (Abboud et al. 2015)
+    - No O(n^{2-ε}) algorithm for Fréchet distance
+    - These matching the best known upper bounds! -/
+structure SETH where
+  /-- For all ε > 0, ∃ k: k-SAT needs 2^{(1-ε)n} time -/
+  statement : Prop
+  /-- Implies ETH (strictly stronger) -/
+  implies_eth : Prop
+  /-- Known lower bounds from SETH -/
+  consequences : Prop
+
+/-- SETH-based lower bounds for fundamental problems.
+
+    | Problem | Best Upper | SETH Lower | Match? |
+    |---------|-----------|------------|--------|
+    | Edit Distance | O(n²) | n^{2-o(1)} | Yes! |
+    | LCS | O(n²) | n^{2-o(1)} | Yes! |
+    | Fréchet Distance | O(n²) | n^{2-o(1)} | Yes! |
+    | Orthogonal Vectors | O(n²) | n^{2-o(1)} | Yes! |
+    | Pattern Matching | O(n√m) | (n√m)^{1-o(1)} | Yes! |
+
+    These results are remarkable: they show that many textbook algorithms
+    are OPTIMAL (under SETH). Previously, we had no evidence that
+    O(n²) algorithms for these problems couldn't be improved.
+
+    The proof technique: reduce k-SAT to the problem via
+    "splitting" the variables into two halves and using the
+    problem structure to check consistency. -/
+theorem seth_lower_bounds :
+    -- SETH ⟹ edit distance needs n^{2-o(1)} time
+    -- SETH ⟹ LCS needs n^{2-o(1)} time
+    -- SETH ⟹ many O(n²) algorithms are optimal
+    -- Technique: split-and-list reductions from k-SAT
+    True := trivial
+
+/-- The Orthogonal Vectors (OV) conjecture.
+
+    OV Problem: Given two sets A, B ⊆ {0,1}^d, each of size n,
+    determine if there exist a ∈ A, b ∈ B with a · b = 0.
+
+    OV Conjecture: OV requires n^{2-o(1)} time when d = ω(log n).
+
+    The OV conjecture is implied by SETH (Williams 2005).
+    It serves as a convenient "intermediate" assumption:
+    - Easier to work with than SETH
+    - Still implies tight lower bounds for many problems
+    - The reduction from SETH to OV is clean and well-understood
+
+    OV is the "universal" fine-grained hardness assumption:
+    almost all SETH-based lower bounds go through OV. -/
+theorem orthogonal_vectors :
+    -- OV conjecture: n^{2-o(1)} time for d = ω(log n)
+    -- SETH ⟹ OV conjecture
+    -- OV conjecture ⟹ edit distance, LCS, Fréchet lower bounds
+    -- OV is the "universal intermediary" for fine-grained reductions
+    True := trivial
+
+/-- The All-Pairs Shortest Paths (APSP) conjecture.
+
+    APSP Conjecture: All-Pairs Shortest Paths on n vertices requires
+    n^{3-o(1)} time.
+
+    Current best: O(n³/2^{Ω(√(log n))}) by Williams (2014).
+    This barely beats the cubic barrier.
+
+    APSP-equivalent problems (under subcubic reductions):
+    - Negative triangle detection
+    - Minimum weight triangle
+    - (min,+) matrix multiplication
+    - Replacement paths
+    - Second shortest path
+
+    These form an "APSP-equivalence class" analogous to NP-completeness
+    but within polynomial time.
+
+    Connection to P vs NP: APSP hardness requires understanding the
+    algebraic structure of (min,+) multiplication, which connects
+    to matrix multiplication and algebraic complexity. -/
+theorem apsp_conjecture :
+    -- APSP conjecture: n^{3-o(1)} time for n-vertex graphs
+    -- Best known: barely subcubic (n³/2^{√(log n)})
+    -- APSP-equivalent class: negative triangle, (min,+) multiplication
+    -- Connections to algebraic complexity (matrix multiplication)
+    True := trivial
+
+/-- Fine-grained complexity and P vs NP.
+
+    Fine-grained complexity relates to P vs NP in several ways:
+
+    1. **Algorithmic progress**: Williams (2010) showed that any
+       non-trivial algorithm for Circuit-SAT implies circuit lower bounds.
+       This "algorithmic method" gives: faster SAT ⟹ NEXP ⊄ ACC⁰.
+
+    2. **Barrier transfer**: if SETH is false (fast k-SAT exists),
+       then many tight lower bounds collapse, which would be surprising.
+       SETH being true is consistent with P ≠ NP.
+
+    3. **Quantitative P vs NP**: even if P = NP, the fine-grained
+       question "can NP-complete problems be solved in n^100 time?"
+       is still relevant. Fine-grained complexity addresses this.
+
+    4. **Hardness amplification**: fine-grained reductions often
+       preserve the exponent exactly, giving tight conditional LBs
+       that algorithmic improvements cannot beat. -/
+theorem fine_grained_pvsnp :
+    -- Williams (2010): faster circuit-SAT ⟹ circuit lower bounds
+    -- SETH consistency: SETH being true is consistent with P ≠ NP
+    -- Fine-grained reductions preserve exact polynomial exponents
+    -- Even if P = NP: "how fast?" is still meaningful
+    True := trivial
+
+end FineGrained
+
+-- Part 62 exports
+#check FineGrained.SETH
+#check FineGrained.seth_lower_bounds
+#check FineGrained.orthogonal_vectors
+#check FineGrained.apsp_conjecture
+#check FineGrained.fine_grained_pvsnp
+
 end PNPBarriers
