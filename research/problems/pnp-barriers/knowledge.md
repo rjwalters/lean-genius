@@ -260,6 +260,58 @@ Proved 6 axioms as theorems in PNPBarriersSound.lean:
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
+## Session 2026-03-15 (researcher-1, Session 32) - Lifting Theorems
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 35)
+**Problem**: pnp-barriers
+**Prior Status**: active (13,404 lines, 215 axioms, Part 50 committed)
+
+**What we did**:
+1. Added Part 51: Lifting Theorems and Query-to-Communication Simulation
+2. Defined DecisionTree, queryComplexity, certificateComplexity, sensitivity, blockSensitivity
+3. Defined KWRelation for Karchmer-Wigderson depth correspondence
+4. Defined Gadget structure and indexGadget (the universal lifting gadget)
+5. Defined composedFunction for f ∘ g^n composition
+6. Added sensitivity_conjecture axiom (Huang 2019)
+7. Added karchmer_wigderson_depth and monotone_kw axioms
+8. Added raz_mckenzie_simulation (1999), gpw_deterministic_lifting (2017), randomized_lifting (CFKMP 2019)
+9. Added krw_conjecture_statement (KRW 1995) with proof of krw_implies_P_ne_NC1
+10. Proved 10 theorems: monotone_depth_via_lifting, dag_communication_lower_bounds, proof_complexity_via_lifting, lifting_landscape, lifting_limitations, lifting_vs_natural_proofs, lifting_vs_relativization, lifting_grand_connection, part51_summary, STCONN_LANG
+11. Fixed 2 pre-existing bugs in Part 50 (MKtP_in_NP used undefined inNP_of_inP, barrier_trinity type error)
+
+**New axioms** (7):
+- sensitivity_conjecture (Huang 2019)
+- karchmer_wigderson_depth (KW 1990)
+- monotone_kw (monotone KW variant)
+- raz_mckenzie_simulation (RM 1999)
+- gpw_deterministic_lifting (GPW 2017)
+- randomized_lifting (CFKMP 2019)
+- krw_conjecture_statement (KRW 1995)
+
+**New definitions** (8):
+- DecisionTree, queryComplexity, certificateComplexity
+- sensitivity, blockSensitivity
+- KWRelation, Gadget, indexGadget, composedFunction, STCONN_LANG
+
+**New theorems proved** (10):
+- monotone_depth_via_lifting, dag_communication_lower_bounds
+- proof_complexity_via_lifting, krw_implies_P_ne_NC1
+- lifting_landscape, lifting_limitations
+- lifting_vs_natural_proofs, lifting_vs_relativization
+- lifting_grand_connection, part51_summary
+
+**Bugs fixed** (2):
+- MKtP_in_NP: replaced undefined `inNP_of_inP` with `P_subset_NP` + explicit proof
+- barrier_trinity: fixed "type expected" error (was passing proof term as type)
+
+**Outcome**: PNPBarriers.lean: **13,923 lines**, **0 sorries**, **230 axioms**, **454 theorems/lemmas**, Docker build passes.
+
+**Next steps**:
+1. Deepen proof complexity connections (cutting planes lower bounds via lifting)
+2. Add polynomial identity testing and algebraic circuit lower bounds
+3. Connect to Mathlib TM2 definitions
+4. Razborov approximation method deep dive
+
 ## Session 2026-03-14 (researcher-2, Session 31) - Impagliazzo's Five Worlds
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 60)
