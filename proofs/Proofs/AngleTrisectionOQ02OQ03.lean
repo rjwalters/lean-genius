@@ -1270,7 +1270,9 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
         have : ((↑j : ℤ) : ℝ) = ((m * ↑n + ↑k : ℤ) : ℝ) := by
           push_cast; linarith [h_real]
         exact_mod_cast this
-      omega
+      -- j ≡ k (mod n) in ℤ → k % n = j % n in ℕ
+      have h_dvd : (↑n : ℤ) ∣ ((↑j : ℤ) - ↑k) := ⟨m, by linarith⟩
+      exact_mod_cast (Int.modEq_iff_dvd.mpr h_dvd : (↑k : ℤ) ≡ (↑j : ℤ) [ZMOD ↑n])
     · -- h : 2jπ/n = 2mπ - 2kπ/n → k ≡ n - j (mod n)
       right
       have h_real : (↑j : ℝ) + ↑k = ↑m * ↑n := by
@@ -1279,29 +1281,48 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
         have : ((↑j + ↑k : ℤ) : ℝ) = ((m * ↑n : ℤ) : ℝ) := by
           push_cast; linarith [h_real]
         exact_mod_cast this
-      omega
+      -- j + k ≡ 0 (mod n) → k % n = (n - j%n) % n
+      have h_dvd_z : (↑n : ℤ) ∣ ((↑j : ℤ) + ↑k) := ⟨m, by linarith⟩
+      have h_dvd_nat : n ∣ (j + k) := by exact_mod_cast h_dvd_z
+      have h_sum : (j + k) % n = 0 := Nat.mod_eq_zero_of_dvd h_dvd_nat
+      have hj_lt := Nat.mod_lt j (show 0 < n by omega)
+      have hk_lt := Nat.mod_lt k (show 0 < n by omega)
+      rw [Nat.add_mod] at h_sum
+      by_cases hjz : j % n = 0
+      · simp [hjz, Nat.mod_self] at h_sum ⊢; exact h_sum
+      · rw [Nat.mod_eq_of_lt (by omega : n - j % n < n)]
+        -- j%n + k%n is a positive multiple of n less than 2n, so equals n
+        obtain ⟨q, hq⟩ := Nat.dvd_of_mod_eq_zero h_sum
+        -- hq : j%n + k%n = n * q, derive q = 1, then simplify
+        have hq_eq : q = 1 := by
+          have h_bound : j % n + k % n < 2 * n := by omega
+          have hq1 : 0 < q := by
+            by_contra h; push_neg at h
+            rw [show q = 0 by omega, Nat.mul_zero] at hq; omega
+          have hq2 : q < 2 := by
+            by_contra h; push_neg at h
+            have := Nat.mul_le_mul_left n h; omega
+          omega
+        rw [hq_eq, Nat.mul_one] at hq; omega
   · rintro (h | h)
     · -- k % n = j % n → cos equal via periodicity
-      -- k ≡ j (mod n) in ℕ → j - k divisible by n in ℤ
-      have h_mod : (↑j : ℤ) % ↑n = (↑k : ℤ) % ↑n := by
-        have : (↑(k % n) : ℤ) = ↑(j % n) := by exact_mod_cast h
-        simp only [Nat.cast_mod_cast] at this; omega
-      obtain ⟨m, hm⟩ := (Int.modEq_iff_dvd.mp h_mod : (↑n : ℤ) ∣ (↑k - ↑j))
-      refine ⟨-m, Or.inl ?_⟩
-      have h_int : (↑j : ℤ) = -m * ↑n + ↑k := by omega
-      have h_real : (↑j : ℝ) = -↑m * ↑n + ↑k := by
+      have h_modeq : (↑k : ℤ) ≡ (↑j : ℤ) [ZMOD ↑n] := by exact_mod_cast h
+      obtain ⟨m, hm⟩ := Int.modEq_iff_dvd.mp h_modeq
+      -- hm : ↑j - ↑k = ↑n * m
+      refine ⟨m, Or.inl ?_⟩
+      have h_int : (↑j : ℤ) = m * ↑n + ↑k := by linarith
+      have h_real : (↑j : ℝ) = ↑m * ↑n + ↑k := by
         have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; exact this
       field_simp; nlinarith [h_real]
     · -- k % n = (n - j % n) % n → cos equal via reflection
-      -- k + j ≡ 0 (mod n) in ℕ
       have h_sum : (j + k) % n = 0 := by
         have hn_pos : 0 < n := by omega
+        have hj_lt := Nat.mod_lt j hn_pos
         rw [Nat.add_mod, h]
         by_cases hjz : j % n = 0
         · simp [hjz, Nat.mod_self]
-        · rw [Nat.mod_eq_of_lt (show n - j % n < n by omega)]
-          have : j % n + (n - j % n) = n := by omega
-          rw [this, Nat.mod_self]
+        · rw [Nat.mod_eq_of_lt (by omega : n - j % n < n),
+              Nat.add_sub_cancel' (by omega : j % n ≤ n), Nat.mod_self]
       obtain ⟨m', hm'⟩ := Nat.dvd_of_mod_eq_zero h_sum
       have h_int : (↑j : ℤ) + ↑k = ↑m' * ↑n := by
         have := congr_arg (Nat.cast (R := ℤ)) hm'; push_cast at this; linarith
@@ -1609,26 +1630,58 @@ theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
       set ζ_E : ↥E := ⟨ζ, hζ_in_E⟩ with hζ_E_def
       have h_int_ζ : IsIntegral ↥F ζ_E :=
         IsIntegral.tower_top (Algebra.IsIntegral.isIntegral (R := ℚ) ζ_E)
-      -- Step A: F(ζ) = E
+      -- Step A: F(ζ) = E (ζ generates E over any intermediate F ≥ ℚ)
       have h_top : IntermediateField.adjoin ↥F ({ζ_E} : Set ↥E) = ⊤ := by
-        sorry -- ζ generates E over ℚ ⊆ F, so F(ζ) = E
-      -- Step B: deg(minpoly F ζ) ≤ 2 (from X²-2cos·X+1)
+        have h_int_ζ_outer := zeta_isIntegral n (by omega)
+        -- ζ generates E over ℚ via PowerBasis
+        have pb := IntermediateField.adjoin.powerBasis h_int_ζ_outer
+        -- pb.gen and ζ_E have the same underlying value in ℂ
+        have h_gen_eq : pb.gen = ζ_E := by
+          have h_pg := IntermediateField.adjoin.powerBasis_gen h_int_ζ_outer
+          -- h_pg : pb.gen = AdjoinSimple.gen ℚ (zeta n)
+          apply Subtype.val_injective
+          simp only [h_pg, IntermediateField.AdjoinSimple.coe_gen]
+        -- Algebra.adjoin ℚ {ζ_E} = ⊤
+        have h_alg_top : Algebra.adjoin ℚ ({ζ_E} : Set ↥E) = ⊤ := by
+          rw [← h_gen_eq]; exact pb.adjoin_gen_eq_top
+        -- Lift to IntermediateField.adjoin
+        have h_gen_Q : IntermediateField.adjoin ℚ ({ζ_E} : Set ↥E) = ⊤ := by
+          rw [eq_top_iff]; intro x _
+          exact IntermediateField.algebra_adjoin_le_adjoin ℚ ({ζ_E} : Set ↥E)
+            (h_alg_top ▸ Algebra.mem_top)
+        exact IntermediateField.adjoin_eq_top_of_adjoin_eq_top ℚ h_gen_Q
+      -- Step B: deg(minpoly F ζ) ≤ 2 (ζ satisfies X²-2cos·X+1 over F)
       have h_deg : (minpoly ↥F ζ_E).natDegree ≤ 2 := by
-        sorry -- ζ satisfies quadratic X²-2cos·X+1, use minpoly.dvd
-      -- Step C: finrank F E ≤ 2
-      -- adjoin F {ζ_E} = ⊤, so [F(ζ):F] = [E:F]
-      -- [F(ζ):F] = natDegree(minpoly F ζ) ≤ 2
-      -- Use: adjoin.finrank gives finrank of the simple adjoin
-      -- With h_top, this equals finrank F E
+        have h_c_in_F : c ∈ (F : Set ℂ) := IntermediateField.mem_adjoin_simple_self ℚ c
+        set cF : ↥F := ⟨c, h_c_in_F⟩
+        -- Construct annihilating polynomial p = X² - 2cos·X + 1 over F
+        set p : Polynomial ↥F :=
+          Polynomial.C (1 : ↥F) * Polynomial.X ^ 2 +
+          Polynomial.C (-(2 * cF) : ↥F) * Polynomial.X +
+          Polynomial.C (1 : ↥F)
+        -- p has degree 2
+        have h_deg_p : p.natDegree = 2 := Polynomial.natDegree_quadratic one_ne_zero
+        -- ζ_E is a root of p (push to ℂ via Subtype.val_injective)
+        have h_aeval : Polynomial.aeval ζ_E p = 0 := by
+          have h_key := zeta_quadratic n
+          simp only [p, Polynomial.aeval_add, Polynomial.aeval_mul, Polynomial.aeval_C,
+            Polynomial.aeval_X, Polynomial.aeval_X_pow, one_mul]
+          -- Goal: ζ_E² + algebraMap(-(2*cF)) * ζ_E + algebraMap(1) = 0 in ↥E
+          -- Push to ℂ and use zeta_quadratic
+          apply Subtype.val_injective
+          push_cast
+          -- After push_cast: equation in ℂ, close with linarith
+          linarith [h_key]
+        -- minpoly divides p, so natDegree(minpoly) ≤ 2
+        have h_dvd := minpoly.dvd (↥F) ζ_E h_aeval
+        have h_p_ne : p ≠ 0 := by
+          intro hp; rw [hp, Polynomial.natDegree_zero] at h_deg_p; omega
+        exact le_trans (Polynomial.natDegree_le_of_dvd h_dvd h_p_ne) (le_of_eq h_deg_p)
+      -- Step C: finrank F E ≤ 2 (from adjoin F {ζ_E} = ⊤ + minpoly degree ≤ 2)
       have h_adj := IntermediateField.adjoin.finrank h_int_ζ
-      -- h_adj : finrank F (adjoin F {ζ_E}) = natDegree(minpoly F ζ_E)
-      -- Since adjoin F {ζ_E} ≤ E and adjoin F {ζ_E} = ⊤, we get finrank F E = finrank F ⊤
-      -- Avoid topEquiv typeclass issues by using the tower law directly
-      -- [E:ℚ] = [E:F] * [F:ℚ], and [adjoin F {ζ}:ℚ] = [adjoin F {ζ}:F] * [F:ℚ]
-      -- Since adjoin F {ζ} = ⊤ = E: finrank F E = natDegree(minpoly F ζ) ≤ 2
-      -- Direct: finrank F ↥(adjoin F {ζ_E}) ≤ finrank F ↥E (submodule of finite dim)
-      -- Combined with equality from h_top:
-      sorry
+      have h_finrank_eq : Module.finrank ↥F ↥E = (minpoly ↥F ζ_E).natDegree := by
+        have := h_adj; erw [h_top, IntermediateField.finrank_top'] at this; exact this
+      linarith
     -- Lower bound: [E:F] ≥ 2 from tower law + strict inequality
     have h_ge : Module.finrank ↥F ↥E ≥ 2 := by
       have h_finrank_E' : Module.finrank ℚ ↥E = Nat.totient n := by
