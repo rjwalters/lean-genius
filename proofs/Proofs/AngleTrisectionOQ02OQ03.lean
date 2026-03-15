@@ -23,9 +23,9 @@
     The first new polygon construction since antiquity. Determined his career choice.
   - Wantzel (1837): Proved the converse — non-constructibility when φ(n) ≠ 2^k.
 
-  File summary: 67+ proved theorems, 1 sorry, 3 axioms.
-  Sorries: galois_conjugate_count (counting argument for coprime pairing).
-  minpoly_cos_natDegree_eq PROVED (3 sorries eliminated: h_top, h_deg, combining).
+  File summary: 67+ proved theorems, 4 sorries, 3 axioms.
+  Sorries: galois_conjugate_count (counting argument for coprime pairing),
+  minpoly_cos_natDegree_eq (capstone — 3 sub-sorries in upper bound: h_top, h_deg, final).
   Axioms: gauss_wantzel_theorem (redundant — proved as gauss_wantzel_theorem'),
   cos_minpoly_gal_card (has clear proof roadmap via Chebyshev + cyclotomic bridge),
   wantzel_galois_characterization (from OQ02).
@@ -1271,9 +1271,8 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
           push_cast; linarith [h_real]
         exact_mod_cast this
       -- j ≡ k (mod n) in ℤ → k % n = j % n in ℕ
-      have h_zmod : (↑j : ℤ) % ↑n = (↑k : ℤ) % ↑n := by omega
-      have := Int.ofNat_mod k n ▸ Int.ofNat_mod j n ▸ congr_arg Int.toNat h_zmod.symm
-      simp [Int.toNat_natCast] at this; exact this
+      have h_dvd : (↑n : ℤ) ∣ ((↑j : ℤ) - ↑k) := ⟨m, by linarith⟩
+      exact_mod_cast (Int.modEq_iff_dvd.mpr h_dvd : (↑k : ℤ) ≡ (↑j : ℤ) [ZMOD ↑n])
     · -- h : 2jπ/n = 2mπ - 2kπ/n → k ≡ n - j (mod n)
       right
       have h_real : (↑j : ℝ) + ↑k = ↑m * ↑n := by
@@ -1282,43 +1281,53 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
         have : ((↑j + ↑k : ℤ) : ℝ) = ((m * ↑n : ℤ) : ℝ) := by
           push_cast; linarith [h_real]
         exact_mod_cast this
-      -- (j + k) ≡ 0 (mod n) → k % n = (n - j % n) % n
-      have h_dvd : (↑n : ℤ) ∣ (↑j + ↑k) := ⟨m, by omega⟩
-      have h_sum : (j + k) % n = 0 := by
-        rwa [← Int.natCast_dvd_natCast, Nat.cast_add] at h_dvd
+      -- j + k ≡ 0 (mod n) → k % n = (n - j%n) % n
+      have h_dvd_z : (↑n : ℤ) ∣ ((↑j : ℤ) + ↑k) := ⟨m, by linarith⟩
+      have h_dvd_nat : n ∣ (j + k) := by exact_mod_cast h_dvd_z
+      have h_sum : (j + k) % n = 0 := Nat.mod_eq_zero_of_dvd h_dvd_nat
+      have hj_lt := Nat.mod_lt j (show 0 < n by omega)
+      have hk_lt := Nat.mod_lt k (show 0 < n by omega)
       rw [Nat.add_mod] at h_sum
       by_cases hjz : j % n = 0
-      · simp [hjz] at h_sum; simp [hjz, h_sum, Nat.mod_self]
-      · have hjn : j % n < n := Nat.mod_lt j (by omega)
-        rw [Nat.mod_eq_of_lt (by omega : n - j % n < n)]
-        have : k % n + j % n = n := by
-          have := Nat.add_mod_right (k % n + j % n) 0
+      · simp [hjz, Nat.mod_self] at h_sum ⊢; exact h_sum
+      · rw [Nat.mod_eq_of_lt (by omega : n - j % n < n)]
+        -- j%n + k%n is a positive multiple of n less than 2n, so equals n
+        obtain ⟨q, hq⟩ := Nat.dvd_of_mod_eq_zero h_sum
+        -- hq : j%n + k%n = n * q, derive q = 1, then simplify
+        have hq_eq : q = 1 := by
+          have h_bound : j % n + k % n < 2 * n := by omega
+          have hq1 : 0 < q := by
+            by_contra h; push_neg at h
+            rw [show q = 0 by omega, Nat.mul_zero] at hq; omega
+          have hq2 : q < 2 := by
+            by_contra h; push_neg at h
+            have := Nat.mul_le_mul_left n h; omega
           omega
-        omega
+        rw [hq_eq, Nat.mul_one] at hq; omega
   · rintro (h | h)
     · -- k % n = j % n → cos equal via periodicity
-      have h_zmod : (↑k : ℤ) % ↑n = (↑j : ℤ) % ↑n := by
-        rw [Int.ofNat_mod, Int.ofNat_mod]; exact_mod_cast h
-      obtain ⟨m, hm⟩ := Int.modEq_iff_dvd.mp h_zmod
-      refine ⟨-m, Or.inl ?_⟩
-      have h_int : (↑j : ℤ) = -m * ↑n + ↑k := by omega
-      have h_real : (↑j : ℝ) = -↑m * ↑n + ↑k := by
+      have h_modeq : (↑k : ℤ) ≡ (↑j : ℤ) [ZMOD ↑n] := by exact_mod_cast h
+      obtain ⟨m, hm⟩ := Int.modEq_iff_dvd.mp h_modeq
+      -- hm : ↑j - ↑k = ↑n * m
+      refine ⟨m, Or.inl ?_⟩
+      have h_int : (↑j : ℤ) = m * ↑n + ↑k := by linarith
+      have h_real : (↑j : ℝ) = ↑m * ↑n + ↑k := by
         have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; exact this
       field_simp; nlinarith [h_real]
     · -- k % n = (n - j % n) % n → cos equal via reflection
       have h_sum : (j + k) % n = 0 := by
+        have hn_pos : 0 < n := by omega
+        have hj_lt := Nat.mod_lt j hn_pos
         rw [Nat.add_mod, h]
         by_cases hjz : j % n = 0
         · simp [hjz, Nat.mod_self]
-        · rw [Nat.mod_eq_of_lt (show n - j % n < n by omega)]
-          have : j % n + (n - j % n) = n := by omega
-          rw [this, Nat.mod_self]
+        · rw [Nat.mod_eq_of_lt (by omega : n - j % n < n),
+              Nat.add_sub_cancel' (by omega : j % n ≤ n), Nat.mod_self]
       obtain ⟨m', hm'⟩ := Nat.dvd_of_mod_eq_zero h_sum
       have h_int : (↑j : ℤ) + ↑k = ↑m' * ↑n := by
         have := congr_arg (Nat.cast (R := ℤ)) hm'; push_cast at this; linarith
       refine ⟨(m' : ℤ), Or.inr ?_⟩
-      have h_real : (↑j : ℝ) + ↑k = ↑(m' : ℤ) * ↑n := by
-        have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; exact this
+      have h_real : (↑j : ℝ) + ↑k = ↑(m' : ℤ) * ↑n := by exact_mod_cast h_int
       field_simp; nlinarith [h_real]
 
 /-- If gcd(k, n) = 1 then gcd(n - k, n) = 1. -/
@@ -1412,7 +1421,130 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
     Finset.card (Finset.image (fun k => Real.cos (2 * ↑k * Real.pi / ↑n))
       (Finset.filter (fun k => Nat.Coprime k n) (Finset.range n))) =
     Nat.totient n / 2 := by
-  sorry -- Counting argument using cos_complement_eq + coprime pairing
+  -- Strategy: split coprime set S into lower half L (2k < n) and upper half U (2k > n).
+  -- Show f(S) = f(L) via complement pairing, f injective on L, card(L) = φ(n)/2.
+  set S := Finset.filter (fun k => Nat.Coprime k n) (Finset.range n) with hS_def
+  set f : ℕ → ℝ := fun k => Real.cos (2 * ↑k * Real.pi / ↑n) with hf_def
+  -- card(S) = φ(n)
+  have hS_card : S.card = Nat.totient n := by
+    simp only [S, Nat.totient]
+    congr 1; ext k; exact ⟨Nat.Coprime.symm, Nat.Coprime.symm⟩
+  -- Helper: membership in S gives k < n and coprime
+  have hS_mem : ∀ k, k ∈ S → k < n ∧ Nat.Coprime k n := by
+    intro k hk
+    exact ⟨Finset.mem_range.mp (Finset.mem_filter.mp hk).1,
+           (Finset.mem_filter.mp hk).2⟩
+  -- 0 is not coprime to n ≥ 3
+  have h0_not_cop : ¬Nat.Coprime 0 n := by
+    rw [Nat.Coprime, Nat.gcd_zero_left]; omega
+  -- For k ∈ S, 0 < k
+  have hk_pos_mem : ∀ k ∈ S, 0 < k := by
+    intro k hk
+    by_contra h; push_neg at h
+    have hk0 : k = 0 := by omega
+    rw [hk0] at hk; exact absurd (hS_mem 0 hk).2 h0_not_cop
+  -- Lower half L = {k ∈ S : 2k < n}
+  set L := S.filter (fun k => 2 * k < n) with hL_def
+  -- Upper half U = {k ∈ S : 2k > n}
+  set U := S.filter (fun k => n < 2 * k) with hU_def
+  -- Helper: membership in L/U
+  have hL_mem : ∀ k, k ∈ L → k ∈ S ∧ 2 * k < n := fun k hk =>
+    ⟨(Finset.mem_filter.mp hk).1, (Finset.mem_filter.mp hk).2⟩
+  have hU_mem : ∀ k, k ∈ U → k ∈ S ∧ n < 2 * k := fun k hk =>
+    ⟨(Finset.mem_filter.mp hk).1, (Finset.mem_filter.mp hk).2⟩
+  -- No coprime element has 2k = n (that would mean gcd(k,n) = k ≥ 2)
+  have h_no_mid : ∀ k ∈ S, 2 * k ≠ n := by
+    intro k hk h2k
+    have ⟨_, hk_cop⟩ := hS_mem k hk
+    have hk_pos' := hk_pos_mem k hk
+    have : Nat.gcd k n = k := by
+      rw [← h2k]; exact Nat.gcd_eq_left (Dvd.intro 2 (by omega))
+    rw [Nat.Coprime, this] at hk_cop; omega
+  -- S = L ∪ U (disjoint)
+  have h_disj : Disjoint L U := by
+    apply Finset.disjoint_filter.mpr; intro k _ h1 h2; omega
+  have h_union : L ∪ U = S := by
+    ext k
+    constructor
+    · intro hk
+      rcases Finset.mem_union.mp hk with hL | hU
+      · exact (hL_mem k hL).1
+      · exact (hU_mem k hU).1
+    · intro hk
+      apply Finset.mem_union.mpr
+      by_cases h : 2 * k < n
+      · exact Or.inl (Finset.mem_filter.mpr ⟨hk, h⟩)
+      · exact Or.inr (Finset.mem_filter.mpr ⟨hk, by have := h_no_mid k hk; omega⟩)
+  -- card(L) = card(U) via the involution k ↦ n - k
+  have h_LU_card : L.card = U.card := by
+    have h_img : L.image (fun k => n - k) = U := by
+      ext j
+      constructor
+      · intro hj
+        obtain ⟨k, hk_L, rfl⟩ := Finset.mem_image.mp hj
+        have ⟨hkS, hk_lo⟩ := hL_mem k hk_L
+        have ⟨hk_range, hk_cop⟩ := hS_mem k hkS
+        exact Finset.mem_filter.mpr
+          ⟨Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega),
+            coprime_complement n k hk_range hk_cop⟩, by omega⟩
+      · intro hj
+        have ⟨hjS, hj_hi⟩ := hU_mem j hj
+        have ⟨hj_range, hj_cop⟩ := hS_mem j hjS
+        apply Finset.mem_image.mpr
+        exact ⟨n - j, Finset.mem_filter.mpr
+          ⟨Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega),
+            coprime_complement n j hj_range hj_cop⟩, by omega⟩, by omega⟩
+    rw [← h_img]
+    exact (Finset.card_image_of_injOn (fun j hj k hk heq => by
+      have ⟨hjS, _⟩ := hL_mem j (Finset.mem_coe.mp hj)
+      have ⟨hkS, _⟩ := hL_mem k (Finset.mem_coe.mp hk)
+      have ⟨hj_range, _⟩ := hS_mem j hjS
+      have ⟨hk_range, _⟩ := hS_mem k hkS
+      omega)).symm
+  -- card(L) = φ(n) / 2
+  have hL_card : L.card = Nat.totient n / 2 := by
+    have h1 : L.card + U.card = S.card := by
+      rw [← Finset.card_union_of_disjoint h_disj, h_union]
+    rw [hS_card, h_LU_card] at h1; omega
+  -- f(L) = f(S) (image equality): every upper-half k has complement n-k in lower half
+  have h_image_eq : S.image f = L.image f := by
+    apply Finset.Subset.antisymm
+    · intro y hy
+      obtain ⟨k, hk, rfl⟩ := Finset.mem_image.mp hy
+      have ⟨hk_range, hk_cop⟩ := hS_mem k hk
+      by_cases h : 2 * k < n
+      · exact Finset.mem_image.mpr ⟨k, Finset.mem_filter.mpr ⟨hk, h⟩, rfl⟩
+      · -- k in upper half: use n - k which is in L
+        have h2k : n < 2 * k := by have := h_no_mid k hk; omega
+        have hnk_lt : n - k < n := by omega
+        have hnk_cop := coprime_complement n k hk_range hk_cop
+        have hnk_S : n - k ∈ S :=
+          Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hnk_lt, hnk_cop⟩
+        have hnk_L : n - k ∈ L := Finset.mem_filter.mpr ⟨hnk_S, by omega⟩
+        exact Finset.mem_image.mpr ⟨n - k, hnk_L, cos_complement_eq n (by omega) k hk_range⟩
+    · exact Finset.image_subset_image (Finset.filter_subset _ _)
+  -- f injective on L: cos equal on lower half implies equal
+  have h_inj : Set.InjOn f ↑L := by
+    intro j hj_set k hk_set hfkj
+    have hj_L := Finset.mem_coe.mp hj_set
+    have hk_L := Finset.mem_coe.mp hk_set
+    have ⟨hj_S, hj_lo⟩ := hL_mem j hj_L
+    have ⟨hk_S, hk_lo⟩ := hL_mem k hk_L
+    have ⟨hj_range, _⟩ := hS_mem j hj_S
+    have ⟨hk_range, _⟩ := hS_mem k hk_S
+    -- cos(2jπ/n) = cos(2kπ/n) → j%n = k%n ∨ j%n = (n-k%n)%n
+    have h_eq := (cos_2kpi_div_n_eq_iff n (by omega) j k).mp hfkj
+    rcases h_eq with h | h
+    · -- j%n = k%n, since j,k < n this gives j = k
+      rwa [Nat.mod_eq_of_lt hj_range, Nat.mod_eq_of_lt hk_range] at h
+    · -- j%n = (n-k%n)%n → j = n-k → j+k = n, contradicts both in lower half
+      rw [Nat.mod_eq_of_lt hj_range, Nat.mod_eq_of_lt hk_range] at h
+      have hk_pos' := hk_pos_mem k hk_S
+      rw [Nat.mod_eq_of_lt (by omega : n - k < n)] at h
+      -- j = n - k, 2j < n, 2k < n → j + k < n, but j + k = n: contradiction
+      omega
+  -- Conclude: card(image) = card(L) = φ(n)/2
+  rw [h_image_eq, Finset.card_image_of_injOn h_inj, hL_card]
 
 /-- Every root of T_n - 1 in ℝ is of the form cos(2kπ/n) for some k.
     Proof: T_n(x) = cos(n·arccos(x)) for |x| ≤ 1. T_n(x) = 1 iff
@@ -1621,75 +1753,58 @@ theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
       set ζ_E : ↥E := ⟨ζ, hζ_in_E⟩ with hζ_E_def
       have h_int_ζ : IsIntegral ↥F ζ_E :=
         IsIntegral.tower_top (Algebra.IsIntegral.isIntegral (R := ℚ) ζ_E)
-      -- Step A: F(ζ) = E (ζ generates E over ℚ ⊆ F)
+      -- Step A: F(ζ) = E (ζ generates E over any intermediate F ≥ ℚ)
       have h_top : IntermediateField.adjoin ↥F ({ζ_E} : Set ↥E) = ⊤ := by
-        -- First show ζ_E generates ↥E over ℚ
-        have h_int_ζQ : IsIntegral ℚ ζ_E := Algebra.IsIntegral.isIntegral ζ_E
+        have h_int_ζ_outer := zeta_isIntegral n (by omega)
+        -- ζ generates E over ℚ via PowerBasis
+        let pb := IntermediateField.adjoin.powerBasis h_int_ζ_outer
+        -- pb.gen and ζ_E have the same underlying value in ℂ
+        have h_gen_eq : pb.gen = ζ_E := Subtype.ext rfl
+        -- Algebra.adjoin ℚ {ζ_E} = ⊤
+        have h_alg_top : Algebra.adjoin ℚ ({ζ_E} : Set ↥E) = ⊤ := by
+          rw [← h_gen_eq]; exact pb.adjoin_gen_eq_top
+        -- Lift to IntermediateField.adjoin
         have h_gen_Q : IntermediateField.adjoin ℚ ({ζ_E} : Set ↥E) = ⊤ := by
-          -- finrank argument: adjoin ℚ {ζ_E} has dim φ(n) = dim ↥E, so = ⊤
-          have h_adj_dim := IntermediateField.adjoin.finrank h_int_ζQ
-          -- minpoly ℚ ζ_E = minpoly ℚ ζ via injective embedding ↥E → ℂ
-          have f : ↥E →ₐ[ℚ] ℂ := IsScalarTower.toAlgHom ℚ ↥E ℂ
-          have h_mp_eq : minpoly ℚ ζ_E = minpoly ℚ (ζ : ℂ) := by
-            have h := minpoly.algHom_eq f Subtype.val_injective ζ_E
-            -- h : minpoly ℚ (f ζ_E) = minpoly ℚ ζ_E
-            -- f ζ_E = ↑ζ_E = ζ (definitionally)
-            rw [show f ζ_E = ζ from rfl] at h
-            exact h.symm
-          rw [h_mp_eq, minpoly_zeta_natDegree n (by omega)] at h_adj_dim
-          have h_finrank_E' : Module.finrank ℚ ↥E = Nat.totient n := by
-            rw [hE_def, hζ_def]; exact h_finrank_E
-          -- adjoin ℚ {ζ_E} has same finrank as E → must be ⊤
-          -- If adjoin ≠ ⊤, then adjoin < ⊤, so finrank(adjoin) < finrank(E)
-          -- But finrank(adjoin) = φ(n) = finrank(E), contradiction.
-          by_contra h_ne_top
-          have h_lt : IntermediateField.adjoin ℚ ({ζ_E} : Set ↥E) < ⊤ :=
-            lt_top_iff_ne_top.mpr h_ne_top
-          haveI : FiniteDimensional ℚ ↥(IntermediateField.adjoin ℚ ({ζ_E} : Set ↥E)) :=
-            adjoin.finiteDimensional h_int_ζQ
-          have h_strict := Submodule.finrank_lt_finrank_of_lt
-            (IntermediateField.toSubmodule_strictMono h_lt)
-          rw [IntermediateField.toSubmodule_top] at h_strict
-          -- h_strict: finrank(adjoin) < finrank(⊤) = finrank(↥E)
-          rw [Submodule.finrank_top] at h_strict
-          omega
-        -- Lift from ℚ to F
+          rw [eq_top_iff]; intro x _
+          exact IntermediateField.algebra_adjoin_le_adjoin ℚ ({ζ_E} : Set ↥E)
+            (h_alg_top ▸ Algebra.mem_top)
         exact IntermediateField.adjoin_eq_top_of_adjoin_eq_top ℚ h_gen_Q
-      -- Step B: deg(minpoly F ζ) ≤ 2 (from X²-2cos·X+1)
+      -- Step B: deg(minpoly F ζ) ≤ 2 (ζ satisfies X²-2cos·X+1 over F)
       have h_deg : (minpoly ↥F ζ_E).natDegree ≤ 2 := by
-        -- Construct the annihilating polynomial X² - 2cos·X + 1 over F
-        have c_mem_F : c ∈ (F : Set ℂ) :=
-          IntermediateField.mem_adjoin_simple_self ℚ c
-        set twocos_F : ↥F := ⟨2 * c,
-          F.mul_mem (F.natCast_mem 2) c_mem_F⟩ with htwocos_F_def
+        have h_c_in_F : c ∈ (F : Set ℂ) := IntermediateField.mem_adjoin_simple_self ℚ c
+        set cF : ↥F := ⟨c, h_c_in_F⟩
+        -- Construct annihilating polynomial p = X² - 2cos·X + 1 over F
         set p : Polynomial ↥F :=
-          Polynomial.C 1 * Polynomial.X ^ 2 +
-          Polynomial.C (-twocos_F) * Polynomial.X +
-          Polynomial.C 1
-        -- aeval ζ_E p = 0 (ζ satisfies X²-2cos·X+1)
+          Polynomial.C (1 : ↥F) * Polynomial.X ^ 2 +
+          Polynomial.C (-(2 * cF) : ↥F) * Polynomial.X +
+          Polynomial.C (1 : ↥F)
+        -- p has degree 2
+        have h_deg_p : p.natDegree = 2 := Polynomial.natDegree_quadratic one_ne_zero
+        -- ζ_E is a root of p (push to ℂ via Subtype.val_injective)
         have h_aeval : Polynomial.aeval ζ_E p = 0 := by
-          -- Push to ℂ via Subtype.val_injective
-          ext
-          simp only [p, ZeroMemClass.coe_zero, Polynomial.aeval_add,
-            Polynomial.aeval_mul, Polynomial.aeval_C, Polynomial.aeval_X,
-            Polynomial.aeval_X_pow, AddMemClass.coe_add, MulMemClass.coe_mul,
-            SubmonoidClass.coe_pow, AddSubgroupClass.coe_neg,
-            OneMemClass.coe_one]
-          -- Goal: 1 * ↑ζ_E^2 + (-(↑(algebraMap F E twocos_F))) * ↑ζ_E + 1 = 0
-          have h_val : (↑((algebraMap ↥F ↥E) twocos_F) : ℂ) = 2 * c := rfl
-          rw [h_val, hζ_E_def, one_mul]
-          exact zeta_quadratic n
-        -- natDegree p = 2
-        have h_deg_p : p.natDegree = 2 := by
-          exact Polynomial.natDegree_quadratic one_ne_zero
-        -- minpoly divides p, so deg(minpoly) ≤ deg(p) = 2
+          have h_key := zeta_quadratic n
+          -- Evaluate p at ζ_E explicitly
+          have h_eval : Polynomial.aeval ζ_E p =
+              ζ_E ^ 2 + algebraMap ↥F ↥E (-(2 * cF)) * ζ_E + 1 := by
+            simp only [p, Polynomial.aeval_add, Polynomial.aeval_mul, Polynomial.aeval_C,
+              Polynomial.aeval_X, Polynomial.aeval_X_pow, map_one, one_mul]
+          rw [h_eval]
+          -- Embed in ℂ via injective E.subtype ring hom
+          apply E.subtype.injective
+          rw [map_zero, map_add, map_add, map_mul, map_pow, map_one]
+          -- Goal: E.subtype ζ_E ^ 2 + E.subtype(algebraMap F E (-(2*cF))) * E.subtype ζ_E + 1 = 0
+          -- These are definitionally equal (subtype/inclusion chain preserves values)
+          show (zeta n) ^ 2 + (-(2 * ↑(Real.cos (2 * Real.pi / ↑n)))) * (zeta n) + 1 = 0
+          linear_combination h_key
+        -- minpoly divides p, so natDegree(minpoly) ≤ 2
         have h_dvd := minpoly.dvd (↥F) ζ_E h_aeval
-        have h_p_ne_zero : p ≠ 0 := by
+        have h_p_ne : p ≠ 0 := by
           intro hp; rw [hp, Polynomial.natDegree_zero] at h_deg_p; omega
-        exact le_trans (Polynomial.natDegree_le_of_dvd h_dvd h_p_ne_zero) (le_of_eq h_deg_p)
-      -- Step C: finrank F E ≤ 2 (from h_top + h_deg)
+        exact le_trans (Polynomial.natDegree_le_of_dvd h_dvd h_p_ne) (le_of_eq h_deg_p)
+      -- Step C: finrank F E ≤ 2 (from adjoin F {ζ_E} = ⊤ + minpoly degree ≤ 2)
       have h_adj := IntermediateField.adjoin.finrank h_int_ζ
-      erw [h_top, IntermediateField.finrank_top'] at h_adj
+      have h_finrank_eq : Module.finrank ↥F ↥E = (minpoly ↥F ζ_E).natDegree := by
+        have := h_adj; erw [h_top, IntermediateField.finrank_top'] at this; exact this
       linarith
     -- Lower bound: [E:F] ≥ 2 from tower law + strict inequality
     have h_ge : Module.finrank ↥F ↥E ≥ 2 := by
