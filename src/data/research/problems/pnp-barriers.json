@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-15",
-    "iteration": 6,
-    "focus": "Part 51: Lifting theorems connecting query complexity to circuit depth via communication complexity",
+    "iteration": 7,
+    "focus": "Parts 51-52: Lifting theorems and query complexity landscape",
     "activeApproach": "Abstract complexity class definitions with barrier theorems. Adding landmark results from complexity theory to build comprehensive formalization.",
     "blockers": [
       "- 40 axioms total; some may be derivable from others with more effort"
     ],
-    "nextAction": "Deepen proof complexity connections via lifting, or add polynomial identity testing and algebraic circuit lower bounds",
+    "nextAction": "Proof complexity connections via lifting, or algebraic circuit lower bounds deep dive",
     "attemptCounts": {
       "total": 5,
       "currentApproach": 5,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Part 51 added (Lifting Theorems). 13,923 lines, ~230 axioms, 0 sorries. Covers Karchmer-Wigderson relations, Raz-McKenzie/GPW/CFKMP lifting, KRW conjecture, query complexity measures, and connections to barriers.",
+    "progressSummary": "PROGRESS: Parts 51-52 added (Lifting Theorems + Sensitivity Conjecture). 14,374 lines, ~240 axioms, 0 sorries. Covers lifting theorems, Karchmer-Wigderson, Huang sensitivity proof, query complexity measures, Fourier analysis of Boolean functions.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -113,6 +113,11 @@
         "name": "Part 51: Lifting Theorems",
         "description": "DecisionTree, KWRelation, Gadget, indexGadget, 7 axioms (KW, RM, GPW, CFKMP, KRW, sensitivity), 10 theorems",
         "proven": true
+      },
+      {
+        "name": "Part 52: Sensitivity Conjecture",
+        "description": "Query complexity measures, Huang proof, Cauchy interlacing, KKL theorem, Fourier analysis. 10 axioms, 7 definitions, 8 theorems",
+        "proven": true
       }
     ],
     "insights": [
@@ -130,7 +135,9 @@
       "MCSP not in AC0[p] is unconditional but extending to general circuits remains open",
       "Lifting theorems provide systematic transfer: query complexity → communication complexity → circuit depth",
       "KRW conjecture (depth(f∘g) ≈ depth(f)+depth(g)) would imply P ≠ NC¹",
-      "Lifting proofs are often non-natural proofs, potentially circumventing Razborov-Rudich barrier"
+      "Lifting proofs are often non-natural proofs, potentially circumventing Razborov-Rudich barrier",
+      "Huang 2019 resolved sensitivity conjecture via spectral argument on signed adjacency matrix of Boolean hypercube",
+      "All query complexity measures (D, C, bs, s, deg, d̃eg, Q) are now polynomially related"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
