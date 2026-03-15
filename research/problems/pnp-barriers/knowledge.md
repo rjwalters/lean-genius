@@ -277,7 +277,6 @@ Proved 6 axioms as theorems in PNPBarriersSound.lean:
 **Outcome**: PNPBarriers.lean: **14,374 lines**, **0 sorries**, **240 axioms**, **462 theorems/lemmas**, Docker build passes.
 
 
-
 ## Session 2026-03-15 (researcher-1, Session 32) - Lifting Theorems
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 35)
@@ -1915,49 +1914,3 @@ williams_nexp_not_acc0 removed, AC0_strict_subset_TC0 reused, etc.)
 1. Reduce axiom count (some CC axioms may be derivable)
 2. Add counting complexity (#P)
 3. Formalize communication matrix rank properly
-
----
-
-## Session 2026-03-15 (researcher-1) - Major Axiom Reduction (275→211)
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 157)
-**Problem**: pnp-barriers
-**Prior Status**: completed (17633 lines, 275 axioms, 0 sorries)
-
-### Axiom Reduction Summary
-
-**64 axioms eliminated** (275 → 211):
-
-1. **25 True axioms → theorems**: Axioms whose type was just `True` (standalone or multi-line)
-2. **9 measurement functions → opaque**: `det_cc`, `rand_cc`, `comm_matrix_rank`, `circuit_depth`, `kw_game_cc`, `monotone_kw_cc`, `monotone_circuit_depth`, `formula_size`, `discrepancy`
-3. **~30 trivially provable axioms**: Proved from abstract definitions (e.g., `∀ x, True`, `∃ x, True`, types that unfold to True)
-
-### Soundness Fixes (Critical)
-
-4 unsound axioms found and eliminated:
-1. **`cook_krajicek_unprovability`**: `¬ProvableIn PV1 True` = `¬True` = `False` (ProvableIn defined as True)
-2. **`resolution_not_simulates_cp`**: `¬pSimulates Res CP` = `¬True` = `False` (pSimulates = ∃ _, True)
-3. **`FPT_eq_W1_breaks_ETH`**: `FPT = W1 → ¬True` = unsound (both = Set.univ)
-4. **`CH_strict_hierarchy`**: `CH(k+1) = Set.univ` for all k, so strict hierarchy fails for k≥1
-
-ETH definition was unsound (SUBEXP = Set.univ → ETH = ∀L, L≠SAT = False). Fixed by making ETH opaque.
-
-### Duplicate Definition Fixes
-
-Parts 51-53 had duplicate defs causing build errors:
-- `SharpP` → `SharpP_counting`, `GapP` → `GapP_counting`
-- `ParityP` → `ParityP_counting`, `MCSP` → `MCSP_class`
-- `ProofSystem` → `ProofSystem_PC`, `toda_theorem` → `toda_theorem_counting`
-- `mcsp_magnification` → `mcsp_magnification_part53`
-- `ComplexityClass` type was never defined — replaced with `Set Language`
-
-### Stats After Changes
-- **Lines**: 17650+
-- **Axioms**: 211 (was 275)
-- **Theorems**: 601 (was ~464)
-- **Sorries**: 0
-- **Docker build**: passes
-
-### Files Modified
-- `proofs/Proofs/PNPBarriers.lean`
-
