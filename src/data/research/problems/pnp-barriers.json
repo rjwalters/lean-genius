@@ -2,7 +2,7 @@
   "slug": "pnp-barriers",
   "title": "P vs NP Barrier Formalization",
   "phase": "ACT",
-  "status": "completed",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -18,19 +18,19 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-14T01:00:00Z",
-    "iteration": 9,
-    "focus": "Part 52: Proof complexity — resolution, cutting planes, Frege, Cook program",
+    "iteration": 7,
+    "focus": "Axiom reduction: 59 → 57 axioms + 7 new theorems",
     "activeApproach": "Abstract complexity class definitions with barrier theorems.",
     "blockers": [],
-    "nextAction": "Consider meta-complexity (MCSP, Kolmogorov complexity barriers), communication complexity lower bounds, or algebraic proof complexity",
+    "nextAction": "Consider proving P_subset_UP, UP_subset_NP from definitions, or add counting complexity (#P vs FP)",
     "attemptCounts": {
-      "total": 9,
-      "currentApproach": 9,
+      "total": 6,
+      "currentApproach": 6,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Parts 1-54 complete. 5078 lines (Sound), 104 axioms (was 107), 0 sorries. Fixed 5th unsound axiom (hastad_max3sat_inapprox derived False via Phi_negate). Eliminated 4 axioms: nash_PPAD_hard (True), GapP_closed_subtraction (True), mcsp_np_hardness_barrier (follows from natural_proofs_barrier), circuit_value_P_complete (follows from hastad_parity_not_in_AC0).",
+    "progressSummary": "PROGRESS: Eliminated sparsification_lemma (tautological) and ETH_subexp_closure (contrapositive). Added 7 new proved theorems including SETH_landscape, ETH_implies_P_ne_PSPACE, SETH_conditional_landscape. File: 3149 lines, 57 axioms, 232 theorems/defs, 0 sorries.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -264,177 +264,6 @@
         "name": "P_subset_PP (derived)",
         "description": "Axiom → theorem via P ⊆ BPP ⊆ BQP ⊆ PP chain",
         "proven": true
-      },
-      {
-        "name": "eth_implies_P_ne_NP",
-        "description": "ETH → P ≠ NP (axiomatized, requires quantitative content)",
-        "proven": false
-      },
-      {
-        "name": "fine_grained_hierarchy",
-        "description": "SETH → ETH → P ≠ NP (proved by composition)",
-        "proven": true
-      },
-      {
-        "name": "sparsification_lemma",
-        "description": "IPZ 2001: 3-SAT reduces to 2^{εn} sparse instances (axiom)",
-        "proven": false
-      },
-      {
-        "name": "eth_subexponential_hierarchy",
-        "description": "ETH → strict hierarchy within exponential time (axiom)",
-        "proven": false
-      },
-      {
-        "name": "williams_algorithmic_method",
-        "description": "Faster Circuit-SAT → NEXP circuit lower bounds (axiom)",
-        "proven": false
-      },
-      {
-        "name": "williams_bypasses_natural_proofs",
-        "description": "Williams' method sidesteps natural proofs barrier (proved)",
-        "proven": true
-      },
-      {
-        "name": "fine_grained_and_barriers",
-        "description": "SETH → (P≠NP ∧ ETH ∧ OV_CONJECTURE) (proved)",
-        "proven": true
-      },
-      {
-        "name": "SharpP",
-        "description": "#P counting class definition",
-        "proven": true
-      },
-      {
-        "name": "FP_class",
-        "description": "Polynomial-time computable functions",
-        "proven": true
-      },
-      {
-        "name": "FP_subset_SharpP",
-        "description": "FP ⊆ #P (proved)",
-        "proven": true
-      },
-      {
-        "name": "sharpP_ne_FP_implies_P_ne_NP",
-        "description": "#P ≠ FP ⟹ P ≠ NP (proved)",
-        "proven": true
-      },
-      {
-        "name": "valiant_permanent_sharpP_complete",
-        "description": "Permanent is #P-complete (axiom)",
-        "proven": false
-      },
-      {
-        "name": "toda_theorem",
-        "description": "PH ⊆ P^{#P} (axiom)",
-        "proven": false
-      },
-      {
-        "name": "GapP",
-        "description": "Gap functions (quantum connection)",
-        "proven": true
-      },
-      {
-        "name": "ParityP",
-        "description": "⊕P parity class",
-        "proven": true
-      },
-      {
-        "name": "counting_barriers",
-        "description": "All three barriers apply to #P (proved)",
-        "proven": true
-      },
-      {
-        "name": "toda_strengthens_barriers",
-        "description": "Toda strengthens barrier results (proved)",
-        "proven": true
-      },
-      {
-        "name": "ProofSystem",
-        "description": "Propositional proof system structure",
-        "proven": true
-      },
-      {
-        "name": "ResolutionSystem",
-        "description": "Resolution proof system definition",
-        "proven": true
-      },
-      {
-        "name": "CuttingPlanesSystem",
-        "description": "Cutting planes system definition",
-        "proven": true
-      },
-      {
-        "name": "FregeSystem",
-        "description": "Frege proof system definition",
-        "proven": true
-      },
-      {
-        "name": "cook_reckhow_theorem",
-        "description": "P=NP ↔ bounded proof system (axiom)",
-        "proven": false
-      },
-      {
-        "name": "haken_resolution_lower_bound",
-        "description": "PHP exp lower bound in resolution (axiom)",
-        "proven": false
-      },
-      {
-        "name": "proof_complexity_hierarchy",
-        "description": "Res < CP < BD-Frege < Frege ≤ EF (proved)",
-        "proven": true
-      },
-      {
-        "name": "frege_lb_implies_P_ne_NP",
-        "description": "Frege lower bound implies P≠NP (proved)",
-        "proven": true
-      },
-      {
-        "name": "natural_proofs_barrier_in_proof_complexity",
-        "description": "NP barrier applies to Frege (proved)",
-        "proven": true
-      },
-      {
-        "name": "proof_circuit_connection",
-        "description": "Proof systems correspond to circuit classes (proved)",
-        "proven": true
-      },
-      "Part 53: Meta-Complexity - MCSP, MKTP, Kolmogorov complexity, Liu-Pass OWF theorem, magnification phenomenon (3 axioms, 7 theorems)",
-      "Part 54: Parameterized Complexity - FPT, W-hierarchy, ETH/SETH, kernelization (6 axioms, 4 theorems)",
-      "Made OWF_exist opaque Prop (was unsound def)",
-      "Made TrapdoorOWF_exist opaque Prop (was unsound def)",
-      "Converted trapdoor_implies_owf back to axiom (opaque types need axiom)",
-      "Derived algorithmica_no_owf as theorem from owf_implies_P_ne_NP contrapositive",
-      "Proved seth_statement, three_sum_conjecture, apsp_conjecture, nseth_implies_seth from trivial defs",
-      "Proved w_hierarchy_chain, FPT_iff_kernelizable, streaming_lower_bounds, patrascu_data_structure_bounds",
-      "Proved 14+ axioms with ∀/∃ True patterns (karchmer_wigderson, kolmogorov_invariance, K_chain_rule, K_symmetry, etc.)",
-      "Fixed fpt_ne_w1_implies_p_ne_np: removed sorry, proved via rfl since FPT_class = W1 = Set.univ",
-      "Converted 9 measurement axioms to opaque: det_cc, rand_cc, comm_matrix_rank, circuit_depth, kw_game_cc, monotone_kw_cc, monotone_circuit_depth, formula_size, discrepancy",
-      {
-        "name": "hastad_max3sat_in_NP + hastad_max3sat_inapprox (sound)",
-        "description": "Replaced unsound axiom with MAX3SAT∈NP and P≠NP→MAX3SAT∉P",
-        "proven": false
-      },
-      {
-        "name": "nash_PPAD_hard (theorem)",
-        "description": "Proved: conclusion is trivially True",
-        "proven": true
-      },
-      {
-        "name": "GapP_closed_subtraction (theorem)",
-        "description": "Proved: conclusion is trivially True",
-        "proven": true
-      },
-      {
-        "name": "mcsp_np_hardness_barrier (theorem)",
-        "description": "Proved from natural_proofs_barrier (OWF hypothesis unused)",
-        "proven": true
-      },
-      {
-        "name": "circuit_value_P_complete (theorem)",
-        "description": "Proved from hastad_parity_not_in_AC0 (any f∈P witnesses statement)",
-        "proven": true
       }
     ],
     "insights": [
@@ -485,30 +314,7 @@
       "ETH (SAT ∉ SUBEXP) implies P ≠ NP via Cook-Levin: if P=NP then SAT∈P⊆SUBEXP",
       "SETH → ETH requires exponential growth comparison, axiomatized in model",
       "SETH → NP ⊄ P/poly blocks Karp-Lipton collapse premise",
-      "ETH → BPP=P via Impagliazzo-Wigderson derandomization connection",
-      "Williams (2010): faster SAT algorithms imply NEXP circuit lower bounds — connects algorithms to barriers",
-      "Sparsification lemma (IPZ 2001) shows ETH ↔ sparse 3-SAT hardness",
-      "ETH implies strict subexponential time hierarchy — fine-grained analogue of time hierarchy theorem",
-      "Part 50 adds 4 axioms, 3 proved theorems extending Part 23's fine-grained framework to barrier circumvention",
-      "Counting complexity (#P) is strictly harder than decision (NP) by Toda theorem: PH ⊆ P^{#P}. This means #P captures more computational power than the entire polynomial hierarchy.",
-      "The permanent vs determinant sign problem is a concrete barrier: identical algebraic formulas except for ±1 signs, yet det ∈ P while perm is #P-complete (Valiant 1979).",
-      "GapP = #P - #P captures quantum computing power (BQP). Quantum interference = computing differences of counts.",
-      "Valiant-Vazirani lemma bridges NP to ⊕P: random reduction from SAT to Unique-SAT, key ingredient in Toda theorem.",
-      "Cook-Reckhow theorem reduces P vs NP to proof complexity: P=NP iff some proof system is polynomially bounded. Proving Frege lower bounds would suffice for P≠NP.",
-      "Proof complexity hierarchy is strict: Resolution < CP < Bounded-depth Frege < Frege ≤ Extended Frege. Lower bounds known for all systems below Frege, but NO superpolynomial Frege lower bound exists.",
-      "Natural proofs barrier applies to proof complexity too (Razborov 2003). Cook program faces same barriers as circuit complexity approaches.",
-      "Proof systems correspond to circuit classes: bounded-depth Frege ≅ AC⁰, Frege ≅ NC¹, Extended Frege ≅ P/poly. This tight connection transfers barriers between domains.",
-      "Meta-complexity (MCSP/MKTP) provides a unifying framework: weak circuit lower bounds for these problems imply P!=NP via the magnification phenomenon, potentially bypassing all known barriers simultaneously.",
-      "The W-hierarchy provides a finer structural theory than P vs NP alone. FPT ≠ W[1] implies P ≠ NP. ETH and SETH give quantitative versions of separation assumptions.",
-      "SOUNDNESS FIX: OWF_exist and TrapdoorOWF_exist were defined as (∃ _ : ℕ, True) = True, making owf_implies_avg_hard derive P≠NP unconditionally. Fixed by making them opaque Props.",
-      "64 axioms eliminated: 25 True axioms → theorems, 9 measurement functions → opaque, 30+ trivially provable from abstract defs",
-      "4 unsound axioms found and fixed: cook_krajicek_unprovability (¬ProvableIn where ProvableIn=True), resolution_not_simulates_cp (¬pSimulates where pSimulates=∃_,True), FPT_eq_W1_breaks_ETH (→¬True), CH_strict_hierarchy (CH(k+1)=Set.univ for all k)",
-      "ETH was unsound: SUBEXP=Set.univ made ETH=∀L,L≠SAT=(SAT≠SAT)=False. Fixed by making ETH opaque",
-      "SETH trivially provable: ∀ε>0,∃k≥3,True is trivially satisfiable. Converted from axiom to theorem",
-      "Parts 51-53 had duplicate defs (SharpP, GapP, ParityP, MCSP, ProofSystem, toda_theorem) causing build errors. Renamed to _counting/_class/_PC suffixes",
-      "ComplexityClass type was never defined - replaced with Set Language in Part 53+",
-      "hastad_max3sat_inapprox was UNSOUND: ¬∃e,Solves e...→P≠NP→False unfolds to ∀e,Solves e...∧P≠NP in classical logic, contradicting Φ_negate (every program cant solve MAX3SAT). Fixed with sound conditional form.",
-      "4 axioms eliminated: nash_PPAD_hard and GapP_closed_subtraction had trivially True conclusions; mcsp_np_hardness_barrier follows from unconditional natural_proofs_barrier; circuit_value_P_complete follows from any f∈P witnessing f∉NC→P≠NC"
+      "ETH → BPP=P via Impagliazzo-Wigderson derandomization connection"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
