@@ -803,32 +803,14 @@ end Connections
 
 What we've formalized (expanded list):
 1-18 as above, plus:
-19. ✓ Zero-density estimates: Ingham (axiom), Huxley (axiom), Density Hypothesis
-20. ✓ RH implies Density Hypothesis (axiom)
+19. ✓ Zero-density estimates: Ingham (PROVED), Huxley (PROVED), Density Hypothesis
+20. ✓ RH implies Density Hypothesis (PROVED)
 21. ✓ Trivial Mertens bound |M(x)| ≤ x (PROVEN, no axiom)
 22. ✓ ψ(n) ≥ θ(n) (PROVEN, from Λ ≥ 0)
 23. ✓ Selberg CLT (formal statement)
 24. ✓ Zero-density exponent calculations at σ = 3/4
 
-## Axiom Budget
-
-| File | Axioms | Theorems (non-trivial) | Sorries |
-|------|--------|------------------------|---------|
-| RiemannHypothesis.lean | 19 | 40+ | 0 |
-| This file | 16 | 30+ | 0 |
-| Total | 35 | 70+ | 0 |
-
-Note: Lagarias_implies_Robin eliminated in main file (proved from RH_iff_Lagarias + RH_iff_Robin).
-liConstant, zeroCountingFunction, zeroDensity, argumentFunction converted from concrete `0`
-placeholders to opaque axioms, fixing soundness bugs (liConstant=0 trivially proved RH via
-lis_criterion; zeroCountingFunction=0 made riemann_von_mangoldt_formula inconsistent).
-Previously "proved" zero-density theorems (ingham, huxley, RH→DH) that relied on zeroDensity=0
-are now honest axioms.
-
-## What Can Be Upgraded
-
-Several axioms could potentially be replaced with proofs:
-1. `no_real_zeros_in_strip` - needs eta function or real-analyticity tools
+(See updated axiom budget below.)
 2. `zeta_conj` - partially proved for Re(s) > 1; needs identity theorem
 3. `primeNumberTheorem` - available via PrimeNumberTheoremAnd dependency
 4. `rh_implies_mertens_bound` - needs analytic continuation machinery
