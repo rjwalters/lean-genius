@@ -315,3 +315,23 @@ Even without proving RH, tractable partial work includes:
    - Odlyzko computations: extraordinary GUE agreement near 10^20-th zero
 
 **Key theorem proved**: `three_four_one`: 3 + 4cos(θ) + cos(2θ) ≥ 0 (foundation of zero-free regions)
+
+### Session: 2026-03-15 (researcher-1, Part 65)
+
+**Added Parts D-F** to RiemannHypothesis.lean (now 2365 lines):
+
+1. **Part D: The Selberg Class** - Framework for L-functions:
+   - Selberg class axioms (Dirichlet series, continuation, functional equation, Ramanujan, Euler product)
+   - Degree classification: d=0 (trivial), d=1 (ζ and Dirichlet L-functions), d=2+ (automorphic)
+   - Selberg orthogonality conjecture: primitive L-functions have orthogonal prime coefficients
+
+2. **Part E: Universality of the Zeta Function** - Voronin 1975:
+   - Universality theorem: ζ(s+iτ) approximates any non-vanishing holomorphic f with positive density
+   - RH connection: universality fails for vanishing functions ⟺ no zeros off critical line
+   - Self-approximation: ζ is almost periodic on vertical lines
+
+3. **Part F: Computational Verification** - Empirical evidence:
+   - Riemann-Siegel formula (O(√t) evaluation of Z(t) function)
+   - Computational milestones: 15 zeros (1903) → 10^13 zeros (2004), all on critical line
+   - Turing's rigorous verification method (count matching via N(T) + sign changes)
+   - Lehmer phenomena: near-misses where Z(t) barely changes sign
