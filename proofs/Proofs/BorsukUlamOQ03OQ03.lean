@@ -25,7 +25,7 @@ YES — the proof strategy is:
 
 ## Infrastructure from Existing Files
 
-- Tucker's lemma (axiom): BorsukUlamOQ01.lean
+- Tucker's 2D lemma (axiom): grid-specific, properly constrained
 - 1D BU and Tucker: BorsukUlamOQ03.lean
 - Spheres, antipodal maps: BorsukUlamOQ01/02.lean
 
@@ -37,7 +37,8 @@ YES — the proof strategy is:
 4. Radial extension from D² to [-1,1]² preserving odd boundary (Part XXII)
 5. Grid infrastructure: vertices, edges, boundary, antipodal map (Part XXIII)
 5b. **Triangulated grid** `gridEdgesTriFin`: H/V + NE-SW diagonal edges (Part XXIII)
-6. **Main theorem**: tucker_disk_approx_zero_proved (from tuckers_lemma axiom)
+5c. **Grid antipodal properties**: involution, boundary preservation, edge preservation
+6. **Main theorem**: tucker_disk_approx_zero_proved (from tucker_2d_grid axiom)
 7. Approximate and exact 2D Borsuk-Ulam (Part XVI)
 
 ## Status: 1 axiom, 0 sorries
@@ -76,16 +77,9 @@ def IsComplementaryEdge {V : Type*} {n : ℕ} (L : SignedLabeling V n) (u v : V)
   ∃ k : Fin n, (L u = (k, true) ∧ L v = (k, false)) ∨
                (L u = (k, false) ∧ L v = (k, true))
 
-/-- Tucker's lemma (axiom, from BorsukUlamOQ01):
-    Any antipodal labeling of a triangulated ball has a complementary edge. -/
-axiom tuckers_lemma (n : ℕ) (hn : n ≥ 1)
-    (V : Type) [Fintype V] [DecidableEq V]
-    (edges : Set (V × V))
-    (boundary : Set V)
-    (antipodal_map : V → V)
-    (L : SignedLabeling V n)
-    (h_antipodal : ∀ v ∈ boundary, L (antipodal_map v) = (⟨(L v).1, !(L v).2⟩)) :
-    ∃ u v, (u, v) ∈ edges ∧ IsComplementaryEdge L u v
+-- Tucker's 2D lemma axiom is stated after the grid infrastructure (Part XXIII),
+-- since it references gridEdgesTriFin, gridBoundaryFin, and gridAntipodalFin.
+-- See `tucker_2d_grid` (after Part XXIII).
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -102,19 +96,19 @@ This serves as a template for the 2D proof (the axiom above).
     then there exists i < n with f(i) ≠ f(i+1).
     (Discrete IVT / pigeonhole on a path.) -/
 theorem discrete_ivt (n : ℕ) (f : Fin (n + 1) → Bool) (hne : f 0 ≠ f (Fin.last n)) :
-    ∃ i : Fin n, f i.castSucc ≠ f i.castSucc.succ := by
+    ∃ i : Fin n, f i.castSucc ≠ f i.succ := by
   by_contra h
   push_neg at h
-  -- h : ∀ i, f i.castSucc = f i.castSucc.succ
+  -- h : ∀ i, f i.castSucc = f i.succ
   -- By induction, f is constant, contradicting hne
   have h_const : ∀ (j : Fin (n + 1)), f j = f 0 := by
     intro j
     induction j using Fin.induction with
     | zero => rfl
     | succ i ih =>
-      have := h i
-      rw [← ih]
-      exact this.symm
+      have := h ⟨i, by omega⟩
+      simp only [Fin.castSucc_mk, Fin.succ_mk] at this
+      rw [← ih]; exact this.symm
   exact hne (by rw [h_const (Fin.last n)])
 
 /-- 1D Tucker's lemma for signed labels:
@@ -122,7 +116,7 @@ theorem discrete_ivt (n : ℕ) (f : Fin (n + 1) → Bool) (hne : f 0 ≠ f (Fin.
 theorem tucker_1d (N : ℕ) (hN : 0 < N)
     (L : Fin (2 * N + 1) → Bool)
     (h_antipodal : L 0 ≠ L (Fin.last (2 * N))) :
-    ∃ i : Fin (2 * N), L i.castSucc ≠ L i.castSucc.succ :=
+    ∃ i : Fin (2 * N), L i.castSucc ≠ L i.succ :=
   discrete_ivt (2 * N) L h_antipodal
 
 /-
@@ -686,12 +680,12 @@ theorem approx_to_exact (f : ℝ × ℝ → ℝ × ℝ) (hf : Continuous f)
     ✓ Mesh refinement principle for compact sets (Part XXI)
     ✓ Radial extension D² → [-1,1]² preserving oddness (Part XXII)
     ✓ Grid infrastructure: Fin-based vertices, edges, boundary, antipodal (Part XXIII)
-    ✓ tucker_disk_approx_zero_proved (from tuckers_lemma)
+    ✓ tucker_disk_approx_zero_proved (from tucker_2d_grid)
     ✓ Approximate → exact BU via compactness
     ✓ Full 2D Borsuk-Ulam: borsuk_ulam_2d_corrected
 
     REMAINING:
-    - Tucker's lemma (1 axiom) — deep combinatorial/topological result -/
+    - tucker_2d_grid (1 axiom) — Tucker's 2D lemma for triangulated grid -/
 theorem formalization_status : True := trivial
 
 /-
@@ -1040,7 +1034,7 @@ This follows from Tucker's lemma (axiom, Part I) + dominantComponentLabel
     Mesh refinement (mesh_refinement_principle) then gives ‖g(w)‖ < δ.
 
     This is proved in tucker_disk_approx_zero_proved (Part XXIII) using
-    tuckers_lemma (Part I), complementary_edge_approx_dominant (Part XX),
+    tucker_2d_grid (Part I), complementary_edge_approx_dominant (Part XX),
     mesh_refinement_principle (Part XXI), and radial extension (Part XXII). -/
 
 /- The approximate and exact 2D BU theorems are stated after
@@ -1569,7 +1563,7 @@ theorem complementary_edge_approx_in_square_snd
 PART XXI: UNIFORM CONTINUITY ON COMPACT DISK
 
 The final analytical ingredient for proving `tucker_disk_approx_zero` from
-`tuckers_lemma`: uniform continuity of g on the compact disk D̄².
+`tucker_2d_grid`: uniform continuity of g on the compact disk D̄².
 
 Combined with the corrected complementary edge theorem (Part XX), this gives:
   mesh → 0 ⟹ dist(u,w) → 0 ⟹ dist(g(u), g(w)) → 0 ⟹ ‖g(w)‖ → 0
@@ -1613,7 +1607,7 @@ theorem disk_continuity_bound (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuous g
     for each mesh size, Tucker gives a complementary edge, and this theorem
     converts it to an approximate zero.
 
-    What remains to prove `tucker_disk_approx_zero` from `tuckers_lemma`:
+    What remains to prove `tucker_disk_approx_zero` from `tucker_2d_grid`:
     1. Instantiate the grid triangulation as a TriangulatedDisk2D (Fintype boilerplate)
     2. Connect dominant-component labeling to Tucker's antipodal condition
     3. Apply this theorem to the Tucker output
@@ -1640,7 +1634,7 @@ theorem mesh_refinement_principle (g : ℝ × ℝ → ℝ × ℝ) (hg : Continuo
 ═══════════════════════════════════════════════════════════════════════════════
 PART XXII: RADIAL EXTENSION AND GRID ELIMINATION OF tucker_disk_approx_zero
 
-Strategy to prove tucker_disk_approx_zero from tuckers_lemma:
+Strategy to prove tucker_disk_approx_zero from tucker_2d_grid:
 
 1. Define radialExtend g: equals g(x) for ‖x‖₂ ≤ 1, equals g(x/‖x‖₂)
    for ‖x‖₂ > 1. This "freezes" g at its S¹ values outside the disk.
@@ -1915,6 +1909,99 @@ theorem gridAntipodalFin_eq_neg (N : ℕ) (hN : 0 < N)
   have hj : v.2.val ≤ 2 * N := by omega
   exact gridVertex_antipodal N hN v.1.val v.2.val hi hj
 
+/-- The grid antipodal map is an involution: applying it twice returns the original vertex.
+    This follows from Fin.rev being an involution. -/
+theorem gridAntipodalFin_involution (N : ℕ) (v : Fin (2 * N + 1) × Fin (2 * N + 1)) :
+    gridAntipodalFin N (gridAntipodalFin N v) = v := by
+  simp only [gridAntipodalFin, Fin.rev_rev]
+
+/-- The grid antipodal map preserves the boundary.
+    If v is on the boundary (has a coordinate at 0 or 2N), so is its antipodal. -/
+theorem gridAntipodalFin_maps_boundary (N : ℕ) (v : Fin (2 * N + 1) × Fin (2 * N + 1))
+    (hv : v ∈ gridBoundaryFin N) :
+    gridAntipodalFin N v ∈ gridBoundaryFin N := by
+  simp only [gridBoundaryFin, Set.mem_setOf_eq, gridAntipodalFin] at hv ⊢
+  have h1 : v.1.rev.val = 2 * N - v.1.val := by simp [Fin.rev]
+  have h2 : v.2.rev.val = 2 * N - v.2.val := by simp [Fin.rev]
+  rcases hv with h | h | h | h
+  · right; left; omega
+  · left; omega
+  · right; right; right; omega
+  · right; right; left; omega
+
+/-- The grid antipodal map preserves the triangulated edge set.
+    If (u, v) is a triangulated grid edge, so is (A(u), A(v)). -/
+theorem gridAntipodalFin_preserves_edges (N : ℕ)
+    (u v : Fin (2 * N + 1) × Fin (2 * N + 1))
+    (he : (u, v) ∈ gridEdgesTriFin N) :
+    (gridAntipodalFin N u, gridAntipodalFin N v) ∈ gridEdgesTriFin N := by
+  simp only [gridEdgesTriFin, Set.mem_setOf_eq, gridAntipodalFin] at he ⊢
+  have hu1 : u.1.rev.val = 2 * N - u.1.val := by simp [Fin.rev]
+  have hu2 : u.2.rev.val = 2 * N - u.2.val := by simp [Fin.rev]
+  have hv1 : v.1.rev.val = 2 * N - v.1.val := by simp [Fin.rev]
+  have hv2 : v.2.rev.val = 2 * N - v.2.val := by simp [Fin.rev]
+  rcases he with ⟨heq, hor⟩ | ⟨heq, hor⟩ | ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · -- Horizontal: same row, adjacent columns → reversed: same row, adjacent columns
+    left; constructor
+    · ext; omega
+    · rcases hor with h | h <;> [right; left] <;> omega
+  · -- Vertical: same column, adjacent rows → reversed: same column, adjacent rows
+    right; left; constructor
+    · ext; omega
+    · rcases hor with h | h <;> [right; left] <;> omega
+  · -- Diagonal (i,j)→(i+1,j+1) → reversed diagonal (2N-i-1,2N-j-1)→(2N-i,2N-j)
+    -- which is (rev(i+1), rev(j+1))→(rev(i), rev(j)), a reverse-direction diagonal
+    right; right; right; constructor <;> omega
+  · -- Reverse diagonal
+    right; right; left; constructor <;> omega
+
+/-
+═══════════════════════════════════════════════════════════════════════════════
+TUCKER'S 2D LEMMA (AXIOM)
+
+Now that all grid infrastructure is defined, we can state Tucker's 2D lemma
+for the specific triangulated grid.
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- Tucker's 2D lemma for the triangulated grid (axiom).
+
+    Any antipodal labeling of the triangulated grid on [-1,1]² has a complementary
+    edge. This is stated specifically for gridEdgesTriFin (with NE-SW diagonals),
+    gridBoundaryFin, and gridAntipodalFin (Fin.rev × Fin.rev), rather than for
+    an arbitrary abstract graph.
+
+    The previous axiom `tuckers_lemma` was overly general: it accepted arbitrary
+    (V, edges, boundary, antipodal_map) without requiring proper triangulation,
+    so it was false for some inputs (e.g., empty edge set). This version is
+    properly constrained to the specific triangulated grid where the theorem holds.
+
+    **Proof roadmap** (any of these equivalent approaches):
+
+    1. **Path-following / complementary pivoting** (~500-1000 lines):
+       Define a pivot rule on triangles, follow from boundary to interior.
+       Each triangle has at most 2 "doors" (edges meeting the pivot criterion).
+       Boundary has odd door count → path terminates at complementary edge.
+
+    2. **Hex theorem reduction** (~300 lines + Hex proof):
+       Color vertices by label component (0 or 1). By the Hex theorem,
+       one color connects opposite boundary sides. Along that connected
+       component, the antipodal condition forces both signs to appear.
+       By discrete_ivt on the connected subgraph, a sign change = complementary edge.
+       Requires: Hex theorem for triangulated grids (itself ~300-500 lines).
+
+    3. **Poincaré-Miranda / intersection theory** (~300-500 lines):
+       Zero sets of the two label components connect opposite boundary arcs.
+       Two such arcs must intersect (discrete Jordan curve theorem).
+       At the intersection → complementary edge.
+
+    All three are equivalent to Brouwer's FPT in 2D.
+    See end-of-file comments for detailed analysis. -/
+axiom tucker_2d_grid (N : ℕ) (hN : 0 < N)
+    (L : SignedLabeling (Fin (2 * N + 1) × Fin (2 * N + 1)) 2)
+    (h_antipodal : ∀ v ∈ gridBoundaryFin N,
+      L (gridAntipodalFin N v) = (⟨(L v).1, !(L v).2⟩)) :
+    ∃ u v, (u, v) ∈ gridEdgesTriFin N ∧ IsComplementaryEdge L u v
+
 /-- Grid boundary vertices of [-1,1]² have at least one coordinate with |·| = 1,
     hence Euclidean norm squared ≥ 1. -/
 theorem gridBoundary_euclidNormSq_ge_one (N : ℕ) (hN : 0 < N)
@@ -2041,8 +2128,7 @@ theorem grid_tri_edge_dist (N : ℕ) (hN : 0 < N)
         linarith
       rw [this]; norm_num
 
-/-- **Main theorem**: tucker_disk_approx_zero follows from tuckers_lemma.
-    This eliminates one of the two remaining axioms.
+/-- **Main theorem**: tucker_disk_approx_zero follows from tucker_2d_grid.
 
     Proof outline:
     1. Let h = radialExtend g (odd outside D̄², equals g on D̄²)
@@ -2110,16 +2196,8 @@ theorem tucker_disk_approx_zero_proved
       -- Transport via dcl_congr, then apply antipodal lemma
       rw [dcl_congr _ _ _ h_neg_ne h_val_eq]
       exact dominantComponentLabel_antipodal (h (gridVertexFin N v)) (h_all_nonzero v) h_neg_ne
-    -- Step 7: Apply Tucker's lemma (using TRIANGULATED grid, not just H/V edges)
-    -- NOTE: Tucker's lemma requires a triangulated grid. The non-triangulated
-    -- gridEdgesFin admits counterexamples (e.g., 5×5 grid with all top-row
-    -- component-0-true, bottom-row component-0-false, sides component-1, and
-    -- interior labels chosen to avoid complementary H/V edges — but the diagonal
-    -- (2,2)→(3,3) IS complementary). The triangulated grid gridEdgesTriFin
-    -- adds NE-SW diagonals, making each cell a pair of triangles.
-    obtain ⟨u_fin, v_fin, he, hcomp⟩ := tuckers_lemma 2 (by omega)
-      (Fin (2 * N + 1) × Fin (2 * N + 1))
-      (gridEdgesTriFin N) (gridBoundaryFin N) (gridAntipodalFin N) L h_antipodal
+    -- Step 7: Apply Tucker's 2D lemma on the triangulated grid
+    obtain ⟨u_fin, v_fin, he, hcomp⟩ := tucker_2d_grid N hN.1 L h_antipodal
     -- Step 8: Extract the complementary edge info
     obtain ⟨k, hk⟩ := hcomp
     -- Grid vertices are in [-1,1]²
@@ -2197,50 +2275,57 @@ AXIOM STATUS SUMMARY
 This file has **1 axiom** and **0 sorries**.
 
 Remaining axiom:
-  tuckers_lemma (Part I): Tucker's lemma for antipodal labelings.
+  tucker_2d_grid (Part I): Tucker's 2D lemma for the triangulated grid.
   This is the ONLY unproved assumption. Everything else is proved from it.
 
-IMPORTANT (soundness fix, 2026-03-14):
-  Tucker's lemma is now applied to `gridEdgesTriFin` (triangulated grid with
-  H/V + diagonal edges), NOT the original `gridEdgesFin` (H/V only).
+  Unlike the previous `tuckers_lemma` axiom (which was overly general and false
+  for some inputs like empty edge sets), `tucker_2d_grid` is properly constrained
+  to the specific triangulated grid (gridEdgesTriFin), boundary (gridBoundaryFin),
+  and antipodal map (gridAntipodalFin) where the theorem is true.
 
-  The non-triangulated grid admits counterexamples to Tucker's lemma:
-  - 5×5 grid (N=2) with antipodal labeling: top row all (0,true), bottom row
-    all (0,false), sides all component 1, interior chosen to avoid ALL
-    complementary H/V edges. But the diagonal (2,2)→(3,3) IS complementary.
-  - This shows gridEdgesFin is insufficient; proper triangulation is needed.
-
-  The triangulated grid `gridEdgesTriFin` adds NE-SW diagonals: each cell
-  (i,j)-(i+1,j)-(i+1,j+1)-(i,j+1) is split into two triangles by the
-  diagonal (i,j)-(i+1,j+1). This diagonal is antipodally symmetric.
-
-  The edge distance bound is unchanged: diagonal edges have L∞ distance
-  1/N (same as H/V edges), so the mesh refinement argument is unaffected.
+Infrastructure for proving tucker_2d_grid (Part XXIII):
+  - gridAntipodalFin_involution: antipodal map is an involution
+  - gridAntipodalFin_maps_boundary: antipodal map preserves boundary
+  - gridAntipodalFin_preserves_edges: antipodal map preserves edge set
+  These properties are prerequisites for any proof approach.
 
 Proof chain:
-  tuckers_lemma → tucker_disk_approx_zero_proved → approx_borsuk_ulam_2d_corrected
+  tucker_2d_grid → tucker_disk_approx_zero_proved → approx_borsuk_ulam_2d_corrected
     → borsuk_ulam_2d_corrected (exact 2D BU from Tucker)
 
-Approaches to eliminate tuckers_lemma (for the triangulated grid):
-  1. Path-following argument (combinatorial, ~500-1000 lines):
-     - Use the NE-SW triangulation of each cell (already in gridEdgesTriFin)
-     - Define "complementary edge paths" through dual graph
-     - Prove boundary has odd number of path endpoints
-     - Therefore at least one interior complementary edge exists
-     Difficulty: Needs detailed finite graph bookkeeping in Lean 4.
+KEY DEAD END (2026-03-14 analysis):
+  Single-path arguments (diagonal, row, column) CANNOT prove Tucker 2D.
+  Example: on the diagonal path (0,0)→(1,1)→...→(2N,2N), labels can avoid
+  complementary edges entirely:
+    (0,T)→(1,F)→(0,F) has 0 complementary edges despite complementary endpoints.
+  At each edge, both the component AND sign can change simultaneously,
+  defeating the discrete IVT argument. A parity count shows:
+    - Sign changes = ODD (forced by antipodal condition)
+    - Component changes = EVEN (start/end have same component)
+    - But sign changes CAN coincide with component changes (Ce = 0 is consistent)
+  CONCLUSION: Tucker 2D requires a genuinely 2D argument.
 
-  2. Winding number / degree theory (~500 lines):
-     - If g ≠ 0 on D², then g/|g| : D² → S¹ extends from boundary
-     - Odd map S¹ → S¹ has odd degree
-     - Map extending over D² has degree 0 → contradiction
-     Difficulty: Needs winding number definition + basic properties.
+Approaches to eliminate tucker_2d_grid:
+  1. Path-following / complementary pivoting (~500-1000 lines):
+     Define a pivot rule on triangles. Start from boundary, follow pivoting path.
+     Boundary has odd door count → path terminates at complementary edge.
+     Difficulty: Detailed finite graph bookkeeping.
+
+  2. Hex theorem reduction (~300 lines proof + Hex):
+     Color vertices by label component. By Hex theorem, one color connects
+     opposite boundary sides. Within that connected component, antipodal
+     condition forces both signs. By IVT → complementary edge.
+     KEY SUBTLETY: the connected component might be monochromatic; need
+     to show the antipodal's sign-flip vertex is in the same component
+     or use a separation argument.
+     Difficulty: Hex theorem itself (~300-500 lines).
 
   3. Poincaré-Miranda / intersection theory (~300-500 lines):
-     - Zero sets Z₁ = {g₁ = 0} and Z₂ = {g₂ = 0} connect opposite boundary arcs
-     - Two arcs connecting opposite sides of a square must intersect
-     Difficulty: Needs discrete Jordan curve theorem.
+     Component-0 boundary connects left-right, component-1 connects top-bottom.
+     By discrete Jordan curve theorem, they intersect → complementary edge.
+     Difficulty: Discrete Jordan curve theorem.
 
-  All three are equivalent to Brouwer's FPT in 2D. Each is a multi-session project.
+  All three are equivalent to Brouwer's FPT in 2D. Multi-session project.
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-
