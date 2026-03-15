@@ -46,7 +46,11 @@
       "Identified and removed false theorem: rr1Mod5Partitions ⊆ distincts is false (counterexample: 1+1+1 = 3)",
       "Decidable partition predicates: defined computable versions of all 6 partition sets using pairwise separation (avoiding noncomputable Multiset.sort), enabling native_decide verification",
       "Computational verification: verified Rogers-Ramanujan I, Rogers-Ramanujan II, and Schur identities for n=0..7 (24 native_decide examples)",
-      "Containment hierarchy theorems: proved rr1_gap_card_le_distinct, rr2_gap_card_le_rr1, schur_gap_card_le_rr1 with decidable predicates"
+      "Containment hierarchy theorems: proved rr1_gap_card_le_distinct, rr2_gap_card_le_rr1, schur_gap_card_le_rr1 with decidable predicates",
+      "Complete bridge theorems: proved all 6 decidable↔noncomputable equivalences (rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGapFull, schurMod) and derived 3 decidable identities from axioms",
+      "Part count bounds: proved rr1_parts_sq_le (k²≤n), rr2_parts_bound (k(k+1)≤n), schur_parts_bound (k(3k-1)/2≤n) via generalized pairwise gap sum bounds",
+      "SchurMod/SchurGapFull characterization: proved schurMod_no_zero_mod3 (no parts divisible by 3 in SchurMod), schurGapFull_div3_gap4 (parts divisible by 3 require gap ≥ 4), schurGapFull_with_div3_not_in_schurMod (gap partitions with div-3 parts are disjoint from mod partitions)",
+      "Extended computational verification: all three identities verified for n=0..12 (60+ native_decide examples)"
     ],
     "references": [
       {
@@ -164,13 +168,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Comprehensive formalization of the Rogers-Ramanujan and Schur partition identity framework. Defines 12 partition sets (6 noncomputable sort-based + 6 decidable pairwise-based), states 3 deep identities as axioms, proves 13 structural theorems with 0 sorries, and computationally verifies all 3 identities for n=0..7 (24 native_decide examples). Key contributions: (1) proving gap ≥ 2 implies distinctness, (2) establishing the containment hierarchy, (3) identifying the false mod-5 ⊆ distinct conjecture, and (4) creating decidable partition predicates that bypass noncomputable Multiset.sort for computational verification.",
-    "implications": "The Rogers-Ramanujan identities connect partition theory to $q$-series, statistical mechanics (Baxter's hard hexagon model), and representation theory (Lepowsky-Wilson vertex operator algebras). Full proof would require formalizing either $q$-series manipulation using Mathlib's `PowerSeries` or bijective constructions (Garsia-Milne involution, Bressoud's proof). The decidable predicates resolve the noncomputable design tension (Multiset.sort vs decidability) and provide a foundation for computational exploration of partition identities in Lean 4.",
+    "summary": "Comprehensive formalization of the Rogers-Ramanujan and Schur partition identity framework. Defines 16 partition sets (noncomputable sort-based + decidable pairwise-based), states 3 deep identities as axioms, and proves 47 structural theorems with 0 sorries. Complete bridge theorems connect all decidable and noncomputable formulations. Computational verification covers all 3 identities for n=0..12 (60+ native_decide examples). Key contributions: (1) gap ≥ 2 implies distinctness, (2) full containment hierarchy, (3) complete decidable↔noncomputable bridges, (4) part count bounds (k²≤n for RR1, k(k+1)≤n for RR2, k(3k-1)/2≤n for Schur), and (5) detailed analysis of proof approaches for the axiomatized identities.",
+    "implications": "The Rogers-Ramanujan identities connect partition theory to $q$-series, statistical mechanics (Baxter's hard hexagon model), and representation theory (Lepowsky-Wilson vertex operator algebras). The most tractable path to proving the axioms is via generating functions adapting Mathlib's PowerSeries and the Wiedijk 100 partition theorem proof pattern. A naive bijective approach (merge close pairs) fails because the merging is not canonical; the known bijections (Bressoud, Alladi-Gordon) require ~500-800 lines of intricate combinatorial construction.",
     "openQuestions": [
-      "Can the decidable predicates be proved equivalent to the noncomputable sort-based versions?",
       "Can the Rogers-Ramanujan identities be proved via q-series in Lean using PowerSeries from Mathlib?",
-      "Can a bijective proof (e.g., Garsia-Milne involution) be formalized?",
-      "Can computational verification be extended beyond n=7 without memory issues?"
+      "Can Bressoud's (1980) or Alladi-Gordon's (1993) bijective proof be formalized for Schur's identity?",
+      "Can the generating function approach adapt the Wiedijk 100 partition theorem proof structure?"
     ]
   },
   "relatedProblems": [

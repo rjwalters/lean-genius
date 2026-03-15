@@ -214,13 +214,6 @@ structure NaturalProof where
     that is hard to invert. This is a standard cryptographic assumption. -/
 axiom OWF_exists : Prop
 
-/-- A pseudorandom function family (PRF) is a function family
-    indistinguishable from random by polynomial-time algorithms. -/
-axiom PRF_exists : Prop
-
-/-- Standard cryptographic result: OWFs imply PRFs (Goldreich-Goldwasser-Micali,
-    Håstad-Impagliazzo-Levin-Luby). -/
-
 /-- The Natural Proofs Barrier (Razborov-Rudich 1997):
     If one-way functions exist, then no natural proof can establish
     super-polynomial circuit lower bounds.
@@ -250,8 +243,6 @@ theorem natural_proof_barrier_consequence (h_owf : OWF_exists)
     This captures the idea of "low-degree extensions" used in interactive
     proofs and PCP constructions. -/
 axiom AlgOracle : Type
-
-/-- Convert a standard oracle to an algebraic extension. -/
 
 /-- P with algebraic oracle access. -/
 axiom P_alg : AlgOracle → Set DecisionProblem
@@ -359,10 +350,6 @@ theorem IP_eq_PSPACE_nonrelativizing :
 /-- The PCP theorem and hardness of approximation use techniques that
     are non-relativizing. Previously axiom — now proved. -/
 theorem PCP_theorem_nonrelativizing : True := trivial
-
-/-- Ryan Williams' approach (2011): ACC⁰ circuit lower bounds via
-    satisfiability algorithms. This navigates the natural proofs barrier
-    by using non-constructive arguments (case analysis on circuit structure). -/
 
 /-- The geometric complexity theory (GCT) program (Mulmuley-Sohoni 2001)
     attempts to use algebraic geometry to navigate all three barriers.
@@ -492,11 +479,6 @@ theorem P_subset_EXP : P ⊆ EXP :=
 -- PART 12: Time Hierarchy and Space Hierarchy
 -- ============================================================
 
-/-- DTIME(f): problems solvable in deterministic time O(f(n)). -/
-axiom DTIME : (Nat → Nat) → Set DecisionProblem
-
-/-- Time hierarchy theorem consequence: strictly more time gives strictly more power. -/
-
 /-- Space hierarchy consequence. -/
 axiom space_hierarchy_consequence : L ≠ PSPACE
 
@@ -506,10 +488,6 @@ axiom space_hierarchy_consequence : L ≠ PSPACE
 
 /-- Polynomial-time many-one reducibility (Karp reductions). -/
 axiom poly_reduces : DecisionProblem → DecisionProblem → Prop
-
-/-- Reductions are reflexive. -/
-
-/-- Reductions are transitive. -/
 
 /-- Reductions preserve P membership. -/
 axiom poly_reduces_in_P (A B : DecisionProblem) :

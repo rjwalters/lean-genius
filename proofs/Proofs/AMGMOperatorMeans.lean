@@ -181,9 +181,6 @@ theorem loewner_le_arithMean_right {A B : Matrix n n ℝ}
 ## Section 4: Matrix Geometric Mean (Axiomatized)
 -/
 
-/-- Matrix square root for PSD matrices -/
-axiom matSqrt (A : Matrix n n ℝ) (hA : RealPosSemidef A) : Matrix n n ℝ
-
 /-- Matrix geometric mean for positive definite matrices -/
 axiom matGeomMean (A B : Matrix n n ℝ) (hA : RealPosDef A) (hB : RealPosDef B) :
     Matrix n n ℝ

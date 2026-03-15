@@ -1,0 +1,108 @@
+{
+  "slug": "amgm-inequality-oq-02-oq-02",
+  "title": "Newton log-concavity of elementary symmetric polynomials",
+  "phase": "NEW",
+  "status": "progress",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-03-14",
+    "iteration": 4,
+    "focus": "1 axiom remains: newton_cleared_denom_inductive_step (degree-6 polynomial in 9 vars)",
+    "blockers": [
+      "Algebraic complexity of inductive step beyond nlinarith capacity"
+    ],
+    "nextAction": "Compute explicit SOS certificate using IH constraints (not just unnormalized Newton), or implement real-rootedness approach",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 3
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Base case proved. Inductive step reduced to final algebraic inequality. 1 sorry remains.",
+    "builtItems": [
+      "elemSymm_zero_implies_higher_zero: zero tail property",
+      "power_ineq_of_log_concave: a_k^(k+1) >= a_{k+1}^k by induction",
+      "rpow_ineq_of_pow_ineq: nat pow to rpow conversion",
+      "maclaurin_step_derived: M_k >= M_{k+1} as theorem (not axiom)",
+      "Fixed cross_product_of_log_concave: added h3 hypothesis (theorem was false)",
+      "newton_cleared_denom: cleared-denominator form of normalized Newton (sorry)",
+      "newton_log_concavity_proved: derives from newton_cleared_denom via div_sub_div",
+      "Proved base case (m=k) of newton_cleared_denom in AmgmInequalityOQ02OQ02.lean:597-750",
+      "Proved k=1 case via maclaurin_sq_m1_ge_m2_general with push_cast bridging",
+      {
+        "name": "newton_ineq base case",
+        "description": "n=k+1 case proved via completing the square",
+        "proven": true
+      },
+      "Fixed all Mathlib4 build errors in NewtonLogConcavity.lean",
+      "Cross-multiplied IH forms and Pascal rule infrastructure in inductive step"
+    ],
+    "insights": [
+      "Division-free induction argument: use mul_pow + cancel via pow_pos",
+      "maclaurin_step axiom in parent file is now provably redundant",
+      "cross_product_of_log_concave was FALSE: a=1,b=0,c=0,d=1 counterexample",
+      "Normalized Newton is strictly stronger than unnormalized - cannot derive one from other",
+      "Cleared-denominator induction yields quadratic in t needing discriminant argument",
+      "Base case (m=k) of newton_cleared_denom fully proved via SOS decomposition: k·D = (k·ek - ekm1·t)² + (k+1)·t²·((k-1)·ekm1² - 2k·ek·ekm2)",
+      "choose_mul_pred identity successfully casts from ℕ to ℝ via congr_arg + push_cast + linarith",
+      "nlinarith can handle the base case SOS with 6 variables (ek,ekm1,ekm2,t,k,C) and targeted hints",
+      "Base case n=k+1 reduces to quadratic non-negativity in last variable t",
+      "Key identity: k*expr = (kP-Et)^2 + (k+1)*((k-1)E^2-2kPF)*t^2 >= 0",
+      "IH at (m=k, k-1) provides discriminant bound: (k-1)E^2 >= 2kPF",
+      "Inductive step needs Pascal rule + Cauchy-Schwarz on both IH instances",
+      "Inductive step reduced to degree-6 polynomial non-negativity in 9 variables - too complex for direct nlinarith",
+      "Real-rootedness or Schur convexity approach may be needed for inductive step",
+      "The inductive step quadratic has 9 real variables (a,b,c,d,p,q,r,s,t). nlinarith cannot find SOS certificates at default search depth.",
+      "Both IH instances (at k and k-1) are needed simultaneously to prove α ≥ 0 and γ ≥ 0. Neither IH alone suffices.",
+      "Key algebraic structure: (q+s)(r+p) vs (p+q)² involves Pascal identity C(m+1,j) = C(m,j) + C(m,j-1)",
+      "DISCRIMINANT ANALYSIS: 4AC-B² = 4(a²-bc)(b²-ad)·DE-(ab-cd)²·E² where D=C(m+1,k-1)·C(m+1,k+1), E=C(m+1,k)²",
+      "CRITICAL: 4(a²-bc)(b²-ad) ≥ (ab-cd)² does NOT hold from unnormalized Newton alone (counterexample: a=4,b=2,c=1,d=1)",
+      "The IH constraints (normalized Newton with binomial coefficients) ARE strong enough - the counterexample violates h_ih_km1",
+      "For t≥0 non-negativity: need EITHER disc≤0 OR minimum at t₀<0 (i.e., f increasing at t=0). The IH constrains this sufficiently.",
+      "Most promising approach: express 4A·f(t) = (2At+B)²+(4AC-B²) ≥ 0, use IH to show 4AC-B² ≥ 0 with binomial coefficient structure",
+      "KEY IDENTITY (researcher-3): 4AC - B² = 4UV(E²-FG)(F²-HE) - V²(EF-HG)² where U=C(m+1,k-1)C(m+1,k+1), V=C(m+1,k)²",
+      "For equal inputs (all xᵢ=1), f(t) = const·(1-t)² is a perfect square, giving 4AC=B² (equality). Asymmetric inputs give strict 4AC>B².",
+      "The discriminant factors as product of unnormalized Newton excesses × 4UV minus V²×(cross-product)². Both IHs are needed simultaneously.",
+      "Binomial log-concavity (c²≥bd, b²≥ac) is needed as additional hypothesis beyond elem sym non-negativity",
+      "After Pascal substitution, the goal becomes polynomial inequality in 9 vars (E,F,G,H,t,a,b,c,d) with 7 inequality hypotheses"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove via discriminant: show 4AC-B² ≥ 0 using BOTH IH instances (h_ih_k and h_ih_km1) with binomial coefficients",
+      "Key identity: 4AC-B² = 4(a²qr-bcp²)(b²sp-daq²)·... expand and verify using IH",
+      "Alternative: real-rootedness approach - show ∏(1+xᵢz) has real roots → normalized coefficients log-concave",
+      "Alternative: Cauchy-Binet via minor determinants of Vandermonde-like matrix",
+      "Estimate: any approach needs 2-4 hours of careful algebra + 200-400 lines of Lean"
+    ]
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "inequalities",
+    "elementary-symmetric-polynomials"
+  ],
+  "relatedProofs": [],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-13T03:56:04.572Z",
+  "lastUpdate": "2026-03-13T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 6
+}

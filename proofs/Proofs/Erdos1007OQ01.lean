@@ -174,19 +174,6 @@ noncomputable def graphDimension' (V : Type*) [Fintype V] (adj : V → V → Pro
     We axiomatize this as extracting the minimum requires a search over all graphs. -/
 axiom minEdgesForDim : ℕ → ℕ
 
-/-- Every simple (irreflexive) graph of dimension d has at least minEdges(d) edges. -/
-axiom minEdgesForDim_le (d : ℕ) (V : Type) [Fintype V] [DecidableEq V]
-    (adj : V → V → Prop) [DecidableRel adj] (hirr : Irreflexive adj) :
-    graphDimension' V adj hirr = d →
-    minEdgesForDim d ≤ (Finset.univ.filter (fun p : V × V => adj p.1 p.2)).card
-
-/-- There exists a simple (irreflexive) graph achieving the minimum. -/
-axiom minEdgesForDim_achieved (d : ℕ) (hd : 0 < d) :
-    ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V)
-      (adj : V → V → Prop) (_ : DecidableRel adj) (hirr : Irreflexive adj),
-      graphDimension' V adj hirr = d ∧
-      (Finset.univ.filter (fun p : V × V => adj p.1 p.2)).card = minEdgesForDim d
-
 -- ============================================================================
 -- § 3. Known Values
 -- ============================================================================
@@ -492,8 +479,125 @@ theorem unique_anomaly_small :
   interval_cases d <;> simp_all [deficiency_dim1, deficiency_dim2, deficiency_dim3,
     deficiency_dim4, deficiency_dim5]
 
+-- ============================================================================
+-- § 11. Quadratic Growth from Optimality
+-- ============================================================================
+
+-- The complete graph optimality conjecture implies quadratic growth of minEdges(d).
+-- Under the conjecture, minEdges(d) = C(d+1,2) = d(d+1)/2 for d ≠ 4.
+-- Since d²/2 ≤ d(d+1)/2 ≤ d², we get Θ(d²) with c₁ = 1/2, c₂ = 1.
+
+/-- Helper: d(d+1)/2 ≤ d² for d ≥ 1 (equivalently, d+1 ≤ 2d). -/
+private theorem choose_two_le_sq (d : ℕ) (hd : 1 ≤ d) :
+    (Nat.choose (d + 1) 2 : ℝ) ≤ (d : ℝ) ^ 2 := by
+  rw [Nat.choose_two_right, Nat.add_sub_cancel]
+  have hdvd : 2 ∣ (d + 1) * d := by
+    rcases Nat.even_or_odd d with ⟨k, hk⟩ | ⟨k, hk⟩ <;> subst hk
+    · exact ⟨(2 * k + 1) * k, by ring⟩
+    · exact ⟨(k + 1) * (2 * k + 1), by ring⟩
+  rw [Nat.cast_div hdvd (by norm_num : (2 : ℝ) ≠ 0)]
+  have : (d : ℝ) ≥ 1 := by exact_mod_cast hd
+  nlinarith [sq_nonneg (d : ℝ)]
+
+/-- Helper: d²/2 ≤ d(d+1)/2 (equivalently, d ≤ d+1). -/
+private theorem sq_half_le_choose_two (d : ℕ) :
+    (1 / 2 : ℝ) * (d : ℝ) ^ 2 ≤ (Nat.choose (d + 1) 2 : ℝ) := by
+  rw [Nat.choose_two_right, Nat.add_sub_cancel]
+  have hdvd : 2 ∣ (d + 1) * d := by
+    rcases Nat.even_or_odd d with ⟨k, hk⟩ | ⟨k, hk⟩ <;> subst hk
+    · exact ⟨(2 * k + 1) * k, by ring⟩
+    · exact ⟨(k + 1) * (2 * k + 1), by ring⟩
+  rw [Nat.cast_div hdvd (by norm_num : (2 : ℝ) ≠ 0)]
+  push_cast
+  nlinarith [sq_nonneg (d : ℝ)]
+
+/-- The complete graph optimality conjecture implies quadratic growth.
+    If K_{d+1} is optimal for d ≠ 4, then minEdges(d) = Θ(d²)
+    with constants c₁ = 1/2 and c₂ = 1. -/
+theorem optimal_implies_quadratic (hopt : complete_graph_optimal_conjecture) :
+    minEdges_quadratic_conjecture := by
+  refine ⟨1/2, 1, by norm_num, by norm_num, fun d hd => ?_⟩
+  constructor
+  · -- Lower bound: (1/2) * d² ≤ minEdges(d)
+    by_cases h4 : d = 4
+    · subst h4; rw [minEdges_dim4]; push_cast; norm_num
+    · rw [hopt d h4 hd]
+      exact sq_half_le_choose_two d
+  · -- Upper bound: minEdges(d) ≤ d²
+    by_cases h4 : d = 4
+    · subst h4; rw [minEdges_dim4]; push_cast; norm_num
+    · rw [hopt d h4 hd, one_mul]
+      exact choose_two_le_sq d hd
+
+-- ============================================================================
+-- § 12. Monotonicity Consequences
+-- ============================================================================
+
+/-- Under monotonicity, minEdges(d) ≥ 15 for all d ≥ 5.
+    This gives a concrete lower bound that improves on the trivial d bound. -/
+theorem monotone_lower_d5 (hmono : minEdges_monotone_conjecture) (d : ℕ) (hd : 5 ≤ d) :
+    15 ≤ minEdgesForDim d := by
+  have := hmono 5 d hd
+  rw [minEdges_dim5] at this
+  exact this
+
+/-- Under monotonicity, minEdges(d) ≥ 9 for all d ≥ 4. -/
+theorem monotone_lower_d4 (hmono : minEdges_monotone_conjecture) (d : ℕ) (hd : 4 ≤ d) :
+    9 ≤ minEdgesForDim d := by
+  have := hmono 4 d hd
+  rw [minEdges_dim4] at this
+  exact this
+
+/-- Combining the two conjectures: optimality → monotonicity → concrete lower bounds.
+    This chain shows that the optimality conjecture gives sharp information. -/
+theorem optimal_chain (hopt : complete_graph_optimal_conjecture) (d : ℕ) (hd : 5 ≤ d) :
+    15 ≤ minEdgesForDim d :=
+  monotone_lower_d5 (optimal_implies_monotone hopt) d hd
+
+-- ============================================================================
+-- § 13. Verified Quadratic Bounds for Known Values
+-- ============================================================================
+
+/-- The quadratic bound d²/2 ≤ minEdges(d) ≤ d² holds for all known values d ≤ 5.
+    This provides unconditional evidence for the quadratic conjecture. -/
+theorem quadratic_verified_small :
+    ∀ d : ℕ, 1 ≤ d → d ≤ 5 →
+      (1 / 2 : ℝ) * (d : ℝ) ^ 2 ≤ (minEdgesForDim d : ℝ) ∧
+      (minEdgesForDim d : ℝ) ≤ (d : ℝ) ^ 2 := by
+  intro d hd1 hd5
+  interval_cases d <;>
+    simp [minEdges_dim1, minEdges_dim2, minEdges_dim3, minEdges_dim4, minEdges_dim5] <;>
+    norm_num
+
+-- ============================================================================
+-- § 14. Tighter Complete Graph Dimension Bound
+-- ============================================================================
+
+-- The current bound (§7) shows dim(K_n) ≤ n by embedding in ℝ^n.
+-- But K_n can be embedded in ℝ^{n-1} since n equidistant points form a
+-- regular (n-1)-simplex. We prove this for K₂ explicitly.
+
+/-- K₂ embeds in ℝ¹: vertices at 0 and 1. -/
+theorem K2_unit_embedding : hasUnitEmbedding' (Fin 2) (fun i j => i ≠ j) 1 := by
+  refine ⟨⟨fun i _ => (i : ℝ), fun u v huv => ?_⟩⟩
+  fin_cases u <;> fin_cases v <;> simp_all [Finset.sum_fin_eq_sum_range]
+  all_goals norm_num [Real.sqrt_eq_one]
+
+/-- dim(K₂) ≤ 1 (tight: two points at distance 1 need only ℝ¹). -/
+theorem complete_graph_dim_le_tight_2 :
+    graphDimension' (Fin 2) (fun i j => i ≠ j) (fun x h => h rfl) ≤ 1 :=
+  Nat.find_le K2_unit_embedding
+
+-- For the general case dim(K_n) ≤ n-1, one embeds n vertices as a regular
+-- (n-1)-simplex in ℝ^{n-1}. The construction: project the ℝ^n simplex
+-- embedding onto the (n-1)-dimensional hyperplane {x : ∑xⱼ = 0}.
+-- Since all pairwise differences are orthogonal to the all-ones vector,
+-- projection preserves distances. The isometry to ℝ^{n-1} requires
+-- constructing an ONB (e.g., Helmert basis), which we leave for future work.
+
 #check @complete_graph_unit_embedding
 #check @complete_graph_dim_le
+#check @complete_graph_dim_le_tight_2
 #check @subgraph_unit_embedding
 #check @hasUnitEmbedding_exists_irrefl
 #check @optimal_implies_monotone

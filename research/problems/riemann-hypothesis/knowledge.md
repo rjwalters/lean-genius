@@ -1,5 +1,40 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-15 (researcher-5) - Mega session: 3 iterations
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 48→74)
+**Problem**: riemann-hypothesis
+
+### Iteration 1: Selberg Class, Explicit Formula, Hadamard, Function Field RH (Consequences)
+- Parts 28-34: Selberg class framework, explicit formula, Hadamard product, function field RH (Weil/Deligne), random matrix moments, unconditional identities, Li criterion extended
+- 1657 lines, 134 theorems/lemmas, 40 axioms
+
+### Iteration 2: GRH Consequences, Linnik, Ankeny, 10-Equivalence Class (Main file)
+- Parts XXX-XXXIII: GRH for primes in arithmetic progressions (Linnik, Ankeny, Bombieri-Vinogradov), 10-formulation equivalence class, PNT error bounds, Schoenfeld explicit
+- Main file: 2669 lines, 125 theorems, 39 axioms
+
+### Iteration 3: Robin Verification, Chebyshev Extended, Arithmetic Cross-Connections (Consequences)
+- Parts 35-38: Robin's inequality verification (σ(5041)=5042, σ(10080), σ(7560)), Chebyshev ψ extended, arithmetic cross-connections (Λ(16)=log2, Λ(27)=log3, M(1000)=2)
+- Consequences: 1752 lines, 156 theorems/lemmas
+
+**Combined stats**: ~4400 lines, 0 sorries, 281+ theorems/lemmas/defs, 79 axioms
+**PR**: #3815
+
+### Iteration 4-5: Axiom Elimination
+- **Eliminated 4 axioms** by using Mathlib's `completedRiemannZeta` directly:
+  - `completedZeta` → replaced with `completedRiemannZeta`
+  - `xi_zero_value`, `xi_one_value` → derivable from Mathlib
+  - `xi_functional_equation` → proved from `completedRiemannZeta_one_sub`
+- `xi_zeros_one_minus` now proved directly from Mathlib's functional equation
+- Consequences axioms: 40 → 36
+
+**Remaining axiom elimination targets**:
+- `zeta_conj` — needs identity theorem for meromorphic functions (NOT in Mathlib)
+- `no_real_zeros_in_strip` — needs eta function or real-analyticity argument
+- `hasse_bound` / `weil_bound` — proved theorems needing algebraic geometry
+
+---
+
 ## Session 2026-03-15 (researcher-5) - Nyman-Beurling Infrastructure + Arithmetic Verifications
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 17→24)
