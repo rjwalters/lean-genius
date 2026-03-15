@@ -89,3 +89,48 @@ The maximal real subfield theory is NOT in Mathlib 4.26.
 2. Prove cyclotomic_degree_over_alpha ([K:ℚ(α)] ≤ 2)
 3. Connect embedding to cos(2kπ/n)
 4. Eliminate original 2 axioms
+
+---
+
+## Session 2026-03-14 (researcher-1) - IntermediateField Degree Proofs
+
+**Mode**: REVISIT (RICH knowledge)
+**Problem**: angle-trisection-oq-02-oq-03-oq-01
+**Prior Status**: 291 lines, 6 axioms, 0 sorries
+
+### What we did:
+1. PROVED `alpha_in_fixedField` (was axiom) — reduced to new `conjAut_zeta_eq_inv` axiom
+2. Added §5b: IntermediateField-based degree computation bypassing Module.Free issues
+3. Proved `alphaField_degree`: [ℚ(α):ℚ] = φ(n)/2 via IntermediateField tower law
+4. Proved `alphaField_degree_ge`: lower bound from tower law
+5. Proved `alphaField_degree_le`: upper bound from inclusion monotonicity
+6. Proved `finrank_over_alphaField`: [K:ℚ(α)] ≤ 2 via quadratic annihilation (filled both sorries)
+7. Fixed cos_2kpi_div_n_eq_iff proof in OQ02OQ03 (h_sum modular arithmetic)
+
+### Key findings:
+- **IntermediateField.adjoin bypasses Module.Free/Finite gaps**: Unlike Algebra.adjoin,
+  IntermediateField automatically has Module.Free and Module.Finite instances.
+  This makes tower law and finrank monotonicity work directly.
+- **Single remaining Galois action axiom**: conjAut_zeta_eq_inv (σ(ζ) = ζ⁻¹) is the
+  precise API gap. Needs connecting galCyclotomicEquivUnitsZMod to autEquivPow action.
+- **fromZetaAut_spec**: Mathlib's `fromZetaAut hμ h (zeta n K L) = μ` is the key theorem
+  for proving the Galois action.
+- **abstractZeta vs IsCyclotomicExtension.zeta**: These are both `.choose` from existence
+  theorems and may differ. Redefining abstractZeta as the Mathlib zeta would simplify proofs.
+
+### Proof technique for finrank_over_alphaField:
+1. PowerBasis from ζ integral ⟹ adjoin ℚ {ζ} = ⊤ (ζ generates K over ℚ)
+2. adjoin_eq_top_of_adjoin_eq_top lifts: adjoin F {ζ} = ⊤ (ζ generates K over F)
+3. IntermediateField.adjoin.finrank: [K:F] = natDegree(minpoly F ζ)
+4. Construct p = X² - αX + 1 over F (polynomial over IntermediateField)
+5. aeval ζ p = 0 pushed to base type via Subtype.val_injective + zeta_quadratic_over_alpha
+6. minpoly.dvd + natDegree_le_of_dvd ⟹ natDegree(minpoly) ≤ 2
+
+### Stats: 291→462 lines (+171), 1 axiom eliminated, 5 new theorems, 0 sorries
+### Axiom count: 6 (was 6, but alpha_in_fixedField eliminated, conjAut_zeta_eq_inv added)
+
+### Next steps:
+1. Prove conjAut_zeta_eq_inv via fromZetaAut_spec or autEquivPow spec
+2. Redefine abstractZeta = IsCyclotomicExtension.zeta to simplify API connection
+3. Eliminate 3 legacy Algebra.adjoin axioms
+4. Prove cos_minimal_poly_degree via cyclotomicEmbedding + alphaField_degree
