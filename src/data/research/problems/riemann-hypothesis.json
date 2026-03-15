@@ -56,7 +56,8 @@
       "RH_implies_prime_gap_bound",
       "explicit_formula",
       "zeta_special_values",
-      "Li_criterion"
+      "Li_criterion",
+      "Consequences file had 6 dangling /-- doc comments causing build failure - fixed by converting to /- comments"
     ],
     "mathlibGaps": [
       "Dirichlet series",
