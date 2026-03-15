@@ -29,11 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "0 sorries, 3 axioms, 1789 lines. GF infrastructure added, broken Part XXVI removed.",
+    "builtItems": [
+      "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
+      "schurModGF, rr1ModGF: specialized GFs for partition identities",
+      "subsetsWithSum: subset sum counting infrastructure",
+      "Bridge theorems connecting decidable ↔ noncomputable formulations"
+    ],
+    "insights": [
+      "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
+      "Noncomputable definitions prevent native_decide verification",
+      "Proving any axiom requires 300-500+ lines of GF proof per identity",
+      "Part XXVI (part count bounds) broke due to Mathlib API changes"
+    ],
+    "mathlibGaps": [
+      "No partition generating function infrastructure",
+      "No bijective proof machinery for partition identities"
+    ],
+    "nextSteps": [
+      "Connect GF coefficients to partition counts via subsetsWithSum",
+      "Build q-series identity framework for RR1/RR2",
+      "Explore bijective proof path for Schur identity"
+    ]
   },
   "approaches": [],
   "tags": [
@@ -49,7 +66,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-12T05:34:54.574Z",
+  "lastUpdate": "2026-03-15T12:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }

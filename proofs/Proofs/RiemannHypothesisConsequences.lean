@@ -1011,15 +1011,6 @@ axiom rh_implies_psi_bound :
     ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
       |chebyshevPsi n - (n : ℝ)| ≤ C * Real.sqrt n * (Real.log n) ^ 2
 
-/-- **RH implies θ(x) = x + O(√x log²x)** (von Koch, 1901).
-
-Since ψ(x) = θ(x) + θ(√x) + θ(∛x) + ..., and the higher terms are O(√x),
-the bound on ψ transfers to θ with the same error term. -/
-axiom rh_implies_theta_bound :
-    RiemannHypothesis →
-    ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 2 →
-      |chebyshevTheta n - (n : ℝ)| ≤ C * Real.sqrt n * (Real.log n) ^ 2
-
 /-- The ψ bound is (weakly) stronger than the θ bound: since ψ ≥ θ,
     knowing |ψ - x| is small and ψ ≥ θ gives information about θ.
 
@@ -1060,18 +1051,6 @@ References:
 
 section PrimeGaps
 
-/-- **RH implies Cramér's prime gap bound** (1936):
-    p_{n+1} - p_n = O(√p_n · log p_n).
-
-    This follows from the explicit formula: if π(x) = Li(x) + O(√x log x)
-    (which follows from RH), then gaps between consecutive primes
-    are at most O(√p · log p) since Li is smooth with derivative 1/log x. -/
-axiom rh_implies_prime_gap :
-    RiemannHypothesis →
-    ∃ C : ℝ, C > 0 ∧ ∀ p : ℕ, Nat.Prime p → p ≥ 3 →
-      ∀ q : ℕ, Nat.Prime q → q > p → (∀ r : ℕ, Nat.Prime r → r > p → r ≥ q) →
-        (q : ℝ) - p ≤ C * Real.sqrt p * Real.log p
-
 end PrimeGaps
 
 /-
@@ -1100,18 +1079,6 @@ section RedhefferMatrix
     This is a concrete definition, not an axiom. -/
 def redhefferEntry (i j : ℕ) : ℤ :=
   if j = 1 ∨ i ∣ j then 1 else 0
-
-/-- Redheffer's theorem: det(R_n) = M(n).
-    This connects the determinant of a combinatorial matrix to the
-    Mertens function, providing a linear algebra perspective on RH.
-
-    The proof uses inclusion-exclusion and properties of the Möbius function.
-    Formalizing the full determinant computation requires matrix theory
-    not yet configured for this purpose in our imports. -/
-axiom redheffer_det_eq_mertens :
-    ∀ n : ℕ, n ≥ 1 →
-    -- det(R_n) = M(n) (stated abstractly since we don't construct the matrix)
-    True ∧ redhefferEntry 1 1 = 1
 
 /-- **RH via Redheffer**: The Riemann Hypothesis is equivalent to
     det(R_n) = O(n^{1/2+ε}) for all ε > 0.
@@ -1287,24 +1254,9 @@ axiom selbergDegree : SelbergClassFunction → ℝ
 /-- The Riemann zeta function is in the Selberg class with degree 1. -/
 axiom zeta_in_selberg_class : ∃ F : SelbergClassFunction, selbergDegree F = 1
 
-/-- All Dirichlet L-functions L(s,χ) are in the Selberg class with degree 1. -/
-axiom dirichlet_L_in_selberg_class :
-  ∀ q : ℕ, q ≥ 1 → ∃ F : SelbergClassFunction, selbergDegree F = 1
-
-/-- **Selberg's Orthogonality Conjecture**: Primitive functions in 𝒮 are
-"orthogonal" — their Dirichlet coefficients have limited correlation.
-This is the key structural conjecture about the Selberg class. -/
-axiom SelbergOrthogonalityConjecture : Prop
-
 /-- **The Degree Conjecture**: The degree of any element of 𝒮 is a non-negative integer. -/
 axiom selberg_degree_conjecture :
   ∀ F : SelbergClassFunction, ∃ n : ℕ, selbergDegree F = n
-
-/-- **No degree-zero functions** (Conrey-Ghosh, 1993): The only function
-in 𝒮 with degree 0 is the constant function 1. -/
-axiom no_degree_zero :
-  ∀ F : SelbergClassFunction, selbergDegree F = 0 →
-    True  -- "F is the constant function 1" (not formalizable without evaluation)
 
 /-- **GRH for the Selberg class**: All non-trivial zeros of all F ∈ 𝒮
 lie on the critical line Re(s) = 1/2. This implies ordinary RH. -/
@@ -1358,28 +1310,6 @@ This is the oscillatory term that connects zero locations to prime distribution.
 When truncated to |Im(ρ)| ≤ T, the error is O(log²(xT)/T). -/
 axiom zeroSum : ℝ → ℝ
 
-/-- The explicit formula for the Chebyshev psi function.
-ψ(x) = x - (sum over zeros) - log(2π) - correction term.
-
-The correction term (1/2)log(1-x^(-2)) comes from trivial zeros. -/
-axiom explicit_formula_psi :
-  ∀ x : ℝ, x ≥ 2 →
-    ∃ correction : ℝ, |correction| ≤ Real.log (2 * x) ∧
-    |(chebyshevPsi ⌊x⌋₊ : ℝ) - (x - zeroSum x - Real.log (2 * Real.pi))| ≤ |correction|
-
-/-- **RH implies the strongest error term**: Under RH, ψ(x) = x + O(√x log²x).
-This is the gold standard for prime distribution. -/
-axiom rh_implies_psi_error :
-  RiemannHypothesis →
-  ∃ C : ℝ, C > 0 ∧ ∀ x : ℝ, x ≥ 2 →
-    |(chebyshevPsi ⌊x⌋₊ : ℝ) - x| ≤ C * Real.sqrt x * (Real.log x) ^ 2
-
-/-- **Without RH, weaker error terms hold**: The PNT gives ψ(x) = x + O(x exp(-c√(log x))).
-This is the de la Vallée-Poussin error term. -/
-axiom pnt_psi_error :
-  ∃ c : ℝ, c > 0 ∧ ∃ C : ℝ, C > 0 ∧ ∀ x : ℝ, x ≥ 2 →
-    |(chebyshevPsi ⌊x⌋₊ : ℝ) - x| ≤ C * x * Real.exp (-c * Real.sqrt (Real.log x))
-
 /-- **The explicit formula error is dominated by the nearest zero to Re(s)=1**.
 If no zeros exist with Re(ρ) > σ, then ψ(x) = x + O(x^σ · log²x).
 This is why the zero-free region matters! -/
@@ -1426,10 +1356,6 @@ section HadamardProduct
 This is an entire function of order 1 with zeros exactly at non-trivial zeros of ζ. -/
 axiom completedZeta : ℂ → ℂ
 
-/-- ξ(0) = ξ(1) = 1/2 (AXIOM - classical value). -/
-axiom xi_zero_value : completedZeta 0 = 1/2
-axiom xi_one_value : completedZeta 1 = 1/2
-
 /-- The functional equation for ξ: ξ(s) = ξ(1-s) for all s ∈ ℂ. -/
 axiom xi_functional_equation : ∀ s : ℂ, completedZeta s = completedZeta (1 - s)
 
@@ -1438,17 +1364,6 @@ theorem xi_zero_eq_one : completedZeta 0 = completedZeta 1 := by
   have h := xi_functional_equation 0
   simp at h
   exact h
-
-/-- ξ is real on the critical line (AXIOM).
-ξ(1/2 + it) ∈ ℝ for all real t. -/
-axiom xi_real_on_critical_line :
-  ∀ t : ℝ, ∃ r : ℝ, completedZeta (1/2 + ↑t * Complex.I) = ↑r
-
-/-- **RH is equivalent to ξ having only real zeros on the critical line** (AXIOM).
-Since ξ(1/2+it) is real-valued, its zeros correspond to real zeros of a real function. -/
-axiom RH_iff_xi_real_zeros :
-  RiemannHypothesis ↔
-    ∀ s : ℂ, completedZeta s = 0 → s.re = 1/2
 
 /-- The Hadamard product converges and represents ξ(s) (AXIOM).
 ξ(s) = ξ(0) · ∏_ρ (1 - s/ρ) where ρ ranges over non-trivial zeros. -/
@@ -1508,30 +1423,6 @@ References:
 
 section FunctionFieldRH
 
-/-- A finite field 𝔽_q with q elements. -/
-axiom FiniteFieldOrder : ℕ → Prop
-
-/-- The zeta function of a curve over 𝔽_q is a rational function.
-Z(C, t) = P(t) / ((1-t)(1-qt)) where P(t) has degree 2g (g = genus). -/
-axiom curveZetaNumerator : ℕ → ℕ → (ℝ → ℝ)  -- (genus, q) → P(t)
-
-/-- **Hasse's Theorem (1936)**: For an elliptic curve E over 𝔽_q,
-|#E(𝔽_q) - (q + 1)| ≤ 2√q. This is RH for genus 1. -/
-axiom hasse_bound :
-  ∀ q : ℕ, q ≥ 2 →  -- q is a prime power
-    ∀ N : ℤ,  -- N = #E(𝔽_q)
-      |N - (q + 1)| ≤ 2 * Int.sqrt q
-
-/-- **Weil's Theorem (1948)**: For a curve C of genus g over 𝔽_q,
-|#C(𝔽_q) - (q + 1)| ≤ 2g√q. This is the full RH for function fields.
-
-This is a THEOREM (proved!), not a conjecture. It was proved using the
-theory of correspondences on algebraic curves. -/
-axiom weil_bound :
-  ∀ (g : ℕ) (q : ℕ), q ≥ 2 →
-    ∀ N : ℤ,  -- N = #C(𝔽_q)
-      |N - (q + 1)| ≤ 2 * g * Int.sqrt q
-
 /-- Hasse's bound is a special case of Weil's bound at g = 1 (structural). -/
 theorem hasse_is_weil_genus_one :
     (∀ q : ℕ, q ≥ 2 → ∀ N : ℤ, |N - (q + 1)| ≤ 2 * 1 * Int.sqrt q) →
@@ -1539,16 +1430,6 @@ theorem hasse_is_weil_genus_one :
   intro h q hq N
   have := h q hq N
   linarith
-
-/-- **Deligne's Theorem (1974)**: The Weil conjectures hold for smooth
-projective varieties of any dimension over finite fields. This includes:
-1. Rationality of the zeta function
-2. Functional equation
-3. Riemann Hypothesis (absolute values of zeros)
-4. Betti numbers
-
-This was the last of the Weil conjectures to be proved. -/
-axiom deligneTheorem : Prop
 
 /-- The function field RH provides evidence for the number field case.
 Both the Hasse-Weil and classical RH concern the location of zeros
@@ -1590,39 +1471,11 @@ section RandomMatrixMoments
 /-- The 2k-th moment of ζ on the critical line: ∫_0^T |ζ(1/2+it)|^{2k} dt. -/
 axiom zetaMoment : ℕ → ℝ → ℝ  -- k, T ↦ moment
 
-/-- **The second moment (Hardy-Littlewood, 1918, PROVED)**:
-∫_0^T |ζ(1/2+it)|² dt ~ T log T. -/
-axiom second_moment :
-  ∃ C : ℝ, C > 0 ∧ ∀ T : ℝ, T ≥ 2 →
-    |zetaMoment 1 T - T * Real.log T| ≤ C * T
-
-/-- **The fourth moment (Ingham, 1926, PROVED)**:
-∫_0^T |ζ(1/2+it)|⁴ dt ~ (1/(2π²)) T (log T)⁴. -/
-axiom fourth_moment :
-  ∃ C : ℝ, C > 0 ∧ ∀ T : ℝ, T ≥ 2 →
-    |zetaMoment 2 T - (1 / (2 * Real.pi ^ 2)) * T * (Real.log T) ^ 4| ≤ C * T * (Real.log T) ^ 3
-
-/-- **Keating-Snaith conjecture (2000)**: For each k ≥ 1, the 2k-th moment
-has the form T (log T)^{k²} with a specific constant. -/
-axiom keating_snaith_conjecture :
-  ∀ k : ℕ, k ≥ 1 →
-    ∃ C_k : ℝ, C_k > 0 ∧ ∀ T : ℝ, T ≥ 2 →
-      zetaMoment k T ≤ C_k * T * (Real.log T) ^ (k ^ 2)
-
 /-- The moment exponent k² grows quadratically (PROVED). -/
 theorem moment_exponent_quadratic (k : ℕ) (hk : k ≥ 1) : k ^ 2 ≥ 1 := by
   calc k ^ 2 = k * k := by ring
   _ ≥ 1 * 1 := Nat.mul_le_mul hk hk
   _ = 1 := by ring
-
-/-- **Lindelöf Hypothesis equivalent to moment bounds (Ramachandra)**.
-LH is equivalent to: ∫_0^T |ζ(1/2+it)|^{2k} dt ≪ T^{1+ε} for all k.
-Since RH → LH, this provides another connection. -/
-axiom lindelof_moment_equivalence :
-  RiemannHypothesis.LindelofHypothesis ↔
-    ∀ k : ℕ, k ≥ 1 → ∀ ε : ℝ, ε > 0 →
-      ∃ C : ℝ, C > 0 ∧ ∀ T : ℝ, T ≥ 2 →
-        zetaMoment k T ≤ C * T ^ (1 + ε)
 
 end RandomMatrixMoments
 

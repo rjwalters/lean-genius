@@ -23,9 +23,9 @@
     The first new polygon construction since antiquity. Determined his career choice.
   - Wantzel (1837): Proved the converse — non-constructibility when φ(n) ≠ 2^k.
 
-  File summary: 70+ proved theorems, 1 sorry, 3 axioms.
-  Sorries: galois_conjugate_count (counting coprime pairs).
-  PROVED: cos_2kpi_div_n_eq_iff (fixed h_sum proof), minpoly_cos_natDegree_eq (capstone).
+  File summary: 67+ proved theorems, 4 sorries, 3 axioms.
+  Sorries: galois_conjugate_count (counting argument for coprime pairing),
+  minpoly_cos_natDegree_eq (capstone — 3 sub-sorries in upper bound: h_top, h_deg, final).
   Axioms: gauss_wantzel_theorem (redundant — proved as gauss_wantzel_theorem'),
   cos_minpoly_gal_card (has clear proof roadmap via Chebyshev + cyclotomic bridge),
   wantzel_galois_characterization (from OQ02).
@@ -1270,11 +1270,7 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
         have : ((↑j : ℤ) : ℝ) = ((m * ↑n + ↑k : ℤ) : ℝ) := by
           push_cast; linarith [h_real]
         exact_mod_cast this
-      -- j = m*n + k in ℤ → j % n = k % n in ℕ
-      have h_mod_int : (↑j : ℤ) % ↑n = (↑k : ℤ) % ↑n := by
-        rw [h_int, show m * ↑n + ↑k = ↑k + m * ↑n from by ring]
-        exact Int.add_mul_emod_self_left (↑k) m (↑n)
-      rwa [Int.natCast_mod, Int.natCast_mod, Nat.cast_inj] at h_mod_int
+      omega
     · -- h : 2jπ/n = 2mπ - 2kπ/n → k ≡ n - j (mod n)
       right
       have h_real : (↑j : ℝ) + ↑k = ↑m * ↑n := by
@@ -1283,19 +1279,13 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
         have : ((↑j + ↑k : ℤ) : ℝ) = ((m * ↑n : ℤ) : ℝ) := by
           push_cast; linarith [h_real]
         exact_mod_cast this
-      -- (j + k) ≡ 0 (mod n) in ℤ → k % n = (n - j % n) % n in ℕ
-      have h_mod_int : ((↑j : ℤ) + ↑k) % ↑n = 0 := by
-        rw [h_int]; exact Int.mul_emod_right m ↑n
-      have h_sum_nat : (j + k) % n = 0 := by
-        rwa [show (↑j : ℤ) + ↑k = ↑(j + k) from by push_cast; ring,
-          Int.natCast_mod, show (0 : ℤ) = ↑(0 : ℕ) from rfl, Nat.cast_inj] at h_mod_int
       omega
   · rintro (h | h)
     · -- k % n = j % n → cos equal via periodicity
       -- k ≡ j (mod n) in ℕ → j - k divisible by n in ℤ
       have h_mod : (↑j : ℤ) % ↑n = (↑k : ℤ) % ↑n := by
         have : (↑(k % n) : ℤ) = ↑(j % n) := by exact_mod_cast h
-        simp only [Int.natCast_mod] at this; linarith
+        simp only [Nat.cast_mod_cast] at this; omega
       obtain ⟨m, hm⟩ := (Int.modEq_iff_dvd.mp h_mod : (↑n : ℤ) ∣ (↑k - ↑j))
       refine ⟨-m, Or.inl ?_⟩
       have h_int : (↑j : ℤ) = -m * ↑n + ↑k := by omega
@@ -1611,351 +1601,58 @@ theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
   -- [E:F] ≤ 2: ζ satisfies X² - 2cos·X + 1 over F (degree 2)
   -- [E:F] ≥ 2: F ≠ E (ζ ∉ F), so strict containment, so [E:F] > 1
   -- Therefore [E:F] = 2 and φ(n) = 2 * finrank ℚ F
-  haveI hFD_FE : FiniteDimensional ↥F ↥E :=
-    Module.Finite.of_restrictScalars_finite ℚ ↥F ↥E
   have h_ef_eq : Module.finrank ↥F ↥E = 2 := by
-    -- Lower bound: [E:F] ≥ 2
-    -- Derive [E:F] > 0 from tower law (avoids NoZeroSMulDivisors synthesis)
-    have h_ef_pos : 0 < Module.finrank ↥F ↥E := by
-      by_contra h
-      push_neg at h
-      have h0 : Module.finrank ↥F ↥E = 0 := by omega
-      rw [h0, mul_zero] at h_tower
-      linarith [h_finrank_E, (Nat.totient_pos).mpr (show 0 < n by omega)]
-    -- [E:F] ≠ 1: if [E:F] = 1 then [F:ℚ] = [E:ℚ], so F = E, contradicting F < E
-    have h_ef_ne_one : Module.finrank ↥F ↥E ≠ 1 := by
-      intro h_one
-      have h_eq_dim : Module.finrank ℚ ↥E ≤ Module.finrank ℚ ↥F := by
-        have h1 := h_tower
-        rw [h_one, mul_one] at h1
-        omega
-      exact absurd (IntermediateField.eq_of_le_of_finrank_le hFE h_eq_dim)
-        (ne_of_lt hFE_strict)
-    -- Upper bound: [E:F] ≤ 2
-    -- ζ satisfies X² - 2cos·X + 1 over F (degree 2 polynomial)
-    -- So minpoly(ζ/F) | (X² - 2c·X + 1), giving deg(minpoly) ≤ 2
-    -- Since E = ℚ(ζ) = F(ζ), [E:F] = deg(minpoly(ζ/F)) ≤ 2
+    -- Upper bound: [E:F] ≤ 2 via the quadratic X²-2cos·X+1
     have h_le : Module.finrank ↥F ↥E ≤ 2 := by
-      -- Key elements
-      set ζE : ↥E := ⟨ζ, IntermediateField.mem_adjoin_simple_self ℚ ζ⟩ with hζE_def
-      -- Step A: ζE generates E over ℚ (PowerBasis → adjoin = ⊤)
-      have h_int_ζ := zeta_isIntegral n (by omega : 1 ≤ n)
-      have pb := IntermediateField.adjoin.powerBasis h_int_ζ
-      have h_pb_gen : pb.gen = ζE := IntermediateField.adjoin.powerBasis_gen h_int_ζ
-      have h_alg_top : Algebra.adjoin ℚ ({ζE} : Set ↥E) = ⊤ := by
-        rw [← h_pb_gen]; exact pb.adjoin_gen_eq_top
-      have h_gen_Q : IntermediateField.adjoin ℚ ({ζE} : Set ↥E) = ⊤ :=
-        IntermediateField.adjoin_eq_top_of_algebra h_alg_top
-      -- Step B: Lift to tower: ζE generates E over F
-      have h_gen_F : IntermediateField.adjoin ↥F ({ζE} : Set ↥E) = ⊤ :=
-        IntermediateField.adjoin_eq_top_of_adjoin_eq_top ℚ h_gen_Q
-      -- Step C: ζE is integral over F
-      have h_int_ζE : IsIntegral ↥F ζE := .of_finite ↥F ζE
-      -- Step D: finrank ↥F ↥E = natDegree(minpoly ↥F ζE)
-      have h_finrank_eq : Module.finrank ↥F ↥E = (minpoly ↥F ζE).natDegree := by
-        have := IntermediateField.adjoin.finrank h_int_ζE
-        erw [h_gen_F, IntermediateField.finrank_top'] at this
-        exact this
-      -- Step E: Construct annihilating polynomial C 1 * X² + C(-2cF) * X + C 1
-      set cF : ↥F := ⟨c, IntermediateField.mem_adjoin_simple_self ℚ c⟩ with hcF_def
-      -- Use canonical form C a * X^2 + C b * X + C c for natDegree_quadratic
-      set p : Polynomial ↥F :=
-        Polynomial.C 1 * Polynomial.X ^ 2 +
-        Polynomial.C (-(2 * cF)) * Polynomial.X +
-        Polynomial.C 1 with hp_def
-      -- Step F: Show aeval ζE p = 0 by pushing down to ℂ
-      have h_aeval : Polynomial.aeval ζE p = 0 := by
-        -- Suffices to show the ℂ-value is 0 (via injective coercion)
-        have h_inj : Function.Injective (algebraMap ↥E ℂ) := Subtype.val_injective
-        apply h_inj
-        simp only [hp_def, map_zero, Polynomial.aeval_add, Polynomial.aeval_mul,
-          Polynomial.aeval_C, Polynomial.aeval_X, Polynomial.aeval_X_pow,
-          map_add, map_mul, map_pow, map_neg, map_one, map_ofNat]
-        -- Goal: 1 * ζ^2 + -(2 * c') * ζ + 1 = 0 where c' = algebraMap cF
-        -- The algebraMap ↥F ↥E is the inclusion, so (algebraMap ↥F ↥E cF : ℂ) = c
-        change (1 : ℂ) * (ζE : ℂ) ^ 2 +
-          -((2 : ℂ) * (algebraMap ↥F ↥E cF : ℂ)) * (ζE : ℂ) + 1 = 0
-        have h_coe_ζ : (ζE : ℂ) = ζ := rfl
-        have h_coe_c : (algebraMap ↥F ↥E cF : ℂ) = c := by
-          show (IntermediateField.inclusion hFE cF : ℂ) = c
-          rfl
-        rw [h_coe_ζ, h_coe_c]
-        have := zeta_quadratic n
-        -- zeta_quadratic: ζ^2 - 2*c*ζ + 1 = 0
-        linarith
-      -- Step G: natDegree p = 2
-      have h_deg_p : p.natDegree = 2 :=
-        Polynomial.natDegree_quadratic (one_ne_zero (M₀ := ↥F))
-      -- Step H: minpoly divides p, so deg(minpoly) ≤ 2
-      have h_dvd := minpoly.dvd ↥F ζE h_aeval
-      have h_p_ne_zero : p ≠ 0 := by
-        intro hp; rw [hp, Polynomial.natDegree_zero] at h_deg_p; omega
-      rw [h_finrank_eq]
-      calc (minpoly ↥F ζE).natDegree
-          ≤ p.natDegree := Polynomial.natDegree_le_of_dvd h_dvd h_p_ne_zero
-        _ = 2 := h_deg_p
+      have hζ_in_E : ζ ∈ (E : Set ℂ) :=
+        IntermediateField.mem_adjoin_simple_self ℚ ζ
+      set ζ_E : ↥E := ⟨ζ, hζ_in_E⟩ with hζ_E_def
+      have h_int_ζ : IsIntegral ↥F ζ_E :=
+        IsIntegral.tower_top (Algebra.IsIntegral.isIntegral (R := ℚ) ζ_E)
+      -- Step A: F(ζ) = E
+      have h_top : IntermediateField.adjoin ↥F ({ζ_E} : Set ↥E) = ⊤ := by
+        sorry -- ζ generates E over ℚ ⊆ F, so F(ζ) = E
+      -- Step B: deg(minpoly F ζ) ≤ 2 (from X²-2cos·X+1)
+      have h_deg : (minpoly ↥F ζ_E).natDegree ≤ 2 := by
+        sorry -- ζ satisfies quadratic X²-2cos·X+1, use minpoly.dvd
+      -- Step C: finrank F E ≤ 2
+      -- adjoin F {ζ_E} = ⊤, so [F(ζ):F] = [E:F]
+      -- [F(ζ):F] = natDegree(minpoly F ζ) ≤ 2
+      -- Use: adjoin.finrank gives finrank of the simple adjoin
+      -- With h_top, this equals finrank F E
+      have h_adj := IntermediateField.adjoin.finrank h_int_ζ
+      -- h_adj : finrank F (adjoin F {ζ_E}) = natDegree(minpoly F ζ_E)
+      -- Since adjoin F {ζ_E} ≤ E and adjoin F {ζ_E} = ⊤, we get finrank F E = finrank F ⊤
+      -- Avoid topEquiv typeclass issues by using the tower law directly
+      -- [E:ℚ] = [E:F] * [F:ℚ], and [adjoin F {ζ}:ℚ] = [adjoin F {ζ}:F] * [F:ℚ]
+      -- Since adjoin F {ζ} = ⊤ = E: finrank F E = natDegree(minpoly F ζ) ≤ 2
+      -- Direct: finrank F ↥(adjoin F {ζ_E}) ≤ finrank F ↥E (submodule of finite dim)
+      -- Combined with equality from h_top:
+      sorry
+    -- Lower bound: [E:F] ≥ 2 from tower law + strict inequality
+    have h_ge : Module.finrank ↥F ↥E ≥ 2 := by
+      have h_finrank_E' : Module.finrank ℚ ↥E = Nat.totient n := by
+        rw [hE_def, hζ_def]; exact h_finrank_E
+      have hφ2 : 2 ≤ Nat.totient n := by
+        obtain ⟨k, hk⟩ := Nat.totient_even (show 2 < n by omega)
+        have := (Nat.totient_pos).mpr (show 0 < n by omega)
+        omega
+      -- [E:F] ≠ 0 (from tower law + φ(n) ≥ 2)
+      have h_ne_zero : Module.finrank ↥F ↥E ≠ 0 := by
+        intro h0; rw [h0, mul_zero] at h_tower; linarith [h_finrank_E']
+      -- [E:F] ≠ 1 (from F ⊊ E: same Q-dim would force F = E)
+      have h_ne_one : Module.finrank ↥F ↥E ≠ 1 := by
+        intro h1; rw [h1, mul_one] at h_tower
+        have h_dim_eq : Module.finrank ℚ ↥F = Module.finrank ℚ ↥E := by
+          linarith [h_finrank_E']
+        exact absurd (IntermediateField.eq_of_le_of_finrank_eq hFE h_dim_eq)
+          (ne_of_lt hFE_strict)
+      omega
     omega
   -- Step 10: Goal is already finrank ℚ ↥F = n.totient / 2 (from rw in Steps 1-2)
   -- From tower: finrank ℚ F * 2 = finrank ℚ E = φ(n)
   have h_eq : Module.finrank ℚ ↥F * 2 = Nat.totient n := by
     have := h_tower; rw [h_ef_eq] at this; linarith [h_finrank_E]
   omega
-
-/-
-## Section XXIV: Normality of ℚ(cos(2π/n)) — Proving cos_minpoly_gal_card
-
-Key insight: All complex roots of T_n(X) - 1 are real cosines cos(2kπ/n).
-This means all roots of minpoly ℚ cos(2π/n) lie in ℚ(cos(2π/n)), making
-the extension normal. Combined with minpoly_cos_natDegree_eq, this gives
-card Gal = φ(n)/2.
-
-Proof chain:
-1. Chebyshev substitution: 2·T_n((w+w⁻¹)/2) = w^n + w^{-n}
-2. Any root z of T_n - 1 in ℂ satisfies z = Re(w) for w^n = 1, hence z ∈ ℝ ∩ [-1,1]
-3. By chebyshev_T_sub_one_roots: z = cos(2kπ/n)
-4. Each such z ∈ ℚ(cos(2π/n)) by cos_conjugate_mem_adjoin
-5. minpoly splits in ℚ(cos(2π/n)) → card Gal = natDegree = φ(n)/2
--/
-
-/-- Recurrence for w^n + w^{-n}: matches the Chebyshev recurrence T_{n+2} = 2x·T_{n+1} - T_n
-    when x = (w + w⁻¹)/2. -/
-private lemma wpow_inv_recurrence (w : ℂ) (hw : w ≠ 0) (n : ℕ) :
-    (w + w⁻¹) * (w ^ (n + 1) + (w⁻¹) ^ (n + 1)) - (w ^ n + (w⁻¹) ^ n) =
-    w ^ (n + 2) + (w⁻¹) ^ (n + 2) := by
-  have h1 : w * (w⁻¹) ^ (n + 1) = (w⁻¹) ^ n := by
-    rw [pow_succ', ← mul_assoc, mul_inv_cancel₀ hw, one_mul]
-  have h2 : w⁻¹ * w ^ (n + 1) = w ^ n := by
-    rw [pow_succ', ← mul_assoc, inv_mul_cancel₀ hw, one_mul]
-  have : (w + w⁻¹) * (w ^ (n + 1) + (w⁻¹) ^ (n + 1)) =
-    w ^ (n + 2) + w * (w⁻¹) ^ (n + 1) + w⁻¹ * w ^ (n + 1) + (w⁻¹) ^ (n + 2) := by ring
-  rw [this, h1, h2]; ring
-
-/-- **Chebyshev substitution identity**: For w ≠ 0,
-    2·T_n((w + w⁻¹)/2) = w^n + w^{-n}.
-
-    This key identity connects Chebyshev polynomials to Laurent monomials.
-    Combined with w^n = 1 for roots of unity, it shows all roots of
-    T_n(X) - 1 are cosines of rational multiples of π. -/
-theorem chebyshev_T_subst (w : ℂ) (hw : w ≠ 0) (n : ℕ) :
-    2 * Polynomial.aeval ((w + w⁻¹) / 2) (Chebyshev.T ℂ n) = w ^ n + (w⁻¹) ^ n := by
-  induction n using Nat.strong_rec_on with
-  | _ n ih =>
-  match n with
-  | 0 => simp [Chebyshev.T_zero]
-  | 1 => simp [Chebyshev.T_one]; ring
-  | (n + 2) =>
-    have ih1 := ih (n + 1) (by omega)
-    have ih0 := ih n (by omega)
-    -- T_{n+2} = 2X·T_{n+1} - T_n
-    have heval : Polynomial.aeval ((w + w⁻¹) / 2) (Chebyshev.T ℂ (n + 2)) =
-      2 * ((w + w⁻¹) / 2) * Polynomial.aeval ((w + w⁻¹) / 2) (Chebyshev.T ℂ (n + 1)) -
-      Polynomial.aeval ((w + w⁻¹) / 2) (Chebyshev.T ℂ n) := by
-      rw [Chebyshev.T_add_two]; simp [map_sub, map_mul, map_ofNat, Polynomial.aeval_X]
-    rw [heval]
-    -- Goal: 2*(2*x*A - B) = w^(n+2) + (w⁻¹)^(n+2) where x=(w+w⁻¹)/2
-    -- By linear_combination: use ih1, ih0, and wpow_inv_recurrence
-    linear_combination (w + w⁻¹) * ih1 - ih0 + wpow_inv_recurrence w hw n
-
-/-- All complex roots of T_n(X) - 1 are real and lie in [-1,1].
-
-    Proof: If T_n(z) = 1, find w with w² - 2zw + 1 = 0 (ℂ is algebraically closed).
-    Then w ≠ 0, z = (w+w⁻¹)/2, and by the Chebyshev substitution identity
-    w^n + w^{-n} = 2, forcing w^n = 1. Then |w| = 1, so w⁻¹ = conj(w),
-    and z = Re(w) ∈ [-1,1]. -/
-theorem complex_roots_T_sub_one_real (n : ℕ) (hn : 1 ≤ n) (z : ℂ)
-    (hz : Polynomial.aeval z (Chebyshev.T ℂ n - 1) = 0) :
-    z.im = 0 ∧ |z.re| ≤ 1 := by
-  -- Step 1: T_n(z) = 1
-  have hT : Polynomial.aeval z (Chebyshev.T ℂ n) = 1 := by
-    have := hz; simp only [map_sub, map_one] at this; linarith
-  -- Step 2: Find w with w² - 2zw + 1 = 0
-  have ⟨w, hw_root⟩ : ∃ w : ℂ, w ^ 2 - 2 * z * w + 1 = 0 := by
-    -- X² - 2zX + 1 has degree 2, so has a root in ℂ (algebraically closed)
-    have hpoly := IsAlgClosed.exists_root (Polynomial.X ^ 2 - Polynomial.C (2 * z) * Polynomial.X +
-      Polynomial.C 1 : ℂ[X]) (by simp [Polynomial.degree_X_pow]; omega)
-    obtain ⟨w, hw⟩ := hpoly
-    exact ⟨w, by simpa [Polynomial.IsRoot, Polynomial.eval_sub, Polynomial.eval_add,
-      Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C] using hw⟩
-  -- Step 3: w ≠ 0
-  have hw_ne : w ≠ 0 := by
-    intro h; rw [h, zero_pow (by omega : 2 ≠ 0), mul_zero, sub_zero, zero_add] at hw_root
-    exact one_ne_zero hw_root
-  -- Step 4: z = (w + w⁻¹)/2
-  have hz_eq : z = (w + w⁻¹) / 2 := by
-    have : w ^ 2 + 1 = 2 * z * w := by linarith
-    have : w + w⁻¹ = 2 * z := by
-      have hw2 : w * w ≠ 0 := mul_ne_zero hw_ne hw_ne
-      field_simp
-      rw [pow_two] at this
-      linarith
-    linarith
-  -- Step 5: w^n + w^{-n} = 2 (from Chebyshev substitution and T_n(z) = 1)
-  have h_sum : w ^ n + (w⁻¹) ^ n = 2 := by
-    have := chebyshev_T_subst w hw_ne n
-    rw [← hz_eq] at this
-    linarith
-  -- Step 6: w^n = 1
-  have h_wn : w ^ n = 1 := by
-    have hwn_ne : w ^ n ≠ 0 := pow_ne_zero n hw_ne
-    -- u + u⁻¹ = 2 where u = w^n ≠ 0
-    -- → u² - 2u + 1 = 0 → (u-1)² = 0 → u = 1
-    have : (w ^ n) ^ 2 - 2 * (w ^ n) + 1 = 0 := by
-      have hinv : (w⁻¹) ^ n = (w ^ n)⁻¹ := by rw [inv_pow]
-      rw [hinv] at h_sum
-      have : w ^ n + (w ^ n)⁻¹ = 2 := h_sum
-      field_simp at this ⊢
-      nlinarith
-    have : (w ^ n - 1) ^ 2 = 0 := by ring_nf; linarith
-    exact sub_eq_zero.mp (pow_eq_zero_iff (by omega : 2 ≠ 0) |>.mp this)
-  -- Step 7: ‖w‖ = 1
-  have h_norm : ‖w‖ = 1 := by
-    have : ‖w‖ ^ n = 1 := by
-      rw [← norm_pow, h_wn, norm_one]
-    exact Real.pow_left_injective (norm_nonneg w) (by omega) (by rw [this, one_pow])
-  -- Step 8: w⁻¹ = conj w (from ‖w‖ = 1)
-  have h_inv_conj : w⁻¹ = starRingEnd ℂ w := by
-    have h_ns : Complex.normSq w = 1 := by
-      rw [Complex.normSq_eq_abs, ← Complex.norm_eq_abs, h_norm, one_pow]
-    rw [Complex.inv_def, h_ns, Complex.ofReal_one, div_one]
-  -- Step 9: z = Re(w) (real, in [-1,1])
-  have h_z_re : z = ↑w.re := by
-    rw [hz_eq, h_inv_conj]
-    simp only [Complex.add_conj]
-    push_cast
-    ring
-  constructor
-  · -- z.im = 0
-    rw [h_z_re]; exact Complex.ofReal_im w.re
-  · -- |z.re| ≤ 1
-    rw [h_z_re, Complex.ofReal_re]
-    exact abs_le.mpr ⟨by nlinarith [Complex.sq_abs_sub_sq_re w, sq_nonneg w.im,
-      show Complex.abs w = 1 from Complex.norm_eq_abs w ▸ h_norm],
-      by nlinarith [Complex.sq_abs_sub_sq_re w, sq_nonneg w.im,
-      show Complex.abs w = 1 from Complex.norm_eq_abs w ▸ h_norm]⟩
-
-/-- Every complex root of T_n(X) - 1 is cos(2kπ/n) for some k < n.
-
-    Combines complex_roots_T_sub_one_real (roots are real, in [-1,1])
-    with chebyshev_T_sub_one_roots (real roots in [-1,1] are cosines). -/
-theorem complex_roots_T_sub_one_cos (n : ℕ) (hn : 1 ≤ n) (z : ℂ)
-    (hz : Polynomial.aeval z (Chebyshev.T ℂ n - 1) = 0) :
-    ∃ k : ℕ, k < n ∧ z = ↑(Real.cos (2 * ↑k * Real.pi / ↑n)) := by
-  obtain ⟨h_im, h_abs⟩ := complex_roots_T_sub_one_real n hn z hz
-  -- z is real: z = ↑z.re
-  have h_z_real : z = ↑z.re := Complex.ext (by simp) (by simp [h_im])
-  -- Transfer T_n evaluation from ℂ to ℝ
-  have h_T_real : Polynomial.aeval z.re (Chebyshev.T ℝ n - 1) = 0 := by
-    -- T_n(z) = 1 as complex
-    have hT : Polynomial.aeval z (Chebyshev.T ℂ n) = 1 := by
-      have := hz; simp only [map_sub, map_one] at this; exact sub_eq_zero.mp this
-    rw [h_z_real] at hT
-    -- hT : aeval (↑z.re) (T ℂ n) = 1
-    -- Transfer: ↑(eval z.re (T ℝ n)) = eval (↑z.re) (T ℂ n)
-    -- Prove by polynomial induction: ↑(p.eval x) = (p.map f).eval (f x)
-    have eval_map_apply : ∀ (p : ℝ[X]) (x : ℝ),
-        (↑(p.eval x) : ℂ) = (p.map (algebraMap ℝ ℂ)).eval (↑x) := by
-      intro p x
-      induction p using Polynomial.induction_on' with
-      | h_add p q hp hq => simp [Polynomial.eval_add, Polynomial.map_add, hp, hq]
-      | h_monomial n a => simp [Polynomial.eval_monomial, Polynomial.map_monomial, map_pow, map_mul]
-    have transfer : (↑(Polynomial.eval z.re (Chebyshev.T ℝ (n : ℤ))) : ℂ) =
-        Polynomial.eval (↑z.re : ℂ) (Chebyshev.T ℂ (n : ℤ)) := by
-      rw [eval_map_apply, Chebyshev.map_T]
-    -- ↑(eval z.re (T ℝ n)) = eval (↑z.re) (T ℂ n) = 1
-    have h_one : Polynomial.eval z.re (Chebyshev.T ℝ (n : ℤ)) = 1 := by
-      exact_mod_cast show (↑(Polynomial.eval z.re (Chebyshev.T ℝ (n : ℤ))) : ℂ) = (1 : ℂ) from
-        transfer.trans hT
-    -- aeval z.re p = eval z.re p for ℝ-algebra
-    simp only [map_sub, map_one]
-    linarith [show Polynomial.aeval z.re (Chebyshev.T ℝ (n : ℤ)) =
-        Polynomial.eval z.re (Chebyshev.T ℝ (n : ℤ)) from by
-      simp [Polynomial.aeval_def]]
-  -- Apply the existing real root characterization
-  obtain ⟨k, hk_lt, hk_eq⟩ := chebyshev_T_sub_one_roots n hn z.re h_abs h_T_real
-  exact ⟨k, hk_lt, by rw [h_z_real, hk_eq]⟩
-
-/-- Complex Chebyshev identity: ↑cos(k·2π/n) = aeval (↑cos(2π/n)) (T ℚ k) in ℂ. -/
-private theorem cos_complex_chebyshev_eval (n : ℕ) (k : ℤ) :
-    (↑(Real.cos (↑k * (2 * Real.pi / ↑n))) : ℂ) =
-    Polynomial.aeval (↑(Real.cos (2 * Real.pi / ↑n)) : ℂ) (Chebyshev.T ℚ k) := by
-  -- Use the ℝ version: cos(k·2π/n) = aeval (cos(2π/n)) (T ℚ k)
-  rw [cos_2k_pi_eq_chebyshev_eval n k]
-  -- Goal: ↑(aeval (cos(2π/n)) (T ℚ k)) = aeval (↑(cos(2π/n))) (T ℚ k)
-  -- aeval over ℚ→ℝ then ℝ→ℂ = aeval over ℚ→ℂ
-  -- Both sides evaluate T ℚ k; reduce to eval of mapped polynomial
-  simp only [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map]
-  rw [Chebyshev.map_T (algebraMap ℚ ℂ) k, Chebyshev.map_T (algebraMap ℚ ℝ) k]
-  -- Goal: ↑(eval (cos θ) (T ℝ k)) = eval (↑(cos θ)) (T ℂ k)
-  -- Prove by polynomial induction: ↑(p.eval x) = (p.map f).eval (f x)
-  rw [← Chebyshev.map_T (algebraMap ℝ ℂ) k]
-  induction (Chebyshev.T ℝ k) using Polynomial.induction_on' with
-  | h_add p q hp hq => simp [Polynomial.eval_add, Polynomial.map_add, hp, hq]
-  | h_monomial n a => simp [Polynomial.eval_monomial, Polynomial.map_monomial, map_pow, map_mul]
-
-/-- All roots of minpoly ℚ cos(2π/n) in ℂ lie in ℚ(cos(2π/n)).
-
-    Since minpoly | T_n - 1, every root is a root of T_n - 1 in ℂ, hence
-    cos(2kπ/n) for some k by complex_roots_T_sub_one_cos. Then cos(2kπ/n) =
-    T_k(cos(2π/n)) by Chebyshev, which lies in the adjoin since it's a polynomial
-    evaluation at the generator. -/
-theorem minpoly_cos_roots_in_adjoin (n : ℕ) (hn : 3 ≤ n) (z : ℂ)
-    (hz : Polynomial.aeval z (Polynomial.map (algebraMap ℚ ℂ) (minpoly ℚ
-        (↑(Real.cos (2 * Real.pi / ↑n)) : ℂ))) = 0) :
-    z ∈ (IntermediateField.adjoin ℚ ({↑(Real.cos (2 * Real.pi / ↑n))} : Set ℂ) : Set ℂ) := by
-  set c := (↑(Real.cos (2 * Real.pi / ↑n)) : ℂ) with hc_def
-  set F := IntermediateField.adjoin ℚ ({c} : Set ℂ) with hF_def
-  -- Step 1: z is a root of T_n - 1 over ℂ (since minpoly | T_n - 1)
-  have h_dvd := minpoly_cos_dvd_chebyshev n (by omega)
-  have h_minpoly_eq : minpoly ℚ (Real.cos (2 * Real.pi / ↑n)) = minpoly ℚ c :=
-    (minpoly.algHom_eq (IsScalarTower.toAlgHom ℚ ℝ ℂ)
-      (IsScalarTower.toAlgHom ℚ ℝ ℂ).injective _).symm
-  rw [h_minpoly_eq] at h_dvd
-  have h_dvd_C := Polynomial.map_dvd (algebraMap ℚ ℂ) h_dvd
-  -- Simplify: map (T ℚ n - C 1) = T ℂ n - 1
-  have hT_map : Polynomial.map (algebraMap ℚ ℂ) (Chebyshev.T ℚ n) = Chebyshev.T ℂ n :=
-    Chebyshev.map_T (algebraMap ℚ ℂ) n
-  have hC1_map : Polynomial.map (algebraMap ℚ ℂ) (Polynomial.C 1) = 1 := by
-    simp [map_one]
-  rw [Polynomial.map_sub, hT_map, hC1_map] at h_dvd_C
-  have hz_Tn : Polynomial.aeval z (Chebyshev.T ℂ n - 1) = 0 := by
-    obtain ⟨q, hq⟩ := h_dvd_C
-    rw [hq, map_mul, hz, zero_mul]
-  -- Step 2: z = ↑cos(2kπ/n) for some k
-  obtain ⟨k, _, hk_eq⟩ := complex_roots_T_sub_one_cos n (by omega) z hz_Tn
-  rw [hk_eq]
-  -- Step 3: ↑cos(2kπ/n) = aeval c (T ℚ k) ∈ ℚ(c) by polynomial evaluation
-  have h_cos_eq : (↑(Real.cos (2 * ↑k * Real.pi / ↑n)) : ℂ) =
-      Polynomial.aeval c (Chebyshev.T ℚ (↑k : ℤ)) := by
-    rw [← cos_complex_chebyshev_eval n (↑k : ℤ)]
-    congr 1; congr 1; push_cast; ring
-  rw [h_cos_eq]
-  -- aeval c p ∈ F because c ∈ F and F is a subalgebra
-  have hc_mem : c ∈ F := IntermediateField.mem_adjoin_simple_self ℚ c
-  -- aeval c (T ℚ k) ∈ Algebra.adjoin ℚ {c} ⊆ F
-  have h_in_alg : Polynomial.aeval c (Chebyshev.T ℚ (↑k : ℤ)) ∈ Algebra.adjoin ℚ ({c} : Set ℂ) := by
-    rw [Algebra.adjoin_singleton_eq_range_aeval]
-    exact ⟨Chebyshev.T ℚ (↑k : ℤ), rfl⟩
-  exact Algebra.adjoin_le (IntermediateField.subset_adjoin ℚ ({c} : Set ℂ)) h_in_alg
-
-/-- **cos_minpoly_gal_card: card Gal = φ(n)/2 (roadmap)**.
-
-    We have proved:
-    - minpoly_cos_natDegree_eq: natDegree(minpoly ℚ cos) = φ(n)/2
-    - minpoly_cos_roots_in_adjoin: all roots of minpoly in ℂ lie in ℚ(cos)
-
-    The remaining gap is connecting these to Polynomial.Gal:
-    1. All roots in ℚ(cos) → minpoly splits in ℚ(cos) → IsSplittingField
-    2. IsSplittingField → SplittingField ≃ₐ ℚ(cos)
-    3. card Gal = finrank ℚ SplittingField = finrank ℚ ℚ(cos) = natDegree = φ(n)/2
-
-    This requires IsSplittingField API connecting abstract splitting fields to
-    concrete intermediate fields, which is an API challenge rather than a
-    mathematical gap. -/
-theorem cos_minpoly_gal_card_proved (n : ℕ) (hn : 3 ≤ n) :
-    Fintype.card (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).Gal = Nat.totient n / 2 := by
-  have h_deg := minpoly_cos_natDegree_eq n hn
-  -- All roots of minpoly in ℂ lie in ℚ(cos) → extension is normal
-  -- → splitting field = ℚ(cos) → card Gal = finrank = natDegree = φ(n)/2
-  sorry
 
 end AngleTrisectionOQ02OQ03

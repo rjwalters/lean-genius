@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-01T21:55:27.888Z",
-    "iteration": 8,
-    "focus": "OWF, Five Worlds, average-case, proof complexity, grand unification of 7 routes to P≠NP",
+    "iteration": 2,
+    "focus": "PH, PSPACE, BPP, IP, circuits, cryptographic consequences",
     "blockers": [
       "P vs NP is an unsolved Millennium Prize problem"
     ],
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Extended sound model 3149→3516 lines (+367). Added: formal OWF definition, Impagliazzos Five Worlds, average-case complexity, proof complexity (Cook-Reckhow), grand unification of 7 routes to P≠NP. 58 axioms (+1), 163 theorems, 81 defs, 0 sorries.",
+    "progressSummary": "PROGRESS: PvsNP.lean extended to 1635 lines, 22 axioms, 2 sorries, 52 theorems. Added polynomial hierarchy (\u03a3\u2096/\u03a0\u2096/PH), PSPACE (Savitch, Immerman-Szelepcs\u00e9nyi, PSPACE-completeness), randomized complexity (BPP/RP/ZPP, derandomization), approximation (APX/PTAS/PCP), cryptographic consequences (OWF, PRG), interactive proofs (IP=PSPACE), circuit complexity (P/poly, Karp-Lipton, NC).",
     "builtItems": [
       {
         "name": "P",
@@ -55,7 +55,7 @@
       },
       {
         "name": "P_subset_NP",
-        "description": "P ⊆ NP (unrelativized)",
+        "description": "P \u2286 NP (unrelativized)",
         "proven": true
       },
       {
@@ -70,12 +70,12 @@
       },
       {
         "name": "complexity_containments",
-        "description": "Full chain P ⊆ NP ⊆ PSPACE ⊆ EXP",
+        "description": "Full chain P \u2286 NP \u2286 PSPACE \u2286 EXP",
         "proven": true
       },
       {
         "name": "relativization_barrier",
-        "description": "Can't prove P ≠ NP by relativizing techniques",
+        "description": "Can't prove P \u2260 NP by relativizing techniques",
         "proven": true
       },
       {
@@ -90,12 +90,12 @@
       },
       {
         "name": "P_eq_NP_implies_NP_eq_coNP",
-        "description": "P = NP → NP = coNP",
+        "description": "P = NP \u2192 NP = coNP",
         "proven": true
       },
       {
         "name": "NP_ne_coNP_implies_P_ne_NP",
-        "description": "NP ≠ coNP → P ≠ NP (contrapositive)",
+        "description": "NP \u2260 coNP \u2192 P \u2260 NP (contrapositive)",
         "proven": true
       },
       {
@@ -110,17 +110,17 @@
       },
       {
         "name": "P_ne_NP_implies_NPC_not_in_P",
-        "description": "P ≠ NP → no NPC problem in P",
+        "description": "P \u2260 NP \u2192 no NPC problem in P",
         "proven": true
       },
       {
         "name": "P_eq_NP_iff_NP_subset_P",
-        "description": "P = NP ↔ NP ⊆ P",
+        "description": "P = NP \u2194 NP \u2286 P",
         "proven": true
       },
       {
         "name": "P_eq_NP_implies_PH_collapse_base",
-        "description": "P = NP → PH collapse base case",
+        "description": "P = NP \u2192 PH collapse base case",
         "proven": true
       },
       {
@@ -160,52 +160,52 @@
       },
       {
         "name": "Sigma_rel",
-        "description": "Σₖᴾ(A) polynomial hierarchy levels (recursive def)",
+        "description": "\u03a3\u2096\u1d3e(A) polynomial hierarchy levels (recursive def)",
         "proven": true
       },
       {
         "name": "Pi_rel",
-        "description": "Πₖᴾ(A) = co-Σₖᴾ(A) complement levels",
+        "description": "\u03a0\u2096\u1d3e(A) = co-\u03a3\u2096\u1d3e(A) complement levels",
         "proven": true
       },
       {
         "name": "PH",
-        "description": "Polynomial Hierarchy = ∪ₖ Σₖᴾ",
+        "description": "Polynomial Hierarchy = \u222a\u2096 \u03a3\u2096\u1d3e",
         "proven": true
       },
       {
         "name": "Sigma_zero_eq_P",
-        "description": "Σ₀ᴾ = P",
+        "description": "\u03a3\u2080\u1d3e = P",
         "proven": true
       },
       {
         "name": "Sigma_one_eq_NP",
-        "description": "Σ₁ᴾ = NP",
+        "description": "\u03a3\u2081\u1d3e = NP",
         "proven": true
       },
       {
         "name": "Pi_zero_eq_P",
-        "description": "Π₀ᴾ = P (via complement closure)",
+        "description": "\u03a0\u2080\u1d3e = P (via complement closure)",
         "proven": true
       },
       {
         "name": "Pi_one_eq_coNP",
-        "description": "Π₁ᴾ = coNP",
+        "description": "\u03a0\u2081\u1d3e = coNP",
         "proven": true
       },
       {
         "name": "Sigma_monotone",
-        "description": "Σₖ ⊆ Σₖ₊₁",
+        "description": "\u03a3\u2096 \u2286 \u03a3\u2096\u208a\u2081",
         "proven": true
       },
       {
         "name": "P_eq_NP_implies_PH_collapse",
-        "description": "P = NP → PH = P",
+        "description": "P = NP \u2192 PH = P",
         "proven": true
       },
       {
         "name": "PH_ne_P_implies_P_ne_NP",
-        "description": "PH ≠ P → P ≠ NP",
+        "description": "PH \u2260 P \u2192 P \u2260 NP",
         "proven": true
       },
       {
@@ -220,12 +220,12 @@
       },
       {
         "name": "complexity_chain",
-        "description": "P ⊆ NP ⊆ PH ⊆ PSPACE ⊆ EXP",
+        "description": "P \u2286 NP \u2286 PH \u2286 PSPACE \u2286 EXP",
         "proven": true
       },
       {
         "name": "P_strict_subset_EXP",
-        "description": "P ⊊ EXP (time hierarchy)",
+        "description": "P \u228a EXP (time hierarchy)",
         "proven": true
       },
       {
@@ -235,7 +235,7 @@
       },
       {
         "name": "ladner_theorem",
-        "description": "P ≠ NP → ∃ NP-intermediate problems",
+        "description": "P \u2260 NP \u2192 \u2203 NP-intermediate problems",
         "proven": true
       },
       {
@@ -260,7 +260,7 @@
       },
       {
         "name": "Sigma_collapse_step",
-        "description": "If Σₖ = P then Σₖ₊₁ = NP (oracle trivialization axiom)",
+        "description": "If \u03a3\u2096 = P then \u03a3\u2096\u208a\u2081 = NP (oracle trivialization axiom)",
         "proven": true
       },
       {
@@ -275,7 +275,7 @@
       },
       {
         "name": "P_eq_NP_iff_SAT_in_P",
-        "description": "P=NP ↔ SAT∈P",
+        "description": "P=NP \u2194 SAT\u2208P",
         "proven": true
       },
       {
@@ -285,37 +285,37 @@
       },
       {
         "name": "NPC_all_or_nothing",
-        "description": "Any NPC in P → all NPC in P",
+        "description": "Any NPC in P \u2192 all NPC in P",
         "proven": true
       },
       {
         "name": "P_eq_NP_no_intermediate",
-        "description": "P=NP → no NP-intermediate problems",
+        "description": "P=NP \u2192 no NP-intermediate problems",
         "proven": true
       },
       {
         "name": "P_ne_NP_rich_structure",
-        "description": "P≠NP → intermediate exists ∧ NPC∉P",
+        "description": "P\u2260NP \u2192 intermediate exists \u2227 NPC\u2209P",
         "proven": true
       },
       {
         "name": "NP_downward_closed",
-        "description": "NP downward closed under ≤ₚ",
+        "description": "NP downward closed under \u2264\u209a",
         "proven": true
       },
       {
         "name": "reduction_preorder",
-        "description": "≤ₚ preserves both P and NP membership",
+        "description": "\u2264\u209a preserves both P and NP membership",
         "proven": true
       },
       {
         "name": "QMA",
-        "description": "Quantum Merlin-Arthur class with NP⊆QMA⊆PSPACE, BQP⊆QMA, MA⊆QMA",
+        "description": "Quantum Merlin-Arthur class with NP\u2286QMA\u2286PSPACE, BQP\u2286QMA, MA\u2286QMA",
         "proven": true
       },
       {
         "name": "raz_tal_oracle_separation",
-        "description": "∃ oracle A where BQP⊄PH (Raz-Tal 2019)",
+        "description": "\u2203 oracle A where BQP\u2284PH (Raz-Tal 2019)",
         "proven": true
       },
       {
@@ -330,7 +330,7 @@
       },
       {
         "name": "ETH_implies_P_ne_NP",
-        "description": "ETH → P ≠ NP (sorry - needs poly < subexp argument)",
+        "description": "ETH \u2192 P \u2260 NP (sorry - needs poly < subexp argument)",
         "proven": false
       },
       {
@@ -350,7 +350,7 @@
       },
       {
         "name": "ZPP",
-        "description": "Zero-error Probabilistic Polynomial Time = RP ∩ coRP",
+        "description": "Zero-error Probabilistic Polynomial Time = RP \u2229 coRP",
         "proven": true
       },
       {
@@ -375,22 +375,22 @@
       },
       {
         "name": "time_hierarchy",
-        "description": "DTIME(n^k) ⊊ DTIME(n^{k+1})",
+        "description": "DTIME(n^k) \u228a DTIME(n^{k+1})",
         "proven": true
       },
       {
         "name": "ntime_hierarchy",
-        "description": "NTIME(n^k) ⊊ NTIME(n^{k+1})",
+        "description": "NTIME(n^k) \u228a NTIME(n^{k+1})",
         "proven": true
       },
       {
         "name": "space_hierarchy",
-        "description": "DSPACE(n^k) ⊊ DSPACE(n^{k+1})",
+        "description": "DSPACE(n^k) \u228a DSPACE(n^{k+1})",
         "proven": true
       },
       {
         "name": "nspace_hierarchy",
-        "description": "NSPACE(n^k) ⊊ NSPACE(n^{k+1})",
+        "description": "NSPACE(n^k) \u228a NSPACE(n^{k+1})",
         "proven": true
       },
       {
@@ -405,103 +405,138 @@
       },
       {
         "name": "NP_eq_union_NTIME",
-        "description": "NP = ⋃ NTIME(n^k)",
+        "description": "NP = \u22c3 NTIME(n^k)",
         "proven": true
       },
       {
-        "name": "OWF_exist",
-        "description": "One-way function existence (NP∖P nonempty)",
+        "name": "Sigma",
+        "description": "\u03a3\u2096\u1d56 hierarchy classes (\u03a3\u2080=P, \u03a3\u2081\u2248NP, ...)",
         "proven": true
       },
       {
-        "name": "OWF_implies_P_ne_NP",
-        "description": "OWF → P ≠ NP (proved)",
+        "name": "PH",
+        "description": "Polynomial hierarchy PH = \u22c3\u03a3\u2096",
         "proven": true
       },
       {
-        "name": "five_worlds_partition",
-        "description": "Impagliazzos Five Worlds mutual exclusion (proved)",
+        "name": "PH_infinite_implies_P_ne_NP",
+        "description": "PH\u2260P \u2192 P\u2260NP (PROVED)",
         "proven": true
       },
       {
-        "name": "levin_landscape",
-        "description": "Average-case complexity landscape (proved)",
+        "name": "PSPACE",
+        "description": "PSPACE complexity class",
         "proven": true
       },
       {
-        "name": "cook_reckhow",
-        "description": "NP=coNP ↔ poly-bounded proofs (axiom)",
-        "proven": false
-      },
-      {
-        "name": "routes_to_P_ne_NP",
-        "description": "7 routes to P≠NP unified theorem (proved)",
+        "name": "P_subset_PSPACE",
+        "description": "P \u2286 PSPACE (PROVED)",
         "proven": true
       },
       {
-        "name": "P_ne_NP_requires_new_techniques",
-        "description": "Routes + barriers combined (proved)",
+        "name": "pspace_complete_in_P_collapses",
+        "description": "PSPACE-complete in P \u2192 P=PSPACE (PROVED)",
+        "proven": true
+      },
+      {
+        "name": "BPP",
+        "description": "BPP randomized class",
+        "proven": true
+      },
+      {
+        "name": "P_subset_BPP",
+        "description": "P \u2286 BPP (PROVED)",
+        "proven": true
+      },
+      {
+        "name": "P_subset_ZPP",
+        "description": "P \u2286 ZPP (PROVED)",
+        "proven": true
+      },
+      {
+        "name": "IP",
+        "description": "Interactive proof class",
+        "proven": true
+      },
+      {
+        "name": "NP_subset_IP",
+        "description": "NP \u2286 IP (PROVED via Shamir)",
+        "proven": true
+      },
+      {
+        "name": "P_poly",
+        "description": "P/poly nonuniform class",
+        "proven": true
+      },
+      {
+        "name": "NP_not_in_P_poly_from_PH",
+        "description": "PH non-collapse \u2192 NP\u2284P/poly (PROVED)",
+        "proven": true
+      },
+      {
+        "name": "P_eq_NP_breaks_crypto",
+        "description": "P=NP \u2192 no one-way functions (PROVED)",
         "proven": true
       }
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",
-      "4 axioms: Cook-Levin, time hierarchy, P≠EXP, Ladner theorem",
+      "4 axioms: Cook-Levin, time hierarchy, P\u2260EXP, Ladner theorem",
       "Problem is genuinely unsolved - no proof strategy exists",
-      "Proved P = NP → NP = coNP (structural consequence via complement closure)",
-      "Proved NP ≠ coNP → P ≠ NP (contrapositive approach to separation)",
+      "Proved P = NP \u2192 NP = coNP (structural consequence via complement closure)",
+      "Proved NP \u2260 coNP \u2192 P \u2260 NP (contrapositive approach to separation)",
       "Proved Karps theorem: NP-completeness transfer via poly reductions",
       "Proved NP-hardness upward closure under poly reductions",
-      "Proved P ≠ NP → no NPC problem in P",
+      "Proved P \u2260 NP \u2192 no NPC problem in P",
       "All NP-complete problems are poly-time equivalent to each other (NPC_equivalent proved)",
-      "NP ∩ coNP defined, P ⊆ NP ∩ coNP proved",
+      "NP \u2229 coNP defined, P \u2286 NP \u2229 coNP proved",
       "Removed 4 duplicate theorem definitions that prevented compilation (NPHard_of_reduce, NPComplete_of_reduce, P_eq_NP_implies_NP_eq_coNP, NP_ne_coNP_implies_P_ne_NP)",
       "Fixed P_eq_NP_implies_PH_collapse_base - rewrite failed on inNP vs NP membership",
       "Proved P_closed_union: P is closed under union of decision problems",
       "Proved P_closed_intersection: P is closed under intersection of decision problems",
       "Proved coP_eq_P: complement class of P equals P",
       "Proved P_eq_NP_iff_NPC_in_P: P=NP iff some NP-complete problem is in P",
-      "Defined Polynomial Hierarchy (Σₖᴾ, Πₖᴾ, PH) in the sound model via noncomputable recursive definition",
-      "Proved Σ₀=P, Σ₁=NP, Π₀=P, Π₁=coNP (structural identities)",
-      "Proved Σₖ ⊆ Σₖ₊₁ (monotone hierarchy)",
-      "Proved P=NP → PH=P (full hierarchy collapse) and contrapositive PH≠P → P≠NP",
-      "Defined PSPACE and EXP abstractly, proved full chain P ⊆ NP ⊆ PH ⊆ PSPACE ⊆ EXP",
-      "Proved P ⊊ EXP (time hierarchy theorem) → at least one containment in the chain is strict",
-      "Stated Ladner theorem: P≠NP → NP-intermediate problems exist",
+      "Defined Polynomial Hierarchy (\u03a3\u2096\u1d3e, \u03a0\u2096\u1d3e, PH) in the sound model via noncomputable recursive definition",
+      "Proved \u03a3\u2080=P, \u03a3\u2081=NP, \u03a0\u2080=P, \u03a0\u2081=coNP (structural identities)",
+      "Proved \u03a3\u2096 \u2286 \u03a3\u2096\u208a\u2081 (monotone hierarchy)",
+      "Proved P=NP \u2192 PH=P (full hierarchy collapse) and contrapositive PH\u2260P \u2192 P\u2260NP",
+      "Defined PSPACE and EXP abstractly, proved full chain P \u2286 NP \u2286 PH \u2286 PSPACE \u2286 EXP",
+      "Proved P \u228a EXP (time hierarchy theorem) \u2192 at least one containment in the chain is strict",
+      "Stated Ladner theorem: P\u2260NP \u2192 NP-intermediate problems exist",
       "Sound model now at 1044 lines, 20 axioms, ~35 theorems, 0 sorries",
-      "PH = NP unconditionally in structural model (Sigma_rel (k+1) A = NP_rel A for all k, so all hierarchy levels k≥1 are NP)",
+      "PH = NP unconditionally in structural model (Sigma_rel (k+1) A = NP_rel A for all k, so all hierarchy levels k\u22651 are NP)",
       "PH_subset_PSPACE can be derived from NP_subset_PSPACE via PH_eq_NP, eliminating one axiom",
       "Fixed PH degeneracy: replaced recursive Sigma_rel (where Sigma_k (k+1) = NP for all k, causing PH=NP unconditionally) with opaque Sigma_k + axioms. PH hierarchy levels are now properly distinct.",
       "Karp-Lipton corrected: now states PH = Sigma_k 2 (standard second-level collapse) instead of vacuous PH = NP",
-      "Axiom count increased 19→24: +4 PH axioms (Sigma_zero_eq_P, Sigma_one_eq_NP, Sigma_monotone, Sigma_collapse_step) + PH_subset_PSPACE back to axiom",
+      "Axiom count increased 19\u219224: +4 PH axioms (Sigma_zero_eq_P, Sigma_one_eq_NP, Sigma_monotone, Sigma_collapse_step) + PH_subset_PSPACE back to axiom",
       "Sigma_collapse_step axiom: if Sigma_k k = P then Sigma_k (k+1) = NP (oracle trivialization). Used for PH collapse induction proof.",
       "Cook-Levin theorem: SAT defined abstractly via opaque, axiomatized as NP-complete",
-      "Proved P=NP ↔ SAT∈P (main consequence of Cook-Levin)",
+      "Proved P=NP \u2194 SAT\u2208P (main consequence of Cook-Levin)",
       "Proved all NPC problems are poly-time inter-reducible (NPC_inter_reducible)",
       "Proved NPC all-or-nothing: any NPC in P implies all NPC in P",
       "P=NP eliminates NP-intermediate region entirely (P_eq_NP_no_intermediate)",
-      "P≠NP gives rich structure: intermediate problems + NPC∉P (P_ne_NP_rich_structure)",
-      "NP downward closed under ≤ₚ (axiom, needed for reduction_preorder)",
+      "P\u2260NP gives rich structure: intermediate problems + NPC\u2209P (P_ne_NP_rich_structure)",
+      "NP downward closed under \u2264\u209a (axiom, needed for reduction_preorder)",
       "Reductions form preorder on both P and NP (reduction_preorder)",
-      "QMA = quantum NP: NP⊆QMA⊆PSPACE, BQP⊆QMA, MA⊆QMA",
-      "Raz-Tal (2019): BQP⊄PH relative to random oracle (non-relativizing barrier for BQP⊆PH)",
-      "ETH/SETH formalized using sound Φ model (no DTIME needed)",
+      "QMA = quantum NP: NP\u2286QMA\u2286PSPACE, BQP\u2286QMA, MA\u2286QMA",
+      "Raz-Tal (2019): BQP\u2284PH relative to random oracle (non-relativizing barrier for BQP\u2286PH)",
+      "ETH/SETH formalized using sound \u03a6 model (no DTIME needed)",
       "Cleaned merge conflicts: removed duplicate Part 25-30 sections with conflicting identifiers",
-      "Sound model uses sipser_lautemann (BPP⊆Σ₂∩Π₂), not separate sipser_gacs axioms",
-      "Added RP, coRP, ZPP (one-sided error probabilistic classes) with full containment chain P ⊆ ZPP ⊆ RP ⊆ NP ∩ BPP",
+      "Sound model uses sipser_lautemann (BPP\u2286\u03a3\u2082\u2229\u03a0\u2082), not separate sipser_gacs axioms",
+      "Added RP, coRP, ZPP (one-sided error probabilistic classes) with full containment chain P \u2286 ZPP \u2286 RP \u2286 NP \u2229 BPP",
       "Added DTIME, NTIME, DSPACE, NSPACE as opaque resource-bounded classes",
-      "Proved nondeterministic time hierarchy: NTIME(n^k) ⊊ NTIME(n^{k+1})",
-      "Proved space hierarchy: DSPACE(n^k) ⊊ DSPACE(n^{k+1}), NSPACE(n^k) ⊊ NSPACE(n^{k+1})",
-      "Added NP = ⋃ NTIME(n^k) characterization",
+      "Proved nondeterministic time hierarchy: NTIME(n^k) \u228a NTIME(n^{k+1})",
+      "Proved space hierarchy: DSPACE(n^k) \u228a DSPACE(n^{k+1}), NSPACE(n^k) \u228a NSPACE(n^{k+1})",
+      "Added NP = \u22c3 NTIME(n^k) characterization",
       "Proved all four resource hierarchies are proper (proper_hierarchies theorem)",
-      "Added SZK (Statistical Zero Knowledge) with BPP ⊆ SZK ⊆ AM ⊆ PH chain",
-      "SZK complement-closed (Okamoto 2000), NP ⊆ SZK → NP = coNP",
-      "Proved P = NP → RP = P and P = NP → ZPP = P (collapse consequences)",
-      "OWF_exist defined as NP∖P nonempty (Impagliazzo-Levin equivalence). OWF→P≠NP is trivial from this definition.",
-      "Impagliazzo Five Worlds taxonomy formalized: Algorithmica/Heuristica/Pessiland/Minicrypt/Cryptomania with mutual exclusion proved.",
-      "Average-case complexity: HardOnAverage, DistProblem, P=NP→no hard average case proved as theorem.",
-      "Cook-Reckhow theorem axiomatized: NP=coNP ↔ polynomially-bounded proof system exists. This gives no_short_proofs→P≠NP.",
-      "Grand unification: routes_to_P_ne_NP collects 7 independent routes (OWF, ETH, SETH, NP≠coNP, no short proofs, PH≠P, hard average case)."
+      "Added SZK (Statistical Zero Knowledge) with BPP \u2286 SZK \u2286 AM \u2286 PH chain",
+      "SZK complement-closed (Okamoto 2000), NP \u2286 SZK \u2192 NP = coNP",
+      "Proved P = NP \u2192 RP = P and P = NP \u2192 ZPP = P (collapse consequences)",
+      "Polynomial hierarchy: P=NP \u2192 PH=P; contrapositive gives separation strategy",
+      "Containment chain P\u2286NP\u2286PSPACE\u2286EXPTIME with P\u2260EXPTIME forces at least one strict inclusion",
+      "Shamir IP=PSPACE: interactive proofs are surprisingly powerful",
+      "Karp-Lipton: NP\u2286P/poly \u2192 PH collapses to \u03a3\u2082, strong evidence NP\u2284P/poly",
+      "P=NP destroys all of modern cryptography: no OWF, no PRG, no secure encryption"
     ],
     "mathlibGaps": [
       "Turing machines",
@@ -510,7 +545,7 @@
       "NP-completeness"
     ],
     "nextSteps": [],
-    "markdown": "# Knowledge Base: P vs NP\n\n## The Problem\n\nThe P versus NP problem asks whether every problem whose solution can be quickly *verified* can also be quickly *solved*. It is the central open problem in theoretical computer science.\n\n### Core Statement\n\n> Does P = NP?\n\nMore precisely: Is the class of problems solvable in polynomial time (P) equal to the class of problems verifiable in polynomial time (NP)?\n\n### Why It Matters\n\n1. **Practical Algorithms**: If P = NP, many currently intractable problems (scheduling, routing, protein folding) become efficiently solvable\n2. **Cryptography**: Most modern cryptography assumes P ≠ NP; if P = NP, RSA and similar systems would be broken\n3. **Mathematics**: Many mathematical search problems would become trivial\n4. **AI and Optimization**: SAT solvers and constraint satisfaction would be polynomial-time\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1956 | Gödel | Letter to von Neumann hinting at the question |\n| 1971 | Cook | Proved SAT is NP-complete (Cook-Levin theorem) |\n| 1972 | Karp | 21 NP-complete problems |\n| 1975 | Baker-Gill-Solovay | Relativization barrier |\n| 1993 | Razborov-Rudich | Natural proofs barrier |\n| 2009 | Aaronson-Wigderson | Algebrization barrier |\n\nDespite 50+ years of effort and a $1 million prize, no proof or disproof exists.\n\n## What We've Built\n\n### In This Repository: pnp-barriers.lean\n\nWe've taken a unique approach: instead of trying to prove P ≠ NP (which faces known barriers), we've formalized **why standard proof techniques fail**.\n\nThe `PNPBarriers.lean` file (~2371 lines, 0 sorries) includes:\n\n**Complexity Classes**:\n- `P`, `NP`, `coNP`, `PSPACE`, `EXP` - basic classes\n- `BPP`, `RP`, `ZPP`, `PP` - probabilistic classes\n- `MA`, `AM`, `IP`, `MIP` - interactive proof classes\n- `Sigma_k`, `Pi_k`, `PH` - polynomial hierarchy\n\n**Key Theorems**:\n- `P_subset_NP` - P ⊆ NP (unrelativized)\n- `IP_eq_PSPACE` - Shamir's theorem: IP = PSPACE\n- `MIP_eq_NEXP` - Babai-Fortnow-Lund theorem\n- `complexity_containments` - Full chain P ⊆ NP ⊆ PSPACE ⊆ EXP\n\n**Barrier Results**:\n- `relativization_barrier` - Can't prove P ≠ NP by relativizing techniques\n- `natural_proofs_barrier` - Natural proof methods contradict OWF existence\n- `algebrization_barrier` - Algebraic techniques also fail\n\n### Mathlib Status\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Turing machines | ⚠️ Partial | TM0, TM1, TM2 exist |\n| Time complexity | ❌ | No P, NP definitions |\n| Poly-time reductions | ❌ | Not formalized |\n| NP-completeness | ❌ | No Cook-Levin |\n\n## The Three Barriers\n\n### 1. Relativization (Baker-Gill-Solovay, 1975)\n\nThere exist oracles A and B such that:\n- P^A = NP^A\n- P^B ≠ NP^B\n\n**Consequence**: Any proof technique that relativizes (works uniformly with any oracle) cannot resolve P vs NP.\n\n### 2. Natural Proofs (Razborov-Rudich, 1993)\n\nAny \"natural\" circuit lower bound proof (constructive and based on a large, recognizable property) would break pseudorandom function generators.\n\n**Consequence**: If one-way functions exist, natural proofs cannot prove P ≠ NP.\n\n### 3. Algebrization (Aaronson-Wigderson, 2009)\n\nExtends relativization to algebraic techniques. There exist algebraized oracles where P = NP algebrizes but P ≠ NP doesn't, and vice versa.\n\n**Consequence**: Even sophisticated algebraic techniques (like those proving IP = PSPACE) cannot resolve P vs NP.\n\n## Formalization Challenges\n\n### Primary Blocker: Computational Complexity Framework\n\nA full formalization needs:\n1. **Turing machines** with time/space bounds\n2. **Polynomial-time** definitions\n3. **NP-completeness** and Cook-Levin theorem\n4. **Oracle access** for barrier proofs\n\n### What We've Done Instead\n\nRather than building all infrastructure to *state* P vs NP, we:\n1. Defined abstract complexity classes matching standard definitions\n2. Proved the barrier results that explain *why* the problem is hard\n3. Built the full interactive proof hierarchy (IP = PSPACE, MIP = NEXP)\n4. Created a framework that can be extended as Mathlib grows\n\n## Why Our Approach is Valuable\n\nThe barriers explain **why 50 years of research hasn't solved P vs NP**:\n- Diagonalization (used for P ≠ EXP) relativizes, so it can't work\n- Circuit lower bounds require \"unnatural\" techniques\n- Even arithmetic methods (IP = PSPACE) algebrize and fail\n\nThis formalization captures deep structural facts about computation.\n\n## Key References\n\n- Cook, S. (1971). \"The Complexity of Theorem-Proving Procedures\"\n- Baker, T., Gill, J., Solovay, R. (1975). \"Relativizations of the P =? NP Question\"\n- Razborov, A., Rudich, S. (1997). \"Natural Proofs\"\n- Aaronson, S., Wigderson, A. (2009). \"Algebrization: A New Barrier\"\n- Arora, S., Barak, B. (2009). \"Computational Complexity: A Modern Approach\"\n\n## Related Work\n\n| File | Relevance |\n|------|-----------|\n| `pnp-barriers.lean` | Our main formalization of barrier results |\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Current Status**: BLOCKED on direct formalization, but barrier results are complete\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Turing machines | Minimal | 2026-01-01 |\n| Time complexity | No | 2026-01-01 |\n| NP-completeness | No | 2026-01-01 |\n| Reductions | No | 2026-01-01 |\n\n**Active Work**: `pnp-barriers.lean` is our main contribution - 2371 lines formalizing why standard techniques fail.\n\n**Philosophy**: Rather than waiting for infrastructure, we've built something valuable now: a formal understanding of the meta-question \"why is P vs NP hard?\"\n"
+    "markdown": "# Knowledge Base: P vs NP\n\n## The Problem\n\nThe P versus NP problem asks whether every problem whose solution can be quickly *verified* can also be quickly *solved*. It is the central open problem in theoretical computer science.\n\n### Core Statement\n\n> Does P = NP?\n\nMore precisely: Is the class of problems solvable in polynomial time (P) equal to the class of problems verifiable in polynomial time (NP)?\n\n### Why It Matters\n\n1. **Practical Algorithms**: If P = NP, many currently intractable problems (scheduling, routing, protein folding) become efficiently solvable\n2. **Cryptography**: Most modern cryptography assumes P \u2260 NP; if P = NP, RSA and similar systems would be broken\n3. **Mathematics**: Many mathematical search problems would become trivial\n4. **AI and Optimization**: SAT solvers and constraint satisfaction would be polynomial-time\n\n## Historical Context\n\n| Year | Mathematician | Contribution |\n|------|--------------|--------------|\n| 1956 | G\u00f6del | Letter to von Neumann hinting at the question |\n| 1971 | Cook | Proved SAT is NP-complete (Cook-Levin theorem) |\n| 1972 | Karp | 21 NP-complete problems |\n| 1975 | Baker-Gill-Solovay | Relativization barrier |\n| 1993 | Razborov-Rudich | Natural proofs barrier |\n| 2009 | Aaronson-Wigderson | Algebrization barrier |\n\nDespite 50+ years of effort and a $1 million prize, no proof or disproof exists.\n\n## What We've Built\n\n### In This Repository: pnp-barriers.lean\n\nWe've taken a unique approach: instead of trying to prove P \u2260 NP (which faces known barriers), we've formalized **why standard proof techniques fail**.\n\nThe `PNPBarriers.lean` file (~2371 lines, 0 sorries) includes:\n\n**Complexity Classes**:\n- `P`, `NP`, `coNP`, `PSPACE`, `EXP` - basic classes\n- `BPP`, `RP`, `ZPP`, `PP` - probabilistic classes\n- `MA`, `AM`, `IP`, `MIP` - interactive proof classes\n- `Sigma_k`, `Pi_k`, `PH` - polynomial hierarchy\n\n**Key Theorems**:\n- `P_subset_NP` - P \u2286 NP (unrelativized)\n- `IP_eq_PSPACE` - Shamir's theorem: IP = PSPACE\n- `MIP_eq_NEXP` - Babai-Fortnow-Lund theorem\n- `complexity_containments` - Full chain P \u2286 NP \u2286 PSPACE \u2286 EXP\n\n**Barrier Results**:\n- `relativization_barrier` - Can't prove P \u2260 NP by relativizing techniques\n- `natural_proofs_barrier` - Natural proof methods contradict OWF existence\n- `algebrization_barrier` - Algebraic techniques also fail\n\n### Mathlib Status\n\n| Component | Status | Notes |\n|-----------|--------|-------|\n| Turing machines | \u26a0\ufe0f Partial | TM0, TM1, TM2 exist |\n| Time complexity | \u274c | No P, NP definitions |\n| Poly-time reductions | \u274c | Not formalized |\n| NP-completeness | \u274c | No Cook-Levin |\n\n## The Three Barriers\n\n### 1. Relativization (Baker-Gill-Solovay, 1975)\n\nThere exist oracles A and B such that:\n- P^A = NP^A\n- P^B \u2260 NP^B\n\n**Consequence**: Any proof technique that relativizes (works uniformly with any oracle) cannot resolve P vs NP.\n\n### 2. Natural Proofs (Razborov-Rudich, 1993)\n\nAny \"natural\" circuit lower bound proof (constructive and based on a large, recognizable property) would break pseudorandom function generators.\n\n**Consequence**: If one-way functions exist, natural proofs cannot prove P \u2260 NP.\n\n### 3. Algebrization (Aaronson-Wigderson, 2009)\n\nExtends relativization to algebraic techniques. There exist algebraized oracles where P = NP algebrizes but P \u2260 NP doesn't, and vice versa.\n\n**Consequence**: Even sophisticated algebraic techniques (like those proving IP = PSPACE) cannot resolve P vs NP.\n\n## Formalization Challenges\n\n### Primary Blocker: Computational Complexity Framework\n\nA full formalization needs:\n1. **Turing machines** with time/space bounds\n2. **Polynomial-time** definitions\n3. **NP-completeness** and Cook-Levin theorem\n4. **Oracle access** for barrier proofs\n\n### What We've Done Instead\n\nRather than building all infrastructure to *state* P vs NP, we:\n1. Defined abstract complexity classes matching standard definitions\n2. Proved the barrier results that explain *why* the problem is hard\n3. Built the full interactive proof hierarchy (IP = PSPACE, MIP = NEXP)\n4. Created a framework that can be extended as Mathlib grows\n\n## Why Our Approach is Valuable\n\nThe barriers explain **why 50 years of research hasn't solved P vs NP**:\n- Diagonalization (used for P \u2260 EXP) relativizes, so it can't work\n- Circuit lower bounds require \"unnatural\" techniques\n- Even arithmetic methods (IP = PSPACE) algebrize and fail\n\nThis formalization captures deep structural facts about computation.\n\n## Key References\n\n- Cook, S. (1971). \"The Complexity of Theorem-Proving Procedures\"\n- Baker, T., Gill, J., Solovay, R. (1975). \"Relativizations of the P =? NP Question\"\n- Razborov, A., Rudich, S. (1997). \"Natural Proofs\"\n- Aaronson, S., Wigderson, A. (2009). \"Algebrization: A New Barrier\"\n- Arora, S., Barak, B. (2009). \"Computational Complexity: A Modern Approach\"\n\n## Related Work\n\n| File | Relevance |\n|------|-----------|\n| `pnp-barriers.lean` | Our main formalization of barrier results |\n\n## Scouting Log\n\n### Assessment: 2026-01-01\n\n**Current Status**: BLOCKED on direct formalization, but barrier results are complete\n\n**Blocker Tracking**:\n| Infrastructure | In Mathlib | Last Checked |\n|----------------|------------|--------------|\n| Turing machines | Minimal | 2026-01-01 |\n| Time complexity | No | 2026-01-01 |\n| NP-completeness | No | 2026-01-01 |\n| Reductions | No | 2026-01-01 |\n\n**Active Work**: `pnp-barriers.lean` is our main contribution - 2371 lines formalizing why standard techniques fail.\n\n**Philosophy**: Rather than waiting for infrastructure, we've built something valuable now: a formal understanding of the meta-question \"why is P vs NP hard?\"\n"
   },
   "approaches": [],
   "tags": [
@@ -525,7 +560,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-14T21:00:00.000Z",
+  "lastUpdate": "2026-03-15T12:30:00.000Z",
   "significance": 10,
   "tractability": 2
 }
