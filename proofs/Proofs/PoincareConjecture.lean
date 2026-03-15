@@ -805,15 +805,212 @@ axiom hopf_fibers_are_circles :
     ∀ p : ↥Sphere2, ∃ (f : ↥(π ⁻¹' {p}) → ↥Sphere1),
       Continuous f ∧ Function.Bijective f
 
-/-- S³ admits a Lie group structure (homeomorphic to SU(2)).
-    The unit quaternions form a group under quaternion multiplication,
-    and as a set they are exactly S³ ⊂ ℝ⁴ ≅ ℍ. The isomorphism
-    SU(2) → S³ sends a matrix to its first column. -/
-axiom sphere3_is_lie_group :
-  ∃ (mul : ↥Sphere3 → ↥Sphere3 → ↥Sphere3) (one : ↥Sphere3)
-    (inv : ↥Sphere3 → ↥Sphere3),
-    Continuous (Function.uncurry mul) ∧ Continuous inv ∧
-    (∀ a, mul one a = a) ∧ (∀ a, mul a (inv a) = one)
+/- ===============================================================================
+PART XLVI: CONCRETE QUATERNION LIE GROUP ON S³
+=============================================================================== -/
+
+/-
+This section constructs the Lie group structure on S³ CONCRETELY using
+quaternion multiplication, eliminating the former existential axiom.
+
+The unit quaternions {q ∈ ℍ | |q| = 1} form a group under quaternion multiplication:
+  - Identity: (1,0,0,0)
+  - Multiplication: Hamilton quaternion product
+  - Inverse: quaternion conjugate (a₀,-a₁,-a₂,-a₃) (= inverse for unit quaternions)
+-/
+
+section ConcreteLieGroup
+
+/-- Sphere3 membership reformulated as norm condition. -/
+private theorem sphere3_mem_norm' (x : EuclideanSpace ℝ (Fin 4)) :
+    x ∈ Sphere3 ↔ ‖x‖ = 1 := by
+  simp [Sphere3, Metric.mem_sphere, dist_zero_right]
+
+/-- The L2 norm squared equals the sum of coordinate squares. -/
+private theorem eucl4_norm_sq (x : EuclideanSpace ℝ (Fin 4)) :
+    ‖x‖ ^ 2 = (x 0) ^ 2 + (x 1) ^ 2 + (x 2) ^ 2 + (x 3) ^ 2 := by
+  rw [EuclideanSpace.norm_sq]
+  simp [Fin.sum_univ_four, sq_abs]
+
+/-- If ‖x‖ = 1 then the sum of coordinate squares equals 1. -/
+private theorem unit_sum_sq' (x : EuclideanSpace ℝ (Fin 4)) (h : ‖x‖ = 1) :
+    (x 0) ^ 2 + (x 1) ^ 2 + (x 2) ^ 2 + (x 3) ^ 2 = 1 := by
+  have := eucl4_norm_sq x; rw [h] at this; linarith
+
+/-- Helper: x ≥ 0 and x² = 1 imply x = 1. -/
+private theorem norm_eq_one_of_sq {x : ℝ} (h_nn : 0 ≤ x) (h_sq : x ^ 2 = 1) : x = 1 := by
+  nlinarith [sq_nonneg (x - 1)]
+
+/-- Quaternion multiplication on ℝ⁴ as a function on EuclideanSpace. -/
+noncomputable def quatMulE (x y : EuclideanSpace ℝ (Fin 4)) :
+    EuclideanSpace ℝ (Fin 4) :=
+  (WithLp.equiv 2 (Fin 4 → ℝ)).symm fun i =>
+    if i = 0 then x 0 * y 0 - x 1 * y 1 - x 2 * y 2 - x 3 * y 3
+    else if i = 1 then x 0 * y 1 + x 1 * y 0 + x 2 * y 3 - x 3 * y 2
+    else if i = 2 then x 0 * y 2 - x 1 * y 3 + x 2 * y 0 + x 3 * y 1
+    else x 0 * y 3 + x 1 * y 2 - x 2 * y 1 + x 3 * y 0
+
+/-- Quaternion conjugation (= inverse for unit quaternions) on ℝ⁴. -/
+noncomputable def quatConjE (x : EuclideanSpace ℝ (Fin 4)) :
+    EuclideanSpace ℝ (Fin 4) :=
+  (WithLp.equiv 2 (Fin 4 → ℝ)).symm fun i =>
+    if i = 0 then x 0
+    else if i = 1 then -(x 1)
+    else if i = 2 then -(x 2)
+    else -(x 3)
+
+/-- The quaternion identity (1,0,0,0) as an element of EuclideanSpace. -/
+noncomputable def quatOneE : EuclideanSpace ℝ (Fin 4) :=
+  EuclideanSpace.single 0 1
+
+/-- Quaternion multiplication preserves the norm: ‖xy‖² = ‖x‖² · ‖y‖²
+    (Euler four-square identity). -/
+theorem quatMulE_norm_sq (x y : EuclideanSpace ℝ (Fin 4)) :
+    ‖quatMulE x y‖ ^ 2 = ‖x‖ ^ 2 * ‖y‖ ^ 2 := by
+  rw [eucl4_norm_sq (quatMulE x y), eucl4_norm_sq x, eucl4_norm_sq y]
+  have h0 : quatMulE x y 0 = x 0 * y 0 - x 1 * y 1 - x 2 * y 2 - x 3 * y 3 := by
+    show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE x y) 0 = _; simp [quatMulE]
+  have h1 : quatMulE x y 1 = x 0 * y 1 + x 1 * y 0 + x 2 * y 3 - x 3 * y 2 := by
+    show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE x y) 1 = _; simp [quatMulE]
+  have h2 : quatMulE x y 2 = x 0 * y 2 - x 1 * y 3 + x 2 * y 0 + x 3 * y 1 := by
+    show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE x y) 2 = _; simp [quatMulE]
+  have h3 : quatMulE x y 3 = x 0 * y 3 + x 1 * y 2 - x 2 * y 1 + x 3 * y 0 := by
+    show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE x y) 3 = _; simp [quatMulE]
+  rw [h0, h1, h2, h3]; ring
+
+/-- Unit quaternion product is unit. -/
+theorem quatMulE_unit (x y : EuclideanSpace ℝ (Fin 4))
+    (hx : ‖x‖ = 1) (hy : ‖y‖ = 1) : ‖quatMulE x y‖ = 1 := by
+  have h := quatMulE_norm_sq x y; rw [hx, hy] at h; simp at h
+  exact norm_eq_one_of_sq (norm_nonneg _) h
+
+/-- Quaternion conjugation preserves the unit sphere. -/
+theorem quatConjE_unit (x : EuclideanSpace ℝ (Fin 4))
+    (hx : ‖x‖ = 1) : ‖quatConjE x‖ = 1 := by
+  apply norm_eq_one_of_sq (norm_nonneg _)
+  rw [eucl4_norm_sq]
+  have h0 : quatConjE x 0 = x 0 := by
+    show WithLp.equiv 2 (Fin 4 → ℝ) (quatConjE x) 0 = _; simp [quatConjE]
+  have h1 : quatConjE x 1 = -(x 1) := by
+    show WithLp.equiv 2 (Fin 4 → ℝ) (quatConjE x) 1 = _; simp [quatConjE]
+  have h2 : quatConjE x 2 = -(x 2) := by
+    show WithLp.equiv 2 (Fin 4 → ℝ) (quatConjE x) 2 = _; simp [quatConjE]
+  have h3 : quatConjE x 3 = -(x 3) := by
+    show WithLp.equiv 2 (Fin 4 → ℝ) (quatConjE x) 3 = _; simp [quatConjE]
+  rw [h0, h1, h2, h3]; ring_nf; linarith [unit_sum_sq' x hx]
+
+private theorem quatMulE_mem_sphere3 (x y : EuclideanSpace ℝ (Fin 4))
+    (hx : x ∈ Sphere3) (hy : y ∈ Sphere3) : quatMulE x y ∈ Sphere3 := by
+  rw [sphere3_mem_norm'] at hx hy ⊢; exact quatMulE_unit x y hx hy
+
+private theorem quatConjE_mem_sphere3 (x : EuclideanSpace ℝ (Fin 4))
+    (hx : x ∈ Sphere3) : quatConjE x ∈ Sphere3 := by
+  rw [sphere3_mem_norm'] at hx ⊢; exact quatConjE_unit x hx
+
+private theorem quatOneE_mem_sphere3 : quatOneE ∈ Sphere3 := by
+  rw [sphere3_mem_norm']; simp [quatOneE, EuclideanSpace.norm_single]
+
+/-- Quaternion multiplication on the unit sphere S³. -/
+noncomputable def sphere3Mul (a b : ↥Sphere3) : ↥Sphere3 :=
+  ⟨quatMulE a.1 b.1, quatMulE_mem_sphere3 a.1 b.1 a.2 b.2⟩
+
+/-- Quaternion conjugate/inverse on the unit sphere S³. -/
+noncomputable def sphere3Inv (a : ↥Sphere3) : ↥Sphere3 :=
+  ⟨quatConjE a.1, quatConjE_mem_sphere3 a.1 a.2⟩
+
+/-- The quaternion identity (1,0,0,0) on S³. -/
+noncomputable def sphere3One : ↥Sphere3 :=
+  ⟨quatOneE, quatOneE_mem_sphere3⟩
+
+/-- Left identity: (1,0,0,0) · a = a for all a ∈ S³. -/
+theorem sphere3_mul_left_id (a : ↥Sphere3) :
+    sphere3Mul sphere3One a = a := by
+  apply Subtype.ext
+  show quatMulE quatOneE a.1 = a.1
+  ext i
+  show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE quatOneE a.1) i =
+       WithLp.equiv 2 (Fin 4 → ℝ) a.1 i
+  simp only [quatMulE, quatOneE, WithLp.equiv_symm_pi_apply]
+  simp [EuclideanSpace.single_apply]
+  fin_cases i <;> simp [Fin.val] <;> ring
+
+/-- Right inverse: a · a* = (1,0,0,0) for all a ∈ S³. -/
+theorem sphere3_mul_right_inv (a : ↥Sphere3) :
+    sphere3Mul a (sphere3Inv a) = sphere3One := by
+  apply Subtype.ext
+  show quatMulE a.1 (quatConjE a.1) = quatOneE
+  have ha := (sphere3_mem_norm' a.1).mp a.2
+  ext i
+  show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE a.1 (quatConjE a.1)) i =
+       WithLp.equiv 2 (Fin 4 → ℝ) quatOneE i
+  simp only [quatMulE, quatConjE, quatOneE, WithLp.equiv_symm_pi_apply]
+  have ha_sq := unit_sum_sq' a.1 ha
+  simp [EuclideanSpace.single_apply]
+  fin_cases i <;> simp [Fin.val] <;> nlinarith
+
+/-- Quaternion multiplication on ℝ⁴ is continuous (polynomial in coordinates). -/
+theorem quatMulE_continuous :
+    Continuous (fun p : EuclideanSpace ℝ (Fin 4) × EuclideanSpace ℝ (Fin 4) =>
+      quatMulE p.1 p.2) := by
+  apply (WithLp.equiv 2 (Fin 4 → ℝ)).symm.continuous.comp
+  apply continuous_pi; intro i; simp only [Function.comp]
+  by_cases h0 : i = 0
+  · subst h0; simp only [quatMulE, ite_true]; continuity
+  · by_cases h1 : i = 1
+    · subst h1; simp only [quatMulE, ite_false, ite_true, h0]; continuity
+    · by_cases h2 : i = 2
+      · subst h2; simp only [quatMulE, ite_false, ite_true, h0, h1]; continuity
+      · simp only [quatMulE, ite_false, h0, h1, h2]; continuity
+
+/-- Quaternion conjugation on ℝ⁴ is continuous. -/
+theorem quatConjE_continuous :
+    Continuous (fun x : EuclideanSpace ℝ (Fin 4) => quatConjE x) := by
+  apply (WithLp.equiv 2 (Fin 4 → ℝ)).symm.continuous.comp
+  apply continuous_pi; intro i; simp only [Function.comp]
+  by_cases h0 : i = 0
+  · subst h0; simp only [quatConjE, ite_true]; continuity
+  · by_cases h1 : i = 1
+    · subst h1; simp only [quatConjE, ite_false, ite_true, h0]; continuity
+    · by_cases h2 : i = 2
+      · subst h2; simp only [quatConjE, ite_false, ite_true, h0, h1]; continuity
+      · simp only [quatConjE, ite_false, h0, h1, h2]; continuity
+
+/-- sphere3Mul is continuous (restriction of continuous quatMulE to subtype). -/
+theorem sphere3Mul_continuous :
+    Continuous (Function.uncurry sphere3Mul) := by
+  rw [show Function.uncurry sphere3Mul =
+    fun p : ↥Sphere3 × ↥Sphere3 =>
+      (⟨quatMulE p.1.1 p.2.1, quatMulE_mem_sphere3 p.1.1 p.2.1 p.1.2 p.2.2⟩ : ↥Sphere3)
+    from by ext ⟨a, b⟩; rfl]
+  apply Continuous.subtype_mk
+  exact quatMulE_continuous.comp ((continuous_subtype_val.comp continuous_fst).prod_mk
+    (continuous_subtype_val.comp continuous_snd))
+
+/-- sphere3Inv is continuous (restriction of continuous quatConjE to subtype). -/
+theorem sphere3Inv_continuous : Continuous sphere3Inv := by
+  show Continuous (fun a : ↥Sphere3 =>
+    (⟨quatConjE a.1, quatConjE_mem_sphere3 a.1 a.2⟩ : ↥Sphere3))
+  apply Continuous.subtype_mk
+  exact quatConjE_continuous.comp continuous_subtype_val
+
+/-- **S³ admits a Lie group structure** (unit quaternions ≅ SU(2)).
+    PROVED with concrete quaternion operations:
+    - mul = Hamilton quaternion product
+    - one = (1,0,0,0)
+    - inv = quaternion conjugation
+    - Continuity: polynomial maps restricted to compact submanifold
+    - Identity: direct coordinate computation
+    - Inverse: Euler four-square identity -/
+theorem sphere3_is_lie_group :
+    ∃ (mul : ↥Sphere3 → ↥Sphere3 → ↥Sphere3) (one : ↥Sphere3)
+      (inv : ↥Sphere3 → ↥Sphere3),
+      Continuous (Function.uncurry mul) ∧ Continuous inv ∧
+      (∀ a, mul one a = a) ∧ (∀ a, mul a (inv a) = one) :=
+  ⟨sphere3Mul, sphere3One, sphere3Inv,
+   sphere3Mul_continuous, sphere3Inv_continuous,
+   sphere3_mul_left_id, sphere3_mul_right_inv⟩
+
+end ConcreteLieGroup
 
 /-- S³ is not contractible despite being simply connected.
     Proof sketch: H₃(S³;ℤ) ≅ ℤ ≠ 0, but contractible spaces have
@@ -2102,7 +2299,8 @@ theorem quat_norm_sq_mul (a₀ a₁ a₂ a₃ b₀ b₁ b₂ b₃ : ℝ) :
 /-- The quaternion group on unit vectors satisfies all algebraic axioms:
     associativity (quat_assoc), identity (quat_left/right_identity),
     inverse (quat_unit_left/right_inverse), norm preservation (euler_four_square).
-    Only continuity of multiplication and inversion remains for sphere3_is_lie_group. -/
+    Continuity was proved in Part XLVI via polynomial continuity arguments,
+    completing the proof of sphere3_is_lie_group (formerly an axiom). -/
 theorem quat_group_algebraic_complete :
     -- Identity element is (1,0,0,0)
     (∀ b₀ b₁ b₂ b₃ : ℝ,
