@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-15T00:00:00Z",
-    "iteration": 9,
-    "focus": "Communication complexity, Karchmer-Wigderson, zero-knowledge, average-case",
+    "iteration": 10,
+    "focus": "Axiom reduction: sparsification_lemma, ETH_subexp_closure proved from definitions",
     "activeApproach": "Abstract complexity class definitions with barrier theorems. Proof complexity and cryptographic world classification.",
     "blockers": [],
     "nextAction": "Reduce axiom count by deriving more results; add counting complexity (#P)",
@@ -303,7 +303,9 @@
       "Part 15: Communication Complexity - CommProblem, EQ, DISJ defs; D_comm, R_comm axioms; EQ_gap, DISJ_hardness (proved); log_rank_lower, commMatrixRank",
       "Part 16: Karchmer-Wigderson - BoolFn, circuitDepth, KW_complexity; karchmer_wigderson theorem; circuit_depth_from_CC (proved); NC1_iff_logdepth; raz_mckenzie monotone separation",
       "Part 17: Zero-Knowledge - SZK, CZK classes; SZK_complement_closed; GMW_NP_in_CZK; BPP_subset_SZK (proved); ZK_reflects_five_worlds (proved)",
-      "Part 18: Average-Case - DistProblem, AvgP, DistNP; distNP_complete_exists (proved); OWF_implies_avg_hard"
+      "Part 18: Average-Case - DistProblem, AvgP, DistNP; distNP_complete_exists (proved); OWF_implies_avg_hard",
+      "Proved sparsification_lemma (ETH ↔ SAT ∉ SUBEXP is Iff.rfl by definition)",
+      "Proved ETH_subexp_closure (was just the contrapositive: (p→q)→(¬q→¬p))"
     ],
     "insights": [
       "P_subset_NP_relative",
