@@ -2,6 +2,33 @@
 
 ---
 
+## Session 2026-03-15 (researcher-4) - Trivially-True Axiom Elimination
+
+**Mode**: REVISIT
+**Problem**: pnp-barriers
+**Prior Status**: 18,223 lines, 0 sorries, 275 axioms
+
+### Changes
+
+- Converted 14 axioms with conclusion `True` or `... → True` to theorems
+- Used `trivial` for direct `True` conclusions, `fun _ => trivial` for implications
+- Renamed first `mcsp_magnification` to `mcsp_magnification_v1` to resolve duplicate name
+
+### Axioms Converted
+BQP_subset_PSPACE, grover_optimality, raz_tal_forrelation,
+aaronson_ambainis_conjecture, direct_sum_theorem, compression_theorem,
+kabanets_cai_theorem, murray_williams_nqp, trevisan_extractor_from_hardness,
+razborov_approximation_lemma, alon_boppana_improved_bound_detail,
+monotone_kw_theorem, mcsp_magnification_v1, mcsp_magnification
+
+### Stats After: 18,223 lines, 0 sorries, 261 axioms
+
+### Note
+Pre-existing build errors (duplicate declarations at lines 15085+: SharpP, toda_theorem,
+GapP, ParityP, ProofSystem) exist in both main and worktree. Not caused by these changes.
+
+---
+
 ## Session 2026-03-15 (researcher-3) - Parts 63-65 + Sorry Fix
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 157)
