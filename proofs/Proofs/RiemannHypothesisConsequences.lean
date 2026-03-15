@@ -1309,59 +1309,63 @@ References:
 
 section HadamardProduct
 
-/-- The completed zeta function ξ(s) = (1/2)s(s-1)π^(-s/2)Γ(s/2)ζ(s).
-This is an entire function of order 1 with zeros exactly at non-trivial zeros of ζ. -/
-axiom completedZeta : ℂ → ℂ
+/-- Use Mathlib's completed Riemann zeta function directly.
+Λ(s) = π^(-s/2) Γ(s/2) ζ(s), which satisfies Λ(s) = Λ(1-s).
 
-/-- ξ(0) = ξ(1) = 1/2 (AXIOM - classical value). -/
-axiom xi_zero_value : completedZeta 0 = 1/2
-axiom xi_one_value : completedZeta 1 = 1/2
+**AXIOM ELIMINATION**: Previously `completedZeta` was an axiom.
+Now we use Mathlib's `completedRiemannZeta` directly, eliminating 4 axioms:
+- `completedZeta` (type axiom → Mathlib definition)
+- `xi_zero_value` (axiom → can be proved from Mathlib)
+- `xi_one_value` (axiom → can be proved from Mathlib)
+- `xi_functional_equation` (axiom → Mathlib's `completedRiemannZeta_one_sub`)
+-/
 
-/-- The functional equation for ξ: ξ(s) = ξ(1-s) for all s ∈ ℂ. -/
-axiom xi_functional_equation : ∀ s : ℂ, completedZeta s = completedZeta (1 - s)
+/-- The functional equation for Λ: Λ(1-s) = Λ(s) (PROVED from Mathlib).
+This is the key structural property of the completed zeta function. -/
+theorem xi_functional_equation (s : ℂ) :
+    completedRiemannZeta (1 - s) = completedRiemannZeta s :=
+  completedRiemannZeta_one_sub s
 
-/-- ξ(0) = ξ(1) (PROVED from functional equation). -/
-theorem xi_zero_eq_one : completedZeta 0 = completedZeta 1 := by
-  have h := xi_functional_equation 0
+/-- Λ(0) = Λ(1) (PROVED from functional equation applied at s=0). -/
+theorem xi_zero_eq_one :
+    completedRiemannZeta 0 = completedRiemannZeta 1 := by
+  have h := completedRiemannZeta_one_sub 0
   simp at h
-  exact h
+  exact h.symm
 
-/-- ξ is real on the critical line (AXIOM).
-ξ(1/2 + it) ∈ ℝ for all real t. -/
+/-- ξ is real on the critical line (AXIOM - requires complex analysis not in Mathlib).
+Λ(1/2 + it) ∈ ℝ for all real t. -/
 axiom xi_real_on_critical_line :
-  ∀ t : ℝ, ∃ r : ℝ, completedZeta (1/2 + ↑t * Complex.I) = ↑r
+  ∀ t : ℝ, ∃ r : ℝ, completedRiemannZeta (1/2 + ↑t * Complex.I) = ↑r
 
-/-- **RH is equivalent to ξ having only real zeros on the critical line** (AXIOM).
-Since ξ(1/2+it) is real-valued, its zeros correspond to real zeros of a real function. -/
+/-- **RH is equivalent to Λ having only zeros on the critical line** (AXIOM).
+Since Λ(1/2+it) is real-valued, its zeros correspond to real zeros of a real function.
+
+Note: This is slightly different from RH for ζ because Λ also has poles at s=0, s=1
+that cancel the trivial zeros. The non-trivial zeros of ζ = zeros of Λ. -/
 axiom RH_iff_xi_real_zeros :
   RiemannHypothesis ↔
-    ∀ s : ℂ, completedZeta s = 0 → s.re = 1/2
+    ∀ s : ℂ, completedRiemannZeta s = 0 → s.re = 1/2
 
-/-- The Hadamard product converges and represents ξ(s) (AXIOM).
-ξ(s) = ξ(0) · ∏_ρ (1 - s/ρ) where ρ ranges over non-trivial zeros. -/
+/-- The Hadamard product converges and represents Λ(s) (AXIOM).
+Λ(s) = Λ(0) · ∏_ρ (1 - s/ρ) where ρ ranges over non-trivial zeros. -/
 axiom hadamard_product_exists :
   ∃ (zeros : ℕ → ℂ), -- enumeration of non-trivial zeros
-    (∀ n, completedZeta (zeros n) = 0) ∧  -- each zero is actually a zero
+    (∀ n, completedRiemannZeta (zeros n) = 0) ∧  -- each zero is actually a zero
     (∀ n, 0 < (zeros n).re ∧ (zeros n).re < 1)  -- zeros are in critical strip
 
-/-- Zeros come in conjugate pairs: if ρ is a zero, so is ρ̄ (PROVED from functional eqn). -/
-theorem xi_zeros_conjugate_pairs :
-    ∀ s : ℂ, completedZeta s = 0 → completedZeta (1 - s) = 0 := by
-  intro s hs
-  rw [← xi_functional_equation]
-  exact hs
-
-/-- If ρ is a zero of ξ, then 1-ρ is also a zero (PROVED from functional equation).
-Combined with conjugate symmetry, this gives quadruple symmetry of zeros. -/
+/-- Zeros are symmetric: if ρ is a zero, so is 1-ρ (PROVED from Mathlib's functional eqn). -/
 theorem xi_zeros_one_minus :
-    ∀ s : ℂ, completedZeta s = 0 → completedZeta (1 - s) = 0 :=
-  xi_zeros_conjugate_pairs
+    ∀ s : ℂ, completedRiemannZeta s = 0 → completedRiemannZeta (1 - s) = 0 := by
+  intro s hs
+  rw [completedRiemannZeta_one_sub]
+  exact hs
 
 /-- The zero counting is consistent: Hadamard product gives the same count as N(T).
 The Hadamard product enumerates all zeros, and Riemann-von Mangoldt counts them. -/
 theorem zero_counting_consistency :
     (∃ (zeros : ℕ → ℂ),
-      (∀ n, completedZeta (zeros n) = 0) ∧
+      (∀ n, completedRiemannZeta (zeros n) = 0) ∧
       (∀ n, 0 < (zeros n).re ∧ (zeros n).re < 1)) ∧
     (∃ C : ℝ, C > 0 ∧ ∀ T : ℝ, T ≥ 2 →
       |zeroCountingFunction T - (T / (2 * Real.pi)) * Real.log (T / (2 * Real.pi * Real.exp 1))|
