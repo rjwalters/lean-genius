@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 100 theorems milestone. File: 2028 lines, 100 theorems, 18 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Session total 36 proved theorems across 2 files. Main: 2028 lines, 100 theorems. Consequences: 1060 lines, 93 theorems. Combined: 28 axioms, 0 sorries.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -82,7 +82,10 @@
       "Proved harmonicNumber_one = 1 from Mathlib harmonic API",
       "Reached 100 proved theorems milestone in RiemannHypothesis.lean",
       "sigma_ge_self proved: σ(n) ≥ n for n ≥ 1 (every number is its own divisor)",
-      "Perfect numbers verified: σ(6) = 2·6, σ(28) = 2·28"
+      "Perfect numbers verified: σ(6) = 2·6, σ(28) = 2·28",
+      "Added prime counting function section to Consequences: π(1) through π(100) computed via native_decide",
+      "Prime density decreasing proved: π(100)/100 < π(10)/10",
+      "Bertrand postulate verified at small cases: π(2n) > π(n) for n=2,3,5"
     ],
     "mathlibGaps": [
       "Dirichlet series",
