@@ -12771,11 +12771,6 @@ axiom monotone_kw_equals_depth (n : ℕ) (f : Fin (2^n) → Bool) :
 ### 49.2: The Discrepancy Method
 -/
 
-/-- Discrepancy of f with respect to a distribution μ on inputs:
-    disc_μ(f) = max over rectangles R of |μ(R ∩ f⁻¹(0)) - μ(R ∩ f⁻¹(1))|
-    Small discrepancy implies high randomized CC. -/
-axiom discrepancy (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) : ℝ
-
 /-
 ### 49.3: Connection to Formula Size (Khrapchenko)
 -/

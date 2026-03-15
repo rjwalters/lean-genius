@@ -1426,34 +1426,405 @@ theorem schur_partition_identity_corrected_decidable (n : ℕ) :
   exact RogersRamanujan.schur_partition_identity_corrected n
 
 -- ============================================================================
--- Part XXV: Final Summary
+-- Part XXV: Extended Computational Verification (n=11..12)
 -- ============================================================================
 
 /-
-## Complete Bridge Theorems Summary
+Extending computational verification of all three partition identities.
+Each native_decide call enumerates all partitions of n and checks the identity.
+-/
 
-### Equivalence Theorems (6):
-  - rr1Gap_eq_rr1GapPartitions: decidable RR1 gap = noncomputable RR1 gap
-  - rr1Mod5_eq_rr1Mod5Partitions: decidable RR1 mod = noncomputable RR1 mod
-  - rr2Gap_eq_rr2GapPartitions: decidable RR2 gap = noncomputable RR2 gap
-  - rr2Mod5_eq_rr2Mod5Partitions: decidable RR2 mod = noncomputable RR2 mod
-  - schurGapFull_eq_schurGapFullPartitions: decidable corrected Schur gap = noncomputable
-  - schurMod_eq_schurModPartitions: decidable Schur mod = noncomputable
+-- Rogers-Ramanujan First Identity for n=11,12
+example : (PartitionDecidable.rr1Gap 11).card = (PartitionDecidable.rr1Mod5 11).card := by native_decide
+example : (PartitionDecidable.rr1Gap 12).card = (PartitionDecidable.rr1Mod5 12).card := by native_decide
 
-### Derived Identities (3):
-  - rogers_ramanujan_first_decidable: |rr1Gap n| = |rr1Mod5 n|
-  - rogers_ramanujan_second_decidable: |rr2Gap n| = |rr2Mod5 n|
-  - schur_partition_identity_corrected_decidable: |schurGapFull n| = |schurMod n|
-    (All follow from axioms + bridge theorems)
+-- Rogers-Ramanujan Second Identity for n=11,12
+example : (PartitionDecidable.rr2Gap 11).card = (PartitionDecidable.rr2Mod5 11).card := by native_decide
+example : (PartitionDecidable.rr2Gap 12).card = (PartitionDecidable.rr2Mod5 12).card := by native_decide
 
-### All bridges complete.
+-- Corrected Schur Identity for n=11,12
+example : (PartitionDecidable.schurGapFull 11).card = (PartitionDecidable.schurMod 11).card := by native_decide
+example : (PartitionDecidable.schurGapFull 12).card = (PartitionDecidable.schurMod 12).card := by native_decide
+
+-- Extended concrete counts (OEIS A003114 for RR1)
+theorem rr1_count_10 : (PartitionDecidable.rr1Gap 10).card = 6 := by native_decide
+theorem rr1_count_11 : (PartitionDecidable.rr1Gap 11).card = 7 := by native_decide
+theorem rr1_count_12 : (PartitionDecidable.rr1Gap 12).card = 9 := by native_decide
+
+-- Schur counts (OEIS A000009 restricted)
+theorem schurFull_count_9 : (PartitionDecidable.schurGapFull 9).card = 4 := by native_decide
+theorem schurFull_count_10 : (PartitionDecidable.schurGapFull 10).card = 4 := by native_decide
+theorem schurFull_count_11 : (PartitionDecidable.schurGapFull 11).card = 5 := by native_decide
+theorem schurFull_count_12 : (PartitionDecidable.schurGapFull 12).card = 6 := by native_decide
+
+-- ============================================================================
+-- Part XXVI: Part Count Bounds
+-- ============================================================================
+
+/-
+A partition with gap condition has a bounded number of parts. The key insight:
+k distinct positive naturals with pairwise separation ≥ d have sum at least
+  1 + (1+d) + (1+2d) + ... + (1+(k-1)d) = k + d·k·(k-1)/2.
+
+For our partition types:
+  - RR1 Gap (d=2): min sum = k², so k ≤ √n
+  - RR2 Gap (d=2, min part ≥ 2): min sum = k(k+1), so k ≤ (√(4n+1)-1)/2
+  - Schur Gap (d=3): min sum = k(3k-1)/2, so k ≤ (1+√(24n+1))/6
+-/
+
+/-- Helper: head of a list with Pairwise (≥ · + 2) and positive elements
+    is at least 2·|tail| + 1. -/
+private lemma pairwise_ge2_head_bound :
+    ∀ (a : ℕ) (rest : List ℕ),
+    (a :: rest).Pairwise (fun x y => x ≥ y + 2) →
+    (∀ b ∈ (a :: rest), 0 < b) →
+    2 * rest.length + 1 ≤ a := by
+  intro a rest hpw hpos
+  induction rest with
+  | nil => simp; exact hpos a (List.mem_cons.mpr (.inl rfl))
+  | cons b rest' ih =>
+    have hab := (List.pairwise_cons.mp hpw).1 b (List.mem_cons.mpr (.inl rfl))
+    have hb_pw := (List.pairwise_cons.mp hpw).2
+    have hb_pos : ∀ x ∈ b :: rest', 0 < x :=
+      fun x hx => hpos x (List.mem_cons.mpr (.inr hx))
+    have hb_bound := ih b hb_pw hb_pos
+    simp only [List.length_cons]
+    omega
+
+/-- A list with Pairwise (≥ · + 2) and positive elements has sum ≥ length². -/
+private lemma pairwise_ge2_sum_bound :
+    ∀ (l : List ℕ),
+    l.Pairwise (fun a b => a ≥ b + 2) →
+    (∀ a ∈ l, 0 < a) →
+    l.length ^ 2 ≤ l.sum := by
+  intro l hpw hpos
+  induction l with
+  | nil => simp
+  | cons a rest ih =>
+    have hrest_pw := (List.pairwise_cons.mp hpw).2
+    have hrest_pos : ∀ x ∈ rest, 0 < x :=
+      fun x hx => hpos x (List.mem_cons.mpr (.inr hx))
+    have hih := ih hrest_pw hrest_pos
+    have ha_bound := pairwise_ge2_head_bound a rest hpw hpos
+    simp only [List.length_cons, List.sum_cons]
+    nlinarith
+
+/-- A Nodup multiset of k positive naturals with pairwise separation ≥ 2
+    sums to at least k². This bounds the number of parts in RR1 gap partitions. -/
+theorem rr1_parts_sq_le {n : ℕ} (p : Nat.Partition n)
+    (hp : p ∈ PartitionDecidable.rr1Gap n) :
+    p.parts.card ^ 2 ≤ n := by
+  -- Extract gap condition via bridge theorem
+  have hp' := (rr1Gap_eq_rr1GapPartitions n).symm ▸ hp
+  simp only [PartitionDecidable.rr1Gap, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+  -- Get the sorted list and its properties
+  have hgap : hasMinGap (p.parts.sort (· ≥ ·)) 2 = true := by
+    rw [rr1Gap_eq_rr1GapPartitions] at hp'
+    simp only [RogersRamanujan.rr1GapPartitions, Finset.mem_filter, Finset.mem_univ,
+      true_and, RogersRamanujan.partHasMinGap] at hp'
+    exact hp'
+  have hpw := hasMinGap_pairwise_ge_d _ 2 hgap
+  have hpos : ∀ a ∈ (p.parts.sort (· ≥ ·)), 0 < a := by
+    intro a ha
+    rw [← Multiset.mem_coe, Multiset.sort_eq] at ha
+    exact p.parts_pos ha
+  have hbound := pairwise_ge2_sum_bound _ hpw hpos
+  -- Connect sorted list properties to partition
+  have hlen : (p.parts.sort (· ≥ ·)).length = p.parts.card := by
+    rw [← Multiset.length_coe, Multiset.sort_eq]
+  have hsum : (p.parts.sort (· ≥ ·)).sum = n := by
+    have : ((p.parts.sort (· ≥ ·) : Multiset ℕ)).sum = p.parts.sum :=
+      congr_arg Multiset.sum (Multiset.sort_eq _ _)
+    rw [Multiset.sum_coe] at this
+    rw [← this, p.parts_sum]
+  rw [hlen, hsum] at hbound
+  exact hbound
+
+-- Verified computationally: the bound k² ≤ n is tight.
+-- At n=4: partition {3,1} has 2 parts, 2²=4 ≤ 4 ✓ (tight!)
+example : ∀ p ∈ PartitionDecidable.rr1Gap 4,
+    p.parts.card ^ 2 ≤ 4 := by native_decide
+-- At n=9: partition {7,3,1} has 3 parts... wait, check:
+-- {5,3,1}: 5-3=2≥2✓, 3-1=2≥2✓, 5-1=4≥2✓. 3²=9≤9 ✓ (tight!)
+example : ∀ p ∈ PartitionDecidable.rr1Gap 9,
+    p.parts.card ^ 2 ≤ 9 := by native_decide
+
+/-- General head bound: head of Pairwise (≥ · + d) list with elements ≥ m
+    satisfies a ≥ m + d·|rest|. -/
+private lemma pairwise_ge_d_head_bound (d m : ℕ) :
+    ∀ (a : ℕ) (rest : List ℕ),
+    (a :: rest).Pairwise (fun x y => x ≥ y + d) →
+    (∀ b ∈ (a :: rest), m ≤ b) →
+    m + d * rest.length ≤ a := by
+  intro a rest hpw hmin
+  induction rest with
+  | nil => simp; exact hmin a (List.mem_cons.mpr (.inl rfl))
+  | cons b rest' ih =>
+    have hab := (List.pairwise_cons.mp hpw).1 b (List.mem_cons.mpr (.inl rfl))
+    have hb_pw := (List.pairwise_cons.mp hpw).2
+    have hb_min : ∀ x ∈ b :: rest', m ≤ x :=
+      fun x hx => hmin x (List.mem_cons.mpr (.inr hx))
+    have hb_bound := ih b hb_pw hb_min
+    simp only [List.length_cons]; omega
+
+/-- General doubled sum bound: 2·sum ≥ |l|·(2m + d·(|l|-1)).
+    Avoids natural number division issues. -/
+private lemma pairwise_ge_d_doubled_sum_bound (d m : ℕ) :
+    ∀ (l : List ℕ),
+    l.Pairwise (fun a b => a ≥ b + d) →
+    (∀ a ∈ l, m ≤ a) →
+    l.length * (2 * m + d * (l.length - 1)) ≤ 2 * l.sum := by
+  intro l hpw hmin
+  induction l with
+  | nil => simp
+  | cons a rest ih =>
+    have hrest_pw := (List.pairwise_cons.mp hpw).2
+    have hrest_min : ∀ x ∈ rest, m ≤ x :=
+      fun x hx => hmin x (List.mem_cons.mpr (.inr hx))
+    have hih := ih hrest_pw hrest_min
+    have ha_bound := pairwise_ge_d_head_bound d m a rest hpw hmin
+    simp only [List.length_cons, List.sum_cons]
+    nlinarith
+
+/-- Helper: Extract hasMinGap and positivity from the sorted parts of a partition
+    that is in the decidable gap set. -/
+private lemma partition_sorted_gap_props (n : ℕ) (p : Nat.Partition n) (d : ℕ) (hd : 1 ≤ d)
+    (hnodup : p.parts.Nodup)
+    (hsep : ∀ a ∈ p.parts, ∀ b ∈ p.parts, a ≠ b → (a + d ≤ b ∨ b + d ≤ a)) :
+    hasMinGap (p.parts.sort (· ≥ ·)) d = true ∧
+    (∀ a ∈ (p.parts.sort (· ≥ ·)), 0 < a) ∧
+    (p.parts.sort (· ≥ ·)).length = p.parts.card ∧
+    (p.parts.sort (· ≥ ·)).sum = n := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · exact PartitionDecidable.decidable_gap_sorted_implies_hasMinGap _ d
+      (p.parts.pairwise_sort (· ≥ ·))
+      (nodup_parts_sort_iff.mpr hnodup)
+      (fun a ha b hb hab => hsep a (mem_parts_sort_iff.mp ha) b (mem_parts_sort_iff.mp hb) hab)
+  · intro a ha
+    rw [← Multiset.mem_coe, Multiset.sort_eq] at ha
+    exact p.parts_pos ha
+  · rw [← Multiset.length_coe, Multiset.sort_eq]
+  · have : ((p.parts.sort (· ≥ ·) : Multiset ℕ)).sum = p.parts.sum :=
+      congr_arg Multiset.sum (Multiset.sort_eq _ _)
+    rw [Multiset.sum_coe] at this
+    rw [← this, p.parts_sum]
+
+/-- RR2 gap partitions have at most k parts where k(k+1) ≤ n.
+    (All parts ≥ 2, pairwise separation ≥ 2, so min sum = 2+4+...+2k = k(k+1).) -/
+theorem rr2_parts_bound {n : ℕ} (p : Nat.Partition n)
+    (hp : p ∈ PartitionDecidable.rr2Gap n) :
+    p.parts.card * (p.parts.card + 1) ≤ n := by
+  simp only [PartitionDecidable.rr2Gap, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+  obtain ⟨hnodup, hsep, hge2⟩ := hp
+  obtain ⟨hgap, hpos, hlen, hsum⟩ :=
+    partition_sorted_gap_props n p 2 (by omega) hnodup hsep
+  -- Get Pairwise (fun a b => a ≥ b + 2) and parts ≥ 2
+  have hpw := hasMinGap_pairwise_ge_d _ 2 hgap
+  have hmin : ∀ a ∈ (p.parts.sort (· ≥ ·)), 2 ≤ a := by
+    intro a ha
+    rw [← Multiset.mem_coe, Multiset.sort_eq] at ha
+    exact hge2 a ha
+  -- Apply doubled bound with d=2, m=2:
+  -- 2·sum ≥ k·(4 + 2·(k-1)) = k·(2k+2) = 2k(k+1)
+  have hbound := pairwise_ge_d_doubled_sum_bound 2 2 _ hpw hmin
+  rw [hlen, hsum] at hbound
+  omega
+
+-- Verified computationally
+example : ∀ p ∈ PartitionDecidable.rr2Gap 6,
+    p.parts.card * (p.parts.card + 1) ≤ 6 := by native_decide
+example : ∀ p ∈ PartitionDecidable.rr2Gap 12,
+    p.parts.card * (p.parts.card + 1) ≤ 12 := by native_decide
+
+/-- Schur gap partitions have at most k parts where k(3k-1)/2 ≤ n.
+    (Pairwise separation ≥ 3, so min sum = 1+4+7+...+(3k-2) = k(3k-1)/2.) -/
+theorem schur_parts_bound {n : ℕ} (p : Nat.Partition n)
+    (hp : p ∈ PartitionDecidable.schurGap n) :
+    p.parts.card * (3 * p.parts.card - 1) / 2 ≤ n := by
+  simp only [PartitionDecidable.schurGap, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+  obtain ⟨hnodup, hsep⟩ := hp
+  obtain ⟨hgap, hpos, hlen, hsum⟩ :=
+    partition_sorted_gap_props n p 3 (by omega) hnodup
+      (fun a ha b hb hab => by
+        rcases hsep a ha b hb hab with h | h
+        · left; omega
+        · right; omega)
+  have hpw := hasMinGap_pairwise_ge_d _ 3 hgap
+  have hmin : ∀ a ∈ (p.parts.sort (· ≥ ·)), 1 ≤ a := by
+    intro a ha; exact hpos a ha
+  -- Apply doubled bound with d=3, m=1:
+  -- 2·sum ≥ k·(2 + 3·(k-1)) = k·(3k-1)
+  have hbound := pairwise_ge_d_doubled_sum_bound 3 1 _ hpw hmin
+  rw [hlen, hsum] at hbound
+  -- From 2n ≥ k(3k-1), derive k(3k-1)/2 ≤ n
+  omega
+
+-- Verified computationally
+-- n=8: max 2 parts (2·5/2=5 ≤ 8, but 3·8/2=12 > 8)
+example : ∀ p ∈ PartitionDecidable.schurGap 8,
+    p.parts.card * (3 * p.parts.card - 1) / 2 ≤ 8 := by native_decide
+
+-- ============================================================================
+-- Part XXVII: SchurMod Characterization Theorems
+-- ============================================================================
+
+/-- In a SchurMod partition, no part is zero mod 3. This is immediate from
+    the definition but stated explicitly for clarity. -/
+theorem schurMod_no_zero_mod3 {n : ℕ} (p : Nat.Partition n)
+    (hp : p ∈ PartitionDecidable.schurMod n) (a : ℕ) (ha : a ∈ p.parts) :
+    a % 3 ≠ 0 := by
+  simp only [PartitionDecidable.schurMod, Finset.mem_filter, Finset.mem_univ,
+    true_and] at hp
+  have hmod := hp.2 a ha
+  omega
+
+/-- In a SchurGapFull partition, parts divisible by 3 require extra gap.
+    Specifically, if a ≡ 0 (mod 3) is in a SchurGapFull partition and b is
+    another part, then |a - b| ≥ 4. -/
+theorem schurGapFull_div3_gap4 {n : ℕ} (p : Nat.Partition n)
+    (hp : p ∈ PartitionDecidable.schurGapFull n)
+    (a b : ℕ) (ha : a ∈ p.parts) (hb : b ∈ p.parts) (hab : a ≠ b)
+    (hdiv : a % 3 = 0) :
+    a + 4 ≤ b ∨ b + 4 ≤ a := by
+  simp only [PartitionDecidable.schurGapFull, Finset.mem_filter, Finset.mem_univ,
+    true_and] at hp
+  have hsep := hp.2 a ha b hb hab
+  simp only [hdiv, true_or, ↓reduceIte] at hsep
+  exact hsep
+
+/-- The SchurMod and SchurGapFull partition sets are disjoint for n ≥ 3
+    where there exist parts ≡ 0 mod 3 in the gap side.
+    More precisely: a partition in SchurGapFull with a part ≡ 0 (mod 3)
+    is NOT in SchurMod. -/
+theorem schurGapFull_with_div3_not_in_schurMod {n : ℕ} (p : Nat.Partition n)
+    (hp : p ∈ PartitionDecidable.schurGapFull n)
+    (a : ℕ) (ha : a ∈ p.parts) (hdiv : a % 3 = 0) :
+    p ∉ PartitionDecidable.schurMod n := by
+  intro hmod
+  exact schurMod_no_zero_mod3 p hmod a ha hdiv
+
+-- ============================================================================
+-- Part XXVIII: Proof Strategy Analysis
+-- ============================================================================
+
+/-
+## Approaches to Proving the Axiomatized Identities
+
+### Why These Identities Are Hard
+
+The Rogers-Ramanujan identities (1894/1913) and Schur's identity (1926) are among
+the deepest results in partition theory. Proving them requires techniques beyond
+simple structural properties:
+
+### Approach 1: Bijective Proofs
+
+Known bijections exist (Bressoud 1980, Garsia-Milne 1981, Alladi-Gordon 1993)
+but are intricate:
+
+**Difficulty for Schur's identity**: A naive "merge close pairs" approach fails
+because the merging process is not canonical — the same SchurGapFull partition
+can arise from merging different SchurMod partitions. For example, at n=15:
+  SchurMod [8,4,2,1] → merge (4,2) → [8,6,1] → merge (8,6) → [14,1]
+  SchurMod [14,1] → no merges needed → [14,1]
+Two different SchurMod partitions map to the same SchurGapFull partition.
+
+The Bressoud/Alladi-Gordon bijections use a more sophisticated algorithm involving
+colored partitions and specific matching rules. Estimated ~500-800 lines of Lean.
+
+### Approach 2: Generating Functions (q-series)
+
+The classical proof uses the identity:
+  ∏_{k≡1,2 (mod 3)} (1 + x^k) = ∑_n S(n) x^n
+
+where S(n) counts both SchurMod and SchurGapFull partitions. This requires:
+  - Formal power series (PowerSeries from Mathlib)
+  - Euler product identities
+  - Coefficient comparison
+
+Mathlib has `PowerSeries` and the Wiedijk 100 partition theorem used similar
+techniques. Estimated ~300-500 lines adapting the Euler partition proof.
+
+### Approach 3: Functional Equation
+
+Schur's identity can be proved via the functional equation:
+  F(x,q) = (1 + xq)(1 + xq²) · F(xq³, q)
+
+where F is the generating function. Both sides satisfy this recurrence.
+Estimated ~200-400 lines.
+
+### Recommended Next Step
+
+The generating function approach (2) seems most tractable in Lean, building on
+Mathlib's existing PowerSeries infrastructure and the pattern of the Wiedijk 100
+partition theorem proof. Start with Schur's identity as it has the simplest
+product formula.
+-/
+
+-- ============================================================================
+-- Part XXIX: Final Summary (Updated)
+-- ============================================================================
+
+/-
+## Complete File Summary
+
+### Definitions (16):
+  List-level (2): hasMinGap, hasSchurGapFull
+  Noncomputable (8): rr1GapPartitions, rr1Mod5Partitions, rr2GapPartitions,
+    rr2Mod5Partitions, schurGapPartitions, schurModPartitions,
+    schurGapFullPartitions, partHasMinGap, partSmallestPart, partAllModIn
+  Decidable (7): rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGap, schurMod,
+    schurGapFull
 
 ### Axioms (3):
   rogers_ramanujan_first, rogers_ramanujan_second,
-  schur_partition_identity_corrected (full gap condition)
+  schur_partition_identity_corrected
   NOTE: schur_partition_identity (simplified) was removed — wrong at n=9.
 
+### Proved Theorems (41, up from 32):
+  Gap characterization (5): hasMinGap_pairwise_ge_d, pairwise_ge_d_implies_hasMinGap,
+    hasMinGap_iff_pairwise, hasMinGap_pairwise_sep, hasMinGap_implies_decidable_gap
+  Decidable↔sorted bridge (1): decidable_gap_sorted_implies_hasMinGap
+  Structural (10): hasMinGap_mono, hasMinGap_ge_one_pairwise_gt,
+    hasMinGap_ge_one_nodup, hasMinGap_two_pairwise_gt,
+    rr1_gap_implies_distinct, rr2_subset_rr1, rr1_gap_subset_distinct,
+    schur_gap_subset_rr1_gap, schur_gap_implies_distinct, schur_nodup_redundant
+  Corrected Schur hierarchy (4): schurGapFullPartitions_subset_schurGapPartitions,
+    schurGapFull_implies_distinct, schurGapFull_card_le_schurGap,
+    schurGapFull_card_le_rr1
+  Hierarchy (6): rr1_gap_card_le_distinct, rr2_gap_card_le_rr1,
+    schur_gap_card_le_rr1, rr2_gap_implies_distinct, schur_gap_implies_distinct',
+    schur_mod_implies_distinct
+  Strict containment (4): rr1_gap_strict_subset_distinct_5,
+    schur_gap_strict_subset_rr1_8, rr2_gap_strict_subset_rr1_5,
+    schurGapFull_ne_schurGap_9
+  Part properties (3): rr1_mod5_parts_nonzero, rr2_mod5_parts_ge_two,
+    schur_mod_parts_coprime_three
+  Bridge theorems (6): rr1Gap_eq_rr1GapPartitions, rr1Mod5_eq_rr1Mod5Partitions,
+    rr2Gap_eq_rr2GapPartitions, rr2Mod5_eq_rr2Mod5Partitions,
+    schurGapFull_eq_schurGapFullPartitions, schurMod_eq_schurModPartitions
+  Derived decidable identities (3): rogers_ramanujan_first_decidable,
+    rogers_ramanujan_second_decidable, schur_partition_identity_corrected_decidable
+  NEW - SchurMod/SchurGapFull characterization (3):
+    schurMod_no_zero_mod3, schurGapFull_div3_gap4,
+    schurGapFull_with_div3_not_in_schurMod
+
+### Named Count Theorems (15, up from 8):
+  rr1_count_0..1, rr1_count_4, rr1_count_6, rr1_count_9,
+  rr1_count_10, rr1_count_11, rr1_count_12,
+  schur_count_0..2, schurFull_count_9..12
+
+### Part Count Bound Theorems (3, all fully proved):
+  rr1_parts_sq_le: k² ≤ n for RR1 gap partitions with k parts
+  rr2_parts_bound: k(k+1) ≤ n for RR2 gap partitions with k parts
+  schur_parts_bound: k(3k-1)/2 ≤ n for Schur gap partitions with k parts
+  (Also verified computationally for specific n values.)
+
 ### Sorries: 0
+
+### Computational Verifications (60+):
+  RR1 for n=0..12, RR2 for n=0..12, Schur (simplified) for n=0..8,
+  Schur (corrected) for n=0..12
+  Part count bounds verified for specific n values
 -/
 
 end
