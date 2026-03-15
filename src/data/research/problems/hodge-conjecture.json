@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "DEEP_DIVE",
     "since": "2026-03-15T10:25:00.000Z",
-    "iteration": 4,
+    "iteration": 5,
     "focus": "Added Tate conjecture section with ℓ-adic cohomology, Frobenius, and Hodge-Tate comparison",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Parts I-XXIX complete. 4682 lines, 109 axioms, 0 sorries. Covers Hodge decomposition, cycle class maps, Lefschetz, standard conjectures, Chow rings, Mumford-Tate, coniveau, Bloch-Beilinson, Deligne cohomology, K3, Tate conjecture, VHS, mixed Hodge structures, p-adic Hodge theory.",
+    "progressSummary": "PROGRESS: Parts I-XXIX complete. 4679 lines, 74 axioms (down from 109), 0 sorries. Converted 35 vacuous True-concluding axioms to theorems. Removed duplicate cattani_deligne_kaplan. Covers Hodge decomposition, cycle class maps, Lefschetz, standard conjectures, Chow rings, Mumford-Tate, coniveau, Bloch-Beilinson, Deligne cohomology, K3, Tate, VHS, mixed Hodge structures, p-adic Hodge theory.",
     "builtItems": [
       "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
       "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
@@ -171,7 +171,8 @@
         "name": "padic_hodge_summary",
         "description": "Full p-adic summary theorem (proved)",
         "proven": true
-      }
+      },
+      "Converted 35 vacuous axioms to theorems: primitive_hodge_numbers, hc_compatible_with_vhs, hodge_conjecture_product, polarized_semisimple, abel_jacobi_is_hodge_morphism, griffiths_abel_jacobi_nontrivial, hodge_iff_full_realization, cattani_deligne_kaplan (dup removed), intersection_commutative, cycle_class_ring_hom, hodge_classes_are_mt_invariants, cm_implies_mt_commutative, generic_mt_maximal, bb_f1_is_kernel, bloch_conjecture_surfaces, noether_lefschetz, deligne_exact_sequence, weil_conjectures_riemann_hypothesis, tate_for_abelian_over_finite_field, faltings_tate_number_fields, artin_comparison_theorem, colmez_fontaine, padic_comparison_C_dR/cris/st, hodge_tate_padic_decomposition, schmid_sl2_orbit, griffiths_period_map_immersion, weight_spectral_sequence, mhs_strict_morphisms, ext_mixed_hodge, carlson_ext_jacobian, abel_jacobi_from_mhs, saito_mixed_hodge_modules"
     ],
     "insights": [
       "Millennium Prize problem, wide open - no known attack strategy",
@@ -212,7 +213,10 @@
       "Added Fontaine functor D_cris, Colmez-Fontaine equivalence theorem",
       "Added p-adic comparison theorems C_dR, C_cris, C_st and Hodge-Tate decomposition",
       "Proved padic_hodge_connects_conjectures: TC ↔ HC for abelian varieties via p-adic methods",
-      "Fontaine-Mazur conjecture states geometric ↔ de Rham + unramified a.e."
+      "Fontaine-Mazur conjecture states geometric ↔ de Rham + unramified a.e.",
+      "35 axioms concluding with True were converted to theorems — these had no real mathematical content and polluted the axiom count",
+      "Duplicate cattani_deligne_kaplan axiom removed (was at both line 2880 and 4426)",
+      "primitive_hodge_numbers was trivially satisfiable (∃ h, h ≤ n — take h=0) and converted to theorem"
     ],
     "mathlibGaps": [
       "Complex manifolds",
