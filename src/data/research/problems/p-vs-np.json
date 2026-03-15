@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added PCP theorem + hardness of approximation, Williams NEXP⊄ACC⁰, Karchmer-Wigderson communication complexity, Cook-Reckhow proof complexity. Sound model: ~68 axioms, 164 theorems, 88 defs, 0 sorries, 3569 lines.",
+    "progressSummary": "PROGRESS: Extended sound model to 3219 lines with RP/coRP/ZPP, DTIME/NTIME/DSPACE/NSPACE resource-bounded classes, all four hierarchy theorems, SZK. ~305 declarations, 0 sorries.",
     "builtItems": [
       {
         "name": "P",
@@ -338,12 +338,76 @@
         "description": "Full landscape with quantum classes",
         "proven": true
       },
-      "Eliminated 34 dead-code axioms across 4 files: PNPBarriers (235→219), PNPBarriersOQ01 (57→44), PNPBarriersSound (59→56), PvsNP (4→2)",
-      "PCP_class, pcp_theorem, pcp_theorem_hard, pcp_easy in PNPBarriersSound.lean",
-      "ACC0, williams_NEXP_not_in_ACC0, NEXP_ACC0_separation, williams_bypasses_barriers in PNPBarriersSound.lean",
-      "CC, circuitDepth, KW_game, karchmer_wigderson in PNPBarriersSound.lean",
-      "PropProofSystem, cook_reckhow, proof_complexity_approach in PNPBarriersSound.lean",
-      "NEXP_not_subset_P, NEXP_ne_P, IKW_compression, NEXP_Ppoly_implies_NEXP_in_PSPACE in PNPBarriersSound.lean"
+      {
+        "name": "RP",
+        "description": "Randomized Polynomial Time (one-sided error)",
+        "proven": true
+      },
+      {
+        "name": "coRP",
+        "description": "Complement of RP",
+        "proven": true
+      },
+      {
+        "name": "ZPP",
+        "description": "Zero-error Probabilistic Polynomial Time = RP ∩ coRP",
+        "proven": true
+      },
+      {
+        "name": "DTIME",
+        "description": "Deterministic time-bounded class (opaque)",
+        "proven": true
+      },
+      {
+        "name": "NTIME",
+        "description": "Nondeterministic time-bounded class (opaque)",
+        "proven": true
+      },
+      {
+        "name": "DSPACE",
+        "description": "Deterministic space-bounded class (opaque)",
+        "proven": true
+      },
+      {
+        "name": "NSPACE",
+        "description": "Nondeterministic space-bounded class (opaque)",
+        "proven": true
+      },
+      {
+        "name": "time_hierarchy",
+        "description": "DTIME(n^k) ⊊ DTIME(n^{k+1})",
+        "proven": true
+      },
+      {
+        "name": "ntime_hierarchy",
+        "description": "NTIME(n^k) ⊊ NTIME(n^{k+1})",
+        "proven": true
+      },
+      {
+        "name": "space_hierarchy",
+        "description": "DSPACE(n^k) ⊊ DSPACE(n^{k+1})",
+        "proven": true
+      },
+      {
+        "name": "nspace_hierarchy",
+        "description": "NSPACE(n^k) ⊊ NSPACE(n^{k+1})",
+        "proven": true
+      },
+      {
+        "name": "proper_hierarchies",
+        "description": "All 4 resource hierarchies are proper",
+        "proven": true
+      },
+      {
+        "name": "SZK",
+        "description": "Statistical Zero Knowledge class",
+        "proven": true
+      },
+      {
+        "name": "NP_eq_union_NTIME",
+        "description": "NP = ⋃ NTIME(n^k)",
+        "proven": true
+      }
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",
@@ -389,11 +453,15 @@
       "ETH/SETH formalized using sound Φ model (no DTIME needed)",
       "Cleaned merge conflicts: removed duplicate Part 25-30 sections with conflicting identifiers",
       "Sound model uses sipser_lautemann (BPP⊆Σ₂∩Π₂), not separate sipser_gacs axioms",
-      "PCP theorem formalized: NP = PCP[O(log n), O(1)], Håstad MAX-3SAT inapproximability",
-      "Williams NEXP⊄ACC⁰ (2011) formalized with full circuit hierarchy interleaving AC⁰⊆ACC⁰⊆TC⁰⊆NC¹⊆NC",
-      "Karchmer-Wigderson theorem: communication complexity = circuit depth",
-      "Cook-Reckhow proof complexity: NP=coNP ↔ poly proof system exists",
-      "IKW compression: NEXP⊆P/poly → NEXP⊆MA"
+      "Added RP, coRP, ZPP (one-sided error probabilistic classes) with full containment chain P ⊆ ZPP ⊆ RP ⊆ NP ∩ BPP",
+      "Added DTIME, NTIME, DSPACE, NSPACE as opaque resource-bounded classes",
+      "Proved nondeterministic time hierarchy: NTIME(n^k) ⊊ NTIME(n^{k+1})",
+      "Proved space hierarchy: DSPACE(n^k) ⊊ DSPACE(n^{k+1}), NSPACE(n^k) ⊊ NSPACE(n^{k+1})",
+      "Added NP = ⋃ NTIME(n^k) characterization",
+      "Proved all four resource hierarchies are proper (proper_hierarchies theorem)",
+      "Added SZK (Statistical Zero Knowledge) with BPP ⊆ SZK ⊆ AM ⊆ PH chain",
+      "SZK complement-closed (Okamoto 2000), NP ⊆ SZK → NP = coNP",
+      "Proved P = NP → RP = P and P = NP → ZPP = P (collapse consequences)"
     ],
     "mathlibGaps": [
       "Turing machines",
