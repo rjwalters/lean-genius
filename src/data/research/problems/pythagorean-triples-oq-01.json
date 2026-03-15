@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Parts I-XXIII. 2376 lines, 7 axioms, 0 sorries, 108 theorems. Added straddling pair analysis (Part XXIII): circleNorm gap identity, involution geometry (n<m/2 outward, n>m/2 inward), parity_from_straddling_vanishes reduction. Upgraded triple_count_from_r2_connection from True to proved (π/8)×(6/π²)×(2/3)=1/(2π). Upgraded landau_two_squares to formal Tendsto statement. Converted r2_pos_iff to axiom.",
+    "progressSummary": "COMPLETED: Build fixed after Mathlib API changes (0 sorries, 7 axioms)",
     "builtItems": [
       "bothOddCoprimeCount: counting function for both-odd coprime pairs",
       "coprime_sector_partition: exact partition identity (coprime = primitive + bothOdd)",
@@ -167,7 +167,8 @@
       "The parity axiom now has a complete geometric explanation: (1) column density ratio is 2/3 by CRT independence, (2) boundary discrepancy vanishes because straddling pairs are O(√N) while coprime pairs are Θ(N).",
       "triple_count_from_r2_connection: the correct factor is 1/8 (octant), not 1/4 (quadrant). The 8-fold symmetry of Z² gives sector = disk/8.",
       "r2_pos_iff converted to axiom: full proof requires Gaussian integer UFD structure which is beyond current Mathlib formalization scope.",
-      "Session 10 assessment: File is MATURE at 2376 lines, 108 theorems, 0 sorries. All axioms thoroughly analyzed and decomposed. Marking completed."
+      "Session 10 assessment: File is MATURE at 2376 lines, 108 theorems, 0 sorries. All axioms thoroughly analyzed and decomposed. Marking completed.",
+      "Fixed 6 Mathlib API breakages: Nat.le multi-constructor, Finset.mem_product/mem_range simp changes, Finset.card_Icc rename, push_cast/linarith regression, Filter.Tendsto.congr API change, simp_rw recursion depth"
     ],
     "mathlibGaps": [
       "No Mathlib formalization of Gauss circle problem asymptotics",

@@ -8,7 +8,8 @@ The number of primitive Pythagorean triples with hypotenuse c ≤ N is asymptoti
 
 **File**: `proofs/Proofs/PythagoreanTriplesOQ01.lean` (~2490 lines)
 **Companion**: `proofs/Proofs/PythagoreanTriplesOQ01Aristotle.lean` (12 routine lemmas proved)
-**Stats**: ~120 theorems, ~39 definitions, 0 sorries, 6 axioms (3 core + 3 supplementary)
+**Stats**: ~120 theorems, ~39 definitions, 0 sorries, 7 axioms (3 core + 4 supplementary)
+**Build**: Passes (fixed Mathlib API breakage 2026-03-15)
 
 ## Proof Architecture
 
