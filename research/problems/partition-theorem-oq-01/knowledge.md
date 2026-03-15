@@ -117,3 +117,54 @@ so the bijection works. RR would need ∏ 1/(1-X^k) infrastructure.
 
 **Docker build**: PASSED (all 3061 jobs)
 **Lines added**: ~80 (Part XXXIV-B + XXXIV-C)
+### Session 2026-03-15 (researcher-2) - BUILD
+
+**Mode**: REVISIT
+**Outcome**: progress — mod-side specialization (step 6) completed
+
+**Built**:
+- `schurModSet`: definition of modular set {k ≤ n | k ≡ 1,2 mod 3}
+- `schurModSet_pos`, `schurModSet_eq_gf_filter`: basic properties
+- `part_le_of_mem`: utility lemma (a ∈ p.parts → a ≤ n)
+- `schurMod_card_eq_subsetsWithSum`: |schurMod n| = |subsetsWithSum (schurModSet n) n|
+  via explicit bijection (toFinset forward, partitionOfSubset backward)
+- `schurMod_card_eq_gf_coeff`: |schurMod n| = coeff n (schurModGF n)
+
+**Key insight**: Bijection only works for Schur (distinct parts). RR1/RR2 mod sides
+allow repeated parts, needing ∏ 1/(1-X^k) framework instead of ∏ (1+X^k).
+
+**File state**: 0 sorries, 3 axioms, ~2160 lines
+**Docker build**: PASSED (3061 jobs)
+
+**Roadmap update**: Steps 1-6 complete. Remaining:
+- Step 7: Gap-side generating function characterization (hard)
+- Step 8: Compose mod + gap to prove Schur identity axiom
+
+### Session 2026-03-15 (researcher-7, second) - BUILD
+
+**Mode**: REVISIT
+**Outcome**: progress — repeated parts GF + Schur gap recursion infrastructure
+
+**Built**:
+- Removed duplicate Part XXXVII (ModSideSpecialization) that duplicated Part XXXIV-B/C
+- **Part XXXIX: Repeated Parts GF Infrastructure**
+  - `geomSeries k`: formal power series 1/(1-X^k) = Σ X^{nk}
+  - `geomSeries_coeff`: coefficient extraction for geomSeries
+  - `geomSeries_inverse` (axiom): (1-X^k) * geomSeries k = 1
+  - `repeatedPartGF S`: ∏_{k ∈ S} 1/(1-X^k) for repeated-parts generating functions
+  - `repeatedPartGF_empty/singleton/insert`: structural lemmas
+  - `rr1ModRepGF`, `rr2ModRepGF`: Rogers-Ramanujan mod-side GFs with repetition
+- **Part XL: Schur Gap Recursion Infrastructure**
+  - `schurStep a`: adaptive gap size (4 if 3|a, else 3)
+  - `schurStep_ge_3/le_4/not_div3/div3`: step bounds
+  - `schurGapFull_iff_schurStep`: gap condition ↔ step characterization
+  - `schurGapFull_implies_minGap3`: **PROVED** — Schur gap ≥ 3 between consecutive elements
+
+**File state**: 0 sorries, 4 axioms (~2445 lines)
+**Docker build**: PASSED (3061 jobs)
+
+**Roadmap update**: Steps 1-6 complete. Steps 7a-7b (infrastructure) in progress:
+- 7a ✅ Repeated parts GF (for RR mod sides)
+- 7b ✅ Schur gap recursion infrastructure
+- 7c 🔲 Gap-side GF characterization (functional equation)
+- 8 🔲 Compose mod + gap to prove Schur identity axiom
