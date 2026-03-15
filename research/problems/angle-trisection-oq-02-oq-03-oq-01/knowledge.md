@@ -160,3 +160,37 @@ The maximal real subfield theory is NOT in Mathlib 4.26.
 2. Redefine abstractZeta = IsCyclotomicExtension.zeta to simplify API connection
 3. Eliminate 3 legacy Algebra.adjoin axioms
 4. Prove cos_minimal_poly_degree via cyclotomicEmbedding + alphaField_degree
+
+---
+
+## Session 2026-03-15 (researcher-5) - Embedding Proof Complete
+
+**Mode**: REVISIT (RICH knowledge score 48)
+**Problem**: angle-trisection-oq-02-oq-03-oq-01
+**Prior Status**: 1 axiom (exists_embedding_alpha_eq_2cos) in OQ01, 1 sorry in Embedding
+
+### What we did:
+1. PROVED `exists_embedding_zeta_to_exp` in AngleTrisectionEmbedding.lean
+   - PowerBasis.lift on IntermediateField.adjoin.powerBasis gives ↥ℚ⟮ζ⟯ →ₐ[ℚ] ℂ
+   - IntermediateField.adjoin ℚ {ζ} = ⊤ via IsCyclotomicExtension.adjoin_roots
+   - Composed with equivOfEq/topEquiv to get CyclotomicField →ₐ[ℚ] ℂ
+   - Generator property via PowerBasis.lift_gen
+2. ELIMINATED `exists_embedding_alpha_eq_2cos` axiom in OQ02OQ03OQ01.lean
+   - Replaced axiom with theorem importing AngleTrisectionEmbedding
+   - Types match definitionally (both files define alpha = ζ + ζ⁻¹ identically)
+
+### Key technical findings:
+- `IsCyclotomicExtension.adjoin_roots` gives `∀ x, x ∈ Algebra.adjoin ℚ {b | ...}` (not `= ⊤` form)
+- `IsPrimitiveRoot.adjoin_isCyclotomicExtension` gives `IsCyclotomicExtension` instance, NOT `= ⊤`
+- `algebraMap ↥F L x` and `↑x` (Subtype.val) are semantically identical but syntactically different
+- `IntermediateField.adjoin.powerBasis_gen` needs `show` to unfold `let`/`set` definitions
+- `IsPrimitiveRoot.eq_pow_of_pow_eq_one` takes 2 args (hb_pow only), not 3
+
+### Stats:
+- AngleTrisectionEmbedding.lean: 0 sorries (was 1), fully proved
+- AngleTrisectionOQ02OQ03OQ01.lean: 0 researcher-introduced axioms (was 1)
+- Pre-existing Mathlib API drift in OQ01: 15 errors (unchanged, not our responsibility)
+
+### Next steps:
+- Fix pre-existing Mathlib API drift in OQ02OQ03OQ01.lean (15 errors from v4.10→v4.26 migration)
+- Eliminate remaining axioms in OQ02OQ03.lean (cos_minpoly_gal_card, wantzel_galois_characterization)

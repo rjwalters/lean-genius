@@ -18,6 +18,7 @@
 -/
 
 import Mathlib
+import Proofs.AngleTrisectionEmbedding
 
 open Polynomial
 
@@ -398,10 +399,11 @@ theorem minpoly_alpha_natDegree (hn : 3 ≤ n) :
 -- ============================================================================
 
 /-- There exists a ℚ-algebra embedding of CyclotomicField into ℂ that sends
-    α = ζ + ζ⁻¹ to 2cos(2π/n). -/
-axiom exists_embedding_alpha_eq_2cos (hn : 3 ≤ n) :
+    α = ζ + ζ⁻¹ to 2cos(2π/n). Proved in AngleTrisectionEmbedding.lean. -/
+theorem exists_embedding_alpha_eq_2cos (hn : 3 ≤ n) :
     ∃ φ : CyclotomicField n ℚ →ₐ[ℚ] ℂ,
-    φ (alpha n) = ↑(2 * Real.cos (2 * Real.pi / ↑n))
+    φ (alpha n) = ↑(2 * Real.cos (2 * Real.pi / ↑n)) :=
+  AngleTrisectionEmbedding.exists_embedding_alpha_eq_2cos n hn
 
 /-- alphaCos = α/2. Under the right embedding, maps to cos(2π/n). -/
 noncomputable def alphaCos : CyclotomicField n ℚ :=
