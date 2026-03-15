@@ -804,13 +804,13 @@ What we've formalized (expanded list):
 23. ✓ Selberg CLT (formal statement)
 24. ✓ Zero-density exponent calculations at σ = 3/4
 
-## Axiom Budget
+## Axiom Budget (updated 2026-03-15)
 
-| File | Axioms | Theorems (non-trivial) | Sorries |
-|------|--------|------------------------|---------|
-| RiemannHypothesis.lean | 19 | 40+ | 0 |
-| This file | 16 | 30+ | 0 |
-| Total | 35 | 70+ | 0 |
+| File | Axioms | Theorems | Sorries |
+|------|--------|----------|---------|
+| RiemannHypothesis.lean | 18 | 100 | 0 |
+| This file | 10 | 93 | 0 |
+| Total | 28 | 193 | 0 |
 
 Note: Lagarias_implies_Robin eliminated in main file (proved from RH_iff_Lagarias + RH_iff_Robin).
 liConstant, zeroCountingFunction, zeroDensity, argumentFunction converted from concrete `0`
