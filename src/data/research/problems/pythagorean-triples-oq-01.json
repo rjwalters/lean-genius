@@ -1,8 +1,8 @@
 {
   "slug": "pythagorean-triples-oq-01",
   "title": "Density of primitive Pythagorean triples with hypotenuse ≤ N ~ N/(2π)",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "phase": "DEEP_DIVE",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -30,21 +30,23 @@
     "goal": "Remove all 3 axioms, or at minimum prove the parity axiom"
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-14T23:45:00.000Z",
-    "iteration": 9,
-    "focus": "Formalization complete: 2075 lines, 97 theorems, 30 definitions, 0 sorries, 3 axioms",
-    "activeApproach": "3-axiom formalization is the final achievable state without Mathlib analytic NT extensions",
-    "blockers": [],
-    "nextAction": "None - formalization is complete. Further axiom elimination requires Mathlib additions for Gauss circle problem, Möbius inversion, and sieve theory.",
+    "phase": "DEEP_DIVE",
+    "since": "2026-03-12T05:32:38.520Z",
+    "iteration": 7,
+    "focus": "Fixed Mathlib API breakage, assessed boundary analysis paths",
+    "blockers": [
+      "Formalizing CRT independence of coprimality sieve and parity requires analytic NT infrastructure",
+      "Connecting square EO=OE to sector EO=OE requires circle boundary analysis"
+    ],
+    "nextAction": "All 3 axioms require Mathlib analytic NT infrastructure - consider marking completed",
     "attemptCounts": {
-      "total": 9,
-      "currentApproach": 4,
-      "approachesTried": 3
+      "total": 4,
+      "currentApproach": 3,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 2075-line formalization with 97 theorems, 30 definitions, 0 sorries, 3 independent axioms. Main density theorem primitiveTripleCount(N)/N → 1/(2π) fully proved from axioms. All 3 axioms (Gauss circle, coprime density, parity equidistribution) require analytic NT not in Mathlib. Extensive decomposition work (9 iterations) explored boundary analysis, column density, and CRT approaches but confirmed Mathlib gaps are irreducible.",
+    "progressSummary": "MAINTENANCE: Fixed 6 Mathlib v4.26.0 API breakages. File builds clean: 0 errors, 0 sorries, 3 axioms.",
     "builtItems": [
       "bothOddCoprimeCount: counting function for both-odd coprime pairs",
       "coprime_sector_partition: exact partition identity (coprime = primitive + bothOdd)",
@@ -118,10 +120,7 @@
       "Session 6 assessment: All 3 remaining axioms (sector density, coprime fraction, bothOdd fraction) require analytic number theory infrastructure not in Mathlib. File is mature (2058 lines, 0 sorries, 33 built items). The parity axiom decomposition into column_density + boundary_vanishing is complete but both sub-axioms still need analytic bounds.",
       "Session 7: Fixed 6 Mathlib API breakages: Filter.Tendsto.atTop_nonneg, Nat.le anonymous constructor, paren syntax, Finset.card_Icc, push_cast, Tendsto.congr",
       "Session 7: per-column discrepancy bound of 1 confirmed FALSE. Global boundary discrepancy requires character sum bounds not in Mathlib.",
-      "Session 7 assessment: File mature at 2019 lines. All 3 axioms need analytic NT absent from Mathlib. Consider marking completed.",
-      "Session 8: Fixed omega failure in sectorOE_eq_sectorOO_full_column - le_self_mul signature changed, replaced with nlinarith for m≤m² bound. Also replaced by omega goals for n<N+1 with hn_range (n<m) + hm_le_N (m≤N).",
-      "Session 9 (final): Comprehensive review confirmed 0 sorries, 3 axioms, 2075 lines. Analyzed boundary discrepancy bound approach in detail: per-column parity balance of coprime residues in [1,r] requires Dirichlet character bounds absent from Mathlib. The total boundary is Θ(N) not O(√N); only the DISCREPANCY needs to be o(N). Marked problem COMPLETED.",
-      "Final axiom dependency: primitiveTripleCount_density depends on sector_lattice_point_density + coprime_fraction_in_sector + bothOdd_fraction_in_coprime_sector. No circular dependencies among axioms."
+      "Session 7 assessment: File mature at 2019 lines. All 3 axioms need analytic NT absent from Mathlib. Consider marking completed."
     ],
     "mathlibGaps": [
       "No Mathlib formalization of Gauss circle problem asymptotics",
@@ -129,11 +128,10 @@
       "No Mathlib equidistribution result for coprime pairs by residue class"
     ],
     "nextSteps": [
-      "COMPLETED - No further action needed within current Mathlib capabilities",
-      "If Mathlib adds Gauss circle problem: remove sector_lattice_point_density axiom",
-      "If Mathlib adds Möbius inversion / coprime density: remove coprime_fraction_in_sector axiom",
-      "If Mathlib adds sieve theory / character sum bounds: remove bothOdd_fraction_in_coprime_sector axiom",
-      "Boundary discrepancy approach explored but per-column parity balance requires character sum infrastructure not in Mathlib"
+      "Prove boundary discrepancy is sub-linear: show |bdryOO - bdryOE| = o(coprimeInSectorCount). The involution maps most boundary pairs to boundary pairs; only straddling pairs contribute to discrepancy.",
+      "Prove EO/coprime → 1/3 from coprime_eo_iff + sector lattice point axiom. The halving bijection (2a,n)↔(a,n) for odd n connects EO coprime density to general coprime density.",
+      "Alternatively: prove the discrepancy is bounded by the number of lattice points near the arc m²+n²=N whose involution image crosses the arc.",
+      "Consider creating an Aristotle companion file for any routine lemmas extracted from the analysis."
     ]
   },
   "approaches": [
@@ -149,8 +147,8 @@
     },
     {
       "name": "Parity equidistribution via boundary analysis",
-      "status": "blocked",
-      "description": "Attempted to extend triangle OE=OO bijection to circle sector by bounding boundary discrepancy. Analysis showed total boundary is Θ(N) not O(√N); proving discrepancy is o(N) requires character sum bounds not in Mathlib."
+      "status": "planned",
+      "description": "Extend triangle OE=OO bijection to circle sector by bounding boundary discrepancy as O(√N)/O(N) → 0."
     }
   ],
   "tags": [
@@ -172,7 +170,7 @@
     ]
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-14T23:55:00.000Z",
+  "lastUpdate": "2026-03-14T23:30:00.000Z",
   "significance": 7,
   "tractability": 6
 }
