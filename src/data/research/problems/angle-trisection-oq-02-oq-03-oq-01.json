@@ -18,14 +18,13 @@
   "currentState": {
     "phase": "IN_PROGRESS",
     "since": "2026-03-14T00:00:00.000Z",
-    "iteration": 8,
-    "focus": "cos_coprime_is_root_of_minpoly (1 sorry). Next: prove via cyclotomic Galois action to complete cos_minpoly_gal_card elimination.",
+    "iteration": 6,
+    "focus": "h_ge PROVED ([E:F]≥2). 2 sorries remain: h_le ([E:F]≤2 via quadratic), galois_conjugate_count.",
     "blockers": [
-      "cos_minpoly_gal_card: need Fintype.card p.Gal = natDegree p (splitting field = simple extension)",
-      "cos_2kpi_div_n_eq_iff has pre-existing Mathlib API drift errors (non-blocking)",
-      "wantzel_galois_characterization from OQ02 file (pre-existing compatibility issues)"
+      "h_le needs adjoin F {ζ} = ⊤ proof (ζ generates E over F via quadratic X²-2cos·X+1)",
+      "Pre-existing build errors in cos_2kpi_div_n_eq_iff (omega/Nat.cast_mod_cast API drift)"
     ],
-    "nextAction": "Eliminate cos_minpoly_gal_card axiom using minpoly_cos_natDegree_eq + splitting field isomorphism",
+    "nextAction": "Prove h_le: construct degree-2 polynomial over F annihilating ζ, show minpoly divides it, deduce [E:F] ≤ 2",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -33,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: galois_conjugate_count PROVED (last sorry eliminated). File now has 0 sorries, 3 axioms. Next: eliminate cos_minpoly_gal_card axiom via splitting field = simple extension argument.",
+    "progressSummary": "PROGRESS: minpoly_cos_natDegree_eq PROVED (3 sorries eliminated). File now has 1 sorry (galois_conjugate_count) + 3 axioms. Next: eliminate cos_minpoly_gal_card axiom using minpoly_cos_natDegree_eq + Galois property.",
     "builtItems": [
       "Section XVI: Primitive Root Properties and Separability (zeta_ne_zero, zeta_pow_n_eq_one, minpoly_cos_separable, minpoly_cos_natDegree_pos, zeta_pow_pred_eq_conj, cos_eq_zeta_pow_re, sin_eq_zeta_pow_im, zeta_pow_norm_one, cos_2k_pi_div_n_bound)",
       "Section XVII: Cyclotomic Polynomial Connection (zeta_is_root_of_xn_sub_one, cyclotomic_natDegree_eq_totient)",
@@ -49,10 +48,7 @@
       "ELIMINATED exists_embedding_alpha_eq_2cos axiom in AngleTrisectionOQ02OQ03OQ01.lean (now theorem via import)",
       "PROVED h_top: IntermediateField.adjoin ↥F {ζ_E} = ⊤ via finrank contrapositive in OQ02OQ03.lean",
       "PROVED h_deg: (minpoly ↥F ζ_E).natDegree ≤ 2 via quadratic X²-2cosX+1 in OQ02OQ03.lean",
-      "PROVED combining sorry: finrank ↥F ↥E ≤ 2 via erw h_top + IntermediateField.finrank_top in OQ02OQ03.lean",
-      "PROVED galois_conjugate_count: |{cos(2kπ/n) : gcd(k,n)=1}| = φ(n)/2 via coprime pairing + cos injectivity (112 lines)",
-      "PROVED cos_is_root_of_T_sub_one: T_n(cos(2kπ/n)) = 1 for all k (forward direction of root characterization)",
-      "Added cos_coprime_is_root_of_minpoly (1 sorry): key infrastructure for cos_minpoly_gal_card elimination"
+      "PROVED combining sorry: finrank ↥F ↥E ≤ 2 via erw h_top + IntermediateField.finrank_top in OQ02OQ03.lean"
     ],
     "insights": [
       "Complex.exp_two_pi_mul_I gives exp(2πi)=1 directly for proving ζ^n=1",
@@ -93,12 +89,7 @@
       "PROVED minpoly_cos_natDegree_eq: natDegree(minpoly ℚ cos(2π/n)) = φ(n)/2 via cyclotomic tower law",
       "h_top (ζ generates E over F) proved via finrank argument + IntermediateField.finrank_lt_finrank_of_lt contrapositive",
       "h_deg (minpoly F ζ has deg ≤ 2) proved via X²-2cosX+1 quadratic annihilation + minpoly.dvd",
-      "IsScalarTower.toAlgHom ℚ ↥E ℂ gives the injective ℚ-AlgHom for minpoly transfer between ↥E and ℂ",
-      "galois_conjugate_count proved via lower-half restriction: partition coprime residues into 2k<n and 2k>n halves, cos symmetry maps upper to lower, cos injective on [0,π] makes restricted map injective, bijection k↦n-k gives card = φ(n)/2",
-      "gcongr tactic handles division monotonicity (a/c ≤ b/c from a ≤ b) cleanly, avoiding need for div_le_iff in calc blocks",
-      "mul_div_cancel_left₀ gives n*π/n = π for field_simp-free division cancellation",
-      "cos_is_root_of_T_sub_one proved: conv_lhs + push_cast/field_simp handles ℤ→ℝ cast for n*(2kπ/n)=2kπ",
-      "Path to cos_minpoly_gal_card: cos_coprime_is_root_of_minpoly → Splits → Normal → IsGalois.mk → card_aut_eq_finrank"
+      "IsScalarTower.toAlgHom ℚ ↥E ℂ gives the injective ℚ-AlgHom for minpoly transfer between ↥E and ℂ"
     ],
     "mathlibGaps": [
       "Maximal real subfield of cyclotomic field not in Mathlib",

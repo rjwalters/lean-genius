@@ -23,8 +23,8 @@
     The first new polygon construction since antiquity. Determined his career choice.
   - Wantzel (1837): Proved the converse — non-constructibility when φ(n) ≠ 2^k.
 
-  File summary: 68+ proved theorems, 0 sorries, 3 axioms.
-  galois_conjugate_count PROVED (coprime pairing via lower-half restriction + cos injectivity).
+  File summary: 67+ proved theorems, 1 sorry, 3 axioms.
+  Sorries: galois_conjugate_count (counting argument for coprime pairing).
   minpoly_cos_natDegree_eq PROVED (3 sorries eliminated: h_top, h_deg, combining).
   Axioms: gauss_wantzel_theorem (redundant — proved as gauss_wantzel_theorem'),
   cos_minpoly_gal_card (has clear proof roadmap via Chebyshev + cyclotomic bridge),
@@ -1412,118 +1412,7 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
     Finset.card (Finset.image (fun k => Real.cos (2 * ↑k * Real.pi / ↑n))
       (Finset.filter (fun k => Nat.Coprime k n) (Finset.range n))) =
     Nat.totient n / 2 := by
-  -- Setup: S = coprime residues mod n, f = cosine map
-  set S := (Finset.range n).filter (fun k => Nat.Coprime k n) with hS_def
-  set f := fun k : ℕ => Real.cos (2 * ↑k * Real.pi / ↑n) with hf_def
-  -- S_lo = lower half (2k < n), S_hi = upper half (2k > n)
-  set S_lo := S.filter (fun k => 2 * k < n)
-  set S_hi := S.filter (fun k => n < 2 * k)
-  -- card S = φ(n)
-  have hS_card : S.card = n.totient := by
-    rw [Nat.totient_eq_card_coprime, hS_def]
-    congr 1; exact Finset.filter_congr (fun k _ => Nat.coprime_comm)
-  -- S = S_lo ∪ S_hi (coprime k can't have 2k = n since gcd(n/2,n) ≥ 2)
-  have h_union : S = S_lo ∪ S_hi := by
-    ext k; constructor
-    · intro hk
-      have hk_S := Finset.mem_filter.mp hk
-      have hk_pos := coprime_pos_of_ge_three hn hk
-      have hk_ne := coprime_ne_sub_self hn hk_pos
-        (Finset.mem_range.mp hk_S.1) hk_S.2
-      rw [Finset.mem_union]
-      by_cases h : 2 * k < n
-      · exact Or.inl (Finset.mem_filter.mpr ⟨hk, h⟩)
-      · exact Or.inr (Finset.mem_filter.mpr ⟨hk, by omega⟩)
-    · intro hk
-      rcases Finset.mem_union.mp hk with h | h
-      · exact (Finset.mem_filter.mp h).1
-      · exact (Finset.mem_filter.mp h).1
-  have h_disj : Disjoint S_lo S_hi := by
-    rw [Finset.disjoint_left]
-    intro k hk_lo hk_hi
-    exact absurd (Finset.mem_filter.mp hk_hi).2
-      (not_lt.mpr (le_of_lt (Finset.mem_filter.mp hk_lo).2))
-  -- image f S = image f S_lo (upper half reduces via cos symmetry)
-  have h_image_eq : S.image f = S_lo.image f := by
-    apply Finset.Subset.antisymm
-    · intro y hy
-      obtain ⟨k, hk_mem, rfl⟩ := Finset.mem_image.mp hy
-      by_cases h_lo : 2 * k < n
-      · exact Finset.mem_image.mpr ⟨k, Finset.mem_filter.mpr ⟨hk_mem, h_lo⟩, rfl⟩
-      · -- k in upper half: use n - k from lower half
-        have hk_S := Finset.mem_filter.mp hk_mem
-        have hk_lt := Finset.mem_range.mp hk_S.1
-        have hk_pos := coprime_pos_of_ge_three hn hk_mem
-        have h_ne := coprime_ne_sub_self hn hk_pos hk_lt hk_S.2
-        have hnk_S := sub_mem_coprime_filter hn hk_pos hk_lt hk_S.2
-        exact Finset.mem_image.mpr
-          ⟨n - k, Finset.mem_filter.mpr ⟨hnk_S, by omega⟩,
-           cos_complement_eq n (by omega) k hk_lt⟩
-    · exact Finset.image_subset_image (Finset.filter_subset _ _)
-  -- f is injective on S_lo (cos injective on [0, π), and 2kπ/n ∈ [0, π) for k in S_lo)
-  have h_inj : Set.InjOn f ↑S_lo := by
-    intro k₁ hk₁ k₂ hk₂ heq
-    rw [Finset.mem_coe] at hk₁ hk₂
-    have hk₁_f := Finset.mem_filter.mp hk₁
-    have hk₂_f := Finset.mem_filter.mp hk₂
-    have h2k₁ := hk₁_f.2
-    have h2k₂ := hk₂_f.2
-    have hk₁_lt := Finset.mem_range.mp (Finset.mem_filter.mp hk₁_f.1).1
-    have hk₂_lt := Finset.mem_range.mp (Finset.mem_filter.mp hk₂_f.1).1
-    have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
-    have hn_ne := ne_of_gt hn_pos
-    have hpi := Real.pi_pos
-    -- Angles in [0, π]: 2kπ/n ≤ nπ/n = π since 2k < n
-    have h₁_mem : 2 * (↑k₁ : ℝ) * Real.pi / ↑n ∈ Set.Icc 0 Real.pi := by
-      refine Set.mem_Icc.mpr ⟨by positivity, ?_⟩
-      calc 2 * (↑k₁ : ℝ) * Real.pi / ↑n
-          ≤ ↑n * Real.pi / ↑n := by
-            gcongr; nlinarith [show (2 * k₁ : ℝ) < n from by exact_mod_cast h2k₁]
-        _ = Real.pi := mul_div_cancel_left₀ _ hn_ne
-    have h₂_mem : 2 * (↑k₂ : ℝ) * Real.pi / ↑n ∈ Set.Icc 0 Real.pi := by
-      refine Set.mem_Icc.mpr ⟨by positivity, ?_⟩
-      calc 2 * (↑k₂ : ℝ) * Real.pi / ↑n
-          ≤ ↑n * Real.pi / ↑n := by
-            gcongr; nlinarith [show (2 * k₂ : ℝ) < n from by exact_mod_cast h2k₂]
-        _ = Real.pi := mul_div_cancel_left₀ _ hn_ne
-    -- cos is injective on [0, π]
-    have h_angle_eq := Real.injOn_cos h₁_mem h₂_mem heq
-    -- 2k₁π/n = 2k₂π/n → k₁ = k₂
-    have : (k₁ : ℝ) = (k₂ : ℝ) := by
-      field_simp at h_angle_eq; nlinarith
-    exact_mod_cast this
-  -- card(image f S) = card(S_lo) by image restriction + injectivity
-  rw [h_image_eq, Finset.card_image_of_injOn h_inj]
-  -- card S_lo = φ(n)/2 via bijection k ↦ n-k between S_lo and S_hi
-  have h_bij_card : S_lo.card = S_hi.card := by
-    apply Finset.card_bij (fun k _ => n - k)
-    · -- Maps S_lo → S_hi
-      intro k hk
-      have hk_f := Finset.mem_filter.mp hk
-      have hk_S := Finset.mem_filter.mp hk_f.1
-      have hk_lt := Finset.mem_range.mp hk_S.1
-      have hk_pos := coprime_pos_of_ge_three hn hk_f.1
-      exact Finset.mem_filter.mpr
-        ⟨sub_mem_coprime_filter hn hk_pos hk_lt hk_S.2, by omega⟩
-    · -- Injective
-      intro k₁ hk₁ k₂ hk₂ h
-      have := Finset.mem_range.mp (Finset.mem_filter.mp (Finset.mem_filter.mp hk₁).1).1
-      have := Finset.mem_range.mp (Finset.mem_filter.mp (Finset.mem_filter.mp hk₂).1).1
-      omega
-    · -- Surjective
-      intro b hb
-      have hb_f := Finset.mem_filter.mp hb
-      have hb_S := Finset.mem_filter.mp hb_f.1
-      have hb_lt := Finset.mem_range.mp hb_S.1
-      have hb_pos := coprime_pos_of_ge_three hn hb_f.1
-      exact ⟨n - b,
-        Finset.mem_filter.mpr
-          ⟨sub_mem_coprime_filter hn hb_pos hb_lt hb_S.2, by omega⟩,
-        by omega⟩
-  -- S = S_lo ∪ S_hi disjointly, card S = 2 * card S_lo
-  have h_sum := Finset.card_union_of_disjoint h_disj
-  rw [← h_union] at h_sum
-  omega
+  sorry -- Counting argument using cos_complement_eq + coprime pairing
 
 /-- Every root of T_n - 1 in ℝ is of the form cos(2kπ/n) for some k.
     Proof: T_n(x) = cos(n·arccos(x)) for |x| ≤ 1. T_n(x) = 1 iff
@@ -1827,61 +1716,5 @@ theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
   have h_eq : Module.finrank ℚ ↥F * 2 = Nat.totient n := by
     have := h_tower; rw [h_ef_eq] at this; linarith [h_finrank_E]
   omega
-
-/-!
-## Section XXIV: Toward Eliminating cos_minpoly_gal_card
-
-The axiom `cos_minpoly_gal_card` states |Gal(minpoly(cos(2π/n)))| = φ(n)/2.
-The proof strategy reduces this to showing ℚ(cos(2π/n))/ℚ is a normal extension.
-
-**Completed ingredients:**
-1. ✅ `minpoly_cos_natDegree_eq`: natDegree(minpoly ℚ cos) = φ(n)/2
-2. ✅ `chebyshev_T_sub_one_roots`: real roots of T_n - 1 in [-1,1] are cos(2kπ/n)
-3. ✅ `cos_conjugate_mem_adjoin`: cos(2kπ/n) ∈ ℚ[cos(2π/n)] for all k
-4. ✅ `minpoly_cos_dvd_chebyshev`: minpoly | T_n - 1
-
-**Required for completion:**
-- Show all roots of minpoly(ℚ, cos) lie in [-1,1] (hence are real)
-  → Then by (2), they are cos(2kπ/n) → by (3), they are in ℚ(cos)
-  → Then minpoly splits in ℚ(cos) → extension is Normal → Galois
-  → card(Gal) = finrank = natDegree = φ(n)/2
-
-**Key gap**: Showing all roots of an irreducible factor of T_n - 1 lie in [-1,1].
-  This follows from the fact that T_n - 1 has degree n and has n real roots
-  (with multiplicity) in [-1,1], hence no complex roots. The multiplicity
-  counting argument requires showing |{j : cos(2jπ/n) = x}| sums to n.
--/
-
-/-- Every cos(2kπ/n) for k = 0,...,n-1 is a root of T_n - 1.
-    This is the forward direction of chebyshev_T_sub_one_roots. -/
-theorem cos_is_root_of_T_sub_one (n : ℕ) (hn : 1 ≤ n) (k : ℕ) :
-    Polynomial.aeval (Real.cos (2 * ↑k * Real.pi / ↑n))
-      (Chebyshev.T ℝ (↑n) - Polynomial.C 1) = 0 := by
-  simp only [map_sub, map_one]
-  rw [Chebyshev.aeval_T, Chebyshev.T_real_cos]
-  -- Goal: cos(↑n * (2 * ↑k * π / ↑n)) - 1 = 0
-  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
-  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
-  -- Simplify ↑n * (2kπ/n) = 2kπ by showing cos of the result equals 1
-  suffices h : Real.cos (↑(↑n : ℤ) * (2 * ↑k * Real.pi / ↑n)) = 1 by linarith
-  -- The argument simplifies to k * 2π
-  conv_lhs => rw [show (↑(↑n : ℤ) : ℝ) * (2 * ↑k * Real.pi / ↑n) =
-    ↑(k : ℤ) * (2 * Real.pi) from by push_cast [Int.cast_natCast]; field_simp]
-  exact Real.cos_int_mul_two_pi k
-
-/-- Every cos(2kπ/n) for k coprime to n is a root of minpoly(ℚ, cos(2π/n)).
-    This follows from: minpoly | T_n - 1, so roots of minpoly are a subset of
-    roots of T_n - 1 in [-1,1], which are {cos(2kπ/n) : k = 0,...,n-1}.
-    The coprimality ensures these are EXACTLY the roots of the irreducible
-    minimal polynomial (via Galois action on cyclotomic fields).
-
-    Note: this is the key step that makes the extension ℚ(cos)/ℚ normal.
-    It requires showing that all algebraic conjugates of cos(2π/n) over ℚ
-    are of the form cos(2kπ/n) with gcd(k,n)=1. -/
-theorem cos_coprime_is_root_of_minpoly (n : ℕ) (hn : 3 ≤ n)
-    (k : ℕ) (hk : k < n) (hc : Nat.Coprime k n) :
-    Polynomial.aeval (Real.cos (2 * ↑k * Real.pi / ↑n))
-      (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))) = 0 := by
-  sorry
 
 end AngleTrisectionOQ02OQ03
