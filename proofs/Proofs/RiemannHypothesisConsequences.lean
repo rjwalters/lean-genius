@@ -976,4 +976,85 @@ theorem rh_triple_equivalence :
 
 end CrossEquivalences
 
+/-
+## Part 23: Prime Counting Function Computations
+
+The prime counting function π(n) = #{p ≤ n : p prime} is the central object
+in the Prime Number Theorem and von Koch's RH equivalence.
+Mathlib provides `Nat.primeCounting` for this function.
+-/
+
+section PrimeCounting
+
+open Nat
+
+/-- π(1) = 0 (no primes ≤ 1). -/
+theorem primeCounting_one : primeCounting 1 = 0 := by native_decide
+
+/-- π(2) = 1 (just the prime 2). -/
+theorem primeCounting_two : primeCounting 2 = 1 := by native_decide
+
+/-- π(3) = 2 (primes: 2, 3). -/
+theorem primeCounting_three : primeCounting 3 = 2 := by native_decide
+
+/-- π(5) = 3 (primes: 2, 3, 5). -/
+theorem primeCounting_five : primeCounting 5 = 3 := by native_decide
+
+/-- π(10) = 4 (primes: 2, 3, 5, 7). -/
+theorem primeCounting_ten : primeCounting 10 = 4 := by native_decide
+
+/-- π(20) = 8 (primes: 2, 3, 5, 7, 11, 13, 17, 19). -/
+theorem primeCounting_twenty : primeCounting 20 = 8 := by native_decide
+
+/-- π(30) = 10. -/
+theorem primeCounting_thirty : primeCounting 30 = 10 := by native_decide
+
+/-- π(100) = 25. -/
+theorem primeCounting_hundred : primeCounting 100 = 25 := by native_decide
+
+/-- Prime density decreases: π(10)/10 = 0.4, π(100)/100 = 0.25.
+    This reflects the Prime Number Theorem: π(x)/x ~ 1/log(x) → 0. -/
+theorem prime_density_decreasing :
+    (primeCounting 100 : ℝ) / 100 < (primeCounting 10 : ℝ) / 10 := by
+  rw [primeCounting_hundred, primeCounting_ten]
+  norm_num
+
+/-- The number of primes in (n, 2n] is at least 1 for n ≥ 1 (Bertrand's postulate). -/
+theorem bertrand_small_cases :
+    primeCounting 4 > primeCounting 2 ∧
+    primeCounting 6 > primeCounting 3 ∧
+    primeCounting 10 > primeCounting 5 := by
+  constructor
+  · native_decide
+  constructor
+  · native_decide
+  · native_decide
+
+end PrimeCounting
+
+/-
+## Part 24: Mertens Function Structural Properties
+-/
+
+section MertensStructural
+
+/-- The Mertens function starts positive and goes negative: M(1)=1, M(2)=0, M(3)=-1.
+    This non-monotonic behavior is characteristic of arithmetic functions. -/
+theorem mertens_nonmonotone :
+    mertens 1 > 0 ∧ mertens 2 = 0 ∧ mertens 3 < 0 :=
+  ⟨by rw [mertens_one]; omega,
+   by rw [mertens_two],
+   by rw [mertens_three]; omega⟩
+
+/-- |M(10)| ≤ 10 (verified). -/
+theorem mertens_abs_ten : |mertens 10| ≤ 10 := by rw [mertens_ten]; norm_num
+
+/-- |M(100)| ≤ 100 (verified). -/
+theorem mertens_abs_hundred : |mertens 100| ≤ 100 := by rw [mertens_hundred]; norm_num
+
+/-- |M(200)| ≤ 200 (verified). -/
+theorem mertens_abs_two_hundred : |mertens 200| ≤ 200 := by rw [mertens_two_hundred]; norm_num
+
+end MertensStructural
+
 end RHConsequences
