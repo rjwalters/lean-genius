@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Gauss-Wantzel theorem PROVED directly (gauss_wantzel_theorem_proved). 2 axioms ELIMINATED (cos_minpoly_gal_card, wantzel_galois_characterization). 1 axiom remains (gauss_wantzel_theorem at top) but is proved separately. OQ02OQ03: 0 sorries, 1 axiom (proved). OQ02OQ03OQ01: 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: minpoly_cos_natDegree_eq PROVED (3 sorries eliminated). File now has 1 sorry (galois_conjugate_count) + 3 axioms. Next: eliminate cos_minpoly_gal_card axiom using minpoly_cos_natDegree_eq + Galois property.",
     "builtItems": [
       "Section XVI: Primitive Root Properties and Separability (zeta_ne_zero, zeta_pow_n_eq_one, minpoly_cos_separable, minpoly_cos_natDegree_pos, zeta_pow_pred_eq_conj, cos_eq_zeta_pow_re, sin_eq_zeta_pow_im, zeta_pow_norm_one, cos_2k_pi_div_n_bound)",
       "Section XVII: Cyclotomic Polynomial Connection (zeta_is_root_of_xn_sub_one, cyclotomic_natDegree_eq_totient)",
@@ -48,18 +48,7 @@
       "ELIMINATED exists_embedding_alpha_eq_2cos axiom in AngleTrisectionOQ02OQ03OQ01.lean (now theorem via import)",
       "PROVED h_top: IntermediateField.adjoin ↥F {ζ_E} = ⊤ via finrank contrapositive in OQ02OQ03.lean",
       "PROVED h_deg: (minpoly ↥F ζ_E).natDegree ≤ 2 via quadratic X²-2cosX+1 in OQ02OQ03.lean",
-      "PROVED combining sorry: finrank ↥F ↥E ≤ 2 via erw h_top + IntermediateField.finrank_top in OQ02OQ03.lean",
-      "dvd_pow_two_is_pow_two: helper theorem for forward direction of Gauss-Wantzel",
-      "gauss_wantzel_theorem: PROVED (was axiom) via direct degree argument from OQ02OQ03OQ01",
-      "minpoly_cos_natDegree_eq: exported theorem in OQ02OQ03OQ01 for natDeg(minpoly ℚ cos) = φ(n)/2",
-      "galois_conjugate_count: 80-line proof eliminating last sorry in AngleTrisectionOQ02OQ03.lean",
-      "Fixed build error: galois_conjugate_count congr issue (Nat.Coprime.symm → Nat.coprime_comm via Finset.filter_congr)",
-      "Fixed build error: omega failure by adding hk_pos_mem/hj_pos hypothesis to scope",
-      "gauss_wantzel_theorem_proved: direct proof of Gauss-Wantzel via degree theory (Section XXIV, ~60 lines)",
-      "dvd_pow_two_is_pow_two: helper lemma for divisibility of powers of 2",
-      "ELIMINATED cos_minpoly_gal_card axiom (Galois group cardinality)",
-      "ELIMINATED wantzel_galois_characterization axiom (Wantzel-Galois criterion)",
-      "REMOVED IsConstructibleFromQ def and gauss_wantzel_theorem_prime (superseded by direct proof)"
+      "PROVED combining sorry: finrank ↥F ↥E ≤ 2 via erw h_top + IntermediateField.finrank_top in OQ02OQ03.lean"
     ],
     "insights": [
       "Complex.exp_two_pi_mul_I gives exp(2πi)=1 directly for proving ζ^n=1",
@@ -100,18 +89,7 @@
       "PROVED minpoly_cos_natDegree_eq: natDegree(minpoly ℚ cos(2π/n)) = φ(n)/2 via cyclotomic tower law",
       "h_top (ζ generates E over F) proved via finrank argument + IntermediateField.finrank_lt_finrank_of_lt contrapositive",
       "h_deg (minpoly F ζ has deg ≤ 2) proved via X²-2cosX+1 quadratic annihilation + minpoly.dvd",
-      "IsScalarTower.toAlgHom ℚ ↥E ℂ gives the injective ℚ-AlgHom for minpoly transfer between ↥E and ℂ",
-      "gauss_wantzel_theorem can be proved directly from degree theory, bypassing Galois group cardinality entirely",
-      "Key insight: constructibility ↔ cos lies in 2-power extension, and degree of minpoly divides extension degree (tower law)",
-      "dvd_pow_two_is_pow_two helper: positive divisor of 2^m is a power of 2 (by induction + prime factorization)",
-      "All 3 axioms in OQ02OQ03.lean eliminated: gauss_wantzel_theorem, cos_minpoly_gal_card, wantzel_galois_characterization",
-      "galois_conjugate_count PROVED: coprime residues pair via k↦n-k (fixed-point free involution), cos injective on lower half (strictAntiOn_cos on [0,π]), |image| = |lower half| = φ(n)/2",
-      "Nat.Coprime.symm gives point-wise symmetry but congr 1 fails because filter predicates are different functions; use Finset.filter_congr with Nat.coprime_comm iff instead",
-      "omega in tactic blocks lacks outer scope hypotheses; must explicitly introduce needed bounds like hk_pos_mem k hkS before omega",
-      "gauss_wantzel_theorem can be proved DIRECTLY from minpoly_cos_natDegree_eq, completely bypassing Galois group cardinality (cos_minpoly_gal_card) and Wantzel-Galois characterization",
-      "Tower law divisibility: IntermediateField.inclusion gives Algebra K L, but need explicit haveI : Module K L for typeclass synthesis",
-      "dvd_pow_two_is_pow_two: Nat.exists_prime_and_dvd + Nat.Prime.dvd_of_dvd_pow shows every prime factor of divisor of 2^k is 2",
-      "IntermediateField.mem_adjoin_simple_self ℚ c gives c ∈ adjoin ℚ {c} (not subset_adjoin)"
+      "IsScalarTower.toAlgHom ℚ ↥E ℂ gives the injective ℚ-AlgHom for minpoly transfer between ↥E and ℂ"
     ],
     "mathlibGaps": [
       "Maximal real subfield of cyclotomic field not in Mathlib",
