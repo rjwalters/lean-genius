@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Parts 1-53 complete. 13920 lines, 236 axioms, 461 theorems, 0 sorries. Covers circuit complexity, algebraic barriers, randomized complexity, derandomization, fine-grained complexity, communication complexity, quantum complexity, average-case complexity, counting complexity, proof complexity, meta-complexity.",
+    "progressSummary": "Parts 1-54 complete. 14047 lines, 242 axioms, 464 theorems, 1 sorry. Covers all major barrier types plus counting, proof, meta-complexity, and parameterized complexity.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -400,7 +400,8 @@
         "description": "Proof systems correspond to circuit classes (proved)",
         "proven": true
       },
-      "Part 53: Meta-Complexity - MCSP, MKTP, Kolmogorov complexity, Liu-Pass OWF theorem, magnification phenomenon (3 axioms, 7 theorems)"
+      "Part 53: Meta-Complexity - MCSP, MKTP, Kolmogorov complexity, Liu-Pass OWF theorem, magnification phenomenon (3 axioms, 7 theorems)",
+      "Part 54: Parameterized Complexity - FPT, W-hierarchy, ETH/SETH, kernelization (6 axioms, 4 theorems)"
     ],
     "insights": [
       "P_subset_NP_relative",
@@ -463,7 +464,8 @@
       "Proof complexity hierarchy is strict: Resolution < CP < Bounded-depth Frege < Frege \u2264 Extended Frege. Lower bounds known for all systems below Frege, but NO superpolynomial Frege lower bound exists.",
       "Natural proofs barrier applies to proof complexity too (Razborov 2003). Cook program faces same barriers as circuit complexity approaches.",
       "Proof systems correspond to circuit classes: bounded-depth Frege \u2245 AC\u2070, Frege \u2245 NC\u00b9, Extended Frege \u2245 P/poly. This tight connection transfers barriers between domains.",
-      "Meta-complexity (MCSP/MKTP) provides a unifying framework: weak circuit lower bounds for these problems imply P!=NP via the magnification phenomenon, potentially bypassing all known barriers simultaneously."
+      "Meta-complexity (MCSP/MKTP) provides a unifying framework: weak circuit lower bounds for these problems imply P!=NP via the magnification phenomenon, potentially bypassing all known barriers simultaneously.",
+      "The W-hierarchy provides a finer structural theory than P vs NP alone. FPT \u2260 W[1] implies P \u2260 NP. ETH and SETH give quantitative versions of separation assumptions."
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
