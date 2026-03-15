@@ -6295,10 +6295,6 @@ private theorem natToBits_length_succ (n : Nat) :
   conv_lhs => rw [natToBits]
   simp only [List.length_cons]
 
-/-- Encoding length is logarithmic: the binary encoding of n uses at most log2(n) + 1 bits.
-    The binary representation of n has ⌊log₂ n⌋ + 1 bits, so encoding length ≤ log₂ n + 1. -/
-axiom encodingLength_log_approx (n : Nat) : encodingLength n ≤ Nat.log2 n + 1
-
 /-- Our inputSize is compatible with encoding length -/
 theorem inputSize_encodingLength_compat (n : Nat) :
     inputSize n = Nat.log2 n + 1 := by
@@ -6307,42 +6303,6 @@ theorem inputSize_encodingLength_compat (n : Nat) :
 -- ============================================================
 -- Concrete TM2 Properties (from Mathlib)
 -- ============================================================
-
-/-- TM2 computations compose (useful for reductions).
-
-    **Proof sketch**:
-    Given TM2 machines Mf computing f in time p(n) and Mg computing g in time q(n):
-    1. Build composed machine M_{g∘f} that:
-       - Runs Mf on input x to get y = f(x)
-       - Runs Mg on y to get g(f(x))
-    2. Time bound: p(n) + q(|f(x)|) ≤ p(n) + q(p(n)) = polynomial in n
-    3. Encoding: Use intermediate encoding eb for communication between stages
-
-    The construction requires Mathlib's TM2 simulation theory. -/
-axiom TM2_compose {α β γ : Type}
-    {ea : Computability.FinEncoding α}
-    {eb : Computability.FinEncoding β}
-    {ec : Computability.FinEncoding γ}
-    {f : α → β} {g : β → γ}
-    (hf : Nonempty (Turing.TM2ComputableInPolyTime ea eb f))
-    (hg : Nonempty (Turing.TM2ComputableInPolyTime eb ec g)) :
-    Nonempty (Turing.TM2ComputableInPolyTime ea ec (g ∘ f))
-
-/-- Polynomial-time functions are closed under intersection (MathLib version).
-
-    **Proof sketch**:
-    Given TM2 machines Mf and Mg deciding f and g respectively:
-    1. Build product machine M_{f∧g} that:
-       - Runs Mf on input n, stores result r1
-       - Runs Mg on input n, stores result r2
-       - Outputs r1 && r2
-    2. Time bound: Time(Mf) + Time(Mg) = polynomial
-    3. Correctness: (f n && g n) = true iff both f n and g n are true
-
-    This is the standard "run both machines" construction for closure under intersection. -/
-axiom MathLibP_closed_composition {f g : Nat → Bool}
-    (hf : MathLibInP f) (hg : MathLibInP g) :
-    MathLibInP (fun n => f n && g n)
 
 -- ============================================================
 -- Summary: The Bridge Landscape
@@ -6604,13 +6564,6 @@ theorem no_tally_NPcomplete :
   have hsparse := tally_is_sparse S htally
   exact hneq (mahaney_theorem S hsparse hnpc)
 
-/-- The census of NP-complete languages grows at least as 2^{n^ε} for some ε > 0.
-    This is a quantitative strengthening of Mahaney's theorem. -/
-axiom NPcomplete_census_lower_bound :
-    P_unrelativized ≠ NP_unrelativized →
-    ∀ L : Language, NPCompleteUnderManyOne L →
-    ∃ ε : Nat, ε > 0 ∧ ∀ N : Nat, N > 0 → census L N ≥ N
-
 /-! ### Berman-Hartmanis Conjecture -/
 
 /-- Polynomial-time isomorphism between languages.
@@ -6652,11 +6605,6 @@ def PolyTimeIsomorphic (L₁ L₂ : Language) : Prop :=
 def BermanHartmanisConjecture : Prop :=
   ∀ L₁ L₂ : Language, NPComplete L₁ → NPComplete L₂ →
     PolyTimeIsomorphic L₁ L₂
-
-/-- SAT and 3-SAT are polynomial-time isomorphic.
-    This is evidence for Berman-Hartmanis: natural NP-complete problems are isomorphic. -/
-axiom SAT_3SAT_isomorphic : PolyTimeIsomorphic SAT (fun _ => true)
-  -- Note: we use placeholder for 3-SAT
 
 /-- **Joseph-Young Theorem (1985)**: If one-way functions exist,
     Berman-Hartmanis conjecture is false.
@@ -6711,11 +6659,6 @@ theorem poly_isomorphism_equiv :
 def DensityDichotomy (L : Language) : Prop :=
   IsSparse L ∨ (∀ N : Nat, ∃ n > N, census L n ≥ 2^(n/2))
 
-/-- NP languages satisfy a weaker density dichotomy. -/
-axiom NP_density_structure :
-    ∀ L ∈ NP_unrelativized,
-    IsSparse L ∨ (∃ c : Nat, ∀ N : Nat, ∃ n > N, census L n ≥ n^c)
-
 /-! ### Padding Arguments -/
 
 /-- Padding function: extends strings to length n with 0s. -/
@@ -6737,26 +6680,6 @@ def paddedLanguage (L : Language) : Language :=
     - Used to transfer results between complexity classes -/
 axiom padding_preserves_NPcomplete :
     ∀ L : Language, NPComplete L → NPComplete (paddedLanguage L)
-
-/-- Padding makes languages sparser but preserves completeness.
-    This is used in many structural complexity arguments.
-
-    **Proof sketch**:
-    For m to be in paddedLanguage L with m ≤ N, there must exist (x, n) such that:
-    1. x ≤ m ≤ N (so x ≤ N)
-    2. n ≤ m ≤ N (so n ≤ N)
-    3. m = pad x n
-    4. L x = true
-
-    The number of valid x values is ≤ census L N.
-    For each x, the number of valid n values is ≤ N.
-    So the total number of (x, n) pairs is ≤ census L N * N.
-
-    Since each m in paddedLanguage L comes from some such pair,
-    census (paddedLanguage L) N ≤ census L N * N. -/
-axiom padding_sparsifies :
-    ∀ L : Language, ∀ N : Nat,
-    census (paddedLanguage L) N ≤ census L N * N
 
 /-! ### Upward Translation (Padding Arguments)
 
@@ -6793,24 +6716,9 @@ theorem downward_separation_EXP_NEXP :
   intro h_sep h_eq
   exact h_sep (upward_translation_P_NP h_eq)
 
-/-- **Upward Translation for PSPACE**: P = PSPACE implies EXP = EXPSPACE.
-
-    Similar padding argument: pad EXPSPACE inputs to exponential length,
-    reducing them to PSPACE membership (polynomial in padded length).
-    If P = PSPACE, this gives EXP algorithms. -/
-axiom upward_translation_P_PSPACE :
-  P_unrelativized = PSPACE → EXP = EXPSPACE
-
 /-- EXPSPACE: problems solvable in exponential space 2^poly(n). -/
 def EXPSPACE : Set (Nat → Bool) :=
   { problem | ∃ poly : Polynomial, True }  -- Abstract placeholder
-
-/-- **Upward Translation for NP vs coNP**: NP = coNP implies NEXP = coNEXP.
-
-    If NP-verifiers can be complemented (NP = coNP), then the same holds
-    for NEXP-verifiers after padding. -/
-axiom upward_translation_NP_coNP :
-  NP_unrelativized = coNP → NEXP = coNEXP
 
 /-- coNEXP: complement of NEXP. -/
 def coNEXP : Set (Nat → Bool) :=
@@ -7674,18 +7582,6 @@ def FO_definable (σ : Vocabulary) (prop : StructureProperty σ) : Prop :=
   -- A ⊨ φ iff prop(A) holds
   True  -- abstract
 
-/-- FO is strictly weaker than P: it cannot express reachability
-    even on ordered structures.
-
-    **Proof**: Ehrenfeucht-Fraïssé games show that no FO sentence
-    of quantifier rank k can distinguish the complete graph on 2k vertices
-    from two disjoint copies. Thus connectivity is not FO-definable.
-
-    This is a fundamental limitation result in finite model theory. -/
-axiom FO_cannot_express_reachability :
-    ∃ σ : Vocabulary, ∃ prop : StructureProperty σ,
-      ¬ FO_definable σ prop  -- reachability is not FO-definable
-
 /-! ### Existential Second-Order Logic (ESO) -/
 
 /-- Existential Second-Order Logic (ESO) extends FO by allowing
@@ -7777,14 +7673,6 @@ def LFP_definable (σ : Vocabulary) (prop : StructureProperty σ) : Prop :=
     inflationary and least fixed-point have the same expressive power. -/
 def IFP_definable (σ : Vocabulary) (prop : StructureProperty σ) : Prop :=
   True  -- abstract
-
-/-- FO + IFP = FO + LFP on finite structures (Immerman 1986).
-
-    This simplifies working with fixed-point logics: we need not worry
-    about monotonicity requirements when working on finite structures. -/
-axiom IFP_eq_LFP_on_finite :
-    ∀ (σ : Vocabulary) (prop : StructureProperty σ),
-      IFP_definable σ prop ↔ LFP_definable σ prop
 
 /-- First-Order Logic with Partial Fixed-Point (FO + PFP).
 
@@ -12591,12 +12479,6 @@ def SIZE (s : Nat → Nat) : Set Language :=
   { L | ∀ n : Nat, ∃ (C : CircuitFamily),
     (C n).size ≤ s n ∧ L n = (C n).compute n }
 
-/-- P/poly equals ⋃_k SIZE(n^k): polynomial-size circuits.
-    This is a non-uniform analogue of P.
-    Axiomatized as the formal connection between the two definitions. -/
-axiom Ppoly_eq_union_SIZE :
-    Ppoly = ⋃ k : Nat, SIZE (fun n => (n + 1) ^ k)
-
 /-- SIZE is monotone: if s₁(n) ≤ s₂(n) for all n, then SIZE(s₁) ⊆ SIZE(s₂). -/
 theorem SIZE_monotone {s₁ s₂ : Nat → Nat} (h : ∀ n, s₁ n ≤ s₂ n) :
     SIZE s₁ ⊆ SIZE s₂ := by
@@ -12766,9 +12648,6 @@ def MA_EXP : Set (Nat → Bool) :=
     where Arthur's random bits are ignored. -/
 axiom NEXP_subset_MA_EXP : NEXP ⊆ MA_EXP
 
-/-- MA_EXP ⊆ Σ₂EXP (MA is in Σ₂ by fixing the random bits). -/
-axiom MA_EXP_subset_Sigma2EXP : MA_EXP ⊆ Sigma2EXP
-
 /-- The circuit lower bound hierarchy:
     P ⊆ NP ⊆ ... ⊆ MA_EXP ⊆ Σ₂EXP
     and Σ₂EXP ⊄ P/poly (Kannan), MA_EXP ⊄ P/poly (Buhrman-Fortnow-Thierauf)
@@ -12837,10 +12716,6 @@ axiom rand_cc (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) : ℕ
 axiom rand_cc_le_det (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) :
     rand_cc n f ≤ det_cc n f
 
-/-- Trivial upper bound: D(f) ≤ n + 1 (Alice sends her input plus one more bit). -/
-axiom det_cc_trivial_ub (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) :
-    det_cc n f ≤ n + 1
-
 /-- The communication matrix M_f of a Boolean function f: the 2^n × 2^n matrix
     where M_f[x,y] = f(x,y). The rank of this matrix (over ℝ) is central
     to communication complexity. -/
@@ -12850,13 +12725,6 @@ axiom comm_matrix_rank (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) : ℕ
     The rank of the communication matrix is a lower bound on CC. -/
 axiom log_rank_lb (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) :
     Nat.log 2 (comm_matrix_rank n f) ≤ det_cc n f
-
-/-- Log-rank conjecture (Lovász-Saks, 1988): D(f) ≤ poly(log₂(rank(M_f))).
-    If true, this would give an efficient characterization of CC.
-    Currently open — best known bound is D(f) ≤ O(√(rank) · log(rank)). -/
-axiom log_rank_conjecture :
-    ∃ (c : ℕ), ∀ n (f : Fin (2^n) → Fin (2^n) → Bool),
-      det_cc n f ≤ (Nat.log 2 (comm_matrix_rank n f)) ^ c
 
 /-
 ### 49.1: The Karchmer-Wigderson Theorem
@@ -12907,11 +12775,6 @@ axiom monotone_kw_equals_depth (n : ℕ) (f : Fin (2^n) → Bool) :
     disc_μ(f) = max over rectangles R of |μ(R ∩ f⁻¹(0)) - μ(R ∩ f⁻¹(1))|
     Small discrepancy implies high randomized CC. -/
 axiom discrepancy (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) : ℝ
-
-/-- Discrepancy lower bound on randomized CC:
-    R(f) ≥ log₂(1/disc(f)) - O(1). -/
-axiom discrepancy_lb (n : ℕ) (f : Fin (2^n) → Fin (2^n) → Bool) :
-    rand_cc n f ≥ Nat.log 2 1 -- Simplified: actual bound involves 1/disc(f)
 
 /-
 ### 49.3: Connection to Formula Size (Khrapchenko)

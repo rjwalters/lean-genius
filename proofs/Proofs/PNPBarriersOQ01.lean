@@ -95,23 +95,17 @@ opaque EXP_rel : Oracle → Set DecisionProblem
 
 -- Basic containments
 axiom P_subset_NP : P ⊆ NP
-axiom P_subset_coNP : P ⊆ coNP
 -- NP_subset_EXP: now a theorem in Part 11a (derived from NP ⊆ PSPACE ⊆ EXP)
 -- coNP_subset_EXP: now a theorem in Part 11a (derived from coNP ⊆ PSPACE ⊆ EXP)
 axiom P_subset_P_poly : P ⊆ P_poly
 
 -- Relativized containments
-axiom P_rel_subset_NP_rel (A : Oracle) : P_rel A ⊆ NP_rel A
-axiom NP_rel_subset_EXP_rel (A : Oracle) : NP_rel A ⊆ EXP_rel A
 
 -- Nontriviality: classes are proper where known
 axiom P_ne_EXP : P ≠ EXP  -- Time hierarchy theorem consequence
-axiom P_nonempty : ∃ L, L ∈ P
 -- NP_has_hard_candidate: now a theorem (derived from cook_levin)
 
 -- Unrelativized = relativized with empty oracle
-axiom P_rel_empty_eq_P : P_rel (fun _ => false) = P
-axiom NP_rel_empty_eq_NP : NP_rel (fun _ => false) = NP
 
 -- ============================================================
 -- PART 4: Relativization Barrier (Baker-Gill-Solovay 1975)
@@ -226,7 +220,6 @@ axiom PRF_exists : Prop
 
 /-- Standard cryptographic result: OWFs imply PRFs (Goldreich-Goldwasser-Micali,
     Håstad-Impagliazzo-Levin-Luby). -/
-axiom OWF_implies_PRF : OWF_exists → PRF_exists
 
 /-- The Natural Proofs Barrier (Razborov-Rudich 1997):
     If one-way functions exist, then no natural proof can establish
@@ -259,7 +252,6 @@ theorem natural_proof_barrier_consequence (h_owf : OWF_exists)
 axiom AlgOracle : Type
 
 /-- Convert a standard oracle to an algebraic extension. -/
-axiom algebraicExtension : Oracle → AlgOracle
 
 /-- P with algebraic oracle access. -/
 axiom P_alg : AlgOracle → Set DecisionProblem
@@ -371,8 +363,6 @@ theorem PCP_theorem_nonrelativizing : True := trivial
 /-- Ryan Williams' approach (2011): ACC⁰ circuit lower bounds via
     satisfiability algorithms. This navigates the natural proofs barrier
     by using non-constructive arguments (case analysis on circuit structure). -/
-axiom williams_ACC_lower_bound :
-    ∃ L, L ∈ NEXP ∧ L ∉ P_poly  -- Simplified: NEXP ⊄ ACC⁰
 
 /-- The geometric complexity theory (GCT) program (Mulmuley-Sohoni 2001)
     attempts to use algebraic geometry to navigate all three barriers.
@@ -506,9 +496,6 @@ theorem P_subset_EXP : P ⊆ EXP :=
 axiom DTIME : (Nat → Nat) → Set DecisionProblem
 
 /-- Time hierarchy theorem consequence: strictly more time gives strictly more power. -/
-axiom time_hierarchy :
-    ∀ (k₁ k₂ : Nat), k₁ < k₂ →
-    DTIME (fun n => n ^ k₁) ⊂ DTIME (fun n => n ^ k₂)
 
 /-- Space hierarchy consequence. -/
 axiom space_hierarchy_consequence : L ≠ PSPACE
@@ -521,11 +508,8 @@ axiom space_hierarchy_consequence : L ≠ PSPACE
 axiom poly_reduces : DecisionProblem → DecisionProblem → Prop
 
 /-- Reductions are reflexive. -/
-axiom poly_reduces_refl (A : DecisionProblem) : poly_reduces A A
 
 /-- Reductions are transitive. -/
-axiom poly_reduces_trans (A B C : DecisionProblem) :
-    poly_reduces A B → poly_reduces B C → poly_reduces A C
 
 /-- Reductions preserve P membership. -/
 axiom poly_reduces_in_P (A B : DecisionProblem) :
@@ -629,7 +613,6 @@ axiom Sigma_P_zero : Sigma_P 0 = P
 axiom Sigma_P_one : Sigma_P 1 = NP
 
 -- Monotonicity: each level contains the previous
-axiom Sigma_P_monotone : ∀ k, Sigma_P k ⊆ Sigma_P (k + 1)
 
 -- PH is the union
 axiom PH_eq_union : ∀ L', L' ∈ PH ↔ ∃ k, L' ∈ Sigma_P k
