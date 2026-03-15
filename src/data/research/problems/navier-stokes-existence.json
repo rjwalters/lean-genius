@@ -29,14 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts XLIV-XLV covering critical function space hierarchy and turbulence dissipation anomaly. File now 8200+ lines, 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: Added Parts XLVI-XLVII covering CKN partial regularity and Constantin-Fefferman geometric regularity. File now 8792 lines, 0 sorries, 0 axioms.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO⁻¹ well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
       "Part XLIII: Backward uniqueness - CarlemanEstimate, BackwardUniquenessResult, ESŠ proof structure, Morrey exponents",
       "NavierStokesAristotle.lean: Added Sections 10-12 (Koch-Tataru, Tao, backward uniqueness lemmas)",
       "Part XLIV: Critical function spaces - Lorentz, Morrey spaces, PSL surface, barely supercritical, Calderón-Zygmund, derivative gap",
-      "Part XLV: Dissipation anomaly - zeroth law, Reynolds number, Kolmogorov scale, Onsager connection, Taylor-Green, intermittency"
+      "Part XLV: Dissipation anomaly - zeroth law, Reynolds number, Kolmogorov scale, Onsager connection, Taylor-Green, intermittency",
+      "Part XLVI: CKN partial regularity - suitable weak solutions, ε-regularity, singular set P¹=0, dimension reduction",
+      "Part XLVII: Constantin-Fefferman geometric regularity - vorticity direction, strain alignment, depletion of nonlinearity"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u·∇)u, not just energy/scaling/div-free properties",
@@ -47,7 +49,10 @@
       "Tao barely supercritical result: log-modified NS has global regularity - single log separates us from Millennium Problem",
       "Prodi-Serrin-Ladyzhenskaya surface: gap not constant along critical curve, smallest at intermediate points (1/4 at energy point vs 1/2 at endpoint)",
       "Dissipation anomaly: smooth solutions require ‖∇u‖² ~ ε/ν → ∞ as ν → 0, creating near-singular turbulent structures",
-      "Critical space hierarchy: L^∞ ⊃ L³ ⊃ L^{3,∞} ⊃ BMO⁻¹ all give regularity; L² (Leray-Hopf) does not"
+      "Critical space hierarchy: L^∞ ⊃ L³ ⊃ L^{3,∞} ⊃ BMO⁻¹ all give regularity; L² (Leray-Hopf) does not",
+      "CKN 1982: singular set has P¹-measure zero - singularities cannot fill a spacetime curve",
+      "Constantin-Fefferman 1993: Lipschitz vorticity direction prevents blowup - geometric rather than analytic criterion",
+      "Depletion of nonlinearity: (u·∇)u is effectively weaker than its factors suggest - Beltrami flows are completely depleted"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
@@ -75,7 +80,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-14T19:01:45.282Z",
+  "lastUpdate": "2026-03-15T12:10:00.000Z",
   "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1

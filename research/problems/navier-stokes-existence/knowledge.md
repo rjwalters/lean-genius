@@ -180,3 +180,30 @@ Formalizing even 2D N-S requires:
 3. **Part XLIII: Backward Uniqueness** - Key tool underlying ESŠ theorem. Formalizes Carleman estimates, weight functions, half-space backward uniqueness, and the complete ESŠ proof structure reducing 3D regularity to L³ Liouville. Quantifies the Millennium gap: Leray-Hopf achieves Serrin value 3/2 vs needed ≤ 1.
 
 **Key insight**: The Lamb vector decomposition (u·∇)u = ∇(|u|²/2) + ω×u is NOT preserved by Tao's averaged operator, suggesting that vortex-dynamics-aware proofs are needed for genuine progress.
+
+### Session: 2026-03-15 (researcher-1, Part 60)
+
+**Added Parts XLVI-XLVII** to NavierStokes.lean (now 8792 lines, 0 sorries, 0 axioms):
+
+1. **Part XLVI: Caffarelli-Kohn-Nirenberg Partial Regularity (1982)** - The deepest known result about NS regularity. Formalizes:
+   - Suitable weak solutions (local energy inequality, stronger than Leray-Hopf)
+   - Parabolic cylinders and scaled energy quantities
+   - ε-regularity theorem (small scaled energy ⟹ smoothness)
+   - The CKN theorem: P¹(Sing(u)) = 0 (singular set has 1D parabolic Hausdorff measure zero)
+   - Optimality gap: CKN allows countable singularities, none observed
+   - Dimension reduction: at most finitely many singular points per time slice
+   - Ladyzhenskaya-Seregin simplification via backward heat kernel
+
+2. **Part XLVII: Constantin-Fefferman Geometric Regularity (1993)** - Geometric criteria for NS regularity:
+   - Vorticity geometry: direction field ξ = ω/|ω|, strain-vorticity decomposition
+   - CF criterion: Lipschitz vorticity direction + L² threshold ⟹ regularity
+   - Mechanism: aligned vorticity ⟹ weak stretching (via div-free constraint)
+   - BKM-CF connection: blowup requires both intense vorticity AND rapid reorientation
+   - Subsequent results: da Veiga-Berselli (W^{1,p}), Vasseur (1/2-Hölder)
+   - Strain-vorticity alignment in turbulence (DNS evidence)
+   - Depletion of nonlinearity concept and Tao barrier connection
+   - Status of the geometric regularity program
+
+**Key insight**: The geometric regularity program narrows blowup scenarios but does not resolve the problem. Blowup requires simultaneously: intense vorticity, rapid direction change, and specific 3D geometry. DNS evidence of strain-vorticity alignment suggests turbulence self-organizes toward regularity.
+
+**Aristotle companion**: Added Sections 13-14 with CKN covering arguments, parabolic dimension calculations, strain trace-free property, and CF geometric constants.

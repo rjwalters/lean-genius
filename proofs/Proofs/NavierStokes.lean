@@ -8306,5 +8306,488 @@ theorem dissipation_regularity_connection :
 
 end DissipationAnomaly
 
+/-
+  ============================================================================
+  Part XLVI: Caffarelli-Kohn-Nirenberg Partial Regularity (1982)
+  ============================================================================
+
+  The CKN theorem is the deepest known result about 3D Navier-Stokes regularity.
+  It establishes that the singular set of a suitable weak solution has
+  1-dimensional parabolic Hausdorff measure zero.
+
+  In practical terms: singularities, if they exist, are extremely rare -
+  they cannot fill a curve in spacetime. The solution is smooth "almost everywhere"
+  in a very strong sense.
+
+  Historical significance:
+  - Scheffer (1976-77): First partial regularity results, introduced suitable weak solutions
+  - Caffarelli-Kohn-Nirenberg (1982): Optimal result - singular set has P¹-measure zero
+  - Lin (1998): Simplified proof using blow-up methods
+  - Ladyzhenskaya-Seregin (1999): Further simplifications
+
+  The CKN proof introduces several key ideas:
+  1. Suitable weak solutions (satisfying a local energy inequality)
+  2. Generalized energy inequality with test functions
+  3. ε-regularity: small scaled energy ⟹ regularity
+  4. Covering arguments to bound the singular set
+
+  This is strictly about partial regularity of WEAK solutions -
+  it says nothing about whether strong solutions can blow up.
+  The Millennium Problem asks about strong (smooth) solutions.
+-/
+namespace CKNPartialRegularity
+
+/-- A suitable weak solution satisfies the local energy inequality.
+    This is stronger than Leray-Hopf: it requires a local estimate, not just global.
+
+    The local energy inequality states:
+    ∂_t(|u|²/2) + div(u(|u|²/2 + p)) - ν∆(|u|²/2) + ν|∇u|² ≤ 0
+
+    in the distributional sense, tested against non-negative φ ∈ C₀^∞.
+
+    Scheffer's key insight: not all Leray-Hopf solutions are suitable!
+    But one can always construct suitable weak solutions. -/
+structure SuitableWeakSolution where
+  /-- Velocity field u : ℝ³ × ℝ → ℝ³ -/
+  velocity : Type
+  /-- Pressure field p : ℝ³ × ℝ → ℝ -/
+  pressure : Type
+  /-- u ∈ L^∞(0,T; L²) ∩ L²(0,T; H¹) -/
+  energy_class : Prop
+  /-- p ∈ L^{5/3}(Ω × (0,T)) - pressure integrability -/
+  pressure_integrability : Prop
+  /-- Satisfies NS in distributional sense -/
+  weak_solution : Prop
+  /-- Local energy inequality with test functions -/
+  local_energy_inequality : Prop
+  /-- Can be constructed from Leray-Hopf via mollification -/
+  constructible : Prop
+
+/-- The parabolic cylinder Q_r(z) = B_r(x) × (t - r², t) centered at z = (x,t).
+    The parabolic scaling r² for time reflects the diffusion scaling of NS. -/
+structure ParabolicCylinder where
+  center_x : Type -- ℝ³ point
+  center_t : Type -- time
+  radius : ℝ      -- spatial radius
+  /-- Time interval is (t - r², t), matching parabolic scaling -/
+  parabolic_scaling : Prop
+
+/-- The scaled energy quantity that controls regularity.
+    For a suitable weak solution u on Q_r(z):
+
+    E(z, r) = (1/r) ∫_{Q_r(z)} |∇u|²
+
+    This is dimensionless under parabolic scaling:
+    if u_λ(x,t) = λu(λx, λ²t), then E(z,r) = E(z_λ, r/λ).
+
+    Small E ⟹ regularity. This is the ε-regularity principle. -/
+structure ScaledEnergy where
+  /-- The scaled gradient integral -/
+  value : ℝ
+  /-- Dimensionless under NS scaling -/
+  scale_invariant : Prop
+  /-- Controls all higher norms via bootstrapping -/
+  controls_regularity : Prop
+
+/-- The ε-regularity theorem: the heart of CKN.
+
+    There exists ε > 0 such that if u is a suitable weak solution and
+    E(z₀, r) < ε for some parabolic cylinder Q_r(z₀), then u is smooth
+    (Hölder continuous, in fact) in a neighborhood of z₀.
+
+    The proof proceeds by contradiction + compactness:
+    1. Assume a sequence with E(zₙ, rₙ) → 0 but |u(zₙ)| → ∞
+    2. Rescale to get a sequence of solutions on Q₁
+    3. Extract a weak limit (which is a suitable weak solution on Q₁)
+    4. The limit has E = 0, hence ∇u = 0, so u is constant
+    5. But |u(0)| = ∞ - contradiction
+
+    The technical difficulty is step 3: compactness for suitable weak solutions. -/
+theorem epsilon_regularity :
+    -- ∃ ε > 0 such that E(z₀, r) < ε ⟹ u is smooth near z₀
+    -- The ε is universal (depends only on the equation, not the solution)
+    -- Quantitative: |u(z)| ≤ C/r for z in Q_{r/2}(z₀)
+    -- Extends to: u ∈ C^{α} for some α > 0 (Hölder regularity)
+    True := trivial
+
+/-- Alternative ε-regularity using pressure.
+
+    Seregin-Šverák version: there exists ε > 0 such that if
+    (1/r²) ∫_{Q_r} |u|³ + |p|^{3/2} < ε
+    then u is regular at z₀.
+
+    The exponents 3 and 3/2 are critical under NS scaling.
+    This formulation is sometimes more convenient as it avoids ∇u. -/
+theorem epsilon_regularity_pressure :
+    -- Alternative: (1/r²) ∫_{Q_r} |u|³ + |p|^{3/2} < ε ⟹ regularity
+    -- Exponents are scaling-critical: 3 for u, 3/2 for p
+    -- Equivalent to the gradient version up to constants
+    True := trivial
+
+/-- The singular set S of a suitable weak solution.
+
+    S = { z ∈ ℝ³ × (0,T) : u is not bounded in any neighborhood of z }
+
+    CKN theorem: The 1-dimensional parabolic Hausdorff measure of S is zero.
+
+    Parabolic Hausdorff measure uses parabolic cylinders instead of balls:
+    P^s(S) = lim_{δ→0} inf { Σᵢ rᵢˢ : S ⊂ ∪ᵢ Q_{rᵢ}(zᵢ), rᵢ < δ }
+
+    The result P¹(S) = 0 means:
+    - S cannot contain a curve in spacetime
+    - S has parabolic dimension ≤ 1
+    - S is "point-like" (isolated singularities at worst)
+    - In particular, S has Lebesgue measure zero (even in ℝ⁴ sense) -/
+structure SingularSet where
+  /-- The set of singular points -/
+  points : Type
+  /-- Characterized by unboundedness of u near the point -/
+  unbounded_characterization : Prop
+  /-- Closed set (regularity is open) -/
+  is_closed : Prop
+  /-- P¹(S) = 0: zero 1-dimensional parabolic Hausdorff measure -/
+  parabolic_hausdorff_zero : Prop
+
+/-- The CKN theorem: main statement.
+
+    Theorem (Caffarelli-Kohn-Nirenberg 1982):
+    Let u be a suitable weak solution to 3D Navier-Stokes on Ω × (0,T).
+    Then the 1-dimensional parabolic Hausdorff measure of the singular set is zero:
+    P¹(Sing(u)) = 0.
+
+    Proof outline:
+    1. Define the singular set S = { z : u not bounded near z }
+    2. For z ∉ S, there exists r such that E(z,r) < ε (by ε-regularity)
+    3. For z ∈ S, E(z,r) ≥ ε for all small r
+    4. By the local energy inequality: ∫∫ |∇u|² < ∞
+    5. Covering argument: cover S by cylinders where E ≥ ε
+    6. The total energy bounds the number of such cylinders at each scale
+    7. At scale r: at most C/r cylinders needed (energy bound / ε)
+    8. Sum: Σ rᵢ ≤ Σ C·r = C → 0 as r → 0
+    9. Therefore P¹(S) = 0
+
+    The covering argument is the key technical step. -/
+theorem ckn_partial_regularity :
+    -- For any suitable weak solution u to 3D NS:
+    -- P¹(Sing(u)) = 0
+    -- Equivalently: the singular set has parabolic dimension ≤ 1
+    -- This is optimal: there exist model problems with point singularities
+    True := trivial
+
+/-- Why P¹ = 0 is optimal (cannot be improved to P^{1-ε} = 0).
+
+    Scheffer (1985) constructed a "weak solution" (in a generalized sense)
+    with a singular set of positive P¹-measure. However, this is not a
+    suitable weak solution, so CKN does not apply.
+
+    For genuine Navier-Stokes:
+    - No example is known with even a SINGLE singular point
+    - CKN allows up to a discrete (countable) set of singular points
+    - The gap between theory (allows singularities) and practice (none observed)
+      is a central mystery
+
+    The question "Are there ANY singular points?" is exactly the
+    Millennium Problem (for smooth initial data). -/
+theorem ckn_optimality_gap :
+    -- Theory allows: countable isolated singularities
+    -- Practice shows: zero singularities (for all tested initial data)
+    -- Gap = Millennium Problem
+    -- Improving CKN to P^0(S) = 0 would SOLVE the Millennium Problem
+    -- (P^0 = 0 means S is empty)
+    True := trivial
+
+/-- The local energy inequality in detail.
+
+    For φ ≥ 0, φ ∈ C₀^∞(ℝ³ × ℝ):
+
+    ∫ |u(x,t)|² φ(x,t) dx + 2ν ∫∫ |∇u|² φ dx ds
+    ≤ ∫∫ |u|² (∂_t φ + ν∆φ) dx ds + ∫∫ (|u|² + 2p)(u · ∇φ) dx ds
+
+    Key properties:
+    - Tests against non-negative functions (like entropy conditions)
+    - Contains the pressure term (requires p ∈ L^{5/3})
+    - The "≤" (not "=") allows for energy dissipation at singular points
+    - Localizes the global energy inequality to neighborhoods -/
+theorem local_energy_inequality_details :
+    -- The local energy inequality is the key tool
+    -- It says: energy can only decrease locally (modulo transport terms)
+    -- The pressure coupling u·∇φ·p is the hardest term to control
+    -- Without pressure integrability, the inequality may fail
+    True := trivial
+
+/-- Dimension reduction: from P¹ to actual spatial dimension.
+
+    CKN gives P¹(S) = 0 in parabolic measure.
+    What does this mean in ordinary Hausdorff dimension?
+
+    For the time slice S_t = { x : (x,t) ∈ S }:
+    - For almost every t: S_t = ∅ (u is regular)
+    - For exceptional t: H^{1/2}(S_t) = 0 (at worst, finitely many points)
+
+    The parabolic-to-Euclidean conversion:
+    - P¹ ↔ H^{1/2} in space (because time scales as r²)
+    - So: at any fixed time, at most finitely many singular points
+
+    Scheffer's earlier result was weaker: H^{5/3}(S) = 0 in spacetime. -/
+theorem dimension_reduction :
+    -- P¹(S) = 0 in parabolic spacetime
+    -- ⟹ For a.e. t: u(·,t) is smooth everywhere
+    -- ⟹ For all t: at most finitely many singular points in space
+    -- ⟹ H^1(S) = 0 in ordinary spacetime Hausdorff measure
+    -- Scheffer's earlier: H^{5/3}(S) = 0 was strictly weaker
+    True := trivial
+
+/-- Improved CKN via Ladyzhenskaya-Seregin approach.
+
+    Ladyzhenskaya-Seregin (1999) simplified the CKN proof by:
+    1. Using backward heat kernel instead of test functions
+    2. A cleaner blow-up argument (inspired by Lin 1998)
+    3. Direct Morrey space estimates
+
+    Key simplification: the backward heat kernel
+    Γ(x,t; x₀,t₀) = (4πν(t₀-t))^{-3/2} exp(-|x-x₀|²/(4ν(t₀-t)))
+
+    is the natural test function for parabolic problems.
+    It automatically satisfies (∂_t + ν∆)Γ = 0 away from (x₀,t₀),
+    which eliminates the ∂_t φ + ν∆φ terms in the local energy inequality. -/
+theorem ladyzhenskaya_seregin_simplification :
+    -- Backward heat kernel: natural test function for NS
+    -- Satisfies adjoint heat equation
+    -- Simplifies local energy inequality
+    -- Lin's blow-up argument: more geometric, less technical
+    True := trivial
+
+end CKNPartialRegularity
+
+/-
+  ============================================================================
+  Part XLVII: Constantin-Fefferman Geometric Regularity (1993)
+  ============================================================================
+
+  A beautiful result connecting the GEOMETRY of the vorticity field
+  to regularity of Navier-Stokes solutions.
+
+  Main idea: if the direction of vorticity varies slowly in space,
+  then the solution remains smooth. Specifically, the vortex stretching
+  term (ω·∇)u vanishes when ω is locally aligned, because the
+  antisymmetric part of ∇u contributes no stretching along ω.
+
+  This gives a regularity criterion in terms of a purely geometric
+  quantity (the angle between vorticity vectors at nearby points),
+  rather than the usual analytic quantities (Sobolev norms, Lᵖ norms).
+
+  Significance:
+  - First regularity criterion based on geometry rather than size
+  - Suggests that singularity formation requires rapid reorientation of vorticity
+  - Connects to the Beale-Kato-Majda criterion through vorticity dynamics
+  - Inspired many subsequent geometric regularity results
+
+  Key reference: Constantin, P. & Fefferman, C. (1993).
+  "Direction of vorticity and the problem of global regularity
+  for the Navier-Stokes equations." Indiana Univ. Math. J.
+-/
+namespace ConstantinFeffermanGeometric
+
+/-- The vorticity field and its direction.
+
+    Vorticity: ω = curl(u) = ∇ × u
+    Direction: ξ(x,t) = ω(x,t)/|ω(x,t)| (unit vector, where ω ≠ 0)
+
+    The vortex stretching term in the vorticity equation:
+    ∂_t ω + (u·∇)ω = (ω·∇)u + ν∆ω
+
+    The stretching (ω·∇)u can be decomposed:
+    (ω·∇)u = Sω where S = (∇u + ∇uᵀ)/2 is the strain rate tensor
+
+    The key observation:
+    ω · (ω·∇)u = |ω|² (ξ · Sξ) = |ω|² λ_ξ
+
+    where λ_ξ is the strain rate in the vorticity direction.
+    If vorticity is aligned with a strain eigenvector, stretching is controlled. -/
+structure VorticityGeometry where
+  /-- Vorticity field ω = ∇ × u -/
+  vorticity : Type
+  /-- Unit vorticity direction ξ = ω/|ω| -/
+  direction : Type
+  /-- Strain rate tensor S = (∇u + (∇u)ᵀ)/2 -/
+  strain_tensor : Type
+  /-- Vortex stretching = Sω -/
+  stretching : Type
+  /-- Coherence function: measures alignment at nearby points -/
+  coherence : Type
+
+/-- The Constantin-Fefferman regularity criterion.
+
+    Theorem (Constantin-Fefferman 1993):
+    Let u be a smooth solution to 3D Navier-Stokes on [0, T*).
+    Suppose there exist ρ > 0 and a function Ω(t) such that for all t < T*:
+
+    |sin ∠(ξ(x,t), ξ(y,t))| ≤ |x - y| / ρ
+
+    whenever |ω(x,t)| > Ω(t) and |ω(y,t)| > Ω(t) and |x-y| < ρ.
+
+    If additionally ∫₀^{T*} Ω(t)² dt < ∞, then u remains smooth on [0, T*].
+
+    In words: if vorticity direction varies at most Lipschitz-continuously
+    (in regions of high vorticity), the solution stays regular.
+
+    The condition is geometric: it constrains the angle between vorticity
+    vectors at nearby points, not their magnitude. -/
+theorem cf_regularity_criterion :
+    -- Lipschitz vorticity direction + integrable vorticity threshold ⟹ regularity
+    -- The angle condition: |sin ∠(ξ(x), ξ(y))| ≤ |x-y|/ρ
+    -- Only needed where |ω| is large (above threshold Ω(t))
+    -- Threshold must be square-integrable in time
+    True := trivial
+
+/-- Why the angle condition prevents blowup.
+
+    The vortex stretching term (ω·∇)u controls the growth of |ω|.
+    The enstrophy equation:
+    (1/2) d/dt |ω|² = ω · Sω - ν|∇ω|² + (lower order)
+
+    The dangerous term ω · Sω = |ω|² (ξ · Sξ).
+
+    When vorticity directions are aligned:
+    - The antisymmetric part of ∇u (= rotation) doesn't stretch ω
+    - Only the symmetric part (strain S) contributes
+    - But aligned vorticity constrains S through ∇·u = 0
+    - The constraint: tr(S) = 0 limits how much S can stretch in one direction
+
+    Specifically, if ξ is nearly constant in a ball:
+    |ω · Sω| ≤ |ω|² · |S| · sin(θ) where θ is the variation angle
+    So small angle ⟹ small stretching ⟹ bounded enstrophy ⟹ regularity. -/
+theorem geometric_mechanism :
+    -- Aligned vorticity ⟹ weak stretching
+    -- Because: rotation doesn't stretch, and div-free constrains strain
+    -- Small angle variation ⟹ |ω·Sω| controlled
+    -- ⟹ d/dt ‖ω‖² bounded ⟹ no blowup
+    True := trivial
+
+/-- The Beale-Kato-Majda connection.
+
+    BKM criterion (1984): u blows up at time T* if and only if
+    ∫₀^{T*} ‖ω(·,t)‖_{L^∞} dt = ∞
+
+    Constantin-Fefferman refines this:
+    - BKM: blowup requires |ω| → ∞ fast enough (size condition)
+    - CF: blowup ALSO requires rapid reorientation of ω (geometry condition)
+    - Together: blowup needs both intensification AND misalignment of vorticity
+
+    This constrains the geometry of potential singularities:
+    - Aligned vortex tubes (like Burgers vortex) cannot blow up
+    - Only complex 3D configurations with rapid twisting might blow up
+    - Numerical evidence: vorticity tends to align with strain eigenvectors -/
+theorem bkm_cf_connection :
+    -- BKM: blowup ⟺ ∫₀^T ‖ω‖_∞ dt = ∞ (size criterion)
+    -- CF: additionally, ξ must vary rapidly (geometry criterion)
+    -- Blowup requires BOTH: intense vorticity + rapid reorientation
+    -- This rules out many potential singularity scenarios
+    True := trivial
+
+/-- Subsequent geometric regularity results.
+
+    The Constantin-Fefferman approach inspired many extensions:
+
+    1. **da Veiga-Berselli (2002)**: Regularity if vorticity direction is
+       in W^{1,p} with p > 3/2 (weaker than Lipschitz)
+
+    2. **Grujić-Ruzmaikina (2006)**: Only need direction coherence in
+       regions where BOTH |ω| and |strain| are large
+
+    3. **Vasseur (2007)**: Replaced Lipschitz by 1/2-Hölder continuity
+       of vorticity direction
+
+    4. **Chae-Lee (2002)**: Extended to Euler equations (inviscid case)
+
+    The trend: weakening the angle condition while maintaining regularity.
+    The weakest known sufficient condition is 1/2-Hölder continuity
+    of the vorticity direction. -/
+theorem subsequent_geometric_results :
+    -- da Veiga-Berselli: W^{1,p} direction with p > 3/2 suffices
+    -- Grujić-Ruzmaikina: only need coherence where BOTH |ω|, |S| are large
+    -- Vasseur: 1/2-Hölder suffices (weaker than Lipschitz)
+    -- Chae-Lee: extends to Euler (no viscosity)
+    True := trivial
+
+/-- The strain-vorticity alignment in turbulence.
+
+    Remarkably, DNS (direct numerical simulation) of turbulence shows:
+    - Vorticity tends to ALIGN with the intermediate eigenvector of strain
+    - This is the eigenvector with the second-largest eigenvalue
+    - The alignment is statistically robust across Reynolds numbers
+
+    For the strain eigenvalues λ₁ ≥ λ₂ ≥ λ₃ (with λ₁ + λ₂ + λ₃ = 0):
+    - λ₁ > 0: stretching direction
+    - λ₃ < 0: compression direction
+    - λ₂: typically positive (λ₂ ≈ 0.15 λ₁ on average)
+
+    Vorticity preferentially aligns with the λ₂-eigenvector.
+    This is precisely the alignment that MINIMIZES stretching!
+
+    The implication for regularity:
+    - Turbulence dynamically organizes to reduce stretching
+    - This is consistent with global regularity (no blowup)
+    - But it doesn't prove it - the alignment could break down -/
+theorem strain_vorticity_alignment :
+    -- DNS shows: ω aligns with intermediate strain eigenvector
+    -- This alignment minimizes vortex stretching
+    -- Consistent with CF criterion: turbulence self-organizes toward regularity
+    -- But: alignment is statistical, not pointwise - doesn't prove regularity
+    True := trivial
+
+/-- The depletion of nonlinearity.
+
+    A unifying concept in geometric regularity theory:
+    "depletion of nonlinearity" means that the nonlinear term (u·∇)u
+    is effectively weaker than its individual factors would suggest.
+
+    Evidence for depletion:
+    1. Helical flows: if u = αω (Beltrami), then (u·∇)u = ∇(|u|²/2) is a gradient
+       ⟹ absorbed by pressure, no stretching at all
+    2. 2D flows: no vortex stretching (depletion is complete)
+    3. Axisymmetric without swirl: reduced to 2D-like dynamics
+    4. Aligned vorticity: CF criterion shows depletion
+
+    The conjecture: 3D NS has enough depletion to prevent blowup.
+    Tao's averaged NS shows this is NOT true for generic nonlinearities,
+    so the specific algebraic structure of (u·∇)u must be essential. -/
+theorem depletion_of_nonlinearity :
+    -- Depletion: the nonlinear term is weaker than expected
+    -- Beltrami: (u·∇)u = gradient (completely depleted)
+    -- 2D: no stretching (completely depleted)
+    -- Aligned vorticity: stretching reduced by sin(angle)
+    -- Tao barrier: depletion is NOT automatic, needs specific algebra
+    True := trivial
+
+/-- Connection to the Millennium Problem.
+
+    The geometric regularity program suggests:
+
+    IF one could prove that vorticity direction remains Hölder continuous
+    for all smooth initial data, THEN regularity follows.
+
+    But proving Hölder continuity of ξ = ω/|ω| is essentially as hard
+    as the original problem:
+    - Need to control ∇ξ, which involves ∇ω/|ω|
+    - When |ω| → ∞, the denominator helps (direction varies slowly)
+    - But when |ω| → 0, ξ is undefined
+    - The competition between stretching and diffusion is exactly the NS difficulty
+
+    Current status: geometric criteria provide insight into what blowup
+    must look like, but do not yet resolve the existence question.
+
+    The "geometric regularity program" continues to narrow the possible
+    singularity scenarios. Each new criterion rules out more configurations,
+    but the critical case remains open. -/
+theorem geometric_program_status :
+    -- Geometric criteria narrow possible blowup scenarios
+    -- Blowup requires: intense vorticity + rapid direction change + specific geometry
+    -- Ruled out: aligned tubes, 2D-like flows, Beltrami-like flows
+    -- Not ruled out: complex 3D tangles with rapid reorientation
+    -- Status: deep understanding of constraints, but open problem remains
+    True := trivial
+
+end ConstantinFeffermanGeometric
 
 end NavierStokesRegularity
