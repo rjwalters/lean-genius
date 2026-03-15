@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3 sorries (subset image, GF coeff, partition-to-subset), 3 axioms. Extended verification to n=15. GF infrastructure advancing.",
+    "progressSummary": "PROGRESS: 2598 lines (+153), 0 sorries, 5 axioms. Added Euler partition identity (distinct=odd) with native_decide verification n=0..10, GF theory summary.",
     "builtItems": [
       "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
@@ -50,7 +50,10 @@
       "Subset sum recursion: inserting element k splits subsets into containing-k and not-containing-k families",
       "GF coefficient theorem connects algebraic (PowerSeries) to combinatorial (subsetsWithSum) counting",
       "partitionOfSubset converts finsets to Nat.Partition, bridging subset and partition formulations",
-      "All three identities (RR1, RR2, Schur corrected) computationally verified through n=15"
+      "All three identities (RR1, RR2, Schur corrected) computationally verified through n=15",
+      "Euler partition identity (distinct=odd) is the simplest partition identity and natural stepping stone toward Rogers-Ramanujan",
+      "Hierarchy: Euler (product manipulation) < Schur (gap analysis) < Rogers-Ramanujan (Bailey chains)",
+      "native_decide verification of Euler identity passes for n=0..10, confirming definitions are correct"
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",
