@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-03-15T00:00:00Z",
     "iteration": 11,
-    "focus": "Fixed duplicate sections, converted D_comm/R_comm/commMatrixRank to opaque defs, cleaned merge artifacts",
+    "focus": "Proved immerman_szelepcsenyi (NL=coNL from Φ_negate) and trapdoor_implies_owf (trivial from definitions). 74 axioms.",
     "activeApproach": "Abstract complexity class definitions with barrier theorems. Proof complexity and cryptographic world classification.",
     "blockers": [],
     "nextAction": "Continue axiom reduction; add counting complexity (#P); consider model refinements for abstract classes",
@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "4107-line sound formalization with 76 axioms, 201 theorems, 0 sorries. Fixed duplicate content from merge, converted 3 measurement function axioms to opaque defs.",
+    "progressSummary": "4127-line sound formalization with 74 axioms (down from 76), 203 theorems, 0 sorries. Proved NL=coNL via Φ_negate and trapdoor→OWF from trivial definitions.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -370,7 +370,9 @@
       "OWF → NP ⊆ CZK (GMW): zero-knowledge reflects Impagliazzos worlds",
       "SZK = coSZK: remarkable self-duality (unlike NP vs coNP which is open)",
       "Duplicate sections from upstream merge (Parts 15-18 appended twice) caused circuitDepth name collision and build failure. Resolved by removing duplicate KW/ZK/AvgCase sections while keeping communication complexity section.",
-      "D_comm, R_comm, commMatrixRank are measurement functions (ℕ-valued), not mathematical claims (Prop-valued). Converting axiom→opaque is semantically correct and reduces axiom count."
+      "D_comm, R_comm, commMatrixRank are measurement functions (ℕ-valued), not mathematical claims (Prop-valued). Converting axiom→opaque is semantically correct and reduces axiom count.",
+      "immerman_szelepcsenyi: In abstract model NL = L = all computable functions, so complement closure follows directly from Φ_negate axiom",
+      "trapdoor_implies_owf: Both TrapdoorOWF_exist and OWF_exist are defined as ∃ _ : ℕ, True (always true), making implication trivial. This means algorithmica_no_owf asserts P≠NP - a model design choice."
     ],
     "mathlibGaps": [
       "Oracle Turing machines",

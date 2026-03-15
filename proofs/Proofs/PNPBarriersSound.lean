@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (76 axioms)
+## Axiom Summary (74 axioms)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -53,7 +53,7 @@ Extended landscape (11):
 - 1 Shamir: shamir_IP_eq_PSPACE (IP = PSPACE)
 - 2 AM/MA: NP_subset_MA, babai_AM_in_Sigma2
 - 3 UP/NEXP: P_subset_UP, UP_subset_NP, EXP_subset_NEXP
-Structural (5): valiant_vazirani, mahaney_theorem, NL_subset_P, immerman_szelepcsenyi, savitch
+Structural (4): valiant_vazirani, mahaney_theorem, NL_subset_P, savitch
 Padding (2): padding_P_eq_NP_implies_EXP_eq_NEXP, padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE
 Separation/existence (2): P_ne_EXP, ladner_theorem
 Completeness results (3): cook_levin, tqbf_pspace_complete, L_ne_PSPACE
@@ -76,6 +76,8 @@ Eliminated axioms (8→theorems/opaques):
 - TC0_computes_multiplication → theorem (same type as majority_in_TC0_not_AC0)
 - TC0_computes_division → theorem (same type as majority_in_TC0_not_AC0)
 - mignon_ressayre → theorem (trivially True)
+- immerman_szelepcsenyi → theorem (NL = coNL from Φ_negate, L = NL in abstract model)
+- trapdoor_implies_owf → theorem (both OWF_exist and TrapdoorOWF_exist are ∃ _ : ℕ, True)
 - D_comm → opaque def (measurement function, not mathematical claim)
 - R_comm → opaque def (measurement function, not mathematical claim)
 - commMatrixRank → opaque def (measurement function, not mathematical claim)
@@ -1194,9 +1196,28 @@ theorem L_subset_P : L ⊆ P :=
 /-- **Immerman-Szelepcsényi Theorem** (1988): NL = coNL.
 
     Nondeterministic logspace is closed under complement.
-    Proved by "inductive counting" of reachable configurations.
-    Contrasts with the open NP vs coNP question. -/
-axiom immerman_szelepcsenyi : NL = coNL
+    The real proof uses "inductive counting" of reachable configurations.
+    In our abstract model, NL = L (both defined as {f | ∃ e, Solves e ∅ f}),
+    so complement closure follows from Φ_negate.
+    Previously axiom; now proved. -/
+theorem immerman_szelepcsenyi : NL = coNL := by
+  ext f
+  simp only [NL, coNL, Set.mem_setOf_eq]
+  constructor
+  · -- NL ⊆ coNL: given program e solving f, construct program solving ¬f
+    intro ⟨e, hsolves⟩
+    obtain ⟨e', he'⟩ := Φ_negate e
+    exact ⟨e', fun n => by
+      obtain ⟨s, hs⟩ := hsolves n
+      exact ⟨s, he' emptyOracle n (f n) s hs⟩⟩
+  · -- coNL ⊆ NL: given program e solving ¬f, construct program solving f
+    intro ⟨e, hsolves⟩
+    obtain ⟨e', he'⟩ := Φ_negate e
+    refine ⟨e', fun n => ?_⟩
+    obtain ⟨s, hs⟩ := hsolves n
+    have h := he' emptyOracle n (!(f n)) s hs
+    simp only [Bool.not_not] at h
+    exact ⟨s, h⟩
 
 /-- NL is closed under complement (from Immerman-Szelepcsényi). -/
 theorem NL_complement_closed (f : ℕ → Bool) :
@@ -3418,8 +3439,11 @@ theorem algorithmica_no_avg_hard : Algorithmica → ¬AvgCaseHardNP := by
     No function can be one-way if inverses are efficiently computable. -/
 axiom algorithmica_no_owf : Algorithmica → ¬OWF_exist
 
-/-- Trapdoor OWFs imply OWFs (a trapdoor OWF is a special case of OWF). -/
-axiom trapdoor_implies_owf : TrapdoorOWF_exist → OWF_exist
+/-- Trapdoor OWFs imply OWFs (a trapdoor OWF is a special case of OWF).
+    Previously axiom; in our abstract model both are ∃ _ : ℕ, True,
+    so this is trivially provable. -/
+theorem trapdoor_implies_owf : TrapdoorOWF_exist → OWF_exist := by
+  intro _; exact ⟨0, trivial⟩
 
 /-- OWFs imply average-case hardness in NP:
     If f is one-way, then inverting f is an average-case hard NP problem
