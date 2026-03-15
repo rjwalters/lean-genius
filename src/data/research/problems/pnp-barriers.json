@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced axiom count from 56 to 51. Proved P_subset_P_poly (program as circuit), P_subset_PP (via BPP chain), derived TC0_computes_multiplication/division from majority_in_TC0_not_AC0. File: 2868 lines, 51 axioms, 131 theorems, 0 sorries.",
+    "progressSummary": "PROGRESS: Added fine-grained complexity (ETH, SETH). Proved ETH → P ≠ NP, SETH → ETH, connections to barriers. File: 3079 lines, 59 axioms, 202 theorems/defs, 0 sorries.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -310,7 +310,11 @@
       "Session 8: P_subset_P_poly proved: a P program e serves as a constant-size circuit (code e, size e) for all input lengths. Uses HasCircuitsOfSize with constant polynomial q(n) = e.",
       "Session 8: P_subset_PP derived via chain P ⊆ BPP ⊆ BQP ⊆ PP (3 existing results).",
       "Session 8: TC0_computes_multiplication and TC0_computes_division share exact type with majority_in_TC0_not_AC0 (∃ f ∈ TC_k 0, f ∉ AC_k 0). Different mathematical witnesses but formally identical.",
-      "Session 8: mignon_ressayre was trivially True - converted to theorem."
+      "Session 8: mignon_ressayre was trivially True - converted to theorem.",
+      "ETH (SAT ∉ SUBEXP) implies P ≠ NP via Cook-Levin: if P=NP then SAT∈P⊆SUBEXP",
+      "SETH → ETH requires exponential growth comparison, axiomatized in model",
+      "SETH → NP ⊄ P/poly blocks Karp-Lipton collapse premise",
+      "ETH → BPP=P via Impagliazzo-Wigderson derandomization connection"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
