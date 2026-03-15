@@ -1,61 +1,50 @@
 # Knowledge Base: borsuk-ulam-oq-03-oq-03
 
-## Problem Understanding
+## Problem Summary
 
-The 2D Borsuk-Ulam theorem proved via Tucker's lemma. File has main theorem
-`borsuk_ulam_2d_corrected` with complete proof chain modulo axioms.
+Constructive 2D Borsuk-Ulam via Tucker's Lemma.
 
-## Key Finding: False Axiom
+## Current State
 
-`complementary_edge_gives_approximate_zero` was FALSE as stated.
-Counterexample: g(x,y)=(x,y), u=(0.01,1), v=(-0.01,1), delta=0.02, k=0.
-The bound 0.02*(2*sup) ~ 0.08 but ||g(w)||_1 >= 0.98 for any w near u.
+**Status**: 1 axiom (Tucker's 2D lemma), 0 sorries, 2318 lines
+**File**: `proofs/Proofs/BorsukUlamOQ03OQ03.lean`
 
-Fix: require k to be the dominant component (as Tucker's labeling guarantees).
+## Key Results (All Proved)
 
-## Axiom Status
+- Dominant component labeling is antipodal (Part II)
+- Complementary edge → approximate zero via IVT (Parts XVIII-XX)
+- Mesh refinement gives arbitrarily small zeros (Part XXI)
+- Grid infrastructure: vertices, edges, boundary, antipodal (Part XXIII)
+- Triangulated grid (`gridEdgesTriFin`) with NE-SW diagonals (Part XXIII)
+- tucker_disk_approx_zero_proved (from axiom)
+- Approximate and exact 2D Borsuk-Ulam (Part XXIV)
+- 1D Tucker proved as discrete IVT
 
-### Current (session 9, 2026-03-14)
-- `tucker_2d_grid` -- 1 remaining axiom, properly constrained to triangulated grid
-- Previous `tuckers_lemma` was overly general (false for empty edges)
+## The One Remaining Axiom
 
-### Infrastructure Added (session 9)
-- `gridAntipodalFin_involution`: antipodal map is an involution (proved)
-- `gridAntipodalFin_maps_boundary`: preserves boundary (proved)
-- `gridAntipodalFin_preserves_edges`: preserves edge set (proved)
-- Fixed Fin API breakage in `discrete_ivt` and `tucker_1d`
+`tuckers_lemma` (line 81): For any antipodal labeling of a triangulated disk,
+there exists a complementary edge.
 
-### Previously Eliminated
-- `complementary_edge_gives_approximate_zero` -- ELIMINATED (was false)
-- `tucker_disk_approx_zero` -- ELIMINATED (reordered file)
-- `x_cube_sub_2_gal_iso_s3` -- ELIMINATED (from InverseGalois)
+### Why It's Hard
 
-## Dead Ends
+Eliminating this axiom is equivalent to proving Brouwer's FPT in 2D. Three approaches:
+1. **Path-following** (~500-1000 lines): dual graph parity argument
+2. **Winding number** (~500 lines): degree theory on S¹
+3. **Poincaré-Miranda** (~300-500 lines): needs discrete Jordan curve theorem
 
-### Single-path arguments for Tucker 2D (CONFIRMED DEAD END)
-A single path through the grid (diagonal, row, column) CANNOT prove Tucker 2D.
+### What Would Help
 
-Labels from {(0,T), (0,F), (1,T), (1,F)} allow complementary-free paths:
-  (0,T) -> (1,F) -> (0,F) has 0 complementary edges despite complementary endpoints.
+- Mathlib adding Sperner's lemma or combinatorial topology infrastructure
+- A dedicated multi-session effort on the path-following approach
 
-Parity analysis on diagonal path (0,0) -> (2N,2N):
-- Sign changes (Ce + Cb) = ODD (antipodal condition)
-- Component changes (Co + Cb) = EVEN (same start/end component)
-- Ce - Co = ODD, but Ce = 0 is consistent (all sign changes coincide with component changes)
+## Session Log
 
-### Row-by-row 1D Tucker (CONFIRMED DEAD END)
-Bottom row sign change NOT guaranteed from boundary conditions.
-The antipodal condition links (0,j) <-> (2N, 2N-j), not same-row endpoints.
+### Session 2026-03-14 (researcher-6) - Assessment
 
-### Hex theorem (PARTIALLY VIABLE)
-Hex gives connected same-component path. But monochromatic case
-needs additional argument: must show antipodal vertex is in same
-connected component, or use separation/Jordan curve theorem.
+**Mode**: REVISIT
+**Outcome**: surveyed — assessed axiom elimination approaches
 
-## Proof Approaches for tucker_2d_grid
-
-All three are equivalent to Brouwer FPT in 2D. Multi-session project.
-
-1. **Path-following / complementary pivoting** (~500-1000 lines)
-2. **Hex theorem reduction** (~300 lines + Hex proof ~300-500 lines)
-3. **Poincare-Miranda / intersection theory** (~300-500 lines)
+**Findings**: All three approaches require 300-1000 lines of new infrastructure.
+The file has comprehensive infrastructure built around the axiom. The axiom is
+used once (line 2120) on the specific triangulated grid. No tractable single-session
+path to eliminate it.

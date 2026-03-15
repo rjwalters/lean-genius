@@ -4,6 +4,36 @@ Minimum edges for graph dimension d in general.
 
 ---
 
+## Session 2026-03-15 (Session 3) - Conjecture Relationship
+
+**Mode**: REVISIT (depth-first, MODERATE knowledge)
+**Outcome**: progress — proved new structural theorem
+
+### What Was Done
+- **Proved `optimal_implies_quadratic`**: If the complete graph optimality conjecture holds
+  (K_{d+1} optimal for d ≠ 4), then minEdges(d) = Θ(d²) with explicit constants c₁ = 1/2, c₂ = 1.
+  - Lower bound: d²/2 ≤ d(d+1)/2 since d ≤ d+1. For d=4: 8 ≤ 9.
+  - Upper bound: d(d+1)/2 ≤ d² since d+1 ≤ 2d for d ≥ 1. For d=4: 9 ≤ 16.
+- Added helper `choose_succ_two_real` for Nat/Real casting of C(d+1,2).
+- File now proves THREE conjecture implications from `complete_graph_optimal_conjecture`:
+  1. → monotonicity (`optimal_implies_monotone`)
+  2. → quadratic growth (`optimal_implies_quadratic`) [NEW]
+  3. ↔ zero deficiency (`optimal_iff_zero_deficiency`)
+
+### Files Modified
+- `proofs/Proofs/Erdos1007OQ01.lean` — added optimal_implies_quadratic
+
+### Assessment
+- All provable theorems now proved (0 sorries, 11 axioms)
+- The complete graph optimality conjecture is identified as the key hypothesis:
+  it implies both monotonicity and quadratic growth
+- Remaining axioms encode computational search results (dim0-dim5 values) and
+  structural properties (lower/upper bounds, minEdgesForDim definition) that
+  require either exhaustive graph search or rigidity theory infrastructure
+- To make further progress: need dim(K_n) = n-1 rigidity (substantial linear algebra)
+
+---
+
 ## Session 2026-03-14 (Session 2) - Soundness Fix
 
 **Mode**: REVISIT (depth-first, MODERATE knowledge)

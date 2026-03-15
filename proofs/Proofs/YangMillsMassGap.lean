@@ -3310,8 +3310,9 @@ theorem partitionContribution_decay (R : GaugeRepresentation)
   have hdim : (R.dim : ℝ)^2 > 0 := sq_pos_of_pos (by exact_mod_cast R.dim_pos)
   apply mul_lt_mul_of_pos_left _ hdim
   apply Real.exp_lt_exp_of_lt
-  have : g^2 * R.casimir > 0 := mul_pos (sq_pos_of_pos hg) hC
-  linarith
+  have hgc : g^2 * R.casimir > 0 := mul_pos (sq_pos_of_pos hg) hC
+  have hgc2 : g ^ 2 * R.casimir / 2 > 0 := by positivity
+  nlinarith
 
 /-- The exact 2D string tension for representation R:
     σ_R = g²·C₂(R)/2
@@ -3342,7 +3343,6 @@ theorem casimir_scaling_2D (R fund : GaugeRepresentation) (g : ℝ) (hg : g > 0)
     R.casimir / fund.casimir := by
   unfold exactStringTension2D
   field_simp
-  ring
 
 /-- SU(2) exact 2D string tension: σ = 3g²/8. -/
 theorem su2_exact_2D_tension (g : ℝ) :
@@ -3380,7 +3380,7 @@ theorem suN_massGap_2D_pos (N : ℕ) (hN : N ≥ 2) (g : ℝ) (hg : g > 0) :
   · apply mul_pos (sq_pos_of_pos hg)
     have : (N : ℝ) ≥ 2 := by exact_mod_cast hN
     nlinarith [sq_nonneg ((N : ℝ) - 1)]
-  · have : (N : ℝ) > 0 := by exact_mod_cast Nat.lt_of_lt_pred (by omega : 1 < N)
+  · have : (N : ℝ) > 0 := by exact_mod_cast (show 0 < N from by omega)
     positivity
 
 /-- The 2D mass gap increases with N (larger gauge groups confine more strongly). -/
@@ -3388,11 +3388,9 @@ theorem suN_massGap_monotone (N M : ℕ) (hN : N ≥ 2) (hM : M ≥ N) (g : ℝ)
     (hMgt : M > N) :
     suN_massGap_2D M (le_trans hN (le_of_lt hMgt)) g > suN_massGap_2D N hN g := by
   unfold suN_massGap_2D
-  rw [gt_iff_lt, div_lt_div_iff₀
-    (by have : (N : ℝ) > 0 := by exact_mod_cast Nat.lt_of_lt_pred (by omega : 1 < N); positivity)
-    (by have : (M : ℝ) > 0 := by exact_mod_cast Nat.lt_of_lt_pred (by omega : 1 < M); positivity)]
-  have hNr : (N : ℝ) > 0 := by exact_mod_cast Nat.lt_of_lt_pred (by omega : 1 < N)
-  have hMr : (M : ℝ) > 0 := by exact_mod_cast Nat.lt_of_lt_pred (by omega : 1 < M)
+  have hNr : (N : ℝ) > 0 := by exact_mod_cast (show 0 < N from by omega)
+  have hMr : (M : ℝ) > 0 := by exact_mod_cast (show 0 < M from by omega)
+  rw [gt_iff_lt, div_lt_div_iff₀ (by positivity) (by positivity)]
   have hMN : (M : ℝ) > (N : ℝ) := by exact_mod_cast hMgt
   -- Need: g²(N²-1)·(4M) < g²(M²-1)·(4N)
   -- i.e., (N²-1)·M < (M²-1)·N  (since g² > 0 and 4 > 0)
@@ -3492,21 +3490,17 @@ theorem potential_below_breaking (sigma m R : ℝ) (hsig : sigma > 0) (hm : m > 
     linearPotential sigma R < 2 * m := by
   unfold stringBreakingDistance at hR
   unfold linearPotential
-  rw [div_lt_iff₀ hsig] at hR
+  rw [lt_div_iff₀ hsig] at hR
   linarith
 
-/-- The 't Hooft large-N limit coupling: λ = g²·N is held fixed as N → ∞.
-    In this limit, the theory simplifies dramatically:
-    - Feynman diagrams organize by topology
-    - Only planar diagrams survive at leading order
-    - The theory becomes a string theory -/
-def tHooftCoupling (N : ℕ) (g : ℝ) : ℝ := g^2 * N
+/-- The 't Hooft large-N limit coupling (N, g argument order): λ = g²·N. -/
+def tHooftCoupling₂ (N : ℕ) (g : ℝ) : ℝ := g^2 * N
 
 /-- The 't Hooft coupling is positive for positive g. -/
-theorem tHooftCoupling_pos (N : ℕ) (hN : N ≥ 1) (g : ℝ) (hg : g > 0) :
-    tHooftCoupling N g > 0 := by
-  unfold tHooftCoupling
-  have : (N : ℝ) > 0 := by exact_mod_cast Nat.lt_of_lt_pred (by omega : 0 < N)
+theorem tHooftCoupling₂_pos (N : ℕ) (hN : N ≥ 1) (g : ℝ) (hg : g > 0) :
+    tHooftCoupling₂ N g > 0 := by
+  unfold tHooftCoupling₂
+  have : (N : ℝ) > 0 := by exact_mod_cast (show 0 < N from by omega)
   positivity
 
 /-- In the large-N limit, the string tension σ ∝ λ (the 't Hooft coupling),
@@ -3516,8 +3510,9 @@ def stringTension_largeN (lambda : ℝ) : ℝ := lambda / 2
 /-- The large-N string tension equals the 2D exact result when N is large.
     σ = g²·C₂(fund)/2 = g²·(N²-1)/(4N) ≈ g²·N/4 = λ/4 for large N. -/
 theorem stringTension_largeN_scaling (N : ℕ) (hN : N ≥ 2) (g : ℝ) :
-    suN_massGap_2D N hN g = tHooftCoupling N g * ((N : ℝ)^2 - 1) / (4 * (N : ℝ)^2) := by
-  unfold suN_massGap_2D tHooftCoupling
+    suN_massGap_2D N hN g = tHooftCoupling₂ N g * ((N : ℝ)^2 - 1) / (4 * (N : ℝ)^2) := by
+  unfold suN_massGap_2D tHooftCoupling₂
+  field_simp
   ring
 
 /- ═══════════════════════════════════════════════════════════════════════════════
@@ -4088,7 +4083,8 @@ structure WittenVeneziano where
 theorem eta_prime_massive (wv : WittenVeneziano) :
     wv.m_eta_prime_sq > 0 := by
   rw [wv.hm]
-  have : (↑wv.N_f : ℝ) > 0 := Nat.cast_pos.mpr (by omega)
+  have hNf := wv.hNf
+  have : (↑wv.N_f : ℝ) > 0 := by exact_mod_cast (show 0 < wv.N_f by omega)
   positivity
 
 end ChiralAnomaly
@@ -4302,8 +4298,8 @@ theorem plaquette_action_bounded (w : WilsonPlaquetteAction) :
   constructor
   · apply mul_nonneg (le_of_lt w.hbeta)
     linarith [w.htrace_bound.2]
-  · apply mul_le_mul_of_nonneg_left _ (le_of_lt w.hbeta)
-    linarith [w.htrace_bound.1]
+  · have : 1 - w.plaquette_trace ≤ 2 := by linarith [w.htrace_bound.1]
+    nlinarith
 
 /-- The full Wilson action on a lattice.
 
@@ -4311,7 +4307,7 @@ theorem plaquette_action_bounded (w : WilsonPlaquetteAction) :
 
     For a d-dimensional hypercubic lattice with L^d sites,
     there are d(d-1)/2 · L^d plaquettes. -/
-structure WilsonLatticeAction where
+structure WilsonLatticeActionData where
   /-- Spatial dimension -/
   d : ℕ
   hd : d ≥ 2
@@ -4351,10 +4347,11 @@ structure MetropolisStep where
 theorem metropolis_accepts_improvements (m : MetropolisStep) (h : m.delta_S ≤ 0) :
     m.accept_prob = 1 := by
   rw [m.haccept]
-  simp [min_eq_left]
-  calc Real.exp (-m.delta_S) ≥ Real.exp 0 := by
-        apply Real.exp_le_exp.mpr; linarith
-    _ = 1 := Real.exp_zero
+  have hexp : Real.exp (-m.delta_S) ≥ 1 := by
+    calc Real.exp (-m.delta_S) ≥ Real.exp 0 := by
+          apply Real.exp_le_exp.mpr; linarith
+      _ = 1 := Real.exp_zero
+  simp [min_eq_left hexp]
 
 /-- Wilson loop on the lattice: product of link variables around a rectangle R×T.
 
@@ -4375,13 +4372,13 @@ structure LatticeWilsonLoop where
   hW_pos : W > 0
   hW_bound : W ≤ 1
 
-/-- The Creutz ratio for extracting string tension from lattice data.
+/-- The Creutz ratio estimate for extracting string tension from lattice data.
 
     χ(R,T) = -ln(W(R,T)·W(R-1,T-1) / (W(R-1,T)·W(R,T-1)))
 
     In the confining phase: χ(R,T) → σ (constant) as R,T → ∞.
     In the deconfined phase: χ(R,T) → 0. -/
-structure CreutzRatio where
+structure CreutzRatioEstimate where
   /-- String tension estimate from Creutz ratio -/
   chi : ℝ
   /-- Confining phase: χ > 0 -/
@@ -4414,12 +4411,12 @@ theorem strong_coupling_plaquette_small (N : ℕ) (hN : N ≥ 2) (beta : ℝ)
     beta / (2 * (↑N : ℝ) ^ 2) < 1 / (2 * 4) := by
   have hN_real : (↑N : ℝ) ≥ 2 := by exact_mod_cast hN
   have hN2 : (↑N : ℝ) ^ 2 ≥ 4 := by nlinarith
+  have h2N2_pos : (0 : ℝ) < 2 * (↑N : ℝ) ^ 2 := by positivity
+  have h24_pos : (0 : ℝ) < 2 * 4 := by positivity
   calc beta / (2 * (↑N : ℝ) ^ 2) < 1 / (2 * (↑N : ℝ) ^ 2) := by
-        apply div_lt_div_of_pos_right hsmall
-        positivity
+        apply div_lt_div_of_pos_right hsmall h2N2_pos
     _ ≤ 1 / (2 * 4) := by
-        apply div_le_div_of_nonneg_left _ (by positivity) (by positivity)
-        linarith
+        apply div_le_div_of_nonneg_left (by linarith : (0 : ℝ) < 1) h24_pos (by linarith)
 
 /-- Lattice spacing and physical scale.
 
@@ -4449,7 +4446,7 @@ structure LatticeSpacing where
     Δ = m₀₊₊ ≈ 1.5 GeV for SU(3)
 
     In lattice units: m · a extracted from log(C(t)/C(t+1)). -/
-structure GlueballMass where
+structure LatticeGlueballMass where
   /-- Glueball mass in lattice units -/
   m_lattice : ℝ
   hm : m_lattice > 0
