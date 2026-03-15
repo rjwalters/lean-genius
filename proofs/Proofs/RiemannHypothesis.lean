@@ -1108,7 +1108,7 @@ Existence and uniqueness of Λ are proven facts (de Bruijn 1950, Newman 1976):
 - The set {t : H_t has all real zeros} is a closed half-line [Λ, ∞)
 - This uses the heat flow: the PDE ∂H/∂t = ∂²H/∂z² implies zeros only move
   towards the real axis as t increases -/
-axiom deBruijnNewmanConstant : ℝ
+opaque deBruijnNewmanConstant : ℝ
 
 /-- **Rodgers-Tao Theorem (2020)**: The de Bruijn-Newman constant is non-negative.
 
@@ -1526,7 +1526,7 @@ This is left abstract (axiom) because formalizing the Mellin transform,
 Schwartz space, and the explicit formula sum requires significant analytic
 infrastructure not yet in Mathlib. A `True` placeholder would make the
 biconditional unsound (asserting RH holds). -/
-axiom WeilPositivity : Prop
+opaque WeilPositivity : Prop
 
 /-- RH is equivalent to Weil's positivity criterion.
 This is a deep result requiring analytic machinery not yet in Mathlib. -/
@@ -1983,7 +1983,7 @@ analytic machinery not yet in Mathlib.
 
 **SOUNDNESS NOTE**: This must be opaque. If defined as True, the
 biconditional RH_iff_Speiser would trivially prove RH. -/
-axiom SpeiserCriterion : Prop
+opaque SpeiserCriterion : Prop
 
 /-- **Speiser's Theorem (1934)**: RH is equivalent to ζ'(s) having no
 zeros in the open left half of the critical strip.
@@ -2065,7 +2065,7 @@ The conjecture states that for the normalized zeros γ̃ₙ = γₙ · log(γₙ
 the pair correlation function approaches 1 - (sin(πu)/(πu))².
 
 Must be opaque — depends on the distribution of actual zeta zeros. -/
-axiom pairCorrelation : ℝ → ℝ
+opaque pairCorrelation : ℝ → ℝ
 
 /-- **Montgomery's Pair Correlation Conjecture (1973)**:
 The pair correlation of normalized zeta zeros equals the GUE form.
@@ -2182,7 +2182,7 @@ This measures the deviation of N(T) from the smooth approximation.
 Must be opaque — the concrete arg function requires ζ(s) on the critical line.
 
 (Also defined in the Consequences file; redeclared here for independence.) -/
-axiom argumentFunction' : ℝ → ℝ
+opaque argumentFunction' : ℝ → ℝ
 
 /-- **Backlund's Theorem (1918)**: S(T) = O(log T) unconditionally.
 
@@ -2769,7 +2769,7 @@ Zero-density estimates bound how many zeros can exist near the line Re(s) = 1.
 
 /-- The Chebyshev psi function ψ(n) = Σ_{k≤n} Λ(k).
     Opaque here since the full definition is in the Consequences file. -/
-axiom chebyshevPsi : ℕ → ℝ
+axiom chebyshevPsi' : ℕ → ℝ
 
 /-- The Mertens function M(n) = Σ_{k≤n} μ(k), as a real-valued function.
     Opaque here since the full definition is in the Consequences file. -/
@@ -2859,7 +2859,7 @@ axiom density_implies_pnt_error :
     (∃ A > 0, ∃ C > 0, ∀ T ≥ 2, ∀ σ : ℝ, 1/2 ≤ σ → σ < 1 →
       (zeroDensityCount σ T : ℝ) ≤ C * T ^ (A * (1 - σ))) →
     ∃ A > 0, ∀ x : ℝ, x ≥ 2 →
-      |chebyshevPsi ⌊x⌋₊ - x| ≤ x ^ (1 - 1/A) * (Real.log x) ^ 2
+      |chebyshevPsi' ⌊x⌋₊ - x| ≤ x ^ (1 - 1/A) * (Real.log x) ^ 2
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXXI: THE SELBERG CLASS
@@ -3012,7 +3012,7 @@ axiom skewes_number_conditional :
     The proof requires the Weil explicit formula and Perron's formula (not in Mathlib). -/
 axiom rh_explicit_formula_optimal :
     _root_.RiemannHypothesis → ∀ x : ℝ, x ≥ 2 →
-      |chebyshevPsi ⌊x⌋₊ - x| ≤ x ^ (1/2 : ℝ) * (Real.log x) ^ 2 * x
+      |chebyshevPsi' ⌊x⌋₊ - x| ≤ x ^ (1/2 : ℝ) * (Real.log x) ^ 2 * x
 
 /-- Connection: explicit estimates → zero-free regions → PNT error terms.
     This closes the conceptual loop between Parts XXX and XXXII.
@@ -3020,7 +3020,7 @@ axiom rh_explicit_formula_optimal :
 axiom estimates_close_loop :
     (∃ c > 0, ∃ t₀ > 0, ∀ s : ℂ,
       |s.im| ≥ t₀ → s.re ≥ 1 - c / Real.log |s.im| → riemannZeta s ≠ 0) →
-    ∃ A > 0, ∀ x : ℝ, x ≥ 2 → |chebyshevPsi ⌊x⌋₊ - x| ≤ x * Real.exp (-(Real.log x) ^ (1/2 : ℝ))
+    ∃ A > 0, ∀ x : ℝ, x ≥ 2 → |chebyshevPsi' ⌊x⌋₊ - x| ≤ x * Real.exp (-(Real.log x) ^ (1/2 : ℝ))
 
 -- ═════════════════════════════════════════════════════════════════════════
 -- VERIFICATION CHECKS
@@ -3408,7 +3408,7 @@ section DirichletConsequences
 /-- Linnik's constant L: the least prime p ≡ a (mod q) satisfies p ≤ q^L.
     Best unconditional bound: L ≤ 5 (Xylouris, 2011).
     Under GRH: L = 2 + ε suffices. -/
-axiom linnik_constant : ℝ
+opaque linnik_constant : ℝ
 
 /-- Linnik's constant is positive. -/
 axiom linnik_constant_pos : linnik_constant > 0

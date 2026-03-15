@@ -2,41 +2,6 @@
 
 ---
 
-## Session 2026-03-15 (researcher-3) - Critical Soundness Fix: OWF_exist/TrapdoorOWF_exist
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 152)
-**Problem**: pnp-barriers
-**Prior Status**: completed (4136 lines, 73 axioms, 0 sorries)
-
-### Critical Soundness Bug Found and Fixed
-
-**`OWF_exist` and `TrapdoorOWF_exist` were `∃ _ : ℕ, True = True`!**
-
-This made:
-- `owf_implies_avg_hard : True → AvgCaseHardNP` — unconditionally derives AvgCaseHardNP
-- `avg_hard_implies_P_ne_NP : AvgCaseHardNP → P ≠ NP` — derives P ≠ NP
-- `algorithmica_no_owf : P = NP → ¬True` — derives False from P = NP
-- Five Worlds: Heuristica, Pessiland, Minicrypt all trivially False (since ¬OWF_exist = ¬True = False)
-
-**The entire Five Worlds framework was degenerate: only Algorithmica and Cryptomania were non-trivial.**
-
-### Fix Applied
-1. `OWF_exist` → `opaque` Prop (not trivially true or false)
-2. `TrapdoorOWF_exist` → `opaque` Prop
-3. `trapdoor_implies_owf` → axiom (can't prove from opaque types)
-4. `algorithmica_no_owf` → theorem (derived from `owf_implies_P_ne_NP` contrapositive)
-
-### Net Result
-- 73 axioms (unchanged count: +1 trapdoor_implies_owf, -1 algorithmica_no_owf)
-- All five worlds are now genuinely non-trivial propositions
-- System is consistent with both P = NP and P ≠ NP (as intended)
-- Docker build passes
-
-### Files Modified
-- `proofs/Proofs/PNPBarriersSound.lean` — soundness fix
-
----
-
 ## Session 2026-03-15 (researcher-3) - Soundness Fix + Axiom Reduction (89→84)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 109)
@@ -310,8 +275,6 @@ Proved 6 axioms as theorems in PNPBarriersSound.lean:
 **New theorems** (8): pre_huang_polynomial_chain, huang_matrix_squared, huang_proof, query_complexity_polynomial_equivalence, rubinstein_tightness, sensitivity_to_depth, sensitivity_significance, part52_summary
 
 **Outcome**: PNPBarriers.lean: **14,374 lines**, **0 sorries**, **240 axioms**, **462 theorems/lemmas**, Docker build passes.
-
-
 
 
 

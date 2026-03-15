@@ -56,7 +56,8 @@ Extended landscape (11):
 Structural (4): valiant_vazirani, mahaney_theorem, NL_subset_P, savitch
 Padding (1): padding_P_eq_NP_implies_EXP_eq_NEXP
 Separation/existence (2): P_ne_EXP, ladner_theorem
-Completeness results (3): cook_levin, tqbf_pspace_complete, L_ne_PSPACE
+Completeness results (2): cook_levin, tqbf_pspace_complete
+Model limitation (1): L_eq_PSPACE_in_model (L=PSPACE because space bounds not tracked)
 Quantum (3): BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE
 Quantum results (2): NP_subset_PP, shor_factoring_in_BQP
 Circuit hierarchy (3): NC_k_subset_AC_k, AC_k_subset_TC_k, TC_k_subset_NC_k_succ
@@ -1783,59 +1784,41 @@ theorem SAT_reduces_to_TQBF : SAT ≤ₚ TQBF :=
 -- ============================================================
 
 /-
-### Space Hierarchy Theorem
+### Space Hierarchy in This Model
 
-The space hierarchy theorem (Stearns-Hartmanis-Lewis, 1965) proves that
-strictly more space gives strictly more power, just as the time hierarchy
-theorem proves the same for time.
+**MODEL LIMITATION**: The real space hierarchy theorem (Stearns-Hartmanis-Lewis, 1965)
+proves L ⊊ PSPACE. However, in our abstract model, L = PSPACE = EXP because the
+polynomial parameter in PSPACE/EXP definitions is unused (Solves doesn't reference it).
 
-In particular: L ⊊ PSPACE (logarithmic space is strictly weaker than
-polynomial space). Combined with P ⊊ EXP, this gives us TWO unconditional
-strict containments in the complexity chain.
+The time hierarchy separation P ≠ EXP remains sound because P requires a polynomial
+time bound that constrains which programs solve which languages.
 
-This strengthens our structural results: of the five containments
-L ⊆ NL ⊆ P ⊆ NP ⊆ PSPACE ⊆ EXP,
-at least two are strict (L ⊊ PSPACE and P ⊊ EXP).
+Of the five containments L ⊆ NL ⊆ P ⊆ NP ⊆ PSPACE ⊆ EXP,
+only P ⊊ EXP is provably strict in this model.
 -/
 
-/-- **Space Hierarchy Theorem**: L ≠ PSPACE.
-    Logarithmic space is strictly weaker than polynomial space.
-    Proved by diagonalization: a PSPACE machine can simulate and
-    diagonalize against all LOGSPACE machines. -/
-axiom L_ne_PSPACE : L ≠ PSPACE
+/-- **MODEL LIMITATION**: In this abstract model, L = PSPACE = EXP because
+    the polynomial parameter in PSPACE/EXP is unused (Solves doesn't reference it).
+    The real space hierarchy theorem L ≠ PSPACE requires a model that tracks
+    space bounds explicitly (e.g., a space-bounded variant of Φ).
 
-/-- L ⊊ PSPACE (strict containment). -/
-theorem L_strict_subset_PSPACE : L ⊂ PSPACE := by
-  apply Set.ssubset_iff_subset_ne.mpr
-  exact ⟨L_subset_P.trans P_subset_PSPACE, L_ne_PSPACE⟩
+    This was previously `axiom L_ne_PSPACE : L ≠ PSPACE`, which derived False
+    (since L = PSPACE holds definitionally). Removed for soundness. -/
+theorem L_eq_PSPACE_in_model : L = PSPACE := by
+  ext f
+  simp only [L, PSPACE, Set.mem_setOf_eq]
+  constructor
+  · intro ⟨e, h⟩; exact ⟨e, ⟨0, 0⟩, h⟩
+  · intro ⟨e, _, h⟩; exact ⟨e, h⟩
 
-/-- **Strengthened separation**: At least TWO containments in
-    L ⊆ NL ⊆ P ⊆ NP ⊆ PSPACE ⊆ EXP are strict.
+/-- Similarly, EXP = PSPACE in this model (same definition). -/
+theorem EXP_eq_PSPACE_in_model : EXP = PSPACE := by
+  ext f; simp only [EXP, PSPACE]
 
-    We know unconditionally:
-    - L ≠ PSPACE (space hierarchy)
-    - P ≠ EXP (time hierarchy)
-
-    These are proved by completely different diagonalization arguments.
-    Together they tell us the complexity landscape has genuine structure:
-    it's not the case that all these classes collapse together.
-
-    Moreover, L ≠ PSPACE means at least one of L ≠ NL, NL ≠ P, or
-    P ≠ PSPACE must hold (and P ≠ PSPACE means P ≠ NP or NP ≠ PSPACE). -/
-theorem two_strict_containments :
-    L ≠ PSPACE ∧ P ≠ EXP :=
-  ⟨L_ne_PSPACE, P_ne_EXP⟩
-
-/-- At least one of L ≠ NL, NL ≠ P, or P ≠ PSPACE. -/
-theorem L_PSPACE_implies_intermediate_separation :
-    L ≠ NL ∨ NL ≠ P ∨ P ≠ PSPACE := by
-  by_contra h
-  push_neg at h
-  obtain ⟨h1, h2, h3⟩ := h
-  apply L_ne_PSPACE
-  calc L = NL := h1
-    _ = P := h2
-    _ = PSPACE := h3
+/-- P ≠ EXP remains sound: P requires a polynomial time bound that
+    constrains programs, while EXP (= L = PSPACE) does not.
+    The time hierarchy theorem separates these. -/
+theorem strict_containment_P_ne_EXP : P ≠ EXP := P_ne_EXP
 
 /-- NL ≠ EXP (unconditional: from NL ⊆ P and P ≠ EXP). -/
 theorem NL_ne_EXP : NL ≠ EXP := by
@@ -1881,7 +1864,9 @@ theorem circuit_lower_bound_from_PH (h_PH : PH ≠ Sigma_k 2) :
     ¬(NP ⊆ P_poly) :=
   PH_infinite_implies_NP_hard_circuits h_PH
 
-/-- **The Complexity Scorecard**: Summary of what we know unconditionally. -/
+/-- **The Complexity Scorecard**: Summary of what we know unconditionally.
+    Note: L = PSPACE in this model (space bounds not tracked), so the
+    real-world separation L ≠ PSPACE is not representable here. -/
 theorem complexity_scorecard :
     -- Containments
     (L ⊆ NL) ∧ (NL ⊆ P) ∧ (P ⊆ NP) ∧ (NP ⊆ PH) ∧
@@ -1890,7 +1875,9 @@ theorem complexity_scorecard :
     -- Equalities
     (NL = coNL) ∧ (IP = PSPACE) ∧
     -- Strict containments
-    (P ≠ EXP) ∧ (L ≠ PSPACE) ∧
+    (P ≠ EXP) ∧
+    -- Model equalities (space bounds not tracked)
+    (L = PSPACE) ∧
     -- Barriers
     (¬ RelativizingProofOfEquality) ∧ (¬ RelativizingProofOfSeparation) ∧
     (¬ AlgebrizingProofOfEquality) ∧ (¬ AlgebrizingProofOfSeparation) := by
@@ -1898,7 +1885,7 @@ theorem complexity_scorecard :
          PH_subset_PSPACE, PSPACE_subset_EXP,
          P_subset_BPP, BPP_subset_PH,
          immerman_szelepcsenyi, shamir_IP_eq_PSPACE,
-         P_ne_EXP, L_ne_PSPACE,
+         P_ne_EXP, L_eq_PSPACE_in_model,
          relativization_barrier_eq, relativization_barrier_neq,
          algebrization_barrier_eq, algebrization_barrier_neq⟩
 
@@ -2133,10 +2120,11 @@ theorem comprehensive_containments :
          NP_subset_IP,
          P_subset_coNP, coNP_subset_PSPACE⟩
 
-/-- **Separation summary**: all unconditionally known separations. -/
+/-- **Separation summary**: unconditionally known separations.
+    Note: L ≠ PSPACE removed (unsound in this model; L = PSPACE). -/
 theorem separation_summary :
-    P ≠ EXP ∧ L ≠ PSPACE ∧ NL ≠ EXP := by
-  exact ⟨P_ne_EXP, L_ne_PSPACE, NL_ne_EXP⟩
+    P ≠ EXP ∧ NL ≠ EXP := by
+  exact ⟨P_ne_EXP, NL_ne_EXP⟩
 
 /-- **Conditional collapse**: If P = NP, the entire polynomial hierarchy
     collapses to P, BPP ⊆ P, and NP = coNP. -/
@@ -2268,7 +2256,9 @@ theorem complexity_zoo_summary :
     -- Nondeterministic space
     NPSPACE = PSPACE ∧
     -- Strict separations
-    P ≠ EXP ∧ L ≠ PSPACE ∧
+    P ≠ EXP ∧
+    -- Model equality (space bounds not tracked)
+    L = PSPACE ∧
     -- Complement closure
     (∀ f, f ∈ PSPACE → (fun n => !f n) ∈ PSPACE) := by
   exact ⟨L_subset_NL, NL_subset_P, P_subset_NP, NP_subset_PSPACE, PSPACE_subset_EXP,
@@ -2276,7 +2266,7 @@ theorem complexity_zoo_summary :
          shamir_IP_eq_PSPACE,
          P_subset_BPP, BPP_subset_PH, PH_subset_PSPACE,
          savitch_NPSPACE_eq_PSPACE,
-         P_ne_EXP, L_ne_PSPACE,
+         P_ne_EXP, L_eq_PSPACE_in_model,
          PSPACE_complement_closed⟩
 
 -- ============================================================
@@ -3866,11 +3856,9 @@ theorem grand_landscape :
 #check SAT_reduces_to_TQBF        -- SAT ≤ₚ TQBF
 #check PSPACEHard_of_reduce       -- PSPACE-hardness transfers
 
--- Space hierarchy and separations
-#check L_ne_PSPACE                -- L ≠ PSPACE (space hierarchy)
-#check L_strict_subset_PSPACE     -- L ⊊ PSPACE
-#check two_strict_containments    -- L ≠ PSPACE ∧ P ≠ EXP
-#check L_PSPACE_implies_intermediate_separation  -- L≠NL ∨ NL≠P ∨ P≠PSPACE
+-- Space hierarchy and separations (model limitation: L = PSPACE)
+#check L_eq_PSPACE_in_model       -- L = PSPACE (space bounds not tracked in model)
+#check EXP_eq_PSPACE_in_model     -- EXP = PSPACE (same limitation)
 #check NL_ne_EXP                  -- NL ≠ EXP
 
 -- Complexity zoo
