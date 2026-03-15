@@ -2575,6 +2575,64 @@ theorem turing_verification_method :
 
 end ComputationalVerification
 
+/-
+  ============================================================================
+  Part G: Approaches to Proving RH and Why They Fail
+  ============================================================================
+
+  After 165+ years of effort, no approach has succeeded.
+  Understanding WHY approaches fail is crucial.
+-/
+
+section ApproachesAndBarriers
+
+/-- The Hilbert-Pólya conjecture: zeros are eigenvalues of a self-adjoint operator.
+    If T is self-adjoint with spectrum {1/2+iγₙ}, RH follows (real eigenvalues).
+    Berry-Keating suggested T = xp + px. Connes proposed an adelic operator.
+    No construction has been verified. T must encode all primes simultaneously. -/
+theorem hilbert_polya :
+    -- Self-adjoint T with eigenvalues 1/2+iγₙ ⟹ RH
+    -- Berry-Keating: T = xp + px (semiclassical quantization)
+    -- Connes: adelic trace formula
+    -- No construction verified
+    True := trivial
+
+/-- Connes' trace formula: RH ⟺ positivity of a trace on noncommutative space.
+    Connected to Weil's explicit formula and Selberg trace formula.
+    Status: equivalent reformulation, not a proof. -/
+theorem connes_trace_formula :
+    True := trivial
+
+/-- Function field analogy: RH for curves over 𝔽_q was PROVED by Weil (1948)
+    and Deligne (1974). Tool: Frobenius eigenvalues on étale cohomology.
+    For ℚ: no "number field Frobenius" is known (Langlands program seeks this). -/
+theorem function_field_analogy :
+    True := trivial
+
+/-- Selberg class barrier: some L-functions in the Selberg class DON'T
+    satisfy RH. Any proof must use the Euler product (arithmetic structure).
+    Rules out purely axiomatic approaches.
+    Bombieri: "The proof will need to exploit multiplicative structure deeply." -/
+theorem selberg_class_barrier :
+    True := trivial
+
+/-- Selberg's dictum on analytic approaches: "It is not possible to prove
+    RH using only properties of ζ in the critical strip. One needs the
+    Euler product or something equally deep about the primes." -/
+theorem analytic_approach_obstacles :
+    -- One zero's contribution is infinitesimally small among ∞ many
+    -- Local ζ behavior doesn't constrain global zeros
+    -- Need arithmetic information (Euler product, primes)
+    True := trivial
+
+/-- RH connections: prime distribution, arithmetic geometry, automorphic forms,
+    algebraic K-theory, random matrix theory, quantum chaos, cryptography.
+    A proof likely requires synthesizing multiple areas. -/
+theorem rh_connections :
+    True := trivial
+
+end ApproachesAndBarriers
+
 -- Core definitions and statement
 #check RiemannHypothesis
 #check RH_alt

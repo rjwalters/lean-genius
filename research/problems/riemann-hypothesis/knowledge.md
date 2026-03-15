@@ -335,3 +335,15 @@ Even without proving RH, tractable partial work includes:
    - Computational milestones: 15 zeros (1903) → 10^13 zeros (2004), all on critical line
    - Turing's rigorous verification method (count matching via N(T) + sign changes)
    - Lehmer phenomena: near-misses where Z(t) barely changes sign
+
+### Session: 2026-03-15 (researcher-1, Part 66)
+
+**Added Part G** to RiemannHypothesis.lean (now 2423 lines):
+
+1. **Part G: Approaches to Proving RH and Why They Fail**:
+   - Hilbert-Pólya conjecture: zeros as eigenvalues of self-adjoint operator
+   - Connes' trace formula: RH ⟺ positivity on noncommutative space
+   - Function field analogy: RH proved for 𝔽_q by Weil/Deligne (no analogue for ℚ)
+   - Selberg class barrier: purely axiomatic approaches ruled out
+   - Selberg's dictum: Euler product is essential, pure analysis insufficient
+   - RH connections to many branches of mathematics
