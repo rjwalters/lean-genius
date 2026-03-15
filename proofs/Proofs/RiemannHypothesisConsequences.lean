@@ -150,17 +150,12 @@ axiom rh_implies_mertens_bound :
   RiemannHypothesis →
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 → |mertens n| ≤ C * Real.sqrt n
 
-/-- RH implies θ(x) = x + O(√x log²x).
-This is essentially equivalent to the explicit formula with RH. -/
+/- RH implies θ(x) = x + O(√x log²x) and prime gaps are O(√p log p).
+   These results are consequences of the explicit formula with RH.
+   (Formal statements require Chebyshev theta and prime gap definitions.) -/
 
-/-- RH implies prime gaps are O(√p log p).
-Cramér's conditional bound. -/
-
-/-!
-## Unconditional Results
-
-Some properties hold regardless of RH.
--/
+/- ## Unconditional Results
+   Some properties hold regardless of RH. -/
 
 /-- The Mertens function changes by μ(n+1) at each step -/
 theorem mertens_step (n : ℕ) :
@@ -211,17 +206,11 @@ A remarkable equivalence: RH is equivalent to M(x) = O(x^(1/2 + ε)) for all ε 
 This was proved by Littlewood.
 -/
 
-/-- RH is equivalent to: for all ε > 0, |M(x)| = O(x^(1/2 + ε))
-This is a classical result of Littlewood. -/
+/- RH ↔ M(x) = O(x^{1/2+ε}) (Littlewood). The Mertens conjecture
+   |M(x)| < √x was disproved by Odlyzko-te Riele (1985). -/
 
-/-- The Mertens conjecture (disproved): |M(x)| < √x for all x ≥ 1
-Disproved by Odlyzko-te Riele in 1985. We state its negation. -/
-
-/-!
-## Extended Mertens Computations
-
-More computed values of M(n) for reference.
--/
+/- ## Extended Mertens Computations
+   More computed values of M(n) for reference. -/
 
 theorem mertens_fifty : mertens 50 = -3 := by native_decide
 theorem mertens_hundred : mertens 100 = 1 := by native_decide
@@ -502,8 +491,8 @@ This was proved by Li (1997) and generalized by Bombieri-Lagarias (1999). -/
 axiom lis_criterion :
   RiemannHypothesis ↔ ∀ n : ℕ, n ≥ 1 → liConstant n ≥ 0
 
-/-- The Keiper-Li asymptotic: if RH holds, λₙ ~ n(A log n + B) for explicit A > 0, B.
-If RH fails, λₙ oscillates wildly. -/
+/- The Keiper-Li asymptotic: if RH holds, λₙ ~ n(A log n + B) for explicit A > 0, B.
+   If RH fails, λₙ oscillates wildly. -/
 
 end LisCriterion
 
@@ -665,11 +654,8 @@ axiom ingham_zero_density :
   ∃ C : ℝ, C > 0 ∧ ∀ σ T : ℝ, 1/2 ≤ σ → σ ≤ 1 → T ≥ 2 →
     (zeroDensity σ T : ℝ) ≤ C * T ^ (3 * (1 - σ) / (2 - σ)) * (Real.log T) ^ 5
 
-/-- **Huxley's Zero-Density Estimate (1972)**:
-    N(σ, T) ≪ T^{12(1-σ)/5} · log^C(T) for σ ≥ 1/2.
-
-    This improves on Ingham for σ close to 1/2. The exponent
-    12(1-σ)/5 is better than 3(1-σ)/(2-σ) when σ < 3/4. -/
+/- **Huxley's Zero-Density Estimate (1972)**: N(σ, T) ≪ T^{12(1-σ)/5} · log^C(T).
+   Improves on Ingham for σ close to 1/2. Axiom omitted — would duplicate Ingham's form. -/
 
 /-- The **Density Hypothesis**: N(σ, T) ≪ T^{2(1-σ)+ε} for all ε > 0.
 
