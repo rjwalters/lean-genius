@@ -509,8 +509,15 @@ theorem binom_log_concave (n k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n) :
 
     This is a well-known true result: it follows from the fact that ∏(1 + xᵢz)
     has all real roots when xᵢ ≥ 0, and polynomials with real roots have
-    ultra-log-concave normalized coefficients. -/
-axiom newton_cleared_denom_inductive_step (m k : ℕ) (hm_eq : k + 1 ≤ m)
+    ultra-log-concave normalized coefficients.
+
+    **Proof strategy**: After Pascal's identity C(m+1,j) = C(m,j) + C(m,j-1),
+    expand LHS - RHS as a quadratic in t: A + B·t + C·t² where:
+    - A ≥ 0 from IH at k
+    - C ≥ 0 from IH at k-1
+    - 4·A·C ≥ B² from combining IH instances with cross-product inequality
+    Then A + B·t + C·t² ≥ 0 for all t ≥ 0 follows from discriminant analysis. -/
+theorem newton_cleared_denom_inductive_step (m k : ℕ) (hm_eq : k + 1 ≤ m)
     (ek ekm1 ekp1 ekm2 t : ℝ)
     (ht_nn : 0 ≤ t)
     (hek_nn : 0 ≤ ek) (hekm1_nn : 0 ≤ ekm1)
@@ -523,7 +530,72 @@ axiom newton_cleared_denom_inductive_step (m k : ℕ) (hm_eq : k + 1 ≤ m)
     (h_ih_km1 : ekm1 ^ 2 * ((Nat.choose m (k - 2) : ℝ) * (Nat.choose m k : ℝ)) ≥
         ekm2 * ek * (Nat.choose m (k - 1) : ℝ) ^ 2) :
     (ek + t * ekm1) ^ 2 * ((Nat.choose (m + 1) (k - 1) : ℝ) * (Nat.choose (m + 1) (k + 1) : ℝ)) ≥
-    (ekm1 + t * ekm2) * (ekp1 + t * ek) * (Nat.choose (m + 1) k : ℝ) ^ 2
+    (ekm1 + t * ekm2) * (ekp1 + t * ek) * (Nat.choose (m + 1) k : ℝ) ^ 2 := by
+  -- Abbreviate binomial coefficients for readability
+  set a := (Nat.choose m (k - 2) : ℝ) with ha_def
+  set b := (Nat.choose m (k - 1) : ℝ) with hb_def
+  set c := (Nat.choose m k : ℝ) with hc_def
+  set d := (Nat.choose m (k + 1) : ℝ) with hd_def
+  -- Pascal's identity: C(m+1, j) = C(m, j) + C(m, j-1)
+  have pascal_km1 : (Nat.choose (m + 1) (k - 1) : ℝ) = b + a := by
+    have h := Nat.choose_succ_succ m (k - 2)
+    rw [show k - 2 + 1 = k - 1 from by omega] at h
+    exact_mod_cast h
+  have pascal_k : (Nat.choose (m + 1) k : ℝ) = c + b := by
+    have h := Nat.choose_succ_succ m (k - 1)
+    rw [show k - 1 + 1 = k from by omega] at h
+    exact_mod_cast h
+  have pascal_kp1 : (Nat.choose (m + 1) (k + 1) : ℝ) = d + c := by
+    have h := Nat.choose_succ_succ m k
+    rw [show k + 1 = k + 1 from rfl] at h
+    exact_mod_cast h
+  rw [pascal_km1, pascal_k, pascal_kp1]
+  -- Non-negativity of binomial coefficients
+  have ha_nn : 0 ≤ a := Nat.cast_nonneg _
+  have hb_nn : 0 ≤ b := Nat.cast_nonneg _
+  have hc_nn : 0 ≤ c := Nat.cast_nonneg _
+  have hd_nn : 0 ≤ d := Nat.cast_nonneg _
+  -- Goal after Pascal substitution:
+  -- (ek + t*ekm1)² * (b+a)*(d+c) ≥ (ekm1 + t*ekm2)(ekp1 + t*ek) * (c+b)²
+  --
+  -- Strategy: The difference LHS - RHS is a quadratic form in t.
+  -- Coefficient of t⁰:
+  --   ek²*(b+a)*(d+c) - ekm1*ekp1*(c+b)²
+  --   = ek²*b*d + ek²*b*c + ek²*a*d + ek²*a*c - ekm1*ekp1*c² - 2*ekm1*ekp1*b*c - ekm1*ekp1*b²
+  --   ≥ 0 from IH at k (ek²*b*d ≥ ekm1*ekp1*c²) + Newton (ek² ≥ ekm1*ekp1) * remaining terms
+  --
+  -- Coefficient of t²:
+  --   ekm1²*(b+a)*(d+c) - ekm2*ek*(c+b)²
+  --   ≥ 0 from IH at k-1 (ekm1²*a*c ≥ ekm2*ek*b²) + Newton at k-1 + remaining
+  --
+  -- Coefficient of t¹:
+  --   2*ek*ekm1*(b+a)*(d+c) - (ekm2*ekp1 + ek*ekm1)*(c+b)²
+  --   The cross-product h_cross ensures this, combined with Cauchy-Schwarz on the t⁰ and t² terms.
+  --
+  -- We prove LHS - RHS ≥ 0 by providing nlinarith with carefully chosen SOS certificates.
+  nlinarith [sq_nonneg (ek * d - ekp1 * c),      -- ek²*d² - 2*ek*ekp1*c*d + ekp1²*c² ≥ 0
+             sq_nonneg (ek * b - ekm1 * a),        -- ek²*b² - 2*ek*ekm1*a*b + ekm1²*a² ≥ 0
+             sq_nonneg (ekm1 * d - ekp1 * b),      -- cross terms
+             sq_nonneg (ekm1 * c - ekm2 * b),      -- for t² coefficient
+             sq_nonneg (ek * c - ekm1 * b),         -- mixed coefficient
+             sq_nonneg (t * (ek * ekm1 - ekm2 * ekp1)),  -- cross product in t
+             sq_nonneg (t * ekm1 * c - t * ekm2 * b),    -- t² terms
+             sq_nonneg (ek * c * t - ekm1 * b * t),       -- t¹ terms
+             mul_nonneg ht_nn (sub_nonneg.mpr h_cross),   -- t * (ek*ekm1 - ekm2*ekp1) ≥ 0
+             mul_nonneg ht_nn hek_nn,
+             mul_nonneg ht_nn hekm1_nn,
+             mul_nonneg hek_nn hekm1_nn,
+             mul_nonneg hek_nn hekp1_nn,
+             mul_nonneg hekm1_nn hekm2_nn,
+             mul_nonneg ha_nn hb_nn,
+             mul_nonneg hb_nn hc_nn,
+             mul_nonneg hc_nn hd_nn,
+             mul_nonneg ha_nn hd_nn,
+             mul_nonneg (mul_nonneg ht_nn ht_nn) (sq_nonneg ekm1),
+             mul_nonneg (mul_nonneg ht_nn ht_nn) (sq_nonneg ek),
+             sq_nonneg (ek * (d + c) - ekp1 * (c + b)),
+             sq_nonneg (ekm1 * (d + c) - ek * (c + b)),
+             mul_self_nonneg (t * ekm1)]
 
 /-- Cleared-denominator form of Newton's log-concavity.
     Equivalent to the normalized form but avoids division. -/

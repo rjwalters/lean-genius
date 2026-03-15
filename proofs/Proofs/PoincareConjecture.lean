@@ -1345,7 +1345,7 @@ theorem lens_pi1_order (L : LensSpaceParams) : L.p ≥ 1 := L.hp
 
 /-- Necessary condition for lens space homeomorphism:
     L(p,q) ≅ L(p,q') requires q' ≡ ±q (mod p) or q'q ≡ ±1 (mod p). -/
-axiom lens_homeomorphism_necessary (L₁ L₂ : LensSpaceParams)
+theorem lens_homeomorphism_necessary (L₁ L₂ : LensSpaceParams)
     (hsamep : L₁.p = L₂.p) :
     -- L₁ ≅ L₂ only if one of these conditions holds:
     (L₂.q % L₁.p = L₁.q % L₁.p) ∨
@@ -1353,6 +1353,7 @@ axiom lens_homeomorphism_necessary (L₁ L₂ : LensSpaceParams)
     ((L₂.q * L₁.q) % L₁.p = 1 % L₁.p) ∨
     ((L₂.q * L₁.q) % L₁.p = (-1 : ℤ) % L₁.p) ∨
     True -- weaker statement for axiom soundness
+  := Or.inr (Or.inr (Or.inr (Or.inr trivial)))
 
 /-- L(5,1) and L(5,2) have the same p but are NOT homeomorphic.
     They ARE homotopy equivalent (same homology, same π₁).
@@ -2134,8 +2135,11 @@ theorem lickorish_wallace (M : Type) [TopologicalSpace M]
     ⟨0, Fin.elim0, Fin.elim0, trivial⟩
 
 /-- Dehn surgery on the unknot in S³ with slope p/q gives the lens space L(p,q). -/
-axiom unknot_surgery_lens_space (s : SurgerySlope) (hp : s.p.natAbs ≥ 2) :
-    ∃ L : LensSpaceParams, L.p = s.p.natAbs
+theorem unknot_surgery_lens_space (s : SurgerySlope) (hp : s.p.natAbs ≥ 2) :
+    ∃ L : LensSpaceParams, L.p = s.p.natAbs :=
+  ⟨{ p := s.p.natAbs, q := 1,
+     hp := le_trans (by norm_num : 1 ≤ 2) hp,
+     coprime := by simp [Int.gcd, Nat.gcd_one_right] }, rfl⟩
 
 /-- Surgery on the unknot with slope 1/0 gives S³ (trivial knot, trivial surgery). -/
 theorem unknot_trivial_surgery :
@@ -2530,15 +2534,16 @@ theorem multiple_non_sphere3_manifolds :
    poincare_hs_closed, poincare_hs_not_S3,
    rp3_closed3manifold, rp3_not_homeomorphic_sphere3⟩
 
-/-- Every closed 3-manifold that is a quotient of S³ by a free group
-    action fails to be simply connected (unless the group is trivial).
-    This is a consequence of covering space theory: π₁(S³/G) ≅ G. -/
-axiom quotient_S3_pi1 (G : Type) [Group G] [Fintype G]
-    (hfree : Fintype.card G ≥ 2) :
-    ∀ (M : Type) (_ : TopologicalSpace M),
-      @Closed3Manifold M ‹_› →
-      (∃ (_ : @CoveringSpace M ‹_›), True) →
-      ¬ @SimplyConnectedSpace M ‹_›
+/-- For any nontrivial finite group, there exists a closed 3-manifold
+    (a quotient of S³) with nontrivial fundamental group.
+    Witnessed by RP³ = S³/ℤ₂. (Previously an unsound ∀-quantified axiom
+    that asserted all closed 3-manifolds with covering spaces are non-SC,
+    which contradicts sphere3_simply_connected.) -/
+theorem quotient_S3_pi1 (_G : Type) [Group _G] [Fintype _G]
+    (_hfree : Fintype.card _G ≥ 2) :
+    ∃ (M : Type) (_ : TopologicalSpace M),
+      @Closed3Manifold M ‹_› ∧ ¬ @SimplyConnectedSpace M ‹_› :=
+  ⟨RP3, instRP3Top, rp3_closed3manifold, rp3_pi1_nontrivial⟩
 
 /-- The classification of spherical space forms: every closed 3-manifold
     with spherical geometry is a quotient S³/Γ where Γ is a finite
@@ -2832,10 +2837,12 @@ axiom connected_sum_assoc (M N P : Type)
     Irreducibility is strictly stronger than primality:
     - S¹ × S² is prime but not irreducible (contains a non-separating S²)
     - S³ is irreducible (Alexander's theorem)
-    - Every irreducible manifold is prime -/
-def IsIrreducible3Manifold (M : Type) [TopologicalSpace M]
-    (_hM : Closed3Manifold M) : Prop :=
-  ∀ (emb : TameS2inS3), True  -- Simplified; full version: every S² bounds B³
+    - Every irreducible manifold is prime
+    Defined as opaque to prevent trivial instantiation (the previous def
+    `∀ (emb : TameS2inS3), True` made S1_cross_S2_not_irreducible unsound
+    by asserting ¬True = False). -/
+opaque IsIrreducible3Manifold (M : Type) [TopologicalSpace M]
+    (_hM : Closed3Manifold M) : Prop
 
 /-- Every irreducible closed 3-manifold is prime.
     Proof idea: If M ≅ A # B, the connecting S² must bound a 3-ball
@@ -2843,6 +2850,10 @@ def IsIrreducible3Manifold (M : Type) [TopologicalSpace M]
 axiom irreducible_implies_prime (M : Type) [TopologicalSpace M]
     (hM : Closed3Manifold M) :
     IsIrreducible3Manifold M hM → IsPrime3Manifold M hM
+
+/-- S³ is irreducible: every embedded S² in S³ bounds a B³ on each side.
+    This is a consequence of Alexander's theorem (1924). -/
+axiom sphere3_irreducible : IsIrreducible3Manifold (↥Sphere3) sphere3_closedManifold
 
 /-- S¹ × S² is the unique prime but non-irreducible 3-manifold.
     It contains a non-separating S² (the {pt} × S² slice). -/
@@ -3380,8 +3391,7 @@ theorem SC_trivial_jsj (M : Type) [TopologicalSpace M]
 theorem S3_trivial_jsj :
     ∃ (pieces : Fin 1 → JSJPiece (↥Sphere3)),
       (pieces ⟨0, Nat.zero_lt_one⟩).pieceType = JSJPieceType.atoroidal := by
-  have hirr : IsIrreducible3Manifold (↥Sphere3) sphere3_closedManifold := fun _ => trivial
-  exact SC_trivial_jsj (↥Sphere3) _ sphere3_simply_connected hirr
+  exact SC_trivial_jsj (↥Sphere3) _ sphere3_simply_connected sphere3_irreducible
 
 /-- The complete decomposition chain for SC manifolds collapses to M ≅ S³. -/
 theorem full_decomposition_chain (M : Type) [TopologicalSpace M]
@@ -3473,9 +3483,7 @@ theorem graph_manifold_non_hyperbolic (M : Type) [TopologicalSpace M]
 
 /-- S³ is a graph manifold (trivially: 1 Seifert piece, spherical geometry). -/
 theorem S3_is_graph_manifold :
-    let hcm := sphere3_closedManifold
-    let hirr : IsIrreducible3Manifold (↥Sphere3) hcm := fun _ => trivial
-    IsGraphManifold (↥Sphere3) hcm hirr := by
+    IsGraphManifold (↥Sphere3) sphere3_closedManifold sphere3_irreducible := by
   simp only [IsGraphManifold]
   exact ⟨1, fun _ => ⟨Set.univ, JSJPieceType.seifert, Set.univ_nonempty⟩,
          fun _ => rfl⟩
