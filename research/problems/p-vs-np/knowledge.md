@@ -436,3 +436,48 @@ Consequences:
 **Build**: Docker build passes, 0 errors, 0 sorries, 1207 lines.
 
 **Outcome**: COMPLETED - Critical soundness fix for the polynomial hierarchy.
+
+## Session: 2026-03-15 - Impagliazzo's Five Worlds
+
+### What Was Added
+
+**Impagliazzo's Five Worlds (1995)**: Formalized the five possible computational universes:
+
+| World | Definition | Key Property |
+|-------|-----------|--------------|
+| Algorithmica | P = NP | Everything efficiently solvable |
+| Heuristica | P ≠ NP, no avg-case hardness, no OWFs | Hard problems exist but are rare |
+| Pessiland | Avg-case hard NP, no OWFs | Hard problems but no crypto |
+| Minicrypt | OWFs exist, no trapdoor OWFs | Symmetric crypto only |
+| Cryptomania | Trapdoor OWFs exist | Full public-key crypto |
+
+**Average-Case Complexity**: AvgCaseHardNP, OWF_exist, TrapdoorOWF_exist as proper Lean definitions.
+
+### Key Theorems Proved
+
+1. **five_worlds_pairwise_exclusive**: All 10 pairs of worlds are mutually exclusive
+2. **non_algorithmica_implies_P_ne_NP**: Worlds 2-5 all imply P ≠ NP
+3. **owf_implies_P_ne_NP**: OWFs → average-case hardness → P ≠ NP
+4. **algorithmica_PH_collapse**: Algorithmica → PH = P
+5. **algorithmica_BPP_eq_P**: Algorithmica → BPP = P
+6. **ETH_not_algorithmica**: ETH → ¬Algorithmica
+7. **SETH_world_consequences**: SETH → P≠NP ∧ BPP=P ∧ NP⊄P/poly ∧ ¬Algorithmica
+8. **grand_landscape**: Unified summary connecting Five Worlds + barriers + derandomization
+
+### Axioms Added (3 new)
+
+- `algorithmica_no_owf`: P = NP → ¬OWF_exist
+- `trapdoor_implies_owf`: TrapdoorOWF_exist → OWF_exist
+- `owf_implies_avg_hard`: OWF_exist → AvgCaseHardNP
+
+### Statistics
+
+- Lines: 3569 → 4021 (+452)
+- Axioms: 67 → 70 (+3)
+- Theorems: ~170 → 199 (+29)
+- Definitions: ~72 → 76 (+4)
+- Sorries: 0
+
+**Build**: Docker build passes, 0 errors, 0 sorries, 4021 lines.
+
+**Outcome**: COMPLETED - Comprehensive Five Worlds formalization with full structural proofs.
