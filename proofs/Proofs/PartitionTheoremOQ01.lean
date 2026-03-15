@@ -2192,7 +2192,123 @@ example : (schurGapFull 15).card = (schurMod 15).card := by native_decide
 end ExtendedVerification
 
 -- ============================================================================
--- Part XXXVI: Updated Summary
+-- Part XXXVII: Mod-Side Specialization (Schur)
+-- ============================================================================
+
+/-
+Connecting the combinatorial infrastructure to the Schur mod partitions.
+We prove that |schurMod n| = |subsetsWithSum schurModSet n|, establishing
+that Schur's mod-side count equals the GF coefficient.
+
+This is step 6 of the axiom elimination roadmap. The key insight:
+SchurMod partitions have DISTINCT parts (Nodup), so they correspond
+exactly to subsets of the modular set summing to n.
+
+Note: The Rogers-Ramanujan mod-side allows repeated parts, so this
+approach doesn't directly apply to RR1/RR2 (they need ∏ 1/(1-X^k)).
+-/
+
+section ModSideSpecialization
+
+open Finset Nat PartitionDecidable
+
+/-- The finite set of naturals ≤ n with k ≡ 1 or 2 (mod 3). -/
+def schurModSet (n : ℕ) : Finset ℕ :=
+  (Finset.range (n + 1)).filter (fun k => k % 3 = 1 ∨ k % 3 = 2)
+
+/-- Elements of schurModSet are positive. -/
+theorem schurModSet_pos (n : ℕ) : ∀ s ∈ schurModSet n, 0 < s := by
+  intro s hs
+  simp only [schurModSet, Finset.mem_filter, Finset.mem_range] at hs
+  rcases hs.2 with h | h <;> omega
+
+/-- schurModSet equals the filter set used in schurModGF. -/
+theorem schurModSet_eq_gf_filter (n : ℕ) :
+    schurModSet n = (Finset.range (n + 1)).filter (fun k => k > 0 ∧ k % 3 ≠ 0) := by
+  ext k
+  simp only [schurModSet, Finset.mem_filter, Finset.mem_range]
+  constructor
+  · rintro ⟨hk, hmod⟩
+    exact ⟨hk, by rcases hmod with h | h <;> omega, by rcases hmod with h | h <;> omega⟩
+  · rintro ⟨hk, _, hmod⟩; exact ⟨hk, by omega⟩
+
+/-- A part of a partition of n is at most n. -/
+private theorem part_le_of_mem {n : ℕ} (p : Nat.Partition n)
+    {a : ℕ} (ha : a ∈ p.parts) : a ≤ n := by
+  calc a ≤ a + (p.parts.erase a).sum := Nat.le_add_right _ _
+    _ = p.parts.sum := by rw [← Multiset.sum_cons, Multiset.cons_erase ha]
+    _ = n := p.parts_sum
+
+/-- **Schur mod-side cardinality**: |schurMod n| = |subsetsWithSum (schurModSet n) n|.
+    Established via explicit bijection: p ↦ p.parts.toFinset. -/
+theorem schurMod_card_eq_subsetsWithSum (n : ℕ) :
+    (schurMod n).card = (subsetsWithSum (schurModSet n) n).card := by
+  -- The map p ↦ p.parts.toFinset is a bijection schurMod n ↔ subsetsWithSum
+  let f : Nat.Partition n → Finset ℕ := fun p => p.parts.toFinset
+  -- Step 1: f is injective on schurMod n (nodup partitions have injective toFinset)
+  have hinj : Set.InjOn f ↑(schurMod n) := by
+    intro p hp q hq heq
+    simp only [f] at heq
+    have hpn : p.parts.Nodup := ((Finset.mem_filter.mp (Finset.mem_coe.mp hp)).2).1
+    have hqn : q.parts.Nodup := ((Finset.mem_filter.mp (Finset.mem_coe.mp hq)).2).1
+    have : p.parts = q.parts := by
+      calc p.parts = p.parts.toFinset.val := (Multiset.dedup_eq_self.mpr hpn).symm
+        _ = q.parts.toFinset.val := by rw [heq]
+        _ = q.parts := Multiset.dedup_eq_self.mpr hqn
+    exact Nat.Partition.ext this
+  -- Step 2: image of f equals subsetsWithSum
+  have himg : (schurMod n).image f = subsetsWithSum (schurModSet n) n := by
+    ext T
+    simp only [Finset.mem_image, f]
+    constructor
+    · -- Forward: p ∈ schurMod n, T = p.parts.toFinset → T ∈ subsetsWithSum
+      rintro ⟨p, hp, rfl⟩
+      simp only [schurMod, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+      obtain ⟨hnodup, hmod⟩ := hp
+      simp only [subsetsWithSum, Finset.mem_filter, Finset.mem_powerset]
+      refine ⟨fun a ha => ?_, ?_⟩
+      · rw [Multiset.mem_toFinset] at ha
+        simp only [schurModSet, Finset.mem_filter, Finset.mem_range]
+        exact ⟨by linarith [part_le_of_mem p ha], hmod a ha⟩
+      · have hval : p.parts.toFinset.val = p.parts :=
+          Multiset.dedup_eq_self.mpr hnodup
+        simp only [Finset.sum, Multiset.map_id, hval, p.parts_sum]
+    · -- Backward: T ∈ subsetsWithSum → ∃ p ∈ schurMod n, p.parts.toFinset = T
+      intro hT
+      simp only [subsetsWithSum, Finset.mem_filter, Finset.mem_powerset] at hT
+      obtain ⟨hTsub, hTsum⟩ := hT
+      have hTpos : ∀ x ∈ T, 0 < x := fun x hx => schurModSet_pos n x (hTsub hx)
+      refine ⟨partitionOfSubset hTpos hTsum, ?_, ?_⟩
+      · -- partitionOfSubset lands in schurMod
+        simp only [schurMod, Finset.mem_filter, Finset.mem_univ, true_and]
+        refine ⟨T.nodup, fun a ha => ?_⟩
+        have hmem := hTsub (show a ∈ T from ha)
+        simp only [schurModSet, Finset.mem_filter] at hmem
+        exact hmem.2
+      · -- Roundtrip: parts.toFinset = T
+        show (partitionOfSubset hTpos hTsum).parts.toFinset = T
+        have : (partitionOfSubset hTpos hTsum).parts = T.val := rfl
+        rw [this, Finset.val_toFinset]
+  -- Combine: card equality
+  calc (schurMod n).card
+      = ((schurMod n).image f).card := (Finset.card_image_of_injOn hinj).symm
+    _ = (subsetsWithSum (schurModSet n) n).card := by rw [himg]
+
+/-- **Schur mod GF theorem**: |schurMod n| equals the n-th coefficient
+    of the Schur mod generating function. -/
+theorem schurMod_card_eq_gf_coeff (n : ℕ) :
+    ↑(schurMod n).card = PowerSeries.coeff (R := ℤ) n (schurModGF n) := by
+  have hgf : schurModGF n = distinctPartGF (schurModSet n) := by
+    unfold schurModGF
+    congr 1
+    exact (schurModSet_eq_gf_filter n).symm
+  rw [hgf, distinctPartGF_coeff _ (schurModSet_pos n)]
+  exact_mod_cast schurMod_card_eq_subsetsWithSum n
+
+end ModSideSpecialization
+
+-- ============================================================================
+-- Part XXXVIII: Updated Summary
 -- ============================================================================
 
 /-
@@ -2211,20 +2327,24 @@ end ExtendedVerification
   rogers_ramanujan_first, rogers_ramanujan_second,
   schur_partition_identity_corrected
 
-### Proved Theorems (50+):
+### Sorries: 0
+
+### Proved Theorems (65+):
   Gap characterization (5), decidable bridge (1), structural (10),
   corrected Schur hierarchy (4), hierarchy (6), strict containment (4),
   part properties (3), bridge theorems (6), derived decidable identities (3),
   SchurMod/SchurGapFull characterization (3)
-  NEW - GF infrastructure (6): distinctPartGF_empty/singleton/insert/union,
+  GF infrastructure (6): distinctPartGF_empty/singleton/insert/union,
     schurModGF_succ, distinctPartGF_coeff_empty
-  NEW - Subset sum recursion (5): subsetsWithSum_empty_zero/pos,
+  Subset sum recursion (7): subsetsWithSum_empty_zero/pos,
     subsetsWithSum_subset_insert, subsetsWithSum_insert_not_mem,
-    subsetsWithSum_insert_mem_empty
-
-### Sorries (0):
-  All proof sorries eliminated!
-
+    subsetsWithSum_insert_mem_image, subsetsWithSum_insert_mem_empty,
+    subsetsWithSum_insert_card
+  GF coefficient (2): distinctPartGF_coeff_empty, distinctPartGF_coeff
+  Partition-subset bridge (3): partitionOfSubset, partitionOfSubset_nodup,
+    schurMod_to_subset
+  Mod-side specialization (5): schurModSet_pos, schurModSet_eq_gf_filter,
+    part_le_of_mem, schurMod_card_eq_subsetsWithSum, schurMod_card_eq_gf_coeff
 ### Named Count Theorems (18):
   rr1_count_0..1, rr1_count_4, rr1_count_6, rr1_count_9..15,
   schur_count_0..2
@@ -2244,9 +2364,14 @@ end ExtendedVerification
   3. ✅ Prove subset sum recursion (insert splitting)
   4. ✅ Prove GF coefficient = |subsetsWithSum S n| (distinctPartGF_coeff)
   5. ✅ Build partition-subset correspondence (partitionOfSubset, schurMod_to_subset)
-  6. ✅ Specialize for Schur mod-side: |schurMod n| = coeff n (schurModGF n)
-  7. 🔲 Build gap-side generating function characterization (hard step)
+  6. ✅ Specialize for mod-side (schurMod_card_eq_subsetsWithSum, schurMod_card_eq_gf_coeff)  7. 🔲 Build gap-side generating function characterization (hard step)
      Note: For RR1/RR2, mod side allows repetition → needs ∏ 1/(1-X^k) (not yet built)
      For Schur, both sides distinct → distinctPartGF approach works
   8. 🔲 Compose to prove identities
+
+### Notes on remaining axiom elimination:
+  - Schur mod side: DONE — |schurMod n| = coeff n (schurModGF n)
+  - RR1/RR2 mod sides: Need ∏ 1/(1-X^k) framework (non-distinct parts)
+  - Gap sides (all): Need gap-condition ↔ GF identity (the deep combinatorial step)
+  - Final composition requires matching mod-side and gap-side GFs
 -/
