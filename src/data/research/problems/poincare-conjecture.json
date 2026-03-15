@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: PoincareConjecture.lean at 4194 lines (+181). Parts XLIX-L: Poincaré homology sphere (Σ(2,3,5), binary icosahedral, Brieskorn, Rokhlin invariant) and higher-dimensional generalizations (exotic spheres, h-cobordism, Kervaire-Milnor counts). 58 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: PoincareConjecture.lean at 4309 lines (+115). Parts LI-LII: Dehn surgery (Lickorish-Wallace, Kirby calculus, Gordon-Luecke, Thurston hyperbolic surgery) and knots (knot groups, Property P, knot complement problem). 63 axioms, 0 sorries.",
     "builtItems": [
       "Proved perelman_entropy_monotone via concrete PerelmanWEntropy",
       "Proved perelman_surgery via reflexive witness",
@@ -57,7 +57,9 @@
       "Part XLVII: Thurston eight geometries - ThurstonGeometry enum, GeometryInfo, geometryData function, isotropic_geometries proved, poincare_from_geometrization",
       "Part XLVIII: Post-Perelman - ProofVerification, OpenProblem3Manifold, Agol virtual Haken, smooth 4D Poincaré open, timeline",
       "Part XLIX: Poincaré homology sphere - PHSConstruction enum, PHSProperties, RokhlinInvariant, BrieskornSphere, binary_icosahedral_order proved",
-      "Part L: Higher dimensions - GeneralizedPoincare, poincareResolution, ExoticSpheres, exoticSphereCounts with proved values (θ₃=1, θ₇=28, θ₁₁=992, θ₄=open)"
+      "Part L: Higher dimensions - GeneralizedPoincare, poincareResolution, ExoticSpheres, exoticSphereCounts with proved values (θ₃=1, θ₇=28, θ₁₁=992, θ₄=open)",
+      "Part LI: Dehn surgery - DehnSurgeryData, Lickorish-Wallace, KirbyCalculus, UnknotSurgery, Gordon-Luecke, Thurston hyperbolic surgery",
+      "Part LII: Knots and Poincaré - Knot, KnotGroup, Property P (Kronheimer-Mrowka 2004), knot_surgery_poincare proved"
     ],
     "insights": [
       "Massive axiom reduction: 39 axioms converted to theorems/defs (115→76)",
