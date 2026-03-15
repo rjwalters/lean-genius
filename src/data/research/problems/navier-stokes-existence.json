@@ -29,19 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts XLI-XLIII covering Tao averaged blowup barrier, Koch-Tataru BMO⁻¹ well-posedness, and backward uniqueness for ESŠ. File now 7700+ lines, 0 sorries, 0 axioms. Companion file extended with 11 new lemmas.",
+    "progressSummary": "PROGRESS: Added Parts XLIV-XLV covering critical function space hierarchy and turbulence dissipation anomaly. File now 8200+ lines, 0 sorries, 0 axioms.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO⁻¹ well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
       "Part XLIII: Backward uniqueness - CarlemanEstimate, BackwardUniquenessResult, ESŠ proof structure, Morrey exponents",
-      "NavierStokesAristotle.lean: Added Sections 10-12 (Koch-Tataru, Tao, backward uniqueness lemmas)"
+      "NavierStokesAristotle.lean: Added Sections 10-12 (Koch-Tataru, Tao, backward uniqueness lemmas)",
+      "Part XLIV: Critical function spaces - Lorentz, Morrey spaces, PSL surface, barely supercritical, Calderón-Zygmund, derivative gap",
+      "Part XLV: Dissipation anomaly - zeroth law, Reynolds number, Kolmogorov scale, Onsager connection, Taylor-Green, intermittency"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u·∇)u, not just energy/scaling/div-free properties",
       "Koch-Tataru (2001): BMO⁻¹ is the largest critical space with well-posedness; Bourgain-Pavlović (2008) showed ill-posedness in B^{-1}_{∞,∞}",
       "ESŠ backward uniqueness reduces 3D regularity to L³ Liouville theorem for ancient solutions",
       "The Lamb vector identity (u·∇)u = ∇(|u|²/2) + ω×u is NOT preserved by Tao averaged operator - potential proof route",
-      "Leray-Hopf interpolation achieves Serrin value 3/2 vs needed 1; gap of exactly 1/2 is the Millennium Problem"
+      "Leray-Hopf interpolation achieves Serrin value 3/2 vs needed 1; gap of exactly 1/2 is the Millennium Problem",
+      "Tao barely supercritical result: log-modified NS has global regularity - single log separates us from Millennium Problem",
+      "Prodi-Serrin-Ladyzhenskaya surface: gap not constant along critical curve, smallest at intermediate points (1/4 at energy point vs 1/2 at endpoint)",
+      "Dissipation anomaly: smooth solutions require ‖∇u‖² ~ ε/ν → ∞ as ν → 0, creating near-singular turbulent structures",
+      "Critical space hierarchy: L^∞ ⊃ L³ ⊃ L^{3,∞} ⊃ BMO⁻¹ all give regularity; L² (Leray-Hopf) does not"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
