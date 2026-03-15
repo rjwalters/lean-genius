@@ -80,6 +80,7 @@ Start Options:
   --seeker N             Number of Seeker agents (default: $DEFAULT_SEEKER, max: $MAX_SEEKER)
   --deployer N           Number of Deployers (default: $DEFAULT_DEPLOYER, max: $MAX_DEPLOYER)
   --tester N             Number of Testers (default: $DEFAULT_TESTER, max: $MAX_TESTER)
+  --herald N             Number of Heralds (default: $DEFAULT_HERALD, max: $MAX_HERALD)
 
 Stop Options:
   <type>                 Stop only agents of this type (enricher, aristotle, etc.)
@@ -93,6 +94,7 @@ Daemon Options:
   --seeker N             Initial Seeker agent count (default: $DEFAULT_SEEKER, max: $MAX_SEEKER)
   --deployer N           Initial Deployer count (default: $DEFAULT_DEPLOYER, max: $MAX_DEPLOYER)
   --tester N             Initial Tester count (default: $DEFAULT_TESTER, max: $MAX_TESTER)
+  --herald N             Initial Herald count (default: $DEFAULT_HERALD, max: $MAX_HERALD)
 
 Agent Types:
   enricher    Enriches proof gallery entries with deeper annotations and commentary
@@ -101,6 +103,7 @@ Agent Types:
   seeker      Selects research problems when candidate pool runs low
   deployer    Merges PRs and deploys website
   tester      Tests random proof pages on the live site
+  herald      Posts noteworthy results to Mathstodon
 
 Examples:
   $0 start                              # Start with defaults
@@ -139,6 +142,7 @@ init_state() {
     local seeker="${4:-$DEFAULT_SEEKER}"
     local deployer="${5:-$DEFAULT_DEPLOYER}"
     local tester="${6:-$DEFAULT_TESTER}"
+    local herald="${7:-$DEFAULT_HERALD}"
 
     mkdir -p "$(dirname "$STATE_FILE")"
 
@@ -160,6 +164,7 @@ init_state() {
         --argjson seeker "$seeker" \
         --argjson deployer "$deployer" \
         --argjson tester "$tester" \
+        --argjson herald "$herald" \
         --argjson prev_stats "$prev_stats" \
         '{
             started_at: $started_at,
@@ -170,7 +175,8 @@ init_state() {
                 researcher: $researcher,
                 seeker: $seeker,
                 deployer: $deployer,
-                tester: $tester
+                tester: $tester,
+                herald: $herald
             },
             agents: {},
             session_stats: (
@@ -261,6 +267,11 @@ get_sessions_for_type() {
                 sessions+=("tester-agent")
             fi
             ;;
+        herald)
+            if tmux has-session -t "herald-agent" 2>/dev/null; then
+                sessions+=("herald-agent")
+            fi
+            ;;
     esac
 
     if [[ ${#sessions[@]} -gt 0 ]]; then
@@ -296,6 +307,9 @@ signal_stop_session() {
             ;;
         tester)
             touch "$SIGNALS_DIR/stop-tester"
+            ;;
+        herald)
+            touch "$SIGNALS_DIR/stop-herald"
             ;;
     esac
 }
@@ -369,6 +383,7 @@ cmd_start() {
     local seeker=$DEFAULT_SEEKER
     local deployer=$DEFAULT_DEPLOYER
     local tester=$DEFAULT_TESTER
+    local herald=$DEFAULT_HERALD
 
     # Parse options
     while [[ $# -gt 0 ]]; do
@@ -395,6 +410,10 @@ cmd_start() {
                 ;;
             --tester)
                 tester="$2"
+                shift 2
+                ;;
+            --herald)
+                herald="$2"
                 shift 2
                 ;;
             *)
@@ -430,6 +449,10 @@ cmd_start() {
         echo -e "${YELLOW}Warning: Tester count $tester exceeds max $MAX_TESTER, using $MAX_TESTER${NC}"
         tester=$MAX_TESTER
     fi
+    if [[ $herald -gt $MAX_HERALD ]]; then
+        echo -e "${YELLOW}Warning: Herald count $herald exceeds max $MAX_HERALD, using $MAX_HERALD${NC}"
+        herald=$MAX_HERALD
+    fi
 
     echo -e "${BOLD}Starting Lean Genius Mathematical Orchestration${NC}"
     echo ""
@@ -440,13 +463,14 @@ cmd_start() {
     echo "  Seekers: $seeker"
     echo "  Deployers: $deployer"
     echo "  Testers: $tester"
+    echo "  Heralds: $herald"
     echo ""
 
     # Migrate state file from old location if needed
     migrate_state_file
 
     # Initialize state
-    init_state "$enricher" "$aristotle" "$researcher" "$seeker" "$deployer" "$tester"
+    init_state "$enricher" "$aristotle" "$researcher" "$seeker" "$deployer" "$tester" "$herald"
 
     # Start agents
     local started=0
@@ -517,6 +541,17 @@ cmd_start() {
         fi
     fi
 
+    # Herald
+    if [[ $herald -gt 0 ]]; then
+        echo -e "${BLUE}Starting Herald agent...${NC}"
+        if check_script "./scripts/herald/launch-agent.sh"; then
+            ./scripts/herald/launch-agent.sh &
+            sleep 1
+            echo -e "${GREEN}✓ Herald agent launched${NC}"
+            started=$((started + 1))
+        fi
+    fi
+
     echo ""
     if [[ $started -gt 0 ]]; then
         echo -e "${GREEN}${BOLD}✓ Lean Genius team started!${NC}"
@@ -560,6 +595,10 @@ get_all_agent_sessions() {
     # Tester
     if tmux has-session -t "tester-agent" 2>/dev/null; then
         sessions+=("tester-agent")
+    fi
+    # Herald
+    if tmux has-session -t "herald-agent" 2>/dev/null; then
+        sessions+=("herald-agent")
     fi
     if [[ ${#sessions[@]} -gt 0 ]]; then
         printf '%s\n' "${sessions[@]}"
@@ -726,7 +765,7 @@ is_polling_agent() {
     local session="$1"
     local agent_type
     agent_type=$(get_agent_type "$session")
-    [[ "$agent_type" == "deployer" || "$agent_type" == "seeker" || "$agent_type" == "tester" ]]
+    [[ "$agent_type" == "deployer" || "$agent_type" == "seeker" || "$agent_type" == "tester" || "$agent_type" == "herald" ]]
 }
 
 # Helper: Determine agent health status
@@ -1018,6 +1057,7 @@ get_agent_type() {
         seeker-agent)     echo "seeker" ;;
         deployer)         echo "deployer" ;;
         tester-agent)     echo "tester" ;;
+        herald-agent)     echo "herald" ;;
         *)                echo "unknown" ;;
     esac
 }
@@ -1149,6 +1189,15 @@ respawn_agent() {
                 daemon_log "INFO" "Tester agent respawned"
             else
                 daemon_log "WARN" "Cannot respawn tester: script not found"
+            fi
+            ;;
+        herald)
+            if check_script "./scripts/herald/launch-agent.sh" 2>/dev/null; then
+                ./scripts/herald/launch-agent.sh &
+                sleep 1
+                daemon_log "INFO" "Herald agent respawned"
+            else
+                daemon_log "WARN" "Cannot respawn herald: script not found"
             fi
             ;;
         *)
@@ -1307,6 +1356,7 @@ cmd_daemon() {
     local seeker=$DEFAULT_SEEKER
     local deployer=$DEFAULT_DEPLOYER
     local tester=$DEFAULT_TESTER
+    local herald=$DEFAULT_HERALD
 
     # Parse options
     while [[ $# -gt 0 ]]; do
@@ -1337,6 +1387,10 @@ cmd_daemon() {
                 ;;
             --tester)
                 tester="$2"
+                shift 2
+                ;;
+            --herald)
+                herald="$2"
                 shift 2
                 ;;
             *)
@@ -1377,10 +1431,10 @@ cmd_daemon() {
     trap 'daemon_log "INFO" "Received SIGINT"; exit 0' INT
 
     daemon_log "INFO" "Starting daemon (PID $$, interval ${interval}s)"
-    daemon_log "INFO" "Pool config: enricher=$enricher, aristotle=$aristotle, researcher=$researcher, seeker=$seeker, deployer=$deployer, tester=$tester"
+    daemon_log "INFO" "Pool config: enricher=$enricher, aristotle=$aristotle, researcher=$researcher, seeker=$seeker, deployer=$deployer, tester=$tester, herald=$herald"
 
     # Start initial agents via cmd_start
-    cmd_start --enricher "$enricher" --aristotle "$aristotle" --researcher "$researcher" --seeker "$seeker" --deployer "$deployer" --tester "$tester"
+    cmd_start --enricher "$enricher" --aristotle "$aristotle" --researcher "$researcher" --seeker "$seeker" --deployer "$deployer" --tester "$tester" --herald "$herald"
 
     local cycle_count=0
     local total_respawns=0
@@ -1493,9 +1547,10 @@ cmd_daemon() {
             researcher=$(jq -r '.config.researcher // 0' "$STATE_FILE" 2>/dev/null || echo "$researcher")
             seeker=$(jq -r '.config.seeker // 0' "$STATE_FILE" 2>/dev/null || echo "$seeker")
             deployer=$(jq -r '.config.deployer // 0' "$STATE_FILE" 2>/dev/null || echo "$deployer")
+            herald=$(jq -r '.config.herald // 0' "$STATE_FILE" 2>/dev/null || echo "$herald")
         fi
 
-        local enricher_active=0 researcher_active=0 aristotle_active=0 seeker_active=0 deployer_active=0
+        local enricher_active=0 researcher_active=0 aristotle_active=0 seeker_active=0 deployer_active=0 herald_active=0
         for i in $(seq 1 $MAX_ENRICHER); do
             tmux has-session -t "enricher-$i" 2>/dev/null && enricher_active=$((enricher_active + 1))
         done
@@ -1505,6 +1560,7 @@ cmd_daemon() {
         tmux has-session -t "aristotle-agent" 2>/dev/null && aristotle_active=1
         tmux has-session -t "seeker-agent" 2>/dev/null && seeker_active=1
         tmux has-session -t "deployer" 2>/dev/null && deployer_active=1
+        tmux has-session -t "herald-agent" 2>/dev/null && herald_active=1
 
         if [[ $enricher_active -lt $enricher ]]; then
             local missing_enricher=$((enricher - enricher_active))
@@ -1551,6 +1607,11 @@ cmd_daemon() {
         if [[ $deployer_active -lt $deployer ]] && is_cooldown_elapsed "deployer"; then
             daemon_log "INFO" "Pool gap: deployer has 0/$deployer, spawning"
             respawn_agent "deployer"
+            total_respawns=$((total_respawns + 1))
+        fi
+        if [[ $herald_active -lt $herald ]] && is_cooldown_elapsed "herald-agent"; then
+            daemon_log "INFO" "Pool gap: herald has 0/$herald, spawning"
+            respawn_agent "herald-agent"
             total_respawns=$((total_respawns + 1))
         fi
 
@@ -1605,13 +1666,13 @@ cmd_stop() {
                 force=true
                 shift
                 ;;
-            enricher|aristotle|researcher|seeker|deployer)
+            enricher|aristotle|researcher|seeker|deployer|herald)
                 agent_type="$1"
                 shift
                 ;;
             *)
                 echo -e "${RED}Unknown stop option: $1${NC}" >&2
-                echo "Usage: $0 stop [enricher|aristotle|researcher|seeker|deployer] [--force]"
+                echo "Usage: $0 stop [enricher|aristotle|researcher|seeker|deployer|herald] [--force]"
                 exit 1
                 ;;
         esac
@@ -1663,7 +1724,7 @@ cmd_stop() {
         # Safety net: kill any remaining agent sessions
         echo -e "${BLUE}Catch-all: cleaning remaining agent sessions...${NC}"
         local remaining_sessions
-        remaining_sessions=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -E '^(enricher-|researcher-|aristotle-agent$|seeker-agent$|deployer$)' || true)
+        remaining_sessions=$(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep -E '^(enricher-|researcher-|aristotle-agent$|seeker-agent$|deployer$|herald-agent$|tester-agent$)' || true)
         if [[ -n "$remaining_sessions" ]]; then
             while IFS= read -r session; do
                 echo -e "  Killing stale session: $session"
@@ -1832,6 +1893,11 @@ cmd_stop_type() {
                     ./scripts/test/launch-agent.sh --graceful-stop 2>/dev/null || true
                 fi
                 ;;
+            herald)
+                if [[ -x "./scripts/herald/launch-agent.sh" ]]; then
+                    ./scripts/herald/launch-agent.sh --graceful-stop 2>/dev/null || true
+                fi
+                ;;
         esac
 
         # Wait up to 60s for graceful shutdown, then force-kill
@@ -1844,7 +1910,7 @@ cmd_spawn() {
     local agent_type="${1:-}"
 
     if [[ -z "$agent_type" ]]; then
-        echo -e "${RED}Error: Must specify agent type (enricher, aristotle, researcher, deployer, tester)${NC}" >&2
+        echo -e "${RED}Error: Must specify agent type (enricher, aristotle, researcher, deployer, tester, herald)${NC}" >&2
         exit 1
     fi
 
@@ -1915,9 +1981,19 @@ cmd_spawn() {
                 echo -e "${GREEN}✓ Tester agent spawned${NC}"
             fi
             ;;
+        herald)
+            echo -e "${BLUE}Spawning Herald agent...${NC}"
+            if tmux has-session -t "herald-agent" 2>/dev/null; then
+                echo -e "${YELLOW}Herald agent already running${NC}"
+            else
+                ./scripts/herald/launch-agent.sh &
+                sleep 1
+                echo -e "${GREEN}✓ Herald agent spawned${NC}"
+            fi
+            ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Valid types: enricher, aristotle, researcher, seeker, deployer, tester"
+            echo "Valid types: enricher, aristotle, researcher, seeker, deployer, tester, herald"
             exit 1
             ;;
     esac
@@ -2021,7 +2097,7 @@ cmd_scale() {
                 echo -e "${GREEN}Already at $count Researchers${NC}"
             fi
             ;;
-        aristotle|seeker|deployer|tester)
+        aristotle|seeker|deployer|tester|herald)
             if [[ $count -gt 1 ]]; then
                 echo -e "${YELLOW}$agent_type can only have 0 or 1 instance, using 1${NC}"
                 count=1
@@ -2051,7 +2127,7 @@ cmd_scale() {
             ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Valid types: enricher, researcher, aristotle, seeker, deployer, tester"
+            echo "Valid types: enricher, researcher, aristotle, seeker, deployer, tester, herald"
             exit 1
             ;;
     esac
@@ -2100,9 +2176,13 @@ cmd_wake() {
             touch "$SIGNALS_DIR/wake-tester-agent"
             echo -e "${GREEN}Wake signal sent to tester-agent${NC}"
             ;;
+        herald)
+            touch "$SIGNALS_DIR/wake-herald-agent"
+            echo -e "${GREEN}Wake signal sent to herald-agent${NC}"
+            ;;
         *)
             echo -e "${RED}Unknown agent type: $agent_type${NC}" >&2
-            echo "Valid types: all, aristotle, researcher, deployer, seeker, enricher, tester"
+            echo "Valid types: all, aristotle, researcher, deployer, seeker, enricher, tester, herald"
             exit 1
             ;;
     esac

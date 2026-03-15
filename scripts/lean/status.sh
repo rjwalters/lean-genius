@@ -139,6 +139,7 @@ gather_status() {
     local seeker_status="stopped"
     local deployer_status="stopped"
     local tester_status="stopped"
+    local herald_status="stopped"
 
     # Enrichers
     for i in 1 2 3 4 5; do
@@ -172,6 +173,11 @@ gather_status() {
     # Tester
     if session_exists "tester-agent"; then
         tester_status="running:$(get_session_uptime "tester-agent")"
+    fi
+
+    # Herald
+    if session_exists "herald-agent"; then
+        herald_status="running:$(get_session_uptime "herald-agent")"
     fi
 
     # Work queue counts
@@ -242,6 +248,10 @@ gather_status() {
     "tester": {
       "status": "${tester_status%%:*}",
       "uptime": "${tester_status#*:}"
+    },
+    "herald": {
+      "status": "${herald_status%%:*}",
+      "uptime": "${herald_status#*:}"
     }
   },
   "session_stats": {
@@ -336,6 +346,14 @@ EOF
             echo "      tester-agent: Running (${tester_status#*:})"
         else
             echo -e "    ${BOLD}Tester:${NC} ${YELLOW}0/1 active${NC}"
+        fi
+
+        # Herald
+        if [[ "${herald_status%%:*}" == "running" ]]; then
+            echo -e "    ${BOLD}Herald:${NC} ${GREEN}1/1 active${NC}"
+            echo "      herald-agent: Running (${herald_status#*:})"
+        else
+            echo -e "    ${BOLD}Herald:${NC} ${YELLOW}0/1 active${NC}"
         fi
         echo ""
 
