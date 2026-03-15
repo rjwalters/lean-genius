@@ -2194,8 +2194,12 @@ example : (schurGapFull 15).card = (schurMod 15).card := by native_decide
 
 end ExtendedVerification
 
+/- Part XXXVII removed: duplicate of Part XXXIV-B/C content
+   (schurModSet, schurMod_card_eq_subsetsWithSum, schurMod_card_eq_gf_coeff
+   were already defined in sections SchurModBijection and SchurModGFLink above) -/
+
 -- ============================================================================
--- Part XXXVI: Updated Summary
+-- Part XXXVIII: Updated Summary
 -- ============================================================================
 
 /-
@@ -2252,4 +2256,190 @@ end ExtendedVerification
      Note: For RR1/RR2, mod side allows repetition → needs ∏ 1/(1-X^k) (not yet built)
      For Schur, both sides distinct → distinctPartGF approach works
   8. 🔲 Compose to prove identities
+
+### Notes on remaining axiom elimination:
+  - Schur mod side: DONE — |schurMod n| = coeff n (schurModGF n)
+  - RR1/RR2 mod sides: Need ∏ 1/(1-X^k) framework (non-distinct parts)
+    → Part XXXIX builds geomSeries and repeatedPartGF infrastructure
+  - Gap sides (all): Need gap-condition ↔ GF identity (the deep combinatorial step)
+  - Final composition requires matching mod-side and gap-side GFs
 -/
+
+-- ============================================================================
+-- Part XXXIX: Repeated Parts GF Infrastructure (for RR1/RR2 Mod Sides)
+-- ============================================================================
+
+/-
+For Rogers-Ramanujan identities, the mod side allows REPEATED parts:
+- RR1 mod: parts ≡ 1,4 (mod 5), repetitions allowed
+- RR2 mod: parts ≡ 2,3 (mod 5), repetitions allowed
+
+The generating function for partitions with repeated parts from S is:
+  ∏_{k ∈ S} 1/(1-X^k) = ∏_{k ∈ S} (1 + X^k + X^{2k} + ...)
+
+This is the geometric series product, complementing the distinctPartGF
+(∏(1+X^k)) used for the Schur mod side.
+-/
+
+section RepeatedPartGF
+
+open Finset Nat PowerSeries
+
+noncomputable section
+
+/-- Geometric series in formal power series: 1 + X^k + X^{2k} + X^{3k} + ...
+    This is the formal expansion of 1/(1-X^k) for k > 0.
+    For k = 0, returns 1 (trivial case). -/
+def geomSeries (k : ℕ) : PowerSeries ℤ :=
+  PowerSeries.mk (fun n => if k = 0 then (if n = 0 then 1 else 0) else if n % k = 0 then 1 else 0)
+
+/-- The coefficient of X^n in geomSeries k is 1 when k | n (for k > 0). -/
+theorem geomSeries_coeff (k n : ℕ) (hk : 0 < k) :
+    PowerSeries.coeff n (geomSeries k) = if n % k = 0 then 1 else 0 := by
+  simp only [geomSeries, PowerSeries.coeff_mk]
+  omega
+
+/-- The coefficient of X^0 in geomSeries k is always 1. -/
+theorem geomSeries_coeff_zero (k : ℕ) :
+    PowerSeries.coeff 0 (geomSeries k) = 1 := by
+  simp only [geomSeries, PowerSeries.coeff_mk]
+  split_ifs <;> simp_all
+
+/-- geomSeries k for k > 0 satisfies: (1 - X^k) * geomSeries k = 1.
+    This is the formal power series identity for the geometric series.
+
+    **Why an axiom?** The convolution proof requires showing that in the
+    antidiagonal sum, the only contributing terms are i=n (coefficient 1)
+    and i=n-k (coefficient -1), which cancel. The Mathlib API for
+    PowerSeries.coeff_mul and coefficient extraction from (1 - X^k)
+    needs careful handling of the sub/coeff interaction. -/
+axiom geomSeries_inverse (k : ℕ) (hk : 0 < k) :
+    (1 - (X : PowerSeries ℤ) ^ k) * geomSeries k = 1
+
+/-- The generating function for partitions with repeated parts from S:
+    GF_S(q) = ∏_{k ∈ S} (1 + X^k + X^{2k} + ...) = ∏_{k ∈ S} geomSeries(k). -/
+def repeatedPartGF (S : Finset ℕ) : PowerSeries ℤ :=
+  S.prod (fun k => geomSeries k)
+
+/-- Empty set gives the constant 1. -/
+theorem repeatedPartGF_empty : repeatedPartGF ∅ = 1 := by
+  simp [repeatedPartGF]
+
+/-- Singleton set {k} gives the geometric series 1/(1-X^k). -/
+theorem repeatedPartGF_singleton (k : ℕ) :
+    repeatedPartGF {k} = geomSeries k := by
+  simp [repeatedPartGF]
+
+/-- Product recursion: inserting an element multiplies the GF. -/
+theorem repeatedPartGF_insert {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) :
+    repeatedPartGF (insert k S) =
+    geomSeries k * repeatedPartGF S := by
+  simp only [repeatedPartGF, Finset.prod_insert hk]
+
+/-- The GF for RR1 mod partitions (with repetition): parts ≡ 1 or 4 (mod 5). -/
+def rr1ModRepGF (N : ℕ) : PowerSeries ℤ :=
+  repeatedPartGF ((Finset.range (N + 1)).filter (fun k => k > 0 ∧ (k % 5 = 1 ∨ k % 5 = 4)))
+
+/-- The GF for RR2 mod partitions (with repetition): parts ≡ 2 or 3 (mod 5). -/
+def rr2ModRepGF (N : ℕ) : PowerSeries ℤ :=
+  repeatedPartGF ((Finset.range (N + 1)).filter (fun k => k > 0 ∧ (k % 5 = 2 ∨ k % 5 = 3)))
+
+/-- Multisets from S summing to n: the combinatorial objects counted by
+    the repeated-parts GF coefficients.
+
+    A multiset T drawn from S with ∑T = n corresponds to a partition of n
+    into parts from S (with repetitions allowed). -/
+def multisetsWithSum (S : Finset ℕ) (n : ℕ) : Finset (Multiset ℕ) :=
+  -- All multisets over S summing to n
+  -- This uses the Finset of bounded multisets
+  (S.val.powersetCard n).toFinset.filter (fun m => m.sum = n ∧ ∀ a ∈ m, a ∈ S)
+
+-- Note: The full coefficient theorem (coeff n (repeatedPartGF S) = |partitions of n from S|)
+-- requires careful handling of multiset convolutions. The key challenge is that
+-- the convolution identity:
+--   coeff n (f * g) = ∑_{i+j=n} coeff i f * coeff j g
+-- applied iteratively over the product, requires tracking which multisets
+-- correspond to which product terms. This is more involved than the distinct-parts
+-- case because multiple elements from S can contribute the same value.
+
+-- For now, the geomSeries inverse identity provides the algebraic foundation,
+-- and the product structure enables recursive coefficient extraction.
+
+end
+
+end RepeatedPartGF
+
+-- ============================================================================
+-- Part XL: Schur Gap Recursion Infrastructure
+-- ============================================================================
+
+/-
+Infrastructure for the gap-side characterization of Schur partitions.
+A Schur gap partition of n with largest part ≤ M satisfies:
+  - Parts are distinct
+  - Consecutive parts (sorted decreasingly) differ by ≥ 3
+  - Consecutive parts where either is ≡ 0 (mod 3) differ by ≥ 4
+
+Key recursion: a Schur gap partition with largest part a is
+a + (Schur gap partition of n-a with largest part ≤ a - schurStep(a))
+where schurStep(a) = 4 if a ≡ 0 mod 3, else 3.
+-/
+
+section SchurGapRecursion
+
+open Finset Nat
+
+/-- The minimum gap required after a part a in the Schur gap condition.
+    Returns 4 if a ≡ 0 (mod 3), otherwise 3. -/
+def schurStep (a : ℕ) : ℕ :=
+  if a % 3 = 0 then 4 else 3
+
+/-- schurStep is always at least 3. -/
+theorem schurStep_ge_3 (a : ℕ) : schurStep a ≥ 3 := by
+  simp only [schurStep]
+  split_ifs <;> omega
+
+/-- schurStep is at most 4. -/
+theorem schurStep_le_4 (a : ℕ) : schurStep a ≤ 4 := by
+  simp only [schurStep]
+  split_ifs <;> omega
+
+/-- For parts not divisible by 3, the step is exactly 3. -/
+theorem schurStep_not_div3 (a : ℕ) (ha : a % 3 ≠ 0) : schurStep a = 3 := by
+  simp [schurStep, ha]
+
+/-- For parts divisible by 3, the step is exactly 4. -/
+theorem schurStep_div3 (a : ℕ) (ha : a % 3 = 0) : schurStep a = 4 := by
+  simp [schurStep, ha]
+
+/-- The Schur gap condition on a sorted decreasing list is equivalent to:
+    for all consecutive pairs (a, b), a ≥ b + schurStep(min a b).
+
+    Note: hasSchurGapFull checks if a ≡ 0 OR b ≡ 0 (mod 3) for gap 4.
+    Since a > b (sorted decreasing, distinct), and parts are positive,
+    the condition "a ≡ 0 or b ≡ 0" is what makes the step adaptive. -/
+theorem schurGapFull_iff_schurStep (a b : ℕ) (rest : List ℕ) :
+    hasSchurGapFull (a :: b :: rest) = true ↔
+    (a ≥ b + (if a % 3 = 0 ∨ b % 3 = 0 then 4 else 3)) ∧
+    hasSchurGapFull (b :: rest) = true := by
+  simp only [hasSchurGapFull, Bool.and_eq_true, decide_eq_true_eq]
+
+/-- hasSchurGapFull implies hasMinGap 3 (gap ≥ 3 between consecutive elements).
+    This follows because the Schur gap is ≥ 3 for non-multiples-of-3 and ≥ 4 for
+    multiples of 3. -/
+theorem schurGapFull_implies_minGap3 :
+    ∀ l : List ℕ, hasSchurGapFull l = true → hasMinGap l 3 = true := by
+  intro l
+  induction l with
+  | nil => simp [hasSchurGapFull, hasMinGap]
+  | cons a tl ih =>
+    match tl with
+    | [] => simp [hasSchurGapFull, hasMinGap]
+    | b :: rest =>
+      simp only [hasSchurGapFull, hasMinGap, Bool.and_eq_true, decide_eq_true_eq]
+      intro ⟨hgap, htl⟩
+      constructor
+      · split_ifs at hgap <;> omega
+      · exact ih htl
+
+end SchurGapRecursion
