@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-03-11T09:48:08.982Z",
-    "iteration": 3,
-    "focus": "Building GF coefficient infrastructure toward axiom elimination",
+    "iteration": 4,
+    "focus": "Mod-side specialization complete, gap-side characterization next",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3 sorries (subset image, GF coeff, partition-to-subset), 3 axioms. Extended verification to n=15. GF infrastructure advancing.",
+    "progressSummary": "PROGRESS: 0 sorries, 3 axioms. Step 6 (mod-side specialization) COMPLETE. |schurMod n| = coeff n (schurModGF n) proved.",
     "builtItems": [
       "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
@@ -40,7 +40,14 @@
       "subsetsWithSum_insert_card: cardinality recursion (proved modulo image lemma)",
       "distinctPartGF_coeff_empty: base case of coefficient theorem (proved)",
       "partitionOfSubset: Finset → Nat.Partition constructor (defined, compiles)",
-      "native_decide verification extended from n=12 to n=15 for all identities"
+      "native_decide verification extended from n=12 to n=15 for all identities",
+      "distinctPartGF_coeff: GF coefficient = subset count (Finset induction proof)",
+      "schurMod_to_subset: forward direction of SchurMod partition ↔ subset correspondence",
+      "Fixed partitionOfSubset parts_sum proof for new Mathlib API",
+      "schurModSet: definition of {k ≤ n | k ≡ 1,2 mod 3}",
+      "schurMod_card_eq_subsetsWithSum: bijection schurMod ↔ subsetsWithSum (card equality)",
+      "schurMod_card_eq_gf_coeff: |schurMod n| = coeff n (schurModGF n)",
+      "part_le_of_mem: a ∈ p.parts → a ≤ n (utility lemma)"
     ],
     "insights": [
       "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
@@ -50,18 +57,24 @@
       "Subset sum recursion: inserting element k splits subsets into containing-k and not-containing-k families",
       "GF coefficient theorem connects algebraic (PowerSeries) to combinatorial (subsetsWithSum) counting",
       "partitionOfSubset converts finsets to Nat.Partition, bridging subset and partition formulations",
-      "All three identities (RR1, RR2, Schur corrected) computationally verified through n=15"
+      "All three identities (RR1, RR2, Schur corrected) computationally verified through n=15",
+      "Proved distinctPartGF_coeff by Finset.induction: key insight is to revert n before induction so IH works for all indices. Uses PowerSeries.coeff_X_pow_mul for k≤n case and X_pow_dvd_iff for n<k case.",
+      "Proved schurMod_to_subset: convert Nodup multiset to Finset via toFinset, use Multiset.dedup_eq_self for sum equality.",
+      "PowerSeries.coeff API change: R is now implicit (use coeff (R := ℤ) n, not coeff ℤ n).",
+      "RR1/RR2 mod sides allow repeated parts, so distinctPartGF approach only applies to Schur",
+      "Bijection uses p.parts.toFinset (forward) and partitionOfSubset (backward)",
+      "Nodup condition on schurMod is essential for the toFinset injection"
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",
       "No bijective proof machinery for partition identities"
     ],
     "nextSteps": [
-      "Prove subsetsWithSum_insert_mem_image: the bijection for containing-k subsets (needs Finset.cons manipulation)",
-      "Prove distinctPartGF_coeff via PowerSeries.coeff_mul chain (main coefficient theorem)",
-      "Build full bijection subsetsWithSum ↔ distinct partitions from a set S",
-      "Specialize to S = {k ≡ 1,2 mod 3} for Schur mod-side characterization",
-      "The hard step: gap-side generating function characterization (Schur functional equation)"
+      "Build gap-side generating function characterization (step 7 - hardest remaining step)",
+      "Need to show Schur gap condition ↔ functional equation on power series",
+      "Consider q-series approach: Schur gap = coefficient of q-series satisfying f(q) = ...",
+      "Alternative: build explicit bijection between gap and mod partitions (combinatorial approach)",
+      "For RR1/RR2: need ∏ 1/(1-X^k) framework for non-distinct parts"
     ]
   },
   "approaches": [],
@@ -78,7 +91,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-15T12:00:00.000Z",
+  "lastUpdate": "2026-03-15T17:30:00.000Z",
   "significance": 7,
   "tractability": 6
 }
