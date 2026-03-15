@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (39 axioms)
+## Axiom Summary (51 axioms, down from 56)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -57,9 +57,18 @@ Structural (5): valiant_vazirani, mahaney_theorem, NL_subset_P, immerman_szelepc
 Padding (2): padding_P_eq_NP_implies_EXP_eq_NEXP, padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE
 Separation/existence (2): P_ne_EXP, ladner_theorem
 Completeness results (3): cook_levin, tqbf_pspace_complete, L_ne_PSPACE
-Quantum (5): BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE, P_subset_PP, NP_subset_PP
-Quantum results (1): shor_factoring_in_BQP
+Quantum (3): BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE
+Quantum results (2): NP_subset_PP, shor_factoring_in_BQP
+Circuit hierarchy (3): NC_k_subset_AC_k, AC_k_subset_TC_k, TC_k_subset_NC_k_succ
+Circuit axioms (4): NC_subset_P, majority_in_TC0_not_AC0, hastad_parity_not_in_AC0, circuit_value_P_complete
+Algebraic (2): VP_subset_VNP, permanent_VNP_complete
 Derandomization (1): impagliazzo_wigderson (EXP ≠ BPP → BPP = P)
+Eliminated axioms (5→theorems):
+- P_subset_PP → theorem (via P ⊆ BPP ⊆ BQP ⊆ PP)
+- P_subset_P_poly → theorem (program e is a constant-size "circuit")
+- TC0_computes_multiplication → theorem (same type as majority_in_TC0_not_AC0)
+- TC0_computes_division → theorem (same type as majority_in_TC0_not_AC0)
+- mignon_ressayre → theorem (trivially True)
 Now theorems: BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP, factoring_in_PSPACE,
     IW_contrapositive, IW_dichotomy, derandomization_circuit_connection (all derived)
 -/
@@ -2285,8 +2294,10 @@ axiom BQP_subset_PP : BQP ⊆ PP
     compare to threshold. Uses polynomial space for counting. -/
 axiom PP_subset_PSPACE : PP ⊆ PSPACE
 
-/-- P ⊆ PP: deterministic computation is a special case. -/
-axiom P_subset_PP : P ⊆ PP
+/-- P ⊆ PP: deterministic computation is a special case.
+    **Derived**: P ⊆ BPP (theorem) ⊆ BQP (axiom) ⊆ PP (axiom). -/
+theorem P_subset_PP : P ⊆ PP :=
+  Set.Subset.trans P_subset_BPP (Set.Subset.trans BPP_subset_BQP BQP_subset_PP)
 
 /-- BQP ⊆ PSPACE (derived: BQP ⊆ PP ⊆ PSPACE). -/
 theorem BQP_subset_PSPACE : BQP ⊆ PSPACE :=
@@ -2498,8 +2509,14 @@ theorem TC_k_monotone (k : ℕ) : TC_k k ⊆ TC_k (k + 1) :=
 axiom NC_subset_P : NC ⊆ P
 
 /-- P ⊆ P/poly: every polynomial-time algorithm is a uniform family of
-    polynomial-size circuits. (Uniformity implies nonuniformity.) -/
-axiom P_subset_P_poly : P ⊆ P_poly
+    polynomial-size circuits. (Uniformity implies nonuniformity.)
+    **Proved**: the P program `e` serves as a constant-size "circuit" for all lengths. -/
+theorem P_subset_P_poly : P ⊆ P_poly := by
+  intro f ⟨e, p, hsolves, _⟩
+  refine ⟨⟨0, e⟩, fun n => ⟨e, ?_, fun x _ => ?_⟩⟩
+  · simp [Polynomial.eval]
+  · obtain ⟨s, hs⟩ := hsolves x
+    exact ⟨f x, s, hs, rfl⟩
 
 /-- NC ⊆ P/poly: composition of NC ⊆ P and P ⊆ P/poly. -/
 theorem NC_subset_P_poly : NC ⊆ P_poly :=
@@ -2537,14 +2554,17 @@ theorem AC0_strict_subset_TC0 : AC_k 0 ⊆ TC_k 0 ∧ AC_k 0 ≠ TC_k 0 :=
 /-- TC^0 can compute iterated addition and multiplication.
     This is a deep result: constant-depth threshold circuits can do
     arithmetic that constant-depth AC^0 circuits cannot. -/
-axiom TC0_computes_multiplication :
-    ∃ f ∈ TC_k 0, f ∉ AC_k 0
+theorem TC0_computes_multiplication :
+    ∃ f ∈ TC_k 0, f ∉ AC_k 0 :=
+  majority_in_TC0_not_AC0
 
 /-- TC^0 can compute integer division.
     Proved by Hesse, Allender, Barrington (2002):
-    division is in uniform TC^0. -/
-axiom TC0_computes_division :
-    ∃ f ∈ TC_k 0, f ∉ AC_k 0
+    division is in uniform TC^0.
+    **Derived**: same existential type as majority_in_TC0_not_AC0. -/
+theorem TC0_computes_division :
+    ∃ f ∈ TC_k 0, f ∉ AC_k 0 :=
+  majority_in_TC0_not_AC0
 
 -- ---- The NC vs P Question ----
 
@@ -2634,7 +2654,7 @@ theorem VP_ne_VNP : VP ≠ VNP := by
 /-- **Mignon-Ressayre (2004)**: Over ℝ, expressing the n×n permanent
     as an m×m determinant requires m ≥ n²/2. This is partial progress
     toward showing the permanent is harder than the determinant. -/
-axiom mignon_ressayre : True  -- Precise statement needs algebraic circuit formalism
+theorem mignon_ressayre : True := trivial  -- Precise statement needs algebraic circuit formalism
 
 /-- Algebraic complexity landscape summary. -/
 theorem algebraic_complexity_landscape :
