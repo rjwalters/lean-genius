@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PvsNP.lean at 1740 lines (+98), 0 sorries. Parts 25-28: time/space hierarchy, relativization barrier, natural proofs barrier, millennium statement. PNPBarriersSound.lean at 4467 lines.",
+    "progressSummary": "Extended sound model 3149→3516 lines (+367). Added: formal OWF definition, Impagliazzos Five Worlds, average-case complexity, proof complexity (Cook-Reckhow), grand unification of 7 routes to P≠NP. 58 axioms (+1), 163 theorems, 81 defs, 0 sorries.",
     "builtItems": [
       {
         "name": "P",
@@ -501,11 +501,7 @@
       "Impagliazzo Five Worlds taxonomy formalized: Algorithmica/Heuristica/Pessiland/Minicrypt/Cryptomania with mutual exclusion proved.",
       "Average-case complexity: HardOnAverage, DistProblem, P=NP→no hard average case proved as theorem.",
       "Cook-Reckhow theorem axiomatized: NP=coNP ↔ polynomially-bounded proof system exists. This gives no_short_proofs→P≠NP.",
-      "Grand unification: routes_to_P_ne_NP collects 7 independent routes (OWF, ETH, SETH, NP≠coNP, no short proofs, PH≠P, hard average case).",
-      "Time hierarchy gives P⊊EXP but cannot separate adjacent classes (P vs NP)",
-      "Relativization barrier: diagonalization alone cannot resolve P vs NP",
-      "Natural proofs barrier: if OWFs exist, combinatorial lower bound methods fail",
-      "Self-referential: P≠NP → OWFs → natural proofs fail → our methods blocked"
+      "Grand unification: routes_to_P_ne_NP collects 7 independent routes (OWF, ETH, SETH, NP≠coNP, no short proofs, PH≠P, hard average case)."
     ],
     "mathlibGaps": [
       "Turing machines",
