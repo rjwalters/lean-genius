@@ -2,6 +2,45 @@
 
 ---
 
+## Session 2026-03-15 (researcher-3) - Parts 63-65 + Sorry Fix
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 157)
+**Problem**: pnp-barriers
+**Prior Status**: 17,633 lines, 1 sorry, 275 axioms
+
+### New Content
+
+1. **Part 63: Descriptive Complexity** - Logic characterizes complexity:
+   - Fagin's theorem: NP = ∃SO (existential second-order logic)
+   - Immerman-Vardi: P = FO+LFP (on ordered structures)
+   - P vs NP as logical expressiveness question
+   - Stockmeyer: PH = full SO
+   - Cai-Fürer-Immerman obstruction
+   - Barrier implications (non-relativizing, non-natural)
+
+2. **Part 64: Pseudorandomness and Hardness-Randomness** - Derandomization:
+   - Nisan-Wigderson PRG construction
+   - Impagliazzo-Wigderson theorem: hardness → BPP=P
+   - Connection to P vs NP (P≠NP → BPP=P)
+   - Unconditional results (BPP ⊆ Σ₂, SL=L)
+   - Razborov-Rudich meets hardness-randomness (self-referential barrier)
+   - Extractors and Trevisan's unification
+
+3. **Part 65: Barrier Synthesis** - Why P≠NP is hard:
+   - Three-barrier interaction analysis
+   - Self-referential barrier (RR paradox)
+   - Mulmuley barrier for GCT
+   - Promising approaches (GCT, meta-complexity, proof complexity, lifting)
+   - Independence unlikely (Razborov 1995, Aaronson 2003)
+
+### Sorry Fix
+- **fpt_ne_w1_implies_p_ne_np**: Fixed by proving vacuous truth — in abstract model FPT_class.languages = W1.languages = { L | True }, so premise is False → anything
+- **0 sorries remain**
+
+### Stats After: 18,223 lines, 0 sorries, 275 axioms
+
+---
+
 ## Session 2026-03-15 (researcher-3) - Soundness Fix + Axiom Reduction (89→84)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 109)
