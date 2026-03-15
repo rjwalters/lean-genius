@@ -1062,4 +1062,78 @@ theorem mertens_abs_two_hundred : |mertens 200| ≤ 200 := by rw [mertens_two_hu
 
 end MertensStructural
 
+/-
+## Part 25: Divisor Function Extended Computations (PROVED)
+-/
+
+section DivisorExtended
+
+/-- σ(p²) computations: σ(4)=7, σ(9)=13, σ(25)=31 -/
+theorem divisorSum_four' : divisorSum 4 = 7 := by native_decide
+theorem divisorSum_nine' : divisorSum 9 = 13 := by native_decide
+theorem divisorSum_twentyfive' : divisorSum 25 = 31 := by native_decide
+
+/-- σ(120) = 360 (120 is highly composite: 2³·3·5) -/
+theorem divisorSum_120 : divisorSum 120 = 360 := by native_decide
+
+/-- σ(2520) = 9360 (2520 is highly composite: 2³·3²·5·7) -/
+theorem divisorSum_2520 : divisorSum 2520 = 9360 := by native_decide
+
+end DivisorExtended
+
+/-
+## Part 26: Von Mangoldt Extended (PROVED)
+-/
+
+section VonMangoldtExtended2
+
+/-- Λ(p^k) = log p for any prime p and k ≥ 1 (PROVED). -/
+theorem vonMangoldt_prime_pow_val (p : ℕ) (k : ℕ) (hp : Nat.Prime p) (hk : k ≥ 1) :
+    Λ (p ^ k) = Real.log p := by
+  rw [vonMangoldt_apply_pow (by omega : k ≠ 0)]
+  exact vonMangoldt_apply_prime hp
+
+/-- Λ(15) = 0 (15 = 3·5 is not a prime power) -/
+theorem vonMangoldt_fifteen : Λ 15 = 0 := by
+  rw [vonMangoldt_eq_zero_iff]; native_decide
+
+/-- Λ(32) = log 2 (32 = 2⁵ is a prime power) -/
+theorem vonMangoldt_thirtytwo : Λ 32 = Real.log 2 := by
+  have h : 32 = 2 ^ 5 := by norm_num
+  rw [h, vonMangoldt_apply_pow (by norm_num : 5 ≠ 0)]
+  exact vonMangoldt_apply_prime Nat.prime_two
+
+end VonMangoldtExtended2
+
+/-
+## Part 27: Möbius Inversion Identity (PROVED)
+
+The fundamental identity: Σ_{d|n} μ(d) = [n=1].
+For n > 1, this sum is always 0. This is the foundation of Möbius inversion.
+-/
+
+section MoebiusInversion
+
+/-- μ(8) = 0 (8 = 2³ is not squarefree) -/
+theorem moebius_eight : ArithmeticFunction.moebius 8 = 0 := by native_decide
+
+/-- μ(10) = 1 (10 = 2·5, squarefree with 2 prime factors) -/
+theorem moebius_ten : ArithmeticFunction.moebius 10 = 1 := by native_decide
+
+/-- Σ_{d|n} μ(d) = 0 for n > 1: verified for n = 6, 12, 30 (PROVED). -/
+theorem moebius_sum_six :
+    ∑ d ∈ (6 : ℕ).divisors, ArithmeticFunction.moebius d = 0 := by native_decide
+
+theorem moebius_sum_twelve :
+    ∑ d ∈ (12 : ℕ).divisors, ArithmeticFunction.moebius d = 0 := by native_decide
+
+theorem moebius_sum_thirty :
+    ∑ d ∈ (30 : ℕ).divisors, ArithmeticFunction.moebius d = 0 := by native_decide
+
+/-- Σ_{d|1} μ(d) = 1 (the n=1 case) -/
+theorem moebius_sum_one :
+    ∑ d ∈ (1 : ℕ).divisors, ArithmeticFunction.moebius d = 1 := by native_decide
+
+end MoebiusInversion
+
 end RHConsequences
