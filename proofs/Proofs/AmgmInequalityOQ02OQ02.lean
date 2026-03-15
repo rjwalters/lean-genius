@@ -792,13 +792,27 @@ theorem newton_cleared_denom : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
         -- k * (k*f^2 - 2*(k+1)*g*t*ek) ≥ 0, and k > 0, so k*f^2 ≥ 2*(k+1)*g*t*ek
         have h_k_times : (↑k : ℝ) * ((↑k : ℝ) * (ek + t * ekm1) ^ 2 -
             2 * ((↑k : ℝ) + 1) * ((ekm1 + t * ekm2) * (t * ek))) ≥ 0 := by
-          nlinarith [h_sq1, h_term2]
+          -- SOS identity: K*expr = (K*ek - t*ekm1)² + (K+1)*t²*((K-1)*ekm1² - 2K*ek*ekm2)
+          have h_sos_id :
+            (↑k : ℝ) * ((↑k : ℝ) * (ek + t * ekm1) ^ 2 -
+            2 * ((↑k : ℝ) + 1) * ((ekm1 + t * ekm2) * (t * ek))) =
+            ((↑k : ℝ) * ek - t * ekm1) ^ 2 +
+            ((↑k : ℝ) + 1) * t ^ 2 * (((↑k : ℝ) - 1) * ekm1 ^ 2 - 2 * (↑k : ℝ) * ek * ekm2) := by
+            ring
+          rw [h_sos_id]
+          apply add_nonneg (sq_nonneg _)
+          apply mul_nonneg
+          · apply mul_nonneg
+            · linarith
+            · exact sq_nonneg t
+          · linarith [h_coeff_nn]
         -- Divide by k > 0
+        have hk_pos : (↑k : ℝ) > 0 := by positivity
         by_contra h_neg
         push_neg at h_neg
         have : (↑k : ℝ) * ((↑k : ℝ) * (ek + t * ekm1) ^ 2 -
             2 * ((↑k : ℝ) + 1) * ((ekm1 + t * ekm2) * (t * ek))) < 0 := by
-          nlinarith
+          exact mul_neg_of_pos_of_neg hk_pos (by linarith)
         linarith
 
 theorem newton_log_concavity_proved {n : ℕ} (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
