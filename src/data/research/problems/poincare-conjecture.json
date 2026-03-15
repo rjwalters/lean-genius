@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3482 lines, 74 axioms, 205 theorems, 0 sorries. Eliminated sphere3_is_lie_group axiom with concrete quaternion Lie group construction.",
+    "progressSummary": "PROGRESS: 48 build errors fixed, file compiles clean. 48 axioms, 0 sorries, ~3760 lines.",
     "builtItems": [
       "Proved perelman_entropy_monotone via concrete PerelmanWEntropy",
       "Proved perelman_surgery via reflexive witness",
@@ -49,7 +49,14 @@
       "sphere3_mul_right_inv: a·a* = (1,0,0,0) proved via Euler four-square",
       "quatMulE_continuous: polynomial continuity via continuous_pi + continuity tactic",
       "sphere3Mul_continuous: restriction of continuous map to subtype",
-      "sphere3Inv_continuous: restriction of continuous conjugation to subtype"
+      "sphere3Inv_continuous: restriction of continuous conjugation to subtype",
+      "Proved hopfMap, hopfMap_continuous, hopfMap_surjective, hopf_map_exists",
+      "Proved ball3_contractible, eucl3_norm_sq",
+      "Fixed eucl4_norm_sq, quatMulE_continuous, quatConjE_continuous",
+      "Fixed eucl4_norm_sq_global/norm_eq_one_of_sq_global scope (private→global)",
+      "Fixed hopfMap_continuous via have+comp pattern",
+      "Fixed hopfMap_surjective: field_simp [hr_ne], ext i",
+      "Fixed quatMulE_continuous/quatConjE_continuous via Equiv.apply_symm_apply"
     ],
     "insights": [
       "Massive axiom reduction: 39 axioms converted to theorems/defs (115→76)",
@@ -59,7 +66,11 @@
       "Quaternion group on S³: all algebraic axioms (identity, inverse, closure, associativity) proved from coordinate-level ring arithmetic. Only continuity remains for sphere3_is_lie_group.",
       "WithLp.equiv bridges EuclideanSpace and plain Fin 4 → ℝ for coordinate computation",
       "Continuity of quaternion ops follows from continuous_pi + continuity tactic on polynomial expressions",
-      "Subtype continuity via Continuous.subtype_mk after proving continuity on ambient space"
+      "Subtype continuity via Continuous.subtype_mk after proving continuity on ambient space",
+      "ball3_contractible proved via convex_closedBall → StarConvex → contractibleSpace",
+      "hopf_map_exists proved: explicit polynomial with surjectivity via explicit preimages",
+      "All 3 sorries fixed: eucl4_norm_sq, quatMulE_continuous, quatConjE_continuous",
+      "Fixed 48 Mathlib API build errors: EuclideanSpace/WithLp scope issues, continuous_induced_rng pattern, field_simp needs explicit ne hypotheses, ext vs funext for PiLp types"
     ],
     "mathlibGaps": [
       "3-manifolds",

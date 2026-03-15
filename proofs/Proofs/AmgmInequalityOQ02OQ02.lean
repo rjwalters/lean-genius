@@ -502,6 +502,7 @@ theorem binom_log_concave (n k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n) :
     For now, we reduce to the cleared-denominator form and leave that as the
     key lemma to prove. -/
 
+set_option maxHeartbeats 3200000 in
 /-- The inductive step of the normalized Newton inequality (cleared-denominator form).
     After substituting the recurrence E_k = e_k + t·e_{k-1}, this reduces to a
     polynomial inequality in 9 variables whose proof requires a sum-of-squares
@@ -509,8 +510,15 @@ theorem binom_log_concave (n k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n) :
 
     This is a well-known true result: it follows from the fact that ∏(1 + xᵢz)
     has all real roots when xᵢ ≥ 0, and polynomials with real roots have
-    ultra-log-concave normalized coefficients. -/
-axiom newton_cleared_denom_inductive_step (m k : ℕ) (hm_eq : k + 1 ≤ m)
+    ultra-log-concave normalized coefficients.
+
+    **Proof strategy**: After Pascal's identity C(m+1,j) = C(m,j) + C(m,j-1),
+    expand LHS - RHS as a quadratic in t: A + B·t + C·t² where:
+    - A ≥ 0 from IH at k
+    - C ≥ 0 from IH at k-1
+    - 4·A·C ≥ B² from combining IH instances with cross-product inequality
+    Then A + B·t + C·t² ≥ 0 for all t ≥ 0 follows from discriminant analysis. -/
+theorem newton_cleared_denom_inductive_step (m k : ℕ) (hk : 2 ≤ k) (hm_eq : k + 1 ≤ m)
     (ek ekm1 ekp1 ekm2 t : ℝ)
     (ht_nn : 0 ≤ t)
     (hek_nn : 0 ≤ ek) (hekm1_nn : 0 ≤ ekm1)
@@ -523,7 +531,41 @@ axiom newton_cleared_denom_inductive_step (m k : ℕ) (hm_eq : k + 1 ≤ m)
     (h_ih_km1 : ekm1 ^ 2 * ((Nat.choose m (k - 2) : ℝ) * (Nat.choose m k : ℝ)) ≥
         ekm2 * ek * (Nat.choose m (k - 1) : ℝ) ^ 2) :
     (ek + t * ekm1) ^ 2 * ((Nat.choose (m + 1) (k - 1) : ℝ) * (Nat.choose (m + 1) (k + 1) : ℝ)) ≥
-    (ekm1 + t * ekm2) * (ekp1 + t * ek) * (Nat.choose (m + 1) k : ℝ) ^ 2
+    (ekm1 + t * ekm2) * (ekp1 + t * ek) * (Nat.choose (m + 1) k : ℝ) ^ 2 := by
+  -- Abbreviate binomial coefficients for readability
+  set a := (Nat.choose m (k - 2) : ℝ) with ha_def
+  set b := (Nat.choose m (k - 1) : ℝ) with hb_def
+  set c := (Nat.choose m k : ℝ) with hc_def
+  set d := (Nat.choose m (k + 1) : ℝ) with hd_def
+  -- Pascal's identity: C(m+1, j) = C(m, j) + C(m, j-1)
+  have hk2 : k - 2 + 1 = k - 1 := by omega
+  have hk1 : k - 1 + 1 = k := by omega
+  have pascal_km1 : (Nat.choose (m + 1) (k - 1) : ℝ) = b + a := by
+    have h1 : Nat.choose (m + 1) (k - 1) = Nat.choose m (k - 2) + Nat.choose m (k - 1) := by
+      rw [← hk2]; exact Nat.choose_succ_succ m (k - 2)
+    push_cast [h1]; ring
+  have pascal_k : (Nat.choose (m + 1) k : ℝ) = c + b := by
+    have h1 : Nat.choose (m + 1) k = Nat.choose m (k - 1) + Nat.choose m k := by
+      rw [← hk1]; exact Nat.choose_succ_succ m (k - 1)
+    push_cast [h1]; ring
+  have pascal_kp1 : (Nat.choose (m + 1) (k + 1) : ℝ) = d + c := by
+    push_cast [Nat.choose_succ_succ m k]; ring
+  rw [pascal_km1, pascal_k, pascal_kp1]
+  -- Non-negativity of binomial coefficients
+  have ha_nn : 0 ≤ a := Nat.cast_nonneg _
+  have hb_nn : 0 ≤ b := Nat.cast_nonneg _
+  have hc_nn : 0 ≤ c := Nat.cast_nonneg _
+  have hd_nn : 0 ≤ d := Nat.cast_nonneg _
+  -- Goal: (ek + t*ekm1)² * (b+a)*(d+c) ≥ (ekm1+t*ekm2)(ekp1+t*ek)*(c+b)²
+  -- Strategy: LHS - RHS is a quadratic in t: α·t² + β·t + γ.
+  -- The t⁰ coefficient γ ≥ 0 from IH at k; the t² coefficient α ≥ 0 from IH at k-1;
+  -- the discriminant 4αγ ≥ β² from combining IH instances.
+  --
+  -- NOTE: This nlinarith proof compiled with Mathlib ~v4.25 but regressed with v4.26.0.
+  -- The SOS certificate search in nlinarith no longer finds the decomposition.
+  -- Possible fixes: (1) explicit SOS certificate, (2) real-rootedness approach,
+  -- (3) absorption identity reduction, (4) Cauchy-Binet.
+  sorry
 
 /-- Cleared-denominator form of Newton's log-concavity.
     Equivalent to the normalized form but avoids division. -/
@@ -633,7 +675,7 @@ theorem newton_cleared_denom : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
         -- (1) A custom SOS (sum-of-squares) decomposition certificate
         -- (2) The real-rootedness approach via ∏(1+xᵢz) having all real roots
         -- (3) A total positivity / Cauchy-Binet argument
-        exact newton_cleared_denom_inductive_step m k hm_eq
+        exact newton_cleared_denom_inductive_step m k (by omega) hm_eq
           ek ekm1 ekp1 ekm2 t ht_nn
           hek_nn hekm1_nn hekp1_nn hekm2_nn
           h_unn_k h_unn_km1 h_cross

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 sorries, 67 axioms. Künneth formula proved via identity morphism.",
+    "progressSummary": "PROGRESS: Major dedup cleanup. Removed ~500 lines of duplicate VHS/MHS sections. Fixed axiom syntax and type mismatch errors. 4505 lines, 75 axioms, 1 sorry (kuenneth_formula universe mismatch). Clean build.",
     "builtItems": [
       "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
       "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
@@ -175,7 +175,11 @@
       "Converted 35 vacuous axioms to theorems: primitive_hodge_numbers, hc_compatible_with_vhs, hodge_conjecture_product, polarized_semisimple, abel_jacobi_is_hodge_morphism, griffiths_abel_jacobi_nontrivial, hodge_iff_full_realization, cattani_deligne_kaplan (dup removed), intersection_commutative, cycle_class_ring_hom, hodge_classes_are_mt_invariants, cm_implies_mt_commutative, generic_mt_maximal, bb_f1_is_kernel, bloch_conjecture_surfaces, noether_lefschetz, deligne_exact_sequence, weil_conjectures_riemann_hypothesis, tate_for_abelian_over_finite_field, faltings_tate_number_fields, artin_comparison_theorem, colmez_fontaine, padic_comparison_C_dR/cris/st, hodge_tate_padic_decomposition, schmid_sl2_orbit, griffiths_period_map_immersion, weight_spectral_sequence, mhs_strict_morphisms, ext_mixed_hodge, carlson_ext_jacobian, abel_jacobi_from_mhs, saito_mixed_hodge_modules",
       "Cleaned Part XXVII/XXVIII to use original structures (eliminated 3 duplicate structure declarations)",
       "Fixed universe-polymorphic type mismatches in K3/Torelli/TateConjecture sections",
-      "Proved kuenneth_formula (was sorry due to universe mismatch)"
+      "Removed 2 full duplicate copies of Parts XXVII-XXVIII (VHS/MHS), saving ~508 lines and 18 duplicate axioms",
+      "Fixed tateStructure_unit_left: converted from axiom-with-sorry-body to proper axiom declaration",
+      "Fixed kuenneth_formula: replaced broken LinearMap.id proof with sorry (universe mismatch)",
+      "Removed broken #check lines referencing undefined identifiers (CalabiYau, Hyperkaehler, ToricVariety, EnriquesSurface, etc.)",
+      "Removed period_domain_dim_weight2 theorem (depended on duplicate PeriodDomain definition)"
     ],
     "insights": [
       "Millennium Prize problem, wide open - no known attack strategy",
@@ -221,8 +225,7 @@
       "Duplicate cattani_deligne_kaplan axiom removed (was at both line 2880 and 4426)",
       "primitive_hodge_numbers was trivially satisfiable (∃ h, h ≤ n — take h=0) and converted to theorem",
       "Fixed all 30 build errors: removed duplicate VHS/PeriodDomain/MHS structures from Part XXVII-XXVIII, fixed IntermediateJacobian/DeligneCohomology constructors, resolved universe level metavariables, fixed argument ordering in GHC coniveau",
-      "Build now passes cleanly: 4574 lines, 76 axioms, 155 theorems, 0 sorries",
-      "kuenneth_formula sorry eliminated by using identity morphism - tensorHodge H_X H_Y serves as both source and target"
+      "Build now passes cleanly: 4574 lines, 76 axioms, 155 theorems, 0 sorries"
     ],
     "mathlibGaps": [
       "Complex manifolds",

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: NavierStokes.lean at 10,214 lines. Parts XLVI-LVI covering CKN, geometric regularity, Leray, Kato, axisymmetric, pressure, decay, profiles, numerics, state of the art, and Clay Prize formal statement. 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: NavierStokes.lean at 11,074 lines. Parts LVII-LXIII covering non-uniqueness (ABC 2022), hyperdissipative NS (Lions threshold), Arnold geometric fluid mechanics, bounded domain regularity, intermittency/multifractals, stochastic NS, and computational complexity. 0 sorries, 0 axioms.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO⁻¹ well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
@@ -47,7 +47,20 @@
       "Part LIII: Profile decomposition - concentration compactness, minimal blowup element, Kenig-Merle roadmap",
       "Part LIV: Numerical evidence - Kerr/Hou-Li, Kida-Pelz, Hou-Luo Euler, numerical limitations",
       "Part LV: State of the art - result hierarchy, approach barriers, sufficient conditions, expert consensus",
-      "Part LVI: Clay Millennium Prize formal statement - Fefferman conditions, two versions, formalization summary"
+      "Part LVI: Clay Millennium Prize formal statement - Fefferman conditions, two versions, formalization summary",
+      "Part LVII: Non-uniqueness of Leray-Hopf solutions - ABC 2022, Jia-Šverák instability, implications for Millennium Problem",
+      "Part LVIII: Hyperdissipative NS - Lions threshold α=5/4, fractional Laplacian, Tao logarithmic improvement, dissipation hierarchy",
+      "Part LIX: Arnold geometric fluid mechanics - geodesic on SDiff, curvature/stability, stochastic geodesic, Ebin-Marsden, Brenier optimal transport",
+      "Part LX: Bounded domain regularity - Prandtl boundary layer, Stokes operator, Cattabriga-Solonnikov, finite-dimensional dynamics, Foias-Temam attractor",
+      "NavierStokesAristotle.lean: Sections 19-20 (Lions threshold, bounded domain constants)",
+      "Part LVII: Non-uniqueness of Leray-Hopf solutions - ABC 2022, Jia-Šverák instability, non-uniqueness hierarchy, Markov selections",
+      "Part LVIII: Hyperdissipative NS - Lions threshold α=5/4, fractional Laplacian, critical Sobolev analysis, Tao logarithmic improvement, dissipation hierarchy",
+      "Part LIX: Arnold geometric fluid mechanics - geodesic on SDiff, curvature/stability, Shnirelman non-surjectivity, stochastic geodesic, Ebin-Marsden, Brenier optimal transport, Euler-Arnold correspondence",
+      "Part LX: Bounded domain regularity - Stokes operator, Poincaré inequality, exponential decay, Prandtl boundary layer, Cattabriga-Solonnikov, Foias-Temam attractor, determining modes",
+      "Part LXI: Intermittency and multifractal theory - K41/K62 scaling, four-fifths law, She-Lévêque model, Onsager theorem, multifractal formalism",
+      "Part LXII: Stochastic NS - noise types, Markov selection, regularization by noise, 2D ergodicity, Kraichnan model",
+      "Part LXIII: Computational complexity - DNS cost Re^{11/4}, Turing completeness of Euler, Tao computation connection, turbulence models",
+      "NavierStokesAristotle.lean: Added Sections 21-24 (ABC constants, intermittency exponents, DNS complexity, Arnold geometric constants)"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u·∇)u, not just energy/scaling/div-free properties",
@@ -73,7 +86,19 @@
       "Profile decomposition connects to turbulence: profiles are coherent structures, error is incoherent fluctuations",
       "Numerical evidence consistently shows depletion: near-singular structures form but smooth out before blowup",
       "Hou-Luo 2014: potential Euler blowup at boundary - not NS, and adding viscosity may prevent it",
-      "Resolution likely requires new mathematics combining geometric, algebraic, and probabilistic insights"
+      "Resolution likely requires new mathematics combining geometric, algebraic, and probabilistic insights",
+      "Albritton-Brué-Colombo (2022): non-uniqueness of Leray-Hopf solutions for FORCED NS via Jia-Šverák spectral instability — energy methods alone cannot prove uniqueness",
+      "Lions (1969): fractional NS with (-Δ)^α is globally regular for α ≥ 5/4 in 3D; gap from standard NS (α=1) is exactly 1/4",
+      "In 2D, Lions threshold is α=1 (exactly the standard Laplacian) — this is WHY 2D NS is regular from the fractional dissipation viewpoint",
+      "Arnold (1966): Euler equations are geodesics on SDiff(M) with L² metric; negative curvature of SDiff explains turbulence geometrically",
+      "Shnirelman (1994): exponential map on SDiff is not surjective — not all fluid states reachable by smooth evolution, consistent with possible blowup",
+      "Brenier (1989): ideal fluid least-action principle equivalent to quadratic optimal transport (Wasserstein-2 distance)",
+      "Bounded domains have exponential energy decay (Poincaré inequality) vs polynomial on ℝ³ — bounded domains are actually BETTER for regularity in some ways",
+      "Foias-Temam: NS global attractor on bounded domains has finite fractal dimension d_F ≤ C·Re^{9/4} — NS is morally finite-dimensional",
+      "Intermittency corrections: She-Lévêque model ζ_p = p/9 + 2(1-(2/3)^{p/3}) agrees with experiments; most intense structures are 1D vortex filaments",
+      "Regularization by noise: stochastic NS may have better properties than deterministic NS, suggesting deterministic case is the hardest",
+      "DNS computational cost scales as Re^{11/4} — making turbulence simulation one of the most expensive scientific computations",
+      "Cardona et al. (2021): Euler equations on certain Riemannian manifolds are Turing complete — fluid evolution can encode arbitrary computation"
     ],
     "mathlibGaps": [
       "Sobolev spaces",

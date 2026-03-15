@@ -5561,9 +5561,9 @@ axiom classNumber (K : ImaginaryQuadraticField) : ℕ
     Solution to Gauss's class number one problem
     (Heegner 1952, Baker 1966, Stark 1967). -/
 axiom heegner_baker_stark :
-    ∀ d : ℕ, d > 0 → Squarefree d →
-      classNumber ⟨d, by omega, ‹_›⟩ = 1 →
-      d ∈ ({1, 2, 3, 7, 11, 19, 43, 67, 163} : Set ℕ)
+    ∀ (K : ImaginaryQuadraticField),
+      classNumber K = 1 →
+      K.d ∈ ({1, 2, 3, 7, 11, 19, 43, 67, 163} : Set ℕ)
 
 /-- A CM elliptic curve: End(E) ⊗ ℚ ≅ K for some imaginary quadratic K -/
 structure CMEllipticCurve extends EllipticCurveData where

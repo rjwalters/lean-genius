@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-06T22:03:59.699Z",
-    "iteration": 5,
-    "focus": "General dim(K_n)<=n-1 via direct simplex construction",
+    "iteration": 4,
+    "focus": "K_3 embedding, dim bounds, file cleanup",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,26 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: regSimplexEmbed construction + all helper lemmas proved. 2 sorries remain in Finset sum decomposition. General dim(K_n)<=n-1 theorem type-checks modulo sorry. 9 axioms, 48+ theorems.",
+    "progressSummary": "PROGRESS: 2 sorry eliminated. Full simplex embedding proof complete. All pairwise distances verified = 1. Remaining work: general dim(K_n)=n-1 via ONB infrastructure.",
     "builtItems": [
-      "optimal_implies_quadratic theorem (\u00a711)",
-      "choose_two_le_sq helper: C(d+1,2) <= d^2 for d>=1 (\u00a711)",
-      "sq_half_le_choose_two helper: d^2/2 <= C(d+1,2) (\u00a711)",
-      "monotone_lower_d4, monotone_lower_d5 theorems (\u00a712)",
-      "optimal_chain: optimality \u2192 monotonicity \u2192 lower bounds (\u00a712)",
-      "quadratic_verified_small: unconditional quadratic bounds for d<=5 (\u00a713)",
-      "K2_unit_embedding: K_2 embeds in R^1 (\u00a714)",
-      "complete_graph_dim_le_tight_2: dim(K_2) <= 1 (\u00a714)",
-      "K3embed: equilateral triangle embedding of K_3 in R^2 (\u00a715)",
-      "K3_unit_embedding: K_3 unit-distance embedding in R^2 (\u00a715)",
-      "complete_graph_dim_le_tight_3: dim(K_3) <= 2 (\u00a715)",
+      "optimal_implies_quadratic theorem (§11)",
+      "choose_two_le_sq helper: C(d+1,2) <= d^2 for d>=1 (§11)",
+      "sq_half_le_choose_two helper: d^2/2 <= C(d+1,2) (§11)",
+      "monotone_lower_d4, monotone_lower_d5 theorems (§12)",
+      "optimal_chain: optimality → monotonicity → lower bounds (§12)",
+      "quadratic_verified_small: unconditional quadratic bounds for d<=5 (§13)",
+      "K2_unit_embedding: K_2 embeds in R^1 (§14)",
+      "complete_graph_dim_le_tight_2: dim(K_2) <= 1 (§14)",
+      "K3embed: equilateral triangle embedding of K_3 in R^2 (§15)",
+      "K3_unit_embedding: K_3 unit-distance embedding in R^2 (§15)",
+      "complete_graph_dim_le_tight_3: dim(K_3) <= 2 (§15)",
       "sq_sqrt_three, sq_sqrt_three_half: helper lemmas for sqrt(3) arithmetic",
-      "regSimplexEmbed: explicit regular simplex in R^{n-1} (\u00a719)",
-      "sum_inv_consecutive: telescoping sum lemma (\u00a719)",
-      "centroid_coord_sq, height_sq: squared coordinate lemmas (\u00a719)",
-      "height_minus_centroid_sq: key distance computation lemma (\u00a719)",
-      "complete_graph_unit_embedding_tight: K_n in R^{n-1} for n>=2 (\u00a719, sorry dep)",
-      "complete_graph_dim_le_tight: dim(K_n) <= n-1 general bound (\u00a719, sorry dep)"
+      "regSimplexEmbed_zero/ge/centroid/height coordinate accessor lemmas",
+      "sum_centroid_sq: telescoping sum identity",
+      "regSimplexEmbed_inner_eq: complete inner product computation",
+      "regSimplexEmbed_dist_from_origin: ‖f(k)‖²=1 (was sorry)",
+      "regSimplexEmbed_dist_sq: ‖f(i)-f(k)‖²=1 (was sorry)"
     ],
     "insights": [
       "optimal_implies_quadratic: complete graph optimality conjecture implies Theta(d^2) growth with c1=1/2, c2=1",
@@ -57,23 +56,20 @@
       "dim(K_2) <= 1 proved (tight bound, embedding two points in R^1)",
       "General dim(K_n) <= n-1 requires projecting R^n simplex to hyperplane; key insight: pairwise differences orthogonal to all-ones vector so projection preserves distances",
       "dim(K_3) <= 2 proved via explicit equilateral triangle in R^2: vertices (0,0), (1,0), (1/2,sqrt(3)/2)",
-      "Removed duplicate \u00a711 (redundant with \u00a78 optimal_implies_quadratic), reducing axiom count to 9",
+      "Removed duplicate §11 (redundant with §8 optimal_implies_quadratic), reducing axiom count to 9",
       "General dim(K_n) <= n-1 assessed as BUILD task: requires ~200-300 lines ONB infrastructure for hyperplane isometry",
-      "regSimplexEmbed: direct regular simplex construction in R^{n-1} without ONB infrastructure",
-      "Formula: vertex k has centroid coords 1/sqrt(2(j+1)(j+2)) for j<k-1 and height sqrt((k+1)/(2k)) at j=k-1",
-      "Telescoping sum identity: sum_{j=0}^{n-1} 1/((j+1)(j+2)) = n/(n+1)",
-      "height_minus_centroid_sq proved: (sqrt((i+1)/(2i)) - 1/sqrt(2i(i+1)))^2 = i/(2(i+1))",
-      "Distance proof reduces to Finset sum decomposition - all algebraic helper lemmas proved"
+      "regSimplexEmbed_inner_eq proved: general inner product formula for regular simplex vertices ⟨f(i),f(k)⟩ = 1 (i=k) or 1/2 (0<i<k)",
+      "Proof technique: split Finset.univ into j≥i (zero), j+1<i (centroid²), j=i-1 (height×centroid or height²), then telescoping sum + arithmetic",
+      "regSimplexEmbed_dist_sq now fully proved via ‖a-b‖²=‖a‖²+‖b‖²-2⟨a,b⟩ reduction"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove regSimplexEmbed_dist_from_origin: Finset.univ sum decomposition for i=0 case",
-      "Prove regSimplexEmbed_dist_sq: general distance proof using origin case + height_minus_centroid_sq",
-      "Key technique needed: split Finset.univ over Fin into range parts (use Fin.sum_univ_eq_sum_range + Finset range splitting)",
-      "Once sorries eliminated: all K_2-K_5 specific embeddings become redundant (general result subsumes them)",
-      "dim(K_n) >= n-1 lower bound still unformalized (needs linear independence / Gram matrix argument)"
+      "General dim(K_n) <= n-1: BUILD task requiring ONB for hyperplane {x: sum=0} to R^{n-1}",
+      "dim(K_n) >= n-1 lower bound via Gram matrix argument (needs Matrix.PosDef from Mathlib)",
+      "Consider explicit K_4 <= 3 embedding (tetrahedron in R^3) as intermediate step",
+      "Mark completed once general result established or assessed as blocked on Mathlib infra"
     ],
-    "markdown": "# Knowledge Base: erdos-1007-oq-01\n\nMinimum edges for graph dimension d in general.\n\n---\n\n## Session 2026-03-14 (Session 2) - Soundness Fix\n\n**Mode**: REVISIT (depth-first, MODERATE knowledge)\n**Outcome**: progress \u2014 eliminated unsound axiom, improved formalization\n\n### What Was Done\n- **Found soundness bug**: `hasUnitEmbedding_exists'` axiom claimed every graph (including\n  those with self-loops) has a unit embedding. Self-loops require \u20160\u2016 = 1 = impossible.\n  This axiom could derive `False` for any graph with `adj v v`.\n- **Fixed by elimination**: Reorganized file to move simplex embedding infrastructure (\u00a77)\n  before `graphDimension'` definition (\u00a71), allowing `graphDimension'` to use the\n  proved `hasUnitEmbedding_exists_irrefl` theorem instead of the unsound axiom.\n- Added `Irreflexive adj` hypothesis to `graphDimension'`, `minEdgesForDim_le`,\n  and `minEdgesForDim_achieved` \u2014 mathematically correct since we only study simple graphs.\n- Axiom count: 12 \u2192 11. All remaining axioms are sound (encode computational search\n  results and rigidity bounds not provable in Lean).\n\n### Files Modified\n- `proofs/Proofs/Erdos1007OQ01.lean` \u2014 reorganized, eliminated axiom\n\n---\n\n## Session 2026-03-11 (Session 1) - Survey\n\n**Mode**: FRESH\n**Outcome**: surveyed\n\n### Key Findings\n- OQ01 file fully proved: 25+ theorems, 0 sorries, 12 axioms (now 11 after Session 2)\n- Simplex embedding construction: K_n embeds in \u211d\u207f as unit distances (complete proof)\n- Deficiency function \u03b4(d) = C(d+1,2) - minEdges(d) with d=4 as unique anomaly\n- optimal_implies_monotone: complete graph optimality conjecture \u2192 monotonicity (proved)\n- Growth rate analysis with verified successive differences\n\n### Assessment\n- All provable theorems already proved\n- Axioms encode known values (House 2013, Chaffee-Noble 2016) and search properties\n- General minEdges(d) is genuinely open\n- To make further progress, would need dim(K_n) = n-1 rigidity argument (non-trivial)\n"
+    "markdown": "# Knowledge Base: erdos-1007-oq-01\n\nMinimum edges for graph dimension d in general.\n\n---\n\n## Session 2026-03-14 (Session 2) - Soundness Fix\n\n**Mode**: REVISIT (depth-first, MODERATE knowledge)\n**Outcome**: progress — eliminated unsound axiom, improved formalization\n\n### What Was Done\n- **Found soundness bug**: `hasUnitEmbedding_exists'` axiom claimed every graph (including\n  those with self-loops) has a unit embedding. Self-loops require ‖0‖ = 1 = impossible.\n  This axiom could derive `False` for any graph with `adj v v`.\n- **Fixed by elimination**: Reorganized file to move simplex embedding infrastructure (§7)\n  before `graphDimension'` definition (§1), allowing `graphDimension'` to use the\n  proved `hasUnitEmbedding_exists_irrefl` theorem instead of the unsound axiom.\n- Added `Irreflexive adj` hypothesis to `graphDimension'`, `minEdgesForDim_le`,\n  and `minEdgesForDim_achieved` — mathematically correct since we only study simple graphs.\n- Axiom count: 12 → 11. All remaining axioms are sound (encode computational search\n  results and rigidity bounds not provable in Lean).\n\n### Files Modified\n- `proofs/Proofs/Erdos1007OQ01.lean` — reorganized, eliminated axiom\n\n---\n\n## Session 2026-03-11 (Session 1) - Survey\n\n**Mode**: FRESH\n**Outcome**: surveyed\n\n### Key Findings\n- OQ01 file fully proved: 25+ theorems, 0 sorries, 12 axioms (now 11 after Session 2)\n- Simplex embedding construction: K_n embeds in ℝⁿ as unit distances (complete proof)\n- Deficiency function δ(d) = C(d+1,2) - minEdges(d) with d=4 as unique anomaly\n- optimal_implies_monotone: complete graph optimality conjecture → monotonicity (proved)\n- Growth rate analysis with verified successive differences\n\n### Assessment\n- All provable theorems already proved\n- Axioms encode known values (House 2013, Chaffee-Noble 2016) and search properties\n- General minEdges(d) is genuinely open\n- To make further progress, would need dim(K_n) = n-1 rigidity argument (non-trivial)\n"
   },
   "approaches": [],
   "tags": [
@@ -88,7 +84,7 @@
     "mathlib": []
   },
   "started": "2026-03-07T18:02:01.176Z",
-  "lastUpdate": "2026-03-15T17:30:00Z",
+  "lastUpdate": "2026-03-15T09:45:00Z",
   "significance": 6,
   "tractability": 5
 }

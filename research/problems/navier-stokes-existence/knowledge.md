@@ -313,3 +313,43 @@ CKN, geometric regularity, Leray, Kato, axisymmetric, pressure, decay, profiles,
    - Comprehensive formalization summary (what 10K+ lines have established)
 
 Total session (researcher-1, 2026-03-15): 8 NS iterations adding Parts XLVI-LVI (~2,000 lines).
+
+### Session: 2026-03-15 (researcher-3)
+
+**Added Parts LVII-LX** to NavierStokes.lean (now 11,088 lines, 0 sorries, 0 axioms):
+
+1. **Part LVII: Non-Uniqueness of Leray-Hopf Solutions** - The Albritton-Brué-Colombo (2022) breakthrough:
+   - Jia-Šverák spectral instability mechanism
+   - ABC construction: two distinct Leray-Hopf solutions for forced NS
+   - Implications for Millennium Problem (energy methods insufficient)
+   - Recent developments: small-force non-uniqueness, stochastic regularization
+   - Convex integration vs ABC comparison
+
+2. **Part LVIII: Hyperdissipative NS and Fractional Dissipation** - Lions (1969):
+   - Fractional Laplacian (-Δ)^α framework
+   - Lions threshold: α ≥ 5/4 gives global regularity in 3D
+   - Critical Sobolev exponent analysis: gap = 1/2 at α = 1
+   - Tao's logarithmic improvement: barely more than (-Δ) suffices
+   - Dimensional analysis: 2D threshold α = 1 explains 2D regularity
+   - Dissipation hierarchy from subcritical to open
+
+3. **Part LIX: Arnold's Geometric Fluid Mechanics** - Geodesic interpretation:
+   - Euler equations as geodesics on SDiff(M) with L² metric
+   - Curvature of SDiff and turbulence (negative curvature → instability)
+   - NS as stochastic geodesic (Constantin-Iyer, Arnaudon-Cruzeiro)
+   - Ebin-Marsden manifold theory for SDiff
+   - Brenier optimal transport connection
+   - Geometric regularity insights (curvature bounds, conjugate points)
+   - Euler-Arnold correspondence for multiple PDEs
+
+4. **Part LX: Bounded Domain Regularity** - Boundary effects:
+   - Prandtl boundary layer theory and validity
+   - Stokes operator on bounded domains (discrete spectrum, analyticity)
+   - Cattabriga-Solonnikov estimates
+   - Finite-dimensional dynamics (Foias-Temam attractor, determining modes)
+   - Exponential vs polynomial energy decay
+   - Boundary vs interior regularity distinction
+
+**Aristotle companion**: Added Sections 19-20 with Lions threshold constants, critical Sobolev exponents, dissipation gap, and bounded domain decay rates.
+
+**Key insight**: The Lions threshold α = 5/4 makes the critical Sobolev exponent exactly s_c = 0 (i.e., L²), so the energy estimate controls the critical norm. At standard α = 1, s_c = 1/2 — the energy estimate falls short by exactly this gap, which IS the Millennium Problem.
