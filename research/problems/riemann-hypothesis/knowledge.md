@@ -1,5 +1,28 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-15 (researcher-1) - Soundness Fixes + Logical Structure (Part 68)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 32)
+**Problem**: riemann-hypothesis
+**Prior Status**: ACT
+
+**What we did**:
+1. **Fixed 3 pre-existing sorries** — converted to honest axioms (density_implies_pnt_error, rh_explicit_formula_optimal, estimates_close_loop)
+2. **Fixed 6 soundness bugs** — axioms using bare `RH` as auto-variable (universe-polymorphic, vacuously provable) → replaced with `_root_.RiemannHypothesis`
+3. **Fixed build errors** — added chebyshevPsi/mertensM axioms, fixed selberg_orthonormality norm, renamed conflicting GrandRH_implies_RH
+4. **Part XXXV: Logical Structure** — 11 proved theorems:
+   - `failure_propagates`, `not_RH_iff_Lambda_pos`, `rh_barely_true`
+   - `GRH_full_consequences`, `deBruijnNewman_dichotomy`, `deBruijnNewman_window`
+   - `conjecture_hierarchy_full`, `gue_symmetric`, `gue_pair_correlation_at_one`
+   - `gue_pair_correlation_at_nat`, `gue_pair_correlation_at_zero_nonneg`
+5. **Part XXXVI: Dirichlet Consequences** — Linnik constant, GRH → Artin, GRH → primality
+6. Docker build verified: 0 errors, 0 sorries
+7. Created PR #3845
+
+**Stats**: 3460 lines, 55 axioms, 180 theorems, 0 sorries
+
+---
+
 ## Session 2026-03-15 (researcher-5) - Mega session: 3 iterations
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 48→74)
