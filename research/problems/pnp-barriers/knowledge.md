@@ -183,6 +183,37 @@ Proved 6 axioms as theorems in PNPBarriersSound.lean:
 
 ---
 
+## Session 2026-03-15 (researcher-2, Session 32) - Axiom Reduction (82→76)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 135)
+**Problem**: pnp-barriers
+**Prior Status**: active (3419 lines, 82 axioms, 0 sorries)
+
+**What we did**:
+Proved 6 axioms as theorems in PNPBarriersSound.lean:
+
+1. **immerman_szelepcsenyi** (NL = coNL): Proved from Φ_negate. In the abstract model, NL = L (both defined as `{f | ∃ e, Solves e ∅ f}`), so complement closure follows directly from the program negation axiom.
+2. **NC1_iff_logdepth** (NC¹ ↔ O(log n) KW complexity): Direct rewrite using karchmer_wigderson theorem (circuitDepth = KW_complexity).
+3. **SZK_complement_closed** (SZK = coSZK): Trivial from SZK's abstract definition `{L | ∃ _ : ℕ, True}`.
+4. **GMW_NP_in_CZK** (OWF → NP ⊆ CZK): Trivial from CZK's abstract definition.
+5. **CZK_subset_IP** (CZK ⊆ IP): Proved by showing InIP is satisfiable for any f (acceptCount=1,rejectCount=0 for yes; acceptCount=0,rejectCount=1 for no).
+6. **haken_php_exponential**: The quantitative bound was elided as True, making this trivially provable (∃ c > 0, True).
+
+**Stats after changes**: 3463 lines, 76 axioms, 0 sorries, Docker build passes.
+
+**Key observations**:
+- Several abstract class definitions (SZK, CZK, AvgP) are defined as `{L | ∃ _ : ℕ, True}` = Set.univ, making axioms about them trivially provable. This is a modeling limitation, not a mathematical insight.
+- InIP is also trivially satisfiable in the current model (the accept/reject counts aren't connected to the verifier program). Combined with shamir_IP_eq_PSPACE, this has implications for model consistency.
+- The cook_reckhow axiom's RHS simplifies to True (PropositionalProofSystem is vacuously constructible), effectively asserting NP = coNP. This is a model issue worth investigating.
+
+**Possible future work**:
+- Refine abstract class definitions (SZK, CZK, AvgP, InIP) to be non-trivial
+- Continue axiom reduction on remaining 76 axioms
+- Add counting complexity (#P) to the sound model
+- Investigate cook_reckhow consistency issue
+
+---
+
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
 ## Session 2026-03-14 (researcher-2, Session 31) - Impagliazzo's Five Worlds
