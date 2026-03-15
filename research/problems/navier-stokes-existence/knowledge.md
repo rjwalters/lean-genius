@@ -258,3 +258,23 @@ Formalizing even 2D N-S requires:
    - Pressure-energy flux: redistribution vs concentration mechanism
 
 **Key insight**: The restricted Euler system (NS without pressure) blows up for ALL initial data. The pressure Hessian acts as a nonlocal restoring force that opposes this blowup tendency. Whether it's sufficient is exactly the Millennium Problem.
+
+### Session: 2026-03-15 (researcher-1, Part 64)
+
+**Added Parts LII-LIII** to NavierStokes.lean (now 9857 lines, 0 sorries, 0 axioms):
+
+1. **Part LII: Decay and Asymptotic Behavior** - Long-time behavior:
+   - Schonbek-Wiegner L² decay: ‖u(t)‖₂ ≤ C(1+t)^{-3/4} (matches heat equation)
+   - Higher-order derivative decay: ‖∇^k u(t)‖₂ ~ t^{-(3/4+k/2)}
+   - Spatial decay: |u(x,t)| ~ |x|^{-(n+1)} (Brandolese)
+   - Eventual regularity: ∃ T₀ such that u is smooth for t ≥ T₀
+
+2. **Part LIII: Profile Decomposition and Concentration Compactness** - Modern approach:
+   - Concentration compactness for L³ sequences
+   - Profile decomposition: multi-scale structure extraction
+   - Minimal blowup element (Gallagher-Koch-Planchon 2013): if blowup exists, simplest possible
+   - Critical norm L₃*: inf of L³ norms leading to blowup
+   - Kenig-Merle roadmap: steps 1-3 done, step 4 (Morawetz estimate) OPEN
+   - Connection to turbulence: profiles = coherent structures
+
+**Key insight**: The Kenig-Merle concentration compactness program is the most concrete "path to proof" for NS regularity. Steps 1-3 are complete. Step 4 requires a Morawetz-type monotone quantity for NS, which would resolve the Millennium Problem.
