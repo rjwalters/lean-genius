@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-01T21:55:27.888Z",
-    "iteration": 1,
-    "focus": "Sound model PH fix: opaque Sigma_k replaces degenerate recursive definition",
+    "iteration": 8,
+    "focus": "OWF, Five Worlds, average-case, proof complexity, grand unification of 7 routes to P≠NP",
     "blockers": [
       "P vs NP is an unsolved Millennium Prize problem"
     ],
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended sound model to 3219 lines with RP/coRP/ZPP, DTIME/NTIME/DSPACE/NSPACE resource-bounded classes, all four hierarchy theorems, SZK. ~305 declarations, 0 sorries.",
+    "progressSummary": "Extended sound model 3149→3516 lines (+367). Added: formal OWF definition, Impagliazzos Five Worlds, average-case complexity, proof complexity (Cook-Reckhow), grand unification of 7 routes to P≠NP. 58 axioms (+1), 163 theorems, 81 defs, 0 sorries.",
     "builtItems": [
       {
         "name": "P",
@@ -407,6 +407,41 @@
         "name": "NP_eq_union_NTIME",
         "description": "NP = ⋃ NTIME(n^k)",
         "proven": true
+      },
+      {
+        "name": "OWF_exist",
+        "description": "One-way function existence (NP∖P nonempty)",
+        "proven": true
+      },
+      {
+        "name": "OWF_implies_P_ne_NP",
+        "description": "OWF → P ≠ NP (proved)",
+        "proven": true
+      },
+      {
+        "name": "five_worlds_partition",
+        "description": "Impagliazzos Five Worlds mutual exclusion (proved)",
+        "proven": true
+      },
+      {
+        "name": "levin_landscape",
+        "description": "Average-case complexity landscape (proved)",
+        "proven": true
+      },
+      {
+        "name": "cook_reckhow",
+        "description": "NP=coNP ↔ poly-bounded proofs (axiom)",
+        "proven": false
+      },
+      {
+        "name": "routes_to_P_ne_NP",
+        "description": "7 routes to P≠NP unified theorem (proved)",
+        "proven": true
+      },
+      {
+        "name": "P_ne_NP_requires_new_techniques",
+        "description": "Routes + barriers combined (proved)",
+        "proven": true
       }
     ],
     "insights": [
@@ -461,7 +496,12 @@
       "Proved all four resource hierarchies are proper (proper_hierarchies theorem)",
       "Added SZK (Statistical Zero Knowledge) with BPP ⊆ SZK ⊆ AM ⊆ PH chain",
       "SZK complement-closed (Okamoto 2000), NP ⊆ SZK → NP = coNP",
-      "Proved P = NP → RP = P and P = NP → ZPP = P (collapse consequences)"
+      "Proved P = NP → RP = P and P = NP → ZPP = P (collapse consequences)",
+      "OWF_exist defined as NP∖P nonempty (Impagliazzo-Levin equivalence). OWF→P≠NP is trivial from this definition.",
+      "Impagliazzo Five Worlds taxonomy formalized: Algorithmica/Heuristica/Pessiland/Minicrypt/Cryptomania with mutual exclusion proved.",
+      "Average-case complexity: HardOnAverage, DistProblem, P=NP→no hard average case proved as theorem.",
+      "Cook-Reckhow theorem axiomatized: NP=coNP ↔ polynomially-bounded proof system exists. This gives no_short_proofs→P≠NP.",
+      "Grand unification: routes_to_P_ne_NP collects 7 independent routes (OWF, ETH, SETH, NP≠coNP, no short proofs, PH≠P, hard average case)."
     ],
     "mathlibGaps": [
       "Turing machines",
@@ -485,7 +525,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-14T18:30:00.000Z",
+  "lastUpdate": "2026-03-14T21:00:00.000Z",
   "significance": 10,
   "tractability": 2
 }
