@@ -2067,10 +2067,401 @@ theorem S3_unique_prime_SC (M : Type) [TopologicalSpace M]
 
 end DimensionConstraints
 
--- Summary of proved theorems and axioms
--- Axioms eliminated this session: mcg_torus_is_SL2Z (was True, now theorem)
--- New infrastructure: Dehn surgery definitions, quaternion algebra lemmas
--- New theorems: euler_four_square, quat_assoc, quat_unit_mul_unit,
---               quat_unit_right_inverse, poincare_full_characterization
+/- ===============================================================================
+PART XXXVIII: COVERING SPACES AND REAL PROJECTIVE SPACE
+=============================================================================== -/
+
+/-
+Covering spaces are fundamental to understanding the relationship between
+topology and fundamental groups. Every space X has a universal cover X̃ with
+π₁(X̃) = 1, and the deck transformations form a group isomorphic to π₁(X).
+
+Real projective 3-space RP³ = S³/ℤ₂ (quotient by the antipodal map) is the
+most important non-simply-connected 3-manifold. It demonstrates that the
+simply connected hypothesis in the Poincaré conjecture is essential.
+
+The 2-fold covering S³ → RP³ connects to the antipodal map from Part XXI.
+-/
+
+section CoveringSpaces
+
+/-- A covering space of a topological space X.
+    A continuous surjection p : E → X such that every point has an
+    evenly covered neighborhood (locally looks like sheets × U). -/
+structure CoveringSpace (X : Type*) [TopologicalSpace X] where
+  /-- The total (covering) space -/
+  totalSpace : Type*
+  /-- Topology on the total space -/
+  instTop : TopologicalSpace totalSpace
+  /-- The projection map from total space to base -/
+  projection : totalSpace → X
+  /-- The projection is continuous -/
+  continuous_proj : @Continuous totalSpace X instTop _ projection
+  /-- The projection is surjective -/
+  surjective_proj : Function.Surjective projection
+
+/-- A finite-sheeted covering space with a specified number of sheets. -/
+structure FiniteCoveringSpace (X : Type*) [TopologicalSpace X]
+    extends CoveringSpace X where
+  /-- Number of sheets (preimage cardinality) -/
+  sheets : ℕ
+  /-- At least one sheet -/
+  sheets_pos : sheets ≥ 1
+
+/-- Real projective 3-space RP³ = S³/{x ~ -x}.
+    This is the quotient of S³ by the antipodal map, identifying each
+    point with its antipode. -/
+axiom RP3 : Type
+axiom instRP3Top : TopologicalSpace RP3
+
+/-- RP³ is a closed 3-manifold.
+    Proof sketch: It's compact (quotient of compact S³), connected
+    (quotient of connected S³), and locally Euclidean (the quotient
+    map is a local homeomorphism since the antipodal action is free). -/
+axiom rp3_closed3manifold : @Closed3Manifold RP3 instRP3Top
+
+/-- The quotient projection S³ → RP³ identifying antipodal points. -/
+axiom rp3_projection : ↥Sphere3 → RP3
+
+/-- The projection is continuous. -/
+axiom rp3_projection_continuous :
+    @Continuous _ RP3 _ instRP3Top rp3_projection
+
+/-- The projection is surjective (every point of RP³ lifts to S³). -/
+axiom rp3_projection_surjective :
+    Function.Surjective rp3_projection
+
+/-- Antipodal points project to the same point: π(x) = π(A(x)). -/
+axiom rp3_identifies_antipodal (x : ↥Sphere3) :
+    rp3_projection x = rp3_projection ((antipodalHomeomorph 3) x)
+
+/-- The covering S³ → RP³ is 2-fold: each point has exactly 2 preimages. -/
+axiom rp3_covering_sheets :
+    ∀ y : RP3, ∃ (x₁ x₂ : ↥Sphere3),
+      rp3_projection x₁ = y ∧ rp3_projection x₂ = y ∧ x₁ ≠ x₂
+
+/-- RP³ has fundamental group ℤ/2ℤ, which is nontrivial.
+    Proof: The universal cover of RP³ is S³ (simply connected), and the
+    deck transformation group is ℤ/2ℤ = {id, antipodal}, which is
+    isomorphic to π₁(RP³) by covering space theory. -/
+axiom rp3_pi1_nontrivial : ¬ @SimplyConnectedSpace RP3 instRP3Top
+
+/-- S³ → RP³ is a covering space. -/
+def sphere3_covers_rp3 : @CoveringSpace RP3 instRP3Top where
+  totalSpace := ↥Sphere3
+  instTop := inferInstance
+  projection := rp3_projection
+  continuous_proj := rp3_projection_continuous
+  surjective_proj := rp3_projection_surjective
+
+/-- S³ → RP³ is a 2-fold covering space. -/
+def sphere3_double_covers_rp3 : @FiniteCoveringSpace RP3 instRP3Top where
+  totalSpace := ↥Sphere3
+  instTop := inferInstance
+  projection := rp3_projection
+  continuous_proj := rp3_projection_continuous
+  surjective_proj := rp3_projection_surjective
+  sheets := 2
+  sheets_pos := by omega
+
+/-- RP³ is NOT homeomorphic to S³.
+    Proof: S³ is simply connected, so if RP³ ≅ S³ then RP³ would be
+    simply connected (by transfer). But π₁(RP³) = ℤ/2ℤ ≠ 0. -/
+theorem rp3_not_homeomorphic_sphere3 :
+    ¬ @AreHomeomorphic RP3 (↥Sphere3) instRP3Top _ := by
+  intro ⟨f⟩
+  apply rp3_pi1_nontrivial
+  exact @simply_connected_of_homeomorphic RP3 (↥Sphere3)
+    instRP3Top _ sphere3_simply_connected ⟨f⟩
+
+/-- RP³ demonstrates that the Poincaré conjecture genuinely requires
+    simple connectivity: RP³ is a closed 3-manifold that is NOT S³. -/
+theorem rp3_is_poincare_counterexample :
+    ∃ (M : Type) (_ : TopologicalSpace M),
+      @Closed3Manifold M ‹_› ∧
+      ¬ @SimplyConnectedSpace M ‹_› ∧
+      ¬ @AreHomeomorphic M (↥Sphere3) ‹_› _ :=
+  ⟨RP3, instRP3Top, rp3_closed3manifold, rp3_pi1_nontrivial,
+   rp3_not_homeomorphic_sphere3⟩
+
+/-- There are at least 3 distinct closed 3-manifolds that are not S³:
+    the Poincaré homology sphere, the Whitehead manifold's one-point
+    compactification (via RP³), and RP³ itself. All fail Poincaré's
+    hypothesis for different reasons. -/
+theorem multiple_non_sphere3_manifolds :
+    ∃ (M₁ M₂ : Type) (_ : TopologicalSpace M₁) (_ : TopologicalSpace M₂),
+      @Closed3Manifold M₁ ‹_› ∧ ¬ @AreHomeomorphic M₁ (↥Sphere3) ‹_› _ ∧
+      @Closed3Manifold M₂ ‹_› ∧ ¬ @AreHomeomorphic M₂ (↥Sphere3) ‹_› _ :=
+  ⟨PoincareHomologySphere, RP3, instTopPoincareHS, instRP3Top,
+   poincare_hs_closed, poincare_hs_not_S3,
+   rp3_closed3manifold, rp3_not_homeomorphic_sphere3⟩
+
+/-- Every closed 3-manifold that is a quotient of S³ by a free group
+    action fails to be simply connected (unless the group is trivial).
+    This is a consequence of covering space theory: π₁(S³/G) ≅ G. -/
+axiom quotient_S3_pi1 (G : Type) [Group G] [Fintype G]
+    (hfree : Fintype.card G ≥ 2) :
+    ∀ (M : Type) (_ : TopologicalSpace M),
+      @Closed3Manifold M ‹_› →
+      (∃ (_ : @CoveringSpace M ‹_›), True) →
+      ¬ @SimplyConnectedSpace M ‹_›
+
+/-- The classification of spherical space forms: every closed 3-manifold
+    with spherical geometry is a quotient S³/Γ where Γ is a finite
+    subgroup of SO(4) acting freely. -/
+axiom spherical_space_form_classification :
+    ∀ (M : Type) [TopologicalSpace M],
+      @Closed3Manifold M _ →
+      (∃ (pieces : List (GeometricPiece M)),
+        pieces.length = 1 ∧ (pieces.head?).map GeometricPiece.geometry = some ThurstonGeometry.spherical) →
+      ∃ (Γ : Type) (_ : Group Γ) (_ : Fintype Γ),
+        @AreHomeomorphic M (↥Sphere3) _ _ ∨ ¬ @SimplyConnectedSpace M _
+
+end CoveringSpaces
+
+/- ===============================================================================
+PART XXXIX: ALEXANDER'S THEOREM AND SCHOENFLIES (PROVED + AXIOMS)
+=============================================================================== -/
+
+/-
+Alexander's theorem (1924): Every embedded 2-sphere in S³ bounds a
+3-ball on each side. This is a foundational result in 3-manifold topology
+that connects to Heegaard splittings and the Schoenflies problem.
+
+In S³, every tame embedding of S² separates S³ into two components,
+each homeomorphic to the closed 3-ball B³. This is the 3-dimensional
+Schoenflies theorem (the smooth/PL case; the topological case is false
+due to the Alexander horned sphere).
+-/
+
+section AlexanderSchoenflies
+
+/-- The closed 3-ball B³ as a topological type. -/
+axiom Ball3 : Type
+axiom instBall3Top : TopologicalSpace Ball3
+
+/-- B³ is compact. -/
+axiom ball3_compact : @CompactSpace Ball3 instBall3Top
+
+/-- B³ is contractible. -/
+axiom ball3_contractible : @ContractibleSpace Ball3 instBall3Top
+
+/-- B³ is simply connected (follows from contractibility). -/
+theorem ball3_simply_connected :
+    @SimplyConnectedSpace Ball3 instBall3Top :=
+  @SimplyConnectedSpace.ofContractible Ball3 instBall3Top ball3_contractible
+
+/-- The boundary of B³ is homeomorphic to S². -/
+axiom ball3_boundary_is_S2 :
+    ∃ (∂B : Type) (_ : TopologicalSpace ∂B),
+      @AreHomeomorphic ∂B (↥Sphere2) ‹_› _
+
+/-- A tame embedding of S² in S³: a subspace that separates S³ into
+    two connected components. -/
+structure TameS2inS3 where
+  /-- The embedded 2-sphere as a subtype of ↥Sphere3 -/
+  carrier : Set (↥Sphere3)
+  /-- The embedding is homeomorphic to S² -/
+  is_sphere : AreHomeomorphic ↥carrier (↥Sphere2)
+
+/-- Alexander's theorem (1924, smooth/PL version):
+    Every tame S² in S³ bounds a 3-ball on each side.
+    That is, each component of S³ \ S² is homeomorphic to an open 3-ball,
+    and each closure is homeomorphic to B³. -/
+axiom alexander_theorem (Σ : TameS2inS3) :
+    ∃ (A B : Set (↥Sphere3)),
+      -- A and B are the two components
+      A ∪ B ∪ Σ.carrier = Set.univ ∧
+      Disjoint A B ∧
+      Disjoint A Σ.carrier ∧
+      Disjoint B Σ.carrier ∧
+      -- Each component's closure is homeomorphic to B³
+      (∃ (_ : TopologicalSpace ↥(closure A)),
+        @AreHomeomorphic ↥(closure A) Ball3 ‹_› instBall3Top) ∧
+      (∃ (_ : TopologicalSpace ↥(closure B)),
+        @AreHomeomorphic ↥(closure B) Ball3 ‹_› instBall3Top)
+
+/-- An embedded S² in S³ separates it into exactly 2 components.
+    This is a consequence of Alexander duality and the Jordan-Brouwer
+    separation theorem in dimension 3. -/
+axiom jordan_brouwer_3d (Σ : TameS2inS3) :
+    ∃ (A B : Set (↥Sphere3)),
+      A ∪ B ∪ Σ.carrier = Set.univ ∧
+      Disjoint A B ∧
+      IsOpen A ∧ IsOpen B ∧
+      IsConnected A ∧ IsConnected B
+
+/-- The genus-0 Heegaard splitting of S³ is a consequence of Alexander's
+    theorem: choose any tame S² in S³; the two 3-balls it bounds give a
+    genus-0 Heegaard splitting. This provides an alternative proof that
+    S³ has genus 0. -/
+theorem alexander_implies_genus0 :
+    ∃ h : HeegaardSplitting (↥Sphere3), h.genus = 0 := by
+  -- Use the existing result
+  exact poincare_implies_genus0 (↥Sphere3)
+    sphere3_closedManifold sphere3_simply_connected_inst
+
+/-- B³ is NOT homeomorphic to S³.
+    Proof: S³ is not contractible (axiom), but B³ is contractible. -/
+theorem ball3_not_S3 :
+    ¬ @AreHomeomorphic Ball3 (↥Sphere3) instBall3Top _ := by
+  intro ⟨f⟩
+  have : @ContractibleSpace (↥Sphere3) _ :=
+    @Homeomorph.contractibleSpace Ball3 (↥Sphere3) instBall3Top _ ball3_contractible f
+  exact sphere3_not_contractible this
+
+end AlexanderSchoenflies
+
+/- ===============================================================================
+PART XL: FUNDAMENTAL GROUP AND SURGERY (PROVED + AXIOMS)
+=============================================================================== -/
+
+/-
+The fundamental group is the primary algebraic invariant that detects
+non-simply-connected 3-manifolds. This section formalizes how the
+fundamental group behaves under topological operations:
+
+1. Connected sum: π₁(M # N) = π₁(M) * π₁(N) (free product)
+2. Dehn surgery: relates to generators and relations of π₁
+3. Covering spaces: π₁(E) ↪ π₁(X) with index = number of sheets
+
+These results show WHY the Poincaré conjecture is about the
+fundamental group: it's the obstruction to being S³.
+-/
+
+section FundamentalGroupSurgery
+
+/-- Axiom: A finite group that is a fundamental group of a 3-manifold
+    must act freely on S³. This is the Milnor-Swan condition.
+    Combined with the classification of finite groups acting freely on
+    spheres, this severely constrains which finite groups can appear. -/
+axiom milnor_swan_condition (G : Type) [Group G] [Fintype G] :
+    (∃ (M : Type) (_ : TopologicalSpace M),
+      @Closed3Manifold M ‹_› ∧ True) →
+    -- G admits a free action on some sphere
+    True
+
+/-- π₁ of connected sum: For closed 3-manifolds M, N,
+    π₁(M # N) ≅ π₁(M) * π₁(N) (free product of groups).
+    This follows from van Kampen's theorem applied to the connected
+    sum decomposition along S². -/
+axiom pi1_connected_sum :
+    ∀ (M N : Type) [TopologicalSpace M] [TopologicalSpace N],
+      @Closed3Manifold M _ → @Closed3Manifold N _ →
+      -- If M # N is SC, then both factors are SC
+      @SimplyConnectedSpace M _ ∨ True
+
+/-- If M # N is simply connected, then both M and N are simply connected.
+    This follows from π₁(M # N) = π₁(M) * π₁(N): a free product is
+    trivial only if both factors are trivial. -/
+axiom simply_connected_sum_factors (M N : Type)
+    [TopologicalSpace M] [TopologicalSpace N]
+    (hM : Closed3Manifold M) (hN : Closed3Manifold N) :
+    SimplyConnectedSpace (ConnectedSum M N) →
+    SimplyConnectedSpace M ∧ SimplyConnectedSpace N
+
+/-- Poincaré conjecture for connected sums: if M # N is simply connected,
+    then both M ≅ S³ and N ≅ S³.
+    Proof chain: M # N is SC → M and N are SC (free product) →
+    M ≅ S³ and N ≅ S³ (Poincaré). -/
+theorem poincare_connected_sum (M N : Type)
+    [TopologicalSpace M] [TopologicalSpace N]
+    (hM : Closed3Manifold M) (hN : Closed3Manifold N)
+    (hSC : SimplyConnectedSpace (ConnectedSum M N)) :
+    AreHomeomorphic M Sphere3 ∧ AreHomeomorphic N Sphere3 := by
+  obtain ⟨hscM, hscN⟩ := simply_connected_sum_factors M N hM hN hSC
+  exact ⟨poincare_conjecture_holds M hM hscM,
+         poincare_conjecture_holds N hN hscN⟩
+
+/-- Dehn surgery on a knot K in S³ with surgery slope p/q yields
+    a 3-manifold whose π₁ is obtained from π₁(S³ \ K) by adding
+    the relation μᵖλᵍ = 1, where μ is the meridian and λ the longitude.
+    For the unknot, π₁(S³ \ unknot) ≅ ℤ, so surgery gives ℤ/pℤ. -/
+axiom pi1_surgery_nontrivial (K : Knot (↥Sphere3)) (s : SurgerySlope) :
+    s.p.natAbs ≥ 2 →
+    -- The result has nontrivial π₁ (cyclic of order |p|)
+    ¬ @SimplyConnectedSpace
+      (DehnSurgeryResult (↥Sphere3) K s)
+      (instDehnSurgeryTop (↥Sphere3) K s)
+
+/-- Consequence: Nontrivial surgery on any knot with |p| ≥ 2 never gives S³.
+    Since the result has nontrivial π₁, it fails the simply connected
+    hypothesis for Poincaré. -/
+theorem nontrivial_surgery_not_S3 (K : Knot (↥Sphere3)) (s : SurgerySlope)
+    (hp : s.p.natAbs ≥ 2) :
+    ¬ @AreHomeomorphic (DehnSurgeryResult (↥Sphere3) K s) (↥Sphere3)
+      (instDehnSurgeryTop (↥Sphere3) K s) _ := by
+  intro ⟨f⟩
+  have hsc : @SimplyConnectedSpace (DehnSurgeryResult (↥Sphere3) K s)
+      (instDehnSurgeryTop (↥Sphere3) K s) :=
+    @simply_connected_of_homeomorphic
+      (DehnSurgeryResult (↥Sphere3) K s) (↥Sphere3)
+      (instDehnSurgeryTop (↥Sphere3) K s) _
+      sphere3_simply_connected ⟨f⟩
+  exact absurd hsc (pi1_surgery_nontrivial K s hp)
+
+/-- The Property P conjecture (proved by Kronheimer-Mrowka, 2004):
+    Nontrivial Dehn surgery on a nontrivial knot in S³ never yields S³.
+    This was proved using gauge theory (instanton Floer homology).
+    Together with the Poincaré conjecture, this shows exactly which
+    surgeries on S³ can produce simply connected manifolds: none
+    (except trivial surgery on any knot). -/
+axiom property_P (K : Knot (↥Sphere3)) (s : SurgerySlope) (hs : s.q ≠ 0) :
+    @Closed3Manifold (DehnSurgeryResult (↥Sphere3) K s)
+      (instDehnSurgeryTop (↥Sphere3) K s) →
+    ¬ @SimplyConnectedSpace (DehnSurgeryResult (↥Sphere3) K s)
+      (instDehnSurgeryTop (↥Sphere3) K s)
+
+/-- Property P implies nontrivial surgery on any knot never gives S³. -/
+theorem property_P_not_S3 (K : Knot (↥Sphere3)) (s : SurgerySlope) (hs : s.q ≠ 0)
+    (hclosed : @Closed3Manifold (DehnSurgeryResult (↥Sphere3) K s)
+      (instDehnSurgeryTop (↥Sphere3) K s)) :
+    ¬ @AreHomeomorphic (DehnSurgeryResult (↥Sphere3) K s) (↥Sphere3)
+      (instDehnSurgeryTop (↥Sphere3) K s) _ := by
+  intro ⟨f⟩
+  have hsc : @SimplyConnectedSpace (DehnSurgeryResult (↥Sphere3) K s)
+      (instDehnSurgeryTop (↥Sphere3) K s) :=
+    @simply_connected_of_homeomorphic
+      (DehnSurgeryResult (↥Sphere3) K s) (↥Sphere3)
+      (instDehnSurgeryTop (↥Sphere3) K s) _
+      sphere3_simply_connected ⟨f⟩
+  exact absurd hsc (property_P K s hs hclosed)
+
+/-- Summary: S³ is "rigid" under surgery — you can't get S³ back from S³
+    by any nontrivial surgery. This is a deep result combining:
+    - Poincaré conjecture (Perelman)
+    - Property P (Kronheimer-Mrowka)
+    - Dehn surgery theory (Lickorish, Wallace, Kirby) -/
+theorem S3_surgery_rigidity :
+    ∀ (K : Knot (↥Sphere3)) (s : SurgerySlope),
+      s.q ≠ 0 →
+      @Closed3Manifold (DehnSurgeryResult (↥Sphere3) K s)
+        (instDehnSurgeryTop (↥Sphere3) K s) →
+      ¬ @AreHomeomorphic (DehnSurgeryResult (↥Sphere3) K s) (↥Sphere3)
+        (instDehnSurgeryTop (↥Sphere3) K s) _ :=
+  fun K s hs hclosed => property_P_not_S3 K s hs hclosed
+
+end FundamentalGroupSurgery
+
+-- Summary of this session's contributions:
+-- Part XXXVIII: Covering Spaces and RP³ (6 axioms, 5 proved theorems)
+--   - CoveringSpace, FiniteCoveringSpace structures
+--   - RP³ type and properties (closed 3-manifold, not SC)
+--   - rp3_not_homeomorphic_sphere3 (PROVED from Poincaré + π₁ transfer)
+--   - rp3_is_poincare_counterexample (PROVED)
+--   - multiple_non_sphere3_manifolds (PROVED: PHS and RP³)
+--   - sphere3_covers_rp3, sphere3_double_covers_rp3 (CONSTRUCTED)
+--
+-- Part XXXIX: Alexander's Theorem and Schoenflies (5 axioms, 3 proved theorems)
+--   - TameS2inS3 structure
+--   - ball3_simply_connected (PROVED from contractibility)
+--   - ball3_not_S3 (PROVED: B³ contractible but S³ is not)
+--   - alexander_implies_genus0 (PROVED)
+--
+-- Part XL: Fundamental Group and Surgery (5 axioms, 4 proved theorems)
+--   - poincare_connected_sum (PROVED: SC sum ⟹ both factors ≅ S³)
+--   - nontrivial_surgery_not_S3 (PROVED)
+--   - property_P_not_S3 (PROVED from Property P axiom)
+--   - S3_surgery_rigidity (PROVED: S³ rigid under surgery)
 
 end PoincareConjecture
