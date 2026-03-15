@@ -2,7 +2,7 @@
   "slug": "navier-stokes-existence",
   "title": "Navier-Stokes Existence and Smoothness",
   "phase": "COMPLETED",
-  "status": "completed",
+  "status": "blocked",
   "tier": "S",
   "path": "full",
   "problemStatement": {
@@ -29,36 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: NavierStokes.lean at 7282 lines, 0 sorries, 0 errors. Parts XXXVIII-XL added: Helicity/Beltrami flows, Pressure estimates/CZ theory, Liouville theorems (KNSS/Landau). Also fixed 3 pre-existing Mathlib API bugs.",
-    "builtItems": [
-      "Part XXXVI: FujitaKato section in NavierStokes.lean (heat semigroup, mild solutions, Kato existence, Koch-Tataru)",
-      "Part XXXVII: BlowupClassification section (Type I/II, ESS theorem, Leray self-similar, Tao bounds, minimal blowup)",
-      "Part XXXVIII: Helicity section (Beltrami flows, helicity bounds, relative helicity, dissipation)",
-      "Part XXXIX: PressureEstimates section (Calderon-Zygmund, pressure-based regularity criteria, strain-vorticity decomposition, negative pressure criterion)",
-      "Part XL: LiouvilleTheorems section (KNSS theorem, Seregin zero theorem, stationary Liouville, Landau solution, millennium connection)"
-    ],
-    "insights": [
-      "Fujita-Kato theory gives local existence in L³ with T ~ ‖u₀‖^{-4} quartic scaling",
-      "Koch-Tataru (2001) extended small data global existence to BMO⁻¹ (largest critical space)",
-      "Self-similar (Type I) blowup ruled out by Nečas-Růžička-Šverák (1996) + Tsai (1998)",
-      "ESS theorem (2003): any blowup must have ‖u(t)‖_{L³} → ∞ (L³ regularity)",
-      "Tao (2019): L³ control gives only triple-exponential H¹ bounds (supercritical barrier)",
-      "Fixed false Serrin pair in Aristotle file (p=6,q=3 was wrong)",
-      "File is at 6658 lines with 241 proved theorems, 0 axioms, 0 sorries - fully self-contained",
-      "Covers Parts I-XXXVII spanning: constants, inequalities, ancient solutions, NS structure, Type II, stability, concentration, CKN, 2D global existence, Leray-Hopf, Serrin, turbulence, BKM, weak-strong uniqueness, Kolmogorov, Ladyzhenskaya, Onsager, dissipation anomaly, regularity criteria, MHD, heat, Burgers, convex integration, singularity classification, stochastic NS, compressible NS, critical Sobolev, vorticity, boundary conditions, Fujita-Kato, blowup classification",
-      "2D global existence is PROVEN without axioms via GlobalNSSolution2D and enstrophy bound",
-      "3D conditional regularity proved via NSAxioms structure (no Lean axiom declarations)",
-      "All 35 original axioms have been eliminated (proved or removed as dead code)",
-      "File has pre-existing build errors but all theorems compile correctly",
-      "Helicity H = ∫ u·ω is conserved in Euler, decays in NS; |H|² ≤ E·Ω (Schwarz bound)",
-      "Beltrami flows (ω = λu) are curl eigenstates, decay exponentially under NS: E(t) ≤ A₀²e^{-2νλ²t}",
-      "Pressure satisfies -Δp = ∂ᵢ∂ⱼ(uᵢuⱼ); CZ gives ‖p‖_{Lq} ≤ C‖u‖²_{L^{2q}}",
-      "Pressure regularity: 2/α + 3/β ≤ 2 (vs Serrin 2/p + 3/q ≤ 1) reflects quadratic nonlinearity",
-      "KNSS Liouville: bounded ancient solutions are zero → rules out Type I blowup",
-      "Stationary Liouville critical exponent is 9/2 (not 3); gap 9/2 - 3 = 3/2 measures distance to Millennium",
-      "Landau solution (u ~ C/|x|) shows L³ threshold is sharp: ‖u‖_{Lp} < ∞ iff p < 3",
-      "Fixed 3 pre-existing Mathlib API bugs: zpow_pos, div_le_div_iff, rwa/lt_div_iff₀"
-    ],
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [
       "Sobolev spaces",
       "PDEs"
@@ -85,7 +58,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-02-21T19:21:07.125Z",
+  "lastUpdate": "2026-03-14T19:01:45.282Z",
   "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1
