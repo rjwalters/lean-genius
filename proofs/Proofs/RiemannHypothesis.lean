@@ -2493,11 +2493,24 @@ axiom ankeny_theorem :
       ∃ a : ℕ, 2 ≤ a ∧ (a : ℝ) ≤ C * (Real.log p) ^ 2 ∧
         ¬∃ b : ℕ, b ^ 2 % p = a % p
 
-/-- **Bombieri-Vinogradov Theorem**: For any A > 0, there exists B > 0 such that
-Σ_{q ≤ √x / (log x)^B} max_{a: gcd(a,q)=1} |π(x;q,a) - Li(x)/φ(q)| ≪ x/(log x)^A.
+/-- **Bombieri-Vinogradov Theorem (1965)**: The GRH error term holds "on average"
+over moduli q ≤ √x / (log x)^B, unconditionally.
 
-This gives the GRH error term "on average" unconditionally. -/
-axiom bombieri_vinogradov : Prop
+For any A > 0, there exists B > 0 such that
+Σ_{q ≤ Q} max_{gcd(a,q)=1} |π(x;q,a) - Li(x)/φ(q)| ≪ x/(log x)^A
+where Q = √x / (log x)^B.
+
+This is arguably the most important unconditional result in the theory,
+as it serves as an "average GRH" and is the key input for sieve methods.
+It replaces GRH in many applications (e.g., Goldbach-type problems, twin primes).
+
+**Note**: Full formalization requires prime counting in arithmetic progressions
+π(x;q,a) = #{p ≤ x : p ≡ a (mod q)}, which needs additional infrastructure.
+
+**References**:
+- Bombieri, E. (1965). "On the large sieve"
+- Vinogradov, A.I. (1965). "The density hypothesis for Dirichlet L-series" -/
+axiom BombieriVinogradovTheorem : Prop
 
 /-- q² ≤ (q log q)² for q ≥ 2, since log q ≥ 1 (PROVED). -/
 theorem sq_le_sq_mul_log_sq (q : ℕ) (hq : q ≥ 2) :
