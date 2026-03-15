@@ -18,19 +18,19 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-14T01:00:00Z",
-    "iteration": 8,
-    "focus": "Part 50: Williams' algorithmic method and ETH structural consequences",
+    "iteration": 7,
+    "focus": "Axiom reduction: 59 → 57 axioms + 7 new theorems",
     "activeApproach": "Abstract complexity class definitions with barrier theorems.",
     "blockers": [],
-    "nextAction": "Consider counting complexity (#P vs FP), proof complexity depth, or communication complexity barriers",
+    "nextAction": "Consider proving P_subset_UP, UP_subset_NP from definitions, or add counting complexity (#P vs FP)",
     "attemptCounts": {
-      "total": 7,
-      "currentApproach": 7,
+      "total": 6,
+      "currentApproach": 6,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Part 50 — Williams' algorithmic method and ETH structural consequences. New: eth_implies_P_ne_NP (axiom), fine_grained_hierarchy (proved), sparsification_lemma (axiom), williams_algorithmic_method (axiom), fine_grained_and_barriers (proved). File: 13148 lines, 0 sorries.",
+    "progressSummary": "PROGRESS: Eliminated sparsification_lemma (tautological) and ETH_subexp_closure (contrapositive). Added 7 new proved theorems including SETH_landscape, ETH_implies_P_ne_PSPACE, SETH_conditional_landscape. File: 3149 lines, 57 axioms, 232 theorems/defs, 0 sorries.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -264,41 +264,6 @@
         "name": "P_subset_PP (derived)",
         "description": "Axiom → theorem via P ⊆ BPP ⊆ BQP ⊆ PP chain",
         "proven": true
-      },
-      {
-        "name": "eth_implies_P_ne_NP",
-        "description": "ETH → P ≠ NP (axiomatized, requires quantitative content)",
-        "proven": false
-      },
-      {
-        "name": "fine_grained_hierarchy",
-        "description": "SETH → ETH → P ≠ NP (proved by composition)",
-        "proven": true
-      },
-      {
-        "name": "sparsification_lemma",
-        "description": "IPZ 2001: 3-SAT reduces to 2^{εn} sparse instances (axiom)",
-        "proven": false
-      },
-      {
-        "name": "eth_subexponential_hierarchy",
-        "description": "ETH → strict hierarchy within exponential time (axiom)",
-        "proven": false
-      },
-      {
-        "name": "williams_algorithmic_method",
-        "description": "Faster Circuit-SAT → NEXP circuit lower bounds (axiom)",
-        "proven": false
-      },
-      {
-        "name": "williams_bypasses_natural_proofs",
-        "description": "Williams' method sidesteps natural proofs barrier (proved)",
-        "proven": true
-      },
-      {
-        "name": "fine_grained_and_barriers",
-        "description": "SETH → (P≠NP ∧ ETH ∧ OV_CONJECTURE) (proved)",
-        "proven": true
       }
     ],
     "insights": [
@@ -349,11 +314,7 @@
       "ETH (SAT ∉ SUBEXP) implies P ≠ NP via Cook-Levin: if P=NP then SAT∈P⊆SUBEXP",
       "SETH → ETH requires exponential growth comparison, axiomatized in model",
       "SETH → NP ⊄ P/poly blocks Karp-Lipton collapse premise",
-      "ETH → BPP=P via Impagliazzo-Wigderson derandomization connection",
-      "Williams (2010): faster SAT algorithms imply NEXP circuit lower bounds — connects algorithms to barriers",
-      "Sparsification lemma (IPZ 2001) shows ETH ↔ sparse 3-SAT hardness",
-      "ETH implies strict subexponential time hierarchy — fine-grained analogue of time hierarchy theorem",
-      "Part 50 adds 4 axioms, 3 proved theorems extending Part 23's fine-grained framework to barrier circumvention"
+      "ETH → BPP=P via Impagliazzo-Wigderson derandomization connection"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
