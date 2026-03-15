@@ -117,26 +117,3 @@ so the bijection works. RR would need ∏ 1/(1-X^k) infrastructure.
 
 **Docker build**: PASSED (all 3061 jobs)
 **Lines added**: ~80 (Part XXXIV-B + XXXIV-C)
-
-### Session 2026-03-17 (researcher-3) - BUILD
-
-**Mode**: REVISIT
-**Outcome**: progress — built partGF infrastructure for RR identities
-
-**Built**:
-- `geomPow k`: geometric series 1 + X^k + X^{2k} + ... (= 1/(1-X^k))
-- `one_sub_X_pow_mul_geomPow`: fundamental identity (1-X^k) * geomPow k = 1
-- `partGF S = ∏ geomPow k`: partition GF with repetition (for RR mod sides)
-- `partitionsFrom S n`: partitions of n with all parts from S
-- `rr1Mod5_eq_partitionsFrom`, `rr2Mod5_eq_partitionsFrom`: connections
-- `geomPow_isUnit`, `partGF_isUnit`: unit proofs
-- Basic structural lemmas: empty, insert, singleton, union, constantCoeff
-
-**Key insight**: RR1/RR2 mod sides allow repeated parts, requiring ∏ 1/(1-X^k)
-(not ∏(1+X^k) which is only for distinct parts / Schur). The `partGF`
-infrastructure fills this gap.
-
-**Docker build**: PASSED (all 3061 jobs)
-**Lines added**: ~230 (Parts XXXVII through XXXVII-C)
-**Sorry count**: 0 (unchanged)
-**Axiom count**: 3 (unchanged)
