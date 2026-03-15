@@ -1242,10 +1242,13 @@ of harmonic numbers (H_n ~ log n + γ) and careful analysis of small cases.
   American Mathematical Monthly, 109(6), 534-543. -/
 axiom RH_iff_Lagarias : RiemannHypothesis ↔ LagariasInequality
 
-/-- Lagarias implies Robin: if σ(n) ≤ H_n + e^{H_n} ln(H_n) for all n ≥ 1,
-then σ(n) < e^γ n log log n for all n > 5040. This follows from the
-asymptotic H_n ~ log n + γ. -/
-axiom Lagarias_implies_Robin : LagariasInequality → RobinsInequality
+/-- **Lagarias implies Robin** (PROVED from equivalences).
+
+Both Lagarias's inequality and Robin's inequality are equivalent to RH.
+Therefore Lagarias → RH → Robin, eliminating the need for an independent proof
+using harmonic number asymptotics. -/
+theorem Lagarias_implies_Robin : LagariasInequality → RobinsInequality :=
+  fun h => RH_iff_Robin.mp (RH_iff_Lagarias.mpr h)
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XIV: ZETA SPECIAL VALUES (PROVED)
