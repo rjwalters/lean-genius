@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Session total 36 proved theorems across 2 files. Main: 2028 lines, 100 theorems. Consequences: 1060 lines, 93 theorems. Combined: 28 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: 8 equivalent formulations (was 7), 227 total theorems+defs, 38 axioms, 0 sorries across 3500+ lines. New: Speiser, Montgomery, Cramer, Backlund, Turan, Miller.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -65,7 +65,15 @@
         "name": "cross_equivalences_complete",
         "description": "NymanBeurling+WeilPositivity cross-equivalences (4 new theorems)",
         "proven": true
-      }
+      },
+      "SpeiserCriterion axiom + RH_iff_Speiser + cross-equivalences in RiemannHypothesis.lean",
+      "Montgomery pair correlation conjecture + GUE kernel symmetry theorem in RiemannHypothesis.lean",
+      "CramerConjecture definition + RH_implies_prime_gap axiom in RiemannHypothesis.lean",
+      "Backlund bound + RH S(T) bound axioms in RiemannHypothesis.lean",
+      "Turán inequalities axiom + coefficient bounds (proved) in RiemannHypothesis.lean",
+      "Miller primality under GRH axiom in RiemannHypothesis.lean",
+      "all_negations_equivalent + RH_implication_chain theorems (proved) in RiemannHypothesis.lean",
+      "RH_equivalence_class_extended: 8-way equivalence (proved) in RiemannHypothesis.lean"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
@@ -85,7 +93,14 @@
       "Perfect numbers verified: σ(6) = 2·6, σ(28) = 2·28",
       "Added prime counting function section to Consequences: π(1) through π(100) computed via native_decide",
       "Prime density decreasing proved: π(100)/100 < π(10)/10",
-      "Bertrand postulate verified at small cases: π(2n) > π(n) for n=2,3,5"
+      "Bertrand postulate verified at small cases: π(2n) > π(n) for n=2,3,5",
+      "Speiser equivalence (1934): RH iff zeta-prime has no zeros in 0 < Re(s) < 1/2 — 8th formulation",
+      "Montgomery pair correlation (1973): zero spacings match GUE random matrix statistics",
+      "Cramér conjecture: prime gaps O((log p)²) — stronger than RH gap bound O(√p log p)",
+      "Backlund theorem (1918): S(T) = O(log T) unconditionally; RH improves to O(log T/log log T)",
+      "Turán inequalities: xi-function derivatives satisfy Newton inequalities (proved 1986)",
+      "Miller primality: GRH gives deterministic polynomial-time primality test",
+      "Complete negation equivalence class: if any formulation fails, all fail (proved)"
     ],
     "mathlibGaps": [
       "Dirichlet series",
