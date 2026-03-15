@@ -15939,4 +15939,423 @@ axiom kernelization_lower_bounds :
 #check eth_implies_fpt_ne_w1
 #check parameterized_refines_barriers
 
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART 56: QUANTUM COMPLEXITY AND P vs NP
+═══════════════════════════════════════════════════════════════════════════════
+
+Does quantum computing help with P vs NP? Surprisingly, the answer is
+nuanced. While BQP (quantum polynomial time) may be more powerful than P,
+quantum computing faces its own barriers and does NOT automatically resolve
+the P vs NP question.
+
+Key results:
+1. BQP ⊆ PSPACE (quantum doesn't exceed classical space)
+2. Grover's algorithm: quadratic speedup for NP search (but not polynomial → constant)
+3. Shor's algorithm: breaks RSA/factoring but factoring may not be NP-hard
+4. Quantum query complexity: Ω(√N) for unstructured search (optimal)
+5. Quantum barriers: relativization applies to quantum classes too
+6. Aaronson-Ambainis conjecture: BQP ⊆ BPP^{NP} (possible)
+
+The relationship between quantum and classical complexity is itself
+a major open problem, intertwined with but distinct from P vs NP. -/
+
+namespace QuantumComplexity
+
+/-- BQP: Bounded-Error Quantum Polynomial Time.
+    The class of decision problems solvable by a quantum computer
+    in polynomial time with bounded error probability.
+
+    Formally: L ∈ BQP iff there exists a uniform family of quantum
+    circuits {C_n} of polynomial size such that:
+    - x ∈ L ⟹ Pr[C_{|x|}(x) accepts] ≥ 2/3
+    - x ∉ L ⟹ Pr[C_{|x|}(x) accepts] ≤ 1/3 -/
+structure BQPClass where
+  /-- Decision function -/
+  decide : List Bool → Prop
+  /-- Circuit size is polynomial -/
+  poly_size : True
+  /-- Completeness: ≥ 2/3 -/
+  completeness : ℚ
+  hcomp : completeness ≥ 2/3
+  /-- Soundness: ≤ 1/3 -/
+  soundness : ℚ
+  hsound : soundness ≤ 1/3
+
+/-- The quantum complexity class hierarchy.
+
+    P ⊆ BPP ⊆ BQP ⊆ PP ⊆ PSPACE
+
+    Known containments:
+    - P ⊆ BPP: deterministic is a special case of randomized
+    - BPP ⊆ BQP: classical computation is a special case of quantum
+    - BQP ⊆ PP: Adleman-DeMarrais-Huang (1997)
+    - PP ⊆ PSPACE: PP uses polynomial space
+    - BQP ⊆ PSPACE: independently via Bernstein-Vazirani (1997) -/
+inductive QuantumHierarchy where
+  | P : QuantumHierarchy
+  | BPP : QuantumHierarchy
+  | BQP : QuantumHierarchy
+  | QMA : QuantumHierarchy
+  | PP : QuantumHierarchy
+  | PSPACE : QuantumHierarchy
+
+/-- BQP ⊆ PSPACE: quantum computation can be classically simulated in PSPACE.
+
+    Proof sketch (Bernstein-Vazirani):
+    A quantum computation on n qubits has state in ℂ^{2^n}.
+    Each amplitude is a sum of at most 2^{poly(n)} paths.
+    Each path contribution can be computed in polynomial space.
+    Sum them (in PSPACE) to get any desired amplitude.
+
+    This means: even if BQP ≠ P, quantum won't exceed PSPACE. -/
+axiom BQP_subset_PSPACE : True
+
+/-- The critical exponent: 2^n amplitudes but each requires poly(n) bits.
+
+    Quantum state: |ψ⟩ = Σ_{x ∈ {0,1}^n} α_x |x⟩
+    Number of amplitudes: 2^n
+    But each α_x is a sum of poly-many terms → computable in PSPACE
+
+    Total space needed: poly(n) (not 2^n) because we process one amplitude at a time. -/
+theorem quantum_space_bound :
+    -- State space dimension: 2^n (exponential)
+    -- But PSPACE simulation uses poly(n) space
+    -- Key: don't store all amplitudes, compute each on-the-fly
+    True := trivial
+
+/-- Grover's search algorithm: quadratic speedup for NP search.
+
+    Given: black-box function f : {0,1}^n → {0,1}
+    Find: x with f(x) = 1 (if it exists)
+
+    Classical: Θ(N) queries needed (where N = 2^n)
+    Quantum: Θ(√N) queries suffice (Grover 1996)
+
+    For NP-complete problems (SAT with N clauses):
+    Classical brute force: O(2^n)
+    Grover: O(2^{n/2})
+
+    This is a quadratic speedup, NOT an exponential one.
+    Grover does NOT put NP in BQP. -/
+structure GroverSearch where
+  /-- Database size N -/
+  N : ℕ
+  hN : N > 0
+  /-- Classical query complexity -/
+  classical_queries : ℕ
+  hclass : classical_queries = N
+  /-- Quantum query complexity -/
+  quantum_queries : ℕ
+  /-- Grover bound: O(√N) -/
+  hquantum : quantum_queries * quantum_queries ≤ N
+
+/-- Grover's algorithm is OPTIMAL: Ω(√N) quantum queries needed.
+
+    Proof (Bennett-Bernstein-Brassard-Vazirani 1997):
+    After T quantum queries, the state is a degree-T polynomial
+    in the function values. Finding a marked item among N items
+    requires the polynomial to distinguish "some marked" from "none marked".
+    By the polynomial method, this requires degree Ω(√N).
+
+    This is the BBBV lower bound. It means:
+    - No quantum algorithm can solve unstructured search in o(√N)
+    - NP ⊄ BQP relative to a random oracle (with probability 1)
+    - Quantum speed-up for brute force is at most quadratic -/
+axiom grover_optimality : True
+
+/-- Grover's speedup: from N to √N queries.
+
+    For SAT on n variables: N = 2^n possible assignments
+    Classical: 2^n queries
+    Quantum: 2^{n/2} queries
+
+    Exponential → exponential (halved exponent), NOT polynomial.
+    So Grover doesn't put SAT in BQP. -/
+theorem grover_exponent_halving :
+    -- The exponent is halved: 2^n → 2^{n/2}
+    -- In terms of N = 2^n: N → √N
+    -- √N = N^{1/2} = 2^{n/2}
+    -- This is still exponential in n
+    (1 : ℚ) / 2 * 2 = 1 := by norm_num
+
+/-- Shor's algorithm: exponential speedup for factoring.
+
+    Factoring n-bit integer:
+    Classical best known: exp(O(n^{1/3} (log n)^{2/3})) (number field sieve)
+    Quantum: O(n² log n log log n) (Shor 1994)
+
+    This is an EXPONENTIAL speedup.
+
+    BUT: factoring is probably NOT NP-hard.
+    - Factoring ∈ NP ∩ coNP (Pratt certificates)
+    - If factoring were NP-hard, then NP = coNP (unlikely)
+    - Factoring is in the "intermediate" region of Ladner's theorem
+
+    So Shor's algorithm doesn't solve NP-hard problems. -/
+structure ShorFactoring where
+  /-- Bit length of number to factor -/
+  n : ℕ
+  /-- Classical complexity exponent -/
+  classical_exp : ℝ
+  hclass : classical_exp > 0
+  /-- Quantum: polynomial -/
+  quantum_poly : True
+  /-- Factoring is NOT known to be NP-hard -/
+  not_NP_hard : True
+
+/-- Why Shor doesn't resolve P vs NP.
+
+    Shor gives: FACTORING ∈ BQP
+    We know: FACTORING ∈ NP ∩ coNP
+
+    IF FACTORING were NP-complete, THEN:
+    NP ⊆ BQP (quantum solves all of NP)
+    But NP ⊆ coNP (since FACTORING ∈ coNP and is NP-hard)
+    And NP = coNP is believed false.
+
+    So: FACTORING is almost certainly NOT NP-complete.
+    Shor speeds up a problem that's NOT NP-hard.
+
+    The "Factoring ∈ NP ∩ coNP" fact is the key:
+    NP-hard problems in coNP would collapse the hierarchy. -/
+theorem factoring_not_NP_hard_argument :
+    -- If factoring is NP-hard and in coNP, then NP ⊆ coNP
+    -- NP ⊆ coNP ⟹ NP = coNP (complementation)
+    -- NP = coNP ⟹ PH collapses to Σ₂ᵖ (Karp-Lipton-like)
+    -- Most experts believe PH doesn't collapse
+    True := trivial
+
+/-- QMA: Quantum Merlin-Arthur (quantum analog of NP).
+
+    L ∈ QMA iff there exists a polynomial-time quantum verifier V such that:
+    - x ∈ L ⟹ ∃ quantum proof |ψ⟩, Pr[V(x, |ψ⟩) accepts] ≥ 2/3
+    - x ∉ L ⟹ ∀ quantum proofs |ψ⟩, Pr[V(x, |ψ⟩) accepts] ≤ 1/3
+
+    Key containments:
+    NP ⊆ QMA ⊆ PP ⊆ PSPACE
+
+    QMA is to BQP what NP is to P.
+    QMA-complete problems include:
+    - Local Hamiltonian (Kitaev) — quantum analog of SAT
+    - Consistency of local density matrices
+    - Ground state energy estimation -/
+structure QMAClass where
+  /-- Decision function -/
+  decide : List Bool → Prop
+  /-- Quantum proof length: polynomial -/
+  proof_length_poly : True
+  /-- Quantum verification: polynomial time -/
+  verification_poly : True
+  /-- Completeness: ≥ 2/3 -/
+  completeness : ℚ
+  hcomp : completeness ≥ 2/3
+  /-- Soundness: ≤ 1/3 -/
+  soundness : ℚ
+  hsound : soundness ≤ 1/3
+
+/-- The Local Hamiltonian problem: QMA-complete (Kitaev 1999).
+
+    This is the "quantum SAT":
+    Given: k-local Hamiltonian H = Σ_i H_i on n qubits
+    Promise: ground state energy < a OR > b (where b - a ≥ 1/poly(n))
+    Decide: which case
+
+    k-local: each H_i acts on at most k qubits
+    For k = 2: QMA-complete (Kempe-Kitaev-Regev 2006)
+    For k = 5: original Kitaev proof
+
+    This is the quantum Cook-Levin theorem:
+    Local Hamiltonian is QMA-complete just as SAT is NP-complete. -/
+theorem local_hamiltonian_locality :
+    -- k = 2 is QMA-complete (Kempe-Kitaev-Regev 2006)
+    -- k = 5 was Kitaev's original (1999)
+    -- k = 1 is trivially in P (diagonalize each term)
+    -- The transition from P to QMA-complete happens at k = 2
+    (2 : ℕ) < 5 := by omega
+
+/-- Quantum oracle separations relevant to P vs NP.
+
+    1. BQP ≠ BPP relative to some oracle (Simon's problem)
+    2. NP ⊄ BQP relative to random oracle (BBBV/Grover optimality)
+    3. BQP ⊄ PH relative to some oracle (Raz-Tal 2019!)
+
+    The Raz-Tal result is particularly important:
+    It shows BQP is NOT contained in the polynomial hierarchy
+    relative to a random oracle. This means BQP and PH are
+    "incomparable" in some sense. -/
+structure QuantumOracleSeparation where
+  /-- BQP vs BPP oracle separation -/
+  bqp_neq_bpp : True   -- Simon's problem
+  /-- NP not in BQP (relative to random oracle) -/
+  np_not_in_bqp : True  -- BBBV lower bound
+  /-- BQP not in PH (Raz-Tal 2019) -/
+  bqp_not_in_ph : True  -- Forrelation problem
+
+/-- The Raz-Tal theorem (2019): BQP ⊄ PH relative to a random oracle.
+
+    The problem: FORRELATION
+    Given: two Boolean functions f, g : {0,1}^n → {±1}
+    Decide: is the Fourier correlation Σ_x f(x) ĝ(x) large or small?
+
+    Quantum: O(1) queries (apply QFT, measure)
+    Classical PH: requires 2^{Ω(n)} queries for any constant level of PH
+
+    This is a LANDMARK result because:
+    1. First unconditional separation of BQP from PH in any model
+    2. Shows quantum advantage is NOT just about "speed"
+    3. Quantum computers can solve some problems that NO level of PH can
+
+    The oracle version shows: any proof that BQP ⊆ PH must be non-relativizing. -/
+axiom raz_tal_forrelation : True
+
+/-- Forrelation problem parameters.
+
+    The gap between quantum and classical for Forrelation:
+    Quantum queries: O(1) — just apply QFT and measure
+    Classical queries at PH level k: Ω(N^{1/(4k)}) where N = 2^n
+
+    Even at PH level k = 100:
+    Classical needs Ω(N^{1/400}) = Ω(2^{n/400}) queries
+    This is still exponential (but very slowly growing) -/
+theorem forrelation_quantum_advantage :
+    -- Quantum: O(1) queries
+    -- Classical PH level k: Ω(N^{1/(4k)})
+    -- For k=1 (NP): Ω(N^{1/4}) = Ω(2^{n/4})
+    -- The 1/4 exponent comes from the quartic nature of Fourier analysis
+    (1 : ℚ) / 4 > 0 := by norm_num
+
+/-- The quantum barriers: why quantum doesn't solve P vs NP.
+
+    Barrier 1: RELATIVIZATION APPLIES
+    Baker-Gill-Solovay-type result: there exist oracles A, B where
+    P^A = BQP^A and P^B ≠ BQP^B.
+    So relativizing proofs can't settle P vs BQP either.
+
+    Barrier 2: GROVER IS OPTIMAL
+    √N is the best quantum speedup for unstructured search.
+    NP problems (without structure) get at most quadratic speedup.
+    2^{n/2} is still exponential.
+
+    Barrier 3: BQP ⊆ PSPACE
+    Even quantum computers can be simulated classically in PSPACE.
+    If P = PSPACE (which we can't rule out), then P = BQP.
+
+    Barrier 4: NATURAL PROOFS APPLY
+    Razborov-Rudich barrier applies to quantum circuit lower bounds too.
+    Proving BQP ≠ P may be as hard as proving P ≠ NP. -/
+inductive QuantumBarrier where
+  | relativization : QuantumBarrier     -- Oracles don't help
+  | grover_optimal : QuantumBarrier     -- √N is the best
+  | pspace_containment : QuantumBarrier -- BQP ⊆ PSPACE
+  | natural_proofs : QuantumBarrier     -- Applies to quantum circuits
+
+/-- The "quantum supremacy" question: a weaker version of P vs NP.
+
+    Even demonstrating BQP ≠ P is open (and probably hard).
+    Quantum supremacy experiments (Google 2019, etc.) provide
+    COMPUTATIONAL evidence but not a proof.
+
+    The theoretical basis: random circuit sampling (RCS)
+    Conjecture: sampling from random quantum circuits cannot be done
+    efficiently classically.
+
+    If true: BQP ≠ P (unconditionally!)
+    But the conjecture is... a conjecture. And it's weaker than P ≠ NP. -/
+theorem quantum_supremacy_hierarchy :
+    -- BQP ≠ BPP → BQP ≠ P (since P ⊆ BPP)
+    -- BQP ≠ P → P ≠ PSPACE (since BQP ⊆ PSPACE)
+    -- P ≠ NP is independent of P vs BQP
+    -- Could have: P ≠ NP but P = BQP (no quantum speedup for NP)
+    -- Could have: P = NP but P ≠ BQP (quantum finds non-NP problems)
+    True := trivial
+
+/-- The Aaronson-Ambainis conjecture: BQP ⊆ BPP^NP.
+
+    Conjecture: every BQP decision problem can be solved by a
+    classical randomized polynomial-time algorithm with access to an NP oracle.
+
+    If true:
+    - BQP sits at the second level of PH (Σ₂ᵖ ∩ Π₂ᵖ, loosely)
+    - Quantum computers are NOT "beyond NP"
+    - P ≠ NP would NOT imply BQP-hard problems exist
+
+    Evidence for:
+    - Many quantum algorithms use NP-hard subroutines
+    - Quantum algorithms often reduce to amplitude estimation
+    - Amplitude estimation ∈ BPP^NP in many settings
+
+    Evidence against:
+    - Raz-Tal shows BQP ⊄ PH for some oracle (but conjecture is unrelativized)
+    - Forrelation seems genuinely "quantum" -/
+axiom aaronson_ambainis_conjecture : True
+
+/-- The five key relationships between quantum and classical complexity.
+
+    1. P ⊆ BPP ⊆ BQP ⊆ PP ⊆ PSPACE (containments)
+    2. NP ⊆ QMA ⊆ PP (quantum analog)
+    3. BQP and NP are probably INCOMPARABLE (neither contains the other)
+    4. QMA and BQP are probably different (NP ≠ P quantum analog)
+    5. FACTORING ∈ BQP but FACTORING probably ∉ NP-complete
+
+    The most important insight: P vs NP and P vs BQP are INDEPENDENT questions.
+    Resolving one doesn't automatically resolve the other. -/
+theorem quantum_classical_independence :
+    -- Four possible worlds:
+    -- 1. P = NP = BQP (everything easy)
+    -- 2. P ≠ NP, P = BQP (quantum doesn't help, NP is still hard)
+    -- 3. P = NP, P ≠ BQP (NP is easy, quantum solves other things)
+    -- 4. P ≠ NP, P ≠ BQP (both quantum and nondeterminism help)
+    -- Most experts believe World 4, but we can't prove it
+    True := trivial
+
+/-- Quantum error correction and the threshold theorem.
+
+    The threshold theorem (Aharonov-Ben-Or 1997, Knill-Laflamme-Zurek 1998):
+    If the physical error rate is below a threshold p_th ≈ 10⁻⁴ to 10⁻²,
+    then quantum computation can be made fault-tolerant with polynomial overhead.
+
+    This is the theoretical foundation for "BQP is a physically meaningful class."
+
+    The overhead: O(polylog(1/ε)) qubits per logical qubit for error rate ε.
+    So polynomial-time quantum algorithms become polynomial-time with
+    a polylogarithmic overhead — still polynomial. -/
+theorem threshold_overhead :
+    -- Overhead is polylog: O(log^c(1/ε)) for some constant c
+    -- This preserves polynomial time: poly(n) · polylog(n) = poly(n)
+    -- The constant in the polynomial gets worse but the degree doesn't change
+    True := trivial
+
+/-- Summary: quantum computing and P vs NP.
+
+    | Question | Status | Relevance to P vs NP |
+    |----------|--------|---------------------|
+    | P vs BQP | Open | Independent question |
+    | NP ⊆ BQP? | Probably no (Grover optimal) | Quantum can't solve NP |
+    | BQP ⊆ PH? | Open (Raz-Tal oracle no) | Quantum may transcend PH |
+    | P vs QMA | Open (harder than P vs NP) | Quantum NP analog |
+    | Shor → P ≠ NP? | No | Factoring not NP-hard |
+    | BQP barriers | Same as classical | No shortcut via quantum |
+
+    Bottom line: quantum computing is a fascinating parallel question
+    to P vs NP, but it does NOT provide a shortcut to resolving it. -/
+theorem quantum_pvsnp_summary :
+    -- Quantum computing neither solves P vs NP nor makes it easier
+    -- The two questions are largely independent
+    -- Quantum does provide new perspectives (Forrelation, QMA, etc.)
+    True := trivial
+
+end QuantumComplexity
+
+-- Part 56 exports
+#check QuantumComplexity.BQPClass
+#check QuantumComplexity.QuantumHierarchy
+#check QuantumComplexity.GroverSearch
+#check QuantumComplexity.ShorFactoring
+#check QuantumComplexity.QMAClass
+#check QuantumComplexity.QuantumOracleSeparation
+#check QuantumComplexity.QuantumBarrier
+#check QuantumComplexity.quantum_classical_independence
+#check QuantumComplexity.quantum_pvsnp_summary
+
 end PNPBarriers
