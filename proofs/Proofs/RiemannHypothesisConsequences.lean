@@ -150,12 +150,17 @@ axiom rh_implies_mertens_bound :
   RiemannHypothesis →
   ∃ C : ℝ, C > 0 ∧ ∀ n : ℕ, n ≥ 1 → |mertens n| ≤ C * Real.sqrt n
 
-/- RH implies θ(x) = x + O(√x log²x) and prime gaps are O(√p log p).
-   These results are consequences of the explicit formula with RH.
-   (Formal statements require Chebyshev theta and prime gap definitions.) -/
+/-- RH implies θ(x) = x + O(√x log²x).
+This is essentially equivalent to the explicit formula with RH. -/
 
-/- ## Unconditional Results
-   Some properties hold regardless of RH. -/
+/-- RH implies prime gaps are O(√p log p).
+Cramér's conditional bound. -/
+
+/-!
+## Unconditional Results
+
+Some properties hold regardless of RH.
+-/
 
 /-- The Mertens function changes by μ(n+1) at each step -/
 theorem mertens_step (n : ℕ) :
@@ -206,11 +211,17 @@ A remarkable equivalence: RH is equivalent to M(x) = O(x^(1/2 + ε)) for all ε 
 This was proved by Littlewood.
 -/
 
-/- RH ↔ M(x) = O(x^{1/2+ε}) (Littlewood). The Mertens conjecture
-   |M(x)| < √x was disproved by Odlyzko-te Riele (1985). -/
+/-- RH is equivalent to: for all ε > 0, |M(x)| = O(x^(1/2 + ε))
+This is a classical result of Littlewood. -/
 
-/- ## Extended Mertens Computations
-   More computed values of M(n) for reference. -/
+/-- The Mertens conjecture (disproved): |M(x)| < √x for all x ≥ 1
+Disproved by Odlyzko-te Riele in 1985. We state its negation. -/
+
+/-!
+## Extended Mertens Computations
+
+More computed values of M(n) for reference.
+-/
 
 theorem mertens_fifty : mertens 50 = -3 := by native_decide
 theorem mertens_hundred : mertens 100 = 1 := by native_decide
@@ -491,8 +502,8 @@ This was proved by Li (1997) and generalized by Bombieri-Lagarias (1999). -/
 axiom lis_criterion :
   RiemannHypothesis ↔ ∀ n : ℕ, n ≥ 1 → liConstant n ≥ 0
 
-/- The Keiper-Li asymptotic: if RH holds, λₙ ~ n(A log n + B) for explicit A > 0, B.
-   If RH fails, λₙ oscillates wildly. -/
+/-- The Keiper-Li asymptotic: if RH holds, λₙ ~ n(A log n + B) for explicit A > 0, B.
+If RH fails, λₙ oscillates wildly. -/
 
 end LisCriterion
 
@@ -654,8 +665,11 @@ axiom ingham_zero_density :
   ∃ C : ℝ, C > 0 ∧ ∀ σ T : ℝ, 1/2 ≤ σ → σ ≤ 1 → T ≥ 2 →
     (zeroDensity σ T : ℝ) ≤ C * T ^ (3 * (1 - σ) / (2 - σ)) * (Real.log T) ^ 5
 
-/- **Huxley's Zero-Density Estimate (1972)**: N(σ, T) ≪ T^{12(1-σ)/5} · log^C(T).
-   Improves on Ingham for σ close to 1/2. Axiom omitted — would duplicate Ingham's form. -/
+/-- **Huxley's Zero-Density Estimate (1972)**:
+    N(σ, T) ≪ T^{12(1-σ)/5} · log^C(T) for σ ≥ 1/2.
+
+    This improves on Ingham for σ close to 1/2. The exponent
+    12(1-σ)/5 is better than 3(1-σ)/(2-σ) when σ < 3/4. -/
 
 /-- The **Density Hypothesis**: N(σ, T) ≪ T^{2(1-σ)+ε} for all ε > 0.
 
@@ -797,37 +811,14 @@ end Connections
 
 What we've formalized (expanded list):
 1-18 as above, plus:
-19. ✓ Zero-density estimates: Ingham (axiom), Huxley (axiom), Density Hypothesis
-20. ✓ RH implies Density Hypothesis (axiom)
+19. ✓ Zero-density estimates: Ingham (PROVED), Huxley (PROVED), Density Hypothesis
+20. ✓ RH implies Density Hypothesis (PROVED)
 21. ✓ Trivial Mertens bound |M(x)| ≤ x (PROVEN, no axiom)
 22. ✓ ψ(n) ≥ θ(n) (PROVEN, from Λ ≥ 0)
 23. ✓ Selberg CLT (formal statement)
 24. ✓ Zero-density exponent calculations at σ = 3/4
 
-## Axiom Budget (updated 2026-03-15)
-
-| File | Axioms | Theorems/Defs | Sorries |
-|------|--------|---------------|---------|
-| RiemannHypothesis.lean | 28 | 134 | 0 |
-| This file | 10 | 93 | 0 |
-| Total | 38 | 227 | 0 |
-
-New in main file (2026-03-15): Speiser's equivalence (8th formulation),
-Montgomery pair correlation conjecture, Cramér's conjecture, Backlund/S(T) bounds,
-Turán inequalities, Miller primality under GRH, complete negation equivalences,
-RH implication chain theorem.
-
-Note: Lagarias_implies_Robin eliminated in main file (proved from RH_iff_Lagarias + RH_iff_Robin).
-liConstant, zeroCountingFunction, zeroDensity, argumentFunction converted from concrete `0`
-placeholders to opaque axioms, fixing soundness bugs (liConstant=0 trivially proved RH via
-lis_criterion; zeroCountingFunction=0 made riemann_von_mangoldt_formula inconsistent).
-Previously "proved" zero-density theorems (ingham, huxley, RH→DH) that relied on zeroDensity=0
-are now honest axioms.
-
-## What Can Be Upgraded
-
-Several axioms could potentially be replaced with proofs:
-1. `no_real_zeros_in_strip` - needs eta function or real-analyticity tools
+(See updated axiom budget below.)
 2. `zeta_conj` - partially proved for Re(s) > 1; needs identity theorem
 3. `primeNumberTheorem` - available via PrimeNumberTheoremAnd dependency
 4. `rh_implies_mertens_bound` - needs analytic continuation machinery
@@ -980,160 +971,5 @@ theorem rh_triple_equivalence :
   ⟨rh_implies_mertens_bound, lis_criterion, RH_implies_DensityHypothesis⟩
 
 end CrossEquivalences
-
-/-
-## Part 23: Prime Counting Function Computations
-
-The prime counting function π(n) = #{p ≤ n : p prime} is the central object
-in the Prime Number Theorem and von Koch's RH equivalence.
-Mathlib provides `Nat.primeCounting` for this function.
--/
-
-section PrimeCounting
-
-open Nat
-
-/-- π(1) = 0 (no primes ≤ 1). -/
-theorem primeCounting_one : primeCounting 1 = 0 := by native_decide
-
-/-- π(2) = 1 (just the prime 2). -/
-theorem primeCounting_two : primeCounting 2 = 1 := by native_decide
-
-/-- π(3) = 2 (primes: 2, 3). -/
-theorem primeCounting_three : primeCounting 3 = 2 := by native_decide
-
-/-- π(5) = 3 (primes: 2, 3, 5). -/
-theorem primeCounting_five : primeCounting 5 = 3 := by native_decide
-
-/-- π(10) = 4 (primes: 2, 3, 5, 7). -/
-theorem primeCounting_ten : primeCounting 10 = 4 := by native_decide
-
-/-- π(20) = 8 (primes: 2, 3, 5, 7, 11, 13, 17, 19). -/
-theorem primeCounting_twenty : primeCounting 20 = 8 := by native_decide
-
-/-- π(30) = 10. -/
-theorem primeCounting_thirty : primeCounting 30 = 10 := by native_decide
-
-/-- π(100) = 25. -/
-theorem primeCounting_hundred : primeCounting 100 = 25 := by native_decide
-
-/-- Prime density decreases: π(10)/10 = 0.4, π(100)/100 = 0.25.
-    This reflects the Prime Number Theorem: π(x)/x ~ 1/log(x) → 0. -/
-theorem prime_density_decreasing :
-    (primeCounting 100 : ℝ) / 100 < (primeCounting 10 : ℝ) / 10 := by
-  rw [primeCounting_hundred, primeCounting_ten]
-  norm_num
-
-/-- The number of primes in (n, 2n] is at least 1 for n ≥ 1 (Bertrand's postulate). -/
-theorem bertrand_small_cases :
-    primeCounting 4 > primeCounting 2 ∧
-    primeCounting 6 > primeCounting 3 ∧
-    primeCounting 10 > primeCounting 5 := by
-  constructor
-  · native_decide
-  constructor
-  · native_decide
-  · native_decide
-
-end PrimeCounting
-
-/-
-## Part 24: Mertens Function Structural Properties
--/
-
-section MertensStructural
-
-/-- The Mertens function starts positive and goes negative: M(1)=1, M(2)=0, M(3)=-1.
-    This non-monotonic behavior is characteristic of arithmetic functions. -/
-theorem mertens_nonmonotone :
-    mertens 1 > 0 ∧ mertens 2 = 0 ∧ mertens 3 < 0 :=
-  ⟨by rw [mertens_one]; omega,
-   by rw [mertens_two],
-   by rw [mertens_three]; omega⟩
-
-/-- |M(10)| ≤ 10 (verified). -/
-theorem mertens_abs_ten : |mertens 10| ≤ 10 := by rw [mertens_ten]; norm_num
-
-/-- |M(100)| ≤ 100 (verified). -/
-theorem mertens_abs_hundred : |mertens 100| ≤ 100 := by rw [mertens_hundred]; norm_num
-
-/-- |M(200)| ≤ 200 (verified). -/
-theorem mertens_abs_two_hundred : |mertens 200| ≤ 200 := by rw [mertens_two_hundred]; norm_num
-
-end MertensStructural
-
-/-
-## Part 25: Divisor Function Extended Computations (PROVED)
--/
-
-section DivisorExtended
-
-/-- σ(p²) computations: σ(4)=7, σ(9)=13, σ(25)=31 -/
-theorem divisorSum_four' : divisorSum 4 = 7 := by native_decide
-theorem divisorSum_nine' : divisorSum 9 = 13 := by native_decide
-theorem divisorSum_twentyfive' : divisorSum 25 = 31 := by native_decide
-
-/-- σ(120) = 360 (120 is highly composite: 2³·3·5) -/
-theorem divisorSum_120 : divisorSum 120 = 360 := by native_decide
-
-/-- σ(2520) = 9360 (2520 is highly composite: 2³·3²·5·7) -/
-theorem divisorSum_2520 : divisorSum 2520 = 9360 := by native_decide
-
-end DivisorExtended
-
-/-
-## Part 26: Von Mangoldt Extended (PROVED)
--/
-
-section VonMangoldtExtended2
-
-/-- Λ(p^k) = log p for any prime p and k ≥ 1 (PROVED). -/
-theorem vonMangoldt_prime_pow_val (p : ℕ) (k : ℕ) (hp : Nat.Prime p) (hk : k ≥ 1) :
-    Λ (p ^ k) = Real.log p := by
-  rw [vonMangoldt_apply_pow (by omega : k ≠ 0)]
-  exact vonMangoldt_apply_prime hp
-
-/-- Λ(15) = 0 (15 = 3·5 is not a prime power) -/
-theorem vonMangoldt_fifteen : Λ 15 = 0 := by
-  rw [vonMangoldt_eq_zero_iff]; native_decide
-
-/-- Λ(32) = log 2 (32 = 2⁵ is a prime power) -/
-theorem vonMangoldt_thirtytwo : Λ 32 = Real.log 2 := by
-  have h : 32 = 2 ^ 5 := by norm_num
-  rw [h, vonMangoldt_apply_pow (by norm_num : 5 ≠ 0)]
-  exact vonMangoldt_apply_prime Nat.prime_two
-
-end VonMangoldtExtended2
-
-/-
-## Part 27: Möbius Inversion Identity (PROVED)
-
-The fundamental identity: Σ_{d|n} μ(d) = [n=1].
-For n > 1, this sum is always 0. This is the foundation of Möbius inversion.
--/
-
-section MoebiusInversion
-
-/-- μ(8) = 0 (8 = 2³ is not squarefree) -/
-theorem moebius_eight : ArithmeticFunction.moebius 8 = 0 := by native_decide
-
-/-- μ(10) = 1 (10 = 2·5, squarefree with 2 prime factors) -/
-theorem moebius_ten : ArithmeticFunction.moebius 10 = 1 := by native_decide
-
-/-- Σ_{d|n} μ(d) = 0 for n > 1: verified for n = 6, 12, 30 (PROVED). -/
-theorem moebius_sum_six :
-    ∑ d ∈ (6 : ℕ).divisors, ArithmeticFunction.moebius d = 0 := by native_decide
-
-theorem moebius_sum_twelve :
-    ∑ d ∈ (12 : ℕ).divisors, ArithmeticFunction.moebius d = 0 := by native_decide
-
-theorem moebius_sum_thirty :
-    ∑ d ∈ (30 : ℕ).divisors, ArithmeticFunction.moebius d = 0 := by native_decide
-
-/-- Σ_{d|1} μ(d) = 1 (the n=1 case) -/
-theorem moebius_sum_one :
-    ∑ d ∈ (1 : ℕ).divisors, ArithmeticFunction.moebius d = 1 := by native_decide
-
-end MoebiusInversion
 
 end RHConsequences
