@@ -18,9 +18,34 @@
       "advanced"
     ],
     "proofRepoPath": "Proofs/InverseGalois.lean",
+    "additionalFiles": [
+      "Proofs/AbelRuffiniGaloisExtensions.lean",
+      "Proofs/AbelRuffini.lean"
+    ],
     "badge": "research",
     "sorries": 2,
     "axioms": 2,
+    "leanFile": {
+      "lineCount": 1518,
+      "theoremCount": 66,
+      "lemmaCount": 9,
+      "defCount": 23,
+      "axiomCount": 2,
+      "sorryCount": 2,
+      "imports": [
+        "Mathlib.NumberTheory.Cyclotomic.Basic",
+        "Mathlib.NumberTheory.Cyclotomic.Gal",
+        "Mathlib.FieldTheory.AbelRuffini",
+        "Mathlib.GroupTheory.Solvable",
+        "Mathlib.GroupTheory.SpecificGroups.Alternating",
+        "Mathlib.FieldTheory.Galois.Basic",
+        "Mathlib.GroupTheory.Perm.Sign",
+        "Mathlib.FieldTheory.SplittingField.Construction",
+        "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic",
+        "Mathlib.Tactic"
+      ],
+      "note": "Total across 3 files: InverseGalois.lean (799 lines), AbelRuffiniGaloisExtensions.lean (534 lines, 0 sorries, 57 theorems), AbelRuffini.lean (185 lines)"
+    },
     "mathlibDependencies": [
       {
         "theorem": "IsCyclotomicExtension.isGalois",
@@ -48,6 +73,11 @@
       "Cyclotomic Galois theory for explicit abelian realizations",
       "Shafarevich's theorem on solvable groups (axiomatized)",
       "Connections to Abel-Ruffini and solvability theory",
+      "Gal(X^3-2/Q) ≅ S_3 proved from scratch (eliminated axiom)",
+      "Cyclotomic irreducibility proved via Polynomial.cyclotomic.irreducible_rat",
+      "Small symmetric groups solvability: S_n solvable iff n ≤ 4 (sharp threshold)",
+      "57 additional theorems in AbelRuffiniGaloisExtensions.lean (0 sorries)",
+      "2-descent and coprimality arguments for splitting field degree",
       "Documentation of the mathematical landscape"
     ],
     "dateAdded": "02/21/26",
@@ -62,7 +92,7 @@
   "overview": {
     "historicalContext": "The Inverse Galois Problem (IGP) emerged naturally from Galois theory, which Évariste Galois developed in 1832 (published posthumously). Galois theory provides a dictionary between field extensions and groups: every Galois extension K/F has a group Gal(K/F), and vice versa. But the 'vice versa' direction—given a group G, finding K—is the challenge.\n\nHilbert in 1892 proved that all symmetric groups Sₙ are realizable using his irreducibility theorem. Shafarevich's 1954 theorem resolved all solvable groups. The problem remains open in general.\n\nThe IGP is intimately connected to understanding the absolute Galois group Gal(ℚ̄/ℚ), one of the most mysterious objects in mathematics. It is related to Grothendieck's 'Esquisse d'un Programme' (1984), which proposed using the IGP to understand the absolute Galois group via its action on algebraic curves.\n\nAs of 2026, the general problem remains unsolved, though most finite simple groups have been realized over ℚ. The holdout cases include certain sporadic simple groups.",
     "problemStatement": "**The Inverse Galois Problem**: Does every finite group G occur as the Galois group Gal(K/ℚ) of some Galois extension K of ℚ?\n\nFormally: ∀ (G : finite group), ∃ (K : Galois extension of ℚ), Gal(K/ℚ) ≅ G.\n\nGalois theory gives us a rich supply of examples. The cyclotomic field ℚ(ζₙ) has Galois group (ℤ/nℤ)ˣ. But can we realize EVERY finite group? The answer is unknown.\n\n**Known results**:\n- All abelian groups: Kronecker-Weber theorem gives all abelian extensions of ℚ as cyclotomic subfields\n- All solvable groups: Shafarevich (1954)\n- All symmetric groups Sₙ: Hilbert's irreducibility theorem\n- Most finite simple groups: case-by-case constructions\n- **Open**: the general case",
-    "proofStrategy": "We approach the IGP through the **cyclotomic method**:\n\n1. **Cyclotomic fields**: ℚ(ζₙ) = splitting field of xⁿ - 1 over ℚ\n2. **Galois structure**: Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)ˣ (when cyclotomic poly is irreducible)\n3. **Abelian groups**: Every finite abelian G embeds in some (ℤ/nℤ)ˣ, giving realizations\n4. **General strategy**: Find polynomials over ℚ(t₁,...,tₙ) with the desired Galois group, then specialize to ℚ\n\n**For non-abelian groups**: The cyclotomic method fails. One uses:\n- Explicit polynomial families (rigid method)\n- Descent arguments\n- Geometric methods (covers of ℙ¹)\n- Inverse limits",
+    "proofStrategy": "The formalization spans three files (1518 lines total). **InverseGalois.lean** (799 lines) states the IGP, proves cyclotomic realizations for abelian groups via Gal(Q(zeta_n)/Q) ≅ (Z/nZ)^x, and axiomatizes Kronecker-Weber and Shafarevich. **AbelRuffiniGaloisExtensions.lean** (534 lines, 0 sorries) proves the sharp solvability threshold: S_n solvable iff n ≤ 4, with 15 sections covering small symmetric groups, alternating group structure, radical solvability, Galois properties, index theorems, and factorial identities. **AbelRuffini.lean** (185 lines) connects to Mathlib's Abel-Ruffini infrastructure. Key proof: Gal(X^3-2/Q) ≅ S_3 proved from scratch using 3|deg (prime irred), deg|6 (Gal embeds S_3), 2|deg (cube root of unity exists), therefore deg=6=|S_3|.",
     "keyInsights": [
       "Cyclotomic fields provide a systematic source of abelian Galois groups over ℚ",
       "The Galois group Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)ˣ whenever the n-th cyclotomic polynomial is irreducible over ℚ",
@@ -129,10 +159,34 @@
       "startLine": 322,
       "endLine": 400,
       "summary": "Documentation of the mathematical landscape: what's known, what's open, connections to absolute Galois groups, the Langlands programme, and Grothendieck's programme."
+    },
+    {
+      "id": "small-symmetric-solvable",
+      "title": "Small Symmetric Groups Are Solvable (Extension File)",
+      "startLine": 49,
+      "endLine": 157,
+      "summary": "In AbelRuffiniGaloisExtensions.lean: S_0, S_1 solvable (subsingleton), S_2 solvable (commutative via decide), S_3 solvable (exact sequence A_3 → S_3 → Z^x), S_4 solvable (exact sequence A_4 → S_4 → Z^x). All fully proved.",
+      "file": "Proofs/AbelRuffiniGaloisExtensions.lean"
+    },
+    {
+      "id": "sharp-threshold",
+      "title": "Sharp Threshold: S_n Solvable iff n ≤ 4",
+      "startLine": 158,
+      "endLine": 188,
+      "summary": "In AbelRuffiniGaloisExtensions.lean: S_n is solvable iff n ≤ 4. Uses Equiv.Perm.not_solvable for n ≥ 5. This is the fundamental threshold in the Abel-Ruffini theorem.",
+      "file": "Proofs/AbelRuffiniGaloisExtensions.lean"
+    },
+    {
+      "id": "galois-properties",
+      "title": "Galois Group Properties and Cardinalities",
+      "startLine": 225,
+      "endLine": 533,
+      "summary": "In AbelRuffiniGaloisExtensions.lean: Galois group properties, subgroup solvability preservation, alternating non-solvability for n ≥ 5, factorial identities and cardinalities for Perm (Fin n), index theorems, and chain properties. 57 theorems total, all fully proved.",
+      "file": "Proofs/AbelRuffiniGaloisExtensions.lean"
     }
   ],
   "conclusion": {
-    "summary": "The Inverse Galois Problem remains one of the great open questions in algebra. We've formalized:\n1. The precise conjecture statement\n2. Cyclotomic fields as Galois extensions with abelian Galois groups\n3. The isomorphism Gal(ℚ(ζₙ)/ℚ) ≅ (ZMod n)ˣ\n4. Specific cardinality computations for small cases\n5. The known positive results (abelian, solvable, symmetric groups)\n\nThe formalization reveals the gap between what's known and the full conjecture. The missing piece is understanding which groups can be Galois groups over ℚ — equivalently, understanding the absolute Galois group Gal(ℚ̄/ℚ).",
+    "summary": "The Inverse Galois Problem remains one of the great open questions in algebra. Across 1518 lines in 3 files (75 theorems, 2 axioms, 2 sorries), we formalize: the IGP conjecture, cyclotomic Galois theory with Gal(Q(zeta_n)/Q) ≅ (Z/nZ)^x, Gal(X^3-2/Q) ≅ S_3 proved from scratch, the sharp solvability threshold S_n solvable iff n ≤ 4 (57 theorems in the extension file), and the known positive results (abelian, solvable, symmetric groups). The 2 remaining axioms (Kronecker-Weber, Shafarevich) are blocked on Mathlib infrastructure gaps. The 2 sorries are the open conjecture itself and symmetric group realizability (needs Hilbert irreducibility).",
     "implications": "The IGP has profound implications:\n\n1. **ABSOLUTE GALOIS GROUP**: A positive answer would mean the absolute Galois group Gal(ℚ̄/ℚ) surjects onto every finite group — revealing its structure.\n\n2. **GALOIS REPRESENTATIONS**: The IGP is connected to the theory of Galois representations, central to the Langlands program and the proof of Fermat's Last Theorem.\n\n3. **ARITHMETIC GEOMETRY**: Via Grothendieck's programme, the IGP connects to the study of algebraic curves and their fundamental groups.\n\n4. **ALGORITHM DESIGN**: Positive answers might come with explicit polynomial constructions, useful for cryptography and computation.\n\n5. **DIFFERENTIAL GALOIS THEORY**: The analogous question for differential equations (Kovacic's problem) has been solved, suggesting approaches for the classical case.",
     "openQuestions": [
       "Does every finite group appear as a Galois group over ℚ?",
