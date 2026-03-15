@@ -2,7 +2,7 @@
   "slug": "riemann-hypothesis",
   "title": "Riemann Hypothesis",
   "phase": "OBSERVE",
-  "status": "completed",
+  "status": "blocked",
   "tier": "S",
   "path": "full",
   "problemStatement": {
@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-13T12:00:00.000Z",
-    "iteration": 5,
-    "focus": "Mathlib equivalence + Lindelöf Hypothesis",
+    "iteration": 6,
+    "focus": "Cross-equivalences and axiom elimination",
     "blockers": [],
-    "nextAction": "Attempt to eliminate no_real_zeros_in_strip axiom or add more equivalent formulations",
+    "nextAction": "Derive rh_implies_chebyshev_bound from rh_implies_psi_bound via psi-theta bounds, or eliminate no_real_zeros_in_strip",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 unused axioms (21→18). File: 1798→~1740 lines, 18 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Eliminated Lagarias_implies_Robin axiom (proved from existing equivalences). Added 7 cross-equivalence theorems proving all RH formulations pairwise equivalent. Main file axioms: 21, Consequences: 9, Total: 30.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -151,7 +151,21 @@
         "description": "RH → convexity bound (PROVED)",
         "proven": true
       },
-      "Eliminated 3 dead-code axioms (21→18): computationally_verified_zeros, RH_implies_prime_gaps, RH_implies_ternary_goldbach_effective"
+      {
+        "name": "Robin_iff_Lagarias",
+        "description": "Robin ↔ Lagarias (PROVED from axioms)",
+        "proven": true
+      },
+      {
+        "name": "Robin_iff_Mertens",
+        "description": "Robin ↔ Mertens (PROVED from axioms)",
+        "proven": true
+      },
+      {
+        "name": "all_equivalences",
+        "description": "5-way equivalence summary theorem (PROVED)",
+        "proven": true
+      }
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
@@ -169,7 +183,9 @@
       "2026-03-14: Proved RH_iff_mathlib - our critical-strip RH definition is equivalent to Mathlib standard definition",
       "2026-03-14: Added Lindelöf Hypothesis formalization + proved RH→Lindelöf→convexity chain",
       "2026-03-14: Complex.abs deprecated in Mathlib - use ‖·‖ norm notation instead",
-      "2026-03-14: Eliminated 3 axioms from Consequences file"
+      "2026-03-14: Eliminated 3 axioms from Consequences file",
+      "2026-03-14: Lagarias_implies_Robin is logically redundant - provable via RH_iff_Lagarias.mpr >> RH_iff_Robin.mp chain",
+      "2026-03-14: All 7 equivalent formulations (Robin, Lagarias, Mertens, PrimeCounting, NymanBeurling, deBruijnNewman, WeilPositivity) form complete equivalence web via Iff.trans through RH"
     ],
     "mathlibGaps": [
       "Dirichlet series",
