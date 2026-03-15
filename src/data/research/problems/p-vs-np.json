@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: PvsNP.lean at 1984 lines (+244), 0 sorries. Parts 29-32: average-case complexity (Levin, Impagliazzo Five Worlds), proof complexity (resolution, Frege, Cook program), quantum complexity (BQP, QMA, Shor, Grover), fine-grained complexity (ETH, SETH, conditional lower bounds). PNPBarriersSound.lean at 4275 lines.",
+    "progressSummary": "PROGRESS: PvsNP.lean at 2142 lines (+158), 0 sorries. Parts 33-35: #P and Todas theorem, Geometric Complexity Theory (GCT), PCP theorem and hardness of approximation. PNPBarriersSound.lean at 4275 lines.",
     "builtItems": [
       {
         "name": "P",
@@ -446,7 +446,10 @@
       "Part 29: Average-case complexity - Levin distributional NP, Impagliazzo Five Worlds, Bogdanov-Trevisan",
       "Part 30: Proof complexity - Resolution, Haken PHP lower bound, Frege, Extended Frege, Cook program",
       "Part 31: Quantum complexity - BQP, QMA, QCMA, Shor algorithm, Grover algorithm, quantum PCP",
-      "Part 32: Fine-grained complexity - ETH, SETH, OV conjecture, APSP conjecture, conditional lower bounds"
+      "Part 32: Fine-grained complexity - ETH, SETH, OV conjecture, APSP conjecture, conditional lower bounds",
+      "Part 33: #P and Todas theorem - SharpP, PP, Valiant permanent, counting complexity",
+      "Part 34: GCT - Geometric Complexity Theory, VP vs VNP, permanent vs determinant",
+      "Part 35: PCP theorem - NP=PCP(log n,1), hardness of approximation, Unique Games Conjecture"
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",
@@ -513,7 +516,10 @@
       "Cook program: super-polynomial Frege lower bounds would imply NP ≠ coNP, Extended Frege lower bounds would essentially imply P ≠ NP",
       "Impagliazzo Five Worlds provide a complete classification of possible complexity landscapes from P=NP to full cryptomania",
       "SETH implies tight quadratic lower bounds for edit distance, LCS, Fréchet distance — fine-grained complexity maps hardness WITHIN P",
-      "NLTS conjecture proved (Anshu-Breuckmann-Nirkhe 2022) but full quantum PCP conjecture remains open"
+      "NLTS conjecture proved (Anshu-Breuckmann-Nirkhe 2022) but full quantum PCP conjecture remains open",
+      "Todas theorem PH⊆P^{#P}: counting is more powerful than the entire polynomial hierarchy",
+      "GCT has not proved new lower bounds but revealed deep connections to algebraic geometry and representation theory",
+      "PCP theorem implies hardness of approximation: MAX-3SAT cannot be approximated within 7/8+ε"
     ],
     "mathlibGaps": [
       "Turing machines",
