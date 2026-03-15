@@ -1,8 +1,8 @@
 {
   "slug": "partition-theorem-oq-01",
   "title": "Rogers-Ramanujan and Schur partition identities in Lean",
-  "phase": "DEEP_DIVE",
-  "status": "completed",
+  "phase": "NEW",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,87 +16,26 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "DEEP_DIVE",
-    "since": "2026-03-13T08:30:00.000Z",
-    "iteration": 7,
-    "focus": "Removed deprecated axiom, investigated q-series. 3 axioms remain, blocked on Mathlib infrastructure.",
+    "phase": "NEW",
+    "since": "2026-03-11T09:48:08.982Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Problem complete modulo foundational axioms. Would need q-series infrastructure in Mathlib to eliminate.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All bridge theorems done. Removed deprecated schur_partition_identity axiom (wrong at n=9). 3 remaining axioms (RR1, RR2, Schur corrected) require Mathlib q-series infrastructure that does not exist. 48+ proved theorems, 3 axioms, 44+ verifications, 0 sorries.",
-    "builtItems": [
-      "PartitionDecidable.rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGap, schurMod: decidable partition set definitions",
-      "schurGapFull: corrected Schur gap with strengthened mod-3 condition",
-      "41 native_decide verifications (RR1 n=0..9, RR2 n=0..9, Schur n=0..8, corrected Schur n=0..9)",
-      "3 strict containment proofs (RR1⊂distinct, Schur⊂RR1, RR2⊂RR1)",
-      "3 part property theorems (mod5 nonzero, mod5 ≥2, coprime to 3)",
-      "schurGapFull_subset_schurGap: full Schur condition implies simplified",
-      "8 named partition count theorems (OEIS connection)",
-      "rr2_gap_implies_distinct, schur_gap_implies_distinct', schur_mod_implies_distinct",
-      "rr1Gap_eq_rr1GapPartitions: decidable RR1 gap = noncomputable RR1 gap",
-      "rr1Mod5_eq_rr1Mod5Partitions: decidable RR1 mod = noncomputable RR1 mod",
-      "rr2Mod5_eq_rr2Mod5Partitions: decidable RR2 mod = noncomputable RR2 mod",
-      "rr2Gap_eq: decidable RR2 gap = noncomputable RR2 gap (bridges partSmallestPart ↔ ∀ parts ≥ 2)",
-      "mem_parts_sort_le: ascending sort membership equivalence helper",
-      "rogers_ramanujan_first_decidable: derived from axiom + bridges",
-      "rogers_ramanujan_second_decidable: derived from axiom + rr2Gap_eq + rr2Mod5_eq bridges",
-      "hasSchurGapFull_implies_hasMinGap3: Schur gap → uniform gap ≥ 3",
-      "hasSchurGapFull_pairwise: forward Pairwise (sorted → ordered pairs)",
-      "hasSchurGapFull_sep: forward symmetric sep (all distinct elements)",
-      "decidable_schurSep_sorted_implies_hasSchurGapFull: backward direction",
-      "schurGapFull_eq_schurGapFullPartitions: decidable Schur gap = noncomputable",
-      "schurMod_eq_schurModPartitions: decidable Schur mod = noncomputable",
-      "schur_partition_identity_corrected_decidable: |schurGapFull n| = |schurMod n|",
-      "nodup_toList_iff: toList.Nodup ↔ Multiset.Nodup helper"
-    ],
-    "insights": [
-      "Pairwise separation equivalence: for d≥1, sorted min gap d ⟺ Nodup ∧ all pairs separated by ≥d. Avoids noncomputable Multiset.sort.",
-      "Decidable predicates on Multiset: ∀ a ∈ M, ∀ b ∈ M, P a b is decidable, enabling Finset.filter + native_decide.",
-      "RR1 gap partitions of 5: only {[5],[4,1]} = 2 (not 3; [3,2] excluded by gap condition).",
-      "Schur gap ⊆ RR1 gap ⊆ distinct: strict containment hierarchy proved computationally for specific n.",
-      "Full proof requires q-series (Jacobi triple product) or bijections (Garsia-Milne involution, ~500+ lines).",
-      "CRITICAL: Simplified Schur gap (uniform ≥3) diverges from true Schur identity at n=9. The real condition requires gap ≥4 when a part ≡ 0 (mod 3). Corrected definition (schurGapFull) verifies through n=9.",
-      "RR2 mod5 parts are always ≥ 2 (parts ≡ 2,3 mod 5), Schur mod parts are coprime to 3.",
-      "The original axiom schur_partition_identity uses the simplified definition - should be restated with schurGapFull for mathematical correctness.",
-      "Multiset.sort_sorted deprecated → Multiset.pairwise_sort. List.mem_cons_self takes implicit args. Bool.and_eq_true is Prop equality not Iff.",
-      "Bridge proof: pairwise_ge_d_implies_hasMinGap (forward) + hasMinGap_ge_one_nodup + hasMinGap_pairwise_sep (backward)",
-      "Non-adjacent pairs in hasSchurGapFull have accumulated gap ≥ 6 (3+3), which exceeds both gap thresholds (4 and 3). Only adjacent pairs need the specific Schur check.",
-      "Or.comm.mp enables symmetric condition transfer: (a%3=0 ∨ b%3=0) ↔ (b%3=0 ∨ a%3=0) for reversing Pairwise direction.",
-      "After rcases with rfl, the substituted variable may be removed from scope. Use split+rename_i instead of by_cases with explicit variable names.",
-      "The suffices pattern (from hasMinGap_pairwise_sep) cleanly separates the Pairwise induction from the main theorem statement.",
-      "Mathlib has NO q-series infrastructure (no q-Pochhammer, no Jacobi triple product, no q-binomial coefficients). Proving RR1/RR2/Schur axioms requires building ~500+ lines of q-series or bijective infrastructure from scratch.",
-      "Removed deprecated schur_partition_identity axiom (simplified gap, wrong at n=9). Reduced axiom count from 4 to 3."
-    ],
-    "mathlibGaps": [
-      "q-Pochhammer symbols (q;q)_n",
-      "Jacobi triple product theorem",
-      "q-binomial coefficients",
-      "Continued fraction theory for Rogers-Ramanujan",
-      "Partition generating function coefficient extraction"
-    ],
-    "nextSteps": [
-      "3 remaining axioms (rogers_ramanujan_first, rogers_ramanujan_second, schur_partition_identity_corrected) blocked on missing Mathlib q-series infrastructure",
-      "No Aristotle companion file needed — 0 sorries remain"
-    ]
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
   },
-  "approaches": [
-    {
-      "name": "Decidable predicates with computational verification",
-      "status": "succeeded",
-      "description": "Define partition sets using decidable pairwise conditions, verify identities via native_decide for small n."
-    },
-    {
-      "name": "Corrected Schur gap definition",
-      "status": "succeeded",
-      "description": "Discovered simplified Schur gap diverges at n=9. Created schurGapFull with strengthened mod-3 gap condition. Verified n=0..9."
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "combinatorics",
@@ -110,7 +49,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-14T20:00:00.000Z",
+  "lastUpdate": "2026-03-12T05:34:54.574Z",
   "significance": 7,
   "tractability": 6
 }

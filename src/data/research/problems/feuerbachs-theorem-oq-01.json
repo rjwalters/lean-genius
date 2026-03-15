@@ -2,132 +2,56 @@
   "slug": "feuerbachs-theorem-oq-01",
   "title": "Prove Feuerbach distance relations via coordinate computation",
   "phase": "COMPLETED",
-  "status": "completed",
+  "status": "graduated",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "dist2 T.ninePointCenter T.incenter = abs (T.ninePointRadius - T.inradius)",
-    "plain": "The nine-point circle is tangent to the incircle and all three excircles. Core distance relations: |NI| = |R/2 - r| and |NI_a| = R/2 + r_a.",
-    "whyMatters": [
-      "Wiedijk #29",
-      "Classical Euclidean geometry masterpiece"
-    ]
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE.",
+    "whyMatters": []
   },
   "knownResults": {
-    "proven": [
-      "All 9 points on nine-point circle (3 midpoints, 3 Euler midpoints, 3 altitude feet)",
-      "Euler line relation",
-      "Nine-point radius = R/2",
-      "Equilateral triangle R = 2r",
-      "3-4-5 triangle numerical verification"
-    ],
+    "proven": [],
     "open": [],
-    "goal": "ACHIEVED: All 4 axioms eliminated and 1 sorry fixed. Proof fully integrated into parent."
+    "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-13T07:00:00.000Z",
-    "iteration": 5,
-    "focus": "All 4 Feuerbach distance axioms eliminated - full proof compiles",
+    "phase": "NEW",
+    "since": "2026-03-11T09:48:08.981Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "None - problem complete",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 1,
-      "approachesTried": 2
-    },
-    "activeApproach": "Algebraic backbone: ext_law_of_sines -> sigma -> Heron -> Feuerbach"
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All 4 Feuerbach distance relations proved via coordinate computation. Eliminated sqrt obstacle using NI vector formula + bilinear expansion + algebraic chain. 1550-line proof file compiles clean.",
-    "builtItems": [
-      "T345_feuerbach_excircle_a: d(N,I_a) = 29/4 = R/2 + r_a verified",
-      "T345_feuerbach_excircle_b: d(N,I_b) = 17/4 = R/2 + r_b verified",
-      "T345_feuerbach_excircle_c: d(N,I_c) = 13/4 = R/2 + r_c verified",
-      "area_pos: Triangle area is positive (general)",
-      "semiperimeter_pos: Semiperimeter is positive (general)",
-      "inradius_pos: Inradius is positive (general)",
-      "FeuerbachsTheoremOQ01Aristotle.lean: 15 lemma targets for automated proof search",
-      "sigma_identity: (s-a)(s-b)c\u00b2+(s-a)(s-c)b\u00b2+(s-b)(s-c)a\u00b2 = abcs-4s(s-a)(s-b)(s-c) [GENERAL, by ring]",
-      "extended_law_of_sines_sq: a\u00b2b\u00b2c\u00b2 = 16R\u00b2\u00b7Area\u00b2 [GENERAL, polynomial identity via field_simp+ring]",
-      "T345_euler_formula: OI\u00b2 = R\u00b2-2Rr for 3-4-5 triangle [verified by norm_num]",
-      "T345_extended_law_of_sines: abc = 4R\u00b7Area for 3-4-5 [verified by norm_num]",
-      "herons_formula_sq: 16*Area^2 = 2a^2*b^2+2b^2*c^2+2c^2*a^2-a^4-b^4-c^4 [GENERAL, by ring]",
-      "dot2_polarization: <A-O,B-O> = (|O-A|^2+|O-B|^2-|A-B|^2)/2 [GENERAL]",
-      "dot_circumcenter_AB: <A-O,B-O> = R^2-c^2/2 [GENERAL, from circumcenter equidistance]",
-      "dot_circumcenter_AC: <A-O,C-O> = R^2-b^2/2 [GENERAL]",
-      "dot_circumcenter_BC: <B-O,C-O> = R^2-a^2/2 [GENERAL]",
-      "side_a/b/c_pos: side lengths are positive [GENERAL]",
-      "circumradius_pos: R > 0 [GENERAL]",
-      "extended_law_of_sines: abc = 4R*Area [GENERAL, from squared version + positivity]",
-      "heron_product_eq_polynomial: (a+b+c)(b+c-a)(a+c-b)(a+b-c) = 2a^2b^2+... [GENERAL, by ring]",
-      "heron_product_form: product form = 16*Area^2 for any triangle [GENERAL]",
-      "area_sq_eq_heron: Area^2 = s(s-a)(s-b)(s-c) [GENERAL, classical Heron]",
-      "sigma_eq_abcs_minus_4area_sq: sigma = abcs - 4*Area^2 [GENERAL]",
-      "feuerbach_algebraic_core: R^2s^2-sigma = (Rs-2A)^2 given abc=4RA [GENERAL]",
-      "feuerbach_algebraic_chain: R^2s^2-sigma = (Rs-2A)^2 for any triangle [GENERAL]",
-      "feuerbach_NI_sq_algebraic: (Rs-2A)^2/(4s^2) = (R/2-r)^2 [GENERAL, field_simp+ring]",
-      "circumcenter_equidist_sq_B/C primes (local versions of private parent lemmas)",
-      "COMPLETE: feuerbach_incircle_distance_proved, excircle_a/b/c_distance_proved"
-    ],
-    "insights": [
-      "General Feuerbach distance proofs blocked by sqrt in side lengths: incenter coords involve a=sqrt(...), cross terms a*b resist ring tactic",
-      "NI = R/2 - r (Feuerbach incircle tangency) follows from Euler identity, but proving either requires eliminating sqrt",
-      "Excircle tangency d(N,I_k) = R/2 + r_k verified numerically for 3-4-5 triangle (all 3 cases)",
-      "The equilateral_R_eq_2r proof in main file was broken by Mathlib v4.26 upgrade (dist2_sq unfold change) - independently proved in OQ01",
-      "Approach for general case: introduce a^2, b^2, c^2 as polynomial constraints and use nlinarith - untested but promising",
-      "Extended law of sines (squared) IS provable as polynomial identity - key was rw [sq_abs] to eliminate |x|\u00b2 before ring",
-      "General Feuerbach proof chain: ext_law_of_sines \u2192 sigma_identity \u2192 Euler OI\u00b2=R\u00b2-2Rr \u2192 NI=(R/2-r)",
-      "FUNDAMENTAL OBSTACLE: incenter coords involve side_a/side_b/side_c (sqrt). Products a\u00b7b resist ring. Need reformulation without sqrt or algebraic elimination.",
-      "Abstract inner-product proof of Feuerbach: N-I = [(s-a)(A-O)+(s-b)(B-O)+(s-c)(C-O)]/(2s), then |N-I|^2 expands via bilinearity using <X-O,Y-O>=R^2-|X-Y|^2/2",
-      "Key chain: bilinearity \u2192 |u|^2 = R^2*s^2 - sigma \u2192 sigma_identity \u2192 Heron \u2192 NI^2 = (R/2-r)^2",
-      "Polarization identity <P-R,Q-R> = (|R-P|^2+|R-Q|^2-|P-Q|^2)/2 is the bridge between dot products and distances",
-      "Heron formula (squared) is polynomial in coords: unfold side lengths, area, then ring",
-      "Unsquared ext law of sines follows from squared version via eq_of_sq_eq_nonneg (both sides positive)",
-      "Complete algebraic chain proved: ext_law_of_sines -> sigma -> Heron -> sigma=abcs-4A^2 -> R^2s^2-sigma=(Rs-2A)^2 -> (R/2-r)^2",
-      "Classical Heron Area^2=s(s-a)(s-b)(s-c) derived from product form + coordinate Heron (no sqrt needed)",
-      "feuerbach_algebraic_chain uses nlinarith to chain sigma_eq_abcs_minus_4area_sq with feuerbach_algebraic_core(extended_law_of_sines)",
-      "Key breakthrough: bypassed sqrt in incenter coords by expressing 4s^2*NI^2 as (2s*(N-I))^2 using vector components, then bilinear expansion with circumcenter dot products",
-      "Proof chain: NI_vector -> bilinear expansion -> substitute R^2 and dot products -> algebraic identity R^2*s^2 - sigma = (Rs-2A)^2 -> divide by 4s^2"
-    ],
+    "progressSummary": "COMPLETED (0 axioms, 0 sorries, all builds pass)",
+    "builtItems": [],
+    "insights": [],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Express 4s^2*NI^2 directly in coordinates, clear ALL denominators, verify polynomial identity by ring",
-      "Alternative: use Mathlib EuclideanGeometry inner product infrastructure",
-      "The polynomial approach may exceed heartbeat limits (~100+ terms in 6 variables)"
-    ]
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: feuerbachs-theorem-oq-01\n\n## Session 2026-03-14 (researcher-4) - Integration & Completion\n\n**Status**: COMPLETED (0 axioms, 0 sorries, all builds pass)\n\n**What was done**: Restructured Feuerbach proof files to integrate OQ01 proofs into parent, eliminating all axioms.\n\n**File changes**:\n- Created `FeuerbachsTheoremDefs.lean` (definitions, nine-point infrastructure, numerical verification)\n- Modified `FeuerbachsTheoremOQ01.lean` (import Defs instead of parent)\n- Modified `FeuerbachsTheoremOQ01Aristotle.lean` (import Defs instead of parent)\n- Rewrote `FeuerbachsTheorem.lean` (thin wrapper importing OQ01, all 4 axioms replaced with proved theorems)\n- Updated `Proofs.lean` (added Defs, OQ01, OQ01Aristotle imports)\n\n**Eliminated**:\n- axiom feuerbach_incircle_distance -> theorem (via OQ01.feuerbach_incircle_distance_proved)\n- axiom feuerbach_excircle_a_distance -> theorem (via OQ01.feuerbach_excircle_a_distance_proved)\n- axiom feuerbach_excircle_b_distance -> theorem (via OQ01.feuerbach_excircle_b_distance_proved)\n- axiom feuerbach_excircle_c_distance -> theorem (via OQ01.feuerbach_excircle_c_distance_proved)\n- sorry in equilateral_R_eq_2r -> uses OQ01.equilateral_R_eq_2r_proved\n\n## Session 2026-03-14 (researcher-6) - Survey\n\n**Status**: PROGRESS (solid infrastructure, general proof blocked on algebra)\n\n**File**: `FeuerbachsTheoremOQ01.lean` (1553 lines, 24+ theorems, 0 axioms, 0 sorries)\n\n**What's built**:\n- All 4 Feuerbach distance relations proved via coordinate computation\n- Altitude feet on nine-point circle (3 axioms eliminated from parent)\n- Equilateral triangle special case R = 2r\n- 3-4-5 triangle excircle verification (all 3 verified)\n- General infrastructure: area_pos, semiperimeter_pos, inradius_pos\n- Sigma identity, extended law of sines, Heron's formula\n- Dot product polarization and circumcenter dot products\n- Side length positivity, circumradius positivity\n\n**Key breakthrough**: Bypassed sqrt in incenter coords by expressing 4s^2*NI^2 via vector components, bilinear expansion with circumcenter dot products, then algebraic identity chain: ext_law_of_sines -> sigma -> Heron -> NI^2 = (R/2-r)^2.\n"
   },
-  "approaches": [
-    {
-      "name": "Coordinate algebra with field_simp/ring",
-      "status": "partial",
-      "notes": "Works for altitude feet and equilateral case, fails for incircle tangency due to sqrt in incenter"
-    },
-    {
-      "name": "Euler formula OI\u00b2=R\u00b2-2Rr",
-      "status": "planned",
-      "notes": "Could prove OI\u00b2 as polynomial identity, then derive NI from midpoint relation"
-    }
-  ],
+  "approaches": [],
   "tags": [
     "seeker-selected",
     "geometry",
     "triangle",
     "circle"
   ],
-  "relatedProofs": [
-    "feuerbachs-theorem"
-  ],
+  "relatedProofs": [],
   "references": {
     "papers": [],
-    "urls": [
-      "https://en.wikipedia.org/wiki/Feuerbach_point"
-    ],
+    "urls": [],
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-14T16:25:00.000Z",
-  "completed": "2026-03-14T16:25:00.000Z",
+  "lastUpdate": "2026-03-14T16:25:43.539Z",
+  "completed": "2026-03-14T16:25:43.539Z",
   "significance": 6,
-  "tractability": 5
+  "tractability": 7
 }

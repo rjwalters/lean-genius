@@ -2,6 +2,7 @@ import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOvervi
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 
+// Type assertion for JSON import
 const meta = metaJson as {
   id: string
   title: string
@@ -13,6 +14,7 @@ const meta = metaJson as {
   conclusion?: ProofConclusion
 }
 
+// Import the Lean source file
 const leanSource = () => import('../../../../proofs/Proofs/PythagoreanTriplesOQ01.lean?raw')
 
 export const proof: Proof = {
@@ -22,13 +24,12 @@ export const proof: Proof = {
   description: meta.description,
   meta: meta.meta,
   sections: meta.sections,
-  source: '',
+  source: '', // Loaded dynamically
   overview: meta.overview,
   conclusion: meta.conclusion,
 }
 
-const rawAnnotations = annotationsJson as unknown as { annotations: Annotation[] } | Annotation[]
-export const annotations: Annotation[] = Array.isArray(rawAnnotations) ? rawAnnotations : rawAnnotations.annotations
+export const annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const proofData: ProofData = {
   proof,
