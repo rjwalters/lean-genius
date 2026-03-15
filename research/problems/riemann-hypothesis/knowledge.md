@@ -1,26 +1,29 @@
 # Knowledge Base: Riemann Hypothesis
 
-## Session 2026-03-15 (researcher-5) - Selberg Class, Explicit Formula, Hadamard, Function Field RH
+## Session 2026-03-15 (researcher-5) - Mega session: 3 iterations
 
-**Mode**: REVISIT (depth-first, RICH knowledge score 48)
+**Mode**: REVISIT (depth-first, RICH knowledge score 48→74)
 **Problem**: riemann-hypothesis
-**Prior Status**: ACT (iteration 6+)
 
-**What we did**:
-1. **Added Selberg Class (Part 28)**: Abstract L-function framework with degree function, zeta membership, degree conjecture. Proved degree non-negativity and positivity.
-2. **Added Explicit Formula (Part 29)**: Von Mangoldt's explicit formula connecting zeros to primes. Proved RH gives optimal error σ=1/2, structural power-saving result.
-3. **Added Hadamard Product (Part 30)**: Completed zeta ξ(s), functional equation, zero symmetry. Proved consistency between Hadamard enumeration and Riemann-von Mangoldt counting.
-4. **Added Function Field RH (Part 31)**: Hasse bound (genus 1), Weil bound (arbitrary genus), Deligne's theorem. Proved Hasse is special case of Weil at g=1.
-5. **Added Random Matrix Moments (Part 32)**: Keating-Snaith moment conjectures, proved second and fourth moments (axioms), Lindelöf-moment equivalence.
-6. **Added Unconditional Identities (Part 33)**: Proved |M(n)| ≤ n+1, ψ(0) = 0, ψ monotonicity, divisor sum multiplicativity (computational verification).
-7. **Added Li Criterion Extended (Part 34)**: Proved cross-equivalences (Robin ↔ Li, Lagarias ↔ Li, Mertens ↔ Li), contrapositive (negative Li constant disproves all formulations).
+### Iteration 1: Selberg Class, Explicit Formula, Hadamard, Function Field RH (Consequences)
+- Parts 28-34: Selberg class framework, explicit formula, Hadamard product, function field RH (Weil/Deligne), random matrix moments, unconditional identities, Li criterion extended
+- 1657 lines, 134 theorems/lemmas, 40 axioms
 
-**Stats**: 1657 lines (was 1139), 134 theorems/lemmas (was 113), 40 axioms (was 10), 8 defs
-**Docker build**: 0 errors, 0 sorries
+### Iteration 2: GRH Consequences, Linnik, Ankeny, 10-Equivalence Class (Main file)
+- Parts XXX-XXXIII: GRH for primes in arithmetic progressions (Linnik, Ankeny, Bombieri-Vinogradov), 10-formulation equivalence class, PNT error bounds, Schoenfeld explicit
+- Main file: 2669 lines, 125 theorems, 39 axioms
 
-**New axiom targets for potential elimination**:
-- `xi_zero_value` / `xi_one_value` — may be derivable from Mathlib's `completedRiemannZeta`
-- `hasse_bound` / `weil_bound` — these are proved theorems but require algebraic geometry machinery
+### Iteration 3: Robin Verification, Chebyshev Extended, Arithmetic Cross-Connections (Consequences)
+- Parts 35-38: Robin's inequality verification (σ(5041)=5042, σ(10080), σ(7560)), Chebyshev ψ extended, arithmetic cross-connections (Λ(16)=log2, Λ(27)=log3, M(1000)=2)
+- Consequences: 1752 lines, 156 theorems/lemmas
+
+**Combined stats**: ~4400 lines, 0 sorries, 281+ theorems/lemmas/defs, 79 axioms
+**PR**: #3815
+
+**Axiom elimination targets**:
+- `xi_zero_value` / `xi_one_value` — may derive from Mathlib's `completedRiemannZeta`
+- `hasse_bound` / `weil_bound` — proved theorems needing algebraic geometry
+- `no_real_zeros_in_strip` — needs eta function or real-analyticity argument
 
 ---
 
