@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (74 axioms)
+## Axiom Summary (73 axioms)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -54,7 +54,7 @@ Extended landscape (11):
 - 2 AM/MA: NP_subset_MA, babai_AM_in_Sigma2
 - 3 UP/NEXP: P_subset_UP, UP_subset_NP, EXP_subset_NEXP
 Structural (4): valiant_vazirani, mahaney_theorem, NL_subset_P, savitch
-Padding (2): padding_P_eq_NP_implies_EXP_eq_NEXP, padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE
+Padding (1): padding_P_eq_NP_implies_EXP_eq_NEXP
 Separation/existence (2): P_ne_EXP, ladner_theorem
 Completeness results (3): cook_levin, tqbf_pspace_complete, L_ne_PSPACE
 Quantum (3): BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE
@@ -70,7 +70,7 @@ Communication complexity (6): comm_trivial_upper, D_ge_R, EQ_det_lower, EQ_rand_
     DISJ_rand_lower, log_rank_lower
 Communication (1): karchmer_wigderson (D(KW_f) = depth(f))
 Proof complexity (1): cook_reckhow (NP=coNP ↔ poly proof system)
-Eliminated axioms (8→theorems/opaques):
+Eliminated axioms (9→theorems/opaques):
 - P_subset_PP → theorem (via P ⊆ BPP ⊆ BQP ⊆ PP)
 - P_subset_P_poly → theorem (program e is a constant-size "circuit")
 - TC0_computes_multiplication → theorem (same type as majority_in_TC0_not_AC0)
@@ -78,6 +78,7 @@ Eliminated axioms (8→theorems/opaques):
 - mignon_ressayre → theorem (trivially True)
 - immerman_szelepcsenyi → theorem (NL = coNL from Φ_negate, L = NL in abstract model)
 - trapdoor_implies_owf → theorem (both OWF_exist and TrapdoorOWF_exist are ∃ _ : ℕ, True)
+- padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE → theorem (EXP = EXPSPACE definitionally)
 - D_comm → opaque def (measurement function, not mathematical claim)
 - R_comm → opaque def (measurement function, not mathematical claim)
 - commMatrixRank → opaque def (measurement function, not mathematical claim)
@@ -2219,12 +2220,16 @@ theorem EXP_ne_NEXP_implies_P_ne_NP : EXP ≠ NEXP → P ≠ NP := by
   exact h (padding_P_eq_NP_implies_EXP_eq_NEXP heq)
 
 /-- **Padding for space**: P = PSPACE → EXP = EXPSPACE.
-    Similar padding argument in the space setting. -/
+    Similar padding argument in the space setting.
+
+    In our abstract model, EXP and EXPSPACE have identical definitions
+    (both are {f | ∃ e p, Solves e ∅ f}), so the conclusion is trivially true.
+    Previously axiom; now proved. -/
 def EXPSPACE : Set (ℕ → Bool) :=
   { f | ∃ (e : ℕ) (p : Polynomial), Solves e emptyOracle f }
 
-axiom padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE :
-  P = PSPACE → EXP = EXPSPACE
+theorem padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE :
+  P = PSPACE → EXP = EXPSPACE := fun _ => rfl
 
 /-- The structural message: if small classes collapse, big ones do too.
     Padding arguments ensure that separations at the bottom of the
