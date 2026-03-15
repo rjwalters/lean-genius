@@ -20,7 +20,7 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2025-12-31T16:00:00-08:00",
-    "iteration": 2,
+    "iteration": 1,
     "focus": "",
     "blockers": [],
     "nextAction": "",
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Axiom reduction - replaced blanket szemeredi_theorem axiom with szemeredi_k_ge_4 (k>=4 only). Full theorem now proved by cases: k=1,2 trivial density lemmas + k=3 Roth via Mathlib + k>=4 axiom.",
+    "progressSummary": "",
     "builtItems": [
       {
         "name": "HasAPOfLength S k",
@@ -67,26 +67,6 @@
         "name": "szemeredi_theorem",
         "description": "full Szemerédi theorem as axiom",
         "proven": true
-      },
-      {
-        "name": "szemeredi_k_ge_4",
-        "description": "weaker axiom covering only k>=4 case",
-        "proven": false
-      },
-      {
-        "name": "szemeredi_k1_density",
-        "description": "k=1 density version for SzemerediTheorem",
-        "proven": true
-      },
-      {
-        "name": "szemeredi_k2_density",
-        "description": "k=2 density version using Nat.ceil bound",
-        "proven": true
-      },
-      {
-        "name": "szemeredi_theorem (proved)",
-        "description": "full theorem assembled from k=1,2,3 proofs + k>=4 axiom",
-        "proven": true
       }
     ],
     "insights": [
@@ -96,10 +76,7 @@
       "SzemerediTheorem",
       "szemeredi_k1",
       "szemeredi_k2",
-      "szemeredi_theorem",
-      "Axiom reduced: szemeredi_theorem was a blanket axiom, now proved from szemeredi_k_ge_4",
-      "k=1 density: N0=1 suffices since any delta-dense set with N>=1 is nonempty",
-      "k=2 density: N0=ceil(2/delta) ensures delta*N >= 2 so S.card >= 2"
+      "szemeredi_theorem"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
