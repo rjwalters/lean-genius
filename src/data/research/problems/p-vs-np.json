@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added PCP theorem + hardness of approximation, Williams NEXP⊄ACC⁰, Karchmer-Wigderson communication complexity, Cook-Reckhow proof complexity. Sound model: ~68 axioms, 164 theorems, 88 defs, 0 sorries, 3569 lines.",
+    "progressSummary": "PROGRESS: Added Impagliazzos Five Worlds framework (Algorithmica/Heuristica/Pessiland/Minicrypt/Cryptomania), average-case complexity, OWF formalization, pairwise exclusivity proofs, connections to barriers/derandomization/ETH/SETH. Sound model: ~70 axioms, 199 theorems, 76 defs, 0 sorries, 4021 lines.",
     "builtItems": [
       {
         "name": "P",
@@ -343,7 +343,12 @@
       "ACC0, williams_NEXP_not_in_ACC0, NEXP_ACC0_separation, williams_bypasses_barriers in PNPBarriersSound.lean",
       "CC, circuitDepth, KW_game, karchmer_wigderson in PNPBarriersSound.lean",
       "PropProofSystem, cook_reckhow, proof_complexity_approach in PNPBarriersSound.lean",
-      "NEXP_not_subset_P, NEXP_ne_P, IKW_compression, NEXP_Ppoly_implies_NEXP_in_PSPACE in PNPBarriersSound.lean"
+      "NEXP_not_subset_P, NEXP_ne_P, IKW_compression, NEXP_Ppoly_implies_NEXP_in_PSPACE in PNPBarriersSound.lean",
+      "Algorithmica, Heuristica, Pessiland, Minicrypt, Cryptomania definitions in PNPBarriersSound.lean",
+      "AvgCaseHardNP, OWF_exist, TrapdoorOWF_exist definitions in PNPBarriersSound.lean",
+      "five_worlds_pairwise_exclusive: all 10 pairs mutually exclusive (PROVED)",
+      "non_algorithmica_implies_P_ne_NP: worlds 2-5 imply P ne NP (PROVED)",
+      "grand_landscape: unified summary theorem (PROVED)"
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",
@@ -393,7 +398,13 @@
       "Williams NEXP⊄ACC⁰ (2011) formalized with full circuit hierarchy interleaving AC⁰⊆ACC⁰⊆TC⁰⊆NC¹⊆NC",
       "Karchmer-Wigderson theorem: communication complexity = circuit depth",
       "Cook-Reckhow proof complexity: NP=coNP ↔ poly proof system exists",
-      "IKW compression: NEXP⊆P/poly → NEXP⊆MA"
+      "IKW compression: NEXP⊆P/poly → NEXP⊆MA",
+      "Formalized Impagliazzos Five Worlds (1995): Algorithmica, Heuristica, Pessiland, Minicrypt, Cryptomania as Lean Propositions",
+      "Proved all 10 pairwise exclusivity theorems between the five worlds (five_worlds_pairwise_exclusive)",
+      "Proved non_algorithmica_implies_P_ne_NP: all worlds except Algorithmica imply P ne NP",
+      "Connected OWFs to P vs NP: OWF_exist -> AvgCaseHardNP -> P ne NP chain proved",
+      "Connected Five Worlds to existing results: ETH_not_algorithmica, SETH_world_consequences, algorithmica_PH_collapse, algorithmica_BPP_eq_P",
+      "grand_landscape theorem: unified Five Worlds + barriers + derandomization + separations"
     ],
     "mathlibGaps": [
       "Turing machines",
@@ -417,7 +428,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-14T18:30:00.000Z",
+  "lastUpdate": "2026-03-15T08:00:00.000Z",
   "significance": 10,
   "tractability": 2
 }
