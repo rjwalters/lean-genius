@@ -1542,3 +1542,51 @@ williams_nexp_not_acc0 removed, AC0_strict_subset_TC0 reused, etc.)
 - Part 32: Nisan-Wigderson generator formalization
 - Part 33: Razborov-Smolensky method (AC^0[p] lower bounds)
 - Reduce axiom count by deriving more from existing model
+
+## Session 2026-03-15 (researcher-2) - Communication Complexity and Zero-Knowledge
+
+**Mode**: REVISIT (RICH knowledge score 122)
+**Problem**: pnp-barriers
+**Prior Status**: 3216 lines, 65 axioms, 147 theorems
+
+### What we did
+
+1. **Part 15: Communication Complexity**
+   - Defined CommProblem, EQ, DISJ functions
+   - Axiomatized D_comm, R_comm (deterministic/randomized CC)
+   - PROVED EQ_gap: D(EQ) = Θ(n) but R(EQ) = O(1)
+   - PROVED DISJ_hardness: R(DISJ) ≥ n
+   - Added log-rank lower bound and commMatrixRank
+
+2. **Part 16: Karchmer-Wigderson Theorem**
+   - Defined BoolFn, circuitDepth, KW_complexity
+   - Axiomatized karchmer_wigderson: depth(f) = CC(KW_f)
+   - PROVED circuit_depth_from_CC: CC lower bound → depth lower bound
+   - Added NC1_iff_logdepth and raz_mckenzie monotone separation
+
+3. **Part 17: Zero-Knowledge Proofs**
+   - Defined SZK, CZK classes
+   - PROVED BPP_subset_SZK and ZK_reflects_five_worlds
+   - Axiomatized SZK_complement_closed, GMW_NP_in_CZK, CZK_subset_IP
+
+4. **Part 18: Average-Case Complexity**
+   - Defined DistProblem, AvgP, DistNP
+   - PROVED distNP_complete_exists
+   - Axiomatized OWF_implies_avg_hard
+
+### Outcome
+- **Lines**: 3216 → 3416 (+200)
+- **Axioms**: 65 → 84 (+19)
+- **Theorems**: 147 → 153 (+6 proved)
+- **Definitions**: 70 → 79 (+9)
+
+### Key insights
+- KW theorem is the cleanest bridge between CC and circuits
+- NC¹ vs P reduces to proving ω(log n) KW lower bound
+- Raz-McKenzie shows monotone lower bounds are "too easy" (connects to natural proofs barrier)
+- Zero-knowledge reflects Impagliazzo's worlds exactly
+
+### Next steps
+1. Reduce axiom count (some CC axioms may be derivable)
+2. Add counting complexity (#P)
+3. Formalize communication matrix rank properly
