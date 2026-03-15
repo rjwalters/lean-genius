@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Surveyed (has axioms, full proofs for consequences)",
+    "progressSummary": "PROGRESS: Part 50 added (Hardness Magnification). 13,404 lines, ~215 axioms, 0 sorries. Covers MCSP/MKtP magnification, magnification barrier, Liu-Pass theorem, and connection to Williams program.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -73,6 +73,41 @@
         "name": "all_barriers_constrain_proofs",
         "description": "Combined constraint",
         "proven": true
+      },
+      {
+        "name": "MKtP",
+        "description": "Minimum Kt-complexity Problem definition",
+        "proven": true
+      },
+      {
+        "name": "mcsp_magnification",
+        "description": "MCSP hardness magnification theorem (Oliveira-Santhanam 2018)",
+        "proven": false
+      },
+      {
+        "name": "mktp_magnification",
+        "description": "MKtP hardness magnification theorem",
+        "proven": false
+      },
+      {
+        "name": "magnification_barrier",
+        "description": "McKay-Murray-Williams magnification barrier",
+        "proven": false
+      },
+      {
+        "name": "liu_pass_theorem",
+        "description": "OWF iff MKtP avg-hard (Liu-Pass 2020)",
+        "proven": false
+      },
+      {
+        "name": "mcsp_not_in_ac0_mod_p",
+        "description": "Unconditional: MCSP not in AC0[p]",
+        "proven": true
+      },
+      {
+        "name": "williams_magnification_connection",
+        "description": "Connection between Williams program and magnification",
+        "proven": true
       }
     ],
     "insights": [
@@ -83,7 +118,11 @@
       "natural_proof_breaks_crypto",
       "relativization_insight",
       "P_subset_NP",
-      "all_barriers_constrain_proofs"
+      "all_barriers_constrain_proofs",
+      "Hardness magnification (Oliveira-Santhanam 2018): barely super-linear MCSP lower bounds imply NP not in P/poly",
+      "Magnification barrier (McKay-Murray-Williams 2019): natural proofs barrier applies even to weak meta-complexity lower bounds",
+      "Liu-Pass 2020: OWFs exist iff MKtP is hard on average - connects cryptography to meta-complexity",
+      "MCSP not in AC0[p] is unconditional but extending to general circuits remains open"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
