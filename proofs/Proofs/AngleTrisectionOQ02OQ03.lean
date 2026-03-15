@@ -1270,7 +1270,10 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
         have : ((↑j : ℤ) : ℝ) = ((m * ↑n + ↑k : ℤ) : ℝ) := by
           push_cast; linarith [h_real]
         exact_mod_cast this
-      omega
+      -- j ≡ k (mod n) in ℤ → k % n = j % n in ℕ
+      have h_zmod : (↑j : ℤ) % ↑n = (↑k : ℤ) % ↑n := by omega
+      have := Int.ofNat_mod k n ▸ Int.ofNat_mod j n ▸ congr_arg Int.toNat h_zmod.symm
+      simp [Int.toNat_natCast] at this; exact this
     · -- h : 2jπ/n = 2mπ - 2kπ/n → k ≡ n - j (mod n)
       right
       have h_real : (↑j : ℝ) + ↑k = ↑m * ↑n := by
@@ -1279,23 +1282,31 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
         have : ((↑j + ↑k : ℤ) : ℝ) = ((m * ↑n : ℤ) : ℝ) := by
           push_cast; linarith [h_real]
         exact_mod_cast this
-      omega
+      -- (j + k) ≡ 0 (mod n) → k % n = (n - j % n) % n
+      have h_dvd : (↑n : ℤ) ∣ (↑j + ↑k) := ⟨m, by omega⟩
+      have h_sum : (j + k) % n = 0 := by
+        rwa [← Int.natCast_dvd_natCast, Nat.cast_add] at h_dvd
+      rw [Nat.add_mod] at h_sum
+      by_cases hjz : j % n = 0
+      · simp [hjz] at h_sum; simp [hjz, h_sum, Nat.mod_self]
+      · have hjn : j % n < n := Nat.mod_lt j (by omega)
+        rw [Nat.mod_eq_of_lt (by omega : n - j % n < n)]
+        have : k % n + j % n = n := by
+          have := Nat.add_mod_right (k % n + j % n) 0
+          omega
+        omega
   · rintro (h | h)
     · -- k % n = j % n → cos equal via periodicity
-      -- k ≡ j (mod n) in ℕ → j - k divisible by n in ℤ
-      have h_mod : (↑j : ℤ) % ↑n = (↑k : ℤ) % ↑n := by
-        have : (↑(k % n) : ℤ) = ↑(j % n) := by exact_mod_cast h
-        simp only [Nat.cast_mod_cast] at this; omega
-      obtain ⟨m, hm⟩ := (Int.modEq_iff_dvd.mp h_mod : (↑n : ℤ) ∣ (↑k - ↑j))
+      have h_zmod : (↑k : ℤ) % ↑n = (↑j : ℤ) % ↑n := by
+        rw [Int.ofNat_mod, Int.ofNat_mod]; exact_mod_cast h
+      obtain ⟨m, hm⟩ := Int.modEq_iff_dvd.mp h_zmod
       refine ⟨-m, Or.inl ?_⟩
       have h_int : (↑j : ℤ) = -m * ↑n + ↑k := by omega
       have h_real : (↑j : ℝ) = -↑m * ↑n + ↑k := by
         have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; exact this
       field_simp; nlinarith [h_real]
     · -- k % n = (n - j % n) % n → cos equal via reflection
-      -- k + j ≡ 0 (mod n) in ℕ
       have h_sum : (j + k) % n = 0 := by
-        have hn_pos : 0 < n := by omega
         rw [Nat.add_mod, h]
         by_cases hjz : j % n = 0
         · simp [hjz, Nat.mod_self]
@@ -1306,7 +1317,8 @@ theorem cos_2kpi_div_n_eq_iff (n : ℕ) (hn : 1 ≤ n) (k j : ℕ) :
       have h_int : (↑j : ℤ) + ↑k = ↑m' * ↑n := by
         have := congr_arg (Nat.cast (R := ℤ)) hm'; push_cast at this; linarith
       refine ⟨(m' : ℤ), Or.inr ?_⟩
-      have h_real : (↑j : ℝ) + ↑k = ↑(m' : ℤ) * ↑n := by exact_mod_cast h_int
+      have h_real : (↑j : ℝ) + ↑k = ↑(m' : ℤ) * ↑n := by
+        have := congr_arg (Int.cast (R := ℝ)) h_int; push_cast at this; exact this
       field_simp; nlinarith [h_real]
 
 /-- If gcd(k, n) = 1 then gcd(n - k, n) = 1. -/
