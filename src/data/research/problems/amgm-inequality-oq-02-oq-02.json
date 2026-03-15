@@ -18,14 +18,14 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-14",
-    "iteration": 3,
-    "focus": "Inductive step: quadratic in t with Pascal structure",
-    "blockers": [],
-    "nextAction": "Prove non-negativity of quadratic via manual SOS decomposition or polyrith",
+    "iteration": 4,
+    "focus": "1 axiom remains: newton_cleared_denom_inductive_step (degree-6 polynomial in 9 vars)",
+    "blockers": ["Algebraic complexity of inductive step beyond nlinarith capacity"],
+    "nextAction": "Compute explicit SOS certificate using IH constraints (not just unnormalized Newton), or implement real-rootedness approach",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 3
     }
   },
   "knowledge": {
@@ -65,14 +65,20 @@
       "Real-rootedness or Schur convexity approach may be needed for inductive step",
       "The inductive step quadratic has 9 real variables (a,b,c,d,p,q,r,s,t). nlinarith cannot find SOS certificates at default search depth.",
       "Both IH instances (at k and k-1) are needed simultaneously to prove α ≥ 0 and γ ≥ 0. Neither IH alone suffices.",
-      "Key algebraic structure: (q+s)(r+p) vs (p+q)² involves Pascal identity C(m+1,j) = C(m,j) + C(m,j-1)"
+      "Key algebraic structure: (q+s)(r+p) vs (p+q)² involves Pascal identity C(m+1,j) = C(m,j) + C(m,j-1)",
+      "DISCRIMINANT ANALYSIS: 4AC-B² = 4(a²-bc)(b²-ad)·DE-(ab-cd)²·E² where D=C(m+1,k-1)·C(m+1,k+1), E=C(m+1,k)²",
+      "CRITICAL: 4(a²-bc)(b²-ad) ≥ (ab-cd)² does NOT hold from unnormalized Newton alone (counterexample: a=4,b=2,c=1,d=1)",
+      "The IH constraints (normalized Newton with binomial coefficients) ARE strong enough - the counterexample violates h_ih_km1",
+      "For t≥0 non-negativity: need EITHER disc≤0 OR minimum at t₀<0 (i.e., f increasing at t=0). The IH constrains this sufficiently.",
+      "Most promising approach: express 4A·f(t) = (2At+B)²+(4AC-B²) ≥ 0, use IH to show 4AC-B² ≥ 0 with binomial coefficient structure"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Manual SOS decomposition: find explicit sum-of-squares certificate for the 9-variable polynomial",
-      "Alternative: use polyrith (Groebner basis) instead of nlinarith",
-      "Alternative: prove via Schur complement / matrix positivity approach",
-      "Alternative: factor the quadratic using normalized variables u=a/p, v=b/q, w=c/r, x=d/s"
+      "Prove via discriminant: show 4AC-B² ≥ 0 using BOTH IH instances (h_ih_k and h_ih_km1) with binomial coefficients",
+      "Key identity: 4AC-B² = 4(a²qr-bcp²)(b²sp-daq²)·... expand and verify using IH",
+      "Alternative: real-rootedness approach - show ∏(1+xᵢz) has real roots → normalized coefficients log-concave",
+      "Alternative: Cauchy-Binet via minor determinants of Vandermonde-like matrix",
+      "Estimate: any approach needs 2-4 hours of careful algebra + 200-400 lines of Lean"
     ]
   },
   "approaches": [],
