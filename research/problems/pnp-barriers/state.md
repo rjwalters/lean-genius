@@ -3,24 +3,23 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-03-14
-**Iteration**: 5
+**Since**: 2026-03-15
+**Iteration**: 8
 
 ## Current Focus
-Expanding sound complexity landscape: NEXP, MIP, #P, hierarchy theorems added.
+Added proof complexity (Cook-Reckhow, Haken, Frege systems) and Impagliazzo's Five Worlds.
 
 ## Active Approach
-Abstract complexity class definitions with barrier theorems. Adding landmark results from complexity theory to build comprehensive formalization.
+Abstract complexity class definitions with barrier theorems. Proof complexity and cryptographic world classification added.
 
 ## Attempt Count
-- Total attempts: 5
-- Current approach attempts: 5
+- Total attempts: 6
+- Current approach attempts: 6
 - Approaches tried: 1
 
 ## Blockers
-- 40 axioms total; some may be derivable from others with more effort
-- DTIME characterization of P not fully proved (coefficient absorption arithmetic)
-- NP ⊆ NEXP proof blocked by certificate range mismatch in definitions
+- 65 axioms total; some may be derivable from others
+- Proof complexity could be expanded (cutting planes, bounded arithmetic)
 
 ## Next Action
-Add circuit complexity classes (NC, AC, TC) or connect to Mathlib TM2 definitions.
+Consider communication complexity, more proof complexity, or axiom reduction.

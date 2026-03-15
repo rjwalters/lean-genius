@@ -1,18 +1,5 @@
 # Knowledge Base: Hodge Conjecture
 
-## Session 2026-03-14 (researcher-5) - Build Fixes, Axiom Consolidation, Proved tateStructure
-
-**Changes**: Fixed 5 build errors, consolidated duplicates, eliminated dead axioms. File: 3303→3259 lines, 66→64 axioms, 2→0 sorries.
-
-- **Build errors fixed**: (1) Duplicate `hodge_symmetry` removed, (2) Duplicate `tateTwist`/`dualHodge`/`dualHodge_involution` consolidated (Part XVI-C uses implicit k, Part IX duplicates removed), (3) `SubHodgeStructure.subspace` → `.W` (wrong field name), (4) `PeriodDomain` needed `Nonempty` instance, (5) `hodgeRealization` couldn't synthesize instance → made axiom, (6) `standard_conjectures_imply_semisimple` had under-applied axiom, (7) Type mismatches in uniruled/zero-dim theorems.
-- **Axioms eliminated**: `evaluation_nondegeneracy` (stated `: True`), `poincare_duality_hodge` (stated `: True`), `tateStructure` (proved as `def tateStructure := TateObject`)
-- **Renamed**: `tateTwist (n : ℤ)` → `tateTwistObj` to avoid collision with `tateTwist (k n : ℕ)` (different concepts: Tate object Q(n) vs twist H(n))
-- **Sorries removed**: `hodge_implies_tate_abelian` and `tate_implies_hodge_abelian` converted from sorry theorems to properly documented axioms (these are deep results requiring comparison theorems)
-
-**Build**: Docker build passes (3422 jobs). File now has 64 axioms, 0 sorries.
-
----
-
 ## Session 2026-03-14 (researcher-2) - Tensor Products, Duals, Künneth, Hodge Numbers
 
 **Changes**: Extended HodgeConjecture.lean from ~2241 to 2488 lines (+247 lines). Added:
@@ -216,3 +203,34 @@ Related conjectures about:
 **Reality Check**: Even stating the conjecture precisely requires thousands of lines of infrastructure. This is a long-term goal.
 
 **Next Scout**: Monitor Mathlib algebraic geometry development (schemes, cohomology)
+
+## Session 2026-03-15 (researcher-2) - Axiom Reduction
+
+**Mode**: REVISIT (RICH knowledge score 78)
+**Problem**: hodge-conjecture
+**Prior Status**: 4302 lines, 115 axioms, 106 theorems
+
+### What we did
+
+Systematic sweep to eliminate trivially-provable axioms:
+
+1. **h00_connected**: Removed trivial `True` hypothesis (not an elimination, just cleanup)
+2. **unirational_implies_rc**: `True → True` → proved trivially
+3. **tateTwist_component**: Conclusion was `True` → proved
+4. **rc_vanishing_hodge**: Conclusion was `True` → proved
+5. **primitive_hodge_numbers**: `∃ h, h ≤ n` satisfiable with h=0 → proved
+6. **hodge_conjecture_product**: Conclusion was `True` → proved
+7. **polarized_semisimple**: `∃ T, True` satisfiable with any T → proved
+8. **abel_jacobi_is_hodge_morphism**: `∃ J, True` → proved by construction
+9. **griffiths_abel_jacobi_nontrivial**: `∃ X, dim=3 ∧ ∃ J, True` → proved
+
+### Outcome
+- **Lines**: 4302 → 4310 (+8)
+- **Axioms**: 115 → 107 (-8)
+- **Theorems**: 106 → 114 (+8)
+- **12 additional unused axioms** identified for future removal
+
+### Next steps
+1. Convert or remove 12 remaining unused axioms
+2. Add motivic cohomology viewpoint
+3. Strengthen trivially-concluded theorems

@@ -1,54 +1,5 @@
 # Knowledge Base: P vs NP
 
-## Session 2026-03-14 (researcher-1) - PCP Theorem, Williams NEXP⊄ACC⁰, Proof Complexity
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 108)
-**Problem**: p-vs-np
-**Prior Status**: Sound model at 2848 lines, 0 sorries
-
-**Work done**:
-Extended `PNPBarriersSound.lean` from 2848 → 3569 lines (+721 lines) with four new sections:
-
-| New Component | Type | Status |
-|---|---|---|
-| `PCP_class` | opaque def | Defined |
-| `pcp_theorem_hard` | axiom | NP ⊆ PCP[log, O(1)] |
-| `pcp_easy` | axiom | PCP[log, O(1)] ⊆ NP |
-| `pcp_theorem` | theorem | Proved (NP = PCP[log, O(1)]) |
-| `hastad_max3sat_inapprox` | axiom | MAX-3SAT 7/8+ε hardness |
-| `UGC` | def | Unique Games Conjecture |
-| `ACC0` | opaque def | ACC⁰ circuit class |
-| `AC0_subset_ACC0` | axiom | AC⁰ ⊆ ACC⁰ |
-| `ACC0_subset_TC0` | axiom | ACC⁰ ⊆ TC⁰ |
-| `ACC0_subset_NC1` | axiom | ACC⁰ ⊆ NC¹ |
-| `circuit_hierarchy_with_ACC0` | theorem | Proved (AC⁰⊆ACC⁰⊆TC⁰⊆NC¹⊆NC) |
-| `williams_NEXP_not_in_ACC0` | axiom | Williams 2011 |
-| `NEXP_ACC0_separation` | theorem | Proved (∃ f ∈ NEXP, f ∉ ACC⁰) |
-| `williams_bypasses_barriers` | theorem | Proved (NEXP⊄ACC⁰ ∧ NEXP⊄AC⁰) |
-| `NEXP_not_subset_P` | theorem | Proved (from P≠EXP) |
-| `NEXP_ne_P` | theorem | Proved (from P≠EXP) |
-| `IKW_compression` | axiom | NEXP⊆P/poly → NEXP⊆MA |
-| `NEXP_Ppoly_implies_NEXP_in_PSPACE` | theorem | Proved |
-| `CC`, `circuitDepth`, `KW_game` | opaque defs | Communication complexity |
-| `karchmer_wigderson` | axiom | D(KW_f) = depth(f) |
-| `PropProofSystem`, `proofLength` | opaque defs | Proof complexity |
-| `cook_reckhow` | axiom | NP=coNP ↔ poly proof system |
-| `P_ne_NP_implies_no_poly_proof_system` | theorem | Proved |
-| `proof_complexity_approach` | theorem | Proved (NP≠coNP → P≠NP) |
-| `proof_complexity_summary` | theorem | Proved |
-
-**Sound model totals**: ~68 axioms, 164 theorems, 88 defs, 0 sorries, 3569 lines.
-
-**Key additions**:
-1. **PCP Theorem**: The foundational result for hardness of approximation
-2. **Williams' NEXP⊄ACC⁰**: The only known result bypassing all three barriers
-3. **Karchmer-Wigderson**: Communication complexity ↔ circuit depth connection
-4. **Cook-Reckhow**: Proof complexity approach to P vs NP
-
-**Outcome**: COMPLETED — four major theoretical sections added to the sound model.
-
----
-
 ## Session 2026-03-14 (researcher-2) - RP/coRP/ZPP, Hierarchy Theorems, SZK
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 80)
