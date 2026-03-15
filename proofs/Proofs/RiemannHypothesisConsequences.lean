@@ -1270,7 +1270,8 @@ theorem selberg_GRH_implies_RH (h : GRH_selberg_class) :
   zeta_in_selberg_class
 
 /-- Degree is non-negative (PROVED from degree conjecture). -/
-theorem selberg_degree_nonneg (F : SelbergClassFunction) (h : selberg_degree_conjecture) :
+theorem selberg_degree_nonneg (F : SelbergClassFunction)
+    (h : ∀ G : SelbergClassFunction, ∃ n : ℕ, selbergDegree G = n) :
     selbergDegree F ≥ 0 := by
   obtain ⟨n, hn⟩ := h F
   rw [hn]
@@ -1352,44 +1353,44 @@ References:
 
 section HadamardProduct
 
-/-- The completed zeta function ξ(s) = (1/2)s(s-1)π^(-s/2)Γ(s/2)ζ(s).
-This is an entire function of order 1 with zeros exactly at non-trivial zeros of ζ. -/
-axiom completedZeta : ℂ → ℂ
+/-- The functional equation for Λ: Λ(s) = Λ(1-s) for all s ∈ ℂ.
+Uses Mathlib's `completedRiemannZeta` (Λ(s) = π^(-s/2) Γ(s/2) ζ(s)).
+PROVED from Mathlib's `completedRiemannZeta_one_sub`. Previously 2 axioms
+(`completedZeta` + `xi_functional_equation`). -/
+theorem xi_functional_equation : ∀ s : ℂ, completedRiemannZeta s = completedRiemannZeta (1 - s) :=
+  fun s => (completedRiemannZeta_one_sub s).symm
 
-/-- The functional equation for ξ: ξ(s) = ξ(1-s) for all s ∈ ℂ. -/
-axiom xi_functional_equation : ∀ s : ℂ, completedZeta s = completedZeta (1 - s)
-
-/-- ξ(0) = ξ(1) (PROVED from functional equation). -/
-theorem xi_zero_eq_one : completedZeta 0 = completedZeta 1 := by
+/-- Λ(0) = Λ(1) (PROVED from functional equation). -/
+theorem xi_zero_eq_one : completedRiemannZeta 0 = completedRiemannZeta 1 := by
   have h := xi_functional_equation 0
   simp at h
   exact h
 
-/-- The Hadamard product converges and represents ξ(s) (AXIOM).
-ξ(s) = ξ(0) · ∏_ρ (1 - s/ρ) where ρ ranges over non-trivial zeros. -/
+/-- The Hadamard product converges and represents Λ(s) (AXIOM).
+Λ(s) has zeros at non-trivial zeros of ζ within the critical strip. -/
 axiom hadamard_product_exists :
   ∃ (zeros : ℕ → ℂ), -- enumeration of non-trivial zeros
-    (∀ n, completedZeta (zeros n) = 0) ∧  -- each zero is actually a zero
+    (∀ n, completedRiemannZeta (zeros n) = 0) ∧  -- each zero is actually a zero
     (∀ n, 0 < (zeros n).re ∧ (zeros n).re < 1)  -- zeros are in critical strip
 
-/-- Zeros come in conjugate pairs: if ρ is a zero, so is ρ̄ (PROVED from functional eqn). -/
+/-- Zeros come in pairs: if ρ is a zero, so is 1-ρ (PROVED from functional eqn). -/
 theorem xi_zeros_conjugate_pairs :
-    ∀ s : ℂ, completedZeta s = 0 → completedZeta (1 - s) = 0 := by
+    ∀ s : ℂ, completedRiemannZeta s = 0 → completedRiemannZeta (1 - s) = 0 := by
   intro s hs
   rw [← xi_functional_equation]
   exact hs
 
-/-- If ρ is a zero of ξ, then 1-ρ is also a zero (PROVED from functional equation).
+/-- If ρ is a zero of Λ, then 1-ρ is also a zero (PROVED from functional equation).
 Combined with conjugate symmetry, this gives quadruple symmetry of zeros. -/
 theorem xi_zeros_one_minus :
-    ∀ s : ℂ, completedZeta s = 0 → completedZeta (1 - s) = 0 :=
+    ∀ s : ℂ, completedRiemannZeta s = 0 → completedRiemannZeta (1 - s) = 0 :=
   xi_zeros_conjugate_pairs
 
 /-- The zero counting is consistent: Hadamard product gives the same count as N(T).
 The Hadamard product enumerates all zeros, and Riemann-von Mangoldt counts them. -/
 theorem zero_counting_consistency :
     (∃ (zeros : ℕ → ℂ),
-      (∀ n, completedZeta (zeros n) = 0) ∧
+      (∀ n, completedRiemannZeta (zeros n) = 0) ∧
       (∀ n, 0 < (zeros n).re ∧ (zeros n).re < 1)) ∧
     (∃ C : ℝ, C > 0 ∧ ∀ T : ℝ, T ≥ 2 →
       |zeroCountingFunction T - (T / (2 * Real.pi)) * Real.log (T / (2 * Real.pi * Real.exp 1))|
@@ -1519,12 +1520,6 @@ theorem divisorSum_coprime_4_9 :
 theorem divisorSum_coprime_8_3 :
     divisorSum 24 = divisorSum 8 * divisorSum 3 := by native_decide
 
-/-- σ(1) = 1 (PROVED). -/
-theorem divisorSum_one : divisorSum 1 = 1 := by native_decide
-
-/-- σ(2) = 3 (PROVED: divisors of 2 are {1, 2}). -/
-theorem divisorSum_two : divisorSum 2 = 3 := by native_decide
-
 /-- σ(3) = 4 (PROVED). -/
 theorem divisorSum_three : divisorSum 3 = 4 := by native_decide
 
@@ -1533,40 +1528,23 @@ Since Λ(k) ≥ 0 for all k, adding more terms can only increase the sum. -/
 theorem chebyshevPsi_monotone {m n : ℕ} (h : m ≤ n) :
     chebyshevPsi m ≤ chebyshevPsi n := by
   unfold chebyshevPsi
-  apply Finset.sum_le_sum_of_subset
-  exact Finset.range_mono (Nat.add_le_add_right h 1)
+  apply Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_mono (Nat.add_le_add_right h 1))
+  intro i _ _
+  exact ArithmeticFunction.vonMangoldt_nonneg
 
 end UnconditionalIdentities
 
 /-
-## Part 34: Li Criterion Extended Properties (PROVED)
+## Part 34: Li Criterion Extended Properties
 
-Building on Part 12, we prove structural properties of Li's criterion
-from the existing axiom base.
+NOTE: Cross-file theorems (Robin ↔ Li, Lagarias ↔ Li, etc.) require importing
+Proofs.RiemannHypothesis for access to RobinsInequality, LagariasInequality, etc.
+These are proven in the main file's namespace via the RH equivalence hub.
+
+For the standalone version, we prove the contrapositive:
 -/
 
 section LiExtended
-
-/-- Li's criterion combined with RH equivalences: Robin ↔ Li non-negative (PROVED).
-Since RH ↔ Robin and RH ↔ Li non-negative, Robin ↔ Li non-negative. -/
-theorem robin_iff_li_nonneg :
-    RiemannHypothesis.RobinsInequality ↔ (∀ n : ℕ, n ≥ 1 → liConstant n ≥ 0) :=
-  RiemannHypothesis.RH_iff_Robin.symm.trans lis_criterion
-
-/-- Lagarias ↔ Li non-negative (PROVED via RH as hub). -/
-theorem lagarias_iff_li_nonneg :
-    RiemannHypothesis.LagariasInequality ↔ (∀ n : ℕ, n ≥ 1 → liConstant n ≥ 0) :=
-  RiemannHypothesis.RH_iff_Lagarias.symm.trans lis_criterion
-
-/-- Mertens bound ↔ Li non-negative (PROVED via RH as hub). -/
-theorem mertens_iff_li_nonneg :
-    RiemannHypothesis.MertensBound ↔ (∀ n : ℕ, n ≥ 1 → liConstant n ≥ 0) :=
-  RiemannHypothesis.RH_iff_Mertens.symm.trans lis_criterion
-
-/-- GRH implies all Li constants are non-negative (PROVED). -/
-theorem grh_implies_li_nonneg (h : RiemannHypothesis.GeneralizedRiemannHypothesis) :
-    ∀ n : ℕ, n ≥ 1 → liConstant n ≥ 0 :=
-  lis_criterion.mp (RiemannHypothesis.GRH_implies_RH h)
 
 /-- If any Li constant is negative, RH is false (PROVED from contrapositive). -/
 theorem li_negative_disproves_rh (n : ℕ) (hn : n ≥ 1) (h : liConstant n < 0) :
@@ -1574,16 +1552,6 @@ theorem li_negative_disproves_rh (n : ℕ) (hn : n ≥ 1) (h : liConstant n < 0)
   intro hrh
   have := (lis_criterion.mp hrh) n hn
   linarith
-
-/-- If any Li constant is negative, ALL equivalent formulations fail (PROVED). -/
-theorem li_negative_disproves_all (n : ℕ) (hn : n ≥ 1) (h : liConstant n < 0) :
-    ¬RiemannHypothesis ∧ ¬RiemannHypothesis.RobinsInequality ∧
-    ¬RiemannHypothesis.LagariasInequality ∧ ¬RiemannHypothesis.MertensBound :=
-  let not_rh := li_negative_disproves_rh n hn h
-  ⟨not_rh,
-   fun hr => not_rh (RiemannHypothesis.RH_iff_Robin.mpr hr),
-   fun hl => not_rh (RiemannHypothesis.RH_iff_Lagarias.mpr hl),
-   fun hm => not_rh (RiemannHypothesis.RH_iff_Mertens.mpr hm)⟩
 
 end LiExtended
 
