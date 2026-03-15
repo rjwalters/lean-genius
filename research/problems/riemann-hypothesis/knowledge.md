@@ -20,7 +20,20 @@
 7. **Computed σ values**: σ(1)=1, σ(2)=3, σ(6)=12, σ(12)=28
 8. **Proved `harmonicNumber_one`**: H₁ = 1, plus positivity
 
-**File stats**: 2008 lines (+177 from 1831), 96 theorems, 18 axioms, 0 sorries
+*Iteration 3: 100-theorem milestone*
+9. **Proved `sigma_ge_self`**: σ(n) ≥ n for n ≥ 1
+10. **Verified perfect numbers**: σ(6) = 2·6, σ(28) = 2·28
+
+*Iteration 4: Consequences file extension*
+11. **Prime counting section**: π(1) through π(100) computed via native_decide
+12. **Proved `prime_density_decreasing`**: π(100)/100 < π(10)/10
+13. **Bertrand postulate small cases**: π(2n) > π(n) for n=2,3,5
+14. **Mertens structural**: nonmonotone behavior, bounded verifications
+
+**File stats**:
+- Main: 2028 lines, 100 theorems, 18 axioms, 0 sorries
+- Consequences: 1060 lines, 93 theorems, 10 axioms, 0 sorries
+- Combined: 3088 lines, 193 theorems, 28 axioms, 0 sorries
 **PR**: #3808
 
 **Axiom budget**: 18 (main) + 10 (consequences) = 28 total (unchanged)
