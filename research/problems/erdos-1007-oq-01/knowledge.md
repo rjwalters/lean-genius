@@ -4,33 +4,44 @@ Minimum edges for graph dimension d in general.
 
 ---
 
-## Session 2026-03-15 (Session 3) - Conjecture Relationship
+## Session 2026-03-15 (Session 3) - Conjecture Connections & Tighter Bounds
 
 **Mode**: REVISIT (depth-first, MODERATE knowledge)
-**Outcome**: progress — proved new structural theorem
+**Outcome**: progress — 8 new theorems connecting conjectures, tighter dimension bound
 
 ### What Was Done
-- **Proved `optimal_implies_quadratic`**: If the complete graph optimality conjecture holds
-  (K_{d+1} optimal for d ≠ 4), then minEdges(d) = Θ(d²) with explicit constants c₁ = 1/2, c₂ = 1.
-  - Lower bound: d²/2 ≤ d(d+1)/2 since d ≤ d+1. For d=4: 8 ≤ 9.
-  - Upper bound: d(d+1)/2 ≤ d² since d+1 ≤ 2d for d ≥ 1. For d=4: 9 ≤ 16.
-- Added helper `choose_succ_two_real` for Nat/Real casting of C(d+1,2).
-- File now proves THREE conjecture implications from `complete_graph_optimal_conjecture`:
-  1. → monotonicity (`optimal_implies_monotone`)
-  2. → quadratic growth (`optimal_implies_quadratic`) [NEW]
-  3. ↔ zero deficiency (`optimal_iff_zero_deficiency`)
+- **`optimal_implies_quadratic`** (§11): Proved that the complete graph optimality conjecture
+  implies quadratic growth minEdges(d) = Θ(d²) with explicit constants c₁ = 1/2, c₂ = 1.
+  Key helpers: `choose_two_le_sq` (C(d+1,2) ≤ d² for d ≥ 1) and `sq_half_le_choose_two`
+  (d²/2 ≤ C(d+1,2)), both with careful ℕ↔ℝ cast arithmetic.
+- **Monotonicity consequences** (§12): `monotone_lower_d4` and `monotone_lower_d5` show
+  that monotonicity propagates known values forward (minEdges(d) ≥ 9 for d ≥ 4, ≥ 15 for d ≥ 5).
+  `optimal_chain` composes optimality → monotonicity → concrete bounds.
+- **Unconditional quadratic verification** (§13): `quadratic_verified_small` proves
+  d²/2 ≤ minEdges(d) ≤ d² for all d = 1,...,5 without assuming any conjecture.
+- **Tighter K₂ bound** (§14): `K2_unit_embedding` constructs an explicit ℝ¹ embedding
+  of K₂ (vertices at 0 and 1), giving `complete_graph_dim_le_tight_2`: dim(K₂) ≤ 1.
+  This improves on the generic dim(K_n) ≤ n bound.
+
+### Conjecture Relationship Map
+```
+complete_graph_optimal_conjecture
+  ├── → minEdges_monotone_conjecture  (optimal_implies_monotone, §8)
+  │       ├── → minEdges(d) ≥ 9 ∀ d≥4   (monotone_lower_d4, §12)
+  │       └── → minEdges(d) ≥ 15 ∀ d≥5  (monotone_lower_d5, §12)
+  ├── → minEdges_quadratic_conjecture  (optimal_implies_quadratic, §11)
+  └── ↔ deficiency = 0 for d ≠ 4       (optimal_iff_zero_deficiency, §10)
+```
+
+### Key Insight: General dim(K_n) = n-1
+To prove dim(K_n) ≤ n-1 in general: project the ℝ^n simplex embedding onto the
+hyperplane {x : ∑xⱼ = 0}. Pairwise differences are orthogonal to (1,...,1),
+so projection preserves distances. Converting to ℝ^{n-1} requires constructing
+an ONB for the hyperplane (Helmert basis or Householder reflection). Non-trivial
+Lean infrastructure but mathematically straightforward.
 
 ### Files Modified
-- `proofs/Proofs/Erdos1007OQ01.lean` — added optimal_implies_quadratic
-
-### Assessment
-- All provable theorems now proved (0 sorries, 11 axioms)
-- The complete graph optimality conjecture is identified as the key hypothesis:
-  it implies both monotonicity and quadratic growth
-- Remaining axioms encode computational search results (dim0-dim5 values) and
-  structural properties (lower/upper bounds, minEdgesForDim definition) that
-  require either exhaustive graph search or rigidity theory infrastructure
-- To make further progress: need dim(K_n) = n-1 rigidity (substantial linear algebra)
+- `proofs/Proofs/Erdos1007OQ01.lean` — added §11-§14 (8 new theorems)
 
 ---
 
