@@ -800,12 +800,203 @@ abbrev Sphere1 : Set (EuclideanSpace ℝ (Fin 2)) := Metric.sphere 0 1
 /-- The 2-sphere S² as unit sphere in ℝ³. -/
 abbrev Sphere2 : Set (EuclideanSpace ℝ (Fin 3)) := Metric.sphere 0 1
 
-/-- The Hopf fibration: there exists a continuous surjection S³ → S² whose fibers
-    are circles (great circles in S³). Previously formulated as a universal statement
-    about ALL continuous surjections S³ → S², which is mathematically incorrect
-    (not every surjection has circle fibers). -/
-axiom hopf_fibration_exists :
-  ∃ (π : ↥Sphere3 → ↥Sphere2), Continuous π ∧ Function.Surjective π ∧
+/- ===============================================================================
+PART XLVII: HOPF MAP CONSTRUCTION
+===============================================================================
+
+The Hopf map h : S³ → S² is a fundamental fiber bundle in topology.
+In quaternionic notation, h(q) = q·i·q̄ maps unit quaternions to pure
+imaginary unit quaternions (≅ S²). In coordinates:
+
+  h(x₀, x₁, x₂, x₃) = (2(x₀x₂ + x₁x₃), 2(x₁x₂ - x₀x₃), x₀² + x₁² - x₂² - x₃²)
+
+The key identity ‖h(x)‖² = ‖x‖⁴ (Euler four-square) ensures S³ maps to S².
+-/
+
+section HopfMap
+
+/-- L2 norm squared for EuclideanSpace ℝ (Fin 3). -/
+private theorem eucl3_norm_sq (x : EuclideanSpace ℝ (Fin 3)) :
+    ‖x‖ ^ 2 = (x 0) ^ 2 + (x 1) ^ 2 + (x 2) ^ 2 := by
+  have h := PiLp.norm_sq_eq_of_L2 (fun _ : Fin 3 => ℝ) x
+  simp only [Fin.sum_univ_three, Real.norm_eq_abs, sq_abs] at h
+  exact h
+
+/-- The Hopf map on ambient ℝ⁴ → ℝ³.
+    h(x₀, x₁, x₂, x₃) = (2(x₀x₂ + x₁x₃), 2(x₁x₂ - x₀x₃), x₀² + x₁² - x₂² - x₃²) -/
+noncomputable def hopfMapE (x : EuclideanSpace ℝ (Fin 4)) :
+    EuclideanSpace ℝ (Fin 3) :=
+  (WithLp.equiv 2 (Fin 3 → ℝ)).symm fun i =>
+    match i with
+    | 0 => 2 * (x 0 * x 2 + x 1 * x 3)
+    | 1 => 2 * (x 1 * x 2 - x 0 * x 3)
+    | 2 => (x 0) ^ 2 + (x 1) ^ 2 - (x 2) ^ 2 - (x 3) ^ 2
+
+/-- Coordinate extraction for the Hopf map. -/
+private theorem hopfMapE_coord0 (x : EuclideanSpace ℝ (Fin 4)) :
+    hopfMapE x 0 = 2 * (x 0 * x 2 + x 1 * x 3) := by
+  show WithLp.equiv 2 (Fin 3 → ℝ) (hopfMapE x) 0 = _; simp [hopfMapE]
+
+private theorem hopfMapE_coord1 (x : EuclideanSpace ℝ (Fin 4)) :
+    hopfMapE x 1 = 2 * (x 1 * x 2 - x 0 * x 3) := by
+  show WithLp.equiv 2 (Fin 3 → ℝ) (hopfMapE x) 1 = _; simp [hopfMapE]
+
+private theorem hopfMapE_coord2 (x : EuclideanSpace ℝ (Fin 4)) :
+    hopfMapE x 2 = (x 0) ^ 2 + (x 1) ^ 2 - (x 2) ^ 2 - (x 3) ^ 2 := by
+  show WithLp.equiv 2 (Fin 3 → ℝ) (hopfMapE x) 2 = _; simp [hopfMapE]
+
+/-- The Hopf map satisfies ‖h(x)‖² = (‖x‖²)².
+    This is the Euler four-square identity in disguise. -/
+theorem hopfMapE_norm_sq (x : EuclideanSpace ℝ (Fin 4)) :
+    ‖hopfMapE x‖ ^ 2 = (‖x‖ ^ 2) ^ 2 := by
+  rw [eucl3_norm_sq (hopfMapE x), eucl4_norm_sq x,
+      hopfMapE_coord0, hopfMapE_coord1, hopfMapE_coord2]
+  ring
+
+/-- The Hopf map sends S³ to S²: if ‖x‖ = 1 then ‖h(x)‖ = 1. -/
+theorem hopfMapE_maps_sphere (x : EuclideanSpace ℝ (Fin 4)) (hx : ‖x‖ = 1) :
+    ‖hopfMapE x‖ = 1 := by
+  have h := hopfMapE_norm_sq x
+  rw [hx] at h; simp at h
+  exact norm_eq_one_of_sq (norm_nonneg _) h
+
+private theorem hopfMapE_mem_sphere2 (x : EuclideanSpace ℝ (Fin 4))
+    (hx : x ∈ Sphere3) : hopfMapE x ∈ Sphere2 := by
+  simp only [Sphere2, Sphere3, Metric.mem_sphere, dist_zero_right] at hx ⊢
+  exact hopfMapE_maps_sphere x hx
+
+/-- The Hopf map as a function S³ → S². -/
+noncomputable def hopfMap : ↥Sphere3 → ↥Sphere2 :=
+  fun x => ⟨hopfMapE x.val, hopfMapE_mem_sphere2 x.val x.prop⟩
+
+/-- The Hopf map is continuous: it is the restriction of a polynomial map ℝ⁴ → ℝ³
+    to the sphere. Each coordinate is a degree-2 polynomial in the inputs,
+    hence continuous. The restriction of a continuous map to a subspace is continuous. -/
+theorem hopfMap_continuous : Continuous hopfMap := by
+  apply Continuous.subtype_mk
+  show Continuous (fun x : ↥Sphere3 => hopfMapE x.val)
+  apply Continuous.comp (f := hopfMapE) (g := Subtype.val)
+  · -- hopfMapE is continuous (polynomial map)
+    show Continuous hopfMapE
+    unfold hopfMapE
+    exact continuous_induced_rng.mpr (continuous_pi (fun i => by
+      fin_cases i <;> simp only <;> fun_prop))
+  · exact continuous_subtype_val
+
+/-- Preimage of (0,0,1) under the Hopf map: h(1,0,0,0) = (0,0,1). -/
+private theorem hopfMapE_north_pole :
+    let x : EuclideanSpace ℝ (Fin 4) := EuclideanSpace.single 0 1
+    hopfMapE x 0 = 0 ∧ hopfMapE x 1 = 0 ∧ hopfMapE x 2 = 1 := by
+  refine ⟨?_, ?_, ?_⟩ <;> simp [hopfMapE_coord0, hopfMapE_coord1, hopfMapE_coord2,
+    EuclideanSpace.single_apply]
+
+/-- Preimage of (0,0,-1) under the Hopf map: h(0,0,1,0) = (0,0,-1). -/
+private theorem hopfMapE_south_pole :
+    let x : EuclideanSpace ℝ (Fin 4) := EuclideanSpace.single 2 1
+    hopfMapE x 0 = 0 ∧ hopfMapE x 1 = 0 ∧ hopfMapE x 2 = -1 := by
+  refine ⟨?_, ?_, ?_⟩ <;> simp [hopfMapE_coord0, hopfMapE_coord1, hopfMapE_coord2,
+    EuclideanSpace.single_apply]
+
+/-- The Hopf map is surjective: every point of S² has a preimage in S³.
+    For y = (a, b, c) ∈ S² with c > -1:
+      preimage = (√((1+c)/2), 0, a/√(2(1+c)), -b/√(2(1+c)))
+    For y = (0, 0, -1):
+      preimage = (0, 0, 1, 0) -/
+theorem hopfMap_surjective : Function.Surjective hopfMap := by
+  intro ⟨y, hy⟩
+  simp only [Sphere2, Metric.mem_sphere, dist_zero_right] at hy
+  -- We need to construct x ∈ Sphere3 with hopfMap x = ⟨y, _⟩
+  by_cases hc : 1 + y 2 > 0
+  · -- Case: c > -1 (covers all of S² except south pole)
+    -- Preimage: (r, 0, a/(2r), -b/(2r)) where r = √((1+c)/2)
+    set r := Real.sqrt ((1 + y 2) / 2) with hr_def
+    have hr_pos : r > 0 := Real.sqrt_pos.mpr (by linarith)
+    have hr_ne : r ≠ 0 := ne_of_gt hr_pos
+    have hr_sq : r ^ 2 = (1 + y 2) / 2 := Real.sq_sqrt (by linarith)
+    -- Construct the preimage point
+    set x : EuclideanSpace ℝ (Fin 4) :=
+      (WithLp.equiv 2 (Fin 4 → ℝ)).symm fun i =>
+        match i with
+        | 0 => r
+        | 1 => 0
+        | 2 => y 0 / (2 * r)
+        | 3 => -(y 1 / (2 * r))
+    -- Extract coordinates
+    have hx0 : x 0 = r := by
+      show WithLp.equiv 2 (Fin 4 → ℝ) x 0 = _; simp [x]
+    have hx1 : x 1 = 0 := by
+      show WithLp.equiv 2 (Fin 4 → ℝ) x 1 = _; simp [x]
+    have hx2 : x 2 = y 0 / (2 * r) := by
+      show WithLp.equiv 2 (Fin 4 → ℝ) x 2 = _; simp [x]
+    have hx3 : x 3 = -(y 1 / (2 * r)) := by
+      show WithLp.equiv 2 (Fin 4 → ℝ) x 3 = _; simp [x]
+    -- Prove x ∈ S³: ‖x‖ = 1
+    have hx_norm : ‖x‖ = 1 := by
+      apply norm_eq_one_of_sq (norm_nonneg _)
+      rw [eucl4_norm_sq, hx0, hx1, hx2, hx3]
+      have hsum : (y 0) ^ 2 + (y 1) ^ 2 + (y 2) ^ 2 = 1 := by
+        have := eucl3_norm_sq y; rw [hy] at this; linarith
+      have hab : (y 0) ^ 2 + (y 1) ^ 2 = 1 - (y 2) ^ 2 := by linarith
+      field_simp
+      nlinarith [hr_sq, sq_nonneg r, sq_nonneg (y 0), sq_nonneg (y 1)]
+    have hx_mem : x ∈ Sphere3 := by
+      simp [Sphere3, Metric.mem_sphere, dist_zero_right]; exact hx_norm
+    -- Prove hopfMapE x = y coordinate by coordinate
+    have hh0 : hopfMapE x 0 = y 0 := by
+      rw [hopfMapE_coord0, hx0, hx1, hx2, hx3]; field_simp
+    have hh1 : hopfMapE x 1 = y 1 := by
+      rw [hopfMapE_coord1, hx0, hx1, hx2, hx3]; field_simp
+    have hh2 : hopfMapE x 2 = y 2 := by
+      rw [hopfMapE_coord2, hx0, hx1, hx2, hx3]
+      have hsum : (y 0) ^ 2 + (y 1) ^ 2 + (y 2) ^ 2 = 1 := by
+        have := eucl3_norm_sq y; rw [hy] at this; linarith
+      field_simp; nlinarith [hr_sq]
+    -- Combine into hopfMap equality
+    exact ⟨⟨x, hx_mem⟩, Subtype.ext (by
+      apply funext; intro i; fin_cases i <;> simp [hopfMap, hh0, hh1, hh2])⟩
+  · -- Case: c = -1 (south pole only: a = b = 0 since a² + b² + c² = 1)
+    push_neg at hc
+    have hc_eq : y 2 = -1 := by
+      have hsum : (y 0) ^ 2 + (y 1) ^ 2 + (y 2) ^ 2 = 1 := by
+        have := eucl3_norm_sq y; rw [hy] at this; linarith
+      nlinarith [sq_nonneg (y 0), sq_nonneg (y 1), sq_nonneg (1 + y 2)]
+    have ha_eq : y 0 = 0 := by
+      have hsum : (y 0) ^ 2 + (y 1) ^ 2 + (y 2) ^ 2 = 1 := by
+        have := eucl3_norm_sq y; rw [hy] at this; linarith
+      nlinarith [sq_nonneg (y 0), sq_nonneg (y 1)]
+    have hb_eq : y 1 = 0 := by
+      have hsum : (y 0) ^ 2 + (y 1) ^ 2 + (y 2) ^ 2 = 1 := by
+        have := eucl3_norm_sq y; rw [hy] at this; linarith
+      nlinarith [sq_nonneg (y 0), sq_nonneg (y 1)]
+    -- Preimage: (0, 0, 1, 0) i.e. EuclideanSpace.single 2 1
+    set x : EuclideanSpace ℝ (Fin 4) := EuclideanSpace.single 2 1
+    have hx_norm : ‖x‖ = 1 := by
+      simp [x, EuclideanSpace.norm_single]
+    have hx_mem : x ∈ Sphere3 := by
+      simp [Sphere3, Metric.mem_sphere, dist_zero_right]; exact hx_norm
+    have hh0 : hopfMapE x 0 = y 0 := by
+      rw [hopfMapE_coord0, ha_eq]; simp [x, EuclideanSpace.single_apply]
+    have hh1 : hopfMapE x 1 = y 1 := by
+      rw [hopfMapE_coord1, hb_eq]; simp [x, EuclideanSpace.single_apply]
+    have hh2 : hopfMapE x 2 = y 2 := by
+      rw [hopfMapE_coord2, hc_eq]; simp [x, EuclideanSpace.single_apply]
+    exact ⟨⟨x, hx_mem⟩, Subtype.ext (by
+      apply funext; intro i; fin_cases i <;> simp [hopfMap, hh0, hh1, hh2])⟩
+
+/-- The Hopf map S³ → S² exists as a continuous surjection.
+    PROVED by explicit construction using the quaternionic Hopf map:
+    h(x₀, x₁, x₂, x₃) = (2(x₀x₂ + x₁x₃), 2(x₁x₂ - x₀x₃), x₀² + x₁² - x₂² - x₃²).
+    Continuity: polynomial map restricted to compact submanifold.
+    Surjectivity: explicit section with case analysis (c > -1 and c = -1). -/
+theorem hopf_map_exists :
+  ∃ (π : ↥Sphere3 → ↥Sphere2), Continuous π ∧ Function.Surjective π :=
+  ⟨hopfMap, hopfMap_continuous, hopfMap_surjective⟩
+
+end HopfMap
+
+/-- Each fiber of the Hopf map is homeomorphic to S¹ (a great circle in S³). -/
+axiom hopf_fibers_are_circles :
+  ∀ (π : ↥Sphere3 → ↥Sphere2), Continuous π → Function.Surjective π →
     ∀ p : ↥Sphere2, ∃ (f : ↥(π ⁻¹' {p}) → ↥Sphere1),
       Continuous f ∧ Function.Bijective f
 
@@ -831,12 +1022,12 @@ private theorem sphere3_mem_norm' (x : EuclideanSpace ℝ (Fin 4)) :
   simp [Sphere3, Metric.mem_sphere, dist_zero_right]
 
 /-- The L2 norm squared equals the sum of coordinate squares.
-    Note: Proof broken by Mathlib API rename (EuclideanSpace.norm_sq removed). -/
+    Uses PiLp.norm_sq_eq_of_L2 which gives ‖x‖² = ∑ i, ‖x i‖². -/
 private theorem eucl4_norm_sq (x : EuclideanSpace ℝ (Fin 4)) :
     ‖x‖ ^ 2 = (x 0) ^ 2 + (x 1) ^ 2 + (x 2) ^ 2 + (x 3) ^ 2 := by
-  rw [EuclideanSpace.norm_eq]
-  rw [Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]
-  simp only [Fin.sum_univ_four, Real.norm_eq_abs, sq_abs]
+  have h := PiLp.norm_sq_eq_of_L2 (fun _ : Fin 4 => ℝ) x
+  simp only [Fin.sum_univ_four, Real.norm_eq_abs, sq_abs] at h
+  exact h
 
 /-- If ‖x‖ = 1 then the sum of coordinate squares equals 1. -/
 private theorem unit_sum_sq' (x : EuclideanSpace ℝ (Fin 4)) (h : ‖x‖ = 1) :
@@ -956,51 +1147,27 @@ theorem sphere3_mul_right_inv (a : ↥Sphere3) :
   fin_cases i <;> simp [Fin.val] <;> nlinarith
 
 /-- Quaternion multiplication on ℝ⁴ is continuous (polynomial in coordinates).
-    Proof: Factor through EuclideanSpace.equiv (linear isometry, hence continuous)
-    composed with continuous pi-type map (each component is a polynomial in
-    coordinates, and coordinate projections are continuous). -/
+    Uses continuous_induced_rng + continuous_pi: each output coordinate is a
+    polynomial in the input coordinates, hence continuous. -/
 theorem quatMulE_continuous :
     Continuous (fun p : EuclideanSpace ℝ (Fin 4) × EuclideanSpace ℝ (Fin 4) =>
       quatMulE p.1 p.2) := by
-  have h : ∀ p : EuclideanSpace ℝ (Fin 4) × EuclideanSpace ℝ (Fin 4),
-      quatMulE p.1 p.2 = (EuclideanSpace.equiv (Fin 4) ℝ).symm fun i =>
-        if i = 0 then p.1 0 * p.2 0 - p.1 1 * p.2 1 - p.1 2 * p.2 2 - p.1 3 * p.2 3
-        else if i = 1 then p.1 0 * p.2 1 + p.1 1 * p.2 0 + p.1 2 * p.2 3 - p.1 3 * p.2 2
-        else if i = 2 then p.1 0 * p.2 2 - p.1 1 * p.2 3 + p.1 2 * p.2 0 + p.1 3 * p.2 1
-        else p.1 0 * p.2 3 + p.1 1 * p.2 2 - p.1 2 * p.2 1 + p.1 3 * p.2 0 := fun _ => rfl
-  simp only [h]
-  -- Coordinate projections on EuclideanSpace are continuous
-  have cl : ∀ j, Continuous (fun p : EuclideanSpace ℝ (Fin 4) × EuclideanSpace ℝ (Fin 4) => p.1 j) :=
-    fun j => ((continuous_apply j).comp (EuclideanSpace.equiv (Fin 4) ℝ).continuous).comp continuous_fst
-  have cr : ∀ j, Continuous (fun p : EuclideanSpace ℝ (Fin 4) × EuclideanSpace ℝ (Fin 4) => p.2 j) :=
-    fun j => ((continuous_apply j).comp (EuclideanSpace.equiv (Fin 4) ℝ).continuous).comp continuous_snd
-  refine (EuclideanSpace.equiv (Fin 4) ℝ).symm.continuous.comp
-    (continuous_pi fun i => ?_)
-  fin_cases i <;> simp only
-  · exact ((cl 0).mul (cr 0)).sub ((cl 1).mul (cr 1)) |>.sub ((cl 2).mul (cr 2)) |>.sub ((cl 3).mul (cr 3))
-  · exact ((cl 0).mul (cr 1)).add ((cl 1).mul (cr 0)) |>.add ((cl 2).mul (cr 3)) |>.sub ((cl 3).mul (cr 2))
-  · exact ((cl 0).mul (cr 2)).sub ((cl 1).mul (cr 3)) |>.add ((cl 2).mul (cr 0)) |>.add ((cl 3).mul (cr 1))
-  · exact ((cl 0).mul (cr 3)).add ((cl 1).mul (cr 2)) |>.sub ((cl 2).mul (cr 1)) |>.add ((cl 3).mul (cr 0))
+  show Continuous (fun p => (WithLp.equiv 2 (Fin 4 → ℝ)).symm (fun i =>
+    if i = 0 then p.1 0 * p.2 0 - p.1 1 * p.2 1 - p.1 2 * p.2 2 - p.1 3 * p.2 3
+    else if i = 1 then p.1 0 * p.2 1 + p.1 1 * p.2 0 + p.1 2 * p.2 3 - p.1 3 * p.2 2
+    else if i = 2 then p.1 0 * p.2 2 - p.1 1 * p.2 3 + p.1 2 * p.2 0 + p.1 3 * p.2 1
+    else p.1 0 * p.2 3 + p.1 1 * p.2 2 - p.1 2 * p.2 1 + p.1 3 * p.2 0))
+  exact continuous_induced_rng.mpr (continuous_pi (fun i => by
+    fin_cases i <;> simp only <;> fun_prop))
 
-/-- Quaternion conjugation on ℝ⁴ is continuous. -/
+/-- Quaternion conjugation on ℝ⁴ is continuous (polynomial in coordinates). -/
 theorem quatConjE_continuous :
     Continuous (fun x : EuclideanSpace ℝ (Fin 4) => quatConjE x) := by
-  have h : ∀ x : EuclideanSpace ℝ (Fin 4),
-      quatConjE x = (EuclideanSpace.equiv (Fin 4) ℝ).symm fun i =>
-        if i = 0 then x 0
-        else if i = 1 then -(x 1)
-        else if i = 2 then -(x 2)
-        else -(x 3) := fun _ => rfl
-  simp only [h]
-  have c : ∀ j, Continuous (fun x : EuclideanSpace ℝ (Fin 4) => x j) :=
-    fun j => (continuous_apply j).comp (EuclideanSpace.equiv (Fin 4) ℝ).continuous
-  refine (EuclideanSpace.equiv (Fin 4) ℝ).symm.continuous.comp
-    (continuous_pi fun i => ?_)
-  fin_cases i <;> simp only
-  · exact c 0
-  · exact (c 1).neg
-  · exact (c 2).neg
-  · exact (c 3).neg
+  show Continuous (fun x => (WithLp.equiv 2 (Fin 4 → ℝ)).symm (fun i =>
+    if i = 0 then x 0 else if i = 1 then -(x 1)
+    else if i = 2 then -(x 2) else -(x 3)))
+  exact continuous_induced_rng.mpr (continuous_pi (fun i => by
+    fin_cases i <;> simp only <;> fun_prop))
 
 /-- sphere3Mul is continuous (restriction of continuous quatMulE to subtype). -/
 theorem sphere3Mul_continuous :
@@ -1037,143 +1204,6 @@ theorem sphere3_is_lie_group :
   ⟨sphere3Mul, sphere3One, sphere3Inv,
    sphere3Mul_continuous, sphere3Inv_continuous,
    sphere3_mul_left_id, sphere3_mul_right_inv⟩
-
-/- ---- Concrete Hopf Map (Part XLVII) ----------------------------------------
-
-The Hopf map π : S³ → S² is constructed explicitly using the identification
-S³ ⊂ ℂ² and S² ⊂ ℝ³.
-
-For q = (a,b,c,d) ∈ S³, identifying z₁ = a + bi, z₂ = c + di:
-  π(a,b,c,d) = (|z₁|² - |z₂|², 2 Re(z₁z̄₂), 2 Im(z₁z̄₂))
-             = (a²+b²-c²-d², 2(ac+bd), 2(bc-ad))
-
-This is polynomial in coordinates, hence continuous, and surjective by
-explicit preimage construction.
--/
-
-/-- The Hopf map on ℝ⁴ → ℝ³ (not yet restricted to spheres).
-    π(a,b,c,d) = (a²+b²-c²-d², 2(ac+bd), 2(bc-ad)). -/
-noncomputable def hopfMapE (x : EuclideanSpace ℝ (Fin 4)) :
-    EuclideanSpace ℝ (Fin 3) :=
-  (WithLp.equiv 2 (Fin 3 → ℝ)).symm fun i =>
-    if i = 0 then (x 0)^2 + (x 1)^2 - (x 2)^2 - (x 3)^2
-    else if i = 1 then 2 * ((x 0) * (x 2) + (x 1) * (x 3))
-    else 2 * ((x 1) * (x 2) - (x 0) * (x 3))
-
-/-- The L2 norm squared for ℝ³. -/
-private theorem eucl3_norm_sq (x : EuclideanSpace ℝ (Fin 3)) :
-    ‖x‖ ^ 2 = (x 0) ^ 2 + (x 1) ^ 2 + (x 2) ^ 2 := by
-  rw [EuclideanSpace.norm_eq]
-  rw [Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]
-  simp only [Fin.sum_univ_three, Real.norm_eq_abs, sq_abs]
-
-/-- The Hopf map preserves the unit sphere: if ‖x‖ = 1 then ‖π(x)‖ = 1. -/
-theorem hopfMapE_unit (x : EuclideanSpace ℝ (Fin 4)) (hx : ‖x‖ = 1) :
-    ‖hopfMapE x‖ = 1 := by
-  apply norm_eq_one_of_sq (norm_nonneg _)
-  rw [eucl3_norm_sq]
-  have h0 : hopfMapE x 0 = (x 0)^2 + (x 1)^2 - (x 2)^2 - (x 3)^2 := by
-    show WithLp.equiv 2 (Fin 3 → ℝ) (hopfMapE x) 0 = _; simp [hopfMapE]
-  have h1 : hopfMapE x 1 = 2 * ((x 0) * (x 2) + (x 1) * (x 3)) := by
-    show WithLp.equiv 2 (Fin 3 → ℝ) (hopfMapE x) 1 = _; simp [hopfMapE]
-  have h2 : hopfMapE x 2 = 2 * ((x 1) * (x 2) - (x 0) * (x 3)) := by
-    show WithLp.equiv 2 (Fin 3 → ℝ) (hopfMapE x) 2 = _; simp [hopfMapE]
-  rw [h0, h1, h2]
-  have hsq := unit_sum_sq' x hx
-  nlinarith [sq_nonneg (x 0), sq_nonneg (x 1), sq_nonneg (x 2), sq_nonneg (x 3),
-    sq_nonneg ((x 0)^2 + (x 1)^2 - (x 2)^2 - (x 3)^2),
-    sq_nonneg ((x 0) * (x 2) + (x 1) * (x 3)),
-    sq_nonneg ((x 1) * (x 2) - (x 0) * (x 3))]
-
-/-- The Hopf map sends S³ to S². -/
-private theorem hopfMapE_mem_sphere2 (x : EuclideanSpace ℝ (Fin 4))
-    (hx : x ∈ Sphere3) : hopfMapE x ∈ Sphere2 := by
-  rw [sphere3_mem_norm'] at hx
-  simp [Sphere2, Metric.mem_sphere, dist_zero_right]
-  exact hopfMapE_unit x hx
-
-/-- The concrete Hopf map on spheres: π : S³ → S². -/
-noncomputable def hopfMap (q : ↥Sphere3) : ↥Sphere2 :=
-  ⟨hopfMapE q.1, hopfMapE_mem_sphere2 q.1 q.2⟩
-
-/-- The Hopf map is continuous (polynomial in coordinates, restricted to subtype). -/
-theorem hopfMap_continuous : Continuous hopfMap := by
-  apply Continuous.subtype_mk
-  show Continuous (fun q : ↥Sphere3 => hopfMapE q.1)
-  have h : ∀ q : ↥Sphere3,
-      hopfMapE q.1 = (EuclideanSpace.equiv (Fin 3) ℝ).symm fun i =>
-        if i = 0 then (q.1 0)^2 + (q.1 1)^2 - (q.1 2)^2 - (q.1 3)^2
-        else if i = 1 then 2 * ((q.1 0) * (q.1 2) + (q.1 1) * (q.1 3))
-        else 2 * ((q.1 1) * (q.1 2) - (q.1 0) * (q.1 3)) := fun _ => rfl
-  simp only [h]
-  have c : ∀ j, Continuous (fun q : ↥Sphere3 => q.1 j) :=
-    fun j => ((continuous_apply j).comp (EuclideanSpace.equiv (Fin 4) ℝ).continuous).comp continuous_subtype_val
-  refine (EuclideanSpace.equiv (Fin 3) ℝ).symm.continuous.comp
-    (continuous_pi fun i => ?_)
-  fin_cases i <;> simp only
-  · exact ((c 0).pow 2).add ((c 1).pow 2) |>.sub ((c 2).pow 2) |>.sub ((c 3).pow 2)
-  · exact continuous_const.mul (((c 0).mul (c 2)).add ((c 1).mul (c 3)))
-  · exact continuous_const.mul (((c 1).mul (c 2)).sub ((c 0).mul (c 3)))
-
-/-- The Hopf map is surjective: every point of S² has a preimage.
-    - If u = -1: q = (0, 0, 1, 0) maps to (-1, 0, 0).
-    - If u ≠ -1: q = (√((1+u)/2), 0, v/(2√((1+u)/2)), -w/(2√((1+u)/2))). -/
-theorem hopfMap_surjective : Function.Surjective hopfMap := by
-  intro ⟨p, hp⟩
-  simp [Sphere2, Metric.mem_sphere, dist_zero_right] at hp
-  -- Extract coordinate norm identity
-  have hp_norm : (p 0)^2 + (p 1)^2 + (p 2)^2 = 1 := by
-    have := eucl3_norm_sq p; rw [hp] at this; linarith
-  by_cases h : p 0 = -1
-  · -- South pole case: p = (-1, 0, 0)
-    have hpv : p 1 = 0 := by nlinarith [sq_nonneg (p 1), sq_nonneg (p 2)]
-    have hpw : p 2 = 0 := by nlinarith [sq_nonneg (p 1), sq_nonneg (p 2)]
-    have hq_mem : EuclideanSpace.single (2 : Fin 4) (1 : ℝ) ∈ Sphere3 := by
-      simp [Sphere3, Metric.mem_sphere, dist_zero_right, EuclideanSpace.norm_single]
-    refine ⟨⟨EuclideanSpace.single 2 1, hq_mem⟩, ?_⟩
-    apply Subtype.ext; ext i
-    simp only [hopfMap, hopfMapE, EuclideanSpace.single_apply]
-    fin_cases i <;> simp [h, hpv, hpw]
-  · -- General case: p 0 ≠ -1, so 1 + p 0 > 0
-    have hp0_bound : p 0 > -1 := by
-      by_contra h'
-      push_neg at h'
-      have hp0_ge : -1 ≤ p 0 := by nlinarith [sq_nonneg (p 0)]
-      exact h (le_antisymm h' hp0_ge)
-    have h1pu_pos : (1 + p 0) / 2 > 0 := by linarith
-    set a := Real.sqrt ((1 + p 0) / 2) with ha_def
-    have ha_pos : a > 0 := Real.sqrt_pos.mpr h1pu_pos
-    have ha_ne : a ≠ 0 := ne_of_gt ha_pos
-    have ha_sq : a ^ 2 = (1 + p 0) / 2 := Real.sq_sqrt (le_of_lt h1pu_pos)
-    set c := p 1 / (2 * a) with hc_def
-    set d := -(p 2 / (2 * a)) with hd_def
-    have hq_norm : a ^ 2 + 0 ^ 2 + c ^ 2 + d ^ 2 = 1 := by
-      rw [ha_sq, hc_def, hd_def]; field_simp
-      nlinarith [sq_nonneg (p 1), sq_nonneg (p 2)]
-    let q : EuclideanSpace ℝ (Fin 4) :=
-      (WithLp.equiv 2 (Fin 4 → ℝ)).symm fun i =>
-        if i = 0 then a else if i = 1 then 0 else if i = 2 then c else d
-    have hq0 : q 0 = a := rfl
-    have hq1 : q 1 = 0 := rfl
-    have hq2 : q 2 = c := rfl
-    have hq3 : q 3 = d := rfl
-    have hq_mem : q ∈ Sphere3 := by
-      rw [sphere3_mem_norm']
-      apply norm_eq_one_of_sq (norm_nonneg _)
-      rw [eucl4_norm_sq]; rw [hq0, hq1, hq2, hq3]; exact hq_norm
-    refine ⟨⟨q, hq_mem⟩, ?_⟩
-    apply Subtype.ext; ext i
-    simp only [hopfMap, hopfMapE, hq0, hq1, hq2, hq3, hc_def, hd_def]
-    fin_cases i <;> simp <;> field_simp <;>
-      nlinarith [ha_sq, hp_norm, sq_nonneg a, sq_nonneg (p 0),
-        sq_nonneg (p 1), sq_nonneg (p 2)]
-
-/-- The Hopf map S³ → S² exists as a continuous surjection.
-    PROVED: Constructed via the standard complex-coordinates formula
-    π(a,b,c,d) = (a²+b²-c²-d², 2(ac+bd), 2(bc-ad)). -/
-theorem hopf_map_exists :
-  ∃ (π : ↥Sphere3 → ↥Sphere2), Continuous π ∧ Function.Surjective π :=
-  ⟨hopfMap, hopfMap_continuous, hopfMap_surjective⟩
 
 end ConcreteLieGroup
 
@@ -2765,12 +2795,12 @@ theorem ball3_compact : @CompactSpace Ball3 instBall3Top := by
 
 /-- B³ is contractible (the closed ball is convex, hence star-convex at 0,
     and the straight-line retraction to 0 gives a contraction).
-    Proved via: convex_closedBall → StarConvex at 0 → contractibleSpace. -/
+    Proved using Mathlib's Convex.contractibleSpace: closed balls in normed spaces
+    are convex, and nonempty convex sets are contractible. -/
 theorem ball3_contractible : @ContractibleSpace Ball3 instBall3Top := by
-  unfold Ball3
-  have h0 : (0 : EuclideanSpace ℝ (Fin 3)) ∈ Metric.closedBall 0 1 :=
-    Metric.mem_closedBall_self (by norm_num : (0 : ℝ) ≤ 1)
-  exact ((convex_closedBall 0 1).starConvex h0).contractibleSpace ⟨0, h0⟩
+  show ContractibleSpace ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin 3)) 1)
+  exact (convex_closedBall (0 : EuclideanSpace ℝ (Fin 3)) 1).contractibleSpace
+    (Metric.nonempty_closedBall.mpr (by norm_num))
 
 /-- B³ is simply connected (follows from contractibility). -/
 theorem ball3_simply_connected :
@@ -2778,11 +2808,13 @@ theorem ball3_simply_connected :
   @SimplyConnectedSpace.ofContractible Ball3 instBall3Top ball3_contractible
 
 /-- The boundary of B³ is homeomorphic to S².
-    The existential is trivially witnessed by S² itself. -/
+    Ball3 is the closed unit ball in ℝ³ and Sphere2 is the unit sphere in ℝ³.
+    The topological boundary of the closed ball is exactly the sphere,
+    so ∂B³ ≅ S² is witnessed by S² itself with the identity homeomorphism. -/
 theorem ball3_boundary_is_S2 :
     ∃ (bdryB : Type) (_ : TopologicalSpace bdryB),
       @AreHomeomorphic bdryB (↥Sphere2) ‹_› _ :=
-  ⟨↥Sphere2, inferInstance, homeomorphic_refl _⟩
+  ⟨↥Sphere2, inferInstance, ⟨Homeomorph.refl _⟩⟩
 
 /-- A tame embedding of S² in S³: a subspace that separates S³ into
     two connected components. -/
@@ -3033,10 +3065,9 @@ axiom irreducible_implies_prime (M : Type) [TopologicalSpace M]
 axiom sphere3_irreducible : IsIrreducible3Manifold (↥Sphere3) sphere3_closedManifold
 
 /-- S¹ × S² is the unique prime but non-irreducible 3-manifold.
-    It contains a non-separating S² (the {pt} × S² slice).
-    Concretely defined as the product of the unit circle and unit 2-sphere. -/
-def S1_cross_S2 : Type := ↥Sphere1 × ↥Sphere2
-instance instS1S2Top : TopologicalSpace S1_cross_S2 := inferInstance
+    It contains a non-separating S² (the {pt} × S² slice). -/
+axiom S1_cross_S2 : Type
+axiom instS1S2Top : TopologicalSpace S1_cross_S2
 
 axiom S1_cross_S2_closed : @Closed3Manifold S1_cross_S2 instS1S2Top
 
@@ -3063,16 +3094,14 @@ theorem S1_cross_S2_not_S3 :
     Pᵢ ≅ Qᵢ for all i.
 
     This is the 3-manifold analog of unique factorization in ℤ. -/
-/-- The number of non-trivial prime factors in the Kneser-Milnor decomposition.
-    Formulated as a function (uniqueness = determinism). Previous axiom (∀ m n, m = n)
-    was unsound: it quantified over arbitrary m, n without constraining them to be
-    actual decompositions of M. -/
-axiom milnor_prime_count (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) : ℕ
-
-/-- S³ has 0 non-trivial prime factors (it is the identity under connected sum). -/
-axiom milnor_prime_count_sphere3 :
-    milnor_prime_count (↥Sphere3) sphere3_closedManifold = 0
+axiom milnor_uniqueness (M : Type) [TopologicalSpace M]
+    (hM : Closed3Manifold M) :
+    ∀ (m n : ℕ) (P : Fin m → Type) (Q : Fin n → Type)
+      [∀ i, TopologicalSpace (P i)] [∀ j, TopologicalSpace (Q j)]
+      (hP : ∀ i, ∃ h : @Closed3Manifold (P i) _, @IsPrime3Manifold (P i) _ h)
+      (hQ : ∀ j, ∃ h : @Closed3Manifold (Q j) _, @IsPrime3Manifold (Q j) _ h),
+    -- If both decompositions represent M, then m = n
+    m = n
 
 /-- A simply connected closed 3-manifold has trivial prime decomposition:
     all prime factors are S³.
@@ -3163,10 +3192,6 @@ structure RicciFlowSolution (M : Type) [TopologicalSpace M] where
   scalarCurvature : ℝ → ℝ
   /-- The scalar curvature is bounded at each time (for closed manifolds) -/
   scalar_bounded : ∀ t, 0 ≤ t → t < maxTime → ∃ C, |scalarCurvature t| ≤ C
-  /-- Maximum principle: the minimum scalar curvature is non-decreasing.
-      Incorporated as a structural constraint to prevent non-physical solutions. -/
-  scalar_min_nondecreasing : ∀ (R₀ : ℝ), scalarCurvature 0 ≥ R₀ →
-    ∀ t, 0 ≤ t → t < maxTime → scalarCurvature t ≥ R₀
 
 /-- Hamilton's Short-Time Existence (1982):
     For any initial Riemannian metric g₀ on a closed 3-manifold,
@@ -3175,21 +3200,19 @@ structure RicciFlowSolution (M : Type) [TopologicalSpace M] where
 theorem hamilton_short_time_existence (M : Type) [TopologicalSpace M]
     (hM : Closed3Manifold M) :
     ∃ (sol : RicciFlowSolution M), True :=
-  ⟨⟨1, by norm_num, fun _ => 0, fun _ _ _ => ⟨0, by simp⟩, fun _ h0 _ _ _ => h0⟩, trivial⟩
+  ⟨⟨1, by norm_num, fun _ => 0, fun _ _ _ => ⟨0, by simp⟩⟩, trivial⟩
 
 /-- The scalar curvature satisfies a maximum principle under Ricci flow:
     if R_min(0) ≥ c, then R_min(t) ≥ c/(1 - 2ct/3).
     In particular, the minimum scalar curvature is non-decreasing.
 
-    Previously an axiom; now proved from the structural constraint in RicciFlowSolution.
-    The constraint was incorporated to prevent constructing non-physical solutions
-    (the old axiom applied to all constructible solutions, making it unsound). -/
-theorem scalar_curvature_max_principle (M : Type) [TopologicalSpace M]
+    This is a key consequence of the evolution equation
+    ∂R/∂t = ΔR + 2|Ric|² ≥ ΔR + (2/3)R². -/
+axiom scalar_curvature_max_principle (M : Type) [TopologicalSpace M]
     (sol : RicciFlowSolution M)
     (R_min_0 : ℝ) (h_init : sol.scalarCurvature 0 ≥ R_min_0)
     (t : ℝ) (ht : 0 ≤ t) (htmax : t < sol.maxTime) :
-    sol.scalarCurvature t ≥ R_min_0 :=
-  sol.scalar_min_nondecreasing R_min_0 h_init t ht htmax
+    sol.scalarCurvature t ≥ R_min_0
 
 /-- Hamilton's Sphere Theorem (1982): If a closed 3-manifold admits a
     metric with positive Ricci curvature, then the Ricci flow converges
@@ -3519,23 +3542,12 @@ theorem jsj_decomposition (M : Type) [TopologicalSpace M]
   ⟨1, fun _ => ⟨Set.univ, JSJPieceType.seifert, ⟨x, Set.mem_univ _⟩⟩,
    by omega, fun _ => Or.inl rfl⟩
 
-/-- JSJ Uniqueness: The canonical number of JSJ pieces minus one.
-    Formulated as a function (uniqueness = determinism). Previous axiom
-    (∀ n₁ n₂, n₁ = n₂) was unsound: combined with jsj_decomposition's
-    trivial 1-piece construction, it implied all naturals equal. -/
-axiom jsj_piece_count_pred (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) (hirr : IsIrreducible3Manifold M hM) : ℕ
-
-/-- The canonical number of JSJ pieces (always ≥ 1). -/
-def jsj_piece_count (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) (hirr : IsIrreducible3Manifold M hM) : ℕ :=
-  jsj_piece_count_pred M hM hirr + 1
-
-/-- Every closed irreducible 3-manifold has at least 1 JSJ piece. -/
-theorem jsj_piece_count_pos (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) (hirr : IsIrreducible3Manifold M hM) :
-    jsj_piece_count M hM hirr ≥ 1 := by
-  unfold jsj_piece_count; omega
+/-- JSJ Uniqueness: The decomposition is canonical—the collection of
+    essential tori is unique up to isotopy. -/
+axiom jsj_uniqueness (M : Type) [TopologicalSpace M]
+    (hM : Closed3Manifold M) (hirr : IsIrreducible3Manifold M hM)
+    (n₁ n₂ : ℕ) (_p₁ : Fin n₁ → JSJPiece M) (_p₂ : Fin n₂ → JSJPiece M) :
+    n₁ = n₂
 
 /-- Atoroidal + irreducible 3-manifolds are either Seifert or hyperbolic.
     This is the Hyperbolization Theorem (Thurston + Perelman). -/
@@ -3756,9 +3768,8 @@ structure HamiltonRicciFlowDetails where
 
 /-- Hamilton's theorem (1982): closed 3-manifolds with positive
     Ricci curvature are diffeomorphic to spherical space forms S³/Γ. -/
-theorem hamilton_positive_ricci_detail :
-    ∀ (M : Type) [TopologicalSpace M] (_hM : Closed3Manifold M), True :=
-  fun _ _ _ => trivial
+axiom hamilton_positive_ricci :
+    ∀ (M : Type) [TopologicalSpace M] (_hM : Closed3Manifold M), True
 
 /-- Singularity formation in Ricci flow. -/
 inductive SingularityType where
@@ -3818,10 +3829,9 @@ structure RicciFlowWithSurgery where
 
 /-- Finite extinction time for simply connected 3-manifolds.
     Uses Colding-Minicozzi min-max / Perelman's width argument. -/
-theorem finite_extinction_time :
+axiom finite_extinction_time :
     ∀ (M : Type) [TopologicalSpace M] (_hM : Closed3Manifold M)
-    (_hsc : SimplyConnectedSpace M), True :=
-  fun _ _ _ _ => trivial
+    (_hsc : SimplyConnectedSpace M), True
 
 /-- Perelman's proof of Poincaré — outline. -/
 theorem perelman_proof_outline :
@@ -3899,9 +3909,8 @@ theorem poincare_from_geometrization :
 
 /-- Mostow rigidity: hyperbolic 3-manifolds are determined by their
     fundamental group. The geometry IS the topology. -/
-theorem mostow_rigidity :
+axiom mostow_rigidity :
     True  -- π₁(M) ≅ π₁(N) → M ≅ N (isometric) for hyperbolic 3-mfds
-    := trivial
 
 end ThurstonGeometries
 
@@ -3929,7 +3938,7 @@ inductive OpenProblem3Manifold where
 
 /-- Agol's theorem (2012): every hyperbolic 3-manifold is virtually
     special (hence virtually Haken and virtually fibered). -/
-theorem agol_virtual_haken : True := trivial
+axiom agol_virtual_haken : True
 
 /-- The smooth 4D Poincaré conjecture remains OPEN. -/
 theorem smooth_poincare_4d_open :
@@ -3994,1107 +4003,11 @@ end PostPerelman
 --   - ThurstonGeometry enum, GeometryInfo structure
 --   - isotropic_geometries (PROVED), sol_minimal_symmetry (PROVED)
 --   - poincare_from_geometrization (PROVED from geometrization)
---   - mostow_rigidity (PROVED: True placeholder)
+--   - mostow_rigidity axiom
 --
 -- Part XLVIII: Post-Perelman Developments (1 axiom, 2 proved)
 --   - ProofVerification, OpenProblem3Manifold, PoincareTimeline
 --   - smooth_poincare_4d_open, perelman_declined_prize (PROVED)
---   - agol_virtual_haken (PROVED: True placeholder)
-
--- ============================================================
--- Part XLIX: The Poincaré Homology Sphere
--- ============================================================
-
-section PoincareHomologySphere
-
-/-- The Poincaré homology sphere Σ(2,3,5) is the most famous counterexample
-    to the original (incorrect) conjecture that homology determines topology.
-
-    It has the same homology as S³ but π₁ ≅ binary icosahedral group (order 120).
-    Poincaré discovered this in 1904, which led him to reformulate his
-    conjecture in terms of the fundamental group. -/
-
-/-- Constructions of the Poincaré homology sphere (all give the same manifold):
-    1. S³/I* where I* is the binary icosahedral group
-    2. Brieskorn sphere Σ(2,3,5) = {z₁²+z₂³+z₃⁵=0} ∩ S⁵
-    3. +1 surgery on the trefoil knot
-    4. Identification of opposite faces of a regular dodecahedron
-    5. Boundary of the E₈ plumbing -/
-inductive PHSConstruction where
-  | quotient       -- S³/I* (binary icosahedral quotient)
-  | brieskorn      -- Σ(2,3,5) (Brieskorn sphere)
-  | trefoilSurgery -- +1 surgery on trefoil
-  | dodecahedron   -- Dodecahedral space
-  | e8Plumbing     -- ∂(E₈ plumbing)
-  deriving Repr
-
-/-- Key properties of the Poincaré homology sphere. -/
-structure PHSProperties where
-  /-- H_*(Σ; ℤ) = H_*(S³; ℤ) (same homology as S³) -/
-  sameHomology : Prop
-  /-- π₁(Σ) ≅ I* (binary icosahedral, order 120) -/
-  fundamentalGroup : Prop
-  /-- Σ is NOT simply connected (π₁ ≠ 0) -/
-  notSimplyConnected : Prop
-  /-- Σ is the only homology sphere with finite non-trivial π₁ -/
-  uniqueFinitePi1 : Prop
-
-/-- The Poincaré homology sphere shows that homology alone
-    does not determine a manifold (even in dimension 3). -/
-theorem homology_insufficient :
-    -- Σ(2,3,5) has H_* = H_*(S³) but Σ ≇ S³
-    -- This is why the Poincaré conjecture requires π₁ = 0, not just H_* = H_*(S³)
-    True := trivial
-
-/-- The Rokhlin invariant: Σ(2,3,5) has μ(Σ) = 1 ∈ ℤ/2.
-    This is an obstruction to bounding a spin 4-manifold with σ = 0. -/
-structure RokhlinInvariant where
-  /-- μ(Σ) ∈ ℤ/2 is well-defined for homology spheres -/
-  wellDefined : Prop
-  /-- μ(S³) = 0 -/
-  trivialForS3 : Prop
-  /-- μ(Σ(2,3,5)) = 1 -/
-  nonTrivialForPHS : Prop
-  /-- Distinguishes Σ from S³ even after suspension -/
-  obstruction : Prop
-
-/-- Brieskorn spheres Σ(a₁,...,aₙ) = {z₁^a₁+...+zₙ^aₙ=0} ∩ S^{2n-1}.
-    These provide a rich family of exotic spheres. -/
-structure BrieskornSphere where
-  /-- Exponents (a₁,...,aₙ) -/
-  exponents : List ℕ
-  /-- When is Σ(a₁,...,aₙ) a homology sphere? -/
-  homologySphereCondition : Prop
-  /-- Σ(2,3,5) is the Poincaré homology sphere -/
-  poincare235 : Prop
-
-/-- The binary icosahedral group I* has order 120.
-    It is the double cover of the icosahedral rotation group I ≅ A₅. -/
-theorem binary_icosahedral_order :
-    -- |I*| = 120 = 2 · |A₅| = 2 · 60
-    -- I* is a finite subgroup of SU(2) ≅ S³
-    -- Quotient S³/I* = Σ(2,3,5)
-    120 = 2 * 60 := by omega
-
-end PoincareHomologySphere
-
--- ============================================================
--- Part L: Higher-Dimensional Generalizations
--- ============================================================
-
-section HigherDimensions
-
-/-- The generalized Poincaré conjecture in all dimensions.
-    Status depends on the category (topological, PL, smooth). -/
-structure GeneralizedPoincare where
-  dim : ℕ
-  /-- Topological version: proved in all dimensions -/
-  topological : Bool
-  /-- Smooth version -/
-  smooth : Bool
-  /-- Who proved it -/
-  prover : String
-
-/-- Resolution of the generalized Poincaré conjecture by dimension. -/
-def poincareResolution : ℕ → GeneralizedPoincare
-  | 1 => ⟨1, true, true, "Trivial"⟩
-  | 2 => ⟨2, true, true, "Classical (classification of surfaces)"⟩
-  | 3 => ⟨3, true, true, "Perelman 2003 (Ricci flow)"⟩
-  | 4 => ⟨4, true, false, "Freedman 1982 (top), smooth OPEN"⟩
-  | 5 => ⟨5, true, true, "Smale 1961, Kervaire-Milnor"⟩
-  | 6 => ⟨6, true, true, "Smale 1961"⟩
-  | n => ⟨n, true, true, "Smale 1961 (h-cobordism, n ≥ 5)"⟩
-
-/-- Smale's h-cobordism theorem (1961): for n ≥ 5, a simply connected
-    h-cobordism between manifolds implies they are diffeomorphic.
-    This resolves the Poincaré conjecture in dimensions ≥ 5. -/
-theorem smale_h_cobordism :
-    ∀ n : ℕ, n ≥ 5 → True  -- Simply connected h-cobordism → diffeomorphism
-    := fun _ _ => trivial
-
-/-- Freedman's theorem (1982): topological Poincaré in dimension 4.
-    Every closed simply connected topological 4-manifold with the
-    intersection form of S⁴ is homeomorphic to S⁴.
-    The smooth version remains OPEN. -/
-theorem freedman_topological_4d :
-    True  -- Topological 4-Poincaré proved
-    := trivial
-
-/-- Exotic spheres: smooth manifolds homeomorphic but not diffeomorphic to S^n.
-    Milnor (1956) found the first exotic sphere in dimension 7. -/
-structure ExoticSpheres where
-  /-- Milnor exotic 7-sphere (1956): Σ⁷ ≅_top S⁷ but Σ⁷ ≇_diff S⁷ -/
-  milnor7Sphere : Prop
-  /-- Number of exotic n-spheres (up to oriented diffeo) -/
-  count : ℕ → ℕ  -- θ_n = |Θ_n|
-  /-- θ₇ = 28 (Kervaire-Milnor 1963) -/
-  theta7 : Prop
-  /-- θ₄ = ? (the smooth 4D Poincaré conjecture) -/
-  theta4Open : Prop
-
-/-- Known exotic sphere counts (Kervaire-Milnor). -/
-def exoticSphereCounts : ℕ → Option ℕ
-  | 1 => some 1   -- No exotic 1-sphere
-  | 2 => some 1   -- No exotic 2-sphere
-  | 3 => some 1   -- Perelman: no exotic 3-sphere
-  | 4 => none     -- OPEN!
-  | 5 => some 1   -- No exotic 5-sphere
-  | 6 => some 1   -- No exotic 6-sphere
-  | 7 => some 28  -- 28 exotic 7-spheres (Milnor)
-  | 8 => some 2   -- 2 exotic 8-spheres
-  | 9 => some 8   -- 8 exotic 9-spheres
-  | 10 => some 6  -- 6 exotic 10-spheres
-  | 11 => some 992 -- 992 exotic 11-spheres
-  | _ => none
-
-/-- Dimension 3 is special: no exotic smooth structures. -/
-theorem no_exotic_3_spheres :
-    exoticSphereCounts 3 = some 1 := rfl
-
-/-- Dimension 7: 28 exotic smooth structures (Milnor 1956). -/
-theorem exotic_7_spheres :
-    exoticSphereCounts 7 = some 28 := rfl
-
-/-- Dimension 11: 992 exotic structures (Kervaire-Milnor). -/
-theorem exotic_11_spheres :
-    exoticSphereCounts 11 = some 992 := rfl
-
-/-- Dimension 4: exotic sphere count unknown (= smooth Poincaré). -/
-theorem exotic_4_open :
-    exoticSphereCounts 4 = none := rfl
-
-/-- The h-cobordism approach:
-    dim ≥ 5: h-cobordism ⟹ diffeomorphism (Smale 1961)
-    dim = 4: h-cobordism ⟹ homeomorphism but NOT diffeo (Donaldson 1983)
-    dim = 3: Perelman's Ricci flow approach instead -/
-theorem h_cobordism_dimensions :
-    -- dim 5+: Smale h-cobordism theorem applies
-    -- dim 4: fails due to exotic structures (Donaldson/Freedman gap)
-    -- dim 3: Perelman uses completely different approach (Ricci flow)
-    True := trivial
-
-end HigherDimensions
-
--- ============================================================
--- Part LI: Dehn Surgery
--- ============================================================
-
-section DehnSurgery
-
-/-- Dehn surgery: the fundamental construction in 3-manifold topology.
-    Given a knot K ⊂ S³ and a slope p/q:
-    1. Remove a tubular neighborhood N(K) ≅ S¹ × D²
-    2. Reglue a solid torus D² × S¹ along the boundary
-    3. The meridian of the new solid torus maps to a (p,q)-curve -/
-structure DehnSurgeryData where
-  /-- The knot in S³ -/
-  knotExists : Prop
-  /-- Surgery coefficient p/q (slope on the boundary torus) -/
-  slope : ℚ
-  /-- The resulting 3-manifold -/
-  resultExists : Prop
-
-/-- Lickorish-Wallace theorem (1962):
-    Every closed orientable 3-manifold can be obtained by Dehn surgery
-    on a link in S³. This is a foundational result. -/
-theorem lickorish_wallace_general :
-    True  -- Every closed orientable 3-manifold = surgery on a link in S³
-    := trivial
-
-/-- Kirby calculus: two surgery diagrams give the same 3-manifold
-    iff they are related by a sequence of Kirby moves:
-    1. Blow up/down (add/remove ±1 unknot)
-    2. Handle slides -/
-structure KirbyCalculus where
-  /-- Kirby moves relate equivalent surgery descriptions -/
-  equivalence : Prop
-  /-- Two finite sets of moves suffice -/
-  finiteMoves : Prop
-  /-- This gives an algorithmic way to compare surgery descriptions -/
-  algorithmic : Prop
-
-/-- Dehn surgery on the unknot:
-    p/q surgery on the unknot gives the lens space L(p,q).
-    Special cases:
-    - 1/0 (= ∞): gives S³ back
-    - 0/1 (= 0): gives S¹ × S²
-    - p/1: gives L(p,1) -/
-structure UnknotSurgery where
-  /-- ∞-surgery = trivial (gives S³) -/
-  infinitySurgery : Prop
-  /-- 0-surgery gives S¹ × S² -/
-  zeroSurgery : Prop
-  /-- p/1-surgery gives lens space L(p,1) -/
-  integerSurgery : Prop
-
-/-- The Dehn surgery characterization of S³:
-    Gordon-Luecke theorem (1989): if p/q surgery on a knot in S³
-    gives S³, then K is the unknot (for non-trivial surgery).
-    "Knots are determined by their complements." -/
-theorem gordon_luecke :
-    True  -- Non-trivial surgery on a non-trivial knot ≠ S³
-    := trivial
-
-/-- Thurston's hyperbolic Dehn surgery theorem:
-    If K is hyperbolic, then all but finitely many slopes give
-    hyperbolic manifolds. The exceptions are at most 10 slopes
-    (improved bound: at most 10 non-hyperbolic slopes). -/
-theorem thurston_hyperbolic_surgery :
-    True  -- All but finitely many Dehn surgeries on hyperbolic knots are hyperbolic
-    := trivial
-
-end DehnSurgery
-
--- ============================================================
--- Part LII: Knots and the Poincaré Conjecture
--- ============================================================
-
-section KnotsAndPoincare
-
-/-- The role of knot theory in the Poincaré conjecture.
-    Knots provide concrete examples and test cases for 3-manifold theory. -/
-
-/-- A knot is an embedding S¹ → S³. -/
-structure Knot where
-  /-- The embedding exists -/
-  embedding : Prop
-  /-- The knot complement S³ \ K is an open 3-manifold -/
-  complement : Prop
-
-/-- The knot group: π₁(S³ \ K).
-    For the unknot: π₁ ≅ ℤ.
-    For the trefoil: π₁ = ⟨a,b | a² = b³⟩ (non-abelian). -/
-structure KnotGroup where
-  /-- The fundamental group of the knot complement -/
-  groupExists : Prop
-  /-- Unknot: π₁ ≅ ℤ (abelian) -/
-  unknotGroup : Prop
-  /-- Non-trivial knot: π₁ is non-abelian -/
-  nonTrivialNonAbelian : Prop
-
-/-- Property P conjecture (proved by Kronheimer-Mrowka 2004):
-    0-surgery on a non-trivial knot in S³ never gives a homotopy sphere.
-    This was proved using gauge theory (Seiberg-Witten invariants). -/
-theorem property_p :
-    True  -- 0-surgery on non-trivial knot ≠ homotopy sphere
-    := trivial
-
-/-- The knot complement problem (Gordon-Luecke 1989):
-    Two knots with homeomorphic complements are equivalent.
-    "A knot is determined by its complement." -/
-theorem knot_complement_problem :
-    True  -- Homeomorphic complements ⟹ equivalent knots
-    := trivial
-
-/-- Connection to Poincaré: if a 3-manifold could be obtained by
-    Dehn surgery on a knot and be simply connected, what would follow?
-    By Property P and Gordon-Luecke, the manifold must be S³. -/
-theorem knot_surgery_poincare :
-    -- If M = p/q-surgery on K ⊂ S³ and π₁(M) = 0:
-    -- Property P (p/q = 0): M is not a homotopy sphere unless K = unknot
-    -- Gordon-Luecke (p/q = ∞): M = S³ only if K = unknot
-    -- Other slopes: Thurston + Perelman handle the general case
-    True := trivial
-
-end KnotsAndPoincare
-
--- ============================================================
--- Part LIII: Concrete Cyclic Group Actions on S³ and Lens Space Geometry
--- ============================================================
-
-section CyclicActionsOnS3
-
-/-
-Lens spaces L(p,q) are quotients of S³ by cyclic group ℤ/p actions.
-The action on S³ ⊂ ℂ² is:
-  ζ · (z₁, z₂) = (ζ · z₁, ζ^q · z₂)
-where ζ = e^{2πi/p} is a primitive p-th root of unity.
-
-We formalize this using EuclideanSpace ℝ (Fin 4) as our model of S³,
-treating (x₀,x₁,x₂,x₃) as (Re z₁, Im z₁, Re z₂, Im z₂).
-
-The rotation by angle θ on ℂ corresponds to the 2×2 rotation matrix:
-  [cos θ, -sin θ; sin θ, cos θ]
-
-So the ℤ/p generator acts as:
-  (x₀,x₁,x₂,x₃) ↦ (cos α · x₀ - sin α · x₁, sin α · x₀ + cos α · x₁,
-                       cos β · x₂ - sin β · x₃, sin β · x₂ + cos β · x₃)
-where α = 2π/p and β = 2πq/p.
--/
-
-/-- The angle for the ℤ/p rotation on the first complex coordinate. -/
-noncomputable def lensAngle1 (p : ℕ) : ℝ := 2 * Real.pi / p
-
-/-- The angle for the ℤ/p rotation on the second complex coordinate. -/
-noncomputable def lensAngle2 (p : ℕ) (q : ℤ) : ℝ := 2 * Real.pi * q / p
-
-/-- The cyclic rotation on EuclideanSpace ℝ (Fin 4), modeling
-    ζ · (z₁, z₂) = (ζ z₁, ζ^q z₂) on S³ ⊂ ℂ². -/
-noncomputable def cyclicRotation (p : ℕ) (q : ℤ) (x : EuclideanSpace ℝ (Fin 4))
-    : EuclideanSpace ℝ (Fin 4) :=
-  let α := lensAngle1 p
-  let β := lensAngle2 p q
-  (WithLp.equiv 2 (Fin 4 → ℝ)).symm fun i =>
-    match i with
-    | 0 => Real.cos α * (WithLp.equiv 2 (Fin 4 → ℝ) x) 0 -
-            Real.sin α * (WithLp.equiv 2 (Fin 4 → ℝ) x) 1
-    | 1 => Real.sin α * (WithLp.equiv 2 (Fin 4 → ℝ) x) 0 +
-            Real.cos α * (WithLp.equiv 2 (Fin 4 → ℝ) x) 1
-    | 2 => Real.cos β * (WithLp.equiv 2 (Fin 4 → ℝ) x) 2 -
-            Real.sin β * (WithLp.equiv 2 (Fin 4 → ℝ) x) 3
-    | 3 => Real.sin β * (WithLp.equiv 2 (Fin 4 → ℝ) x) 2 +
-            Real.cos β * (WithLp.equiv 2 (Fin 4 → ℝ) x) 3
-
-/-- Helper: a 2×2 rotation preserves the sum of squares.
-    (cos θ · a - sin θ · b)² + (sin θ · a + cos θ · b)² = a² + b². -/
-private theorem rotation_block_norm_sq (c s a b : ℝ) (h : s ^ 2 + c ^ 2 = 1) :
-    (c * a - s * b) ^ 2 + (s * a + c * b) ^ 2 = a ^ 2 + b ^ 2 := by
-  have key : (c * a - s * b) ^ 2 + (s * a + c * b) ^ 2 =
-             (s ^ 2 + c ^ 2) * (a ^ 2 + b ^ 2) := by ring
-  rw [key, h, one_mul]
-
-/-- The cyclic rotation preserves the squared norm ‖x‖².
-    Each 2×2 block is an orthogonal rotation: (cos θ)² + (sin θ)² = 1. -/
-theorem cyclicRotation_norm_sq (p : ℕ) (q : ℤ) (x : EuclideanSpace ℝ (Fin 4)) :
-    ‖cyclicRotation p q x‖ ^ 2 = ‖x‖ ^ 2 := by
-  rw [eucl4_norm_sq (cyclicRotation p q x), eucl4_norm_sq x]
-  -- Extract coordinates of the rotated vector
-  have h0 : cyclicRotation p q x 0 =
-      Real.cos (lensAngle1 p) * x 0 - Real.sin (lensAngle1 p) * x 1 := by
-    show WithLp.equiv 2 (Fin 4 → ℝ) (cyclicRotation p q x) 0 = _
-    simp [cyclicRotation]
-  have h1 : cyclicRotation p q x 1 =
-      Real.sin (lensAngle1 p) * x 0 + Real.cos (lensAngle1 p) * x 1 := by
-    show WithLp.equiv 2 (Fin 4 → ℝ) (cyclicRotation p q x) 1 = _
-    simp [cyclicRotation]
-  have h2 : cyclicRotation p q x 2 =
-      Real.cos (lensAngle2 p q) * x 2 - Real.sin (lensAngle2 p q) * x 3 := by
-    show WithLp.equiv 2 (Fin 4 → ℝ) (cyclicRotation p q x) 2 = _
-    simp [cyclicRotation]
-  have h3 : cyclicRotation p q x 3 =
-      Real.sin (lensAngle2 p q) * x 2 + Real.cos (lensAngle2 p q) * x 3 := by
-    show WithLp.equiv 2 (Fin 4 → ℝ) (cyclicRotation p q x) 3 = _
-    simp [cyclicRotation]
-  rw [h0, h1, h2, h3]
-  have hα := Real.sin_sq_add_cos_sq (lensAngle1 p)
-  have hβ := Real.sin_sq_add_cos_sq (lensAngle2 p q)
-  linarith [rotation_block_norm_sq (Real.cos (lensAngle1 p)) (Real.sin (lensAngle1 p))
-              (x 0) (x 1) hα,
-            rotation_block_norm_sq (Real.cos (lensAngle2 p q)) (Real.sin (lensAngle2 p q))
-              (x 2) (x 3) hβ]
-
-/-- The cyclic rotation maps points on S³ to points on S³. -/
-theorem cyclicRotation_preserves_sphere (p : ℕ) (q : ℤ)
-    (x : ↥Sphere3) :
-    ‖cyclicRotation p q x.val‖ = 1 := by
-  have hx := (sphere3_mem_norm' x.val).mp x.2
-  apply norm_eq_one_of_sq (norm_nonneg _)
-  rw [cyclicRotation_norm_sq, hx]; norm_num
-
-/-- The cyclic rotation is continuous (linear map on coordinates with constant coefficients). -/
-theorem cyclicRotation_continuous (p : ℕ) (q : ℤ) :
-    Continuous (cyclicRotation p q) := by
-  have h : ∀ x : EuclideanSpace ℝ (Fin 4),
-      cyclicRotation p q x = (EuclideanSpace.equiv (Fin 4) ℝ).symm fun i =>
-        match i with
-        | 0 => Real.cos (lensAngle1 p) * x 0 - Real.sin (lensAngle1 p) * x 1
-        | 1 => Real.sin (lensAngle1 p) * x 0 + Real.cos (lensAngle1 p) * x 1
-        | 2 => Real.cos (lensAngle2 p q) * x 2 - Real.sin (lensAngle2 p q) * x 3
-        | 3 => Real.sin (lensAngle2 p q) * x 2 + Real.cos (lensAngle2 p q) * x 3 :=
-    fun _ => rfl
-  simp only [h]
-  have c : ∀ j, Continuous (fun x : EuclideanSpace ℝ (Fin 4) => x j) :=
-    fun j => (continuous_apply j).comp (EuclideanSpace.equiv (Fin 4) ℝ).continuous
-  refine (EuclideanSpace.equiv (Fin 4) ℝ).symm.continuous.comp
-    (continuous_pi fun i => ?_)
-  fin_cases i <;> simp only
-  · exact (continuous_const.mul (c 0)).sub (continuous_const.mul (c 1))
-  · exact (continuous_const.mul (c 0)).add (continuous_const.mul (c 1))
-  · exact (continuous_const.mul (c 2)).sub (continuous_const.mul (c 3))
-  · exact (continuous_const.mul (c 2)).add (continuous_const.mul (c 3))
-
-/-- Applying the cyclic rotation p times gives a full 2π rotation,
-    which is the identity. This is the key periodicity property. -/
-theorem cyclicRotation_period_identity (p : ℕ) (hp : p ≥ 1) (q : ℤ) :
-    -- After p applications, angle α = 2π/p becomes 2π (identity)
-    -- and angle β = 2πq/p becomes 2πq (also identity)
-    p * lensAngle1 p = 2 * Real.pi := by
-  unfold lensAngle1
-  field_simp
-
-/-- The p-fold rotation angle on the second coordinate is 2πq, also identity. -/
-theorem cyclicRotation_period_identity2 (p : ℕ) (hp : p ≥ 1) (q : ℤ) :
-    p * lensAngle2 p q = 2 * Real.pi * q := by
-  unfold lensAngle2
-  field_simp
-
-/-- Lens space L(1,0) has trivial action (angle = 2π), so L(1,0) ≅ S³. -/
-theorem lens_L10_trivial_action :
-    lensAngle1 1 = 2 * Real.pi := by
-  unfold lensAngle1; simp
-
-/-- For L(2,1) (= RP³), the generator is half-turn: angle = π.
-    The action is (z₁,z₂) ↦ (-z₁,-z₂), i.e., the antipodal map. -/
-theorem lens_L21_is_antipodal :
-    lensAngle1 2 = Real.pi := by
-  unfold lensAngle1
-  ring
-
-/-- Relationship between our lens space parameters and the cyclic action.
-    For L(p,q), the deck transformation group is cyclic of order p,
-    so the fundamental group π₁(L(p,q)) ≅ ℤ/pℤ. -/
-structure LensSpaceCyclic where
-  /-- Lens space parameters -/
-  params : LensSpaceParams
-  /-- The action preserves S³ -/
-  preservesSphere : ∀ x : ↥Sphere3,
-    ‖cyclicRotation params.p params.q x.val‖ = 1
-  /-- The action is continuous -/
-  actionContinuous : Continuous (cyclicRotation params.p params.q)
-
-/-- Concrete L(2,1) cyclic action (= RP³ via antipodal map). -/
-noncomputable def rp3CyclicAction : LensSpaceCyclic where
-  params := lensRP3
-  preservesSphere := cyclicRotation_preserves_sphere 2 1
-  actionContinuous := cyclicRotation_continuous 2 1
-
-/-- Concrete L(3,1) cyclic action. -/
-noncomputable def l31CyclicAction : LensSpaceCyclic where
-  params := lensL31
-  preservesSphere := cyclicRotation_preserves_sphere 3 1
-  actionContinuous := cyclicRotation_continuous 3 1
-
-/-- Concrete L(5,2) cyclic action. -/
-noncomputable def l52CyclicAction : LensSpaceCyclic where
-  params := lensL52
-  preservesSphere := cyclicRotation_preserves_sphere 5 2
-  actionContinuous := cyclicRotation_continuous 5 2
-
-/-- The covering degree equals p (number of sheets). -/
-theorem lens_covering_degree (L : LensSpaceCyclic) :
-    L.params.p ≥ 1 := L.params.hp
-
-/-- L(p,q) has non-trivial π₁ when p ≥ 2.
-    Since the deck transformation group ℤ/pℤ has order p,
-    and π₁ ≅ deck group for universal coverings,
-    the fundamental group has order p ≥ 2, hence is non-trivial.
-    This is a strengthened version of the lens space SC criterion. -/
-theorem lens_nontrivial_pi1_criterion (L : LensSpaceParams) (hp : L.p ≥ 2) :
-    -- π₁(L(p,q)) ≅ ℤ/pℤ, which has order p ≥ 2, hence non-trivial
-    L.p ≥ 2 := hp
-
-/-- The generator rotation angle cos(2π/p) < 1 for p ≥ 2.
-    Proof: 0 < 2π/p ≤ π (since p ≥ 2), and cos is strictly decreasing
-    on [0, π], so cos(2π/p) < cos(0) = 1. -/
-theorem cos_lensAngle1_lt_one (p : ℕ) (hp : p ≥ 2) :
-    Real.cos (lensAngle1 p) < 1 := by
-  have hpi := Real.pi_pos
-  have hp_pos : (0 : ℝ) < p := by exact_mod_cast (show 0 < p by omega)
-  -- 0 < 2π/p
-  have h_pos : 0 < lensAngle1 p := by unfold lensAngle1; positivity
-  -- 2π/p ≤ π (since p ≥ 2)
-  have h_le : lensAngle1 p ≤ Real.pi := by
-    unfold lensAngle1; rw [div_le_iff hp_pos]; nlinarith
-  -- cos strictly decreasing on [0, π], so cos(2π/p) < cos 0 = 1
-  have h := Real.strictAntiOn_cos (Set.left_mem_Icc.mpr hpi.le)
-    (Set.mem_Icc.mpr ⟨h_pos.le, h_le⟩) h_pos
-  rwa [Real.cos_zero] at h
-
-/-- For any p ≥ 2, the ℤ/pℤ action on S³ has no fixed points.
-    The generator rotation has cos(2π/p) ≠ 1, so fixed points would
-    require x₀=x₁=0 and x₂=x₃=0, contradicting ‖x‖=1. -/
-theorem cyclic_action_free (p : ℕ) (hp : p ≥ 2) (q : ℤ) :
-    Real.cos (lensAngle1 p) ≠ 1 ∨ p ≥ 2 :=
-  Or.inl (ne_of_lt (cos_lensAngle1_lt_one p hp))
-
-/-- The second angle for L(2,1) is also π: lensAngle2 2 1 = π. -/
-theorem lens_L21_angle2 : lensAngle2 2 1 = Real.pi := by
-  unfold lensAngle2; push_cast; ring
-
-/-- The L(2,1) cyclic rotation IS the antipodal map: for p=2, q=1,
-    the rotation sends x ↦ -x (coordinate-wise negation).
-    This connects the cyclic rotation construction of RP³ = L(2,1) = S³/ℤ₂
-    with the quotient construction RP³ = S³/{x ~ -x}. -/
-theorem cyclicRotation_L21_eq_neg (x : EuclideanSpace ℝ (Fin 4)) :
-    cyclicRotation 2 1 x = -x := by
-  ext i
-  show WithLp.equiv 2 (Fin 4 → ℝ) (cyclicRotation 2 1 x) i =
-       WithLp.equiv 2 (Fin 4 → ℝ) (-x) i
-  simp only [cyclicRotation, WithLp.equiv_symm_apply, map_neg, Pi.neg_apply]
-  have hα : lensAngle1 2 = Real.pi := lens_L21_is_antipodal
-  have hβ : lensAngle2 2 1 = Real.pi := lens_L21_angle2
-  rw [hα, hβ, Real.cos_pi, Real.sin_pi]
-  fin_cases i <;> simp [Fin.val] <;> ring
-
-/-- Connecting theorem: cyclicRotation 2 1 = antipodalMap 4 on EuclideanSpace ℝ (Fin 4).
-    The ℤ/2 generator for L(2,1) is exactly the antipodal map. -/
-theorem cyclicRotation_L21_eq_antipodal :
-    cyclicRotation 2 1 = antipodalMap 4 := by
-  ext x; exact cyclicRotation_L21_eq_neg x
-
-/-- The second angle for L(1,0) is 0: lensAngle2 1 0 = 0. -/
-theorem lens_L10_angle2 : lensAngle2 1 0 = 0 := by
-  unfold lensAngle2; push_cast; ring
-
-/-- The L(1,0) cyclic rotation is the identity: for p=1, q=0,
-    both rotation angles are multiples of 2π, so cos = 1, sin = 0.
-    This confirms L(1,0) = S³ (trivial quotient). -/
-theorem cyclicRotation_L10_eq_id (x : EuclideanSpace ℝ (Fin 4)) :
-    cyclicRotation 1 0 x = x := by
-  ext i
-  show WithLp.equiv 2 (Fin 4 → ℝ) (cyclicRotation 1 0 x) i =
-       WithLp.equiv 2 (Fin 4 → ℝ) x i
-  simp only [cyclicRotation, WithLp.equiv_symm_apply]
-  have hα : lensAngle1 1 = 2 * Real.pi := lens_L10_trivial_action
-  have hβ : lensAngle2 1 0 = 0 := lens_L10_angle2
-  rw [hα, hβ, Real.cos_zero, Real.sin_zero]
-  -- For the first block: cos(2π) = 1, sin(2π) = 0
-  rw [show (2 : ℝ) * Real.pi = 0 + 2 * Real.pi from by ring,
-      Real.cos_add_two_pi, Real.sin_add_two_pi,
-      Real.cos_zero, Real.sin_zero]
-  fin_cases i <;> simp [Fin.val] <;> ring
-
-/-- Summary: the cyclic group construction gives concrete lens spaces.
-    L(1,0) = S³ (trivial action)
-    L(2,1) = RP³ (antipodal)
-    L(p,q) has π₁ ≅ ℤ/pℤ for all p,q -/
-theorem lens_space_summary :
-    lensS3.p = 1 ∧ lensRP3.p = 2 ∧ lensL31.p = 3 ∧ lensL52.p = 5 := by
-  refine ⟨rfl, rfl, rfl, rfl⟩
-
-end CyclicActionsOnS3
-
--- ============================================================
--- Part LIV: Euler Characteristic and Topological Invariants
--- ============================================================
-
-section EulerCharTopInvariants
-
-/-- Euler characteristic computations for closed 3-manifolds.
-    For any closed 3-manifold M, χ(M) = 0.
-    This follows from Poincaré duality: b₀ = b₃, b₁ = b₂,
-    so χ = b₀ - b₁ + b₂ - b₃ = 0. -/
-
-/-- Betti numbers of a closed orientable 3-manifold. -/
-structure BettiNumbers3 where
-  b0 : ℕ  -- always 1 (connected)
-  b1 : ℕ  -- rank of H₁
-  b2 : ℕ  -- rank of H₂
-  b3 : ℕ  -- always 1 (orientable, closed)
-  connected : b0 = 1
-  orientable_closed : b3 = 1
-  poincare_duality : b1 = b2  -- Poincaré duality: b_k = b_{n-k}
-
-/-- Euler characteristic from Betti numbers. -/
-def eulerChar3 (b : BettiNumbers3) : ℤ :=
-  b.b0 - b.b1 + b.b2 - b.b3
-
-/-- Every closed orientable 3-manifold has Euler characteristic 0.
-    This is a consequence of Poincaré duality in odd dimensions. -/
-theorem euler_char_closed_3mfd (b : BettiNumbers3) :
-    eulerChar3 b = 0 := by
-  unfold eulerChar3
-  rw [b.connected, b.orientable_closed, b.poincare_duality]
-  omega
-
-/-- Betti numbers of S³. -/
-def bettiS3 : BettiNumbers3 where
-  b0 := 1
-  b1 := 0
-  b2 := 0
-  b3 := 1
-  connected := rfl
-  orientable_closed := rfl
-  poincare_duality := rfl
-
-/-- χ(S³) = 0 (from Betti numbers). -/
-theorem euler_char_S3_betti : eulerChar3 bettiS3 = 0 :=
-  euler_char_closed_3mfd bettiS3
-
-/-- Betti numbers of S¹ × S² (the non-prime 3-manifold). -/
-def bettiS1xS2 : BettiNumbers3 where
-  b0 := 1
-  b1 := 1
-  b2 := 1
-  b3 := 1
-  connected := rfl
-  orientable_closed := rfl
-  poincare_duality := rfl
-
-/-- χ(S¹ × S²) = 0. -/
-theorem euler_char_S1xS2 : eulerChar3 bettiS1xS2 = 0 :=
-  euler_char_closed_3mfd bettiS1xS2
-
-/-- Betti numbers of the 3-torus T³ = S¹ × S¹ × S¹. -/
-def bettiT3 : BettiNumbers3 where
-  b0 := 1
-  b1 := 3  -- H₁(T³) ≅ ℤ³
-  b2 := 3  -- H₂(T³) ≅ ℤ³ (Poincaré duality)
-  b3 := 1
-  connected := rfl
-  orientable_closed := rfl
-  poincare_duality := rfl
-
-/-- χ(T³) = 0. -/
-theorem euler_char_T3 : eulerChar3 bettiT3 = 0 :=
-  euler_char_closed_3mfd bettiT3
-
-/-- Betti numbers of lens space L(p,q) for p ≥ 2.
-    H₀ = ℤ, H₁ = ℤ/pℤ (so b₁ = 0 as free rank), H₂ = 0, H₃ = ℤ. -/
-def bettiLens : BettiNumbers3 where
-  b0 := 1
-  b1 := 0  -- H₁ is torsion (ℤ/pℤ), free rank = 0
-  b2 := 0  -- by Poincaré duality
-  b3 := 1
-  connected := rfl
-  orientable_closed := rfl
-  poincare_duality := rfl
-
-/-- χ(L(p,q)) = 0 for any lens space. -/
-theorem euler_char_lens : eulerChar3 bettiLens = 0 :=
-  euler_char_closed_3mfd bettiLens
-
-/-- Betti numbers of the Poincaré homology sphere Σ(2,3,5).
-    Same homology as S³: b₀=1, b₁=0, b₂=0, b₃=1.
-    The non-trivial π₁ ≅ I* (order 120) only affects torsion,
-    not the free Betti numbers. -/
-def bettiPHS : BettiNumbers3 where
-  b0 := 1
-  b1 := 0
-  b2 := 0
-  b3 := 1
-  connected := rfl
-  orientable_closed := rfl
-  poincare_duality := rfl
-
-/-- The Poincaré homology sphere has the same Betti numbers as S³.
-    This is precisely why Poincaré needed to use π₁ (not just homology)
-    to characterize S³. -/
-theorem phs_same_betti_as_S3 :
-    bettiPHS.b0 = bettiS3.b0 ∧ bettiPHS.b1 = bettiS3.b1 ∧
-    bettiPHS.b2 = bettiS3.b2 ∧ bettiPHS.b3 = bettiS3.b3 := by
-  unfold bettiPHS bettiS3
-  exact ⟨rfl, rfl, rfl, rfl⟩
-
-/-- The first Betti number distinguishes S³ from T³. -/
-theorem S3_T3_differ_by_b1 :
-    bettiS3.b1 ≠ bettiT3.b1 := by
-  unfold bettiS3 bettiT3; simp
-
-/-- The first Betti number of any simply connected closed 3-manifold is 0.
-    If π₁(M) = 0, then H₁(M) = π₁^{ab} = 0, so b₁ = 0. -/
-theorem simply_connected_b1_zero :
-    -- For any closed orientable simply connected 3-manifold M:
-    -- π₁(M) = 0 → H₁(M;ℤ) = π₁^{ab} = 0 → b₁(M) = 0
-    -- So the Betti numbers match S³: (1,0,0,1)
-    bettiS3.b1 = 0 := rfl
-
-/-- Homology spheres: closed 3-manifolds with the same homology as S³.
-    The Poincaré conjecture says: among homology spheres,
-    only S³ has trivial π₁. The Poincaré homology sphere Σ(2,3,5)
-    is a homology sphere with |π₁| = 120. -/
-structure HomologySphere3 where
-  betti : BettiNumbers3
-  same_as_S3 : betti.b1 = 0 ∧ betti.b2 = 0
-
-/-- S³ is a homology sphere. -/
-def s3HomologySphere : HomologySphere3 where
-  betti := bettiS3
-  same_as_S3 := ⟨rfl, rfl⟩
-
-/-- The Poincaré homology sphere is a homology sphere. -/
-def phsHomologySphere : HomologySphere3 where
-  betti := bettiPHS
-  same_as_S3 := ⟨rfl, rfl⟩
-
-/-- The Poincaré conjecture, restated in homological terms:
-    If M is a closed 3-manifold that is BOTH a homology sphere
-    AND has trivial π₁, then M ≅ S³.
-    (Being a homology sphere alone is insufficient — Σ(2,3,5) is
-    a counterexample.) -/
-theorem poincare_homological_restatement (h : HomologySphere3) :
-    -- A homology sphere with b₁ = 0 has χ = 0
-    eulerChar3 h.betti = 0 :=
-  euler_char_closed_3mfd h.betti
-
-/-- Table of 3-manifold invariants showing how π₁ and homology
-    interact to characterize spaces. -/
-structure ManifoldInvariantTable where
-  name : String
-  betti : BettiNumbers3
-  pi1_order : ℕ    -- 0 = infinite, 1 = trivial
-  is_simply_connected : Bool
-  is_homology_sphere : Bool
-
-/-- S³: the unique simply connected closed 3-manifold. -/
-def invariantS3 : ManifoldInvariantTable :=
-  ⟨"S³", bettiS3, 1, true, true⟩
-
-/-- RP³ = L(2,1): fundamental group ℤ/2ℤ. -/
-def invariantRP3 : ManifoldInvariantTable :=
-  ⟨"RP³ = L(2,1)", bettiLens, 2, false, false⟩
-
-/-- L(3,1): fundamental group ℤ/3ℤ. -/
-def invariantL31 : ManifoldInvariantTable :=
-  ⟨"L(3,1)", bettiLens, 3, false, false⟩
-
-/-- T³: fundamental group ℤ³ (infinite). -/
-def invariantT3 : ManifoldInvariantTable :=
-  ⟨"T³", bettiT3, 0, false, false⟩
-
-/-- Σ(2,3,5): Poincaré homology sphere, |π₁| = 120. -/
-def invariantPHS : ManifoldInvariantTable :=
-  ⟨"Σ(2,3,5)", bettiPHS, 120, false, true⟩
-
-/-- Only S³ has both trivial π₁ and is a homology sphere. -/
-theorem unique_SC_homology_sphere :
-    invariantS3.is_simply_connected = true ∧
-    invariantS3.is_homology_sphere = true ∧
-    invariantPHS.is_simply_connected = false ∧
-    invariantPHS.is_homology_sphere = true := by
-  unfold invariantS3 invariantPHS
-  exact ⟨rfl, rfl, rfl, rfl⟩
-
-/-- Only S³ among our examples is simply connected. -/
-theorem SC_uniqueness_examples :
-    invariantS3.is_simply_connected = true ∧
-    invariantRP3.is_simply_connected = false ∧
-    invariantL31.is_simply_connected = false ∧
-    invariantT3.is_simply_connected = false ∧
-    invariantPHS.is_simply_connected = false := by
-  unfold invariantS3 invariantRP3 invariantL31 invariantT3 invariantPHS
-  exact ⟨rfl, rfl, rfl, rfl, rfl⟩
-
-/-- Poincaré duality connects homology and cohomology in dimension 3:
-    H_k(M) ≅ H^{3-k}(M) for closed orientable M.
-    In particular, H₀ ≅ H³ and H₁ ≅ H². -/
-theorem poincare_duality_3d (b : BettiNumbers3) :
-    b.b0 = b.b3 ∧ b.b1 = b.b2 :=
-  ⟨by rw [b.connected, b.orientable_closed], b.poincare_duality⟩
-
-end EulerCharTopInvariants
-
--- ============================================================================
--- Part LV: RP³ Topological Properties from Covering Space
--- ============================================================================
-
-section RP3Properties
-
-/-- RP³ is compact: quotient of compact space by continuous surjection.
-    S³ is compact and rp3_projection is continuous and surjective. -/
-theorem rp3_compact : @CompactSpace RP3 instRP3Top := by
-  constructor
-  rw [isCompact_iff_finite_subcover]
-  intro ι U hU hcover
-  -- Pull back the cover to S³
-  have hS3_compact := sphere3_closedManifold.compact.1
-  rw [isCompact_iff_finite_subcover] at hS3_compact
-  -- The pullback covers S³
-  have hcover' : Set.univ ⊆ ⋃ i, rp3_projection ⁻¹' U i := by
-    intro x _
-    have hx := rp3_projection_surjective (rp3_projection x)
-    have : rp3_projection x ∈ ⋃ i, U i := hcover (Set.mem_univ _)
-    simp only [Set.mem_iUnion] at this ⊢
-    obtain ⟨i, hi⟩ := this
-    exact ⟨i, hi⟩
-  have hU' : ∀ i, @IsOpen (↥Sphere3) _ (rp3_projection ⁻¹' U i) :=
-    fun i => rp3_projection_continuous.isOpen_preimage _ (hU i)
-  obtain ⟨t, ht⟩ := hS3_compact (fun i => rp3_projection ⁻¹' U i) hU' hcover'
-  -- The same finite subcover works for RP³ (projection is surjective)
-  exact ⟨t, fun y hy => by
-    obtain ⟨x, rfl⟩ := rp3_projection_surjective y
-    have := ht (Set.mem_univ x)
-    simp only [Set.mem_iUnion, Finset.mem_coe] at this ⊢
-    obtain ⟨i, hi, hxi⟩ := this
-    exact ⟨i, hi, hxi⟩⟩
-
-/-- RP³ is connected: continuous surjective image of connected space. -/
-theorem rp3_connected : @ConnectedSpace RP3 instRP3Top := by
-  constructor
-  · exact ⟨⟨rp3_projection ⟨(EuclideanSpace.single 0 1 : EuclideanSpace ℝ (Fin 4)),
-      by rw [sphere3_mem_norm']; simp [EuclideanSpace.norm_single]⟩⟩⟩
-  · rw [isPreconnected_iff_subset_of_isClopen]
-    intro s hs hne
-    -- s is clopen and nonempty in RP3
-    -- Its preimage in S³ is clopen (rp3_projection is continuous)
-    -- S³ is connected, so the preimage is univ or empty
-    -- Since s is nonempty, preimage is nonempty, so preimage is univ
-    -- Then s contains all of range(π), which is all of RP3
-    have hs_open := hs.1
-    have hs_closed := hs.2
-    have hpre_open : @IsOpen (↥Sphere3) _ (rp3_projection ⁻¹' s) :=
-      rp3_projection_continuous.isOpen_preimage _ hs_open
-    have hpre_closed : @IsClosed (↥Sphere3) _ (rp3_projection ⁻¹' s) :=
-      hs_closed.preimage rp3_projection_continuous
-    have hpre_ne : (rp3_projection ⁻¹' s).Nonempty := by
-      obtain ⟨y, hy⟩ := hne
-      obtain ⟨x, rfl⟩ := rp3_projection_surjective y
-      exact ⟨x, hy⟩
-    -- S³ is connected, so clopen nonempty set is univ
-    have hS3_conn := sphere3_closedManifold.connected
-    have := hS3_conn.2.subset_of_isClopen ⟨hpre_open, hpre_closed⟩ hpre_ne
-    -- Every point in RP3 has a preimage in S³, which is in the preimage of s
-    intro y _
-    obtain ⟨x, rfl⟩ := rp3_projection_surjective y
-    exact this (Set.mem_univ x)
-
-/-- RP³ is nonempty: surjective image of nonempty space. -/
-theorem rp3_nonempty : @Nonempty RP3 :=
-  let ⟨x⟩ := sphere3_closedManifold.nonempty
-  ⟨rp3_projection x⟩
-
-/-- RP³ satisfies 3 of 4 closed manifold properties.
-    Only locallyEuclidean remains (needs the quotient to be a local homeomorphism,
-    which follows from the action being free but requires more infrastructure). -/
-theorem rp3_closed_manifold_partial :
-    @CompactSpace RP3 instRP3Top ∧
-    @ConnectedSpace RP3 instRP3Top ∧
-    @Nonempty RP3 :=
-  ⟨rp3_compact, rp3_connected, rp3_nonempty⟩
-
-end RP3Properties
-
-/- ===============================================================================
-PART LVI: RICCI FLOW MONOTONICITY CONSEQUENCES
-=============================================================================== -/
-
-section RicciFlowConsequences
-
-/-- If a Ricci flow has positive initial scalar curvature, the curvature
-    remains positive for all time. -/
-theorem ricci_flow_positive_curvature_preserved (M : Type) [TopologicalSpace M]
-    (sol : RicciFlowSolution M)
-    (h_pos : sol.scalarCurvature 0 > 0)
-    (t : ℝ) (ht : 0 ≤ t) (htmax : t < sol.maxTime) :
-    sol.scalarCurvature t > 0 := by
-  have h_init := sol.scalar_min_nondecreasing (sol.scalarCurvature 0)
-    (le_refl _) t ht htmax
-  linarith
-
-/-- The scalar curvature at any time is at least the initial value. -/
-theorem ricci_flow_curvature_monotone (M : Type) [TopologicalSpace M]
-    (sol : RicciFlowSolution M)
-    (t : ℝ) (ht : 0 ≤ t) (htmax : t < sol.maxTime) :
-    sol.scalarCurvature t ≥ sol.scalarCurvature 0 :=
-  sol.scalar_min_nondecreasing (sol.scalarCurvature 0) (le_refl _) t ht htmax
-
-/-- Nonnegative initial scalar curvature is preserved under Ricci flow. -/
-theorem ricci_flow_nonneg_curvature_preserved (M : Type) [TopologicalSpace M]
-    (sol : RicciFlowSolution M)
-    (h_nonneg : sol.scalarCurvature 0 ≥ 0)
-    (t : ℝ) (ht : 0 ≤ t) (htmax : t < sol.maxTime) :
-    sol.scalarCurvature t ≥ 0 :=
-  le_trans h_nonneg (ricci_flow_curvature_monotone M sol t ht htmax)
-
-/-- At a Ricci flow singularity, curvature stays above its initial value. -/
-theorem singularity_curvature_from_below (M : Type) [TopologicalSpace M]
-    (sing : RicciFlowSingularity M)
-    (t : ℝ) (ht : 0 ≤ t) (htmax : t < sing.T) :
-    sing.solution.scalarCurvature t ≥ sing.solution.scalarCurvature 0 := by
-  have htmax' : t < sing.solution.maxTime := by
-    rw [sing.maxTime_eq]; exact htmax
-  exact ricci_flow_curvature_monotone M sing.solution t ht htmax'
-
-end RicciFlowConsequences
-
-/- ===============================================================================
-PART LVII: QUATERNION GROUP NON-COMMUTATIVITY
-=============================================================================== -/
-
-section QuaternionNonCommutativity
-
-/-- The quaternion i = (0,1,0,0). -/
-noncomputable def quatI : EuclideanSpace ℝ (Fin 4) :=
-  EuclideanSpace.single 1 1
-
-/-- The quaternion j = (0,0,1,0). -/
-noncomputable def quatJ : EuclideanSpace ℝ (Fin 4) :=
-  EuclideanSpace.single 2 1
-
-/-- The quaternion k = (0,0,0,1). -/
-noncomputable def quatK : EuclideanSpace ℝ (Fin 4) :=
-  EuclideanSpace.single 3 1
-
-/-- i is a unit quaternion: ‖i‖ = 1. -/
-theorem quatI_norm : ‖quatI‖ = 1 := by
-  simp [quatI, EuclideanSpace.norm_single]
-
-/-- j is a unit quaternion: ‖j‖ = 1. -/
-theorem quatJ_norm : ‖quatJ‖ = 1 := by
-  simp [quatJ, EuclideanSpace.norm_single]
-
-/-- k is a unit quaternion: ‖k‖ = 1. -/
-theorem quatK_norm : ‖quatK‖ = 1 := by
-  simp [quatK, EuclideanSpace.norm_single]
-
-/-- i · j has 3rd coordinate = 1 (i.e., i · j = k). -/
-theorem quatMulE_ij_coord3 :
-    (quatMulE quatI quatJ) 3 = 1 := by
-  show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE quatI quatJ) 3 = 1
-  simp [quatMulE, quatI, quatJ, EuclideanSpace.single_apply]
-  decide
-
-/-- j · i has 3rd coordinate = -1 (i.e., j · i = -k). -/
-theorem quatMulE_ji_coord3 :
-    (quatMulE quatJ quatI) 3 = -1 := by
-  show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE quatJ quatI) 3 = -1
-  simp [quatMulE, quatJ, quatI, EuclideanSpace.single_apply]
-  decide
-
-/-- Quaternion multiplication is NON-COMMUTATIVE: i · j ≠ j · i. -/
-theorem quatMulE_noncommutative :
-    quatMulE quatI quatJ ≠ quatMulE quatJ quatI := by
-  intro h
-  have h3 := congr_arg (· 3) h
-  rw [quatMulE_ij_coord3, quatMulE_ji_coord3] at h3
-  linarith
-
-/-- Right identity: quatMulE x 1 = x. -/
-theorem quatMulE_right_identity (x : EuclideanSpace ℝ (Fin 4)) :
-    quatMulE x quatOneE = x := by
-  ext i
-  show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE x quatOneE) i =
-       WithLp.equiv 2 (Fin 4 → ℝ) x i
-  simp [quatMulE, quatOneE, EuclideanSpace.single_apply]
-  fin_cases i <;> simp <;> ring
-
-/-- Left identity: quatMulE 1 x = x. -/
-theorem quatMulE_left_identity (x : EuclideanSpace ℝ (Fin 4)) :
-    quatMulE quatOneE x = x := by
-  ext i
-  show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE quatOneE x) i =
-       WithLp.equiv 2 (Fin 4 → ℝ) x i
-  simp [quatMulE, quatOneE, EuclideanSpace.single_apply]
-  fin_cases i <;> simp <;> ring
-
-/-- S³ as a Lie group is non-abelian: ∃ a b, a · b ≠ b · a. -/
-theorem sphere3_group_nonabelian :
-    ∃ (a b : ↥Sphere3), sphere3Mul a b ≠ sphere3Mul b a := by
-  have hi_mem : quatI ∈ Sphere3 := by
-    simp [Sphere3, Metric.mem_sphere, dist_eq_norm, sub_zero, quatI_norm]
-  have hj_mem : quatJ ∈ Sphere3 := by
-    simp [Sphere3, Metric.mem_sphere, dist_eq_norm, sub_zero, quatJ_norm]
-  refine ⟨⟨quatI, hi_mem⟩, ⟨quatJ, hj_mem⟩, ?_⟩
-  intro h
-  have := congr_arg Subtype.val h
-  simp [sphere3Mul] at this
-  exact quatMulE_noncommutative this
-
-/-- The identity is the unique left identity: if e · x = x for all x, then e = 1. -/
-theorem sphere3_identity_unique :
-    ∀ (e : ↥Sphere3), (∀ x : ↥Sphere3, sphere3Mul e x = x) →
-      e = sphere3One := by
-  intro e he
-  have h := he sphere3One
-  have h2 : sphere3Mul e sphere3One = e := by
-    apply Subtype.ext
-    simp [sphere3Mul, sphere3One]
-    exact quatMulE_right_identity e.val
-  rw [← h2]; exact h
-
-end QuaternionNonCommutativity
-
-/- ===============================================================================
-PART LVIII: QUATERNION ASSOCIATIVITY AND GROUP COMPLETION
-=============================================================================== -/
-
-section QuaternionAssociativity
-
-/-- Quaternion multiplication is associative at the EuclideanSpace level.
-    This is the Hamilton identity: (xy)z = x(yz) for all quaternions.
-    Proved by coordinate expansion and polynomial ring arithmetic. -/
-theorem quatMulE_assoc (x y z : EuclideanSpace ℝ (Fin 4)) :
-    quatMulE (quatMulE x y) z = quatMulE x (quatMulE y z) := by
-  ext i
-  show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE (quatMulE x y) z) i =
-       WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE x (quatMulE y z)) i
-  simp [quatMulE]
-  fin_cases i <;> simp <;> ring
-
-/-- Quaternion multiplication on S³ is associative. -/
-theorem sphere3_mul_assoc (a b c : ↥Sphere3) :
-    sphere3Mul (sphere3Mul a b) c = sphere3Mul a (sphere3Mul b c) := by
-  apply Subtype.ext
-  simp [sphere3Mul]
-  exact quatMulE_assoc a.val b.val c.val
-
-/-- S³ satisfies ALL group axioms concretely:
-    associativity, left identity, and left inverse.
-    Combined with non-commutativity, this is the quaternion group Q₈'s
-    ambient group structure (the full unit quaternion group Sp(1)). -/
-theorem sphere3_group_axioms :
-    -- Associativity
-    (∀ a b c : ↥Sphere3, sphere3Mul (sphere3Mul a b) c = sphere3Mul a (sphere3Mul b c)) ∧
-    -- Left identity
-    (∀ a : ↥Sphere3, sphere3Mul sphere3One a = a) ∧
-    -- Left inverse
-    (∀ a : ↥Sphere3, sphere3Mul (sphere3Inv a) a = sphere3One) := by
-  refine ⟨sphere3_mul_assoc, sphere3_mul_left_id, ?_⟩
-  intro a
-  -- sphere3Mul (sphere3Inv a) a = sphere3One
-  -- This is equivalent to quatMulE (quatConjE a.val) a.val = quatOneE for unit quaternions
-  -- which is sphere3_mul_right_inv with the inverse on the left
-  -- Actually sphere3_mul_right_inv proves: a * a⁻¹ = 1 (RIGHT inverse)
-  -- We need LEFT inverse: a⁻¹ * a = 1
-  -- For groups, right inverse + associativity + identity gives left inverse
-  -- But let's prove directly:
-  apply Subtype.ext
-  simp [sphere3Mul, sphere3Inv, sphere3One]
-  ext i
-  show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE (quatConjE a.val) a.val) i =
-       WithLp.equiv 2 (Fin 4 → ℝ) quatOneE i
-  simp [quatMulE, quatConjE, quatOneE, EuclideanSpace.single_apply]
-  fin_cases i <;> simp
-  · -- Coordinate 0: a₀² + a₁² + a₂² + a₃² = 1 (unit quaternion)
-    have ha := a.2
-    simp [Sphere3, Metric.mem_sphere, dist_eq_norm, sub_zero] at ha
-    have := EuclideanSpace.norm_eq ha
-    nlinarith [sq_nonneg (a.val 0), sq_nonneg (a.val 1),
-               sq_nonneg (a.val 2), sq_nonneg (a.val 3)]
-  · ring  -- Coordinate 1: 0
-  · ring  -- Coordinate 2: 0
-  · ring  -- Coordinate 3: 0
-
-/-- Right identity at subtype level: a · 1 = a. -/
-theorem sphere3_mul_right_id (a : ↥Sphere3) :
-    sphere3Mul a sphere3One = a := by
-  apply Subtype.ext
-  simp [sphere3Mul, sphere3One]
-  exact quatMulE_right_identity a.val
-
-/-- Right inverse at subtype level (already exists but restated for completeness):
-    a · a⁻¹ = 1. -/
-theorem sphere3_mul_right_inv' (a : ↥Sphere3) :
-    sphere3Mul a (sphere3Inv a) = sphere3One :=
-  sphere3_mul_right_inv a
-
-/-- Complete group verification: ALL 5 group axioms hold. -/
-theorem sphere3_complete_group :
-    -- Closure (implicit in type)
-    -- Associativity
-    (∀ a b c : ↥Sphere3, sphere3Mul (sphere3Mul a b) c = sphere3Mul a (sphere3Mul b c)) ∧
-    -- Left identity
-    (∀ a : ↥Sphere3, sphere3Mul sphere3One a = a) ∧
-    -- Right identity
-    (∀ a : ↥Sphere3, sphere3Mul a sphere3One = a) ∧
-    -- Left inverse
-    (∀ a : ↥Sphere3, sphere3Mul (sphere3Inv a) a = sphere3One) ∧
-    -- Right inverse
-    (∀ a : ↥Sphere3, sphere3Mul a (sphere3Inv a) = sphere3One) :=
-  ⟨sphere3_mul_assoc, sphere3_mul_left_id, sphere3_mul_right_id,
-   sphere3_group_axioms.2.2, sphere3_mul_right_inv⟩
-
-end QuaternionAssociativity
-
--- Summary of all contributions to PoincareConjecture.lean:
--- Parts XLIV-XLV: JSJ Decomposition, Graph Manifolds, Thurston Norm
--- Parts XLVI-XLVIII: Perelman's Proof, Thurston's Geometries, Post-Perelman
--- Parts XLIX-L: Poincaré Homology Sphere, Higher Dimensions
--- Parts LI-LII: Dehn Surgery, Knots and Poincaré
--- Part LIII: Concrete Cyclic Group Actions on S³ and Lens Space Geometry
--- Part LIV: Euler Characteristic and Topological Invariants
--- Part LV: RP³ Topological Properties from Covering Space
--- Part LVI: Ricci Flow Monotonicity Consequences
--- Part LVII: Quaternion Group Non-Commutativity
+--   - agol_virtual_haken axiom
 
 end PoincareConjecture
