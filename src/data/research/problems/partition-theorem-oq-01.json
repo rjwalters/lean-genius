@@ -18,55 +18,50 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-03-11T09:48:08.982Z",
-    "iteration": 4,
-    "focus": "All sorries eliminated; 3 axioms (RR1, RR2, Schur) remain as deep partition identities",
+    "iteration": 3,
+    "focus": "Building GF coefficient infrastructure toward axiom elimination",
     "blockers": [],
-    "nextAction": "Investigate axiom elimination via GF infrastructure or bijective proofs.",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 0 sorries (all 3 eliminated), 3 axioms (RR1, RR2, Schur identities). Full GF coefficient infrastructure proved. Subset-partition bridge complete.",
+    "progressSummary": "PROGRESS: 3 sorries (subset image, GF coeff, partition-to-subset), 3 axioms. Extended verification to n=15. GF infrastructure advancing.",
     "builtItems": [
       "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
       "subsetsWithSum: subset sum counting infrastructure",
       "Bridge theorems connecting decidable ↔ noncomputable formulations",
-      "subsetsWithSum_insert_not_mem: subsets not containing k (proved)",
-      "subsetsWithSum_insert_mem_image: bijection for containing-k subsets (proved)",
+      "subsetsWithSum_insert_not_mem: subsets not containing k are subsets of S (proved)",
       "subsetsWithSum_insert_mem_empty: no containing-k subsets when k > n (proved)",
-      "subsetsWithSum_insert_card: cardinality recursion (fully proved)",
+      "subsetsWithSum_insert_card: cardinality recursion (proved modulo image lemma)",
       "distinctPartGF_coeff_empty: base case of coefficient theorem (proved)",
-      "distinctPartGF_coeff: GF coefficient = subset count (fully proved via Finset.induction)",
-      "coeff_X_pow_mul_shift / coeff_X_pow_mul_zero: PowerSeries coefficient helpers (proved)",
-      "partitionOfSubset: Finset → Nat.Partition constructor (proved)",
-      "partitionOfSubset_nodup: subset partitions have distinct parts (proved)",
-      "schurMod_to_subset: SchurMod partitions → mod-3 subsets (proved)",
-      "native_decide verification through n=15 for all identities (equality examples)"
+      "partitionOfSubset: Finset → Nat.Partition constructor (defined, compiles)",
+      "native_decide verification extended from n=12 to n=15 for all identities"
     ],
     "insights": [
       "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
       "Noncomputable definitions prevent native_decide verification",
       "Proving any axiom requires 300-500+ lines of GF proof per identity",
-      "Finset.induction requires `revert n` to get IH for all n, not just fixed n",
-      "PowerSeries.coeff has R as implicit parameter in current Mathlib4",
-      "PowerSeries.coeff_mul_X_pow argument order: (p : R⟦X⟧) (n d : ℕ)",
-      "partitionOfSubset parts_pos needs implicit arg pattern: fun hx => hpos _ hx",
-      "Finset.card_image_of_injOn + congr_arg (erase · k) proves injectivity of insert k",
-      "native_decide rr1_count_13/14/15 fail (pre-existing, OEIS values may need checking)"
+      "Part XXVI (part count bounds) broke due to Mathlib API changes",
+      "Subset sum recursion: inserting element k splits subsets into containing-k and not-containing-k families",
+      "GF coefficient theorem connects algebraic (PowerSeries) to combinatorial (subsetsWithSum) counting",
+      "partitionOfSubset converts finsets to Nat.Partition, bridging subset and partition formulations",
+      "All three identities (RR1, RR2, Schur corrected) computationally verified through n=15"
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",
       "No bijective proof machinery for partition identities"
     ],
     "nextSteps": [
-      "Investigate if RR1/RR2/Schur axioms can be eliminated via full GF proof",
-      "Build gap-side generating function characterization (continued fractions / functional equations)",
-      "Consider bijective approach: explicit bijections between gap and mod partition families",
-      "Explore if Mathlib has enough q-series / basic hypergeometric infrastructure"
+      "Prove subsetsWithSum_insert_mem_image: the bijection for containing-k subsets (needs Finset.cons manipulation)",
+      "Prove distinctPartGF_coeff via PowerSeries.coeff_mul chain (main coefficient theorem)",
+      "Build full bijection subsetsWithSum ↔ distinct partitions from a set S",
+      "Specialize to S = {k ≡ 1,2 mod 3} for Schur mod-side characterization",
+      "The hard step: gap-side generating function characterization (Schur functional equation)"
     ]
   },
   "approaches": [],
@@ -83,7 +78,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-15T18:00:00.000Z",
+  "lastUpdate": "2026-03-15T12:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
