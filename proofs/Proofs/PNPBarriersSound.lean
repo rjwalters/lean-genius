@@ -70,6 +70,7 @@ Communication complexity (6): comm_trivial_upper, D_ge_R, EQ_det_lower, EQ_rand_
     DISJ_rand_lower, log_rank_lower
 Communication (1): karchmer_wigderson (D(KW_f) = depth(f))
 Proof complexity (1): cook_reckhow (NP=coNP ↔ poly proof system)
+Five Worlds (2): trapdoor_implies_owf, owf_implies_avg_hard
 Eliminated axioms (9→theorems/opaques):
 - P_subset_PP → theorem (via P ⊆ BPP ⊆ BQP ⊆ PP)
 - P_subset_P_poly → theorem (program e is a constant-size "circuit")
@@ -77,11 +78,14 @@ Eliminated axioms (9→theorems/opaques):
 - TC0_computes_division → theorem (same type as majority_in_TC0_not_AC0)
 - mignon_ressayre → theorem (trivially True)
 - immerman_szelepcsenyi → theorem (NL = coNL from Φ_negate, L = NL in abstract model)
-- trapdoor_implies_owf → theorem (both OWF_exist and TrapdoorOWF_exist are ∃ _ : ℕ, True)
+- algorithmica_no_owf → theorem (derived: owf_implies_P_ne_NP contrapositive)
 - padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE → theorem (EXP = EXPSPACE definitionally)
 - D_comm → opaque def (measurement function, not mathematical claim)
 - R_comm → opaque def (measurement function, not mathematical claim)
 - commMatrixRank → opaque def (measurement function, not mathematical claim)
+Soundness fixes:
+- OWF_exist, TrapdoorOWF_exist → opaque Props (previously ∃ _ : ℕ, True = True,
+  which made owf_implies_avg_hard derive P≠NP unconditionally)
 Now theorems: BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP, factoring_in_PSPACE,
     IW_contrapositive, IW_dichotomy, derandomization_circuit_connection (all derived)
 -/
@@ -3385,19 +3389,18 @@ def AvgCaseHardNP : Prop :=
     (polynomial time) but hard to invert (no poly-time inverter succeeds
     with non-negligible probability).
 
-    This replaces the placeholder `owf_exists_assumption : True`. -/
-def OWF_exist : Prop :=
-  ∃ _f_owf : ℕ, True
-  -- In the Gödelized model, a one-way function would be a program e
-  -- such that Φ e ∅ n computes f(n) in poly time, but no program
-  -- can invert f on random inputs in poly time.
-  -- We abstract this as a Prop for clean axiom statements.
+    **Design**: OWF_exist is opaque to prevent it from being trivially
+    true or false. The previous definition `∃ _ : ℕ, True` was unsound:
+    it made OWF_exist = True, which combined with `owf_implies_avg_hard`
+    to unconditionally derive P ≠ NP. -/
+opaque OWF_exist : Prop
 
 /-- **Trapdoor one-way functions**: One-way functions where a secret "trapdoor"
     makes inversion easy. These enable public-key cryptography.
-    OWFs alone give symmetric crypto; trapdoor OWFs give PKC. -/
-def TrapdoorOWF_exist : Prop :=
-  ∃ _f_trap : ℕ, True  -- Abstracted: trapdoor OWF existence is a Prop
+    OWFs alone give symmetric crypto; trapdoor OWFs give PKC.
+
+    **Design**: Opaque to prevent trivial instantiation (same as OWF_exist). -/
+opaque TrapdoorOWF_exist : Prop
 
 -- ============================================================
 -- The Five Worlds as Propositions
@@ -3439,16 +3442,8 @@ theorem algorithmica_no_avg_hard : Algorithmica → ¬AvgCaseHardNP := by
   intro h ⟨f, hf_np, hf_notp⟩
   exact hf_notp (h ▸ hf_np)
 
-/-- Algorithmica implies no OWFs:
-    If P = NP, inversion is in NP (guess and verify), hence in P.
-    No function can be one-way if inverses are efficiently computable. -/
-axiom algorithmica_no_owf : Algorithmica → ¬OWF_exist
-
-/-- Trapdoor OWFs imply OWFs (a trapdoor OWF is a special case of OWF).
-    Previously axiom; in our abstract model both are ∃ _ : ℕ, True,
-    so this is trivially provable. -/
-theorem trapdoor_implies_owf : TrapdoorOWF_exist → OWF_exist := by
-  intro _; exact ⟨0, trivial⟩
+/-- Trapdoor OWFs imply OWFs (a trapdoor OWF is a special case of OWF). -/
+axiom trapdoor_implies_owf : TrapdoorOWF_exist → OWF_exist
 
 /-- OWFs imply average-case hardness in NP:
     If f is one-way, then inverting f is an average-case hard NP problem
@@ -3473,6 +3468,13 @@ theorem cryptomania_has_owf : Cryptomania → OWF_exist :=
 /-- OWF existence implies P ≠ NP (via average-case hardness). -/
 theorem owf_implies_P_ne_NP : OWF_exist → P ≠ NP :=
   fun h => avg_hard_implies_P_ne_NP (owf_implies_avg_hard h)
+
+/-- Algorithmica implies no OWFs:
+    If P = NP, inversion is in NP (guess and verify), hence in P.
+    No function can be one-way if inverses are efficiently computable.
+    **Previously axiom** — now derived from `owf_implies_P_ne_NP` (contrapositive). -/
+theorem algorithmica_no_owf : Algorithmica → ¬OWF_exist :=
+  fun h howf => owf_implies_P_ne_NP howf h
 
 /-- Cryptomania implies P ≠ NP. -/
 theorem cryptomania_implies_P_ne_NP : Cryptomania → P ≠ NP :=
