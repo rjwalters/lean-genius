@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Parts I-XXIX complete. 70 axioms after researcher-7 deep elimination (was 104→70, -34). Researcher-4 added Part XXIX p-adic Hodge Theory (+5 axioms, +112 lines). Covers Hodge decomposition, cycle class maps, Lefschetz theorems, standard conjectures, Chow rings, Mumford-Tate groups, coniveau filtration, Bloch-Beilinson, Deligne cohomology, K3 surfaces, Tate conjecture, VHS/period domains, mixed Hodge structures, p-adic Hodge theory.",
+    "progressSummary": "PROGRESS: Parts I-XXIX complete. 4679 lines, 74 axioms (down from 109), 0 sorries. Converted 35 vacuous True-concluding axioms to theorems. Removed duplicate cattani_deligne_kaplan. Covers Hodge decomposition, cycle class maps, Lefschetz, standard conjectures, Chow rings, Mumford-Tate, coniveau, Bloch-Beilinson, Deligne cohomology, K3, Tate, VHS, mixed Hodge structures, p-adic Hodge theory.",
     "builtItems": [
       "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
       "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
@@ -216,8 +216,7 @@
       "Fontaine-Mazur conjecture states geometric ↔ de Rham + unramified a.e.",
       "35 axioms concluding with True were converted to theorems — these had no real mathematical content and polluted the axiom count",
       "Duplicate cattani_deligne_kaplan axiom removed (was at both line 2880 and 4426)",
-      "primitive_hodge_numbers was trivially satisfiable (∃ h, h ≤ n — take h=0) and converted to theorem",
-      "Axiom reduction 104→70: removed 3 unused axioms, converted 28 True-concluding axioms to theorems, proved 3 trivially-satisfiable existentials. All remaining axioms carry genuine mathematical content."
+      "primitive_hodge_numbers was trivially satisfiable (∃ h, h ≤ n — take h=0) and converted to theorem"
     ],
     "mathlibGaps": [
       "Complex manifolds",
