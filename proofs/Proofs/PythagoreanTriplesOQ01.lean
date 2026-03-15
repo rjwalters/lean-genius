@@ -2100,11 +2100,13 @@ theorem triple_count_from_r2_connection :
 
 /-- Landau's theorem: The number of integers ≤ N representable as a sum
     of two squares is asymptotically C·N/√(log N) where C is the
-    Landau-Ramanujan constant ≈ 0.7642... -/
-axiom landau_two_squares :
-    -- #{n ≤ N : r₂(n) > 0} ~ C · N / √(log N)
-    -- C = (1/√2) · ∏_{p≡3(4)} (1 - 1/p²)^{-1/2}
-    True
+    Landau-Ramanujan constant ≈ 0.7642...
+    C = (1/√2) · ∏_{p≡3(4)} (1 - 1/p²)^{-1/2}
+
+    This is a deep result requiring the Dedekind zeta function of ℤ[i].
+    Stated here as documentation; proving it would require analytic NT
+    infrastructure far beyond current Mathlib. -/
+theorem landau_two_squares_statement : True := trivial
 
 /-
 ## Part XXI: Pythagorean Triples by Leg and Area
@@ -2194,16 +2196,131 @@ theorem all_primitive_triples_from_gaussian :
 
 ### New Definitions and Theorems:
 - **r2**: representation function r₂(n) = #{(a,b) : a²+b² = n}
-- **r2_pos_iff**: characterization via prime factorization (Fermat)
-- **r2_average_order**: (1/N)Σr₂(n) → π (Gauss circle)
+- **r2_pos_iff**: characterization via prime factorization (partial)
+- **r2_average_order**: (1/N)Σr₂(n) → π (Gauss circle) [AXIOM]
 - **GaussianInt**: Gaussian integer structure
 - **gaussian_norm_mul**: norm multiplicativity (PROVED)
 - **gaussian_square_pythagorean**: z² gives Pythagorean triple (PROVED)
 - **gaussian_square_components**: real and imaginary parts of z² (PROVED)
-- **landau_two_squares**: N/√(log N) integers ≤ N are sums of two squares
+- **landau_two_squares_statement**: Landau-Ramanujan constant (documentation)
 
-### Axiom Count: 6 total (3 original + 3 new: r2_average_order, landau_two_squares, primitive_by_leg_density)
+### Axiom Count: 5 total (3 original + 2 new: r2_average_order, primitive_by_leg_density)
 ### Sorries: 0
+-/
+
+/-
+## Part XXIII: Algebraic Identities and Triple Composition
+
+The Brahmagupta-Fibonacci identity shows that sums of two squares are closed
+under multiplication. This has deep implications:
+- It explains WHY the norm is multiplicative (it IS the identity)
+- It gives explicit triple composition formulas
+- It connects to the Gaussian integer ring structure
+-/
+
+/-- **Brahmagupta-Fibonacci Identity** (first form):
+    (a² + b²)(c² + d²) = (ac - bd)² + (ad + bc)²
+
+    This is the real content behind N(zw) = N(z)N(w) for Gaussian integers.
+    The factors on the right are the real and imaginary parts of (a+bi)(c+di). -/
+theorem brahmagupta_fibonacci (a b c d : ℤ) :
+    (a ^ 2 + b ^ 2) * (c ^ 2 + d ^ 2) =
+    (a * c - b * d) ^ 2 + (a * d + b * c) ^ 2 := by
+  ring
+
+/-- **Brahmagupta-Fibonacci Identity** (second form):
+    (a² + b²)(c² + d²) = (ac + bd)² + (ad - bc)²
+
+    This corresponds to conjugation: (a+bi)(c-di) gives the other factorization. -/
+theorem brahmagupta_fibonacci' (a b c d : ℤ) :
+    (a ^ 2 + b ^ 2) * (c ^ 2 + d ^ 2) =
+    (a * c + b * d) ^ 2 + (a * d - b * c) ^ 2 := by
+  ring
+
+/-- **Triple composition**: If (a,b,c) and (d,e,f) are Pythagorean triples
+    (a² + b² = c², d² + e² = f²), then (ac-be, ae+bd, cf) is also a triple.
+
+    This is the multiplicative structure of Pythagorean triples viewed through
+    the Gaussian integer ring: the triple (a,b,c) corresponds to z = a + bi
+    with |z|² = c², so (zw) gives a new triple with hypotenuse |z|·|w| = cf. -/
+theorem triple_composition {a b c d e f : ℤ}
+    (h1 : a ^ 2 + b ^ 2 = c ^ 2) (h2 : d ^ 2 + e ^ 2 = f ^ 2) :
+    (a * d - b * e) ^ 2 + (a * e + b * d) ^ 2 = (c * f) ^ 2 := by
+  calc (a * d - b * e) ^ 2 + (a * e + b * d) ^ 2
+      = (a ^ 2 + b ^ 2) * (d ^ 2 + e ^ 2) := by ring
+    _ = c ^ 2 * f ^ 2 := by rw [h1, h2]
+    _ = (c * f) ^ 2 := by ring
+
+/-- **Triple composition** (second form): the other Brahmagupta-Fibonacci
+    factorization also gives a valid triple. -/
+theorem triple_composition' {a b c d e f : ℤ}
+    (h1 : a ^ 2 + b ^ 2 = c ^ 2) (h2 : d ^ 2 + e ^ 2 = f ^ 2) :
+    (a * d + b * e) ^ 2 + (a * e - b * d) ^ 2 = (c * f) ^ 2 := by
+  calc (a * d + b * e) ^ 2 + (a * e - b * d) ^ 2
+      = (a ^ 2 + b ^ 2) * (d ^ 2 + e ^ 2) := by ring
+    _ = c ^ 2 * f ^ 2 := by rw [h1, h2]
+    _ = (c * f) ^ 2 := by ring
+
+/-- Norm multiplicativity is the Brahmagupta-Fibonacci identity in disguise. -/
+theorem gaussian_norm_mul_is_bf (z w : GaussianInt) :
+    (z.mul w).norm = z.norm * w.norm := gaussian_norm_mul z w
+
+/-- **Example**: Composing (3,4,5) with itself gives (3·3-4·4, 3·4+4·3, 25) = (-7, 24, 25),
+    i.e., the primitive triple (7, 24, 25). -/
+theorem compose_3_4_5_with_self :
+    (3 * 3 - 4 * 4 : ℤ) ^ 2 + (3 * 4 + 4 * 3) ^ 2 = 25 ^ 2 := by norm_num
+
+/-- **Example**: Composing (3,4,5) with (5,12,13) gives (3·5-4·12, 3·12+4·5, 65) = (-33, 56, 65).
+    The triple (33, 56, 65) has 33² + 56² = 1089 + 3136 = 4225 = 65². -/
+theorem compose_345_51213 :
+    (3 * 5 - 4 * 12 : ℤ) ^ 2 + (3 * 12 + 4 * 5) ^ 2 = 65 ^ 2 := by norm_num
+
+/-- The other composition gives (3·5+4·12, 3·12-4·5, 65) = (63, 16, 65).
+    The triple (16, 63, 65) has 16² + 63² = 256 + 3969 = 4225 = 65². -/
+theorem compose_345_51213' :
+    (3 * 5 + 4 * 12 : ℤ) ^ 2 + (3 * 12 - 4 * 5) ^ 2 = 65 ^ 2 := by norm_num
+
+/-- **Two representations of 65**: 65 = 4² + 7² = 1² + 8².
+    Composing (3,4,5) and (5,12,13) produces TWO distinct triples with
+    hypotenuse 65, corresponding to the two Brahmagupta-Fibonacci forms.
+    This is because 65 = 5 × 13, and both 5 and 13 are primes ≡ 1 (mod 4),
+    so they split in ℤ[i], giving 2 essentially different factorizations. -/
+theorem hypotenuse_65_two_triples :
+    (16 : ℤ) ^ 2 + 63 ^ 2 = 65 ^ 2 ∧ (33 : ℤ) ^ 2 + 56 ^ 2 = 65 ^ 2 := by
+  constructor <;> norm_num
+
+/-
+## Part XXIII Summary
+
+### New Theorems (all PROVED):
+- **brahmagupta_fibonacci**: (a²+b²)(c²+d²) = (ac-bd)² + (ad+bc)²
+- **brahmagupta_fibonacci'**: (a²+b²)(c²+d²) = (ac+bd)² + (ad-bc)²
+- **triple_composition**: composing two Pythagorean triples via multiplication
+- **triple_composition'**: second composition form
+- **compose_3_4_5_with_self**: (3,4,5)² = (7,24,25) verification
+- **compose_345_51213**: (3,4,5)×(5,12,13) = (33,56,65) verification
+- **compose_345_51213'**: second form gives (16,63,65)
+- **hypotenuse_65_two_triples**: 65² = 16²+63² = 33²+56²
+
+### Mathematical Significance:
+The Brahmagupta-Fibonacci identity is the algebraic heart of the connection
+between Pythagorean triples and Gaussian integers. It shows that:
+1. Sums of two squares are closed under multiplication
+2. Pythagorean triples compose multiplicatively
+3. Products of primes ≡ 1 (mod 4) have multiple representations as x²+y²
+
+### Overall File Statistics:
+- **Lines**: ~2300
+- **Axioms**: 5 (3 core density + r2_average_order + primitive_by_leg_density)
+- **Sorries**: 0
+- **Theorems proved**: ~110
+- **Definitions**: ~35
+- **Computational verifications**: 12
+
+### The 3 Core Axioms (irreducible given current Mathlib):
+1. **sector_lattice_point_density**: sectorPointCount(N)/N → π/8 [Gauss circle]
+2. **coprime_fraction_in_sector**: coprimeInSector/sectorPoint → 6/π² [Möbius]
+3. **bothOdd_fraction_in_coprime_sector**: bothOddCoprime/coprime → 1/3 [sieve theory]
 -/
 
 end PythagoreanTriplesDensity
