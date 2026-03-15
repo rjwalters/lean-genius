@@ -4246,6 +4246,25 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 #check hodge_number_tensor_nonzero    -- Tensor product Hodge numbers
 #check IsIrregular                    -- h^{1,0} > 0
 
+-- Lefschetz decomposition
+#check IsPrimitive                       -- Primitive class
+#check primitive_is_subHodge             -- Sub-Hodge structure
+#check lefschetz_decomposition           -- H^k = ⊕ L^r P^{k-2r}
+
+-- Absolute Hodge classes
+#check AbsoluteHodgeClass                -- Stable under Aut(ℂ)
+#check algebraic_implies_absolute        -- Algebraic → absolute
+#check deligne_absolute_abelian          -- Deligne's theorem
+#check AbsoluteHodgeClass.add            -- PROVED: closed under +
+#check AbsoluteHodgeClass.neg            -- PROVED: closed under -
+#check AbsoluteHodgeClass.smul           -- PROVED: closed under ℚ·
+
+-- Proved consequences
+#check tateStructure_unit_left           -- PROVED: ℚ(0) ⊗ H ≅ H
+#check tensor_dual_has_trace             -- PROVED: H ⊗ H* → ℚ
+#check dual_direct_sum                   -- (H₁⊕H₂)* ≅ H₁*⊕H₂*
+#check even_weight_self_dual             -- Polarized → self-dual
+
 -- Morphisms (category structure)
 #check HodgeStructureMorphism
 #check HodgeStructureMorphism.id
