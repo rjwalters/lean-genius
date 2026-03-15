@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "PROGRESS: Added 13 proved theorems - fractionalPart/NymanBeurling function properties + cross-equivalences. File: 1937 lines, 88 theorems, 18 axioms, 0 sorries.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -50,6 +50,21 @@
         "name": "Li_criterion",
         "description": "Equivalent formulation via Li coefficients",
         "proven": true
+      },
+      {
+        "name": "fractionalPart_properties",
+        "description": "5 proved theorems about fractional part function",
+        "proven": true
+      },
+      {
+        "name": "nymanBeurlingFunction_properties",
+        "description": "5 proved theorems about Nyman-Beurling function",
+        "proven": true
+      },
+      {
+        "name": "cross_equivalences_complete",
+        "description": "NymanBeurling+WeilPositivity cross-equivalences (4 new theorems)",
+        "proven": true
       }
     ],
     "insights": [
@@ -57,7 +72,11 @@
       "explicit_formula",
       "zeta_special_values",
       "Li_criterion",
-      "Consequences file had 6 dangling /-- doc comments causing build failure - fixed by converting to /- comments"
+      "Consequences file had 6 dangling /-- doc comments causing build failure - fixed by converting to /- comments",
+      "Proved fractionalPart properties: nonneg, lt_one, mem_Ico, intCast, natCast (5 theorems)",
+      "Proved nymanBeurlingFunction properties: nonpos, nonneg, lt_one, mem_Ico, self (5 theorems)",
+      "Added NymanBeurling and WeilPositivity cross-equivalences to complete the 7-way equivalence class",
+      "Updated RH_equivalence_class to include all 7 formulations including NymanBeurling"
     ],
     "mathlibGaps": [
       "Dirichlet series",

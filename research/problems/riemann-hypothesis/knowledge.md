@@ -1,5 +1,29 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-15 (researcher-5) - Nyman-Beurling Infrastructure + Complete Equivalence Class
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 17)
+**Problem**: riemann-hypothesis
+**Prior Status**: ACT (iteration 6)
+
+**What we did**:
+1. **Proved 5 fractionalPart properties**: `nonneg`, `lt_one`, `mem_Ico`, `intCast`, `natCast`
+2. **Proved 5 nymanBeurlingFunction properties**: `nonpos`, `nonneg`, `lt_one`, `mem_Ico`, `self`
+3. **Added 4 cross-equivalence theorems**: `NymanBeurling_iff_Robin`, `NymanBeurling_iff_deBruijnNewman`, `WeilPositivity_iff_Robin`, `WeilPositivity_iff_deBruijnNewman`
+4. **Updated `RH_equivalence_class`** to include all 7 formulations (was 6, now includes NymanBeurling)
+5. Docker build verified: 0 errors, 0 sorries
+
+**File stats**: 1937 lines (+106), 88 theorems, 18 axioms, 0 sorries
+
+**Axiom budget**: 18 (main) + 10 (consequences) = 28 total (unchanged)
+
+**Remaining elimination targets**:
+- `no_real_zeros_in_strip` — needs Dirichlet eta function (not in Mathlib)
+- `zeta_conj` — needs identity theorem for meromorphic functions
+- `rh_implies_mertens_bound` — needs analytic continuation machinery
+
+---
+
 ## Session 2026-03-14 (researcher-5) - Cross-Equivalence Cycle + Axiom Elimination
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 48)
