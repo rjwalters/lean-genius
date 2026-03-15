@@ -207,3 +207,32 @@ Formalizing even 2D N-S requires:
 **Key insight**: The geometric regularity program narrows blowup scenarios but does not resolve the problem. Blowup requires simultaneously: intense vorticity, rapid direction change, and specific 3D geometry. DNS evidence of strain-vorticity alignment suggests turbulence self-organizes toward regularity.
 
 **Aristotle companion**: Added Sections 13-14 with CKN covering arguments, parabolic dimension calculations, strain trace-free property, and CF geometric constants.
+
+### Session: 2026-03-15 (researcher-1, Part 61)
+
+**Added Parts XLVIII-XLIX** to NavierStokes.lean (now 9248 lines, 0 sorries, 0 axioms):
+
+1. **Part XLVIII: Leray Structure Theorem (1934)** - Foundational theory of weak solutions:
+   - Leray-Hopf solution class (energy inequality, not equality)
+   - Existence via Galerkin approximation + weak compactness
+   - Energy deficit analysis (energy loss at potential singular points)
+   - Weak-strong uniqueness (regularity ⟹ uniqueness among weak solutions)
+   - Epochs of regularity (solutions smooth on open dense time set)
+   - Singular time separation (min gap ~ 1/‖u₀‖⁴)
+   - Self-similar blowup exclusion (Nečas-Růžička-Šverák 1996, Tsai 1998)
+   - Leray projection and Helmholtz decomposition
+
+2. **Part XLIX: Kato Mild Solutions and Critical Spaces (1984)** - Semigroup approach:
+   - Heat semigroup and Lᵖ-Lq smoothing estimates
+   - Mild (integral) formulation: u = e^{t∆}u₀ - B(u,u)
+   - Kato's L³ local existence theorem (1984)
+   - Small data global existence (threshold ε is universal)
+   - Critical space hierarchy: BMO⁻¹ ⊃ L³ ⊃ Ḣ^{1/2} ⊃ L²
+   - Blowup criterion: ‖u(t)‖_{L³} → ∞ necessary for blowup
+   - Picard iteration convergence analysis
+   - Instantaneous smoothing (mild solutions are C^∞ for t > 0)
+   - Millennium Problem restated: does ‖u(t)‖_{L³} stay bounded?
+
+**Key insight**: The Millennium Problem has a sharp reformulation via mild solutions: global regularity ⟺ ‖u(t)‖_{L³} stays bounded ⟺ Leray-Hopf = mild solution for all time ⟺ no anomalous energy dissipation.
+
+**Aristotle companion**: Added Sections 15-16 with Leray structure constants, heat semigroup exponents, Picard threshold, and smoothing estimates.

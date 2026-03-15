@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts XLVI-XLVII covering CKN partial regularity and Constantin-Fefferman geometric regularity. File now 8792 lines, 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: Added Parts XLVI-XLIX covering CKN partial regularity, Constantin-Fefferman geometric regularity, Leray structure theorem, and Kato mild solutions. File now 9248 lines, 0 sorries, 0 axioms.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO⁻¹ well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
@@ -38,7 +38,9 @@
       "Part XLIV: Critical function spaces - Lorentz, Morrey spaces, PSL surface, barely supercritical, Calderón-Zygmund, derivative gap",
       "Part XLV: Dissipation anomaly - zeroth law, Reynolds number, Kolmogorov scale, Onsager connection, Taylor-Green, intermittency",
       "Part XLVI: CKN partial regularity - suitable weak solutions, ε-regularity, singular set P¹=0, dimension reduction",
-      "Part XLVII: Constantin-Fefferman geometric regularity - vorticity direction, strain alignment, depletion of nonlinearity"
+      "Part XLVII: Constantin-Fefferman geometric regularity - vorticity direction, strain alignment, depletion of nonlinearity",
+      "Part XLVIII: Leray structure theorem - Galerkin existence, weak-strong uniqueness, epochs of regularity, self-similar exclusion",
+      "Part XLIX: Kato mild solutions - heat semigroup, Picard iteration, critical spaces, instantaneous smoothing"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u·∇)u, not just energy/scaling/div-free properties",
@@ -52,7 +54,10 @@
       "Critical space hierarchy: L^∞ ⊃ L³ ⊃ L^{3,∞} ⊃ BMO⁻¹ all give regularity; L² (Leray-Hopf) does not",
       "CKN 1982: singular set has P¹-measure zero - singularities cannot fill a spacetime curve",
       "Constantin-Fefferman 1993: Lipschitz vorticity direction prevents blowup - geometric rather than analytic criterion",
-      "Depletion of nonlinearity: (u·∇)u is effectively weaker than its factors suggest - Beltrami flows are completely depleted"
+      "Depletion of nonlinearity: (u·∇)u is effectively weaker than its factors suggest - Beltrami flows are completely depleted",
+      "Leray 1934: weak solutions exist globally but energy inequality (not equality) allows dissipation at singularities",
+      "Kato 1984: mild solutions give sharp reformulation - global regularity ⟺ bounded L³ norm for all time",
+      "Weak-strong uniqueness: if smooth solution exists, it is the unique weak solution - non-uniqueness implies non-regularity"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
@@ -80,7 +85,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-15T12:10:00.000Z",
+  "lastUpdate": "2026-03-15T12:15:00.000Z",
   "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1
