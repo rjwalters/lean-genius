@@ -29,9 +29,47 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Parts I-XI complete. 1129 lines, 15 axioms, 1 sorry, 74 theorems. Added CGMS 2023 breakthrough (R(k,k) \u2264 (4-\u03b5)^k), off-diagonal bounds, Mattheus-Verstra\u00ebte R(4,t), graph Ramsey theory.",
+    "builtItems": [
+      {
+        "name": "cgms_diagonal_upper_bound",
+        "description": "R(k,k) \u2264 (4-\u03b5)^k (CGMS 2023)",
+        "proven": false
+      },
+      {
+        "name": "cgms_improves_erdos_szekeres",
+        "description": "CGMS beats Erd\u0151s-Szekeres (PROVED)",
+        "proven": true
+      },
+      {
+        "name": "book_algorithm_structure",
+        "description": "Book algorithm proof structure",
+        "proven": false
+      },
+      {
+        "name": "bohman_keevash_r3t",
+        "description": "R(3,t) = \u0398(t\u00b2/logt) lower bound",
+        "proven": false
+      },
+      {
+        "name": "mattheus_verstraete_r4t",
+        "description": "R(4,t) = \u03a9(t\u00b3/(logt)\u2074)",
+        "proven": false
+      },
+      {
+        "name": "burr_erdos_conjecture",
+        "description": "Burr-Erd\u0151s: linear Ramsey for bounded degree",
+        "proven": false
+      },
+      {
+        "name": "ramsey_symmetric_prime",
+        "description": "R(s,t) = R(t,s) (PROVED)",
+        "proven": true
+      }
+    ],
+    "insights": [
+      "The CGMS 2023 breakthrough broke a 90-year barrier on diagonal Ramsey upper bounds using a novel \"book algorithm\". Mattheus-Verstra\u00ebte 2024 used algebraic geometry (Hermitian varieties) for R(4,t) lower bounds."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
