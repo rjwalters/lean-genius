@@ -297,36 +297,24 @@ theorem coprimeInSectorCount_mono {N₁ N₂ : ℕ} (h : N₁ ≤ N₂) :
   unfold coprimeInSectorCount
   apply Finset.card_le_card
   intro ⟨m, n⟩ hmn
-  have hf := Finset.mem_filter.mp hmn
-  have hp := Finset.mem_product.mp hf.1
-  have hm_range := Finset.mem_range.mp hp.1
-  have hn_range := Finset.mem_range.mp hp.2
-  apply Finset.mem_filter.mpr
-  constructor
-  · exact Finset.mem_product.mpr
-      ⟨Finset.mem_range.mpr (by omega), Finset.mem_range.mpr (by omega)⟩
-  · exact ⟨hf.2.1, hf.2.2.1, hf.2.2.2.1, le_trans hf.2.2.2.2 h⟩
+  simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_range] at hmn ⊢
+  exact ⟨⟨by omega, by omega⟩, hmn.2.1, hmn.2.2.1, hmn.2.2.2.1, by omega⟩
 
 /-- Each pair (k, 1) with k ≥ 2 and k² + 1 ≤ N is in the coprime sector. -/
 theorem pair_k_one_in_sector {k N : ℕ} (hk : 2 ≤ k) (hN : k ^ 2 + 1 ≤ N) :
     (k, 1) ∈ ((Finset.range (N + 1)).product (Finset.range (N + 1))).filter (fun mn =>
       0 < mn.2 ∧ mn.2 < mn.1 ∧ Nat.Coprime mn.1 mn.2 ∧ mn.1 ^ 2 + mn.2 ^ 2 ≤ N) := by
-  apply Finset.mem_filter.mpr
-  constructor
-  · exact Finset.mem_product.mpr
-      ⟨Finset.mem_range.mpr (by nlinarith [sq_nonneg k]),
-       Finset.mem_range.mpr (by nlinarith [sq_nonneg k])⟩
-  · refine ⟨?_, ?_, Nat.coprime_one_right k, ?_⟩
-    · omega
-    · omega
-    · nlinarith
+  simp only [Finset.mem_filter, Finset.mem_product, Finset.mem_range]
+  refine ⟨⟨by omega, by omega⟩, by omega, by omega, Nat.coprime_one_right k, by omega⟩
 
 /-- The coprime sector count grows without bound.
 The pairs (k, 1) for k = 2, 3, ... are all coprime with hypotenuse k²+1,
 so coprimeInSectorCount(N) ≥ √(N-1) - 1. -/
 theorem coprimeInSectorCount_tendsto_atTop :
     Filter.Tendsto (fun N => (coprimeInSectorCount N : ℝ)) atTop atTop := by
-  rw [Filter.tendsto_atTop_atTop]
+  apply Filter.Tendsto.atTop_nonneg (fun N => (coprimeInSectorCount N : ℝ))
+    (fun N => Nat.cast_nonneg _)
+  rw [Filter.tendsto_atTop]
   intro b
   -- For N = (⌈b⌉₊ + 2)² + 1, the pairs (2,1), ..., (⌈b⌉₊+2, 1) give ⌈b⌉₊+1 coprime pairs
   use (⌈b⌉₊ + 2) ^ 2 + 1
@@ -337,23 +325,19 @@ theorem coprimeInSectorCount_tendsto_atTop :
     linarith [Nat.le_ceil b]
   -- The ⌈b⌉₊ + 1 pairs {(k, 1) : k ∈ [2, ⌈b⌉₊ + 2]} are all in the sector and distinct
   unfold coprimeInSectorCount
-  -- Count pairs (k, 1) for k ∈ [2, ⌈b⌉₊ + 2]
-  have h_inj : Function.Injective (fun k : ℕ => (k, (1 : ℕ))) :=
-    fun a b h => by simpa using h
-  have h_sub : (Finset.Icc 2 (⌈b⌉₊ + 2)).image (fun k => (k, (1 : ℕ))) ⊆
-      ((Finset.range (N + 1)).product (Finset.range (N + 1))).filter (fun mn =>
-        0 < mn.2 ∧ mn.2 < mn.1 ∧ Nat.Coprime mn.1 mn.2 ∧
-        mn.1 ^ 2 + mn.2 ^ 2 ≤ N) := by
-    intro ⟨m, n⟩ hmn
-    simp only [Finset.mem_image, Finset.mem_Icc] at hmn
-    obtain ⟨k, hk, rfl, rfl⟩ := hmn
-    exact pair_k_one_in_sector (by omega) (by nlinarith)
   calc ⌈b⌉₊ + 1
       = (Finset.Icc 2 (⌈b⌉₊ + 2)).card := by
-        simp
+        simp [Finset.card_Icc]; omega
     _ = ((Finset.Icc 2 (⌈b⌉₊ + 2)).image (fun k => (k, (1 : ℕ)))).card := by
-        rw [Finset.card_image_of_injective _ h_inj]
-    _ ≤ _ := Finset.card_le_card h_sub
+        rw [Finset.card_image_of_injective _ (fun a b h => by simpa using h)]
+    _ ≤ (((Finset.range (N + 1)).product (Finset.range (N + 1))).filter (fun mn =>
+          0 < mn.2 ∧ mn.2 < mn.1 ∧ Nat.Coprime mn.1 mn.2 ∧
+          mn.1 ^ 2 + mn.2 ^ 2 ≤ N)).card :=
+        Finset.card_le_card (fun ⟨m, n⟩ hmn => by
+          simp only [Finset.mem_image, Finset.mem_Icc] at hmn
+          obtain ⟨k, ⟨hk_lo, hk_hi⟩, hm, hn⟩ := hmn
+          subst hm; subst hn
+          exact pair_k_one_in_sector (by omega) (by nlinarith))
 
 /-- Computational verification: coprimeInSectorCount(5) = 1. -/
 theorem coprimeInSector_5 : coprimeInSectorCount 5 = 1 := by
@@ -1288,7 +1272,6 @@ theorem sectorOE_eq_sectorOO_full_column {m N : ℕ}
     · intro ⟨_, hn_pos, hn_lt, hcop, _, hn_even, _⟩
       exact ⟨by omega, hn_pos, hcop, hn_even⟩
     · intro ⟨hn_range, hn_pos, hcop, hn_even⟩
-      have hmN : m ≤ N := by nlinarith [sq_nonneg (m - 1)]
       refine ⟨by omega, hn_pos, by omega, hcop, hm_odd, hn_even, ?_⟩
       -- n ≤ m - 1, so n² ≤ (m-1)², hence m² + n² ≤ m² + (m-1)² ≤ N
       have : n ^ 2 ≤ (m - 1) ^ 2 := Nat.pow_le_pow_left (by omega) 2
@@ -1301,7 +1284,6 @@ theorem sectorOE_eq_sectorOO_full_column {m N : ℕ}
     · intro ⟨_, hn_pos, hn_lt, hcop, _, hn_odd, _⟩
       exact ⟨by omega, hn_pos, hcop, hn_odd⟩
     · intro ⟨hn_range, hn_pos, hcop, hn_odd⟩
-      have hmN : m ≤ N := by nlinarith [sq_nonneg (m - 1)]
       refine ⟨by omega, hn_pos, by omega, hcop, hm_odd, hn_odd, ?_⟩
       have : n ^ 2 ≤ (m - 1) ^ 2 := Nat.pow_le_pow_left (by omega) 2
       omega
@@ -1509,7 +1491,7 @@ EO/coprime → 1/3.
 Proof: OE/C - OO/C = (OE - OO)/C = (bdryOO - bdryOE)/C → 0. -/
 theorem oe_oo_same_density_of_boundary_vanishes
     (h_bdry : Filter.Tendsto (fun N =>
-      (((triangleOO_outsideCircle (Nat.sqrt N) N).card : ℝ) -
+      ((triangleOO_outsideCircle (Nat.sqrt N) N).card : ℝ) -
       (triangleOE_outsideCircle (Nat.sqrt N) N).card) /
       (coprimeInSectorCount N : ℝ))
       atTop (𝓝 0)) :
@@ -1528,7 +1510,7 @@ theorem oe_oo_same_density_of_boundary_vanishes
       (triangleOE_outsideCircle (Nat.sqrt N) N).card := by
     intro N
     have h := sector_oe_oo_discrepancy_bound N
-    exact_mod_cast h
+    push_cast at h ⊢; linarith
   simp_rw [h_disc]
   exact h_bdry
 
@@ -1571,7 +1553,7 @@ theorem parity_from_boundary_and_eo
       ring
     have h_target : (2 : ℝ) / 3 = 1 - 1 / 3 := by ring
     rw [h_target]
-    exact (tendsto_const_nhds.sub h_eo).congr' (h_part_eq.mono fun N hN => hN.symm)
+    exact (Filter.Tendsto.congr' h_part_eq).mpr (tendsto_const_nhds.sub h_eo)
   -- OO/C = ((OE + OO)/C - (OE - OO)/C) / 2
   have h_target : (1 : ℝ) / 3 = (2 / 3 - 0) / 2 := by ring
   rw [h_target]
@@ -1581,7 +1563,8 @@ theorem parity_from_boundary_and_eo
       ((coprimeOddEvenCount N : ℝ) / (coprimeInSectorCount N : ℝ) -
        (coprimeOddOddCount N : ℝ) / (coprimeInSectorCount N : ℝ))) / 2 := by
     intro N; ring
-  exact ((h_sum.sub h_diff).div_const 2).congr (fun N => (h_oo_eq N).symm)
+  simp_rw [h_oo_eq]
+  exact (h_sum.sub h_diff).div_const 2
 
 /-
 ## Summary (Part XVI)

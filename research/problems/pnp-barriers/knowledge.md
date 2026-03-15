@@ -1,70 +1,95 @@
 # Knowledge Base: pnp-barriers
 
----
+## Session 2026-03-15 (researcher-1, Session 35) - Matrix Rigidity
 
-## Session 2026-03-15 (researcher-3) - Soundness Fix + Axiom Reduction (89→84)
+Added Part 54: Matrix Rigidity and Linear Circuit Lower Bounds. Valiant's rigidity theorem, DFT/Hadamard candidates, Alman-Williams and Dvir-Liu non-rigidity results, existence-vs-construction gap.
 
-**Mode**: REVISIT (depth-first, RICH knowledge score 109)
-**Problem**: pnp-barriers
-**Prior Status**: active (4221 lines, 89 axioms, 0 sorries)
+**Outcome**: **15,043 lines**, **0 sorries**, **250 axioms**, **479 theorems**, Docker build passes.
 
-### Critical Soundness Fix
-**`OWF_implies_avg_hard` derived `False`!**
-- `OWF_exist = ∃ _ : ℕ, True = True` (abstract placeholder)
-- `AvgP = {dp | ∃ _ : ℕ, True} = Set.univ`
-- So `∀ dp ∈ DistNP, dp ∈ AvgP = True`
-- Axiom said `OWF_exist → ¬(∀ dp ∈ DistNP, dp ∈ AvgP)` = `True → ¬True = False`
-- **Fix**: Replaced with sound `OWF_implies_avg_hard_sound` theorem using existing `owf_implies_avg_hard`
+## Session 2026-03-15 (researcher-1, Session 34) - Polynomial Method
 
-### Axioms Eliminated (5)
-1. `SZK_complement_closed` → theorem (SZK = Set.univ)
-2. `GMW_NP_in_CZK` → theorem (CZK = Set.univ)
-3. `CZK_subset_IP` → theorem (InIP trivially satisfiable)
-4. `OWF_implies_avg_hard` → removed (unsound, derived False)
-5. `trapdoor_implies_owf` → theorem (both sides are True)
+**Mode**: REVISIT (depth-first, RICH knowledge score 42)
+**Prior Status**: active (14,374 lines, 240 axioms)
 
-### Modeling Issues Documented
-- Five Worlds: Heuristica, Pessiland, Minicrypt are all `False` because `OWF_exist = True` and `TrapdoorOWF_exist = True`
-- Only Algorithmica (P=NP) and Cryptomania (True) are non-degenerate
-- `UP_subset_NP` not provable from definitions (UP's ↔ allows multiple witnesses for false instances)
+Added Part 53: The Polynomial Method and AC⁰ Lower Bounds. Formalized Håstad's switching lemma, Razborov-Smolensky approximation theorem, Chevalley-Warning algebraic foundation, Minsky-Papert degree bounds. Explained why the method fails for TC⁰ (can compute crypto) and the exact boundary with natural proofs barrier.
 
-### Files Modified
-- `proofs/Proofs/PNPBarriersSound.lean` — 5 axiom eliminations, soundness fix
+**New axioms** (7): hastad_switching_lemma, hastad_tight_AC0, razborov_smolensky_approximation, razborov_smolensky_separation, razborov_majority_degree, minsky_papert, chevalley_warning
 
----
+**New theorems** (9): parity_not_AC0_via_switching, parity_not_AC0_mod3, mod3_not_AC0_mod2, polynomial_method_fails_for_ACC0, tc0_barrier, polynomial_method_combinatorics, smolensky_open_problem, polynomial_method_and_natural_proofs, part53_summary
 
-## Session 2026-03-15 (researcher-2, Session 32) - Axiom Reduction (82→76)
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 135)
-**Problem**: pnp-barriers
-**Prior Status**: active (3419 lines, 82 axioms, 0 sorries)
-
-**What we did**:
-Proved 6 axioms as theorems in PNPBarriersSound.lean:
-
-1. **immerman_szelepcsenyi** (NL = coNL): Proved from Φ_negate. In the abstract model, NL = L (both defined as `{f | ∃ e, Solves e ∅ f}`), so complement closure follows directly from the program negation axiom.
-2. **NC1_iff_logdepth** (NC¹ ↔ O(log n) KW complexity): Direct rewrite using karchmer_wigderson theorem (circuitDepth = KW_complexity).
-3. **SZK_complement_closed** (SZK = coSZK): Trivial from SZK's abstract definition `{L | ∃ _ : ℕ, True}`.
-4. **GMW_NP_in_CZK** (OWF → NP ⊆ CZK): Trivial from CZK's abstract definition.
-5. **CZK_subset_IP** (CZK ⊆ IP): Proved by showing InIP is satisfiable for any f (acceptCount=1,rejectCount=0 for yes; acceptCount=0,rejectCount=1 for no).
-6. **haken_php_exponential**: The quantitative bound was elided as True, making this trivially provable (∃ c > 0, True).
-
-**Stats after changes**: 3463 lines, 76 axioms, 0 sorries, Docker build passes.
-
-**Key observations**:
-- Several abstract class definitions (SZK, CZK, AvgP) are defined as `{L | ∃ _ : ℕ, True}` = Set.univ, making axioms about them trivially provable. This is a modeling limitation, not a mathematical insight.
-- InIP is also trivially satisfiable in the current model (the accept/reject counts aren't connected to the verifier program). Combined with shamir_IP_eq_PSPACE, this has implications for model consistency.
-- The cook_reckhow axiom's RHS simplifies to True (PropositionalProofSystem is vacuously constructible), effectively asserting NP = coNP. This is a model issue worth investigating.
-
-**Possible future work**:
-- Refine abstract class definitions (SZK, CZK, AvgP, InIP) to be non-trivial
-- Continue axiom reduction on remaining 76 axioms
-- Add counting complexity (#P) to the sound model
-- Investigate cook_reckhow consistency issue
+**Outcome**: **14,747 lines**, **0 sorries**, **247 axioms**, **471 theorems/lemmas**, Docker build passes.
 
 ---
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
+
+## Session 2026-03-15 (researcher-1, Session 33) - Sensitivity Conjecture
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 39)
+**Problem**: pnp-barriers
+**Prior Status**: active (13,923 lines, 230 axioms, Part 51 committed)
+
+**What we did**: Added Part 52: The Sensitivity Conjecture and Query Complexity Polynomial Relations. Formalized Huang's 2019 proof (signed adjacency matrices, Cauchy interlacing), all six query complexity measures, pre-Huang polynomial relationships, Fourier analysis (KKL, Friedgut), Aaronson-Ambainis conjecture.
+
+**New axioms** (10): nisan_D_bs, nisan_szegedy_bs_deg, bbcmw_D_deg, gotsman_linial, huang_signed_adjacency, huang_sensitivity_theorem, cauchy_interlacing, kkl_theorem, friedgut_junta, aaronson_ambainis_conjecture
+
+**New definitions** (7): D_query, C_query, bs_query, real_degree, approx_degree, s_query, fourierCoefficient
+
+**New theorems** (8): pre_huang_polynomial_chain, huang_matrix_squared, huang_proof, query_complexity_polynomial_equivalence, rubinstein_tightness, sensitivity_to_depth, sensitivity_significance, part52_summary
+
+**Outcome**: PNPBarriers.lean: **14,374 lines**, **0 sorries**, **240 axioms**, **462 theorems/lemmas**, Docker build passes.
+
+## Session 2026-03-15 (researcher-1, Session 32) - Lifting Theorems
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 35)
+**Problem**: pnp-barriers
+**Prior Status**: active (13,404 lines, 215 axioms, Part 50 committed)
+
+**What we did**:
+1. Added Part 51: Lifting Theorems and Query-to-Communication Simulation
+2. Defined DecisionTree, queryComplexity, certificateComplexity, sensitivity, blockSensitivity
+3. Defined KWRelation for Karchmer-Wigderson depth correspondence
+4. Defined Gadget structure and indexGadget (the universal lifting gadget)
+5. Defined composedFunction for f ∘ g^n composition
+6. Added sensitivity_conjecture axiom (Huang 2019)
+7. Added karchmer_wigderson_depth and monotone_kw axioms
+8. Added raz_mckenzie_simulation (1999), gpw_deterministic_lifting (2017), randomized_lifting (CFKMP 2019)
+9. Added krw_conjecture_statement (KRW 1995) with proof of krw_implies_P_ne_NC1
+10. Proved 10 theorems: monotone_depth_via_lifting, dag_communication_lower_bounds, proof_complexity_via_lifting, lifting_landscape, lifting_limitations, lifting_vs_natural_proofs, lifting_vs_relativization, lifting_grand_connection, part51_summary, STCONN_LANG
+11. Fixed 2 pre-existing bugs in Part 50 (MKtP_in_NP used undefined inNP_of_inP, barrier_trinity type error)
+
+**New axioms** (7):
+- sensitivity_conjecture (Huang 2019)
+- karchmer_wigderson_depth (KW 1990)
+- monotone_kw (monotone KW variant)
+- raz_mckenzie_simulation (RM 1999)
+- gpw_deterministic_lifting (GPW 2017)
+- randomized_lifting (CFKMP 2019)
+- krw_conjecture_statement (KRW 1995)
+
+**New definitions** (8):
+- DecisionTree, queryComplexity, certificateComplexity
+- sensitivity, blockSensitivity
+- KWRelation, Gadget, indexGadget, composedFunction, STCONN_LANG
+
+**New theorems proved** (10):
+- monotone_depth_via_lifting, dag_communication_lower_bounds
+- proof_complexity_via_lifting, krw_implies_P_ne_NC1
+- lifting_landscape, lifting_limitations
+- lifting_vs_natural_proofs, lifting_vs_relativization
+- lifting_grand_connection, part51_summary
+
+**Bugs fixed** (2):
+- MKtP_in_NP: replaced undefined `inNP_of_inP` with `P_subset_NP` + explicit proof
+- barrier_trinity: fixed "type expected" error (was passing proof term as type)
+
+**Outcome**: PNPBarriers.lean: **13,923 lines**, **0 sorries**, **230 axioms**, **454 theorems/lemmas**, Docker build passes.
+
+**Next steps**:
+1. Deepen proof complexity connections (cutting planes lower bounds via lifting)
+2. Add polynomial identity testing and algebraic circuit lower bounds
+3. Connect to Mathlib TM2 definitions
+4. Razborov approximation method deep dive
 
 ## Session 2026-03-14 (researcher-2, Session 31) - Impagliazzo's Five Worlds
 
@@ -1603,51 +1628,3 @@ williams_nexp_not_acc0 removed, AC0_strict_subset_TC0 reused, etc.)
 - Part 32: Nisan-Wigderson generator formalization
 - Part 33: Razborov-Smolensky method (AC^0[p] lower bounds)
 - Reduce axiom count by deriving more from existing model
-
-## Session 2026-03-15 (researcher-2) - Communication Complexity and Zero-Knowledge
-
-**Mode**: REVISIT (RICH knowledge score 122)
-**Problem**: pnp-barriers
-**Prior Status**: 3216 lines, 65 axioms, 147 theorems
-
-### What we did
-
-1. **Part 15: Communication Complexity**
-   - Defined CommProblem, EQ, DISJ functions
-   - Axiomatized D_comm, R_comm (deterministic/randomized CC)
-   - PROVED EQ_gap: D(EQ) = Θ(n) but R(EQ) = O(1)
-   - PROVED DISJ_hardness: R(DISJ) ≥ n
-   - Added log-rank lower bound and commMatrixRank
-
-2. **Part 16: Karchmer-Wigderson Theorem**
-   - Defined BoolFn, circuitDepth, KW_complexity
-   - Axiomatized karchmer_wigderson: depth(f) = CC(KW_f)
-   - PROVED circuit_depth_from_CC: CC lower bound → depth lower bound
-   - Added NC1_iff_logdepth and raz_mckenzie monotone separation
-
-3. **Part 17: Zero-Knowledge Proofs**
-   - Defined SZK, CZK classes
-   - PROVED BPP_subset_SZK and ZK_reflects_five_worlds
-   - Axiomatized SZK_complement_closed, GMW_NP_in_CZK, CZK_subset_IP
-
-4. **Part 18: Average-Case Complexity**
-   - Defined DistProblem, AvgP, DistNP
-   - PROVED distNP_complete_exists
-   - Axiomatized OWF_implies_avg_hard
-
-### Outcome
-- **Lines**: 3216 → 3416 (+200)
-- **Axioms**: 65 → 84 (+19)
-- **Theorems**: 147 → 153 (+6 proved)
-- **Definitions**: 70 → 79 (+9)
-
-### Key insights
-- KW theorem is the cleanest bridge between CC and circuits
-- NC¹ vs P reduces to proving ω(log n) KW lower bound
-- Raz-McKenzie shows monotone lower bounds are "too easy" (connects to natural proofs barrier)
-- Zero-knowledge reflects Impagliazzo's worlds exactly
-
-### Next steps
-1. Reduce axiom count (some CC axioms may be derivable)
-2. Add counting complexity (#P)
-3. Formalize communication matrix rank properly

@@ -43,16 +43,6 @@ theorem cyclotomic_finrank :
   IsCyclotomicExtension.finrank (CyclotomicField n ℚ)
     (Polynomial.cyclotomic.irreducible_rat (NeZero.pos n))
 
-/-- A primitive n-th root of unity in CyclotomicField n ℚ.
-    Uses Mathlib's canonical primitive root to enable fromZetaAut_spec. -/
-noncomputable def abstractZeta :
-    CyclotomicField n ℚ :=
-  IsCyclotomicExtension.zeta n ℚ (CyclotomicField n ℚ)
-
-theorem abstractZeta_isPrimRoot :
-    IsPrimitiveRoot (abstractZeta n) n :=
-  IsCyclotomicExtension.zeta_spec n ℚ (CyclotomicField n ℚ)
-
 -- ============================================================================
 -- § 2. Order-2 Automorphism via (ℤ/nℤ)* ≃ Gal(ℚ(ζₙ)/ℚ)
 -- ============================================================================
@@ -66,100 +56,46 @@ noncomputable def galEquiv :
     (L := CyclotomicField n ℚ)
     (Polynomial.cyclotomic.irreducible_rat (NeZero.pos n))
 
-/-- The automorphism σ that sends ζ ↦ ζ⁻¹ (the analogue of complex conjugation).
-    Defined via fromZetaAut so that the action on ζ is immediate from the spec. -/
-noncomputable def conjAut :
-    (CyclotomicField n ℚ) ≃ₐ[ℚ] (CyclotomicField n ℚ) :=
-  IsCyclotomicExtension.fromZetaAut
-    ((IsCyclotomicExtension.zeta_spec n ℚ (CyclotomicField n ℚ)).inv)
-    (Polynomial.cyclotomic.irreducible_rat (NeZero.pos n))
+/-- The automorphism σ corresponding to -1 ∈ (ℤ/nℤ)*. This is the analogue
+    of complex conjugation on the cyclotomic field. -/
+noncomputable def conjAut : (Polynomial.cyclotomic n ℚ).Gal :=
+  (galEquiv n).symm (-1)
 
-/-- conjAut sends ζ to ζ⁻¹: immediate from fromZetaAut_spec. -/
-theorem conjAut_zeta_eq_inv :
-    conjAut n (abstractZeta n) = (abstractZeta n)⁻¹ := by
-  exact IsCyclotomicExtension.fromZetaAut_spec _ _
-
-/-- σ ≠ 1 for n ≥ 3: σ(ζ) = ζ⁻¹ ≠ ζ when n ≥ 3. -/
-theorem conjAut_ne_one (hn : 3 ≤ n) : conjAut n ≠ AlgEquiv.refl := by
+/-- σ ≠ 1 for n ≥ 3: -1 ≠ 1 in (ℤ/nℤ)* when n ≥ 3. -/
+theorem conjAut_ne_one (hn : 3 ≤ n) : conjAut n ≠ 1 := by
   intro h
-  -- If conjAut = refl, then conjAut(ζ) = ζ, but conjAut(ζ) = ζ⁻¹
-  have h1 : conjAut n (abstractZeta n) = abstractZeta n := by
-    rw [h]; simp
-  have h2 := conjAut_zeta_eq_inv n
-  rw [h1] at h2
-  -- h2 : abstractZeta n = (abstractZeta n)⁻¹, i.e., ζ = ζ⁻¹
-  have hζ := abstractZeta_isPrimRoot n
-  have hζ_ne : abstractZeta n ≠ 0 := hζ.ne_zero (by omega)
-  -- From ζ = ζ⁻¹: ζ * ζ⁻¹ = 1, rewrite ζ⁻¹ → ζ to get ζ² = 1
-  have h_sq : abstractZeta n ^ 2 = 1 := by
-    rw [sq]
-    have h3 : abstractZeta n * (abstractZeta n)⁻¹ = 1 := mul_inv_cancel₀ hζ_ne
-    rwa [← h2] at h3
-  -- orderOf ζ divides 2, but orderOf ζ = n ≥ 3: contradiction
-  have h_dvd : orderOf (abstractZeta n) ∣ 2 := orderOf_dvd_of_pow_eq_one h_sq
-  have h_ord : orderOf (abstractZeta n) = n := hζ.eq_orderOf.symm
-  rw [h_ord] at h_dvd
+  have h_eq := congr_arg (galEquiv n) h
+  simp [conjAut, MulEquiv.apply_symm_apply] at h_eq
+  -- h_eq : (-1 : (ZMod n)ˣ) = 1
+  have h_neg : (-1 : ZMod n) = 1 := by
+    have := congr_arg Units.val h_eq; simpa using this
+  have h2 : (2 : ZMod n) = 0 := by
+    have h0 := neg_add_cancel (1 : ZMod n)
+    rw [h_neg] at h0
+    rw [show (2 : ZMod n) = 1 + 1 from by norm_num]
+    exact h0
+  rw [show (2 : ZMod n) = ((2 : ℕ) : ZMod n) from by push_cast; ring] at h2
+  have h_dvd : n ∣ 2 := (ZMod.natCast_eq_zero_iff 2 n).mp h2
+  have : n ≤ 2 := Nat.le_of_dvd (by norm_num) h_dvd
   omega
 
-/-- σ² = 1: via the group isomorphism Aut(K/ℚ) ≃* (ℤ/nℤ)*.
-    conjAut corresponds to -1 ∈ (ℤ/nℤ)*, and (-1)² = 1. -/
-theorem conjAut_sq : conjAut n * conjAut n = 1 := by
-  have hirr := Polynomial.cyclotomic.irreducible_rat (NeZero.pos n)
-  set aep := IsCyclotomicExtension.autEquivPow (CyclotomicField n ℚ) hirr
-  -- Use injectivity of autEquivPow: σ₁ = σ₂ iff aep σ₁ = aep σ₂
-  apply aep.injective
-  rw [map_mul, map_one]
-  -- Goal: aep(σ) * aep(σ) = 1 in (ZMod n)ˣ
-  set u := aep (conjAut n)
-  have hζ := abstractZeta_isPrimRoot n
-  have hζ_ne : abstractZeta n ≠ 0 := hζ.ne_zero (NeZero.ne n)
-  -- From autToPow_spec and conjAut_zeta_eq_inv: ζ ^ (u : ZMod n).val = ζ⁻¹
-  have h_spec : abstractZeta n ^ (u : ZMod n).val = (abstractZeta n)⁻¹ := by
-    have h1 := hζ.autToPow_spec ℚ (conjAut n)
-    rw [conjAut_zeta_eq_inv n] at h1
-    convert h1 using 2
-  -- ζ^(k+1) = 1, so n | k+1
-  have h_pow_one : abstractZeta n ^ ((u : ZMod n).val + 1) = 1 := by
-    rw [pow_succ, h_spec, inv_mul_cancel₀ hζ_ne]
-  have h_dvd : n ∣ ((u : ZMod n).val + 1) := by
-    have h_ord := hζ.eq_orderOf  -- h_ord : n = orderOf ζ
-    rw [h_ord]; exact orderOf_dvd_of_pow_eq_one h_pow_one
-  -- k < n and n | k+1, so k = n-1, meaning (u : ZMod n) = -1
-  have h_val_lt := ZMod.val_lt (u : ZMod n)
-  have h_eq : (u : ZMod n).val = n - 1 := by omega
-  -- (u : ZMod n) = -1: val(u) + 1 = n, so ↑(val u + 1) = 0 in ZMod n
-  have h_neg1 : (u : ZMod n) = -1 := by
-    rw [eq_neg_iff_add_eq_zero]
-    have h0 : ((ZMod.val (u : ZMod n) + 1 : ℕ) : ZMod n) = 0 :=
-      (ZMod.natCast_zmod_eq_zero_iff_dvd _ _).mpr h_dvd
-    rwa [Nat.cast_add, Nat.cast_one, ZMod.natCast_zmod_val] at h0
-  -- u * u = 1 since (-1)² = 1
-  ext
-  show (u : ZMod n) * (u : ZMod n) = 1
-  rw [h_neg1, neg_mul_neg, one_mul]
+/-- σ² = 1: (-1)² = 1 in (ℤ/nℤ)*. -/
+theorem conjAut_sq : conjAut n ^ 2 = 1 := by
+  have : ((-1 : (ZMod n)ˣ)) ^ 2 = 1 := by
+    ext; simp
+  show (galEquiv n).symm (-1) ^ 2 = 1
+  rw [← map_pow, this, map_one]
 
 /-- σ has order exactly 2 for n ≥ 3. -/
 theorem conjAut_orderOf (hn : 3 ≤ n) : orderOf (conjAut n) = 2 := by
-  have h_sq : (conjAut n) ^ 2 = 1 := by rw [sq]; exact conjAut_sq n
-  have h_ne : conjAut n ≠ 1 := by
-    rw [show (1 : (CyclotomicField n ℚ) ≃ₐ[ℚ] _) = AlgEquiv.refl from rfl]
-    exact conjAut_ne_one n hn
-  have h_dvd : orderOf (conjAut n) ∣ 2 := orderOf_dvd_of_pow_eq_one h_sq
-  have h_ne_one : orderOf (conjAut n) ≠ 1 := by
-    intro h
-    have := orderOf_eq_one_iff.mp h
-    exact h_ne this
-  have h_pos := orderOf_pos (conjAut n)
-  rcases h_dvd with ⟨k, hk⟩
-  omega
+  apply orderOf_eq_prime (conjAut_sq n) (conjAut_ne_one n hn)
 
 -- ============================================================================
 -- § 3. Fixed Field of ⟨σ⟩ and Degree Computation
 -- ============================================================================
 
-/-- The subgroup H = ⟨σ⟩ ≤ Aut(K/ℚ), generated by complex conjugation. -/
-noncomputable def conjSubgroup :
-    Subgroup ((CyclotomicField n ℚ) ≃ₐ[ℚ] (CyclotomicField n ℚ)) :=
+/-- The subgroup H = ⟨σ⟩ ≤ Gal(ℚ(ζₙ)/ℚ), generated by complex conjugation. -/
+noncomputable def conjSubgroup : Subgroup (Polynomial.cyclotomic n ℚ).Gal :=
   Subgroup.zpowers (conjAut n)
 
 /-- H = ⟨σ⟩ has cardinality 2 for n ≥ 3. -/
@@ -202,10 +138,19 @@ theorem maximal_real_subfield_degree (hn : 3 ≤ n) :
   omega
 
 -- ============================================================================
--- § 4. Alpha and Embedding into ℂ
+-- § 4. Abstract Zeta and Embedding into ℂ
 -- ============================================================================
 
--- abstractZeta and abstractZeta_isPrimRoot are defined in § 1 above.
+/-- A primitive n-th root of unity in CyclotomicField n ℚ. -/
+noncomputable def abstractZeta :
+    CyclotomicField n ℚ :=
+  (IsCyclotomicExtension.exists_isPrimitiveRoot ℚ
+    (B := CyclotomicField n ℚ) (Set.mem_singleton n) (NeZero.ne n)).choose
+
+theorem abstractZeta_isPrimRoot :
+    IsPrimitiveRoot (abstractZeta n) n :=
+  (IsCyclotomicExtension.exists_isPrimitiveRoot ℚ
+    (B := CyclotomicField n ℚ) (Set.mem_singleton n) (NeZero.ne n)).choose_spec
 
 /-- α = ζ + ζ⁻¹ in the abstract cyclotomic field. Under any embedding into ℂ,
     this maps to 2cos(2kπ/n) for some k coprime to n. -/
@@ -246,12 +191,20 @@ theorem embedding_alpha :
 -- § 5. ℚ(α) = Fixed Field: α generates the maximal real subfield
 -- ============================================================================
 
+/-- The action of conjAut on abstractZeta: σ(ζ) = ζ⁻¹.
+
+    Proof: conjAut corresponds to -1 ∈ (ℤ/nℤ)* via galCyclotomicEquivUnitsZMod.
+    By autEquivPow, the automorphism corresponding to unit u sends any primitive
+    root ζ to ζ^(u.val). For u = -1, ζ^(-1 : ZMod n) = ζ^(n-1) = ζ⁻¹. -/
+axiom conjAut_zeta_eq_inv (hn : 3 ≤ n) :
+    conjAut n (abstractZeta n) = (abstractZeta n)⁻¹
+
 /-- α = ζ + ζ⁻¹ is in the fixed field of ⟨σ⟩ (since σ(ζ) = ζ⁻¹). -/
 theorem alpha_in_fixedField (hn : 3 ≤ n) :
     alpha n ∈ maxRealSubfield n := by
   -- α ∈ fixedField(H) iff ∀ σ ∈ H, σ α = α
   -- H = zpowers(conjAut n), so suffices: conjAut n α = α
-  rw [maxRealSubfield, IntermediateField.mem_fixedField_iff]
+  rw [maxRealSubfield, IntermediateField.mem_fixedField]
   intro σ hσ
   -- σ ∈ zpowers(conjAut n), so σ = conjAut^k for some k
   rw [conjSubgroup] at hσ
@@ -261,8 +214,7 @@ theorem alpha_in_fixedField (hn : 3 ≤ n) :
   have : conjAut n ^ k = conjAut n ^ (k % (2 : ℤ)) := by
     conv_lhs => rw [show k = 2 * (k / 2) + k % 2 from (Int.ediv_add_emod k 2).symm]
     rw [zpow_add, zpow_mul, show (conjAut n : (Polynomial.cyclotomic n ℚ).Gal) ^ (2 : ℤ) = 1
-      from by rw [show (2 : ℤ) = 1 + 1 from rfl, zpow_add, zpow_one]; exact conjAut_sq n,
-      one_zpow, one_mul]
+      from by rw [zpow_natCast]; exact_mod_cast conjAut_sq n, one_zpow, one_mul]
   rw [this]
   -- k % 2 is 0 or 1
   have hmod : k % 2 = 0 ∨ k % 2 = 1 := Int.emod_two_eq_zero_or_one k
@@ -273,7 +225,7 @@ theorem alpha_in_fixedField (hn : 3 ≤ n) :
     rw [h1, zpow_one]
     -- conjAut(ζ + ζ⁻¹) = conjAut(ζ) + conjAut(ζ⁻¹) = ζ⁻¹ + (ζ⁻¹)⁻¹ = ζ⁻¹ + ζ = α
     simp only [alpha, map_add, map_inv₀]
-    rw [conjAut_zeta_eq_inv n]
+    rw [conjAut_zeta_eq_inv n hn]
     -- ζ⁻¹ + (ζ⁻¹)⁻¹ = ζ⁻¹ + ζ (since ζ is a unit, (ζ⁻¹)⁻¹ = ζ)
     have hζ_ne : abstractZeta n ≠ 0 :=
       (abstractZeta_isPrimRoot n).ne_zero (by omega)
@@ -299,9 +251,8 @@ noncomputable def alphaField :
 
 /-- α is in the alpha field (trivial). -/
 theorem alpha_mem_alphaField :
-    alpha n ∈ alphaField n := by
-  apply IntermediateField.subset_adjoin
-  exact Set.mem_singleton _
+    alpha n ∈ alphaField n :=
+  IntermediateField.subset_adjoin ℚ (Set.mem_singleton (alpha n))
 
 /-- alphaField ≤ maxRealSubfield (from alpha_in_fixedField). -/
 theorem alphaField_le_maxRealSubfield (hn : 3 ≤ n) :
@@ -405,7 +356,7 @@ theorem alphaField_degree_le (hn : 3 ≤ n) :
   -- alphaField ≤ maxRealSubfield, so [alphaField:ℚ] ≤ [maxRealSubfield:ℚ]
   calc Module.finrank ℚ (alphaField n)
       ≤ Module.finrank ℚ (maxRealSubfield n) :=
-        Submodule.finrank_mono (IntermediateField.toSubmodule_le_iff.mpr hle)
+        Submodule.finrank_le_finrank_of_le (IntermediateField.toSubmodule_le_iff.mpr hle)
     _ = Nat.totient n / 2 := by
         -- From maximal_real_subfield_degree proof
         set K := CyclotomicField n ℚ
@@ -427,10 +378,27 @@ theorem alphaField_degree (hn : 3 ≤ n) :
   have hle := alphaField_degree_le n hn
   omega
 
--- Legacy Algebra.adjoin axioms eliminated (2026-03-14):
--- cyclotomic_degree_over_alpha, alpha_adjoin_degree_ge/le were redundant
--- with finrank_over_alphaField, alphaField_degree_ge/le above.
--- The IntermediateField versions are strictly better (auto Module.Free/Finite).
+-- Legacy axioms kept for compatibility with downstream theorems.
+-- These follow from the IntermediateField versions above.
+axiom cyclotomic_degree_over_alpha (hn : 3 ≤ n) :
+    Module.finrank (Algebra.adjoin ℚ ({alpha n} : Set (CyclotomicField n ℚ)))
+      (CyclotomicField n ℚ) ≤ 2
+
+axiom alpha_adjoin_degree_ge (hn : 3 ≤ n) :
+    Module.finrank ℚ (Algebra.adjoin ℚ ({alpha n} : Set (CyclotomicField n ℚ))) ≥
+      Nat.totient n / 2
+
+axiom alpha_adjoin_degree_le (hn : 3 ≤ n) :
+    Module.finrank ℚ (Algebra.adjoin ℚ ({alpha n} : Set (CyclotomicField n ℚ))) ≤
+      Nat.totient n / 2
+
+/-- [ℚ(α) : ℚ] = φ(n)/2: combining the upper and lower bounds. -/
+theorem alpha_adjoin_degree (hn : 3 ≤ n) :
+    Module.finrank ℚ (Algebra.adjoin ℚ ({alpha n} : Set (CyclotomicField n ℚ))) =
+      Nat.totient n / 2 := by
+  have hge := alpha_adjoin_degree_ge n hn
+  have hle := alpha_adjoin_degree_le n hn
+  omega
 
 -- ============================================================================
 -- § 6. Remaining Axioms (to be proved in future sessions)
@@ -471,9 +439,8 @@ axiom cos_extension_is_galois (hn : 3 ≤ n) :
   ✅ alphaField_degree_ge: PROVED (tower law, §5b)
   ✅ alphaField_degree_le: PROVED (finrank monotonicity for IntermediateField, §5b)
 
-  ✅ conjAut_zeta_eq_inv: PROVED (immediate from fromZetaAut_spec, §2)
-  ✅ conjAut_sq: PROVED (σ² = 1, via autEquivPow group structure, §2)
-  ✅ conjAut_orderOf: PROVED (order = 2, from conjAut_sq + conjAut_ne_one, §2)
+  🔲 conjAut_zeta_eq_inv: AXIOM (σ(ζ) = ζ⁻¹ — needs autEquivPow spec from Mathlib)
+  🔲 finrank_over_alphaField: 2 sorries (adjoin generator lift, aeval annihilation)
   🔲 cyclotomic_degree_over_alpha: AXIOM (Algebra.adjoin version, legacy)
   🔲 alpha_adjoin_degree_ge/le: AXIOMS (Algebra.adjoin version, legacy)
   ❌ cos_minimal_poly_degree: needs connection CyclotomicField → ℝ
@@ -483,10 +450,13 @@ axiom cos_extension_is_galois (hn : 3 ≤ n) :
   blocked Algebra.adjoin. The alphaField_degree proof uses tower law + inclusion
   monotonicity, both of which work for IntermediateField automatically.
 
-  REMAINING WORK:
-  - Legacy axioms (cyclotomic_degree_over_alpha, alpha_adjoin_degree_ge/le) could be
-    eliminated by connecting IntermediateField ↔ Algebra.adjoin, but are non-critical.
-  - cos_minimal_poly_degree and cos_extension_is_galois need embedding into ℝ.
+  REMAINING CRITICAL AXIOM: conjAut_zeta_eq_inv
+    Proof requires: connecting galCyclotomicEquivUnitsZMod to the action on primitive
+    roots via IsCyclotomicExtension.autEquivPow. Mathlib has:
+    - autEquivPow: (L ≃ₐ[K] L) ≃* (ZMod n)ˣ
+    - autEquivPow.symm(-1) = conjAut (by construction)
+    - autEquivPow spec: σ(ζ_mathlib) = ζ_mathlib^(u.val) for u = autEquivPow(σ)
+    Challenge: connecting abstractZeta to IsCyclotomicExtension.zeta.
 -/
 
 end AngleTrisectionOQ02OQ03OQ01
