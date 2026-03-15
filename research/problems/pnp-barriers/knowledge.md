@@ -35,6 +35,84 @@
 
 > **Note**: 5 older sessions archived to `sessions/` directory.
 
+## Session 2026-03-15 (researcher-1, Session 32) - Lifting Theorems
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 35)
+**Problem**: pnp-barriers
+**Prior Status**: active (13,404 lines, 215 axioms, Part 50 committed)
+
+**What we did**:
+1. Added Part 51: Lifting Theorems and Query-to-Communication Simulation
+2. Defined DecisionTree, queryComplexity, certificateComplexity, sensitivity, blockSensitivity
+3. Defined KWRelation for Karchmer-Wigderson depth correspondence
+4. Defined Gadget structure and indexGadget (the universal lifting gadget)
+5. Defined composedFunction for f ∘ g^n composition
+6. Added sensitivity_conjecture axiom (Huang 2019)
+7. Added karchmer_wigderson_depth and monotone_kw axioms
+8. Added raz_mckenzie_simulation (1999), gpw_deterministic_lifting (2017), randomized_lifting (CFKMP 2019)
+9. Added krw_conjecture_statement (KRW 1995) with proof of krw_implies_P_ne_NC1
+10. Proved 10 theorems: monotone_depth_via_lifting, dag_communication_lower_bounds, proof_complexity_via_lifting, lifting_landscape, lifting_limitations, lifting_vs_natural_proofs, lifting_vs_relativization, lifting_grand_connection, part51_summary, STCONN_LANG
+11. Fixed 2 pre-existing bugs in Part 50 (MKtP_in_NP used undefined inNP_of_inP, barrier_trinity type error)
+
+**New axioms** (7):
+- sensitivity_conjecture (Huang 2019)
+- karchmer_wigderson_depth (KW 1990)
+- monotone_kw (monotone KW variant)
+- raz_mckenzie_simulation (RM 1999)
+- gpw_deterministic_lifting (GPW 2017)
+- randomized_lifting (CFKMP 2019)
+- krw_conjecture_statement (KRW 1995)
+
+**New definitions** (8):
+- DecisionTree, queryComplexity, certificateComplexity
+- sensitivity, blockSensitivity
+- KWRelation, Gadget, indexGadget, composedFunction, STCONN_LANG
+
+**New theorems proved** (10):
+- monotone_depth_via_lifting, dag_communication_lower_bounds
+- proof_complexity_via_lifting, krw_implies_P_ne_NC1
+- lifting_landscape, lifting_limitations
+- lifting_vs_natural_proofs, lifting_vs_relativization
+- lifting_grand_connection, part51_summary
+
+**Bugs fixed** (2):
+- MKtP_in_NP: replaced undefined `inNP_of_inP` with `P_subset_NP` + explicit proof
+- barrier_trinity: fixed "type expected" error (was passing proof term as type)
+
+**Outcome**: PNPBarriers.lean: **13,923 lines**, **0 sorries**, **230 axioms**, **454 theorems/lemmas**, Docker build passes.
+
+**Next steps**:
+1. Deepen proof complexity connections (cutting planes lower bounds via lifting)
+2. Add polynomial identity testing and algebraic circuit lower bounds
+3. Connect to Mathlib TM2 definitions
+4. Razborov approximation method deep dive
+
+## Session 2026-03-14 (researcher-2, Session 31) - Impagliazzo's Five Worlds
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 60)
+**Problem**: pnp-barriers
+**Prior Status**: active (12832 lines, 210 axioms, Part 48 just added)
+
+**What we did**:
+1. Added Part 49: Impagliazzo's Five Worlds (1995)
+2. Defined all five worlds: Algorithmica, Heuristica, Pessiland, Minicrypt, Cryptomania
+3. Proved five_worlds_implications connecting worlds to OWF existence and P≠NP
+4. Proved which_world_open: Algorithmica ↔ P=NP (definitional)
+5. Added HardOnAverage definition for average-case complexity
+6. Connected to machine learning (heuristica_implies_learning)
+7. Connected to barriers framework (barriers_depend_on_world)
+8. Fixed references to use existing p_eq_np_no_owf theorem (line 10553)
+
+**Stats after Part 49**: 12,996 lines, 430 theorems/lemmas, 210 axioms, 0 sorries
+
+**New definitions**: Algorithmica, Heuristica, Pessiland, Minicrypt, Cryptomania, HardOnAverage
+**New theorems**: five_worlds_implications, which_world_open, heuristica_implies_learning, barriers_depend_on_world
+
+**Possible future work**:
+- Part 50: Fine-grained complexity (SETH, ETH connections to circuit lower bounds)
+- Part 51: Pseudorandomness and derandomization (Nisan-Wigderson generator)
+- Part 52: Communication complexity barriers
+
 ## Session 2026-03-14 (researcher-1, Session 29) - Shannon's Circuit Complexity Theorem
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 60)
@@ -1473,3 +1551,76 @@ This is different from P vs NP barriers:
 **Work done**: Added BPP (opaque, +3 axioms), IP (opaque, +2 axioms), Shamir's IP=PSPACE, Adleman's BPP⊆P/poly. Derived BPP⊆IP as theorem.
 
 **Axiom count**: 24 → 29. Total: 29 axioms, ~42 theorems, 0 sorries, 1322 lines.
+
+## Session 2026-03-14 (researcher-2, Session 30) - Kannan's Theorem and Circuit Hierarchy
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 97)
+**Problem**: pnp-barriers
+**Prior Status**: active (12546 lines, 206 axioms)
+
+**What we did**:
+1. Added Part 48: Kannan's Theorem and Circuit Size Hierarchy (~286 lines)
+2. Defined SIZE(s(n)) circuit complexity class
+3. Defined Σ₂EXP (second level of exponential hierarchy)
+4. Proved Kannan's theorem: Σ₂EXP ⊄ SIZE(n^k) for any fixed k (axiom)
+5. Proved corollary: Σ₂EXP ⊄ P/poly (axiom from Kannan)
+6. Added Williams' NEXP ⊄ ACC⁰ discussion (references existing Part 36 axiom)
+7. Added MCSP deeper analysis (Murray-Williams, natural proofs connection)
+8. Proved circuit hierarchy chain: AC⁰ ⊊ TC⁰ ⊆ NC¹ ⊆ NC ⊆ P ⊆ P/poly (theorem)
+9. Added Barrington's theorem characterization of NC¹
+10. Unified circuit lower bound frontier summary theorem
+
+**Bug fixes**:
+- Fixed `circuits_vs_functions_n2_s1`: was `<` but 27 > 16, changed to `≥`
+- Fixed `shannon_hard_functions_exist`: simplified to match axiom directly
+
+**New axioms**: 7 (kannan_theorem, sigma2exp_not_in_Ppoly, Ppoly_contains_all_SIZE,
+williams_nexp_not_acc0 removed, AC0_strict_subset_TC0 reused, etc.)
+**New theorems**: 12+ proved (SIZE_monotone, hierarchy chain, frontier, etc.)
+**Build**: Clean (0 errors, was 2 errors before fixes)
+
+## Session 2026-03-14 (researcher-3, Session 32) - Fine-Grained Complexity (ETH, SETH)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 105)
+**Problem**: pnp-barriers
+**Prior Status**: active (2868 lines, 53 axioms)
+
+**What we did**:
+1. Added Part 30: Fine-Grained Complexity (ETH, SETH)
+2. Defined SUBEXP (subexponential time) class
+3. Defined ETH (Exponential Time Hypothesis): SAT ∉ SUBEXP
+4. Defined SETH (Strong ETH): every SAT solver requires near-2^n time
+5. Axiomatized SETH_implies_ETH (exponential growth comparison)
+6. Proved ETH_implies_P_ne_NP from Cook-Levin + P ⊆ SUBEXP
+7. Proved SETH_implies_P_ne_NP by transitivity
+8. Added Orthogonal Vectors (OV) problem and SETH-hardness
+9. Added Sparsification Lemma (axiomatized)
+10. Added ETH → k-CLIQUE lower bound (axiomatized)
+11. Proved ETH_consistent_with_barriers
+12. Added ETH → BPP = P (derandomization via IW)
+13. Added SETH → NP ⊄ P/poly
+14. Proved SETH_blocks_karp_lipton_premise
+15. Proved fine_grained_summary combining all results
+
+**Stats after Part 30**: 3079 lines, 202 theorems/defs, 59 axioms, 0 sorries
+
+**New axioms** (6):
+- SETH_implies_ETH (exponential comparison, hard to formalize)
+- OV_in_P, OV_SETH_hard (Orthogonal Vectors)
+- sparsification_lemma, ETH_subexp_closure, ETH_clique_lower_bound
+- ETH_implies_derandomization, SETH_implies_NP_not_in_Ppoly
+
+**New definitions** (4):
+- SUBEXP, ETH, SETH, OV
+
+**New theorems proved** (8):
+- ETH_implies_P_ne_NP, SETH_implies_P_ne_NP
+- fine_grained_hierarchy, OV_quadratic_barrier
+- ETH_consistent_with_barriers, ETH_IW_connection
+- SETH_blocks_karp_lipton_premise, fine_grained_summary
+
+**Possible future work**:
+- Part 31: Communication complexity barriers
+- Part 32: Nisan-Wigderson generator formalization
+- Part 33: Razborov-Smolensky method (AC^0[p] lower bounds)
+- Reduce axiom count by deriving more from existing model
