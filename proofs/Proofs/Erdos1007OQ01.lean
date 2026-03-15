@@ -31,7 +31,7 @@ This formalization proves:
 - Verified monotonicity of C(d+1,2) as a building block (§8)
 - Growth rate analysis from known values (§9)
 
-Axiom count: 11 (all for computational search results or rigidity bounds)
+Axiom count: 9 (all for computational search results or rigidity bounds)
 -/
 
 import Mathlib
@@ -598,6 +598,18 @@ private theorem sq_sqrt_six_third : (Real.sqrt 6 / 3) ^ 2 = 2 / 3 := by
 private theorem sq_sqrt_three_sixth : (Real.sqrt 3 / 6) ^ 2 = 1 / 12 := by
   rw [div_pow, sq_sqrt_three]; norm_num
 
+/-- Helper: (√3/2 - √3/6)² = 1/3. -/
+private theorem sq_diff_sqrt3_half_sixth :
+    (Real.sqrt 3 / 2 - Real.sqrt 3 / 6) ^ 2 = 1 / 3 := by
+  have h : Real.sqrt 3 / 2 - Real.sqrt 3 / 6 = Real.sqrt 3 / 3 := by ring
+  rw [h, div_pow, sq_sqrt_three]; norm_num
+
+/-- Helper: (√3/6 - √3/2)² = 1/3. -/
+private theorem sq_diff_sqrt3_sixth_half :
+    (Real.sqrt 3 / 6 - Real.sqrt 3 / 2) ^ 2 = 1 / 3 := by
+  have h : Real.sqrt 3 / 6 - Real.sqrt 3 / 2 = -(Real.sqrt 3 / 2 - Real.sqrt 3 / 6) := by ring
+  rw [h, neg_pow_two, sq_diff_sqrt3_half_sixth]
+
 /-- The regular tetrahedron embedding of K₄ in ℝ³. -/
 noncomputable def K4embed : Fin 4 → Fin 3 → ℝ
   | ⟨0, _⟩, _ => 0
@@ -610,8 +622,11 @@ noncomputable def K4embed : Fin 4 → Fin 3 → ℝ
   | ⟨3, _⟩, ⟨1, _⟩ => Real.sqrt 3 / 6
   | ⟨3, _⟩, ⟨2, _⟩ => Real.sqrt 6 / 3
 
+set_option maxHeartbeats 400000 in
 /-- K₄ admits a unit-distance embedding in ℝ³. -/
 theorem K4_unit_embedding : hasUnitEmbedding' (Fin 4) (fun i j => i ≠ j) 3 := by
+  have hd1 := sq_diff_sqrt3_half_sixth
+  have hd2 := sq_diff_sqrt3_sixth_half
   refine ⟨⟨K4embed, fun u v huv => ?_⟩⟩
   fin_cases u <;> fin_cases v <;>
     simp_all [K4embed, Finset.sum_fin_eq_sum_range, Finset.sum_range_succ,
@@ -623,6 +638,81 @@ open Classical in
 theorem complete_graph_dim_le_tight_4 :
     graphDimension' (Fin 4) (fun i j => i ≠ j) (fun x h => h rfl) ≤ 3 :=
   Nat.find_le K4_unit_embedding
+
+-- ============================================================================
+-- § 16b. K₅ embeds in ℝ⁴ (regular 4-simplex)
+-- ============================================================================
+
+-- Vertices of a regular 4-simplex with unit edge length:
+-- v₀ = (0, 0, 0, 0)
+-- v₁ = (1, 0, 0, 0)
+-- v₂ = (1/2, √3/2, 0, 0)
+-- v₃ = (1/2, √3/6, √6/3, 0)
+-- v₄ = (1/2, √3/6, √6/12, √10/4)
+--
+-- Heights computed recursively: h_k = √(1 - dist(centroid, v₀)²)
+-- h₄ = √(5/8) = √10/4
+
+/-- Helper: √10 squared is 10. -/
+private theorem sq_sqrt_ten : Real.sqrt 10 ^ 2 = 10 :=
+  Real.sq_sqrt (by norm_num : (10:ℝ) ≥ 0)
+
+/-- Helper: (√10/4)² = 5/8. -/
+private theorem sq_sqrt_ten_fourth : (Real.sqrt 10 / 4) ^ 2 = 5 / 8 := by
+  rw [div_pow, sq_sqrt_ten]; norm_num
+
+/-- Helper: (√6/12)² = 1/24. -/
+private theorem sq_sqrt_six_twelfth : (Real.sqrt 6 / 12) ^ 2 = 1 / 24 := by
+  rw [div_pow, sq_sqrt_six]; norm_num
+
+/-- Helper: (√6/3 - √6/12)² = 3/8. -/
+private theorem sq_diff_sqrt6_third_twelfth :
+    (Real.sqrt 6 / 3 - Real.sqrt 6 / 12) ^ 2 = 3 / 8 := by
+  have h : Real.sqrt 6 / 3 - Real.sqrt 6 / 12 = Real.sqrt 6 / 4 := by ring
+  rw [h, div_pow, sq_sqrt_six]; norm_num
+
+/-- Helper: (√6/12 - √6/3)² = 3/8. -/
+private theorem sq_diff_sqrt6_twelfth_third :
+    (Real.sqrt 6 / 12 - Real.sqrt 6 / 3) ^ 2 = 3 / 8 := by
+  have h : Real.sqrt 6 / 12 - Real.sqrt 6 / 3 = -(Real.sqrt 6 / 3 - Real.sqrt 6 / 12) := by ring
+  rw [h, neg_pow_two, sq_diff_sqrt6_third_twelfth]
+
+/-- The regular 4-simplex embedding of K₅ in ℝ⁴. -/
+noncomputable def K5embed : Fin 5 → Fin 4 → ℝ
+  | ⟨0, _⟩, _ => 0
+  | ⟨1, _⟩, ⟨0, _⟩ => 1
+  | ⟨1, _⟩, _ => 0
+  | ⟨2, _⟩, ⟨0, _⟩ => 1 / 2
+  | ⟨2, _⟩, ⟨1, _⟩ => Real.sqrt 3 / 2
+  | ⟨2, _⟩, _ => 0
+  | ⟨3, _⟩, ⟨0, _⟩ => 1 / 2
+  | ⟨3, _⟩, ⟨1, _⟩ => Real.sqrt 3 / 6
+  | ⟨3, _⟩, ⟨2, _⟩ => Real.sqrt 6 / 3
+  | ⟨3, _⟩, _ => 0
+  | ⟨4, _⟩, ⟨0, _⟩ => 1 / 2
+  | ⟨4, _⟩, ⟨1, _⟩ => Real.sqrt 3 / 6
+  | ⟨4, _⟩, ⟨2, _⟩ => Real.sqrt 6 / 12
+  | ⟨4, _⟩, ⟨3, _⟩ => Real.sqrt 10 / 4
+
+set_option maxHeartbeats 800000 in
+/-- K₅ admits a unit-distance embedding in ℝ⁴. -/
+theorem K5_unit_embedding : hasUnitEmbedding' (Fin 5) (fun i j => i ≠ j) 4 := by
+  have hd1 := sq_diff_sqrt3_half_sixth
+  have hd2 := sq_diff_sqrt3_sixth_half
+  have hd3 := sq_diff_sqrt6_third_twelfth
+  have hd4 := sq_diff_sqrt6_twelfth_third
+  refine ⟨⟨K5embed, fun u v huv => ?_⟩⟩
+  fin_cases u <;> fin_cases v <;>
+    simp_all [K5embed, Finset.sum_fin_eq_sum_range, Finset.sum_range_succ,
+              sq_sqrt_three_half, sq_sqrt_three_sixth,
+              sq_sqrt_six_third, sq_sqrt_six_twelfth,
+              sq_sqrt_ten_fourth, Real.sqrt_one] <;> norm_num
+
+open Classical in
+/-- dim(K₅) ≤ 4 (tight: regular 4-simplex in ℝ⁴). -/
+theorem complete_graph_dim_le_tight_5 :
+    graphDimension' (Fin 5) (fun i j => i ≠ j) (fun x h => h rfl) ≤ 4 :=
+  Nat.find_le K5_unit_embedding
 
 -- ============================================================================
 -- § 17. General dim(K_n) ≤ n-1 via Centered Simplex
@@ -656,16 +746,19 @@ theorem complete_graph_dim_le_tight_4 :
 -- dim(K₂) ≤ 1  (proved, §14 — tight)
 -- dim(K₃) ≤ 2  (proved, §15 — tight)
 -- dim(K₄) ≤ 3  (proved, §16 — tight)
+-- dim(K₅) ≤ 4  (proved, §16b — tight)
 -- dim(K_n) ≤ n  (proved, §7 — off by one from optimal)
--- dim(K_n) = n-1 (conjectured, proved for n=2,3,4; general requires ONB infrastructure)
+-- dim(K_n) = n-1 (conjectured, proved for n=2,3,4,5; general requires ONB infrastructure)
 
 #check @complete_graph_unit_embedding
 #check @complete_graph_dim_le
 #check @complete_graph_dim_le_tight_2
 #check @complete_graph_dim_le_tight_3
 #check @complete_graph_dim_le_tight_4
+#check @complete_graph_dim_le_tight_5
 #check @K3_unit_embedding
 #check @K4_unit_embedding
+#check @K5_unit_embedding
 #check @subgraph_unit_embedding
 #check @hasUnitEmbedding_exists_irrefl
 #check @optimal_implies_monotone
