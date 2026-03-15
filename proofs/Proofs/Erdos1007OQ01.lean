@@ -22,12 +22,15 @@ Lower bound (trivial): minEdges(d) ≥ d (need at least d edges for d-dimensiona
 Upper bound: minEdges(d) ≤ C(d+1, 2) (K_{d+1} always has dimension d)
 
 This formalization proves:
+- Simplex embedding: K_n embeds in ℝⁿ with unit distances (§1b, proved)
+- Every irreflexive graph has a unit embedding (§1c, proved — no axiom needed)
 - Known values and structural results for small d (§3-4)
 - General upper/lower bounds (§5)
-- Simplex embedding construction: K_n embeds in ℝⁿ with unit distances (§7)
 - The complete graph optimality conjecture implies monotonicity (§8)
 - Verified monotonicity of C(d+1,2) as a building block (§8)
 - Growth rate analysis from known values (§9)
+
+Axiom count: 11 (all for computational search results or rigidity bounds)
 -/
 
 import Mathlib
@@ -48,16 +51,119 @@ structure UnitDistanceEmbedding' (V : Type*) (adj : V → V → Prop) (n : ℕ) 
 def hasUnitEmbedding' (V : Type*) (adj : V → V → Prop) (n : ℕ) : Prop :=
   Nonempty (UnitDistanceEmbedding' V adj n)
 
--- Note: This axiom is proved constructively for irreflexive graphs as
--- hasUnitEmbedding_exists_irrefl (§7b), using the simplex embedding.
--- The irreflexivity hypothesis (standard for simple graphs) is needed
--- because self-loops (adj v v) would require ‖0‖ = 1, which is impossible.
-axiom hasUnitEmbedding_exists' (V : Type*) [Fintype V] (adj : V → V → Prop) :
-  ∃ n, hasUnitEmbedding' V adj n
+-- ============================================================================
+-- § 1b. Simplex Embedding Construction
+-- ============================================================================
+
+-- The key construction: embed vertex i as (1/√2) · eᵢ in ℝⁿ.
+-- Then for i ≠ j: ‖vᵢ - vⱼ‖² = (1/√2)² + (-1/√2)² = 1/2 + 1/2 = 1.
+-- This gives a unit-distance embedding of K_n in ℝⁿ.
+--
+-- This infrastructure is placed early because it's needed to prove that
+-- every irreflexive graph has a unit embedding (§1c), which is required
+-- by the definition of graphDimension' below.
+
+/-- The simplex embedding function: vertex i maps to (1/√2) eᵢ -/
+noncomputable def simplexEmbed (n : ℕ) (i : Fin n) (j : Fin n) : ℝ :=
+  if i = j then 1 / Real.sqrt 2 else 0
+
+/-- Key lemma: (1/√2)² = 1/2 -/
+private theorem inv_sqrt_two_sq : (1 / Real.sqrt 2) ^ 2 = 1 / 2 := by
+  have h2 : Real.sqrt 2 ≠ 0 := Real.sqrt_ne_zero'.mpr (by norm_num : (0:ℝ) < 2)
+  field_simp
+  rw [Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]
+
+/-- Key computation: the squared difference at coordinate k for distinct vertices i, j.
+    This equals 1/2 when k = i or k = j, and 0 otherwise. -/
+theorem simplexEmbed_sq_diff (n : ℕ) (i j : Fin n) (hij : i ≠ j) (k : Fin n) :
+    (simplexEmbed n i k - simplexEmbed n j k) ^ 2 =
+      if k = i then 1 / 2 else if k = j then 1 / 2 else 0 := by
+  simp only [simplexEmbed]
+  by_cases hki : i = k
+  · subst hki
+    simp only [if_true, ite_eq_right_iff]
+    have : ¬(j = i) := hij.symm
+    simp only [this, ite_false, sub_zero, ite_true]
+    exact inv_sqrt_two_sq
+  · by_cases hkj : j = k
+    · subst hkj
+      simp only [hki, ite_false, if_true, zero_sub, neg_sq, Ne.symm hij, ite_false, ite_true]
+      exact inv_sqrt_two_sq
+    · simp only [hki, hkj, ite_false, sub_self, zero_pow, Ne.symm hki, Ne.symm hkj]
+      norm_num
+
+/-- The squared distance sum for the simplex embedding equals 1. -/
+theorem simplexEmbed_dist_sq (n : ℕ) (hn : 2 ≤ n) (i j : Fin n) (hij : i ≠ j) :
+    Finset.univ.sum (fun k => (simplexEmbed n i k - simplexEmbed n j k) ^ 2) = 1 := by
+  simp_rw [simplexEmbed_sq_diff n i j hij]
+  rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i)]
+  simp only [ite_true]
+  have h1 : ∀ k ∈ Finset.univ.erase i,
+      (if k = i then (1:ℝ)/2 else if k = j then 1/2 else 0) =
+      if k = j then 1/2 else 0 := by
+    intro k hk; simp [(Finset.mem_erase.mp hk).1]
+  rw [Finset.sum_congr rfl h1]
+  have hj_mem : j ∈ Finset.univ.erase i :=
+    Finset.mem_erase.mpr ⟨hij.symm, Finset.mem_univ j⟩
+  rw [← Finset.add_sum_erase _ _ hj_mem]
+  simp only [ite_true]
+  have h2 : ∀ k ∈ (Finset.univ.erase i).erase j,
+      (if k = j then (1:ℝ)/2 else 0) = 0 := by
+    intro k hk; simp [(Finset.mem_erase.mp hk).1]
+  rw [Finset.sum_congr rfl h2, Finset.sum_const_zero]
+  ring
+
+/-- The complete graph K_n admits a unit-distance embedding in ℝⁿ for n ≥ 2. -/
+theorem complete_graph_unit_embedding (n : ℕ) (hn : 2 ≤ n) :
+    hasUnitEmbedding' (Fin n) (fun i j => i ≠ j) n := by
+  refine ⟨⟨simplexEmbed n, fun u v huv => ?_⟩⟩
+  rw [simplexEmbed_dist_sq n hn u v huv, Real.sqrt_one]
+
+/-- Any subgraph of K_n inherits the unit embedding from K_n. -/
+theorem subgraph_unit_embedding (n : ℕ) (hn : 2 ≤ n)
+    (adj : Fin n → Fin n → Prop) (hsub : ∀ u v, adj u v → u ≠ v) :
+    hasUnitEmbedding' (Fin n) adj n := by
+  refine ⟨⟨simplexEmbed n, fun u v hadj => ?_⟩⟩
+  rw [simplexEmbed_dist_sq n hn u v (hsub u v hadj), Real.sqrt_one]
+
+-- ============================================================================
+-- § 1c. Embedding Existence (Proved)
+-- ============================================================================
+
+-- Every irreflexive (simple) graph admits a unit-distance embedding in some ℝⁿ.
+-- Irreflexivity is essential: self-loops require ‖v - v‖ = ‖0‖ = 1, which
+-- is impossible, so graphs with self-loops have NO unit embedding.
+-- (A prior version axiomatized this without irreflexivity, which was unsound —
+-- it allowed derivation of False for any graph with a self-loop.)
+--
+-- Proof: If |V| ≤ 1, irreflexivity forces adj to be empty, so any map works.
+-- If |V| ≥ 2, compose the simplex embedding with V ≃ Fin |V|. Since adj is
+-- irreflexive, adj u v → u ≠ v, so the complete graph's unit embedding works.
+open Classical in
+theorem hasUnitEmbedding_exists_irrefl (V : Type*) [Fintype V]
+    (adj : V → V → Prop) (hirr : Irreflexive adj) :
+    ∃ n, hasUnitEmbedding' V adj n := by
+  by_cases hcard : Fintype.card V ≤ 1
+  · use 1
+    refine ⟨⟨fun _ _ => 0, fun u v hadj => ?_⟩⟩
+    exact absurd (Fintype.card_le_one_iff.mp hcard u v ▸ hadj) (hirr u)
+  · push_neg at hcard
+    set c := Fintype.card V
+    have hc2 : 2 ≤ c := hcard
+    use c
+    have e : V ≃ Fin c := (Fintype.truncEquivFin V).out
+    refine ⟨⟨fun v => simplexEmbed c (e v), fun u v hadj => ?_⟩⟩
+    have huv : u ≠ v := fun h => hirr u (h ▸ hadj)
+    rw [simplexEmbed_dist_sq c hc2 (e u) (e v) (e.injective.ne huv), Real.sqrt_one]
+
+-- ============================================================================
+-- § 1d. Graph Dimension
+-- ============================================================================
 
 open Classical in
-noncomputable def graphDimension' (V : Type*) [Fintype V] (adj : V → V → Prop) : ℕ :=
-  Nat.find (hasUnitEmbedding_exists' V adj)
+noncomputable def graphDimension' (V : Type*) [Fintype V] (adj : V → V → Prop)
+    (hirr : Irreflexive adj) : ℕ :=
+  Nat.find (hasUnitEmbedding_exists_irrefl V adj hirr)
 
 -- ============================================================================
 -- § 2. Minimum Edge Function
@@ -67,17 +173,17 @@ noncomputable def graphDimension' (V : Type*) [Fintype V] (adj : V → V → Pro
     We axiomatize this as extracting the minimum requires a search over all graphs. -/
 axiom minEdgesForDim : ℕ → ℕ
 
-/-- Every graph of dimension d has at least minEdges(d) edges. -/
+/-- Every simple (irreflexive) graph of dimension d has at least minEdges(d) edges. -/
 axiom minEdgesForDim_le (d : ℕ) (V : Type) [Fintype V] [DecidableEq V]
-    (adj : V → V → Prop) [DecidableRel adj] :
-    graphDimension' V adj = d →
+    (adj : V → V → Prop) [DecidableRel adj] (hirr : Irreflexive adj) :
+    graphDimension' V adj hirr = d →
     minEdgesForDim d ≤ (Finset.univ.filter (fun p : V × V => adj p.1 p.2)).card
 
-/-- There exists a graph achieving the minimum. -/
+/-- There exists a simple (irreflexive) graph achieving the minimum. -/
 axiom minEdgesForDim_achieved (d : ℕ) (hd : 0 < d) :
     ∃ (V : Type) (_ : Fintype V) (_ : DecidableEq V)
-      (adj : V → V → Prop) (_ : DecidableRel adj),
-      graphDimension' V adj = d ∧
+      (adj : V → V → Prop) (_ : DecidableRel adj) (hirr : Irreflexive adj),
+      graphDimension' V adj hirr = d ∧
       (Finset.univ.filter (fun p : V × V => adj p.1 p.2)).card = minEdgesForDim d
 
 -- ============================================================================
@@ -190,130 +296,16 @@ theorem lower_bound_linear (d : ℕ) (hd : 1 ≤ d) :
   exact_mod_cast minEdges_lower_bound d (by omega)
 
 -- ============================================================================
--- § 7. Simplex Embedding Construction
+-- § 7. Graph Dimension of Complete Graphs
 -- ============================================================================
-
--- The key construction: embed vertex i as (1/√2) · eᵢ in ℝⁿ.
--- Then for i ≠ j: ‖vᵢ - vⱼ‖² = (1/√2)² + (-1/√2)² = 1/2 + 1/2 = 1.
--- This gives a unit-distance embedding of K_n in ℝⁿ.
-
-/-- The simplex embedding function: vertex i maps to (1/√2) eᵢ -/
-noncomputable def simplexEmbed (n : ℕ) (i : Fin n) (j : Fin n) : ℝ :=
-  if i = j then 1 / Real.sqrt 2 else 0
-
-/-- Key lemma: (1/√2)² = 1/2 -/
-private theorem inv_sqrt_two_sq : (1 / Real.sqrt 2) ^ 2 = 1 / 2 := by
-  have h2 : Real.sqrt 2 ≠ 0 := Real.sqrt_ne_zero'.mpr (by norm_num : (0:ℝ) < 2)
-  field_simp
-  rw [Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]
-
-/-- Key computation: the squared difference at coordinate k for distinct vertices i, j.
-    This equals 1/2 when k = i or k = j, and 0 otherwise. -/
-theorem simplexEmbed_sq_diff (n : ℕ) (i j : Fin n) (hij : i ≠ j) (k : Fin n) :
-    (simplexEmbed n i k - simplexEmbed n j k) ^ 2 =
-      if k = i then 1 / 2 else if k = j then 1 / 2 else 0 := by
-  simp only [simplexEmbed]
-  by_cases hki : i = k
-  · -- k = i: embed(i, k) = 1/√2, embed(j, k) = 0 (since j ≠ i = k)
-    subst hki
-    simp only [if_true, ite_eq_right_iff]
-    have : ¬(j = i) := hij.symm
-    simp only [this, ite_false, sub_zero, ite_true]
-    exact inv_sqrt_two_sq
-  · by_cases hkj : j = k
-    · -- k = j: embed(i, k) = 0, embed(j, k) = 1/√2
-      subst hkj
-      simp only [hki, ite_false, if_true, zero_sub, neg_sq, Ne.symm hij, ite_false, ite_true]
-      exact inv_sqrt_two_sq
-    · -- k ≠ i and k ≠ j: both are 0
-      simp only [hki, hkj, ite_false, sub_self, zero_pow, Ne.symm hki, Ne.symm hkj]
-      norm_num
-
-/-- The squared distance sum for the simplex embedding equals 1. -/
-theorem simplexEmbed_dist_sq (n : ℕ) (hn : 2 ≤ n) (i j : Fin n) (hij : i ≠ j) :
-    Finset.univ.sum (fun k => (simplexEmbed n i k - simplexEmbed n j k) ^ 2) = 1 := by
-  simp_rw [simplexEmbed_sq_diff n i j hij]
-  -- Extract the i-th term from the sum
-  rw [← Finset.add_sum_erase _ _ (Finset.mem_univ i)]
-  simp only [ite_true]
-  -- In the remaining sum (k ≠ i), the first branch is false
-  have h1 : ∀ k ∈ Finset.univ.erase i,
-      (if k = i then (1:ℝ)/2 else if k = j then 1/2 else 0) =
-      if k = j then 1/2 else 0 := by
-    intro k hk; simp [(Finset.mem_erase.mp hk).1]
-  rw [Finset.sum_congr rfl h1]
-  -- Extract the j-th term
-  have hj_mem : j ∈ Finset.univ.erase i :=
-    Finset.mem_erase.mpr ⟨hij.symm, Finset.mem_univ j⟩
-  rw [← Finset.add_sum_erase _ _ hj_mem]
-  simp only [ite_true]
-  -- The remaining sum is all zeros
-  have h2 : ∀ k ∈ (Finset.univ.erase i).erase j,
-      (if k = j then (1:ℝ)/2 else 0) = 0 := by
-    intro k hk; simp [(Finset.mem_erase.mp hk).1]
-  rw [Finset.sum_congr rfl h2, Finset.sum_const_zero]
-  ring
-
-/-- The complete graph K_n admits a unit-distance embedding in ℝⁿ for n ≥ 2. -/
-theorem complete_graph_unit_embedding (n : ℕ) (hn : 2 ≤ n) :
-    hasUnitEmbedding' (Fin n) (fun i j => i ≠ j) n := by
-  refine ⟨⟨simplexEmbed n, fun u v huv => ?_⟩⟩
-  rw [simplexEmbed_dist_sq n hn u v huv, Real.sqrt_one]
 
 -- Corollary: graphDimension(K_n) ≤ n for n ≥ 2.
 -- (The optimal bound is n-1, which requires a harder rigidity argument.)
 open Classical in
 theorem complete_graph_dim_le (n : ℕ) (hn : 2 ≤ n) :
-    graphDimension' (Fin n) (fun i j => i ≠ j) ≤ n := by
+    graphDimension' (Fin n) (fun i j => i ≠ j) (fun x h => h rfl) ≤ n := by
   exact Nat.find_le ⟨⟨simplexEmbed n, fun u v huv => by
     rw [simplexEmbed_dist_sq n hn u v huv, Real.sqrt_one]⟩⟩
-
--- ============================================================================
--- § 7b. General Embedding Existence (Proved)
--- ============================================================================
-
--- The axiom hasUnitEmbedding_exists' (§1) asserts every finite graph embeds
--- in some ℝⁿ. Here we prove this constructively for irreflexive graphs
--- (standard simple graphs) using the simplex embedding from §7.
---
--- Strategy: any irreflexive adj has adj u v → u ≠ v, so the complete
--- graph K_|V| embedding is also a valid unit embedding for adj.
-
-/-- Any subgraph of K_n inherits the unit embedding from K_n. -/
-theorem subgraph_unit_embedding (n : ℕ) (hn : 2 ≤ n)
-    (adj : Fin n → Fin n → Prop) (hsub : ∀ u v, adj u v → u ≠ v) :
-    hasUnitEmbedding' (Fin n) adj n := by
-  refine ⟨⟨simplexEmbed n, fun u v hadj => ?_⟩⟩
-  rw [simplexEmbed_dist_sq n hn u v (hsub u v hadj), Real.sqrt_one]
-
--- Every irreflexive finite graph admits a unit-distance embedding.
--- This is a constructive proof of the axiom hasUnitEmbedding_exists' (§1)
--- under the standard graph-theoretic assumption of irreflexivity.
---
--- Proof: If |V| ≤ 1, irreflexivity forces adj to be empty, so any map works.
--- If |V| ≥ 2, compose the simplex embedding with V ≃ Fin |V|. Since adj is
--- irreflexive, adj u v → u ≠ v, so the complete graph's unit embedding works.
-open Classical in
-theorem hasUnitEmbedding_exists_irrefl (V : Type*) [Fintype V]
-    (adj : V → V → Prop) (hirr : Irreflexive adj) :
-    ∃ n, hasUnitEmbedding' V adj n := by
-  by_cases hcard : Fintype.card V ≤ 1
-  · -- 0 or 1 vertices: irreflexivity means adj is empty, any embedding works
-    use 1
-    refine ⟨⟨fun _ _ => 0, fun u v hadj => ?_⟩⟩
-    -- adj u v is impossible: with ≤ 1 vertex, u = v, contradicting irreflexivity
-    exact absurd (Fintype.card_le_one_iff.mp hcard u v ▸ hadj) (hirr u)
-  · -- ≥ 2 vertices: use simplex embedding via V ≃ Fin |V|
-    push_neg at hcard
-    set c := Fintype.card V
-    have hc2 : 2 ≤ c := hcard
-    use c
-    -- Get an equivalence V ≃ Fin c
-    have e : V ≃ Fin c := (Fintype.truncEquivFin V).out
-    refine ⟨⟨fun v => simplexEmbed c (e v), fun u v hadj => ?_⟩⟩
-    -- adj u v → u ≠ v (irreflexivity) → images distinct → simplex distance = 1
-    have huv : u ≠ v := fun h => hirr u (h ▸ hadj)
-    rw [simplexEmbed_dist_sq c hc2 (e u) (e v) (e.injective.ne huv), Real.sqrt_one]
 
 -- ============================================================================
 -- § 8. Conjecture Relationships

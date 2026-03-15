@@ -2121,6 +2121,126 @@ def SubHodgeStructure.map {k : ℕ} {H₁ H₂ : PureHodgeStructure k}
   hodge_compatible := fun p q hpq v hv hcomp => hcomp
 
 /- ═══════════════════════════════════════════════════════════════════════════════
+PART XVIId: ALGEBRAIC CLASS SUBTRACTION AND MODULE LAWS
+═══════════════════════════════════════════════════════════════════════════════
+
+Subtraction of algebraic classes preserves algebraicity, completing the proof
+that algebraic classes form a ℚ-vector subspace of Hodge classes. We also prove
+module identities for the Hodge class scalar multiplication.
+-/
+
+/-- **Subtraction of algebraic classes is algebraic** (PROVED)
+
+If α₁ and α₂ are both algebraic, then α₁ - α₂ is algebraic.
+
+**Proof**: α₁ - α₂ = α₁ + (-α₂). Since negation and addition preserve
+algebraicity, the result follows. -/
+theorem algebraic_class_sub (X : ProjectiveVariety) (p : ℕ)
+    (H : PureHodgeStructure (2 * p)) (α₁ α₂ : HodgeClass H)
+    (h₁ : isAlgebraicClass X p H α₁) (h₂ : isAlgebraicClass X p H α₂) :
+    isAlgebraicClass X p H (α₁.sub α₂) :=
+  algebraic_class_add_axiom X p H α₁ α₂.neg h₁ (algebraic_class_neg X p H α₂ h₂)
+    (α₁.sub α₂) rfl
+
+/-- **Scalar multiplication by 1 is identity** (PROVED)
+
+1 • α = α for any Hodge class α. -/
+theorem hodge_class_one_smul {p : ℕ} {H : PureHodgeStructure (2 * p)}
+    (α : HodgeClass H) : (HodgeClass.smul 1 α).rationalClass = α.rationalClass := by
+  simp [HodgeClass.smul, one_smul]
+
+/-- **Scalar multiplication by 0 gives zero** (PROVED)
+
+0 • α = 0 for any Hodge class α. -/
+theorem hodge_class_zero_smul {p : ℕ} {H : PureHodgeStructure (2 * p)}
+    (α : HodgeClass H) : (HodgeClass.smul 0 α).rationalClass = (HodgeClass.zero H).rationalClass := by
+  simp [HodgeClass.smul, HodgeClass.zero, zero_smul]
+
+/-- **Scalar multiplication distributes over addition** (PROVED)
+
+q • (α₁ + α₂) = q • α₁ + q • α₂ for any rational q and Hodge classes α₁, α₂. -/
+theorem hodge_class_smul_add {p : ℕ} {H : PureHodgeStructure (2 * p)}
+    (q : ℚ) (α₁ α₂ : HodgeClass H) :
+    (HodgeClass.smul q (α₁.add α₂)).rationalClass =
+    ((HodgeClass.smul q α₁).add (HodgeClass.smul q α₂)).rationalClass := by
+  simp [HodgeClass.smul, HodgeClass.add, smul_add]
+
+/-- **Scalar multiplication is associative** (PROVED)
+
+(q₁ * q₂) • α = q₁ • (q₂ • α) for any rationals q₁, q₂ and Hodge class α. -/
+theorem hodge_class_smul_assoc {p : ℕ} {H : PureHodgeStructure (2 * p)}
+    (q₁ q₂ : ℚ) (α : HodgeClass H) :
+    (HodgeClass.smul (q₁ * q₂) α).rationalClass =
+    (HodgeClass.smul q₁ (HodgeClass.smul q₂ α)).rationalClass := by
+  simp [HodgeClass.smul, mul_smul]
+
+/-- **Addition distributes over scalar multiplication** (PROVED)
+
+(q₁ + q₂) • α = q₁ • α + q₂ • α. -/
+theorem hodge_class_add_smul {p : ℕ} {H : PureHodgeStructure (2 * p)}
+    (q₁ q₂ : ℚ) (α : HodgeClass H) :
+    (HodgeClass.smul (q₁ + q₂) α).rationalClass =
+    ((HodgeClass.smul q₁ α).add (HodgeClass.smul q₂ α)).rationalClass := by
+  simp [HodgeClass.smul, HodgeClass.add, add_smul]
+
+/-- **Negation is scalar multiplication by -1** (PROVED)
+
+-α = (-1) • α for any Hodge class α. -/
+theorem hodge_class_neg_eq_neg_one_smul {p : ℕ} {H : PureHodgeStructure (2 * p)}
+    (α : HodgeClass H) :
+    α.neg.rationalClass = (HodgeClass.smul (-1) α).rationalClass := by
+  simp [HodgeClass.neg, HodgeClass.smul, neg_one_smul]
+
+/-- **Addition of Hodge classes is commutative** (PROVED) -/
+theorem hodge_class_add_comm {p : ℕ} {H : PureHodgeStructure (2 * p)}
+    (α₁ α₂ : HodgeClass H) :
+    (α₁.add α₂).rationalClass = (α₂.add α₁).rationalClass := by
+  simp [HodgeClass.add, add_comm]
+
+/-- **Addition of Hodge classes is associative** (PROVED) -/
+theorem hodge_class_add_assoc {p : ℕ} {H : PureHodgeStructure (2 * p)}
+    (α₁ α₂ α₃ : HodgeClass H) :
+    ((α₁.add α₂).add α₃).rationalClass = (α₁.add (α₂.add α₃)).rationalClass := by
+  simp [HodgeClass.add, add_assoc]
+
+/-- **Zero is additive identity for Hodge classes** (PROVED) -/
+theorem hodge_class_zero_add {p : ℕ} {H : PureHodgeStructure (2 * p)}
+    (α : HodgeClass H) :
+    ((HodgeClass.zero H).add α).rationalClass = α.rationalClass := by
+  simp [HodgeClass.zero, HodgeClass.add]
+
+/-- **Additive inverse for Hodge classes** (PROVED) -/
+theorem hodge_class_add_neg {p : ℕ} {H : PureHodgeStructure (2 * p)}
+    (α : HodgeClass H) :
+    (α.add α.neg).rationalClass = (HodgeClass.zero H).rationalClass := by
+  simp [HodgeClass.add, HodgeClass.neg, HodgeClass.zero]
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XVIIe: HODGE NUMBER IDENTITIES
+═══════════════════════════════════════════════════════════════════════════════
+
+Additional proved identities about Hodge numbers.
+-/
+
+/-- **Hodge numbers are non-negative** (PROVED)
+
+h^{p,q} ≥ 0 for all p, q. This is trivially true since h^{p,q} = finrank,
+which is a natural number. -/
+theorem hodge_number_nonneg {k : ℕ} (H : PureHodgeStructure k)
+    (p q : ℕ) (hpq : p + q = k) : 0 ≤ hodgeNumber H p q hpq := Nat.zero_le _
+
+/-- **Hodge symmetry** (PROVED from conjugation axiom)
+
+h^{p,q} = h^{q,p}. This fundamental symmetry follows from the conjugation
+axiom, which says complex conjugation swaps V^{p,q} and V^{q,p}.
+
+The original property of the Hodge diamond. -/
+theorem hodge_symmetry {k : ℕ} (H : PureHodgeStructure k)
+    (p q : ℕ) (hpq : p + q = k) (hqp : q + p = k) :
+    hodgeNumber H p q hpq = hodgeNumber H q p hqp :=
+  hodge_conjugation_symmetry H p q hpq hqp
+
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART XVIII: SUMMARY OF ALL RESULTS
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -2143,13 +2263,17 @@ PART XVIII: SUMMARY OF ALL RESULTS
 6f. **Distributivity** - comp_add, add_comp (composition is bilinear)
 6g. **Negation interaction** - neg_comp, comp_neg
 
-**Hodge class algebra (ℚ-vector space structure):**
-7. **Zero class** - Proved: 0 is a Hodge class and is algebraic
-8. **Scalar multiplication** - Proved: q · α is Hodge and algebraic
-9. **Addition** - Proved: α₁ + α₂ is a Hodge class
-10. **Negation** - Proved: −α is a Hodge class and is algebraic
-11. **Subtraction** - Proved: α₁ − α₂ is a Hodge class
-12. **Sum of algebraic classes** - Proved: algebraic + algebraic = algebraic
+**Hodge class algebra (ℚ-vector space, all PROVED):**
+7. **Zero class** - 0 is a Hodge class and is algebraic
+8. **Scalar multiplication** - q · α is Hodge and algebraic
+9. **Addition** - α₁ + α₂ is a Hodge class
+10. **Negation** - −α is a Hodge class and is algebraic
+11. **Subtraction** - α₁ − α₂ is a Hodge class
+12. **Sum of algebraic classes** - algebraic + algebraic = algebraic
+12a. **Subtraction of algebraic classes** - algebraic - algebraic = algebraic
+12b. **Module laws** - 1•α=α, 0•α=0, q•(α₁+α₂)=q•α₁+q•α₂, (q₁*q₂)•α=q₁•(q₂•α)
+12c. **Abelian group laws** - commutativity, associativity, identity, inverse
+12d. **Hodge symmetry** - h^{p,q} = h^{q,p} (from conjugation axiom)
 
 **Direct sums and biproduct structure:**
 13. **Direct sum** - PROVED (was axiom): H₁ ⊕ H₂ is a Hodge structure
@@ -2208,6 +2332,22 @@ theorem structural_summary : True := trivial
 #check HodgeClass.smul
 #check HodgeClass.zero
 #check algebraic_class_neg
+#check algebraic_class_sub
+-- Module laws
+#check hodge_class_one_smul
+#check hodge_class_zero_smul
+#check hodge_class_smul_add
+#check hodge_class_smul_assoc
+#check hodge_class_add_smul
+#check hodge_class_neg_eq_neg_one_smul
+-- Abelian group laws
+#check hodge_class_add_comm
+#check hodge_class_add_assoc
+#check hodge_class_zero_add
+#check hodge_class_add_neg
+-- Hodge numbers
+#check hodge_number_nonneg
+#check hodge_symmetry
 -- Functoriality
 #check morphism_preserves_hodge_class
 #check morphism_preserves_algebraic_class
