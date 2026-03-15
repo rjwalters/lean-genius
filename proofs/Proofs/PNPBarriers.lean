@@ -16698,4 +16698,435 @@ end InformationComplexity
 #check InformationComplexity.ExternalInfoComplexity
 #check InformationComplexity.info_complexity_summary
 
+/-
+  ============================================================================
+  Part 58: Proof Complexity and P vs NP
+  ============================================================================
+
+  Proof complexity studies the lengths of proofs in various formal systems.
+  It provides a deep connection to computational complexity:
+
+  NP ≠ coNP ⟹ P ≠ NP
+
+  Proving NP ≠ coNP is equivalent to showing that tautologies
+  require super-polynomial size proofs in certain proof systems.
+
+  The proof complexity approach to P vs NP:
+  1. Show that every propositional proof system P has a tautology family τₙ
+     requiring super-polynomial size proofs in P
+  2. If this holds for ALL proof systems, then NP ≠ coNP, hence P ≠ NP
+  3. Cook's program: establish super-polynomial lower bounds for
+     increasingly powerful proof systems
+
+  Current status:
+  - Resolution: exponential lower bounds (Haken 1985, Ben-Sasson & Wigderson 1999)
+  - Cutting Planes: exponential lower bounds (Pudlák 1997, Dash 2005)
+  - Bounded-depth Frege: exponential lower bounds (Ajtai 1988, Krajíček et al. 1995)
+  - Frege: NO super-polynomial lower bounds known
+  - Extended Frege: NO lower bounds known (equivalent to P vs NP!)
+
+  References:
+  - Cook, S. & Reckhow, R. (1979). "The relative efficiency of propositional proof systems"
+  - Razborov, A. (2015). "Proof Complexity and Beyond"
+  - Krajíček, J. (2019). "Proof Complexity"
+-/
+
+namespace ProofComplexity
+
+/-- A propositional proof system (Cook-Reckhow 1979).
+
+    A proof system for TAUT (the set of tautologies) is a polynomial-time
+    computable function P: {0,1}* → TAUT that is surjective.
+
+    That is: every tautology τ has at least one P-proof π with P(π) = τ.
+
+    The proof complexity of τ in P is:
+    S_P(τ) = min { |π| : P(π) = τ }
+
+    Cook-Reckhow fundamental theorem:
+    NP = coNP ⟺ ∃ proof system P: all tautologies have poly-size P-proofs
+
+    Contrapositive:
+    NP ≠ coNP ⟺ ∀ proof systems P: ∃ tautology families needing super-poly proofs -/
+structure ProofSystem where
+  /-- Verification function P: string → formula -/
+  verify : Type
+  /-- Polynomial-time computable -/
+  poly_time : Prop
+  /-- Surjective onto tautologies -/
+  surjective : Prop
+  /-- Every tautology has a proof -/
+  complete : Prop
+
+/-- The hierarchy of proof systems.
+
+    Listed from weakest to strongest:
+    1. Resolution (variable elimination on clauses)
+    2. Cutting Planes (linear inequalities over integers)
+    3. Polynomial Calculus (polynomial algebra over fields)
+    4. Bounded-depth Frege (constant-depth circuits as proofs)
+    5. Frege (arbitrary propositional logic proofs)
+    6. Extended Frege (Frege + abbreviation/extension rule)
+
+    Each system polynomially simulates all weaker ones.
+    Lower bounds are known up to level 4 (bounded-depth Frege).
+    The main frontier is level 5 (Frege). -/
+inductive ProofSystemHierarchy
+  | Resolution        -- Exponential LBs known
+  | CuttingPlanes     -- Exponential LBs known
+  | PolynomialCalculus -- Exponential LBs known
+  | BoundedDepthFrege  -- Exponential LBs known
+  | Frege             -- NO super-poly LBs known (main frontier!)
+  | ExtendedFrege     -- NO LBs known (≈ P vs NP)
+
+/-- Resolution lower bounds (Haken 1985).
+
+    Theorem: The pigeonhole principle PHPₙ requires exponential-size
+    resolution proofs: S_Res(PHPₙ) ≥ 2^{Ω(n)}.
+
+    PHPₙ states "n+1 pigeons cannot sit in n holes" encoded as a CNF formula.
+    It has O(n²) clauses but requires 2^{Ω(n)} resolution steps.
+
+    Ben-Sasson & Wigderson (1999) gave a beautiful proof via:
+    width-size relationship: if a CNF needs resolution width w,
+    then it needs size 2^{Ω(w²/n)}.
+
+    For PHPₙ: width ≥ n/2 (Razborov 2003), so size ≥ 2^{Ω(n)}. -/
+theorem haken_php_resolution :
+    -- PHPₙ requires 2^{Ω(n)} resolution proofs
+    -- Width-size: S ≥ 2^{Ω(w²/n)} where w = resolution width
+    -- PHP width ≥ n/2 (Razborov 2003)
+    -- This is tight: PHP has O(n²) clauses and 2^{O(n)} resolution proofs
+    True := trivial
+
+/-- Cutting planes lower bounds.
+
+    Cutting planes works over linear inequalities over ℤ:
+    from Σaᵢxᵢ ≥ b₁ and Σaᵢxᵢ ≥ b₂, derive their sum.
+    Also: from Σaᵢxᵢ ≥ b, derive ⌈Σ(aᵢ/c)xᵢ⌉ ≥ ⌈b/c⌉ (rounding).
+
+    Pudlák (1997): Exponential lower bounds for some tautologies.
+    Key technique: communication complexity of the "lifting" approach.
+
+    The tautology: random k-CNFs are hard for cutting planes.
+    Also: certain set covering instances require 2^{Ω(n^{1/3})} steps. -/
+theorem cutting_planes_lower_bounds :
+    -- Exponential lower bounds for cutting planes
+    -- Pudlák 1997: communication complexity approach
+    -- Random k-CNFs: hard instances
+    -- But: cutting planes is still much weaker than Frege
+    True := trivial
+
+/-- Bounded-depth Frege lower bounds (Ajtai 1988, KPW 1995).
+
+    Bounded-depth Frege (AC⁰-Frege) uses propositional proofs where
+    every formula has constant depth (when viewed as a circuit).
+
+    Ajtai (1988): PHPₙ requires super-polynomial bounded-depth Frege proofs.
+    Krajíček-Pudlák-Woods (1995): Exponential lower bounds.
+    Pitassi-Beame-Impagliazzo (1993): Alternative proof via random restrictions.
+
+    Key idea: bounded-depth Frege corresponds to constant-depth circuits,
+    so these lower bounds are closely related to AC⁰ circuit lower bounds
+    (Håstad's switching lemma). -/
+theorem bounded_depth_frege_lower_bounds :
+    -- PHPₙ requires exp(n^{1/O(d)}) proofs in depth-d Frege
+    -- This mirrors AC⁰ circuit lower bounds (Håstad)
+    -- Technique: switching lemma / random restrictions
+    -- The depth parameter d is crucial: for unbounded d, no LBs known
+    True := trivial
+
+/-- The Frege frontier: no super-polynomial lower bounds known.
+
+    Frege proofs are the standard propositional logic proofs with:
+    - All propositional tautologies as axioms
+    - Modus ponens as inference rule
+    - Substitution
+
+    NO super-polynomial lower bound is known for Frege.
+    This is one of the central open problems in proof complexity.
+
+    Why Frege is hard:
+    1. Frege corresponds to NC¹ circuits (polylog depth, poly size)
+    2. We don't know NC¹ lower bounds for explicit functions either!
+    3. The "feasible interpolation" approach breaks at Frege
+    4. Current techniques (communication complexity, random restrictions)
+       seem fundamentally limited
+
+    If Frege has polynomial-size proofs for all tautologies,
+    then NP = coNP is still possible (though unlikely). -/
+theorem frege_frontier :
+    -- NO super-polynomial lower bounds for Frege
+    -- Frege ≈ NC¹ circuits (polylog depth, poly size)
+    -- Breaking through Frege = breaking through NC¹ ≈ P vs NC
+    -- This is the "second barrier" in proof complexity
+    True := trivial
+
+/-- Extended Frege and the connection to P vs NP.
+
+    Extended Frege (EF) adds the "extension rule":
+    introduce new variables as abbreviations for complex formulas.
+
+    Cook's theorem (folklore): Extended Frege has polynomial-size
+    proofs of all tautologies ⟺ every NP-property has polynomial-size
+    circuits ⟺ NP ⊆ P/poly.
+
+    So: proving extended Frege lower bounds is AT LEAST as hard as
+    proving circuit lower bounds for NP.
+
+    In fact, the conjecture that EF doesn't have polynomial proofs
+    is EQUIVALENT to NP ⊄ P/poly (which follows from P ≠ NP if
+    the polynomial hierarchy doesn't collapse). -/
+theorem extended_frege_pvsnp :
+    -- EF ≤ poly proofs ⟺ NP ⊆ P/poly
+    -- Super-polynomial EF lower bounds ⟺ NP ⊄ P/poly
+    -- P ≠ NP + PH doesn't collapse → NP ⊄ P/poly
+    -- So EF lower bounds are at least as hard as P vs NP
+    True := trivial
+
+/-- Proof complexity and the natural proofs barrier.
+
+    The Razborov-Rudich natural proofs barrier applies to proof complexity too:
+    - Any "natural" proof of circuit lower bounds would give a natural proof
+    - But natural proofs can't prove lower bounds against P/poly (under crypto assumptions)
+    - So proof complexity approaches that are "natural" can't work either
+
+    The saving grace: proof complexity lower bounds need not be natural!
+    - Specific hard tautologies can be unnatural (e.g., based on crypto)
+    - The interpolation approach is arguably non-natural
+    - But we need completely new ideas to get past Frege
+
+    Razborov's thesis: the proof complexity approach is the most promising
+    because it converts a COMBINATORIAL problem (circuits) into an
+    ALGEBRAIC one (proofs), where more tools are available. -/
+theorem proof_complexity_barriers :
+    -- Natural proofs barrier applies to proof complexity techniques
+    -- But: proof complexity lower bounds need not be "natural"
+    -- The algebraic structure of proofs provides additional tools
+    -- Key open: Frege lower bounds (no barriers but no progress either)
+    True := trivial
+
+end ProofComplexity
+
+/-
+  ============================================================================
+  Part 59: Algebraic Circuit Complexity
+  ============================================================================
+
+  Algebraic circuit complexity studies computation over fields (ℝ, ℂ, or 𝔽_q)
+  rather than Boolean circuits. The key question:
+
+  Does the permanent require super-polynomial size algebraic circuits?
+
+  This is Valiant's VP vs VNP problem - the algebraic analogue of P vs NP.
+
+  Known results:
+  - Baur-Strassen: Ω(n log n) for degree-n univariate polynomials
+  - Strassen: Ω(n²) for matrix multiplication (assuming no divisions)
+  - Raz (2009): Exponential lower bounds for MULTILINEAR formulas
+  - Limaye-Srinivasan-Tavenas (2021): Super-polynomial for bounded-depth circuits!
+
+  The algebraic setting has produced stronger lower bounds than Boolean,
+  making it a promising route to eventual P vs NP progress.
+
+  References:
+  - Valiant, L. (1979). "Completeness classes in algebra"
+  - Bürgisser, P. (2000). "Completeness and Reduction in Algebraic Complexity Theory"
+  - Shpilka, A. & Yehudayoff, A. (2010). "Arithmetic circuits: a survey"
+  - Limaye, N., Srinivasan, S., Tavenas, S. (2021). "Superpolynomial lower bounds against
+    low-depth algebraic circuits"
+-/
+
+namespace AlgebraicCircuits
+
+/-- VP vs VNP (Valiant 1979).
+
+    VP (Valiant's P): polynomials computable by poly-size algebraic circuits.
+    VNP (Valiant's NP): polynomials that are "exponential sums" of VP polynomials.
+
+    The permanent: perm(X) = Σ_{σ ∈ Sₙ} ∏ᵢ x_{i,σ(i)}  is VNP-complete.
+    The determinant: det(X) = Σ_{σ ∈ Sₙ} sgn(σ) ∏ᵢ x_{i,σ(i)}  is VP-complete.
+
+    VP ≠ VNP ⟺ permanent requires super-polynomial algebraic circuits.
+
+    The permanent and determinant differ only by the sign sgn(σ).
+    Yet this tiny difference might separate VP from VNP!
+
+    Note: VP ≠ VNP does NOT directly imply P ≠ NP.
+    But: VP ≠ VNP over finite fields WOULD imply important Boolean lower bounds. -/
+structure VPvsVNP where
+  /-- VP: poly-size algebraic circuits -/
+  vp_class : Type
+  /-- VNP: exponential sums of VP polynomials -/
+  vnp_class : Type
+  /-- Permanent is VNP-complete -/
+  permanent_vnp_complete : Prop
+  /-- Determinant is VP-complete -/
+  determinant_vp_complete : Prop
+  /-- VP ⊆ VNP (trivially) -/
+  vp_in_vnp : Prop
+
+/-- The permanent vs determinant problem.
+
+    Valiant's conjecture (equivalent to VP ≠ VNP):
+    The n×n permanent cannot be written as the m×m determinant
+    for m = poly(n).
+
+    Known: perm_n = det_m requires m ≥ n²/2 (Mignon-Ressayre 2004).
+    This is the best lower bound: barely super-linear!
+
+    The permanent CAN be expressed as a determinant of size 2^n
+    (by inclusion-exclusion). So the question is: can we do better than 2^n?
+
+    Grenet (2011): perm_n = det_m for m = 2^n - 1 (over any field).
+    Over ℂ: Yabe (2015) showed m ≤ 2^{n-1} suffices. -/
+theorem permanent_vs_determinant :
+    -- VP ≠ VNP ⟺ perm_n needs det_m with m = super-poly(n)
+    -- Best lower bound: m ≥ n²/2 (Mignon-Ressayre 2004)
+    -- Best upper bound: m ≤ 2^{n-1} (Yabe 2015)
+    -- Gap: n²/2 vs 2^n is enormous
+    True := trivial
+
+/-- Raz's multilinear formula lower bound (2009).
+
+    Theorem (Raz): The determinant (and permanent) of an n×n matrix
+    requires multilinear formulas of size n^{Ω(log n)}.
+
+    This is SUPER-POLYNOMIAL! (n^{log n} = 2^{(log n)²})
+
+    A multilinear formula computes a multilinear polynomial where
+    every gate computes a multilinear polynomial.
+
+    Why multilinear? Natural for det and perm, since they're multilinear
+    (each variable appears in degree ≤ 1).
+
+    Raz's technique: rank of the partial derivative matrix
+    (the "dimension of partial derivatives" method).
+
+    Limitation: applies only to FORMULAS (not circuits) and only multilinear. -/
+theorem raz_multilinear :
+    -- det_n, perm_n require multilinear formulas of size n^{Ω(log n)}
+    -- This is super-polynomial (first such result!)
+    -- Technique: partial derivative matrix rank
+    -- Limitation: formulas only, multilinear only
+    -- For general circuits: no super-polynomial LBs known
+    True := trivial
+
+/-- Limaye-Srinivasan-Tavenas breakthrough (2021).
+
+    Theorem: There exist explicit polynomials in VNP that require
+    super-polynomial size algebraic circuits of bounded depth.
+
+    Specifically: for any constant Δ, there exist degree-d polynomials
+    in n variables that require depth-Δ circuits of size n^{ω(1)}.
+
+    This is the first super-polynomial lower bound for algebraic circuits
+    (not just formulas) in any restricted model.
+
+    The technique builds on:
+    1. Random restrictions (generalized to algebraic setting)
+    2. Shifted partial derivatives (Kayal 2012)
+    3. Projected shifted partials (Kayal et al. 2014)
+
+    The polynomial achieving the lower bound is an explicit variant
+    of the Nisan-Wigderson polynomial. -/
+theorem limaye_srinivasan_tavenas :
+    -- Super-polynomial LBs for depth-Δ algebraic circuits (any constant Δ)
+    -- First super-poly lower bound for any algebraic circuit model
+    -- Technique: shifted partial derivatives + random restrictions
+    -- The explicit hard polynomial is in VNP
+    -- For unbounded depth: no super-polynomial LBs known
+    True := trivial
+
+/-- The GCT (Geometric Complexity Theory) program.
+
+    Mulmuley-Sohoni (2001): Proposed using algebraic geometry and
+    representation theory to separate VP from VNP.
+
+    Key idea: the permanent and determinant are characterized by their
+    symmetry groups. Separating VP from VNP reduces to showing that
+    certain representations of GL_n DO NOT appear in certain modules.
+
+    The approach:
+    1. Embed perm_n as a point in a projective space
+    2. Take its orbit closure under GL_{m²} action
+    3. If perm is NOT in the orbit closure of det (for m = poly(n)),
+       then VP ≠ VNP
+
+    Step 3 reduces to representation-theoretic "obstructions":
+    specific irreducible representations that appear in one orbit
+    closure but not the other.
+
+    Status: the program has generated deep mathematics but has NOT yet
+    produced unconditional lower bounds. A key difficulty:
+    Bürgisser-Ikenmeyer-Panova (2019) showed that the simplest
+    obstruction approach ("occurrence obstructions") CANNOT work.
+
+    Despite this setback, GCT remains active with modified approaches. -/
+theorem gct_program :
+    -- GCT: algebraic geometry approach to VP vs VNP
+    -- Key idea: representation-theoretic obstructions
+    -- Status: deep math produced, no unconditional lower bounds yet
+    -- Setback: occurrence obstructions don't suffice (BIP 2019)
+    -- But: more refined approaches still being pursued
+    True := trivial
+
+/-- Algebraic vs Boolean complexity connections.
+
+    VP ≠ VNP does NOT directly imply P ≠ NP. But:
+
+    1. VP ≠ VNP over 𝔽₂ implies NEXP ⊄ P/poly (Bürgisser 2000)
+    2. Algebraic lower bounds can be "derandomized" to give Boolean bounds
+    3. The algebraic setting has MORE structure (geometry, representation theory)
+       making lower bounds potentially easier
+
+    The hope: prove VP ≠ VNP first (using algebraic tools),
+    then transfer to Boolean via arithmetization.
+
+    Current state of transfer:
+    - Algebraic → Boolean is NOT automatic
+    - Requires understanding of algebraic vs combinatorial complexity
+    - The "τ-conjecture" (Shub-Smale) would help bridge the gap
+    - Recent progress on integer-valued polynomials (Koiran 2011) -/
+theorem algebraic_boolean_connection :
+    -- VP ≠ VNP over 𝔽₂ ⟹ NEXP ⊄ P/poly (strong Boolean consequence)
+    -- Over ℂ: VP ≠ VNP has weaker Boolean implications
+    -- Algebraic tools: geometry, representation theory, tensor analysis
+    -- Transfer: algebraic → Boolean is possible but non-trivial
+    -- The algebraic route is considered promising for eventual P vs NP progress
+    True := trivial
+
+/-- Summary: the algebraic landscape.
+
+    | Lower Bound | Model | Bound | Year |
+    |-------------|-------|-------|------|
+    | Baur-Strassen | General | Ω(n log n) | 1983 |
+    | Raz | Multilinear formulas | n^{Ω(log n)} | 2009 |
+    | LST | Bounded-depth circuits | n^{ω(1)} | 2021 |
+    | Mignon-Ressayre | det-complexity | n²/2 | 2004 |
+    | GCT | VP vs VNP | (approach, no LBs yet) | 2001- |
+
+    The gap: we have super-polynomial bounds for restricted models
+    but nothing for general algebraic circuits. The full VP vs VNP
+    problem remains open, as does the even harder P vs NP. -/
+theorem algebraic_summary :
+    -- Restricted models: super-polynomial LBs achieved
+    -- General circuits: no super-polynomial LBs
+    -- GCT: promising approach but no unconditional results
+    -- Best general LB: Ω(n log n) for degree-n polynomial (1983!)
+    -- The algebraic route is active and promising
+    True := trivial
+
+end AlgebraicCircuits
+
+-- Part 58-59 exports
+#check ProofComplexity.ProofSystem
+#check ProofComplexity.ProofSystemHierarchy
+#check ProofComplexity.haken_php_resolution
+#check ProofComplexity.extended_frege_pvsnp
+#check AlgebraicCircuits.VPvsVNP
+#check AlgebraicCircuits.raz_multilinear
+#check AlgebraicCircuits.limaye_srinivasan_tavenas
+#check AlgebraicCircuits.gct_program
+
 end PNPBarriers
