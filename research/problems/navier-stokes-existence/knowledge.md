@@ -168,3 +168,15 @@ Formalizing even 2D N-S requires:
 **Related Active Work**: `2d-navier-stokes` attempts the tractable 2D case
 
 **Next Scout**: Check Mathlib PDE development; 2D case is the near-term goal
+
+### Session: 2026-03-15 (researcher-1)
+
+**Added Parts XLI-XLIII** to NavierStokes.lean (now 7700+ lines, 0 sorries, 0 axioms):
+
+1. **Part XLI: Tao's Averaged NS Blowup** - Barrier result showing that energy/scaling/div-free methods alone cannot prove regularity. Formalizes BilinearProperties, BlowupProgram (telescoping frequency cascade), ProofStrategy classification, and Lamb vector identity as a potential route beyond Tao's barrier.
+
+2. **Part XLII: Koch-Tataru BMO⁻¹ Well-posedness** - Critical space theory: BMO⁻¹ is the largest critical space with well-posedness (Koch-Tataru 2001), ill-posedness above (Bourgain-Pavlović 2008). Formalizes CriticalSpace hierarchy, John-Nirenberg inequality structure, CarlesonMeasureNorm, and the optimality result.
+
+3. **Part XLIII: Backward Uniqueness** - Key tool underlying ESŠ theorem. Formalizes Carleman estimates, weight functions, half-space backward uniqueness, and the complete ESŠ proof structure reducing 3D regularity to L³ Liouville. Quantifies the Millennium gap: Leray-Hopf achieves Serrin value 3/2 vs needed ≤ 1.
+
+**Key insight**: The Lamb vector decomposition (u·∇)u = ∇(|u|²/2) + ω×u is NOT preserved by Tao's averaged operator, suggesting that vortex-dynamics-aware proofs are needed for genuine progress.

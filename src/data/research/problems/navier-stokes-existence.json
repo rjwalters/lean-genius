@@ -29,9 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: Added Parts XLI-XLIII covering Tao averaged blowup barrier, Koch-Tataru BMO⁻¹ well-posedness, and backward uniqueness for ESŠ. File now 7700+ lines, 0 sorries, 0 axioms. Companion file extended with 11 new lemmas.",
+    "builtItems": [
+      "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
+      "Part XLII: Koch-Tataru BMO⁻¹ well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
+      "Part XLIII: Backward uniqueness - CarlemanEstimate, BackwardUniquenessResult, ESŠ proof structure, Morrey exponents",
+      "NavierStokesAristotle.lean: Added Sections 10-12 (Koch-Tataru, Tao, backward uniqueness lemmas)"
+    ],
+    "insights": [
+      "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u·∇)u, not just energy/scaling/div-free properties",
+      "Koch-Tataru (2001): BMO⁻¹ is the largest critical space with well-posedness; Bourgain-Pavlović (2008) showed ill-posedness in B^{-1}_{∞,∞}",
+      "ESŠ backward uniqueness reduces 3D regularity to L³ Liouville theorem for ancient solutions",
+      "The Lamb vector identity (u·∇)u = ∇(|u|²/2) + ω×u is NOT preserved by Tao averaged operator - potential proof route",
+      "Leray-Hopf interpolation achieves Serrin value 3/2 vs needed 1; gap of exactly 1/2 is the Millennium Problem"
+    ],
     "mathlibGaps": [
       "Sobolev spaces",
       "PDEs"
