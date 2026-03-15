@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "2099-line formalization with 54 axioms (145 theorems/defs), 0 sorries. Eliminated hopf_map_essential axiom (trivially follows from surjectivity + S² has ≥2 points). Added Dehn surgery, quaternion algebra, Hodge-style module laws.",
+    "progressSummary": "PROGRESS: Eliminated 30 unused axioms (77→47). File: 2304 lines, 47 axioms, 0 sorries.",
     "builtItems": [
       "Part XXI: Antipodal map (antipodalMap, antipodalHomeomorph, no_fixed_points, distance=2)",
       "Part XXIII: Euler characteristic and Betti numbers (sphereEulerChar, euler_char_odd/even, Betti S³)",
@@ -77,7 +77,8 @@
         "name": "mcg_torus_is_SL2Z",
         "description": "Converted from axiom to theorem (was True)",
         "proven": true
-      }
+      },
+      "Eliminated 30 dead-code axioms (77→47): RicciCurvature, perelman_surgery, perelman_entropy_monotone, hamilton_positive_ricci, sphere_n_simply_connected, connected_sum, Hopf bundle, lens space, Heegaard, Dehn surgery, RP3, Jordan-Brouwer, Milnor-Swan, pi1 axioms"
     ],
     "insights": [
       "Antipodal map on S^n: continuous involution, norm-preserving, fixed-point-free (all proved)",
