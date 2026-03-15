@@ -1264,6 +1264,77 @@ theorem Lagarias_implies_Robin : LagariasInequality → RobinsInequality :=
   fun h => RH_iff_Robin.mp (RH_iff_Lagarias.mpr h)
 
 /- ═══════════════════════════════════════════════════════════════════════════════
+PART XIII-bis: CONCRETE ARITHMETIC VERIFICATIONS (PROVED)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-
+Concrete computations verifying the building blocks of Robin's and Lagarias's
+inequalities at specific values. These ground the abstract equivalences in
+explicit arithmetic.
+-/
+
+/-- σ(1) = 1 (the only divisor of 1 is 1 itself). -/
+theorem sigma_one : sigma 1 = 1 := by native_decide
+
+/-- σ(2) = 3 (divisors: 1, 2). -/
+theorem sigma_two : sigma 2 = 3 := by native_decide
+
+/-- σ(6) = 12 (6 is a perfect number: 1 + 2 + 3 + 6 = 12 = 2·6). -/
+theorem sigma_six : sigma 6 = 12 := by native_decide
+
+/-- σ(12) = 28. -/
+theorem sigma_twelve : sigma 12 = 28 := by native_decide
+
+/-- σ(p) = p + 1 for primes (PROVED). -/
+theorem sigma_prime_eq (p : ℕ) (hp : Nat.Prime p) : sigma p = p + 1 := by
+  unfold sigma
+  have h1 : p.divisors = {1, p} := by
+    ext d; simp only [Finset.mem_insert, Finset.mem_singleton, Nat.mem_divisors]
+    constructor
+    · rintro ⟨hd, _⟩
+      have := hp.eq_one_or_self_of_dvd d hd
+      tauto
+    · rintro (rfl | rfl)
+      · exact ⟨one_dvd _, hp.ne_zero⟩
+      · exact ⟨dvd_refl _, hp.ne_zero⟩
+  rw [h1]
+  have h_ne : (1 : ℕ) ∉ ({p} : Finset ℕ) := by
+    simp only [Finset.mem_singleton]; exact hp.one_lt.ne
+  rw [Finset.sum_insert h_ne, Finset.sum_singleton]
+  simp only [_root_.id]
+  omega
+
+/-- σ(n) ≥ n + 1 for n ≥ 2 (since 1 and n are always divisors). -/
+theorem sigma_ge_succ {n : ℕ} (hn : n ≥ 2) : sigma n ≥ n + 1 := by
+  unfold sigma
+  have h1 : 1 ∈ n.divisors := Nat.mem_divisors.mpr ⟨one_dvd n, by omega⟩
+  have hn_self : n ∈ n.divisors := Nat.mem_divisors.mpr ⟨dvd_refl n, by omega⟩
+  have h_ne : (1 : ℕ) ≠ n := by omega
+  calc n.divisors.sum _root_.id
+      ≥ ({1, n} : Finset ℕ).sum _root_.id := by
+        apply Finset.sum_le_sum_of_subset_of_nonneg
+        · intro x hx
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+          rcases hx with rfl | rfl
+          · exact h1
+          · exact hn_self
+        · intros; exact Nat.zero_le _
+    _ = 1 + n := by
+        rw [Finset.sum_insert (by simp [Finset.mem_singleton, h_ne]),
+            Finset.sum_singleton]
+        simp [_root_.id]
+    _ = n + 1 := by omega
+
+/-- H₁ = 1 (harmonic number at 1). -/
+theorem harmonicNumber_one : harmonicNumber 1 = 1 := by
+  unfold harmonicNumber
+  simp [harmonic_succ, harmonic_zero]
+
+/-- H₁ > 0. -/
+theorem harmonicNumber_one_pos : 0 < harmonicNumber 1 := by
+  rw [harmonicNumber_one]; norm_num
+
+/- ═══════════════════════════════════════════════════════════════════════════════
 PART XIV: ZETA SPECIAL VALUES (PROVED)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 13 proved theorems - fractionalPart/NymanBeurling function properties + cross-equivalences. File: 1937 lines, 88 theorems, 18 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Added 21 proved theorems total this session. File: 2008 lines, 96 theorems, 18 axioms, 0 sorries.",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -76,7 +76,10 @@
       "Proved fractionalPart properties: nonneg, lt_one, mem_Ico, intCast, natCast (5 theorems)",
       "Proved nymanBeurlingFunction properties: nonpos, nonneg, lt_one, mem_Ico, self (5 theorems)",
       "Added NymanBeurling and WeilPositivity cross-equivalences to complete the 7-way equivalence class",
-      "Updated RH_equivalence_class to include all 7 formulations including NymanBeurling"
+      "Updated RH_equivalence_class to include all 7 formulations including NymanBeurling",
+      "Proved sigma_prime_eq: σ(p) = p + 1 for primes",
+      "Proved sigma_ge_succ: σ(n) ≥ n + 1 for n ≥ 2",
+      "Proved harmonicNumber_one = 1 from Mathlib harmonic API"
     ],
     "mathlibGaps": [
       "Dirichlet series",
