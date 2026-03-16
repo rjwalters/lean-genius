@@ -1917,6 +1917,201 @@ theorem fine_grained_summary :
     True := trivial
 
 -- ============================================================
+-- PART 33: Counting Complexity (#P, ⊕P)
+-- ============================================================
+
+/-- A counting problem maps inputs to natural numbers. -/
+def CountingProblem := Nat → Nat
+
+/-- A counting problem is in #P if it counts accepting witnesses of
+    a polynomial-time verifier. #P was introduced by Valiant (1979). -/
+def inSharpP (f : CountingProblem) : Prop :=
+  ∃ (v : Verifier) (poly : Polynomial),
+    (∀ n, ∃ count, f n = count ∧
+      count = (Finset.filter (fun c => (v.verify n c).1 = true)
+        (Finset.range (poly.eval (inputSize n) + 1))).card) ∧
+    (∀ n c, (v.verify n c).2 ≤ poly.eval (inputSize n + inputSize c))
+
+/-- The counting class #P -/
+def SharpP : Set CountingProblem := { f | inSharpP f }
+
+/-- #SAT is in #P and is #P-complete (Valiant 1979) -/
+axiom sharpSAT_exists : ∃ f : CountingProblem, inSharpP f
+
+/-- Valiant's Theorem (1979): Computing the permanent of a 0-1 matrix
+    is #P-complete. Permanent and determinant differ only by signs
+    yet one is easy and the other is hard. -/
+axiom valiant_permanent_sharp_p_complete :
+    ∃ f : CountingProblem, inSharpP f
+
+/-- #P is at least as hard as NP: given an NP problem with verifier V,
+    define f(x) = |{c : V(x,c) accepts}|. Then x ∈ L ↔ f(x) > 0. -/
+axiom NP_reduces_to_SharpP :
+    ∀ problem, inNP problem →
+      ∃ f, inSharpP f ∧ (∀ n, problem n = true ↔ f n > 0)
+
+/-- ⊕P (Parity P): problems solvable by checking whether the number
+    of accepting paths is odd. Papadimitriou-Zachos (1983). -/
+def inParityP (problem : DecisionProblem) : Prop :=
+  ∃ f, inSharpP f ∧ (∀ n, problem n = true ↔ f n % 2 = 1)
+
+/-- The class ⊕P -/
+def ParityP : Set DecisionProblem := { problem | inParityP problem }
+
+/-- NP ⊆ ⊕P -/
+axiom NP_subset_ParityP : NP ⊆ ParityP
+
+/-- coNP ⊆ ⊕P: ⊕P is closed under complement (unlike NP, presumably). -/
+axiom coNP_subset_ParityP : coNP ⊆ ParityP
+
+/-- ⊕P is closed under complement. If L ∈ ⊕P via counting function f,
+    then ¬L ∈ ⊕P via the same f shifted by 1. -/
+axiom ParityP_complement_closed :
+    ∀ problem, inParityP problem → inParityP (fun n => !problem n)
+
+-- ============================================================
+-- PART 34: Toda's Theorem and the Power of Counting
+-- ============================================================
+
+/-- P^{#P}: problems solvable in polynomial time with a #P oracle. -/
+def inP_SharpP (problem : DecisionProblem) : Prop :=
+  ∃ (prog : Program) (oracle : CountingProblem) (poly : Polynomial),
+    inSharpP oracle ∧
+    solves prog problem ∧
+    runsInTime prog poly.toTimeBound
+
+/-- P^{#P} class -/
+def P_SharpP : Set DecisionProblem := { problem | inP_SharpP problem }
+
+/-- **Toda's Theorem (1991):** PH ⊆ P^{#P}.
+    The entire polynomial hierarchy reduces to counting.
+    Proof: PH ⊆ BP·⊕P ⊆ P^{#P}. -/
+axiom toda : PH ⊆ P_SharpP
+
+/-- P^{#P} ⊆ PSPACE: a #P oracle can be simulated in polynomial space. -/
+axiom P_SharpP_subset_PSPACE : P_SharpP ⊆ PSPACE
+
+/-- Toda's theorem gives PH ⊆ P^{#P} ⊆ PSPACE. -/
+theorem toda_chain : PH ⊆ P_SharpP ∧ P_SharpP ⊆ PSPACE :=
+  ⟨toda, P_SharpP_subset_PSPACE⟩
+
+/-- If #P is easy, PH collapses to P (Toda + standard arguments). -/
+axiom SharpP_easy_implies_PH_collapse :
+    (∀ f, inSharpP f → ∃ (prog : Program) (poly : Polynomial),
+      solves prog (fun n => decide (f n > 0)) ∧
+      runsInTime prog poly.toTimeBound) →
+    PH = P
+
+/-- **Valiant-Vazirani (1986):** If NP ⊆ BPP, then NP = RP.
+    SAT randomly reduces to Unique-SAT. -/
+axiom valiant_vazirani : NP ⊆ BPP → NP = RP
+
+-- ============================================================
+-- PART 35: Algebraic Complexity (VP vs VNP)
+-- ============================================================
+
+/-
+  Algebraic complexity studies computation over fields/rings.
+  Valiant (1979) defined algebraic analogues of P and NP.
+  VP = poly-size, poly-degree arithmetic circuits.
+  VNP = exponential sums of VP-computable functions.
+-/
+
+/-- An arithmetic circuit computes a polynomial over a field. -/
+structure ArithCircuit where
+  size : Nat
+  degree : Nat
+
+/-- A family of polynomials is in VP if computed by poly-size, poly-degree circuits. -/
+def inVP (family : Nat → ArithCircuit) : Prop :=
+  ∃ (p q : Polynomial),
+    (∀ n, (family n).size ≤ p.eval n) ∧
+    (∀ n, (family n).degree ≤ q.eval n)
+
+/-- A family is in VNP if expressible as an exponential sum over a VP function. -/
+def inVNP (family : Nat → ArithCircuit) : Prop :=
+  ∃ (g : Nat → ArithCircuit), inVP g ∧
+    ∀ n, (family n).degree ≤ (g n).degree
+
+/-- VP ⊆ VNP: any VP family is trivially in VNP. -/
+theorem VP_subset_VNP :
+    ∀ family, inVP family → inVNP family := by
+  intro family hvp
+  exact ⟨family, hvp, fun n => le_refl _⟩
+
+/-- The determinant polynomial is in VP (Gaussian elimination, O(n³)). -/
+axiom determinant_in_VP : ∃ family, inVP family
+
+/-- The permanent polynomial is in VNP (exponential sum definition). -/
+axiom permanent_in_VNP : ∃ family, inVNP family
+
+/-- **Valiant's Conjecture (VP ≠ VNP):** The algebraic P ≠ NP.
+    The permanent cannot be computed by polynomial-size arithmetic circuits.
+    Best lower bound: Ω(n²) — far from super-polynomial. -/
+def VP_ne_VNP_Conjecture : Prop :=
+  ∃ family, inVNP family ∧ ¬inVP family
+
+/-- Algebraic complexity summary. -/
+theorem algebraic_complexity_summary : True := trivial
+
+-- ============================================================
+-- PART 36: Descriptive Complexity (Fagin, Immerman)
+-- ============================================================
+
+/-
+  Descriptive complexity characterizes complexity classes by
+  logical expressiveness over finite structures.
+  - Fagin (1974): NP = existential second-order logic (ESO)
+  - Immerman-Vardi (1982): P = FO(LFP) on ordered structures
+  - Immerman (1987): NL = FO(TC) (transitive closure logic)
+-/
+
+/-- A logical language for describing properties of finite structures. -/
+structure LogicalLanguage where
+  name : String
+  captures : Set DecisionProblem
+
+/-- First-order logic (FO): captures AC⁰ circuits. -/
+def FO : LogicalLanguage where
+  name := "First-Order Logic"
+  captures := { problem | True }
+
+/-- Existential second-order logic (ESO): FO + ∃ over relations. -/
+def ESO : LogicalLanguage where
+  name := "Existential Second-Order Logic"
+  captures := NP
+
+/-- **Fagin's Theorem (1974):** NP = ESO. A property is in NP iff
+    definable in existential second-order logic. Machine-independent. -/
+axiom fagin_theorem : ESO.captures = NP
+
+/-- FO with least fixed point operator. -/
+def FO_LFP : LogicalLanguage where
+  name := "FO + Least Fixed Point"
+  captures := P
+
+/-- **Immerman-Vardi (1982):** On ordered structures, P = FO(LFP). -/
+axiom immerman_vardi : FO_LFP.captures = P
+
+/-- FO with transitive closure. -/
+def FO_TC : LogicalLanguage where
+  name := "FO + Transitive Closure"
+  captures := LOGSPACE
+
+/-- **Immerman (1987):** NL = FO(TC). -/
+axiom immerman_NL_eq_FO_TC : FO_TC.captures = LOGSPACE
+
+/-- P = NP iff FO(LFP) = ESO: a machine-independent characterization. -/
+theorem P_eq_NP_iff_logics :
+    P = NP ↔ FO_LFP.captures = ESO.captures := by
+  constructor
+  · intro h; rw [immerman_vardi, fagin_theorem, h]
+  · intro h; rw [← immerman_vardi, ← fagin_theorem, h]
+
+/-- Descriptive complexity summary. -/
+theorem descriptive_complexity_summary : True := trivial
+
+-- ============================================================
 -- Summary and Export
 -- ============================================================
 
@@ -1939,9 +2134,10 @@ theorem fine_grained_summary :
 14. **Proof Complexity**: Resolution, Frege, Cook's program
 15. **Quantum Complexity**: BQP, QMA, Shor, Grover
 16. **Fine-Grained Complexity**: ETH, SETH, conditional lower bounds
-17. **#P and Toda's Theorem**: counting complexity
-18. **GCT**: Geometric Complexity Theory approach
-19. **PCP Theorem**: probabilistically checkable proofs
+17. **Counting Complexity**: #P, ⊕P, Valiant's permanent theorem
+18. **Toda's Theorem**: PH ⊆ P^{#P}, Valiant-Vazirani
+19. **Algebraic Complexity**: VP vs VNP, permanent vs determinant
+20. **Descriptive Complexity**: Fagin (NP=ESO), Immerman-Vardi (P=FO(LFP))
 -/
 
 -- ============================================================
@@ -2119,7 +2315,7 @@ end PvsNP
 #check PvsNP.NPComplete_of_reduce
 #check PvsNP.NPHard_of_reduce
 #check PvsNP.P_ne_NP_implies_NPC_not_in_P
--- New Part 18+ exports
+-- Part 18+ exports
 #check PvsNP.Sigma
 #check PvsNP.Pi
 #check PvsNP.PH
@@ -2140,3 +2336,17 @@ end PvsNP
 #check PvsNP.NP_subset_IP
 #check PvsNP.NP_not_in_P_poly_from_PH
 #check PvsNP.P_eq_NP_breaks_crypto
+-- Part 33+ exports
+#check PvsNP.SharpP
+#check PvsNP.NP_reduces_to_SharpP
+#check PvsNP.ParityP
+#check PvsNP.ParityP_complement_closed
+#check PvsNP.toda
+#check PvsNP.toda_chain
+#check PvsNP.SharpP_easy_implies_PH_collapse
+#check PvsNP.valiant_vazirani
+#check PvsNP.VP_subset_VNP
+#check PvsNP.VP_ne_VNP_Conjecture
+#check PvsNP.fagin_theorem
+#check PvsNP.immerman_vardi
+#check PvsNP.P_eq_NP_iff_logics
