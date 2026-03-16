@@ -1176,10 +1176,13 @@ theorem K3_not_in_R1 : ¬ hasUnitEmbedding' (Fin 3) (fun i j => i ≠ j) 1 := by
 theorem K3_not_in_R0 : ¬ hasUnitEmbedding' (Fin 3) (fun i j => i ≠ j) 0 := by
   intro ⟨⟨f, hf⟩⟩
   have h01 := hf 0 1 (by decide)
-  simp [Fin.sum_univ_zero] at h01
+  have hempty : Finset.univ.sum (fun i : Fin 0 => (f 0 i - f 1 i) ^ 2) = 0 := by
+    apply Finset.sum_eq_zero; intro x; exact Fin.elim0 x
+  rw [hempty, Real.sqrt_zero] at h01
+  exact absurd h01 (by norm_num)
 
-/-- dim(K₃) ≥ 2: the complete graph on 3 vertices requires at least 2 dimensions. -/
 open Classical in
+/-- dim(K₃) ≥ 2: the complete graph on 3 vertices requires at least 2 dimensions. -/
 theorem complete_graph_dim_ge_2 :
     2 ≤ graphDimension' (Fin 3) (fun i j => i ≠ j) (fun x h => h rfl) := by
   unfold graphDimension'
@@ -1194,8 +1197,8 @@ theorem complete_graph_dim_ge_2 :
   · rw [h] at hspec; exact K3_not_in_R0 hspec
   · rw [h] at hspec; exact K3_not_in_R1 hspec
 
-/-- dim(K₃) = 2: tight bound combining upper and lower bounds. -/
 open Classical in
+/-- dim(K₃) = 2: tight bound combining upper and lower bounds. -/
 theorem complete_graph_dim_eq_2 :
     graphDimension' (Fin 3) (fun i j => i ≠ j) (fun x h => h rfl) = 2 :=
   le_antisymm complete_graph_dim_le_tight_3 complete_graph_dim_ge_2
