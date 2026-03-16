@@ -2450,3 +2450,120 @@ example : schurGapRec 12 12 = schurModRec 12 12 := by native_decide
 example : schurGapRec 15 15 = schurModRec 15 15 := by native_decide
 
 end SchurRecurrence
+
+-- ============================================================================
+-- Part XXXIX: Unrestricted Partition GF (for RR identities)
+-- ============================================================================
+
+/-
+For the Rogers-Ramanujan identities, the mod-side allows REPEATED parts
+(not just distinct). So we need ∏_{k ∈ S} 1/(1-X^k) instead of ∏(1+X^k).
+
+In formal power series, 1/(1-X^k) = ∑_{j≥0} X^{kj} (geometric series).
+So ∏ 1/(1-X^k) counts partitions with parts from S (repetition allowed),
+weighted by coefficient = number of such partitions.
+
+PowerSeries over ℤ: (1 - X^k) is a unit since its constant term is 1.
+The inverse is given by PowerSeries.invOfUnit or direct construction.
+-/
+
+section UnrestrictedGF
+
+open Finset Nat PowerSeries
+
+noncomputable section
+
+/-- The geometric series as a power series: ∑_{j≥0} X^{kj} = 1/(1-X^k).
+    Defined directly as a PowerSeries for k > 0. -/
+def geomSeries (k : ℕ) : PowerSeries ℤ :=
+  PowerSeries.mk (fun n => if k = 0 then 0 else if k ∣ n then 1 else 0)
+
+/-- The generating function for partitions with parts from S (repetition allowed):
+    GF_S(q) = ∏_{k ∈ S} (∑_{j≥0} q^{kj}).
+    This counts partitions of n into parts from S. -/
+def partGF (S : Finset ℕ) : PowerSeries ℤ :=
+  S.prod (fun k => geomSeries k)
+
+/-- The RR1 mod-side GF: ∏_{k≡1,4(5)} 1/(1-X^k) for parts ≤ N. -/
+def rr1ModGFUnrestricted (N : ℕ) : PowerSeries ℤ :=
+  partGF ((Finset.range (N + 1)).filter (fun k => k % 5 = 1 ∨ k % 5 = 4))
+
+/-- The RR2 mod-side GF: ∏_{k≡2,3(5)} 1/(1-X^k) for parts ≤ N. -/
+def rr2ModGFUnrestricted (N : ℕ) : PowerSeries ℤ :=
+  partGF ((Finset.range (N + 1)).filter (fun k => k % 5 = 2 ∨ k % 5 = 3))
+
+/-- Geometric series coefficient: coeff n (geomSeries k) = 1 if k ∣ n, else 0. -/
+theorem geomSeries_coeff (k n : ℕ) (hk : 0 < k) :
+    PowerSeries.coeff (R := ℤ) n (geomSeries k) = if k ∣ n then 1 else 0 := by
+  simp only [geomSeries, PowerSeries.coeff_mk]
+  simp [Nat.pos_iff_ne_zero.mp hk]
+
+/-- Geometric series for k=1: every coefficient is 1. -/
+theorem geomSeries_one_coeff (n : ℕ) :
+    PowerSeries.coeff (R := ℤ) n (geomSeries 1) = 1 := by
+  rw [geomSeries_coeff 1 n (by omega)]
+  simp
+
+/-- Geometric series for k=0 is zero. -/
+theorem geomSeries_zero : geomSeries 0 = 0 := by
+  ext n
+  simp [geomSeries, PowerSeries.coeff_mk, map_zero]
+
+/-- Constant term of geomSeries k is 1 (for k > 0). -/
+theorem geomSeries_constantCoeff (k : ℕ) (hk : 0 < k) :
+    PowerSeries.coeff (R := ℤ) 0 (geomSeries k) = 1 := by
+  change PowerSeries.coeff (R := ℤ) 0 (geomSeries k) = 1
+  rw [geomSeries_coeff k 0 hk]
+  simp
+
+/-- Empty product gives 1. -/
+theorem partGF_empty : partGF ∅ = 1 := by
+  simp [partGF]
+
+end
+
+end UnrestrictedGF
+
+-- ============================================================================
+-- Part XL: Multisets-from-S counting (for unrestricted partitions)
+-- ============================================================================
+
+/-
+For unrestricted partitions (repetition allowed), we need to count
+multisets of elements from S summing to n. This is the combinatorial
+interpretation of ∏_{k ∈ S} 1/(1-X^k).
+
+A multiset from S summing to n is essentially a function f: S → ℕ
+where ∑_{k ∈ S} k * f(k) = n. The count of such multisets is the
+n-th coefficient of the unrestricted GF.
+-/
+
+section MultisetsFromS
+
+open Finset Nat
+
+/-- Count of multisets from {k} summing to n: exactly 1 if k ∣ n, else 0. -/
+theorem singleton_partition_count (k n : ℕ) (hk : 0 < k) :
+    ((Finset.range (n / k + 1)).filter (fun j => k * j = n)).card =
+    if k ∣ n then 1 else 0 := by
+  by_cases hd : k ∣ n
+  · simp only [hd, if_pos]
+    rw [Finset.card_eq_one]
+    refine ⟨n / k, ?_⟩
+    ext j
+    simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_singleton]
+    constructor
+    · intro ⟨_, hj⟩
+      exact Nat.eq_of_mul_eq_left (by omega) (by omega)
+    · intro h
+      subst h
+      exact ⟨by omega, Nat.div_mul_cancel hd⟩
+  · simp only [hd, if_neg, not_false_eq_true]
+    rw [Finset.card_eq_zero]
+    ext j
+    simp only [Finset.mem_filter, Finset.mem_range, Finset.notMem_empty, iff_false, not_and]
+    intro _
+    intro hkj
+    exact hd ⟨j, by omega⟩
+
+end MultisetsFromS
