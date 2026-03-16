@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: NavierStokes.lean at 11,854 lines. Parts LXVII-LXIX covering BKM criterion (vorticity blowup, BMO, logarithmic improvements), Littlewood-Paley/Besov spaces (paradifferential calculus, energy cascade), statistical solutions (Foias, invariant measures, four-fifths law, Batchelor spectrum). 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: NavierStokes.lean at 12,262 lines. Parts LXX-LXXIII covering convex integration/Onsager conjecture (Nash-Isett program, wild solutions, Buckmaster-Vicol), regularity criteria compendium (Serrin, BKM, pressure, component, strain, Type I), turbulence closure (RANS, LES, DNS, moment hierarchy), intermittency multifractal refinement (Parisi-Frisch, She-Lévêque). 0 sorries, 0 axioms.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO⁻¹ well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
@@ -68,7 +68,11 @@
       "Part LXVII: BKM criterion - BKM vorticity blowup, Kozono-Taniuchi BMO, logarithmic improvements, direction-dependent criteria",
       "Part LXVIII: Littlewood-Paley - LP decomposition, Besov spaces, Cannone well-posedness, Chemin-Lerner spaces, paradifferential calculus, energy cascade",
       "Part LXIX: Statistical solutions - Foias statistical solutions, invariant measures, Kolmogorov theory, four-fifths law, Batchelor spectrum, measure-valued solutions",
-      "NavierStokesAristotle.lean: Sections 28-30 (BKM constants, LP Besov exponents, statistical solution constants)"
+      "NavierStokesAristotle.lean: Sections 28-30 (BKM constants, LP Besov exponents, statistical solution constants)",
+      "Part LXX: Convex integration/Onsager - HPrinciple, OnsagerConjectureResolution, DLSzScheme, IsettResolution, WildSolutionsEuler, BuckmasterVicolNS, ConvexIntegrationBarrierResult",
+      "Part LXXI: Regularity criteria compendium - SerrinClass, VorticityRegularityCriteria, PressureRegularityCriteria, ComponentStrainCriteria, TypeIExclusion, RegularityCompendiumHierarchy",
+      "Part LXXII: Turbulence closure - ReynoldsDecomposition, TurbulenceModelHierarchy, LargeEddySim, DNS, ClosureObstruction",
+      "Part LXXIII: Intermittency multifractal - K41Anomaly, LogNormalIntermittency, MultifractalTurbulence, IntermittencyVerification"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u·∇)u, not just energy/scaling/div-free properties",
@@ -115,7 +119,11 @@
       "BKM (1984): blowup iff vorticity integral diverges; Kozono-Taniuchi (2000) weakens L^inf to BMO",
       "Littlewood-Paley makes energy cascade precise: E_j ~ 2^{-10j/3} from K41 spectrum k^{-5/3}",
       "Four-fifths law is the ONLY exact, rigorous result in turbulence: S_3(r) = -4/5 epsilon r",
-      "Batchelor spectrum (Bedrossian et al 2022): first rigorous proof of Kolmogorov-type scaling prediction"
+      "Batchelor spectrum (Bedrossian et al 2022): first rigorous proof of Kolmogorov-type scaling prediction",
+      "Convex integration barrier: any NS regularity proof must essentially use viscosity (not just energy methods)",
+      "Regularity criteria form a hierarchy: all are critical (scale-invariant), none verified for generic Leray-Hopf solutions",
+      "Turbulence closure is fundamentally impossible: moment hierarchy never closes (nonperturbative)",
+      "Intermittency multifractal: She-Lévêque model ζ_p = p/9 + 2(1-(2/3)^{p/3}) best fit across all experiments"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
