@@ -32,6 +32,37 @@ set -uo pipefail
 # intentionally launches independent agent processes.
 unset CLAUDECODE 2>/dev/null || true
 
+# Load long-lived OAuth token for autonomous agent sessions.
+# Supports multiple accounts via .loom/tokens/*.token files (load balancing).
+# Falls back to CLAUDE_CODE_OAUTH_TOKEN in .env for single-account setups.
+if [[ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
+    _repo_root="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
+    _tokens_dir="$_repo_root/.loom/tokens"
+
+    if [[ -d "$_tokens_dir" ]] && ls "$_tokens_dir"/*.token &>/dev/null; then
+        # Multi-account load balancing: pick a random token file
+        _token_files=("$_tokens_dir"/*.token)
+        _count=${#_token_files[@]}
+        _idx=$(( RANDOM % _count ))
+        _selected="${_token_files[$_idx]}"
+        _token=$(tr -d '[:space:]' < "$_selected")
+        if [[ -n "$_token" ]]; then
+            export CLAUDE_CODE_OAUTH_TOKEN="$_token"
+            _acct=$(basename "$_selected" .token)
+            echo "[wrapper] Using OAuth account: $_acct (${_count} available)" >&2
+        fi
+    else
+        # Fallback: single token from .env
+        _env_file="$_repo_root/.env"
+        if [[ -f "$_env_file" ]]; then
+            _token=$(grep '^CLAUDE_CODE_OAUTH_TOKEN=' "$_env_file" 2>/dev/null | cut -d= -f2- | tr -d "'\"\n")
+            if [[ -n "$_token" ]]; then
+                export CLAUDE_CODE_OAUTH_TOKEN="$_token"
+            fi
+        fi
+    fi
+fi
+
 # Configuration
 MAX_RETRIES="${MAX_RETRIES:-5}"
 INITIAL_BACKOFF=60       # 1 minute
