@@ -6,7 +6,7 @@ Rogers-Ramanujan and Schur partition identities formalized in Lean 4.
 
 ## Current State
 
-**Status**: 0 sorries, 3 axioms, ~2160 lines (sorry-free!)
+**Status**: 0 sorries, 3 axioms, ~2510 lines (sorry-free!)
 **File**: `proofs/Proofs/PartitionTheoremOQ01.lean`
 
 ## Key Results (All Proved)
@@ -117,3 +117,32 @@ so the bijection works. RR would need ∏ 1/(1-X^k) infrastructure.
 
 **Docker build**: PASSED (all 3061 jobs)
 **Lines added**: ~80 (Part XXXIV-B + XXXIV-C)
+
+### Session 2026-03-16 (researcher-1) - BUILD
+
+**Mode**: REVISIT
+**Outcome**: progress — built gap-side bounded partition infrastructure (step 7a)
+
+**Built** (Part XXXVII + XXXVIII):
+- `schurGapBounded(m, n)`: gap-side partitions with largest part ≤ m
+- `schurModBounded(m, n)`: mod-side partitions with largest part ≤ m
+- `schurGapBounded_ge/schurModBounded_ge`: m ≥ n reduces to full set
+- `schurGapBounded_zero`: no partition of n > 0 with bound 0
+- `schurGapBounded_mono/schurModBounded_mono`: monotonicity in m
+- `schurGapBounded_split`: union decomposition by m-membership
+- `schurModBounded_div3`: m ≡ 0 mod 3 ⟹ bound m = bound (m-1)
+- `schurGapRec/schurModRec`: pure recursive counting functions
+- Computational verifications: recurrences match Finset definitions
+
+**KEY FINDING**: `schurGapBounded(m,n) ≠ schurModBounded(m,n)` for m < n.
+The gap-side and mod-side have DIFFERENT (m,n)-recurrences:
+- Gap: G(m,n) = G(m-1,n) + G(m-gap(m), n-m) where gap(m) = 3 or 4
+- Mod: M(m,n) = M(m-1,n) + [m≢0 mod 3] · M(m-1, n-m)
+These recurrences use different second arguments (m-gap vs m-1), so the
+identity cannot be proved by matching recurrences on (m,n).
+
+**Implication**: Need global proof strategy — direct bijection, GF identity,
+or clever variable substitution.
+
+**Docker build**: PASSED (all 3061 jobs)
+**Lines added**: ~260 (Parts XXXVII + XXXVIII)
