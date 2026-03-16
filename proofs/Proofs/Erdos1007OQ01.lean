@@ -1116,19 +1116,110 @@ theorem complete_graph_dim_le_tight (n : ℕ) (hn : 2 ≤ n) :
   exact Nat.find_le (complete_graph_unit_embedding_tight n hn)
 
 -- ============================================================================
--- § 20. Summary of Dimension Bounds (Updated)
+-- § 21. Lower Bound: K₃ cannot embed in ℝ¹
+-- ============================================================================
+
+-- Three points on a line cannot all have pairwise distance 1.
+-- If |a-b| = |b-c| = |a-c| = 1, then since a-c = (a-b) + (b-c),
+-- we get (a-c)² = (a-b)² + 2(a-b)(b-c) + (b-c)² = 2 + 2(a-b)(b-c).
+-- Also (a-b)²(b-c)² = 1, so ((a-b)(b-c))² = 1, meaning (a-b)(b-c) ∈ {-1, 1}.
+-- But (a-c)² = 1 forces 2 + 2(a-b)(b-c) = 1, so (a-b)(b-c) = -1/2.
+-- This contradicts ((a-b)(b-c))² = 1 since (-1/2)² = 1/4 ≠ 1.
+
+/-- Helper: For Fin 1, the sum ∑ i, f i equals f 0. -/
+private theorem sum_fin1 (f : Fin 1 → ℝ) : ∑ i : Fin 1, f i = f 0 :=
+  Fin.sum_univ_one f
+
+/-- Algebraic core: x² = 1 ∧ y² = 1 ∧ (x+y)² = 1 is impossible. -/
+private theorem no_three_unit_distances (x y : ℝ) (hx : x ^ 2 = 1) (hy : y ^ 2 = 1)
+    (hxy : (x + y) ^ 2 = 1) : False := by
+  -- From hxy expanded: x² + 2xy + y² = 1, so 2xy = 1 - 1 - 1 = -1
+  have h2xy : 2 * (x * y) = -1 := by nlinarith
+  -- From hx * hy: (xy)² = 1
+  have hprod : (x * y) ^ 2 = 1 := by nlinarith
+  -- But from h2xy: (2xy)² = 1, so 4(xy)² = 1. Combined with (xy)² = 1: 4 = 1.
+  nlinarith
+
+/-- Three points with all pairwise distances equal cannot lie on a line (in ℝ¹). -/
+theorem K3_not_in_R1 : ¬ hasUnitEmbedding' (Fin 3) (fun i j => i ≠ j) 1 := by
+  intro ⟨⟨f, hf⟩⟩
+  -- Extract the three unit-distance conditions
+  have h01 := hf 0 1 (by decide)
+  have h12 := hf 1 2 (by decide)
+  have h02 := hf 0 2 (by decide)
+  -- For Fin 1, the sum has a single term
+  simp only [sum_fin1] at h01 h12 h02
+  -- h01: sqrt((f 0 0 - f 1 0)²) = 1, etc.
+  -- Extract squared distances via sqrt_eq_one
+  set a := f 0 (0 : Fin 1) with ha_def
+  set b := f 1 (0 : Fin 1) with hb_def
+  set c := f 2 (0 : Fin 1) with hc_def
+  -- sqrt(z²) = 1 implies z² = 1 (since sqrt(z²) = |z| and |z|=1 iff z²=1)
+  have hab : (a - b) ^ 2 = 1 := by
+    have : Real.sqrt ((a - b) ^ 2) = 1 := h01
+    have hnn : (a - b) ^ 2 ≥ 0 := sq_nonneg _
+    nlinarith [Real.sq_sqrt hnn]
+  have hbc : (b - c) ^ 2 = 1 := by
+    have : Real.sqrt ((b - c) ^ 2) = 1 := h12
+    have hnn : (b - c) ^ 2 ≥ 0 := sq_nonneg _
+    nlinarith [Real.sq_sqrt hnn]
+  have hac : (a - c) ^ 2 = 1 := by
+    have : Real.sqrt ((a - c) ^ 2) = 1 := h02
+    have hnn : (a - c) ^ 2 ≥ 0 := sq_nonneg _
+    nlinarith [Real.sq_sqrt hnn]
+  -- a - c = (a - b) + (b - c), so (a-c)² = ((a-b)+(b-c))²
+  have heq : a - c = (a - b) + (b - c) := by ring
+  rw [heq] at hac
+  exact no_three_unit_distances _ _ hab hbc hac
+
+/-- K₃ cannot embed in ℝ⁰ (no room for edges). -/
+theorem K3_not_in_R0 : ¬ hasUnitEmbedding' (Fin 3) (fun i j => i ≠ j) 0 := by
+  intro ⟨⟨f, hf⟩⟩
+  have h01 := hf 0 1 (by decide)
+  simp [Fin.sum_univ_zero] at h01
+
+/-- dim(K₃) ≥ 2: the complete graph on 3 vertices requires at least 2 dimensions. -/
+open Classical in
+theorem complete_graph_dim_ge_2 :
+    2 ≤ graphDimension' (Fin 3) (fun i j => i ≠ j) (fun x h => h rfl) := by
+  unfold graphDimension'
+  by_contra hlt
+  push_neg at hlt
+  have hspec := Nat.find_spec (hasUnitEmbedding_exists_irrefl (Fin 3)
+    (fun i j => i ≠ j) (fun x h => h rfl))
+  have hcases : Nat.find (hasUnitEmbedding_exists_irrefl (Fin 3) (fun i j => i ≠ j)
+    (fun x h => h rfl)) = 0 ∨ Nat.find (hasUnitEmbedding_exists_irrefl (Fin 3)
+    (fun i j => i ≠ j) (fun x h => h rfl)) = 1 := by omega
+  rcases hcases with h | h
+  · rw [h] at hspec; exact K3_not_in_R0 hspec
+  · rw [h] at hspec; exact K3_not_in_R1 hspec
+
+/-- dim(K₃) = 2: tight bound combining upper and lower bounds. -/
+open Classical in
+theorem complete_graph_dim_eq_2 :
+    graphDimension' (Fin 3) (fun i j => i ≠ j) (fun x h => h rfl) = 2 :=
+  le_antisymm complete_graph_dim_le_tight_3 complete_graph_dim_ge_2
+
+-- ============================================================================
+-- § 22. Summary of Dimension Bounds (Updated)
 -- ============================================================================
 
 -- Proved results:
--- dim(K₂) ≤ 1  (§14 — explicit embedding)
--- dim(K₃) ≤ 2  (§15 — equilateral triangle)
--- dim(K₄) ≤ 3  (§16 — regular tetrahedron)
--- dim(K₅) ≤ 4  (§16b — regular 4-simplex)
--- dim(K_n) ≤ n-1  (§19 — general regular simplex, for all n ≥ 2)
+-- Upper bounds:
+--   dim(K₂) ≤ 1  (§14 — explicit embedding)
+--   dim(K₃) ≤ 2  (§15 — equilateral triangle)
+--   dim(K₄) ≤ 3  (§16 — regular tetrahedron)
+--   dim(K₅) ≤ 4  (§16b — regular 4-simplex)
+--   dim(K_n) ≤ n-1  (§19 — general regular simplex, for all n ≥ 2)
 --
--- The general result subsumes all individual cases. The bound is tight:
--- dim(K_n) = n-1 for all n ≥ 2 (the lower bound dim(K_n) ≥ n-1 follows from
--- linear independence of centered embedding vectors, but is not yet formalized).
+-- Lower bounds:
+--   dim(K₃) ≥ 2  (§21 — K₃ can't embed in ℝ¹)
+--
+-- Exact values:
+--   dim(K₃) = 2  (§21 — combining upper and lower bounds)
+--
+-- Open: dim(K_n) ≥ n-1 for general n requires showing that n equidistant
+-- points span n-1 dimensions (centered vectors are linearly independent).
 
 #check @complete_graph_unit_embedding
 #check @complete_graph_dim_le
@@ -1147,3 +1238,7 @@ theorem complete_graph_dim_le_tight (n : ℕ) (hn : 2 ≤ n) :
 #check @optimal_implies_quadratic
 #check @optimal_iff_zero_deficiency
 #check @unique_anomaly_small
+#check @K3_not_in_R1
+#check @complete_graph_dim_ge_2
+#check @complete_graph_dim_eq_2
+#check @K3_not_in_R0
