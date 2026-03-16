@@ -800,12 +800,6 @@ abbrev Sphere1 : Set (EuclideanSpace ℝ (Fin 2)) := Metric.sphere 0 1
 /-- The 2-sphere S² as unit sphere in ℝ³. -/
 abbrev Sphere2 : Set (EuclideanSpace ℝ (Fin 3)) := Metric.sphere 0 1
 
-/-- The Hopf map S³ → S² exists as a continuous surjection.
-    Constructed via quaternionic multiplication: for q ∈ S³ ⊂ ℍ,
-    π(q) = q·i·q⁻¹ identifies points on great circle orbits. -/
-axiom hopf_map_exists :
-  ∃ (π : ↥Sphere3 → ↥Sphere2), Continuous π ∧ Function.Surjective π
-
 /-- Each fiber of the Hopf map is homeomorphic to S¹ (a great circle in S³). -/
 axiom hopf_fibers_are_circles :
   ∀ (π : ↥Sphere3 → ↥Sphere2), Continuous π → Function.Surjective π →
@@ -959,23 +953,51 @@ theorem sphere3_mul_right_inv (a : ↥Sphere3) :
   fin_cases i <;> simp [Fin.val] <;> nlinarith
 
 /-- Quaternion multiplication on ℝ⁴ is continuous (polynomial in coordinates).
-    Note: Proof broken by Mathlib API rename (WithLp.isometry_equiv removed). -/
+    Proof: Factor through EuclideanSpace.equiv (linear isometry, hence continuous)
+    composed with continuous pi-type map (each component is a polynomial in
+    coordinates, and coordinate projections are continuous). -/
 theorem quatMulE_continuous :
     Continuous (fun p : EuclideanSpace ℝ (Fin 4) × EuclideanSpace ℝ (Fin 4) =>
       quatMulE p.1 p.2) := by
-  simp only [quatMulE]
-  apply (WithLp.equiv 2 (Fin 4 → ℝ)).symm.continuous.comp
-  apply continuous_pi; intro i
-  fin_cases i <;> simp only <;> fun_prop
+  have h : ∀ p : EuclideanSpace ℝ (Fin 4) × EuclideanSpace ℝ (Fin 4),
+      quatMulE p.1 p.2 = (EuclideanSpace.equiv (Fin 4) ℝ).symm fun i =>
+        if i = 0 then p.1 0 * p.2 0 - p.1 1 * p.2 1 - p.1 2 * p.2 2 - p.1 3 * p.2 3
+        else if i = 1 then p.1 0 * p.2 1 + p.1 1 * p.2 0 + p.1 2 * p.2 3 - p.1 3 * p.2 2
+        else if i = 2 then p.1 0 * p.2 2 - p.1 1 * p.2 3 + p.1 2 * p.2 0 + p.1 3 * p.2 1
+        else p.1 0 * p.2 3 + p.1 1 * p.2 2 - p.1 2 * p.2 1 + p.1 3 * p.2 0 := fun _ => rfl
+  simp only [h]
+  -- Coordinate projections on EuclideanSpace are continuous
+  have cl : ∀ j, Continuous (fun p : EuclideanSpace ℝ (Fin 4) × EuclideanSpace ℝ (Fin 4) => p.1 j) :=
+    fun j => ((continuous_apply j).comp (EuclideanSpace.equiv (Fin 4) ℝ).continuous).comp continuous_fst
+  have cr : ∀ j, Continuous (fun p : EuclideanSpace ℝ (Fin 4) × EuclideanSpace ℝ (Fin 4) => p.2 j) :=
+    fun j => ((continuous_apply j).comp (EuclideanSpace.equiv (Fin 4) ℝ).continuous).comp continuous_snd
+  refine (EuclideanSpace.equiv (Fin 4) ℝ).symm.continuous.comp
+    (continuous_pi fun i => ?_)
+  fin_cases i <;> simp only
+  · exact ((cl 0).mul (cr 0)).sub ((cl 1).mul (cr 1)) |>.sub ((cl 2).mul (cr 2)) |>.sub ((cl 3).mul (cr 3))
+  · exact ((cl 0).mul (cr 1)).add ((cl 1).mul (cr 0)) |>.add ((cl 2).mul (cr 3)) |>.sub ((cl 3).mul (cr 2))
+  · exact ((cl 0).mul (cr 2)).sub ((cl 1).mul (cr 3)) |>.add ((cl 2).mul (cr 0)) |>.add ((cl 3).mul (cr 1))
+  · exact ((cl 0).mul (cr 3)).add ((cl 1).mul (cr 2)) |>.sub ((cl 2).mul (cr 1)) |>.add ((cl 3).mul (cr 0))
 
-/-- Quaternion conjugation on ℝ⁴ is continuous.
-    Note: Proof broken by Mathlib API rename (WithLp.isometry_equiv removed). -/
+/-- Quaternion conjugation on ℝ⁴ is continuous. -/
 theorem quatConjE_continuous :
     Continuous (fun x : EuclideanSpace ℝ (Fin 4) => quatConjE x) := by
-  simp only [quatConjE]
-  apply (WithLp.equiv 2 (Fin 4 → ℝ)).symm.continuous.comp
-  apply continuous_pi; intro i
-  fin_cases i <;> simp only <;> fun_prop
+  have h : ∀ x : EuclideanSpace ℝ (Fin 4),
+      quatConjE x = (EuclideanSpace.equiv (Fin 4) ℝ).symm fun i =>
+        if i = 0 then x 0
+        else if i = 1 then -(x 1)
+        else if i = 2 then -(x 2)
+        else -(x 3) := fun _ => rfl
+  simp only [h]
+  have c : ∀ j, Continuous (fun x : EuclideanSpace ℝ (Fin 4) => x j) :=
+    fun j => (continuous_apply j).comp (EuclideanSpace.equiv (Fin 4) ℝ).continuous
+  refine (EuclideanSpace.equiv (Fin 4) ℝ).symm.continuous.comp
+    (continuous_pi fun i => ?_)
+  fin_cases i <;> simp only
+  · exact c 0
+  · exact (c 1).neg
+  · exact (c 2).neg
+  · exact (c 3).neg
 
 /-- sphere3Mul is continuous (restriction of continuous quatMulE to subtype). -/
 theorem sphere3Mul_continuous :
@@ -1012,6 +1034,143 @@ theorem sphere3_is_lie_group :
   ⟨sphere3Mul, sphere3One, sphere3Inv,
    sphere3Mul_continuous, sphere3Inv_continuous,
    sphere3_mul_left_id, sphere3_mul_right_inv⟩
+
+/- ---- Concrete Hopf Map (Part XLVII) ----------------------------------------
+
+The Hopf map π : S³ → S² is constructed explicitly using the identification
+S³ ⊂ ℂ² and S² ⊂ ℝ³.
+
+For q = (a,b,c,d) ∈ S³, identifying z₁ = a + bi, z₂ = c + di:
+  π(a,b,c,d) = (|z₁|² - |z₂|², 2 Re(z₁z̄₂), 2 Im(z₁z̄₂))
+             = (a²+b²-c²-d², 2(ac+bd), 2(bc-ad))
+
+This is polynomial in coordinates, hence continuous, and surjective by
+explicit preimage construction.
+-/
+
+/-- The Hopf map on ℝ⁴ → ℝ³ (not yet restricted to spheres).
+    π(a,b,c,d) = (a²+b²-c²-d², 2(ac+bd), 2(bc-ad)). -/
+noncomputable def hopfMapE (x : EuclideanSpace ℝ (Fin 4)) :
+    EuclideanSpace ℝ (Fin 3) :=
+  (WithLp.equiv 2 (Fin 3 → ℝ)).symm fun i =>
+    if i = 0 then (x 0)^2 + (x 1)^2 - (x 2)^2 - (x 3)^2
+    else if i = 1 then 2 * ((x 0) * (x 2) + (x 1) * (x 3))
+    else 2 * ((x 1) * (x 2) - (x 0) * (x 3))
+
+/-- The L2 norm squared for ℝ³. -/
+private theorem eucl3_norm_sq (x : EuclideanSpace ℝ (Fin 3)) :
+    ‖x‖ ^ 2 = (x 0) ^ 2 + (x 1) ^ 2 + (x 2) ^ 2 := by
+  rw [EuclideanSpace.norm_eq]
+  rw [Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]
+  simp only [Fin.sum_univ_three, Real.norm_eq_abs, sq_abs]
+
+/-- The Hopf map preserves the unit sphere: if ‖x‖ = 1 then ‖π(x)‖ = 1. -/
+theorem hopfMapE_unit (x : EuclideanSpace ℝ (Fin 4)) (hx : ‖x‖ = 1) :
+    ‖hopfMapE x‖ = 1 := by
+  apply norm_eq_one_of_sq (norm_nonneg _)
+  rw [eucl3_norm_sq]
+  have h0 : hopfMapE x 0 = (x 0)^2 + (x 1)^2 - (x 2)^2 - (x 3)^2 := by
+    show WithLp.equiv 2 (Fin 3 → ℝ) (hopfMapE x) 0 = _; simp [hopfMapE]
+  have h1 : hopfMapE x 1 = 2 * ((x 0) * (x 2) + (x 1) * (x 3)) := by
+    show WithLp.equiv 2 (Fin 3 → ℝ) (hopfMapE x) 1 = _; simp [hopfMapE]
+  have h2 : hopfMapE x 2 = 2 * ((x 1) * (x 2) - (x 0) * (x 3)) := by
+    show WithLp.equiv 2 (Fin 3 → ℝ) (hopfMapE x) 2 = _; simp [hopfMapE]
+  rw [h0, h1, h2]
+  have hsq := unit_sum_sq' x hx
+  nlinarith [sq_nonneg (x 0), sq_nonneg (x 1), sq_nonneg (x 2), sq_nonneg (x 3),
+    sq_nonneg ((x 0)^2 + (x 1)^2 - (x 2)^2 - (x 3)^2),
+    sq_nonneg ((x 0) * (x 2) + (x 1) * (x 3)),
+    sq_nonneg ((x 1) * (x 2) - (x 0) * (x 3))]
+
+/-- The Hopf map sends S³ to S². -/
+private theorem hopfMapE_mem_sphere2 (x : EuclideanSpace ℝ (Fin 4))
+    (hx : x ∈ Sphere3) : hopfMapE x ∈ Sphere2 := by
+  rw [sphere3_mem_norm'] at hx
+  simp [Sphere2, Metric.mem_sphere, dist_zero_right]
+  exact hopfMapE_unit x hx
+
+/-- The concrete Hopf map on spheres: π : S³ → S². -/
+noncomputable def hopfMap (q : ↥Sphere3) : ↥Sphere2 :=
+  ⟨hopfMapE q.1, hopfMapE_mem_sphere2 q.1 q.2⟩
+
+/-- The Hopf map is continuous (polynomial in coordinates, restricted to subtype). -/
+theorem hopfMap_continuous : Continuous hopfMap := by
+  apply Continuous.subtype_mk
+  show Continuous (fun q : ↥Sphere3 => hopfMapE q.1)
+  have h : ∀ q : ↥Sphere3,
+      hopfMapE q.1 = (EuclideanSpace.equiv (Fin 3) ℝ).symm fun i =>
+        if i = 0 then (q.1 0)^2 + (q.1 1)^2 - (q.1 2)^2 - (q.1 3)^2
+        else if i = 1 then 2 * ((q.1 0) * (q.1 2) + (q.1 1) * (q.1 3))
+        else 2 * ((q.1 1) * (q.1 2) - (q.1 0) * (q.1 3)) := fun _ => rfl
+  simp only [h]
+  have c : ∀ j, Continuous (fun q : ↥Sphere3 => q.1 j) :=
+    fun j => ((continuous_apply j).comp (EuclideanSpace.equiv (Fin 4) ℝ).continuous).comp continuous_subtype_val
+  refine (EuclideanSpace.equiv (Fin 3) ℝ).symm.continuous.comp
+    (continuous_pi fun i => ?_)
+  fin_cases i <;> simp only
+  · exact ((c 0).pow 2).add ((c 1).pow 2) |>.sub ((c 2).pow 2) |>.sub ((c 3).pow 2)
+  · exact continuous_const.mul (((c 0).mul (c 2)).add ((c 1).mul (c 3)))
+  · exact continuous_const.mul (((c 1).mul (c 2)).sub ((c 0).mul (c 3)))
+
+/-- The Hopf map is surjective: every point of S² has a preimage.
+    - If u = -1: q = (0, 0, 1, 0) maps to (-1, 0, 0).
+    - If u ≠ -1: q = (√((1+u)/2), 0, v/(2√((1+u)/2)), -w/(2√((1+u)/2))). -/
+theorem hopfMap_surjective : Function.Surjective hopfMap := by
+  intro ⟨p, hp⟩
+  simp [Sphere2, Metric.mem_sphere, dist_zero_right] at hp
+  -- Extract coordinate norm identity
+  have hp_norm : (p 0)^2 + (p 1)^2 + (p 2)^2 = 1 := by
+    have := eucl3_norm_sq p; rw [hp] at this; linarith
+  by_cases h : p 0 = -1
+  · -- South pole case: p = (-1, 0, 0)
+    have hpv : p 1 = 0 := by nlinarith [sq_nonneg (p 1), sq_nonneg (p 2)]
+    have hpw : p 2 = 0 := by nlinarith [sq_nonneg (p 1), sq_nonneg (p 2)]
+    have hq_mem : EuclideanSpace.single (2 : Fin 4) (1 : ℝ) ∈ Sphere3 := by
+      simp [Sphere3, Metric.mem_sphere, dist_zero_right, EuclideanSpace.norm_single]
+    refine ⟨⟨EuclideanSpace.single 2 1, hq_mem⟩, ?_⟩
+    apply Subtype.ext; ext i
+    simp only [hopfMap, hopfMapE, EuclideanSpace.single_apply]
+    fin_cases i <;> simp [h, hpv, hpw]
+  · -- General case: p 0 ≠ -1, so 1 + p 0 > 0
+    have hp0_bound : p 0 > -1 := by
+      by_contra h'
+      push_neg at h'
+      have hp0_ge : -1 ≤ p 0 := by nlinarith [sq_nonneg (p 0)]
+      exact h (le_antisymm h' hp0_ge)
+    have h1pu_pos : (1 + p 0) / 2 > 0 := by linarith
+    set a := Real.sqrt ((1 + p 0) / 2) with ha_def
+    have ha_pos : a > 0 := Real.sqrt_pos.mpr h1pu_pos
+    have ha_ne : a ≠ 0 := ne_of_gt ha_pos
+    have ha_sq : a ^ 2 = (1 + p 0) / 2 := Real.sq_sqrt (le_of_lt h1pu_pos)
+    set c := p 1 / (2 * a) with hc_def
+    set d := -(p 2 / (2 * a)) with hd_def
+    have hq_norm : a ^ 2 + 0 ^ 2 + c ^ 2 + d ^ 2 = 1 := by
+      rw [ha_sq, hc_def, hd_def]; field_simp
+      nlinarith [sq_nonneg (p 1), sq_nonneg (p 2)]
+    let q : EuclideanSpace ℝ (Fin 4) :=
+      (WithLp.equiv 2 (Fin 4 → ℝ)).symm fun i =>
+        if i = 0 then a else if i = 1 then 0 else if i = 2 then c else d
+    have hq0 : q 0 = a := rfl
+    have hq1 : q 1 = 0 := rfl
+    have hq2 : q 2 = c := rfl
+    have hq3 : q 3 = d := rfl
+    have hq_mem : q ∈ Sphere3 := by
+      rw [sphere3_mem_norm']
+      apply norm_eq_one_of_sq (norm_nonneg _)
+      rw [eucl4_norm_sq]; rw [hq0, hq1, hq2, hq3]; exact hq_norm
+    refine ⟨⟨q, hq_mem⟩, ?_⟩
+    apply Subtype.ext; ext i
+    simp only [hopfMap, hopfMapE, hq0, hq1, hq2, hq3, hc_def, hd_def]
+    fin_cases i <;> simp <;> field_simp <;>
+      nlinarith [ha_sq, hp_norm, sq_nonneg a, sq_nonneg (p 0),
+        sq_nonneg (p 1), sq_nonneg (p 2)]
+
+/-- The Hopf map S³ → S² exists as a continuous surjection.
+    PROVED: Constructed via the standard complex-coordinates formula
+    π(a,b,c,d) = (a²+b²-c²-d², 2(ac+bd), 2(bc-ad)). -/
+theorem hopf_map_exists :
+  ∃ (π : ↥Sphere3 → ↥Sphere2), Continuous π ∧ Function.Surjective π :=
+  ⟨hopfMap, hopfMap_continuous, hopfMap_surjective⟩
 
 end ConcreteLieGroup
 
@@ -2602,8 +2761,13 @@ theorem ball3_compact : @CompactSpace Ball3 instBall3Top := by
   exact h
 
 /-- B³ is contractible (the closed ball is convex, hence star-convex at 0,
-    and the straight-line retraction to 0 gives a contraction). -/
-axiom ball3_contractible : @ContractibleSpace Ball3 instBall3Top
+    and the straight-line retraction to 0 gives a contraction).
+    Proved via: convex_closedBall → StarConvex at 0 → contractibleSpace. -/
+theorem ball3_contractible : @ContractibleSpace Ball3 instBall3Top := by
+  unfold Ball3
+  have h0 : (0 : EuclideanSpace ℝ (Fin 3)) ∈ Metric.closedBall 0 1 :=
+    Metric.mem_closedBall_self (by norm_num : (0 : ℝ) ≤ 1)
+  exact ((convex_closedBall 0 1).starConvex h0).contractibleSpace ⟨0, h0⟩
 
 /-- B³ is simply connected (follows from contractibility). -/
 theorem ball3_simply_connected :
