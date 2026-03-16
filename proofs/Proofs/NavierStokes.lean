@@ -10705,9 +10705,9 @@ structure CattabrigaSolonnikov where
     finite-dimensional, despite the infinite-dimensional phase space. -/
 structure GlobalAttractor where
   /-- The global attractor A exists and is compact -/
-  exists : Prop
+  attractor_exists : Prop
   /-- A is invariant under the NS semigroup -/
-  invariant : Prop
+  attractor_invariant : Prop
   /-- A has finite fractal dimension -/
   finiteFractalDim : Prop
   /-- Dimension bound: d_F ≤ C · Re^{9/4} (Foias-Temam) -/
@@ -11160,9 +11160,9 @@ structure TypeI_Ancient where
     Jia-Šverák (2014): there exist DSS solutions for certain large data.
     Bradshaw-Tsai (2019): DSS solutions exist for all DSS initial data. -/
 structure DiscretelySelfSimilar where
-  /-- Scaling factor λ > 1 -/
+  /-- Scaling factor lambda > 1 -/
   scalingFactor : ℝ
-  hλ : scalingFactor > 1
+  hscale : scalingFactor > 1
   /-- DSS symmetry: u(λx, λ²t) = (1/λ)u(x,t) -/
   dss_symmetry : Prop
   /-- Existence: DSS solutions exist for DSS initial data (Bradshaw-Tsai) -/
