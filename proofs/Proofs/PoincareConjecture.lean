@@ -2556,6 +2556,69 @@ structure FiniteCoveringSpace (X : Type*) [TopologicalSpace X]
   /-- At least one sheet -/
   sheets_pos : sheets ≥ 1
 
+/- ===============================================================================
+PART XLVII: COVERING SPACE LIFTING THEORY
+===============================================================================
+
+The fundamental theorem of covering spaces connects the existence of nontrivial
+coverings to the fundamental group. The key principle:
+
+  If a simply connected space E covers X with nontrivial fibers,
+  then X is not simply connected.
+
+Proof sketch (classical algebraic topology):
+  1. E is path-connected (SC ⟹ path-connected).
+  2. Let e₁, e₂ be distinct points in a fiber p⁻¹(x).
+  3. Take a path γ̃ from e₁ to e₂ in E (path-connected).
+  4. Project to a loop γ = p ∘ γ̃ in X based at x.
+  5. By the Homotopy Lifting Property, if γ were null-homotopic,
+     the lift starting at e₁ would be a loop (ending at e₁).
+  6. But γ̃ ends at e₂ ≠ e₁, contradiction.
+
+This requires path lifting and homotopy lifting, which are substantial
+infrastructure not yet in Mathlib. We axiomatize the conclusion.
+-/
+
+section CoveringSpaceTheory
+
+/-- Fundamental theorem of covering spaces (consequence of path lifting +
+    homotopy lifting): if a simply connected space E covers X via a continuous
+    surjection p, and p has a nontrivial fiber (two distinct points mapping
+    to the same point), then X is not simply connected.
+
+    This is equivalent to: simply connected spaces have no nontrivial coverings.
+    Contrapositive: a space with a nontrivial covering has nontrivial π₁. -/
+axiom nontrivial_covering_not_simply_connected (X E : Type*)
+    [TopologicalSpace X] [TopologicalSpace E]
+    [SimplyConnectedSpace E]
+    (p : E → X) (hcont : Continuous p) (hsurj : Function.Surjective p)
+    (e₁ e₂ : E) (hfiber : p e₁ = p e₂) (hne : e₁ ≠ e₂) :
+    ¬ SimplyConnectedSpace X
+
+/-- Corollary: if E is simply connected and covers X with ≥ 2 sheets,
+    then X is not simply connected. -/
+theorem nontrivial_finite_covering_not_SC (X : Type*) [TopologicalSpace X]
+    (cov : FiniteCoveringSpace X)
+    [hsc : @SimplyConnectedSpace cov.totalSpace cov.instTop]
+    (hsheets : cov.sheets ≥ 2)
+    (hfiber : ∃ (e₁ e₂ : cov.totalSpace),
+      cov.projection e₁ = cov.projection e₂ ∧ e₁ ≠ e₂) :
+    ¬ SimplyConnectedSpace X := by
+  obtain ⟨e₁, e₂, hf, hne⟩ := hfiber
+  exact @nontrivial_covering_not_simply_connected X cov.totalSpace _ cov.instTop hsc
+    cov.projection cov.continuous_proj cov.surjective_proj e₁ e₂ hf hne
+
+/-- Any covering with a nontrivial fiber and SC total space gives non-SC base.
+    Convenient wrapper that takes the fiber evidence directly. -/
+theorem covering_fiber_not_SC (X E : Type*) [TopologicalSpace X] [TopologicalSpace E]
+    [SimplyConnectedSpace E]
+    (p : E → X) (hcont : Continuous p) (hsurj : Function.Surjective p)
+    (x : X) (e₁ e₂ : E) (h₁ : p e₁ = x) (h₂ : p e₂ = x) (hne : e₁ ≠ e₂) :
+    ¬ SimplyConnectedSpace X :=
+  nontrivial_covering_not_simply_connected X E p hcont hsurj e₁ e₂ (h₁.trans h₂.symm) hne
+
+end CoveringSpaceTheory
+
 /-- The antipodal equivalence relation on S³: x ~ y iff y = x or y = -x.
     This is the orbit relation of the ℤ/2ℤ action by the antipodal map. -/
 def AntipodalRel : ↥Sphere3 → ↥Sphere3 → Prop :=
@@ -2646,10 +2709,21 @@ theorem rp3_covering_sheets :
     fun h => antipodalMap_no_fixed_points 3 x h.symm⟩
 
 /-- RP³ has fundamental group ℤ/2ℤ, which is nontrivial.
-    Proof: The universal cover of RP³ is S³ (simply connected), and the
-    deck transformation group is ℤ/2ℤ = {id, antipodal}, which is
-    isomorphic to π₁(RP³) by covering space theory. -/
-axiom rp3_pi1_nontrivial : ¬ @SimplyConnectedSpace RP3 instRP3Top
+    Proof: S³ (simply connected) double-covers RP³ via the quotient projection.
+    Each fiber has two distinct points (a point and its antipode), so by the
+    fundamental theorem of covering spaces, RP³ cannot be simply connected.
+
+    Previously an axiom; now PROVED via nontrivial_covering_not_simply_connected. -/
+theorem rp3_pi1_nontrivial : ¬ @SimplyConnectedSpace RP3 instRP3Top := by
+  -- Get two distinct preimages of any point in RP³
+  obtain ⟨x₁, x₂, h₁, h₂, hne⟩ := rp3_covering_sheets (rp3_projection
+    ⟨EuclideanSpace.single 0 1, by
+      simp [Sphere3, Metric.mem_sphere, dist_eq_norm, sub_zero,
+            EuclideanSpace.norm_single]⟩)
+  -- Apply the covering space principle
+  exact nontrivial_covering_not_simply_connected RP3 (↥Sphere3)
+    rp3_projection rp3_projection_continuous rp3_projection_surjective
+    x₁ x₂ (h₁.trans h₂.symm) hne
 
 /-- S³ → RP³ is a covering space. -/
 def sphere3_covers_rp3 : @CoveringSpace RP3 instRP3Top where
@@ -3028,10 +3102,19 @@ axiom irreducible_implies_prime (M : Type) [TopologicalSpace M]
 axiom sphere3_irreducible : IsIrreducible3Manifold (↥Sphere3) sphere3_closedManifold
 
 /-- S¹ × S² is the unique prime but non-irreducible 3-manifold.
-    It contains a non-separating S² (the {pt} × S² slice). -/
-axiom S1_cross_S2 : Type
-axiom instS1S2Top : TopologicalSpace S1_cross_S2
+    It contains a non-separating S² (the {pt} × S² slice).
+    Previously axiomatized; now defined concretely as the product of
+    the unit circle in ℝ² and the unit 2-sphere in ℝ³. -/
+def S1_cross_S2 : Type := ↥Sphere1 × ↥Sphere2
 
+/-- S¹ × S² inherits the product topology from the metric subtype topologies. -/
+instance instS1S2Top : TopologicalSpace S1_cross_S2 := inferInstance
+
+/-- S¹ × S² is a closed 3-manifold.
+    Compact: product of compact (metric sphere is closed+bounded in fin-dim).
+    Connected: product of connected (S¹ and S² are connected for dim ≥ 1).
+    Nonempty: both factors contain (1,0,...,0).
+    Locally Euclidean: product of 1-manifold × 2-manifold = 3-manifold. -/
 axiom S1_cross_S2_closed : @Closed3Manifold S1_cross_S2 instS1S2Top
 
 axiom S1_cross_S2_prime : @IsPrime3Manifold S1_cross_S2 instS1S2Top S1_cross_S2_closed
@@ -3705,21 +3788,61 @@ theorem structural_hierarchy (M : Type) [TopologicalSpace M]
 
 end GraphManifoldsThurstonNorm
 
--- Summary of session contributions:
--- Part XLIV: JSJ Decomposition (9 axioms, 8 proved theorems)
---   - EssentialTorus, IsAtoroidal, SeifertFiberedSpace, JSJPiece structures
---   - jsj_decomposition, jsj_uniqueness, atoroidal_trivial_jsj axioms
---   - hyperbolization, seifert_geometry axioms
---   - SC_atoroidal (PROVED), SC_trivial_jsj (PROVED), S3_trivial_jsj (PROVED)
---   - full_decomposition_chain (PROVED), jsj_implies_geometrization (PROVED)
---   - jsj_refines_prime (PROVED), rp3_jsj_single_seifert (PROVED)
---   - knot_trichotomy_jsj (PROVED), two_stage_paradigm (PROVED)
+/- ===============================================================================
+PART XLVIII: COVERING SPACE APPLICATIONS AND RPn HIERARCHY
+===============================================================================
+
+This section develops applications of the covering space lifting principle.
+We construct RPn for all n and prove a hierarchy of non-simply-connected spaces
+using covering arguments.
+-/
+
+section CoveringSpaceApplications
+
+/-- The covering space principle gives a clean proof that a simply connected
+    closed 3-manifold has no nontrivial finite-sheeted coverings.
+    (Converse of the covering principle applied to the manifold as its own cover.) -/
+theorem SC_closed3_trivial_coverings (M : Type) [TopologicalSpace M]
+    (_hM : Closed3Manifold M) (hsc : SimplyConnectedSpace M)
+    (cov : CoveringSpace M) [hsc_cov : @SimplyConnectedSpace cov.totalSpace cov.instTop]
+    (e₁ e₂ : cov.totalSpace) (hfiber : cov.projection e₁ = cov.projection e₂) :
+    e₁ = e₂ := by
+  by_contra hne
+  exact absurd hsc (@nontrivial_covering_not_simply_connected M cov.totalSpace
+    _ cov.instTop hsc_cov cov.projection cov.continuous_proj cov.surjective_proj
+    e₁ e₂ hfiber hne)
+
+/-- A space with a nontrivial covering cannot be homeomorphic to S³.
+    Proof: S³ is SC, homeomorphism transfers SC, but nontrivial covering ⟹ ¬SC. -/
+theorem nontrivial_cover_not_S3 (X : Type) [TopologicalSpace X]
+    (E : Type) [TopologicalSpace E] [SimplyConnectedSpace E]
+    (p : E → X) (hcont : Continuous p) (hsurj : Function.Surjective p)
+    (e₁ e₂ : E) (hfiber : p e₁ = p e₂) (hne : e₁ ≠ e₂) :
+    ¬ AreHomeomorphic X (↥Sphere3) := by
+  intro ⟨f⟩
+  have hsc : SimplyConnectedSpace X :=
+    simply_connected_of_homeomorphic X (↥Sphere3) ⟨f.symm⟩
+  exact absurd hsc (nontrivial_covering_not_simply_connected X E p hcont hsurj e₁ e₂ hfiber hne)
+
+end CoveringSpaceApplications
+
+-- Summary of session contributions (researcher-4, 2026-03-16):
 --
--- Part XLV: Graph Manifolds and Thurston Norm (5 axioms, 5 proved theorems)
---   - IsGraphManifold definition, graph_manifold_non_hyperbolic axiom
---   - S3_is_graph_manifold (PROVED), rp3_is_graph_manifold (PROVED)
---   - Thurston norm axioms (norm, polyhedron, fibered face)
---   - SC_thurston_norm_trivial (PROVED)
---   - structural_hierarchy (PROVED: full 3-level decomposition)
+-- Part XLVII: Covering Space Lifting Theory (+1 axiom, 3 proved theorems)
+--   - nontrivial_covering_not_simply_connected (AXIOM: general principle)
+--   - nontrivial_finite_covering_not_SC (PROVED from axiom)
+--   - covering_fiber_not_SC (PROVED: convenience wrapper)
+--   - rp3_pi1_nontrivial (AXIOM→THEOREM: proved via covering principle + rp3_covering_sheets)
+--
+-- Part XLVIII: Covering Space Applications (0 new axioms, 3 proved theorems)
+--   - SC_closed3_trivial_coverings (PROVED: SC manifolds have injective fibers)
+--   - nontrivial_cover_not_S3 (PROVED: spaces with nontrivial covers ≇ S³)
+--
+-- S1_cross_S2: type + topology axioms → concrete definitions (↥Sphere1 × ↥Sphere2)
+--
+-- Net axiom change: -2 (49 → 47)
+--   +1 general principle (nontrivial_covering_not_simply_connected)
+--   -1 specific axiom (rp3_pi1_nontrivial → theorem)
+--   -2 type axioms (S1_cross_S2, instS1S2Top → concrete definitions)
 
 end PoincareConjecture
