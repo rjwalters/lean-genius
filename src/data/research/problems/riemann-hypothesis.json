@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Soundness audit: fixed 1 vacuous axiom (voronin True), 1 vacuous existential (turan), 1 wrong bound (explicit_formula), 1 build error (chebyshevPsi collision)",
+    "progressSummary": "Soundness audit: fixed voronin_universality (axiom True), turanInequalities (vacuous ∃), GRH_artin_conjecture (vacuous conclusion), rh_explicit_formula_optimal (wrong bound), forward reference bug. -1 axiom (45 total).",
     "builtItems": [
       {
         "name": "RH_implies_prime_gap_bound",
@@ -160,7 +160,9 @@
       "Part XXXV: Logical structure - 11 proved theorems (failure_propagates, not_RH_iff_Lambda_pos, deBruijnNewman_dichotomy, gue_symmetric, etc.)",
       "Part XXXVI: Dirichlet consequences - Linnik constant, GRH → Artin, GRH → efficient primality",
       "Fixed 4 soundness/correctness issues in RiemannHypothesis.lean",
-      "Fixed pre-existing build error (chebyshevPsi name collision with Mathlib 4.26)"
+      "Fixed pre-existing build error (chebyshevPsi name collision with Mathlib 4.26)",
+      "gue_pair_correlation_le_one: gue(x) ≤ 1 for all x (proved)",
+      "Fixed 4 soundness issues, eliminated 1 axiom (45 axioms now)"
     ],
     "insights": [
       "RH_implies_prime_gap_bound",
@@ -190,7 +192,12 @@
       "voronin_universality was axiom asserting True - converted to theorem (-1 vacuous axiom)",
       "turanInequalities had vacuous ∃ξ_deriv - fixed with opaque xiDerivCoeff axiom",
       "rh_explicit_formula_optimal had x^(3/2)*log²x bound instead of correct C*√x*log²x - fixed",
-      "chebyshevPsi conflicted with Mathlib ArithmeticFunction.chebyshevPsi - renamed to chebyshevPsi prime"
+      "chebyshevPsi conflicted with Mathlib ArithmeticFunction.chebyshevPsi - renamed to chebyshevPsi prime",
+      "2026-03-15: voronin_universality was still axiom True (not fixed in previous session despite knowledge claim) - converted to theorem",
+      "2026-03-15: turanInequalities still had vacuous ∃ξ_deriv (xiDerivCoeff opaque not added despite knowledge claim) - fixed",
+      "2026-03-15: GRH_artin_conjecture conclusion was vacuous (just infinitely many primes) - added primitive root condition",
+      "2026-03-15: rh_explicit_formula_optimal bound was x^(3/2)·log²x instead of C·√x·log²x - fixed",
+      "2026-03-15: selberg_degree_one_classification had forward reference to kaczorowski_perelli_degree_one - reordered"
     ],
     "mathlibGaps": [
       "Dirichlet series",
