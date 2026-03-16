@@ -2253,3 +2253,200 @@ end ExtendedVerification
      For Schur, both sides distinct → distinctPartGF approach works
   8. 🔲 Compose to prove identities
 -/
+
+-- ============================================================================
+-- Part XXXVII: Gap-Side Bounded Partition Counts
+-- ============================================================================
+
+/-
+Step 7a: Building the gap-side partition infrastructure.
+
+We parameterize gap-side partitions by the maximum allowed part size m.
+This enables structural analysis of the Schur identity.
+
+KEY FINDING: schurGapBounded(m,n) ≠ schurModBounded(m,n) for m < n.
+The gap-side and mod-side have DIFFERENT (m,n)-recurrences, so the
+Schur identity cannot be proved by matching recurrences on (m,n).
+A global proof strategy (bijection or GF identity) is needed.
+-/
+
+section GapSideBounded
+
+open Finset Nat PartitionDecidable
+
+/-- SchurGapFull partitions of n with largest part ≤ m. -/
+def schurGapBounded (m n : ℕ) : Finset (Nat.Partition n) :=
+  (schurGapFull n).filter (fun p => ∀ a ∈ p.parts, a ≤ m)
+
+/-- SchurMod partitions of n with largest part ≤ m. -/
+def schurModBounded (m n : ℕ) : Finset (Nat.Partition n) :=
+  (schurMod n).filter (fun p => ∀ a ∈ p.parts, a ≤ m)
+
+/-- When m ≥ n, all parts are automatically ≤ m (since parts sum to n). -/
+theorem schurGapBounded_ge (m n : ℕ) (h : n ≤ m) :
+    schurGapBounded m n = schurGapFull n := by
+  ext p
+  simp only [schurGapBounded, Finset.mem_filter, and_iff_left_iff_imp]
+  intro hp a ha
+  have ha_le : a ≤ p.parts.sum := Multiset.single_le_sum (fun _ _ => Nat.zero_le _) _ ha
+  have hsum : p.parts.sum = n := p.parts_sum
+  omega
+
+/-- When m ≥ n, all mod-side parts are automatically ≤ m. -/
+theorem schurModBounded_ge (m n : ℕ) (h : n ≤ m) :
+    schurModBounded m n = schurMod n := by
+  ext p
+  simp only [schurModBounded, Finset.mem_filter, and_iff_left_iff_imp]
+  intro hp a ha
+  have ha_le : a ≤ p.parts.sum := Multiset.single_le_sum (fun _ _ => Nat.zero_le _) _ ha
+  have hsum : p.parts.sum = n := p.parts_sum
+  omega
+
+/-- No partition of n > 0 fits in bound 0. -/
+theorem schurGapBounded_zero {n : ℕ} (hn : 0 < n) :
+    schurGapBounded 0 n = ∅ := by
+  ext p
+  simp only [schurGapBounded, Finset.mem_filter, Finset.notMem_empty, iff_false, not_and]
+  intro _
+  intro hbound
+  have hzero : ∀ a ∈ p.parts, a = 0 := fun a ha => by
+    have := hbound a ha; have := p.parts_pos ha; omega
+  have hsum : p.parts.sum = n := p.parts_sum
+  have : p.parts.sum = 0 := Multiset.sum_eq_zero hzero
+  omega
+
+/-- The empty partition fits any bound. -/
+theorem schurGapBounded_zero_zero :
+    schurGapBounded 0 0 = schurGapFull 0 := by
+  exact schurGapBounded_ge 0 0 (le_refl 0)
+
+-- The identity holds for m ≥ n (reduces to the full identity):
+example : (schurGapBounded 0 0).card = (schurModBounded 0 0).card := by native_decide
+example : (schurGapBounded 5 5).card = (schurModBounded 5 5).card := by native_decide
+example : (schurGapBounded 9 9).card = (schurModBounded 9 9).card := by native_decide
+example : (schurGapBounded 10 10).card = (schurModBounded 10 10).card := by native_decide
+example : (schurGapBounded 12 12).card = (schurModBounded 12 12).card := by native_decide
+
+/-- Gap-side monotonicity: increasing the bound only adds partitions. -/
+theorem schurGapBounded_mono {m₁ m₂ n : ℕ} (h : m₁ ≤ m₂) :
+    schurGapBounded m₁ n ⊆ schurGapBounded m₂ n := by
+  intro p hp
+  simp only [schurGapBounded, Finset.mem_filter] at *
+  exact ⟨hp.1, fun a ha => le_trans (hp.2 a ha) h⟩
+
+/-- Mod-side monotonicity. -/
+theorem schurModBounded_mono {m₁ m₂ n : ℕ} (h : m₁ ≤ m₂) :
+    schurModBounded m₁ n ⊆ schurModBounded m₂ n := by
+  intro p hp
+  simp only [schurModBounded, Finset.mem_filter] at *
+  exact ⟨hp.1, fun a ha => le_trans (hp.2 a ha) h⟩
+
+/-- Gap-side split: partitions with bound m split into those with bound (m-1)
+    and those that actually use part m. -/
+theorem schurGapBounded_split (m n : ℕ) (hm : 0 < m) :
+    schurGapBounded m n =
+    schurGapBounded (m - 1) n ∪
+    ((schurGapBounded m n).filter (fun p => m ∈ p.parts)) := by
+  ext p
+  simp only [Finset.mem_union, schurGapBounded, Finset.mem_filter]
+  constructor
+  · intro ⟨hp, hbound⟩
+    by_cases hm_in : m ∈ p.parts
+    · exact Or.inr ⟨⟨hp, hbound⟩, hm_in⟩
+    · left
+      exact ⟨hp, fun a ha => by
+        have := hbound a ha
+        have hne : a ≠ m := fun h => hm_in (h ▸ ha)
+        omega⟩
+  · intro h
+    rcases h with ⟨hp, hbound⟩ | ⟨⟨hp, hbound⟩, _⟩
+    · exact ⟨hp, fun a ha => le_trans (hbound a ha) (Nat.sub_le m 1)⟩
+    · exact ⟨hp, hbound⟩
+
+/-- Mod-side: if m ≡ 0 mod 3, no partition in schurMod uses m. -/
+theorem schurModBounded_div3 (m n : ℕ) (hmod : m % 3 = 0) :
+    schurModBounded m n = schurModBounded (m - 1) n := by
+  ext p
+  simp only [schurModBounded, schurMod, Finset.mem_filter, Finset.mem_univ, true_and]
+  constructor
+  · rintro ⟨⟨hnodup, hmod_parts⟩, hbound⟩
+    refine ⟨⟨hnodup, hmod_parts⟩, fun a ha => ?_⟩
+    have ha_le := hbound a ha
+    have ha_mod := hmod_parts a ha
+    by_cases heq : a = m
+    · subst heq; omega
+    · omega
+  · rintro ⟨⟨hnodup, hmod_parts⟩, hbound⟩
+    exact ⟨⟨hnodup, hmod_parts⟩, fun a ha => le_trans (hbound a ha) (Nat.sub_le m 1)⟩
+
+end GapSideBounded
+
+-- ============================================================================
+-- Part XXXVIII: Schur Recurrence Functions
+-- ============================================================================
+
+/-
+Define pure recursive counting functions for both gap-side and mod-side.
+These capture the recurrence structure and enable computational verification.
+
+The recurrences are DIFFERENT:
+  Gap:  G(m, n) = G(m-1, n) + G(m - gap(m), n - m)
+  Mod:  M(m, n) = M(m-1, n) + [m ≢ 0 mod 3] · M(m-1, n - m)
+
+Gap recurses to (m - gap(m)), Mod recurses to (m-1).
+This asymmetry is why the Schur identity is deep.
+-/
+
+section SchurRecurrence
+
+open PartitionDecidable
+
+/-- Pure recursive gap-side Schur count. -/
+def schurGapRec (m n : ℕ) : ℕ :=
+  match m, n with
+  | 0, 0 => 1
+  | 0, _ + 1 => 0
+  | m' + 1, n' =>
+    let skip := schurGapRec m' n'
+    let gap := if (m' + 1) % 3 = 0 then 4 else 3
+    if m' + 1 ≤ n' then
+      skip + schurGapRec (m' + 1 - gap) (n' - (m' + 1))
+    else if m' + 1 = n' then
+      skip + 1
+    else
+      skip
+termination_by (m, n)
+decreasing_by all_goals simp_wf; omega
+
+/-- Pure recursive mod-side Schur count. -/
+def schurModRec (m n : ℕ) : ℕ :=
+  match m, n with
+  | 0, 0 => 1
+  | 0, _ + 1 => 0
+  | m' + 1, n' =>
+    let skip := schurModRec m' n'
+    if (m' + 1) % 3 = 0 then
+      skip
+    else if m' + 1 ≤ n' then
+      skip + schurModRec m' (n' - (m' + 1))
+    else if m' + 1 = n' then
+      skip + 1
+    else
+      skip
+termination_by (m, n)
+decreasing_by all_goals simp_wf; omega
+
+-- Recurrences match Finset definitions for m ≥ n
+example : schurGapRec 5 5 = (schurGapBounded 5 5).card := by native_decide
+example : schurGapRec 8 8 = (schurGapBounded 8 8).card := by native_decide
+example : schurGapRec 10 10 = (schurGapBounded 10 10).card := by native_decide
+
+example : schurModRec 5 5 = (schurModBounded 5 5).card := by native_decide
+example : schurModRec 8 8 = (schurModBounded 8 8).card := by native_decide
+example : schurModRec 10 10 = (schurModBounded 10 10).card := by native_decide
+
+-- The recurrences give equal values for m ≥ n (the Schur identity)
+example : schurGapRec 12 12 = schurModRec 12 12 := by native_decide
+example : schurGapRec 15 15 = schurModRec 15 15 := by native_decide
+
+end SchurRecurrence
