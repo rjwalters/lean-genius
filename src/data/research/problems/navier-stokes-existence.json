@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: NavierStokes.lean at 11,533 lines. Parts LXIV-LXVI covering Liouville theorems/ancient solutions (Seregin, KNSS, ESŠ program), inviscid limit/Euler connection (Kato, Onsager, anomalous dissipation), and analyticity/Gevrey regularity (Foias-Temam, Grujić-Kukavica, complex singularities). 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: NavierStokes.lean at 11,854 lines. Parts LXVII-LXIX covering BKM criterion (vorticity blowup, BMO, logarithmic improvements), Littlewood-Paley/Besov spaces (paradifferential calculus, energy cascade), statistical solutions (Foias, invariant measures, four-fifths law, Batchelor spectrum). 0 sorries, 0 axioms.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO⁻¹ well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
@@ -64,7 +64,11 @@
       "Part LXIV: Liouville theorems - KNSS bounded ancient solutions, Seregin L_{3,∞} Liouville, ESŠ program structure, Type I ancient solutions, discretely self-similar solutions",
       "Part LXV: Inviscid limit - Kato convergence O(ν), boundary layer criterion, Euler-NS connection, Onsager theorem (rigid+flexible), anomalous dissipation, Buckmaster-Vicol NS",
       "Part LXVI: Gevrey regularity - Foias-Temam analyticity, Grujić-Kukavica radius bound, analyticity blowup criterion, Biswas-Swanson unification, Bradshaw-Grujić algebraic bound, complex singularities",
-      "NavierStokesAristotle.lean: Added Sections 25-27 (Liouville constants, inviscid limit/Onsager exponents, Gevrey/analyticity constants)"
+      "NavierStokesAristotle.lean: Added Sections 25-27 (Liouville constants, inviscid limit/Onsager exponents, Gevrey/analyticity constants)",
+      "Part LXVII: BKM criterion - BKM vorticity blowup, Kozono-Taniuchi BMO, logarithmic improvements, direction-dependent criteria",
+      "Part LXVIII: Littlewood-Paley - LP decomposition, Besov spaces, Cannone well-posedness, Chemin-Lerner spaces, paradifferential calculus, energy cascade",
+      "Part LXIX: Statistical solutions - Foias statistical solutions, invariant measures, Kolmogorov theory, four-fifths law, Batchelor spectrum, measure-valued solutions",
+      "NavierStokesAristotle.lean: Sections 28-30 (BKM constants, LP Besov exponents, statistical solution constants)"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u·∇)u, not just energy/scaling/div-free properties",
@@ -107,7 +111,11 @@
       "ESŠ program gap: rescaling gives L_{3,∞} bound, Liouville works for L_{3,∞}, but suitable-weak vs mild distinction creates technical gap that IS the Millennium Problem",
       "Bradshaw-Tsai (2019): discretely self-similar solutions exist for all DSS data — potential counterexample pathway",
       "Global regularity ⟺ inf_t δ(t) > 0 where δ(t) is radius of spatial analyticity — elegant scalar reformulation",
-      "Viscosity pushes complex singularities away from real axis; blowup = complex singularity reaching the real axis (Sulem-Sulem-Frisch framework)"
+      "Viscosity pushes complex singularities away from real axis; blowup = complex singularity reaching the real axis (Sulem-Sulem-Frisch framework)",
+      "BKM (1984): blowup iff vorticity integral diverges; Kozono-Taniuchi (2000) weakens L^inf to BMO",
+      "Littlewood-Paley makes energy cascade precise: E_j ~ 2^{-10j/3} from K41 spectrum k^{-5/3}",
+      "Four-fifths law is the ONLY exact, rigorous result in turbulence: S_3(r) = -4/5 epsilon r",
+      "Batchelor spectrum (Bedrossian et al 2022): first rigorous proof of Kolmogorov-type scaling prediction"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
@@ -135,7 +143,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-16T16:00:00.000Z",
+  "lastUpdate": "2026-03-16T17:00:00.000Z",
   "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1
