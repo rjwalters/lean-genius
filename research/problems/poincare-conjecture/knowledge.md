@@ -383,3 +383,58 @@ New content is structurally clean.
 2. Prove `sphere3_not_contractible` (needs homology or degree theory)
 3. Continue eliminating axioms with concrete constructions
 4. Add quaternion associativity and right identity at subtype level
+
+## Session 2026-03-17 (researcher-4) - Quaternion Associativity + Axiom Elimination
+
+**Mode**: REVISIT (MODERATE knowledge, depth-first)
+**Problem**: poincare-conjecture
+**Prior Status**: 3848 lines, 47 axioms, 231 theorems
+
+### What we did
+
+#### Phase 1: Axiom Eliminations (-4 axioms, +2 axioms, net -2)
+
+1. **`ball3_boundary_is_S2`** (axiom→theorem): The existential "∃ type homeomorphic to S²"
+   is trivially satisfied by S² itself via `homeomorphic_refl`.
+
+2. **Added two fundamental principles**:
+   - `circle_not_simply_connected`: π₁(S¹) ≅ ℤ (axiom, from covering space ℝ → S¹)
+   - `simply_connected_of_prod`: X × Y SC ∧ Y nonempty → X SC (axiom, from projection)
+
+3. **`sphere2_cross_S1_not_simply_connected`** (axiom→theorem): If S² × S¹ were SC,
+   swap to S¹ × S² via `Homeomorph.prodComm`, extract S¹ factor via `simply_connected_of_prod`,
+   contradicting `circle_not_simply_connected`.
+
+4. **`torus3_not_simply_connected`** (axiom→theorem): T³ = S¹ × (S¹ × S¹), extract first
+   S¹ factor via `simply_connected_of_prod`, contradiction.
+
+5. **`S1_cross_S2_not_SC`** (axiom→theorem): Same pattern, extract S¹ from S¹ × S².
+
+#### Phase 2: Quaternion Group Completion (+5 theorems)
+
+1. **`quatMulE_assoc`**: Hamilton product is associative. Each component is a degree-3
+   polynomial in 12 variables; `ring` tactic verifies the identity.
+2. **`sphere3_mul_assoc`**: Lifts associativity to S³ subtype via `Subtype.ext`.
+3. **`sphere3_mul_right_id`**: Right identity a·1 = a by coordinate computation + `ring`.
+4. **`sphere3_mul_left_inv`**: Left inverse a*·a = 1 by coordinate computation + `nlinarith`.
+5. **`sphere3_is_topological_group`**: Complete group axioms (assoc + 2-sided identity +
+   2-sided inverse + continuity). Replaces previous `sphere3_is_lie_group` (kept as alias).
+
+### Outcome
+- **Lines**: 3848 → 3936 (+88)
+- **Axioms**: 47 → 45 (-2 net: -4 eliminated, +2 new fundamental principles)
+- **Theorems**: 231 → 240 (+9)
+
+### Key insights
+- Two general principles (π₁(S¹) ≅ ℤ + product SC factor extraction) subsume three
+  specific non-SC axioms for products involving S¹
+- `ball3_boundary_is_S2` was a vacuously-satisfiable existential — the axiom asked for
+  "a type homeomorphic to S²" without connecting it to the actual boundary of B³
+- Hamilton quaternion associativity is a degree-3 polynomial identity that `ring` handles
+  in 4 cases (one per Fin 4 coordinate)
+
+### Next steps
+1. Prove `sphere3_simply_connected` (needs Seifert-van Kampen or cellular approximation)
+2. Prove `sphere3_not_contractible` (needs H₃ or degree theory)
+3. Add formal `Group` instance on `↥Sphere3` using proved quaternion axioms
+4. Eliminate `hopf_fibers_are_circles` using concrete Hopf map
