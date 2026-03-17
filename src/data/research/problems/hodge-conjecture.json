@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Strengthened 12+ True-concluding items, added Parts XXXIV-XXXV (projective space, synthesis), fixed 9 pre-existing errors. 5270 lines, 92 axioms, 176 theorems, 0 sorries, 0 build errors.",
+    "progressSummary": "PROGRESS: Added projective space Hodge diamond (Part XXXIV), strengthened 2 weak existentials. 5254 lines, 126 axioms, 151 theorems, 0 sorries, 0 build errors.",
     "builtItems": [
       "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
       "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
@@ -189,7 +189,10 @@
       "hodge_threefold_boundary theorem PROVED",
       "hodge_abelian_threefold theorem PROVED",
       "hodge_conjecture_interior_suffices meta-theorem PROVED",
-      "first_unknown_is_fourfold_codim2 theorem PROVED"
+      "first_unknown_is_fourfold_codim2 theorem PROVED",
+      "Part XXXIV: Projective Space Hodge Diamond (IsProjectiveSpace, hodge_diagonal, hodge_offdiag, HC for ℙⁿ)",
+      "Part XXXV: Strengthened Results (complement_nontrivial_of_proper)",
+      "Strengthened 2 weak existentials (polarized_semisimple, polarization_restricts_to_subHodge)"
     ],
     "insights": [
       "Millennium Prize problem, wide open - no known attack strategy",
@@ -253,7 +256,10 @@
       "Added Part XXXIV: ProjectiveSpace, CompleteIntersection structures and HC proofs",
       "Added Part XXXV: Synthesis - dim≤2 HC, codim-1 HC, interior_suffices meta-theorem",
       "Fixed 9 pre-existing build errors: universe levels, interval_cases, type mismatch",
-      "Build passes: 5270 lines, 92 axioms, 176 theorems, 0 sorries, 0 errors"
+      "Build passes: 5270 lines, 92 axioms, 176 theorems, 0 sorries, 0 errors",
+      "Projective space ℙⁿ: h^{p,p}=1 (0≤p≤n), h^{p,q}=0 (p≠q), so HC trivially holds",
+      "Strengthened polarized_semisimple from ∃T,True to ∃T, S⊓T=⊥ ∧ S⊔T=⊤ (proper complement)",
+      "Strengthened polarization_restricts_to_subHodge to state restriction equals pol.Q composed with inclusion"
     ],
     "mathlibGaps": [
       "Complex manifolds",
