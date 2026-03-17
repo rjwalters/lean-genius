@@ -2553,11 +2553,9 @@ theorem singleton_partition_count (k n : ℕ) (hk : 0 < k) :
     ext j
     simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_singleton]
     constructor
-    · intro ⟨_, hj⟩
-      exact Nat.eq_of_mul_eq_left (by omega) (by omega)
-    · intro h
-      subst h
-      exact ⟨by omega, Nat.div_mul_cancel hd⟩
+    · intro ⟨_, hj⟩; omega
+    · intro h; subst h
+      exact ⟨by omega, by omega⟩
   · simp only [hd, if_neg, not_false_eq_true]
     rw [Finset.card_eq_zero]
     ext j
@@ -2567,3 +2565,199 @@ theorem singleton_partition_count (k n : ℕ) (hk : 0 < k) :
     exact hd ⟨j, by omega⟩
 
 end MultisetsFromS
+
+-- ============================================================================
+-- Part XLI: Schur Bijection Infrastructure
+-- ============================================================================
+
+/-
+GOAL: Prove the Schur identity |schurGapFull n| = |schurMod n|.
+
+APPROACH: Selective A-B pairing bijection.
+
+Given π ∈ schurMod(n) (sorted decreasing, parts ≡ 1 or 2 mod 3, distinct):
+1. Find consecutive pairs that VIOLATE the Schur gap condition
+   (in schurMod, violations only occur between different-residue parts with gap ≤ 2)
+2. For each violating pair (a, b) with a ≡ 2, b ≡ 1 (gap 1) or a ≡ 1, b ≡ 2 (gap 2):
+   merge into c = a + b ≡ 0 (mod 3)
+3. Handle cascades: if merged c violates with a neighbor (needs gap ≥ 4 since c ≡ 0),
+   REDISTRIBUTE rather than merge again
+
+KEY FINDINGS (this session):
+
+1. SAME-RESIDUE pairs never violate: if a ≡ b mod 3 with a,b ≢ 0 mod 3,
+   then a - b ≡ 0 (mod 3), so gap ≥ 3. Gap condition satisfied.
+
+2. CROSS-RESIDUE violations produce ≡ 0 sums: (1 mod 3) + (2 mod 3) = 0 mod 3.
+
+3. GREEDY MERGE FAILS: After merging (2,1)→3 in [5,2,1], we get [5,3].
+   Since 3≡0 needs gap ≥ 4, but gap=2. Cascading merge gives [8], but
+   [8] is also schurModToGap([8]). NOT INJECTIVE.
+
+4. A-B PAIRING (pair all A with all B) ALSO FAILS: [5,4], [7,2], [8,1]
+   all map to [9]. Need selective pairing of only violating pairs.
+
+5. REDISTRIBUTION resolves cascades: for [5,3] with gap 2 < 4,
+   redistribute to [6,2] (gap 4 ≥ 4). This is (a+1, b-1) when gap ≡ 2 mod 4.
+
+The correct bijection likely uses "selective merge + redistribute" or
+the Alladi-Gordon colored partition framework.
+-/
+
+section SchurBijection
+
+open PartitionDecidable
+
+-- ============================================================================
+-- Part XLI-A: Structural properties of schurMod partitions
+-- ============================================================================
+
+/-- In schurMod, same-residue parts always have gap ≥ 3.
+    If a ≡ b (mod 3) with a > b and both ≢ 0 (mod 3), then a - b ≥ 3. -/
+theorem schurMod_same_residue_gap (a b : ℕ)
+    (ha : a % 3 = 1 ∨ a % 3 = 2) (hb : b % 3 = 1 ∨ b % 3 = 2)
+    (hab : a > b) (hres : a % 3 = b % 3) :
+    a ≥ b + 3 := by omega
+
+/-- Cross-residue parts with gap < 3 sum to ≡ 0 (mod 3). -/
+theorem schurMod_cross_residue_sum (a b : ℕ)
+    (ha : a % 3 = 1 ∨ a % 3 = 2) (hb : b % 3 = 1 ∨ b % 3 = 2)
+    (hab : a > b) (hres : a % 3 ≠ b % 3) (hgap : a < b + 3) :
+    (a + b) % 3 = 0 := by omega
+
+/-- Cross-residue parts with gap < 3 have gap exactly 1 or 2. -/
+theorem schurMod_cross_residue_gap (a b : ℕ)
+    (ha : a % 3 ≠ 0) (hb : b % 3 ≠ 0) (hab : a > b) (hgap : a < b + 3) :
+    a = b + 1 ∨ a = b + 2 := by omega
+
+/-- In schurMod, violations only occur between cross-residue consecutive parts. -/
+theorem schurMod_violation_cross_residue (a b : ℕ)
+    (ha : a % 3 = 1 ∨ a % 3 = 2) (hb : b % 3 = 1 ∨ b % 3 = 2)
+    (hab : a > b) (hviolation : a < b + 3) :
+    a % 3 ≠ b % 3 := by omega
+
+-- ============================================================================
+-- Part XLI-B: Redistribution lemma (cascade resolution)
+-- ============================================================================
+
+/-- When a merged part c ≡ 0 (mod 3) is too close to a neighbor d (≢ 0 mod 3),
+    we can redistribute: (c, d) → (c + Δ, d - Δ) to achieve gap ≥ 4.
+    The redistribution preserves the sum and fixes the gap condition. -/
+theorem redistribute_fixes_gap (c d : ℕ) (hc : c % 3 = 0) (hd : d % 3 ≠ 0)
+    (hdc : d > c) (hgap : d < c + 4) (hsum : 4 ≤ c + d) :
+    ∃ δ : ℕ, δ ≤ 2 ∧ (d - δ) + (c + δ) = c + d ∧ (d - δ) ≥ (c + δ) + 4 := by
+  sorry  -- Need: find δ such that gap(d-δ, c+δ) = d-c-2δ ≥ 4
+
+/-- For gap violations between ≡0 and ≡non-0 parts, shifting by 1 suffices
+    when the gap is 2 or 3 (the only possible violations after a first merge). -/
+theorem shift_resolves_cascade (a b : ℕ) (hab : a > b)
+    (hb_mod : b % 3 = 0) (ha_mod : a % 3 ≠ 0)
+    (hgap : a < b + 4) (ha_pos : 1 ≤ a) :
+    (a - 1) + (b + 1) = a + b ∧
+    (a - 1) % 3 ≠ 0 ∧ (b + 1) % 3 ≠ 0 → -- if residues work out
+    True := by trivial  -- Placeholder for the full redistribution proof
+
+-- ============================================================================
+-- Part XLI-C: Insert and list utilities
+-- ============================================================================
+
+/-- Insert into a sorted (decreasing) list, maintaining order. -/
+def insertDesc : ℕ → List ℕ → List ℕ
+  | x, [] => [x]
+  | x, a :: rest =>
+    if x ≥ a then x :: a :: rest
+    else a :: insertDesc x rest
+
+/-- insertDesc preserves the sum. -/
+theorem insertDesc_sum (x : ℕ) (l : List ℕ) :
+    (insertDesc x l).sum = x + l.sum := by
+  induction l with
+  | nil => simp [insertDesc]
+  | cons a rest ih =>
+    simp only [insertDesc]
+    split
+    · simp [List.sum_cons]
+    · simp [List.sum_cons, ih]; omega
+
+/-- insertDesc preserves list length + 1. -/
+theorem insertDesc_length (x : ℕ) (l : List ℕ) :
+    (insertDesc x l).length = l.length + 1 := by
+  induction l with
+  | nil => simp [insertDesc]
+  | cons a rest ih =>
+    simp only [insertDesc]
+    split
+    · simp [List.length_cons]
+    · simp [List.length_cons, ih]
+
+/-- Classify parts by residue mod 3. -/
+def classifyMod3 : List ℕ → List ℕ × List ℕ
+  | [] => ([], [])
+  | a :: rest =>
+    let (as_, bs) := classifyMod3 rest
+    if a % 3 = 1 then (a :: as_, bs) else (as_, a :: bs)
+
+/-- classifyMod3 preserves the sum. -/
+theorem classifyMod3_sum (l : List ℕ) :
+    (classifyMod3 l).1.sum + (classifyMod3 l).2.sum = l.sum := by
+  induction l with
+  | nil => simp [classifyMod3]
+  | cons a rest ih =>
+    simp only [classifyMod3]
+    split <;> simp [List.sum_cons] <;> omega
+
+-- ============================================================================
+-- Part XLI-D: Computational exploration of the bijection
+-- ============================================================================
+
+-- Verify classify
+#eval classifyMod3 [7, 5, 4, 2, 1]  -- ([7, 4, 1], [5, 2])
+#eval classifyMod3 [8, 5, 2]        -- ([], [8, 5, 2])
+
+/-
+EXAMPLES showing the correct bijection for small n:
+
+n = 3: schurMod = {[2,1]}  →  schurGapFull = {[3]}
+  [2,1]: violating pair (2,1), merge → [3] ✓
+
+n = 8: schurMod = {[8], [7,1], [5,2,1]}  →  schurGapFull = {[8], [7,1], [6,2]}
+  [8] → [8] (no violations)
+  [7,1] → [7,1] (gap 6 ≥ 3, no violations)
+  [5,2,1] → merge (2,1)→3, then redistribute (5,3)→(6,2) = [6,2] ✓
+
+n = 9: schurMod = {[8,1], [7,2], [5,4]}  →  schurGapFull = {[9], [8,1], [7,2]}
+  [8,1] → [8,1] (gap 7 ≥ 3, no violations)
+  [7,2] → [7,2] (gap 5 ≥ 3, no violations)
+  [5,4] → merge (5,4)→[9] ✓
+
+The redistribution step for n=8 [5,2,1] is the key novelty:
+  After merge (2,1)→3: [5,3]. Gap = 2, but 3≡0 needs ≥4.
+  Redistribute: (5,3) → (6,2). Move 1 from 5's share to 3's share.
+  Formally: 5+3 = 8, need a ≥ b+4 with a+b=8. a=6, b=2. ✓
+  Result [6,2]: gap 4, 6≡0 2≡2, need≥4. 4≥4. ✓
+-/
+
+-- Extended verification of the identity (from previous sessions)
+example : (schurGapFull 11).card = (schurMod 11).card := by native_decide
+example : (schurGapFull 12).card = (schurMod 12).card := by native_decide
+example : (schurGapFull 13).card = (schurMod 13).card := by native_decide
+example : (schurGapFull 14).card = (schurMod 14).card := by native_decide
+example : (schurGapFull 15).card = (schurMod 15).card := by native_decide
+
+-- ============================================================================
+-- Part XLI-E: Statement of the Schur identity (target theorem)
+-- ============================================================================
+
+/-- **Schur's Partition Identity** via selective merge + redistribute bijection.
+    The full proof requires:
+    1. ✓ Same-residue parts never violate (schurMod_same_residue_gap)
+    2. ✓ Cross-residue violations sum to ≡0 (schurMod_cross_residue_sum)
+    3. □ Selective merge of violating pairs only
+    4. □ Cascade redistribution (shift_resolves_cascade)
+    5. □ Proof that result satisfies Schur gap condition
+    6. □ Inverse construction and bijectivity -/
+theorem schur_identity_via_pairing (n : ℕ) :
+    (schurGapFull n).card = (schurMod n).card := by
+  sorry
+
+end SchurBijection
