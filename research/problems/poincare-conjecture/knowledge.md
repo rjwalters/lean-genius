@@ -424,7 +424,104 @@ New content is structurally clean.
 - **Pre-existing build errors**: 4 (Equiv.continuous in quatMulE/quatConjE_continuous)
 
 ### Next steps
-1. Prove cyclicRotation_norm_sq (needs careful WithLp.equiv coordinate expansion)
-2. Fix Equiv.continuous build errors (Mathlib API change)
-3. Prove sphere3_simply_connected
-4. Prove sphere3_not_contractible
+1. Prove sphere3_simply_connected (needs Seifert-van Kampen or cellular approximation)
+2. Prove sphere3_not_contractible (needs homology or degree theory)
+3. Fix pre-existing build errors (ThurstonGeometry/Knot redeclarations, floating docstrings)
+4. Prove rp3_pi1_nontrivial (needs covering space theory)
+
+## Session 2026-03-17 (researcher-2) - Cyclic Rotation + Boundary Axiom Elimination
+
+**Mode**: REVISIT (RICH knowledge, depth-first)
+**Problem**: poincare-conjecture
+**Prior Status**: 4652 lines, 52 axioms, 0 sorries
+
+### What we did
+
+1. **Proved `rotation_preserves_norm_sq`** (new helper lemma):
+   - Key identity: (cos θ · a - sin θ · b)² + (sin θ · a + cos θ · b)² = a² + b²
+   - Clean proof: `ring` to factor as (sin²θ + cos²θ)·(a²+b²), then `sin_sq_add_cos_sq` + `one_mul`
+
+2. **Eliminated `cyclicRotation_norm_sq` axiom**:
+   - Coordinate extraction via `show WithLp.equiv ... = _; simp [cyclicRotation]`
+   - Applied `rotation_preserves_norm_sq` to each 2×2 rotation block
+   - Combined with `linarith`
+
+3. **Eliminated `cyclicRotation_preserves_sphere` axiom**:
+   - From `cyclicRotation_norm_sq` + sphere membership via `norm_eq_one_of_sq`
+
+4. **Eliminated `cyclicRotation_continuous` axiom**:
+   - Used `show` to eta-expand goal (critical: `simp only [h]` fails without this)
+   - Factored through `EuclideanSpace.equiv.symm.continuous.comp` + `continuous_pi`
+   - Each coordinate: `continuous_const.mul (c j)` combined with `.sub` or `.add`
+
+5. **Eliminated `ball3_boundary_is_S2` axiom**:
+   - Trivially satisfiable existential: witnessed by `⟨↥Sphere2, inferInstance, ⟨Homeomorph.refl _⟩⟩`
+
+### Outcome
+- **Lines**: 4652 → 4697 (+45)
+- **Axioms**: 52 → 48 (-4 eliminated)
+- **New helper**: `rotation_preserves_norm_sq` (reusable for any 2D rotation block)
+- **Docker build**: Passes (only pre-existing errors)
+
+### Technical insights
+- `simp only [h]` where `h : ∀ x, f x = g x` cannot rewrite `Continuous f` (not eta-expanded). Must use `show Continuous fun y => f y` first.
+- Docker build from main repo mounts `REPO_ROOT`, not worktree. Use worktree's `docker-build.sh` for testing.
+- `rotation_preserves_norm_sq` proof: `ring` factors out sin²+cos² cleanly; no need for `nlinarith` with many hints.
+
+### Also: Fixed all 12 pre-existing build errors
+- 4 floating `/--` docstrings → `/-` (comments not attached to declarations)
+- Renamed duplicate `RicciFlowWithSurgery` → `RicciFlowWithSurgeryDetail`
+- Renamed duplicate `ThurstonGeometry` → `ThurstonGeometryDetailed` (+ updated refs)
+- Renamed duplicate `Knot` → `KnotBasic`
+- **Result**: 12 errors → 0 (CLEAN BUILD, first time in several sessions)
+
+## Session 2026-03-17 (researcher-2, Session 2) - Soundness Fixes + Covering Space Theory
+
+**Mode**: REVISIT (RICH knowledge, depth-first)
+**Problem**: poincare-conjecture
+**Prior Status**: 4705 lines, 48 axioms, 0 sorries, CLEAN BUILD
+
+### What we did
+
+1. **Removed unsound `hopf_fibers_are_circles` axiom**:
+   - Claimed ALL continuous surjections S³ → S² have circle fibers (false in general)
+   - Was never used in any proof
+   - Replaced with explanatory comment
+
+2. **Fixed unsound `jsj_uniqueness` axiom**:
+   - Old version claimed n₁ = n₂ for ANY `Fin n → JSJPiece M`, without validity
+   - This was unsound: for nonempty M, JSJPiece M is inhabited, so the axiom
+     proved any two natural numbers equal
+   - Added `IsJSJDecomposition` opaque validity predicate
+   - `jsj_uniqueness` now requires both decompositions to be valid
+   - `jsj_decomposition` converted from trivially-witnessed theorem to honest axiom
+
+3. **Added `quotient_free_involution_not_SC` axiom** (covering space monodromy):
+   - A free involution on a SC Hausdorff space produces a non-SC quotient
+   - Based on covering space theory: 2-fold covering of SC base is trivial,
+     contradicting non-injectivity of the projection
+
+4. **Derived `rp3_pi1_nontrivial` as THEOREM** (was axiom):
+   - Applied `quotient_free_involution_not_SC` to S³/antipodal
+   - Uses: `antipodalHomeomorph 3`, `antipodal_involution`, `antipodalMap_no_fixed_points`
+   - Direct term-mode proof, no tactics needed
+
+### Outcome
+- **Lines**: 4705 → 4737 (+32)
+- **Axioms**: 48 → 48 (net: -2 removed, +2 added, but quality improved)
+  - Removed: `hopf_fibers_are_circles` (unsound), `rp3_pi1_nontrivial` (→ theorem)
+  - Added: `quotient_free_involution_not_SC` (general), `jsj_decomposition` (was fake theorem)
+  - Fixed: `jsj_uniqueness` (was unsound, now requires validity)
+- **Docker build**: CLEAN (3175 jobs, only pre-existing lint warnings)
+
+### Key mathematical connections
+- Covering space monodromy is a fundamental tool for computing π₁
+- The same axiom could derive non-SC for any quotient by free involution (RP^n, etc.)
+- Generalizing to free actions of nontrivial finite groups would cover lens spaces
+
+### Next steps
+1. Prove sphere3_simply_connected (needs Seifert-van Kampen or cellular approximation)
+2. Prove sphere3_not_contractible (needs homology or degree theory)
+3. Prove sphere2_cross_S1_not_simply_connected (needs π₁(S¹) ≅ ℤ)
+4. Generalize covering axiom to free actions of arbitrary nontrivial finite groups
+5. Prove IsLocallyHomeomorph for rp3_projection (to ground the covering axiom)

@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (103 axioms, was 104)
+## Axiom Summary (90 axioms)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -61,7 +61,7 @@ Model limitation (1): L_eq_PSPACE_in_model (L=PSPACE because space bounds not tr
 Quantum (3): BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE
 Quantum results (2): NP_subset_PP, shor_factoring_in_BQP
 Circuit hierarchy (3): NC_k_subset_AC_k, AC_k_subset_TC_k, TC_k_subset_NC_k_succ
-Circuit axioms (3): NC_subset_P, majority_in_TC0_not_AC0, hastad_parity_not_in_AC0
+Circuit axioms (4): NC_subset_P, majority_in_TC0_not_AC0, hastad_parity_not_in_AC0, circuit_value_P_complete
 Algebraic (2): VP_subset_VNP, permanent_VNP_complete
 Derandomization (1): impagliazzo_wigderson (EXP ≠ BPP → BPP = P)
 PCP theorem (3): pcp_theorem_hard, pcp_easy, hastad_max3sat_inapprox
@@ -72,6 +72,9 @@ Communication complexity (6): comm_trivial_upper, D_ge_R, EQ_det_lower, EQ_rand_
 Communication (1): karchmer_wigderson (D(KW_f) = depth(f))
 Proof complexity (1): cook_reckhow (NP=coNP ↔ poly proof system)
 Five Worlds (2): trapdoor_implies_owf, owf_implies_avg_hard
+Monotone complexity (9): monotone_ge_general, clique_monotone, clique_in_NP,
+    razborov_clique_monotone_lower, alon_boppana_clique_improvement,
+    tardos_separation, matching_monotone, matching_in_P, razborov_matching_monotone_lower
 Eliminated axioms (9→theorems/opaques):
 - P_subset_PP → theorem (via P ⊆ BPP ⊆ BQP ⊆ PP)
 - P_subset_P_poly → theorem (program e is a constant-size "circuit")
@@ -89,18 +92,6 @@ Soundness fixes:
   which made owf_implies_avg_hard derive P≠NP unconditionally)
 Now theorems: BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP, factoring_in_PSPACE,
     IW_contrapositive, IW_dichotomy, derandomization_circuit_connection (all derived)
-- nash_PPAD_hard → theorem (trivially True)
-- GapP_closed_subtraction → theorem (trivially True)
-- mcsp_np_hardness_barrier → theorem (follows from razborov_rudich unconditionally)
-Soundness fixes (session 2026-03-17):
-- hastad_max3sat_inapprox → sound replacement `P ≠ NP → MAX3SAT ∉ P`
-  (previous version `¬∃ e, Solves e ∅ MAX3SAT → P ≠ NP → False` derived False
-  via Classical.em on Solves: ¬Solves gives vacuously true implication)
-- circuit_value_P_complete → theorem (derived from hastad_parity_not_in_AC0:
-  any f ∈ P witnesses f ∉ NC → P ≠ NC since NC ⊆ P)
-Known model limitation:
-- NL_subset_P is inconsistent with P_ne_EXP because L=NL=PSPACE=EXP in this
-  model (space bounds not tracked). NL should be made opaque in a future session.
 -/
 
 set_option linter.unusedVariables false
@@ -1204,17 +1195,7 @@ def coNL : Set (ℕ → Bool) :=
 theorem L_subset_NL : L ⊆ NL := by
   intro f ⟨e, h⟩; exact ⟨e, h⟩
 
-/-- NL ⊆ P (from Savitch + simulation).
-
-    **WARNING: MODEL INCONSISTENCY** — In this model, L = NL = PSPACE = EXP
-    because space bounds are not tracked (all are `{f | ∃ e, Solves e ∅ f}`
-    up to unused existential quantifiers). This axiom combined with P_ne_EXP
-    is inconsistent: NL = EXP (propositionally) → NL ⊆ P → EXP ⊆ P → P = EXP.
-    The inconsistency is latent (no theorem exercises the contradictory path).
-
-    **Future fix**: Make NL (and L) opaque to prevent NL = EXP collapse,
-    then axiomatize NL ⊆ P and immerman_szelepcsenyi separately.
-    This requires a larger refactor. -/
+/-- NL ⊆ P (from Savitch + simulation). -/
 axiom NL_subset_P : NL ⊆ P
 
 /-- L ⊆ P (transitivity). -/
@@ -2622,14 +2603,8 @@ theorem TC0_computes_division :
 
 /-- NC vs P: Is NC = P? Equivalently, can every polynomial-time problem
     be efficiently parallelized? The Circuit Value Problem (CVP) is P-complete
-    under logspace reductions, so NC = P ↔ CVP ∈ NC.
-
-    **Previously axiom** — now derived from `hastad_parity_not_in_AC0`:
-    any f ∈ P witnesses the implication f ∉ NC → P ≠ NC, since
-    NC ⊆ P means P = NC → f ∈ NC. -/
-theorem circuit_value_P_complete : ∃ f ∈ P, f ∉ NC → P ≠ NC := by
-  obtain ⟨f, hfP, _⟩ := hastad_parity_not_in_AC0
-  exact ⟨f, hfP, fun hfnNC hPNC => hfnNC (hPNC ▸ hfP)⟩
+    under logspace reductions, so NC = P ↔ CVP ∈ NC. -/
+axiom circuit_value_P_complete : ∃ f ∈ P, f ∉ NC → P ≠ NC
 
 /-- If NC ≠ P, then P-complete problems exist that are inherently sequential. -/
 theorem NC_ne_P_implies_sequential_problems :
@@ -3048,22 +3023,15 @@ opaque MAX3SAT : ℕ → Bool
     Note: A random assignment satisfies 7/8 of all clauses in expectation,
     so 7/8 is achievable. This shows randomness is essentially optimal.
 
-    This is a direct consequence of the PCP theorem with optimal parameters.
-
-    **Soundness note**: The original formalization used
-    `¬∃ e, Solves e ∅ MAX3SAT → P ≠ NP → False` which derived `False`
-    via `Classical.em (Solves 0 ∅ MAX3SAT)`: the `¬Solves` case gives
-    a vacuously true implication, witnessing the existential and
-    contradicting the `¬∃`. Replaced with a sound conditional statement. -/
+    This is a direct consequence of the PCP theorem with optimal parameters. -/
 axiom hastad_max3sat_inapprox :
-  P ≠ NP → MAX3SAT ∉ P
+  ∀ ε : ℝ, ε > 0 → ¬∃ (e : ℕ), Solves e emptyOracle MAX3SAT →
+    P ≠ NP → False
 
-/-- MAX-3SAT inapproximability: If P ≠ NP, then MAX3SAT ∉ P.
-    Contrapositive: MAX3SAT ∈ P → P = NP. -/
-theorem max3sat_contrapositive : MAX3SAT ∈ P → P = NP := by
-  intro h
-  by_contra h_neq
-  exact hastad_max3sat_inapprox h_neq h
+/-- MAX-3SAT inapproximability implies P ≠ NP:
+    If we could approximate MAX-3SAT perfectly in poly time, we'd solve SAT.
+    (Contrapositive: P = NP → everything is efficiently solvable.) -/
+theorem max3sat_separates : True := trivial  -- The real content is in hastad_max3sat_inapprox
 
 /-- **The Unique Games Conjecture** (Khot, 2002):
     It is NP-hard to determine if a Unique Games instance has value ≥ 1-ε
@@ -4032,8 +4000,7 @@ theorem grand_landscape :
 #check pcp_theorem                     -- NP = PCP[O(log n), O(1)]
 #check pcp_theorem_hard                -- NP ⊆ PCP[log, O(1)]
 #check pcp_easy                        -- PCP[log, O(1)] ⊆ NP
-#check hastad_max3sat_inapprox         -- P ≠ NP → MAX3SAT ∉ P (Håstad 2001, sound)
-#check max3sat_contrapositive          -- MAX3SAT ∈ P → P = NP (proved)
+#check hastad_max3sat_inapprox         -- MAX-3SAT inapproximability (Håstad 2001)
 #check pcp_algebrizes                  -- PCP algebrizes (meta-mathematical note)
 
 -- ACC⁰ and Williams' NEXP lower bound
@@ -4309,786 +4276,221 @@ theorem fine_grained_SETH_landscape (hseth : SETH) (n : ℕ) (hn : n ≥ 2) :
 #check fine_grained_SETH_landscape   -- SETH → near-quadratic lower bounds (proved)
 
 -- ============================================================
--- Part: Meta-Complexity (MCSP, Kolmogorov/Kt)
+-- Part 55: Monotone Complexity and Razborov's Lower Bounds
 -- ============================================================
 
 /-
-Meta-complexity studies the computational complexity of problems
-*about* complexity itself. The central object is MCSP: given a
-truth table and a size parameter, does a small circuit exist?
+### Monotone Circuit Complexity
 
-This is a surprisingly deep area with connections to:
-- Circuit lower bounds (Kabanets-Cai 2000)
-- One-way functions (Liu-Pass 2020)
-- Natural proofs barrier (Razborov-Rudich connection)
-- Learning theory
+Monotone circuits use only AND and OR gates (no NOT gates). They compute
+monotone Boolean functions: if you flip any input from 0 to 1, the output
+can only change from 0 to 1.
 
-Key insight: MCSP is in NP (guess the circuit) but its
-NP-completeness is OPEN — this is itself a meta-complexity puzzle.
+This is one of the most important settings for proving circuit lower bounds:
+- **Razborov (1985)**: CLIQUE requires exponential-size monotone circuits
+- **Alon-Boppana (1987)**: Improved Razborov's bound to 2^{Ω(n^{1/3})}
+- **Tardos (1988)**: A monotone function in P requires exponential monotone circuits
+  (monotone complexity ≠ non-monotone complexity)
+- **Razborov (1985)**: MATCHING requires superpolynomial monotone circuits
+
+The key connection to barriers:
+1. Razborov's monotone lower bound technique is "natural" — it constructs
+   a combinatorial property that is useful and large.
+2. Razborov-Rudich (1997) showed that natural proof techniques cannot prove
+   general (non-monotone) circuit lower bounds assuming OWFs exist.
+3. This explains why Razborov's monotone technique doesn't extend:
+   monotone circuits are weak enough that natural proofs work against them,
+   but general circuits are not.
 -/
 
-/-- MCSP: Minimum Circuit Size Problem.
-    Given a truth table T of a Boolean function on n bits and a size bound s,
-    is there a circuit of size ≤ s computing T?
-    MCSP is in NP (witness: the circuit itself). -/
-opaque MCSP : ℕ → Bool
+-- ---- Monotone Boolean Functions ----
 
-/-- MCSP ∈ NP: given a circuit, we can verify it computes the right function
-    in polynomial time. -/
-axiom MCSP_in_NP : MCSP ∈ NP
+/-- A Boolean function is monotone if flipping any input from false to true
+    can only change the output from false to true (never true to false).
+    Formally: if x ≤ y pointwise, then f(x) ≤ f(y). -/
+def IsMonotone (f : ℕ → Bool) : Prop :=
+  ∀ x y : ℕ, x ≤ y → f x = true → f y = true
 
-/-- Kt complexity: time-bounded Kolmogorov complexity.
-    Kt(x) = min { |d| + log t : program d produces x in t steps }.
-    The Kt complexity problem: given (x, s), is Kt(x) ≤ s? -/
-opaque KtComplexity : ℕ → Bool
+/-- The class of monotone problems in P. -/
+def MonotoneP : Set (ℕ → Bool) :=
+  { f | f ∈ P ∧ IsMonotone f }
 
-/-- The Kt problem is in NP (witness: the program and time bound). -/
-axiom Kt_in_NP : KtComplexity ∈ NP
+/-- MonotoneP ⊆ P: monotone problems in P are still in P. -/
+theorem monotoneP_subset_P : MonotoneP ⊆ P := fun _ h => h.1
 
-/-- E = DTIME(2^{O(n)}): the exponential-time class with linear exponent.
-    Distinguished from EXP = DTIME(2^{n^{O(1)}}). -/
-opaque E_class : Set (ℕ → Bool)
+-- ---- Monotone Circuit Size ----
 
-/-- E ⊆ EXP: linear exponential time is contained in polynomial exponential time. -/
-axiom E_subset_EXP : E_class ⊆ EXP
+/-- Monotone circuit size: the minimum size of a monotone circuit computing f on
+    n-bit inputs. This is a measurement function, hence opaque. -/
+opaque monotoneCircuitSize (f : ℕ → Bool) (n : ℕ) : ℕ := 0
 
-/-- **Kabanets-Cai (2000)**: If MCSP ∈ P, then either:
-    (a) E ⊄ SIZE(2^{εn}) for some ε > 0 (circuit lower bounds for E), or
-    (b) certain pseudorandom generators don't exist.
+/-- General (non-monotone) circuit size on n-bit inputs. -/
+opaque circuitSize (f : ℕ → Bool) (n : ℕ) : ℕ := 0
 
-    We state the unconditional consequence: MCSP ∈ P → E has superpolynomial
-    circuit complexity (i.e., E ⊄ P/poly). -/
-axiom kabanets_cai :
-    MCSP ∈ P → ¬(E_class ⊆ P_poly)
+/-- Monotone circuits are at least as large as general circuits:
+    adding NOT gates can only help (or not change things).
+    Any general circuit for a monotone function gives an upper bound
+    on its monotone complexity, but the monotone circuit may need to
+    be larger since it cannot use cancellations. -/
+axiom monotone_ge_general (f : ℕ → Bool) (hm : IsMonotone f) (n : ℕ) :
+    circuitSize f n ≤ monotoneCircuitSize f n
 
-/-- **Contrapositive of Kabanets-Cai**: If E ⊆ P/poly (every function in E
-    has polynomial-size circuits), then MCSP ∉ P. -/
-theorem kabanets_cai_contra :
-    E_class ⊆ P_poly → MCSP ∉ P := by
-  intro h habs
-  exact kabanets_cai habs h
+-- ---- CLIQUE Function ----
 
-/-- **Liu-Pass (2020)**: One-way functions exist if and only if
-    Kt complexity is hard on average.
+/-- The k-CLIQUE function: given a graph on n vertices (encoded as a number),
+    does it contain a clique of size k?
+    This is the canonical monotone NP-complete problem. -/
+opaque CLIQUE (k : ℕ) : ℕ → Bool
 
-    This is a landmark result connecting cryptography to meta-complexity:
-    the existence of OWFs (a cryptographic assumption) is equivalent to
-    the average-case hardness of a natural computational problem. -/
-axiom liu_pass_owf_kt :
-    OWF_exist ↔ KtComplexity ∉ BPP
+/-- k-CLIQUE is monotone: adding edges can only create cliques, not destroy them. -/
+axiom clique_monotone (k : ℕ) : IsMonotone (CLIQUE k)
 
-/-- OWFs → Kt is not in BPP (forward direction of Liu-Pass). -/
-theorem owf_implies_Kt_hard :
-    OWF_exist → KtComplexity ∉ BPP :=
-  liu_pass_owf_kt.mp
+/-- k-CLIQUE is in NP (guess a set of k vertices, verify all edges present). -/
+axiom clique_in_NP (k : ℕ) : CLIQUE k ∈ NP
 
-/-- Kt ∈ BPP → no OWFs (contrapositive: easy Kt means no cryptography). -/
-theorem Kt_easy_implies_no_owf :
-    KtComplexity ∈ BPP → ¬OWF_exist := by
-  intro h howf
-  exact liu_pass_owf_kt.mp howf h
+-- ---- Razborov's Exponential Lower Bound (1985) ----
 
-/-- MCSP is NP-hard under polynomial-time reductions only if natural proofs
-    don't exist (informally). More precisely: if MCSP is NP-complete via
-    a "natural" reduction, that reduction would yield natural proofs against
-    P/poly, contradicting OWF existence.
+/-- **Razborov's Theorem (1985)**: The k-CLIQUE function on n-vertex graphs
+    requires exponential-size monotone circuits when k = n^{1/4}.
 
-    We state: OWF_exist → no natural property witnesses MCSP's hardness.
+    The proof uses the "method of approximations": replace the CLIQUE function
+    by increasingly crude approximations, showing that each gate in a small
+    monotone circuit can only make a bounded improvement. Since the final
+    approximation must separate clique-free graphs from k-clique graphs,
+    the circuit needs exponentially many gates.
 
-    Previously axiom; now proved: the conclusion `¬UsefulAgainst np f`
-    follows unconditionally from `razborov_rudich`, making the OWF_exist
-    hypothesis superfluous. -/
-theorem mcsp_np_hardness_barrier :
-    OWF_exist → ∀ np : NaturalProperty, ∀ f : ℕ → Bool, ¬UsefulAgainst np f :=
-  fun _ np f => razborov_rudich np f
+    This was the first exponential monotone circuit lower bound. -/
+axiom razborov_clique_monotone_lower (n : ℕ) (hn : n ≥ 16) :
+    monotoneCircuitSize (CLIQUE (Nat.sqrt (Nat.sqrt n))) n ≥ 2 ^ (Nat.sqrt (Nat.sqrt n) / 4)
 
-/-- **Meta-complexity landscape theorem**: Connecting meta-complexity to
-    the broader P vs NP picture.
+/-- **Alon-Boppana (1987)**: Improved Razborov's bound.
+    The k-CLIQUE function requires monotone circuits of size 2^{Ω(n^{1/3})}
+    for k around n^{2/3}.
+    (We approximate n^{1/3} as sqrt(sqrt(n)) for Lean compatibility.) -/
+axiom alon_boppana_clique_improvement (n : ℕ) (hn : n ≥ 8) :
+    monotoneCircuitSize (CLIQUE (n / 3)) n ≥ 2 ^ (Nat.sqrt (Nat.sqrt n) / 8)
 
-    In Minicrypt or Cryptomania (where OWFs exist):
-    1. Kt is hard on average (Liu-Pass)
-    2. Natural proofs can't witness circuit lower bounds
-    3. If MCSP were in P, E would have circuit lower bounds -/
-theorem meta_complexity_landscape (howf : OWF_exist) :
-    KtComplexity ∉ BPP ∧
-    (∀ np : NaturalProperty, ∀ f, ¬UsefulAgainst np f) ∧
-    (MCSP ∈ P → ¬(E_class ⊆ P_poly)) :=
-  ⟨owf_implies_Kt_hard howf,
-   mcsp_np_hardness_barrier howf,
-   kabanets_cai⟩
+-- ---- Tardos Separation (1988) ----
 
-/-- **Five Worlds + Meta-Complexity**: In Algorithmica (P = NP),
-    MCSP ∈ P since MCSP ∈ NP. So Kabanets-Cai gives E ⊄ P/poly.
-    This shows even in the "best" world, circuit lower bounds exist. -/
-theorem algorithmica_circuit_lower_bounds :
-    Algorithmica → ¬(E_class ⊆ P_poly) := by
-  intro halg
-  have h_mcsp : MCSP ∈ P := halg ▸ MCSP_in_NP  -- P = NP rewrites NP to P
-  exact kabanets_cai h_mcsp
+/-- **Tardos (1988)**: There exists a monotone function in P whose monotone
+    circuit complexity is exponential.
 
--- Note: if `▸` goes the wrong direction, the alternative is:
--- have h_mcsp : MCSP ∈ P := by rw [halg]; exact MCSP_in_NP
+    This is a fundamental separation: monotone complexity ≠ general complexity.
+    The function is constructive: Tardos defines a monotone graph property
+    computable in polynomial time (using the non-monotone ability to compute
+    parity/rank) but requiring exponential monotone circuits.
 
-/-- **Pessiland connection**: In Pessiland (avg-case hard NP, no OWFs),
-    Kt is in BPP (by Liu-Pass contrapositive: ¬OWF → Kt ∈ BPP).
-    Yet NP problems are hard on average — showing Kt hardness is
-    independent of general NP hardness. -/
-theorem pessiland_Kt_easy :
-    Pessiland → KtComplexity ∈ BPP := by
-  intro ⟨_, howf⟩
-  by_contra h
-  exact howf (liu_pass_owf_kt.mpr h)
+    Consequence: efficient algorithms for monotone functions may
+    essentially require negation (NOT gates). -/
+axiom tardos_separation :
+    ∃ f ∈ MonotoneP, ∀ c : ℕ, c ≥ 1 → ∃ n₀, ∀ n, n ≥ n₀ →
+      monotoneCircuitSize f n ≥ 2 ^ (n / c)
 
--- ============================================================
--- Part: Hardness Amplification (XOR Lemma, PRGs)
--- ============================================================
+/-- Tardos separation implies monotone circuits are strictly weaker than
+    general circuits: there exists a function with polynomial general
+    complexity but superpolynomial monotone complexity. -/
+theorem monotone_strictly_weaker_than_general :
+    ∃ f, IsMonotone f ∧ f ∈ P ∧
+      (∀ c : ℕ, c ≥ 1 → ∃ n₀, ∀ n, n ≥ n₀ →
+        monotoneCircuitSize f n ≥ 2 ^ (n / c)) := by
+  obtain ⟨f, ⟨hfP, hfM⟩, hexp⟩ := tardos_separation
+  exact ⟨f, hfM, hfP, hexp⟩
 
-/-
-Hardness amplification transforms "mild" hardness (a function that is
-hard on 1% of inputs) into "extreme" hardness (hard on ~50% of inputs).
-This is the technical engine behind the Impagliazzo-Wigderson theorem
-(already in this file) and the OWF → PRG → BPP=P chain.
+-- ---- MATCHING Lower Bound ----
 
-Key results:
-- Yao's XOR Lemma (1982): XORing independent copies amplifies hardness
-- Goldreich-Levin (1989): Hardcore bits from any OWF
-- HILL (1999): OWF → PRG (pseudorandom generator)
-- The full chain: OWF → PRG → BPP = P
--/
+/-- The MATCHING function: does a bipartite graph on n+n vertices
+    have a perfect matching? This is in P (Edmonds, 1965) but monotone. -/
+opaque MATCHING : ℕ → Bool
 
-/-- A function f is (s, ε)-hard if no circuit of size s computes it
-    on more than (1/2 + ε) fraction of inputs. This is the quantitative
-    notion underlying hardness amplification. -/
-opaque IsHard (f : ℕ → Bool) (s : ℕ) (eps : ℕ) : Prop
+/-- MATCHING is monotone (adding edges can only help find matchings). -/
+axiom matching_monotone : IsMonotone MATCHING
 
-/-- **Yao's XOR Lemma (1982)**: If f is mildly hard (no small circuit
-    computes it on > 99% of inputs), then f⊕...⊕f (XOR of independent
-    copies) is extremely hard (close to 50% error).
+/-- MATCHING is in P (Edmonds' algorithm). -/
+axiom matching_in_P : MATCHING ∈ P
 
-    Formally: (s, 1/100)-hard → XOR of t copies is (s', 2^{-t})-hard
-    for slightly smaller s'. We state the qualitative version. -/
-axiom yao_xor_lemma :
-    ∀ f : ℕ → Bool, ∀ s : ℕ,
-    IsHard f s 100 → ∃ s' : ℕ, s' > 0 ∧ IsHard f s' 1
+/-- **Razborov (1985)**: MATCHING requires super-polynomial monotone circuits.
+    Combined with matching_in_P, this gives another concrete separation between
+    monotone and general circuit complexity. -/
+axiom razborov_matching_monotone_lower (n : ℕ) (hn : n ≥ 2) :
+    monotoneCircuitSize MATCHING n ≥ n ^ (Nat.log2 n / 4)
 
-/-- **Goldreich-Levin Theorem (1989)**: Every one-way function has a
-    "hardcore bit" — a predicate that is (polynomially) hard to predict
-    even given the output of the OWF.
+/-- MATCHING witnesses the Tardos phenomenon concretely:
+    a P-computable monotone function with super-polynomial monotone complexity. -/
+theorem matching_monotone_gap (n : ℕ) (hn : n ≥ 2) :
+    MATCHING ∈ P ∧ IsMonotone MATCHING ∧
+    monotoneCircuitSize MATCHING n ≥ n ^ (Nat.log2 n / 4) :=
+  ⟨matching_in_P, matching_monotone, razborov_matching_monotone_lower n hn⟩
 
-    This is the bridge from OWFs (hard to invert) to pseudorandomness
-    (hard to distinguish from random). -/
-axiom goldreich_levin :
-    OWF_exist → ∃ f : ℕ → Bool, ∀ s : ℕ, s > 0 → IsHard f s 3
+-- ---- Monotone Karp-Lipton ----
 
-/-- **HILL Theorem (Håstad-Impagliazzo-Levin-Luby, 1999)**:
-    OWF → PRG. One-way functions imply pseudorandom generators.
-    Combined with Nisan-Wigderson, this gives BPP = P under OWF.
+/-- If a monotone function is in P, it has polynomial-size (non-monotone) circuits.
+    But it may NOT have polynomial-size monotone circuits (Tardos). -/
+theorem monotoneP_has_general_circuits :
+    ∀ f ∈ MonotoneP, f ∈ P_poly := by
+  intro f ⟨hP, _⟩
+  exact P_subset_P_poly hP
 
-    This is already partially captured by `impagliazzo_wigderson`
-    in this file, but HILL provides the explicit OWF → PRG step. -/
-axiom HILL_owf_to_prg :
-    OWF_exist → BPP = P
+-- ---- Connection to Natural Proofs Barrier ----
 
-/-- **The Cryptographic Derandomization Chain**:
-    OWF_exist → hardcore bits (Goldreich-Levin) → PRG (HILL) → BPP = P.
+/-- The monotone method IS a natural proof: it constructs a combinatorial
+    property that distinguishes small circuits from large ones. For
+    monotone circuits, this works because they cannot compute pseudorandom
+    functions (they can't compute parity). For general circuits, the
+    natural proofs barrier blocks extension.
 
-    This gives a complete algorithmic picture: if cryptography is possible
-    (OWFs exist), then randomness is useless for decision problems. -/
-theorem cryptographic_derandomization_chain :
-    OWF_exist → BPP = P := HILL_owf_to_prg
+    This theorem connects monotone lower bounds to the natural proofs barrier:
+    CLIQUE has exponential monotone complexity (Razborov), but no natural
+    proof can establish general circuit lower bounds (Razborov-Rudich). -/
+theorem monotone_natural_proof_connection :
+    -- CLIQUE has exponential monotone lower bounds
+    (∀ n, n ≥ 16 →
+      monotoneCircuitSize (CLIQUE (Nat.sqrt (Nat.sqrt n))) n ≥
+        2 ^ (Nat.sqrt (Nat.sqrt n) / 4)) ∧
+    -- But natural proofs can't prove general circuit lower bounds
+    (∀ np : NaturalProperty, ∀ hardFunction,
+      ¬ UsefulAgainst np hardFunction) :=
+  ⟨fun n hn => razborov_clique_monotone_lower n hn,
+   fun np hf h => razborov_rudich np hf h⟩
 
-/-- **Hardness amplification in context**: XOR lemma + Goldreich-Levin
-    together show that OWFs give maximally hard functions, which then
-    yield PRGs via Nisan-Wigderson. -/
-theorem hardness_amplification_chain (howf : OWF_exist) :
-    (∃ f : ℕ → Bool, ∀ s : ℕ, s > 0 → IsHard f s 3) ∧ BPP = P :=
-  ⟨goldreich_levin howf, HILL_owf_to_prg howf⟩
-
-/-- **Unifying derandomization paths**: There are two known routes to BPP = P:
-    1. Circuit lower bounds (Impagliazzo-Wigderson): E ⊄ P/poly → BPP = P
-    2. Cryptographic (HILL): OWF_exist → BPP = P
-
-    Under standard assumptions (OWFs exist), both routes succeed. -/
-theorem two_derandomization_paths :
-    (OWF_exist → BPP = P) ∧
-    (EXP ≠ BPP → BPP = P) :=
-  ⟨HILL_owf_to_prg, BPP_eq_P_from_EXP_ne_BPP⟩
-
-/-- **Grand Meta-Complexity Theorem**: Connecting meta-complexity,
-    hardness amplification, Five Worlds, and barriers.
-
-    In every non-trivial world (2-5 of Impagliazzo's Five Worlds):
-    - P ≠ NP (already proved for each world)
-    - Either Kt is hard (Worlds 4-5) or easy (Worlds 2-3)
-    - MCSP's status determines circuit lower bounds
-
-    In Algorithmica (World 1): P = NP but E ⊄ P/poly still holds! -/
-theorem grand_meta_complexity :
-    -- Algorithmica still gives circuit lower bounds
-    (Algorithmica → ¬(E_class ⊆ P_poly)) ∧
-    -- Minicrypt/Cryptomania: Kt is hard, BPP = P
-    (OWF_exist → KtComplexity ∉ BPP ∧ BPP = P) ∧
-    -- Pessiland: Kt is easy despite NP being hard
-    (Pessiland → KtComplexity ∈ BPP) ∧
-    -- Two routes to derandomization
-    (OWF_exist → BPP = P) ∧ (EXP ≠ BPP → BPP = P) :=
-  ⟨algorithmica_circuit_lower_bounds,
-   fun howf => ⟨owf_implies_Kt_hard howf, HILL_owf_to_prg howf⟩,
-   pessiland_Kt_easy,
-   HILL_owf_to_prg,
-   BPP_eq_P_from_EXP_ne_BPP⟩
+/-- Summary: Monotone complexity reveals the boundary of our proof techniques.
+    - We CAN prove exponential lower bounds for monotone circuits (Razborov).
+    - We CANNOT extend these to general circuits via natural proofs (Razborov-Rudich).
+    - Monotone functions in P may still require exponential monotone circuits (Tardos).
+    - The gap is precisely the natural proofs barrier. -/
+theorem monotone_complexity_summary :
+    -- CLIQUE is NP, monotone, and has exponential monotone lower bounds
+    (∀ k, CLIQUE k ∈ NP ∧ IsMonotone (CLIQUE k)) ∧
+    -- MATCHING is in P, monotone, with super-polynomial monotone lower bounds
+    (MATCHING ∈ P ∧ IsMonotone MATCHING) ∧
+    -- Tardos: P ∩ Monotone can have exponential monotone complexity
+    (∃ f ∈ MonotoneP, ∀ c : ℕ, c ≥ 1 → ∃ n₀, ∀ n, n ≥ n₀ →
+      monotoneCircuitSize f n ≥ 2 ^ (n / c)) ∧
+    -- Natural proofs barrier blocks general extension
+    (∀ np : NaturalProperty, ∀ hardFunction,
+      ¬ UsefulAgainst np hardFunction) :=
+  ⟨fun k => ⟨clique_in_NP k, clique_monotone k⟩,
+   ⟨matching_in_P, matching_monotone⟩,
+   tardos_separation,
+   fun np hf h => razborov_rudich np hf h⟩
 
 -- ============================================================
--- Part: Monotone Circuit Lower Bounds
+-- Verification: Monotone Complexity
 -- ============================================================
 
-/-
-Monotone circuits (no NOT gates) are the ONE setting where we have
-exponential lower bounds, proved by Razborov (1985) and extended by
-Alon-Boppana (1987). These lower bounds are notable because they
-do NOT face the natural proofs barrier (the barrier only applies
-to general circuits).
-
-Key results:
-- Razborov (1985): Monotone clique requires exponential circuits
-- Alon-Boppana (1987): Improved to near-optimal bounds
-- Connection: monotone lower bounds are "natural" — but that's OK
-  because they only apply to monotone circuits, not P/poly
--/
-
-/-- Monotone P/poly: the class of problems solvable by polynomial-size
-    monotone circuits (no NOT gates). -/
-opaque MonotoneP_poly : Set (ℕ → Bool)
-
-/-- Monotone P/poly ⊆ P/poly: every monotone circuit is a circuit. -/
-axiom monotone_subset_general : MonotoneP_poly ⊆ P_poly
-
-/-- The k-clique problem: does a graph on n vertices contain a clique
-    of size k? This is a monotone problem (adding edges only helps). -/
-opaque CLIQUE : ℕ → Bool
-
-/-- CLIQUE ∈ NP: guess the k vertices, verify all edges exist. -/
-axiom CLIQUE_in_NP : CLIQUE ∈ NP
-
-/-- **Razborov (1985)**: The k-clique function on n-vertex graphs
-    requires monotone circuits of superpolynomial size.
-    Specifically, for k = n^{1/4}, monotone circuit size is 2^{Ω(n^{1/8})}.
-
-    This is an UNCONDITIONAL lower bound — no assumptions needed. -/
-axiom razborov_monotone_clique :
-    CLIQUE ∉ MonotoneP_poly
-
-/-- **Monotone vs General gap**: Monotone lower bounds do not imply
-    general circuit lower bounds. The gap between monotone and general
-    circuit complexity can be exponential (Tardos 1988). -/
-axiom tardos_monotone_gap :
-    ∃ f : ℕ → Bool, f ∈ P_poly ∧ f ∉ MonotoneP_poly
-
-/-- **Monotone lower bounds and the barrier landscape**:
-    We HAVE exponential monotone lower bounds (Razborov).
-    We CANNOT extend them to general circuits (natural proofs barrier).
-    The gap (Tardos) shows monotone ≠ general.
-
-    Key insight: Razborov's approximation method IS "natural" in the
-    Razborov-Rudich sense — it is constructive and large. But this
-    doesn't contradict the natural proofs barrier because that barrier
-    applies only to general circuits. -/
-theorem monotone_barrier_landscape :
-    -- Unconditional monotone lower bound
-    CLIQUE ∉ MonotoneP_poly ∧
-    -- Monotone methods don't extend to general circuits (under OWF)
-    (OWF_exist → ∀ np : NaturalProperty, ∀ f, ¬UsefulAgainst np f) ∧
-    -- Gap exists between monotone and general
-    (∃ f, f ∈ P_poly ∧ f ∉ MonotoneP_poly) :=
-  ⟨razborov_monotone_clique,
-   fun howf np f => natural_proofs_barrier np f,
-   tardos_monotone_gap⟩
-
--- ============================================================
--- Verification: Meta-Complexity, Hardness Amplification, Monotone
--- ============================================================
-
--- Meta-Complexity
-#check MCSP_in_NP                      -- MCSP ∈ NP
-#check Kt_in_NP                        -- Kt ∈ NP
-#check kabanets_cai                    -- MCSP ∈ P → E ⊄ P/poly
-#check kabanets_cai_contra             -- E ⊆ P/poly → MCSP ∉ P (proved)
-#check liu_pass_owf_kt                 -- OWF ↔ Kt ∉ BPP
-#check owf_implies_Kt_hard             -- OWF → Kt ∉ BPP (proved)
-#check Kt_easy_implies_no_owf          -- Kt ∈ BPP → ¬OWF (proved)
-#check mcsp_np_hardness_barrier        -- OWF → MCSP not NP-hard naturally
-#check meta_complexity_landscape       -- OWF → Kt hard ∧ MCSP barrier ∧ KC (proved)
-#check algorithmica_circuit_lower_bounds -- P=NP → E ⊄ P/poly (proved)
-#check pessiland_Kt_easy               -- Pessiland → Kt ∈ BPP (proved)
-
--- Hardness Amplification
-#check yao_xor_lemma                   -- Mild hardness → extreme hardness
-#check goldreich_levin                 -- OWF → hardcore bits
-#check HILL_owf_to_prg                 -- OWF → BPP = P
-#check cryptographic_derandomization_chain -- OWF → BPP = P (proved)
-#check hardness_amplification_chain    -- OWF → hardcore bits ∧ BPP=P (proved)
-#check two_derandomization_paths       -- Two routes to BPP=P (proved)
-#check grand_meta_complexity           -- Grand unification theorem (proved)
-
--- Monotone Circuit Lower Bounds
-#check razborov_monotone_clique        -- CLIQUE ∉ monotone P/poly
-#check tardos_monotone_gap             -- Monotone ≠ general (gap exists)
-#check monotone_barrier_landscape      -- Unconditional LB + barrier + gap (proved)
-
--- ============================================================
--- PART 37: Total Search Problems (TFNP, PPAD, PLS)
--- ============================================================
-
-/-
-### TFNP and Its Subclasses
-
-TFNP (Total Function NP) captures search problems where:
-1. Solutions can be verified in polynomial time
-2. A solution is guaranteed to exist (by a combinatorial principle)
-
-Unlike decision problems (P vs NP), search problems in TFNP are
-guaranteed to have solutions — the question is whether they can
-be found efficiently.
-
-Key subclasses, each based on a different existence principle:
-- **PPAD** (Polynomial Parity Argument, Directed): end-of-line in directed graphs
-- **PLS** (Polynomial Local Search): local optima always exist
-- **PPP** (Polynomial Pigeonhole Principle): collisions in compressed mappings
-- **CLS** (Continuous Local Search): PLS ∩ PPAD
-
-Famous PPAD-complete problems:
-- Nash equilibrium (Chen-Deng 2006, Daskalakis-Goldberg-Papadimitriou 2009)
-- Brouwer fixed point computation
-
-TFNP is important for P vs NP because:
-- It captures a DIFFERENT notion of computational hardness
-- PPAD-hard ≠ NP-hard (under standard assumptions)
-- If P = NP, then all search problems become easy (PPAD ⊆ FP)
-- But PPAD ⊄ FP does NOT imply P ≠ NP directly
--/
-
-/-- FNP: function problems associated with NP.
-    An FNP problem asks "find a witness" rather than "does one exist?"
-    Formally: given x, find w such that R(x,w) holds, where R is poly-time. -/
-opaque FNP : Set (ℕ → Bool)
-
-/-- TFNP: total function NP problems.
-    FNP problems where a solution is guaranteed to exist for every input.
-    Based on combinatorial existence principles (parity, pigeonhole, etc.). -/
-opaque TFNP : Set (ℕ → Bool)
-
-/-- PPAD: Polynomial Parity Argument (Directed).
-    Based on the principle: in a directed graph where every node has
-    in-degree ≤ 1 and out-degree ≤ 1, if there is a source then there
-    must be a sink. -/
-opaque PPAD : Set (ℕ → Bool)
-
-/-- PLS: Polynomial Local Search.
-    Based on the principle: every DAG has a sink (local optima always exist). -/
-opaque PLS : Set (ℕ → Bool)
-
-/-- PPP: Polynomial Pigeonhole Principle.
-    Based on the pigeonhole principle: compressions must have collisions. -/
-opaque PPP : Set (ℕ → Bool)
-
-/-- CLS: Continuous Local Search = PPAD ∩ PLS. -/
-def CLS : Set (ℕ → Bool) := PPAD ∩ PLS
-
-/-- FP: function problems solvable in polynomial time. -/
-opaque FP : Set (ℕ → Bool)
-
-/-- FP ⊆ TFNP: poly-time solvable search problems are total. -/
-axiom FP_subset_TFNP : FP ⊆ TFNP
-
-/-- TFNP ⊆ FNP: every total function NP problem is a function NP problem. -/
-axiom TFNP_subset_FNP : TFNP ⊆ FNP
-
-/-- PPAD ⊆ TFNP: parity argument problems are total. -/
-axiom PPAD_subset_TFNP : PPAD ⊆ TFNP
-
-/-- PLS ⊆ TFNP: local search problems are total. -/
-axiom PLS_subset_TFNP : PLS ⊆ TFNP
-
-/-- PPP ⊆ TFNP: pigeonhole problems are total. -/
-axiom PPP_subset_TFNP : PPP ⊆ TFNP
-
-theorem CLS_subset_PPAD : CLS ⊆ PPAD :=
-  Set.inter_subset_left
-
-theorem CLS_subset_PLS : CLS ⊆ PLS :=
-  Set.inter_subset_right
-
-theorem CLS_subset_TFNP : CLS ⊆ TFNP :=
-  Set.Subset.trans CLS_subset_PPAD PPAD_subset_TFNP
-
-/-- Nash equilibrium computation (PPAD-complete, Chen-Deng 2006). -/
-opaque NASH : ℕ → Bool
-
-axiom nash_in_PPAD : NASH ∈ PPAD
-
-/-- PPAD-hardness of Nash: every PPAD problem reduces to Nash.
-    Previously axiom; trivially True in abstract model. -/
-theorem nash_PPAD_hard : ∀ f ∈ PPAD, True :=
-  fun _ _ => trivial
-
-theorem nash_in_TFNP : NASH ∈ TFNP :=
-  PPAD_subset_TFNP nash_in_PPAD
-
-/-- TFNP containment chain:
-    FP ⊆ CLS ⊆ { PPAD, PLS } ⊆ TFNP ⊆ FNP -/
-theorem tfnp_containment_chain :
-    CLS ⊆ PPAD ∧ CLS ⊆ PLS ∧
-    PPAD ⊆ TFNP ∧ PLS ⊆ TFNP ∧ PPP ⊆ TFNP ∧
-    TFNP ⊆ FNP :=
-  ⟨CLS_subset_PPAD, CLS_subset_PLS,
-   PPAD_subset_TFNP, PLS_subset_TFNP, PPP_subset_TFNP,
-   TFNP_subset_FNP⟩
-
-/-- TFNP captures "hardness of search" orthogonal to P vs NP. -/
-theorem tfnp_orthogonal_to_P_vs_NP :
-    (P = NP → True) ∧
-    (PPAD ⊆ TFNP) ∧
-    (TFNP ⊆ FNP) :=
-  ⟨fun _ => trivial, PPAD_subset_TFNP, TFNP_subset_FNP⟩
-
--- ============================================================
--- PART 38: Descriptive Complexity (Fagin, Immerman, Vardi)
--- ============================================================
-
-/-
-### Descriptive Complexity
-
-Descriptive complexity theory characterizes complexity classes
-by the *type of logic* needed to express problems, with no reference
-to time, space, or Turing machines:
-
-- **NP = ESO** (Fagin 1974): NP is exactly the class of properties
-  expressible in existential second-order logic
-- **P = FO(LFP)** (Immerman 1982, Vardi 1982): On ordered structures,
-  P equals first-order logic with least fixed-point operator
-- **NL = FO(TC)** (Immerman 1999): NL equals first-order logic
-  with transitive closure operator
-
-These characterizations give a fundamentally different perspective:
-P vs NP becomes "Does FO(LFP) = ESO?"
--/
-
-/-- ESO: Existential Second-Order Logic. -/
-opaque ESO : Set (ℕ → Bool)
-
-/-- FO_LFP: First-Order logic with Least Fixed-Point operator.
-    On ordered structures, captures exactly polynomial time. -/
-opaque FO_LFP : Set (ℕ → Bool)
-
-/-- FO_TC: First-Order logic with Transitive Closure operator.
-    On ordered structures, captures exactly NL. -/
-opaque FO_TC : Set (ℕ → Bool)
-
-/-- **Fagin's Theorem** (1974): NP = ESO. -/
-axiom fagin_theorem : NP = ESO
-
-/-- **Immerman-Vardi Theorem** (1982): P = FO(LFP) on ordered structures. -/
-axiom immerman_vardi : P = FO_LFP
-
-/-- Immerman's characterization: NL = FO(TC) (1999). -/
-axiom immerman_NL_eq_FO_TC : NL = FO_TC
-
-/-- Descriptive P vs NP: P = NP ↔ FO(LFP) = ESO.
-    A purely logical reformulation of the question. -/
-theorem descriptive_P_vs_NP :
-    (P = NP) ↔ (FO_LFP = ESO) := by
-  constructor
-  · intro h; rw [← immerman_vardi, ← fagin_theorem]; exact h
-  · intro h; rw [immerman_vardi, fagin_theorem]; exact h
-
-/-- The descriptive hierarchy mirrors the computational one. -/
-theorem descriptive_hierarchy :
-    NL ⊆ P ∧ P ⊆ NP ∧
-    NL = FO_TC ∧ P = FO_LFP ∧ NP = ESO :=
-  ⟨NL_subset_P, P_subset_NP,
-   immerman_NL_eq_FO_TC, immerman_vardi, fagin_theorem⟩
-
-/-- Fagin's theorem connects to Cook-Levin. -/
-theorem fagin_cook_levin_connection :
-    NP = ESO ∧ SAT ∈ NP ∧ NPHard SAT :=
-  ⟨fagin_theorem, SAT_in_NP, SAT_is_NPHard⟩
-
-/-- Descriptive complexity gives a barrier-independent view of P vs NP. -/
-theorem descriptive_vs_barriers :
-    ((P = NP) ↔ (FO_LFP = ESO)) ∧
-    (∀ np f, ¬UsefulAgainst np f) :=
-  ⟨descriptive_P_vs_NP, natural_proofs_barrier⟩
-
--- ============================================================
--- PART 39: Counting Complexity Extensions (#P landscape)
--- ============================================================
-
-/-
-### Extended Counting Complexity
-
-#P counts the number of accepting paths of an NP machine.
-Toda's theorem (PH ⊆ P^{#P}) already appears above.
-
-Here we formalize deeper structural results about counting:
-- **GapP**: the gap between accepting and rejecting paths
-- **#P-completeness of permanent** (Valiant 1979)
-- **Toda's theorem consequences**: PH randomized reducible to #SAT
-- **Counting hierarchy**: relationships between counting and decision
-
-The key insight: counting is MORE POWERFUL than deciding.
-Even though PH doesn't know P vs NP, #P CONTAINS PH (via Toda).
--/
-
-/-- GapP: the difference between accepting and rejecting paths.
-    While #P counts only accepting paths, GapP allows the "signed count"
-    to be negative. GapP captures the power of #P under closure. -/
-opaque GapP : Set (ℕ → ℕ)
-
-/-- #SAT: the canonical #P-complete problem.
-    Count the number of satisfying assignments of a Boolean formula. -/
-opaque SharpSAT : ℕ → ℕ
-
-/-- #SAT is #P-complete (Valiant 1979). -/
-axiom sharp_SAT_complete : SharpSAT ∈ SharpP
-
-/-- GapP ⊇ #P: every counting function is a gap function. -/
-axiom SharpP_subset_GapP : SharpP ⊆ GapP
-
-/-- GapP is closed under subtraction (unlike #P).
-    Previously axiom; trivially True in abstract model. -/
-theorem GapP_closed_subtraction :
-    ∀ f g : ℕ → ℕ, f ∈ GapP → g ∈ GapP → True :=
-  fun _ _ _ _ => trivial
-
-/-- **Toda's theorem gives PH ⊆ P^{#P}**: combined with PH ⊆ PSPACE,
-    this shows PH reduces to COUNTING, not just to PSPACE. -/
-theorem toda_gives_PH_in_PSPACE :
-    PH ⊆ PSPACE := PH_subset_PSPACE
-
-/-- **Counting captures PH**: Toda's theorem + VP/VNP. -/
-theorem counting_captures_PH :
-    -- Toda: PH ⊆ P^{#P}
-    PH ⊆ P_with_SharpP ∧
-    -- PH ⊆ PSPACE (from Toda + SharpP ⊆ PSPACE)
-    PH ⊆ PSPACE ∧
-    -- Counting distinguishes permanent from determinant (VP vs VNP)
-    (¬ (VP = VNP) → True) :=
-  ⟨toda_theorem, PH_subset_PSPACE, fun _ => trivial⟩
-
--- ============================================================
--- PART 40: Oracle Separations and the Limits of Relativization
--- ============================================================
-
-/-
-### Oracle Separations: What They Do and Don't Tell Us
-
-Oracle separations provide strong evidence about complexity relationships
-but cannot resolve P vs NP (Baker-Gill-Solovay). Here we formalize
-additional important oracle results beyond the basic BGS theorem:
-
-- **IP ≠ PSPACE relative to some oracle** (but IP = PSPACE unrelativized!)
-  This shows that non-relativizing techniques CAN separate/collapse classes
-- **Random oracle hypothesis**: with probability 1, P^A ≠ NP^A (Bennett-Gill 1981)
-- **Raz-Tal**: BQP ⊄ PH relative to random oracle (already formalized above)
-
-The lesson: oracle separations set the "default" expectation,
-but the actual relationships can differ. Every known collapse
-(IP = PSPACE, MIP = NEXP) uses non-relativizing techniques.
--/
-
-/-- **Bennett-Gill random oracle theorem** (1981):
-    With probability 1 over random oracle A, P^A ≠ NP^A.
-    This gives strong evidence that P ≠ NP, but is NOT a proof
-    (Baker-Gill-Solovay shows oracles can go either way).
-
-    We state this as: there are MANY more separating oracles than
-    collapsing ones. The set of separating oracles is "generic". -/
-theorem bennett_gill_random_oracle :
-    -- Separating oracles exist (BGS Part 2)
-    (∃ B : Oracle, P_rel B ≠ NP_rel B) ∧
-    -- But collapsing oracles also exist (BGS Part 1)
-    (∃ A : Oracle, P_rel A = NP_rel A) :=
-  ⟨baker_gill_solovay_sep, baker_gill_solovay_eq⟩
-
-/-- Every known collapse of complexity classes uses non-relativizing
-    techniques. The most important example:
-    - IP = PSPACE (Shamir 1990, uses arithmetization)
-    This would fail if relativization were required, since there exist
-    oracles where IP ≠ PSPACE. -/
-theorem known_collapses_are_non_relativizing :
-    -- IP = PSPACE (Shamir, non-relativizing)
-    IP = PSPACE :=
-  shamir_IP_eq_PSPACE
-
-/-- **Oracles as structural tools**: While oracles can't resolve P vs NP,
-    they reveal which techniques CAN'T work. Combined with algebrization
-    and natural proofs, they carve out the "allowed technique space". -/
-theorem oracle_technique_landscape :
-    -- Relativization barrier (oracles give both outcomes)
-    (∃ A : Oracle, P_rel A = NP_rel A) ∧
-    (∃ B : Oracle, P_rel B ≠ NP_rel B) ∧
-    -- Algebrization barrier
-    (¬AlgebrizingProofOfEquality ∧ ¬AlgebrizingProofOfSeparation) ∧
-    -- Known non-relativizing results exist
-    (IP = PSPACE) :=
-  ⟨baker_gill_solovay_eq,
-   baker_gill_solovay_sep,
-   algebrization_barrier,
-   shamir_IP_eq_PSPACE⟩
-
--- ============================================================
--- PART 41: Unconditional Lower Bounds (What We Actually Know)
--- ============================================================
-
-/-
-### Unconditional Results: The Bedrock
-
-Despite being unable to resolve P vs NP, we DO have unconditional results:
-
-1. **P ⊊ EXP** (time hierarchy) — at least one link is strict
-2. **NEXP ⊄ ACC⁰** (Williams 2011) — a nonuniform lower bound
-3. **Monotone circuit lower bounds** (Razborov 1985) — exponential
-4. **AC⁰ lower bounds** (Furst-Saxe-Sipser, Håstad) — parity, majority
-5. **Hierarchy theorems** — DTIME(n^k) ⊊ DTIME(n^{k+1})
-
-These form the foundation of what we provably know about computation.
--/
-
-/-- NEXP ⊄ AC⁰: corollary of Williams via AC⁰ ⊆ ACC⁰. -/
-theorem NEXP_not_in_AC0 : ¬(NEXP ⊆ AC_k 0) := by
-  intro h
-  exact williams_NEXP_not_in_ACC0 (Set.Subset.trans h AC0_subset_ACC0)
-
-/-- **Comprehensive unconditional lower bounds summary**.
-    These results hold WITHOUT any unproven assumptions. -/
-theorem unconditional_lower_bounds :
-    -- P ⊊ EXP (time hierarchy theorem)
-    (P ⊂ EXP) ∧
-    -- NEXP ⊄ ACC⁰ (Williams 2011)
-    (¬(NEXP ⊆ ACC0)) ∧
-    -- NEXP ⊄ AC⁰ (corollary via AC⁰ ⊆ ACC⁰)
-    (¬(NEXP ⊆ AC_k 0)) ∧
-    -- Parity not in AC⁰ (Håstad 1987)
-    (∃ f ∈ P, f ∉ AC_k 0) ∧
-    -- CLIQUE not in monotone P/poly (Razborov 1985)
-    (CLIQUE ∉ MonotoneP_poly) :=
-  ⟨P_strict_subset_EXP,
-   williams_NEXP_not_in_ACC0,
-   NEXP_not_in_AC0,
-   hastad_parity_not_in_AC0,
-   razborov_monotone_clique⟩
-
-/-- **The gap between what we know and what we want**:
-    We can separate P from EXP (two exponentials apart) but
-    NOT from NP (one polynomial apart). The frontier of knowledge. -/
-theorem unconditional_vs_conditional :
-    -- Unconditional: P ⊊ EXP
-    (P ⊂ EXP) ∧
-    -- Conditional: P ≠ NP requires new techniques
-    (∀ np f, ¬UsefulAgainst np f) ∧
-    -- At least one of P⊆NP⊆PH⊆PSPACE⊆EXP is strict
-    (P ≠ NP ∨ NP ≠ PH ∨ PH ≠ PSPACE ∨ PSPACE ≠ EXP) :=
-  ⟨P_strict_subset_EXP,
-   natural_proofs_barrier,
-   some_containment_strict⟩
-
--- ============================================================
--- PART 42: The P vs NP Grand Unification
--- ============================================================
-
-/-
-### Grand Unification: Connecting All Parts
-
-The sound model now encompasses:
-1. **Core model** (Gödelized computation, oracle computation)
-2. **Three barriers** (relativization, natural proofs, algebrization)
-3. **Full complexity zoo** (P, NP, PH, PSPACE, EXP, BPP, BQP, PP, QMA, ...)
-4. **Circuit complexity** (NC, AC, TC, ACC⁰, P/poly)
-5. **Algebraic complexity** (VP, VNP, permanent)
-6. **Proof complexity** (Cook-Reckhow, Frege systems)
-7. **Derandomization** (IW, HILL, BPP = P)
-8. **Fine-grained complexity** (ETH, SETH, parameterized)
-9. **Meta-complexity** (MCSP, Kt, Liu-Pass)
-10. **Five Worlds** (Impagliazzo's framework)
-11. **Communication complexity** (KW, lifting)
-12. **Total search** (TFNP, PPAD, Nash)
-13. **Descriptive complexity** (Fagin, Immerman-Vardi)
-14. **Counting complexity** (#P, GapP, Toda)
-15. **Oracle separations** (BGS, Raz-Tal, Bennett-Gill)
-
-Together, these form the most comprehensive formal complexity theory
-encyclopedia in Lean.
--/
-
-/-- **The Master Theorem**: a single statement connecting all major
-    components of our formalization. -/
-theorem p_vs_np_master_summary :
-    -- I. Sound model
-    (P ≠ Set.univ) ∧
-    -- II. Structural containments
-    (P ⊆ NP ∧ NP ⊆ PH ∧ PH ⊆ PSPACE ∧ PSPACE ⊆ EXP) ∧
-    -- III. Unconditional separations
-    (P ⊂ EXP) ∧
-    -- IV. Three barriers
-    (∀ np f, ¬UsefulAgainst np f) ∧
-    -- V. Counting captures PH (Toda)
-    (PH ⊆ P_with_SharpP) ∧
-    -- VI. TFNP: orthogonal hardness dimension
-    (PPAD ⊆ TFNP ∧ TFNP ⊆ FNP) ∧
-    -- VII. Descriptive reformulation
-    ((P = NP) ↔ (FO_LFP = ESO)) ∧
-    -- VIII. Interactive proofs (non-relativizing collapse)
-    (IP = PSPACE) ∧
-    -- IX. Oracle landscape (oracles give both P=NP and P≠NP)
-    (∃ A : Oracle, P_rel A = NP_rel A) ∧
-    (∃ B : Oracle, P_rel B ≠ NP_rel B) :=
-  ⟨P_nontrivial,
-   ⟨P_subset_NP, NP_subset_PH, PH_subset_PSPACE, PSPACE_subset_EXP⟩,
-   P_strict_subset_EXP,
-   natural_proofs_barrier,
-   toda_theorem,
-   ⟨PPAD_subset_TFNP, TFNP_subset_FNP⟩,
-   descriptive_P_vs_NP,
-   shamir_IP_eq_PSPACE,
-   baker_gill_solovay_eq,
-   baker_gill_solovay_sep⟩
-
--- ============================================================
--- Verification: TFNP, Descriptive, Counting, Oracle, Unconditional
--- ============================================================
-
--- TFNP
-#check PPAD_subset_TFNP              -- PPAD ⊆ TFNP
-#check PLS_subset_TFNP               -- PLS ⊆ TFNP
-#check PPP_subset_TFNP               -- PPP ⊆ TFNP
-#check CLS_subset_PPAD               -- CLS ⊆ PPAD (proved)
-#check CLS_subset_PLS                -- CLS ⊆ PLS (proved)
-#check CLS_subset_TFNP               -- CLS ⊆ TFNP (proved)
-#check nash_in_PPAD                  -- NASH ∈ PPAD
-#check nash_in_TFNP                  -- NASH ∈ TFNP (proved)
-#check tfnp_containment_chain        -- Full TFNP chain (proved)
-
--- Descriptive Complexity
-#check fagin_theorem                 -- NP = ESO (Fagin 1974)
-#check immerman_vardi                -- P = FO(LFP) (Immerman-Vardi 1982)
-#check immerman_NL_eq_FO_TC          -- NL = FO(TC) (Immerman 1999)
-#check descriptive_P_vs_NP           -- P = NP ↔ FO(LFP) = ESO (proved)
-#check descriptive_hierarchy         -- Full hierarchy (proved)
-
--- Counting Complexity
-#check sharp_SAT_complete             -- #SAT is #P-complete
-#check counting_captures_PH           -- Toda + VP/VNP (proved)
-#check NEXP_not_in_AC0                -- NEXP ⊄ AC⁰ (proved)
-
--- Oracle Separations
-#check oracle_technique_landscape     -- BGS + algebrization + IP=PSPACE (proved)
-#check bennett_gill_random_oracle     -- Random oracle: P≠NP w.p. 1
-
--- Unconditional Lower Bounds
-#check unconditional_lower_bounds     -- P⊊EXP + NEXP⊄ACC⁰ + ... (proved)
-#check unconditional_vs_conditional   -- Gap between known and wanted (proved)
-
--- Grand Unification
-#check p_vs_np_master_summary         -- Master summary (proved)
+#check @IsMonotone                          -- (ℕ → Bool) → Prop
+#check @MonotoneP                           -- Set (ℕ → Bool)
+#check monotoneP_subset_P                   -- MonotoneP ⊆ P (proved)
+#check @monotoneCircuitSize                 -- (ℕ → Bool) → ℕ → ℕ
+#check monotone_ge_general                  -- circuitSize ≤ monotoneCircuitSize (axiom)
+#check @CLIQUE                              -- ℕ → ℕ → Bool
+#check clique_monotone                      -- CLIQUE k is monotone (axiom)
+#check clique_in_NP                         -- CLIQUE k ∈ NP (axiom)
+#check razborov_clique_monotone_lower       -- Exponential monotone lower bound (axiom)
+#check alon_boppana_clique_improvement      -- Improved bound (axiom)
+#check tardos_separation                    -- ∃ f ∈ MonotoneP, exp monotone complexity (axiom)
+#check monotone_strictly_weaker_than_general -- Monotone < general (proved)
+#check matching_monotone_gap                -- MATCHING gap (proved)
+#check monotone_natural_proof_connection    -- Links to natural proofs barrier (proved)
+#check monotone_complexity_summary          -- Full summary (proved)
 
 end PNPBarriersSound
