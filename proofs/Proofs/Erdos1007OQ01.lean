@@ -31,7 +31,11 @@ This formalization proves:
 - Verified monotonicity of C(d+1,2) as a building block (§8)
 - Growth rate analysis from known values (§9)
 
-Axiom count: 9 (all for computational search results; dimension bound now proved)
+Axiom count: 9
+  - 1 function definition (minEdgesForDim — requires exhaustive graph search to define)
+  - 6 known values (d=0,...,5 from House 2013, Chaffee-Noble 2016)
+  - 2 general bounds (lower: d ≤ minEdges(d), upper: minEdges(d) ≤ C(d+1,2))
+  All are inherently computational; the key theoretical result dim(K_n) = n-1 is fully proved.
 -/
 
 import Mathlib
@@ -1224,12 +1228,11 @@ theorem complete_graph_dim_exact (n : ℕ) (hn : 2 ≤ n) :
     graphDimension' (Fin n) (fun i j => i ≠ j) (fun x h => h rfl) = n - 1 :=
   le_antisymm (complete_graph_dim_le_tight n hn) (complete_graph_dim_ge_tight n hn)
 
-/-- **Upper bound on minEdges via exact dimension**: Since dim(K_{d+1}) = d,
-    the complete graph K_{d+1} witnesses minEdges(d) ≤ C(d+1, 2).
-    This confirms the axiom minEdges_upper_bound from first principles. -/
-theorem upper_bound_from_exact_dim (d : ℕ) (hd : 1 ≤ d) :
-    -- K_{d+1} has dimension d and C(d+1,2) edges
-    True := trivial
+-- Note: The axiom `minEdges_upper_bound` is now fully witnessed by
+-- `complete_graph_dim_exact`, which proves dim(K_{d+1}) = d for all d ≥ 1.
+-- K_{d+1} has C(d+1, 2) edges and dimension exactly d, providing the constructive
+-- witness for minEdges(d) ≤ C(d+1, 2). The axiom remains because `minEdgesForDim`
+-- is itself axiomatized (defining it constructively requires exhaustive graph search).
 
 -- ============================================================================
 -- § 21. Summary of Dimension Bounds (Final)
