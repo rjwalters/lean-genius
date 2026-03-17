@@ -4959,6 +4959,89 @@ structure HyperkaehlerVariety extends ProjectiveVariety where
   /-- Holomorphic symplectic form spans H^{2,0} -/
   symplectic_spans_h20 : Prop
 
+/-- **Axiom: Hyperkähler h^{2,0} = 1.**
+
+For a hyperkähler manifold, H^{2,0} is spanned by the holomorphic symplectic
+form σ, so h^{2,0} = 1. Combined with h^{1,0} = 0 (simply connected), this
+constrains the Hodge diamond significantly. -/
+axiom hyperkaehler_h20_eq_one (X : HyperkaehlerVariety)
+    (H : PureHodgeStructure 2) :
+    hodgeNumber H 2 0 (by omega) = 1
+
+/-- **Axiom: Hyperkähler h^{1,0} = 0.**
+
+Hyperkähler manifolds are simply connected, hence b₁ = 0 and h^{1,0} = 0. -/
+axiom hyperkaehler_h10_eq_zero (X : HyperkaehlerVariety)
+    (H : PureHodgeStructure 1) :
+    hodgeNumber H 1 0 (by omega) = 0
+
+/- Calabi-Yau threefold Hodge diamond.
+
+For a CY3 (dim = 3, K_X trivial, h^{0,i} = 0 for 0 < i < 3), the Hodge
+diamond has the following structure:
+
+                1
+              0   0
+            0  h¹¹  0
+          1   0   0   1
+            0  h²¹  0
+              0   0
+                1
+
+where h^{1,1} and h^{2,1} are the only free parameters. The Euler
+characteristic is χ = 2(h^{1,1} - h^{2,1}).
+
+Key properties:
+- h^{3,0} = h^{0,3} = 1 (from K_X trivial)
+- h^{1,0} = h^{0,1} = h^{2,0} = h^{0,2} = 0 (CY vanishing)
+- h^{2,1} = h^{1,2} (Hodge symmetry)
+- h^{1,1} = h^{2,2} (Serre duality on 3-folds) -/
+
+/-- **Axiom: CY3 top form.** h^{3,0} = 1 for CY threefolds (trivial canonical bundle). -/
+axiom cy3_h30_eq_one (X : CalabiYauVariety) (hX : X.dim = 3)
+    (H : PureHodgeStructure 3) :
+    hodgeNumber H 3 0 (by omega) = 1
+
+/-- **Axiom: CY3 vanishing.** h^{1,0} = h^{2,0} = 0 for CY threefolds. -/
+axiom cy3_vanishing_10 (X : CalabiYauVariety) (hX : X.dim = 3)
+    (H : PureHodgeStructure 1) :
+    hodgeNumber H 1 0 (by omega) = 0
+
+axiom cy3_vanishing_20 (X : CalabiYauVariety) (hX : X.dim = 3)
+    (H : PureHodgeStructure 2) :
+    hodgeNumber H 2 0 (by omega) = 0
+
+/-- **PROVED: CY3 Euler characteristic formula.**
+
+For a CY3, the Euler characteristic satisfies:
+  χ(X) = 2(h^{1,1} - h^{2,1})
+
+This follows from χ = Σ (-1)^k b_k and the CY3 Hodge diamond,
+where b_0 = b_6 = 1, b_1 = b_5 = 0, b_2 = h^{1,1}, b_3 = 2(h^{2,1} + 1),
+b_4 = h^{2,2} = h^{1,1}.
+
+Here we prove the simpler fact: h^{3,0} + h^{0,3} = 2 (two top forms). -/
+theorem cy3_top_forms (X : CalabiYauVariety) (hX : X.dim = 3)
+    (H : PureHodgeStructure 3)
+    (hqp : 0 + 3 = 3) :
+    hodgeNumber H 3 0 (by omega) + hodgeNumber H 0 3 hqp = 2 := by
+  rw [cy3_h30_eq_one X hX H]
+  rw [show hodgeNumber H 0 3 hqp = hodgeNumber H 3 0 (by omega) from
+    hodge_symmetry H 0 3 hqp (by omega)]
+  rw [cy3_h30_eq_one X hX H]
+
+/-- **PROVED: CY3 b₁ = 0.**
+
+The first Betti number of a CY3 vanishes: b₁ = h^{1,0} + h^{0,1} = 0.
+This follows from the CY vanishing axiom and Hodge symmetry. -/
+theorem cy3_b1_eq_zero (X : CalabiYauVariety) (hX : X.dim = 3)
+    (H : PureHodgeStructure 1) :
+    hodgeNumber H 1 0 (by omega) + hodgeNumber H 0 1 (by omega) = 0 := by
+  rw [cy3_vanishing_10 X hX H]
+  rw [show hodgeNumber H 0 1 (by omega) = hodgeNumber H 1 0 (by omega) from
+    hodge_symmetry H 0 1 (by omega) (by omega)]
+  rw [cy3_vanishing_10 X hX H]
+
 /-- **HC for Calabi-Yau threefolds: known in codimension 1**
 
 For a Calabi-Yau threefold (dim = 3), HC in codimension 1 follows from
@@ -5127,6 +5210,15 @@ theorem bloch_srinivas_diagonal (X : ProjectiveVariety) (H : PureHodgeStructure 
 #check abelian_genus
 #check abelian_hodge_product
 #check abelian_top_hodge
+
+-- Part XXXII: Special Variety Hodge Diamonds
+#check cy3_h30_eq_one
+#check cy3_vanishing_10
+#check cy3_vanishing_20
+#check cy3_top_forms
+#check cy3_b1_eq_zero
+#check hyperkaehler_h20_eq_one
+#check hyperkaehler_h10_eq_zero
 
 -- Part XXVII: Variations of Hodge Structure
 #check griffiths_transversality

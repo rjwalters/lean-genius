@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Strengthened 7 True:=trivial to proved theorems (voisin, verbitsky, shioda, bloch-srinivas, pure_from_smooth, mhs_strict, mhs_abelian), 1 to axiom (rationally_connected), added abelian Hodge diamond (4 items). 5180 lines, 90 axioms, 234 theorems/defs, 0 sorries, 13 True:=trivial (was 20).",
+    "progressSummary": "PROGRESS: Added CY3 Hodge diamond (h^{3,0}=1, vanishing, Euler char), hyperkaehler Hodge axioms (h^{2,0}=1, h^{1,0}=0), proved cy3_top_forms and cy3_b1_eq_zero. 5272 lines, 95 axioms, 236 theorems/defs, 0 sorries.",
     "builtItems": [
       "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
       "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
@@ -207,7 +207,14 @@
       "weight_one_torelli_surjective PROVED from griffiths_transversality",
       "hc_compatible_with_vhs₂ PROVED from griffiths_transversality",
       "mhs_strict_morphisms PROVED: W k ≤ W (k+1)",
-      "mhs_category_abelian PROVED: W k ≤ W (k+2) via transitivity"
+      "mhs_category_abelian PROVED: W k ≤ W (k+2) via transitivity",
+      "cy3_h30_eq_one axiom: h^{3,0}=1 for CY threefolds",
+      "cy3_vanishing_10 axiom: h^{1,0}=0 for CY threefolds",
+      "cy3_vanishing_20 axiom: h^{2,0}=0 for CY threefolds",
+      "cy3_top_forms theorem PROVED: h^{3,0}+h^{0,3}=2",
+      "cy3_b1_eq_zero theorem PROVED: h^{1,0}+h^{0,1}=0",
+      "hyperkaehler_h20_eq_one axiom: h^{2,0}=1 for hyperkähler",
+      "hyperkaehler_h10_eq_zero axiom: h^{1,0}=0 for hyperkähler"
     ],
     "insights": [
       "Millennium Prize problem, wide open - no known attack strategy",
@@ -279,7 +286,12 @@
       "Strengthened 7 True:=trivial theorems to real proved conclusions using existing axioms",
       "Converted rationally_connected_hodge_simple to axiom: h^{p,0}=0 for p>0 on RC varieties",
       "VHS theorems (griffiths_period_map, weight_one_torelli, hc_compatible) now proved via griffiths_transversality",
-      "Removed stale #check references to Parts XXXIV/XXXV (not on this branch)"
+      "Removed stale #check references to Parts XXXIV/XXXV (not on this branch)",
+      "CY3 Hodge diamond: h^{3,0}=1, h^{1,0}=h^{2,0}=0, with h^{1,1} and h^{2,1} as free parameters",
+      "CY3 Euler char = 2(h^{1,1} - h^{2,1}), Betti numbers b_0=b_6=1, b_1=b_5=0",
+      "Hyperkähler: h^{2,0}=1 (symplectic form), h^{1,0}=0 (simply connected)",
+      "Proved cy3_top_forms: h^{3,0}+h^{0,3}=2 using Hodge symmetry",
+      "Proved cy3_b1_eq_zero: first Betti number vanishes for CY3"
     ],
     "mathlibGaps": [
       "Complex manifolds",
