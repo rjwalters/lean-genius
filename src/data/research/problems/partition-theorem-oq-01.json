@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-03-11T09:48:08.982Z",
-    "iteration": 3,
-    "focus": "Building GF coefficient infrastructure toward axiom elimination",
+    "iteration": 4,
+    "focus": "partGF infrastructure complete, next: convolution formula + partGF_coeff",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Step 6 complete. SchurMod ↔ subsetsWithSum bijection proved, GF coefficient link established. 0 sorries, 3 axioms. Next: gap-side GF characterization (step 7).",
+    "progressSummary": "PROGRESS: Step 7a-c complete. Built partGF = ∏ geomPow k (repetition-allowing GF for RR identities). Proved (1-X^k)*geomPow k = 1. Connected RR1/RR2 to partitionsFrom. 0 sorries, 3 axioms.",
     "builtItems": [
       "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
@@ -46,7 +46,14 @@
       "Fixed partitionOfSubset parts_sum proof for new Mathlib API",
       "schurModSet: {k ∈ [1..n] | k ≡ 1,2 mod 3} definition",
       "schurMod_card_eq_subsetsWithSum: bijection via Finset.card_bij (proved)",
-      "schurMod_card_eq_gf_coeff: |schurMod n| = coeff n (schurModGF n) (proved)"
+      "schurMod_card_eq_gf_coeff: |schurMod n| = coeff n (schurModGF n) (proved)",
+      "geomPow k: geometric power series 1/(1-X^k) as PowerSeries ℤ",
+      "one_sub_X_pow_mul_geomPow: fundamental identity (1-X^k) * geomPow k = 1",
+      "partGF S = ∏_{k∈S} geomPow k: partition GF with repetition",
+      "partitionsFrom S n: partitions of n with all parts from S",
+      "rr1Mod5_eq_partitionsFrom: RR1 mod = partitionsFrom appropriate set",
+      "rr2Mod5_eq_partitionsFrom: RR2 mod = partitionsFrom appropriate set",
+      "geomPow_isUnit, partGF_isUnit: unit proofs for the GFs"
     ],
     "insights": [
       "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
@@ -62,17 +69,20 @@
       "PowerSeries.coeff API change: R is now implicit (use coeff (R := ℤ) n, not coeff ℤ n).",
       "SchurMod ↔ subsetsWithSum bijection via Finset.card_bij: forward p↦parts.toFinset, inverse via partitionOfSubset",
       "RR1/RR2 mod sides allow repeated parts (no Nodup) → distinctPartGF approach only works for Schur, not RR",
-      "schurMod_card_eq_gf_coeff chains: bijection → distinctPartGF_coeff → GF definition equality"
+      "schurMod_card_eq_gf_coeff chains: bijection → distinctPartGF_coeff → GF definition equality",
+      "omega cannot handle nonlinear multiplication (k*c terms); use mul_add/mul_one rewrites first",
+      "PowerSeries.coeff is additive map (map_sub works), not ring hom (map_mul fails)",
+      "IsUnit construction for PowerSeries via explicit Units record (val, inv, both products = 1)"
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",
       "No bijective proof machinery for partition identities"
     ],
     "nextSteps": [
-      "Build gap-side GF characterization for Schur (recurrence/functional equation)",
-      "Build partGF = ∏ 1/(1-X^k) for RR mod-side (allows repetition)",
-      "Prove gap-side partition count = coeff n (gap-side GF)",
-      "Equate mod-side and gap-side GFs to prove identities"
+      "Prove coeff_geomPow_mul convolution formula: coeff n (geomPow k * f) = Σ coeff(n-jk) f",
+      "Prove partGF_coeff: coeff n (partGF S) = |partitionsFrom S n|",
+      "Build gap-side GF characterization for Schur and RR identities",
+      "Compose to prove the 3 axioms"
     ]
   },
   "approaches": [],
@@ -89,7 +99,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-15T12:00:00.000Z",
+  "lastUpdate": "2026-03-17T05:51:00.000Z",
   "significance": 7,
   "tractability": 6
 }
