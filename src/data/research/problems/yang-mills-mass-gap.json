@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts LXVIII-LXIX (OS axioms, large-N expansion). File now 8281 lines, 6 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Added Parts LXVIII-LXX. File now 8391 lines, 6 axioms, 0 sorries. OS axioms, large-N, asymptotic freedom.",
     "builtItems": [
       "Part LVIII: Schwinger Model — SchwingerParams, schwingerMass, schwingerMassSq, MultiFlavorSchwinger, etaPrimeMass",
       "Part LIX: Yang-Mills Gradient Flow — GradientFlowParams, smoothingRadius, FlowedEnergyDensity, ReferenceScale, WScale",
@@ -41,7 +41,8 @@
       "Part LXV: t Hooft Loop — PhaseClassification, LoopBehavior, EM duality proved",
       "Part LXVI: Witten Index — WittenIndexData, GauginoCondensate, SUSY→pure YM connection",
       "Part LXVIII: Osterwalder-Schrader axioms - OS0-OS4, reflection positivity, OS reconstruction, Wightman axioms, spectral condition, YM-specific OS, constructive program",
-      "Part LXIX: Large-N expansion - t Hooft coupling, planar expansion, factorization, string connection, large-N mass gap, Eguchi-Kawai reduction"
+      "Part LXIX: Large-N expansion - t Hooft coupling, planar expansion, factorization, string connection, large-N mass gap, Eguchi-Kawai reduction",
+      "Part LXX: Asymptotic freedom - beta function, running coupling, dimensional transmutation, confinement mechanism, Cornell potential"
     ],
     "insights": [
       "Schwinger model mass gap m = e/√π is exactly computable and positive (proved m > 0, m² > 0)",
@@ -72,7 +73,10 @@
       "OS axioms (5 conditions) define what existence of a QFT means; reflection positivity is the KEY axiom giving Hilbert space via GNS construction",
       "Constructive program for YM: Steps 1-2 (lattice action, finite lattice OS) known; Steps 3-5 (continuum limit, continuum OS, mass gap) completely open",
       "Large-N: t Hooft coupling λ=g²N fixed, genus g suppressed by 1/N^{2g}, leading order is planar diagrams which match string perturbation theory",
-      "Eguchi-Kawai reduction: at N=∞ single-site lattice captures infinite-volume physics — extreme volume independence"
+      "Eguchi-Kawai reduction: at N=∞ single-site lattice captures infinite-volume physics — extreme volume independence",
+      "Asymptotic freedom (β₀>0 for N_f<11N/2): coupling decreases at high energy, explaining why short-distance QCD is perturbative",
+      "Dimensional transmutation: quantum effects break classical conformal symmetry, generating Λ_{QCD} from dimensionless coupling g — all masses proportional to Λ",
+      "Mass gap and confinement are linked: Δ ~ √σ ~ Λ_{QCD}, all governed by the same scale from asymptotic freedom"
     ],
     "mathlibGaps": [
       "Principal bundles",
