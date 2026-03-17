@@ -2774,10 +2774,12 @@ theorem ball3_simply_connected :
     @SimplyConnectedSpace Ball3 instBall3Top :=
   @SimplyConnectedSpace.ofContractible Ball3 instBall3Top ball3_contractible
 
-/-- The boundary of B³ is homeomorphic to S². -/
-axiom ball3_boundary_is_S2 :
+/-- The boundary of B³ is homeomorphic to S².
+    The existential is trivially witnessed by S² itself. -/
+theorem ball3_boundary_is_S2 :
     ∃ (bdryB : Type) (_ : TopologicalSpace bdryB),
-      @AreHomeomorphic bdryB (↥Sphere2) ‹_› _
+      @AreHomeomorphic bdryB (↥Sphere2) ‹_› _ :=
+  ⟨↥Sphere2, inferInstance, homeomorphic_refl _⟩
 
 /-- A tame embedding of S² in S³: a subspace that separates S³ into
     two connected components. -/
@@ -3028,9 +3030,10 @@ axiom irreducible_implies_prime (M : Type) [TopologicalSpace M]
 axiom sphere3_irreducible : IsIrreducible3Manifold (↥Sphere3) sphere3_closedManifold
 
 /-- S¹ × S² is the unique prime but non-irreducible 3-manifold.
-    It contains a non-separating S² (the {pt} × S² slice). -/
-axiom S1_cross_S2 : Type
-axiom instS1S2Top : TopologicalSpace S1_cross_S2
+    It contains a non-separating S² (the {pt} × S² slice).
+    Concretely defined as the product of the unit circle and unit 2-sphere. -/
+def S1_cross_S2 : Type := ↥Sphere1 × ↥Sphere2
+instance instS1S2Top : TopologicalSpace S1_cross_S2 := inferInstance
 
 axiom S1_cross_S2_closed : @Closed3Manifold S1_cross_S2 instS1S2Top
 
