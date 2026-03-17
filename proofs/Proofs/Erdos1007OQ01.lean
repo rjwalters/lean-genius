@@ -31,7 +31,8 @@ This formalization proves:
 - Verified monotonicity of C(d+1,2) as a building block (§8)
 - Growth rate analysis from known values (§9)
 
-Axiom count: 9 (all for computational search results or rigidity bounds)
+Axiom count: 9 (all for computational search results; all dimension theorems proved)
+Sorry count: 0
 -/
 
 import Mathlib
@@ -916,15 +917,17 @@ private theorem regSimplexEmbed_inner_eq (m : ℕ) (i k : Fin (m + 2))
         by_cases hik_eq : (i : ℕ) = (k : ℕ)
         · -- i = k: product = height(i)²
           rw [if_pos hik_eq, regSimplexEmbed_height m k j hk_ne (by omega) (by omega),
-              show (k : ℝ) = (i : ℝ) from by push_cast; omega,
+              show (k : ℝ) = (i : ℝ) from by exact_mod_cast hik_eq.symm,
               ← sq, height_sq (i : ℕ) hi_pos]
         · -- i < k: f(k,j) = centroid(j), j = i-1
           rw [if_neg hik_eq, regSimplexEmbed_centroid m k j hk_ne (by omega)]
           -- height(i) * centroid(i-1) = 1/(2i)
           -- Prove by showing squares are equal (both sides ≥ 0)
           have hi_r : (0 : ℝ) < (i : ℝ) := Nat.cast_pos.mpr hi_pos
-          have hj_r1 : (j : ℝ) + 1 = (i : ℝ) := by push_cast; omega
-          have hj_r2 : (j : ℝ) + 2 = (i : ℝ) + 1 := by push_cast; omega
+          have hj_nat1 : (j : ℕ) + 1 = (i : ℕ) := by omega
+          have hj_nat2 : (j : ℕ) + 2 = (i : ℕ) + 1 := by omega
+          have hj_r1 : (j : ℝ) + 1 = (i : ℝ) := by exact_mod_cast hj_nat1
+          have hj_r2 : (j : ℝ) + 2 = (i : ℝ) + 1 := by exact_mod_cast hj_nat2
           have h_lhs_nn : 0 ≤ Real.sqrt (((i : ℝ) + 1) / (2 * (i : ℝ))) *
               (1 / Real.sqrt (2 * ((j : ℝ) + 1) * ((j : ℝ) + 2))) := by positivity
           have h_rhs_nn : (0 : ℝ) ≤ 1 / (2 * (i : ℝ)) := by positivity
@@ -934,7 +937,7 @@ private theorem regSimplexEmbed_inner_eq (m : ℕ) (i k : Fin (m + 2))
               Real.sq_sqrt (by positivity : (0:ℝ) ≤ ((i : ℝ) + 1) / (2 * (i : ℝ))),
               Real.sq_sqrt (by rw [hj_r1, hj_r2]; positivity :
                 (0:ℝ) ≤ 2 * ((j : ℝ) + 1) * ((j : ℝ) + 2))]
-          rw [hj_r1, hj_r2]; field_simp; ring
+          rw [hj_r1, hj_r2]; field_simp
   simp_rw [h_term]
   -- Now sum: split {j < i} and {j ≥ i}
   rw [← Finset.sum_filter_add_sum_filter_not Finset.univ
@@ -994,8 +997,8 @@ private theorem regSimplexEmbed_inner_eq (m : ℕ) (i k : Fin (m + 2))
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.ext_iff,
                not_lt]
     constructor
-    · intro ⟨⟨_, h1⟩, h2⟩; omega
-    · intro h; subst h; refine ⟨⟨?_, by omega⟩, by omega⟩; exact Finset.mem_univ _
+    · rintro ⟨hlt, hge⟩; omega
+    · intro h; subst h; exact ⟨by omega, by omega⟩
   -- Rewrite constant sum over singleton
   rw [Finset.sum_const, h_single_card, one_nsmul]
   -- Centroid filter = {0, ..., i-2}, biject to range (i-1)
@@ -1013,13 +1016,12 @@ private theorem regSimplexEmbed_inner_eq (m : ℕ) (i k : Fin (m + 2))
       rw [Finset.mem_range] at hj
       refine ⟨⟨j, by omega⟩, ?_, rfl⟩
       simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-      exact ⟨⟨Finset.mem_univ _, by omega⟩, by omega⟩
+      exact ⟨by omega, by omega⟩
     · intro ⟨j, _⟩ _; rfl
   rw [h_cent_bij, sum_centroid_sq]
   -- Final arithmetic
   have hi_r : (0 : ℝ) < (i : ℝ) := Nat.cast_pos.mpr hi_pos
-  rw [show ((↑(i : ℕ) - 1 : ℕ) : ℝ) = (i : ℝ) - 1 from by push_cast; omega,
-      show ((↑(i : ℕ) - 1 : ℕ) : ℝ) + 1 = (i : ℝ) from by push_cast; omega]
+  simp only [Nat.cast_sub (by omega : 1 ≤ (i : ℕ)), Nat.cast_one, sub_add_cancel]
   split
   · -- i = k: (i-1)/(2i) + (i+1)/(2i) = 1
     field_simp; ring
@@ -1116,169 +1118,112 @@ theorem complete_graph_dim_le_tight (n : ℕ) (hn : 2 ≤ n) :
   exact Nat.find_le (complete_graph_unit_embedding_tight n hn)
 
 -- ============================================================================
--- § 20. Lower Bound: dim(K_n) ≥ n-1
+-- § 20. Lower Bound: dim(K_n) ≥ n-1 (Proved)
 -- ============================================================================
 
-/-
-The lower bound proof uses linear independence of centered vectors.
-
-Given n unit-distance points f(0),...,f(n-1) in ℝ^d, define
-  w(i) = f(i+1) - f(0)  for i = 0,...,n-2.
-
-Key identity: the dot product of centered vectors satisfies
-  ⟨w(i), w(j)⟩ = 1 (i = j) or 1/2 (i ≠ j).
-
-From the polarization identity:
-  ⟨w(i), w(j)⟩ = (‖w(i)‖² + ‖w(j)‖² - ‖w(i)-w(j)‖²)/2 = (1 + 1 - 1)/2 = 1/2.
-
-Then for any c₀,...,c_{n-2} ∈ ℝ:
-  ‖Σ cᵢ wᵢ‖² = Σᵢ cᵢ² + Σᵢ≠ⱼ cᵢcⱼ/2 = (1/2)(Σ cᵢ² + (Σ cᵢ)²).
-
-If Σ cᵢ wᵢ = 0, then ‖Σ cᵢ wᵢ‖² = 0, so Σ cᵢ² = 0, so all cᵢ = 0.
-Therefore the n-1 vectors w(i) are linearly independent, giving d ≥ n-1.
--/
-
-/-- Squared distance = 1 for a unit distance embedding of K_n with distinct vertices. -/
-private theorem unit_embed_dist_sq {n d : ℕ} (emb : UnitDistanceEmbedding' (Fin n) (fun i j => i ≠ j) d)
-    (u v : Fin n) (huv : u ≠ v) :
-    ∑ k : Fin d, (emb.embed u k - emb.embed v k) ^ 2 = 1 := by
+/-- Extract squared distance from the sqrt-based unit_edges condition. -/
+private theorem sq_dist_of_sqrt_one {V : Type*} {d : ℕ} {adj : V → V → Prop}
+    (emb : UnitDistanceEmbedding' V adj d) (u v : V) (huv : adj u v) :
+    Finset.univ.sum (fun j : Fin d => (emb.embed u j - emb.embed v j) ^ 2) = 1 := by
   have h := emb.unit_edges u v huv
-  have h1 : (Real.sqrt (∑ k, (emb.embed u k - emb.embed v k) ^ 2)) ^ 2 = 1 := by
-    rw [h]; norm_num
-  rwa [Real.sq_sqrt (Finset.sum_nonneg fun k _ => sq_nonneg _)] at h1
+  have hS : (0 : ℝ) ≤ Finset.univ.sum
+      (fun j : Fin d => (emb.embed u j - emb.embed v j) ^ 2) :=
+    Finset.sum_nonneg fun j _ => sq_nonneg _
+  nlinarith [Real.sq_sqrt hS]
 
-/-- Dot product of centered vectors: for unit-distance points,
-    ⟨f(a)-f(c), f(b)-f(c)⟩ = (‖f(a)-f(c)‖² + ‖f(b)-f(c)‖² - ‖f(a)-f(b)‖²) / 2. -/
-private theorem centered_dot_product {n d : ℕ} (emb : UnitDistanceEmbedding' (Fin n) (fun i j => i ≠ j) d)
-    (a b c : Fin n) (hac : a ≠ c) (hbc : b ≠ c) (hab : a ≠ b) :
-    ∑ k : Fin d, (emb.embed a k - emb.embed c k) * (emb.embed b k - emb.embed c k) = 1 / 2 := by
-  -- Polarization: ⟨u,v⟩ = (‖u‖² + ‖v‖² - ‖u-v‖²) / 2
-  have hac_sq := unit_embed_dist_sq emb a c hac
-  have hbc_sq := unit_embed_dist_sq emb b c hbc
-  have hab_sq := unit_embed_dist_sq emb a b hab
-  -- (a-c) - (b-c) = a - b, so ‖(a-c)-(b-c)‖² = ‖a-b‖² = 1
-  have key : ∑ k : Fin d, ((emb.embed a k - emb.embed c k) -
-      (emb.embed b k - emb.embed c k)) ^ 2 = 1 := by
-    convert hab_sq using 1
-    apply Finset.sum_congr rfl; intro k _; ring
-  -- Expand ‖u - v‖² = ‖u‖² + ‖v‖² - 2⟨u,v⟩
-  have expand : ∀ k : Fin d,
-      ((emb.embed a k - emb.embed c k) - (emb.embed b k - emb.embed c k)) ^ 2 =
-      (emb.embed a k - emb.embed c k) ^ 2 + (emb.embed b k - emb.embed c k) ^ 2 -
-      2 * ((emb.embed a k - emb.embed c k) * (emb.embed b k - emb.embed c k)) := by
-    intro k; ring
-  rw [show (∑ k, ((emb.embed a k - emb.embed c k) -
-      (emb.embed b k - emb.embed c k)) ^ 2) =
-      ∑ k, ((emb.embed a k - emb.embed c k) ^ 2 + (emb.embed b k - emb.embed c k) ^ 2 -
-      2 * ((emb.embed a k - emb.embed c k) * (emb.embed b k - emb.embed c k)))
-    from Finset.sum_congr rfl (fun k _ => expand k)] at key
-  rw [Finset.sum_sub_distrib, Finset.sum_add_distrib] at key
-  rw [← Finset.mul_sum] at key
-  linarith
-
-/-- Dot product of centered vectors: diagonal case (same vector), ‖w(i)‖² = 1. -/
-private theorem centered_dot_product_diag {n d : ℕ} (emb : UnitDistanceEmbedding' (Fin n) (fun i j => i ≠ j) d)
-    (a c : Fin n) (hac : a ≠ c) :
-    ∑ k : Fin d, (emb.embed a k - emb.embed c k) ^ 2 = 1 :=
-  unit_embed_dist_sq emb a c hac
-
-/-- **Lower bound**: dim(K_n) ≥ n-1 for n ≥ 2.
+/-- **General lower bound**: Any unit-distance embedding of K_n in ℝ^d requires d ≥ n-1.
 
     Proved via linear independence of centered unit-distance vectors.
-    The Gram matrix has entries 1 on diagonal and 1/2 off-diagonal,
-    making the quadratic form (1/2)(Σ cᵢ² + (Σ cᵢ)²) positive-definite.
-    Hence n-1 linearly independent vectors in ℝ^d forces d ≥ n-1. -/
-open Classical in
-theorem complete_graph_dim_ge_tight (n : ℕ) (hn : 2 ≤ n) :
-    n - 1 ≤ graphDimension' (Fin n) (fun i j => i ≠ j) (fun x h => h rfl) := by
-  -- Show: for all d < n-1, there's no unit embedding of K_n in ℝ^d.
-  suffices ∀ d, d < n - 1 → ¬ hasUnitEmbedding' (Fin n) (fun i j => i ≠ j) d by
-    by_contra hlt; push_neg at hlt; exact this _ hlt (Nat.find_spec _)
-  intro d hd ⟨emb⟩
-  -- We have an embedding emb : Fin n → (Fin d → ℝ) with unit distances.
-  -- Define centered vectors w(i) = emb(i+1) - emb(0) for i : Fin (n-1).
+    Given n points in ℝ^d with pairwise distance 1, the n-1 vectors
+    w_i = f(i+1) - f(0) have Gram matrix with diagonal 1 and off-diagonal 1/2.
+    Taking inner products with each w_p yields g_p + (S-g_p)/2 = 0
+    (S = sum of coefficients) for any vanishing combination ∑ g_i w_i = 0.
+    Hence g_p = -S for all p, giving (1+|s|)·S = 0, so S = 0 and all g_p = 0.
+    Linear independence of n-1 vectors in ℝ^d forces d ≥ n-1. -/
+theorem unit_embedding_dim_lower_bound (n d : ℕ) (hn : 2 ≤ n)
+    (h : hasUnitEmbedding' (Fin n) (fun i j => i ≠ j) d) : n - 1 ≤ d := by
+  obtain ⟨emb⟩ := h
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 2 := ⟨n - 2, by omega⟩
-  -- Now n = m + 2, n - 1 = m + 1, need d < m + 1 leads to contradiction
-  -- The centered vectors: w : Fin (m+1) → (Fin d → ℝ)
-  set w : Fin (m + 1) → (Fin d → ℝ) := fun i k => emb.embed i.succ k - emb.embed 0 k
-  -- Claim: w is linearly independent
-  -- This gives m + 1 ≤ finrank ℝ (Fin d → ℝ) = d, contradicting d < m + 1
-  have hli : LinearIndependent ℝ w := by
-    rw [linearIndependent_iff']
-    intro s g hsum i hi
-    -- hsum : ∑ j ∈ s, g j • w j = 0 (as a function Fin d → ℝ)
-    -- This means: ∀ k, ∑ j ∈ s, g j * w j k = 0
-    have hcoord : ∀ k : Fin d, ∑ j ∈ s, g j * w j k = 0 := by
-      intro k
-      have := congr_fun hsum k
-      simp only [Pi.zero_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this
+  show m + 1 ≤ d
+  let g : Fin (m + 1) → (Fin d → ℝ) := fun i j =>
+    emb.embed (Fin.succ i) j - emb.embed 0 j
+  have sq_dist : ∀ u v : Fin (m + 2), u ≠ v →
+      Finset.univ.sum (fun j : Fin d => (emb.embed u j - emb.embed v j) ^ 2) = 1 :=
+    fun u v huv => sq_dist_of_sqrt_one emb u v huv
+  have g_sqnorm : ∀ i : Fin (m + 1),
+      Finset.univ.sum (fun j : Fin d => g i j ^ 2) = 1 :=
+    fun i => sq_dist (Fin.succ i) 0 (Fin.succ_ne_zero i)
+  have g_inner : ∀ i k : Fin (m + 1), i ≠ k →
+      Finset.univ.sum (fun j : Fin d => g i j * g k j) = 1 / 2 := by
+    intro i k hik
+    have h_diff : Finset.univ.sum (fun j : Fin d => (g i j - g k j) ^ 2) = 1 := by
+      have : ∀ j : Fin d,
+          g i j - g k j = emb.embed (Fin.succ i) j - emb.embed (Fin.succ k) j := by
+        intro j; simp only [g, sub_sub_sub_cancel_right]
+      simp_rw [this]
+      exact sq_dist _ _ (fun h => hik (Fin.succ_injective _ h))
+    have h_polar :
+        Finset.univ.sum (fun j => (g i j - g k j) ^ 2) +
+        2 * Finset.univ.sum (fun j => g i j * g k j) =
+        Finset.univ.sum (fun j => g i j ^ 2) +
+        Finset.univ.sum (fun j => g k j ^ 2) := by
+      rw [Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+      congr 1; ext j; ring
+    linarith [g_sqnorm i, g_sqnorm k]
+  have g_li : LinearIndependent ℝ g := by
+    rw [Fintype.linearIndependent_iff]
+    intro c hc
+    have hc_pw : ∀ j : Fin d, ∑ i : Fin (m + 1), c i * g i j = 0 := by
+      intro j; have := congr_fun hc j
+      simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this
       exact this
-    -- Prove g i = 0 via Gram matrix dot product argument.
-    -- Inner products: ⟨w j, w j⟩ = 1, ⟨w j₁, w j₂⟩ = 1/2 for j₁ ≠ j₂
-    have w_diag : ∀ j : Fin (m + 1), ∑ k : Fin d, w j k * w j k = 1 := by
-      intro j
-      have h := centered_dot_product_diag emb j.succ 0 ((Fin.succ_pos _).ne')
-      have : ∀ k : Fin d, w j k * w j k =
-          (emb.embed j.succ k - emb.embed 0 k) ^ 2 := fun k => by
-        dsimp only [w]; ring
-      simp_rw [this]; exact h
-    have w_off : ∀ j₁ j₂ : Fin (m + 1), j₁ ≠ j₂ →
-        ∑ k : Fin d, w j₁ k * w j₂ k = 1 / 2 := by
-      intro j₁ j₂ hne
-      exact centered_dot_product emb j₁.succ j₂.succ 0
-        ((Fin.succ_pos _).ne') ((Fin.succ_pos _).ne')
-        (by intro h; exact hne (Fin.succ_injective _ h))
-    -- For any j ∈ s: dotting the zero equation with w j gives g j = -(∑ g)
-    set S := ∑ j ∈ s, g j
-    have dot_rel : ∀ j ∈ s, g j = -S := by
-      intro j hj
-      -- ∑_{j'∈s} g_{j'} · ⟨w_{j'}, w_j⟩ = 0
-      have key : ∑ j' ∈ s, g j' * (∑ k : Fin d, w j' k * w j k) = 0 := by
-        calc ∑ j' ∈ s, g j' * ∑ k : Fin d, w j' k * w j k
-            = ∑ j' ∈ s, ∑ k : Fin d, g j' * (w j' k * w j k) := by
-              apply sum_congr rfl; intro j' _; rw [mul_sum]
-          _ = ∑ k : Fin d, ∑ j' ∈ s, g j' * (w j' k * w j k) := sum_comm ..
-          _ = ∑ k : Fin d, (∑ j' ∈ s, g j' * w j' k) * w j k := by
-              apply sum_congr rfl; intro k _; rw [sum_mul]
-              apply sum_congr rfl; intro j' _; ring
-          _ = 0 := sum_eq_zero (fun k _ => by rw [hcoord k]; ring)
-      -- Split: g j · 1 + ∑_{j'≠j} g j' · (1/2) = 0
-      have hadd := add_sum_erase s (fun j' => g j' * (∑ k : Fin d, w j' k * w j k)) hj
-      dsimp only [] at hadd
-      rw [key] at hadd; rw [w_diag j, mul_one] at hadd
-      have hrest : ∑ j' ∈ s.erase j, g j' * (∑ k : Fin d, w j' k * w j k) =
-          1 / 2 * (S - g j) := by
-        have heq : ∑ j' ∈ s.erase j, g j' * (∑ k : Fin d, w j' k * w j k) =
-            ∑ j' ∈ s.erase j, g j' * (1 / 2) :=
-          sum_congr rfl (fun j' hj' => by rw [w_off j' j (ne_of_mem_erase hj')])
-        rw [heq, ← mul_sum]
-        have := add_sum_erase s g hj; linarith
-      linarith [hrest]
-    -- S = -|s|·S, so (1 + |s|)·S = 0. Since |s| ≥ 1 (i ∈ s), S = 0.
-    have hS_zero : S = 0 := by
-      have hS_eq : S = -(↑s.card : ℝ) * S := by
-        have h_const : ∀ (t : Finset (Fin (m + 1))),
-            ∑ _ ∈ t, (-S) = -(↑t.card : ℝ) * S := by
-          intro t; induction t using Finset.induction_on with
-          | empty => simp
-          | @insert a s' ha ih =>
-            rw [sum_insert ha, ih, card_insert_of_not_mem ha]; push_cast; ring
-        calc S = ∑ j ∈ s, g j := rfl
-          _ = ∑ _ ∈ s, (-S) := sum_congr rfl (fun j hj => dot_rel j hj)
-          _ = -(↑s.card : ℝ) * S := h_const s
-      have hpos : (0 : ℝ) < 1 + ↑s.card := by positivity
-      exact (mul_eq_zero.mp (show (1 + ↑s.card : ℝ) * S = 0 by linarith)).resolve_left
-        (ne_of_gt hpos)
-    rw [dot_rel i hi, hS_zero, neg_zero]
-  -- From linear independence: card (Fin (m+1)) ≤ finrank ℝ (Fin d → ℝ)
-  have hcard := hli.fintype_card_le_finrank
-  simp [Fintype.card_fin] at hcard
-  omega
+    let S : ℝ := ∑ i : Fin (m + 1), c i
+    have h_ck : ∀ k : Fin (m + 1), c k = -S := by
+      intro k
+      have h_inner_vals : ∀ i : Fin (m + 1),
+          Finset.univ.sum (fun j => g i j * g k j) = if i = k then 1 else 1 / 2 := by
+        intro i; split_ifs with h
+        · subst h; convert g_sqnorm i using 1; congr 1; ext j; rw [sq]
+        · exact g_inner i k h
+      have h_sum : ∑ i : Fin (m + 1), c i *
+          Finset.univ.sum (fun j => g i j * g k j) = 0 := by
+        calc ∑ i, c i * ∑ j, g i j * g k j
+            = ∑ i, ∑ j, c i * (g i j * g k j) := by
+              congr 1; ext i; rw [Finset.mul_sum]
+          _ = ∑ j, ∑ i, c i * (g i j * g k j) := Finset.sum_comm
+          _ = ∑ j, (∑ i, c i * g i j) * g k j := by
+              congr 1; ext j; rw [Finset.sum_mul]; congr 1; ext i; ring
+          _ = 0 := by
+              apply Finset.sum_eq_zero; intro j _; rw [hc_pw j, zero_mul]
+      simp_rw [h_inner_vals] at h_sum
+      have hdecomp : ∀ i : Fin (m + 1),
+          c i * (if i = k then (1:ℝ) else 1 / 2) =
+          c i / 2 + if i = k then c i / 2 else 0 := fun i => by split_ifs <;> ring
+      simp_rw [hdecomp] at h_sum
+      rw [Finset.sum_add_distrib, ← Finset.sum_div, Finset.sum_ite_eq'] at h_sum
+      simp only [Finset.mem_univ, ite_true] at h_sum
+      linarith
+    have hS : S = 0 := by
+      have h := Finset.sum_congr rfl (fun i (_ : i ∈ Finset.univ) => h_ck i)
+      change S = ∑ _ : Fin (m + 1), (-S) at h
+      rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h
+      have : ((m : ℝ) + 2) * S = 0 := by push_cast at h ⊢; nlinarith
+      exact (mul_eq_zero.mp this).resolve_left (by positivity)
+    intro k; rw [h_ck k, hS, neg_zero]
+  calc m + 1 = Fintype.card (Fin (m + 1)) := (Fintype.card_fin _).symm
+    _ ≤ Module.finrank ℝ (Fin d → ℝ) := g_li.fintype_card_le_finrank
+    _ = d := Module.finrank_fin_fun (R := ℝ)
+
+open Classical in
+/-- **dim(K_n) ≥ n-1** for n ≥ 2 (proved via linear independence of centered vectors). -/
+theorem complete_graph_dim_ge_tight (n : ℕ) (hn : 2 ≤ n) :
+    n - 1 ≤ graphDimension' (Fin n) (fun i j => i ≠ j) (fun x h => h rfl) :=
+  unit_embedding_dim_lower_bound n _ hn (Nat.find_spec _)
 
 open Classical in
 /-- **dim(K_n) = n-1** for all n ≥ 2: the exact graph dimension of the complete graph.
     Upper bound: proved via regular simplex embedding (§19).
-    Lower bound: from Gram matrix positive-definiteness (axiomatized above). -/
+    Lower bound: proved via linear independence of centered vectors (§20). -/
 theorem complete_graph_dim_exact (n : ℕ) (hn : 2 ≤ n) :
     graphDimension' (Fin n) (fun i j => i ≠ j) (fun x h => h rfl) = n - 1 :=
   le_antisymm (complete_graph_dim_le_tight n hn) (complete_graph_dim_ge_tight n hn)
@@ -1293,11 +1238,6 @@ theorem complete_graph_witnesses_dim (d : ℕ) (hd : 1 ≤ d) :
   have := complete_graph_dim_exact (d + 1) h2
   simp only [Nat.add_sub_cancel] at this
   exact this
--- Note: The axiom `minEdges_upper_bound` is now fully witnessed by
--- `complete_graph_dim_exact`, which proves dim(K_{d+1}) = d for all d ≥ 1.
--- K_{d+1} has C(d+1, 2) edges and dimension exactly d, providing the constructive
--- witness for minEdges(d) ≤ C(d+1, 2). The axiom remains because `minEdgesForDim`
--- is itself axiomatized (defining it constructively requires exhaustive graph search).
 
 -- ============================================================================
 -- § 21. Summary of Dimension Bounds (Final)
@@ -1309,36 +1249,10 @@ theorem complete_graph_witnesses_dim (d : ℕ) (hd : 1 ≤ d) :
 -- dim(K₄) ≤ 3  (§16 — regular tetrahedron)
 -- dim(K₅) ≤ 4  (§16b — regular 4-simplex)
 -- dim(K_n) ≤ n-1  (§19 — general regular simplex, for all n ≥ 2)
--- dim(K_n) ≥ n-1  (§20 — Gram matrix lower bound, axiomatized)
+-- dim(K_n) ≥ n-1  (§20 — linear independence lower bound, proved)
 -- dim(K_n) = n-1  (§20 — proved from ≤ and ≥, for all n ≥ 2)
 
--- ============================================================================
--- § 21. Lower Bound: dim(K_n) ≥ n-1 (Argument Sketch)
--- ============================================================================
-
-/-- The dimension of K_n is exactly n-1 for n ≥ 2.
-    Upper bound: dim(K_n) ≤ n-1 via regular simplex (§19, proved modulo 2 sorries).
-    Lower bound: dim(K_n) ≥ n-1 via linear algebra argument.
-
-    Proof sketch for lower bound:
-    Given a unit embedding f: V → ℝ^d of K_n, center at the origin:
-    g(v) = f(v) - centroid.
-    Then ‖g(i) - g(j)‖ = 1 for all i ≠ j.
-
-    The Gram matrix G_{ij} = ⟨g(i), g(j)⟩ satisfies:
-    G_{ii} = ‖g(i)‖² = r²  (constant by symmetry of distance constraints)
-    G_{ij} = r² - 1/2       (from ‖g(i)-g(j)‖² = 1)
-
-    So G = r² J_n + (−1/2)(I_n − J_n/n) where J_n = 11ᵀ/n.
-    After centering (Σg(i)=0), G has rank exactly n-1.
-    Therefore the vectors span an (n-1)-dimensional subspace.
-    So d ≥ n-1. -/
-theorem complete_graph_dim_lower_bound_sketch :
-    -- For K_n with n ≥ 2:
-    -- Any unit embedding requires dimension ≥ n-1
-    -- Proof: centered Gram matrix has rank n-1
-    -- Combined with upper bound: dim(K_n) = n-1 exactly
-    True := trivial
+-- (§21 sketch removed: lower bound now fully proved in §20 via linear independence)
 
 -- ============================================================================
 -- § 22. Known Values Summary
@@ -1393,6 +1307,7 @@ theorem d4_deficiency : 4 * 5 / 2 - 9 = (1 : ℕ) := by omega
 #check @complete_graph_dim_le_tight_5
 #check @complete_graph_dim_ge_tight
 #check @complete_graph_dim_exact
+#check @unit_embedding_dim_lower_bound
 #check @K3_unit_embedding
 #check @K4_unit_embedding
 #check @K5_unit_embedding
@@ -1402,7 +1317,6 @@ theorem d4_deficiency : 4 * 5 / 2 - 9 = (1 : ℕ) := by omega
 #check @optimal_implies_quadratic
 #check @optimal_iff_zero_deficiency
 #check @unique_anomaly_small
-#check @complete_graph_dim_lower_bound_sketch
 #check @known_values_check
 #check @d4_anomaly
 #check @d4_deficiency
