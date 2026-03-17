@@ -3045,9 +3045,11 @@ theorem standard_conjectures_imply_semisimple
 R_H(h(X) ⊗ h(Y)) ≅ R_H(h(X)) ⊗ R_H(h(Y)).
 This is the Künneth formula at the motivic level. -/
 axiom realization_preserves_tensor (M₁ M₂ : Motive) :
-    -- R_H(h(X) ⊗ h(Y)) ≅ R_H(h(X)) ⊗ R_H(h(Y)) by Künneth formula
-    ∃ f : (M₁.realization.VQ ⊗[ℚ] M₂.realization.VQ) →ₗ[ℚ]
-      (tensorHodge M₁.realization M₂.realization).VQ,
+    -- R_H(M₁ ⊗ M₂) ≅ R_H(M₁) ⊗ R_H(M₂) via Künneth formula
+    -- Formulated as: the tensor Hodge structure of realizations is naturally
+    -- isomorphic to the realization of the tensor motive
+    ∃ f : (tensorHodge (hodgeRealization M₁) (hodgeRealization M₂)).VQ →ₗ[ℚ]
+      (hodgeRealization ⟨M₁.variety, M₁.weight + M₂.weight⟩).VQ,
     Function.Bijective f
 
 /- ═══════════════════════════════════════════════════════════════════════════════
@@ -3087,14 +3089,13 @@ axiom hodge_for_uniruled_codim1 (X : ProjectiveVariety)
 If the Hodge conjecture holds for X and Y separately, then it holds
 for X × Y (by the Künneth formula). This was axiomatized as
 hodge_conjecture_product; here we re-derive it as a corollary. -/
-theorem hodge_product_from_factors (X Y : ProjectiveVariety)
-    (hX : ∀ p (H : PureHodgeStructure (2*p)) (α : HodgeClass H),
-      isAlgebraicClass X p H α)
-    (hY : ∀ p (H : PureHodgeStructure (2*p)) (α : HodgeClass H),
-      isAlgebraicClass Y p H α)
-    (p : ℕ) (H : PureHodgeStructure (2*p)) (α : HodgeClass H) :
-    True :=  -- HC holds for X × Y
-  trivial
+axiom hodge_product_from_factors (X Y XY : ProjectiveVariety)
+    (hXY_dim : XY.dim = X.dim + Y.dim)
+    (hX : ∀ p (H : PureHodgeStructure (2*p)), HodgeConjectureStatement X p H)
+    (hY : ∀ p (H : PureHodgeStructure (2*p)), HodgeConjectureStatement Y p H)
+    (p : ℕ) (H : PureHodgeStructure (2*p)) :
+    -- By the Künneth formula, HC for factors implies HC for the product
+    HodgeConjectureStatement XY p H
 
 /-- **PROVED: HC for 0-dimensional varieties is trivial.**
 
@@ -3489,11 +3490,11 @@ The first step of the BB filtration is the group of homologically
 trivial cycles: cycles whose cohomology class is zero.
 
 **Why an axiom?** This is part of the BB conjecture definition. -/
-theorem bb_f1_is_kernel (X : ProjectiveVariety) (p : ℕ)
-    (hp : p ≤ X.dim) (CH : ChowGroup X p) (H : PureHodgeStructure (2 * p))
+axiom bb_f1_is_kernel (X : ProjectiveVariety) (p : ℕ)
+    (hp : p ≤ X.dim) (CH : ChowGroup X p)
     (BB : BlochBeilinsonFiltration X p CH) :
-    True :=  -- F^1 = ker(cl : CH^p → H^{2p})
-  trivial
+    -- The BB filtration is decreasing: F^{j+1} ≤ F^j
+    ∀ j : ℕ, BB.step (j + 1) ≤ BB.step j
 
 /-- **Axiom: Filtration terminates.**
 
@@ -3566,10 +3567,12 @@ theorem level_le_weight (k : ℕ) (H : PureHodgeStructure k) :
 If ℓ(H) = 0 (for weight k), then H is concentrated in type (k/2, k/2).
 All rational classes are Hodge classes. The Hodge conjecture is
 trivially true for such structures (when k is even). -/
-theorem level_zero_all_hodge (H : PureHodgeStructure 0)
+theorem level_zero_all_hodge (X : ProjectiveVariety) (H : PureHodgeStructure 0)
     (hlevel : hodgeLevel 0 H = 0) :
-    True :=  -- All classes in V_ℚ are Hodge
-  trivial
+    HodgeConjectureStatement X 0 H :=
+  -- Level-0 weight-0 Hodge structure: all classes are (0,0), hence Hodge.
+  -- Codimension 0 is the trivial case (fundamental class).
+  hodge_conjecture_codim_zero X H
 
 /-- The **geometric genus** of a variety: p_g = h^{n,0} = h^{0,n}
 where n = dim(X). For surfaces, p_g = h^{2,0}. -/
@@ -3609,11 +3612,10 @@ the hyperplane class, which is algebraic).
 
 **Why an axiom?** Requires monodromy arguments and the topology of
 the universal family of hypersurfaces. -/
-theorem noether_lefschetz (X : ProjectiveVariety) (hn : X.dim = 2)
+axiom noether_lefschetz (X : ProjectiveVariety) (hn : X.dim = 2)
     [IsVeryGeneral X] [HasDegreeGe X 4]
     (H : PureHodgeStructure 2) :
-    True :=  -- Pic(X) ≅ ℤ (Hodge conjecture holds trivially)
-  trivial
+    HodgeConjectureStatement X 1 H
 
 /-- **PROVED: HC is trivially true for varieties with h^{p,p} = 0.**
 
@@ -3710,10 +3712,14 @@ The diagram commutes:
   CH^p(X) →^{cl_D} H^{2p}_D(X,ℤ(p))
                          ↓ π
   CH^p(X) →^{cl}  H^{2p}(X,ℤ) -/
-theorem deligne_projects_to_classical (X : ProjectiveVariety) (p : ℕ)
-    (hp : p ≤ X.dim) :
-    True :=  -- cl = π ∘ cl_D
-  trivial
+axiom deligne_projects_to_classical (X : ProjectiveVariety) (p : ℕ)
+    (hp : p ≤ X.dim) (HD : DeligneCohomology X (2 * p) p)
+    (H : PureHodgeStructure (2 * p)) :
+    -- The Deligne cycle class projects to the classical cycle class:
+    -- cl = π ∘ cl_D, where π : H^{2p}_D → H^{2p} is the projection
+    ∃ (π : HD.carrier → H.VQ),
+      ∀ (Z : AlgebraicCycle X p),
+        π (deligne_cycle_class X p hp HD Z) = cycleClassMap X p H Z
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XXV: K3 SURFACES — A KEY TEST CASE
@@ -4074,10 +4080,31 @@ def TateClass.smul {p : ℕ} {H : EtaleCohomology (2 * p)}
   rationalClass := q • α.rationalClass
   isTate := True
 
+/-- **Axiom: Étale cycle class map.**
+
+    The ℓ-adic cycle class map sends algebraic cycles to étale cohomology:
+      cl_ℓ : Z^p(X) → H^{2p}_{ét}(X̄, ℚ_ℓ(p))
+
+    This is the arithmetic analogue of the classical cycle class map
+    cl : Z^p(X) → H^{2p}(X(ℂ), ℚ). Under the Artin comparison
+    isomorphism, these two maps are compatible.
+
+    **Why an axiom?** Requires étale cohomology theory, ℓ-adic sheaves,
+    and the construction of the cycle class in the derived category. -/
+axiom etaleCycleClassMap (X : ProjectiveVariety) (p : ℕ)
+    (H : EtaleCohomology (2 * p)) (Z : AlgebraicCycle X p) : H.space
+
+/-- An étale cohomology class is **algebraic** if it is a ℚ-linear combination
+    of ℓ-adic cycle classes. This parallels `isAlgebraicClass` for Hodge theory. -/
+def isAlgebraicEtaleClass (X : ProjectiveVariety) (p : ℕ)
+    (H : EtaleCohomology (2 * p)) (α : TateClass p H) : Prop :=
+  ∃ (cycles : Finset (AlgebraicCycle X p)) (coeffs : AlgebraicCycle X p → ℚ),
+    α.rationalClass = ∑ Z ∈ cycles, coeffs Z • etaleCycleClassMap X p H Z
+
 /-- **The Tate Conjecture (full statement)**.
 
     For a smooth projective variety X over a finitely generated field k
-    and any prime ℓ ≠ char(k), the cycle class map
+    and any prime ℓ ≠ char(k), the ℓ-adic cycle class map
 
       cl_ℓ : CH^p(X) ⊗ ℚ_ℓ → H^{2p}_{ét}(X̄, ℚ_ℓ(p))^{Gal(k̄/k)}
 
@@ -4086,13 +4113,19 @@ def TateClass.smul {p : ℕ} {H : EtaleCohomology (2 * p)}
     **Relationship to existing TateConjecture : Prop:**
     This is the internal version with full structure. The earlier bare
     `TateConjecture` at line 953 is the external statement. -/
-def TateConjectureStatement : Prop :=
-  ∀ (p : ℕ) (H : EtaleCohomology.{0} (2 * p)) (α : TateClass p H),
-    True  -- α is in the image of the cycle class map
+def TateConjectureStatement (X : ProjectiveVariety) (p : ℕ)
+    (H : EtaleCohomology (2 * p)) : Prop :=
+  ∀ (α : TateClass p H), isAlgebraicEtaleClass X p H α
+
+/-- The full Tate conjecture for all varieties (universe-fixed). -/
+def TateConjectureFullStatement : Prop :=
+  ∀ (X : ProjectiveVariety.{0}) (p : ℕ) (_ : p ≤ X.dim)
+    (H : EtaleCohomology.{0} (2 * p)),
+    TateConjectureStatement X p H
 
 /-- **Tate conjecture consistency**: the structured statement implies the bare axiom. -/
 axiom tate_conjecture_consistent :
-    TateConjectureStatement → TateConjecture
+    TateConjectureFullStatement → TateConjecture
 
 /-- **Weil conjectures** (Deligne, 1974).
 
@@ -4131,9 +4164,10 @@ theorem tate_class_eigenvalue_constraint (p : ℕ) :
 
     **Why an axiom?** Tate's proof uses Honda-Tate theory and the
     classification of abelian varieties over finite fields. -/
-theorem tate_for_abelian_over_finite_field :
-    True :=  -- Tate conjecture for abelian varieties / F_q
-  trivial
+axiom tate_for_abelian_over_finite_field (X : ProjectiveVariety)
+    [IsAbelianVariety X] (p : ℕ) (hp : p ≤ X.dim)
+    (H : EtaleCohomology (2 * p)) :
+    TateConjectureStatement X p H
 
 /-- **Faltings' theorem** (1983, Mordell conjecture + Tate conjecture).
 
@@ -4144,9 +4178,10 @@ theorem tate_for_abelian_over_finite_field :
 
     **Why an axiom?** Faltings' proof introduced fundamentally new
     techniques (heights on moduli spaces, p-adic Hodge theory). -/
-theorem faltings_tate_number_fields :
-    True :=  -- Tate conjecture for abelian varieties / number fields
-  trivial
+axiom faltings_tate_number_fields (X : ProjectiveVariety)
+    [IsAbelianVariety X] (p : ℕ) (hp : p ≤ X.dim)
+    (H : EtaleCohomology (2 * p)) :
+    TateConjectureStatement X p H
 
 /-- **PROVED: Hodge ↔ Tate equivalence for abelian varieties.**
 
@@ -4183,9 +4218,13 @@ theorem artin_comparison_theorem :
     Under the Artin comparison isomorphism, the image of an algebraic
     cycle class in Betti cohomology maps to its image in ℓ-adic cohomology.
     This is the key compatibility that makes Hodge ↔ Tate meaningful. -/
-theorem comparison_preserves_cycles :
-    True :=  -- cl_B(Z) ↦ cl_ℓ(Z) under Artin comparison
-  trivial
+axiom comparison_preserves_cycles (X : ProjectiveVariety) (p : ℕ)
+    (hp : p ≤ X.dim) (H_B : PureHodgeStructure (2 * p))
+    (H_ℓ : EtaleCohomology (2 * p)) (Z : AlgebraicCycle X p) :
+    -- Under the Artin comparison isomorphism, the Betti and ℓ-adic
+    -- cycle class maps are compatible: comp ∘ cl_B = cl_ℓ
+    ∃ comp : H_B.VQ →ₗ[ℚ] H_ℓ.space,
+      comp (cycleClassMap X p H_B Z) = etaleCycleClassMap X p H_ℓ Z
 
 /-- **PROVED: If Tate holds for all abelian varieties, then Hodge holds
     for all abelian varieties** (summary theorem). -/
@@ -4283,7 +4322,7 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 -- Special classes
 #check hodge_for_abelian_absolute        -- Deligne: abelian → absolute
 #check hodge_for_uniruled_codim1         -- Uniruled codim 1
-#check hodge_product_from_factors        -- PROVED: HC(X)∧HC(Y) → HC(X×Y)
+#check hodge_product_from_factors        -- HC(X)∧HC(Y) → HC(X×Y)
 #check hodge_zero_dimensional            -- PROVED: HC for dim 0
 
 -- Morphisms (category structure)
@@ -4467,15 +4506,18 @@ PART XVIII-FINAL: SUMMARY OF ALL RESULTS
 #check TateClass.add                     -- PROVED: closed under +
 #check TateClass.neg                     -- PROVED: closed under -
 #check TateClass.smul                    -- PROVED: closed under ℚ·
-#check TateConjectureStatement           -- PROVED: full Tate conjecture def
-#check tate_conjecture_consistent        -- PROVED: relates to TateConjecture axiom
+#check etaleCycleClassMap                -- Étale cycle class map cl_ℓ
+#check isAlgebraicEtaleClass             -- α is ℚ-combination of cl_ℓ(Z_i)
+#check TateConjectureStatement           -- TC for specific (X, p, H)
+#check TateConjectureFullStatement       -- Full TC for all varieties
+#check tate_conjecture_consistent        -- TateConjectureFullStatement → TateConjecture
 #check weil_conjectures_riemann_hypothesis -- Deligne: |eigenvalues| = q^{k/2}
 #check tate_class_eigenvalue_constraint  -- PROVED: eigenvalue consistency
-#check tate_for_abelian_over_finite_field -- Tate (1966)
-#check faltings_tate_number_fields       -- Faltings (1983)
+#check tate_for_abelian_over_finite_field -- Tate (1966): TC for abelian / F_q
+#check faltings_tate_number_fields       -- Faltings (1983): TC for abelian / number fields
 #check hodge_tate_equivalence_abelian    -- PROVED: HC ↔ TC for abelian
 #check artin_comparison_theorem          -- H^k_ét ≅ H^k_B ⊗ ℚ_ℓ
-#check comparison_preserves_cycles       -- PROVED: preserves cycle classes
+#check comparison_preserves_cycles       -- comp ∘ cl_B = cl_ℓ
 #check tate_gives_hodge_for_abelian      -- PROVED: TC ⟹ HC (abelian)
 
 /- ═══════════════════════════════════════════════════════════════════════════════
@@ -4590,7 +4632,9 @@ axiom mhs_strict_morphisms (M₁ M₂ : MixedHodgeStructure)
 Formally: for any submodule S of V_ℚ, the induced filtration W_k ∩ S is a valid MHS.
 This follows from Deligne's strictness (mhs_strict_morphisms). -/
 axiom mhs_category_abelian (M : MixedHodgeStructure) :
-    ∃ (sub : MixedHodgeStructure), ∃ (_ : sub.VQ →ₗ[ℚ] M.VQ), True
+    -- Every sub-MHS embeds injectively (abelian category property)
+    ∃ (sub : MixedHodgeStructure) (f : sub.VQ →ₗ[ℚ] M.VQ),
+      Function.Injective f
 
 /-- Extensions of MHS: Ext¹(ℚ(0), ℚ(p)) ≅ ℂ/(ℚ + F^p ℂ) for p ≥ 1.
 This classifies extension classes and gives the intermediate Jacobian structure.
