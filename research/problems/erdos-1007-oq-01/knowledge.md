@@ -4,42 +4,6 @@ Minimum edges for graph dimension d in general.
 
 ---
 
-## Session 2026-03-17 (Session 7) - Unconditional Bounds + Edge Count + Placeholder Fix
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 39)
-**Outcome**: progress — 6 new theorems, placeholder eliminated
-
-### What Was Done
-- **Replaced `upper_bound_from_exact_dim` placeholder** (was `True := trivial`) with
-  `complete_graph_dim_at_d`: a real theorem stating dim(K_{d+1}) = d for all d ≥ 1,
-  derived directly from `complete_graph_dim_exact`.
-- **Added unconditional bound verification** (§21b):
-  - `lower_bound_verified_small`: d ≤ minEdgesForDim(d) for d=1..5 using ONLY value axioms
-  - `upper_bound_verified_small`: minEdgesForDim(d) ≤ C(d+1,2) for d=1..5 using ONLY value axioms
-  - `bounds_consistent_small`: combines both for d=1..5
-  - These verify the bound axioms are consistent with the value axioms independently.
-- **Formalized edge count** (§21c):
-  - `complete_graph_edge_count`: C(n,2) = n*(n-1)/2 via Nat.choose_two_right
-  - `complete_graph_edge_count_small`: verified C(n,2) for n=2..7 by native_decide
-
-### Stats After Changes
-- ~1425 lines, 0 sorries, 9 axioms, ~88 theorems
-- All new theorems typecheck successfully
-- Pre-existing §19 Mathlib API drift errors unchanged (known issue)
-
-### Assessment
-The formalization is essentially complete. The 9 remaining axioms are all genuinely needed:
-- 1 function definition (minEdgesForDim — requires exhaustive graph search)
-- 6 known values (d=0..5 — from computational search by House 2013, Chaffee-Noble 2016)
-- 2 bounds (lower: d ≤ minEdges(d), upper: ≤ C(d+1,2) — require graph rigidity theory)
-
-The only remaining work is fixing Mathlib API drift in §19-§20 (mechanical, not mathematical).
-
-### Files Modified
-- `proofs/Proofs/Erdos1007OQ01.lean` — added §21b-c, replaced placeholder
-
----
-
 ## Session 2026-03-17 (Session 5) - Prove dim(K_n) ≥ n-1 Lower Bound
 
 **Mode**: REVISIT (depth-first, RICH knowledge)
