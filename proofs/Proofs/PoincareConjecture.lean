@@ -1110,6 +1110,31 @@ theorem sphere3_is_lie_group :
   let ⟨mul, one, inv, hcm, hci, _, hlid, _, hrinv, _⟩ := sphere3_is_topological_group
   ⟨mul, one, inv, hcm, hci, hlid, hrinv⟩
 
+/-- The unit quaternions S³ form a Group (typeclass instance).
+    This gives access to Mathlib's group theory API: powers, order,
+    conjugation, subgroups, etc. on the unit quaternions. -/
+noncomputable instance sphere3MulInst : Mul ↥Sphere3 := ⟨sphere3Mul⟩
+noncomputable instance sphere3OneInst : One ↥Sphere3 := ⟨sphere3One⟩
+noncomputable instance sphere3InvInst : Inv ↥Sphere3 := ⟨sphere3Inv⟩
+
+noncomputable instance sphere3Group : Group ↥Sphere3 where
+  mul_assoc := sphere3_mul_assoc
+  one_mul := sphere3_mul_left_id
+  mul_one := sphere3_mul_right_id
+  inv_mul_cancel := sphere3_mul_left_inv
+
+/-- S³ with its quaternion group structure is nontrivial (has > 1 element).
+    (1,0,0,0) ≠ (0,1,0,0) on S³. -/
+theorem sphere3_nontrivial : ∃ (a b : ↥Sphere3), a ≠ b := by
+  have h1 : EuclideanSpace.single (0 : Fin 4) (1 : ℝ) ∈ Sphere3 := by
+    simp [Sphere3, Metric.mem_sphere, dist_eq_norm, sub_zero, EuclideanSpace.norm_single]
+  have h2 : EuclideanSpace.single (1 : Fin 4) (1 : ℝ) ∈ Sphere3 := by
+    simp [Sphere3, Metric.mem_sphere, dist_eq_norm, sub_zero, EuclideanSpace.norm_single]
+  refine ⟨⟨_, h1⟩, ⟨_, h2⟩, ?_⟩
+  intro h
+  have := congr_arg (fun x => x.val (0 : Fin 4)) h
+  simp [EuclideanSpace.single_apply] at this
+
 /- ---- Concrete Hopf Map (Part XLVII) ----------------------------------------
 
 The Hopf map π : S³ → S² is constructed explicitly using the identification
