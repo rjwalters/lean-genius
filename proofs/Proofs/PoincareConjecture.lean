@@ -800,9 +800,12 @@ abbrev Sphere1 : Set (EuclideanSpace ℝ (Fin 2)) := Metric.sphere 0 1
 /-- The 2-sphere S² as unit sphere in ℝ³. -/
 abbrev Sphere2 : Set (EuclideanSpace ℝ (Fin 3)) := Metric.sphere 0 1
 
-/-- Each fiber of the Hopf map is homeomorphic to S¹ (a great circle in S³). -/
-axiom hopf_fibers_are_circles :
-  ∀ (π : ↥Sphere3 → ↥Sphere2), Continuous π → Function.Surjective π →
+/-- The Hopf fibration: there exists a continuous surjection S³ → S² whose fibers
+    are circles (great circles in S³). Previously formulated as a universal statement
+    about ALL continuous surjections S³ → S², which is mathematically incorrect
+    (not every surjection has circle fibers). -/
+axiom hopf_fibration_exists :
+  ∃ (π : ↥Sphere3 → ↥Sphere2), Continuous π ∧ Function.Surjective π ∧
     ∀ p : ↥Sphere2, ∃ (f : ↥(π ⁻¹' {p}) → ↥Sphere1),
       Continuous f ∧ Function.Bijective f
 
@@ -4990,6 +4993,98 @@ theorem sphere3_identity_unique :
   rw [← h2]; exact h
 
 end QuaternionNonCommutativity
+
+/- ===============================================================================
+PART LVIII: QUATERNION ASSOCIATIVITY AND GROUP COMPLETION
+=============================================================================== -/
+
+section QuaternionAssociativity
+
+/-- Quaternion multiplication is associative at the EuclideanSpace level.
+    This is the Hamilton identity: (xy)z = x(yz) for all quaternions.
+    Proved by coordinate expansion and polynomial ring arithmetic. -/
+theorem quatMulE_assoc (x y z : EuclideanSpace ℝ (Fin 4)) :
+    quatMulE (quatMulE x y) z = quatMulE x (quatMulE y z) := by
+  ext i
+  show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE (quatMulE x y) z) i =
+       WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE x (quatMulE y z)) i
+  simp [quatMulE]
+  fin_cases i <;> simp <;> ring
+
+/-- Quaternion multiplication on S³ is associative. -/
+theorem sphere3_mul_assoc (a b c : ↥Sphere3) :
+    sphere3Mul (sphere3Mul a b) c = sphere3Mul a (sphere3Mul b c) := by
+  apply Subtype.ext
+  simp [sphere3Mul]
+  exact quatMulE_assoc a.val b.val c.val
+
+/-- S³ satisfies ALL group axioms concretely:
+    associativity, left identity, and left inverse.
+    Combined with non-commutativity, this is the quaternion group Q₈'s
+    ambient group structure (the full unit quaternion group Sp(1)). -/
+theorem sphere3_group_axioms :
+    -- Associativity
+    (∀ a b c : ↥Sphere3, sphere3Mul (sphere3Mul a b) c = sphere3Mul a (sphere3Mul b c)) ∧
+    -- Left identity
+    (∀ a : ↥Sphere3, sphere3Mul sphere3One a = a) ∧
+    -- Left inverse
+    (∀ a : ↥Sphere3, sphere3Mul (sphere3Inv a) a = sphere3One) := by
+  refine ⟨sphere3_mul_assoc, sphere3_mul_left_id, ?_⟩
+  intro a
+  -- sphere3Mul (sphere3Inv a) a = sphere3One
+  -- This is equivalent to quatMulE (quatConjE a.val) a.val = quatOneE for unit quaternions
+  -- which is sphere3_mul_right_inv with the inverse on the left
+  -- Actually sphere3_mul_right_inv proves: a * a⁻¹ = 1 (RIGHT inverse)
+  -- We need LEFT inverse: a⁻¹ * a = 1
+  -- For groups, right inverse + associativity + identity gives left inverse
+  -- But let's prove directly:
+  apply Subtype.ext
+  simp [sphere3Mul, sphere3Inv, sphere3One]
+  ext i
+  show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE (quatConjE a.val) a.val) i =
+       WithLp.equiv 2 (Fin 4 → ℝ) quatOneE i
+  simp [quatMulE, quatConjE, quatOneE, EuclideanSpace.single_apply]
+  fin_cases i <;> simp
+  · -- Coordinate 0: a₀² + a₁² + a₂² + a₃² = 1 (unit quaternion)
+    have ha := a.2
+    simp [Sphere3, Metric.mem_sphere, dist_eq_norm, sub_zero] at ha
+    have := EuclideanSpace.norm_eq ha
+    nlinarith [sq_nonneg (a.val 0), sq_nonneg (a.val 1),
+               sq_nonneg (a.val 2), sq_nonneg (a.val 3)]
+  · ring  -- Coordinate 1: 0
+  · ring  -- Coordinate 2: 0
+  · ring  -- Coordinate 3: 0
+
+/-- Right identity at subtype level: a · 1 = a. -/
+theorem sphere3_mul_right_id (a : ↥Sphere3) :
+    sphere3Mul a sphere3One = a := by
+  apply Subtype.ext
+  simp [sphere3Mul, sphere3One]
+  exact quatMulE_right_identity a.val
+
+/-- Right inverse at subtype level (already exists but restated for completeness):
+    a · a⁻¹ = 1. -/
+theorem sphere3_mul_right_inv' (a : ↥Sphere3) :
+    sphere3Mul a (sphere3Inv a) = sphere3One :=
+  sphere3_mul_right_inv a
+
+/-- Complete group verification: ALL 5 group axioms hold. -/
+theorem sphere3_complete_group :
+    -- Closure (implicit in type)
+    -- Associativity
+    (∀ a b c : ↥Sphere3, sphere3Mul (sphere3Mul a b) c = sphere3Mul a (sphere3Mul b c)) ∧
+    -- Left identity
+    (∀ a : ↥Sphere3, sphere3Mul sphere3One a = a) ∧
+    -- Right identity
+    (∀ a : ↥Sphere3, sphere3Mul a sphere3One = a) ∧
+    -- Left inverse
+    (∀ a : ↥Sphere3, sphere3Mul (sphere3Inv a) a = sphere3One) ∧
+    -- Right inverse
+    (∀ a : ↥Sphere3, sphere3Mul a (sphere3Inv a) = sphere3One) :=
+  ⟨sphere3_mul_assoc, sphere3_mul_left_id, sphere3_mul_right_id,
+   sphere3_group_axioms.2.2, sphere3_mul_right_inv⟩
+
+end QuaternionAssociativity
 
 -- Summary of all contributions to PoincareConjecture.lean:
 -- Parts XLIV-XLV: JSJ Decomposition, Graph Manifolds, Thurston Norm
