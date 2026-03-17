@@ -1,28 +1,28 @@
 /-
-  Newton Log-Concavity: Deriving Maclaurin Step
+  Newton Log-Concavity: Complete Proof and Maclaurin Step Derivation
   Research: amgm-inequality-oq-02-oq-02
 
-  Goal: Prove that the `maclaurin_step` axiom follows from `newton_log_concavity`,
-  reducing the axiom count in AmgmInequalityOQ02.lean from 2 to 1.
+  This file proves Newton's log-concavity for elementary symmetric polynomials
+  and derives both axioms from AmgmInequalityOQ02.lean as theorems:
 
-  Main result: `maclaurin_step_derived`
-    For non-negative reals x₁, ..., xₙ and 0 < k with k+1 ≤ n:
-    Mₖ ≥ Mₖ₊₁ where Mⱼ = (eⱼ/C(n,j))^(1/j)
+  Main results (0 axioms, 0 sorries):
+  1. `newton_log_concavity_proved` — normalized Newton's inequality
+     (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1)) · (eₖ₊₁/C(n,k+1))
+  2. `maclaurin_step_derived` — Mₖ ≥ Mₖ₊₁ where Mⱼ = (eⱼ/C(n,j))^(1/j)
 
-  Proof strategy:
-  1. Log-concavity (aⱼ² ≥ aⱼ₋₁·aⱼ₊₁) implies the power inequality
-     aₖ^(k+1) ≥ aₖ₊₁^k (by induction on k)
-  2. The power inequality implies the rpow inequality
-     aₖ^(1/k) ≥ aₖ₊₁^(1/(k+1)) (by monotonicity of rpow)
-
-  The inductive step uses a division-free argument:
-    (aₖ₊₁²)^(k+1) ≥ (aₖ·aₖ₊₂)^(k+1)  [Newton, pow monotone]
-    = aₖ^(k+1)·aₖ₊₂^(k+1)              [mul_pow]
-    ≥ aₖ₊₁^k·aₖ₊₂^(k+1)               [IH]
-    Then cancel aₖ₊₁^k to get aₖ₊₁^(k+2) ≥ aₖ₊₂^(k+1).
+  Proof architecture:
+  Part I:   Structural properties (zero-tail, normESym basics)
+  Part II:  Unnormalized Newton eₖ² ≥ eₖ₋₁·eₖ₊₁ (induction on n)
+  Part III: Binomial log-concavity C(n,k)² ≥ C(n,k-1)·C(n,k+1)
+  Part IV:  Cleared-denominator inductive step (absorption + discriminant)
+  Part V:   Cleared-denominator main induction
+  Part VI:  Normalized Newton (derived from cleared-denom form)
+  Part VII: Power inequality aₖ^(k+1) ≥ aₖ₊₁^k
+  Part VIII: Maclaurin step Mₖ ≥ Mₖ₊₁
 
   References:
   - Hardy-Littlewood-Pólya "Inequalities" (1934) §2.22
+  - Newton (1707), Maclaurin (1729)
   - AmgmInequalityOQ02.lean (parent formalization)
 -/
 
@@ -100,134 +100,7 @@ lemma normESym_zero_implies_higher_zero {n : ℕ} (j k : ℕ) (x : Fin n → ℝ
     ((normESym_eq_zero_iff j hj x).mp h) k hjk
 
 /-
-## Part II: Power Inequality from Log-Concavity
--/
-
-lemma normESym_log_concave {n : ℕ} (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
-    (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
-    normESym k x ^ 2 ≥ normESym (k - 1) x * normESym (k + 1) x :=
-  newton_log_concavity k hk hkn x hx
-
-/-- Key lemma: log-concavity implies the power inequality aₖ^(k+1) ≥ aₖ₊₁^k.
-    Proved by induction on k using a division-free argument. -/
-theorem power_ineq_of_log_concave {n : ℕ} (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
-    (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
-    normESym k x ^ (k + 1) ≥ normESym (k + 1) x ^ k := by
-  induction k with
-  | zero => omega
-  | succ m ih =>
-    -- k = m + 1: need normESym (m+1) x ^ (m+2) ≥ normESym (m+2) x ^ (m+1)
-    -- Case 1: normESym (m+1) = 0
-    by_cases ha_zero : normESym (m + 1) x = 0
-    · have hb_zero : normESym (m + 2) x = 0 :=
-        normESym_zero_implies_higher_zero (m + 1) (m + 2) x hx
-          (by omega) (by omega) (by omega) ha_zero
-      simp [ha_zero, hb_zero]
-    · -- Case 2: normESym (m+1) > 0
-      have ha_nn : 0 ≤ normESym (m + 1) x := normESym_nonneg _ x hx
-      have hb_nn : 0 ≤ normESym (m + 2) x := normESym_nonneg _ x hx
-      have ha_pos : 0 < normESym (m + 1) x := lt_of_le_of_ne ha_nn (Ne.symm ha_zero)
-      cases m with
-      | zero =>
-        -- k = 1: need normESym 1 x ^ 2 ≥ normESym 2 x ^ 1
-        -- From Newton at k=1: normESym 1 x ^ 2 ≥ normESym 0 x * normESym 2 x = normESym 2 x
-        have h_newton := normESym_log_concave 1 le_rfl hkn x hx
-        simp only [show (1 : ℕ) - 1 = 0 from rfl, show (1 : ℕ) + 1 = 2 from rfl,
-                   normESym_zero] at h_newton
-        -- h_newton : normESym 1 x ^ 2 ≥ 1 * normESym 2 x
-        simp only [show (0 : ℕ) + 1 = 1 from rfl, show (0 : ℕ) + 2 = 2 from rfl]
-        linarith
-      | succ p =>
-        -- k = p + 2
-        -- a = normESym (p+2) x, b = normESym (p+3) x, a_prev = normESym (p+1) x
-        have ha_prev_nn : 0 ≤ normESym (p + 1) x := normESym_nonneg _ x hx
-        -- Newton at k = p+2: normESym (p+2) ^ 2 ≥ normESym (p+1) * normESym (p+3)
-        have h_newton : normESym (p + 2) x ^ 2 ≥
-            normESym (p + 1) x * normESym (p + 3) x := by
-          have := normESym_log_concave (p + 2) (by omega) (by omega : p + 2 + 1 ≤ n) x hx
-          simp only [show p + 2 - 1 = p + 1 from by omega,
-                     show p + 2 + 1 = p + 3 from by omega] at this
-          exact this
-        -- IH: normESym (p+1) ^ (p+2) ≥ normESym (p+2) ^ (p+1)
-        have h_ih : normESym (p + 1) x ^ (p + 2) ≥ normESym (p + 2) x ^ (p + 1) := by
-          have := ih (by omega : 1 ≤ p + 1) (by omega : p + 1 + 1 ≤ n)
-          simp only [show p + 1 + 1 = p + 2 from by omega] at this
-          exact this
-        -- Goal after simplification: normESym (p+2) ^ (p+3) ≥ normESym (p+3) ^ (p+2)
-        -- The simp normalizes m+1 = p+1+1 = p+2, m+2 = p+3, etc.
-        simp only [show p + 1 + 1 = p + 2 from by omega,
-                   show p + 1 + 2 = p + 3 from by omega]
-        -- Division-free argument:
-        -- Step 1: (normESym (p+2))^(2(p+2)) ≥ (normESym (p+1) * normESym (p+3))^(p+2)
-        have h1 : (normESym (p + 2) x ^ 2) ^ (p + 2) ≥
-            (normESym (p + 1) x * normESym (p + 3) x) ^ (p + 2) :=
-          pow_le_pow_left₀ (mul_nonneg ha_prev_nn (normESym_nonneg _ x hx)) h_newton (p + 2)
-        rw [← pow_mul, mul_pow] at h1
-        -- h1: normESym (p+2) ^ (2*(p+2)) ≥ normESym (p+1) ^ (p+2) * normESym (p+3) ^ (p+2)
-        -- Step 2: Combine with IH
-        have h2 : normESym (p + 2) x ^ (2 * (p + 2)) ≥
-            normESym (p + 2) x ^ (p + 1) * normESym (p + 3) x ^ (p + 2) :=
-          calc normESym (p + 2) x ^ (2 * (p + 2))
-              ≥ normESym (p + 1) x ^ (p + 2) * normESym (p + 3) x ^ (p + 2) := h1
-            _ ≥ normESym (p + 2) x ^ (p + 1) * normESym (p + 3) x ^ (p + 2) :=
-                mul_le_mul_of_nonneg_right h_ih (pow_nonneg (normESym_nonneg _ x hx) _)
-        -- Step 3: Rewrite 2*(p+2) = (p+1) + (p+3)
-        have h_split : 2 * (p + 2) = (p + 1) + (p + 3) := by omega
-        rw [h_split, pow_add] at h2
-        -- h2: normESym (p+2) ^ (p+1) * normESym (p+2) ^ (p+3) ≥
-        --     normESym (p+2) ^ (p+1) * normESym (p+3) ^ (p+2)
-        -- Step 4: Cancel normESym (p+2) ^ (p+1) (positive)
-        have ha_pow_pos : 0 < normESym (p + 2) x ^ (p + 1) := pow_pos ha_pos _
-        exact le_of_mul_le_mul_left (by linarith) ha_pow_pos
-
-/-
-## Part III: From Power Inequality to RPow Inequality
--/
-
-/-- If 0 ≤ a, 0 ≤ b, 0 < k, and a^(k+1) ≥ b^k, then a^(1/k) ≥ b^(1/(k+1)).
-    Uses the identity a^(1/k) = (a^(k+1))^(1/(k(k+1))) and monotonicity of rpow. -/
-theorem rpow_ineq_of_pow_ineq (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b)
-    (k : ℕ) (hk : 0 < k) (h : a ^ (k + 1) ≥ b ^ k) :
-    a ^ ((1 : ℝ) / k) ≥ b ^ ((1 : ℝ) / (↑k + 1)) := by
-  have hk_pos : (0 : ℝ) < k := Nat.cast_pos.mpr hk
-  have hk1_pos : (0 : ℝ) < ↑k + 1 := by positivity
-  have hkk1_pos : (0 : ℝ) < ↑k * (↑k + 1) := by positivity
-  -- a^(1/k) = (a^(k+1))^(1/(k*(k+1)))
-  have h_a_rw : a ^ ((1 : ℝ) / k) = (a ^ (k + 1 : ℕ)) ^ ((1 : ℝ) / (↑k * (↑k + 1))) := by
-    rw [← Real.rpow_natCast a (k + 1), ← Real.rpow_mul ha]
-    congr 1
-    rw [Nat.cast_add, Nat.cast_one]
-    field_simp
-  -- b^(1/(k+1)) = (b^k)^(1/(k*(k+1)))
-  have h_b_rw : b ^ ((1 : ℝ) / (↑k + 1)) = (b ^ (k : ℕ)) ^ ((1 : ℝ) / (↑k * (↑k + 1))) := by
-    rw [← Real.rpow_natCast b k, ← Real.rpow_mul hb]
-    congr 1
-    field_simp
-  rw [ge_iff_le, h_b_rw, h_a_rw]
-  exact Real.rpow_le_rpow (pow_nonneg hb _) h (by positivity)
-
-/-
-## Part IV: Main Result
--/
-
-/-- Maclaurin step derived as a theorem from Newton's log-concavity.
-    This shows the `maclaurin_step` axiom is redundant given `newton_log_concavity`. -/
-theorem maclaurin_step_derived {n : ℕ} (k : ℕ) (hk : 0 < k) (hkn : k + 1 ≤ n)
-    (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
-    maclaurinMean k x ≥ maclaurinMean (k + 1) x := by
-  unfold maclaurinMean
-  have h_pow := power_ineq_of_log_concave k hk hkn x hx
-  -- Apply the rpow conversion
-  have h_rpow := rpow_ineq_of_pow_ineq
-    (normESym k x) (normESym (k + 1) x)
-    (normESym_nonneg k x hx) (normESym_nonneg (k + 1) x hx)
-    k hk h_pow
-  -- h_rpow uses normESym = elemSymm / C(n,k), same as the goal
-  simp only [normESym, ge_iff_le] at h_rpow ⊢
-  convert h_rpow using 2 <;> simp [one_div, Nat.cast_add, Nat.cast_one]
-
-/-
-## Part V: Proving Newton's Log-Concavity (Eliminating the Last Axiom)
+## Part II: Unnormalized Newton's Inequality
 
 Strategy: Prove the stronger UNNORMALIZED version
   eₖ(x)² ≥ eₖ₋₁(x) · eₖ₊₁(x)
@@ -398,7 +271,7 @@ theorem elemSymm_log_concave : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
                  mul_nonneg (mul_nonneg ht_nn ht_nn) (sub_nonneg.mpr h_delta_km1)]
 
 /-
-## Part VI: Log-Concavity of Binomial Coefficients
+## Part III: Log-Concavity of Binomial Coefficients
 -/
 
 /-- Recurrence identity: (k+1) · C(n, k+1) = (n-k) · C(n, k) in ℕ.
@@ -471,7 +344,7 @@ theorem binom_log_concave (n k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n) :
     _ = Nat.choose n k ^ 2 * ((k + 1) * (n - k + 1)) := by ring
 
 /-
-## Part VII: Proving Normalized Newton from Unnormalized
+## Part IV: Cleared-Denominator Inductive Step
 -/
 
 /-
@@ -1086,53 +959,128 @@ theorem newton_log_concavity_proved {n : ℕ} (k : ℕ) (hk : 1 ≤ k) (hkn : k 
     exact (mul_pos (pow_pos hCk 2) (mul_pos hCkm1 hCkp1)).le
 
 /-
+## Part VII: Power Inequality and Maclaurin Step
+
+Now that newton_log_concavity_proved is available as a theorem (not an axiom),
+we derive the remaining results without any axiom dependency.
+-/
+
+/-- Normalized Newton's log-concavity as a lemma (proved, not axiom). -/
+lemma normESym_log_concave {n : ℕ} (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
+    (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
+    normESym k x ^ 2 ≥ normESym (k - 1) x * normESym (k + 1) x :=
+  newton_log_concavity_proved k hk hkn x hx
+
+/-- Key lemma: log-concavity implies the power inequality aₖ^(k+1) ≥ aₖ₊₁^k.
+    Proved by induction on k using a division-free argument. -/
+theorem power_ineq_of_log_concave {n : ℕ} (k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n)
+    (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
+    normESym k x ^ (k + 1) ≥ normESym (k + 1) x ^ k := by
+  induction k with
+  | zero => omega
+  | succ m ih =>
+    by_cases ha_zero : normESym (m + 1) x = 0
+    · have hb_zero : normESym (m + 2) x = 0 :=
+        normESym_zero_implies_higher_zero (m + 1) (m + 2) x hx
+          (by omega) (by omega) (by omega) ha_zero
+      simp [ha_zero, hb_zero]
+    · have ha_nn : 0 ≤ normESym (m + 1) x := normESym_nonneg _ x hx
+      have ha_pos : 0 < normESym (m + 1) x := lt_of_le_of_ne ha_nn (Ne.symm ha_zero)
+      cases m with
+      | zero =>
+        have h_newton := normESym_log_concave 1 le_rfl hkn x hx
+        simp only [show (1 : ℕ) - 1 = 0 from rfl, show (1 : ℕ) + 1 = 2 from rfl,
+                   normESym_zero] at h_newton
+        simp only [show (0 : ℕ) + 1 = 1 from rfl, show (0 : ℕ) + 2 = 2 from rfl]
+        linarith
+      | succ p =>
+        have ha_prev_nn : 0 ≤ normESym (p + 1) x := normESym_nonneg _ x hx
+        have h_newton : normESym (p + 2) x ^ 2 ≥
+            normESym (p + 1) x * normESym (p + 3) x := by
+          have := normESym_log_concave (p + 2) (by omega) (by omega : p + 2 + 1 ≤ n) x hx
+          simp only [show p + 2 - 1 = p + 1 from by omega,
+                     show p + 2 + 1 = p + 3 from by omega] at this
+          exact this
+        have h_ih : normESym (p + 1) x ^ (p + 2) ≥ normESym (p + 2) x ^ (p + 1) := by
+          have := ih (by omega : 1 ≤ p + 1) (by omega : p + 1 + 1 ≤ n)
+          simp only [show p + 1 + 1 = p + 2 from by omega] at this
+          exact this
+        simp only [show p + 1 + 1 = p + 2 from by omega,
+                   show p + 1 + 2 = p + 3 from by omega]
+        have h1 : (normESym (p + 2) x ^ 2) ^ (p + 2) ≥
+            (normESym (p + 1) x * normESym (p + 3) x) ^ (p + 2) :=
+          pow_le_pow_left₀ (mul_nonneg ha_prev_nn (normESym_nonneg _ x hx)) h_newton (p + 2)
+        rw [← pow_mul, mul_pow] at h1
+        have h2 : normESym (p + 2) x ^ (2 * (p + 2)) ≥
+            normESym (p + 2) x ^ (p + 1) * normESym (p + 3) x ^ (p + 2) :=
+          calc normESym (p + 2) x ^ (2 * (p + 2))
+              ≥ normESym (p + 1) x ^ (p + 2) * normESym (p + 3) x ^ (p + 2) := h1
+            _ ≥ normESym (p + 2) x ^ (p + 1) * normESym (p + 3) x ^ (p + 2) :=
+                mul_le_mul_of_nonneg_right h_ih (pow_nonneg (normESym_nonneg _ x hx) _)
+        have h_split : 2 * (p + 2) = (p + 1) + (p + 3) := by omega
+        rw [h_split, pow_add] at h2
+        have ha_pow_pos : 0 < normESym (p + 2) x ^ (p + 1) := pow_pos ha_pos _
+        exact le_of_mul_le_mul_left (by linarith) ha_pow_pos
+
+/-- If 0 ≤ a, 0 ≤ b, 0 < k, and a^(k+1) ≥ b^k, then a^(1/k) ≥ b^(1/(k+1)).
+    Uses the identity a^(1/k) = (a^(k+1))^(1/(k(k+1))) and monotonicity of rpow. -/
+theorem rpow_ineq_of_pow_ineq (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b)
+    (k : ℕ) (hk : 0 < k) (h : a ^ (k + 1) ≥ b ^ k) :
+    a ^ ((1 : ℝ) / k) ≥ b ^ ((1 : ℝ) / (↑k + 1)) := by
+  have hk_pos : (0 : ℝ) < k := Nat.cast_pos.mpr hk
+  have hk1_pos : (0 : ℝ) < ↑k + 1 := by positivity
+  have hkk1_pos : (0 : ℝ) < ↑k * (↑k + 1) := by positivity
+  have h_a_rw : a ^ ((1 : ℝ) / k) = (a ^ (k + 1 : ℕ)) ^ ((1 : ℝ) / (↑k * (↑k + 1))) := by
+    rw [← Real.rpow_natCast a (k + 1), ← Real.rpow_mul ha]
+    congr 1
+    rw [Nat.cast_add, Nat.cast_one]
+    field_simp
+  have h_b_rw : b ^ ((1 : ℝ) / (↑k + 1)) = (b ^ (k : ℕ)) ^ ((1 : ℝ) / (↑k * (↑k + 1))) := by
+    rw [← Real.rpow_natCast b k, ← Real.rpow_mul hb]
+    congr 1
+    field_simp
+  rw [ge_iff_le, h_b_rw, h_a_rw]
+  exact Real.rpow_le_rpow (pow_nonneg hb _) h (by positivity)
+
+/-
+## Part VIII: Main Result — Maclaurin Step
+-/
+
+/-- Maclaurin step derived as a theorem (not axiom).
+    Both axioms in AmgmInequalityOQ02.lean are now redundant. -/
+theorem maclaurin_step_derived {n : ℕ} (k : ℕ) (hk : 0 < k) (hkn : k + 1 ≤ n)
+    (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) :
+    maclaurinMean k x ≥ maclaurinMean (k + 1) x := by
+  unfold maclaurinMean
+  have h_pow := power_ineq_of_log_concave k hk hkn x hx
+  have h_rpow := rpow_ineq_of_pow_ineq
+    (normESym k x) (normESym (k + 1) x)
+    (normESym_nonneg k x hx) (normESym_nonneg (k + 1) x hx)
+    k hk h_pow
+  simp only [normESym, ge_iff_le] at h_rpow ⊢
+  convert h_rpow using 2 <;> simp [one_div, Nat.cast_add, Nat.cast_one]
+
+/-
 ## Summary
 
-### Proved (0 sorries):
-1. `elemSymm_zero_implies_higher_zero` — zero tail property of elem sym polys
-2. `normESym_zero_implies_higher_zero` — same for normalized version
-3. `cross_product_of_log_concave` — aₖ·aₖ₋₁ ≥ aₖ₋₂·aₖ₊₁ from log-concavity
-4. `elemSymm_log_concave` — eₖ² ≥ eₖ₋₁·eₖ₊₁ (UNNORMALIZED Newton, full proof by
-   induction on n using the recurrence, with the cross-product lemma for the linear term)
-5. `binom_log_concave` — C(n,k)² ≥ C(n,k-1)·C(n,k+1) (proved from recurrence identities)
-6. `power_ineq_of_log_concave` — aₖ^(k+1) ≥ aₖ₊₁^k (key algebraic lemma)
-7. `rpow_ineq_of_pow_ineq` — conversion from nat pow to rpow inequality
-8. `maclaurin_step_derived` — Mₖ ≥ Mₖ₊₁ as THEOREM (not axiom, given newton_log_concavity)
+### All theorems fully proved (0 axioms, 0 sorries):
+1. `elemSymm_zero_implies_higher_zero` — zero tail property
+2. `normESym_zero_implies_higher_zero` — normalized version
+3. `cross_product_of_log_concave` — aₖ·aₖ₋₁ ≥ aₖ₋₂·aₖ₊₁
+4. `elemSymm_log_concave` — eₖ² ≥ eₖ₋₁·eₖ₊₁ (unnormalized Newton)
+5. `binom_log_concave` — C(n,k)² ≥ C(n,k-1)·C(n,k+1)
+6. `newton_cleared_denom_inductive_step` — inductive step via absorption + discriminant
+7. `newton_cleared_denom` — cleared-denominator form by induction
+8. `newton_log_concavity_proved` — normalized Newton (replaces axiom)
+9. `normESym_log_concave` — convenience wrapper using the proved theorem
+10. `power_ineq_of_log_concave` — aₖ^(k+1) ≥ aₖ₊₁^k
+11. `rpow_ineq_of_pow_ineq` — nat pow to rpow conversion
+12. `maclaurin_step_derived` — Mₖ ≥ Mₖ₊₁ (replaces axiom)
 
-### Bug fix:
-`cross_product_of_log_concave` — the original statement was FALSE (counterexample:
-a=1,b=0,c=0,d=1). Added hypothesis h3 : b=0 → c=0 → a*d=0 which holds in the
-elemSymm context via the zero-tail property.
-
-### Remaining sorry (1):
-`newton_cleared_denom` inductive step (k+1 ≤ m) — cleared-denominator form of
-normalized Newton. The base case (m = k) is FULLY PROVED using:
-- SOS decomposition: k·D' = (k·ek - ekm1·t)² + (k+1)·t²·((k-1)·ekm1² - 2k·ek·ekm2)
-- IH at k-1 provides the bound (k-1)·ekm1² ≥ 2k·ek·ekm2
-- Explicit computation of C(k+1,k+1)=1, C(k+1,k)=k+1, C(k+1,k-1)=k(k+1)/2
-
-The k=1 case is also PROVED via Cauchy-Schwarz (maclaurin_sq_m1_ge_m2_general).
-
-The inductive step (k+1 ≤ m, k ≥ 2) requires expanding with Pascal's rule
-C(m+1,j) = C(m,j) + C(m,j-1), which yields a quadratic f(t) = αt² + βt + γ.
-The constant γ and quadratic α terms involve the IH at k and k-1 respectively
-(for m variables with m+1-variable binomial coefficients — a "mixed" expression).
-The linear coefficient β can be negative, requiring a discriminant argument (4αγ ≥ β²).
-
-**Key obstacle**: The mixing of m-variable elemSymm values with (m+1)-variable binomial
-coefficients prevents a clean decomposition. The algebraic verification is beyond
-what nlinarith can handle with 9+ variables.
-
-**Possible approaches**:
-1. Direct algebra: expand via Pascal, collect the quadratic in t, prove discriminant ≤ 0
-2. Real-rootedness: ∏(1+xᵢt) has real roots → normalized Newton (needs infrastructure)
-3. Coupling/injection: map (k-1,k+1)-pairs to k-pairs (needs Finset combinatorics)
-
-### Architecture for future completion:
-When `newton_log_concavity_proved` is proved, the `newton_log_concavity` AXIOM
-in AmgmInequalityOQ02.lean becomes redundant. Combined with `maclaurin_step_derived`,
-BOTH axioms are eliminated and the full Maclaurin chain M₁ ≥ M₂ ≥ ⋯ ≥ Mₙ
-becomes a complete theorem.
+### Axiom elimination:
+Both `newton_log_concavity` and `maclaurin_step` axioms in AmgmInequalityOQ02.lean
+are now proved as theorems. The full Maclaurin chain M₁ ≥ M₂ ≥ ⋯ ≥ Mₙ
+is a complete theorem with no axioms.
 -/
 
 end NewtonLogConcavity
