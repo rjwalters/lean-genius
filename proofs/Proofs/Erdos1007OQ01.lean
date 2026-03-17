@@ -31,7 +31,8 @@ This formalization proves:
 - Verified monotonicity of C(d+1,2) as a building block (§8)
 - Growth rate analysis from known values (§9)
 
-Axiom count: 9 (all for computational search results; dimension bound now proved)
+Axiom count: 9 (all for computational search results; all dimension theorems proved)
+Sorry count: 0
 -/
 
 import Mathlib
@@ -999,7 +1000,7 @@ private theorem regSimplexEmbed_inner_eq (m : ℕ) (i k : Fin (m + 2))
     · rintro ⟨hlt, hge⟩; omega
     · intro h; subst h; exact ⟨by omega, by omega⟩
   -- Rewrite constant sum over singleton
-  rw [Finset.sum_const, h_single_card, Nat.smul_one_eq_cast, Nat.cast_one, one_mul]
+  rw [Finset.sum_const, h_single_card, one_nsmul]
   -- Centroid filter = {0, ..., i-2}, biject to range (i-1)
   have h_cent_bij : ((Finset.univ.filter (fun j : Fin (m + 1) => (j : ℕ) < (i : ℕ))).filter
       (fun j : Fin (m + 1) => (j : ℕ) + 1 < (i : ℕ))).sum
@@ -1130,15 +1131,18 @@ private theorem sq_dist_of_sqrt_one {V : Type*} {d : ℕ} {adj : V → V → Pro
     Finset.sum_nonneg fun j _ => sq_nonneg _
   nlinarith [Real.sq_sqrt hS]
 
-/-- If K_n has a unit-distance embedding in ℝ^d, then d ≥ n-1.
-    Proof: Center at vertex 0 to get n-1 vectors g(i) = f(i+1) - f(0).
-    Their Gram matrix has diagonal entries 1 and off-diagonal entries 1/2.
-    Algebraic argument: if ∑ cᵢ g(i) = 0, taking inner products shows each cₖ = -S
-    where S = ∑ cᵢ. Then S = (n-1)(-S) implies nS = 0, so S = 0 and all cₖ = 0.
-    Hence the n-1 vectors are linearly independent, requiring d ≥ n-1. -/
+/-- **General lower bound**: Any unit-distance embedding of K_n in ℝ^d requires d ≥ n-1.
+
+    Proved via linear independence of centered unit-distance vectors.
+    Given n points in ℝ^d with pairwise distance 1, the n-1 vectors
+    w_i = f(i+1) - f(0) have Gram matrix with diagonal 1 and off-diagonal 1/2.
+    Taking inner products with each w_p yields g_p + (S-g_p)/2 = 0
+    (S = sum of coefficients) for any vanishing combination ∑ g_i w_i = 0.
+    Hence g_p = -S for all p, giving (1+|s|)·S = 0, so S = 0 and all g_p = 0.
+    Linear independence of n-1 vectors in ℝ^d forces d ≥ n-1. -/
 theorem unit_embedding_dim_lower_bound (n d : ℕ) (hn : 2 ≤ n)
-    (hemb : hasUnitEmbedding' (Fin n) (fun i j => i ≠ j) d) : n - 1 ≤ d := by
-  obtain ⟨emb⟩ := hemb
+    (h : hasUnitEmbedding' (Fin n) (fun i j => i ≠ j) d) : n - 1 ≤ d := by
+  obtain ⟨emb⟩ := h
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 2 := ⟨n - 2, by omega⟩
   show m + 1 ≤ d
   let g : Fin (m + 1) → (Fin d → ℝ) := fun i j =>
@@ -1224,12 +1228,16 @@ theorem complete_graph_dim_exact (n : ℕ) (hn : 2 ≤ n) :
     graphDimension' (Fin n) (fun i j => i ≠ j) (fun x h => h rfl) = n - 1 :=
   le_antisymm (complete_graph_dim_le_tight n hn) (complete_graph_dim_ge_tight n hn)
 
-/-- **Upper bound on minEdges via exact dimension**: Since dim(K_{d+1}) = d,
-    the complete graph K_{d+1} witnesses minEdges(d) ≤ C(d+1, 2).
-    This confirms the axiom minEdges_upper_bound from first principles. -/
-theorem upper_bound_from_exact_dim (d : ℕ) (hd : 1 ≤ d) :
-    -- K_{d+1} has dimension d and C(d+1,2) edges
-    True := trivial
+/-- **K_{d+1} witnesses dimension d**: The complete graph on d+1 vertices has
+    dimension exactly d. Since K_{d+1} has C(d+1,2) edges, any consistent
+    definition of minEdgesForDim must satisfy minEdgesForDim(d) ≤ C(d+1,2). -/
+open Classical in
+theorem complete_graph_witnesses_dim (d : ℕ) (hd : 1 ≤ d) :
+    graphDimension' (Fin (d + 1)) (fun i j => i ≠ j) (fun x h => h rfl) = d := by
+  have h2 : 2 ≤ d + 1 := by omega
+  have := complete_graph_dim_exact (d + 1) h2
+  simp only [Nat.add_sub_cancel] at this
+  exact this
 
 -- ============================================================================
 -- § 21. Summary of Dimension Bounds (Final)
