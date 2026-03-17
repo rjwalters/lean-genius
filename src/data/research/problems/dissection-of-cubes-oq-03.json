@@ -1,0 +1,86 @@
+{
+  "slug": "dissection-of-cubes-oq-03",
+  "title": "Connections to packing problems",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Packing/covering dichotomy: CubePacking with all different sizes exists, but CubeDissection with all different sizes does not.",
+    "plain": "The covering requirement is what forces size repetition in cube dissections. Packings (containment + disjointness alone) CAN have all different sizes.",
+    "whyMatters": [
+      "Identifies the covering constraint as the essential ingredient of the impossibility",
+      "Connects Wiedijk #82 to broader packing theory"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "packing_covering_dichotomy: packing allows all-different, dissection does not",
+      "cube_side_le_one: containment bounds on cube size",
+      "count_volume_bound: n * eps^3 <= 1 from volume constraint"
+    ],
+    "open": [],
+    "goal": "Formalize the structural connection between dissection impossibility and packing theory"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-17T22:45:00Z",
+    "iteration": 1,
+    "focus": "Packing/covering dichotomy + volume bounds",
+    "blockers": [],
+    "nextAction": "Problem completed",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Formalized packing/covering dichotomy. Proved packing with all-different sizes exists (constructive witness). Volume-based count bounds derived. 1 axiom (volume additivity).",
+    "builtItems": [
+      "CubePacking structure (relaxation of CubeDissection)",
+      "dissectionToPacking: forgetful functor CubeDissection -> CubePacking",
+      "packing_all_different_exists: constructive witness with one cube of side 1/2",
+      "packing_covering_dichotomy: the key structural theorem",
+      "cube_side_le_one: containment size bound",
+      "count_volume_bound: n * eps^3 <= 1",
+      "nonempty_packing_count_bound: existential minimum-side bound",
+      "volume_dissection_bound: dissection volume <= 1",
+      "Cube.volume, Cube.volume_pos in DissectionOfCubes namespace"
+    ],
+    "insights": [
+      "The covering requirement is the essential ingredient forcing size repetition",
+      "Packings (containment + disjointness) CAN have all different sizes - trivially",
+      "Volume additivity (axiomatized) gives packing count bounds: n*eps^3 <= 1",
+      "Dimensional classification: d=1 possible, d=2 possible (squared squares), d>=3 impossible",
+      "Apollonian gaskets show infinite packings with all different sizes exist in 2D and 3D"
+    ],
+    "mathlibGaps": [
+      "Volume additivity for axis-aligned boxes with disjoint interiors (needs measure theory)"
+    ],
+    "nextSteps": [
+      "No further Lean work needed - problem completed"
+    ],
+    "markdown": ""
+  },
+  "approaches": [],
+  "tags": [
+    "seeker-selected",
+    "geometry",
+    "combinatorics",
+    "packing"
+  ],
+  "relatedProofs": [
+    "dissection-of-cubes",
+    "dissection-of-cubes-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-17T22:25:00Z",
+  "lastUpdate": "2026-03-17T22:45:00Z",
+  "significance": 5,
+  "tractability": 7
+}
