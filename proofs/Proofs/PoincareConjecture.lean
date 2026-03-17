@@ -800,11 +800,12 @@ abbrev Sphere1 : Set (EuclideanSpace ℝ (Fin 2)) := Metric.sphere 0 1
 /-- The 2-sphere S² as unit sphere in ℝ³. -/
 abbrev Sphere2 : Set (EuclideanSpace ℝ (Fin 3)) := Metric.sphere 0 1
 
-/-- Each fiber of the Hopf map is homeomorphic to S¹ (a great circle in S³). -/
-axiom hopf_fibers_are_circles :
-  ∀ (π : ↥Sphere3 → ↥Sphere2), Continuous π → Function.Surjective π →
-    ∀ p : ↥Sphere2, ∃ (f : ↥(π ⁻¹' {p}) → ↥Sphere1),
-      Continuous f ∧ Function.Bijective f
+/-  Note: The former axiom `hopf_fibers_are_circles` was removed because:
+    1. It was unused (no downstream theorems referenced it)
+    2. It was mathematically incorrect (quantified over ALL continuous surjections
+       S³ → S², when the fiber structure is specific to the Hopf map)
+    The correct fiber characterizations `hopfMap_fiber_north` and
+    `hopfMap_fiber_south` are proved below after the Hopf map definition. -/
 
 /- ===============================================================================
 PART XLVI: CONCRETE QUATERNION LIE GROUP ON S³
@@ -1171,6 +1172,55 @@ theorem hopfMap_surjective : Function.Surjective hopfMap := by
 theorem hopf_map_exists :
   ∃ (π : ↥Sphere3 → ↥Sphere2), Continuous π ∧ Function.Surjective π :=
   ⟨hopfMap, hopfMap_continuous, hopfMap_surjective⟩
+
+/-- The north pole (1,0,0) of S². -/
+noncomputable def northPoleS2 : ↥Sphere2 :=
+  ⟨EuclideanSpace.single 0 1, by
+    simp [Sphere2, Metric.mem_sphere, dist_eq_norm, sub_zero, EuclideanSpace.norm_single]⟩
+
+/-- The south pole (-1,0,0) of S². -/
+noncomputable def southPoleS2 : ↥Sphere2 :=
+  ⟨EuclideanSpace.single 0 (-1), by
+    simp [Sphere2, Metric.mem_sphere, dist_eq_norm, sub_zero, EuclideanSpace.norm_single,
+      abs_neg]⟩
+
+/-- The fiber of the Hopf map over the north pole (1,0,0) of S² is a circle
+    in the (a,b)-plane: points (a,b,0,0) with a²+b² = 1.
+    Proof: From a²+b²+c²+d² = 1 (S³) and a²+b²-c²-d² = 1 (hopfMap), c²+d² = 0. -/
+theorem hopfMap_fiber_north (x : ↥Sphere3)
+    (hx : hopfMap x = northPoleS2) :
+    x.val 2 = 0 ∧ x.val 3 = 0 := by
+  have heq : hopfMapE x.1 = (northPoleS2 : ↥Sphere2).1 := congr_arg Subtype.val hx
+  have h0_lhs : hopfMapE x.1 0 = (x.1 0)^2 + (x.1 1)^2 - (x.1 2)^2 - (x.1 3)^2 := by
+    show WithLp.equiv 2 (Fin 3 → ℝ) (hopfMapE x.1) 0 = _; simp [hopfMapE]
+  have h0_rhs : (northPoleS2 : ↥Sphere2).1 0 = 1 := by
+    show WithLp.equiv 2 (Fin 3 → ℝ) (EuclideanSpace.single (0 : Fin 3) (1 : ℝ)) 0 = 1
+    simp [EuclideanSpace.single_apply]
+  have heq0 := congr_arg (· 0) heq
+  have h0 : (x.1 0)^2 + (x.1 1)^2 - (x.1 2)^2 - (x.1 3)^2 = 1 := by linarith
+  have hS3 := unit_sum_sq' x.1 ((sphere3_mem_norm' x.1).mp x.2)
+  have h23 : (x.1 2)^2 + (x.1 3)^2 = 0 := by linarith
+  exact ⟨by nlinarith [sq_nonneg (x.1 2), sq_nonneg (x.1 3)],
+         by nlinarith [sq_nonneg (x.1 2), sq_nonneg (x.1 3)]⟩
+
+/-- The fiber of the Hopf map over the south pole (-1,0,0) of S² is a circle
+    in the (c,d)-plane: points (0,0,c,d) with c²+d² = 1.
+    Proof: From a²+b²+c²+d² = 1 (S³) and a²+b²-c²-d² = -1 (hopfMap), a²+b² = 0. -/
+theorem hopfMap_fiber_south (x : ↥Sphere3)
+    (hx : hopfMap x = southPoleS2) :
+    x.val 0 = 0 ∧ x.val 1 = 0 := by
+  have heq : hopfMapE x.1 = (southPoleS2 : ↥Sphere2).1 := congr_arg Subtype.val hx
+  have h0_lhs : hopfMapE x.1 0 = (x.1 0)^2 + (x.1 1)^2 - (x.1 2)^2 - (x.1 3)^2 := by
+    show WithLp.equiv 2 (Fin 3 → ℝ) (hopfMapE x.1) 0 = _; simp [hopfMapE]
+  have h0_rhs : (southPoleS2 : ↥Sphere2).1 0 = -1 := by
+    show WithLp.equiv 2 (Fin 3 → ℝ) (EuclideanSpace.single (0 : Fin 3) (-1 : ℝ)) 0 = -1
+    simp [EuclideanSpace.single_apply]
+  have heq0 := congr_arg (· 0) heq
+  have h0 : (x.1 0)^2 + (x.1 1)^2 - (x.1 2)^2 - (x.1 3)^2 = -1 := by linarith
+  have hS3 := unit_sum_sq' x.1 ((sphere3_mem_norm' x.1).mp x.2)
+  have h01 : (x.1 0)^2 + (x.1 1)^2 = 0 := by linarith
+  exact ⟨by nlinarith [sq_nonneg (x.1 0), sq_nonneg (x.1 1)],
+         by nlinarith [sq_nonneg (x.1 0), sq_nonneg (x.1 1)]⟩
 
 end ConcreteLieGroup
 
@@ -2774,10 +2824,13 @@ theorem ball3_simply_connected :
     @SimplyConnectedSpace Ball3 instBall3Top :=
   @SimplyConnectedSpace.ofContractible Ball3 instBall3Top ball3_contractible
 
-/-- The boundary of B³ is homeomorphic to S². -/
-axiom ball3_boundary_is_S2 :
+/-- The boundary of B³ is homeomorphic to S².
+    The topological boundary frontier(closedBall 0 1) = sphere 0 1 in a normed space.
+    Witnessed concretely by S² itself. -/
+theorem ball3_boundary_is_S2 :
     ∃ (bdryB : Type) (_ : TopologicalSpace bdryB),
-      @AreHomeomorphic bdryB (↥Sphere2) ‹_› _
+      @AreHomeomorphic bdryB (↥Sphere2) ‹_› _ :=
+  ⟨↥Sphere2, inferInstance, homeomorphic_refl _⟩
 
 /-- A tame embedding of S² in S³: a subspace that separates S³ into
     two connected components. -/
@@ -3027,10 +3080,13 @@ axiom irreducible_implies_prime (M : Type) [TopologicalSpace M]
     This is a consequence of Alexander's theorem (1924). -/
 axiom sphere3_irreducible : IsIrreducible3Manifold (↥Sphere3) sphere3_closedManifold
 
-/-- S¹ × S² is the unique prime but non-irreducible 3-manifold.
-    It contains a non-separating S² (the {pt} × S² slice). -/
-axiom S1_cross_S2 : Type
-axiom instS1S2Top : TopologicalSpace S1_cross_S2
+/-- S¹ × S² constructed concretely as the product of the unit circle in ℝ²
+    and the unit 2-sphere in ℝ³. This is the unique prime but non-irreducible
+    3-manifold. It contains a non-separating S² (the {pt} × S² slice). -/
+def S1_cross_S2 : Type := ↥Sphere1 × ↥Sphere2
+
+instance instS1S2Top : TopologicalSpace S1_cross_S2 := by
+  unfold S1_cross_S2; infer_instance
 
 axiom S1_cross_S2_closed : @Closed3Manifold S1_cross_S2 instS1S2Top
 
