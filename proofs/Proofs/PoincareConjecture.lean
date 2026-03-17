@@ -4510,6 +4510,28 @@ theorem cyclicRotation_L21_eq_antipodal :
     cyclicRotation 2 1 = antipodalMap 4 := by
   ext x; exact cyclicRotation_L21_eq_neg x
 
+/-- The second angle for L(1,0) is 0: lensAngle2 1 0 = 0. -/
+theorem lens_L10_angle2 : lensAngle2 1 0 = 0 := by
+  unfold lensAngle2; push_cast; ring
+
+/-- The L(1,0) cyclic rotation is the identity: for p=1, q=0,
+    both rotation angles are multiples of 2π, so cos = 1, sin = 0.
+    This confirms L(1,0) = S³ (trivial quotient). -/
+theorem cyclicRotation_L10_eq_id (x : EuclideanSpace ℝ (Fin 4)) :
+    cyclicRotation 1 0 x = x := by
+  ext i
+  show WithLp.equiv 2 (Fin 4 → ℝ) (cyclicRotation 1 0 x) i =
+       WithLp.equiv 2 (Fin 4 → ℝ) x i
+  simp only [cyclicRotation, WithLp.equiv_symm_apply]
+  have hα : lensAngle1 1 = 2 * Real.pi := lens_L10_trivial_action
+  have hβ : lensAngle2 1 0 = 0 := lens_L10_angle2
+  rw [hα, hβ, Real.cos_zero, Real.sin_zero]
+  -- For the first block: cos(2π) = 1, sin(2π) = 0
+  rw [show (2 : ℝ) * Real.pi = 0 + 2 * Real.pi from by ring,
+      Real.cos_add_two_pi, Real.sin_add_two_pi,
+      Real.cos_zero, Real.sin_zero]
+  fin_cases i <;> simp [Fin.val] <;> ring
+
 /-- Summary: the cyclic group construction gives concrete lens spaces.
     L(1,0) = S³ (trivial action)
     L(2,1) = RP³ (antipodal)
