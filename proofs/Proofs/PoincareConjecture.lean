@@ -800,11 +800,10 @@ abbrev Sphere1 : Set (EuclideanSpace ℝ (Fin 2)) := Metric.sphere 0 1
 /-- The 2-sphere S² as unit sphere in ℝ³. -/
 abbrev Sphere2 : Set (EuclideanSpace ℝ (Fin 3)) := Metric.sphere 0 1
 
-/-- Each fiber of the Hopf map is homeomorphic to S¹ (a great circle in S³). -/
-axiom hopf_fibers_are_circles :
-  ∀ (π : ↥Sphere3 → ↥Sphere2), Continuous π → Function.Surjective π →
-    ∀ p : ↥Sphere2, ∃ (f : ↥(π ⁻¹' {p}) → ↥Sphere1),
-      Continuous f ∧ Function.Bijective f
+/- Note: The former `hopf_fibers_are_circles` axiom was removed because it was
+   unsound — it claimed ALL continuous surjections S³ → S² have circle fibers,
+   which is false in general. For our specific Hopf map, the fiber structure
+   is captured by `hopf_map_exists` and `hopf_map_essential` below. -/
 
 /- ===============================================================================
 PART XLVI: CONCRETE QUATERNION LIE GROUP ON S³
@@ -2533,6 +2532,24 @@ The 2-fold covering S³ → RP³ connects to the antipodal map from Part XXI.
 
 section CoveringSpaces
 
+/-- Covering space monodromy for free involutions: If E is a simply connected
+    Hausdorff space and σ : E ≃ₜ E is a free involution, then the quotient
+    E/σ is NOT simply connected.
+
+    Proof sketch (classical covering space theory): The quotient map p : E → E/σ
+    is a 2-fold covering space (σ being free + continuous + involutive on a T₂
+    space gives a local homeomorphism). If E/σ were simply connected, then by the
+    monodromy theorem, any connected covering is trivial (a homeomorphism). But a
+    homeomorphism is injective, contradicting p(x) = p(σ(x)) with σ(x) ≠ x.
+
+    This generalizes: every free action of a nontrivial group on a simply
+    connected Hausdorff space produces a non-simply-connected quotient. -/
+axiom quotient_free_involution_not_SC (E : Type*) [TopologicalSpace E] [T2Space E]
+    [SimplyConnectedSpace E]
+    (σ : E ≃ₜ E) (hσ_involution : ∀ x, σ (σ x) = x) (hσ_free : ∀ x, σ x ≠ x)
+    (S : Setoid E) (hS : ∀ x y, S.r x y ↔ (x = y ∨ σ x = y)) :
+    ¬ @SimplyConnectedSpace (Quotient S) instTopologicalSpaceQuotient
+
 /-- A covering space of a topological space X.
     A continuous surjection p : E → X such that every point has an
     evenly covered neighborhood (locally looks like sheets × U). -/
@@ -2646,10 +2663,16 @@ theorem rp3_covering_sheets :
     fun h => antipodalMap_no_fixed_points 3 x h.symm⟩
 
 /-- RP³ has fundamental group ℤ/2ℤ, which is nontrivial.
-    Proof: The universal cover of RP³ is S³ (simply connected), and the
-    deck transformation group is ℤ/2ℤ = {id, antipodal}, which is
-    isomorphic to π₁(RP³) by covering space theory. -/
-axiom rp3_pi1_nontrivial : ¬ @SimplyConnectedSpace RP3 instRP3Top
+    Proof: RP³ = S³/{x ~ -x} is the quotient of the simply connected Hausdorff
+    space S³ by the free antipodal involution. By the covering space monodromy
+    theorem (quotient_free_involution_not_SC), this quotient is not SC. -/
+theorem rp3_pi1_nontrivial : ¬ @SimplyConnectedSpace RP3 instRP3Top :=
+  quotient_free_involution_not_SC (↥Sphere3)
+    (antipodalHomeomorph 3)
+    antipodal_involution
+    (fun x => antipodalMap_no_fixed_points 3 x)
+    antipodalSetoid
+    (fun _ _ => ⟨fun h => h, fun h => h⟩)
 
 /-- S³ → RP³ is a covering space. -/
 def sphere3_covers_rp3 : @CoveringSpace RP3 instRP3Top where
@@ -3492,26 +3515,35 @@ structure JSJPiece (M : Type) [TopologicalSpace M] where
   /-- The piece is nonempty -/
   nonempty : carrier.Nonempty
 
+/-- A valid JSJ decomposition: the pieces form a canonical decomposition along
+    essential tori. Made opaque to prevent trivial instantiation (the previous
+    `jsj_uniqueness` axiom was unsound because it did not require validity,
+    effectively claiming any two natural numbers are equal). -/
+opaque IsJSJDecomposition (M : Type) [TopologicalSpace M]
+    (_hM : Closed3Manifold M) (_hirr : IsIrreducible3Manifold M _hM)
+    (n : ℕ) (_pieces : Fin n → JSJPiece M) : Prop
+
 /-- JSJ Decomposition Theorem (Jaco-Shalen 1979, Johannson 1979):
     Every closed, orientable, irreducible 3-manifold admits a decomposition
     along a (possibly empty) canonical collection of disjoint essential tori
     into pieces that are each either Seifert fibered or atoroidal.
     The decomposition is UNIQUE up to isotopy (canonical). -/
-theorem jsj_decomposition (M : Type) [TopologicalSpace M]
+axiom jsj_decomposition (M : Type) [TopologicalSpace M]
     (hM : Closed3Manifold M) (hirr : IsIrreducible3Manifold M hM) :
     ∃ (n : ℕ) (pieces : Fin n → JSJPiece M),
       n ≥ 1 ∧
+      IsJSJDecomposition M hM hirr n pieces ∧
       (∀ i, (pieces i).pieceType = JSJPieceType.seifert ∨
-            (pieces i).pieceType = JSJPieceType.atoroidal) :=
-  have ⟨x⟩ := hM.nonempty
-  ⟨1, fun _ => ⟨Set.univ, JSJPieceType.seifert, ⟨x, Set.mem_univ _⟩⟩,
-   by omega, fun _ => Or.inl rfl⟩
+            (pieces i).pieceType = JSJPieceType.atoroidal)
 
 /-- JSJ Uniqueness: The decomposition is canonical—the collection of
-    essential tori is unique up to isotopy. -/
+    essential tori is unique up to isotopy. Two valid JSJ decompositions
+    have the same number of pieces. -/
 axiom jsj_uniqueness (M : Type) [TopologicalSpace M]
     (hM : Closed3Manifold M) (hirr : IsIrreducible3Manifold M hM)
-    (n₁ n₂ : ℕ) (_p₁ : Fin n₁ → JSJPiece M) (_p₂ : Fin n₂ → JSJPiece M) :
+    (n₁ n₂ : ℕ) (p₁ : Fin n₁ → JSJPiece M) (p₂ : Fin n₂ → JSJPiece M)
+    (h₁ : IsJSJDecomposition M hM hirr n₁ p₁)
+    (h₂ : IsJSJDecomposition M hM hirr n₂ p₂) :
     n₁ = n₂
 
 /-- Atoroidal + irreducible 3-manifolds are either Seifert or hyperbolic.
