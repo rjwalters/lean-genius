@@ -4852,13 +4852,13 @@ structure RegularityStructureYM where
   /-- Singularity increases with dimension -/
   hsingular : d ≥ 3 → regularity < 0
 
-/-- In 2D, the Yang-Mills Langevin equation is just barely regular enough
+/- In 2D, the Yang-Mills Langevin equation is just barely regular enough
     to be handled by classical theory (regularity > 0 marginally). -/
 
-/-- In 3D, the Yang-Mills Langevin equation requires renormalization.
+/- In 3D, the Yang-Mills Langevin equation requires renormalization.
     The regularity is negative: α = -1/2 - ε. -/
 
-/-- Stochastic quantization and the mass gap: a unified picture.
+/- Stochastic quantization and the mass gap: a unified picture.
 
     The mass gap appears in four equivalent characterizations:
     1. Hamiltonian: spectral gap of H (E₁ - E₀ > 0)
@@ -7724,7 +7724,7 @@ def su3_condensate (Lambda : ℝ) (hL : Lambda > 0) : GauginoCondensate where
   nVacua := 3
   hnv := rfl
 
-/-- Connection to pure (non-SUSY) Yang-Mills.
+/- Connection to pure (non-SUSY) Yang-Mills.
 
     The N=1 SYM result is the closest rigorous analog:
     - SUSY YM has mass gap ~ Λ (established via holomorphy + SUSY)
@@ -7837,7 +7837,8 @@ This confirms ξ is the natural decay scale. -/
 theorem decay_at_correlation_length (params : CorrelatorDecayParams) :
     Real.exp (-params.massGap * correlationLength params) = Real.exp (-1) := by
   unfold correlationLength
-  rw [mul_one_div_cancel (ne_of_gt params.gap_pos)]
+  congr 1
+  rw [neg_mul, neg_inj, mul_one_div, div_self (ne_of_gt params.gap_pos)]
 
 /-- **PROVED: Larger mass gap means faster decay (shorter correlation length).**
 
@@ -7847,7 +7848,7 @@ theorem larger_gap_shorter_length (p₁ p₂ : CorrelatorDecayParams)
     (h : p₁.massGap > p₂.massGap) :
     correlationLength p₁ < correlationLength p₂ := by
   unfold correlationLength
-  exact div_lt_div_of_pos_left one_pos p₁.gap_pos h
+  exact div_lt_div_of_pos_left one_pos p₂.gap_pos h
 
 /-- **PROVED: Correlator vanishes at infinity when mass gap > 0.**
 
@@ -7857,17 +7858,38 @@ theorem correlator_vanishes_at_infinity (params : CorrelatorDecayParams)
     (ed : ExponentialDecay params) (ε : ℝ) (hε : ε > 0) :
     ∃ R : ℝ, R > 0 ∧ ∀ r, r ≥ R →
       ed.correlator r ≤ ε := by
-  -- Choose R large enough that C · exp(-Δ · R) ≤ ε
-  -- i.e., R ≥ (1/Δ) · ln(C/ε)
-  use (1 / params.massGap) * (Real.log (ed.C_bound / ε) + 1)
+  -- Choose R = max(1, (1/Δ)·(ln(C/ε) + 1)) to ensure R > 0 and sufficient decay
+  set R := max 1 (1 / params.massGap * (Real.log (ed.C_bound / ε) + 1)) with hR_def
+  use R
   constructor
-  · positivity
+  · exact lt_of_lt_of_le one_pos (le_max_left 1 _)
   · intro r hr
+    have hr_pos : r ≥ 0 := le_trans (le_of_lt (lt_of_lt_of_le one_pos (le_max_left 1 _))) hr
+    have hΔ := params.gap_pos
+    have hC := ed.C_pos
+    have hCε : ed.C_bound / ε > 0 := div_pos hC hε
     calc ed.correlator r
-        ≤ ed.C_bound * Real.exp (-params.massGap * r) := ed.exp_bound r (by linarith [correlation_length_pos params])
+        ≤ ed.C_bound * Real.exp (-params.massGap * r) := ed.exp_bound r hr_pos
       _ ≤ ε := by
-          -- At sufficiently large r, the exponential decays below ε/C
-          sorry -- Technical: requires Real.exp monotonicity bounds
+          -- r ≥ R ≥ (1/Δ)*(log(C/ε) + 1), so Δ*r ≥ log(C/ε) + 1 > log(C/ε)
+          -- Therefore exp(-Δ*r) ≤ exp(-log(C/ε)) = ε/C, and C*(ε/C) = ε.
+          have hr2 : r ≥ 1 / params.massGap * (Real.log (ed.C_bound / ε) + 1) :=
+            le_trans (le_max_right 1 _) hr
+          -- Δ*r ≥ log(C/ε) + 1
+          have h_dr : params.massGap * r ≥ Real.log (ed.C_bound / ε) + 1 := by
+            have := mul_le_mul_of_nonneg_left hr2 (le_of_lt hΔ)
+            rwa [← mul_assoc, mul_one_div_cancel (ne_of_gt hΔ), one_mul] at this
+          -- exp(-Δ*r) ≤ exp(-log(C/ε)) = ε/C
+          have h_exp : Real.exp (-params.massGap * r) ≤ ε / ed.C_bound := by
+            have h_le : Real.exp (-params.massGap * r) ≤
+                Real.exp (-(Real.log (ed.C_bound / ε))) := by
+              apply Real.exp_le_exp.mpr; linarith
+            rw [Real.exp_neg, Real.exp_log hCε, inv_div] at h_le
+            exact h_le
+          -- C * (ε/C) = ε
+          calc ed.C_bound * Real.exp (-params.massGap * r)
+              ≤ ed.C_bound * (ε / ed.C_bound) := by gcongr
+            _ = ε := mul_div_cancel₀ ε (ne_of_gt hC)
 
 /-- **Power-law decay**: signature of a massless theory (NO mass gap).
 
