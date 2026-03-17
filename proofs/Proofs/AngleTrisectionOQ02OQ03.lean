@@ -23,8 +23,8 @@
     The first new polygon construction since antiquity. Determined his career choice.
   - Wantzel (1837): Proved the converse — non-constructibility when φ(n) ≠ 2^k.
 
-  File summary: 67+ proved theorems, 1 sorry, 3 axioms.
-  Sorries: galois_conjugate_count (counting argument for coprime pairing).
+  File summary: 68+ proved theorems, 0 sorries, 3 axioms.
+  galois_conjugate_count PROVED (coprime pairing via lower-half restriction + cos injectivity).
   minpoly_cos_natDegree_eq PROVED (3 sorries eliminated: h_top, h_deg, combining).
   Axioms: gauss_wantzel_theorem (redundant — proved as gauss_wantzel_theorem'),
   cos_minpoly_gal_card (has clear proof roadmap via Chebyshev + cyclotomic bridge),
