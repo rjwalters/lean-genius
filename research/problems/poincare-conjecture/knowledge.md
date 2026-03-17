@@ -508,3 +508,62 @@ New content is structurally clean.
 2. Prove sphere3_not_contractible (needs homology, degree theory, or Lefschetz)
 3. Prove sphere2_cross_S1_not_simply_connected / torus3_not_simply_connected (need π₁(S¹)≅ℤ)
 4. Continue axiom elimination with concrete constructions
+
+## Session 2026-03-17 (researcher-3, Session 3) - Covering Space Theory + Betti Classification
+
+**Mode**: REVISIT (RICH knowledge, depth-first)
+**Problem**: poincare-conjecture
+**Prior Status**: 4714 lines, 45 axioms, 0 sorries
+
+### What we did
+
+1. **Added covering space fundamental theorem** (`sc_covering_injective`):
+   - New axiom: connected coverings of simply connected spaces are injective
+   - More general and reusable than the specific axioms it replaces
+   - Key tool for future axiom elimination
+
+2. **Proved `rp3_pi1_nontrivial`** (axiom → theorem, -1 axiom):
+   - If RP³ is simply connected, covering S³ → RP³ would be injective
+   - But `rp3_covering_sheets` shows every point has ≥ 2 preimages
+   - Contradiction via `sc_covering_injective`
+
+3. **Added Part LV: Covering Space Theory and Fundamental Group Consequences**
+   - `sc_covering_bijective`: SC → covering is bijective
+   - `not_sc_of_nontrivial_covering`: contrapositive - nontrivial covering → not SC
+   - `pi1_nontrivial_of_multisheeted_covering`: general multi-sheet detection
+   - `rp3_pi1_nontrivial_via_covering`: alternative proof via general theorem
+   - `euler_char_covering_multiplicativity`: χ multiplicativity
+   - `rp3_fundamental_group_order`: |π₁(RP³)| = 2
+   - `covering_theory_summary`: comprehensive summary theorem
+
+4. **Strengthened True-placeholder theorems in VolumeTopologyBounds**:
+   - `gromov_betti_bound_3d_*`: concrete bound verification for S³, T³, L(p,q), S¹×S²
+   - `gromov_betti_bound_3d_general`: universal bound for b₁ ≤ 3
+   - `SC_betti_is_S3`: SC closed 3-mfd has Betti numbers matching S³
+   - `SimplicialVolume3` structure with concrete examples
+   - `SC_closed_3mfd_euler_char_concrete`: concrete Euler char computation
+
+5. **Added Part LVI: Betti Number Classification of 3-Manifolds**
+   - `betti1_not_sufficient_for_SC`: b₁ = 0 ≠ SC (Σ(2,3,5) counterexample)
+   - `betti_not_complete_invariant`: S³ and Σ(2,3,5) share Betti numbers but differ
+   - `betti1_classification_table`: classification by first Betti number
+   - `betti1_distinguishes_families`: b₁ distinguishes major 3-manifold families
+   - `total_betti_range`: total Betti number range (2 to 8)
+
+### Outcome
+- **Lines**: 4714 → 4952 (+238)
+- **Axioms**: 45 → 45 (net 0: +1 sc_covering_injective, -1 rp3_pi1_nontrivial proved)
+- **Theorems**: new 20+ proved theorems in Parts LV-LVI
+- **Build**: CLEAN (3175 jobs, only pre-existing lint warnings)
+
+### Key technical insights
+- `sc_covering_injective` provides a general framework for detecting nontrivial π₁ via coverings
+- `rp3_covering_sheets` + `sc_covering_injective` gives a clean 5-line proof of rp3_pi1_nontrivial
+- BettiNumbers3 structure is powerful for concrete computations (verified Gromov bound universally)
+- `injection h` on Lean 4 structures can have unexpected behavior with identical fields
+
+### Next steps
+1. Construct winding map S¹ → S¹ to create coverings for S¹ × S² and T³
+2. Prove S1_cross_S2_not_SC and torus3_not_simply_connected via covering theory
+3. Prove sphere3_simply_connected (Seifert-van Kampen)
+4. Define Poincaré homology sphere concretely (Brieskorn or S³/I*)
