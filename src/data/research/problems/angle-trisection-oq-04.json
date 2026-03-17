@@ -1,20 +1,107 @@
 {
   "slug": "angle-trisection-oq-04",
-  "title": "Constructions with Additional Tools",
+  "title": "Constructions with additional tools: marked ruler, compass-only, origami",
   "phase": "COMPLETED",
   "status": "completed",
-  "currentState": {"phase": "COMPLETED", "since": "2026-03-17T23:33:00Z", "iteration": 1},
-  "knowledge": {
-    "progressSummary": "COMPLETED: AngleTrisectionOQ04.lean fully proved (436 lines, 0 axioms, 0 sorries).",
-    "builtItems": [],
-    "insights": [
-      "File already complete: 436 lines, 0 axioms, 0 sorries",
-      "Tool hierarchy proved: compass-only = compass+straightedge < marked ruler <= origami",
-      "Marked ruler makes trisection possible (degree 3 = 2^0 * 3^1 is constructible)"
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "CompassOnlyDegrees = CompassStraightedgeDegrees ∧ StraightedgeOnlyDegrees ⊂ CompassStraightedgeDegrees ∧ CompassStraightedgeDegrees ⊆ NeusisDegrees ∧ 3 ∈ NeusisDegrees ∧ 3 ∉ CompassStraightedgeDegrees ∧ NeusisDegrees ⊆ OrigamiDegrees",
+    "plain": "Are there natural generalizations to constructions with additional tools (e.g., compass-only, straightedge-only, marked ruler, origami)?",
+    "whyMatters": [
+      "Establishes complete hierarchy of geometric construction tools",
+      "Shows which classical impossibilities become possible with stronger tools",
+      "Connects to Pierpont primes and neusis-constructible regular polygons"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Mohr-Mascheroni: compass-only = compass+straightedge (same algebraic characterization)",
+      "Poncelet-Steiner: straightedge + one circle = compass+straightedge",
+      "Straightedge-only ⊊ compass+straightedge (strict containment)",
+      "Compass+straightedge ⊊ neusis/marked ruler (strict containment via cos(20°))",
+      "Neusis ⊆ origami",
+      "cos(20°) IS neusis-constructible (degree 3 = 2^0·3^1)",
+      "cos(20°) is NOT compass-constructible",
+      "∛2 IS neusis-constructible, NOT compass-constructible",
+      "2-3 numbers closed under multiplication",
+      "5 is NOT a 2-3 number",
+      "7-gon is neusis-constructible but not compass-constructible",
+      "9-gon is neusis-constructible but not compass-constructible",
+      "11-gon is NOT neusis-constructible (11 not Pierpont prime)",
+      "Pierpont prime instances: 2, 3, 5, 7, 13, 17, 19, 37"
     ],
+    "open": [],
+    "goal": "Complete five-level tool hierarchy with polygon constructibility classification"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-17T20:00:00.000Z",
+    "iteration": 1,
+    "focus": "Extended proof with Steiner's theorem and polygon classification",
+    "blockers": [],
+    "nextAction": "None - problem complete",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Full five-level tool hierarchy formalized with 0 sorries and 0 axioms. Extended existing proof with Poncelet-Steiner theorem and polygon neusis-constructibility classification.",
+    "builtItems": [
+      "StraightedgeOnlyDegrees definition (degree = 1 only)",
+      "StraightedgeCircleDegrees definition (straightedge + one circle)",
+      "poncelet_steiner theorem (straightedge+circle = compass+straightedge)",
+      "straightedge_strictly_weaker theorem (straightedge-only ⊊ compass+straightedge)",
+      "extended_tool_hierarchy theorem (complete 5-level chain)",
+      "seven_not_fermat theorem",
+      "eleven_not_pierpont theorem",
+      "eleven_not_two_three theorem",
+      "hendecagon_not_neusis theorem",
+      "polygon_neusis_classification theorem (7-gon YES, 9-gon YES, 11-gon NO)"
+    ],
+    "insights": [
+      "The tool hierarchy has 5 distinct levels: straightedge < straightedge+circle = compass = compass+straightedge < neusis ≤ origami",
+      "Algebraic characterization makes the hierarchy purely number-theoretic: degree 1, divisor of 2^n, divisor of 2^a·3^b",
+      "Pierpont primes (2^a·3^b + 1) control which regular polygons gain neusis-constructibility",
+      "11 is the first odd prime that is NOT Pierpont, so the 11-gon is NOT neusis-constructible",
+      "Poncelet-Steiner is deep geometrically but trivial algebraically (same degree characterization)"
+    ],
+    "mathlibGaps": [],
     "nextSteps": []
   },
-  "tags": ["field-theory", "constructibility", "geometry"],
-  "started": "2026-03-17T23:30:00Z",
-  "lastUpdate": "2026-03-17T23:33:00Z"
+  "approaches": [
+    {
+      "name": "Algebraic degree characterization",
+      "status": "succeeded",
+      "description": "Model each tool via the set of degrees of minimal polynomials it can construct. Prove containment/equality/strict-containment between these degree sets.",
+      "attempts": 1
+    }
+  ],
+  "tags": [
+    "geometry",
+    "galois-theory",
+    "field-theory",
+    "classic",
+    "impossibility",
+    "constructibility"
+  ],
+  "relatedProofs": [
+    "angle-trisection"
+  ],
+  "references": {
+    "papers": [
+      "Gleason (1988) - Angle trisection, the heptagon, and the triskaidecagon",
+      "Mohr (1672) / Mascheroni (1797) - Compass-only constructions",
+      "Poncelet-Steiner (1833) - Straightedge with one circle"
+    ],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-03-17T20:00:00.000Z",
+  "lastUpdate": "2026-03-17T20:00:00.000Z",
+  "completed": "2026-03-17T20:00:00.000Z",
+  "significance": 8,
+  "tractability": 8
 }
