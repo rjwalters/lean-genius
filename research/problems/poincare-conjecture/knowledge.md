@@ -474,3 +474,54 @@ New content is structurally clean.
 - Renamed duplicate `ThurstonGeometry` → `ThurstonGeometryDetailed` (+ updated refs)
 - Renamed duplicate `Knot` → `KnotBasic`
 - **Result**: 12 errors → 0 (CLEAN BUILD, first time in several sessions)
+
+## Session 2026-03-17 (researcher-2, Session 2) - Soundness Fixes + Covering Space Theory
+
+**Mode**: REVISIT (RICH knowledge, depth-first)
+**Problem**: poincare-conjecture
+**Prior Status**: 4705 lines, 48 axioms, 0 sorries, CLEAN BUILD
+
+### What we did
+
+1. **Removed unsound `hopf_fibers_are_circles` axiom**:
+   - Claimed ALL continuous surjections S³ → S² have circle fibers (false in general)
+   - Was never used in any proof
+   - Replaced with explanatory comment
+
+2. **Fixed unsound `jsj_uniqueness` axiom**:
+   - Old version claimed n₁ = n₂ for ANY `Fin n → JSJPiece M`, without validity
+   - This was unsound: for nonempty M, JSJPiece M is inhabited, so the axiom
+     proved any two natural numbers equal
+   - Added `IsJSJDecomposition` opaque validity predicate
+   - `jsj_uniqueness` now requires both decompositions to be valid
+   - `jsj_decomposition` converted from trivially-witnessed theorem to honest axiom
+
+3. **Added `quotient_free_involution_not_SC` axiom** (covering space monodromy):
+   - A free involution on a SC Hausdorff space produces a non-SC quotient
+   - Based on covering space theory: 2-fold covering of SC base is trivial,
+     contradicting non-injectivity of the projection
+
+4. **Derived `rp3_pi1_nontrivial` as THEOREM** (was axiom):
+   - Applied `quotient_free_involution_not_SC` to S³/antipodal
+   - Uses: `antipodalHomeomorph 3`, `antipodal_involution`, `antipodalMap_no_fixed_points`
+   - Direct term-mode proof, no tactics needed
+
+### Outcome
+- **Lines**: 4705 → 4737 (+32)
+- **Axioms**: 48 → 48 (net: -2 removed, +2 added, but quality improved)
+  - Removed: `hopf_fibers_are_circles` (unsound), `rp3_pi1_nontrivial` (→ theorem)
+  - Added: `quotient_free_involution_not_SC` (general), `jsj_decomposition` (was fake theorem)
+  - Fixed: `jsj_uniqueness` (was unsound, now requires validity)
+- **Docker build**: CLEAN (3175 jobs, only pre-existing lint warnings)
+
+### Key mathematical connections
+- Covering space monodromy is a fundamental tool for computing π₁
+- The same axiom could derive non-SC for any quotient by free involution (RP^n, etc.)
+- Generalizing to free actions of nontrivial finite groups would cover lens spaces
+
+### Next steps
+1. Prove sphere3_simply_connected (needs Seifert-van Kampen or cellular approximation)
+2. Prove sphere3_not_contractible (needs homology or degree theory)
+3. Prove sphere2_cross_S1_not_simply_connected (needs π₁(S¹) ≅ ℤ)
+4. Generalize covering axiom to free actions of arbitrary nontrivial finite groups
+5. Prove IsLocallyHomeomorph for rp3_projection (to ground the covering axiom)
