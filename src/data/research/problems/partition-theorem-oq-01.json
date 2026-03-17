@@ -19,7 +19,7 @@
     "phase": "ORIENT",
     "since": "2026-03-11T09:48:08.982Z",
     "iteration": 4,
-    "focus": "Prove recurrence correctness and equality for Schur identity",
+    "focus": "Proving Schur identity via bijection or GF identity",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,32 +29,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Step 7a complete. Gap/mod recurrences defined, verified for n=0..15, reduction theorem proved. 2 sorries (recurrence correctness), 3 axioms. Next: prove recurrence correctness by induction, then tackle recurrence equality.",
+    "progressSummary": "PROGRESS: Steps 7a complete. Built bounded partition infrastructure (schurGapBounded, schurModBounded) with recurrences. KEY FINDING: bounded counts differ for m<n, ruling out naive induction on (m,n). The Schur identity requires a global proof strategy (bijection or GF identity). 0 sorries, 3 axioms.",
     "builtItems": [
-      "distinctPartGF: generating function \u220f(1+X^k) as PowerSeries \u2124",
+      "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
       "subsetsWithSum: subset sum counting infrastructure",
-      "Bridge theorems connecting decidable \u2194 noncomputable formulations",
+      "Bridge theorems connecting decidable ↔ noncomputable formulations",
       "subsetsWithSum_insert_not_mem: subsets not containing k are subsets of S (proved)",
       "subsetsWithSum_insert_mem_empty: no containing-k subsets when k > n (proved)",
       "subsetsWithSum_insert_card: cardinality recursion (proved modulo image lemma)",
       "distinctPartGF_coeff_empty: base case of coefficient theorem (proved)",
-      "partitionOfSubset: Finset \u2192 Nat.Partition constructor (defined, compiles)",
+      "partitionOfSubset: Finset → Nat.Partition constructor (defined, compiles)",
       "native_decide verification extended from n=12 to n=15 for all identities",
       "distinctPartGF_coeff: GF coefficient = subset count (Finset induction proof)",
-      "schurMod_to_subset: forward direction of SchurMod partition \u2194 subset correspondence",
+      "schurMod_to_subset: forward direction of SchurMod partition ↔ subset correspondence",
       "Fixed partitionOfSubset parts_sum proof for new Mathlib API",
-      "schurModSet: {k \u2208 [1..n] | k \u2261 1,2 mod 3} definition",
+      "schurModSet: {k ∈ [1..n] | k ≡ 1,2 mod 3} definition",
       "schurMod_card_eq_subsetsWithSum: bijection via Finset.card_bij (proved)",
       "schurMod_card_eq_gf_coeff: |schurMod n| = coeff n (schurModGF n) (proved)",
-      "schurGapSize: minimum gap function (4 if 3|m, else 3)",
-      "schurGapCount: computable recurrence for gap-side Schur partitions",
-      "schurModCount: computable recurrence for mod-side Schur partitions",
-      "schurGapBounded: decidable gap partitions with part bound",
-      "schurModBounded: decidable mod partitions with part bound",
-      "schurGapBounded_eq_full, schurModBounded_eq_full: bound=n gives full set",
-      "schurGapBounded_decompose: partitions split by max part membership",
-      "schur_from_recurrences: reduction theorem (3 subgoals \u2192 Schur identity)"
+      "schurGapBounded(m,n): gap-side partitions with largest part ≤ m (Finset filter)",
+      "schurModBounded(m,n): mod-side partitions with largest part ≤ m (Finset filter)",
+      "schurGapRec/schurModRec: pure recursive counting functions verified against Finset defs",
+      "schurGapBounded_ge/schurModBounded_ge: m≥n reduces to full set",
+      "schurGapBounded_mono/schurModBounded_mono: monotonicity in bound m",
+      "schurModBounded_div3: m≡0 mod 3 ⟹ schurModBounded m = schurModBounded (m-1)",
+      "schurGapBounded_split: union decomposition by m-membership"
     ],
     "insights": [
       "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
@@ -65,29 +64,26 @@
       "GF coefficient theorem connects algebraic (PowerSeries) to combinatorial (subsetsWithSum) counting",
       "partitionOfSubset converts finsets to Nat.Partition, bridging subset and partition formulations",
       "All three identities (RR1, RR2, Schur corrected) computationally verified through n=15",
-      "Proved distinctPartGF_coeff by Finset.induction: key insight is to revert n before induction so IH works for all indices. Uses PowerSeries.coeff_X_pow_mul for k\u2264n case and X_pow_dvd_iff for n<k case.",
+      "Proved distinctPartGF_coeff by Finset.induction: key insight is to revert n before induction so IH works for all indices. Uses PowerSeries.coeff_X_pow_mul for k≤n case and X_pow_dvd_iff for n<k case.",
       "Proved schurMod_to_subset: convert Nodup multiset to Finset via toFinset, use Multiset.dedup_eq_self for sum equality.",
-      "PowerSeries.coeff API change: R is now implicit (use coeff (R := \u2124) n, not coeff \u2124 n).",
-      "SchurMod \u2194 subsetsWithSum bijection via Finset.card_bij: forward p\u21a6parts.toFinset, inverse via partitionOfSubset",
-      "RR1/RR2 mod sides allow repeated parts (no Nodup) \u2192 distinctPartGF approach only works for Schur, not RR",
-      "schurMod_card_eq_gf_coeff chains: bijection \u2192 distinctPartGF_coeff \u2192 GF definition equality",
-      "Gap recurrence: schurGapSize(m) = 4 if m%3=0, else 3. When m\u22620(mod 3), bound m-3 is valid because (m-3)\u22620(mod 3).",
-      "Reduction theorem schur_from_recurrences decomposes Schur identity into 3 independent subgoals: gap correctness, mod correctness, recurrence equality.",
-      "Both recurrences verified equal for n=0..15 (48+16 native_decide examples).",
-      "Product identity approach: \u220f_{k\u22611,2(3)}(1+X^k) = \u220f_{k\u22611,5(6)}1/(1-X^k) via (1+X^k)=(1-X^{2k})/(1-X^k) and 2S\u2286S cancellation",
-      "schurModCount_eq_bounded proof approach: strong induction on (n,m). Need schurModBounded_decompose (split by max part), then bijection 'remove max part m+1' maps {p using m+1} to schurModBounded (n-m) m. Requires Nat.Partition part removal/addition machinery. Estimated 150-200 lines."
+      "PowerSeries.coeff API change: R is now implicit (use coeff (R := ℤ) n, not coeff ℤ n).",
+      "SchurMod ↔ subsetsWithSum bijection via Finset.card_bij: forward p↦parts.toFinset, inverse via partitionOfSubset",
+      "RR1/RR2 mod sides allow repeated parts (no Nodup) → distinctPartGF approach only works for Schur, not RR",
+      "schurMod_card_eq_gf_coeff chains: bijection → distinctPartGF_coeff → GF definition equality",
+      "Bounded counts schurGapBounded(m,n) ≠ schurModBounded(m,n) for m < n — the identity is genuinely global",
+      "Gap-side recurrence uses gap(m) offset: G(m,n)=G(m-1,n)+G(m-gap,n-m). Mod-side uses M(m,n)=M(m-1,n)+M(m-1,n-m). Different recurrences → cannot prove by matching.",
+      "Three viable proof strategies remain: (a) direct bijection, (b) GF identity at power series level, (c) clever variable substitution",
+      "Session 5 assessment: 3 axioms remain (RR1, RR2, Schur). All verified computationally to n=15. Proving symbolically requires either bijective proof (Bressoud-Zeilberger style) or GF identity approach. The GF infrastructure (partGF, geomSeries, convolution) is mature but connecting it to the specific partition sets needs additional work."
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",
       "No bijective proof machinery for partition identities"
     ],
     "nextSteps": [
-      "BUILD: schurModBounded_decompose (split by max part membership, analogous to schurGapBounded_decompose)",
-      "BUILD: Nat.Partition part removal: given p with m+1 \u2208 p.parts, construct partition of n-m by erasing m+1",
-      "BUILD: Nat.Partition part addition: given q of n-m with parts \u2264 m, add m+1 to get partition of n+1",
-      "PROVE: schurModCount_eq_bounded by strong induction with decompose + bijection",
-      "PROVE: schurGapCount_eq_bounded similarly (harder due to variable gap sizes)",
-      "PROVE: recurrence equality schurGapCount n n = schurModCount n n (product identity or bijection)"
+      "Try bijective proof: construct explicit Finset.card_bij between schurGapFull and schurMod",
+      "Alternative: prove GF identity ∏(1+X^k for k≢0 mod 3) encodes gap-side via q-difference equation",
+      "Alternative: find change-of-variables making gap/mod recurrences equivalent",
+      "Consider Bressoud-Zeilberger or Pak bijective constructions for Schur"
     ]
   },
   "approaches": [],
@@ -104,7 +100,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-15T12:00:00.000Z",
+  "lastUpdate": "2026-03-16T16:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
