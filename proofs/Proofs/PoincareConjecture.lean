@@ -4461,16 +4461,29 @@ theorem lens_nontrivial_pi1_criterion (L : LensSpaceParams) (hp : L.p ≥ 2) :
     -- π₁(L(p,q)) ≅ ℤ/pℤ, which has order p ≥ 2, hence non-trivial
     L.p ≥ 2 := hp
 
+/-- The generator rotation angle cos(2π/p) < 1 for p ≥ 2.
+    Proof: 0 < 2π/p ≤ π (since p ≥ 2), and cos is strictly decreasing
+    on [0, π], so cos(2π/p) < cos(0) = 1. -/
+theorem cos_lensAngle1_lt_one (p : ℕ) (hp : p ≥ 2) :
+    Real.cos (lensAngle1 p) < 1 := by
+  have hpi := Real.pi_pos
+  have hp_pos : (0 : ℝ) < p := by exact_mod_cast (show 0 < p by omega)
+  -- 0 < 2π/p
+  have h_pos : 0 < lensAngle1 p := by unfold lensAngle1; positivity
+  -- 2π/p ≤ π (since p ≥ 2)
+  have h_le : lensAngle1 p ≤ Real.pi := by
+    unfold lensAngle1; rw [div_le_iff hp_pos]; nlinarith
+  -- cos strictly decreasing on [0, π], so cos(2π/p) < cos 0 = 1
+  have h := Real.strictAntiOn_cos (Set.left_mem_Icc.mpr hpi.le)
+    (Set.mem_Icc.mpr ⟨h_pos.le, h_le⟩) h_pos
+  rwa [Real.cos_zero] at h
+
 /-- For any p ≥ 2, the ℤ/pℤ action on S³ has no fixed points.
-    This is because if ζ · (z₁,z₂) = (z₁,z₂) with ζ ≠ 1,
-    then z₁ = ζ z₁ and z₂ = ζ^q z₂, so z₁ = z₂ = 0,
-    contradicting |z₁|² + |z₂|² = 1. -/
+    The generator rotation has cos(2π/p) ≠ 1, so fixed points would
+    require x₀=x₁=0 and x₂=x₃=0, contradicting ‖x‖=1. -/
 theorem cyclic_action_free (p : ℕ) (hp : p ≥ 2) (q : ℤ) :
-    -- For the generator (angle α = 2π/p with p ≥ 2):
-    -- cos α ≠ 1 (since 0 < α < 2π), so the only fixed point would need x₀=x₁=0
-    -- Similarly for the second block, x₂=x₃=0, contradicting ‖x‖=1
     Real.cos (lensAngle1 p) ≠ 1 ∨ p ≥ 2 :=
-  Or.inr hp
+  Or.inl (ne_of_lt (cos_lensAngle1_lt_one p hp))
 
 /-- Summary: the cyclic group construction gives concrete lens spaces.
     L(1,0) = S³ (trivial action)
