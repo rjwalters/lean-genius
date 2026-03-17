@@ -430,24 +430,93 @@ theorem newton_cleared_denom_inductive_step (m k : ℕ) (hk : 2 ≤ k) (hm_eq : 
   have hb_nn : 0 ≤ b := Nat.cast_nonneg _
   have hc_nn : 0 ≤ c := Nat.cast_nonneg _
   have hd_nn : 0 ≤ d := Nat.cast_nonneg _
-  -- Goal: (ek + t*ekm1)² * (b+a)*(d+c) ≥ (ekm1+t*ekm2)(ekp1+t*ek)*(c+b)²
-  -- Strategy: LHS - RHS is a quadratic in t: α·t² + β·t + γ.
-  -- The t⁰ coefficient γ ≥ 0 from IH at k; the t² coefficient α ≥ 0 from IH at k-1;
-  -- the discriminant 4αγ ≥ β² from combining IH instances.
+  -- === PROOF via quadratic_nonneg + absorption identities ===
+  -- LHS - RHS = α·t² + β·t + γ where:
+  --   γ = ek²·AD - ekm1·ekp1·B2 ≥ 0  (from IH at k + binom_ineq)
+  --   α = ekm1²·AD - ekm2·ek·B2 ≥ 0  (from IH at k-1 + dual binom)
+  --   4αγ ≥ β²                        (from combined IH + cross products)
+  -- Then quadratic_nonneg gives α·t²+β·t+γ ≥ 0 for t ≥ 0.
   --
-  -- NOTE: This nlinarith proof compiled with Mathlib ~v4.25 but regressed with v4.26.0.
-  -- The SOS certificate search in nlinarith no longer finds the decomposition.
+  -- Step 1: Binom inequality and its dual
+  have h_binom := binom_ineq m k hk hm_eq
+  set AD := (b + a) * (d + c) with hAD_def
+  set B2 := (c + b) ^ 2 with hB2_def
+  have hAD_nn : 0 ≤ AD := by
+    unfold_let AD; nlinarith [mul_nonneg ha_nn hd_nn, mul_nonneg hb_nn hc_nn]
+  -- binom_ineq ↔ c²·AD ≥ bd·B2
+  have h_c2AD_ge_bdB2 : c ^ 2 * AD ≥ b * d * B2 := by nlinarith [h_binom]
+  -- Algebraic identity gives dual: b²·AD ≥ ac·B2
+  have h_binom_symm : (c ^ 2 - b ^ 2) * AD = (b * d - a * c) * B2 := by
+    unfold_let AD B2; ring
+  have h_b2AD_ge_acB2 : b ^ 2 * AD ≥ a * c * B2 := by
+    nlinarith [h_c2AD_ge_bdB2, h_binom_symm]
+  -- Positivity of binomial coefficients
+  have hb_pos : (0 : ℝ) < b := by exact_mod_cast Nat.choose_pos (show k - 1 ≤ m by omega)
+  have hc_pos : (0 : ℝ) < c := by exact_mod_cast Nat.choose_pos (show k ≤ m by omega)
+  have hd_pos : (0 : ℝ) < d := by exact_mod_cast Nat.choose_pos (show k + 1 ≤ m by omega)
+  have ha_pos : (0 : ℝ) < a := by exact_mod_cast Nat.choose_pos (show k - 2 ≤ m by omega)
   --
-  -- ANALYSIS (researcher-5, 2026-03-17):
-  -- The discriminant approach (quadratic_nonneg from NewtonInductiveStep.lean) gets
-  -- α ≥ 0 and γ ≥ 0 proved by nlinarith, but the discriminant condition 4αγ ≥ β²
-  -- is a degree-8 inequality in 8 variables that nlinarith cannot close.
-  -- Key identity: 4αγ - β² = (c+b)²·[4UV·(b+a)(d+c) - W²·(c+b)²]
-  -- where U=ek²-ekm1·ekp1, V=ekm1²-ek·ekm2, W=ek·ekm1-ekm2·ekp1 (all ≥ 0).
-  -- Needs: 4UV·AD ≥ W²·B² (a mixed elem-sym/binomial inequality).
-  -- Possible approaches: (1) explicit SOS certificate via external CAS,
-  -- (2) absorption identity approach (like binom_ineq), (3) coupling.
-  sorry
+  -- Step 2: γ ≥ 0
+  have hγ : ek ^ 2 * AD ≥ ekm1 * ekp1 * B2 := by
+    -- bd·γ = (ek²bd - ekm1ekp1c²)·AD + ekm1ekp1·(c²AD - bdB2) ≥ 0
+    have t1 : 0 ≤ (ek ^ 2 * (b * d) - ekm1 * ekp1 * c ^ 2) * AD :=
+      mul_nonneg (by nlinarith [h_ih_k]) hAD_nn
+    have t2 : 0 ≤ ekm1 * ekp1 * (c ^ 2 * AD - b * d * B2) :=
+      mul_nonneg (mul_nonneg hekm1_nn hekp1_nn) (by nlinarith [h_c2AD_ge_bdB2])
+    have h_sum : (ek ^ 2 * (b * d) - ekm1 * ekp1 * c ^ 2) * AD +
+        ekm1 * ekp1 * (c ^ 2 * AD - b * d * B2) =
+        b * d * (ek ^ 2 * AD - ekm1 * ekp1 * B2) := by unfold_let AD B2; ring
+    by_contra h_neg; push_neg at h_neg
+    linarith [mul_neg_of_pos_of_neg (mul_pos hb_pos hd_pos) (by linarith :
+      ek ^ 2 * AD - ekm1 * ekp1 * B2 < 0)]
+  --
+  -- Step 3: α ≥ 0
+  have hα : ekm1 ^ 2 * AD ≥ ekm2 * ek * B2 := by
+    have t1 : 0 ≤ (ekm1 ^ 2 * (a * c) - ekm2 * ek * b ^ 2) * AD :=
+      mul_nonneg (by nlinarith [h_ih_km1]) hAD_nn
+    have t2 : 0 ≤ ekm2 * ek * (b ^ 2 * AD - a * c * B2) :=
+      mul_nonneg (mul_nonneg hekm2_nn hek_nn) (by nlinarith [h_b2AD_ge_acB2])
+    have h_sum : (ekm1 ^ 2 * (a * c) - ekm2 * ek * b ^ 2) * AD +
+        ekm2 * ek * (b ^ 2 * AD - a * c * B2) =
+        a * c * (ekm1 ^ 2 * AD - ekm2 * ek * B2) := by unfold_let AD B2; ring
+    by_contra h_neg; push_neg at h_neg
+    linarith [mul_neg_of_pos_of_neg (mul_pos ha_pos hc_pos) (by linarith :
+      ekm1 ^ 2 * AD - ekm2 * ek * B2 < 0)]
+  --
+  -- Step 4: Discriminant 4αγ ≥ β²
+  have hdisc : 4 * (ekm1 ^ 2 * AD - ekm2 * ek * B2) *
+      (ek ^ 2 * AD - ekm1 * ekp1 * B2) ≥
+      (2 * ek * ekm1 * AD - (ek * ekm1 + ekm2 * ekp1) * B2) ^ 2 := by
+    -- Non-negative excess terms from IH and log-concavity
+    have δ₁ : 0 ≤ ek ^ 2 * (b * d) - ekm1 * ekp1 * c ^ 2 := by nlinarith [h_ih_k]
+    have δ₂ : 0 ≤ ekm1 ^ 2 * (a * c) - ekm2 * ek * b ^ 2 := by nlinarith [h_ih_km1]
+    have hU : 0 ≤ ek ^ 2 - ekm1 * ekp1 := by nlinarith [h_unn_k]
+    have hV : 0 ≤ ekm1 ^ 2 - ekm2 * ek := by nlinarith [h_unn_km1]
+    have hW : 0 ≤ ek * ekm1 - ekm2 * ekp1 := by nlinarith [h_cross]
+    -- Products of excess terms (all non-negative)
+    nlinarith [mul_nonneg δ₁ hV, mul_nonneg δ₂ hU, mul_nonneg δ₁ δ₂,
+               mul_nonneg (mul_nonneg hW hekm2_nn) hekp1_nn,
+               sq_nonneg (ek * ekm1 - ekm2 * ekp1),
+               sq_nonneg ((ek ^ 2 - ekm1 * ekp1) * ekm2 * ekp1),
+               sq_nonneg (ek * ekm1 * c - ekm2 * ekp1 * b),
+               sq_nonneg (ek * ekm1 * d - ekm2 * ekp1 * c),
+               mul_nonneg (by nlinarith [h_c2AD_ge_bdB2] : 0 ≤ c ^ 2 * AD - b * d * B2) hU,
+               mul_nonneg (by nlinarith [h_b2AD_ge_acB2] : 0 ≤ b ^ 2 * AD - a * c * B2) hV,
+               mul_nonneg hek_nn hekm1_nn, mul_nonneg hekm2_nn hekp1_nn,
+               mul_nonneg (mul_nonneg hek_nn hekm1_nn) (mul_nonneg hekm2_nn hekp1_nn)]
+  --
+  -- Step 5: Apply quadratic_nonneg and connect to goal
+  have h_quad := quadratic_nonneg
+    (ekm1 ^ 2 * AD - ekm2 * ek * B2)
+    (2 * ek * ekm1 * AD - (ek * ekm1 + ekm2 * ekp1) * B2)
+    (ek ^ 2 * AD - ekm1 * ekp1 * B2)
+    t ht_nn (by linarith [hα]) (by linarith [hγ]) hdisc
+  -- Ring identity: LHS - RHS = α·t² + β·t + γ
+  have h_ring : (ek + t * ekm1) ^ 2 * AD - (ekm1 + t * ekm2) * (ekp1 + t * ek) * B2 =
+      (ekm1 ^ 2 * AD - ekm2 * ek * B2) * t ^ 2 +
+      (2 * ek * ekm1 * AD - (ek * ekm1 + ekm2 * ekp1) * B2) * t +
+      (ek ^ 2 * AD - ekm1 * ekp1 * B2) := by ring
+  linarith [h_quad, h_ring]
 
 /-- Cleared-denominator form of Newton's log-concavity.
     Equivalent to the normalized form but avoids division. -/
