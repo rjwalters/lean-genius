@@ -916,15 +916,16 @@ private theorem regSimplexEmbed_inner_eq (m : ℕ) (i k : Fin (m + 2))
         by_cases hik_eq : (i : ℕ) = (k : ℕ)
         · -- i = k: product = height(i)²
           rw [if_pos hik_eq, regSimplexEmbed_height m k j hk_ne (by omega) (by omega),
-              show (k : ℝ) = (i : ℝ) from by push_cast; omega,
+              show (k : ℝ) = (i : ℝ) from by exact_mod_cast hik_eq.symm,
               ← sq, height_sq (i : ℕ) hi_pos]
         · -- i < k: f(k,j) = centroid(j), j = i-1
           rw [if_neg hik_eq, regSimplexEmbed_centroid m k j hk_ne (by omega)]
           -- height(i) * centroid(i-1) = 1/(2i)
           -- Prove by showing squares are equal (both sides ≥ 0)
           have hi_r : (0 : ℝ) < (i : ℝ) := Nat.cast_pos.mpr hi_pos
-          have hj_r1 : (j : ℝ) + 1 = (i : ℝ) := by push_cast; omega
-          have hj_r2 : (j : ℝ) + 2 = (i : ℝ) + 1 := by push_cast; omega
+          have hj_nat1 : (j : ℕ) + 1 = (i : ℕ) := by omega
+          have hj_r1 : (j : ℝ) + 1 = (i : ℝ) := by exact_mod_cast hj_nat1
+          have hj_r2 : (j : ℝ) + 2 = (i : ℝ) + 1 := by exact_mod_cast show (j : ℕ) + 2 = (i : ℕ) + 1 by omega
           have h_lhs_nn : 0 ≤ Real.sqrt (((i : ℝ) + 1) / (2 * (i : ℝ))) *
               (1 / Real.sqrt (2 * ((j : ℝ) + 1) * ((j : ℝ) + 2))) := by positivity
           have h_rhs_nn : (0 : ℝ) ≤ 1 / (2 * (i : ℝ)) := by positivity
@@ -934,7 +935,7 @@ private theorem regSimplexEmbed_inner_eq (m : ℕ) (i k : Fin (m + 2))
               Real.sq_sqrt (by positivity : (0:ℝ) ≤ ((i : ℝ) + 1) / (2 * (i : ℝ))),
               Real.sq_sqrt (by rw [hj_r1, hj_r2]; positivity :
                 (0:ℝ) ≤ 2 * ((j : ℝ) + 1) * ((j : ℝ) + 2))]
-          rw [hj_r1, hj_r2]; field_simp; ring
+          rw [hj_r1, hj_r2]; field_simp
   simp_rw [h_term]
   -- Now sum: split {j < i} and {j ≥ i}
   rw [← Finset.sum_filter_add_sum_filter_not Finset.univ
@@ -991,40 +992,42 @@ private theorem regSimplexEmbed_inner_eq (m : ℕ) (i k : Fin (m + 2))
     rw [Finset.card_eq_one]
     refine ⟨⟨(i : ℕ) - 1, by omega⟩, ?_⟩
     ext ⟨j, hj⟩
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.ext_iff,
-               not_lt]
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.ext_iff]
     constructor
-    · intro ⟨⟨_, h1⟩, h2⟩; omega
-    · intro h; subst h; refine ⟨⟨?_, by omega⟩, by omega⟩; exact Finset.mem_univ _
+    · intro ⟨h1, h2⟩; omega
+    · intro h; subst h; exact ⟨by omega, by omega⟩
   -- Rewrite constant sum over singleton
-  rw [Finset.sum_const, h_single_card, Nat.smul_one_eq_cast, Nat.cast_one, one_mul]
+  rw [Finset.sum_const, h_single_card, one_nsmul]
   -- Centroid filter = {0, ..., i-2}, biject to range (i-1)
   have h_cent_bij : ((Finset.univ.filter (fun j : Fin (m + 1) => (j : ℕ) < (i : ℕ))).filter
       (fun j : Fin (m + 1) => (j : ℕ) + 1 < (i : ℕ))).sum
       (fun j => (1 : ℝ) / (2 * ((j : ℝ) + 1) * ((j : ℝ) + 2))) =
     (Finset.range ((i : ℕ) - 1)).sum
       (fun j => 1 / (2 * ((j : ℝ) + 1) * ((j : ℝ) + 2))) := by
-    apply Finset.sum_nbij (fun j => (j : ℕ))
-    · intro ⟨j, _⟩ hm
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hm
-      rw [Finset.mem_range]; omega
-    · intro ⟨a, _⟩ _ ⟨b, _⟩ _ h; exact Fin.ext (by simpa using h)
-    · intro j hj
-      rw [Finset.mem_range] at hj
-      refine ⟨⟨j, by omega⟩, ?_, rfl⟩
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-      exact ⟨⟨Finset.mem_univ _, by omega⟩, by omega⟩
-    · intro ⟨j, _⟩ _; rfl
+    -- Show the image of our filter under Fin.val is the range
+    set S := (Finset.univ.filter (fun j : Fin (m + 1) => (j : ℕ) < (i : ℕ))).filter
+        (fun j : Fin (m + 1) => (j : ℕ) + 1 < (i : ℕ))
+    have h_img : S.image Fin.val = Finset.range ((i : ℕ) - 1) := by
+      ext j; simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and,
+        Finset.mem_range, S]
+      constructor
+      · rintro ⟨a, ⟨h1, h2⟩, rfl⟩; omega
+      · intro hj
+        refine ⟨⟨j, by have := i.isLt; omega⟩, ?_, rfl⟩
+        simp only [Fin.val_mk]
+        exact ⟨by omega, by omega⟩
+    rw [← h_img, Finset.sum_image (fun a _ b _ h => Fin.ext h)]
   rw [h_cent_bij, sum_centroid_sq]
   -- Final arithmetic
   have hi_r : (0 : ℝ) < (i : ℝ) := Nat.cast_pos.mpr hi_pos
-  rw [show ((↑(i : ℕ) - 1 : ℕ) : ℝ) = (i : ℝ) - 1 from by push_cast; omega,
-      show ((↑(i : ℕ) - 1 : ℕ) : ℝ) + 1 = (i : ℝ) from by push_cast; omega]
+  have hi_ge1 : 1 ≤ (i : ℕ) := hi_pos
+  have hcast : ((↑i - 1 : ℕ) : ℝ) = ((i : ℕ) : ℝ) - 1 := by
+    rw [Nat.cast_sub hi_ge1, Nat.cast_one]
   split
   · -- i = k: (i-1)/(2i) + (i+1)/(2i) = 1
-    field_simp; ring
+    simp_rw [hcast]; field_simp; ring
   · -- i ≠ k: (i-1)/(2i) + 1/(2i) = 1/2
-    field_simp; ring
+    simp_rw [hcast]; field_simp; ring
 
 /-- Squared distance from the origin to vertex k: Σ_j f(k,j)² = 1 for k > 0. -/
 private theorem regSimplexEmbed_dist_from_origin (m : ℕ) (k : Fin (m + 2)) (hk : (k : ℕ) ≠ 0) :
@@ -1192,15 +1195,19 @@ open Classical in
 theorem complete_graph_dim_ge_tight (n : ℕ) (hn : 2 ≤ n) :
     n - 1 ≤ graphDimension' (Fin n) (fun i j => i ≠ j) (fun x h => h rfl) := by
   -- Show: for all d < n-1, there's no unit embedding of K_n in ℝ^d.
-  apply Nat.le_find_iff.mpr
-  intro d hd ⟨emb⟩
+  by_contra hlt
+  push_neg at hlt
+  -- hlt : Nat.find _ < n - 1
+  set d := graphDimension' (Fin n) (fun i j => i ≠ j) (fun x h => h rfl) with hd_def
+  have hd : d < n - 1 := hlt
+  obtain ⟨emb⟩ : hasUnitEmbedding' (Fin n) (fun i j => i ≠ j) d := Nat.find_spec _
   -- We have an embedding emb : Fin n → (Fin d → ℝ) with unit distances.
   -- Define centered vectors w(i) = emb(i+1) - emb(0) for i : Fin (n-1).
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 2 := ⟨n - 2, by omega⟩
   -- Now n = m + 2, n - 1 = m + 1, need to show d ≥ m + 1 contradicts d < m + 1
   -- Actually we're in the branch ⟨emb⟩ with d < m + 1
   -- The centered vectors: w : Fin (m+1) → (Fin d → ℝ)
-  set w : Fin (m + 1) → (Fin d → ℝ) := fun i k => emb.embed i.castSucc.succ k - emb.embed 0 k
+  set w : Fin (m + 1) → (Fin d → ℝ) := fun i k => emb.embed i.succ k - emb.embed 0 k
   -- Claim: w is linearly independent
   -- This gives m + 1 ≤ finrank ℝ (Fin d → ℝ) = d, contradicting d < m + 1
   have hli : LinearIndependent ℝ w := by
@@ -1216,17 +1223,14 @@ theorem complete_graph_dim_ge_tight (n : ℕ) (hn : 2 ≤ n) :
     -- Direct proof via inner product of hcoord with w j
     -- ⟨w j, w j⟩ = 1 (diagonal), ⟨w a, w b⟩ = 1/2 (off-diagonal, a ≠ b)
     have w_diag : ∀ j : Fin (m + 1), ∑ k : Fin d, w j k * w j k = 1 := fun j => by
-      convert centered_dot_product_diag emb j.castSucc.succ 0 (Fin.succ_ne_zero _) using 1
+      convert centered_dot_product_diag emb j.succ 0 (Fin.succ_ne_zero _) using 1
       apply Finset.sum_congr rfl; intro k _; ring
     have w_off : ∀ a b : Fin (m + 1), a ≠ b →
         ∑ k : Fin d, w a k * w b k = 1 / 2 := fun a b hab => by
-      have hab' : a.castSucc.succ ≠ b.castSucc.succ := by
-        intro h; exact hab (by
-          have := Fin.succ_injective _ h
-          exact Fin.castSucc_injective _ this)
-      convert centered_dot_product emb a.castSucc.succ b.castSucc.succ 0
-        (Fin.succ_ne_zero _) (Fin.succ_ne_zero _) hab' using 1
-      apply Finset.sum_congr rfl; intro k _; ring
+      have hab' : a.succ ≠ b.succ := by
+        intro h; exact hab (Fin.succ_injective _ h)
+      exact centered_dot_product emb a.succ b.succ 0
+        (Fin.succ_ne_zero _) (Fin.succ_ne_zero _) hab'
     -- Multiply hcoord by w j and sum: g j + (S-g j)/2 = 0 ⟹ g j = -S
     set S := ∑ l ∈ s, g l
     have gi_eq : ∀ j ∈ s, g j = -S := by

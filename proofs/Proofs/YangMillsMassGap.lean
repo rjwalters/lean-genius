@@ -510,7 +510,7 @@ theorem wilson_loop_trivial {G : Type*} [CompactSimpleGaugeGroup G]
     W.value A = 1 :=
   h_unit A
 
-/-- The Wilson loop is multiplicative under composition of loops.
+/- The Wilson loop is multiplicative under composition of loops.
     W(C₁ · C₂) relates to W(C₁) and W(C₂). -/
 
 /-- **The Area Law**: For confining theories, the Wilson loop expectation value
@@ -3201,7 +3201,7 @@ structure TopologicalSusceptibility where
   chi_t : ℝ
   chi_t_pos : chi_t > 0
 
-/-- The topological susceptibility is related to the eta' meson mass
+/- The topological susceptibility is related to the eta' meson mass
     via the Witten-Veneziano formula (with fermions):
     m²_{η'} ∝ 2N_f · χ_t
     In pure gauge theory (no fermions), χ_t is positive and
@@ -3398,8 +3398,7 @@ theorem suN_massGap_monotone (N M : ℕ) (hN : N ≥ 2) (hM : M ≥ N) (g : ℝ)
   -- i.e., NM(N-M) < -(M-N)
   -- i.e., NM(N-M) + (M-N) < 0
   -- i.e., (N-M)(NM + 1) < 0  ← true since N < M and NM+1 > 0
-  have hg2 := sq_pos_of_pos hg
-  nlinarith [mul_pos hNr hMr, sq_nonneg (hMr - hNr)]
+  nlinarith [mul_pos hNr hMr, sq_nonneg ((M : ℝ) - (N : ℝ)), sq_nonneg g]
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XLII: CONFINEMENT CRITERIA AND WILSON LOOP CHARACTERIZATION
@@ -3451,13 +3450,13 @@ theorem creutz_ratio_area_law (sigma : ℝ) (hsig : sigma > 0) :
   simp only [CreutzRatio.chi]
   -- W(I,J)·W(I-1,J-1) / (W(I,J-1)·W(I-1,J)) = exp(-σ)
   -- because -σIJ - σ(I-1)(J-1) + σI(J-1) + σ(I-1)J = -σ
-  rw [show cr.wilsonLoop I J = Real.exp (-(sigma * I * J)) from rfl]
-  rw [show cr.wilsonLoop (I-1) (J-1) = Real.exp (-(sigma * (I-1) * (J-1))) from rfl]
-  rw [show cr.wilsonLoop I (J-1) = Real.exp (-(sigma * I * (J-1))) from rfl]
-  rw [show cr.wilsonLoop (I-1) J = Real.exp (-(sigma * (I-1) * J)) from rfl]
-  rw [← Real.exp_add, ← Real.exp_add, div_eq_mul_inv, ← Real.exp_neg, ← Real.exp_add,
-      ← Real.exp_add, Real.log_exp]
-  ring_nf
+  -- cr.wilsonLoop reduces definitionally since cr is a let-binding
+  change -Real.log (Real.exp (-(sigma * ↑I * ↑J)) *
+      Real.exp (-(sigma * ↑(I - 1) * ↑(J - 1))) /
+      (Real.exp (-(sigma * ↑I * ↑(J - 1))) *
+       Real.exp (-(sigma * ↑(I - 1) * ↑J)))) = sigma
+  rw [← Real.exp_add, div_eq_mul_inv, ← Real.exp_neg, ← Real.exp_add,
+      ← Real.exp_add, ← Real.exp_add, Real.log_exp]
   push_cast
   ring
 
@@ -3513,7 +3512,6 @@ theorem stringTension_largeN_scaling (N : ℕ) (hN : N ≥ 2) (g : ℝ) :
     suN_massGap_2D N hN g = tHooftCoupling₂ N g * ((N : ℝ)^2 - 1) / (4 * (N : ℝ)^2) := by
   unfold suN_massGap_2D tHooftCoupling₂
   field_simp
-  ring
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART XLIII: SUMMARY (UPDATED)
@@ -3844,7 +3842,7 @@ structure GribovData where
   /-- Whether the Faddeev-Popov operator has zero modes -/
   has_zero_modes : Bool
 
-/-- Singer's theorem (1978): For non-abelian gauge theories on compact
+/- Singer's theorem (1978): For non-abelian gauge theories on compact
     manifolds, there is NO continuous global gauge fixing.
 
     More precisely: the gauge bundle G → A → A/G is non-trivial
@@ -3997,7 +3995,7 @@ structure AnomalyCoefficient where
   coeff : ℝ
   hcoeff_pos : coeff > 0
 
-/-- The Adler-Bardeen theorem: the chiral anomaly receives contributions
+/- The Adler-Bardeen theorem: the chiral anomaly receives contributions
     ONLY from one-loop diagrams. Higher-loop corrections vanish exactly.
 
     This is remarkable: most quantum corrections are perturbative series
@@ -4050,7 +4048,7 @@ structure BanksCasherRelation where
   /-- The chiral condensate ⟨ψ̄ψ⟩ = -πρ(0)/V -/
   condensate : ℝ
 
-/-- For QCD (SU(3) with N_f = 3 light quarks):
+/- For QCD (SU(3) with N_f = 3 light quarks):
     ρ(0) > 0 → chiral condensate ≠ 0 → pions are pseudo-Goldstone bosons.
 
     The pion mass comes from the explicit chiral symmetry breaking
@@ -4083,9 +4081,10 @@ structure WittenVeneziano where
 theorem eta_prime_massive (wv : WittenVeneziano) :
     wv.m_eta_prime_sq > 0 := by
   rw [wv.hm]
-  have hNf := wv.hNf
   have : (↑wv.N_f : ℝ) > 0 := by exact_mod_cast (show 0 < wv.N_f by omega)
-  positivity
+  apply div_pos
+  · apply mul_pos (mul_pos (by positivity) this) wv.chi_t_pos
+  · exact sq_pos_of_pos wv.f_pi_pos
 
 end ChiralAnomaly
 
@@ -4298,8 +4297,10 @@ theorem plaquette_action_bounded (w : WilsonPlaquetteAction) :
   constructor
   · apply mul_nonneg (le_of_lt w.hbeta)
     linarith [w.htrace_bound.2]
-  · have : 1 - w.plaquette_trace ≤ 2 := by linarith [w.htrace_bound.1]
-    nlinarith
+  · have h1 : 1 - w.plaquette_trace ≤ 2 := by linarith [w.htrace_bound.1]
+    have h2 : w.beta * (1 - w.plaquette_trace) ≤ w.beta * 2 :=
+      mul_le_mul_of_nonneg_left h1 (le_of_lt w.hbeta)
+    linarith
 
 /-- The full Wilson action on a lattice.
 
@@ -4416,7 +4417,8 @@ theorem strong_coupling_plaquette_small (N : ℕ) (hN : N ≥ 2) (beta : ℝ)
   calc beta / (2 * (↑N : ℝ) ^ 2) < 1 / (2 * (↑N : ℝ) ^ 2) := by
         apply div_lt_div_of_pos_right hsmall h2N2_pos
     _ ≤ 1 / (2 * 4) := by
-        apply div_le_div_of_nonneg_left (by linarith : (0 : ℝ) < 1) h24_pos (by linarith)
+        rw [div_le_div_iff h2N2_pos h24_pos]
+        nlinarith
 
 /-- Lattice spacing and physical scale.
 
