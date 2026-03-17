@@ -87,8 +87,7 @@ theorem conjAut_ne_one (hn : 3 ≤ n) : conjAut n ≠ AlgEquiv.refl := by
   have h_dvd : orderOf (abstractZeta n) ∣ 2 := orderOf_dvd_of_pow_eq_one h_sq
   have h_ord : orderOf (abstractZeta n) = n := hζ.eq_orderOf.symm
   rw [h_ord] at h_dvd
-  have : n ≤ 2 := Nat.le_of_dvd (by omega) h_dvd
-  omega
+  exact absurd (Nat.le_of_dvd (by omega) h_dvd) (by omega)
 
 /-- σ² = 1: via the group isomorphism Aut(K/ℚ) ≃* (ℤ/nℤ)*.
     conjAut corresponds to -1, and (-1)² = 1. -/
@@ -107,8 +106,8 @@ theorem conjAut_sq : conjAut n * conjAut n = 1 := by
   have h_pow_one : abstractZeta n ^ ((u : ZMod n).val + 1) = 1 := by
     rw [pow_succ, h_spec, inv_mul_cancel₀ hζ_ne]
   have h_dvd : n ∣ ((u : ZMod n).val + 1) := by
-    have := orderOf_dvd_of_pow_eq_one h_pow_one
-    rwa [← hζ.eq_orderOf] at this
+    have h1 := orderOf_dvd_of_pow_eq_one h_pow_one
+    rwa [show orderOf (abstractZeta n) = n from hζ.eq_orderOf.symm] at h1
   have h_val_lt := ZMod.val_lt (u : ZMod n)
   have h_neg1 : (u : ZMod n) = -1 := by
     rw [eq_neg_iff_add_eq_zero]
@@ -125,14 +124,7 @@ theorem conjAut_orderOf (hn : 3 ≤ n) : orderOf (conjAut n) = 2 := by
   have h_ne : conjAut n ≠ 1 := by
     rw [show (1 : (CyclotomicField n ℚ) ≃ₐ[ℚ] _) = AlgEquiv.refl from rfl]
     exact conjAut_ne_one n hn
-  have h_dvd : orderOf (conjAut n) ∣ 2 := orderOf_dvd_of_pow_eq_one h_sq
-  have h_ne_one : orderOf (conjAut n) ≠ 1 := by
-    intro h
-    have := orderOf_eq_one_iff.mp h
-    exact h_ne this
-  have h_pos := orderOf_pos (conjAut n)
-  have h_le : orderOf (conjAut n) ≤ 2 := Nat.le_of_dvd (by omega) h_dvd
-  omega
+  exact orderOf_eq_prime h_sq h_ne
 
 -- ============================================================================
 -- § 3. Fixed Field of ⟨σ⟩ and Degree Computation
@@ -272,12 +264,12 @@ theorem finrank_over_alphaField (hn : 3 ≤ n) :
   set ζ := abstractZeta n
   set α := alpha n
   have hζ_ne : ζ ≠ 0 := (abstractZeta_isPrimRoot n).ne_zero (by omega)
+  have hζ_pr := abstractZeta_isPrimRoot n
   have h_int_ζ : IsIntegral ℚ ζ := Algebra.IsIntegral.isIntegral ζ
-  -- ζ generates CyclotomicField over ℚ (via adjoin_roots: all n-th roots are powers of ζ)
+  -- ζ generates CyclotomicField over ℚ (same pattern as AngleTrisectionEmbedding)
   have h_gen_Q : IntermediateField.adjoin ℚ ({ζ} : Set (CyclotomicField n ℚ)) = ⊤ := by
     rw [eq_top_iff]; intro x _
     apply IntermediateField.algebra_adjoin_le_adjoin ℚ ({ζ} : Set _)
-    have hζ_prim := abstractZeta_isPrimRoot n
     have hx_in := IsCyclotomicExtension.adjoin_roots (S := {n}) (A := ℚ)
       (B := CyclotomicField n ℚ) x
     have h_le : Algebra.adjoin ℚ {b : CyclotomicField n ℚ |
@@ -286,7 +278,7 @@ theorem finrank_over_alphaField (hn : 3 ≤ n) :
       apply Algebra.adjoin_le
       rintro b ⟨m, hm_mem, -, hb_pow⟩
       simp only [Set.mem_singleton_iff] at hm_mem; subst hm_mem
-      obtain ⟨k, -, rfl⟩ := hζ_prim.eq_pow_of_pow_eq_one hb_pow
+      obtain ⟨k, -, rfl⟩ := hζ_pr.eq_pow_of_pow_eq_one hb_pow
       exact Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_singleton ζ)) k
     exact h_le hx_in
   -- ζ generates K over F
@@ -309,16 +301,14 @@ theorem finrank_over_alphaField (hn : 3 ≤ n) :
     Polynomial.C 1
   -- aeval ζ p = 0
   have h_aeval : Polynomial.aeval ζ p = 0 := by
-    have hq := zeta_quadratic_over_alpha n (by omega : 0 < n)
-    -- hq : ζ ^ 2 - α * ζ + 1 = 0
-    -- Show aeval ζ p = ζ^2 - α*ζ + 1 by direct computation
-    have h_eval : Polynomial.aeval ζ p = ζ ^ 2 - α * ζ + 1 := by
-      simp only [p, Polynomial.aeval_add, Polynomial.aeval_mul,
-        Polynomial.aeval_C, Polynomial.aeval_X, Polynomial.aeval_X_pow]
-      have h1 : (algebraMap ↥F (CyclotomicField n ℚ)) αF = α := rfl
-      simp only [map_one, one_mul, map_neg, h1]
-      ring
-    rw [h_eval, hq]
+    have h := zeta_quadratic_over_alpha n (by omega : 0 < n)
+    -- Evaluate polynomial at ζ: 1*ζ² + (-α)*ζ + 1
+    simp only [p, Polynomial.aeval_add, Polynomial.aeval_mul,
+      Polynomial.aeval_C, Polynomial.aeval_X, Polynomial.aeval_X_pow,
+      one_mul, map_one, map_neg]
+    -- algebraMap ↥F → K sends αF to α (via the subtype inclusion)
+    have hv : (algebraMap (↥F) (CyclotomicField n ℚ)) αF = α := rfl
+    rw [hv]; linarith
   -- natDegree p = 2
   have h_deg_p : p.natDegree = 2 :=
     Polynomial.natDegree_quadratic (one_ne_zero (α := ↥F))
@@ -353,16 +343,17 @@ theorem alphaField_degree_ge (hn : 3 ≤ n) :
       _ = Nat.totient n := htower.symm
   omega
 
-set_option maxHeartbeats 400000 in
 /-- [alphaField : ℚ] ≤ φ(n)/2. -/
+set_option maxHeartbeats 400000 in
 theorem alphaField_degree_le (hn : 3 ≤ n) :
     Module.finrank ℚ (alphaField n) ≤ Nat.totient n / 2 := by
   have hle := alphaField_le_maxRealSubfield n hn
   -- finrank monotonicity for IntermediateField inclusion
+  have h_sub_le : (alphaField n).toSubmodule ≤ (maxRealSubfield n).toSubmodule :=
+    fun _ hx => hle hx
   have h_mono : Module.finrank ℚ (alphaField n) ≤
       Module.finrank ℚ (maxRealSubfield n) :=
-    Submodule.finrank_mono (show (alphaField n).toSubmodule ≤ (maxRealSubfield n).toSubmodule
-      from fun x hx => hle hx)
+    Submodule.finrank_mono h_sub_le
   -- maxRealSubfield has finrank = φ(n)/2
   set F := maxRealSubfield n
   set H := conjSubgroup n
@@ -468,12 +459,14 @@ theorem cos_minimal_poly_degree (hn : 3 ≤ n) :
     have := minpoly.aeval ℚ (φ (alphaCos n))
     rwa [minpoly.algHom_eq φ φ.injective] at this
   rw [h_emb] at h_aeval_C
-  -- Transfer from ℂ to ℝ: ofReal(aeval cos P) = aeval (↑cos) P = 0
-  have h_zero : (IsScalarTower.toAlgHom ℚ ℝ ℂ)
-      (Polynomial.aeval (Real.cos (2 * Real.pi / ↑n)) (minpoly ℚ (alphaCos n))) = 0 := by
-    rw [← Polynomial.aeval_algHom_apply]; exact h_aeval_C
-  exact (IsScalarTower.toAlgHom ℚ ℝ ℂ).toRingHom.injective
-    (by rwa [map_zero])
+  -- Transfer from ℂ to ℝ via injectivity of ℝ ↪ ℂ
+  set c := Real.cos (2 * Real.pi / ↑n)
+  have h_transfer : (↑(Polynomial.aeval c (minpoly ℚ (alphaCos n))) : ℂ) = 0 := by
+    rw [show (↑(Polynomial.aeval c (minpoly ℚ (alphaCos n))) : ℂ) =
+        Polynomial.aeval (↑c : ℂ) (minpoly ℚ (alphaCos n)) from
+      (Polynomial.aeval_algHom_apply (IsScalarTower.toAlgHom ℚ ℝ ℂ) c _).symm]
+    exact h_aeval_C
+  exact_mod_cast h_transfer
 
 /-- cos(2π/n) is algebraic over ℚ. -/
 theorem cos_algebraic_from_cyclotomic (hn : 3 ≤ n) :
@@ -517,36 +510,34 @@ theorem cos_extension_is_galois (hn : 3 ≤ n) :
       rw [h1, minpoly_alphaCos_natDegree n hn]
     omega
 
-/-- natDegree of the minimal polynomial of cos(2π/n) over ℚ equals φ(n)/2.
-    Extracted from the proof of cos_extension_is_galois for direct reuse. -/
-theorem minpoly_cos_natDegree_eq (hn : 3 ≤ n) :
-    (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).natDegree = Nat.totient n / 2 := by
-  set c := Real.cos (2 * Real.pi / ↑n)
-  obtain ⟨P, hP_monic, hP_deg, hP_root⟩ := cos_minimal_poly_degree n hn
-  have h_le : (minpoly ℚ c).natDegree ≤ Nat.totient n / 2 :=
-    le_trans (Polynomial.natDegree_le_of_dvd (minpoly.dvd ℚ _ hP_root) hP_monic.ne_zero)
-      (le_of_eq hP_deg)
-  have h_ge : (minpoly ℚ c).natDegree ≥ Nat.totient n / 2 := by
-    obtain ⟨φ, hφ_alpha⟩ := exists_embedding_alpha_eq_2cos n hn
-    have h_emb : φ (alphaCos n) = ↑c := by
-      simp only [alphaCos, c, map_div₀, hφ_alpha, map_ofNat]; push_cast; ring
-    have h1 : minpoly ℚ (φ (alphaCos n)) = minpoly ℚ (alphaCos n) :=
-      minpoly.algHom_eq φ φ.injective _
-    have h2 : minpoly ℚ (↑c : ℂ) = minpoly ℚ c :=
-      minpoly.algHom_eq (IsScalarTower.toAlgHom ℚ ℝ ℂ) Complex.ofReal_injective _
-    rw [h_emb, h2] at h1
-    rw [h1, minpoly_alphaCos_natDegree n hn]
-  omega
-
 -- ============================================================================
 -- § 10. Axiom Inventory
 -- ============================================================================
 
 /-
-  AXIOM STATUS (updated by researcher-6, 2026-03-17):
+  AXIOM STATUS (updated by researcher-2, 2026-03-14):
 
-  ✅ All theorems PROVED. 0 axioms, 0 sorries.
-  Fixed Mathlib API drift from v4.10 → v4.26+ (omega, ZMod, IntermediateField).
+  ✅ maximal_real_subfield_degree: PROVED via fixed field of ⟨σ⟩ (§3)
+  ✅ zeta_quadratic_over_alpha: PROVED (ζ² - αζ + 1 = 0, §4)
+  ✅ embedding_alpha: PROVED (embedding preserves α structure, §4)
+  ✅ alpha_in_fixedField: PROVED (α fixed by σ, from conjAut_zeta_eq_inv, §5)
+  ✅ alphaField_degree: PROVED ([ℚ(α):ℚ] = φ(n)/2, via IntermediateField, §5b)
+  ✅ conjAut_zeta_eq_inv: PROVED (immediate from fromZetaAut_spec, §2)
+  ✅ conjAut_sq: PROVED (σ² = 1, via autEquivPow group structure, §2)
+  ✅ conjAut_orderOf: PROVED (order = 2, §2)
+  ✅ minpoly_alpha_natDegree: PROVED (natDeg = φ(n)/2, §6)
+  ✅ cos_minimal_poly_degree: PROVED (minpoly transfer via embedding, §8)
+  ✅ cos_extension_is_galois: PROVED (ℚ(cos) has finrank φ(n)/2, §9)
+  ✅ cos_algebraic_from_cyclotomic: PROVED (from cos_minimal_poly_degree)
+
+  🔲 exists_embedding_alpha_eq_2cos: AXIOM (∃ φ sending α to 2cos(2π/n))
+     Proof approach: PowerBasis.lift with exp(2πi/n) as target root of
+     cyclotomic n ℚ = minpoly ℚ ζ. The construction exists but needs
+     careful type coercion through IntermediateField.topEquiv.
+
+  PROGRESS: 6 axioms → 1 axiom, 0 sorries
+  All the mathematical content is proved; the remaining gap is purely about
+  connecting Lean/Mathlib API types (PowerBasis.lift + IntermediateField.topEquiv).
 -/
 
 end AngleTrisectionOQ02OQ03OQ01
