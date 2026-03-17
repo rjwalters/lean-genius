@@ -1223,15 +1223,90 @@ theorem complete_graph_dim_ge_tight (n : ℕ) (hn : 2 ≤ n) :
     -- ≥ (1/2) ∑ g(j)², so ∑ g(j)² = 0, so g(j) = 0 for all j
     -- Compute: ∑ k, (∑ j, g j * w j k)² ≥ (1/2) * ∑ j ∈ s, g j ^ 2
     -- Since this equals 0, we get ∑ g j ^ 2 = 0, hence each g j = 0
-    suffices h : (1 : ℝ) / 2 * ∑ j ∈ s, g j ^ 2 ≤ 0 by
-      have hnn : 0 ≤ ∑ j ∈ s, g j ^ 2 := Finset.sum_nonneg fun j _ => sq_nonneg _
-      have := le_antisymm (by linarith) hnn
-      have := Finset.sum_eq_zero_iff_of_nonneg (fun j _ => sq_nonneg (g j)) |>.mp this i hi
-      exact sq_eq_zero_iff.mp this
-    -- Need: (1/2) ∑ g j² ≤ ∑ k (∑ j g j * w j k)² = 0
-    -- i.e., (1/2) ∑ g j² ≤ norm_sq_zero = 0
-    -- This follows from expanding norm_sq as (1/2)(sum_sq + sum²) ≥ (1/2) sum_sq
-    sorry -- TODO: expand the double sum and use inner product computations
+    -- Inner product approach: show g i = 0 directly
+    -- Step 1: Norm-squared of centered vectors = 1
+    have hw_nsq : ∀ j : Fin (m + 1), ∑ k : Fin d, w j k * w j k = 1 := by
+      intro j
+      have hne : (j.castSucc.succ : Fin (m + 2)) ≠ 0 := Fin.succ_ne_zero _
+      have h_unit := emb.unit_edges _ _ hne
+      have hnn : (0 : ℝ) ≤ Finset.univ.sum fun x =>
+          (emb.embed j.castSucc.succ x - emb.embed 0 x) ^ 2 :=
+        Finset.sum_nonneg fun _ _ => sq_nonneg _
+      have hsq := Real.sq_sqrt hnn; rw [h_unit, one_pow] at hsq
+      convert hsq.symm using 1; congr 1; ext k; simp only [w]; ring
+    -- Step 2: Cross inner product = 1/2 for distinct vectors
+    have hw_cross : ∀ a b : Fin (m + 1), a ≠ b →
+        ∑ k : Fin d, w a k * w b k = 1 / 2 := by
+      intro a b hab
+      have hne : (a.castSucc.succ : Fin (m + 2)) ≠ b.castSucc.succ :=
+        fun h => hab (Fin.castSucc_injective _ (Fin.succ_injective _ h))
+      have h_unit := emb.unit_edges _ _ hne
+      have hnn : (0 : ℝ) ≤ Finset.univ.sum fun x =>
+          (emb.embed a.castSucc.succ x - emb.embed b.castSucc.succ x) ^ 2 :=
+        Finset.sum_nonneg fun _ _ => sq_nonneg _
+      have hsq := Real.sq_sqrt hnn; rw [h_unit, one_pow] at hsq
+      -- ∑ (w a - w b)² = 1
+      have h1 : ∑ k : Fin d, (w a k - w b k) * (w a k - w b k) = 1 := by
+        convert hsq.symm using 1; congr 1; ext k; simp only [w]; ring
+      -- Expand: ∑ w_a² - 2∑ w_a·w_b + ∑ w_b² = 1
+      have h_expand : (∑ k : Fin d, w a k * w a k) -
+          2 * (∑ k : Fin d, w a k * w b k) +
+          (∑ k : Fin d, w b k * w b k) = 1 := by
+        have : ∀ k : Fin d, (w a k - w b k) * (w a k - w b k) =
+            w a k * w a k - 2 * (w a k * w b k) + w b k * w b k := by
+          intro k; ring
+        rw [show (∑ k, (w a k - w b k) * (w a k - w b k)) =
+            (∑ k, w a k * w a k) - 2 * (∑ k, w a k * w b k) +
+            (∑ k, w b k * w b k) from by
+          simp_rw [this, Finset.sum_sub_distrib, Finset.sum_add_distrib,
+            ← Finset.mul_sum]] at h1
+        linarith
+      rw [hw_nsq a, hw_nsq b] at h_expand; linarith
+    -- Step 3: For i ∈ s, derive g i = -(∑ j∈s, g j)
+    -- by computing ∑_k (∑_j∈s g_j·w_j_k)·w_i_k two ways
+    set S := ∑ j ∈ s, g j with hS_def
+    have hgi_eq : ∀ a ∈ s, g a / 2 + S / 2 = 0 := by
+      intro a ha
+      -- Way 1: = 0 (from hcoord, since each ∑_j term is 0)
+      have h_zero : ∑ k : Fin d, (∑ j ∈ s, g j * w j k) * w a k = 0 :=
+        Finset.sum_eq_zero fun k _ => by rw [hcoord k, zero_mul]
+      -- Way 2: exchange sums to get ∑_j∈s g_j · ⟨w_j, w_a⟩
+      have h_exch : ∑ j ∈ s, g j * (∑ k : Fin d, w j k * w a k) = 0 := by
+        rw [← h_zero, Finset.sum_comm]; congr 1; ext k
+        rw [Finset.sum_mul]; congr 1; ext j; ring
+      -- Split j=a vs j≠a
+      rw [← Finset.add_sum_erase _ _ ha] at h_exch
+      have h_diag : ∑ k : Fin d, w a k * w a k = 1 := hw_nsq a
+      have h_off : ∀ j ∈ s.erase a, ∑ k : Fin d, w j k * w a k = 1 / 2 := by
+        intro j hj; exact hw_cross j a (Finset.ne_of_mem_erase hj)
+      rw [h_diag, mul_one] at h_exch
+      have h_sum_off : ∑ j ∈ s.erase a, g j * (1 / 2) = (S - g a) / 2 := by
+        rw [← Finset.sum_div, ← Finset.sum_mul_boole_eq_sum_filter]
+        simp only [Finset.sum_erase_eq_sub ha, hS_def]; ring
+      conv at h_exch => rhs; rw [show (0 : ℝ) = 0 from rfl]
+      have h_off_sum : ∑ j ∈ s.erase a, g j * (∑ k : Fin d, w j k * w a k) =
+          ∑ j ∈ s.erase a, g j * (1 / 2) := by
+        apply Finset.sum_congr rfl; intro j hj; rw [h_off j hj]
+      rw [h_off_sum] at h_exch
+      -- g a + (S - g a)/2 = 0 → g a/2 + S/2 = 0
+      linarith [Finset.sum_erase_eq_sub ha (f := g)]
+    -- Step 4: g i = -S, and S = 0
+    have hgi_neg : ∀ a ∈ s, g a = -S := by
+      intro a ha; linarith [hgi_eq a ha]
+    have hS_zero : S = 0 := by
+      by_cases hs : s.Nonempty
+      · obtain ⟨a, ha⟩ := hs
+        have : S = ∑ j ∈ s, g j := rfl
+        rw [show ∑ j ∈ s, g j = ∑ j ∈ s, (-S) from
+          Finset.sum_congr rfl (fun j hj => hgi_neg j hj)] at this
+        simp [Finset.sum_const, nsmul_eq_mul] at this
+        -- S = -(s.card) * S → S * (1 + s.card) = 0 → S = 0
+        have hcard : (0 : ℝ) < 1 + ↑s.card := by positivity
+        nlinarith
+      · rw [Finset.not_nonempty_iff_eq_empty.mp hs] at hS_def ⊢
+        simp [hS_def]
+    -- Step 5: g i = 0
+    have := hgi_neg i hi; linarith
   -- From linear independence: card (Fin (m+1)) ≤ finrank ℝ (Fin d → ℝ)
   have hcard := hli.fintype_card_le_finrank
   simp [Fintype.card_fin, Module.finrank_fin_fun] at hcard
