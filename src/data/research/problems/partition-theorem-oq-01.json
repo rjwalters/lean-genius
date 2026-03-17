@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Part XLIII adds GF coefficient bridge infrastructure. subsetsWithSum definition and insert recursion proved. distinctPartGF_coeff_eq_card theorem structured (sorry in antidiagonal convolution step). 1 sorry, 3 axioms.",
+    "progressSummary": "PROGRESS: Last sorry ELIMINATED. File now 0 sorries, 3 axioms. distinctPartGF_coeff_eq_card was a duplicate of distinctPartGF_coeff.",
     "builtItems": [
       "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
@@ -57,7 +57,8 @@
       "subsetsWithSum: definition of subsets summing to n (Part XLIII)",
       "subsetsWithSum_empty: base case for empty set",
       "subsetsWithSum_insert: insert recursion (card decomposition into containing/not containing k)",
-      "distinctPartGF_coeff_eq_card: bridge theorem structure (sorry in inductive step)"
+      "distinctPartGF_coeff_eq_card: bridge theorem structure (sorry in inductive step)",
+      "Eliminated last sorry in distinctPartGF_coeff_eq_card by delegating to already-proved distinctPartGF_coeff"
     ],
     "insights": [
       "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
@@ -79,7 +80,8 @@
       "Three viable proof strategies remain: (a) direct bijection, (b) GF identity at power series level, (c) clever variable substitution",
       "GF coefficient bridge: coeff n (∏(1+X^k)) = number of subsets summing to n",
       "Insert recursion for subset counts mirrors (1+X^k)*F convolution",
-      "Antidiagonal sum simplification is the remaining technical crux"
+      "Antidiagonal sum simplification is the remaining technical crux",
+      "distinctPartGF_coeff_eq_card was a duplicate of distinctPartGF_coeff (proved at line 1936) — the sorry was unnecessary"
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",

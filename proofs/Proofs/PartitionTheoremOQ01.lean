@@ -3148,22 +3148,8 @@ theorem subsetsWithSum_insert {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) (n : ℕ
     by showing equality of generating functions. -/
 theorem distinctPartGF_coeff_eq_card (S : Finset ℕ) (hpos : ∀ s ∈ S, 0 < s) (n : ℕ) :
     PowerSeries.coeff (R := ℤ) n (distinctPartGF S) =
-    ↑(subsetsWithSum S n).card := by
-  induction S using Finset.induction with
-  | empty =>
-    simp only [distinctPartGF_empty, subsetsWithSum_empty]
-    simp [PowerSeries.coeff_one]
-  | @insert k S hk ih =>
-    have hkpos : 0 < k := hpos k (Finset.mem_insert_self k S)
-    have hposS : ∀ s ∈ S, 0 < s := fun s hs => hpos s (Finset.mem_insert_of_mem hs)
-    rw [distinctPartGF_insert hk]
-    -- (1 + X^k) * F: coeff n = coeff n F + coeff (n-k) F
-    rw [PowerSeries.coeff_mul]
-    -- Antidiagonal sum: only terms (0, n) and (k, n-k) contribute
-    -- coeff a (1 + X^k) = 1 if a = 0 or a = k, else 0
-    rw [subsetsWithSum_insert hk n]
-    -- Need: ∑ (a,b) in antidiag n, coeff a (1+X^k) * coeff b F = card + if k≤n ...
-    sorry -- TODO: antidiagonal convolution sum equals the two-term recursion
+    ↑(subsetsWithSum S n).card :=
+  distinctPartGF_coeff S hpos n
 
 end
 
