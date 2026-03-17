@@ -23,12 +23,12 @@
     The first new polygon construction since antiquity. Determined his career choice.
   - Wantzel (1837): Proved the converse — non-constructibility when φ(n) ≠ 2^k.
 
-  File summary: 67+ proved theorems, 1 sorry, 3 axioms.
-  Sorries: galois_conjugate_count (counting argument for coprime pairing).
+  File summary: 67+ proved theorems, 0 sorries, 0 axioms.
+  galois_conjugate_count: PROVED (coprime pairing via lower-half injectivity).
   minpoly_cos_natDegree_eq PROVED (3 sorries eliminated: h_top, h_deg, combining).
-  Axioms: gauss_wantzel_theorem (redundant — proved as gauss_wantzel_theorem'),
-  cos_minpoly_gal_card (has clear proof roadmap via Chebyshev + cyclotomic bridge),
-  wantzel_galois_characterization (from OQ02).
+  gauss_wantzel_theorem PROVED (via degree theory from OQ02OQ03OQ01).
+  All 3 former axioms eliminated: gauss_wantzel_theorem, cos_minpoly_gal_card,
+  wantzel_galois_characterization.
   Key results: cos integrality (Chebyshev T_n), conjugate infrastructure (T_k identity,
   adjoin membership), minpoly divisibility (minpoly | T_n - 1), cyclotomic-cosine bridge
   (ζ quadratic, ζ ∉ ℝ, no real roots, ζ⁻¹ = conj(ζ)),
@@ -37,6 +37,7 @@
 -/
 
 import Mathlib
+import Proofs.AngleTrisectionOQ02OQ03OQ01
 
 open Polynomial IntermediateField
 
@@ -129,17 +130,40 @@ def IsConstructibleNgon (n : ℕ) : Prop :=
     Real.cos (2 * Real.pi / n) ∈ K
 
 /-!
-## Section IV: Gauss-Wantzel Theorem (Axiomatized)
+## Section IV: Gauss-Wantzel Theorem (Proved)
 
-Proof requires: cyclotomic field theory
-  [ℚ(ζₙ):ℚ] = φ(n), Gal(ℚ(ζₙ)/ℚ) ≅ (ℤ/nℤ)*
-  cos(2π/n) = (ζₙ + ζₙ⁻¹)/2 generates the maximal real subfield
-  [ℚ(ζₙ):ℚ(cos(2π/n))] = 2 → [ℚ(cos(2π/n)):ℚ] = φ(n)/2
-  By OQ02: n-gon constructible ↔ Gal(Φₙ) is 2-group ↔ φ(n) = 2^k.
-
-Mathlib has IsCyclotomicExtension and ZMod.unitsEquivCoprime but not the full
-assembled Gauss-Wantzel theorem. Infrastructure estimate: ~300 lines to prove.
+Proof via degree theory from OQ02OQ03OQ01:
+  1. cos_extension_is_galois: ∃ K with [K:ℚ] = φ(n)/2 containing cos(2π/n)
+  2. minpoly_cos_natDegree_eq: natDeg(minpoly ℚ cos(2π/n)) = φ(n)/2
+  3. Forward (→): cos ∈ K with [K:ℚ] = 2^m → φ(n)/2 | 2^m → φ(n) = 2^k
+  4. Backward (←): φ(n) = 2^k → φ(n)/2 = 2^(k-1) → K witnesses constructibility
 -/
+
+/-- A positive divisor of 2^m is itself a power of 2. -/
+private theorem dvd_pow_two_is_pow_two {d m : ℕ} (hd : 0 < d) (h : d ∣ 2 ^ m) :
+    ∃ k : ℕ, d = 2 ^ k := by
+  induction m generalizing d with
+  | zero =>
+    rw [pow_zero] at h
+    exact ⟨0, Nat.eq_one_of_dvd_one h⟩
+  | succ m ih =>
+    by_cases h2 : 2 ∣ d
+    · obtain ⟨d', rfl⟩ := h2
+      have hd' : 0 < d' := by omega
+      have h' : d' ∣ 2 ^ m := by
+        rw [pow_succ] at h
+        exact (Nat.mul_dvd_mul_iff_left (by omega : 0 < 2)).mp h
+      obtain ⟨k, hk⟩ := ih hd' h'
+      exact ⟨k + 1, by rw [hk, pow_succ]⟩
+    · -- d is odd and divides 2^(m+1), so d = 1
+      have hd1 : d = 1 := by
+        by_contra hne
+        obtain ⟨p, hp, hpd⟩ := Nat.exists_prime_and_dvd (by omega : d ≠ 1)
+        have hpeq2 : p = 2 := by
+          have hp2 : p ∣ 2 := hp.dvd_of_dvd_pow (dvd_trans hpd h)
+          exact le_antisymm (Nat.le_of_dvd (by omega) hp2) hp.two_le
+        exact h2 (hpeq2 ▸ hpd)
+      exact ⟨0, by rw [hd1, pow_zero]⟩
 
 /-- **Gauss-Wantzel Theorem** (Gauss 1796, Wantzel 1837):
     A regular n-gon is constructible by compass and straightedge if and only if
@@ -147,10 +171,43 @@ assembled Gauss-Wantzel theorem. Infrastructure estimate: ~300 lines to prove.
 
     Equivalently: n = 2^k · p₁ · p₂ · ... · p_r where p₁,...,p_r are distinct Fermat primes.
 
-    Connection to OQ02: The Galois group Gal(Φₙ/ℚ) ≅ (ℤ/nℤ)* has order φ(n).
-    By the Wantzel-Galois criterion (OQ02): cos(2π/n) constructible ↔ Gal is 2-group ↔ φ(n) = 2^k. -/
-axiom gauss_wantzel_theorem (n : ℕ) (hn : 3 ≤ n) :
-    IsConstructibleNgon n ↔ TotientIsPow2 n
+    Proved via cyclotomic field degree theory (OQ02OQ03OQ01). -/
+theorem gauss_wantzel_theorem (n : ℕ) (hn : 3 ≤ n) :
+    IsConstructibleNgon n ↔ TotientIsPow2 n := by
+  constructor
+  · -- Forward: IsConstructibleNgon → TotientIsPow2
+    rintro ⟨K, hK_fd, ⟨m, hK_pow⟩, hcos_mem⟩
+    set c := Real.cos (2 * Real.pi / ↑n) with hc_def
+    have h_int : IsIntegral ℚ c :=
+      (AngleTrisectionOQ02OQ03OQ01.cos_algebraic_from_cyclotomic n hn).isIntegral
+    -- finrank ℚ (adjoin ℚ {c}) = φ(n)/2
+    set F := IntermediateField.adjoin ℚ ({c} : Set ℝ)
+    have h_finrank_F : Module.finrank ℚ ↥F = Nat.totient n / 2 := by
+      have h_adj := IntermediateField.adjoin.finrank h_int
+      have h_deg := AngleTrisectionOQ02OQ03OQ01.minpoly_cos_natDegree_eq n hn
+      linarith
+    -- F ≤ K since c ∈ K
+    have hF_le_K : F ≤ K :=
+      IntermediateField.adjoin_le_iff.mpr (Set.singleton_subset_iff.mpr hcos_mem)
+    -- Tower law: finrank ℚ K = finrank ℚ F * finrank F K
+    -- so finrank ℚ F ∣ finrank ℚ K = 2^m
+    have h_dvd : Nat.totient n / 2 ∣ 2 ^ m := by
+      rw [← h_finrank_F, ← hK_pow]
+      exact ⟨Module.finrank ↥F ↥K,
+        (Module.finrank_mul_finrank ℚ ↥F ↥K).symm⟩
+    -- φ(n)/2 divides 2^m → φ(n)/2 = 2^j
+    have h_pos : 0 < Nat.totient n / 2 := by
+      have := (Nat.totient_pos).mpr (show 0 < n by omega)
+      have := (Nat.totient_even (show 3 ≤ n by omega)).two_dvd
+      omega
+    obtain ⟨j, hj⟩ := dvd_pow_two_is_pow_two h_pos h_dvd
+    exact (totient_div2_pow2_iff hn).mp ⟨j, hj⟩
+  · -- Backward: TotientIsPow2 → IsConstructibleNgon
+    rintro htot
+    obtain ⟨j, hj⟩ := (totient_div2_pow2_iff hn).mpr htot
+    obtain ⟨K, hK_fd, hcos_mem, hK_rank⟩ :=
+      AngleTrisectionOQ02OQ03OQ01.cos_extension_is_galois n hn
+    exact ⟨K, hK_fd, ⟨j, by rw [hK_rank]; exact hj⟩, hcos_mem⟩
 
 /-!
 ## Section V: Constructible Regular Polygons
@@ -577,15 +634,12 @@ Key insight: cos(2kπ/n) = T_k(cos(2π/n)) where T_k is the kth Chebyshev polyno
 This proves all potential Galois conjugates of cos(2π/n) lie in ℚ(cos(2π/n)),
 establishing normality of the extension ℚ(cos(2π/n))/ℚ.
 
-**Normality proof roadmap** (to eventually eliminate cos_minpoly_gal_card axiom):
+**Normality proof roadmap** (cos_minpoly_gal_card axiom ELIMINATED via direct degree argument):
 1. ✅ cos(2kπ/n) = T_k(cos(2π/n)) (cos_2k_pi_eq_chebyshev_eval, proved below)
 2. ✅ cos(2kπ/n) ∈ ℚ[cos(2π/n)] (cos_conjugate_mem_adjoin, proved below)
 3. ✅ minpoly(ℚ, cos(2π/n)) | T_n - 1 (minpoly_cos_dvd_chebyshev, proved below)
-4. ❌ All roots of T_n - 1 in ℝ are cos(2kπ/n) (needs analytic characterization)
-5. ❌ minpoly splits in ℚ(cos(2π/n)) (follows from 2+3+4)
-6. ❌ SplittingField(minpoly) ≅ ℚ(cos(2π/n)) (follows from 5)
-7. ❌ |Gal| = finrank = natDegree(minpoly) (from 6 + IsGalois.card_aut_eq_finrank)
-8. ❌ natDegree(minpoly) = φ(n)/2 (needs cyclotomic tower law: φ(n) = 2 · [ℚ(cos):ℚ])
+Note: The Gauss-Wantzel theorem is now proved directly from degree theory
+(via OQ02OQ03OQ01), bypassing the Galois group cardinality entirely.
 -/
 
 /-- cos(2kπ/n) = T_k(cos(2π/n)): every potential conjugate of cos(2π/n) is a
@@ -617,23 +671,6 @@ theorem minpoly_cos_dvd_chebyshev (n : ℕ) (hn : 1 ≤ n) :
   have : (↑(↑n : ℤ) : ℝ) * (2 * Real.pi / ↑n) = 2 * Real.pi := by
     rw [Int.cast_natCast]; field_simp
   rw [this, Real.cos_two_pi, sub_self]
-
-/-- The Galois group of the minimal polynomial of cos(2π/n) over ℚ has
-    order φ(n)/2 for n ≥ 3.
-
-    **Proof strategy** (mostly assembled, requires 2 more steps):
-    Step A: SplittingField(minpoly) = ℚ(cos(2π/n))
-      - minpoly | T_n - 1 (✅ minpoly_cos_dvd_chebyshev)
-      - Roots of T_n - 1 are cos(2kπ/n) (needs analytic characterization of T_n roots)
-      - Each cos(2kπ/n) ∈ ℚ(cos(2π/n)) (✅ cos_conjugate_mem_adjoin)
-      - So all roots of minpoly are in ℚ(cos(2π/n))
-      - Hence SplittingField = ℚ(cos(2π/n)) (normality)
-    Step B: |Gal| = [ℚ(cos(2π/n)):ℚ] = φ(n)/2
-      - |Gal| = finrank ℚ SplittingField (by IsGalois.card_aut_eq_finrank)
-      - = finrank ℚ ℚ(cos(2π/n)) = natDegree(minpoly)  (from Step A)
-      - = φ(n)/2 (needs cyclotomic tower: [ℚ(ζₙ):ℚ] = φ(n), [ℚ(ζₙ):ℚ(cos)] = 2) -/
-axiom cos_minpoly_gal_card (n : ℕ) (hn : 3 ≤ n) :
-    Fintype.card (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).Gal = Nat.totient n / 2
 
 /-- Arithmetic bridge: φ(n)/2 is a power of 2 iff φ(n) is a power of 2 (for n ≥ 3).
 
@@ -670,53 +707,6 @@ theorem totient_div2_pow2_iff {n : ℕ} (hn : 3 ≤ n) :
       exact absurd (hk ▸ (Nat.totient_even (by omega : 3 ≤ n))) (by decide)
     exact ⟨k - 1, by rw [hk, Nat.pow_div hk1 (by omega)]⟩
 
-/-- α ∈ ℝ is constructible from ℚ if it lies in a finite 2-power extension.
-    (Same definition as AngleTrisectionOQ02.IsConstructibleFromQ, inlined for
-    self-containment since OQ02 has pre-existing Mathlib compatibility issues.) -/
-private def IsConstructibleFromQ (α : ℝ) : Prop :=
-  ∃ (K : IntermediateField ℚ ℝ),
-    FiniteDimensional ℚ K ∧
-    (∃ n : ℕ, Module.finrank ℚ K = 2 ^ n) ∧
-    α ∈ K
-
-/-- Wantzel-Galois characterization: α constructible ↔ Gal(minpoly) is a 2-group.
-    (Axiomatized from OQ02, which proves 2-group facts and states this as its main axiom.) -/
-private axiom wantzel_galois_characterization (α : ℝ) (hα : IsIntegral ℚ α) :
-    IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal
-
-/-- **Gauss-Wantzel Theorem (Proved from decomposed axioms)**:
-    A regular n-gon is constructible ↔ φ(n) is a power of 2.
-
-    This is now a THEOREM, not an axiom! It follows from:
-    1. cos_2pi_div_n_isIntegral (cos(2π/n) is algebraic — PROVED via Chebyshev)
-    2. cos_minpoly_gal_card (|Gal| = φ(n)/2)
-    3. wantzel_galois_characterization (constructible ↔ 2-group, from OQ02)
-    4. totient_div2_pow2_iff (arithmetic bridge, proved above) -/
-theorem gauss_wantzel_theorem' (n : ℕ) (hn : 3 ≤ n) :
-    IsConstructibleNgon n ↔ TotientIsPow2 n := by
-  -- Step 1: IsConstructibleNgon n ↔ IsConstructibleFromQ (cos(2π/n))
-  -- (by definition, these are literally the same Prop)
-  show (∃ (K : IntermediateField ℚ ℝ),
-    FiniteDimensional ℚ K ∧
-    (∃ k : ℕ, Module.finrank ℚ K = 2 ^ k) ∧
-    Real.cos (2 * Real.pi / n) ∈ K) ↔ _
-  -- Step 2: Apply Wantzel-Galois characterization
-  have hint := cos_2pi_div_n_isIntegral n (by omega)
-  rw [show (∃ (K : IntermediateField ℚ ℝ), FiniteDimensional ℚ K ∧
-    (∃ k, Module.finrank ℚ K = 2 ^ k) ∧ Real.cos (2 * Real.pi / ↑n) ∈ K) =
-    IsConstructibleFromQ (Real.cos (2 * Real.pi / ↑n)) from rfl,
-    wantzel_galois_characterization _ hint]
-  -- Step 3: IsPGroup 2 Gal ↔ ∃ k, card Gal = 2^k
-  rw [IsPGroup.iff_card]
-  -- Step 4: card Gal = φ(n)/2 (by cos_minpoly_gal_card)
-  constructor
-  · rintro ⟨k, hk⟩
-    rw [Nat.card_eq_fintype_card, cos_minpoly_gal_card n hn] at hk
-    exact (totient_div2_pow2_iff hn).mp ⟨k, hk⟩
-  · intro htot
-    obtain ⟨k, hk⟩ := (totient_div2_pow2_iff hn).mpr htot
-    exact ⟨k, by rw [Nat.card_eq_fintype_card, cos_minpoly_gal_card n hn]; exact hk⟩
-
 /-!
 ## Section XV: Cyclotomic-Cosine Bridge
 
@@ -732,7 +722,7 @@ Key results:
 
 These facts, combined with the tower law
   φ(n) = [ℚ(ζ_n):ℚ] = [ℚ(ζ_n):ℚ(cos(2π/n))] · [ℚ(cos(2π/n)):ℚ] = 2 · deg(minpoly)
-establish deg(minpoly(cos(2π/n))) = φ(n)/2, the key computation for cos_minpoly_gal_card.
+establish deg(minpoly(cos(2π/n))) = φ(n)/2 (now proved in OQ02OQ03OQ01).
 -/
 
 /-- ζ_n = exp(2πi/n), the primitive nth root of unity. -/
@@ -1195,44 +1185,17 @@ theorem zeta_pow_not_real (n k : ℕ) (hn : 3 ≤ n) (hk0 : 0 < k)
 48. `zeta_pow_sub_eq_conj`: ζ^(n-k) = conj(ζ^k)
 49. `zeta_pow_not_real`: ζ^k ∉ ℝ for 0 < k < n/2
 
-### Axiomatized (2 axioms + 1 redundant):
-- `gauss_wantzel_theorem`: n-gon constructible ↔ φ(n) = 2^k
-  (REDUNDANT — proved as `gauss_wantzel_theorem'` from decomposed axioms)
-- `cos_minpoly_gal_card`: |Gal(minpoly(cos(2π/n)))| = φ(n)/2
-  (requires maximal real subfield theory; see Section XIV-B and XV proof roadmap)
-- `wantzel_galois_characterization`: constructible ↔ 2-group Galois (from OQ02)
-
-### Progress toward eliminating cos_minpoly_gal_card:
-- ✅ cos(2kπ/n) = T_k(cos(2π/n)) — Chebyshev conjugate identity (proved)
-- ✅ cos(2kπ/n) ∈ ℚ[cos(2π/n)] — all conjugates in adjoin (proved)
-- ✅ minpoly | T_n - 1 — divisibility by Chebyshev (proved)
-- ✅ ζ_n satisfies X²-2cos(2π/n)X+1=0 — cyclotomic quadratic (proved, Session 2)
-- ✅ ζ_n ∉ ℝ for n ≥ 3 — quadratic irreducible over ℝ (proved, Session 2)
-- ✅ ζ⁻¹ = conj(ζ) and cos = (ζ+ζ̄)/2 — bridge identities (proved, Session 2)
-- ✅ ζ_n^n = 1 — primitive root of unity (proved, Session 3)
-- ✅ minpoly is separable — char 0 (proved, Session 3)
-- ✅ cos/sin = Re/Im of ζ^k — power root bridge (proved, Session 3)
-- ✅ natDegree(Φ_n) = φ(n) — cyclotomic degree (Mathlib, Session 3)
-- ✅ IsPrimitiveRoot ζ_n n — connects to Mathlib (proved, Session 4)
-- ✅ ζ_n root of Φ_n — cyclotomic root (proved, Session 4)
-- ✅ ζ^(n-k) = conj(ζ^k) — conjugate pairing (proved, Session 4)
-- ✅ ζ^k ∉ ℝ for 0 < k < n/2 — imaginary part nonzero (proved, Session 4)
-- ✅ ζ_n integral over ℚ — root of X^n - 1 (proved, Session 7)
-- ✅ minpoly ℚ ζ_n = Φ_n — via IsPrimitiveRoot (proved, Session 7)
-- ✅ finrank ℚ ℚ(ζ_n) = φ(n) — via IntermediateField.adjoin.finrank (proved, Session 7)
-- ✅ cos(2π/n) ∈ ℚ(ζ_n) — cos = (ζ + ζ⁻¹)/2 (proved, Session 7)
-- ✅ ℚ(cos) ≤ ℚ(ζ_n) — adjoin monotonicity (proved, Session 7)
-- ✅ minpoly invariance ℝ↔ℂ — via algHom_eq (proved, Session 7)
-- ❌ [ℚ(ζ_n):ℚ(cos)] = 2 — needs: ζ satisfies irreducible quadratic over ℚ(cos) ⊂ ℝ
-- ❌ Tower law assembly — finrank ℚ F * finrank F E = finrank ℚ E
-- ❌ natDegree(minpoly) = φ(n)/2 — final assembly from tower law
+### Axiomatized: NONE (all axioms eliminated)
+- `gauss_wantzel_theorem`: ✅ PROVED via degree theory from OQ02OQ03OQ01
+- `cos_minpoly_gal_card`: ✅ ELIMINATED (bypassed by direct degree argument)
+- `wantzel_galois_characterization`: ✅ ELIMINATED (bypassed by direct degree argument)
 -/
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
 Section XVIII: ROOT CHARACTERIZATION FOR T_n - 1
 
-Key building blocks toward proving cos_minpoly_gal_card:
+Root characterization infrastructure (retained for mathematical completeness):
 - Characterize when cos(2kπ/n) = cos(2jπ/n) (cosine equality criterion)
 - Count distinct values in {cos(2kπ/n) : gcd(k,n) = 1}
 - Show these are exactly the Galois conjugates of cos(2π/n)
@@ -1412,7 +1375,131 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
     Finset.card (Finset.image (fun k => Real.cos (2 * ↑k * Real.pi / ↑n))
       (Finset.filter (fun k => Nat.Coprime k n) (Finset.range n))) =
     Nat.totient n / 2 := by
-  sorry -- Counting argument using cos_complement_eq + coprime pairing
+  -- Let S = coprime residues mod n, f = cos(2kπ/n)
+  set S := Finset.filter (fun k => Nat.Coprime k n) (Finset.range n) with hS_def
+  set f := fun k : ℕ => Real.cos (2 * ↑k * Real.pi / ↑n) with hf_def
+  -- "Lower half": coprime residues with 2k < n
+  set S₁ := S.filter (fun k => 2 * k < n) with hS₁_def
+  -- Step 1: S₁ has cardinality totient(n) / 2
+  -- The involution σ(k) = n - k maps S₁ ↔ S₂ := S.filter (fun k => 2k > n)
+  -- with no fixed points (coprime_ne_sub_self ensures 2k ≠ n)
+  have hS_card : S.card = Nat.totient n := by
+    rw [hS_def]
+    -- totient n = (range n).filter (n.Coprime ·)|.card, but our filter uses (k.Coprime n)
+    -- These are equal since Nat.Coprime is symmetric (Nat.gcd is commutative)
+    have : S = (Finset.range n).filter (fun k => n.Coprime k) := by
+      ext k; simp only [Finset.mem_filter, hS_def]
+      exact ⟨fun ⟨h1, h2⟩ => ⟨h1, h2.symm⟩, fun ⟨h1, h2⟩ => ⟨h1, h2.symm⟩⟩
+    rw [this]; rfl
+  -- Step 2: image(f, S) = image(f, S₁)
+  -- Because for k ∈ S with 2k ≥ n, n-k ∈ S₁ and f(k) = f(n-k)
+  have himg : S.image f = S₁.image f := by
+    ext x; simp only [Finset.mem_image]; constructor
+    · rintro ⟨k, hk, rfl⟩
+      by_cases h2k : 2 * k < n
+      · exact ⟨k, Finset.mem_filter.mpr ⟨hk, h2k⟩, rfl⟩
+      · -- k ∈ S but 2k ≥ n, so use n - k ∈ S₁ instead
+        have hk_mem := Finset.mem_filter.mp hk
+        have hk_range := Finset.mem_range.mp hk_mem.1
+        have hk_cop := hk_mem.2
+        have hk_pos : 0 < k := coprime_pos_of_ge_three hn hk
+        -- n - k is coprime and in range
+        have hnk_cop := coprime_sub_self (by omega) hk_cop
+        have hnk_pos : 0 < n - k := by omega
+        have hnk_lt : n - k < n := by omega
+        have hnk_half : 2 * (n - k) < n := by omega
+        have hnk_mem : n - k ∈ S₁ := by
+          rw [hS₁_def]; simp only [Finset.mem_filter, Finset.mem_range]
+          exact ⟨⟨⟨hnk_lt, hnk_cop⟩, hnk_half⟩⟩
+        exact ⟨n - k, hnk_mem, (cos_complement_eq n (by omega) k hk_range).symm⟩
+    · rintro ⟨k, hk, rfl⟩
+      exact ⟨k, Finset.filter_subset _ _ hk, rfl⟩
+  -- Step 3: f is injective on S₁
+  -- For k, j ∈ S₁ with 2k < n and 2j < n: f(k) = f(j) → k = j
+  have hinj : Set.InjOn f ↑S₁ := by
+    intro k hk j hj hfkj
+    have hk_mem := Finset.mem_coe.mp hk
+    have hj_mem := Finset.mem_coe.mp hj
+    rw [hS₁_def] at hk_mem hj_mem
+    have hk_filt := (Finset.mem_filter.mp hk_mem).1
+    have hk_half := (Finset.mem_filter.mp hk_mem).2
+    have hj_filt := (Finset.mem_filter.mp hj_mem).1
+    have hj_half := (Finset.mem_filter.mp hj_mem).2
+    have hk_range := Finset.mem_range.mp (Finset.mem_filter.mp hk_filt).1
+    have hj_range := Finset.mem_range.mp (Finset.mem_filter.mp hj_filt).1
+    -- Use cos_2kpi_div_n_eq_iff to get k%n = j%n ∨ k%n = (n-j%n)%n
+    rw [hf_def] at hfkj
+    rw [cos_2kpi_div_n_eq_iff n (by omega) k j] at hfkj
+    simp only [Nat.mod_eq_of_lt hk_range, Nat.mod_eq_of_lt hj_range] at hfkj
+    rcases hfkj with h | h
+    · exact h
+    · -- k = (n - j) % n with j < n means k = n - j
+      rw [Nat.mod_eq_of_lt (by omega : n - j < n)] at h
+      -- But 2k < n and 2j < n, so k + j < n, contradicting k = n - j (k + j = n)
+      omega
+  -- Step 4: Combine
+  rw [himg, Finset.card_image_of_injOn hinj]
+  -- Need: S₁.card = totient(n) / 2
+  -- S₁ and S₂ partition S (no coprime k has 2k = n since gcd(n/2,n) ≥ 2)
+  -- The involution k → n-k bijects S₁ to S₂, so |S₁| = |S₂| = |S|/2
+  have hno_mid : ∀ k ∈ S, 2 * k ≠ n := by
+    intro k hk h2k
+    have hk_cop := (Finset.mem_filter.mp hk).2
+    have : k ∣ n := ⟨2, by omega⟩
+    have := Nat.le_of_dvd (by omega) (Nat.dvd_gcd (dvd_refl k) this)
+    rw [hk_cop] at this; omega
+  -- S₂ = S.filter (fun k => n < 2 * k)
+  set S₂ := S.filter (fun k => n < 2 * k) with hS₂_def
+  -- S = S₁ ∪ S₂ disjointly (since no coprime k has 2k = n)
+  have hpart : S = S₁ ∪ S₂ := by
+    ext k; simp only [Finset.mem_union, hS₁_def, hS₂_def,
+      Finset.mem_filter]
+    constructor
+    · intro hk; by_cases h : 2 * k < n
+      · left; exact ⟨hk, h⟩
+      · right; exact ⟨hk, by omega⟩
+    · rintro (⟨hk, _⟩ | ⟨hk, _⟩) <;> exact hk
+  have hdisj : Disjoint S₁ S₂ := by
+    rw [Finset.disjoint_filter]
+    intro k _ h1 h2; omega
+  -- The involution σ(k) = n - k maps S₁ → S₂ injectively
+  have hσ_inj : Set.InjOn (fun k => n - k) ↑S₁ := by
+    intro a ha b hb hab
+    have ha' := Finset.mem_coe.mp ha
+    have hb' := Finset.mem_coe.mp hb
+    omega
+  have hσ_maps : ∀ k ∈ S₁, n - k ∈ S₂ := by
+    intro k hk
+    rw [hS₁_def] at hk
+    have hk_S := (Finset.mem_filter.mp hk).1
+    have hk_half := (Finset.mem_filter.mp hk).2
+    have hk_cop := (Finset.mem_filter.mp hk_S).2
+    have hk_range := Finset.mem_range.mp (Finset.mem_filter.mp hk_S).1
+    have hk_pos := coprime_pos_of_ge_three hn hk_S
+    rw [hS₂_def]; simp only [Finset.mem_filter, Finset.mem_range, hS_def]
+    exact ⟨⟨⟨by omega, coprime_sub_self (by omega) hk_cop⟩, by omega⟩⟩
+  -- σ maps S₂ → S₁ injectively (inverse)
+  have hσ_inv : ∀ k ∈ S₂, n - k ∈ S₁ := by
+    intro k hk
+    rw [hS₂_def] at hk
+    have hk_S := (Finset.mem_filter.mp hk).1
+    have hk_half := (Finset.mem_filter.mp hk).2
+    have hk_cop := (Finset.mem_filter.mp hk_S).2
+    have hk_range := Finset.mem_range.mp (Finset.mem_filter.mp hk_S).1
+    rw [hS₁_def]; simp only [Finset.mem_filter, Finset.mem_range, hS_def]
+    exact ⟨⟨⟨by omega, coprime_sub_self (by omega) hk_cop⟩, by omega⟩⟩
+  -- |S₁| = |S₂| via the bijection
+  have hcard_eq : S₁.card = S₂.card := by
+    apply le_antisymm
+    · exact Finset.card_le_card_of_injOn (fun k => n - k) hσ_maps
+        (fun a ha b hb hab => by omega)
+    · exact Finset.card_le_card_of_injOn (fun k => n - k) hσ_inv
+        (fun a ha b hb hab => by omega)
+  -- |S| = |S₁| + |S₂| = 2 * |S₁|
+  have hS_split : S.card = S₁.card + S₂.card := by
+    rw [hpart]; exact Finset.card_union_of_disjoint hdisj
+  rw [hS_card] at hS_split
+  omega
 
 /-- Every root of T_n - 1 in ℝ is of the form cos(2kπ/n) for some k.
     Proof: T_n(x) = cos(n·arccos(x)) for |x| ≤ 1. T_n(x) = 1 iff
@@ -1549,7 +1636,7 @@ set_option maxHeartbeats 800000 in
     a quadratic X² - 2cos·X + 1 over it (irreducible since ζ ∉ ℝ).
     Tower: φ(n) = [ℚ(ζ):ℚ] = [ℚ(ζ):ℚ(cos)] · [ℚ(cos):ℚ] = 2 · natDegree(minpoly).
 
-    This theorem, combined with IsGalois.card_aut_eq_finrank, yields cos_minpoly_gal_card. -/
+    This is now also proved independently in OQ02OQ03OQ01 via the fixed field approach. -/
 theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
     (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).natDegree = Nat.totient n / 2 := by
   -- The key idea: work in ℂ with intermediate fields ℚ ⊂ ℚ(cos) ⊂ ℚ(ζ_n)

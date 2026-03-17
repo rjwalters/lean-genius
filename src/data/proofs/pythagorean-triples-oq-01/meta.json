@@ -41,79 +41,136 @@
     "relatedProblems": [
       {
         "id": "pythagorean-triples",
-        "relationship": "Root: Pythagorean triples formalization"
+        "relationship": "Root: Pythagorean triples formalization (Euclid's parametrization)"
+      },
+      {
+        "id": "pythagorean-theorem",
+        "relationship": "Foundation: the Pythagorean theorem $a^2 + b^2 = c^2$ underlying all triples"
+      },
+      {
+        "id": "basel-problem",
+        "relationship": "The coprime density $6/\\pi^2 = 1/\\zeta(2)$ connects directly to the Basel problem $\\sum 1/k^2 = \\pi^2/6$"
+      },
+      {
+        "id": "euler-totient",
+        "relationship": "Euler's totient function $\\varphi(m)$ counts coprime residues, central to the row-level parity analysis"
+      },
+      {
+        "id": "infinitude-primes",
+        "relationship": "The coprime density relies on the distribution of primes via M\u00f6bius inversion"
+      },
+      {
+        "id": "chinese-remainder-non-coprime",
+        "relationship": "CRT structure underlies the independence of coprime conditions modulo different primes"
       }
     ]
   },
   "overview": {
-    "historicalContext": "**Density of Primitive Pythagorean Triples**\n\nA primitive Pythagorean triple (a,b,c) with a\u00b2+b\u00b2=c\u00b2 and gcd(a,b,c)=1 corresponds to a unique pair (m,n) with m>n>0, gcd(m,n)=1, m\u2262n (mod 2), via a=m\u00b2-n\u00b2, b=2mn, c=m\u00b2+n\u00b2. The density N/(2\u03c0) was known classically but not previously formalized in Lean.",
+    "historicalContext": "**Density of Primitive Pythagorean Triples**\n\nPythagorean triples have been studied since Babylonian times (the tablet Plimpton 322, c. 1800 BCE, lists 15 triples). Euclid gave the first complete parametrization in Book X of the *Elements*: every primitive triple $(a,b,c)$ with $a^2+b^2=c^2$ and $\\gcd(a,b,c)=1$ corresponds to a unique pair $(m,n)$ with $m>n>0$, $\\gcd(m,n)=1$, $m \\not\\equiv n \\pmod{2}$, via $a=m^2-n^2$, $b=2mn$, $c=m^2+n^2$.\n\nThe asymptotic density question\u2014how many primitive triples have hypotenuse $c \\le N$?\u2014was answered by D. N. Lehmer in 1900 and refined by subsequent work connecting it to the Gauss circle problem and the density of coprime integers. The result $N/(2\\pi)$ combines three classical facts: lattice point counting in circular sectors (Gauss, 1801), the probability $6/\\pi^2$ that two random integers are coprime (Euler/Ces\u00e0ro, 1883), and the parity structure of coprime pairs. This formalization appears to be the first mechanized proof of this density result.",
     "problemStatement": "**Theorem**: lim_{N\u2192\u221e} primitiveTripleCount(N) \u00b7 (2\u03c0)/N = 1. That is, the number of primitive Pythagorean triples with hypotenuse \u2264 N grows as N/(2\u03c0).",
     "proofStrategy": "The proof decomposes into three factors:\n\n1. **Sector area** (Part VIII-B, axiom): The quarter-disk sector {(x,y): 0<y<x, x\u00b2+y\u00b2\u2264N} contains ~\u03c0N/8 lattice points\n2. **Coprime density** (Part VIII-B, axiom): Among lattice points in the sector, ~6/\u03c0\u00b2 fraction are coprime\n3. **Parity correction** (Part VIII-B, axiom + Parts XIII-XIX): Among coprime pairs, 2/3 have opposite parity (m\u2262n mod 2)\n\nProduct: \u03c0N/8 \u00d7 6/\u03c0\u00b2 \u00d7 2/3 = N/(2\u03c0)",
     "keyInsights": [
-      "The parity involution (m,n) \u2194 (m, m-n) preserves coprimality and swaps EO\u2194OO parity classes",
-      "The three factors are independent: geometry (sector area), number theory (coprime density), and combinatorics (parity)",
-      "The 2/3 parity fraction follows from showing the OO (both-odd) class is exactly 1/3 of coprime pairs",
-      "Column-level analysis decomposes the global parity result into per-column identities"
+      "The three-factor decomposition $\\pi N/8 \\times 6/\\pi^2 \\times 2/3 = N/(2\\pi)$ cleanly separates geometry (lattice counting), number theory (coprime density via $\\zeta(2)$), and combinatorics (parity sieving) into independent ingredients",
+      "The parity involution $(m,n) \\mapsto (m, m-n)$ preserves coprimality and swaps EO$\\leftrightarrow$OO classes, giving an exact bijection rather than just an asymptotic estimate",
+      "The 2/3 parity fraction is reduced to the cleaner statement that bothOdd/coprime $\\to$ 1/3 via the algebraic identity $2/3 = 1 - 1/3$, avoiding direct computation with two parity classes",
+      "The proof uses telescoping ratios $\\text{count}/N = (\\text{count}/\\text{coprime}) \\cdot (\\text{coprime}/\\text{sector}) \\cdot (\\text{sector}/N)$ and the continuity of multiplication for filters to compose the three limits",
+      "Row-level analysis reveals a structural dichotomy: for even $m$, all coprime pairs are EO; for odd $m \\ge 3$, the involution gives exact OE = OO equality per row"
     ]
   },
   "sections": [
     {
       "id": "counting-functions",
       "title": "Parts I-II: Counting Functions and Parametrization",
-      "summary": "Defines primitiveTripleCount, sectorPointCount, coprimeInSectorCount. Connects to Mathlib's PythagoreanTriple parametrization.",
+      "summary": "Defines primitiveTripleCount, tripleDensityConstant, and connects to Mathlib's PythagoreanTriple parametrization. Establishes the bijection between primitive triples and valid parameter pairs.",
       "startLine": 69,
       "endLine": 110
     },
     {
       "id": "parity-density",
       "title": "Parts III-IV: Parity Analysis and Density Algebra",
-      "summary": "Decomposes coprime pairs into even-odd (EO), odd-even (OE), and odd-odd (OO) classes. Derives the N/(2\u03c0) formula from three factors.",
+      "summary": "Proves coprime pairs cannot be both-even. Classifies into three parity classes (EO, OE, OO). Verifies the algebraic identity $\\pi/8 \\times 6/\\pi^2 \\times 2/3 = 1/(2\\pi)$ and shows the density constant is positive.",
       "startLine": 111,
       "endLine": 183
     },
     {
       "id": "verification",
       "title": "Part V: Computational Verification",
-      "summary": "Verifies the counting functions for small values (N = 0, 4, 5, 13, 25, 50) via native_decide.",
+      "summary": "Verifies primitiveTripleCount for N = 0, 4, 5, 13, 25, 50, 100 via native_decide. Confirms values track the predicted $N/(2\\pi) \\approx 0.159N$.",
       "startLine": 184,
       "endLine": 221
     },
     {
+      "id": "monotonicity-intermediates",
+      "title": "Parts VI-VII: Monotonicity and Intermediate Counting Functions",
+      "summary": "Proves primitiveTripleCount is monotone. Introduces sectorPointCount and coprimeInSectorCount as intermediate sieving steps, with ordering lemmas (primitive $\\le$ coprime $\\le$ sector) and growth results showing coprimeInSectorCount $\\to \\infty$.",
+      "startLine": 222,
+      "endLine": 375
+    },
+    {
       "id": "partition-axioms",
       "title": "Parts VIII-A/B: Parity Partition and Density Axioms",
-      "summary": "Three-way partition of coprime sector into EO+OE+OO. Three axioms: sector point density (\u03c0/8), coprime fraction (6/\u03c0\u00b2), both-odd fraction (1/3).",
+      "summary": "Proves the partition identity coprimeInSector = primitive + bothOdd. States three axioms encoding deep analytic number theory: sector density $\\pi/8$ (Gauss circle problem), coprime fraction $6/\\pi^2$ (M\u00f6bius inversion), bothOdd fraction $1/3$ (parity equidistribution). Shows the 2/3 parity fraction follows from the 1/3 bothOdd axiom.",
       "startLine": 376,
-      "endLine": 543
+      "endLine": 530
     },
     {
       "id": "main-theorems",
-      "title": "Parts IX-X: Main Asymptotic Theorems",
-      "summary": "Derives the main result from the three axioms. Proves primitiveTripleCount(N)/N \u2192 1/(2\u03c0) and consequences.",
-      "startLine": 544,
-      "endLine": 618
+      "title": "Parts IX-X: Main Asymptotic Theorems and Consequences",
+      "summary": "Derives the main result by telescoping three ratio limits: $\\text{count}/N = (\\text{count}/\\text{coprime}) \\cdot (\\text{coprime}/\\text{sector}) \\cdot (\\text{sector}/N) \\to 2/3 \\cdot 6/\\pi^2 \\cdot \\pi/8 = 1/(2\\pi)$. Also proves the equivalent asymptotic form count$(N) \\sim N/(2\\pi)$.",
+      "startLine": 531,
+      "endLine": 622
+    },
+    {
+      "id": "mathlib-connection",
+      "title": "Part XI: Connection to Mathlib's PythagoreanTriple",
+      "summary": "Links the counting function to Mathlib's PythagoreanTriple.IsPrimitiveClassified, confirming the parametrization generates all primitive triples and the counting function counts the correct objects.",
+      "startLine": 606,
+      "endLine": 660
+    },
+    {
+      "id": "parity-counting",
+      "title": "Part XII: Parity Class Counting Functions",
+      "summary": "Defines fine-grained counting functions for each parity class: coprimeEvenOddCount, coprimeOddEvenCount, coprimeOddOddCount. Proves the three-way partition and relates bothOddCoprimeCount to coprimeOddOddCount.",
+      "startLine": 660,
+      "endLine": 814
     },
     {
       "id": "involution",
-      "title": "Parts XIII-XIV: The Parity Involution",
-      "summary": "The key bijection (m,n) \u2194 (m, m-n) preserves coprimality and swaps EO\u2194OO. Proves triangle-level OE=OO equality.",
+      "title": "Parts XIII-XIV: The Parity Involution and Triangle Counting",
+      "summary": "Proves the involution $(m,n) \\mapsto (m, m-n)$ preserves coprimality, swaps EO$\\leftrightarrow$OO, and is an involution. Uses Finset.card_bij to establish exact equality $|\\text{OE}(K)| = |\\text{OO}(K)|$ for all $K$.",
       "startLine": 814,
       "endLine": 930
     },
     {
+      "id": "row-analysis",
+      "title": "Parts XIV-B to XV: Row-Level Parity Decomposition",
+      "summary": "Per-row analysis: for even $m$, all coprime residues are odd (only EO pairs). For odd $m \\ge 3$, the involution bijects even and odd coprime residues, giving exact equality per row.",
+      "startLine": 918,
+      "endLine": 1138
+    },
+    {
       "id": "column-analysis",
       "title": "Parts XVI-XIX: Column Decomposition and Density",
-      "summary": "Per-column involution analysis, sector-triangle boundary analysis, EO coprime density via GCD halving, and column-sum decomposition by m-parity.",
+      "summary": "The deepest technical section. Analyzes EO coprime density via GCD halving ($\\gcd(2k,n)=1$ iff $\\gcd(k,n)=1$ and $n$ odd). Decomposes column sums by $m$-parity and proves the boundary analysis for sector-triangle discrepancy.",
       "startLine": 1138,
       "endLine": 2029
+    },
+    {
+      "id": "final-results",
+      "title": "Part XX: Summary and Final Verification",
+      "summary": "Collects all results and provides a final summary of the 97 theorems, 3 axioms, and 0 sorries. Includes the verification table showing count$(N)$ tracks $N/(2\\pi)$.",
+      "startLine": 2029,
+      "endLine": 2485
     }
   ],
   "conclusion": {
-    "summary": "A thorough formalization of the primitive Pythagorean triple density theorem with 97 theorems, 3 axioms (analytic number theory results), and 0 sorries. The 3 axioms encode deep results from analytic number theory that require sieve methods or complex analysis.",
-    "implications": "**Significance**\n\n1. **First Lean formalization**: The N/(2\u03c0) asymptotic density for primitive Pythagorean triples.\n2. **Clean decomposition**: The three-factor approach separates geometric, number-theoretic, and combinatorial ingredients.\n3. **Involution technique**: The (m,n)\u2194(m,m-n) bijection is a general technique for parity-class counting.\n4. **Extensive verification**: Computational checks confirm the counting functions for small values.",
+    "summary": "A thorough formalization of the primitive Pythagorean triple density theorem, establishing $\\text{primitiveTripleCount}(N)/N \\to 1/(2\\pi)$ via a clean three-factor decomposition. The proof comprises 97 theorems, 3 axioms (encoding deep analytic number theory), and 0 sorries across 2485 lines. The three axioms isolate precisely the analytic content (Gauss circle problem, M\u00f6bius inversion, parity equidistribution) that would require sieve methods or complex analysis to prove formally.",
+    "implications": "**Significance**\n\n1. **First mechanized proof**: This appears to be the first formal verification of the $N/(2\\pi)$ density result for primitive Pythagorean triples in any proof assistant.\n2. **Modular architecture**: The three-factor decomposition into geometry ($\\pi/8$), number theory ($6/\\pi^2$), and combinatorics ($2/3$) makes each component independently verifiable and replaceable.\n3. **Bijective technique**: The parity involution $(m,n) \\mapsto (m, m-n)$ is a general technique applicable to any coprime-parity counting problem, not just Pythagorean triples.\n4. **Computational confidence**: Verification of counting functions for $N = 0, 4, 5, 13, 25, 50, 100$ via native_decide confirms the formalized definitions match the intended mathematical objects.\n5. **Connection to $\\zeta(2)$**: The coprime density factor $6/\\pi^2 = 1/\\zeta(2)$ links this result to the Basel problem, demonstrating how the Riemann zeta function controls the distribution of coprime pairs.",
     "openQuestions": [
-      "Can the sector lattice point density axiom be proved from Gauss circle problem results?",
-      "Can the coprime density 6/\u03c0\u00b2 be proved from Euler product for \u03b6(2)?",
-      "Is the bothOdd fraction 1/3 provable from the involution alone (without the asymptotic axiom)?"
+      "Can the sector lattice point density axiom ($\\pi/8$) be proved from Gauss circle problem results in Mathlib, using the error term $O(\\sqrt{N})$?",
+      "Can the coprime density $6/\\pi^2$ be derived from the Euler product formula for $\\zeta(2)$ once Mathlib has sufficient analytic number theory?",
+      "Is the bothOdd fraction $1/3$ provable purely from the involution technique without the asymptotic axiom, perhaps via a counting argument on Euler's totient function?",
+      "Can the three-factor approach be extended to count representations by other quadratic forms $am^2 + bn^2 \\le N$?"
     ]
   }
 }
