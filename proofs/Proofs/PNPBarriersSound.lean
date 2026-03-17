@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (73 axioms)
+## Axiom Summary (103 axioms, was 104)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -61,7 +61,7 @@ Model limitation (1): L_eq_PSPACE_in_model (L=PSPACE because space bounds not tr
 Quantum (3): BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE
 Quantum results (2): NP_subset_PP, shor_factoring_in_BQP
 Circuit hierarchy (3): NC_k_subset_AC_k, AC_k_subset_TC_k, TC_k_subset_NC_k_succ
-Circuit axioms (4): NC_subset_P, majority_in_TC0_not_AC0, hastad_parity_not_in_AC0, circuit_value_P_complete
+Circuit axioms (3): NC_subset_P, majority_in_TC0_not_AC0, hastad_parity_not_in_AC0
 Algebraic (2): VP_subset_VNP, permanent_VNP_complete
 Derandomization (1): impagliazzo_wigderson (EXP ≠ BPP → BPP = P)
 PCP theorem (3): pcp_theorem_hard, pcp_easy, hastad_max3sat_inapprox
@@ -93,9 +93,14 @@ Now theorems: BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP, factoring_in_PSPAC
 - GapP_closed_subtraction → theorem (trivially True)
 - mcsp_np_hardness_barrier → theorem (follows from razborov_rudich unconditionally)
 Soundness fixes (session 2026-03-17):
-- hastad_max3sat_inapprox → sound replacement (previous version derived False:
-  `¬∃ e, Solves e ∅ MAX3SAT → P ≠ NP → False` is contradicted by Classical.em
-  on Solves + Φ_negate)
+- hastad_max3sat_inapprox → sound replacement `P ≠ NP → MAX3SAT ∉ P`
+  (previous version `¬∃ e, Solves e ∅ MAX3SAT → P ≠ NP → False` derived False
+  via Classical.em on Solves: ¬Solves gives vacuously true implication)
+- circuit_value_P_complete → theorem (derived from hastad_parity_not_in_AC0:
+  any f ∈ P witnesses f ∉ NC → P ≠ NC since NC ⊆ P)
+Known model limitation:
+- NL_subset_P is inconsistent with P_ne_EXP because L=NL=PSPACE=EXP in this
+  model (space bounds not tracked). NL should be made opaque in a future session.
 -/
 
 set_option linter.unusedVariables false
@@ -1199,7 +1204,17 @@ def coNL : Set (ℕ → Bool) :=
 theorem L_subset_NL : L ⊆ NL := by
   intro f ⟨e, h⟩; exact ⟨e, h⟩
 
-/-- NL ⊆ P (from Savitch + simulation). -/
+/-- NL ⊆ P (from Savitch + simulation).
+
+    **WARNING: MODEL INCONSISTENCY** — In this model, L = NL = PSPACE = EXP
+    because space bounds are not tracked (all are `{f | ∃ e, Solves e ∅ f}`
+    up to unused existential quantifiers). This axiom combined with P_ne_EXP
+    is inconsistent: NL = EXP (propositionally) → NL ⊆ P → EXP ⊆ P → P = EXP.
+    The inconsistency is latent (no theorem exercises the contradictory path).
+
+    **Future fix**: Make NL (and L) opaque to prevent NL = EXP collapse,
+    then axiomatize NL ⊆ P and immerman_szelepcsenyi separately.
+    This requires a larger refactor. -/
 axiom NL_subset_P : NL ⊆ P
 
 /-- L ⊆ P (transitivity). -/
@@ -2607,8 +2622,14 @@ theorem TC0_computes_division :
 
 /-- NC vs P: Is NC = P? Equivalently, can every polynomial-time problem
     be efficiently parallelized? The Circuit Value Problem (CVP) is P-complete
-    under logspace reductions, so NC = P ↔ CVP ∈ NC. -/
-axiom circuit_value_P_complete : ∃ f ∈ P, f ∉ NC → P ≠ NC
+    under logspace reductions, so NC = P ↔ CVP ∈ NC.
+
+    **Previously axiom** — now derived from `hastad_parity_not_in_AC0`:
+    any f ∈ P witnesses the implication f ∉ NC → P ≠ NC, since
+    NC ⊆ P means P = NC → f ∈ NC. -/
+theorem circuit_value_P_complete : ∃ f ∈ P, f ∉ NC → P ≠ NC := by
+  obtain ⟨f, hfP, _⟩ := hastad_parity_not_in_AC0
+  exact ⟨f, hfP, fun hfnNC hPNC => hfnNC (hPNC ▸ hfP)⟩
 
 /-- If NC ≠ P, then P-complete problems exist that are inherently sequential. -/
 theorem NC_ne_P_implies_sequential_problems :
@@ -3027,15 +3048,22 @@ opaque MAX3SAT : ℕ → Bool
     Note: A random assignment satisfies 7/8 of all clauses in expectation,
     so 7/8 is achievable. This shows randomness is essentially optimal.
 
-    This is a direct consequence of the PCP theorem with optimal parameters. -/
-axiom hastad_max3sat_inapprox :
-  ∀ ε : ℝ, ε > 0 → ¬∃ (e : ℕ), Solves e emptyOracle MAX3SAT →
-    P ≠ NP → False
+    This is a direct consequence of the PCP theorem with optimal parameters.
 
-/-- MAX-3SAT inapproximability implies P ≠ NP:
-    If we could approximate MAX-3SAT perfectly in poly time, we'd solve SAT.
-    (Contrapositive: P = NP → everything is efficiently solvable.) -/
-theorem max3sat_separates : True := trivial  -- The real content is in hastad_max3sat_inapprox
+    **Soundness note**: The original formalization used
+    `¬∃ e, Solves e ∅ MAX3SAT → P ≠ NP → False` which derived `False`
+    via `Classical.em (Solves 0 ∅ MAX3SAT)`: the `¬Solves` case gives
+    a vacuously true implication, witnessing the existential and
+    contradicting the `¬∃`. Replaced with a sound conditional statement. -/
+axiom hastad_max3sat_inapprox :
+  P ≠ NP → MAX3SAT ∉ P
+
+/-- MAX-3SAT inapproximability: If P ≠ NP, then MAX3SAT ∉ P.
+    Contrapositive: MAX3SAT ∈ P → P = NP. -/
+theorem max3sat_contrapositive : MAX3SAT ∈ P → P = NP := by
+  intro h
+  by_contra h_neq
+  exact hastad_max3sat_inapprox h_neq h
 
 /-- **The Unique Games Conjecture** (Khot, 2002):
     It is NP-hard to determine if a Unique Games instance has value ≥ 1-ε
@@ -4004,7 +4032,8 @@ theorem grand_landscape :
 #check pcp_theorem                     -- NP = PCP[O(log n), O(1)]
 #check pcp_theorem_hard                -- NP ⊆ PCP[log, O(1)]
 #check pcp_easy                        -- PCP[log, O(1)] ⊆ NP
-#check hastad_max3sat_inapprox         -- MAX-3SAT inapproximability (Håstad 2001)
+#check hastad_max3sat_inapprox         -- P ≠ NP → MAX3SAT ∉ P (Håstad 2001, sound)
+#check max3sat_contrapositive          -- MAX3SAT ∈ P → P = NP (proved)
 #check pcp_algebrizes                  -- PCP algebrizes (meta-mathematical note)
 
 -- ACC⁰ and Williams' NEXP lower bound
