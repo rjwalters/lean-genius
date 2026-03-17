@@ -1828,4 +1828,60 @@ theorem minpoly_cos_natDegree_eq (n : ℕ) (hn : 3 ≤ n) :
     have := h_tower; rw [h_ef_eq] at this; linarith [h_finrank_E]
   omega
 
+/-!
+## Section XXIV: Toward Eliminating cos_minpoly_gal_card
+
+The axiom `cos_minpoly_gal_card` states |Gal(minpoly(cos(2π/n)))| = φ(n)/2.
+The proof strategy reduces this to showing ℚ(cos(2π/n))/ℚ is a normal extension.
+
+**Completed ingredients:**
+1. ✅ `minpoly_cos_natDegree_eq`: natDegree(minpoly ℚ cos) = φ(n)/2
+2. ✅ `chebyshev_T_sub_one_roots`: real roots of T_n - 1 in [-1,1] are cos(2kπ/n)
+3. ✅ `cos_conjugate_mem_adjoin`: cos(2kπ/n) ∈ ℚ[cos(2π/n)] for all k
+4. ✅ `minpoly_cos_dvd_chebyshev`: minpoly | T_n - 1
+
+**Required for completion:**
+- Show all roots of minpoly(ℚ, cos) lie in [-1,1] (hence are real)
+  → Then by (2), they are cos(2kπ/n) → by (3), they are in ℚ(cos)
+  → Then minpoly splits in ℚ(cos) → extension is Normal → Galois
+  → card(Gal) = finrank = natDegree = φ(n)/2
+
+**Key gap**: Showing all roots of an irreducible factor of T_n - 1 lie in [-1,1].
+  This follows from the fact that T_n - 1 has degree n and has n real roots
+  (with multiplicity) in [-1,1], hence no complex roots. The multiplicity
+  counting argument requires showing |{j : cos(2jπ/n) = x}| sums to n.
+-/
+
+/-- Every cos(2kπ/n) for k = 0,...,n-1 is a root of T_n - 1.
+    This is the forward direction of chebyshev_T_sub_one_roots. -/
+theorem cos_is_root_of_T_sub_one (n : ℕ) (hn : 1 ≤ n) (k : ℕ) :
+    Polynomial.aeval (Real.cos (2 * ↑k * Real.pi / ↑n))
+      (Chebyshev.T ℝ (↑n) - Polynomial.C 1) = 0 := by
+  simp only [map_sub, map_one]
+  rw [Chebyshev.aeval_T, Chebyshev.T_real_cos]
+  -- Goal: cos(↑n * (2 * ↑k * π / ↑n)) - 1 = 0
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  -- Simplify ↑n * (2kπ/n) = 2kπ by showing cos of the result equals 1
+  suffices h : Real.cos (↑(↑n : ℤ) * (2 * ↑k * Real.pi / ↑n)) = 1 by linarith
+  -- The argument simplifies to k * 2π
+  conv_lhs => rw [show (↑(↑n : ℤ) : ℝ) * (2 * ↑k * Real.pi / ↑n) =
+    ↑(k : ℤ) * (2 * Real.pi) from by push_cast [Int.cast_natCast]; field_simp]
+  exact Real.cos_int_mul_two_pi k
+
+/-- Every cos(2kπ/n) for k coprime to n is a root of minpoly(ℚ, cos(2π/n)).
+    This follows from: minpoly | T_n - 1, so roots of minpoly are a subset of
+    roots of T_n - 1 in [-1,1], which are {cos(2kπ/n) : k = 0,...,n-1}.
+    The coprimality ensures these are EXACTLY the roots of the irreducible
+    minimal polynomial (via Galois action on cyclotomic fields).
+
+    Note: this is the key step that makes the extension ℚ(cos)/ℚ normal.
+    It requires showing that all algebraic conjugates of cos(2π/n) over ℚ
+    are of the form cos(2kπ/n) with gcd(k,n)=1. -/
+theorem cos_coprime_is_root_of_minpoly (n : ℕ) (hn : 3 ≤ n)
+    (k : ℕ) (hk : k < n) (hc : Nat.Coprime k n) :
+    Polynomial.aeval (Real.cos (2 * ↑k * Real.pi / ↑n))
+      (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))) = 0 := by
+  sorry
+
 end AngleTrisectionOQ02OQ03

@@ -61,6 +61,22 @@ PROVED `galois_conjugate_count` — the LAST sorry in AngleTrisectionOQ02OQ03.le
 
 Gauss-Wantzel Theorem: prove cos_minpoly_gal_card from Mathlib cyclotomic infrastructure.
 
+## Session 2026-03-17 (researcher-2, session 2) - Infrastructure toward cos_minpoly_gal_card
+
+**Mode**: REVISIT (RICH knowledge score 65)
+
+### What we did:
+1. PROVED `cos_is_root_of_T_sub_one`: T_n(cos(2kπ/n)) = 1 for all k
+2. Added `cos_coprime_is_root_of_minpoly` (1 sorry): key step toward elimination
+3. Documented path: cos_coprime → minpoly splits → Normal → Galois → card = natDegree
+
+### Key finding:
+- Mathlib provides: `IsGalois.card_aut_eq_finrank`, `IsGalois.mk` (from Normal + Separable)
+- To prove cos_coprime_is_root_of_minpoly: use cyclotomic σ_k ∈ Gal(ℚ(ζ)/ℚ) mapping cos → cos(2kπ/n)
+- Then: automorphisms preserve minimal polynomials, so cos(2kπ/n) is a root of minpoly(cos)
+
+---
+
 ## Session 2026-03-17 (researcher-2) - galois_conjugate_count Proved
 
 **Mode**: REVISIT (RICH knowledge score 61)
