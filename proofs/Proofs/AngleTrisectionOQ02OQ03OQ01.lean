@@ -113,7 +113,7 @@ theorem conjAut_sq : conjAut n * conjAut n = 1 := by
   have h_neg1 : (u : ZMod n) = -1 := by
     rw [eq_neg_iff_add_eq_zero]
     have h0 : ((ZMod.val (u : ZMod n) + 1 : ℕ) : ZMod n) = 0 :=
-      (ZMod.natCast_zmod_eq_zero_iff_dvd _ _).mpr h_dvd
+      (ZMod.natCast_eq_zero_iff _ _).mpr h_dvd
     rwa [Nat.cast_add, Nat.cast_one, ZMod.natCast_zmod_val] at h0
   ext
   show (u : ZMod n) * (u : ZMod n) = 1
@@ -273,23 +273,22 @@ theorem finrank_over_alphaField (hn : 3 ≤ n) :
   set α := alpha n
   have hζ_ne : ζ ≠ 0 := (abstractZeta_isPrimRoot n).ne_zero (by omega)
   have h_int_ζ : IsIntegral ℚ ζ := Algebra.IsIntegral.isIntegral ζ
-  -- ζ generates CyclotomicField over ℚ (by finrank argument)
+  -- ζ generates CyclotomicField over ℚ (via adjoin_roots: all n-th roots are powers of ζ)
   have h_gen_Q : IntermediateField.adjoin ℚ ({ζ} : Set (CyclotomicField n ℚ)) = ⊤ := by
-    have h_adj_fr := IntermediateField.adjoin.finrank h_int_ζ
-    have h_deg : (minpoly ℚ ζ).natDegree = Nat.totient n := by
-      change (minpoly ℚ (abstractZeta n)).natDegree = _
-      rw [(abstractZeta_isPrimRoot n).minpoly_eq_cyclotomic_of_irreducible
-        (Polynomial.cyclotomic.irreducible_rat (NeZero.pos n))]
-      exact Polynomial.natDegree_cyclotomic n ℚ
-    rw [h_deg] at h_adj_fr
-    have hKQ := cyclotomic_finrank n
-    -- adjoin ℚ {ζ} has finrank φ(n) = finrank K, so adjoin = ⊤
     rw [eq_top_iff]; intro x _
-    -- Use Submodule dimension theory
-    have h_sub_top : (IntermediateField.adjoin ℚ
-        ({ζ} : Set (CyclotomicField n ℚ))).toSubmodule = ⊤ :=
-      Submodule.eq_top_of_finrank_eq (by rw [h_adj_fr, hKQ])
-    exact h_sub_top ▸ Submodule.mem_top
+    apply IntermediateField.algebra_adjoin_le_adjoin ℚ ({ζ} : Set _)
+    have hζ_prim := abstractZeta_isPrimRoot n
+    have hx_in := IsCyclotomicExtension.adjoin_roots (S := {n}) (A := ℚ)
+      (B := CyclotomicField n ℚ) x
+    have h_le : Algebra.adjoin ℚ {b : CyclotomicField n ℚ |
+        ∃ n₁ ∈ ({n} : Set ℕ), n₁ ≠ 0 ∧ b ^ n₁ = 1} ≤
+        Algebra.adjoin ℚ ({ζ} : Set (CyclotomicField n ℚ)) := by
+      apply Algebra.adjoin_le
+      rintro b ⟨m, hm_mem, -, hb_pow⟩
+      simp only [Set.mem_singleton_iff] at hm_mem; subst hm_mem
+      obtain ⟨k, -, rfl⟩ := hζ_prim.eq_pow_of_pow_eq_one hb_pow
+      exact Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_singleton ζ)) k
+    exact h_le hx_in
   -- ζ generates K over F
   have h_gen_F : IntermediateField.adjoin (↥F)
       ({ζ} : Set (CyclotomicField n ℚ)) = ⊤ :=
