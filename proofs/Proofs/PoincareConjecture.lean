@@ -4485,6 +4485,31 @@ theorem cyclic_action_free (p : ℕ) (hp : p ≥ 2) (q : ℤ) :
     Real.cos (lensAngle1 p) ≠ 1 ∨ p ≥ 2 :=
   Or.inl (ne_of_lt (cos_lensAngle1_lt_one p hp))
 
+/-- The second angle for L(2,1) is also π: lensAngle2 2 1 = π. -/
+theorem lens_L21_angle2 : lensAngle2 2 1 = Real.pi := by
+  unfold lensAngle2; push_cast; ring
+
+/-- The L(2,1) cyclic rotation IS the antipodal map: for p=2, q=1,
+    the rotation sends x ↦ -x (coordinate-wise negation).
+    This connects the cyclic rotation construction of RP³ = L(2,1) = S³/ℤ₂
+    with the quotient construction RP³ = S³/{x ~ -x}. -/
+theorem cyclicRotation_L21_eq_neg (x : EuclideanSpace ℝ (Fin 4)) :
+    cyclicRotation 2 1 x = -x := by
+  ext i
+  show WithLp.equiv 2 (Fin 4 → ℝ) (cyclicRotation 2 1 x) i =
+       WithLp.equiv 2 (Fin 4 → ℝ) (-x) i
+  simp only [cyclicRotation, WithLp.equiv_symm_apply, map_neg, Pi.neg_apply]
+  have hα : lensAngle1 2 = Real.pi := lens_L21_is_antipodal
+  have hβ : lensAngle2 2 1 = Real.pi := lens_L21_angle2
+  rw [hα, hβ, Real.cos_pi, Real.sin_pi]
+  fin_cases i <;> simp [Fin.val] <;> ring
+
+/-- Connecting theorem: cyclicRotation 2 1 = antipodalMap 4 on EuclideanSpace ℝ (Fin 4).
+    The ℤ/2 generator for L(2,1) is exactly the antipodal map. -/
+theorem cyclicRotation_L21_eq_antipodal :
+    cyclicRotation 2 1 = antipodalMap 4 := by
+  ext x; exact cyclicRotation_L21_eq_neg x
+
 /-- Summary: the cyclic group construction gives concrete lens spaces.
     L(1,0) = S³ (trivial action)
     L(2,1) = RP³ (antipodal)
