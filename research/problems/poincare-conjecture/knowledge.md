@@ -469,3 +469,42 @@ New content is structurally clean.
 2. Prove sphere3_simply_connected
 3. Prove sphere3_not_contractible
 4. Continue axiom elimination
+
+## Session 2026-03-17 (researcher-3, Session 2) - Axiom Elimination + Hopf Fiber Proofs
+
+**Mode**: REVISIT (RICH knowledge, depth-first)
+**Problem**: poincare-conjecture
+**Prior Status**: 4658 lines, 49 axioms, 274 theorems
+
+### What we did
+
+1. **Made S¹×S² concrete** (2 axioms eliminated):
+   - `axiom S1_cross_S2 : Type` → `def S1_cross_S2 := ↥Sphere1 × ↥Sphere2`
+   - `axiom instS1S2Top` → `instance instS1S2Top` via `unfold S1_cross_S2; infer_instance`
+
+2. **Proved `ball3_boundary_is_S2`** (1 axiom eliminated):
+   - Trivially satisfiable: witness is `↥Sphere2` with `homeomorphic_refl`
+
+3. **Removed `hopf_fibers_are_circles`** (1 axiom eliminated):
+   - Was unused (no downstream references)
+   - Was mathematically incorrect (quantified over ALL surjections S³→S²)
+
+4. **Added correct Hopf fiber characterizations** (2 new proved theorems):
+   - `northPoleS2`, `southPoleS2`: concrete poles on S²
+   - `hopfMap_fiber_north`: if hopfMap(x) = (1,0,0), then x₂ = x₃ = 0
+   - `hopfMap_fiber_south`: if hopfMap(x) = (-1,0,0), then x₀ = x₁ = 0
+   - Proof pattern: extract coordinates via `congr_arg (· 0)`, combine with
+     `unit_sum_sq'` via `linarith`, conclude with `nlinarith [sq_nonneg ...]`
+
+### Outcome
+- **Lines**: 4658 → 4714 (+56)
+- **Axioms**: 49 → 45 (-4 eliminated)
+- **Theorems**: 274 → 277 (+3 proved: ball3_boundary_is_S2, hopfMap_fiber_north, hopfMap_fiber_south)
+- **Definitions**: +3 (S1_cross_S2, northPoleS2, southPoleS2)
+- **Build**: CLEAN (3175 jobs, warnings only)
+
+### Next steps
+1. Prove sphere3_simply_connected (needs Seifert-van Kampen or cellular approximation)
+2. Prove sphere3_not_contractible (needs homology, degree theory, or Lefschetz)
+3. Prove sphere2_cross_S1_not_simply_connected / torus3_not_simply_connected (need π₁(S¹)≅ℤ)
+4. Continue axiom elimination with concrete constructions
