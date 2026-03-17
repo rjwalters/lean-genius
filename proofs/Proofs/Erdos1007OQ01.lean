@@ -31,7 +31,8 @@ This formalization proves:
 - Verified monotonicity of C(d+1,2) as a building block (§8)
 - Growth rate analysis from known values (§9)
 
-Axiom count: 9 (all for computational search results; dimension bound now proved)
+Axiom count: 9 (all for computational search results; all dimension theorems proved)
+Sorry count: 0
 -/
 
 import Mathlib
@@ -1130,42 +1131,7 @@ private theorem sq_dist_of_sqrt_one {V : Type*} {d : ℕ} {adj : V → V → Pro
     Finset.sum_nonneg fun j _ => sq_nonneg _
   nlinarith [Real.sq_sqrt hS]
 
-/-- Dot product of centered vectors: for unit-distance points,
-    ⟨f(a)-f(c), f(b)-f(c)⟩ = (‖f(a)-f(c)‖² + ‖f(b)-f(c)‖² - ‖f(a)-f(b)‖²) / 2. -/
-private theorem centered_dot_product {n d : ℕ} (emb : UnitDistanceEmbedding' (Fin n) (fun i j => i ≠ j) d)
-    (a b c : Fin n) (hac : a ≠ c) (hbc : b ≠ c) (hab : a ≠ b) :
-    ∑ k : Fin d, (emb.embed a k - emb.embed c k) * (emb.embed b k - emb.embed c k) = 1 / 2 := by
-  -- Polarization: ⟨u,v⟩ = (‖u‖² + ‖v‖² - ‖u-v‖²) / 2
-  have hac_sq := unit_embed_dist_sq emb a c hac
-  have hbc_sq := unit_embed_dist_sq emb b c hbc
-  have hab_sq := unit_embed_dist_sq emb a b hab
-  -- (a-c) - (b-c) = a - b, so ‖(a-c)-(b-c)‖² = ‖a-b‖² = 1
-  have key : ∑ k : Fin d, ((emb.embed a k - emb.embed c k) -
-      (emb.embed b k - emb.embed c k)) ^ 2 = 1 := by
-    convert hab_sq using 1
-    apply Finset.sum_congr rfl; intro k _; ring
-  -- Expand ‖u - v‖² = ‖u‖² + ‖v‖² - 2⟨u,v⟩
-  have expand : ∀ k : Fin d,
-      ((emb.embed a k - emb.embed c k) - (emb.embed b k - emb.embed c k)) ^ 2 =
-      (emb.embed a k - emb.embed c k) ^ 2 + (emb.embed b k - emb.embed c k) ^ 2 -
-      2 * ((emb.embed a k - emb.embed c k) * (emb.embed b k - emb.embed c k)) := by
-    intro k; ring
-  rw [show (∑ k, ((emb.embed a k - emb.embed c k) -
-      (emb.embed b k - emb.embed c k)) ^ 2) =
-      ∑ k, ((emb.embed a k - emb.embed c k) ^ 2 + (emb.embed b k - emb.embed c k) ^ 2 -
-      2 * ((emb.embed a k - emb.embed c k) * (emb.embed b k - emb.embed c k)))
-    from Finset.sum_congr rfl (fun k _ => expand k)] at key
-  rw [Finset.sum_sub_distrib, Finset.sum_add_distrib] at key
-  rw [← Finset.mul_sum] at key
-  linarith
-
-/-- Dot product of centered vectors: diagonal case (same vector), ‖w(i)‖² = 1. -/
-private theorem centered_dot_product_diag {n d : ℕ} (emb : UnitDistanceEmbedding' (Fin n) (fun i j => i ≠ j) d)
-    (a c : Fin n) (hac : a ≠ c) :
-    ∑ k : Fin d, (emb.embed a k - emb.embed c k) ^ 2 = 1 :=
-  unit_embed_dist_sq emb a c hac
-
-/-- **Lower bound**: dim(K_n) ≥ n-1 for n ≥ 2.
+/-- **General lower bound**: Any unit-distance embedding of K_n in ℝ^d requires d ≥ n-1.
 
     Proved via linear independence of centered unit-distance vectors.
     Given n points in ℝ^d with pairwise distance 1, the n-1 vectors
@@ -1174,13 +1140,9 @@ private theorem centered_dot_product_diag {n d : ℕ} (emb : UnitDistanceEmbeddi
     (S = sum of coefficients) for any vanishing combination ∑ g_i w_i = 0.
     Hence g_p = -S for all p, giving (1+|s|)·S = 0, so S = 0 and all g_p = 0.
     Linear independence of n-1 vectors in ℝ^d forces d ≥ n-1. -/
-open Classical in
-theorem complete_graph_dim_ge_tight (n : ℕ) (hn : 2 ≤ n) :
-    n - 1 ≤ graphDimension' (Fin n) (fun i j => i ≠ j) (fun x h => h rfl) := by
-  -- Any unit-distance embedding of K_n requires at least n-1 dimensions
-  suffices h : ∀ d, hasUnitEmbedding' (Fin n) (fun i j => i ≠ j) d → n - 1 ≤ d by
-    exact h _ (Nat.find_spec _)
-  intro d ⟨emb⟩
+theorem unit_embedding_dim_lower_bound (n d : ℕ) (hn : 2 ≤ n)
+    (h : hasUnitEmbedding' (Fin n) (fun i j => i ≠ j) d) : n - 1 ≤ d := by
+  obtain ⟨emb⟩ := h
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 2 := ⟨n - 2, by omega⟩
   show m + 1 ≤ d
   let g : Fin (m + 1) → (Fin d → ℝ) := fun i j =>
@@ -1266,12 +1228,16 @@ theorem complete_graph_dim_exact (n : ℕ) (hn : 2 ≤ n) :
     graphDimension' (Fin n) (fun i j => i ≠ j) (fun x h => h rfl) = n - 1 :=
   le_antisymm (complete_graph_dim_le_tight n hn) (complete_graph_dim_ge_tight n hn)
 
-/-- **Upper bound on minEdges via exact dimension**: Since dim(K_{d+1}) = d,
-    the complete graph K_{d+1} witnesses minEdges(d) ≤ C(d+1, 2).
-    This confirms the axiom minEdges_upper_bound from first principles. -/
-theorem upper_bound_from_exact_dim (d : ℕ) (hd : 1 ≤ d) :
-    -- K_{d+1} has dimension d and C(d+1,2) edges
-    True := trivial
+/-- **K_{d+1} witnesses dimension d**: The complete graph on d+1 vertices has
+    dimension exactly d. Since K_{d+1} has C(d+1,2) edges, any consistent
+    definition of minEdgesForDim must satisfy minEdgesForDim(d) ≤ C(d+1,2). -/
+open Classical in
+theorem complete_graph_witnesses_dim (d : ℕ) (hd : 1 ≤ d) :
+    graphDimension' (Fin (d + 1)) (fun i j => i ≠ j) (fun x h => h rfl) = d := by
+  have h2 : 2 ≤ d + 1 := by omega
+  have := complete_graph_dim_exact (d + 1) h2
+  simp only [Nat.add_sub_cancel] at this
+  exact this
 
 -- ============================================================================
 -- § 21. Summary of Dimension Bounds (Final)
