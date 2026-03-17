@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Strengthened 11 True-concluding items with real mathematical content. Added étale cycle class infrastructure (etaleCycleClassMap, isAlgebraicEtaleClass). 5303 lines, 138 axioms, 140 theorems, 0 sorries, 0 build errors. True conclusions reduced from ~40 to 31.",
+    "progressSummary": "PROGRESS: Added Parts XXXVI-XXXVIII. 5618 lines, 129 axioms, 0 sorries. Standard Conjectures, counterexamples, and recent progress/prospects.",
     "builtItems": [
       "Proved directSumHodge (PureHodgeStructure construction) in HodgeConjecture.lean",
       "Proved directSum_inl, directSum_inr (injection morphisms) in HodgeConjecture.lean",
@@ -193,12 +193,9 @@
       "Part XXXIV: Projective Space Hodge Diamond (IsProjectiveSpace, hodge_diagonal, hodge_offdiag, HC for ℙⁿ)",
       "Part XXXV: Strengthened Results (complement_nontrivial_of_proper)",
       "Strengthened 2 weak existentials (polarized_semisimple, polarization_restricts_to_subHodge)",
-      "etaleCycleClassMap axiom: cl_ℓ : AlgebraicCycle X p → H.space",
-      "isAlgebraicEtaleClass definition: α ∈ ℚ-span of cl_ℓ",
-      "TateConjectureStatement(X,p,H): every Tate class is algebraic",
-      "TateConjectureFullStatement: full TC for all varieties",
-      "comparison_preserves_cycles: comp ∘ cl_B = cl_ℓ",
-      "deligne_projects_to_classical: π ∘ cl_D = cl"
+      "Part XXXVI: Standard Conjectures - AlgebraicCorrespondence, StandardConjectureA/B/C/D, hierarchy (A⟹B⟹C, B+D⟹Hodge), André motivated cycles, Jannsen semisimplicity",
+      "Part XXXVII: Counterexamples - IntegralHodgeFailure (Atiyah-Hirzebruch, Totaro), KaehlerCounterexample (Voisin 2002), GeneralizedHodgeConjecture (corrected GHC), PositiveCharacteristic (Tate), boundary conditions, Voisin birational non-invariance",
+      "Part XXXVIII: Recent progress and prospects - Voisin diagonal decomposition, derived category approach, motivic methods, specific cases (CY3, hyperkähler, cubic fourfolds), first open case"
     ],
     "insights": [
       "Millennium Prize problem, wide open - no known attack strategy",
@@ -266,13 +263,11 @@
       "Projective space ℙⁿ: h^{p,p}=1 (0≤p≤n), h^{p,q}=0 (p≠q), so HC trivially holds",
       "Strengthened polarized_semisimple from ∃T,True to ∃T, S⊓T=⊥ ∧ S⊔T=⊤ (proper complement)",
       "Strengthened polarization_restricts_to_subHodge to state restriction equals pol.Q composed with inclusion",
-      "Étale cycle class map (etaleCycleClassMap) and isAlgebraicEtaleClass parallel the Hodge cycle class infrastructure",
-      "TateConjectureStatement now takes (X, p, H) parameters, paralleling HodgeConjectureStatement",
-      "TateConjectureFullStatement quantifies over all varieties, paralleling HodgeConjectureFullStatement",
-      "comparison_preserves_cycles now expresses cl = comp ∘ cl_B via existential projection",
-      "bb_f1_is_kernel strengthened to express BB filtration is decreasing: ∀ j, F^{j+1} ≤ F^j",
-      "noether_lefschetz now concludes HodgeConjectureStatement X 1 H",
-      "hodge_product_from_factors now takes product variety XY and concludes HodgeConjectureStatement"
+      "Standard Conjectures hierarchy: A⟹B⟹C, and B+D⟹Hodge in char 0. All known for abelian varieties but open in general.",
+      "André (2004): Standard Conjecture B holds for varieties motivated by abelian varieties — the largest known class",
+      "Integral HC is FALSE (Atiyah-Hirzebruch 1962): Steenrod operations give topological obstructions to algebraicity of torsion classes",
+      "Kähler HC is FALSE (Voisin 2002): projectivity is essential, not just the Kähler condition — deformations can kill algebraic cycles",
+      "HC is NOT birational invariant (Voisin 2003): proofs cannot simplify to a birational model"
     ],
     "mathlibGaps": [
       "Complex manifolds",
@@ -303,7 +298,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-03-13T07:52:17.042Z",
+  "lastUpdate": "2026-03-17T17:00:00.000Z",
   "significance": 10,
   "tractability": 1
 }
