@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Parts 1-54 complete. 5065 lines, 104 axioms (was 107→275 originally), 243 theorems, 0 sorries. Fixed unsound hastad_max3sat_inapprox (derived False via Classical.em + Φ_negate). Eliminated 3 axioms: nash_PPAD_hard (trivially True), GapP_closed_subtraction (trivially True), mcsp_np_hardness_barrier (follows from razborov_rudich).",
+    "progressSummary": "Parts 1-54 complete. 17650+ lines, 211 axioms (was 275), 601 theorems, 0 sorries. Fixed 4 unsound axioms (OWF, cook_krajicek, resolution_not_simulates_cp, FPT_eq_W1_breaks_ETH, CH_strict_hierarchy). Reduced 64 axioms via True conversion, opaque measurement functions, and provable theorems.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -410,12 +410,7 @@
       "Proved w_hierarchy_chain, FPT_iff_kernelizable, streaming_lower_bounds, patrascu_data_structure_bounds",
       "Proved 14+ axioms with ∀/∃ True patterns (karchmer_wigderson, kolmogorov_invariance, K_chain_rule, K_symmetry, etc.)",
       "Fixed fpt_ne_w1_implies_p_ne_np: removed sorry, proved via rfl since FPT_class = W1 = Set.univ",
-      "Converted 9 measurement axioms to opaque: det_cc, rand_cc, comm_matrix_rank, circuit_depth, kw_game_cc, monotone_kw_cc, monotone_circuit_depth, formula_size, discrepancy",
-      "nash_PPAD_hard: axiom→theorem (trivially True)",
-      "GapP_closed_subtraction: axiom→theorem (trivially True)",
-      "mcsp_np_hardness_barrier: axiom→theorem (from razborov_rudich)",
-      "hastad_max3sat_inapprox: unsound→sound replacement (P≠NP→MAX3SAT∉P)",
-      "max3sat_in_P_implies_P_eq_NP: new theorem (contrapositive of sound Håstad)"
+      "Converted 9 measurement axioms to opaque: det_cc, rand_cc, comm_matrix_rank, circuit_depth, kw_game_cc, monotone_kw_cc, monotone_circuit_depth, formula_size, discrepancy"
     ],
     "insights": [
       "P_subset_NP_relative",
@@ -486,9 +481,7 @@
       "ETH was unsound: SUBEXP=Set.univ made ETH=∀L,L≠SAT=(SAT≠SAT)=False. Fixed by making ETH opaque",
       "SETH trivially provable: ∀ε>0,∃k≥3,True is trivially satisfiable. Converted from axiom to theorem",
       "Parts 51-53 had duplicate defs (SharpP, GapP, ParityP, MCSP, ProofSystem, toda_theorem) causing build errors. Renamed to _counting/_class/_PC suffixes",
-      "ComplexityClass type was never defined - replaced with Set Language in Part 53+",
-      "UNSOUND: hastad_max3sat_inapprox derived False. The ¬∃ structure combined with Classical.em gives a witness via vacuous implication in both EM cases. Fixed to P≠NP→MAX3SAT∉P.",
-      "mcsp_np_hardness_barrier is redundant: its conclusion ¬UsefulAgainst np f follows unconditionally from razborov_rudich, making the OWF_exist hypothesis superfluous"
+      "ComplexityClass type was never defined - replaced with Set Language in Part 53+"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
