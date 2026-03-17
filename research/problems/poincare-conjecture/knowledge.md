@@ -467,3 +467,10 @@ New content is structurally clean.
 - `simp only [h]` where `h : ∀ x, f x = g x` cannot rewrite `Continuous f` (not eta-expanded). Must use `show Continuous fun y => f y` first.
 - Docker build from main repo mounts `REPO_ROOT`, not worktree. Use worktree's `docker-build.sh` for testing.
 - `rotation_preserves_norm_sq` proof: `ring` factors out sin²+cos² cleanly; no need for `nlinarith` with many hints.
+
+### Also: Fixed all 12 pre-existing build errors
+- 4 floating `/--` docstrings → `/-` (comments not attached to declarations)
+- Renamed duplicate `RicciFlowWithSurgery` → `RicciFlowWithSurgeryDetail`
+- Renamed duplicate `ThurstonGeometry` → `ThurstonGeometryDetailed` (+ updated refs)
+- Renamed duplicate `Knot` → `KnotBasic`
+- **Result**: 12 errors → 0 (CLEAN BUILD, first time in several sessions)
