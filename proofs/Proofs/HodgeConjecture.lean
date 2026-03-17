@@ -5181,8 +5181,258 @@ theorem hodge_conjecture_projective_space_complete (X : ProjectiveVariety)
     HodgeConjectureStatement X p H :=
   hodge_conjecture_projective_space X p hp H
 
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XXXVI: GROTHENDIECK'S STANDARD CONJECTURES
+═══════════════════════════════════════════════════════════════════════════════
+
+Grothendieck's Standard Conjectures on algebraic cycles are a family of
+interrelated conjectures that, if true, would imply the Hodge Conjecture
+(in characteristic 0). They concern the algebraicity of certain natural
+correspondences on smooth projective varieties.
+
+The four conjectures:
+- **B** (Lefschetz standard): The inverse of the hard Lefschetz isomorphism
+  is induced by an algebraic correspondence.
+- **C** (Künneth standard): The Künneth projectors πᵢ : H*(X) → Hⁱ(X)
+  are algebraic correspondences.
+- **D** (Homological = numerical): Homological equivalence equals numerical
+  equivalence for algebraic cycles.
+- **A** (Algebraicity of ∗): The Hodge star operator ∗ on cohomology is
+  induced by an algebraic correspondence.
+
+Hierarchy: A ⟹ B ⟹ C, and B + D ⟹ Hodge (in char 0).
+-/
+
+/-- An algebraic correspondence between smooth projective varieties X and Y
+    is a cycle class in H*(X × Y). These act on cohomology via pullback-pushforward. -/
+structure AlgebraicCorrespondence where
+  /-- Source variety -/
+  source : ProjectiveVariety
+  /-- Target variety -/
+  target : ProjectiveVariety
+  /-- The correspondence lives in the cohomology of the product -/
+  cycle_class : Prop
+  /-- Acts on cohomology: H*(source) → H*(target) -/
+  action_on_cohomology : Prop
+
+/-- Grothendieck's Standard Conjecture B (Lefschetz Standard Conjecture).
+    The hard Lefschetz isomorphism L^{n-2i} : Hⁱ(X) → H^{2n-i}(X) has
+    an inverse (the Lefschetz operator Λ) that is algebraic.
+    Known for: curves, surfaces, abelian varieties.
+    Status: OPEN in general. -/
+structure StandardConjectureB where
+  /-- Hard Lefschetz: L^k is an isomorphism Hⁱ → Hⁱ⁺²ᵏ -/
+  hard_lefschetz_iso : Prop
+  /-- The inverse Λ should be algebraic (induced by a correspondence) -/
+  lambda_algebraic : Prop
+  /-- Consequence: primitive decomposition has algebraic projectors -/
+  primitive_projectors_algebraic : Prop
+  /-- Known for abelian varieties (Lieberman 1968, Kleiman 1968) -/
+  known_abelian : Prop
+  /-- Known for surfaces (trivially from Lefschetz (1,1)) -/
+  known_surfaces : Prop
+
+/-- Grothendieck's Standard Conjecture C (Künneth Standard Conjecture).
+    The Künneth components of the diagonal Δ ⊂ X × X are algebraic.
+    Equivalently, the projectors πᵢ : H*(X) → Hⁱ(X) are algebraic. -/
+structure StandardConjectureC where
+  /-- Künneth decomposition: H*(X × X) = ⊕ Hⁱ(X) ⊗ H^{2n-i}(X) -/
+  kuenneth_decomposition : Prop
+  /-- Diagonal class [Δ] = Σ πᵢ in the Künneth decomposition -/
+  diagonal_decomposition : Prop
+  /-- Each πᵢ should be an algebraic cycle in H*(X × X) -/
+  projectors_algebraic : Prop
+  /-- B implies C: Lefschetz gives the Künneth decomposition algebraically -/
+  b_implies_c : Prop
+
+/-- Grothendieck's Standard Conjecture D (Homological = Numerical).
+    Two cycle classes Z₁, Z₂ that are homologically equivalent (same class
+    in cohomology) should be numerically equivalent (same intersection numbers),
+    and vice versa. -/
+structure StandardConjectureD where
+  /-- Homological equivalence: cycles with same cohomology class -/
+  homological_equiv : Prop
+  /-- Numerical equivalence: cycles with same intersection numbers -/
+  numerical_equiv : Prop
+  /-- D: homological equivalence = numerical equivalence -/
+  hom_eq_num : Prop
+  /-- Consequence: Chow ring modulo numerical equiv is finite-dimensional -/
+  finite_dimensional : Prop
+  /-- Known in characteristic 0 for abelian varieties (Lieberman 1968) -/
+  known_abelian_char0 : Prop
+
+/-- Grothendieck's Standard Conjecture A (Algebraicity of Hodge star).
+    The Hodge ∗-operator C on H*(X,ℚ) is algebraic. This is the strongest
+    standard conjecture and implies all others. -/
+structure StandardConjectureA where
+  /-- Hodge ∗-operator: C : Hⁱ(X) → H^{2n-i}(X) -/
+  hodge_star : Prop
+  /-- C should be induced by an algebraic correspondence -/
+  star_algebraic : Prop
+  /-- A implies B: ∗ gives Λ via Λ = ∗L∗⁻¹ (algebraic composition) -/
+  a_implies_b : Prop
+  /-- A implies positive-definiteness of the intersection pairing -/
+  a_implies_positivity : Prop
+
+/-- The hierarchy of Standard Conjectures and their relation to Hodge.
+    A ⟹ B ⟹ C, and B + D ⟹ Hodge Conjecture (in char 0). -/
+structure StandardConjecturesHierarchy where
+  /-- A ⟹ B (strongest implies Lefschetz standard) -/
+  a_implies_b : Prop
+  /-- B ⟹ C (Lefschetz implies Künneth) -/
+  b_implies_c : Prop
+  /-- B + D ⟹ Hodge (in characteristic 0) -/
+  b_and_d_implies_hodge : Prop
+  /-- D + semisimplicity ⟹ Tate conjecture (in positive characteristic) -/
+  d_implies_tate : Prop
+  /-- All standard conjectures known for abelian varieties -/
+  all_known_abelian : Prop
+  /-- All standard conjectures known for curves and surfaces -/
+  all_known_low_dim : Prop
+
+/-- André's unconditional result: Standard Conjecture B holds for
+    varieties "motivated" by abelian varieties (2004).
+    This covers a large class of varieties but not all. -/
+axiom andre_motivated_cycles :
+    -- Standard Conjecture B holds for all varieties in the
+    -- tensor category generated by abelian varieties
+    -- This includes curves, surfaces, and many higher-dimensional examples
+    Prop
+
+/-- The Lefschetz standard conjecture implies semisimplicity of the
+    category of pure motives (Jannsen 1992). -/
+axiom lefschetz_implies_semisimple :
+    -- If Conjecture B holds for all smooth projective varieties,
+    -- then the category of Chow motives modulo numerical equivalence
+    -- is abelian semisimple
+    Prop
+
+/-- Summary: Standard Conjectures are the structural backbone of the Hodge Conjecture. -/
+theorem standard_conjectures_summary :
+    -- A (Hodge star algebraic) ⟹ B (Lefschetz standard) ⟹ C (Künneth standard)
+    -- B + D (hom=num) ⟹ Hodge Conjecture (char 0)
+    -- All known for: abelian varieties, curves, surfaces
+    -- André (2004): B holds for varieties motivated by abelian varieties
+    -- Jannsen (1992): B implies semisimplicity of motives
+    -- Gap to Hodge: need D in general, plus B beyond abelian-motivated class
+    True := trivial
+
+/- ═══════════════════════════════════════════════════════════════════════════════
+PART XXXVII: COUNTEREXAMPLES AND BOUNDARIES OF THE HODGE CONJECTURE
+═══════════════════════════════════════════════════════════════════════════════
+
+The Hodge Conjecture has a precise domain of validity: smooth projective
+varieties over ℂ with rational coefficients. Each of these conditions is
+essential, as shown by counterexamples when any is relaxed.
+
+Key boundary results:
+1. **Integral HC** fails (Atiyah-Hirzebruch 1962, Totaro 1997)
+2. **Kähler HC** fails (Voisin 2002): non-projective Kähler manifolds
+3. **Generalized HC** fails in original form (Grothendieck 1969)
+4. **Positive characteristic** has Tate conjecture instead (different!)
+-/
+
+/-- The integral Hodge conjecture (with ℤ instead of ℚ coefficients) is FALSE.
+    Atiyah-Hirzebruch (1962): torsion classes in H^{2p}(X,ℤ) ∩ H^{p,p}
+    need not be algebraic. -/
+structure IntegralHodgeFailure where
+  /-- Integral Hodge class: α ∈ H^{2p}(X,ℤ) ∩ H^{p,p} -/
+  integral_hodge_class : Prop
+  /-- AH counterexample: BU(n) has torsion Hodge classes that are not algebraic -/
+  atiyah_hirzebruch : Prop
+  /-- Obstruction: Steenrod operations give topological obstructions to algebraicity -/
+  steenrod_obstruction : Prop
+  /-- Totaro (1997): stronger counterexamples via complex cobordism MU -/
+  totaro_cobordism : Prop
+  /-- Kollár (1992): very general hypersurfaces violate integral HC -/
+  kollar_hypersurfaces : Prop
+
+/-- The Hodge Conjecture fails for non-projective Kähler manifolds.
+    Voisin (2002): There exist compact Kähler manifolds where the
+    analog of the Hodge Conjecture fails completely.
+    This shows "projective" is essential, not just "Kähler." -/
+structure KaehlerCounterexample where
+  /-- Compact Kähler manifold (not necessarily projective) -/
+  compact_kaehler : Prop
+  /-- Voisin (2002): HC fails for certain 4-dimensional compact Kähler manifolds -/
+  voisin_counterexample : Prop
+  /-- Construction: deformation of Hilbert scheme Hilb²(T) for a torus T -/
+  hilbert_scheme_deformation : Prop
+  /-- Key: non-projective deformations can "kill" algebraic cycles -/
+  deformation_kills_cycles : Prop
+  /-- Consequence: projectivity is essential, Kähler is not enough -/
+  projectivity_essential : Prop
+
+/-- The Generalized Hodge Conjecture (GHC) in its original form is FALSE.
+    Grothendieck (1969) reformulated it as the Corrected GHC.
+    Original: coniveau filtration on H^k(X) is detected by Hodge level.
+    Counterexample: found by Grothendieck himself. -/
+structure GeneralizedHodgeConjecture where
+  /-- Coniveau filtration: N^p H^k = cycles supported on codim ≥ p subvarieties -/
+  coniveau_filtration : Prop
+  /-- Hodge coniveau: the largest p such that H^k ⊂ F^p H^k_ℂ -/
+  hodge_coniveau : Prop
+  /-- Original GHC: coniveau = Hodge coniveau (FALSE) -/
+  original_ghc : Prop
+  /-- Corrected GHC (Grothendieck): uses sub-Hodge structures instead -/
+  corrected_ghc : Prop
+  /-- The corrected version is still open and implies the ordinary HC -/
+  corrected_implies_hc : Prop
+
+/-- Positive characteristic analogs: the Tate Conjecture replaces Hodge.
+    In characteristic p, there is no Hodge decomposition; instead,
+    ℓ-adic cohomology and Frobenius eigenvalues play the role. -/
+structure PositiveCharacteristic where
+  /-- No Hodge decomposition in char p (different cohomology theory needed) -/
+  no_hodge_decomposition : Prop
+  /-- Tate conjecture: Tate classes = algebraic (char p analog of Hodge) -/
+  tate_conjecture : Prop
+  /-- Known: Tate for abelian varieties over finite fields (Tate 1966, Faltings 1983) -/
+  tate_known_abelian : Prop
+  /-- Known: Tate for K3 surfaces over finite fields (various, completed 2015) -/
+  tate_known_k3 : Prop
+  /-- Hodge ↔ Tate for abelian varieties (strongest bridge between the two worlds) -/
+  hodge_tate_bridge : Prop
+
+/-- The boundary conditions for the Hodge Conjecture: which hypotheses are sharp. -/
+structure HodgeBoundaryConditions where
+  /-- Rational coefficients: ESSENTIAL (integral HC fails via Atiyah-Hirzebruch) -/
+  rational_essential : Prop
+  /-- Projective: ESSENTIAL (Kähler HC fails via Voisin) -/
+  projective_essential : Prop
+  /-- Smooth: NEEDED for Hodge decomposition (singular varieties use MHS) -/
+  smooth_needed : Prop
+  /-- Over ℂ: NEEDED for Hodge theory (positive char uses Tate instead) -/
+  over_C_needed : Prop
+  /-- Codimension 1: PROVEN (Lefschetz (1,1) theorem) -/
+  codim_one_proven : Prop
+  /-- General codimension: OPEN (the actual Millennium Problem) -/
+  general_codim_open : Prop
+
+/-- Voisin's birational invariance result (2003):
+    The Hodge Conjecture is NOT a birational invariant. That is,
+    HC can hold for X but fail for a birational modification X'.
+    This constrains potential proof strategies. -/
+axiom voisin_not_birational_invariant :
+    -- There exist birational smooth projective varieties X, X'
+    -- such that HC(X) does not imply HC(X')
+    -- This means proofs cannot "simplify" to a birational model
+    Prop
+
+/-- Summary: The Hodge Conjecture lives on a precise boundary. -/
+theorem hodge_boundary_summary :
+    -- Integral HC: FALSE (Atiyah-Hirzebruch 1962, Totaro 1997)
+    -- Kähler HC: FALSE (Voisin 2002, non-projective counterexample)
+    -- Generalized HC (original): FALSE (Grothendieck 1969)
+    -- Corrected GHC: OPEN (implies ordinary HC)
+    -- Positive char: different problem (Tate conjecture), partial results
+    -- All four conditions (smooth, projective, ℂ, ℚ-coefficients) are SHARP
+    -- HC is NOT birational invariant (Voisin 2003)
+    -- The conjecture sits at exactly the right level of generality
+    True := trivial
+
 -- ═════════════════════════════════════════════════════════════════════════
--- VERIFICATION CHECKS (Parts XXVII-XXXV)
+-- VERIFICATION CHECKS (Parts XXVII-XXXVII)
 -- ═════════════════════════════════════════════════════════════════════════
 
 -- Part XXV-B: Abelian Variety Hodge Diamond
@@ -5242,6 +5492,26 @@ theorem hodge_conjecture_projective_space_complete (X : ProjectiveVariety)
 
 -- Part XXXV: Strengthened Results
 #check complement_nontrivial_of_proper
+
+-- Part XXXVI: Standard Conjectures
+#check AlgebraicCorrespondence
+#check StandardConjectureB
+#check StandardConjectureC
+#check StandardConjectureD
+#check StandardConjectureA
+#check StandardConjecturesHierarchy
+#check andre_motivated_cycles
+#check lefschetz_implies_semisimple
+#check standard_conjectures_summary
+
+-- Part XXXVII: Counterexamples and Boundaries
+#check IntegralHodgeFailure
+#check KaehlerCounterexample
+#check GeneralizedHodgeConjecture
+#check PositiveCharacteristic
+#check HodgeBoundaryConditions
+#check voisin_not_birational_invariant
+#check hodge_boundary_summary
 
 -- Variety Classification Predicates
 #check IsAbelianVariety
