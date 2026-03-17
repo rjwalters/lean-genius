@@ -2560,7 +2560,7 @@ theorem singleton_partition_count (k n : ℕ) (hk : 0 < k) :
     · intro h
       subst h
       refine ⟨by omega, ?_⟩
-      have := Nat.div_mul_cancel hd; omega
+      rw [Nat.mul_comm]; exact Nat.div_mul_cancel hd
   · simp only [hd, if_neg, not_false_eq_true]
     rw [Finset.card_eq_zero]
     ext j
@@ -2625,7 +2625,11 @@ theorem geomSeries_functional_eq (k : ℕ) (hk : 0 < k) :
             rcases m with _ | m'
             · simp at hm; omega
             · omega
-          exact ⟨m - 1, by rw [hm]; zify [hm1]; ring⟩
+          refine ⟨m - 1, ?_⟩
+          have hkm : k ≤ k * m := Nat.le_mul_of_pos_right k (by omega)
+          rw [hm]
+          zify [hm1, hkm]
+          ring
         · intro h
           have := dvd_add h (dvd_refl k)
           rwa [Nat.sub_add_cancel hnk] at this
