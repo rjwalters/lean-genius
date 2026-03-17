@@ -5310,6 +5310,15 @@ theorem bloch_srinivas_diagonal (X : ProjectiveVariety) (H : PureHodgeStructure 
 #check abelian_hodge_product
 #check abelian_top_hodge
 
+-- Part XXXII: Special Variety Hodge Diamonds
+#check cy3_h30_eq_one
+#check cy3_vanishing_10
+#check cy3_vanishing_20
+#check cy3_top_forms
+#check cy3_b1_eq_zero
+#check hyperkaehler_h20_eq_one
+#check hyperkaehler_h10_eq_zero
+
 -- Part XXVII: Variations of Hodge Structure
 #check griffiths_transversality
 #check schmid_nilpotent_orbit

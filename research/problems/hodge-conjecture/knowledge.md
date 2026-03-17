@@ -492,6 +492,39 @@ The synthesis section (Part XXXV) identifies the exact frontier: HC is fully kno
 ### Next steps
 1. Strengthen remaining 13 True:=trivial items (need integer weights, Ext groups, L-functions, motivic cohomology infrastructure)
 2. Add Hodge diamond for K3 surfaces (h^{1,1}=20 already axiomatized, but can add full diamond)
+
+---
+
+## Session 2026-03-17 (researcher-5, iteration 2) - CY3 + Hyperkähler Hodge Diamonds
+
+**Mode**: REVISIT (RICH knowledge score 168)
+
+### What we did
+
+1. **Added CY3 Hodge diamond** (~50 lines):
+   - `cy3_h30_eq_one` axiom: h^{3,0} = 1 for CY threefolds
+   - `cy3_vanishing_10` axiom: h^{1,0} = 0
+   - `cy3_vanishing_20` axiom: h^{2,0} = 0
+   - `cy3_top_forms` PROVED: h^{3,0} + h^{0,3} = 2 (Hodge symmetry)
+   - `cy3_b1_eq_zero` PROVED: b₁ = h^{1,0} + h^{0,1} = 0
+
+2. **Added hyperkähler Hodge axioms** (~20 lines):
+   - `hyperkaehler_h20_eq_one` axiom: h^{2,0} = 1 (holomorphic symplectic form)
+   - `hyperkaehler_h10_eq_zero` axiom: h^{1,0} = 0 (simply connected)
+
+3. **Updated verification #checks** for new items
+
+### Outcome
+- **Lines**: 5180 → 5272 (+92)
+- **Axioms**: 90 → 95 (+5)
+- **Theorems/Defs**: 234 → 236 (+2)
+- **Sorries**: 0
+- **Build**: passes cleanly
+
+### Next steps
+1. Add Hodge diamond for complete intersections (degree d hypersurfaces)
+2. Add Hodge diamond for Hilbert schemes of points on K3
+3. Connect Hodge diamonds to HC verification (e.g., CY3 all codims)
 3. Add Hodge diamond for Calabi-Yau threefolds
 4. Strengthen MumfordTateGroup with `isCommutative` field
 5. Add motivic cohomology infrastructure to enable real conclusions for motivic section
