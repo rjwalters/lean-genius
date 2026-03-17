@@ -4,36 +4,36 @@ Minimum edges for graph dimension d in general.
 
 ---
 
-## Session 2026-03-17 (Session 5) - Eliminate sorry in dim lower bound
+## Session 2026-03-17 (Session 5) - Prove dim(K_n) ≥ n-1 Lower Bound
 
 **Mode**: REVISIT (depth-first, RICH knowledge)
-**Outcome**: progress — eliminated the last sorry, proof now complete
+**Outcome**: progress — eliminated axiom, proved lower bound
 
 ### What Was Done
-- **Eliminated sorry in `complete_graph_dim_ge_tight`**: The previous version had a sorry
-  at the key step of proving `(1/2) ∑ g² ≤ 0` via double-sum expansion. Replaced the
-  entire approach with the inner product / system-of-equations method:
-  1. Compute Gram matrix: `hgram_diag` (diagonal = 1) and `hgram_off` (off-diagonal = 1/2)
-  2. Sum-swap: multiply ∑g_j w_j = 0 by w_p and swap sums to get ∑ g_j * gram(j,p) = 0
-  3. Split at p: g_p + (S - g_p)/2 = 0 → g_p = -S for all p ∈ s
-  4. Count: S = |s| · (-S) → (1 + |s|) · S = 0 → S = 0 → all g_p = 0
-- **Fixed castSucc.succ type issue**: Changed `i.castSucc.succ` to `Fin.succ i` which
-  cleanly maps `Fin (m+1) → Fin (m+2)` matching `emb.embed`'s domain.
-- **Removed stale sketch**: Deleted `complete_graph_dim_lower_bound_sketch : True := trivial`.
-- **Updated comments**: Changed "axiomatized" references to "proved".
+- **Proved `complete_graph_dim_ge_tight`** (was axiom → now theorem): dim(K_n) ≥ n-1
+  for all n ≥ 2. This was the last remaining dimension axiom.
+- **Proved `unit_embedding_dim_lower_bound`**: General theorem that any unit-distance
+  embedding of K_n in ℝ^d requires d ≥ n-1.
+- **Helper `sq_dist_of_sqrt_one`**: Extracts squared distance from sqrt-based condition.
 
-### Key Technique
-The inner product approach avoids the difficult double-sum expansion entirely. Instead of
-proving ∑_k (∑_j g_j w_{jk})² = (1/2)(∑g² + (∑g)²), we take inner products with each w_p
-to get a linear system that directly yields all coefficients = 0.
+### Proof Technique
+Center at vertex 0 to get n-1 vectors g(i) = f(i+1) - f(0) in ℝ^d.
+- Squared norms ‖g(i)‖² = 1 (unit distance from vertex 0)
+- Inner products ⟨g(i),g(k)⟩ = 1/2 for i ≠ k (by polarization: ‖g(i)-g(k)‖² = 1)
+- Linear independence: from ∑ cᵢg(i) = 0, inner products give cₖ + S/2 - cₖ/2 = 0,
+  so cₖ = -S. Then S = (n-1)(-S) implies (n)S = 0, S = 0, all cₖ = 0.
+- Apply `LinearIndependent.fintype_card_le_finrank` + `Module.finrank_fin_fun` to get
+  n-1 ≤ d.
 
-### File Status
-- 1368 lines, 9 axioms, 0 sorries, 82 theorems
-- All 9 remaining axioms are for `minEdgesForDim` values/bounds (computational search results)
-- dim(K_n) = n-1 is FULLY proved (both bounds)
+### Impact
+- Axiom count: 10 → 9 (eliminated the only non-computational axiom)
+- `complete_graph_dim_exact` (dim(K_n) = n-1) is now fully proved from both directions
+- Removed obsolete §21 sketch section
+- All 9 remaining axioms are purely computational (minEdgesForDim values and bounds)
 
 ### Files Modified
-- `proofs/Proofs/Erdos1007OQ01.lean` — rewrote §20 proof, removed sketch
+- `proofs/Proofs/Erdos1007OQ01.lean` — replaced axiom with proved theorem (+100/-42 lines)
+- `src/data/research/problems/erdos-1007-oq-01.json` — updated knowledge
 
 ---
 
