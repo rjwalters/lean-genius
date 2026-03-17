@@ -513,6 +513,27 @@ theorem cos_extension_is_galois (hn : 3 ≤ n) :
       rw [h1, minpoly_alphaCos_natDegree n hn]
     omega
 
+/-- natDegree of the minimal polynomial of cos(2π/n) over ℚ equals φ(n)/2.
+    Extracted from the proof of cos_extension_is_galois for direct reuse. -/
+theorem minpoly_cos_natDegree_eq (hn : 3 ≤ n) :
+    (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).natDegree = Nat.totient n / 2 := by
+  set c := Real.cos (2 * Real.pi / ↑n)
+  obtain ⟨P, hP_monic, hP_deg, hP_root⟩ := cos_minimal_poly_degree n hn
+  have h_le : (minpoly ℚ c).natDegree ≤ Nat.totient n / 2 :=
+    le_trans (Polynomial.natDegree_le_of_dvd (minpoly.dvd ℚ _ hP_root) hP_monic.ne_zero)
+      (le_of_eq hP_deg)
+  have h_ge : (minpoly ℚ c).natDegree ≥ Nat.totient n / 2 := by
+    obtain ⟨φ, hφ_alpha⟩ := exists_embedding_alpha_eq_2cos n hn
+    have h_emb : φ (alphaCos n) = ↑c := by
+      simp only [alphaCos, c, map_div₀, hφ_alpha, map_ofNat]; push_cast; ring
+    have h1 : minpoly ℚ (φ (alphaCos n)) = minpoly ℚ (alphaCos n) :=
+      minpoly.algHom_eq φ φ.injective _
+    have h2 : minpoly ℚ (↑c : ℂ) = minpoly ℚ c :=
+      minpoly.algHom_eq (IsScalarTower.toAlgHom ℚ ℝ ℂ) Complex.ofReal_injective _
+    rw [h_emb, h2] at h1
+    rw [h1, minpoly_alphaCos_natDegree n hn]
+  omega
+
 -- ============================================================================
 -- § 10. Axiom Inventory
 -- ============================================================================
@@ -533,14 +554,10 @@ theorem cos_extension_is_galois (hn : 3 ≤ n) :
   ✅ cos_extension_is_galois: PROVED (ℚ(cos) has finrank φ(n)/2, §9)
   ✅ cos_algebraic_from_cyclotomic: PROVED (from cos_minimal_poly_degree)
 
-  🔲 exists_embedding_alpha_eq_2cos: AXIOM (∃ φ sending α to 2cos(2π/n))
-     Proof approach: PowerBasis.lift with exp(2πi/n) as target root of
-     cyclotomic n ℚ = minpoly ℚ ζ. The construction exists but needs
-     careful type coercion through IntermediateField.topEquiv.
+  ✅ exists_embedding_alpha_eq_2cos: PROVED (in AngleTrisectionEmbedding.lean)
+  ✅ minpoly_cos_natDegree_eq: PROVED (natDeg(minpoly ℚ cos) = φ(n)/2)
 
-  PROGRESS: 6 axioms → 1 axiom, 0 sorries
-  All the mathematical content is proved; the remaining gap is purely about
-  connecting Lean/Mathlib API types (PowerBasis.lift + IntermediateField.topEquiv).
+  PROGRESS: 0 axioms, 0 sorries — this file is fully proved.
 -/
 
 end AngleTrisectionOQ02OQ03OQ01

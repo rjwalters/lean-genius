@@ -7,7 +7,7 @@
     "title": "Problem Statement and History",
     "content": "**Erdős Problem #316** asks whether sets with reciprocal sum less than 2 can always be split into two parts each with sum less than 1. The answer is **NO** - Csaba Sándor disproved this in 1997.\n\nThe minimal counterexample was found by Tom Stobart: the set $\\{2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15\\}$ has reciprocal sum approximately 1.96, but every partition leaves at least one part with sum at least 1.",
     "mathContext": "This problem belongs to the theory of Egyptian fractions (unit fractions $1/n$). The Erdős-Graham conjecture proposed that if $\\sum_{n \\in A} 1/n < 2$, the 'spare capacity' of $2 - \\sum 1/n$ should allow a balanced partition. The counterexample shows that the structure of individual terms matters more than the total sum — the specific values $\\{2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15\\}$ create an interlocking dependency where no bipartition achieves balance.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Egyptian fractions", "Partitions", "Counterexamples", "Erdős-Graham problems"],
     "prerequisites": ["Finite sets", "Rational arithmetic", "Reciprocal sums"]
   },
@@ -31,7 +31,7 @@
     "title": "Minimal Counterexample Definition",
     "content": "The **minimal counterexample** is the 11-element set $\\{2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15\\}$. This is the smallest set (by cardinality) that disproves Erdős's conjecture.\n\n```lean\ndef minimalCounterexample : Finset ℕ := {2, 3, 4, 5, 6, 7, 10, 11, 13, 14, 15}\n```",
     "mathContext": "This set was discovered by Tom Stobart through computational search over all subsets of small integers. Its reciprocal sum is exactly $4234829/2162160 \\approx 1.9586 < 2$. The 'gap' of $2 - 1.9586 \\approx 0.0414$ is too small to allow any balanced partition. Note the set skips $\\{8, 9, 12\\}$: including any of these would push the sum above 2 or enable a valid partition.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Finset literal", "Computational search", "Minimality"],
     "prerequisites": ["Finset", "Natural numbers"]
   },
@@ -67,7 +67,7 @@
     "title": "Main Theorem: Erdős's Conjecture is FALSE",
     "content": "**The core result**: Erdős's conjecture is false. The proof exhibits the counterexample and exhaustively verifies that no valid partition exists.\n\nThe proof strategy:\n1. Negate the universal statement to produce an existential goal\n2. Provide the specific counterexample set $A$\n3. Verify $A$ satisfies the hypotheses (sum $< 2$, excludes 0 and 1)\n4. Check all $2^{11} = 2048$ possible subsets $B$ to confirm that whenever $B$ has sum $< 1$, the complement $A \\setminus B$ has sum $\\ge 1$",
     "mathContext": "The proof structure is: $\\neg \\forall A, P(A) \\Rightarrow Q(A)$ iff $\\exists A, P(A) \\wedge \\neg Q(A)$. After `simp only` rewrites, we witness $A = \\{2, 3, \\ldots, 15\\}$, verify $P(A)$ (sum $< 2$), and prove $\\neg Q(A)$ by showing every subset $B \\subseteq A$ with $\\sum_{B} 1/n < 1$ has complement satisfying $\\sum_{A \\setminus B} 1/n \\ge 1$. The `decide +kernel` tactic enumerates all $2^{11} = 2048$ subsets and checks the condition computationally, making this a certified exhaustive search.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Proof by counterexample", "Exhaustive search", "decide +kernel", "Finset.sdiff"],
     "prerequisites": ["minimalCounterexample", "Finset.powerset", "Rational inequality"]
   },
