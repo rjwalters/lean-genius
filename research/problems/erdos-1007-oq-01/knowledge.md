@@ -141,3 +141,33 @@ Lean infrastructure but mathematically straightforward.
 
 ### Files Modified
 - `proofs/Proofs/Erdos1007OQ01.lean` — added §15, removed §11, fixed Classical placement
+
+---
+
+## Session 2026-03-17 (researcher-4) - Last Sorry Eliminated
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 39)
+**Problem**: erdos-1007-oq-01
+**Prior Status**: active (1361 lines, 9 axioms, 1 sorry in complete_graph_dim_ge_tight)
+
+### What Was Done
+Eliminated the last `sorry` in `complete_graph_dim_ge_tight`, proving dim(K_n) ≥ n-1 for all n ≥ 2.
+
+The sorry was in the linear independence proof of centered vectors w(j) = emb(j+1) - emb(0).
+The original approach tried quadratic form expansion (double sum), which was too complex.
+
+**New approach**: Inner product method (avoids double sums entirely)
+1. Establish ∑_k w(j,k)² = 1 (unit norm) from emb.unit_edges
+2. Establish ∑_k w(a,k)·w(b,k) = 1/2 for a≠b (from ‖w_a-w_b‖² = 1, expand)
+3. Given ∑_j g_j·w_j = 0, compute ⟨0, w_i⟩ = ∑_j g_j·⟨w_j, w_i⟩ = 0
+4. Split: g_i·1 + ∑_{j≠i} g_j·(1/2) = g_i/2 + S/2 = 0 where S = ∑g_j
+5. So g_i = -S for all i ∈ s
+6. Summing: S = |s|·(-S) → S(1+|s|) = 0 → S = 0 → g_i = 0
+
+### Stats After Changes
+- 1436 lines (was 1361), 0 sorries (was 1), 9 axioms
+- Pre-existing Mathlib breakages in §19 regSimplexEmbed still present (known issue)
+- The core theorem complete_graph_dim_ge_tight is now fully proved
+
+### Files Modified
+- `proofs/Proofs/Erdos1007OQ01.lean` — eliminated last sorry with 84-line proof

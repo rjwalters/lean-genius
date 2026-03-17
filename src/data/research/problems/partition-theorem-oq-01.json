@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-03-11T09:48:08.982Z",
-    "iteration": 4,
-    "focus": "Prove recurrence correctness and equality for Schur identity",
+    "iteration": 5,
+    "focus": "Exchange bijection between gap-only and mod-only partitions",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Step 7a complete. Gap/mod recurrences defined, verified for n=0..15, reduction theorem proved. 2 sorries (recurrence correctness), 3 axioms. Next: prove recurrence correctness by induction, then tackle recurrence equality.",
+    "progressSummary": "PROGRESS: Built formal reduction framework. Schur axiom <=> gap count = GF coeff <=> |GapOnly|=|ModOnly| (exchange bijection). Canonical split defined with 11 properties proved. Collision analysis shows context-dependent splitting needed. 0 sorries, 3 axioms, ~3070 lines.",
     "builtItems": [
       "distinctPartGF: generating function \u220f(1+X^k) as PowerSeries \u2124",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
@@ -47,14 +47,17 @@
       "schurModSet: {k \u2208 [1..n] | k \u2261 1,2 mod 3} definition",
       "schurMod_card_eq_subsetsWithSum: bijection via Finset.card_bij (proved)",
       "schurMod_card_eq_gf_coeff: |schurMod n| = coeff n (schurModGF n) (proved)",
-      "schurGapSize: minimum gap function (4 if 3|m, else 3)",
-      "schurGapCount: computable recurrence for gap-side Schur partitions",
-      "schurModCount: computable recurrence for mod-side Schur partitions",
-      "schurGapBounded: decidable gap partitions with part bound",
-      "schurModBounded: decidable mod partitions with part bound",
-      "schurGapBounded_eq_full, schurModBounded_eq_full: bound=n gives full set",
-      "schurGapBounded_decompose: partitions split by max part membership",
-      "schur_from_recurrences: reduction theorem (3 subgoals \u2192 Schur identity)"
+      "schurGapBounded(m,n): gap-side partitions with largest part \u2264 m (Finset filter)",
+      "schurModBounded(m,n): mod-side partitions with largest part \u2264 m (Finset filter)",
+      "schurGapRec/schurModRec: pure recursive counting functions verified against Finset defs",
+      "schurGapBounded_ge/schurModBounded_ge: m\u2265n reduces to full set",
+      "schurGapBounded_mono/schurModBounded_mono: monotonicity in bound m",
+      "schurModBounded_div3: m\u22610 mod 3 \u27f9 schurModBounded m = schurModBounded (m-1)",
+      "schurGapBounded_split: union decomposition by m-membership",
+      "schur_axiom_from_gap_gf: Schur axiom from gap-side GF link (Part XLIII)",
+      "splitHi/splitLo: canonical split for parts 0 mod 3 (Part XLIV)",
+      "schurGapOnly/schurModOnly/schurBoth: partition classification (Part XLV)",
+      "schur_identity_iff_exchange: Schur identity <=> |GapOnly|=|ModOnly| (Part XLV)"
     ],
     "insights": [
       "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
@@ -71,23 +74,24 @@
       "SchurMod \u2194 subsetsWithSum bijection via Finset.card_bij: forward p\u21a6parts.toFinset, inverse via partitionOfSubset",
       "RR1/RR2 mod sides allow repeated parts (no Nodup) \u2192 distinctPartGF approach only works for Schur, not RR",
       "schurMod_card_eq_gf_coeff chains: bijection \u2192 distinctPartGF_coeff \u2192 GF definition equality",
-      "Gap recurrence: schurGapSize(m) = 4 if m%3=0, else 3. When m\u22620(mod 3), bound m-3 is valid because (m-3)\u22620(mod 3).",
-      "Reduction theorem schur_from_recurrences decomposes Schur identity into 3 independent subgoals: gap correctness, mod correctness, recurrence equality.",
-      "Both recurrences verified equal for n=0..15 (48+16 native_decide examples).",
-      "Product identity approach: \u220f_{k\u22611,2(3)}(1+X^k) = \u220f_{k\u22611,5(6)}1/(1-X^k) via (1+X^k)=(1-X^{2k})/(1-X^k) and 2S\u2286S cancellation",
-      "schurModCount_eq_bounded proof approach: strong induction on (n,m). Need schurModBounded_decompose (split by max part), then bijection 'remove max part m+1' maps {p using m+1} to schurModBounded (n-m) m. Requires Nat.Partition part removal/addition machinery. Estimated 150-200 lines."
+      "Bounded counts schurGapBounded(m,n) \u2260 schurModBounded(m,n) for m < n \u2014 the identity is genuinely global",
+      "Gap-side recurrence uses gap(m) offset: G(m,n)=G(m-1,n)+G(m-gap,n-m). Mod-side uses M(m,n)=M(m-1,n)+M(m-1,n-m). Different recurrences \u2192 cannot prove by matching.",
+      "Three viable proof strategies remain: (a) direct bijection, (b) GF identity at power series level, (c) clever variable substitution",
+      "Session 5 assessment: 3 axioms remain (RR1, RR2, Schur). All verified computationally to n=15. Proving symbolically requires either bijective proof (Bressoud-Zeilberger style) or GF identity approach. The GF infrastructure (partGF, geomSeries, convolution) is mature but connecting it to the specific partition sets needs additional work.",
+      "Exchange reduction: Schur identity <=> |GapOnly| = |ModOnly| where GapOnly = gap-valid with div3-part, ModOnly = mod-valid with gap-violation",
+      "Canonical split of c=0 mod 3: splitHi=(c+2)/2, splitLo=c-splitHi. Gap <= 2 (violates Schur >=3). Split parts not 0 mod 3.",
+      "Collision issue: canonical split(9)=(5,4) collides with existing part 4 in {9,4,1}. Context-dependent split needed for general case."
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",
       "No bijective proof machinery for partition identities"
     ],
     "nextSteps": [
-      "BUILD: schurModBounded_decompose (split by max part membership, analogous to schurGapBounded_decompose)",
-      "BUILD: Nat.Partition part removal: given p with m+1 \u2208 p.parts, construct partition of n-m by erasing m+1",
-      "BUILD: Nat.Partition part addition: given q of n-m with parts \u2264 m, add m+1 to get partition of n+1",
-      "PROVE: schurModCount_eq_bounded by strong induction with decompose + bijection",
-      "PROVE: schurGapCount_eq_bounded similarly (harder due to variable gap sizes)",
-      "PROVE: recurrence equality schurGapCount n n = schurModCount n n (product identity or bijection)"
+      "Build exchange bijection: context-dependent splitting for gap-only to mod-only",
+      "Key challenge: when canonical split collides, find collision-free alternative split",
+      "Build inverse merging map: mod-only to gap-only",
+      "Alternative: try Bressoud-Zeilberger bijection from the literature",
+      "Alternative: prove bounded identity gapBounded(n-1,n) vs modBounded(n-1,n) by induction"
     ]
   },
   "approaches": [],
@@ -104,7 +108,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-15T12:00:00.000Z",
+  "lastUpdate": "2026-03-17T08:30:00.000Z",
   "significance": 7,
   "tractability": 6
 }

@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (73 axioms)
+## Axiom Summary (104 axioms, was 107)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -61,10 +61,10 @@ Model limitation (1): L_eq_PSPACE_in_model (L=PSPACE because space bounds not tr
 Quantum (3): BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE
 Quantum results (2): NP_subset_PP, shor_factoring_in_BQP
 Circuit hierarchy (3): NC_k_subset_AC_k, AC_k_subset_TC_k, TC_k_subset_NC_k_succ
-Circuit axioms (4): NC_subset_P, majority_in_TC0_not_AC0, hastad_parity_not_in_AC0, circuit_value_P_complete
+Circuit axioms (3): NC_subset_P, majority_in_TC0_not_AC0, hastad_parity_not_in_AC0
 Algebraic (2): VP_subset_VNP, permanent_VNP_complete
 Derandomization (1): impagliazzo_wigderson (EXP ≠ BPP → BPP = P)
-PCP theorem (3): pcp_theorem_hard, pcp_easy, hastad_max3sat_inapprox
+PCP theorem (4): pcp_theorem_hard, pcp_easy, hastad_max3sat_in_NP, hastad_max3sat_inapprox
 ACC⁰/Williams (5): AC0_subset_ACC0, ACC0_subset_TC0, ACC0_subset_NC1,
     williams_NEXP_not_in_ACC0, IKW_compression
 Communication complexity (6): comm_trivial_upper, D_ge_R, EQ_det_lower, EQ_rand_upper,
@@ -72,7 +72,7 @@ Communication complexity (6): comm_trivial_upper, D_ge_R, EQ_det_lower, EQ_rand_
 Communication (1): karchmer_wigderson (D(KW_f) = depth(f))
 Proof complexity (1): cook_reckhow (NP=coNP ↔ poly proof system)
 Five Worlds (2): trapdoor_implies_owf, owf_implies_avg_hard
-Eliminated axioms (9→theorems/opaques):
+Eliminated axioms (15→theorems/opaques, was 11):
 - P_subset_PP → theorem (via P ⊆ BPP ⊆ BQP ⊆ PP)
 - P_subset_P_poly → theorem (program e is a constant-size "circuit")
 - TC0_computes_multiplication → theorem (same type as majority_in_TC0_not_AC0)
@@ -84,9 +84,17 @@ Eliminated axioms (9→theorems/opaques):
 - D_comm → opaque def (measurement function, not mathematical claim)
 - R_comm → opaque def (measurement function, not mathematical claim)
 - commMatrixRank → opaque def (measurement function, not mathematical claim)
-Soundness fixes:
+- nash_PPAD_hard → theorem (conclusion is trivially True)
+- GapP_closed_subtraction → theorem (conclusion is trivially True)
+- mcsp_np_hardness_barrier → theorem (follows from natural_proofs_barrier)
+- circuit_value_P_complete → theorem (any f ∈ P witnesses f ∉ NC → P ≠ NC)
+Soundness fixes (5, was 4):
 - OWF_exist, TrapdoorOWF_exist → opaque Props (previously ∃ _ : ℕ, True = True,
   which made owf_implies_avg_hard derive P≠NP unconditionally)
+- hastad_max3sat_inapprox → replaced (old form derived False: in classical logic,
+  `¬∃e, Solves e ... → P≠NP→False` unfolds to `∀e, Solves e ... ∧ P≠NP`,
+  contradicting Φ_negate. New form: `P ≠ NP → MAX3SAT ∉ P` with separate
+  `hastad_max3sat_in_NP : MAX3SAT ∈ NP`)
 Now theorems: BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP, factoring_in_PSPACE,
     IW_contrapositive, IW_dichotomy, derandomization_circuit_connection (all derived)
 -/
@@ -2600,8 +2608,14 @@ theorem TC0_computes_division :
 
 /-- NC vs P: Is NC = P? Equivalently, can every polynomial-time problem
     be efficiently parallelized? The Circuit Value Problem (CVP) is P-complete
-    under logspace reductions, so NC = P ↔ CVP ∈ NC. -/
-axiom circuit_value_P_complete : ∃ f ∈ P, f ∉ NC → P ≠ NC
+    under logspace reductions, so NC = P ↔ CVP ∈ NC.
+
+    **Previously axiom** — converted to theorem. For any f ∈ P,
+    `f ∉ NC → P ≠ NC` holds trivially (if P = NC, then f ∈ P = NC).
+    We use the parity function from `hastad_parity_not_in_AC0` as witness. -/
+theorem circuit_value_P_complete : ∃ f ∈ P, f ∉ NC → P ≠ NC := by
+  obtain ⟨f, hfP, _⟩ := hastad_parity_not_in_AC0
+  exact ⟨f, hfP, fun hfNC h => hfNC (show f ∈ NC by rw [← h]; exact hfP)⟩
 
 /-- If NC ≠ P, then P-complete problems exist that are inherently sequential. -/
 theorem NC_ne_P_implies_sequential_problems :
@@ -3020,15 +3034,19 @@ opaque MAX3SAT : ℕ → Bool
     Note: A random assignment satisfies 7/8 of all clauses in expectation,
     so 7/8 is achievable. This shows randomness is essentially optimal.
 
-    This is a direct consequence of the PCP theorem with optimal parameters. -/
-axiom hastad_max3sat_inapprox :
-  ∀ ε : ℝ, ε > 0 → ¬∃ (e : ℕ), Solves e emptyOracle MAX3SAT →
-    P ≠ NP → False
+    This is a direct consequence of the PCP theorem with optimal parameters.
 
-/-- MAX-3SAT inapproximability implies P ≠ NP:
-    If we could approximate MAX-3SAT perfectly in poly time, we'd solve SAT.
-    (Contrapositive: P = NP → everything is efficiently solvable.) -/
-theorem max3sat_separates : True := trivial  -- The real content is in hastad_max3sat_inapprox
+    **Soundness fix (2026-03-17)**: Previous formulation was unsound:
+      `∀ ε > 0, ¬∃ e, Solves e ... MAX3SAT → P ≠ NP → False`
+    In classical logic this unfolds to `∀ ε > 0, ∀ e, Solves e ... MAX3SAT ∧ P ≠ NP`,
+    claiming every program e solves MAX3SAT, contradicting Φ_negate.
+    Replaced with conditional: P ≠ NP → MAX3SAT ∉ P (MAX3SAT is NP-hard). -/
+axiom hastad_max3sat_in_NP : MAX3SAT ∈ NP
+axiom hastad_max3sat_inapprox : P ≠ NP → MAX3SAT ∉ P
+
+/-- MAX-3SAT separates P from NP: under P ≠ NP, MAX3SAT witnesses the gap. -/
+theorem max3sat_separates : P ≠ NP → MAX3SAT ∈ NP ∧ MAX3SAT ∉ P :=
+  fun h => ⟨hastad_max3sat_in_NP, hastad_max3sat_inapprox h⟩
 
 /-- **The Unique Games Conjecture** (Khot, 2002):
     It is NP-hard to determine if a Unique Games instance has value ≥ 1-ε
@@ -3997,7 +4015,9 @@ theorem grand_landscape :
 #check pcp_theorem                     -- NP = PCP[O(log n), O(1)]
 #check pcp_theorem_hard                -- NP ⊆ PCP[log, O(1)]
 #check pcp_easy                        -- PCP[log, O(1)] ⊆ NP
-#check hastad_max3sat_inapprox         -- MAX-3SAT inapproximability (Håstad 2001)
+#check hastad_max3sat_in_NP            -- MAX-3SAT ∈ NP
+#check hastad_max3sat_inapprox         -- P ≠ NP → MAX3SAT ∉ P (was unsound, fixed)
+#check max3sat_separates               -- P ≠ NP → MAX3SAT ∈ NP ∧ MAX3SAT ∉ P (PROVED)
 #check pcp_algebrizes                  -- PCP algebrizes (meta-mathematical note)
 
 -- ACC⁰ and Williams' NEXP lower bound
@@ -4357,9 +4377,12 @@ theorem Kt_easy_implies_no_owf :
     a "natural" reduction, that reduction would yield natural proofs against
     P/poly, contradicting OWF existence.
 
-    We state: OWF_exist → no natural property witnesses MCSP's hardness. -/
-axiom mcsp_np_hardness_barrier :
-    OWF_exist → ∀ np : NaturalProperty, ∀ f : ℕ → Bool, ¬UsefulAgainst np f
+    **Previously axiom** — converted to theorem. The conclusion
+    `∀ np f, ¬UsefulAgainst np f` is already unconditionally proved by
+    `natural_proofs_barrier`, so the OWF_exist hypothesis is unused. -/
+theorem mcsp_np_hardness_barrier :
+    OWF_exist → ∀ np : NaturalProperty, ∀ f : ℕ → Bool, ¬UsefulAgainst np f :=
+  fun _ np f => natural_proofs_barrier np f
 
 /-- **Meta-complexity landscape theorem**: Connecting meta-complexity to
     the broader P vs NP picture.
@@ -4685,8 +4708,9 @@ opaque NASH : ℕ → Bool
 
 axiom nash_in_PPAD : NASH ∈ PPAD
 
-/-- PPAD-hardness of Nash: every PPAD problem reduces to Nash. -/
-axiom nash_PPAD_hard : ∀ f ∈ PPAD, True
+/-- PPAD-hardness of Nash: every PPAD problem reduces to Nash.
+    **Previously axiom** — converted to theorem (conclusion is trivially True). -/
+theorem nash_PPAD_hard : ∀ f ∈ PPAD, True := fun _ _ => trivial
 
 theorem nash_in_TFNP : NASH ∈ TFNP :=
   PPAD_subset_TFNP nash_in_PPAD
@@ -4811,9 +4835,10 @@ axiom sharp_SAT_complete : SharpSAT ∈ SharpP
 /-- GapP ⊇ #P: every counting function is a gap function. -/
 axiom SharpP_subset_GapP : SharpP ⊆ GapP
 
-/-- GapP is closed under subtraction (unlike #P). -/
-axiom GapP_closed_subtraction :
-    ∀ f g : ℕ → ℕ, f ∈ GapP → g ∈ GapP → True
+/-- GapP is closed under subtraction (unlike #P).
+    **Previously axiom** — converted to theorem (conclusion is trivially True). -/
+theorem GapP_closed_subtraction :
+    ∀ f g : ℕ → ℕ, f ∈ GapP → g ∈ GapP → True := fun _ _ _ _ => trivial
 
 /-- **Toda's theorem gives PH ⊆ P^{#P}**: combined with PH ⊆ PSPACE,
     this shows PH reduces to COUNTING, not just to PSPACE. -/
