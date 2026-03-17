@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (103 axioms, was 104)
+## Axiom Summary (105 axioms; net +1 from 104 due to model consistency fix)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -57,7 +57,7 @@ Structural (4): valiant_vazirani, mahaney_theorem, NL_subset_P, savitch
 Padding (1): padding_P_eq_NP_implies_EXP_eq_NEXP
 Separation/existence (2): P_ne_EXP, ladner_theorem
 Completeness results (2): cook_levin, tqbf_pspace_complete
-Model limitation (1): L_eq_PSPACE_in_model (L=PSPACE because space bounds not tracked)
+Space complexity (3): L_subset_NL, NL_subset_P, immerman_szelepcsenyi (L/NL opaque)
 Quantum (3): BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE
 Quantum results (2): NP_subset_PP, shor_factoring_in_BQP
 Circuit hierarchy (3): NC_k_subset_AC_k, AC_k_subset_TC_k, TC_k_subset_NC_k_succ
@@ -98,9 +98,13 @@ Soundness fixes (session 2026-03-17):
   via Classical.em on Solves: ¬Solves gives vacuously true implication)
 - circuit_value_P_complete → theorem (derived from hastad_parity_not_in_AC0:
   any f ∈ P witnesses f ∉ NC → P ≠ NC since NC ⊆ P)
-Known model limitation:
-- NL_subset_P is inconsistent with P_ne_EXP because L=NL=PSPACE=EXP in this
-  model (space bounds not tracked). NL should be made opaque in a future session.
+Model consistency fixes:
+- L, NL → opaque (prevents L=NL=PSPACE=EXP collapse that made NL⊆P+P≠EXP inconsistent)
+- L_subset_NL → axiom (was trivial from identical definitions)
+- immerman_szelepcsenyi → axiom (was proved from concrete NL=L + Φ_negate)
+- L_eq_PSPACE_in_model → REMOVED (was the inconsistency-enabling theorem)
+Remaining model limitation:
+- EXP = PSPACE still holds (same definition, unused polynomial parameter)
 -/
 
 set_option linter.unusedVariables false
@@ -1188,33 +1192,35 @@ Key result: NL = coNL (nondeterministic logspace is closed under complement),
 contrasting with the open question NP = coNP?.
 -/
 
-/-- L (LOGSPACE): problems solvable in O(log n) space. -/
-def L : Set (ℕ → Bool) :=
-  { f | ∃ (e : ℕ), Solves e emptyOracle f }
+/-- L (LOGSPACE): problems solvable in O(log n) space.
 
-/-- NL (NLOGSPACE): problems solvable nondeterministically in O(log n) space. -/
-def NL : Set (ℕ → Bool) :=
-  { f | ∃ (e : ℕ), Solves e emptyOracle f }
+    **Design**: Opaque to prevent L = PSPACE = EXP collapse. The previous
+    concrete definition `{f | ∃ e, Solves e ∅ f}` was identical to PSPACE/EXP
+    (space bounds not tracked in this model), making NL_subset_P inconsistent
+    with P_ne_EXP. Opacity breaks this chain while preserving all axiomatized
+    properties. -/
+opaque L : Set (ℕ → Bool)
+
+/-- NL (NLOGSPACE): problems solvable nondeterministically in O(log n) space.
+
+    **Design**: Opaque for same reasons as L. The previous concrete definition
+    was identical to L, PSPACE, and EXP. Opacity allows NL_subset_P and P_ne_EXP
+    to coexist consistently. -/
+opaque NL : Set (ℕ → Bool)
 
 /-- coNL: complements of NL problems. -/
 def coNL : Set (ℕ → Bool) :=
   { f | (fun n => !f n) ∈ NL }
 
-/-- L ⊆ NL. -/
-theorem L_subset_NL : L ⊆ NL := by
-  intro f ⟨e, h⟩; exact ⟨e, h⟩
+/-- L ⊆ NL: logspace is contained in nondeterministic logspace.
+    Previously proved trivially from identical definitions; now axiomatized
+    since L and NL are opaque. -/
+axiom L_subset_NL : L ⊆ NL
 
 /-- NL ⊆ P (from Savitch + simulation).
 
-    **WARNING: MODEL INCONSISTENCY** — In this model, L = NL = PSPACE = EXP
-    because space bounds are not tracked (all are `{f | ∃ e, Solves e ∅ f}`
-    up to unused existential quantifiers). This axiom combined with P_ne_EXP
-    is inconsistent: NL = EXP (propositionally) → NL ⊆ P → EXP ⊆ P → P = EXP.
-    The inconsistency is latent (no theorem exercises the contradictory path).
-
-    **Future fix**: Make NL (and L) opaque to prevent NL = EXP collapse,
-    then axiomatize NL ⊆ P and immerman_szelepcsenyi separately.
-    This requires a larger refactor. -/
+    This is now consistent because L and NL are opaque, preventing the
+    NL = EXP collapse that previously made NL ⊆ P + P ≠ EXP inconsistent. -/
 axiom NL_subset_P : NL ⊆ P
 
 /-- L ⊆ P (transitivity). -/
@@ -1225,27 +1231,12 @@ theorem L_subset_P : L ⊆ P :=
 
     Nondeterministic logspace is closed under complement.
     The real proof uses "inductive counting" of reachable configurations.
-    In our abstract model, NL = L (both defined as {f | ∃ e, Solves e ∅ f}),
-    so complement closure follows from Φ_negate.
-    Previously axiom; now proved. -/
-theorem immerman_szelepcsenyi : NL = coNL := by
-  ext f
-  simp only [NL, coNL, Set.mem_setOf_eq]
-  constructor
-  · -- NL ⊆ coNL: given program e solving f, construct program solving ¬f
-    intro ⟨e, hsolves⟩
-    obtain ⟨e', he'⟩ := Φ_negate e
-    exact ⟨e', fun n => by
-      obtain ⟨s, hs⟩ := hsolves n
-      exact ⟨s, he' emptyOracle n (f n) s hs⟩⟩
-  · -- coNL ⊆ NL: given program e solving ¬f, construct program solving f
-    intro ⟨e, hsolves⟩
-    obtain ⟨e', he'⟩ := Φ_negate e
-    refine ⟨e', fun n => ?_⟩
-    obtain ⟨s, hs⟩ := hsolves n
-    have h := he' emptyOracle n (!(f n)) s hs
-    simp only [Bool.not_not] at h
-    exact ⟨s, h⟩
+
+    Previously proved from concrete NL definition + Φ_negate (when NL = L =
+    all computable functions). Now axiomatized since NL is opaque. The real
+    proof technique (inductive counting) is fundamentally different from
+    bit-flipping (Φ_negate). -/
+axiom immerman_szelepcsenyi : NL = coNL
 
 /-- NL is closed under complement (from Immerman-Szelepcsényi). -/
 theorem NL_complement_closed (f : ℕ → Bool) :
@@ -1808,37 +1799,25 @@ theorem SAT_reduces_to_TQBF : SAT ≤ₚ TQBF :=
 /-
 ### Space Hierarchy in This Model
 
-**MODEL LIMITATION**: The real space hierarchy theorem (Stearns-Hartmanis-Lewis, 1965)
-proves L ⊊ PSPACE. However, in our abstract model, L = PSPACE = EXP because the
-polynomial parameter in PSPACE/EXP definitions is unused (Solves doesn't reference it).
+**FIXED**: Previously, L and NL were defined as `{f | ∃ e, Solves e ∅ f}`,
+identical to PSPACE/EXP (space bounds not tracked). This made NL_subset_P
+inconsistent with P_ne_EXP (via NL = EXP). Now L and NL are opaque,
+breaking the chain while preserving all axiomatized relationships.
 
-The time hierarchy separation P ≠ EXP remains sound because P requires a polynomial
-time bound that constrains which programs solve which languages.
+Note: PSPACE = EXP still holds (same definition), which is a remaining
+model limitation. P ≠ EXP remains sound because P requires a polynomial
+time bound.
 
 Of the five containments L ⊆ NL ⊆ P ⊆ NP ⊆ PSPACE ⊆ EXP,
-only P ⊊ EXP is provably strict in this model.
+P ⊊ EXP and NL ⊊ EXP are provably strict in this model.
 -/
 
-/-- **MODEL LIMITATION**: In this abstract model, L = PSPACE = EXP because
-    the polynomial parameter in PSPACE/EXP is unused (Solves doesn't reference it).
-    The real space hierarchy theorem L ≠ PSPACE requires a model that tracks
-    space bounds explicitly (e.g., a space-bounded variant of Φ).
-
-    This was previously `axiom L_ne_PSPACE : L ≠ PSPACE`, which derived False
-    (since L = PSPACE holds definitionally). Removed for soundness. -/
-theorem L_eq_PSPACE_in_model : L = PSPACE := by
-  ext f
-  simp only [L, PSPACE, Set.mem_setOf_eq]
-  constructor
-  · intro ⟨e, h⟩; exact ⟨e, ⟨0, 0⟩, h⟩
-  · intro ⟨e, _, h⟩; exact ⟨e, h⟩
-
-/-- Similarly, EXP = PSPACE in this model (same definition). -/
+/-- EXP = PSPACE in this model (same definition, unused polynomial parameter). -/
 theorem EXP_eq_PSPACE_in_model : EXP = PSPACE := by
   ext f; simp only [EXP, PSPACE]
 
 /-- P ≠ EXP remains sound: P requires a polynomial time bound that
-    constrains programs, while EXP (= L = PSPACE) does not.
+    constrains programs, while EXP (= PSPACE) does not.
     The time hierarchy theorem separates these. -/
 theorem strict_containment_P_ne_EXP : P ≠ EXP := P_ne_EXP
 
@@ -1886,9 +1865,7 @@ theorem circuit_lower_bound_from_PH (h_PH : PH ≠ Sigma_k 2) :
     ¬(NP ⊆ P_poly) :=
   PH_infinite_implies_NP_hard_circuits h_PH
 
-/-- **The Complexity Scorecard**: Summary of what we know unconditionally.
-    Note: L = PSPACE in this model (space bounds not tracked), so the
-    real-world separation L ≠ PSPACE is not representable here. -/
+/-- **The Complexity Scorecard**: Summary of what we know unconditionally. -/
 theorem complexity_scorecard :
     -- Containments
     (L ⊆ NL) ∧ (NL ⊆ P) ∧ (P ⊆ NP) ∧ (NP ⊆ PH) ∧
@@ -1897,9 +1874,7 @@ theorem complexity_scorecard :
     -- Equalities
     (NL = coNL) ∧ (IP = PSPACE) ∧
     -- Strict containments
-    (P ≠ EXP) ∧
-    -- Model equalities (space bounds not tracked)
-    (L = PSPACE) ∧
+    (P ≠ EXP) ∧ (NL ≠ EXP) ∧
     -- Barriers
     (¬ RelativizingProofOfEquality) ∧ (¬ RelativizingProofOfSeparation) ∧
     (¬ AlgebrizingProofOfEquality) ∧ (¬ AlgebrizingProofOfSeparation) := by
@@ -1907,7 +1882,7 @@ theorem complexity_scorecard :
          PH_subset_PSPACE, PSPACE_subset_EXP,
          P_subset_BPP, BPP_subset_PH,
          immerman_szelepcsenyi, shamir_IP_eq_PSPACE,
-         P_ne_EXP, L_eq_PSPACE_in_model,
+         P_ne_EXP, NL_ne_EXP,
          relativization_barrier_eq, relativization_barrier_neq,
          algebrization_barrier_eq, algebrization_barrier_neq⟩
 
@@ -2143,7 +2118,7 @@ theorem comprehensive_containments :
          P_subset_coNP, coNP_subset_PSPACE⟩
 
 /-- **Separation summary**: unconditionally known separations.
-    Note: L ≠ PSPACE removed (unsound in this model; L = PSPACE). -/
+    P ≠ EXP from time hierarchy; NL ≠ EXP from NL ⊆ P + P ≠ EXP. -/
 theorem separation_summary :
     P ≠ EXP ∧ NL ≠ EXP := by
   exact ⟨P_ne_EXP, NL_ne_EXP⟩
@@ -2278,9 +2253,7 @@ theorem complexity_zoo_summary :
     -- Nondeterministic space
     NPSPACE = PSPACE ∧
     -- Strict separations
-    P ≠ EXP ∧
-    -- Model equality (space bounds not tracked)
-    L = PSPACE ∧
+    P ≠ EXP ∧ NL ≠ EXP ∧
     -- Complement closure
     (∀ f, f ∈ PSPACE → (fun n => !f n) ∈ PSPACE) := by
   exact ⟨L_subset_NL, NL_subset_P, P_subset_NP, NP_subset_PSPACE, PSPACE_subset_EXP,
@@ -2288,7 +2261,7 @@ theorem complexity_zoo_summary :
          shamir_IP_eq_PSPACE,
          P_subset_BPP, BPP_subset_PH, PH_subset_PSPACE,
          savitch_NPSPACE_eq_PSPACE,
-         P_ne_EXP, L_eq_PSPACE_in_model,
+         P_ne_EXP, NL_ne_EXP,
          PSPACE_complement_closed⟩
 
 -- ============================================================
@@ -3892,8 +3865,7 @@ theorem grand_landscape :
 #check PSPACEHard_of_reduce       -- PSPACE-hardness transfers
 
 -- Space hierarchy and separations (model limitation: L = PSPACE)
-#check L_eq_PSPACE_in_model       -- L = PSPACE (space bounds not tracked in model)
-#check EXP_eq_PSPACE_in_model     -- EXP = PSPACE (same limitation)
+#check EXP_eq_PSPACE_in_model     -- EXP = PSPACE (unused polynomial parameter)
 #check NL_ne_EXP                  -- NL ≠ EXP
 
 -- Complexity zoo
