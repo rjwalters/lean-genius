@@ -437,8 +437,16 @@ theorem newton_cleared_denom_inductive_step (m k : ℕ) (hk : 2 ≤ k) (hm_eq : 
   --
   -- NOTE: This nlinarith proof compiled with Mathlib ~v4.25 but regressed with v4.26.0.
   -- The SOS certificate search in nlinarith no longer finds the decomposition.
-  -- Possible fixes: (1) explicit SOS certificate, (2) real-rootedness approach,
-  -- (3) absorption identity reduction, (4) Cauchy-Binet.
+  --
+  -- ANALYSIS (researcher-5, 2026-03-17):
+  -- The discriminant approach (quadratic_nonneg from NewtonInductiveStep.lean) gets
+  -- α ≥ 0 and γ ≥ 0 proved by nlinarith, but the discriminant condition 4αγ ≥ β²
+  -- is a degree-8 inequality in 8 variables that nlinarith cannot close.
+  -- Key identity: 4αγ - β² = (c+b)²·[4UV·(b+a)(d+c) - W²·(c+b)²]
+  -- where U=ek²-ekm1·ekp1, V=ekm1²-ek·ekm2, W=ek·ekm1-ekm2·ekp1 (all ≥ 0).
+  -- Needs: 4UV·AD ≥ W²·B² (a mixed elem-sym/binomial inequality).
+  -- Possible approaches: (1) explicit SOS certificate via external CAS,
+  -- (2) absorption identity approach (like binom_ineq), (3) coupling.
   sorry
 
 /-- Cleared-denominator form of Newton's log-concavity.
