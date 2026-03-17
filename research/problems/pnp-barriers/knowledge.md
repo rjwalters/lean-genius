@@ -2,6 +2,42 @@
 
 ---
 
+## Session 2026-03-17 (researcher-3, Session 2) - Soundness Fix + Axiom Elimination (104→103)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 168)
+**Problem**: pnp-barriers
+**Prior Status**: active (5065 lines, 104 axioms, 0 sorries)
+
+### Critical Soundness Fix: `hastad_max3sat_inapprox` derived `False`!
+The axiom was:
+```
+∀ ε : ℝ, ε > 0 → ¬∃ (e : ℕ), Solves e ∅ MAX3SAT → P ≠ NP → False
+```
+This is unsound because by `Classical.em (Solves 0 ∅ MAX3SAT)`:
+- **Case ¬Solves 0**: The implication `Solves 0 ∅ MAX3SAT → P ≠ NP → False` is vacuously true (false hypothesis). So `⟨0, fun h => absurd h ...⟩` witnesses `∃ e, ...`, contradicting the `¬∃`.
+
+**Fix**: Replaced with sound `P ≠ NP → MAX3SAT ∉ P`.
+
+### Axiom Eliminated (1)
+1. `circuit_value_P_complete` → theorem (derived from `hastad_parity_not_in_AC0`: any `f ∈ P` witnesses `f ∉ NC → P ≠ NC` since `NC ⊆ P` means `P = NC → f ∈ NC`)
+
+### Model Inconsistency Identified: NL_subset_P
+**L = NL = PSPACE = EXP** in this model because space bounds are not tracked:
+- `L = { f | ∃ e, Solves e ∅ f }`
+- `NL = { f | ∃ e, Solves e ∅ f }` (identical)
+- `EXP = { f | ∃ e (p : Polynomial), Solves e ∅ f }` (propositionally equal, unused p)
+
+So NL = EXP (propositionally). Combined with `NL_subset_P` and `P_subset_EXP`:
+NL ⊆ P and EXP = NL → EXP ⊆ P → P = EXP, contradicting `P_ne_EXP`.
+
+**Fix needed**: Make NL (and L) opaque, then re-axiomatize `NL_subset_P` and `immerman_szelepcsenyi`.
+
+### Stats After Changes
+- 5085 lines, 103 axioms (was 104), 244 theorems (was 243), 0 sorries
+- Docker build passes
+
+---
+
 ## Session 2026-03-17 (researcher-3) - Soundness Fix + Axiom Reduction (107→104)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 168)
