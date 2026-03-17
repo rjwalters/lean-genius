@@ -4692,6 +4692,86 @@ theorem poincare_duality_3d (b : BettiNumbers3) :
 
 end EulerCharTopInvariants
 
+-- ============================================================================
+-- Part LV: RP³ Topological Properties from Covering Space
+-- ============================================================================
+
+section RP3Properties
+
+/-- RP³ is compact: quotient of compact space by continuous surjection.
+    S³ is compact and rp3_projection is continuous and surjective. -/
+theorem rp3_compact : @CompactSpace RP3 instRP3Top := by
+  constructor
+  rw [isCompact_iff_finite_subcover]
+  intro ι U hU hcover
+  -- Pull back the cover to S³
+  have hS3_compact := sphere3_closedManifold.compact.1
+  rw [isCompact_iff_finite_subcover] at hS3_compact
+  -- The pullback covers S³
+  have hcover' : Set.univ ⊆ ⋃ i, rp3_projection ⁻¹' U i := by
+    intro x _
+    have hx := rp3_projection_surjective (rp3_projection x)
+    have : rp3_projection x ∈ ⋃ i, U i := hcover (Set.mem_univ _)
+    simp only [Set.mem_iUnion] at this ⊢
+    obtain ⟨i, hi⟩ := this
+    exact ⟨i, hi⟩
+  have hU' : ∀ i, @IsOpen (↥Sphere3) _ (rp3_projection ⁻¹' U i) :=
+    fun i => rp3_projection_continuous.isOpen_preimage _ (hU i)
+  obtain ⟨t, ht⟩ := hS3_compact (fun i => rp3_projection ⁻¹' U i) hU' hcover'
+  -- The same finite subcover works for RP³ (projection is surjective)
+  exact ⟨t, fun y hy => by
+    obtain ⟨x, rfl⟩ := rp3_projection_surjective y
+    have := ht (Set.mem_univ x)
+    simp only [Set.mem_iUnion, Finset.mem_coe] at this ⊢
+    obtain ⟨i, hi, hxi⟩ := this
+    exact ⟨i, hi, hxi⟩⟩
+
+/-- RP³ is connected: continuous surjective image of connected space. -/
+theorem rp3_connected : @ConnectedSpace RP3 instRP3Top := by
+  constructor
+  · exact ⟨⟨rp3_projection ⟨(EuclideanSpace.single 0 1 : EuclideanSpace ℝ (Fin 4)),
+      by rw [sphere3_mem_norm']; simp [EuclideanSpace.norm_single]⟩⟩⟩
+  · rw [isPreconnected_iff_subset_of_isClopen]
+    intro s hs hne
+    -- s is clopen and nonempty in RP3
+    -- Its preimage in S³ is clopen (rp3_projection is continuous)
+    -- S³ is connected, so the preimage is univ or empty
+    -- Since s is nonempty, preimage is nonempty, so preimage is univ
+    -- Then s contains all of range(π), which is all of RP3
+    have hs_open := hs.1
+    have hs_closed := hs.2
+    have hpre_open : @IsOpen (↥Sphere3) _ (rp3_projection ⁻¹' s) :=
+      rp3_projection_continuous.isOpen_preimage _ hs_open
+    have hpre_closed : @IsClosed (↥Sphere3) _ (rp3_projection ⁻¹' s) :=
+      hs_closed.preimage rp3_projection_continuous
+    have hpre_ne : (rp3_projection ⁻¹' s).Nonempty := by
+      obtain ⟨y, hy⟩ := hne
+      obtain ⟨x, rfl⟩ := rp3_projection_surjective y
+      exact ⟨x, hy⟩
+    -- S³ is connected, so clopen nonempty set is univ
+    have hS3_conn := sphere3_closedManifold.connected
+    have := hS3_conn.2.subset_of_isClopen ⟨hpre_open, hpre_closed⟩ hpre_ne
+    -- Every point in RP3 has a preimage in S³, which is in the preimage of s
+    intro y _
+    obtain ⟨x, rfl⟩ := rp3_projection_surjective y
+    exact this (Set.mem_univ x)
+
+/-- RP³ is nonempty: surjective image of nonempty space. -/
+theorem rp3_nonempty : @Nonempty RP3 :=
+  let ⟨x⟩ := sphere3_closedManifold.nonempty
+  ⟨rp3_projection x⟩
+
+/-- RP³ satisfies 3 of 4 closed manifold properties.
+    Only locallyEuclidean remains (needs the quotient to be a local homeomorphism,
+    which follows from the action being free but requires more infrastructure). -/
+theorem rp3_closed_manifold_partial :
+    @CompactSpace RP3 instRP3Top ∧
+    @ConnectedSpace RP3 instRP3Top ∧
+    @Nonempty RP3 :=
+  ⟨rp3_compact, rp3_connected, rp3_nonempty⟩
+
+end RP3Properties
+
 -- Summary of all contributions to PoincareConjecture.lean:
 -- Parts XLIV-XLV: JSJ Decomposition, Graph Manifolds, Thurston Norm
 -- Parts XLVI-XLVIII: Perelman's Proof, Thurston's Geometries, Post-Perelman
@@ -4699,5 +4779,6 @@ end EulerCharTopInvariants
 -- Parts LI-LII: Dehn Surgery, Knots and Poincaré
 -- Part LIII: Concrete Cyclic Group Actions on S³ and Lens Space Geometry
 -- Part LIV: Euler Characteristic and Topological Invariants
+-- Part LV: RP³ Topological Properties from Covering Space
 
 end PoincareConjecture
