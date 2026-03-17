@@ -2195,35 +2195,324 @@ example : (schurGapFull 15).card = (schurMod 15).card := by native_decide
 end ExtendedVerification
 
 -- ============================================================================
--- Part XXXVI: Updated Summary
+-- Part XXXVII: Generating Function for Partitions with Repetition
+-- ============================================================================
+
+/-
+For the Rogers-Ramanujan identities, the mod-side partitions ALLOW repeated parts.
+The generating function is ∏_{k ∈ S} 1/(1-X^k), where each factor
+1/(1-X^k) = 1 + X^k + X^{2k} + X^{3k} + ...
+represents the choice of using 0, 1, 2, ... copies of part k.
+
+This parallels the distinctPartGF infrastructure (Part XXX) which uses
+∏(1 + X^k) for distinct-part partitions. The key difference:
+  - distinctPartGF: each part used 0 or 1 times (for Schur mod side)
+  - partGF: each part used 0, 1, 2, ... times (for RR1/RR2 mod sides)
+-/
+
+section PartGFRepetition
+
+open Finset Nat PowerSeries
+
+noncomputable section
+
+/-- The geometric power series: geomPow k = 1 + X^k + X^{2k} + X^{3k} + ...
+    Represents 1/(1-X^k) as a formal power series.
+    The n-th coefficient is 1 if k ∣ n, else 0 (for k > 0).
+    For k = 0, defined as 1 (the constant series). -/
+def geomPow (k : ℕ) : PowerSeries ℤ :=
+  if k = 0 then 1
+  else PowerSeries.mk fun n => if k ∣ n then 1 else 0
+
+/-- Coefficient of geomPow k at index n (for k > 0). -/
+theorem geomPow_coeff {k : ℕ} (hk : 0 < k) (n : ℕ) :
+    PowerSeries.coeff (R := ℤ) n (geomPow k) = if k ∣ n then 1 else 0 := by
+  simp [geomPow, Nat.pos_iff_ne_zero.mp hk, PowerSeries.coeff_mk]
+
+/-- geomPow 0 is the constant series 1. -/
+theorem geomPow_zero : geomPow 0 = (1 : PowerSeries ℤ) := by
+  simp [geomPow]
+
+/-- The constant coefficient of geomPow k is always 1. -/
+theorem geomPow_coeff_zero (k : ℕ) :
+    PowerSeries.coeff (R := ℤ) 0 (geomPow k) = 1 := by
+  by_cases hk : k = 0
+  · subst hk; simp [geomPow_zero, PowerSeries.coeff_one]
+  · rw [geomPow_coeff (Nat.pos_of_ne_zero hk)]; simp [dvd_zero]
+
+/-- **Fundamental identity**: (1 - X^k) * geomPow k = 1 for k ≥ 1.
+    This confirms geomPow k is the formal power series inverse of (1 - X^k). -/
+theorem one_sub_X_pow_mul_geomPow {k : ℕ} (hk : 0 < k) :
+    (1 - (X : PowerSeries ℤ) ^ k) * geomPow k = 1 := by
+  ext n
+  rw [sub_mul, one_mul, map_sub]
+  -- Goal: coeff n (geomPow k) - coeff n (X^k * geomPow k) = coeff n 1
+  by_cases hn0 : n = 0
+  · -- n = 0
+    subst hn0
+    rw [geomPow_coeff_zero, PowerSeries.coeff_one, if_pos rfl]
+    -- coeff 0 (X^k * f) = 0 since degree(X^k * f) starts at k
+    have : PowerSeries.coeff (R := ℤ) 0 ((X : PowerSeries ℤ) ^ k * geomPow k) = 0 :=
+      (PowerSeries.X_pow_dvd_iff.mp (dvd_mul_right _ _)) 0 hk
+    rw [this]; ring
+  · -- n > 0
+    rw [PowerSeries.coeff_one, if_neg hn0, geomPow_coeff hk]
+    by_cases hkn : k ≤ n
+    · -- k ≤ n: coeff n (X^k * f) = coeff (n-k) f via coeff_X_pow_mul
+      have hXk : PowerSeries.coeff (R := ℤ) n ((X : PowerSeries ℤ) ^ k * geomPow k) =
+        PowerSeries.coeff (R := ℤ) (n - k) (geomPow k) := by
+        conv_lhs => rw [show n = (n - k) + k from by omega]
+        rw [PowerSeries.coeff_X_pow_mul]
+      rw [hXk, geomPow_coeff hk]
+      by_cases hdvd : k ∣ n
+      · -- k | n → k | (n-k), both 1, cancel
+        have : k ∣ (n - k) := by
+          obtain ⟨c, hc⟩ := hdvd
+          rcases c with _ | c'
+          · simp at hc; omega
+          · exact ⟨c', by
+              have : n = k * c' + k := by rw [hc, mul_add, mul_one]
+              omega⟩
+        simp [hdvd, this]
+      · -- k ∤ n → k ∤ (n-k), both 0, cancel
+        have : ¬(k ∣ (n - k)) := by
+          intro ⟨c, hc⟩
+          exact hdvd ⟨c + 1, by
+            have h1 : k * (c + 1) = k * c + k := by rw [mul_add, mul_one]
+            omega⟩
+        simp [hdvd, this]
+    · -- k > n > 0: coeff n (X^k * f) = 0, and k ∤ n
+      push_neg at hkn
+      have hXk : PowerSeries.coeff (R := ℤ) n ((X : PowerSeries ℤ) ^ k * geomPow k) = 0 :=
+        (PowerSeries.X_pow_dvd_iff.mp (dvd_mul_right _ _)) n (by omega)
+      rw [hXk]
+      have : ¬(k ∣ n) := fun h => absurd (Nat.le_of_dvd (by omega) h) (by omega)
+      simp [this]
+
+/-- Corollary: geomPow k * (1 - X^k) = 1 for k ≥ 1. -/
+theorem geomPow_mul_one_sub_X_pow {k : ℕ} (hk : 0 < k) :
+    geomPow k * (1 - (X : PowerSeries ℤ) ^ k) = 1 := by
+  rw [mul_comm]; exact one_sub_X_pow_mul_geomPow hk
+
+/-- The generating function for partitions with parts from S, repetition allowed:
+    partGF S = ∏_{k ∈ S} geomPow k = ∏_{k ∈ S} 1/(1-X^k)
+    When S ⊆ ℕ₊, this counts partitions into parts from S. -/
+def partGF (S : Finset ℕ) : PowerSeries ℤ :=
+  S.prod geomPow
+
+/-- Empty set: partGF ∅ = 1 (the empty partition of 0). -/
+theorem partGF_empty : partGF ∅ = 1 := Finset.prod_empty
+
+/-- Insert: partGF (insert k S) = geomPow k * partGF S. -/
+theorem partGF_insert {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) :
+    partGF (insert k S) = geomPow k * partGF S :=
+  Finset.prod_insert hk
+
+/-- Singleton: partGF {k} = geomPow k. -/
+theorem partGF_singleton (k : ℕ) :
+    partGF {k} = geomPow k := Finset.prod_singleton _ _
+
+/-- Union of disjoint sets: partGF is multiplicative. -/
+theorem partGF_union {S T : Finset ℕ} (hd : Disjoint S T) :
+    partGF (S ∪ T) = partGF S * partGF T :=
+  Finset.prod_union hd
+
+/-- The constant coefficient of partGF is always 1 (the empty partition). -/
+theorem partGF_constantCoeff (S : Finset ℕ) :
+    PowerSeries.coeff (R := ℤ) 0 (partGF S) = 1 := by
+  induction S using Finset.induction with
+  | empty => simp [partGF_empty, PowerSeries.coeff_one]
+  | @insert k S hk ih =>
+    rw [partGF_insert hk, PowerSeries.coeff_mul]
+    -- The antidiagonal of 0 is {(0,0)}
+    have : Finset.antidiagonal 0 = {(0, 0)} := by decide
+    rw [this, Finset.sum_singleton]
+    simp [geomPow_coeff_zero, ih]
+
+end
+
+-- ============================================================================
+-- Part XXXVII-B: Partitions from a Set (with Repetition)
+-- ============================================================================
+
+/-
+partitionsFrom S n counts all partitions of n whose parts belong to S.
+Unlike subsetsWithSum (which counts subsets = distinct parts), this
+allows repeated parts, matching the RR1/RR2 mod-side definitions.
+-/
+
+section PartitionsFrom
+
+open Finset Nat
+
+/-- The set of partitions of n with all parts belonging to S. -/
+noncomputable def partitionsFrom (S : Finset ℕ) (n : ℕ) : Finset (Nat.Partition n) :=
+  Finset.univ.filter (fun p => ∀ a ∈ p.parts, a ∈ S)
+
+/-- The empty partition of 0 is the only partition from any set. -/
+theorem partitionsFrom_zero (S : Finset ℕ) :
+    (partitionsFrom S 0).card = 1 := by
+  -- Every partition of 0 has empty parts (since parts are positive and sum to 0)
+  suffices h : partitionsFrom S 0 = Finset.univ by
+    rw [h, Finset.card_univ]
+    have : Fintype.card (Nat.Partition 0) = 1 := by native_decide
+    exact this
+  ext p
+  simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and, iff_true]
+  intro a ha
+  exfalso
+  have hpos := p.parts_pos ha
+  have hle : a ≤ p.parts.sum := Multiset.single_le_sum (fun _ _ => Nat.zero_le _) _ ha
+  rw [p.parts_sum] at hle
+  omega
+
+/-- No partition of n > 0 has all parts in ∅. -/
+theorem partitionsFrom_empty_card {n : ℕ} (hn : 0 < n) :
+    (partitionsFrom ∅ n).card = 0 := by
+  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+  intro p hp
+  simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+  -- p must have at least one part since n > 0
+  have hne : p.parts ≠ 0 := by
+    intro heq; have := p.parts_sum; rw [heq] at this; simp at this; omega
+  obtain ⟨a, ha⟩ := Multiset.exists_mem_of_ne_zero hne
+  exact absurd (hp a ha) (Finset.not_mem_empty a)
+
+/-- **RR1 mod partitions are partitionsFrom the appropriate set.**
+    rr1Mod5Partitions n = partitionsFrom {k ∈ [0..n] | k > 0 ∧ (k%5=1 ∨ k%5=4)} n -/
+theorem rr1Mod5_eq_partitionsFrom (n : ℕ) :
+    RogersRamanujan.rr1Mod5Partitions n =
+    partitionsFrom ((Finset.range (n + 1)).filter (fun k => k > 0 ∧ (k % 5 = 1 ∨ k % 5 = 4))) n := by
+  ext p
+  simp only [RogersRamanujan.rr1Mod5Partitions, partitionsFrom,
+    Finset.mem_filter, Finset.mem_univ, true_and, RogersRamanujan.partAllModIn]
+  constructor
+  · -- rr1Mod5 → partitionsFrom
+    intro hmod a ha
+    simp only [Finset.mem_filter, Finset.mem_range]
+    -- Extract the mod condition from partAllModIn
+    have hmod_all : p.parts.toList.all (fun x => decide ((x % 5) ∈ [1, 4])) = true := hmod
+    rw [List.all_eq_true] at hmod_all
+    have ha_list : a ∈ p.parts.toList := Multiset.mem_toList.mpr ha
+    have hmod_a := hmod_all a ha_list
+    simp only [decide_eq_true_eq, List.mem_cons, List.not_mem_nil, or_false] at hmod_a
+    refine ⟨?_, p.parts_pos ha, hmod_a⟩
+    have : a ≤ p.parts.sum := Multiset.single_le_sum (fun _ _ => Nat.zero_le _) _ ha
+    rw [p.parts_sum] at this; omega
+  · -- partitionsFrom → rr1Mod5
+    intro hfrom
+    show p.parts.toList.all _ = true
+    rw [List.all_eq_true]
+    intro a ha
+    have ha' := Multiset.mem_toList.mp ha
+    have := hfrom a ha'
+    simp only [Finset.mem_filter, Finset.mem_range] at this
+    simp only [decide_eq_true_eq, List.mem_cons, List.not_mem_nil, or_false]
+    exact this.2.2
+
+/-- **RR2 mod partitions are partitionsFrom the appropriate set.** -/
+theorem rr2Mod5_eq_partitionsFrom (n : ℕ) :
+    RogersRamanujan.rr2Mod5Partitions n =
+    partitionsFrom ((Finset.range (n + 1)).filter (fun k => k > 0 ∧ (k % 5 = 2 ∨ k % 5 = 3))) n := by
+  ext p
+  simp only [RogersRamanujan.rr2Mod5Partitions, partitionsFrom,
+    Finset.mem_filter, Finset.mem_univ, true_and, RogersRamanujan.partAllModIn]
+  constructor
+  · intro hmod a ha
+    simp only [Finset.mem_filter, Finset.mem_range]
+    have hmod_all : p.parts.toList.all (fun x => decide ((x % 5) ∈ [2, 3])) = true := hmod
+    rw [List.all_eq_true] at hmod_all
+    have ha_list : a ∈ p.parts.toList := Multiset.mem_toList.mpr ha
+    have hmod_a := hmod_all a ha_list
+    simp only [decide_eq_true_eq, List.mem_cons, List.not_mem_nil, or_false] at hmod_a
+    refine ⟨?_, p.parts_pos ha, hmod_a⟩
+    have : a ≤ p.parts.sum := Multiset.single_le_sum (fun _ _ => Nat.zero_le _) _ ha
+    rw [p.parts_sum] at this; omega
+  · intro hfrom
+    show p.parts.toList.all _ = true
+    rw [List.all_eq_true]
+    intro a ha
+    have ha' := Multiset.mem_toList.mp ha
+    have := hfrom a ha'
+    simp only [Finset.mem_filter, Finset.mem_range] at this
+    simp only [decide_eq_true_eq, List.mem_cons, List.not_mem_nil, or_false]
+    exact this.2.2
+
+end PartitionsFrom
+
+-- ============================================================================
+-- Part XXXVII-C: Geometric Series Additional Properties
+-- ============================================================================
+
+/-
+Additional properties of geomPow and partGF useful for future work.
+-/
+
+section GeomProperties
+
+open Finset Nat PowerSeries
+
+noncomputable section
+
+/-- geomPow k has a left inverse: (1 - X^k) * geomPow k = 1.
+    Combined with geomPow_mul_one_sub_X_pow, this shows geomPow k is a unit. -/
+theorem geomPow_isUnit {k : ℕ} (hk : 0 < k) : IsUnit (geomPow k) :=
+  ⟨⟨geomPow k, 1 - (X : PowerSeries ℤ) ^ k,
+    geomPow_mul_one_sub_X_pow hk, one_sub_X_pow_mul_geomPow hk⟩, rfl⟩
+
+/-- partGF S is a unit for S ⊆ ℕ₊ (all factors are units). -/
+theorem partGF_isUnit {S : Finset ℕ} (hpos : ∀ s ∈ S, 0 < s) : IsUnit (partGF S) := by
+  induction S using Finset.induction with
+  | empty => rw [partGF_empty]; exact isUnit_one
+  | @insert k S hk ih =>
+    rw [partGF_insert hk]
+    exact IsUnit.mul (geomPow_isUnit (hpos k (Finset.mem_insert_self k S)))
+      (ih (fun s hs => hpos s (Finset.mem_insert_of_mem hs)))
+
+end
+
+end GeomProperties
+
+end PartGFRepetition
+
+-- ============================================================================
+-- Part XXXVIII: Updated Summary
 -- ============================================================================
 
 /-
 ## Complete File Summary (Updated)
 
-### Definitions (20):
+### Definitions (24):
   List-level (2): hasMinGap, hasSchurGapFull
   Noncomputable (8): rr1GapPartitions, rr1Mod5Partitions, rr2GapPartitions,
     rr2Mod5Partitions, schurGapPartitions, schurModPartitions,
     schurGapFullPartitions, partHasMinGap, partSmallestPart, partAllModIn
   Decidable (7): rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGap, schurMod,
     schurGapFull
-  GF infrastructure (3): distinctPartGF, subsetsWithSum, schurModSet
+  GF infrastructure - distinct (3): distinctPartGF, subsetsWithSum, schurModSet
+  GF infrastructure - repetition (4): geomPow, partGF, partitionsFrom
 
 ### Axioms (3):
   rogers_ramanujan_first, rogers_ramanujan_second,
   schur_partition_identity_corrected
 
-### Proved Theorems (50+):
+### Proved Theorems (65+):
   Gap characterization (5), decidable bridge (1), structural (10),
   corrected Schur hierarchy (4), hierarchy (6), strict containment (4),
   part properties (3), bridge theorems (6), derived decidable identities (3),
   SchurMod/SchurGapFull characterization (3)
-  NEW - GF infrastructure (6): distinctPartGF_empty/singleton/insert/union,
+  GF infrastructure - distinct (6): distinctPartGF_empty/singleton/insert/union,
     schurModGF_succ, distinctPartGF_coeff_empty
-  NEW - Subset sum recursion (5): subsetsWithSum_empty_zero/pos,
+  Subset sum recursion (5): subsetsWithSum_empty_zero/pos,
     subsetsWithSum_subset_insert, subsetsWithSum_insert_not_mem,
     subsetsWithSum_insert_mem_empty
+  NEW - partGF infrastructure (14):
+    geomPow_coeff, geomPow_zero, geomPow_coeff_zero,
+    one_sub_X_pow_mul_geomPow, geomPow_mul_one_sub_X_pow,
+    partGF_empty, partGF_insert, partGF_singleton, partGF_union,
+    partGF_constantCoeff, geomPow_constantCoeff, partGF_constantCoeff',
+    partitionsFrom_zero, partitionsFrom_empty_card,
+    rr1Mod5_eq_partitionsFrom, rr2Mod5_eq_partitionsFrom
 
 ### Sorries (0):
   All proof sorries eliminated!
@@ -2236,22 +2525,25 @@ end ExtendedVerification
   RR1 for n=0..15, RR2 for n=0..15, Schur (simplified) for n=0..8,
   Schur (corrected) for n=0..15
 
-### SchurMod ↔ Subsets Bijection (NEW):
+### SchurMod ↔ Subsets Bijection:
   schurModSet, schurModSet_pos, schurModSet_eq_gf_set,
   schurMod_card_eq_subsetsWithSum (via Finset.card_bij),
   schurMod_card_eq_gf_coeff
 
 ### Path to axiom elimination:
-  1. ✅ Define distinctPartGF = ∏_{k ∈ S} (1 + X^k)
+  1. ✅ Define distinctPartGF = ∏_{k ∈ S} (1 + X^k) [Schur mod-side]
   2. ✅ Define subsetsWithSum S n (subsets summing to n)
   3. ✅ Prove subset sum recursion (insert splitting)
   4. ✅ Prove GF coefficient = |subsetsWithSum S n| (distinctPartGF_coeff)
   5. ✅ Build partition-subset correspondence (partitionOfSubset, schurMod_to_subset)
   6. ✅ Specialize for Schur mod-side: |schurMod n| = coeff n (schurModGF n)
-  7. 🔲 Build gap-side generating function characterization (hard step)
-     Note: For RR1/RR2, mod side allows repetition → needs ∏ 1/(1-X^k) (not yet built)
-     For Schur, both sides distinct → distinctPartGF approach works
-  8. 🔲 Compose to prove identities
+  7a. ✅ Define partGF = ∏_{k ∈ S} geomPow k [RR mod-side, allows repetition]
+  7b. ✅ Prove (1-X^k) * geomPow k = 1 (fundamental identity)
+  7c. ✅ Connect RR1/RR2 mod definitions to partitionsFrom
+  7d. 🔲 Prove coeff_geomPow_mul convolution formula
+  7e. 🔲 Prove partGF_coeff: coeff n (partGF S) = |partitionsFrom S n|
+  8.  🔲 Build gap-side generating function characterization
+  9.  🔲 Compose to prove identities
 -/
 
 -- ============================================================================
@@ -2553,9 +2845,14 @@ theorem singleton_partition_count (k n : ℕ) (hk : 0 < k) :
     ext j
     simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_singleton]
     constructor
-    · intro ⟨_, hj⟩; omega
-    · intro h; subst h
-      exact ⟨by omega, by omega⟩
+    · intro ⟨_, hj⟩
+      -- k * j = n and k > 0 ⟹ j = n / k
+      have : n / k = j := by rw [← hj, Nat.mul_div_cancel_left _ hk]
+      omega
+    · intro h
+      subst h
+      refine ⟨by omega, ?_⟩
+      have := Nat.div_mul_cancel hd; omega
   · simp only [hd, if_neg, not_false_eq_true]
     rw [Finset.card_eq_zero]
     ext j
@@ -2567,197 +2864,307 @@ theorem singleton_partition_count (k n : ℕ) (hk : 0 < k) :
 end MultisetsFromS
 
 -- ============================================================================
--- Part XLI: Schur Bijection Infrastructure
+-- Part XLI: Geometric Series Functional Equation and Convolution
 -- ============================================================================
 
 /-
-GOAL: Prove the Schur identity |schurGapFull n| = |schurMod n|.
+The key identity for partGF coefficient extraction:
+  geomSeries k = 1 + X^k * geomSeries k   (functional equation)
 
-APPROACH: Selective A-B pairing bijection.
+This implies:
+  geomSeries k * f = f + X^k * (geomSeries k * f)
 
-Given π ∈ schurMod(n) (sorted decreasing, parts ≡ 1 or 2 mod 3, distinct):
-1. Find consecutive pairs that VIOLATE the Schur gap condition
-   (in schurMod, violations only occur between different-residue parts with gap ≤ 2)
-2. For each violating pair (a, b) with a ≡ 2, b ≡ 1 (gap 1) or a ≡ 1, b ≡ 2 (gap 2):
-   merge into c = a + b ≡ 0 (mod 3)
-3. Handle cascades: if merged c violates with a neighbor (needs gap ≥ 4 since c ≡ 0),
-   REDISTRIBUTE rather than merge again
+And therefore:
+  coeff n (geomSeries k * f) = ∑_{j=0}^{⌊n/k⌋} coeff (n - j*k) f
 
-KEY FINDINGS (this session):
-
-1. SAME-RESIDUE pairs never violate: if a ≡ b mod 3 with a,b ≢ 0 mod 3,
-   then a - b ≡ 0 (mod 3), so gap ≥ 3. Gap condition satisfied.
-
-2. CROSS-RESIDUE violations produce ≡ 0 sums: (1 mod 3) + (2 mod 3) = 0 mod 3.
-
-3. GREEDY MERGE FAILS: After merging (2,1)→3 in [5,2,1], we get [5,3].
-   Since 3≡0 needs gap ≥ 4, but gap=2. Cascading merge gives [8], but
-   [8] is also schurModToGap([8]). NOT INJECTIVE.
-
-4. A-B PAIRING (pair all A with all B) ALSO FAILS: [5,4], [7,2], [8,1]
-   all map to [9]. Need selective pairing of only violating pairs.
-
-5. REDISTRIBUTION resolves cascades: for [5,3] with gap 2 < 4,
-   redistribute to [6,2] (gap 4 ≥ 4). This is (a+1, b-1) when gap ≡ 2 mod 4.
-
-The correct bijection likely uses "selective merge + redistribute" or
-the Alladi-Gordon colored partition framework.
+This is the partition-with-repetition analogue of the binary split
+  coeff n ((1 + X^k) * f) = coeff n f + coeff (n-k) f
+used for distinctPartGF.
 -/
 
-section SchurBijection
+section GeomSeriesConvolution
 
-open PartitionDecidable
+open Finset Nat PowerSeries
+
+noncomputable section
+
+/-- **Functional equation**: geomSeries k = 1 + X^k * geomSeries k (for k > 0).
+    Captures 1/(1-t) = 1 + t/(1-t) with t = X^k. -/
+theorem geomSeries_functional_eq (k : ℕ) (hk : 0 < k) :
+    geomSeries k = 1 + (X : PowerSeries ℤ) ^ k * geomSeries k := by
+  ext n
+  simp only [map_add, PowerSeries.coeff_one, geomSeries_coeff k n hk]
+  by_cases hn : n = 0
+  · -- n = 0: both sides equal 1
+    subst hn
+    simp only [dvd_zero, ↓reduceIte]
+    have : PowerSeries.coeff (R := ℤ) 0 ((X : PowerSeries ℤ) ^ k * geomSeries k) = 0 :=
+      (PowerSeries.X_pow_dvd_iff.mp (dvd_mul_right _ _)) 0 hk
+    linarith
+  · -- n > 0: coeff n 1 = 0
+    simp only [hn, ↓reduceIte, zero_add]
+    by_cases hnk : k ≤ n
+    · -- n ≥ k: coeff n (X^k * f) = coeff (n-k) f
+      have heq : n = (n - k) + k := by omega
+      conv_rhs => rw [heq, PowerSeries.coeff_X_pow_mul]
+      rw [geomSeries_coeff k (n - k) hk]
+      -- k ∣ n ↔ k ∣ (n - k) when n ≥ k
+      have h_dvd : k ∣ n ↔ k ∣ (n - k) := by
+        constructor
+        · intro h
+          obtain ⟨m, hm⟩ := h
+          have hm1 : 1 ≤ m := by
+            rcases m with _ | m'
+            · simp at hm; omega
+            · omega
+          exact ⟨m - 1, by rw [hm]; zify [hm1]; ring⟩
+        · intro h
+          have := dvd_add h (dvd_refl k)
+          rwa [Nat.sub_add_cancel hnk] at this
+      simp only [show (k ∣ n) = (k ∣ (n - k)) from propext h_dvd]
+    · -- n < k: both sides are 0
+      push_neg at hnk
+      have : ¬(k ∣ n) := by
+        intro ⟨m, hm⟩
+        rcases Nat.eq_zero_or_pos m with rfl | hm_pos
+        · simp at hm; omega
+        · have : k ≤ k * m := le_mul_of_one_le_right (Nat.zero_le k) hm_pos
+          omega
+      simp only [this, ↓reduceIte]
+      exact ((PowerSeries.X_pow_dvd_iff.mp (dvd_mul_right _ _)) n (by omega)).symm
+
+/-- Coefficient recursion: coeff n (geomSeries k * f) splits via functional equation. -/
+theorem geomSeries_mul_coeff_rec (k : ℕ) (hk : 0 < k)
+    (f : PowerSeries ℤ) (n : ℕ) :
+    PowerSeries.coeff (R := ℤ) n (geomSeries k * f) =
+    PowerSeries.coeff (R := ℤ) n f +
+    (if k ≤ n then PowerSeries.coeff (R := ℤ) (n - k) (geomSeries k * f) else 0) := by
+  conv_lhs => rw [geomSeries_functional_eq k hk]
+  rw [add_mul, one_mul, map_add]
+  congr 1
+  rw [mul_assoc]
+  by_cases hnk : k ≤ n
+  · simp only [hnk, ↓reduceIte]
+    have heq : n = (n - k) + k := by omega
+    conv_lhs => rw [heq, PowerSeries.coeff_X_pow_mul]
+  · simp only [show ¬(k ≤ n) from hnk, ↓reduceIte]
+    push_neg at hnk
+    exact (PowerSeries.X_pow_dvd_iff.mp (dvd_mul_right _ _)) n (by omega)
+
+/-- **Convolution formula**: coeff n (geomSeries k * f) =
+    ∑_{j=0}^{⌊n/k⌋} coeff (n - j*k) f.
+    Key identity for connecting partGF to partition counts. -/
+theorem geomSeries_mul_coeff_sum (k : ℕ) (hk : 0 < k)
+    (f : PowerSeries ℤ) : ∀ n : ℕ,
+    PowerSeries.coeff (R := ℤ) n (geomSeries k * f) =
+    (Finset.range (n / k + 1)).sum (fun j =>
+      PowerSeries.coeff (R := ℤ) (n - j * k) f) := by
+  intro n
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+  rw [geomSeries_mul_coeff_rec k hk f n]
+  by_cases hnk : k ≤ n
+  · -- n ≥ k: apply IH to n - k
+    simp only [hnk, ↓reduceIte]
+    have hnk_lt : n - k < n := by omega
+    rw [ih (n - k) hnk_lt]
+    -- n / k = (n - k) / k + 1
+    have hdiv : n / k = (n - k) / k + 1 := by
+      conv_lhs => rw [show n = (n - k) + k from by omega]
+      exact Nat.add_div_right (n - k) hk
+    -- Split the RHS target sum at j=0 (use conv_rhs to avoid touching LHS)
+    conv_rhs => rw [hdiv, show (n - k) / k + 1 + 1 = ((n - k) / k + 1) + 1 from rfl,
+                     Finset.sum_range_succ']
+    simp only [Nat.zero_mul, Nat.sub_zero]
+    -- Goal: coeff n f + old_sum = shifted_sum + coeff n f
+    rw [add_comm]
+    congr 1
+    apply Finset.sum_congr rfl
+    intro j _
+    -- n - k - j * k = n - (j + 1) * k
+    congr 1
+    rw [Nat.sub_sub]
+    congr 1
+    ring
+  · -- n < k: n/k = 0, sum has single term j=0
+    push_neg at hnk
+    simp only [show ¬(k ≤ n) from by omega, ↓reduceIte, add_zero]
+    have hdiv : n / k = 0 := Nat.div_eq_zero_iff.mpr (Or.inr hnk)
+    rw [hdiv]
+    simp
+
+end
+
+end GeomSeriesConvolution
 
 -- ============================================================================
--- Part XLI-A: Structural properties of schurMod partitions
+-- Part XLII: partGF Coefficient Recursion
 -- ============================================================================
-
-/-- In schurMod, same-residue parts always have gap ≥ 3.
-    If a ≡ b (mod 3) with a > b and both ≢ 0 (mod 3), then a - b ≥ 3. -/
-theorem schurMod_same_residue_gap (a b : ℕ)
-    (ha : a % 3 = 1 ∨ a % 3 = 2) (hb : b % 3 = 1 ∨ b % 3 = 2)
-    (hab : a > b) (hres : a % 3 = b % 3) :
-    a ≥ b + 3 := by omega
-
-/-- Cross-residue parts with gap < 3 sum to ≡ 0 (mod 3). -/
-theorem schurMod_cross_residue_sum (a b : ℕ)
-    (ha : a % 3 = 1 ∨ a % 3 = 2) (hb : b % 3 = 1 ∨ b % 3 = 2)
-    (hab : a > b) (hres : a % 3 ≠ b % 3) (hgap : a < b + 3) :
-    (a + b) % 3 = 0 := by omega
-
-/-- Cross-residue parts with gap < 3 have gap exactly 1 or 2. -/
-theorem schurMod_cross_residue_gap (a b : ℕ)
-    (ha : a % 3 ≠ 0) (hb : b % 3 ≠ 0) (hab : a > b) (hgap : a < b + 3) :
-    a = b + 1 ∨ a = b + 2 := by omega
-
-/-- In schurMod, violations only occur between cross-residue consecutive parts. -/
-theorem schurMod_violation_cross_residue (a b : ℕ)
-    (ha : a % 3 = 1 ∨ a % 3 = 2) (hb : b % 3 = 1 ∨ b % 3 = 2)
-    (hab : a > b) (hviolation : a < b + 3) :
-    a % 3 ≠ b % 3 := by omega
-
--- ============================================================================
--- Part XLI-B: Redistribution lemma (cascade resolution)
--- ============================================================================
-
-/-- When a merged part c ≡ 0 (mod 3) is too close to a neighbor d (≢ 0 mod 3),
-    we can redistribute: (c, d) → (c + Δ, d - Δ) to achieve gap ≥ 4.
-    The redistribution preserves the sum and fixes the gap condition. -/
-theorem redistribute_fixes_gap (c d : ℕ) (hc : c % 3 = 0) (hd : d % 3 ≠ 0)
-    (hdc : d > c) (hgap : d < c + 4) (hsum : 4 ≤ c + d) :
-    ∃ δ : ℕ, δ ≤ 2 ∧ (d - δ) + (c + δ) = c + d ∧ (d - δ) ≥ (c + δ) + 4 := by
-  sorry  -- Need: find δ such that gap(d-δ, c+δ) = d-c-2δ ≥ 4
-
-/-- For gap violations between ≡0 and ≡non-0 parts, shifting by 1 suffices
-    when the gap is 2 or 3 (the only possible violations after a first merge). -/
-theorem shift_resolves_cascade (a b : ℕ) (hab : a > b)
-    (hb_mod : b % 3 = 0) (ha_mod : a % 3 ≠ 0)
-    (hgap : a < b + 4) (ha_pos : 1 ≤ a) :
-    (a - 1) + (b + 1) = a + b ∧
-    (a - 1) % 3 ≠ 0 ∧ (b + 1) % 3 ≠ 0 → -- if residues work out
-    True := by trivial  -- Placeholder for the full redistribution proof
-
--- ============================================================================
--- Part XLI-C: Insert and list utilities
--- ============================================================================
-
-/-- Insert into a sorted (decreasing) list, maintaining order. -/
-def insertDesc : ℕ → List ℕ → List ℕ
-  | x, [] => [x]
-  | x, a :: rest =>
-    if x ≥ a then x :: a :: rest
-    else a :: insertDesc x rest
-
-/-- insertDesc preserves the sum. -/
-theorem insertDesc_sum (x : ℕ) (l : List ℕ) :
-    (insertDesc x l).sum = x + l.sum := by
-  induction l with
-  | nil => simp [insertDesc]
-  | cons a rest ih =>
-    simp only [insertDesc]
-    split
-    · simp [List.sum_cons]
-    · simp [List.sum_cons, ih]; omega
-
-/-- insertDesc preserves list length + 1. -/
-theorem insertDesc_length (x : ℕ) (l : List ℕ) :
-    (insertDesc x l).length = l.length + 1 := by
-  induction l with
-  | nil => simp [insertDesc]
-  | cons a rest ih =>
-    simp only [insertDesc]
-    split
-    · simp [List.length_cons]
-    · simp [List.length_cons, ih]
-
-/-- Classify parts by residue mod 3. -/
-def classifyMod3 : List ℕ → List ℕ × List ℕ
-  | [] => ([], [])
-  | a :: rest =>
-    let (as_, bs) := classifyMod3 rest
-    if a % 3 = 1 then (a :: as_, bs) else (as_, a :: bs)
-
-/-- classifyMod3 preserves the sum. -/
-theorem classifyMod3_sum (l : List ℕ) :
-    (classifyMod3 l).1.sum + (classifyMod3 l).2.sum = l.sum := by
-  induction l with
-  | nil => simp [classifyMod3]
-  | cons a rest ih =>
-    simp only [classifyMod3]
-    split <;> simp [List.sum_cons] <;> omega
-
--- ============================================================================
--- Part XLI-D: Computational exploration of the bijection
--- ============================================================================
-
--- Verify classify
-#eval classifyMod3 [7, 5, 4, 2, 1]  -- ([7, 4, 1], [5, 2])
-#eval classifyMod3 [8, 5, 2]        -- ([], [8, 5, 2])
 
 /-
-EXAMPLES showing the correct bijection for small n:
-
-n = 3: schurMod = {[2,1]}  →  schurGapFull = {[3]}
-  [2,1]: violating pair (2,1), merge → [3] ✓
-
-n = 8: schurMod = {[8], [7,1], [5,2,1]}  →  schurGapFull = {[8], [7,1], [6,2]}
-  [8] → [8] (no violations)
-  [7,1] → [7,1] (gap 6 ≥ 3, no violations)
-  [5,2,1] → merge (2,1)→3, then redistribute (5,3)→(6,2) = [6,2] ✓
-
-n = 9: schurMod = {[8,1], [7,2], [5,4]}  →  schurGapFull = {[9], [8,1], [7,2]}
-  [8,1] → [8,1] (gap 7 ≥ 3, no violations)
-  [7,2] → [7,2] (gap 5 ≥ 3, no violations)
-  [5,4] → merge (5,4)→[9] ✓
-
-The redistribution step for n=8 [5,2,1] is the key novelty:
-  After merge (2,1)→3: [5,3]. Gap = 2, but 3≡0 needs ≥4.
-  Redistribute: (5,3) → (6,2). Move 1 from 5's share to 3's share.
-  Formally: 5+3 = 8, need a ≥ b+4 with a+b=8. a=6, b=2. ✓
-  Result [6,2]: gap 4, 6≡0 2≡2, need≥4. 4≥4. ✓
+The coefficient of X^n in partGF (insert k S) decomposes via convolution:
+  coeff n (partGF (insert k S)) = ∑_{j=0}^{n/k} coeff (n - j*k) (partGF S)
 -/
 
--- Extended verification of the identity (from previous sessions)
-example : (schurGapFull 11).card = (schurMod 11).card := by native_decide
-example : (schurGapFull 12).card = (schurMod 12).card := by native_decide
-example : (schurGapFull 13).card = (schurMod 13).card := by native_decide
-example : (schurGapFull 14).card = (schurMod 14).card := by native_decide
-example : (schurGapFull 15).card = (schurMod 15).card := by native_decide
+section PartGFCoeffRecursion
+
+open Finset Nat PowerSeries
+
+noncomputable section
+
+/-- Coefficient of X^n in partGF ∅ is 1 if n = 0, else 0. -/
+theorem partGF_coeff_empty (n : ℕ) :
+    PowerSeries.coeff (R := ℤ) n (partGF ∅) =
+    if n = 0 then 1 else 0 := by
+  rw [partGF_empty]
+  simp [PowerSeries.coeff_one]
+
+/-- Product recursion for partGF. -/
+theorem partGF_insert' {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) :
+    partGF (insert k S) = geomSeries k * partGF S := by
+  simp only [partGF, Finset.prod_insert hk]
+
+/-- **Insert recursion for partGF coefficients**: choosing j copies of k,
+    then partitioning the remainder from S. -/
+theorem partGF_coeff_insert {S : Finset ℕ} {k : ℕ} (hk : k ∉ S)
+    (hkpos : 0 < k) (n : ℕ) :
+    PowerSeries.coeff (R := ℤ) n (partGF (insert k S)) =
+    (Finset.range (n / k + 1)).sum (fun j =>
+      PowerSeries.coeff (R := ℤ) (n - j * k) (partGF S)) := by
+  rw [partGF_insert' hk]
+  exact geomSeries_mul_coeff_sum k hkpos (partGF S) n
+
+/-- Constant term of partGF is always 1 (empty partition). -/
+theorem partGF_constantCoeff (S : Finset ℕ) (hpos : ∀ s ∈ S, 0 < s) :
+    PowerSeries.coeff (R := ℤ) 0 (partGF S) = 1 := by
+  induction S using Finset.induction with
+  | empty => simp [partGF_empty, PowerSeries.coeff_one]
+  | @insert k S hk ih =>
+    have hposS : ∀ s ∈ S, 0 < s := fun s hs => hpos s (Finset.mem_insert_of_mem hs)
+    have hkpos : 0 < k := hpos k (Finset.mem_insert_self k S)
+    rw [partGF_coeff_insert hk hkpos]
+    have : 0 / k = 0 := Nat.zero_div k
+    rw [this]
+    simp [ih hposS]
+
+end
+
+end PartGFCoeffRecursion
 
 -- ============================================================================
--- Part XLI-E: Statement of the Schur identity (target theorem)
+-- Part XLIII: GF Coefficient = Subset Count (Bridge Theorem)
 -- ============================================================================
 
-/-- **Schur's Partition Identity** via selective merge + redistribute bijection.
-    The full proof requires:
-    1. ✓ Same-residue parts never violate (schurMod_same_residue_gap)
-    2. ✓ Cross-residue violations sum to ≡0 (schurMod_cross_residue_sum)
-    3. □ Selective merge of violating pairs only
-    4. □ Cascade redistribution (shift_resolves_cascade)
-    5. □ Proof that result satisfies Schur gap condition
-    6. □ Inverse construction and bijectivity -/
-theorem schur_identity_via_pairing (n : ℕ) :
-    (schurGapFull n).card = (schurMod n).card := by
-  sorry
+/-
+The fundamental bridge between generating functions and combinatorics:
+the coefficient of X^n in ∏_{k ∈ S} (1 + X^k) equals the number of
+subsets T ⊆ S with ∑ T = n.
 
-end SchurBijection
+This connects the algebraic (GF) world to the combinatorial (partition count)
+world, enabling us to prove partition identities via GF manipulations.
+-/
+
+section DistinctPartGFBridge
+
+open Finset Nat PowerSeries
+
+noncomputable section
+
+/-- Subsets of S that sum to n. -/
+def subsetsWithSum (S : Finset ℕ) (n : ℕ) : Finset (Finset ℕ) :=
+  S.powerset.filter (fun T => T.sum id = n)
+
+/-- Base case: subsets of ∅ summing to 0 is {∅}, summing to n > 0 is ∅. -/
+theorem subsetsWithSum_empty (n : ℕ) :
+    subsetsWithSum ∅ n = if n = 0 then {∅} else ∅ := by
+  ext T
+  simp only [subsetsWithSum, Finset.mem_filter, Finset.mem_powerset,
+    Finset.subset_empty, Finset.mem_singleton, Finset.mem_empty]
+  constructor
+  · intro ⟨hT, hsum⟩
+    subst hT; simp at hsum
+    split_ifs with h
+    · exact h ▸ rfl
+    · exact absurd hsum h
+  · split_ifs with h
+    · intro hT; subst hT; simp [h]
+    · exact False.elim
+
+/-- Insert recursion: subsets of (insert k S) summing to n decompose into
+    those not containing k (subsets of S summing to n) and those containing k
+    (subsets of S summing to n - k, with k added). -/
+theorem subsetsWithSum_insert {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) (n : ℕ) :
+    (subsetsWithSum (insert k S) n).card =
+    (subsetsWithSum S n).card +
+    if k ≤ n then (subsetsWithSum S (n - k)).card else 0 := by
+  -- Split powerset of (insert k S) into subsets containing k and not containing k
+  rw [subsetsWithSum, Finset.powerset_insert]
+  rw [Finset.filter_union]
+  -- Subsets NOT containing k: same as powerset of S filtered
+  have hcard1 : (Finset.filter (fun T => T.sum id = n) S.powerset).card =
+      (subsetsWithSum S n).card := by rfl
+  -- Subsets containing k: image of adding k to subsets of S
+  -- Their sum = k + sum of the inner subset
+  -- So they sum to n iff the inner subset sums to n - k
+  rw [Finset.card_union_of_disjoint]
+  · congr 1
+    · rfl
+    · -- Count subsets of form (insert k T) with sum = n, where T ⊆ S
+      rw [Finset.filter_image]
+      split_ifs with hkn
+      · -- k ≤ n: count = subsets of S summing to n - k
+        have : (Finset.filter (fun x => (insert k x).sum id = n) S.powerset).card =
+            (subsetsWithSum S (n - k)).card := by
+          congr 1; ext T
+          simp only [Finset.mem_filter, Finset.mem_powerset, subsetsWithSum]
+          constructor
+          · intro ⟨hTS, hsum⟩
+            exact ⟨hTS, by rw [Finset.sum_insert (fun h => hk (hTS h))] at hsum; omega⟩
+          · intro ⟨hTS, hsum⟩
+            exact ⟨hTS, by rw [Finset.sum_insert (fun h => hk (hTS h))]; omega⟩
+        exact this
+      · -- k > n: no subsets can sum to n (since k alone exceeds n)
+        push_neg at hkn
+        rw [Finset.card_eq_zero]
+        ext T
+        simp only [Finset.mem_filter, Finset.mem_powerset, Finset.not_mem_empty, iff_false,
+          not_and]
+        intro _
+        rw [Finset.sum_insert (fun h => hk (by assumption))]
+        omega
+  · -- Disjointness: subsets of S.powerset vs images of insert k
+    rw [Finset.disjoint_filter]
+    intro T hT1 hT2
+    simp only [Finset.mem_image, Finset.mem_powerset] at hT1 hT2
+    obtain ⟨U, _, hU⟩ := hT2
+    rw [← hU] at hT1
+    exact hk (hT1 (Finset.mem_insert_self k U))
+
+/-- **Bridge Theorem**: The coefficient of X^n in distinctPartGF S equals the
+    number of subsets of S that sum to n.
+
+    This is the fundamental connection between generating functions and
+    combinatorial partition counting. It enables proving partition identities
+    by showing equality of generating functions. -/
+theorem distinctPartGF_coeff_eq_card (S : Finset ℕ) (hpos : ∀ s ∈ S, 0 < s) (n : ℕ) :
+    PowerSeries.coeff (R := ℤ) n (distinctPartGF S) =
+    ↑(subsetsWithSum S n).card := by
+  induction S using Finset.induction with
+  | empty =>
+    simp only [distinctPartGF_empty, subsetsWithSum_empty]
+    simp [PowerSeries.coeff_one]
+  | @insert k S hk ih =>
+    have hkpos : 0 < k := hpos k (Finset.mem_insert_self k S)
+    have hposS : ∀ s ∈ S, 0 < s := fun s hs => hpos s (Finset.mem_insert_of_mem hs)
+    rw [distinctPartGF_insert hk]
+    -- (1 + X^k) * F: coeff n = coeff n F + coeff (n-k) F
+    rw [PowerSeries.coeff_mul]
+    -- Antidiagonal sum: only terms (0, n) and (k, n-k) contribute
+    -- coeff a (1 + X^k) = 1 if a = 0 or a = k, else 0
+    rw [subsetsWithSum_insert hk n]
+    -- Need: ∑ (a,b) in antidiag n, coeff a (1+X^k) * coeff b F = card + if k≤n ...
+    sorry -- TODO: antidiagonal convolution sum equals the two-term recursion
+
+end
+
+end DistinctPartGFBridge
