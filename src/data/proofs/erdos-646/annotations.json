@@ -7,8 +7,9 @@
     "title": "p-adic Valuation",
     "content": "**p-adic Valuation** vₚ(m):\n\nThe largest exponent k such that p^k divides m.\n\n**Examples:**\n- v₂(24) = 3 since 24 = 2³ · 3\n- v₃(81) = 4 since 81 = 3⁴\n- vₚ(1) = 0 for all p\n\nUses Mathlib's padicValNat function.",
     "mathContext": "Fundamental to p-adic analysis and divisibility theory.",
-    "significance": "critical",
-    "relatedConcepts": ["Prime factorization", "Divisibility", "p-adic numbers"]
+    "significance": "key",
+    "relatedConcepts": ["Prime factorization", "Divisibility", "p-adic numbers"],
+    "prerequisites": ["padicValNat", "Nat.Prime"]
   },
   {
     "id": "ann-e646-legendre",
@@ -18,8 +19,9 @@
     "title": "Legendre's Formula",
     "content": "**Legendre's Formula:**\n\nvₚ(n!) = ⌊n/p⌋ + ⌊n/p²⌋ + ⌊n/p³⌋ + ...\n\n**Intuition:**\n- ⌊n/p⌋ counts multiples of p in [1, n]\n- ⌊n/p²⌋ counts multiples of p² (extra factor)\n- Continue until p^k > n\n\n**Example:** v₂(10!) = 5 + 2 + 1 = 8",
     "mathContext": "Named after Adrien-Marie Legendre who discovered it in 1808.",
-    "significance": "critical",
-    "relatedConcepts": ["Factorial", "Floor function", "Prime counting"]
+    "significance": "key",
+    "relatedConcepts": ["Factorial", "Floor function", "Prime counting"],
+    "prerequisites": ["Nat.factorial", "padicValNat", "Nat.floor"]
   },
   {
     "id": "ann-e646-even-val",
@@ -28,7 +30,7 @@
     "type": "definition",
     "title": "Even Valuation",
     "content": "**hasEvenValuation p n:**\n\nn! is divisible by an even power of p.\n\n**Definition:**\n```lean\ndef hasEvenValuation (p n : ℕ) : Prop :=\n  Even (padicValNat p (n.factorial))\n```\n\nEquivalently: 2 | vₚ(n!)",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e646-all-even",
@@ -37,7 +39,7 @@
     "type": "definition",
     "title": "Multi-prime Even Valuation",
     "content": "**hasAllEvenValuations S n:**\n\nn! is divisible by an even power of each prime in S.\n\n**Definition:**\n```lean\ndef hasAllEvenValuations (S : Finset ℕ) (n : ℕ) : Prop :=\n  ∀ p ∈ S, p.Prime → hasEvenValuation p n\n```\n\nThis is the property we seek for infinitely many n.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e646-digit-sum",
@@ -75,7 +77,7 @@
     "title": "Berend's Existence Theorem",
     "content": "**berend_existence:**\n\nFor any finite set S of primes, infinitely many n exist such that n! is divisible by an even power of each prime in S.\n\n**Statement:**\n```lean\naxiom berend_existence (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :\n  {n : ℕ | hasAllEvenValuations S n}.Infinite\n```\n\nThis is the main positive result from Berend (1997).",
     "mathContext": "Berend's proof uses analytic number theory techniques.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e646-berend-gaps",
@@ -84,7 +86,7 @@
     "type": "axiom",
     "title": "Berend's Bounded Gaps",
     "content": "**berend_bounded_gaps:**\n\nThe sequence of n with all even valuations has bounded gaps.\n\n**Statement:**\n```lean\naxiom berend_bounded_gaps (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :\n  ∃ B : ℕ, ∀ n : ℕ, ∃ m : ℕ, n ≤ m ∧ m ≤ n + B ∧ hasAllEvenValuations S m\n```\n\nThis is stronger than mere infinitude - implies positive density.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e646-conjecture",
@@ -93,7 +95,7 @@
     "type": "definition",
     "title": "Erdős Conjecture 646",
     "content": "**ErdosConjecture646:**\n\nFor any finite set of primes, infinitely many n have even valuation for all primes in the set.\n\n**Definition:**\n```lean\ndef ErdosConjecture646 : Prop :=\n  ∀ S : Finset ℕ, (∀ p ∈ S, p.Prime) → {n : ℕ | hasAllEvenValuations S n}.Infinite\n```\n\nThis is the formal statement of Erdős's question.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e646-main",
@@ -102,7 +104,7 @@
     "type": "theorem",
     "title": "Main Result: Conjecture TRUE",
     "content": "**erdos_646: ErdosConjecture646**\n\n**Proof:**\n```lean\ntheorem erdos_646 : ErdosConjecture646 := by\n  intro S hS\n  exact berend_existence S hS\n```\n\nThe conjecture follows directly from Berend's existence theorem.",
-    "significance": "critical"
+    "significance": "key"
   },
   {
     "id": "ann-e646-kummer",
