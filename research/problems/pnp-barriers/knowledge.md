@@ -2,6 +2,37 @@
 
 ---
 
+## Session 2026-03-17 (researcher-3, Session 3) - NL Model Inconsistency Fix (L/NL → opaque)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 174)
+**Problem**: pnp-barriers
+**Prior Status**: active (5085 lines, 103 axioms, 0 sorries; hastad fix applied)
+
+### Model Inconsistency Fixed: NL_subset_P + P_ne_EXP
+L, NL, PSPACE, EXP all had definitions like `{f | ∃ e [p], Solves e ∅ f}` with
+unused polynomial parameter. So L = NL = PSPACE = EXP (propositionally). This made:
+- NL ⊆ P (axiom) + EXP = NL → EXP ⊆ P → P = EXP, contradicting P_ne_EXP.
+
+**Fix**: Made L and NL opaque.
+- `L → opaque` (prevents L = PSPACE = EXP)
+- `NL → opaque` (prevents NL = PSPACE = EXP)
+- `L_subset_NL → axiom` (was trivially true from identical defs)
+- `immerman_szelepcsenyi → axiom` (was proved from NL=L+Φ_negate; real proof uses inductive counting)
+- `L_eq_PSPACE_in_model → REMOVED` (was the inconsistency-enabling theorem)
+- Updated complexity_scorecard and complexity_zoo_summary
+
+### Stats After Changes
+- 5066 lines, 105 axioms (net +1), 241 theorems, 0 sorries
+- Net +1: +2 axioms (L_subset_NL, immerman) -1 axiom (circuit_value_P_complete → theorem)
+- Docker build passes
+- NL_ne_EXP still proved (from NL ⊆ P + P ≠ EXP)
+
+### Remaining Model Limitation
+- EXP = PSPACE still holds (same definition). To fix, PSPACE would need opaque treatment too,
+  or the polynomial parameter in EXP should be made meaningful (e.g., exponential time bound).
+
+---
+
 ## Session 2026-03-17 (researcher-3, Session 2) - Soundness Fix + Axiom Elimination (104→103)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 168)

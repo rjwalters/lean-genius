@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Parts 1-54 complete. 17650+ lines, 211 axioms (main file). Sound file: 103 axioms (was 104), 244 theorems, 0 sorries. Fixed 5 unsound axioms total (OWF, cook_krajicek, resolution_not_simulates_cp, FPT_eq_W1_breaks_ETH, hastad_max3sat_inapprox). Identified NL_subset_P model inconsistency (L=NL=EXP, NL⊆P contradicts P≠EXP).",
+    "progressSummary": "Parts 1-54 complete. Sound file: 105 axioms, 241 theorems, 0 sorries. Fixed NL model inconsistency (L/NL→opaque). Fixed 5 unsound axioms. Remaining model limitation: EXP=PSPACE (same definition).",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -484,7 +484,10 @@
       "ComplexityClass type was never defined - replaced with Set Language in Part 53+",
       "hastad_max3sat_inapprox was UNSOUND (derived False via Classical.em on Solves + vacuous implication). Fixed to P ≠ NP → MAX3SAT ∉ P",
       "circuit_value_P_complete derivable as theorem from hastad_parity_not_in_AC0 (any f∈P witnesses f∉NC→P≠NC since NC⊆P)",
-      "NL_subset_P is INCONSISTENT with P_ne_EXP in current model: L=NL=PSPACE=EXP (space not tracked), so NL⊆P+P⊆EXP=P=EXP contradicts P≠EXP. Latent inconsistency (no theorem exercises path). Fix: make NL opaque."
+      "NL_subset_P is INCONSISTENT with P_ne_EXP in current model: L=NL=PSPACE=EXP (space not tracked), so NL⊆P+P⊆EXP=P=EXP contradicts P≠EXP. Latent inconsistency (no theorem exercises path). Fix: make NL opaque.",
+      "NL model inconsistency FIXED: made L and NL opaque. Previously L=NL=PSPACE=EXP (identical definitions), making NL⊆P+P≠EXP inconsistent. Now L/NL opaque → NL≠EXP chain broken.",
+      "immerman_szelepcsenyi axiomatized: previous proof used NL=L+Φ_negate (bit-flipping), but real proof uses inductive counting. Axiomatization is semantically more honest.",
+      "L_eq_PSPACE_in_model REMOVED: was the inconsistency-enabling theorem. Good riddance."
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
