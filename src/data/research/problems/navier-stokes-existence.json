@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: NavierStokes.lean at 12,262 lines. Parts LXX-LXXIII covering convex integration/Onsager conjecture (Nash-Isett program, wild solutions, Buckmaster-Vicol), regularity criteria compendium (Serrin, BKM, pressure, component, strain, Type I), turbulence closure (RANS, LES, DNS, moment hierarchy), intermittency multifractal refinement (Parisi-Frisch, She-Lévêque). 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: NavierStokes.lean at 12,348 lines. Parts LXX-LXXII covering convex integration (h-principle, Onsager, Buckmaster-Vicol), regularity criteria compendium (all known sufficient conditions), blowup classification (Type I exclusion, Type II open). 0 sorries, 0 axioms.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO⁻¹ well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
@@ -69,10 +69,10 @@
       "Part LXVIII: Littlewood-Paley - LP decomposition, Besov spaces, Cannone well-posedness, Chemin-Lerner spaces, paradifferential calculus, energy cascade",
       "Part LXIX: Statistical solutions - Foias statistical solutions, invariant measures, Kolmogorov theory, four-fifths law, Batchelor spectrum, measure-valued solutions",
       "NavierStokesAristotle.lean: Sections 28-30 (BKM constants, LP Besov exponents, statistical solution constants)",
-      "Part LXX: Convex integration/Onsager - HPrinciple, OnsagerConjectureResolution, DLSzScheme, IsettResolution, WildSolutionsEuler, BuckmasterVicolNS, ConvexIntegrationBarrierResult",
-      "Part LXXI: Regularity criteria compendium - SerrinClass, VorticityRegularityCriteria, PressureRegularityCriteria, ComponentStrainCriteria, TypeIExclusion, RegularityCompendiumHierarchy",
-      "Part LXXII: Turbulence closure - ReynoldsDecomposition, TurbulenceModelHierarchy, LargeEddySim, DNS, ClosureObstruction",
-      "Part LXXIII: Intermittency multifractal - K41Anomaly, LogNormalIntermittency, MultifractalTurbulence, IntermittencyVerification"
+      "Part LXX: Convex integration and wild solutions - h-principle, Onsager conjecture, DLS scheme, Mikado flows, Buckmaster-Vicol NS non-uniqueness, convex integration barrier",
+      "Part LXXI: Regularity criteria compendium - velocity/vorticity/pressure/strain/geometric/one-component/scaling-critical criteria, regularity gap analysis",
+      "Part LXXII: Blowup scenarios and Type classification - Type I/II taxonomy, Type I exclusion (Seregin/ESŠ), self-similar exclusion, DSS solutions, blowup rate bounds, spatial concentration, Millennium reduction",
+      "NavierStokesAristotle.lean: Sections 31-33 (convex integration, regularity criteria, blowup classification constants)"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u·∇)u, not just energy/scaling/div-free properties",
@@ -120,10 +120,11 @@
       "Littlewood-Paley makes energy cascade precise: E_j ~ 2^{-10j/3} from K41 spectrum k^{-5/3}",
       "Four-fifths law is the ONLY exact, rigorous result in turbulence: S_3(r) = -4/5 epsilon r",
       "Batchelor spectrum (Bedrossian et al 2022): first rigorous proof of Kolmogorov-type scaling prediction",
-      "Convex integration barrier: any NS regularity proof must essentially use viscosity (not just energy methods)",
-      "Regularity criteria form a hierarchy: all are critical (scale-invariant), none verified for generic Leray-Hopf solutions",
-      "Turbulence closure is fundamentally impossible: moment hierarchy never closes (nonperturbative)",
-      "Intermittency multifractal: She-Lévêque model ζ_p = p/9 + 2(1-(2/3)^{p/3}) best fit across all experiments"
+      "Convex integration barrier (Buckmaster-Vicol 2019): NS has non-unique weak solutions below Serrin class, so any regularity proof must use viscous dissipation essentially",
+      "Combined Tao + convex integration barrier: proof must use BOTH viscosity AND specific bilinear (u·∇)u structure — rules out generic energy/scaling approaches",
+      "Type I blowup (self-similar rate) is EXCLUDED by Seregin (2012) + ESŠ backward uniqueness — the Millennium Problem reduces to excluding Type II blowup only",
+      "Discretely self-similar solutions exist (Bradshaw-Tsai 2019) but are not excluded by the ESŠ machinery — potential counterexample pathway",
+      "Regularity gap is exactly 1/2: Leray-Hopf gives 2/2+3/6=3/2, Serrin needs ≤1; closing this gap requires nonlinear structure, not interpolation"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
@@ -151,7 +152,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-16T17:00:00.000Z",
+  "lastUpdate": "2026-03-17T17:00:00.000Z",
   "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1
