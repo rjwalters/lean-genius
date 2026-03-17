@@ -3748,7 +3748,7 @@ end GraphManifoldsThurstonNorm
 
 section PerelmanSurgery
 
-/-- Perelman's proof resolves the Poincaré Conjecture (and Thurston Geometrization)
+/- Perelman's proof resolves the Poincaré Conjecture (and Thurston Geometrization)
     by establishing Ricci flow with surgery on closed 3-manifolds.
 
     Key papers:
@@ -3819,14 +3819,6 @@ structure SurgeryProcedure where
   /-- Topology: connected sum decomposition -/
   connectedSumDecomposition : Prop
 
-/-- Ricci flow with surgery: the full algorithm. -/
-structure RicciFlowWithSurgery where
-  /-- Surgery times are discrete -/
-  discreteSurgeryTimes : Prop
-  /-- Finitely many surgeries on any finite interval -/
-  finitelySurgeries : Prop
-  /-- Post-surgery manifold has controlled geometry -/
-  controlledGeometry : Prop
 
 /-- Finite extinction time for simply connected 3-manifolds.
     Uses Colding-Minicozzi min-max / Perelman's width argument. -/
@@ -3853,17 +3845,6 @@ end PerelmanSurgery
 
 section ThurstonGeometries
 
-/-- Thurston's eight model geometries for 3-manifolds. -/
-inductive ThurstonGeometry where
-  | S3     -- Spherical (positive curvature)
-  | E3     -- Euclidean (flat)
-  | H3     -- Hyperbolic (negative curvature)
-  | S2xR   -- Product S² × ℝ
-  | H2xR   -- Product ℍ² × ℝ
-  | Nil     -- Nilgeometry (Heisenberg group)
-  | Sol     -- Solvegeometry
-  | SL2R   -- Universal cover of SL(2,ℝ)
-  deriving Repr, DecidableEq
 
 /-- Each geometry has a maximal symmetry group. -/
 structure GeometryInfo where
@@ -3877,26 +3858,26 @@ structure GeometryInfo where
 
 /-- Data for the eight geometries. -/
 def geometryData : ThurstonGeometry → GeometryInfo
-  | .S3 => ⟨.S3, 6, false, "Finitely many (lens spaces, prism manifolds, etc.)"⟩
-  | .E3 => ⟨.E3, 6, false, "6 orientable (Bieberbach groups)"⟩
-  | .H3 => ⟨.H3, 6, false, "Infinitely many (Mostow rigidity)"⟩
-  | .S2xR => ⟨.S2xR, 4, false, "S² × S¹ and RP³ # RP³"⟩
-  | .H2xR => ⟨.H2xR, 4, false, "Surface × S¹"⟩
-  | .Nil => ⟨.Nil, 4, false, "Torus bundles (Anosov)"⟩
-  | .Sol => ⟨.Sol, 3, false, "Torus bundles (hyperbolic monodromy)"⟩
-  | .SL2R => ⟨.SL2R, 4, false, "Seifert fibered over hyperbolic orbifold"⟩
+  | .spherical => ⟨.spherical, 6, false, "Finitely many (lens spaces, prism manifolds, etc.)"⟩
+  | .euclidean => ⟨.euclidean, 6, false, "6 orientable (Bieberbach groups)"⟩
+  | .hyperbolic => ⟨.hyperbolic, 6, false, "Infinitely many (Mostow rigidity)"⟩
+  | .s2xr => ⟨.s2xr, 4, false, "S² × S¹ and RP³ # RP³"⟩
+  | .h2xr => ⟨.h2xr, 4, false, "Surface × S¹"⟩
+  | .nil => ⟨.nil, 4, false, "Torus bundles (Anosov)"⟩
+  | .sol => ⟨.sol, 3, false, "Torus bundles (hyperbolic monodromy)"⟩
+  | .sl2r => ⟨.sl2r, 4, false, "Seifert fibered over hyperbolic orbifold"⟩
 
 /-- Three isotropic geometries (isometry group dim 6):
     S³, E³, H³ — the constant curvature spaces. -/
 theorem isotropic_geometries :
-    (geometryData .S3).isomDim = 6 ∧
-    (geometryData .E3).isomDim = 6 ∧
-    (geometryData .H3).isomDim = 6 := by
+    (geometryData .spherical).isomDim = 6 ∧
+    (geometryData .euclidean).isomDim = 6 ∧
+    (geometryData .hyperbolic).isomDim = 6 := by
   exact ⟨rfl, rfl, rfl⟩
 
 /-- Sol has the smallest isometry group (dim 3). -/
 theorem sol_minimal_symmetry :
-    (geometryData .Sol).isomDim = 3 := rfl
+    (geometryData .sol).isomDim = 3 := rfl
 
 /-- Poincaré conjecture from geometrization:
     SC + closed + 3D → must have spherical (S³) geometry → M ≅ S³. -/
@@ -4019,7 +4000,7 @@ end PostPerelman
 
 section PoincareHomologySphere
 
-/-- The Poincaré homology sphere Σ(2,3,5) is the most famous counterexample
+/- The Poincaré homology sphere Σ(2,3,5) is the most famous counterexample
     to the original (incorrect) conjecture that homology determines topology.
 
     It has the same homology as S³ but π₁ ≅ binary icosahedral group (order 120).
@@ -4263,15 +4244,9 @@ end DehnSurgery
 
 section KnotsAndPoincare
 
-/-- The role of knot theory in the Poincaré conjecture.
+/- The role of knot theory in the Poincaré conjecture.
     Knots provide concrete examples and test cases for 3-manifold theory. -/
 
-/-- A knot is an embedding S¹ → S³. -/
-structure Knot where
-  /-- The embedding exists -/
-  embedding : Prop
-  /-- The knot complement S³ \ K is an open 3-manifold -/
-  complement : Prop
 
 /-- The knot group: π₁(S³ \ K).
     For the unknot: π₁ ≅ ℤ.
@@ -4358,24 +4333,55 @@ noncomputable def cyclicRotation (p : ℕ) (q : ℤ) (x : EuclideanSpace ℝ (Fi
             Real.cos β * (WithLp.equiv 2 (Fin 4 → ℝ) x) 3
 
 /-- The cyclic rotation preserves the squared norm ‖x‖².
-    This follows because each 2×2 block is an orthogonal rotation:
-    (cos θ)² + (sin θ)² = 1. -/
-axiom cyclicRotation_norm_sq (p : ℕ) (q : ℤ) (x : EuclideanSpace ℝ (Fin 4)) :
-    ‖cyclicRotation p q x‖ ^ 2 = ‖x‖ ^ 2
--- Proof sketch: expand to coordinates, apply cos²θ + sin²θ = 1 for each 2×2 block.
--- Requires careful handling of WithLp.equiv and EuclideanSpace norm.
+    Each 2×2 block is an orthogonal rotation: (cos θ)² + (sin θ)² = 1. -/
+theorem cyclicRotation_norm_sq (p : ℕ) (q : ℤ) (x : EuclideanSpace ℝ (Fin 4)) :
+    ‖cyclicRotation p q x‖ ^ 2 = ‖x‖ ^ 2 := by
+  rw [eucl4_norm_sq (cyclicRotation p q x), eucl4_norm_sq x]
+  have h0 : cyclicRotation p q x 0 =
+      Real.cos (lensAngle1 p) * x 0 - Real.sin (lensAngle1 p) * x 1 := by
+    show WithLp.equiv 2 (Fin 4 → ℝ) (cyclicRotation p q x) 0 = _
+    simp [cyclicRotation]
+  have h1 : cyclicRotation p q x 1 =
+      Real.sin (lensAngle1 p) * x 0 + Real.cos (lensAngle1 p) * x 1 := by
+    show WithLp.equiv 2 (Fin 4 → ℝ) (cyclicRotation p q x) 1 = _
+    simp [cyclicRotation]
+  have h2 : cyclicRotation p q x 2 =
+      Real.cos (lensAngle2 p q) * x 2 - Real.sin (lensAngle2 p q) * x 3 := by
+    show WithLp.equiv 2 (Fin 4 → ℝ) (cyclicRotation p q x) 2 = _
+    simp [cyclicRotation]
+  have h3 : cyclicRotation p q x 3 =
+      Real.sin (lensAngle2 p q) * x 2 + Real.cos (lensAngle2 p q) * x 3 := by
+    show WithLp.equiv 2 (Fin 4 → ℝ) (cyclicRotation p q x) 3 = _
+    simp [cyclicRotation]
+  rw [h0, h1, h2, h3]
+  have hα := Real.sin_sq_add_cos_sq (lensAngle1 p)
+  have hβ := Real.sin_sq_add_cos_sq (lensAngle2 p q)
+  nlinarith [sq_nonneg (Real.cos (lensAngle1 p)), sq_nonneg (Real.sin (lensAngle1 p)),
+             sq_nonneg (Real.cos (lensAngle2 p q)), sq_nonneg (Real.sin (lensAngle2 p q)),
+             sq_nonneg (x 0), sq_nonneg (x 1), sq_nonneg (x 2), sq_nonneg (x 3)]
 
 /-- The cyclic rotation maps points on S³ to points on S³. -/
-axiom cyclicRotation_preserves_sphere (p : ℕ) (q : ℤ)
+theorem cyclicRotation_preserves_sphere (p : ℕ) (q : ℤ)
     (x : ↥Sphere3) :
-    ‖cyclicRotation p q x.val‖ = 1
--- Proof sketch: from cyclicRotation_norm_sq + ‖x.val‖ = 1.
+    ‖cyclicRotation p q x.val‖ = 1 := by
+  have h := cyclicRotation_norm_sq p q x.val
+  have hx : ‖x.val‖ = 1 := (sphere3_mem_norm' x.val).mp x.property
+  have h1 : ‖cyclicRotation p q x.val‖ ^ 2 = 1 := by rw [h, hx]; norm_num
+  exact norm_eq_one_of_sq (norm_nonneg _) h1
 
 /-- The cyclic rotation is continuous (polynomial map on coordinates). -/
-axiom cyclicRotation_continuous (p : ℕ) (q : ℤ) :
-    Continuous (cyclicRotation p q)
--- Proof sketch: continuous_pi + fun_prop on polynomial coordinate expressions.
--- Blocked by Mathlib API change: Equiv.continuous removed.
+theorem cyclicRotation_continuous (p : ℕ) (q : ℤ) :
+    Continuous (cyclicRotation p q) := by
+  unfold cyclicRotation
+  have c : ∀ j, Continuous (fun x : EuclideanSpace ℝ (Fin 4) => x j) :=
+    fun j => (continuous_apply j).comp (EuclideanSpace.equiv (Fin 4) ℝ).continuous
+  refine (EuclideanSpace.equiv (Fin 4) ℝ).symm.continuous.comp
+    (continuous_pi fun i => ?_)
+  fin_cases i <;> simp only
+  · exact ((continuous_const.mul (c 0)).sub (continuous_const.mul (c 1)))
+  · exact ((continuous_const.mul (c 0)).add (continuous_const.mul (c 1)))
+  · exact ((continuous_const.mul (c 2)).sub (continuous_const.mul (c 3)))
+  · exact ((continuous_const.mul (c 2)).add (continuous_const.mul (c 3)))
 
 /-- Applying the cyclic rotation p times gives a full 2π rotation,
     which is the identity. This is the key periodicity property. -/
@@ -4474,7 +4480,7 @@ end CyclicActionsOnS3
 
 section EulerCharTopInvariants
 
-/-- Euler characteristic computations for closed 3-manifolds.
+/- Euler characteristic computations for closed 3-manifolds.
     For any closed 3-manifold M, χ(M) = 0.
     This follows from Poincaré duality: b₀ = b₃, b₁ = b₂,
     so χ = b₀ - b₁ + b₂ - b₃ = 0. -/
