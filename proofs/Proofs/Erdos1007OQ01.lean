@@ -1003,7 +1003,7 @@ private theorem regSimplexEmbed_inner_eq (m : ℕ) (i k : Fin (m + 2))
     · intro ⟨⟨_, h1⟩, h2⟩; omega
     · intro h; subst h; refine ⟨⟨?_, by omega⟩, by omega⟩; exact Finset.mem_univ _
   -- Rewrite constant sum over singleton
-  rw [Finset.sum_const, h_single_card, Nat.smul_one_eq_cast, Nat.cast_one, one_mul]
+  rw [Finset.sum_const, h_single_card, one_nsmul]
   -- Centroid filter = {0, ..., i-2}, biject to range (i-1)
   have h_cent_bij : ((Finset.univ.filter (fun j : Fin (m + 1) => (j : ℕ) < (i : ℕ))).filter
       (fun j : Fin (m + 1) => (j : ℕ) + 1 < (i : ℕ))).sum
@@ -1179,7 +1179,7 @@ private theorem centered_dot_product {n d : ℕ} (emb : UnitDistanceEmbedding' (
       2 * ((emb.embed a k - emb.embed c k) * (emb.embed b k - emb.embed c k)))
     from Finset.sum_congr rfl (fun k _ => expand k)] at key
   rw [Finset.sum_sub_distrib, Finset.sum_add_distrib] at key
-  rw [← Finset.sum_mul_distrib] at key
+  rw [← Finset.mul_sum] at key
   linarith
 
 /-- Dot product of centered vectors: diagonal case (same vector), ‖w(i)‖² = 1. -/
@@ -1200,8 +1200,10 @@ private theorem centered_dot_product_diag {n d : ℕ} (emb : UnitDistanceEmbeddi
 open Classical in
 theorem complete_graph_dim_ge_tight (n : ℕ) (hn : 2 ≤ n) :
     n - 1 ≤ graphDimension' (Fin n) (fun i j => i ≠ j) (fun x h => h rfl) := by
-  apply Nat.le_find_iff.mpr
-  intro d hd ⟨emb⟩
+  -- Any unit-distance embedding of K_n requires at least n-1 dimensions
+  suffices h : ∀ d, hasUnitEmbedding' (Fin n) (fun i j => i ≠ j) d → n - 1 ≤ d by
+    exact h _ (Nat.find_spec _)
+  intro d ⟨emb⟩
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 2 := ⟨n - 2, by omega⟩
   -- Centered vectors: w(i) = emb(succ i) - emb(0) for i : Fin (m+1)
   set w : Fin (m + 1) → (Fin d → ℝ) :=
