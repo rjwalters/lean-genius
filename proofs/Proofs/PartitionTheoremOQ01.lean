@@ -3050,3 +3050,121 @@ theorem partGF_constantCoeff (S : Finset ℕ) (hpos : ∀ s ∈ S, 0 < s) :
 end
 
 end PartGFCoeffRecursion
+
+-- ============================================================================
+-- Part XLIII: GF Coefficient = Subset Count (Bridge Theorem)
+-- ============================================================================
+
+/-
+The fundamental bridge between generating functions and combinatorics:
+the coefficient of X^n in ∏_{k ∈ S} (1 + X^k) equals the number of
+subsets T ⊆ S with ∑ T = n.
+
+This connects the algebraic (GF) world to the combinatorial (partition count)
+world, enabling us to prove partition identities via GF manipulations.
+-/
+
+section DistinctPartGFBridge
+
+open Finset Nat PowerSeries
+
+noncomputable section
+
+/-- Subsets of S that sum to n. -/
+def subsetsWithSum (S : Finset ℕ) (n : ℕ) : Finset (Finset ℕ) :=
+  S.powerset.filter (fun T => T.sum id = n)
+
+/-- Base case: subsets of ∅ summing to 0 is {∅}, summing to n > 0 is ∅. -/
+theorem subsetsWithSum_empty (n : ℕ) :
+    subsetsWithSum ∅ n = if n = 0 then {∅} else ∅ := by
+  ext T
+  simp only [subsetsWithSum, Finset.mem_filter, Finset.mem_powerset,
+    Finset.subset_empty, Finset.mem_singleton, Finset.mem_empty]
+  constructor
+  · intro ⟨hT, hsum⟩
+    subst hT; simp at hsum
+    split_ifs with h
+    · exact h ▸ rfl
+    · exact absurd hsum h
+  · split_ifs with h
+    · intro hT; subst hT; simp [h]
+    · exact False.elim
+
+/-- Insert recursion: subsets of (insert k S) summing to n decompose into
+    those not containing k (subsets of S summing to n) and those containing k
+    (subsets of S summing to n - k, with k added). -/
+theorem subsetsWithSum_insert {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) (n : ℕ) :
+    (subsetsWithSum (insert k S) n).card =
+    (subsetsWithSum S n).card +
+    if k ≤ n then (subsetsWithSum S (n - k)).card else 0 := by
+  -- Split powerset of (insert k S) into subsets containing k and not containing k
+  rw [subsetsWithSum, Finset.powerset_insert]
+  rw [Finset.filter_union]
+  -- Subsets NOT containing k: same as powerset of S filtered
+  have hcard1 : (Finset.filter (fun T => T.sum id = n) S.powerset).card =
+      (subsetsWithSum S n).card := by rfl
+  -- Subsets containing k: image of adding k to subsets of S
+  -- Their sum = k + sum of the inner subset
+  -- So they sum to n iff the inner subset sums to n - k
+  rw [Finset.card_union_of_disjoint]
+  · congr 1
+    · rfl
+    · -- Count subsets of form (insert k T) with sum = n, where T ⊆ S
+      rw [Finset.filter_image]
+      split_ifs with hkn
+      · -- k ≤ n: count = subsets of S summing to n - k
+        have : (Finset.filter (fun x => (insert k x).sum id = n) S.powerset).card =
+            (subsetsWithSum S (n - k)).card := by
+          congr 1; ext T
+          simp only [Finset.mem_filter, Finset.mem_powerset, subsetsWithSum]
+          constructor
+          · intro ⟨hTS, hsum⟩
+            exact ⟨hTS, by rw [Finset.sum_insert (fun h => hk (hTS h))] at hsum; omega⟩
+          · intro ⟨hTS, hsum⟩
+            exact ⟨hTS, by rw [Finset.sum_insert (fun h => hk (hTS h))]; omega⟩
+        exact this
+      · -- k > n: no subsets can sum to n (since k alone exceeds n)
+        push_neg at hkn
+        rw [Finset.card_eq_zero]
+        ext T
+        simp only [Finset.mem_filter, Finset.mem_powerset, Finset.not_mem_empty, iff_false,
+          not_and]
+        intro _
+        rw [Finset.sum_insert (fun h => hk (by assumption))]
+        omega
+  · -- Disjointness: subsets of S.powerset vs images of insert k
+    rw [Finset.disjoint_filter]
+    intro T hT1 hT2
+    simp only [Finset.mem_image, Finset.mem_powerset] at hT1 hT2
+    obtain ⟨U, _, hU⟩ := hT2
+    rw [← hU] at hT1
+    exact hk (hT1 (Finset.mem_insert_self k U))
+
+/-- **Bridge Theorem**: The coefficient of X^n in distinctPartGF S equals the
+    number of subsets of S that sum to n.
+
+    This is the fundamental connection between generating functions and
+    combinatorial partition counting. It enables proving partition identities
+    by showing equality of generating functions. -/
+theorem distinctPartGF_coeff_eq_card (S : Finset ℕ) (hpos : ∀ s ∈ S, 0 < s) (n : ℕ) :
+    PowerSeries.coeff (R := ℤ) n (distinctPartGF S) =
+    ↑(subsetsWithSum S n).card := by
+  induction S using Finset.induction with
+  | empty =>
+    simp only [distinctPartGF_empty, subsetsWithSum_empty]
+    simp [PowerSeries.coeff_one]
+  | @insert k S hk ih =>
+    have hkpos : 0 < k := hpos k (Finset.mem_insert_self k S)
+    have hposS : ∀ s ∈ S, 0 < s := fun s hs => hpos s (Finset.mem_insert_of_mem hs)
+    rw [distinctPartGF_insert hk]
+    -- (1 + X^k) * F: coeff n = coeff n F + coeff (n-k) F
+    rw [PowerSeries.coeff_mul]
+    -- Antidiagonal sum: only terms (0, n) and (k, n-k) contribute
+    -- coeff a (1 + X^k) = 1 if a = 0 or a = k, else 0
+    rw [subsetsWithSum_insert hk n]
+    -- Need: ∑ (a,b) in antidiag n, coeff a (1+X^k) * coeff b F = card + if k≤n ...
+    sorry -- TODO: antidiagonal convolution sum equals the two-term recursion
+
+end
+
+end DistinctPartGFBridge

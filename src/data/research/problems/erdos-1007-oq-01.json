@@ -17,9 +17,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-06T22:03:59.699Z",
-    "iteration": 4,
-    "focus": "K_3 embedding, dim bounds, file cleanup",
+    "since": "2026-03-17T17:00:00Z",
+    "iteration": 5,
+    "focus": "sorry eliminated, proof complete",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: First dimension LOWER BOUND proved. dim(K_3)=2 exact (both <= and >=). K3_not_in_R1 via algebraic impossibility of three equidistant points on a line. Pre-existing Mathlib breakages in S19 regSimplexEmbed_inner_eq need fixing.",
+    "progressSummary": "PROGRESS: sorry in complete_graph_dim_ge_tight ELIMINATED. Full proof via inner product / system-of-equations method: centered vectors have Gram matrix (1 diag, 1/2 off-diag), inner product equations give g_k = -S, counting gives S = 0. Also fixed castSucc.succ type issue by using Fin.succ directly. File: 1368 lines, 9 axioms, 0 sorries, 82 theorems.",
     "builtItems": [
       "optimal_implies_quadratic theorem (§11)",
       "choose_two_le_sq helper: C(d+1,2) <= d^2 for d>=1 (§11)",
@@ -52,7 +52,12 @@
       "S21: K3_not_in_R0 (K_3 cannot embed in R^0)",
       "S21: K3_not_in_R1 (K_3 cannot embed in R^1, first lower bound)",
       "S21: complete_graph_dim_ge_2 (dim(K_3) >= 2)",
-      "S21: complete_graph_dim_eq_2 (dim(K_3) = 2, exact value)"
+      "S21: complete_graph_dim_eq_2 (dim(K_3) = 2, exact value)",
+      "complete_graph_dim_ge_tight proof: inner product argument replacing sorry (§20)",
+      "hgram_diag/hgram_off: Gram matrix entries for centered vectors (§20)",
+      "hinner: inner product sum-swapping lemma (§20)",
+      "hgkey: algebraic derivation g_k = -S from Gram values (§20)",
+      "Removed stale complete_graph_dim_lower_bound_sketch placeholder"
     ],
     "insights": [
       "optimal_implies_quadratic: complete graph optimality conjecture implies Theta(d^2) growth with c1=1/2, c2=1",
@@ -67,7 +72,10 @@
       "Proof technique: split Finset.univ into j≥i (zero), j+1<i (centroid²), j=i-1 (height×centroid or height²), then telescoping sum + arithmetic",
       "regSimplexEmbed_dist_sq now fully proved via ‖a-b‖²=‖a‖²+‖b‖²-2⟨a,b⟩ reduction",
       "Lower bound proof technique: in R^1, three equidistant points require x^2=1, y^2=1, (x+y)^2=1 which gives 4(xy)^2=4 but (2xy)^2=1, contradiction",
-      "Pre-existing Mathlib breakages in S19 (regSimplexEmbed_inner_eq) at lines 919-998 need separate fix"
+      "Pre-existing Mathlib breakages in S19 (regSimplexEmbed_inner_eq) at lines 919-998 need separate fix",
+      "Inner product approach avoids double-sum expansion entirely: multiply ∑g_j*w_j=0 by w_p and swap sums to get Gram-weighted equation",
+      "Fin.succ : Fin (m+1) → Fin (m+2) is the clean way to index centered vectors w_i = f(i+1) - f(0)",
+      "linear_combination tactic elegantly handles (1+card)*S = 0 derivation from S = card*(-S)"
     ],
     "mathlibGaps": [],
     "nextSteps": [

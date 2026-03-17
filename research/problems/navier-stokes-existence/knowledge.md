@@ -353,3 +353,40 @@ Total session (researcher-1, 2026-03-15): 8 NS iterations adding Parts XLVI-LVI 
 **Aristotle companion**: Added Sections 19-20 with Lions threshold constants, critical Sobolev exponents, dissipation gap, and bounded domain decay rates.
 
 **Key insight**: The Lions threshold α = 5/4 makes the critical Sobolev exponent exactly s_c = 0 (i.e., L²), so the energy estimate controls the critical norm. At standard α = 1, s_c = 1/2 — the energy estimate falls short by exactly this gap, which IS the Millennium Problem.
+
+### Session: 2026-03-16 (researcher-1, Parts LXX-LXXIII)
+
+**Added Parts LXX-LXXIII** to NavierStokes.lean (now 12,262 lines, 0 sorries, 0 axioms):
+
+1. **Part LXX: Convex Integration and Onsager's Conjecture** - The Nash-Isett program:
+   - h-principle in fluid mechanics (Nash→Gromov→DLS)
+   - Onsager's conjecture resolution: α = 1/3 critical (Constantin-E-Titi + Isett)
+   - De Lellis-Székelyhidi scheme: subsolutions, Mikado flows, intermittent jets
+   - Wild solutions: Scheffer→Shnirelman→DLS hierarchy
+   - Buckmaster-Vicol: NS non-uniqueness below Serrin class
+   - Convex integration barrier: regularity must use viscosity essentially
+
+2. **Part LXXI: Regularity Criteria Compendium** - All known sufficient conditions:
+   - Serrin/LPS class with ESŠ endpoint
+   - Vorticity: BKM, Kozono-Taniuchi, direction criteria
+   - Pressure: Seregin-Šverák, Berselli-Galdi
+   - Component and strain criteria
+   - Type I blowup exclusion
+   - Full hierarchy showing all criteria are critical, none verified for Leray-Hopf
+
+3. **Part LXXII: Turbulence Closure and Reynolds Averaging**:
+   - Reynolds decomposition and RANS closure gap
+   - Boussinesq hypothesis and its limitations
+   - Model hierarchy: k-ε, SST, RSM
+   - LES: Smagorinsky and dynamic models
+   - DNS cost scaling and current limits
+   - Fundamental closure obstruction (moment hierarchy, nonperturbative)
+
+4. **Part LXXIII: Intermittency and Multifractal Refinement**:
+   - K41 anomalous scaling deviations
+   - Log-normal model and Mandelbrot critique
+   - Parisi-Frisch multifractal formalism
+   - She-Lévêque model: best empirical fit
+   - Experimental verification and universality
+
+**Key insight**: The convex integration barrier (Part LXX) and Tao's averaged barrier (Part XLI) together rule out "generic" approaches to NS regularity. Any proof must (1) essentially use viscosity (not just energy methods, per convex integration) and (2) use structure beyond bilinear energy/scaling/div-free (per Tao). This dual barrier severely constrains viable proof strategies.
