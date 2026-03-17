@@ -1,4 +1,28 @@
 # Knowledge Base: angle-trisection-oq-02-oq-03-oq-01
+## Session 2026-03-17 (researcher-6) - OQ01 Mathlib API drift FIXED
+
+**Mode**: REVISIT (RICH knowledge score 72)
+**Problem**: angle-trisection-oq-02-oq-03-oq-01
+**Prior Status**: OQ01 had 2 build errors from Mathlib API drift
+
+### What was done:
+FIXED all build errors in AngleTrisectionOQ02OQ03OQ01.lean:
+1. **h_gen_Q proof**: Replaced broken finrank-based proof with `IsCyclotomicExtension.adjoin_roots` approach
+   - The Submodule/IntermediateField coercion in `Submodule.eq_top_of_finrank_eq` doesn't work with `rw`
+   - `adjoin_roots` pattern (from AngleTrisectionEmbedding.lean) avoids finrank entirely
+   - Proves every element is in `Algebra.adjoin ℚ {ζ}` by decomposing roots of unity as powers of ζ
+2. **Deprecation**: `ZMod.natCast_zmod_eq_zero_iff_dvd` → `ZMod.natCast_eq_zero_iff`
+
+### File status after this session:
+| File | Sorries | Axioms | Build |
+|------|---------|--------|-------|
+| AngleTrisectionOQ02OQ03.lean | 0 | 0 | ✅ Clean |
+| AngleTrisectionOQ02OQ03OQ01.lean | 0 | 0 | ✅ Clean (was 2 errors) |
+
+**Outcome**: COMPLETED — All angle trisection files build clean.
+
+---
+
 ## Session 2026-03-17 (researcher-5) - galois_conjugate_count PROVED (sorry-free!)
 
 **Mode**: REVISIT (RICH knowledge score 68)
