@@ -2554,10 +2554,13 @@ theorem singleton_partition_count (k n : ℕ) (hk : 0 < k) :
     simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_singleton]
     constructor
     · intro ⟨_, hj⟩
-      exact Nat.eq_of_mul_eq_left (by omega) (by omega)
+      -- k * j = n and k > 0 ⟹ j = n / k
+      have : n / k = j := by rw [← hj, Nat.mul_div_cancel_left _ hk]
+      omega
     · intro h
       subst h
-      exact ⟨by omega, Nat.div_mul_cancel hd⟩
+      refine ⟨by omega, ?_⟩
+      have := Nat.div_mul_cancel hd; omega
   · simp only [hd, if_neg, not_false_eq_true]
     rw [Finset.card_eq_zero]
     ext j
@@ -2567,3 +2570,191 @@ theorem singleton_partition_count (k n : ℕ) (hk : 0 < k) :
     exact hd ⟨j, by omega⟩
 
 end MultisetsFromS
+
+-- ============================================================================
+-- Part XLI: Geometric Series Functional Equation and Convolution
+-- ============================================================================
+
+/-
+The key identity for partGF coefficient extraction:
+  geomSeries k = 1 + X^k * geomSeries k   (functional equation)
+
+This implies:
+  geomSeries k * f = f + X^k * (geomSeries k * f)
+
+And therefore:
+  coeff n (geomSeries k * f) = ∑_{j=0}^{⌊n/k⌋} coeff (n - j*k) f
+
+This is the partition-with-repetition analogue of the binary split
+  coeff n ((1 + X^k) * f) = coeff n f + coeff (n-k) f
+used for distinctPartGF.
+-/
+
+section GeomSeriesConvolution
+
+open Finset Nat PowerSeries
+
+noncomputable section
+
+/-- **Functional equation**: geomSeries k = 1 + X^k * geomSeries k (for k > 0).
+    Captures 1/(1-t) = 1 + t/(1-t) with t = X^k. -/
+theorem geomSeries_functional_eq (k : ℕ) (hk : 0 < k) :
+    geomSeries k = 1 + (X : PowerSeries ℤ) ^ k * geomSeries k := by
+  ext n
+  simp only [map_add, PowerSeries.coeff_one, geomSeries_coeff k n hk]
+  by_cases hn : n = 0
+  · -- n = 0: both sides equal 1
+    subst hn
+    simp only [dvd_zero, ↓reduceIte]
+    have : PowerSeries.coeff (R := ℤ) 0 ((X : PowerSeries ℤ) ^ k * geomSeries k) = 0 :=
+      (PowerSeries.X_pow_dvd_iff.mp (dvd_mul_right _ _)) 0 hk
+    linarith
+  · -- n > 0: coeff n 1 = 0
+    simp only [hn, ↓reduceIte, zero_add]
+    by_cases hnk : k ≤ n
+    · -- n ≥ k: coeff n (X^k * f) = coeff (n-k) f
+      have heq : n = (n - k) + k := by omega
+      conv_rhs => rw [heq, PowerSeries.coeff_X_pow_mul]
+      rw [geomSeries_coeff k (n - k) hk]
+      -- k ∣ n ↔ k ∣ (n - k) when n ≥ k
+      have h_dvd : k ∣ n ↔ k ∣ (n - k) := by
+        constructor
+        · intro h
+          obtain ⟨m, hm⟩ := h
+          have hm1 : 1 ≤ m := by
+            rcases m with _ | m'
+            · simp at hm; omega
+            · omega
+          exact ⟨m - 1, by rw [hm]; zify [hm1]; ring⟩
+        · intro h
+          have := dvd_add h (dvd_refl k)
+          rwa [Nat.sub_add_cancel hnk] at this
+      simp only [show (k ∣ n) = (k ∣ (n - k)) from propext h_dvd]
+    · -- n < k: both sides are 0
+      push_neg at hnk
+      have : ¬(k ∣ n) := by
+        intro ⟨m, hm⟩
+        rcases Nat.eq_zero_or_pos m with rfl | hm_pos
+        · simp at hm; omega
+        · have : k ≤ k * m := le_mul_of_one_le_right (Nat.zero_le k) hm_pos
+          omega
+      simp only [this, ↓reduceIte]
+      exact ((PowerSeries.X_pow_dvd_iff.mp (dvd_mul_right _ _)) n (by omega)).symm
+
+/-- Coefficient recursion: coeff n (geomSeries k * f) splits via functional equation. -/
+theorem geomSeries_mul_coeff_rec (k : ℕ) (hk : 0 < k)
+    (f : PowerSeries ℤ) (n : ℕ) :
+    PowerSeries.coeff (R := ℤ) n (geomSeries k * f) =
+    PowerSeries.coeff (R := ℤ) n f +
+    (if k ≤ n then PowerSeries.coeff (R := ℤ) (n - k) (geomSeries k * f) else 0) := by
+  conv_lhs => rw [geomSeries_functional_eq k hk]
+  rw [add_mul, one_mul, map_add]
+  congr 1
+  rw [mul_assoc]
+  by_cases hnk : k ≤ n
+  · simp only [hnk, ↓reduceIte]
+    have heq : n = (n - k) + k := by omega
+    conv_lhs => rw [heq, PowerSeries.coeff_X_pow_mul]
+  · simp only [show ¬(k ≤ n) from hnk, ↓reduceIte]
+    push_neg at hnk
+    exact (PowerSeries.X_pow_dvd_iff.mp (dvd_mul_right _ _)) n (by omega)
+
+/-- **Convolution formula**: coeff n (geomSeries k * f) =
+    ∑_{j=0}^{⌊n/k⌋} coeff (n - j*k) f.
+    Key identity for connecting partGF to partition counts. -/
+theorem geomSeries_mul_coeff_sum (k : ℕ) (hk : 0 < k)
+    (f : PowerSeries ℤ) : ∀ n : ℕ,
+    PowerSeries.coeff (R := ℤ) n (geomSeries k * f) =
+    (Finset.range (n / k + 1)).sum (fun j =>
+      PowerSeries.coeff (R := ℤ) (n - j * k) f) := by
+  intro n
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+  rw [geomSeries_mul_coeff_rec k hk f n]
+  by_cases hnk : k ≤ n
+  · -- n ≥ k: apply IH to n - k
+    simp only [hnk, ↓reduceIte]
+    have hnk_lt : n - k < n := by omega
+    rw [ih (n - k) hnk_lt]
+    -- n / k = (n - k) / k + 1
+    have hdiv : n / k = (n - k) / k + 1 := by
+      conv_lhs => rw [show n = (n - k) + k from by omega]
+      exact Nat.add_div_right (n - k) hk
+    -- Split the RHS target sum at j=0 (use conv_rhs to avoid touching LHS)
+    conv_rhs => rw [hdiv, show (n - k) / k + 1 + 1 = ((n - k) / k + 1) + 1 from rfl,
+                     Finset.sum_range_succ']
+    simp only [Nat.zero_mul, Nat.sub_zero]
+    -- Goal: coeff n f + old_sum = shifted_sum + coeff n f
+    rw [add_comm]
+    congr 1
+    apply Finset.sum_congr rfl
+    intro j _
+    -- n - k - j * k = n - (j + 1) * k
+    congr 1
+    rw [Nat.sub_sub]
+    congr 1
+    ring
+  · -- n < k: n/k = 0, sum has single term j=0
+    push_neg at hnk
+    simp only [show ¬(k ≤ n) from by omega, ↓reduceIte, add_zero]
+    have hdiv : n / k = 0 := Nat.div_eq_zero_iff.mpr (Or.inr hnk)
+    rw [hdiv]
+    simp
+
+end
+
+end GeomSeriesConvolution
+
+-- ============================================================================
+-- Part XLII: partGF Coefficient Recursion
+-- ============================================================================
+
+/-
+The coefficient of X^n in partGF (insert k S) decomposes via convolution:
+  coeff n (partGF (insert k S)) = ∑_{j=0}^{n/k} coeff (n - j*k) (partGF S)
+-/
+
+section PartGFCoeffRecursion
+
+open Finset Nat PowerSeries
+
+noncomputable section
+
+/-- Coefficient of X^n in partGF ∅ is 1 if n = 0, else 0. -/
+theorem partGF_coeff_empty (n : ℕ) :
+    PowerSeries.coeff (R := ℤ) n (partGF ∅) =
+    if n = 0 then 1 else 0 := by
+  rw [partGF_empty]
+  simp [PowerSeries.coeff_one]
+
+/-- Product recursion for partGF. -/
+theorem partGF_insert' {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) :
+    partGF (insert k S) = geomSeries k * partGF S := by
+  simp only [partGF, Finset.prod_insert hk]
+
+/-- **Insert recursion for partGF coefficients**: choosing j copies of k,
+    then partitioning the remainder from S. -/
+theorem partGF_coeff_insert {S : Finset ℕ} {k : ℕ} (hk : k ∉ S)
+    (hkpos : 0 < k) (n : ℕ) :
+    PowerSeries.coeff (R := ℤ) n (partGF (insert k S)) =
+    (Finset.range (n / k + 1)).sum (fun j =>
+      PowerSeries.coeff (R := ℤ) (n - j * k) (partGF S)) := by
+  rw [partGF_insert' hk]
+  exact geomSeries_mul_coeff_sum k hkpos (partGF S) n
+
+/-- Constant term of partGF is always 1 (empty partition). -/
+theorem partGF_constantCoeff (S : Finset ℕ) (hpos : ∀ s ∈ S, 0 < s) :
+    PowerSeries.coeff (R := ℤ) 0 (partGF S) = 1 := by
+  induction S using Finset.induction with
+  | empty => simp [partGF_empty, PowerSeries.coeff_one]
+  | @insert k S hk ih =>
+    have hposS : ∀ s ∈ S, 0 < s := fun s hs => hpos s (Finset.mem_insert_of_mem hs)
+    have hkpos : 0 < k := hpos k (Finset.mem_insert_self k S)
+    rw [partGF_coeff_insert hk hkpos]
+    have : 0 / k = 0 := Nat.zero_div k
+    rw [this]
+    simp [ih hposS]
+
+end
+
+end PartGFCoeffRecursion
