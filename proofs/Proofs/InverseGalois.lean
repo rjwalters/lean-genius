@@ -451,19 +451,11 @@ The problem is related to:
 - The Langlands programme
 -/
 
-/--
-The IGP over function fields is fully solved.
-
-Over the function field ℂ(t) (complex rational functions), EVERY finite group
-is realizable as a Galois group. This follows from Riemann's existence theorem:
-finite groups arise as monodromy groups of branched covers of the Riemann sphere.
-
-Over ℚ(t) (rational rational functions), this is harder, but the situation
-is significantly better than over ℚ itself (Hilbert's irreducibility theorem
-then allows "descending" to ℚ).
+/-
+Note: The IGP over function fields is fully solved (Riemann's existence theorem).
+Over ℂ(t), every finite group is realizable as a Galois group via monodromy of
+branched covers. This deep result from complex analysis is not formalized here.
 -/
-theorem igp_over_function_field_is_solved : True := by
-  trivial -- This is a mathematical fact; the full proof is in complex analysis
 
 /-
 ## Part IX: Connections to Related Theorems
