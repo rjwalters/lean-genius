@@ -917,15 +917,17 @@ private theorem regSimplexEmbed_inner_eq (m : ℕ) (i k : Fin (m + 2))
         by_cases hik_eq : (i : ℕ) = (k : ℕ)
         · -- i = k: product = height(i)²
           rw [if_pos hik_eq, regSimplexEmbed_height m k j hk_ne (by omega) (by omega),
-              show (k : ℝ) = (i : ℝ) from by push_cast; omega,
+              show (k : ℝ) = (i : ℝ) from by exact_mod_cast hik_eq.symm,
               ← sq, height_sq (i : ℕ) hi_pos]
         · -- i < k: f(k,j) = centroid(j), j = i-1
           rw [if_neg hik_eq, regSimplexEmbed_centroid m k j hk_ne (by omega)]
           -- height(i) * centroid(i-1) = 1/(2i)
           -- Prove by showing squares are equal (both sides ≥ 0)
           have hi_r : (0 : ℝ) < (i : ℝ) := Nat.cast_pos.mpr hi_pos
-          have hj_r1 : (j : ℝ) + 1 = (i : ℝ) := by push_cast; omega
-          have hj_r2 : (j : ℝ) + 2 = (i : ℝ) + 1 := by push_cast; omega
+          have hj_nat1 : (j : ℕ) + 1 = (i : ℕ) := by omega
+          have hj_nat2 : (j : ℕ) + 2 = (i : ℕ) + 1 := by omega
+          have hj_r1 : (j : ℝ) + 1 = (i : ℝ) := by exact_mod_cast hj_nat1
+          have hj_r2 : (j : ℝ) + 2 = (i : ℝ) + 1 := by exact_mod_cast hj_nat2
           have h_lhs_nn : 0 ≤ Real.sqrt (((i : ℝ) + 1) / (2 * (i : ℝ))) *
               (1 / Real.sqrt (2 * ((j : ℝ) + 1) * ((j : ℝ) + 2))) := by positivity
           have h_rhs_nn : (0 : ℝ) ≤ 1 / (2 * (i : ℝ)) := by positivity
@@ -935,7 +937,7 @@ private theorem regSimplexEmbed_inner_eq (m : ℕ) (i k : Fin (m + 2))
               Real.sq_sqrt (by positivity : (0:ℝ) ≤ ((i : ℝ) + 1) / (2 * (i : ℝ))),
               Real.sq_sqrt (by rw [hj_r1, hj_r2]; positivity :
                 (0:ℝ) ≤ 2 * ((j : ℝ) + 1) * ((j : ℝ) + 2))]
-          rw [hj_r1, hj_r2]; field_simp; ring
+          rw [hj_r1, hj_r2]; field_simp
   simp_rw [h_term]
   -- Now sum: split {j < i} and {j ≥ i}
   rw [← Finset.sum_filter_add_sum_filter_not Finset.univ
@@ -995,8 +997,8 @@ private theorem regSimplexEmbed_inner_eq (m : ℕ) (i k : Fin (m + 2))
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.ext_iff,
                not_lt]
     constructor
-    · intro ⟨⟨_, h1⟩, h2⟩; omega
-    · intro h; subst h; refine ⟨⟨?_, by omega⟩, by omega⟩; exact Finset.mem_univ _
+    · rintro ⟨hlt, hge⟩; omega
+    · intro h; subst h; exact ⟨by omega, by omega⟩
   -- Rewrite constant sum over singleton
   rw [Finset.sum_const, h_single_card, Nat.smul_one_eq_cast, Nat.cast_one, one_mul]
   -- Centroid filter = {0, ..., i-2}, biject to range (i-1)
@@ -1014,13 +1016,12 @@ private theorem regSimplexEmbed_inner_eq (m : ℕ) (i k : Fin (m + 2))
       rw [Finset.mem_range] at hj
       refine ⟨⟨j, by omega⟩, ?_, rfl⟩
       simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-      exact ⟨⟨Finset.mem_univ _, by omega⟩, by omega⟩
+      exact ⟨by omega, by omega⟩
     · intro ⟨j, _⟩ _; rfl
   rw [h_cent_bij, sum_centroid_sq]
   -- Final arithmetic
   have hi_r : (0 : ℝ) < (i : ℝ) := Nat.cast_pos.mpr hi_pos
-  rw [show ((↑(i : ℕ) - 1 : ℕ) : ℝ) = (i : ℝ) - 1 from by push_cast; omega,
-      show ((↑(i : ℕ) - 1 : ℕ) : ℝ) + 1 = (i : ℝ) from by push_cast; omega]
+  simp only [Nat.cast_sub (by omega : 1 ≤ (i : ℕ)), Nat.cast_one, sub_add_cancel]
   split
   · -- i = k: (i-1)/(2i) + (i+1)/(2i) = 1
     field_simp; ring
