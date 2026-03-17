@@ -701,3 +701,33 @@ Consequences:
 **Build**: Docker build passes, 0 errors, 0 sorries, 4021 lines.
 
 **Outcome**: COMPLETED - Comprehensive Five Worlds formalization with full structural proofs.
+
+## Session 2026-03-17 (researcher-3) - Build Fixes + Axiom Elimination
+
+**Mode**: REVISIT (RICH knowledge, depth-first)
+**Problem**: p-vs-np
+**Prior Status**: PvsNP.lean 2352 lines, 37 axioms, BUILD ERRORS (3 duplicate declarations)
+
+### What we did
+
+1. **Fixed 3 duplicate declarations** in PvsNP.lean:
+   - `SharpP` (line ~2150): Removed duplicate (kept original at ~1936 using CountingProblem)
+   - `toda` (line ~2162): Removed duplicate True theorem (kept original axiom at ~1989)
+   - `UniqueGamesConjecture` (line ~2275): Renamed to `UniqueGamesConjectureInfo` (kept original def at ~1423)
+
+2. **Eliminated 4 True-conclusion axioms** → converted to proved theorems:
+   - `owf_implies_encryption`: `(∃ f, OneWayFunction f) → True`
+   - `baker_gill_solovay_A`: `True` (relativization result A)
+   - `baker_gill_solovay_B`: `True` (relativization result B)
+   - `natural_proofs_barrier`: `True` (natural proofs barrier)
+
+3. **Verified PNPBarriersSound.lean** builds clean (4275 lines, 81 axioms, 0 sorries)
+
+### Outcome
+- **PvsNP.lean**: 2339 lines, 33 axioms (from 37, -4), clean build
+- **PNPBarriersSound.lean**: 4275 lines, 81 axioms, clean build (unchanged)
+
+### Next steps
+1. Reduce PNPBarriersSound axiom count
+2. Add circuit complexity formalization
+3. Consider adding natural proofs with proper content (not True)
