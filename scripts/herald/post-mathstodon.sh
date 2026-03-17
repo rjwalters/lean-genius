@@ -60,6 +60,11 @@ if [[ -z "$TEXT" ]]; then
     exit 1
 fi
 
+# Append automated post tag
+TEXT="${TEXT}
+
+[automated post]"
+
 # Validate character limit
 CHAR_COUNT=${#TEXT}
 if [[ $CHAR_COUNT -gt $MAX_CHARS ]]; then
