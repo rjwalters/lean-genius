@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (105 axioms; net +1 from 104 due to model consistency fix)
+## Axiom Summary (105 axioms; +2 from 103 for model consistency: L_subset_NL, immerman_szelepcsenyi)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -78,7 +78,7 @@ Eliminated axioms (9→theorems/opaques):
 - TC0_computes_multiplication → theorem (same type as majority_in_TC0_not_AC0)
 - TC0_computes_division → theorem (same type as majority_in_TC0_not_AC0)
 - mignon_ressayre → theorem (trivially True)
-- immerman_szelepcsenyi → theorem (NL = coNL from Φ_negate, L = NL in abstract model)
+- immerman_szelepcsenyi → was theorem (NL = coNL), now axiom again (NL opaque)
 - algorithmica_no_owf → theorem (derived: owf_implies_P_ne_NP contrapositive)
 - padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE → theorem (EXP = EXPSPACE definitionally)
 - D_comm → opaque def (measurement function, not mathematical claim)
@@ -3864,8 +3864,8 @@ theorem grand_landscape :
 #check SAT_reduces_to_TQBF        -- SAT ≤ₚ TQBF
 #check PSPACEHard_of_reduce       -- PSPACE-hardness transfers
 
--- Space hierarchy and separations (model limitation: L = PSPACE)
-#check EXP_eq_PSPACE_in_model     -- EXP = PSPACE (unused polynomial parameter)
+-- Space hierarchy and separations (L, NL now opaque)
+#check EXP_eq_PSPACE_in_model     -- EXP = PSPACE (same transparent def)
 #check NL_ne_EXP                  -- NL ≠ EXP
 
 -- Complexity zoo
