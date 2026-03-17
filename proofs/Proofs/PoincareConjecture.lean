@@ -3713,13 +3713,15 @@ end GraphManifoldsThurstonNorm
 
 section PerelmanSurgery
 
-/-- Perelman's proof resolves the Poincaré Conjecture (and Thurston Geometrization)
-    by establishing Ricci flow with surgery on closed 3-manifolds.
+/-
+Perelman's proof resolves the Poincaré Conjecture (and Thurston Geometrization)
+by establishing Ricci flow with surgery on closed 3-manifolds.
 
-    Key papers:
-    1. "The entropy formula for the Ricci flow" (2002)
-    2. "Ricci flow with surgery on three-manifolds" (2003)
-    3. "Finite extinction time for the solutions to the Ricci flow" (2003) -/
+Key papers:
+1. "The entropy formula for the Ricci flow" (2002)
+2. "Ricci flow with surgery on three-manifolds" (2003)
+3. "Finite extinction time for the solutions to the Ricci flow" (2003)
+-/
 
 /-- Hamilton's Ricci flow equation: ∂g/∂t = -2Ric(g).
     This PDE deforms the metric toward uniform curvature. -/
@@ -3784,8 +3786,8 @@ structure SurgeryProcedure where
   /-- Topology: connected sum decomposition -/
   connectedSumDecomposition : Prop
 
-/-- Ricci flow with surgery: the full algorithm. -/
-structure RicciFlowWithSurgery where
+/-- Ricci flow with surgery: the full algorithm (detail structure). -/
+structure RicciFlowWithSurgeryDetail where
   /-- Surgery times are discrete -/
   discreteSurgeryTimes : Prop
   /-- Finitely many surgeries on any finite interval -/
@@ -3818,8 +3820,8 @@ end PerelmanSurgery
 
 section ThurstonGeometries
 
-/-- Thurston's eight model geometries for 3-manifolds. -/
-inductive ThurstonGeometry where
+/-- Thurston's eight model geometries with detailed info. -/
+inductive ThurstonGeometryDetailed where
   | S3     -- Spherical (positive curvature)
   | E3     -- Euclidean (flat)
   | H3     -- Hyperbolic (negative curvature)
@@ -3832,7 +3834,7 @@ inductive ThurstonGeometry where
 
 /-- Each geometry has a maximal symmetry group. -/
 structure GeometryInfo where
-  geometry : ThurstonGeometry
+  geometry : ThurstonGeometryDetailed
   /-- Dimension of isometry group -/
   isomDim : ℕ
   /-- Is the model space compact? -/
@@ -3841,7 +3843,7 @@ structure GeometryInfo where
   numCompactQuotients : String
 
 /-- Data for the eight geometries. -/
-def geometryData : ThurstonGeometry → GeometryInfo
+def geometryData : ThurstonGeometryDetailed → GeometryInfo
   | .S3 => ⟨.S3, 6, false, "Finitely many (lens spaces, prism manifolds, etc.)"⟩
   | .E3 => ⟨.E3, 6, false, "6 orientable (Bieberbach groups)"⟩
   | .H3 => ⟨.H3, 6, false, "Infinitely many (Mostow rigidity)"⟩
@@ -3984,12 +3986,14 @@ end PostPerelman
 
 section PoincareHomologySphere
 
-/-- The Poincaré homology sphere Σ(2,3,5) is the most famous counterexample
-    to the original (incorrect) conjecture that homology determines topology.
+/-
+The Poincaré homology sphere Σ(2,3,5) is the most famous counterexample
+to the original (incorrect) conjecture that homology determines topology.
 
-    It has the same homology as S³ but π₁ ≅ binary icosahedral group (order 120).
-    Poincaré discovered this in 1904, which led him to reformulate his
-    conjecture in terms of the fundamental group. -/
+It has the same homology as S³ but π₁ ≅ binary icosahedral group (order 120).
+Poincaré discovered this in 1904, which led him to reformulate his
+conjecture in terms of the fundamental group.
+-/
 
 /-- Constructions of the Poincaré homology sphere (all give the same manifold):
     1. S³/I* where I* is the binary icosahedral group
@@ -4228,11 +4232,13 @@ end DehnSurgery
 
 section KnotsAndPoincare
 
-/-- The role of knot theory in the Poincaré conjecture.
-    Knots provide concrete examples and test cases for 3-manifold theory. -/
+/-
+The role of knot theory in the Poincaré conjecture.
+Knots provide concrete examples and test cases for 3-manifold theory.
+-/
 
-/-- A knot is an embedding S¹ → S³. -/
-structure Knot where
+/-- A knot (basic structure for examples). -/
+structure KnotBasic where
   /-- The embedding exists -/
   embedding : Prop
   /-- The knot complement S³ \ K is an open 3-manifold -/
@@ -4482,10 +4488,12 @@ end CyclicActionsOnS3
 
 section EulerCharTopInvariants
 
-/-- Euler characteristic computations for closed 3-manifolds.
-    For any closed 3-manifold M, χ(M) = 0.
-    This follows from Poincaré duality: b₀ = b₃, b₁ = b₂,
-    so χ = b₀ - b₁ + b₂ - b₃ = 0. -/
+/-
+Euler characteristic computations for closed 3-manifolds.
+For any closed 3-manifold M, χ(M) = 0.
+This follows from Poincaré duality: b₀ = b₃, b₁ = b₂,
+so χ = b₀ - b₁ + b₂ - b₃ = 0.
+-/
 
 /-- Betti numbers of a closed orientable 3-manifold. -/
 structure BettiNumbers3 where
