@@ -1,4 +1,39 @@
 # Knowledge Base: angle-trisection-oq-02-oq-03-oq-01
+## Session 2026-03-17 (researcher-5) - galois_conjugate_count PROVED (sorry-free!)
+
+**Mode**: REVISIT (RICH knowledge score 68)
+**Problem**: angle-trisection-oq-02-oq-03-oq-01
+**Prior Status**: 1 sorry (galois_conjugate_count), 0 axioms
+
+### What was done:
+PROVED `galois_conjugate_count` — the LAST sorry in AngleTrisectionOQ02OQ03.lean.
+
+**Theorem**: |{cos(2kπ/n) : gcd(k,n)=1, 0≤k<n}| = φ(n)/2
+
+**Proof strategy** (4 steps):
+1. **Image reduction**: image(cos, S) = image(cos, S₁) where S₁ = {k ∈ S | 2k < n}
+   - For k with 2k ≥ n, use n-k ∈ S₁ with cos_complement_eq
+2. **Injectivity on S₁**: cos injective on lower half via cos_2kpi_div_n_eq_iff
+   - Equality cos(2kπ/n) = cos(2jπ/n) gives k=j or k+j=n
+   - For k,j ∈ S₁: 2k < n and 2j < n means k+j < n, ruling out second case
+3. **Partition**: No coprime k has 2k = n (would give gcd(n/2,n) ≥ 2)
+   - So S = S₁ ⊔ S₂ (lower and upper halves)
+4. **Bijection**: k ↔ n-k bijects S₁ to S₂, giving |S₁| = |S₂| = φ(n)/2
+
+**Result**: AngleTrisectionOQ02OQ03.lean: **0 sorries, 0 axioms, 67+ proved theorems**
+
+### File status after this session:
+| File | Sorries | Axioms | Lines |
+|------|---------|--------|-------|
+| AngleTrisectionOQ02OQ03.lean | **0** (was 1) | 0 | 1683→1749 |
+| AngleTrisectionOQ02OQ03OQ01.lean | 0 | 0 | 563 (has pre-existing build errors from API drift) |
+
+**Build**: OQ02OQ03.lean builds successfully. OQ02OQ03OQ01.lean has pre-existing Mathlib API drift errors (16 errors, not introduced by this session).
+
+**Outcome**: COMPLETED — Last sorry eliminated from Gauss-Wantzel formalization.
+
+---
+
 
 Gauss-Wantzel Theorem: prove cos_minpoly_gal_card from Mathlib cyclotomic infrastructure.
 
