@@ -3060,14 +3060,16 @@ theorem S1_cross_S2_not_S3 :
     Pᵢ ≅ Qᵢ for all i.
 
     This is the 3-manifold analog of unique factorization in ℤ. -/
-axiom milnor_uniqueness (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) :
-    ∀ (m n : ℕ) (P : Fin m → Type) (Q : Fin n → Type)
-      [∀ i, TopologicalSpace (P i)] [∀ j, TopologicalSpace (Q j)]
-      (hP : ∀ i, ∃ h : @Closed3Manifold (P i) _, @IsPrime3Manifold (P i) _ h)
-      (hQ : ∀ j, ∃ h : @Closed3Manifold (Q j) _, @IsPrime3Manifold (Q j) _ h),
-    -- If both decompositions represent M, then m = n
-    m = n
+/-- The number of non-trivial prime factors in the Kneser-Milnor decomposition.
+    Formulated as a function (uniqueness = determinism). Previous axiom (∀ m n, m = n)
+    was unsound: it quantified over arbitrary m, n without constraining them to be
+    actual decompositions of M. -/
+axiom milnor_prime_count (M : Type) [TopologicalSpace M]
+    (hM : Closed3Manifold M) : ℕ
+
+/-- S³ has 0 non-trivial prime factors (it is the identity under connected sum). -/
+axiom milnor_prime_count_sphere3 :
+    milnor_prime_count (↥Sphere3) sphere3_closedManifold = 0
 
 /-- A simply connected closed 3-manifold has trivial prime decomposition:
     all prime factors are S³.
@@ -3158,6 +3160,10 @@ structure RicciFlowSolution (M : Type) [TopologicalSpace M] where
   scalarCurvature : ℝ → ℝ
   /-- The scalar curvature is bounded at each time (for closed manifolds) -/
   scalar_bounded : ∀ t, 0 ≤ t → t < maxTime → ∃ C, |scalarCurvature t| ≤ C
+  /-- Maximum principle: the minimum scalar curvature is non-decreasing.
+      Incorporated as a structural constraint to prevent non-physical solutions. -/
+  scalar_min_nondecreasing : ∀ (R₀ : ℝ), scalarCurvature 0 ≥ R₀ →
+    ∀ t, 0 ≤ t → t < maxTime → scalarCurvature t ≥ R₀
 
 /-- Hamilton's Short-Time Existence (1982):
     For any initial Riemannian metric g₀ on a closed 3-manifold,
@@ -3166,19 +3172,21 @@ structure RicciFlowSolution (M : Type) [TopologicalSpace M] where
 theorem hamilton_short_time_existence (M : Type) [TopologicalSpace M]
     (hM : Closed3Manifold M) :
     ∃ (sol : RicciFlowSolution M), True :=
-  ⟨⟨1, by norm_num, fun _ => 0, fun _ _ _ => ⟨0, by simp⟩⟩, trivial⟩
+  ⟨⟨1, by norm_num, fun _ => 0, fun _ _ _ => ⟨0, by simp⟩, fun _ h0 _ _ _ => h0⟩, trivial⟩
 
 /-- The scalar curvature satisfies a maximum principle under Ricci flow:
     if R_min(0) ≥ c, then R_min(t) ≥ c/(1 - 2ct/3).
     In particular, the minimum scalar curvature is non-decreasing.
 
-    This is a key consequence of the evolution equation
-    ∂R/∂t = ΔR + 2|Ric|² ≥ ΔR + (2/3)R². -/
-axiom scalar_curvature_max_principle (M : Type) [TopologicalSpace M]
+    Previously an axiom; now proved from the structural constraint in RicciFlowSolution.
+    The constraint was incorporated to prevent constructing non-physical solutions
+    (the old axiom applied to all constructible solutions, making it unsound). -/
+theorem scalar_curvature_max_principle (M : Type) [TopologicalSpace M]
     (sol : RicciFlowSolution M)
     (R_min_0 : ℝ) (h_init : sol.scalarCurvature 0 ≥ R_min_0)
     (t : ℝ) (ht : 0 ≤ t) (htmax : t < sol.maxTime) :
-    sol.scalarCurvature t ≥ R_min_0
+    sol.scalarCurvature t ≥ R_min_0 :=
+  sol.scalar_min_nondecreasing R_min_0 h_init t ht htmax
 
 /-- Hamilton's Sphere Theorem (1982): If a closed 3-manifold admits a
     metric with positive Ricci curvature, then the Ricci flow converges
@@ -3508,12 +3516,23 @@ theorem jsj_decomposition (M : Type) [TopologicalSpace M]
   ⟨1, fun _ => ⟨Set.univ, JSJPieceType.seifert, ⟨x, Set.mem_univ _⟩⟩,
    by omega, fun _ => Or.inl rfl⟩
 
-/-- JSJ Uniqueness: The decomposition is canonical—the collection of
-    essential tori is unique up to isotopy. -/
-axiom jsj_uniqueness (M : Type) [TopologicalSpace M]
-    (hM : Closed3Manifold M) (hirr : IsIrreducible3Manifold M hM)
-    (n₁ n₂ : ℕ) (_p₁ : Fin n₁ → JSJPiece M) (_p₂ : Fin n₂ → JSJPiece M) :
-    n₁ = n₂
+/-- JSJ Uniqueness: The canonical number of JSJ pieces minus one.
+    Formulated as a function (uniqueness = determinism). Previous axiom
+    (∀ n₁ n₂, n₁ = n₂) was unsound: combined with jsj_decomposition's
+    trivial 1-piece construction, it implied all naturals equal. -/
+axiom jsj_piece_count_pred (M : Type) [TopologicalSpace M]
+    (hM : Closed3Manifold M) (hirr : IsIrreducible3Manifold M hM) : ℕ
+
+/-- The canonical number of JSJ pieces (always ≥ 1). -/
+def jsj_piece_count (M : Type) [TopologicalSpace M]
+    (hM : Closed3Manifold M) (hirr : IsIrreducible3Manifold M hM) : ℕ :=
+  jsj_piece_count_pred M hM hirr + 1
+
+/-- Every closed irreducible 3-manifold has at least 1 JSJ piece. -/
+theorem jsj_piece_count_pos (M : Type) [TopologicalSpace M]
+    (hM : Closed3Manifold M) (hirr : IsIrreducible3Manifold M hM) :
+    jsj_piece_count M hM hirr ≥ 1 := by
+  unfold jsj_piece_count; omega
 
 /-- Atoroidal + irreducible 3-manifolds are either Seifert or hyperbolic.
     This is the Hyperbolization Theorem (Thurston + Perelman). -/
@@ -4832,6 +4851,146 @@ theorem rp3_closed_manifold_partial :
 
 end RP3Properties
 
+/- ===============================================================================
+PART LVI: RICCI FLOW MONOTONICITY CONSEQUENCES
+=============================================================================== -/
+
+section RicciFlowConsequences
+
+/-- If a Ricci flow has positive initial scalar curvature, the curvature
+    remains positive for all time. -/
+theorem ricci_flow_positive_curvature_preserved (M : Type) [TopologicalSpace M]
+    (sol : RicciFlowSolution M)
+    (h_pos : sol.scalarCurvature 0 > 0)
+    (t : ℝ) (ht : 0 ≤ t) (htmax : t < sol.maxTime) :
+    sol.scalarCurvature t > 0 := by
+  have h_init := sol.scalar_min_nondecreasing (sol.scalarCurvature 0)
+    (le_refl _) t ht htmax
+  linarith
+
+/-- The scalar curvature at any time is at least the initial value. -/
+theorem ricci_flow_curvature_monotone (M : Type) [TopologicalSpace M]
+    (sol : RicciFlowSolution M)
+    (t : ℝ) (ht : 0 ≤ t) (htmax : t < sol.maxTime) :
+    sol.scalarCurvature t ≥ sol.scalarCurvature 0 :=
+  sol.scalar_min_nondecreasing (sol.scalarCurvature 0) (le_refl _) t ht htmax
+
+/-- Nonnegative initial scalar curvature is preserved under Ricci flow. -/
+theorem ricci_flow_nonneg_curvature_preserved (M : Type) [TopologicalSpace M]
+    (sol : RicciFlowSolution M)
+    (h_nonneg : sol.scalarCurvature 0 ≥ 0)
+    (t : ℝ) (ht : 0 ≤ t) (htmax : t < sol.maxTime) :
+    sol.scalarCurvature t ≥ 0 :=
+  le_trans h_nonneg (ricci_flow_curvature_monotone M sol t ht htmax)
+
+/-- At a Ricci flow singularity, curvature stays above its initial value. -/
+theorem singularity_curvature_from_below (M : Type) [TopologicalSpace M]
+    (sing : RicciFlowSingularity M)
+    (t : ℝ) (ht : 0 ≤ t) (htmax : t < sing.T) :
+    sing.solution.scalarCurvature t ≥ sing.solution.scalarCurvature 0 := by
+  have htmax' : t < sing.solution.maxTime := by
+    rw [sing.maxTime_eq]; exact htmax
+  exact ricci_flow_curvature_monotone M sing.solution t ht htmax'
+
+end RicciFlowConsequences
+
+/- ===============================================================================
+PART LVII: QUATERNION GROUP NON-COMMUTATIVITY
+=============================================================================== -/
+
+section QuaternionNonCommutativity
+
+/-- The quaternion i = (0,1,0,0). -/
+noncomputable def quatI : EuclideanSpace ℝ (Fin 4) :=
+  EuclideanSpace.single 1 1
+
+/-- The quaternion j = (0,0,1,0). -/
+noncomputable def quatJ : EuclideanSpace ℝ (Fin 4) :=
+  EuclideanSpace.single 2 1
+
+/-- The quaternion k = (0,0,0,1). -/
+noncomputable def quatK : EuclideanSpace ℝ (Fin 4) :=
+  EuclideanSpace.single 3 1
+
+/-- i is a unit quaternion: ‖i‖ = 1. -/
+theorem quatI_norm : ‖quatI‖ = 1 := by
+  simp [quatI, EuclideanSpace.norm_single]
+
+/-- j is a unit quaternion: ‖j‖ = 1. -/
+theorem quatJ_norm : ‖quatJ‖ = 1 := by
+  simp [quatJ, EuclideanSpace.norm_single]
+
+/-- k is a unit quaternion: ‖k‖ = 1. -/
+theorem quatK_norm : ‖quatK‖ = 1 := by
+  simp [quatK, EuclideanSpace.norm_single]
+
+/-- i · j has 3rd coordinate = 1 (i.e., i · j = k). -/
+theorem quatMulE_ij_coord3 :
+    (quatMulE quatI quatJ) 3 = 1 := by
+  show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE quatI quatJ) 3 = 1
+  simp [quatMulE, quatI, quatJ, EuclideanSpace.single_apply]
+  decide
+
+/-- j · i has 3rd coordinate = -1 (i.e., j · i = -k). -/
+theorem quatMulE_ji_coord3 :
+    (quatMulE quatJ quatI) 3 = -1 := by
+  show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE quatJ quatI) 3 = -1
+  simp [quatMulE, quatJ, quatI, EuclideanSpace.single_apply]
+  decide
+
+/-- Quaternion multiplication is NON-COMMUTATIVE: i · j ≠ j · i. -/
+theorem quatMulE_noncommutative :
+    quatMulE quatI quatJ ≠ quatMulE quatJ quatI := by
+  intro h
+  have h3 := congr_arg (· 3) h
+  rw [quatMulE_ij_coord3, quatMulE_ji_coord3] at h3
+  linarith
+
+/-- Right identity: quatMulE x 1 = x. -/
+theorem quatMulE_right_identity (x : EuclideanSpace ℝ (Fin 4)) :
+    quatMulE x quatOneE = x := by
+  ext i
+  show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE x quatOneE) i =
+       WithLp.equiv 2 (Fin 4 → ℝ) x i
+  simp [quatMulE, quatOneE, EuclideanSpace.single_apply]
+  fin_cases i <;> simp <;> ring
+
+/-- Left identity: quatMulE 1 x = x. -/
+theorem quatMulE_left_identity (x : EuclideanSpace ℝ (Fin 4)) :
+    quatMulE quatOneE x = x := by
+  ext i
+  show WithLp.equiv 2 (Fin 4 → ℝ) (quatMulE quatOneE x) i =
+       WithLp.equiv 2 (Fin 4 → ℝ) x i
+  simp [quatMulE, quatOneE, EuclideanSpace.single_apply]
+  fin_cases i <;> simp <;> ring
+
+/-- S³ as a Lie group is non-abelian: ∃ a b, a · b ≠ b · a. -/
+theorem sphere3_group_nonabelian :
+    ∃ (a b : ↥Sphere3), sphere3Mul a b ≠ sphere3Mul b a := by
+  have hi_mem : quatI ∈ Sphere3 := by
+    simp [Sphere3, Metric.mem_sphere, dist_eq_norm, sub_zero, quatI_norm]
+  have hj_mem : quatJ ∈ Sphere3 := by
+    simp [Sphere3, Metric.mem_sphere, dist_eq_norm, sub_zero, quatJ_norm]
+  refine ⟨⟨quatI, hi_mem⟩, ⟨quatJ, hj_mem⟩, ?_⟩
+  intro h
+  have := congr_arg Subtype.val h
+  simp [sphere3Mul] at this
+  exact quatMulE_noncommutative this
+
+/-- The identity is the unique left identity: if e · x = x for all x, then e = 1. -/
+theorem sphere3_identity_unique :
+    ∀ (e : ↥Sphere3), (∀ x : ↥Sphere3, sphere3Mul e x = x) →
+      e = sphere3One := by
+  intro e he
+  have h := he sphere3One
+  have h2 : sphere3Mul e sphere3One = e := by
+    apply Subtype.ext
+    simp [sphere3Mul, sphere3One]
+    exact quatMulE_right_identity e.val
+  rw [← h2]; exact h
+
+end QuaternionNonCommutativity
+
 -- Summary of all contributions to PoincareConjecture.lean:
 -- Parts XLIV-XLV: JSJ Decomposition, Graph Manifolds, Thurston Norm
 -- Parts XLVI-XLVIII: Perelman's Proof, Thurston's Geometries, Post-Perelman
@@ -4840,5 +4999,7 @@ end RP3Properties
 -- Part LIII: Concrete Cyclic Group Actions on S³ and Lens Space Geometry
 -- Part LIV: Euler Characteristic and Topological Invariants
 -- Part LV: RP³ Topological Properties from Covering Space
+-- Part LVI: Ricci Flow Monotonicity Consequences
+-- Part LVII: Quaternion Group Non-Commutativity
 
 end PoincareConjecture
