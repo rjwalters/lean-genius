@@ -17,9 +17,9 @@
   },
   "currentState": {
     "phase": "ORIENT",
-    "since": "2026-03-17T17:30:00Z",
-    "iteration": 5,
-    "focus": "GF coefficient bridge infrastructure",
+    "since": "2026-03-11T09:48:08.982Z",
+    "iteration": 4,
+    "focus": "Prove recurrence correctness and equality for Schur identity",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Part XLIII adds GF coefficient bridge infrastructure. subsetsWithSum definition and insert recursion proved. distinctPartGF_coeff_eq_card theorem structured (sorry in antidiagonal convolution step). 1 sorry, 3 axioms.",
+    "progressSummary": "PROGRESS: Step 7a complete. Gap/mod recurrences defined, verified for n=0..15, reduction theorem proved. 2 sorries (recurrence correctness), 3 axioms. Next: prove recurrence correctness by induction, then tackle recurrence equality.",
     "builtItems": [
       "distinctPartGF: generating function ∏(1+X^k) as PowerSeries ℤ",
       "schurModGF, rr1ModGF: specialized GFs for partition identities",
@@ -47,17 +47,14 @@
       "schurModSet: {k ∈ [1..n] | k ≡ 1,2 mod 3} definition",
       "schurMod_card_eq_subsetsWithSum: bijection via Finset.card_bij (proved)",
       "schurMod_card_eq_gf_coeff: |schurMod n| = coeff n (schurModGF n) (proved)",
-      "schurGapBounded(m,n): gap-side partitions with largest part ≤ m (Finset filter)",
-      "schurModBounded(m,n): mod-side partitions with largest part ≤ m (Finset filter)",
-      "schurGapRec/schurModRec: pure recursive counting functions verified against Finset defs",
-      "schurGapBounded_ge/schurModBounded_ge: m≥n reduces to full set",
-      "schurGapBounded_mono/schurModBounded_mono: monotonicity in bound m",
-      "schurModBounded_div3: m≡0 mod 3 ⟹ schurModBounded m = schurModBounded (m-1)",
-      "schurGapBounded_split: union decomposition by m-membership",
-      "subsetsWithSum: definition of subsets summing to n (Part XLIII)",
-      "subsetsWithSum_empty: base case for empty set",
-      "subsetsWithSum_insert: insert recursion (card decomposition into containing/not containing k)",
-      "distinctPartGF_coeff_eq_card: bridge theorem structure (sorry in inductive step)"
+      "schurGapSize: minimum gap function (4 if 3|m, else 3)",
+      "schurGapCount: computable recurrence for gap-side Schur partitions",
+      "schurModCount: computable recurrence for mod-side Schur partitions",
+      "schurGapBounded: decidable gap partitions with part bound",
+      "schurModBounded: decidable mod partitions with part bound",
+      "schurGapBounded_eq_full, schurModBounded_eq_full: bound=n gives full set",
+      "schurGapBounded_decompose: partitions split by max part membership",
+      "schur_from_recurrences: reduction theorem (3 subgoals → Schur identity)"
     ],
     "insights": [
       "All 3 axioms encode deep partition identities (RR1, RR2, Schur)",
@@ -74,22 +71,21 @@
       "SchurMod ↔ subsetsWithSum bijection via Finset.card_bij: forward p↦parts.toFinset, inverse via partitionOfSubset",
       "RR1/RR2 mod sides allow repeated parts (no Nodup) → distinctPartGF approach only works for Schur, not RR",
       "schurMod_card_eq_gf_coeff chains: bijection → distinctPartGF_coeff → GF definition equality",
-      "Bounded counts schurGapBounded(m,n) ≠ schurModBounded(m,n) for m < n — the identity is genuinely global",
-      "Gap-side recurrence uses gap(m) offset: G(m,n)=G(m-1,n)+G(m-gap,n-m). Mod-side uses M(m,n)=M(m-1,n)+M(m-1,n-m). Different recurrences → cannot prove by matching.",
-      "Three viable proof strategies remain: (a) direct bijection, (b) GF identity at power series level, (c) clever variable substitution",
-      "GF coefficient bridge: coeff n (∏(1+X^k)) = number of subsets summing to n",
-      "Insert recursion for subset counts mirrors (1+X^k)*F convolution",
-      "Antidiagonal sum simplification is the remaining technical crux"
+      "Gap recurrence: schurGapSize(m) = 4 if m%3=0, else 3. When m≢0(mod 3), bound m-3 is valid because (m-3)≢0(mod 3).",
+      "Reduction theorem schur_from_recurrences decomposes Schur identity into 3 independent subgoals: gap correctness, mod correctness, recurrence equality.",
+      "Both recurrences verified equal for n=0..15 (48+16 native_decide examples).",
+      "Product identity approach: ∏_{k≡1,2(3)}(1+X^k) = ∏_{k≡1,5(6)}1/(1-X^k) via (1+X^k)=(1-X^{2k})/(1-X^k) and 2S⊆S cancellation"
     ],
     "mathlibGaps": [
       "No partition generating function infrastructure",
       "No bijective proof machinery for partition identities"
     ],
     "nextSteps": [
-      "Fill sorry in distinctPartGF_coeff_eq_card: simplify antidiagonal convolution sum",
-      "Prove analogous bridge for partGF (parts with repetition)",
-      "Connect subsetsWithSum to schurModPartitions via partition-subset bijection",
-      "Use both bridges + GF identity to eliminate schur_partition_identity_corrected axiom"
+      "Prove schurGapCount_eq_bounded by strong induction on (n,m): show partitions decompose as use/skip max part",
+      "Prove schurModCount_eq_bounded similarly: induction with residue filter",
+      "Prove recurrence equality (core of Schur theorem): product identity or bijection approach",
+      "Product identity path: prove (1+X^k)=(1-X^{2k})*geomPS(k), then ∏ cancellation for 2S⊆S",
+      "Alternative: build explicit bijection between schurMod and schurGapFull (Bressoud/Alladi-Gordon style)"
     ]
   },
   "approaches": [],
@@ -106,7 +102,7 @@
     "mathlib": []
   },
   "started": "2026-03-12T05:34:54.574Z",
-  "lastUpdate": "2026-03-16T16:00:00.000Z",
+  "lastUpdate": "2026-03-15T12:00:00.000Z",
   "significance": 7,
   "tractability": 6
 }
