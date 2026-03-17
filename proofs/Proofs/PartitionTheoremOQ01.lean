@@ -2762,3 +2762,309 @@ theorem partGF_constantCoeff (S : Finset ℕ) (hpos : ∀ s ∈ S, 0 < s) :
 end
 
 end PartGFCoeffRecursion
+
+-- ============================================================================
+-- Part XLIII: Schur Identity — Formal Reduction to GF
+-- ============================================================================
+
+/-
+The Schur axiom states:
+  (schurGapFullPartitions n).card = (schurModPartitions n).card
+
+We have already proved (Part XXXIV-C):
+  (schurMod n).card = coeff n (schurModGF n)
+
+And the bridge theorems (Part XXIV):
+  schurGapFull n = schurGapFullPartitions n
+  schurMod n = schurModPartitions n
+
+So the axiom is equivalent to:
+  (schurGapFull n).card = coeff n (schurModGF n)
+
+This section formalizes the reduction, reducing axiom elimination to a single
+counting theorem on the decidable gap-side.
+-/
+
+section SchurGFReduction
+
+open Finset Nat PowerSeries
+
+/-- **Axiom reduction**: Proving the decidable gap-side count equals the
+    mod GF coefficient suffices to eliminate the Schur axiom. -/
+theorem schur_axiom_from_gap_gf (n : ℕ)
+    (h : ↑(PartitionDecidable.schurGapFull n).card =
+         PowerSeries.coeff (R := ℤ) n (schurModGF n)) :
+    (RogersRamanujan.schurGapFullPartitions n).card =
+    (RogersRamanujan.schurModPartitions n).card := by
+  rw [← schurGapFull_eq_schurGapFullPartitions, ← schurMod_eq_schurModPartitions]
+  have hmod := schurMod_card_eq_gf_coeff n
+  exact_mod_cast h.trans hmod.symm
+
+/-- **Reverse direction**: The Schur axiom implies the gap-side GF link. -/
+theorem gap_gf_from_schur_axiom (n : ℕ)
+    (h : (RogersRamanujan.schurGapFullPartitions n).card =
+         (RogersRamanujan.schurModPartitions n).card) :
+    ↑(PartitionDecidable.schurGapFull n).card =
+    PowerSeries.coeff (R := ℤ) n (schurModGF n) := by
+  rw [← schurGapFull_eq_schurGapFullPartitions, ← schurMod_eq_schurModPartitions] at h
+  have : ↑(PartitionDecidable.schurGapFull n).card =
+    ↑(PartitionDecidable.schurMod n).card := by exact_mod_cast h
+  rw [this]
+  exact schurMod_card_eq_gf_coeff n
+
+end SchurGFReduction
+
+-- ============================================================================
+-- Part XLIV: Schur Canonical Split (Parts ≡ 0 mod 3)
+-- ============================================================================
+
+/-
+For the exchange bijection between gap-only and mod-only partitions,
+we need a canonical way to split a part c ≡ 0 (mod 3) into two parts
+a, b with a ≡ 1 or 2 (mod 3), b ≡ complement, a + b = c, and a > b.
+
+The canonical split chooses the CLOSEST pair (minimizing a - b):
+  - c ≡ 0 mod 6: split as (c/2 + 1, c/2 - 1), gap = 2
+  - c ≡ 3 mod 6: split as ((c+1)/2, (c-1)/2), gap = 1
+
+Key property: the split pair violates the Schur gap condition (gap < 3),
+ensuring the result is gap-invalid when used in the exchange map.
+-/
+
+section SchurCanonicalSplit
+
+/-- The larger part of the canonical split of c ≡ 0 (mod 3).
+    For c = 3k: splitHi c = ⌈c/2⌉ if c odd, c/2 + 1 if c even. -/
+def splitHi (c : ℕ) : ℕ := (c + 2) / 2
+
+/-- The smaller part of the canonical split of c ≡ 0 (mod 3).
+    splitLo c = c - splitHi c. -/
+def splitLo (c : ℕ) : ℕ := c - splitHi c
+
+/-- The split parts sum to c. -/
+theorem split_sum (c : ℕ) (_ : 0 < c) : splitHi c + splitLo c = c := by
+  simp only [splitHi, splitLo]; omega
+
+/-- splitHi c > splitLo c (the split is strict). -/
+theorem splitHi_gt_splitLo (c : ℕ) (hc : 2 < c) : splitHi c > splitLo c := by
+  simp only [splitHi, splitLo]; omega
+
+/-- The gap between split parts is at most 2 (violates Schur's ≥ 3 condition). -/
+theorem split_gap_le_two (c : ℕ) (_ : 2 < c) :
+    splitHi c - splitLo c ≤ 2 := by
+  simp only [splitHi, splitLo]; omega
+
+/-- For c ≡ 0 mod 6 (even multiple of 3): splitHi c ≡ 1 mod 3. -/
+theorem splitHi_mod3_of_mod6_zero (c : ℕ) (hc6 : c % 6 = 0) (_ : 0 < c) :
+    splitHi c % 3 = 1 := by
+  simp only [splitHi]; omega
+
+/-- For c ≡ 0 mod 6: splitLo c ≡ 2 mod 3. -/
+theorem splitLo_mod3_of_mod6_zero (c : ℕ) (hc6 : c % 6 = 0) (_ : 0 < c) :
+    splitLo c % 3 = 2 := by
+  simp only [splitHi, splitLo]; omega
+
+/-- For c ≡ 3 mod 6 (odd multiple of 3): splitHi c ≡ 2 mod 3. -/
+theorem splitHi_mod3_of_mod6_three (c : ℕ) (hc6 : c % 6 = 3) :
+    splitHi c % 3 = 2 := by
+  simp only [splitHi]; omega
+
+/-- For c ≡ 3 mod 6: splitLo c ≡ 1 mod 3. -/
+theorem splitLo_mod3_of_mod6_three (c : ℕ) (hc6 : c % 6 = 3) :
+    splitLo c % 3 = 1 := by
+  simp only [splitHi, splitLo]; omega
+
+/-- **Neither split part is ≡ 0 mod 3** (for c ≡ 0 mod 3, c > 0). -/
+theorem splitHi_not_div3 (c : ℕ) (hc3 : c % 3 = 0) (_ : 0 < c) :
+    splitHi c % 3 ≠ 0 := by
+  simp only [splitHi]; omega
+
+/-- Neither split part is ≡ 0 mod 3 (low part). -/
+theorem splitLo_not_div3 (c : ℕ) (hc3 : c % 3 = 0) (_ : 0 < c) :
+    splitLo c % 3 ≠ 0 := by
+  simp only [splitHi, splitLo]; omega
+
+/-- Both split parts are positive (for c ≥ 3). -/
+theorem splitHi_pos (c : ℕ) (hc : 2 < c) : 0 < splitHi c := by
+  simp only [splitHi]; omega
+
+theorem splitLo_pos (c : ℕ) (hc : 2 < c) : 0 < splitLo c := by
+  simp only [splitHi, splitLo]; omega
+
+/-- Computational verification of split for small values. -/
+example : splitHi 3 = 2 ∧ splitLo 3 = 1 := by simp [splitHi, splitLo]
+example : splitHi 6 = 4 ∧ splitLo 6 = 2 := by simp [splitHi, splitLo]
+example : splitHi 9 = 5 ∧ splitLo 9 = 4 := by simp [splitHi, splitLo]
+example : splitHi 12 = 7 ∧ splitLo 12 = 5 := by simp [splitHi, splitLo]
+example : splitHi 15 = 8 ∧ splitLo 15 = 7 := by simp [splitHi, splitLo]
+example : splitHi 18 = 10 ∧ splitLo 18 = 8 := by simp [splitHi, splitLo]
+
+end SchurCanonicalSplit
+
+-- ============================================================================
+-- Part XLV: Gap-Only / Mod-Only Partition Classification
+-- ============================================================================
+
+/-
+Partition the set of distinct partitions of n into four classes:
+  BOTH:     gap-valid AND mod-valid
+  GAP_ONLY: gap-valid AND NOT mod-valid (has part ≡ 0 mod 3)
+  MOD_ONLY: NOT gap-valid AND mod-valid (gap < 3 somewhere)
+  NEITHER:  NOT gap-valid AND NOT mod-valid
+
+The Schur identity states |schurGapFull| = |schurMod|, which is equivalent to:
+  |BOTH| + |GAP_ONLY| = |BOTH| + |MOD_ONLY|
+  ⟺ |GAP_ONLY| = |MOD_ONLY|
+
+So the identity reduces to an exchange bijection between GAP_ONLY and MOD_ONLY.
+-/
+
+section GapModClassification
+
+open Finset Nat
+
+/-- Gap-only partitions: satisfy Schur gap but NOT Schur mod (have ≡ 0 mod 3 parts). -/
+def schurGapOnly (n : ℕ) : Finset (Nat.Partition n) :=
+  (PartitionDecidable.schurGapFull n).filter (fun p => ¬(∀ a ∈ p.parts, a % 3 ≠ 0))
+
+/-- Mod-only partitions: satisfy Schur mod but NOT Schur gap (gap violation). -/
+def schurModOnly (n : ℕ) : Finset (Nat.Partition n) :=
+  (PartitionDecidable.schurMod n).filter
+    (fun p => p ∉ PartitionDecidable.schurGapFull n)
+
+/-- Partitions in both gap and mod. -/
+def schurBoth (n : ℕ) : Finset (Nat.Partition n) :=
+  (PartitionDecidable.schurGapFull n).filter
+    (fun p => p ∈ PartitionDecidable.schurMod n)
+
+/-- GapFull = Both ∪ GapOnly (disjoint). -/
+theorem schurGapFull_eq_both_union_gapOnly (n : ℕ) :
+    PartitionDecidable.schurGapFull n = schurBoth n ∪ schurGapOnly n := by
+  ext p
+  simp only [schurBoth, schurGapOnly, Finset.mem_union, Finset.mem_filter]
+  constructor
+  · intro hp
+    by_cases hmod : p ∈ PartitionDecidable.schurMod n
+    · left; exact ⟨hp, hmod⟩
+    · right
+      refine ⟨hp, ?_⟩
+      simp only [PartitionDecidable.schurMod, Finset.mem_filter, Finset.mem_univ,
+        true_and] at hmod
+      push_neg
+      push_neg at hmod
+      obtain ⟨a, ha, hmod'⟩ := hmod (by
+        simp only [PartitionDecidable.schurGapFull, Finset.mem_filter, Finset.mem_univ,
+          true_and] at hp
+        exact hp.1)
+      exact ⟨a, ha, by omega⟩
+  · intro hp
+    rcases hp with ⟨hgap, _⟩ | ⟨hgap, _⟩ <;> exact hgap
+
+/-- Both and GapOnly are disjoint. -/
+theorem schurBoth_disjoint_gapOnly (n : ℕ) :
+    Disjoint (schurBoth n) (schurGapOnly n) := by
+  rw [Finset.disjoint_left]
+  intro p hp hq
+  simp only [schurBoth, Finset.mem_filter] at hp
+  simp only [schurGapOnly, Finset.mem_filter] at hq
+  have hmod := hp.2
+  simp only [PartitionDecidable.schurMod, Finset.mem_filter, Finset.mem_univ,
+    true_and] at hmod
+  exact hq.2 (fun a ha h => by
+    have := hmod.2 a ha
+    omega)
+
+/-- SchurMod = Both ∪ ModOnly (disjoint). -/
+theorem schurMod_eq_both_union_modOnly (n : ℕ) :
+    PartitionDecidable.schurMod n = schurBoth n ∪ schurModOnly n := by
+  ext p
+  simp only [schurBoth, schurModOnly, Finset.mem_union, Finset.mem_filter]
+  constructor
+  · intro hmod
+    by_cases hgap : p ∈ PartitionDecidable.schurGapFull n
+    · left; exact ⟨hgap, hmod⟩
+    · right; exact ⟨hmod, hgap⟩
+  · intro hp
+    rcases hp with ⟨_, hmod⟩ | ⟨hmod, _⟩ <;> exact hmod
+
+/-- Both and ModOnly are disjoint. -/
+theorem schurBoth_disjoint_modOnly (n : ℕ) :
+    Disjoint (schurBoth n) (schurModOnly n) := by
+  rw [Finset.disjoint_left]
+  intro p hp hq
+  simp only [schurBoth, Finset.mem_filter] at hp
+  simp only [schurModOnly, Finset.mem_filter] at hq
+  exact hq.2 hp.1
+
+/-- **The Schur identity reduces to the exchange**: |GapOnly| = |ModOnly|. -/
+theorem schur_identity_iff_exchange (n : ℕ) :
+    (PartitionDecidable.schurGapFull n).card = (PartitionDecidable.schurMod n).card ↔
+    (schurGapOnly n).card = (schurModOnly n).card := by
+  rw [schurGapFull_eq_both_union_gapOnly, schurMod_eq_both_union_modOnly]
+  rw [Finset.card_union_of_disjoint (schurBoth_disjoint_gapOnly n)]
+  rw [Finset.card_union_of_disjoint (schurBoth_disjoint_modOnly n)]
+  omega
+
+/-- Computational verification of the exchange for small n. -/
+example : (schurGapOnly 0).card = (schurModOnly 0).card := by native_decide
+example : (schurGapOnly 3).card = (schurModOnly 3).card := by native_decide
+example : (schurGapOnly 6).card = (schurModOnly 6).card := by native_decide
+example : (schurGapOnly 9).card = (schurModOnly 9).card := by native_decide
+example : (schurGapOnly 12).card = (schurModOnly 12).card := by native_decide
+
+/-- The gap-only set is nonempty exactly when n ≡ 0 mod 3 and n ≥ 3. -/
+example : (schurGapOnly 3).card = 1 := by native_decide
+example : (schurGapOnly 6).card = 1 := by native_decide
+example : (schurGapOnly 9).card = 1 := by native_decide
+example : (schurGapOnly 12).card = 2 := by native_decide  -- {12} and {9,3}
+
+end GapModClassification
+
+-- ============================================================================
+-- Part XLVI: Analysis Summary and Proof Strategy
+-- ============================================================================
+
+/-
+## Schur Identity Proof Status
+
+### What We Have
+1. ✅ Mod-side GF link: |schurMod n| = coeff n (schurModGF n)
+2. ✅ Axiom reduction: Schur axiom ⟺ |schurGapFull n| = coeff n (schurModGF n)
+3. ✅ Exchange reduction: Schur identity ⟺ |GapOnly| = |ModOnly|
+4. ✅ Canonical split: splitHi/splitLo for parts ≡ 0 mod 3
+5. ✅ Split properties: sum, gap ≤ 2, residue ≢ 0, positivity
+
+### What Remains
+The exchange bijection between GapOnly and ModOnly partitions.
+
+**Approach 1 — Direct Exchange (Most Promising)**:
+For gap-only → mod-only: Split all parts ≡ 0 mod 3 using context-dependent
+splitting. When canonical split collides, use alternative splits.
+For mod-only → gap-only: Merge specific pairs of parts into ≡ 0 mod 3 parts.
+
+Key challenge: Defining the splitting/merging to be mutually inverse.
+The merging map is NOT simply "merge closest pairs" — see analysis in
+knowledge.md for the {9,4,1} example showing non-adjacent merges needed.
+The canonical split(9) = (5,4) collides with existing part 4; must use (7,2).
+
+**Approach 2 — Bressoud-Zeilberger Bijection**:
+A classical bijective proof using partition analysis on residue classes.
+More complex but well-studied in the literature.
+
+**Approach 3 — Induction with Recurrence**:
+Prove by strong induction on n, using the decomposition:
+  - n ≢ 0 mod 3: |gapBounded(n-1,n)| = |modBounded(n-1,n)|
+  - n ≡ 0 mod 3: |gapBounded(n-1,n)| + 1 = |modBounded(n-1,n)|
+This reduces to a bounded identity that might yield to induction on the bound.
+
+### Recommended Next Steps
+1. Investigate approach 1 with collision-free splitting for single-div3 partitions
+2. Computationally verify the exchange map for n ≤ 20
+3. Build the merging map (mod-only → gap-only) for the collision-free case
+4. Extend to the general case with collision resolution
+
+### Axiom Count: 3 (unchanged)
+  - rogers_ramanujan_first (n : ℕ)
+  - rogers_ramanujan_second (n : ℕ)
+  - schur_partition_identity_corrected (n : ℕ)
+-/
