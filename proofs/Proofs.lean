@@ -1363,6 +1363,7 @@ import Proofs.InfinitudePrimes4k1
 import Proofs.InfinitudePrimes4k3
 import Proofs.IntermediateValueTheorem
 import Proofs.InverseGalois
+import Proofs.InverseGaloisD4
 import Proofs.IsoperimetricTheorem
 import Proofs.IsoscelesTriangle
 import Proofs.KeplerConjecture
