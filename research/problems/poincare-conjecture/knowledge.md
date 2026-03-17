@@ -429,58 +429,82 @@ New content is structurally clean.
 3. Prove sphere3_simply_connected
 4. Prove sphere3_not_contractible
 
-## Session 2026-03-17 (researcher-4) - Soundness Fixes + Quaternion Non-Commutativity
+## Session 2026-03-17 (researcher-3) - Build Fixes + Cyclic Rotation Proofs
 
 **Mode**: REVISIT (RICH knowledge, depth-first)
 **Problem**: poincare-conjecture
-**Prior Status**: 4844 lines, 46 axioms (3 UNSOUND), ~285 theorems
+**Prior Status**: 4652 lines, 52 axioms, 287 theorems, BUILD ERRORS
 
 ### What we did
 
-#### Phase 1: Fix 3 Unsound Axioms (Critical for Soundness)
+#### Phase 1: Fix All Build Errors
+1. **Orphaned `/--` docstrings** (4 instances): Changed to `/-` comments at:
+   - Perelman's proof description (line ~3714)
+   - Poincaré homology sphere description (line ~3966)
+   - Knot theory section intro (line ~4210)
+   - Euler characteristic section intro (line ~4415)
+2. **Duplicate `RicciFlowWithSurgery`** (line ~3786): Removed parameterless duplicate (kept original at ~3272)
+3. **Duplicate `ThurstonGeometry`** (line ~3812): Removed duplicate with `S3/E3/H3/Sol` constructors; updated `geometryData`, `isotropic_geometries`, `sol_minimal_symmetry` to use original constructors (`.spherical/.euclidean/.hyperbolic/.sol`)
+4. **Duplicate `Knot`** (line ~4213): Removed parameterless duplicate (kept original at ~2251)
 
-1. **`scalar_curvature_max_principle`** — Was an axiom that applied to ALL constructible
-   `RicciFlowSolution` values, but you can construct solutions with non-monotone
-   curvature (making the axiom inconsistent). **FIX**: Incorporated as a structural
-   field `scalar_min_nondecreasing` of `RicciFlowSolution`. The axiom becomes a
-   trivially proved theorem. Updated `hamilton_short_time_existence` construction.
-
-2. **`milnor_uniqueness`** — Was `∀ m n, m = n` without constraining m, n to be actual
-   decompositions of M. Could derive `1 = 2` from any closed 3-manifold + S³ primality.
-   **FIX**: Replaced with `milnor_prime_count` (function axiom, uniqueness by determinism)
-   + `milnor_prime_count_sphere3` (S³ has count 0).
-
-3. **`jsj_uniqueness`** — Was `∀ n₁ n₂, n₁ = n₂` without constraining decompositions.
-   Combined with `jsj_decomposition` (trivial 1-piece construction), implies all naturals
-   equal. **FIX**: Replaced with `jsj_piece_count_pred` (function axiom) + `jsj_piece_count`
-   (def, = pred + 1) + `jsj_piece_count_pos` (proved: always ≥ 1).
-
-#### Phase 2: New Proved Content
-
-4. **Part LVI: Ricci Flow Monotonicity Consequences** (4 theorems)
-   - `ricci_flow_positive_curvature_preserved`: R(0) > 0 ⟹ R(t) > 0
-   - `ricci_flow_curvature_monotone`: R(t) ≥ R(0) always
-   - `ricci_flow_nonneg_curvature_preserved`: R(0) ≥ 0 ⟹ R(t) ≥ 0
-   - `singularity_curvature_from_below`: at singularity, R(t) ≥ R(0)
-
-5. **Part LVII: Quaternion Group Non-Commutativity** (11 theorems + 3 defs)
-   - `quatI`, `quatJ`, `quatK`: basis quaternions as EuclideanSpace elements
-   - `quatMulE_ij_coord3`, `quatMulE_ji_coord3`: coordinate computations
-   - `quatMulE_noncommutative`: i·j ≠ j·i (proved by coordinate 3 comparison)
-   - `sphere3_group_nonabelian`: ∃ a b, a·b ≠ b·a on S³
-   - `quatMulE_right_identity`, `quatMulE_left_identity`: 1 is two-sided identity
-   - `sphere3_identity_unique`: unique left identity theorem
+#### Phase 2: Prove 3 Cyclic Rotation Axioms
+1. **`cyclicRotation_norm_sq`**: Proved each coordinate using `show WithLp.equiv ... = _; simp [cyclicRotation]`, then `rw [h0, h1, h2, h3]` + `nlinarith` with `Real.sin_sq_add_cos_sq` witnesses
+2. **`cyclicRotation_preserves_sphere`**: Proved via `cyclicRotation_norm_sq` + `sphere3_mem_norm'` + `norm_eq_one_of_sq`
+3. **`cyclicRotation_continuous`**: Proved via `unfold cyclicRotation` + `continuous_pi` + `fin_cases` with `continuous_const.mul (c j)` for each coordinate
 
 ### Outcome
-- **Lines**: 4844 → 5005 (+161)
-- **Axioms**: 46 → 46 (3 unsound removed, 3 sound replacements added)
-- **Theorems**: ~285 → 301 (+16 new proved, including 1 converted from axiom)
-- **Definitions**: 66 → 70 (+4)
-- **Sorries**: 0
-- **Docker build**: PASSED (3175 jobs)
+- **Lines**: 4652 → 4658 (+6 net)
+- **Axioms**: 52 → 49 (-3 eliminated)
+- **Theorems**: 287 → 290 (+3 proved)
+- **Build**: CLEAN (3175 jobs, warnings only)
+
+### Key technical insights
+- `sphere3_mem_norm'` is the key helper for converting `x.property` to `‖x.val‖ = 1`
+- For `match`-based definitions like `cyclicRotation`, `unfold` works better than `simp only [h]` + `rfl` for continuity proofs
+- `continuous_const.mul (c j)` pattern for scalar-times-coordinate continuity
+- `nlinarith` with `sin²+cos²=1` witnesses handles rotation norm preservation
+
+### Next steps
+1. Define S¹×S² concretely to eliminate 6 axioms
+2. Prove sphere3_simply_connected
+3. Prove sphere3_not_contractible
+4. Continue axiom elimination
+
+## Session 2026-03-17 (researcher-3, Session 2) - Axiom Elimination + Hopf Fiber Proofs
+
+**Mode**: REVISIT (RICH knowledge, depth-first)
+**Problem**: poincare-conjecture
+**Prior Status**: 4658 lines, 49 axioms, 274 theorems
+
+### What we did
+
+1. **Made S¹×S² concrete** (2 axioms eliminated):
+   - `axiom S1_cross_S2 : Type` → `def S1_cross_S2 := ↥Sphere1 × ↥Sphere2`
+   - `axiom instS1S2Top` → `instance instS1S2Top` via `unfold S1_cross_S2; infer_instance`
+
+2. **Proved `ball3_boundary_is_S2`** (1 axiom eliminated):
+   - Trivially satisfiable: witness is `↥Sphere2` with `homeomorphic_refl`
+
+3. **Removed `hopf_fibers_are_circles`** (1 axiom eliminated):
+   - Was unused (no downstream references)
+   - Was mathematically incorrect (quantified over ALL surjections S³→S²)
+
+4. **Added correct Hopf fiber characterizations** (2 new proved theorems):
+   - `northPoleS2`, `southPoleS2`: concrete poles on S²
+   - `hopfMap_fiber_north`: if hopfMap(x) = (1,0,0), then x₂ = x₃ = 0
+   - `hopfMap_fiber_south`: if hopfMap(x) = (-1,0,0), then x₀ = x₁ = 0
+   - Proof pattern: extract coordinates via `congr_arg (· 0)`, combine with
+     `unit_sum_sq'` via `linarith`, conclude with `nlinarith [sq_nonneg ...]`
+
+### Outcome
+- **Lines**: 4658 → 4714 (+56)
+- **Axioms**: 49 → 45 (-4 eliminated)
+- **Theorems**: 274 → 277 (+3 proved: ball3_boundary_is_S2, hopfMap_fiber_north, hopfMap_fiber_south)
+- **Definitions**: +3 (S1_cross_S2, northPoleS2, southPoleS2)
+- **Build**: CLEAN (3175 jobs, warnings only)
 
 ### Next steps
 1. Prove sphere3_simply_connected (needs Seifert-van Kampen or cellular approximation)
-2. Prove sphere3_not_contractible (needs homology or degree theory)
-3. Audit remaining 46 axioms for more consistency issues
-4. Fix pre-existing lint warnings (unused variables)
+2. Prove sphere3_not_contractible (needs homology, degree theory, or Lefschetz)
+3. Prove sphere2_cross_S1_not_simply_connected / torus3_not_simply_connected (need π₁(S¹)≅ℤ)
+4. Continue axiom elimination with concrete constructions

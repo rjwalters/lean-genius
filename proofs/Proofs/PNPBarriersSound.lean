@@ -36,7 +36,7 @@ This model is sound because:
 - [ ] Uses Mathlib for main result
 - [x] Pedagogical example
 
-## Axiom Summary (104 axioms, was 107)
+## Axiom Summary (105 axioms; +2 from 103 for model consistency: L_subset_NL, immerman_szelepcsenyi)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -57,14 +57,14 @@ Structural (4): valiant_vazirani, mahaney_theorem, NL_subset_P, savitch
 Padding (1): padding_P_eq_NP_implies_EXP_eq_NEXP
 Separation/existence (2): P_ne_EXP, ladner_theorem
 Completeness results (2): cook_levin, tqbf_pspace_complete
-Model limitation (1): L_eq_PSPACE_in_model (L=PSPACE because space bounds not tracked)
+Space complexity (3): L_subset_NL, NL_subset_P, immerman_szelepcsenyi (L/NL opaque)
 Quantum (3): BPP_subset_BQP, BQP_subset_PP, PP_subset_PSPACE
 Quantum results (2): NP_subset_PP, shor_factoring_in_BQP
 Circuit hierarchy (3): NC_k_subset_AC_k, AC_k_subset_TC_k, TC_k_subset_NC_k_succ
 Circuit axioms (3): NC_subset_P, majority_in_TC0_not_AC0, hastad_parity_not_in_AC0
 Algebraic (2): VP_subset_VNP, permanent_VNP_complete
 Derandomization (1): impagliazzo_wigderson (EXP ≠ BPP → BPP = P)
-PCP theorem (4): pcp_theorem_hard, pcp_easy, hastad_max3sat_in_NP, hastad_max3sat_inapprox
+PCP theorem (3): pcp_theorem_hard, pcp_easy, hastad_max3sat_inapprox
 ACC⁰/Williams (5): AC0_subset_ACC0, ACC0_subset_TC0, ACC0_subset_NC1,
     williams_NEXP_not_in_ACC0, IKW_compression
 Communication complexity (6): comm_trivial_upper, D_ge_R, EQ_det_lower, EQ_rand_upper,
@@ -72,31 +72,39 @@ Communication complexity (6): comm_trivial_upper, D_ge_R, EQ_det_lower, EQ_rand_
 Communication (1): karchmer_wigderson (D(KW_f) = depth(f))
 Proof complexity (1): cook_reckhow (NP=coNP ↔ poly proof system)
 Five Worlds (2): trapdoor_implies_owf, owf_implies_avg_hard
-Eliminated axioms (15→theorems/opaques, was 11):
+Eliminated axioms (9→theorems/opaques):
 - P_subset_PP → theorem (via P ⊆ BPP ⊆ BQP ⊆ PP)
 - P_subset_P_poly → theorem (program e is a constant-size "circuit")
 - TC0_computes_multiplication → theorem (same type as majority_in_TC0_not_AC0)
 - TC0_computes_division → theorem (same type as majority_in_TC0_not_AC0)
 - mignon_ressayre → theorem (trivially True)
-- immerman_szelepcsenyi → theorem (NL = coNL from Φ_negate, L = NL in abstract model)
+- immerman_szelepcsenyi → was theorem (NL = coNL), now axiom again (NL opaque)
 - algorithmica_no_owf → theorem (derived: owf_implies_P_ne_NP contrapositive)
 - padding_P_eq_PSPACE_implies_EXP_eq_EXPSPACE → theorem (EXP = EXPSPACE definitionally)
 - D_comm → opaque def (measurement function, not mathematical claim)
 - R_comm → opaque def (measurement function, not mathematical claim)
 - commMatrixRank → opaque def (measurement function, not mathematical claim)
-- nash_PPAD_hard → theorem (conclusion is trivially True)
-- GapP_closed_subtraction → theorem (conclusion is trivially True)
-- mcsp_np_hardness_barrier → theorem (follows from natural_proofs_barrier)
-- circuit_value_P_complete → theorem (any f ∈ P witnesses f ∉ NC → P ≠ NC)
-Soundness fixes (5, was 4):
+Soundness fixes:
 - OWF_exist, TrapdoorOWF_exist → opaque Props (previously ∃ _ : ℕ, True = True,
   which made owf_implies_avg_hard derive P≠NP unconditionally)
-- hastad_max3sat_inapprox → replaced (old form derived False: in classical logic,
-  `¬∃e, Solves e ... → P≠NP→False` unfolds to `∀e, Solves e ... ∧ P≠NP`,
-  contradicting Φ_negate. New form: `P ≠ NP → MAX3SAT ∉ P` with separate
-  `hastad_max3sat_in_NP : MAX3SAT ∈ NP`)
 Now theorems: BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP, factoring_in_PSPACE,
     IW_contrapositive, IW_dichotomy, derandomization_circuit_connection (all derived)
+- nash_PPAD_hard → theorem (trivially True)
+- GapP_closed_subtraction → theorem (trivially True)
+- mcsp_np_hardness_barrier → theorem (follows from razborov_rudich unconditionally)
+Soundness fixes (session 2026-03-17):
+- hastad_max3sat_inapprox → sound replacement `P ≠ NP → MAX3SAT ∉ P`
+  (previous version `¬∃ e, Solves e ∅ MAX3SAT → P ≠ NP → False` derived False
+  via Classical.em on Solves: ¬Solves gives vacuously true implication)
+- circuit_value_P_complete → theorem (derived from hastad_parity_not_in_AC0:
+  any f ∈ P witnesses f ∉ NC → P ≠ NC since NC ⊆ P)
+Model consistency fixes:
+- L, NL → opaque (prevents L=NL=PSPACE=EXP collapse that made NL⊆P+P≠EXP inconsistent)
+- L_subset_NL → axiom (was trivial from identical definitions)
+- immerman_szelepcsenyi → axiom (was proved from concrete NL=L + Φ_negate)
+- L_eq_PSPACE_in_model → REMOVED (was the inconsistency-enabling theorem)
+Remaining model limitation:
+- EXP = PSPACE still holds (same definition, unused polynomial parameter)
 -/
 
 set_option linter.unusedVariables false
@@ -1184,23 +1192,35 @@ Key result: NL = coNL (nondeterministic logspace is closed under complement),
 contrasting with the open question NP = coNP?.
 -/
 
-/-- L (LOGSPACE): problems solvable in O(log n) space. -/
-def L : Set (ℕ → Bool) :=
-  { f | ∃ (e : ℕ), Solves e emptyOracle f }
+/-- L (LOGSPACE): problems solvable in O(log n) space.
 
-/-- NL (NLOGSPACE): problems solvable nondeterministically in O(log n) space. -/
-def NL : Set (ℕ → Bool) :=
-  { f | ∃ (e : ℕ), Solves e emptyOracle f }
+    **Design**: Opaque to prevent L = PSPACE = EXP collapse. The previous
+    concrete definition `{f | ∃ e, Solves e ∅ f}` was identical to PSPACE/EXP
+    (space bounds not tracked in this model), making NL_subset_P inconsistent
+    with P_ne_EXP. Opacity breaks this chain while preserving all axiomatized
+    properties. -/
+opaque L : Set (ℕ → Bool)
+
+/-- NL (NLOGSPACE): problems solvable nondeterministically in O(log n) space.
+
+    **Design**: Opaque for same reasons as L. The previous concrete definition
+    was identical to L, PSPACE, and EXP. Opacity allows NL_subset_P and P_ne_EXP
+    to coexist consistently. -/
+opaque NL : Set (ℕ → Bool)
 
 /-- coNL: complements of NL problems. -/
 def coNL : Set (ℕ → Bool) :=
   { f | (fun n => !f n) ∈ NL }
 
-/-- L ⊆ NL. -/
-theorem L_subset_NL : L ⊆ NL := by
-  intro f ⟨e, h⟩; exact ⟨e, h⟩
+/-- L ⊆ NL: logspace is contained in nondeterministic logspace.
+    Previously proved trivially from identical definitions; now axiomatized
+    since L and NL are opaque. -/
+axiom L_subset_NL : L ⊆ NL
 
-/-- NL ⊆ P (from Savitch + simulation). -/
+/-- NL ⊆ P (from Savitch + simulation).
+
+    This is now consistent because L and NL are opaque, preventing the
+    NL = EXP collapse that previously made NL ⊆ P + P ≠ EXP inconsistent. -/
 axiom NL_subset_P : NL ⊆ P
 
 /-- L ⊆ P (transitivity). -/
@@ -1211,27 +1231,12 @@ theorem L_subset_P : L ⊆ P :=
 
     Nondeterministic logspace is closed under complement.
     The real proof uses "inductive counting" of reachable configurations.
-    In our abstract model, NL = L (both defined as {f | ∃ e, Solves e ∅ f}),
-    so complement closure follows from Φ_negate.
-    Previously axiom; now proved. -/
-theorem immerman_szelepcsenyi : NL = coNL := by
-  ext f
-  simp only [NL, coNL, Set.mem_setOf_eq]
-  constructor
-  · -- NL ⊆ coNL: given program e solving f, construct program solving ¬f
-    intro ⟨e, hsolves⟩
-    obtain ⟨e', he'⟩ := Φ_negate e
-    exact ⟨e', fun n => by
-      obtain ⟨s, hs⟩ := hsolves n
-      exact ⟨s, he' emptyOracle n (f n) s hs⟩⟩
-  · -- coNL ⊆ NL: given program e solving ¬f, construct program solving f
-    intro ⟨e, hsolves⟩
-    obtain ⟨e', he'⟩ := Φ_negate e
-    refine ⟨e', fun n => ?_⟩
-    obtain ⟨s, hs⟩ := hsolves n
-    have h := he' emptyOracle n (!(f n)) s hs
-    simp only [Bool.not_not] at h
-    exact ⟨s, h⟩
+
+    Previously proved from concrete NL definition + Φ_negate (when NL = L =
+    all computable functions). Now axiomatized since NL is opaque. The real
+    proof technique (inductive counting) is fundamentally different from
+    bit-flipping (Φ_negate). -/
+axiom immerman_szelepcsenyi : NL = coNL
 
 /-- NL is closed under complement (from Immerman-Szelepcsényi). -/
 theorem NL_complement_closed (f : ℕ → Bool) :
@@ -1794,37 +1799,25 @@ theorem SAT_reduces_to_TQBF : SAT ≤ₚ TQBF :=
 /-
 ### Space Hierarchy in This Model
 
-**MODEL LIMITATION**: The real space hierarchy theorem (Stearns-Hartmanis-Lewis, 1965)
-proves L ⊊ PSPACE. However, in our abstract model, L = PSPACE = EXP because the
-polynomial parameter in PSPACE/EXP definitions is unused (Solves doesn't reference it).
+**FIXED**: Previously, L and NL were defined as `{f | ∃ e, Solves e ∅ f}`,
+identical to PSPACE/EXP (space bounds not tracked). This made NL_subset_P
+inconsistent with P_ne_EXP (via NL = EXP). Now L and NL are opaque,
+breaking the chain while preserving all axiomatized relationships.
 
-The time hierarchy separation P ≠ EXP remains sound because P requires a polynomial
-time bound that constrains which programs solve which languages.
+Note: PSPACE = EXP still holds (same definition), which is a remaining
+model limitation. P ≠ EXP remains sound because P requires a polynomial
+time bound.
 
 Of the five containments L ⊆ NL ⊆ P ⊆ NP ⊆ PSPACE ⊆ EXP,
-only P ⊊ EXP is provably strict in this model.
+P ⊊ EXP and NL ⊊ EXP are provably strict in this model.
 -/
 
-/-- **MODEL LIMITATION**: In this abstract model, L = PSPACE = EXP because
-    the polynomial parameter in PSPACE/EXP is unused (Solves doesn't reference it).
-    The real space hierarchy theorem L ≠ PSPACE requires a model that tracks
-    space bounds explicitly (e.g., a space-bounded variant of Φ).
-
-    This was previously `axiom L_ne_PSPACE : L ≠ PSPACE`, which derived False
-    (since L = PSPACE holds definitionally). Removed for soundness. -/
-theorem L_eq_PSPACE_in_model : L = PSPACE := by
-  ext f
-  simp only [L, PSPACE, Set.mem_setOf_eq]
-  constructor
-  · intro ⟨e, h⟩; exact ⟨e, ⟨0, 0⟩, h⟩
-  · intro ⟨e, _, h⟩; exact ⟨e, h⟩
-
-/-- Similarly, EXP = PSPACE in this model (same definition). -/
+/-- EXP = PSPACE in this model (same definition, unused polynomial parameter). -/
 theorem EXP_eq_PSPACE_in_model : EXP = PSPACE := by
   ext f; simp only [EXP, PSPACE]
 
 /-- P ≠ EXP remains sound: P requires a polynomial time bound that
-    constrains programs, while EXP (= L = PSPACE) does not.
+    constrains programs, while EXP (= PSPACE) does not.
     The time hierarchy theorem separates these. -/
 theorem strict_containment_P_ne_EXP : P ≠ EXP := P_ne_EXP
 
@@ -1872,9 +1865,7 @@ theorem circuit_lower_bound_from_PH (h_PH : PH ≠ Sigma_k 2) :
     ¬(NP ⊆ P_poly) :=
   PH_infinite_implies_NP_hard_circuits h_PH
 
-/-- **The Complexity Scorecard**: Summary of what we know unconditionally.
-    Note: L = PSPACE in this model (space bounds not tracked), so the
-    real-world separation L ≠ PSPACE is not representable here. -/
+/-- **The Complexity Scorecard**: Summary of what we know unconditionally. -/
 theorem complexity_scorecard :
     -- Containments
     (L ⊆ NL) ∧ (NL ⊆ P) ∧ (P ⊆ NP) ∧ (NP ⊆ PH) ∧
@@ -1883,9 +1874,7 @@ theorem complexity_scorecard :
     -- Equalities
     (NL = coNL) ∧ (IP = PSPACE) ∧
     -- Strict containments
-    (P ≠ EXP) ∧
-    -- Model equalities (space bounds not tracked)
-    (L = PSPACE) ∧
+    (P ≠ EXP) ∧ (NL ≠ EXP) ∧
     -- Barriers
     (¬ RelativizingProofOfEquality) ∧ (¬ RelativizingProofOfSeparation) ∧
     (¬ AlgebrizingProofOfEquality) ∧ (¬ AlgebrizingProofOfSeparation) := by
@@ -1893,7 +1882,7 @@ theorem complexity_scorecard :
          PH_subset_PSPACE, PSPACE_subset_EXP,
          P_subset_BPP, BPP_subset_PH,
          immerman_szelepcsenyi, shamir_IP_eq_PSPACE,
-         P_ne_EXP, L_eq_PSPACE_in_model,
+         P_ne_EXP, NL_ne_EXP,
          relativization_barrier_eq, relativization_barrier_neq,
          algebrization_barrier_eq, algebrization_barrier_neq⟩
 
@@ -2129,7 +2118,7 @@ theorem comprehensive_containments :
          P_subset_coNP, coNP_subset_PSPACE⟩
 
 /-- **Separation summary**: unconditionally known separations.
-    Note: L ≠ PSPACE removed (unsound in this model; L = PSPACE). -/
+    P ≠ EXP from time hierarchy; NL ≠ EXP from NL ⊆ P + P ≠ EXP. -/
 theorem separation_summary :
     P ≠ EXP ∧ NL ≠ EXP := by
   exact ⟨P_ne_EXP, NL_ne_EXP⟩
@@ -2264,9 +2253,7 @@ theorem complexity_zoo_summary :
     -- Nondeterministic space
     NPSPACE = PSPACE ∧
     -- Strict separations
-    P ≠ EXP ∧
-    -- Model equality (space bounds not tracked)
-    L = PSPACE ∧
+    P ≠ EXP ∧ NL ≠ EXP ∧
     -- Complement closure
     (∀ f, f ∈ PSPACE → (fun n => !f n) ∈ PSPACE) := by
   exact ⟨L_subset_NL, NL_subset_P, P_subset_NP, NP_subset_PSPACE, PSPACE_subset_EXP,
@@ -2274,7 +2261,7 @@ theorem complexity_zoo_summary :
          shamir_IP_eq_PSPACE,
          P_subset_BPP, BPP_subset_PH, PH_subset_PSPACE,
          savitch_NPSPACE_eq_PSPACE,
-         P_ne_EXP, L_eq_PSPACE_in_model,
+         P_ne_EXP, NL_ne_EXP,
          PSPACE_complement_closed⟩
 
 -- ============================================================
@@ -2610,12 +2597,12 @@ theorem TC0_computes_division :
     be efficiently parallelized? The Circuit Value Problem (CVP) is P-complete
     under logspace reductions, so NC = P ↔ CVP ∈ NC.
 
-    **Previously axiom** — converted to theorem. For any f ∈ P,
-    `f ∉ NC → P ≠ NC` holds trivially (if P = NC, then f ∈ P = NC).
-    We use the parity function from `hastad_parity_not_in_AC0` as witness. -/
+    **Previously axiom** — now derived from `hastad_parity_not_in_AC0`:
+    any f ∈ P witnesses the implication f ∉ NC → P ≠ NC, since
+    NC ⊆ P means P = NC → f ∈ NC. -/
 theorem circuit_value_P_complete : ∃ f ∈ P, f ∉ NC → P ≠ NC := by
   obtain ⟨f, hfP, _⟩ := hastad_parity_not_in_AC0
-  exact ⟨f, hfP, fun hfNC h => hfNC (show f ∈ NC by rw [← h]; exact hfP)⟩
+  exact ⟨f, hfP, fun hfnNC hPNC => hfnNC (hPNC ▸ hfP)⟩
 
 /-- If NC ≠ P, then P-complete problems exist that are inherently sequential. -/
 theorem NC_ne_P_implies_sequential_problems :
@@ -3036,17 +3023,20 @@ opaque MAX3SAT : ℕ → Bool
 
     This is a direct consequence of the PCP theorem with optimal parameters.
 
-    **Soundness fix (2026-03-17)**: Previous formulation was unsound:
-      `∀ ε > 0, ¬∃ e, Solves e ... MAX3SAT → P ≠ NP → False`
-    In classical logic this unfolds to `∀ ε > 0, ∀ e, Solves e ... MAX3SAT ∧ P ≠ NP`,
-    claiming every program e solves MAX3SAT, contradicting Φ_negate.
-    Replaced with conditional: P ≠ NP → MAX3SAT ∉ P (MAX3SAT is NP-hard). -/
-axiom hastad_max3sat_in_NP : MAX3SAT ∈ NP
-axiom hastad_max3sat_inapprox : P ≠ NP → MAX3SAT ∉ P
+    **Soundness note**: The original formalization used
+    `¬∃ e, Solves e ∅ MAX3SAT → P ≠ NP → False` which derived `False`
+    via `Classical.em (Solves 0 ∅ MAX3SAT)`: the `¬Solves` case gives
+    a vacuously true implication, witnessing the existential and
+    contradicting the `¬∃`. Replaced with a sound conditional statement. -/
+axiom hastad_max3sat_inapprox :
+  P ≠ NP → MAX3SAT ∉ P
 
-/-- MAX-3SAT separates P from NP: under P ≠ NP, MAX3SAT witnesses the gap. -/
-theorem max3sat_separates : P ≠ NP → MAX3SAT ∈ NP ∧ MAX3SAT ∉ P :=
-  fun h => ⟨hastad_max3sat_in_NP, hastad_max3sat_inapprox h⟩
+/-- MAX-3SAT inapproximability: If P ≠ NP, then MAX3SAT ∉ P.
+    Contrapositive: MAX3SAT ∈ P → P = NP. -/
+theorem max3sat_contrapositive : MAX3SAT ∈ P → P = NP := by
+  intro h
+  by_contra h_neq
+  exact hastad_max3sat_inapprox h_neq h
 
 /-- **The Unique Games Conjecture** (Khot, 2002):
     It is NP-hard to determine if a Unique Games instance has value ≥ 1-ε
@@ -3874,9 +3864,8 @@ theorem grand_landscape :
 #check SAT_reduces_to_TQBF        -- SAT ≤ₚ TQBF
 #check PSPACEHard_of_reduce       -- PSPACE-hardness transfers
 
--- Space hierarchy and separations (model limitation: L = PSPACE)
-#check L_eq_PSPACE_in_model       -- L = PSPACE (space bounds not tracked in model)
-#check EXP_eq_PSPACE_in_model     -- EXP = PSPACE (same limitation)
+-- Space hierarchy and separations (L, NL now opaque)
+#check EXP_eq_PSPACE_in_model     -- EXP = PSPACE (same transparent def)
 #check NL_ne_EXP                  -- NL ≠ EXP
 
 -- Complexity zoo
@@ -4015,9 +4004,8 @@ theorem grand_landscape :
 #check pcp_theorem                     -- NP = PCP[O(log n), O(1)]
 #check pcp_theorem_hard                -- NP ⊆ PCP[log, O(1)]
 #check pcp_easy                        -- PCP[log, O(1)] ⊆ NP
-#check hastad_max3sat_in_NP            -- MAX-3SAT ∈ NP
-#check hastad_max3sat_inapprox         -- P ≠ NP → MAX3SAT ∉ P (was unsound, fixed)
-#check max3sat_separates               -- P ≠ NP → MAX3SAT ∈ NP ∧ MAX3SAT ∉ P (PROVED)
+#check hastad_max3sat_inapprox         -- P ≠ NP → MAX3SAT ∉ P (Håstad 2001, sound)
+#check max3sat_contrapositive          -- MAX3SAT ∈ P → P = NP (proved)
 #check pcp_algebrizes                  -- PCP algebrizes (meta-mathematical note)
 
 -- ACC⁰ and Williams' NEXP lower bound
@@ -4377,12 +4365,14 @@ theorem Kt_easy_implies_no_owf :
     a "natural" reduction, that reduction would yield natural proofs against
     P/poly, contradicting OWF existence.
 
-    **Previously axiom** — converted to theorem. The conclusion
-    `∀ np f, ¬UsefulAgainst np f` is already unconditionally proved by
-    `natural_proofs_barrier`, so the OWF_exist hypothesis is unused. -/
+    We state: OWF_exist → no natural property witnesses MCSP's hardness.
+
+    Previously axiom; now proved: the conclusion `¬UsefulAgainst np f`
+    follows unconditionally from `razborov_rudich`, making the OWF_exist
+    hypothesis superfluous. -/
 theorem mcsp_np_hardness_barrier :
     OWF_exist → ∀ np : NaturalProperty, ∀ f : ℕ → Bool, ¬UsefulAgainst np f :=
-  fun _ np f => natural_proofs_barrier np f
+  fun _ np f => razborov_rudich np f
 
 /-- **Meta-complexity landscape theorem**: Connecting meta-complexity to
     the broader P vs NP picture.
@@ -4709,8 +4699,9 @@ opaque NASH : ℕ → Bool
 axiom nash_in_PPAD : NASH ∈ PPAD
 
 /-- PPAD-hardness of Nash: every PPAD problem reduces to Nash.
-    **Previously axiom** — converted to theorem (conclusion is trivially True). -/
-theorem nash_PPAD_hard : ∀ f ∈ PPAD, True := fun _ _ => trivial
+    Previously axiom; trivially True in abstract model. -/
+theorem nash_PPAD_hard : ∀ f ∈ PPAD, True :=
+  fun _ _ => trivial
 
 theorem nash_in_TFNP : NASH ∈ TFNP :=
   PPAD_subset_TFNP nash_in_PPAD
@@ -4836,9 +4827,10 @@ axiom sharp_SAT_complete : SharpSAT ∈ SharpP
 axiom SharpP_subset_GapP : SharpP ⊆ GapP
 
 /-- GapP is closed under subtraction (unlike #P).
-    **Previously axiom** — converted to theorem (conclusion is trivially True). -/
+    Previously axiom; trivially True in abstract model. -/
 theorem GapP_closed_subtraction :
-    ∀ f g : ℕ → ℕ, f ∈ GapP → g ∈ GapP → True := fun _ _ _ _ => trivial
+    ∀ f g : ℕ → ℕ, f ∈ GapP → g ∈ GapP → True :=
+  fun _ _ _ _ => trivial
 
 /-- **Toda's theorem gives PH ⊆ P^{#P}**: combined with PH ⊆ PSPACE,
     this shows PH reduces to COUNTING, not just to PSPACE. -/

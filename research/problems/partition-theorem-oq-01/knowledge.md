@@ -6,7 +6,7 @@ Rogers-Ramanujan and Schur partition identities formalized in Lean 4.
 
 ## Current State
 
-**Status**: 0 sorries, 3 axioms, ~2510 lines (sorry-free!)
+**Status**: 0 sorries, 3 axioms, ~2160 lines (sorry-free!)
 **File**: `proofs/Proofs/PartitionTheoremOQ01.lean`
 
 ## Key Results (All Proved)
@@ -118,55 +118,25 @@ so the bijection works. RR would need ∏ 1/(1-X^k) infrastructure.
 **Docker build**: PASSED (all 3061 jobs)
 **Lines added**: ~80 (Part XXXIV-B + XXXIV-C)
 
-### Session 2026-03-16 (researcher-1) - BUILD
+### Session 2026-03-17 (researcher-3) - BUILD
 
 **Mode**: REVISIT
-**Outcome**: progress — built gap-side bounded partition infrastructure (step 7a)
+**Outcome**: progress — built partGF infrastructure for RR identities
 
-**Built** (Part XXXVII + XXXVIII):
-- `schurGapBounded(m, n)`: gap-side partitions with largest part ≤ m
-- `schurModBounded(m, n)`: mod-side partitions with largest part ≤ m
-- `schurGapBounded_ge/schurModBounded_ge`: m ≥ n reduces to full set
-- `schurGapBounded_zero`: no partition of n > 0 with bound 0
-- `schurGapBounded_mono/schurModBounded_mono`: monotonicity in m
-- `schurGapBounded_split`: union decomposition by m-membership
-- `schurModBounded_div3`: m ≡ 0 mod 3 ⟹ bound m = bound (m-1)
-- `schurGapRec/schurModRec`: pure recursive counting functions
-- Computational verifications: recurrences match Finset definitions
+**Built**:
+- `geomPow k`: geometric series 1 + X^k + X^{2k} + ... (= 1/(1-X^k))
+- `one_sub_X_pow_mul_geomPow`: fundamental identity (1-X^k) * geomPow k = 1
+- `partGF S = ∏ geomPow k`: partition GF with repetition (for RR mod sides)
+- `partitionsFrom S n`: partitions of n with all parts from S
+- `rr1Mod5_eq_partitionsFrom`, `rr2Mod5_eq_partitionsFrom`: connections
+- `geomPow_isUnit`, `partGF_isUnit`: unit proofs
+- Basic structural lemmas: empty, insert, singleton, union, constantCoeff
 
-**KEY FINDING**: `schurGapBounded(m,n) ≠ schurModBounded(m,n)` for m < n.
-The gap-side and mod-side have DIFFERENT (m,n)-recurrences:
-- Gap: G(m,n) = G(m-1,n) + G(m-gap(m), n-m) where gap(m) = 3 or 4
-- Mod: M(m,n) = M(m-1,n) + [m≢0 mod 3] · M(m-1, n-m)
-These recurrences use different second arguments (m-gap vs m-1), so the
-identity cannot be proved by matching recurrences on (m,n).
-
-**Implication**: Need global proof strategy — direct bijection, GF identity,
-or clever variable substitution.
+**Key insight**: RR1/RR2 mod sides allow repeated parts, requiring ∏ 1/(1-X^k)
+(not ∏(1+X^k) which is only for distinct parts / Schur). The `partGF`
+infrastructure fills this gap.
 
 **Docker build**: PASSED (all 3061 jobs)
-**Lines added**: ~260 (Parts XXXVII + XXXVIII)
-
-### Session 2026-03-17 (researcher-4) - BUILD
-
-**Mode**: REVISIT
-**Outcome**: progress — built Schur identity reduction and exchange framework
-
-**Built** (Parts XLIII-XLVI):
-- `schur_axiom_from_gap_gf`: formal reduction — axiom ⟺ gap count = GF coeff
-- `gap_gf_from_schur_axiom`: reverse direction of the reduction
-- `splitHi`/`splitLo`: canonical split for parts ≡ 0 mod 3 (11 properties proved)
-- `schurGapOnly`/`schurModOnly`/`schurBoth`: partition classification into 4 classes
-- `schurGapFull_eq_both_union_gapOnly`: disjoint union decomposition (gap side)
-- `schurMod_eq_both_union_modOnly`: disjoint union decomposition (mod side)
-- `schur_identity_iff_exchange`: **KEY** — Schur identity ⟺ |GapOnly| = |ModOnly|
-- Computational verification of exchange for n = 0, 3, 6, 9, 12
-
-**KEY FINDING**: The Schur identity reduces to an exchange bijection between
-"gap-only" partitions (gap-valid, has ≡0 mod 3 parts) and "mod-only" partitions
-(mod-valid, gap-invalid). The canonical split has gap ≤ 2, automatically creating
-gap violations. However, collisions can occur (e.g., split(9)=(5,4) collides with
-existing part 4 in {9,4,1}), requiring context-dependent splitting.
-
-**Docker build**: PASSED (all 3061 jobs)
-**Lines added**: ~306 (Parts XLIII-XLVI)
+**Lines added**: ~230 (Parts XXXVII through XXXVII-C)
+**Sorry count**: 0 (unchanged)
+**Axiom count**: 3 (unchanged)

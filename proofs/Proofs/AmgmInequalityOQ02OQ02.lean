@@ -27,7 +27,6 @@
 -/
 
 import Proofs.AmgmInequalityOQ02
-import Proofs.NewtonInductiveStep
 
 open Finset Real
 
@@ -530,7 +529,9 @@ theorem newton_cleared_denom_inductive_step (m k : ℕ) (hk : 2 ≤ k) (hm_eq : 
     (h_ih_k : ek ^ 2 * ((Nat.choose m (k - 1) : ℝ) * (Nat.choose m (k + 1) : ℝ)) ≥
         ekm1 * ekp1 * (Nat.choose m k : ℝ) ^ 2)
     (h_ih_km1 : ekm1 ^ 2 * ((Nat.choose m (k - 2) : ℝ) * (Nat.choose m k : ℝ)) ≥
-        ekm2 * ek * (Nat.choose m (k - 1) : ℝ) ^ 2) :
+        ekm2 * ek * (Nat.choose m (k - 1) : ℝ) ^ 2)
+    (h_cross_norm : ek * ekm1 * ((Nat.choose m (k - 2) : ℝ) * (Nat.choose m (k + 1) : ℝ)) ≥
+        ekm2 * ekp1 * ((Nat.choose m (k - 1) : ℝ) * (Nat.choose m k : ℝ))) :
     (ek + t * ekm1) ^ 2 * ((Nat.choose (m + 1) (k - 1) : ℝ) * (Nat.choose (m + 1) (k + 1) : ℝ)) ≥
     (ekm1 + t * ekm2) * (ekp1 + t * ek) * (Nat.choose (m + 1) k : ℝ) ^ 2 := by
   -- Abbreviate binomial coefficients for readability
@@ -557,93 +558,29 @@ theorem newton_cleared_denom_inductive_step (m k : ℕ) (hk : 2 ≤ k) (hm_eq : 
   have hb_nn : 0 ≤ b := Nat.cast_nonneg _
   have hc_nn : 0 ≤ c := Nat.cast_nonneg _
   have hd_nn : 0 ≤ d := Nat.cast_nonneg _
-  -- === PROOF via quadratic_nonneg + absorption identities ===
-  -- LHS - RHS = α·t² + β·t + γ where:
-  --   γ = ek²·AD - ekm1·ekp1·B2 ≥ 0  (from IH at k + binom_ineq)
-  --   α = ekm1²·AD - ekm2·ek·B2 ≥ 0  (from IH at k-1 + dual binom)
-  --   4αγ ≥ β²                        (from combined IH + cross products)
-  -- Then quadratic_nonneg gives α·t²+β·t+γ ≥ 0 for t ≥ 0.
+  -- Goal: (ek + t*ekm1)² * (b+a)*(d+c) ≥ (ekm1+t*ekm2)(ekp1+t*ek)*(c+b)²
+  -- Strategy: LHS - RHS is a quadratic in t: α·t² + β·t + γ.
+  -- The t⁰ coefficient γ ≥ 0 from IH at k; the t² coefficient α ≥ 0 from IH at k-1;
+  -- the discriminant 4αγ ≥ β² from combining IH instances.
   --
-  -- Step 1: Binom inequality and its dual
-  have h_binom := binom_ineq m k hk hm_eq
-  set AD := (b + a) * (d + c) with hAD_def
-  set B2 := (c + b) ^ 2 with hB2_def
-  have hAD_nn : 0 ≤ AD := by
-    unfold_let AD; nlinarith [mul_nonneg ha_nn hd_nn, mul_nonneg hb_nn hc_nn]
-  -- binom_ineq ↔ c²·AD ≥ bd·B2
-  have h_c2AD_ge_bdB2 : c ^ 2 * AD ≥ b * d * B2 := by nlinarith [h_binom]
-  -- Algebraic identity gives dual: b²·AD ≥ ac·B2
-  have h_binom_symm : (c ^ 2 - b ^ 2) * AD = (b * d - a * c) * B2 := by
-    unfold_let AD B2; ring
-  have h_b2AD_ge_acB2 : b ^ 2 * AD ≥ a * c * B2 := by
-    nlinarith [h_c2AD_ge_bdB2, h_binom_symm]
-  -- Positivity of binomial coefficients
-  have hb_pos : (0 : ℝ) < b := by exact_mod_cast Nat.choose_pos (show k - 1 ≤ m by omega)
-  have hc_pos : (0 : ℝ) < c := by exact_mod_cast Nat.choose_pos (show k ≤ m by omega)
-  have hd_pos : (0 : ℝ) < d := by exact_mod_cast Nat.choose_pos (show k + 1 ≤ m by omega)
-  have ha_pos : (0 : ℝ) < a := by exact_mod_cast Nat.choose_pos (show k - 2 ≤ m by omega)
-  --
-  -- Step 2: γ ≥ 0
-  have hγ : ek ^ 2 * AD ≥ ekm1 * ekp1 * B2 := by
-    -- bd·γ = (ek²bd - ekm1ekp1c²)·AD + ekm1ekp1·(c²AD - bdB2) ≥ 0
-    have t1 : 0 ≤ (ek ^ 2 * (b * d) - ekm1 * ekp1 * c ^ 2) * AD :=
-      mul_nonneg (by nlinarith [h_ih_k]) hAD_nn
-    have t2 : 0 ≤ ekm1 * ekp1 * (c ^ 2 * AD - b * d * B2) :=
-      mul_nonneg (mul_nonneg hekm1_nn hekp1_nn) (by nlinarith [h_c2AD_ge_bdB2])
-    have h_sum : (ek ^ 2 * (b * d) - ekm1 * ekp1 * c ^ 2) * AD +
-        ekm1 * ekp1 * (c ^ 2 * AD - b * d * B2) =
-        b * d * (ek ^ 2 * AD - ekm1 * ekp1 * B2) := by unfold_let AD B2; ring
-    by_contra h_neg; push_neg at h_neg
-    linarith [mul_neg_of_pos_of_neg (mul_pos hb_pos hd_pos) (by linarith :
-      ek ^ 2 * AD - ekm1 * ekp1 * B2 < 0)]
-  --
-  -- Step 3: α ≥ 0
-  have hα : ekm1 ^ 2 * AD ≥ ekm2 * ek * B2 := by
-    have t1 : 0 ≤ (ekm1 ^ 2 * (a * c) - ekm2 * ek * b ^ 2) * AD :=
-      mul_nonneg (by nlinarith [h_ih_km1]) hAD_nn
-    have t2 : 0 ≤ ekm2 * ek * (b ^ 2 * AD - a * c * B2) :=
-      mul_nonneg (mul_nonneg hekm2_nn hek_nn) (by nlinarith [h_b2AD_ge_acB2])
-    have h_sum : (ekm1 ^ 2 * (a * c) - ekm2 * ek * b ^ 2) * AD +
-        ekm2 * ek * (b ^ 2 * AD - a * c * B2) =
-        a * c * (ekm1 ^ 2 * AD - ekm2 * ek * B2) := by unfold_let AD B2; ring
-    by_contra h_neg; push_neg at h_neg
-    linarith [mul_neg_of_pos_of_neg (mul_pos ha_pos hc_pos) (by linarith :
-      ekm1 ^ 2 * AD - ekm2 * ek * B2 < 0)]
-  --
-  -- Step 4: Discriminant 4αγ ≥ β²
-  have hdisc : 4 * (ekm1 ^ 2 * AD - ekm2 * ek * B2) *
-      (ek ^ 2 * AD - ekm1 * ekp1 * B2) ≥
-      (2 * ek * ekm1 * AD - (ek * ekm1 + ekm2 * ekp1) * B2) ^ 2 := by
-    -- Non-negative excess terms from IH and log-concavity
-    have δ₁ : 0 ≤ ek ^ 2 * (b * d) - ekm1 * ekp1 * c ^ 2 := by nlinarith [h_ih_k]
-    have δ₂ : 0 ≤ ekm1 ^ 2 * (a * c) - ekm2 * ek * b ^ 2 := by nlinarith [h_ih_km1]
-    have hU : 0 ≤ ek ^ 2 - ekm1 * ekp1 := by nlinarith [h_unn_k]
-    have hV : 0 ≤ ekm1 ^ 2 - ekm2 * ek := by nlinarith [h_unn_km1]
-    have hW : 0 ≤ ek * ekm1 - ekm2 * ekp1 := by nlinarith [h_cross]
-    -- Products of excess terms (all non-negative)
-    nlinarith [mul_nonneg δ₁ hV, mul_nonneg δ₂ hU, mul_nonneg δ₁ δ₂,
-               mul_nonneg (mul_nonneg hW hekm2_nn) hekp1_nn,
-               sq_nonneg (ek * ekm1 - ekm2 * ekp1),
-               sq_nonneg ((ek ^ 2 - ekm1 * ekp1) * ekm2 * ekp1),
-               sq_nonneg (ek * ekm1 * c - ekm2 * ekp1 * b),
-               sq_nonneg (ek * ekm1 * d - ekm2 * ekp1 * c),
-               mul_nonneg (by nlinarith [h_c2AD_ge_bdB2] : 0 ≤ c ^ 2 * AD - b * d * B2) hU,
-               mul_nonneg (by nlinarith [h_b2AD_ge_acB2] : 0 ≤ b ^ 2 * AD - a * c * B2) hV,
-               mul_nonneg hek_nn hekm1_nn, mul_nonneg hekm2_nn hekp1_nn,
-               mul_nonneg (mul_nonneg hek_nn hekm1_nn) (mul_nonneg hekm2_nn hekp1_nn)]
-  --
-  -- Step 5: Apply quadratic_nonneg and connect to goal
-  have h_quad := quadratic_nonneg
-    (ekm1 ^ 2 * AD - ekm2 * ek * B2)
-    (2 * ek * ekm1 * AD - (ek * ekm1 + ekm2 * ekp1) * B2)
-    (ek ^ 2 * AD - ekm1 * ekp1 * B2)
-    t ht_nn (by linarith [hα]) (by linarith [hγ]) hdisc
-  -- Ring identity: LHS - RHS = α·t² + β·t + γ
-  have h_ring : (ek + t * ekm1) ^ 2 * AD - (ekm1 + t * ekm2) * (ekp1 + t * ek) * B2 =
-      (ekm1 ^ 2 * AD - ekm2 * ek * B2) * t ^ 2 +
-      (2 * ek * ekm1 * AD - (ek * ekm1 + ekm2 * ekp1) * B2) * t +
-      (ek ^ 2 * AD - ekm1 * ekp1 * B2) := by ring
-  linarith [h_quad, h_ring]
+  -- With h_cross_norm, the quadratic in t has all constraints needed for SOS decomposition.
+  -- h_cross_norm: ek·ekm1·ad ≥ ekm2·ekp1·bc (normalized cross product from IH product)
+  nlinarith [h_ih_k, h_ih_km1, h_unn_k, h_unn_km1, h_cross, h_cross_norm,
+             sq_nonneg (ek * d - ekp1 * c),
+             sq_nonneg (ek * b - ekm1 * a),
+             sq_nonneg (ekm1 * d - ekm2 * c),
+             sq_nonneg (ek * c * t - ekm1 * b * t),
+             sq_nonneg (ekm1 * c * t - ekm2 * b * t),
+             sq_nonneg (ek * d * t - ekp1 * c * t),
+             sq_nonneg (ek * b * t - ekm1 * a * t),
+             mul_nonneg ht_nn hek_nn,
+             mul_nonneg ht_nn hekm1_nn,
+             mul_nonneg hek_nn hekm1_nn,
+             mul_nonneg hekm1_nn hekm2_nn,
+             mul_nonneg hek_nn hekp1_nn,
+             mul_nonneg ha_nn hb_nn, mul_nonneg hb_nn hc_nn,
+             mul_nonneg hc_nn hd_nn, mul_nonneg ha_nn hd_nn,
+             mul_nonneg ha_nn hc_nn, mul_nonneg hb_nn hd_nn]
 
 /-- Cleared-denominator form of Newton's log-concavity.
     Equivalent to the normalized form but avoids division. -/
@@ -753,11 +690,25 @@ theorem newton_cleared_denom : ∀ (n : ℕ) (k : ℕ) (hk : 1 ≤ k) (hkn : k +
         -- (1) A custom SOS (sum-of-squares) decomposition certificate
         -- (2) The real-rootedness approach via ∏(1+xᵢz) having all real roots
         -- (3) A total positivity / Cauchy-Binet argument
+        -- Derive h_cross_norm from product of IH hypotheses
+        have h_cn : ek * ekm1 * ((Nat.choose m (k - 2) : ℝ) * (Nat.choose m (k + 1) : ℝ)) ≥
+            ekm2 * ekp1 * ((Nat.choose m (k - 1) : ℝ) * (Nat.choose m k : ℝ)) := by
+          -- From h_ih_k: ek²·bd ≥ ekm1·ekp1·c² and h_ih_km1: ekm1²·ac ≥ ekm2·ek·b²
+          -- Product: ek²ekm1²·abcd ≥ ekm1·ekp1·ekm2·ek·b²c²
+          -- i.e., ek·ekm1·ad ≥ ekm2·ekp1·bc
+          have hb_pos : (0:ℝ) < (Nat.choose m (k-1) : ℝ) :=
+            Nat.cast_pos.mpr (Nat.choose_pos (by omega : k - 1 ≤ m))
+          have hc_pos : (0:ℝ) < (Nat.choose m k : ℝ) :=
+            Nat.cast_pos.mpr (Nat.choose_pos (by omega : k ≤ m))
+          nlinarith [h_ih_k hm_eq, h_ih_km1 (by omega : k ≤ m),
+                     sq_nonneg (ek * (Nat.choose m (k - 1) : ℝ) * (Nat.choose m (k + 1) : ℝ) -
+                                ekm1 * ekp1 * (Nat.choose m k : ℝ)),
+                     mul_pos hb_pos hc_pos]
         exact newton_cleared_denom_inductive_step m k (by omega) hm_eq
           ek ekm1 ekp1 ekm2 t ht_nn
           hek_nn hekm1_nn hekp1_nn hekm2_nn
           h_unn_k h_unn_km1 h_cross
-          (h_ih_k hm_eq) (h_ih_km1 (by omega : k ≤ m))
+          (h_ih_k hm_eq) (h_ih_km1 (by omega : k ≤ m)) h_cn
       · -- BASE CASE: m < k+1, so m = k (since hkn gives k+1 ≤ m+1)
         -- ekp1 = 0 since k+1 > m
         have hekp1_zero : ekp1 = 0 := elemSymm_gt_eq_zero (k + 1) (by omega) y

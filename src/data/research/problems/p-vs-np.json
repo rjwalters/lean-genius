@@ -568,7 +568,9 @@
       "Bennett-Gill (1981) formalized as theorem (not axiom): separating oracles exist AND collapsing oracles exist - both from BGS",
       "Grand Unification master theorem connects 11 major components in single statement: sound model, containments, separations, barriers, counting, TFNP, descriptive, interactive proofs, oracle landscape",
       "Counting complexity extended: GapP (signed counting), SharpSAT (#P-complete), counting_captures_PH connecting Toda to VP/VNP",
-      "Unconditional lower bounds consolidated: P⊊EXP + NEXP⊄ACC0 + NEXP⊄AC0 + Hastad + Razborov in single theorem"
+      "Unconditional lower bounds consolidated: P⊊EXP + NEXP⊄ACC0 + NEXP⊄AC0 + Hastad + Razborov in single theorem",
+      "PvsNP.lean model is unsound: Program.decide is arbitrary Lean function, so P=NP=PSPACE=EXP=Set.univ. Axiom P_ne_EXP derives False in this model.",
+      "104 remaining axioms in PNPBarriersSound.lean are mostly about opaque types (circuit families, PH levels, parameterized classes) - further reduction needs non-opaque definitions or new structural axioms"
     ],
     "mathlibGaps": [
       "Turing machines",
