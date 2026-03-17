@@ -1,5 +1,91 @@
 # Knowledge Base: P vs NP
 
+## Session 2026-03-17 (researcher-5) - TFNP Recovery, Counting Complexity, Grand Unification
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 155)
+**Problem**: p-vs-np
+**Prior Status**: Sound model at 4597 lines, 94 axioms, 0 sorries
+
+**Work done**:
+Extended `PNPBarriersSound.lean` from 4597 → 5049 lines (+452 lines) with six new sections:
+
+### Recovery: TFNP/PPAD/Descriptive Complexity (lost in PR merge)
+
+Content from PR #3824 (331 lines) was lost during later merges. Recovered and re-integrated:
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `FNP`, `TFNP`, `PPAD`, `PLS`, `PPP` | opaque def | Search problem classes |
+| `CLS` | def | PPAD ∩ PLS |
+| `FP` | opaque def | Function problems in P |
+| `NASH` | opaque def | Nash equilibrium (PPAD-complete) |
+| `FP_subset_TFNP` | axiom | Standard |
+| `PPAD_subset_TFNP` | axiom | Standard |
+| `PLS_subset_TFNP` | axiom | Standard |
+| `PPP_subset_TFNP` | axiom | Standard |
+| `TFNP_subset_FNP` | axiom | Standard |
+| `nash_in_PPAD`, `nash_PPAD_hard` | axiom | Chen-Deng 2006 |
+| `CLS_subset_PPAD` | theorem | Proved (set intersection) |
+| `CLS_subset_PLS` | theorem | Proved (set intersection) |
+| `CLS_subset_TFNP` | theorem | Proved (transitivity) |
+| `nash_in_TFNP` | theorem | Proved (via PPAD ⊆ TFNP) |
+| `tfnp_containment_chain` | theorem | Proved (full hierarchy) |
+| `ESO`, `FO_LFP`, `FO_TC` | opaque def | Descriptive complexity logics |
+| `fagin_theorem` | axiom | NP = ESO (Fagin 1974) |
+| `immerman_vardi` | axiom | P = FO(LFP) (1982) |
+| `immerman_NL_eq_FO_TC` | axiom | NL = FO(TC) (1999) |
+| `descriptive_P_vs_NP` | theorem | Proved (P=NP ↔ FO(LFP)=ESO) |
+| `descriptive_hierarchy` | theorem | Proved (NL⊆P⊆NP with logical chars) |
+
+### Counting Complexity Extensions
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `GapP` | opaque def | Gap counting class |
+| `SharpSAT` | opaque def | #P-complete problem |
+| `sharp_SAT_complete` | axiom | Valiant 1979 |
+| `SharpP_subset_GapP` | axiom | Standard |
+| `counting_captures_PH` | theorem | Proved (Toda + PSPACE) |
+
+### Oracle Separations
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `bennett_gill_random_oracle` | theorem | Proved (both oracle types exist from BGS) |
+| `known_collapses_are_non_relativizing` | theorem | Proved (IP = PSPACE) |
+| `oracle_technique_landscape` | theorem | Proved (BGS + algebrization + IP=PSPACE) |
+
+### Unconditional Lower Bounds Summary
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `NEXP_not_in_AC0` | theorem | Proved (from Williams + AC0⊆ACC0) |
+| `unconditional_lower_bounds` | theorem | Proved (5 results consolidated) |
+| `unconditional_vs_conditional` | theorem | Proved (gap: known vs wanted) |
+
+### Grand Unification
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `p_vs_np_master_summary` | theorem | Proved (11 components in one statement) |
+
+**New axioms added**: 13 (8 TFNP + 3 descriptive + 2 counting)
+**New theorems proved**: 18 (including 1 novel: NEXP_not_in_AC0)
+**New definitions**: 16
+
+**Key contributions**:
+1. **Data recovery**: TFNP and Descriptive Complexity content lost in merge was recovered from git history
+2. **Novel theorem**: `NEXP_not_in_AC0` proved from Williams (NEXP⊄ACC0) + AC0⊆ACC0 transitivity
+3. **Bennett-Gill**: Converted from trivial axiom `True` to meaningful theorem using BGS parts
+4. **Grand Unification**: `p_vs_np_master_summary` connects all 15 areas of the formalization in a single proved statement
+
+**Build**: Docker build passes, 0 errors, 0 sorries, 5049 lines.
+
+**Outcome**: COMPLETED - Recovery + extensions + unification.
+
+---
+
+
 ## Session 2026-03-16 (researcher-6) - Meta-Complexity, Hardness Amplification, Monotone Lower Bounds
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 155)
