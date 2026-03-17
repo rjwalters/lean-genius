@@ -23,8 +23,8 @@
     The first new polygon construction since antiquity. Determined his career choice.
   - Wantzel (1837): Proved the converse — non-constructibility when φ(n) ≠ 2^k.
 
-  File summary: 67+ proved theorems, 0 sorries, 0 axioms.
-  galois_conjugate_count: PROVED (coprime pairing via lower-half injectivity).
+  File summary: 68+ proved theorems, 0 sorries, 0 axioms.
+  galois_conjugate_count PROVED (coprime pairing + cos injectivity on [0,π]).
   minpoly_cos_natDegree_eq PROVED (3 sorries eliminated: h_top, h_deg, combining).
   gauss_wantzel_theorem PROVED (via degree theory from OQ02OQ03OQ01).
   All 3 former axioms eliminated: gauss_wantzel_theorem, cos_minpoly_gal_card,
@@ -1375,131 +1375,116 @@ theorem galois_conjugate_count (n : ℕ) (hn : 3 ≤ n) :
     Finset.card (Finset.image (fun k => Real.cos (2 * ↑k * Real.pi / ↑n))
       (Finset.filter (fun k => Nat.Coprime k n) (Finset.range n))) =
     Nat.totient n / 2 := by
-  -- Let S = coprime residues mod n, f = cos(2kπ/n)
-  set S := Finset.filter (fun k => Nat.Coprime k n) (Finset.range n) with hS_def
-  set f := fun k : ℕ => Real.cos (2 * ↑k * Real.pi / ↑n) with hf_def
-  -- "Lower half": coprime residues with 2k < n
-  set S₁ := S.filter (fun k => 2 * k < n) with hS₁_def
-  -- Step 1: S₁ has cardinality totient(n) / 2
-  -- The involution σ(k) = n - k maps S₁ ↔ S₂ := S.filter (fun k => 2k > n)
-  -- with no fixed points (coprime_ne_sub_self ensures 2k ≠ n)
+  -- Strategy: partition coprime residues into lower/upper halves via k ↦ n-k.
+  -- cos is injective on the lower half (angles in (0,π)), and both halves
+  -- map to the same image. So |image| = |lower half| = φ(n)/2.
+  set f : ℕ → ℝ := fun k => Real.cos (2 * ↑k * Real.pi / ↑n)
+  set S := (Finset.range n).filter (fun k => Nat.Coprime k n) with hS_def
+  set L := S.filter (fun k => 2 * k < n)
+  have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+  have hn_ne : (↑n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  -- (A) S.card = Nat.totient n
   have hS_card : S.card = Nat.totient n := by
-    rw [hS_def]
-    -- totient n = (range n).filter (n.Coprime ·)|.card, but our filter uses (k.Coprime n)
-    -- These are equal since Nat.Coprime is symmetric (Nat.gcd is commutative)
-    have : S = (Finset.range n).filter (fun k => n.Coprime k) := by
-      ext k; simp only [Finset.mem_filter, hS_def]
-      exact ⟨fun ⟨h1, h2⟩ => ⟨h1, h2.symm⟩, fun ⟨h1, h2⟩ => ⟨h1, h2.symm⟩⟩
-    rw [this]; rfl
-  -- Step 2: image(f, S) = image(f, S₁)
-  -- Because for k ∈ S with 2k ≥ n, n-k ∈ S₁ and f(k) = f(n-k)
-  have himg : S.image f = S₁.image f := by
+    change S.card = ((Finset.range n).filter (Nat.Coprime n)).card
+    congr 1; exact Finset.filter_congr fun k _ => Nat.coprime_comm
+  -- (B) Members of S are positive
+  have pos_of_mem : ∀ k ∈ S, 0 < k := fun k hk =>
+    coprime_pos_of_ge_three hn hk
+  -- (C) No fixed point: 2k ≠ n for k ∈ S
+  have no_fp : ∀ k ∈ S, 2 * k ≠ n := by
+    intro k hk heq
+    have hc : Nat.Coprime k n := (Finset.mem_filter.mp hk).2
+    have hkn : k ∣ n := ⟨2, by omega⟩
+    have : k ≤ 1 := by
+      have h1 : k ∣ Nat.gcd k n := Nat.dvd_gcd (dvd_refl k) hkn
+      rw [hc] at h1; exact Nat.le_of_dvd one_pos h1
+    omega
+  -- (D) n - k ∈ S when k ∈ S
+  have sub_mem_S : ∀ k ∈ S, n - k ∈ S := by
+    intro k hk
+    have hkS := Finset.mem_filter.mp hk
+    exact sub_mem_coprime_filter hn (pos_of_mem k hk)
+      (Finset.mem_range.mp hkS.1) hkS.2
+  -- (E) image(S, f) = image(L, f)
+  have himg : S.image f = L.image f := by
     ext x; simp only [Finset.mem_image]; constructor
     · rintro ⟨k, hk, rfl⟩
-      by_cases h2k : 2 * k < n
-      · exact ⟨k, Finset.mem_filter.mpr ⟨hk, h2k⟩, rfl⟩
-      · -- k ∈ S but 2k ≥ n, so use n - k ∈ S₁ instead
-        have hk_mem := Finset.mem_filter.mp hk
-        have hk_range := Finset.mem_range.mp hk_mem.1
-        have hk_cop := hk_mem.2
-        have hk_pos : 0 < k := coprime_pos_of_ge_three hn hk
-        -- n - k is coprime and in range
-        have hnk_cop := coprime_sub_self (by omega) hk_cop
-        have hnk_pos : 0 < n - k := by omega
-        have hnk_lt : n - k < n := by omega
-        have hnk_half : 2 * (n - k) < n := by omega
-        have hnk_mem : n - k ∈ S₁ := by
-          rw [hS₁_def]; simp only [Finset.mem_filter, Finset.mem_range]
-          exact ⟨⟨⟨hnk_lt, hnk_cop⟩, hnk_half⟩⟩
-        exact ⟨n - k, hnk_mem, (cos_complement_eq n (by omega) k hk_range).symm⟩
+      by_cases h : 2 * k < n
+      · exact ⟨k, Finset.mem_filter.mpr ⟨hk, h⟩, rfl⟩
+      · have hk_lt := Finset.mem_range.mp (Finset.mem_filter.mp hk).1
+        have hne := no_fp k hk
+        refine ⟨n - k, Finset.mem_filter.mpr ⟨sub_mem_S k hk, by omega⟩, ?_⟩
+        exact cos_complement_eq n (by omega) k hk_lt
     · rintro ⟨k, hk, rfl⟩
-      exact ⟨k, Finset.filter_subset _ _ hk, rfl⟩
-  -- Step 3: f is injective on S₁
-  -- For k, j ∈ S₁ with 2k < n and 2j < n: f(k) = f(j) → k = j
-  have hinj : Set.InjOn f ↑S₁ := by
-    intro k hk j hj hfkj
-    have hk_mem := Finset.mem_coe.mp hk
-    have hj_mem := Finset.mem_coe.mp hj
-    rw [hS₁_def] at hk_mem hj_mem
-    have hk_filt := (Finset.mem_filter.mp hk_mem).1
-    have hk_half := (Finset.mem_filter.mp hk_mem).2
-    have hj_filt := (Finset.mem_filter.mp hj_mem).1
-    have hj_half := (Finset.mem_filter.mp hj_mem).2
-    have hk_range := Finset.mem_range.mp (Finset.mem_filter.mp hk_filt).1
-    have hj_range := Finset.mem_range.mp (Finset.mem_filter.mp hj_filt).1
-    -- Use cos_2kpi_div_n_eq_iff to get k%n = j%n ∨ k%n = (n-j%n)%n
-    rw [hf_def] at hfkj
-    rw [cos_2kpi_div_n_eq_iff n (by omega) k j] at hfkj
-    simp only [Nat.mod_eq_of_lt hk_range, Nat.mod_eq_of_lt hj_range] at hfkj
-    rcases hfkj with h | h
-    · exact h
-    · -- k = (n - j) % n with j < n means k = n - j
-      rw [Nat.mod_eq_of_lt (by omega : n - j < n)] at h
-      -- But 2k < n and 2j < n, so k + j < n, contradicting k = n - j (k + j = n)
-      omega
-  -- Step 4: Combine
-  rw [himg, Finset.card_image_of_injOn hinj]
-  -- Need: S₁.card = totient(n) / 2
-  -- S₁ and S₂ partition S (no coprime k has 2k = n since gcd(n/2,n) ≥ 2)
-  -- The involution k → n-k bijects S₁ to S₂, so |S₁| = |S₂| = |S|/2
-  have hno_mid : ∀ k ∈ S, 2 * k ≠ n := by
-    intro k hk h2k
-    have hk_cop := (Finset.mem_filter.mp hk).2
-    have : k ∣ n := ⟨2, by omega⟩
-    have := Nat.le_of_dvd (by omega) (Nat.dvd_gcd (dvd_refl k) this)
-    rw [hk_cop] at this; omega
-  -- S₂ = S.filter (fun k => n < 2 * k)
-  set S₂ := S.filter (fun k => n < 2 * k) with hS₂_def
-  -- S = S₁ ∪ S₂ disjointly (since no coprime k has 2k = n)
-  have hpart : S = S₁ ∪ S₂ := by
-    ext k; simp only [Finset.mem_union, hS₁_def, hS₂_def,
-      Finset.mem_filter]
-    constructor
-    · intro hk; by_cases h : 2 * k < n
-      · left; exact ⟨hk, h⟩
-      · right; exact ⟨hk, by omega⟩
-    · rintro (⟨hk, _⟩ | ⟨hk, _⟩) <;> exact hk
-  have hdisj : Disjoint S₁ S₂ := by
-    rw [Finset.disjoint_filter]
-    intro k _ h1 h2; omega
-  -- The involution σ(k) = n - k maps S₁ → S₂ injectively
-  have hσ_inj : Set.InjOn (fun k => n - k) ↑S₁ := by
-    intro a ha b hb hab
-    have ha' := Finset.mem_coe.mp ha
-    have hb' := Finset.mem_coe.mp hb
-    omega
-  have hσ_maps : ∀ k ∈ S₁, n - k ∈ S₂ := by
-    intro k hk
-    rw [hS₁_def] at hk
-    have hk_S := (Finset.mem_filter.mp hk).1
-    have hk_half := (Finset.mem_filter.mp hk).2
-    have hk_cop := (Finset.mem_filter.mp hk_S).2
-    have hk_range := Finset.mem_range.mp (Finset.mem_filter.mp hk_S).1
-    have hk_pos := coprime_pos_of_ge_three hn hk_S
-    rw [hS₂_def]; simp only [Finset.mem_filter, Finset.mem_range, hS_def]
-    exact ⟨⟨⟨by omega, coprime_sub_self (by omega) hk_cop⟩, by omega⟩⟩
-  -- σ maps S₂ → S₁ injectively (inverse)
-  have hσ_inv : ∀ k ∈ S₂, n - k ∈ S₁ := by
-    intro k hk
-    rw [hS₂_def] at hk
-    have hk_S := (Finset.mem_filter.mp hk).1
-    have hk_half := (Finset.mem_filter.mp hk).2
-    have hk_cop := (Finset.mem_filter.mp hk_S).2
-    have hk_range := Finset.mem_range.mp (Finset.mem_filter.mp hk_S).1
-    rw [hS₁_def]; simp only [Finset.mem_filter, Finset.mem_range, hS_def]
-    exact ⟨⟨⟨by omega, coprime_sub_self (by omega) hk_cop⟩, by omega⟩⟩
-  -- |S₁| = |S₂| via the bijection
-  have hcard_eq : S₁.card = S₂.card := by
-    apply le_antisymm
-    · exact Finset.card_le_card_of_injOn (fun k => n - k) hσ_maps
-        (fun a ha b hb hab => by omega)
-    · exact Finset.card_le_card_of_injOn (fun k => n - k) hσ_inv
-        (fun a ha b hb hab => by omega)
-  -- |S| = |S₁| + |S₂| = 2 * |S₁|
-  have hS_split : S.card = S₁.card + S₂.card := by
-    rw [hpart]; exact Finset.card_union_of_disjoint hdisj
-  rw [hS_card] at hS_split
-  omega
+      exact ⟨k, (Finset.mem_filter.mp hk).1, rfl⟩
+  -- (F) f injective on L (cos strictly anti on [0, π])
+  have f_inj : Set.InjOn f ↑L := by
+    intro j hj k hk hjk
+    simp only [Finset.mem_coe] at hj hk
+    have ⟨hjS, hj_low⟩ := Finset.mem_filter.mp hj
+    have ⟨hkS, hk_low⟩ := Finset.mem_filter.mp hk
+    have hj_pos : (0 : ℝ) < ↑j := Nat.cast_pos.mpr (pos_of_mem j hjS)
+    have hk_pos : (0 : ℝ) < ↑k := Nat.cast_pos.mpr (pos_of_mem k hkS)
+    have hj_in : 2 * (↑j : ℝ) * Real.pi / ↑n ∈ Set.Icc (0 : ℝ) Real.pi :=
+      ⟨by positivity, by
+        rw [div_le_iff₀ hn_pos]
+        nlinarith [Real.pi_pos, show (2 : ℝ) * ↑j < ↑n from by exact_mod_cast hj_low]⟩
+    have hk_in : 2 * (↑k : ℝ) * Real.pi / ↑n ∈ Set.Icc (0 : ℝ) Real.pi :=
+      ⟨by positivity, by
+        rw [div_le_iff₀ hn_pos]
+        nlinarith [Real.pi_pos, show (2 : ℝ) * ↑k < ↑n from by exact_mod_cast hk_low]⟩
+    have h_eq := Real.strictAntiOn_cos.injOn hj_in hk_in hjk
+    rw [div_eq_div_iff hn_ne hn_ne] at h_eq
+    have := mul_right_cancel₀ hn_ne h_eq
+    have := mul_right_cancel₀ (ne_of_gt Real.pi_pos) this
+    have := mul_left_cancel₀ (by norm_num : (2 : ℝ) ≠ 0) this
+    exact_mod_cast this
+  -- (G) |L| = totient n / 2 (via k ↦ n-k bijection between halves)
+  have hL_card : L.card = Nat.totient n / 2 := by
+    set U := S.filter (fun k => n < 2 * k)
+    -- L and U are disjoint
+    have hDisj : Disjoint L U := by
+      rw [Finset.disjoint_left]; intro k hkL hkU
+      exact absurd (Finset.mem_filter.mp hkU).2
+        (not_lt.mpr (le_of_lt (Finset.mem_filter.mp hkL).2))
+    -- S = L ∪ U (no fixed point: 2k ≠ n)
+    have hSLU : S = L ∪ U := by
+      ext k; constructor
+      · intro hk
+        rw [Finset.mem_union]
+        by_cases h : 2 * k < n
+        · left; exact Finset.mem_filter.mpr ⟨hk, h⟩
+        · right; exact Finset.mem_filter.mpr
+            ⟨hk, lt_of_le_of_ne (not_lt.mp h) (Ne.symm (no_fp k hk))⟩
+      · intro hk
+        rcases Finset.mem_union.mp hk with h | h
+        · exact (Finset.mem_filter.mp h).1
+        · exact (Finset.mem_filter.mp h).1
+    -- |L| = |U| via bijection k ↦ n - k
+    have hLU_card : L.card = U.card := by
+      apply Finset.card_bij (fun k _ => n - k)
+      · -- mapping: k ∈ L → n - k ∈ U
+        intro k hk
+        have ⟨hkS, hk_low⟩ := Finset.mem_filter.mp hk
+        exact Finset.mem_filter.mpr ⟨sub_mem_S k hkS, by omega⟩
+      · -- injective
+        intro j hj k hk hjk
+        have hj_lt := Finset.mem_range.mp
+          (Finset.mem_filter.mp (Finset.mem_filter.mp hj).1).1
+        have hk_lt := Finset.mem_range.mp
+          (Finset.mem_filter.mp (Finset.mem_filter.mp hk).1).1
+        omega
+      · -- surjective: for k ∈ U, preimage is n - k ∈ L
+        intro k hk
+        have ⟨hkS, hk_high⟩ := Finset.mem_filter.mp hk
+        have hk_lt : k < n := Finset.mem_range.mp (Finset.mem_filter.mp hkS).1
+        refine ⟨n - k, Finset.mem_filter.mpr ⟨sub_mem_S k hkS, by omega⟩, ?_⟩
+        omega
+    -- |S| = |L| + |U| = 2|L|, so |L| = φ(n)/2
+    have h_sum := Finset.card_union_of_disjoint hDisj
+    rw [← hSLU, hS_card, hLU_card] at h_sum; omega
+  -- Combine: |image| = |image(L)| = |L| = φ(n)/2
+  rw [himg, Finset.card_image_of_injOn f_inj, hL_card]
 
 /-- Every root of T_n - 1 in ℝ is of the form cos(2kπ/n) for some k.
     Proof: T_n(x) = cos(n·arccos(x)) for |x| ≤ 1. T_n(x) = 1 iff

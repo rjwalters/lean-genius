@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "MAJOR: AngleTrisectionOQ02OQ03.lean is now FULLY PROVED. 0 sorries, 0 axioms. galois_conjugate_count proved via lower-half coprime pairing + cos injectivity on (0,π).",
+    "progressSummary": "PROVED galois_conjugate_count - AngleTrisectionOQ02OQ03.lean now has 0 sorries, 0 axioms",
     "builtItems": [
       "Section XVI: Primitive Root Properties and Separability (zeta_ne_zero, zeta_pow_n_eq_one, minpoly_cos_separable, minpoly_cos_natDegree_pos, zeta_pow_pred_eq_conj, cos_eq_zeta_pow_re, sin_eq_zeta_pow_im, zeta_pow_norm_one, cos_2k_pi_div_n_bound)",
       "Section XVII: Cyclotomic Polynomial Connection (zeta_is_root_of_xn_sub_one, cyclotomic_natDegree_eq_totient)",
@@ -52,7 +52,7 @@
       "dvd_pow_two_is_pow_two: helper theorem for forward direction of Gauss-Wantzel",
       "gauss_wantzel_theorem: PROVED (was axiom) via direct degree argument from OQ02OQ03OQ01",
       "minpoly_cos_natDegree_eq: exported theorem in OQ02OQ03OQ01 for natDeg(minpoly ℚ cos) = φ(n)/2",
-      "galois_conjugate_count: PROVED (was sorry) - coprime pairing via lower-half S₁ injectivity + involution bijection"
+      "galois_conjugate_count: 80-line proof eliminating last sorry in AngleTrisectionOQ02OQ03.lean"
     ],
     "insights": [
       "Complex.exp_two_pi_mul_I gives exp(2πi)=1 directly for proving ζ^n=1",
@@ -98,9 +98,7 @@
       "Key insight: constructibility ↔ cos lies in 2-power extension, and degree of minpoly divides extension degree (tower law)",
       "dvd_pow_two_is_pow_two helper: positive divisor of 2^m is a power of 2 (by induction + prime factorization)",
       "All 3 axioms in OQ02OQ03.lean eliminated: gauss_wantzel_theorem, cos_minpoly_gal_card, wantzel_galois_characterization",
-      "galois_conjugate_count proved via 4-step argument: (1) image(S)=image(S₁) where S₁=lower half, (2) cos injective on S₁ via cos_2kpi_div_n_eq_iff + omega, (3) |S₁|=|S₂| via k↔n-k bijection, (4) |S|=|S₁|+|S₂|=2|S₁| so |S₁|=φ(n)/2",
-      "Key trick: no coprime k satisfies 2k=n (would give gcd(n/2,n)≥2), so lower/upper halves partition coprime residues cleanly",
-      "cos_2kpi_div_n_eq_iff + range constraints reduce cos equality to k=j or k+j=n; for both in lower half, k+j<n eliminates second case"
+      "galois_conjugate_count PROVED: coprime residues pair via k↦n-k (fixed-point free involution), cos injective on lower half (strictAntiOn_cos on [0,π]), |image| = |lower half| = φ(n)/2"
     ],
     "mathlibGaps": [
       "Maximal real subfield of cyclotomic field not in Mathlib",
