@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All axioms eliminated. Newton log-concavity for elementary symmetric polynomials fully proved.",
+    "progressSummary": "PROGRESS: Sorry persists. Discriminant analysis: α≥0 and γ≥0 proved by nlinarith, but 4αγ≥β² is degree-8 beyond nlinarith. Need 4UV·AD ≥ W²·B² (mixed bound). Import of NewtonInductiveStep added.",
     "builtItems": [
       "elemSymm_zero_implies_higher_zero: zero tail property",
       "power_ineq_of_log_concave: a_k^(k+1) >= a_{k+1}^k by induction",
@@ -89,7 +89,11 @@
       "4αγ-β² factors as 4(q+s)(r+p)(a²-bc)(b²-ad) - (p+q)⁴(ab-cd)²; needs both IHs + binom coefficient structure",
       "Fixed nlinarith timeout by providing explicit ring identity for SOS decomposition: k*(k*f^2 - 2*(k+1)*g*t*ek) = (k*ek-t*ekm1)^2 + t^2*(k+1)*((k-1)*ekm1^2-2k*ek*ekm2)",
       "Build now succeeds (was timing out at lines 795-798)",
-      "newton_cleared_denom_inductive_step proved via nlinarith with SOS certificates - the key was providing sq_nonneg hints for cross terms like (ek*d - ekp1*c), (ek*b - ekm1*a), plus product non-negativity from cross inequality"
+      "newton_cleared_denom_inductive_step proved via nlinarith with SOS certificates - the key was providing sq_nonneg hints for cross terms like (ek*d - ekp1*c), (ek*b - ekm1*a), plus product non-negativity from cross inequality",
+      "Discriminant approach: α ≥ 0 and γ ≥ 0 proved by nlinarith, but 4αγ ≥ β² is degree-8 and fails",
+      "Key identity: 4αγ - β² = (c+b)²·[4UV·AD - W²·B²] where U,V,W are from unnormalized/cross hypotheses",
+      "Newton inductive step needs 4UV·AD ≥ W²·B² - a mixed elem-sym/binomial bound",
+      "NewtonInductiveStep.lean has binom_ineq (fully proved) and quadratic_nonneg ready to use"
     ],
     "mathlibGaps": [],
     "nextSteps": [

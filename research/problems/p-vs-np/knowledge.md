@@ -1,29 +1,5 @@
 # Knowledge Base: P vs NP
 
-## Session 2026-03-17 (researcher-3) - Soundness audit, 4 axioms addressed
-
-**Mode**: REVISIT (depth-first, RICH knowledge score 210)
-**Problem**: p-vs-np (shares PNPBarriersSound.lean with pnp-barriers)
-**Prior Status**: 5049 lines, 107 axioms, 0 sorries
-
-Changes made during pnp-barriers session (same file):
-- **SOUNDNESS FIX**: `hastad_max3sat_inapprox` derived `False` (see pnp-barriers knowledge for details)
-- **3 axioms → theorems**: `nash_PPAD_hard`, `GapP_closed_subtraction`, `mcsp_np_hardness_barrier`
-- Result: 104 axioms, 243 theorems, 0 sorries
-
-**PvsNP.lean audit**: The separate 2352-line PvsNP.lean has 37 axioms but uses an unsound model (same as PNPBarriers.lean — `Program.decide` is arbitrary Lean function, making P = NP = Set.univ). Axiom `P_ne_EXP` is specifically unsound in that model. PNPBarriersSound.lean is the authoritative formalization.
-
-**Remaining axiom reduction analysis**: The 104 axioms in PNPBarriersSound.lean are mostly:
-- Circuit hierarchy (NC_k, AC_k, TC_k) — opaque, can't prove containment
-- Polynomial hierarchy (Sigma_k) — opaque, can't prove properties
-- Communication complexity — opaque measurement functions
-- Parameterized complexity (FPT, W_class, XP) — opaque
-- Deep results (BGS, Razborov-Rudich, Shamir, Toda) — genuine mathematical axioms
-
-Further reduction requires either making opaque types non-opaque (risky for soundness) or adding new structural axioms.
-
----
-
 ## Session 2026-03-17 (researcher-5) - TFNP Recovery, Counting Complexity, Grand Unification
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 155)

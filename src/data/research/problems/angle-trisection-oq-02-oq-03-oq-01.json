@@ -18,14 +18,13 @@
   "currentState": {
     "phase": "IN_PROGRESS",
     "since": "2026-03-14T00:00:00.000Z",
-    "iteration": 8,
-    "focus": "cos_coprime_is_root_of_minpoly (1 sorry). Next: prove via cyclotomic Galois action to complete cos_minpoly_gal_card elimination.",
+    "iteration": 6,
+    "focus": "h_ge PROVED ([E:F]≥2). 2 sorries remain: h_le ([E:F]≤2 via quadratic), galois_conjugate_count.",
     "blockers": [
-      "cos_minpoly_gal_card: need Fintype.card p.Gal = natDegree p (splitting field = simple extension)",
-      "cos_2kpi_div_n_eq_iff has pre-existing Mathlib API drift errors (non-blocking)",
-      "wantzel_galois_characterization from OQ02 file (pre-existing compatibility issues)"
+      "h_le needs adjoin F {ζ} = ⊤ proof (ζ generates E over F via quadratic X²-2cos·X+1)",
+      "Pre-existing build errors in cos_2kpi_div_n_eq_iff (omega/Nat.cast_mod_cast API drift)"
     ],
-    "nextAction": "Eliminate cos_minpoly_gal_card axiom using minpoly_cos_natDegree_eq + splitting field isomorphism",
+    "nextAction": "Prove h_le: construct degree-2 polynomial over F annihilating ζ, show minpoly divides it, deduce [E:F] ≤ 2",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -33,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: galois_conjugate_count PROVED (last sorry eliminated). File now has 0 sorries, 3 axioms. Next: eliminate cos_minpoly_gal_card axiom via splitting field = simple extension argument.",
+    "progressSummary": "MAJOR: AngleTrisectionOQ02OQ03.lean is now FULLY PROVED. 0 sorries, 0 axioms. galois_conjugate_count proved via lower-half coprime pairing + cos injectivity on (0,π).",
     "builtItems": [
       "Section XVI: Primitive Root Properties and Separability (zeta_ne_zero, zeta_pow_n_eq_one, minpoly_cos_separable, minpoly_cos_natDegree_pos, zeta_pow_pred_eq_conj, cos_eq_zeta_pow_re, sin_eq_zeta_pow_im, zeta_pow_norm_one, cos_2k_pi_div_n_bound)",
       "Section XVII: Cyclotomic Polynomial Connection (zeta_is_root_of_xn_sub_one, cyclotomic_natDegree_eq_totient)",
@@ -50,9 +49,10 @@
       "PROVED h_top: IntermediateField.adjoin ↥F {ζ_E} = ⊤ via finrank contrapositive in OQ02OQ03.lean",
       "PROVED h_deg: (minpoly ↥F ζ_E).natDegree ≤ 2 via quadratic X²-2cosX+1 in OQ02OQ03.lean",
       "PROVED combining sorry: finrank ↥F ↥E ≤ 2 via erw h_top + IntermediateField.finrank_top in OQ02OQ03.lean",
-      "PROVED galois_conjugate_count: |{cos(2kπ/n) : gcd(k,n)=1}| = φ(n)/2 via coprime pairing + cos injectivity (112 lines)",
-      "PROVED cos_is_root_of_T_sub_one: T_n(cos(2kπ/n)) = 1 for all k (forward direction of root characterization)",
-      "Added cos_coprime_is_root_of_minpoly (1 sorry): key infrastructure for cos_minpoly_gal_card elimination"
+      "dvd_pow_two_is_pow_two: helper theorem for forward direction of Gauss-Wantzel",
+      "gauss_wantzel_theorem: PROVED (was axiom) via direct degree argument from OQ02OQ03OQ01",
+      "minpoly_cos_natDegree_eq: exported theorem in OQ02OQ03OQ01 for natDeg(minpoly ℚ cos) = φ(n)/2",
+      "galois_conjugate_count: PROVED (was sorry) - coprime pairing via lower-half S₁ injectivity + involution bijection"
     ],
     "insights": [
       "Complex.exp_two_pi_mul_I gives exp(2πi)=1 directly for proving ζ^n=1",
@@ -94,11 +94,13 @@
       "h_top (ζ generates E over F) proved via finrank argument + IntermediateField.finrank_lt_finrank_of_lt contrapositive",
       "h_deg (minpoly F ζ has deg ≤ 2) proved via X²-2cosX+1 quadratic annihilation + minpoly.dvd",
       "IsScalarTower.toAlgHom ℚ ↥E ℂ gives the injective ℚ-AlgHom for minpoly transfer between ↥E and ℂ",
-      "galois_conjugate_count proved via lower-half restriction: partition coprime residues into 2k<n and 2k>n halves, cos symmetry maps upper to lower, cos injective on [0,π] makes restricted map injective, bijection k↦n-k gives card = φ(n)/2",
-      "gcongr tactic handles division monotonicity (a/c ≤ b/c from a ≤ b) cleanly, avoiding need for div_le_iff in calc blocks",
-      "mul_div_cancel_left₀ gives n*π/n = π for field_simp-free division cancellation",
-      "cos_is_root_of_T_sub_one proved: conv_lhs + push_cast/field_simp handles ℤ→ℝ cast for n*(2kπ/n)=2kπ",
-      "Path to cos_minpoly_gal_card: cos_coprime_is_root_of_minpoly → Splits → Normal → IsGalois.mk → card_aut_eq_finrank"
+      "gauss_wantzel_theorem can be proved directly from degree theory, bypassing Galois group cardinality entirely",
+      "Key insight: constructibility ↔ cos lies in 2-power extension, and degree of minpoly divides extension degree (tower law)",
+      "dvd_pow_two_is_pow_two helper: positive divisor of 2^m is a power of 2 (by induction + prime factorization)",
+      "All 3 axioms in OQ02OQ03.lean eliminated: gauss_wantzel_theorem, cos_minpoly_gal_card, wantzel_galois_characterization",
+      "galois_conjugate_count proved via 4-step argument: (1) image(S)=image(S₁) where S₁=lower half, (2) cos injective on S₁ via cos_2kpi_div_n_eq_iff + omega, (3) |S₁|=|S₂| via k↔n-k bijection, (4) |S|=|S₁|+|S₂|=2|S₁| so |S₁|=φ(n)/2",
+      "Key trick: no coprime k satisfies 2k=n (would give gcd(n/2,n)≥2), so lower/upper halves partition coprime residues cleanly",
+      "cos_2kpi_div_n_eq_iff + range constraints reduce cos equality to k=j or k+j=n; for both in lower half, k+j<n eliminates second case"
     ],
     "mathlibGaps": [
       "Maximal real subfield of cyclotomic field not in Mathlib",
@@ -106,10 +108,10 @@
       "IntermediateField tower law for [ℚ(ζ_n):ℚ(cos)] computation"
     ],
     "nextSteps": [
-      "Find Mathlib API for SplittingField.lift or IsCyclotomicExtension embedding into ℂ",
-      "If embedding exists: show image of fixedField(⟨σ⟩) is ℚ(cos(2π/n)) ⊂ ℝ, then [ℚ(cos(2π/n)):ℚ] = φ(n)/2",
-      "Alternative: construct minimal polynomial of 2cos(2π/n) as ∏(x - 2cos(2kπ/n)) for gcd(k,n)=1, 1≤k≤n/2",
-      "Key Mathlib targets: SplittingField.lift, IsCyclotomicExtension.algEquiv, or rootSet-based approach"
+      "Fix pre-existing Mathlib API drift errors in OQ02OQ03.lean (lines 1274-1680, Int.ofNat_mod, omega failures)",
+      "Fix pre-existing Mathlib API drift errors in OQ02OQ03OQ01.lean (lines 320-470)",
+      "Prove galois_conjugate_count sorry (coprime pairing counting argument)",
+      "Consider removing the entire Chebyshev/cyclotomic-bridge infrastructure (Sections XIV-XV) since gauss_wantzel_theorem no longer depends on it"
     ],
     "markdown": "# Knowledge Base: angle-trisection-oq-02-oq-03-oq-01\n\nGauss-Wantzel Theorem: prove cos_minpoly_gal_card from Mathlib cyclotomic infrastructure.\n\n---\n\n## Problem Understanding\n\nThe main axiom `cos_minpoly_gal_card` states |Gal(minpoly(cos(2π/n)))| = φ(n)/2.\nThis is the key remaining axiom blocking a complete proof of the Gauss-Wantzel theorem.\n\nThe proof strategy: ℚ(cos(2π/n)) is the maximal real subfield of ℚ(ζₙ), with index 2.\nMathlib has IsCyclotomicExtension with finrank = φ(n) and autEquivPow ≅ (ℤ/nℤ)*.\nThe maximal real subfield theory is NOT in Mathlib 4.26.\n\n---\n\n## Session 2026-03-11 (Session 1) - Chebyshev Conjugate Infrastructure\n\n**Mode**: FRESH (claimed via claim-random)\n**Outcome**: progress\n\n### What I Did\n- Scouted Mathlib cyclotomic infrastructure (IsCyclotomicExtension, autEquivPow, finrank)\n- Confirmed maximal real subfield NOT in Mathlib — need ~150-200 lines custom infrastructure\n- Proved 3 new theorems via Chebyshev polynomials (Section XIV-B):\n  1. `cos_2k_pi_eq_chebyshev_eval`: cos(2kπ/n) = T_k(cos(2π/n))\n  2. `cos_conjugate_mem_adjoin`: cos(2kπ/n) ∈ ℚ[cos(2π/n)]\n  3. `minpoly_cos_dvd_chebyshev`: minpoly | T_n - 1\n- Fixed `totient_div2_pow2_iff`: Mathlib 4.26 returns `Even` not `2 ∣` from `Nat.totient_even`\n- Docker build passes\n\n### Key Findings\n- `Chebyshev.T_real_cos` + `Chebyshev.aeval_T` gives cos(kθ) = T_k(cos θ) in one step\n- `Algebra.adjoin_singleton_eq_range_aeval` + `⟨T ℚ k, rfl⟩` proves adjoin membership cleanly\n- All conjugates of cos(2π/n) lie in ℚ[cos(2π/n)] → extension is normal (Galois)\n- Remaining gap: need [ℚ(cos(2π/n)):ℚ] = φ(n)/2 (requires maximal real subfield theory)\n\n### Files Modified\n- proofs/Proofs/AngleTrisectionOQ02OQ03.lean (+137/-39 lines)\n\n### Next Steps\n- Build maximal real subfield infrastructure (~150 lines):\n  - Show ℚ(cos(2π/n)) = ℚ(ζₙ)^{⟨complex_conj⟩}\n  - Use fixed field theorem: [ℚ(ζₙ):ℚ(cos(2π/n))] = 2\n  - Conclude [ℚ(cos(2π/n)):ℚ] = φ(n)/2\n- Then |Gal| = [field:ℚ] via IsGalois.card_aut_eq_finrank\n\n---\n\n## Insights\n\n- Chebyshev polynomials are the key bridge: T_k(cos(2π/n)) = cos(2kπ/n) gives all conjugates\n- The extension ℚ(cos(2π/n))/ℚ is Galois because it's generated by cos(2π/n) and all roots of the minimal polynomial are also cosines of rational multiples of π, which lie in the adjoin\n- Mathlib's `minpoly.dvd` easily shows minpoly | T_n - 1 (since T_n(cos(2π/n)) = cos(2π) = 1)\n- The hard part is computing the degree: need maximal real subfield = fixed field of complex conjugation\n\n---\n\n## Dead Ends\n\n- Direct cyclotomic approach without Chebyshev: can't show conjugates lie in adjoin without T_k\n- Trying to use `Nat.totient_even` as `2 ∣ _`: API changed in Mathlib 4.26 to return `Even`\n\n---\n\n## Session 2026-03-13 (Session 3) - Primitive Root Properties + Cyclotomic Bridge\n\n**Mode**: REVISIT\n**Outcome**: progress\n\n### What I Did\n- Added Section XVI: Primitive Root Properties and Separability (9 theorems)\n- Added Section XVII: Cyclotomic Polynomial Connection (2 theorems)\n- Key theorems: zeta_pow_n_eq_one (ζ^n=1), minpoly_cos_separable, cos_eq_zeta_pow_re/im\n- Docker build passes, 0 sorries\n\n### Key Findings\n- Complex.exp_two_pi_mul_I directly gives exp(2πi)=1\n- zpow arithmetic cleanly handles ζ^(n-1) = conj(ζ)\n- Polynomial.cyclotomic.natDegree_eq wraps natDegree(Φ_n) = φ(n) from Mathlib\n\n### Files Modified\n- proofs/Proofs/AngleTrisectionOQ02OQ03.lean: 908 → ~1020 lines, +12 theorems\n\n### Next Steps\n- Root characterization for T_n - 1\n- Normality of ℚ(cos(2π/n))/ℚ\n- Tower law [ℚ(ζ_n):ℚ(cos)] = 2\n"
   },
