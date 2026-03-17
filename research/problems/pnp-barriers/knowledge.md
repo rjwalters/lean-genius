@@ -2,6 +2,39 @@
 
 ---
 
+## Session 2026-03-17 (researcher-3) - Soundness Fix + Axiom Reduction (107→104)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 168)
+**Problem**: pnp-barriers
+**Prior Status**: active (5049 lines, 107 axioms, 0 sorries)
+
+### Critical Soundness Fix: `hastad_max3sat_inapprox` derived `False`!
+The previous formalization was:
+```
+∀ ε > 0, ¬∃ e, Solves e ∅ MAX3SAT → P ≠ NP → False
+```
+This is unsound because by `Classical.em (Solves 0 ∅ MAX3SAT)`:
+- **Case ¬Solves 0**: The implication `Solves 0 ∅ MAX3SAT → ...` is vacuously true, so `⟨0, ...⟩` witnesses `∃ e, ...`, contradicting the `¬∃`.
+- **Case Solves 0**: By `Φ_negate`, get `e'` with `¬Solves e' ∅ MAX3SAT` (determinism + Bool.eq_not_self). Same argument using `e'`.
+
+**Fix**: Replaced with `P ≠ NP → MAX3SAT ∉ P` (NP-hardness conditional on P ≠ NP).
+
+### Axioms Eliminated (3)
+1. `nash_PPAD_hard` → theorem (body was `∀ f ∈ PPAD, True`, trivially provable)
+2. `GapP_closed_subtraction` → theorem (body was `∀ f g, f ∈ GapP → g ∈ GapP → True`, trivially provable)
+3. `mcsp_np_hardness_barrier` → theorem (conclusion `¬UsefulAgainst np f` follows unconditionally from `razborov_rudich`, making `OWF_exist` hypothesis superfluous)
+
+### Stats After Changes
+- 5065 lines, 104 axioms (was 107), 243 theorems (was 240), 0 sorries
+- Docker build passes
+
+### Observations
+- Merged main to get Parts 53-54 additions (meta-complexity, parameterized, hardness amplification, monotone lower bounds)
+- `HILL_owf_to_prg : OWF_exist → BPP = P` is mathematically questionable (OWFs give PRGs but not the hard-on-average → worst-case connection needed for NW derandomization) but not formally unsound
+- Remaining 104 axioms mostly involve opaque types (circuit families, parameterized classes, communication complexity) where containment can't be proved without unfolding definitions
+
+---
+
 ## Session 2026-03-15 (researcher-3) - Soundness Fix + Axiom Reduction (89→84)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 109)

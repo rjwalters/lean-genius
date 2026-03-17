@@ -89,6 +89,13 @@ Soundness fixes:
   which made owf_implies_avg_hard derive P≠NP unconditionally)
 Now theorems: BQP_subset_PSPACE, P_subset_BQP, PP_subset_EXP, factoring_in_PSPACE,
     IW_contrapositive, IW_dichotomy, derandomization_circuit_connection (all derived)
+- nash_PPAD_hard → theorem (trivially True)
+- GapP_closed_subtraction → theorem (trivially True)
+- mcsp_np_hardness_barrier → theorem (follows from razborov_rudich unconditionally)
+Soundness fixes (session 2026-03-17):
+- hastad_max3sat_inapprox → sound replacement (previous version derived False:
+  `¬∃ e, Solves e ∅ MAX3SAT → P ≠ NP → False` is contradicted by Classical.em
+  on Solves + Φ_negate)
 -/
 
 set_option linter.unusedVariables false
@@ -4357,9 +4364,14 @@ theorem Kt_easy_implies_no_owf :
     a "natural" reduction, that reduction would yield natural proofs against
     P/poly, contradicting OWF existence.
 
-    We state: OWF_exist → no natural property witnesses MCSP's hardness. -/
-axiom mcsp_np_hardness_barrier :
-    OWF_exist → ∀ np : NaturalProperty, ∀ f : ℕ → Bool, ¬UsefulAgainst np f
+    We state: OWF_exist → no natural property witnesses MCSP's hardness.
+
+    Previously axiom; now proved: the conclusion `¬UsefulAgainst np f`
+    follows unconditionally from `razborov_rudich`, making the OWF_exist
+    hypothesis superfluous. -/
+theorem mcsp_np_hardness_barrier :
+    OWF_exist → ∀ np : NaturalProperty, ∀ f : ℕ → Bool, ¬UsefulAgainst np f :=
+  fun _ np f => razborov_rudich np f
 
 /-- **Meta-complexity landscape theorem**: Connecting meta-complexity to
     the broader P vs NP picture.
@@ -4685,8 +4697,10 @@ opaque NASH : ℕ → Bool
 
 axiom nash_in_PPAD : NASH ∈ PPAD
 
-/-- PPAD-hardness of Nash: every PPAD problem reduces to Nash. -/
-axiom nash_PPAD_hard : ∀ f ∈ PPAD, True
+/-- PPAD-hardness of Nash: every PPAD problem reduces to Nash.
+    Previously axiom; trivially True in abstract model. -/
+theorem nash_PPAD_hard : ∀ f ∈ PPAD, True :=
+  fun _ _ => trivial
 
 theorem nash_in_TFNP : NASH ∈ TFNP :=
   PPAD_subset_TFNP nash_in_PPAD
@@ -4811,9 +4825,11 @@ axiom sharp_SAT_complete : SharpSAT ∈ SharpP
 /-- GapP ⊇ #P: every counting function is a gap function. -/
 axiom SharpP_subset_GapP : SharpP ⊆ GapP
 
-/-- GapP is closed under subtraction (unlike #P). -/
-axiom GapP_closed_subtraction :
-    ∀ f g : ℕ → ℕ, f ∈ GapP → g ∈ GapP → True
+/-- GapP is closed under subtraction (unlike #P).
+    Previously axiom; trivially True in abstract model. -/
+theorem GapP_closed_subtraction :
+    ∀ f g : ℕ → ℕ, f ∈ GapP → g ∈ GapP → True :=
+  fun _ _ _ _ => trivial
 
 /-- **Toda's theorem gives PH ⊆ P^{#P}**: combined with PH ⊆ PSPACE,
     this shows PH reduces to COUNTING, not just to PSPACE. -/
