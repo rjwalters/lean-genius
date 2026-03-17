@@ -2,6 +2,58 @@
 
 ---
 
+## Session 2026-03-17 (researcher-2) - Sunflower Lemma + Switching Lemma (Parts 43-44)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 180)
+**Problem**: pnp-barriers
+**Prior Status**: active (5066 lines, 105 axioms, 0 sorries)
+
+### What we added
+
+**Part 43: Sunflower Lemma and Combinatorial Barriers** (~120 lines)
+1. Defined `Sunflower` structure (numPetals, setWidth, coreSize)
+2. Defined `SunflowerFree` (abstract sunflower-free family)
+3. Axiomatized `erdos_rado_sunflower` (1960): bound (p-1)^w * w!
+4. Axiomatized `improved_sunflower_bound` (ALWZ 2019): bound (C*log(pw))^w
+5. Proved `improved_implies_classical` (improved bound implies original)
+6. Proved `sunflower_dnf_sparsification` (sunflower → bounded-width DNF canonical forms)
+7. Proved `sunflower_razborov_connection` (connects to monotone circuit lower bounds)
+
+**Part 44: Switching Lemma and AC⁰ Structure** (~130 lines)
+1. Axiomatized `hastad_switching_lemma` (1987): exponential decay for random restrictions
+2. Proved `switching_gives_AC0_parity_bound` (PARITY not in AC⁰)
+3. Proved `switching_majority_separation` (MAJORITY separates TC⁰ from AC⁰)
+4. Proved `razborov_smolensky_avoids_barrier` (why RS method works despite natural proofs)
+5. Axiomatized `rossman_clique_formula` (2008): depth-d circuits for k-CLIQUE need n^{Ω(k^{1/(d-1)})}
+6. Proved `AC0_complete_landscape` (7-conjunct summary of AC⁰/TC⁰/ACC⁰/NC/P hierarchy)
+7. Proved `combinatorial_methods_frontier` (what methods CAN vs CANNOT do under OWF)
+
+### Updated master summary
+- Added X. Combinatorial methods frontier (Håstad parity + Razborov monotone) to `p_vs_np_master_summary`
+- Updated header to list 17 topics (was 15)
+
+### Stats after changes
+- **Lines**: 5066 → 5388 (+322)
+- **Axioms**: 105 → 109 (+4: erdos_rado_sunflower, improved_sunflower_bound, hastad_switching_lemma, rossman_clique_formula)
+- **Theorems**: 239 → 249 (+10 proved)
+- **Definitions**: 135 → 137 (+2: Sunflower, SunflowerFree)
+- **Sorries**: 0
+- **Docker build**: passes
+
+### Key insights
+- Sunflower lemma is the combinatorial foundation of DNF sparsification, which enables PRG constructions
+- Switching lemma is the single most important tool for AC⁰ lower bounds — multi-layer application gives parity/majority bounds
+- Razborov-Smolensky avoids natural proofs barrier because AC⁰ is too weak to contain OWFs
+- The dividing line is exact: combinatorial methods work against classes weaker than OWF-containing classes
+- Rossman extended switching lemma from symmetric functions to graph properties (non-trivial generalization)
+
+### Next steps
+- Part 45: Proof complexity deeper (Resolution width, Nullstellensatz, Polynomial Calculus)
+- Part 46: Algebraic proof techniques (IPS, algebraic circuit complexity connection)
+- Continue axiom reduction in Sound model (109 axioms, target: <100)
+
+---
+
 ## Session 2026-03-15 (researcher-3) - Soundness Fix + Axiom Reduction (89→84)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 109)
