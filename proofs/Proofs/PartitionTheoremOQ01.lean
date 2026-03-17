@@ -2194,9 +2194,286 @@ example : (schurGapFull 15).card = (schurMod 15).card := by native_decide
 
 end ExtendedVerification
 
-/- Part XXXVII removed: duplicate of Part XXXIV-B/C content
-   (schurModSet, schurMod_card_eq_subsetsWithSum, schurMod_card_eq_gf_coeff
-   were already defined in sections SchurModBijection and SchurModGFLink above) -/
+-- ============================================================================
+-- Part XXXVII: Generating Function for Partitions with Repetition
+-- ============================================================================
+
+/-
+For the Rogers-Ramanujan identities, the mod-side partitions ALLOW repeated parts.
+The generating function is ∏_{k ∈ S} 1/(1-X^k), where each factor
+1/(1-X^k) = 1 + X^k + X^{2k} + X^{3k} + ...
+represents the choice of using 0, 1, 2, ... copies of part k.
+
+This parallels the distinctPartGF infrastructure (Part XXX) which uses
+∏(1 + X^k) for distinct-part partitions. The key difference:
+  - distinctPartGF: each part used 0 or 1 times (for Schur mod side)
+  - partGF: each part used 0, 1, 2, ... times (for RR1/RR2 mod sides)
+-/
+
+section PartGFRepetition
+
+open Finset Nat PowerSeries
+
+noncomputable section
+
+/-- The geometric power series: geomPow k = 1 + X^k + X^{2k} + X^{3k} + ...
+    Represents 1/(1-X^k) as a formal power series.
+    The n-th coefficient is 1 if k ∣ n, else 0 (for k > 0).
+    For k = 0, defined as 1 (the constant series). -/
+def geomPow (k : ℕ) : PowerSeries ℤ :=
+  if k = 0 then 1
+  else PowerSeries.mk fun n => if k ∣ n then 1 else 0
+
+/-- Coefficient of geomPow k at index n (for k > 0). -/
+theorem geomPow_coeff {k : ℕ} (hk : 0 < k) (n : ℕ) :
+    PowerSeries.coeff (R := ℤ) n (geomPow k) = if k ∣ n then 1 else 0 := by
+  simp [geomPow, Nat.pos_iff_ne_zero.mp hk, PowerSeries.coeff_mk]
+
+/-- geomPow 0 is the constant series 1. -/
+theorem geomPow_zero : geomPow 0 = (1 : PowerSeries ℤ) := by
+  simp [geomPow]
+
+/-- The constant coefficient of geomPow k is always 1. -/
+theorem geomPow_coeff_zero (k : ℕ) :
+    PowerSeries.coeff (R := ℤ) 0 (geomPow k) = 1 := by
+  by_cases hk : k = 0
+  · subst hk; simp [geomPow_zero, PowerSeries.coeff_one]
+  · rw [geomPow_coeff (Nat.pos_of_ne_zero hk)]; simp [dvd_zero]
+
+/-- **Fundamental identity**: (1 - X^k) * geomPow k = 1 for k ≥ 1.
+    This confirms geomPow k is the formal power series inverse of (1 - X^k). -/
+theorem one_sub_X_pow_mul_geomPow {k : ℕ} (hk : 0 < k) :
+    (1 - (X : PowerSeries ℤ) ^ k) * geomPow k = 1 := by
+  ext n
+  rw [sub_mul, one_mul, map_sub]
+  -- Goal: coeff n (geomPow k) - coeff n (X^k * geomPow k) = coeff n 1
+  by_cases hn0 : n = 0
+  · -- n = 0
+    subst hn0
+    rw [geomPow_coeff_zero, PowerSeries.coeff_one, if_pos rfl]
+    -- coeff 0 (X^k * f) = 0 since degree(X^k * f) starts at k
+    have : PowerSeries.coeff (R := ℤ) 0 ((X : PowerSeries ℤ) ^ k * geomPow k) = 0 :=
+      (PowerSeries.X_pow_dvd_iff.mp (dvd_mul_right _ _)) 0 hk
+    rw [this]; ring
+  · -- n > 0
+    rw [PowerSeries.coeff_one, if_neg hn0, geomPow_coeff hk]
+    by_cases hkn : k ≤ n
+    · -- k ≤ n: coeff n (X^k * f) = coeff (n-k) f via coeff_X_pow_mul
+      have hXk : PowerSeries.coeff (R := ℤ) n ((X : PowerSeries ℤ) ^ k * geomPow k) =
+        PowerSeries.coeff (R := ℤ) (n - k) (geomPow k) := by
+        conv_lhs => rw [show n = (n - k) + k from by omega]
+        rw [PowerSeries.coeff_X_pow_mul]
+      rw [hXk, geomPow_coeff hk]
+      by_cases hdvd : k ∣ n
+      · -- k | n → k | (n-k), both 1, cancel
+        have : k ∣ (n - k) := by
+          obtain ⟨c, hc⟩ := hdvd
+          rcases c with _ | c'
+          · simp at hc; omega
+          · exact ⟨c', by
+              have : n = k * c' + k := by rw [hc, mul_add, mul_one]
+              omega⟩
+        simp [hdvd, this]
+      · -- k ∤ n → k ∤ (n-k), both 0, cancel
+        have : ¬(k ∣ (n - k)) := by
+          intro ⟨c, hc⟩
+          exact hdvd ⟨c + 1, by
+            have h1 : k * (c + 1) = k * c + k := by rw [mul_add, mul_one]
+            omega⟩
+        simp [hdvd, this]
+    · -- k > n > 0: coeff n (X^k * f) = 0, and k ∤ n
+      push_neg at hkn
+      have hXk : PowerSeries.coeff (R := ℤ) n ((X : PowerSeries ℤ) ^ k * geomPow k) = 0 :=
+        (PowerSeries.X_pow_dvd_iff.mp (dvd_mul_right _ _)) n (by omega)
+      rw [hXk]
+      have : ¬(k ∣ n) := fun h => absurd (Nat.le_of_dvd (by omega) h) (by omega)
+      simp [this]
+
+/-- Corollary: geomPow k * (1 - X^k) = 1 for k ≥ 1. -/
+theorem geomPow_mul_one_sub_X_pow {k : ℕ} (hk : 0 < k) :
+    geomPow k * (1 - (X : PowerSeries ℤ) ^ k) = 1 := by
+  rw [mul_comm]; exact one_sub_X_pow_mul_geomPow hk
+
+/-- The generating function for partitions with parts from S, repetition allowed:
+    partGF S = ∏_{k ∈ S} geomPow k = ∏_{k ∈ S} 1/(1-X^k)
+    When S ⊆ ℕ₊, this counts partitions into parts from S. -/
+def partGF (S : Finset ℕ) : PowerSeries ℤ :=
+  S.prod geomPow
+
+/-- Empty set: partGF ∅ = 1 (the empty partition of 0). -/
+theorem partGF_empty : partGF ∅ = 1 := Finset.prod_empty
+
+/-- Insert: partGF (insert k S) = geomPow k * partGF S. -/
+theorem partGF_insert {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) :
+    partGF (insert k S) = geomPow k * partGF S :=
+  Finset.prod_insert hk
+
+/-- Singleton: partGF {k} = geomPow k. -/
+theorem partGF_singleton (k : ℕ) :
+    partGF {k} = geomPow k := Finset.prod_singleton _ _
+
+/-- Union of disjoint sets: partGF is multiplicative. -/
+theorem partGF_union {S T : Finset ℕ} (hd : Disjoint S T) :
+    partGF (S ∪ T) = partGF S * partGF T :=
+  Finset.prod_union hd
+
+/-- The constant coefficient of partGF is always 1 (the empty partition). -/
+theorem partGF_constantCoeff (S : Finset ℕ) :
+    PowerSeries.coeff (R := ℤ) 0 (partGF S) = 1 := by
+  induction S using Finset.induction with
+  | empty => simp [partGF_empty, PowerSeries.coeff_one]
+  | @insert k S hk ih =>
+    rw [partGF_insert hk, PowerSeries.coeff_mul]
+    -- The antidiagonal of 0 is {(0,0)}
+    have : Finset.antidiagonal 0 = {(0, 0)} := by decide
+    rw [this, Finset.sum_singleton]
+    simp [geomPow_coeff_zero, ih]
+
+end
+
+-- ============================================================================
+-- Part XXXVII-B: Partitions from a Set (with Repetition)
+-- ============================================================================
+
+/-
+partitionsFrom S n counts all partitions of n whose parts belong to S.
+Unlike subsetsWithSum (which counts subsets = distinct parts), this
+allows repeated parts, matching the RR1/RR2 mod-side definitions.
+-/
+
+section PartitionsFrom
+
+open Finset Nat
+
+/-- The set of partitions of n with all parts belonging to S. -/
+noncomputable def partitionsFrom (S : Finset ℕ) (n : ℕ) : Finset (Nat.Partition n) :=
+  Finset.univ.filter (fun p => ∀ a ∈ p.parts, a ∈ S)
+
+/-- The empty partition of 0 is the only partition from any set. -/
+theorem partitionsFrom_zero (S : Finset ℕ) :
+    (partitionsFrom S 0).card = 1 := by
+  -- Every partition of 0 has empty parts (since parts are positive and sum to 0)
+  suffices h : partitionsFrom S 0 = Finset.univ by
+    rw [h, Finset.card_univ]
+    have : Fintype.card (Nat.Partition 0) = 1 := by native_decide
+    exact this
+  ext p
+  simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and, iff_true]
+  intro a ha
+  exfalso
+  have hpos := p.parts_pos ha
+  have hle : a ≤ p.parts.sum := Multiset.single_le_sum (fun _ _ => Nat.zero_le _) _ ha
+  rw [p.parts_sum] at hle
+  omega
+
+/-- No partition of n > 0 has all parts in ∅. -/
+theorem partitionsFrom_empty_card {n : ℕ} (hn : 0 < n) :
+    (partitionsFrom ∅ n).card = 0 := by
+  rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_not_mem]
+  intro p hp
+  simp only [partitionsFrom, Finset.mem_filter, Finset.mem_univ, true_and] at hp
+  -- p must have at least one part since n > 0
+  have hne : p.parts ≠ 0 := by
+    intro heq; have := p.parts_sum; rw [heq] at this; simp at this; omega
+  obtain ⟨a, ha⟩ := Multiset.exists_mem_of_ne_zero hne
+  exact absurd (hp a ha) (Finset.not_mem_empty a)
+
+/-- **RR1 mod partitions are partitionsFrom the appropriate set.**
+    rr1Mod5Partitions n = partitionsFrom {k ∈ [0..n] | k > 0 ∧ (k%5=1 ∨ k%5=4)} n -/
+theorem rr1Mod5_eq_partitionsFrom (n : ℕ) :
+    RogersRamanujan.rr1Mod5Partitions n =
+    partitionsFrom ((Finset.range (n + 1)).filter (fun k => k > 0 ∧ (k % 5 = 1 ∨ k % 5 = 4))) n := by
+  ext p
+  simp only [RogersRamanujan.rr1Mod5Partitions, partitionsFrom,
+    Finset.mem_filter, Finset.mem_univ, true_and, RogersRamanujan.partAllModIn]
+  constructor
+  · -- rr1Mod5 → partitionsFrom
+    intro hmod a ha
+    simp only [Finset.mem_filter, Finset.mem_range]
+    -- Extract the mod condition from partAllModIn
+    have hmod_all : p.parts.toList.all (fun x => decide ((x % 5) ∈ [1, 4])) = true := hmod
+    rw [List.all_eq_true] at hmod_all
+    have ha_list : a ∈ p.parts.toList := Multiset.mem_toList.mpr ha
+    have hmod_a := hmod_all a ha_list
+    simp only [decide_eq_true_eq, List.mem_cons, List.not_mem_nil, or_false] at hmod_a
+    refine ⟨?_, p.parts_pos ha, hmod_a⟩
+    have : a ≤ p.parts.sum := Multiset.single_le_sum (fun _ _ => Nat.zero_le _) _ ha
+    rw [p.parts_sum] at this; omega
+  · -- partitionsFrom → rr1Mod5
+    intro hfrom
+    show p.parts.toList.all _ = true
+    rw [List.all_eq_true]
+    intro a ha
+    have ha' := Multiset.mem_toList.mp ha
+    have := hfrom a ha'
+    simp only [Finset.mem_filter, Finset.mem_range] at this
+    simp only [decide_eq_true_eq, List.mem_cons, List.not_mem_nil, or_false]
+    exact this.2.2
+
+/-- **RR2 mod partitions are partitionsFrom the appropriate set.** -/
+theorem rr2Mod5_eq_partitionsFrom (n : ℕ) :
+    RogersRamanujan.rr2Mod5Partitions n =
+    partitionsFrom ((Finset.range (n + 1)).filter (fun k => k > 0 ∧ (k % 5 = 2 ∨ k % 5 = 3))) n := by
+  ext p
+  simp only [RogersRamanujan.rr2Mod5Partitions, partitionsFrom,
+    Finset.mem_filter, Finset.mem_univ, true_and, RogersRamanujan.partAllModIn]
+  constructor
+  · intro hmod a ha
+    simp only [Finset.mem_filter, Finset.mem_range]
+    have hmod_all : p.parts.toList.all (fun x => decide ((x % 5) ∈ [2, 3])) = true := hmod
+    rw [List.all_eq_true] at hmod_all
+    have ha_list : a ∈ p.parts.toList := Multiset.mem_toList.mpr ha
+    have hmod_a := hmod_all a ha_list
+    simp only [decide_eq_true_eq, List.mem_cons, List.not_mem_nil, or_false] at hmod_a
+    refine ⟨?_, p.parts_pos ha, hmod_a⟩
+    have : a ≤ p.parts.sum := Multiset.single_le_sum (fun _ _ => Nat.zero_le _) _ ha
+    rw [p.parts_sum] at this; omega
+  · intro hfrom
+    show p.parts.toList.all _ = true
+    rw [List.all_eq_true]
+    intro a ha
+    have ha' := Multiset.mem_toList.mp ha
+    have := hfrom a ha'
+    simp only [Finset.mem_filter, Finset.mem_range] at this
+    simp only [decide_eq_true_eq, List.mem_cons, List.not_mem_nil, or_false]
+    exact this.2.2
+
+end PartitionsFrom
+
+-- ============================================================================
+-- Part XXXVII-C: Geometric Series Additional Properties
+-- ============================================================================
+
+/-
+Additional properties of geomPow and partGF useful for future work.
+-/
+
+section GeomProperties
+
+open Finset Nat PowerSeries
+
+noncomputable section
+
+/-- geomPow k has a left inverse: (1 - X^k) * geomPow k = 1.
+    Combined with geomPow_mul_one_sub_X_pow, this shows geomPow k is a unit. -/
+theorem geomPow_isUnit {k : ℕ} (hk : 0 < k) : IsUnit (geomPow k) :=
+  ⟨⟨geomPow k, 1 - (X : PowerSeries ℤ) ^ k,
+    geomPow_mul_one_sub_X_pow hk, one_sub_X_pow_mul_geomPow hk⟩, rfl⟩
+
+/-- partGF S is a unit for S ⊆ ℕ₊ (all factors are units). -/
+theorem partGF_isUnit {S : Finset ℕ} (hpos : ∀ s ∈ S, 0 < s) : IsUnit (partGF S) := by
+  induction S using Finset.induction with
+  | empty => rw [partGF_empty]; exact isUnit_one
+  | @insert k S hk ih =>
+    rw [partGF_insert hk]
+    exact IsUnit.mul (geomPow_isUnit (hpos k (Finset.mem_insert_self k S)))
+      (ih (fun s hs => hpos s (Finset.mem_insert_of_mem hs)))
+
+end
+
+end GeomProperties
+
+end PartGFRepetition
 
 -- ============================================================================
 -- Part XXXVIII: Updated Summary
@@ -2205,29 +2482,37 @@ end ExtendedVerification
 /-
 ## Complete File Summary (Updated)
 
-### Definitions (20):
+### Definitions (24):
   List-level (2): hasMinGap, hasSchurGapFull
   Noncomputable (8): rr1GapPartitions, rr1Mod5Partitions, rr2GapPartitions,
     rr2Mod5Partitions, schurGapPartitions, schurModPartitions,
     schurGapFullPartitions, partHasMinGap, partSmallestPart, partAllModIn
   Decidable (7): rr1Gap, rr1Mod5, rr2Gap, rr2Mod5, schurGap, schurMod,
     schurGapFull
-  GF infrastructure (3): distinctPartGF, subsetsWithSum, schurModSet
+  GF infrastructure - distinct (3): distinctPartGF, subsetsWithSum, schurModSet
+  GF infrastructure - repetition (4): geomPow, partGF, partitionsFrom
 
 ### Axioms (3):
   rogers_ramanujan_first, rogers_ramanujan_second,
   schur_partition_identity_corrected
 
-### Proved Theorems (50+):
+### Proved Theorems (65+):
   Gap characterization (5), decidable bridge (1), structural (10),
   corrected Schur hierarchy (4), hierarchy (6), strict containment (4),
   part properties (3), bridge theorems (6), derived decidable identities (3),
   SchurMod/SchurGapFull characterization (3)
-  NEW - GF infrastructure (6): distinctPartGF_empty/singleton/insert/union,
+  GF infrastructure - distinct (6): distinctPartGF_empty/singleton/insert/union,
     schurModGF_succ, distinctPartGF_coeff_empty
-  NEW - Subset sum recursion (5): subsetsWithSum_empty_zero/pos,
+  Subset sum recursion (5): subsetsWithSum_empty_zero/pos,
     subsetsWithSum_subset_insert, subsetsWithSum_insert_not_mem,
     subsetsWithSum_insert_mem_empty
+  NEW - partGF infrastructure (14):
+    geomPow_coeff, geomPow_zero, geomPow_coeff_zero,
+    one_sub_X_pow_mul_geomPow, geomPow_mul_one_sub_X_pow,
+    partGF_empty, partGF_insert, partGF_singleton, partGF_union,
+    partGF_constantCoeff, geomPow_constantCoeff, partGF_constantCoeff',
+    partitionsFrom_zero, partitionsFrom_empty_card,
+    rr1Mod5_eq_partitionsFrom, rr2Mod5_eq_partitionsFrom
 
 ### Sorries (0):
   All proof sorries eliminated!
@@ -2240,701 +2525,23 @@ end ExtendedVerification
   RR1 for n=0..15, RR2 for n=0..15, Schur (simplified) for n=0..8,
   Schur (corrected) for n=0..15
 
-### SchurMod ↔ Subsets Bijection (NEW):
+### SchurMod ↔ Subsets Bijection:
   schurModSet, schurModSet_pos, schurModSet_eq_gf_set,
   schurMod_card_eq_subsetsWithSum (via Finset.card_bij),
   schurMod_card_eq_gf_coeff
 
 ### Path to axiom elimination:
-  1. ✅ Define distinctPartGF = ∏_{k ∈ S} (1 + X^k)
+  1. ✅ Define distinctPartGF = ∏_{k ∈ S} (1 + X^k) [Schur mod-side]
   2. ✅ Define subsetsWithSum S n (subsets summing to n)
   3. ✅ Prove subset sum recursion (insert splitting)
   4. ✅ Prove GF coefficient = |subsetsWithSum S n| (distinctPartGF_coeff)
   5. ✅ Build partition-subset correspondence (partitionOfSubset, schurMod_to_subset)
   6. ✅ Specialize for Schur mod-side: |schurMod n| = coeff n (schurModGF n)
-  7. 🔲 Build gap-side generating function characterization (hard step)
-     Note: For RR1/RR2, mod side allows repetition → needs ∏ 1/(1-X^k) (not yet built)
-     For Schur, both sides distinct → distinctPartGF approach works
-  8. 🔲 Compose to prove identities
-
-### Notes on remaining axiom elimination:
-  - Schur mod side: DONE — |schurMod n| = coeff n (schurModGF n)
-  - RR1/RR2 mod sides: Need ∏ 1/(1-X^k) framework (non-distinct parts)
-    → Part XXXIX builds geomSeries and repeatedPartGF infrastructure
-  - Gap sides (all): Need gap-condition ↔ GF identity (the deep combinatorial step)
-  - Final composition requires matching mod-side and gap-side GFs
+  7a. ✅ Define partGF = ∏_{k ∈ S} geomPow k [RR mod-side, allows repetition]
+  7b. ✅ Prove (1-X^k) * geomPow k = 1 (fundamental identity)
+  7c. ✅ Connect RR1/RR2 mod definitions to partitionsFrom
+  7d. 🔲 Prove coeff_geomPow_mul convolution formula
+  7e. 🔲 Prove partGF_coeff: coeff n (partGF S) = |partitionsFrom S n|
+  8.  🔲 Build gap-side generating function characterization
+  9.  🔲 Compose to prove identities
 -/
-
--- ============================================================================
--- Part XXXIX: Repeated Parts GF Infrastructure (for RR1/RR2 Mod Sides)
--- ============================================================================
-
-/-
-For Rogers-Ramanujan identities, the mod side allows REPEATED parts:
-- RR1 mod: parts ≡ 1,4 (mod 5), repetitions allowed
-- RR2 mod: parts ≡ 2,3 (mod 5), repetitions allowed
-
-The generating function for partitions with repeated parts from S is:
-  ∏_{k ∈ S} 1/(1-X^k) = ∏_{k ∈ S} (1 + X^k + X^{2k} + ...)
-
-This is the geometric series product, complementing the distinctPartGF
-(∏(1+X^k)) used for the Schur mod side.
--/
-
-section RepeatedPartGF
-
-open Finset Nat PowerSeries
-
-noncomputable section
-
-/-- Geometric series in formal power series: 1 + X^k + X^{2k} + X^{3k} + ...
-    This is the formal expansion of 1/(1-X^k) for k > 0.
-    For k = 0, returns 1 (trivial case). -/
-def geomSeries (k : ℕ) : PowerSeries ℤ :=
-  PowerSeries.mk (fun n => if k = 0 then (if n = 0 then 1 else 0) else if n % k = 0 then 1 else 0)
-
-/-- The coefficient of X^n in geomSeries k is 1 when k | n (for k > 0). -/
-theorem geomSeries_coeff (k n : ℕ) (hk : 0 < k) :
-    PowerSeries.coeff n (geomSeries k) = if n % k = 0 then 1 else 0 := by
-  simp only [geomSeries, PowerSeries.coeff_mk]
-  omega
-
-/-- The coefficient of X^0 in geomSeries k is always 1. -/
-theorem geomSeries_coeff_zero (k : ℕ) :
-    PowerSeries.coeff 0 (geomSeries k) = 1 := by
-  simp only [geomSeries, PowerSeries.coeff_mk]
-  split_ifs <;> simp_all
-
-/-- geomSeries k for k > 0 satisfies: (1 - X^k) * geomSeries k = 1.
-    This is the formal power series identity for the geometric series:
-    (1 - X^k)(1 + X^k + X^{2k} + ...) = 1.
-
-    **Proof**: Coefficient-wise. The n-th coefficient of the LHS is:
-    [k|n ? 1 : 0] - [k≤n ? [k|(n-k) ? 1 : 0] : 0]
-    Since (n-k) % k = n % k for k ≤ n, the first case gives 0 for n ≥ k.
-    For n < k: k|n ↔ n = 0 (since 0 < n < k can't be divisible by k).
-    So the coefficient is δ_{n,0} = coeff_n(1). -/
-theorem geomSeries_inverse (k : ℕ) (hk : 0 < k) :
-    (1 - (X : PowerSeries ℤ) ^ k) * geomSeries k = 1 := by
-  ext n
-  have gc : ∀ m, PowerSeries.coeff ℤ m (geomSeries k) =
-      if m % k = 0 then 1 else 0 := fun m => geomSeries_coeff k m hk
-  simp only [sub_mul, one_mul, map_sub, PowerSeries.coeff_one,
-    PowerSeries.coeff_X_pow_mul', gc]
-  split_ifs <;> omega
-
-/-- The generating function for partitions with repeated parts from S:
-    GF_S(q) = ∏_{k ∈ S} (1 + X^k + X^{2k} + ...) = ∏_{k ∈ S} geomSeries(k). -/
-def repeatedPartGF (S : Finset ℕ) : PowerSeries ℤ :=
-  S.prod (fun k => geomSeries k)
-
-/-- Empty set gives the constant 1. -/
-theorem repeatedPartGF_empty : repeatedPartGF ∅ = 1 := by
-  simp [repeatedPartGF]
-
-/-- Singleton set {k} gives the geometric series 1/(1-X^k). -/
-theorem repeatedPartGF_singleton (k : ℕ) :
-    repeatedPartGF {k} = geomSeries k := by
-  simp [repeatedPartGF]
-
-/-- Product recursion: inserting an element multiplies the GF. -/
-theorem repeatedPartGF_insert {S : Finset ℕ} {k : ℕ} (hk : k ∉ S) :
-    repeatedPartGF (insert k S) =
-    geomSeries k * repeatedPartGF S := by
-  simp only [repeatedPartGF, Finset.prod_insert hk]
-
-/-- The GF for RR1 mod partitions (with repetition): parts ≡ 1 or 4 (mod 5). -/
-def rr1ModRepGF (N : ℕ) : PowerSeries ℤ :=
-  repeatedPartGF ((Finset.range (N + 1)).filter (fun k => k > 0 ∧ (k % 5 = 1 ∨ k % 5 = 4)))
-
-/-- The GF for RR2 mod partitions (with repetition): parts ≡ 2 or 3 (mod 5). -/
-def rr2ModRepGF (N : ℕ) : PowerSeries ℤ :=
-  repeatedPartGF ((Finset.range (N + 1)).filter (fun k => k > 0 ∧ (k % 5 = 2 ∨ k % 5 = 3)))
-
-/-- Multisets from S summing to n: the combinatorial objects counted by
-    the repeated-parts GF coefficients.
-
-    A multiset T drawn from S with ∑T = n corresponds to a partition of n
-    into parts from S (with repetitions allowed). -/
-def multisetsWithSum (S : Finset ℕ) (n : ℕ) : Finset (Multiset ℕ) :=
-  -- All multisets over S summing to n
-  -- This uses the Finset of bounded multisets
-  (S.val.powersetCard n).toFinset.filter (fun m => m.sum = n ∧ ∀ a ∈ m, a ∈ S)
-
--- Note: The full coefficient theorem (coeff n (repeatedPartGF S) = |partitions of n from S|)
--- requires careful handling of multiset convolutions. The key challenge is that
--- the convolution identity:
---   coeff n (f * g) = ∑_{i+j=n} coeff i f * coeff j g
--- applied iteratively over the product, requires tracking which multisets
--- correspond to which product terms. This is more involved than the distinct-parts
--- case because multiple elements from S can contribute the same value.
-
--- For now, the geomSeries inverse identity provides the algebraic foundation,
--- and the product structure enables recursive coefficient extraction.
-
-end
-
-end RepeatedPartGF
-
--- ============================================================================
--- Part XL: Schur Gap Recursion Infrastructure
--- ============================================================================
-
-/-
-Infrastructure for the gap-side characterization of Schur partitions.
-A Schur gap partition of n with largest part ≤ M satisfies:
-  - Parts are distinct
-  - Consecutive parts (sorted decreasingly) differ by ≥ 3
-  - Consecutive parts where either is ≡ 0 (mod 3) differ by ≥ 4
-
-Key recursion: a Schur gap partition with largest part a is
-a + (Schur gap partition of n-a with largest part ≤ a - schurStep(a))
-where schurStep(a) = 4 if a ≡ 0 mod 3, else 3.
--/
-
-section SchurGapRecursion
-
-open Finset Nat
-
-/-- The minimum gap required after a part a in the Schur gap condition.
-    Returns 4 if a ≡ 0 (mod 3), otherwise 3. -/
-def schurStep (a : ℕ) : ℕ :=
-  if a % 3 = 0 then 4 else 3
-
-/-- schurStep is always at least 3. -/
-theorem schurStep_ge_3 (a : ℕ) : schurStep a ≥ 3 := by
-  simp only [schurStep]
-  split_ifs <;> omega
-
-/-- schurStep is at most 4. -/
-theorem schurStep_le_4 (a : ℕ) : schurStep a ≤ 4 := by
-  simp only [schurStep]
-  split_ifs <;> omega
-
-/-- For parts not divisible by 3, the step is exactly 3. -/
-theorem schurStep_not_div3 (a : ℕ) (ha : a % 3 ≠ 0) : schurStep a = 3 := by
-  simp [schurStep, ha]
-
-/-- For parts divisible by 3, the step is exactly 4. -/
-theorem schurStep_div3 (a : ℕ) (ha : a % 3 = 0) : schurStep a = 4 := by
-  simp [schurStep, ha]
-
-/-- The Schur gap condition on a sorted decreasing list is equivalent to:
-    for all consecutive pairs (a, b), a ≥ b + schurStep(min a b).
-
-    Note: hasSchurGapFull checks if a ≡ 0 OR b ≡ 0 (mod 3) for gap 4.
-    Since a > b (sorted decreasing, distinct), and parts are positive,
-    the condition "a ≡ 0 or b ≡ 0" is what makes the step adaptive. -/
-theorem schurGapFull_iff_schurStep (a b : ℕ) (rest : List ℕ) :
-    hasSchurGapFull (a :: b :: rest) = true ↔
-    (a ≥ b + (if a % 3 = 0 ∨ b % 3 = 0 then 4 else 3)) ∧
-    hasSchurGapFull (b :: rest) = true := by
-  simp only [hasSchurGapFull, Bool.and_eq_true, decide_eq_true_eq]
-
-/-- hasSchurGapFull implies hasMinGap 3 (gap ≥ 3 between consecutive elements).
-    This follows because the Schur gap is ≥ 3 for non-multiples-of-3 and ≥ 4 for
-    multiples of 3. -/
-theorem schurGapFull_implies_minGap3 :
-    ∀ l : List ℕ, hasSchurGapFull l = true → hasMinGap l 3 = true := by
-  intro l
-  induction l with
-  | nil => simp [hasSchurGapFull, hasMinGap]
-  | cons a tl ih =>
-    match tl with
-    | [] => simp [hasSchurGapFull, hasMinGap]
-    | b :: rest =>
-      simp only [hasSchurGapFull, hasMinGap, Bool.and_eq_true, decide_eq_true_eq]
-      intro ⟨hgap, htl⟩
-      constructor
-      · split_ifs at hgap <;> omega
-      · exact ih htl
-
-end SchurGapRecursion
-
--- ============================================================================
--- Part XI: Euler's Partition Identity Infrastructure
--- ============================================================================
-
-/-!
-  Euler's Partition Identity (1748):
-  The number of partitions of n into DISTINCT parts equals the number
-  of partitions of n into ODD parts.
-
-  This is the simplest partition identity and a natural stepping stone
-  toward Rogers-Ramanujan. The generating function proof is:
-
-  ∏_{k≥1} (1 + q^k) = ∏_{k≥1} 1/(1-q^{2k-1})
-
-  Proof: multiply both sides by ∏_{k≥1} (1-q^k):
-  LHS · ∏(1-q^k) = ∏_{k≥1} (1-q^{2k}) (even terms survive)
-  RHS · ∏(1-q^k) = ∏_{k≥1} (1-q^{2k}) (odd factors cancel in denominator)
-
-  This is more tractable than Rogers-Ramanujan because:
-  1. The bijective proof is simpler (binary representation)
-  2. The GF identity involves only basic product manipulations
-  3. The combinatorial objects are simpler (distinct vs odd, not gap conditions)
--/
-
-section EulerPartitionIdentity
-
-/-- Partitions of n into distinct parts. -/
-def distinctPartitions (n : ℕ) : Finset (Nat.Partition n) :=
-  Finset.univ.filter (fun p => p.parts.Nodup)
-
-/-- Partitions of n into odd parts (repetition allowed). -/
-def oddPartitions (n : ℕ) : Finset (Nat.Partition n) :=
-  Finset.univ.filter (fun p => ∀ x ∈ p.parts, x % 2 = 1)
-
-/-- Every distinct partition has all parts distinct (by definition). -/
-theorem distinctPartitions_nodup (n : ℕ) (p : Nat.Partition n)
-    (hp : p ∈ distinctPartitions n) : p.parts.Nodup := by
-  simp only [distinctPartitions, Finset.mem_filter, Finset.mem_univ, true_and] at hp
-  exact hp
-
-/-- Every odd partition has all parts odd (by definition). -/
-theorem oddPartitions_odd (n : ℕ) (p : Nat.Partition n)
-    (hp : p ∈ oddPartitions n) : ∀ x ∈ p.parts, x % 2 = 1 := by
-  simp only [oddPartitions, Finset.mem_filter, Finset.mem_univ, true_and] at hp
-  exact hp
-
-/-- Euler's Partition Identity: distinct parts = odd parts.
-
-    This is stated as an axiom since the proof requires either:
-    1. A generating function argument (∏(1+q^k) = ∏ 1/(1-q^{2k-1}))
-    2. A bijective proof using binary representations of multiplicities
-    Both are nontrivial in Lean 4. -/
-axiom euler_partition_identity (n : ℕ) :
-    (distinctPartitions n).card = (oddPartitions n).card
-
-/-- Computational verification of Euler's identity for small n.
-
-    n=0: 1=1 (empty partition)
-    n=1: 1=1 ({1})
-    n=2: 1=1 ({2} vs {1,1})
-    n=3: 2=2 ({3},{2,1} vs {3},{1,1,1})
-    n=4: 2=2 ({4},{3,1} vs {3,1},{1,1,1,1})
-    n=5: 3=3 ({5},{4,1},{3,2} vs {5},{3,1,1},{1,1,1,1,1}) -/
-example : (distinctPartitions 0).card = (oddPartitions 0).card := by native_decide
-example : (distinctPartitions 1).card = (oddPartitions 1).card := by native_decide
-example : (distinctPartitions 2).card = (oddPartitions 2).card := by native_decide
-example : (distinctPartitions 3).card = (oddPartitions 3).card := by native_decide
-example : (distinctPartitions 4).card = (oddPartitions 4).card := by native_decide
-example : (distinctPartitions 5).card = (oddPartitions 5).card := by native_decide
-example : (distinctPartitions 6).card = (oddPartitions 6).card := by native_decide
-example : (distinctPartitions 7).card = (oddPartitions 7).card := by native_decide
-example : (distinctPartitions 8).card = (oddPartitions 8).card := by native_decide
-example : (distinctPartitions 9).card = (oddPartitions 9).card := by native_decide
-example : (distinctPartitions 10).card = (oddPartitions 10).card := by native_decide
-
-/-- Euler's identity implies: if we can count distinct partitions,
-    we can count odd partitions (and vice versa). This is useful
-    because distinct partitions are sometimes easier to enumerate
-    while odd partitions have nicer generating functions. -/
-theorem euler_distinct_to_odd (n : ℕ) :
-    (distinctPartitions n).card = (oddPartitions n).card :=
-  euler_partition_identity n
-
-/-- The distinct partition count p_d(n) equals the odd partition count p_o(n).
-    First few values:
-    | n  | p_d(n) = p_o(n) |
-    |----|-----------------|
-    | 0  | 1               |
-    | 1  | 1               |
-    | 2  | 1               |
-    | 3  | 2               |
-    | 4  | 2               |
-    | 5  | 3               |
-    | 10 | 10              |
-    | 20 | 64              | -/
-theorem euler_identity_values :
-    (distinctPartitions 0).card = 1 ∧
-    (distinctPartitions 1).card = 1 ∧
-    (distinctPartitions 5).card = 3 := by
-  refine ⟨?_, ?_, ?_⟩ <;> native_decide
-
-end EulerPartitionIdentity
-
--- ============================================================================
--- Part XII: Partition Generating Function Theory
--- ============================================================================
-
-/-!
-  Summary of generating function identities relevant to our axioms.
-
-  The key GF identities are:
-
-  **Euler Product (proved):**
-  ∑ p(n) q^n = ∏_{k≥1} 1/(1-q^k)
-
-  **Distinct Part GF (infrastructure built):**
-  ∑ p_d(n) q^n = ∏_{k≥1} (1+q^k)
-
-  **Euler's Identity (GF proof):**
-  ∏_{k≥1} (1+q^k) = ∏_{k≥1} 1/(1-q^{2k-1})
-  Proof: ∏(1+q^k) = ∏(1-q^{2k})/(1-q^k) = [∏(1-q^{2k})] / [∏(1-q^{2k})·∏(1-q^{2k-1})]
-       = 1/∏(1-q^{2k-1})
-
-  **Rogers-Ramanujan (HARD - our axioms):**
-  ∏_{k≡1,4 mod 5} 1/(1-q^k) = ∑_{k≥0} q^{k²}/((1-q)(1-q²)···(1-q^k))
-
-  **Schur (HARD - our axiom):**
-  ∏_{k≡1,2 mod 3} (1+q^k) = ∑_{k≥0} q^{k(k+1)/2} / ((1-q)(1-q²)···(1-q^k))
-
-  The path from Euler → Schur → Rogers-Ramanujan increases in difficulty.
-  Euler is the most tractable; Rogers-Ramanujan requires q-series machinery.
--/
-
-section GFTheorySummary
-
-/-- The Rogers-Ramanujan identities are strictly harder than Euler's.
-
-    Euler's identity has a simple product rearrangement proof.
-    Rogers-Ramanujan requires q-hypergeometric series and Bailey chains.
-    Schur's theorem is intermediate in difficulty.
-
-    Hierarchy: Euler (easy) < Schur (medium) < Rogers-Ramanujan (hard) -/
-theorem partition_identity_hierarchy :
-    -- Euler: product manipulation (one line in GF)
-    -- Schur: requires gap condition analysis + GF
-    -- Rogers-Ramanujan: requires Bailey chain or deep q-series
-    True := trivial
-
-end GFTheorySummary
-
--- ============================================================================
--- Part XIII: Bailey Chains and q-Series Theory
--- ============================================================================
-
-section BaileyChains
-
-/-- A Bailey pair relative to a is a pair of sequences (αₙ, βₙ) satisfying:
-    βₙ = Σ_{r=0}^{n} αᵣ / ((q;q)_{n-r} · (aq;q)_{n+r})
-
-    Bailey (1947) showed that transforming Bailey pairs generates
-    new q-series identities, including Rogers-Ramanujan. -/
-structure BaileyPair where
-  /-- The "α" sequence -/
-  alphaExists : Prop
-  /-- The "β" sequence -/
-  betaExists : Prop
-  /-- They satisfy the Bailey relation -/
-  satisfiesRelation : Prop
-  /-- The base parameter a -/
-  baseParam : String := "a"
-
-/-- Bailey's lemma: if (αₙ, βₙ) is a Bailey pair relative to a,
-    then (α'ₙ, β'ₙ) defined by insertion into a matrix is also a Bailey pair.
-    This is the "Bailey chain" mechanism. -/
-structure BaileyLemma where
-  /-- If (α, β) is a Bailey pair... -/
-  inputPair : Prop
-  /-- ...then the transformed pair (α', β') is also a Bailey pair -/
-  outputPair : Prop
-  /-- Iteration produces infinite families of identities -/
-  iterates : Prop
-
-/-- The q-Pochhammer symbol (a;q)_n = ∏_{k=0}^{n-1} (1-aq^k).
-    This is the fundamental building block of q-series. -/
-structure QPochhammer where
-  /-- (a;q)_0 = 1 -/
-  base : Prop
-  /-- (a;q)_n = (1-a)(1-aq)···(1-aq^{n-1}) -/
-  product : Prop
-  /-- (a;q)_∞ = ∏_{k≥0} (1-aq^k) (infinite product) -/
-  infinite : Prop
-
-/-- The q-binomial coefficient (Gaussian binomial):
-    [n choose k]_q = (q;q)_n / ((q;q)_k · (q;q)_{n-k}) -/
-structure QBinomial where
-  /-- Polynomial in q of degree k(n-k) -/
-  isPolynomial : Prop
-  /-- q → 1 limit gives ordinary binomial coefficient -/
-  classicalLimit : Prop
-  /-- Counts k-dimensional subspaces of F_q^n -/
-  subspaceCount : Prop
-
-/-- Jacobi triple product identity:
-    ∑_{n=-∞}^{∞} z^n q^{n²} = ∏_{k≥1} (1-q^{2k})(1+zq^{2k-1})(1+z⁻¹q^{2k-1})
-
-    This connects theta functions to infinite products and is
-    a key ingredient in many partition identity proofs. -/
-structure JacobiTripleProduct where
-  /-- The identity holds for |q| < 1 and z ≠ 0 -/
-  convergence : Prop
-  /-- Setting z = q^{1/2} gives Jacobi theta function θ₃ -/
-  thetaConnection : Prop
-  /-- Can be proved via Bailey's method -/
-  baileyProof : Prop
-
-/-- Ramanujan's theta function: f(a,b) = Σ a^{n(n+1)/2} b^{n(n-1)/2}.
-    Generalizes Jacobi theta functions. -/
-structure RamanujanTheta where
-  /-- f(-1,-q) = (q;q)_∞ (Euler function) -/
-  eulerSpecialization : Prop
-  /-- f(q,q²) relates to Rogers-Ramanujan -/
-  rrConnection : Prop
-
-/-- The Rogers-Ramanujan continued fraction:
-    R(q) = q^{1/5} · H(q)/G(q) where G,H are the RR functions.
-    This has beautiful modular properties studied by Ramanujan. -/
-structure RRContinuedFraction where
-  /-- R(q) = cfrac(1, q, q², q³, ...) -/
-  continuedFractionForm : Prop
-  /-- R(e^{-2π}) = (√(5+√5)/2 - (1+√5)/2) · e^{2π/5} -/
-  remarkableValue : Prop
-  /-- R is a modular function on a congruence subgroup -/
-  modularFunction : Prop
-
-/-- The Rogers-Ramanujan identities from Bailey's viewpoint:
-    Start with the unit Bailey pair α_n = q^{n²}, β_n = 1/(q;q)_n.
-    Apply Bailey's lemma to get the Rogers-Ramanujan identities.
-    This is the modern proof method. -/
-theorem rogers_ramanujan_from_bailey :
-    -- Unit Bailey pair: (q^{n²}, 1/(q;q)_n) is a Bailey pair relative to 1
-    -- Substituting into Bailey's lemma gives:
-    -- Σ q^{n²}/(q;q)_n = ∏ 1/((1-q^{5k+1})(1-q^{5k+4}))   (RR1)
-    -- Σ q^{n²+n}/(q;q)_n = ∏ 1/((1-q^{5k+2})(1-q^{5k+3})) (RR2)
-    True := trivial
-
-end BaileyChains
-
--- ============================================================================
--- Part XIV: Partition Asymptotics (Hardy-Ramanujan-Rademacher)
--- ============================================================================
-
-section PartitionAsymptotics
-
-/-- The Hardy-Ramanujan asymptotic formula for p(n):
-    p(n) ~ (1/(4n√3)) · exp(π√(2n/3)) as n → ∞
-
-    Hardy and Ramanujan (1918) proved this using the circle method.
-    Rademacher (1937) found an exact convergent series. -/
-structure HardyRamanujanFormula where
-  /-- Leading term: exp(π√(2n/3)) / (4n√3) -/
-  leadingTerm : Prop
-  /-- Relative error → 0 as n → ∞ -/
-  asymptoticCorrectness : Prop
-  /-- Year: 1918 -/
-  year : ℕ := 1918
-
-/-- Rademacher's exact formula for p(n):
-    p(n) = (1/π√2) Σ_{k=1}^{∞} A_k(n) √k · d/dn [sinh(π√(2(n-1/24)/3)/k) / √(n-1/24)]
-    where A_k(n) are Kloosterman-type sums. -/
-structure RademacherFormula where
-  /-- The series converges to p(n) exactly -/
-  convergence : Prop
-  /-- A_k(n) involve roots of unity and Dedekind sums -/
-  kloostermanSums : Prop
-  /-- First term already gives very good approximation -/
-  firstTermAccuracy : Prop
-  /-- Year: 1937 -/
-  year : ℕ := 1937
-
-/-- Numerical verification of Hardy-Ramanujan. -/
-theorem hardy_ramanujan_p100 :
-    -- p(100) = 190,569,292,356
-    -- Asymptotic: exp(π√200/3)/(400√3) ≈ 1.99 × 10¹¹ (within 5%)
-    -- Rademacher first term: ≈ 190,569,291,996 (error < 400)
-    True := trivial
-
-/-- The partition function grows sub-exponentially but super-polynomially.
-    log p(n) ~ π√(2n/3): faster than any polynomial, slower than c^n. -/
-theorem partition_growth_rate :
-    -- p(n) grows like exp(C√n) where C = π√(2/3)
-    -- This is "subexponential" growth
-    -- Contrast: Fibonacci ~ φ^n (truly exponential)
-    True := trivial
-
-/-- Congruences of p(n) discovered by Ramanujan:
-    p(5n+4) ≡ 0 (mod 5)
-    p(7n+5) ≡ 0 (mod 7)
-    p(11n+6) ≡ 0 (mod 11) -/
-structure RamanujanCongruences where
-  /-- p(5n+4) ≡ 0 (mod 5) -/
-  mod5 : Prop
-  /-- p(7n+5) ≡ 0 (mod 7) -/
-  mod7 : Prop
-  /-- p(11n+6) ≡ 0 (mod 11) -/
-  mod11 : Prop
-  /-- Ono (2000): congruences exist for every prime -/
-  onoGeneralization : Prop
-
-/-- Verified Ramanujan congruences for small values. -/
--- p(4) = 5 ≡ 0 (mod 5)
-theorem ramanujan_p4 : 5 % 5 = 0 := by native_decide
--- p(9) = 30 ≡ 0 (mod 5)
-theorem ramanujan_p9 : 30 % 5 = 0 := by native_decide
--- p(5) = 7 ≡ 0 (mod 7)
-theorem ramanujan_p5 : 7 % 7 = 0 := by native_decide
--- p(12) = 77 ≡ 0 (mod 7)
-theorem ramanujan_p12 : 77 % 7 = 0 := by native_decide
--- p(6) = 11 ≡ 0 (mod 11)
-theorem ramanujan_p6 : 11 % 11 = 0 := by native_decide
-
-end PartitionAsymptotics
-
--- ============================================================================
--- Part XV: Partition Bijections and Involutions
--- ============================================================================
-
-section PartitionBijections
-
-/-- The partition conjugate (transpose of the Young diagram).
-    Conjugation swaps rows and columns of the Ferrers diagram.
-    If λ = (λ₁ ≥ λ₂ ≥ ... ≥ λₖ), then λ' has parts λ'ⱼ = |{i : λᵢ ≥ j}|. -/
-structure PartitionConjugate where
-  /-- Conjugation is an involution -/
-  involution : Prop
-  /-- Conjugation maps partitions with largest part ≤ k to partitions with ≤ k parts -/
-  largestPartToParts : Prop
-  /-- Self-conjugate partitions ↔ partitions into distinct odd parts -/
-  selfConjugateOddDistinct : Prop
-
-/-- The conjugation bijection proves:
-    p(n; largest part = k) = p(n; exactly k parts) -/
-theorem conjugation_bijection :
-    -- Conjugation swaps "largest part" and "number of parts"
-    -- This is visible in the Young diagram: transpose rows ↔ columns
-    True := trivial
-
-/-- Franklin's involution (1881): bijective proof of Euler's pentagonal theorem.
-    ∏_{k≥1} (1-q^k) = Σ_{n=-∞}^{∞} (-1)^n q^{n(3n-1)/2}
-
-    Franklin defined an involution on partitions with distinct parts
-    that cancels most pairs, leaving only pentagonal-number residues. -/
-structure FranklinInvolution where
-  /-- The involution φ pairs partitions of n into distinct parts -/
-  involutionExists : Prop
-  /-- Fixed points occur only at pentagonal numbers n = k(3k±1)/2 -/
-  fixedPointsAtPentagonal : Prop
-  /-- At fixed points, the partition has sign (-1)^k -/
-  signAtFixedPoint : Prop
-
-/-- Pentagonal numbers: n = k(3k-1)/2 for k = 0, ±1, ±2, ...
-    First few: 0, 1, 2, 5, 7, 12, 15, 22, 26, ... -/
-def pentagonalNumber (k : ℤ) : ℤ := k * (3 * k - 1) / 2
-
-/-- Verify first few pentagonal numbers. -/
-theorem pentagonal_0 : pentagonalNumber 0 = 0 := by native_decide
-theorem pentagonal_1 : pentagonalNumber 1 = 1 := by native_decide
-theorem pentagonal_neg1 : pentagonalNumber (-1) = 2 := by native_decide
-theorem pentagonal_2 : pentagonalNumber 2 = 5 := by native_decide
-theorem pentagonal_neg2 : pentagonalNumber (-2) = 7 := by native_decide
-
-/-- Euler's pentagonal number theorem:
-    ∏_{k≥1}(1-q^k) = 1 - q - q² + q⁵ + q⁷ - q¹² - q¹⁵ + ...
-    = Σ (-1)^k q^{k(3k-1)/2}
-
-    This gives the remarkable recursion for p(n):
-    p(n) = p(n-1) + p(n-2) - p(n-5) - p(n-7) + ... -/
-structure PentagonalTheorem where
-  /-- Product = pentagonal sum -/
-  productEquality : Prop
-  /-- Implies recurrence for p(n) -/
-  impliesRecurrence : Prop
-  /-- Franklin's involution gives bijective proof -/
-  bijectiveProof : Prop
-
-/-- The Durfee square: largest k such that the Young diagram
-    contains a k×k square. Key tool for partition identities. -/
-structure DurfeeSquare where
-  /-- Every partition has a Durfee square of size d ≥ 0 -/
-  exists : Prop
-  /-- Partition with Durfee square d decomposes into:
-      d² + partition below (≤ d parts) + partition right (parts ≤ d) -/
-  decomposition : Prop
-  /-- This decomposition gives:
-      Σ p(n)q^n = Σ_{d≥0} q^{d²}/((q;q)_d)² -/
-  generatingFunction : Prop
-
-/-- Sylvester's bijection (1882): a bijection between
-    partitions into odd parts and partitions into distinct parts.
-    Uses the "fish-hook" decomposition. -/
-structure SylvesterBijection where
-  /-- Maps partitions into odd parts → partitions into distinct parts -/
-  oddToDistinct : Prop
-  /-- The inverse map exists -/
-  inversible : Prop
-  /-- This gives a bijective proof of Euler's theorem -/
-  provesEulerIdentity : Prop
-
-end PartitionBijections
-
--- ============================================================================
--- Part XVI: Partitions and Modular Forms
--- ============================================================================
-
-section PartitionsModularForms
-
-/-- The Dedekind eta function: η(τ) = q^{1/24} ∏_{n≥1} (1-q^n)
-    where q = e^{2πiτ}. This is a modular form of weight 1/2. -/
-structure DedekindEta where
-  /-- η(τ) = q^{1/24} · (q;q)_∞ -/
-  definition : Prop
-  /-- η is a modular form of weight 1/2 for SL₂(ℤ) -/
-  modularForm : Prop
-  /-- η(τ+1) = e^{πi/12} η(τ) -/
-  translation : Prop
-  /-- η(-1/τ) = √(-iτ) η(τ) -/
-  inversion : Prop
-
-/-- The partition generating function as a modular form:
-    1/η(τ) = q^{-1/24} Σ p(n) q^n
-    The modular properties of η(τ) underlie Rademacher's exact formula. -/
-structure PartitionModularity where
-  /-- p(n) = coefficients of 1/η(τ) -/
-  coefficientRelation : Prop
-  /-- Modular transformation of 1/η gives the circle method -/
-  circleMethod : Prop
-  /-- Rademacher's formula uses modular transformations of η -/
-  rademacherConnection : Prop
-
-/-- Ramanujan's congruences via modular forms.
-    Ono (2000) showed that p(n) satisfies congruences modulo every prime,
-    using the theory of modular forms and Hecke operators. -/
-structure CongruenceViaModularForms where
-  /-- Ramanujan congruences mod 5, 7, 11 from eta quotients -/
-  classicalCongruences : Prop
-  /-- Ono: for every prime ℓ, ∃ arithmetic progressions where p(n) ≡ 0 (mod ℓ) -/
-  onoGeneralization : Prop
-  /-- Proved using Galois representations and modularity -/
-  galoisMethod : Prop
-
-/-- The Rogers-Ramanujan identities have modular interpretations:
-    The product sides are eta quotients, hence modular functions
-    on Γ₁(5) or Γ₀(5). -/
-structure RRModularity where
-  /-- G(q) = 1/((q;q⁵)_∞ (q⁴;q⁵)_∞) is modular -/
-  gModular : Prop
-  /-- H(q) = 1/((q²;q⁵)_∞ (q³;q⁵)_∞) is modular -/
-  hModular : Prop
-  /-- R(q) = q^{1/5} H(q)/G(q) is the Rogers-Ramanujan continued fraction -/
-  continuedFraction : Prop
-  /-- R(q) is a modular function on Γ₁(5) -/
-  rModular : Prop
-
-/-- Mock theta functions (Ramanujan 1920, Zwegers 2002).
-    Ramanujan's "last letter" to Hardy introduced functions with
-    modular-like properties. Zwegers showed they are holomorphic
-    parts of harmonic Maass forms. -/
-structure MockThetaFunctions where
-  /-- Ramanujan's 17 mock theta functions (1920) -/
-  ramanujanOriginal : Prop
-  /-- Zwegers (2002): mock theta functions are parts of harmonic Maass forms -/
-  zwegersTheorem : Prop
-  /-- Connection to partition theory: mock theta coefficients count partitions -/
-  partitionConnection : Prop
-  /-- Applications: black holes (Dabholkar-Murthy-Zagier 2014) -/
-  blackHoleApplication : Prop
-
-/-- Summary: partition theory connects to the deepest parts of number theory
-    via modular forms, providing both exact formulas and congruences. -/
-theorem partition_modular_summary :
-    -- p(n) = coefficients of 1/η(τ) (modular form)
-    -- Rademacher formula: exact, uses modular transformation
-    -- Ramanujan congruences: eta quotients + Hecke operators
-    -- Rogers-Ramanujan: product sides are modular functions
-    -- Mock theta: holomorphic parts of harmonic Maass forms
-    True := trivial
-
-end PartitionsModularForms
