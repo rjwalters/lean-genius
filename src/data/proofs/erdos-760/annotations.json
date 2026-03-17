@@ -7,7 +7,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #760: Cochromatic Number of Subgraphs**\n\nIf G has chromatic number χ(G) = m, must G contain a subgraph H with ζ(H) ≫ m / log m?\n\n**Status:** SOLVED (YES)\n\n**Solution:** Alon-Krivelevich-Sudakov (1997)\n\nThe bound is tight - complete graphs achieve it.",
     "mathContext": "Connects chromatic number, cochromatic number, and Ramsey theory. The cochromatic number allows cliques as color classes, not just independent sets.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Chromatic number", "Cochromatic number", "Ramsey theory", "Homogeneous sets"]
   },
   {
@@ -17,7 +17,7 @@
     "type": "definition",
     "title": "Homogeneous Set",
     "content": "**IsHomogeneous(G, S):**\n\nA set is homogeneous if it's either a clique OR an independent set.\n\nThis is the key concept for cochromatic colorings - color classes must be homogeneous.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["IsClique", "IsIndependentSet", "cochromatic coloring"]
   },
   {
@@ -27,7 +27,7 @@
     "type": "definition",
     "title": "Cochromatic Number",
     "content": "**cochromaticNumber(G):**\n\nζ(G) = minimum colors where each color class is homogeneous (clique or independent set). Axiomatized because the existence proof for the minimum requires careful combinatorial arguments.\n\n**Key property:** ζ(G) ≤ χ(G) always, since independent sets are homogeneous.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["IsCochromaticColoring", "IsHomogeneous", "chromaticNumber"]
   },
   {
@@ -59,7 +59,7 @@
     "title": "Alon-Krivelevich-Sudakov Theorem (1997)",
     "content": "**aks_theorem** and **erdos_760_solved:**\n\nIf χ(G) = m, then G has subgraph H with ζ(H) ≥ c · m / log m.\n\n**This solves Erdős Problem #760!**\n\nThe bound is optimal - complete graphs achieve it. erdos_760_solved directly refers to aks_theorem.",
     "mathContext": "The proof uses recursive decomposition via Ramsey-type homogeneous sets. At each step, a log-sized homogeneous set is extracted, and the process repeats m / log m times.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["ramsey_for_cochromatic", "erdos_760_solved", "erdos_760"]
   },
   {
@@ -79,7 +79,7 @@
     "type": "theorem",
     "title": "Main Result",
     "content": "**erdos_760:**\n\nA genuine theorem combining the AKS result: ∃c > 0 such that χ(G) = m implies G has subgraph H with ζ(H) ≥ cm / log m. Proved via `aks_theorem`.\n\n**Timeline:**\n- 1993: Erdős-Gimbel prove √(m / log m)\n- 1997: AKS prove optimal m / log m",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["aks_theorem", "erdos_760_solved", "cochromatic number"]
   }
 ]

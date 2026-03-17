@@ -7,7 +7,7 @@
     "title": "Problem Overview",
     "content": "**Erdős Problem #789**: Estimate h(n), the maximal size of a sum-length-free subset B of any n-element set A ⊆ ℤ. A set B is sum-length-free if equal sums must use equal numbers of terms. Known bounds: (n log n)^{1/3} ≪ h(n) ≪ √n. The gap between exponents 1/3 and 1/2 remains OPEN.",
     "mathContext": "Posed by Erdős in 1962, with bounds improved by Straus (1966, upper) and Choi (1974, lower). Related to Problems 186 and 874.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Sum-free sets", "Sidon sets", "Additive combinatorics"]
   },
   {
@@ -17,7 +17,7 @@
     "type": "definition",
     "title": "Sum Representations and Sum-Length-Free",
     "content": "**SumRep B**: A multiset of terms from B, with length (number of terms) and value (sum). **SumLengthFree B**: For any two sum representations with equal values, their lengths must be equal. This is weaker than Sidon (which requires the actual terms to match).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Multiset", "Sum representations", "Sidon property"]
   },
   {
@@ -28,7 +28,7 @@
     "title": "The Function h(n)",
     "content": "**h(n)** = max |B| such that B ⊆ A is sum-length-free for any n-element set A ⊆ ℤ. Axiomatized with h_pos (h(n) > 0 for n ≥ 1) and h_achievable (the max is achieved).",
     "mathContext": "This is an extremal function: for every n-element set A, we can always find a sum-length-free subset of size at least h(n).",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Extremal functions", "Guaranteed subsets"]
   },
   {
@@ -38,7 +38,7 @@
     "type": "axiom",
     "title": "Upper Bounds",
     "content": "**Erdős (1962)**: h(n) ≪ n^{5/6}, the first upper bound. **Straus (1966)**: h(n) ≪ √n, a dramatic improvement using counting arguments on sum representations. This is the best known upper bound and matches the Sidon set bound.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Straus", "Counting arguments", "Best known bounds"]
   },
   {
@@ -48,7 +48,7 @@
     "type": "axiom",
     "title": "Lower Bounds",
     "content": "**Erdős (1962)**: h(n) ≫ n^{1/3} via a probabilistic construction using fractional parts {αa} for random α. **Erdős-Choi (1974)**: h(n) ≫ (n log n)^{1/3}, refining the probabilistic argument with Diophantine approximation. This is the best known lower bound.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Probabilistic method", "Fractional parts", "Diophantine approximation"]
   },
   {
@@ -58,7 +58,7 @@
     "type": "theorem",
     "title": "Combined Bounds",
     "content": "**combined_bounds**: (n log n)^{1/3} ≪ h(n) ≪ √n. Proved by combining erdos_choi_1974_lower and straus_1966_upper. At n = 10^6: lower ≈ 239, upper = 1000 — a substantial gap.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Gap between bounds", "Open problem"]
   },
   {
@@ -88,7 +88,7 @@
     "type": "theorem",
     "title": "Main Theorem",
     "content": "**erdos_789**: The main theorem combines lower bound (n log n)^{1/3} and upper bound √n. Proved by exact ⟨erdos_choi_1974_lower, straus_1966_upper⟩. Problem remains OPEN — the true growth rate of h(n) is unknown.",
-    "significance": "critical",
+    "significance": "key",
     "relatedConcepts": ["Summary", "Open problem", "State of the art"]
   }
 ]
