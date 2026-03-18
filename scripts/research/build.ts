@@ -68,6 +68,8 @@ interface ResearchListing {
   linkedProof?: string
   significance?: number
   tractability?: number
+  leanFileCount?: number
+  totalLeanLines?: number
 }
 
 interface ArchivedSession {
@@ -144,6 +146,7 @@ interface ResearchProblem {
   linkedProof?: string
   significance?: number
   tractability?: number
+  leanFiles?: { path: string; filename: string; lineCount: number; theoremCount: number; axiomCount: number; defCount: number; sorryCount: number; isAristotle: boolean; githubUrl: string }[]
 }
 
 /**
@@ -617,7 +620,9 @@ function generateListing(problem: ResearchProblem): ResearchListing {
     approachCount: problem.approaches?.length ?? 0,
     linkedProof: problem.linkedProof,
     significance: problem.significance,
-    tractability: problem.tractability
+    tractability: problem.tractability,
+    leanFileCount: problem.leanFiles?.length,
+    totalLeanLines: problem.leanFiles?.reduce((sum, f) => sum + f.lineCount, 0),
   }
 }
 

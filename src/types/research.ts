@@ -173,6 +173,8 @@ export interface ResearchListing {
   linkedProof?: string
   significance?: number
   tractability?: number
+  leanFileCount?: number
+  totalLeanLines?: number
 }
 
 /**
@@ -288,6 +290,22 @@ export interface ResearchApproach {
 }
 
 /**
+ * Metadata about a Lean 4 formalization file associated with a research problem.
+ * Populated by the enrich-research.ts build script.
+ */
+export interface LeanFileInfo {
+  path: string
+  filename: string
+  lineCount: number
+  theoremCount: number
+  axiomCount: number
+  defCount: number
+  sorryCount: number
+  isAristotle: boolean
+  githubUrl: string
+}
+
+/**
  * References for a problem
  */
 export interface ResearchReferences {
@@ -324,6 +342,8 @@ export interface ResearchProblem {
 
   significance?: number
   tractability?: number
+
+  leanFiles?: LeanFileInfo[]
 }
 
 /**

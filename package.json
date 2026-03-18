@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "pnpm annotations:build && pnpm research:build && tsc -b && vite build",
+    "build": "pnpm annotations:build && pnpm research:build && pnpm research:enrich && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy": "pnpm build && wrangler pages deploy dist --project-name=lean-genius --commit-dirty=true",
@@ -15,6 +15,7 @@
     "annotations:parse": "tsx scripts/annotations/resolver.ts parse",
     "research:sync": "tsx scripts/research/sync-data.ts",
     "research:build": "pnpm research:sync && tsx scripts/research/build.ts",
+    "research:enrich": "tsx scripts/research/enrich-research.ts",
     "db:export": "tsx scripts/research/db-export.ts",
     "db:rebuild": "tsx scripts/research/db-rebuild.ts",
     "aristotle": "./research/scripts/aristotle-status.sh",
