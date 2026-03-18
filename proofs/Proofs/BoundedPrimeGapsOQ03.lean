@@ -225,7 +225,7 @@ prime gap theorem (Polymath 8b): 246 is simultaneously achievable
 
 /-- The Maynard-Tao 50-tuple sieve achieves prime gaps ≤ 246 infinitely often.
     This restates the Polymath 8b axiom from BoundedPrimeGaps for convenience. -/
-theorem polymath_achieves_246 : ∃ N : ℕ, ∀ n ≥ N, BoundedPrimeGaps.primeGap n ≤ 246 :=
+theorem polymath_achieves_246 : ∀ N : ℕ, ∃ n ≥ N, BoundedPrimeGaps.primeGap n ≤ 246 :=
   BoundedPrimeGaps.polymath_bounded_gaps_246
 
 /-- For any D < 246, no admissible 50-tuple achieves diameter D.
@@ -242,7 +242,7 @@ theorem no_smaller_50_tuple_diameter (D : ℕ) (hD : D < 246) :
     (no admissible 50-tuple can achieve a prime gap bound < 246).
     This is the master theorem connecting the analytic and combinatorial sides. -/
 theorem polymath_246_is_tight :
-    (∃ N : ℕ, ∀ n ≥ N, BoundedPrimeGaps.primeGap n ≤ 246) ∧
+    (∀ N : ℕ, ∃ n ≥ N, BoundedPrimeGaps.primeGap n ≤ 246) ∧
     (∃ H : Finset ℕ, ∃ hne : H.Nonempty,
       IsAdmissible H ∧ H.card = 50 ∧ H.max' hne - H.min' hne = 246) ∧
     (∀ H : Finset ℕ, IsAdmissible H → H.card ≥ 50 →

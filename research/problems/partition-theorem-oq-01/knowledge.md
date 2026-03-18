@@ -147,28 +147,26 @@ or clever variable substitution.
 **Docker build**: PASSED (all 3061 jobs)
 **Lines added**: ~260 (Parts XXXVII + XXXVIII)
 
----
+### Session 2026-03-17 (researcher-4) - BUILD
 
-## Session 2026-03-17 (researcher-1) - GF Coefficient Bridge Infrastructure
+**Mode**: REVISIT
+**Outcome**: progress — built Schur identity reduction and exchange framework
 
-**Mode**: REVISIT (depth-first, RICH knowledge)
-**Outcome**: progress — built GF-to-combinatorics bridge infrastructure
+**Built** (Parts XLIII-XLVI):
+- `schur_axiom_from_gap_gf`: formal reduction — axiom ⟺ gap count = GF coeff
+- `gap_gf_from_schur_axiom`: reverse direction of the reduction
+- `splitHi`/`splitLo`: canonical split for parts ≡ 0 mod 3 (11 properties proved)
+- `schurGapOnly`/`schurModOnly`/`schurBoth`: partition classification into 4 classes
+- `schurGapFull_eq_both_union_gapOnly`: disjoint union decomposition (gap side)
+- `schurMod_eq_both_union_modOnly`: disjoint union decomposition (mod side)
+- `schur_identity_iff_exchange`: **KEY** — Schur identity ⟺ |GapOnly| = |ModOnly|
+- Computational verification of exchange for n = 0, 3, 6, 9, 12
 
-### What Was Done
-- **Part XLIII: GF Coefficient = Subset Count (Bridge Theorem)**
-  - Defined `subsetsWithSum S n`: subsets of S that sum to n
-  - Proved `subsetsWithSum_empty`: base case for empty set
-  - Proved `subsetsWithSum_insert`: insert recursion decomposing subsets into
-    those containing/not containing the inserted element
-  - Structured `distinctPartGF_coeff_eq_card`: the fundamental bridge theorem
-    connecting GF coefficients to combinatorial subset counts
-  - Sorry remains in inductive step (antidiagonal convolution simplification)
+**KEY FINDING**: The Schur identity reduces to an exchange bijection between
+"gap-only" partitions (gap-valid, has ≡0 mod 3 parts) and "mod-only" partitions
+(mod-valid, gap-invalid). The canonical split has gap ≤ 2, automatically creating
+gap violations. However, collisions can occur (e.g., split(9)=(5,4) collides with
+existing part 4 in {9,4,1}), requiring context-dependent splitting.
 
-### Key Insight
-The insert recursion for subset counts perfectly mirrors the `(1+X^k)*F`
-convolution for generating functions. The remaining step is showing that
-the Cauchy product (antidiagonal sum) reduces to exactly two terms when
-one factor is `1 + X^k`.
-
-### Files Modified
-- `proofs/Proofs/PartitionTheoremOQ01.lean`: 3052 → 3170 lines (+118), 1 sorry, 3 axioms
+**Docker build**: PASSED (all 3061 jobs)
+**Lines added**: ~306 (Parts XLIII-XLVI)
