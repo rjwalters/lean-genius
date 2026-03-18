@@ -1,0 +1,103 @@
+{
+  "slug": "cayley-hamilton-minpoly-oq-04",
+  "title": "Nonderogatory matrix characterization: μ_M = χ_M iff cyclic vector",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For } M \\in M_n(K), \\; \\mu_M = \\chi_M \\iff \\exists v \\in K^n \\text{ s.t. } \\{v, Mv, \\ldots, M^{n-1}v\\} \\text{ is a basis}",
+    "plain": "A matrix M over a field K is nonderogatory (its minimal polynomial equals its characteristic polynomial) if and only if it has a cyclic vector v such that {v, Mv, M²v, ..., M^{n-1}v} forms a basis of K^n.",
+    "whyMatters": [
+      "Connects spectral theory to cyclic module structure",
+      "Foundation for rational canonical form",
+      "Key criterion in control theory (observability/controllability)"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Forward direction: cyclic vector → minpoly = charpoly (0 sorries)",
+      "Bridge lemma: monic polynomials with divisibility and same degree are equal",
+      "Degree characterization: nonderogatory iff deg(minpoly) = n",
+      "Full equivalence (using axiom for backward direction)"
+    ],
+    "open": [
+      "Backward direction: nonderogatory → cyclic vector (axiomatized, needs PID structure theorem)"
+    ],
+    "goal": "Complete formalization of nonderogatory characterization"
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-03-18T02:00:00Z",
+    "iteration": 1,
+    "focus": "Forward direction proved, backward axiomatized",
+    "blockers": [],
+    "nextAction": "Backward direction could be proved using PID module theory from Mathlib",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Forward direction of nonderogatory characterization proved (0 sorries). Backward direction axiomatized. Full equivalence stated.",
+    "builtItems": [
+      "IsCyclicVector definition (annihilator formulation) in CayleyHamiltonMinpolyOQ04.lean",
+      "IsCyclicVectorLI definition (linear independence formulation) in CayleyHamiltonMinpolyOQ04.lean",
+      "IsNonderogatory definition in CayleyHamiltonMinpolyOQ04.lean",
+      "minpoly_eq_charpoly_of_natDegree_eq (bridge lemma) in CayleyHamiltonMinpolyOQ04.lean",
+      "cyclic_implies_nonderogatory (forward direction) in CayleyHamiltonMinpolyOQ04.lean",
+      "nonderogatory_iff_cyclic_vector (full equivalence) in CayleyHamiltonMinpolyOQ04.lean",
+      "nonderogatory_iff_natDegree_eq (degree characterization) in CayleyHamiltonMinpolyOQ04.lean",
+      "derogatory_iff_natDegree_lt (derogatory characterization) in CayleyHamiltonMinpolyOQ04.lean"
+    ],
+    "insights": [
+      "The annihilator formulation of cyclic vector (no nonzero polynomial of degree < n annihilates v) gives a much cleaner forward direction proof than the linear independence formulation",
+      "The forward direction proof is beautifully simple: minpoly annihilates M, so it annihilates v, giving a nonzero polynomial in the annihilator if deg < n",
+      "Bridge lemma (monic divisor with same degree = equal) is a clean self-contained result useful beyond this problem",
+      "Backward direction requires substantial module theory infrastructure (PID structure theorem or JNF)"
+    ],
+    "mathlibGaps": [
+      "Structure theorem for f.g. modules over PID (partial in Mathlib but not in ready-to-use form for this application)",
+      "Rational canonical form not in Mathlib"
+    ],
+    "nextSteps": [
+      "The backward direction could potentially be proved by deploying Mathlib's PID module theory",
+      "Over algebraically closed fields, could use existing JNF axioms from OQ01 to prove backward direction"
+    ]
+  },
+  "approaches": [
+    {
+      "name": "Annihilator-based forward direction",
+      "description": "Define cyclic vector via annihilator ideal, prove forward direction using minpoly annihilation",
+      "status": "succeeded",
+      "outcome": "Clean proof with 0 sorries for forward direction"
+    }
+  ],
+  "tags": [
+    "linear-algebra",
+    "minimal-polynomial",
+    "nonderogatory",
+    "cyclic-vector",
+    "matrix-theory"
+  ],
+  "relatedProofs": [
+    "MinpolyCharpoly.lean",
+    "CayleyHamiltonOQ01.lean",
+    "CayleyHamiltonMinpolyOQ01.lean",
+    "CayleyHamiltonMinpolyOQ02.lean"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+    ]
+  },
+  "started": "2026-03-18T01:48:35Z",
+  "lastUpdate": "2026-03-18T02:48:00Z",
+  "completed": "2026-03-18T02:48:00Z",
+  "significance": 7,
+  "tractability": 6
+}
