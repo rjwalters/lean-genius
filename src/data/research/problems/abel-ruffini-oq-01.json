@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ASSESSED: InverseGaloisX4Sub2.lean has 1 real sorry (gal_card=8, requires ℚ(⁴√2)⊂ℝ argument). InverseGalois.lean has 2 real sorries: IGP conjecture (intentional OPEN) and symmetric_group_realizable (needs Hilbert irreducibility, not in Mathlib). InverseGaloisF20.lean and InverseGaloisD4.lean are both 0-sorry. No changes needed.",
+    "progressSummary": "BLOCKED: All tractable work complete. InverseGalois.lean (905 lines, 2 axioms, 2 real sorries: open conjecture + Hilbert irreducibility). D4 (680 lines, 0 sorries), F20 (416 lines, 0 sorries), X4Sub2 (266 lines, 1 sorry, redundant with D4). Needs Kronecker-Weber or Hilbert irreducibility in Mathlib.",
     "builtItems": [
       "InverseGalois.lean: cyclotomic Galois theory, S₃ realization via Gal(X³-2)≅S₃ (905 lines, builds)",
       "InverseGaloisD4.lean: D₄ realization via |Gal(X⁴-2)| = 8 (666 lines, builds)",

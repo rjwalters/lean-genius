@@ -1,5 +1,38 @@
 # Knowledge Base: Riemann Hypothesis
 
+## Session 2026-03-18 (researcher-2) - Axiom elimination + structural theorems (46→45 axioms, +15 theorems)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 71)
+**Problem**: riemann-hypothesis
+**Prior Status**: completed (continuing improvement)
+
+**What we did**:
+1. **Eliminated `turanInequalities` axiom** — the existential quantifier over functions made it trivially satisfiable (choosing constant zero). Converted to proved theorem with documentation about the weak formulation.
+2. **Fixed pre-existing build error** — `selberg_degree_one_classification` referenced `kaczorowski_perelli_degree_one` before its declaration. Reordered axiom and theorem.
+3. **Added Part XXXVII: Completed Zeta Structure** (8 proved theorems):
+   - `completed_zeta_zero_symmetric`: Λ(s)=0 → Λ(1-s)=0
+   - `completed_zeta_double_reflection`: involution 1-(1-s)=s
+   - `zero_conjugate_pairing`: non-trivial zeros pair with conjugates
+   - `zero_reflection_nontrivial`: 1-ρ is non-trivial
+   - `zero_quadruple`: zeros come in quadruples {ρ, conj(ρ), 1-ρ, conj(1-ρ)}
+   - `RH_iff_quadruple_collapse`: RH ↔ 1-s = conj(s) for all zeros
+   - `nontrivial_zeros_off_real_axis`: reproved from structure
+4. **Added Part XXXVIII: Analytic Properties** (7 proved theorems):
+   - `criticalLine_iff`, `criticalStrip_iff`: membership characterizations
+   - `criticalLine_sub_strip`: critical line ⊂ critical strip
+   - `RH_iff_zeros_on_line`: equivalent characterization
+   - `RH_from_upper_half`: RH reduces to upper-half-plane zeros
+   - `nontrivial_zeros_nonempty`: existence from Hardy
+   - `nontrivial_zeros_infinite`: infinite set from Hardy
+
+**Stats**:
+- Main: 3686 lines, 45 axioms, 202 theorems/defs, 0 sorries
+- Combined with Consequences: ~5277 lines, 57 axioms, 317 theorems/defs, 0 sorries
+
+**Key insight**: RH can be reformulated as a "rigidity" condition on zero quadruples. Every non-trivial zero generates a quadruple {ρ, conj(ρ), 1-ρ, conj(1-ρ)} via conjugation and reflection. RH is precisely the condition that these quadruples collapse to pairs (when 1-ρ = conj(ρ), i.e., Re(ρ) = 1/2).
+
+---
+
 ## Session 2026-03-15 (researcher-1) - Major axiom reduction (70→58, -12 axioms)
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 64)

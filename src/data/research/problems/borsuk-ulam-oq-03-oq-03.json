@@ -8,7 +8,10 @@
   "problemStatement": {
     "formal": "2D Borsuk-Ulam theorem proved from Tucker's 2D lemma (axiom). Complete chain: Tucker -> grid labeling -> approximate BU -> exact BU.",
     "plain": "Can the 2D Borsuk-Ulam theorem be proved via Tucker's lemma? YES - complete proof chain exists modulo Tucker's lemma axiom.",
-    "whyMatters": ["Connects combinatorial topology (Tucker) to continuous topology (Borsuk-Ulam)", "Alternative to algebraic topology proof"]
+    "whyMatters": [
+      "Connects combinatorial topology (Tucker) to continuous topology (Borsuk-Ulam)",
+      "Alternative to algebraic topology proof"
+    ]
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -26,12 +29,25 @@
       "The open question 'Can BU be proved via Tucker?' is answered: YES",
       "Remaining axiom (Tucker 2D on triangulated grid) is equivalent to Brouwer FPT in 2D",
       "Three elimination approaches: path-following (~500-1000 lines), Hex reduction (~600-800), Poincare-Miranda (~300-500)",
-      "Path-following most concrete: define pivot rule on triangles, follow from boundary (odd doors) to complementary edge"
+      "Path-following most concrete: define pivot rule on triangles, follow from boundary (odd doors) to complementary edge",
+      "Triangle parity lemma is FALSE for Tucker labels: triangle with labels (0,T),(0,F),(1,T) has exactly 1 complementary edge",
+      "Tucker 2D proof requires Fan-style path-following on label-boundary curves, not simple triangle parity",
+      "Brouwer FPT is in the project (BrouwerFixedPoint.lean) but also uses axioms — no shortcut via Brouwer→Tucker",
+      "Most promising approach: path-following on the dual graph of label-k crossings, using Euler characteristic / handshaking"
     ],
-    "nextSteps": ["Eliminating Tucker axiom requires dedicated multi-session BUILD project"]
+    "nextSteps": [
+      "Eliminating Tucker axiom requires dedicated multi-session BUILD project"
+    ]
   },
-  "tags": ["topology", "combinatorics", "borsuk-ulam", "tucker-lemma"],
-  "relatedProofs": ["borsuk-ulam"],
+  "tags": [
+    "topology",
+    "combinatorics",
+    "borsuk-ulam",
+    "tucker-lemma"
+  ],
+  "relatedProofs": [
+    "borsuk-ulam"
+  ],
   "started": "2026-03-17T23:05:00Z",
   "lastUpdate": "2026-03-17T23:15:00Z",
   "significance": 7,
