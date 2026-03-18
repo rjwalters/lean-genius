@@ -96,3 +96,15 @@ For the backward direction, the direct polynomial approach works for infinite fi
 
 - `proofs/Proofs/CayleyHamiltonMinpolyOQ04BackwardAristotle.lean`
   - Aristotle companion file with 5 routine lemmas for automated proof search
+
+## Approaches Explored
+
+### Annihilator-based forward direction
+**Status**: succeeded
+Define cyclic vector via annihilator ideal, prove forward direction using minpoly annihilation
+**Outcome**: Clean proof with 0 sorries for forward direction
+
+### Union avoidance for infinite fields
+**Status**: in-progress
+Prove backward direction by showing non-cyclic vectors lie in a finite union of proper subspaces, then applying union avoidance (infinite fields only)
+**Outcome**: 3 key lemmas proved, main theorem wired with 6 helper sorries

@@ -83,20 +83,6 @@
       "For finite fields: would need PID module structure theorem or explicit counting via Mobius function"
     ]
   },
-  "approaches": [
-    {
-      "name": "Annihilator-based forward direction",
-      "description": "Define cyclic vector via annihilator ideal, prove forward direction using minpoly annihilation",
-      "status": "succeeded",
-      "outcome": "Clean proof with 0 sorries for forward direction"
-    },
-    {
-      "name": "Union avoidance for infinite fields",
-      "description": "Prove backward direction by showing non-cyclic vectors lie in a finite union of proper subspaces, then applying union avoidance (infinite fields only)",
-      "status": "in-progress",
-      "outcome": "3 key lemmas proved, main theorem wired with 6 helper sorries"
-    }
-  ],
   "tags": [
     "linear-algebra",
     "minimal-polynomial",
