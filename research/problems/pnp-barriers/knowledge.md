@@ -2047,3 +2047,43 @@ Parts 51-53 had duplicate defs causing build errors:
 
 ### Files Modified
 - `proofs/Proofs/PNPBarriersSound.lean` — 1 soundness fix, 4 axiom eliminations, header updated
+
+---
+
+## Session 2026-03-17 (researcher-3) - TFNP + Five Worlds + Master Synthesis (Parts 67-69)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 197)
+**Problem**: pnp-barriers
+**Prior Status**: completed (18964 lines, 227 axioms, 0 sorries)
+
+### What we added
+
+**Part 67: Total Function Complexity (TFNP)** (~350 lines)
+1. Defined `SearchProblem`, `FNP`, `TFNP`, `FP` hierarchy
+2. Defined TFNP subclasses: `PPAD`, `PLS`, `PPP`, `PPA`, `CLS`, `EOPL`
+3. Proved containments: `FP_subset_TFNP`, `PPAD_subset_PPA`, `PPAD_subset_PPP`, `CLS_subset_PPAD`, `CLS_subset_PLS`
+4. Axiomatized `cls_eq_eopl` (CLS = EOPL = PPAD ∩ PLS, Fearnley et al. 2021)
+5. Defined `NashEquilibriumProblem` and axiomatized `nash_existence`, `nash_ppad_complete`
+6. Axiomatized `brouwer_ppad_complete`, `ppad_crypto_connection`
+7. Axiomatized PLS-completeness results: `local_max_cut_pls_complete`, `congestion_game_pls_complete`
+8. Proved `tfnp_and_pvsnp`, `whitebox_tfnp_proof_complexity`
+
+**Part 68: Impagliazzo's Five Worlds** (~300 lines)
+1. Defined `World` inductive type (algorithmica, heuristica, pessiland, minicrypt, cryptomania)
+2. Defined `isAlgorithmica`, `isHeuristica`, `isPessiland`, `isMinicrypt`, `isCryptomania`
+3. Axiomatized `impagliazzo_levin` (worst-case to average-case for NP)
+4. Axiomatized `impagliazzo_rudich` (no black-box OWF → key agreement)
+5. Proved structural theorems: `owf_implies_derandomization`, `fine_grained_cryptomania`, `pvsnp_and_five_worlds`
+
+**Part 69: Master Synthesis** (~200 lines)
+1. Proved `three_barriers_and_bypasses`: comprehensive barrier summary
+2. Proved `known_structural_results`: key constraints on P vs NP
+3. Proved `why_pvsnp_is_hard`: fundamental difficulty analysis
+4. Proved `formalization_summary`: what 69 parts achieve
+
+### Stats after changes
+- **Lines**: 18964 → 20074 (+1110)
+- **Axioms**: 227 → 237 (+10)
+- **Theorems**: ~633 → ~644 (+11 proved)
+- **Definitions**: ~520 → ~527 (+7)
+- **New inductive type**: `World` (five worlds)

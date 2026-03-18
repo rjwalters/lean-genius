@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 125 axioms, 269 theorems, 6125 lines. Added proof complexity deeper (Parts 45-46) with resolution width, algebraic proof systems (NS/PC/IPS), and communication complexity lifting theorems (GPW, KW pipeline).",
+    "progressSummary": "PROGRESS: 237 axioms, 644 theorems, 20074 lines. Added Parts 67-69: Total function complexity (TFNP/PPAD/PLS/Nash equilibrium), Impagliazzo five worlds (cryptographic complexity landscape), and master synthesis connecting all 69 parts.",
     "builtItems": [
       {
         "name": "P_subset_NP_relative",
@@ -421,7 +421,10 @@
       "Part 46: Query complexity, lifting theorem (GPW), monotone lifting, lifting-proof-complexity connection, lifting frontier",
       "6 new opaques: resolutionWidth, resolutionSize, nullstellensatzDegree, polyCalcDegree, queryComplexity, liftedFunction",
       "Master summary expanded to 22 topics / XIV conjuncts",
-      "Fixed upstream duplicate declarations (mcsp_np_hardness_barrier, nash_PPAD_hard, GapP_closed_subtraction)"
+      "Fixed upstream duplicate declarations (mcsp_np_hardness_barrier, nash_PPAD_hard, GapP_closed_subtraction)",
+      "Part 67: Total Function Complexity (TFNP, PPAD, PLS, PPP, PPA, CLS, EOPL, Nash equilibrium, Brouwer fixed point)",
+      "Part 68: Impagliazzo Five Worlds (Algorithmica through Cryptomania, OWF→derandomization, Impagliazzo-Rudich barrier)",
+      "Part 69: Master Synthesis (three barriers + bypasses, structural constraints, why P vs NP is hard)"
     ],
     "insights": [
       "P_subset_NP_relative",
@@ -510,7 +513,12 @@
       "Ideal Proof System (Grochow-Pitassi 2018) polynomially simulates all Cook-Reckhow proof systems; IPS lower bounds equivalent to VP vs VNP",
       "Lifting theorems (Göös-Pitassi-Watson 2017) transform query complexity lower bounds into communication complexity lower bounds via Index gadget composition",
       "KW + lifting pipeline: query LB → communication LB → circuit depth LB. Works for monotone circuits; non-monotone case is the frontier",
-      "Natural proofs barrier applies to proof complexity too: Frege LBs would yield natural proofs against P/poly"
+      "Natural proofs barrier applies to proof complexity too: Frege LBs would yield natural proofs against P/poly",
+      "TFNP (total function complexity) formalizes search problems with guaranteed solutions; PPAD, PLS, PPP, PPA are subclasses capturing WHY solutions exist",
+      "CLS = EOPL = PPAD ∩ PLS (Fearnley et al. 2021) resolved a decade-long open TFNP structure question",
+      "Nash equilibrium computation is PPAD-complete (DGP 2006, CD 2006) — hard but NOT NP-hard, a different kind of hardness",
+      "Impagliazzo five worlds (Algorithmica/Heuristica/Pessiland/Minicrypt/Cryptomania) classify possible computational realities; current evidence: Cryptomania",
+      "White-box TFNP creates a precise dictionary between proof systems and TFNP subclasses: Resolution↔PPAD, Cutting Planes↔PLS"
     ],
     "mathlibGaps": [
       "Oracle Turing machines",
