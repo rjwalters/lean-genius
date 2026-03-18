@@ -9,6 +9,7 @@ import Mathlib.FieldTheory.AbelRuffini
 import Mathlib.Algebra.Group.Equiv.Basic
 import Mathlib.RingTheory.Polynomial.Eisenstein.Criterion
 import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.NumberTheory.LSeries.PrimesInAP
 import Proofs.NthRootIrrationalOQ01
 
 /-
@@ -414,7 +415,7 @@ theorem s3_realizable :
   exact ⟨p.SplittingField,
     inferInstance, inferInstance, inferInstance,
     IsGalois.mk,
-    x_cube_sub_2_gal_iso_s3_proved.map MulEquiv.symm⟩
+    ⟨x_cube_sub_2_gal_iso_s3_proved.some.symm⟩⟩
 
 /-
 ## Part VIII: What's Known and What's Open
@@ -598,10 +599,8 @@ theorem no_root_of_irreducible_degree_ndvd
   have hmin_irr := minpoly.irreducible hx_int
   have hassoc := hmin_irr.associated_of_dvd hp hdvd
   -- So natDegree(minpoly) = natDegree(p)
-  have hdegeq : (minpoly F x).natDegree = p.natDegree := by
-    obtain ⟨u, hu⟩ := hassoc
-    rw [← hu]
-    exact (Polynomial.natDegree_mul_isUnit (isUnit_unit u)).symm
+  have hdegeq : (minpoly F x).natDegree = p.natDegree :=
+    hassoc.symm.natDegree_eq
   -- [F(x):F] = natDegree(minpoly F x), and [F(x):F] divides [K:F] by tower law
   rw [← hdegeq]
   set Fx : IntermediateField F K := IntermediateField.adjoin F {x}
@@ -664,6 +663,7 @@ theorem root_of_cofactor_gives_cube_root_of_unity
   have expand : α ^ 2 * (β * α⁻¹) ^ 2 = β ^ 2 * (α ^ 2 * α⁻¹ ^ 2) := by ring
   have expand2 : α ^ 2 * (β * α⁻¹) = β * (α ^ 2 * α⁻¹) := by ring
   rw [mul_add, mul_add, expand, hi2, mul_one, expand2, hi1, mul_one]
+  have : β * α = α * β := mul_comm β α
   linarith [hroot]
 
 /--
@@ -679,7 +679,7 @@ theorem x_cube_sub_2_monic : (X ^ 3 - C (2 : ℚ) : ℚ[X]).Monic :=
 theorem adjoin_root_x_cube_sub_2_finrank :
     Module.finrank ℚ (AdjoinRoot (X ^ 3 - C (2 : ℚ) : ℚ[X])) = 3 := by
   have hpb := AdjoinRoot.powerBasis x_cube_sub_2_monic.ne_zero
-  rw [hpb.finrank]
+  rw [PowerBasis.finrank hpb]
   exact x_cube_sub_2_natDegree
 
 -- Helper: AdjoinRoot.root of X³-2 is nonzero (since α³ = 2 ≠ 0)
@@ -688,15 +688,15 @@ theorem adjoin_root_x_cube_sub_2_root_ne_zero :
   intro h
   have heval := AdjoinRoot.eval₂_root (X ^ 3 - C (2 : ℚ) : ℚ[X])
   simp only [Polynomial.eval₂_sub, Polynomial.eval₂_pow, Polynomial.eval₂_X,
-    Polynomial.eval₂_C, h, zero_pow (by decide : 3 ≠ 0), zero_sub, neg_eq_zero,
-    map_ofNat] at heval
-  exact absurd heval two_ne_zero
+    Polynomial.eval₂_C, h, zero_pow (by decide : 3 ≠ 0), zero_sub, neg_eq_zero] at heval
+  exact absurd heval (by exact_mod_cast (two_ne_zero : (2 : ℚ) ≠ 0))
 
 -- Helper: connecting ring-level equation to aeval
 theorem aeval_x_sq_add_x_add_1 {K : Type*} [CommRing K] [Algebra ℚ K] (x : K) :
     Polynomial.aeval x (X ^ 2 + X + 1 : ℚ[X]) = x ^ 2 + x + 1 := by
   simp only [map_add, map_pow, map_one, aeval_X]
 
+set_option maxHeartbeats 400000 in
 theorem cofactor_has_no_root_in_adjoin_root :
     ∀ β : AdjoinRoot (X ^ 3 - C (2 : ℚ)),
     β ^ 2 + AdjoinRoot.root (X ^ 3 - C (2 : ℚ)) * β +
@@ -957,39 +957,31 @@ theorem units_zmod_realizable (n : ℕ) [NeZero n] :
     ⟨(cyclotomic_galois_group_iso_units_zmod n).symm⟩⟩
 
 -- ============================================================================
--- Part XIV: Toward Cyclic Group Realizability
+-- Part XIV: Cyclic Group Realizability
 -- ============================================================================
 
 /-
-## Part XIV: Toward General Cyclic Group Realizability
+## Part XIV: Cyclic Group Realizability
 
 **Goal**: Every finite cyclic group C_n is realizable as a Galois group over ℚ.
 
-**Proof strategy** (requires Dirichlet's theorem + Galois correspondence):
-1. By Dirichlet's theorem (`Nat.forall_exists_prime_gt_and_modEq` from
-   `Mathlib.NumberTheory.LSeries.PrimesInAP`, wrapped in `Proofs.DirichletsTheorem`),
-   for any n > 0, there exists a prime p ≡ 1 (mod n), giving n | (p-1).
-2. The p-th cyclotomic field has Galois group (ℤ/pℤ)ˣ ≅ C_{p-1} (Part II-III).
-3. Since n | (p-1), the cyclic group C_{p-1} has a unique subgroup of order (p-1)/n.
-4. By the Galois correspondence (`IsGalois.intermediateFieldEquivSubgroup` from
-   `Mathlib.FieldTheory.Galois.Basic`), the fixed field K of this subgroup satisfies:
-   - [K:ℚ] = n
-   - K/ℚ is Galois (since (ℤ/pℤ)ˣ is abelian, all subgroups are normal)
-   - Gal(K/ℚ) ≅ C_{p-1} / subgroup ≅ C_n
+**Proof strategy** (Dirichlet's theorem + Galois correspondence):
+1. By Dirichlet's theorem (`Nat.forall_exists_prime_gt_and_modEq`),
+   for any n > 0, ∃ prime p ≡ 1 (mod n), giving n | (p-1).
+2. The p-th cyclotomic field has Galois group (ℤ/pℤ)ˣ ≅ C_{p-1}.
+3. Since n | (p-1), construct subgroup H = ⟨g^n⟩ of Gal with order (p-1)/n.
+4. The fixed field K = E^H satisfies [K:ℚ] = n, is Galois (abelian → normal),
+   and has cyclic Galois group of order n.
 
-**What's proven below**: For prime p, the cyclotomic Galois group is cyclic of
-order p-1. This combines our cyclotomic theory with the standard result that
-finite field unit groups are cyclic.
+**What's proven**:
+- `exists_prime_dvd_pred`: Dirichlet step (∀ n > 0, ∃ prime p, n | p-1)
+- `cyclic_prime_pred_realizable`: C_{p-1} is realizable for every prime p
+- `prime_cyclotomic_galois_isCyclic`, `prime_cyclotomic_galois_card`: Cyclotomic Galois groups
+- `cyclic_group_realizable`: Full proof with 2 sorry marks for Galois correspondence steps
 
-**What's sorry**: The general cyclic realizability. The Galois correspondence step
-(constructing intermediate fields from subgroups and showing the quotient Galois
-group has the right structure) needs careful type-level plumbing.
-
-**Mathlib infrastructure available but not yet connected**:
-- `IntermediateField.fixedField` — maps subgroup to fixed field
-- `IntermediateField.finrank_fixedField_eq_card` — [L:fixedField(H)] = |H|
-- `IsGalois.intermediateFieldEquivSubgroup` — the Galois correspondence
-- `Nat.forall_exists_prime_gt_and_modEq` — Dirichlet's theorem (in Proofs.DirichletsTheorem)
+**Remaining sorry marks** (well-identified Lean API challenges, not math gaps):
+- `Normal ℚ ↥K`: fixedField of normal subgroup gives normal extension
+- `IsCyclic (↥K ≃ₐ[ℚ] ↥K)`: quotient of cyclic Galois group is cyclic
 -/
 
 /-- For prime p, the Galois group of the p-th cyclotomic polynomial is cyclic.
@@ -1014,28 +1006,113 @@ theorem prime_cyclotomic_galois_card (p : ℕ) [Fact (Nat.Prime p)] :
   rw [cyclotomic_galois_group_card]
   exact Nat.totient_prime (Fact.out)
 
+/-- For any n > 0, there exists a prime p such that n ∣ (p - 1).
+    This is a consequence of Dirichlet's theorem on primes in arithmetic
+    progressions: there exist infinitely many primes p ≡ 1 (mod n). -/
+lemma exists_prime_dvd_pred (n : ℕ) (hn : 0 < n) :
+    ∃ p : ℕ, Nat.Prime p ∧ n ∣ (p - 1) := by
+  obtain ⟨p, hp, _, hmod⟩ := Nat.forall_exists_prime_gt_and_modEq
+    (Nat.pos_iff_ne_zero.mp hn) (Nat.coprime_one_left n) 0
+  exact ⟨p, hp, (Nat.modEq_iff_dvd' (Nat.one_le_of_lt hp.one_lt)).mp hmod.symm⟩
+
+/-- For every prime p, C_{p-1} is realizable as a Galois group over ℚ.
+    The witness is the splitting field of the p-th cyclotomic polynomial. -/
+theorem cyclic_prime_pred_realizable (p : ℕ) [hp : Fact (Nat.Prime p)] :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      IsCyclic (K ≃ₐ[ℚ] K) ∧ Fintype.card (K ≃ₐ[ℚ] K) = p - 1 :=
+  ⟨(Polynomial.cyclotomic p ℚ).SplittingField,
+    inferInstance, inferInstance, inferInstance, inferInstance,
+    prime_cyclotomic_galois_isCyclic p, prime_cyclotomic_galois_card p⟩
+
 /-- Every finite cyclic group C_n is realizable as a Galois group over ℚ.
 
-    Proof uses Dirichlet's theorem (primes in arithmetic progressions) and
-    the Galois correspondence for intermediate fields of cyclotomic extensions.
-    See Part XIV documentation above for the full proof strategy.
+    **Proof**: By Dirichlet's theorem, find a prime p ≡ 1 (mod n). The p-th
+    cyclotomic extension has cyclic Galois group C_{p-1}. Since n | (p-1),
+    the subgroup H = ⟨g^n⟩ ≤ Gal has order (p-1)/n. The fixed field K = E^H
+    has [K:ℚ] = n and cyclic Galois group of order n.
 
-    **Status**: sorry — the Dirichlet step is in Mathlib (and in
-    `Proofs.DirichletsTheorem`), but connecting the Galois correspondence
-    for intermediate fields requires additional type-level work. -/
+    **Sorry marks**: Two Galois correspondence steps that are known results
+    but require specific Mathlib API (Normal instance for fixedField of normal
+    subgroup, and IsCyclic for the quotient Galois group). -/
 theorem cyclic_group_realizable (n : ℕ) (hn : 0 < n) :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
       (_ : IsGalois ℚ K),
       IsCyclic (K ≃ₐ[ℚ] K) ∧ Fintype.card (K ≃ₐ[ℚ] K) = n := by
-  sorry
-  -- Proof outline:
-  -- 1. By Dirichlet (Nat.forall_exists_prime_gt_and_modEq), ∃ prime p ≡ 1 (mod n)
-  -- 2. Gal(ℚ(ζ_p)/ℚ) ≅ (ℤ/pℤ)ˣ ≅ C_{p-1} with n | (p-1)
-  -- 3. Let H = unique subgroup of (ℤ/pℤ)ˣ of order (p-1)/n
-  -- 4. K = IntermediateField.fixedField (H mapped to Gal via the isomorphism)
-  -- 5. [K:ℚ] = |Gal|/|H| = (p-1)/((p-1)/n) = n
-  -- 6. K/ℚ is Galois (H is normal since (ℤ/pℤ)ˣ is abelian)
-  -- 7. Gal(K/ℚ) ≅ (ℤ/pℤ)ˣ / H ≅ C_n
+  -- Step 1: By Dirichlet, get prime p with n | (p-1)
+  obtain ⟨p, hp, hdvd⟩ := exists_prime_dvd_pred n hn
+  haveI : Fact (Nat.Prime p) := ⟨hp⟩
+  haveI : NeZero p := ⟨hp.ne_zero⟩
+  -- Step 2: The p-th cyclotomic splitting field E is Galois over ℚ
+  set E := (Polynomial.cyclotomic p ℚ).SplittingField with hE_def
+  haveI : IsGalois ℚ E := inferInstance
+  -- Step 3: Isomorphism Gal(E/ℚ) ≅ (ℤ/pℤ)ˣ and generator
+  let iso := cyclotomic_galois_group_iso_units_zmod p
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
+  -- Step 4: Construct subgroup H = ⟨iso⁻¹(g^n)⟩ ≤ Gal(E/ℚ) of order (p-1)/n
+  set σ : (Polynomial.cyclotomic p ℚ).Gal := iso.symm (g ^ n) with hσ_def
+  set H : Subgroup (Polynomial.cyclotomic p ℚ).Gal := Subgroup.zpowers σ with hH_def
+  -- Step 5: H is normal (Gal is abelian since (ℤ/pℤ)ˣ is abelian)
+  haveI : H.Normal := ⟨fun x hx a => by
+    suffices h : a * x * a⁻¹ = x by rw [h]; exact hx
+    -- Commutativity via iso: Gal ≃* (ℤ/pℤ)ˣ (commutative)
+    have hab : a * x = x * a :=
+      iso.injective (by rw [map_mul, map_mul, mul_comm])
+    rw [hab]; group⟩
+  -- Step 6: Fixed field K = E^H
+  set K := IntermediateField.fixedField H with hK_def
+  -- Step 7: K/ℚ is Galois (Normal + Separable)
+  -- Normal: fixedField of normal subgroup is a normal extension (Galois correspondence)
+  haveI : Normal ℚ ↥K :=
+    sorry -- Needs: IntermediateField.fixedField of normal subgroup is normal
+  haveI : Algebra.IsSeparable ℚ ↥K := inferInstance
+  haveI : IsGalois ℚ ↥K := IsGalois.mk
+  -- Step 8: Compute |H| = (p-1)/n
+  have hH_card : Nat.card ↥H = (p - 1) / n := by
+    -- |H| = |zpowers(σ)| = orderOf(σ)
+    rw [Nat.card_zpowers]
+    -- orderOf(σ) = orderOf(g^n) (iso preserves order)
+    have h_ord_eq : orderOf σ = orderOf (g ^ n) :=
+      MulEquiv.orderOf_eq iso.symm (g ^ n)
+    -- orderOf(g^n) = orderOf(g) / gcd(orderOf(g), n)
+    have h_ord_pow : orderOf (g ^ n) = orderOf g / Nat.gcd (orderOf g) n :=
+      orderOf_pow' g (Nat.pos_iff_ne_zero.mp hn)
+    -- orderOf(g) = p - 1
+    have h_ord_g : orderOf g = p - 1 := by
+      rw [orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card,
+          ZMod.card_units_eq_totient, Nat.totient_prime hp]
+    -- gcd(p-1, n) = n since n | (p-1)
+    have h_gcd : Nat.gcd (p - 1) n = n := by
+      rw [Nat.gcd_comm]; exact Nat.gcd_eq_left hdvd
+    rw [h_ord_eq, h_ord_pow, h_ord_g, h_gcd]
+  -- Step 9: [K:ℚ] = n via tower law
+  have hK_degree : Module.finrank ℚ ↥K = n := by
+    -- Tower law: [K:ℚ] · [E:K] = [E:ℚ]
+    have htower := Module.finrank_mul_finrank ℚ ↥K E
+    -- [E:ℚ] = p - 1
+    have hE_fr : Module.finrank ℚ E = p - 1 := by
+      have h1 : Nat.card (E ≃ₐ[ℚ] E) = Module.finrank ℚ E :=
+        IsGalois.card_aut_eq_finrank ℚ E
+      have h2 : Fintype.card (E ≃ₐ[ℚ] E) = p - 1 :=
+        prime_cyclotomic_galois_card p
+      rw [← Nat.card_eq_fintype_card] at h2; linarith
+    -- [E:K] = |H| (Artin's lemma)
+    have hEK : Module.finrank ↥K E = Nat.card ↥H :=
+      IntermediateField.finrank_fixedField_eq_card H
+    -- htower : finrank ℚ K * ((p-1)/n) = p - 1
+    rw [hEK, hH_card, hE_fr] at htower
+    -- Cancel (p-1)/n (which is positive) from both sides
+    have hp_pos : 0 < p - 1 := by have := hp.one_lt; omega
+    have h_pos : (p - 1) / n ≠ 0 :=
+      Nat.pos_iff_ne_zero.mp (Nat.div_pos (Nat.le_of_dvd hp_pos hdvd) hn)
+    exact mul_right_cancel₀ h_pos (htower.trans (Nat.mul_div_cancel' hdvd).symm)
+  -- Step 10: IsCyclic — quotient of cyclic Galois group is cyclic
+  have hK_cyclic : IsCyclic (↥K ≃ₐ[ℚ] ↥K) :=
+    sorry -- Needs: Gal(K/ℚ) ≅ Gal(E/ℚ)/H, quotient of cyclic is cyclic
+  -- Step 11: |Gal(K/ℚ)| = n
+  have hK_card : Fintype.card (↥K ≃ₐ[ℚ] ↥K) = n := by
+    rw [← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank ℚ ↥K]; exact hK_degree
+  exact ⟨↥K, inferInstance, inferInstance, inferInstance, inferInstance, hK_cyclic, hK_card⟩
 
 -- ============================================================================
 -- Part XIII: (ℤ/nℤ)ˣ Realizability Bridge
