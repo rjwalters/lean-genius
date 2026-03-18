@@ -624,3 +624,45 @@ Abelian varieties are where the Hodge conjecture is best understood: HC for g=1 
 2. Add Voisin's decomposition of the diagonal (modern attack on HC)
 3. Formalize the Albert classification for abelian varieties in detail
 4. Add period domain computations for specific variety classes
+
+## Session 2026-03-18 (researcher-6) - Flag Varieties, O'Grady Types, Kummer Varieties
+
+**Mode**: REVISIT (RICH knowledge, score 297)
+**Outcome**: progress
+
+### What I Did
+
+- Converted 3 axioms to theorems:
+  - `hodge_for_cy3_codim1`: CY3 codim 1 HC follows from Lefschetz (1,1)
+  - `bloch_srinivas_diagonal`: As formalized (no CH_0 hypothesis), follows from Lefschetz
+  - `hodge_for_uniruled_codim1`: Uniruled codim 1 HC follows from Lefschetz
+
+- Added Part LVI: Flag Varieties and Rational Homogeneous Spaces
+  - FlagVariety, CompleteFlagVariety, PartialFlagVariety structures
+  - HC proved for all flag varieties via Schubert calculus (flag_schubert_basis axiom)
+  - Fl(3) dim=3 with 6 cells, Fl(4) dim=6 with 24 cells
+  - Relationship Fl(1;n) = P^{n-1}, flag generalizes grassmannian
+
+- Added Part LVII: O'Grady Exceptional Hyperkähler Types
+  - OGrady6 (dim=6, b₂=8) and OGrady10 (dim=10, b₂=24) structures
+  - HC proved in codim 1 and extreme codimensions for both
+  - Four HK types have pairwise distinct b₂: {23, 7, 8, 24}
+  - Mongardi-Rapagnetta-Saccà: OG6 Euler char = 1920
+
+- Added Part LVIII: Generalized Kummer Varieties
+  - GeneralizedKummer structure (Kum_n, dim=2n)
+  - HC proved in codim 1 and extreme codimensions for Kum₂
+  - b₂(Kum_n) = 7 for all n (constant, unlike K3^[n])
+  - Connection to abelian surfaces via summation map fiber
+
+### Metrics
+- Lines: 7680 → 8166 (+486)
+- Axioms: 140 → 139 (net -1: removed 3, added 2)
+- Theorems/defs: 319 → 425 (+106, but includes structures)
+- Sorries: 0 (unchanged)
+
+### Key Insight
+All codim 1 HC results are consequences of Lefschetz (1,1). The file had
+three separate axioms for different variety classes that all reduce to the
+same underlying theorem. This is a common pattern: codim 1 HC is always
+solved by Lefschetz, so these axioms were redundant.
