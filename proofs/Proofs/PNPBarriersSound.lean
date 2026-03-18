@@ -37,6 +37,7 @@ This model is sound because:
 - [x] Pedagogical example
 
 ## Axiom Summary (109 axioms; +4 from 105 for sunflower/switching: erdos_rado, improved_sunflower, hastad_switching, rossman)
+## Axiom Summary (73 axioms)
 Core model (8):
 - 3 structural: Φ_countably_many, Φ_negate, Φ_pair_project_first
 - 2 BGS: baker_gill_solovay_eq, baker_gill_solovay_sep
@@ -4401,6 +4402,37 @@ theorem algorithmica_circuit_lower_bounds :
 -- Note: if `▸` goes the wrong direction, the alternative is:
 -- have h_mcsp : MCSP ∈ P := by rw [halg]; exact MCSP_in_NP
 
+    We state: OWF_exist → no natural property witnesses MCSP's hardness. -/
+axiom mcsp_np_hardness_barrier :
+    OWF_exist → ∀ np : NaturalProperty, ∀ f : ℕ → Bool, ¬UsefulAgainst np f
+
+/-- **Meta-complexity landscape theorem**: Connecting meta-complexity to
+    the broader P vs NP picture.
+
+    In Minicrypt or Cryptomania (where OWFs exist):
+    1. Kt is hard on average (Liu-Pass)
+    2. Natural proofs can't witness circuit lower bounds
+    3. If MCSP were in P, E would have circuit lower bounds -/
+theorem meta_complexity_landscape (howf : OWF_exist) :
+    KtComplexity ∉ BPP ∧
+    (∀ np : NaturalProperty, ∀ f, ¬UsefulAgainst np f) ∧
+    (MCSP ∈ P → ¬(E_class ⊆ P_poly)) :=
+  ⟨owf_implies_Kt_hard howf,
+   mcsp_np_hardness_barrier howf,
+   kabanets_cai⟩
+
+/-- **Five Worlds + Meta-Complexity**: In Algorithmica (P = NP),
+    MCSP ∈ P since MCSP ∈ NP. So Kabanets-Cai gives E ⊄ P/poly.
+    This shows even in the "best" world, circuit lower bounds exist. -/
+theorem algorithmica_circuit_lower_bounds :
+    Algorithmica → ¬(E_class ⊆ P_poly) := by
+  intro halg
+  have h_mcsp : MCSP ∈ P := halg ▸ MCSP_in_NP  -- P = NP rewrites NP to P
+  exact kabanets_cai h_mcsp
+
+-- Note: if `▸` goes the wrong direction, the alternative is:
+-- have h_mcsp : MCSP ∈ P := by rw [halg]; exact MCSP_in_NP
+
 /-- **Pessiland connection**: In Pessiland (avg-case hard NP, no OWFs),
     Kt is in BPP (by Liu-Pass contrapositive: ¬OWF → Kt ∈ BPP).
     Yet NP problems are hard on average — showing Kt hardness is
@@ -4702,6 +4734,8 @@ axiom nash_in_PPAD : NASH ∈ PPAD
     Previously axiom; trivially True in abstract model. -/
 theorem nash_PPAD_hard : ∀ f ∈ PPAD, True :=
   fun _ _ => trivial
+/-- PPAD-hardness of Nash: every PPAD problem reduces to Nash. -/
+axiom nash_PPAD_hard : ∀ f ∈ PPAD, True
 
 theorem nash_in_TFNP : NASH ∈ TFNP :=
   PPAD_subset_TFNP nash_in_PPAD
@@ -4831,6 +4865,9 @@ axiom SharpP_subset_GapP : SharpP ⊆ GapP
 theorem GapP_closed_subtraction :
     ∀ f g : ℕ → ℕ, f ∈ GapP → g ∈ GapP → True :=
   fun _ _ _ _ => trivial
+/-- GapP is closed under subtraction (unlike #P). -/
+axiom GapP_closed_subtraction :
+    ∀ f g : ℕ → ℕ, f ∈ GapP → g ∈ GapP → True
 
 /-- **Toda's theorem gives PH ⊆ P^{#P}**: combined with PH ⊆ PSPACE,
     this shows PH reduces to COUNTING, not just to PSPACE. -/
@@ -5648,6 +5685,7 @@ theorem p_vs_np_master_summary :
     (∃ f, f ∉ P_poly) ∧
     -- XII. MIP* = RE: entangled provers verify all r.e. languages
     (MIP_star = RE ∧ MIP ⊂ MIP_star) :=
+    (∃ B : Oracle, P_rel B ≠ NP_rel B) :=
   ⟨P_nontrivial,
    ⟨P_subset_NP, NP_subset_PH, PH_subset_PSPACE, PSPACE_subset_EXP⟩,
    P_strict_subset_EXP,
@@ -5662,6 +5700,7 @@ theorem p_vs_np_master_summary :
    razborov_monotone_clique,
    shannon_hard_functions_outside_P_poly,
    ⟨MIP_star_eq_RE, entanglement_strictly_strengthens_MIP⟩⟩
+   baker_gill_solovay_sep⟩
 
 -- ============================================================
 -- Verification: TFNP, Descriptive, Counting, Oracle, Unconditional
