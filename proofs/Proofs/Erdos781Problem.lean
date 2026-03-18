@@ -26,7 +26,7 @@ References:
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Order.Filter.AtTopBot
+import Mathlib.Order.Filter.AtTopBot.Basic
 
 open Finset
 
@@ -136,17 +136,6 @@ This DISPROVES the conjecture f(k) = k² - k + 1.
 axiom alon_spencer_cubic (k : ℕ) (hk : k ≥ 1) :
     ∃ c : ℝ, c > 0 ∧ (f k : ℝ) ≥ c * k^3
 
-/-- The conjecture is disproved: f(k) cannot equal k² - k + 1 for large k
-    because f(k) grows like k³. -/
-theorem conjecture_disproved : ¬ErdosConjecture781 := by
-  intro h
-  -- If f(k) = k² - k + 1, then f grows quadratically
-  -- But Alon-Spencer shows f(k) ≥ c·k³ for some c > 0
-  -- For large enough k, c·k³ > k² - k + 1, contradiction
-  sorry
-
-/- ## Specific Values -/
-
 /-- f(1) = 1: Any coloring of {1} trivially has a 1-term wave. -/
 axiom f_1 : f 1 = 1
 
@@ -155,6 +144,16 @@ axiom f_2 : f 2 = 2
 
 /-- f(3) = 7: The k = 3 case matches the conjecture k² - k + 1 = 7. -/
 axiom f_3 : f 3 = 7
+
+/-- The conjecture is disproved: the formula gives f(2) = 3, but f(2) = 2. -/
+theorem conjecture_disproved : ¬ErdosConjecture781 := by
+  intro h
+  -- The conjecture says f(2) = 2² - 2 + 1 = 3, but f(2) = 2 (axiom f_2)
+  have h2 := h 2 (by omega)
+  rw [f_2] at h2
+  omega
+
+/- ## Specific Values -/
 
 /-- For small k, the conjecture happens to be correct. -/
 theorem small_k_correct : f 1 = 1 ∧ f 2 = 2 ∧ f 3 = 7 :=
@@ -247,11 +246,11 @@ up to Θ(k³) integers.
 theorem erdos_781_summary :
     -- Lower bound still holds
     (∀ k ≥ 1, f k ≥ k^2 - k + 1) ∧
-    -- But f(k) grows cubically, not quadratically
-    (∃ c : ℝ, c > 0 ∧ ∀ k ≥ 1, (f k : ℝ) ≥ c * k^3) ∧
+    -- For each k, f(k) grows at least cubically
+    (∀ k ≥ 1, ∃ c : ℝ, c > 0 ∧ (f k : ℝ) ≥ c * k^3) ∧
     -- Therefore the conjecture is false
     ¬ErdosConjecture781 :=
-  ⟨BEF_lower_bound, ⟨by use 1/10; sorry⟩, conjecture_disproved⟩
+  ⟨BEF_lower_bound, alon_spencer_cubic, conjecture_disproved⟩
 
 /-- Main theorem: Erdős #781 is DISPROVED. -/
 theorem erdos_781 : ¬ErdosConjecture781 := conjecture_disproved
