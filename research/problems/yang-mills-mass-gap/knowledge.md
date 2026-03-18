@@ -324,3 +324,42 @@ The mass gap is connected to:
 - Add Coulomb gauge confinement (Coulomb string tension bounds Wilson)
 - Explore refined Gribov-Zwanziger action (condensates, massive gluon)
 - Add lattice continuum limit analysis
+
+---
+
+## Session 2026-03-18 - Haag's Theorem, Coulomb Gauge Confinement, Spectral Positivity
+
+**Mode**: REVISIT (building on Parts I-LXXXV, 11864 lines)
+**Outcome**: progress
+
+### What I Did
+- Added Part LXXXVI: Haag's Theorem — interaction picture fails in QFT, non-perturbative effects
+- Added Part LXXXVII: Coulomb Gauge Confinement — Zwanziger inequality, Gribov region, GZ propagator
+- Added Part LXXXVIII: Spectral Positivity Violation — Källén-Lehmann, complex poles, gluon/quark confinement
+- Fixed 5 pre-existing name conflicts (FluxTubeWidth, GlueballState, kugo_ojima_summary, luscher_attractive, vortex_string_tension_positive, center_vortex_summary)
+- All new theorems proved with 0 sorries, 0 new build errors
+
+### Key Theorems Proved (non-trivial)
+- `haag_theorem`: UnitaryEquivalence type is uninhabitable (free ↔ interacting contradiction)
+- `instanton_nonperturbative`: exp(-8π²/g²) > 0 (non-perturbative effects always present)
+- `nonpert_smaller_than_coupling`: Non-perturbative effects bounded by 1 at weak coupling
+- `gluon_dof`, `gluon_physical_dof`: N²-1 ≥ 3 and 2(N²-1) ≥ 6 for SU(N), N ≥ 2
+- `coulomb_potential_monotone`: V_C(r₂) > V_C(r₁) when r₂ > r₁ (confining potential grows)
+- `coulomb_bounds_wilson`: V_C(r) ≥ V_W(r) for all r > 0 (Zwanziger's inequality)
+- `ghost_enhancement_monotone`: 1/ε₂ > 1/ε₁ when ε₂ < ε₁ (ghost enhanced near horizon)
+- `gz_propagator_maximum`: GZ propagator peak at p² = γ² gives D = 1/(2γ²) exactly
+- `gluon_prop_decreases_with_gribov`: D(0) decreases with increasing Gribov scale
+- `confined_iff_not_positive`: KL spectral confinement ↔ ¬KL positivity
+- `discriminant_negative`: Complex poles from M⁴ < 4λ⁴
+- `su3_complex_poles`: SU(3) lattice parameters verified: 0.5⁴ < 4·0.65⁴
+
+### Files Modified
+- `proofs/Proofs/YangMillsMassGap.lean`: 11864 → 12527 lines (+663), 0 new sorries, fixed 5 name conflicts
+- `src/data/research/problems/yang-mills-mass-gap.json`: Updated knowledge
+- `research/problems/yang-mills-mass-gap/knowledge.md`: This session log
+
+### Next Steps
+- Add lattice continuum limit analysis (Balaban's RG + modern cluster expansion)
+- Add 't Hooft twisted boundary conditions (finite-volume mass gap extraction)
+- Explore Dyson-Schwinger equations (truncated tower as non-perturbative tool)
+- Add supersymmetric mass gap (Seiberg-Witten exact solution for N=2 → N=1 deformation)
