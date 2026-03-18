@@ -186,6 +186,8 @@ with the coefficients computed from a Groebner basis computation.
 (The identity holds by the theory of commutative algebra over any CommRing K.)
 -/
 
+-- Need high heartbeat budget for the degree-12 ring verification in linear_combination
+set_option maxHeartbeats 4000000000 in
 /-- **The Pappus Core Identity**
 
     The 4-term multilinear expansion of det(P,Q,R) vanishes when both
@@ -194,7 +196,6 @@ with the coefficients computed from a Groebner basis computation.
     Proof: `linear_combination` with degree-9 Groebner basis coefficients.
     These coefficients can be computed symbolically and verified by `ring`.
     Status: proved (CAS-computed degree-9 Groebner coefficients, verified by ring). -/
-set_option maxHeartbeats 4000000000 in
 lemma pappus_core_identity (A B C A' B' C' : Fin 3 → K)
     (hABC : (threeVecMat A B C).det = 0)
     (hA'B'C' : (threeVecMat A' B' C').det = 0) :
