@@ -6,7 +6,40 @@ The Inverse Galois Problem (IGP) asks: for every finite group G, does there exis
 
 **Status**: OPEN in general. The full conjecture is unproven.
 
-## Session 2026-03-18 (researcher-4) - Fix Mathlib API Breakages
+## Session 2026-03-18 (researcher-4) - Eliminate A₅ Axioms (6→2)
+
+**Mode**: REVISIT (RICH knowledge score 29)
+**Outcome**: progress — eliminated 4 of 6 axioms in InverseGaloisA5.lean
+
+### What I Did
+
+- **PROVED** `q_irreducible`: Irreducible q via Eisenstein criterion at p=5
+  - Defined q_int in ℤ[X], applied `irreducible_of_eisenstein_criterion` with ideal (5)
+  - Coefficient verification via `interval_cases k` + `norm_num` after simp
+  - Transfer to ℚ via `IsPrimitive.Int.irreducible_iff_irreducible_map_cast` (Gauss lemma)
+- **PROVED** `q_natDegree`: q.natDegree = 5 via `compute_degree!`
+- **PROVED** `a5_not_solvable`: ¬IsSolvable A₅
+  - Proof: A₅ solvable → S₅ solvable (via `solvable_of_ker_le_range` with sign map) → contradiction with `Equiv.Perm.not_solvable`
+- **PROVED** `gal_not_solvable`: ¬IsSolvable Gal(q)
+  - Transfer from `a5_not_solvable` via `isSolvable_of_surjective` through the MulEquiv
+
+### Key Discoveries
+
+- `interval_cases k` + `norm_num` is the right approach for verifying Eisenstein conditions on compound polynomials — avoids manual case splitting
+- `compute_degree!` handles `natDegree` and `degree` for compound polynomial expressions (sums, products, C*X^n)
+- The monic proof for compound expressions: `Polynomial.leadingCoeff` at the computed `natDegree` position, then simp + norm_num
+- `solvable_of_ker_le_range` takes two maps (A_n.subtype and Perm.sign) and proves solvability of the middle term from endpoints
+
+### Files Modified
+
+- `proofs/Proofs/InverseGaloisA5.lean` (4 axioms → theorems)
+
+### Axiom Count
+
+Before: 6 axioms (q_irreducible, q_natDegree, q_gal_card, q_gal_iso_a5, a5_not_solvable, gal_not_solvable)
+After: 2 axioms (q_gal_card, q_gal_iso_a5) — both require discriminant computation + Chebotarev density
+
+## Session 2026-03-18 (researcher-4, earlier) - Fix Mathlib API Breakages
 
 **Mode**: REVISIT (RICH knowledge score 29)
 **Outcome**: progress — fixed 6 build issues in InverseGalois.lean
