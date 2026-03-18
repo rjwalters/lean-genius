@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: NavierStokes.lean at ~13,380 lines (Part LXXVII added). Companion at ~890 lines (Sections 41-45). Part LXXVII adds proved interpolation and convexity results: Young with epsilon (denominator-free form), weighted power means, Serrin curve convexity, absorbing inequalities, Gronwall building blocks, Newton/Cayley-Hamilton for trace-free 3x3, energy-enstrophy interpolation exponents, sharp Cauchy-Schwarz constants, trace-free reverse C-S, dimensional analysis, and vorticity-strain depletion bounds. 0 new errors introduced.",
+    "progressSummary": "PROGRESS: NavierStokes.lean at ~13,700 lines (Part LXXVIII added). Companion at ~960 lines (Sections 46-50). Part LXXVIII adds proved cross product algebra: componentwise definitions, anticommutativity, perpendicularity (a·(a×b)=0), Lagrange identity (|a×b|²=|a|²|b|²-(a·b)²), Cauchy-Schwarz derived from Lagrange, scalar triple product cyclic/antisymmetry, BAC-CAB vector triple product, Jacobi identity (so(3) Lie algebra), Lamb vector bounds, helicity-Lamb decomposition, Beltrami zero-Lamb characterization, and depletion of nonlinearity bounds. 0 new errors introduced.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO⁻¹ well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
@@ -80,7 +80,9 @@
       "Part LXXVI: Quantitative Estimates — proved strain tensor algebra (trace-free eigenvalues), energy estimate bounds (dissipation sign, Poincaré decay, attracting set), scaling dimension analysis (critical/sub/supercritical), GNS exponent verification (Ladyzhenskaya, Sobolev, Morrey), heat semigroup smoothing exponents, fundamental 2D-vs-3D gap analysis",
       "NavierStokesAristotle.lean: Sections 36-40 (strain algebra, 3D Cauchy-Schwarz, energy bounds, scaling dimensions, heat smoothing, Grönwall bound)",
       "Part LXXVII: Interpolation Inequalities and Convexity — proved Young with ε (denominator-free via mul_inv_cancel), weighted power mean (convexity of x²), three-point convexity, Jensen for squares, Serrin curve convexity (affine in reciprocal space), absorbing inequalities (remaining dissipation ν/2), Grönwall building blocks (exp ≥ 1+x, quadratic blowup time), Newton identity and Cayley-Hamilton for trace-free 3×3, energy-enstrophy interpolation (2D linear vs 3D superlinear), sharp C-S constants, trace-free reverse C-S (σ₂²+σ₃² ≥ σ₁²/2), Kolmogorov dimensional analysis, vorticity-strain depletion bound",
-      "NavierStokesAristotle.lean: Sections 41-45 (Young/absorbing, Serrin curve, trace-free algebra, Jensen/convexity, vorticity-strain bounds)"
+      "NavierStokesAristotle.lean: Sections 41-45 (Young/absorbing, Serrin curve, trace-free algebra, Jensen/convexity, vorticity-strain bounds)",
+      "Part LXXVIII: Cross product algebra — Lagrange identity, BAC-CAB rule, Jacobi identity, Lamb vector bounds, helicity-Lamb decomposition, Beltrami depletion, Cauchy-Schwarz from Lagrange",
+      "NavierStokesAristotle.lean: Sections 46-50 (cross product algebra, Lagrange identity, scalar triple product, Jacobi identity, Beltrami/Lamb bounds)"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u·∇)u, not just energy/scaling/div-free properties",
@@ -141,7 +143,9 @@
       "Fixed duplicate end NavierStokesRegularity namespace bug in the original file",
       "Young inequality with ε requires denominator-free formulation in Lean 4: state as 2ab ≤ ca² + c⁻¹b² to avoid field_simp/nlinarith issues with b²/(4ε)",
       "Serrin curve is affine (not convex) in (1/p, 1/q) space — convex combinations of Serrin pairs remain Serrin pairs, making interpolation theory straightforward",
-      "The depletion bound (stretching ≤ σ₁·|ω|²) shows that NS nonlinearity is ALWAYS bounded by the maximum strain times total enstrophy — alignment with intermediate eigenvalue σ₂ gives strictly less"
+      "The depletion bound (stretching ≤ σ₁·|ω|²) shows that NS nonlinearity is ALWAYS bounded by the maximum strain times total enstrophy — alignment with intermediate eigenvalue σ₂ gives strictly less",
+      "Lagrange identity |a×b|² = |a|²|b|² - (a·b)² provides direct derivation of Cauchy-Schwarz, and bounds the Lamb vector: |ω×u|² = |ω|²|u|² - (ω·u)² where (ω·u) is helicity density",
+      "Jacobi identity for cross products (Lie algebra so(3) structure) constrains how vorticity, velocity, and strain interact — three nested vector identities all zero"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
@@ -169,7 +173,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-18T08:55:00.000Z",
+  "lastUpdate": "2026-03-18T13:58:00.000Z",
   "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1

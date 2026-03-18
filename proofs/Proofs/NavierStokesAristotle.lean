@@ -891,4 +891,79 @@ theorem four_fifths : -(4 : ℚ) / 5 = -4 / 5 := by norm_num
 /-- Reynolds number: 3/4 + 1/4 = 1 (Kolmogorov scaling consistency). -/
 theorem reynolds_scaling : (3 : ℚ) / 4 + 1 / 4 = 1 := by norm_num
 
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 46: Cross Product Algebra
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Cross product anticommutativity: (a×b)₃ = -(b×a)₃. -/
+theorem cross3_anti' (a₁ a₂ b₁ b₂ : ℝ) :
+    a₁ * b₂ - a₂ * b₁ = -(b₁ * a₂ - b₂ * a₁) := by ring
+
+/-- Self cross product vanishes: (a×a)₁ = 0. -/
+theorem cross_self_1 (a₂ a₃ : ℝ) : a₂ * a₃ - a₃ * a₂ = 0 := by ring
+
+/-- Perpendicularity: a·(a×b) = 0 in ℝ³. -/
+theorem cross_perp (a₁ a₂ a₃ b₁ b₂ b₃ : ℝ) :
+    a₁ * (a₂ * b₃ - a₃ * b₂) + a₂ * (a₃ * b₁ - a₁ * b₃) +
+    a₃ * (a₁ * b₂ - a₂ * b₁) = 0 := by ring
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 47: Lagrange Identity
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Lagrange identity: |a×b|² = |a|²|b|² - (a·b)². -/
+theorem lagrange_id (a₁ a₂ a₃ b₁ b₂ b₃ : ℝ) :
+    (a₂ * b₃ - a₃ * b₂) ^ 2 + (a₃ * b₁ - a₁ * b₃) ^ 2 + (a₁ * b₂ - a₂ * b₁) ^ 2 =
+    (a₁^2 + a₂^2 + a₃^2) * (b₁^2 + b₂^2 + b₃^2) -
+    (a₁*b₁ + a₂*b₂ + a₃*b₃) ^ 2 := by ring
+
+/-- Cauchy-Schwarz from Lagrange: (a·b)² ≤ |a|²|b|². -/
+theorem cs_from_lagrange (a₁ a₂ a₃ b₁ b₂ b₃ : ℝ) :
+    (a₁*b₁ + a₂*b₂ + a₃*b₃) ^ 2 ≤
+    (a₁^2 + a₂^2 + a₃^2) * (b₁^2 + b₂^2 + b₃^2) := by
+  nlinarith [sq_nonneg (a₂*b₃ - a₃*b₂), sq_nonneg (a₃*b₁ - a₁*b₃),
+             sq_nonneg (a₁*b₂ - a₂*b₁)]
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 48: Scalar Triple Product
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Scalar triple product is cyclic: a·(b×c) = b·(c×a). -/
+theorem triple_cyclic (a₁ a₂ a₃ b₁ b₂ b₃ c₁ c₂ c₃ : ℝ) :
+    a₁*(b₂*c₃ - b₃*c₂) + a₂*(b₃*c₁ - b₁*c₃) + a₃*(b₁*c₂ - b₂*c₁) =
+    b₁*(c₂*a₃ - c₃*a₂) + b₂*(c₃*a₁ - c₁*a₃) + b₃*(c₁*a₂ - c₂*a₁) := by ring
+
+/-- Scalar triple product with repeated vector vanishes. -/
+theorem triple_degenerate (a₁ a₂ a₃ b₁ b₂ b₃ : ℝ) :
+    a₁*(a₂*b₃ - a₃*b₂) + a₂*(a₃*b₁ - a₁*b₃) + a₃*(a₁*b₂ - a₂*b₁) = 0 := by ring
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 49: Jacobi Identity
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Jacobi identity, component 3: (a×(b×c))₃ + (b×(c×a))₃ + (c×(a×b))₃ = 0.
+    Using correct formula: (a×d)₃ = a₁d₂ - a₂d₁ where d = b×c. -/
+theorem jacobi_3' (a₁ a₂ a₃ b₁ b₂ b₃ c₁ c₂ c₃ : ℝ) :
+    (a₁*(b₃*c₁ - b₁*c₃) - a₂*(b₂*c₃ - b₃*c₂)) +
+    (b₁*(c₃*a₁ - c₁*a₃) - b₂*(c₂*a₃ - c₃*a₂)) +
+    (c₁*(a₃*b₁ - a₁*b₃) - c₂*(a₂*b₃ - a₃*b₂)) = 0 := by ring
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 50: Beltrami and Lamb Vector
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Beltrami flow: if ω = κu, then (ω×u)₁ = 0. -/
+theorem beltrami_1 (κ u₁ u₂ u₃ : ℝ) :
+    (κ*u₂) * u₃ - (κ*u₃) * u₂ = 0 := by ring
+
+/-- Beltrami flow: if ω = κu, then (ω×u)₂ = 0. -/
+theorem beltrami_2 (κ u₁ u₂ u₃ : ℝ) :
+    (κ*u₃) * u₁ - (κ*u₁) * u₃ = 0 := by ring
+
+/-- Lamb vector bound: |ω×u|² ≤ |ω|²|u|² (from Lagrange + CS). -/
+theorem lamb_bound (ω₁ ω₂ ω₃ u₁ u₂ u₃ : ℝ) :
+    (ω₂*u₃ - ω₃*u₂)^2 + (ω₃*u₁ - ω₁*u₃)^2 + (ω₁*u₂ - ω₂*u₁)^2 ≤
+    (ω₁^2 + ω₂^2 + ω₃^2) * (u₁^2 + u₂^2 + u₃^2) := by
+  nlinarith [sq_nonneg (ω₁*u₁ + ω₂*u₂ + ω₃*u₃)]
+
 end NavierStokesAristotle

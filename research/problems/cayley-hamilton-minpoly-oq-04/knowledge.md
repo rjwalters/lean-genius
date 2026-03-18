@@ -83,14 +83,16 @@ For the backward direction, the direct polynomial approach works for infinite fi
   - `nonderogatory_iff_natDegree_eq` - degree characterization
   - `derogatory_iff_natDegree_lt` - derogatory characterization
 
-- `proofs/Proofs/CayleyHamiltonMinpolyOQ04Backward.lean` (6 sorries, 0 axioms)
+- `proofs/Proofs/CayleyHamiltonMinpolyOQ04Backward.lean` (3 sorries, 0 axioms)
   - `not_union_proper_subspaces` - PROVED: union avoidance for infinite fields
   - `aeval_ne_zero_of_ne_zero` - PROVED: nonzero poly → nonzero matrix
   - `exists_mulVec_ne_zero` - PROVED: nonzero matrix has vector outside kernel
-  - `powers_linearIndependent` - framework proved, 3 helper sorries
-  - `isCyclicVector_of_linearIndependent` - 1 sorry
-  - `nonderogatory_has_cyclic_vector_infinite` - main theorem, 1 sorry (wiring)
-  - `nilpotent_krylov_independent` - 1 sorry
+  - `powers_linearIndependent` - FULLY PROVED (coefficient extraction via C_mul_X_pow_eq_monomial + coeff_monomial; degree bound via natDegree_C_mul_X_pow_le + Finset.sup_lt_iff)
+  - `isCyclicVector_of_linearIndependent` - 1 sorry (needs polynomial → matrix sum → mulVec distribution)
+  - `nonderogatory_has_cyclic_vector_infinite` - main theorem, 1 sorry (wiring: kernel lattice + union avoidance)
+  - `nilpotent_krylov_independent` - 1 sorry (descending induction extracting coefficients via N^{n-1-j})
+
+  Session 2026-03-18 (researcher-5): Eliminated 2 sorries in powers_linearIndependent
 
 - `proofs/Proofs/CayleyHamiltonMinpolyOQ04BackwardAristotle.lean`
   - Aristotle companion file with 5 routine lemmas for automated proof search
