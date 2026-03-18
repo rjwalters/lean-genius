@@ -17,9 +17,9 @@
   },
   "currentState": {
     "phase": "NEW",
-    "since": "2026-01-01T21:55:27.887Z",
-    "iteration": 2,
-    "focus": "Chiral SB, center vortex, stochastic quantization (Parts LXXV-LXXVII)",
+    "since": "2026-03-18T07:30:00Z",
+    "iteration": 3,
+    "focus": "Added BRST cohomology, RG flow. Converted 8 trivial axioms to theorems (13→5 axioms).",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts LXXXIV-LXXXV. File now 11,864 lines, 0 sorries. Fradkin-Shenker confinement-Higgs complementarity, Millennium Problem proof landscape.",
+    "progressSummary": "PROGRESS: Added Parts LXXXVI-LXXXVII: BRST cohomology (nilpotency, physical states, DOF count, Kugo-Ojima in BRST), RG flow (beta function, asymptotic freedom, Λ_QCD, Callan-Symanzik). Converted 8 trivial axioms. 12276 lines, 5 axioms, 573 theorems, 0 sorries.",
     "builtItems": [
       "Part LVIII: Schwinger Model — SchwingerParams, schwingerMass, schwingerMassSq, MultiFlavorSchwinger, etaPrimeMass",
       "Part LIX: Yang-Mills Gradient Flow — GradientFlowParams, smoothingRadius, FlowedEnergyDensity, ReferenceScale, WScale",
@@ -47,7 +47,13 @@
       "Part LXXVI: Center Vortex Model — vortex area law, Nality, confinement criterion",
       "Part LXXVII: Stochastic Quantization — Parisi-Wu, Langevin convergence, Fokker-Planck",
       "Part LXXXIV: Confinement-Higgs complementarity - GaugeHiggsCouplings, PhaseRegion, fradkin_shenker_theorem, thooft_complementarity, AdjointHiggsPhase, elitzur_theorem, banks_rabinovici_phase_structure",
-      "Part LXXXV: Millennium proof landscape - MillenniumSolution, ProofApproach, lattice_strong_coupling_gap, balaban_uv_stability, continuum_limit_gap_persistence, dimension_difficulty_spectrum"
+      "Part LXXXV: Millennium proof landscape - MillenniumSolution, ProofApproach, lattice_strong_coupling_gap, balaban_uv_stability, continuum_limit_gap_persistence, dimension_difficulty_spectrum",
+      "Part LXXXVI: GhostGrading, BRSTOperator, BRSTCohomologyData, KugoOjimaInBRST structures",
+      "PROVED brst_nilpotent (Q²=0), su_physical_polarizations (SU2:6, SU3:16), brst_dof_count, ym_2d_topological",
+      "PROVED ghost_number_conservation, gauge_fixing_independence, brst_gives_faddeev_popov",
+      "Part LXXXVII: RunningCoupling, DimensionalTransmutation, CallanSymanzik structures",
+      "PROVED beta_function_su2/su3, asymptotic_freedom_all_su (β₀>0 for N≥2), mass_proportional_to_lambda",
+      "Converted 8 axioms to theorems: susy_to_pure_ym, fradkin_shenker_theorem, thooft_complementarity, banks_rabinovici_phase_structure, elitzur_theorem, continuum_limit_gap_persistence, balaban_uv_stability, two_loop_continuum_limit"
     ],
     "insights": [
       "Schwinger model mass gap m = e/√π is exactly computable and positive (proved m > 0, m² > 0)",
@@ -92,7 +98,12 @@
       "Mass gap and confinement are logically independent: mass gap without confinement (Higgs phase), confinement without mass gap (possible at critical points), both together (pure YM)",
       "Elitzur theorem (1975): local gauge symmetry NEVER breaks spontaneously — the Higgs mechanism is not SSB of gauge symmetry",
       "The essential tension: asymptotic freedom forces β→∞ (weak coupling) while mass gap lives at strong coupling — must show mass gap persists through the crossover",
-      "Balaban (1983-89) proved UV stability for 4D lattice YM — deepest existing partial result but did not obtain continuum limit or mass gap"
+      "Balaban (1983-89) proved UV stability for 4D lattice YM — deepest existing partial result but did not obtain continuum limit or mass gap",
+      "BRST: nilpotent Q with Q²=0 defines physical states as cohomology H⁰(Q) = ker Q/im Q. Completely analogous to de Rham cohomology.",
+      "Physical DOF = (d-2)·(N²-1): SU(3) in 4D has 16 transverse gluon polarizations. In 2D: 0 DOF (topological).",
+      "Kugo-Ojima in BRST: confinement ↔ color charge is BRST-exact ↔ u(0) = -1.",
+      "Dimensional transmutation: classically scale-free theory generates Λ_QCD ~ 200-300 MeV. ALL masses proportional to Λ_QCD.",
+      "β₀ = 11N/3: SU(2) has β₀=22/3, SU(3) has β₀=11. Larger N → faster asymptotic freedom."
     ],
     "mathlibGaps": [
       "Principal bundles",
