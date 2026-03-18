@@ -6,7 +6,7 @@
   "meta": {
     "author": "Grigori Perelman (2002-2003)",
     "date": "2003",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/PoincareConjecture.lean",
     "tags": [
       "topology",
@@ -14,8 +14,10 @@
       "millennium-prize",
       "advanced"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
+    "axiomCount": 45,
+    "assumptions": "45 axiom declarations encoding Perelman's Ricci flow surgery (finite extinction), generalized Poincare in dimensions 2, 4, and >=5 (Smale, Freedman), topological constructions (connected sum, Dehn surgery), classification results (JSJ decomposition, h/s-cobordism theorems), 3-manifold topology (Heegaard splittings, Waldhausen, Property P, prime decomposition), and counterexample structures (Poincare homology sphere, Whitehead manifold).",
     "mathlibDependencies": [
       {
         "theorem": "SimplyConnectedSpace",
