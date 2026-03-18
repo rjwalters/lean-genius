@@ -418,7 +418,6 @@ for problem_file in problems_dir.glob("*.json"):
             "started": datetime.now().isoformat(),
             "lastUpdate": datetime.now().isoformat(),
             "attemptCount": attempt_count,
-            "approachCount": 0,
             "significance": 5,
             "tractability": 5
         }

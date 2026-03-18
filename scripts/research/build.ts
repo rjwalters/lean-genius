@@ -64,7 +64,6 @@ interface ResearchListing {
   lastUpdate?: string
   completed?: string
   attemptCount: number
-  approachCount: number
   linkedProof?: string
   significance?: number
   tractability?: number
@@ -119,20 +118,6 @@ interface ResearchProblem {
     markdown?: string  // Full knowledge.md content for rich rendering
     archivedSessions?: ArchivedSession[]  // Older sessions from sessions/ directory
   }
-  approaches: {
-    id: string
-    name: string
-    status: 'active' | 'completed' | 'abandoned'
-    hypothesis: string
-    strategy: string
-    risks: string[]
-    attempts: { file: string; succeeded: boolean }[]
-    postMortem?: {
-      whatWorked: string[]
-      whatFailed: string[]
-      lessonsLearned: string[]
-    }
-  }[]
   tags: string[]
   relatedProofs: string[]
   references: {
@@ -419,56 +404,6 @@ function parseKnowledge(content: string): ResearchProblem['knowledge'] {
 }
 
 /**
- * Parse approaches directory
- */
-function parseApproaches(approachesDir: string): ResearchProblem['approaches'] {
-  if (!fs.existsSync(approachesDir)) return []
-
-  const approaches: ResearchProblem['approaches'] = []
-  const dirs = fs.readdirSync(approachesDir).filter(d => {
-    return fs.statSync(path.join(approachesDir, d)).isDirectory()
-  })
-
-  for (const dir of dirs) {
-    const approachPath = path.join(approachesDir, dir)
-    const approachMd = path.join(approachPath, 'approach.md')
-    const hypothesisMd = path.join(approachPath, 'hypothesis.md')
-
-    let content = ''
-    if (fs.existsSync(approachMd)) {
-      content = fs.readFileSync(approachMd, 'utf-8')
-    } else if (fs.existsSync(hypothesisMd)) {
-      content = fs.readFileSync(hypothesisMd, 'utf-8')
-    }
-
-    // Count attempts
-    const attemptsDir = path.join(approachPath, 'attempts')
-    const attempts: { file: string; succeeded: boolean }[] = []
-    if (fs.existsSync(attemptsDir)) {
-      const files = fs.readdirSync(attemptsDir).filter(f => f.endsWith('.lean'))
-      for (const f of files) {
-        attempts.push({ file: f, succeeded: false })
-      }
-    }
-
-    const titleMatch = content.match(/^#\s+(?:Approach \d+:\s*)?(.+)$/m)
-    const strategyMatch = content.match(/##\s*Strategy\s*\n([\s\S]*?)(?=\n##|$)/m)
-
-    approaches.push({
-      id: dir,
-      name: titleMatch?.[1]?.trim() || dir,
-      status: 'active',
-      hypothesis: '',
-      strategy: strategyMatch?.[1]?.trim() || '',
-      risks: [],
-      attempts
-    })
-  }
-
-  return approaches
-}
-
-/**
  * Read archived sessions from sessions/ subdirectory
  */
 function readArchivedSessions(sessionsDir: string): ArchivedSession[] {
@@ -563,8 +498,6 @@ function processProblem(slug: string, entry: RegistryEntry): ResearchProblem | n
     knowledge.archivedSessions = archivedSessions
   }
 
-  const approaches = parseApproaches(path.join(problemDir, 'approaches'))
-
   return {
     slug,
     title,
@@ -584,7 +517,6 @@ function processProblem(slug: string, entry: RegistryEntry): ResearchProblem | n
     },
     currentState,
     knowledge,
-    approaches,
     tags,
     relatedProofs,
     references: {
@@ -617,7 +549,6 @@ function generateListing(problem: ResearchProblem): ResearchListing {
     lastUpdate: problem.lastUpdate,
     completed: problem.completed,
     attemptCount: problem.currentState?.attemptCounts?.total ?? 0,
-    approachCount: problem.approaches?.length ?? 0,
     linkedProof: problem.linkedProof,
     significance: problem.significance,
     tractability: problem.tractability,
