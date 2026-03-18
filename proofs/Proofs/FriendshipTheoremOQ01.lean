@@ -1,0 +1,361 @@
+import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Combinatorics.SimpleGraph.Finite
+import Mathlib.Combinatorics.SimpleGraph.DegreeSum
+import Mathlib.Data.Set.Card
+import Mathlib.Data.Fintype.Card
+import Mathlib.Tactic
+
+set_option linter.unusedSectionVars false
+
+/-
+# Spectral Proof Infrastructure for the Friendship Theorem (OQ-01)
+
+The Friendship Theorem (Erdős–Rényi–Sós, 1966) states that in any finite
+graph where every pair of distinct vertices has exactly one common neighbor,
+there exists a "politician" vertex adjacent to all others.
+
+This file develops the combinatorial infrastructure underlying the spectral
+proof:
+
+1. **Unique common neighbor** extraction and properties
+2. **A² off-diagonal identity**: |N(u) ∩ N(v)| = 1 for u ≠ v
+   (Combinatorial form of (A²)ᵢⱼ = 1)
+3. **Counting identity**: n - 1 = Σ_{v ∈ N(u)} (deg(v) - 1)
+   via an explicit partition of V \ {u} into fibers
+4. **Regular friendship constraint**: n = k(k-1) + 1
+5. **Number theory**: s | s·s + 1 ⟹ s = 1
+   (Key step forcing k = 2 in the spectral argument)
+6. **Spectral framework**: axiomatized eigenvalue step + consequences
+
+The single axiom (`spectral_regular_friendship`) encapsulates the
+eigenvalue analysis: A² = (k-1)I + J forces eigenvalues ±√(k-1),
+and the trace condition forces k = 2.
+
+Status: 1 axiom (spectral eigenvalue step), 0 sorries
+-/
+
+namespace FriendshipTheoremOQ01
+
+open SimpleGraph Finset BigOperators
+
+variable {V : Type*} [Fintype V] [DecidableEq V]
+
+/-- The friendship property: every pair of distinct vertices has exactly one
+    common neighbor. -/
+def IsFriendshipGraph (G : SimpleGraph V) : Prop :=
+  ∀ u v : V, u ≠ v → (G.commonNeighbors u v).ncard = 1
+
+variable (G : SimpleGraph V) [DecidableRel G.Adj]
+
+-- ============================================================================
+-- Part I: Unique Common Neighbor
+-- ============================================================================
+
+/-- Extract the unique common neighbor of distinct vertices u and v. -/
+noncomputable def ucn (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) : V :=
+  (Set.ncard_eq_one.mp (hF u v huv)).choose
+
+/-- The common neighbor set equals the singleton {ucn}. -/
+lemma ucn_spec (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) :
+    G.commonNeighbors u v = {ucn G hF u v huv} :=
+  (Set.ncard_eq_one.mp (hF u v huv)).choose_spec
+
+/-- The ucn is adjacent to u. -/
+lemma ucn_adj_left (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) :
+    G.Adj u (ucn G hF u v huv) := by
+  have hmem : ucn G hF u v huv ∈ G.commonNeighbors u v := by
+    rw [ucn_spec G hF u v huv]; exact Set.mem_singleton _
+  rw [SimpleGraph.mem_commonNeighbors] at hmem
+  exact hmem.1
+
+/-- The ucn is adjacent to v. -/
+lemma ucn_adj_right (hF : IsFriendshipGraph G) (u v : V) (huv : u ≠ v) :
+    G.Adj v (ucn G hF u v huv) := by
+  have hmem : ucn G hF u v huv ∈ G.commonNeighbors u v := by
+    rw [ucn_spec G hF u v huv]; exact Set.mem_singleton _
+  rw [SimpleGraph.mem_commonNeighbors] at hmem
+  exact hmem.2
+
+/-- Any common neighbor of u and v must equal ucn. -/
+lemma ucn_unique (hF : IsFriendshipGraph G) (u v w : V) (huv : u ≠ v)
+    (h1 : G.Adj u w) (h2 : G.Adj v w) : w = ucn G hF u v huv := by
+  have hmem : w ∈ G.commonNeighbors u v := by
+    rw [SimpleGraph.mem_commonNeighbors]; exact ⟨h1, h2⟩
+  rw [ucn_spec G hF u v huv] at hmem
+  exact Set.mem_singleton_iff.mp hmem
+
+-- ============================================================================
+-- Part II: A² Off-Diagonal Identity
+-- ============================================================================
+
+/-- **A² off-diagonal identity**: In a friendship graph, distinct vertices u, v
+    have exactly one common neighbor (as a finset intersection).
+    This is the combinatorial form of (A²)ᵢⱼ = 1 for i ≠ j. -/
+theorem common_neighbor_finset_card (hF : IsFriendshipGraph G) (u v : V)
+    (huv : u ≠ v) :
+    (G.neighborFinset u ∩ G.neighborFinset v).card = 1 := by
+  have h := hF u v huv
+  rw [Set.ncard_eq_one] at h
+  obtain ⟨w, hw⟩ := h
+  suffices G.neighborFinset u ∩ G.neighborFinset v = {w} by
+    rw [this, card_singleton]
+  ext x
+  simp only [Finset.mem_inter, SimpleGraph.mem_neighborFinset, Finset.mem_singleton]
+  constructor
+  · intro ⟨h1, h2⟩
+    have hmem : x ∈ G.commonNeighbors u v := by
+      rw [SimpleGraph.mem_commonNeighbors]; exact ⟨h1, h2⟩
+    rw [hw] at hmem
+    exact Set.mem_singleton_iff.mp hmem
+  · intro hxw; rw [hxw]
+    have hmem : w ∈ G.commonNeighbors u v := by rw [hw]; exact Set.mem_singleton _
+    rw [SimpleGraph.mem_commonNeighbors] at hmem; exact ⟨hmem.1, hmem.2⟩
+
+-- ============================================================================
+-- Part III: Counting Identity via Partition
+-- ============================================================================
+
+/-- The neighbor fibers are pairwise disjoint: if w ∈ N(v₁)\{u} ∩ N(v₂)\{u}
+    for v₁ ≠ v₂ both in N(u), then v₁ and v₂ are both common neighbors of
+    u and w, contradicting uniqueness. -/
+lemma counting_disjoint (hF : IsFriendshipGraph G) (u : V) :
+    (G.neighborFinset u : Set V).PairwiseDisjoint
+      (fun v => (G.neighborFinset v).erase u) := by
+  intro v₁ hv₁ v₂ hv₂ hne
+  show Disjoint ((G.neighborFinset v₁).erase u) ((G.neighborFinset v₂).erase u)
+  rw [Finset.disjoint_left]
+  intro w hw₁ hw₂
+  rw [Finset.mem_erase] at hw₁ hw₂
+  have hwu : w ≠ u := hw₁.1
+  have huw : u ≠ w := fun h => hwu h.symm
+  have hadj_u_v₁ : G.Adj u v₁ := by
+    rw [← SimpleGraph.mem_neighborFinset]; exact Finset.mem_coe.mp hv₁
+  have hadj_v₁_w : G.Adj v₁ w := by
+    rw [← SimpleGraph.mem_neighborFinset]; exact hw₁.2
+  have hadj_u_v₂ : G.Adj u v₂ := by
+    rw [← SimpleGraph.mem_neighborFinset]; exact Finset.mem_coe.mp hv₂
+  have hadj_v₂_w : G.Adj v₂ w := by
+    rw [← SimpleGraph.mem_neighborFinset]; exact hw₂.2
+  have hv₁_cn : v₁ ∈ G.commonNeighbors u w := by
+    rw [SimpleGraph.mem_commonNeighbors]; exact ⟨hadj_u_v₁, G.symm hadj_v₁_w⟩
+  have hv₂_cn : v₂ ∈ G.commonNeighbors u w := by
+    rw [SimpleGraph.mem_commonNeighbors]; exact ⟨hadj_u_v₂, G.symm hadj_v₂_w⟩
+  have h1 := hF u w huw
+  rw [Set.ncard_eq_one] at h1
+  obtain ⟨z, hz⟩ := h1
+  have hv₁z : v₁ = z := Set.mem_singleton_iff.mp (hz ▸ hv₁_cn)
+  have hv₂z : v₂ = z := Set.mem_singleton_iff.mp (hz ▸ hv₂_cn)
+  exact absurd (hv₁z.trans hv₂z.symm) hne
+
+/-- The neighbor fibers cover V \ {u}: every w ≠ u has a unique common
+    neighbor with u, placing w into some fiber N(v) \ {u}. -/
+lemma counting_cover (hF : IsFriendshipGraph G) (u : V) :
+    (G.neighborFinset u).biUnion (fun v => (G.neighborFinset v).erase u) =
+      Finset.univ.erase u := by
+  ext w
+  constructor
+  · intro hw
+    rw [Finset.mem_biUnion] at hw
+    obtain ⟨_, _, hw'⟩ := hw
+    rw [Finset.mem_erase] at hw'
+    rw [Finset.mem_erase]
+    exact ⟨hw'.1, Finset.mem_univ w⟩
+  · intro hw
+    rw [Finset.mem_erase] at hw
+    have hwu : w ≠ u := hw.1
+    have huw : u ≠ w := fun h => hwu h.symm
+    have h1 := hF u w huw
+    rw [Set.ncard_eq_one] at h1
+    obtain ⟨v, hv⟩ := h1
+    have hv_mem : v ∈ G.commonNeighbors u w := hv ▸ Set.mem_singleton v
+    rw [SimpleGraph.mem_commonNeighbors] at hv_mem
+    rw [Finset.mem_biUnion]
+    refine ⟨v, ?_, ?_⟩
+    · rw [SimpleGraph.mem_neighborFinset]; exact hv_mem.1
+    · rw [Finset.mem_erase]
+      exact ⟨hwu, by rw [SimpleGraph.mem_neighborFinset]; exact G.symm hv_mem.2⟩
+
+/-- **Counting Identity (Partition Form)**: The vertices V \ {u} partition
+    into fibers N(v) \ {u} indexed by neighbors v of u. Therefore:
+
+    |V \ {u}| = Σ_{v ∈ N(u)} |N(v) \ {u}|
+
+    Equivalently: n - 1 = Σ_{v ∈ N(u)} (deg(v) - 1).
+
+    This is the combinatorial backbone of the spectral proof. For k-regular
+    friendship graphs, it yields n = k(k-1) + 1. -/
+theorem counting_identity (hF : IsFriendshipGraph G) (u : V) :
+    (Finset.univ.erase u).card =
+      ∑ v ∈ G.neighborFinset u, ((G.neighborFinset v).erase u).card := by
+  rw [← counting_cover G hF u, Finset.card_biUnion (counting_disjoint G hF u)]
+
+-- ============================================================================
+-- Part IV: Regular Friendship Graph Constraint
+-- ============================================================================
+
+/-- **Regular friendship constraint**: In a k-regular friendship graph,
+    n = k(k-1) + 1.
+
+    Proof: By the counting identity, n - 1 = Σ_{v ∈ N(u)} (deg(v) - 1).
+    With deg(v) = k for all v, each fiber has size k - 1 and there are k fibers,
+    giving n - 1 = k · (k - 1).
+
+    This is equivalent to the matrix identity A² = (k-1)I + J when combined
+    with A² diagonal = degree. -/
+theorem regular_friendship_card (hF : IsFriendshipGraph G) (u : V)
+    (k : ℕ) (hreg : ∀ v : V, G.degree v = k) (hk : k ≥ 1) :
+    Fintype.card V = k * (k - 1) + 1 := by
+  have hcount := counting_identity G hF u
+  rw [Finset.card_erase_of_mem (Finset.mem_univ u), Finset.card_univ] at hcount
+  -- Each fiber N(v) \ {u} has card = k - 1
+  have h_fiber : ∀ v ∈ G.neighborFinset u,
+      ((G.neighborFinset v).erase u).card = k - 1 := by
+    intro v hv
+    have hadj : G.Adj u v := by rw [SimpleGraph.mem_neighborFinset] at hv; exact hv
+    have hu_in : u ∈ G.neighborFinset v := by
+      rw [SimpleGraph.mem_neighborFinset]; exact G.symm hadj
+    rw [Finset.card_erase_of_mem hu_in]
+    have hk_v := hreg v
+    rw [SimpleGraph.degree] at hk_v
+    omega
+  rw [Finset.sum_const_nat h_fiber] at hcount
+  have hdeg : (G.neighborFinset u).card = k := by
+    have := hreg u; rwa [SimpleGraph.degree] at this
+  rw [hdeg] at hcount
+  have hcard_pos : Fintype.card V ≥ 1 := Fintype.card_pos_iff.mpr ⟨u⟩
+  omega
+
+-- ============================================================================
+-- Part V: Number Theory
+-- ============================================================================
+
+/-- **Key number theory lemma**: If s ≥ 1 and s divides s·s + 1, then s = 1.
+
+    This is the final step of the spectral argument: the trace condition
+    forces s | (s² + 1) where s = √(k-1), and this lemma forces s = 1,
+    giving k = 2 and n = 3. -/
+theorem dvd_sq_add_one_imp_one (s : ℕ) (hs : s ≥ 1) (h : s ∣ s * s + 1) :
+    s = 1 := by
+  obtain ⟨c, hc⟩ := h
+  -- hc : s * s + 1 = s * c
+  -- In ℤ: s * (c - s) = 1, forcing s = 1
+  have hc1 : c ≥ 1 := by nlinarith
+  have key : (s : ℤ) * ((c : ℤ) - s) = 1 := by push_cast at hc ⊢; linarith
+  have hle : (s : ℤ) ≤ 1 := by
+    by_contra hgt; push_neg at hgt
+    have hcs : (c : ℤ) - s ≥ 1 := by
+      by_contra hlt; push_neg at hlt; nlinarith
+    nlinarith
+  omega
+
+-- ============================================================================
+-- Part VI: Spectral Framework
+-- ============================================================================
+
+/-- **Spectral eigenvalue axiom**: In a k-regular friendship graph (k ≥ 2),
+    the adjacency matrix A satisfies A² = (k-1)I + J.
+
+    Eigenvalue analysis:
+    - The all-ones vector 𝟙 is an eigenvector: A𝟙 = k𝟙
+    - For v ⊥ 𝟙: A²v = (k-1)v, so eigenvalues are ±√(k-1)
+    - trace(A) = 0 gives: k + (m₊ - m₋)·√(k-1) = 0
+    - For √(k-1) irrational: m₊ = m₋ and k = 0, contradiction
+    - So k-1 = s² for some s ≥ 1, and (m₊ - m₋) = -(s²+1)/s
+    - For this to be an integer: s | (s²+1), forcing s = 1 by
+      `dvd_sq_add_one_imp_one`
+    - Therefore k = 2
+
+    This axiom encapsulates the linear algebra (eigenvalues, trace,
+    orthogonality) that is not yet available for SimpleGraph in Mathlib. -/
+axiom spectral_regular_friendship (hF : IsFriendshipGraph G)
+    (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
+    k = 2
+
+/-- A k-regular friendship graph has exactly 3 vertices (must be K₃). -/
+theorem regular_friendship_is_triangle (hF : IsFriendshipGraph G)
+    (u : V) (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
+    Fintype.card V = 3 := by
+  have hk2 := spectral_regular_friendship G hF k hk hreg
+  have hcard := regular_friendship_card G hF u k hreg (by omega)
+  subst hk2; omega
+
+/-- A k-regular friendship graph has a universal vertex.
+    Since k = 2 and n = 3, every vertex has degree n - 1,
+    making it adjacent to all others. -/
+theorem regular_friendship_has_universal (hF : IsFriendshipGraph G)
+    (u : V) (k : ℕ) (hk : k ≥ 2) (hreg : ∀ v : V, G.degree v = k) :
+    ∃ c : V, ∀ v : V, v ≠ c → G.Adj c v := by
+  have hk2 := spectral_regular_friendship G hF k hk hreg
+  have hn := regular_friendship_is_triangle G hF u k hk hreg
+  refine ⟨u, fun v hvu => ?_⟩
+  have hdc : (G.neighborFinset u).card = Fintype.card V - 1 := by
+    rw [← SimpleGraph.degree, hreg u, hk2, hn]
+  have hsub : G.neighborFinset u ⊆ Finset.univ.erase u := by
+    intro x hx
+    simp only [Finset.mem_erase, Finset.mem_univ, and_true]
+    intro heq
+    rw [SimpleGraph.mem_neighborFinset, heq] at hx
+    exact absurd hx (G.loopless u)
+  have heq : G.neighborFinset u = Finset.univ.erase u :=
+    Finset.eq_of_subset_of_card_le hsub (by
+      rw [Finset.card_erase_of_mem (Finset.mem_univ u), Finset.card_univ]; omega)
+  have hv_mem : v ∈ G.neighborFinset u := by
+    rw [heq, Finset.mem_erase]; exact ⟨hvu, Finset.mem_univ v⟩
+  rw [SimpleGraph.mem_neighborFinset] at hv_mem
+  exact hv_mem
+
+-- ============================================================================
+-- Part VII: Summary
+-- ============================================================================
+
+/-
+## What This File Proves
+
+| Result | Type | Description |
+|--------|------|-------------|
+| `ucn` | def | Unique common neighbor extraction |
+| `ucn_spec` | lemma | commonNeighbors = {ucn} |
+| `ucn_adj_left/right` | lemma | ucn is adjacent to both vertices |
+| `ucn_unique` | lemma | Any common neighbor equals ucn |
+| `common_neighbor_finset_card` | theorem | |N(u) ∩ N(v)| = 1 (A² identity) |
+| `counting_disjoint` | lemma | Partition fibers are disjoint |
+| `counting_cover` | lemma | Partition fibers cover V \ {u} |
+| `counting_identity` | theorem | n-1 = Σ (deg(v)-1) over N(u) |
+| `regular_friendship_card` | theorem | n = k(k-1)+1 for k-regular |
+| `dvd_sq_add_one_imp_one` | theorem | s | s²+1 ⟹ s = 1 |
+| `spectral_regular_friendship` | **axiom** | Eigenvalue analysis ⟹ k = 2 |
+| `regular_friendship_is_triangle` | theorem | k-regular friendship ⟹ n = 3 |
+| `regular_friendship_has_universal` | theorem | k-regular friendship ⟹ universal vertex |
+
+## Remaining Work to Eliminate the Axiom
+
+The axiom `spectral_regular_friendship` can be eliminated by formalizing:
+
+1. **Adjacency matrix definition** for SimpleGraph (not yet in Mathlib v4.26)
+2. **A² = (k-1)I + J** from `common_neighbor_finset_card` + diagonal identity
+3. **Eigenvalue decomposition** of a real symmetric matrix
+4. **Trace computation**: tr(A) = 0 (no self-loops)
+5. **Eigenvalue constraint**: λ² = k-1 for eigenvectors ⊥ 𝟙
+6. **Rationality**: √(k-1) must be rational for integer multiplicities
+7. **Application of `dvd_sq_add_one_imp_one`** to conclude k = 2
+
+Steps 1-6 require Mathlib's linear algebra (eigenvalues of real symmetric
+matrices, trace, orthogonal decomposition). Step 7 is proved here.
+
+## Connection to FriendshipTheorem.lean
+
+This file provides the infrastructure to eliminate the axiom
+`friendship_regular_implies_universal_axiom` from the base file:
+- `regular_friendship_has_universal` proves the same conclusion
+  (regular friendship ⟹ universal vertex) modulo the spectral axiom
+-/
+
+#check ucn
+#check common_neighbor_finset_card
+#check counting_identity
+#check regular_friendship_card
+#check dvd_sq_add_one_imp_one
+#check regular_friendship_is_triangle
+#check regular_friendship_has_universal
+
+end FriendshipTheoremOQ01

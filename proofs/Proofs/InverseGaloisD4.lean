@@ -422,11 +422,11 @@ theorem fourth_root_unity_cases {K : Type*} [Field K] {c : K} (h : c ^ 4 = 1) :
 theorem sq_add_one_eq_implies {K : Type*} [Field K] {ω z : K}
     (hω : ω ^ 2 + 1 = 0) (hz : z ^ 2 + 1 = 0) :
     z = ω ∨ z = -ω := by
-  have h1 : z ^ 2 = ω ^ 2 := by linarith
-  have h2 : (z - ω) * (z + ω) = 0 := by nlinarith
+  have h1 : z ^ 2 = ω ^ 2 := by linear_combination hz - hω
+  have h2 : (z - ω) * (z + ω) = 0 := by linear_combination h1
   rcases mul_eq_zero.mp h2 with h | h
-  · left; linarith
-  · right; linarith
+  · left; linear_combination h
+  · right; linear_combination h
 
 /-- Every root of X⁴-2 in the splitting field is in ℚ⟮α,ω⟯.
 
@@ -449,9 +449,11 @@ theorem roots_in_adjoin
     (Polynomial.mem_rootSet.mp hr).2
   -- α⁴ = 2 and r⁴ = 2
   have hα4 : α ^ 4 = algebraMap ℚ _ 2 := by
-    have := hα; simp at this; linarith
+    have h := hα; rw [map_sub, map_pow, aeval_X, aeval_C] at h
+    exact sub_eq_zero.mp h
   have hr4 : r ^ 4 = algebraMap ℚ _ 2 := by
-    have := hr_eval; simp at this; linarith
+    have h := hr_eval; rw [map_sub, map_pow, aeval_X, aeval_C] at h
+    exact sub_eq_zero.mp h
   -- (r/α)⁴ = 1
   have hc4 : (r * α⁻¹) ^ 4 = 1 := by
     rw [mul_pow, inv_pow]; field_simp; rw [hr4, hα4]
@@ -464,20 +466,31 @@ theorem roots_in_adjoin
   -- Case split on r/α
   rcases fourth_root_unity_cases hc4 with hc1 | hc_neg1 | hc_prim
   · -- r/α = 1, so r = α
-    have : r = α := by field_simp at hc1; linarith
+    have : r = α := by
+      calc r = r * α⁻¹ * α := by rw [mul_assoc, inv_mul_cancel₀ hα_ne, mul_one]
+        _ = 1 * α := by rw [hc1]
+        _ = α := one_mul α
     rw [this]; exact hα_K
   · -- r/α = -1, so r = -α
-    have : r = -α := by field_simp at hc_neg1; linarith
+    have : r = -α := by
+      calc r = r * α⁻¹ * α := by rw [mul_assoc, inv_mul_cancel₀ hα_ne, mul_one]
+        _ = -1 * α := by rw [hc_neg1]
+        _ = -α := by ring
     rw [this]
     exact (IntermediateField.adjoin ℚ ({α, ω} : Set _)).neg_mem hα_K
   · -- (r/α)² + 1 = 0, so r/α = ω or r/α = -ω
     rcases sq_add_one_eq_implies hω hc_prim with hcω | hcnω
     · -- r/α = ω, so r = ω * α
-      have : r = ω * α := by field_simp at hcω; linarith
+      have : r = ω * α := by
+        calc r = r * α⁻¹ * α := by rw [mul_assoc, inv_mul_cancel₀ hα_ne, mul_one]
+          _ = ω * α := by rw [hcω]
       rw [this]
       exact (IntermediateField.adjoin ℚ ({α, ω} : Set _)).mul_mem hω_K hα_K
     · -- r/α = -ω, so r = -(ω * α)
-      have : r = -(ω * α) := by field_simp at hcnω; linarith
+      have : r = -(ω * α) := by
+        calc r = r * α⁻¹ * α := by rw [mul_assoc, inv_mul_cancel₀ hα_ne, mul_one]
+          _ = -ω * α := by rw [hcnω]
+          _ = -(ω * α) := by ring
       rw [this]
       exact (IntermediateField.adjoin ℚ ({α, ω} : Set _)).neg_mem
         ((IntermediateField.adjoin ℚ ({α, ω} : Set _)).mul_mem hω_K hα_K)
@@ -576,8 +589,9 @@ theorem x4_sub_2_gal_card_dvd_8 :
       apply IntermediateField.adjoin_le_iff.mpr
       intro x hx
       show x ∈ (Kαω : Set E)
-      rcases hx with rfl | hx
+      rcases hx with hx_eq | hx
       · -- x = α ∈ Kα ⊆ Kαω (base field is in every intermediate field)
+        rw [hx_eq]
         have hα_Kα : α ∈ (Kα : Set E) := by
           apply IntermediateField.subset_adjoin; exact Set.mem_singleton α
         have : (⊥ : IntermediateField (↥Kα) E) ≤ Kαω := bot_le
