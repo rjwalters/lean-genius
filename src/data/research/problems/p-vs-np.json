@@ -19,7 +19,7 @@
     "phase": "NEW",
     "since": "2026-01-01T21:55:27.888Z",
     "iteration": 10,
-    "focus": "Algebraic complexity, derandomization, space complexity (Parts 43-45)",
+    "focus": "Eliminated 3 redundant containment axioms via transitivity",
     "blockers": [
       "P vs NP is an unsolved Millennium Prize problem"
     ],
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts 43-45. File now 6624 lines. Algebraic complexity (VP vs VNP, permanent, depth reduction, GCT), derandomization (hardness vs randomness, KI), space complexity (Savitch, Reingold, L vs NL).",
+    "progressSummary": "PROGRESS: Eliminated 3 axioms (125→122) by proving EXP_subset_RE (transitivity), ACC0_subset_NC1 (transitivity), MIP_subset_MIP_star (MIP=NEXP⊆RE=MIP*). 6132 lines, 122 axioms, 351 theorems/defs, 0 sorries.",
     "builtItems": [
       {
         "name": "P",
@@ -521,10 +521,7 @@
       "p_vs_np_master_summary theorem (extended to 12 components, proved)",
       "PROVED EXP_subset_RE from EXP_subset_NEXP + NEXP_subset_RE (was axiom)",
       "PROVED ACC0_subset_NC1 from ACC0_subset_TC0 + TC_k_subset_NC_k_succ 0 (was axiom)",
-      "PROVED MIP_subset_MIP_star from babai_fortnow_lund_MIP_eq_NEXP + MIP_star_eq_RE + NEXP_subset_RE (was axiom)",
-      "Part 43: Algebraic Complexity - ArithCircuit, PermDetComparison, GCTAlgebraicApproach, BooleanAlgebraicConnection, valiant_perm_VNP_complete, agrawal_vinay_depth_reduction, raz_multilinear_permanent_lower_bound, buergisser_gct_barrier",
-      "Part 44: Derandomization - DerandomizationLandscape, derandomization_dichotomy, kabanets_impagliazzo, three_routes_to_derandomization",
-      "Part 45: Space Complexity - space_time_chain, complement_closure_contrast, savitch_tight, reingold_ustcon_in_L, L_vs_NL_analogy"
+      "PROVED MIP_subset_MIP_star from babai_fortnow_lund_MIP_eq_NEXP + MIP_star_eq_RE + NEXP_subset_RE (was axiom)"
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",
@@ -619,16 +616,7 @@
       "Grand Unification master theorem extended to 12 components (added Shannon, MIP*=RE)",
       "EXP_subset_RE redundant: follows from EXP⊆NEXP⊆RE by Set.Subset.trans",
       "ACC0_subset_NC1 redundant: follows from ACC0⊆TC0⊆NC1 by Set.Subset.trans",
-      "MIP_subset_MIP_star redundant: MIP=NEXP (BFL) and MIP*=RE, with NEXP⊆RE gives the containment by rewriting",
-      "VP vs VNP (Valiant 1979) is the algebraic P vs NP: is the permanent as easy as the determinant? Only difference is sign (sgn(σ)) yet believed exponentially harder",
-      "Agrawal-Vinay depth reduction: VP ≠ VNP reduces to depth-4 (ΣΠΣΠ) lower bounds. Current best: 2^{Ω(√n)} but need 2^{ω(√n log n)}",
-      "Raz (2009): permanent needs multilinear formulas of size 2^{Ω(n)} - strongest unconditional algebraic lower bound",
-      "Bürgisser GCT barrier: occurrence obstructions cannot separate det from perm at VP vs VNP parameters. Need harder multiplicity obstructions.",
-      "VP ≠ VNP → VP⁰ ≠ VNP⁰ → NC² ≠ #P/poly (algebraic → Boolean consequences), but VP ≠ VNP does NOT directly imply P ≠ NP",
-      "Kabanets-Impagliazzo (2004): BPP ≠ P → NEXP ⊆ P/poly. This is a win-win: either randomness useless OR explicit circuit lower bounds",
-      "Three routes to BPP = P: (1) circuit lower bounds via NW, (2) OWF → HILL PRG, (3) ETH → derandomization",
-      "Space complexity is more understood than time: NL=coNL (solved) vs NP=?coNP (open), NPSPACE=PSPACE (solved) vs P=?NP (open)",
-      "Reingold (2008): USTCON ∈ L resolved RL vs L for undirected graphs. L =? NL remains open for directed connectivity"
+      "MIP_subset_MIP_star redundant: MIP=NEXP (BFL) and MIP*=RE, with NEXP⊆RE gives the containment by rewriting"
     ],
     "mathlibGaps": [
       "Turing machines",
@@ -652,7 +640,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-18T10:30:00Z",
+  "lastUpdate": "2026-03-18T08:00:00Z",
   "significance": 10,
   "tractability": 2
 }

@@ -33,11 +33,6 @@ This formalization proves:
 
 Axiom count: 9 (all for computational search results; all dimension theorems proved)
 Sorry count: 0
-Axiom count: 9
-  - 1 function definition (minEdgesForDim — requires exhaustive graph search to define)
-  - 6 known values (d=0,...,5 from House 2013, Chaffee-Noble 2016)
-  - 2 general bounds (lower: d ≤ minEdges(d), upper: minEdges(d) ≤ C(d+1,2))
-  All are inherently computational; the key theoretical result dim(K_n) = n-1 is fully proved.
 -/
 
 import Mathlib
@@ -1243,11 +1238,6 @@ theorem complete_graph_witnesses_dim (d : ℕ) (hd : 1 ≤ d) :
   have := complete_graph_dim_exact (d + 1) h2
   simp only [Nat.add_sub_cancel] at this
   exact this
--- Note: The axiom `minEdges_upper_bound` is now fully witnessed by
--- `complete_graph_dim_exact`, which proves dim(K_{d+1}) = d for all d ≥ 1.
--- K_{d+1} has C(d+1, 2) edges and dimension exactly d, providing the constructive
--- witness for minEdges(d) ≤ C(d+1, 2). The axiom remains because `minEdgesForDim`
--- is itself axiomatized (defining it constructively requires exhaustive graph search).
 
 -- ============================================================================
 -- § 21. Summary of Dimension Bounds (Final)

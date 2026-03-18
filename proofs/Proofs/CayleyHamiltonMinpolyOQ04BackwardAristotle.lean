@@ -27,7 +27,13 @@ variable {K : Type*} [Field K] {n : ℕ}
 /-- If p is nonzero with deg < deg(minpoly), then p(M) ≠ 0. -/
 theorem aeval_ne_zero_of_ne_zero {M : Matrix (Fin n) (Fin n) K}
     {p : K[X]} (hp : p ≠ 0) (hd : p.natDegree < (minpoly K M).natDegree) :
-    aeval M p ≠ 0 := by sorry
+    aeval M p ≠ 0 := by
+  intro h_eq
+  -- If aeval M p = 0, the minpoly divides p (after making it monic)
+  -- But deg(minpoly) > deg(p), so minpoly can't divide a nonzero p of lower degree
+  have h_minpoly_dvd := minpoly.dvd K M h_eq
+  have h_deg := Polynomial.natDegree_le_of_dvd h_minpoly_dvd hp
+  omega
 
 -- ============================================================
 -- Lemma 2: Nonzero matrix has a vector outside its kernel
@@ -36,7 +42,18 @@ theorem aeval_ne_zero_of_ne_zero {M : Matrix (Fin n) (Fin n) K}
 /-- A nonzero matrix has a vector not in its kernel. -/
 theorem exists_mulVec_ne_zero' {n : ℕ}
     {A : Matrix (Fin n) (Fin n) K} (hA : A ≠ 0) :
-    ∃ v : Fin n → K, A.mulVec v ≠ 0 := by sorry
+    ∃ v : Fin n → K, A.mulVec v ≠ 0 := by
+  -- If ∀ v, A.mulVec v = 0, then A = 0 (contradiction)
+  by_contra h
+  push_neg at h
+  apply hA
+  ext i j
+  have hv := congr_fun (h (Pi.single j 1)) i
+  simp only [Pi.zero_apply] at hv
+  -- Show (A *ᵥ Pi.single j 1) i = A i j
+  simp only [mulVec, dotProduct, Pi.single_apply, Finset.sum_ite_eq',
+    Finset.mem_univ, ite_true, mul_one] at hv
+  simpa using hv
 
 -- ============================================================
 -- Lemma 3: Polynomial coefficient extraction
@@ -46,7 +63,17 @@ theorem exists_mulVec_ne_zero' {n : ℕ}
 theorem coeff_sum_eq_zero_of_sum_eq_zero
     {s : Finset (Fin n)} {c : Fin n → K}
     (h : ∑ k ∈ s, C (c k) * X ^ (k : ℕ) = (0 : K[X]))
-    (i : Fin n) (hi : i ∈ s) : c i = 0 := by sorry
+    (i : Fin n) (hi : i ∈ s) : c i = 0 := by
+  -- Extract the coefficient of X^i from both sides
+  -- Extract the coefficient of X^(i:ℕ) from both sides
+  have h_coeff := congr_arg (Polynomial.coeff · (i : ℕ)) h
+  simp only [Polynomial.coeff_zero, map_sum, Polynomial.finset_sum_coeff,
+    Polynomial.coeff_C_mul_X_pow] at h_coeff
+  -- In the sum, only k with (k:ℕ) = (i:ℕ) contributes, i.e., k = i
+  convert h_coeff using 1
+  rw [Finset.sum_eq_single i (fun k hk hki => if_neg (Fin.val_ne_of_ne hki))
+    (fun hi' => absurd hi hi')]
+  simp
 
 -- ============================================================
 -- Lemma 4: Degree bound for polynomial sum

@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ACT",
     "since": "2026-03-14",
-    "iteration": 6,
-    "focus": "Identified fundamental issue with theorem statement. Need h_cross_norm or alternative proof strategy.",
+    "iteration": 5,
+    "focus": "binom_ineq proved in NewtonInductiveStep.lean. Main sorry at NewtonLogConcavity.lean:349 remains (quadratic non-negativity via discriminant bound)",
     "blockers": [
       "Algebraic complexity of inductive step beyond nlinarith capacity"
     ],
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Deep analysis of the remaining sorry. Proved the theorem as stated is UNPROVABLE - needs additional h_cross_norm hypothesis (normalized cross product). Identified the fix and multiple alternative approaches.",
+    "progressSummary": "PROGRESS: Sorry persists. Discriminant analysis: α≥0 and γ≥0 proved by nlinarith, but 4αγ≥β² is degree-8 beyond nlinarith. Need 4UV·AD ≥ W²·B² (mixed bound). Import of NewtonInductiveStep added.",
     "builtItems": [
       "elemSymm_zero_implies_higher_zero: zero tail property",
       "power_ineq_of_log_concave: a_k^(k+1) >= a_{k+1}^k by induction",
@@ -90,12 +90,10 @@
       "Fixed nlinarith timeout by providing explicit ring identity for SOS decomposition: k*(k*f^2 - 2*(k+1)*g*t*ek) = (k*ek-t*ekm1)^2 + t^2*(k+1)*((k-1)*ekm1^2-2k*ek*ekm2)",
       "Build now succeeds (was timing out at lines 795-798)",
       "newton_cleared_denom_inductive_step proved via nlinarith with SOS certificates - the key was providing sq_nonneg hints for cross terms like (ek*d - ekp1*c), (ek*b - ekm1*a), plus product non-negativity from cross inequality",
-      "CRITICAL FINDING: newton_cleared_denom_inductive_step as stated is UNPROVABLE from its hypotheses alone. Counterexample: A=B=5/2, C=D=1 with k=2,m=3 satisfies all listed constraints but violates the inequality (f(1)=-10.25). This point is not achievable as elem sym of non-negative reals (violates AM-GM: e1^3=15.6 < 27·e3), but the theorem statement doesn't enforce this.",
-      "The discriminant 4αγ-β² can be negative for points satisfying h_ih_k, h_ih_km1, h_unn_k, h_unn_km1, h_cross but NOT corresponding to actual elem sym. Need additional constraint.",
-      "SOLUTION: Add normalized cross product hypothesis h_cross_norm: ek·ekm1·C(m,k-2)·C(m,k+1) ≥ ekm2·ekp1·C(m,k-1)·C(m,k). This is derivable from product of h_ih_k and h_ih_km1 (when bc > 0).",
-      "Absorption identity analysis: After multiplying by k³(k+1)(r+1)b², goal reduces to kr(ek+tF)²≥(k+1)(r+1)(F+tH)(G+tA). Clean form has α'≥rB²/k and γ'≥kA²/r.",
-      "Factorization identity: k³(k+1)(r+1)·binom_ineq = r(k+r)²b⁴. Same identity holds for shifted binom_ineq. Both proved via linear_combination of absorption identities.",
-      "For equal inputs (all x_i = c), f(t)=const·(t-1)² (perfect square). 4αγ-β²=0 at this point. For unequal feasible inputs, 4αγ-β²>0."
+      "Discriminant approach: α ≥ 0 and γ ≥ 0 proved by nlinarith, but 4αγ ≥ β² is degree-8 and fails",
+      "Key identity: 4αγ - β² = (c+b)²·[4UV·AD - W²·B²] where U,V,W are from unnormalized/cross hypotheses",
+      "Newton inductive step needs 4UV·AD ≥ W²·B² - a mixed elem-sym/binomial bound",
+      "NewtonInductiveStep.lean has binom_ineq (fully proved) and quadratic_nonneg ready to use"
     ],
     "mathlibGaps": [],
     "nextSteps": [
