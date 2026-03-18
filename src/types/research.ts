@@ -288,6 +288,21 @@ export interface ResearchApproach {
 }
 
 /**
+ * Information about a Lean source file associated with a research problem
+ */
+export interface LeanFileInfo {
+  path: string           // e.g., "Proofs/PvsNP.lean"
+  filename: string       // e.g., "PvsNP.lean"
+  lineCount: number      // Total lines of Lean code
+  theoremCount: number   // Number of theorems/lemmas
+  axiomCount: number     // Number of axiom declarations
+  defCount: number       // Number of definitions
+  sorryCount: number     // Number of sorry placeholders remaining
+  isAristotle: boolean   // Whether this is an Aristotle companion file
+  githubUrl: string      // Direct link to the file on GitHub
+}
+
+/**
  * References for a problem
  */
 export interface ResearchReferences {
@@ -316,6 +331,7 @@ export interface ResearchProblem {
   tags: string[]
   relatedProofs: string[]
   references: ResearchReferences
+  leanFiles?: LeanFileInfo[]
 
   started: string
   lastUpdate?: string
