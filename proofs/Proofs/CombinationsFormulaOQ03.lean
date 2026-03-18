@@ -34,7 +34,9 @@ q-binomial coefficients arise naturally in:
 - [x] KEY: q-binomials at q=1 give ordinary binomial coefficients
 - [x] Product formula: [n,k]_q · [k]_q! · [n-k]_q! = [n]_q!
 - [x] Concrete verifications
-- [ ] Incomplete (has sorries)
+- [x] Penultimate entry: [n+1 choose n]_q = [n+1]_q
+- [x] Row absorption: [n,k]_q · [n-k]_q = [n,k+1]_q · [k+1]_q
+- [x] SYMMETRY: [n,k]_q = [n,n-k]_q
 
 ## Mathlib Dependencies
 - `Mathlib.Data.Nat.Choose.Basic` : Ordinary binomial coefficients and Pascal's identity
@@ -321,35 +323,27 @@ theorem qBinom_absorption (q : R) : ∀ (n k : ℕ), k ≤ n →
     qBinom q (n + 1) (k + 1) * qNumber q (k + 1) = qNumber q (n + 1) * qBinom q n k
   | 0, 0, _ => by simp [qBinom, qNumber]
   | n + 1, 0, _ => by
-    rw [qBinom_one_right, qNumber_one, mul_one, mul_one]
+    simp [qBinom_one_right]
   | n + 1, k + 1, hk => by
     have hk' : k ≤ n := by omega
-    have hk1 : k + 1 ≤ n + 1 := by omega
-    -- Expand using Pascal: [n+2, k+2] = [n+1, k+1] + q^{k+2} · [n+1, k+2]
-    rw [qBinom_pascal]
-    -- Distribute multiplication
-    rw [add_mul]
-    -- Apply IH at (n, k+1) to second term
-    rw [mul_assoc, qBinom_absorption q n (k + 1) hk1]
-    -- Expand [k+2]_q = 1 + q · [k+1]_q in first term
-    rw [qNumber_succ q (k + 1)]
-    rw [mul_add, mul_one]
-    -- Apply IH at (n, k) to part of first term
-    rw [mul_comm (qBinom q (n + 1) (k + 1)) (q * qNumber q (k + 1)),
-        mul_assoc, qBinom_absorption q n k hk']
-    -- Now have: [n+1, k+1] + q · [n+1]_q · [n, k] + q^{k+2} · [n+1]_q · [n, k+1]
-    -- Need: [n+2]_q · [n+1, k+1]
-    -- Factor q · [n+1]_q out of last two terms
-    rw [← mul_assoc, ← mul_assoc q, ← mul_add (q * qNumber q (n + 1))]
-    -- Combine [n,k] + q^{k+1} · [n,k+1] = [n+1, k+1] via Pascal
-    rw [show q ^ (k + 2) = q * q ^ (k + 1) from by ring]
-    rw [mul_assoc q (q ^ (k + 1)), ← mul_assoc (q * qNumber q (n + 1)),
-        mul_comm (q * qNumber q (n + 1)) (q ^ (k + 1)),
-        mul_assoc (q ^ (k + 1))]
-    rw [← mul_add (q * qNumber q (n + 1))]
-    rw [← qBinom_pascal]
-    -- Now have: [n+1, k+1] + q · [n+1]_q · [n+1, k+1] = (1 + q · [n+1]_q) · [n+1, k+1]
-    rw [← add_mul, ← qNumber_succ]
+    rcases Nat.eq_or_lt_of_le (show k + 1 ≤ n + 1 from by omega) with hkeq | hklt
+    · -- k + 1 = n + 1: both sides equal qNumber q (n+2)
+      have hkn : k = n := by omega
+      subst hkn
+      simp [qBinom_self]
+    · -- k + 1 < n + 1: general case
+      have hk1 : k + 1 ≤ n := by omega
+      have ih1 := qBinom_absorption q n k hk'
+      have ih2 := qBinom_absorption q n (k + 1) hk1
+      have pasc_n := qBinom_pascal q n k
+      have qnum_k := qNumber_succ q (k + 1)
+      have qnum_n := qNumber_succ q (n + 1)
+      -- Expand qBinom and qNumber at the top level
+      rw [qBinom_pascal q (n + 1) (k + 1), qnum_k, qnum_n]
+      rw [qnum_k] at ih2
+      -- Now all terms are in basic form; close by linear algebra
+      linear_combination q * ih1 + q ^ (k + 2) * ih2 -
+        q * qNumber q (n + 1) * pasc_n
 
 /-- **q-Absorption at q = 1** verifies the classical identity:
     C(n+1, k+1) · (k+1) = (n+1) · C(n, k). -/
@@ -370,6 +364,139 @@ example : qBinom (2 : ℤ) 4 2 * qNumber (2 : ℤ) 2 = qNumber (2 : ℤ) 4 * qBi
 /-- Verification: [5,3]_q · [3]_q = [5]_q · [4,2]_q over ℤ at q = 2. -/
 example : qBinom (2 : ℤ) 5 3 * qNumber (2 : ℤ) 3 = qNumber (2 : ℤ) 5 * qBinom (2 : ℤ) 4 2 := by
   native_decide
+
+-- ============================================================
+-- Part IX: Symmetry of q-Binomial Coefficients
+-- ============================================================
+
+/-- Adding q^n to [n]_q gives [n+1]_q: extends the geometric sum by one term. -/
+theorem qNumber_add_pow (q : R) (n : ℕ) :
+    qNumber q n + q ^ n = qNumber q (n + 1) := by
+  rw [qNumber_succ]
+  have h := qNumber_geometric q n
+  linear_combination -h
+
+/-- The penultimate entry: [n+1 choose n]_q = [n+1]_q.
+    This is the q-analog of C(n+1, n) = n+1. -/
+theorem qBinom_penult (q : R) : ∀ n : ℕ, qBinom q (n + 1) n = qNumber q (n + 1)
+  | 0 => by simp [qBinom, qNumber]
+  | n + 1 => by
+    rw [qBinom_pascal, qBinom_self, mul_one, qBinom_penult q n, qNumber_add_pow]
+
+/-- **Row Absorption Identity**: [n,k]_q · [n-k]_q = [n,k+1]_q · [k+1]_q.
+
+    This relates adjacent entries in the same row of the q-Pascal triangle.
+    The proof uses the q-Pascal recurrence to reduce to the inductive hypothesis,
+    then applies q-number splitting [a+b]_q = [a]_q + q^a·[b]_q to show both
+    sides equal [n-1,k]_q · [n]_q.
+
+    This identity is the key tool for proving symmetry of q-binomials over
+    arbitrary commutative rings (where cancellation is unavailable). -/
+theorem qBinom_row_absorption (q : R) : ∀ (n k : ℕ), k + 1 ≤ n →
+    qBinom q n k * qNumber q (n - k) = qBinom q n (k + 1) * qNumber q (k + 1)
+  | 0, _, h => absurd h (by omega)
+  | n + 1, k, hk => by
+    rcases k with _ | k
+    · -- k = 0: [n+1,0]·[n+1] = [n+1,1]·[1] = [n+1]
+      simp [qBinom_zero_right, qBinom_one_right, qNumber_one]
+    · -- k ≥ 1: k+1+1 ≤ n+1, so k+1 ≤ n
+      rcases Nat.eq_or_lt_of_le (show k + 1 ≤ n from by omega) with hkeq | hklt
+      · -- Boundary: k+1 = n, reduces to penultimate lemma
+        subst hkeq
+        rw [show k + 1 + 1 - (k + 1) = 1 from by omega]
+        simp [qNumber_one, qBinom_self, qBinom_penult]
+      · -- General: 1 ≤ k+1 < n, use IH at (n, k) and (n, k+1)
+        have ih1 := qBinom_row_absorption q n k (by omega)
+        have ih2 := qBinom_row_absorption q n (k + 1) (by omega)
+        rw [show n + 1 - (k + 1) = n - k from by omega]
+        rw [qBinom_pascal q n k, qBinom_pascal q n (k + 1)]
+        -- Both sides reduce to qBinom q n (k+1) * qNumber q (n+1)
+        -- via IH + q-number splitting
+        have add1 : qNumber q (k + 1) + q ^ (k + 1) * qNumber q (n - k) =
+            qNumber q (n + 1) := by
+          rw [← qNumber_add]; congr 1; omega
+        have add2 : qNumber q (k + 2) + q ^ (k + 2) * qNumber q (n - (k + 1)) =
+            qNumber q (n + 1) := by
+          rw [← qNumber_add]; congr 1; omega
+        calc (qBinom q n k + q ^ (k + 1) * qBinom q n (k + 1)) * qNumber q (n - k)
+            = qBinom q n k * qNumber q (n - k) +
+              q ^ (k + 1) * qBinom q n (k + 1) * qNumber q (n - k) := by ring
+          _ = qBinom q n (k + 1) * qNumber q (k + 1) +
+              q ^ (k + 1) * qBinom q n (k + 1) * qNumber q (n - k) := by rw [ih1]
+          _ = qBinom q n (k + 1) * (qNumber q (k + 1) +
+              q ^ (k + 1) * qNumber q (n - k)) := by ring
+          _ = qBinom q n (k + 1) * qNumber q (n + 1) := by rw [add1]
+          _ = qBinom q n (k + 1) * (qNumber q (k + 2) +
+              q ^ (k + 2) * qNumber q (n - (k + 1))) := by rw [add2]
+          _ = qBinom q n (k + 1) * qNumber q (k + 2) +
+              q ^ (k + 2) * qBinom q n (k + 1) * qNumber q (n - (k + 1)) := by ring
+          _ = qBinom q n (k + 1) * qNumber q (k + 2) +
+              q ^ (k + 2) * (qBinom q n (k + 2) * qNumber q (k + 2)) := by rw [mul_assoc, ih2]
+          _ = (qBinom q n (k + 1) + q ^ (k + 2) * qBinom q n (k + 2)) *
+              qNumber q (k + 2) := by ring
+
+/-- **Symmetry**: [n,k]_q = [n,n-k]_q.
+
+    The q-binomial coefficients are symmetric in k and n-k, generalizing
+    the classical identity C(n,k) = C(n,n-k). Over an arbitrary commutative
+    ring, this cannot be proved by "cancelling q-factorials" (zero divisors
+    may exist). Instead, the proof combines:
+    1. Induction on n with the q-Pascal recurrence,
+    2. The row absorption identity to relate adjacent entries,
+    3. The geometric sum formula to bridge power and q-number expressions.
+
+    The key algebraic step reduces the symmetry condition to showing
+    (q-1) · ([n,k]_q · [n-k]_q - [n,k+1]_q · [k+1]_q) = 0,
+    which follows from row absorption. -/
+theorem qBinom_symm (q : R) : ∀ (n k : ℕ), k ≤ n →
+    qBinom q n k = qBinom q n (n - k)
+  | _, 0, _ => by simp
+  | 0, _ + 1, h => absurd h (by omega)
+  | n + 1, k + 1, hk => by
+    rw [show n + 1 - (k + 1) = n - k from by omega]
+    rcases Nat.eq_or_lt_of_le (show k ≤ n from by omega) with rfl | hlt
+    · simp -- k = n: both sides are 1
+    · -- k < n, so n - k ≥ 1
+      -- Expand LHS via Pascal
+      rw [qBinom_pascal]
+      -- Expand RHS via Pascal (rewrite n-k = (n-k-1)+1 first)
+      conv_rhs => rw [show (n - k : ℕ) = (n - k - 1) + 1 from by omega]
+      rw [qBinom_pascal]
+      rw [show n - k - 1 + 1 = n - k from by omega]
+      -- Apply symmetry IH to RHS terms
+      have ih1 : qBinom q n (n - k - 1) = qBinom q n (k + 1) := by
+        rw [qBinom_symm q n (n - k - 1) (by omega)]; congr 1; omega
+      have ih2 : qBinom q n (n - k) = qBinom q n k := by
+        rw [qBinom_symm q n (n - k) (by omega)]; congr 1; omega
+      rw [ih1, ih2]
+      -- Goal: qBinom q n k + q^(k+1) * qBinom q n (k+1)
+      --     = qBinom q n (k+1) + q^(n-k) * qBinom q n k
+      -- Follows from row absorption + geometric identity
+      have ra := qBinom_row_absorption q n k (by omega)
+      have g1 := qNumber_geometric q (n - k)
+      have g2 := qNumber_geometric q (k + 1)
+      linear_combination qBinom q n k * g1 - qBinom q n (k + 1) * g2 - (q - 1) * ra
+
+-- ============================================================
+-- Part X: Symmetry Verifications
+-- ============================================================
+
+section SymmetryVerifications
+variable (q : R)
+
+/-- Symmetry verification: [4 choose 1]_q = [4 choose 3]_q. -/
+example : qBinom q 4 1 = qBinom q 4 3 :=
+  qBinom_symm q 4 1 (by omega)
+
+/-- Symmetry verification: [5 choose 2]_q = [5 choose 3]_q. -/
+example : qBinom q 5 2 = qBinom q 5 3 :=
+  qBinom_symm q 5 2 (by omega)
+
+/-- Row absorption verification: [4,1]·[3] = [4,2]·[2] over ℤ at q=2. -/
+example : qBinom (2 : ℤ) 4 1 * qNumber (2 : ℤ) 3 = qBinom (2 : ℤ) 4 2 * qNumber (2 : ℤ) 2 := by
+  native_decide
+
+end SymmetryVerifications
 
 end QBinomialCoefficients
 

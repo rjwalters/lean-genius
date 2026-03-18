@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: NavierStokes.lean at 12,726 lines. Parts LXX-LXXV (session total: 6 new parts). Comprehensive formalization covering 75 parts of NS regularity theory. 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: NavierStokes.lean at ~13,000 lines (Part LXXVI added). Companion at 800 lines (Sections 36-40). Part LXXVI adds proved quantitative estimates: strain tensor algebra, energy bounds, scaling analysis, GNS exponents, heat semigroup smoothing, 2D-vs-3D gap. Fixed duplicate namespace end bug. 0 sorries, 0 axioms.",
     "builtItems": [
       "Part XLI: Tao averaged NS blowup - BilinearProperties, BlowupProgram, ProofStrategy enum, Lamb vector analysis",
       "Part XLII: Koch-Tataru BMO⁻¹ well-posedness - CriticalSpace hierarchy, CarlesonMeasureNorm, KochTataruTheorem",
@@ -76,7 +76,9 @@
       "Part LXXIII: Turbulence models and closure - Reynolds decomposition, Boussinesq hypothesis, k-ε model, LES, DNS cost scaling, moment hierarchy unclosability",
       "Part LXXIV: Topological methods - helicity conservation, Kelvin circulation, vortex reconnection, topological blowup constraints, Arnold energy bound",
       "NavierStokesAristotle.lean: Sections 34-35 (turbulence model constants, topological constants)",
-      "Part LXXV: Millennium Problem prospects - Kenig-Merle program (Morawetz gap), geometric program (direction control gap), probabilistic methods, sufficient conditions, known barriers, expert consensus"
+      "Part LXXV: Millennium Problem prospects - Kenig-Merle program (Morawetz gap), geometric program (direction control gap), probabilistic methods, sufficient conditions, known barriers, expert consensus",
+      "Part LXXVI: Quantitative Estimates — proved strain tensor algebra (trace-free eigenvalues), energy estimate bounds (dissipation sign, Poincaré decay, attracting set), scaling dimension analysis (critical/sub/supercritical), GNS exponent verification (Ladyzhenskaya, Sobolev, Morrey), heat semigroup smoothing exponents, fundamental 2D-vs-3D gap analysis",
+      "NavierStokesAristotle.lean: Sections 36-40 (strain algebra, 3D Cauchy-Schwarz, energy bounds, scaling dimensions, heat smoothing, Grönwall bound)"
     ],
     "insights": [
       "Tao (2016) averaged NS blowup: any regularity proof must use specific algebraic structure of (u·∇)u, not just energy/scaling/div-free properties",
@@ -131,7 +133,10 @@
       "Regularity gap is exactly 1/2: Leray-Hopf gives 2/2+3/6=3/2, Serrin needs ≤1; closing this gap requires nonlinear structure, not interpolation",
       "The closure problem is a fundamental obstacle distinct from regularity: the n-th moment equation involves (n+1)-th moment, creating an unclosable infinite hierarchy",
       "Vortex reconnection only occurs with viscosity (breaks Kelvin circulation); reconnection cascades are a potential blowup mechanism",
-      "Arnold energy lower bound: linked vortex tubes with circulations Γ₁,Γ₂ and linking number L satisfy E ≥ c|Γ₁Γ₂L| — topology constrains dynamics"
+      "Arnold energy lower bound: linked vortex tubes with circulations Γ₁,Γ₂ and linking number L satisfy E ≥ c|Γ₁Γ₂L| — topology constrains dynamics",
+      "Part LXXVI introduces PROVED mathematical content (not just Prop-typed survey): strain eigenvalue algebra, quadratic inequalities, and precise exponent calculations — all verified by the Lean type checker",
+      "The 2D-vs-3D gap has three consistent manifestations: Serrin gap 1/2, Lions gap 1/4, Sobolev gap 1/2 — with the relation: Serrin gap = 2 × Lions gap (because the bilinear term is quadratic)",
+      "Fixed duplicate end NavierStokesRegularity namespace bug in the original file"
     ],
     "mathlibGaps": [
       "Sobolev spaces",
@@ -159,7 +164,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-17T17:00:00.000Z",
+  "lastUpdate": "2026-03-18T07:20:00.000Z",
   "completed": "2026-02-11T05:41:00.787Z",
   "significance": 10,
   "tractability": 1

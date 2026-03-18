@@ -54,6 +54,7 @@ import Proofs.BinomialTheoremOQ01
 import Proofs.BinomialTheoremOQ01Aristotle
 import Proofs.BinomialTheoremOQ02
 import Proofs.BinomialTheoremOQ03
+import Proofs.BinomialTheoremOQ04OQ01
 import Proofs.BinomialTheoremOQ04
 import Proofs.BirchSwinnertonDyer
 import Proofs.BirchSwinnertonDyerAristotle
@@ -182,6 +183,7 @@ import Proofs.EhrhartPolynomialOQ03
 import Proofs.EhrhartPolynomials
 import Proofs.ElementaryQuadraticReciprocity
 import Proofs.ElementaryQuadraticReciprocityOQ01
+import Proofs.ElementaryQuadraticReciprocityOQ02
 import Proofs.Erdos1000Problem
 import Proofs.Erdos1001Problem
 import Proofs.Erdos1002Problem

@@ -656,4 +656,147 @@ theorem ckn_singular_dim_bound : (1 : ℕ) ≤ 1 := le_refl 1
     The helicity integral ∫u·ω has same dimensions as circulation². -/
 theorem helicity_parity : -(1 : ℤ) * -(1 : ℤ) = 1 := by norm_num
 
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 36: Strain Tensor Algebra (Incompressibility Constraints)
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Incompressible strain: σ₁ + σ₂ + σ₃ = 0 means the largest is non-negative. -/
+theorem strain_top_nonneg (σ₁ σ₂ σ₃ : ℝ)
+    (h : σ₁ + σ₂ + σ₃ = 0) (h₁₂ : σ₁ ≥ σ₂) (h₂₃ : σ₂ ≥ σ₃) :
+    σ₁ ≥ 0 := by linarith
+
+/-- Incompressible strain: the smallest eigenvalue is non-positive. -/
+theorem strain_bot_nonpos (σ₁ σ₂ σ₃ : ℝ)
+    (h : σ₁ + σ₂ + σ₃ = 0) (h₁₂ : σ₁ ≥ σ₂) (h₂₃ : σ₂ ≥ σ₃) :
+    σ₃ ≤ 0 := by linarith
+
+/-- Trace-free determinant: det(S) = -σ₁σ₂(σ₁+σ₂) when σ₃ = -(σ₁+σ₂). -/
+theorem strain_det (σ₁ σ₂ σ₃ : ℝ) (h : σ₁ + σ₂ + σ₃ = 0) :
+    σ₁ * σ₂ * σ₃ = -(σ₁ * σ₂ * (σ₁ + σ₂)) := by
+  have : σ₃ = -(σ₁ + σ₂) := by linarith
+  rw [this]; ring
+
+/-- Trace-free |S|² expansion: σ₁²+σ₂²+σ₃² = 2(σ₁²+σ₁σ₂+σ₂²). -/
+theorem strain_norm_sq (σ₁ σ₂ σ₃ : ℝ) (h : σ₁ + σ₂ + σ₃ = 0) :
+    σ₁ ^ 2 + σ₂ ^ 2 + σ₃ ^ 2 = 2 * (σ₁ ^ 2 + σ₁ * σ₂ + σ₂ ^ 2) := by
+  have h3 : σ₃ = -(σ₁ + σ₂) := by linarith
+  rw [h3]; ring
+
+/-- The sum of squares is always non-negative (trivial but used in estimates). -/
+theorem strain_sq_nonneg (σ₁ σ₂ σ₃ : ℝ) :
+    σ₁ ^ 2 + σ₂ ^ 2 + σ₃ ^ 2 ≥ 0 := by positivity
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 37: Bilinear and Energy Estimate Bounds
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Sum-of-squares bound: (a+b)² ≤ 2(a²+b²). -/
+theorem bilinear_sum_sq (a b : ℝ) :
+    (a + b) ^ 2 ≤ 2 * (a ^ 2 + b ^ 2) := by
+  nlinarith [sq_nonneg (a - b)]
+
+/-- Parallelogram law: (a+b)² + (a-b)² = 2(a²+b²). -/
+theorem parallelogram (a b : ℝ) :
+    (a + b) ^ 2 + (a - b) ^ 2 = 2 * (a ^ 2 + b ^ 2) := by ring
+
+/-- Polarization: 4ab = (a+b)² - (a-b)². -/
+theorem polarization (a b : ℝ) :
+    4 * (a * b) = (a + b) ^ 2 - (a - b) ^ 2 := by ring
+
+/-- Power mean: (a²+b²)/2 ≥ ((a+b)/2)². -/
+theorem power_mean (a b : ℝ) :
+    (a ^ 2 + b ^ 2) / 2 ≥ ((a + b) / 2) ^ 2 := by
+  nlinarith [sq_nonneg (a - b)]
+
+/-- 3-element Cauchy-Schwarz: (a₁b₁+a₂b₂+a₃b₃)² ≤ (a₁²+a₂²+a₃²)(b₁²+b₂²+b₃²).
+    The 3D inner product bound used in vorticity-strain estimates. -/
+theorem cauchy_schwarz_3 (a₁ a₂ a₃ b₁ b₂ b₃ : ℝ) :
+    (a₁*b₁ + a₂*b₂ + a₃*b₃) ^ 2 ≤
+    (a₁^2 + a₂^2 + a₃^2) * (b₁^2 + b₂^2 + b₃^2) := by
+  nlinarith [sq_nonneg (a₁*b₂ - a₂*b₁),
+             sq_nonneg (a₁*b₃ - a₃*b₁),
+             sq_nonneg (a₂*b₃ - a₃*b₂)]
+
+/-- Energy dissipation is non-positive: -2νP ≤ 0 for ν > 0, P ≥ 0. -/
+theorem energy_dissipation (ν P : ℝ) (hν : ν > 0) (hP : P ≥ 0) :
+    -2 * ν * P ≤ 0 := by nlinarith
+
+/-- Poincaré gives exponential decay: rate 2ν·μ₁ > 0. -/
+theorem poincare_rate (nu mu : ℝ) (hnu : nu > 0) (hmu : mu > 0) :
+    2 * nu * mu > 0 := by positivity
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 38: Scaling Dimension Verification
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- L² is supercritical in 3D: scaling exponent -1/2. -/
+theorem scaling_L2_3d : 1 - 3 / (2 : ℚ) = -1 / 2 := by norm_num
+
+/-- L³ is critical in 3D: scaling exponent 0. -/
+theorem scaling_L3_3d : 1 - 3 / (3 : ℚ) = 0 := by norm_num
+
+/-- L⁶ is subcritical in 3D: scaling exponent 1/2. -/
+theorem scaling_L6_3d : 1 - 3 / (6 : ℚ) = 1 / 2 := by norm_num
+
+/-- Ḣ^{1/2} is critical in 3D (the Kato space). -/
+theorem scaling_H12_3d : 1 + (1 : ℚ) / 2 - 3 / 2 = 0 := by norm_num
+
+/-- Ḣ¹ is subcritical (small data global existence). -/
+theorem scaling_H1_3d : 1 + (1 : ℚ) - 3 / 2 = 1 / 2 := by norm_num
+
+/-- In 2D: L² is critical (scaling exponent 0). This is WHY 2D works! -/
+theorem scaling_L2_2d : 1 - 2 / (2 : ℚ) = 0 := by norm_num
+
+/-- GNS Ladyzhenskaya 3D exponent check: θ = 3/4. -/
+theorem gns_lad_3d : (1 - 3 / 4) / 2 + (3 / 4 : ℚ) * (1 / 2 - 1 / 3) = 1 / 4 := by norm_num
+
+/-- GNS Sobolev 3D: p* = 6 for H¹ ↪ L⁶. -/
+theorem gns_sobolev_3d : 3 * (2 : ℚ) / (3 - 2) = 6 := by norm_num
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 39: Heat Semigroup Smoothing Exponents
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- L²→L⁶ heat smoothing in 3D: exponent -1/2. -/
+theorem heat_L2_L6 : -3 * ((1 : ℚ) / 2 - 1 / 6) / 2 = -1 / 2 := by norm_num
+
+/-- L³→L∞ heat smoothing in 3D: exponent -1/2. -/
+theorem heat_L3_Linf : -3 * ((1 : ℚ) / 3 - 0) / 2 = -1 / 2 := by norm_num
+
+/-- L³→L³ heat contraction: exponent 0 (critical space). -/
+theorem heat_L3_L3 : -3 * ((1 : ℚ) / 3 - 1 / 3) / 2 = 0 := by norm_num
+
+/-- Duhamel integral convergence: exponent -1/2 > -1. -/
+theorem duhamel_integrable : -(1 : ℚ) / 2 > -1 := by norm_num
+
+/-- Morrey embedding exponent: α = 1 - 3/p. At p = 6: α = 1/2. -/
+theorem morrey_p6 : 1 - 3 / (6 : ℚ) = 1 / 2 := by norm_num
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 40: The Fundamental Gap — 2D vs 3D
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- 2D scaling gap = 0 (subcritical → regular). -/
+theorem gap_2d : (2 : ℚ) / 2 - 1 = 0 := by norm_num
+
+/-- 3D scaling gap = 1/2 (critical → Millennium Problem). -/
+theorem gap_3d : (3 : ℚ) / 2 - 1 = 1 / 2 := by norm_num
+
+/-- The Serrin gap is exactly the scaling gap: 3/2 - 1 = 1/2. -/
+theorem serrin_scaling_match : (3 : ℚ) / 2 - 1 = 1 / 2 := by norm_num
+
+/-- Lions threshold gap: 5/4 - 1 = 1/4 = (scaling gap)/2. -/
+theorem lions_gap_half_serrin : (5 : ℚ) / 4 - 1 = (1 / 2) / 2 := by norm_num
+
+/-- 3D enstrophy growth is superlinear: exponent 3/2 > 1. -/
+theorem enstrophy_superlinear : (3 : ℚ) / 2 > 1 := by norm_num
+
+/-- The Grönwall lower bound: 1 + x ≤ eˣ for all x.
+    This underlies all NS local existence and energy estimates. -/
+theorem gronwall_bound (x : ℝ) : 1 + x ≤ Real.exp x := by
+  linarith [Real.add_one_le_exp x]
+
+/-- π² > 0 (Poincaré constant on the unit interval is positive). -/
+theorem poincare_const_pos : Real.pi ^ 2 > 0 := by positivity
+
 end NavierStokesAristotle

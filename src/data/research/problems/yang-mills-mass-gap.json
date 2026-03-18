@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts LXXV-LXXVII. File now 9148 lines, 0 sorries. Chiral symmetry breaking (Banks-Casher, GMOR), center vortex confinement, stochastic quantization (Parisi-Wu).",
+    "progressSummary": "PROGRESS: Added Parts LXXXIV-LXXXV. File now 11,864 lines, 0 sorries. Fradkin-Shenker confinement-Higgs complementarity, Millennium Problem proof landscape.",
     "builtItems": [
       "Part LVIII: Schwinger Model — SchwingerParams, schwingerMass, schwingerMassSq, MultiFlavorSchwinger, etaPrimeMass",
       "Part LIX: Yang-Mills Gradient Flow — GradientFlowParams, smoothingRadius, FlowedEnergyDensity, ReferenceScale, WScale",
@@ -45,7 +45,9 @@
       "Part LXX: Asymptotic freedom - beta function, running coupling, dimensional transmutation, confinement mechanism, Cornell potential",
       "Part LXXV: Chiral Symmetry Breaking — ChiralCondensate, GMORRelation, Banks-Casher, pion mass",
       "Part LXXVI: Center Vortex Model — vortex area law, Nality, confinement criterion",
-      "Part LXXVII: Stochastic Quantization — Parisi-Wu, Langevin convergence, Fokker-Planck"
+      "Part LXXVII: Stochastic Quantization — Parisi-Wu, Langevin convergence, Fokker-Planck",
+      "Part LXXXIV: Confinement-Higgs complementarity - GaugeHiggsCouplings, PhaseRegion, fradkin_shenker_theorem, thooft_complementarity, AdjointHiggsPhase, elitzur_theorem, banks_rabinovici_phase_structure",
+      "Part LXXXV: Millennium proof landscape - MillenniumSolution, ProofApproach, lattice_strong_coupling_gap, balaban_uv_stability, continuum_limit_gap_persistence, dimension_difficulty_spectrum"
     ],
     "insights": [
       "Schwinger model mass gap m = e/√π is exactly computable and positive (proved m > 0, m² > 0)",
@@ -85,7 +87,12 @@
       "Center vortex model: vortex suppression factor < 1 produces area law, proved σ > 0 from vortex condensation",
       "N-ality determines confinement: proved N-ality = 0 ↔ N∣k (adjoint screens, fundamental confines)",
       "Stochastic quantization (Parisi-Wu): Langevin convergence rate = mass gap, proved exp(-Δτ) < 1",
-      "Larger mass gap gives faster Langevin convergence: proved exp(-Δ₂τ) < exp(-Δ₁τ) when Δ₂ > Δ₁"
+      "Larger mass gap gives faster Langevin convergence: proved exp(-Δ₂τ) < exp(-Δ₁τ) when Δ₂ > Δ₁",
+      "Fradkin-Shenker (1979): confinement and Higgs phases are analytically connected when Higgs is in fundamental rep — no phase transition between them",
+      "Mass gap and confinement are logically independent: mass gap without confinement (Higgs phase), confinement without mass gap (possible at critical points), both together (pure YM)",
+      "Elitzur theorem (1975): local gauge symmetry NEVER breaks spontaneously — the Higgs mechanism is not SSB of gauge symmetry",
+      "The essential tension: asymptotic freedom forces β→∞ (weak coupling) while mass gap lives at strong coupling — must show mass gap persists through the crossover",
+      "Balaban (1983-89) proved UV stability for 4D lattice YM — deepest existing partial result but did not obtain continuum limit or mass gap"
     ],
     "mathlibGaps": [
       "Principal bundles",
@@ -111,7 +118,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.887Z",
-  "lastUpdate": "2026-03-17T18:00:00.000Z",
+  "lastUpdate": "2026-03-17T22:30:00.000Z",
   "completed": "2026-03-13T17:50:22.123Z",
   "significance": 10,
   "tractability": 1

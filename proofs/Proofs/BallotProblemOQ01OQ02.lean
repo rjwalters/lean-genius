@@ -528,6 +528,114 @@ theorem multi_candidate_ballot (m : ℕ) (hm : 2 ≤ m) (a b : ℕ) (hab : b < a
 
 end ProperReduction
 
+/-! ## Part VIII-B: Fiber Bijection Infrastructure (toward axiom elimination)
+
+The `fiber_card_uniform` axiom can be eliminated by constructing an explicit
+bijection between fibers. The bijection works by extracting opponent values
+from one fiber and reconstructing a sequence for a different target.
+
+**Status**: Definitions proved, key properties stated. To eliminate the axiom,
+prove `fiberSwap_involutive` and `fiberSwap_mem_fiber`, then derive
+`fiber_card_uniform` from the resulting bijection. -/
+
+section FiberBijection
+
+/-- Extract non-leader values from positions where the target has -1.
+    Given a multi-candidate sequence s and a ±1 target, this produces
+    the list of opponent candidate labels (in positional order). -/
+def extractOpponents {m : ℕ} (s : List (Fin m)) (target : List ℤ) : List (Fin m) :=
+  (s.zip target).filterMap fun p => if p.2 = -1 then some p.1 else none
+
+/-- The length of extractOpponents equals the number of -1 entries in target
+    (when s and target have the same length). -/
+theorem extractOpponents_length {m : ℕ} (s : List (Fin m)) (target : List ℤ)
+    (hlen : s.length = target.length) :
+    (extractOpponents s target).length = (target.filter (· = -1)).length := by
+  unfold extractOpponents
+  rw [List.length_filterMap]
+  rw [List.length_zip, hlen, min_self]
+  induction s generalizing target with
+  | nil => simp [List.zip, List.filterMap, List.filter]
+  | cons v vs ih =>
+    cases target with
+    | nil => simp at hlen
+    | cons t ts =>
+      simp only [List.zip, List.filterMap, List.filter, List.length_cons] at hlen ⊢
+      simp only [List.countP_cons]
+      split_ifs with h
+      · simp only [List.length_cons, decide_true h]
+        congr 1
+        exact ih (by omega)
+      · simp only [decide_false h]
+        exact ih (by omega)
+
+/-- Reconstruct a multi-candidate sequence from a ±1 target and a list of
+    opponent values. At positions where target = 1, emit leader; at positions
+    where target ≠ 1, consume the next opponent value. -/
+def reconstructSeq (m : ℕ) (hm : m ≥ 1) :
+    List ℤ → List (Fin m) → List (Fin m)
+  | [], _ => []
+  | (t :: ts), ops =>
+    if t = 1 then
+      leader m hm :: reconstructSeq m hm ts ops
+    else
+      match ops with
+      | v :: rest => v :: reconstructSeq m hm ts rest
+      | [] => leader m hm :: reconstructSeq m hm ts []
+
+/-- reconstructSeq produces a list of the same length as the target. -/
+theorem reconstructSeq_length (m : ℕ) (hm : m ≥ 1) :
+    ∀ (target : List ℤ) (ops : List (Fin m)),
+    (reconstructSeq m hm target ops).length = target.length := by
+  intro target
+  induction target with
+  | nil => simp [reconstructSeq]
+  | cons t ts ih =>
+    intro ops
+    simp only [reconstructSeq, List.length_cons]
+    split_ifs
+    · simp [ih]
+    · cases ops with
+      | nil => simp [ih]
+      | cons v rest => simp [ih]
+
+/-- The fiber swap map: extract opponent values using t1's pattern, then
+    reconstruct using t2's pattern. This maps fiber(t1) → fiber(t2). -/
+def fiberSwap (m : ℕ) (hm : m ≥ 1) (t1 t2 : List ℤ)
+    (s : List (Fin m)) : List (Fin m) :=
+  reconstructSeq m hm t2 (extractOpponents s t1)
+
+/-- The fiber swap preserves list length. -/
+theorem fiberSwap_length (m : ℕ) (hm : m ≥ 1) (t1 t2 : List ℤ)
+    (s : List (Fin m)) :
+    (fiberSwap m hm t1 t2 s).length = t2.length := by
+  unfold fiberSwap; exact reconstructSeq_length m hm t2 _
+
+/-
+**Proof roadmap for eliminating fiber_card_uniform:**
+
+Given t1, t2 ∈ countedSequence a b (both ±1 lists with a ones and b negative-ones):
+
+1. fiberSwap maps fiber(t1) into fiber(t2):
+   - Length: fiberSwap_length gives length = t2.length = a + b ✓
+   - Count: leader count preserved (a leaders in, a leaders out) [needs proof]
+   - Projection: projects to t2 by construction [needs proof]
+
+2. fiberSwap is involutive: fiberSwap t2→t1 ∘ fiberSwap t1→t2 = id
+   - extractOpponents extracts exactly the opponent values from reconstructSeq
+   - reconstructSeq with original target recovers the original sequence
+
+3. Involutive → bijective → Set.ncard equal
+
+Key remaining proof obligations:
+- `reconstructSeq_projects`: reconstructSeq m hm t ops projects to t (when ops are non-leader)
+- `reconstructSeq_count`: reconstructSeq preserves leader count
+- `extract_reconstruct_cancel`: extractOpponents (reconstructSeq t2 ops) t2 = ops
+- `reconstruct_extract_cancel`: reconstructSeq t1 (extractOpponents s t1) = s (for s ∈ fiber(t1))
+-/
+
+end FiberBijection
+
 /-! ## Part IX: Reference — The Classical Ballot Theorem
 
 Mathlib's `Ballot.ballot_problem` (Wiedijk #30) states:

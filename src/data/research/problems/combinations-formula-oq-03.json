@@ -19,7 +19,7 @@
       "q-Pascal recurrence: [n+1,k+1]_q = [n,k]_q + q^{k+1}[n,k+1]_q",
       "Geometric sum identity: (q-1)[n]_q = q^n - 1",
       "Specialization: [n,k]_1 = C(n,k)",
-      "Product formula: [n,k]_q · [k]_q! · [n-k]_q! = [n]_q!",
+      "Product formula: [n,k]_q \u00b7 [k]_q! \u00b7 [n-k]_q! = [n]_q!",
       "Boundary cases: [n,0]_q = 1, [n,n]_q = 1, [n,k]_q = 0 for k > n",
       "[n,1]_q = [n]_q (q-number)",
       "q-number splitting: [a+b]_q = [a]_q + q^a[b]_q"
@@ -41,28 +41,37 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Full formalization of q-analog binomial coefficients over arbitrary commutative rings. Defined qNumber, qFactorial, qBinom recursively. Proved specialization at q=1 gives classical binomial coefficients, product formula, geometric sum identity, and verified subspace counting examples (Fano plane).",
+    "progressSummary": "COMPLETED+EXTENDED: Full formalization of q-analog binomial coefficients with symmetry. Original formalization (q-numbers, q-factorials, q-binomials, specialization at q=1, product formula, absorption identity) extended with: (1) penultimate entry identity, (2) row absorption identity, (3) SYMMETRY of q-binomial coefficients over arbitrary CommRing. Also fixed bug in absorption proof.",
     "builtItems": [
       "qNumber definition and 7 theorems in CombinationsFormulaOQ03.lean",
       "qFactorial definition and 4 theorems in CombinationsFormulaOQ03.lean",
       "qBinom definition and 7 theorems in CombinationsFormulaOQ03.lean",
       "qBinom_at_one specialization theorem in CombinationsFormulaOQ03.lean",
       "qBinom_product formula in CombinationsFormulaOQ03.lean",
-      "10 concrete verification examples in CombinationsFormulaOQ03.lean"
+      "10 concrete verification examples in CombinationsFormulaOQ03.lean",
+      "qNumber_add_pow: extending geometric sum by one term (CombinationsFormulaOQ03.lean)",
+      "qBinom_penult: penultimate entry equals q-number (CombinationsFormulaOQ03.lean)",
+      "qBinom_row_absorption: adjacent row entries identity (CombinationsFormulaOQ03.lean)",
+      "qBinom_symm: symmetry of q-binomial coefficients (CombinationsFormulaOQ03.lean)",
+      "Fixed qBinom_absorption proof (boundary case for k=n)"
     ],
     "insights": [
       "Recursive q-Pascal definition avoids division, works over any CommRing",
       "Product formula proof requires q-number splitting lemma and case split on k=n vs k<n",
       "q-binomial coefficients are polynomials in q with non-negative integer coefficients",
-      "No existing q-analog infrastructure in Mathlib v4.26.0 - built from scratch"
+      "No existing q-analog infrastructure in Mathlib v4.26.0 - built from scratch",
+      "Row absorption identity relates adjacent entries: [n,k]\u00b7[n-k] = [n,k+1]\u00b7[k+1], provable by induction + q-number splitting",
+      "Symmetry over arbitrary CommRing requires row absorption + geometric identity (cannot cancel q-factorials due to zero divisors)",
+      "Penultimate entry [n+1,n] = [n+1] proved via geometric sum identity: qNumber n + q^n = qNumber (n+1)",
+      "Fixed pre-existing bug in qBinom_absorption: case split needed for k=n boundary (IH requires k+1 \u2264 n, not k+1 \u2264 n+1)"
     ],
     "mathlibGaps": [
       "No q-analog module in Mathlib (as of v4.26.0)"
     ],
     "nextSteps": [
-      "Symmetry: [n,k]_q = [n,n-k]_q (requires alternative q-Pascal identity)",
-      "q-Vandermonde identity",
-      "q-binomial theorem connection"
+      "q-Vandermonde identity: convolution of q-binomials",
+      "q-binomial theorem: (1+x)(1+qx)...(1+q^{n-1}x) expansion",
+      "Unimodality of q-binomial coefficients"
     ]
   },
   "approaches": [

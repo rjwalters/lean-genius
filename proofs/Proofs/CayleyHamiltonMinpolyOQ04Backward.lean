@@ -190,11 +190,19 @@ theorem powers_linearIndependent
   -- p(M) = ∑ c_k M^k = 0 (from hc), p ≠ 0 (c_i ≠ 0), deg(p) < n
   -- This contradicts minimality of minpoly (degree n)
   have hp_eval : aeval M p = 0 := by
-    sorry -- converting between ∑ c_k • M^k = 0 and aeval M (∑ C(c_k) X^k) = 0
+    simp only [p, map_sum, map_mul, map_pow, aeval_C, aeval_X]
+    simp only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
+    exact hc
   have hp_ne : p ≠ 0 := by
-    sorry -- c_i ≠ 0 implies polynomial is nonzero at coefficient i
+    suffices h : p.coeff (i : ℕ) ≠ 0 from fun heq => h (by rw [heq]; simp)
+    simp only [p, finset_sum_coeff, coeff_C_mul_X_pow, Fin.val_injective.eq_iff,
+      Finset.sum_ite_eq', hi, ↓reduceIte]
+    exact h_ne
   have hp_deg : p.natDegree < n := by
-    sorry -- all exponents k < n, so natDegree < n
+    apply (natDegree_sum_le s _).trans_lt
+    rw [Finset.sup_lt_iff (by omega : 0 < n)]
+    intro k _
+    exact (natDegree_C_mul_X_pow_le (c k) (k : ℕ)).trans_lt k.isLt
   exact absurd hp_eval (aeval_ne_zero_of_ne_zero hp_ne (by omega))
 
 -- ============================================================
@@ -209,10 +217,36 @@ theorem isCyclicVector_of_linearIndependent
     (hli : LinearIndependent K (fun k : Fin n => (M ^ (k : ℕ)).mulVec v)) :
     IsCyclicVector M v := by
   intro p hp hann
-  -- p(M)v = 0. Write p = ∑ aᵢ Xⁱ for i < n (since deg(p) < n).
-  -- Then p(M)v = ∑ aᵢ Mⁱv = 0.
-  -- By linear independence of {Mⁱv}, all aᵢ = 0, so p = 0.
-  sorry
+  rw [linearIndependent_iff'] at hli
+  -- Reconstruct p as a finite sum over Fin n
+  let q := ∑ k : Fin n, C (p.coeff (k : ℕ)) * X ^ (k : ℕ)
+  have hqp : q = p := by
+    ext i
+    simp only [q, finset_sum_coeff, coeff_C_mul_X_pow, Fin.val_injective.eq_iff,
+      Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]
+    split
+    · rfl
+    next hi => exact (Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)).symm
+  -- aeval M p = ∑ k, p.coeff k • M^k
+  have heval : aeval M p = ∑ k : Fin n, p.coeff (k : ℕ) • M ^ (k : ℕ) := by
+    conv_lhs => rw [← hqp]
+    simp only [q, map_sum, map_mul, map_pow, aeval_C, aeval_X,
+      Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
+  -- Distribute mulVec: (∑ aₖ • M^k).mulVec v = ∑ aₖ • (M^k v)
+  have hsum : ∑ k : Fin n, p.coeff (k : ℕ) • (M ^ (k : ℕ)).mulVec v = 0 := by
+    have h_distrib : (∑ k : Fin n, p.coeff ↑k • M ^ (↑k : ℕ)).mulVec v =
+        ∑ k : Fin n, p.coeff ↑k • (M ^ (↑k : ℕ)).mulVec v := by
+      simp only [Finset.sum_mulVec, Matrix.smul_mulVec_assoc]
+    rw [← h_distrib, ← heval]; exact hann
+  -- Linear independence forces all coefficients to zero
+  have hcoeff : ∀ k : Fin n, p.coeff (k : ℕ) = 0 :=
+    hli Finset.univ (fun k => p.coeff (k : ℕ)) hsum
+  -- p = 0 since all coefficients vanish
+  ext i
+  simp only [Polynomial.coeff_zero]
+  by_cases hi : i < n
+  · exact hcoeff ⟨i, hi⟩
+  · exact Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
 
 -- ============================================================
 -- PART V: Main Theorem
@@ -276,9 +310,64 @@ theorem nilpotent_krylov_independent
     LinearIndependent K (fun k : Fin n => (N ^ (k : ℕ)).mulVec v) := by
   rw [linearIndependent_iff']
   intro s c hc i hi
-  -- Induction: apply N^{n-1-j} for j = 0, 1, ..., extracting c_j = 0
-  -- from the relation ∑_k c_k N^{k+n-1-j} v = 0 using nilpotency.
-  sorry
+  -- Proof by contradiction using the smallest counterexample.
+  -- If c i ≠ 0 for some i ∈ s, let j be the smallest such index.
+  -- Multiplying the relation by N^{n-1-j} kills all higher terms (nilpotency)
+  -- and all lower terms (c k = 0 by minimality), leaving c j • N^{n-1} v = 0.
+  -- Since N^{n-1} v ≠ 0, c j = 0, contradiction.
+  by_contra h_ne
+  -- Among indices in s with nonzero coefficient, find the smallest
+  have hne_set : (s.filter (fun k => c k ≠ 0)).Nonempty := by
+    rw [Finset.nonempty_filter]
+    exact ⟨i, hi, h_ne⟩
+  obtain ⟨j, hj_mem⟩ := (s.filter (fun k => c k ≠ 0)).exists_min_image
+    (fun k : Fin n => (k : ℕ)) hne_set
+  simp only [Finset.mem_filter, ne_eq] at hj_mem
+  obtain ⟨⟨hjs, hjne⟩, hjmin⟩ := hj_mem
+  -- Apply N^{n-1-j} to the relation ∑_k c_k N^k v = 0
+  have hrel : (N ^ (n - 1 - (j : ℕ))).mulVec (∑ k ∈ s, c k • (N ^ (k : ℕ)).mulVec v) = 0 := by
+    rw [hc]; simp [mulVec_zero]
+  rw [mulVec_sum] at hrel
+  simp_rw [mulVec_smul, ← mulVec_mulVec, ← pow_add] at hrel
+  -- Each term in the sum: c k • N^{(n-1-j) + k} v
+  -- For k > j: (n-1-j) + k ≥ n, so N^{...} = 0, term vanishes
+  -- For k < j with k ∈ s: c k = 0 (j was minimal nonzero), term vanishes
+  -- For k = j: (n-1-j) + j = n-1, giving c j • N^{n-1} v
+  -- The sum reduces to c j • N^{n-1} v = 0
+  have hsum_eq : ∑ k ∈ s, c k • (N ^ (n - 1 - (j : ℕ) + (k : ℕ))).mulVec v =
+      c j • (N ^ (n - 1)).mulVec v := by
+    rw [← Finset.add_sum_erase s _ hjs]
+    have hj_exp : n - 1 - (j : ℕ) + (j : ℕ) = n - 1 := by omega
+    rw [hj_exp]
+    suffices ∑ k ∈ s.erase j, c k • (N ^ (n - 1 - (j : ℕ) + (k : ℕ))).mulVec v = 0 by
+      rw [this, add_zero]
+    apply Finset.sum_eq_zero
+    intro k hk
+    rw [Finset.mem_erase] at hk
+    obtain ⟨hkj, hks⟩ := hk
+    by_cases hlt : (k : ℕ) < (j : ℕ)
+    · -- k < j: c k = 0 by minimality of j
+      have hck : c k = 0 := by
+        by_contra hck_ne
+        have := hjmin k (Finset.mem_filter.mpr ⟨hks, hck_ne⟩)
+        omega
+      simp [hck]
+    · -- k ≥ j and k ≠ j, so k > j: nilpotency kills the term
+      have hgt : (j : ℕ) < (k : ℕ) := by
+        rcases Nat.lt_or_ge (k : ℕ) (j : ℕ) with h | h
+        · exact absurd h (not_lt.mpr (le_of_not_lt hlt))
+        · exact lt_of_le_of_ne h (fun h => hkj (Fin.ext (h.symm)))
+      have hge_n : n - 1 - (j : ℕ) + (k : ℕ) ≥ n := by omega
+      have hpow_zero : N ^ (n - 1 - (j : ℕ) + (k : ℕ)) = 0 := by
+        obtain ⟨d, hd⟩ := Nat.exists_eq_add_of_le hge_n
+        rw [hd, pow_add, hnil, zero_mul]
+      simp [hpow_zero, mulVec_zero]
+  rw [hsum_eq] at hrel
+  -- c j • N^{n-1} v = 0, but N^{n-1} v ≠ 0, so c j = 0
+  have := smul_eq_zero.mp hrel
+  rcases this with hcj | habsurd
+  · exact hjne hcj
+  · exact hv habsurd
 
 -- ============================================================
 -- Summary
@@ -293,11 +382,12 @@ theorem nilpotent_krylov_independent
   - `not_union_proper_subspaces`: union avoidance for finitely many proper subspaces
     (complete proof via line argument with Finset induction)
   - `powers_linearIndependent`: {I, M, ..., M^{n-1}} are linearly independent
-    when deg(minpoly) = n
+    when deg(minpoly) = n (all 3 helper lemmas proved)
+  - `isCyclicVector_of_linearIndependent`: converting linear independence of
+    Krylov vectors to IsCyclicVector (annihilator formulation) — complete proof
+    via polynomial reconstruction and coefficient vanishing argument
 
   **Partially proved** (with sorries):
-  - `isCyclicVector_of_linearIndependent`: converting linear independence of
-    Krylov vectors to IsCyclicVector (annihilator formulation)
   - `nonderogatory_has_cyclic_vector_infinite`: main theorem (needs wiring
     the components together with the finite kernel lattice argument)
   - `nilpotent_krylov_independent`: nilpotent case (Krylov independence from
