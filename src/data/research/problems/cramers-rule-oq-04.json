@@ -1,0 +1,27 @@
+{
+  "slug": "cramers-rule-oq-04",
+  "title": "Cramer's Rule and Generalized Inverses",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "currentState": {"phase": "COMPLETED", "since": "2026-03-17T23:30:00Z", "iteration": 1},
+  "knowledge": {
+    "progressSummary": "COMPLETED: CramersRuleOQ04.lean formalizes adjugate as generalized inverse. 0 axioms, 0 sorries.",
+    "builtItems": [
+      "adjugate_reflexive: 1-reflexive generalized inverse property",
+      "cramer_generalized: Cramer formula for all matrices (singular included)",
+      "adjugate_kernel_singular: singular case characterization",
+      "adjugate_scaled_is_right_inv: non-singular inverse recovery"
+    ],
+    "insights": [
+      "Adjugate satisfies A*adj(A)*A = det(A)*A (1-reflexive, not Moore-Penrose)",
+      "For singular A, adj(A) maps everything to ker(A)",
+      "det(adj(A)) = det(A)^(n-1) connects adjugate to spectral theory"
+    ],
+    "nextSteps": []
+  },
+  "tags": ["linear-algebra", "generalized-inverse", "cramer"],
+  "started": "2026-03-17T23:22:00Z",
+  "lastUpdate": "2026-03-17T23:30:00Z",
+  "significance": 5,
+  "tractability": 6
+}
