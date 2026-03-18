@@ -1,5 +1,79 @@
 # Knowledge Base: P vs NP
 
+## Session 2026-03-18 (researcher-5) - QIP=PSPACE, NL-Completeness, Barrington's Theorem
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 266)
+**Problem**: p-vs-np
+**Prior Status**: Sound model at 6075 lines, 122 axioms, 0 sorries
+
+**Work done**:
+Extended `PNPBarriersSound.lean` from 6075 → 6396 lines (+321 lines) with three new sections:
+
+### Part 47: Quantum Interactive Proofs (QIP = PSPACE)
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `QMA` | opaque def | Quantum Merlin-Arthur (recovered: lost in merge) |
+| `QCMA` | opaque def | Quantum Classical Merlin Arthur |
+| `QMA2` | opaque def | QMA with two unentangled proofs |
+| `QIP` | opaque def | Quantum Interactive Proofs |
+| `NP_subset_QCMA` | axiom | Classical proofs for quantum verifier |
+| `QCMA_subset_QMA` | axiom | Classical proof ⊆ quantum proof |
+| `QMA_subset_QIP` | axiom | Single message ⊆ interaction |
+| `QIP_subset_PSPACE` | axiom | Jain et al. 2011 (hard direction) |
+| `IP_subset_QIP` | axiom | Classical verifiers ⊆ quantum verifiers |
+| `QMA_subset_QMA2` | axiom | Standard |
+| `QMA2_subset_PSPACE` | axiom | Standard |
+| `PSPACE_subset_QIP` | theorem | Proved (IP=PSPACE + IP⊆QIP) |
+| `jain_QIP_eq_PSPACE` | theorem | Proved (QIP⊆PSPACE + PSPACE⊆QIP) |
+| `QMA_subset_PSPACE'` | theorem | Proved (QMA⊆QIP⊆PSPACE) |
+| `quantum_verification_chain'` | theorem | Proved (NP⊆QCMA⊆QMA⊆QIP⊆PSPACE) |
+| `quantum_interaction_equivalence` | theorem | Proved (QIP=IP=PSPACE) |
+| `quantum_MA_landscape` | theorem | Proved (full NP→PSPACE chain) |
+
+### Part 48: NL-Completeness and Reachability
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `NLHard` | def | NL-hardness via logspace reductions |
+| `NLComplete` | def | NL membership + NL-hardness |
+| `PATH` | opaque def | s-t connectivity |
+| `PATH_NL_complete` | axiom | Savitch 1970 |
+| `PATH_in_NL` | theorem | Proved (from NL-completeness) |
+| `PATH_NL_hard` | theorem | Proved (from NL-completeness) |
+| `PATH_in_P` | theorem | Proved (NL ⊆ P) |
+| `PATH_complement_in_NL` | theorem | Proved (NL = coNL) |
+| `space_complexity_landscape` | theorem | Proved (L⊆NL=coNL⊆P + PATH) |
+
+### Part 49: Barrington's Theorem and Branching Programs
+
+| New Component | Type | Status |
+|---------------|------|--------|
+| `BPWidth` | opaque def | Width-bounded branching programs |
+| `barrington_theorem` | axiom | NC¹ = BPWidth(5) |
+| `width4_subset_width5` | axiom | Width-4 ⊆ Width-5 |
+| `width4_subset_ACC0` | axiom | Width-4 ⊆ ACC⁰ (solvable groups) |
+| `barrington_algebraic_threshold` | theorem | Proved (width-4→ACC⁰, width-5→NC¹) |
+| `barrington_in_hierarchy` | theorem | Proved (ACC⁰⊆TC⁰⊆NC¹=BPWidth5⊆NC⊆P) |
+| `P_ne_NC_implies_P_ne_NC1` | theorem | Proved |
+
+**New axioms added**: 11 (7 quantum, 1 NL-complete, 3 Barrington)
+**New definitions**: 8
+**New theorems proved**: 13
+
+**Key contributions**:
+1. **QMA recovered**: QMA opaque definition was lost in earlier merges. Recovered and connected to full quantum verification chain.
+2. **QIP = PSPACE proved**: The landmark 2011 result, derived from QIP⊆PSPACE + IP⊆QIP + IP=PSPACE.
+3. **PATH NL-completeness**: Canonical space-complete problem with complement in NL (from Immerman-Szelepcsényi).
+4. **Barrington's theorem**: The algebraic threshold — S₅ non-solvability enables NC¹ computation at width 5.
+5. **Master summary extended to 14 components** (XII. QIP=PSPACE, XIII. NL-completeness + NL=coNL).
+
+**Build**: Docker build passes, 0 errors, 0 sorries, 6396 lines.
+
+**Outcome**: COMPLETED - Three new areas, grand unification extended.
+
+---
+
 ## Session 2026-03-17 (researcher-5) - TFNP Recovery, Counting Complexity, Grand Unification
 
 **Mode**: REVISIT (depth-first, RICH knowledge score 155)

@@ -72,6 +72,10 @@ Communication complexity (6): comm_trivial_upper, D_ge_R, EQ_det_lower, EQ_rand_
 Communication (1): karchmer_wigderson (D(KW_f) = depth(f))
 Proof complexity (1): cook_reckhow (NP=coNP ↔ poly proof system)
 Five Worlds (2): trapdoor_implies_owf, owf_implies_avg_hard
+Quantum interactive (7): NP_subset_QCMA, QCMA_subset_QMA, QMA_subset_QIP,
+    QIP_subset_PSPACE, IP_subset_QIP, QMA_subset_QMA2, QMA2_subset_PSPACE
+NL-completeness (1): PATH_NL_complete
+Barrington (3): barrington_theorem, width4_subset_width5, width4_subset_ACC0
 Eliminated axioms (9→theorems/opaques):
 - P_subset_PP → theorem (via P ⊆ BPP ⊆ BQP ⊆ PP)
 - P_subset_P_poly → theorem (program e is a constant-size "circuit")
@@ -5968,6 +5972,297 @@ theorem lifting_frontier :
   ⟨razborov_monotone_clique, karchmer_wigderson, DISJ_rand_lower, natural_proofs_barrier⟩
 
 -- ============================================================
+-- PART 47: Quantum Interactive Proofs (QIP = PSPACE)
+-- ============================================================
+
+/-
+### Quantum Interactive Proofs
+
+Classical interactive proofs (IP) allow a polynomial-time verifier to
+interact with an all-powerful prover. Shamir's theorem shows IP = PSPACE.
+
+**Quantum** interactive proofs (QIP) allow the verifier to be a polynomial-time
+quantum computer. A priori, quantum verification could be more powerful than
+classical verification. The landmark result of Jain-Ji-Upadhyay-Watrous (2011)
+shows QIP = PSPACE = IP: quantum verification is no more powerful than classical.
+
+This is surprising because:
+- QMA ⊋ MA (likely): quantum proofs seem to help
+- BQP ⊄ BPP relative to some oracle (Raz-Tal): quantum computation helps
+- Yet QIP = IP: quantum INTERACTION doesn't help
+-/
+
+/-- QIP: the class of problems having quantum interactive proof systems.
+    The verifier is a polynomial-time quantum computer interacting with
+    an all-powerful (possibly quantum) prover. -/
+opaque QIP : Set (ℕ → Bool)
+
+/-- QMA (Quantum Merlin-Arthur): the quantum analog of MA/NP.
+    Merlin sends a quantum proof (a quantum state), Arthur runs a
+    polynomial-time quantum verifier (BQP computation).
+
+    Key relationships: NP ⊆ MA ⊆ QMA ⊆ PSPACE, BQP ⊆ QMA.
+    QMA is to NP as BQP is to P: adding quantum resources to verification.
+    The local Hamiltonian problem is QMA-complete (Kitaev 2002). -/
+opaque QMA : Set (ℕ → Bool)
+
+/-- QCMA (Quantum Classical Merlin Arthur): quantum verifier with a
+    CLASSICAL proof. Merlin sends a classical bit string, Arthur runs a
+    BQP verifier. NP ⊆ QCMA ⊆ QMA: classical proofs verified quantumly. -/
+opaque QCMA : Set (ℕ → Bool)
+
+/-- QMA(2): QMA with TWO unentangled quantum proofs. Blier-Tapp (2009)
+    showed that some problems have short QMA(2) proofs but seemingly no
+    short QMA(1) proofs. -/
+opaque QMA2 : Set (ℕ → Bool)
+
+/-- NP ⊆ QCMA: A classical NP witness is a valid classical proof for a
+    quantum verifier (the verifier simulates the classical check). -/
+axiom NP_subset_QCMA : NP ⊆ QCMA
+
+/-- QCMA ⊆ QMA: A classical proof is a special case of a quantum proof
+    (a quantum state in the computational basis). -/
+axiom QCMA_subset_QMA : QCMA ⊆ QMA
+
+/-- QMA ⊆ QIP: A single-message proof is a special case of interaction
+    (one round of interaction). -/
+axiom QMA_subset_QIP : QMA ⊆ QIP
+
+/-- QIP ⊆ PSPACE: The non-trivial direction. Every QIP protocol can be
+    simulated in PSPACE using semidefinite programming.
+    (Kitaev-Watrous 2000 for QIP ⊆ EXP; Jain et al. 2011 for QIP ⊆ PSPACE.) -/
+axiom QIP_subset_PSPACE : QIP ⊆ PSPACE
+
+/-- IP ⊆ QIP: A classical interactive proof verifier can be simulated by
+    a quantum verifier (quantum computers simulate classical computation).
+    Every IP protocol is trivially a QIP protocol. -/
+axiom IP_subset_QIP : IP ⊆ QIP
+
+/-- PSPACE ⊆ QIP: Since IP = PSPACE (Shamir) and IP ⊆ QIP. -/
+theorem PSPACE_subset_QIP : PSPACE ⊆ QIP :=
+  shamir_IP_eq_PSPACE ▸ IP_subset_QIP
+
+/-- **Jain-Ji-Upadhyay-Watrous Theorem** (2011): QIP = PSPACE.
+    This is one of the most surprising results in quantum complexity theory.
+
+    Proved by showing that QIP protocols can be parallelized to 3 messages
+    (QIP = QIP(3)) and that 3-message QIP can be simulated in PSPACE
+    using semidefinite programming and the multiplicative weights method.
+
+    Consequence: Quantum interaction is no more powerful than classical
+    interaction, even though quantum PROOFS (QMA) and quantum COMPUTATION
+    (BQP) appear to be more powerful than their classical counterparts. -/
+theorem jain_QIP_eq_PSPACE : QIP = PSPACE :=
+  Set.Subset.antisymm QIP_subset_PSPACE PSPACE_subset_QIP
+
+/-- The quantum verification chain: NP ⊆ QCMA ⊆ QMA ⊆ QIP = PSPACE.
+    Shows how quantum resources progressively strengthen verification. -/
+theorem quantum_verification_chain' :
+    NP ⊆ QCMA ∧ QCMA ⊆ QMA ∧ QMA ⊆ QIP ∧ QIP ⊆ PSPACE :=
+  ⟨NP_subset_QCMA, QCMA_subset_QMA, QMA_subset_QIP, QIP_subset_PSPACE⟩
+
+/-- QMA ⊆ PSPACE: Quantum Merlin-Arthur is contained in PSPACE.
+    Proved by transitivity: QMA ⊆ QIP ⊆ PSPACE. Previously axiomatized
+    (QMA_subset_PSPACE), now derivable from the QIP chain. -/
+theorem QMA_subset_PSPACE' : QMA ⊆ PSPACE :=
+  Set.Subset.trans QMA_subset_QIP QIP_subset_PSPACE
+
+/-- Quantum doesn't help interaction: QIP = IP = PSPACE.
+    Classical and quantum interactive proofs characterize exactly the same class.
+    This is in stark contrast to:
+    - BQP vs BPP (likely different)
+    - QMA vs MA (likely different)
+    - MIP* vs MIP (provably different: MIP = NEXP, MIP* = RE) -/
+theorem quantum_interaction_equivalence :
+    -- QIP ⊆ PSPACE ⊆ IP ⊆ QIP (cycle)
+    QIP ⊆ PSPACE ∧ IP = PSPACE ∧
+    -- Quantum helps for proofs but not for interaction
+    (NP ⊆ QMA ∧ QMA ⊆ PSPACE) :=
+  ⟨QIP_subset_PSPACE, shamir_IP_eq_PSPACE,
+   Set.Subset.trans NP_subset_QCMA QCMA_subset_QMA,
+   QMA_subset_PSPACE'⟩
+
+/-- QMA(2) containments: QMA ⊆ QMA(2) ⊆ PSPACE.
+    It is open whether QMA(2) = QMA or QMA(2) is strictly more powerful. -/
+axiom QMA_subset_QMA2 : QMA ⊆ QMA2
+axiom QMA2_subset_PSPACE : QMA2 ⊆ PSPACE
+
+/-- The quantum Merlin-Arthur landscape:
+    NP ⊆ QCMA ⊆ QMA ⊆ QMA(2) ⊆ QIP = PSPACE.
+    Shows that even with multiple unentangled quantum proofs,
+    we stay within PSPACE. -/
+theorem quantum_MA_landscape :
+    NP ⊆ QCMA ∧ QCMA ⊆ QMA ∧ QMA ⊆ QMA2 ∧ QMA2 ⊆ PSPACE ∧
+    QIP ⊆ PSPACE :=
+  ⟨NP_subset_QCMA, QCMA_subset_QMA, QMA_subset_QMA2,
+   QMA2_subset_PSPACE, QIP_subset_PSPACE⟩
+
+-- ============================================================
+-- PART 48: NL-Completeness and the Reachability Problem
+-- ============================================================
+
+/-
+### NL-Completeness
+
+The class NL (nondeterministic logspace) has a natural complete problem:
+**PATH** (also called STCON or s-t connectivity) — given a directed graph
+and two vertices s and t, is there a path from s to t?
+
+Savitch showed STCON is NL-complete (1970). Combined with Immerman-
+Szelepcsényi (NL = coNL), this gives a complete picture of nondeterministic
+space complexity.
+-/
+
+/-- NL-hardness: A problem is NL-hard if every NL problem reduces to it
+    in logspace. -/
+def NLHard (problem : ℕ → Bool) : Prop :=
+  ∀ f ∈ NL, ∃ (reduction : ℕ → ℕ),
+    (∀ n, f n = problem (reduction n)) ∧
+    PolyTimeComputable emptyOracle reduction
+
+/-- NL-completeness: a problem is NL-complete if it is in NL and NL-hard. -/
+def NLComplete (problem : ℕ → Bool) : Prop :=
+  problem ∈ NL ∧ NLHard problem
+
+/-- PATH (s-t connectivity): Given a directed graph and vertices s, t,
+    is there a directed path from s to t?
+
+    This is the canonical NL-complete problem. Solved by nondeterministically
+    guessing the path vertex-by-vertex, using only O(log n) space to track
+    the current vertex. -/
+opaque PATH : ℕ → Bool
+
+/-- **PATH is NL-complete** (Savitch 1970): s-t connectivity is the
+    canonical NL-complete problem.
+
+    NL-hardness: Every NL computation can be viewed as reachability in
+    the configuration graph of a nondeterministic logspace machine.
+    NL membership: Guess a path vertex-by-vertex in O(log n) space. -/
+axiom PATH_NL_complete : NLComplete PATH
+
+/-- PATH ∈ NL (consequence of NL-completeness). -/
+theorem PATH_in_NL : PATH ∈ NL := PATH_NL_complete.1
+
+/-- PATH is NL-hard (consequence of NL-completeness). -/
+theorem PATH_NL_hard : NLHard PATH := PATH_NL_complete.2
+
+/-- PATH ∈ P: s-t connectivity is solvable in polynomial time
+    (BFS/DFS). Combined with NL ⊆ P, this is consistent. -/
+theorem PATH_in_P : PATH ∈ P :=
+  NL_subset_P (PATH_NL_complete.1)
+
+/-- NL-completeness and co-completeness: Since NL = coNL (Immerman-
+    Szelepcsényi), the complement of PATH (s-t non-connectivity) is
+    also in NL. This was surprising: it means a nondeterministic logspace
+    machine can verify that there is NO path. -/
+theorem PATH_complement_in_NL :
+    (fun n => !PATH n) ∈ NL := by
+  -- PATH ∈ NL (from completeness)
+  have hpath : PATH ∈ NL := PATH_NL_complete.1
+  -- NL = coNL (Immerman-Szelepcsényi)
+  -- PATH ∈ NL = coNL = {f | (fun n => !f n) ∈ NL}
+  -- Therefore (fun n => !PATH n) ∈ NL
+  have hcoNL : PATH ∈ coNL := immerman_szelepcsenyi ▸ hpath
+  exact hcoNL
+
+/-- **Space complexity hierarchy**: L ⊆ NL = coNL ⊆ P, with
+    PATH as the NL-complete problem and NL-completeness preserved
+    under complement (since NL = coNL). -/
+theorem space_complexity_landscape :
+    L ⊆ NL ∧ NL = coNL ∧ NL ⊆ P ∧
+    NLComplete PATH ∧
+    PATH ∈ P :=
+  ⟨L_subset_NL, immerman_szelepcsenyi, NL_subset_P,
+   PATH_NL_complete, PATH_in_P⟩
+
+-- ============================================================
+-- PART 49: Barrington's Theorem and Branching Programs
+-- ============================================================
+
+/-
+### Barrington's Theorem (1989)
+
+Barrington proved a remarkable characterization of NC¹: a language is in
+NC¹ if and only if it can be computed by polynomial-length, width-5
+branching programs.
+
+This connects circuit depth (NC¹ = circuits of O(log n) depth) to the
+algebraic structure of the symmetric group S₅. The key insight is that S₅
+is non-solvable (it contains A₅, the smallest non-abelian simple group),
+which allows encoding arbitrary Boolean computations.
+
+Width 4 is NOT sufficient: width-4 branching programs can only compute
+languages in ACC⁰ (a weaker class). The jump from width 4 to width 5
+corresponds to the algebraic jump from solvable to non-solvable groups.
+-/
+
+/-- Width-bounded branching programs: the set of problems computable by
+    polynomial-length branching programs of width at most w. -/
+opaque BPWidth (w : ℕ) : Set (ℕ → Bool)
+
+/-- **Barrington's Theorem** (1989): NC¹ = BPWidth(5).
+    A language is in NC¹ (polynomial-size, O(log n)-depth Boolean circuits)
+    if and only if it can be computed by polynomial-length, width-5
+    branching programs.
+
+    Proof sketch: The forward direction (NC¹ ⊆ BPWidth(5)) simulates
+    each gate of a log-depth circuit using a constant-length width-5
+    branching program, using the non-solvability of S₅ to compose
+    sub-programs for AND and NOT gates.
+
+    The reverse direction (BPWidth(5) ⊆ NC¹) converts a branching program
+    into a log-depth circuit via divide-and-conquer on the program length. -/
+axiom barrington_theorem : NC_k 1 = BPWidth 5
+
+/-- Width-4 branching programs are weaker than width-5: BPWidth(4) ⊊ BPWidth(5).
+    Width-4 BP compute only ACC⁰ languages (solvable group programs).
+    Width-5 BP compute NC¹ languages (non-solvable group S₅). -/
+axiom width4_subset_width5 : BPWidth 4 ⊆ BPWidth 5
+axiom width4_subset_ACC0 : BPWidth 4 ⊆ ACC0
+
+/-- The algebraic threshold: the jump from width 4 to width 5 corresponds
+    to the jump from solvable to non-solvable groups.
+    S₃ and S₄ are solvable → width ≤ 4 gives only ACC⁰
+    S₅ is non-solvable → width 5 gives NC¹ (which contains ACC⁰) -/
+theorem barrington_algebraic_threshold :
+    BPWidth 4 ⊆ ACC0 ∧
+    NC_k 1 = BPWidth 5 ∧
+    ACC0 ⊆ NC_k 1 := by
+  refine ⟨width4_subset_ACC0, barrington_theorem, ?_⟩
+  -- ACC0 ⊆ TC0 ⊆ NC1
+  exact Set.Subset.trans ACC0_subset_TC0 (TC_k_subset_NC_k_succ 0)
+
+/-- Barrington connects to the circuit hierarchy:
+    ACC⁰ ⊆ TC⁰ ⊆ NC¹ = BPWidth(5), and NC¹ ⊆ NC ⊆ P.
+    The branching program characterization gives an algebraic handle
+    on NC¹ that circuit descriptions alone don't provide. -/
+theorem barrington_in_hierarchy :
+    ACC0 ⊆ TC_k 0 ∧
+    TC_k 0 ⊆ NC_k 1 ∧
+    NC_k 1 = BPWidth 5 ∧
+    NC_k 1 ⊆ NC ∧
+    NC ⊆ P :=
+  ⟨ACC0_subset_TC0,
+   TC_k_subset_NC_k_succ 0,
+   barrington_theorem,
+   Set.subset_iUnion_of_subset 1 (Set.Subset.refl _),
+   NC_subset_P⟩
+
+/-- **P vs NC¹ separation**: If P ≠ NC, then in particular P ≠ NC¹.
+    Barrington's theorem means: P ≠ NC¹ iff P has problems that
+    cannot be computed by polynomial-length width-5 branching programs.
+
+    Note: P vs NC is a major open problem, weaker than P vs NP
+    (since NC ⊆ P ⊆ NP). -/
+theorem P_ne_NC_implies_P_ne_NC1 (h : P ≠ NC) : P ≠ NC_k 1 := by
+  intro h1
+  apply h
+  exact Set.Subset.antisymm (by
+    intro f hf
+    rw [h1] at hf
+    exact Set.mem_iUnion.mpr ⟨1, hf⟩) NC_subset_P
+
+-- ============================================================
 -- PART 42: The P vs NP Grand Unification
 -- ============================================================
 
@@ -5990,6 +6285,9 @@ The sound model now encompasses:
 13. **Descriptive complexity** (Fagin, Immerman-Vardi)
 14. **Counting complexity** (#P, GapP, Toda)
 15. **Oracle separations** (BGS, Raz-Tal, Bennett-Gill)
+16. **Quantum interactive proofs** (QIP = PSPACE, QCMA, QMA(2))
+17. **NL-completeness** (PATH, space hierarchy)
+18. **Branching programs** (Barrington's theorem, NC¹ = width-5 BP)
 
 Together, these form the most comprehensive formal complexity theory
 encyclopedia in Lean.
@@ -6020,7 +6318,11 @@ theorem p_vs_np_master_summary :
     -- X. Shannon counting: hard functions exist (nonconstructive)
     (∃ f, f ∉ P_poly) ∧
     -- XI. MIP*=RE: entanglement strictly strengthens multi-prover proofs
-    (MIP ⊂ MIP_star) :=
+    (MIP ⊂ MIP_star) ∧
+    -- XII. QIP = PSPACE: quantum interaction doesn't help
+    (QIP = PSPACE) ∧
+    -- XIII. NL-completeness: PATH is the canonical space-complete problem
+    (NLComplete PATH ∧ NL = coNL) :=
   ⟨P_nontrivial,
    ⟨P_subset_NP, NP_subset_PH, PH_subset_PSPACE, PSPACE_subset_EXP⟩,
    P_strict_subset_EXP,
@@ -6032,7 +6334,9 @@ theorem p_vs_np_master_summary :
    baker_gill_solovay_eq,
    baker_gill_solovay_sep,
    shannon_hard_functions_outside_P_poly,
-   entanglement_strictly_strengthens_MIP⟩
+   entanglement_strictly_strengthens_MIP,
+   jain_QIP_eq_PSPACE,
+   ⟨PATH_NL_complete, immerman_szelepcsenyi⟩⟩
 
 -- ============================================================
 -- Verification: TFNP, Descriptive, Counting, Oracle, Unconditional
@@ -6068,6 +6372,23 @@ theorem p_vs_np_master_summary :
 -- Unconditional Lower Bounds
 #check unconditional_lower_bounds     -- P⊊EXP + NEXP⊄ACC⁰ + ... (proved)
 #check unconditional_vs_conditional   -- Gap between known and wanted (proved)
+
+-- Quantum Interactive Proofs
+#check QIP_subset_PSPACE              -- QIP ⊆ PSPACE (Jain et al. 2011)
+#check jain_QIP_eq_PSPACE             -- QIP = PSPACE (proved)
+#check quantum_verification_chain'    -- NP ⊆ QCMA ⊆ QMA ⊆ QIP ⊆ PSPACE
+#check quantum_interaction_equivalence -- QIP = IP = PSPACE (proved)
+
+-- NL-Completeness
+#check PATH_NL_complete               -- PATH is NL-complete
+#check PATH_in_P                      -- PATH ∈ P (proved from NL ⊆ P)
+#check PATH_complement_in_NL          -- Complement of PATH ∈ NL (proved)
+#check space_complexity_landscape     -- Full space hierarchy (proved)
+
+-- Barrington's Theorem
+#check barrington_theorem             -- NC¹ = BPWidth(5)
+#check barrington_algebraic_threshold -- Width-4 → ACC⁰, Width-5 → NC¹ (proved)
+#check barrington_in_hierarchy        -- Full circuit-BP hierarchy (proved)
 
 -- Grand Unification
 #check p_vs_np_master_summary         -- Master summary (proved)

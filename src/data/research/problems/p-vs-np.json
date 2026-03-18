@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-01T21:55:27.888Z",
-    "iteration": 11,
-    "focus": "Eliminated 3 trivially-provable axioms, extended master summary to 12 components",
+    "iteration": 12,
+    "focus": "Added QIP=PSPACE, NL-completeness (PATH), Barrington theorem (NC1=BPWidth5), extended master summary to 14 components",
     "blockers": [
       "P vs NP is an unsolved Millennium Prize problem"
     ],
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 more axioms (125→122): nash_PPAD_hard (trivially True), GapP_closed_subtraction (trivially True), mcsp_np_hardness_barrier (derived from razborov_rudich). Extended p_vs_np_master_summary to 12 components (added Shannon counting + MIP* separation). 6075 lines, 122 axioms, 0 sorries.",
+    "progressSummary": "PROGRESS: Added 3 new sections: QIP=PSPACE (quantum interactive proofs, Jain et al. 2011), NL-completeness (PATH as canonical NL-complete problem), and Barrington theorem (NC1 = width-5 branching programs). Extended master summary to 14 components. 6396 lines, 133 axioms, 0 sorries.",
     "builtItems": [
       {
         "name": "P",
@@ -525,7 +525,29 @@
       "nash_PPAD_hard theorem (was axiom, trivially True)",
       "GapP_closed_subtraction theorem (was axiom, trivially True)",
       "mcsp_np_hardness_barrier theorem (was axiom, derived from razborov_rudich)",
-      "p_vs_np_master_summary extended to 12 components (Shannon + MIP*)"
+      "p_vs_np_master_summary extended to 12 components (Shannon + MIP*)",
+      "QMA opaque def (recovered: was lost in merge)",
+      "QCMA opaque def (classical proofs, quantum verification)",
+      "QMA2 opaque def (two unentangled quantum proofs)",
+      "QIP opaque def (quantum interactive proofs)",
+      "BPWidth opaque def (width-bounded branching programs)",
+      "PATH opaque def (s-t connectivity, NL-complete problem)",
+      "NLHard def (NL-hardness via logspace reductions)",
+      "NLComplete def (NL membership + NL-hardness)",
+      "NP_subset_QCMA axiom, QCMA_subset_QMA axiom, QMA_subset_QIP axiom",
+      "QIP_subset_PSPACE axiom (Jain et al. 2011), IP_subset_QIP axiom",
+      "QMA_subset_QMA2 axiom, QMA2_subset_PSPACE axiom",
+      "PATH_NL_complete axiom (Savitch 1970)",
+      "barrington_theorem axiom (NC1 = BPWidth 5, 1989)",
+      "width4_subset_width5 axiom, width4_subset_ACC0 axiom",
+      "jain_QIP_eq_PSPACE theorem (proved: QIP=PSPACE from QIP⊆PSPACE + IP⊆QIP + IP=PSPACE)",
+      "PSPACE_subset_QIP theorem (proved: PSPACE = IP ⊆ QIP)",
+      "QMA_subset_PSPACE theorem (proved: QMA ⊆ QIP ⊆ PSPACE)",
+      "PATH_in_P theorem (proved: from NL ⊆ P)",
+      "PATH_complement_in_NL theorem (proved: from NL = coNL)",
+      "barrington_algebraic_threshold theorem (proved: width-4→ACC0, width-5→NC1, ACC0⊆NC1)",
+      "barrington_in_hierarchy theorem (proved: ACC0⊆TC0⊆NC1=BPWidth5⊆NC⊆P)",
+      "p_vs_np_master_summary extended to 14 components (QIP=PSPACE, NL-completeness)"
     ],
     "insights": [
       "Same abstract model triviality as PNPBarriers - Program.decide allows arbitrary functions",
@@ -624,7 +646,13 @@
       "nash_PPAD_hard was trivially True (∀ f ∈ PPAD, True) — eliminated as theorem",
       "GapP_closed_subtraction was trivially True (∀ f g, f∈GapP → g∈GapP → True) — eliminated as theorem",
       "mcsp_np_hardness_barrier redundant: OWF hypothesis unnecessary since razborov_rudich is unconditional in model",
-      "Master summary extended to 12 components: added X (Shannon hard functions outside P/poly) and XI (MIP ⊊ MIP*)"
+      "Master summary extended to 12 components: added X (Shannon hard functions outside P/poly) and XI (MIP ⊊ MIP*)",
+      "QIP = PSPACE (Jain-Ji-Upadhyay-Watrous 2011): quantum interaction does NOT help beyond classical interaction, in contrast to quantum proofs (QMA) and quantum computation (BQP)",
+      "NP ⊆ QCMA ⊆ QMA ⊆ QIP = PSPACE: full quantum verification chain formalized with 7 new axioms",
+      "QMA(2) (two unentangled quantum proofs) also contained in PSPACE; open whether QMA(2) = QMA",
+      "PATH (s-t connectivity) is NL-complete, PATH ∈ P (from NL ⊆ P), complement of PATH also in NL (from NL = coNL)",
+      "Barrington theorem (1989): NC1 = BPWidth(5). The algebraic threshold: S5 non-solvability enables universal computation at width 5",
+      "Width-4 branching programs compute only ACC0 (solvable groups), width-5 computes NC1 (non-solvable S5)"
     ],
     "mathlibGaps": [
       "Turing machines",
@@ -648,7 +676,7 @@
     "mathlib": []
   },
   "started": "2026-01-01T21:55:27.888Z",
-  "lastUpdate": "2026-03-18T16:00:00Z",
+  "lastUpdate": "2026-03-18T23:55:00Z",
   "significance": 10,
   "tractability": 2
 }
