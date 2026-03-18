@@ -169,7 +169,6 @@ export interface ResearchListing {
   lastUpdate?: string
   completed?: string
   attemptCount: number
-  approachCount: number
   linkedProof?: string
   significance?: number
   tractability?: number
@@ -246,50 +245,6 @@ export interface ResearchKnowledge {
 }
 
 /**
- * A single proof attempt
- */
-export interface ResearchAttempt {
-  file: string
-  timestamp?: string
-  succeeded: boolean
-  notes?: string
-}
-
-/**
- * Post-mortem analysis for failed approaches
- */
-export interface PostMortem {
-  whatWorked: string[]
-  whatFailed: string[]
-  lessonsLearned: string[]
-}
-
-/**
- * Success recap for completed proofs
- */
-export interface SuccessRecap {
-  keyTheorem: string
-  techniquesUsed: string[]
-  linesOfProof?: number
-  timeToSuccess?: string
-}
-
-/**
- * An approach to solving the problem
- */
-export interface ResearchApproach {
-  id: string
-  name: string
-  status: 'active' | 'completed' | 'abandoned'
-  hypothesis: string
-  strategy: string
-  risks: string[]
-  attempts: ResearchAttempt[]
-  postMortem?: PostMortem
-  successRecap?: SuccessRecap
-}
-
-/**
  * Metadata about a Lean 4 formalization file associated with a research problem.
  * Populated by the enrich-research.ts build script.
  */
@@ -329,7 +284,6 @@ export interface ResearchProblem {
   knownResults: KnownResults
   currentState: ResearchState
   knowledge: ResearchKnowledge
-  approaches: ResearchApproach[]
 
   tags: string[]
   relatedProofs: string[]

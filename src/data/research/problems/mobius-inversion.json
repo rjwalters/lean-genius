@@ -36,7 +36,6 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: mobius-inversion\n\n## Problem Summary\n\nFormalize Mobius inversion formula.\n\n## Current State\n\n**Status**: SKIPPED (IN MATHLIB)\n\n### Why Skipped\n\nAlready in Mathlib with full proofs:\n- `sum_eq_iff_sum_mul_moebius_eq` (for rings)\n- `sum_eq_iff_sum_smul_moebius_eq` (for additive groups)  \n- `prod_eq_iff_prod_pow_moebius_eq` (for multiplicative)\n- `coe_zeta_mul_moebius` proves ζ*μ=1\n\n### What's in Mathlib\n\n```lean\n-- The core inversion theorem\ntheorem sum_eq_iff_sum_mul_moebius_eq [AddCommGroup R] [Module R R]\n    (f g : ℕ → R) : \n    (∀ n, g n = ∑ d ∈ n.divisors, f d) ↔ \n    (∀ n, f n = ∑ d ∈ n.divisors, μ d • g (n/d))\n```\n\nThis problem was marked \"skipped\" but is actually IN MATHLIB.\n\n## Session Log\n\n### Backfill Session (2026-01-01)\n\n**Mode**: BACKFILL - This is complete in Mathlib, no work needed\n"
   },
-  "approaches": [],
   "tags": [
     "number-theory",
     "arithmetic-functions",

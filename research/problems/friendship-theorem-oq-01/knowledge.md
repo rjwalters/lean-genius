@@ -85,3 +85,10 @@ Eliminate the spectral axiom via:
 3. Eigenvalue decomposition (in Mathlib for real symmetric)
 4. Trace = sum of eigenvalues → integrality constraint
 5. Application of dvd_sq_add_one_imp_one (proved)
+
+## Approaches Explored
+
+### Spectral A² identity
+**Status**: succeeded
+Prove A²=(k-1)I+J for regular friendship graph, derive eigenvalue constraints
+**Outcome**: Full proof architecture with 0 sorries and 1 axiom (spectral eigenvalue step)

@@ -36,7 +36,6 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: cauchy-schwarz-integral-oq-01-oq-01\n\n## Status: COMPLETED\n\nFull formalization exists in `proofs/Proofs/CauchySchwarzIntegralOQ01OQ01.lean` (0 sorries).\nGallery data at `src/data/proofs/cauchy-schwarz-integral-oq-01-oq-01/` (status: verified).\n\n## Key Results\n- Hölder inequality at lintegral level via `ENNReal.lintegral_mul_le_Lp_mul_Lq`\n- Cauchy-Schwarz at p=q=2 (lintegral specialization)\n- Minkowski in eLpNorm form via `eLpNorm_add_le`\n- L² Cauchy-Schwarz via `abs_real_inner_le_norm`\n- Minkowski L² from CS (norm-squared identity)\n- Young's inequality (pointwise foundation)\n- Complete hierarchy verified with Mathlib 4.26+ eLpNorm API\n"
   },
-  "approaches": [],
   "tags": [
     "seeker-selected",
     "analysis",

@@ -35,3 +35,10 @@ The Gauss sum proof architecture for QR:
 | Eisenstein | Lattice points | ElementaryQuadraticReciprocity.lean | 357 |
 | Zolotarev | Permutation signs | ElementaryQuadraticReciprocityOQ01.lean | 628 |
 | Gauss sums | τ² evaluation | ElementaryQuadraticReciprocityOQ02.lean | 175 |
+
+## Approaches Explored
+
+### Gauss Sum Architecture
+**Status**: successful
+Axiomatize τ² = χ(-1)·p, derive QR using Frobenius and Euler's criterion
+**Outcome**: Complete architecture with 1 axiom

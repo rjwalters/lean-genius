@@ -17,7 +17,6 @@ import {
   Target,
   Lightbulb,
   BookOpen,
-  Beaker,
   FileText,
   Archive,
   Code2,
@@ -42,8 +41,7 @@ export function ResearchProblemPage() {
   const { slug } = useParams<{ slug: string }>()
   const [problem, setProblem] = useState<ResearchProblem | null>(null)
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'overview' | 'approaches' | 'formalization' | 'knowledge'>('overview')
-  const [expandedApproaches, setExpandedApproaches] = useState<string[]>([])
+  const [activeTab, setActiveTab] = useState<'overview' | 'formalization' | 'knowledge'>('overview')
   const [expandedSessions, setExpandedSessions] = useState<string[]>([])
   const [showArchived, setShowArchived] = useState(false)
   const [showAllBuiltItems, setShowAllBuiltItems] = useState(false)
@@ -64,12 +62,6 @@ export function ResearchProblemPage() {
         setLoading(false)
       })
   }, [slug])
-
-  const toggleApproach = (id: string) => {
-    setExpandedApproaches((prev) =>
-      prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]
-    )
-  }
 
   const toggleSession = (filename: string) => {
     setExpandedSessions((prev) =>
@@ -212,7 +204,6 @@ export function ResearchProblemPage() {
               <nav className="flex gap-6">
                 {[
                   { id: 'overview', label: 'Overview', icon: Target },
-                  { id: 'approaches', label: 'Approaches', icon: Beaker },
                   ...(hasLeanFiles ? [{ id: 'formalization', label: 'Formalization', icon: Code2 }] : []),
                   { id: 'knowledge', label: 'Knowledge', icon: Lightbulb }
                 ].map((tab) => {
@@ -421,123 +412,6 @@ export function ResearchProblemPage() {
                       ))}
                     </div>
                   </section>
-                )}
-              </div>
-            )}
-
-            {activeTab === 'approaches' && (
-              <div className="space-y-4">
-                <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <Beaker className="h-5 w-5 text-annotation" />
-                  Approaches Tried
-                </h2>
-                {problem.approaches.length === 0 ? (
-                  <p className="text-muted-foreground text-center py-8">
-                    No approaches documented yet.
-                  </p>
-                ) : (
-                  <div className="space-y-3">
-                    {problem.approaches.map((approach, index) => {
-                      const isExpanded = expandedApproaches.includes(approach.id)
-                      const statusColor = approach.status === 'completed' ? '#22C55E' :
-                        approach.status === 'abandoned' ? '#EF4444' : '#F59E0B'
-
-                      return (
-                        <div
-                          key={approach.id}
-                          className="bg-card border border-border rounded-lg overflow-hidden"
-                        >
-                          <button
-                            onClick={() => toggleApproach(approach.id)}
-                            className="w-full px-4 py-3 flex items-center justify-between hover:bg-muted/50 transition-colors"
-                          >
-                            <div className="flex items-center gap-3">
-                              <span className="text-sm text-muted-foreground">
-                                #{index + 1}
-                              </span>
-                              <span className="font-medium">{approach.name}</span>
-                              <span
-                                className="px-2 py-0.5 rounded text-xs font-medium capitalize"
-                                style={{
-                                  backgroundColor: `${statusColor}20`,
-                                  color: statusColor
-                                }}
-                              >
-                                {approach.status}
-                              </span>
-                              <span className="text-xs text-muted-foreground">
-                                {approach.attempts.length} attempt{approach.attempts.length !== 1 ? 's' : ''}
-                              </span>
-                            </div>
-                            {isExpanded ? (
-                              <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                            ) : (
-                              <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                            )}
-                          </button>
-                          {isExpanded && (
-                            <div className="px-4 pb-4 border-t border-border pt-4 space-y-4">
-                              {approach.strategy && (
-                                <div>
-                                  <p className="text-sm font-medium mb-1">Strategy</p>
-                                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-                                    {approach.strategy}
-                                  </p>
-                                </div>
-                              )}
-                              {approach.attempts.length > 0 && (
-                                <div>
-                                  <p className="text-sm font-medium mb-2">Attempts</p>
-                                  <div className="space-y-1">
-                                    {approach.attempts.map((attempt, i) => (
-                                      <div
-                                        key={i}
-                                        className="flex items-center gap-2 text-sm"
-                                      >
-                                        {attempt.succeeded ? (
-                                          <CheckCircle2 className="h-3 w-3 text-green-400" />
-                                        ) : (
-                                          <AlertCircle className="h-3 w-3 text-red-400" />
-                                        )}
-                                        <span className="font-mono text-xs text-muted-foreground">
-                                          {attempt.file}
-                                        </span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                              {approach.postMortem && (
-                                <div className="p-3 bg-red-500/5 border border-red-500/20 rounded">
-                                  <p className="text-sm font-medium text-red-400 mb-2">Post-Mortem</p>
-                                  {approach.postMortem.whatFailed.length > 0 && (
-                                    <div className="mb-2">
-                                      <p className="text-xs text-red-400/70 mb-1">What Failed:</p>
-                                      <ul className="list-disc list-inside text-sm text-muted-foreground">
-                                        {approach.postMortem.whatFailed.map((item, i) => (
-                                          <li key={i}>{item}</li>
-                                        ))}
-                                      </ul>
-                                    </div>
-                                  )}
-                                  {approach.postMortem.lessonsLearned.length > 0 && (
-                                    <div>
-                                      <p className="text-xs text-yellow-400/70 mb-1">Lessons Learned:</p>
-                                      <ul className="list-disc list-inside text-sm text-muted-foreground">
-                                        {approach.postMortem.lessonsLearned.map((item, i) => (
-                                          <li key={i}>{item}</li>
-                                        ))}
-                                      </ul>
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
                 )}
               </div>
             )}
