@@ -349,6 +349,16 @@ End each session with:
 - Block without assessing buildability
 - Make commits without meaningful progress
 
+## Axiom Integrity
+
+When setting `status`, `axiomCount`, or `badge` in meta.json, count ALL assumptions -- not just Lean `axiom` declarations. Structure-encoded hypotheses (fields in structures like `NSAxioms`, `SelbergClassAxioms`, `RHAxioms`, etc.) are assumptions that the proof depends on. Moving axioms into structure fields does not eliminate them.
+
+**Rules:**
+- `axiomCount` = number of `axiom` declarations + number of assumption-carrying structure fields
+- Millennium Prize / Clay problems and open conjectures: use `status: "axiomatized"`, never `"verified"`
+- A proof is only `"verified"` (0 axioms) if it has zero `axiom` declarations AND zero structure-encoded assumptions
+- When creating or updating meta.json, inspect the actual Lean file for both forms of assumptions
+
 ## Observability
 
 **Log your actions** to enable monitoring without TUI access:
