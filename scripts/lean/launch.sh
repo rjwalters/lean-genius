@@ -770,6 +770,28 @@ is_polling_agent() {
     [[ "$agent_type" == "deployer" || "$agent_type" == "seeker" || "$agent_type" == "tester" || "$agent_type" == "herald" ]]
 }
 
+# Helper: Get consecutive failure count from agent log
+get_consecutive_failures() {
+    local session="$1"
+    local log_dir=".loom/logs"
+    local log_file=""
+    case "$session" in
+        researcher-*) log_file="$log_dir/${session}.log" ;;
+        enricher-*)   log_file="$log_dir/${session}.log" ;;
+        deployer)     log_file="$log_dir/deployer.log" ;;
+        seeker-agent) log_file="$log_dir/seeker.log" ;;
+        herald-agent) log_file="$log_dir/herald.log" ;;
+        aristotle-agent) log_file="$log_dir/aristotle.log" ;;
+        tester-agent) log_file="$log_dir/tester-agent.log" ;;
+        *) echo "0"; return ;;
+    esac
+    if [[ ! -f "$log_file" ]]; then echo "0"; return; fi
+    local count
+    count=$(grep -o "consecutive failures: [0-9]*" "$log_file" | tail -1 | grep -o '[0-9]*$')
+    echo "${count:-0}"
+}
+CONSECUTIVE_FAILURE_THRESHOLD=10
+
 # Helper: Determine agent health status
 # Returns: RUNNING, COMPLETED, STUCK, IDLE, or UNKNOWN
 get_agent_status() {

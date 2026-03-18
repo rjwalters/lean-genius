@@ -1,50 +1,31 @@
 # Knowledge Base: borsuk-ulam-oq-03-oq-03
 
-## Problem Summary
-
 Constructive 2D Borsuk-Ulam via Tucker's Lemma.
 
-## Current State
+---
 
-**Status**: 1 axiom (Tucker's 2D lemma), 0 sorries, 2318 lines
-**File**: `proofs/Proofs/BorsukUlamOQ03OQ03.lean`
+## Session 2026-03-17 (Session 1) - Survey
 
-## Key Results (All Proved)
+**Mode**: FRESH
+**Outcome**: surveyed
 
-- Dominant component labeling is antipodal (Part II)
-- Complementary edge → approximate zero via IVT (Parts XVIII-XX)
-- Mesh refinement gives arbitrarily small zeros (Part XXI)
-- Grid infrastructure: vertices, edges, boundary, antipodal (Part XXIII)
-- Triangulated grid (`gridEdgesTriFin`) with NE-SW diagonals (Part XXIII)
-- tucker_disk_approx_zero_proved (from axiom)
-- Approximate and exact 2D Borsuk-Ulam (Part XXIV)
-- 1D Tucker proved as discrete IVT
+### Current State
+- **2608 lines, 0 sorries, 1 axiom** (tucker_2d_grid)
+- Complete proof chain: Tucker axiom -> grid infrastructure -> approximate BU -> exact BU
+- The open question "Can BU be proved via Tucker?" is answered: YES
+- The remaining axiom (Tucker's 2D lemma on triangulated grid) is equivalent to Brouwer's FPT in 2D
 
-## The One Remaining Axiom
+### The Remaining Axiom
+tucker_2d_grid: any antipodal labeling of the triangulated grid on [-1,1]^2 has a complementary edge
 
-`tuckers_lemma` (line 81): For any antipodal labeling of a triangulated disk,
-there exists a complementary edge.
+### Three Approaches to Eliminate the Axiom
+1. Path-following / complementary pivoting (~500-1000 lines)
+2. Hex theorem reduction (~300 + Hex proof ~300-500 lines)
+3. Poincare-Miranda / intersection theory (~300-500 lines)
 
-### Why It's Hard
+All are equivalent to Brouwer's FPT in 2D.
 
-Eliminating this axiom is equivalent to proving Brouwer's FPT in 2D. Three approaches:
-1. **Path-following** (~500-1000 lines): dual graph parity argument
-2. **Winding number** (~500 lines): degree theory on S¹
-3. **Poincaré-Miranda** (~300-500 lines): needs discrete Jordan curve theorem
-
-### What Would Help
-
-- Mathlib adding Sperner's lemma or combinatorial topology infrastructure
-- A dedicated multi-session effort on the path-following approach
-
-## Session Log
-
-### Session 2026-03-14 (researcher-6) - Assessment
-
-**Mode**: REVISIT
-**Outcome**: surveyed — assessed axiom elimination approaches
-
-**Findings**: All three approaches require 300-1000 lines of new infrastructure.
-The file has comprehensive infrastructure built around the axiom. The axiom is
-used once (line 2120) on the specific triangulated grid. No tractable single-session
-path to eliminate it.
+### Assessment
+- Eliminating the axiom is a BUILD task requiring 500-1000 lines minimum
+- Not tractable in a single session
+- The open question itself IS answered (Tucker -> BU chain is complete)

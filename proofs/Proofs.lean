@@ -37,6 +37,8 @@ import Proofs.BorsukUlam
 import Proofs.BorsukUlamOQ01
 import Proofs.BorsukUlamOQ02
 import Proofs.BoundedPrimeGaps
+import Proofs.BoundedPrimeGapsOQ03
+import Proofs.BoundedPrimeGapsSieve
 import Proofs.BrouwerFixedPoint
 import Proofs.BuffonsNeedle
 import Proofs.BuffonsNoodle
@@ -1364,6 +1366,8 @@ import Proofs.InfinitudePrimes4k3
 import Proofs.IntermediateValueTheorem
 import Proofs.InverseGalois
 import Proofs.InverseGaloisD4
+import Proofs.InverseGaloisF20
+import Proofs.InverseGaloisX4Sub2
 import Proofs.IsoperimetricTheorem
 import Proofs.IsoscelesTriangle
 import Proofs.KeplerConjecture

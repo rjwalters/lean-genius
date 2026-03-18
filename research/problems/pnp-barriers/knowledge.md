@@ -2013,3 +2013,37 @@ Parts 51-53 had duplicate defs causing build errors:
 ### Files Modified
 - `proofs/Proofs/PNPBarriers.lean`
 
+
+---
+
+## Session 2026-03-17 (researcher-4) - Soundness Fix + Axiom Reduction (107→104)
+
+**Mode**: REVISIT (depth-first, RICH knowledge score 168)
+**Problem**: pnp-barriers
+**Prior Status**: active (5049 lines Sound, 107 axioms, 0 sorries)
+
+### Critical Soundness Fix
+**`hastad_max3sat_inapprox` derived `False`!**
+- Old form: `∀ ε : ℝ, ε > 0 → ¬∃ (e : ℕ), Solves e emptyOracle MAX3SAT → P ≠ NP → False`
+- In classical logic, `¬(A → B → False)` = `A ∧ B`, so this unfolds to:
+  `∀ ε > 0, ∀ e, Solves e emptyOracle MAX3SAT ∧ P ≠ NP`
+- The `∀ e, Solves e emptyOracle MAX3SAT` part says EVERY program solves MAX3SAT
+- Combined with `Φ_negate`: program e solves MAX3SAT, so e' solves ¬MAX3SAT,
+  but e' also allegedly solves MAX3SAT → Φ returns both `!(MAX3SAT n)` and `MAX3SAT n`
+  for the same input → `Bool.not b = b` → `False`
+- **Fix**: Replaced with sound `hastad_max3sat_in_NP : MAX3SAT ∈ NP` and
+  `hastad_max3sat_inapprox : P ≠ NP → MAX3SAT ∉ P`
+
+### Axioms Eliminated (4)
+1. `nash_PPAD_hard` → theorem (conclusion `True` is trivially provable)
+2. `GapP_closed_subtraction` → theorem (conclusion `True` is trivially provable)
+3. `mcsp_np_hardness_barrier` → theorem (follows from unconditional `natural_proofs_barrier`)
+4. `circuit_value_P_complete` → theorem (any f ∈ P witnesses `f ∉ NC → P ≠ NC`)
+
+### Stats After Changes
+- 5078 lines (Sound), 104 axioms (was 107), 0 sorries
+- Docker build passes
+- 5th unsound axiom found and fixed (total: OWF_exist×2, cook_krajicek, resolution_not_simulates_cp, FPT_eq_W1_breaks_ETH, CH_strict_hierarchy, hastad_max3sat_inapprox)
+
+### Files Modified
+- `proofs/Proofs/PNPBarriersSound.lean` — 1 soundness fix, 4 axiom eliminations, header updated

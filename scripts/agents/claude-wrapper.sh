@@ -270,6 +270,10 @@ is_recoverable_error() {
     return 1
 }
 
+# Liveness check: if claude produces 0 bytes of output after this many seconds,
+# assume it's hung on startup and kill it early (instead of waiting full CLAUDE_TIMEOUT).
+LIVENESS_TIMEOUT="${LIVENESS_TIMEOUT:-120}"  # 2 minutes
+
 # Run Claude once and return exit code
 run_claude_once() {
     local last_output=""
@@ -286,25 +290,48 @@ run_claude_once() {
     local tmpfile
     tmpfile=$(mktemp)
 
-    timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude -p --dangerously-skip-permissions "$PROMPT" < /dev/null > "$tmpfile" 2>&1
-    exit_code=$?
+    # Run in background so we can monitor for startup hangs
+    timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude -p --dangerously-skip-permissions "$PROMPT" < /dev/null > "$tmpfile" 2>&1 &
+    local claude_pid=$!
 
-    # Append to log file if configured
-    if [[ -n "$LOG_FILE" ]]; then
-        cat "$tmpfile" >> "$LOG_FILE"
+    # Liveness monitor: wait up to LIVENESS_TIMEOUT for first output byte.
+    local waited=0
+    while [[ $waited -lt $LIVENESS_TIMEOUT ]]; do
+        if ! kill -0 "$claude_pid" 2>/dev/null; then break; fi
+        local file_size
+        file_size=$(stat -f%z "$tmpfile" 2>/dev/null || stat -c%s "$tmpfile" 2>/dev/null || echo "0")
+        if [[ "$file_size" -gt 0 ]]; then break; fi
+        sleep 5
+        waited=$((waited + 5))
+    done
+
+    # If process is still running but produced no output, it's hung
+    if kill -0 "$claude_pid" 2>/dev/null; then
+        local file_size
+        file_size=$(stat -f%z "$tmpfile" 2>/dev/null || stat -c%s "$tmpfile" 2>/dev/null || echo "0")
+        if [[ "$file_size" -eq 0 && $waited -ge $LIVENESS_TIMEOUT ]]; then
+            log_warn "Liveness check failed: 0 bytes output after ${LIVENESS_TIMEOUT}s — killing hung process (PID $claude_pid)"
+            kill "$claude_pid" 2>/dev/null; sleep 2; kill -9 "$claude_pid" 2>/dev/null
+            wait "$claude_pid" 2>/dev/null
+            rm -f "$tmpfile"
+            LAST_OUTPUT="Liveness check failed: no output after ${LIVENESS_TIMEOUT}s"
+            return 1
+        fi
     fi
 
+    wait "$claude_pid" 2>/dev/null
+    exit_code=$?
+
+    if [[ -n "$LOG_FILE" ]]; then cat "$tmpfile" >> "$LOG_FILE"; fi
     last_output=$(cat "$tmpfile")
     rm -f "$tmpfile"
 
-    # Check for timeout (exit code 124 = SIGTERM, 137 = SIGKILL)
     if [[ "$exit_code" -eq 124 ]]; then
         log_warn "Claude CLI timed out after ${CLAUDE_TIMEOUT}s (SIGTERM)"
     elif [[ "$exit_code" -eq 137 ]]; then
         log_warn "Claude CLI timed out after ${CLAUDE_TIMEOUT}s (required SIGKILL)"
     fi
 
-    # Store output for caller
     LAST_OUTPUT="$last_output"
     return $exit_code
 }

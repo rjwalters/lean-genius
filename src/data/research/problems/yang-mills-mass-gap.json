@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-01T21:55:27.887Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Chiral SB, center vortex, stochastic quantization (Parts LXXV-LXXVII)",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Parts LXVIII-LXX. File now 8391 lines, 6 axioms, 0 sorries. OS axioms, large-N, asymptotic freedom.",
+    "progressSummary": "PROGRESS: Added Parts LXXV-LXXVII. File now 9148 lines, 0 sorries. Chiral symmetry breaking (Banks-Casher, GMOR), center vortex confinement, stochastic quantization (Parisi-Wu).",
     "builtItems": [
       "Part LVIII: Schwinger Model — SchwingerParams, schwingerMass, schwingerMassSq, MultiFlavorSchwinger, etaPrimeMass",
       "Part LIX: Yang-Mills Gradient Flow — GradientFlowParams, smoothingRadius, FlowedEnergyDensity, ReferenceScale, WScale",
@@ -42,7 +42,10 @@
       "Part LXVI: Witten Index — WittenIndexData, GauginoCondensate, SUSY→pure YM connection",
       "Part LXVIII: Osterwalder-Schrader axioms - OS0-OS4, reflection positivity, OS reconstruction, Wightman axioms, spectral condition, YM-specific OS, constructive program",
       "Part LXIX: Large-N expansion - t Hooft coupling, planar expansion, factorization, string connection, large-N mass gap, Eguchi-Kawai reduction",
-      "Part LXX: Asymptotic freedom - beta function, running coupling, dimensional transmutation, confinement mechanism, Cornell potential"
+      "Part LXX: Asymptotic freedom - beta function, running coupling, dimensional transmutation, confinement mechanism, Cornell potential",
+      "Part LXXV: Chiral Symmetry Breaking — ChiralCondensate, GMORRelation, Banks-Casher, pion mass",
+      "Part LXXVI: Center Vortex Model — vortex area law, Nality, confinement criterion",
+      "Part LXXVII: Stochastic Quantization — Parisi-Wu, Langevin convergence, Fokker-Planck"
     ],
     "insights": [
       "Schwinger model mass gap m = e/√π is exactly computable and positive (proved m > 0, m² > 0)",
@@ -76,7 +79,13 @@
       "Eguchi-Kawai reduction: at N=∞ single-site lattice captures infinite-volume physics — extreme volume independence",
       "Asymptotic freedom (β₀>0 for N_f<11N/2): coupling decreases at high energy, explaining why short-distance QCD is perturbative",
       "Dimensional transmutation: quantum effects break classical conformal symmetry, generating Λ_{QCD} from dimensionless coupling g — all masses proportional to Λ",
-      "Mass gap and confinement are linked: Δ ~ √σ ~ Λ_{QCD}, all governed by the same scale from asymptotic freedom"
+      "Mass gap and confinement are linked: Δ ~ √σ ~ Λ_{QCD}, all governed by the same scale from asymptotic freedom",
+      "Banks-Casher relation formalized: ⟨ψ̄ψ⟩ = -πρ(0), proved condensate negative when ρ(0) > 0",
+      "GMOR relation: m²_π·f²_π = m_q·|⟨ψ̄ψ⟩|, proved pion mass proportional to quark mass",
+      "Center vortex model: vortex suppression factor < 1 produces area law, proved σ > 0 from vortex condensation",
+      "N-ality determines confinement: proved N-ality = 0 ↔ N∣k (adjoint screens, fundamental confines)",
+      "Stochastic quantization (Parisi-Wu): Langevin convergence rate = mass gap, proved exp(-Δτ) < 1",
+      "Larger mass gap gives faster Langevin convergence: proved exp(-Δ₂τ) < exp(-Δ₁τ) when Δ₂ > Δ₁"
     ],
     "mathlibGaps": [
       "Principal bundles",
