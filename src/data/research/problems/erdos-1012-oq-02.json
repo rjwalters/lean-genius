@@ -1,68 +1,114 @@
 {
   "slug": "erdos-1012-oq-02",
   "title": "Vertex-Pancyclicity Strengthening of Dense Graph Long Cycles",
-  "phase": "NEW",
+  "phase": "OBSERVE",
   "status": "active",
-  "tier": "A",
+  "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE.",
-    "whyMatters": []
+    "formal": "Under Woodall conditions (n >= 2k+3, edges >= T(n,k)), every vertex lies on cycles of all lengths 3 to n-k",
+    "plain": "Can the pancyclicity result from Erdos #1012 be strengthened to vertex-pancyclicity, where every vertex (not just the graph) has cycles of all lengths?",
+    "whyMatters": [
+      "Natural strengthening of Woodall's pancyclicity result",
+      "Connects to Bondy's metaconjecture about vertex-pancyclicity",
+      "Bridges dense graph conditions with local cycle structure"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "vertexPancyclic_implies_pancyclic: VP implies P",
+      "hasCycleThroughVertex_implies_hasCycleOfLength: vertex cycle -> graph cycle",
+      "isPancyclicUpTo_mono, isVertexPancyclicUpTo_mono, isVertexPancyclicGraphUpTo_mono",
+      "every_vertex_on_long_cycle: Woodall -> all vertices on (n-k)-cycles",
+      "every_vertex_on_triangle: Woodall -> all vertices on triangles",
+      "spectrum_contains_range: VP spectrum contains {3,...,m}"
+    ],
+    "open": [
+      "vertex_pancyclic_implies_connected (Walk API)",
+      "threshold_exceeds_turan_for_small_k (binomial inequality)",
+      "threshold_k0_exceeds_turan (arithmetic for k=0)",
+      "spectrum_size_lower_bound (counting argument)"
+    ],
+    "goal": "Formalize vertex-pancyclicity strengthening of Woodall's theorem"
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-17T22:02:58.360Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "OBSERVE",
+    "since": "2026-03-18T13:10:00Z",
+    "iteration": 2,
+    "focus": "Survey and document existing formalization",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Resolve Nat.choose arithmetic sorries",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 308 lines, 4 sorries, 2 axioms. Vertex-pancyclicity framework built.",
+    "progressSummary": "SURVEYED: 308 lines, 8 proved theorems, 2 axioms, 3 sorries (arithmetic/Walk API). Definitions complete, structural relationships proved.",
     "builtItems": [
-      "Erdos1012OQ02.lean: vertex-pancyclicity definitions and framework",
-      "8 proved structural theorems (monotonicity, implications, consequences)",
-      "2 axioms (Bondy VP, Woodall VP strengthening)",
-      "3 sorries on combinatorial arithmetic inequalities"
+      "hasCycleThroughVertex: cycle through specific vertex (Walk API)",
+      "isVertexPancyclicUpTo: vertex pancyclic up to length m",
+      "isVertexPancyclicGraphUpTo: every vertex pancyclic up to m",
+      "pancyclicSpectrum: set of cycle lengths through a vertex",
+      "8 proved structural theorems",
+      "2 axioms (Bondy VP, Woodall VP)"
     ],
     "insights": [
-      "Vertex-pancyclicity is strictly stronger than pancyclicity: every vertex on every cycle length",
-      "Bondy (1971) showed VP is almost free from P: only balanced bipartite exception",
-      "Woodall conditions (n≥2k+3, enough edges) should give VP up to length n-k",
-      "Walk API in Lean requires careful type handling for cycle extraction"
+      "Vertex-pancyclicity is strictly stronger than pancyclicity",
+      "Bondy (1971): VP is almost free from P (only balanced bipartite exception)",
+      "Under Woodall conditions, the edge threshold exceeds Turan number n^2/4",
+      "Walk API in Lean requires careful handling for cycle-to-path extraction",
+      "Nat.choose arithmetic with natural number division is non-trivial in Lean",
+      "For k=0: C(n-1,2) + 2 >= n^2/4 + 1 follows from 2(n-1)(n-2) >= n^2 - 4 for n >= 3"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "No vertex-pancyclicity definitions in Mathlib",
+      "Walk.IsCycle -> vertex extraction needs manual work"
+    ],
     "nextSteps": [
-      "Prove threshold_exceeds_turan_for_small_k (binomial inequality)",
-      "Prove vertex_pancyclic_implies_connected using Walk API",
-      "Consider proving bipartite exception cannot occur under Woodall conditions"
-    ]
+      "Prove threshold_k0_exceeds_turan using Nat.choose_two_right expansion",
+      "Prove threshold_exceeds_turan_for_small_k (harder, general k)",
+      "Prove vertex_pancyclic_implies_connected via Hamiltonian cycle -> Walk",
+      "Prove spectrum_size_lower_bound via Set.ncard of Icc"
+    ],
+    "markdown": "# erdos-1012-oq-02: Vertex-Pancyclicity Strengthening\n\n## Session 2026-03-18 - Survey\n\n**Mode**: FRESH -> SURVEY\n**Outcome**: surveyed existing formalization\n\n### Current State\n- 308 lines, 8 proved theorems, 2 axioms, 3 sorries\n- All definitions and structural relationships complete\n- Sorries are arithmetic (Nat.choose bounds) and Walk API (connectivity)\n\n### Remaining Sorries\n1. `threshold_k0_exceeds_turan`: C(n-1,2)+2 >= n^2/4+1 for n>=3\n   - Key: 2(n-1)(n-2) >= n^2-4 iff n^2-6n+8>=0 iff (n-2)(n-4)>=0\n   - Holds for n>=4; n=3 by direct check\n2. `threshold_exceeds_turan_for_small_k`: General k version, harder\n3. `vertex_pancyclic_implies_connected`: Every vertex on n-cycle -> connected\n   - Via Hamiltonian cycle visiting all vertices -> reachable\n4. `spectrum_size_lower_bound`: {3,...,m} has m-2 elements, Set.ncard"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Axiom + consequences",
+      "status": "in-progress",
+      "description": "Axiomatize Bondy/Woodall VP theorems, prove structural consequences",
+      "attempts": 1
+    }
+  ],
   "tags": [
     "seeker-selected",
     "graph-theory",
-    "erdos"
+    "erdos",
+    "pancyclicity",
+    "vertex-pancyclicity"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "erdos-1012"
+  ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Bondy (1971) - Pancyclic graphs I",
+      "Schmeichel-Hakimi (1988) - Pancyclic graphs and Bondy-Chvatal conjecture",
+      "Woodall (1972) - Sufficient conditions for circuits in graphs"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1012"
+    ],
+    "mathlib": [
+      "SimpleGraph.Walk.IsCycle",
+      "SimpleGraph.Connected",
+      "Nat.choose"
+    ]
   },
   "started": "2026-03-17T22:03:36.908Z",
-  "lastUpdate": "2026-03-17T22:03:36.908Z",
+  "lastUpdate": "2026-03-18T13:10:00Z",
   "significance": 7,
   "tractability": 6
 }

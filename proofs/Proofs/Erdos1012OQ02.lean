@@ -241,8 +241,11 @@ theorem threshold_k0_exceeds_turan (n : ℕ) (hn : n ≥ 3) :
     edgeThreshold n 0 ≥ n ^ 2 / 4 + 1 := by
   unfold edgeThreshold
   simp only [Nat.sub_zero]
-  -- C(n-1, 2) + C(2, 2) + 1 = n(n-1)/2 + 1 + 1 ≥ n²/4 + 1
-  sorry -- Arithmetic inequality
+  -- C(n-1, 2) + C(2, 2) + 1 ≥ n²/4 + 1
+  -- C(n-1, 2) = (n-1)(n-2)/2 grows as ~n²/2 >> n²/4
+  -- Proof: 2(n-1)(n-2) ≥ n² for n ≥ 4 since n²-6n+4 ≥ 0 iff (n-2)(n-4) ≥ 0
+  -- For n = 3: C(2,2) + C(2,2) + 1 = 3 ≥ 9/4 + 1 = 3 ✓
+  sorry -- Combinatorial inequality: requires Nat.choose expansion + division arithmetic
 
 -- ============================================================================
 -- Part VII: The Pancyclicity Spectrum
