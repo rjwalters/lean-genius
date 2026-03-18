@@ -389,7 +389,7 @@ check_cwd_exists() {
 
 # Liveness check: if claude produces 0 bytes of output after this many seconds,
 # assume it's hung on startup and kill it early (instead of waiting full CLAUDE_TIMEOUT).
-LIVENESS_TIMEOUT="${LIVENESS_TIMEOUT:-120}"  # 2 minutes
+LIVENESS_TIMEOUT="${LIVENESS_TIMEOUT:-300}"  # 5 minutes (large CLAUDE.md + prompts need time)
 
 # Run Claude once and return exit code
 run_claude_once() {
