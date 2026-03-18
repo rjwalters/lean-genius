@@ -221,10 +221,32 @@ theorem isCyclicVector_of_linearIndependent
     (hli : LinearIndependent K (fun k : Fin n => (M ^ (k : ℕ)).mulVec v)) :
     IsCyclicVector M v := by
   intro p hp hann
-  -- p(M)v = 0. Write p = ∑ aᵢ Xⁱ for i < n (since deg(p) < n).
-  -- Then p(M)v = ∑ aᵢ Mⁱv = 0.
-  -- By linear independence of {Mⁱv}, all aᵢ = 0, so p = 0.
-  sorry
+  -- All coefficients of p must be 0
+  suffices h : ∀ k : Fin n, p.coeff ↑k = 0 by
+    ext m; simp only [Polynomial.coeff_zero]
+    by_cases hm : m < n
+    · exact h ⟨m, hm⟩
+    · exact Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)
+  -- Linear independence: ∑ c_k • v_k = 0 → all c_k = 0
+  apply Fintype.linearIndependent_iff.mp hli
+  -- Goal: ∑ k : Fin n, p.coeff ↑k • (M ^ ↑k).mulVec v = 0
+  -- Step 1: aeval M p = ∑_{i < n} p.coeff i • M^i
+  have heval : aeval M p = ∑ i in Finset.range n, p.coeff i • M ^ i := by
+    rw [aeval_def, eval₂_eq_sum_range' hp]
+    simp only [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
+  -- Step 2: mulVec distributes over finite sums
+  have hdist : ∀ (s : Finset ℕ),
+      (∑ i in s, p.coeff i • M ^ i).mulVec v =
+      ∑ i in s, p.coeff i • (M ^ i).mulVec v := by
+    intro s
+    induction s using Finset.induction with
+    | empty => simp [Matrix.zero_mulVec]
+    | insert ha ih =>
+      rw [Finset.sum_insert ha, Matrix.add_mulVec, ih,
+          Finset.sum_insert ha, Matrix.smul_mulVec_assoc]
+  -- Step 3: Convert Fin n sum to range n sum, factor out mulVec, use hann
+  rw [Fin.sum_univ_eq_sum_range, ← hdist, ← heval]
+  exact hann
 
 -- ============================================================
 -- PART V: Main Theorem
@@ -286,9 +308,52 @@ theorem nilpotent_krylov_independent
     (hnil : N ^ n = 0)
     (v : Fin n → K) (hv : (N ^ (n - 1)).mulVec v ≠ 0) :
     LinearIndependent K (fun k : Fin n => (N ^ (k : ℕ)).mulVec v) := by
-  -- Induction: apply N^{n-1-j} for j = 0, 1, ..., extracting c_j = 0
-  -- from the relation ∑_k c_k N^{k+n-1-j} v = 0 using nilpotency.
-  sorry
+  -- Ascending induction: apply N^{n-1-j} to ∑ c_k N^k v = 0.
+  -- For k > j: N^{k+n-1-j} = 0 (nilpotency). For k < j: c_k = 0 (IH).
+  -- For k = j: c_j N^{n-1} v = 0, so c_j = 0 (since N^{n-1}v ≠ 0).
+  rw [Fintype.linearIndependent_iff]
+  intro c hc
+  -- Strong induction: prove c ⟨j, _⟩ = 0 for j = 0, 1, ..., n-1
+  suffices main : ∀ j : ℕ, (hj : j < n) → c ⟨j, hj⟩ = 0 from
+    fun i => main ↑i i.isLt
+  intro j hj
+  induction j using Nat.strongRecOn with
+  | ind j ih =>
+    -- Apply N^{n-1-j} to ∑ c_k N^k v = 0 and distribute
+    have happ : ∑ k : Fin n, c k • (N ^ (n - 1 - j + ↑k)).mulVec v = 0 := by
+      have h0 := congr_arg (fun w => (N ^ (n - 1 - j)).mulVec w) hc
+      simp only [Matrix.mulVec_zero] at h0
+      -- Distribute mulVec (as a linear map) over sum and smul
+      simp only [← Matrix.mulVecLin_apply (N ^ (n - 1 - j)),
+                  map_sum, map_smul, Matrix.mulVecLin_apply,
+                  ← Matrix.mulVec_mulVec, ← pow_add] at h0
+      exact h0
+    -- The sum reduces to c ⟨j, hj⟩ • N^{n-1} v (other terms vanish)
+    have hred : ∑ k : Fin n, c k • (N ^ (n - 1 - j + ↑k)).mulVec v =
+                c ⟨j, hj⟩ • (N ^ (n - 1)).mulVec v := by
+      rw [Finset.sum_eq_single_of_mem ⟨j, hj⟩ (Finset.mem_univ _)]
+      · -- The j-th term: n-1-j+j = n-1
+        congr 1; congr 1; omega
+      · -- All other terms vanish
+        intro k _ hk
+        have hk_val : (↑k : ℕ) ≠ j := fun h => hk (Fin.ext h)
+        rcases lt_or_gt_of_ne hk_val with hlt | hgt
+        · -- ↑k < j: c k = 0 by induction hypothesis
+          have : c k = 0 := by
+            have := ih ↑k hlt k.isLt
+            rwa [show (⟨↑k, k.isLt⟩ : Fin n) = k from Fin.eta k k.isLt] at this
+          simp [this]
+        · -- ↑k > j: N^{n-1-j+↑k} ≥ N^n = 0 by nilpotency
+          have hge : n ≤ n - 1 - j + ↑k := by omega
+          have hpow : N ^ (n - 1 - j + ↑k) = 0 := by
+            obtain ⟨d, hd⟩ := Nat.exists_eq_add_of_le hge
+            rw [hd, pow_add, hnil, zero_mul]
+          simp [hpow, Matrix.zero_mulVec]
+    -- Extract: c ⟨j, hj⟩ • N^{n-1} v = 0, so c ⟨j, hj⟩ = 0
+    rw [hred] at happ
+    rcases smul_eq_zero.mp happ with h | h
+    · exact h
+    · exact absurd h hv
 
 -- ============================================================
 -- Summary
