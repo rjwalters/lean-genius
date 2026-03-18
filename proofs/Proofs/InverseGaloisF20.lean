@@ -263,10 +263,11 @@ theorem f20_roots_in_adjoin
   intro r hr
   set K := IntermediateField.adjoin ℚ ({α, ζ} :
     Set (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField)
-  have hα_K : α ∈ (K : Set _) :=
-    IntermediateField.subset_adjoin (Set.mem_insert α {ζ})
-  have hζ_K : ζ ∈ (K : Set _) :=
-    IntermediateField.subset_adjoin (Set.mem_insert_iff.mpr (Or.inr rfl))
+  have hα_K : (α : (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField) ∈ K := by
+    apply IntermediateField.subset_adjoin; exact Set.mem_insert α {ζ}
+  have hζ_K : (ζ : (X ^ 5 - C (2 : ℚ) : ℚ[X]).SplittingField) ∈ K := by
+    apply IntermediateField.subset_adjoin
+    exact Set.mem_insert_of_mem α rfl
   have hr_eval : Polynomial.aeval r (X ^ 5 - C (2 : ℚ) : ℚ[X]) = 0 :=
     (Polynomial.mem_rootSet.mp hr).2
   have hα5 : α ^ 5 = algebraMap ℚ _ 2 := by
@@ -278,15 +279,21 @@ theorem f20_roots_in_adjoin
     simp only [c]; rw [mul_pow, inv_pow, hr5, hα5]; field_simp
   rcases fifth_root_unity_cases hc5 with hc1 | hc_phi
   · have : r = α := by
-      calc r = r * α⁻¹ * α := by rw [mul_assoc, inv_mul_cancel₀ hα_ne, mul_one]
-        _ = 1 * α := by rw [hc1]
-        _ = α := one_mul α
+      have h2 : r = c * α := by
+        show r = r * α⁻¹ * α
+        rw [mul_assoc, inv_mul_cancel₀ hα_ne, mul_one]
+      rw [h2, hc1, one_mul]
     rw [this]; exact hα_K
-  · rcases cyclotomic5_root_is_power hζ hc_phi with h | h | h | h <;> {
-      have hr_eq : r = ζ ^ _ * α := by
-        calc r = r * α⁻¹ * α := by rw [mul_assoc, inv_mul_cancel₀ hα_ne, mul_one]
-          _ = _ * α := by rw [h]
-      rw [hr_eq]; exact K.mul_mem (K.pow_mem hζ_K _) hα_K }
+  · have hr_c : r = c * α := by
+      show r = r * α⁻¹ * α
+      rw [mul_assoc, inv_mul_cancel₀ hα_ne, mul_one]
+    have hc_K : c ∈ K := by
+      rcases cyclotomic5_root_is_power hζ hc_phi with h | h | h | h
+      · rw [h]; exact hζ_K
+      · rw [h]; exact pow_mem hζ_K 2
+      · rw [h]; exact pow_mem hζ_K 3
+      · rw [h]; exact pow_mem hζ_K 4
+    rw [hr_c]; exact K.mul_mem hc_K hα_K
 
 /-- SF(X⁵-2) = ℚ⟮α,ζ⟯. -/
 theorem f20_adjoin_eq_top
@@ -349,20 +356,43 @@ theorem gal_card_dvd_20 :
       · rw [h_eq]
         apply (bot_le : (⊥ : IntermediateField (↥Kα) E) ≤ Kαζ)
         rw [IntermediateField.mem_bot]
-        exact ⟨⟨α, IntermediateField.subset_adjoin (Set.mem_singleton α)⟩, rfl⟩
+        refine ⟨⟨α, ?_⟩, rfl⟩
+        apply IntermediateField.subset_adjoin; exact Set.mem_singleton α
       · rw [Set.mem_singleton_iff.mp hx]
-        exact IntermediateField.subset_adjoin (Set.mem_singleton ζ)
+        apply IntermediateField.subset_adjoin; exact Set.mem_singleton ζ
     rw [hK_top] at h_le; rw [eq_top_iff]; exact fun x _ => h_le IntermediateField.mem_top
   have hζ_int : IsIntegral (↥Kα) ζ := .of_finite (↥Kα) ζ
   have hζ_eval : Polynomial.aeval ζ ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1) = 0 := by
     simp only [map_add, map_pow, aeval_X, map_one]; exact hζ
   have hmin_dvd := minpoly.dvd (↥Kα) ζ hζ_eval
   have hphi5_ne : ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1) ≠ 0 := by
-    intro h; have := congr_arg (fun p => p.coeff 4) h
-    simp [Polynomial.coeff_add, Polynomial.coeff_X_pow_self, Polynomial.coeff_X_pow] at this
-  have hmin_le : (minpoly (↥Kα) ζ).natDegree ≤ 4 :=
-    le_trans (Polynomial.natDegree_le_of_dvd hmin_dvd hphi5_ne)
-      (le_trans (Polynomial.natDegree_add_le _ _) (by simp))
+    intro h
+    have : ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1).natDegree = 0 := by
+      rw [h]; exact Polynomial.natDegree_zero
+    have h4 : ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1).natDegree = 4 := by
+      rw [show (X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1 =
+        Polynomial.cyclotomic 5 (↥Kα) from by
+          haveI : Fact (Nat.Prime 5) := ⟨by decide⟩
+          have h1 := cyclotomic_prime (R := (↥Kα)) (p := 5)
+          simp only [Finset.sum_range_succ, Finset.sum_range_zero, pow_zero, pow_one,
+            zero_add] at h1
+          rw [h1]; ring]
+      rw [Polynomial.natDegree_cyclotomic]; decide
+    omega
+  have hmin_le : (minpoly (↥Kα) ζ).natDegree ≤ 4 := by
+    have hdeg4 : ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1).natDegree = 4 := by
+      rw [show (X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1 =
+        Polynomial.cyclotomic 5 (↥Kα) from by
+          haveI : Fact (Nat.Prime 5) := ⟨by decide⟩
+          have h1 := cyclotomic_prime (R := (↥Kα)) (p := 5)
+          simp only [Finset.sum_range_succ, Finset.sum_range_zero, pow_zero, pow_one,
+            zero_add] at h1
+          rw [h1]; ring]
+      rw [Polynomial.natDegree_cyclotomic]; decide
+    calc (minpoly (↥Kα) ζ).natDegree
+        ≤ ((X : (↥Kα)[X]) ^ 4 + X ^ 3 + X ^ 2 + X + 1).natDegree :=
+          Polynomial.natDegree_le_of_dvd hmin_dvd hphi5_ne
+      _ = 4 := hdeg4
   have hfr_adj := IntermediateField.adjoin.finrank hζ_int
   change Module.finrank (↥Kα) ↥Kαζ = _ at hfr_adj
   rw [hKαζ_top] at hfr_adj
@@ -374,7 +404,7 @@ theorem gal_card_dvd_20 :
   have h4dvd : 4 ∣ Module.finrank (↥Kα) E := by
     have := four_dvd_splitting_field_finrank
     rw [← htower] at this
-    exact Nat.Coprime.dvd_of_dvd_mul_left (by decide : Nat.Coprime 5 4) this
+    exact Nat.Coprime.dvd_of_dvd_mul_left (by decide : Nat.Coprime 4 5) this
   have hfr_eq : Module.finrank (↥Kα) E = 4 := by obtain ⟨k, hk⟩ := h4dvd; omega
   rw [hfr_eq]
 
