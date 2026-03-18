@@ -7,11 +7,11 @@
   "versionHistory": [
     {
       "version": "v4",
-      "name": "Axiom-Free Formalization (0 axioms, 0 sorries)",
+      "name": "Conditional 3D + Proven 2D",
       "date": "2026-02-12",
-      "status": "verified",
+      "status": "conditional",
       "file": null,
-      "summary": "All 35 original axioms eliminated (35 → 12 → 1 → 0). 12 dead-code axioms removed. 3D regularity uses NSAxioms structure (not axiom declarations). 2D global existence proven axiom-free via GlobalNSSolution2D. File is 2352 lines, fully compilable."
+      "summary": "3D regularity is CONDITIONAL on hypotheses encoded in NSAxioms structure (physical assumptions moved from axiom declarations to structure fields — mathematically equivalent). 2D global existence (Ladyzhenskaya 1969) is genuinely proven without assumptions. The Millennium Problem remains open."
     },
     {
       "version": "v1",
@@ -44,7 +44,7 @@
     "sourceUrl": "https://x.com/davidmbudden/status/2002627726877069805",
     "date": "2025-12-20",
     "revisionDate": "2026-02-12",
-    "status": "verified",
+    "status": "conditional",
     "tags": [
       "PDE",
       "fluid-dynamics",
@@ -72,7 +72,7 @@
     "millenniumProblem": "navier-stokes"
   },
   "objection": {
-    "verdict": "CONDITIONAL 3D + PROVEN 2D (0 axioms, 0 sorries)",
+    "verdict": "CONDITIONAL 3D + PROVEN 2D",
     "summary": "We identify the precise structural obstruction to ruling out Type II blowup: the SCALE MISMATCH between the parabolic scale √(T*-t) where Barker-Prange gives concentration, and the diffusion scale R_diff = √(ν/Ω) where the proof needs it. The Bubble Persistence hypothesis B′ bridges this gap.",
     "coreIssue": "THE SCALE MISMATCH PROBLEM:\n\n• For Type I blowup: R_diff ≈ √(T*-t), so scales match and proof closes\n• For Type II blowup: R_diff << √(T*-t), creating a gap the smoothing lemma cannot bridge\n\nV3 FORMULATION (Bubble Persistence B′):\nConcentration A(r) = (1/r)∫|∇u|² ≥ ε must persist across all DYADIC radii r ∈ {2⁻ᵏ : R_diff ≤ 2⁻ᵏ ≤ c√(T*-t)}.\n\nThis is the MINIMAL hypothesis that:\n1. Glues CKN ε-regularity to enstrophy ODE\n2. Forces Type I rates via scale comparison\n3. Enables ESŠ backward uniqueness to exclude blowup\n\nThe hypothesis rules out exactly what Tao identifies as the core obstruction: cascade/escape mechanisms.",
     "thetaKRefactor": {
@@ -144,9 +144,9 @@
       "sophistication": "This is not a naive circular argument. The tropical rigidity framework, Type II adiabatic analysis, and CKN-based capacity arguments represent genuine mathematical contributions.",
       "repairability": "REVISED ASSESSMENT: The θₖ refactor makes the missing hypothesis MORE PRECISE and potentially MORE TRACTABLE. The question 'is bubble count K bounded?' is a sharper target than 'does single-ball concentration hold?'"
     },
-    "whatLeanActuallyVerified": "CURRENT STATUS (0 axioms, 0 sorries): The Lean file proves: (1) 3D conditional regularity via NSAxioms structure (no Lean axiom declarations), (2) ESS backward uniqueness and Type I exclusion, (3) Type II stability and beta to 0, (4) CKN dimension/capacity framework, (5) All concentration infrastructure (thetaAt, thetaAtK, averaging lemma), (6) 2D global existence and enstrophy bound (axiom-free, via GlobalNSSolution2D), (7) 2D exponential decay under Poincare inequality.",
+    "whatLeanActuallyVerified": "The Lean file proves: (1) 3D conditional regularity — IF the NSAxioms hypotheses hold THEN no blowup (the hypotheses encode the hard open problem), (2) ESS backward uniqueness and Type I exclusion, (3) Type II stability and beta to 0, (4) CKN dimension/capacity framework, (5) 2D global existence and enstrophy bound (Ladyzhenskaya 1969 — genuinely proven, no assumptions), (6) 2D exponential decay under Poincare inequality. NOTE: The 3D result uses NSAxioms structure fields which are mathematically equivalent to axiom declarations — the assumptions were reorganized, not eliminated.",
     "millenniumPrizeStatus": "The Navier-Stokes Millennium Prize problem remains UNSOLVED. The Lean file achieves 0 axioms and 0 sorries by encoding physical hypotheses via the NSAxioms structure (not axiom declarations). The 3D conditional theorem shows: NSAxioms implies no blowup. The 2D case is fully proven (axiom-free).",
-    "axiomEliminationNote": "All 8 axioms from v2 meta have been eliminated. The Lean file now uses 0 axiom declarations. Physical hypotheses are encoded via the NSAxioms structure (a Lean structure, not axiom declarations), making the 3D theorem conditional but axiom-free. The 2D theorem is unconditional. 12 additional dead-code axioms were removed as comments."
+    "axiomEliminationNote": "The Lean file uses 0 axiom declarations, but this is a technical distinction, not a mathematical one. The physical hypotheses were moved from Lean `axiom` declarations into an NSAxioms structure — the mathematical assumptions are unchanged. The 3D theorem is conditional on these structure fields. The 2D theorem (Ladyzhenskaya) is genuinely unconditional."
   },
   "overview": {
     "historicalContext": "The Navier-Stokes equations, formulated by Claude-Louis Navier (1822) and George Gabriel Stokes (1845), describe the motion of viscous fluids. In 2000, the Clay Mathematics Institute designated the Navier-Stokes existence and smoothness problem as one of seven Millennium Prize Problems, offering $1 million for its resolution.\n\nThe question: given smooth initial conditions, do solutions to the 3D incompressible Navier-Stokes equations remain smooth for all time, or can singularities (blowup) develop? This remains one of the great unsolved problems in mathematics.",
