@@ -173,6 +173,8 @@ export interface ResearchListing {
   linkedProof?: string
   significance?: number
   tractability?: number
+  leanFileCount?: number
+  totalLeanLines?: number
 }
 
 /**
@@ -288,18 +290,19 @@ export interface ResearchApproach {
 }
 
 /**
- * Information about a Lean source file associated with a research problem
+ * Metadata about a Lean 4 formalization file associated with a research problem.
+ * Populated by the enrich-research.ts build script.
  */
 export interface LeanFileInfo {
-  path: string           // e.g., "Proofs/PvsNP.lean"
-  filename: string       // e.g., "PvsNP.lean"
-  lineCount: number      // Total lines of Lean code
-  theoremCount: number   // Number of theorems/lemmas
-  axiomCount: number     // Number of axiom declarations
-  defCount: number       // Number of definitions
-  sorryCount: number     // Number of sorry placeholders remaining
-  isAristotle: boolean   // Whether this is an Aristotle companion file
-  githubUrl: string      // Direct link to the file on GitHub
+  path: string
+  filename: string
+  lineCount: number
+  theoremCount: number
+  axiomCount: number
+  defCount: number
+  sorryCount: number
+  isAristotle: boolean
+  githubUrl: string
 }
 
 /**
@@ -340,6 +343,8 @@ export interface ResearchProblem {
 
   significance?: number
   tractability?: number
+
+  leanFiles?: LeanFileInfo[]
 }
 
 /**
