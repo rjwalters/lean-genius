@@ -14479,7 +14479,7 @@ theorem gluon_dof_monotone_colors (N₁ N₂ d : ℕ) (hN₁ : N₁ ≥ 2) (hN�
     gluonDOF N₁ d < gluonDOF N₂ d := by
   unfold gluonDOF
   apply Nat.mul_lt_mul_of_pos_right
-  · have : N₁ ^ 2 < N₂ ^ 2 := Nat.pow_lt_pow_left h (by omega)
+  · have : N₁ ^ 2 < N₂ ^ 2 := by nlinarith [sq_nonneg N₁, sq_nonneg N₂]
     omega
   · omega
 
@@ -14608,20 +14608,25 @@ theorem frg_lattice_consistency (m_frg m_lat : ℝ) (hf : 0 < m_frg) (hl : 0 < m
     (hratio : 0.8 * m_lat ≤ m_frg) (hratio2 : m_frg ≤ 1.2 * m_lat) :
     m_frg / m_lat ≤ 1.2 ∧ 0.8 ≤ m_frg / m_lat := by
   constructor
-  · exact div_le_of_le_mul₀ (by linarith) (by linarith) hratio2
-  · exact le_div_of_mul_le₀ (by linarith) (by linarith) hratio
+  · rw [div_le_iff hl]; linarith
+  · rw [le_div_iff hl]; linarith
 
 /-- FRG flow equation structure: ∂_t Γ_k = ½ Tr[...].
     The trace sums over all field species with appropriate signs. -/
 theorem frg_trace_decomposition (N d : ℕ) (hN : N ≥ 2) (hd : d ≥ 2) :
     totalFlowDOF N d = (N ^ 2 - 1 : ℤ) * ((d : ℤ) - 1 - 2) := by
   unfold totalFlowDOF gluonDOF ghostDOF
+  have hN2 : N ^ 2 ≥ 4 := by nlinarith
+  have hd1 : d ≥ 2 := hd
+  zify [show 1 ≤ N ^ 2 from by omega, show 1 ≤ d from by omega]
   ring
 
 /-- In d = 4, the trace simplifies: net DOF = (N²-1) per color. -/
 theorem frg_trace_4d (N : ℕ) (hN : N ≥ 2) :
     totalFlowDOF N 4 = (N ^ 2 - 1 : ℤ) := by
   unfold totalFlowDOF gluonDOF ghostDOF
+  have hN2 : N ^ 2 ≥ 4 := by nlinarith
+  zify [show 1 ≤ N ^ 2 from by omega]
   ring
 
 /-
@@ -14743,7 +14748,12 @@ theorem latent_heat_monotone (N₁ N₂ : ℕ) (hN₁ : N₁ ≥ 2) (hN₂ : N�
     (h : N₁ < N₂) :
     latentHeatScaling N₁ < latentHeatScaling N₂ := by
   unfold latentHeatScaling
-  exact Nat.pow_lt_pow_left h (by omega)
+  have h1 := Nat.mul_lt_mul_of_pos_right h (show 0 < N₁ by omega)
+  have h2 := Nat.mul_le_mul_left N₂ (le_of_lt h)
+  calc N₁ ^ 2 = N₁ * N₁ := by ring
+    _ < N₂ * N₁ := h1
+    _ ≤ N₂ * N₂ := h2
+    _ = N₂ ^ 2 := by ring
 
 /-- On R³ × S¹(β), the inverse temperature β = 1/T. -/
 noncomputable def inverseTemp (T : ℝ) (hT : 0 < T) : ℝ := 1 / T
@@ -14844,10 +14854,10 @@ theorem su3_casimir_ratio :
 theorem casimir_ratio_gt_one (N : ℕ) (hN : N ≥ 2) :
     casimirRatio N > 1 := by
   unfold casimirRatio
-  rw [gt_iff_lt, div_lt_iff₀]
-  · nlinarith [sq_nonneg (N : ℚ)]
-  · have : (N : ℚ) ≥ 2 := by exact_mod_cast hN
-    nlinarith [sq_nonneg (N : ℚ)]
+  have hNq : (N : ℚ) ≥ 2 := by exact_mod_cast hN
+  have hN2 : (N : ℚ) ^ 2 - 1 > 0 := by nlinarith [sq_nonneg (N : ℚ)]
+  rw [gt_iff_lt, lt_div_iff hN2]
+  nlinarith [sq_nonneg (N : ℚ)]
 
 /-- The critical temperature for SU(N) in the large-N limit scales as T_c ∝ √σ.
     More precisely: T_c/√σ approaches a universal constant as N → ∞. -/
@@ -14911,7 +14921,7 @@ theorem sb_dof_monotone (N₁ N₂ : ℕ) (hN₁ : N₁ ≥ 2) (hN₂ : N₂ ≥
     (h : N₁ < N₂) :
     stefanBoltzmannDOF N₁ < stefanBoltzmannDOF N₂ := by
   unfold stefanBoltzmannDOF
-  have : N₁ ^ 2 < N₂ ^ 2 := Nat.pow_lt_pow_left h (by omega)
+  have : N₁ ^ 2 < N₂ ^ 2 := by nlinarith [sq_nonneg N₁, sq_nonneg N₂]
   omega
 
 /-- Adjoint Polyakov loop ⟨L_adj⟩: invariant under Z_N, does not serve as
@@ -14963,9 +14973,10 @@ theorem gap_decreases_with_action (S0₁ S0₂ : ℝ) (N : ℕ) (hN : N ≥ 1)
     (hS : S0₁ < S0₂) :
     monopoleMassGap S0₂ N hN < monopoleMassGap S0₁ N hN := by
   unfold monopoleMassGap
-  apply Real.exp_lt_exp_of_lt
-  have hN_pos : (0 : ℝ) < N := by exact_mod_cast Nat.lt_of_lt_pred (by omega)
-  exact div_lt_div_of_neg_right hS (by linarith)
+  have hN_pos : (0 : ℝ) < ↑N := Nat.cast_pos.mpr (by omega)
+  have hlt : -S0₂ / ↑N < -S0₁ / ↑N := by
+    apply div_lt_div_of_pos_right _ hN_pos; linarith
+  exact Real.exp_strictMono hlt
 
 /-- Continuity conjecture: the mass gap on R³ × S¹(L) is continuous as L → ∞.
     If proven, this would bridge the semi-classical mass gap to the R⁴ mass gap.
