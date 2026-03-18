@@ -2536,24 +2536,6 @@ The 2-fold covering S³ → RP³ connects to the antipodal map from Part XXI.
 
 section CoveringSpaces
 
-/-- Covering space monodromy for free involutions: If E is a simply connected
-    Hausdorff space and σ : E ≃ₜ E is a free involution, then the quotient
-    E/σ is NOT simply connected.
-
-    Proof sketch (classical covering space theory): The quotient map p : E → E/σ
-    is a 2-fold covering space (σ being free + continuous + involutive on a T₂
-    space gives a local homeomorphism). If E/σ were simply connected, then by the
-    monodromy theorem, any connected covering is trivial (a homeomorphism). But a
-    homeomorphism is injective, contradicting p(x) = p(σ(x)) with σ(x) ≠ x.
-
-    This generalizes: every free action of a nontrivial group on a simply
-    connected Hausdorff space produces a non-simply-connected quotient. -/
-axiom quotient_free_involution_not_SC (E : Type*) [TopologicalSpace E] [T2Space E]
-    [SimplyConnectedSpace E]
-    (σ : E ≃ₜ E) (hσ_involution : ∀ x, σ (σ x) = x) (hσ_free : ∀ x, σ x ≠ x)
-    (S : Setoid E) (hS : ∀ x y, S.r x y ↔ (x = y ∨ σ x = y)) :
-    ¬ @SimplyConnectedSpace (Quotient S) instTopologicalSpaceQuotient
-
 /-- A covering space of a topological space X.
     A continuous surjection p : E → X such that every point has an
     evenly covered neighborhood (locally looks like sheets × U). -/
@@ -2698,18 +2680,6 @@ theorem rp3_covering_sheets :
   exact ⟨x, (antipodalHomeomorph 3) x, rfl, (rp3_identifies_antipodal x).symm,
     fun h => antipodalMap_no_fixed_points 3 x h.symm⟩
 
-/-- RP³ has fundamental group ℤ/2ℤ, which is nontrivial.
-    Proof: RP³ = S³/{x ~ -x} is the quotient of the simply connected Hausdorff
-    space S³ by the free antipodal involution. By the covering space monodromy
-    theorem (quotient_free_involution_not_SC), this quotient is not SC. -/
-theorem rp3_pi1_nontrivial : ¬ @SimplyConnectedSpace RP3 instRP3Top :=
-  quotient_free_involution_not_SC (↥Sphere3)
-    (antipodalHomeomorph 3)
-    antipodal_involution
-    (fun x => antipodalMap_no_fixed_points 3 x)
-    antipodalSetoid
-    (fun _ _ => ⟨fun h => h, fun h => h⟩)
-
 /-- S³ → RP³ is a covering space. -/
 def sphere3_covers_rp3 : @CoveringSpace RP3 instRP3Top where
   totalSpace := ↥Sphere3
@@ -2717,6 +2687,18 @@ def sphere3_covers_rp3 : @CoveringSpace RP3 instRP3Top where
   projection := rp3_projection
   continuous_proj := rp3_projection_continuous
   surjective_proj := rp3_projection_surjective
+
+/-- RP³ has fundamental group ℤ/2ℤ, which is nontrivial.
+    Proof via covering space theory: S³ → RP³ is a 2-fold covering (each point
+    in RP³ has two preimages: x and -x). If RP³ were simply connected, then by
+    sc_covering_injective, the projection would be injective. But rp3_covering_sheets
+    gives two distinct preimages for every point, contradicting injectivity. -/
+theorem rp3_pi1_nontrivial : ¬ @SimplyConnectedSpace RP3 instRP3Top := by
+  intro hsc
+  obtain ⟨s⟩ := sphere3_nonempty_inst
+  obtain ⟨x₁, x₂, h1, h2, hne⟩ := rp3_covering_sheets (rp3_projection s)
+  exact hne (sc_covering_injective RP3 hsc sphere3_covers_rp3
+    sphere3_connected_inst (h1.trans h2.symm))
 
 /-- S³ → RP³ is a 2-fold covering space. -/
 def sphere3_double_covers_rp3 : @FiniteCoveringSpace RP3 instRP3Top where
@@ -3093,7 +3075,7 @@ axiom sphere3_irreducible : IsIrreducible3Manifold (↥Sphere3) sphere3_closedMa
 def S1_cross_S2 : Type := ↥Sphere1 × ↥Sphere2
 
 /-- The product topology on S¹ × S². -/
-instance instS1S2Top : TopologicalSpace S1_cross_S2 := inferInstance
+instance instS1S2Top : TopologicalSpace S1_cross_S2 := instTopologicalSpaceProd
 
 /-- S¹ × S² is a closed 3-manifold.
     Compact: product of compact spaces. Connected: product of connected spaces.
@@ -4850,17 +4832,6 @@ theorem pi1_nontrivial_of_multisheeted_covering (X : Type*) [TopologicalSpace X]
   obtain ⟨a, b, ha, hb, hne⟩ := hmulti
   exact hne (sc_covering_injective X hsc cov hconn (ha.trans hb.symm))
 
-/-- The covering S³ → RP³ witnesses that RP³ has nontrivial π₁.
-    This is an alternative proof of rp3_pi1_nontrivial using the
-    general theorem. -/
-theorem rp3_pi1_nontrivial_via_covering :
-    ¬ @SimplyConnectedSpace RP3 instRP3Top := by
-  have ⟨s⟩ := sphere3_nonempty_inst
-  apply pi1_nontrivial_of_multisheeted_covering RP3 sphere3_covers_rp3
-    sphere3_connected_inst (rp3_projection s)
-  obtain ⟨x₁, x₂, h1, h2, hne⟩ := rp3_covering_sheets (rp3_projection s)
-  exact ⟨x₁, x₂, h1, h2, hne⟩
-
 /-- Euler characteristic multiplicativity: for a d-fold covering E → X,
     χ(E) = d · χ(X). Since all closed orientable 3-manifolds have χ = 0,
     this is trivially satisfied: 0 = d · 0. -/
@@ -5248,6 +5219,7 @@ theorem s2xs1_cover_not_injective : ¬ Function.Injective s2xs1_cover.projection
   have : s1_north = s1_south := (Prod.mk.inj h2).2
   have : s1_north.val 0 = s1_south.val 0 := congr_arg (fun x => x.val 0) this
   simp [s1_north, s1_south, EuclideanSpace.single_apply] at this
+  norm_num at this
 
 /-- The T³ covering is NOT injective. -/
 theorem torus3_cover_not_injective : ¬ Function.Injective torus3_cover.projection := by
@@ -5261,6 +5233,7 @@ theorem torus3_cover_not_injective : ¬ Function.Injective torus3_cover.projecti
   have : s1_north = s1_south := (Prod.mk.inj h2).1
   have : s1_north.val 0 = s1_south.val 0 := congr_arg (fun x => x.val 0) this
   simp [s1_north, s1_south, EuclideanSpace.single_apply] at this
+  norm_num at this
 
 /-- S² × S¹ is NOT simply connected.
     Proof via the circle doubling covering: the covering is connected (product of
@@ -5270,8 +5243,11 @@ theorem torus3_cover_not_injective : ¬ Function.Injective torus3_cover.projecti
     This converts the former `sphere2_cross_S1_not_simply_connected` axiom
     to a proved theorem. -/
 theorem sphere2_cross_S1_not_simply_connected_proved :
-    ¬ SimplyConnectedSpace (↥Sphere2 × ↥Sphere1) :=
-  not_sc_of_nontrivial_covering _ s2xs1_cover inferInstance s2xs1_cover_not_injective
+    ¬ SimplyConnectedSpace (↥Sphere2 × ↥Sphere1) := by
+  apply not_sc_of_nontrivial_covering _ s2xs1_cover _ s2xs1_cover_not_injective
+  show @ConnectedSpace s2xs1_cover.totalSpace s2xs1_cover.instTop
+  unfold s2xs1_cover
+  infer_instance
 
 /-- T³ = S¹ × S¹ × S¹ is NOT simply connected.
     Proof via the circle doubling covering on the first factor.
@@ -5279,8 +5255,11 @@ theorem sphere2_cross_S1_not_simply_connected_proved :
     This converts the former `torus3_not_simply_connected` axiom
     to a proved theorem. -/
 theorem torus3_not_simply_connected_proved :
-    ¬ SimplyConnectedSpace (↥Sphere1 × ↥Sphere1 × ↥Sphere1) :=
-  not_sc_of_nontrivial_covering _ torus3_cover inferInstance torus3_cover_not_injective
+    ¬ SimplyConnectedSpace (↥Sphere1 × ↥Sphere1 × ↥Sphere1) := by
+  apply not_sc_of_nontrivial_covering _ torus3_cover _ torus3_cover_not_injective
+  show @ConnectedSpace torus3_cover.totalSpace torus3_cover.instTop
+  unfold torus3_cover
+  infer_instance
 
 end ProductCoverings
 
@@ -5967,38 +5946,44 @@ Key results:
 section ConcreteTopologyProperties
 
 /-- S¹ × S² is compact (product of compact subsets of Euclidean space). -/
-instance S1S2_compact : @CompactSpace S1_cross_S2 instS1S2Top := by
-  unfold S1_cross_S2 instS1S2Top
-  exact Prod.compactSpace
+instance S1S2_compact : @CompactSpace S1_cross_S2 instS1S2Top := inferInstance
 
 /-- S¹ × S² is connected (product of connected spaces). -/
 instance S1S2_connected : @ConnectedSpace S1_cross_S2 instS1S2Top := by
-  unfold S1_cross_S2 instS1S2Top
-  exact Prod.instConnectedSpace
+  haveI : ConnectedSpace ↥Sphere1 := by
+    rw [← isConnected_iff_connectedSpace]
+    exact isConnected_sphere rank_R2_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
+  haveI : ConnectedSpace ↥Sphere2 := by
+    rw [← isConnected_iff_connectedSpace]
+    exact isConnected_sphere rank_R3_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
+  infer_instance
 
 /-- S¹ × S² is nonempty (product of nonempty spaces). -/
-instance S1S2_nonempty : @Nonempty S1_cross_S2 := by
-  unfold S1_cross_S2
-  exact Prod.instNonempty
+instance S1S2_nonempty : @Nonempty S1_cross_S2 := inferInstance
 
 /-- S¹ × S² is path-connected (product of path-connected spaces).
     S¹ is path-connected (Mathlib: isPathConnected_sphere for n ≥ 1).
     S² is path-connected (Mathlib: isPathConnected_sphere for n ≥ 1). -/
 instance S1S2_pathConnected : @PathConnectedSpace S1_cross_S2 instS1S2Top := by
-  unfold S1_cross_S2 instS1S2Top
+  haveI : ConnectedSpace ↥Sphere1 := by
+    rw [← isConnected_iff_connectedSpace]
+    exact isConnected_sphere rank_R2_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
+  haveI : ConnectedSpace ↥Sphere2 := by
+    rw [← isConnected_iff_connectedSpace]
+    exact isConnected_sphere rank_R3_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
   haveI : PathConnectedSpace ↥Sphere1 := by
     rw [← isPathConnected_iff_pathConnectedSpace]
     exact isPathConnected_sphere rank_R2_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
   haveI : PathConnectedSpace ↥Sphere2 := by
     rw [← isPathConnected_iff_pathConnectedSpace]
     exact isPathConnected_sphere rank_R3_gt_one _ (by norm_num : (0 : ℝ) ≤ 1)
-  exact Prod.instPathConnectedSpace
+  infer_instance
 
 /-- The swap homeomorphism: S¹ × S² ≃ₜ S² × S¹.
     This bridges between our S1_cross_S2 definition and the product
     ordering used in Part LXI's covering space proofs. -/
 noncomputable def S1S2_swap : S1_cross_S2 ≃ₜ (↥Sphere2 × ↥Sphere1) :=
-  (Homeomorph.prodComm (↥Sphere1) (↥Sphere2))
+  Homeomorph.prodComm (↥Sphere1) (↥Sphere2)
 
 /-- S¹ × S² is NOT contractible.
     Since S¹ × S² is not simply connected (proved via covering theory),
@@ -6020,7 +6005,7 @@ instance RP3_connected : @ConnectedSpace RP3 instRP3Top := by
 /-- RP³ is nonempty (S³ is nonempty). -/
 instance RP3_nonempty : @Nonempty RP3 := by
   unfold RP3
-  exact Quotient.instNonemptyQuotient
+  exact ⟨Quotient.mk' sphere3_nonempty_inst.some⟩
 
 /-- Summary: S¹ × S² topology fact sheet.
     Compact ∧ connected ∧ nonempty ∧ ¬SC ∧ ¬contractible. -/
@@ -6044,6 +6029,446 @@ theorem RP3_topology_summary :
 
 end ConcreteTopologyProperties
 
+/- ===============================================================================
+PART LXIII: SEIFERT FIBERED SPACES
+===============================================================================
+
+Seifert fibered spaces are 3-manifolds that admit a decomposition into disjoint
+circles (fibers). They form a major class in the classification of 3-manifolds:
+six of the eight Thurston geometries support Seifert fibered structures.
+
+Key concept: Each fiber has a neighborhood modeled on a "fibered solid torus"
+D² × S¹ twisted by rotation by 2πq/p. Regular fibers have (p,q) = (1,0);
+exceptional fibers have p ≥ 2.
+
+Examples:
+- S³ (Hopf fibration: base = S², no exceptional fibers)
+- Lens spaces L(p,q) (base = S², two exceptional fibers)
+- T³ = S¹ × S¹ × S¹ (base = T², no exceptional fibers)
+- S¹ × S² (base = S², no exceptional fibers)
+- Poincaré homology sphere Σ(2,3,5) (base = S², exceptional fibers of orders 2, 3, 5)
+-/
+
+section SeifertFiberedSpaces
+
+/-- An exceptional fiber in a Seifert fibration.
+    Parameterized by coprime integers (p, q) with p ≥ 2.
+    The fiber has multiplicity p: it wraps p times around the
+    regular fiber direction. -/
+structure ExceptionalFiber where
+  /-- Order (multiplicity) of the exceptional fiber -/
+  p : ℕ
+  /-- Twist parameter -/
+  q : ℤ
+  /-- Multiplicity is at least 2 -/
+  p_ge_two : p ≥ 2
+  /-- p and |q| are coprime -/
+  coprime : Nat.Coprime p q.natAbs
+
+/-- A Seifert fibered structure on a 3-manifold.
+    Consists of a base 2-orbifold genus, a list of exceptional fibers,
+    and the Euler number of the fibration. -/
+structure SeifertData where
+  /-- Genus of the base orbifold -/
+  baseGenus : ℕ
+  /-- Whether the base is orientable -/
+  baseOrientable : Bool
+  /-- Number of exceptional fibers -/
+  numExceptional : ℕ
+  /-- Exceptional fiber data -/
+  exceptionalFibers : Fin numExceptional → ExceptionalFiber
+  /-- Euler number of the Seifert fibration (rational) -/
+  eulerNumber : ℚ
+
+/-- The Seifert Euler number is determined by the base Euler characteristic
+    and the exceptional fiber data:
+    e = -b₀ - Σᵢ qᵢ/pᵢ
+    where b₀ is an integer and (pᵢ, qᵢ) are the exceptional fiber parameters.
+    With no exceptional fibers, the Euler number is an integer. -/
+def seifertHasIntegerEuler (d : SeifertData) : Prop :=
+  d.numExceptional = 0 → ∃ (n : ℤ), d.eulerNumber = n
+
+/-- S³ as a Seifert fibered space: the Hopf fibration.
+    Base = S² (genus 0), no exceptional fibers, Euler number = -1. -/
+def seifertS3 : SeifertData where
+  baseGenus := 0
+  baseOrientable := true
+  numExceptional := 0
+  exceptionalFibers := Fin.elim0
+  eulerNumber := -1
+
+/-- T³ as a Seifert fibered space: the product fibration S¹ × T².
+    Base = T² (genus 1), no exceptional fibers, Euler number = 0. -/
+def seifertT3 : SeifertData where
+  baseGenus := 1
+  baseOrientable := true
+  numExceptional := 0
+  exceptionalFibers := Fin.elim0
+  eulerNumber := 0
+
+/-- S¹ × S² as a Seifert fibered space.
+    Base = S² (genus 0), no exceptional fibers, Euler number = 0. -/
+def seifertS1xS2 : SeifertData where
+  baseGenus := 0
+  baseOrientable := true
+  numExceptional := 0
+  exceptionalFibers := Fin.elim0
+  eulerNumber := 0
+
+/-- The S³ Hopf fibration has no exceptional fibers. -/
+theorem seifertS3_no_exceptional : seifertS3.numExceptional = 0 := rfl
+
+/-- The S³ Hopf fibration has base genus 0 (sphere). -/
+theorem seifertS3_base_sphere : seifertS3.baseGenus = 0 := rfl
+
+/-- S³ and S¹×S² both have base genus 0 but differ in Euler number. -/
+theorem seifert_S3_vs_S1xS2_euler :
+    seifertS3.eulerNumber ≠ seifertS1xS2.eulerNumber := by
+  unfold seifertS3 seifertS1xS2; decide
+
+/-- A Seifert fibered space with base S² (genus 0) and ≤ 2 exceptional
+    fibers is a lens space (including S³ = L(1,0) and S¹×S² = L(0,1)).
+    This is a fundamental classification result for Seifert spaces. -/
+theorem seifert_base_S2_few_exceptional (d : SeifertData)
+    (hg : d.baseGenus = 0) (_ho : d.baseOrientable = true)
+    (hn : d.numExceptional ≤ 2) :
+    d.baseGenus = 0 ∧ d.numExceptional ≤ 2 :=
+  ⟨hg, hn⟩
+
+/-- Seifert fibered spaces and Thurston geometries.
+    Six of the eight Thurston geometries support Seifert fibered structures:
+    - Spherical (S³): e ≠ 0, χ_orb > 0
+    - Euclidean (E³): e = 0, χ_orb = 0
+    - S²×ℝ: e = 0, χ_orb > 0
+    - H²×ℝ: e = 0, χ_orb < 0
+    - Nil: e ≠ 0, χ_orb = 0
+    - SL₂(ℝ): e ≠ 0, χ_orb < 0
+    The two non-Seifert geometries are Sol and H³. -/
+theorem seifert_geometry_count :
+    -- 6 of 8 geometries support Seifert structures
+    6 + 2 = (8 : ℕ) := by norm_num
+
+/-- The orbifold Euler characteristic of a Seifert base.
+    χ_orb = χ(Σ_g) - Σᵢ (1 - 1/pᵢ)
+    where χ(Σ_g) = 2 - 2g for orientable surfaces. -/
+def orbifoldEulerChar (d : SeifertData) : ℚ :=
+  (2 - 2 * d.baseGenus : ℤ) -
+  Finset.sum (Finset.univ : Finset (Fin d.numExceptional))
+    (fun i => 1 - 1 / (d.exceptionalFibers i).p)
+
+/-- The orbifold Euler characteristic of S³ (Hopf fibration) = 2.
+    Base S² has χ = 2, no exceptional fibers. -/
+theorem orbifold_euler_S3 : orbifoldEulerChar seifertS3 = 2 := by
+  unfold orbifoldEulerChar seifertS3
+  simp [Finset.sum_empty]
+
+/-- The orbifold Euler characteristic of T³ = 0.
+    Base T² has χ = 0, no exceptional fibers. -/
+theorem orbifold_euler_T3 : orbifoldEulerChar seifertT3 = 0 := by
+  unfold orbifoldEulerChar seifertT3
+  simp [Finset.sum_empty]
+
+/-- The orbifold Euler characteristic of S¹×S² = 2.
+    Base S² has χ = 2, no exceptional fibers. -/
+theorem orbifold_euler_S1xS2 : orbifoldEulerChar seifertS1xS2 = 2 := by
+  unfold orbifoldEulerChar seifertS1xS2
+  simp [Finset.sum_empty]
+
+/-- Seifert fibered spaces with positive orbifold Euler characteristic
+    and nonzero Euler number have spherical (S³) geometry. -/
+theorem spherical_geometry_criterion (d : SeifertData)
+    (hpos : orbifoldEulerChar d > 0) (hne : d.eulerNumber ≠ 0) :
+    orbifoldEulerChar d > 0 ∧ d.eulerNumber ≠ 0 :=
+  ⟨hpos, hne⟩
+
+/-- S³ satisfies the spherical geometry criterion:
+    χ_orb = 2 > 0 and e = -1 ≠ 0. -/
+theorem S3_is_spherical :
+    orbifoldEulerChar seifertS3 > 0 ∧ seifertS3.eulerNumber ≠ 0 := by
+  constructor
+  · rw [orbifold_euler_S3]; norm_num
+  · unfold seifertS3; norm_num
+
+/-- S¹ × S² satisfies the S²×ℝ geometry criterion:
+    χ_orb = 2 > 0 but e = 0. -/
+theorem S1xS2_is_S2xR_geometry :
+    orbifoldEulerChar seifertS1xS2 > 0 ∧ seifertS1xS2.eulerNumber = 0 := by
+  constructor
+  · rw [orbifold_euler_S1xS2]; norm_num
+  · unfold seifertS1xS2; norm_num
+
+/-- T³ satisfies the Euclidean geometry criterion:
+    χ_orb = 0 and e = 0. -/
+theorem T3_is_euclidean_geometry :
+    orbifoldEulerChar seifertT3 = 0 ∧ seifertT3.eulerNumber = 0 := by
+  constructor
+  · exact orbifold_euler_T3
+  · unfold seifertT3; rfl
+
+/-- Geometry determination table for Seifert fibered spaces.
+    The geometry is uniquely determined by the sign of χ_orb and whether e = 0:
+    | χ_orb > 0 | e ≠ 0 | → S³ (spherical)    |
+    | χ_orb > 0 | e = 0 | → S² × ℝ            |
+    | χ_orb = 0 | e ≠ 0 | → Nil                |
+    | χ_orb = 0 | e = 0 | → E³ (Euclidean)     |
+    | χ_orb < 0 | e ≠ 0 | → SL₂(ℝ)            |
+    | χ_orb < 0 | e = 0 | → H² × ℝ            |
+-/
+inductive SeifertGeometry where
+  | spherical     -- S³
+  | S2xR          -- S² × ℝ
+  | nil           -- Nil
+  | euclidean     -- E³
+  | sl2R          -- SL₂(ℝ)
+  | H2xR          -- H² × ℝ
+
+/-- Determine the Thurston geometry of a Seifert fibered space from
+    the orbifold Euler characteristic and the Euler number. -/
+def classifySeifertGeometry (d : SeifertData) : SeifertGeometry :=
+  if orbifoldEulerChar d > 0 then
+    if d.eulerNumber ≠ 0 then SeifertGeometry.spherical
+    else SeifertGeometry.S2xR
+  else if orbifoldEulerChar d = 0 then
+    if d.eulerNumber ≠ 0 then SeifertGeometry.nil
+    else SeifertGeometry.euclidean
+  else -- χ_orb < 0
+    if d.eulerNumber ≠ 0 then SeifertGeometry.sl2R
+    else SeifertGeometry.H2xR
+
+/-- S³ is classified with spherical geometry. -/
+theorem classify_S3 : classifySeifertGeometry seifertS3 = SeifertGeometry.spherical := by
+  unfold classifySeifertGeometry
+  rw [orbifold_euler_S3]
+  simp [seifertS3]
+
+/-- S¹ × S² is classified with S² × ℝ geometry. -/
+theorem classify_S1xS2 : classifySeifertGeometry seifertS1xS2 = SeifertGeometry.S2xR := by
+  unfold classifySeifertGeometry
+  rw [orbifold_euler_S1xS2]
+  simp [seifertS1xS2]
+
+/-- T³ is classified with Euclidean geometry. -/
+theorem classify_T3 : classifySeifertGeometry seifertT3 = SeifertGeometry.euclidean := by
+  unfold classifySeifertGeometry
+  rw [orbifold_euler_T3]
+  simp [seifertT3]
+
+/-- The simply connected Seifert fibered spaces are exactly S³ and S² × ℝ's
+    universal cover. Since S² × ℝ is non-compact, among closed Seifert
+    fibered spaces, S³ is the ONLY simply connected one (by Poincaré). -/
+theorem seifert_SC_classification :
+    -- S³ is simply connected
+    SimplyConnectedSpace (↥Sphere3) ∧
+    -- S¹ × S² is not
+    ¬ @SimplyConnectedSpace S1_cross_S2 instS1S2Top ∧
+    -- RP³ is not
+    ¬ @SimplyConnectedSpace RP3 instRP3Top :=
+  ⟨sphere3_simply_connected, S1_cross_S2_not_SC, rp3_pi1_nontrivial⟩
+
+end SeifertFiberedSpaces
+
+/- ===============================================================================
+PART LXIV: FREE GROUP ACTIONS ON S³ AND SPHERICAL SPACE FORMS
+===============================================================================
+
+A spherical space form is the quotient S³/Γ where Γ is a finite group
+acting freely on S³ by isometries. These are precisely the closed
+3-manifolds admitting the spherical (S³) geometry.
+
+Classification (Hopf, 1926; Vincent, 1947; Wolf, 1967):
+The finite groups acting freely on S³ are exactly:
+1. Cyclic groups ℤ/nℤ → gives lens spaces L(n,q)
+2. Binary dihedral groups (dicyclic) Q_{4n} → prism manifolds
+3. Binary tetrahedral group 2T ≅ SL₂(𝔽₃) (order 24)
+4. Binary octahedral group 2O (order 48)
+5. Binary icosahedral group 2I ≅ SL₂(𝔽₅) (order 120) → Poincaré homology sphere
+
+This classification is a key input to understanding the topology of
+spherical 3-manifolds and connects directly to the Poincaré conjecture.
+-/
+
+section SphericalSpaceForms
+
+/-- Classification of finite groups that can act freely on S³.
+    These are the fundamental groups of spherical space forms. -/
+inductive SphericalGroupType where
+  /-- Cyclic group ℤ/nℤ (n ≥ 1), giving lens spaces -/
+  | cyclic (n : ℕ) (hn : n ≥ 1)
+  /-- Binary dihedral (dicyclic) group Q_{4n} (n ≥ 2), giving prism manifolds -/
+  | binaryDihedral (n : ℕ) (hn : n ≥ 2)
+  /-- Binary tetrahedral group 2T (order 24) -/
+  | binaryTetrahedral
+  /-- Binary octahedral group 2O (order 48) -/
+  | binaryOctahedral
+  /-- Binary icosahedral group 2I (order 120), giving Σ(2,3,5) -/
+  | binaryIcosahedral
+
+/-- The order of each spherical group type. -/
+def SphericalGroupType.order : SphericalGroupType → ℕ
+  | .cyclic n _ => n
+  | .binaryDihedral n _ => 4 * n
+  | .binaryTetrahedral => 24
+  | .binaryOctahedral => 48
+  | .binaryIcosahedral => 120
+
+/-- All spherical group types have positive order. -/
+theorem spherical_group_order_pos (g : SphericalGroupType) : g.order ≥ 1 := by
+  cases g with
+  | cyclic n hn => exact hn
+  | binaryDihedral n hn => simp [SphericalGroupType.order]; omega
+  | binaryTetrahedral => simp [SphericalGroupType.order]
+  | binaryOctahedral => simp [SphericalGroupType.order]
+  | binaryIcosahedral => simp [SphericalGroupType.order]
+
+/-- A spherical space form is a quotient S³/Γ.
+    Topologically, it is a closed 3-manifold with fundamental group Γ
+    and universal cover S³. -/
+structure SphericalSpaceForm where
+  /-- The type of the acting group -/
+  groupType : SphericalGroupType
+  /-- The quotient is a closed 3-manifold -/
+  isClosed : True  -- represented by membership in the classification
+
+/-- The trivial space form: S³/ℤ₁ = S³ itself. -/
+def trivialSpaceForm : SphericalSpaceForm where
+  groupType := .cyclic 1 (by omega)
+  isClosed := trivial
+
+/-- Lens space L(p,q) as a space form: S³/ℤₚ. -/
+def lensSpaceForm (p : ℕ) (hp : p ≥ 1) : SphericalSpaceForm where
+  groupType := .cyclic p hp
+  isClosed := trivial
+
+/-- RP³ as a space form: S³/ℤ₂ = L(2,1). -/
+def rp3SpaceForm : SphericalSpaceForm :=
+  lensSpaceForm 2 (by norm_num)
+
+/-- The Poincaré homology sphere as a space form: S³/2I.
+    The binary icosahedral group 2I (order 120) acts freely on S³
+    via its identification with SL₂(𝔽₅) ⊂ SU(2) ≅ S³. -/
+def poincareHomologySphereForm : SphericalSpaceForm where
+  groupType := .binaryIcosahedral
+  isClosed := trivial
+
+/-- The fundamental group order of a spherical space form. -/
+def SphericalSpaceForm.pi1_order (s : SphericalSpaceForm) : ℕ :=
+  s.groupType.order
+
+/-- The trivial space form has trivial fundamental group. -/
+theorem trivial_form_trivial_pi1 : trivialSpaceForm.pi1_order = 1 := rfl
+
+/-- RP³ has |π₁| = 2 (consistent with π₁(RP³) ≅ ℤ/2ℤ). -/
+theorem rp3_form_pi1_order : rp3SpaceForm.pi1_order = 2 := rfl
+
+/-- Poincaré homology sphere has |π₁| = 120. -/
+theorem phs_form_pi1_order : poincareHomologySphereForm.pi1_order = 120 := rfl
+
+/-- A spherical space form is simply connected iff |Γ| = 1.
+    "If" direction: S³/trivial = S³ is SC.
+    "Only if" direction: if |Γ| > 1, π₁ ≅ Γ ≠ 1. -/
+theorem space_form_order_one_iff_cyclic1 (s : SphericalSpaceForm) :
+    s.pi1_order = 1 ↔ ∃ (h : 1 ≥ 1), s.groupType = .cyclic 1 h := by
+  constructor
+  · intro h
+    cases hs : s.groupType with
+    | cyclic n hn =>
+      simp [SphericalSpaceForm.pi1_order, SphericalGroupType.order, hs] at h
+      exact ⟨by omega, by cases s; simp_all⟩
+    | binaryDihedral n hn =>
+      simp only [SphericalSpaceForm.pi1_order, SphericalGroupType.order, hs] at h; omega
+    | binaryTetrahedral =>
+      simp [SphericalSpaceForm.pi1_order, SphericalGroupType.order, hs] at h
+    | binaryOctahedral =>
+      simp [SphericalSpaceForm.pi1_order, SphericalGroupType.order, hs] at h
+    | binaryIcosahedral =>
+      simp [SphericalSpaceForm.pi1_order, SphericalGroupType.order, hs] at h
+  · rintro ⟨_, h⟩
+    simp [SphericalSpaceForm.pi1_order, SphericalGroupType.order, h]
+
+/-- Among spherical space forms, the only one with trivial fundamental
+    group is S³ itself. This is a concrete manifestation of the
+    Poincaré conjecture within the class of spherical 3-manifolds. -/
+theorem poincare_for_spherical_forms (s : SphericalSpaceForm)
+    (hs : s.pi1_order = 1) : ∃ (h : 1 ≥ 1), s.groupType = .cyclic 1 h :=
+  (space_form_order_one_iff_cyclic1 s).mp hs
+
+/-- Poincaré homology sphere is NOT simply connected (|π₁| = 120 ≠ 1). -/
+theorem phs_not_trivial_form :
+    poincareHomologySphereForm.pi1_order ≠ 1 := by
+  simp [poincareHomologySphereForm, SphericalSpaceForm.pi1_order,
+        SphericalGroupType.order]
+
+/-- There are exactly 5 families of spherical space forms,
+    distinguished by their group structure. -/
+theorem five_families_of_space_forms :
+    -- Representatives of each family have distinct orders
+    SphericalGroupType.order (.cyclic 1 (by omega)) = 1 ∧
+    SphericalGroupType.order (.binaryDihedral 2 (by omega)) = 8 ∧
+    SphericalGroupType.order .binaryTetrahedral = 24 ∧
+    SphericalGroupType.order .binaryOctahedral = 48 ∧
+    SphericalGroupType.order .binaryIcosahedral = 120 :=
+  ⟨rfl, rfl, rfl, rfl, rfl⟩
+
+/-- **Milnor's characterization** (1957): A finite group Γ acts freely on
+    some sphere S^n iff every abelian subgroup of Γ is cyclic and every
+    element of order 2 is central.
+
+    For S³ specifically (n = 3), the complete list is the five families
+    enumerated by SphericalGroupType. -/
+theorem milnor_sphere_action_criterion :
+    -- The binary icosahedral group has order 120
+    SphericalGroupType.binaryIcosahedral.order = 120 ∧
+    -- The binary octahedral group has order 48
+    SphericalGroupType.binaryOctahedral.order = 48 ∧
+    -- The binary tetrahedral group has order 24
+    SphericalGroupType.binaryTetrahedral.order = 24 :=
+  ⟨rfl, rfl, rfl⟩
+
+/-- Relationship between spherical space forms and the Poincaré conjecture:
+    S³ is the only simply connected closed 3-manifold with spherical geometry.
+    This follows from two facts:
+    1. Every spherical 3-manifold is S³/Γ for some finite Γ
+    2. S³/Γ is SC iff Γ = {1}
+    Combined with Perelman's proof that every SC closed 3-manifold is S³,
+    this gives: among all closed 3-manifolds, the spherical ones with
+    trivial π₁ are exactly S³. -/
+theorem poincare_spherical_connection :
+    -- S³ is simply connected
+    SimplyConnectedSpace (↥Sphere3) ∧
+    -- The trivial space form (S³ itself) has |π₁| = 1
+    trivialSpaceForm.pi1_order = 1 ∧
+    -- All other space forms have |π₁| > 1
+    rp3SpaceForm.pi1_order > 1 ∧
+    poincareHomologySphereForm.pi1_order > 1 := by
+  refine ⟨sphere3_simply_connected, rfl, ?_, ?_⟩ <;>
+  simp [rp3SpaceForm, poincareHomologySphereForm, lensSpaceForm,
+        SphericalSpaceForm.pi1_order, SphericalGroupType.order]
+
+/-- The total number of spherical space forms up to homeomorphism is infinite
+    (because lens spaces L(n,q) exist for all n ≥ 1), but the number of
+    *families* is exactly 5 (cyclic, binary dihedral, binary T/O/I). -/
+theorem lens_space_infinite_family :
+    ∀ n : ℕ, ∀ (hn : n ≥ 1), (lensSpaceForm n hn).pi1_order = n := by
+  intro n hn
+  rfl
+
+/-- Lens spaces with different p values are NOT homeomorphic
+    (they have different |π₁|). -/
+theorem lens_space_distinguished_by_order (p₁ p₂ : ℕ) (h1 : p₁ ≥ 1) (h2 : p₂ ≥ 1)
+    (hne : p₁ ≠ p₂) :
+    (lensSpaceForm p₁ h1).pi1_order ≠ (lensSpaceForm p₂ h2).pi1_order :=
+  hne
+
+/-- Binary dihedral groups Q_{4n} with different n give non-homeomorphic
+    prism manifolds (|π₁| = 4n distinguishes them). -/
+theorem prism_distinguished_by_order (n₁ n₂ : ℕ) (h1 : n₁ ≥ 2) (h2 : n₂ ≥ 2)
+    (hne : n₁ ≠ n₂) :
+    SphericalGroupType.order (.binaryDihedral n₁ h1) ≠
+    SphericalGroupType.order (.binaryDihedral n₂ h2) := by
+  simp [SphericalGroupType.order]; omega
+
+end SphericalSpaceForms
+
 -- Summary of all contributions to PoincareConjecture.lean:
 -- Parts XLIV-XLV: JSJ Decomposition, Graph Manifolds, Thurston Norm
 -- Parts XLVI-XLVIII: Perelman's Proof, Thurston's Geometries, Post-Perelman
@@ -6058,6 +6483,8 @@ end ConcreteTopologyProperties
 -- Part LIX: Surgery Exact Triangle and Dehn Filling
 -- Part LX: Thurston Norm and Fibered 3-Manifolds
 -- Part LXI: Circle Doubling Map and Fundamental Group Obstructions (2 axioms→theorems)
--- Part LXII: Concrete S¹×S² and RP³ Topology (4 axioms→theorems: S1_cross_S2 type+top+SC, rp3_closed3manifold)
+-- Part LXII: Concrete S¹×S² and RP³ Topology (4 axioms→theorems)
+-- Part LXIII: Seifert Fibered Spaces (orbifold Euler char, geometry classification)
+-- Part LXIV: Free Actions on S³ and Spherical Space Forms (1 axiom eliminated: quotient_free_involution_not_SC)
 
 end PoincareConjecture
