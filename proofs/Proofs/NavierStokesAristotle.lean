@@ -966,4 +966,62 @@ theorem lamb_bound (ω₁ ω₂ ω₃ u₁ u₂ u₃ : ℝ) :
     (ω₁^2 + ω₂^2 + ω₃^2) * (u₁^2 + u₂^2 + u₃^2) := by
   nlinarith [sq_nonneg (ω₁*u₁ + ω₂*u₂ + ω₃*u₃)]
 
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 51: Symmetric-Antisymmetric Decomposition
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Decomposition: aᵢⱼ = (aᵢⱼ + aⱼᵢ)/2 + (aᵢⱼ - aⱼᵢ)/2. -/
+theorem sym_antisym_decomp' (aij aji : ℝ) :
+    aij = (aij + aji) / 2 + (aij - aji) / 2 := by ring
+
+/-- Frobenius orthogonality of S and Ω (off-diagonal terms). -/
+theorem frob_orthog (a₁₂ a₁₃ a₂₁ a₂₃ a₃₁ a₃₂ : ℝ) :
+    ((a₁₂ + a₂₁)/2) * ((a₁₂ - a₂₁)/2) +
+    ((a₁₃ + a₃₁)/2) * ((a₁₃ - a₃₁)/2) +
+    ((a₂₁ + a₁₂)/2) * ((a₂₁ - a₁₂)/2) +
+    ((a₂₃ + a₃₂)/2) * ((a₂₃ - a₃₂)/2) +
+    ((a₃₁ + a₁₃)/2) * ((a₃₁ - a₁₃)/2) +
+    ((a₃₂ + a₂₃)/2) * ((a₃₂ - a₂₃)/2) = 0 := by ring
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 52: Vorticity-Strain Energy Decomposition
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- |ω|² = 2|Ω|² where Ω is the antisymmetric part. -/
+theorem vort_sq_eq_2omega (ω₁₂ ω₁₃ ω₂₃ : ℝ) :
+    (2*ω₂₃)^2 + (2*ω₁₃)^2 + (2*ω₁₂)^2 =
+    2 * (2 * (ω₁₂^2 + ω₁₃^2 + ω₂₃^2)) := by ring
+
+/-- |∇u|² = |S|² + |ω|²/2 (energy split). -/
+theorem energy_split (s₁₁ s₁₂ s₁₃ s₂₂ s₂₃ s₃₃ ω₁₂ ω₁₃ ω₂₃ : ℝ) :
+    s₁₁^2 + (s₁₂ + ω₁₂)^2 + (s₁₃ + ω₁₃)^2 +
+    (s₁₂ - ω₁₂)^2 + s₂₂^2 + (s₂₃ + ω₂₃)^2 +
+    (s₁₃ - ω₁₃)^2 + (s₂₃ - ω₂₃)^2 + s₃₃^2 =
+    (s₁₁^2 + 2*s₁₂^2 + 2*s₁₃^2 + s₂₂^2 + 2*s₂₃^2 + s₃₃^2) +
+    2*(ω₁₂^2 + ω₁₃^2 + ω₂₃^2) := by ring
+
+-- ═══════════════════════════════════════════════════════════════════
+-- Section 53: Vortex Stretching and Determinant
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Stretching scales quadratically: (λω)·S·(λω) = λ²(ω·S·ω). -/
+theorem stretching_scale' (c e₁ e₂ e₃ s₁₁ s₁₂ s₁₃ s₂₂ s₂₃ s₃₃ : ℝ) :
+    (c*e₁)*(s₁₁*(c*e₁) + s₁₂*(c*e₂) + s₁₃*(c*e₃)) +
+    (c*e₂)*(s₁₂*(c*e₁) + s₂₂*(c*e₂) + s₂₃*(c*e₃)) +
+    (c*e₃)*(s₁₃*(c*e₁) + s₂₃*(c*e₂) + s₃₃*(c*e₃)) =
+    c^2 * (e₁*(s₁₁*e₁ + s₁₂*e₂ + s₁₃*e₃) +
+           e₂*(s₁₂*e₁ + s₂₂*e₂ + s₂₃*e₃) +
+           e₃*(s₁₃*e₁ + s₂₃*e₂ + s₃₃*e₃)) := by ring
+
+/-- Determinant with equal rows vanishes. -/
+theorem det_equal_rows' (a₁ a₂ a₃ c₁ c₂ c₃ : ℝ) :
+    a₁*(a₂*c₃ - a₃*c₂) - a₂*(a₁*c₃ - a₃*c₁) + a₃*(a₁*c₂ - a₂*c₁) = 0 := by ring
+
+/-- tr(Ω²) = -2(ω₁₂² + ω₁₃² + ω₂₃²) for antisymmetric Ω. -/
+theorem trace_omega_sq' (ω₁₂ ω₁₃ ω₂₃ : ℝ) :
+    0*0 + ω₁₂*(-ω₁₂) + ω₁₃*(-ω₁₃) +
+    (-ω₁₂)*ω₁₂ + 0*0 + ω₂₃*(-ω₂₃) +
+    (-ω₁₃)*ω₁₃ + (-ω₂₃)*ω₂₃ + 0*0 =
+    -(ω₁₂^2 + ω₁₃^2 + ω₂₃^2) * 2 := by ring
+
 end NavierStokesAristotle
