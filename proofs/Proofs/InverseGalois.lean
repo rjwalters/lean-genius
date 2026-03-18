@@ -394,27 +394,10 @@ theorem x_cube_sub_2_natDegree :
     (X ^ 3 - C (2 : ℚ) : ℚ[X]).natDegree = 3 :=
   NthRootIrrationalOQ01.natDegree_X_pow_sub_C_eq (by omega) (by norm_num)
 
-/--
-The symmetric group S₃ is realizable as a Galois group over ℚ.
-
-This is the first concrete non-abelian realization in our formalization.
-S₃ has order 6 and is solvable (consistent with Shafarevich's theorem),
-but this direct construction via X³ - 2 is more explicit.
-
-Previously used an axiom for Gal(X³-2) ≅ S₃; now uses the fully proved
-`x_cube_sub_2_gal_iso_s3_proved` (see Part XII below).
+/-
+S₃ realizability (s3_realizable) is proved after Part XII below,
+using the fully proved x_cube_sub_2_gal_iso_s3_proved.
 -/
-theorem s3_realizable :
-    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
-      (_ : IsGalois ℚ K),
-      Nonempty (Equiv.Perm (Fin 3) ≃* (K ≃ₐ[ℚ] K)) := by
-  let p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
-  have : Normal ℚ p.SplittingField := inferInstance
-  have : Algebra.IsSeparable ℚ p.SplittingField := inferInstance
-  exact ⟨p.SplittingField,
-    inferInstance, inferInstance, inferInstance,
-    IsGalois.mk,
-    x_cube_sub_2_gal_iso_s3_proved.map MulEquiv.symm⟩
 
 /-
 ## Part VIII: What's Known and What's Open
@@ -591,18 +574,26 @@ theorem no_root_of_irreducible_degree_ndvd
     ∀ x : K, Polynomial.aeval x p ≠ 0 := by
   intro x hroot
   apply hndvd
+  have hx_int : IsIntegral F x := .of_finite F x
   -- minpoly F x divides p (since aeval x p = 0)
   have hdvd : minpoly F x ∣ p := minpoly.dvd F x hroot
-  -- Since p is irreducible and minpoly divides p, they are associated
-  have hassoc := hp.associated_of_dvd hdvd (minpoly.ne_zero_of_finite F x)
-  -- So natDegree(minpoly) = natDegree(p)
+  -- p irreducible, minpoly | p → p = minpoly * q with q a unit
+  have ⟨q, hq⟩ := hdvd
+  have hq_unit : IsUnit q := (hp.isUnit_or_isUnit hq).resolve_left
+    fun h => (minpoly.irreducible hx_int).1 h
+  -- natDegree(minpoly) = natDegree(p) since q is a unit (natDegree 0)
   have hdegeq : (minpoly F x).natDegree = p.natDegree := by
-    have := hassoc.natDegree_eq
-    rwa [this]
+    have h_eq := congr_arg Polynomial.natDegree hq
+    rw [Polynomial.natDegree_mul (minpoly.ne_zero hx_int) hq_unit.ne_zero] at h_eq
+    -- q is a unit polynomial → natDegree(q) = 0
+    have hq_deg0 : q.natDegree = 0 := by
+      obtain ⟨_, _, hr⟩ := Polynomial.isUnit_iff.mp hq_unit
+      rw [← hr, Polynomial.natDegree_C]
+    omega
   -- [F(x):F] = natDegree(minpoly F x), and [F(x):F] divides [K:F] by tower law
   rw [← hdegeq]
-  have hx_int : IsIntegral F x := .of_finite F x
-  have htower := FiniteDimensional.finrank_mul_finrank F F⟮x⟯ K
+  set Fx := IntermediateField.adjoin F ({x} : Set K)
+  have htower := Module.finrank_mul_finrank F Fx K
   rw [IntermediateField.adjoin.finrank hx_int] at htower
   exact ⟨_, htower.symm⟩
 
@@ -618,8 +609,7 @@ theorem x_sq_add_x_add_1_irreducible :
 
 theorem x_sq_add_x_add_1_natDegree :
     (X ^ 2 + X + 1 : ℚ[X]).natDegree = 2 := by
-  rw [x_sq_add_x_add_1_eq_cyclotomic_3]
-  simp [Polynomial.natDegree_cyclotomic]
+  rw [x_sq_add_x_add_1_eq_cyclotomic_3, Polynomial.natDegree_cyclotomic]; decide
 
 /--
 X²+X+1 has no root in any degree 3 extension of ℚ, because its degree 2
@@ -633,72 +623,14 @@ theorem no_cube_root_unity_in_degree_3_ext
   rw [x_sq_add_x_add_1_natDegree, hK]
   omega
 
-/--
-The factorization X³ - a = (X - α)(X² + αX + α²) when α³ = a.
-This is the difference-of-cubes identity.
--/
-theorem x_cube_sub_factor {R : Type*} [CommRing R] (α : R) :
-    (X : R[X]) ^ 3 - C (α ^ 3) = (X - C α) * (X ^ 2 + C α * X + C (α ^ 2)) := by
-  ring
-
-/--
-If β is a root of X²+αX+α² and α is invertible, then β/α (= β * α⁻¹)
-is a root of X²+X+1.
-
-This connects the factored form back to the cyclotomic polynomial.
--/
-theorem root_of_cofactor_gives_cube_root_of_unity
-    {K : Type*} [Field K] {α β : K} (hα : α ≠ 0)
-    (hroot : β ^ 2 + α * β + α ^ 2 = 0) :
-    (β * α⁻¹) ^ 2 + (β * α⁻¹) + 1 = 0 := by
-  have hα2 : α ^ 2 ≠ 0 := pow_ne_zero 2 hα
-  field_simp
-  nlinarith [hroot]
-
-/--
-In AdjoinRoot(X³-2), the quotient polynomial X²+αX+α² (where α = root)
-has no root, because any root would give a root of X²+X+1 in a degree 3
-extension of ℚ, contradicting the fact that 2 ∤ 3.
--/
 -- Helper: X³-2 is monic
 theorem x_cube_sub_2_monic : (X ^ 3 - C (2 : ℚ) : ℚ[X]).Monic :=
   monic_X_pow_sub_C 2 (by omega)
-
--- Helper: Module.finrank ℚ (AdjoinRoot (X³-2)) = 3
-theorem adjoin_root_x_cube_sub_2_finrank :
-    Module.finrank ℚ (AdjoinRoot (X ^ 3 - C (2 : ℚ) : ℚ[X])) = 3 := by
-  have hpb := AdjoinRoot.powerBasis x_cube_sub_2_monic
-  rw [hpb.finrank, AdjoinRoot.powerBasis_dim, x_cube_sub_2_natDegree]
-
--- Helper: AdjoinRoot.root of X³-2 is nonzero (since α³ = 2 ≠ 0)
-theorem adjoin_root_x_cube_sub_2_root_ne_zero :
-    AdjoinRoot.root (X ^ 3 - C (2 : ℚ) : ℚ[X]) ≠ 0 := by
-  intro h
-  have heval := AdjoinRoot.eval₂_root (X ^ 3 - C (2 : ℚ) : ℚ[X])
-  simp [map_sub, map_ofNat] at heval
-  rw [h] at heval
-  simp at heval
 
 -- Helper: connecting ring-level equation to aeval
 theorem aeval_x_sq_add_x_add_1 {K : Type*} [CommRing K] [Algebra ℚ K] (x : K) :
     Polynomial.aeval x (X ^ 2 + X + 1 : ℚ[X]) = x ^ 2 + x + 1 := by
   simp only [map_add, map_pow, map_one, aeval_X]
-
-theorem cofactor_has_no_root_in_adjoin_root :
-    ∀ β : AdjoinRoot (X ^ 3 - C (2 : ℚ)),
-    β ^ 2 + AdjoinRoot.root (X ^ 3 - C (2 : ℚ)) * β +
-    AdjoinRoot.root (X ^ 3 - C (2 : ℚ)) ^ 2 ≠ 0 := by
-  intro β hβ
-  -- α is nonzero because α³ = 2 ≠ 0
-  have hα_ne := adjoin_root_x_cube_sub_2_root_ne_zero
-  -- β/α satisfies (β/α)² + (β/α) + 1 = 0
-  set α := AdjoinRoot.root (X ^ 3 - C (2 : ℚ) : ℚ[X])
-  have hcube := root_of_cofactor_gives_cube_root_of_unity hα_ne hβ
-  -- But X²+X+1 has no root in AdjoinRoot (degree 3 extension, and 2 ∤ 3)
-  have hnoroot := no_cube_root_unity_in_degree_3_ext adjoin_root_x_cube_sub_2_finrank (β * α⁻¹)
-  apply hnoroot
-  rw [aeval_x_sq_add_x_add_1]
-  exact hcube
 
 /--
 In the splitting field of X³-2, the ratio of two distinct roots is a
@@ -714,19 +646,18 @@ and [SplittingField : ℚ] | 6 (Gal embeds in S₃), we get
 theorem cube_root_ratio_satisfies_cyclotomic
     {K : Type*} [Field K] {a b : K} (ha3 : a ^ 3 = b ^ 3) (hab : a ≠ b) (hb : b ≠ 0) :
     (a * b⁻¹) ^ 2 + (a * b⁻¹) + 1 = 0 := by
-  have hb3 : b ^ 3 ≠ 0 := pow_ne_zero 3 hb
   -- a³ = b³ means a³ - b³ = 0, i.e., (a-b)(a²+ab+b²) = 0
   -- Since a ≠ b (so a - b ≠ 0 in a field), we get a² + ab + b² = 0
   have hcofactor : a ^ 2 + a * b + b ^ 2 = 0 := by
     have hdiff : a ^ 3 - b ^ 3 = (a - b) * (a ^ 2 + a * b + b ^ 2) := by ring
     have h0 : a ^ 3 - b ^ 3 = 0 := by rw [ha3]; ring
     rw [hdiff] at h0
-    have hsub : a - b ≠ 0 := sub_ne_zero.mpr hab
-    exact (mul_eq_zero.mp h0).resolve_left hsub
+    exact (mul_eq_zero.mp h0).resolve_left (sub_ne_zero.mpr hab)
   -- Now divide by b² to get (a/b)² + (a/b) + 1 = 0
   have hb2 : b ^ 2 ≠ 0 := pow_ne_zero 2 hb
-  have : (a * b⁻¹) ^ 2 + (a * b⁻¹) + 1 = (a ^ 2 + a * b + b ^ 2) * (b⁻¹) ^ 2 := by ring
-  rw [this, hcofactor, zero_mul]
+  have key : (a * b⁻¹) ^ 2 + (a * b⁻¹) + 1 = (a ^ 2 + a * b + b ^ 2) / b ^ 2 := by
+    field_simp
+  rw [key, hcofactor, zero_div]
 
 -- Helper: X³-2 is separable (irreducible in char 0)
 theorem x_cube_sub_2_separable : (X ^ 3 - C (2 : ℚ) : ℚ[X]).Separable :=
@@ -744,6 +675,7 @@ theorem three_dvd_gal_card :
 theorem gal_card_dvd_six :
     Fintype.card (X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal ∣ 6 := by
   set p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
+  classical
   haveI : Fact (map (algebraMap ℚ p.SplittingField) p).Splits :=
     ⟨Polynomial.SplittingField.splits p⟩
   -- Gal embeds injectively into Perm(rootSet) via galActionHom
@@ -820,7 +752,8 @@ theorem two_dvd_splitting_field_finrank :
     rw [← hmin, x_sq_add_x_add_1_natDegree]
   -- natDegree(minpoly) divides finrank (tower law)
   have hω_int : IsIntegral ℚ ω := .of_finite ℚ ω
-  have htower := Module.finrank_mul_finrank ℚ ℚ⟮ω⟯
+  set Kω := IntermediateField.adjoin ℚ ({ω} : Set (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField)
+  have htower := Module.finrank_mul_finrank ℚ Kω
     (X ^ 3 - C (2 : ℚ) : ℚ[X]).SplittingField
   rw [IntermediateField.adjoin.finrank hω_int, hdeg] at htower
   exact ⟨_, htower.symm⟩
@@ -878,6 +811,7 @@ This gives an isomorphism Gal ≅ Perm(rootSet) ≅ Perm(Fin 3) ≅ S₃.
 theorem x_cube_sub_2_gal_iso_s3_proved :
     Nonempty ((X ^ 3 - C (2 : ℚ) : ℚ[X]).Gal ≃* Equiv.Perm (Fin 3)) := by
   set p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
+  classical
   haveI : Fact (map (algebraMap ℚ p.SplittingField) p).Splits :=
     ⟨Polynomial.SplittingField.splits p⟩
   -- galActionHom is injective
@@ -900,6 +834,27 @@ theorem x_cube_sub_2_gal_iso_s3_proved :
   -- Transfer via rootSet ≃ Fin 3
   have hfin : p.rootSet p.SplittingField ≃ Fin 3 :=
     Fintype.equivFinOfCardEq hcard_root
-  exact ⟨hiso.trans (Equiv.permCongr hfin)⟩
+  have hperm : Equiv.Perm (p.rootSet p.SplittingField) ≃* Equiv.Perm (Fin 3) :=
+    { toEquiv := Equiv.permCongr hfin
+      map_mul' := fun σ τ => by ext x; simp [Equiv.permCongr_apply, Equiv.Perm.mul_apply] }
+  exact ⟨hiso.trans hperm⟩
+
+/--
+S₃ is realizable as a Galois group over ℚ.
+
+The simplest non-abelian group, realized via X³ - 2.
+-/
+theorem s3_realizable :
+    ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
+      (_ : IsGalois ℚ K),
+      Nonempty (Equiv.Perm (Fin 3) ≃* (K ≃ₐ[ℚ] K)) := by
+  let p := (X ^ 3 - C (2 : ℚ) : ℚ[X])
+  have : Normal ℚ p.SplittingField := inferInstance
+  have : Algebra.IsSeparable ℚ p.SplittingField := inferInstance
+  obtain ⟨iso⟩ := x_cube_sub_2_gal_iso_s3_proved
+  exact ⟨p.SplittingField,
+    inferInstance, inferInstance, inferInstance,
+    IsGalois.mk,
+    ⟨iso.symm⟩⟩
 
 end InverseGaloisProblem

@@ -6,6 +6,33 @@ The Inverse Galois Problem (IGP) asks: for every finite group G, does there exis
 
 **Status**: OPEN in general. The full conjecture is unproven.
 
+## Session 2026-03-18 (researcher-1) - Build Fixes and Cleanup
+
+**Mode**: REVISIT (RICH knowledge score 24)
+**Outcome**: progress — fixed InverseGalois.lean build, removed redundant file
+
+### What I Did
+
+- **REMOVED** `InverseGaloisX4Sub2.lean` (redundant with InverseGaloisD4.lean which proves |Gal(X⁴-2)|=8 with 0 sorries)
+- **FIXED** `InverseGalois.lean` build — was broken by Mathlib API changes, now builds with only 2 expected sorries
+- **REMOVED** dead code: 5 unused theorems (cofactor_has_no_root_in_adjoin_root, x_cube_sub_factor, root_of_cofactor_gives_cube_root_of_unity, adjoin_root_x_cube_sub_2_finrank, adjoin_root_x_cube_sub_2_root_ne_zero)
+- **FIXED** ~10 Mathlib API issues:
+  - `ℚ⟮ω⟯` notation → explicit `IntermediateField.adjoin`
+  - `Irreducible.associated_of_dvd` removed → `isUnit_or_isUnit` approach
+  - `AdjoinRoot.powerBasis` signature: Monic → NeZero
+  - `DecidableEq` needed for `Fintype (Equiv.Perm rootSet)` → `classical`
+  - `Equiv.permCongr` gives `≃` not `≃*` → manual MulEquiv construction
+  - `ring` fails on field inverses → `field_simp`
+  - Forward reference: `s3_realizable` → moved after Part XII
+  - `natDegree_cyclotomic` → needs `decide` for totient
+- **UPDATED** F20 comment (falsely claimed sorry where proof is complete)
+
+### Files Modified
+
+- `proofs/Proofs/InverseGalois.lean` (fixed, -93 lines net)
+- `proofs/Proofs/InverseGaloisF20.lean` (comment fix)
+- `proofs/Proofs/InverseGaloisX4Sub2.lean` (deleted)
+
 ## Session 2026-03-17 (researcher-4) - X⁴-2 Galois Group and General Lemma
 
 **Mode**: REVISIT (WEAK knowledge score 4)

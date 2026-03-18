@@ -385,7 +385,7 @@ theorem gal_card_dvd_20 :
 /-- **The Galois group of X⁵-2 over ℚ has exactly 20 elements.**
 
     Lower bound: 20 | |Gal| (fully proved from irreducibility and coprimality).
-    Upper bound: |Gal| | 20 (sorry - requires symmetric polynomial computation). -/
+    Upper bound: |Gal| | 20 (fully proved via tower law with ℚ(α,ζ₅)). -/
 theorem x5_sub_2_gal_card :
     Fintype.card ((X : ℚ[X]) ^ 5 - C 2).Gal = 20 := by
   have h20 : 20 ∣ Fintype.card ((X : ℚ[X]) ^ 5 - C 2).Gal := twenty_dvd_gal_card
